@@ -1,256 +1,134 @@
-Received: from mail-il1-f202.google.com (mail-il1-f202.google.com [209.85.166.202])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FF47D407
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 22:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C7E4C9B
+	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 01:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706652546; cv=none; b=WUiTIBJ5b2uO0PxBpW4ZMIFpC7NCtcUVwoZ+Lr8lm9NsxjJ1xX7yYtsIBS1wR4bjNkv4GR7c0kq16g2JLD9PPZgAaDUdW76Hjk1V6K62RzeQcV3HmBy+udriT67S/28bo5XqNpgCbtoHbJTaUqExpfXi/T9sM3KZsA3fW6EkabQ=
+	t=1706663584; cv=none; b=amd4BNxSZx/ec2CWL3MK8iZchHYAdGlymxfeIn24+jfPVHXowofz38LiMcwtfMWslEdcO9URX9LBTYGIZQZZ+KLAO01GOMiOIQsO57odf0K+C+H2/kdB6EoHL8Ak0x2SOvbeGIvZHt8zNBsD/kW6paMGNASWgSFMEd206zFsEn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706652546; c=relaxed/simple;
-	bh=cAGKrm92oVrNmOiOMn8fy23L/TVwM7iclaVD4LZh5WE=;
+	s=arc-20240116; t=1706663584; c=relaxed/simple;
+	bh=WnaiMYjG3HYrBPVosKeochjRi58QHb85b9Uafy87v5A=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=J7ge4QXsBcdvYCQcCD1Zr5Iz9UKgKEeMIEt1CsY3U9z86vX2J39lXKd7Au2ZP0/ju7/U8wSJIGG2C4zWh8Fasn/xwVZp490Btq9GG9irQE7utA338NC+6+9U0BF7USY83M9jImPxpiW93DE5Obu5WEkDF/NUuiVX9T8BJ0z+QBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fF8CFle+; arc=none smtp.client-ip=209.85.166.202
+	 To:Cc:Content-Type; b=XwQGKRk8sjpE1P6np5WqkLqmgf5IxU4kIUkQ1m/erTPQrd0/EWB9SPYhH6KYidX2KihHyPlrmK8F8hj+z9mKnZzAsHG94IQtezegteoeDPLArv3weDAUAaUjw9YMEHC1A2Xv4JKlbXStwRHb07UUFvdeKYeBbX1ZIgi5eUslv2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bxtUb0Ti; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fF8CFle+"
-Received: by mail-il1-f202.google.com with SMTP id e9e14a558f8ab-3637d687281so1902975ab.1
-        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 14:09:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bxtUb0Ti"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-1d91d4c6469so6244435ad.0
+        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 17:13:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706652544; x=1707257344; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1706663582; x=1707268382; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=v4ZNXq4RV3WjW3eGUbkswFledHjcQCF1i0cLTt8hHb8=;
-        b=fF8CFle+XBaRKiRP7o01QwWF3LI61qUKxi6vsJXI2XdQDbR5cc3kke/tXv9mFU/WOK
-         1wbQj1QZ8yGlWvVZWM3a4mQDDMczm2+7ZazeGvLqroYDBADdXaKrAkCuw5eORJHP3m1c
-         EOAo7fpr4Le7/IhVTCLBB2F78S2bMwVYnzWRG7ul5Tz2kEhk5RrlWOaml1WYIS0cBd4V
-         OoK7vanwR1JQ0PajyYDbr2GqDkih5Yfr3mw4SS/7ceSl3cIDe9XdcnnhD7pLrJN1iQJt
-         dPpMLwi2N8ts7U0aIqkEzYec93Hy5/+f2b8sDxxteiB5sMoq9Y7jFAhM7g7Ur71mO5WU
-         ruNg==
+        bh=/GoosJvXV4tQVgQnoX094ue9LgaeDV/puMZ+zgV5v8A=;
+        b=bxtUb0TiHwOmU6maPYHXIhvFmIYpd50MHPIav0HTh/Nlrav1Fy1GGJ6RtF+v7+npPx
+         2OutdRlvUutzGPrSdtbWWN6KzEmANSTAj3r9lA5lW/HxltwtqO1XXlr5iCA2sngyKBec
+         P0q8UFbLLhbTTVS9vnjzvMjIkulK4mau/oFu8a0kHSTA6VCnNT/VfhI8lgr/EGHcz15F
+         NaD/EI38SVfL7ZRcg3vuI2KZJo2LQmHMLDgCkqM7dpSjebEN/V5+LB0X6p3AAiVhiOka
+         1qirr5pnuia0xUVd/ANL7VXSs/GrTcFIwm/gsqdkfPl1wZ6q9bnu/F2X9WfAXmxt6hcI
+         j4Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706652544; x=1707257344;
+        d=1e100.net; s=20230601; t=1706663582; x=1707268382;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v4ZNXq4RV3WjW3eGUbkswFledHjcQCF1i0cLTt8hHb8=;
-        b=p6BmnanBiGaiWdCeFZgk9r+s6egREFPe0oPBLCouiwr9z6FB7J+w81A+XcWJOHEeMU
-         SwvKMG8ykflhPQ8bhfKvZF6QzZ4GtKjGu3Z7aVi13bIlTqtlbY5mrws+lETZglgJmRZp
-         eTpAqdcq16xqqsK59GoCE8nd6h/ZDs4V2z+dFh699xASvwee6fcETaxS9q4PuG1nX6Uw
-         cv2IEE41Q/fRrVXTrna80172m/o9dsw0nj4oQCKLwQSXF6OENYtyzfQChu5bs4KlDDrr
-         pxbz6F2ZjqfD3evCCHFkFmMiTQCH7nPlT2aSrzKfotCoe/arpu915BWBf6ILsrgJGXJc
-         Xo6g==
-X-Gm-Message-State: AOJu0Yy6bHjPxsGZvzfvZIckmatctFpMluZ2hwIvgW3mEiSs1kgpuwRu
-	oOR1ev86usiPAeqlSFLbe2A31N57oiNaiaxOrUFMSsSCW85fvmQS6gf+aTbDOVF2GG1jM4YPMrG
-	BS8AXkqKfLRccTyWLWXpIPacfHTz8Dg==
-X-Google-Smtp-Source: AGHT+IGLFDGZPeP67g5zfyhIPj2E3tcSBR6QJ4v+rNDYBBTtGTydMOdlEidlwkSIVWN2gnrHVjbqLZp5evEJhBBxyEQp
-X-Received: from loughlin00.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:1b6f])
- (user=kevinloughlin job=sendgmr) by 2002:a05:6e02:92d:b0:363:8c76:8741 with
- SMTP id o13-20020a056e02092d00b003638c768741mr50259ilt.0.1706652543762; Tue,
- 30 Jan 2024 14:09:03 -0800 (PST)
-Date: Tue, 30 Jan 2024 22:08:45 +0000
-In-Reply-To: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
+        bh=/GoosJvXV4tQVgQnoX094ue9LgaeDV/puMZ+zgV5v8A=;
+        b=dHpjn0LAMLGc463ztAf00OLlLRTl1u9UG0WSvk+HsjezWXr0FCkLxxVdebRkqjUcf6
+         LbQba0IuQEQnWPcqBAm61BD72fs4UgecMZYHNhE5pSYNxIjry+DbqubLQPjzRurcCroq
+         7bQ7q2DLDUEHnlnuQWL8fjvUEgYA6QETwzrulx1fhDb+Cz2QJzcZse2wMCC9h3ynrvIT
+         CQVLwKM99Mivn+R403HZ1LMAd/GruliRnpO+6djq5VKRM1Kh0OxG+rFJCyyRVqO3DOvH
+         voL6XRx9V6vv27TIBm+DgfAauYJnF7i/o5wpUr52/21TwUuSvNqgtH76a7VkposMK/oU
+         AGGg==
+X-Gm-Message-State: AOJu0YwVBifGNhwB4Y6U2FtwRSSCqPlLawjAz90vQ60UbCLFTqzqO7GW
+	Anp2TNZFyhodfhyub/tqkBAaVsxjTBdEm4h4FV1wFwlJiJ6OLh8OHt7PVnwYLanaGjtzhSjgrDv
+	jeA==
+X-Google-Smtp-Source: AGHT+IHXA4t0uhZ7tzthJIqQkUlU7edO5hP5ya6T+NaNmVk8RFxp+26SnKPKNqGEdvTVdg4s3sxwKV4qvvQ=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:902:d212:b0:1d9:1e1:76ca with SMTP id
+ t18-20020a170902d21200b001d901e176camr715ply.10.1706663582547; Tue, 30 Jan
+ 2024 17:13:02 -0800 (PST)
+Date: Tue, 30 Jan 2024 17:13:00 -0800
+In-Reply-To: <20231016115028.996656-9-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
-X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
-Message-ID: <20240130220845.1978329-3-kevinloughlin@google.com>
-Subject: [PATCH v3 2/2] x86/head64: Replace pointer fixups with RIP_RELATIVE_ADDR()
-From: Kevin Loughlin <kevinloughlin@google.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Nick Desaulniers <ndesaulniers@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Kevin Loughlin <kevinloughlin@google.com>, 
-	Pankaj Gupta <pankaj.gupta@amd.com>, Hou Wenlong <houwenlong.hwl@antgroup.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Dionna Glaze <dionnaglaze@google.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-coco@lists.linux.dev, 
-	Ashish Kalra <ashish.kalra@amd.com>, Andi Kleen <ak@linux.intel.com>
-Cc: Adam Dunlap <acdunlap@google.com>, Peter Gonda <pgonda@google.com>, 
-	Jacob Xu <jacobhxu@google.com>, Sidharth Telang <sidtelang@google.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <20231016115028.996656-1-michael.roth@amd.com> <20231016115028.996656-9-michael.roth@amd.com>
+Message-ID: <ZbmenP05fo8hZU8N@google.com>
+Subject: Re: [PATCH RFC gmem v1 8/8] KVM: x86: Determine shared/private faults
+ based on vm_type
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, isaku.yamahata@intel.com, 
+	ackerleytng@google.com, vbabka@suse.cz, ashish.kalra@amd.com, 
+	nikunj.dadhania@amd.com, jroedel@suse.de, pankaj.gupta@amd.com
+Content-Type: text/plain; charset="us-ascii"
 
-Now that we have RIP_RELATIVE_ADDR(), we can replace the "fixup_*()"
-family of functions in head64.c with the new macro for cleaner code.
+On Mon, Oct 16, 2023, Michael Roth wrote:
+> For KVM_X86_SNP_VM, only the PFERR_GUEST_ENC_MASK flag is needed to
+> determine with an #NPF is due to a private/shared access by the guest.
+> Implement that handling here. Also add handling needed to deal with
+> SNP guests which in some cases will make MMIO accesses with the
+> encryption bit.
 
-Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
----
- arch/x86/kernel/head64.c | 63 +++++++++++++++-------------------------
- 1 file changed, 24 insertions(+), 39 deletions(-)
+...
 
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index d159239997f4..e782149eefc4 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -85,23 +85,8 @@ static struct desc_ptr startup_gdt_descr __initdata = {
- 	.address = 0,
- };
- 
--static void __head *fixup_pointer(void *ptr, unsigned long physaddr)
--{
--	return ptr - (void *)_text + (void *)physaddr;
--}
--
--static unsigned long __head *fixup_long(void *ptr, unsigned long physaddr)
--{
--	return fixup_pointer(ptr, physaddr);
--}
--
- #ifdef CONFIG_X86_5LEVEL
--static unsigned int __head *fixup_int(void *ptr, unsigned long physaddr)
--{
--	return fixup_pointer(ptr, physaddr);
--}
--
--static bool __head check_la57_support(unsigned long physaddr)
-+static bool __head check_la57_support(void)
- {
- 	/*
- 	 * 5-level paging is detected and enabled at kernel decompression
-@@ -110,17 +95,17 @@ static bool __head check_la57_support(unsigned long physaddr)
- 	if (!(native_read_cr4() & X86_CR4_LA57))
- 		return false;
- 
--	*fixup_int(&__pgtable_l5_enabled, physaddr) = 1;
--	*fixup_int(&pgdir_shift, physaddr) = 48;
--	*fixup_int(&ptrs_per_p4d, physaddr) = 512;
--	*fixup_long(&page_offset_base, physaddr) = __PAGE_OFFSET_BASE_L5;
--	*fixup_long(&vmalloc_base, physaddr) = __VMALLOC_BASE_L5;
--	*fixup_long(&vmemmap_base, physaddr) = __VMEMMAP_BASE_L5;
-+	*((unsigned int *)RIP_RELATIVE_ADDR(__pgtable_l5_enabled)) = 1;
-+	*((unsigned int *)RIP_RELATIVE_ADDR(pgdir_shift)) = 48;
-+	*((unsigned int *)RIP_RELATIVE_ADDR(ptrs_per_p4d)) = 512;
-+	*((unsigned long *)RIP_RELATIVE_ADDR(page_offset_base)) = __PAGE_OFFSET_BASE_L5;
-+	*((unsigned long *)RIP_RELATIVE_ADDR(vmalloc_base)) = __VMALLOC_BASE_L5;
-+	*((unsigned long *)RIP_RELATIVE_ADDR(vmemmap_base)) = __VMEMMAP_BASE_L5;
- 
- 	return true;
- }
- #else
--static bool __head check_la57_support(unsigned long physaddr)
-+static bool __head check_la57_support(void)
- {
- 	return false;
- }
-@@ -175,8 +160,8 @@ static unsigned long __head sme_postprocess_startup(struct boot_params *bp, pmdv
-  * Code in __startup_64() can be relocated during execution, but the compiler
-  * doesn't have to generate PC-relative relocations when accessing globals from
-  * that function. Clang actually does not generate them, which leads to
-- * boot-time crashes. To work around this problem, every global pointer must
-- * be adjusted using fixup_pointer() or RIP_RELATIVE_ADDR().
-+ * boot-time crashes. To work around this problem, every global variable access
-+ * must be adjusted using RIP_RELATIVE_ADDR().
-  */
- unsigned long __head __startup_64(unsigned long physaddr,
- 				  struct boot_params *bp)
-@@ -194,7 +179,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	int i;
- 	unsigned int *next_pgt_ptr;
- 
--	la57 = check_la57_support(physaddr);
-+	la57 = check_la57_support();
- 
- 	/* Is the address too large? */
- 	if (physaddr >> MAX_PHYSMEM_BITS)
-@@ -215,7 +200,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 
- 	/* Fixup the physical addresses in the page table */
- 
--	pgd = fixup_pointer(early_top_pgt, physaddr);
-+	pgd = RIP_RELATIVE_ADDR(early_top_pgt);
- 	p = pgd + pgd_index(__START_KERNEL_map);
- 	if (la57)
- 		*p = (unsigned long)level4_kernel_pgt;
-@@ -224,15 +209,15 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	*p += _PAGE_TABLE_NOENC - __START_KERNEL_map + load_delta;
- 
- 	if (la57) {
--		p4d = fixup_pointer(level4_kernel_pgt, physaddr);
-+		p4d = RIP_RELATIVE_ADDR(level4_kernel_pgt);
- 		p4d[511] += load_delta;
- 	}
- 
--	pud = fixup_pointer(level3_kernel_pgt, physaddr);
-+	pud = RIP_RELATIVE_ADDR(level3_kernel_pgt);
- 	pud[510] += load_delta;
- 	pud[511] += load_delta;
- 
--	pmd = fixup_pointer(level2_fixmap_pgt, physaddr);
-+	pmd = RIP_RELATIVE_ADDR(level2_fixmap_pgt);
- 	for (i = FIXMAP_PMD_TOP; i > FIXMAP_PMD_TOP - FIXMAP_PMD_NUM; i--)
- 		pmd[i] += load_delta;
- 
-@@ -243,8 +228,8 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	 * it avoids problems around wraparound.
- 	 */
- 
--	next_pgt_ptr = fixup_pointer(&next_early_pgt, physaddr);
--	early_dynamic_pgts_ptr = fixup_pointer(early_dynamic_pgts, physaddr);
-+	early_dynamic_pgts_ptr = RIP_RELATIVE_ADDR(early_dynamic_pgts);
-+	next_pgt_ptr = RIP_RELATIVE_ADDR(next_early_pgt);
- 	pud = (pudval_t *) early_dynamic_pgts_ptr[(*next_pgt_ptr)++];
- 	pmd = (pmdval_t *) early_dynamic_pgts_ptr[(*next_pgt_ptr)++];
- 
-@@ -272,7 +257,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 
- 	pmd_entry = __PAGE_KERNEL_LARGE_EXEC & ~_PAGE_GLOBAL;
- 	/* Filter out unsupported __PAGE_KERNEL_* bits: */
--	mask_ptr = fixup_pointer(&__supported_pte_mask, physaddr);
-+	mask_ptr = RIP_RELATIVE_ADDR(__supported_pte_mask);
- 	pmd_entry &= *mask_ptr;
- 	pmd_entry += sme_me_mask_fixed_up;
- 	pmd_entry +=  physaddr;
-@@ -299,7 +284,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	 * error, causing the BIOS to halt the system.
- 	 */
- 
--	pmd = fixup_pointer(level2_kernel_pgt, physaddr);
-+	pmd = RIP_RELATIVE_ADDR(level2_kernel_pgt);
- 
- 	/* invalidate pages before the kernel image */
- 	for (i = 0; i < pmd_index((unsigned long)_text); i++)
-@@ -318,7 +303,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	 * Fixup phys_base - remove the memory encryption mask to obtain
- 	 * the true physical address.
- 	 */
--	*fixup_long(&phys_base, physaddr) += load_delta - sme_me_mask_fixed_up;
-+	*((unsigned long *)RIP_RELATIVE_ADDR(phys_base)) += load_delta - sme_me_mask_fixed_up;
- 
- 	return sme_postprocess_startup(bp, pmd);
- }
-@@ -594,15 +579,15 @@ static void set_bringup_idt_handler(gate_desc *idt, int n, void *handler)
- /* This runs while still in the direct mapping */
- static void __head startup_64_load_idt(unsigned long physbase)
- {
--	struct desc_ptr *desc = fixup_pointer(&bringup_idt_descr, physbase);
--	gate_desc *idt = fixup_pointer(bringup_idt_table, physbase);
-+	struct desc_ptr *desc = RIP_RELATIVE_ADDR(bringup_idt_descr);
-+	gate_desc *idt = RIP_RELATIVE_ADDR(bringup_idt_table);
- 
- 
- 	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
- 		void *handler;
- 
- 		/* VMM Communication Exception */
--		handler = fixup_pointer(vc_no_ghcb, physbase);
-+		handler = RIP_RELATIVE_ADDR(vc_no_ghcb);
- 		set_bringup_idt_handler(idt, X86_TRAP_VC, handler);
- 	}
- 
-@@ -629,7 +614,7 @@ void early_setup_idt(void)
- void __head startup_64_setup_env(unsigned long physbase)
- {
- 	/* Load GDT */
--	startup_gdt_descr.address = (unsigned long)fixup_pointer(startup_gdt, physbase);
-+	startup_gdt_descr.address = (unsigned long)RIP_RELATIVE_ADDR(startup_gdt);
- 	native_load_gdt(&startup_gdt_descr);
- 
- 	/* New GDT is live - reload data segment registers */
--- 
-2.43.0.429.g432eaa2c6b-goog
+> @@ -4356,12 +4357,19 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+>  			return RET_PF_EMULATE;
+>  	}
+>  
+> -	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn)) {
+> +	/*
+> +	 * In some cases SNP guests will make MMIO accesses with the encryption
+> +	 * bit set. Handle these via the normal MMIO fault path.
+> +	 */
+> +	if (!slot && private_fault && kvm_is_vm_type(vcpu->kvm, KVM_X86_SNP_VM))
+> +		private_fault = false;
 
+Why?  This is inarguably a guest bug.
+
+> +	if (private_fault != kvm_mem_is_private(vcpu->kvm, fault->gfn)) {
+>  		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+>  		return -EFAULT;
+>  	}
+>  
+> -	if (fault->is_private)
+> +	if (private_fault)
+>  		return kvm_faultin_pfn_private(vcpu, fault);
+>  
+>  	async = false;
+> diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+> index 759c8b718201..e5b973051ad9 100644
+> --- a/arch/x86/kvm/mmu/mmu_internal.h
+> +++ b/arch/x86/kvm/mmu/mmu_internal.h
+> @@ -251,6 +251,24 @@ struct kvm_page_fault {
+>  
+>  int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault);
+>  
+> +static bool kvm_mmu_fault_is_private(struct kvm *kvm, gpa_t gpa, u64 err)
+> +{
+> +	bool private_fault = false;
+> +
+> +	if (kvm_is_vm_type(kvm, KVM_X86_SNP_VM)) {
+> +		private_fault = !!(err & PFERR_GUEST_ENC_MASK);
+> +	} else if (kvm_is_vm_type(kvm, KVM_X86_SW_PROTECTED_VM)) {
+> +		/*
+> +		 * This handling is for gmem self-tests and guests that treat
+> +		 * userspace as the authority on whether a fault should be
+> +		 * private or not.
+> +		 */
+> +		private_fault = kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT);
+> +	}
+
+This can be more simply:
+
+	if (kvm_is_vm_type(kvm, KVM_X86_SNP_VM))
+		return !!(err & PFERR_GUEST_ENC_MASK);
+
+	if (kvm_is_vm_type(kvm, KVM_X86_SW_PROTECTED_VM))
+		return kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT);
