@@ -1,116 +1,105 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC79512CDB8
-	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 18:18:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEC138F8F;
+	Wed, 31 Jan 2024 18:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706725123; cv=none; b=B8hLBXaE3j9DfLMK7aUu/G/YCsDnWSUDYZO/eXsBUPb007OrVkGjQsMA+G3TqbpBQbLnjwMVLy9ptQO43MVErfxELp9N5RUJoNAudOMKiWT6aNaTBHcUAQVhTfo/LpEKLpHU4tpawzmlH35n2avFwKMcakzrOQmSq2kAjKfsD4k=
+	t=1706725821; cv=none; b=tVnXjrWFaRQeZ5XV0LY9v6/A8/fghHMeLD3R73iLPD23AE/L4PzbMHOYGu7edepCMu+6b1YLI1O0IlPcs7PQzAT56t9qrlaxOHYQBW5X9o5BEVqDhLDylfWdEO1+qQyY5ZcqHc8QfzBcu9dOGTTTyZgHzi01QgTPP9U+85nQLZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706725123; c=relaxed/simple;
-	bh=hk8mRlX4mjnPvVPM8IAfoswnHXcKo4FOa+HNypkGML8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OPDD01sSBZWATZh3WD6qN9hcSn+HQQJfdcUQC6Ktq0RhVssiEnMT7eqxgJ1S8fR4KbM0Lg7np8ke2ORAiEEvcSrlwmyIN5UaiN9eksqg940PD0ywRZi1coLkhmxmqSkYRKIMVBPlXXWPIx3nUUX+xSMqEj6MI8aRWDM8wJjDmJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ceWcn8h4; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1706725821; c=relaxed/simple;
+	bh=r1Ng7ZF/2p6XuLx2B6gkXcy/kzt01Tiqwdn97xflGWc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pqEsTc2pzpOUlLABwisOJkg+UjWRp1lxJ5J1SjhdU7jv+Z7+mLGWucV9tOKdK6OuMvSaVX2rYWqMoCCCXf++L+J70YLju/l4wc8ykI7gToanuscrUOxdeKhNqPTSra4hKWshcqIkoKSbhuQqWHtkK+O5aTy7sb9W4tfOAEB8ui4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=LWH+Mshb; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ceWcn8h4"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-40ef6f10b56so878515e9.2
-        for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 10:18:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1706725118; x=1707329918; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AzRwm4UO/Zj0dihFsSdw0bNikw8vpG8Qlhm2KtzCh+Q=;
-        b=ceWcn8h4vKuEuB2eQClRtJ0pajlk/mmDA/ekJpY6btGEaLiua1jCzKgmktIoSm/QQw
-         R9nM7ret6IDZcWQ94bQzm3J82N07hYgsr8claH0lVAxoPXKrhBOQzimi7qB/+y6Ts60s
-         ZIYIGGJdcAuaCkV8/ppb8PBucA72XZTgjR8fd7bOI8J1JyX4VhoDCXFzKmLbUK5NUIp2
-         kdYg6XkPrCLEotIS1psycHmTsZi3ia3ngEiz8FA0n3x2yGKUdXhPdeNtucK1rdOH1qsx
-         QYzfrQRUgczHsfMcGoU8LwJO4wRWbcHlZslXdfoop5K57CReonRQ4VHd+3UvwP5OsgfW
-         ebEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706725118; x=1707329918;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AzRwm4UO/Zj0dihFsSdw0bNikw8vpG8Qlhm2KtzCh+Q=;
-        b=lL8A9hlQEfUiaAnstHyW/bwV8hO49VSHsPY+fQlcNPqXGbBLMwU99Rqq3qkyM5kGyz
-         ftCxhNkx2tnloGpprvr8QixOPZnJby2xbSbMoqLt5AF5Gly9BmLmnUp52ELFTC/8d/Ln
-         RtxRUh/HeQ05y7iMgj5iwfMO22zLUK/Ys7SYJdBCGb7ok8h4DM5dJiQwy00H7JTgyOkS
-         JMoyCx4Jhu+3L5yN5Oa+MKHallGiPofAZggnOV15cRpTgyNPKiX9p6RtnC+hGTtQ/jh2
-         e/VlyTs3akIHsVJAE3K5Cbic4Vxx1HmDVcOLPu6tG6g4T+SKiP2mS+ip87SIkbWBIAmk
-         RW4w==
-X-Gm-Message-State: AOJu0Yy9bF/CrtYcrI+3ONBPob2j5C1ucPmx3q1xqQA/thAXHiZZqsJc
-	xeCZO4P6qyu/PswQQBF0AH01rq0ivJVQ7IJpoCBGsy3rTRBEHJiAvs4wf3ojQu0=
-X-Google-Smtp-Source: AGHT+IFlerNnTYUOTUSapaoI+UDDATLttB4os/ksQnnOUNF1jVTF7nOlnLuNJ3pWMAKicLCCZU0ziw==
-X-Received: by 2002:a05:600c:3515:b0:40f:b770:fa42 with SMTP id h21-20020a05600c351500b0040fb770fa42mr479403wmq.33.1706725118189;
-        Wed, 31 Jan 2024 10:18:38 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCVy1xn9w5DxLe2K+iu60xYij8fws7n3OrrO5b1XIV8mMgc0hV2O6rkXLBEFaUrY64Tk+TT+COagoLLI+tfKB8pEigoWdhKKJz+c3IMPt5+CRblFEKnWoQumRf/m04rfk4L3LhacC3+t+si5eVDGAM2jHpOKhk1gaYmOTICme63UcNneUMnQmEy1N9YFeODLaXA6JKztRMVGaBDzADAIF8eB74BIFwg+Xo51kVDYJ567G1lLwdlQj55didzP5lN1Ee4OWga2kw==
-Received: from ?IPV6:2a10:bac0:b000:7588:aea0:a2ac:ddc1:371f? ([2a10:bac0:b000:7588:aea0:a2ac:ddc1:371f])
-        by smtp.gmail.com with ESMTPSA id m21-20020a05600c4f5500b0040fb03f803esm2264032wmq.24.2024.01.31.10.18.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Jan 2024 10:18:38 -0800 (PST)
-Message-ID: <8655c3b5-84a7-42c7-8f2d-8ea32308fe5d@suse.com>
-Date: Wed, 31 Jan 2024 20:18:36 +0200
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="LWH+Mshb"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D212040E00C5;
+	Wed, 31 Jan 2024 18:30:16 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id S2T9VafLywYD; Wed, 31 Jan 2024 18:30:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1706725814; bh=/+NtwTeM2WJJmwO5s2FNbBwsFJel7210irlJXEyfKSU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LWH+MshbXOQDOug2oC0/qmgLf9e0lWP6Acf6uWxiooq36saxvU3ZxVpGm3/EAXg5a
+	 TGqBwUZQWx5d6HpUAm2etuL2sWfz2FmtIG2jnxwPsrcBfYGfiQIUn91gUKT4cXnFXQ
+	 CjKULTC99gfVESdzx262x0zDY/0JsAZo67ZLV6MifBHQSY215jexzpb7UledkVRL2w
+	 GGE5QRV+a3MwdqWRRImmc/E4JqVawFpQjydgyDF3ueCPFLqay1oXQ6fnv+N/6dAnXT
+	 4loWAhFCFIbgGm3aK8jCz/QrRSuOqtUfrIbFb/kT51+iCCfSEOV+BCABMgH3FChcRc
+	 rkRVaowWvfbC1FbRdaEVMa3jb6UmHIOXPf9W+ky5BK/j0xvRmk43lfSJS3F2RHeMNH
+	 WIzT4g31JKZWXVrPDwX72MMA0c74B9+J3hsVMu5Jd31qDIqE6v8jeXJhEYo3BE40rD
+	 ol6cq+SjP76XPOZN8mZWCn2Y01sbWrkSMWBQJnoBPa2I5uwdFbN8GGlEiYDsTZ3RHQ
+	 ntmSC33VLC3P/NjKwslRjzL7auI5Tk59OYjV3and5arLRAvKtRNltgA4pOoERbodrP
+	 W/wiQrtPl7g0cZv2YgraIDNVSMPiR1x20l0lfWO9jHAR+1vKP43bYgtJuEY0aawcjm
+	 YJ4lvT+zcVpGm2jhLpD64TK0=
+Received: from zn.tnic (pd953033e.dip0.t-ipconnect.de [217.83.3.62])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7F10D40E016C;
+	Wed, 31 Jan 2024 18:29:50 +0000 (UTC)
+Date: Wed, 31 Jan 2024 19:29:44 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Jacob Xu <jacobhxu@google.com>
+Cc: Kevin Loughlin <kevinloughlin@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Dionna Glaze <dionnaglaze@google.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	linux-coco@lists.linux.dev, Ashish Kalra <ashish.kalra@amd.com>,
+	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>,
+	Peter Gonda <pgonda@google.com>,
+	Sidharth Telang <sidtelang@google.com>
+Subject: Re: [PATCH v3 0/2] x86: enforce and cleanup RIP-relative accesses in
+ early boot code
+Message-ID: <20240131182944.GJZbqRmBN_KDgK_nmB@fat_crate.local>
+References: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
+ <20240130220845.1978329-1-kevinloughlin@google.com>
+ <20240131140037.GDZbpShX2b0elXlqDA@fat_crate.local>
+ <CAJ5mJ6j-Vw2P=QLK-J_J79S35UggvZPtm5sia74=enR1qq9X9A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface
- for quote generation
-Content-Language: en-US
-To: Dave Hansen <dave.hansen@intel.com>, linux-coco@lists.linux.dev
-Cc: x86@kernel.org, dave.hansen@linux.intel.com, dan.j.williams@intel.com,
- dionnaglaze@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-References: <20240124093858.1818497-1-nik.borisov@suse.com>
- <e3078be1-397a-4927-966a-acea5561eec8@suse.com>
- <464ff551-5909-42e4-b544-5c68ff86c76c@intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-In-Reply-To: <464ff551-5909-42e4-b544-5c68ff86c76c@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAJ5mJ6j-Vw2P=QLK-J_J79S35UggvZPtm5sia74=enR1qq9X9A@mail.gmail.com>
 
+On Wed, Jan 31, 2024 at 10:16:55AM -0800, Jacob Xu wrote:
+> We're interested in fixing SEV-SNP guest boots which are currently
+> broken when using a guest kernel compiled with clang. It seems like
+> every other user of SEV/SNP linux kernel code uses GCC to compile the
+> kernel so they've avoided this issue.
 
+Lemme give that a try here.
 
-On 31.01.24 г. 17:27 ч., Dave Hansen wrote:
-> On 1/30/24 23:28, Nikolay Borisov wrote:
->> On 24.01.24 г. 11:38 ч., Nikolay Borisov wrote:
->>> IOCTL based interface was the natural choice for interacting with the
->>> quote generation machine at a time when there wasn't anything better.
->>> Fortunately, now we have a vendor-agnostic, configfs-based one which
->>> obviates the need to have the IOCTL-based interface.
->>>
->>> Gate the relevant code behind a Kconfig option, clearly marking it as
->>> deprecated as well as introduce a runtime warning.
->>>
->>> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
->>
->> Ping?
-> 
-> There is no clear consensus from this changelog, nor the tags about this
-> approach.  It would be much appreciated if you could make this changelog
-> more freestanding and  make it clear that this approach is acceptable to
-> both the authors and users of the code you are modifying.
+> E.g. Google COS uses clang to compile the kernel and we've made do
+> with an internal fix for a while. 
 
+Which means that, theoretically, you could forward-port this internal
+fix until the issue is fixed for real, I'd say.
 
-So how about something along the lines of:
+-- 
+Regards/Gruss,
+    Boris.
 
-IOCTL based interface was the natural choice for interacting with the
-quote generation machine at a time when there wasn't anything better. In 
-its current form it's only usable for local attestation but that use 
-case is also going to be switched to the config-tsm interface. In 
-preparation for this introduce a Kconfig option which allows the user to 
-choose to disable the legacy code.
-
-This strikes a balance between starting the deprecation process, yet not 
-prevent existing users to continue using the code.
-
-
----------------------------------------
-
-And the next version of the patch won't have the runtime warning.
+https://people.kernel.org/tglx/notes-about-netiquette
