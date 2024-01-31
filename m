@@ -1,115 +1,116 @@
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC44412FF7C
-	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 18:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC79512CDB8
+	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 18:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706725030; cv=none; b=Bzl1qsJ/XnLdwmw4suyOHcDHwJT4CIe4dbh7k2zD1KMIo6/B5gi2HIkXgvTOoucH+aJIE8yKjiqztd9Aafy2M+v54tuQI2p4CbpW+YRXS6vrrX6TWogIrFcbT0QYMJwWorXqgczPMQSi6YEa0u1E8JwzsTzcVnO7pPfjKrYCpK8=
+	t=1706725123; cv=none; b=B8hLBXaE3j9DfLMK7aUu/G/YCsDnWSUDYZO/eXsBUPb007OrVkGjQsMA+G3TqbpBQbLnjwMVLy9ptQO43MVErfxELp9N5RUJoNAudOMKiWT6aNaTBHcUAQVhTfo/LpEKLpHU4tpawzmlH35n2avFwKMcakzrOQmSq2kAjKfsD4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706725030; c=relaxed/simple;
-	bh=lSL7ZiS6AF8e2f46sDRNj1OPxHM2bdMKamA8rT7qT4k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QhEd3lrBAZx7ofyqh/kjLWm3E08JaqewoOhF+T8/zfmn+y0pPtp0KXOxlJPkRGcIhswfFdzt4j67+g2OY3UVtonh0q00XD8QSIZPQOcDGaaWZScmnC3jdr5/Zi9tEErWW/W+yUOxyuEDbd3YGt1KC83RioHj3domTkKbZBTTORU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uRhM7bFH; arc=none smtp.client-ip=209.85.166.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706725123; c=relaxed/simple;
+	bh=hk8mRlX4mjnPvVPM8IAfoswnHXcKo4FOa+HNypkGML8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OPDD01sSBZWATZh3WD6qN9hcSn+HQQJfdcUQC6Ktq0RhVssiEnMT7eqxgJ1S8fR4KbM0Lg7np8ke2ORAiEEvcSrlwmyIN5UaiN9eksqg940PD0ywRZi1coLkhmxmqSkYRKIMVBPlXXWPIx3nUUX+xSMqEj6MI8aRWDM8wJjDmJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ceWcn8h4; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uRhM7bFH"
-Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-36394219fbfso5165ab.1
-        for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 10:17:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ceWcn8h4"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-40ef6f10b56so878515e9.2
+        for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 10:18:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706725028; x=1707329828; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cGoGC6xB6KW9odfFn1t46MQGiYGwOCppmvmcxLORiTA=;
-        b=uRhM7bFHOs1/C/MZsSlMEZVqD+y/2QqDiZ+vTn7dmi8hTyQf9/LtsoalUy1aVFzqRa
-         X1dhAsw3wflDbjS6+buBAwkyxGUIPpnqiGRduTCWnI+w37PSD37RMfINp7sJ1+ZdEhxw
-         g1cZI8TOfkKsD/R+wouvUXApLoPuikCYxb3d6ClXJewrDUc5vQi7iiyYXxb2gCRA+49W
-         PEH7/QKmqGyBl6SKAMBAVjPK/QrKfU0z4uIqYfBPY5VHFvTk/Eq4LcYCNCY/gTbe0mT+
-         RlwW0oWl6kQ9YdPUAdSRB/uQqB0vmhiqKEsTzZ0eMQeBD2HTTyNrVka106FHhuG8UfTq
-         6NDw==
+        d=suse.com; s=google; t=1706725118; x=1707329918; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AzRwm4UO/Zj0dihFsSdw0bNikw8vpG8Qlhm2KtzCh+Q=;
+        b=ceWcn8h4vKuEuB2eQClRtJ0pajlk/mmDA/ekJpY6btGEaLiua1jCzKgmktIoSm/QQw
+         R9nM7ret6IDZcWQ94bQzm3J82N07hYgsr8claH0lVAxoPXKrhBOQzimi7qB/+y6Ts60s
+         ZIYIGGJdcAuaCkV8/ppb8PBucA72XZTgjR8fd7bOI8J1JyX4VhoDCXFzKmLbUK5NUIp2
+         kdYg6XkPrCLEotIS1psycHmTsZi3ia3ngEiz8FA0n3x2yGKUdXhPdeNtucK1rdOH1qsx
+         QYzfrQRUgczHsfMcGoU8LwJO4wRWbcHlZslXdfoop5K57CReonRQ4VHd+3UvwP5OsgfW
+         ebEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706725028; x=1707329828;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cGoGC6xB6KW9odfFn1t46MQGiYGwOCppmvmcxLORiTA=;
-        b=B8Kv9APgWJmd5ZrBX9GQvmX7vDr/6Evt4c2qJWwmODTwMCKAkrCvwRCyapFUCo37zn
-         ciOVHVRPKLF/71dptjP/YeKXlq6JtZtmzyCiucH0xluTzduLvhLxpdEgButLQ+dk6iuT
-         prqV19vSHWwUN9qtSsmbeQ2cMN6EJ86i2aXoDjzrb6vc4xbzmKYqKZZ1lkR2X2dRrFnJ
-         RF4zXvnBJmPLK91QWaVzxqZ0JySx9/mOx3SkEXg2NOX5UhV7F8QjEVRgnhNl45+Uyx/c
-         L31UWtWVbi//kxrBUVp3v204btv+7+WK/SG9iyAJWJWk2dWuu7HsRoiIJbUn4TPXDhW6
-         vwBQ==
-X-Gm-Message-State: AOJu0YyEEtkYifCFcwqeOTaRQTXBCRigGqb/6FRZvPwsr2nvJQx7kEQ0
-	8SRkM8sXo/qnlAELWWnZn6Ev1cJFTUAjZ+he2jLLYWukBU9TX2y/oHxXvsfq/aCPDweZ7ydpGYZ
-	4pRKHykE/Xy/G2HcEGu4O6DKAivc32z+p9sfq
-X-Google-Smtp-Source: AGHT+IHycvDls/YT+3j8QE0ZFLpsakcLLNDEcd+SkH5MogAi7j4e2wPM1sO7EFqC9NaJxi/HxumIw1JCoMp8P/VnjQo=
-X-Received: by 2002:a92:c9cd:0:b0:363:8388:dbd1 with SMTP id
- k13-20020a92c9cd000000b003638388dbd1mr15806ilq.16.1706725027987; Wed, 31 Jan
- 2024 10:17:07 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706725118; x=1707329918;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AzRwm4UO/Zj0dihFsSdw0bNikw8vpG8Qlhm2KtzCh+Q=;
+        b=lL8A9hlQEfUiaAnstHyW/bwV8hO49VSHsPY+fQlcNPqXGbBLMwU99Rqq3qkyM5kGyz
+         ftCxhNkx2tnloGpprvr8QixOPZnJby2xbSbMoqLt5AF5Gly9BmLmnUp52ELFTC/8d/Ln
+         RtxRUh/HeQ05y7iMgj5iwfMO22zLUK/Ys7SYJdBCGb7ok8h4DM5dJiQwy00H7JTgyOkS
+         JMoyCx4Jhu+3L5yN5Oa+MKHallGiPofAZggnOV15cRpTgyNPKiX9p6RtnC+hGTtQ/jh2
+         e/VlyTs3akIHsVJAE3K5Cbic4Vxx1HmDVcOLPu6tG6g4T+SKiP2mS+ip87SIkbWBIAmk
+         RW4w==
+X-Gm-Message-State: AOJu0Yy9bF/CrtYcrI+3ONBPob2j5C1ucPmx3q1xqQA/thAXHiZZqsJc
+	xeCZO4P6qyu/PswQQBF0AH01rq0ivJVQ7IJpoCBGsy3rTRBEHJiAvs4wf3ojQu0=
+X-Google-Smtp-Source: AGHT+IFlerNnTYUOTUSapaoI+UDDATLttB4os/ksQnnOUNF1jVTF7nOlnLuNJ3pWMAKicLCCZU0ziw==
+X-Received: by 2002:a05:600c:3515:b0:40f:b770:fa42 with SMTP id h21-20020a05600c351500b0040fb770fa42mr479403wmq.33.1706725118189;
+        Wed, 31 Jan 2024 10:18:38 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCVy1xn9w5DxLe2K+iu60xYij8fws7n3OrrO5b1XIV8mMgc0hV2O6rkXLBEFaUrY64Tk+TT+COagoLLI+tfKB8pEigoWdhKKJz+c3IMPt5+CRblFEKnWoQumRf/m04rfk4L3LhacC3+t+si5eVDGAM2jHpOKhk1gaYmOTICme63UcNneUMnQmEy1N9YFeODLaXA6JKztRMVGaBDzADAIF8eB74BIFwg+Xo51kVDYJ567G1lLwdlQj55didzP5lN1Ee4OWga2kw==
+Received: from ?IPV6:2a10:bac0:b000:7588:aea0:a2ac:ddc1:371f? ([2a10:bac0:b000:7588:aea0:a2ac:ddc1:371f])
+        by smtp.gmail.com with ESMTPSA id m21-20020a05600c4f5500b0040fb03f803esm2264032wmq.24.2024.01.31.10.18.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Jan 2024 10:18:38 -0800 (PST)
+Message-ID: <8655c3b5-84a7-42c7-8f2d-8ea32308fe5d@suse.com>
+Date: Wed, 31 Jan 2024 20:18:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
- <20240130220845.1978329-1-kevinloughlin@google.com> <20240131140037.GDZbpShX2b0elXlqDA@fat_crate.local>
-In-Reply-To: <20240131140037.GDZbpShX2b0elXlqDA@fat_crate.local>
-From: Jacob Xu <jacobhxu@google.com>
-Date: Wed, 31 Jan 2024 10:16:55 -0800
-Message-ID: <CAJ5mJ6j-Vw2P=QLK-J_J79S35UggvZPtm5sia74=enR1qq9X9A@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] x86: enforce and cleanup RIP-relative accesses in
- early boot code
-To: Borislav Petkov <bp@alien8.de>
-Cc: Kevin Loughlin <kevinloughlin@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Nick Desaulniers <ndesaulniers@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>, 
-	Hou Wenlong <houwenlong.hwl@antgroup.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-coco@lists.linux.dev, 
-	Ashish Kalra <ashish.kalra@amd.com>, Andi Kleen <ak@linux.intel.com>, 
-	Adam Dunlap <acdunlap@google.com>, Peter Gonda <pgonda@google.com>, 
-	Sidharth Telang <sidtelang@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Jan 31, 2024 at 6:01=E2=80=AFAM Borislav Petkov <bp@alien8.de> wrot=
-e:
->
-> On Tue, Jan 30, 2024 at 10:08:43PM +0000, Kevin Loughlin wrote:
-> > Instead, this patchset continues the approach of fixing the immediate
-> > problem of SEV-SNP boots crashing when built by clang, providing a
-> > backport-friendly set of changes needed to successfully boot SEV-SNP
-> > hosts and guests.
->
-> What use cases are those exactly? How do I reproduce them here?
->
-
-We're interested in fixing SEV-SNP guest boots which are currently
-broken when using a guest kernel compiled with clang. It seems like
-every other user of SEV/SNP linux kernel code uses GCC to compile the
-kernel so they've avoided this issue.
-
-> SNP is not upstream yet and the SEV* code has been out there for a while
-> now without a single such report so this must be something new happening
-> due to <raisins>...?
-
-E.g. Google COS uses clang to compile the kernel and we've made do
-with an internal fix for a while. We've unfortunately just been rather
-slow to report upstream.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface
+ for quote generation
+Content-Language: en-US
+To: Dave Hansen <dave.hansen@intel.com>, linux-coco@lists.linux.dev
+Cc: x86@kernel.org, dave.hansen@linux.intel.com, dan.j.williams@intel.com,
+ dionnaglaze@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+References: <20240124093858.1818497-1-nik.borisov@suse.com>
+ <e3078be1-397a-4927-966a-acea5561eec8@suse.com>
+ <464ff551-5909-42e4-b544-5c68ff86c76c@intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+In-Reply-To: <464ff551-5909-42e4-b544-5c68ff86c76c@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
->
-> Thx.
->
-> --
-> Regards/Gruss,
->     Boris.
->
-> https://people.kernel.org/tglx/notes-about-netiquette
+
+On 31.01.24 г. 17:27 ч., Dave Hansen wrote:
+> On 1/30/24 23:28, Nikolay Borisov wrote:
+>> On 24.01.24 г. 11:38 ч., Nikolay Borisov wrote:
+>>> IOCTL based interface was the natural choice for interacting with the
+>>> quote generation machine at a time when there wasn't anything better.
+>>> Fortunately, now we have a vendor-agnostic, configfs-based one which
+>>> obviates the need to have the IOCTL-based interface.
+>>>
+>>> Gate the relevant code behind a Kconfig option, clearly marking it as
+>>> deprecated as well as introduce a runtime warning.
+>>>
+>>> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+>>
+>> Ping?
+> 
+> There is no clear consensus from this changelog, nor the tags about this
+> approach.  It would be much appreciated if you could make this changelog
+> more freestanding and  make it clear that this approach is acceptable to
+> both the authors and users of the code you are modifying.
+
+
+So how about something along the lines of:
+
+IOCTL based interface was the natural choice for interacting with the
+quote generation machine at a time when there wasn't anything better. In 
+its current form it's only usable for local attestation but that use 
+case is also going to be switched to the config-tsm interface. In 
+preparation for this introduce a Kconfig option which allows the user to 
+choose to disable the legacy code.
+
+This strikes a balance between starting the deprecation process, yet not 
+prevent existing users to continue using the code.
+
+
+---------------------------------------
+
+And the next version of the patch won't have the runtime warning.
