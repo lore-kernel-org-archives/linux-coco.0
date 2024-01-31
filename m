@@ -1,104 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E674A84A52;
-	Wed, 31 Jan 2024 14:52:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7A684A37
+	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 15:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706712751; cv=none; b=UegH0DUL+ftOE9N9aM6kl8XY3Ynubqe8gmqZJlEx9HBOo+R6FLS2O8aEe87pvjCtIDJA6jRTfS+2RjJLTQH8qNfWNg4aP4q5jVXb1OE1L9omYOZlkuagSSmAmy+z245oQVjELabKEHzvJCQ4dbT9LyifVdAcJXxOHGeXjU/y2WY=
+	t=1706714641; cv=none; b=uQzaBLNUXHc1GmCaqzypGvHvxHHq1ux5I/mFK0cklaP2G1hhq0ctLrEEygV2UqQcV8Wow8fYdCW/iX7Aldf6sINAPgU8q0DQEJDpEFCRnH0wcII1E6DVrtEyPxvQhb7hpDrKKOcQKAIRq9uzFcItZnBuQxronJ4jZ60SgbQndaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706712751; c=relaxed/simple;
-	bh=CAVuopFYw2Cq9k4IZHTbz/jUD6sj9hYEe12XppGE8tk=;
+	s=arc-20240116; t=1706714641; c=relaxed/simple;
+	bh=nPSaMyCuayy/I+QR1Qo4ECI40Tw9VjSdBcgrujLtNpk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MnOxWf5bZGT8ADzbWJwTLQk/XqKDb12vzqSEM2Gohxkj7LR47Yo7MyFAsKWSqggoV987bQRLfd2Qz19zgPaYvweQ5ZiD0MtdjLzPSUjev2ja09ouByAXATP5oIQ2kCOMeULMmzYYDaVhDuxoVG4BRwOkX6PReWQREY1OwX04W4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=ZM5My5wo; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=nEOsWPaOxAi7ZfER1uhdf7QE3o5gPVMlVAB9Mmz54zq5BCw8A86QRh4z6+QCzz301b+1ke38EddEGTv7UocDu2V3WBGGNl5XSor6e1FrgN7z3Xor26XdT98QjjJYrVLB+wwdgXyVQqSXztZqJmscLfMSHiywknrnpjqlaNdPA3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RDsw4kK2; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="ZM5My5wo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9202C43601;
-	Wed, 31 Jan 2024 14:52:28 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="ZM5My5wo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1706712747;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RDsw4kK2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706714638;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=08V5Tn/E3QHiknxLw9Mvmg79PQM1lmEyJEgFVM+dfA0=;
-	b=ZM5My5woF1RnrEBzh7NrcqN2HvNxx1AExBaNWhqTm2lUemCmQdNGipM8JH9pThNLq7da16
-	Ds4ggg+Q5amSpO0B9NQviIIWB9XJAC9hMytXOFyoNoLwP7JUVgqXDQudQK769svE+IqIhf
-	VSfCOqaSPVBWKuBUK49CbbmqzMtSCVI=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 6f61bf04 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Wed, 31 Jan 2024 14:52:27 +0000 (UTC)
-Date: Wed, 31 Jan 2024 15:52:26 +0100
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Theodore Ts'o <tytso@mit.edu>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
+	bh=ShXEhsnOf4Qa8k8iTBTenpYOXlavsQuWnbVyMIJ1hzA=;
+	b=RDsw4kK2gHDkvRchbESRRC60cPHjZZqqw3zrjfW6bgNbNwlMhylHEg2cSHUBCHGVuVD6+I
+	gRGd7nHLdAWHuFmboN+9PyqQ/UAEZLDkZvg2OaoKdnnKV4pGs3W/sNev38HPptHfRXCdY6
+	oU/Rn7UW17wm+uul0JiSCFUduxJ7XmQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-153-DXhB-mCfPv-1sXMqsS7BtQ-1; Wed, 31 Jan 2024 10:23:55 -0500
+X-MC-Unique: DXhB-mCfPv-1sXMqsS7BtQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4853F185A784;
+	Wed, 31 Jan 2024 15:23:54 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.15])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 32C088B;
+	Wed, 31 Jan 2024 15:23:53 +0000 (UTC)
+Date: Wed, 31 Jan 2024 23:23:50 +0800
+From: Baoquan He <bhe@redhat.com>
+To: "Huang, Kai" <kai.huang@intel.com>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>,
 	"Nakajima, Jun" <jun.nakajima@intel.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	"Kalra, Ashish" <ashish.kalra@amd.com>,
 	Sean Christopherson <seanjc@google.com>,
+	"kexec@lists.infradead.org" <kexec@lists.infradead.org>,
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
-Message-ID: <ZbpequdB0dQdH6aA@zx2c4.com>
-References: <CAHmME9pOt=uEmuBzBpgUHw9DqAD2FZTZ3v53AOZbQ3Cd2p97xQ@mail.gmail.com>
- <DM8PR11MB5750E38A8B2BCE66AF7F9812E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9qMO7=RDR60bKJvpDTRokcKed_i0+7BbFD53_7o2OJ6-g@mail.gmail.com>
- <CAHmME9rum4uwSNFd_GkD9p_+vN4DBxA=feZX7k9RvugFZsZNJg@mail.gmail.com>
- <DM8PR11MB5750797D0B9B8EB32740F55DE77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9oC=GE-7QS2m9FA5cs_ss+tQgB9Pj3tKnTtMMFpQmUshg@mail.gmail.com>
- <DM8PR11MB5750B861F7A105886AA5FCE4E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com>
- <20240131140756.GB2356784@mit.edu>
- <Zbpc8tppxuKr-hnN@zx2c4.com>
+Subject: Re: [PATCHv6 00/16] x86/tdx: Add kexec support
+Message-ID: <ZbpmBulaR7eft/CE@MiWiFi-R3L-srv>
+References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
+ <3f44458f-2b4a-4464-a3df-cb791298dafc@redhat.com>
+ <efe20a00-9a7c-4c03-8fcc-fce265cdbf0e@suse.com>
+ <ZbpBbAkPxQZ6gHoE@MiWiFi-R3L-srv>
+ <5d91fc11-0b3b-40f0-872d-abdbb4038f76@suse.com>
+ <BL1PR11MB5978633DF36A69F8020818E1F77C2@BL1PR11MB5978.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zbpc8tppxuKr-hnN@zx2c4.com>
+In-Reply-To: <BL1PR11MB5978633DF36A69F8020818E1F77C2@BL1PR11MB5978.namprd11.prod.outlook.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-On Wed, Jan 31, 2024 at 03:45:06PM +0100, Jason A. Donenfeld wrote:
-> On Wed, Jan 31, 2024 at 09:07:56AM -0500, Theodore Ts'o wrote:
-> > What about simply treating boot-time initialization of the /dev/random
-> > state as special.  That is, on x86, if the hardware promises that
-> > RDSEED or RDRAND is available, we use them to initialization our RNG
-> > state at boot.  On bare metal, there can't be anyone else trying to
-> > exhaust the on-chip RNG's entropy supply, so if RDSEED or RDRAND
-> > aren't working available --- panic, since the hardware is clearly
-> > busted.
+On 01/31/24 at 01:07pm, Huang, Kai wrote:
+> > > Runtime disabling kexec looks better than at cmpile time, esp for
+> > > distros. While from above patch, making using of kexec_load_disabled
+> > > to achive the runtime disabling may not be so good. Because we have a
+> > > front door to enable it through:
+> > >
+> > > /proc/sys/kernel/kexec_load_disabled
+> > 
+> > AFAIU it can't be enabled via this sysctl because the handler for it expects
+> > only 1 to be written to it:
+> > 
+> >       2                 .proc_handler   = proc_dointvec_minmax,
+> > 
+> >       1                 .extra1         = SYSCTL_ONE,
+> > 
+> >    994                  .extra2         = SYSCTL_ONE,
+> > 
 > 
-> This is the first thing I suggested here: https://lore.kernel.org/all/CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com/
+> This is also my understanding.  
 > 
-> But Elena found this dissatisfying because we still can't guarantee new
-> material later.
+> The documentation also says once it is turned to disable we cannot turn back again:
 > 
-> > On a guest OS, if confidential compute is enabled, and if RDSEED and
-> > RDRAND don't work after N retries, and we know CC is enabled, panic,
-> > since the kernel can't provide the promised security gaurantees, and
-> > the CC developers and users are cordially invited to sharpen their
-> > pitchforks and to send their tender regards to the Intel RNG
-> > engineers.
+> kexec_load_disable
+> ===================
 > 
-> Yea, maybe bubbling the RDRAND DoS up to another DoS in the CoCo case is
-> a good tradeoff that will produce the right pitchforkers without
-> breaking anything real.
+> A toggle indicating if the syscalls ``kexec_load`` and
+> ``kexec_file_load`` have been disabled.
+> This value defaults to 0 (false: ``kexec_*load`` enabled), but can be
+> set to 1 (true: ``kexec_*load`` disabled).
+> Once true, kexec can no longer be used, and the toggle cannot be set
+> back to false.
 
-One problem, though, is userspace can DoS the kernel's use of RDRAND.
-So probably infinitely retrying in CoCo environments is better than
-panicing/warning, since ostensibly a kthread will eventually succeed.
+you are quite right, I have never noticed this, thanks.
 
-Maybe, though, the Intel platform just simply isn't ready for CoCo, and
-marketing got a little bit ahead of the tech?
+Then then mentioned patch looks good to me.
 
-Jason
