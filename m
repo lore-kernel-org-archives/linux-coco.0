@@ -1,105 +1,126 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEC138F8F;
-	Wed, 31 Jan 2024 18:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A6B33986
+	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 19:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706725821; cv=none; b=tVnXjrWFaRQeZ5XV0LY9v6/A8/fghHMeLD3R73iLPD23AE/L4PzbMHOYGu7edepCMu+6b1YLI1O0IlPcs7PQzAT56t9qrlaxOHYQBW5X9o5BEVqDhLDylfWdEO1+qQyY5ZcqHc8QfzBcu9dOGTTTyZgHzi01QgTPP9U+85nQLZo=
+	t=1706727920; cv=none; b=P1CYkWHE/AH2kvnHyt7enLEFSPdPgfPF+hijf//eCrLfjwnUQxWBwsYM0bnbR6tCHc9mlAggU7OPSCSJ3YNNNkAuFW001tp8TGs4L3fAle9/mviCE70oQm3wtOK+uEx979BfVElVXy/63r2V/xUo10WDb81P1fs3aR3j7jXXa/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706725821; c=relaxed/simple;
-	bh=r1Ng7ZF/2p6XuLx2B6gkXcy/kzt01Tiqwdn97xflGWc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pqEsTc2pzpOUlLABwisOJkg+UjWRp1lxJ5J1SjhdU7jv+Z7+mLGWucV9tOKdK6OuMvSaVX2rYWqMoCCCXf++L+J70YLju/l4wc8ykI7gToanuscrUOxdeKhNqPTSra4hKWshcqIkoKSbhuQqWHtkK+O5aTy7sb9W4tfOAEB8ui4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=LWH+Mshb; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1706727920; c=relaxed/simple;
+	bh=TYC7CFZj8c+TKApRj4NIb9Ph6HilMkn2amrqOXW+L8s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TBWvRtirWOEYo28mn3oadsGVEa9cCi0ahQu/mgLqeicmSSdSoAc6K95h4FaFoiP7b1ttt5E/VEk/Xo8WBCnuSUpC6hSyRSGYe46fZonii39EKp1URZ/GCxSPGDWjng7PvGYUsdB8vODCCOsECsGigvvvsvBe/QNDp0aA8LoLP84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QGa9n6Vy; arc=none smtp.client-ip=192.55.52.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="LWH+Mshb"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D212040E00C5;
-	Wed, 31 Jan 2024 18:30:16 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id S2T9VafLywYD; Wed, 31 Jan 2024 18:30:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1706725814; bh=/+NtwTeM2WJJmwO5s2FNbBwsFJel7210irlJXEyfKSU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LWH+MshbXOQDOug2oC0/qmgLf9e0lWP6Acf6uWxiooq36saxvU3ZxVpGm3/EAXg5a
-	 TGqBwUZQWx5d6HpUAm2etuL2sWfz2FmtIG2jnxwPsrcBfYGfiQIUn91gUKT4cXnFXQ
-	 CjKULTC99gfVESdzx262x0zDY/0JsAZo67ZLV6MifBHQSY215jexzpb7UledkVRL2w
-	 GGE5QRV+a3MwdqWRRImmc/E4JqVawFpQjydgyDF3ueCPFLqay1oXQ6fnv+N/6dAnXT
-	 4loWAhFCFIbgGm3aK8jCz/QrRSuOqtUfrIbFb/kT51+iCCfSEOV+BCABMgH3FChcRc
-	 rkRVaowWvfbC1FbRdaEVMa3jb6UmHIOXPf9W+ky5BK/j0xvRmk43lfSJS3F2RHeMNH
-	 WIzT4g31JKZWXVrPDwX72MMA0c74B9+J3hsVMu5Jd31qDIqE6v8jeXJhEYo3BE40rD
-	 ol6cq+SjP76XPOZN8mZWCn2Y01sbWrkSMWBQJnoBPa2I5uwdFbN8GGlEiYDsTZ3RHQ
-	 ntmSC33VLC3P/NjKwslRjzL7auI5Tk59OYjV3and5arLRAvKtRNltgA4pOoERbodrP
-	 W/wiQrtPl7g0cZv2YgraIDNVSMPiR1x20l0lfWO9jHAR+1vKP43bYgtJuEY0aawcjm
-	 YJ4lvT+zcVpGm2jhLpD64TK0=
-Received: from zn.tnic (pd953033e.dip0.t-ipconnect.de [217.83.3.62])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7F10D40E016C;
-	Wed, 31 Jan 2024 18:29:50 +0000 (UTC)
-Date: Wed, 31 Jan 2024 19:29:44 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Jacob Xu <jacobhxu@google.com>
-Cc: Kevin Loughlin <kevinloughlin@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Hou Wenlong <houwenlong.hwl@antgroup.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Dionna Glaze <dionnaglaze@google.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-coco@lists.linux.dev, Ashish Kalra <ashish.kalra@amd.com>,
-	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>,
-	Peter Gonda <pgonda@google.com>,
-	Sidharth Telang <sidtelang@google.com>
-Subject: Re: [PATCH v3 0/2] x86: enforce and cleanup RIP-relative accesses in
- early boot code
-Message-ID: <20240131182944.GJZbqRmBN_KDgK_nmB@fat_crate.local>
-References: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
- <20240130220845.1978329-1-kevinloughlin@google.com>
- <20240131140037.GDZbpShX2b0elXlqDA@fat_crate.local>
- <CAJ5mJ6j-Vw2P=QLK-J_J79S35UggvZPtm5sia74=enR1qq9X9A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QGa9n6Vy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706727918; x=1738263918;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=TYC7CFZj8c+TKApRj4NIb9Ph6HilMkn2amrqOXW+L8s=;
+  b=QGa9n6VySuE8w8FE5SBJ6brOCAoxxCzHUGOAKW/YGqvyTgGOOw+uhxbW
+   S4FDg6gUqKeUzw2MRIHC8Oxk7vfuhy14WS2OZ38o1zhEGgxiTRCKRHeR0
+   0JfpsSu+54ECp3olXummn4hdwQXU5YRD9EF6OQMg/LCoRSPHnKjgI0UVS
+   WHfahDcTbdFE9GX4zuvwIICH+Q4DaRZNqBrCBMOKo3MawwX85e7952P5P
+   3zqw4vR4q/IUGpFrwcqiwIrxAA3x6vj2b5zHkLquB0DkP216Bh8XY96Gt
+   W1qlSpcd9dVxk595KLZD7Hx00ChrUF03KH2+wIJ04eDp2UD65h1tEBkOF
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="434867757"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="434867757"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 11:05:17 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="1119706929"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="1119706929"
+Received: from dspeerx-mobl.amr.corp.intel.com (HELO [10.212.131.185]) ([10.212.131.185])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 11:05:16 -0800
+Message-ID: <43ba2334-12ae-4311-8be9-e8eac631e0b9@intel.com>
+Date: Wed, 31 Jan 2024 11:05:16 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAJ5mJ6j-Vw2P=QLK-J_J79S35UggvZPtm5sia74=enR1qq9X9A@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface
+ for quote generation
+Content-Language: en-US
+To: Nikolay Borisov <nik.borisov@suse.com>, linux-coco@lists.linux.dev
+Cc: x86@kernel.org, dave.hansen@linux.intel.com, dan.j.williams@intel.com,
+ dionnaglaze@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+References: <20240124093858.1818497-1-nik.borisov@suse.com>
+ <e3078be1-397a-4927-966a-acea5561eec8@suse.com>
+ <464ff551-5909-42e4-b544-5c68ff86c76c@intel.com>
+ <8655c3b5-84a7-42c7-8f2d-8ea32308fe5d@suse.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <8655c3b5-84a7-42c7-8f2d-8ea32308fe5d@suse.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 31, 2024 at 10:16:55AM -0800, Jacob Xu wrote:
-> We're interested in fixing SEV-SNP guest boots which are currently
-> broken when using a guest kernel compiled with clang. It seems like
-> every other user of SEV/SNP linux kernel code uses GCC to compile the
-> kernel so they've avoided this issue.
+On 1/31/24 10:18, Nikolay Borisov wrote:
+>> There is no clear consensus from this changelog, nor the tags about this
+>> approach.  It would be much appreciated if you could make this changelog
+>> more freestanding and  make it clear that this approach is acceptable to
+>> both the authors and users of the code you are modifying.
+> 
+> So how about something along the lines of:
+> 
+> IOCTL based interface was the natural choice for interacting with the
+> quote generation machine at a time when there wasn't anything better. In
+> its current form it's only usable for local attestation but that use
+> case is also going to be switched to the config-tsm interface. In
+> preparation for this introduce a Kconfig option which allows the user to
+> choose to disable the legacy code.
 
-Lemme give that a try here.
-
-> E.g. Google COS uses clang to compile the kernel and we've made do
-> with an internal fix for a while. 
-
-Which means that, theoretically, you could forward-port this internal
-fix until the issue is fixed for real, I'd say.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+That's an interesting theory.  Do the users and authors of the TDX code
+you're Kconfig'ing away agree with you?
