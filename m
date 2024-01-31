@@ -1,234 +1,132 @@
-Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A191E522
-	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 12:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3935D7690E
+	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 12:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706703051; cv=none; b=NTH3A51XEhKEaodqgbK2IJoocm2xOj/Db5i3l3ci+yl8ItA7asu1+5CkiLXqS/yrUTKSBEjuEAy13q9iQsdvdmFvBBFEta/ozirqoml9BDT0Rw5Bm4WqQlVYPtFYN/L5MbylKHoUoUBeCFzx3qm2dTIFsWiIh+ldc8NVKKOnp/Q=
+	t=1706705277; cv=none; b=BVH2iP2HM56oxnKGLdDPAB3pan6jl3cnrOXRcImj0qTeJv8br6adBTY9gqD1OekO2qPJ1nhfHexJRfypz3bU9nwImJ67sU3ctt+3DpV+v2fPYUr2vWzd2mo5KGpLiyHe5HWGhinUJ8YmwmM9MP/NYNiwfTMTskS3gn7X0tU8SOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706703051; c=relaxed/simple;
-	bh=/0iLm9Atvy/JSiwLXNWauydouf0fB7129/ouQ1lxNas=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eYdsf0Ku8dvIpU5rwIy3Mfeo8Mp2eoNdKqaFqRLKPDx0E7qxBtkBFGAQz0S9iRGXEmnVtkFxzhdIdScUIfqZEy5IsMCQ1SIzULAofOK+eZGEr5M5yf9mLDuTMyCskWFdYgig72Q35L0bYzER9uY7gN/J7dJ+Ndv8IXYjJSlBJTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
-Received: from wind.enjellic.com (localhost [127.0.0.1])
-	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 40VBx1Dj007499;
-	Wed, 31 Jan 2024 05:59:01 -0600
-Received: (from greg@localhost)
-	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 40VBx0nZ007498;
-	Wed, 31 Jan 2024 05:59:00 -0600
-Date: Wed, 31 Jan 2024 05:59:00 -0600
-From: "Dr. Greg" <greg@enjellic.com>
-To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: "Daniel P. Berrang??" <berrange@redhat.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Nakajima, Jun" <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-Message-ID: <20240131115900.GA7394@wind.enjellic.com>
-Reply-To: "Dr. Greg" <greg@enjellic.com>
-References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com> <20240130083007.1876787-2-kirill.shutemov@linux.intel.com> <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1706705277; c=relaxed/simple;
+	bh=4wQ7TAIOJQ5m6kdVg1wSzsPCQ4PkDeWkFwCc0m1BgrE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uS7I/isiWNTGroKtT4GOWKxfmclkGnvZdhSI9AOwwWWJ0qTQQnky4b0tJrs2Z9XHwPe8amVUfQeP/3t/ddC/JbyjlRBzMzMlwW2FAWjR1KCqi3BOwC8OudZB+Hp6YJLYUD2F+c+SlwxM2XIuBNgdu7kjsnzvBsCI38eo5CeaJds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DXzTCDtm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DXzTCDtm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706705274;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sZgQ3em8+hL4vf1kxriNyHbGVBBe93HygSX6eu/F3dE=;
+	b=DXzTCDtma/hGY0Ub738dAmNLNbvI+VOPp4PtMeuCkeC2nxtLb/0zEOcACm0jF6b3+BS/sf
+	k22Hn2VqWM0cJ41kpVg9RmtJVuTA9qwxhsc9oDXZkpXBOIaZL+KAFW5E2/lD2JOwU6D6Ya
+	ceidpRuk2RsCn7ZMz1LCkGAxYikOsp4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-495-VJTCrdEtObC81bpv7NZDpQ-1; Wed, 31 Jan 2024 07:47:49 -0500
+X-MC-Unique: VJTCrdEtObC81bpv7NZDpQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BA1EA800074;
+	Wed, 31 Jan 2024 12:47:48 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.15])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id CAA01492BC6;
+	Wed, 31 Jan 2024 12:47:47 +0000 (UTC)
+Date: Wed, 31 Jan 2024 20:47:40 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv6 00/16] x86/tdx: Add kexec support
+Message-ID: <ZbpBbAkPxQZ6gHoE@MiWiFi-R3L-srv>
+References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
+ <3f44458f-2b4a-4464-a3df-cb791298dafc@redhat.com>
+ <efe20a00-9a7c-4c03-8fcc-fce265cdbf0e@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
-User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Wed, 31 Jan 2024 05:59:01 -0600 (CST)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <efe20a00-9a7c-4c03-8fcc-fce265cdbf0e@suse.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-On Wed, Jan 31, 2024 at 08:16:56AM +0000, Reshetova, Elena wrote:
-
-Good morning, I hope the week is going well for everyone.
-
-> > On Tue, Jan 30, 2024 at 06:49:15PM +0100, Jason A. Donenfeld wrote:
-> > > On Tue, Jan 30, 2024 at 6:32???PM Dave Hansen <dave.hansen@intel.com> wrote:
-> > > >
-> > > > On 1/30/24 05:45, Reshetova, Elena wrote:
-> > > > >> You're the Intel employee so you can find out about this with much
-> > > > >> more assurance than me, but I understand the sentence above to be _way
-> > > > >> more_ true for RDRAND than for RDSEED. If your informed opinion is,
-> > > > >> "RDRAND failing can only be due to totally broken hardware"
-> > > > > No, this is not the case per Intel SDM. I think we can live under a simple
-> > > > > assumption that both of these instructions can fail not just due to broken
-> > > > > HW, but also due to enough pressure put into the whole DRBG construction
-> > > > > that supplies random numbers via RDRAND/RDSEED.
-> > > >
-> > > > I don't think the SDM is the right thing to look at for guidance here.
-> > > >
-> > > > Despite the SDM allowing it, we (software) need RDRAND/RDSEED failures
-> > > > to be exceedingly rare by design.  If they're not, we're going to get
-> > > > our trusty torches and pitchforks and go after the folks who built the
-> > > > broken hardware.
-> > > >
-> > > > Repeat after me:
-> > > >
-> > > >         Regular RDRAND/RDSEED failures only occur on broken hardware
-> > > >
-> > > > If it's nice hardware that's gone bad, then we WARN() and try to make
-> > > > the best of it.  If it turns out that WARN() was because of a broken
-> > > > hardware _design_ then we go sharpen the pitchforks.
-> > > >
-> > > > Anybody disagree?
-> > >
-> > > Yes, I disagree. I made a trivial test that shows RDSEED breaks easily
-> > > in a busy loop. So at the very least, your statement holds true only
-> > > for RDRAND.
-> > >
-> > > But, anyway, if the statement "RDRAND failures only occur on broken
-> > > hardware" is true, then a WARN() in the failure path there presents no
-> > > DoS potential of any kind, and so that's a straightforward conclusion
-> > > to this discussion. However, that really hinges on  "RDRAND failures
-> > > only occur on broken hardware" being a true statement.
+On 01/31/24 at 09:31am, Nikolay Borisov wrote:
+> 
+> 
+> On 30.01.24 г. 15:43 ч., Paolo Bonzini wrote:
+> > On 1/24/24 13:55, Kirill A. Shutemov wrote:
+> > > The patchset adds bits and pieces to get kexec (and crashkernel) work on
+> > > TDX guest.
+> > > 
+> > > The last patch implements CPU offlining according to the approved ACPI
+> > > spec change poposal[1]. It unlocks kexec with all CPUs visible in
+> > > the target
+> > > kernel. It requires BIOS-side enabling. If it missing we fallback to
+> > > booting
+> > > 2nd kernel with single CPU.
+> > > 
+> > > Please review. I would be glad for any feedback.
 > > 
-> > There's a useful comment here from an Intel engineer
+> > Hi Kirill,
 > > 
-> > https://web.archive.org/web/20190219074642/https://software.intel.com/en-
-> > us/blogs/2012/11/17/the-difference-between-rdrand-and-rdseed
+> > I have a very basic question: is there a reason why this series does not
+> > revert commit cb8eb06d50fc, "x86/virt/tdx: Disable TDX host support when
+> > kexec is enabled"?
+> 
+> While on the topic, Paolo do you think it's  better to have a runtime
+> disable of kexec rather than at compile time:
+> 
+> [RFC PATCH] x86/virt/tdx: Disable KEXEC in the presence of TDX
+> 
+> 20240118160118.1899299-1-nik.borisov@suse.com
+
+Runtime disabling kexec looks better than at cmpile time, esp for
+distros. While from above patch, making using of kexec_load_disabled to 
+achive the runtime disabling may not be so good. Because we have a front
+door to enable it through:
+
+/proc/sys/kernel/kexec_load_disabled
+
+If there's a flag or status to check if TDX host is enabled, and does
+the checking in kexec_load_permitted(), that could be better. Anyway, I
+saw Huang, Kai has posted the tdx host support patchset.
+
+> 
+> I'm trying to get traction for this patch.
+> 
+> 
 > > 
-> >   "RDRAND is, indeed, faster than RDSEED because it comes
-> >    from a hardware-based pseudorandom number generator.
-> >    One seed value (effectively, the output from one RDSEED
-> >    command) can provide up to 511 128-bit random values
-> >    before forcing a reseed"
+> > Thanks,
 > > 
-> > We know we can exhaust RDSEED directly pretty trivially. Making your
-> > test program run in parallel across 20 cpus, I got a mere 3% success
-> > rate from RDSEED.
+> > Paolo
 > > 
-> > If RDRAND is reseeding every 511 values, RDRAND output would have
-> > to be consumed significantly faster than RDSEED in order that the
-> > reseed will happen frequently enough to exhaust the seeds.
 > > 
-> > This looks pretty hard, but maybe with a large enough CPU count
-> > this will be possible in extreme load ?
-> > 
-> > So I'm not convinced we can blindly wave away RDRAND failures as
-> > guaranteed to mean broken hardware.
+> 
 
-> This matches both my understanding (I do have cryptography
-> background and understanding how cryptographic RNGs work) and
-> official public docs that Intel published on this matter.  Given
-> that the physical entropy source is limited anyhow, and by giving
-> enough pressure on the whole construction you should be able to make
-> RDRAND fail because if the intermediate AES-CBC MAC extractor/
-> conditioner is not getting its min entropy input rate, it wont
-> produce a proper seed for AES CTR DRBG.  Of course exact
-> details/numbers can wary between different generations of Intel DRNG
-> implementation, and the platforms where it is running on, so be
-> careful to sticking to concrete numbers.
->
-> That said, I have taken an AR to follow up internally on what can be
-> done to improve our situation with RDRAND/RDSEED. But I would still
-> like to finish the discussion on what people think should be done in
-> the meanwhile keeping in mind that the problem is not intel
-> specific, despite us intel people bringing it for public discussion
-> first. The old saying is still here: "Please don't shoot the
-> messenger" )) We are actually trying to be open about these things
-> and create a public discussion.
-
-Based on Dave Hansen's comments above, it appears that the COCO
-community needs to break out the oil and whetstones and hone the tips
-of their pitchforks.. :-)
-
-The positive issue in all of this is that, to date, TDX hardware has
-not seen significant public availability.  I suspect that when that
-happens, if this problem isn't corrected, there will be the usual
-flood of papers demonstrating quasi-practical lab attacks that stem
-from the fruits of a poisonable random number source.
-
-The problem reproduces pretty easily, albeit on somewhat dated
-hardware.
-
-One of our lab machines, that reports a model name of 'Intel(R)
-Core(TM) i5-6500 CPU @ 3.20GHz', shows a consistent failure rate of
-65% for RDSEED on a single-threaded test.  It gets worse when more
-simultaneous demand is placed on the hardware randomness source, as
-was demonstrated elsewhere.
-
-Corrupted randomness has the potential to strike pretty deeply into
-the TDX attestation architecture, given the need to generate signed
-attestation reports and the SGX/TDX key generation architecture that
-requires 'wearout protection'.  Beyond that, there is the subsequent
-need to conduct userspace attestation, currently by IMA as I believe
-is the intent, that in turn requires cryptography with undeniable
-integrity.
-
-At this point, given that all this is about confidentiality, that in
-turn implies a trusted platform, there is only one option, panic and
-hard fail the boot if there is any indication that the hardware has
-not been able to provide sound instruction based randomness.  Doing
-anything else breaks the 'contract' that a user is pushing a workload
-into a trusted/confidential environment.
-
-RDSEED is the root of hardware instruction based randomness and its
-randomness comes from quantum noise across a diode junction
-(simplistically).  The output of RDSEED drives the AES derived RDRAND
-randomness.
-
-Additional clarification from inside of Intel on this is needed, but
-the problem would appear to be that the above infrastructure
-(RDSEED/RDRAND) is part of the 'Uncore' architecture, rather than
-being core specific.  This creates an incestuous relationship across
-all of the cores sharing a resource, that as in the past, creates
-security issues.
-
-This issue was easily anticipated and foreshadowed by the
-demonstration of the CVE-2020-0543/CrossTalk vulnerability.
-
-If the above interpretion is correct, a full fix should be 'straight
-forward', for some definition of 'straight forward'... :-)
-
-On TDX capable hardare, the RDSEED noise source needs to come from a
-piece of core specific silicon.  If the boot of a TDX VM is core
-locked, this would create an environment where a socket based sibling
-adversary would be unable to compromise the root of the randomness
-source.
-
-Once the Linux random number generator is properly seeded, the issue
-should be over, given that by now, everyone has agreed that a properly
-initialized Linux RNG cannot 'run out' of randomness.
-
-Given that it seems pretty clear that timing and other 'noise'
-information in a COCO environment can't be trusted, having core
-specific randomness would be a win for the overall cryptographic
-health of VM's that are running in a COCO environment.
-
-Once again, an attack doesn't need to be practical, only demonstrable.
-Once demonstrated, faith is lost in the technology, SGX clearly
-demonstrated that, as did the micro-architectural attacks.
-
-Both SGX and TDX operate from the notion of 'you trust Intel and the
-silicon', so the fix is for Intel to implement a secure silicon based
-source of randomness.
-
-AMD will probably need the same thing.
-
-> Best Regards,
-> Elena. 
-
-Hopefuly the above is helpful in furthering these discussions.
-
-Have a good remainder of the week.
-
-As always,
-Dr. Greg
-
-The Quixote Project - Flailing at the Travails of Cybersecurity
-              https://github.com/Quixote-Project
