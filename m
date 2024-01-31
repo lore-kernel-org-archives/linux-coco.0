@@ -1,156 +1,111 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022FE79DA6
-	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 12:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D167AE7C
+	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 13:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706705917; cv=none; b=gWzFnzpmj8z2xLRpOPmP3JB+A5/47AnC5G8Wf1J3PCMcpzzFWqbUCY18oAUtf9Lisy/im3WLG6jryhD7YjvQJz7ZCSMtuc8FBCs7WiTJEJnLOx6lCQuwKdCRUfw/UtlwRMLboI2U+uE9aAhbm+yGxfdXBM/M4mK+JrsmbQjymuo=
+	t=1706706392; cv=none; b=kkAGuET7oXKP/Vn1cHATMx8SFHTQ0Vfpwb+SIKKgsDhWiYwMFOQaG7a27se0V/MsLvjZ2yPmKGBpN9ZSAE6TEP3LQ9wjMsnlRzhLYBGphzjXCiL9HRPcopd0dt+ek4rBP/vLJ11u4gMNj4d9oUhbTjCwDDMfivY/1yTnPWGNU9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706705917; c=relaxed/simple;
-	bh=Lb0a59hiN3odqPkQB6CkgCJ9VO+sdiG559p7/FCWAnI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Iv/Xr1U9kLGSo1/oI0mFDGzwbdoZXdJ1utia2/J+DTYY7TfmV/Gy8WCxy6jyQbchPrMOEbgkbO6j8eo+s8CU0FjBn2uLDXh0ijCJlHoKY8RH4r0rlUyOVV5SGDbs2LwNaPXjQVu3yFrS2yuGy/EmYaMjHVP7LofMe2CsQvuUSRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=D4lUwOPR; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1706706392; c=relaxed/simple;
+	bh=JMBL4IgJh6FN7pNaSkp+l1vIL/LpjvsQZz9Cc9BlkHY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WWTgWkFhX8Eh2roVBmWlm5Q+OfoyZoGegRv13n/+Rp8Zq1V//xvFB9L7nLd0UnAu4CTYYOgYlrssUkRvta8/L7uQxoIgObBjYICiABmPMBPPjW1R0dR0auVHEKp8SqiPyn3+XpM0UlI6Dbz6KRtT2HNyeJAu+1cfwJGhIwJ2Foc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=S/KhLrMc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="D4lUwOPR"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-51032e62171so5841130e87.3
-        for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 04:58:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1706705913; x=1707310713; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=g7ky/3M7B61YCAGNE0WXFX5+lOGZrN7occ3cCWK7ac0=;
-        b=D4lUwOPR6qOSJApVJMdoOlmRXi71yzbhRCrgdJWIOPzndj5flN35yseuGXVyiObWw6
-         xyvA1s0ajesBJDAF/N6IlJpMcq+V62+1vO9F1fV1cjb/u/nvXetnQaJ4BNksb7blMfzS
-         F5U7o7kkizNHx5W/qB+dxR5PiRUopX5sTf1ErpUdoOpV7CSOjCnil8PyMtIdwFFonVD0
-         KWbj0V8WOmf/RGWEYvU1oRKt548AjqGV2/6u3LO0TU6J2MOZkfNel+HjjBCS0rDJUGZ/
-         dqbQ/d7ZakgQVuEgdTV4XvEqCdFSCI9SG7Uf8kIZfbaxAFcJ13vVS5wIjFrAHlbopb0X
-         f9XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706705913; x=1707310713;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g7ky/3M7B61YCAGNE0WXFX5+lOGZrN7occ3cCWK7ac0=;
-        b=T2hjPnPDyOurhOGykkvfOeFk2MxChuI8wQYphV9cGVA2MG6DLFueVap838fta7kuJ2
-         TxXT/FOIQrrXSZfFZ4I9jiJWiuj2r6XCXyxSKjyjpmh5QSCkkVLjU3SRLqrFLSiQYPxQ
-         rSZkQ43KaZNSJ7QpenPBNhm6NvAR75WnmRK13Fixf3XY2aANe3pXu64X/G9hqfUuJWEO
-         o/XHa09O/RWxeu+bMb6vABhJd3hyZl9sJ0gDQzoaEYQZKI6nwprweTXFikGSB0svDXs9
-         eo8kUKelfImM9klmoeFTNzqxAfxBJbPPRu5mdGgHv4Yn4mtrlbKSkWzuarMjL0a8cVHu
-         GBhw==
-X-Gm-Message-State: AOJu0YxJd6m5qcDDYBVHXw7ty/XcMpHf/sGbrKnxpMI+wpdDN7kfiDwL
-	dhJZkg3pEcFI9DPSumx6nPpeZKW+diFKKpV3oXEL8mdVXGbJSbkGp2LvHYYtuAA=
-X-Google-Smtp-Source: AGHT+IE12TytICRdsL2F3gNVkV6eKllHYKHvuShfvBQQdBABSqGov6rYd2Qc6dcxo5JCUzXwAptJzA==
-X-Received: by 2002:a05:6512:344e:b0:511:2988:cf93 with SMTP id j14-20020a056512344e00b005112988cf93mr388733lfr.54.1706705913005;
-        Wed, 31 Jan 2024 04:58:33 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWB/0NZYSc+xrEkVzOogX/cM/IKKcg5EJTC6B2y9F48G5yRtsyfETvhOLVWvWV0Ew2K+08tvh36yYqHe+RT8HSPxUVhQsimG7cJcNpMGMcvBbzB+kL+gZH/SS3MJEBgwaAv3ECfWjMO9wnFCnL9H/E527oxJiRgGozE1GsgxCDOoeXdhG/oIw7qcMdPymV22P26BKiCps8HsQhixsI9mglEySod4PCumklL6cfR3ZrR5jufzPgdORpTz9usdPpnwJUBSY8eDAE493bvf5NbV63BWB2Tif+sSnJS/Sw0MAVVPIvhY5b4Ar2Fl5MCexEUySgE36todwO6cqxtz4Oi9hcgQjVYP8TfUzFkNfvvEKcnWKppIXgy/KnfuohWgzn/M/L8Rpg49ZNwIkmdPW+byAUywP8jy38dxcxjBkt24TkddNLJz3E0+yhRREgBQI2NmZSG3e5HFua1OMmNyZeTXkgasaNrL/mtlkDelRpipd5nDmPwY15yI1+Hvera4u21ewnqjq28uixNF6KLPZ1pDvmGNiUtJ+leOlc73Zolm0SFMY9Ewo8R1peycNLwQ964o2XUSivhMPk3AD9QV+xzQGA4UkgW03vQDXdRHYwyKZ8Cks7XG4CosUUGmzLQLSjJdYMferXoU4vY2ypR2JQWEYZ0pJWixfCYwrOz59Q+MIaA0/Dfs3GgCU+rzt/wbZ89I97sHMALt/1625k=
-Received: from ?IPV6:2a10:bac0:b000:7588:aea0:a2ac:ddc1:371f? ([2a10:bac0:b000:7588:aea0:a2ac:ddc1:371f])
-        by smtp.gmail.com with ESMTPSA id bv16-20020a170906b1d000b00a35e3202d81sm2705223ejb.122.2024.01.31.04.58.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Jan 2024 04:58:32 -0800 (PST)
-Message-ID: <5d91fc11-0b3b-40f0-872d-abdbb4038f76@suse.com>
-Date: Wed, 31 Jan 2024 14:58:30 +0200
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="S/KhLrMc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04E1C43390
+	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 13:06:31 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="S/KhLrMc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1706706387;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JMBL4IgJh6FN7pNaSkp+l1vIL/LpjvsQZz9Cc9BlkHY=;
+	b=S/KhLrMcZXz9d8cswaZ09ypkUDyHrDczczH0oWxpLRDNdvNYObLxIlqHNHIjQgjnQ5P8lT
+	dsxvdTDHKBXOsv6jqQauHHYPxi8m1VU7OIq71YHvhJ5ZAFb1WT3gIkz3JChTTW5rkR4H0X
+	GmtG2pK6O0UYp4SpoBaJXMrSjCNpCmw=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c8efdac1 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <linux-coco@lists.linux.dev>;
+	Wed, 31 Jan 2024 13:06:27 +0000 (UTC)
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-dbed179f0faso675054276.1
+        for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 05:06:27 -0800 (PST)
+X-Gm-Message-State: AOJu0YwZcZqCHHEu3r+zWdjHWjzGOdHFW619X/qaSA+wHCoQVbRPaXrB
+	KtbrWz2Lybpjp4XG9k6Td92YQCRFgavqAleGEDj5kGTXkynw1/DwhxYw6Qkv4hXFln5O+Bk84MD
+	eVHrIlx1dmqPxQSJ4kDB1LKEBBGw=
+X-Google-Smtp-Source: AGHT+IECjO87DEo81/cO9y6afveELLDn162ICBU2lZW6q6aRJGKBPIWUj+HGRiv/ZvxBvvVPJiC2HvUdgBQDISUTJZw=
+X-Received: by 2002:a05:690c:d17:b0:5ff:8ab2:89a7 with SMTP id
+ cn23-20020a05690c0d1700b005ff8ab289a7mr2802145ywb.4.1706706385220; Wed, 31
+ Jan 2024 05:06:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 00/16] x86/tdx: Add kexec support
-Content-Language: en-US
-To: Baoquan He <bhe@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>,
- Jun Nakajima <jun.nakajima@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
- "Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
- <3f44458f-2b4a-4464-a3df-cb791298dafc@redhat.com>
- <efe20a00-9a7c-4c03-8fcc-fce265cdbf0e@suse.com>
- <ZbpBbAkPxQZ6gHoE@MiWiFi-R3L-srv>
-From: Nikolay Borisov <nik.borisov@suse.com>
-In-Reply-To: <ZbpBbAkPxQZ6gHoE@MiWiFi-R3L-srv>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
+ <20240130083007.1876787-2-kirill.shutemov@linux.intel.com>
+ <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com>
+ <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com>
+ <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+In-Reply-To: <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Wed, 31 Jan 2024 14:06:13 +0100
+X-Gmail-Original-Message-ID: <CAHmME9ps6W5snQrYeNVMFgfhMKFKciky=-UxxGFbAx_RrxSHoA@mail.gmail.com>
+Message-ID: <CAHmME9ps6W5snQrYeNVMFgfhMKFKciky=-UxxGFbAx_RrxSHoA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+	"Hansen, Dave" <dave.hansen@intel.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	"Nakajima, Jun" <jun.nakajima@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jan 31, 2024 at 9:17=E2=80=AFAM Reshetova, Elena
+<elena.reshetova@intel.com> wrote:
+> This matches both my understanding (I do have cryptography background
+> and understanding how cryptographic RNGs work)
+> and official public docs that Intel published on this matter.
+> Given that the physical entropy source is limited anyhow, and by giving
+> enough pressure on the whole construction you should be able to
+> make RDRAND fail because if the intermediate AES-CBC MAC extractor/
+> conditioner is not getting its min entropy input rate, it wont
+> produce a proper seed for AES CTR DRBG.
+> Of course exact details/numbers can wary between different generations of
+> Intel DRNG implementation, and the platforms where it is running on,
+> so be careful to sticking to concrete numbers.
 
+Alright, so RDRAND is not reliable. The question for us now is: do we
+want RDRAND unreliability to translate to another form of
+unreliability elsewhere, e.g. DoS/infiniteloop/latency/WARN_ON()? Or
+would it be better to declare the hardware simply broken and ask Intel
+to fix it? (I don't know the answer to that question.)
 
-On 31.01.24 г. 14:47 ч., Baoquan He wrote:
-> On 01/31/24 at 09:31am, Nikolay Borisov wrote:
->>
->>
->> On 30.01.24 г. 15:43 ч., Paolo Bonzini wrote:
->>> On 1/24/24 13:55, Kirill A. Shutemov wrote:
->>>> The patchset adds bits and pieces to get kexec (and crashkernel) work on
->>>> TDX guest.
->>>>
->>>> The last patch implements CPU offlining according to the approved ACPI
->>>> spec change poposal[1]. It unlocks kexec with all CPUs visible in
->>>> the target
->>>> kernel. It requires BIOS-side enabling. If it missing we fallback to
->>>> booting
->>>> 2nd kernel with single CPU.
->>>>
->>>> Please review. I would be glad for any feedback.
->>>
->>> Hi Kirill,
->>>
->>> I have a very basic question: is there a reason why this series does not
->>> revert commit cb8eb06d50fc, "x86/virt/tdx: Disable TDX host support when
->>> kexec is enabled"?
->>
->> While on the topic, Paolo do you think it's  better to have a runtime
->> disable of kexec rather than at compile time:
->>
->> [RFC PATCH] x86/virt/tdx: Disable KEXEC in the presence of TDX
->>
->> 20240118160118.1899299-1-nik.borisov@suse.com
-> 
-> Runtime disabling kexec looks better than at cmpile time, esp for
-> distros. While from above patch, making using of kexec_load_disabled to
-> achive the runtime disabling may not be so good. Because we have a front
-> door to enable it through:
-> 
-> /proc/sys/kernel/kexec_load_disabled
+> That said, I have taken an AR to follow up internally on what can be done
+> to improve our situation with RDRAND/RDSEED.
 
-AFAIU it can't be enabled via this sysctl because the handler for it 
-expects only 1 to be written to it:
+Specifying this is an interesting question. What exactly might our
+requirements be for a "non-broken" RDRAND? It seems like we have two
+basic ones:
 
-      2                 .proc_handler   = proc_dointvec_minmax, 
+- One VMX (or host) context can't DoS another one.
+- Ring 3 can't DoS ring 0.
 
-      1                 .extra1         = SYSCTL_ONE, 
+I don't know whether that'd be implemented with context-tied rate
+limiting or more state or what. But I think, short of just making
+RDRAND never fail, that's basically what's needed.
 
-   994                  .extra2         = SYSCTL_ONE,
-
-> 
-> If there's a flag or status to check if TDX host is enabled, and does
-> the checking in kexec_load_permitted(), that could be better. Anyway, I
-> saw Huang, Kai has posted the tdx host support patchset.
-> 
->>
->> I'm trying to get traction for this patch.
->>
->>
->>>
->>> Thanks,
->>>
->>> Paolo
->>>
->>>
->>
-> 
+Jason
