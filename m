@@ -1,112 +1,234 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8833A57895;
-	Wed, 31 Jan 2024 08:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A191E522
+	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 12:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706689463; cv=none; b=UqNVvV1aZ91agXW89nGuRwc1AipzGSfiHv3kvwrcEiHojvDKsdsRci7jyPieaVScvt7gysWU13DjFVjIRzHEMjAG3UktqcSRHEbwfG5gPU2F2uM3x8V3zJM7plddkzz7SYnT35+rJccAsXoKwiAYHeYkNos0GBM8zrAwe7U4og8=
+	t=1706703051; cv=none; b=NTH3A51XEhKEaodqgbK2IJoocm2xOj/Db5i3l3ci+yl8ItA7asu1+5CkiLXqS/yrUTKSBEjuEAy13q9iQsdvdmFvBBFEta/ozirqoml9BDT0Rw5Bm4WqQlVYPtFYN/L5MbylKHoUoUBeCFzx3qm2dTIFsWiIh+ldc8NVKKOnp/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706689463; c=relaxed/simple;
-	bh=p2eNGaNPy/qRkXoqrBMs9FtoycBXq4Fa+3HgEddDlkA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AeNNBcupzCmLB2qOzZE58EeQV7eSGCS0EM8Zk9P7rEzqqHUmwaMhE/IpyQx/MdGYwL0fs7rcT3FK3wgGWlFQoAElCQSdq5LZUnxS/2oiwNo8fti0jwl35CJQbN5IzUDnvfwX2h5n1HYRvdVfUlQtktJsd7b+y3PRluHqH0cAx4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FZfkbxbO; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FZfkbxbO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706689462; x=1738225462;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=p2eNGaNPy/qRkXoqrBMs9FtoycBXq4Fa+3HgEddDlkA=;
-  b=FZfkbxbOavkUx128m/D5r0K+l/rO3y21VAcS4rNE/X0i7aFp3N6GZccn
-   hg9J8bkS75rPBg8DTgYX9fClcB0CcO3988dmUM8rtqCWHLrvzYc987O/Z
-   DbI2Ax2RWajn3PwsgVuKyAQS3pKuZp/8r/sZ02hWXhjFfMGJxstx4Q+Fk
-   XkRzZOJALflxxbGXZ6p0b863Hn4syY+HrciqqyCjmgka2d5Br6uzHtS9M
-   tqwaJFjF0UV794G3//ejVzW2XRb/lxDfsgvs3xJ57/XLdhV0IFqyDcWK0
-   aetcUvub3zIV6GRa200T73AQ/6tZkig0lT+1wWXkCO1UDeaLX3De1G0LB
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="3399900"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="3399900"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 00:24:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="911715756"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="911715756"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga004.jf.intel.com with ESMTP; 31 Jan 2024 00:24:15 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 6D2A42D5; Wed, 31 Jan 2024 10:22:52 +0200 (EET)
-Date: Wed, 31 Jan 2024 10:22:52 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Kevin Loughlin <kevinloughlin@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Nick Desaulniers <ndesaulniers@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>, 
-	Hou Wenlong <houwenlong.hwl@antgroup.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-coco@lists.linux.dev, Ashish Kalra <ashish.kalra@amd.com>, 
-	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>, 
-	Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>, 
-	Sidharth Telang <sidtelang@google.com>
-Subject: Re: [PATCH v3 2/2] x86/head64: Replace pointer fixups with
- RIP_RELATIVE_ADDR()
-Message-ID: <sx3i6e6rgggh6wxtqt6odvwubg5vqotfleyjditiicjvjgpf6r@bswwhdt6zzti>
-References: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
- <20240130220845.1978329-3-kevinloughlin@google.com>
+	s=arc-20240116; t=1706703051; c=relaxed/simple;
+	bh=/0iLm9Atvy/JSiwLXNWauydouf0fB7129/ouQ1lxNas=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eYdsf0Ku8dvIpU5rwIy3Mfeo8Mp2eoNdKqaFqRLKPDx0E7qxBtkBFGAQz0S9iRGXEmnVtkFxzhdIdScUIfqZEy5IsMCQ1SIzULAofOK+eZGEr5M5yf9mLDuTMyCskWFdYgig72Q35L0bYzER9uY7gN/J7dJ+Ndv8IXYjJSlBJTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 40VBx1Dj007499;
+	Wed, 31 Jan 2024 05:59:01 -0600
+Received: (from greg@localhost)
+	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 40VBx0nZ007498;
+	Wed, 31 Jan 2024 05:59:00 -0600
+Date: Wed, 31 Jan 2024 05:59:00 -0600
+From: "Dr. Greg" <greg@enjellic.com>
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: "Daniel P. Berrang??" <berrange@redhat.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+        "Theodore Ts'o" <tytso@mit.edu>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Message-ID: <20240131115900.GA7394@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com> <20240130083007.1876787-2-kirill.shutemov@linux.intel.com> <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240130220845.1978329-3-kevinloughlin@google.com>
+In-Reply-To: <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Wed, 31 Jan 2024 05:59:01 -0600 (CST)
 
-On Tue, Jan 30, 2024 at 10:08:45PM +0000, Kevin Loughlin wrote:
-> @@ -594,15 +579,15 @@ static void set_bringup_idt_handler(gate_desc *idt, int n, void *handler)
->  /* This runs while still in the direct mapping */
->  static void __head startup_64_load_idt(unsigned long physbase)
->  {
-> -	struct desc_ptr *desc = fixup_pointer(&bringup_idt_descr, physbase);
-> -	gate_desc *idt = fixup_pointer(bringup_idt_table, physbase);
-> +	struct desc_ptr *desc = RIP_RELATIVE_ADDR(bringup_idt_descr);
-> +	gate_desc *idt = RIP_RELATIVE_ADDR(bringup_idt_table);
->  
->  
->  	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
->  		void *handler;
->  
->  		/* VMM Communication Exception */
-> -		handler = fixup_pointer(vc_no_ghcb, physbase);
-> +		handler = RIP_RELATIVE_ADDR(vc_no_ghcb);
->  		set_bringup_idt_handler(idt, X86_TRAP_VC, handler);
->  	}
->  
+On Wed, Jan 31, 2024 at 08:16:56AM +0000, Reshetova, Elena wrote:
 
-Looks like you removed all physbase users in the function. No need to pass
-it to it.
+Good morning, I hope the week is going well for everyone.
 
-> @@ -629,7 +614,7 @@ void early_setup_idt(void)
->  void __head startup_64_setup_env(unsigned long physbase)
->  {
->  	/* Load GDT */
-> -	startup_gdt_descr.address = (unsigned long)fixup_pointer(startup_gdt, physbase);
-> +	startup_gdt_descr.address = (unsigned long)RIP_RELATIVE_ADDR(startup_gdt);
->  	native_load_gdt(&startup_gdt_descr);
->  
->  	/* New GDT is live - reload data segment registers */
+> > On Tue, Jan 30, 2024 at 06:49:15PM +0100, Jason A. Donenfeld wrote:
+> > > On Tue, Jan 30, 2024 at 6:32???PM Dave Hansen <dave.hansen@intel.com> wrote:
+> > > >
+> > > > On 1/30/24 05:45, Reshetova, Elena wrote:
+> > > > >> You're the Intel employee so you can find out about this with much
+> > > > >> more assurance than me, but I understand the sentence above to be _way
+> > > > >> more_ true for RDRAND than for RDSEED. If your informed opinion is,
+> > > > >> "RDRAND failing can only be due to totally broken hardware"
+> > > > > No, this is not the case per Intel SDM. I think we can live under a simple
+> > > > > assumption that both of these instructions can fail not just due to broken
+> > > > > HW, but also due to enough pressure put into the whole DRBG construction
+> > > > > that supplies random numbers via RDRAND/RDSEED.
+> > > >
+> > > > I don't think the SDM is the right thing to look at for guidance here.
+> > > >
+> > > > Despite the SDM allowing it, we (software) need RDRAND/RDSEED failures
+> > > > to be exceedingly rare by design.  If they're not, we're going to get
+> > > > our trusty torches and pitchforks and go after the folks who built the
+> > > > broken hardware.
+> > > >
+> > > > Repeat after me:
+> > > >
+> > > >         Regular RDRAND/RDSEED failures only occur on broken hardware
+> > > >
+> > > > If it's nice hardware that's gone bad, then we WARN() and try to make
+> > > > the best of it.  If it turns out that WARN() was because of a broken
+> > > > hardware _design_ then we go sharpen the pitchforks.
+> > > >
+> > > > Anybody disagree?
+> > >
+> > > Yes, I disagree. I made a trivial test that shows RDSEED breaks easily
+> > > in a busy loop. So at the very least, your statement holds true only
+> > > for RDRAND.
+> > >
+> > > But, anyway, if the statement "RDRAND failures only occur on broken
+> > > hardware" is true, then a WARN() in the failure path there presents no
+> > > DoS potential of any kind, and so that's a straightforward conclusion
+> > > to this discussion. However, that really hinges on  "RDRAND failures
+> > > only occur on broken hardware" being a true statement.
+> > 
+> > There's a useful comment here from an Intel engineer
+> > 
+> > https://web.archive.org/web/20190219074642/https://software.intel.com/en-
+> > us/blogs/2012/11/17/the-difference-between-rdrand-and-rdseed
+> > 
+> >   "RDRAND is, indeed, faster than RDSEED because it comes
+> >    from a hardware-based pseudorandom number generator.
+> >    One seed value (effectively, the output from one RDSEED
+> >    command) can provide up to 511 128-bit random values
+> >    before forcing a reseed"
+> > 
+> > We know we can exhaust RDSEED directly pretty trivially. Making your
+> > test program run in parallel across 20 cpus, I got a mere 3% success
+> > rate from RDSEED.
+> > 
+> > If RDRAND is reseeding every 511 values, RDRAND output would have
+> > to be consumed significantly faster than RDSEED in order that the
+> > reseed will happen frequently enough to exhaust the seeds.
+> > 
+> > This looks pretty hard, but maybe with a large enough CPU count
+> > this will be possible in extreme load ?
+> > 
+> > So I'm not convinced we can blindly wave away RDRAND failures as
+> > guaranteed to mean broken hardware.
 
-With startup_64_load_idt() fixed, no users for physbase in this function
-either.
+> This matches both my understanding (I do have cryptography
+> background and understanding how cryptographic RNGs work) and
+> official public docs that Intel published on this matter.  Given
+> that the physical entropy source is limited anyhow, and by giving
+> enough pressure on the whole construction you should be able to make
+> RDRAND fail because if the intermediate AES-CBC MAC extractor/
+> conditioner is not getting its min entropy input rate, it wont
+> produce a proper seed for AES CTR DRBG.  Of course exact
+> details/numbers can wary between different generations of Intel DRNG
+> implementation, and the platforms where it is running on, so be
+> careful to sticking to concrete numbers.
+>
+> That said, I have taken an AR to follow up internally on what can be
+> done to improve our situation with RDRAND/RDSEED. But I would still
+> like to finish the discussion on what people think should be done in
+> the meanwhile keeping in mind that the problem is not intel
+> specific, despite us intel people bringing it for public discussion
+> first. The old saying is still here: "Please don't shoot the
+> messenger" )) We are actually trying to be open about these things
+> and create a public discussion.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Based on Dave Hansen's comments above, it appears that the COCO
+community needs to break out the oil and whetstones and hone the tips
+of their pitchforks.. :-)
+
+The positive issue in all of this is that, to date, TDX hardware has
+not seen significant public availability.  I suspect that when that
+happens, if this problem isn't corrected, there will be the usual
+flood of papers demonstrating quasi-practical lab attacks that stem
+from the fruits of a poisonable random number source.
+
+The problem reproduces pretty easily, albeit on somewhat dated
+hardware.
+
+One of our lab machines, that reports a model name of 'Intel(R)
+Core(TM) i5-6500 CPU @ 3.20GHz', shows a consistent failure rate of
+65% for RDSEED on a single-threaded test.  It gets worse when more
+simultaneous demand is placed on the hardware randomness source, as
+was demonstrated elsewhere.
+
+Corrupted randomness has the potential to strike pretty deeply into
+the TDX attestation architecture, given the need to generate signed
+attestation reports and the SGX/TDX key generation architecture that
+requires 'wearout protection'.  Beyond that, there is the subsequent
+need to conduct userspace attestation, currently by IMA as I believe
+is the intent, that in turn requires cryptography with undeniable
+integrity.
+
+At this point, given that all this is about confidentiality, that in
+turn implies a trusted platform, there is only one option, panic and
+hard fail the boot if there is any indication that the hardware has
+not been able to provide sound instruction based randomness.  Doing
+anything else breaks the 'contract' that a user is pushing a workload
+into a trusted/confidential environment.
+
+RDSEED is the root of hardware instruction based randomness and its
+randomness comes from quantum noise across a diode junction
+(simplistically).  The output of RDSEED drives the AES derived RDRAND
+randomness.
+
+Additional clarification from inside of Intel on this is needed, but
+the problem would appear to be that the above infrastructure
+(RDSEED/RDRAND) is part of the 'Uncore' architecture, rather than
+being core specific.  This creates an incestuous relationship across
+all of the cores sharing a resource, that as in the past, creates
+security issues.
+
+This issue was easily anticipated and foreshadowed by the
+demonstration of the CVE-2020-0543/CrossTalk vulnerability.
+
+If the above interpretion is correct, a full fix should be 'straight
+forward', for some definition of 'straight forward'... :-)
+
+On TDX capable hardare, the RDSEED noise source needs to come from a
+piece of core specific silicon.  If the boot of a TDX VM is core
+locked, this would create an environment where a socket based sibling
+adversary would be unable to compromise the root of the randomness
+source.
+
+Once the Linux random number generator is properly seeded, the issue
+should be over, given that by now, everyone has agreed that a properly
+initialized Linux RNG cannot 'run out' of randomness.
+
+Given that it seems pretty clear that timing and other 'noise'
+information in a COCO environment can't be trusted, having core
+specific randomness would be a win for the overall cryptographic
+health of VM's that are running in a COCO environment.
+
+Once again, an attack doesn't need to be practical, only demonstrable.
+Once demonstrated, faith is lost in the technology, SGX clearly
+demonstrated that, as did the micro-architectural attacks.
+
+Both SGX and TDX operate from the notion of 'you trust Intel and the
+silicon', so the fix is for Intel to implement a secure silicon based
+source of randomness.
+
+AMD will probably need the same thing.
+
+> Best Regards,
+> Elena. 
+
+Hopefuly the above is helpful in furthering these discussions.
+
+Have a good remainder of the week.
+
+As always,
+Dr. Greg
+
+The Quixote Project - Flailing at the Travails of Cybersecurity
+              https://github.com/Quixote-Project
