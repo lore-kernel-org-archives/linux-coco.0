@@ -1,132 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190C534550
-	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 02:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057FC3A8F0
+	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 03:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706755947; cv=none; b=NZzepg+Avl7XcRbEMeQYo5QgWlkS/zpFpNhOVnMHJwicdq2w8uo4YzHh2iWh+WLarS4YnE7dySvEf1CzjuSGJdREfL2Lnbcn5iPjzzfcnUByF8guy0MXanGXzZ5E0nOl11hiruQeRIcqBAAn0U/Q/MRez9ILLCJrjgEa1n4fgG0=
+	t=1706758887; cv=none; b=BdDqb0meE6951NqyxGYzDCQG6AxaUyOEYPritc8Cb3zfoQmaCXyr8Fw6ZOBGoDlbeVdlZ5bnRRo4DCUnLI7PZoIEuCEXn3HlFud1tisSAAFow77v+861tRgSwPcdbstUCKHbIQXKzUBx7jKyesGJHNXSJoKqANzOqmNQByXoQMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706755947; c=relaxed/simple;
-	bh=VE/sh02bs3Pzqdd1/pbGh/uNg084WQ6X3hDLMjvsc8I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h5K4EwO/aMF4S0EijSbri7TxR5wVDLPUiP9eWHLeVKAnp0lSQEhbpsHgTIbaJ+cmibVdKjLIqOXPkqlJfInk7KdYsFqxCMQ3WnNfyXTA7ZpciqAjMaRC0+C7Gl+J/zsYAJclUBFcX2bIW1e9bFaYcnpDTdX437vUeNvqO2RIu+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eZqtCYNb; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1706758887; c=relaxed/simple;
+	bh=pD0qQqzTU6WGAJKcIVfmEDXMQaiBlK+UQHQsdA5kW08=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HkOeW13gxZPkpx2UOZWKfZVZo+u4EO04H/CxtxZrtpTHvKO/qLFZN8e4nOl2IqZNju0Y6IO971RI/o7sbNqaoG5dIG72zA2pDen5tusBEzVD3Pc4toPrUZ3Uardm62FJa7JopFet5EzuLmVxxGjz+AjQN8Xam9qno7eQvE+Pns0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0iKkYnv8; arc=none smtp.client-ip=209.85.222.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eZqtCYNb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706755946; x=1738291946;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=VE/sh02bs3Pzqdd1/pbGh/uNg084WQ6X3hDLMjvsc8I=;
-  b=eZqtCYNb2/6gSMqvtYV3D7i+HVT6nWqKjlsPIFQvLEv+lpvdmYECOMG4
-   XYQQzRCfGJCQ9skjN1kegdXhKXZNlkZm86iW2br2h72bHZ0Q9QsSaa93h
-   Z/kUqY1XcvjDCV9posSaaGyUtcZAqgFC4BKteTgGjN1tbuHhyrbBXYmK8
-   fDjcneG8DiiS/GjBlG73OFJTDgWQMmg+HvFsdwEjwEKJ1PSRqlZWxfDAO
-   fD0xTH4wppRueVE6u6DPOa+wGjEgR+vhaTwd+AdDBvD/28Sfgz774qxEi
-   CLvZitcP8YWf11MSngrkr9LIFHOzNrA8zTcjQFhEX63Dn0bHPcuBAnLDA
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="22294791"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="22294791"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 18:52:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="4253702"
-Received: from mannguye-mobl.amr.corp.intel.com (HELO [10.209.56.25]) ([10.209.56.25])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 18:52:26 -0800
-Message-ID: <73584c9a-5779-4052-a8cb-138048f16f60@linux.intel.com>
-Date: Wed, 31 Jan 2024 18:52:24 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0iKkYnv8"
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-7d2e1a0337bso280762241.3
+        for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 19:41:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706758885; x=1707363685; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0DGWnf0OzAJDC2ay8IuZMeYL0UHzgLCYpMni5nUB1LM=;
+        b=0iKkYnv8BVaOaJ6CAp1NWjVxay48/Qr911uBqVFS0Gkaot3DtI7cPFDbC2LQ7JrQKb
+         vUnxn9e/fiNAvGSBltE06zh58jRI4mpdNi6TtKLvItihQhjWMMwrtG7FIdyEx9Y904ZB
+         r9DlPuwrvGp89Dq6bY3iQYoCdc49NYslNZ7p01hkZs3aqxFLnXNcMCyFBS8aimhrOtcB
+         nRXYih5HX7xZ2ZzvtzsDpI+/0B2Qz3xz0TgeJLdS2kJmYEqGkZiWLx+3wxxLQbv7glsa
+         ltiUe/7U7jFV7jqAeMNjZcT8jL/hlGcVPOiGLUHxeN1VppyHuyWpGNnrvrpr9KdicXqU
+         Pbrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706758885; x=1707363685;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0DGWnf0OzAJDC2ay8IuZMeYL0UHzgLCYpMni5nUB1LM=;
+        b=ABob1wGWf0F7RD6DlyYVDnF1wPYy0ld3qwv6gbhbkjlEIc8hAMSuQSruVyEkq1S/9/
+         +Kszq1Qg0LxunWvLLk2Jz/+X/90LjjKYsLiIPEsNJ7GksaGGYNd74H6UdCX4lP8C3ubd
+         sQ4Z5owmXC58lDWonxpGegeHGDOElJvNLeZLqECC7dvUoWP+vCn1x1aB5dGDTfLY4yak
+         oDl1mr89oq5aP2n5RhmakfucJNG09f21VhbyxHyWzOlWy/jVGaFOeYaETHhu2VRBUDXU
+         9E/0VqEzRzRb0TbcYAQGGOnlE72gnzpSLtvEcvCr884jazOvqcxTkdue05VpUhFRiVCJ
+         7YAA==
+X-Gm-Message-State: AOJu0YyvoLMcC+T40UrWiTnvh6XLm0IoGdkVwXvwcmkJG6/G7RvBV4Is
+	JXRSX2Jjqht7VGhnBCszGCkKlrnBlehX/Pv7PExTFMPWCK+eoCN7PHJQwT6Y3XkGnZaqbKpwJYg
+	473n4VO3AI3lfZEvSKvawLYSa2+mFfNQjv82x
+X-Google-Smtp-Source: AGHT+IG8cEzY8akfVwuYulwp7fNS1FiJpo8aIaBQKCVk7NWukI6OIqqT1l36q6zX6ceqa4hmH6bIZzQwumwKYy9Qd/U=
+X-Received: by 2002:a05:6102:41a2:b0:46c:f354:efbe with SMTP id
+ cd34-20020a05610241a200b0046cf354efbemr347871vsb.1.1706758884507; Wed, 31 Jan
+ 2024 19:41:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface
- for quote generation
-Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Nikolay Borisov <nik.borisov@suse.com>, linux-coco@lists.linux.dev,
- x86@kernel.org, dave.hansen@linux.intel.com, dionnaglaze@google.com,
- dan.middleton@linux.intel.com
-References: <20240124093858.1818497-1-nik.borisov@suse.com>
- <e8c2043a-a872-43ff-b079-ebbbfa6cb743@linux.intel.com>
- <65baa477b8da8_37ad29436@dwillia2-xfh.jf.intel.com.notmuch>
- <59f268c4-8491-4256-8766-664a8ee0ffd8@linux.intel.com>
- <Zbq04j1Av2znlKIC@redhat.com>
- <65bab7cdc650e_37ad294e1@dwillia2-xfh.jf.intel.com.notmuch>
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <65bab7cdc650e_37ad294e1@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240112055251.36101-1-vannapurve@google.com> <20240112055251.36101-5-vannapurve@google.com>
+ <db477cef-f63b-4950-82b0-275bd10dbe5c@intel.com>
+In-Reply-To: <db477cef-f63b-4950-82b0-275bd10dbe5c@intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Thu, 1 Feb 2024 09:11:11 +0530
+Message-ID: <CAGtprH8AymwMJuvsTbGcLgbCOLB8q1M9LGYyPzPUbQQwvB0_eQ@mail.gmail.com>
+Subject: Re: [RFC V1 4/5] x86: CVMs: Allow allocating all DMA memory from SWIOTLB
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	rientjes@google.com, seanjc@google.com, erdemaktas@google.com, 
+	ackerleytng@google.com, jxgao@google.com, sagis@google.com, oupton@google.com, 
+	peterx@redhat.com, vkuznets@redhat.com, dmatlack@google.com, 
+	pgonda@google.com, michael.roth@amd.com, kirill@shutemov.name, 
+	thomas.lendacky@amd.com, dave.hansen@linux.intel.com, 
+	linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
+	isaku.yamahata@gmail.com, andrew.jones@linux.dev, corbet@lwn.net, hch@lst.de, 
+	m.szyprowski@samsung.com, rostedt@goodmis.org, iommu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jan 31, 2024 at 9:47=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+>
+> On 1/11/24 21:52, Vishal Annapurve wrote:
+> > --- a/arch/x86/mm/mem_encrypt.c
+> > +++ b/arch/x86/mm/mem_encrypt.c
+> > @@ -112,10 +112,14 @@ void __init mem_encrypt_setup_arch(void)
+> >        * The percentage of guest memory used here for SWIOTLB buffers
+> >        * is more of an approximation of the static adjustment which
+> >        * 64MB for <1G, and ~128M to 256M for 1G-to-4G, i.e., the 6%
+> > +      *
+> > +      * Extra 2% is added to accommodate the requirement of DMA alloca=
+tions
+> > +      * done using dma_alloc_* APIs.
+> >        */
+> > -     size =3D total_mem * 6 / 100;
+> > -     size =3D clamp_val(size, IO_TLB_DEFAULT_SIZE, SZ_1G);
+> > +     size =3D total_mem * 8 / 100;
+> > +     size =3D clamp_val(size, IO_TLB_DEFAULT_SIZE, (SZ_1G + SZ_256M));
+> >       swiotlb_adjust_size(size);
+> > +     swiotlb_adjust_alignment(SZ_2M);
+>
+> FWIW, this appears superficially to just be fiddling with random
+> numbers.  The changelog basically says: "did stuff".
+>
+> What *are* "the requirement of DMA allocations done using dma_alloc_* API=
+s"?
 
-On 1/31/24 1:12 PM, Dan Williams wrote:
-> Daniel P. Berrangé wrote:
->> On Wed, Jan 31, 2024 at 12:44:46PM -0800, Kuppuswamy Sathyanarayanan wrote:
->>> On 1/31/24 11:50 AM, Dan Williams wrote:
->>>> Kuppuswamy Sathyanarayanan wrote:
->>>>> + Dan Middleton
->>>>>
->>>>> Hi Boris,
->>>>>
->>>>> On 1/24/24 1:38 AM, Nikolay Borisov wrote:
->>>>>> IOCTL based interface was the natural choice for interacting with the
->>>>>> quote generation machine at a time when there wasn't anything better.
->>>>>> Fortunately, now we have a vendor-agnostic, configfs-based one which
->>>>>> obviates the need to have the IOCTL-based interface.
->>>>>>
->>>>>> Gate the relevant code behind a Kconfig option, clearly marking it as
->>>>>> deprecated as well as introduce a runtime warning.
->>>>>>
->>>>>> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
->>>>>> ---
->>>>> In the following thread, Dan Middleton raised a point about this interface
->>>>> being used for local attestation use cases.
->>>>>
->>>>> https://lore.kernel.org/all/ZbAaKAh-230Hj4BF@redhat.com/T/#m691dae9a7833a35552cafb597c838df9c2ed5f3a
->>>>>
->>>>> Currently, the configfs-based ABI does not support the local attestation use cases.
->>>> What are local attestation use cases, and what happens if Linux does not
->>>> provide a local attestation interface and standardizes on remotely
->>>> attestable as the standard?
->>>
->>> Local attestation is used by one TD on the same platform to prove to another TD
->>> in the same platform about its identity. It is mainly used in cases where a TD provides
->>> some special services required by other TDs. Since they are all in the same platform,
->>> there is no need for a 3rd party verifier or Quoting service. It can use the verifiable MAC
->>> to check the correctness of the TD.
->> As an example of where this might be needed, consider supporting a vTPM in
->> TDX. The TPM impl would likely be run in a separate service TD, and need to
->> be locally attested by the primary TD, to establish trust in the vTPM.
-> Service TDs are in active deployment? How does that work? A tenant pays
-> the fees to host 2 VMs? Is that more economical than just communicating
+dma_alloc_* invocations depend on the devices used and may change with
+time, so it's difficult to calculate the memory required for such
+allocations.
 
-For scalability or security reasons, CSPs can choose to host the VMM services
-in a separate VM guest. Since the service VM guest generally extends the TCB
-of the tenant VM guest to which it provides service to, it is considered secure. A
-single service VM can provide service to multiple tenant VMs. Since service VM
-implements host services, I don't think tenant has to pay for two VMs.
+Though one could note following points about memory allocations done
+using dma_alloc_* APIs:
+1) They generally happen during early setup of device drivers.
+2) They should be relatively smaller in size compared to runtime
+memory allocation done by dma_map_* APIs.
 
-In TDX, we already use service TDs for  TD Migration. Related TVMCALLs are defined
-in TDX 1.5 GHCI specification, section "TDG.VP.VMCALL <Service>"
-(https://cdrdv2.intel.com/v1/dl/getContent/726792)
-
-> the remote verifier? Not trying to be argumentative just trying to get
-> to the root of the question "why Linux must care about local
-> attestation".
-
-I think the main use case is when a tenant VM wants to use services provided
-by a service VM in the same platform.
-
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+This change increases the SWIOTLB memory area by 30% based on the
+above observations. Strategy here would be to take a safe enough
+heuristic and let dynamic SWIOTLB allocations to handle any spillover.
