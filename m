@@ -1,103 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11313B199
-	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 04:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C423B190
+	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 04:48:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706760875; cv=none; b=n5FdhovY7DcxpjAmjLfyEDB4pKrH/WKxd6XGQ8usbYpyMs9fEsWBiF5alSyfQR/J54aW44PYXhoWLTSB7setqI84GWZneZiCmEvzLe2cZDeZ0+15PYJNhJLWlCuskkjB3zDPibNhWO8ilGsuVLa+ieeW3zZyDMveqLpS8G3amU8=
+	t=1706762902; cv=none; b=fOLz/GWHO1aiU1AQd4BGpvuka/oqRVcRPtU7Q6v7Lb0oQyTWoh6s+V1vqkwTi4nAGyCzCelj9mL4pGnxmSlJCUPBr30Q7vyTNPNqBFxgM0q1E5Z6X8P3uWyYj7eBt29RL12sxAJElDYsUv5qZ4dEs15QHxHFs9ofgkmb9TTmGxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706760875; c=relaxed/simple;
-	bh=AHOmQz5aaBMq7TUk7Y6KWuFG4gcWN6thBlIFk1DrvBg=;
-	h=Content-Type:To:Cc:Subject:References:Date:MIME-Version:From:
-	 Message-ID:In-Reply-To; b=RDU2iG0o/TC0Koc612A7Yn37llJlg/aPshLb6m9xCbS792qfr0PM8RLLvVyPBVT4XAV5j1nEhJcPZghCQIKS/6MikAMp6CpbocUjHC2Pv7sQPKMSZ3g3d/13Drv7FIBvz4nkxX6FTWkXn0vIQfd+Hqr893FFXZH2LV6cLIEcn+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mpLvN0yD; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1706762902; c=relaxed/simple;
+	bh=/6YbQjizUZMS23f4SnahTuQrczLTdM9PS2UdU1MpK0Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kmbUxOXzMWoZ/ej+dWczEek+XvXJB/Dd08e7ptPwkBxwfBdGqWbi10Ms08v0Uxi1rhDKRvxxVoaStyx0APhOCiSjgbyjbePfbuCQm/LBz79nt14gXREv/lKCRFKMWJHXsl4ARx8NnTxmLnh9WkZeCherr/1WXKLNJmiMJhzPjwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=mJ30WTYx; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mpLvN0yD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706760873; x=1738296873;
-  h=to:cc:subject:references:date:mime-version:
-   content-transfer-encoding:from:message-id:in-reply-to;
-  bh=AHOmQz5aaBMq7TUk7Y6KWuFG4gcWN6thBlIFk1DrvBg=;
-  b=mpLvN0yDrV5Lkx5+y2b60Fzy7kbz+OlwSjhGtT+XQKTt+QDsK9tB+VJm
-   K3Y3lfblahs0L+Op4OKtMYV3o9GtRcpBqYpya7pwvgGqr4WCmpuGm4WmQ
-   YXbYV6gCc7SdZOGvD2SFh50tbbfv9iHD9qv/ofSKgRq4lp5WOC9TucqnA
-   9dVl9icwi6nMM5bUs4tz+gP6hV603jmQVT8+A/ewvsnjMcOyRHhczfNe6
-   JlhfJT+7MO9RwEV6GHwJyd7vWHBJa42dQsCbctkamIzn4CmHYl9eO1npj
-   zpWPC0+ezCCkO9WLLuO5cB1GW5EsC0CawOij2mU0bFMiUPWIUiNmL7tIL
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="25264759"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="25264759"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 20:14:32 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="4401653"
-Received: from hhuan26-mobl.amr.corp.intel.com ([10.92.17.168])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-SHA; 31 Jan 2024 20:14:31 -0800
-Content-Type: text/plain; charset=iso-8859-15; format=flowed; delsp=yes
-To: "Nikolay Borisov" <nik.borisov@suse.com>, linux-coco@lists.linux.dev,
- "Dave Hansen" <dave.hansen@intel.com>
-Cc: x86@kernel.org, dave.hansen@linux.intel.com, dan.j.williams@intel.com,
- dionnaglaze@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface
- for quote generation
-References: <20240124093858.1818497-1-nik.borisov@suse.com>
- <e3078be1-397a-4927-966a-acea5561eec8@suse.com>
- <464ff551-5909-42e4-b544-5c68ff86c76c@intel.com>
- <8655c3b5-84a7-42c7-8f2d-8ea32308fe5d@suse.com>
- <43ba2334-12ae-4311-8be9-e8eac631e0b9@intel.com>
-Date: Wed, 31 Jan 2024 22:14:29 -0600
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="mJ30WTYx"
+Received: from cwcc.thunk.org (pool-173-48-116-252.bstnma.fios.verizon.net [173.48.116.252])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 4114lZfQ008107
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 31 Jan 2024 23:47:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1706762860; bh=BFvwTRtGW9jE9hJ9zWULwsFsLtUy+2JhKU5qj42LjRA=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=mJ30WTYxc+jicP7NtTK/sK5Qfp95EW8SIPC2VIt9Hzvo9pTY5TmZllPzbBdvk4ZUo
+	 UYSUOxqKUp5oiWbSqQ4fLsWLNA+3TypHcQyeiC6pMUGXELlycJAK2TaI3D0ffRaLr2
+	 P7roc1WYEgo3lj+yK0jfWco5SSFrlRma8WYGCUyA2lt/8/dLbYLJbBR8CWcR2/MIqq
+	 uEHH2OuzMoxaxAee9TKjipvL/uyGMktk1sdCKRS0A2EqBVzNSs95apz28LMfoHxakU
+	 ig/XuRLSYNTpATsbWP9GAevXLr3TCr7olt7sb8FJ90hrMiMIqRa/OhLWBrEjuIYdVN
+	 3MlsY+rvHfWSA==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id 8C87115C0667; Wed, 31 Jan 2024 23:47:35 -0500 (EST)
+Date: Wed, 31 Jan 2024 23:47:35 -0500
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: "Dr. Greg" <greg@enjellic.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Reshetova, Elena" <elena.reshetova@intel.com>,
+        "Daniel P. Berrang??" <berrange@redhat.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Message-ID: <20240201044735.GC2356784@mit.edu>
+References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
+ <20240130083007.1876787-2-kirill.shutemov@linux.intel.com>
+ <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com>
+ <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com>
+ <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com>
+ <Zbk6h0ogqeInLa_1@redhat.com>
+ <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <CAHmME9ps6W5snQrYeNVMFgfhMKFKciky=-UxxGFbAx_RrxSHoA@mail.gmail.com>
+ <20240131203531.GA12035@wind.enjellic.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: "Haitao Huang" <haitao.huang@linux.intel.com>
-Organization: Intel
-Message-ID: <op.2if3efmtwjvjmi@hhuan26-mobl.amr.corp.intel.com>
-In-Reply-To: <43ba2334-12ae-4311-8be9-e8eac631e0b9@intel.com>
-User-Agent: Opera Mail/1.0 (Win32)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240131203531.GA12035@wind.enjellic.com>
 
-On Wed, 31 Jan 2024 13:05:16 -0600, Dave Hansen <dave.hansen@intel.com>  
-wrote:
+On Wed, Jan 31, 2024 at 02:35:32PM -0600, Dr. Greg wrote:
+> I think it would demonstrate a lack of appropriate engineering
+> diligence on the part of our community to declare RDRAND 'busted' at
+> this point.
+> 
+> While it appeares to be trivially easy to force RDSEED into depletion,
+> there does not seem to be a suggestion, at least in the open
+> literature, that this directly or easily translates into stalling
+> output from RDRAND in any type of relevant adversarial fashion.
+> 
+> If this were the case, given what CVE's seem to be worth on a resume,
+> someone would have rented a cloud machine and come up with a POC
+> against RDRAND in a multi-tenant environment and then promptly put up
+> a web-site called 'Random Starve' or something equally ominous.
 
-> On 1/31/24 10:18, Nikolay Borisov wrote:
->>> There is no clear consensus from this changelog, nor the tags about  
->>> this
->>> approach.  It would be much appreciated if you could make this  
->>> changelog
->>> more freestanding and  make it clear that this approach is acceptable  
->>> to
->>> both the authors and users of the code you are modifying.
->>
->> So how about something along the lines of:
->>
->> IOCTL based interface was the natural choice for interacting with the
->> quote generation machine at a time when there wasn't anything better. In
->> its current form it's only usable for local attestation but that use
->> case is also going to be switched to the config-tsm interface. In
->> preparation for this introduce a Kconfig option which allows the user to
->> choose to disable the legacy code.
->
-> That's an interesting theory.  Do the users and authors of the TDX code
-> you're Kconfig'ing away agree with you?
->
+I suspect the reason why DOS attacks aren't happening in practice, is
+because of concerns over the ability to trust the RDRAND (how do you
+prove that the NSA didn't put a backdoor into the hardware with
+Intel's acquisence --- after all, the NSA absolutely positively didn't
+encourage the kneecaping of WEP and absolutely didn't put a trapdoor
+into DUAL_EC_DRBG...)  since it can not externally audited and verfied
+by a third party, in contrast to the source code for the /dev/random
+driver or the RNG used in OpenSSL.
 
-As DanM pointed out [1], this ioctl() is not a duplicate of the current  
-configfs-tsm ABI. And Local Attestation is a use case mentioned. Can we  
-wait until there are two platforms requiring this interface and we have a  
-clear idea what the configfs-tsm interface replacement of it is before  
-deprecating? A Kconfig to deprecate without alternative implemented also  
-does not make sense to me.
+As a result, most random number generators use RDRAND in combination
+with other techniques.  If RDRAND is absolutely trustworthy, the extra
+sources won't hurt --- and if it isn't trustworthy mixing in other
+sources will likely make things harder for Fort Meade.  And even if
+these other sources might be observable for someone who can listen in
+on the inter-packet arrival times on the LAN (for example), it might
+not be so easy for an analyst sitting at their desk in Fort Meade.
 
-BR
-Haitao
+And once you do _that_, you don't need to necessarily loop on RDRAND,
+because it's one of multiple sources of entropies that are getting
+mixed togethwer.  Hence, even if someone drives RDRAND into depletion,
+if they are using getrandom(2), it's not a big deal.
 
-[1]https://lore.kernel.org/all/ZbAaKAh-230Hj4BF@redhat.com/T/#m691dae9a7833a35552cafb597c838df9c2ed5f3a
+There's a special case with Confidential Compute VM's, since the
+assumption is that you want to protect against even a malicious
+hypervisor who could theoretically control all other sources of timing
+uncertainty.  And so, yes, in that case, the only thing we can do is
+Panic if RDRAND fails.
+
+   	    	  		     	 - Ted
