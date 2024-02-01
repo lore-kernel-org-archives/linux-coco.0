@@ -1,104 +1,128 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4552F15DBA4;
-	Thu,  1 Feb 2024 12:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A7A7E0E8
+	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 16:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706790012; cv=none; b=MigbesTYSP4HDbUtXjE35NlC9lAj5AXg7EFtMGndDEV7e014wy+TFCQzh29KU9hFIEAfe/DQvo7cwkU3ljzVG9DvE8ebEBnZvxo1Ndp4qh2nzbjHbV45ppQfUUAetOx3Zm8xAierVJH5n6xfuId+4R2iXoGiVDI8YzZG4zehjaU=
+	t=1706805517; cv=none; b=fEa+eURCygM0thQU0RP+eofaRP6pk0M0USttClrgupkeVhE48rLSK6xITr6aNGlvX5gxo7y6mTSth0qUbZTjIwe9jtpJfU6wxCxceWnqMAHApr2jQnLm7cakcR/uySKE9LjX4SzDYtXa5fMLYSxwARNDkmLcZ31L7NoTbaKG03g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706790012; c=relaxed/simple;
-	bh=mkpPJwo8nkKG5bpESYi5qYl29ciuB88ElRNBgkzAMv8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YANVtpVsMF9KkhQ4zgZbqrbrjB8nfG2OEKMIlcn5lt102+ENKFZjOHqH7K/+juVu4+Z9MCw2mqHwM4Vq5sliIantLsFSREVcI/7xgYeGqZ9XZtEEKMsvlU4Pt6y39c8GDwioUvAfsctPyCxdZMcQffnAb5u45Xoij7P6wAvIBC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=THozEcgT; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1706805517; c=relaxed/simple;
+	bh=EKKfK1jLKXIPEoqnvWWsPVTEbHgmCxR3CtVMQy6TP7g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iPobg1A/f5DdLjpjKt/cg1yV8Tnzl3GKW8erUHfSwZekNLD1HAscsCic7gU4dV6PGgX09Iv8sXB8PLYu8lKwSgahP4AQbAUTMld3r0Sph5rebtaqNbF9xxV7BQEPiisnOCw0ySRGjNsO48aHNf4uhk1C0MHg5azQ14X1A7FlELY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OTiNBapQ; arc=none smtp.client-ip=209.85.222.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="THozEcgT"
-Received: from [100.66.96.10] (unknown [108.143.43.187])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 47181206FCCE;
-	Thu,  1 Feb 2024 04:20:05 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 47181206FCCE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1706790010;
-	bh=DoGkwwTfNrBvre86yV2tHsglFQXvOb9/ZoWRaatJS54=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=THozEcgTrrRliYGkmJpSosuyTA8Ufby2M+CKXOrYTUpK3cTluLWnEniWX84AjNaJE
-	 nNw6UOATefXyM8Y+odJnBinFjc4pIBOzS6/T81BmAVl2xgcr4AtoNnISj/ZKfVXytv
-	 cfGCdqpmGjXFLpaONbOJJrTBwWPnlIvrASA6KzPw=
-Message-ID: <0fda610f-a8ae-4133-a9d5-e9084c88ba7b@linux.microsoft.com>
-Date: Thu, 1 Feb 2024 13:20:03 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OTiNBapQ"
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-7d5fce59261so575280241.3
+        for <linux-coco@lists.linux.dev>; Thu, 01 Feb 2024 08:38:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706805515; x=1707410315; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LxydBSYt78Q3tDYYvbfwJIQv5drJs2GhS3kKeICFZ4k=;
+        b=OTiNBapQ4gAb5Q/ZiTco7H/HQEXZ707QBtcbkWEmeMxHbCCmjpzSAGQoNHcAJq/uu+
+         yHh/VfVMcbuBrtMJqd7/ic1pKn69e95T13o/2lgIj/0pDb82JanZ5uAauBVRnXNErEhA
+         g8Qz9AvULfOzAyJRfT94eRMZs1J/Yvwt8JA2lMdSRJoGTyPkufWH6OcSnSppwCAI0+20
+         L6zgE15ooyuqox1dQIxajO0LsKc5adxon4aoZ/UdjiztKw5ii14dscW10QNfPn/VV05U
+         m7catyN8qI52swzu9aCI1Z61+pLMDTayPXt8DK7mJ1GAmLQezCKqU4B4q9te+oEIhQ4C
+         XCWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706805515; x=1707410315;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LxydBSYt78Q3tDYYvbfwJIQv5drJs2GhS3kKeICFZ4k=;
+        b=qT7gP5nkIobP39vL4b9bjRiRKgughn8C3PmWL3CcK+l5MyogHgRMSC6xl3pXRxL8BJ
+         QODsscbYZlYbkUlEXHKbfm1m4GlLzGSmOVGGnQsCk+G2CxjAED3x+uZ4iEabuDAx90+c
+         LTuzZ2l0nSGhU7CIcOXgW8eoCCwh9PQpny15ia9rFJtpC1EtenEqqHHfFfp/KdOnujuM
+         nXU7nsEJ/w9OcB/PjLxgqts2brDnhR/3dl2p4lA9qXCC4JRf/5ry8jd5U7PhhdsEBqQ/
+         nTdmAY6/M6Zg6JeYtTZZmZjqjq5yTnHGgfE0gskCZDPpMAIDh2i1uivTBoPkMJiT4OxO
+         LJuw==
+X-Gm-Message-State: AOJu0YxHFXYbqwGsejBdhewFeShWPBvv792Mth9mZynWXvUz8lR7MU21
+	SEE3q9vjbi3qXz3EpRnxDm4IEgu1cEJiwKMqSRkzV1rg7tBB5sSMyjLooZMy8P0yjyyzf+CReh+
+	X1pZsGcvcpVQSxgm4v7IxsGvmVsG67Q5Il1/8
+X-Google-Smtp-Source: AGHT+IFvLBp7+wMbKBKxwjYgXGrG962W6VY58iu9bhsBfRyOqGFPu3+P1yJI2ZKLHaKwekY3Mc56N8uf1sMgdb+Cosg=
+X-Received: by 2002:ac5:cb6b:0:b0:4b6:c3ae:97f6 with SMTP id
+ l11-20020ac5cb6b000000b004b6c3ae97f6mr4498112vkn.0.1706805514702; Thu, 01 Feb
+ 2024 08:38:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 3/5] x86: CVMs: Enable dynamic swiotlb by default for
- CVMs
-Content-Language: en-US
-To: Vishal Annapurve <vannapurve@google.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-Cc: pbonzini@redhat.com, rientjes@google.com, bgardon@google.com,
- seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com,
- jxgao@google.com, sagis@google.com, oupton@google.com, peterx@redhat.com,
- vkuznets@redhat.com, dmatlack@google.com, pgonda@google.com,
- michael.roth@amd.com, kirill@shutemov.name, thomas.lendacky@amd.com,
- dave.hansen@linux.intel.com, linux-coco@lists.linux.dev,
- chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com,
- andrew.jones@linux.dev, corbet@lwn.net, hch@lst.de,
- m.szyprowski@samsung.com, bp@suse.de, rostedt@goodmis.org,
- iommu@lists.linux.dev
-References: <20240112055251.36101-1-vannapurve@google.com>
- <20240112055251.36101-4-vannapurve@google.com>
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <20240112055251.36101-4-vannapurve@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
+ <20240130220845.1978329-3-kevinloughlin@google.com> <sx3i6e6rgggh6wxtqt6odvwubg5vqotfleyjditiicjvjgpf6r@bswwhdt6zzti>
+In-Reply-To: <sx3i6e6rgggh6wxtqt6odvwubg5vqotfleyjditiicjvjgpf6r@bswwhdt6zzti>
+From: Kevin Loughlin <kevinloughlin@google.com>
+Date: Thu, 1 Feb 2024 08:38:23 -0800
+Message-ID: <CAGdbjmKOwRbWa9w3M6NH-gTnTOt-ZaM0UA700TMhFzrX8z5MVw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] x86/head64: Replace pointer fixups with RIP_RELATIVE_ADDR()
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Nick Desaulniers <ndesaulniers@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>, 
+	Hou Wenlong <houwenlong.hwl@antgroup.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-coco@lists.linux.dev, Ashish Kalra <ashish.kalra@amd.com>, 
+	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>, 
+	Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>, 
+	Sidharth Telang <sidtelang@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/01/2024 06:52, Vishal Annapurve wrote:
-> CVMs used SWIOTLB for non-trusted IO using dma_map_* APIs. This series
-> will ensure that dma_alloc_* API to also allocate from SWIOTLB pools.
-> Initial size of SWIOTLB pool is decided using heuristics and has been
-> working with CVM usecases so far.
-> 
-> It's better to allow SWIOTLB to scale up on demand rather than keeping
-> the size fixed to avoid failures with possibly increased usage of
-> SWIOTLB with dma_alloc_* APIs allocating from SWIOTLB pools. This should
-> also help in future with more devices getting used from CVMs for
-> non-trusted IO.
-> 
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> ---
->  arch/x86/Kconfig | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 1566748f16c4..035c8a022c4c 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -884,6 +884,7 @@ config INTEL_TDX_GUEST
->  	select X86_MEM_ENCRYPT
->  	select X86_MCE
->  	select UNACCEPTED_MEMORY
-> +	select SWIOTLB_DYNAMIC
->  	help
->  	  Support running as a guest under Intel TDX.  Without this support,
->  	  the guest kernel can not boot or run under TDX.
-> @@ -1534,6 +1535,7 @@ config AMD_MEM_ENCRYPT
->  	select ARCH_HAS_CC_PLATFORM
->  	select X86_MEM_ENCRYPT
->  	select UNACCEPTED_MEMORY
-> +	select SWIOTLB_DYNAMIC
->  	help
->  	  Say yes to enable support for the encryption of system memory.
->  	  This requires an AMD processor that supports Secure Memory
+On Wed, Jan 31, 2024 at 12:24=E2=80=AFAM Kirill A. Shutemov
+<kirill.shutemov@linux.intel.com> wrote:
+>
+> On Tue, Jan 30, 2024 at 10:08:45PM +0000, Kevin Loughlin wrote:
+> > @@ -594,15 +579,15 @@ static void set_bringup_idt_handler(gate_desc *id=
+t, int n, void *handler)
+> >  /* This runs while still in the direct mapping */
+> >  static void __head startup_64_load_idt(unsigned long physbase)
+> >  {
+> > -     struct desc_ptr *desc =3D fixup_pointer(&bringup_idt_descr, physb=
+ase);
+> > -     gate_desc *idt =3D fixup_pointer(bringup_idt_table, physbase);
+> > +     struct desc_ptr *desc =3D RIP_RELATIVE_ADDR(bringup_idt_descr);
+> > +     gate_desc *idt =3D RIP_RELATIVE_ADDR(bringup_idt_table);
+> >
+> >
+> >       if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
+> >               void *handler;
+> >
+> >               /* VMM Communication Exception */
+> > -             handler =3D fixup_pointer(vc_no_ghcb, physbase);
+> > +             handler =3D RIP_RELATIVE_ADDR(vc_no_ghcb);
+> >               set_bringup_idt_handler(idt, X86_TRAP_VC, handler);
+> >       }
+> >
+>
+> Looks like you removed all physbase users in the function. No need to pas=
+s
+> it to it.
 
-What this does is unconditionally enable SWIOTLB_DYNAMIC for every kernel compiled
-to support memory encryption, regardless of whether it runs inside a confidential guest.
-I don't think that is what you intended.
+Thanks, will fix.
 
-Best wishes,
-Jeremi
+>
+> > @@ -629,7 +614,7 @@ void early_setup_idt(void)
+> >  void __head startup_64_setup_env(unsigned long physbase)
+> >  {
+> >       /* Load GDT */
+> > -     startup_gdt_descr.address =3D (unsigned long)fixup_pointer(startu=
+p_gdt, physbase);
+> > +     startup_gdt_descr.address =3D (unsigned long)RIP_RELATIVE_ADDR(st=
+artup_gdt);
+> >       native_load_gdt(&startup_gdt_descr);
+> >
+> >       /* New GDT is live - reload data segment registers */
+>
+> With startup_64_load_idt() fixed, no users for physbase in this function
+> either.
 
-
+Ditto.
