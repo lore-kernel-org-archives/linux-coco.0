@@ -1,111 +1,103 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822FD3B190
-	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 03:46:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11313B199
+	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 04:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706759178; cv=none; b=spCdCaPUteZKGyOAUE8xNmDYnhHRjkHnoHnDmYhPHEYmp58bldn+qs73g8cU0c+U6QKzMe2fno6+b2zoccvBSd/YOvCkxWJeNWTzPdpQ1GnBYVf9RBDuE8r5C+zqA1qunaUSslKz7A/UBs+3I4XilA0UHXKg7n4gTMU7a1WDpQo=
+	t=1706760875; cv=none; b=n5FdhovY7DcxpjAmjLfyEDB4pKrH/WKxd6XGQ8usbYpyMs9fEsWBiF5alSyfQR/J54aW44PYXhoWLTSB7setqI84GWZneZiCmEvzLe2cZDeZ0+15PYJNhJLWlCuskkjB3zDPibNhWO8ilGsuVLa+ieeW3zZyDMveqLpS8G3amU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706759178; c=relaxed/simple;
-	bh=jLZl2svZauxC4ea4Z0jDZi5dNNmdxwWEhOWyRJ7STJk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G3qWuTG8z7urmkelRtoTSUA4xTcDa6ng0dG9AuSkaEu4KEo3YydVouMmcmxk6dTEUxgfvsJETO1oV9zd6J5wuZgAWdGEtqSZB8yuRDdTRpPA4BadX8Yvwmnx0FJO6ssB7nfjFNF7lEQJPeMNeJuZqtp/AZr0eetl+4F3Ji/OQok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C2iWBfiu; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706760875; c=relaxed/simple;
+	bh=AHOmQz5aaBMq7TUk7Y6KWuFG4gcWN6thBlIFk1DrvBg=;
+	h=Content-Type:To:Cc:Subject:References:Date:MIME-Version:From:
+	 Message-ID:In-Reply-To; b=RDU2iG0o/TC0Koc612A7Yn37llJlg/aPshLb6m9xCbS792qfr0PM8RLLvVyPBVT4XAV5j1nEhJcPZghCQIKS/6MikAMp6CpbocUjHC2Pv7sQPKMSZ3g3d/13Drv7FIBvz4nkxX6FTWkXn0vIQfd+Hqr893FFXZH2LV6cLIEcn+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mpLvN0yD; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C2iWBfiu"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-68c35bf7523so2461536d6.0
-        for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 19:46:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706759175; x=1707363975; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mFF8rhKxfnZfXzZDWT495muOJWGnqIPs5LoDZ1rl5gE=;
-        b=C2iWBfiuhyYbO5/u1jSGVgc7W21tS0UOHj6l0D0wbm4bDbS0Os3EFyEUF5F6RdzSZ/
-         6vn7gtZ5Rone+61ndbIOlkD8tncd2kvjCxSrDqammahYXBzWF9ZU2Mwbi9N/7gUVHlxV
-         aKOVAfWF1yL3vFdy+YWQtri4OatUKV3PmjA8U+Z5n2eUJYbAhSwDrVyM188VhAC8ashM
-         1OKZ253IFzsepRzwOun8DQ+cZt1jCHyo+wcfKGinOpgDxbSk9g3sWQcxBpIKZIoJTkpz
-         +cumROGuecL/o91Y5LmjE7X+ZKTG5hd8JHyD6fqM8pGXAwMY9Q7k8xhHT2q8bgYgYfoF
-         H2lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706759175; x=1707363975;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mFF8rhKxfnZfXzZDWT495muOJWGnqIPs5LoDZ1rl5gE=;
-        b=ico1xt3LDXhBFFpInqrpOt3VpUI1rFR/FT+JNmI68zKVYdanpkQX6jGtOblHVE3J2I
-         Cq9035eFOhhvfPrmZGIZKFU0dZakTWQKCXiN2RWWqwTHQr6Nmo5Ivt7B8rvEAyhF71TE
-         tPmkxXThbdtho5YtxqitxdJYuIm/bVmpEkBUwhGreVXXWfjD6fVJcUmAbPMWTUa+IPeA
-         sO79nPZC7x9J+BUv16iuvdtYwBfsTVUjs3nm/4ZUG3oY+/Xrhd2Gd7b7+Q/07kuGYHjd
-         TOjWqAje2PtuwbC3i7oN8jWUD255Gkcpj5PcxqsJQ09KtseEOGzYUsVtw7AAdEfKYNI/
-         DaFg==
-X-Gm-Message-State: AOJu0Yxl3q1FOUlcgqgG47xc1ZOQE2DAw22xzjqz0kmWqbeN50c1m1ET
-	IvXxI9IaHRpQ1hW8IkWRH8lhr1UNi2/Oje8w8yEuxeNAfvGRagA3rVvKk+xGIx2u0KoZ7PAY2Qy
-	DV0+i+1p6/Pi85v+fjuyOISzLBOD9dLvP+1Q6
-X-Google-Smtp-Source: AGHT+IGl3N0KrMo4pI0gs+wWPmLLPDTG5QuX4lcGW2kiKQyFlHOmi4pC0Z0bfHJbRXQX44gvJC50zjr6/z8SDinOs0E=
-X-Received: by 2002:a05:6214:21eb:b0:686:aaad:e36d with SMTP id
- p11-20020a05621421eb00b00686aaade36dmr3110186qvj.2.1706759174991; Wed, 31 Jan
- 2024 19:46:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mpLvN0yD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706760873; x=1738296873;
+  h=to:cc:subject:references:date:mime-version:
+   content-transfer-encoding:from:message-id:in-reply-to;
+  bh=AHOmQz5aaBMq7TUk7Y6KWuFG4gcWN6thBlIFk1DrvBg=;
+  b=mpLvN0yDrV5Lkx5+y2b60Fzy7kbz+OlwSjhGtT+XQKTt+QDsK9tB+VJm
+   K3Y3lfblahs0L+Op4OKtMYV3o9GtRcpBqYpya7pwvgGqr4WCmpuGm4WmQ
+   YXbYV6gCc7SdZOGvD2SFh50tbbfv9iHD9qv/ofSKgRq4lp5WOC9TucqnA
+   9dVl9icwi6nMM5bUs4tz+gP6hV603jmQVT8+A/ewvsnjMcOyRHhczfNe6
+   JlhfJT+7MO9RwEV6GHwJyd7vWHBJa42dQsCbctkamIzn4CmHYl9eO1npj
+   zpWPC0+ezCCkO9WLLuO5cB1GW5EsC0CawOij2mU0bFMiUPWIUiNmL7tIL
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="25264759"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="25264759"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 20:14:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="4401653"
+Received: from hhuan26-mobl.amr.corp.intel.com ([10.92.17.168])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-SHA; 31 Jan 2024 20:14:31 -0800
+Content-Type: text/plain; charset=iso-8859-15; format=flowed; delsp=yes
+To: "Nikolay Borisov" <nik.borisov@suse.com>, linux-coco@lists.linux.dev,
+ "Dave Hansen" <dave.hansen@intel.com>
+Cc: x86@kernel.org, dave.hansen@linux.intel.com, dan.j.williams@intel.com,
+ dionnaglaze@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface
+ for quote generation
+References: <20240124093858.1818497-1-nik.borisov@suse.com>
+ <e3078be1-397a-4927-966a-acea5561eec8@suse.com>
+ <464ff551-5909-42e4-b544-5c68ff86c76c@intel.com>
+ <8655c3b5-84a7-42c7-8f2d-8ea32308fe5d@suse.com>
+ <43ba2334-12ae-4311-8be9-e8eac631e0b9@intel.com>
+Date: Wed, 31 Jan 2024 22:14:29 -0600
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240112055251.36101-1-vannapurve@google.com> <20240112055251.36101-6-vannapurve@google.com>
- <6709a57c-48a0-4ddd-b64e-a1e34ae2b763@intel.com>
-In-Reply-To: <6709a57c-48a0-4ddd-b64e-a1e34ae2b763@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Thu, 1 Feb 2024 09:16:03 +0530
-Message-ID: <CAGtprH_ANUVU+Dh1KOq0vpT7BGbCEvD2ab9B=sxjzHYsKxFGeA@mail.gmail.com>
-Subject: Re: [RFC V1 5/5] x86: CVMs: Ensure that memory conversions happen at
- 2M alignment
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	rientjes@google.com, seanjc@google.com, erdemaktas@google.com, 
-	ackerleytng@google.com, jxgao@google.com, sagis@google.com, oupton@google.com, 
-	peterx@redhat.com, vkuznets@redhat.com, dmatlack@google.com, 
-	pgonda@google.com, michael.roth@amd.com, kirill@shutemov.name, 
-	thomas.lendacky@amd.com, dave.hansen@linux.intel.com, 
-	linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
-	isaku.yamahata@gmail.com, andrew.jones@linux.dev, corbet@lwn.net, hch@lst.de, 
-	m.szyprowski@samsung.com, rostedt@goodmis.org, iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+From: "Haitao Huang" <haitao.huang@linux.intel.com>
+Organization: Intel
+Message-ID: <op.2if3efmtwjvjmi@hhuan26-mobl.amr.corp.intel.com>
+In-Reply-To: <43ba2334-12ae-4311-8be9-e8eac631e0b9@intel.com>
+User-Agent: Opera Mail/1.0 (Win32)
 
-On Wed, Jan 31, 2024 at 10:03=E2=80=AFPM Dave Hansen <dave.hansen@intel.com=
-> wrote:
+On Wed, 31 Jan 2024 13:05:16 -0600, Dave Hansen <dave.hansen@intel.com>  
+wrote:
+
+> On 1/31/24 10:18, Nikolay Borisov wrote:
+>>> There is no clear consensus from this changelog, nor the tags about  
+>>> this
+>>> approach.  It would be much appreciated if you could make this  
+>>> changelog
+>>> more freestanding and  make it clear that this approach is acceptable  
+>>> to
+>>> both the authors and users of the code you are modifying.
+>>
+>> So how about something along the lines of:
+>>
+>> IOCTL based interface was the natural choice for interacting with the
+>> quote generation machine at a time when there wasn't anything better. In
+>> its current form it's only usable for local attestation but that use
+>> case is also going to be switched to the config-tsm interface. In
+>> preparation for this introduce a Kconfig option which allows the user to
+>> choose to disable the legacy code.
 >
-> On 1/11/24 21:52, Vishal Annapurve wrote:
-> > @@ -2133,8 +2133,10 @@ static int __set_memory_enc_pgtable(unsigned lon=
-g addr, int numpages, bool enc)
-> >       int ret;
-> >
-> >       /* Should not be working on unaligned addresses */
-> > -     if (WARN_ONCE(addr & ~PAGE_MASK, "misaligned address: %#lx\n", ad=
-dr))
-> > -             addr &=3D PAGE_MASK;
-> > +     if (WARN_ONCE(addr & ~HPAGE_MASK, "misaligned address: %#lx\n", a=
-ddr)
-> > +             || WARN_ONCE((numpages << PAGE_SHIFT) & ~HPAGE_MASK,
-> > +                     "misaligned numpages: %#lx\n", numpages))
-> > +             return -EINVAL;
->
-> This series is talking about swiotlb and DMA, then this applies a
-> restriction to what I *thought* was a much more generic function:
-> __set_memory_enc_pgtable().  What prevents this function from getting
-> used on 4k mappings?
->
+> That's an interesting theory.  Do the users and authors of the TDX code
+> you're Kconfig'ing away agree with you?
 >
 
-The end goal here is to limit the conversion granularity to hugepage
-sizes. SWIOTLB allocations are the major source of unaligned
-allocations(and so the conversions) that need to be fixed before
-achieving this goal.
+As DanM pointed out [1], this ioctl() is not a duplicate of the current  
+configfs-tsm ABI. And Local Attestation is a use case mentioned. Can we  
+wait until there are two platforms requiring this interface and we have a  
+clear idea what the configfs-tsm interface replacement of it is before  
+deprecating? A Kconfig to deprecate without alternative implemented also  
+does not make sense to me.
 
-This change will ensure that conversion fails for unaligned ranges, as
-I don't foresee the need for 4K aligned conversions apart from DMA
-allocations.
+BR
+Haitao
+
+[1]https://lore.kernel.org/all/ZbAaKAh-230Hj4BF@redhat.com/T/#m691dae9a7833a35552cafb597c838df9c2ed5f3a
