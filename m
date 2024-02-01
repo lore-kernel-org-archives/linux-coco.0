@@ -1,32 +1,32 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF47D15B984;
-	Thu,  1 Feb 2024 12:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4552F15DBA4;
+	Thu,  1 Feb 2024 12:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706788967; cv=none; b=OucXdQRig5OdO4r47IHC5IddWwxxwtY0QbujzSOs1N/qeNfqTYhqPKXA7KWAE66Au/nZPKlFVcXfQyVXieP+0Fiwr/aEIartx4a3P0V7BUKPMaWoQ4zdcxnzMUmeizwhCce7KdrxbkZrJdG9ot0zoCdAwK1BUi19uLcgyeeDvcw=
+	t=1706790012; cv=none; b=MigbesTYSP4HDbUtXjE35NlC9lAj5AXg7EFtMGndDEV7e014wy+TFCQzh29KU9hFIEAfe/DQvo7cwkU3ljzVG9DvE8ebEBnZvxo1Ndp4qh2nzbjHbV45ppQfUUAetOx3Zm8xAierVJH5n6xfuId+4R2iXoGiVDI8YzZG4zehjaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706788967; c=relaxed/simple;
-	bh=U1QgTx/gonDu/uoDj6Yhkj7Mk5lTXdQzwCSaXC26Vq0=;
+	s=arc-20240116; t=1706790012; c=relaxed/simple;
+	bh=mkpPJwo8nkKG5bpESYi5qYl29ciuB88ElRNBgkzAMv8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SYYA/lb7cSMDkp2BPGCqQDV2evigCigkKhY6JBKoi1FBYbPbMp2mrYM+1FC6VQsl/f77NED3X30D8y/vaJENWi2tI+WuknCNon5/OpSxMHgsy6DQAQUVaqD6IYmwB6XrgrkheY4n5CRFU3S+SrsZ+0DgY2vjlkMkXpvXT47c6aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=WRELC0PS; arc=none smtp.client-ip=13.77.154.182
+	 In-Reply-To:Content-Type; b=YANVtpVsMF9KkhQ4zgZbqrbrjB8nfG2OEKMIlcn5lt102+ENKFZjOHqH7K/+juVu4+Z9MCw2mqHwM4Vq5sliIantLsFSREVcI/7xgYeGqZ9XZtEEKMsvlU4Pt6y39c8GDwioUvAfsctPyCxdZMcQffnAb5u45Xoij7P6wAvIBC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=THozEcgT; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="WRELC0PS"
-Received: from [192.168.1.212] (181-28-144-85.ftth.glasoperator.nl [85.144.28.181])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 6F789206FCD0;
-	Thu,  1 Feb 2024 04:02:40 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6F789206FCD0
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="THozEcgT"
+Received: from [100.66.96.10] (unknown [108.143.43.187])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 47181206FCCE;
+	Thu,  1 Feb 2024 04:20:05 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 47181206FCCE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1706788965;
-	bh=qjw0e01e5zFmjwwo4oUZmNAjRO4lcWWRzjpiHATsHPU=;
+	s=default; t=1706790010;
+	bh=DoGkwwTfNrBvre86yV2tHsglFQXvOb9/ZoWRaatJS54=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WRELC0PSaLUMEtlRV/S8ryd5KvNa58lt15AZNRro2BSnLpzOJFyou7LW6Nv9NfFoY
-	 GfOyTslatpxy2VeYebidLaHHNzfydmCyJHoEFt05OPTOV7uPHkCYu3eKXWmFLFCLPf
-	 B3mXpPQSaXrvqobr5rXV0qztr8Dn4f4Mc1IWSzhk=
-Message-ID: <1d9d3372-825a-417a-8811-ffa501c83936@linux.microsoft.com>
-Date: Thu, 1 Feb 2024 13:02:38 +0100
+	b=THozEcgTrrRliYGkmJpSosuyTA8Ufby2M+CKXOrYTUpK3cTluLWnEniWX84AjNaJE
+	 nNw6UOATefXyM8Y+odJnBinFjc4pIBOzS6/T81BmAVl2xgcr4AtoNnISj/ZKfVXytv
+	 cfGCdqpmGjXFLpaONbOJJrTBwWPnlIvrASA6KzPw=
+Message-ID: <0fda610f-a8ae-4133-a9d5-e9084c88ba7b@linux.microsoft.com>
+Date: Thu, 1 Feb 2024 13:20:03 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -34,67 +34,71 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 5/5] x86: CVMs: Ensure that memory conversions happen at
- 2M alignment
-To: Vishal Annapurve <vannapurve@google.com>,
- Dave Hansen <dave.hansen@intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com,
- rientjes@google.com, seanjc@google.com, erdemaktas@google.com,
- ackerleytng@google.com, jxgao@google.com, sagis@google.com,
- oupton@google.com, peterx@redhat.com, vkuznets@redhat.com,
- dmatlack@google.com, pgonda@google.com, michael.roth@amd.com,
- kirill@shutemov.name, thomas.lendacky@amd.com, dave.hansen@linux.intel.com,
- linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com,
- isaku.yamahata@gmail.com, andrew.jones@linux.dev, corbet@lwn.net,
- hch@lst.de, m.szyprowski@samsung.com, rostedt@goodmis.org,
+Subject: Re: [RFC V1 3/5] x86: CVMs: Enable dynamic swiotlb by default for
+ CVMs
+Content-Language: en-US
+To: Vishal Annapurve <vannapurve@google.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: pbonzini@redhat.com, rientjes@google.com, bgardon@google.com,
+ seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com,
+ jxgao@google.com, sagis@google.com, oupton@google.com, peterx@redhat.com,
+ vkuznets@redhat.com, dmatlack@google.com, pgonda@google.com,
+ michael.roth@amd.com, kirill@shutemov.name, thomas.lendacky@amd.com,
+ dave.hansen@linux.intel.com, linux-coco@lists.linux.dev,
+ chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com,
+ andrew.jones@linux.dev, corbet@lwn.net, hch@lst.de,
+ m.szyprowski@samsung.com, bp@suse.de, rostedt@goodmis.org,
  iommu@lists.linux.dev
 References: <20240112055251.36101-1-vannapurve@google.com>
- <20240112055251.36101-6-vannapurve@google.com>
- <6709a57c-48a0-4ddd-b64e-a1e34ae2b763@intel.com>
- <CAGtprH_ANUVU+Dh1KOq0vpT7BGbCEvD2ab9B=sxjzHYsKxFGeA@mail.gmail.com>
-Content-Language: en-US
+ <20240112055251.36101-4-vannapurve@google.com>
 From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <CAGtprH_ANUVU+Dh1KOq0vpT7BGbCEvD2ab9B=sxjzHYsKxFGeA@mail.gmail.com>
+In-Reply-To: <20240112055251.36101-4-vannapurve@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 01/02/2024 04:46, Vishal Annapurve wrote:
-> On Wed, Jan 31, 2024 at 10:03 PM Dave Hansen <dave.hansen@intel.com> wrote:
->>
->> On 1/11/24 21:52, Vishal Annapurve wrote:
->>> @@ -2133,8 +2133,10 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
->>>       int ret;
->>>
->>>       /* Should not be working on unaligned addresses */
->>> -     if (WARN_ONCE(addr & ~PAGE_MASK, "misaligned address: %#lx\n", addr))
->>> -             addr &= PAGE_MASK;
->>> +     if (WARN_ONCE(addr & ~HPAGE_MASK, "misaligned address: %#lx\n", addr)
->>> +             || WARN_ONCE((numpages << PAGE_SHIFT) & ~HPAGE_MASK,
->>> +                     "misaligned numpages: %#lx\n", numpages))
->>> +             return -EINVAL;
->>
->> This series is talking about swiotlb and DMA, then this applies a
->> restriction to what I *thought* was a much more generic function:
->> __set_memory_enc_pgtable().  What prevents this function from getting
->> used on 4k mappings?
->>
->>
+On 12/01/2024 06:52, Vishal Annapurve wrote:
+> CVMs used SWIOTLB for non-trusted IO using dma_map_* APIs. This series
+> will ensure that dma_alloc_* API to also allocate from SWIOTLB pools.
+> Initial size of SWIOTLB pool is decided using heuristics and has been
+> working with CVM usecases so far.
 > 
-> The end goal here is to limit the conversion granularity to hugepage
-> sizes. SWIOTLB allocations are the major source of unaligned
-> allocations(and so the conversions) that need to be fixed before
-> achieving this goal.
+> It's better to allow SWIOTLB to scale up on demand rather than keeping
+> the size fixed to avoid failures with possibly increased usage of
+> SWIOTLB with dma_alloc_* APIs allocating from SWIOTLB pools. This should
+> also help in future with more devices getting used from CVMs for
+> non-trusted IO.
 > 
-> This change will ensure that conversion fails for unaligned ranges, as
-> I don't foresee the need for 4K aligned conversions apart from DMA
-> allocations.
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> ---
+>  arch/x86/Kconfig | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 1566748f16c4..035c8a022c4c 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -884,6 +884,7 @@ config INTEL_TDX_GUEST
+>  	select X86_MEM_ENCRYPT
+>  	select X86_MCE
+>  	select UNACCEPTED_MEMORY
+> +	select SWIOTLB_DYNAMIC
+>  	help
+>  	  Support running as a guest under Intel TDX.  Without this support,
+>  	  the guest kernel can not boot or run under TDX.
+> @@ -1534,6 +1535,7 @@ config AMD_MEM_ENCRYPT
+>  	select ARCH_HAS_CC_PLATFORM
+>  	select X86_MEM_ENCRYPT
+>  	select UNACCEPTED_MEMORY
+> +	select SWIOTLB_DYNAMIC
+>  	help
+>  	  Say yes to enable support for the encryption of system memory.
+>  	  This requires an AMD processor that supports Secure Memory
 
-Hi Vishal,
+What this does is unconditionally enable SWIOTLB_DYNAMIC for every kernel compiled
+to support memory encryption, regardless of whether it runs inside a confidential guest.
+I don't think that is what you intended.
 
-This assumption is wrong. set_memory_decrypted is called from various
-parts of the kernel: kexec, sev-guest, kvmclock, hyperv code. These conversions
-are for non-DMA allocations that need to be done at 4KB granularity
-because the data structures in question are page sized.
-
-Thanks,
+Best wishes,
 Jeremi
+
+
