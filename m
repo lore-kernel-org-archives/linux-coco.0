@@ -1,128 +1,212 @@
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A7A7E0E8
-	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 16:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93A574281
+	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 18:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706805517; cv=none; b=fEa+eURCygM0thQU0RP+eofaRP6pk0M0USttClrgupkeVhE48rLSK6xITr6aNGlvX5gxo7y6mTSth0qUbZTjIwe9jtpJfU6wxCxceWnqMAHApr2jQnLm7cakcR/uySKE9LjX4SzDYtXa5fMLYSxwARNDkmLcZ31L7NoTbaKG03g=
+	t=1706810976; cv=none; b=nHoNcYKNZjXoNl4gyygRwugvqoDPpMxoG4wLakGPWxCg5F8+sg2jKlRn+ozg4eZk/TGOS+03XoMgONObj7AXaHCy3U7N/nshxDzHgnBKTue93MbenFNTKOvwKHxLDpfL3diIfBnU4nBxYR1eUq8MAMvSC/aOZj5Y7hrbfCYcz40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706805517; c=relaxed/simple;
-	bh=EKKfK1jLKXIPEoqnvWWsPVTEbHgmCxR3CtVMQy6TP7g=;
+	s=arc-20240116; t=1706810976; c=relaxed/simple;
+	bh=XjAesaMRPLp5QxyOh8ZLeX5dtHwXo+xamByfNTJNWZQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iPobg1A/f5DdLjpjKt/cg1yV8Tnzl3GKW8erUHfSwZekNLD1HAscsCic7gU4dV6PGgX09Iv8sXB8PLYu8lKwSgahP4AQbAUTMld3r0Sph5rebtaqNbF9xxV7BQEPiisnOCw0ySRGjNsO48aHNf4uhk1C0MHg5azQ14X1A7FlELY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OTiNBapQ; arc=none smtp.client-ip=209.85.222.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=YNdiLFhfDG8Di8AqwRCu/i3VHTSPPCICnf9E8v/ilAaP0bWliNqB4TDioYjCrF8XpGt+6HQ4MJwso3TaTKYsR1FOXoKCL2gQD92is5qulCBSPmqnfsRbPOoZOVax29CHss9eJ0YtzT1+htq8BkcjsV6BKL4L9vRFmPLDHVsA9Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=PPHVYxxW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OTiNBapQ"
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-7d5fce59261so575280241.3
-        for <linux-coco@lists.linux.dev>; Thu, 01 Feb 2024 08:38:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706805515; x=1707410315; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LxydBSYt78Q3tDYYvbfwJIQv5drJs2GhS3kKeICFZ4k=;
-        b=OTiNBapQ4gAb5Q/ZiTco7H/HQEXZ707QBtcbkWEmeMxHbCCmjpzSAGQoNHcAJq/uu+
-         yHh/VfVMcbuBrtMJqd7/ic1pKn69e95T13o/2lgIj/0pDb82JanZ5uAauBVRnXNErEhA
-         g8Qz9AvULfOzAyJRfT94eRMZs1J/Yvwt8JA2lMdSRJoGTyPkufWH6OcSnSppwCAI0+20
-         L6zgE15ooyuqox1dQIxajO0LsKc5adxon4aoZ/UdjiztKw5ii14dscW10QNfPn/VV05U
-         m7catyN8qI52swzu9aCI1Z61+pLMDTayPXt8DK7mJ1GAmLQezCKqU4B4q9te+oEIhQ4C
-         XCWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706805515; x=1707410315;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LxydBSYt78Q3tDYYvbfwJIQv5drJs2GhS3kKeICFZ4k=;
-        b=qT7gP5nkIobP39vL4b9bjRiRKgughn8C3PmWL3CcK+l5MyogHgRMSC6xl3pXRxL8BJ
-         QODsscbYZlYbkUlEXHKbfm1m4GlLzGSmOVGGnQsCk+G2CxjAED3x+uZ4iEabuDAx90+c
-         LTuzZ2l0nSGhU7CIcOXgW8eoCCwh9PQpny15ia9rFJtpC1EtenEqqHHfFfp/KdOnujuM
-         nXU7nsEJ/w9OcB/PjLxgqts2brDnhR/3dl2p4lA9qXCC4JRf/5ry8jd5U7PhhdsEBqQ/
-         nTdmAY6/M6Zg6JeYtTZZmZjqjq5yTnHGgfE0gskCZDPpMAIDh2i1uivTBoPkMJiT4OxO
-         LJuw==
-X-Gm-Message-State: AOJu0YxHFXYbqwGsejBdhewFeShWPBvv792Mth9mZynWXvUz8lR7MU21
-	SEE3q9vjbi3qXz3EpRnxDm4IEgu1cEJiwKMqSRkzV1rg7tBB5sSMyjLooZMy8P0yjyyzf+CReh+
-	X1pZsGcvcpVQSxgm4v7IxsGvmVsG67Q5Il1/8
-X-Google-Smtp-Source: AGHT+IFvLBp7+wMbKBKxwjYgXGrG962W6VY58iu9bhsBfRyOqGFPu3+P1yJI2ZKLHaKwekY3Mc56N8uf1sMgdb+Cosg=
-X-Received: by 2002:ac5:cb6b:0:b0:4b6:c3ae:97f6 with SMTP id
- l11-20020ac5cb6b000000b004b6c3ae97f6mr4498112vkn.0.1706805514702; Thu, 01 Feb
- 2024 08:38:34 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="PPHVYxxW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1210CC43390
+	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 18:09:35 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="PPHVYxxW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1706810973;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F5FPzyCgS3qlpBxGuSDs3VA0uLft4F+6gNLOCZnu3Ao=;
+	b=PPHVYxxWBCs3R9o1f3wBb/69uKC5mZpb2p3aUU7ryPR7cem1SeBWKGhh66TYbY+0PSld3M
+	IcYanoqUIvzX9huw+MniZ/j5orm84EQVeSpCctXhac5NCZvUDxpeUlYsu81evJ42LSje4Y
+	ekNrSg31jfrGeXhSfNUS8ddskdZOLYc=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 9bc4d263 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <linux-coco@lists.linux.dev>;
+	Thu, 1 Feb 2024 18:09:32 +0000 (UTC)
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-59a9304aef0so658439eaf.1
+        for <linux-coco@lists.linux.dev>; Thu, 01 Feb 2024 10:09:32 -0800 (PST)
+X-Gm-Message-State: AOJu0YyOnVEBIRzff+Oh5xePr7u4cMN7o49B6ycbUpOhBntsCks3igwN
+	89n34UdCEQ7NOmCgRJ/yYQCw3zixr66Y1i5UeiYxlgYuKB70Zjl6b1RrwBKkNdPvMp7brf2TCS3
+	kSNMt8dVLXX40hNsK32FYJeRWry0=
+X-Google-Smtp-Source: AGHT+IHH/xWjBAnQeRWIcaxySsGSIZkkOGMkMq5jS9NRPgQhc/dVRXjOarvdrc697ZXXsj/QVgmJEQQ8H8vw1Xe6iks=
+X-Received: by 2002:a05:6358:1901:b0:178:a295:996 with SMTP id
+ w1-20020a056358190100b00178a2950996mr6216795rwm.22.1706810970033; Thu, 01 Feb
+ 2024 10:09:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
- <20240130220845.1978329-3-kevinloughlin@google.com> <sx3i6e6rgggh6wxtqt6odvwubg5vqotfleyjditiicjvjgpf6r@bswwhdt6zzti>
-In-Reply-To: <sx3i6e6rgggh6wxtqt6odvwubg5vqotfleyjditiicjvjgpf6r@bswwhdt6zzti>
-From: Kevin Loughlin <kevinloughlin@google.com>
-Date: Thu, 1 Feb 2024 08:38:23 -0800
-Message-ID: <CAGdbjmKOwRbWa9w3M6NH-gTnTOt-ZaM0UA700TMhFzrX8z5MVw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] x86/head64: Replace pointer fixups with RIP_RELATIVE_ADDR()
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Nick Desaulniers <ndesaulniers@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>, 
-	Hou Wenlong <houwenlong.hwl@antgroup.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-coco@lists.linux.dev, Ashish Kalra <ashish.kalra@amd.com>, 
-	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>, 
-	Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>, 
-	Sidharth Telang <sidtelang@google.com>
+References: <CAHmME9rum4uwSNFd_GkD9p_+vN4DBxA=feZX7k9RvugFZsZNJg@mail.gmail.com>
+ <DM8PR11MB5750797D0B9B8EB32740F55DE77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <CAHmME9oC=GE-7QS2m9FA5cs_ss+tQgB9Pj3tKnTtMMFpQmUshg@mail.gmail.com>
+ <DM8PR11MB5750B861F7A105886AA5FCE4E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com>
+ <20240131140756.GB2356784@mit.edu> <Zbpc8tppxuKr-hnN@zx2c4.com>
+ <20240131171042.GA2371371@mit.edu> <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com> <20240201045710.GD2356784@mit.edu>
+In-Reply-To: <20240201045710.GD2356784@mit.edu>
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Thu, 1 Feb 2024 19:09:17 +0100
+X-Gmail-Original-Message-ID: <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
+Message-ID: <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
+To: "Theodore Ts'o" <tytso@mit.edu>, "Reshetova, Elena" <elena.reshetova@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, 
+	"x86@kernel.org" <x86@kernel.org>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	"Nakajima, Jun" <jun.nakajima@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 31, 2024 at 12:24=E2=80=AFAM Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
->
-> On Tue, Jan 30, 2024 at 10:08:45PM +0000, Kevin Loughlin wrote:
-> > @@ -594,15 +579,15 @@ static void set_bringup_idt_handler(gate_desc *id=
-t, int n, void *handler)
-> >  /* This runs while still in the direct mapping */
-> >  static void __head startup_64_load_idt(unsigned long physbase)
-> >  {
-> > -     struct desc_ptr *desc =3D fixup_pointer(&bringup_idt_descr, physb=
-ase);
-> > -     gate_desc *idt =3D fixup_pointer(bringup_idt_table, physbase);
-> > +     struct desc_ptr *desc =3D RIP_RELATIVE_ADDR(bringup_idt_descr);
-> > +     gate_desc *idt =3D RIP_RELATIVE_ADDR(bringup_idt_table);
-> >
-> >
-> >       if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
-> >               void *handler;
-> >
-> >               /* VMM Communication Exception */
-> > -             handler =3D fixup_pointer(vc_no_ghcb, physbase);
-> > +             handler =3D RIP_RELATIVE_ADDR(vc_no_ghcb);
-> >               set_bringup_idt_handler(idt, X86_TRAP_VC, handler);
-> >       }
-> >
->
-> Looks like you removed all physbase users in the function. No need to pas=
-s
-> it to it.
+Hi Ted, Elena, Dave,
 
-Thanks, will fix.
-
+On Thu, Feb 1, 2024 at 5:57=E2=80=AFAM Theodore Ts'o <tytso@mit.edu> wrote:
 >
-> > @@ -629,7 +614,7 @@ void early_setup_idt(void)
-> >  void __head startup_64_setup_env(unsigned long physbase)
-> >  {
-> >       /* Load GDT */
-> > -     startup_gdt_descr.address =3D (unsigned long)fixup_pointer(startu=
-p_gdt, physbase);
-> > +     startup_gdt_descr.address =3D (unsigned long)RIP_RELATIVE_ADDR(st=
-artup_gdt);
-> >       native_load_gdt(&startup_gdt_descr);
+> On Wed, Jan 31, 2024 at 07:01:01PM +0100, Jason A. Donenfeld wrote:
+> > So if this is what we're congealing around, I guess we can:
 > >
-> >       /* New GDT is live - reload data segment registers */
+> > 0) Leave RDSEED alone and focus on RDRAND.
+> > 1) Add `WARN_ON_ONCE(in_early_boot);` to the failure path of RDRAND
+> > (and simply hope this doesn't get exploited for guest-guest boot DoS).
+> > 2) Loop forever in RDRAND on CoCo VMs, post-boot, with the comments
+> > and variable naming making it clear that this is a hardware bug
+> > workaround, not a "feature" added for "extra security".
+> > 3) Complain loudly to Intel and get them to fix the hardware.
+> >
+> > Though, a large part of me would really like to skip that step (2),
+> > first because it's a pretty gross bandaid that adds lots of
+> > complexity, and second because it'll make (3) less poignant
 >
-> With startup_64_load_idt() fixed, no users for physbase in this function
-> either.
+> If we need to loop more than, say, 10 seconds in a CoCo VM, I'd just
+> panic with a repeated RDRAND failure message.  This makes the point of
+> (3) that much pointed, and it's better than having a CoCo VM
+> mysteriously hang in the face of a DOS attack.
 
-Ditto.
+Yea, true. Problem is that in theory, userspace can DoS the kernel's
+use of RDRAND. Of course in practice, a userspace process preempting a
+kthread for >10 seconds is probably a larger problem.
+
+Anyway, I want to lay out the various potential solutions discussed.
+As they all have some drawback, it's worth enumerating them.
+
+=3D=3D
+
+Solution A) WARN_ON_ONCE(is_early_boot)/BUG_ON(is_early_boot) in the
+RDRAND failure path (> 10 retries).
+
+The biggest advantage here is that this is super simple and isn't
+CoCo-specific. The premise is that if RDRAND fails 10 times in a row
+before userspace has started, it's most definitely a hardware problem.
+Systems-wise, the drawback is that, in a VM, it alternatively might be
+a guest-guest DoS attack on RDRAND, or in the CoCo case, a host-guest
+DoS attack (which is presumably easier because the host controls
+scheduling). In the CoCo case, not booting is better than losing
+confidentiality. In the non-CoCo case, that seems like theoretically a
+DoS we might not want. RNG-wise, the drawback is that this doesn't
+help deal with secure reseeding later in time, which is a RNG property
+that we otherwise enjoy.
+
+Solution B) BUG_ON(is_early_boot && is_coco_system) in the RDRAND
+failure path (> 10 retries).
+
+This is slightly less simple than A, because we have to plumb
+CoCo-detection through to the RDRAND helper. [Side note: I feel
+ridiculous typing 'CoCo'.] Systems-wise, I don't see drawbacks.
+RNG-wise, the drawback is that this doesn't help deal with secure
+reseeding later in time, which is a RNG property that we otherwise
+enjoy.
+
+Solution C) WARN_ONCE()/BUG() in the RDRAND failure path (> 10 retries).
+
+The advantage here is also simplicity, and the fact that it "ensures"
+we'll be able to securely reseed later on. Systems-wise, the drawback
+is that userspace can in theory DoS the kernel's RDRAND and cause a
+crash.
+
+Solution D) BUG_ON(is_coco_system) in the RDRAND failure path (> 10 retries=
+).
+
+This is slightly less simple than A, because we have to plumb
+CoCo-detection through to the RDRAND helper, but it "ensures" we'll be
+able to securely reseed later on. Systems-wise, the drawback is that
+userspace can in theory DoS the kernel's RDRAND and cause a crash.
+
+Solution E) BUG() in a new time-based RDRAND failure path on CoCo
+systems (> 10 seconds).
+
+This adds a lot of complexity, and we'd need some alternative code
+path for CoCo with an infinite loop that breaks on a jiffies
+comparison. But it at least makes it harder for userspace to DoS the
+kernel's use of RDRAND, because it seems hard for a user thread to
+preempt a kthread for that long, though maybe somebody has some nasty
+scheduler tricks here that would break that hope.
+
+Solution F) Loop forever in RDRAND on CoCo systems.
+
+This makes debugging harder because of lockups (though I suppose we
+could WARN after some amount of time), but at least it's somewhat
+"sound".
+
+=3D=3D
+
+I am currently leaning toward (B) as being the lightest touch that has
+the least potential to break anything. (F) is also tempting because it
+doesn't have the RNG-drawback. The others seem complex or incomplete
+or otherwise annoying somehow.
+
+There is also "Solution G" -- do nothing and raise a fuss and let
+security researchers go to town and hope Intel gets their act
+together. Given that the CoCo thing seems kind of
+imaginary/aspirational anyway at this point, I'm very attracted by
+this. I don't mean to say that I intend to mount a large argument that
+we *should* do nothing, but it's just sort of sitting there in the
+back of my mind as an appealing possibility.
+
+Also, I wanted to enumerate currently open questions:
+
+=3D=3D
+
+Question i) Just how deterministic can these CoCo VMs be? Elena
+pointed to some TDX code regarding RDTSC that seemed fairly damning,
+but I also wonder what gotchas a motivated researcher might run into
+and how those could help us (or not).
+
+Question ii) Just how DoS-able is RDRAND? From host to guest, where
+the host controls scheduling, that seems easier, but how much so, and
+what's the granularity of these operations, and could retries still
+help, or not at all? What about from guest to guest, where the
+scheduling is out of control; in that case is there a value of N for
+which N retries makes it actually impossible to DoS? What about from
+userspace to kernelspace; good value of N?
+
+Question iii) How likely is Intel to actually fix this in a
+satisfactory way (see "specifying this is an interesting question" in
+[1])? And if they would, what would the timeline even be?
+
+=3D=3D
+
+Anyway, that's about where I'm at. I figure I'll wait to see if the
+internal inquiry within Intel yields anything interesting, and then
+maybe we can move forward with solutions (B) or (F) or (G) or a
+different Roald Dahl novel instead.
+
+Jason
+
+[1] https://lore.kernel.org/all/CAHmME9ps6W5snQrYeNVMFgfhMKFKciky=3D-UxxGFb=
+Ax_RrxSHoA@mail.gmail.com/
