@@ -1,164 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36DB84FC1
-	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 18:46:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B2F84FD3
+	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 19:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706813174; cv=none; b=aKzG0Mib5jtXvSvoTuSEp3HIWXdpLiIPJYM07apz26BshJi4QNCvR+isMj1ydBMbOkoBU9fA35oUhWcUOEIuKwiKnThspN2p6caEZsd4mIhuG5QRSESMsrgt9DLdGUr58zr049H0wbgAS8jpfDPFbPDT3ZsB0A/MdQcMwrjsQag=
+	t=1706814188; cv=none; b=H3rb3fYl9/h8LXQTW3WrjUytt6s4GiUWH++2WYJ6KPtUX3lLSWQA5pRO69N9GG9iQbEmKg33b9FMjet3flAE80fc+RonpOojH/xb6UgLsBjf/pkw3gKD0bJHI5zy4Y59FIdlDV6iNjJlejqaSPj3RhQNzH3cCEiITmQnFGOOkVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706813174; c=relaxed/simple;
-	bh=xsTs2RGYt2at3I7JikZ/ECbNYpWJsqpH0UZJpVK+zlE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S2JPxQ3NES5zZN6wkyY2/G3Mo6xeMRBgCxOSsOPweIUkqNAPn1M4gucLpBaxOXIue4JzaEvl69D6N2z7iVI8/aKs34Bsca4CuD+Zjo0d/36ppme+BaqLxSOmw+zYP5Ckn6cgLAdy3jiGTU5K9c4tTyHcNUS497At7iK/9guRGUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a3TxeLuG; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1706814188; c=relaxed/simple;
+	bh=/k+B1mAjGbVHW0u2oSbT1r0tPCzVnEoOzFJ/awMko9E=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=ODNPbJTSb1b/009ubDGqGlOWklL5OuRUsP6PTGME8gYRtECKqhXoMQPqfCUiSf+OoD+Ldgm57rOWUnwrDNFAiQQr4bWE05Vyd4OGbEEaVrOdVOcPrw71RX5N884YIJZMqPw7JcJaAx69hWcsTSjQcFcDJq7X207pqe7uXRtNk1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=fail (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=lQuIo6xO reason="signature verification failed"; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a3TxeLuG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706813170; x=1738349170;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=xsTs2RGYt2at3I7JikZ/ECbNYpWJsqpH0UZJpVK+zlE=;
-  b=a3TxeLuG4H7X7j5Ko9WwjwRHg00ozJIeKqGCwuOhPydUf/+08GEjllX5
-   9OW7vE66Q5Pkg1grg+Xnju7I/HXRnVUneclU6vI9Y0m1Vv8EVC4vvcjki
-   h9NvdXyurHPRC503qhgu9RD1XV2PYDtaMyVhmTa5LtOPyg0eW+mBKvQmf
-   6iS/W/igkfS79qGBWopDqn3JLdF5cxzCwPUS/V9w56GdepFiX5FjSZ6bV
-   sBswf1ozkBhqOug2uHk/C6Ea/PV8pVU14pu0aQ1lHcgvczrhXRmD5qtzN
-   4Hkf6WoJVQYNa+A6tGiHX8dVKKawOQuYHGMWNCJ3q5/w2/0p7usjZAb+D
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="159647"
-X-IronPort-AV: E=Sophos;i="6.05,235,1701158400"; 
-   d="scan'208";a="159647"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 10:46:08 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="908339127"
-X-IronPort-AV: E=Sophos;i="6.05,236,1701158400"; 
-   d="scan'208";a="908339127"
-Received: from arbartma-mobl.amr.corp.intel.com (HELO [10.212.155.10]) ([10.212.155.10])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 10:46:07 -0800
-Message-ID: <bed77821-1e36-4f92-86c5-e49628431c53@intel.com>
-Date: Thu, 1 Feb 2024 10:46:06 -0800
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="lQuIo6xO"
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 411J2YGs4164724
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 1 Feb 2024 11:02:35 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 411J2YGs4164724
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2024011201; t=1706814155;
+	bh=kTXZyCcIqsNzCBXtIsoCaFjWy3OW00U35UzSwYcLSMo=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=lQuIo6xOi7oNx4tIHkF1PGZbqvLVDtNXhxS0pj5tZMDm2pJ+X+bmBJjabf5/ual1Y
+	 WYSqI2jN7dJEyv0ajkY8IwhSEMiJ+r5412GDFUObznHTY9ZTwvpSbBQHOBnmHAAWO8
+	 HiSJf3oFwOkbinYlQ/PqvC/jZfme4xNyeBjQYDGenDBaVJtCMX2+3HAPjmN5oQuRod
+	 UJ8V8BCKAnUaQJdw3zUI7KpOMRyw8v9ZgcFvHI6mbARp/7/5QpreEMJUz3t3dxB80p
+	 tQf9OE6h8n/dItJvhSYw0MyjmtIePa6aP+EYzLzGVUpghdQ/ywI9+l0xphDlFGpCh0
+	 w+ZhbevD4A9eQ==
+Date: Thu, 01 Feb 2024 11:02:32 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Dave Hansen <dave.hansen@intel.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Theodore Ts'o" <tytso@mit.edu>,
+        "Reshetova, Elena" <elena.reshetova@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+CC: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
+User-Agent: K-9 Mail for Android
+In-Reply-To: <bed77821-1e36-4f92-86c5-e49628431c53@intel.com>
+References: <CAHmME9rum4uwSNFd_GkD9p_+vN4DBxA=feZX7k9RvugFZsZNJg@mail.gmail.com> <DM8PR11MB5750797D0B9B8EB32740F55DE77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <CAHmME9oC=GE-7QS2m9FA5cs_ss+tQgB9Pj3tKnTtMMFpQmUshg@mail.gmail.com> <DM8PR11MB5750B861F7A105886AA5FCE4E77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com> <20240131140756.GB2356784@mit.edu> <Zbpc8tppxuKr-hnN@zx2c4.com> <20240131171042.GA2371371@mit.edu> <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com> <20240201045710.GD2356784@mit.edu> <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com> <bed77821-1e36-4f92-86c5-e49628431c53@intel.com>
+Message-ID: <52A2842D-AC23-4321-B06B-CDA082183862@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
-Content-Language: en-US
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>, Theodore Ts'o <tytso@mit.edu>,
- "Reshetova, Elena" <elena.reshetova@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- "x86@kernel.org" <x86@kernel.org>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "Nakajima, Jun" <jun.nakajima@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <CAHmME9rum4uwSNFd_GkD9p_+vN4DBxA=feZX7k9RvugFZsZNJg@mail.gmail.com>
- <DM8PR11MB5750797D0B9B8EB32740F55DE77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9oC=GE-7QS2m9FA5cs_ss+tQgB9Pj3tKnTtMMFpQmUshg@mail.gmail.com>
- <DM8PR11MB5750B861F7A105886AA5FCE4E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com>
- <20240131140756.GB2356784@mit.edu> <Zbpc8tppxuKr-hnN@zx2c4.com>
- <20240131171042.GA2371371@mit.edu>
- <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
- <20240201045710.GD2356784@mit.edu>
- <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2/1/24 10:09, Jason A. Donenfeld wrote:
-> Question ii) Just how DoS-able is RDRAND? From host to guest, where
-> the host controls scheduling, that seems easier, but how much so, and
-> what's the granularity of these operations, and could retries still
-> help, or not at all? What about from guest to guest, where the
-> scheduling is out of control; in that case is there a value of N for
-> which N retries makes it actually impossible to DoS? What about from
-> userspace to kernelspace; good value of N?
+On February 1, 2024 10:46:06 AM PST, Dave Hansen <dave=2Ehansen@intel=2Ecom=
+> wrote:
+>On 2/1/24 10:09, Jason A=2E Donenfeld wrote:
+>> Question ii) Just how DoS-able is RDRAND? From host to guest, where
+>> the host controls scheduling, that seems easier, but how much so, and
+>> what's the granularity of these operations, and could retries still
+>> help, or not at all? What about from guest to guest, where the
+>> scheduling is out of control; in that case is there a value of N for
+>> which N retries makes it actually impossible to DoS? What about from
+>> userspace to kernelspace; good value of N?
+>
+>So far, in practice, I haven't seen a single failure of RDRAND=2E  It's
+>been limited to RDSEED=2E  In a perfect world, I'd change the architectur=
+e
+>docs to say, "RDRAND only fails when the hardware breaks" and leave
+>RDSEED defined to be the one that fails easily=2E
+>
+>Dealing with a fragile RDSEED seems like a much easier problem than
+>dealing with a fragile RDRAND since RDSEED is used _much_ more sparingly
+>in the kernel today=2E
+>
+>But I'm not sure if the hardware implementations fit into this perfect
+>world I've conjured up=2E  We're going to wrangle up the folks at Intel
+>who can hopefully tell me if I'm totally deluded=2E
+>
+>Has anyone seen RDRAND failures in practice?  Or just RDSEED?
+>
+>> Question iii) How likely is Intel to actually fix this in a
+>> satisfactory way (see "specifying this is an interesting question" in
+>> [1])? And if they would, what would the timeline even be?
+>
+>If the fix is pure documentation, it's on the order of months=2E  I'm
+>holding out hope that some kind of anti-DoS claims like you mentioned:
+>
+>> Specifying this is an interesting question=2E What exactly might our
+>> requirements be for a "non-broken" RDRAND? It seems like we have two
+>> basic ones:
+>>=20
+>> - One VMX (or host) context can't DoS another one=2E
+>> - Ring 3 can't DoS ring 0=2E
+>
+>are still possible on existing hardware, at least for RDRAND=2E
 
-So far, in practice, I haven't seen a single failure of RDRAND.  It's
-been limited to RDSEED.  In a perfect world, I'd change the architecture
-docs to say, "RDRAND only fails when the hardware breaks" and leave
-RDSEED defined to be the one that fails easily.
+The real question is: what do we actually need?
 
-Dealing with a fragile RDSEED seems like a much easier problem than
-dealing with a fragile RDRAND since RDSEED is used _much_ more sparingly
-in the kernel today.
+During startup, we could afford a *lot* of looping to collect enough entro=
+py before giving up=2E After that, even if RDSEED fails 99% of the time, it=
+ will still produce far more entropy than a typical external randomness sou=
+rce=2E We don't want to loop that long, obviously (*), but instead try peri=
+odically and let the entropy accumulate=2E
 
-But I'm not sure if the hardware implementations fit into this perfect
-world I've conjured up.  We're going to wrangle up the folks at Intel
-who can hopefully tell me if I'm totally deluded.
+(*) We *could* of course choose to aggressively loop in task context if th=
+ere task would otherwise block on /dev/random=2E
 
-Has anyone seen RDRAND failures in practice?  Or just RDSEED?
-
-> Question iii) How likely is Intel to actually fix this in a
-> satisfactory way (see "specifying this is an interesting question" in
-> [1])? And if they would, what would the timeline even be?
-
-If the fix is pure documentation, it's on the order of months.  I'm
-holding out hope that some kind of anti-DoS claims like you mentioned:
-
-> Specifying this is an interesting question. What exactly might our
-> requirements be for a "non-broken" RDRAND? It seems like we have two
-> basic ones:
-> 
-> - One VMX (or host) context can't DoS another one.
-> - Ring 3 can't DoS ring 0.
-
-are still possible on existing hardware, at least for RDRAND.
