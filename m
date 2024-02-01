@@ -1,145 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A27543AC0
-	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 08:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98ABD4DA19
+	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 09:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706775329; cv=none; b=Wpcngel3Kb9qnU/bb+8wGQs4FlhqUHNsQ4okzrQy7B6zMibNh1ThQ1Pri7s394VmWaooyKfqnLwjCZ0twN8MhK7hUeD5v1fbD97LVL+gQNFp05XdFLsBQrvbxFNav2xSkvY1EzI6KWZ1adFs80VYR4c0liSuqv/E3PzK5/kgcUg=
+	t=1706781584; cv=none; b=f0Sjl6ROhHUIpMjtk4bDQsHBmVhe1v0nFGWFL14xCO/13ofhpgrCLp8xiIZ8spcMSUcZJMSUxdux9sjhWL8IcUJXmxEgKWkU1kyFlv3Zz3eT3AtPKDK0xsyIoPjGB8pO4EjpD2qq2MmGUvoU083JigcenCN6/hugCI0UU410Gyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706775329; c=relaxed/simple;
-	bh=+hl3MulbJIcZd3qZtP9hoi8toi8Bac3oc+EfxJWLOIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=LEA8wryh0mkdKfyX7kZyXk/796PfaZLmF8k/XN0k0iwHl1kCPB25m0P51AzHdCD5WG/LpgyMUh77Pm1NlgBv5XAeTZa5AdHyvlTAKzFUbKEnEdnWJa52mr/rqUcCgoOqOlKw0YxkB+Ah2NJO6fqERLmc4q24eLI0z/9E//IJ84U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TXGnOU6U; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TXGnOU6U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706775326;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bhZhfPqoa9HPDA4Ap1gFQwV4Q6xA+en5rvnxodzvMMc=;
-	b=TXGnOU6Ub8MNQjbt/IJqFsFpDit64vMjzVyhomGgUBkLcn1DOIFF1DsSe2ie5SKyt5p/Pk
-	jAG4eHLMN6LnWHe9V83TVCWpLKgzPzeHIlKTImqlBgRVUP1HGmrZ8WIri6T0esDRiKHkA9
-	NIGSMCu+aEF8sYANBQ5bB82m4lzlI0A=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-414-W6RdqT-oO96k_i7uFa_eFg-1; Thu,
- 01 Feb 2024 03:15:22 -0500
-X-MC-Unique: W6RdqT-oO96k_i7uFa_eFg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3C24D1C06905;
-	Thu,  1 Feb 2024 08:15:22 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.46])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id ECA77C0FDEF;
-	Thu,  1 Feb 2024 08:15:20 +0000 (UTC)
-Date: Thu, 1 Feb 2024 08:15:14 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, linux-coco@lists.linux.dev,
-	x86@kernel.org, dave.hansen@linux.intel.com, dionnaglaze@google.com,
-	dan.middleton@linux.intel.com
-Subject: Re: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface
- for quote generation
-Message-ID: <ZbtS2I_R_2kRH_JP@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20240124093858.1818497-1-nik.borisov@suse.com>
- <e8c2043a-a872-43ff-b079-ebbbfa6cb743@linux.intel.com>
- <65baa477b8da8_37ad29436@dwillia2-xfh.jf.intel.com.notmuch>
- <59f268c4-8491-4256-8766-664a8ee0ffd8@linux.intel.com>
- <Zbq04j1Av2znlKIC@redhat.com>
- <65bab7cdc650e_37ad294e1@dwillia2-xfh.jf.intel.com.notmuch>
+	s=arc-20240116; t=1706781584; c=relaxed/simple;
+	bh=HpRKshTR53h1WMYXI/4/LpBIWmTwxTMmuHtPn3QrAg4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gzn7mh3NV3M6lI7FMuubwbjYbXkkulnhxA/bMqbSb7THjPPXE0blcp0vuIbTZMvJTOeTSWdA9kdFLDv9//SFwzfyF2pjQaekdTfCmLxMuNVtaLm3CxsOwj6IfzaP6io9wMRXv1f8deSkAbl30nCNNKbbeB1G4tRzlXCuDDYaBwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 4119sqmr017945;
+	Thu, 1 Feb 2024 03:54:52 -0600
+Received: (from greg@localhost)
+	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 4119sp8g017944;
+	Thu, 1 Feb 2024 03:54:51 -0600
+Date: Thu, 1 Feb 2024 03:54:51 -0600
+From: "Dr. Greg" <greg@enjellic.com>
+To: "Theodore Ts'o" <tytso@mit.edu>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Reshetova, Elena" <elena.reshetova@intel.com>,
+        "Daniel P. Berrang??" <berrange@redhat.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Message-ID: <20240201095451.GA17612@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <20240130083007.1876787-2-kirill.shutemov@linux.intel.com> <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <CAHmME9ps6W5snQrYeNVMFgfhMKFKciky=-UxxGFbAx_RrxSHoA@mail.gmail.com> <20240131203531.GA12035@wind.enjellic.com> <20240201044735.GC2356784@mit.edu>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-In-Reply-To: <65bab7cdc650e_37ad294e1@dwillia2-xfh.jf.intel.com.notmuch>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240201044735.GC2356784@mit.edu>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Thu, 01 Feb 2024 03:54:53 -0600 (CST)
 
-On Wed, Jan 31, 2024 at 01:12:45PM -0800, Dan Williams wrote:
-> Daniel P. Berrangé wrote:
-> > On Wed, Jan 31, 2024 at 12:44:46PM -0800, Kuppuswamy Sathyanarayanan wrote:
-> > > 
-> > > On 1/31/24 11:50 AM, Dan Williams wrote:
-> > > > Kuppuswamy Sathyanarayanan wrote:
-> > > >> + Dan Middleton
-> > > >>
-> > > >> Hi Boris,
-> > > >>
-> > > >> On 1/24/24 1:38 AM, Nikolay Borisov wrote:
-> > > >>> IOCTL based interface was the natural choice for interacting with the
-> > > >>> quote generation machine at a time when there wasn't anything better.
-> > > >>> Fortunately, now we have a vendor-agnostic, configfs-based one which
-> > > >>> obviates the need to have the IOCTL-based interface.
-> > > >>>
-> > > >>> Gate the relevant code behind a Kconfig option, clearly marking it as
-> > > >>> deprecated as well as introduce a runtime warning.
-> > > >>>
-> > > >>> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
-> > > >>> ---
-> > > >> In the following thread, Dan Middleton raised a point about this interface
-> > > >> being used for local attestation use cases.
-> > > >>
-> > > >> https://lore.kernel.org/all/ZbAaKAh-230Hj4BF@redhat.com/T/#m691dae9a7833a35552cafb597c838df9c2ed5f3a
-> > > >>
-> > > >> Currently, the configfs-based ABI does not support the local attestation use cases.
-> > > > What are local attestation use cases, and what happens if Linux does not
-> > > > provide a local attestation interface and standardizes on remotely
-> > > > attestable as the standard?
-> > > 
-> > > 
-> > > Local attestation is used by one TD on the same platform to prove to another TD
-> > > in the same platform about its identity. It is mainly used in cases where a TD provides
-> > > some special services required by other TDs. Since they are all in the same platform,
-> > > there is no need for a 3rd party verifier or Quoting service. It can use the verifiable MAC
-> > > to check the correctness of the TD.
+On Wed, Jan 31, 2024 at 11:47:35PM -0500, Theodore Ts'o wrote:
+> On Wed, Jan 31, 2024 at 02:35:32PM -0600, Dr. Greg wrote:
+> > I think it would demonstrate a lack of appropriate engineering
+> > diligence on the part of our community to declare RDRAND 'busted' at
+> > this point.
 > > 
-> > As an example of where this might be needed, consider supporting a vTPM in
-> > TDX. The TPM impl would likely be run in a separate service TD, and need to
-> > be locally attested by the primary TD, to establish trust in the vTPM.
+> > While it appeares to be trivially easy to force RDSEED into depletion,
+> > there does not seem to be a suggestion, at least in the open
+> > literature, that this directly or easily translates into stalling
+> > output from RDRAND in any type of relevant adversarial fashion.
+> > 
+> > If this were the case, given what CVE's seem to be worth on a resume,
+> > someone would have rented a cloud machine and come up with a POC
+> > against RDRAND in a multi-tenant environment and then promptly put up
+> > a web-site called 'Random Starve' or something equally ominous.
+
+> I suspect the reason why DOS attacks aren't happening in practice, is
+> because of concerns over the ability to trust the RDRAND (how do you
+> prove that the NSA didn't put a backdoor into the hardware with
+> Intel's acquisence --- after all, the NSA absolutely positively didn't
+> encourage the kneecaping of WEP and absolutely didn't put a trapdoor
+> into DUAL_EC_DRBG...)  since it can not externally audited and verfied
+> by a third party, in contrast to the source code for the /dev/random
+> driver or the RNG used in OpenSSL.
 > 
-> Service TDs are in active deployment? How does that work? A tenant pays
-> the fees to host 2 VMs? Is that more economical than just communicating
-> the remote verifier? Not trying to be argumentative just trying to get
-> to the root of the question "why Linux must care about local
-> attestation".
+> As a result, most random number generators use RDRAND in combination
+> with other techniques.  If RDRAND is absolutely trustworthy, the extra
+> sources won't hurt --- and if it isn't trustworthy mixing in other
+> sources will likely make things harder for Fort Meade.  And even if
+> these other sources might be observable for someone who can listen in
+> on the inter-packet arrival times on the LAN (for example), it might
+> not be so easy for an analyst sitting at their desk in Fort Meade.
+> 
+> And once you do _that_, you don't need to necessarily loop on RDRAND,
+> because it's one of multiple sources of entropies that are getting
+> mixed togethwer.  Hence, even if someone drives RDRAND into depletion,
+> if they are using getrandom(2), it's not a big deal.
 
-Any VM you buy has host resource overhead beyond the VM's declared resources,
-and whether you realize it or not, as a user you are paying for this extra
-resource consumption.
+All well taken points, the Linux RNG and associated community has
+benefited from your and Jason's concerns and work on all of this.
 
-With KVM today, vTPM will involve each VM having a separate swtpm process
-running alongside QEMU in the host, and of course QEMU itself has resource
-consumption which can be fairly significant.  A Cloud provider will have to
-take account of the additional per-VM overheads when calculating their
-potential host capacity for running VMs & thus setting their VM price. 
+However, whether or not DOS attacks based on RNG depletion are
+happening in the wild, and the reasons they are not, are orthogonal to
+whether or not they can be proven to exist, which was the point I was
+trying to make.
 
-In a TDX scenario this separate swtpm turns into something that runs inside
-a minimal TDVM instead. The RAM overhead may be larger than with swtpm, but
-for a cloud provider its merely one more factor to take account of when
-setting their price vs host capacity.
+Demonstrating a vulnerability in something as critical as Intel's RNG
+implementation would be a big motivation for some research group.  The
+fact that hasn't occurred would seem to suggest that the RDRAND
+resource depletion we are concerned with is not adversarially
+exploitable.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+I suspect that the achievable socket core count cannot effectively
+overwhelm the 1022x amplification factor inherent in the design of the
+RDSEED based seeding of RDRAND.
 
+We will see if Elena can come up with what Intel engineering's
+definition of 'astronomical' is.. :-)
+
+> There's a special case with Confidential Compute VM's, since the
+> assumption is that you want to protect against even a malicious
+> hypervisor who could theoretically control all other sources of
+> timing uncertainty.  And so, yes, in that case, the only thing we
+> can do is Panic if RDRAND fails.
+
+Indeed.
+
+The bigger question, which I will respond to Elena with, is how much
+this issue calls the entire question of confidential computing into
+question.
+
+>    	    	  		     	 - Ted
+
+Have a good day, it has been a long time since you and I were standing
+around with Phil Hughes in the Galleria in Atlanta argueing about
+whether or not Active Directory was going to dominate enterprise
+computing.
+
+It does seem to have gained some significant amount of traction... :-)
+
+As always,
+Dr. Greg
+
+The Quixote Project - Flailing at the Travails of Cybersecurity
+              https://github.com/Quixote-Project
