@@ -1,106 +1,107 @@
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED343BB3C
-	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 04:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2342612E8
+	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 05:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706763458; cv=none; b=ZkNWFEZI+Lj9i8xNZv3rwRa5qZcq9GJwYVYKJGxoXZHgV0gT76f1o7Vivc2VABM3ggBnM3bCGafQQZnijfipTO70VsvGPKh5LexQr6EIsTKDDOrncExaT3v11iVN4F9MS+MgApAW49dov1qQAp3z3ZhM6XWaeof6LhS0/ihdm0o=
+	t=1706766284; cv=none; b=RSr1E0B68pSob8IRwXrx3YNmBTxeW0OtN5Hmk2vGiXn26Sb9mNRtuVlNZQyvDCv3aEIQ/JaMJGUDpVpbPxQ9n5EuwAsTKo0V32ZnrGOmuXlNP0DVXZ+s+byODuKgcX1y3+LN8iwtK58/5XE+Dp1whoHQRaeTS5MJJ6Qj/MTlyhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706763458; c=relaxed/simple;
-	bh=zYVGiC1rLRFF+J+Yr82QEPl5LjdWofkbHi4aPWTR5Z8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BQoRqRLliJQqKkvS6jIw6MglzN8kxMq0IoBuCMHPBOFuWlpisIwZs0uUY5l/z5xas1+EUNEipraBLIYW2jlATIqe+ThuRtRWiE4+wrnbMV0JoG6AYY7Nho1dTOwbpD67gGQ7iAE5JL6fRpLz/hMOYGMVoWkc45sMN7lQrBbU6tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=MqwSgJtn; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+	s=arc-20240116; t=1706766284; c=relaxed/simple;
+	bh=vEMPM/EH6Okz3t25IkSZi1WRRqu1MVzESQkdYhAZwy0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CRfxcK62LHvncB+YjthrcJPm2zrSKew7jt4+47V88TY70gACeUz7hsqtQRAk9OEz/Y3zqrHAS6TnTGSH0xvHMHIsK+afjf/tAPjAiV2iTlA2iRrpAp0CRvH/8D0WJlAS8f8QXvaWAvF+vQXwNHIyFgw3ZmOQUmulmBkFMfUoVdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kiPlyceY; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="MqwSgJtn"
-Received: from cwcc.thunk.org (pool-173-48-116-252.bstnma.fios.verizon.net [173.48.116.252])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 4114vATx012056
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 31 Jan 2024 23:57:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1706763434; bh=s5ToCA1JK1JWcXOK8/ttVS+ZKfu8UHQRYtgp6PPZIrk=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=MqwSgJtnw4X94zDhBAH6QhHOATjVVZYoLWGI0YKJLSWQwmWWTNJLtmHmrkbkdW3YG
-	 ov/cwRHzxDcMWkoZ+QGs2/X3qO/+Is1sILcwTcZXCKj+eQ7gvpgX2Filnj+BmfPxHW
-	 zEKcY6ib7BfLs8zNsKvX7hAdPz9r9gOLKR7hx3IXW1jnhf71C5GCcnfEPsk3adQL0r
-	 EhjRDnSms1WnNOFHwou6YDmR5oanEQg0PfTf4ENs5Gl+zhjh3f/D5WnmGfHA+ZCkzv
-	 tYq2GVgzrjDM2UzjbnuirVULtYw+A0i/N85rQVmy/uelT+3CQNYIXvJzH0Cfv2+erM
-	 UhQsg/cq8tdYw==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id 4E15B15C0667; Wed, 31 Jan 2024 23:57:10 -0500 (EST)
-Date: Wed, 31 Jan 2024 23:57:10 -0500
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Nakajima, Jun" <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
-Message-ID: <20240201045710.GD2356784@mit.edu>
-References: <CAHmME9rum4uwSNFd_GkD9p_+vN4DBxA=feZX7k9RvugFZsZNJg@mail.gmail.com>
- <DM8PR11MB5750797D0B9B8EB32740F55DE77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9oC=GE-7QS2m9FA5cs_ss+tQgB9Pj3tKnTtMMFpQmUshg@mail.gmail.com>
- <DM8PR11MB5750B861F7A105886AA5FCE4E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com>
- <20240131140756.GB2356784@mit.edu>
- <Zbpc8tppxuKr-hnN@zx2c4.com>
- <20240131171042.GA2371371@mit.edu>
- <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kiPlyceY"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-68873473ce6so3196136d6.0
+        for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 21:44:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706766282; x=1707371082; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fmok2g8b5tWvpbsX9cLmWQHlMF1xII4qzBeVlpsQ4mQ=;
+        b=kiPlyceYIM5lIARcZ7JbYOR2MGqttOdJr6HKOBRzFVJLWc7RVAwpKzfU0i3e/iknrp
+         wDjj8VqMRxzFzs2rO/bXqoSmgRjv9J0MUDwPVhiklqf/AbgqPb0EvO+uxvMWpBPil3gT
+         JadJ4q70Mq9NDrjnofIsm8rsGpXsu8CDm5YPawqfpoOTj+UnoL5ic7PpfC+d4fnhBkkb
+         PPsTAlxRWTSUwdUyRro1WdZFz5RIcqN/8zgmhIrVzaMp5CqwRYsxozU644QP7MbMYc+V
+         uiniAwC0eZiu7hZyIC5tgypEbn41T1+w02CKKSrnXhJmxm92V9DGdSunDPAWB299ePFr
+         lU7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706766282; x=1707371082;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fmok2g8b5tWvpbsX9cLmWQHlMF1xII4qzBeVlpsQ4mQ=;
+        b=WTfeLrkB5pN8GXp9yMHipo3clsVK5P7JSyx1iqOxxAh3/qOL8H+HJuqreFv/GGI32M
+         6YfQ91sVvXwCEVKGaOwwZkSLqks7Wl8F5/6aUAT074edajoQVTuDv0IZ8vPH8NRVDSCA
+         TXeuKKcsD5bT/CM9ry9svPMUqx6YTXtzKWp3T4tdqv1slFtsANsVZlwujTuj5BIvWSRP
+         oe/7VJis5RO+BqfkLN3JINFZj/dJ68ND1glvRM+7LF6dING0w8s0On2EEWzLj4ZQWXrl
+         MWGGcZxKtCtXOTi6oDRnlrtYmEr41K1l11AHNOZuyG/kZKRBQxgX+LgJ2PK3GdqtN7Vl
+         P2sg==
+X-Gm-Message-State: AOJu0YyhMBkQpldFlk88yIhNnCng8NKMkfr1gVQI23deLY1TVaGvAKD+
+	I1oMJKAJelo9OmSZ7ka+Ce+NLA9ynFK9w0zkDXMLbAkNqm3lTAf+wDzmbiwEqA+nJugGiF6quh7
+	rlynW5PPO8oNY2lQvezuoT5iSeSeQSrIraAzX
+X-Google-Smtp-Source: AGHT+IHVvumo0DfD1PcCVlzlBND2HO0YlBAKMh0ymb7ulOnj4hcNNN1Lnv/Ngc1/yQN/cM+UWlxHcXe5s2sVnvXBr4U=
+X-Received: by 2002:a05:6214:d87:b0:681:77d9:c405 with SMTP id
+ e7-20020a0562140d8700b0068177d9c405mr3957939qve.33.1706766281534; Wed, 31 Jan
+ 2024 21:44:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
+References: <20240112055251.36101-1-vannapurve@google.com> <a06f9b81-38c1-4be8-9d07-6db31530741e@intel.com>
+In-Reply-To: <a06f9b81-38c1-4be8-9d07-6db31530741e@intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Thu, 1 Feb 2024 11:14:28 +0530
+Message-ID: <CAGtprH8HhCVvjARm3ZuHu04uxAENOLa--kHQhRtAfSz+4-23kg@mail.gmail.com>
+Subject: Re: [RFC V1 0/5] x86: CVMs: Align memory conversions to 2M granularity
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	rientjes@google.com, seanjc@google.com, erdemaktas@google.com, 
+	ackerleytng@google.com, jxgao@google.com, sagis@google.com, oupton@google.com, 
+	peterx@redhat.com, vkuznets@redhat.com, dmatlack@google.com, 
+	pgonda@google.com, michael.roth@amd.com, kirill@shutemov.name, 
+	thomas.lendacky@amd.com, dave.hansen@linux.intel.com, 
+	linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
+	isaku.yamahata@gmail.com, andrew.jones@linux.dev, corbet@lwn.net, hch@lst.de, 
+	m.szyprowski@samsung.com, rostedt@goodmis.org, iommu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 31, 2024 at 07:01:01PM +0100, Jason A. Donenfeld wrote:
-> So if this is what we're congealing around, I guess we can:
-> 
-> 0) Leave RDSEED alone and focus on RDRAND.
-> 1) Add `WARN_ON_ONCE(in_early_boot);` to the failure path of RDRAND
-> (and simply hope this doesn't get exploited for guest-guest boot DoS).
-> 2) Loop forever in RDRAND on CoCo VMs, post-boot, with the comments
-> and variable naming making it clear that this is a hardware bug
-> workaround, not a "feature" added for "extra security".
-> 3) Complain loudly to Intel and get them to fix the hardware.
-> 
-> Though, a large part of me would really like to skip that step (2),
-> first because it's a pretty gross bandaid that adds lots of
-> complexity, and second because it'll make (3) less poignant
+On Wed, Jan 31, 2024 at 10:23=E2=80=AFPM Dave Hansen <dave.hansen@intel.com=
+> wrote:
+>
+> There's a bunch of code in the kernel for TDX and SEV guests.  How much
+> of it uses the "CVM" nomenclature?
 
-If we need to loop more than, say, 10 seconds in a CoCo VM, I'd just
-panic with a repeated RDRAND failure message.  This makes the point of
-(3) that much pointed, and it's better than having a CoCo VM
-mysteriously hang in the face of a DOS attack.
+Right, I see that "CoCo VMs" is a more accepted term in the kernel
+codebase so far, will update the references in the next version.
 
-I'll note that it should be relatively easy for Intel to make sure
-that if there is an undue draw on RDRAND, to at that point enforce
-"fair share" mode where each of the N cores get at most 1/N of the
-available entropy.  So if you have single core CoCo VM on a 256 core
-machine trying to boot, and the evil attacker has purchased 255 cores
-worth of VM's, all of which are busy-looping on RDRAND, while the CoCo
-VM is booting, if it is looping on RDRAND, it should be getting
-1/256th of the availabe RDRAND output, and since it is only trying to
-grab enough randomness to seed the /dev/random CRNG, if it can't get
-enough randomness in 10 seconds --- well, Intel's customers should be
-finding another vendor's CPU that can do a better job.
+>
+> What do you do when you need to dynamically scale up the SWIOTLB size
+> and can't allocate a 2M page?  I guess you're saying here that you'd
+> rather run with a too-small 2M pool than a large-enough mixed 4k/2M pool.
 
-			     	      	 - Ted
+I am not yet certain how to ensure 2M page is always available/made
+available at runtime for CoCo VMs. Few options that I can think of:
+1) Reserve additional memory for CMA allocations to satisfy runtime
+requests of 2M allocations.
+2) Pre-reserve SWIOTLB to a safe value just like it's done today and
+not rely on dynamic scaling.
+
+Any suggestions are welcome.
+
+>
+> I also had a really hard time parsing through the problem statement and
+> solution here.  I'd really suggest cleaning up the problem statement and
+> more clearly differentiating the host and guest sides in the description.
+
+Thanks for taking a look at this series. I will reword the description
+in the next version. The goal basically is to ensure private and
+shared memory regions are always huge page aligned.
