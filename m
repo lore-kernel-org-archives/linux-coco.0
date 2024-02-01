@@ -1,47 +1,34 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B2F84FD3
-	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 19:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5013C488
+	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 21:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706814188; cv=none; b=H3rb3fYl9/h8LXQTW3WrjUytt6s4GiUWH++2WYJ6KPtUX3lLSWQA5pRO69N9GG9iQbEmKg33b9FMjet3flAE80fc+RonpOojH/xb6UgLsBjf/pkw3gKD0bJHI5zy4Y59FIdlDV6iNjJlejqaSPj3RhQNzH3cCEiITmQnFGOOkVw=
+	t=1706821768; cv=none; b=t+6FJeFinZSls1PXu7RmYGt6zOZLLms73QcncpNWW1mPG5psTSjdbfD41nRd1Kc13MuQvjAqRgrJgdF2FzX4T6MlAUeiNQFnq5TurwGYENAihcA39OEds2CE8uvm0GZa3NmqevwqtkoqFDT1AozY4HK6kakcmdWdgXp7B0iEGEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706814188; c=relaxed/simple;
-	bh=/k+B1mAjGbVHW0u2oSbT1r0tPCzVnEoOzFJ/awMko9E=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ODNPbJTSb1b/009ubDGqGlOWklL5OuRUsP6PTGME8gYRtECKqhXoMQPqfCUiSf+OoD+Ldgm57rOWUnwrDNFAiQQr4bWE05Vyd4OGbEEaVrOdVOcPrw71RX5N884YIJZMqPw7JcJaAx69hWcsTSjQcFcDJq7X207pqe7uXRtNk1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=fail (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=lQuIo6xO reason="signature verification failed"; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="lQuIo6xO"
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 411J2YGs4164724
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 1 Feb 2024 11:02:35 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 411J2YGs4164724
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024011201; t=1706814155;
-	bh=kTXZyCcIqsNzCBXtIsoCaFjWy3OW00U35UzSwYcLSMo=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=lQuIo6xOi7oNx4tIHkF1PGZbqvLVDtNXhxS0pj5tZMDm2pJ+X+bmBJjabf5/ual1Y
-	 WYSqI2jN7dJEyv0ajkY8IwhSEMiJ+r5412GDFUObznHTY9ZTwvpSbBQHOBnmHAAWO8
-	 HiSJf3oFwOkbinYlQ/PqvC/jZfme4xNyeBjQYDGenDBaVJtCMX2+3HAPjmN5oQuRod
-	 UJ8V8BCKAnUaQJdw3zUI7KpOMRyw8v9ZgcFvHI6mbARp/7/5QpreEMJUz3t3dxB80p
-	 tQf9OE6h8n/dItJvhSYw0MyjmtIePa6aP+EYzLzGVUpghdQ/ywI9+l0xphDlFGpCh0
-	 w+ZhbevD4A9eQ==
-Date: Thu, 01 Feb 2024 11:02:32 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Dave Hansen <dave.hansen@intel.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Theodore Ts'o" <tytso@mit.edu>,
+	s=arc-20240116; t=1706821768; c=relaxed/simple;
+	bh=TBOTB9Czzf4Q8dqszUSC2KR1hcttocjMtosMwe5WxeM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PilOEyFu8lodyVva30K9SvZMi26wGQyN5jH7xxjJDBJg2necqmvSR0uvRt4MkX9sV5MKIcY90gQV9pMK4Bn0a7hEwK11dLgQcFVOZzwCeBjyt1ZEipbQ88VO6QRlmjMwPT1PDvbXHvkKSEXdRBOwx+qamEXbi3FsWwvR3jZh6rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 411L4BB7024212;
+	Thu, 1 Feb 2024 15:04:11 -0600
+Received: (from greg@localhost)
+	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 411L4A9c024211;
+	Thu, 1 Feb 2024 15:04:10 -0600
+Date: Thu, 1 Feb 2024 15:04:10 -0600
+From: "Dr. Greg" <greg@enjellic.com>
+To: "Daniel P. Berrang??" <berrange@redhat.com>
+Cc: "Theodore Ts'o" <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         "Reshetova, Elena" <elena.reshetova@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-CC: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
         Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
         "Nakajima, Jun" <jun.nakajima@intel.com>,
         Tom Lendacky <thomas.lendacky@amd.com>,
@@ -49,72 +36,119 @@ CC: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Sean Christopherson <seanjc@google.com>,
         "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
-User-Agent: K-9 Mail for Android
-In-Reply-To: <bed77821-1e36-4f92-86c5-e49628431c53@intel.com>
-References: <CAHmME9rum4uwSNFd_GkD9p_+vN4DBxA=feZX7k9RvugFZsZNJg@mail.gmail.com> <DM8PR11MB5750797D0B9B8EB32740F55DE77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <CAHmME9oC=GE-7QS2m9FA5cs_ss+tQgB9Pj3tKnTtMMFpQmUshg@mail.gmail.com> <DM8PR11MB5750B861F7A105886AA5FCE4E77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com> <20240131140756.GB2356784@mit.edu> <Zbpc8tppxuKr-hnN@zx2c4.com> <20240131171042.GA2371371@mit.edu> <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com> <20240201045710.GD2356784@mit.edu> <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com> <bed77821-1e36-4f92-86c5-e49628431c53@intel.com>
-Message-ID: <52A2842D-AC23-4321-B06B-CDA082183862@zytor.com>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Message-ID: <20240201210410.GA24013@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <CAHmME9ps6W5snQrYeNVMFgfhMKFKciky=-UxxGFbAx_RrxSHoA@mail.gmail.com> <20240131203531.GA12035@wind.enjellic.com> <20240201044735.GC2356784@mit.edu> <20240201095451.GA17612@wind.enjellic.com> <Zbt7mXg9p6IOdcqp@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zbt7mXg9p6IOdcqp@redhat.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Thu, 01 Feb 2024 15:04:12 -0600 (CST)
 
-On February 1, 2024 10:46:06 AM PST, Dave Hansen <dave=2Ehansen@intel=2Ecom=
-> wrote:
->On 2/1/24 10:09, Jason A=2E Donenfeld wrote:
->> Question ii) Just how DoS-able is RDRAND? From host to guest, where
->> the host controls scheduling, that seems easier, but how much so, and
->> what's the granularity of these operations, and could retries still
->> help, or not at all? What about from guest to guest, where the
->> scheduling is out of control; in that case is there a value of N for
->> which N retries makes it actually impossible to DoS? What about from
->> userspace to kernelspace; good value of N?
->
->So far, in practice, I haven't seen a single failure of RDRAND=2E  It's
->been limited to RDSEED=2E  In a perfect world, I'd change the architectur=
-e
->docs to say, "RDRAND only fails when the hardware breaks" and leave
->RDSEED defined to be the one that fails easily=2E
->
->Dealing with a fragile RDSEED seems like a much easier problem than
->dealing with a fragile RDRAND since RDSEED is used _much_ more sparingly
->in the kernel today=2E
->
->But I'm not sure if the hardware implementations fit into this perfect
->world I've conjured up=2E  We're going to wrangle up the folks at Intel
->who can hopefully tell me if I'm totally deluded=2E
->
->Has anyone seen RDRAND failures in practice?  Or just RDSEED?
->
->> Question iii) How likely is Intel to actually fix this in a
->> satisfactory way (see "specifying this is an interesting question" in
->> [1])? And if they would, what would the timeline even be?
->
->If the fix is pure documentation, it's on the order of months=2E  I'm
->holding out hope that some kind of anti-DoS claims like you mentioned:
->
->> Specifying this is an interesting question=2E What exactly might our
->> requirements be for a "non-broken" RDRAND? It seems like we have two
->> basic ones:
->>=20
->> - One VMX (or host) context can't DoS another one=2E
->> - Ring 3 can't DoS ring 0=2E
->
->are still possible on existing hardware, at least for RDRAND=2E
+On Thu, Feb 01, 2024 at 11:08:09AM +0000, Daniel P. Berrang?? wrote:
 
-The real question is: what do we actually need?
+Hi Dan, thanks for the thoughts.
 
-During startup, we could afford a *lot* of looping to collect enough entro=
-py before giving up=2E After that, even if RDSEED fails 99% of the time, it=
- will still produce far more entropy than a typical external randomness sou=
-rce=2E We don't want to loop that long, obviously (*), but instead try peri=
-odically and let the entropy accumulate=2E
+> On Thu, Feb 01, 2024 at 03:54:51AM -0600, Dr. Greg wrote:
+> > I suspect that the achievable socket core count cannot effectively
+> > overwhelm the 1022x amplification factor inherent in the design of the
+> > RDSEED based seeding of RDRAND.
 
-(*) We *could* of course choose to aggressively loop in task context if th=
-ere task would otherwise block on /dev/random=2E
+> In testing I could get RDSEED down to < 3% success rate when
+> running on 20 cores in parallel on a laptop class i7. If that
+> failure rate can be improved by a little more than one order
+> of magnitude to 0.1% we're starting to get to the point where
+> it might be enough to make RDRAND re-seed fail.
+> 
+> Intel's Sierra Forest CPUs are said to have a variant with 288
+> cores per socket, which is an order of magnitude larger. It is
+> conceivable this might be large enough to demonstrate RDRAND
+> failure in extreme load. Then again who knows what else has
+> changed that might alter the equation, maybe the DRBG is also
+> better / faster. Only real world testing can say for sure.
+> One thing is certain though, core counts per socket keep going
+> up, so the potential worst case load on RDSEED will increase...
 
+Indeed, that would seem to be the important and operative question
+that Intel could answer, maybe Dave and Elena will be able to provide
+some guidance.
+
+Until someone can actually demonstrate a sustained RDRAND depletion
+attack we don't have an issue, only a lot of wringing of hands and
+other handwaving on what we should do.
+
+The thing that intrigues me is that we have two AMD engineers
+following this, do you guys have any comments, reflections?  Unless I
+misunderstand, SEV-SNP has the same challenges and issues.
+
+As of late you guys have been delivering higher core counts that would
+make your platform more susceptible.  Does your hardware design not
+have a socket common RNG architecture that makes RDSEED vulnerable to
+socket adversarial depletion?  Is this a complete non-issue in
+practice?
+
+Big opportunity here to proclaim: "Just buy AMD"... :-)
+
+> > We will see if Elena can come up with what Intel engineering's
+> > definition of 'astronomical' is.. :-)
+> > 
+> > > There's a special case with Confidential Compute VM's, since the
+> > > assumption is that you want to protect against even a malicious
+> > > hypervisor who could theoretically control all other sources of
+> > > timing uncertainty.  And so, yes, in that case, the only thing we
+> > > can do is Panic if RDRAND fails.
+> > 
+> > Indeed.
+> > 
+> > The bigger question, which I will respond to Elena with, is how much
+> > this issue calls the entire question of confidential computing into
+> > question.
+
+> A denial of service (from a panic on RDRAND fail) doesn't undermine
+> confidental computing. Guest data confidentiality is maintained by
+> panicing on RDRAND failure and DoS protection isn't a threat that CC
+> claims to be able to mitigate in general.
+
+Yes, if there is a problem with RDRAND we have a CoCo solution, full
+stop.
+
+The issue that I was raising with Elena is more generic, to wit:
+
+Her expressed concern is that a code construct looking something like this,
+rdrand() returning 0 on success:
+
+for (i= 0; i < 9; ++i)
+	if (!rdrand(&seed))
+		break;
+	sleep(some time);
+}
+if (i == 9)
+	BUG("No entropy");
+
+do_something_with(seed);
+
+Could be sufficiently manipulated by a malicious hypervisor in a TDX
+environment so as to compromise its functionality.
+
+If this level of control is indeed possible, given the long history of
+timing and side-channel attacks against cryptography, this would seem
+to pose significant questions as to whether or not CoCo can deliver on
+its stated goals.
+
+> With regards,
+> Daniel
+
+Have a good evening.
+
+As always,
+Dr. Greg
+
+The Quixote Project - Flailing at the Travails of Cybersecurity
+              https://github.com/Quixote-Project
