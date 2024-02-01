@@ -1,154 +1,84 @@
-Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5013C488
-	for <linux-coco@lists.linux.dev>; Thu,  1 Feb 2024 21:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A393EA73;
+	Thu,  1 Feb 2024 22:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706821768; cv=none; b=t+6FJeFinZSls1PXu7RmYGt6zOZLLms73QcncpNWW1mPG5psTSjdbfD41nRd1Kc13MuQvjAqRgrJgdF2FzX4T6MlAUeiNQFnq5TurwGYENAihcA39OEds2CE8uvm0GZa3NmqevwqtkoqFDT1AozY4HK6kakcmdWdgXp7B0iEGEQ=
+	t=1706824967; cv=none; b=JBdb30UQfSeevTRel93vY4K+o1oU70Mnfbspa/JCsrCfhEUDMYLL3pmM8eFYSNK7TnN3PO1bJzRbawp5XTBCl7HnP0R68OMkyPMqrxFkl7vqG4QigUIvwvnDs6PKyrnJF6TQjXksosKQki29aPN16F2pNvHyHd+Xqeje3vIk3yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706821768; c=relaxed/simple;
-	bh=TBOTB9Czzf4Q8dqszUSC2KR1hcttocjMtosMwe5WxeM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PilOEyFu8lodyVva30K9SvZMi26wGQyN5jH7xxjJDBJg2necqmvSR0uvRt4MkX9sV5MKIcY90gQV9pMK4Bn0a7hEwK11dLgQcFVOZzwCeBjyt1ZEipbQ88VO6QRlmjMwPT1PDvbXHvkKSEXdRBOwx+qamEXbi3FsWwvR3jZh6rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
-Received: from wind.enjellic.com (localhost [127.0.0.1])
-	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 411L4BB7024212;
-	Thu, 1 Feb 2024 15:04:11 -0600
-Received: (from greg@localhost)
-	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 411L4A9c024211;
-	Thu, 1 Feb 2024 15:04:10 -0600
-Date: Thu, 1 Feb 2024 15:04:10 -0600
-From: "Dr. Greg" <greg@enjellic.com>
-To: "Daniel P. Berrang??" <berrange@redhat.com>
-Cc: "Theodore Ts'o" <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Reshetova, Elena" <elena.reshetova@intel.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Nakajima, Jun" <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-Message-ID: <20240201210410.GA24013@wind.enjellic.com>
-Reply-To: "Dr. Greg" <greg@enjellic.com>
-References: <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <CAHmME9ps6W5snQrYeNVMFgfhMKFKciky=-UxxGFbAx_RrxSHoA@mail.gmail.com> <20240131203531.GA12035@wind.enjellic.com> <20240201044735.GC2356784@mit.edu> <20240201095451.GA17612@wind.enjellic.com> <Zbt7mXg9p6IOdcqp@redhat.com>
+	s=arc-20240116; t=1706824967; c=relaxed/simple;
+	bh=QiNfWmRaFs425HrmGWK3F+bpacxbRPm2xwsnX64FA8Q=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=VDhoUZ034JJyBaehpstqyGCCQiDjW9PvQyCJN3JstYcTtXTdbmeOWQ/z35a972OPUp5AAydU9rULRtBX/SyYiSK30fmVU78KwxWUGzJyD4mabX/mG/ijrRvonYEBP7aJO3DAqqCcRmgzxSaSGBA2lFsX2W5nX+CesydwVLeYIuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/FJId3R; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/FJId3R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5B8C433C7;
+	Thu,  1 Feb 2024 22:02:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706824966;
+	bh=QiNfWmRaFs425HrmGWK3F+bpacxbRPm2xwsnX64FA8Q=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=Y/FJId3RPFGnOsy5WCk4US14TJujegs9EmwDK/7fUB7Ua5L0Q13q3eQR2WagTHyjm
+	 vYEvGEPEqd1WQ2Cs82aMiAWuDFkcM7tan/CSID4finnSe6Ccxh/nTYpR1AMchinJmD
+	 QZbBvqBU36C0Dv/Z87ShjBxs+iXhwoq+JjaG5j1dDZN1KdIhgfettcLK/3EbB69gB3
+	 q9PxMXfskRB4mjWQs43rz/5UwRHQ0pfGs6bftyMII/JjjUU1T1U456eD70Ed3VSErq
+	 0eO5b2np2wgd7Pr2MDBQ5Oyo8KPpbg99HnK41gXQrB8PCSPBJA0p63lh2zSDD++a13
+	 WGIRCyCXdZQBA==
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zbt7mXg9p6IOdcqp@redhat.com>
-User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Thu, 01 Feb 2024 15:04:12 -0600 (CST)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 02 Feb 2024 00:02:42 +0200
+Message-Id: <CYU2YB3KWV7V.1NHLFEN71HC3N@suppilovahvero>
+Cc: "Kuppuswamy Sathyanarayanan"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, "Qinkun Bao"
+ <qinkun@google.com>, "Yao, Jiewen" <jiewen.yao@intel.com>, "Xing, Cedric"
+ <cedric.xing@intel.com>, "Dionna Amalie Glaze" <dionnaglaze@google.com>,
+ <biao.lu@intel.com>, <linux-coco@lists.linux.dev>,
+ <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Samuel Ortiz" <sameo@rivosinc.com>, "Dan Williams"
+ <dan.j.williams@intel.com>
+X-Mailer: aerc 0.15.2
+References: <20240128212532.2754325-1-sameo@rivosinc.com>
+In-Reply-To: <20240128212532.2754325-1-sameo@rivosinc.com>
 
-On Thu, Feb 01, 2024 at 11:08:09AM +0000, Daniel P. Berrang?? wrote:
+On Sun Jan 28, 2024 at 11:25 PM EET, Samuel Ortiz wrote:
+> Some confidential computing architectures (Intel TDX, ARM CCA, RISC-V
+> CoVE) provide their guests with a set of measurements registers that can
+> be extended at runtime, i.e. after the initial, host-initiated
+> measurements of the TVM are finalized. Those runtime measurement
+> registers (RTMR) are isolated from the host accessible ones but TSMs
+> include them in their signed attestation reports.
 
-Hi Dan, thanks for the thoughts.
+Please expand "TSM" acronym and explain what it is.
 
-> On Thu, Feb 01, 2024 at 03:54:51AM -0600, Dr. Greg wrote:
-> > I suspect that the achievable socket core count cannot effectively
-> > overwhelm the 1022x amplification factor inherent in the design of the
-> > RDSEED based seeding of RDRAND.
+> All architectures supporting RTMRs expose a similar interface to their
 
-> In testing I could get RDSEED down to < 3% success rate when
-> running on 20 cores in parallel on a laptop class i7. If that
-> failure rate can be improved by a little more than one order
-> of magnitude to 0.1% we're starting to get to the point where
-> it might be enough to make RDRAND re-seed fail.
-> 
-> Intel's Sierra Forest CPUs are said to have a variant with 288
-> cores per socket, which is an order of magnitude larger. It is
-> conceivable this might be large enough to demonstrate RDRAND
-> failure in extreme load. Then again who knows what else has
-> changed that might alter the equation, maybe the DRBG is also
-> better / faster. Only real world testing can say for sure.
-> One thing is certain though, core counts per socket keep going
-> up, so the potential worst case load on RDSEED will increase...
+Please expand RTMR *everywhere* ot "measurement registers". It is
+totally useless terminology.
 
-Indeed, that would seem to be the important and operative question
-that Intel could answer, maybe Dave and Elena will be able to provide
-some guidance.
+> TVMs: An extension command/call that takes a measurement value and an
 
-Until someone can actually demonstrate a sustained RDRAND depletion
-attack we don't have an issue, only a lot of wringing of hands and
-other handwaving on what we should do.
+What is TVM?
 
-The thing that intrigues me is that we have two AMD engineers
-following this, do you guys have any comments, reflections?  Unless I
-misunderstand, SEV-SNP has the same challenges and issues.
+> RTMR index to extend it with, and a readback command for reading an RTMR
+> value back (taking an RTMR index as an argument as well). This patch seri=
+es
+> builds an architecture agnostic, configfs-based ABI for userspace to exte=
+nd
+> and read RTMR values back. It extends the current TSM ops structure and
+> each confidential computing architecture can implement this extension to
+> provide RTMR support.
 
-As of late you guys have been delivering higher core counts that would
-make your platform more susceptible.  Does your hardware design not
-have a socket common RNG architecture that makes RDSEED vulnerable to
-socket adversarial depletion?  Is this a complete non-issue in
-practice?
+This patch set should simplify its gibberish terminology to common
+language.
 
-Big opportunity here to proclaim: "Just buy AMD"... :-)
-
-> > We will see if Elena can come up with what Intel engineering's
-> > definition of 'astronomical' is.. :-)
-> > 
-> > > There's a special case with Confidential Compute VM's, since the
-> > > assumption is that you want to protect against even a malicious
-> > > hypervisor who could theoretically control all other sources of
-> > > timing uncertainty.  And so, yes, in that case, the only thing we
-> > > can do is Panic if RDRAND fails.
-> > 
-> > Indeed.
-> > 
-> > The bigger question, which I will respond to Elena with, is how much
-> > this issue calls the entire question of confidential computing into
-> > question.
-
-> A denial of service (from a panic on RDRAND fail) doesn't undermine
-> confidental computing. Guest data confidentiality is maintained by
-> panicing on RDRAND failure and DoS protection isn't a threat that CC
-> claims to be able to mitigate in general.
-
-Yes, if there is a problem with RDRAND we have a CoCo solution, full
-stop.
-
-The issue that I was raising with Elena is more generic, to wit:
-
-Her expressed concern is that a code construct looking something like this,
-rdrand() returning 0 on success:
-
-for (i= 0; i < 9; ++i)
-	if (!rdrand(&seed))
-		break;
-	sleep(some time);
-}
-if (i == 9)
-	BUG("No entropy");
-
-do_something_with(seed);
-
-Could be sufficiently manipulated by a malicious hypervisor in a TDX
-environment so as to compromise its functionality.
-
-If this level of control is indeed possible, given the long history of
-timing and side-channel attacks against cryptography, this would seem
-to pose significant questions as to whether or not CoCo can deliver on
-its stated goals.
-
-> With regards,
-> Daniel
-
-Have a good evening.
-
-As always,
-Dr. Greg
-
-The Quixote Project - Flailing at the Travails of Cybersecurity
-              https://github.com/Quixote-Project
+BR, Jarkko
