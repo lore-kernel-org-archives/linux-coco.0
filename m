@@ -1,54 +1,40 @@
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE0E83A02
-	for <linux-coco@lists.linux.dev>; Fri,  2 Feb 2024 22:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1E03D3A7;
+	Fri,  2 Feb 2024 22:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706911244; cv=none; b=J2WyrSfHLy8bBoFSFLJfsGrdtdt/+7vLEXpduwGYiHKbPTZv83gjdenjOrbcevuLd8z1nXPTJh1zNbiDy6SsSjqzC4NRBd3sKLf1OxKrPh1/+prpJOmWxzPemcUsc5c7Gylare9BFiA7SHUthrzy5QwLuE8WeA+crv1RWl9EoAg=
+	t=1706914058; cv=none; b=tHrdk6rb5MxSEDXjSr8PSx/UG13GTYCW6Y5+g5I06abXh9EZPRHRaEx7Pp/uAiuE764mODid3mMOgV3rT/kYukel84lTrE02a3MAcrVbNDqV1fzi7HNyzDpuvEQEZQQBWVrzHxEtRUzXDajFvTG4dAlVRn92R7c98WtaukZMcBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706911244; c=relaxed/simple;
-	bh=T1MXEQB746wrX62S7IpUJjq100rQ6d7kzLltQ5g3nRE=;
+	s=arc-20240116; t=1706914058; c=relaxed/simple;
+	bh=FRA7NClfGuH+mvD0ef76LKG3VhCS7wCAZ28qMHUqieI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FD1+kOCm1iwG8qS5peRnOKX54/aj31uhYHt37e6JdM5b1Nrb/uRxoYcu25UqKD8eqUUPHYepIXC30F0Ku04sNuBJGtFkINJdDyBU8/RyH2J7SpVkLcVcr/hNqC4CmxkSMdNnIWuNGGjAMYNRrYYWCxbAo5aW85jsnxXMsiZgq4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v2W/SSgQ; arc=none smtp.client-ip=209.85.217.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=YvvPsi2bQ4Go6Yjsb/ExIcDDE1D+izUMNqrwsd8i/vmN2FwiVQS8MfTwtv+5ivlTb3bkmoyXO3GSfsInoVZcuf2XnQ5jR4x8uSkvuUKRSpKi9zkotTcwIsfHwZIbpYK830fMqj8Hy5L+XPfJ7aybQ2KCmLABWCK6ISxmCpjp9OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n0DPef5g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v2W/SSgQ"
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-46cfd8b96b1so467029137.0
-        for <linux-coco@lists.linux.dev>; Fri, 02 Feb 2024 14:00:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706911242; x=1707516042; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hry1ZKGYXn0PLELk19zPrbAcJfAf3mQKU3XmGI8OhDs=;
-        b=v2W/SSgQwhVEdTnnHN4H59DtqnOlnb21vOhpvLlgtlJpIo7EPZzWqFWcEqu7WSNOar
-         k0z3++YjqtDpEiX5wW94c53LMM6Y3LQmEg8sclaPv2gerNR4ljJKBt9kQ/ado7ZVwt6E
-         5IQzWM2470KzPFT9G8YsI401Ofy3E/2oOp00xxrYzJWWe9x5tEntaChwMDEcRBO9xnpn
-         3Gfat3jfsbmOWkHzCvC4LzWIuLA50qhbrxglNNgTwcsFqn3sFGtl4V5ZS81Lmj/TaVCk
-         mU7J0uXBdxBr8UXK2A7CIi3bDs7xDPbUDIY0bjAVHNqnuVRdkewt+/210G1oR6CmeOMr
-         8SjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706911242; x=1707516042;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hry1ZKGYXn0PLELk19zPrbAcJfAf3mQKU3XmGI8OhDs=;
-        b=d6shayp1a7AoF3W/TDboYfTiHu2AO3A6i2hABJJ24aHD0mftXryPugFLm1b81zzy2Z
-         aXBplZivtvqk38dJxd/AuTuGQon8efnTQdGj6eWaet8g7tF5XWfQUUhWxIulgH25FdLk
-         ZxSA3ddSt+nbqwDry4v3vfRz0NNDB0zp2lwN6axVkXBPMEkk2cHzts3pUVcsY426pwEl
-         xS5CLraQ2QI7Y2Mcw/9ofvKY/DXNNoNc/nU8oemwsTI0E6puK73a9VRNeOxtPQdWx9wy
-         QD+6aLZQep/+sD25C+s3ZzUf7GFPJuf/4pZQLSHezRIiYcThXjiu+Iz6UL3JGh7WP37E
-         htRA==
-X-Gm-Message-State: AOJu0Yzd7X5o4JbfP6BdRFOukBcv+hhUTLldCh/PMuP7S5lAucde2Olr
-	dwHd3vXZuLb1nR1wnGULHC5lsT0p0Ckkxe4hvXfetq3uKz87kpiS0CqH2Uo+KfIW1+auYhhWLk2
-	dU//M2VqVY3P28xfCaGuEoNrXdChoxcFjHVaX
-X-Google-Smtp-Source: AGHT+IFUXimzUG8NKidpgusFqnc2mrXenla7Rri5SA/FWuN+STma6oTZzhlhnm7yzn8Qgpm/liJq5PDpZqGjZbzCjFo=
-X-Received: by 2002:a05:6102:a15:b0:46b:42f5:ae94 with SMTP id
- t21-20020a0561020a1500b0046b42f5ae94mr8595652vsa.22.1706911241549; Fri, 02
- Feb 2024 14:00:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n0DPef5g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E960C433F1;
+	Fri,  2 Feb 2024 22:47:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706914058;
+	bh=FRA7NClfGuH+mvD0ef76LKG3VhCS7wCAZ28qMHUqieI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=n0DPef5gSNxToXTohsSeZcihSpMaSpUKBj1kmxQ8Ovo7ep11yIBePTRjz5D+Lwryz
+	 a0vbIvbGQGl8DzLy4D7sA9GTwhVxhN7fxbEVxyJtmR18bQF5zWJOUPO7ylgibJRtAM
+	 bOtiZIJJBs34wQGc0i+FUULk+gksBFUAUOwmrNfxCWX7rHeYYXOqyyp3ZAS+mA9apz
+	 oXFAh7ANei2JCeeujyMqZdbkMUjmSkVysc3OrQ7AMRUI1H2hj7pAcHhex2qHptN+WB
+	 h2+zOnv4OsTzsGTmZ5llFqSWL4MrFD4611phCPcz2wUtUuY8R3vYqHw38nG7O9fhIx
+	 rW+caqU/Yuc/g==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5111c7d40deso4203057e87.1;
+        Fri, 02 Feb 2024 14:47:38 -0800 (PST)
+X-Gm-Message-State: AOJu0YwByfKe789r8obYZUSmoHCmOtZg9Um/vZF/L8YwB7nLAf76vGjS
+	OtGyDiBcbay+aCCZ3VXQKJxQc9VVrF69gpo7NyR1kwSZColJTRFHWEOvchCBlBYTL/oiqMClgBW
+	QeYFi0CZhbbyrq1ZylHp0VI/1uMQ=
+X-Google-Smtp-Source: AGHT+IGAzmBgx5AlqOdWC/vDn6AUUi/qQxt6yaKcueUyhjFL6OzyVjxU3IlOHtv5MDQph0qKWSywZKeI5DIYd67c5jM=
+X-Received: by 2002:a05:6512:62:b0:511:1ed7:61bd with SMTP id
+ i2-20020a056512006200b005111ed761bdmr2339301lfo.54.1706914056299; Fri, 02 Feb
+ 2024 14:47:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -57,20 +43,23 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
  <20240130220845.1978329-2-kevinloughlin@google.com> <4ljfvg7c23g2wx4hcqz6x6tx7uvp6fffayqvu4ptsmfqajlujr@zngokbd2awma>
-In-Reply-To: <4ljfvg7c23g2wx4hcqz6x6tx7uvp6fffayqvu4ptsmfqajlujr@zngokbd2awma>
-From: Kevin Loughlin <kevinloughlin@google.com>
-Date: Fri, 2 Feb 2024 14:00:30 -0800
-Message-ID: <CAGdbjm+dt2LMqsWkzME-Gya9F=pZMubTuW3Ad3dStj=L+MW+ng@mail.gmail.com>
+ <CAGdbjm+dt2LMqsWkzME-Gya9F=pZMubTuW3Ad3dStj=L+MW+ng@mail.gmail.com>
+In-Reply-To: <CAGdbjm+dt2LMqsWkzME-Gya9F=pZMubTuW3Ad3dStj=L+MW+ng@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 2 Feb 2024 23:47:24 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGSZkJ-1opx9mrpfhzyreCM+P616xM+MhPOaR+EgP5NNg@mail.gmail.com>
+Message-ID: <CAMj1kXGSZkJ-1opx9mrpfhzyreCM+P616xM+MhPOaR+EgP5NNg@mail.gmail.com>
 Subject: Re: [PATCH v3 1/2] x86/sev: enforce RIP-relative accesses in early
  SEV/SME code
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+To: Kevin Loughlin <kevinloughlin@google.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
 	Nick Desaulniers <ndesaulniers@google.com>, Justin Stitt <justinstitt@google.com>, 
 	Tom Lendacky <thomas.lendacky@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>, 
-	Hou Wenlong <houwenlong.hwl@antgroup.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	Hou Wenlong <houwenlong.hwl@antgroup.com>, Dionna Glaze <dionnaglaze@google.com>, 
+	Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
 	linux-coco@lists.linux.dev, Ashish Kalra <ashish.kalra@amd.com>, 
 	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>, 
 	Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>, 
@@ -78,66 +67,84 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borisl
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 31, 2024 at 12:20=E2=80=AFAM Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
+On Fri, 2 Feb 2024 at 23:00, Kevin Loughlin <kevinloughlin@google.com> wrot=
+e:
 >
-> On Tue, Jan 30, 2024 at 10:08:44PM +0000, Kevin Loughlin wrote:
-> > diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/=
-mem_encrypt.h
-> > index 359ada486fa9..b65e66ee79c4 100644
-> > --- a/arch/x86/include/asm/mem_encrypt.h
-> > +++ b/arch/x86/include/asm/mem_encrypt.h
-> > @@ -17,6 +17,20 @@
+> On Wed, Jan 31, 2024 at 12:20=E2=80=AFAM Kirill A. Shutemov
+> <kirill.shutemov@linux.intel.com> wrote:
 > >
-> >  #include <asm/bootparam.h>
+> > On Tue, Jan 30, 2024 at 10:08:44PM +0000, Kevin Loughlin wrote:
+> > > diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/as=
+m/mem_encrypt.h
+> > > index 359ada486fa9..b65e66ee79c4 100644
+> > > --- a/arch/x86/include/asm/mem_encrypt.h
+> > > +++ b/arch/x86/include/asm/mem_encrypt.h
+> > > @@ -17,6 +17,20 @@
+> > >
+> > >  #include <asm/bootparam.h>
+> > >
+> > > +/*
+> > > + * Like the address operator "&", evaluates to the address of a LHS =
+variable
+> > > + * "var", but also enforces the use of RIP-relative logic. This macr=
+o can be
+> > > + * used to safely access global data variables prior to kernel reloc=
+ation.
+> > > + */
+> > > +#define RIP_RELATIVE_ADDR(var)               \
+> > > +({                                   \
+> > > +     void *rip_rel_ptr;              \
+> > > +     asm ("lea "#var"(%%rip), %0"    \
+> > > +             : "=3Dr" (rip_rel_ptr)    \
+> > > +             : "p" (&var));          \
+> > > +     rip_rel_ptr;                    \
+> > > +})
+> > > +
 > >
-> > +/*
-> > + * Like the address operator "&", evaluates to the address of a LHS va=
-riable
-> > + * "var", but also enforces the use of RIP-relative logic. This macro =
-can be
-> > + * used to safely access global data variables prior to kernel relocat=
-ion.
-> > + */
-> > +#define RIP_RELATIVE_ADDR(var)               \
-> > +({                                   \
-> > +     void *rip_rel_ptr;              \
-> > +     asm ("lea "#var"(%%rip), %0"    \
-> > +             : "=3Dr" (rip_rel_ptr)    \
-> > +             : "p" (&var));          \
-> > +     rip_rel_ptr;                    \
-> > +})
-> > +
+> > I don't think it is the right place for the macro. The next patch uses =
+for
+> > things unrelated to memory encryption.
 >
-> I don't think it is the right place for the macro. The next patch uses fo=
-r
-> things unrelated to memory encryption.
+> You're right; with the cleanup, I agree it becomes more general. We
+> can move it to arch/x86/include/asm/asm.h.
+>
+> >
+> > > @@ -239,14 +244,14 @@ unsigned long __head __startup_64(unsigned long=
+ physaddr,
+> > >        */
+> > >
+> > >       next_pgt_ptr =3D fixup_pointer(&next_early_pgt, physaddr);
+> > > -     pud =3D fixup_pointer(early_dynamic_pgts[(*next_pgt_ptr)++], ph=
+ysaddr);
+> > > -     pmd =3D fixup_pointer(early_dynamic_pgts[(*next_pgt_ptr)++], ph=
+ysaddr);
+> > > +     early_dynamic_pgts_ptr =3D fixup_pointer(early_dynamic_pgts, ph=
+ysaddr);
+> > > +     pud =3D (pudval_t *) early_dynamic_pgts_ptr[(*next_pgt_ptr)++];
+> > > +     pmd =3D (pmdval_t *) early_dynamic_pgts_ptr[(*next_pgt_ptr)++];
+> > >
+> >
+> > This change doesn't belong to this patch. Maybe move it into the next
+> > patch and combine with removing fixup_pointer().
+>
+> I'll put it in a separate commit even preceding this one, as it's
+> actually a bug in the existing fixup pointer logic that I noticed when
+> transitioning to the use of the RIP-relative macro. Specifically,
+> early_dynamic_pgts is a global variable just like next_early_pgt and
+> thus also needs to be fixed up to guarantee the correct address is
+> used across toolchains.
 
-You're right; with the cleanup, I agree it becomes more general. We
-can move it to arch/x86/include/asm/asm.h.
+No, this is not a bug.
 
->
-> > @@ -239,14 +244,14 @@ unsigned long __head __startup_64(unsigned long p=
-hysaddr,
-> >        */
-> >
-> >       next_pgt_ptr =3D fixup_pointer(&next_early_pgt, physaddr);
-> > -     pud =3D fixup_pointer(early_dynamic_pgts[(*next_pgt_ptr)++], phys=
-addr);
-> > -     pmd =3D fixup_pointer(early_dynamic_pgts[(*next_pgt_ptr)++], phys=
-addr);
-> > +     early_dynamic_pgts_ptr =3D fixup_pointer(early_dynamic_pgts, phys=
-addr);
-> > +     pud =3D (pudval_t *) early_dynamic_pgts_ptr[(*next_pgt_ptr)++];
-> > +     pmd =3D (pmdval_t *) early_dynamic_pgts_ptr[(*next_pgt_ptr)++];
-> >
->
-> This change doesn't belong to this patch. Maybe move it into the next
-> patch and combine with removing fixup_pointer().
+early_dynamic_pgts is a two dimensional array
 
-I'll put it in a separate commit even preceding this one, as it's
-actually a bug in the existing fixup pointer logic that I noticed when
-transitioning to the use of the RIP-relative macro. Specifically,
-early_dynamic_pgts is a global variable just like next_early_pgt and
-thus also needs to be fixed up to guarantee the correct address is
-used across toolchains.
+extern pmd_t early_dynamic_pgts[EARLY_DYNAMIC_PAGE_TABLES][PTRS_PER_PMD];
+
+and so this expression
+
+early_dynamic_pgts[(*next_pgt_ptr)++]
+
+produces the kernel virtual address of one of the top level elements,
+which itself is an array, and so this can be fixed up as usual.
+IOW, the [] operation does not result in pointer dereference here,
+only in pointer arithmetic.
