@@ -1,308 +1,120 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE0A126F22
-	for <linux-coco@lists.linux.dev>; Fri,  2 Feb 2024 22:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FFA67A15
+	for <linux-coco@lists.linux.dev>; Fri,  2 Feb 2024 23:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706914500; cv=none; b=VZcLsm7Mb6X3LSa4jnzdlR3JKLDQVwDXHtMbFwzUnJDzyhEHbNUAvSdA8NUSUIiwG8Rca7E8f2XDTWR64p7UhbPZTZhtoQL3uzPL9iDkq9kZHLleLu+Sfp2bVdBZfUi7k/Hdt9/8dGXwpoTh274ChQ6YegeSkqn7Vp+DoUGprbo=
+	t=1706915261; cv=none; b=AagmConz+4OYOgtET9XRbpGjwsmr7G7WhqI8sT/lFRqiNtcUGujBXLE3gr/d7ZzoyqGlBNHvFfyjQ0neWX+3+tFuVAhUlrUYEwO/mFVxhic4ufSGv/enDhxF3VsenrPrNEqZtxrcy1uJuZ+c+F8d71tPQoPJ15KbKVB9jIujBxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706914500; c=relaxed/simple;
-	bh=xLLdVjR78iCftIzXlIU+GT2WV5TXzmzQM7wql3RHWCw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GlWSIemXYza5LcQrEsLiq6px6CRqjfdoXv+0B7voSErv/9ROBrwayG+/Xxkd0Q2BrDMyQC3kf7ckQreJwe8r7fxPwpy5cBIXlhjYvAPB5S6GEG+M6almP7d1yDwtQthZRIDf3b0DgY7qUebVQhINC0uoyJ01QmMFRA6+XZVt1gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SEEqlveR; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1706915261; c=relaxed/simple;
+	bh=I4kgLC3tSksK++ityeMyPTC5f5gRQSkqZH6Pa8WTjlk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cu4Nl/wIsBGEXGcSYBeNKdL34JmZ61Au8Y7Bh4UpdLkqmG2BhBX3j2/kLCf75iaXyHenacjCYowd2i9N68v3r+BxmFHvCaRW3jzvUNP701FtqvnQkoyb9xdWAGoynD19H0ky3qxBZYRhiODE0RmLO9vC9sC4cpe1hzV91u/o+yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ek9puBpt; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SEEqlveR"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc6bad01539so3484038276.3
-        for <linux-coco@lists.linux.dev>; Fri, 02 Feb 2024 14:54:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706914497; x=1707519297; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yST2IhC4x7xwue5FLDSVPscgeSgsqzoau2hWHl8C2YI=;
-        b=SEEqlveRVOpDQdN/ev+AKaqTWd06c3liEb/ThaliY88uioRQypyqx6W859HmB1SEhg
-         QrhUduTLBVDzh/yuhJQpKooHum8c9DGdyJhDT+88kMYwNEBRYBimGn4HKnwuGkkSVx/I
-         6K0loB2mUIZo+L73c3l+ucgszidbWQaog5LvofJWkMqU9Chyhn5tBRO1icU+oT10SrKt
-         jscEeLjnNaqo+BKymIXwPZQcQjdM+72BwPinuwlJTOdNid3TewVIAKBMOqmvpF+SdW4Y
-         wWHz1Rp0Bk0BnhGw9sb1i1sVCmcVMMustUrP5EgcitJoI3a9Q8zl/Qqh1mUJsE6YqIyb
-         dh6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706914497; x=1707519297;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yST2IhC4x7xwue5FLDSVPscgeSgsqzoau2hWHl8C2YI=;
-        b=E5GNk/7Lg4v0p8XycYFPf64lIZDyt5w+DD9LxTQoCuFhE7n9NjpD0kd0dKWMBbKbeV
-         RXKWh2PZJzJNtUTQJQVrnq1dCvZVjqGXGBygiLg1zRw4bMCtZUBVLEy3DFoPfYLBjTx8
-         xqpdNInt/WKB3zu4ysgsvJWvV1tZEjwf1Qbhl6VqEnSQtiTtSWFA0wuB+cbDUFmocgp5
-         TiV3PDRl4DaJQwy0Ruz5j901r+c+FFkzIcRuWjjoAX5a3HXL432hPrNv9PL7uujHpQfK
-         zuN52MIeuTI6CFoVcjO2p70WG3Vk2gerlBX7sOUOIXNJGBscs61xGuIF4kznwVitNPXB
-         ZKqQ==
-X-Gm-Message-State: AOJu0Yy+k88k4roZ7DwiiCqvMAdoktgKLgyaLY+Xhq58uU/24S4QY6zY
-	4Q9px6pLcZDKHHoyHn2ZbDw9q0eU18OBFZl1iZxh4RBTUIrEzJIcYXPIGk1/3fW/ukG8pia3L6L
-	eSQ==
-X-Google-Smtp-Source: AGHT+IHpo//SwtMaQHEuaxSujjkaLfTq03FTpTzav293FCFg3laEeYePeMZVtQBRLJICB1llqkhzIf5zGgs=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:993:b0:dc2:25fd:eff1 with SMTP id
- bv19-20020a056902099300b00dc225fdeff1mr234713ybb.4.1706914497040; Fri, 02 Feb
- 2024 14:54:57 -0800 (PST)
-Date: Fri, 2 Feb 2024 14:54:55 -0800
-In-Reply-To: <20240116041457.wver7acnwthjaflr@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ek9puBpt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706915260; x=1738451260;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=I4kgLC3tSksK++ityeMyPTC5f5gRQSkqZH6Pa8WTjlk=;
+  b=ek9puBpt6DTFNskqJUKALFVx2NSJaxtblSJhEGNETN4htqvRBaN7saQB
+   LKNacQuayRNgIst3Tv+YjyQ87783v0csrG+vpKQEvMKUNpkwoObHSG0eU
+   XgU53uPKhOTh1+dPyBQeGak/6VWm/W2Mx9oM7E6UV7tyac/AR1PO8UKpw
+   GjUG88TafV6AxSkLxp4qOs76GoSC6z//8k9Ibm8cgJLe03AQOBEw/qyoA
+   lGsaBf7vAba+8e0YE24pQxBy/nfAc7BzlG1j4TZjB6gXubIDwMbASxVbA
+   eRcRAFMyQEUijKOISuy4Cg1jb98+lBlNMnuEqoLLUFAi+vMVVxt4MCADC
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="17672586"
+X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
+   d="scan'208";a="17672586"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 15:07:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
+   d="scan'208";a="4795159"
+Received: from mfzarate-mobl.amr.corp.intel.com (HELO [10.92.4.37]) ([10.92.4.37])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 15:07:37 -0800
+Message-ID: <a255bc36-2438-41b7-b304-bcf7a6628bef@linux.intel.com>
+Date: Fri, 2 Feb 2024 17:07:35 -0600
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20231230172351.574091-1-michael.roth@amd.com> <20231230172351.574091-19-michael.roth@amd.com>
- <ZZ67oJwzAsSvui5U@google.com> <20240116041457.wver7acnwthjaflr@amd.com>
-Message-ID: <Zb1yv67h6gkYqqv9@google.com>
-Subject: Re: [PATCH v11 18/35] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
-	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com, 
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com, 
-	Brijesh Singh <brijesh.singh@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
+Content-Language: en-US
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ Samuel Ortiz <sameo@rivosinc.com>, Dan Williams <dan.j.williams@intel.com>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Qinkun Bao <qinkun@google.com>, "Yao, Jiewen" <jiewen.yao@intel.com>,
+ "Xing, Cedric" <cedric.xing@intel.com>,
+ Dionna Amalie Glaze <dionnaglaze@google.com>, biao.lu@intel.com,
+ linux-coco@lists.linux.dev, linux-integrity@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240128212532.2754325-1-sameo@rivosinc.com>
+ <c17a31e4fb30f5f9d4a337e5bd8d54cc6f99eef7.camel@HansenPartnership.com>
+From: Dan Middleton <dan.middleton@linux.intel.com>
+In-Reply-To: <c17a31e4fb30f5f9d4a337e5bd8d54cc6f99eef7.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 15, 2024, Michael Roth wrote:
-> On Wed, Jan 10, 2024 at 07:45:36AM -0800, Sean Christopherson wrote:
-> > On Sat, Dec 30, 2023, Michael Roth wrote:
-> > > diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> > > index b1beb2fe8766..d4325b26724c 100644
-> > > --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> > > +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> > > @@ -485,6 +485,34 @@ Returns: 0 on success, -negative on error
-> > >  
-> > >  See the SEV-SNP specification for further detail on the launch input.
-> > >  
-> > > +20. KVM_SNP_LAUNCH_UPDATE
-> > > +-------------------------
-> > > +
-> > > +The KVM_SNP_LAUNCH_UPDATE is used for encrypting a memory region. It also
-> > > +calculates a measurement of the memory contents. The measurement is a signature
-> > > +of the memory contents that can be sent to the guest owner as an attestation
-> > > +that the memory was encrypted correctly by the firmware.
-> > > +
-> > > +Parameters (in): struct  kvm_snp_launch_update
-> > > +
-> > > +Returns: 0 on success, -negative on error
-> > > +
-> > > +::
-> > > +
-> > > +        struct kvm_sev_snp_launch_update {
-> > > +                __u64 start_gfn;        /* Guest page number to start from. */
-> > > +                __u64 uaddr;            /* userspace address need to be encrypted */
-> > 
-> > Huh?  Why is KVM taking a userspace address?  IIUC, the address unconditionally
-> > gets translated into a gfn, so why not pass a gfn?
-> > 
-> > And speaking of gfns, AFAICT start_gfn is never used.
-> 
-> I think having both the uaddr and start_gfn parameters makes sense. I
-> think it's only awkward because how I'm using the memslot to translate
-> the uaddr to a GFN in the current implementation,
 
-Yes.
+On 2/2/24 12:24 AM, James Bottomley wrote:
+> On Sun, 2024-01-28 at 22:25 +0100, Samuel Ortiz wrote:
+>> All architectures supporting RTMRs expose a similar interface to
+>> their TVMs: An extension command/call that takes a measurement value
+>> and an RTMR index to extend it with, and a readback command for
+>> reading an RTMR value back (taking an RTMR index as an argument as
+>> well). This patch series builds an architecture agnostic, configfs-
+>> based ABI for userspace to extend and read RTMR values back. It
+>> extends the current TSM ops structure and each confidential computing
+>> architecture can implement this extension to provide RTMR support.
+> What's the actual use case for this?  At the moment the TPM PCRs only
+> provide a read interface to userspace (via /sys/class/tpm/tpmX/pcr-
+> shaY/Z) and don't have any extension ability becuase nothing in
+> userspace currently extends them.
+>
+> The only current runtime use for TPM PCRs is IMA, which is in-kernel
+> (and which this patch doesn't enable).
+>
+> Without the ability to log, this interface is unusable anyway, but even
+> with that it's not clear that you need the ability separately to extend
+> PCRs because the extension and log entry should be done atomically to
+> prevent the log going out of sync with the PCRs, so it would seem a log
+> first interface would be the correct way of doing this rather than a
+> PCR first one.
+>
+> James
+>
+>
 
-> > Oof, reading more of the code, this *requires* an effective in-place copy-and-convert
-> > of guest memory.
-> 
-> Yes, I'm having some trouble locating the various threads, but initially
-> there were some discussions about having a userspace API that allows for
-> UPM/gmem pages to be pre-populated before they are in-place encrypted, but
-> we'd all eventually decided that having KVM handle this internally was
-> the simplest approach.
-> 
-> So that's how it's done here, KVM_SNP_LAUNCH_UPDATE copies the pages into
-> gmem, then passes those pages on to firmware for encryption. Then the
-> VMM is expected to mark the GFN range as private via
-> KVM_SET_MEMORY_ATTRIBUTES, since the VMM understands what constitutes
-> initial private/encrypted payload. I should document that better in
-> KVM_SNP_LAUNCH_UPDATE docs however.
+While we clearly need to cover PCR-like usages, I think Confidential
+Computing affords usages that go beyond TPM.
 
-That's fine.  As above, my complaints are that the unencrypted source *must* be
-covered by a memslot.  That's beyond ugly.
+For example, Attested Containers [1] (and similar explorations in CNCF
+Confidential Containers [2]) extends the measurement chain into the guest.
+There, a trusted agent measures container images, and extends an RTMR
+with those measurements. Particularly in the case of containers, the 
+existing
+runtime infrastructure is user mode oriented. However the generalization
+here is in providing a mechanism to strongly identify an application or
+behavior provided by the TVM.
 
-> > What's "the IMI"?  Initial Measurement Image?  I assume this is essentially just
-> > a flag that communicates whether or not the page should be measured?
-> 
-> This is actually for loading a measured migration agent into the target
-> system so that it can handle receiving the encrypted guest data from the
-> source. There's still a good deal of planning around how live migration
-> will be handled however so if you think it's premature to expose this
-> via KVM I can remove the related fields.
+Less concretely, I think this is an area for developer creativity.
+Attestation is one of the main APIs that CC gives application developers and
+these runtime extendable fields provide a further degree of creativity.
 
-Yes, please.  Though FWIW, I honestly hope KVM_SEV_SNP_LAUNCH_UPDATE goes away
-and we end up with a common uAPI for populating guest memory:
+[1] ACON https://github.com/intel/acon
+[2] CoCo 
+https://github.com/confidential-containers/guest-components/commit/3c75201a8ba0327fb41b68b7e1521ff517e3ca9f
 
-https://lore.kernel.org/all/Zbrj5WKVgMsUFDtb@google.com
+Regards,
+Dan
 
-> > > +                __u8 page_type;         /* page type */
-> > > +                __u8 vmpl3_perms;       /* VMPL3 permission mask */
-> > > +                __u8 vmpl2_perms;       /* VMPL2 permission mask */
-> > > +                __u8 vmpl1_perms;       /* VMPL1 permission mask */
-> > 
-> > Why?  KVM doesn't support VMPLs.
-> 
-> It does actually get used by the SVSM.
-
-> I can remove these but then we'd need some capability bit or something to
-> know when they are available if they get re-introduced.
-
-_If_.  We don't merge dead code, and we _definitely_ don't merge dead code that
-creates ABI.
-
-> > > +		kvaddr = pfn_to_kaddr(pfns[i]);
-> > > +		if (!virt_addr_valid(kvaddr)) {
-> > 
-> > I really, really don't like that this assume guest_memfd is backed by struct page.
-> 
-> There are similar enforcements in the SEV/SEV-ES code. There was some
-> initial discussion about relaxing this for SNP so we could support
-> things like /dev/mem-mapped guest memory, but then guest_memfd came
-> along and made that to be an unlikely use-case in the near-term given
-> that it relies on alloc_pages() currently and explicitly guards against
-> mmap()'ing pages in userspace.
-> 
-> I think it makes to keep the current tightened restrictions in-place
-> until such a use-case comes along, since otherwise we are relaxing a
-> bunch of currently-useful sanity checks that span all throughout the code
-> to support some nebulous potential use-case that might never come along.
-> I think it makes more sense to cross that bridge when we get there.
-
-I disagree.  You say "sanity checks", while I see a bunch of arbitrary assumptions
-that don't need to exist.  Yes, today guest_memfd always uses struct page memory,
-but that should have _zero_ impact on SNP.  Arbitrary assumptions often cause a
-lot of confusion for future readers, e.g. a few years from now, if the above code
-still exists, someone might wonder what is so special about struct page memory,
-and then waste a bunch of time trying to figure out that there's no technical
-reason SNP "requires" struct page memory.
-
-This is partly why I was pushing for guest_memfd to handle some of this; the
-gmem code _knows_ what backing type it's using, it _knows_ if the direct map is
-valid, etc.
-
-> > > +			pr_err("Invalid HVA 0x%llx for GFN 0x%llx\n", (uint64_t)kvaddr, gfn);
-> > > +			ret = -EINVAL;
-> > > +			goto e_release;
-> > > +		}
-> > > +
-> > > +		ret = kvm_read_guest_page(kvm, gfn, kvaddr, 0, PAGE_SIZE);
-> > 
-> > Good gravy.  If I'm reading this correctly, KVM:
-> > 
-> >   1. Translates an HVA into a GFN.
-> >   2. Gets the PFN for that GFN from guest_memfd
-> >   3. Verifies the PFN is not assigned to the guest
-> >   4. Copies memory from the shared memslot page to the guest_memfd page
-> >   5. Converts the page to private and asks the PSP to encrypt it
-> > 
-> > (a) As above, why is #1 a thing?
-> 
-> Yah, it's probably best to avoid this, as proposed above.
-> 
-> > (b) Why are KVM's memory attributes never consulted?
-> 
-> It doesn't really matter if the attributes are set before or after
-> KVM_SNP_LAUNCH_UPDATE, only that by the time the guest actually launches
-> they pages get set to private so they get faulted in from gmem. We could
-> document our expectations and enforce them here if that's preferable
-> however. Maybe requiring KVM_SET_MEMORY_ATTRIBUTES(private) in advance
-> would make it easier to enforce that userspace does the right thing.
-> I'll see how that looks if there are no objections.
-
-Userspace owns whether a page is PRIVATE or SHARED, full stop.  If KVM can't
-honor that, then we need to come up with better uAPI.
-
-> > (c) What prevents TOCTOU issues with respect to the RMP?
-> 
-> Time-of-use will be when the guest faults the gmem page in with C-bit
-> set. If it is not in the expected Guest-owned/pre-validated state that
-> SEV_CMD_SNP_LAUNCH_UPDATE expected/set, then the guest will get an RMP
-> fault or #VC exception for unvalidated page access. It will also fail
-> attestation. Not sure if that covers the scenarios you had in mind.
-
-I don't think this covers what I was asking, but I suspect my concern will go
-away once the new APIs come along, so let's table this for now.
-
-> 
-> > (d) Why is *KVM* copying memory into guest_memfd?
-> 
-> As mentioned above, there were various discussions of ways of allowing
-> userspace to pwrite() to the guest_memfd in advance of
-> "sealing"/"binding" it and then encrypting it in place. I think this was
-> one of the related threads:
-> 
->   https://lore.kernel.org/linux-mm/YkyKywkQYbr9U0CA@google.com/
-> 
-> My read at the time was that the requirements between pKVM/TDX/SNP were all
-> so unique that we'd spin forever trying to come up with a userspace ABI
-> that worked for everyone. At the time you'd suggested for pKVM to handle
-> their specific requirements internally in pKVM to avoid unecessary churn on
-> TDX/SNP side, and I took the same approach with SNP in implementing it
-> internally in SNP's KVM interfaces since it seemed unlikely there would
-> be much common ground with how TDX handles it via KVM_TDX_INIT_MEM_REGION.
-
-Yeah, the whole "intra-memslot copy" thing threw me.
-
-> > (e) What guarantees the direct map is valid for guest_memfd?
-> 
-> Are you suggesting this may change in the near-term?
-
-I asking because, when I asked, I was unaware that the plan was to shatter the
-direct to address the 2MiB vs. 4KiB erratum (as opposed to unmapping guest_memfd
-pfns).
-
-> > > +		if (ret) {
-> > > +			pr_err("SEV-SNP launch update failed, ret: 0x%x, fw_error: 0x%x\n",
-> > > +			       ret, *error);
-> > > +			snp_page_reclaim(pfns[i]);
-> > > +
-> > > +			/*
-> > > +			 * When invalid CPUID function entries are detected, the firmware
-> > > +			 * corrects these entries for debugging purpose and leaves the
-> > > +			 * page unencrypted so it can be provided users for debugging
-> > > +			 * and error-reporting.
-> > > +			 *
-> > > +			 * Copy the corrected CPUID page back to shared memory so
-> > > +			 * userpsace can retrieve this information.
-> > 
-> > Why?  IIUC, this is basically backdooring reads/writes into guest_memfd to avoid
-> > having to add proper mmap() support.
-> 
-> The CPUID page is private/encrypted, so it needs to be a gmem page.
-> SNP firmware is doing the backdooring when it writes the unencrypted,
-> expected contents into the page during failure. What's wrong with copying
-> the contents back into the source page so userspace can be use of it?
-> If we implement the above-mentioned changes then the source page is just
-> a userspace buffer that isn't necessarily associated with a memslot, so
-> it becomes even more straightforward.
-> 
-> Would that be acceptable?
-
-Yes, I am specifically complaining about writing guest memory on failure, which is
-all kinds of weird.
-
-> > > +	kvfree(pfns);
-> > 
-> > Saving PFNs from guest_memfd, which is fully owned by KVM, is so unnecessarily
-> > complex.  Add a guest_memfd API (or three) to do this safely, e.g. to lock the
-> > pages, do (and track) the RMP conversion, etc...
-> 
-> Is adding 3 gmem APIs and tracking RMP states inside gmem really less
-> complex than what's going on here?
-
-I think we covered this in PUCK?  Holler if you still have questions here.
