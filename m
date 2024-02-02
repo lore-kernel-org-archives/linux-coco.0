@@ -1,171 +1,143 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65ED681751
-	for <linux-coco@lists.linux.dev>; Fri,  2 Feb 2024 21:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE0E83A02
+	for <linux-coco@lists.linux.dev>; Fri,  2 Feb 2024 22:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706909317; cv=none; b=EJ2WJcJqehSW0K8OGpTph0l46f6EU8645C+A8zGCzf3P7W2sOA1tUjbyZbnuAlUv+F/APTxT65xbcCop3EXYfGA/Nfc8D2PdTqmI2FNUD8u7AJMNk6wJkj5P/WpXdAJA6rbkbeajFEbssr9SAGHhXXaLnvzhMAEHyP/OAfRfGTU=
+	t=1706911244; cv=none; b=J2WyrSfHLy8bBoFSFLJfsGrdtdt/+7vLEXpduwGYiHKbPTZv83gjdenjOrbcevuLd8z1nXPTJh1zNbiDy6SsSjqzC4NRBd3sKLf1OxKrPh1/+prpJOmWxzPemcUsc5c7Gylare9BFiA7SHUthrzy5QwLuE8WeA+crv1RWl9EoAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706909317; c=relaxed/simple;
-	bh=XyjPHGndI+MoNCSsW1aIE1c7E7oe1Y7s3NJJa14+lOU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tUrFQgf971RFPfnJKCveVMxIaNrh87HDSSvl35l5mmt535FDGk8RwG7+rMNNEDaUseVirMreMQtLK+ULzRX5GIhkZrhx5tQBFricOpyFzt1+lz7J1z5vd5hW5fFnSpFHuO11xUnZRhjEcKRVbpE3CyEHxNC8jXA2zbnVx6xPBRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=X65ntk3Y; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1706911244; c=relaxed/simple;
+	bh=T1MXEQB746wrX62S7IpUJjq100rQ6d7kzLltQ5g3nRE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FD1+kOCm1iwG8qS5peRnOKX54/aj31uhYHt37e6JdM5b1Nrb/uRxoYcu25UqKD8eqUUPHYepIXC30F0Ku04sNuBJGtFkINJdDyBU8/RyH2J7SpVkLcVcr/hNqC4CmxkSMdNnIWuNGGjAMYNRrYYWCxbAo5aW85jsnxXMsiZgq4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v2W/SSgQ; arc=none smtp.client-ip=209.85.217.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="X65ntk3Y"
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 412LMQDx006438;
-	Fri, 2 Feb 2024 21:28:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=upT5E8WhMh+NpFZBlCi3M+42Wgyud0gZF/cyZtkROsc=;
- b=X65ntk3YyV3vO98fo2eZRKHuwpceBC24S7RxLYGdouicoFNtw/ug4Ud93XHhgH3mpIWa
- i4OmhblNWT2ckGAkaDMwcAz/6NYTpgVRP7GyFCvsplz9A5ibi7IAx2sjUhShPqJPgOFE
- xLzTxzCIu/c6ZtRd9R46v/gYUeC/eB2OxlnP1m/zok6IHUVDjNgqyg2nHqg8X8nC6XyA
- 8jFx6FEG7tYsTadWfFOqfXuVsV4wYZ1sWKCZD56yMpNyjyYH+bANrrE+LsIAOI3zZyzQ
- xKHFD+BUTCBv2CAuBi2JHoQ+j1MkHX0IcL21YMm6qIjg+pkCpFwgWz0TanJIEfcbedqs VQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w188br3by-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Feb 2024 21:28:10 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 412LMS21006461;
-	Fri, 2 Feb 2024 21:28:10 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w188br3b8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Feb 2024 21:28:10 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 412KXu0k007168;
-	Fri, 2 Feb 2024 21:28:09 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vwev2wgup-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Feb 2024 21:28:09 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 412LS8bq20120294
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 2 Feb 2024 21:28:08 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8A14058058;
-	Fri,  2 Feb 2024 21:28:08 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B440958057;
-	Fri,  2 Feb 2024 21:28:03 +0000 (GMT)
-Received: from [172.22.1.223] (unknown [9.67.185.238])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  2 Feb 2024 21:28:03 +0000 (GMT)
-Message-ID: <6ccd8c7998542f1ac68514700fb9e31049a3a3c7.camel@linux.ibm.com>
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: "Theodore Ts'o" <tytso@mit.edu>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Reshetova, Elena"
- <elena.reshetova@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov
- <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
-        "x86@kernel.org"
- <x86@kernel.org>,
-        Kuppuswamy Sathyanarayanan
- <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Nakajima, Jun"
- <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra,
- Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date: Fri, 02 Feb 2024 22:28:01 +0100
-In-Reply-To: <20240202160515.GC119530@mit.edu>
-References: 
-	<DM8PR11MB5750B861F7A105886AA5FCE4E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
-	 <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com>
-	 <20240131140756.GB2356784@mit.edu> <Zbpc8tppxuKr-hnN@zx2c4.com>
-	 <20240131171042.GA2371371@mit.edu>
-	 <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
-	 <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
-	 <20240201045710.GD2356784@mit.edu>
-	 <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
-	 <ad1a131a006bf98a506e767a01f5022358b3e291.camel@linux.ibm.com>
-	 <20240202160515.GC119530@mit.edu>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v2W/SSgQ"
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-46cfd8b96b1so467029137.0
+        for <linux-coco@lists.linux.dev>; Fri, 02 Feb 2024 14:00:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706911242; x=1707516042; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hry1ZKGYXn0PLELk19zPrbAcJfAf3mQKU3XmGI8OhDs=;
+        b=v2W/SSgQwhVEdTnnHN4H59DtqnOlnb21vOhpvLlgtlJpIo7EPZzWqFWcEqu7WSNOar
+         k0z3++YjqtDpEiX5wW94c53LMM6Y3LQmEg8sclaPv2gerNR4ljJKBt9kQ/ado7ZVwt6E
+         5IQzWM2470KzPFT9G8YsI401Ofy3E/2oOp00xxrYzJWWe9x5tEntaChwMDEcRBO9xnpn
+         3Gfat3jfsbmOWkHzCvC4LzWIuLA50qhbrxglNNgTwcsFqn3sFGtl4V5ZS81Lmj/TaVCk
+         mU7J0uXBdxBr8UXK2A7CIi3bDs7xDPbUDIY0bjAVHNqnuVRdkewt+/210G1oR6CmeOMr
+         8SjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706911242; x=1707516042;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hry1ZKGYXn0PLELk19zPrbAcJfAf3mQKU3XmGI8OhDs=;
+        b=d6shayp1a7AoF3W/TDboYfTiHu2AO3A6i2hABJJ24aHD0mftXryPugFLm1b81zzy2Z
+         aXBplZivtvqk38dJxd/AuTuGQon8efnTQdGj6eWaet8g7tF5XWfQUUhWxIulgH25FdLk
+         ZxSA3ddSt+nbqwDry4v3vfRz0NNDB0zp2lwN6axVkXBPMEkk2cHzts3pUVcsY426pwEl
+         xS5CLraQ2QI7Y2Mcw/9ofvKY/DXNNoNc/nU8oemwsTI0E6puK73a9VRNeOxtPQdWx9wy
+         QD+6aLZQep/+sD25C+s3ZzUf7GFPJuf/4pZQLSHezRIiYcThXjiu+Iz6UL3JGh7WP37E
+         htRA==
+X-Gm-Message-State: AOJu0Yzd7X5o4JbfP6BdRFOukBcv+hhUTLldCh/PMuP7S5lAucde2Olr
+	dwHd3vXZuLb1nR1wnGULHC5lsT0p0Ckkxe4hvXfetq3uKz87kpiS0CqH2Uo+KfIW1+auYhhWLk2
+	dU//M2VqVY3P28xfCaGuEoNrXdChoxcFjHVaX
+X-Google-Smtp-Source: AGHT+IFUXimzUG8NKidpgusFqnc2mrXenla7Rri5SA/FWuN+STma6oTZzhlhnm7yzn8Qgpm/liJq5PDpZqGjZbzCjFo=
+X-Received: by 2002:a05:6102:a15:b0:46b:42f5:ae94 with SMTP id
+ t21-20020a0561020a1500b0046b42f5ae94mr8595652vsa.22.1706911241549; Fri, 02
+ Feb 2024 14:00:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aE7ZWHsxFs8wPydSK9e4wmzWrzuxXahb
-X-Proofpoint-ORIG-GUID: qTUk9b7EiQk_odhnwMryDIq1QGThG6DZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-02_14,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 spamscore=0
- clxscore=1015 impostorscore=0 mlxscore=0 adultscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402020158
+References: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
+ <20240130220845.1978329-2-kevinloughlin@google.com> <4ljfvg7c23g2wx4hcqz6x6tx7uvp6fffayqvu4ptsmfqajlujr@zngokbd2awma>
+In-Reply-To: <4ljfvg7c23g2wx4hcqz6x6tx7uvp6fffayqvu4ptsmfqajlujr@zngokbd2awma>
+From: Kevin Loughlin <kevinloughlin@google.com>
+Date: Fri, 2 Feb 2024 14:00:30 -0800
+Message-ID: <CAGdbjm+dt2LMqsWkzME-Gya9F=pZMubTuW3Ad3dStj=L+MW+ng@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] x86/sev: enforce RIP-relative accesses in early
+ SEV/SME code
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Nick Desaulniers <ndesaulniers@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>, 
+	Hou Wenlong <houwenlong.hwl@antgroup.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-coco@lists.linux.dev, Ashish Kalra <ashish.kalra@amd.com>, 
+	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>, 
+	Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>, 
+	Sidharth Telang <sidtelang@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2024-02-02 at 11:05 -0500, Theodore Ts'o wrote:
-> On Fri, Feb 02, 2024 at 04:47:11PM +0100, James Bottomley wrote:
-> > 
-> > It's a lot to quote, so I cut it, but all of your solutions assume
-> > a rdseed/rdrand failure equates to a system one but it really
-> > doesn't: in most systems there are other entropy sources.  In
-> > confidential computing it is an issue because we have no other
-> > trusted sources. The problem with picking on rdseed/rdrand is that
-> > there are bound to be older CP s somewhere that have rng generation
-> > bugs that this will
-> > expose.
-> 
-> I'm not sure what you're concerned about.  As far as I know, all of
-> the CPU's have some variant of Confidential Compute have some kind of
-> RDRAND-like command.  And while we're using the term RDRAND, I'd
-> extend this to any CPU architecture-level RNG instruction which can
-> return failure if it is subject to exhaustion attacks.
+On Wed, Jan 31, 2024 at 12:20=E2=80=AFAM Kirill A. Shutemov
+<kirill.shutemov@linux.intel.com> wrote:
+>
+> On Tue, Jan 30, 2024 at 10:08:44PM +0000, Kevin Loughlin wrote:
+> > diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/=
+mem_encrypt.h
+> > index 359ada486fa9..b65e66ee79c4 100644
+> > --- a/arch/x86/include/asm/mem_encrypt.h
+> > +++ b/arch/x86/include/asm/mem_encrypt.h
+> > @@ -17,6 +17,20 @@
+> >
+> >  #include <asm/bootparam.h>
+> >
+> > +/*
+> > + * Like the address operator "&", evaluates to the address of a LHS va=
+riable
+> > + * "var", but also enforces the use of RIP-relative logic. This macro =
+can be
+> > + * used to safely access global data variables prior to kernel relocat=
+ion.
+> > + */
+> > +#define RIP_RELATIVE_ADDR(var)               \
+> > +({                                   \
+> > +     void *rip_rel_ptr;              \
+> > +     asm ("lea "#var"(%%rip), %0"    \
+> > +             : "=3Dr" (rip_rel_ptr)    \
+> > +             : "p" (&var));          \
+> > +     rip_rel_ptr;                    \
+> > +})
+> > +
+>
+> I don't think it is the right place for the macro. The next patch uses fo=
+r
+> things unrelated to memory encryption.
 
-My big concern is older cpus where rdrand/rdseed don't produce useful
-entropy.  Exhaustion attacks are going to be largely against VMs not
-physical systems, so I worry about physical systems with older CPUs
-that might have rdrand issues which then trip our Confidential
-Computing checks.
+You're right; with the cleanup, I agree it becomes more general. We
+can move it to arch/x86/include/asm/asm.h.
 
+>
+> > @@ -239,14 +244,14 @@ unsigned long __head __startup_64(unsigned long p=
+hysaddr,
+> >        */
+> >
+> >       next_pgt_ptr =3D fixup_pointer(&next_early_pgt, physaddr);
+> > -     pud =3D fixup_pointer(early_dynamic_pgts[(*next_pgt_ptr)++], phys=
+addr);
+> > -     pmd =3D fixup_pointer(early_dynamic_pgts[(*next_pgt_ptr)++], phys=
+addr);
+> > +     early_dynamic_pgts_ptr =3D fixup_pointer(early_dynamic_pgts, phys=
+addr);
+> > +     pud =3D (pudval_t *) early_dynamic_pgts_ptr[(*next_pgt_ptr)++];
+> > +     pmd =3D (pmdval_t *) early_dynamic_pgts_ptr[(*next_pgt_ptr)++];
+> >
+>
+> This change doesn't belong to this patch. Maybe move it into the next
+> patch and combine with removing fixup_pointer().
 
-> > How about making the failure contingent on the entropy pool
-> > not having any entropy when the first random number is requested?
-> 
-> We have tried to avoid characterizing entropy sources as "valid" or
-> "invalid".  First of all, it's rarely quite so black-and-white.
-> Something which is vulnerable to someone who can spy on inter-packet
-> arrival times by having a hardware tap between the CPU and the
-> network switch, or a wireless radio right next to the device being
-> attacked, might not be easily carried out by someone who doesn't have
-> local physical access.
-> 
-> So we may be measuring various things that might or might not have
-> "entropy".  In the case of Confidential Compute, we have declared
-> that none of those other sources constitute "entropy".  But that's
-> not a decision that can be made by the computer, or at least until
-> we've tracked the AGI problem.  (At which point, we might have other
-> problems --- "I'm sorry, I'm afraid I can't do that.")
-
-The signal for rdseed failing is fairly clear, so if the node has other
-entropy sources, it should continue otherwise it should signal failure.
-Figuring out how a confidential computing environment signals that
-failure is TBD.
-
-James
-
+I'll put it in a separate commit even preceding this one, as it's
+actually a bug in the existing fixup pointer logic that I noticed when
+transitioning to the use of the RIP-relative macro. Specifically,
+early_dynamic_pgts is a global variable just like next_early_pgt and
+thus also needs to be fixed up to guarantee the correct address is
+used across toolchains.
