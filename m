@@ -1,150 +1,308 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1E03D3A7;
-	Fri,  2 Feb 2024 22:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE0A126F22
+	for <linux-coco@lists.linux.dev>; Fri,  2 Feb 2024 22:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706914058; cv=none; b=tHrdk6rb5MxSEDXjSr8PSx/UG13GTYCW6Y5+g5I06abXh9EZPRHRaEx7Pp/uAiuE764mODid3mMOgV3rT/kYukel84lTrE02a3MAcrVbNDqV1fzi7HNyzDpuvEQEZQQBWVrzHxEtRUzXDajFvTG4dAlVRn92R7c98WtaukZMcBY=
+	t=1706914500; cv=none; b=VZcLsm7Mb6X3LSa4jnzdlR3JKLDQVwDXHtMbFwzUnJDzyhEHbNUAvSdA8NUSUIiwG8Rca7E8f2XDTWR64p7UhbPZTZhtoQL3uzPL9iDkq9kZHLleLu+Sfp2bVdBZfUi7k/Hdt9/8dGXwpoTh274ChQ6YegeSkqn7Vp+DoUGprbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706914058; c=relaxed/simple;
-	bh=FRA7NClfGuH+mvD0ef76LKG3VhCS7wCAZ28qMHUqieI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YvvPsi2bQ4Go6Yjsb/ExIcDDE1D+izUMNqrwsd8i/vmN2FwiVQS8MfTwtv+5ivlTb3bkmoyXO3GSfsInoVZcuf2XnQ5jR4x8uSkvuUKRSpKi9zkotTcwIsfHwZIbpYK830fMqj8Hy5L+XPfJ7aybQ2KCmLABWCK6ISxmCpjp9OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n0DPef5g; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706914500; c=relaxed/simple;
+	bh=xLLdVjR78iCftIzXlIU+GT2WV5TXzmzQM7wql3RHWCw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=GlWSIemXYza5LcQrEsLiq6px6CRqjfdoXv+0B7voSErv/9ROBrwayG+/Xxkd0Q2BrDMyQC3kf7ckQreJwe8r7fxPwpy5cBIXlhjYvAPB5S6GEG+M6almP7d1yDwtQthZRIDf3b0DgY7qUebVQhINC0uoyJ01QmMFRA6+XZVt1gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SEEqlveR; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n0DPef5g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E960C433F1;
-	Fri,  2 Feb 2024 22:47:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706914058;
-	bh=FRA7NClfGuH+mvD0ef76LKG3VhCS7wCAZ28qMHUqieI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=n0DPef5gSNxToXTohsSeZcihSpMaSpUKBj1kmxQ8Ovo7ep11yIBePTRjz5D+Lwryz
-	 a0vbIvbGQGl8DzLy4D7sA9GTwhVxhN7fxbEVxyJtmR18bQF5zWJOUPO7ylgibJRtAM
-	 bOtiZIJJBs34wQGc0i+FUULk+gksBFUAUOwmrNfxCWX7rHeYYXOqyyp3ZAS+mA9apz
-	 oXFAh7ANei2JCeeujyMqZdbkMUjmSkVysc3OrQ7AMRUI1H2hj7pAcHhex2qHptN+WB
-	 h2+zOnv4OsTzsGTmZ5llFqSWL4MrFD4611phCPcz2wUtUuY8R3vYqHw38nG7O9fhIx
-	 rW+caqU/Yuc/g==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5111c7d40deso4203057e87.1;
-        Fri, 02 Feb 2024 14:47:38 -0800 (PST)
-X-Gm-Message-State: AOJu0YwByfKe789r8obYZUSmoHCmOtZg9Um/vZF/L8YwB7nLAf76vGjS
-	OtGyDiBcbay+aCCZ3VXQKJxQc9VVrF69gpo7NyR1kwSZColJTRFHWEOvchCBlBYTL/oiqMClgBW
-	QeYFi0CZhbbyrq1ZylHp0VI/1uMQ=
-X-Google-Smtp-Source: AGHT+IGAzmBgx5AlqOdWC/vDn6AUUi/qQxt6yaKcueUyhjFL6OzyVjxU3IlOHtv5MDQph0qKWSywZKeI5DIYd67c5jM=
-X-Received: by 2002:a05:6512:62:b0:511:1ed7:61bd with SMTP id
- i2-20020a056512006200b005111ed761bdmr2339301lfo.54.1706914056299; Fri, 02 Feb
- 2024 14:47:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SEEqlveR"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc6bad01539so3484038276.3
+        for <linux-coco@lists.linux.dev>; Fri, 02 Feb 2024 14:54:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706914497; x=1707519297; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yST2IhC4x7xwue5FLDSVPscgeSgsqzoau2hWHl8C2YI=;
+        b=SEEqlveRVOpDQdN/ev+AKaqTWd06c3liEb/ThaliY88uioRQypyqx6W859HmB1SEhg
+         QrhUduTLBVDzh/yuhJQpKooHum8c9DGdyJhDT+88kMYwNEBRYBimGn4HKnwuGkkSVx/I
+         6K0loB2mUIZo+L73c3l+ucgszidbWQaog5LvofJWkMqU9Chyhn5tBRO1icU+oT10SrKt
+         jscEeLjnNaqo+BKymIXwPZQcQjdM+72BwPinuwlJTOdNid3TewVIAKBMOqmvpF+SdW4Y
+         wWHz1Rp0Bk0BnhGw9sb1i1sVCmcVMMustUrP5EgcitJoI3a9Q8zl/Qqh1mUJsE6YqIyb
+         dh6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706914497; x=1707519297;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yST2IhC4x7xwue5FLDSVPscgeSgsqzoau2hWHl8C2YI=;
+        b=E5GNk/7Lg4v0p8XycYFPf64lIZDyt5w+DD9LxTQoCuFhE7n9NjpD0kd0dKWMBbKbeV
+         RXKWh2PZJzJNtUTQJQVrnq1dCvZVjqGXGBygiLg1zRw4bMCtZUBVLEy3DFoPfYLBjTx8
+         xqpdNInt/WKB3zu4ysgsvJWvV1tZEjwf1Qbhl6VqEnSQtiTtSWFA0wuB+cbDUFmocgp5
+         TiV3PDRl4DaJQwy0Ruz5j901r+c+FFkzIcRuWjjoAX5a3HXL432hPrNv9PL7uujHpQfK
+         zuN52MIeuTI6CFoVcjO2p70WG3Vk2gerlBX7sOUOIXNJGBscs61xGuIF4kznwVitNPXB
+         ZKqQ==
+X-Gm-Message-State: AOJu0Yy+k88k4roZ7DwiiCqvMAdoktgKLgyaLY+Xhq58uU/24S4QY6zY
+	4Q9px6pLcZDKHHoyHn2ZbDw9q0eU18OBFZl1iZxh4RBTUIrEzJIcYXPIGk1/3fW/ukG8pia3L6L
+	eSQ==
+X-Google-Smtp-Source: AGHT+IHpo//SwtMaQHEuaxSujjkaLfTq03FTpTzav293FCFg3laEeYePeMZVtQBRLJICB1llqkhzIf5zGgs=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6902:993:b0:dc2:25fd:eff1 with SMTP id
+ bv19-20020a056902099300b00dc225fdeff1mr234713ybb.4.1706914497040; Fri, 02 Feb
+ 2024 14:54:57 -0800 (PST)
+Date: Fri, 2 Feb 2024 14:54:55 -0800
+In-Reply-To: <20240116041457.wver7acnwthjaflr@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
- <20240130220845.1978329-2-kevinloughlin@google.com> <4ljfvg7c23g2wx4hcqz6x6tx7uvp6fffayqvu4ptsmfqajlujr@zngokbd2awma>
- <CAGdbjm+dt2LMqsWkzME-Gya9F=pZMubTuW3Ad3dStj=L+MW+ng@mail.gmail.com>
-In-Reply-To: <CAGdbjm+dt2LMqsWkzME-Gya9F=pZMubTuW3Ad3dStj=L+MW+ng@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 2 Feb 2024 23:47:24 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGSZkJ-1opx9mrpfhzyreCM+P616xM+MhPOaR+EgP5NNg@mail.gmail.com>
-Message-ID: <CAMj1kXGSZkJ-1opx9mrpfhzyreCM+P616xM+MhPOaR+EgP5NNg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] x86/sev: enforce RIP-relative accesses in early
- SEV/SME code
-To: Kevin Loughlin <kevinloughlin@google.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Nick Desaulniers <ndesaulniers@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>, 
-	Hou Wenlong <houwenlong.hwl@antgroup.com>, Dionna Glaze <dionnaglaze@google.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-coco@lists.linux.dev, Ashish Kalra <ashish.kalra@amd.com>, 
-	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>, 
-	Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>, 
-	Sidharth Telang <sidtelang@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20231230172351.574091-1-michael.roth@amd.com> <20231230172351.574091-19-michael.roth@amd.com>
+ <ZZ67oJwzAsSvui5U@google.com> <20240116041457.wver7acnwthjaflr@amd.com>
+Message-ID: <Zb1yv67h6gkYqqv9@google.com>
+Subject: Re: [PATCH v11 18/35] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
+	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com, 
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com, 
+	Brijesh Singh <brijesh.singh@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, 2 Feb 2024 at 23:00, Kevin Loughlin <kevinloughlin@google.com> wrot=
-e:
->
-> On Wed, Jan 31, 2024 at 12:20=E2=80=AFAM Kirill A. Shutemov
-> <kirill.shutemov@linux.intel.com> wrote:
-> >
-> > On Tue, Jan 30, 2024 at 10:08:44PM +0000, Kevin Loughlin wrote:
-> > > diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/as=
-m/mem_encrypt.h
-> > > index 359ada486fa9..b65e66ee79c4 100644
-> > > --- a/arch/x86/include/asm/mem_encrypt.h
-> > > +++ b/arch/x86/include/asm/mem_encrypt.h
-> > > @@ -17,6 +17,20 @@
-> > >
-> > >  #include <asm/bootparam.h>
-> > >
-> > > +/*
-> > > + * Like the address operator "&", evaluates to the address of a LHS =
-variable
-> > > + * "var", but also enforces the use of RIP-relative logic. This macr=
-o can be
-> > > + * used to safely access global data variables prior to kernel reloc=
-ation.
-> > > + */
-> > > +#define RIP_RELATIVE_ADDR(var)               \
-> > > +({                                   \
-> > > +     void *rip_rel_ptr;              \
-> > > +     asm ("lea "#var"(%%rip), %0"    \
-> > > +             : "=3Dr" (rip_rel_ptr)    \
-> > > +             : "p" (&var));          \
-> > > +     rip_rel_ptr;                    \
-> > > +})
+On Mon, Jan 15, 2024, Michael Roth wrote:
+> On Wed, Jan 10, 2024 at 07:45:36AM -0800, Sean Christopherson wrote:
+> > On Sat, Dec 30, 2023, Michael Roth wrote:
+> > > diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> > > index b1beb2fe8766..d4325b26724c 100644
+> > > --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> > > +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> > > @@ -485,6 +485,34 @@ Returns: 0 on success, -negative on error
+> > >  
+> > >  See the SEV-SNP specification for further detail on the launch input.
+> > >  
+> > > +20. KVM_SNP_LAUNCH_UPDATE
+> > > +-------------------------
 > > > +
-> >
-> > I don't think it is the right place for the macro. The next patch uses =
-for
-> > things unrelated to memory encryption.
->
-> You're right; with the cleanup, I agree it becomes more general. We
-> can move it to arch/x86/include/asm/asm.h.
->
-> >
-> > > @@ -239,14 +244,14 @@ unsigned long __head __startup_64(unsigned long=
- physaddr,
-> > >        */
-> > >
-> > >       next_pgt_ptr =3D fixup_pointer(&next_early_pgt, physaddr);
-> > > -     pud =3D fixup_pointer(early_dynamic_pgts[(*next_pgt_ptr)++], ph=
-ysaddr);
-> > > -     pmd =3D fixup_pointer(early_dynamic_pgts[(*next_pgt_ptr)++], ph=
-ysaddr);
-> > > +     early_dynamic_pgts_ptr =3D fixup_pointer(early_dynamic_pgts, ph=
-ysaddr);
-> > > +     pud =3D (pudval_t *) early_dynamic_pgts_ptr[(*next_pgt_ptr)++];
-> > > +     pmd =3D (pmdval_t *) early_dynamic_pgts_ptr[(*next_pgt_ptr)++];
-> > >
-> >
-> > This change doesn't belong to this patch. Maybe move it into the next
-> > patch and combine with removing fixup_pointer().
->
-> I'll put it in a separate commit even preceding this one, as it's
-> actually a bug in the existing fixup pointer logic that I noticed when
-> transitioning to the use of the RIP-relative macro. Specifically,
-> early_dynamic_pgts is a global variable just like next_early_pgt and
-> thus also needs to be fixed up to guarantee the correct address is
-> used across toolchains.
+> > > +The KVM_SNP_LAUNCH_UPDATE is used for encrypting a memory region. It also
+> > > +calculates a measurement of the memory contents. The measurement is a signature
+> > > +of the memory contents that can be sent to the guest owner as an attestation
+> > > +that the memory was encrypted correctly by the firmware.
+> > > +
+> > > +Parameters (in): struct  kvm_snp_launch_update
+> > > +
+> > > +Returns: 0 on success, -negative on error
+> > > +
+> > > +::
+> > > +
+> > > +        struct kvm_sev_snp_launch_update {
+> > > +                __u64 start_gfn;        /* Guest page number to start from. */
+> > > +                __u64 uaddr;            /* userspace address need to be encrypted */
+> > 
+> > Huh?  Why is KVM taking a userspace address?  IIUC, the address unconditionally
+> > gets translated into a gfn, so why not pass a gfn?
+> > 
+> > And speaking of gfns, AFAICT start_gfn is never used.
+> 
+> I think having both the uaddr and start_gfn parameters makes sense. I
+> think it's only awkward because how I'm using the memslot to translate
+> the uaddr to a GFN in the current implementation,
 
-No, this is not a bug.
+Yes.
 
-early_dynamic_pgts is a two dimensional array
+> > Oof, reading more of the code, this *requires* an effective in-place copy-and-convert
+> > of guest memory.
+> 
+> Yes, I'm having some trouble locating the various threads, but initially
+> there were some discussions about having a userspace API that allows for
+> UPM/gmem pages to be pre-populated before they are in-place encrypted, but
+> we'd all eventually decided that having KVM handle this internally was
+> the simplest approach.
+> 
+> So that's how it's done here, KVM_SNP_LAUNCH_UPDATE copies the pages into
+> gmem, then passes those pages on to firmware for encryption. Then the
+> VMM is expected to mark the GFN range as private via
+> KVM_SET_MEMORY_ATTRIBUTES, since the VMM understands what constitutes
+> initial private/encrypted payload. I should document that better in
+> KVM_SNP_LAUNCH_UPDATE docs however.
 
-extern pmd_t early_dynamic_pgts[EARLY_DYNAMIC_PAGE_TABLES][PTRS_PER_PMD];
+That's fine.  As above, my complaints are that the unencrypted source *must* be
+covered by a memslot.  That's beyond ugly.
 
-and so this expression
+> > What's "the IMI"?  Initial Measurement Image?  I assume this is essentially just
+> > a flag that communicates whether or not the page should be measured?
+> 
+> This is actually for loading a measured migration agent into the target
+> system so that it can handle receiving the encrypted guest data from the
+> source. There's still a good deal of planning around how live migration
+> will be handled however so if you think it's premature to expose this
+> via KVM I can remove the related fields.
 
-early_dynamic_pgts[(*next_pgt_ptr)++]
+Yes, please.  Though FWIW, I honestly hope KVM_SEV_SNP_LAUNCH_UPDATE goes away
+and we end up with a common uAPI for populating guest memory:
 
-produces the kernel virtual address of one of the top level elements,
-which itself is an array, and so this can be fixed up as usual.
-IOW, the [] operation does not result in pointer dereference here,
-only in pointer arithmetic.
+https://lore.kernel.org/all/Zbrj5WKVgMsUFDtb@google.com
+
+> > > +                __u8 page_type;         /* page type */
+> > > +                __u8 vmpl3_perms;       /* VMPL3 permission mask */
+> > > +                __u8 vmpl2_perms;       /* VMPL2 permission mask */
+> > > +                __u8 vmpl1_perms;       /* VMPL1 permission mask */
+> > 
+> > Why?  KVM doesn't support VMPLs.
+> 
+> It does actually get used by the SVSM.
+
+> I can remove these but then we'd need some capability bit or something to
+> know when they are available if they get re-introduced.
+
+_If_.  We don't merge dead code, and we _definitely_ don't merge dead code that
+creates ABI.
+
+> > > +		kvaddr = pfn_to_kaddr(pfns[i]);
+> > > +		if (!virt_addr_valid(kvaddr)) {
+> > 
+> > I really, really don't like that this assume guest_memfd is backed by struct page.
+> 
+> There are similar enforcements in the SEV/SEV-ES code. There was some
+> initial discussion about relaxing this for SNP so we could support
+> things like /dev/mem-mapped guest memory, but then guest_memfd came
+> along and made that to be an unlikely use-case in the near-term given
+> that it relies on alloc_pages() currently and explicitly guards against
+> mmap()'ing pages in userspace.
+> 
+> I think it makes to keep the current tightened restrictions in-place
+> until such a use-case comes along, since otherwise we are relaxing a
+> bunch of currently-useful sanity checks that span all throughout the code
+> to support some nebulous potential use-case that might never come along.
+> I think it makes more sense to cross that bridge when we get there.
+
+I disagree.  You say "sanity checks", while I see a bunch of arbitrary assumptions
+that don't need to exist.  Yes, today guest_memfd always uses struct page memory,
+but that should have _zero_ impact on SNP.  Arbitrary assumptions often cause a
+lot of confusion for future readers, e.g. a few years from now, if the above code
+still exists, someone might wonder what is so special about struct page memory,
+and then waste a bunch of time trying to figure out that there's no technical
+reason SNP "requires" struct page memory.
+
+This is partly why I was pushing for guest_memfd to handle some of this; the
+gmem code _knows_ what backing type it's using, it _knows_ if the direct map is
+valid, etc.
+
+> > > +			pr_err("Invalid HVA 0x%llx for GFN 0x%llx\n", (uint64_t)kvaddr, gfn);
+> > > +			ret = -EINVAL;
+> > > +			goto e_release;
+> > > +		}
+> > > +
+> > > +		ret = kvm_read_guest_page(kvm, gfn, kvaddr, 0, PAGE_SIZE);
+> > 
+> > Good gravy.  If I'm reading this correctly, KVM:
+> > 
+> >   1. Translates an HVA into a GFN.
+> >   2. Gets the PFN for that GFN from guest_memfd
+> >   3. Verifies the PFN is not assigned to the guest
+> >   4. Copies memory from the shared memslot page to the guest_memfd page
+> >   5. Converts the page to private and asks the PSP to encrypt it
+> > 
+> > (a) As above, why is #1 a thing?
+> 
+> Yah, it's probably best to avoid this, as proposed above.
+> 
+> > (b) Why are KVM's memory attributes never consulted?
+> 
+> It doesn't really matter if the attributes are set before or after
+> KVM_SNP_LAUNCH_UPDATE, only that by the time the guest actually launches
+> they pages get set to private so they get faulted in from gmem. We could
+> document our expectations and enforce them here if that's preferable
+> however. Maybe requiring KVM_SET_MEMORY_ATTRIBUTES(private) in advance
+> would make it easier to enforce that userspace does the right thing.
+> I'll see how that looks if there are no objections.
+
+Userspace owns whether a page is PRIVATE or SHARED, full stop.  If KVM can't
+honor that, then we need to come up with better uAPI.
+
+> > (c) What prevents TOCTOU issues with respect to the RMP?
+> 
+> Time-of-use will be when the guest faults the gmem page in with C-bit
+> set. If it is not in the expected Guest-owned/pre-validated state that
+> SEV_CMD_SNP_LAUNCH_UPDATE expected/set, then the guest will get an RMP
+> fault or #VC exception for unvalidated page access. It will also fail
+> attestation. Not sure if that covers the scenarios you had in mind.
+
+I don't think this covers what I was asking, but I suspect my concern will go
+away once the new APIs come along, so let's table this for now.
+
+> 
+> > (d) Why is *KVM* copying memory into guest_memfd?
+> 
+> As mentioned above, there were various discussions of ways of allowing
+> userspace to pwrite() to the guest_memfd in advance of
+> "sealing"/"binding" it and then encrypting it in place. I think this was
+> one of the related threads:
+> 
+>   https://lore.kernel.org/linux-mm/YkyKywkQYbr9U0CA@google.com/
+> 
+> My read at the time was that the requirements between pKVM/TDX/SNP were all
+> so unique that we'd spin forever trying to come up with a userspace ABI
+> that worked for everyone. At the time you'd suggested for pKVM to handle
+> their specific requirements internally in pKVM to avoid unecessary churn on
+> TDX/SNP side, and I took the same approach with SNP in implementing it
+> internally in SNP's KVM interfaces since it seemed unlikely there would
+> be much common ground with how TDX handles it via KVM_TDX_INIT_MEM_REGION.
+
+Yeah, the whole "intra-memslot copy" thing threw me.
+
+> > (e) What guarantees the direct map is valid for guest_memfd?
+> 
+> Are you suggesting this may change in the near-term?
+
+I asking because, when I asked, I was unaware that the plan was to shatter the
+direct to address the 2MiB vs. 4KiB erratum (as opposed to unmapping guest_memfd
+pfns).
+
+> > > +		if (ret) {
+> > > +			pr_err("SEV-SNP launch update failed, ret: 0x%x, fw_error: 0x%x\n",
+> > > +			       ret, *error);
+> > > +			snp_page_reclaim(pfns[i]);
+> > > +
+> > > +			/*
+> > > +			 * When invalid CPUID function entries are detected, the firmware
+> > > +			 * corrects these entries for debugging purpose and leaves the
+> > > +			 * page unencrypted so it can be provided users for debugging
+> > > +			 * and error-reporting.
+> > > +			 *
+> > > +			 * Copy the corrected CPUID page back to shared memory so
+> > > +			 * userpsace can retrieve this information.
+> > 
+> > Why?  IIUC, this is basically backdooring reads/writes into guest_memfd to avoid
+> > having to add proper mmap() support.
+> 
+> The CPUID page is private/encrypted, so it needs to be a gmem page.
+> SNP firmware is doing the backdooring when it writes the unencrypted,
+> expected contents into the page during failure. What's wrong with copying
+> the contents back into the source page so userspace can be use of it?
+> If we implement the above-mentioned changes then the source page is just
+> a userspace buffer that isn't necessarily associated with a memslot, so
+> it becomes even more straightforward.
+> 
+> Would that be acceptable?
+
+Yes, I am specifically complaining about writing guest memory on failure, which is
+all kinds of weird.
+
+> > > +	kvfree(pfns);
+> > 
+> > Saving PFNs from guest_memfd, which is fully owned by KVM, is so unnecessarily
+> > complex.  Add a guest_memfd API (or three) to do this safely, e.g. to lock the
+> > pages, do (and track) the RMP conversion, etc...
+> 
+> Is adding 3 gmem APIs and tracking RMP states inside gmem really less
+> complex than what's going on here?
+
+I think we covered this in PUCK?  Holler if you still have questions here.
