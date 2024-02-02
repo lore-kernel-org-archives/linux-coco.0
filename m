@@ -1,69 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BD53F8DB;
-	Thu,  1 Feb 2024 22:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831BFF51C
+	for <linux-coco@lists.linux.dev>; Fri,  2 Feb 2024 04:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706825164; cv=none; b=YH0QNELIu1VvHfoFsLZrS8qulXgJLvc4O09RFhomOYBZ4YfF8i8oAt8frKr2Jq1B+vHObX0kYIbImVvlWWc6+mFovS2/e8m5Q3xiexRdiyKSUXZ2Qe6Toj+idzBFNvD/C20FxQ0ANmmeeGha2Tgf9cbfA3d5PvMnXlCLNxt9Q5M=
+	t=1706848875; cv=none; b=Q0lOX5vWXcxCfER81Dp7jCvm2tSLwVQGZy4XUxM8fYsgCSpHq4/jP3KPutzEB8dqg+KvyOOA6WwIrm3B+kopKAkK1KFfeOQaSi2LzeMYY9YeXz6s1G+UQ+B282dqYfEj5XJ1ho+x5pARhqmxe8FpXnXb1RrMbZ0jQQp7UODVeyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706825164; c=relaxed/simple;
-	bh=gm39k00fXSJe5GlQK5AeCq4vRl3BvQqkpLTuncjtNyE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=eRpPcozx98BDJoR/n0KJ9eWvO8wNyJa8h33vF6EhD6POEb5DrMjRMjz6LgUQ6Y1S1C2uj/P9tUtN6EkDUl++OR/0qqtPpUXcfzAyASPOt2e6UrNdDyio/KJDpXLcSdbezWSr+1b+vgjeHGzpwxBJewUYPiSubZKsqRSMheKIruc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UomVBqi0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706848875; c=relaxed/simple;
+	bh=/pB71NBkTE0MT14Da9dzFzR+degq732UxHP/HWHbMgw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e7oU4kL6MSp+GX1YHT29DmXHFDJCkVqLaE5RZPy5AUG++2RnuWERJqI2zWmKJ36IdEndgO7HEG8cYVJQWlg7KHNNyhf9oxAhm8eInk23+WoF38dx2u2hiAXb3YRvNFURnkOzqqCoAFWi9N924Vp5eZqtv2Jx0RWqzJaj6kMvnZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GBQH5Dfd; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UomVBqi0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBB9C433F1;
-	Thu,  1 Feb 2024 22:06:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706825163;
-	bh=gm39k00fXSJe5GlQK5AeCq4vRl3BvQqkpLTuncjtNyE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UomVBqi0EGzJV6yaG7J923dM9+hNpVQN1BWkCkA4WcWuUz2at+hH0i96TKF9woxct
-	 fqA37JLy5PeGJAR4C1W+7n3prCC+ZDfmqyS1iiFl57ihoM8h7gcV6s00l7foLPZv4P
-	 dA8gI4KIHDCkS9YH3/39+Bs3f/QkbgDPYlVPr8ocgxRESn6wYkXIL0uyni/EjXXH7j
-	 uYi17hnKmhzTRkyE8jsd1/iK6RjofrafqRpOQa51K7p0cStv3gvOMZMLf+9mDfETU9
-	 uq+zqKR1C0SQ9kuCQUEk6Gl25dkW+zIdKaVQQPLqUicLjpeHkr6QeEc1NYGKcm2Dvm
-	 MKppWHKy3FR+Q==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GBQH5Dfd"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a370328e8b8so28138366b.3
+        for <linux-coco@lists.linux.dev>; Thu, 01 Feb 2024 20:41:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706848872; x=1707453672; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JRhBf4Bx7DrVWvh5cmLuWZexlCXbaWG6blbF9sDghb8=;
+        b=GBQH5Dfd3XLDnmvKlS2Zw3XCJNrNVfxao8LDJg7fp75ewP0IKt81sW4MwuyeQBIoU3
+         IzhWgAOrzcdXSb1gwEXcY954y6chobWTEKH1mRi1/DmZyz4PE4Us+WHdLMhJWbHNC5Ab
+         GwSuIWdwL7cYihqV3QrMXh5Wy/kV13I5b+V7cV2l1NGnE6aNpV4aRltjN1sZIj8xWCLp
+         YM9RlVkOgVQ/qssey9+SX1bshMND9yWjgBr4YE+aqECFr6GCsh3jsBPO8vUkHdhQwvUo
+         onUAyQDt5UezRSwmPRKrEKtCfcvLgCT3nb3dE12eJ+/FwHiDqB3/mFF57ACvgoHlm3dP
+         d4mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706848872; x=1707453672;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JRhBf4Bx7DrVWvh5cmLuWZexlCXbaWG6blbF9sDghb8=;
+        b=IncCww2H8XAS//zpOwIk7Rr0j5UlF7xeYFWMNQrIui1tTBHE3X2zbnBDadqknahcKl
+         OthDjjnuDycMjFyYDkC2pb+y40OdfkqnHDOvBZFBPuzIjNXldPPE/+LINrFGV3q4oWfA
+         kgQYP16nvSeUeUDi/7YAkYkbXXmVlbw7PKu9s+M4H5eyKMQ232/Ne1qg1t65t9t28NQH
+         i9wpPbMHRHssu6udmrYumb8RQTbWCuHT8pGBiUI3hEI2BSfmr61dVp+/CMNMbej0dx5Y
+         uJ8h9PzxuDjgNh4G2zdoSt2dstlLoDV1SorwUL3dEZIMpcOLpoCnbh0COAO0UtHESb0J
+         h8NQ==
+X-Gm-Message-State: AOJu0Ywe/4eeHQLIjuw/F7b48fOIBVSq9vnuTyxeXmLUHqz58jRmt4ii
+	0Y35S0VvOHyHHUpyF8F3SBYnOwYIpdzspIziu3FRulyGiuu1NrkILfDjx2T2L2AkBE1Yuf9Fd6J
+	0Oho1TQDKfZJo3TIb1WCx8WhSO31QI0WeiIwY
+X-Google-Smtp-Source: AGHT+IEVE5Y3uH5AqP3V6QPyHqLgJU0azKUT5CeTH/HmRivo8ARRLcdrlEqfII1PGFRkUc05mpeJSMRCMT6FSFjC8i8=
+X-Received: by 2002:a17:906:30c5:b0:a35:cbf1:c254 with SMTP id
+ b5-20020a17090630c500b00a35cbf1c254mr625339ejb.11.1706848871298; Thu, 01 Feb
+ 2024 20:41:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20240112055251.36101-1-vannapurve@google.com> <20240112055251.36101-4-vannapurve@google.com>
+ <0fda610f-a8ae-4133-a9d5-e9084c88ba7b@linux.microsoft.com>
+In-Reply-To: <0fda610f-a8ae-4133-a9d5-e9084c88ba7b@linux.microsoft.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Fri, 2 Feb 2024 10:10:56 +0530
+Message-ID: <CAGtprH_Kr+PfK5MxcoYB3fhQZ7S4uaxQz7Lr+ZN-nbshViG4hg@mail.gmail.com>
+Subject: Re: [RFC V1 3/5] x86: CVMs: Enable dynamic swiotlb by default for CVMs
+To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	rientjes@google.com, seanjc@google.com, erdemaktas@google.com, 
+	ackerleytng@google.com, jxgao@google.com, sagis@google.com, oupton@google.com, 
+	peterx@redhat.com, vkuznets@redhat.com, dmatlack@google.com, 
+	pgonda@google.com, michael.roth@amd.com, kirill@shutemov.name, 
+	thomas.lendacky@amd.com, dave.hansen@linux.intel.com, 
+	linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
+	isaku.yamahata@gmail.com, andrew.jones@linux.dev, corbet@lwn.net, hch@lst.de, 
+	m.szyprowski@samsung.com, rostedt@goodmis.org, iommu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 02 Feb 2024 00:05:59 +0200
-Message-Id: <CYU30TPVVC1Y.1ZN3LHF3O70QC@suppilovahvero>
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Samuel Ortiz" <sameo@rivosinc.com>, "Dan Williams"
- <dan.j.williams@intel.com>
-Cc: "Kuppuswamy Sathyanarayanan"
- <sathyanarayanan.kuppuswamy@linux.intel.com>, "Qinkun Bao"
- <qinkun@google.com>, "Yao, Jiewen" <jiewen.yao@intel.com>, "Xing, Cedric"
- <cedric.xing@intel.com>, "Dionna Amalie Glaze" <dionnaglaze@google.com>,
- <biao.lu@intel.com>, <linux-coco@lists.linux.dev>,
- <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v2 2/4] tsm: Add RTMRs to the configfs-tsm hierarchy
-X-Mailer: aerc 0.15.2
-References: <20240128212532.2754325-1-sameo@rivosinc.com>
- <20240128212532.2754325-3-sameo@rivosinc.com>
-In-Reply-To: <20240128212532.2754325-3-sameo@rivosinc.com>
 
-On Sun Jan 28, 2024 at 11:25 PM EET, Samuel Ortiz wrote:
-> RTMRs are defined and managed by their corresponding TSM provider. As
-> such, they can be configured through the TSM configfs root.
+On Thu, Feb 1, 2024 at 5:50=E2=80=AFPM Jeremi Piotrowski
+<jpiotrowski@linux.microsoft.com> wrote:
 >
-> An additional `rtmrs` directory is added by default under the `tsm` one,
-> where each supported RTMR can be configured:
+> On 12/01/2024 06:52, Vishal Annapurve wrote:
+> > CVMs used SWIOTLB for non-trusted IO using dma_map_* APIs. This series
+> > will ensure that dma_alloc_* API to also allocate from SWIOTLB pools.
+> > Initial size of SWIOTLB pool is decided using heuristics and has been
+> > working with CVM usecases so far.
+> >
+> > It's better to allow SWIOTLB to scale up on demand rather than keeping
+> > the size fixed to avoid failures with possibly increased usage of
+> > SWIOTLB with dma_alloc_* APIs allocating from SWIOTLB pools. This shoul=
+d
+> > also help in future with more devices getting used from CVMs for
+> > non-trusted IO.
+> >
+> > Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> > ---
+> >  arch/x86/Kconfig | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> > index 1566748f16c4..035c8a022c4c 100644
+> > --- a/arch/x86/Kconfig
+> > +++ b/arch/x86/Kconfig
+> > @@ -884,6 +884,7 @@ config INTEL_TDX_GUEST
+> >       select X86_MEM_ENCRYPT
+> >       select X86_MCE
+> >       select UNACCEPTED_MEMORY
+> > +     select SWIOTLB_DYNAMIC
+> >       help
+> >         Support running as a guest under Intel TDX.  Without this suppo=
+rt,
+> >         the guest kernel can not boot or run under TDX.
+> > @@ -1534,6 +1535,7 @@ config AMD_MEM_ENCRYPT
+> >       select ARCH_HAS_CC_PLATFORM
+> >       select X86_MEM_ENCRYPT
+> >       select UNACCEPTED_MEMORY
+> > +     select SWIOTLB_DYNAMIC
+> >       help
+> >         Say yes to enable support for the encryption of system memory.
+> >         This requires an AMD processor that supports Secure Memory
 >
-> mkdir /sys/kernel/config/tsm/rtmrs/rtmr0
-> echo 0 > /sys/kernel/config/tsm/rtmrs/rtmr0/index
+> What this does is unconditionally enable SWIOTLB_DYNAMIC for every kernel=
+ compiled
+> to support memory encryption, regardless of whether it runs inside a conf=
+idential guest.
+> I don't think that is what you intended.
+>
 
-/sys/kernel/config/tsm/registers/0
+Right, I will have to add a way to toggle this support dynamically in
+addition to having the support built in, based on more discussion
+around 2M allocations and dynamic scaling.
 
-Does not mean that I agree with "tsm" sub-path as I don't know what
-TSM is by definition.
-
-BR, Jarkko
+> Best wishes,
+> Jeremi
+>
+>
