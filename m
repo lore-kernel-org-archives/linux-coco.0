@@ -1,137 +1,171 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FF9148315;
-	Fri,  2 Feb 2024 16:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65ED681751
+	for <linux-coco@lists.linux.dev>; Fri,  2 Feb 2024 21:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706891761; cv=none; b=CPz+NE80w26USwR2fpjcAoQZ3GuloGzuR3kxDsFGv82LeRGCxGNhqmwb+7iKxy86spPXSwAUtMVd2BdPcJLvd2KA47KRkrVeNoAozzc6m8hWy8yKx5pj9yJ1ynyEpdajY17G7W2i80KWpN/FpKQsyw0GBl5JpZ7AEpXPYHsPE3Q=
+	t=1706909317; cv=none; b=EJ2WJcJqehSW0K8OGpTph0l46f6EU8645C+A8zGCzf3P7W2sOA1tUjbyZbnuAlUv+F/APTxT65xbcCop3EXYfGA/Nfc8D2PdTqmI2FNUD8u7AJMNk6wJkj5P/WpXdAJA6rbkbeajFEbssr9SAGHhXXaLnvzhMAEHyP/OAfRfGTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706891761; c=relaxed/simple;
-	bh=NvkwA1jk/5kaJF3W/uYQ89LSQ+kOKTgXko1D4t7m/78=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nMWRpIoEdcbxTogsLfBiDmk0z4X2GNfkzVaWHZvK1GKyfUQiAzlK9MZDBUM5J/3x4111TvqS2PvuSjc+Rf50Jr0X+usjnauRcQte11wKNiGDXcKFWMO+uoQPJ9pWwxH/wZzFeN5fDN3GlE/ZEQXz8lcfos3lqh5DHpCPBk7u0jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i5Qiz51h; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1706909317; c=relaxed/simple;
+	bh=XyjPHGndI+MoNCSsW1aIE1c7E7oe1Y7s3NJJa14+lOU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tUrFQgf971RFPfnJKCveVMxIaNrh87HDSSvl35l5mmt535FDGk8RwG7+rMNNEDaUseVirMreMQtLK+ULzRX5GIhkZrhx5tQBFricOpyFzt1+lz7J1z5vd5hW5fFnSpFHuO11xUnZRhjEcKRVbpE3CyEHxNC8jXA2zbnVx6xPBRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=X65ntk3Y; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i5Qiz51h"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706891760; x=1738427760;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=NvkwA1jk/5kaJF3W/uYQ89LSQ+kOKTgXko1D4t7m/78=;
-  b=i5Qiz51hD4MikrTOzHTwgScjko3N3kPLIPl5AgxhG2BxbvMEi3uNUz5P
-   bpQ048ZLKB2typmYxwACKjD5Nc/jGLffAqJr6PuK19ntq09ViCY++iAjT
-   5oyPWN4vnlQn0OgBQh31BamxBr8JTurW7m4lxqPj4gBjJHBi/fHoORFDF
-   ixgx8iBvTitzb2VW21xfSJWySu3i/iwGOZbL1bqL6YSdBWE+LF6OEK23h
-   68AjWkC5XCIHhIcJ3MOGR3tEPu22nD5xZwecQ1bM97ltbIHFuJBfLmEie
-   I9fh5zwipaKap8cP8jXHN51SFnmR43EPLvUIylyGUvekMqRytlZIkM6Vc
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="22673855"
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="22673855"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 08:35:59 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="4715525"
-Received: from adcimmar-mobl.amr.corp.intel.com (HELO [10.212.206.109]) ([10.212.206.109])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 08:35:59 -0800
-Message-ID: <746d2448-3adc-467b-a39c-5585f33bd740@intel.com>
-Date: Fri, 2 Feb 2024 08:35:58 -0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="X65ntk3Y"
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 412LMQDx006438;
+	Fri, 2 Feb 2024 21:28:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=upT5E8WhMh+NpFZBlCi3M+42Wgyud0gZF/cyZtkROsc=;
+ b=X65ntk3YyV3vO98fo2eZRKHuwpceBC24S7RxLYGdouicoFNtw/ug4Ud93XHhgH3mpIWa
+ i4OmhblNWT2ckGAkaDMwcAz/6NYTpgVRP7GyFCvsplz9A5ibi7IAx2sjUhShPqJPgOFE
+ xLzTxzCIu/c6ZtRd9R46v/gYUeC/eB2OxlnP1m/zok6IHUVDjNgqyg2nHqg8X8nC6XyA
+ 8jFx6FEG7tYsTadWfFOqfXuVsV4wYZ1sWKCZD56yMpNyjyYH+bANrrE+LsIAOI3zZyzQ
+ xKHFD+BUTCBv2CAuBi2JHoQ+j1MkHX0IcL21YMm6qIjg+pkCpFwgWz0TanJIEfcbedqs VQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w188br3by-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Feb 2024 21:28:10 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 412LMS21006461;
+	Fri, 2 Feb 2024 21:28:10 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w188br3b8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Feb 2024 21:28:10 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 412KXu0k007168;
+	Fri, 2 Feb 2024 21:28:09 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vwev2wgup-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Feb 2024 21:28:09 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 412LS8bq20120294
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 2 Feb 2024 21:28:08 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8A14058058;
+	Fri,  2 Feb 2024 21:28:08 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B440958057;
+	Fri,  2 Feb 2024 21:28:03 +0000 (GMT)
+Received: from [172.22.1.223] (unknown [9.67.185.238])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  2 Feb 2024 21:28:03 +0000 (GMT)
+Message-ID: <6ccd8c7998542f1ac68514700fb9e31049a3a3c7.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
+From: James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To: "Theodore Ts'o" <tytso@mit.edu>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Reshetova, Elena"
+ <elena.reshetova@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner
+ <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov
+ <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+        "x86@kernel.org"
+ <x86@kernel.org>,
+        Kuppuswamy Sathyanarayanan
+ <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun"
+ <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra,
+ Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date: Fri, 02 Feb 2024 22:28:01 +0100
+In-Reply-To: <20240202160515.GC119530@mit.edu>
+References: 
+	<DM8PR11MB5750B861F7A105886AA5FCE4E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+	 <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com>
+	 <20240131140756.GB2356784@mit.edu> <Zbpc8tppxuKr-hnN@zx2c4.com>
+	 <20240131171042.GA2371371@mit.edu>
+	 <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+	 <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
+	 <20240201045710.GD2356784@mit.edu>
+	 <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
+	 <ad1a131a006bf98a506e767a01f5022358b3e291.camel@linux.ibm.com>
+	 <20240202160515.GC119530@mit.edu>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 5/5] x86: CVMs: Ensure that memory conversions happen at
- 2M alignment
-Content-Language: en-US
-To: Vishal Annapurve <vannapurve@google.com>,
- Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com,
- rientjes@google.com, seanjc@google.com, erdemaktas@google.com,
- ackerleytng@google.com, jxgao@google.com, sagis@google.com,
- oupton@google.com, peterx@redhat.com, vkuznets@redhat.com,
- dmatlack@google.com, pgonda@google.com, michael.roth@amd.com,
- kirill@shutemov.name, thomas.lendacky@amd.com, dave.hansen@linux.intel.com,
- linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com,
- isaku.yamahata@gmail.com, andrew.jones@linux.dev, corbet@lwn.net,
- hch@lst.de, m.szyprowski@samsung.com, rostedt@goodmis.org,
- iommu@lists.linux.dev
-References: <20240112055251.36101-1-vannapurve@google.com>
- <20240112055251.36101-6-vannapurve@google.com>
- <6709a57c-48a0-4ddd-b64e-a1e34ae2b763@intel.com>
- <CAGtprH_ANUVU+Dh1KOq0vpT7BGbCEvD2ab9B=sxjzHYsKxFGeA@mail.gmail.com>
- <1d9d3372-825a-417a-8811-ffa501c83936@linux.microsoft.com>
- <CAGtprH8r0kYYqGoumsVeZq42cX8CN3cchkuRYhQULqtb-1nKww@mail.gmail.com>
- <3313c886-e964-48c3-8277-b47cb1955de9@linux.microsoft.com>
- <CAGtprH9X0Yz_Z+QaYcLpLNXtY_Ye68aqvx-G1pOWZxv9SiRRoQ@mail.gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <CAGtprH9X0Yz_Z+QaYcLpLNXtY_Ye68aqvx-G1pOWZxv9SiRRoQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: aE7ZWHsxFs8wPydSK9e4wmzWrzuxXahb
+X-Proofpoint-ORIG-GUID: qTUk9b7EiQk_odhnwMryDIq1QGThG6DZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-02_14,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 spamscore=0
+ clxscore=1015 impostorscore=0 mlxscore=0 adultscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402020158
 
-On 2/2/24 08:22, Vishal Annapurve wrote:
->> If you must - focus on getting swiotlb conversions to happen at the desired
->> granularity but don't try to force every single conversion to be >4K.
-> If any conversion within a guest happens at 4K granularity, then this
-> will effectively cause non-hugepage aligned EPT/NPT entries. This
-> series is trying to get all private and shared memory regions to be
-> hugepage aligned to address the problem statement.
+On Fri, 2024-02-02 at 11:05 -0500, Theodore Ts'o wrote:
+> On Fri, Feb 02, 2024 at 04:47:11PM +0100, James Bottomley wrote:
+> > 
+> > It's a lot to quote, so I cut it, but all of your solutions assume
+> > a rdseed/rdrand failure equates to a system one but it really
+> > doesn't: in most systems there are other entropy sources.  In
+> > confidential computing it is an issue because we have no other
+> > trusted sources. The problem with picking on rdseed/rdrand is that
+> > there are bound to be older CP s somewhere that have rng generation
+> > bugs that this will
+> > expose.
+> 
+> I'm not sure what you're concerned about.  As far as I know, all of
+> the CPU's have some variant of Confidential Compute have some kind of
+> RDRAND-like command.  And while we're using the term RDRAND, I'd
+> extend this to any CPU architecture-level RNG instruction which can
+> return failure if it is subject to exhaustion attacks.
 
-Yeah, but the series is trying to do that by being awfully myopic at
-this stage and without being _declared_ to be so myopic.
+My big concern is older cpus where rdrand/rdseed don't produce useful
+entropy.  Exhaustion attacks are going to be largely against VMs not
+physical systems, so I worry about physical systems with older CPUs
+that might have rdrand issues which then trip our Confidential
+Computing checks.
 
-Take a look at all of the set_memory_decrypted() calls.  How many of
-them even operate on the part of the guest address space rooted in the
-memfd where splits matter?  They're not doing conversions.  They're just
-setting up shared mappings in the page tables of gunk that was never
-private in the first place.
+
+> > How about making the failure contingent on the entropy pool
+> > not having any entropy when the first random number is requested?
+> 
+> We have tried to avoid characterizing entropy sources as "valid" or
+> "invalid".  First of all, it's rarely quite so black-and-white.
+> Something which is vulnerable to someone who can spy on inter-packet
+> arrival times by having a hardware tap between the CPU and the
+> network switch, or a wireless radio right next to the device being
+> attacked, might not be easily carried out by someone who doesn't have
+> local physical access.
+> 
+> So we may be measuring various things that might or might not have
+> "entropy".  In the case of Confidential Compute, we have declared
+> that none of those other sources constitute "entropy".  But that's
+> not a decision that can be made by the computer, or at least until
+> we've tracked the AGI problem.  (At which point, we might have other
+> problems --- "I'm sorry, I'm afraid I can't do that.")
+
+The signal for rdseed failing is fairly clear, so if the node has other
+entropy sources, it should continue otherwise it should signal failure.
+Figuring out how a confidential computing environment signals that
+failure is TBD.
+
+James
+
