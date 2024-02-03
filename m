@@ -1,162 +1,154 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E542BAED
-	for <linux-coco@lists.linux.dev>; Sat,  3 Feb 2024 07:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4A15D72E;
+	Sat,  3 Feb 2024 10:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706944417; cv=none; b=sZN25MFBDVozD6gjsoHU2I2/qT1VvGti9PtMNFOhjiwyFD1feq23tkK69a3o7b2wa4UPJTG0waDny2rApIX6Cn39AnP9VhtyY+qbY5uVPaEIB+jAVeQtbiiCQt4n73A/WNf68yFbD6GOR5Q7qWVDAQz9pPHpZgl07P5mGaDjQ+Y=
+	t=1706955164; cv=none; b=He6pLdDwcw+YTBRjHoHh7FWcUUiTBUnlF4ZBR/tC1z75TwT/FmHBOYg06pHeXKmkvmqQo6yKmJeYAqkDgh3rYOWoTiO/GAzol2F+eiLrd6VBg1MDSroW62kp0ncSiY1vqJygH3ha0NrFc924oMIDT7FgV3e5oPtW+F26TB1SknA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706944417; c=relaxed/simple;
-	bh=FicCW69rF62g2VrQ+5UcTUBEh/cxkfw55Hhc0JdIl18=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qKc74PWFQjgp7TvvkyYaXTK6hiDpBJwEW/WPWcAsuTyYzWGhh/jM74clVl96GUjiQnE3QuXNB1NRrLIVtHAUTu5HoYC0HxSOI8tsEsub85fjT23z4vXVMq+EwdPH7CfQZ+FB3u1ytE1spKGj17+08xFy1O7rylHwIayLHY8IUvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eSV0czTl; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1706955164; c=relaxed/simple;
+	bh=DvXqZtbYFVinLivL3K4A/ClltCGxOW4cow1fDLrjL9A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HCEHmCdeIoAKFsMF4yDZr8L8Bmn/NIAf5zoiqbxlqrcB7Qb+L4oQkxll2ZJ2VkevjZUmzLfHoTTuuamGmGvuxDFjoH6PaEL50yMGh4OyPqc9nKi37Zfz2kXHVqRrNfzeHb2WGoRDMQ0alXlDUcXXJeUyKnKlZ3RvnhOk8WWWTB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=jUTnY4su; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eSV0czTl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706944416; x=1738480416;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=FicCW69rF62g2VrQ+5UcTUBEh/cxkfw55Hhc0JdIl18=;
-  b=eSV0czTlws2nYvOHjDc9EfHrhlvsgGcqwOt4tYY4UaI2VR8/h+L650nz
-   9xVPzRSs6+Kf7CjZscEdAIxmKCzucyGlcFvO2Pn9ewOMTdDLfC0bTypb3
-   ehteVgCTcu72O1CEYE8aPzIXIUvsaR7HE7c4k17gdG1UjIi46NpCN+Ls2
-   ej48hG9Welf1Qg8onl03ynwYp/W3lArR6kYXcyCkmB8n3oXW5iscI3U55
-   fWmu2U0S8x7cDepj3+6/U0F6cIUaB9LrXS2IQrt6OiAnoozZLr2kfxHhB
-   eZhTZqeNyTwbMSOPNPTteRcwv/fEBmrV2YY5fpLlovumvJCCp5/7sMrQj
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="10893441"
-X-IronPort-AV: E=Sophos;i="6.05,240,1701158400"; 
-   d="scan'208";a="10893441"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 23:13:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,240,1701158400"; 
-   d="scan'208";a="274160"
-Received: from ttroksa-mobl1.amr.corp.intel.com (HELO [10.251.2.3]) ([10.251.2.3])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 23:13:34 -0800
-Message-ID: <1557f98a-3d52-4a02-992b-4401c7c85dd7@linux.intel.com>
-Date: Fri, 2 Feb 2024 23:13:33 -0800
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="jUTnY4su"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9402BC433F1;
+	Sat,  3 Feb 2024 10:12:42 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="jUTnY4su"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1706955161;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Fyk47rv6PoXblVb+58I9Tj/qLrH+SfbKgfIIMGJ0GzE=;
+	b=jUTnY4su1U7l4f/7BLAhdUi1vD/Oo6HHZp5XMY5o3SvJ0sasDgJTMby5wxjTzpIsXSjRbt
+	zMYNSdoHnQaFRj5S54sERYGFkowrbnduWTcpq7o8vrE2BErJMTjfKmTYZ8NKQQk8yRi941
+	lIjlYerzkuq0HNN8mnPkQD1pz1IAi4M=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id be5d1e7e (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Sat, 3 Feb 2024 10:12:40 +0000 (UTC)
+Date: Sat, 3 Feb 2024 11:12:37 +0100
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Theodore Ts'o <tytso@mit.edu>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Nakajima, Jun" <jun.nakajima@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
+Message-ID: <Zb4RlTzq_LV7AzsH@zx2c4.com>
+References: <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com>
+ <20240131140756.GB2356784@mit.edu>
+ <Zbpc8tppxuKr-hnN@zx2c4.com>
+ <20240131171042.GA2371371@mit.edu>
+ <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
+ <20240201045710.GD2356784@mit.edu>
+ <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
+ <DM8PR11MB57505F657A8F08E15DC34673E7422@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240202153927.GA119530@mit.edu>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
-Content-Language: en-US
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
- Dan Middleton <dan.middleton@linux.intel.com>,
- Samuel Ortiz <sameo@rivosinc.com>, Dan Williams <dan.j.williams@intel.com>
-Cc: Qinkun Bao <qinkun@google.com>, "Yao, Jiewen" <jiewen.yao@intel.com>,
- "Xing, Cedric" <cedric.xing@intel.com>,
- Dionna Amalie Glaze <dionnaglaze@google.com>, biao.lu@intel.com,
- linux-coco@lists.linux.dev, linux-integrity@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240128212532.2754325-1-sameo@rivosinc.com>
- <c17a31e4fb30f5f9d4a337e5bd8d54cc6f99eef7.camel@HansenPartnership.com>
- <a255bc36-2438-41b7-b304-bcf7a6628bef@linux.intel.com>
- <42e14f74d3819c95fdb97cd2e9b2829dcb1b1563.camel@HansenPartnership.com>
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <42e14f74d3819c95fdb97cd2e9b2829dcb1b1563.camel@HansenPartnership.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240202153927.GA119530@mit.edu>
 
+Hi Ted, Kirill,
 
-On 2/2/24 10:03 PM, James Bottomley wrote:
-> On Fri, 2024-02-02 at 17:07 -0600, Dan Middleton wrote:
->> On 2/2/24 12:24 AM, James Bottomley wrote:
->>> On Sun, 2024-01-28 at 22:25 +0100, Samuel Ortiz wrote:
->>>> All architectures supporting RTMRs expose a similar interface to
->>>> their TVMs: An extension command/call that takes a measurement
->>>> value and an RTMR index to extend it with, and a readback command
->>>> for reading an RTMR value back (taking an RTMR index as an
->>>> argument as well). This patch series builds an architecture
->>>> agnostic, configfs-based ABI for userspace to extend and read
->>>> RTMR values back. It extends the current TSM ops structure and
->>>> each confidential computing architecture can implement this
->>>> extension to provide RTMR support.
->>> What's the actual use case for this?  At the moment the TPM PCRs
->>> only provide a read interface to userspace (via
->>> /sys/class/tpm/tpmX/pcr-shaY/Z) and don't have any extension
->>> ability becuase nothing in userspace currently extends them.
->>>
->>> The only current runtime use for TPM PCRs is IMA, which is in-
->>> kernel (and which this patch doesn't enable).
->>>
->>> Without the ability to log, this interface is unusable anyway, but
->>> even with that it's not clear that you need the ability separately
->>> to extend PCRs because the extension and log entry should be done
->>> atomically to prevent the log going out of sync with the PCRs, so
->>> it would seem a log first interface would be the correct way of
->>> doing this rather than a PCR first one.
->>>
->>> James
->>>
->>>
->> While we clearly need to cover PCR-like usages, I think Confidential
->> Computing affords usages that go beyond TPM.
-> Well, don't get me wrong, I think the ability to create non repudiable
-> log entries from userspace is very useful.  However, I think the
-> proposed ABI is wrong: it should take the log entry (which will contain
-> the PCR number and the hash) then do the extension and add it to the
-> log so we get the non-repudiable verifiability.  This should work
-> equally with TPM and RTMR (and anything else).
+On Fri, Feb 02, 2024 at 10:39:27AM -0500, Theodore Ts'o wrote:
+> On Fri, Feb 02, 2024 at 07:25:42AM +0000, Reshetova, Elena wrote:
+> > This is a great summary of options, thank you Jason!
+> > My proposal would be to wait on result of our internal investigation 
+> > before proceeding to choose the approach. 
+> 
+> I'm happy for the option "Do nothing for now", but if we do want to do
+> something in the absence of more detailed information, I'd suggest
+> doing something simple for first, on the theory that it doesn't make
+> things worse, and we can always do something more complicated if it
+> turns out to be needed.
+> 
+> In that vein, my suggestion is:
+> 
+> > > Solution B) BUG_ON(is_early_boot && is_coco_system) in the RDRAND
+> > > failure path (> 10 retries).
+> > > 
+> > > This is slightly less simple than A, because we have to plumb
+> > > CoCo-detection through to the RDRAND helper. [Side note: I feel
+> > > ridiculous typing 'CoCo'.] Systems-wise, I don't see drawbacks.
+> > > RNG-wise, the drawback is that this doesn't help deal with secure
+> > > reseeding later in time, which is a RNG property that we otherwise
+> > > enjoy.
+> 
+> If there isn't a global variable we can test to see if Confidential
+> Compute is enabled, I suspect we should just add one.  I would assume
+> that /dev/random isn't the only place where we might need to do
+> whether Confidential Compute is enabled.
+> 
+> So I don't think plumbing CC into the /dev/random code, and since we
+> are only doing this in early boot, I wouldn't put it in the RDRAND
+> helper, but rather in the caller of the RDRAND helper that gets used
+> in the early boot path.
 
-Maybe I misunderstood your comments, but I am not sure why
-the user ABI needs to change? I agree that logging after extension is
-the right approach. But, IMO, it should be owned by the back end
-TSM vendor drivers. The user ABI should just pass the digest and
-RTMR index.
+Yea, actually, I had a pretty similar idea for something like that
+that's very non-invasive, where none of this even touches the RDRAND
+core code, much less random.c. Specifically, we consider "adding some
+extra RDRAND to the pool" like any other driver that wants to add some
+of its own seeds to the pool, with add_device_randomness(), a call that
+lives in various driver code, doesn't influence any entropy readiness
+aspects of random.c, and can safely be sprinkled in any device or
+platform driver.
 
->
-> The issue, I suppose, is what log format?  The TCG has one which is
-> extensible and IMA uses a similar but different binary log format.
+Specifically what I'm thinking about is something like:
 
-TDX uses EFI_TCG2_EVENT_LOG_FORMAT_TCG_2 log format. I think SEV is the
-same.
+void coco_main_boottime_init_function_somewhere_deep_in_arch_code(void)
+{
+  // [...]
+  // bring up primary CoCo nuts
+  // [...]
 
-https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#virtual-platform-cc-event-log
+  /* CoCo requires an explicit RDRAND seed, because the host can make the
+   * rest of the system deterministic.
+   */
+  unsigned long seed[32 / sizeof(long)];
+  size_t i, longs;
+  for (i = 0; i < ARRAY_SIZE(seed); i += longs) {
+    longs = arch_get_random_longs(&seed[i], ARRAY_SIZE(seed) - i);
+    /* If RDRAND is being DoS'd, panic, because we can't ensure
+     * confidentiality.
+     */
+    BUG_ON(!longs);
+  }
+  add_device_randomness(seed, sizeof(seed));
+  memzero_explicit(seed, sizeof(seed));
 
->
->> For example, Attested Containers [1] (and similar explorations in
->> CNCF Confidential Containers [2]) extends the measurement chain into
->> the guest. There, a trusted agent measures container images, and
->> extends an RTMR with those measurements. Particularly in the case of
->> containers, the  existing runtime infrastructure is user mode
->> oriented. However the generalization here is in providing a mechanism
->> to strongly identify an application or behavior provided by the TVM.
-> There's a similar proposal for Keylime which was demo'd at Plumbers
-> last year, except it uses IMA to measure the container so you only have
-> to trust the kernel:
->
-> https://lpc.events/event/17/contributions/1571/
->
->> Less concretely, I think this is an area for developer creativity.
->> Attestation is one of the main APIs that CC gives application
->> developers and
->> these runtime extendable fields provide a further degree of
->> creativity.
->>
->> [1] ACON https://github.com/intel/acon
-> Just on this, lest we repeat the errors of the past (and believe me
-> there was a time people thought that simply extending TPM PCRs without
-> log entries was the way to do measurements), if you're extending a PCR
-> like entity you also need a log entry to tell people who come after you
-> what you've done.  Even in the one ephemeral VM per pod kata use case
-> (with RTMRs local to the VM), you'll still likely be starting several
-> sidecars and if you don't have a log to tell you the order you measured
-> the containers deriving the RTMR value is a combinatoric explosion.
->
-> James
->
->
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+  // [...]
+  // do other CoCo things
+  // [...]
+}
 
+I would have no objection to the CoCo people adding something like this
+and would give it my Ack, but more importantly, my Ack for that doesn't
+even matter, because add_device_randomness() is pretty innocuous.
+
+So Kirill, if nobody else here objects to that approach, and you want to
+implement it in some super minimal way like that, that would be fine
+with me. Or maybe we want to wait for that internal inquiry at Intel to
+return some answers first. But either way, this might be an easy
+approach that doesn't add too much complexity.
+
+Jason
