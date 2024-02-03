@@ -1,115 +1,148 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BED10A18
-	for <linux-coco@lists.linux.dev>; Sat,  3 Feb 2024 05:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FED111AE
+	for <linux-coco@lists.linux.dev>; Sat,  3 Feb 2024 06:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706937594; cv=none; b=rQNcaUrtVYIzd0sHClCFOuEIybxyDgR+T1zy5K6rexfhE/nhHhksWG6WANovj45znDXL+T2NMntcGPESI8t9J9V7exlb7rPEnUeia93J1pHWMSv/Q+gkI0R+I1kiZwBBNPJ2gJOdVcWeQpq/wcPP6e4xegYDMstMZj35iltV54A=
+	t=1706940230; cv=none; b=p2MNyV7HpbQywnMDi+8Vjk8qFilQjsfkZBlSNRZ/2qWuqhL3Ad4GfuvCCmJeumTMoEcx0epCMJFvjMUm2c39A27VHyM9jUIQVTAqEpNp0BlwxRBmvmzw6DeeT7DQKtF65ZpQN9+iJXFZHEZ5/aor9iWAQJiHTGkjfgdrmkBevlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706937594; c=relaxed/simple;
-	bh=aV3RAoxJAIIl/L41qxXGSFWaFYi0w5bCiFnptXPK/IE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NGi4lGlYEaEMhSLNGWuD8ab6JD6GdCZ/qqK7gjBxOBP/qmnMlw2D/whXAJVqjVxL8pZp7aH/dD1NWG5gfbj+tEbi7OHSQk85zfS0yxmz6txo1Cj8G6HC8wARXAfkcRzVWbLSlNyr7F11BAHmM6J+C786Y4WtiODzjJECauDso/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aoPP5Gta; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706940230; c=relaxed/simple;
+	bh=eNd1ClVX59J0wqBIkVpAFV3QDg4zYqccFUENcGjqt+w=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NoZg1JhVajxDMLU2Bq5qsTyhD4ndq6LLhgPSJgAp1KD3XUGnyPlwKSWX0gUxkk/h4U+N10vcxwlpcp2PE4OpO5jaDO5wBi+NgNSPgBhTBQ3FWZduKhtWwcqBvULmSsuiGj2M3K90TNc1fJI5hOED3m3hOGo2a+Bi6d0pev5IxuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=hQmjl2k5; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=hQmjl2k5; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aoPP5Gta"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-68c814135a9so10382256d6.1
-        for <linux-coco@lists.linux.dev>; Fri, 02 Feb 2024 21:19:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706937592; x=1707542392; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hxZUisTRnkCHmoXtIIiIE5AFQkxg9hNXueoX4FT1IyU=;
-        b=aoPP5Gta8BfLWm0Qt7dmjXgoxspZEczBfWiSNw4p7nBKPxvsZx2kUMMisAxrZakBT0
-         ea480dfiCnBK3pd4JqUSwM69iX29ox5VGGPtvuqS+lhiVqTKmVKB/Vc0VFyktuMH48Lr
-         SrGZop3lveKkSmGoDLVH6aQZNUENvOOkI/NWcay7qMvWQgkV9R26p34LOQXDqIqBCFOW
-         SnsQ8DRwz+XcmIWkCtdJ3XcaCi4eGck8pXu5x4QhjLDmXK/8LZSP3vOrr9p9MsO9qJmG
-         n2Ql1o6ZkNlsIpSSZdSLTJ9d1/Ja0rZwxHoJDZGimE4t3cTl0Y8jRf1yn9cJVNdzN+YH
-         F6KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706937592; x=1707542392;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hxZUisTRnkCHmoXtIIiIE5AFQkxg9hNXueoX4FT1IyU=;
-        b=r3ExqWPOFBxj3TrLm9/iEUJ7oM5OIHRx4Ts5bueCWlOdtPoEEz1Qnj9nKLzSlqEAxy
-         IXCKrIiir+2USLQq9CyGV3JOEozFLSMbtXLipEGg8ZuBa/RN9RO9/w2Lf08iJ3NQgxT9
-         0GMFoz2BuAT+wXEU3ULBHwRwVYGkriPPHQ5p6FMEgivKPIGpEvztspEN8LRHv3jS32Ve
-         IP0IM33qfsbC70Tj/NthY03brWpUGK2w8pjWch7JdG+ELpyg/Uxbxst1+JMhVhHh0+mv
-         fxy0Ke9VGgIYRz0foSOdhmhIvaoJWhn05BxW0ga9wJghyDK7T7FdjTO5N/00iujlU21j
-         IJyQ==
-X-Gm-Message-State: AOJu0YweY3iqBDUVSlw8fofYr61St1IiVdcjD0RBQzTZNQ5K0qIT7GWh
-	Q17zRDk2BhGCBaShBQDXL2Qwoz16fAZcr8VFV+VgPXeiU7G3u9CAzuP70Lxa/GNnM5nj0PojZDd
-	HxuExHsINsX/DzSreQkHhtlOii13bGU1C9LFx
-X-Google-Smtp-Source: AGHT+IEZAAPF64V9fhwb83mtq8fxx2bw72Ju+9SxlvorBwmV39Npwwn5YZ+MgV2PpJ35mYdpTaZi8VMsqxbbJHCx/cY=
-X-Received: by 2002:a0c:aa1a:0:b0:685:edc7:62c0 with SMTP id
- d26-20020a0caa1a000000b00685edc762c0mr285138qvb.30.1706937591794; Fri, 02 Feb
- 2024 21:19:51 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="hQmjl2k5";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="hQmjl2k5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1706940226;
+	bh=eNd1ClVX59J0wqBIkVpAFV3QDg4zYqccFUENcGjqt+w=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=hQmjl2k51DpQPx7lmCq+fB/7Ex/oy2kpEsZ730BpnAjWofxjmh1SPSf5Ljt14aY8b
+	 hCR2pTR4h/fOVqOrvQu9zjVGyiMmmdX+wklOSCEbg66k7lTVYypMonR/qLYAnD0X0d
+	 PDNAd/Q/7OYHgn0U9c7LWYrHcNzjmSUhWRuv0vjg=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id BE3DF128609F;
+	Sat,  3 Feb 2024 01:03:46 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id V5jh_h4SDLnw; Sat,  3 Feb 2024 01:03:46 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1706940226;
+	bh=eNd1ClVX59J0wqBIkVpAFV3QDg4zYqccFUENcGjqt+w=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=hQmjl2k51DpQPx7lmCq+fB/7Ex/oy2kpEsZ730BpnAjWofxjmh1SPSf5Ljt14aY8b
+	 hCR2pTR4h/fOVqOrvQu9zjVGyiMmmdX+wklOSCEbg66k7lTVYypMonR/qLYAnD0X0d
+	 PDNAd/Q/7OYHgn0U9c7LWYrHcNzjmSUhWRuv0vjg=
+Received: from [172.22.1.223] (66.224-78-194.adsl-static.isp.belgacom.be [194.78.224.66])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 4E30D128609C;
+	Sat,  3 Feb 2024 01:03:44 -0500 (EST)
+Message-ID: <42e14f74d3819c95fdb97cd2e9b2829dcb1b1563.camel@HansenPartnership.com>
+Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Dan Middleton <dan.middleton@linux.intel.com>, Samuel Ortiz
+	 <sameo@rivosinc.com>, Dan Williams <dan.j.williams@intel.com>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+  Qinkun Bao <qinkun@google.com>, "Yao, Jiewen" <jiewen.yao@intel.com>,
+ "Xing, Cedric" <cedric.xing@intel.com>, Dionna Amalie Glaze
+ <dionnaglaze@google.com>,  biao.lu@intel.com, linux-coco@lists.linux.dev,
+ linux-integrity@vger.kernel.org,  linux-kernel@vger.kernel.org
+Date: Sat, 03 Feb 2024 07:03:40 +0100
+In-Reply-To: <a255bc36-2438-41b7-b304-bcf7a6628bef@linux.intel.com>
+References: <20240128212532.2754325-1-sameo@rivosinc.com>
+	 <c17a31e4fb30f5f9d4a337e5bd8d54cc6f99eef7.camel@HansenPartnership.com>
+	 <a255bc36-2438-41b7-b304-bcf7a6628bef@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240112055251.36101-1-vannapurve@google.com> <20240112055251.36101-6-vannapurve@google.com>
- <6709a57c-48a0-4ddd-b64e-a1e34ae2b763@intel.com> <CAGtprH_ANUVU+Dh1KOq0vpT7BGbCEvD2ab9B=sxjzHYsKxFGeA@mail.gmail.com>
- <1d9d3372-825a-417a-8811-ffa501c83936@linux.microsoft.com>
- <CAGtprH8r0kYYqGoumsVeZq42cX8CN3cchkuRYhQULqtb-1nKww@mail.gmail.com>
- <3313c886-e964-48c3-8277-b47cb1955de9@linux.microsoft.com>
- <CAGtprH9X0Yz_Z+QaYcLpLNXtY_Ye68aqvx-G1pOWZxv9SiRRoQ@mail.gmail.com> <746d2448-3adc-467b-a39c-5585f33bd740@intel.com>
-In-Reply-To: <746d2448-3adc-467b-a39c-5585f33bd740@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Sat, 3 Feb 2024 10:49:38 +0530
-Message-ID: <CAGtprH8X96enAOmgu60q0N6L=NEB29PBu_0yEuS8u1U=C4VO3g@mail.gmail.com>
-Subject: Re: [RFC V1 5/5] x86: CVMs: Ensure that memory conversions happen at
- 2M alignment
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, pbonzini@redhat.com, rientjes@google.com, 
-	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, 
-	jxgao@google.com, sagis@google.com, oupton@google.com, peterx@redhat.com, 
-	vkuznets@redhat.com, dmatlack@google.com, pgonda@google.com, 
-	michael.roth@amd.com, kirill@shutemov.name, thomas.lendacky@amd.com, 
-	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
-	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, andrew.jones@linux.dev, 
-	corbet@lwn.net, hch@lst.de, m.szyprowski@samsung.com, rostedt@goodmis.org, 
-	iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 2, 2024 at 10:06=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
- wrote:
->
-> On 2/2/24 08:22, Vishal Annapurve wrote:
-> >> If you must - focus on getting swiotlb conversions to happen at the de=
-sired
-> >> granularity but don't try to force every single conversion to be >4K.
-> > If any conversion within a guest happens at 4K granularity, then this
-> > will effectively cause non-hugepage aligned EPT/NPT entries. This
-> > series is trying to get all private and shared memory regions to be
-> > hugepage aligned to address the problem statement.
->
-> Yeah, but the series is trying to do that by being awfully myopic at
-> this stage and without being _declared_ to be so myopic.
->
+On Fri, 2024-02-02 at 17:07 -0600, Dan Middleton wrote:
+> 
+> On 2/2/24 12:24 AM, James Bottomley wrote:
+> > On Sun, 2024-01-28 at 22:25 +0100, Samuel Ortiz wrote:
+> > > All architectures supporting RTMRs expose a similar interface to
+> > > their TVMs: An extension command/call that takes a measurement
+> > > value and an RTMR index to extend it with, and a readback command
+> > > for reading an RTMR value back (taking an RTMR index as an
+> > > argument as well). This patch series builds an architecture
+> > > agnostic, configfs-based ABI for userspace to extend and read
+> > > RTMR values back. It extends the current TSM ops structure and
+> > > each confidential computing architecture can implement this
+> > > extension to provide RTMR support.
+> > What's the actual use case for this?  At the moment the TPM PCRs
+> > only provide a read interface to userspace (via
+> > /sys/class/tpm/tpmX/pcr-shaY/Z) and don't have any extension
+> > ability becuase nothing in userspace currently extends them.
+> > 
+> > The only current runtime use for TPM PCRs is IMA, which is in-
+> > kernel (and which this patch doesn't enable).
+> > 
+> > Without the ability to log, this interface is unusable anyway, but
+> > even with that it's not clear that you need the ability separately
+> > to extend PCRs because the extension and log entry should be done
+> > atomically to prevent the log going out of sync with the PCRs, so
+> > it would seem a log first interface would be the correct way of
+> > doing this rather than a PCR first one.
+> > 
+> > James
+> > 
+> > 
+> 
+> While we clearly need to cover PCR-like usages, I think Confidential
+> Computing affords usages that go beyond TPM.
 
-Agreed. I was being overly optimistic when I mentioned following in
-the cover message:
-"** This series leaves out some of the conversion sites which might not
-be 2M aligned but should be easy to fix once the approach is finalized. **"
+Well, don't get me wrong, I think the ability to create non repudiable
+log entries from userspace is very useful.  However, I think the
+proposed ABI is wrong: it should take the log entry (which will contain
+the PCR number and the hash) then do the extension and add it to the
+log so we get the non-repudiable verifiability.  This should work
+equally with TPM and RTMR (and anything else).
 
-> Take a look at all of the set_memory_decrypted() calls.  How many of
-> them even operate on the part of the guest address space rooted in the
-> memfd where splits matter?  They're not doing conversions.  They're just
-> setting up shared mappings in the page tables of gunk that was never
-> private in the first place.
+The issue, I suppose, is what log format?  The TCG has one which is
+extensible and IMA uses a similar but different binary log format.
 
-Thinking it over again, yeah the conversions that are happening
-outside SWIOTLB should be impacting significantly less memory ranges.
-As Jeremi and you are suggesting, it would be a big step forward if
-memory conversions happening for just DMA requests are aligned to
-hugepage sizes.
+> For example, Attested Containers [1] (and similar explorations in
+> CNCF Confidential Containers [2]) extends the measurement chain into
+> the guest. There, a trusted agent measures container images, and
+> extends an RTMR with those measurements. Particularly in the case of
+> containers, the  existing runtime infrastructure is user mode
+> oriented. However the generalization here is in providing a mechanism
+> to strongly identify an application or behavior provided by the TVM.
+
+There's a similar proposal for Keylime which was demo'd at Plumbers
+last year, except it uses IMA to measure the container so you only have
+to trust the kernel:
+
+https://lpc.events/event/17/contributions/1571/
+
+> Less concretely, I think this is an area for developer creativity.
+> Attestation is one of the main APIs that CC gives application
+> developers and
+> these runtime extendable fields provide a further degree of
+> creativity.
+> 
+> [1] ACON https://github.com/intel/acon
+
+Just on this, lest we repeat the errors of the past (and believe me
+there was a time people thought that simply extending TPM PCRs without
+log entries was the way to do measurements), if you're extending a PCR
+like entity you also need a log entry to tell people who come after you
+what you've done.  Even in the one ephemeral VM per pod kata use case
+(with RTMRs local to the VM), you'll still likely be starting several
+sidecars and if you don't have a log to tell you the order you measured
+the containers deriving the RTMR value is a combinatoric explosion.
+
+James
+
