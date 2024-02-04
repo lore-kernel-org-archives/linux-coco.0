@@ -1,67 +1,55 @@
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99842208F
-	for <linux-coco@lists.linux.dev>; Sat,  3 Feb 2024 14:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2A5241E5
+	for <linux-coco@lists.linux.dev>; Sun,  4 Feb 2024 17:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706970991; cv=none; b=GQbbWm6EEGSAHFa1VX/SAgoF38fjyxIF9Qf/xqPicK06OER/dVXVenA/UmC29tSgG9099RxtOAQ02soPMlnaCuPvSLQFOMm/VAfHFsoc7Ezm/llGfucqvUl89mwg12HWqOEHrd4RrWQl76ojAoG8KTTpwD9Qp3MvG1mfUMBunRI=
+	t=1707067521; cv=none; b=GM1kqxvichtTG0GoZZ4cNM7S4FUxVaBp41QrXgstMIbRoG7MbskpnEscNjV1MIHKpGkEt9rg1JHpPj2j2uRdmOOOtrCy7kmClVs2mEs7vRim/4Ol0oT7RUtri1tEoeWhKW7tw+hFo1ztumsfvgMLfHWwf4j1C1poJWXBEQ/PzcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706970991; c=relaxed/simple;
-	bh=5zVRnjyDndBGcBDaYKnA/6ke/KUEwTKEduciNLtEb20=;
+	s=arc-20240116; t=1707067521; c=relaxed/simple;
+	bh=o6XgZklQg99ao472cPaHWFZkdLc8gXrmjSvTwRxHuxo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ehDNmJTo3DqB/FAjT16kBLBTE3VtpxDqjYSDE6H0UULJGWU8xNGKn4ToCtM30MrwEpbb7j+qmiYDBPiatkFVX7Nz9AWkfcraHBZLC+WTvcQnpfIbWC7kwQR5HsKYJsvMcgWZ7tLe9JeWbCzWZXcxji+hINZe2bSJOS2WxVPPyTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=YYN4u85c; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="YYN4u85c"
-Received: from cwcc.thunk.org (pool-173-48-82-236.bstnma.fios.verizon.net [173.48.82.236])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 413EZl0m014620
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 3 Feb 2024 09:35:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1706970953; bh=W9QRnEoj1oim8rFp3GQ1Wc3cLjSRInO2QO0PatD71QY=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=YYN4u85clNWA8JLLCI02AQorfr9PBNeSBudlXfEAghMoEz0ZTBX7ghOZdHIcOLzER
-	 sso4j0KZjG5omETRiKLSrvvArg1CpQdW2ZKYU70F/1fp0It9dsx+x1eYjohjvHk+nf
-	 406gLLSAJ5fqnLdQ1gcAXvLTYBNF9SjoTKDI8WNOxTCktL/Onfows6h/+K6AcFK08V
-	 ZYvbJ/8duGPRC2fjNpSO9okEUmqeh8fSquvfsUZ+VDk243VZuek02iZIlznCVtdQS7
-	 xZDoCTyPpPoEfN2tP5um/biKDEPB4YKgDbbh1C4dH1GPafv2aU4xzocVoRJQDCKITn
-	 i/su3IuLPf62g==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id 3ED9915C02FC; Sat,  3 Feb 2024 09:35:47 -0500 (EST)
-Date: Sat, 3 Feb 2024 09:35:47 -0500
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: James Bottomley <jejb@linux.ibm.com>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Reshetova, Elena" <elena.reshetova@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Nakajima, Jun" <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
-Message-ID: <20240203143547.GC36616@mit.edu>
-References: <20240131140756.GB2356784@mit.edu>
- <Zbpc8tppxuKr-hnN@zx2c4.com>
- <20240131171042.GA2371371@mit.edu>
- <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
- <20240201045710.GD2356784@mit.edu>
- <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
- <ad1a131a006bf98a506e767a01f5022358b3e291.camel@linux.ibm.com>
- <20240202160515.GC119530@mit.edu>
- <6ccd8c7998542f1ac68514700fb9e31049a3a3c7.camel@linux.ibm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TN1avc3WT/XHGYEkLHNFOWH4ajWnHA1mlu09SaaoYq3nTErMNinLTVO++B90QFMD5Hq/AoVYu1VgnV2DW1mmEXMPe97840OoD1kF3sWZ2ySKwLTJSptf57J7FWI6quGfO5rjUEOQckHsywGb/SAd0UNS3rrJquwSyaI7tcUyxOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 5E0872800B3C2;
+	Sun,  4 Feb 2024 18:25:10 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 463422F90E5; Sun,  4 Feb 2024 18:25:10 +0100 (CET)
+Date: Sun, 4 Feb 2024 18:25:10 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+	linuxarm@huawei.com, David Box <david.e.box@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>,
+	Zhi Wang <zhi.a.wang@intel.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
+Message-ID: <20240204172510.GA19805@wunner.de>
+References: <cover.1695921656.git.lukas@wunner.de>
+ <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
+ <20231003153937.000034ca@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,30 +58,102 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6ccd8c7998542f1ac68514700fb9e31049a3a3c7.camel@linux.ibm.com>
+In-Reply-To: <20231003153937.000034ca@Huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Fri, Feb 02, 2024 at 10:28:01PM +0100, James Bottomley wrote:
+On Tue, Oct 03, 2023 at 03:39:37PM +0100, Jonathan Cameron wrote:
+> On Thu, 28 Sep 2023 19:32:37 +0200 Lukas Wunner <lukas@wunner.de> wrote:
+> > +/**
+> > + * spdm_challenge_rsp_sz() - Calculate CHALLENGE_AUTH response size
+> > + *
+> > + * @spdm_state: SPDM session state
+> > + * @rsp: CHALLENGE_AUTH response (optional)
+> > + *
+> > + * A CHALLENGE_AUTH response contains multiple variable-length fields
+> > + * as well as optional fields.  This helper eases calculating its size.
+> > + *
+> > + * If @rsp is %NULL, assume the maximum OpaqueDataLength of 1024 bytes
+> > + * (SPDM 1.0.0 table 21).  Otherwise read OpaqueDataLength from @rsp.
+> > + * OpaqueDataLength can only be > 0 for SPDM 1.0 and 1.1, as they lack
+> > + * the OtherParamsSupport field in the NEGOTIATE_ALGORITHMS request.
+> > + * For SPDM 1.2+, we do not offer any Opaque Data Formats in that field,
+> > + * which forces OpaqueDataLength to 0 (SPDM 1.2.0 margin no 261).
+> > + */
+> > +static size_t spdm_challenge_rsp_sz(struct spdm_state *spdm_state,
+> > +				    struct spdm_challenge_rsp *rsp)
+> > +{
+> > +	size_t  size  = sizeof(*rsp)		/* Header */
 > 
-> My big concern is older cpus where rdrand/rdseed don't produce useful
-> entropy.  Exhaustion attacks are going to be largely against VMs not
-> physical systems, so I worry about physical systems with older CPUs
-> that might have rdrand issues which then trip our Confidential
-> Computing checks.
+> Double spaces look a bit strange...
+> 
+> > +		      + spdm_state->h		/* CertChainHash */
+> > +		      + 32;			/* Nonce */
+> > +
+> > +	if (rsp)
+> > +		/* May be unaligned if hash algorithm has unusual length. */
+> > +		size += get_unaligned_le16((u8 *)rsp + size);
+> > +	else
+> > +		size += SPDM_MAX_OPAQUE_DATA;	/* OpaqueData */
+> > +
+> > +	size += 2;				/* OpaqueDataLength */
+> > +
+> > +	if (spdm_state->version >= 0x13)
+> > +		size += 8;			/* RequesterContext */
+> > +
+> > +	return  size  + spdm_state->s;		/* Signature */
+> 
+> Double space here as well looks odd to me.
 
-For (non-CC) VM's the answer is virtio-rng.  This solves the
-exhaustion problem, since if you can't trust the host, the VM's
-security is taost anyway (again, ignoring Confidential Compute).
+This was criticized by Ilpo as well, but the double spaces are
+intentional to vertically align "size" on each line for neatness.
 
-> The signal for rdseed failing is fairly clear, so if the node has other
-> entropy sources, it should continue otherwise it should signal failure.
-> Figuring out how a confidential computing environment signals that
-> failure is TBD.
+How strongly do you guys feel about it? ;)
 
-That's a design decision, and I believe we've been converging on a
-panic during early boot.  Post boot, if we've successfully succeeded
-in initializing the guest kernel's RNG, we're secure so long as the
-cryptographic primitives haven't been defeated --- and if we have,
-such as if Quantuum Computing because practical, we've got bigger
-problems anyway.
 
-					- Ted
+> > +int spdm_authenticate(struct spdm_state *spdm_state)
+> > +{
+> > +	size_t transcript_sz;
+> > +	void *transcript;
+> > +	int rc = -ENOMEM;
+> > +	u8 slot;
+> > +
+> > +	mutex_lock(&spdm_state->lock);
+> > +	spdm_reset(spdm_state);
+[...]
+> > +	rc = spdm_challenge(spdm_state, slot);
+> > +
+> > +unlock:
+> > +	if (rc)
+> > +		spdm_reset(spdm_state);
+> 
+> I'd expect reset to also clear authenticated. Seems odd to do it separately
+> and relies on reset only being called here. If that were the case and you
+> were handling locking and freeing using cleanup.h magic, then
+> 
+> 	rc = spdm_challenge(spdm_state);
+> 	if (rc)
+> 		goto reset;
+> 	return 0;
+> 
+> reset:
+> 	spdm_reset(spdm_state);
+
+Unfortunately clearing "authenticated" in spdm_reset() is not an
+option:
+
+Note that spdm_reset() is also called at the top of spdm_authenticate().
+
+If the device was previously successfully authenticated and is now
+re-authenticated successfully, clearing "authenticated" in spdm_reset()
+would cause the flag to be briefly set to false, which may irritate
+user space inspecting the sysfs attribute at just the wrong moment.
+
+If the device was previously successfully authenticated and is
+re-authenticated successfully, I want the "authenticated" attribute
+to show "true" without any gaps.  Hence it's only cleared at the end
+of spdm_authenticate() if there was an error.
+
+I agree with all your other review feedback and have amended the
+patch accordingly.  Thanks a lot!
+
+Lukas
