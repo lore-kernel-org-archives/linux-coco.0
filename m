@@ -1,172 +1,249 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3819168DA
-	for <linux-coco@lists.linux.dev>; Mon,  5 Feb 2024 10:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CBB1367
+	for <linux-coco@lists.linux.dev>; Tue,  6 Feb 2024 01:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707127679; cv=none; b=aI/jCq6PKunj/bSeJq7XxqoDLtJPwDo8ry4i+00hayWrW+W5b1F0NhuldU7AE/dK0GRhtk0bNgeNu/9q0ZlPUZcd123cNCjLRGxaD0P8zl1XOcBPZBJ4P9c/xzGSXil8PVjxY/n2BEGGXzTnOIHWTcQPY1mNuG8UeNUttkxhlT0=
+	t=1707182286; cv=none; b=RIUgwLnBRFcE7KCjg4+FxzhkDOPolZq36kYLrr/dfI7r0WeBxZE6/Q8EuJ+UhVPhEnV71F1nEdMuW6WQ90mEaEfx4P88DFT28YmYnThGPUD6wDjK9SdpnTrtIRd9HaWysTimnfQHeY4aiDVfAAhs5FKPISopNOrC2hve6Sk9DEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707127679; c=relaxed/simple;
-	bh=iBaUmXBlN0VxxLhGqD9SvUefjOy+3CbgHgnuPzCue3A=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FxqXdmmtIAicsRKyp9mODHykKfiu6kIQfQow/pK6ddGWPfp2kPpZHzueGHtzDS0lPMILClToBaDDJOEvV0heuhZqZlP+JXY5jwfMxyYXEfxs4hK6QU/gWCWqLAW1Zdw/KsQDtYy8GXSFsZV3QCrRmPxwDkbxrtDHgySs3pwNJqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TT26g0TNXz6GBd5;
-	Mon,  5 Feb 2024 18:04:43 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id BFC8314185F;
-	Mon,  5 Feb 2024 18:07:54 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 5 Feb
- 2024 10:07:54 +0000
-Date: Mon, 5 Feb 2024 10:07:53 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Lukas Wunner <lukas@wunner.de>
-CC: Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Bjorn
- Helgaas" <helgaas@kernel.org>, David Howells <dhowells@redhat.com>, "David
- Woodhouse" <dwmw2@infradead.org>, Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Alex Williamson
-	<alex.williamson@redhat.com>, <linux-pci@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <linuxarm@huawei.com>, David Box
-	<david.e.box@intel.com>, Dan Williams <dan.j.williams@intel.com>, "Dave
- Jiang" <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>, Zhi Wang
-	<zhi.a.wang@intel.com>, Alistair Francis <alistair.francis@wdc.com>, Wilfred
- Mallawa <wilfred.mallawa@wdc.com>, Alexey Kardashevskiy <aik@amd.com>, Tom
- Lendacky <thomas.lendacky@amd.com>, "Sean Christopherson"
-	<seanjc@google.com>, Alexander Graf <graf@amazon.com>
-Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
-Message-ID: <20240205100753.0000798b@Huawei.com>
-In-Reply-To: <20240204172510.GA19805@wunner.de>
-References: <cover.1695921656.git.lukas@wunner.de>
-	<89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
-	<20231003153937.000034ca@Huawei.com>
-	<20240204172510.GA19805@wunner.de>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1707182286; c=relaxed/simple;
+	bh=1OAsjmGWHUQHaPAdnmgD2EvriyaiRbFvOT6jgGrn8SE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H6w2uiWj2JmRwxiU2z7wZ+Eth0sV3Wcl/SwLP1ae2N2PEpWzLKzG6utB+UZwf1E2ztQNJeidIhZi8LVKyI+lYvGNvDMRxVI3ZZ+mG1TGabqYyAFwzlQfD4HhqFecpA94eN8ltFYWHHCdNln9Jb0yn5Or3nY9sl+LyzaA7mcFDC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 4161CmKi029258;
+	Mon, 5 Feb 2024 19:12:48 -0600
+Received: (from greg@localhost)
+	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 4161ClJZ029257;
+	Mon, 5 Feb 2024 19:12:47 -0600
+Date: Mon, 5 Feb 2024 19:12:47 -0600
+From: "Dr. Greg" <greg@enjellic.com>
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: "Daniel P. Berrang??" <berrange@redhat.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+        "Theodore Ts'o" <tytso@mit.edu>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Message-ID: <20240206011247.GA29224@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com> <20240130083007.1876787-2-kirill.shutemov@linux.intel.com> <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Mon, 05 Feb 2024 19:12:48 -0600 (CST)
 
-On Sun, 4 Feb 2024 18:25:10 +0100
-Lukas Wunner <lukas@wunner.de> wrote:
+On Wed, Jan 31, 2024 at 08:16:56AM +0000, Reshetova, Elena wrote:
 
-> On Tue, Oct 03, 2023 at 03:39:37PM +0100, Jonathan Cameron wrote:
-> > On Thu, 28 Sep 2023 19:32:37 +0200 Lukas Wunner <lukas@wunner.de> wrote:  
-> > > +/**
-> > > + * spdm_challenge_rsp_sz() - Calculate CHALLENGE_AUTH response size
-> > > + *
-> > > + * @spdm_state: SPDM session state
-> > > + * @rsp: CHALLENGE_AUTH response (optional)
-> > > + *
-> > > + * A CHALLENGE_AUTH response contains multiple variable-length fields
-> > > + * as well as optional fields.  This helper eases calculating its size.
-> > > + *
-> > > + * If @rsp is %NULL, assume the maximum OpaqueDataLength of 1024 bytes
-> > > + * (SPDM 1.0.0 table 21).  Otherwise read OpaqueDataLength from @rsp.
-> > > + * OpaqueDataLength can only be > 0 for SPDM 1.0 and 1.1, as they lack
-> > > + * the OtherParamsSupport field in the NEGOTIATE_ALGORITHMS request.
-> > > + * For SPDM 1.2+, we do not offer any Opaque Data Formats in that field,
-> > > + * which forces OpaqueDataLength to 0 (SPDM 1.2.0 margin no 261).
-> > > + */
-> > > +static size_t spdm_challenge_rsp_sz(struct spdm_state *spdm_state,
-> > > +				    struct spdm_challenge_rsp *rsp)
-> > > +{
-> > > +	size_t  size  = sizeof(*rsp)		/* Header */  
+Good evening, I hope the week has started well for everyone.
+
+> > On Tue, Jan 30, 2024 at 06:49:15PM +0100, Jason A. Donenfeld wrote:
+> > > On Tue, Jan 30, 2024 at 6:32???PM Dave Hansen <dave.hansen@intel.com> wrote:
+> > > >
+> > > > On 1/30/24 05:45, Reshetova, Elena wrote:
+> > > > >> You're the Intel employee so you can find out about this with much
+> > > > >> more assurance than me, but I understand the sentence above to be _way
+> > > > >> more_ true for RDRAND than for RDSEED. If your informed opinion is,
+> > > > >> "RDRAND failing can only be due to totally broken hardware"
+> > > > > No, this is not the case per Intel SDM. I think we can live under a simple
+> > > > > assumption that both of these instructions can fail not just due to broken
+> > > > > HW, but also due to enough pressure put into the whole DRBG construction
+> > > > > that supplies random numbers via RDRAND/RDSEED.
+> > > >
+> > > > I don't think the SDM is the right thing to look at for guidance here.
+> > > >
+> > > > Despite the SDM allowing it, we (software) need RDRAND/RDSEED failures
+> > > > to be exceedingly rare by design.  If they're not, we're going to get
+> > > > our trusty torches and pitchforks and go after the folks who built the
+> > > > broken hardware.
+> > > >
+> > > > Repeat after me:
+> > > >
+> > > >         Regular RDRAND/RDSEED failures only occur on broken hardware
+> > > >
+> > > > If it's nice hardware that's gone bad, then we WARN() and try to make
+> > > > the best of it.  If it turns out that WARN() was because of a broken
+> > > > hardware _design_ then we go sharpen the pitchforks.
+> > > >
+> > > > Anybody disagree?
+> > >
+> > > Yes, I disagree. I made a trivial test that shows RDSEED breaks easily
+> > > in a busy loop. So at the very least, your statement holds true only
+> > > for RDRAND.
+> > >
+> > > But, anyway, if the statement "RDRAND failures only occur on broken
+> > > hardware" is true, then a WARN() in the failure path there presents no
+> > > DoS potential of any kind, and so that's a straightforward conclusion
+> > > to this discussion. However, that really hinges on  "RDRAND failures
+> > > only occur on broken hardware" being a true statement.
 > > 
-> > Double spaces look a bit strange...
-> >   
-> > > +		      + spdm_state->h		/* CertChainHash */
-> > > +		      + 32;			/* Nonce */
-> > > +
-> > > +	if (rsp)
-> > > +		/* May be unaligned if hash algorithm has unusual length. */
-> > > +		size += get_unaligned_le16((u8 *)rsp + size);
-> > > +	else
-> > > +		size += SPDM_MAX_OPAQUE_DATA;	/* OpaqueData */
-> > > +
-> > > +	size += 2;				/* OpaqueDataLength */
-> > > +
-> > > +	if (spdm_state->version >= 0x13)
-> > > +		size += 8;			/* RequesterContext */
-> > > +
-> > > +	return  size  + spdm_state->s;		/* Signature */  
+> > There's a useful comment here from an Intel engineer
 > > 
-> > Double space here as well looks odd to me.  
-> 
-> This was criticized by Ilpo as well, but the double spaces are
-> intentional to vertically align "size" on each line for neatness.
-> 
-> How strongly do you guys feel about it? ;)
-
-I suspect we'll see 'fixes' for this creating noise for maintainers.
-So whilst I don't feel that strongly about it I'm not sure the alignment
-really helps much with readability either.
- 
-> 
-> 
-> > > +int spdm_authenticate(struct spdm_state *spdm_state)
-> > > +{
-> > > +	size_t transcript_sz;
-> > > +	void *transcript;
-> > > +	int rc = -ENOMEM;
-> > > +	u8 slot;
-> > > +
-> > > +	mutex_lock(&spdm_state->lock);
-> > > +	spdm_reset(spdm_state);  
-> [...]
-> > > +	rc = spdm_challenge(spdm_state, slot);
-> > > +
-> > > +unlock:
-> > > +	if (rc)
-> > > +		spdm_reset(spdm_state);  
+> > https://web.archive.org/web/20190219074642/https://software.intel.com/en-
+> > us/blogs/2012/11/17/the-difference-between-rdrand-and-rdseed
 > > 
-> > I'd expect reset to also clear authenticated. Seems odd to do it separately
-> > and relies on reset only being called here. If that were the case and you
-> > were handling locking and freeing using cleanup.h magic, then
+> >   "RDRAND is, indeed, faster than RDSEED because it comes
+> >    from a hardware-based pseudorandom number generator.
+> >    One seed value (effectively, the output from one RDSEED
+> >    command) can provide up to 511 128-bit random values
+> >    before forcing a reseed"
 > > 
-> > 	rc = spdm_challenge(spdm_state);
-> > 	if (rc)
-> > 		goto reset;
-> > 	return 0;
+> > We know we can exhaust RDSEED directly pretty trivially. Making your
+> > test program run in parallel across 20 cpus, I got a mere 3% success
+> > rate from RDSEED.
 > > 
-> > reset:
-> > 	spdm_reset(spdm_state);  
-> 
-> Unfortunately clearing "authenticated" in spdm_reset() is not an
-> option:
-> 
-> Note that spdm_reset() is also called at the top of spdm_authenticate().
-> 
-> If the device was previously successfully authenticated and is now
-> re-authenticated successfully, clearing "authenticated" in spdm_reset()
-> would cause the flag to be briefly set to false, which may irritate
-> user space inspecting the sysfs attribute at just the wrong moment.
+> > If RDRAND is reseeding every 511 values, RDRAND output would have
+> > to be consumed significantly faster than RDSEED in order that the
+> > reseed will happen frequently enough to exhaust the seeds.
+> > 
+> > This looks pretty hard, but maybe with a large enough CPU count
+> > this will be possible in extreme load ?
+> > 
+> > So I'm not convinced we can blindly wave away RDRAND failures as
+> > guaranteed to mean broken hardware.
 
-That makes sense. Thanks.
+> This matches both my understanding (I do have cryptography
+> background and understanding how cryptographic RNGs work) and
+> official public docs that Intel published on this matter.  Given
+> that the physical entropy source is limited anyhow, and by giving
+> enough pressure on the whole construction you should be able to make
+> RDRAND fail because if the intermediate AES-CBC MAC extractor/
+> conditioner is not getting its min entropy input rate, it wont
+> produce a proper seed for AES CTR DRBG.  Of course exact
+> details/numbers can wary between different generations of Intel DRNG
+> implementation, and the platforms where it is running on, so be
+> careful to sticking to concrete numbers.
 
-> 
-> If the device was previously successfully authenticated and is
-> re-authenticated successfully, I want the "authenticated" attribute
-> to show "true" without any gaps.  Hence it's only cleared at the end
-> of spdm_authenticate() if there was an error.
-> 
-> I agree with all your other review feedback and have amended the
-> patch accordingly.  Thanks a lot!
-> 
-> Lukas
-> 
+In the spirit of that philosophy we proffer the response below.
 
+> That said, I have taken an AR to follow up internally on what can be
+> done to improve our situation with RDRAND/RDSEED. But I would still
+> like to finish the discussion on what people think should be done in
+> the meanwhile keeping in mind that the problem is not intel
+> specific, despite us intel people bringing it for public discussion
+> first. The old saying is still here: "Please don't shoot the
+> messenger" )) We are actually trying to be open about these things
+> and create a public discussion.
+
+Actually, I now believe there is clear evidence that the problem is
+indeed Intel specific.  In light of our testing, it will be
+interesting to see what your 'AR' returns with respect to an official
+response from Intel engineering on this issue.
+
+One of the very bright young engineers collaborating on Quixote, who
+has been following this conversation, took it upon himself to do some
+very methodical engineering analysis on this issue.  I'm the messenger
+but this is very much his work product.
+
+Executive summary is as follows:
+
+- No RDRAND depletion failures were observable with either the Intel
+  or AMD hardware that was load tested.
+
+- RDSEED depletion is an Intel specific issue, AMD's RDSEED
+  implementation could not be provoked into failure.
+
+- AMD's RDRAND/RDSEED implementation is significantly slower than
+  Intel's.
+
+Here are the engineer's lab notes verbatim:
+
+---------------------------------------------------------------------------
+I tested both the single-threaded and OMP-multithreaded versions of
+the RDSEED/RDRAND depletion loop on each of the machines below.
+
+AMD: 2X AMD EPYC 7713 (Milan) 64-Core Processor @ 2.0 GHz, 128
+physical cores total
+
+Intel: 2X Intel Xeon Gold 6140 (Skylake) 18-Core Processor @ 2.3 GHz,
+36 physical cores total
+
+Single-threaded results:
+
+Test case: 1,000,000 iterations each for RDRAND and RDSEED, n=100
+tests, single-threaded.
+
+AMD: 100% success rate for both RDRAND and RDSEED for all tests,
+runtime 0.909-1.055s (min-max).
+
+Intel: 100% success rate for RDRAND for all tests, 20.01-20.12%
+(min-max) success rate for RSEED, runtime 0.256-0.281s (min-max)
+
+OMP multithreaded results:
+
+Test case: 1,000,000 iterations per thread, for both RDRAND and
+RDSEED, n=100 tests, OMP multithreaded with OMP_NUM_THREADS=<total
+physical cores> (i.e. 128 for AMD and 36 for Intel)
+
+AMD: 100% success rate for both RDRAND and RDSEED for all tests,
+runtime 47.229-47.603s (min-max).
+
+Intel: 100% success rate for RDRAND for all tests, 1.77-5.62%
+(min-max) success rate for RSEED, runtime 0.562-0.595s (min-max)
+
+CONCLUSION
+
+RDSEED failure was reproducibly induced on the Intel Skylake platform,
+for both single- and multithreaded tests, whereas RDSEED failure could
+not be induced on the AMD platform for either test. RDRAND did not
+fail on either platform for either test.
+
+AMD execution time was roughly 4x slower than Intel (1s vs 0.25s) for
+the single-threaded test, and almost 100x slower than Intel (47s vs
+0.5s) for the multithreaded test. The difference in clock rates (2.0
+GHz for AMD vs 2.3 GHz for Intel) is not sufficient to explain these
+runtime differences. So it seems likely that AMD is gating the rate at
+which a new RDSEED value can be requested.
+---------------------------------------------------------------------------
+
+Speaking now with my voice:
+
+Unless additional information shows up, despite our collective
+handwringing, as long as the RDRAND instruction is used as the
+cryptographic primitive, there appears to be little likelihood of a
+DOS randomness attack against a TDX based CoCo virtual machine.
+
+While it is highly unlikely we will ever get an 'official' readout on
+this issue, I suspect there is a high probability that Intel
+engineering favored performance with their RDSEED/RDRAND
+implementation.
+
+AMD 'appears', and without engineering feedback from AMD I would
+emphasize the notion of 'appears', to have embraced the principal of
+taking steps to eliminate the possibility of a socket based adversary
+attack against their RNG infrastructure.
+
+> Elena.
+
+Hopefully the above is useful for everyone interested in this issue.
+
+Once again, a thank you to our version of 'Sancho' for his legwork on
+this, who has also read Cervantes at length... :-)
+
+Have a good remainder of the week.
+
+As always,
+Dr. Greg
+
+The Quixote Project - Flailing at the Travails of Cybersecurity
+              https://github.com/Quixote-Project
