@@ -1,199 +1,193 @@
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2129.outbound.protection.outlook.com [40.107.100.129])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2056.outbound.protection.outlook.com [40.107.237.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D5C134A4
-	for <linux-coco@lists.linux.dev>; Tue,  6 Feb 2024 17:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38939134A6
+	for <linux-coco@lists.linux.dev>; Tue,  6 Feb 2024 18:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707241348; cv=fail; b=HyGINrDzQV8t886iXmE8Xrqr6M502Ap6FLbdkv+H1+T7SJbhatzb/auhAciRNqYfjcMVvl3QrfHvJ2T9zgFfowfYDRSoASuQXQ3jXATvCQTwtSENNIieHxMigX+IgbcRmlHSrjL1v2cVVe2/GWFSKTM0XamsxAI6hrvFL6g4WeQ=
+	t=1707243025; cv=fail; b=CHfhosL5Ll3k/lgvXf+yryQWgFwPa9jRDjlLCYPmcpjN7KfAm+SE4W8L7cjtxDmVmrirLrwuczy9DEtg+926lb6WTsuyKFEFTqSb0zbtTGDsQ5yEJxkzLP5TMKrMGCFfkVHqLTWgny1vYbn9w3mq9KYJVrufTzg5OhymMkO/154=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707241348; c=relaxed/simple;
-	bh=OBi+040wwqULO8THNo6tIYtic/kL/T5xhNIIMwv5TxA=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=sMDd0hGbNlY2W1xDGmGOj3SPBZAAD77I06nU/3e40c/ZDLfjbzMYjD9QJVDnScHSlJxQnw0zE+YlfzLTGUKQCdDpIFMNH7yzWde/7uTfRDY7rzCJPnM3Ln6bZqpLlvM4PkBO3+rCIk7c7upNtHK8K+QBnCc5qp2FtrOoqlrPEW0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=Wfs8Bu4+; arc=fail smtp.client-ip=40.107.100.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+	s=arc-20240116; t=1707243025; c=relaxed/simple;
+	bh=yPU/dbdG7nGxSdULbvWr05ckV7DPJor8ypgDxeRMxF0=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=OXzsTXyRe4nUGKpsayyB8ckQzT2p/SXcCRJxl47oFH6iB+sPleXLsqSuQW+FQE0i91Q946/GyrBoY36IAmtYSirTXskxe8p3HHcfZsHoBH30O0G51AEx7SBG1ePpyaXFTfpZrkLkzuHUjQ55fHxujOjr5Bz+BgeMaU+rmNg78ag=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZfLi8kxQ; arc=fail smtp.client-ip=40.107.237.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="Wfs8Bu4+"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZfLi8kxQ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OzuS6EJelCzAitDOB09aChBLn7swWs8kNPkiwbcPsXeQ+O68vxPg3XPDejeUeCK2rJNDIOMeEIKfC5JBp5JSHyzfxn2xGDlQfWi9vb34k3WR8QDcy/G1H4v7E6M8c+uJPyBhspgQ5K9D5cB3m/CevIBFdSUP84oVUbjydSPAq5NCZh3T8ZhhTPkGmRe2KvoFS84VX+ASwboobjuK7UduLDNRAeZY8sh3eV8IlbGMxruJ/tMQdVlz7feLaEi7lCsRtrsojy9BxIp2qckxHlCsyTrDHUSR0gJu7sAcxSluEliXCLXb52Xs1O8yrR0LTXaY9knl6FEtXfPRqYl2oolWig==
+ b=gxkxmmI4PZFmhZ3L7xy6GZhywcwP8Xs1Oh3Qm86II7+UNncODmOeNjuCXEha9Ez5Ej7zCvzQ0IsOeO5492V3c2L43ExLrRuVDHuYxIi/fSNrO4EBepWrlJemqMFNhciojB4OdXUHM1vLTSFHKFLOydDodxdwblQg9pzXamR2VG2wWQxcCoogihcEFeAtj5r5wMPyJCq9KsjUSgclG3NulPB97vSUAEx1ctqDRLUTm8SCQJ7eBJ/cGhQ+rxhya3b3ufgbNSqCkGN2HITekRfqmHxAEHQO4LfUPsTM+J1uuskVMokwqgL2uNL/7ghIRA/Ye4Eq+M6PjQgcbBKxLBJ9dw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ReyKi+mYR5cbQYvN2pqaWFVoHbHGwRJp242c9IauhrQ=;
- b=QT8gCKU3ehF+rPQ6xw/OKUqn2uoGBIjVjIGZVy1ahALjkbOB0rIE1iZd04ZPg0R33+5n9vqPeHThNoZuVs9Bsg61qoxnNg7kjf4b/+yjhbhZeeD/eJSl1+bs1D+B9F4ZZrjhVRkwfPVQxXB6tAEslRH+xmX44cQ0ZlpKXLqOY3ciODuXd7e1Uow77lTwWvq8gBZjF5J8PIADi9Q5ehnwYx6dxYX005FVyJHfQ1q8O9cT9y8k6SpHE121p3zmtgcNTVlvUZx6AIUxKQZlANk0gmqseolnaHAByNXG+EUwPNjR6YNmuHiGYEqIV+RCRA4hb1wecBqLll54WceLDdVhfw==
+ bh=c0fG76dmgQh/KPApHoNgeoyqy1loK9WJJTGdAlmysL4=;
+ b=PNGlXCtof6svIJqyMe16duEhspkwYmoiSK9ojPphe3KNS7gbJ8eTf+Ht7pMMOCV5OC0wpQ+mdT8tULyf4oKPRCz+1u5ZiK8RuN/uBLCee4E3KtyeLiJbTFxeanK9lm0kt6T7+UsvNit2MPGptIIIBENS+dufu3P8PCjVh4HRuQeykDW7kcRhtzk2CKFHlgR8Ukhy0LKpzcsUye4rXpy8l7VJ6Kt6AAZuyyvXiehZ5bLcW8+K/YJIh7pyw6w6CTPbKAwKV0e3H/9iz8c8+ZLXe4INb6enZ49B0tdho/cSCiDHWv4KUifqIUJJd8W0S+SVOD7r03BgLLRj8rc4U5ytng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ReyKi+mYR5cbQYvN2pqaWFVoHbHGwRJp242c9IauhrQ=;
- b=Wfs8Bu4+T1c9tQa891c3+21+pjpETGWcHiACWumNipDRogRSkgR4skxxjEYp787WEH+imsIROqQRSn9fsP3NeLcktR0Xw7q/54J87wCA+cz4RQSeZsu2x/+ZsTpZZF/6RQeM6V1xzwsolI87CHZONnwOZDjglZ6YBNl5N37h3IY=
-Received: from MN0PR21MB3072.namprd21.prod.outlook.com (2603:10b6:208:370::21)
- by DS7PR21MB3453.namprd21.prod.outlook.com (2603:10b6:8:92::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7292.4; Tue, 6 Feb 2024 17:41:07 +0000
-Received: from MN0PR21MB3072.namprd21.prod.outlook.com
- ([fe80::4707:3962:7bfc:bed5]) by MN0PR21MB3072.namprd21.prod.outlook.com
- ([fe80::4707:3962:7bfc:bed5%4]) with mapi id 15.20.7292.001; Tue, 6 Feb 2024
- 17:41:07 +0000
-From: Jon Lange <jlange@microsoft.com>
-To: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>,
-	"svsm-devel@coconut-svsm.dev" <svsm-devel@coconut-svsm.dev>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: RE: [EXTERNAL] [svsm-devel] SVSM Development Call Feb. 7th, 2024 (and
+ bh=c0fG76dmgQh/KPApHoNgeoyqy1loK9WJJTGdAlmysL4=;
+ b=ZfLi8kxQdvbhnbKu9uvS9ve1syT/gRgZTnHP9NSH3334bMNPf20jkCbPyDmgW+TpHtZ5TnTCi38imA9IRcXYPN9sUyj7fHZ5PkXTJitgMeF5LUpw2RIbWlQQkXzINGE4Vx5iLL895xQUTuGh47HxoHE9gDw2fev/C0beiz6cH0A=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5874.namprd12.prod.outlook.com (2603:10b6:208:396::17)
+ by SA1PR12MB5657.namprd12.prod.outlook.com (2603:10b6:806:234::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.14; Tue, 6 Feb
+ 2024 18:10:18 +0000
+Received: from BL1PR12MB5874.namprd12.prod.outlook.com
+ ([fe80::251:b545:952c:18dd]) by BL1PR12MB5874.namprd12.prod.outlook.com
+ ([fe80::251:b545:952c:18dd%7]) with mapi id 15.20.7270.012; Tue, 6 Feb 2024
+ 18:10:18 +0000
+Message-ID: <e9fb3fdf-dc00-421b-a44f-2b2b231607c8@amd.com>
+Date: Tue, 6 Feb 2024 12:10:16 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [EXTERNAL] [svsm-devel] SVSM Development Call Feb. 7th, 2024 (and
  Cargo workspace transition)
-Thread-Topic: [EXTERNAL] [svsm-devel] SVSM Development Call Feb. 7th, 2024
- (and Cargo workspace transition)
-Thread-Index: AQHaWRmjA5k8U0iEzkaE00F2cfxdIrD9lIbw
-Date: Tue, 6 Feb 2024 17:41:07 +0000
-Message-ID:
- <MN0PR21MB3072D34761004C4555CA635DCA462@MN0PR21MB3072.namprd21.prod.outlook.com>
-References: <C58BAD04-27B1-4183-8A65-5E4699E1BFF1@suse.de>
-In-Reply-To: <C58BAD04-27B1-4183-8A65-5E4699E1BFF1@suse.de>
-Accept-Language: en-US
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=4438e998-0ad0-4635-b975-28d053b01c50;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-02-06T17:38:57Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR21MB3072:EE_|DS7PR21MB3453:EE_
-x-ms-office365-filtering-correlation-id: 4d945d14-871c-4687-e8d6-08dc273acc7f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- cBp0UReSW5rY+ne6ulFZIfJUTWyjhJF7NVRBddTUQPR/J/pODl+weWXG1Mp7D53tkmfXpmxNs6U7e6JLRUOfNkJpxg8Y0mJi7Qvr7DdyS+Mc7bHjfu8B49N9mfAPmIXTSrk7JicPVW40qzU7iCUUpM8F/sYPJVCN5sQUDAglk11btxh43/JSiJ3udxLFzjYbZcUimIGD+c3MqxykJ6SH/v5voLo+PYwKDhiE3s5h/X+O/TKrDL/6fuvS41svMNDrl8OBK4YdKLzImlYjVtoe8fsstU6ULx8TgkDQaOdZWLf8gIbWKClcmFoOS7lbGfEW12kWF+QsrkZ7hZNOGKwQykZrs9zXtIYxdBxJTbnnRJ9HmmRHbVtlWAMu4zFaig4h7qxg4rTlCHIL5PhDkn16mYZ6PbgSb50ll33QkpnKGo7tACwSZe8FvoFOmWpWUzaX5NIC2m1HocCF9JAUGOnEc6zQSUOq2n7esROq9aZTu6GOe45J7b8FMzGeIifx0VJLpxJjb+H80SftYH2D5SlrD/vVGjqNnhpMV8KNPVuFuGfNvAgdzs4wYS1wLoOBMdT+Z6w9X6C/H1rjlbA/H4hwWjPMFLq9TwQ8Kd6uKTufh9U=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR21MB3072.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(136003)(39860400002)(366004)(396003)(230922051799003)(230273577357003)(1800799012)(451199024)(64100799003)(186009)(5660300002)(83380400001)(6506007)(71200400001)(966005)(316002)(33656002)(10290500003)(478600001)(7696005)(110136005)(66446008)(64756008)(38070700009)(8936002)(52536014)(82960400001)(8676002)(38100700002)(76116006)(66556008)(66476007)(66946007)(53546011)(82950400001)(122000001)(66574015)(9686003)(86362001)(41300700001)(8990500004)(2906002)(55016003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?tqG0L1648OAHVmxuCd+TKExffVu2GyXN32xG0FULfCnieVUnfVSpb0rp1h?=
- =?iso-8859-1?Q?F7mauTGu8Zi3Tu22ziL5FM4dcC63zovrgsas1dnYD9ioksk41ZfNTtIHOM?=
- =?iso-8859-1?Q?4rASOPWU2utBS3n9tNU9uDmv8gtFAyLKWWlxUVGp21MiCOHDRWqz5RNTRt?=
- =?iso-8859-1?Q?sO9AST6UilbpZFAMfIgPAHW/yYxdz6okbmji0USbzPT74s+zL4odjreKng?=
- =?iso-8859-1?Q?+zy5xd7/JC7K62Fthwlxu1dBqyYVO1Gcs1bbOqbls/QQAHGaXNGNDSJqmj?=
- =?iso-8859-1?Q?WAwUgXpuNC6kThEMQEQVrGbNTTdMJjzYF7pvAoMIJViJBBDGkc5JPhptIq?=
- =?iso-8859-1?Q?uSIxD6prEM8FYJf+1+36gTsP673/ZF+Rph7hPnpewGV+uDkizgxz6jcILF?=
- =?iso-8859-1?Q?P/kJOHo9ji0y3VxLvNw708LcBjZNixvcYf/hFsAYW3dVUWOdRXBJRYBY68?=
- =?iso-8859-1?Q?hjK8DG9ZxyvgaroxzupI/HdICkCVY8qJz3m0g5QFBJick3n/eWm0aXD3FB?=
- =?iso-8859-1?Q?wHTLssAy/QxqXwn3VHP2Bo+tm7k0Jrl2likeiYA25jbOxvgTSnmUI/H0mL?=
- =?iso-8859-1?Q?hhlcKN4qZ+wdihyUdjtjnAgtGD+TGAtt0Ri/dZVrJ+VM8/aH+DcpQZMgc9?=
- =?iso-8859-1?Q?X19NzwVqfg5ziZDkm7D/gcbQL9C/3SX04In0LdLvgIlnLMqNTO+e9rczS6?=
- =?iso-8859-1?Q?BwwslaY2yKaI57igNtkoAxPCVsjAj311p6Ne+xJE9Lk3Jy6lCKa7ZKSMcu?=
- =?iso-8859-1?Q?vMa4P4Xsk0t2WirysLOL0907+KzhgzW2gsmEYvbI9Lrh0XpaDT2BZU0uwm?=
- =?iso-8859-1?Q?bPUISFK1CoHiJhYPkx7/vixRnDqYHWIyZN4Ci2xWWr4Jo8wDxQs3smIkuJ?=
- =?iso-8859-1?Q?pmZjZGbpu5VdP37Ffble4NPcj2KgJKaqZhobB7b1KJuM+L0Zg9aEuRP0s5?=
- =?iso-8859-1?Q?UM425cYuDca7x0G9KnOMmIlRFZ2YgCJbHSGHMZXhFn9R2UbrHA6ogj1Agd?=
- =?iso-8859-1?Q?RpJ7hjWOpoNN8lSGA8krYh9SSk8OV/Sh5NMM8zz5QXbQQCDETh+f9AxWSf?=
- =?iso-8859-1?Q?nSizXlSIFaF3M0o6xDYn1aa4K/HYZn6BwYzx2Uvx6jlYBAWpF/5j33l6jP?=
- =?iso-8859-1?Q?sztgFJi1MaYlwomIO3BgvRES2K0WF9a+ujXZ6X8XchxFQsVMVtX69TCLfb?=
- =?iso-8859-1?Q?69uYzJp08RYDl2F6VzwTAvpbzuGwko2FrJcZes8RlKfLKALj+7WvGt3Udk?=
- =?iso-8859-1?Q?v+tVSlzC9vbYhVzaFarQqngEInuYh+olamFtpXIx3MGgJSUhqFRfGVE1tF?=
- =?iso-8859-1?Q?O67b3F5mlZD14dZploEhTx8iZGkE6m0kOK8nRRYy9IVMInEGE6ADrL9H+l?=
- =?iso-8859-1?Q?TXYzHu0DzxRBxeRz9LnfSvKfqEU1QieGdkhcVs75Pa86gHwfix4yODZuGW?=
- =?iso-8859-1?Q?CwdvE91q+lw5pxqtw9Pg5CmytEgdB2aZxJ2z/as0/jWvRPbcmh9EoA6r9z?=
- =?iso-8859-1?Q?58Hw0XxAdx51v8z+JmiWrjvRoSGq2Wypf3P/lPxAmPlhXtI9uHKdeT6Yhc?=
- =?iso-8859-1?Q?3i9YNrBcSNMl0nogSB74mSJZvxrxJw80hQAwlD4cE3aLjgvIZKp7ixIXGz?=
- =?iso-8859-1?Q?+izeFgZDejZAgEsLDV/TR7Gjhn3GvVVgRPgfVgXg/dWqsFOx8RZCADvwdE?=
- =?iso-8859-1?Q?u3qwawt3oymSp1qeAoLwBre5tKEt4AwjrQDY0mFO?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+To: Jon Lange <jlange@microsoft.com>, =?UTF-8?B?SsO2cmcgUsO2ZGVs?=
+ <jroedel@suse.de>, "svsm-devel@coconut-svsm.dev"
+ <svsm-devel@coconut-svsm.dev>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+References: <C58BAD04-27B1-4183-8A65-5E4699E1BFF1@suse.de>
+ <MN0PR21MB3072D34761004C4555CA635DCA462@MN0PR21MB3072.namprd21.prod.outlook.com>
+From: Carlos Bilbao <carlos.bilbao@amd.com>
+In-Reply-To: <MN0PR21MB3072D34761004C4555CA635DCA462@MN0PR21MB3072.namprd21.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DM6PR12CA0032.namprd12.prod.outlook.com
+ (2603:10b6:5:1c0::45) To BL1PR12MB5874.namprd12.prod.outlook.com
+ (2603:10b6:208:396::17)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5874:EE_|SA1PR12MB5657:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6954f77f-5251-4866-6f4f-08dc273ee042
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	pQ6PkZuVV1LAJMBMhxTblUM/sZiwHzji26NKZGAN6H8PxpLkP7IVt811m2OJAOybUSiE7NGNlWHaDh2MtUMUFVD+DAewQYy9y13vDsluHwotqWsYoYE7ytMBAaBy8qe0cnYINAfwa3owK/HfWiTMbsmH8t9ywOj8pJYfU/JN+j4Kuz8HY0UjucxKlhYwYtUBgoLOp4ALGx9XnE7fLmOlJubPAcyGR9C4t1xwfPEuR5uDQzhLU5brdEpU56XHL+X30az1zN8vZVgrMWQinYZUVFY+nPYX8lE3H7uAlF20jT4guuxLTrU5fQL4aEIDJNLr2YEprlJWUm1h+dqOiHS6tseiwsP9IvaMSWOR+q4r/W2TZ1eJqxe1O/WSWk+dRdp4MDQ6X0nX5DyY9FCO4cSMzGM4hQoBii/AOCPfLYRSxry8NUcg2Urm39PlM1gw/+rLzkauaKA4AJFpIGHmHQ3B0vwUTTyCLkmrX1lmVecUQpu3Vq2cvBSnyBYKRH4og6Ic2lYMeSWqOmGUvjMKN7wJjZyAZTgD9+zqmX5yIjJkqe5d1kGd6cq5bSJsMBSU1nooPr7fHOYjJpBlFQxc44jHb/2rKg9Opbu7CW1pskHceURFwjG7Mc+E1Bv0hPrpFCRTR0EHr8+WeSdmawFehDek1A==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5874.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(346002)(136003)(396003)(376002)(230273577357003)(230922051799003)(186009)(451199024)(1800799012)(64100799003)(478600001)(31696002)(26005)(2616005)(316002)(2906002)(44832011)(86362001)(6506007)(38100700002)(8676002)(110136005)(66946007)(8936002)(66574015)(66476007)(5660300002)(83380400001)(66556008)(41300700001)(966005)(53546011)(6512007)(6486002)(36756003)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?by9oTC8xWmNpTzJyejlUaHJQTnVVczl5R3R2TWxqMk5lWTMvZjZGbm14dHAx?=
+ =?utf-8?B?ejRCYWRtZ1JkdGdnbUdsa2dPNXUwaGY4M2NDRFNVUi9wakV6QWlhTStDNmNJ?=
+ =?utf-8?B?bXp2alUrVjkvejBiOVBFaXJoZldqRlUrSUdpS25MR1JjWjBGY1FMZkoxNjR2?=
+ =?utf-8?B?OW9Qa3A3a29JZGJhWHh1cnpvYnl5Yiszb3FYdEllNW5qUGNpd29VQWRtOGc5?=
+ =?utf-8?B?NE1xSnNrakFUaTF5cFoyM0VyUFVvNDdOSENWYVhMdXo1SXRWc3FsVCtkenJN?=
+ =?utf-8?B?M1BkK0Fldk5mUXhzbmhDazJaUm9PYnRWcm9HRitVNVFQdlkySHEvNEJWNENB?=
+ =?utf-8?B?b2htbm96T01JdXowNGxiWi9jR3daWkZaYU80Y2FNOXBJckk2YU9xR0RqSjl3?=
+ =?utf-8?B?cjczcVZtNW90a0g0OUw0Q2F4WktuWDhvVGlJZjdaU2hOdjMwUHo3aFltZ3JB?=
+ =?utf-8?B?ejZOQnFyTEJPSUYwU2h0RG5paXl4NHZENWFuVXNIaERxY1RvVytzSUlFWTRv?=
+ =?utf-8?B?WExLbmx4azZTRUxhSjY4eGNzRXJhbU0rU0FPTXFzdWtzNWtlMTdBRmxHTjZY?=
+ =?utf-8?B?ZVE5Vnh6UDRkUFFVZzZ2ZmlkZTRkbVA4SHdCejRrMFpTOWFLalBObWRWaGh6?=
+ =?utf-8?B?Qm9ma2JqYWRQZUhqQ3FSQk1Gam8rVHFOS0dHQXd1UXJicURGTW5BWlhPekZZ?=
+ =?utf-8?B?ME0wQTJ3ZHJnU0RxNXM4UUx6cXI2OVorKytOZ20yODZoWkZ3WjRXTGdTS3Bt?=
+ =?utf-8?B?amdXNFpRTUdaL3MwZElpNUg0cmdPSzhneTBkSUN5cDd0RWZHbkNOZmNPNmR3?=
+ =?utf-8?B?WkU5dWtTeGtRSUZLSnFmbkxLMTFtaTV0TnROWU1IdG9tcnJldzlGNDB1RHdy?=
+ =?utf-8?B?SzdLT2hiY2luZWRaUnQxakhrdXF6TzRsV2FGOURlb0Z0ZGZJWEVNTW9GeUxG?=
+ =?utf-8?B?UnBlSWFlNGhONXFhdjNxejN0RUNTNHVzamp4S3E2WDAvZkRmeHA5SHVMTy82?=
+ =?utf-8?B?elhCTXcvYUNjWm5scTU3K0RWL3MzQmFvNDFuMXFFZGxVSEpkcitVZE96OWk3?=
+ =?utf-8?B?cEVydHJSaUtCSWdLSlFOdGd5ZmlpMXpVUjJtYU5RQTRVeHRZYWw5dEVmKzBT?=
+ =?utf-8?B?eWQybk91dDVNTXdYQ0ExaEpaYmJDMkVUZTdMMTl6SDhnUFpTVjlKR2xNUFdE?=
+ =?utf-8?B?NFdmZXdRM213WE4vQkY2UE5uM3FVeENkSXNiemFDNUdISzVPdDBUdWg3UENL?=
+ =?utf-8?B?OThkek9nVUp1YXhiTDVGUndzWnlUNW5Cc3ptWURtYkhjQzNmUHZvZzNCLzRt?=
+ =?utf-8?B?aHlRaGVhRXl1c2FLUUZ6UnUzMGExZGFjZ2I4Z3BaVHZQdFk5N3l5Rnc3bW43?=
+ =?utf-8?B?Q3dCS05pSmRqdk8vMU1adDJwN1J2U2RSSEtlUnFDWWtLdERGZ2RBRVJjQUZR?=
+ =?utf-8?B?cUtqTkoxSGh5a3VkZU8ySzE2QjR4TWVGaU9ua0xhTkJDQVFWZFpUNUNSUVRV?=
+ =?utf-8?B?dmNnR05yN2FlUG9jeVN2b2Q5czM5aHR0MFBsR1UyRWsxK0tXRFVNa3BFMDl4?=
+ =?utf-8?B?cGIwMjVUSVVrMXVlVE9KQ2Y5ZVJ5bU5TaENCSVNWSVgyaG9nOWh0di9hTEJL?=
+ =?utf-8?B?TGRDdE5qTnl6T05obnF1aFNQdGdpa0RjZ2hWZkljVVk5cGtUazlrV1pLSlVX?=
+ =?utf-8?B?T3F5NGF1bVd3bHVUSXYvK3NxUy8zdnhBYm5wRFp2aW9veUJZY0hDN0h5cDhY?=
+ =?utf-8?B?bjFDd0NNa2hScVExNXZsdWxnRmRXSERybHdpbmVHWlNuVnA3UElYaXNHUzc3?=
+ =?utf-8?B?TEtTQlpZSmpnQmFISitrNS9WTkczMi8xazBWVGd0WGlEeHFIems3b3BvZm16?=
+ =?utf-8?B?UGRJelYvQmVVOC9pTnVKNlZMdlFTcWJ0M2lVQnZLb2txZWR2QnRYazhFbDJD?=
+ =?utf-8?B?cWRFYmkrbml1RzlldW83VCtQaTBzSDBUWkNLRGdIQlZvS0sxa3ZhS3dCSmM5?=
+ =?utf-8?B?eWxxcFlNRHozbjhhTFdKWjNkMVY0b3YrREVGTGJ4MTV4MlM0bUtrOGdXcUJJ?=
+ =?utf-8?B?aG5zd202MmYxdXY5UXFNOHA0WmJ5WW9IQ2VZWjlaLzl4eit3R1ZQR0tHQXdp?=
+ =?utf-8?Q?iBUJgIT2NrPaG7lwGiBOHnByt?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6954f77f-5251-4866-6f4f-08dc273ee042
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5874.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR21MB3072.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d945d14-871c-4687-e8d6-08dc273acc7f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Feb 2024 17:41:07.2016
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2024 18:10:18.4875
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: h089/4wm1DaCwlAT+5yn40DNuX9MY5IIXZdmJpKkt+bzAWHmozBjZaQm709cVv6mV+2jIKgkjc3fqJV+mZOrfg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR21MB3453
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nfBweMIYCMo9J/jpFTCmiE7iynlbZlstGNGYtadBL2R6eSiynb9by/Y+6sUpusHGOxVR5mxY1/jDW7YlVvzfrg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5657
 
-Realistically, there will not be a point in time at which there are no pend=
-ing PRs, so there will always be some number of PRs subject to conflict no =
-matter when the transition is made.  It seems much better to make the trans=
-ition as early as possible to reap the benefits of the transition.  Count m=
-e as another voice in strong support of option (1).
+Hello,
 
--Jon
+I have an open PR and don't mind rebasing it. Since we already have both
+Cargo.lock and Cargo.toml, I'd appreciate it if tomorrow we could go
+through what this change may entail in practice.
 
------Original Message-----
-From: Svsm-devel <svsm-devel-bounces@coconut-svsm.dev> On Behalf Of J=F6rg =
-R=F6del
-Sent: Tuesday, February 6, 2024 8:29 AM
-To: svsm-devel@coconut-svsm.dev; linux-coco@lists.linux.dev
-Subject: [EXTERNAL] [svsm-devel] SVSM Development Call Feb. 7th, 2024 (and =
-Cargo workspace transition)
+Thanks,
+Carlos Bilbao
 
-Hi,
-
-As some of you already noticed there is a PR now which transforms the SVSM =
-repository into a cargo workspace.
-
-I consider the move to a cargo workspace an important change which should b=
-etter happen sooner than later, but it is also very intrusive, basically br=
-eaking any other pending PR.
-
-So there are two possible strategies right now:
-
-1) Merge the cargo workspace PR and let everyone else rebase their work on-=
-top. That is work for everyone, but should not cause major hickups as only =
-file paths will change and not the actual file content
-2) Merge some of the pending PRs first and then do the cargo workspace tran=
-sition. This requires re-basing the cargo workspace PR, which is also quite=
- some work.
-
-I am leaning towards option 1) as I think the sooner the transition is done=
- the better, but I am open to other opinions on this. So if you think optio=
-n 1) will not work/causes too much hassle or we should do something differe=
-nt, please speak up. Merging PRs is stopped until there is a decision on th=
-is, which I hope will be made after the SVSM Development call tomorrow.
-
-The call is happing as usual tomorrow at 9am PST/5pm UTC/6pm CET.
-
-You are all invited to join the discussion at:
-
-https://meet.google.com/ppv-xehx-dvb
-
-Please also let me know of any additional agenda items you want to discuss,=
- either by replying to this email or raising them in the meeting.
-
-A public Google calendar is available here:
-
-https://calendar.google.com/calendar/u/0?cid=3DY181NWEzOGYzNDYwYzYzODc2MmE3=
-NWQ0ZmQ2ZWRhM2IxY2Y0NTVlYzRjZmQ3ZjgzMjAxZTNjYmY4MTdiNDIwZGQ4QGdyb3VwLmNhbGV=
-uZGFyLmdvb2dsZS5jb20
-
-Looking forward to see you all there and discuss the above topics!
-
-Regards,
-
-J=F6rg R=F6del
-jroedel@suse.de
-
-SUSE Software Solutions Germany GmbH
-Frankenstra=DFe 146
-90461 N=FCrnberg
-Germany
-https://www.suse.com/
-
-Gesch=E4ftsf=FChrer: Ivo Totev, Andrew McDonald, Werner Knoblich (HRB 36809=
-, AG N=FCrnberg)
-
---
-Svsm-devel mailing list
-Svsm-devel@coconut-svsm.dev
-https://mail.8bytes.org/cgi-bin/mailman/listinfo/svsm-devel
+On 2/6/24 11:41, Jon Lange wrote:
+> Realistically, there will not be a point in time at which there are no pending PRs, so there will always be some number of PRs subject to conflict no matter when the transition is made.  It seems much better to make the transition as early as possible to reap the benefits of the transition.  Count me as another voice in strong support of option (1).
+> 
+> -Jon
+> 
+> -----Original Message-----
+> From: Svsm-devel <svsm-devel-bounces@coconut-svsm.dev> On Behalf Of Jörg Rödel
+> Sent: Tuesday, February 6, 2024 8:29 AM
+> To: svsm-devel@coconut-svsm.dev; linux-coco@lists.linux.dev
+> Subject: [EXTERNAL] [svsm-devel] SVSM Development Call Feb. 7th, 2024 (and Cargo workspace transition)
+> 
+> Hi,
+> 
+> As some of you already noticed there is a PR now which transforms the SVSM repository into a cargo workspace.
+> 
+> I consider the move to a cargo workspace an important change which should better happen sooner than later, but it is also very intrusive, basically breaking any other pending PR.
+> 
+> So there are two possible strategies right now:
+> 
+> 1) Merge the cargo workspace PR and let everyone else rebase their work on-top. That is work for everyone, but should not cause major hickups as only file paths will change and not the actual file content
+> 2) Merge some of the pending PRs first and then do the cargo workspace transition. This requires re-basing the cargo workspace PR, which is also quite some work.
+> 
+> I am leaning towards option 1) as I think the sooner the transition is done the better, but I am open to other opinions on this. So if you think option 1) will not work/causes too much hassle or we should do something different, please speak up. Merging PRs is stopped until there is a decision on this, which I hope will be made after the SVSM Development call tomorrow.
+> 
+> The call is happing as usual tomorrow at 9am PST/5pm UTC/6pm CET.
+> 
+> You are all invited to join the discussion at:
+> 
+> https://meet.google.com/ppv-xehx-dvb
+> 
+> Please also let me know of any additional agenda items you want to discuss, either by replying to this email or raising them in the meeting.
+> 
+> A public Google calendar is available here:
+> 
+> https://calendar.google.com/calendar/u/0?cid=Y181NWEzOGYzNDYwYzYzODc2MmE3NWQ0ZmQ2ZWRhM2IxY2Y0NTVlYzRjZmQ3ZjgzMjAxZTNjYmY4MTdiNDIwZGQ4QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20
+> 
+> Looking forward to see you all there and discuss the above topics!
+> 
+> Regards,
+> 
+> Jörg Rödel
+> jroedel@suse.de
+> 
+> SUSE Software Solutions Germany GmbH
+> Frankenstraße 146
+> 90461 Nürnberg
+> Germany
+> https://www.suse.com/
+> 
+> Geschäftsführer: Ivo Totev, Andrew McDonald, Werner Knoblich (HRB 36809, AG Nürnberg)
+> 
+> --
+> Svsm-devel mailing list
+> Svsm-devel@coconut-svsm.dev
+> https://mail.8bytes.org/cgi-bin/mailman/listinfo/svsm-devel
+> 
