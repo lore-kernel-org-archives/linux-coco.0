@@ -1,163 +1,215 @@
-Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C94149006
-	for <linux-coco@lists.linux.dev>; Tue,  6 Feb 2024 12:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F3012F382
+	for <linux-coco@lists.linux.dev>; Tue,  6 Feb 2024 13:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707221378; cv=none; b=lTxWA1V0VBvdkd/YI1/lUWNAfpM36HYn0CobM6QgXSqS524DQ+ncRZhGE6/KePq8/qpmUUFfLwwUG6UYRWnh5caJrYfIWSq+1/bPf4hQe6QM0uqFuu+bC8CBUv6GSwWr6YssvuBIdf9GmI4Z0lEWkY+wfnyDN99XnuGJDnuiejg=
+	t=1707224417; cv=none; b=U+D5zMBatrPJKU3dqLcZLuWhsBVAxm7aEHKrGM4VtAICcyJP61rCVHfPcek5+uGgjAZHmvdI5WYu3xeag6dwVGaLjpsdTwDp7BQFsmpz3bd3p//9j7RberWK1Vgalyu2TSkpNdSk/u3ZhqmbzX9X01TOTDU2F43E4ibi6aEGoiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707221378; c=relaxed/simple;
-	bh=EGtKM5D1Vb04Le+B1pWopgp/oS3U/Hrc4JxPx+8xT5U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RsUvie6vusbTqciLf3pFhqRVUCVWXYpFgQpmXRwEwMSEIAJ6rJpbERm0yJeAyIRfVhtgFHhgxlkbq3vYrYyrnlld1Jiq2/cEHELlk2+iy+2IQaf6NbAt9mjLztRxUnWeIit5iRwXZlHEUdTSx02Ecus0SVeSOpmhHYR993ipmyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
-Received: from wind.enjellic.com (localhost [127.0.0.1])
-	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 416C4knk001762;
-	Tue, 6 Feb 2024 06:04:46 -0600
-Received: (from greg@localhost)
-	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 416C4jTD001748;
-	Tue, 6 Feb 2024 06:04:45 -0600
-Date: Tue, 6 Feb 2024 06:04:45 -0600
-From: "Dr. Greg" <greg@enjellic.com>
-To: "Daniel P. Berrang??" <berrange@redhat.com>
+	s=arc-20240116; t=1707224417; c=relaxed/simple;
+	bh=abe9E3ueQx9G2fBlwjT7LMFmPpMhp9/GiSVQD4q8kh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oh4vAzyCDGyzrxpV5gUf+iOdPIWBiNuElXgM/58DWjI55b0KJqj/pMZSI7JvQFdBSmJIu2yj9GxVoAElKIFDbwnS/4FHryEx+tZDyzYx85NEhSMl3kQ/kCaQs7Iv38R7KEgsJnO7tIYpJSJ3UmJXIcCp3Ih/iEbDXXOjWjnZ5E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BC14rrfb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BC14rrfb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707224414;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
+	bh=cmGxWZhgjlISLF6/RimgbvtGqlUWWkI9oFgV/zY1qL0=;
+	b=BC14rrfbkkedzhp9jnt341c9JSp6g1YrlTt4eWWYoMlyG5Mmu3tel8wK7e/pIcBW1QXuro
+	6MqfV2xHXr86Unr+QBZByTHmL0YZ3mdIhFY1F16vA2XQRTB9WohVJTYRdxMJJbSKYjiKh0
+	yBgt26UyvaFULO9TMV4YUMgsoHux9R8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-320-OMpscAT4PcKefY_O_GnelQ-1; Tue, 06 Feb 2024 08:00:09 -0500
+X-MC-Unique: OMpscAT4PcKefY_O_GnelQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE4E483B828;
+	Tue,  6 Feb 2024 13:00:07 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.53])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 2DFDC1121312;
+	Tue,  6 Feb 2024 13:00:05 +0000 (UTC)
+Date: Tue, 6 Feb 2024 13:00:03 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: "Dr. Greg" <greg@enjellic.com>
 Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Nakajima, Jun" <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Nakajima, Jun" <jun.nakajima@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-Message-ID: <20240206120445.GA1247@wind.enjellic.com>
-Reply-To: "Dr. Greg" <greg@enjellic.com>
-References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com> <20240130083007.1876787-2-kirill.shutemov@linux.intel.com> <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <20240206011247.GA29224@wind.enjellic.com> <ZcHoKUElwXGPzrWb@redhat.com>
+Message-ID: <ZcItU5FKlIVEEVte@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+References: <20240130083007.1876787-2-kirill.shutemov@linux.intel.com>
+ <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com>
+ <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com>
+ <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com>
+ <Zbk6h0ogqeInLa_1@redhat.com>
+ <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240206011247.GA29224@wind.enjellic.com>
+ <ZcHoKUElwXGPzrWb@redhat.com>
+ <20240206120445.GA1247@wind.enjellic.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZcHoKUElwXGPzrWb@redhat.com>
-User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Tue, 06 Feb 2024 06:04:46 -0600 (CST)
+In-Reply-To: <20240206120445.GA1247@wind.enjellic.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-On Tue, Feb 06, 2024 at 08:04:57AM +0000, Daniel P. Berrang?? wrote:
+On Tue, Feb 06, 2024 at 06:04:45AM -0600, Dr. Greg wrote:
+> On Tue, Feb 06, 2024 at 08:04:57AM +0000, Daniel P. Berrang?? wrote:
+> 
+> Good morning to everyone.
+> 
+> > On Mon, Feb 05, 2024 at 07:12:47PM -0600, Dr. Greg wrote:
+> > > 
+> > > Actually, I now believe there is clear evidence that the problem is
+> > > indeed Intel specific.  In light of our testing, it will be
+> > > interesting to see what your 'AR' returns with respect to an official
+> > > response from Intel engineering on this issue.
+> > > 
+> > > One of the very bright young engineers collaborating on Quixote, who
+> > > has been following this conversation, took it upon himself to do some
+> > > very methodical engineering analysis on this issue.  I'm the messenger
+> > > but this is very much his work product.
+> > > 
+> > > Executive summary is as follows:
+> > > 
+> > > - No RDRAND depletion failures were observable with either the Intel
+> > >   or AMD hardware that was load tested.
+> > > 
+> > > - RDSEED depletion is an Intel specific issue, AMD's RDSEED
+> > >   implementation could not be provoked into failure.
+> 
+> > My colleague ran a multithread parallel stress test program on his
+> > 16core/2HT AMD Ryzen (Zen4 uarch) and saw a 80% failure rate in
+> > RDSEED.
+> 
+> Interesting datapoint, thanks for forwarding it along, so the issue
+> shows up on at least some AMD platforms as well.
+> 
+> On the 18 core/socket Intel Skylake platform, the parallelized
+> depletion test forces RDSEED success rates down to around 2%.  It
+> would appear that your tests suggest that the AMD platform fairs
+> better than the Intel platform.
 
-Good morning to everyone.
+Yes, given the speed of the AMD RDRAND/RDSEED ops, compared to my
+Intel test platforms, their DRBG looks better able to keep up with
+the demand for bits.
 
-> On Mon, Feb 05, 2024 at 07:12:47PM -0600, Dr. Greg wrote:
-> > 
-> > Actually, I now believe there is clear evidence that the problem is
-> > indeed Intel specific.  In light of our testing, it will be
-> > interesting to see what your 'AR' returns with respect to an official
-> > response from Intel engineering on this issue.
-> > 
-> > One of the very bright young engineers collaborating on Quixote, who
-> > has been following this conversation, took it upon himself to do some
-> > very methodical engineering analysis on this issue.  I'm the messenger
-> > but this is very much his work product.
-> > 
-> > Executive summary is as follows:
-> > 
-> > - No RDRAND depletion failures were observable with either the Intel
-> >   or AMD hardware that was load tested.
-> > 
-> > - RDSEED depletion is an Intel specific issue, AMD's RDSEED
-> >   implementation could not be provoked into failure.
+> Of course, the other variable may be how the parallelized stress test
+> is conducted.  If you would like to share your implementation source
+> we could give it a twirl on the systems we have access to.
 
-> My colleague ran a multithread parallel stress test program on his
-> 16core/2HT AMD Ryzen (Zen4 uarch) and saw a 80% failure rate in
-> RDSEED.
+It is just Jason's earlier test program, but moved into one thread
+for each core....
 
-Interesting datapoint, thanks for forwarding it along, so the issue
-shows up on at least some AMD platforms as well.
+$ cat cpurngstress.c
+#include <stdio.h>
+#include <immintrin.h>
+#include <pthread.h>
+#include <unistd.h>
 
-On the 18 core/socket Intel Skylake platform, the parallelized
-depletion test forces RDSEED success rates down to around 2%.  It
-would appear that your tests suggest that the AMD platform fairs
-better than the Intel platform.
+/*
+ * Gives about 25 seconds walllock time on my Alderlake CPU
+ *
+ * Probably want to reduce this x10, or possibly even x100
+ * on AMD due to much slower ops.
+ */
+#define MAX_ITER 10000000
 
-So this is turning into even more of a morass, given that RDSEED
-depletion on AMD may be a function of the micro-architecture the
-platform is based on.  The other variable is that our AMD test
-platform had a substantially higher core count per socket, one would
-assume that would result in higher depletion rates, if the operative
-theory of socket common RNG infrastructure is valid.
+#define MAX_CPUS 4096
 
-Unless AMD engineering understands the problem and has taken some type
-of action on higher core count systems to address the issue.
+void *doit(void *f) {
+    unsigned long long rand;
+    unsigned int i, success_rand = 0, success_seed = 0;
 
-Of course, the other variable may be how the parallelized stress test
-is conducted.  If you would like to share your implementation source
-we could give it a twirl on the systems we have access to.
+    for (i = 0; i < MAX_ITER; ++i) {
+        success_seed += !!_rdseed64_step(&rand);
+    }
+    for (i = 0; i < MAX_ITER; ++i) {
+        success_rand += !!_rdrand64_step(&rand);
+    }
 
-The continuing operative question is whether or not any of this ever
-leads to an RDRAND failure.
+    fprintf(stderr,
+	    "RDRAND: %.2f%%, RDSEED: %.2f%%\n",
+	    success_rand * 100.0 / MAX_ITER,
+	    success_seed * 100.0 / MAX_ITER);
 
-We've conducted some additional tests on the Intel platform where
-RDSEED depletion was driven low as possible, ~1-2% success rates,
-while RDRAND depletion tests were being run simultaneously.  No RDRAND
-failures have been noted.
+    return NULL;
+}
 
-So the operative question remains, why worry about this if RDRAND is
-used as the randomness primitive.
 
-We haven't seen anything out of Intel yet on this, maybe AMD has a
-quantifying definition for 'astronomical' when it comes to RDRAND
-failures.
+int main(int argc, char *argv[])
+{
+    pthread_t th[MAX_CPUS];
+    int nproc = sysconf(_SC_NPROCESSORS_ONLN);
+    if (nproc > MAX_CPUS) {
+      nproc = MAX_CPUS;
+    }
+    fprintf(stderr, "Stressing RDRAND/RDSEED across %d CPUs\n", nproc);
 
-The silence appears to be deafening out of the respective engineering
-camps... :-)
+    for (int i = 0 ; i < nproc;i ++) {
+      pthread_create(&th[i], NULL, doit,NULL);
+    }
 
-> > - AMD's RDRAND/RDSEED implementation is significantly slower than
-> >   Intel's.
+    for (int i = 0 ; i < nproc;i ++) {
+      pthread_join(th[i], NULL);
+    }
 
-> Yes, we also noticed the AMD impl is horribly slow compared to
-> Intel, had to cut test iterations x100.
+    return 0;
+}
 
-The operative question is the impact of 'slow', in the absence of
-artifical stress tests.
+$ gcc -march=native -o cpurngstress cpurngstress.c
 
-It would seem that a major question is what are or were the
-engineering thought processes on the throughput of the hardware
-randomness instructions.
 
-Intel documents the following randomness throughput rates:
+> If there is the possibility of over-harvesting randomness, why not
+> design the implementations to be clamped at some per core value such
+> as a megabit/second.  In the case of the documented RDSEED generation
+> rates, that would allow the servicing of 3222 cores, if my math at
+> 0530 in the morning is correct.
+> 
+> Would a core need more than 128 kilobytes of randomness, ie. one
+> second of output, to effectively seed a random number generator?
+> 
+> A cynical conclusion would suggest engineering acquiesing to marketing
+> demands... :-)
 
-RDSEED: 3 Gbit/second
-RDRAND: 6.4 Gbit/second
+My assumption is that it was simply easier to not implement a
+rate limiting feature at the CPU level and punt the starvation
+problem to software :-)
 
-If there is the possibility of over-harvesting randomness, why not
-design the implementations to be clamped at some per core value such
-as a megabit/second.  In the case of the documented RDSEED generation
-rates, that would allow the servicing of 3222 cores, if my math at
-0530 in the morning is correct.
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-Would a core need more than 128 kilobytes of randomness, ie. one
-second of output, to effectively seed a random number generator?
-
-A cynical conclusion would suggest engineering acquiesing to marketing
-demands... :-)
-
-> With regards,
-> Daniel
-
-Have a good day.
-
-As always,
-Dr. Greg
-
-The Quixote Project - Flailing at the Travails of Cybersecurity
-              https://github.com/Quixote-Project
