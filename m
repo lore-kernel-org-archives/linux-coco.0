@@ -1,143 +1,163 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D417128825
-	for <linux-coco@lists.linux.dev>; Tue,  6 Feb 2024 08:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C94149006
+	for <linux-coco@lists.linux.dev>; Tue,  6 Feb 2024 12:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707209874; cv=none; b=G8smGqKoT3LgRvHAJZNHURUQkv3vweHxXJWSqHGo2q5R5BYLkk8hzpuLy0TKCzNaVyGBc55WG56TVTTobfatVLR+IudBIRiqIOXrM7eG6DAQImYO09XVBVMgEN/jBA5hY5GILhOjJxaH8h3LBQ0IA2jU750fYD5ChHchnp0dTEE=
+	t=1707221378; cv=none; b=lTxWA1V0VBvdkd/YI1/lUWNAfpM36HYn0CobM6QgXSqS524DQ+ncRZhGE6/KePq8/qpmUUFfLwwUG6UYRWnh5caJrYfIWSq+1/bPf4hQe6QM0uqFuu+bC8CBUv6GSwWr6YssvuBIdf9GmI4Z0lEWkY+wfnyDN99XnuGJDnuiejg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707209874; c=relaxed/simple;
-	bh=zWlDDsNgIAFDlXYYsMxg8m2uMuE5A3i7ukXkyc7rkmk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YXecehgKMyAqxHPAGEEYQA6jdmZL8n0GSFaiEHtagLCbS5clQ0C7K46vKQMELizOtan8ScLMl743ga9ph739XFQxsos0mcEfkh9xNvkC6TPhiqbJZIfgt2xbs8NB5MxCsDaQ86tERF+zSF+WkVMkPL+T/wbPWFfbo4G6t4zu/0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=bAj/eEVD; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=bAj/eEVD; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="bAj/eEVD";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="bAj/eEVD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1707209870;
-	bh=zWlDDsNgIAFDlXYYsMxg8m2uMuE5A3i7ukXkyc7rkmk=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=bAj/eEVDl+krx60izBrMvuGrvvbwH7kqpwEpjRbmw0l4mNM9BpIIM/dsrJWjObozA
-	 X/6sgC+gHUgoOPGQIctMApODGluk3b61I4871jrX/xVi7C50sRSz1fa0pyaXZuNSjb
-	 XcCmg6VfI917qlT7tgV7kyoXdfvb4LPRLOZXbPfk=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 755F21286825;
-	Tue,  6 Feb 2024 03:57:50 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id jeBuSS9UoaOe; Tue,  6 Feb 2024 03:57:50 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1707209870;
-	bh=zWlDDsNgIAFDlXYYsMxg8m2uMuE5A3i7ukXkyc7rkmk=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=bAj/eEVDl+krx60izBrMvuGrvvbwH7kqpwEpjRbmw0l4mNM9BpIIM/dsrJWjObozA
-	 X/6sgC+gHUgoOPGQIctMApODGluk3b61I4871jrX/xVi7C50sRSz1fa0pyaXZuNSjb
-	 XcCmg6VfI917qlT7tgV7kyoXdfvb4LPRLOZXbPfk=
-Received: from [192.168.28.110] (unknown [151.2.154.214])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id F0FE91286815;
-	Tue,  6 Feb 2024 03:57:47 -0500 (EST)
-Message-ID: <fe1722c3618a8216cb53b8fd3f1b7cbb6fdff5a0.camel@HansenPartnership.com>
-Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: "Xing, Cedric" <cedric.xing@intel.com>, Kuppuswamy Sathyanarayanan
-	 <sathyanarayanan.kuppuswamy@linux.intel.com>, Dan Middleton
-	 <dan.middleton@linux.intel.com>, Samuel Ortiz <sameo@rivosinc.com>, Dan
-	Williams <dan.j.williams@intel.com>
-Cc: Qinkun Bao <qinkun@google.com>, "Yao, Jiewen" <jiewen.yao@intel.com>, 
- Dionna Amalie Glaze <dionnaglaze@google.com>, biao.lu@intel.com,
- linux-coco@lists.linux.dev,  linux-integrity@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 06 Feb 2024 08:57:45 +0000
-In-Reply-To: <b8140cc8-a56b-40f6-a593-7be49db14c77@intel.com>
-References: <20240128212532.2754325-1-sameo@rivosinc.com>
-	 <c17a31e4fb30f5f9d4a337e5bd8d54cc6f99eef7.camel@HansenPartnership.com>
-	 <a255bc36-2438-41b7-b304-bcf7a6628bef@linux.intel.com>
-	 <42e14f74d3819c95fdb97cd2e9b2829dcb1b1563.camel@HansenPartnership.com>
-	 <1557f98a-3d52-4a02-992b-4401c7c85dd7@linux.intel.com>
-	 <85b7a4a679eada1d17b311bf004c2d9e18ab5cd3.camel@HansenPartnership.com>
-	 <b8140cc8-a56b-40f6-a593-7be49db14c77@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1707221378; c=relaxed/simple;
+	bh=EGtKM5D1Vb04Le+B1pWopgp/oS3U/Hrc4JxPx+8xT5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RsUvie6vusbTqciLf3pFhqRVUCVWXYpFgQpmXRwEwMSEIAJ6rJpbERm0yJeAyIRfVhtgFHhgxlkbq3vYrYyrnlld1Jiq2/cEHELlk2+iy+2IQaf6NbAt9mjLztRxUnWeIit5iRwXZlHEUdTSx02Ecus0SVeSOpmhHYR993ipmyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 416C4knk001762;
+	Tue, 6 Feb 2024 06:04:46 -0600
+Received: (from greg@localhost)
+	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 416C4jTD001748;
+	Tue, 6 Feb 2024 06:04:45 -0600
+Date: Tue, 6 Feb 2024 06:04:45 -0600
+From: "Dr. Greg" <greg@enjellic.com>
+To: "Daniel P. Berrang??" <berrange@redhat.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+        "Theodore Ts'o" <tytso@mit.edu>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Message-ID: <20240206120445.GA1247@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com> <20240130083007.1876787-2-kirill.shutemov@linux.intel.com> <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <20240206011247.GA29224@wind.enjellic.com> <ZcHoKUElwXGPzrWb@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZcHoKUElwXGPzrWb@redhat.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Tue, 06 Feb 2024 06:04:46 -0600 (CST)
 
-On Tue, 2024-02-06 at 00:34 -0800, Xing, Cedric wrote:
-[...]
-> I'm not familiar with existing TPM code. Per 
-> https://elixir.free-electrons.com/linux/latest/source/drivers/char/tpm/tpm-interface.c#L314
-> ,
-> tpm_pcr_extend() doesn't seem to take/log the actual event, but only 
-> extends the PCR.
+On Tue, Feb 06, 2024 at 08:04:57AM +0000, Daniel P. Berrang?? wrote:
 
-That's the low level code we build on.  The TPM doesn't maintain a log
-at all, just the measuring entity.
+Good morning to everyone.
 
->  IMA seems to maintain the measurement list/log by itself.
-
-It does, yes.
-
->  Am I right? If so, why do we want logging to be part of TSM
-> here?
-
-Well, as I said above: without a log you have a combinatoric explosion
-of events that lead to the PCR value.
-
-> For measured boots, I think UEFI BIOS has already maintained a log so
-> what's needed here is just to expose the log somewhere in sysfs.
-> IMHO, I don't think logging is even necessary because everything in
-> the boot flow is static, hence a relying party can simply compare
-> measurement registers against known good values without looking at
-> any log. But please correct me if I have missed anything.
-
-Without the log the UEFI boot flow is way too brittle because
-measurements aren't actually static and without knowing what happened
-you can't reproduce the PCR value.  It was actually the earliest
-insight from the keylime project that it couldn't just define state by
-PCR values and had to parse the log instead.
-
-> > If you have a kernel backed log, the ABI for extending it should be
-> > where you get the PCR extensions from, that way nothing can go
-> > wrong. An API to extend the PCRs separately will only cause pain
-> > for people who get it wrong (and lead to ordering issues if more
-> > than one thing wants to add to the log, which they will do because
-> > neither the TPM nor the RTMRs have enough registers to do one per
-> > process that wants to use it if this becomes popular).
+> On Mon, Feb 05, 2024 at 07:12:47PM -0600, Dr. Greg wrote:
 > > 
-> There's an easy way to solve the synchronization problem in user mode
-> by applying flock() on the log file - i.e., a process can extend a 
-> measurement register only when holding an exclusive lock on the 
-> corresponding log file.
+> > Actually, I now believe there is clear evidence that the problem is
+> > indeed Intel specific.  In light of our testing, it will be
+> > interesting to see what your 'AR' returns with respect to an official
+> > response from Intel engineering on this issue.
+> > 
+> > One of the very bright young engineers collaborating on Quixote, who
+> > has been following this conversation, took it upon himself to do some
+> > very methodical engineering analysis on this issue.  I'm the messenger
+> > but this is very much his work product.
+> > 
+> > Executive summary is as follows:
+> > 
+> > - No RDRAND depletion failures were observable with either the Intel
+> >   or AMD hardware that was load tested.
+> > 
+> > - RDSEED depletion is an Intel specific issue, AMD's RDSEED
+> >   implementation could not be provoked into failure.
 
-Which would be where exactly? and owned by whom?
+> My colleague ran a multithread parallel stress test program on his
+> 16core/2HT AMD Ryzen (Zen4 uarch) and saw a 80% failure rate in
+> RDSEED.
 
->  A possible drawback is it'd allow a malicious
-> process to starve all other processes by holding the lock forever, or
-> to mess up the log file content intentionally. But that shouldn't be
-> a practical problem because the existence of such malicious processes
-> would have rendered the CVM untrustworthy anyway - i.e., should the
-> CVM still be able to generate a valid attestation, that would only
-> lead to a distrust decision by any sane relying party.
-> 
-> IMHO, if something can be easily solved in user mode, probably it 
-> shouldn't be solved in kernel mode.
+Interesting datapoint, thanks for forwarding it along, so the issue
+shows up on at least some AMD platforms as well.
 
-There isn't really anything more complex about an interface that takes
-a log entry, and does the record an extend, than an interface which
-takes a PCR extension value.  So best practice would say that you
-should create the ABI that you can't get wrong (log and record) rather
-than creating one that causes additional problems for userspace.
+On the 18 core/socket Intel Skylake platform, the parallelized
+depletion test forces RDSEED success rates down to around 2%.  It
+would appear that your tests suggest that the AMD platform fairs
+better than the Intel platform.
 
-James
+So this is turning into even more of a morass, given that RDSEED
+depletion on AMD may be a function of the micro-architecture the
+platform is based on.  The other variable is that our AMD test
+platform had a substantially higher core count per socket, one would
+assume that would result in higher depletion rates, if the operative
+theory of socket common RNG infrastructure is valid.
 
+Unless AMD engineering understands the problem and has taken some type
+of action on higher core count systems to address the issue.
+
+Of course, the other variable may be how the parallelized stress test
+is conducted.  If you would like to share your implementation source
+we could give it a twirl on the systems we have access to.
+
+The continuing operative question is whether or not any of this ever
+leads to an RDRAND failure.
+
+We've conducted some additional tests on the Intel platform where
+RDSEED depletion was driven low as possible, ~1-2% success rates,
+while RDRAND depletion tests were being run simultaneously.  No RDRAND
+failures have been noted.
+
+So the operative question remains, why worry about this if RDRAND is
+used as the randomness primitive.
+
+We haven't seen anything out of Intel yet on this, maybe AMD has a
+quantifying definition for 'astronomical' when it comes to RDRAND
+failures.
+
+The silence appears to be deafening out of the respective engineering
+camps... :-)
+
+> > - AMD's RDRAND/RDSEED implementation is significantly slower than
+> >   Intel's.
+
+> Yes, we also noticed the AMD impl is horribly slow compared to
+> Intel, had to cut test iterations x100.
+
+The operative question is the impact of 'slow', in the absence of
+artifical stress tests.
+
+It would seem that a major question is what are or were the
+engineering thought processes on the throughput of the hardware
+randomness instructions.
+
+Intel documents the following randomness throughput rates:
+
+RDSEED: 3 Gbit/second
+RDRAND: 6.4 Gbit/second
+
+If there is the possibility of over-harvesting randomness, why not
+design the implementations to be clamped at some per core value such
+as a megabit/second.  In the case of the documented RDSEED generation
+rates, that would allow the servicing of 3222 cores, if my math at
+0530 in the morning is correct.
+
+Would a core need more than 128 kilobytes of randomness, ie. one
+second of output, to effectively seed a random number generator?
+
+A cynical conclusion would suggest engineering acquiesing to marketing
+demands... :-)
+
+> With regards,
+> Daniel
+
+Have a good day.
+
+As always,
+Dr. Greg
+
+The Quixote Project - Flailing at the Travails of Cybersecurity
+              https://github.com/Quixote-Project
