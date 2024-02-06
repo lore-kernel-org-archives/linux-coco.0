@@ -1,121 +1,271 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58677129A72
-	for <linux-coco@lists.linux.dev>; Tue,  6 Feb 2024 08:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707206713; cv=none; b=MA9sFj1RCYaV+2WwoG1B471lwAxxgfO3kLDgem4U+Q9I237D1nlm9Z1r73IRt02fqfjJIfXhdYy+8Zvxc6j6ThRJaHrtnwqSs2xd+XY4igiFr9HrUEZaSw/fH5ez1iH9Aq3ic6WEo9QNKdEUJwdnUMT/JP4Hj6b+zvXxjR5b4P4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707206713; c=relaxed/simple;
-	bh=MsHf8cVdpuCFq4ctLxFOemRpS5F5u/extnlTkO7PvNY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X7v5gHXa0Ulbsxk7q/wJldj8TXxA/sal5E6ZY1Xy3JttJ5kloN1caiaJOc3QP6FOj37zVbQm5GYrolMf/zbqhv7cSbV6wpELqUWm9N1gFf53grFa8eoXIYHjLReuQ4cvVPaJvHSGsLnd6daZsvRtMVGZFQqxCVVTVSq0l5vA/Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VEgB+XBu; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D02212BF13
+	for <linux-coco@lists.linux.dev>; Tue,  6 Feb 2024 08:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707208507; cv=fail; b=jjN2M7vrmKjvVO6HFPKUkbgypiPpPEF0MPu7iR9Ez9TYcEk2ec79l6OHiJRLjGSrYKH81B0aiR6/tiGPWqx537Vi3hk2OmSnzspaLfnrQVTgPY4RDmSrlg2eJwgfbpB6gKkF+EubX9pko9EMyGYKGmKWPCwBWuQ/lRrKSFZYRaM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707208507; c=relaxed/simple;
+	bh=BTT6SWhbbRoYsUw/Agc7Q3eU3mbHC+pPXGuk7WLskbQ=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=TrNZYWBL0bm+/mQcVvwoRBzTMDTxhdZhZjZspG+q4cYqrYDET+rXCwrP4vsXvrUCHI4gwH5vWbtBRrR1neFkfYBerlBPLdG37IRG9hCXAF8OfIcxTfA+/S4jn8/u4anJjulIgizp/0FSda3vkV2MrHvhrq/2TQeC+1IZNzrTdc0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EHBLKyze; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VEgB+XBu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707206710;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=VoG77iC4V8mtXCplQh9IiWyiocJNF7CpVFSOwa43ZiE=;
-	b=VEgB+XBuSH7DpS23IqBgjU1612A5NI2HtI2IFy7UGpCdMFKd/z12qQrsB+T2o2HP9DwGIW
-	p0bi1SrnQGqj/lpUOWjQ5AUZu/w3RPO6Emf15RjF9U86/+OruYboafs/dQg4ViNcR0lSIf
-	WsXmRFkcUKoN1oy0shAoV/vXAnh1Nrg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-148-IXlGMc1pNmqu9FkmToUdZQ-1; Tue, 06 Feb 2024 03:05:06 -0500
-X-MC-Unique: IXlGMc1pNmqu9FkmToUdZQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 85A4085A588;
-	Tue,  6 Feb 2024 08:05:05 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.53])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id AECA02166B32;
-	Tue,  6 Feb 2024 08:05:00 +0000 (UTC)
-Date: Tue, 6 Feb 2024 08:04:57 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: "Dr. Greg" <greg@enjellic.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Nakajima, Jun" <jun.nakajima@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-Message-ID: <ZcHoKUElwXGPzrWb@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
- <20240130083007.1876787-2-kirill.shutemov@linux.intel.com>
- <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com>
- <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com>
- <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com>
- <Zbk6h0ogqeInLa_1@redhat.com>
- <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20240206011247.GA29224@wind.enjellic.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EHBLKyze"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707208506; x=1738744506;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=BTT6SWhbbRoYsUw/Agc7Q3eU3mbHC+pPXGuk7WLskbQ=;
+  b=EHBLKyzeHlXHaLfab/uDD3zF7sEPQm3wMfUGp2BcVndjdPKgYB1PmhXJ
+   JeJIhbUAX0vYcmJOM38gbO46/x2zfUJLBqbhXofR8ur+YIQDoDk/QFuPi
+   1XElgWyIiD+XCzEKYwBObBbuOUbzb1udH8PKgTGHNPM3RHaqQEP/B8dq5
+   +y5hllpKvSsufjnLyt56rj9shvBxyNhKeoIcv20vE2dPhiKwrL5HWiSAk
+   xYZAVaL2wp+ict+KKw6sVxPl6VzHkxIsipSmG5zJvd3uwHlLakYPKK7TY
+   uG+wLPeYqwxKUYRDFziG2sUUfwBkOMFvDRqzr3NPOGPcWBaWeGksvKHQ1
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="11436720"
+X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; 
+   d="scan'208";a="11436720"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 00:35:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; 
+   d="scan'208";a="24207347"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Feb 2024 00:35:05 -0800
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 6 Feb 2024 00:35:04 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 6 Feb 2024 00:35:04 -0800
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 6 Feb 2024 00:35:04 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=myfjTp2Zh0hHMyBSgQ6juxSHwXCBYUN77nI2RWHJfCv2FLjCgJaFJzqsawmFn4s6po4bHGZ+y8nzYs13oDozYEn+yH8j8OliaNPEVplp/7TJztoauao8xo5f3IhLBFRSGlMVAHURF78bTM0nWTZzNH1dD8MyLFpyrAtt8OHO1/Tshb/c63Bs1lqxwJDp178FBjDnIINQc71hWNxtaxI5TNZKXwPhM5gYpzDNzt8wU28oFRdogwdpWnUQqFkG/vDrsLuQGptM1fNolwR673qUOXS5IHxZsj5XfdjSjgCeJuNcP8pUVD319BFWFzmxLCns6UOGmEvx/gipq4gWZpQlbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NO+4mFLEZKqwy03owlPREzxSEVoiSJlL5FT9vMUdwqI=;
+ b=UDTkWl/7Ew6TGRiyYjFCkVcPAHyvoHfBR3ltSkw0PUgSBzvzyM4nmv3KSLl2IgTrTmt5vZ5Atj64X/y+w5jNFsqlXYEjgMtVKSdJX8gA3BKnbzQzFnWn2jVmt7HiQR8J5EHpx7Q4vBBO6iwB43llDkybb9q/YiE3A/pu73cMgTb8yNJYNtaxhp2RZUsx67Qzni5SZIq7LjDzUSg5ANz6HutMhzM8C+Udt2kJEWeDp08wJGrnxDJGk90hAe1BFoBulDF5zOBQ5GaDLZ0mEsodtl7q86injABcTrp5mrQDEKhiwIB6Nak7UjJz/CEnET99YqoOy2t4cWqPjC3+7NoQtA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS7PR11MB6269.namprd11.prod.outlook.com (2603:10b6:8:97::14) by
+ DM4PR11MB5535.namprd11.prod.outlook.com (2603:10b6:5:398::11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7249.36; Tue, 6 Feb 2024 08:35:02 +0000
+Received: from DS7PR11MB6269.namprd11.prod.outlook.com
+ ([fe80::52c6:33d7:27be:28c5]) by DS7PR11MB6269.namprd11.prod.outlook.com
+ ([fe80::52c6:33d7:27be:28c5%4]) with mapi id 15.20.7249.035; Tue, 6 Feb 2024
+ 08:35:02 +0000
+Message-ID: <b8140cc8-a56b-40f6-a593-7be49db14c77@intel.com>
+Date: Tue, 6 Feb 2024 00:34:59 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
+To: James Bottomley <James.Bottomley@HansenPartnership.com>, "Kuppuswamy
+ Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>, Dan Middleton
+	<dan.middleton@linux.intel.com>, Samuel Ortiz <sameo@rivosinc.com>, "Dan
+ Williams" <dan.j.williams@intel.com>
+CC: Qinkun Bao <qinkun@google.com>, "Yao, Jiewen" <jiewen.yao@intel.com>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>, <biao.lu@intel.com>,
+	<linux-coco@lists.linux.dev>, <linux-integrity@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20240128212532.2754325-1-sameo@rivosinc.com>
+ <c17a31e4fb30f5f9d4a337e5bd8d54cc6f99eef7.camel@HansenPartnership.com>
+ <a255bc36-2438-41b7-b304-bcf7a6628bef@linux.intel.com>
+ <42e14f74d3819c95fdb97cd2e9b2829dcb1b1563.camel@HansenPartnership.com>
+ <1557f98a-3d52-4a02-992b-4401c7c85dd7@linux.intel.com>
+ <85b7a4a679eada1d17b311bf004c2d9e18ab5cd3.camel@HansenPartnership.com>
+Content-Language: en-US
+From: "Xing, Cedric" <cedric.xing@intel.com>
+In-Reply-To: <85b7a4a679eada1d17b311bf004c2d9e18ab5cd3.camel@HansenPartnership.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4P220CA0029.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:303:115::34) To DS7PR11MB6269.namprd11.prod.outlook.com
+ (2603:10b6:8:97::14)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240206011247.GA29224@wind.enjellic.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR11MB6269:EE_|DM4PR11MB5535:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67908461-9e04-4c6e-8097-08dc26ee8347
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: nqlJA3w09oubg+pbQxpjjRnA/oyUKE3/Uhfh3E+s9WErwLQgD9iyj7y75JjrVONUHTx8xvsu8TvJTTrMPguFE/DBB9DU2OHozlYAn0y+f2yf+K6g1B7mBcifqg+xOghCul8XWeY+kowuVsVSWMRuDOeIz9OWCzPekiAPSwj07ie91Z8r0aoj1/O2hkt8TTSZOBa9c1AdPu49RLKQ9Mm4qzB9e73iKGo1+hvFhHnuyrXWNEYaVq1AG1CWbSfQ0YKK4B7l+rFO6t/UOlvvNy/Ax5nfkKUFoUBmsrlvXTBGct37Wed5Mj61CDyX2akZy5dhC0D4S73ZEysA6iTFYToGK7zfqAb6ofBwzB1kbfj72d/i0AN7+/6/hUmBSPGDFok2PjWcYWQRQ/9mdMb7ia+5XSw8vjyyaTXZzoPiLrdTX8bc11qlMCeBSFkRauklV3WkFMQh8TaV9XzfVsHZceXzTAcTJL+6RZFQdNx3sANHWsRyB6u6NEO6LjlkklXrlgqxEQUc2TOz45DWB7SGUlCRM7zvJ4g4Pququ0UrFdavVNAPL2Gil5GZnf0I26ULt1QQk48b+zhd4SjPHWpgf240zrjlyC4sDWop4WefM5nYDt+b+YUXEN6VyA9yx65I2eiLPGTD6dVNJO+vn3R9CShFaw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB6269.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(39860400002)(396003)(376002)(136003)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(5660300002)(2906002)(31686004)(41300700001)(83380400001)(38100700002)(26005)(82960400001)(86362001)(31696002)(2616005)(6506007)(6512007)(53546011)(110136005)(6636002)(54906003)(8676002)(8936002)(6666004)(478600001)(6486002)(66476007)(66556008)(66946007)(966005)(36756003)(4326008)(316002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NmdjK2gwbVJkSENCOStXQTNxWmNJck9OZ2pBaHl0L2UyQ3BpTVY4OEFvOVdQ?=
+ =?utf-8?B?SGZTaUgzZWM4TEdIMGlqbVB2WmJTUHFmSUJRRDBQRWUxNHBjUmtQS1FBcy9h?=
+ =?utf-8?B?REJjaVFkakE5eXlzNmYxYXdNazNqNkFrdVRucGVMR1hraUs3bW93QXlSeVRD?=
+ =?utf-8?B?RnIrTzRiMzE5OEkxdDJ5c0w0bTYvZWVMb3IyNWNibVpReHhwMzg4VjA5TWsw?=
+ =?utf-8?B?UWs0ckFzQThGZHNJRWR6clg5L20vaEowWGEzamNHZVNabjdZaktmbk1Cc29x?=
+ =?utf-8?B?RVNCQTZERStNczNaeWNiczJwMi9ueDZkWk1kazlMZ2JjRmxHSllKR1ppVnM1?=
+ =?utf-8?B?TTNBOTcrSmx4aFQ2Q1ZHVGZKUklOVVhhVFp3aTBRSjZqYjl2cVl5NVUybHgw?=
+ =?utf-8?B?WWNGL3ZTN3A0cWR3bEhxbWg4UVFnNDlrLytQRktRcHVmbnUwMTE1QnJNZUl3?=
+ =?utf-8?B?Q3lEUWtwNzBBSU5IZkdEaFBNcTNPSVJocC9XNkFSeWROdDMxNzE0bFd5YTZS?=
+ =?utf-8?B?M3g2TkRvTE9FYzdqdkVhazhsWkRzMUxROHdqMFRlb1hpcTJiTzlaTVA3NzJ0?=
+ =?utf-8?B?SG1Yb2hmRzRBdElraWpmLytEckdNMUtYZ3kwM2p4TXZlRmF0SlRTZ0VsQ3gy?=
+ =?utf-8?B?MFNqRndhQkZWaHhJL0wzZTJMcFZmYUgvVjN1WGh2N0NJTWYwYWdXV3dsb1Jr?=
+ =?utf-8?B?TzNQRkQyQTBaS2c5THFWVzhiRC9VZk1BNGNPOExseWJneGNLSkdCV0VQbmxk?=
+ =?utf-8?B?dHo1cmtiTE5kS1NWY1VyZG1ENVV1R2JpQ0FlYnZ0NWVkKytnWlZuTWxxNHFE?=
+ =?utf-8?B?ZUJLaEtpSE5GV1V3U0drbUdZUUI1ak9Dcm9YaTUwejByNlhvVnJXYUQyV3hw?=
+ =?utf-8?B?bGd5a0wrb0k2d0d0RmxCSnVFY1N6cFE4a3duUjV6OFhwSHNLSDY0cUVINmxP?=
+ =?utf-8?B?alp2TXkxSEFEMmc1eERKUWtlWHJZVThLcmRWc1dNaWpIbFZzdFFCSlJuRHZV?=
+ =?utf-8?B?OUw3dGhnaXkreHRNdWNCaHhDQmlMMDNkOFVlOU5uVG9uY09ETXFLS1RjZjlh?=
+ =?utf-8?B?NUxta1habkpXZmRrRlZlcEZER3pLci8xalJlZGdwWHNIcWNQWlQwODJDRjNL?=
+ =?utf-8?B?K1BUdU56NGduOTVxRno1RURVcVpFV3JjTkkxczAyNGhxN0Vqb2NhMnkxRDdh?=
+ =?utf-8?B?TnhWekNGcEIvQkxwbHNIRW15U0N0YnJXQVBNRi9Sa29zSlhaZE5kMU1SZVpJ?=
+ =?utf-8?B?M0lNbU42Z3ZMckc4V0hBR09tUkpqODVIeDI2ZTdvV1Y2SFhlRURaZWhsQ2FS?=
+ =?utf-8?B?cnFxWkVFN3Uzc1l6UTFxWkJnaHdEd215U0NVd3ZFOVBNZkV4SEpzeng3TUll?=
+ =?utf-8?B?ck40MWJzNmZOQU1NSnc3dW4xYXFHZUpweXNrQU56NGYydDZuNk9Ya1MvZFdG?=
+ =?utf-8?B?MTRDS2pCWmVoTkZnZFJCOHhvaURjN2xGcVBvS2lPVGtoU0hEaVl2MDVjTDJG?=
+ =?utf-8?B?TTU2OXVxdis2TG1XSHZicDNneDZUa2NHR1BEQTcxOWxmSUJIcXd6d1ltcWJB?=
+ =?utf-8?B?MlBFKzRZVThHVzk5MStnYTJXMndXekhsNzUxYXl4ektzZXliQ1RUaDgzQVZo?=
+ =?utf-8?B?MWlpaFRQVHBWUTFEQjlWTG5FMGcvK3hkamJKWTJhdVlxWERIdkpPTXQvbHJH?=
+ =?utf-8?B?QnFTaUNRY2NsTHdFVC9GL1BrS21FTVYvS1liVHJaaU1wbGRrK0k1d3BkM1p0?=
+ =?utf-8?B?MW8yV1kvTStmNkpUdnVMS0o4YktiNmNRTUpjem9Vd0hXTHhKWUJNWWFEd0Fa?=
+ =?utf-8?B?bnFaVkJMdzRMRWUySFA1Smw1anRiZUtISDFsQzZCTGhLMjg4UExCWForU2xX?=
+ =?utf-8?B?alByZkNLanhIMDJpYXRtQjdBcmEyb2RlZVJwQ2w2c01nbGxsQnJEMXVsaVY4?=
+ =?utf-8?B?NXRMSTN0V2hwdTJIb3UvNFNWUWlYSHVkMEhscVU3QXJhMmhidTBJdTQ0TnZC?=
+ =?utf-8?B?TGVZVjNGSXRFOU5idnVsWjdUZmxkVTc2b0FPNDB5UG11R0ZZcVFQQ1BpK25r?=
+ =?utf-8?B?SDBrck8zZ052d1FKNzQ5QkJGYkhUaFNpN2VXa3orK0VDc1lkUkJEQzhLUDJO?=
+ =?utf-8?Q?GOh1yU6rMYwUHXUIo8YT5+SSM?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67908461-9e04-4c6e-8097-08dc26ee8347
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB6269.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2024 08:35:02.7964
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bnVYdprOvUuVemnWdfksZBA8V9mMhPGRCBFcf1+rUla3Y6nOm3R82+gxk5UVM6PRLgum+F1VIXmZ8dxYmFYSgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5535
+X-OriginatorOrg: intel.com
 
-On Mon, Feb 05, 2024 at 07:12:47PM -0600, Dr. Greg wrote:
+On 2/3/2024 2:27 AM, James Bottomley wrote:
+> On Fri, 2024-02-02 at 23:13 -0800, Kuppuswamy Sathyanarayanan wrote:
+>>
+>> On 2/2/24 10:03 PM, James Bottomley wrote:
+>>> On Fri, 2024-02-02 at 17:07 -0600, Dan Middleton wrote:
+>>>> On 2/2/24 12:24 AM, James Bottomley wrote:
+>>>>> On Sun, 2024-01-28 at 22:25 +0100, Samuel Ortiz wrote:
+>>>>>> All architectures supporting RTMRs expose a similar interface
+>>>>>> to
+>>>>>> their TVMs: An extension command/call that takes a
+>>>>>> measurement
+>>>>>> value and an RTMR index to extend it with, and a readback
+>>>>>> command
+>>>>>> for reading an RTMR value back (taking an RTMR index as an
+>>>>>> argument as well). This patch series builds an architecture
+>>>>>> agnostic, configfs-based ABI for userspace to extend and read
+>>>>>> RTMR values back. It extends the current TSM ops structure
+>>>>>> and
+>>>>>> each confidential computing architecture can implement this
+>>>>>> extension to provide RTMR support.
+>>>>> What's the actual use case for this?  At the moment the TPM
+>>>>> PCRs
+>>>>> only provide a read interface to userspace (via
+>>>>> /sys/class/tpm/tpmX/pcr-shaY/Z) and don't have any extension
+>>>>> ability becuase nothing in userspace currently extends them.
+>>>>>
+>>>>> The only current runtime use for TPM PCRs is IMA, which is in-
+>>>>> kernel (and which this patch doesn't enable).
+>>>>>
+>>>>> Without the ability to log, this interface is unusable anyway,
+>>>>> but
+>>>>> even with that it's not clear that you need the ability
+>>>>> separately
+>>>>> to extend PCRs because the extension and log entry should be
+>>>>> done
+>>>>> atomically to prevent the log going out of sync with the PCRs,
+>>>>> so
+>>>>> it would seem a log first interface would be the correct way of
+>>>>> doing this rather than a PCR first one.
+>>>>>
+>>>>> James
+>>>>>
+>>>>>
+>>>> While we clearly need to cover PCR-like usages, I think
+>>>> Confidential
+>>>> Computing affords usages that go beyond TPM.
+>>> Well, don't get me wrong, I think the ability to create non
+>>> repudiable
+>>> log entries from userspace is very useful.  However, I think the
+>>> proposed ABI is wrong: it should take the log entry (which will
+>>> contain
+>>> the PCR number and the hash) then do the extension and add it to
+>>> the
+>>> log so we get the non-repudiable verifiability.  This should work
+>>> equally with TPM and RTMR (and anything else).
+>>
+>> Maybe I misunderstood your comments, but I am not sure why
+>> the user ABI needs to change?
 > 
-> Actually, I now believe there is clear evidence that the problem is
-> indeed Intel specific.  In light of our testing, it will be
-> interesting to see what your 'AR' returns with respect to an official
-> response from Intel engineering on this issue.
+> Well, there is no ABI currently, so I'm saying get it right before
+> there is one.
 > 
-> One of the very bright young engineers collaborating on Quixote, who
-> has been following this conversation, took it upon himself to do some
-> very methodical engineering analysis on this issue.  I'm the messenger
-> but this is very much his work product.
+>>   I agree that logging after extension is the right approach. But,
+>> IMO, it should be owned by the back end TSM vendor drivers. The user
+>> ABI should just pass the digest and RTMR index.
 > 
-> Executive summary is as follows:
+> Well, lets wind back to the assumptions about the log.  The current
+> convention from IMA and Measured Boot is that the log is managed by the
+> kernel.  Given the potential problems with timing and serialization
+> (which can cause log mismatches) it would make sense for this ABI also
+> to have a kernel backed log (probably a new one from the other two).
+
+I'm not familiar with existing TPM code. Per 
+https://elixir.free-electrons.com/linux/latest/source/drivers/char/tpm/tpm-interface.c#L314, 
+tpm_pcr_extend() doesn't seem to take/log the actual event, but only 
+extends the PCR. IMA seems to maintain the measurement list/log by 
+itself. Am I right? If so, why do we want logging to be part of TSM here?
+
+For measured boots, I think UEFI BIOS has already maintained a log so 
+what's needed here is just to expose the log somewhere in sysfs. IMHO, I 
+don't think logging is even necessary because everything in the boot 
+flow is static, hence a relying party can simply compare measurement 
+registers against known good values without looking at any log. But 
+please correct me if I have missed anything.
+
+> If you have a kernel backed log, the ABI for extending it should be
+> where you get the PCR extensions from, that way nothing can go wrong.
+> An API to extend the PCRs separately will only cause pain for people
+> who get it wrong (and lead to ordering issues if more than one thing
+> wants to add to the log, which they will do because neither the TPM nor
+> the RTMRs have enough registers to do one per process that wants to use
+> it if this becomes popular).
 > 
-> - No RDRAND depletion failures were observable with either the Intel
->   or AMD hardware that was load tested.
+There's an easy way to solve the synchronization problem in user mode by 
+applying flock() on the log file - i.e., a process can extend a 
+measurement register only when holding an exclusive lock on the 
+corresponding log file. A possible drawback is it'd allow a malicious 
+process to starve all other processes by holding the lock forever, or to 
+mess up the log file content intentionally. But that shouldn't be a 
+practical problem because the existence of such malicious processes 
+would have rendered the CVM untrustworthy anyway - i.e., should the CVM 
+still be able to generate a valid attestation, that would only lead to a 
+distrust decision by any sane relying party.
+
+IMHO, if something can be easily solved in user mode, probably it 
+shouldn't be solved in kernel mode.
+
+> James
 > 
-> - RDSEED depletion is an Intel specific issue, AMD's RDSEED
->   implementation could not be provoked into failure.
-
-My colleague ran a multithread parallel stress test program on
-his 16core/2HT AMD Ryzen (Zen4 uarch) and saw a 80% failure rate
-in RDSEED.
-
-> - AMD's RDRAND/RDSEED implementation is significantly slower than
->   Intel's.
-
-Yes, we also noticed the AMD impl is horribly slow compared to Intel,
-had to cut test iterations x100
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
