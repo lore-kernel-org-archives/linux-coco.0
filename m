@@ -1,49 +1,46 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D9A168B1
-	for <linux-coco@lists.linux.dev>; Tue,  6 Feb 2024 18:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FE013FE7
+	for <linux-coco@lists.linux.dev>; Tue,  6 Feb 2024 19:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707245457; cv=none; b=r/cdBhB1I6HbqJ6kD4SvmXjCLHeX84e2X2iC72CQ3bamO7Mh6Qx2IdWNGHY7600qrNQRhRMyZKgCTpI97ygeRZQ7VAtDcWjmiy3a7y1u2LPY43uATxqp+lbDK0TxG0r4ZTVNsKaStmEQTSebXMnMH/MpWsic9COub0nkGp3Jkxg=
+	t=1707246764; cv=none; b=HfLR5gfRhrec4CcMMJstyy+W3+hdEZNJuy9LWNGfgG43hw1VGdgIxrDu7UR1TeCY8WfNxiQ1+Dl6D1Rt9H6+NalKmJMUQqAKBLNw2o63Jp2txpakxaKqmPljr0sWnHJsLA+gbHmD9o99ycUWjhnmGzLEXaOBg7xLOb3auL75lw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707245457; c=relaxed/simple;
-	bh=9QXK7yv8qwXOa/XpUnLXjJTOiYjo+NdrQAQTzhXy5oo=;
+	s=arc-20240116; t=1707246764; c=relaxed/simple;
+	bh=QIX8ThrxEN/63pZ8mRtmW7NV4oz3tc5pqgfER4WuGZQ=;
 	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=N2fTSLamYM34wmG0n8FeplCY29BlOR/NjjgZYCRtECsiaEQU2G0SpVgSnrw2rTdW/fq9Oi9vS+AUKVwY5au0lB1dnrCSK8RV6pMkf3009FzwK6ea/cSD31FxvWDF4BU47VN7sCm2BWhRpceE2QLcCLRxghWuFut+Q2TD/WLnCBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=fail (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=XHMvD5Km reason="signature verification failed"; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version:Content-Type; b=DCaxmL1khonWrvMPo3QfkhkYG3KOScMx/HX3VIOYcP9RLiYuL1Lgd9CFjnGvA6vDL3HflrkcJ6KDyoeg8D7E2LJMPLdnAOrBRCWT/c6e8ixMLFaj7YmwjTInJqLnj4ug0She8qZZOwLg7UEX99yl7jkYGfhP+g6e3r42NtpSnB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=fail (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=uMLtbKsy reason="signature verification failed"; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="XHMvD5Km"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="uMLtbKsy"
 Received: from [127.0.0.1] ([76.133.66.138])
 	(authenticated bits=0)
-	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 416Io1fA2330850
+	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 416JCCeF2336557
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 6 Feb 2024 10:50:02 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 416Io1fA2330850
+	Tue, 6 Feb 2024 11:12:13 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 416JCCeF2336557
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024011201; t=1707245403;
-	bh=M9cPKezRp+PquE4lEOvKR5VGh1H+MJcDJYB8rjUwjF0=;
+	s=2024011201; t=1707246734;
+	bh=/E4fg2gasMcWdntZWwFj38PVFbI5P1u58WKFuSARsxc=;
 	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=XHMvD5KmB/JGmNoLhKhu9eFAdWBrJ2LJO7AsVoWADhSyBwK5RTlqRWN9q111AeVIW
-	 huxXqFA6SzLDVNuK+HLltNMbFGlGc5RqSVPGGvNKnEms+xtg+pcB80qymSRVIejvvn
-	 mD7fCO5Mg3SVf3schSJzZdtXNAn80Fr04ZAa1KCUTb7y2WrkrkHpxs5vHpX+55/lH6
-	 pU8gCgDfksq38ojCWS+qFw9t4HMkTJMdSdz35j4SBH1NT84O5mELE5MF/vRKuq95sN
-	 rMSM7FXTJkG6IrT7TClbE737Y4iN2YyuQN/y1gJW4XQ1P4u8xuKy8dfIcvuVmkc4tH
-	 STVj9WMl6pjfw==
-Date: Tue, 06 Feb 2024 10:49:59 -0800
+	b=uMLtbKsyKS5HG8bI9WVODWUgmtAbiisxY67Yk4/FwkgGt+guW5fPDfogSOkaWZPdV
+	 mO8RJ/gvv+KsrSqcFDHrr6MNNzeEctYsgXWVau6wxabhW0wACq9ayptzrXc38hZ6rF
+	 jCD5yek3PtSCuphTvbLGl3jTPS25dTCmfK7ZdjXIlVz/Fl/A/r5UC6J622JhfCUQk9
+	 AJPUv/BEyjDW3875YK+cNaE2FA88o9nN6XnxdeMNgzfIF5UCZ2uAm/p0lH/LEi/Pfn
+	 NlGwfIWTu6WtLSOn/gZNHfwePXvRvNyY7Rj5cJLIoSq/L1Ir296X1LuK7cpP2foBbN
+	 CkfBas0vb80dQ==
+Date: Tue, 06 Feb 2024 11:12:08 -0800
 From: "H. Peter Anvin" <hpa@zytor.com>
-To: "Dr. Greg" <greg@enjellic.com>,
-        "Daniel P. Berrang??" <berrange@redhat.com>
-CC: "Reshetova, Elena" <elena.reshetova@intel.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
+To: "Theodore Ts'o" <tytso@mit.edu>, James Bottomley <jejb@linux.ibm.com>
+CC: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Reshetova, Elena" <elena.reshetova@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "x86@kernel.org" <x86@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
+        Borislav Petkov <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
         Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
         "Nakajima, Jun" <jun.nakajima@intel.com>,
         Tom Lendacky <thomas.lendacky@amd.com>,
@@ -51,11 +48,11 @@ CC: "Reshetova, Elena" <elena.reshetova@intel.com>,
         Sean Christopherson <seanjc@google.com>,
         "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
 User-Agent: K-9 Mail for Android
-In-Reply-To: <20240206120445.GA1247@wind.enjellic.com>
-References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com> <20240130083007.1876787-2-kirill.shutemov@linux.intel.com> <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <20240206011247.GA29224@wind.enjellic.com> <ZcHoKUElwXGPzrWb@redhat.com> <20240206120445.GA1247@wind.enjellic.com>
-Message-ID: <00DF289B-1450-4272-9142-60643FAA852C@zytor.com>
+In-Reply-To: <20240203143547.GC36616@mit.edu>
+References: <20240131140756.GB2356784@mit.edu> <Zbpc8tppxuKr-hnN@zx2c4.com> <20240131171042.GA2371371@mit.edu> <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com> <20240201045710.GD2356784@mit.edu> <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com> <ad1a131a006bf98a506e767a01f5022358b3e291.camel@linux.ibm.com> <20240202160515.GC119530@mit.edu> <6ccd8c7998542f1ac68514700fb9e31049a3a3c7.camel@linux.ibm.com> <20240203143547.GC36616@mit.edu>
+Message-ID: <60465F66-46A6-4A16-97AC-38EAE3FC67DA@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -66,130 +63,66 @@ Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On February 6, 2024 4:04:45 AM PST, "Dr=2E Greg" <greg@enjellic=2Ecom> wrot=
-e:
->On Tue, Feb 06, 2024 at 08:04:57AM +0000, Daniel P=2E Berrang?? wrote:
+On February 3, 2024 6:35:47 AM PST, Theodore Ts'o <tytso@mit=2Eedu> wrote:
+>On Fri, Feb 02, 2024 at 10:28:01PM +0100, James Bottomley wrote:
+>>=20
+>> My big concern is older cpus where rdrand/rdseed don't produce useful
+>> entropy=2E  Exhaustion attacks are going to be largely against VMs not
+>> physical systems, so I worry about physical systems with older CPUs
+>> that might have rdrand issues which then trip our Confidential
+>> Computing checks=2E
 >
->Good morning to everyone=2E
+>For (non-CC) VM's the answer is virtio-rng=2E  This solves the
+>exhaustion problem, since if you can't trust the host, the VM's
+>security is taost anyway (again, ignoring Confidential Compute)=2E
 >
->> On Mon, Feb 05, 2024 at 07:12:47PM -0600, Dr=2E Greg wrote:
->> >=20
->> > Actually, I now believe there is clear evidence that the problem is
->> > indeed Intel specific=2E  In light of our testing, it will be
->> > interesting to see what your 'AR' returns with respect to an official
->> > response from Intel engineering on this issue=2E
->> >=20
->> > One of the very bright young engineers collaborating on Quixote, who
->> > has been following this conversation, took it upon himself to do some
->> > very methodical engineering analysis on this issue=2E  I'm the messen=
-ger
->> > but this is very much his work product=2E
->> >=20
->> > Executive summary is as follows:
->> >=20
->> > - No RDRAND depletion failures were observable with either the Intel
->> >   or AMD hardware that was load tested=2E
->> >=20
->> > - RDSEED depletion is an Intel specific issue, AMD's RDSEED
->> >   implementation could not be provoked into failure=2E
+>> The signal for rdseed failing is fairly clear, so if the node has other
+>> entropy sources, it should continue otherwise it should signal failure=
+=2E
+>> Figuring out how a confidential computing environment signals that
+>> failure is TBD=2E
 >
->> My colleague ran a multithread parallel stress test program on his
->> 16core/2HT AMD Ryzen (Zen4 uarch) and saw a 80% failure rate in
->> RDSEED=2E
+>That's a design decision, and I believe we've been converging on a
+>panic during early boot=2E  Post boot, if we've successfully succeeded
+>in initializing the guest kernel's RNG, we're secure so long as the
+>cryptographic primitives haven't been defeated --- and if we have,
+>such as if Quantuum Computing because practical, we've got bigger
+>problems anyway=2E
 >
->Interesting datapoint, thanks for forwarding it along, so the issue
->shows up on at least some AMD platforms as well=2E
->
->On the 18 core/socket Intel Skylake platform, the parallelized
->depletion test forces RDSEED success rates down to around 2%=2E  It
->would appear that your tests suggest that the AMD platform fairs
->better than the Intel platform=2E
->
->So this is turning into even more of a morass, given that RDSEED
->depletion on AMD may be a function of the micro-architecture the
->platform is based on=2E  The other variable is that our AMD test
->platform had a substantially higher core count per socket, one would
->assume that would result in higher depletion rates, if the operative
->theory of socket common RNG infrastructure is valid=2E
->
->Unless AMD engineering understands the problem and has taken some type
->of action on higher core count systems to address the issue=2E
->
->Of course, the other variable may be how the parallelized stress test
->is conducted=2E  If you would like to share your implementation source
->we could give it a twirl on the systems we have access to=2E
->
->The continuing operative question is whether or not any of this ever
->leads to an RDRAND failure=2E
->
->We've conducted some additional tests on the Intel platform where
->RDSEED depletion was driven low as possible, ~1-2% success rates,
->while RDRAND depletion tests were being run simultaneously=2E  No RDRAND
->failures have been noted=2E
->
->So the operative question remains, why worry about this if RDRAND is
->used as the randomness primitive=2E
->
->We haven't seen anything out of Intel yet on this, maybe AMD has a
->quantifying definition for 'astronomical' when it comes to RDRAND
->failures=2E
->
->The silence appears to be deafening out of the respective engineering
->camps=2E=2E=2E :-)
->
->> > - AMD's RDRAND/RDSEED implementation is significantly slower than
->> >   Intel's=2E
->
->> Yes, we also noticed the AMD impl is horribly slow compared to
->> Intel, had to cut test iterations x100=2E
->
->The operative question is the impact of 'slow', in the absence of
->artifical stress tests=2E
->
->It would seem that a major question is what are or were the
->engineering thought processes on the throughput of the hardware
->randomness instructions=2E
->
->Intel documents the following randomness throughput rates:
->
->RDSEED: 3 Gbit/second
->RDRAND: 6=2E4 Gbit/second
->
->If there is the possibility of over-harvesting randomness, why not
->design the implementations to be clamped at some per core value such
->as a megabit/second=2E  In the case of the documented RDSEED generation
->rates, that would allow the servicing of 3222 cores, if my math at
->0530 in the morning is correct=2E
->
->Would a core need more than 128 kilobytes of randomness, ie=2E one
->second of output, to effectively seed a random number generator?
->
->A cynical conclusion would suggest engineering acquiesing to marketing
->demands=2E=2E=2E :-)
->
->> With regards,
->> Daniel
->
->Have a good day=2E
->
->As always,
->Dr=2E Greg
->
->The Quixote Project - Flailing at the Travails of Cybersecurity
->              https://github=2Ecom/Quixote-Project
+>					- Ted
 
-You do realize, right, that the "deafening silence" is due to the need for=
- research and discussions on our part, and presumably AMD's=2E
+I also want to emphasize that there is a huge difference between boot (ini=
+tialization) time and runtime=2E Runtime harvesting has always been opportu=
+nistic in Linux, and so if RDSEED fails, try again later =E2=80=93 unless p=
+erhaps a task is blocked on /dev/random in which case it might make sense t=
+o aggressively loop on the blocked core instead of just putting the process=
+ to sleep=2E
 
-In addition, quite frankly, your rather abusive language isn't exactly enc=
-ouraging people to speak publicly based on immediately available and theref=
-ore inherently incomplete and/or dated information, meaning that we have ha=
-d to take even what discussions we might have been able to have in public w=
-ithout IP concerns behind the scenes=2E
+Initialization time is a different game entirely=2E Until we have accumula=
+ted about 256-512 bits of seed data, even the best PRNG can't really be con=
+sidered "completely random=2E" Thus a far more aggressive approach may be c=
+alled for; furthermore, this is the time to look for total failure of the N=
+RBG if after some number N attempts (where I believe N should be quite larg=
+e, if we spend a full second in the very worst case that is probably better=
+ than declaring failure and optionally panic the system) we have not acquir=
+ed enough entropy then warn and optionally panic the system=2E
 
-Yes, we work for Intel=2E No, we don't know every detail about every Intel=
- chip ever created off the top of my head, nor do we necessarily know the e=
-xact person that is *currently* in charge of the architecture of a particul=
-ar unit, nor is it necessarily true that even *that* person knows all the e=
-xact properties of the behavior of their unit when integrated into a partic=
-ular SoC, as units are modular by design=2E
+By setting the limit in terms of time rather than iterations, this avoids =
+the awkward issue of "the interface to the RDSEED unit is too fast and so i=
+t returns failure too often=2E" I don't think anyone would argue that the r=
+ight thing would be to slow down the response time of RDSEED for that reaso=
+n, even though it would most likely radically reduce the failure rate (beca=
+use the NRBG would have more time to produce entropy between queries at the=
+ maximum rate=2E)
+
+Let's say, entirely hypothetically (as of right now I have absolutely *no*=
+ insider information of the RNG unit roadmap), that we were to implement a =
+prefetch buffer in the core, such that a single or a handful of RD* instruc=
+tions could execute in a handful of cycles, with the core itself issuing th=
+e request to the RNG unit when there is space in the queue=2E Such a prefet=
+ch buffer could rather obviously get *very* quickly exhausted because the p=
+oll rate could be dramatically increased, and having the core stall until t=
+here is data may or may not be a good solution (advantage: the CPU can go t=
+o a lower power state while waiting; disadvantage: opportunistic harvesting=
+ would prefer a "poll and fail fast" variation, *especially* if the CPU is =
+going to fulfill the request autonomously anyway=2E)
