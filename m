@@ -1,70 +1,76 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F069C10957
-	for <linux-coco@lists.linux.dev>; Wed,  7 Feb 2024 02:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69C8200B8
+	for <linux-coco@lists.linux.dev>; Wed,  7 Feb 2024 08:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707273822; cv=none; b=iAIC9Bs5gucKkdh/vEu5N7M9H9iN9fz+y3ZUxM5erJqSB1NEUQzIx2VpEKP8QNx02eIW7ibZCiUjpGnNSS+pp1m7t3ssypMpXDPSEA0CXBqtjQ8+KuFUrBGknN76MTQEE7ecQvhqnxp2ET5nZEbuj0DD60KwKpNCFcOK0B80X0A=
+	t=1707293010; cv=none; b=om81r4SW/Od8atgvfimuvGpJuA3uqFxYY/NpgT2+xukZT3O7nQrs57ojzbEwo/yji8BJA5se5btxVwLuRjDMMdCqInhg+WWer1EnJh9LsxyrdjqRMza9eLkkh8iF/7qG9iCJafM1Yh9xiCYrtUHidCQeJpgpr/7M9hTdMc7vHhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707273822; c=relaxed/simple;
-	bh=yAc2qDg86yKSHh+BWfG2RTtPpu6Cksg1ErI8pCgZ7jE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Qsz5mdFEdNH7pUxh53+O4HeUfN2TrZeefGe8BWvWtaTzbIXjNa/FeJL7YZpqIE0p5VBVCcQ0mQluE9fl9KVxSqFSG09/7b0hArFxv5SuFQ7cvPbB0+Dkc9KiJtH2Dju8WxtfvYm/ZHovHk2F5R1JU3Ionoskpi5EA42tqsIbDao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r7M9088Z; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1707293010; c=relaxed/simple;
+	bh=bJ71cMX8UtV3aRxuUkL58YBzQmBYqGTAktwFzLIIFOo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BbHjAfKOwZLZymPIp1IQeVOr+9lp5LiCLJd9wxMQS5BPjKyzDZc0IuMHvyhaCVC1abamcOXtRn1S49kectQdyANvGCe/zFLbrux9D1zh1NLQ0t6ekebZzGcPM1xQwJhKsR+H92MjsB7dQymLAaVn9ZHuno8OxYfl0Dx8LpEUtS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Gchjrn6A; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r7M9088Z"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc6b9f4a513so244038276.3
-        for <linux-coco@lists.linux.dev>; Tue, 06 Feb 2024 18:43:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707273820; x=1707878620; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=g7guOO3K6cZeccVPYodTSSR3CLbTuFzc0JepOhwBqf8=;
-        b=r7M9088ZHvKaYsq5sC83fk5MeAsOuvhKtibIS9tcH8xBwlE5nxD5LiaNNgDBJpo0xt
-         k+a5kKSWs4EzzxWuSAtG3vtyiCHfUO5ErJViuWvlysDWhFJ8ll0rPYl6p/WjqbGibjCs
-         7deIit0KATctrX6fK+Fk4m0BRQiDrGbKJSE4vFJpCbUmcbCuQdwR/xw9qM00xCKbJk4Q
-         uhNsDcVnWMzQkKKpCrgo6HZeJxRIorT2c8Dj0YTPFCNC7MsyhcdYLg3lzCzaizxgxg9J
-         2t2rBqf/j8s143UsTsZKH5kkOZb0o/dn31PaezFYIuDa2rb78Lz2zbm5UPVGFETP8Ah8
-         Ll4Q==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Gchjrn6A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707293007;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P2cTjV2SgwNJoZVYjRYppg2qiwtD1i4vzmwnoPMVa3o=;
+	b=Gchjrn6AWMGCpTN4f9vIcpPWWPc4xfHbkXyImCqNBT7hrjhhTPfY49vY8q/hvQQPGdtgev
+	3UkrAX2jnGVNJOCPhHgmmcpW2E9hkdQrpCBZ5rMt7W+RgocVla/V/LXMUcct/GicOYQh4O
+	R9nUxksrM5LgsSE6r6s5vZR/Fl2CWT0=
+Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
+ [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-530-eaGbVD5UOx-0Ke_MfoCT_A-1; Wed, 07 Feb 2024 03:03:26 -0500
+X-MC-Unique: eaGbVD5UOx-0Ke_MfoCT_A-1
+Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-7d62654aabbso443056241.0
+        for <linux-coco@lists.linux.dev>; Wed, 07 Feb 2024 00:03:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707273820; x=1707878620;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=g7guOO3K6cZeccVPYodTSSR3CLbTuFzc0JepOhwBqf8=;
-        b=pJ0bjfWHGhRdB5KrpD/w0nOxEEMu8mEoAtu3vBh6LqRK7MeLZKCG1gy0FFBUh+LJ3v
-         7AH9q1gTwgY+zbR4KGUe7SLUe0H2LN8rKvs4HvRPQJT4x1HEXmoPjWChoEjduRkHDPvy
-         xvNk/7ZtVwi1APykcGUpW9Z7KjAaJtK3e99frETEpUxLDghPoR85jCZkcwhGjLtH5zMf
-         hshsvOo+4rd5hYKOfDdAWMovCKMD/SsxOc4PQDuRG5UArq3FiBKzwSEZm/oV+XI6JK7B
-         UkSk/ppKPkefHlA/dnJrY71zLcf2N6vSxK1WhNi3Z8SakdEhcehVwM/AS/zxjFJoNQ0i
-         3E+Q==
-X-Gm-Message-State: AOJu0Yy1SyXNvIiJ1td7A/yP0lmhmycGA2mrfiD40nV4WX9bsHMICn/t
-	aBq9qB2Yjm3oCS8OHpEPm98wY5Ow4AukpkAExQsjFNtDbwlMb8kdqc+Id/7Sr+TXPzvvlANWhoe
-	g7w==
-X-Google-Smtp-Source: AGHT+IHFKn95FP8tDKGyeHSLkuyZnMtdrnlqEFcDN45UncE4QphOeyXOIkcKI10ZFatjnFxEnz3hwTc5JAw=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:2485:b0:dc2:550b:a4f4 with SMTP id
- ds5-20020a056902248500b00dc2550ba4f4mr906756ybb.1.1707273820039; Tue, 06 Feb
- 2024 18:43:40 -0800 (PST)
-Date: Tue, 6 Feb 2024 18:43:38 -0800
-In-Reply-To: <CABgObfa_PbxXdj9v7=2ZXfqQ_tJgdQTrO9NHKOQ691TSKQDY2A@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1707293006; x=1707897806;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P2cTjV2SgwNJoZVYjRYppg2qiwtD1i4vzmwnoPMVa3o=;
+        b=JWK5+mBY+lAXdkTzzvQSboCTq9gT+KBw7U36+VAU+TE4cCT8hbJzgJYgE+kgK2dWk4
+         RklGg5Wy6fOyJVmAkJbYCJhPR5zCzdkY/mrxgmP9aRFllZkegp83quO0GMLDEP9mu0h8
+         Ezy0eOEFWjxmAIcXWEBh2t4Gorlq0olc7t/EuuGVhwt86+nYVAUYm6qkG2TmhH2TAlFU
+         bMLBMqfZKCuHllDDCe9CWUHqrfDRNY6GyAmi0NINK8DIKohRJdFeHf1ye27tKVbQLHp6
+         MALUaM0kwQIyFufYqtRFZ2sju54N143QuxVZULwG24vMaNsa/88btfzTNHWrUNYRT4yz
+         Z5Gg==
+X-Gm-Message-State: AOJu0YweCv+kkJv5pCt0nVFtf80u4Le4o4OPiLRt3qNmO25hI5sTcZqy
+	IiTwvcAD0BWPKJa2Sywq9v9UgHLjzL8zEvQ2szfWccxAR7MUp0hUQcIdRcl98n6qQyOnCphVq2J
+	2in2w7DDfLFsSwX0H7oJZy/M/vgKZQ/yLaz3Dco+D+IOxH9SzuajJA8M7suvrzkJEJdzER2/jWd
+	22lUEqcn3CR6U53MUbliRSO3b/4jRCFw3AlA==
+X-Received: by 2002:a05:6102:2362:b0:46d:2b0f:aeb5 with SMTP id o2-20020a056102236200b0046d2b0faeb5mr1289290vsa.16.1707293006043;
+        Wed, 07 Feb 2024 00:03:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEaZzeu/zdF20sLH9pOgZUQvjc4KHv6RddT40BWYC2FIjhnKgF5FPo4oS7Mufd54mwaj/3nM5NsQwxICjqiu1o=
+X-Received: by 2002:a05:6102:2362:b0:46d:2b0f:aeb5 with SMTP id
+ o2-20020a056102236200b0046d2b0faeb5mr1289258vsa.16.1707293005763; Wed, 07 Feb
+ 2024 00:03:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20231230172351.574091-1-michael.roth@amd.com> <20231230172351.574091-19-michael.roth@amd.com>
  <ZZ67oJwzAsSvui5U@google.com> <20240116041457.wver7acnwthjaflr@amd.com>
  <Zb1yv67h6gkYqqv9@google.com> <CABgObfa_PbxXdj9v7=2ZXfqQ_tJgdQTrO9NHKOQ691TSKQDY2A@mail.gmail.com>
-Message-ID: <ZcLuGxZ-w4fPmFxd@google.com>
+ <ZcLuGxZ-w4fPmFxd@google.com>
+In-Reply-To: <ZcLuGxZ-w4fPmFxd@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 7 Feb 2024 09:03:13 +0100
+Message-ID: <CABgObfbPeaD83yYM8cHKuffV9CTPZP4QPMbdyRyLUF1xX7KBvg@mail.gmail.com>
 Subject: Re: [PATCH v11 18/35] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
+To: Sean Christopherson <seanjc@google.com>
 Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
 	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
 	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
@@ -78,102 +84,89 @@ Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.l
 	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
 	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com, 
 	Brijesh Singh <brijesh.singh@amd.com>
-Content-Type: text/plain; charset="utf-8"
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 07, 2024, Paolo Bonzini wrote:
-> On Fri, Feb 2, 2024 at 11:55=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> > > It doesn't really matter if the attributes are set before or after
-> > > KVM_SNP_LAUNCH_UPDATE, only that by the time the guest actually launc=
-hes
-> > > they pages get set to private so they get faulted in from gmem. We co=
-uld
-> > > document our expectations and enforce them here if that's preferable
-> > > however. Maybe requiring KVM_SET_MEMORY_ATTRIBUTES(private) in advanc=
-e
-> > > would make it easier to enforce that userspace does the right thing.
-> > > I'll see how that looks if there are no objections.
+On Wed, Feb 7, 2024 at 3:43=E2=80=AFAM Sean Christopherson <seanjc@google.c=
+om> wrote:
+> > > Userspace owns whether a page is PRIVATE or SHARED, full stop.  If KV=
+M can't
+> > > honor that, then we need to come up with better uAPI.
 > >
-> > Userspace owns whether a page is PRIVATE or SHARED, full stop.  If KVM =
-can't
-> > honor that, then we need to come up with better uAPI.
->=20
-> Can you explain more verbosely what you mean?
+> > Can you explain more verbosely what you mean?
+>
+> As proposed, snp_launch_update_gfn_handler() doesn't verify the state of =
+the
+> gfns' attributes.  But that's a minor problem and probably not a sticking=
+ point.
+>
+> My overarching complaint is that the code is to be wildly unsafe, or at t=
+he very
+> least brittle.  Without guest_memfd's knowledge, and without holding any =
+locks
+> beyond kvm->lock, it
+>
+>  1) checks if a pfn is shared in the RMP
+>  2) copies data to the page
+>  3) converts the page to private in the RMP
+>  4) does PSP stuff
+>  5) on failure, converts the page back to shared in RMP
+>  6) conditionally on failure, writes to the page via a gfn
+>
+> I'm not at all confident that 1-4 isn't riddled with TOCTOU bugs, and tha=
+t's
+> before KVM gains support for intrahost migration, i.e. before KVM allows =
+multiple
+> VM instances to bind to a single guest_memfd.
 
-As proposed, snp_launch_update_gfn_handler() doesn't verify the state of th=
-e
-gfns' attributes.  But that's a minor problem and probably not a sticking p=
-oint.
+Absolutely.
 
-My overarching complaint is that the code is to be wildly unsafe, or at the=
- very
-least brittle.  Without guest_memfd's knowledge, and without holding any lo=
-cks
-beyond kvm->lock, it=20
+> But I _think_ we mostly sorted this out at PUCK.  IIRC, the plan is to ha=
+ve guest_memfd
+> provide (kernel) APIs to allow arch/vendor code to initialize a guest_mem=
+fd range.
+> That will give guest_memfd complete control over the state of a given pag=
+e, will
+> allow guest_memfd to take the appropriate locks, and if we're lucky, will=
+ be reusable
+> by other CoCo flavors beyond SNP.
 
- 1) checks if a pfn is shared in the RMP
- 2) copies data to the page
- 3) converts the page to private in the RMP
- 4) does PSP stuff
- 5) on failure, converts the page back to shared in RMP
- 6) conditionally on failure, writes to the page via a gfn
+Ok, either way it's clear that guest_memfd needs to be in charge.
+Whether it's MEMORY_ENCRYPT_OP that calls into guest_memfd or vice
+versa, that only matters so much.
 
-I'm not at all confident that 1-4 isn't riddled with TOCTOU bugs, and that'=
-s
-before KVM gains support for intrahost migration, i.e. before KVM allows mu=
-ltiple
-VM instances to bind to a single guest_memfd.
-
-But I _think_ we mostly sorted this out at PUCK.  IIRC, the plan is to have=
- guest_memfd
-provide (kernel) APIs to allow arch/vendor code to initialize a guest_memfd=
- range.
-That will give guest_memfd complete control over the state of a given page,=
- will
-allow guest_memfd to take the appropriate locks, and if we're lucky, will b=
-e reusable
-by other CoCo flavors beyond SNP.
-
-> > > > > +                  * When invalid CPUID function entries are dete=
-cted, the firmware
-> > > > > +                  * corrects these entries for debugging purpose=
- and leaves the
-> > > > > +                  * page unencrypted so it can be provided users=
- for debugging
-> > > > > +                  * and error-reporting.
-> > > >
-> > > > Why?  IIUC, this is basically backdooring reads/writes into guest_m=
-emfd to avoid
-> > > > having to add proper mmap() support.
+> > > Yes, I am specifically complaining about writing guest memory on fail=
+ure, which is
+> > > all kinds of weird.
 > >
-> > Yes, I am specifically complaining about writing guest memory on failur=
-e, which is
-> > all kinds of weird.
->=20
-> It is weird but I am not sure if you are complaining about firmware
-> behavior or something else.
+> > It is weird but I am not sure if you are complaining about firmware
+> > behavior or something else.
+>
+> This proposed KVM code:
+>
+> +                               host_rmp_make_shared(pfns[i], PG_LEVEL_4K=
+, true);
+> +
+> +                               ret =3D kvm_write_guest_page(kvm, gfn, kv=
+addr, 0, PAGE_SIZE);
+> +                               if (ret)
+> +                                       pr_err("Failed to write CPUID pag=
+e back to userspace, ret: 0x%x\n",
+> +                                              ret);
+>
+>
+> I have no objection to propagating error/debug information back to usersp=
+ace,
+> but it needs to be routed through the source page (or I suppose some dedi=
+cated
+> error page, but that seems like overkill).  Shoving the error information=
+ into
+> guest memory is gross.
 
-This proposed KVM code:
+Yes, but it should be just a consequence of not actually using
+start_gfn. Having to copy back remains weird, but what can you do.
 
-+                               host_rmp_make_shared(pfns[i], PG_LEVEL_4K, =
-true);
-+
-+                               ret =3D kvm_write_guest_page(kvm, gfn, kvad=
-dr, 0, PAGE_SIZE);
-+                               if (ret)
-+                                       pr_err("Failed to write CPUID page =
-back to userspace, ret: 0x%x\n",
-+                                              ret);
+Paolo
 
-
-I have no objection to propagating error/debug information back to userspac=
-e,
-but it needs to be routed through the source page (or I suppose some dedica=
-ted
-error page, but that seems like overkill).  Shoving the error information i=
-nto
-guest memory is gross.
-
-But this should naturally go away when the requirement that the source be
-covered by the same memslot also goes away.
