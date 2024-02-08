@@ -1,206 +1,226 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2074.outbound.protection.outlook.com [40.107.92.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B3B20312
-	for <linux-coco@lists.linux.dev>; Thu,  8 Feb 2024 00:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.74
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707351884; cv=fail; b=gbcvQ34+l2KrcPNXJsOWhp0Ic0Xvlncw6sz1jgmyrdjvIRTQnWCxTZLHo+ngmnXXY0JKg9rBEg7qqVHnVUFURfDCc4iZpTtDFJlHGHFhsa8PB/7e7x1fvR/sb65hzpJnPiZ7ZNKMLSHLYBLkJYJK4Pq/Zu29Xsbq9ajEZDayIEY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707351884; c=relaxed/simple;
-	bh=24P25l7WOVAQI9MXmURNl7SfRkxv1meyHJ91yk9qp1c=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RIsngnCX6q8YR0ir8UiepHxSKHN4K1MeOUGMa6/baYVIsB/09lpIhduUoso0nIStcUDG4vU4HjfHBvGOlxreEVAn82C0DacU3RtxZod3tyvxYHZ7ZjeEqKq3zr9IIb7lnXMZ0748WlCYRBWi6OiHN4rQ91QTpe0SW7Gfmj7DtqU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1YtD7J8G; arc=fail smtp.client-ip=40.107.92.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1YtD7J8G"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=da5i96kltwco148uw98uOhprLh+nfRKUtr2VA4j8UXFevJh++aI8PQ+Q1QTKFT3zEhCdRc6olllSgWmazDt9kE0oCCe+rlnwNLYDUPnpU/tTNwmUEhKFuyFVE0M7SgjbGQewyHchFJBvhhoy05ht/GJK5hf3Vqf/LVqcihLwcgAbH/kVsLgkpjXrjVuslBjmzg+g3wqQkrJfVElMHpfOKmeBCOmpdjHr0KMzm9G3H2sjeOVNlB6JJ5FVtaRnRD+M5DQFIBoLlw9F+QCEU2gQYpvkrDvfFh3o+ZMcuyYwfCDqW6Q8Lgx06HKWvtPTOndXCprEyb35XgENC3l5WvcQDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/CYBAY5yRIT9SKIkZFN8jpfkACBa/PVJwqDruYaCGOY=;
- b=kgZ2mrtIxxy/R3Q2hIGD5VWDpRjovlpGdKivFi/w/QbzVCAGp0Kq8gFYY+AOEZG8vCM8pJUPB46T76S+brZiZdegDuQZo75MQlJnsOFIHATiC3BqyqR6I8gs5EhHt3WXFgMlId7zKjLlh7Vqmk1nUnStPk5Q8m7NwRLtJd+zTyq5Kz3vQS1ar+KxjzCnta95hZG9N6TpO3cHNhhh2xCmGYT/B+9hltmoRfNwbj4qhgoqAALJmZTgvxkVAL9D+UUxp+OerbEcucm9JK9yBywKzBMPzCn3gCR6gMWrf3WJJSYdB4YUiTGk6e4ObZ9ipoNJrUr+wBTy/oWraIrxMdSyXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/CYBAY5yRIT9SKIkZFN8jpfkACBa/PVJwqDruYaCGOY=;
- b=1YtD7J8G6dEfDHKnjz5QjepfHP+uf/ZY0aiu0s+Jr+ouHzFcmNcT51v4atN/pVsuhzP8PkQ4ehdiQBMJLiNVZrqsLTvT42Fb5939IOaqmPcT/J3/yABuJLhHfMVCmEr9PbmajLorliPSpYRDZHi0mzrZlrTYrdmhlrZPOtnleRo=
-Received: from BYAPR07CA0086.namprd07.prod.outlook.com (2603:10b6:a03:12b::27)
- by PH8PR12MB8431.namprd12.prod.outlook.com (2603:10b6:510:25a::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.14; Thu, 8 Feb
- 2024 00:24:39 +0000
-Received: from CO1PEPF000044F1.namprd05.prod.outlook.com
- (2603:10b6:a03:12b:cafe::ba) by BYAPR07CA0086.outlook.office365.com
- (2603:10b6:a03:12b::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.38 via Frontend
- Transport; Thu, 8 Feb 2024 00:24:39 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044F1.mail.protection.outlook.com (10.167.241.71) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7249.19 via Frontend Transport; Thu, 8 Feb 2024 00:24:39 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 7 Feb
- 2024 18:24:38 -0600
-Date: Wed, 7 Feb 2024 18:24:20 -0600
-From: Michael Roth <michael.roth@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<pbonzini@redhat.com>, <isaku.yamahata@intel.com>, <ackerleytng@google.com>,
-	<vbabka@suse.cz>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
-	<jroedel@suse.de>, <pankaj.gupta@amd.com>, <thomas.lendacky@amd.com>
-Subject: Re: [PATCH RFC gmem v1 8/8] KVM: x86: Determine shared/private
- faults based on vm_type
-Message-ID: <20240208002420.34mvemnzrwwsaesw@amd.com>
-References: <20231016115028.996656-1-michael.roth@amd.com>
- <20231016115028.996656-9-michael.roth@amd.com>
- <ZbmenP05fo8hZU8N@google.com>
+Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C621DFC4
+	for <linux-coco@lists.linux.dev>; Thu,  8 Feb 2024 10:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707388590; cv=none; b=KWsahHhQpyIXMPT3+IVmosKa2pQTww+0dNX2sy1ynPGovkl9mo7XE9/y7Q1EahRKCOK7zBqcixXOMAhMNrS7FMoSV+cqQlLPVxW5+a00+RfeGswpAyV0Sv6GGljaoEtNbXRb1zamYLb9Y7K2bknDOXjjmCcofkT7rp6tYd8qZTs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707388590; c=relaxed/simple;
+	bh=HEbzkWf7E48tqxLX+5DXDAgO+/sJmFhalyk/7wcrN/E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bH9niT7cN8RMev7JlsykJ76dkyGQcKLWi9Eg6WuiY7NhfehUm+1++LYOBebdfam4qbj+F1DXlDoEoKYC0vGamOVZCNKgs23NnU0VbOLVTHN0rAhgGfenR0fPo6/VgCNRm30AhsIw89+UXwbZEpZjZO103Nso00WU0lL3zdyccRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 418AVCnJ023148;
+	Thu, 8 Feb 2024 04:31:12 -0600
+Received: (from greg@localhost)
+	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 418AVBGq023147;
+	Thu, 8 Feb 2024 04:31:11 -0600
+Date: Thu, 8 Feb 2024 04:31:11 -0600
+From: "Dr. Greg" <dg@enjellic.com>
+To: "Daniel P. Berrang??" <berrange@redhat.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+        "Theodore Ts'o" <tytso@mit.edu>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Message-ID: <20240208103111.GA22549@wind.enjellic.com>
+Reply-To: "Dr. Greg" <dg@enjellic.com>
+References: <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <20240206011247.GA29224@wind.enjellic.com> <ZcHoKUElwXGPzrWb@redhat.com> <20240206120445.GA1247@wind.enjellic.com> <ZcItU5FKlIVEEVte@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZbmenP05fo8hZU8N@google.com>
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044F1:EE_|PH8PR12MB8431:EE_
-X-MS-Office365-Filtering-Correlation-Id: 68cf77cf-ad8e-40af-c1dc-08dc283c5688
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	BpLq/KEt89wK2BWexDAJoBmv1kYonYPuq8V6uE/+q2xPJRy8ohVWjQNNs1y+I1OgOqHnMYe0j58f/uPWMB83HFaSJTbJZv5ZwXLa+IyKLRowhxjvFwViD4vTToetTOf+AwsIphJYbL55ex+iRZbibrPOy4k97Y4a9R8WQDD6ZCfGnfKc+Wz0ZJLoyu0VYD4nLw9gdEyon9Yq4UYMZkPO3s0Ubf0sM5MLpJitHmYmRPmwcyQHiIA4TGvi8gTodAKtAMx0ACnSZPUB2C68vjoThdK8NVWJLUx7k9q7NBEiELqBSIRsbnrf4OFpt4Yq3lFXqQUwTtyc4cMn8fOcGt/QQ8LkXcpIH9u62R03QsqrPeQwW+gccXn0X0HhR/wdMJ2qJXsBtJ+Z22DX3q5tMx7hcRNXP9Bc2KHXP1Oe71RTl9q2d4CRPRV1frifqFJRCgntf3It325MMMHLtojAPH5f4Lz4GqblyGdEquzY8AkNw5MUUmbovGaFg5SJz4H5GKWlMaE7rSreAft5soLUCwcVBKCH/bHh1Cuo9/zznQJzam7gks6lehOMEnunJZcgU4Av02tH+fgCkpWRLBa56Lk2+Q==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(396003)(39860400002)(136003)(346002)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(82310400011)(40470700004)(46966006)(36840700001)(478600001)(86362001)(41300700001)(966005)(83380400001)(82740400003)(356005)(81166007)(336012)(426003)(8936002)(66899024)(6666004)(316002)(4326008)(6916009)(2906002)(5660300002)(36756003)(16526019)(26005)(70206006)(54906003)(7416002)(8676002)(44832011)(70586007)(2616005)(1076003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Feb 2024 00:24:39.3001
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68cf77cf-ad8e-40af-c1dc-08dc283c5688
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000044F1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB8431
+In-Reply-To: <ZcItU5FKlIVEEVte@redhat.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Thu, 08 Feb 2024 04:31:12 -0600 (CST)
 
-On Tue, Jan 30, 2024 at 05:13:00PM -0800, Sean Christopherson wrote:
-> On Mon, Oct 16, 2023, Michael Roth wrote:
-> > For KVM_X86_SNP_VM, only the PFERR_GUEST_ENC_MASK flag is needed to
-> > determine with an #NPF is due to a private/shared access by the guest.
-> > Implement that handling here. Also add handling needed to deal with
-> > SNP guests which in some cases will make MMIO accesses with the
-> > encryption bit.
+On Tue, Feb 06, 2024 at 01:00:03PM +0000, Daniel P. Berrang?? wrote:
+
+Good morning.
+
+> On Tue, Feb 06, 2024 at 06:04:45AM -0600, Dr. Greg wrote:
+> > On Tue, Feb 06, 2024 at 08:04:57AM +0000, Daniel P. Berrang?? wrote:
+> > 
+> > Good morning to everyone.
+> > 
+> > > On Mon, Feb 05, 2024 at 07:12:47PM -0600, Dr. Greg wrote:
+> > > > 
+> > > > Actually, I now believe there is clear evidence that the problem is
+> > > > indeed Intel specific.  In light of our testing, it will be
+> > > > interesting to see what your 'AR' returns with respect to an official
+> > > > response from Intel engineering on this issue.
+> > > > 
+> > > > One of the very bright young engineers collaborating on Quixote, who
+> > > > has been following this conversation, took it upon himself to do some
+> > > > very methodical engineering analysis on this issue.  I'm the messenger
+> > > > but this is very much his work product.
+> > > > 
+> > > > Executive summary is as follows:
+> > > > 
+> > > > - No RDRAND depletion failures were observable with either the Intel
+> > > >   or AMD hardware that was load tested.
+> > > > 
+> > > > - RDSEED depletion is an Intel specific issue, AMD's RDSEED
+> > > >   implementation could not be provoked into failure.
+> > 
+> > > My colleague ran a multithread parallel stress test program on his
+> > > 16core/2HT AMD Ryzen (Zen4 uarch) and saw a 80% failure rate in
+> > > RDSEED.
+> > 
+> > Interesting datapoint, thanks for forwarding it along, so the issue
+> > shows up on at least some AMD platforms as well.
+> > 
+> > On the 18 core/socket Intel Skylake platform, the parallelized
+> > depletion test forces RDSEED success rates down to around 2%.  It
+> > would appear that your tests suggest that the AMD platform fairs
+> > better than the Intel platform.
+
+> Yes, given the speed of the AMD RDRAND/RDSEED ops, compared to my
+> Intel test platforms, their DRBG looks better able to keep up with
+> the demand for bits.
+
+We now believe the observed resiliency of AMD's RNG infrastructure
+comes down to the fact that the completion times of their RNG
+instructions are significantly slower than Intel's.
+
+SkyLake and KabyLake instruction completion times are documented at
+463 clock cycles, regardless of operand size.
+
+AMD Ryzen documents variable completion times based on operand size.
+16 and 32 bit transfers complete in 1200 clock cycles with 64 bit
+requests completing in 2500 clock cycles.
+
+Given that Jason's test program was issueing 64-bit RNG requests, the
+AMD platforms are going to be approximately 5.4 times slower than
+Intel platforms, provided the results are corrected for CPU clock
+rates.
+
+AMD's entropy source is execution jitter time over a bank of inverter
+based ring oscillors, presumably sampled by a constant clock rate
+sampler.  Slower instruction retirement times consumes less of the
+constant rate entropy production.
+
+Intel uses thermal/quantum noise across a diode junction retrieved by
+a self-clocked sampler.  Faster instruction retirement translates into
+increased bandwidth demands on the sampler.
+
+> > Of course, the other variable may be how the parallelized stress test
+> > is conducted.  If you would like to share your implementation source
+> > we could give it a twirl on the systems we have access to.
 > 
-> ...
+> It is just Jason's earlier test program, but moved into one thread
+> for each core....
 > 
-> > @@ -4356,12 +4357,19 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
-> >  			return RET_PF_EMULATE;
-> >  	}
-> >  
-> > -	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn)) {
-> > +	/*
-> > +	 * In some cases SNP guests will make MMIO accesses with the encryption
-> > +	 * bit set. Handle these via the normal MMIO fault path.
-> > +	 */
-> > +	if (!slot && private_fault && kvm_is_vm_type(vcpu->kvm, KVM_X86_SNP_VM))
-> > +		private_fault = false;
+> $ cat cpurngstress.c
+> #include <stdio.h>
+> #include <immintrin.h>
+> #include <pthread.h>
+> #include <unistd.h>
 > 
-> Why?  This is inarguably a guest bug.
-
-AFAICT this isn't explicitly disallowed by the SNP spec. There was
-however a set of security mitigations for SEV-ES that resulted in this
-being behavior being highly discouraged in linux guest code:
-
-  https://lkml.org/lkml/2020/10/20/464  
-
-as well as OVMF guest code:
-
-  https://edk2.groups.io/g/devel/message/69948
-
-However the OVMF guest code still allows 1 exception for accesses to the
-local APIC base address, which is the only case I'm aware of that
-triggers this condition:
-
-  https://github.com/tianocore/edk2/blob/master/OvmfPkg/Library/CcExitLib/CcExitVcHandler.c#L100
-
-I think the rationale there is that if the guest absolutely *knows* that
-encrypted information is not stored at a particular MMIO address, then
-it can selectively choose to allow for exceptional cases like these. So
-KVM would need to allow for these cases in order to be fully compatible
-with existing SNP guests that do this.
-
+> /*
+>  * Gives about 25 seconds walllock time on my Alderlake CPU
+>  *
+>  * Probably want to reduce this x10, or possibly even x100
+>  * on AMD due to much slower ops.
+>  */
+> #define MAX_ITER 10000000
 > 
-> > +	if (private_fault != kvm_mem_is_private(vcpu->kvm, fault->gfn)) {
-> >  		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
-> >  		return -EFAULT;
-> >  	}
-> >  
-> > -	if (fault->is_private)
-> > +	if (private_fault)
-> >  		return kvm_faultin_pfn_private(vcpu, fault);
-> >  
-> >  	async = false;
-> > diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-> > index 759c8b718201..e5b973051ad9 100644
-> > --- a/arch/x86/kvm/mmu/mmu_internal.h
-> > +++ b/arch/x86/kvm/mmu/mmu_internal.h
-> > @@ -251,6 +251,24 @@ struct kvm_page_fault {
-> >  
-> >  int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault);
-> >  
-> > +static bool kvm_mmu_fault_is_private(struct kvm *kvm, gpa_t gpa, u64 err)
-> > +{
-> > +	bool private_fault = false;
-> > +
-> > +	if (kvm_is_vm_type(kvm, KVM_X86_SNP_VM)) {
-> > +		private_fault = !!(err & PFERR_GUEST_ENC_MASK);
-> > +	} else if (kvm_is_vm_type(kvm, KVM_X86_SW_PROTECTED_VM)) {
-> > +		/*
-> > +		 * This handling is for gmem self-tests and guests that treat
-> > +		 * userspace as the authority on whether a fault should be
-> > +		 * private or not.
-> > +		 */
-> > +		private_fault = kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT);
-> > +	}
+> #define MAX_CPUS 4096
 > 
-> This can be more simply:
+> void *doit(void *f) {
+>     unsigned long long rand;
+>     unsigned int i, success_rand = 0, success_seed = 0;
 > 
-> 	if (kvm_is_vm_type(kvm, KVM_X86_SNP_VM))
-> 		return !!(err & PFERR_GUEST_ENC_MASK);
+>     for (i = 0; i < MAX_ITER; ++i) {
+>         success_seed += !!_rdseed64_step(&rand);
+>     }
+>     for (i = 0; i < MAX_ITER; ++i) {
+>         success_rand += !!_rdrand64_step(&rand);
+>     }
 > 
-> 	if (kvm_is_vm_type(kvm, KVM_X86_SW_PROTECTED_VM))
-> 		return kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT);
+>     fprintf(stderr,
+> 	    "RDRAND: %.2f%%, RDSEED: %.2f%%\n",
+> 	    success_rand * 100.0 / MAX_ITER,
+> 	    success_seed * 100.0 / MAX_ITER);
 > 
+>     return NULL;
+> }
+> 
+> 
+> int main(int argc, char *argv[])
+> {
+>     pthread_t th[MAX_CPUS];
+>     int nproc = sysconf(_SC_NPROCESSORS_ONLN);
+>     if (nproc > MAX_CPUS) {
+>       nproc = MAX_CPUS;
+>     }
+>     fprintf(stderr, "Stressing RDRAND/RDSEED across %d CPUs\n", nproc);
+> 
+>     for (int i = 0 ; i < nproc;i ++) {
+>       pthread_create(&th[i], NULL, doit,NULL);
+>     }
+> 
+>     for (int i = 0 ; i < nproc;i ++) {
+>       pthread_join(th[i], NULL);
+>     }
+> 
+>     return 0;
+> }
+> 
+> $ gcc -march=native -o cpurngstress cpurngstress.c
 
-Yes, indeed. But TDX has taken a different approach for SW_PROTECTED_VM
-case where they do this check in kvm_mmu_page_fault() and then synthesize
-the PFERR_GUEST_ENC_MASK into error_code before calling
-kvm_mmu_do_page_fault(). It's not in the v18 patchset AFAICT, but it's
-in the tdx-upstream git branch that corresponds to it:
+Thanks for forwarding your test code along, we've added it to our
+tests for comparison.
 
-  https://github.com/intel/tdx/commit/3717a903ef453aa7b62e7eb65f230566b7f158d4
+> > If there is the possibility of over-harvesting randomness, why not
+> > design the implementations to be clamped at some per core value such
+> > as a megabit/second.  In the case of the documented RDSEED generation
+> > rates, that would allow the servicing of 3222 cores, if my math at
+> > 0530 in the morning is correct.
+> > 
+> > Would a core need more than 128 kilobytes of randomness, ie. one
+> > second of output, to effectively seed a random number generator?
+> > 
+> > A cynical conclusion would suggest engineering acquiesing to marketing
+> > demands... :-)
 
-Would you prefer that SNP adopt the same approach?
+> My assumption is that it was simply easier to not implement a rate
+> limiting feature at the CPU level and punt the starvation problem to
+> software :-)
 
--Mike
+Could be, it does seem unlikely that random number generation speed
+would be seen as fertile ground for marketing types.
+
+Punting to software is certainly rationale, perhaps problematic in a
+CoCo environment depending on the definition of 'astronomical'.  See
+my response to Borislav who was kind enough to respond to all of this.
+
+> With regards,
+> Daniel
+
+Have a good day.
+
+As always,
+Dr. Greg
+
+The Quixote Project - Flailing at the Travails of Cybersecurity
+              https://github.com/Quixote-Project
