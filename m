@@ -1,138 +1,143 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9AF7CF02
-	for <linux-coco@lists.linux.dev>; Thu,  8 Feb 2024 13:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746DB6F097
+	for <linux-coco@lists.linux.dev>; Thu,  8 Feb 2024 13:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707398074; cv=none; b=BAHy/VHPpo7T05EUhiOOtlcfJLFY/AlCz25HQoL0O62yP+9VfYuDYT8UsMAb8cx4E889YK3d41JUU9A6EaWcUj/yR8ffYyRJJrwQCz8QfR0GC9slN/pxquJ9njIbv0L94Pv19d3P1sNpm15BV/b+54dMptEEF/M9hl8FkSGa1Ns=
+	t=1707399786; cv=none; b=gPyPaGei852hp2mgstedbomz6H96AzunMqtUZGGPRjpPcBIVYjC8hDW9exVi5hioyjORkXUT5XAKaVzrDhdG1qeh8BwCLrsxw71u2BNRBpRd5Ve1B5JomD5GDdAoHIpL/JOfNfIiedij9n5WpA88L05rRcvnbWIHkkI3EELhwd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707398074; c=relaxed/simple;
-	bh=qc/QUzIAoXnycO+wmMn25Ign0tl0oChS1W2GTrGq/h4=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=q/Rxt4NQnpFveyVvoihbbxxltxOPI/Yj2pq5O2pbGA0DYL1N9CeJW0NUPVo2o6cNc69AZIVElJu7Q7jsCecj2PH7R1A2SdnLPvEjT/pTz4++UM9PQNi1NaEVuV2SpjT3xZF1BBwPNYZcwGJ1fInRUqYTIdgRTG1MbyjqJptShS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ot7wGwM5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cR/o8+6n; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ot7wGwM5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cR/o8+6n; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1707399786; c=relaxed/simple;
+	bh=Lk+lnICjyzdSOAN6ElSfws1jJHVhMjD8WqdjhE/qtKI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rnv8CIAcffZFTgSn4T68HmD1QbChZODEP9NoGj+Md3Q5mhVyO8YbjGiw54k9iQl5WBGADZA2IWqDBwa3NWq41b/4E2/vkxQLDoeZ5B47Erw69TNEEkaV2kNIpsZy2ZzuXljRcYAhS/+bkVdgaxbOaQy9WGs9Ye1PAKNT+ROM65M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DXG6dv//; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ot7wGwM5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cR/o8+6n";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ot7wGwM5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cR/o8+6n"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CE8A51FCEB;
-	Thu,  8 Feb 2024 13:14:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1707398070; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YeUTFo8uc1p+m9KpeASqboioBCJzdFSIMv/7Dq2+9Bk=;
-	b=ot7wGwM5im6UmDmLStnbTOk45XAOIJWsLEHEp6yNSP2HZ78oDwUarYP9Y+Z1H60+RhsRsT
-	QzVyZW8D8gtTC6INGp72r4htlih49zAII//QfJMlCwyo8XZOsPPnJ/dB6Yp0SGcl7tiUJJ
-	wFNa74esG4b7q9W3uwGUJn9XW4Ag8YU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1707398070;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YeUTFo8uc1p+m9KpeASqboioBCJzdFSIMv/7Dq2+9Bk=;
-	b=cR/o8+6nAQeyWFmOiLZACP5j9JCvuW5V2DRmB67W6Op8Irv/aGP9onv97BXAZ0CyRHICir
-	mJQSwKqR4sDqB2Bg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1707398070; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YeUTFo8uc1p+m9KpeASqboioBCJzdFSIMv/7Dq2+9Bk=;
-	b=ot7wGwM5im6UmDmLStnbTOk45XAOIJWsLEHEp6yNSP2HZ78oDwUarYP9Y+Z1H60+RhsRsT
-	QzVyZW8D8gtTC6INGp72r4htlih49zAII//QfJMlCwyo8XZOsPPnJ/dB6Yp0SGcl7tiUJJ
-	wFNa74esG4b7q9W3uwGUJn9XW4Ag8YU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1707398070;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YeUTFo8uc1p+m9KpeASqboioBCJzdFSIMv/7Dq2+9Bk=;
-	b=cR/o8+6nAQeyWFmOiLZACP5j9JCvuW5V2DRmB67W6Op8Irv/aGP9onv97BXAZ0CyRHICir
-	mJQSwKqR4sDqB2Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AA48F13984;
-	Thu,  8 Feb 2024 13:14:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id XE6oJ7bTxGXAUgAAD6G6ig
-	(envelope-from <jroedel@suse.de>); Thu, 08 Feb 2024 13:14:30 +0000
-Date: Thu, 8 Feb 2024 14:14:25 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: COCONUT-SVSM now uses cargo workspace
-Message-ID: <ZcTTsZ156ghln73W@suse.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DXG6dv//"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707399784; x=1738935784;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Lk+lnICjyzdSOAN6ElSfws1jJHVhMjD8WqdjhE/qtKI=;
+  b=DXG6dv//jSYBXdsWTDMUuSJs5RLpM9KUXVKxW0l45ffw4KGc/5hcJjRg
+   OBt1u0KnCtUzV6MR8B3tTCBuuJg5YWDqJE2RrJDZN/AfLh2zUQ7XOe7Bl
+   IYdp5nBsyziqy7xIT4onxjKK7eKf3DhjMtm9X/tbMA8vlyn5kC5Fhl6WB
+   DLKJSZ8PVIEvsWcNgDCAv9MLGq6GfMweiVAvYqkRtMkCK96AE0P0B31ko
+   VECnCZI5Y17aYeeQeVQqu3f6aRQMSZYH+7PlElomV0iemcVXZvZ4nvXHA
+   VRZ1G/5mOtvEQrmNTaAJy9//VUw2PRgRNBKvYc2zEV04z8KeOYpnAsUC4
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="11952049"
+X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
+   d="scan'208";a="11952049"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 05:43:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
+   d="scan'208";a="24901795"
+Received: from jelyouss-mobl.ger.corp.intel.com (HELO himmelriiki) ([10.252.43.19])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 05:43:00 -0800
+Date: Thu, 8 Feb 2024 15:42:51 +0200
+From: Mikko Ylinen <mikko.ylinen@linux.intel.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Nikolay Borisov <nik.borisov@suse.com>, linux-coco@lists.linux.dev,
+	x86@kernel.org, dave.hansen@linux.intel.com, dionnaglaze@google.com,
+	dan.middleton@linux.intel.com
+Subject: Re: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface
+ for quote generation
+Message-ID: <ZcTaW3gKIWWF1fKS@himmelriiki>
+References: <20240124093858.1818497-1-nik.borisov@suse.com>
+ <e8c2043a-a872-43ff-b079-ebbbfa6cb743@linux.intel.com>
+ <65baa477b8da8_37ad29436@dwillia2-xfh.jf.intel.com.notmuch>
+ <59f268c4-8491-4256-8766-664a8ee0ffd8@linux.intel.com>
+ <65bab6ef2a198_37ad2948b@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -0.05
-X-Spamd-Result: default: False [-0.05 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 BAYES_HAM(-0.00)[33.40%];
-	 FROM_HAS_DN(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-0.999];
-	 MIME_GOOD(-0.10)[text/plain];
-	 TO_DN_NONE(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_TWO(0.00)[2];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 R_MIXED_CHARSET(1.25)[subject];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Flag: NO
+In-Reply-To: <65bab6ef2a198_37ad2948b@dwillia2-xfh.jf.intel.com.notmuch>
 
-Hi,
+On Wed, Jan 31, 2024 at 01:09:03PM -0800, Dan Williams wrote:
+> Kuppuswamy Sathyanarayanan wrote:
+> > 
+> > On 1/31/24 11:50 AM, Dan Williams wrote:
+> > > Kuppuswamy Sathyanarayanan wrote:
+> > >> + Dan Middleton
+> > >>
+> > >> Hi Boris,
+> > >>
+> > >> On 1/24/24 1:38 AM, Nikolay Borisov wrote:
+> > >>> IOCTL based interface was the natural choice for interacting with the
+> > >>> quote generation machine at a time when there wasn't anything better.
+> > >>> Fortunately, now we have a vendor-agnostic, configfs-based one which
+> > >>> obviates the need to have the IOCTL-based interface.
+> > >>>
+> > >>> Gate the relevant code behind a Kconfig option, clearly marking it as
+> > >>> deprecated as well as introduce a runtime warning.
+> > >>>
+> > >>> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+> > >>> ---
+> > >> In the following thread, Dan Middleton raised a point about this interface
+> > >> being used for local attestation use cases.
+> > >>
+> > >> https://lore.kernel.org/all/ZbAaKAh-230Hj4BF@redhat.com/T/#m691dae9a7833a35552cafb597c838df9c2ed5f3a
+> > >>
+> > >> Currently, the configfs-based ABI does not support the local attestation use cases.
+> > > What are local attestation use cases, and what happens if Linux does not
+> > > provide a local attestation interface and standardizes on remotely
+> > > attestable as the standard?
+> > 
+> > 
+> > Local attestation is used by one TD on the same platform to prove to another TD
+> > in the same platform about its identity. It is mainly used in cases where a TD provides
+> > some special services required by other TDs. Since they are all in the same platform,
+> > there is no need for a 3rd party verifier or Quoting service. It can use the verifiable MAC
+> > to check the correctness of the TD.
+> > 
+> > I am not sure about actual local attestation users. May be Dan can share that info.
+> > 
+> > Regarding your question about using "remotely attestable as the standard", I think
+> > remote attestation can handle all local attestation use cases. But, does it make sense to
+> > force users to run a Quoting service if they don't need to communicate with 3rd party
+> > servers?
+> 
+> SEV-SNP seems to get by without a local attestation flow, if I am not
+> mistaken, so the question is why should the kernel support cross-vendor
+> divergence here? Remember, the kernel ends up being the "standardization
+> body of last resort", it does not need to onboard all the complexity it
+> can find.
+> 
+> > SGX also seems to have local attestation concept
+> > 
+> > https://sgx101.gitbook.io/sgx101/sgx-bootstrap/attestation/inter-process-local-attestation
+> 
+> I am less concerned with concepts, and more concerned with use cases.
+> For example it could be the case that configfs-tsm needs to grow to
+> support local attestation for multiple vendors, but that should be due
+> to concrete use cases to be deployed, not theoretical observations.
 
-I spent the morning getting the transition of the COCONUT-SVSM
-repository to a cargo workspace merged. There were a couple of issues to
-fix, but everything should be working now. Please report any issues in
-case you find them.
+Confidential Containers project started using the tdx_guest ioctl() to get
+the TD report. This is used by the attestation-agent to check that the hash
+of a policy file is correctly included in the TD report's MRCONFIGID field.
 
-Also, in case you are using the pre-commit git-hook you need to install
-the latest version from the main branch. This one has some updates to
-correctly run all checks in the new environment.
+The report stays within the TD and there's no need take it to the host QGS
+quoting service for signing. Right now we need to go to configs-tsm for
+the quote and tdx_guest ioctl() for the TD report.
 
-As discussed in the SVSM development calls, I also updated the
-repository to reflect the change of the project license from
-MIT-OR-Apache-2.0 to MIT.
+The corresponding SNP check in this use case is to get the HOSTDATA report
+field by using 'get report' ioctl() (non-ext version is enough). With
+configfs-tsm this is same as using just 'outblob' and ignoring 'auxblob',
+AFAICS.
 
-Regards,
+However, perhaps some generic report 'type' TSM report attribute would be
+justified here to allow users select between TD report/quote and
+report/ext_report generation?
 
--- 
-Jörg Rödel
-jroedel@suse.de
-
-SUSE Software Solutions Germany GmbH
-Frankenstraße 146
-90461 Nürnberg
-Germany
-https://www.suse.com/
-
-Geschäftsführer: Ivo Totev, Andrew McDonald, Werner Knoblich
-(HRB 36809, AG Nürnberg)
+-- Regards, Mikko
