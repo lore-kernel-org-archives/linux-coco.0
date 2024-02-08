@@ -1,226 +1,305 @@
-Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C621DFC4
-	for <linux-coco@lists.linux.dev>; Thu,  8 Feb 2024 10:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5536E2DC
+	for <linux-coco@lists.linux.dev>; Thu,  8 Feb 2024 10:57:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707388590; cv=none; b=KWsahHhQpyIXMPT3+IVmosKa2pQTww+0dNX2sy1ynPGovkl9mo7XE9/y7Q1EahRKCOK7zBqcixXOMAhMNrS7FMoSV+cqQlLPVxW5+a00+RfeGswpAyV0Sv6GGljaoEtNbXRb1zamYLb9Y7K2bknDOXjjmCcofkT7rp6tYd8qZTs=
+	t=1707389848; cv=none; b=luhTubdb7m+zHgWEVA9meQNT6dtGdlQ9El+q+QVBu1d/1aj8tsWOitygnbrICVNn5KeC0dEz4tvaqHMv41X3uLrWokpXZlwFUEjQv/8Lwkcs9jkxHytDjruehlx35g8g8V3aXFm9Amox5xrFDlln3LuRv4S0tMSMxNVAcnHhOSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707388590; c=relaxed/simple;
-	bh=HEbzkWf7E48tqxLX+5DXDAgO+/sJmFhalyk/7wcrN/E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bH9niT7cN8RMev7JlsykJ76dkyGQcKLWi9Eg6WuiY7NhfehUm+1++LYOBebdfam4qbj+F1DXlDoEoKYC0vGamOVZCNKgs23NnU0VbOLVTHN0rAhgGfenR0fPo6/VgCNRm30AhsIw89+UXwbZEpZjZO103Nso00WU0lL3zdyccRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
-Received: from wind.enjellic.com (localhost [127.0.0.1])
-	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 418AVCnJ023148;
-	Thu, 8 Feb 2024 04:31:12 -0600
-Received: (from greg@localhost)
-	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 418AVBGq023147;
-	Thu, 8 Feb 2024 04:31:11 -0600
-Date: Thu, 8 Feb 2024 04:31:11 -0600
-From: "Dr. Greg" <dg@enjellic.com>
-To: "Daniel P. Berrang??" <berrange@redhat.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Nakajima, Jun" <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-Message-ID: <20240208103111.GA22549@wind.enjellic.com>
-Reply-To: "Dr. Greg" <dg@enjellic.com>
-References: <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <20240206011247.GA29224@wind.enjellic.com> <ZcHoKUElwXGPzrWb@redhat.com> <20240206120445.GA1247@wind.enjellic.com> <ZcItU5FKlIVEEVte@redhat.com>
+	s=arc-20240116; t=1707389848; c=relaxed/simple;
+	bh=F0AD35zRkzPDFFqGLNrXClBOwbPZXXqj2AyKsqqb3P8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jz09XQ1ARDdkKlRzJoOdCcg9DVALgA1kBpZIzU00ZUhy3LGGhoX6p3Yuivl4W232CeSE0teKfeWkIxYYNcHvwhN3EF3p8HDop6C34RswFIPicSPiRFPL/u8WNxXCwl6AJhzO51ow+3PIt8wmjHOn0Ra7xjSd7+7wDRjUX8laE/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 99EB01FB;
+	Thu,  8 Feb 2024 02:58:07 -0800 (PST)
+Received: from [10.57.10.153] (unknown [10.57.10.153])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D64DA3F762;
+	Thu,  8 Feb 2024 02:57:22 -0800 (PST)
+Message-ID: <761a3982-c7a1-40f1-92d8-5c08dad8383a@arm.com>
+Date: Thu, 8 Feb 2024 10:57:21 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZcItU5FKlIVEEVte@redhat.com>
-User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Thu, 08 Feb 2024 04:31:12 -0600 (CST)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC gmem v1 3/8] KVM: x86: Add gmem hook for initializing
+ memory
+Content-Language: en-GB
+To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
+Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
+ isaku.yamahata@intel.com, ackerleytng@google.com, vbabka@suse.cz,
+ ashish.kalra@amd.com, nikunj.dadhania@amd.com, jroedel@suse.de,
+ pankaj.gupta@amd.com
+References: <20231016115028.996656-1-michael.roth@amd.com>
+ <20231016115028.996656-4-michael.roth@amd.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20231016115028.996656-4-michael.roth@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 06, 2024 at 01:00:03PM +0000, Daniel P. Berrang?? wrote:
+Hi,
 
-Good morning.
-
-> On Tue, Feb 06, 2024 at 06:04:45AM -0600, Dr. Greg wrote:
-> > On Tue, Feb 06, 2024 at 08:04:57AM +0000, Daniel P. Berrang?? wrote:
-> > 
-> > Good morning to everyone.
-> > 
-> > > On Mon, Feb 05, 2024 at 07:12:47PM -0600, Dr. Greg wrote:
-> > > > 
-> > > > Actually, I now believe there is clear evidence that the problem is
-> > > > indeed Intel specific.  In light of our testing, it will be
-> > > > interesting to see what your 'AR' returns with respect to an official
-> > > > response from Intel engineering on this issue.
-> > > > 
-> > > > One of the very bright young engineers collaborating on Quixote, who
-> > > > has been following this conversation, took it upon himself to do some
-> > > > very methodical engineering analysis on this issue.  I'm the messenger
-> > > > but this is very much his work product.
-> > > > 
-> > > > Executive summary is as follows:
-> > > > 
-> > > > - No RDRAND depletion failures were observable with either the Intel
-> > > >   or AMD hardware that was load tested.
-> > > > 
-> > > > - RDSEED depletion is an Intel specific issue, AMD's RDSEED
-> > > >   implementation could not be provoked into failure.
-> > 
-> > > My colleague ran a multithread parallel stress test program on his
-> > > 16core/2HT AMD Ryzen (Zen4 uarch) and saw a 80% failure rate in
-> > > RDSEED.
-> > 
-> > Interesting datapoint, thanks for forwarding it along, so the issue
-> > shows up on at least some AMD platforms as well.
-> > 
-> > On the 18 core/socket Intel Skylake platform, the parallelized
-> > depletion test forces RDSEED success rates down to around 2%.  It
-> > would appear that your tests suggest that the AMD platform fairs
-> > better than the Intel platform.
-
-> Yes, given the speed of the AMD RDRAND/RDSEED ops, compared to my
-> Intel test platforms, their DRBG looks better able to keep up with
-> the demand for bits.
-
-We now believe the observed resiliency of AMD's RNG infrastructure
-comes down to the fact that the completion times of their RNG
-instructions are significantly slower than Intel's.
-
-SkyLake and KabyLake instruction completion times are documented at
-463 clock cycles, regardless of operand size.
-
-AMD Ryzen documents variable completion times based on operand size.
-16 and 32 bit transfers complete in 1200 clock cycles with 64 bit
-requests completing in 2500 clock cycles.
-
-Given that Jason's test program was issueing 64-bit RNG requests, the
-AMD platforms are going to be approximately 5.4 times slower than
-Intel platforms, provided the results are corrected for CPU clock
-rates.
-
-AMD's entropy source is execution jitter time over a bank of inverter
-based ring oscillors, presumably sampled by a constant clock rate
-sampler.  Slower instruction retirement times consumes less of the
-constant rate entropy production.
-
-Intel uses thermal/quantum noise across a diode junction retrieved by
-a self-clocked sampler.  Faster instruction retirement translates into
-increased bandwidth demands on the sampler.
-
-> > Of course, the other variable may be how the parallelized stress test
-> > is conducted.  If you would like to share your implementation source
-> > we could give it a twirl on the systems we have access to.
+On 16/10/2023 12:50, Michael Roth wrote:
+> guest_memfd pages are generally expected to be in some arch-defined
+> initial state prior to using them for guest memory. For SEV-SNP this
+> initial state is 'private', or 'guest-owned', and requires additional
+> operations to move these pages into a 'private' state by updating the
+> corresponding entries the RMP table.
 > 
-> It is just Jason's earlier test program, but moved into one thread
-> for each core....
+> Allow for an arch-defined hook to handle updates of this sort, and go
+> ahead and implement one for x86 so KVM implementations like AMD SVM can
+> register a kvm_x86_ops callback to handle these updates for SEV-SNP
+> guests.
 > 
-> $ cat cpurngstress.c
-> #include <stdio.h>
-> #include <immintrin.h>
-> #include <pthread.h>
-> #include <unistd.h>
+> The preparation callback is always called when allocating/grabbing
+> folios via gmem, and it is up to the architecture to keep track of
+> whether or not the pages are already in the expected state (e.g. the RMP
+> table in the case of SEV-SNP).
 > 
-> /*
->  * Gives about 25 seconds walllock time on my Alderlake CPU
->  *
->  * Probably want to reduce this x10, or possibly even x100
->  * on AMD due to much slower ops.
->  */
-> #define MAX_ITER 10000000
-> 
-> #define MAX_CPUS 4096
-> 
-> void *doit(void *f) {
->     unsigned long long rand;
->     unsigned int i, success_rand = 0, success_seed = 0;
-> 
->     for (i = 0; i < MAX_ITER; ++i) {
->         success_seed += !!_rdseed64_step(&rand);
->     }
->     for (i = 0; i < MAX_ITER; ++i) {
->         success_rand += !!_rdrand64_step(&rand);
->     }
-> 
->     fprintf(stderr,
-> 	    "RDRAND: %.2f%%, RDSEED: %.2f%%\n",
-> 	    success_rand * 100.0 / MAX_ITER,
-> 	    success_seed * 100.0 / MAX_ITER);
-> 
->     return NULL;
-> }
-> 
-> 
-> int main(int argc, char *argv[])
-> {
->     pthread_t th[MAX_CPUS];
->     int nproc = sysconf(_SC_NPROCESSORS_ONLN);
->     if (nproc > MAX_CPUS) {
->       nproc = MAX_CPUS;
->     }
->     fprintf(stderr, "Stressing RDRAND/RDSEED across %d CPUs\n", nproc);
-> 
->     for (int i = 0 ; i < nproc;i ++) {
->       pthread_create(&th[i], NULL, doit,NULL);
->     }
-> 
->     for (int i = 0 ; i < nproc;i ++) {
->       pthread_join(th[i], NULL);
->     }
-> 
->     return 0;
-> }
-> 
-> $ gcc -march=native -o cpurngstress cpurngstress.c
+> In some cases, it is necessary to defer the preparation of the pages to
+> handle things like in-place encryption of initial guest memory payloads
+> before marking these pages as 'private'/'guest-owned', so also add a
+> helper that performs the same function as kvm_gmem_get_pfn(), but allows
+> for the preparation callback to be bypassed to allow for pages to be
+> accessed beforehand.
 
-Thanks for forwarding your test code along, we've added it to our
-tests for comparison.
+This will be useful for Arm CCA, where the pages need to be moved into
+"Realm state". Some minor comments below.
 
-> > If there is the possibility of over-harvesting randomness, why not
-> > design the implementations to be clamped at some per core value such
-> > as a megabit/second.  In the case of the documented RDSEED generation
-> > rates, that would allow the servicing of 3222 cores, if my math at
-> > 0530 in the morning is correct.
-> > 
-> > Would a core need more than 128 kilobytes of randomness, ie. one
-> > second of output, to effectively seed a random number generator?
-> > 
-> > A cynical conclusion would suggest engineering acquiesing to marketing
-> > demands... :-)
+> 
+> Link: https://lore.kernel.org/lkml/ZLqVdvsF11Ddo7Dq@google.com/
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>   arch/x86/include/asm/kvm-x86-ops.h |  1 +
+>   arch/x86/include/asm/kvm_host.h    |  2 ++
+>   arch/x86/kvm/x86.c                 |  6 ++++
+>   include/linux/kvm_host.h           | 14 ++++++++
+>   virt/kvm/Kconfig                   |  4 +++
+>   virt/kvm/guest_memfd.c             | 56 +++++++++++++++++++++++++++---
+>   6 files changed, 78 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+> index e3054e3e46d5..0c113f42d5c7 100644
+> --- a/arch/x86/include/asm/kvm-x86-ops.h
+> +++ b/arch/x86/include/asm/kvm-x86-ops.h
+> @@ -134,6 +134,7 @@ KVM_X86_OP(msr_filter_changed)
+>   KVM_X86_OP(complete_emulated_msr)
+>   KVM_X86_OP(vcpu_deliver_sipi_vector)
+>   KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
+> +KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
+>   
+>   #undef KVM_X86_OP
+>   #undef KVM_X86_OP_OPTIONAL
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 95018cc653f5..66fc89d1858f 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1752,6 +1752,8 @@ struct kvm_x86_ops {
+>   	 * Returns vCPU specific APICv inhibit reasons
+>   	 */
+>   	unsigned long (*vcpu_get_apicv_inhibit_reasons)(struct kvm_vcpu *vcpu);
+> +
+> +	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+>   };
+>   
+>   struct kvm_x86_nested_ops {
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 767236b4d771..33a4cc33d86d 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -13301,6 +13301,12 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
+>   }
+>   EXPORT_SYMBOL_GPL(kvm_arch_no_poll);
+>   
+> +#ifdef CONFIG_HAVE_KVM_GMEM_PREPARE
+> +int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order)
+> +{
+> +	return static_call(kvm_x86_gmem_prepare)(kvm, pfn, gfn, max_order);
+> +}
+> +#endif
+>   
+>   int kvm_spec_ctrl_test_value(u64 value)
+>   {
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 8c5c017ab4e9..c7f82c2f1bcf 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2403,9 +2403,19 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>   #endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
+>   
+>   #ifdef CONFIG_KVM_PRIVATE_MEM
+> +int __kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> +		       gfn_t gfn, kvm_pfn_t *pfn, int *max_order, bool prep);
+>   int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>   			      gfn_t gfn, kvm_pfn_t *pfn, int *max_order);
+>   #else
+> +static inline int __kvm_gmem_get_pfn(struct kvm *kvm,
+> +				     struct kvm_memory_slot *slot, gfn_t gfn,
+> +				     kvm_pfn_t *pfn, int *max_order)
 
-> My assumption is that it was simply easier to not implement a rate
-> limiting feature at the CPU level and punt the starvation problem to
-> software :-)
+Missing "bool prep" here ?
 
-Could be, it does seem unlikely that random number generation speed
-would be seen as fertile ground for marketing types.
+minor nit: Do we need to export both __kvm_gmem_get_pfn and 
+kvm_gmem_get_pfn ? I don't see anyone else using the former.
 
-Punting to software is certainly rationale, perhaps problematic in a
-CoCo environment depending on the definition of 'astronomical'.  See
-my response to Borislav who was kind enough to respond to all of this.
+We could have :
 
-> With regards,
-> Daniel
+#ifdef CONFIG_KVM_PRIVATE_MEM
+int __kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+		       gfn_t gfn, kvm_pfn_t *pfn, int *max_order, bool prep);
+#else
+static inline int __kvm_gmem_get_pfn(struct kvm *kvm,
+				    struct kvm_memory_slot *slot, gfn_t gfn,
+				    kvm_pfn_t *pfn, int *max_order,
+				    bool prep)
+{
+	KVM_BUG_ON(1, kvm);
+	return -EIO;
+}
+#endif
 
-Have a good day.
+static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+				 struct kvm_memory_slot *slot, gfn_t gfn,
+				kvm_pfn_t *pfn, int *max_order)
+{
+	return __kvm_gmem_get_pfn(kvm, slot, gfn, pfn, max_order, true);
+}
 
-As always,
-Dr. Greg
 
-The Quixote Project - Flailing at the Travails of Cybersecurity
-              https://github.com/Quixote-Project
+Suzuki
+
+> +	KVM_BUG_ON(1, kvm);
+> +	return -EIO;
+> +}
+> +
+>   static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+>   				   struct kvm_memory_slot *slot, gfn_t gfn,
+>   				   kvm_pfn_t *pfn, int *max_order)
+> @@ -2415,4 +2425,8 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+>   }
+>   #endif /* CONFIG_KVM_PRIVATE_MEM */
+>   
+> +#ifdef CONFIG_HAVE_KVM_GMEM_PREPARE
+> +int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order);
+> +#endif
+> +
+>   #endif
+> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+> index 2c964586aa14..992cf6ed86ef 100644
+> --- a/virt/kvm/Kconfig
+> +++ b/virt/kvm/Kconfig
+> @@ -109,3 +109,7 @@ config KVM_GENERIC_PRIVATE_MEM
+>          select KVM_GENERIC_MEMORY_ATTRIBUTES
+>          select KVM_PRIVATE_MEM
+>          bool
+> +
+> +config HAVE_KVM_GMEM_PREPARE
+> +       bool
+> +       depends on KVM_PRIVATE_MEM
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index f6f1b17a319c..72ff8b7b31d5 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -44,7 +44,40 @@ static struct folio *kvm_gmem_get_huge_folio(struct inode *inode, pgoff_t index)
+>   #endif
+>   }
+>   
+> -static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+> +static int kvm_gmem_prepare_folio(struct inode *inode, pgoff_t index, struct folio *folio)
+> +{
+> +#ifdef CONFIG_HAVE_KVM_GMEM_PREPARE
+> +	struct list_head *gmem_list = &inode->i_mapping->private_list;
+> +	struct kvm_gmem *gmem;
+> +
+> +	list_for_each_entry(gmem, gmem_list, entry) {
+> +		struct kvm_memory_slot *slot;
+> +		struct kvm *kvm = gmem->kvm;
+> +		struct page *page;
+> +		kvm_pfn_t pfn;
+> +		gfn_t gfn;
+> +		int rc;
+> +
+> +		slot = xa_load(&gmem->bindings, index);
+> +		if (!slot)
+> +			continue;
+> +
+> +		page = folio_file_page(folio, index);
+> +		pfn = page_to_pfn(page);
+> +		gfn = slot->base_gfn + index - slot->gmem.pgoff;
+> +		rc = kvm_arch_gmem_prepare(kvm, gfn, pfn, compound_order(compound_head(page)));
+> +		if (rc) {
+> +			pr_warn_ratelimited("gmem: Failed to prepare folio for index %lx, error %d.\n",
+> +					    index, rc);
+> +			return rc;
+> +		}
+> +	}
+> +
+> +#endif
+> +	return 0;
+> +}
+> +
+> +static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index, bool prep)
+>   {
+>   	struct folio *folio;
+>   
+> @@ -74,6 +107,12 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+>   		folio_mark_uptodate(folio);
+>   	}
+>   
+> +	if (prep && kvm_gmem_prepare_folio(inode, index, folio)) {
+> +		folio_unlock(folio);
+> +		folio_put(folio);
+> +		return NULL;
+> +	}
+> +
+>   	/*
+>   	 * Ignore accessed, referenced, and dirty flags.  The memory is
+>   	 * unevictable and there is no storage to write back to.
+> @@ -178,7 +217,7 @@ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
+>   			break;
+>   		}
+>   
+> -		folio = kvm_gmem_get_folio(inode, index);
+> +		folio = kvm_gmem_get_folio(inode, index, true);
+>   		if (!folio) {
+>   			r = -ENOMEM;
+>   			break;
+> @@ -537,8 +576,8 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+>   	fput(file);
+>   }
+>   
+> -int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> -		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order)
+> +int __kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> +		       gfn_t gfn, kvm_pfn_t *pfn, int *max_order, bool prep)
+>   {
+>   	pgoff_t index, huge_index;
+>   	struct kvm_gmem *gmem;
+> @@ -559,7 +598,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>   		goto out_fput;
+>   	}
+>   
+> -	folio = kvm_gmem_get_folio(file_inode(file), index);
+> +	folio = kvm_gmem_get_folio(file_inode(file), index, prep);
+>   	if (!folio) {
+>   		r = -ENOMEM;
+>   		goto out_fput;
+> @@ -600,4 +639,11 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>   
+>   	return r;
+>   }
+> +EXPORT_SYMBOL_GPL(__kvm_gmem_get_pfn);
+> +
+> +int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> +		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order)
+> +{
+> +	return __kvm_gmem_get_pfn(kvm, slot, gfn, pfn, max_order, true);
+> +} >   EXPORT_SYMBOL_GPL(kvm_gmem_get_pfn);
+
