@@ -1,136 +1,138 @@
-Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D54371B24
-	for <linux-coco@lists.linux.dev>; Thu,  8 Feb 2024 11:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9AF7CF02
+	for <linux-coco@lists.linux.dev>; Thu,  8 Feb 2024 13:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707392976; cv=none; b=hYaXfLvA/0XbsxwGxX2Bna7EdVtzm1ZWozxbeJnMmyAKILtbq4TrDHeSZpQGgCTO9UQqQpfXau7nEP8jj7uDKrQAb/IYHx/z8niKa9edxo8p64anzuAImprlVFs9Ww7lP0+98zhD82QneOruNnQex1gU62fosEPIZ/QJum9jI4Q=
+	t=1707398074; cv=none; b=BAHy/VHPpo7T05EUhiOOtlcfJLFY/AlCz25HQoL0O62yP+9VfYuDYT8UsMAb8cx4E889YK3d41JUU9A6EaWcUj/yR8ffYyRJJrwQCz8QfR0GC9slN/pxquJ9njIbv0L94Pv19d3P1sNpm15BV/b+54dMptEEF/M9hl8FkSGa1Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707392976; c=relaxed/simple;
-	bh=W8hh8SVXTKvD7eEwi7WV4j5y4uSnRC+F/4neJBDMh5U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=INqveX/Hwly1AhezpDq61lJNrDHCrysBfGnlN98R5Z2vs0v3DGASYfMAsTZorVFXMet7/l6vKwx3lUVyefF5BqsOiZTMAz1zyYP5GLtlWfMOxvIGP0P7FxoQDwc2YPmnGtX4u38b47drYg+x5z9a9sWdgv3eE9YOWlDGyoAxRi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
-Received: from wind.enjellic.com (localhost [127.0.0.1])
-	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 418BijxE023873;
-	Thu, 8 Feb 2024 05:44:45 -0600
-Received: (from greg@localhost)
-	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 418BiiQW023872;
-	Thu, 8 Feb 2024 05:44:44 -0600
-Date: Thu, 8 Feb 2024 05:44:44 -0600
-From: "Dr. Greg" <greg@enjellic.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: "Daniel P. Berrang??" <berrange@redhat.com>,
-        "Reshetova, Elena" <elena.reshetova@intel.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Nakajima, Jun" <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-Message-ID: <20240208114444.GA23164@wind.enjellic.com>
-Reply-To: "Dr. Greg" <greg@enjellic.com>
-References: <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <20240206011247.GA29224@wind.enjellic.com> <ZcHoKUElwXGPzrWb@redhat.com> <20240206120445.GA1247@wind.enjellic.com> <20240206153529.GHZcJRwTdDkWXuopOQ@fat_crate.local>
+	s=arc-20240116; t=1707398074; c=relaxed/simple;
+	bh=qc/QUzIAoXnycO+wmMn25Ign0tl0oChS1W2GTrGq/h4=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=q/Rxt4NQnpFveyVvoihbbxxltxOPI/Yj2pq5O2pbGA0DYL1N9CeJW0NUPVo2o6cNc69AZIVElJu7Q7jsCecj2PH7R1A2SdnLPvEjT/pTz4++UM9PQNi1NaEVuV2SpjT3xZF1BBwPNYZcwGJ1fInRUqYTIdgRTG1MbyjqJptShS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ot7wGwM5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cR/o8+6n; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ot7wGwM5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cR/o8+6n; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ot7wGwM5";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cR/o8+6n";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ot7wGwM5";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cR/o8+6n"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id CE8A51FCEB;
+	Thu,  8 Feb 2024 13:14:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1707398070; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YeUTFo8uc1p+m9KpeASqboioBCJzdFSIMv/7Dq2+9Bk=;
+	b=ot7wGwM5im6UmDmLStnbTOk45XAOIJWsLEHEp6yNSP2HZ78oDwUarYP9Y+Z1H60+RhsRsT
+	QzVyZW8D8gtTC6INGp72r4htlih49zAII//QfJMlCwyo8XZOsPPnJ/dB6Yp0SGcl7tiUJJ
+	wFNa74esG4b7q9W3uwGUJn9XW4Ag8YU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1707398070;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YeUTFo8uc1p+m9KpeASqboioBCJzdFSIMv/7Dq2+9Bk=;
+	b=cR/o8+6nAQeyWFmOiLZACP5j9JCvuW5V2DRmB67W6Op8Irv/aGP9onv97BXAZ0CyRHICir
+	mJQSwKqR4sDqB2Bg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1707398070; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YeUTFo8uc1p+m9KpeASqboioBCJzdFSIMv/7Dq2+9Bk=;
+	b=ot7wGwM5im6UmDmLStnbTOk45XAOIJWsLEHEp6yNSP2HZ78oDwUarYP9Y+Z1H60+RhsRsT
+	QzVyZW8D8gtTC6INGp72r4htlih49zAII//QfJMlCwyo8XZOsPPnJ/dB6Yp0SGcl7tiUJJ
+	wFNa74esG4b7q9W3uwGUJn9XW4Ag8YU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1707398070;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YeUTFo8uc1p+m9KpeASqboioBCJzdFSIMv/7Dq2+9Bk=;
+	b=cR/o8+6nAQeyWFmOiLZACP5j9JCvuW5V2DRmB67W6Op8Irv/aGP9onv97BXAZ0CyRHICir
+	mJQSwKqR4sDqB2Bg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AA48F13984;
+	Thu,  8 Feb 2024 13:14:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id XE6oJ7bTxGXAUgAAD6G6ig
+	(envelope-from <jroedel@suse.de>); Thu, 08 Feb 2024 13:14:30 +0000
+Date: Thu, 8 Feb 2024 14:14:25 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: COCONUT-SVSM now uses cargo workspace
+Message-ID: <ZcTTsZ156ghln73W@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240206153529.GHZcJRwTdDkWXuopOQ@fat_crate.local>
-User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Thu, 08 Feb 2024 05:44:45 -0600 (CST)
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: -0.05
+X-Spamd-Result: default: False [-0.05 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 BAYES_HAM(-0.00)[33.40%];
+	 FROM_HAS_DN(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-0.999];
+	 MIME_GOOD(-0.10)[text/plain];
+	 TO_DN_NONE(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCPT_COUNT_TWO(0.00)[2];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 R_MIXED_CHARSET(1.25)[subject];
+	 RCVD_TLS_ALL(0.00)[];
+	 MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Flag: NO
 
-On Tue, Feb 06, 2024 at 04:35:29PM +0100, Borislav Petkov wrote:
+Hi,
 
-Good morning, or perhaps afternoon, thanks for taking the time to
-reply.
+I spent the morning getting the transition of the COCONUT-SVSM
+repository to a cargo workspace merged. There were a couple of issues to
+fix, but everything should be working now. Please report any issues in
+case you find them.
 
-> On Tue, Feb 06, 2024 at 06:04:45AM -0600, Dr. Greg wrote:
-> > The silence appears to be deafening out of the respective engineering
-> > camps... :-)
+Also, in case you are using the pre-commit git-hook you need to install
+the latest version from the main branch. This one has some updates to
+correctly run all checks in the new environment.
 
-> I usually wait for those threads to "relax" themselves first. :)
+As discussed in the SVSM development calls, I also updated the
+repository to reflect the change of the project license from
+MIT-OR-Apache-2.0 to MIT.
 
-Indeed, my standard practice is to wait 24 hours before replying to
-any public e-mail, hence the delay in my response.
+Regards,
 
-> So, what do you wanna know?
+-- 
+Jörg Rödel
+jroedel@suse.de
 
-I guess a useful starting point would be if AMD would like to offer
-any type of quantification for 'astronomically small' when it comes to
-the probability of failure over 10 RDRAND attempts... :-)
+SUSE Software Solutions Germany GmbH
+Frankenstraße 146
+90461 Nürnberg
+Germany
+https://www.suse.com/
 
-Secondly, given our test findings and those of RedHat, would it be
-safe to assume that EPYC has engineering that prevents RDSEED failures
-that Ryzen does not?
-
-Given HPA's response in this thread, I do appreciate that all of this
-may be shrouded in trade secrets and other issues.  With an
-acknowledgement to that fact, let me see if I can extend the
-discussion in a generic manner that may prove useful to the community
-without being 'abusive'.
-
-Both AMD and Intel designs start with a hardware based entropy source.
-Intel samples thermal/quantum junction noise, AMD samples execution
-jitter over a bank of inverter based oscillators.  An assumption of
-constant clocked sampling implies a maximum randomness bandwidth
-limit.
-
-None of this implies that randomness is a finite resource, it will
-always become available, with the caveat that a core may have to stand
-in line, cup in hand, waiting for a dollop.
-
-So this leaves the fundamental question of what does an RDRAND or
-RDSEED failure return actually imply?
-
-Silicon is a expensive resource, which would imply a queue depth
-limitation for access to the socket common RNG infastructure.  If the
-queue is full when an instruction issues, it would be a logical
-response to signal an instruction failure quickly and let software try
-again.
-
-An alternate theory would be a requirement for constant instruction
-time completion.  In that case a 'buffer' of cycles would be included
-in the RNG instruction cycle allocation count.  If the instruction
-would need to 'sleep', waiting for randomness, beyond this cycle
-buffer, a failure would be returned.
-
-Absent broken hardware, astronomical then becomes the probability of a
-core being unlucky enough to run into these or alternate
-implementation scenarios 10 times in a row.  Particularly given the
-recommendation to sleep between attempts, which implies getting
-scheduled onto different cores for the attempts.
-
-Any enlightenment along these lines would seem to be useful in
-facilitating an understanding of the issues at hand.
-
-Given the time and engineering invested in the engineering behind both
-TDX and SEV-SNP, it would seem unlikely that really smart engineers at
-both Intel and AMD didn't anticipate this issue and its proper
-resolution for CoCo environments.
-
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
-
-All the best from the Upper Midwest.
-
-As always,
-Dr. Greg
-
-The Quixote Project - Flailing at the Travails of Cybersecurity
-              https://github.com/Quixote-Project
+Geschäftsführer: Ivo Totev, Andrew McDonald, Werner Knoblich
+(HRB 36809, AG Nürnberg)
