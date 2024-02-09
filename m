@@ -1,115 +1,250 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04olkn2072.outbound.protection.outlook.com [40.92.46.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E231B6DD1F
-	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 15:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707491597; cv=none; b=YTQjFiURgvRFQXIBu7ANit4LG5RGGxrAkv5v/FBQnSM9a3siQzXboozan3vyfqxd7Tj4W6K/Ek3oIgaG37SaTA68cX+MUedLnzMzZQfnhVcEUo7lgbRutkdlKZl0kHZfphYKp5WGL8a2PmwJZ68XHp7IbkxrkHxRbXTbOpXE7ok=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707491597; c=relaxed/simple;
-	bh=Bug3A6ZbFfpsIwrLaT1Ik2CEiJjUByjmzkWryqfXzuU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qRNQMTPGV4L38cUu7PSg3Y52hDaPIGuiB+fAuLIjZjkmZxjna3zFNxVpSWc1QfrT6rKmSDuCRGxHhXrD6YNn2WCuqBXWXV/b3fLGa9ORw3xtpb0ueRu9pAARq6ZdeYIG7cK0JA/kAu54OxHG6gAWhfa0GdJEuRok3SGDIj+6vyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x7RkO/op; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C78F57314
+	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 15:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.46.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707493878; cv=fail; b=ETMUTYSlqGn9blyIMVbEo3hcs1nUoa2QGAE3dja0Tnmi9cfSeyE9AKpLjJR2yqvtlsRah2f0A+crFdztZtIRygOoLZ3OAl35SKSDvzOrFxDhqF2znud7CV8xDqJEGs+LvDdG25f4PJpx8pea2VWJmk45/Dm8PdzuByw/lK7FbNc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707493878; c=relaxed/simple;
+	bh=SrKqnSszn0y1bOyTjJxXDvmXq7HoUh7qBRpw85zvrZQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YYNGLtUY84h4eeCaCoBzQywbVKdUoSDNZ2/a5mnLgln9iWLmHHkOsZKoQT4FDrvExGHCKQ1gWeWhn7v/HaUeLAd+gtCPqgY5MIgQWYLGV+y9+c9znwSYgGf7Gd6ZZd5pTMLYQErGta+ql0UOSsXAbd2pac45/SNySUE3RZgvfZM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=ek8Aq4Ma; arc=fail smtp.client-ip=40.92.46.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x7RkO/op"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-290c6d7776eso994204a91.2
-        for <linux-coco@lists.linux.dev>; Fri, 09 Feb 2024 07:13:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707491595; x=1708096395; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cgGQ0Ler+WUl/NFsNP3EozyAO4eJj17xtfp/FQdoBaA=;
-        b=x7RkO/opnzVcT/cG0LZHVLYLBVI0bKfj4MhMAGzZKZYrvmiYZGasgQ/YCirYOSU0k2
-         StQ0uTGj8gaJDBFMifw+GSCCjBqTidFWaPpWz0CA/AE4qXSKtMD8txpmapmTGCqSdfXY
-         LuoQCqUzqLn0j5PM/8+aBxLOf00L/+3qD6isMuzcK6Xphz3A1iOIBu2BlVxiaMK65g/d
-         JBPNvJfXrlBWyfTTKSZA3XJwzUeu2YdBoG+dOO70/ixr7vEynZv9y3T7Cm8+NEhDkmNT
-         CzbO7OpgrZWjTklKX3uQrGWj7kag6zomv5cix2lt7Nbf2JGUM1ZdxynG5GScFmX+/h/M
-         RboQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707491595; x=1708096395;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cgGQ0Ler+WUl/NFsNP3EozyAO4eJj17xtfp/FQdoBaA=;
-        b=taY0SnmwKpJWF/7doBXSUVtb3eVfW1rcIC9Ywk69X5nLHxKgiz9E44D1Hjg8AqbBpY
-         7EyWlAlJhJLr4Qq/SoN7yUw1j+elXMo1Q5ZZFB9LxpnkOgYASSdIk7H57gMgIQN8Shrk
-         d2Y3/M+lolM6A4ixbJIpZjBn1lLv+TrcGVO7Q8LBFXFvovC2i/nK8jTnsJWz17ppOLvl
-         TYFO1GJ20RYq93KDro/QiSQY5qN4h0+Ym/PkuPVgpTF2zfc7DQ9N1/V8Kantrr+7SGri
-         Mv7IW0PrV1qvrfc3Q+Q5coZe99x4Lfw3YwDYuk0IAJmhKUqeqXFFJmph0P9W4rX1aY1c
-         s6rA==
-X-Forwarded-Encrypted: i=1; AJvYcCX3uZrftqwVc0jif/1Yhnk4foJuKelbUX71V8gJH0ECgqdu4CvFocYQsRhRtmg5MvVCF55ddyaIV4HFY+MhJxKs8Ce7drSqR2IGlQ==
-X-Gm-Message-State: AOJu0YxbxnaJtvZzpu8oXE6APGdkejhltRsxBWwkTPipF9B87J19Ro2Y
-	vdMXN4vSOOzKvZ8p1JUkJ1Z9b2XMXkwbIXEWN189+/hqjh3PGZHZMhK6IgmdtnwzkjTio4AFnKF
-	H9Q==
-X-Google-Smtp-Source: AGHT+IGnxQ9hUZq2I0deBQMbaG7FpVg+3DEJAeDot7uWCeqlyGYIqcr+64bku6EdOLuv7fFuPPSWAvWzMMw=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:90b:2781:b0:296:aa24:8bc3 with SMTP id
- pw1-20020a17090b278100b00296aa248bc3mr23980pjb.5.1707491595319; Fri, 09 Feb
- 2024 07:13:15 -0800 (PST)
-Date: Fri, 9 Feb 2024 07:13:13 -0800
-In-Reply-To: <84d62953-527d-4837-acf8-315391f4b225@arm.com>
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="ek8Aq4Ma"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SMtoXlVZXQ56ua1Fqhik53+tvyUX3lQR5d7ksDdEHw6y2Mu5eev6nmwWUoHIOqmY+bxu/Abb4L2vTRkHnhpUqZPhPotIAfa+f/7Gki99AQuFoe0S58LMu4nqlxh2YyBv8ejv4ivA4BdvPhsuViG/h3uvkady5cp4gKDBXH2/pYF1YSq8jAzPyqgZUz6/yPLIAkKG06r5aeres+LZeiye+Ib4EEWoUV39fDNCXeXqg/SE+qdwtNymXZyfCb2CxnXsUZeuia0WOAoCDtAk8YQ6btEAHo+dSOcVro9oJojOq4sNbx2C44rigS8qEecVkirLc8uylyZiduNQoJ6Wu/1zWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U8CHvNv7PFbrd0VVBGEfglDX5/lrXoLYbZn9aB6aDtI=;
+ b=JM9mFRIiKRx4QMcMedgP1WXux+KePLf0UTg45oXDPSLRdkNt9oh3eIogfESZ1sN46OYfo9KRg6Ey1XpEX5+zT1P6bvJ6klT+Yp6UV+y3IrUQKmJBeJRSuR+s4fOYyGY3prjMFw6WksNP/AwUfAoY+XrSpecZQPOk0KIqkkKGGN1a/GVMB45XOUDTNyangROtOzVNjA9tM+Rpn19rNqo9s4UEB2ufXegUZzvNbsvDIYt/AT54U/ce2n9XUHMwCP5A+0pn42xiEbbLiyxsU83tgf7gXEDQQyO6RPbwVvwInH0OkC7QYhiY+G6RfB6yJ9Y88aYuh9sTjUeI2kgGYccvdA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U8CHvNv7PFbrd0VVBGEfglDX5/lrXoLYbZn9aB6aDtI=;
+ b=ek8Aq4Ma6We50+wR7W2bFCa4dMzf5TCYCoKnfr1D5oKC1+grWIQWdULY5VWjJ5WddP2K2KoWTtIysHR8a9LK9iyH8FBGovac8h8VxE3GTopt0H+iEZCs68fFHSXKVcL3XN8/hM5eAfjPbzPZQOFBLHBbjWVX/QUffkBwjbQhjHtz631RlpH1xfTM++dDE5OxR0ie8w7VzThTxRK9BgSSB3892QQNrv7AxsML+umD8zClE96cjTbVJ340A6TyRwWTC1t+HdXwFNircFVuahFBIpUXMJlQBsVhGEWXZNcNXyfZw8fgepR8DMwoyrWTxnVY2ackoNqrJGLSu+FZuXCmfA==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by MW4PR02MB7492.namprd02.prod.outlook.com (2603:10b6:303:7c::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.27; Fri, 9 Feb
+ 2024 15:51:13 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::67a9:f3c0:f57b:86dd]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::67a9:f3c0:f57b:86dd%5]) with mapi id 15.20.7249.027; Fri, 9 Feb 2024
+ 15:51:13 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: "wei.liu@kernel.org" <wei.liu@kernel.org>
+CC: "tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>, "decui@microsoft.com"
+	<decui@microsoft.com>, "luto@kernel.org" <luto@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "urezki@gmail.com" <urezki@gmail.com>,
+	"hch@infradead.org" <hch@infradead.org>, "lstoakes@gmail.com"
+	<lstoakes@gmail.com>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+	"ardb@kernel.org" <ardb@kernel.org>, "jroedel@suse.de" <jroedel@suse.de>,
+	"seanjc@google.com" <seanjc@google.com>, "rick.p.edgecombe@intel.com"
+	<rick.p.edgecombe@intel.com>, "sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: RE: [PATCH v4 0/3] x86/hyperv: Mark CoCo VM pages not present when
+ changing encrypted state
+Thread-Topic: [PATCH v4 0/3] x86/hyperv: Mark CoCo VM pages not present when
+ changing encrypted state
+Thread-Index: AQHaSCKexFAY/xZWtkOyLYyKvYn/6LECTKjA
+Date: Fri, 9 Feb 2024 15:51:12 +0000
+Message-ID:
+ <SN6PR02MB41571A797CF7BA7ADE60AF03D44B2@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20240116022008.1023398-1-mhklinux@outlook.com>
+In-Reply-To: <20240116022008.1023398-1-mhklinux@outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tmn: [G0Ndzn12MV+32UH1fR6q8PazfioyiZB2]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|MW4PR02MB7492:EE_
+x-ms-office365-filtering-correlation-id: 6b768536-7678-4862-e6c3-08dc2986f11f
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 7tmkelpnU4exZliC2btPV8AbjsVP/vAqn6U8aCrOaj13oKcjhA5CsnoN35mtFXhkQA3ZyCyFbt85AZs/nGB/jV0p0e8pFRit2dXxcbav2b+5tV69B9WU+ivXgY4Rb4VxdEY/Qb4fdZsxXfKFFJv2Em9pskNEXBWjVg9DkU3Df4XxJZAYPmOBnc/KT339FFCOFSkekoTIvSSHqkluOF5YQvt7kI5JMbugIE2ienKf4vZgp+z2m7qu8+FqthQ+oUimIRnXwYmdVb9GMXB9eQ83aEtesHOhGTWB4FSGtv/JhXSLm17o1ov5MxAcRe9Hi4kyjIRlWeyBJfV17chay4Fkh9bY5gpcWzYeHA5DmYaeKybxS97YQRcmFebJjahxaQrgc+DIhfjqe9eWgRvdxhlUYfVvXr73yivytD56Vd1N6JaQ1jBEqJgDvu/cFnGBfOq9Q9WX5Gm9dObc/Z+pVfBY57mnqcHVe2VsdEgDO83kq36NDS1PgZYRJlqcab9Fe5yyRuvDORb8RXz0qvJs6CvTHQV6MBABP6Ul1w+b2/3F+3s=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?tKb2rB0KSVx8MNyWSPWc97epu7kltnzxCI32rOcTI7r0NqzV8rI7VKWqPNKt?=
+ =?us-ascii?Q?Qojdq9Zj8jRILH43UbeD8Ki8ZyLTkzYGvgdMeWBRHR5ZI3jLEpi9so4rFG1r?=
+ =?us-ascii?Q?xhthW+RZ3ZqunxD3vlV/hMc6LJpToSpkT2b2RAdZ0T7BHUHY5c69QfTVxyuf?=
+ =?us-ascii?Q?RMsqeHAW7gcVjJceFlXx4r/wiuzoyjIj6ab4dR8Qb83L+yTkl3Jo5p8hJLKM?=
+ =?us-ascii?Q?7VM1aqNJeEw+nXZG+w5tASb9YB26Z5204sG5I5kpxkamhExnmPhtuRcVDJJz?=
+ =?us-ascii?Q?KyZRSZ6CItNYfRm43JqQOkkbEuZx64X7izsAtEyz6HR9ukLrqcdBZhlnyqeH?=
+ =?us-ascii?Q?CI9ZSVmvwgAO7y61C2OtxRni/W8kWBPKr3EE9lw052SV/vNY+9UFRvtSFi6R?=
+ =?us-ascii?Q?BH2pNe8khDV3/j8snR/LOeLakk/0V7mrXuM9JbQvk/RKaDBxszcw0phlqGPn?=
+ =?us-ascii?Q?llnoDl8i4h1QT51UxJGt7X0dwf9UwJNMa9DUdYAm3jP+DjrWQGP409aRLYL4?=
+ =?us-ascii?Q?jJpBXGTW50of+eh54034Unex9EQmZd9eXHqVVvWUjs/vF9XTXApwhLjwOhJ3?=
+ =?us-ascii?Q?8o9/qtncij9J41DpxOwrh6MMITegWqu6s3UvmRa1ruzDVs7eveYzmPDnUj8z?=
+ =?us-ascii?Q?7OBJdye4WWEyj0cH0KEFQ6LJPCqlsWnBVjGYopE/iZO/bwH33u/17pl4Sdqg?=
+ =?us-ascii?Q?IsTYUBCUWLQNeeKlDE6bHuoBcvQMmDRs0xw/ZSJfRjjWASPK9rnbojVI+wrh?=
+ =?us-ascii?Q?JuyRUSEnHmh6g3SqND4TM2w61NO2zRGSNLUApUFKXNb88y/PTIMhdnu3xfQO?=
+ =?us-ascii?Q?d93VLCQU48j16/BhR8kJoUdqQdstDpdscErXQc9ZfwMc5CP47hvs8Mb4S4Dr?=
+ =?us-ascii?Q?+Pl7ANx6a5KOZITHigsvTQrKkPV/4aWHGrlrfaKTGHSg52EPL6nO6s1hc/Sz?=
+ =?us-ascii?Q?aKL4UbDVnEZi6WdxuD3SbDPGwQVD1XFleTPcugDy1tH1zU5Kbo/efVWsnNM9?=
+ =?us-ascii?Q?KFCgkC5URT+xiQd0H3+Ta6qdhQrohdP1+g5rmeXsZWLcvsPKt4lel763MlJ3?=
+ =?us-ascii?Q?7Z9LVD48qRz65HBvE3GAsltCwhlSGnY2X1r+pX0rKhpgkB/65/U1ai11kvFB?=
+ =?us-ascii?Q?zBSPpC1GqN85+d/gpMdaGYAHNrzlRGakgovGFHCbtUn0pn2AIpBhgvU1RTD1?=
+ =?us-ascii?Q?jUnWm4IuzkaE4gXhCg5Vqjn6LXCKFfCBTi0cr0pYSrBTCyqz8BaYZwWTeGg?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20231016115028.996656-1-michael.roth@amd.com> <20231016115028.996656-5-michael.roth@amd.com>
- <e7125fcb-52b1-4942-9ae7-c85049e92e5c@arm.com> <ZcY2VRsRd03UQdF7@google.com> <84d62953-527d-4837-acf8-315391f4b225@arm.com>
-Message-ID: <ZcZBCdTA2kBoSeL8@google.com>
-Subject: Re: [PATCH RFC gmem v1 4/8] KVM: x86: Add gmem hook for invalidating memory
-From: Sean Christopherson <seanjc@google.com>
-To: Steven Price <steven.price@arm.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, "tabba@google.com" <tabba@google.com>, linux-coco@lists.linux.dev, 
-	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	pbonzini@redhat.com, isaku.yamahata@intel.com, ackerleytng@google.com, 
-	vbabka@suse.cz, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	jroedel@suse.de, pankaj.gupta@amd.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b768536-7678-4862-e6c3-08dc2986f11f
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Feb 2024 15:51:12.7338
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR02MB7492
 
-On Fri, Feb 09, 2024, Steven Price wrote:
-> >> One option that I've considered is to implement a seperate CCA ioctl to
-> >> notify KVM whether the memory should be mapped protected.
-> > 
-> > That's what KVM_SET_MEMORY_ATTRIBUTES+KVM_MEMORY_ATTRIBUTE_PRIVATE is for, no?
-> 
-> Sorry, I really didn't explain that well. Yes effectively this is the
-> attribute flag, but there's corner cases for destruction of the VM. My
-> thought was that if the VMM wanted to tear down part of the protected
-> range (without making it shared) then a separate ioctl would be needed
-> to notify KVM of the unmap.
+From: mhkelley58@gmail.com <mhkelley58@gmail.com> Sent: Monday, January 15,=
+ 2024 6:20 PM
+>=20
+> In a CoCo VM, when transitioning memory from encrypted to decrypted, or
+> vice versa, the caller of set_memory_encrypted() or set_memory_decrypted(=
+)
+> is responsible for ensuring the memory isn't in use and isn't referenced
+> while the transition is in progress.  The transition has multiple steps,
+> and the memory is in an inconsistent state until all steps are complete.
+> A reference while the state is inconsistent could result in an exception
+> that can't be cleanly fixed up.
+>=20
+> However, the kernel load_unaligned_zeropad() mechanism could cause a stra=
+y
+> reference that can't be prevented by the caller of set_memory_encrypted()
+> or set_memory_decrypted(), so there's specific code to handle this case.
+> But a CoCo VM running on Hyper-V may be configured to run with a paraviso=
+r,
+> with the #VC or #VE exception routed to the paravisor. There's no
+> architectural way to forward the exceptions back to the guest kernel, and
+> in such a case, the load_unaligned_zeropad() specific code doesn't work.
+>=20
+> To avoid this problem, mark pages as "not present" while a transition
+> is in progress. If load_unaligned_zeropad() causes a stray reference, a
+> normal page fault is generated instead of #VC or #VE, and the
+> page-fault-based fixup handlers for load_unaligned_zeropad() resolve the
+> reference. When the encrypted/decrypted transition is complete, mark the
+> pages as "present" again.
+>=20
+> This version of the patch series marks transitioning pages "not present"
+> only when running as a Hyper-V guest with a paravisor. Previous
+> versions[1] marked transitioning pages "not present" regardless of the
+> hypervisor and regardless of whether a paravisor is in use.  That more
+> general use had the benefit of decoupling the load_unaligned_zeropad()
+> fixup from CoCo VM #VE and #VC exception handling.  But the implementatio=
+n
+> was problematic for SEV-SNP because the SEV-SNP hypervisor callbacks
+> require a valid virtual address, not a physical address like with TDX and
+> the Hyper-V paravisor.  Marking the transitioning pages "not present"
+> causes the virtual address to not be valid, and the PVALIDATE
+> instruction in the SEV-SNP callback fails. Constructing a temporary
+> virtual address for this purpose is slower and adds complexity that
+> negates the benefits of the more general use. So this version narrows
+> the applicability of the approach to just where it is required
+> because of the #VC and #VE exceptions being routed to a paravisor.
+>=20
+> The previous version minimized the TLB flushing done during page
+> transitions between encrypted and decrypted. Because this version
+> marks the pages "not present" in hypervisor specific callbacks and
+> not in __set_memory_enc_pgtable(), doing such optimization is more
+> difficult to coordinate. But the page transitions are not a hot path,
+> so this version eschews optimization of TLB flushing in favor of
+> simplicity.
+>=20
+> Since this version no longer touches __set_memory_enc_pgtable(),
+> I've also removed patches that add comments about error handling
+> in that function.  Rick Edgecombe has proposed patches to improve
+> that error handling, and I'll leave those comments to Rick's
+> patches.
+>=20
+> Patch 1 handles implications of the hypervisor callbacks needing
+> to do virt-to-phys translations on pages that are temporarily
+> marked not present.
+>=20
+> Patch 2 makes the existing set_memory_p() function available for
+> use in the hypervisor callbacks.
+>=20
+> Patch 3 is the core change that marks the transitioning pages
+> as not present.
+>=20
+> This patch set is based on the linux-next20240103 code tree.
+>=20
+> Changes in v4:
+> * Patch 1: Updated comment in slow_virt_to_phys() to reduce the
+>   likelihood of the comment becoming stale.  The new comment
+>   describes the requirement to work with leaf PTE not present,
+>   but doesn't directly reference the CoCo hypervisor callbacks.
+>   [Rick Edgecombe]
+> * Patch 1: Decomposed a complex line-wrapped statement into
+>   multiple statements for ease of understanding. No functional
+>   change compared with v3. [Kirill Shutemov]
+> * Patch 3: Fixed handling of memory allocation errors. [Rick
+>   Edgecombe]
+>=20
+> Changes in v3:
+> * Major rework and simplification per discussion above.
+>=20
+> Changes in v2:
+> * Added Patches 3 and 4 to deal with the failure on SEV-SNP
+>   [Tom Lendacky]
+> * Split the main change into two separate patches (Patch 5 and
+>   Patch 6) to improve reviewability and to offer the option of
+>   retaining both hypervisor callbacks.
+> * Patch 5 moves set_memory_p() out of an #ifdef CONFIG_X86_64
+>   so that the code builds correctly for 32-bit, even though it
+>   is never executed for 32-bit [reported by kernel test robot]
+>=20
+> [1] https://lore.kernel.org/lkml/20231121212016.1154303-1-
+> mhklinux@outlook.com/
+>=20
+> Michael Kelley (3):
+>   x86/hyperv: Use slow_virt_to_phys() in page transition hypervisor
+>     callback
+>   x86/mm: Regularize set_memory_p() parameters and make non-static
+>   x86/hyperv: Make encrypted/decrypted changes safe for
+>     load_unaligned_zeropad()
+>=20
+>  arch/x86/hyperv/ivm.c             | 65 ++++++++++++++++++++++++++++---
+>  arch/x86/include/asm/set_memory.h |  1 +
+>  arch/x86/mm/pat/set_memory.c      | 24 +++++++-----
+>  3 files changed, 75 insertions(+), 15 deletions(-)
+>=20
 
-No new uAPI should be needed, because the only scenario time a benign VMM should
-do this is if the guest also knows the memory is being removed, in which case
-PUNCH_HOLE will suffice.
+Wei --
 
-> >> This 'solves' the problem nicely except for the case where the VMM
-> >> deliberately punches holes in memory which the guest is using.
-> > 
-> > I don't see what problem there is to solve in this case.  PUNCH_HOLE is destructive,
-> > so don't do that.
-> 
-> A well behaving VMM wouldn't PUNCH_HOLE when the guest is using it, but
-> my concern here is a VMM which is trying to break the host. In this case
-> either the PUNCH_HOLE needs to fail, or we actually need to recover the
-> memory from the guest (effectively killing the guest in the process).
+Can this series go through the Hyper-V tree?  It's mostly Hyper-V specific
+code, plus some comments and a minor tweak to a utility function in 'mm'.
 
-The latter.  IIRC, we talked about this exact case somewhere in the hour-long
-rambling discussion on guest_memfd at PUCK[1].  And we've definitely discussed
-this multiple times on-list, though I don't know that there is a single thread
-that captures the entire plan.
+All comments on earlier versions have been addressed, and it would be
+good to get some mileage in linux-next before the 6.9 merge window.
 
-The TL;DR is that gmem will invoke an arch hook for every "struct kvm_gmem"
-instance that's attached to a given guest_memfd inode when a page is being fully
-removed, i.e. when a page is being freed back to the normal memory pool.  Something
-like this proposed SNP patch[2].
+Michael
 
-Mike, do have WIP patches you can share?
 
-[1] https://drive.google.com/corp/drive/folders/116YTH1h9yBZmjqeJc03cV4_AhSe-VBkc?resourcekey=0-sOGeFEUi60-znJJmZBsTHQ
-[2] https://lore.kernel.org/all/20231230172351.574091-30-michael.roth@amd.com
