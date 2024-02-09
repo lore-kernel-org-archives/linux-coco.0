@@ -1,228 +1,176 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0E367E89
-	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 10:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C85692FC
+	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 14:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707473502; cv=none; b=cgCAp7LMlXR4Vc8cjfmMw8QGHoPm1HApeVJ0l3K4BOoxYyrJqkZLXXdiXL12n0hH64+v4LHjStyRI0btUAhOOHC/+CMciuPX4b8CEn4l6RMjiedN4K/hgDncJOPi7TgryPyyJurNYP6c0pGJkSZqAa0Bi0Jo9krGI3CK1K7A0Zs=
+	t=1707488888; cv=none; b=l7u+CDiVLFgjEVWpN58Pt8lt3Ww5/W3eY6mQcysiLmPPocjM9tfm4yFXMdxeZ186RpDXAyn5UqvkfGVUdHOELN4CKx2bySXmQoN2L7j9+GNmMjniRe5GmsNAzsj9gY3bbPoell14/hoYzXz2Zm1njhmgZ5hDFf5zk78J+5hgihA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707473502; c=relaxed/simple;
-	bh=sJ+o92d/lwk1g9oSwisR/d0SlJfcelUCjwmiemb5sy8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=li/Z+NMcDh1qtOEXGLzwQuAv03OzPQwyVQOvh2tWae0SaiTi8d51j8qWYYkwydGSOKza+1V0JebFxGi5n5dDQuBDOThgSOHQxsag0l2eIDatonweTH1Whe38jnn5ikSFmTM9fLPIQf1/JO0yxMFzART0TNZgg4qnbmblGPKGFXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9739BDA7;
-	Fri,  9 Feb 2024 02:12:20 -0800 (PST)
-Received: from [10.1.37.16] (e122027.cambridge.arm.com [10.1.37.16])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C16773F5A1;
-	Fri,  9 Feb 2024 02:11:34 -0800 (PST)
-Message-ID: <e7125fcb-52b1-4942-9ae7-c85049e92e5c@arm.com>
-Date: Fri, 9 Feb 2024 10:11:32 +0000
+	s=arc-20240116; t=1707488888; c=relaxed/simple;
+	bh=HUx7t17vxGA5IaYOV8ff1kr8+jU/9ANSxbnT6H9GSco=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=iMM/CC84efDH2bSK48N/93r1uYZxKmAGM+JDOlZwiyKZjGNItJwpUPAIyRdMFk28RVemjYeXlOTnFxIg9LZADlip0irCAWzSRPzOiZLPYrkzss/g7huvhFeS4s4zkaHWiXlu8T/MdIyUiGGUtc8x5Sb6QxqkELvn8s+sNtvej14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zBIxuTzW; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zBIxuTzW"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-5ee22efe5eeso20360717b3.3
+        for <linux-coco@lists.linux.dev>; Fri, 09 Feb 2024 06:28:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1707488886; x=1708093686; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uCfsv6GrpUFnVCwcL3J5Wem8yNPUxVMsIIYMkBzD0b0=;
+        b=zBIxuTzWgVYiA7KxMKOlcQbSawvhhbjdwYwv+4ynLuIdLr3COMyElVp7UOISLqsn5O
+         VbTFxGMsrzWqd+5Y1oo3/qtxVo72oV4CE41SM5UwjJEgobcWip3+4WcaaN4nH8BqmfhM
+         rl353JSyHe/TaLSupjksVnZzQWhVVIu1A76A8RCVy6ds3XoaDHbfZeIfNrtRdFpFLm0W
+         f1vu6iGYvts0GQTSxuCc8i5gRx0lWWjXBlDPx7SkHtAcIsFMkzxgfHuO6QwOst0duEJ0
+         YGl5gC/sq0BFFvfQugqx6b5t2AVjYofIVnLUV3iSHnMOeVd4fbn22aw7OE9l3+bL3x5q
+         m6vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707488886; x=1708093686;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uCfsv6GrpUFnVCwcL3J5Wem8yNPUxVMsIIYMkBzD0b0=;
+        b=vwLLJh7WfbgXYA5F6QprZNli/7O376ZksjUcUPYNA+nOvjBxo6vgAazBptgns4Ip38
+         3WxhhYQGhX70XqTU8QGA3I35iW+RjWAqbxAyGnUZCwcMrKaL78LMr7O17xcpE5FIN+ZJ
+         HVCppiwe1RDyMbiUn7FHw1n74cCu90cECqdMprtaRXAlHoBfJ6+D85gSRMHbXvIw1jYV
+         xVOpTXyyntWfFUEspKoGxYXTPkOdFt+1nJ2CATMEkm9HShuo8KDSvF6jT5Ra7txhpukR
+         SlBJCvqyzJb4Ni6Ps8YLiWhj0ayovZygzjMkwvlvh5EsLfLPV2By29tqv2h90A9ATUUq
+         W33w==
+X-Gm-Message-State: AOJu0YzCMeGwin8R5x1z/TIlShYZqVtgfxtOBEaU7TWD7M6WDn8oL9LN
+	d8jpY/lLj/bTn+jxDZFSG77p97xCVbFxQ81maFdZQIgNp5Ugi5aCbZ4Bhzn0TE7Gd2y8FUy/yUE
+	TMA==
+X-Google-Smtp-Source: AGHT+IHy+djrwH9lBwMcfClT+8pK1QZMj2IcA9F/oSlT9qX98kneABwsfBtcWfL+f67hdIOBZn1ACZ3Dunw=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a81:6d82:0:b0:5ff:a885:65b with SMTP id
+ i124-20020a816d82000000b005ffa885065bmr252030ywc.10.1707488885935; Fri, 09
+ Feb 2024 06:28:05 -0800 (PST)
+Date: Fri, 9 Feb 2024 06:28:04 -0800
+In-Reply-To: <e7125fcb-52b1-4942-9ae7-c85049e92e5c@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC gmem v1 4/8] KVM: x86: Add gmem hook for invalidating
- memory
-To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- "tabba@google.com" <tabba@google.com>
-Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
- isaku.yamahata@intel.com, ackerleytng@google.com, vbabka@suse.cz,
- ashish.kalra@amd.com, nikunj.dadhania@amd.com, jroedel@suse.de,
- pankaj.gupta@amd.com
-References: <20231016115028.996656-1-michael.roth@amd.com>
- <20231016115028.996656-5-michael.roth@amd.com>
-Content-Language: en-GB
-From: Steven Price <steven.price@arm.com>
-In-Reply-To: <20231016115028.996656-5-michael.roth@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20231016115028.996656-1-michael.roth@amd.com> <20231016115028.996656-5-michael.roth@amd.com>
+ <e7125fcb-52b1-4942-9ae7-c85049e92e5c@arm.com>
+Message-ID: <ZcY2VRsRd03UQdF7@google.com>
+Subject: Re: [PATCH RFC gmem v1 4/8] KVM: x86: Add gmem hook for invalidating memory
+From: Sean Christopherson <seanjc@google.com>
+To: Steven Price <steven.price@arm.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, "tabba@google.com" <tabba@google.com>, linux-coco@lists.linux.dev, 
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	pbonzini@redhat.com, isaku.yamahata@intel.com, ackerleytng@google.com, 
+	vbabka@suse.cz, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	jroedel@suse.de, pankaj.gupta@amd.com
+Content-Type: text/plain; charset="us-ascii"
 
-On 16/10/2023 12:50, Michael Roth wrote:
-> In some cases, like with SEV-SNP, guest memory needs to be updated in a
-> platform-specific manner before it can be safely freed back to the host.
-> Wire up arch-defined hooks to the .free_folio kvm_gmem_aops callback to
-> allow for special handling of this sort when freeing memory in response
-> to FALLOC_FL_PUNCH_HOLE operations and when releasing the inode, and go
-> ahead and define an arch-specific hook for x86 since it will be needed
-> for handling memory used for SEV-SNP guests.
-
-Hi all,
-
-Arm CCA has a similar need to prepare/unprepare memory (granule
-delegate/undelegate using our terminology) before it is used for
-protected memory.
-
-However I see a problem with the current gmem implementation that the
-"invalidations" are not precise enough for our RMI API. When punching a
-hole in the memfd the code currently hits the same path (ending in
-kvm_unmap_gfn_range()) as if a VMA is modified in the same range (for
-the shared version). The Arm CCA architecture doesn't allow the
-protected memory to be removed and refaulted without the permission of
-the guest (the memory contents would be wiped in this case).
-
-One option that I've considered is to implement a seperate CCA ioctl to
-notify KVM whether the memory should be mapped protected. The
-invalidations would then be ignored on ranges that are currently
-protected for this guest.
-
-This 'solves' the problem nicely except for the case where the VMM
-deliberately punches holes in memory which the guest is using.
-
-The issue in this case is that there's no way of failing the punch hole
-operation - we can detect that the memory is in use and shouldn't be
-freed, but this callback doesn't give the opportunity to actually block
-the freeing of the memory.
-
-Sadly there's no easy way to map from a physical page in a gmem back to
-which VM (and where in the VM) the page is mapped. So actually ripping
-the page out of the appropriate VM isn't really possible in this case.
-
-How is this situation handled on x86? Is it possible to invalidate and
-then refault a protected page without affecting the memory contents? My
-guess is yes and that is a CCA specific problem - is my understanding
-correct?
-
-My current thoughts for CCA are one of three options:
-
-1. Represent shared and protected memory as two separate memslots. This
-matches the underlying architecture more closely (the top address bit is
-repurposed as a 'shared' flag), but I don't like it because it's a
-deviation from other CoCo architectures (notably pKVM).
-
-2. Allow punch-hole to fail on CCA if the memory is mapped into the
-guest's protected space. Again, this is CCA being different and also
-creates nasty corner cases where the gmem descriptor could have to
-outlive the VMM - so looks like a potential source of memory leaks.
-
-3. 'Fix' the invalidation to provide more precise semantics. I haven't
-yet prototyped it but it might be possible to simply provide a flag from
-kvm_gmem_invalidate_begin specifying that the invalidation is for the
-protected memory. KVM would then only unmap the protected memory when
-this flag is set (avoiding issues with VMA updates causing spurious unmaps).
-
-Fairly obviously (3) is my preferred option, but it relies on the
-guarantees that the "invalidation" is actually a precise set of
-addresses where the memory is actually being freed.
-
-Comments, thoughts, objections welcome!
-
-Steve
-
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/include/asm/kvm-x86-ops.h |  1 +
->  arch/x86/include/asm/kvm_host.h    |  1 +
->  arch/x86/kvm/x86.c                 |  7 +++++++
->  include/linux/kvm_host.h           |  4 ++++
->  virt/kvm/Kconfig                   |  4 ++++
->  virt/kvm/guest_memfd.c             | 14 ++++++++++++++
->  6 files changed, 31 insertions(+)
+On Fri, Feb 09, 2024, Steven Price wrote:
+> On 16/10/2023 12:50, Michael Roth wrote:
+> > In some cases, like with SEV-SNP, guest memory needs to be updated in a
+> > platform-specific manner before it can be safely freed back to the host.
+> > Wire up arch-defined hooks to the .free_folio kvm_gmem_aops callback to
+> > allow for special handling of this sort when freeing memory in response
+> > to FALLOC_FL_PUNCH_HOLE operations and when releasing the inode, and go
+> > ahead and define an arch-specific hook for x86 since it will be needed
+> > for handling memory used for SEV-SNP guests.
 > 
-> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-> index 0c113f42d5c7..f1505a5fa781 100644
-> --- a/arch/x86/include/asm/kvm-x86-ops.h
-> +++ b/arch/x86/include/asm/kvm-x86-ops.h
-> @@ -135,6 +135,7 @@ KVM_X86_OP(complete_emulated_msr)
->  KVM_X86_OP(vcpu_deliver_sipi_vector)
->  KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
->  KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
-> +KVM_X86_OP_OPTIONAL(gmem_invalidate)
->  
->  #undef KVM_X86_OP
->  #undef KVM_X86_OP_OPTIONAL
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 66fc89d1858f..dbec74783f48 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1754,6 +1754,7 @@ struct kvm_x86_ops {
->  	unsigned long (*vcpu_get_apicv_inhibit_reasons)(struct kvm_vcpu *vcpu);
->  
->  	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
-> +	void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
->  };
->  
->  struct kvm_x86_nested_ops {
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 33a4cc33d86d..0e95c3a95e59 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -13308,6 +13308,13 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
->  }
->  #endif
->  
-> +#ifdef CONFIG_HAVE_KVM_GMEM_INVALIDATE
-> +void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
-> +{
-> +	static_call_cond(kvm_x86_gmem_invalidate)(start, end);
-> +}
-> +#endif
-> +
->  int kvm_spec_ctrl_test_value(u64 value)
->  {
->  	/*
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index c7f82c2f1bcf..840a5be5962a 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2429,4 +2429,8 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
->  int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order);
->  #endif
->  
-> +#ifdef CONFIG_HAVE_KVM_GMEM_INVALIDATE
-> +void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
-> +#endif
-> +
->  #endif
-> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-> index 992cf6ed86ef..7fd1362a7ebe 100644
-> --- a/virt/kvm/Kconfig
-> +++ b/virt/kvm/Kconfig
-> @@ -113,3 +113,7 @@ config KVM_GENERIC_PRIVATE_MEM
->  config HAVE_KVM_GMEM_PREPARE
->         bool
->         depends on KVM_PRIVATE_MEM
-> +
-> +config HAVE_KVM_GMEM_INVALIDATE
-> +       bool
-> +       depends on KVM_PRIVATE_MEM
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 72ff8b7b31d5..b4c4df259fb8 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -369,12 +369,26 @@ static int kvm_gmem_error_page(struct address_space *mapping, struct page *page)
->  	return MF_DELAYED;
->  }
->  
-> +#ifdef CONFIG_HAVE_KVM_GMEM_INVALIDATE
-> +static void kvm_gmem_free_folio(struct folio *folio)
-> +{
-> +	struct page *page = folio_page(folio, 0);
-> +	kvm_pfn_t pfn = page_to_pfn(page);
-> +	int order = folio_order(folio);
-> +
-> +	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
-> +}
-> +#endif
-> +
->  static const struct address_space_operations kvm_gmem_aops = {
->  	.dirty_folio = noop_dirty_folio,
->  #ifdef CONFIG_MIGRATION
->  	.migrate_folio	= kvm_gmem_migrate_folio,
->  #endif
->  	.error_remove_page = kvm_gmem_error_page,
-> +#ifdef CONFIG_HAVE_KVM_GMEM_INVALIDATE
-> +	.free_folio = kvm_gmem_free_folio,
-> +#endif
->  };
->  
->  static int kvm_gmem_getattr(struct mnt_idmap *idmap, const struct path *path,
+> Hi all,
+> 
+> Arm CCA has a similar need to prepare/unprepare memory (granule
+> delegate/undelegate using our terminology) before it is used for
+> protected memory.
+> 
+> However I see a problem with the current gmem implementation that the
+> "invalidations" are not precise enough for our RMI API. When punching a
+> hole in the memfd the code currently hits the same path (ending in
+> kvm_unmap_gfn_range()) as if a VMA is modified in the same range (for
+> the shared version).
+>
+> The Arm CCA architecture doesn't allow the protected memory to be removed and
+> refaulted without the permission of the guest (the memory contents would be
+> wiped in this case).
 
+TDX behaves almost exactly like CCA.  Well, that's not technically true, strictly
+speaking, as there are TDX APIs that do allow for *temporarily* marking mappings
+!PRESENT, but those aren't in play for invalidation events like this.
+
+SNP does allow zapping page table mappings, but fully removing a page, as PUNCH_HOLE
+would do, is destructive, so SNP also behaves the same way for all intents and
+purposes.
+
+> One option that I've considered is to implement a seperate CCA ioctl to
+> notify KVM whether the memory should be mapped protected.
+
+That's what KVM_SET_MEMORY_ATTRIBUTES+KVM_MEMORY_ATTRIBUTE_PRIVATE is for, no?
+
+> The invalidations would then be ignored on ranges that are currently
+> protected for this guest.
+
+That's backwards.  Invalidations on a guest_memfd should affect only *protected*
+mappings.  And for that, the plan/proposal is to plumb only_{shared,private} flags
+into "struct kvm_gfn_range"[1] so that guest_memfd invalidations don't zap shared
+mappings, and mmu_notifier invalidation don't zap private mappings.  Sample usage
+in the TDX context[2] (disclaimer, I'm pretty sure I didn't write most of that
+patch despite, I only provided a rough sketch).
+
+[1] https://lore.kernel.org/all/20231027182217.3615211-13-seanjc@google.com
+[2] https://lore.kernel.org/all/0b308fb6dd52bafe7153086c7f54bfad03da74b1.1705965635.git.isaku.yamahata@intel.com
+
+> This 'solves' the problem nicely except for the case where the VMM
+> deliberately punches holes in memory which the guest is using.
+
+I don't see what problem there is to solve in this case.  PUNCH_HOLE is destructive,
+so don't do that.
+
+> The issue in this case is that there's no way of failing the punch hole
+> operation - we can detect that the memory is in use and shouldn't be
+> freed, but this callback doesn't give the opportunity to actually block
+> the freeing of the memory.
+
+Why is this KVM's problem?  E.g. the same exact thing happens without guest_memfd
+if userspace munmap()s memory the guest is using.
+
+> Sadly there's no easy way to map from a physical page in a gmem back to
+> which VM (and where in the VM) the page is mapped. So actually ripping
+> the page out of the appropriate VM isn't really possible in this case.
+
+I don't follow.  guest_memfd has a 1:1 binding with a VM *and* a gfn, how can you
+not know what exactly needs to be invalidated?
+
+> How is this situation handled on x86? Is it possible to invalidate and
+> then refault a protected page without affecting the memory contents? My
+> guess is yes and that is a CCA specific problem - is my understanding
+> correct?
+> 
+> My current thoughts for CCA are one of three options:
+> 
+> 1. Represent shared and protected memory as two separate memslots. This
+> matches the underlying architecture more closely (the top address bit is
+> repurposed as a 'shared' flag), but I don't like it because it's a
+> deviation from other CoCo architectures (notably pKVM).
+> 
+> 2. Allow punch-hole to fail on CCA if the memory is mapped into the
+> guest's protected space. Again, this is CCA being different and also
+> creates nasty corner cases where the gmem descriptor could have to
+> outlive the VMM - so looks like a potential source of memory leaks.
+> 
+> 3. 'Fix' the invalidation to provide more precise semantics. I haven't
+> yet prototyped it but it might be possible to simply provide a flag from
+> kvm_gmem_invalidate_begin specifying that the invalidation is for the
+> protected memory. KVM would then only unmap the protected memory when
+> this flag is set (avoiding issues with VMA updates causing spurious unmaps).
+> 
+> Fairly obviously (3) is my preferred option, but it relies on the
+> guarantees that the "invalidation" is actually a precise set of
+> addresses where the memory is actually being freed.
+
+#3 is what we are planning for x86, and except for the only_{shared,private} flags,
+the requisite functionality should already be in Linus' tree, though it does need
+to be wired up for ARM.
