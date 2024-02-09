@@ -1,202 +1,162 @@
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED43538A
-	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 20:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893DA125CA
+	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 20:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707510730; cv=none; b=MvaXJy4d6idFZn+gxZIGcta4SjMSm/N4DL+rbRFtiEj9Z1h9QWEXR+RED+XTjIfZk0kW771MvHOugui/In+Ll2S70seyVbdcKEeWyStRRzcE0f0IW3lNnLK0kJkJw5tLVngrQy3YKGfJ7Lvzvl+EPIpqdlbuO+UV3UuUfTuaZOk=
+	t=1707511046; cv=none; b=oFQjjmm7PPz9MsOh+Ahr8C9oiWE0t18pnTqlFz88fykQt3hbP4mHkOb+enNm/Z18xIThpOy12YmJBm4xj88J65KT6rFOmcECzYqs1UUWx8xT0f1wvL3B8rA73+5ta51cEQ8v3yIhyLqRY0Fqv6tjC4VPs5CS8cPZSSdjUs79/f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707510730; c=relaxed/simple;
-	bh=W4hX4Fr27kDfOqCWn6zXDk0H9YB1rKxtALyMNKxVk4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PqeADNssBfRMqNNEynQ02gcKnCtiArGpnYzIUS9pSFiS7T3wYVKPVUCzqP3hUM/QukF9hbR+mns3MyJmQrlDi0EaGEd8A3wggM7+wHO//cq551pWAQ+/qRu652z1phtdwXJ347UyYAGt7MbbTcIGW+zzhSibKMOxO6mAT6aVxUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 9FB682800B767;
-	Fri,  9 Feb 2024 21:32:04 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 808144D3896; Fri,  9 Feb 2024 21:32:04 +0100 (CET)
-Date: Fri, 9 Feb 2024 21:32:04 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>,
-	Zhi Wang <zhi.a.wang@intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>
-Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
-Message-ID: <20240209203204.GA5850@wunner.de>
-References: <cover.1695921656.git.lukas@wunner.de>
- <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
- <5d0e75-993c-3978-8ccf-60bfb7cac10@linux.intel.com>
+	s=arc-20240116; t=1707511046; c=relaxed/simple;
+	bh=+jakRoEvADGltt2rjt8cuiOk6U4xLU0Ovul21Y+4JsY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ljf3VmrfYGFpty3ZBDksC4jIdiiI1/FQEFl8SXuvzzM8mJ96Y9xiungtE75xwkJQL9wPqgiOyhTuymc7PtnJN00CNiQ0ADOBUhm2PofzC1ZblNFiJZOWBd3A//tFiF+GwFy8FA9lwmS/6VKewx7k+k+u6PfQDvQ02gnnL3pbqc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EX0cVzvS; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EX0cVzvS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707511044; x=1739047044;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+jakRoEvADGltt2rjt8cuiOk6U4xLU0Ovul21Y+4JsY=;
+  b=EX0cVzvS58WGBL3zCTxo6pnuXtdwJC2020nfyAc3pZrRTODktJ1Xphg6
+   SZXWQLf5xcKuiIQSTGluaA/IfsrSRLg8AsH/MTYp1dXnYXdlXOGrcEzQI
+   u66TCCasOaUo4rW3/twnxM2i/Als/SoIciAjYRrleSA81YBlMy7NmThnM
+   y1cB1sSgDJnrdJOBmCKXa7/bePkcCbGYxo36o8+rsjD6u+8SrfTOqkiKF
+   RBzxy3C8A05x1gICQQYDfGgvFU9tfW6einJyj7eajayoaZIRxCzy/6o+Q
+   9QoGiY8DgAGKdSB5ZBOov8buWNJ9uN/ilGLxyBd1UYS4XPnUdeUvIhGnD
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="12227239"
+X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
+   d="scan'208";a="12227239"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 12:37:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
+   d="scan'208";a="39470158"
+Received: from pkdiveka-mobl.amr.corp.intel.com (HELO [10.212.136.53]) ([10.212.136.53])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 12:37:23 -0800
+Message-ID: <469bd890-36fb-4fbb-8060-36cd1169b654@intel.com>
+Date: Fri, 9 Feb 2024 12:37:22 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5d0e75-993c-3978-8ccf-60bfb7cac10@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Content-Language: en-US
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>, Borislav Petkov <bp@alien8.de>
+Cc: "Dr. Greg" <greg@enjellic.com>, "Daniel P. Berrang??"
+ <berrange@redhat.com>, "Reshetova, Elena" <elena.reshetova@intel.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ "x86@kernel.org" <x86@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "Nakajima, Jun" <jun.nakajima@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
+ <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com>
+ <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com>
+ <Zbk6h0ogqeInLa_1@redhat.com>
+ <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240206011247.GA29224@wind.enjellic.com> <ZcHoKUElwXGPzrWb@redhat.com>
+ <20240206120445.GA1247@wind.enjellic.com>
+ <20240206153529.GHZcJRwTdDkWXuopOQ@fat_crate.local>
+ <20240208114444.GA23164@wind.enjellic.com>
+ <20240209173102.GBZcZhVuFJZ8JOKTjG@fat_crate.local>
+ <CAHmME9pEVNM6UVW+pKbTZEhsnrGvq5ERMOSC1ezdrCn96q36kA@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <CAHmME9pEVNM6UVW+pKbTZEhsnrGvq5ERMOSC1ezdrCn96q36kA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 03, 2023 at 01:35:26PM +0300, Ilpo Järvinen wrote:
-> On Thu, 28 Sep 2023, Lukas Wunner wrote:
-> > +typedef int (spdm_transport)(void *priv, struct device *dev,
-> > +                          const void *request, size_t request_sz,
-> > +                          void *response, size_t response_sz);
+On 2/9/24 11:49, Jason A. Donenfeld wrote:
+> [As an aside, I would like to note that a different construction of
+> RDRAND could keep outputting good random numbers for a reeeeeallly
+> long time without needing to reseed, or without penalty if RDSEED is
+> depleted, and so could be made to actually never fail. But given the
+> design goals of RDRAND, this kind of crypto is highly likely to never
+> be implemented, so I'm not even moving to suggest that AMD/Intel just
+> 'fix' the crypto design goals of the instruction. It's not gonna
+> happen for lots of reasons.]
+
+Intel's RDRAND reseeding behavior is spelled out here:
+
+> https://www.intel.com/content/www/us/en/developer/articles/guide/intel-digital-random-number-generator-drng-software-implementation-guide.html
+
+In the "Guaranteeing DBRG Reseeding" section.
+
+> It's a bit of a scheduling/queueing thing, where different security
+> contexts shouldn't be able to starve others out of the finite resource
+> indefinitely.
 > 
-> This returns a length or an error, right? If so return ssize_t instead.
-> 
-> If you make this change, alter the caller types too.
+> What I'm wondering is if that kind of fairness is even possible to
+> achieve in the hardware or the microcode.
+...
 
-Alright, I've changed the types in __spdm_exchange() and spdm_exchange().
+Even ignoring different security contexts, Intel's whitepaper claims
+that no starvation happens with RDRAND:
 
-However the callers of those functions assign the result to an "rc" variable
-which is also used to receive an "int" return value.
-E.g. spdm_get_digests() assigns the ssize_t result of spdm_exchange() to rc
-but also the int result of crypto_shash_update().
+> If multiple threads are invoking RDRAND simultaneously, total RDRAND
+> throughput (across all threads) scales approximately linearly with
+> the number of threads until no more hardware threads remain, the bus
+> limits of the processor are reached, or the DRNG interface is fully
+> saturated. Past this point, the maximum throughput is divided equally
+> among the active threads. No threads get starved.
 
-It feels awkward to change the type of "rc" to "ssize_t" in those
-functions, so I kept "int".
+800 MB/sec of total RDRAND throughput across all threads, guaranteed
+reseeding, and no starvation sounds pretty good to me.
 
-
-> > +} __packed;
-> > +
-> > +#define SPDM_GET_CAPABILITIES 0xE1
-> 
-> There's non-capital hex later in the file, please try to be consistent.
-
-The spec uses capital hex characters, so this was done to ease
-connecting the implementation to the spec.
-
-OTOH I don't want to capitalize all the hex codes in enum spdm_error_code.
-
-So I guess consistency takes precedence and I've amended the
-patch to downcase all hex characters, as you've requested.
-
-
-> > +struct spdm_error_rsp {
-> > +	u8 version;
-> > +	u8 code;
-> > +	enum spdm_error_code error_code:8;
-> > +	u8 error_data;
-> > +
-> > +	u8 extended_error_data[];
-> > +} __packed;
-> 
-> Is this always going to produce the layout you want given the alignment 
-> requirements for the storage unit for u8 and enum are probably different?
-
-Yes, the __packed attribute forces the compiler to avoid padding.
-
-
-> > +	spdm_state->responder_caps = le32_to_cpu(rsp->flags);
-> 
-> Earlier, unaligned accessors where used with the version_number_entries.
-> Is it intentional they're not used here (I cannot see what would be 
-> reason for this difference)?
-
-Thanks, good catch.  Indeed this is not necessarily naturally aligned
-because the GET_CAPABILITIES request and response succeeds the
-GET_VERSION response in the same allocation.  And the GET_VERSION
-response size is a multiple of 2, but not always a multiple of 4.
-
-So I've amended the patch to use a separate allocation for the
-GET_CAPABILITIES request and response.  The spec-defined struct layout
-of those messages is such that the 32-bit accesses are indeed always
-naturally aligned.
-
-The existing unaligned accessor in spdm_get_version() turned out
-to be unnecessary after taking a closer look, so I dropped that one.
-
-
-> > +static int spdm_negotiate_algs(struct spdm_state *spdm_state,
-> > +			       void *transcript, size_t transcript_sz)
-> > +{
-> > +	struct spdm_req_alg_struct *req_alg_struct;
-> > +	struct spdm_negotiate_algs_req *req;
-> > +	struct spdm_negotiate_algs_rsp *rsp;
-> > +	size_t req_sz = sizeof(*req);
-> > +	size_t rsp_sz = sizeof(*rsp);
-> > +	int rc, length;
-> > +
-> > +	/* Request length shall be <= 128 bytes (SPDM 1.1.0 margin no 185) */
-> > +	BUILD_BUG_ON(req_sz > 128);
-> 
-> I don't know why this really has to be here? This could be static_assert()
-> below the struct declaration.
-
-A follow-on patch to add key exchange support increases req_sz based on
-an SPDM_MAX_REQ_ALG_STRUCT macro defined here in front of the function
-where it's used.  That's the reason why the size is checked here as well.
-
-
-> > +static int spdm_get_certificate(struct spdm_state *spdm_state, u8 slot)
-> > +{
-> > +	struct spdm_get_certificate_req req = {
-> > +		.code = SPDM_GET_CERTIFICATE,
-> > +		.param1 = slot,
-> > +	};
-> > +	struct spdm_get_certificate_rsp *rsp;
-> > +	struct spdm_cert_chain *certs = NULL;
-> > +	size_t rsp_sz, total_length, header_length;
-> > +	u16 remainder_length = 0xffff;
-> 
-> 0xffff in this function should use either U16_MAX or SZ_64K - 1.
-
-The SPDM spec uses 0xffff so I'm deliberately using that as well
-to make the connection to the spec obvious.
-
-
-> > +static void spdm_create_combined_prefix(struct spdm_state *spdm_state,
-> > +					const char *spdm_context, void *buf)
-> > +{
-> > +	u8 minor = spdm_state->version & 0xf;
-> > +	u8 major = spdm_state->version >> 4;
-> > +	size_t len = strlen(spdm_context);
-> > +	int rc, zero_pad;
-> > +
-> > +	rc = snprintf(buf, SPDM_PREFIX_SZ + 1,
-> > +		      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*"
-> > +		      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*",
-> > +		      major, minor, major, minor, major, minor, major, minor);
-> 
-> Why are these using s8 formatting specifier %hhx ??
-
-I don't quite follow, "%hhx" is an unsigned char, not a signed char.
-
-spdm_state->version may contain e.g. 0x12 which is converted to
-"dmtf-spdm-v1.2.*" here.
-
-The question is what happens if the major or minor version goes beyond 9.
-The total length of the prefix is hard-coded by the spec, hence my
-expectation is that 1.10 will be represented as "dmtf-spdm-v1.a.*"
-to not exceed the length.  The code follows that expectation.
-
-Thanks for taking a look!   I've amended the patch to take all your
-other feedback into account.
-
-Lukas
+Does that need improving?
