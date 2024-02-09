@@ -1,175 +1,130 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0265A7BB04
-	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 17:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CEEC84A45
+	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 19:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707499890; cv=none; b=Pxs0iBa/9lpchQ2Lv1ERAXObx83CUdwTwv+T/Dz5vrf9PJSyBqcS1/HiiseUu5TMxQtLrBIokE1v8fHpDJW+zkKGqyqYjNtLVuO4H5/ZNhDF4Ct9uugsHgDq4pJcjNfOBv77E+/pLazkUBrRbWCEn3SwtMo9Gg3MwLpe9n/NZ3g=
+	t=1707508202; cv=none; b=kKt3Ex+Z81ayB8vISBCcUvttcRZwFTUmS4gULoEPUnqogtkK26Oc7meN/FnvBcMSa/VnopJjt+E2Fr8ZO6pA+s374kZlLCKlVqqiOUJytYdOsjntXSleN5iWTFnUe3EPHksrERwpbMMgcuioGlBe0LakdwUol/S3bRT69mh5Abs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707499890; c=relaxed/simple;
-	bh=ueF/3l/pdEkS8nmlN1GCOrqczipbSy+MacJ/+GVMuHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WLrl+kSecHvuP8n529B5Y4uJmz6ulzfod1EL+Eb/CDjdN6Q7AF/6BSoAc1FHsrEqiUGa9n4TTxF1ZCRWbER/Pw4cK7p0FVpTHHw/hKWOscOvedoCKUUOoIIvd8yzYplnDxDCMOueyOF0TSl6S0m4CR3vVU1tKmJViWxPic9QKqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=e6JLmdhx; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1707508202; c=relaxed/simple;
+	bh=iTu1VA2xMG+lx8NyzpZCf6Y+0UQu7r2E3itVvpPoWuk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QQtoE/A0zqZTOskLOiEvGFhRECJMEjXt6/EVRR76ewwiRmtiyTA4REr46F4NG520dhiH5QWGODiSE6s698vWrG8fDT4DnMSIv/dZ34EF3DYAxstvdofLn/M3G4prGCgd7eekWq2vLvkFevE9ghprHPiQN1zz5wASbopZd3YF5oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=OZrcJOhA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="e6JLmdhx"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5AF5B40E00B2;
-	Fri,  9 Feb 2024 17:31:25 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id DjG77o1yKKfM; Fri,  9 Feb 2024 17:31:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1707499882; bh=QJ8IvXe5L7kQUA05kg6s4Kuht0GQjKo92ZVIchIlagU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e6JLmdhxkDsBxZfc0bpyjqv1otCTSJtzz7kRKCl/QqUcQK9B7lyn12IvY2J0ibb4j
-	 fdiaL8iPnN0nkBu1ImUi/KuedEG5kutYQutKlYK5icev6GoVn+gTGhvyLCx97lBA2p
-	 DlYH1aF5ifJOwtOsk2NEF6xj/M8yLSPjuZvpQDBx6SzoSRgakGzbCXsSUW7x5d9afG
-	 ATiNBtCuLbM6AXRXuoaEMaQvcZoLP5GAqHwiCJ9oQLNl41aUloVR2ySHrY4sHkGMID
-	 vnsCL8vAc/STm9fbP8UtfWSiWoPighc4mfP1z7F9T90jiyEb8AegXhX1UHdieUNUTT
-	 2/sun38XtEgq3u+PTVAi469WFKFluvOg92ziZylkgrIjqKEXtg6EBC3bPMDQuoq5YK
-	 AWIwDG9zNn0jwnGf8xf6fhPl1LICBaFIWCU4HM/y2EDwGFnBb9R/ipziFkEd2aa4ta
-	 SqZ8omV22A+fhgipCGPzvwVkMwZ5bxEVLusdhKp9GktPiZGnK9KLnKRPqav0UA3tNV
-	 j/Nx6uJo13HpZT3TLbXgpfvS6GiBb8SvBqPZJpp4Lb9Ns3Rx095TwMBSpQ8ZhTSuv8
-	 SK1PtiEqQ4RbT4L5Tp56ub52qYxRATRxzIeDSLEh+fR1UoxtXFbphiOdeeDVRB/gQu
-	 ooiyBVxd+sOCMtbYn20KCN58=
-Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 331EF40E0192;
-	Fri,  9 Feb 2024 17:31:03 +0000 (UTC)
-Date: Fri, 9 Feb 2024 18:31:02 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "Dr. Greg" <greg@enjellic.com>
-Cc: "Daniel P. Berrang??" <berrange@redhat.com>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Nakajima, Jun" <jun.nakajima@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-Message-ID: <20240209173102.GBZcZhVuFJZ8JOKTjG@fat_crate.local>
-References: <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com>
- <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com>
- <Zbk6h0ogqeInLa_1@redhat.com>
- <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20240206011247.GA29224@wind.enjellic.com>
- <ZcHoKUElwXGPzrWb@redhat.com>
- <20240206120445.GA1247@wind.enjellic.com>
- <20240206153529.GHZcJRwTdDkWXuopOQ@fat_crate.local>
- <20240208114444.GA23164@wind.enjellic.com>
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="OZrcJOhA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27FCC43399
+	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 19:50:01 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="OZrcJOhA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1707508196;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iTu1VA2xMG+lx8NyzpZCf6Y+0UQu7r2E3itVvpPoWuk=;
+	b=OZrcJOhAhnSTYQ1X/TVOIHpzy8J0VGenQG9Zkh/33gi9IJh7+fc3FEIbIhSko3Jonqf21+
+	9772JZos8Q2dwBP9ZlKOGxNDAsvDO8e4bRmSPPUjYbO1lW6clBS128h9JQ+mP1zUu+KrhE
+	C75Tir8zeKaA0AiU45HQqb2nM1rMUbI=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 2a616a49 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <linux-coco@lists.linux.dev>;
+	Fri, 9 Feb 2024 19:49:56 +0000 (UTC)
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-dc6d8bd612dso1392587276.1
+        for <linux-coco@lists.linux.dev>; Fri, 09 Feb 2024 11:49:55 -0800 (PST)
+X-Gm-Message-State: AOJu0YxVA5VS38Uum+EFTwccdWeOJ4KEKjVOxIuLR040GVsaC7zE1NEw
+	psk6KZgmhLqoIUZ9Xn4QYO2CflZBWjRKRHwxygwwive9Eg6cobMv4iPvENhnlwkuGz1DaQjr7UK
+	ZvZgokBFWRYEaJvUWVwa9+alKgM4=
+X-Google-Smtp-Source: AGHT+IEnmYc5xL/JOVB1tx6sQdZ7M72qNY2SDRwlgVZZzRP3BJ91yZNqzfciMT2T1i9jWXyzaOpvl6tI5WYyO1fvkHI=
+X-Received: by 2002:a25:d655:0:b0:dc2:4400:f69a with SMTP id
+ n82-20020a25d655000000b00dc24400f69amr151606ybg.24.1707508193534; Fri, 09 Feb
+ 2024 11:49:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240208114444.GA23164@wind.enjellic.com>
+References: <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com>
+ <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240206011247.GA29224@wind.enjellic.com> <ZcHoKUElwXGPzrWb@redhat.com>
+ <20240206120445.GA1247@wind.enjellic.com> <20240206153529.GHZcJRwTdDkWXuopOQ@fat_crate.local>
+ <20240208114444.GA23164@wind.enjellic.com> <20240209173102.GBZcZhVuFJZ8JOKTjG@fat_crate.local>
+In-Reply-To: <20240209173102.GBZcZhVuFJZ8JOKTjG@fat_crate.local>
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Fri, 9 Feb 2024 20:49:40 +0100
+X-Gmail-Original-Message-ID: <CAHmME9pEVNM6UVW+pKbTZEhsnrGvq5ERMOSC1ezdrCn96q36kA@mail.gmail.com>
+Message-ID: <CAHmME9pEVNM6UVW+pKbTZEhsnrGvq5ERMOSC1ezdrCn96q36kA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+To: Borislav Petkov <bp@alien8.de>
+Cc: "Dr. Greg" <greg@enjellic.com>, "Daniel P. Berrang??" <berrange@redhat.com>, 
+	"Reshetova, Elena" <elena.reshetova@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	"Nakajima, Jun" <jun.nakajima@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 08, 2024 at 05:44:44AM -0600, Dr. Greg wrote:
-> I guess a useful starting point would be if AMD would like to offer
-> any type of quantification for 'astronomically small' when it comes to
-> the probability of failure over 10 RDRAND attempts... :-)
+Hey Boris,
 
-Right, let's establish the common ground first: please have a look at
-this, albeit a bit outdated whitepaper:
+While you're here, I was wondering if you could comment on one thing relate=
+d:
 
-https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/white-papers/amd-random-number-generator.pdf
+On Fri, Feb 9, 2024 at 6:31=E2=80=AFPM Borislav Petkov <bp@alien8.de> wrote=
+:
+> Now, considering that this is a finite resource, you can imagine that
+> there can be scenarios where that source can be depleted.
 
-in case you haven't seen it yet.
+Yea, this makes sense.
 
-Now, considering that this is a finite resource, you can imagine that
-there can be scenarios where that source can be depleted.
+[As an aside, I would like to note that a different construction of
+RDRAND could keep outputting good random numbers for a reeeeeallly
+long time without needing to reseed, or without penalty if RDSEED is
+depleted, and so could be made to actually never fail. But given the
+design goals of RDRAND, this kind of crypto is highly likely to never
+be implemented, so I'm not even moving to suggest that AMD/Intel just
+'fix' the crypto design goals of the instruction. It's not gonna
+happen for lots of reasons.]
 
-And newer Zen generations perform significantly better. So much so that
-on Zen3 and later 10 retries should never observe a failure unless it
-is bad hardware. Also, I agree with hpa's note that any and all retries
-should be time based.
+So assuming that RDSEED and hence RDRAND can never be made to never
+fail, the options are:
 
-> Secondly, given our test findings and those of RedHat, would it be
-> safe to assume that EPYC has engineering that prevents RDSEED failures
-> that Ryzen does not?
+1. Finite resource that refills faster than whatever instruction
+issuance latency, so it's never observably empty. (Seems unlikely)
+2. More secure sharing of the finite resource.
 
-Well, roughly speaking, client is a less beefier and less performant
-version of server. You can extrapolate that to the topic at hand.
+It's this second option I wanted to ask you about. I wrote down what I
+thought "secure sharing" meant here [1]:
 
-But at least on AMD, any potential DoSing of RDRAND on client doesn't
-matter for CoCo because client doesn't enable SEV*.
+> - One VMX (or host) context can't DoS another one.
+> - Ring 3 can't DoS ring 0.
 
-> Both AMD and Intel designs start with a hardware based entropy source.
-> Intel samples thermal/quantum junction noise, AMD samples execution
-> jitter over a bank of inverter based oscillators.
+It's a bit of a scheduling/queueing thing, where different security
+contexts shouldn't be able to starve others out of the finite resource
+indefinitely.
 
-See above paper for the AMD side.
+What I'm wondering is if that kind of fairness is even possible to
+achieve in the hardware or the microcode. I don't really know how that
+all works under the covers and what sorts of "policies" and such are
+feasible to implement. In suggesting it, I feel like a bit of a
+presumptuous kernel developer talking to hardware people, not fully
+appreciating their domain and its challenges. For, if this were just a
+C program, I know exactly what I'd do, but we're talking about a CPU
+here.
 
-> An assumption of constant clocked sampling implies a maximum
-> randomness bandwidth limit.
+Is it actually possible to make RDRAND usage "fair" between different
+security contexts? Or am I totally delusional and this is not how the
+hardware works or can ever work?
 
-You said it.
+Jason
 
-> None of this implies that randomness is a finite resource
-
-Huh? This contradicts with what you just said in the above sentence.
-
-Or maybe I'm reading this wrong...
-
-> So this leaves the fundamental question of what does an RDRAND or
-> RDSEED failure return actually imply?
-
-Simple: if no random data is ready at the time the insn executes, it
-says "invalid". Because the generator is a finite resource as you said
-above, if the software tries to pull random data faster than it can
-generate, this is the main case for CF=0.
-
-> Silicon is a expensive resource, which would imply a queue depth
-> limitation for access to the socket common RNG infastructure.  If the
-> queue is full when an instruction issues, it would be a logical
-> response to signal an instruction failure quickly and let software try
-> again.
-
-That's actually in the APM documenting RDRAND:
-
-"If the returned value is invalid, software must execute the instruction
-again."
-
-> Given the time and engineering invested in the engineering behind both
-> TDX and SEV-SNP, it would seem unlikely that really smart engineers at
-> both Intel and AMD didn't anticipate this issue and its proper
-> resolution for CoCo environments.
-
-You can probably imagine that no one can do a fully secure system in one
-single attempt but rather needs to do an iterative process.
-
-And I don't know how much you've followed those technologies but they
-*are* the perfect example for such an iterative improvement process.
-
-I hope this answers at least some of your questions.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+[1] https://lore.kernel.org/all/CAHmME9ps6W5snQrYeNVMFgfhMKFKciky=3D-UxxGFb=
+Ax_RrxSHoA@mail.gmail.com/
