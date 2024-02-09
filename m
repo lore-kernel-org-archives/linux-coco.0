@@ -1,134 +1,202 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9D084A45
-	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 19:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED43538A
+	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 20:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707508405; cv=none; b=ZbMqFoPR72x0e63joqLeTjlEfHhl2Zxhx2Sscns1l3LdVjTH3Tnzqx457mNep6K3PD9iP8TeKzq4AYAE9p7hgosOFfKGwdIDHJgXes2VwzHQ3YgYDJptJP7cvetI0KCPEVnDmf86QFnAKXbUX61+pEScpyTchlYYJZCkXbIiuiU=
+	t=1707510730; cv=none; b=MvaXJy4d6idFZn+gxZIGcta4SjMSm/N4DL+rbRFtiEj9Z1h9QWEXR+RED+XTjIfZk0kW771MvHOugui/In+Ll2S70seyVbdcKEeWyStRRzcE0f0IW3lNnLK0kJkJw5tLVngrQy3YKGfJ7Lvzvl+EPIpqdlbuO+UV3UuUfTuaZOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707508405; c=relaxed/simple;
-	bh=LJIFwC8k9S1XsGgVeDvZlU1w3z5QzGRmOgRDGw9A1bY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XIfQRCbVrmgH9c5ZWl/ifWm+J5bXN1hJlrhfjJYORStoscezjhN7HktlkdB00QYT3KNW3lC00PViRCc4pVgDXQfyR4KjSNlJII6G/ByLDGIXoIXAM43eM4HbuG5u/7wLvIVTgkHAwYYvAjIplXRYzOOaSIIfTfb45Dc5H9LnUjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=nSzQKepy; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="nSzQKepy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4774C433F1
-	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 19:53:23 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="nSzQKepy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1707508401;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dvzf8anF/xolUSyJeFvlIlkwZn341uHj6NRh1hIQN2U=;
-	b=nSzQKepyd1UwZ0OU4oEVJ2oi143l6wdsN/YmS4u6fnGNT/DQwMg4agRt218nzCyJWUn3el
-	FH4sIUmOjnq9oft/HW8haSb7mD05Mw8gBoMjtp2Swtpc/XPcj3nln+bk8Yr/GHaIYNWJZ/
-	AxHmkQG+xIozdJmtThA2TGC08DvyjHw=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id dc4532eb (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
-	for <linux-coco@lists.linux.dev>;
-	Fri, 9 Feb 2024 19:53:21 +0000 (UTC)
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6049416cd38so11819457b3.2
-        for <linux-coco@lists.linux.dev>; Fri, 09 Feb 2024 11:53:21 -0800 (PST)
-X-Gm-Message-State: AOJu0YwnulI93+GvH9A8zgTMPqkiC8QonX9WYIfMRlf2UTTbbJ8UDirg
-	5DSxhLYvf9xyQJVm9ntuCsDA2FAApJGpkypQ4BRxVBusCqfxJM9RljMnSq+LbFjhOfq5ZIGXkTK
-	//6RgTHwD1QGFo9y1/dw9iGf9apw=
-X-Google-Smtp-Source: AGHT+IGep7MreGa1qNSxjgy79NorsGSpOFmd0e/BRU1HXP/yciy0w6ccd/i5a+ExBWXD3SJb4Up/c4p2ygaSEpQu8M0=
-X-Received: by 2002:a0d:e543:0:b0:604:96c8:652a with SMTP id
- o64-20020a0de543000000b0060496c8652amr237052ywe.24.1707508399446; Fri, 09 Feb
- 2024 11:53:19 -0800 (PST)
+	s=arc-20240116; t=1707510730; c=relaxed/simple;
+	bh=W4hX4Fr27kDfOqCWn6zXDk0H9YB1rKxtALyMNKxVk4o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PqeADNssBfRMqNNEynQ02gcKnCtiArGpnYzIUS9pSFiS7T3wYVKPVUCzqP3hUM/QukF9hbR+mns3MyJmQrlDi0EaGEd8A3wggM7+wHO//cq551pWAQ+/qRu652z1phtdwXJ347UyYAGt7MbbTcIGW+zzhSibKMOxO6mAT6aVxUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 9FB682800B767;
+	Fri,  9 Feb 2024 21:32:04 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 808144D3896; Fri,  9 Feb 2024 21:32:04 +0100 (CET)
+Date: Fri, 9 Feb 2024 21:32:04 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linuxarm@huawei.com,
+	David Box <david.e.box@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>,
+	Zhi Wang <zhi.a.wang@intel.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
+Message-ID: <20240209203204.GA5850@wunner.de>
+References: <cover.1695921656.git.lukas@wunner.de>
+ <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
+ <5d0e75-993c-3978-8ccf-60bfb7cac10@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com>
- <20240131140756.GB2356784@mit.edu> <Zbpc8tppxuKr-hnN@zx2c4.com>
- <20240131171042.GA2371371@mit.edu> <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
- <20240201045710.GD2356784@mit.edu> <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
- <DM8PR11MB57505F657A8F08E15DC34673E7422@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20240202153927.GA119530@mit.edu> <Zb4RlTzq_LV7AzsH@zx2c4.com>
-In-Reply-To: <Zb4RlTzq_LV7AzsH@zx2c4.com>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Fri, 9 Feb 2024 20:53:07 +0100
-X-Gmail-Original-Message-ID: <CAHmME9owdbHzfb66xisoWmvWeT_-hkxCu7tR2=Rbye_ik1JgQQ@mail.gmail.com>
-Message-ID: <CAHmME9owdbHzfb66xisoWmvWeT_-hkxCu7tR2=Rbye_ik1JgQQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>, "Theodore Ts'o" <tytso@mit.edu>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"x86@kernel.org" <x86@kernel.org>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"Nakajima, Jun" <jun.nakajima@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5d0e75-993c-3978-8ccf-60bfb7cac10@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Hi Kirill,
+On Tue, Oct 03, 2023 at 01:35:26PM +0300, Ilpo Järvinen wrote:
+> On Thu, 28 Sep 2023, Lukas Wunner wrote:
+> > +typedef int (spdm_transport)(void *priv, struct device *dev,
+> > +                          const void *request, size_t request_sz,
+> > +                          void *response, size_t response_sz);
+> 
+> This returns a length or an error, right? If so return ssize_t instead.
+> 
+> If you make this change, alter the caller types too.
 
-On Sat, Feb 3, 2024 at 11:12=E2=80=AFAM Jason A. Donenfeld <Jason@zx2c4.com=
-> wrote:
-> Yea, actually, I had a pretty similar idea for something like that
-> that's very non-invasive, where none of this even touches the RDRAND
-> core code, much less random.c. Specifically, we consider "adding some
-> extra RDRAND to the pool" like any other driver that wants to add some
-> of its own seeds to the pool, with add_device_randomness(), a call that
-> lives in various driver code, doesn't influence any entropy readiness
-> aspects of random.c, and can safely be sprinkled in any device or
-> platform driver.
->
-> Specifically what I'm thinking about is something like:
->
-> void coco_main_boottime_init_function_somewhere_deep_in_arch_code(void)
-> {
->   // [...]
->   // bring up primary CoCo nuts
->   // [...]
->
->   /* CoCo requires an explicit RDRAND seed, because the host can make the
->    * rest of the system deterministic.
->    */
->   unsigned long seed[32 / sizeof(long)];
->   size_t i, longs;
->   for (i =3D 0; i < ARRAY_SIZE(seed); i +=3D longs) {
->     longs =3D arch_get_random_longs(&seed[i], ARRAY_SIZE(seed) - i);
->     /* If RDRAND is being DoS'd, panic, because we can't ensure
->      * confidentiality.
->      */
->     BUG_ON(!longs);
->   }
->   add_device_randomness(seed, sizeof(seed));
->   memzero_explicit(seed, sizeof(seed));
->
->   // [...]
->   // do other CoCo things
->   // [...]
-> }
->
-> I would have no objection to the CoCo people adding something like this
-> and would give it my Ack, but more importantly, my Ack for that doesn't
-> even matter, because add_device_randomness() is pretty innocuous.
->
-> So Kirill, if nobody else here objects to that approach, and you want to
-> implement it in some super minimal way like that, that would be fine
-> with me. Or maybe we want to wait for that internal inquiry at Intel to
-> return some answers first. But either way, this might be an easy
-> approach that doesn't add too much complexity.
+Alright, I've changed the types in __spdm_exchange() and spdm_exchange().
 
-I went ahead and implemented this just to have something concrete out there=
-:
-https://lore.kernel.org/all/20240209164946.4164052-1-Jason@zx2c4.com/
+However the callers of those functions assign the result to an "rc" variable
+which is also used to receive an "int" return value.
+E.g. spdm_get_digests() assigns the ssize_t result of spdm_exchange() to rc
+but also the int result of crypto_shash_update().
 
-I probably screwed up some x86 platform conventions/details, but
-that's the general idea I had in mind.
+It feels awkward to change the type of "rc" to "ssize_t" in those
+functions, so I kept "int".
 
-Jason
+
+> > +} __packed;
+> > +
+> > +#define SPDM_GET_CAPABILITIES 0xE1
+> 
+> There's non-capital hex later in the file, please try to be consistent.
+
+The spec uses capital hex characters, so this was done to ease
+connecting the implementation to the spec.
+
+OTOH I don't want to capitalize all the hex codes in enum spdm_error_code.
+
+So I guess consistency takes precedence and I've amended the
+patch to downcase all hex characters, as you've requested.
+
+
+> > +struct spdm_error_rsp {
+> > +	u8 version;
+> > +	u8 code;
+> > +	enum spdm_error_code error_code:8;
+> > +	u8 error_data;
+> > +
+> > +	u8 extended_error_data[];
+> > +} __packed;
+> 
+> Is this always going to produce the layout you want given the alignment 
+> requirements for the storage unit for u8 and enum are probably different?
+
+Yes, the __packed attribute forces the compiler to avoid padding.
+
+
+> > +	spdm_state->responder_caps = le32_to_cpu(rsp->flags);
+> 
+> Earlier, unaligned accessors where used with the version_number_entries.
+> Is it intentional they're not used here (I cannot see what would be 
+> reason for this difference)?
+
+Thanks, good catch.  Indeed this is not necessarily naturally aligned
+because the GET_CAPABILITIES request and response succeeds the
+GET_VERSION response in the same allocation.  And the GET_VERSION
+response size is a multiple of 2, but not always a multiple of 4.
+
+So I've amended the patch to use a separate allocation for the
+GET_CAPABILITIES request and response.  The spec-defined struct layout
+of those messages is such that the 32-bit accesses are indeed always
+naturally aligned.
+
+The existing unaligned accessor in spdm_get_version() turned out
+to be unnecessary after taking a closer look, so I dropped that one.
+
+
+> > +static int spdm_negotiate_algs(struct spdm_state *spdm_state,
+> > +			       void *transcript, size_t transcript_sz)
+> > +{
+> > +	struct spdm_req_alg_struct *req_alg_struct;
+> > +	struct spdm_negotiate_algs_req *req;
+> > +	struct spdm_negotiate_algs_rsp *rsp;
+> > +	size_t req_sz = sizeof(*req);
+> > +	size_t rsp_sz = sizeof(*rsp);
+> > +	int rc, length;
+> > +
+> > +	/* Request length shall be <= 128 bytes (SPDM 1.1.0 margin no 185) */
+> > +	BUILD_BUG_ON(req_sz > 128);
+> 
+> I don't know why this really has to be here? This could be static_assert()
+> below the struct declaration.
+
+A follow-on patch to add key exchange support increases req_sz based on
+an SPDM_MAX_REQ_ALG_STRUCT macro defined here in front of the function
+where it's used.  That's the reason why the size is checked here as well.
+
+
+> > +static int spdm_get_certificate(struct spdm_state *spdm_state, u8 slot)
+> > +{
+> > +	struct spdm_get_certificate_req req = {
+> > +		.code = SPDM_GET_CERTIFICATE,
+> > +		.param1 = slot,
+> > +	};
+> > +	struct spdm_get_certificate_rsp *rsp;
+> > +	struct spdm_cert_chain *certs = NULL;
+> > +	size_t rsp_sz, total_length, header_length;
+> > +	u16 remainder_length = 0xffff;
+> 
+> 0xffff in this function should use either U16_MAX or SZ_64K - 1.
+
+The SPDM spec uses 0xffff so I'm deliberately using that as well
+to make the connection to the spec obvious.
+
+
+> > +static void spdm_create_combined_prefix(struct spdm_state *spdm_state,
+> > +					const char *spdm_context, void *buf)
+> > +{
+> > +	u8 minor = spdm_state->version & 0xf;
+> > +	u8 major = spdm_state->version >> 4;
+> > +	size_t len = strlen(spdm_context);
+> > +	int rc, zero_pad;
+> > +
+> > +	rc = snprintf(buf, SPDM_PREFIX_SZ + 1,
+> > +		      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*"
+> > +		      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*",
+> > +		      major, minor, major, minor, major, minor, major, minor);
+> 
+> Why are these using s8 formatting specifier %hhx ??
+
+I don't quite follow, "%hhx" is an unsigned char, not a signed char.
+
+spdm_state->version may contain e.g. 0x12 which is converted to
+"dmtf-spdm-v1.2.*" here.
+
+The question is what happens if the major or minor version goes beyond 9.
+The total length of the prefix is hard-coded by the spec, hence my
+expectation is that 1.10 will be represented as "dmtf-spdm-v1.a.*"
+to not exceed the length.  The code follows that expectation.
+
+Thanks for taking a look!   I've amended the patch to take all your
+other feedback into account.
+
+Lukas
