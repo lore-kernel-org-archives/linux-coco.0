@@ -1,70 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CEEC84A45
-	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 19:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9D084A45
+	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 19:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707508202; cv=none; b=kKt3Ex+Z81ayB8vISBCcUvttcRZwFTUmS4gULoEPUnqogtkK26Oc7meN/FnvBcMSa/VnopJjt+E2Fr8ZO6pA+s374kZlLCKlVqqiOUJytYdOsjntXSleN5iWTFnUe3EPHksrERwpbMMgcuioGlBe0LakdwUol/S3bRT69mh5Abs=
+	t=1707508405; cv=none; b=ZbMqFoPR72x0e63joqLeTjlEfHhl2Zxhx2Sscns1l3LdVjTH3Tnzqx457mNep6K3PD9iP8TeKzq4AYAE9p7hgosOFfKGwdIDHJgXes2VwzHQ3YgYDJptJP7cvetI0KCPEVnDmf86QFnAKXbUX61+pEScpyTchlYYJZCkXbIiuiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707508202; c=relaxed/simple;
-	bh=iTu1VA2xMG+lx8NyzpZCf6Y+0UQu7r2E3itVvpPoWuk=;
+	s=arc-20240116; t=1707508405; c=relaxed/simple;
+	bh=LJIFwC8k9S1XsGgVeDvZlU1w3z5QzGRmOgRDGw9A1bY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QQtoE/A0zqZTOskLOiEvGFhRECJMEjXt6/EVRR76ewwiRmtiyTA4REr46F4NG520dhiH5QWGODiSE6s698vWrG8fDT4DnMSIv/dZ34EF3DYAxstvdofLn/M3G4prGCgd7eekWq2vLvkFevE9ghprHPiQN1zz5wASbopZd3YF5oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=OZrcJOhA; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=XIfQRCbVrmgH9c5ZWl/ifWm+J5bXN1hJlrhfjJYORStoscezjhN7HktlkdB00QYT3KNW3lC00PViRCc4pVgDXQfyR4KjSNlJII6G/ByLDGIXoIXAM43eM4HbuG5u/7wLvIVTgkHAwYYvAjIplXRYzOOaSIIfTfb45Dc5H9LnUjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=nSzQKepy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="OZrcJOhA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27FCC43399
-	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 19:50:01 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="nSzQKepy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4774C433F1
+	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 19:53:23 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="OZrcJOhA"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="nSzQKepy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1707508196;
+	t=1707508401;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iTu1VA2xMG+lx8NyzpZCf6Y+0UQu7r2E3itVvpPoWuk=;
-	b=OZrcJOhAhnSTYQ1X/TVOIHpzy8J0VGenQG9Zkh/33gi9IJh7+fc3FEIbIhSko3Jonqf21+
-	9772JZos8Q2dwBP9ZlKOGxNDAsvDO8e4bRmSPPUjYbO1lW6clBS128h9JQ+mP1zUu+KrhE
-	C75Tir8zeKaA0AiU45HQqb2nM1rMUbI=
+	bh=dvzf8anF/xolUSyJeFvlIlkwZn341uHj6NRh1hIQN2U=;
+	b=nSzQKepyd1UwZ0OU4oEVJ2oi143l6wdsN/YmS4u6fnGNT/DQwMg4agRt218nzCyJWUn3el
+	FH4sIUmOjnq9oft/HW8haSb7mD05Mw8gBoMjtp2Swtpc/XPcj3nln+bk8Yr/GHaIYNWJZ/
+	AxHmkQG+xIozdJmtThA2TGC08DvyjHw=
 Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 2a616a49 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id dc4532eb (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
 	for <linux-coco@lists.linux.dev>;
-	Fri, 9 Feb 2024 19:49:56 +0000 (UTC)
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-dc6d8bd612dso1392587276.1
-        for <linux-coco@lists.linux.dev>; Fri, 09 Feb 2024 11:49:55 -0800 (PST)
-X-Gm-Message-State: AOJu0YxVA5VS38Uum+EFTwccdWeOJ4KEKjVOxIuLR040GVsaC7zE1NEw
-	psk6KZgmhLqoIUZ9Xn4QYO2CflZBWjRKRHwxygwwive9Eg6cobMv4iPvENhnlwkuGz1DaQjr7UK
-	ZvZgokBFWRYEaJvUWVwa9+alKgM4=
-X-Google-Smtp-Source: AGHT+IEnmYc5xL/JOVB1tx6sQdZ7M72qNY2SDRwlgVZZzRP3BJ91yZNqzfciMT2T1i9jWXyzaOpvl6tI5WYyO1fvkHI=
-X-Received: by 2002:a25:d655:0:b0:dc2:4400:f69a with SMTP id
- n82-20020a25d655000000b00dc24400f69amr151606ybg.24.1707508193534; Fri, 09 Feb
- 2024 11:49:53 -0800 (PST)
+	Fri, 9 Feb 2024 19:53:21 +0000 (UTC)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6049416cd38so11819457b3.2
+        for <linux-coco@lists.linux.dev>; Fri, 09 Feb 2024 11:53:21 -0800 (PST)
+X-Gm-Message-State: AOJu0YwnulI93+GvH9A8zgTMPqkiC8QonX9WYIfMRlf2UTTbbJ8UDirg
+	5DSxhLYvf9xyQJVm9ntuCsDA2FAApJGpkypQ4BRxVBusCqfxJM9RljMnSq+LbFjhOfq5ZIGXkTK
+	//6RgTHwD1QGFo9y1/dw9iGf9apw=
+X-Google-Smtp-Source: AGHT+IGep7MreGa1qNSxjgy79NorsGSpOFmd0e/BRU1HXP/yciy0w6ccd/i5a+ExBWXD3SJb4Up/c4p2ygaSEpQu8M0=
+X-Received: by 2002:a0d:e543:0:b0:604:96c8:652a with SMTP id
+ o64-20020a0de543000000b0060496c8652amr237052ywe.24.1707508399446; Fri, 09 Feb
+ 2024 11:53:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com>
- <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20240206011247.GA29224@wind.enjellic.com> <ZcHoKUElwXGPzrWb@redhat.com>
- <20240206120445.GA1247@wind.enjellic.com> <20240206153529.GHZcJRwTdDkWXuopOQ@fat_crate.local>
- <20240208114444.GA23164@wind.enjellic.com> <20240209173102.GBZcZhVuFJZ8JOKTjG@fat_crate.local>
-In-Reply-To: <20240209173102.GBZcZhVuFJZ8JOKTjG@fat_crate.local>
+References: <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com>
+ <20240131140756.GB2356784@mit.edu> <Zbpc8tppxuKr-hnN@zx2c4.com>
+ <20240131171042.GA2371371@mit.edu> <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
+ <20240201045710.GD2356784@mit.edu> <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
+ <DM8PR11MB57505F657A8F08E15DC34673E7422@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240202153927.GA119530@mit.edu> <Zb4RlTzq_LV7AzsH@zx2c4.com>
+In-Reply-To: <Zb4RlTzq_LV7AzsH@zx2c4.com>
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Fri, 9 Feb 2024 20:49:40 +0100
-X-Gmail-Original-Message-ID: <CAHmME9pEVNM6UVW+pKbTZEhsnrGvq5ERMOSC1ezdrCn96q36kA@mail.gmail.com>
-Message-ID: <CAHmME9pEVNM6UVW+pKbTZEhsnrGvq5ERMOSC1ezdrCn96q36kA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-To: Borislav Petkov <bp@alien8.de>
-Cc: "Dr. Greg" <greg@enjellic.com>, "Daniel P. Berrang??" <berrange@redhat.com>, 
-	"Reshetova, Elena" <elena.reshetova@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>, 
+Date: Fri, 9 Feb 2024 20:53:07 +0100
+X-Gmail-Original-Message-ID: <CAHmME9owdbHzfb66xisoWmvWeT_-hkxCu7tR2=Rbye_ik1JgQQ@mail.gmail.com>
+Message-ID: <CAHmME9owdbHzfb66xisoWmvWeT_-hkxCu7tR2=Rbye_ik1JgQQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>, "Theodore Ts'o" <tytso@mit.edu>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, 
+	"x86@kernel.org" <x86@kernel.org>, 
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
 	"Nakajima, Jun" <jun.nakajima@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
 	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
@@ -73,58 +73,62 @@ Cc: "Dr. Greg" <greg@enjellic.com>, "Daniel P. Berrang??" <berrange@redhat.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hey Boris,
+Hi Kirill,
 
-While you're here, I was wondering if you could comment on one thing relate=
-d:
+On Sat, Feb 3, 2024 at 11:12=E2=80=AFAM Jason A. Donenfeld <Jason@zx2c4.com=
+> wrote:
+> Yea, actually, I had a pretty similar idea for something like that
+> that's very non-invasive, where none of this even touches the RDRAND
+> core code, much less random.c. Specifically, we consider "adding some
+> extra RDRAND to the pool" like any other driver that wants to add some
+> of its own seeds to the pool, with add_device_randomness(), a call that
+> lives in various driver code, doesn't influence any entropy readiness
+> aspects of random.c, and can safely be sprinkled in any device or
+> platform driver.
+>
+> Specifically what I'm thinking about is something like:
+>
+> void coco_main_boottime_init_function_somewhere_deep_in_arch_code(void)
+> {
+>   // [...]
+>   // bring up primary CoCo nuts
+>   // [...]
+>
+>   /* CoCo requires an explicit RDRAND seed, because the host can make the
+>    * rest of the system deterministic.
+>    */
+>   unsigned long seed[32 / sizeof(long)];
+>   size_t i, longs;
+>   for (i =3D 0; i < ARRAY_SIZE(seed); i +=3D longs) {
+>     longs =3D arch_get_random_longs(&seed[i], ARRAY_SIZE(seed) - i);
+>     /* If RDRAND is being DoS'd, panic, because we can't ensure
+>      * confidentiality.
+>      */
+>     BUG_ON(!longs);
+>   }
+>   add_device_randomness(seed, sizeof(seed));
+>   memzero_explicit(seed, sizeof(seed));
+>
+>   // [...]
+>   // do other CoCo things
+>   // [...]
+> }
+>
+> I would have no objection to the CoCo people adding something like this
+> and would give it my Ack, but more importantly, my Ack for that doesn't
+> even matter, because add_device_randomness() is pretty innocuous.
+>
+> So Kirill, if nobody else here objects to that approach, and you want to
+> implement it in some super minimal way like that, that would be fine
+> with me. Or maybe we want to wait for that internal inquiry at Intel to
+> return some answers first. But either way, this might be an easy
+> approach that doesn't add too much complexity.
 
-On Fri, Feb 9, 2024 at 6:31=E2=80=AFPM Borislav Petkov <bp@alien8.de> wrote=
+I went ahead and implemented this just to have something concrete out there=
 :
-> Now, considering that this is a finite resource, you can imagine that
-> there can be scenarios where that source can be depleted.
+https://lore.kernel.org/all/20240209164946.4164052-1-Jason@zx2c4.com/
 
-Yea, this makes sense.
-
-[As an aside, I would like to note that a different construction of
-RDRAND could keep outputting good random numbers for a reeeeeallly
-long time without needing to reseed, or without penalty if RDSEED is
-depleted, and so could be made to actually never fail. But given the
-design goals of RDRAND, this kind of crypto is highly likely to never
-be implemented, so I'm not even moving to suggest that AMD/Intel just
-'fix' the crypto design goals of the instruction. It's not gonna
-happen for lots of reasons.]
-
-So assuming that RDSEED and hence RDRAND can never be made to never
-fail, the options are:
-
-1. Finite resource that refills faster than whatever instruction
-issuance latency, so it's never observably empty. (Seems unlikely)
-2. More secure sharing of the finite resource.
-
-It's this second option I wanted to ask you about. I wrote down what I
-thought "secure sharing" meant here [1]:
-
-> - One VMX (or host) context can't DoS another one.
-> - Ring 3 can't DoS ring 0.
-
-It's a bit of a scheduling/queueing thing, where different security
-contexts shouldn't be able to starve others out of the finite resource
-indefinitely.
-
-What I'm wondering is if that kind of fairness is even possible to
-achieve in the hardware or the microcode. I don't really know how that
-all works under the covers and what sorts of "policies" and such are
-feasible to implement. In suggesting it, I feel like a bit of a
-presumptuous kernel developer talking to hardware people, not fully
-appreciating their domain and its challenges. For, if this were just a
-C program, I know exactly what I'd do, but we're talking about a CPU
-here.
-
-Is it actually possible to make RDRAND usage "fair" between different
-security contexts? Or am I totally delusional and this is not how the
-hardware works or can ever work?
+I probably screwed up some x86 platform conventions/details, but
+that's the general idea I had in mind.
 
 Jason
-
-[1] https://lore.kernel.org/all/CAHmME9ps6W5snQrYeNVMFgfhMKFKciky=3D-UxxGFb=
-Ax_RrxSHoA@mail.gmail.com/
