@@ -1,162 +1,232 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893DA125CA
-	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 20:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707511046; cv=none; b=oFQjjmm7PPz9MsOh+Ahr8C9oiWE0t18pnTqlFz88fykQt3hbP4mHkOb+enNm/Z18xIThpOy12YmJBm4xj88J65KT6rFOmcECzYqs1UUWx8xT0f1wvL3B8rA73+5ta51cEQ8v3yIhyLqRY0Fqv6tjC4VPs5CS8cPZSSdjUs79/f0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707511046; c=relaxed/simple;
-	bh=+jakRoEvADGltt2rjt8cuiOk6U4xLU0Ovul21Y+4JsY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ljf3VmrfYGFpty3ZBDksC4jIdiiI1/FQEFl8SXuvzzM8mJ96Y9xiungtE75xwkJQL9wPqgiOyhTuymc7PtnJN00CNiQ0ADOBUhm2PofzC1ZblNFiJZOWBd3A//tFiF+GwFy8FA9lwmS/6VKewx7k+k+u6PfQDvQ02gnnL3pbqc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EX0cVzvS; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE21DF54
+	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 20:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707512304; cv=fail; b=dsJxgWqYiHznVjLKwskHpnU+H5Qpavv1ZFJbmz8KTFYrs8CGOQcDT/Aae3GoPucWsLkL9BNBzi9MLwkYJCS6a8dYNAiRR8lKZR62crQ+HoXlY9/8BTxBL17CNioPLER8kF97wG2XEqf6Hw/7hbvXeb2WNRMimwPQUhvpIUVHtC0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707512304; c=relaxed/simple;
+	bh=7l3yCLojRhYlK08XCP0TGsXX/tTt3jQJSwzfBfSuR70=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=C7wFX33HfS2QFaZyITM2L79T8jDw0Zg68fseK3eNASxlt8oidk1sZcDnpGuLla2W31Qe7sEdZ3atDo9q2dLJcCb4sBXwRotphQ3xmwS2f35tso8DEIfUQCKKD47wUbVPg+IGzbAHphwkRX7XHTNnaUczTq5ZUZX/fgWwBiu1dr4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GR59OxEP; arc=fail smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EX0cVzvS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GR59OxEP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707511044; x=1739047044;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+jakRoEvADGltt2rjt8cuiOk6U4xLU0Ovul21Y+4JsY=;
-  b=EX0cVzvS58WGBL3zCTxo6pnuXtdwJC2020nfyAc3pZrRTODktJ1Xphg6
-   SZXWQLf5xcKuiIQSTGluaA/IfsrSRLg8AsH/MTYp1dXnYXdlXOGrcEzQI
-   u66TCCasOaUo4rW3/twnxM2i/Als/SoIciAjYRrleSA81YBlMy7NmThnM
-   y1cB1sSgDJnrdJOBmCKXa7/bePkcCbGYxo36o8+rsjD6u+8SrfTOqkiKF
-   RBzxy3C8A05x1gICQQYDfGgvFU9tfW6einJyj7eajayoaZIRxCzy/6o+Q
-   9QoGiY8DgAGKdSB5ZBOov8buWNJ9uN/ilGLxyBd1UYS4XPnUdeUvIhGnD
+  t=1707512303; x=1739048303;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=7l3yCLojRhYlK08XCP0TGsXX/tTt3jQJSwzfBfSuR70=;
+  b=GR59OxEP9FAKDTcCerc/+WyoNIJ+lbNnNGuvMPf1+SIaTD0CVnWvLdC7
+   nk9vZKpxR72Hz8CxPJa+SU8vn8DJJ23lkOdOi9fYq8fXngcnXh4EjmawT
+   4cTMeLuV3FQsAgBNssTaOMH0lJGlFic1nWtbQ52K5RmawjRDM3VxH4sLQ
+   isncUUV8sJjK36rBW/xocTrzlDVF57ZFxaoFmeppEQ41nJt+6neNaDUxY
+   QhQC2CQvwOyW+JnV/mVfWGM5TaDpYnnwnbJWFBBb5IPNaxBQhkvcgbxJc
+   WTEudajyr8tGHkCeCxQGVKfnre3j2S3Gn/NdZAnyBIKuwVeL6dmk/VuZa
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="12227239"
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="1380644"
 X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
-   d="scan'208";a="12227239"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 12:37:23 -0800
+   d="scan'208";a="1380644"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 12:58:22 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
-   d="scan'208";a="39470158"
-Received: from pkdiveka-mobl.amr.corp.intel.com (HELO [10.212.136.53]) ([10.212.136.53])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 12:37:23 -0800
-Message-ID: <469bd890-36fb-4fbb-8060-36cd1169b654@intel.com>
-Date: Fri, 9 Feb 2024 12:37:22 -0800
+   d="scan'208";a="6680542"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 09 Feb 2024 12:58:21 -0800
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 9 Feb 2024 12:58:21 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 9 Feb 2024 12:58:20 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Fri, 9 Feb 2024 12:58:20 -0800
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 9 Feb 2024 12:58:19 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dvtmaTpUzWGttXGeWqA7UFsLtybco3Co2OEtKuXt8iJ/YF97GNTw3l5gA39Pw7Ur1yAv19xgI4VDBHSG7wqeUSuh61lyUDzcwXN2gZgzQKY/ZFG/UIoTssygLGKMV0qIXCFIFBVWbEvctbVPk2BxjJwy3qtkLFSCR2UEM+/XJExg1xpqxYfe/A/p/MVz2fjiXCwEKu12+m0NXiSEIIbWLqayBzNHwY5MvNWhEZVDibMARoaecLOTFg/OZvI5vt0PPG1+RGUGyA61WT3faaVmjGQftJIyrco4mDqm8ImQ0O0G5zPVmySeCKTmf3p0WemPGpNyf1sMVNMv3z4o8u0Rhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8i/RpuroYJNanEztSCQCdSIhHWFSwSNIVM0Xff/dqZc=;
+ b=nIolEBk+lcALfg7A1eMeW30Dz9aoU3eoMN6BhmTrs17/OYGTUn8ZKyKmAhO5eB9S6D+BHWaDmw8ds+n195aK/YxUR6324wXGEcGG1LGCpRiUAq9Vojw5IlxNOabzD1C1OUzuRZBub6pN31IySyjfNtDX9kUUOYU+vQGN67D0VGj2t6JOhnVDPMe3GyMM8IvfhResz7FH/K2O03uby/Ub22TRV3YA0FTn4zXKhWsN2WfxZjqsdAskByb8ulHjLMRZBeYdJ3fQ7ChwqBehLeT18aejeqi0J9kKolpc105u5VlHuF3sQM76BMWdVEc9DphTeGZ4MYVJZcc8LmRbzniANg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA1PR11MB8428.namprd11.prod.outlook.com (2603:10b6:806:38b::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.36; Fri, 9 Feb
+ 2024 20:58:12 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7270.024; Fri, 9 Feb 2024
+ 20:58:12 +0000
+Date: Fri, 9 Feb 2024 12:58:09 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>, "Kuppuswamy
+ Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>, "Xing, Cedric"
+	<cedric.xing@intel.com>, Dan Williams <dan.j.williams@intel.com>, "Dan
+ Middleton" <dan.middleton@linux.intel.com>, Samuel Ortiz <sameo@rivosinc.com>
+CC: Qinkun Bao <qinkun@google.com>, "Yao, Jiewen" <jiewen.yao@intel.com>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>, <biao.lu@intel.com>,
+	<linux-coco@lists.linux.dev>, <linux-integrity@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
+Message-ID: <65c691e13a50d_afa42948a@dwillia2-xfh.jf.intel.com.notmuch>
+References: <a255bc36-2438-41b7-b304-bcf7a6628bef@linux.intel.com>
+ <42e14f74d3819c95fdb97cd2e9b2829dcb1b1563.camel@HansenPartnership.com>
+ <1557f98a-3d52-4a02-992b-4401c7c85dd7@linux.intel.com>
+ <85b7a4a679eada1d17b311bf004c2d9e18ab5cd3.camel@HansenPartnership.com>
+ <b8140cc8-a56b-40f6-a593-7be49db14c77@intel.com>
+ <fe1722c3618a8216cb53b8fd3f1b7cbb6fdff5a0.camel@HansenPartnership.com>
+ <65c2e4aa54a0_d4122947f@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <22088ed3-51a4-415f-932c-db84c92a2812@intel.com>
+ <527da630-4952-4b1d-80c0-5a87997ff9fd@linux.intel.com>
+ <332775d7218843d6cc168c963d76e6841eab5d5b.camel@HansenPartnership.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <332775d7218843d6cc168c963d76e6841eab5d5b.camel@HansenPartnership.com>
+X-ClientProxiedBy: MW4PR03CA0106.namprd03.prod.outlook.com
+ (2603:10b6:303:b7::21) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-Content-Language: en-US
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>, Borislav Petkov <bp@alien8.de>
-Cc: "Dr. Greg" <greg@enjellic.com>, "Daniel P. Berrang??"
- <berrange@redhat.com>, "Reshetova, Elena" <elena.reshetova@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- "x86@kernel.org" <x86@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "Nakajima, Jun" <jun.nakajima@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com>
- <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com>
- <Zbk6h0ogqeInLa_1@redhat.com>
- <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20240206011247.GA29224@wind.enjellic.com> <ZcHoKUElwXGPzrWb@redhat.com>
- <20240206120445.GA1247@wind.enjellic.com>
- <20240206153529.GHZcJRwTdDkWXuopOQ@fat_crate.local>
- <20240208114444.GA23164@wind.enjellic.com>
- <20240209173102.GBZcZhVuFJZ8JOKTjG@fat_crate.local>
- <CAHmME9pEVNM6UVW+pKbTZEhsnrGvq5ERMOSC1ezdrCn96q36kA@mail.gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <CAHmME9pEVNM6UVW+pKbTZEhsnrGvq5ERMOSC1ezdrCn96q36kA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA1PR11MB8428:EE_
+X-MS-Office365-Filtering-Correlation-Id: 790fc770-f369-4921-9eba-08dc29b1d3a0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: UeXN9FAon+H+hsftcbu6gJP1iPsOeC+GkIs8De3wfCk1qorgrUbK1dm4KxBupBNDYG79Q3V0cy4aZ01uoqZ4eeBkL9ggen5mEkgHSX8v8qRiIukKyV++z4QrqSV4268yL3dL5GOp9sIPlU8fQMa0q9NLTw8m6DrtU3fafZPTCoRMPwkLMCG56dK3um5/bkxzXAJ7EfIsa/9BuROX/bTvrXHnWkarahvebMcfVaNxk4dZP9ugkPdhvF21aHIMnyWv72AmkPoQxmhpt/OZEV3lR4aCiCxPRuhjFnExfPuJ8DB7uKAkkNo62cGgr4UnAqNFw0DGbo5jwi+64/DwoYD1/HWP9zrev77WKyygVCue10lmnGm0/nrCTZadZcM9Or0wzGib8noH7Ikqny/fsFA6/Zbv+/di9KunpD0ryOYKKe2Fm/JimkMT/D+Uvpfu6lwWS48foFk6rcE6DB9jNLmRFxZug4qimWaucwJhxW2EnKs+vEW0Dj/W+xmoH4JqSl6MD4i1IS43v2vHz81sHkbs6wIFOnIiSn0f9DEuKQ2DiBGWV/8DsYUGYqyD+K3EsNtr
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(396003)(346002)(136003)(376002)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(41300700001)(6666004)(6512007)(6486002)(6506007)(478600001)(53546011)(26005)(9686003)(83380400001)(5660300002)(66556008)(38100700002)(110136005)(54906003)(66476007)(316002)(4326008)(8936002)(8676002)(82960400001)(66946007)(2906002)(86362001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?9Afovn+I3jsRmE6YpiBe60UZVqAKeITviKerVasj1unBkfu4hYPKnayAry?=
+ =?iso-8859-1?Q?pj1NU4zvbGcQMbCPUepd6Z9YlpjPR6O0Zs8l8lAJYYlV43RIL31PbT6Aup?=
+ =?iso-8859-1?Q?fnRRkQ1kpbUunNA/visb86H1I5UGkDCM1HHJ0neB7KFeKSA6n1jUs9x1cw?=
+ =?iso-8859-1?Q?jxQvtfUJ/CeCl5Gv5MGgdhzeywj206Tts2JBQmXpq9jHn+S0IHkm6y4iE+?=
+ =?iso-8859-1?Q?g4r9jMG3bKrtDu0EOl1hzFu+YZ+H1l9zULtQqhhyajxIrD3WKebp38Wkoo?=
+ =?iso-8859-1?Q?XlPUkonntwNaeWQ/rgJH4XSx2D4eBeFJKnB38nwwy6rosVUpai98K8h59o?=
+ =?iso-8859-1?Q?wBxQlJoAbJSUMI/UQTyP+pL3ELR+t+Q31jEE7zrV4i7tk7otdYuWHSSewR?=
+ =?iso-8859-1?Q?n4p2iN/73Re6jI14vOt42G4xPvTxydM5eHqUXG0AshLm75cGZh8kkUGLEO?=
+ =?iso-8859-1?Q?9xAcqONwa1K6hFKjyOT+OX29Vo5n3J870EWqcInqOI2ParK2UgEeosHMCa?=
+ =?iso-8859-1?Q?qNDSM31Yxj5Cm/I7O7d3yOy61y18Xu7uogPh3PYKrvXjxSklhBXP8myD6l?=
+ =?iso-8859-1?Q?/ZzKAlAI2cktNzLOBXBC9c3AT1XwW+SHxeUQHHW7PAkSme+jQGkJkbvRbr?=
+ =?iso-8859-1?Q?3f7mZdPnz8Ss6RcLKjtP/Rgq37Dj/KnIM6IulkNoBuypi7DK29nPxjtmls?=
+ =?iso-8859-1?Q?f2ke5ix3JRSdfnKjH+bytPIk+hR4uk2Z9DqNdbzalS1dipobb/R72q++M6?=
+ =?iso-8859-1?Q?snL0tJgF8VWTVFWvUVvzNMSJZkbaZ6l5EKDr8nrBo0EFqDcAxIAD+a9ZXR?=
+ =?iso-8859-1?Q?DAXDAJ88yqDf4fRqqjxr06vkOwEXUdo25j8MHXwWd7u5CdmGpCglh1kMY6?=
+ =?iso-8859-1?Q?k/uk62z8whQKA/lvG3Qa/uRl5oEoDAdaL2rVvlJX1cN/UfIWjOXUZuVLiz?=
+ =?iso-8859-1?Q?5/qlWu7BDs/HM/nEEICSR5h0kMXJEn7WdMN7UqfbFSrdFMswxyPevNoiiW?=
+ =?iso-8859-1?Q?cj6KRXIcOKVbnM+xJg9q61SCEQobng8RR0DzGhDZixpxRh1g5MJyBRti8W?=
+ =?iso-8859-1?Q?DXt1ehkb3d7Gc17bxTSoKSh9Wf0VxqLL8gmX+9aDw3u3oMSPCIRLkBDUwZ?=
+ =?iso-8859-1?Q?yVEh0LEjDRR/q5o3ApA8/7ykQsA/7DXhkyVmWtGhJfd/s2EjNn3CbgS4ym?=
+ =?iso-8859-1?Q?D6B3jKb8sfGzJCEhgUsU+HZU8JHeZ5DqAifa3BzhJsT7wArX7g81IsF/LC?=
+ =?iso-8859-1?Q?I5URyL1jIyeVO2GQ2brkuociDmi9nfbhQCz7Vg/7ldDzuGO+GnmWH/w7m/?=
+ =?iso-8859-1?Q?ovH1+3bMXCFWI2uRyLX9iV7NJJIorYLbSRRPlx31dtDaifytcjrGiEt9BP?=
+ =?iso-8859-1?Q?mzkQghftp3w39aWIOgHonqjLzT00n1QaoniEhf5StSLyRSgNgJ7YUVmN0w?=
+ =?iso-8859-1?Q?lT4NqHXD3vMamjpx2ZLnQQ5fsoT8FNrKUcwZZ1e0VUUJvDzWfEBmiNiAgH?=
+ =?iso-8859-1?Q?5zzLdintf0a1urIUSOw+sNMX15yyDZJFOIklGxTeHHiK3yZeTSHl5dlZ7G?=
+ =?iso-8859-1?Q?yAE5pjjq53Sa6wKgrrQvFbj0SbjstmgniMQnSaBYXFxTsQKcgJ58a8wfdP?=
+ =?iso-8859-1?Q?P+g2/dAi5V85vrwjB41M0+dcBUhKWqZsNL/L23siGH/phcjV7892iC1A?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 790fc770-f369-4921-9eba-08dc29b1d3a0
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2024 20:58:11.7714
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gU07aZeq4u7amzvbAJZlBduNZR0d7nQJUJs//Y6WW3ouUCD4H91VGKvKsbNuX0BfPQCLGHeuU/EvCZwFAJJyq3fv+VWWes8ix0MeV1A8Q/4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8428
+X-OriginatorOrg: intel.com
 
-On 2/9/24 11:49, Jason A. Donenfeld wrote:
-> [As an aside, I would like to note that a different construction of
-> RDRAND could keep outputting good random numbers for a reeeeeallly
-> long time without needing to reseed, or without penalty if RDSEED is
-> depleted, and so could be made to actually never fail. But given the
-> design goals of RDRAND, this kind of crypto is highly likely to never
-> be implemented, so I'm not even moving to suggest that AMD/Intel just
-> 'fix' the crypto design goals of the instruction. It's not gonna
-> happen for lots of reasons.]
-
-Intel's RDRAND reseeding behavior is spelled out here:
-
-> https://www.intel.com/content/www/us/en/developer/articles/guide/intel-digital-random-number-generator-drng-software-implementation-guide.html
-
-In the "Guaranteeing DBRG Reseeding" section.
-
-> It's a bit of a scheduling/queueing thing, where different security
-> contexts shouldn't be able to starve others out of the finite resource
-> indefinitely.
+James Bottomley wrote:
+> On Wed, 2024-02-07 at 13:08 -0800, Kuppuswamy Sathyanarayanan wrote:
+> > 
+> > On 2/7/24 12:16 PM, Xing, Cedric wrote:
+> > > On 2/6/2024 6:02 PM, Dan Williams wrote:
+> > > > James Bottomley wrote:
+> > > > > There isn't really anything more complex about an interface
+> > > > > that takes a log entry, and does the record an extend, than an
+> > > > > interface which takes a PCR extension value.  So best practice
+> > > > > would say that you should create the ABI that you can't get
+> > > > > wrong (log and record) rather than creating one that causes
+> > > > > additional problems for userspace.
+> > > > 
+> > > > Agree, there's no need for the kernel to leave deliberately
+> > > > pointy edges for userspace to trip over.
+> > > > 
+> > > > Cedric, almost every time we, kernel community, build an
+> > > > interface where userspace says "trust us, we know what we are
+> > > > doing" it inevitably results later in "whoops, turns out it would
+> > > > have helped if the kernel enforced structure here". So the log
+> > > > ABI adds that structure for the primary use cases.
+> > > 
+> > > Dan, I agree with your statement generally. But with the precedent
+> > > of TPM module not maintaining a log, I just wonder if the addition
+> > > of log would cause problems or force more changes to existing
+> > > usages than necessary. For example, IMA has its own log and if
+> > > changed to use RTMR, how would those 2 logs interoperate? We would
+> > > also need to decide on a log format that can accommodate all
+> > > applications.
+> > 
+> > 
+> > IIUC, CC event logging in firmware uses TCG2 format. Since IMA
+> > internally uses TPM calls, I assume it also uses the TCG2 format. I
+> > think we can follow the same format for RTMR extension.
 > 
-> What I'm wondering is if that kind of fairness is even possible to
-> achieve in the hardware or the microcode.
-...
+> Just to correct this: IMA uses its own log format, but I think this was
+> a mistake long ago and the new log should use TCG2 format so all the
+> tools know how to parse it.
 
-Even ignoring different security contexts, Intel's whitepaper claims
-that no starvation happens with RDRAND:
+Is this a chance to nudge IMA towards a standard log format? In other
+words, one of the goals alongside userspace consumers of the RTMR log
+would be for IMA to support it as well as an alternate in-kernel backend
+next to TPM. IMA-over-TPM continues with its current format,
+IMA-over-RTMR internally unifies with the log format that is shared with
+RTMR-user-ABI.
 
-> If multiple threads are invoking RDRAND simultaneously, total RDRAND
-> throughput (across all threads) scales approximately linearly with
-> the number of threads until no more hardware threads remain, the bus
-> limits of the processor are reached, or the DRNG interface is fully
-> saturated. Past this point, the maximum throughput is divided equally
-> among the active threads. No threads get starved.
+...but be warned the above is a comment from someone who knows nothing
+about IMA internals, just reacting to the comment.
 
-800 MB/sec of total RDRAND throughput across all threads, guaranteed
-reseeding, and no starvation sounds pretty good to me.
 
-Does that need improving?
+> > I am wondering where will the event log be stored? Is it in the
+> > log_area region of CCEL table?
+> 
+> IMA stores its log in kernel memory and makes it visible in securityfs
+> (in the smae place as the measured boot log).  Since this interface is
+> using configfs, that's where I'd make the log visible.
+> 
+> Just to add a note about how UEFI works: the measured boot log is
+> effectively copied into kernel memory because the UEFI memory it once
+> occupied is freed after exit boot services, so no UEFI interface will
+> suffice for the log location.
+> 
+> I'd make the file exporting it root owned but probably readable by only
+> the people who can also extend it (presumably enforced by group?). 
+
+I assume EFI copying into kernel memory is ok because that log has a
+limited number of entries. If this RTMR log gets large I assume it needs
+some way cull entries that have been moved to storage. Maybe this is a
+problem IMA has already solved.
