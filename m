@@ -1,213 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E18762CD;
-	Fri,  9 Feb 2024 16:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0265A7BB04
+	for <linux-coco@lists.linux.dev>; Fri,  9 Feb 2024 17:31:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707497571; cv=none; b=P9boCjeKLMlVWAMoBNIPs2NkOkIN6LHNbSoKTvcMol9ehPqYrA4TaFsSzFeR0NpmPUXcY83Oefy7xC4WB2iEzgyb63grZCuaPv5z2BR3Ge71CERBNGFBtqwOxkuzgSzwJR+jgbzfPgcC4S5mDUZTyqGqQbAmCWbKcQkvtot1Bz0=
+	t=1707499890; cv=none; b=Pxs0iBa/9lpchQ2Lv1ERAXObx83CUdwTwv+T/Dz5vrf9PJSyBqcS1/HiiseUu5TMxQtLrBIokE1v8fHpDJW+zkKGqyqYjNtLVuO4H5/ZNhDF4Ct9uugsHgDq4pJcjNfOBv77E+/pLazkUBrRbWCEn3SwtMo9Gg3MwLpe9n/NZ3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707497571; c=relaxed/simple;
-	bh=NmxkS+jMEl1UDH6K3hczdpAMvlCTTVjwBXbAsGC195I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QQrth0eJXD1KYQXU7VASZPnmvTmHk6AxC/kIo8lRl9J2RJOR2WnIQEIekyspVJzyV40j/cAx7Ya6D/KuvPBxQie4MHtBDntKifUyOU+jduRKo8WouK3lyxfBD8xtujoH64GLt9A7qkMoi64IYq6t/nJAhbKFab3jhxHVXohpmE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=HG3l0MQQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1707499890; c=relaxed/simple;
+	bh=ueF/3l/pdEkS8nmlN1GCOrqczipbSy+MacJ/+GVMuHw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WLrl+kSecHvuP8n529B5Y4uJmz6ulzfod1EL+Eb/CDjdN6Q7AF/6BSoAc1FHsrEqiUGa9n4TTxF1ZCRWbER/Pw4cK7p0FVpTHHw/hKWOscOvedoCKUUOoIIvd8yzYplnDxDCMOueyOF0TSl6S0m4CR3vVU1tKmJViWxPic9QKqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=e6JLmdhx; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="HG3l0MQQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566E0C433F1;
-	Fri,  9 Feb 2024 16:52:49 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="HG3l0MQQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1707497565;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ynfqeEaOI5g7zJp9rFKHbivlh40eLsPZgdwI7uHEjME=;
-	b=HG3l0MQQMBB/izRV3H7Zc7JNrczDOpSpsAZXyzy5j/UH6cLoiMw5DTRxwVxAGeKSa7DRsk
-	LL1NMS7VhaL8tbyNi2QFjNNIo+HcQuY9RgMxn3QuyfWQeF3/uoFHkb6hZ/VbFdy57kv3s7
-	PpuOkZxB3krT0n1j8Fn8X5nx/IkFDYg=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id f1048efb (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Fri, 9 Feb 2024 16:52:45 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Borislav Petkov <bp@alien8.de>,
-	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="e6JLmdhx"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5AF5B40E00B2;
+	Fri,  9 Feb 2024 17:31:25 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id DjG77o1yKKfM; Fri,  9 Feb 2024 17:31:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1707499882; bh=QJ8IvXe5L7kQUA05kg6s4Kuht0GQjKo92ZVIchIlagU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e6JLmdhxkDsBxZfc0bpyjqv1otCTSJtzz7kRKCl/QqUcQK9B7lyn12IvY2J0ibb4j
+	 fdiaL8iPnN0nkBu1ImUi/KuedEG5kutYQutKlYK5icev6GoVn+gTGhvyLCx97lBA2p
+	 DlYH1aF5ifJOwtOsk2NEF6xj/M8yLSPjuZvpQDBx6SzoSRgakGzbCXsSUW7x5d9afG
+	 ATiNBtCuLbM6AXRXuoaEMaQvcZoLP5GAqHwiCJ9oQLNl41aUloVR2ySHrY4sHkGMID
+	 vnsCL8vAc/STm9fbP8UtfWSiWoPighc4mfP1z7F9T90jiyEb8AegXhX1UHdieUNUTT
+	 2/sun38XtEgq3u+PTVAi469WFKFluvOg92ziZylkgrIjqKEXtg6EBC3bPMDQuoq5YK
+	 AWIwDG9zNn0jwnGf8xf6fhPl1LICBaFIWCU4HM/y2EDwGFnBb9R/ipziFkEd2aa4ta
+	 SqZ8omV22A+fhgipCGPzvwVkMwZ5bxEVLusdhKp9GktPiZGnK9KLnKRPqav0UA3tNV
+	 j/Nx6uJo13HpZT3TLbXgpfvS6GiBb8SvBqPZJpp4Lb9Ns3Rx095TwMBSpQ8ZhTSuv8
+	 SK1PtiEqQ4RbT4L5Tp56ub52qYxRATRxzIeDSLEh+fR1UoxtXFbphiOdeeDVRB/gQu
+	 ooiyBVxd+sOCMtbYn20KCN58=
+Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 331EF40E0192;
+	Fri,  9 Feb 2024 17:31:03 +0000 (UTC)
+Date: Fri, 9 Feb 2024 18:31:02 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Dr. Greg" <greg@enjellic.com>
+Cc: "Daniel P. Berrang??" <berrange@redhat.com>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
 	Theodore Ts'o <tytso@mit.edu>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH] x86/coco: Require seeding RNG with RDRAND on CoCo systems
-Date: Fri,  9 Feb 2024 17:49:15 +0100
-Message-ID: <20240209164946.4164052-1-Jason@zx2c4.com>
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Nakajima, Jun" <jun.nakajima@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Message-ID: <20240209173102.GBZcZhVuFJZ8JOKTjG@fat_crate.local>
+References: <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com>
+ <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com>
+ <Zbk6h0ogqeInLa_1@redhat.com>
+ <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240206011247.GA29224@wind.enjellic.com>
+ <ZcHoKUElwXGPzrWb@redhat.com>
+ <20240206120445.GA1247@wind.enjellic.com>
+ <20240206153529.GHZcJRwTdDkWXuopOQ@fat_crate.local>
+ <20240208114444.GA23164@wind.enjellic.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240208114444.GA23164@wind.enjellic.com>
 
-There are few uses of CoCo that don't rely on working cryptography and
-hence a working RNG. Unfortunately, the CoCo threat model means that the
-VM host cannot be trusted and may actively work against guests to
-extract secrets or manipulate computation. Since a malicious host can
-modify or observe nearly all inputs to guests, the only remaining source
-of entropy for CoCo guests is RDRAND.
+On Thu, Feb 08, 2024 at 05:44:44AM -0600, Dr. Greg wrote:
+> I guess a useful starting point would be if AMD would like to offer
+> any type of quantification for 'astronomically small' when it comes to
+> the probability of failure over 10 RDRAND attempts... :-)
 
-Unfortunately, RDRAND itself can be rendered unreliable by the host,
-since the host controls guest scheduling and can starve RDRAND's
-generation. A malicious host could also choose to simply terminate or
-not boot a CoCo guest. So, tie the starvation of RDRAND to a BUG_ON at
-boot time.
+Right, let's establish the common ground first: please have a look at
+this, albeit a bit outdated whitepaper:
 
-Specifically, try at boot to seed the RNG using 256 bits of RDRAND
-output. If these fail, BUG(). This doesn't handle the more complicated
-case of reseeding later in boot, but that's fraught with its own
-difficulties, such as a malicious userspace starving the kernel. For
-now, simply make sure the RNG is initially seeded securely during boot,
-avoiding the worst of potential pitfalls.
+https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/white-papers/amd-random-number-generator.pdf
 
-This patch is deliberately written to be "just a CoCo x86 driver
-feature" and not part of the RNG itself. Many device drivers and
-platforms have some desire to contribute something to the RNG, and
-add_device_randomness() is specifically meant for this purpose. Any
-driver can call this with seed data of any quality, or even garbage
-quality, and it can only possibly make the quality of the RNG better or
-have no effect, but can never make it worse. Rather than trying to
-build something into the core of the RNG, this patch interprets the
-particular CoCo issue as just a CoCo issue, and therefore separates this
-all out into driver (well, arch/platform) code.
+in case you haven't seen it yet.
 
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Elena Reshetova <elena.reshetova@intel.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Theodore Ts'o <tytso@mit.edu>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
-Probably this shouldn't be merged until Dave/Elena and others get back
-with regards to the full picture, with information from inside Intel.
-But I have a feeling this patch, or something like it, is ultimately
-what we'll wind up with, so I'm posting it now.
+Now, considering that this is a finite resource, you can imagine that
+there can be scenarios where that source can be depleted.
 
-I don't have a functional CoCo setup, so this patch has only been very
-lightly tested.
+And newer Zen generations perform significantly better. So much so that
+on Zen3 and later 10 retries should never observe a failure unless it
+is bad hardware. Also, I agree with hpa's note that any and all retries
+should be time based.
 
- arch/x86/coco/core.c        | 36 ++++++++++++++++++++++++++++++++++++
- arch/x86/include/asm/coco.h |  2 ++
- arch/x86/kernel/setup.c     |  2 ++
- 3 files changed, 40 insertions(+)
+> Secondly, given our test findings and those of RedHat, would it be
+> safe to assume that EPYC has engineering that prevents RDSEED failures
+> that Ryzen does not?
 
-diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-index eeec9986570e..4e3b1cfe0063 100644
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -3,13 +3,16 @@
-  * Confidential Computing Platform Capability checks
-  *
-  * Copyright (C) 2021 Advanced Micro Devices, Inc.
-+ * Copyright (C) 2024 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-  *
-  * Author: Tom Lendacky <thomas.lendacky@amd.com>
-  */
- 
- #include <linux/export.h>
- #include <linux/cc_platform.h>
-+#include <linux/random.h>
- 
-+#include <asm/archrandom.h>
- #include <asm/coco.h>
- #include <asm/processor.h>
- 
-@@ -153,3 +156,36 @@ __init void cc_set_mask(u64 mask)
- {
- 	cc_mask = mask;
- }
-+
-+__init void cc_random_init(void)
-+{
-+	unsigned long rng_seed[32 / sizeof(long)];
-+	size_t i, longs;
-+
-+	if (cc_vendor == CC_VENDOR_NONE)
-+		return;
-+
-+	/*
-+	 * Since the CoCo threat model includes the host, the only reliable
-+	 * source of entropy that can be neither observed nor manipulated is
-+	 * RDRAND. Usually, RDRAND failure is considered tolerable, but since a
-+	 * host can possibly induce failures consistently, it's important to at
-+	 * least ensure the RNG gets some initial random seeds.
-+	 */
-+	for (i = 0; i < ARRAY_SIZE(rng_seed); i += longs) {
-+		longs = arch_get_random_longs(&rng_seed[i], ARRAY_SIZE(rng_seed) - i);
-+
-+		/*
-+		 * A zero return value means that the guest is under attack,
-+		 * the hardware is broken, or some other mishap has occurred
-+		 * that means the RNG cannot be properly rng_seeded, which also
-+		 * likely means most crypto inside of the CoCo instance will be
-+		 * broken, defeating the purpose of CoCo in the first place. So
-+		 * just panic here because it's absolutely unsafe to continue
-+		 * executing.
-+		 */
-+		BUG_ON(longs == 0);
-+	}
-+	add_device_randomness(rng_seed, sizeof(rng_seed));
-+	memzero_explicit(rng_seed, sizeof(rng_seed));
-+}
-diff --git a/arch/x86/include/asm/coco.h b/arch/x86/include/asm/coco.h
-index 76c310b19b11..e9d059449885 100644
---- a/arch/x86/include/asm/coco.h
-+++ b/arch/x86/include/asm/coco.h
-@@ -15,6 +15,7 @@ extern enum cc_vendor cc_vendor;
- void cc_set_mask(u64 mask);
- u64 cc_mkenc(u64 val);
- u64 cc_mkdec(u64 val);
-+void cc_random_init(void);
- #else
- #define cc_vendor (CC_VENDOR_NONE)
- 
-@@ -27,6 +28,7 @@ static inline u64 cc_mkdec(u64 val)
- {
- 	return val;
- }
-+static inline void cc_random_init(void) { }
- #endif
- 
- #endif /* _ASM_X86_COCO_H */
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 84201071dfac..30a653cfc7d2 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -36,6 +36,7 @@
- #include <asm/bios_ebda.h>
- #include <asm/bugs.h>
- #include <asm/cacheinfo.h>
-+#include <asm/coco.h>
- #include <asm/cpu.h>
- #include <asm/efi.h>
- #include <asm/gart.h>
-@@ -994,6 +995,7 @@ void __init setup_arch(char **cmdline_p)
- 	 * memory size.
- 	 */
- 	mem_encrypt_setup_arch();
-+	cc_random_init();
- 
- 	efi_fake_memmap();
- 	efi_find_mirror();
+Well, roughly speaking, client is a less beefier and less performant
+version of server. You can extrapolate that to the topic at hand.
+
+But at least on AMD, any potential DoSing of RDRAND on client doesn't
+matter for CoCo because client doesn't enable SEV*.
+
+> Both AMD and Intel designs start with a hardware based entropy source.
+> Intel samples thermal/quantum junction noise, AMD samples execution
+> jitter over a bank of inverter based oscillators.
+
+See above paper for the AMD side.
+
+> An assumption of constant clocked sampling implies a maximum
+> randomness bandwidth limit.
+
+You said it.
+
+> None of this implies that randomness is a finite resource
+
+Huh? This contradicts with what you just said in the above sentence.
+
+Or maybe I'm reading this wrong...
+
+> So this leaves the fundamental question of what does an RDRAND or
+> RDSEED failure return actually imply?
+
+Simple: if no random data is ready at the time the insn executes, it
+says "invalid". Because the generator is a finite resource as you said
+above, if the software tries to pull random data faster than it can
+generate, this is the main case for CF=0.
+
+> Silicon is a expensive resource, which would imply a queue depth
+> limitation for access to the socket common RNG infastructure.  If the
+> queue is full when an instruction issues, it would be a logical
+> response to signal an instruction failure quickly and let software try
+> again.
+
+That's actually in the APM documenting RDRAND:
+
+"If the returned value is invalid, software must execute the instruction
+again."
+
+> Given the time and engineering invested in the engineering behind both
+> TDX and SEV-SNP, it would seem unlikely that really smart engineers at
+> both Intel and AMD didn't anticipate this issue and its proper
+> resolution for CoCo environments.
+
+You can probably imagine that no one can do a fully secure system in one
+single attempt but rather needs to do an iterative process.
+
+And I don't know how much you've followed those technologies but they
+*are* the perfect example for such an iterative improvement process.
+
+I hope this answers at least some of your questions.
+
+Thx.
+
 -- 
-2.43.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
