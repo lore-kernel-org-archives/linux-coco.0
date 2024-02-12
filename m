@@ -1,47 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0713A8FF
-	for <linux-coco@lists.linux.dev>; Mon, 12 Feb 2024 10:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419253A8D2
+	for <linux-coco@lists.linux.dev>; Mon, 12 Feb 2024 10:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707734709; cv=none; b=QS6pjDNrqkkPlic5+3iSt5dLbYMBzmnJ2JvBFSm9XmuStktAfiu0IUe0jLE803a3QD4Cts6yh1cdRDqdp6kcYytzDuHBVrwO4j1CpCvPg0dN+IAuxAD2ERlceuRzHiVGy14kvaX2INYMyYWNSlSfT+HQq6KiJDuXVKXO4QI0b7k=
+	t=1707734709; cv=none; b=ODomEB+iZZi9WZopKYu/XIvgtICxKJrwlxxkughSQNLzonzRmfOud5Py3GBUbvXXy3viPGOdrx6yBgqVwky943sJx9pDL+uEhquOf4MdezoDXiXvqIPflK0YpMDuOZbi3+b7cNaVjcCNas63/h2+7P4yfcfw6aeJIkOEMa4mvSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1707734709; c=relaxed/simple;
-	bh=LcZSO2fCT5WaMkS6shCgOhCUo14EJT04WN8x+U0u+KI=;
+	bh=9DcFlB+EMYNkp2N6OZv2c5TmDu3Stsj7JMO1CUBiP2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KeZrQrTEGFxvlPhQP4gq057jIvngp6dJOFbO0SWBVzkYQJcLIsmhTNdZuTqTsLuU4rgZNewfZ0HfobQfFrnfTT5HjRzXCrjhB3hbEnj/JVy4TYZplrroWLVPPqpjLKpzYhgmcXnrO4AaLFtn3NFJG72NkS7mnJiall4BlBo12cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J3VUunRc; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=QaMP8am+kTUnnkBM63wc02fh59de3kNjwVa6ck7PWkNLThDpBmDCgrRzDapgzW3/Ys1esrsFlh7jo9jheqFlKJoWdnteg3iGH/fFeelI4eV2w59CyFVpTOq3uuWv36G9RNDJCyiCQfv/AM30OVLVWXUEqX0fWZ7C28cyFUcjws8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C+I5uNVA; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J3VUunRc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C+I5uNVA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707734706; x=1739270706;
+  t=1707734705; x=1739270705;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=LcZSO2fCT5WaMkS6shCgOhCUo14EJT04WN8x+U0u+KI=;
-  b=J3VUunRcyQ9nJJ5iRMmPHZ+c3H/gLuhM5+Ov9IS7YQXFDzNfL+TIt4s1
-   FkZNIUlaUDnNK/s9WTjMRP7inCsxArxMFxJZGIvqC4BhhrSnHE0+7OZYu
-   o/9ow1LI9e0Memvp6yHJX5ptTTAwSJ8o4a9PvLh6/5vXClkKVhZDiidWX
-   UDRWuzHqTcIPPYGn2jJ/Ek7dbO2aC7qr88E8AXfrYtNUcYXhhNQOCQWIy
-   71RyAMKixhgGLdPFMlOIADT009m5kU2bnoFb/DTtNTvPndpanlQ9eiD+M
-   Eqr61fcoDBXKeopdPCgDQDUWLK60GbrhckyeXY2yvQVVkpvY+zTcI9sIo
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="1585053"
+  bh=9DcFlB+EMYNkp2N6OZv2c5TmDu3Stsj7JMO1CUBiP2Q=;
+  b=C+I5uNVAJMsC/ViIjKVgIRRGpTER8Oguy9rNsJzzXMWCTgPusyEojjfv
+   6unroMiSEBg5TcJjcKmNLek54uPjRcfCUJ71MWyiGSITFp4zfP2NRwHw0
+   y7BrbAeRkSudC8fbislLhbG6qmyE0DXie1J1FTadFo0uKXN5vzk5bjtc8
+   iDXgYVVuDmbLAmTO8H195U9CqeL6foR06umUB0w993kHx9bLgFpCZhE/y
+   /IH47/fktMX+cmWgNTu4DgaZjuDBrIsE/DqAEujwb2YKqtDPs5SrMRVav
+   bdZ7jeMZncywmFW3HCZL3aYB6ZlCmc0FlWHebZnH7p0Ry0JjC683Syu24
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="1585075"
 X-IronPort-AV: E=Sophos;i="6.05,263,1701158400"; 
-   d="scan'208";a="1585053"
+   d="scan'208";a="1585075"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 02:45:04 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="935035599"
+X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="935035603"
 X-IronPort-AV: E=Sophos;i="6.05,262,1701158400"; 
-   d="scan'208";a="935035599"
+   d="scan'208";a="935035603"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga001.fm.intel.com with ESMTP; 12 Feb 2024 02:45:00 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 2AEBC535; Mon, 12 Feb 2024 12:44:53 +0200 (EET)
+	id 7D00E65E; Mon, 12 Feb 2024 12:44:53 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -64,9 +64,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv7 05/16] x86/kexec: Keep CR4.MCE set during kexec for TDX guest
-Date: Mon, 12 Feb 2024 12:44:37 +0200
-Message-ID: <20240212104448.2589568-6-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv7 11/16] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
+Date: Mon, 12 Feb 2024 12:44:43 +0200
+Message-ID: <20240212104448.2589568-12-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
 References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
@@ -78,48 +78,72 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
-to #VE.
+e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
+things, guides where direct mapping ends. Any memory above max_pfn is
+not going to be present in the direct mapping.
 
-Use alternatives to keep the flag during kexec for TDX guests.
+e820__end_of_ram_pfn() finds the end of the ram based on the highest
+E820_TYPE_RAM range. But it doesn't includes E820_TYPE_ACPI ranges into
+calculation.
 
-The change doesn't affect non-TDX-guest environments.
+Despite the name, E820_TYPE_ACPI covers not only ACPI data, but also EFI
+tables and might be required by kernel to function properly.
+
+Usually the problem is hidden because there is some E820_TYPE_RAM memory
+above E820_TYPE_ACPI. But crashkernel only presents pre-allocated crash
+memory as E820_TYPE_RAM on boot. If the preallocated range is small, it
+can fit under the last E820_TYPE_ACPI range.
+
+Modify e820__end_of_ram_pfn() and e820__end_of_low_ram_pfn() to cover
+E820_TYPE_ACPI memory.
+
+The problem was discovered during debugging kexec for TDX guest. TDX
+guest uses E820_TYPE_ACPI to store the unaccepted memory bitmap and pass
+it between the kernels on kexec.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
 ---
- arch/x86/kernel/relocate_kernel_64.S | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kernel/e820.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
-index 56cab1bb25f5..e144bcf60cbe 100644
---- a/arch/x86/kernel/relocate_kernel_64.S
-+++ b/arch/x86/kernel/relocate_kernel_64.S
-@@ -5,6 +5,8 @@
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index fb8cf953380d..99c80680dc9e 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -827,7 +827,7 @@ u64 __init e820__memblock_alloc_reserved(u64 size, u64 align)
+ /*
+  * Find the highest page frame number we have available
   */
+-static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type type)
++static unsigned long __init e820_end_ram_pfn(unsigned long limit_pfn)
+ {
+ 	int i;
+ 	unsigned long last_pfn = 0;
+@@ -838,7 +838,8 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
+ 		unsigned long start_pfn;
+ 		unsigned long end_pfn;
  
- #include <linux/linkage.h>
-+#include <linux/stringify.h>
-+#include <asm/alternative.h>
- #include <asm/page_types.h>
- #include <asm/kexec.h>
- #include <asm/processor-flags.h>
-@@ -145,12 +147,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
- 	 * Set cr4 to a known state:
- 	 *  - physical address extension enabled
- 	 *  - 5-level paging, if it was enabled before
-+	 *  - Machine check exception on TDX guest. Clearing MCE is not allowed
-+	 *    in TDX guests.
- 	 */
- 	movl	$X86_CR4_PAE, %eax
- 	testq	$X86_CR4_LA57, %r13
- 	jz	1f
- 	orl	$X86_CR4_LA57, %eax
- 1:
-+	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %eax), X86_FEATURE_TDX_GUEST
- 	movq	%rax, %cr4
+-		if (entry->type != type)
++		if (entry->type != E820_TYPE_RAM &&
++		    entry->type != E820_TYPE_ACPI)
+ 			continue;
  
- 	jmp 1f
+ 		start_pfn = entry->addr >> PAGE_SHIFT;
+@@ -864,12 +865,12 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
+ 
+ unsigned long __init e820__end_of_ram_pfn(void)
+ {
+-	return e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM);
++	return e820_end_ram_pfn(MAX_ARCH_PFN);
+ }
+ 
+ unsigned long __init e820__end_of_low_ram_pfn(void)
+ {
+-	return e820_end_pfn(1UL << (32 - PAGE_SHIFT), E820_TYPE_RAM);
++	return e820_end_ram_pfn(1UL << (32 - PAGE_SHIFT));
+ }
+ 
+ static void __init early_panic(char *msg)
 -- 
 2.43.0
 
