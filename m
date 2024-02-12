@@ -1,179 +1,223 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941433B78D
-	for <linux-coco@lists.linux.dev>; Mon, 12 Feb 2024 10:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46E139857
+	for <linux-coco@lists.linux.dev>; Mon, 12 Feb 2024 11:47:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707735046; cv=none; b=cPOFkwaQM6IuHGK81b6JeTPJlvOrg2txKYFGJ9Is0t9y5wV5rspqEbZniOBoXQHUt5PQmYzQOynLI6ot7AiG+xEc9s20uq3D0wyVwk7R5S8mG/S/NkbzDNykqpFOp4+4QLKJRN+LvRQoFRRj4znSoYDFrozO4tzKsAIiQt++0z8=
+	t=1707738449; cv=none; b=EzwhV0CvCEu2t4C6RhL2A2UItTU20gf3mKiEGPjcMl/2JMm5YYXAYVcQ1Tvo6ZeeJrOFazTOMpkG4A5fS8zct6nSQ1GegM9btrtkBGyLEBYo4cXtMqqJOOVPt9vaEKPbweluhHQsdhk5y1JndpSc8nkkcZYrMh8JTl9VZ0hK9r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707735046; c=relaxed/simple;
-	bh=Lr66KmZnVLS82nRgdt+beezb2jJBazpmkeYHKLN/A9Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pFjz+Gwu6LaT8AtAV3UmxKP29jXaWteRu2ldS+o6lU6fS3KvndyzrezATo7EMf96HvlL3vMCsIc5hScQor4FVk4LUhtyoOBdhXJgVapfqsUvSXiQ6dHYH/zY6P3G3D4UMOSDIW+AHzoKB6GbH6OjYrGFi289qLlKC6QPmeRFnZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M4V85FiM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1707738449; c=relaxed/simple;
+	bh=qlzqXd3E8EN9sGyZ5zlZscBBy3a7+JL3uMmODD1BNa0=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=aVEc+rrJyQuHDfFuIxKrPTIL4au/pS9vk1Mmwg5/xrfEHH+VmLzoehcmzdd/PAM31pyIas50c++WylRzOLd6f42+lPwpdzPIIVr+G5lrL2eX4F7GJK/fi0jmUvw2/1EvY6KRI9kfm9a+tg3yIzwp/5nU8uEtQ+WL24vvD9VdsT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bgV0M7fl; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M4V85FiM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707735042;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CGzi02Tn24h+4KX7saOQvUPo/IOGq4TShidAZaCvX4Q=;
-	b=M4V85FiMpVf9ad8urNi0YLTZhEIaligdCP40ZSJMQuB/+e88t892IdYfQf7tpsPXcVVIRU
-	lNvneXKfh6Qhgysh2A7uaPzLn4Ky6H1JlxEvfcY/5k919GzwiqhcwaaOXwTehtM2Yrwi0x
-	SLJyCK4L9RQwg6lRXGq9H4HAyCbo0Jc=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-YJfXQYT5NmGoYzX7ZVgoXA-1; Mon, 12 Feb 2024 05:50:41 -0500
-X-MC-Unique: YJfXQYT5NmGoYzX7ZVgoXA-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5610ff5d29dso1243954a12.2
-        for <linux-coco@lists.linux.dev>; Mon, 12 Feb 2024 02:50:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707735040; x=1708339840;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CGzi02Tn24h+4KX7saOQvUPo/IOGq4TShidAZaCvX4Q=;
-        b=xPZUXQAc2B02fWQ1UXsaCzWk2NRl0sjnneSm4Iz0Z/L2brIrBQqJZ6bS8MIHNSr79C
-         GyZUXWrVhzRa0LAhtiinYOe7u4cZUozgWT2fjhPJydaroGLQUaKmg7zc861xkXVHtIXf
-         ZfTBfBaNtacoJkcUqISWNvr+sJWNUWKEEh68qyxRU4hHAPeTZWp85q4J9+tuHJjY+Sre
-         UA+mtiJSImoj28SOf7CdWlGK1VCJ5fJlhym/99s55ZJ4YPdnd+xyZ9dKpEQ2nLKnOj58
-         SSCfntWLYcr+ovKSAwHRwNugJ+Df9x+drhTlSI7qeG26DsC9S4yXiZV7E5TlyiyOgQM5
-         1vZQ==
-X-Gm-Message-State: AOJu0YwOI5vQdp0OoQ60svUZ23yoYnTAyfxXSCpe03QwhVxpVbh4lH8X
-	GF1lfu8DcWD15rxtVlPChCFa4iapixW/2/U/sryshMigT3GAtkaJCCoGFgG2aUgmJki3RNRFhWW
-	jqEAO+0qnuyFtxD1LhiATw4GEZN7jQeMN+x3Tot06NmBYTPvKOfWWzppVuxkc8CwaAb077dvVPG
-	eEtXTw7T78a21TTZKASaIDt+h2Q5BtHyuPjw==
-X-Received: by 2002:a17:906:3507:b0:a3c:2293:6500 with SMTP id r7-20020a170906350700b00a3c22936500mr3694535eja.62.1707735039902;
-        Mon, 12 Feb 2024 02:50:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEs/dTfWeYlV2h3bAXvOeCpDOIaWG7ELxlYs012S707SouVNragOMr+4A+e87Se2En7qrc/XFhuu59BW51wQ4A=
-X-Received: by 2002:a17:906:3507:b0:a3c:2293:6500 with SMTP id
- r7-20020a170906350700b00a3c22936500mr3694493eja.62.1707735039576; Mon, 12 Feb
- 2024 02:50:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bgV0M7fl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707738447; x=1739274447;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=qlzqXd3E8EN9sGyZ5zlZscBBy3a7+JL3uMmODD1BNa0=;
+  b=bgV0M7flaX4Nt69oHr+vWJm5QE8SRjWogJGG4kGCwUodQzyfo67c6MwC
+   u+PyeQ6aEi9EN5L0NHSnOpIm+p2MmLAcFETGCyKyGFdZefN8b/Ey4XE/h
+   Vxqwkz+y7o1oq3bIGCjorwXiee1H3TtRukViJcirhk3K6ktqd/c+pBd2F
+   9MHYeXC9DZxX9Vmg4XRNxYCCBmPXvISkdQCxRuukj1GoC0QIFJlKeTZ++
+   var+yV1P4GZC0hlshDZgbLFfy6ixbJD+9e631NRp2mQu1XVaSvoaj2JL9
+   2ZDaRsjulZW8u+bZta6VnoU13w5YaZtLlpm2BLSdcjJSR157Xo7ULXFtx
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="2054880"
+X-IronPort-AV: E=Sophos;i="6.06,263,1705392000"; 
+   d="scan'208";a="2054880"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 03:47:26 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="911459436"
+X-IronPort-AV: E=Sophos;i="6.06,263,1705392000"; 
+   d="scan'208";a="911459436"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.246.49.160])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 03:47:20 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 12 Feb 2024 13:47:14 +0200 (EET)
+To: Lukas Wunner <lukas@wunner.de>
+cc: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>, 
+    David Woodhouse <dwmw2@infradead.org>, 
+    Herbert Xu <herbert@gondor.apana.org.au>, 
+    "David S. Miller" <davem@davemloft.net>, 
+    Alex Williamson <alex.williamson@redhat.com>, linux-pci@vger.kernel.org, 
+    linux-cxl@vger.kernel.org, linux-coco@lists.linux.dev, 
+    keyrings@vger.kernel.org, linux-crypto@vger.kernel.org, 
+    kvm@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+    linuxarm@huawei.com, David Box <david.e.box@intel.com>, 
+    Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
+    "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>, 
+    Alistair Francis <alistair.francis@wdc.com>, 
+    Wilfred Mallawa <wilfred.mallawa@wdc.com>, 
+    Alexey Kardashevskiy <aik@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+    Sean Christopherson <seanjc@google.com>, Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
+In-Reply-To: <20240209203204.GA5850@wunner.de>
+Message-ID: <5de3ae38-023f-0a3f-d750-fbfa1af7a8ee@linux.intel.com>
+References: <cover.1695921656.git.lukas@wunner.de> <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de> <5d0e75-993c-3978-8ccf-60bfb7cac10@linux.intel.com> <20240209203204.GA5850@wunner.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231230172351.574091-1-michael.roth@amd.com> <20231230172351.574091-31-michael.roth@amd.com>
-In-Reply-To: <20231230172351.574091-31-michael.roth@amd.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 12 Feb 2024 11:50:26 +0100
-Message-ID: <CABgObfYX74NwYPV8dHGfLjBBp5JMGsN5OSQaJrgHQTghVdrD1g@mail.gmail.com>
-Subject: Re: [PATCH v11 30/35] KVM: x86: Add gmem hook for determining max NPT
- mapping level
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
-	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com, 
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; BOUNDARY="8323328-136259284-1707737012=:1013"
+Content-ID: <fd482b13-2b88-f6d9-c1f8-18cb38ef1b33@linux.intel.com>
 
-On Sat, Dec 30, 2023 at 6:32=E2=80=AFPM Michael Roth <michael.roth@amd.com>=
- wrote:
->         int max_order, r;
-> +       u8 max_level;
->
->         if (!kvm_slot_can_be_private(fault->slot)) {
->                 kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
-> @@ -4321,8 +4322,15 @@ static int kvm_faultin_pfn_private(struct kvm_vcpu=
- *vcpu,
->                 return r;
->         }
->
-> -       fault->max_level =3D min(kvm_max_level_for_order(max_order),
-> -                              fault->max_level);
-> +       max_level =3D kvm_max_level_for_order(max_order);
-> +       r =3D static_call(kvm_x86_gmem_max_level)(vcpu->kvm, fault->pfn,
-> +                                               fault->gfn, &max_level);
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Might as well pass &fault->max_level directly to the callback, with no
-change to the vendor-specific code.
+--8323328-136259284-1707737012=:1013
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <ea362b92-2407-d2f9-8869-a76532c7362f@linux.intel.com>
 
-I'll include the MMU part in a generic series to be the base for both
-Intel TDX and AMD SEV-SNP, and will do that change.
+On Fri, 9 Feb 2024, Lukas Wunner wrote:
 
-Paolo
+> On Tue, Oct 03, 2023 at 01:35:26PM +0300, Ilpo J=E4rvinen wrote:
+> > On Thu, 28 Sep 2023, Lukas Wunner wrote:
+> > > +typedef int (spdm_transport)(void *priv, struct device *dev,
+> > > +                          const void *request, size_t request_sz,
+> > > +                          void *response, size_t response_sz);
+> >=20
+> > This returns a length or an error, right? If so return ssize_t instead.
+> >=20
+> > If you make this change, alter the caller types too.
+>=20
+> Alright, I've changed the types in __spdm_exchange() and spdm_exchange().
+>=20
+> However the callers of those functions assign the result to an "rc" varia=
+ble
+> which is also used to receive an "int" return value.
+> E.g. spdm_get_digests() assigns the ssize_t result of spdm_exchange() to =
+rc
+> but also the int result of crypto_shash_update().
+>=20
+> It feels awkward to change the type of "rc" to "ssize_t" in those
+> functions, so I kept "int".
 
-> +       if (r) {
-> +               kvm_release_pfn_clean(fault->pfn);
-> +               return r;
-> +       }
-> +
-> +       fault->max_level =3D min(max_level, fault->max_level);
->         fault->map_writable =3D !(fault->slot->flags & KVM_MEM_READONLY);
->
->         return RET_PF_CONTINUE;
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 85f63b6842b6..5eb836b73131 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -4315,3 +4315,30 @@ void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_=
-t end)
->                 pfn +=3D use_2m_update ? PTRS_PER_PMD : 1;
->         }
->  }
-> +
-> +int sev_gmem_max_level(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, u8 *ma=
-x_level)
-> +{
-> +       int level, rc;
-> +       bool assigned;
-> +
-> +       if (!sev_snp_guest(kvm))
-> +               return 0;
-> +
-> +       rc =3D snp_lookup_rmpentry(pfn, &assigned, &level);
-> +       if (rc) {
-> +               pr_err_ratelimited("SEV: RMP entry not found: GFN %llx PF=
-N %llx level %d error %d\n",
-> +                                  gfn, pfn, level, rc);
-> +               return -ENOENT;
-> +       }
-> +
-> +       if (!assigned) {
-> +               pr_err_ratelimited("SEV: RMP entry is not assigned: GFN %=
-llx PFN %llx level %d\n",
-> +                                  gfn, pfn, level);
-> +               return -EINVAL;
-> +       }
-> +
-> +       if (level < *max_level)
-> +               *max_level =3D level;
-> +
-> +       return 0;
-> +}
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index f26b8c2a8be4..f745022f7454 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -5067,6 +5067,7 @@ static struct kvm_x86_ops svm_x86_ops __initdata =
-=3D {
->         .alloc_apic_backing_page =3D svm_alloc_apic_backing_page,
->
->         .gmem_prepare =3D sev_gmem_prepare,
-> +       .gmem_max_level =3D sev_gmem_max_level,
->         .gmem_invalidate =3D sev_gmem_invalidate,
->  };
->
-> --
-> 2.25.1
->
+Using ssize_t type variable for return values is not that uncommon (kernel=
+=20
+wide). Obviously that results in int -> ssize_t conversion if they call=20
+any function that only needs to return an int. But it seems harmless.
 
+crypto_shash_update() doesn't input size_t like (spdm_transport)() does.
+
+> > > +struct spdm_error_rsp {
+> > > +=09u8 version;
+> > > +=09u8 code;
+> > > +=09enum spdm_error_code error_code:8;
+> > > +=09u8 error_data;
+> > > +
+> > > +=09u8 extended_error_data[];
+> > > +} __packed;
+> >=20
+> > Is this always going to produce the layout you want given the alignment=
+=20
+> > requirements for the storage unit for u8 and enum are probably differen=
+t?
+>=20
+> Yes, the __packed attribute forces the compiler to avoid padding.
+
+Okay, so I assume compiler is actually able put enum with u8, seemingly=20
+bitfield code generation has gotten better than it used to be.
+
+With how little is promised wordings in the spec (unless there is later=20
+update I've not seen), I'd suggest you still add a static_assert for the=20
+sizeof of the struct to make sure it is always of correct size.=20
+Mislayouting is much easier to catch on build time.
+
+> > > +static int spdm_negotiate_algs(struct spdm_state *spdm_state,
+> > > +=09=09=09       void *transcript, size_t transcript_sz)
+> > > +{
+> > > +=09struct spdm_req_alg_struct *req_alg_struct;
+> > > +=09struct spdm_negotiate_algs_req *req;
+> > > +=09struct spdm_negotiate_algs_rsp *rsp;
+> > > +=09size_t req_sz =3D sizeof(*req);
+> > > +=09size_t rsp_sz =3D sizeof(*rsp);
+> > > +=09int rc, length;
+> > > +
+> > > +=09/* Request length shall be <=3D 128 bytes (SPDM 1.1.0 margin no 1=
+85) */
+> > > +=09BUILD_BUG_ON(req_sz > 128);
+> >=20
+> > I don't know why this really has to be here? This could be static_asser=
+t()
+> > below the struct declaration.
+>=20
+> A follow-on patch to add key exchange support increases req_sz based on
+> an SPDM_MAX_REQ_ALG_STRUCT macro defined here in front of the function
+> where it's used.  That's the reason why the size is checked here as well.
+
+Okay, understood. I didn't go that in my analysis so I missed the later=20
+addition.
+
+> > > +static int spdm_get_certificate(struct spdm_state *spdm_state, u8 sl=
+ot)
+> > > +{
+> > > +=09struct spdm_get_certificate_req req =3D {
+> > > +=09=09.code =3D SPDM_GET_CERTIFICATE,
+> > > +=09=09.param1 =3D slot,
+> > > +=09};
+> > > +=09struct spdm_get_certificate_rsp *rsp;
+> > > +=09struct spdm_cert_chain *certs =3D NULL;
+> > > +=09size_t rsp_sz, total_length, header_length;
+> > > +=09u16 remainder_length =3D 0xffff;
+> >=20
+> > 0xffff in this function should use either U16_MAX or SZ_64K - 1.
+>=20
+> The SPDM spec uses 0xffff so I'm deliberately using that as well
+> to make the connection to the spec obvious.
+
+It's not obvious when somebody is reading 0xffff. If you want to make the=
+=20
+connection obvious, you create a proper #define + add a comment where its=
+=20
+defined with the spec ref.
+
+> > > +static void spdm_create_combined_prefix(struct spdm_state *spdm_stat=
+e,
+> > > +=09=09=09=09=09const char *spdm_context, void *buf)
+> > > +{
+> > > +=09u8 minor =3D spdm_state->version & 0xf;
+> > > +=09u8 major =3D spdm_state->version >> 4;
+> > > +=09size_t len =3D strlen(spdm_context);
+> > > +=09int rc, zero_pad;
+> > > +
+> > > +=09rc =3D snprintf(buf, SPDM_PREFIX_SZ + 1,
+> > > +=09=09      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*"
+> > > +=09=09      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*",
+> > > +=09=09      major, minor, major, minor, major, minor, major, minor);
+> >=20
+> > Why are these using s8 formatting specifier %hhx ??
+>=20
+> I don't quite follow, "%hhx" is an unsigned char, not a signed char.
+>=20
+> spdm_state->version may contain e.g. 0x12 which is converted to
+> "dmtf-spdm-v1.2.*" here.
+>=20
+> The question is what happens if the major or minor version goes beyond 9.
+> The total length of the prefix is hard-coded by the spec, hence my
+> expectation is that 1.10 will be represented as "dmtf-spdm-v1.a.*"
+> to not exceed the length.  The code follows that expectation.
+
+It's actually fine.
+
+I just got tunnel vision when looking what that %hhx is in the first=20
+place, in Documentation/core-api/printk-formats.rst there's this list:
+
+=09        signed char             %d or %hhx
+                unsigned char           %u or %x
+
+But of course %hhx is just as valid for unsigned.
+
+--=20
+ i.
+--8323328-136259284-1707737012=:1013--
