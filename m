@@ -1,120 +1,112 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE8B3D0D1
-	for <linux-coco@lists.linux.dev>; Mon, 12 Feb 2024 16:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAAE40BF9
+	for <linux-coco@lists.linux.dev>; Mon, 12 Feb 2024 16:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707755246; cv=none; b=JI80PleFbrQFykGuPi+r7tT3cuGFrEDctx4yBjIpQ9XOshQjyn7u/QU5YJyHlrQrDeZe/O+VLLJ3OwoScAzIWJYJHJU49aMXTyN7CnpRNiyqoYp1DDUXcgpF/Q6KhaxD/YFcdOLi47Jdg67TAJgWT7quaGUEGKM+uT/BCXo6+m0=
+	t=1707755606; cv=none; b=DbCVpNKrtE1Gp43Qp+YUp3CSxFfLl6oK3GVJjUDev3dnZOUKb4wbSnDVksYm9CaybtWXVvKOKOFZrsBItbrraDs9jbKjBeEF/sFbxegAkxJmJZEv0MpD83WpSZA4lyyhcANrF3ZMJPFFlD9YihNMSS78TWOIj9FJ8WVaiVkP4RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707755246; c=relaxed/simple;
-	bh=Ldgz4EaDjAiFoWUe/b915SB6Or4QvlmL0gWc1JCpdjQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ewPIWB70QG0u8SMFvWLy8vWHNB2QqXesLGWlGBdYsPtx7glDs3MMaMqmInhOnoy2nD12yTI1ye0v1WJuV5FWkiJX8iyhrbqsZsnSnh46gk2cETaRyZ20aoG9J1R3DBjK268CMd34aow9cNd+z0bKY7PkxG8ohgPQr+nOOfosL9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gmmi2iWP; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1707755606; c=relaxed/simple;
+	bh=y0rQ7md8dSpziIPwq351580LwTvSO5cMAtMGhD2sD4s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m2+p+eJ7iiIvYz+Hy65ZrFP0HI1CunBE1qn3i283GvxzlTcsd5PZeAeDp4tbZ4Ay9MlRqIyibj2S/mmddgqpEMvH1SHOF4ROH7ul4+yzDsa0x0DGSdXxb6PgfG1BaSEyekrvLc0roR2JJH74Qy03Yn9TNGlRXZaGS8KKRV4LNgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=fVDCymGL; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gmmi2iWP"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc64e0fc7c8so4558153276.2
-        for <linux-coco@lists.linux.dev>; Mon, 12 Feb 2024 08:27:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707755243; x=1708360043; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jEjTcKce0fZYlWVBDi232LEPLK7jT44Dgj/oRcn95IY=;
-        b=Gmmi2iWP1GQsG4+h7FA62dbGSJ6AHUNaTv4tHNTZRkiTq8MyALG1FZQshXAbY8r29N
-         iyJcQrThZUxrUSxsru16GQgAg9fy8NwecT514w8oGzPiSPd5ubzqehXODvO/cHzJ8iYJ
-         1KHtj0aZHNCLW4yuzwwP2yzJdBlDSMtX1MF06/gCPh58FLrHnt96MVCBLhpDwcQtAsNM
-         OePuw1gspAfO4niOQ8mrTA2l+kJyaQl0tSd+nr7AmgbYfAHhOCbH7NjKJFJcDZNRW/+K
-         kBuy1E97AhNJad6jpTT0qtIaErDmF/os4h7j9p11Z5wFkvIcePSs9SSr3fA3oC2GAT6t
-         L6hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707755243; x=1708360043;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jEjTcKce0fZYlWVBDi232LEPLK7jT44Dgj/oRcn95IY=;
-        b=j1LHWTy009GGOGHpqzhtKq30OsLwqQ+sm/nbjlCoLypU32e7MBXh5J/+C1D7kPjTmi
-         1rmWAEroM1Xq5Tnj4CSPyWzIcBNwT3LYZ7adBOYB52gRapUtYsQFnqlpFe0sLZTQib01
-         UcwN+Yyz07UpEUvv8fQ7USHXNmTb61P0L7dbp5mwW8N4gB5hoypdHyjiBkmwJ03E1cqh
-         +n8cAJR9pye78kFRuXHItiOLygcRqMAvcdpYJtOp7EepWh8JTbr1UowkWh9bKmVg9Lot
-         BOTC4vZUMfCd0vzSLkSaj5K35U+AfY0xa3VKxkOtGVdOD27IpYHHznDJioAjzHLgPHQs
-         SK/A==
-X-Gm-Message-State: AOJu0Yz1FDRZ7mpv6YCGcZidXHzPlVh4qONYDxcCWHdHPniqqAi9nR/i
-	xKmeNGhb23iCuPbCqFlY8C5xYubjgVx+mUfd6NSDnpB6rkd8Yx5ejdaMHlZN9Hem5gNn3NdYnWd
-	6pA==
-X-Google-Smtp-Source: AGHT+IEsXJBF4/bgLbVzuTLfn0V+5NyBJ3BEiCA1tlOmkNRLRYQ2dckzNx5kcO0b5SJRLl+MJVUD0K6FNQI=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:1005:b0:dcb:c2c0:b319 with SMTP id
- w5-20020a056902100500b00dcbc2c0b319mr42995ybt.9.1707755243421; Mon, 12 Feb
- 2024 08:27:23 -0800 (PST)
-Date: Mon, 12 Feb 2024 08:27:21 -0800
-In-Reply-To: <CABgObfanrHTL429Cr8tcMGqs-Ov+6LWeQbzghvjQiGu9tz0EUA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="fVDCymGL"
+Received: from cwcc.thunk.org (pool-173-48-116-68.bstnma.fios.verizon.net [173.48.116.68])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 41CGWaFt017659
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Feb 2024 11:32:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1707755561; bh=dQeklz7XleQ5cWK9tnOkGna6cm/Ji39W7G3AvRTDy+0=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=fVDCymGL76+YwEh2v7DrscPA0mjbKOyrxO+8OGo8720Uh6qpG0+FptkkJpErxIjyn
+	 Tn5RtmfOwKe7Syq6ViHb+qspjyXAs205iKkzHMuknxsLRyqum9TeBkC+L0LnLm+Zx0
+	 u6BpKwUp7xWfJr88EdcKc2I5jZmapwhEyaJ+GDYD2BEknlveGK4LRZb40EqZSvf30r
+	 rmIcE0anqTRcMy0n5kml8jBH4JMCqtduNnKMqhmq1O3lT4pU0NBmB7tsI5RaYfOpVC
+	 L68FGPizpap9TJ09qTbaO1YgsH7F0j+zmOtqrtZBhl7YT9q+aodYiaLbpzjAMNQhtw
+	 tQVB0X3ep/7Vw==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id BEA7915C0336; Mon, 12 Feb 2024 11:32:36 -0500 (EST)
+Date: Mon, 12 Feb 2024 11:32:36 -0500
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
+Message-ID: <20240212163236.GA444708@mit.edu>
+References: <20240131171042.GA2371371@mit.edu>
+ <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
+ <20240201045710.GD2356784@mit.edu>
+ <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
+ <DM8PR11MB57505F657A8F08E15DC34673E7422@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240202153927.GA119530@mit.edu>
+ <Zb4RlTzq_LV7AzsH@zx2c4.com>
+ <CAHmME9owdbHzfb66xisoWmvWeT_-hkxCu7tR2=Rbye_ik1JgQQ@mail.gmail.com>
+ <DM8PR11MB5750C1A848A9F1EF6BE66241E7482@DM8PR11MB5750.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20231230172351.574091-1-michael.roth@amd.com> <20231230172351.574091-10-michael.roth@amd.com>
- <CABgObfanrHTL429Cr8tcMGqs-Ov+6LWeQbzghvjQiGu9tz0EUA@mail.gmail.com>
-Message-ID: <ZcpG6Ul4_8xAsnuy@google.com>
-Subject: Re: [PATCH v11 09/35] KVM: x86: Determine shared/private faults based
- on vm_type
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, 
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DM8PR11MB5750C1A848A9F1EF6BE66241E7482@DM8PR11MB5750.namprd11.prod.outlook.com>
 
-On Mon, Feb 12, 2024, Paolo Bonzini wrote:
-> On Sat, Dec 30, 2023 at 6:24=E2=80=AFPM Michael Roth <michael.roth@amd.co=
-m> wrote:
-> >
-> > For KVM_X86_SNP_VM, only the PFERR_GUEST_ENC_MASK flag is needed to
-> > determine with an #NPF is due to a private/shared access by the guest.
-> > Implement that handling here. Also add handling needed to deal with
-> > SNP guests which in some cases will make MMIO accesses with the
-> > encryption bit.
-> >
-> > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > ---
-> >  arch/x86/kvm/mmu/mmu.c          | 12 ++++++++++--
-> >  arch/x86/kvm/mmu/mmu_internal.h | 20 +++++++++++++++++++-
-> >  2 files changed, 29 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > index d3fbfe0686a0..61213f6648a1 100644
-> > --- a/arch/x86/kvm/mmu/mmu.c
-> > +++ b/arch/x86/kvm/mmu/mmu.c
-> > @@ -4331,6 +4331,7 @@ static int kvm_faultin_pfn_private(struct kvm_vcp=
-u *vcpu,
-> >  static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fa=
-ult *fault)
-> >  {
-> >         struct kvm_memory_slot *slot =3D fault->slot;
-> > +       bool private_fault =3D fault->is_private;
->=20
-> I think it's nicer to just make the fault !is_private in
-> kvm_mmu_do_page_fault().
+On Mon, Feb 12, 2024 at 08:25:33AM +0000, Reshetova, Elena wrote:
+> What if we instead of doing some special treatment on rdrand/seed, we
+> try to fix the underneath problem of Linux RNG not supporting CoCo threat
+> model. Linux RNG has almost set in stone definition of what sources contribute
+> entropy and what don’t (with some additional flexibility with flags like trust_cpu).
+> This works well for the current fixed threat model, but doesn’t work for
+> CoCo because some sources are suddenly not trusted anymore to contribute
+> entropy. However, some are still trusted and that is not just rdrand/rdseed,
+> but we would also trust add_hwgenerator_randomness (given that we use
+> TEE IO device here or have a way to get this input securely). So, even in
+> theoretical scenario that both rdrand/rdseed is broken (let's say HW failure),
+> a Linux RNG can actually boot securely in the guest if we have enough
+> entropy from add_hwgenerator_randomness.
 
-Yeah.  I'm starting to recall more of this discussion.  This is one of the =
-reasons
-I suggested/requested stuffing the error code to piggy-back the new SNP bit=
-; doing
-so allows is_private to be computed from the get-go without needing any ven=
-dor
-specific hooks.
+So the problem with this is that there is now way we can authenticate
+the hardware RNG.  For example, the hypervisor could claim that there
+is a ChaosKey USB key attached, and at the moment, unlike all other
+hardware random number generators, the Linux kernel is configured to
+blindly trust the ChaosKey because it was designed by Keith Packard
+and Bdale Garbee, and "It Must Be Good".  But the only way that we
+know that it is a ChaosKey is by its USB major and minor id numbers
+--- and a malicious hypervisor could fake up such a device.
+
+And of course, that's not unique to the hypervisor --- someone could
+create a hardware USB key that claimed to be a ChaosKey, but which
+generated a fixed sequence, say 3,1,4,1,5,9,2,6,... and it would pass
+most RNG quality checkers, since it's obviously not a repeated
+sequence of digits, so the mandated FIPS required check would give it
+a thumbs up.  And it doesn't have to be a faked ChaosKey device; a
+hypervisor could claim that there is a virtual TPM with its hardware
+random number generator, but it's also gimmicked to always give the
+same fixed sequence, and there's no way the guest OS could know
+otherwise.
+
+Hence, for the unique requirements of Confidential Compute, I'm afraid
+it's RDRAND/RSEED or bust....
+
+						- Ted
