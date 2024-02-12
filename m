@@ -1,223 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46E139857
-	for <linux-coco@lists.linux.dev>; Mon, 12 Feb 2024 11:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE8B3D0D1
+	for <linux-coco@lists.linux.dev>; Mon, 12 Feb 2024 16:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707738449; cv=none; b=EzwhV0CvCEu2t4C6RhL2A2UItTU20gf3mKiEGPjcMl/2JMm5YYXAYVcQ1Tvo6ZeeJrOFazTOMpkG4A5fS8zct6nSQ1GegM9btrtkBGyLEBYo4cXtMqqJOOVPt9vaEKPbweluhHQsdhk5y1JndpSc8nkkcZYrMh8JTl9VZ0hK9r8=
+	t=1707755246; cv=none; b=JI80PleFbrQFykGuPi+r7tT3cuGFrEDctx4yBjIpQ9XOshQjyn7u/QU5YJyHlrQrDeZe/O+VLLJ3OwoScAzIWJYJHJU49aMXTyN7CnpRNiyqoYp1DDUXcgpF/Q6KhaxD/YFcdOLi47Jdg67TAJgWT7quaGUEGKM+uT/BCXo6+m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707738449; c=relaxed/simple;
-	bh=qlzqXd3E8EN9sGyZ5zlZscBBy3a7+JL3uMmODD1BNa0=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=aVEc+rrJyQuHDfFuIxKrPTIL4au/pS9vk1Mmwg5/xrfEHH+VmLzoehcmzdd/PAM31pyIas50c++WylRzOLd6f42+lPwpdzPIIVr+G5lrL2eX4F7GJK/fi0jmUvw2/1EvY6KRI9kfm9a+tg3yIzwp/5nU8uEtQ+WL24vvD9VdsT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bgV0M7fl; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1707755246; c=relaxed/simple;
+	bh=Ldgz4EaDjAiFoWUe/b915SB6Or4QvlmL0gWc1JCpdjQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ewPIWB70QG0u8SMFvWLy8vWHNB2QqXesLGWlGBdYsPtx7glDs3MMaMqmInhOnoy2nD12yTI1ye0v1WJuV5FWkiJX8iyhrbqsZsnSnh46gk2cETaRyZ20aoG9J1R3DBjK268CMd34aow9cNd+z0bKY7PkxG8ohgPQr+nOOfosL9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gmmi2iWP; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bgV0M7fl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707738447; x=1739274447;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=qlzqXd3E8EN9sGyZ5zlZscBBy3a7+JL3uMmODD1BNa0=;
-  b=bgV0M7flaX4Nt69oHr+vWJm5QE8SRjWogJGG4kGCwUodQzyfo67c6MwC
-   u+PyeQ6aEi9EN5L0NHSnOpIm+p2MmLAcFETGCyKyGFdZefN8b/Ey4XE/h
-   Vxqwkz+y7o1oq3bIGCjorwXiee1H3TtRukViJcirhk3K6ktqd/c+pBd2F
-   9MHYeXC9DZxX9Vmg4XRNxYCCBmPXvISkdQCxRuukj1GoC0QIFJlKeTZ++
-   var+yV1P4GZC0hlshDZgbLFfy6ixbJD+9e631NRp2mQu1XVaSvoaj2JL9
-   2ZDaRsjulZW8u+bZta6VnoU13w5YaZtLlpm2BLSdcjJSR157Xo7ULXFtx
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="2054880"
-X-IronPort-AV: E=Sophos;i="6.06,263,1705392000"; 
-   d="scan'208";a="2054880"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 03:47:26 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="911459436"
-X-IronPort-AV: E=Sophos;i="6.06,263,1705392000"; 
-   d="scan'208";a="911459436"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.246.49.160])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 03:47:20 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 12 Feb 2024 13:47:14 +0200 (EET)
-To: Lukas Wunner <lukas@wunner.de>
-cc: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>, 
-    David Woodhouse <dwmw2@infradead.org>, 
-    Herbert Xu <herbert@gondor.apana.org.au>, 
-    "David S. Miller" <davem@davemloft.net>, 
-    Alex Williamson <alex.williamson@redhat.com>, linux-pci@vger.kernel.org, 
-    linux-cxl@vger.kernel.org, linux-coco@lists.linux.dev, 
-    keyrings@vger.kernel.org, linux-crypto@vger.kernel.org, 
-    kvm@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-    linuxarm@huawei.com, David Box <david.e.box@intel.com>, 
-    Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
-    "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>, 
-    Alistair Francis <alistair.francis@wdc.com>, 
-    Wilfred Mallawa <wilfred.mallawa@wdc.com>, 
-    Alexey Kardashevskiy <aik@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-    Sean Christopherson <seanjc@google.com>, Alexander Graf <graf@amazon.com>
-Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
-In-Reply-To: <20240209203204.GA5850@wunner.de>
-Message-ID: <5de3ae38-023f-0a3f-d750-fbfa1af7a8ee@linux.intel.com>
-References: <cover.1695921656.git.lukas@wunner.de> <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de> <5d0e75-993c-3978-8ccf-60bfb7cac10@linux.intel.com> <20240209203204.GA5850@wunner.de>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gmmi2iWP"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc64e0fc7c8so4558153276.2
+        for <linux-coco@lists.linux.dev>; Mon, 12 Feb 2024 08:27:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1707755243; x=1708360043; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jEjTcKce0fZYlWVBDi232LEPLK7jT44Dgj/oRcn95IY=;
+        b=Gmmi2iWP1GQsG4+h7FA62dbGSJ6AHUNaTv4tHNTZRkiTq8MyALG1FZQshXAbY8r29N
+         iyJcQrThZUxrUSxsru16GQgAg9fy8NwecT514w8oGzPiSPd5ubzqehXODvO/cHzJ8iYJ
+         1KHtj0aZHNCLW4yuzwwP2yzJdBlDSMtX1MF06/gCPh58FLrHnt96MVCBLhpDwcQtAsNM
+         OePuw1gspAfO4niOQ8mrTA2l+kJyaQl0tSd+nr7AmgbYfAHhOCbH7NjKJFJcDZNRW/+K
+         kBuy1E97AhNJad6jpTT0qtIaErDmF/os4h7j9p11Z5wFkvIcePSs9SSr3fA3oC2GAT6t
+         L6hA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707755243; x=1708360043;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jEjTcKce0fZYlWVBDi232LEPLK7jT44Dgj/oRcn95IY=;
+        b=j1LHWTy009GGOGHpqzhtKq30OsLwqQ+sm/nbjlCoLypU32e7MBXh5J/+C1D7kPjTmi
+         1rmWAEroM1Xq5Tnj4CSPyWzIcBNwT3LYZ7adBOYB52gRapUtYsQFnqlpFe0sLZTQib01
+         UcwN+Yyz07UpEUvv8fQ7USHXNmTb61P0L7dbp5mwW8N4gB5hoypdHyjiBkmwJ03E1cqh
+         +n8cAJR9pye78kFRuXHItiOLygcRqMAvcdpYJtOp7EepWh8JTbr1UowkWh9bKmVg9Lot
+         BOTC4vZUMfCd0vzSLkSaj5K35U+AfY0xa3VKxkOtGVdOD27IpYHHznDJioAjzHLgPHQs
+         SK/A==
+X-Gm-Message-State: AOJu0Yz1FDRZ7mpv6YCGcZidXHzPlVh4qONYDxcCWHdHPniqqAi9nR/i
+	xKmeNGhb23iCuPbCqFlY8C5xYubjgVx+mUfd6NSDnpB6rkd8Yx5ejdaMHlZN9Hem5gNn3NdYnWd
+	6pA==
+X-Google-Smtp-Source: AGHT+IEsXJBF4/bgLbVzuTLfn0V+5NyBJ3BEiCA1tlOmkNRLRYQ2dckzNx5kcO0b5SJRLl+MJVUD0K6FNQI=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6902:1005:b0:dcb:c2c0:b319 with SMTP id
+ w5-20020a056902100500b00dcbc2c0b319mr42995ybt.9.1707755243421; Mon, 12 Feb
+ 2024 08:27:23 -0800 (PST)
+Date: Mon, 12 Feb 2024 08:27:21 -0800
+In-Reply-To: <CABgObfanrHTL429Cr8tcMGqs-Ov+6LWeQbzghvjQiGu9tz0EUA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-136259284-1707737012=:1013"
-Content-ID: <fd482b13-2b88-f6d9-c1f8-18cb38ef1b33@linux.intel.com>
+Mime-Version: 1.0
+References: <20231230172351.574091-1-michael.roth@amd.com> <20231230172351.574091-10-michael.roth@amd.com>
+ <CABgObfanrHTL429Cr8tcMGqs-Ov+6LWeQbzghvjQiGu9tz0EUA@mail.gmail.com>
+Message-ID: <ZcpG6Ul4_8xAsnuy@google.com>
+Subject: Re: [PATCH v11 09/35] KVM: x86: Determine shared/private faults based
+ on vm_type
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, 
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323328-136259284-1707737012=:1013
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <ea362b92-2407-d2f9-8869-a76532c7362f@linux.intel.com>
-
-On Fri, 9 Feb 2024, Lukas Wunner wrote:
-
-> On Tue, Oct 03, 2023 at 01:35:26PM +0300, Ilpo J=E4rvinen wrote:
-> > On Thu, 28 Sep 2023, Lukas Wunner wrote:
-> > > +typedef int (spdm_transport)(void *priv, struct device *dev,
-> > > +                          const void *request, size_t request_sz,
-> > > +                          void *response, size_t response_sz);
-> >=20
-> > This returns a length or an error, right? If so return ssize_t instead.
-> >=20
-> > If you make this change, alter the caller types too.
+On Mon, Feb 12, 2024, Paolo Bonzini wrote:
+> On Sat, Dec 30, 2023 at 6:24=E2=80=AFPM Michael Roth <michael.roth@amd.co=
+m> wrote:
+> >
+> > For KVM_X86_SNP_VM, only the PFERR_GUEST_ENC_MASK flag is needed to
+> > determine with an #NPF is due to a private/shared access by the guest.
+> > Implement that handling here. Also add handling needed to deal with
+> > SNP guests which in some cases will make MMIO accesses with the
+> > encryption bit.
+> >
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> >  arch/x86/kvm/mmu/mmu.c          | 12 ++++++++++--
+> >  arch/x86/kvm/mmu/mmu_internal.h | 20 +++++++++++++++++++-
+> >  2 files changed, 29 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index d3fbfe0686a0..61213f6648a1 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+> > @@ -4331,6 +4331,7 @@ static int kvm_faultin_pfn_private(struct kvm_vcp=
+u *vcpu,
+> >  static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fa=
+ult *fault)
+> >  {
+> >         struct kvm_memory_slot *slot =3D fault->slot;
+> > +       bool private_fault =3D fault->is_private;
 >=20
-> Alright, I've changed the types in __spdm_exchange() and spdm_exchange().
->=20
-> However the callers of those functions assign the result to an "rc" varia=
-ble
-> which is also used to receive an "int" return value.
-> E.g. spdm_get_digests() assigns the ssize_t result of spdm_exchange() to =
-rc
-> but also the int result of crypto_shash_update().
->=20
-> It feels awkward to change the type of "rc" to "ssize_t" in those
-> functions, so I kept "int".
+> I think it's nicer to just make the fault !is_private in
+> kvm_mmu_do_page_fault().
 
-Using ssize_t type variable for return values is not that uncommon (kernel=
-=20
-wide). Obviously that results in int -> ssize_t conversion if they call=20
-any function that only needs to return an int. But it seems harmless.
-
-crypto_shash_update() doesn't input size_t like (spdm_transport)() does.
-
-> > > +struct spdm_error_rsp {
-> > > +=09u8 version;
-> > > +=09u8 code;
-> > > +=09enum spdm_error_code error_code:8;
-> > > +=09u8 error_data;
-> > > +
-> > > +=09u8 extended_error_data[];
-> > > +} __packed;
-> >=20
-> > Is this always going to produce the layout you want given the alignment=
-=20
-> > requirements for the storage unit for u8 and enum are probably differen=
-t?
->=20
-> Yes, the __packed attribute forces the compiler to avoid padding.
-
-Okay, so I assume compiler is actually able put enum with u8, seemingly=20
-bitfield code generation has gotten better than it used to be.
-
-With how little is promised wordings in the spec (unless there is later=20
-update I've not seen), I'd suggest you still add a static_assert for the=20
-sizeof of the struct to make sure it is always of correct size.=20
-Mislayouting is much easier to catch on build time.
-
-> > > +static int spdm_negotiate_algs(struct spdm_state *spdm_state,
-> > > +=09=09=09       void *transcript, size_t transcript_sz)
-> > > +{
-> > > +=09struct spdm_req_alg_struct *req_alg_struct;
-> > > +=09struct spdm_negotiate_algs_req *req;
-> > > +=09struct spdm_negotiate_algs_rsp *rsp;
-> > > +=09size_t req_sz =3D sizeof(*req);
-> > > +=09size_t rsp_sz =3D sizeof(*rsp);
-> > > +=09int rc, length;
-> > > +
-> > > +=09/* Request length shall be <=3D 128 bytes (SPDM 1.1.0 margin no 1=
-85) */
-> > > +=09BUILD_BUG_ON(req_sz > 128);
-> >=20
-> > I don't know why this really has to be here? This could be static_asser=
-t()
-> > below the struct declaration.
->=20
-> A follow-on patch to add key exchange support increases req_sz based on
-> an SPDM_MAX_REQ_ALG_STRUCT macro defined here in front of the function
-> where it's used.  That's the reason why the size is checked here as well.
-
-Okay, understood. I didn't go that in my analysis so I missed the later=20
-addition.
-
-> > > +static int spdm_get_certificate(struct spdm_state *spdm_state, u8 sl=
-ot)
-> > > +{
-> > > +=09struct spdm_get_certificate_req req =3D {
-> > > +=09=09.code =3D SPDM_GET_CERTIFICATE,
-> > > +=09=09.param1 =3D slot,
-> > > +=09};
-> > > +=09struct spdm_get_certificate_rsp *rsp;
-> > > +=09struct spdm_cert_chain *certs =3D NULL;
-> > > +=09size_t rsp_sz, total_length, header_length;
-> > > +=09u16 remainder_length =3D 0xffff;
-> >=20
-> > 0xffff in this function should use either U16_MAX or SZ_64K - 1.
->=20
-> The SPDM spec uses 0xffff so I'm deliberately using that as well
-> to make the connection to the spec obvious.
-
-It's not obvious when somebody is reading 0xffff. If you want to make the=
-=20
-connection obvious, you create a proper #define + add a comment where its=
-=20
-defined with the spec ref.
-
-> > > +static void spdm_create_combined_prefix(struct spdm_state *spdm_stat=
-e,
-> > > +=09=09=09=09=09const char *spdm_context, void *buf)
-> > > +{
-> > > +=09u8 minor =3D spdm_state->version & 0xf;
-> > > +=09u8 major =3D spdm_state->version >> 4;
-> > > +=09size_t len =3D strlen(spdm_context);
-> > > +=09int rc, zero_pad;
-> > > +
-> > > +=09rc =3D snprintf(buf, SPDM_PREFIX_SZ + 1,
-> > > +=09=09      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*"
-> > > +=09=09      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*",
-> > > +=09=09      major, minor, major, minor, major, minor, major, minor);
-> >=20
-> > Why are these using s8 formatting specifier %hhx ??
->=20
-> I don't quite follow, "%hhx" is an unsigned char, not a signed char.
->=20
-> spdm_state->version may contain e.g. 0x12 which is converted to
-> "dmtf-spdm-v1.2.*" here.
->=20
-> The question is what happens if the major or minor version goes beyond 9.
-> The total length of the prefix is hard-coded by the spec, hence my
-> expectation is that 1.10 will be represented as "dmtf-spdm-v1.a.*"
-> to not exceed the length.  The code follows that expectation.
-
-It's actually fine.
-
-I just got tunnel vision when looking what that %hhx is in the first=20
-place, in Documentation/core-api/printk-formats.rst there's this list:
-
-=09        signed char             %d or %hhx
-                unsigned char           %u or %x
-
-But of course %hhx is just as valid for unsigned.
-
---=20
- i.
---8323328-136259284-1707737012=:1013--
+Yeah.  I'm starting to recall more of this discussion.  This is one of the =
+reasons
+I suggested/requested stuffing the error code to piggy-back the new SNP bit=
+; doing
+so allows is_private to be computed from the get-go without needing any ven=
+dor
+specific hooks.
