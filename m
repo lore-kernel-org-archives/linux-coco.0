@@ -1,68 +1,67 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FC95788C
-	for <linux-coco@lists.linux.dev>; Tue, 13 Feb 2024 16:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8B363099
+	for <linux-coco@lists.linux.dev>; Tue, 13 Feb 2024 23:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707843273; cv=none; b=Iqw6KFWeL6iGM5Zmoab8ZDNwVuS50nFvItYviiTxQhWjCSmx8ig8Y0SaKlaABCNyft6B7gpxLQ8JLaZyq7I4l32mpChqwoKW6GuhveSQ5U7YoEDvgsPHyze6u3Qreri6tFCJLTSx1bVZoftTjIH5ez+uptW0idlzT/WwJRYJirQ=
+	t=1707866081; cv=none; b=WVz0e1TPYHHTPQqN2fNEvD4ioN4a8GTH/r5QI+6KpCRGNvnUH9DNHLFd6HvG+e4IWAS+AmP8E4l9uGdusTzxVBd9WA12S29+gkJ6P9T0v1jNypyU7RmSne4GrL0y29No905lVo+HmPC8TlDSPXwbD9OxOvmJt7HnQY2wTTpCpM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707843273; c=relaxed/simple;
-	bh=xEg5ouqnb/N8+KsSAGFLMCMLgtEyusBJnWDJ1mOZXKI=;
+	s=arc-20240116; t=1707866081; c=relaxed/simple;
+	bh=tm9bh5WYq9qFOSmpNFY5tnSe6fXVetze1S53nUYpGLQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MOkUMwhhiPVCAu37l3hdBvnP2qOp8kGVwzJ44U8arxdxO6r12zRU7el2/JWvKLOwH8r4zqDRvBz3x29yURF7q0lw6ESSXSxNdGgB6Wg4SaaE5IxqTlGkRDjiKIMHFWEBYJ9MRHGSFiG0q3AfB1D8hFCOSYmG+R86zYNbaZU8aX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GeNdte29; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=BSvxtBDI5aBSrAnMvvfN/wWV1YMcDrwq7hEJuL9GOK32RewgNeRtoV/kSJLvLmNB2sp4b7YkvIowm/cQO3sMZycKK1Tdq50jZGlSdpAalc90XMc3G5Vk2yMg2t6PCdY049K0m00lC6g7NLE9ZRo3Voxh/Eznn4lx6I1srRLrpE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=RuXQ03U6; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GeNdte29"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707843272; x=1739379272;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xEg5ouqnb/N8+KsSAGFLMCMLgtEyusBJnWDJ1mOZXKI=;
-  b=GeNdte29/hUfMpkDXtAbBziJ7DbfSAhqLP8VqMb8nDEFi2vNzX9BipXz
-   mpmnvqIgdNf3MYvzO976xS74Ih1KlZnrmf8Pp+Sh5pugzhkL2ixsnIMfx
-   NRHiOiDgMGiFnrvDDHGB1PolRsM6LknElHG7ePgqWabrMzd/Xn03yrN33
-   cmzAIPATzMeRhj76HYukoXJelgEbXo8+mB7GkWjWa3Fnj9T+NcA3cisNd
-   isHAn3gFGfw3cYCBlv8U+j7IftK4bcHwOxL5yulYREmgs7T8a5EeoZsVM
-   UyQZPEQjrzFBz+IAVJrl7pfgA3oOD4hDm5kNAklFz7MiZaNo42XtDd6OL
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="5633850"
-X-IronPort-AV: E=Sophos;i="6.06,157,1705392000"; 
-   d="scan'208";a="5633850"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2024 08:54:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,157,1705392000"; 
-   d="scan'208";a="2911660"
-Received: from mhakkine-mobl4.ger.corp.intel.com (HELO himmelriiki) ([10.251.219.175])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2024 08:54:27 -0800
-Date: Tue, 13 Feb 2024 18:54:16 +0200
-From: Mikko Ylinen <mikko.ylinen@linux.intel.com>
-To: "Xing, Cedric" <cedric.xing@intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Dan Middleton <dan.middleton@linux.intel.com>,
-	Samuel Ortiz <sameo@rivosinc.com>, Qinkun Bao <qinkun@google.com>,
-	"Yao, Jiewen" <jiewen.yao@intel.com>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>, biao.lu@intel.com,
-	linux-coco@lists.linux.dev, linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
-Message-ID: <ZcueuCGgq-l9U4Er@himmelriiki>
-References: <1557f98a-3d52-4a02-992b-4401c7c85dd7@linux.intel.com>
- <85b7a4a679eada1d17b311bf004c2d9e18ab5cd3.camel@HansenPartnership.com>
- <b8140cc8-a56b-40f6-a593-7be49db14c77@intel.com>
- <fe1722c3618a8216cb53b8fd3f1b7cbb6fdff5a0.camel@HansenPartnership.com>
- <65c2e4aa54a0_d4122947f@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <22088ed3-51a4-415f-932c-db84c92a2812@intel.com>
- <527da630-4952-4b1d-80c0-5a87997ff9fd@linux.intel.com>
- <332775d7218843d6cc168c963d76e6841eab5d5b.camel@HansenPartnership.com>
- <65c691e13a50d_afa42948a@dwillia2-xfh.jf.intel.com.notmuch>
- <226df539-b3f4-4099-b6a6-293fa200c536@intel.com>
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="RuXQ03U6"
+Received: from cwcc.thunk.org (pool-173-48-116-68.bstnma.fios.verizon.net [173.48.116.68])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 41DNDfdn018753
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Feb 2024 18:13:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1707866026; bh=wwrGC1FNnOW190/1wKhOVWxjmtFKCbQRLRYMM3aJ8JY=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=RuXQ03U6F0BbF3jEXwi+edV15YcD1YUV4rf+CpvWMs17CNDbwPTXIWAB5k4mfJh7Y
+	 L3p31VGYjVY2XGFmfUVz3AWGue7leXoBkmzqrkt0PpIV20cXUXFabcuz6fO47gXmNn
+	 AeHegxXbvNIyGUxlKKusqTYeU5xNrOZ/TQ3dMY+FzFFRgCMdPjHmjYsqcLH8yf1Dhc
+	 sDl9/s2f+LTURc8xxgi8H3YG/C81J5g9TOJ72+FvvZfB1ydAUsDYhbCZ0PUZerbvnD
+	 wvK0JtHhX4ljNcR+rKk1ya+HqIjciNDej+OLG2liLiy2a1gs5H8D6Oc7LFuLyjll2s
+	 LTPMdfQET8J1g==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id 824A915C0336; Tue, 13 Feb 2024 18:13:41 -0500 (EST)
+Date: Tue, 13 Feb 2024 18:13:41 -0500
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
+Message-ID: <20240213231341.GB394352@mit.edu>
+References: <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
+ <20240201045710.GD2356784@mit.edu>
+ <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
+ <DM8PR11MB57505F657A8F08E15DC34673E7422@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240202153927.GA119530@mit.edu>
+ <Zb4RlTzq_LV7AzsH@zx2c4.com>
+ <CAHmME9owdbHzfb66xisoWmvWeT_-hkxCu7tR2=Rbye_ik1JgQQ@mail.gmail.com>
+ <DM8PR11MB5750C1A848A9F1EF6BE66241E7482@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240212163236.GA444708@mit.edu>
+ <65cb1a1fe2dda_29b1294e@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,77 +70,31 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <226df539-b3f4-4099-b6a6-293fa200c536@intel.com>
+In-Reply-To: <65cb1a1fe2dda_29b1294e@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 
-On Mon, Feb 12, 2024 at 11:36:27PM -0800, Xing, Cedric wrote:
-> On 2/9/2024 12:58 PM, Dan Williams wrote:
-> > James Bottomley wrote:
-> > > Just to correct this: IMA uses its own log format, but I think this was
-> > > a mistake long ago and the new log should use TCG2 format so all the
-> > > tools know how to parse it.
-> > 
-> > Is this a chance to nudge IMA towards a standard log format? In other
-> > words, one of the goals alongside userspace consumers of the RTMR log
-> > would be for IMA to support it as well as an alternate in-kernel backend
-> > next to TPM. IMA-over-TPM continues with its current format,
-> > IMA-over-RTMR internally unifies with the log format that is shared with
-> > RTMR-user-ABI.
-> > 
-> I'm not a TCG expert. As far as I know, https://trustedcomputinggroup.org/wp-content/uploads/TCG-PC-Client-Platform-Firmware-Profile-Version-1.06-Revision-52_pub-1.pdf
-> defines the event types for TCG2 logs for firmware uses only. I cannot find
-> a spec that defines event types for OS or applications. We may reuse the
-> firmware event types for Linux but I doubt they can accommodate IMA.
-> 
-> IMHO, we don't have to follow TCG2 format because TDX is never TPM, nor are
-> any other TEEs that support runtime measurements. The existing TCG2 format
-> looks to me somewhat like ASN.1 - well defined but schema is needed to
-> decode. In contrast, JSON is a lot more popular than ASN.1 nowadays because
-> it's human readable and doesn't require a schema. I just wonder if we should
-> introduce a text based log format. We could make the log a text file, in
-> which each line is an event record and the digest of the line is extended to
-> the specified runtime measurement register. The content of each line could
-> be free-form at the ABI level, but we can still recommend a convention for
-> applications - e.g., the first word/column must be an URL for readers to
-> find out the format/syntax of the rest of the line. Thoughts?
+On Mon, Feb 12, 2024 at 11:28:31PM -0800, Dan Williams wrote:
+> Sure there is, that is what, for example, PCI TDISP (TEE Device
+> Interface Security Protocol) is about. Set aside the difficulty of doing
+> the PCI TDISP flow early in boot, and validating the device certficate
+> and measurements based on golden values without talking to a remote
+> verifier etc..., but if such a device has been accepted and its driver
+> calls hwrng_register() it should be added as an entropy source.
 
-There's also the 'Canonical Event Log' format from TCG. It
-covers IMA but it looks it's PC/client specific otherwise.
+How real is TDISP?  What hardware exists today and how much of this
+support is ready to land in the kernel?  Looking at the news articles,
+it appears to me like bleeding edge technology, and what an unkind
+person might call "vaporware"?  Is that an unfair characterization?
 
-systemd seems to be following this format for its systemd-pcr*
-services and exposing the log in JSON format under /run/log [1].
+There have plenty of things that have squirted out of standards
+bodies, like for example, "objected base storage", which has turned
+out to be a complete commercial failure and was never actually
+deployed in any real numbers, other than sample hardare being provided
+to academic researchers.  How can we be sure that PCI TDISP won't end
+up going down that route?
 
-[1] https://www.freedesktop.org/software/systemd/man/latest/systemd-pcrphase.service.html
+In any case, if we are going to go down this path, we will need to
+have some kind of policy engine hwrng_register() reject
+non-authenticated hardware if Confidential Compute is enabled (and
+possibly in other cases).
 
-> 
-> > ...but be warned the above is a comment from someone who knows nothing
-> > about IMA internals, just reacting to the comment.
-> > 
-> > 
-> > > > I am wondering where will the event log be stored? Is it in the
-> > > > log_area region of CCEL table?
-> > > 
-> > > IMA stores its log in kernel memory and makes it visible in securityfs
-> > > (in the smae place as the measured boot log).  Since this interface is
-> > > using configfs, that's where I'd make the log visible.
-> > > 
-> > > Just to add a note about how UEFI works: the measured boot log is
-> > > effectively copied into kernel memory because the UEFI memory it once
-> > > occupied is freed after exit boot services, so no UEFI interface will
-> > > suffice for the log location.
-> > > 
-> > > I'd make the file exporting it root owned but probably readable by only
-> > > the people who can also extend it (presumably enforced by group?).
-> > 
-> > I assume EFI copying into kernel memory is ok because that log has a
-> > limited number of entries. If this RTMR log gets large I assume it needs
-> > some way cull entries that have been moved to storage. Maybe this is a
-> > problem IMA has already solved.
-> 
-> We don't have to, and are also not supposed to I guess, append to the log
-> generated by BIOS. The kernel can start a new log, and potentially in a
-> different format. I think the BIOS log is exposed via securityfs today. Am I
-> correct? For the new TEE measurement log, I don't think it has to be
-> collocated with the BIOS log, because TEEs are never TPMs.
-
--- 
-Regards, Mikko
+				- Ted
