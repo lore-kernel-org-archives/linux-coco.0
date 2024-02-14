@@ -1,74 +1,139 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5B910A25
-	for <linux-coco@lists.linux.dev>; Wed, 14 Feb 2024 07:15:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707894933; cv=none; b=fSrUuJYn53h1jYd2wK4HQA/RUZP1lf7tdiWJqWyUrLmLCMo0thhcSL6z4E0NdgfvYiWmrCP4dWM/GjS/afPnCwEwsQbS8QJiVoTt3QIWd6pRyaLWyctxIRN2UnEJDhkZdNmERVQ4jmancIFWmufQJD/hW0X1yJ9tEOM8IzQ2fJs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707894933; c=relaxed/simple;
-	bh=Hbv5GAP+7DYh8DNlLo8Utw+B07SB7s5j/Y9np0ob9+M=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=U4RkE5unpOtZldhNz/+eZMcy/Wpggkga/Q2s2OMHOrHhXNU+ZI3Nmq4J2rOdpen7jRyJEW4WQNq3yHL+fkpGo+q4TRMuWI0vik1eaclDv+cSKZgmfP007hFopaIu4Mfxo3spKikGcdRlbakyCc9GGg7+IF40BhxXQkNFHaLHjeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=xYBXtYTR; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="xYBXtYTR"
-Received: from 8bytes.org (p4ffe0c3c.dip0.t-ipconnect.de [79.254.12.60])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id EE4641C5D08;
-	Wed, 14 Feb 2024 08:15:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1707894923;
-	bh=Hbv5GAP+7DYh8DNlLo8Utw+B07SB7s5j/Y9np0ob9+M=;
-	h=Date:From:To:Subject:From;
-	b=xYBXtYTRhHIUT7zYzW9DoQMOcGPkVzw90ivrcfL++f76wzr4rQZza9eEoR+dZfkLr
-	 s8WN6NgTR+z/HV3ykyJ4qStS4Kd1CZdTLyBxXvSRLpAdT9YIeFlwe7RCUe4WyKVFkq
-	 5SpLtckSpPc9Ls5TcrR+fABJDyTSPPMu6YQswuFx2YBLG4qNidPnZEmV3uOPtfZxoF
-	 yvYhxaSsXNFVFMq3fUcuF7qzX7RT01sTxue1QV2Sjj1b4QZ7AkePoAKmgIYir5YoXE
-	 yX7ro5EUsnm7sQ3MVMmNegKL3fTUC/wYeDwB+gD4FzH6pE9u9K5t8hBC4s9Oy9l+d7
-	 CNSqdF7s5Rmcw==
-Date: Wed, 14 Feb 2024 08:15:20 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: SVSM Devel Call Feb. 14th, 2024
-Message-ID: <ZcxoiH2tYenFpUhJ@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723B315B7
+	for <linux-coco@lists.linux.dev>; Wed, 14 Feb 2024 08:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707899695; cv=none; b=RjZ1AISIye7BfHyqh5U6G3jrK/jyXbzRnF9Zmg77INtfvECsd28zFLUQtunsoLDj6zJbc2NRjTs/By64w7Fm3svj7lc20i1bovqlkodBPRHeW27iL4b00dwgJ4LCfA9oqK1Q/zCOxiPo+14HMvJKvQSgNcrBfIChgPkavGZ5EZQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707899695; c=relaxed/simple;
+	bh=PFn4wCJ4Kc9o4ZUF1udSybUYlNbwYhG9hFxqj59fXaM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DkSVcEdqbLIqKMojWxGJbuTW3AoN4qzO+ptYSq6MSpp3T9/5O7+Oc2Dc05IqPpjzR+uxzxHuN6MD4QhtsCZGqJ/g6tZinpDLxbS5uqAI0oQk7w0ON/xRhCwdj3RavDMuUyhWgqnGcj0XBQEqgck/K/D2BSGd01SZM9UrfE0gDbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dIozZlWq; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dIozZlWq"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d1025717c7so24996011fa.2
+        for <linux-coco@lists.linux.dev>; Wed, 14 Feb 2024 00:34:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1707899691; x=1708504491; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uAiL2qOT91a69hH8+cvQmScbp9QK6BB+OUyGeu3FPlA=;
+        b=dIozZlWqSstYkWQe3LPp68UN08xJqX/8/qNtubD/iSbk4+Enz5hFrdLtTbNZgs+veZ
+         7jTaSh0GR2g4rWWq0D7TQNi9x8Q/r1T4XhaoRr6n0+9sE80WRseurM1ioSnynem7vTyg
+         J72ogvW3jG7wvvWPmJXwx9TGJf3PdF4lQQQ2vsZ0+o9LSzxN8ZuZZc+CAjXBdm7/vi9D
+         knUkWLWjvpq/iV3eQYMp36duKcN+QfbHglyvk5EpbnTCgWVW4rmTegvS8uDsR6MGqjw5
+         quL4uDF5V/CIFjlRfQXJc7kxuFeo9+jtW0MeuSEzQkgnvCZb+q2HbwWDyzktx3MEYbDT
+         hz3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707899691; x=1708504491;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uAiL2qOT91a69hH8+cvQmScbp9QK6BB+OUyGeu3FPlA=;
+        b=Pa5ourv77p2Eba5fLQw6lc0jVuuffJsi0MC9pxRvNOZSiT0MUljcWo7BxsEN0ljwJd
+         BgCzjnrcFqeE/LnYn5bYKY261GcOj1Oku0rzhRC8FAeJ1fCHB/5HXsDTVJIzUOt2tZnI
+         mZDVFU62bEO1RNt4t0cqhOvQ4dfVKBw19HBgkRZhkhW17Po5OhiGvSUS86gMsMX3PXZR
+         5Ez/35C6k3Dgb32dQ50cOR1abBfZcvL/G1VjVHKSqeveaPXZf9qqsx846S6GcD2QFQhc
+         FGNWRE5coVLrE79gfJgFR2yYPHhNkYfLHmanbx11w2WaYZnl41RhQgxlvV+LVuEXfLdL
+         GjsA==
+X-Forwarded-Encrypted: i=1; AJvYcCUBABj4X1/3sIEBsW92gCAaiF1JIPZppsCCpCwH3Zx4KdpbGwVIka4fN2y+Zftf5Mxk2u8TmGUOuUnD3ZRsaQqO7M1QC2SWRda+cg==
+X-Gm-Message-State: AOJu0YwtSrR85SUWz2ut86Ek21z8IBLq3+26UdCjHQ2VL0bjMALTIrgm
+	JKq9GoQlPE8IcMGppOAmU/sgoahZQRXBLVCzz4GQtt+hobKr5ySakNE7c97ZJMI=
+X-Google-Smtp-Source: AGHT+IGNZP5/YY1RfF2lKO9BAAKxQ2ruwwCntxr2AxjDChypk993E72C6C2Q1/RyRnrut17odI30UA==
+X-Received: by 2002:ac2:5b4c:0:b0:511:483b:91c6 with SMTP id i12-20020ac25b4c000000b00511483b91c6mr1203488lfp.48.1707899691455;
+        Wed, 14 Feb 2024 00:34:51 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXpjEFtyIr/O2VfxqFT9HgCjHAO3qwMYeVKPbMBph5yslKlVHA6UCY8vGMWe8ahtRW4t5JMSBXcX/v7HbEq29cICxr1wVKHmy7P7F5jLrHkXhOhwjpNRkn2EegTPLy/zRMKhP8xv4R5uLMYGe9nS+lhGJAVvZMDSKYtjKsYwu04ZRFV28cqCNEtquI8ZJ+yYSKL33k9mGdESeuZzxr5HSw3p9r7ZHT+ShUL3jTOoKCwdjFJIDBXq48EMg7gmfjJW4rElDVSm1rncE020UL/a0CLn4xd7DoypvlwM+/nwsMtdXMzjAcH64efaTrgZsGWyuGNJZV3+jRhmkvYWUVKaDSZZYgQoFnpb7fkS662VyWMWEBpj5TNQcN5zo+lpFG7TwDgVYKt71nEnwyfvS9mUTEDqo6uNpBOc17UauW4HwN9mhSTtNHd26DfJjNnwsU3bo3Cx6x1hIO2dyqeeP1aGF9tIXjnVN+8RWTI03iazqY49oCM2yD84TCglRqKsCXa8/Iv2tM2V8iWbIeK041ML9PTBP8R3i4iSZFjygSZTsBTvdR8bOM14+R5OfU=
+Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [85.187.217.136])
+        by smtp.gmail.com with ESMTPSA id s1-20020a056512214100b005115dc3a63fsm1598800lfr.135.2024.02.14.00.34.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Feb 2024 00:34:51 -0800 (PST)
+Message-ID: <b786185e-fc57-4d4a-b0aa-741b92de0c5c@suse.com>
+Date: Wed, 14 Feb 2024 10:34:48 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
+Content-Language: en-US
+To: Theodore Ts'o <tytso@mit.edu>, Dan Williams <dan.j.williams@intel.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "Nakajima, Jun" <jun.nakajima@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
+ <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
+ <DM8PR11MB57505F657A8F08E15DC34673E7422@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240202153927.GA119530@mit.edu> <Zb4RlTzq_LV7AzsH@zx2c4.com>
+ <CAHmME9owdbHzfb66xisoWmvWeT_-hkxCu7tR2=Rbye_ik1JgQQ@mail.gmail.com>
+ <DM8PR11MB5750C1A848A9F1EF6BE66241E7482@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240212163236.GA444708@mit.edu>
+ <65cb1a1fe2dda_29b1294e@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <20240213231341.GB394352@mit.edu>
+ <65cc0ef2c7be_29b12948d@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <20240214043245.GC394352@mit.edu>
+From: Nikolay Borisov <nik.borisov@suse.com>
+In-Reply-To: <20240214043245.GC394352@mit.edu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi,
 
-here is the usual call for agenda items for todays SVSM development
-call. I have one item to discuss:
 
-	* Move to IGVM boot by default
+On 14.02.24 г. 6:32 ч., Theodore Ts'o wrote:
+> On Tue, Feb 13, 2024 at 04:53:06PM -0800, Dan Williams wrote:
+>>
+>> Indeed it is. Typically when you have x86, riscv, arm, and s390 folks
+>> all show up at a Linux Plumbers session [1] to talk about their approach
+>> to handling a new platform paradigm, that is a decent indication that
+>> the technology is more real than not. Point taken that it is not here
+>> today, but it is also not multiple hardware generations away as the
+>> Plumbers participation indicated.
+> 
+> My big concerns with TDISP which make me believe it may not be a
+> silver bullet is that (a) it's hyper-complex (although to be fair
+> Confidential Compute isn't exactly simple, and (b) it's one thing to
+> digitally sign software so you know that it comes from a trusted
+> source; but it's a **lot** harder to prove that hardware hasn't been
+> tampered with --- a digital siganture can't tell you much about
+> whether or not the hardware is in an as-built state coming from the
+> factory --- this requires things like wrapping the device with
+> resistive wire in multiple directions with a whetstone bridge to
+> detect if the wire has gotten cut or shorted, then dunking the whole
+> thing in epoxy, so that any attempt to tamper with the hardware will
+> result it self-destructing (via a thermite charge or equivalent :-)
 
-If you have additional items, please let me know via email or in the
-meeting.
+This really reminds me of the engineering that goes into the omnipresent 
+POS terminals ate every store, since they store certificates from the 
+card (Visa/Master) operators. So I wonder if at somepoint we'll have a 
+pos-like device (by merit of its engineering) in every server....
 
-A heads-up for NEXT WEEK: I will be off next week, which means we skip
-next weeks meeting.
+> 
+> Remember, the whole conceit of Confidential Compute is that you don't
+> trust the cloud provider --- but if that entity controls the PCI cards
+> installed in their servers, and and that entity has the ability to
+> *modify* the PCI cards in the server, all of the digital signatures
+> and fancy-schmancy TDISP complexity isn't necessarily going to save
+> you.
 
-The meeting today is at 9am PST/12pm ET/6pm CET. Join using this GMeet
-link:
+Can't the same argument go for the CPU, though it's a lot more 
+"integrated" into the silicong substrate, yet we somehow believe CoCo 
+ascertains that a vm is running on trusted hardware? But ultimately the 
+CPU is still a part that comes from the untrusted CSP.
 
-	https://meet.google.com/ppv-xehx-dvb
 
-The public Google calendar link with all meetings is:
-
-	https://calendar.google.com/calendar/embed?src=c_55a38f3460c638762a75d4fd6eda3b1cf455ec4cfd7f83201e3cbf817b420dd8%40group.calendar.google.com&ctz=Europe%2FBerlin
-
-See you all there.
-
-Regards,
-
-	J�rg
+<snip>
