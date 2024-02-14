@@ -1,294 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D0312B8A
-	for <linux-coco@lists.linux.dev>; Wed, 14 Feb 2024 08:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707900858; cv=fail; b=MnJXTfEjqj93FfDPd2YLndwkAWBIv1mufS+yZfC1t4QaRn3nZ2gyFNyxcXRIykSaYJC3txo4HlnCvgY/eXvKWUVVV9IHNw0jMYLxeoXLrQ18IBTZi8inTTctkvaadXtNSctPqgicxMMfEqkO9WPYRo0Gu7oBzUeMM7paxBOTy0c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707900858; c=relaxed/simple;
-	bh=oebu53Kt3p5ZsUubTolXhFKtjmVIZAyujJJtyZhd07A=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=tJ9+ZR2kzU0ueWCRUmsLf+F30VEvM30xtvEvzEwtF4jwDmB9+I++N6DGEHL06BEkT9B/As/KOX6O+cRcb0av34/y8x2QqMrSITgThJ89Jvd0Nk2vQ3jhTrBuMiHNCyCRAodK4l5V2JCx8n25tTE/+eR2EmV3vj0lg8BubBscbao=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DiXtMrR/; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DiXtMrR/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707900856; x=1739436856;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=oebu53Kt3p5ZsUubTolXhFKtjmVIZAyujJJtyZhd07A=;
-  b=DiXtMrR/s0FlkOgsEls5ZGa+TaNzWcaQ3+18pecX6ZYD3aV+hOm+bHXf
-   Obe7bnCtgrfkWwQqBFK8rjv53SQLf1kOw9LhtX1zu9959qGjgE92PvF7d
-   5bieCcT0Vbqrto0h49NhwaaGzg/EUgOBT6Q7HbooCz/jCTaOt6u/Q7EBX
-   0a6bfh0jTAyDaF5SKpamEikcQRoomfQqIYUDFIPwvGRwOkCmJl3lolJ5j
-   /9+0bOGpQjwVexGChTjXAWcAZGYagHm3aYxysW7XpStZljI1A1pdG50WX
-   /tH0H4rUFiV+387Dyh15OvP9aS/wFu584PXhwRI5ZS6keQbwCPerkRawK
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="4902003"
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="4902003"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 00:54:15 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
-   d="scan'208";a="3034933"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 14 Feb 2024 00:54:15 -0800
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 14 Feb 2024 00:54:14 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 14 Feb 2024 00:54:14 -0800
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.169)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 14 Feb 2024 00:54:14 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HbZliMGMaUXJXguE9hZy2ca0PiaEgYr1qTU2YSG6mI/h8qV+qnYEFuQL5Jb9Jg4Zg5hys73TpWiJWvLTHQajzI43MgvAFAtvu8o47dAUFJ0tJnJBojmr2NWkMgvLKXeGkBozC+Nd1JEZc0tGfZv8/jTr04Bf2SAyJ0D3AO8tBVOvUJ/1JAlsSRG8m+42APRvLFBn62oMK6l6St6Jo3dJw8UF94fmnIXPJbWWSVdUZwd7rZ0cQMoHY55reWJsOhPvmrfbDtrvHVEuHPb9vOUrb5/IoHX70tg2tD666MGyvCyPObNGzbWqtqQd03+UVdewwjWTmf17PjmiWm+raFc0Kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Nzfy11Llkre2zzYE59Xp4hMlUE9gE5l7mkLChnCm1pc=;
- b=cphSlUtUoWCIw8HxXPLbcevh64mq5g+xLN6NS68ZhXoT14qchud5Srkgv2a1WxdikSg0gJu6qBzWdoTx5zo72gaE+KtLBUTyQb2xFtcAtXbb76kM7dnxmQWH0chTSrnQjNQn29Z/K52JlrKAKJ4lausgq1GpVOM3fDTrUre5jo7rrV116UCBPVLANe2kQMZRErAA5ydPq8loRQCruKpZ/f4DgUPMqXsAiUpQFRjUelgQfsxV2dV6qA1Gwp6Luu4uGN2B7khegfwB6fcNu9YpMbCBuBCaDD3XA2Boj/knSoP8pi38GLHznPXE/di7c03nAib55L77Q22U4TwE45E7EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB6269.namprd11.prod.outlook.com (2603:10b6:8:97::14) by
- PH7PR11MB5817.namprd11.prod.outlook.com (2603:10b6:510:13a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39; Wed, 14 Feb
- 2024 08:54:12 +0000
-Received: from DS7PR11MB6269.namprd11.prod.outlook.com
- ([fe80::52c6:33d7:27be:28c5]) by DS7PR11MB6269.namprd11.prod.outlook.com
- ([fe80::52c6:33d7:27be:28c5%4]) with mapi id 15.20.7270.033; Wed, 14 Feb 2024
- 08:54:12 +0000
-Message-ID: <ef770532-6db6-4262-8225-2d3ee09b7d23@intel.com>
-Date: Wed, 14 Feb 2024 00:54:09 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
-Content-Language: en-US
-To: James Bottomley <James.Bottomley@HansenPartnership.com>, Dan Williams
-	<dan.j.williams@intel.com>, Kuppuswamy Sathyanarayanan
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, Dan Middleton
-	<dan.middleton@linux.intel.com>, Samuel Ortiz <sameo@rivosinc.com>
-CC: Qinkun Bao <qinkun@google.com>, "Yao, Jiewen" <jiewen.yao@intel.com>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>, <biao.lu@intel.com>,
-	<linux-coco@lists.linux.dev>, <linux-integrity@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <a255bc36-2438-41b7-b304-bcf7a6628bef@linux.intel.com>
- <42e14f74d3819c95fdb97cd2e9b2829dcb1b1563.camel@HansenPartnership.com>
- <1557f98a-3d52-4a02-992b-4401c7c85dd7@linux.intel.com>
- <85b7a4a679eada1d17b311bf004c2d9e18ab5cd3.camel@HansenPartnership.com>
- <b8140cc8-a56b-40f6-a593-7be49db14c77@intel.com>
- <fe1722c3618a8216cb53b8fd3f1b7cbb6fdff5a0.camel@HansenPartnership.com>
- <65c2e4aa54a0_d4122947f@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <22088ed3-51a4-415f-932c-db84c92a2812@intel.com>
- <527da630-4952-4b1d-80c0-5a87997ff9fd@linux.intel.com>
- <332775d7218843d6cc168c963d76e6841eab5d5b.camel@HansenPartnership.com>
- <65c691e13a50d_afa42948a@dwillia2-xfh.jf.intel.com.notmuch>
- <226df539-b3f4-4099-b6a6-293fa200c536@intel.com>
- <982e19fcd71c41a162ba664281eb0a68d9dc960c.camel@HansenPartnership.com>
-From: "Xing, Cedric" <cedric.xing@intel.com>
-In-Reply-To: <982e19fcd71c41a162ba664281eb0a68d9dc960c.camel@HansenPartnership.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0292.namprd03.prod.outlook.com
- (2603:10b6:303:b5::27) To DS7PR11MB6269.namprd11.prod.outlook.com
- (2603:10b6:8:97::14)
+Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D141642A
+	for <linux-coco@lists.linux.dev>; Wed, 14 Feb 2024 09:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707903316; cv=none; b=kYxFhEcYCXgKcqF4DMBh9SLQ1GKr1w63M+A8DkrR4uyVB8uV5G0rAg12NzHvvwX1bdFUVoH5tTfIGWicOeYguONbIBf0K7ZELE021e0tWzCmD9v8z44upCjfJND0t4FXP7pj/BTdURLTAdabgBsX2hoSKqeqV/9lssXZ133cJvE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707903316; c=relaxed/simple;
+	bh=BhPisRloYBOp5JHEYXaJkZ4QaiijqmCKzndK4WLH23A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qW7YF+dJmTc2ImLBG5jsmyFoYyl7+xNPMX6q1yypb8/gXr9uIEOQsRLVkIX+AefRxVN9pGJXTa7ga127Sp1bQbAmrz0XvNyYyc0yOUB1jd1gSuuRjaihq6jWifVE6V7RQoEchXI+7QmZvbZB7m5ucBeQ6x0dJOtE+JTtJZTlmD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 41E9YACA010558;
+	Wed, 14 Feb 2024 03:34:10 -0600
+Received: (from greg@localhost)
+	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 41E9Y9d2010555;
+	Wed, 14 Feb 2024 03:34:09 -0600
+Date: Wed, 14 Feb 2024 03:34:09 -0600
+From: "Dr. Greg" <greg@enjellic.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: "Theodore Ts'o" <tytso@mit.edu>, Dan Williams <dan.j.williams@intel.com>,
+        "Reshetova, Elena" <elena.reshetova@intel.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
+Message-ID: <20240214093409.GA10124@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <20240202153927.GA119530@mit.edu> <Zb4RlTzq_LV7AzsH@zx2c4.com> <CAHmME9owdbHzfb66xisoWmvWeT_-hkxCu7tR2=Rbye_ik1JgQQ@mail.gmail.com> <DM8PR11MB5750C1A848A9F1EF6BE66241E7482@DM8PR11MB5750.namprd11.prod.outlook.com> <20240212163236.GA444708@mit.edu> <65cb1a1fe2dda_29b1294e@dwillia2-mobl3.amr.corp.intel.com.notmuch> <20240213231341.GB394352@mit.edu> <65cc0ef2c7be_29b12948d@dwillia2-mobl3.amr.corp.intel.com.notmuch> <20240214043245.GC394352@mit.edu> <b786185e-fc57-4d4a-b0aa-741b92de0c5c@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB6269:EE_|PH7PR11MB5817:EE_
-X-MS-Office365-Filtering-Correlation-Id: b8869869-e2e8-489d-d670-08dc2d3a838b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 3tfYeZ0WGUR1eCSUzjI45JKq8IVV8FDHjlaAOt2shkBpwbr9RDMw2JZvPYPhWaebFuGrPhCDirwLfa+Wgj1FD/1eVZizKETO0vO+FrwIHQwuR4aSE221fZ97V3Ff272x5eYpFXR+AOBzj90QQwrt8+wnvyMBOzK4Pw3302TtaZXZYVIEx/Bxp1WYiMw8bB6yLiYooB48NXPF0AL3vbA4gTbsDvSejSLhYTxAQuk2J+sGd+j6eeSPXjprQH2CWUWdkq6nh/mXk2tEK/uUIjEhKrPEZHupLgSx/EHhZTgRdxjtA0gPv3tRZT/4yfezkATTRdLUSf5INLqgboVa2ZvefHXXIfnLumhhu6cOvSOL4kEH7O927BwBmBY8ILJrVU8FmZL3bebWaTaqsMgoWpUumR581vCy00UdCE3XttUU2cQeF2LZgeYErXQadTuorex9yNGhQ7vdrFs+HNppbmnK1piiceATvpursytZanxyYxJVm7k1nWrFmsoupt7EBtZZOib/U3gCIUG0ynn2+bB57L7weLHsBjmt/4O1u28E+0Y=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB6269.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(396003)(136003)(346002)(376002)(230922051799003)(451199024)(64100799003)(186009)(1800799012)(31686004)(2906002)(2616005)(53546011)(6506007)(8936002)(83380400001)(66476007)(5660300002)(6512007)(66556008)(8676002)(4326008)(66946007)(26005)(36756003)(41300700001)(478600001)(966005)(54906003)(110136005)(6486002)(6666004)(316002)(38100700002)(86362001)(31696002)(82960400001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q2RLZmFxeVlRQ2VleGhLZFMzNW94ay9tRFlTN0t2bzRxNjhoSnQzZ1NxV1ZT?=
- =?utf-8?B?eXFHanpKakpRa1ZiWE1ibitnZTNlL2xoelhKOTdhWmdOek5BeFo2QmJLNW40?=
- =?utf-8?B?ZG9yenRHVytFeEJRbEpaTnhDWURlZ0FYSHREcFNsK1A2WGp6ZXR0bTF5UXFP?=
- =?utf-8?B?SE5ia0NQWHBWYW1YdjcvekxCMTNGSG13eHRJdjNHT0Z5MkplTkh3eDcxazEx?=
- =?utf-8?B?Tk9ONmRhczRGZHR5MmJyL0hZRURqRmw2Z1V4bko4MXRWUys0MlRwdXRSQlEv?=
- =?utf-8?B?S0dXRmhKUUdWTE5kWEkveGljT1NzSlZ1ODZwK0tleERQUVU4REZkN1liWHlH?=
- =?utf-8?B?S0lwMkRWNVd6UE4rTHlOV2pBWWpjNTI3eTJ1Z29iLzRPU3hnckpxOGVTTUNa?=
- =?utf-8?B?Vjc0TW80MHgramJJbTdOODZNdG91aTF3ZUF0U1JOaFk1dGh6MCtUSmpzTnV4?=
- =?utf-8?B?RWVYN3AzbnJuVmRaakJYMU1pS2ovcWpnRXhNZFBmZVdKQ0FBUUdxNS9UZjhz?=
- =?utf-8?B?M2lOdXI4aTk4T2xyWUo1OUFKSWVnQTFNbGV2SGlRbjhqOC9uR2k2c0tkYmtl?=
- =?utf-8?B?NjFjdFEyazN1VnVnbnJRSldETWk5Q3p4WHEvT1VyOTk1WHkzMnYrbzZmQWtS?=
- =?utf-8?B?Z1o0RVdCWWZCTHNPK0djOXU5eDc4cTRTRDVQeDhieE9KcEtjeldZcHdXakNG?=
- =?utf-8?B?NGgwbTFzM0cwNC9sbk5wSTdtYTRQb3QxYzZVQTNWWElDYmtSVmdTZTRJM2xO?=
- =?utf-8?B?eFlpUnM4UmIxZkIrL0pLZ0cxUEtnQlVJWGxWNG00RjkrUEU0YjJlMVdoU3Jq?=
- =?utf-8?B?MHFmQzVNTytoU0Y1YkxVQjNYdHhSWWhMRW9yOHRha0Y2Zmh6aTdvUW9EUy9o?=
- =?utf-8?B?dU1wZ2VsWHR1dktWVnJEYXI5azI1WmVWeDhqK1U4MWVraCs3ajVPRUdpcW5m?=
- =?utf-8?B?cWExYnJma2k4aHVHUEwzaWJiUmM0eGlIaWk5RVBQQkpaTFdZaThLelFtclpw?=
- =?utf-8?B?TmIvYzI4K3RGd3pnK2hpQ3R4aWVGWlNKVEZ0ZnFKSFdWTUx5a0FhblQ3bENv?=
- =?utf-8?B?MVhHZmowT29JQU5YekpkMk5aNEI4bnRzUFdjc2MyWlMyYk5iczRsd29FY0My?=
- =?utf-8?B?TjIzZCtTR2ZVNTRQaXpEMis2YU8xM2hwaklBTGN3ajMvektzWGVoQ3JDY3Rr?=
- =?utf-8?B?ZHRyS2Y0dlRnZjFQbHl1MFJxUm1JYXlHeE5yQStGd0h1bU1JcXB3U1FkZ3VU?=
- =?utf-8?B?ZmNXWmIwWnc4ZGpZMUFqYUFFQzVXTHN6VDJIWjVYOEQ2RHUxMW9VRVE5eVBI?=
- =?utf-8?B?N040M2Rwd3hUTmMzdHBtWTNrWWpROEt2ODd1RDNxWFpHWlpkRGZFK05ocW9D?=
- =?utf-8?B?bjE4V1c4eDg2cWhGYmhoMlBSY3pDZndhRzAxUWFBcFAvUFR2c3g0YzVuM0x0?=
- =?utf-8?B?ZHB4WktJcXZKOVlxUDlMOTVLYlZ1OHlZQ0hVZDdLS2czVnJENEEwZS90VFB4?=
- =?utf-8?B?VWhnRjhyTWUwcHlSTDQwTi95ZUpNOXo4ZWZCcEZySTEvNmhVazFiay9GdCti?=
- =?utf-8?B?MHlGTkpwUTcyMEhUYXVXMDIyYUI4NnVoeWk2UkY4L2crR3FBMWtoTXZEUWds?=
- =?utf-8?B?Sk8zRWI2cSt0OFdSck5kRlByWG55OWFaVjZMV3hDQUhVaFlzSmJtWEcvdWhL?=
- =?utf-8?B?NVBJdjFOYlZodjgwcDFvS1ZvakdoT1JOdk9FMlR3T0tWNHBlTWxnY1VHMDR1?=
- =?utf-8?B?bHlhTVdiOGhOcmEra0llMTVSRzhvVzhHQ0s4Ti9maHB6YnFjalBzVDJpY1Zv?=
- =?utf-8?B?WGhBM3RsSVFRT0JCUlQwc3VCQVNaTUNhY2w3Rmo5QTJHWS9Wa0pIUEphSXRu?=
- =?utf-8?B?SEN1K2pueE1IdlJHRTE3OVdSNU5EU1l3VFY5RE93M0M1eGJ6bENUd2t2MGpH?=
- =?utf-8?B?dXBhb0Q2c0h1MHJwN3BFWjRjZE5wU3dIbFQrNEhEaWlzMms5Q0JpKzBlYUM3?=
- =?utf-8?B?cG1PRnpyZnpoZTNJQ081SFQzT1g1QkNPVERydUZZY3JpcnhxWUYwTUJMVWNw?=
- =?utf-8?B?T2YzMlhjOVIyQ0hPVEI4MEx3eTBndTRKWXJlODNsNDNZcmZ6YktHQjVIam1k?=
- =?utf-8?Q?/qnSWHGfpw/FxX/wX+TZvt7La?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b8869869-e2e8-489d-d670-08dc2d3a838b
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB6269.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2024 08:54:11.9862
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3WMdDbJYN1f47aOaZylQbzQjC4Fmg757Px5XonJjxsvIAVyjPn/BIadzJpqsOPoxHeTbtPFoAHZXqthQSX1Qaw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5817
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b786185e-fc57-4d4a-b0aa-741b92de0c5c@suse.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Wed, 14 Feb 2024 03:34:10 -0600 (CST)
 
-On 2/13/2024 8:05 AM, James Bottomley wrote:
-> On Mon, 2024-02-12 at 23:36 -0800, Xing, Cedric wrote:
->> On 2/9/2024 12:58 PM, Dan Williams wrote:
->>> James Bottomley wrote:
->>>> Just to correct this: IMA uses its own log format, but I think
->>>> this was a mistake long ago and the new log should use TCG2
->>>> format so all the tools know how to parse it.
->>>
->>> Is this a chance to nudge IMA towards a standard log format? In
->>> other words, one of the goals alongside userspace consumers of the
->>> RTMR log would be for IMA to support it as well as an alternate in-
->>> kernel backend next to TPM. IMA-over-TPM continues with its current
->>> format, IMA-over-RTMR internally unifies with the log format that
->>> is shared with RTMR-user-ABI.
->>>
->> I'm not a TCG expert. As far as I know,
->> https://trustedcomputinggroup.org/wp-content/uploads/TCG-PC-Client-Platform-Firmware-Profile-Version-1.06-Revision-52_pub-1.pdf
->>   
->> defines the event types for TCG2 logs for firmware uses only. I
->> cannot  find a spec that defines event types for OS or applications.
->> We may  reuse the firmware event types for Linux but I doubt they can
->> accommodate IMA.
-> 
-> The TCG crypto agile log format is
-> 
->   index (32 bit),
->   event tag (32 bit),
->   digests array,
->   sized event entry (up to 4GB)
-> 
-> So an IMA log entry can definitely be transformed into this format
-> (providing someone agrees to the tag or set of tags).  The slight
-> problem would be that none of the current IMA tools would understand
-> it, but that could be solved over time (the kernel could use the TCG
-> format internally but transform to the IMA format for the current
-> securityfs IMA log).
-> 
-Hi James,
+On Wed, Feb 14, 2024 at 10:34:48AM +0200, Nikolay Borisov wrote:
 
-As Mikko mentioned in his reply, TCG has defined the "Canonical Event 
-Log Format" (aka. CEL) [1], while systemd-pcr* services use a subset of 
-CEL format in their user space log.
+Hi, I hope the week is going well for everyone.
 
-I skimmed through the CEL spec today. Comparing to TCG2 log, CEL follows 
-the same design (i.e., each event has a type field that determines the 
-structure of the event data) but separates the encoding from the 
-information model.
+> On 14.02.24 ??. 6:32 ??., Theodore Ts'o wrote:
+> >On Tue, Feb 13, 2024 at 04:53:06PM -0800, Dan Williams wrote:
+> >>
+> >>Indeed it is. Typically when you have x86, riscv, arm, and s390 folks
+> >>all show up at a Linux Plumbers session [1] to talk about their approach
+> >>to handling a new platform paradigm, that is a decent indication that
+> >>the technology is more real than not. Point taken that it is not here
+> >>today, but it is also not multiple hardware generations away as the
+> >>Plumbers participation indicated.
+> >
+> >My big concerns with TDISP which make me believe it may not be a
+> >silver bullet is that (a) it's hyper-complex (although to be fair
+> >Confidential Compute isn't exactly simple, and (b) it's one thing to
+> >digitally sign software so you know that it comes from a trusted
+> >source; but it's a **lot** harder to prove that hardware hasn't been
+> >tampered with --- a digital siganture can't tell you much about
+> >whether or not the hardware is in an as-built state coming from the
+> >factory --- this requires things like wrapping the device with
+> >resistive wire in multiple directions with a whetstone bridge to
+> >detect if the wire has gotten cut or shorted, then dunking the whole
+> >thing in epoxy, so that any attempt to tamper with the hardware will
+> >result it self-destructing (via a thermite charge or equivalent :-)
 
-IMHO, CEL only works for applications defined in its information model 
-(currently UEFI BIOS and IMA) but wouldn't work for any other 
-applications like systemd. The systemd source code has documented the 
-difference [2] between their log format and CEL.
+> This really reminds me of the engineering that goes into the
+> omnipresent POS terminals ate every store, since they store
+> certificates from the card (Visa/Master) operators. So I wonder if
+> at somepoint we'll have a pos-like device (by merit of its
+> engineering) in every server....
 
-One problem of CEL is its "content_type", which contains numeric values 
-assigned by the spec. systemd doesn't have a numeric "content_type" 
-assigned so has to use a string value - "systemd", which can only be 
-encoded in JSON but not in TLV or CBOR. Technically, the systemd log is 
-NOT CEL even though they claim that's a subset of it.
+It already exists.  CoCo, at least the Intel implementation, is
+dependent on what amounts to this concept.
 
-Another problem of CEL is that NOT every byte of an event is 
-hashed/extended. CEL spec has defined for each "content_type" the subset 
-of bytes to hash, so a verifier must understand ALL content types to be 
-able to verify the integrity of a log. In other words, the integrity of 
-a "systemd" log can never be verified by a CEL conformant verifier.
+> >Remember, the whole conceit of Confidential Compute is that you don't
+> >trust the cloud provider --- but if that entity controls the PCI cards
+> >installed in their servers, and and that entity has the ability to
+> >*modify* the PCI cards in the server, all of the digital signatures
+> >and fancy-schmancy TDISP complexity isn't necessarily going to save
+> >you.
 
-So I wouldn't recommend CEL to be the log format here.
+> Can't the same argument go for the CPU, though it's a lot more
+> "integrated" into the silicong substrate, yet we somehow believe
+> CoCo ascertains that a vm is running on trusted hardware? But
+> ultimately the CPU is still a part that comes from the untrusted
+> CSP.
 
-We are looking for, as I believe, is a format that can accommodate all 
-applications and allow application-agnostic verifiers. For every event, 
-the kernel only needs to know what to store in the log, and what to 
-hash/extend and to which measurement registers, but isn't concerned by 
-the semantics of the event. If reusing CEL terms, what needs to be 
-defined here is the "encoding" (so that every application can 
-store/extend "something" in a log that every verifier knows how to 
-replay); while every application should be allowed to define its own 
-"information model".
+The attestation model for TDX is largely built on top of SGX.
 
--Cedric
+The Intel predicate with respect to SGX/TDX is that you have to trust
+the CPU silicon implementation, if you can't entertain that level of
+trust, it is game over for security.
 
-[1] https://trustedcomputinggroup.org/resource/canonical-event-log-format/
+To support that security model, Intel provides infrastructure that
+proves that the software is running on a 'Genuine Intel' CPU.
 
-[2] 
-https://github.com/systemd/systemd/blob/e1390da0256bbe2017c4c2fbc636c54fe02c84cb/src/shared/tpm2-util.c#L6112
+Roughly, a root key is burned into the silicon that is used as the
+basis for additional derived keys.  The key access and derivation
+processes can only occur when the process is running software with a
+known signature in a protected region of memory (enclave).
 
->> IMHO, we don't have to follow TCG2 format because TDX is never TPM,
->> nor are any other TEEs that support runtime measurements. The
->> existing TCG2 format looks to me somewhat like ASN.1 - well defined
->> but schema is needed to decode. In contrast, JSON is a lot more
->> popular than ASN.1  nowadays because it's human readable and doesn't
->> require a schema. I just wonder if we should introduce a text based
->> log format. We could make the log a text file, in which each line is
->> an event record and the digest of the line is extended to the
->> specified runtime measurement register. The content of each line
->> could be free-form at the ABI level, but we can still recommend a
->> convention for applications - e.g., the first word/column must be an
->> URL for readers to find out the format/syntax of the rest of the
->> line. Thoughts?
-> 
-> https://xkcd.com/927/
-> 
-That is funny :-D
+The model is to fill a structure with data that defines the
+hardware/software state.  A keyed checksum is run over the structure
+that allows a relying party to verify that the data structure contents
+could have only been generated on a valid Intel CPU.
 
-I can't agree more, so "no log" I think is always an option.
+This process verifies that the CPU is from a known vendor, which is of
+course only the initial starting point for verifying that something
+like a VM is running in a known and trusted state.  But, if you can't
+start with that predicate you have nothing to build on.
 
->>   For the new TEE measurement log, I don't think it has to be
->> collocated with the BIOS log, because TEEs are never TPMs.
-> 
-> This depends.  Logs are separable by PCRs.  As in every entry for the
-> same PCR could be in a separate, correctly ordered, log.  However, you
-> can't have separate logs that both use the same PCR because they won't
-> replay.
-> 
-We can have separate logs for the same PCR as long as there's a way to 
-order those logs. A simple way is to record the current PCR value at the 
-beginning of every log, then a verifier can always replay the log to get 
-the PCR value at exit, and use that value to match the next log.
+The actual implementation nowadays is a bit more complex, given that
+all of this has to happen on multi-socket systems which involve more
+than one CPU, but the concept is the same.
 
-Anyway, those details are unimportant. What I intended to say was that 
-those logs don't have to be in the same format.
+Have a good day.
 
-> James
-> 
-> 
-> 
+As always,
+Dr. Greg
+
+The Quixote Project - Flailing at the Travails of Cybersecurity
+              https://github.com/Quixote-Project
