@@ -1,104 +1,145 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52326604CB
-	for <linux-coco@lists.linux.dev>; Wed, 14 Feb 2024 16:57:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226BE83A1E;
+	Wed, 14 Feb 2024 17:21:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707929829; cv=none; b=l+TXiAczdAh+48ZrnUBrp3qrfnRwbEd6nVvCOPRu20A8C4jRc+D0hhSz4Giq/MHSqHQHd9PvOry60k4Ro9xtdpyn7GBkxiVfdST/Xz13OkjbHtm20Jvc8/AMCQYmYP6u33ONiE4SuYzdPGwFxGYYiCzW9SMSgtoU8pk6xIVHtbs=
+	t=1707931320; cv=none; b=ZLLjsnXF9LQ4KWolAG0CtxHvGhSM1/fXhn3053rj8xk0DPnmuqadPgkM3wrTrWHr4h0Ad29Xbx4nbbUbMnAdoYm3XEj999XmEzD6ZH1Nf0ubbvZcBDOi39c7iTd9gb8llcdP9Va6DliyablOxhXEKFRw8LJqHqhjaJE3C3kTvG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707929829; c=relaxed/simple;
-	bh=biuzYcQMelgQl+J54Kbot+3JqcMvoeGyuw3X50yl3uo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Doth6bbzK9QQxGdZQ7ypCOWBdct5BFDMGquFXIlADHU0qBWMLNDfiCuZF1gLQWVHBSkqMGmSlfJXc2CUIoLr+Sv9w7MN1gGIckWxcSGr2iN4v3QncSm0QCi1wwjDbw5GMIJDpsoT9C4j9ul7VAfoC+rr4CinoFGjlAuVddjx5fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=bcp4Da1B; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1707931320; c=relaxed/simple;
+	bh=wNciBySlMAxEqegwGBJHPqbtebvqeKeL8MXAm8xIM9Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eiZGReiiWRLDZVUuVRBh5X/0scr3xIqX4W/Kt2PABHwDwebxTE8VtiTcEKrpsgzE1+2wKS2ZC6KlgPEvsmG1Va1yichu4QMeUBSab630dOmleuINVvy0TOIJJ/TH+P11F89TgZjW01097nI8bgjVQoJkCOfa+YH4XKK1AiPWEY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=gj7URXbb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="bcp4Da1B"
-Received: from [100.66.32.72] (unknown [108.143.43.187])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 4C6E120B2000;
-	Wed, 14 Feb 2024 08:56:59 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4C6E120B2000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1707929827;
-	bh=ckiTjQJyYMqOqp6nmIcopayJUmMXUp+ALCH4tNreFgA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bcp4Da1BitmockWhF96LYrtqTtYF1wsfqg1TsvWy2uwN7ngUJtjxpHOsFsOFkYRJo
-	 Oc1JJKqKMD6tBVucLCv3I/J+wJYE56PeZVCCO7qQ3ND3CBRPqEuGxsTyjNc2QPe9EQ
-	 6yEqS9dEv9MTe2x16MuoGJbktHyukuLjD1rAvyRk=
-Message-ID: <b6f00233-0cbf-4d9a-aa8b-babc8a9ca696@linux.microsoft.com>
-Date: Wed, 14 Feb 2024 17:56:56 +0100
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="gj7URXbb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037B6C433C7;
+	Wed, 14 Feb 2024 17:21:57 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="gj7URXbb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1707931315;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WZwi+vdzpHGZX+Nb7Ks31fJ33S155hZL64yC+vQwOQw=;
+	b=gj7URXbb4PfZ+LnbtVPwINBwopSuxpUC9VnhcHhu4v8RoIZJ6vwu/qKYE4Q4OiFarheJIU
+	NMaS+ekZth9cjpnULPk5rvE93c5/qzHWFbFWYCxmKJDQIDfsFsRQJZhU9NxAIy7AFTNCS/
+	j37QJ6zF3tsm462Xv51jQ2JrIP1eQxc=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 97ac0457 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Wed, 14 Feb 2024 17:21:54 +0000 (UTC)
+Date: Wed, 14 Feb 2024 18:21:51 +0100
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: Theodore Ts'o <tytso@mit.edu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Nakajima, Jun" <jun.nakajima@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
+Message-ID: <Zcz2r51Tbb44ywjl@zx2c4.com>
+References: <CAHmME9oJvbZgT4yT9Vydc2ZQVSo3Ea65G5aVK7gFxphkV00BnQ@mail.gmail.com>
+ <20240131140756.GB2356784@mit.edu>
+ <Zbpc8tppxuKr-hnN@zx2c4.com>
+ <20240131171042.GA2371371@mit.edu>
+ <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
+ <20240201045710.GD2356784@mit.edu>
+ <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
+ <DM8PR11MB57505F657A8F08E15DC34673E7422@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <DM8PR11MB57503A2BB6F74618D64CC44AE74E2@DM8PR11MB5750.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 04/26] x86/sev: Add the host SEV-SNP initialization
- support
-To: Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-mm@kvack.org, linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com, tobin@ibm.com,
- vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
- tony.luck@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
- nikunj.dadhania@amd.com, pankaj.gupta@amd.com,
- "liam.merwick@oracle.com Brijesh Singh" <brijesh.singh@amd.com>
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-5-michael.roth@amd.com>
- <f60c5fe0-9909-468d-8160-34d5bae39305@linux.microsoft.com>
- <20240105160916.GDZZgprE8T6xbbHJ9E@fat_crate.local>
- <20240105162142.GEZZgslgQCQYI7twat@fat_crate.local>
- <0c4aac73-10d8-4e47-b6a8-f0c180ba1900@linux.microsoft.com>
- <20240108170418.GDZZwrEiIaGuMpV0B0@fat_crate.local>
- <b5b57b60-1573-44f4-8161-e2249eb6f9b6@linux.microsoft.com>
- <20240109122906.GCZZ08Esh86vhGwVx1@fat_crate.local>
- <20240109124440.GDZZ0/uDY9RRPIOxOB@fat_crate.local>
-Content-Language: en-US
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <20240109124440.GDZZ0/uDY9RRPIOxOB@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DM8PR11MB57503A2BB6F74618D64CC44AE74E2@DM8PR11MB5750.namprd11.prod.outlook.com>
 
-On 09/01/2024 13:44, Borislav Petkov wrote:
-> On Tue, Jan 09, 2024 at 01:29:06PM +0100, Borislav Petkov wrote:
->> At least three issues I see with that:
->>
->> - the allocation can fail so it is a lot more convenient when the
->>   firmware prepares it
->>
->> - the RMP_BASE and RMP_END writes need to be verified they actially did
->>   set up the RMP range because if they haven't, you might as well
->>   throw SNP security out of the window. In general, letting the kernel
->>   do the RMP allocation needs to be verified very very thoroughly.
->>
->> - a future feature might make this more complicated
-> 
-> - What do you do if you boot on a system which has the RMP already
->   allocated in the BIOS?
-> 
-> - How do you detect that it is the L1 kernel that must allocate the RMP?
-> 
-> - Why can't you use the BIOS allocated RMP in your scenario too instead
->   of the L1 kernel allocating it?
-> 
-> - ...
-> 
-> I might think of more.
-> 
+Hi Elena,
 
-Sorry for not replying back sooner.
+On Wed, Feb 14, 2024 at 4:18 PM Reshetova, Elena <elena.reshetova@intel.com> wrote:
+> "The RdRand in a non-defective device is designed to be faster than the bus,
+> so when a core accesses the output from the DRNG, it will always get a
+> random number.
+> As a result, it is hard to envision a scenario where the RdRand, on a fully
+> functional device, will underflow.
+> The carry flag after RdRand signals an underflow so in the case of a defective chip,
+> this will prevent the code thinking it has a random number when it does not.
 
-I agree, lets get the base SNP stuff in and then talk about extensions.
+That's really great news, especially combined with a very similar
+statement from Borislav about AMD chips:
 
-I want to sync up with Michael to make sure he's onboard with what I'm
-proposing. I'll add more design/documentation/usecase descriptions with the
-next submission and will make sure to address all the issues you brought up.
+On Fri, Feb 9, 2024 at 10:45 PM Borislav Petkov <bp@alien8.de> wrote:
+> Yeah, I know exactly what you mean and I won't go into details for
+> obvious reasons. Two things:
+>
+> * Starting with Zen3, provided properly configured hw RDRAND will never
+> fail. It is also fair when feeding the different contexts.
 
-Jeremi
+I assume that this faster-than-the-bus-ness also takes into account the
+various accesses required to even switch contexts when scheduling VMs,
+so your proposed host-guest scheduling attack can't really happen
+either. Correct?
+
+One clarifying question in all of this: what is the point of the "try 10
+times" advice? Is the "faster than the bus" statement actually "faster
+than the bus if you try 10 times"? Or is the "10 times" advice just old
+and not relevant.
+
+In other words, is the following a reasonable patch?
+
+diff --git a/arch/x86/include/asm/archrandom.h b/arch/x86/include/asm/archrandom.h
+index 02bae8e0758b..2d5bf5aa9774 100644
+--- a/arch/x86/include/asm/archrandom.h
++++ b/arch/x86/include/asm/archrandom.h
+@@ -13,22 +13,16 @@
+ #include <asm/processor.h>
+ #include <asm/cpufeature.h>
+ 
+-#define RDRAND_RETRY_LOOPS	10
+-
+ /* Unconditional execution of RDRAND and RDSEED */
+ 
+ static inline bool __must_check rdrand_long(unsigned long *v)
+ {
+ 	bool ok;
+-	unsigned int retry = RDRAND_RETRY_LOOPS;
+-	do {
+-		asm volatile("rdrand %[out]"
+-			     CC_SET(c)
+-			     : CC_OUT(c) (ok), [out] "=r" (*v));
+-		if (ok)
+-			return true;
+-	} while (--retry);
+-	return false;
++	asm volatile("rdrand %[out]"
++		     CC_SET(c)
++		     : CC_OUT(c) (ok), [out] "=r" (*v));
++	WARN_ON(!ok);
++	return ok;
+ }
+ 
+ static inline bool __must_check rdseed_long(unsigned long *v)
+
+(As for the RDSEED clarification, that also matches Borislav's reply, is
+what we expected and knew experimentally, and doesn't really have any
+bearing on Linux's RNG or this discussion, since RDRAND is all we need
+anyway.)
+
+Regards,
+Jason
