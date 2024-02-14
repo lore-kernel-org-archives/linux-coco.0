@@ -1,138 +1,111 @@
-Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D141642A
-	for <linux-coco@lists.linux.dev>; Wed, 14 Feb 2024 09:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
+Received: from wfhigh8-smtp.messagingengine.com (wfhigh8-smtp.messagingengine.com [64.147.123.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014DE5A7AB;
+	Wed, 14 Feb 2024 14:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707903316; cv=none; b=kYxFhEcYCXgKcqF4DMBh9SLQ1GKr1w63M+A8DkrR4uyVB8uV5G0rAg12NzHvvwX1bdFUVoH5tTfIGWicOeYguONbIBf0K7ZELE021e0tWzCmD9v8z44upCjfJND0t4FXP7pj/BTdURLTAdabgBsX2hoSKqeqV/9lssXZ133cJvE=
+	t=1707922201; cv=none; b=AYV3UYURgQdPCqiCx77kFtpatbZCoUvJljxiNDX5P5MOURe/svrtRsCRUZJmBJK9RoB2OF0xXfq+nzxDOS6m51DTUJpa0agbGHOQsxXvaSHF3wjVdwV5N1XjfbydoHFHUrr54Oexl5DFAH+mbrnMY/HQfen9bw1ajod23+F1dSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707903316; c=relaxed/simple;
-	bh=BhPisRloYBOp5JHEYXaJkZ4QaiijqmCKzndK4WLH23A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qW7YF+dJmTc2ImLBG5jsmyFoYyl7+xNPMX6q1yypb8/gXr9uIEOQsRLVkIX+AefRxVN9pGJXTa7ga127Sp1bQbAmrz0XvNyYyc0yOUB1jd1gSuuRjaihq6jWifVE6V7RQoEchXI+7QmZvbZB7m5ucBeQ6x0dJOtE+JTtJZTlmD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
-Received: from wind.enjellic.com (localhost [127.0.0.1])
-	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 41E9YACA010558;
-	Wed, 14 Feb 2024 03:34:10 -0600
-Received: (from greg@localhost)
-	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 41E9Y9d2010555;
-	Wed, 14 Feb 2024 03:34:09 -0600
-Date: Wed, 14 Feb 2024 03:34:09 -0600
-From: "Dr. Greg" <greg@enjellic.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: "Theodore Ts'o" <tytso@mit.edu>, Dan Williams <dan.j.williams@intel.com>,
-        "Reshetova, Elena" <elena.reshetova@intel.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Nakajima, Jun" <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
-Message-ID: <20240214093409.GA10124@wind.enjellic.com>
-Reply-To: "Dr. Greg" <greg@enjellic.com>
-References: <20240202153927.GA119530@mit.edu> <Zb4RlTzq_LV7AzsH@zx2c4.com> <CAHmME9owdbHzfb66xisoWmvWeT_-hkxCu7tR2=Rbye_ik1JgQQ@mail.gmail.com> <DM8PR11MB5750C1A848A9F1EF6BE66241E7482@DM8PR11MB5750.namprd11.prod.outlook.com> <20240212163236.GA444708@mit.edu> <65cb1a1fe2dda_29b1294e@dwillia2-mobl3.amr.corp.intel.com.notmuch> <20240213231341.GB394352@mit.edu> <65cc0ef2c7be_29b12948d@dwillia2-mobl3.amr.corp.intel.com.notmuch> <20240214043245.GC394352@mit.edu> <b786185e-fc57-4d4a-b0aa-741b92de0c5c@suse.com>
+	s=arc-20240116; t=1707922201; c=relaxed/simple;
+	bh=B1yFHfeHqpqZavgAJ56fxZmHRfqRxaiP53AMO42YAk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a0qOCV1FTndOYCCD5gDYv2YGD9WrHImAFeJMhubnsbSDcM9zbb8IH1ZgUDrctv5rWFpjolRXhg7AO9ljcpTxwp48mFJDZ1JJPlB8AslQ89FJ/uFYxsnoftlOZkZ/rnmx2SsZxphbtq5Cqg7KTLa3VsAEb4117s4WTnWcg8jmjLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=gyQBbXH2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TWECDkEP; arc=none smtp.client-ip=64.147.123.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="gyQBbXH2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TWECDkEP"
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+	by mailfhigh.west.internal (Postfix) with ESMTP id 5ECD2180007C;
+	Wed, 14 Feb 2024 09:49:56 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute7.internal (MEProxy); Wed, 14 Feb 2024 09:49:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1707922195; x=
+	1708008595; bh=epVZw1x9FVt2elh8jYLSX6PiqT6PpjnxqNeFSeq1Zwo=; b=g
+	yQBbXH2Nd0+K8dm+BcBfX5h1iijUIOSpznBIPpqcSiWFGBi4uy+ekQkVEtz4utnl
+	RC8WyKwJOIUYe5ltvS5CAV+nY0oL7R6qmfPLy89cXJDUfEcV6QuVgXY6HOBcoTPE
+	IQuz8RItCSO8eg6jjCJnd8bgwu7h45n25lgd7Z3a0PHioW7afFmpMQdlr+rD2xEz
+	MPUyK8Y/nzYX7ovkxetOJuRLvdBfO5ImGrS4gFLl08+oXTfEk6Rlm2GCLHS5ezJR
+	B8LCU0r4c2Q+Kpolz6HDeASuRuILF687s2ny91S+eXAr10vzUppyIYhZ9TaUXxIu
+	KUhOEnig/MnY4J5ySkMcg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1707922195; x=1708008595; bh=epVZw1x9FVt2elh8jYLSX6PiqT6P
+	pjnxqNeFSeq1Zwo=; b=TWECDkEPyM+sYaRC5S/kgrLIwNlmMN5vk78TViGP+uG9
+	sV19jQS/pZDH4VVyghDBnXnQeLbpl1oHNGtkc3b/KaF9+eOyZw8LVVBdHg8HarEe
+	fxc9m704DTG9dzstJOSIgSC0v8gBAAUYNpTIDGOqvmxJLzJDtxyd8MhUVA84+6Dq
+	VUJNWPDOJSCI7cUVBgvFHDPYb5A127XlJLexkbUWAddoJ4Z1KTdrogLR55ErvDia
+	+rk09aBQcQMq815rtwAMzyqDPMcaU99rsptGwady+fZc67+o5+OF2IBcl9iXNqnL
+	fydkw+UZqln/W0ihd9dwmd65wNdWU1wpL1lZbAJyeA==
+X-ME-Sender: <xms:E9PMZX54oyMKaAaJ_yd4U6z8deSTfX2VjxyII9T6oyFqWDT-VmqR1Q>
+    <xme:E9PMZc6d-aqCG-k5tlYpGO8Jj8vd_mU482uidZ4ns0uLHBAeHSO9zjPpeSX1rSUsL
+    xMCWALJfyqh_m6mzrs>
+X-ME-Received: <xmr:E9PMZeecVyW9Weif_91PgXCD17To5gU9JRvdVVTHnPpNba-1Uy8mGg6SeMpgZPtUS-opmQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejgdejtdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpedfmfhirhhi
+    lhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrg
+    hmvgeqnecuggftrfgrthhtvghrnhepffdvveeuteduhffhffevlefhteefveevkeelveej
+    udduvedvuddvleetudevhfeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgv
+X-ME-Proxy: <xmx:E9PMZYLEHNnCXh7Lx4P7KqbQWT0tTqd8hEYZyFHflgl86FQLOcl8Aw>
+    <xmx:E9PMZbI76GkVpmnx_IE0boGvmj1BCkv5F__Yoni-YXjxJp7Z6YFz8g>
+    <xmx:E9PMZRzzgaJxAaeZGGZvPtYcKP1GTtrA2EsR8rh_Bdipdm5GmLHtdg>
+    <xmx:E9PMZYj5w7fKoEtOhFuSYQhLi5HWBZVcSmJyPzQtJmPhHvhCrKLFGZJS86M>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 14 Feb 2024 09:49:46 -0500 (EST)
+Date: Wed, 14 Feb 2024 16:49:43 +0200
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	rientjes@google.com, bgardon@google.com, seanjc@google.com, erdemaktas@google.com, 
+	ackerleytng@google.com, jxgao@google.com, sagis@google.com, oupton@google.com, 
+	peterx@redhat.com, vkuznets@redhat.com, dmatlack@google.com, pgonda@google.com, 
+	michael.roth@amd.com, thomas.lendacky@amd.com, dave.hansen@linux.intel.com, 
+	linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, 
+	andrew.jones@linux.dev, corbet@lwn.net, hch@lst.de, m.szyprowski@samsung.com, bp@suse.de, 
+	rostedt@goodmis.org, iommu@lists.linux.dev
+Subject: Re: [RFC V1 1/5] swiotlb: Support allocating DMA memory from SWIOTLB
+Message-ID: <etvf2mon464whscbxqktdd7bputnqmmwmoeg7ssixsk4kljfek@4wngbgzbbmck>
+References: <20240112055251.36101-1-vannapurve@google.com>
+ <20240112055251.36101-2-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b786185e-fc57-4d4a-b0aa-741b92de0c5c@suse.com>
-User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Wed, 14 Feb 2024 03:34:10 -0600 (CST)
+In-Reply-To: <20240112055251.36101-2-vannapurve@google.com>
 
-On Wed, Feb 14, 2024 at 10:34:48AM +0200, Nikolay Borisov wrote:
+On Fri, Jan 12, 2024 at 05:52:47AM +0000, Vishal Annapurve wrote:
+> Modify SWIOTLB framework to allocate DMA memory always from SWIOTLB.
+> 
+> CVMs use SWIOTLB buffers for bouncing memory when using dma_map_* APIs
+> to setup memory for IO operations. SWIOTLB buffers are marked as shared
+> once during early boot.
+> 
+> Buffers allocated using dma_alloc_* APIs are allocated from kernel memory
+> and then converted to shared during each API invocation. This patch ensures
+> that such buffers are also allocated from already shared SWIOTLB
+> regions. This allows enforcing alignment requirements on regions marked
+> as shared.
 
-Hi, I hope the week is going well for everyone.
+But does it work in practice? 
 
-> On 14.02.24 ??. 6:32 ??., Theodore Ts'o wrote:
-> >On Tue, Feb 13, 2024 at 04:53:06PM -0800, Dan Williams wrote:
-> >>
-> >>Indeed it is. Typically when you have x86, riscv, arm, and s390 folks
-> >>all show up at a Linux Plumbers session [1] to talk about their approach
-> >>to handling a new platform paradigm, that is a decent indication that
-> >>the technology is more real than not. Point taken that it is not here
-> >>today, but it is also not multiple hardware generations away as the
-> >>Plumbers participation indicated.
-> >
-> >My big concerns with TDISP which make me believe it may not be a
-> >silver bullet is that (a) it's hyper-complex (although to be fair
-> >Confidential Compute isn't exactly simple, and (b) it's one thing to
-> >digitally sign software so you know that it comes from a trusted
-> >source; but it's a **lot** harder to prove that hardware hasn't been
-> >tampered with --- a digital siganture can't tell you much about
-> >whether or not the hardware is in an as-built state coming from the
-> >factory --- this requires things like wrapping the device with
-> >resistive wire in multiple directions with a whetstone bridge to
-> >detect if the wire has gotten cut or shorted, then dunking the whole
-> >thing in epoxy, so that any attempt to tamper with the hardware will
-> >result it self-destructing (via a thermite charge or equivalent :-)
+Some devices (like GPUs) require a lot of DMA memory. So with this approach
+we would need to have huge SWIOTLB buffer that is unused in most VMs.
 
-> This really reminds me of the engineering that goes into the
-> omnipresent POS terminals ate every store, since they store
-> certificates from the card (Visa/Master) operators. So I wonder if
-> at somepoint we'll have a pos-like device (by merit of its
-> engineering) in every server....
-
-It already exists.  CoCo, at least the Intel implementation, is
-dependent on what amounts to this concept.
-
-> >Remember, the whole conceit of Confidential Compute is that you don't
-> >trust the cloud provider --- but if that entity controls the PCI cards
-> >installed in their servers, and and that entity has the ability to
-> >*modify* the PCI cards in the server, all of the digital signatures
-> >and fancy-schmancy TDISP complexity isn't necessarily going to save
-> >you.
-
-> Can't the same argument go for the CPU, though it's a lot more
-> "integrated" into the silicong substrate, yet we somehow believe
-> CoCo ascertains that a vm is running on trusted hardware? But
-> ultimately the CPU is still a part that comes from the untrusted
-> CSP.
-
-The attestation model for TDX is largely built on top of SGX.
-
-The Intel predicate with respect to SGX/TDX is that you have to trust
-the CPU silicon implementation, if you can't entertain that level of
-trust, it is game over for security.
-
-To support that security model, Intel provides infrastructure that
-proves that the software is running on a 'Genuine Intel' CPU.
-
-Roughly, a root key is burned into the silicon that is used as the
-basis for additional derived keys.  The key access and derivation
-processes can only occur when the process is running software with a
-known signature in a protected region of memory (enclave).
-
-The model is to fill a structure with data that defines the
-hardware/software state.  A keyed checksum is run over the structure
-that allows a relying party to verify that the data structure contents
-could have only been generated on a valid Intel CPU.
-
-This process verifies that the CPU is from a known vendor, which is of
-course only the initial starting point for verifying that something
-like a VM is running in a known and trusted state.  But, if you can't
-start with that predicate you have nothing to build on.
-
-The actual implementation nowadays is a bit more complex, given that
-all of this has to happen on multi-socket systems which involve more
-than one CPU, but the concept is the same.
-
-Have a good day.
-
-As always,
-Dr. Greg
-
-The Quixote Project - Flailing at the Travails of Cybersecurity
-              https://github.com/Quixote-Project
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
