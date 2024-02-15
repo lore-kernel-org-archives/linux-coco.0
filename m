@@ -1,188 +1,207 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02olkn2016.outbound.protection.outlook.com [40.92.44.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FD9139560;
-	Thu, 15 Feb 2024 20:26:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.44.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708028806; cv=fail; b=ONmsUf7flmuPsjjFS01OWgZvYGaHJQBW6iytPh0bN0IWsrsxFZtuMBTtsIy7Czexd2r49MgO8/JIIu8SiZCuGfgvtU5s3b67x3H3oN22SIPrEjBrTLGFZnjDxi8gHgGVUji7dS3+vFh50idnQTRT0+RvwQI4qjIZR+hglRKZqSU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708028806; c=relaxed/simple;
-	bh=xZ/Bgk7yJ+PNapz/y1SMNpFBii0TdS4L6JbAZEQHHZs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=JMV1c4+ZEUBsA7OWlSVfIdAmUxhXvNvuvUUB12RtIMLU9uGcDpmQAFYuyN+JC22PlJ9MspI854OlkcboXf4cTKJDlrvCHjE6hay+Qc5kZS9ss57vTkOk8figIwE0q7+zH249m5YpLyxmwZL+o6gkNXM0ApwLlfjKk9NXCqDMkCI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=H8F5PHeK; arc=fail smtp.client-ip=40.92.44.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="H8F5PHeK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dD9V7UAGP/nuVLBnA+owevZgk4yRflnzt2oJLq0HFcMDUCxQjAvLouAGb2x9sC4iZFwl6F+kjJZAKsD/kEuH359YUNmA2YDh1yumDzyp/GLJmAvtwbQzhtsXwauBUWQmcpztHAuddfrhyAkNCRJOyZtZ8YHeFhaQ9f4uemA1GkGOGIwiXoPpTHwfj1gEakPxUiH67YBaRQUEVix98J7PA09+jR+ZiMsldJaNS7W8vAkH+QieNElYTRJ0d+foQJyglcZQyqQKk6uCu9X20lk+zQRZwmgr3VVop0Gl3Gg8sbcoZu3AWJM4jgJgOSfPAF69FE4JRWZMSWJ6ps5IRCgE0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xZ/Bgk7yJ+PNapz/y1SMNpFBii0TdS4L6JbAZEQHHZs=;
- b=Y7oac3GTdqw7zd7rfgnS6t0fwIt5tfonx7+pKMDhy44m0Vk9AbNpFMfGlr+qXdUBNzwLiEj6D3pmyTq4bsEA7SJDLcnqtydL681MsfgBnag3BmPKEZuM/eFIb4k3mECLPYyzK/bf/IRzL5JQ5uxdmO+CQsTMB6OtlbhI1PUXA8rL3SZRTd1kRldsdYxklp6LtOwCInvqwcqx4zftw3nYd0E31rHBpPk/tOgGCZi5pmjRB7bggA76KGm7IeUWeEKPMs6X44I5EuwiCiitPgTqaTZithRUiM0sioVzEB0Jggm6puqVs/fsG0E9SLci3yrvDqB5P8eQWNNAvR1tLtolwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xZ/Bgk7yJ+PNapz/y1SMNpFBii0TdS4L6JbAZEQHHZs=;
- b=H8F5PHeKKtrJUG5OxU6rv4VlotXUVKUt1AunYHFkdQSlFnpNWkXayZaDuhL+E5JcbboeLQLqJ4l3thjadhJRufu5hmCPfTnnEYJfWKGbmf9XiNNHvEiPNghloLWnV20FgVsz5a4GB2ZMLKuMJVwxsIl9DTCVjsV4ZJ06dLFoKUDs+obfudcLgwTE76Tqv/fZ5VPvbCNlx7cF7rnKxzAO5NHxlSD8Yf5xWgP9loy8lI8RYvKvpDt0NY6w+xWL5RoN8Q1zUG1/P0LF+VvHDd78N1Lb0c9g7jrmDCZwPrbgc2Bv0Dqu7Wxw/P5NJt7R6UqapZtaLky2txUtfOKsb6CpWQ==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by BL3PR02MB8017.namprd02.prod.outlook.com (2603:10b6:208:358::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.27; Thu, 15 Feb
- 2024 20:26:41 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::67a9:f3c0:f57b:86dd]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::67a9:f3c0:f57b:86dd%5]) with mapi id 15.20.7270.033; Thu, 15 Feb 2024
- 20:26:41 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Alexander Graf <graf@amazon.com>, Vishal Annapurve
-	<vannapurve@google.com>, "Kirill A. Shutemov" <kirill@shutemov.name>
-CC: "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"rientjes@google.com" <rientjes@google.com>, "seanjc@google.com"
-	<seanjc@google.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>, "jxgao@google.com"
-	<jxgao@google.com>, "sagis@google.com" <sagis@google.com>,
-	"oupton@google.com" <oupton@google.com>, "peterx@redhat.com"
-	<peterx@redhat.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>,
-	"dmatlack@google.com" <dmatlack@google.com>, "pgonda@google.com"
-	<pgonda@google.com>, "michael.roth@amd.com" <michael.roth@amd.com>,
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>,
-	"isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>,
-	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, "corbet@lwn.net"
-	<corbet@lwn.net>, "hch@lst.de" <hch@lst.de>, "m.szyprowski@samsung.com"
-	<m.szyprowski@samsung.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>
-Subject: RE: [RFC V1 1/5] swiotlb: Support allocating DMA memory from SWIOTLB
-Thread-Topic: [RFC V1 1/5] swiotlb: Support allocating DMA memory from SWIOTLB
-Thread-Index: AQHaRRu2XlAVwhlX4keozaeeIIQbSLEKH9+AgAE9Hc6AAK9p8A==
-Date: Thu, 15 Feb 2024 20:26:41 +0000
-Message-ID:
- <SN6PR02MB41575CFBC54C46701110703CD44D2@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20240112055251.36101-1-vannapurve@google.com>
- <20240112055251.36101-2-vannapurve@google.com>
- <etvf2mon464whscbxqktdd7bputnqmmwmoeg7ssixsk4kljfek@4wngbgzbbmck>
- <CAGtprH-95FEUzpc-yxQMo87gpqgMxyz9W8tiWtu_ZHhMW-jjuA@mail.gmail.com>
- <8a6dabdf-dc11-4989-b6b4-b49871ff9ca6@amazon.com>
-In-Reply-To: <8a6dabdf-dc11-4989-b6b4-b49871ff9ca6@amazon.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-tmn: [baEvVU65RiHyY/1eZ6UPQgh2FHhU8GEH]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|BL3PR02MB8017:EE_
-x-ms-office365-filtering-correlation-id: c4f24484-a5ad-45d1-33f7-08dc2e646b74
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- AFiHlx9G41oaMIuMoby5tL1cN8LM3r4Zgk2mXB+x7bPMqoUl+YFmLS3P14wP2MhnLq3xJa6chdvgniJVr5efbrkQuBuMkRiBuHffVmMt3yV7XqnMA5sXXKMY9iVn0wtB9Y9v3m/q5R68T5iHA5y4NmHRH2rarX0OQOJRh02O+52eTaoshSghnk5G/qOyJvtkHhnAVBXcqMDpx4AHaNKR7vzNn/cOoCBtjtd4aA3gz07zFugppEMWoH/0ZIVm8GGg2MgdAXKlWdV/KK8mDjoKtkXD+fV5IqANiXoeh0tpuIk0y7iohha8lzynDEnRvVlzugEzrBneVzP/rnOY1THrC+j4B2BrC0F77EXa0IeaQg017qtFJ+bbC6RzrZrsPYfcFdLmZ6BhHzYwv8CCd/Mj6G8UX3dG8M5VJ/k9dsaRbWwFN1/xs9144y+/XcCqlzTtp+K1xDq+hIiVENAZvUsOEE1BWlHMtxsCbk3/ejy5ODzLCyioWxqBNHB6bkVg0tRcU14dudrnsTr9KVDp6eDqNzE+ArsC0Qo0sOTTZ1eEKTIDOlW6oZUhAXkc5SuQWB/J
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?TzZYVHZ4Z0Z3UmYyTER1bEVLU3R1MDhLN0l6UjVyY2FMT28zcnhnYzRRY2xX?=
- =?utf-8?B?MWRjbDNLd0xkeHRwRWtWTWtiSm0wdHpyNXZNMzVtUW4yRXU0QTMvQzhPaDZy?=
- =?utf-8?B?UGVOV29sakx0Z2dsUXNFN20wa0N2SlJBM1gyd3o4Q0tvRWM2V1FOL0ZZWDRi?=
- =?utf-8?B?VzFjOVl5QzVlZXdDaFVKbjdzY0E1SEdDWE8vc3gxeXVld2g5bXlaQVFjU3VD?=
- =?utf-8?B?V2NscktDMEVESlQveUlDZ3ZEcWNtdTFpNVFXOGgxNThya2VTQzlRYTRnUmYy?=
- =?utf-8?B?a3VPUnBXYUVjaG41R1hWanlyWmZtWnQ3ZE9nNVB2cFFpa0tQWVZTcjVSMVJi?=
- =?utf-8?B?eGxhc2NMMnFuRkFmMy9IaUxna1NZVWJ6QThKQTRZRGh1Zi84NnRVcVVabExi?=
- =?utf-8?B?VGdlY0E3YlhKaDh2SXNEa2hLTVpjSDVYaDN3VWF3b1RGR1RTZkZFbUwvdjhD?=
- =?utf-8?B?Y2NZVDcwVHNweko3MEhBT1g1d1I3Tk5la2xDcGp2UHlFYXZabnU0dnA3a1pz?=
- =?utf-8?B?YTdMNUZ4N1ZCeXoyTUc0SGg5SHBKYUVLQkovRjI2dml2eHRsMXJJa3Job3l3?=
- =?utf-8?B?SVk1VjJtajlndXROSlFwOTNsMTVlSklackhsRldCaHV6c0VxWWFOLzJkWk00?=
- =?utf-8?B?RHF4clJ2VEEyWFRtV2VzVDdCODkrTkd0a2svY3dNWlczYlpPdmtCUWtKbnVk?=
- =?utf-8?B?U2ZlczhycC9HRXhobzlDZ3F6MDlrN3l1eUxKb0pVQ3hBUktCT1lQWmxSQnVG?=
- =?utf-8?B?OWNhYVQyUTYzcDd6bXNwVkdtUW50SWN1VFNQTEEwV1p5M1gwZVZocUtFMnhH?=
- =?utf-8?B?Ums5RnkyUmFTVjBjbWM2T3dCQnF0U3h6T3R3NTMxczFvWHd6WWdDWGJyY0gx?=
- =?utf-8?B?elpwN3pzUkM5SHQ1RWlLc1YreHVPYXhXcHRGVzlwS2VxSlU0dGxPRHdPelA0?=
- =?utf-8?B?Y2pOUGtxME5INkhTMlF0a1NXN1NzQzV1UXhPUWlBOXR6L3pTVjJXV05wWFQ2?=
- =?utf-8?B?eG1yRzdKTzc3dkJhT2J3YnBRQTA2REtuRDBkSWF0ZVFIc1Z0dTVUcldTSHdG?=
- =?utf-8?B?TTZ6akpHWVdRWXh4ODNrdDlOVGRJRzVIK3k0Q2FhWnRvRDlMU01oQmpNV1pk?=
- =?utf-8?B?MUtQNUFTY1Q1ZFZ3RWpqOHdXK1R6dG9xMFA2REczWE9QTml2Z1IwcHg5RnhH?=
- =?utf-8?B?emdqcE5lbFdvSUZPNlVpdDVqQnJ4bDY4WGNaWjVtTXNIQkI1SzFpdzBrYnFU?=
- =?utf-8?B?MUZnc3J5c2ZvUXpiNmNMWHJiS3U2YUt0b1Blc1YwWHkzYjN2M0dOZkF6UTBx?=
- =?utf-8?B?QzFZQjBLWkpaS2MzS29Ma2R1bkhlQ2d6V1ZQeGlTSldiWFR6L2JVQTdSejdO?=
- =?utf-8?B?dEl3aTg2T21BN0dodVI2THVzcXBNZEI5WjMrQkVlTHhRNE1jQmlXQ3J3cDdQ?=
- =?utf-8?B?Q3RQNkFMUWwxelgwNWEwZnpFZGlWMHJvaThMeDFYZUdjMUpiZWFpZFljTHJU?=
- =?utf-8?B?OHdFRG1zTDRNT0dpNk93NFE4ZXpTdUw0RHZvazBkalV2NER6K1lNM0dWWkQw?=
- =?utf-8?B?Y3ZqakJYTE5TUWZBQmltb293ODVVWGIvS3lnL3pxdk0yRmRwQW95dlFFaDJr?=
- =?utf-8?Q?hvbQOsyOUN7522Mn6Qn1X/qNyEF2AWmexgD9XCr2vTyc=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AE213AA2A
+	for <linux-coco@lists.linux.dev>; Thu, 15 Feb 2024 22:44:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708037081; cv=none; b=qktmIXl28XddkgdbGs7fd41Qnh3wLehnWJY+T2LgxO3ct5hoZPIpI9JW+IlMuYQgDPdu+qjtmzE2BCP62AtzwswTDry+FDRWrbFPLFs3SJ1DDqG1JgGAINjVLMWz0BX1FMEa3b9nmowtma9MbtA7uMxs0gqloBvmO4bc1hvZWrM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708037081; c=relaxed/simple;
+	bh=7a4CRGflS3UeQaHyITsY4L13WF6Py9FXyYYu/eRX+qg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j3OZ4OXPRJR+3sDfHSzYMLwv8nWI7rbfM+IU37rkdDONWzlGZo8p2EplvKtwHrofqFIR3S+Ih/hSjckAi3FKCYatxXiAgjLlVptxaZejXJNYNP5QDgjahC29bFLuZWu33bePz9PPcsev4npNSCgoZomyQD8IVtPkhllud1iYgKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 41FMi83U029550;
+	Thu, 15 Feb 2024 16:44:08 -0600
+Received: (from greg@localhost)
+	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 41FMi7wZ029549;
+	Thu, 15 Feb 2024 16:44:07 -0600
+Date: Thu, 15 Feb 2024 16:44:06 -0600
+From: "Dr. Greg" <greg@enjellic.com>
+To: "Xing, Cedric" <cedric.xing@intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Dan Middleton <dan.middleton@linux.intel.com>,
+        Samuel Ortiz <sameo@rivosinc.com>, Qinkun Bao <qinkun@google.com>,
+        "Yao, Jiewen" <jiewen.yao@intel.com>,
+        Dionna Amalie Glaze <dionnaglaze@google.com>, biao.lu@intel.com,
+        linux-coco@lists.linux.dev, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
+Message-ID: <20240215224406.GA29515@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <1557f98a-3d52-4a02-992b-4401c7c85dd7@linux.intel.com> <85b7a4a679eada1d17b311bf004c2d9e18ab5cd3.camel@HansenPartnership.com> <b8140cc8-a56b-40f6-a593-7be49db14c77@intel.com> <fe1722c3618a8216cb53b8fd3f1b7cbb6fdff5a0.camel@HansenPartnership.com> <65c2e4aa54a0_d4122947f@dwillia2-mobl3.amr.corp.intel.com.notmuch> <22088ed3-51a4-415f-932c-db84c92a2812@intel.com> <527da630-4952-4b1d-80c0-5a87997ff9fd@linux.intel.com> <332775d7218843d6cc168c963d76e6841eab5d5b.camel@HansenPartnership.com> <65c691e13a50d_afa42948a@dwillia2-xfh.jf.intel.com.notmuch> <226df539-b3f4-4099-b6a6-293fa200c536@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4f24484-a5ad-45d1-33f7-08dc2e646b74
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Feb 2024 20:26:41.3944
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR02MB8017
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <226df539-b3f4-4099-b6a6-293fa200c536@intel.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Thu, 15 Feb 2024 16:44:08 -0600 (CST)
 
-RnJvbTogQWxleGFuZGVyIEdyYWYgPGdyYWZAYW1hem9uLmNvbT4gU2VudDogVGh1cnNkYXksIEZl
-YnJ1YXJ5IDE1LCAyMDI0IDE6NDQgQU0NCj4gDQo+IE9uIDE1LjAyLjI0IDA0OjMzLCBWaXNoYWwg
-QW5uYXB1cnZlIHdyb3RlOg0KPiA+IE9uIFdlZCwgRmViIDE0LCAyMDI0IGF0IDg6MjDigK9QTSBL
-aXJpbGwgQS4gU2h1dGVtb3YNCj4gPGtpcmlsbEBzaHV0ZW1vdi5uYW1lPiB3cm90ZToNCj4gPj4g
-T24gRnJpLCBKYW4gMTIsIDIwMjQgYXQgMDU6NTI6NDdBTSArMDAwMCwgVmlzaGFsIEFubmFwdXJ2
-ZSB3cm90ZToNCj4gPj4+IE1vZGlmeSBTV0lPVExCIGZyYW1ld29yayB0byBhbGxvY2F0ZSBETUEg
-bWVtb3J5IGFsd2F5cyBmcm9tIFNXSU9UTEIuDQo+ID4+Pg0KPiA+Pj4gQ1ZNcyB1c2UgU1dJT1RM
-QiBidWZmZXJzIGZvciBib3VuY2luZyBtZW1vcnkgd2hlbiB1c2luZyBkbWFfbWFwXyogQVBJcw0K
-PiA+Pj4gdG8gc2V0dXAgbWVtb3J5IGZvciBJTyBvcGVyYXRpb25zLiBTV0lPVExCIGJ1ZmZlcnMg
-YXJlIG1hcmtlZCBhcyBzaGFyZWQNCj4gPj4+IG9uY2UgZHVyaW5nIGVhcmx5IGJvb3QuDQo+ID4+
-Pg0KPiA+Pj4gQnVmZmVycyBhbGxvY2F0ZWQgdXNpbmcgZG1hX2FsbG9jXyogQVBJcyBhcmUgYWxs
-b2NhdGVkIGZyb20ga2VybmVsIG1lbW9yeQ0KPiA+Pj4gYW5kIHRoZW4gY29udmVydGVkIHRvIHNo
-YXJlZCBkdXJpbmcgZWFjaCBBUEkgaW52b2NhdGlvbi4gVGhpcyBwYXRjaCBlbnN1cmVzDQo+ID4+
-PiB0aGF0IHN1Y2ggYnVmZmVycyBhcmUgYWxzbyBhbGxvY2F0ZWQgZnJvbSBhbHJlYWR5IHNoYXJl
-ZCBTV0lPVExCDQo+ID4+PiByZWdpb25zLiBUaGlzIGFsbG93cyBlbmZvcmNpbmcgYWxpZ25tZW50
-IHJlcXVpcmVtZW50cyBvbiByZWdpb25zIG1hcmtlZA0KPiA+Pj4gYXMgc2hhcmVkLg0KPiA+PiBC
-dXQgZG9lcyBpdCB3b3JrIGluIHByYWN0aWNlPw0KPiA+Pg0KPiA+PiBTb21lIGRldmljZXMgKGxp
-a2UgR1BVcykgcmVxdWlyZSBhIGxvdCBvZiBETUEgbWVtb3J5LiBTbyB3aXRoIHRoaXMgYXBwcm9h
-Y2gNCj4gPj4gd2Ugd291bGQgbmVlZCB0byBoYXZlIGh1Z2UgU1dJT1RMQiBidWZmZXIgdGhhdCBp
-cyB1bnVzZWQgaW4gbW9zdCBWTXMuDQo+ID4+DQo+ID4gQ3VycmVudCBpbXBsZW1lbnRhdGlvbiBs
-aW1pdHMgdGhlIHNpemUgb2Ygc3RhdGljYWxseSBhbGxvY2F0ZWQgU1dJT1RMQg0KPiA+IG1lbW9y
-eSBwb29sIHRvIDFHLiBJIHdhcyBwcm9wb3NpbmcgdG8gZW5hYmxlIGR5bmFtaWMgU1dJT1RMQiBm
-b3IgQ1ZNcw0KPiA+IGluIGFkZGl0aW9uIHRvIGFsaWduaW5nIHRoZSBtZW1vcnkgYWxsb2NhdGlv
-bnMgdG8gaHVnZXBhZ2Ugc2l6ZXMsIHNvDQo+ID4gdGhhdCB0aGUgU1dJT1RMQiBwb29sIGNhbiBi
-ZSBzY2FsZWQgdXAgb24gZGVtYW5kLg0KPiA+DQoNClZpc2hhbCAtLQ0KDQpXaGVuIHRoZSBkeW5h
-bWljIHN3aW90bGIgbWVjaGFuaXNtIHRyaWVzIHRvIGdyb3cgc3dpb3RsYiBzcGFjZQ0KYnkgYWRk
-aW5nIGFub3RoZXIgcG9vbCwgaXQgZ2V0cyB0aGUgYWRkaXRpb25hbCBtZW1vcnkgYXMgYSBzaW5n
-bGUNCnBoeXNpY2FsbHkgY29udGlndW91cyBjaHVuayB1c2luZyBhbGxvY19wYWdlcygpLiAgIEl0
-IHN0YXJ0cyBieSB0cnlpbmcNCnRvIGFsbG9jYXRlIGEgY2h1bmsgdGhlIHNpemUgb2YgdGhlIG9y
-aWdpbmFsIHN3aW90bGIgc2l6ZSwgYW5kIGlmIHRoYXQNCmZhaWxzLCBoYWx2ZXMgdGhlIHNpemUg
-dW50aWwgaXQgZ2V0cyBhIHNpemUgd2hlcmUgdGhlIGFsbG9jYXRpb24gc3VjY2VlZHMuDQpUaGUg
-bWluaW11bSBzaXplIGlzIDEgTWJ5dGUsIGFuZCBpZiB0aGF0IGZhaWxzLCB0aGUgImdyb3ciIGZh
-aWxzLg0KDQpTbyBpdCBzZWVtcyBsaWtlIGR5bmFtaWMgc3dpb3RsYiBpcyBzdWJqZWN0IHRvIHRo
-ZSBhbG1vc3QgdGhlIHNhbWUNCm1lbW9yeSBmcmFnbWVudGF0aW9uIGxpbWl0YXRpb25zIGFzIHRy
-eWluZyB0byBhbGxvY2F0ZSBodWdlIHBhZ2VzLg0Kc3dpb3RsYiBuZWVkcyBhIG1pbmltdW0gb2Yg
-MSBNYnl0ZSBjb250aWd1b3VzIGluIG9yZGVyIHRvIGdyb3csDQp3aGlsZSBodWdlIHBhZ2VzIG5l
-ZWQgMiBNYnl0ZXMsIGJ1dCBlaXRoZXIgaXMgbGlrZWx5IHRvIGJlDQpwcm9ibGVtYXRpYyBpbiBh
-IFZNIHRoYXQgaGFzIGJlZW4gcnVubmluZyBhIHdoaWxlLiAgV2l0aCB0aGF0DQppbiBtaW5kLCBJ
-J20gbm90IGNsZWFyIG9uIHRoZSBiZW5lZml0IG9mIGVuYWJsaW5nIGR5bmFtaWMgc3dpb3RsYi4N
-Ckl0IHNlZW1zIGxpa2UgaXQganVzdCBtb3ZlcyBhcm91bmQgdGhlIHByb2JsZW0gb2YgbmVlZGlu
-ZyBoaWdoIG9yZGVyDQpjb250aWd1b3VzIG1lbW9yeSBhbGxvY2F0aW9ucy4gIE9yIGFtIEkgbWlz
-c2luZyBzb21ldGhpbmc/DQoNCk1pY2hhZWwNCg0KPiA+IFRoZSBpc3N1ZSB3aXRoIGFsaWduaW5n
-IHRoZSBwb29sIGFyZWFzIHRvIGh1Z2VwYWdlcyBpcyB0aGF0IGh1Z2VwYWdlDQo+ID4gYWxsb2Nh
-dGlvbiBhdCBydW50aW1lIGlzIG5vdCBndWFyYW50ZWVkLiBHdWFyYW50ZWVpbmcgdGhlIGh1Z2Vw
-YWdlDQo+ID4gYWxsb2NhdGlvbiBtaWdodCBuZWVkIGNhbGN1bGF0aW5nIHRoZSB1cHBlciBib3Vu
-ZCBpbiBhZHZhbmNlLCB3aGljaA0KPiA+IGRlZmVhdHMgdGhlIHB1cnBvc2Ugb2YgZW5hYmxpbmcg
-ZHluYW1pYyBTV0lPVExCLiBJIGFtIG9wZW4gdG8NCj4gPiBzdWdnZXN0aW9ucyBoZXJlLg0KPiAN
-Cj4gDQo+IFlvdSBjb3VsZCBhbGxvY2F0ZSBhIG1heCBib3VuZCBhdCBib290IHVzaW5nIENNQSBh
-bmQgdGhlbiBvbmx5IGZpbGwgaW50bw0KPiB0aGUgQ01BIGFyZWEgd2hlbiBTV0lPVExCIHNpemUg
-cmVxdWlyZW1lbnRzIGluY3JlYXNlPyBUaGUgQ01BIHJlZ2lvbg0KPiB3aWxsIGFsbG93IG1vdmFi
-bGUgYWxsb2NhdGlvbnMgYXMgbG9uZyBhcyB5b3UgZG9uJ3QgcmVxdWlyZSB0aGUgQ01BIHNwYWNl
-Lg0KPiANCj4gDQo+IEFsZXgNCg0K
+On Mon, Feb 12, 2024 at 11:36:27PM -0800, Xing, Cedric wrote:
+
+Hi, I hope the week is going well for everyone.
+
+> On 2/9/2024 12:58 PM, Dan Williams wrote:
+> >James Bottomley wrote:
+> >>Just to correct this: IMA uses its own log format, but I think this was
+> >>a mistake long ago and the new log should use TCG2 format so all the
+> >>tools know how to parse it.
+> >
+> >Is this a chance to nudge IMA towards a standard log format? In other
+> >words, one of the goals alongside userspace consumers of the RTMR log
+> >would be for IMA to support it as well as an alternate in-kernel backend
+> >next to TPM. IMA-over-TPM continues with its current format,
+> >IMA-over-RTMR internally unifies with the log format that is shared with
+> >RTMR-user-ABI.
+
+> I'm not a TCG expert. As far as I know,
+> https://trustedcomputinggroup.org/wp-content/uploads/TCG-PC-Client-Platform-Firmware-Profile-Version-1.06-Revision-52_pub-1.pdf
+> defines the event types for TCG2 logs for firmware uses only. I
+> cannot find a spec that defines event types for OS or
+> applications. We may reuse the firmware event types for Linux but I
+> doubt they can accommodate IMA.
+>
+> IMHO, we don't have to follow TCG2 format because TDX is never TPM,
+> nor are any other TEEs that support runtime measurements. The
+> existing TCG2 format looks to me somewhat like ASN.1 - well defined
+> but schema is needed to decode. In contrast, JSON is a lot more
+> popular than ASN.1 nowadays because it's human readable and doesn't
+> require a schema. I just wonder if we should introduce a text based
+> log format. We could make the log a text file, in which each line is
+> an event record and the digest of the line is extended to the
+> specified runtime measurement register. The content of each line
+> could be free-form at the ABI level, but we can still recommend a
+> convention for applications - e.g., the first word/column must be an
+> URL for readers to find out the format/syntax of the rest of the
+> line. Thoughts?
+
+A common text based security event description format, based on JSON
+encoding of LSM security event descriptions, surfaced through
+securityfs, has already been implemented, proposed and has been pushed
+out for review twice.
+
+The TSEM LSM is designed to be a generic security modeling and
+security event description export architecture.
+
+The V2 patches and discusion around those can be found here:
+
+https://lore.kernel.org/lkml/20230710102319.19716-1-greg@enjellic.com/T/#t
+
+We have a rather significant upgrade to that patchset that we are
+staging up for a V3 release.
+
+The fundamental premise for TSEM is the encoding and modeling of the
+parameters that describe LSM based security events.  It is designed to
+be a model/policy agnostic scheme for generating attestations on the
+state of the platform at large or a workload.  Workload models are
+supported by a concept known as a security modeling namespace, much
+like any other namespace, that tracks events for an isolated process
+heirarchy.
+
+The most important review comment on the V1 patchset, that can also be
+found on lore, was by Greg Kroah-Hartmann who suggested using a
+standardized encoding scheme like JSON for the event descriptions.  If
+you look at his comments, he indicated that there is little rationale
+for not using an encoding format that the entire technology industry
+trusts and uses.
+
+FWIW, we made the change to JSON and have never looked back, it was
+the most positive review comment we received.
+
+The current format would not seem to have any issues supporting IMA
+style attestation.  For example, the most important event for IMA
+would be a file open event.  Here is an example of the encoding
+generated for that event:
+
+{
+    "event": {
+        "process": "quixote",
+        "type": "file_open",
+        "ttd": "219",
+        "p_ttd": "219",
+        "task_id": "20e07b3614ee37869391849278dfe7285f37ec2362f7d10c052e6715ad888584",
+        "p_task_id": "20e07b3614ee37869391849278dfe7285f37ec2362f7d10c052e6715ad888584",
+        "ts": "6535350020298"
+    },
+    "COE": {
+        "uid": "0",
+        "euid": "0",
+        "suid": "0",
+        "gid": "0",
+        "egid": "0",
+        "sgid": "0",
+        "fsuid": "0",
+        "fsgid": "0",
+        "capeff": "0x3ffffffffff"
+    },
+    "file_open": {
+        "file": {
+            "flags": "32800",
+            "inode": {
+                "uid": "50",
+                "gid": "50",
+                "mode": "0100755",
+                "s_magic": "0xef53",
+                "s_id": "xvda",
+                "s_uuid": "feadbeaffeadbeaffeadbeaffeadbeaf"
+            },
+            "path": {
+                "dev": {
+                    "major": "202",
+                    "minor": "0"
+                },
+                "pathname": "/opt/Quixote/sbin/runc"
+            },
+            "digest": "81f73a59be3d122ab484d7dfe9ddc81030f595cc59968f61c113a9a38a2c113a"
+        }
+    }
+}
+
+There is sufficient information included to track the digests of
+executable files, or any other type of file for that matter, for any
+user on the system.
+
+This isn't an attempt to pitch TSEM, but rather to suggest the utility
+of a self-describing JSON format for security logging.
+
+As GKH correctly noted in his review comments, there is a great deal
+of utility to be had by using a format that has significant and mature
+userspace tooling support.  Our own work and deployments have also
+indicated a great deal of utility to having log entries that are
+self-describing.
+
+One additional observation that may be of use with respect to anyone
+pursueing an alternate event log format has come out of our data
+science team.  They indicate there has been significant work in the
+Elastic search community with respect to the development of
+standardized descriptions of events for logging and other purposes,
+reference the following URL:
+
+https://www.elastic.co/guide/en/ecs/current/index.html
+
+Our data team is looking at modifying our current security event
+descriptions to be as consistent as possible with existing standards
+for identifying event parameters.  Given that attestation and host
+based security event modeling are only going to become more important
+in the future, there would seem to be utility in working towards
+contributing to standardized descriptions for security relevant logs.
+
+Hopefully the above reflections are of assistance in furthering the
+various agendas that are involved.
+
+Have a good remainder of the week.
+
+As always,
+Dr. Greg
+
+The Quixote Project - Flailing at the Travails of Cybersecurity
+              https://github.com/Quixote-Project
