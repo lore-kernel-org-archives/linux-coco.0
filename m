@@ -1,64 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E7512FB3A;
-	Thu, 15 Feb 2024 13:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3286412FF96;
+	Thu, 15 Feb 2024 13:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708002068; cv=none; b=fEpufksKNgFnhhBMbZG9u4N/xI3sxBD5dLb+mQT2K5XBCcOZRdRb7avupuEDx8FUzex1qhDPRMsgqmiczedZ2bQWFkHkvJ+74SFYI61k28ObXUo/OoqMCvEeH1k6bgHi7X+zI2VIukq2bOG6vprDp8Lz2yO3RDiYYSeWk2r0Nes=
+	t=1708003380; cv=none; b=Zr7vzWtY5SyPKgtGpdQ68A8IHJRicB4ePNyUB9/TYsn0Pzsem0QLmQ+GPcwxXQsskgBPzpiBpZOgzEJU30jQGo+5qE06DnxqGKVYYWZEDbZ8tDboc8oNm1RinMV+hyBO6UVbGcqjmM+llqszqju88zJGtLiELbm1Wna9wYuoUD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708002068; c=relaxed/simple;
-	bh=FKlHtZWfNDxZ04AeiSEPpER0SNLeAdM4WdMorVnWmZU=;
+	s=arc-20240116; t=1708003380; c=relaxed/simple;
+	bh=aprbRSSrNekh4TziwkCVNUHRLpaysztfD/0uIJPTDW8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bPiA24za8wTcbqcI1KvkhYXhMsREwzox/TxzLjGpyumw7lkcaXLcB274w/SXXSq5/M9TitdEtzi57onDXcOrenTx1lLfWH+DkvMp53a6JKqaWBA9vNZckljgnXNqoz4rUAbnGsye+ZWOMurxUpKReN/Fav4wRHbKi5QRkgA6InQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=pmsDStBA; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=pgngwCBplxK1nQEXNKsGPH1eL5aqYwNCYQ70vQ2cuuFNubipXNuzv+sHoFAnzMcJnJYSu/GL6RibQ4VGlkFvruWXkjRcNOvj60hCP8pFk3iudJAseAyCiERhnXmHq2w85K8AiYcgUoj2MsZVafST/D6Z58yvbL5rMLtx5YSWLV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=acPd2w66; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="pmsDStBA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C7BC433F1;
-	Thu, 15 Feb 2024 13:01:06 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="acPd2w66"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70453C433F1;
+	Thu, 15 Feb 2024 13:22:58 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="pmsDStBA"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="acPd2w66"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1708002064;
+	t=1708003376;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ILV4sGG7xolY2UKGldmnLNxgLZat+Tcj+GmnaSdLwRk=;
-	b=pmsDStBAbQNsYJflCVc7Zp+TSrz5YVhfAPL4l1lhEOc67hoMGEa+k0dk932Ql4HicJd5Ng
-	SAYbF+Jcx0egG8YLVoYE79nKC7JDyCnY9K9HCMddZV6AJLVI6bQR5+MTw7JAjcI1cBQ4K8
-	RIGLSJb/JuYVL9tR/dqsy4hOmTvdEUY=
+	bh=gH77Wpl45QrIFBHWb9b04lKTCLb8JnPiulNkEJpR7rI=;
+	b=acPd2w666YPwPoBmmYcpxXoBMPlZJs0SNmmkL9TCA+lQlT1Zm6T6KZ0f3iXVWWKih+FqKq
+	obzfyijfvmrEJfrm7VbRwPqyCWhN6RFDnIieWuohlqUjcsI92E/lTUYYvEGPPRKorkHo9a
+	lyUe3j2gHzo+XBDxJ4rVMOICfjWJT0k=
 Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id bf99dffa (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 15 Feb 2024 13:01:04 +0000 (UTC)
-Date: Thu, 15 Feb 2024 14:01:04 +0100
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 8cd6da92 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Thu, 15 Feb 2024 13:22:56 +0000 (UTC)
+Date: Thu, 15 Feb 2024 14:22:56 +0100
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Theodore Ts'o <tytso@mit.edu>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Nakajima, Jun" <jun.nakajima@intel.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: "x86@kernel.org" <x86@kernel.org>,
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
-Message-ID: <Zc4LEAOCFOBcIRXy@zx2c4.com>
-References: <DM8PR11MB5750C7D16DC566CD1329D5A5E77C2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9q-eUXnXnpaDu0VOQemOYysst7SaJ-=b8-vCFP9h50Szg@mail.gmail.com>
- <20240201045710.GD2356784@mit.edu>
- <CAHmME9oqM2a766dBK22-yKr8=2-icg=UkQzmBOF8G5Zh_Y9E9w@mail.gmail.com>
- <DM8PR11MB57505F657A8F08E15DC34673E7422@DM8PR11MB5750.namprd11.prod.outlook.com>
- <DM8PR11MB57503A2BB6F74618D64CC44AE74E2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <Zcz2r51Tbb44ywjl@zx2c4.com>
- <696a5d98-b6a2-43aa-b259-fd85f68a5707@amd.com>
- <CAHmME9pzOTdkNr=mM7yKKqLWApQ5cxjvb7R9C2eQ2QFeUEqT6A@mail.gmail.com>
- <20240214201103.GD394352@mit.edu>
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Theodore Ts'o <tytso@mit.edu>, Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v2 2/2] x86/coco: Require seeding RNG with RDRAND on CoCo
+ systems
+Message-ID: <Zc4QMAnrMiiCwkmX@zx2c4.com>
+References: <20240214195744.8332-1-Jason@zx2c4.com>
+ <20240214195744.8332-3-Jason@zx2c4.com>
+ <DM8PR11MB57501389AE5518CB26E037D7E74D2@DM8PR11MB5750.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,33 +56,71 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240214201103.GD394352@mit.edu>
+In-Reply-To: <DM8PR11MB57501389AE5518CB26E037D7E74D2@DM8PR11MB5750.namprd11.prod.outlook.com>
 
-On Wed, Feb 14, 2024 at 03:11:03PM -0500, Theodore Ts'o wrote:
-> On Wed, Feb 14, 2024 at 09:04:34PM +0100, Jason A. Donenfeld wrote:
-> > AMD people, Intel people: what are the fullest statements we can rely
-> > on here? Do the following two statements work?
-> > 
-> > 1) On newer chips, RDRAND never fails.
-> > 2) On older chips, RDRAND never fails if you try 10 times in a loop,
-> > unless you consider host->guest attacks, which we're not, because CoCo
-> > is only a thing on the newer chips.
-> > 
-> > If those hold true, then the course of action would be to just add a
-> > WARN_ON(!ok) but keep the loop as-is.
-> 
-> I think we may only want to do the WARN_ON in early boot.  Otherwise,
-> on older chips, if a userspace process executes RDRAND is a tight
-> loop, it might cause the WARN_ON to trigger, which is considered
-> undesirable (and is certainly going to be something that could result
-> in a syzbot complaint).
+Hi Elena,
 
-Yea, seems reasonable. Or maybe we just don't bother adding any WARN
-there and just address the CoCo thing with the patch 2/2. As it turns
-out, on normal systems, the RNG is designed anyway to deal with a broken
-or missing RDRAND. So maybe adding these heuristics to warn when the CPU
-is broken isn't worth it? Or maybe that's an interesting thing to do?
-Dunno, I'm indifferent about it I suppose. But I agree if it's added,
-doing it at early boot only makes most sense.
+On Thu, Feb 15, 2024 at 07:30:32AM +0000, Reshetova, Elena wrote:
+> Should we just go back to the approach to add one more check in random_init_early()
+> to panic in the CoCo case if both rdseed and rdrand fails to give us anything? 
+
+Yea, no, definitely not. That is, in my opinion, completely backwards
+and leads to impossible maintainability. CoCo is not some special
+snowflake that gets to sprinkle random conditionals in generic code.
+
+First, consider the motivation for doing this:
+- This is to abort on a physical defective CPU bug -- presumably a
+  highly implausible thing to ever happen.
+- This is for a threat model that few people are really compelled by
+  anyway, e.g. it's whack-a-mole season with host->guest vectors.
+- This is for a single somewhat obscure configuration of a single
+  architecture with a feature only available on certain chipsets.
+- This is not an "intrinsic" problem that necessitates plumbing complex
+  policy logic all over the place, but for a very special
+  driver-specific case.
+
+Rather, what this patch does is...
+
+> Now with this patch, the logic becomes
+
+Your description actually wasn't quite accurate so I'll write it out
+(and I'll clarify in the commit message/comments for v3 - my fault for
+being vague):
+
+1. At early boot, x86/CoCo is initialized. As part of that
+   initialization, it makes sure it can get 256 bits of RDRAND output
+   and adds it to the pool, in exactly the same way that the SD card
+   driver adds inserted memory card serial numbers to the pool. If it
+   can't get RDRAND output, it means CoCo loses one of its "Co"s, and so
+   it panic()s.
+
+2. Later, the generic RNG initializes in random_init_early() and
+   random_init(), where it opportunistically tries to use everything it
+   can to get initialized -- architectural seed, architectural rand,
+   jitter, timers, boot seeds, *seeds passed from other drivers*, and
+   whatever else it can.
+
+Now what you're complaining about is that in this step 2, we wind up
+adding *even more* rdrand (though, more probably rdseed), in addition to
+what was already added in the platform-specific driver in step 1. Boo
+hoo? I can't see how that's a bad thing. Step 1 was CoCo's policy driver
+*ensuring* that it was able to push at least *something good* into the
+RNG, and taking a CoCo-specific policy decision (panic()ing) if it
+can't. Step 2 is just generic RNG stuff doing its generic RNG thing.
+
+You might also want to needle on the fact that if RDRAND is somehow
+intermittently physically defective, and so step 1 succeeds, but in step
+2, the RNG doesn't manage to get seeded by RDRAND and so initializes
+based on jitter or IRQs or something. Okay, fine, but who cares? First,
+you'd be talking here about a hugely unlikely defective hardware case,
+and second, the end state remains basically identical: there's a good
+seed from RDRAND and the RNG itself is able to initialize.
+
+So I really don't want to litter the generic code with a bunch of
+platform-specific hacks. The function add_device_randomness()
+specifically exists so that individual platforms and devices that have
+some unique insight into an entropy source or entropy requirements or
+policy or whatever else can do that in their own platform or device
+driver code where it belongs.
 
 Jason
