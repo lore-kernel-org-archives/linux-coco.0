@@ -1,124 +1,146 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2042.outbound.protection.outlook.com [40.107.243.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1C2364C6
-	for <linux-coco@lists.linux.dev>; Mon, 19 Feb 2024 13:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708350769; cv=none; b=TSomvFqQOHUAJ/W+Bky7PwoMUU5zzjBP2r1Lqk4Iyz5wx4OVRvtctmb3uJqiJt2X7Q69gP3/aAIBkpJ5E2F1jCCIZYneaP0UhjTGil/QUKuNsQRos16fTNobV81Vyo9pjsg2L6oBzc35a5jbeA2vX6ORaqdYDoZfQyXRR8pKTfE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708350769; c=relaxed/simple;
-	bh=yPMBSovixa7VCIL6tvi34aVw1yfzyVwmD5bVU4sWDNs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qrPmfpuIbOccrNlD29KX+zlsN40tzRO2xwv6mAr9RiHcVR62UjujFQ5C4ffu8J3yH/ikXPqKMOpphqAkZZHOZ5XagVxmbjJJ50SRIACVX9lqbPBqx/WcQA1pWXwMNtQh6ik/lewim8s3wWIslo8z8GGFPCWCnN/++uMnM0CaCHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lcte9Ltr; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1F8535BE
+	for <linux-coco@lists.linux.dev>; Mon, 19 Feb 2024 21:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708377135; cv=fail; b=GWXkRYiZr1tnrF1R0GVxMgsY8KS0vv5XcXcD9P6SQuCgNNIjtas8NPh2LlZDouWH2l8WvzQ7Oe+fQNCHqC0D+LHDF2bZTsEqGjqMfw2lBOg3dxqZnoRd0Il/FLIX75PSjh6wEyW1OQfw9Py0k3h6vzXH4Z69A71W0DUcJGxXixU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708377135; c=relaxed/simple;
+	bh=eV9PVuyzpZ70I/pu9Z3stgOdL4n4O5Q3lijY/WMVqA0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HJR3MZ3DwKwvtuxfdBxCoMKLQuuYSsb1x7IzDkk/t21LZ7sQvu2M77+LZrH8ymycnDfYRaYA4Yh5MlglR3J59nbWuQkZMMSknb2u1/3D1g3XGIrjr0zPioVC5jFzE9/MBD+tdTNNymFfU8LHu11Xe3Pbgw02BZ0UNKQ64IIfD9c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HwD0a/z7; arc=fail smtp.client-ip=40.107.243.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lcte9Ltr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708350768; x=1739886768;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yPMBSovixa7VCIL6tvi34aVw1yfzyVwmD5bVU4sWDNs=;
-  b=lcte9LtrzVR/a2XNInONQlzTJbiRZHhyNQjXnzYk8x3Z7AEtxjRigOF7
-   lMIUiuiMu/AogGAd6rrhk+mmeX8AYyDtMkhL/2finxOINhSYvN+EeZ5qp
-   7P/+HJVnu9yfPRz1n0yM/iVXotWM/4ScWMIocQBCkD48gcBI8tnGUi9ey
-   XTn7KXKXO3dccMNuozpE7yb/3pz9tX/OClo3b4im86OosLUIF1/Omb8kP
-   WCI1hyHF7SeRv2qxjrtYDxRSt70Ef4Y8/GSdPuMOM1CbxfrkUBm52MxVh
-   nH9wTnVi7n0ImTkDHTs321WLnSqMe1b4m8Su8349QFxi4Uappooxlnmcz
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="2333804"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="2333804"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 05:52:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="936293708"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="936293708"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 19 Feb 2024 05:52:42 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 9DC35350; Mon, 19 Feb 2024 15:52:41 +0200 (EET)
-Date: Mon, 19 Feb 2024 15:52:41 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Baoquan He <bhe@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv7 07/16] x86/mm: Return correct level from
- lookup_address() if pte is none
-Message-ID: <zhbhgq27kjrhkdgbxomjykjez2i4hckguvmxyptvfvoftue5ca@zowl5qbl6psl>
-References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
- <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
- <ZdLjQCaxhOnR+GzX@MiWiFi-R3L-srv>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HwD0a/z7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TGXR/RFgHIwl55y2sSHxH5H7WZICoZh1sdRsVuZCjLIWvC5TUOu0VNz85wENCL1GUajwUXc0yXqUhloZUt28kzqRproM7Zt+g7P1dH7z9Z59Nidirm/EhMvoCuCyvwceI9ff+bydvQUKTKUdjxiW20WHlryIIy92DSrqT7Z1t2NTFlGncL+t/Y1hPKEcQeVJ2lShMugs19GFxRvvESBRp50u+BZSAM+feS+NuG5Upkx9YU/L3vc0GF6rT0eqQCBGPlBsLjfvKUz/0i/WCnO1HHF2zGOQ68nqXuDtzgjz6TsmJMqAq2YAJK9d7Wff8Gb+Jsqzll5uPVeSyWGD3obiEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=y6PG7rDVf4cEk4RqzZVKG6iYnAzchQ1zPvQVV5Q2L+4=;
+ b=Qr8R4pxaY1LxSb5a7EGqFOd+up6aYX99Gn5p2sMZuuB4u+B4fkwc61Aa3+I70cnconaNf4LJya3yxyWeym8c2TNDaBrIudCfrfP7zmGoAhjVV2iRfH1f5Jpv/UfFLojPPvb4AvjtdhzDnjSF9TQ6CJYul6rKzHD/dM0hcMRazWSsWlq5ZzeTFglR8PQZEy+Su9iKSUu7AX1qGwrAa1TYHriA2fcb5T3T4dZEW6FddZbKn/CtOQ1XO/UzQ8BNXvSok7tDQialRjZxTmKMRLOcVmbr/q+QW1VaOyxU9ByS2fJkTdNn2PZG7F3TV/vfL/WLvBEY9dgqfpZYne5YZAZZ8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linutronix.de smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=y6PG7rDVf4cEk4RqzZVKG6iYnAzchQ1zPvQVV5Q2L+4=;
+ b=HwD0a/z7KGyd6k8usNyKZg+PWsjCFcXWXXqPjvds5Lh2x/gz/cgQJd9MX4UofgfyuyZWN1gkDXrB4/DFPbmGnn9Q4OOjae9IB2wjz+UOfS/aKcuu6EbAqQuCDpR00qXGfMOWKvqtxDe4fu1Z8AfkaK+Vuoe+WkJV6WBO1hvk4CU=
+Received: from BN6PR17CA0054.namprd17.prod.outlook.com (2603:10b6:405:75::43)
+ by PH7PR12MB7233.namprd12.prod.outlook.com (2603:10b6:510:204::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.16; Mon, 19 Feb
+ 2024 21:12:09 +0000
+Received: from BN1PEPF0000468E.namprd05.prod.outlook.com
+ (2603:10b6:405:75:cafe::d0) by BN6PR17CA0054.outlook.office365.com
+ (2603:10b6:405:75::43) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39 via Frontend
+ Transport; Mon, 19 Feb 2024 21:12:09 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN1PEPF0000468E.mail.protection.outlook.com (10.167.243.139) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7292.25 via Frontend Transport; Mon, 19 Feb 2024 21:12:09 +0000
+Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 19 Feb
+ 2024 15:12:08 -0600
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>
+CC: <ardb@kernel.org>, <hpa@zytor.com>, <linux-efi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <rafael@kernel.org>, <peterz@infradead.org>,
+	<adrian.hunter@intel.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	<elena.reshetova@intel.com>, <jun.nakajima@intel.com>,
+	<rick.p.edgecombe@intel.com>, <thomas.lendacky@amd.com>, <seanjc@google.com>,
+	<kai.huang@intel.com>, <bhe@redhat.com>, <kexec@lists.infradead.org>,
+	<linux-coco@lists.linux.dev>, <kirill.shutemov@linux.intel.com>,
+	<anisinha@redhat.com>, <michael.roth@amd.com>, <bdas@redhat.com>,
+	<vkuznets@redhat.com>
+Subject: [PATCH] efi/x86: skip efi_arch_mem_reserve() in case of kexec.
+Date: Mon, 19 Feb 2024 21:11:58 +0000
+Message-ID: <20240219211158.768523-1-Ashish.Kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZdLjQCaxhOnR+GzX@MiWiFi-R3L-srv>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000468E:EE_|PH7PR12MB7233:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9593f61e-3912-4aea-ae6e-08dc318f6f02
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	zv5+Wj+QPkgmwV77lGpy67xlucjkDzmfuaeb/L6kP1ZRU8RFIhev9Eg0Z0mFZlBUrxbGW2daC1Mn3+3yge4VNwhklL6DDyqL3isZ9HbryqoHGeLSJKr73Pq/pYjK4icHc8lZAe06un0fm+5hFkGQRW32HES0w/F50HAfRQ8YGnRDaQRJU+qkG8OOIXQYx6fDz3N3Ob5uL3UCbM66bQiU/z+D4Hnso/NrxmRi2IsPSh2LbMUbnALhN6gfuNlIocZsVm1lxavWWOojuYDqfl9SUGyHL2SCNCqfuBUFgMDm7ZYSS4QcIO2BeK94TlmR735zbVZvdEEblA2Al31sTLa9xSSqV7N0JzSw1VRxkTAFICBppC+TGMruB02Sel/o/cTCZUP6I8LHaf2LNvSNEmaWBL32VlYhMHw05x0cfJgSL07BMXcvrmWzqbSTBqTSW6PU3ff6LBAjT5ZQ2+LknyR6wKlKyi1NHc5PcrngL1c8i7l8BN9zCuGHPvIOtrxT6PyMpIC5hr5Hy87+d4wjxN2ZOP7TLa+PtRtzMPj/oUE1BkjatZ+eVqpTFM3/cBgqpgVWhZG29Gd9ZClKf/0H0O5vuy4sKyL30C/P2djd3+tiGdzu6JjNJ4WnMMPKFFnlDD68+bm1iDHqTY1tpTfvRU/JI4uxmi5HVPlP9K/TaxGPjfY=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(46966006)(40470700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2024 21:12:09.1830
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9593f61e-3912-4aea-ae6e-08dc318f6f02
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF0000468E.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7233
 
-On Mon, Feb 19, 2024 at 01:12:32PM +0800, Baoquan He wrote:
-> On 02/12/24 at 12:44pm, Kirill A. Shutemov wrote:
-> > lookup_address() only returns correct page table level for the entry if
-> > the entry is not none.
-> > 
-> > Make the helper to always return correct 'level'. It allows to implement
-> > iterator over kernel page tables using lookup_address().
-> > 
-> > Add one more entry into enum pg_level to indicate size of VA covered by
-> > one PGD entry in 5-level paging mode.
-> > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> > ---
-> >  arch/x86/include/asm/pgtable_types.h | 1 +
-> >  arch/x86/mm/pat/set_memory.c         | 8 ++++----
-> >  2 files changed, 5 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-> > index 0b748ee16b3d..3f648ffdfbe5 100644
-> > --- a/arch/x86/include/asm/pgtable_types.h
-> > +++ b/arch/x86/include/asm/pgtable_types.h
-> > @@ -548,6 +548,7 @@ enum pg_level {
-> >  	PG_LEVEL_2M,
-> >  	PG_LEVEL_1G,
-> >  	PG_LEVEL_512G,
-> > +	PG_LEVEL_256T,
-> >  	PG_LEVEL_NUM
-> >  };
-> >  
-> > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> > index f92da8c9a86d..3612e3167147 100644
-> > --- a/arch/x86/mm/pat/set_memory.c
-> > +++ b/arch/x86/mm/pat/set_memory.c
-> > @@ -666,32 +666,32 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
-> 
-> LGTM,
-> 
-> Reviewed-by: Baoquan He <bhe@redhat.com>
-> 
-> By the way, we may need update the code comment above function
-> lookup_address_in_pgd() and function lookup_address() since they don't
-> reflect the latest behaviour of them.
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-I am not sure what part of the comment you see doesn't reflect the
-behaviour. From my PoV, changed code matches the comment closer that
-original.
+For kexec use case, need to use and stick to the EFI memmap passed
+from the first kernel via boot-params/setup data, hence,
+skip efi_arch_mem_reserve() during kexec.
 
-Hm?
+Additionally during SNP guest kexec testing discovered that EFI memmap
+is corrupted during chained kexec. kexec_enter_virtual_mode() during
+late init will remap the efi_memmap physical pages allocated in
+efi_arch_mem_reserve() via memboot & then subsequently cause random
+EFI memmap corruption once memblock is freed/teared-down.
 
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+---
+ arch/x86/platform/efi/quirks.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+index f0cc00032751..d4562d074371 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -258,6 +258,16 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+ 	int num_entries;
+ 	void *new;
+ 
++	/*
++	 * For kexec use case, need to use the EFI memmap passed from the first
++	 * kernel via boot-params/setup data and need to skip this.
++	 * Additionally kexec_enter_virtual_mode() during late init will remap
++	 * the efi_memmap physical pages allocated here via memboot & then
++	 * subsequently cause random EFI memmap corruption once memblock is freed.
++	 */
++	if (efi_setup)
++		return;
++
+ 	if (efi_mem_desc_lookup(addr, &md) ||
+ 	    md.type != EFI_BOOT_SERVICES_DATA) {
+ 		pr_err("Failed to lookup EFI memory descriptor for %pa\n", &addr);
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.34.1
+
