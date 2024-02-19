@@ -1,39 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E2F2209F;
-	Mon, 19 Feb 2024 08:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1141822098
+	for <linux-coco@lists.linux.dev>; Mon, 19 Feb 2024 10:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708333070; cv=none; b=AxJyO48IIi4SlaUn3biYosttVWQ/kopb/1zLsvD/oRBLn7W9diSIqsuJmF5Bcqq02imAvSeFAo80Gw1ZfDbfVmMxUXnnJyuSOm0gHYngTziAT/pDbGb6gYuhTZsKpr+7NiEknOCvOItTGz1m7XwURtsgLjXpAnp2kqqrAbNnKsc=
+	t=1708337314; cv=none; b=adeN/yAI8n79sNi8xuNEidDR4djnrO/6R02uTzeYbzBPixZj3tVC34xy4bTvcQAP064IbLpejPW47/ua1k0ABpH2kKZySzmwloKos4Wwaxpc1Vk2z9SLQ1YCzvGuafgmMppQzrx2e1/U5L9b9XXes91oP6iH3SX0f4EkWlkTPgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708333070; c=relaxed/simple;
-	bh=W5gz7RMXrw90JHSAorCY56w4sEZ+6vgfrsPlqOLhK3I=;
+	s=arc-20240116; t=1708337314; c=relaxed/simple;
+	bh=TR8HS0OFrh9aNH4iX7ntd6fP5lH5BPlQhF5iDC7RPM0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PDfWjqkd0rgdjLjuPku1Lr4Y0/hh73n+t1aG3ZgWiSN4xiasX9m+6TylF90HJaCwxk3Fy8O7V9rp3OzbueGg2BLxdUvaoplPsN/gFt0s6Svg7vPl6wBsqR8jUKIRsX8sMguC3ST/G/oHnHlBBa2AuPG3j7KFVJk14uACYCgOU4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+jMNdMU; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rbr9j64NJiJxw7qEkkSNolycPQ9lKsAfKQ5XedebAFxnAc9bLMdR4zzLv/ol6Jvp/SrjrEHIF41m9+zshWUcZG/poIij4lZTXNDDLbzslkXD1y9b5UUAdxWeW+Tn5c5wdSP0M+Wo/7IXkeVsM1rNFlYbwfjPv1uQt2Ml7Ib9XmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=at6aA4ex; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+jMNdMU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB74C433F1;
-	Mon, 19 Feb 2024 08:57:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708333070;
-	bh=W5gz7RMXrw90JHSAorCY56w4sEZ+6vgfrsPlqOLhK3I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d+jMNdMUnY4SA9y3fIl2HfSZqdLHuiyL039fZrDWwOcm57cQj0gWGhkctiQaZBXeH
-	 JdaemzmMmW/jvNCcAJSB0v6cF01sb0fNU5KvCOLkBw0Y2ivV29dLarhm1K7WUmvADH
-	 +pyo3w6uq8l7BGYe+y8azIX9PwmU2DMk8MS5CKow=
-Date: Mon, 19 Feb 2024 09:57:47 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org
-Subject: Re: [RFC PATCH 4/5] sysfs: Introduce a mechanism to hide static
- attribute_groups
-Message-ID: <2024021910-paced-hazing-9c7a@gregkh>
-References: <170660662589.224441.11503798303914595072.stgit@dwillia2-xfh.jf.intel.com>
- <170660664848.224441.8152468052311375109.stgit@dwillia2-xfh.jf.intel.com>
- <2024013016-sank-idly-dd6b@gregkh>
- <65b9285a93e42_5cc6f294ac@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="at6aA4ex"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708337313; x=1739873313;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TR8HS0OFrh9aNH4iX7ntd6fP5lH5BPlQhF5iDC7RPM0=;
+  b=at6aA4ext6IAn8SqJ6oA3rU6WsTLdLmjNw4RaQ3rll0yoQaLFhVmfXz8
+   8YeLhhB22+s4DbgsA9BrcBm5HG6CAbTZg3K8yZ9mvw0pCW4M1m4lLMTWH
+   0EemgSCj/oupT5/zfuc8Y/UQbkSh4scAEIkaC7YU4tzgzIAUlKsWZONRU
+   44KFn+FCZzyzK3aqWOiWuDq3UvkH0XxWdoWgRDREfeVep/nxWrJqcAp36
+   VipWme//xq2qE+yKeqOLLwPw1qsR1ZzpCrJfYYo8iMQusQ0dPUPggMFVU
+   elQ4cDuQA1IgYUjjIIDQijis96AacNa58OZRQV780Pkbc9Jrtml26j5ba
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="2532834"
+X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
+   d="scan'208";a="2532834"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 02:08:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="936268601"
+X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
+   d="scan'208";a="936268601"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 19 Feb 2024 02:08:27 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 96E9B34B; Mon, 19 Feb 2024 12:08:26 +0200 (EET)
+Date: Mon, 19 Feb 2024 12:08:26 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Baoquan He <bhe@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv7 01/16] x86/acpi: Extract ACPI MADT wakeup code into a
+ separate file
+Message-ID: <a2cmua3qhbmhgzdxl5mszuvatnkyf4nwxjciurguhgbulrhin4@gvswvfats5er>
+References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
+ <20240212104448.2589568-2-kirill.shutemov@linux.intel.com>
+ <ZdLc61QMLu3L0Eqv@MiWiFi-R3L-srv>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -42,92 +68,64 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <65b9285a93e42_5cc6f294ac@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+In-Reply-To: <ZdLc61QMLu3L0Eqv@MiWiFi-R3L-srv>
 
-On Tue, Jan 30, 2024 at 08:48:26AM -0800, Dan Williams wrote:
-> Greg KH wrote:
-> > On Tue, Jan 30, 2024 at 01:24:08AM -0800, Dan Williams wrote:
-> > > Add a mechanism for named attribute_groups to hide their directory at
-> > > sysfs_update_group() time, or otherwise skip emitting the group
-> > > directory when the group is first registered. It piggybacks on
-> > > is_visible() in a similar manner as SYSFS_PREALLOC, i.e. special flags
-> > > in the upper bits of the returned mode. To use it, specify a symbol
-> > > prefix to DEFINE_SYSFS_GROUP_VISIBLE(), and then pass that same prefix
-> > > to SYSFS_GROUP_VISIBLE() when assigning the @is_visible() callback:
-> > > 
-> > > 	DEFINE_SYSFS_GROUP_VISIBLE($prefix)
-> > > 
-> > > 	struct attribute_group $prefix_group = {
-> > > 		.name = $name,
-> > > 		.is_visible = SYSFS_GROUP_VISIBLE($prefix),
-> > > 	};
-> > > 
-> > > SYSFS_GROUP_VISIBLE() expects a definition of $prefix_group_visible()
-> > > and $prefix_attr_visible(), where $prefix_group_visible() just returns
-> > > true / false and $prefix_attr_visible() behaves as normal.
-> > > 
-> > > The motivation for this capability is to centralize PCI device
-> > > authentication in the PCI core with a named sysfs group while keeping
-> > > that group hidden for devices and platforms that do not meet the
-> > > requirements. In a PCI topology, most devices will not support
-> > > authentication, a small subset will support just PCI CMA (Component
-> > > Measurement and Authentication), a smaller subset will support PCI CMA +
-> > > PCIe IDE (Link Integrity and Encryption), and only next generation
-> > > server hosts will start to include a platform TSM (TEE Security
-> > > Manager).
-> > > 
-> > > Without this capability the alternatives are:
-> > > 
-> > > * Check if all attributes are invisible and if so, hide the directory.
-> > >   Beyond trouble getting this to work [1], this is an ABI change for
-> > >   scenarios if userspace happens to depend on group visibility absent any
-> > >   attributes. I.e. this new capability avoids regression since it does
-> > >   not retroactively apply to existing cases.
-> > > 
-> > > * Publish an empty /sys/bus/pci/devices/$pdev/tsm/ directory for all PCI
-> > >   devices (i.e. for the case when TSM platform support is present, but
-> > >   device support is absent). Unfortunate that this will be a vestigial
-> > >   empty directory in the vast majority of cases.
-> > > 
-> > > * Reintroduce usage of runtime calls to sysfs_{create,remove}_group()
-> > >   in the PCI core. Bjorn has already indicated that he does not want to
-> > >   see any growth of pci_sysfs_init() [2].
-> > > 
-> > > * Drop the named group and simulate a directory by prefixing all
-> > >   TSM-related attributes with "tsm_". Unfortunate to not use the naming
-> > >   capability of a sysfs group as intended.
-> > > 
-> > > In comparison, there is a small potential for regression if for some
-> > > reason an @is_visible() callback had dependencies on how many times it
-> > > was called. Additionally, it is no longer an error to update a group
-> > > that does not have its directory already present, and it is no longer a
-> > > WARN() to remove a group that was never visible.
-> > > 
-> > > Link: https://lore.kernel.org/all/2024012321-envious-procedure-4a58@gregkh/ [1]
-> > > Link: https://lore.kernel.org/linux-pci/20231019200110.GA1410324@bhelgaas/ [2]
-> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > > ---
-> > >  fs/sysfs/group.c      |   45 ++++++++++++++++++++++++++++-------
-> > >  include/linux/sysfs.h |   63 ++++++++++++++++++++++++++++++++++++++++---------
-> > >  2 files changed, 87 insertions(+), 21 deletions(-)
-> > 
-> > You beat me to this again :)
+On Mon, Feb 19, 2024 at 12:45:31PM +0800, Baoquan He wrote:
+> Do we need add the entry printing for ACPI_MADT_TYPE_MULTIPROC_WAKEUP
+> now in acpi_table_print_madt_entry()? Surely it's not related to this
+> patch.
+
+Good catch. See patch below. Does it look okay?
+
+> FWIW, 
 > 
-> Pardon the spam, was just showing it in context of the patchset I was
-> developing.
-> 
-> > I have tested this patch, and it looks good, I'll send out my series
-> > that uses it for a different subsystem as well.
-> > 
-> > I guess I can take this as a static tag for others to pull from for this
-> > rc development cycle?
-> 
-> That works for me. Thanks Greg!
+> Reviewed-by: Baoquan He <bhe@redhat.com>
 
-I've applied this to my testing branch right now, and if 0-day passes
-everything (it's done so in other branches), I can create a static tag
-for everyone to pull from.
+Thanks!
 
-thanks,
+From 23b7f9856a3d6b91c702def1e03872a60ae07d0e Mon Sep 17 00:00:00 2001
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Date: Mon, 19 Feb 2024 11:58:19 +0200
+Subject: [PATCH] ACPI: tables: Print MULTIPROC_WAKEUP when MADT is parse
 
-greg k-h
+When MADT is parsed, print MULTIPROC_WAKEUP information:
+
+ACPI: MP Wakeup (version[1], mailbox[0x7fffd000], reset[0x7fffe068])
+
+This debug information will be very helpful during bring up.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ drivers/acpi/tables.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+index b07f7d091d13..c59a3617bca7 100644
+--- a/drivers/acpi/tables.c
++++ b/drivers/acpi/tables.c
+@@ -198,6 +198,20 @@ void acpi_table_print_madt_entry(struct acpi_subtable_header *header)
+ 		}
+ 		break;
+ 
++	case ACPI_MADT_TYPE_MULTIPROC_WAKEUP:
++		{
++			struct acpi_madt_multiproc_wakeup *p =
++				(struct acpi_madt_multiproc_wakeup *)header;
++			u64 reset_vector = 0;
++
++			if (p->version >= ACPI_MADT_MP_WAKEUP_VERSION_V1)
++				reset_vector = p->reset_vector;
++
++			pr_debug("MP Wakeup (version[%d], mailbox[%#llx], reset[%#llx])\n",
++				 p->version, p->mailbox_address, reset_vector);
++		}
++		break;
++
+ 	case ACPI_MADT_TYPE_CORE_PIC:
+ 		{
+ 			struct acpi_madt_core_pic *p = (struct acpi_madt_core_pic *)header;
+-- 
+2.43.0
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
