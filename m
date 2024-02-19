@@ -1,353 +1,371 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2078.outbound.protection.outlook.com [40.107.94.78])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2D7145328
-	for <linux-coco@lists.linux.dev>; Fri, 16 Feb 2024 21:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708119502; cv=fail; b=ofr2FcZ8eSGCkmEjCgm1jdTZBVwmUAOfaB282szhsfEzuXcPmT/UMnhL9+EhRARnuR0bRoxq7ohFwFLM4pMMKSAQilHVjAg/NUsPKWFpP+mS0zsX3bK6vPH/4BXBZtUo1EOSSkKKK6+zUGPCRKnsqhNqVU7fhAK7BsVX1O57r+A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708119502; c=relaxed/simple;
-	bh=DhmdAAYKR6Po2hsin5KfieYMkMO9WvBLaFxwKzq3zgw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=em0O9o3fDgJuKyIA59N/++4DluCymPvnm1lhSd4AzCQKHeGICJ45QYN/bWKhxe1cGSngTZepRG8zeCWPyaNwEo5SBdaw6qNVOWGsrPtcqa0TjZpo0hhtUhXhqV2I8VlO5Uv3phXhFSm8fWyRLmVmoUw8ermqumOUuRB8Y3SDKmw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Bptsd9vJ; arc=fail smtp.client-ip=40.107.94.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6288B2114
+	for <linux-coco@lists.linux.dev>; Mon, 19 Feb 2024 04:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708317946; cv=none; b=OWChZwj3/gCn5Ja+U/3YAYtQEES3gneYU5hHdyTVnjGWtCLUxkdtYSrVFkD0/xjAC/f3JW1t8g2VmT1YN28+AIvGpqpvSbyYc4LhQ2n8QEVzIQBvHQ7RI5oGk7UkC95uHRUW2zab55il0ACOUi0SxyvmTNPKsbVBHko9Hg5sfSs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708317946; c=relaxed/simple;
+	bh=48Mm4NCP4+SYNvsqwlHZD2dNY1yaOq5BSi4q0cWrrec=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TIokReKO2PQ57mLvyrxDbDfYEqblk+PCRk8efDdpFha9QHpXiTlPhGDRo9/CWHZq5XzHP+W70F+6eRdOdwOy27BmjAoEt/8MTCQ6CTRxGyrXP6ql2PGaMM6F0AgDAPxs56r5bMMI6JmEP20zLlp+6R+Hm0uD82M4j+DEjnudEgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IDA4r7tj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Bptsd9vJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mBLBnhBpSek5m3s4uu/wbFDtnnppa+Ervd5yGGH+M04FVWptMr+FMtec0WeJeKjBvPuOr6LuuVlG0wfGkSJQRgceNDUdUHX3Ckiu/AyxkHZqr7KNkPvHjOqApjW9JaXAQhiR5GCQ0bDx7YrYaX6bJc5WdGZasRU0EowIbDEhjHWB073G6h/ZLCPZr0OWsxYbibuRZvYoUiiD5l7RnnsfIB6RpLNIQdEsMgxlLUAYrZTQiicsXbotUXe5PPKmd0x/8app3kz/pHW00aVcJzC0ICLt4vCgW6dRC0LwE5a8kwsEUFk16eJoYJ9zTwH2qYqJzjbkgeG0cdQbd+ELX+BwmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dNrs3sakF4kCWduqUXHLirTNVHMEJsqG22zK5FMerfU=;
- b=hva0B6vRU5ae7fL9EehTWSx6kVf/RTrHAc0Y4MD4dVaTi/Shr3r038Q/AR971Kr3wXAMQoW6ndoOSkGOg7AjhmBdY3f6ghVamjlGafaNNywCX8uUPGgqixl0p1uBCdYTu2C84HDFQD4Ak5ychEXgwqNMBUUXU+BdVZS/SmslCZkggCTB6a4qYRBKX7ixij9/qQwIEO+VNOJrTJeBsOpqVHOqs3aRLbIUBDvOr37YfbSjBzC+UT6kyp9aolqZCCIaAJj3wFU9z32HYjatzWv+i9c2FpSPXsiyzfKMyvGmmfAFEIcZDHLXas8Yqn8TMivjvZVJGl9/Ap60isOQw8gi1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dNrs3sakF4kCWduqUXHLirTNVHMEJsqG22zK5FMerfU=;
- b=Bptsd9vJpBJxv8disKIDbxdvS6cJtmol63KCoghRD18iZGL1OWyBkI7syLrkrqIOvHTHfL1VkGxIzgKllXA6qkdv0JszPLShBjz6wR4WAzYUIaTuw2QbmaGxovSPRnfC0EFKTHQeQNrsNR9c8PdCaQ5wodg2/Mk+KsebSjYp9z8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by SA1PR12MB7368.namprd12.prod.outlook.com (2603:10b6:806:2b7::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.25; Fri, 16 Feb
- 2024 21:38:16 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::c167:ed6d:bcf1:4638]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::c167:ed6d:bcf1:4638%7]) with mapi id 15.20.7316.010; Fri, 16 Feb 2024
- 21:38:16 +0000
-Message-ID: <79921a75-6d90-4d7c-9aac-5df4430cf985@amd.com>
-Date: Sat, 17 Feb 2024 08:38:09 +1100
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [RFC PATCH 5/5] PCI/TSM: Authenticate devices via platform TSM
-Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
-Cc: Wu Hao <hao.wu@intel.com>, Yilun Xu <yilun.xu@intel.com>,
- Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
- Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
- gregkh@linuxfoundation.org
-References: <170660662589.224441.11503798303914595072.stgit@dwillia2-xfh.jf.intel.com>
- <170660665391.224441.13963835575448844460.stgit@dwillia2-xfh.jf.intel.com>
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <170660665391.224441.13963835575448844460.stgit@dwillia2-xfh.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY8PR01CA0030.ausprd01.prod.outlook.com
- (2603:10c6:10:29c::18) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IDA4r7tj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708317939;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L+CSJZ7Mf24H9r788Q3To198U/mbP/oA5rZIZAQSTkg=;
+	b=IDA4r7tjXEsFMdD2ZCCrKHlWEexoGrstk2d1Jq/ZceQiDZdj1NPeW6e3CAGaCmBe1myq+A
+	Ig/GmfjInlUOPiYEzY83mQL9UbNx78GONjVBUwilG5TskNR1igeaCICOoiUS4yXrGfPLUP
+	5cWXl/RNorDiXxIOjk12M4MQYVKy1As=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-503-qOtQD3RqPTO_wxKt9r_inQ-1; Sun,
+ 18 Feb 2024 23:45:37 -0500
+X-MC-Unique: qOtQD3RqPTO_wxKt9r_inQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E1833C025C3;
+	Mon, 19 Feb 2024 04:45:36 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.2])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 7B45A2022AAC;
+	Mon, 19 Feb 2024 04:45:34 +0000 (UTC)
+Date: Mon, 19 Feb 2024 12:45:31 +0800
+From: Baoquan He <bhe@redhat.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv7 01/16] x86/acpi: Extract ACPI MADT wakeup code into a
+ separate file
+Message-ID: <ZdLc61QMLu3L0Eqv@MiWiFi-R3L-srv>
+References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
+ <20240212104448.2589568-2-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SA1PR12MB7368:EE_
-X-MS-Office365-Filtering-Correlation-Id: 518737af-f304-45e4-f0d9-08dc2f3795a8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	fmkeG27VcqSjdo8kKIscd1VWY6ghDvgFNkn8cBxxcOt8OCEwx7tYcWUdsnK7ErmQozzQykyXSXrwnUTC5fmXgXXZQwNDTvW1RPD+s3AJ1CQgO6h+NepMRPDvqCzMcaM8FxKa7zFCC0YX7C9fDBt5z4JQQZUtdb05D7fVX46jy4rf99iDlCG1CEshCwbJQxBHmFa+lBWLxhsbiaTQfcdB0oOCM9dEZZWMOx51WL93IGg5+MHyfaFzEE/+pc3eC7RXckjPtoA+qpj93vqRZ0dfqnDQXSPcSdLoYvXA2cvebeGqZsMbnPL/3oE1ajXym9tVHlFOvHjYtrhTUb3LWJ5DkhVbPGBvuV0q2qVgtxo/FOpmSmEXsKm+ctrvKfafTR8vXn4d1KHXEl//v/MNZ3IwYN3Ggzu9VAMbdb5AnbmchGRdtOLrJ10TggieeKS/bHwzKTiQJMTloeJYZNH81pxsravrtsU6imJlbhykx0h9we3YS26fubUIOFqMv14uohCQfbBJpBXDIojamZ3HeoFNeA7Emj2JR0nGKdedrY8u/z6vc16bhFjndYYAfLdZsSmW
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(346002)(136003)(39860400002)(376002)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(66556008)(8676002)(8936002)(54906003)(36756003)(66946007)(4326008)(316002)(66476007)(2906002)(2616005)(5660300002)(38100700002)(6512007)(6666004)(6506007)(26005)(53546011)(6486002)(31696002)(478600001)(83380400001)(41300700001)(31686004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SUZVVVo4bmZDYUVHd1hyS1M4aFZRTDhIY1RkU0lFOHJZM1c4TURUZFRiV0tT?=
- =?utf-8?B?cDhVYzB2WS9PMVc5RzhXQXZzVVlMUnpXMXpoUDlHY1R6R2VXRHVkd1pCWk1M?=
- =?utf-8?B?bnNCc1BqOHk3b05LUHlLbjQ2eVNaY01qVTdTWmtIOXordElvZ1RRWlM4Si9O?=
- =?utf-8?B?QWFHUllkcTJqeVplUHVrbUlhTjRRa2pQTmxqLzQ0TG8xNEpyRm1ScCs1eTRD?=
- =?utf-8?B?cW1mZDdneHErbWJ6OTM3b01GQk5DQy9QVnpEaGV0cXpFaTIvZlZpMVJjVzNB?=
- =?utf-8?B?djlQYnNxVmRoRVdmd3dJV0JNeGVxZHJ5b1RVc1Eyazl5TWtsYXlPMzcrNEFh?=
- =?utf-8?B?dWVvc3l5R0FWbjMwNTdFa1lEZGVia1B3dVZCcE5lSTVZelBxUWxDUFRvSUhu?=
- =?utf-8?B?d1d1ZEN1UzYxd05PamRxRDhGSGZDU2tES21wbGE3VGNCMSs3TjZPOE9qZVhY?=
- =?utf-8?B?aWlBUjFUKzI1YW5HY0dFZHgreXFhM05udldnTmxKOTJoWmVPZ2NXeFZkOWtI?=
- =?utf-8?B?c28ySDZDamV1K0twRm9HcnRGZktJNjFXT3Q4aVJuNkl1cHNiQkVidUJxRGh5?=
- =?utf-8?B?Qlk2Y3ZqRWJtb2pmeVRmTzNTTWdXUHM0elY5RzErVEtJdHJuc2Z5TFM3bEpi?=
- =?utf-8?B?Q09DOUh0QkJUM0ZWYWtKOSs2QVJVNFdXRVpUTWVqUUpzVGt0Rm9jaDNmL2Qw?=
- =?utf-8?B?R05nd1ZqcWpONWdUWTVCbWEyN3JCSUs5QjlHVkJENDBoT2VVTUdUNmxZWjBO?=
- =?utf-8?B?d2lDaVBNTUU3THp2TFEzNk1iYjR3QmtkYUZnNCtDVmJ6Ylp1SEMwWmFtMHdi?=
- =?utf-8?B?UzMxejcxYXhHK3dDcUZqNWJVN1BtOStGZ2pqZi9tWkt3aTE2ZlRLZGVWNFA3?=
- =?utf-8?B?RHF1UzVGTnBLN3hhdVViUnFTcVJ4bkt1dXk2UFhWS2NtSWcyUTRQVkJkT2xJ?=
- =?utf-8?B?czMvSVJKV0NuYVpHL2JqWVNNekRKV3JjT0V1K0lsNlpnTnJwSkE1Yk5VeGx3?=
- =?utf-8?B?bkpRalVCdUJhVk5yR29adUhQTVgzMWlHb096anUzeTkxeVk1QWRLd0NZUGFl?=
- =?utf-8?B?OUpGQkl1eTIzYjNtbEVwQTRpeWNvUHN4RWhwWHVlYXd2U1Z0Q09uQjMxSG02?=
- =?utf-8?B?Rmx6UzUyQ3VzZGh3UzFZNE1jdDdLYi8xSzVjQTZlL29aMWJCSC9xZlZqUHZk?=
- =?utf-8?B?Y3N4WHIycGFzbGZYb2IrL0U5K3pqWlNkcDRvM1VIVko5Vy9BY0ZPSHh3TDdo?=
- =?utf-8?B?Mm1XY2pDRitCYk1RZG1RcitoZmM0SnNkODFmYzhpc2piWUhhYlM3Ti8wazJm?=
- =?utf-8?B?UHludGdqeE9hNFVXajZ4aVRIZ3FKZ255dUtVUU5pd2lLVTBEVG84REZ0bVI3?=
- =?utf-8?B?MUd3REhtaSsyaU82NFpxVXlZS01uQ3ZCcjF2OUQvalJlYTN3azVUVWFTVkVw?=
- =?utf-8?B?TVVoYVJ2cjVXU01TMXgxZjl2ZndwSlk5RUVnSnFhenJzMUdJZkZHTmdaVEo0?=
- =?utf-8?B?dzFiN29iK1R6bmNFem1FVXozZk9LRkpycUZZaHhpQmV1ZjZaS1FpcEpwNzcx?=
- =?utf-8?B?OFBVSGVZUWNSa1ZMVm8wUnVHeFlmY29TTTl2L2dJQ2NWNytuR1dyVXRoZGJV?=
- =?utf-8?B?elhoQmpYakVjZWxEczRpUGt0RDVJanRXcWJyVVlmdzJzZXJQQmdjMnpNRGow?=
- =?utf-8?B?aDFzZXpoS29RcjVKY0ZKeXNNakZlY0RKZEJXbyt0bDNneGtKbmpydXlrc3hz?=
- =?utf-8?B?dWo4RDl5WWtHclRpVFV6L3Bobyt0U3JBRFdYb2h5MjI2RXBGYVpNRHlnancy?=
- =?utf-8?B?NzBtT2FnaTNKa05ZU1BKTG9BeTF2aG1iZlo4NFR2ajhhcThjNC8vblNnN3cv?=
- =?utf-8?B?aEg0TnFlL3NGVmtLZWRmZkt6MjdaZU9lR1MzOVNES3FuVlc5bnBsMUdDM25D?=
- =?utf-8?B?a3ptMFh6N3VPRW13aE5hWVVlbHlGbFZrVVlvaGp2NlpVeWMzMSs4RVNKb3BY?=
- =?utf-8?B?MHlGTWtIejNod3ZvWlBYajFCTmVuUXJUaFRWNFF5b0VINjlyWFlOSnBZSVNo?=
- =?utf-8?B?eldXVFZ4UmVFUG9vV0w1UHZLUzFzRllCNkl0VUpIOTVpVk5MQ0lxRHdoL2FS?=
- =?utf-8?Q?osQnDuLgiOkR27Bvf8Peyefkm?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 518737af-f304-45e4-f0d9-08dc2f3795a8
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2024 21:38:16.3403
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ernLRxlQ1+lnG3MzRXcJfaV1OCLElXoK/0YqcXHlY4kdNpY4UeNOu448NkSHxNEWktm/6tBz30LUPo28vhS0Eg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7368
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240212104448.2589568-2-kirill.shutemov@linux.intel.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-On 30/1/24 20:24, Dan Williams wrote:
-> The PCIe 6.1 specification, section 11, introduces the Trusted
-> Execution Environment (TEE) Device Interface Security Protocol (TDISP).
-> This interface definition builds upon CMA, component measurement and
-> authentication, and IDE, link integrity and data encryption. It adds
-> support for establishing virtual functions within a device that can be
-> assigned to a confidential VM such that the assigned device is enabled
-> to access guest private memory protected by technologies like Intel TDX,
-> AMD SEV-SNP, RISCV COVE, or ARM CCA.
+On 02/12/24 at 12:44pm, Kirill A. Shutemov wrote:
+> In order to prepare for the expansion of support for the ACPI MADT
+> wakeup method, move the relevant code into a separate file.
 > 
-> The "TSM" (TEE Security Manager) is a concept in the TDISP specification
-> of an agent that mediates between a device security manager (DSM) and
-> system software in both a VMM and a VM. From a Linux perspective the TSM
-> abstracts many of the details of TDISP, IDE, and CMA. Some of those
-> details leak through at times, but for the most part TDISP is an
-> internal implementation detail of the TSM.
+> Introduce a new configuration option to clearly indicate dependencies
+> without the use of ifdefs.
 > 
-> Similar to the PCI core extensions to support CONFIG_PCI_CMA,
-> CONFIG_PCI_TSM builds upon that to reuse the "authenticated" sysfs
-> attribute, and add more properties + controls in a tsm/ subdirectory of
-> the PCI device sysfs interface. Unlike CMA that can depend on a local to
-> the PCI core implementation, PCI_TSM needs to be prepared for late
-> loading of the platform TSM driver. Consider that the TSM driver may
-> itself be a PCI driver. Userspace can depend on the common TSM device
-> uevent to know when the PCI core has TSM services enabled. The PCI
-> device tsm/ subdirectory is supplemented by the TSM device pci/
-> directory for platform global TSM properties + controls.
+> There have been no functional changes.
 > 
-> All vendor TSM implementations share the property of asking the VMM to
-> perform DOE mailbox operations on behalf of the TSM. That common
-> capability is centralized in PCI core code that invokes an ->exec()
-> operation callback potentially multiple times to service a given request
-> (struct pci_tsm_req). Future operations / verbs will be handled
-> similarly with the "request + exec" model. For now, only "connect" and
-> "disconnect" are implemented which at a minimum is expected to establish
-> IDE for the link.
-> 
-> In addition to requests the low-level TSM implementation is notified of
-> device arrival and departure events so that it can filter devices that
-> the TSM is not prepared to support, or otherwise setup and teardown
-> per-device context.
-> 
-> Cc: Wu Hao <hao.wu@intel.com>
-> Cc: Yilun Xu <yilun.xu@intel.com>
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: Samuel Ortiz <sameo@rivosinc.com>
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Acked-by: Kai Huang <kai.huang@intel.com>
 > ---
->   Documentation/ABI/testing/sysfs-bus-pci   |   43 +++-
->   Documentation/ABI/testing/sysfs-class-tsm |   23 ++
->   drivers/pci/Kconfig                       |   15 +
->   drivers/pci/Makefile                      |    2
->   drivers/pci/cma.c                         |    5
->   drivers/pci/pci-sysfs.c                   |    3
->   drivers/pci/pci.h                         |   14 +
->   drivers/pci/probe.c                       |    1
->   drivers/pci/remove.c                      |    1
->   drivers/pci/tsm.c                         |  346 +++++++++++++++++++++++++++++
->   drivers/virt/coco/tsm/Makefile            |    1
->   drivers/virt/coco/tsm/class.c             |   22 +-
->   drivers/virt/coco/tsm/pci.c               |   83 +++++++
->   drivers/virt/coco/tsm/tsm.h               |   28 ++
->   include/linux/pci.h                       |    3
->   include/linux/tsm.h                       |   77 ++++++
->   include/uapi/linux/pci_regs.h             |    3
->   17 files changed, 662 insertions(+), 8 deletions(-)
->   create mode 100644 drivers/pci/tsm.c
->   create mode 100644 drivers/virt/coco/tsm/pci.c
->   create mode 100644 drivers/virt/coco/tsm/tsm.h
+>  arch/x86/Kconfig                   |  7 +++
+>  arch/x86/include/asm/acpi.h        |  5 ++
+>  arch/x86/kernel/acpi/Makefile      | 11 ++--
+>  arch/x86/kernel/acpi/boot.c        | 86 +-----------------------------
+>  arch/x86/kernel/acpi/madt_wakeup.c | 82 ++++++++++++++++++++++++++++
+>  5 files changed, 101 insertions(+), 90 deletions(-)
+>  create mode 100644 arch/x86/kernel/acpi/madt_wakeup.c
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-pci b/Documentation/ABI/testing/sysfs-bus-pci
-> index 35b0e11fd0e6..0eef2128cf09 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-pci
-> +++ b/Documentation/ABI/testing/sysfs-bus-pci
-> @@ -508,11 +508,16 @@ Description:
->   		This file contains "native" if the device authenticated
->   		successfully with CMA-SPDM (PCIe r6.1 sec 6.31). It contains
->   		"none" if the device failed authentication (and may thus be
-> -		malicious).
-> +		malicious). It transitions from "native" to "tsm" after
-> +		successful connection to a tsm, see the "connect" attribute
-> +		below.
->   
->   		Writing "native" to this file causes reauthentication with
->   		kernel-selected keys and the kernel's certificate chain.  That
-> -		may be opportune after updating the .cma keyring.
-> +		may be opportune after updating the .cma keyring. Note
-> +		that once connected to a tsm this returns -EBUSY to attempts to
-> +		write "native", i.e. first disconnect from the tsm to retrigger
-> +		native authentication.
->   
->   		The file is not visible if authentication is unsupported
->   		by the device.
-> @@ -529,3 +534,37 @@ Description:
->   		The reason why authentication support could not be determined
->   		is apparent from "dmesg".  To probe for authentication support
->   		again, exercise the "remove" and "rescan" attributes.
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 5edec175b9bf..1c1c06f6c0f1 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -1108,6 +1108,13 @@ config X86_LOCAL_APIC
+>  	depends on X86_64 || SMP || X86_32_NON_STANDARD || X86_UP_APIC || PCI_MSI
+>  	select IRQ_DOMAIN_HIERARCHY
+>  
+> +config X86_ACPI_MADT_WAKEUP
+> +	def_bool y
+> +	depends on X86_64
+> +	depends on ACPI
+> +	depends on SMP
+> +	depends on X86_LOCAL_APIC
 > +
-> +What:		/sys/bus/pci/devices/.../tsm/
-> +Date:		January 2024
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:
-> +		This directory only appears if a device supports CMA and IDE,
-> +		and only after a TSM driver has loaded and accepted / setup this
-> +		PCI device. Similar to the 'authenticated' attribute, trigger
-> +		"remove" and "rescan" to retry the initialization. See
-> +		Documentation/ABI/testing/sysfs-class-tsm for enumerating the
-> +		platform's TSM capabilities.
+>  config X86_IO_APIC
+>  	def_bool y
+>  	depends on X86_LOCAL_APIC || X86_UP_IOAPIC
+> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+> index f896eed4516c..2625b915ae7f 100644
+> --- a/arch/x86/include/asm/acpi.h
+> +++ b/arch/x86/include/asm/acpi.h
+> @@ -76,6 +76,11 @@ static inline bool acpi_skip_set_wakeup_address(void)
+>  
+>  #define acpi_skip_set_wakeup_address acpi_skip_set_wakeup_address
+>  
+> +union acpi_subtable_headers;
 > +
-> +What:		/sys/bus/pci/devices/.../tsm/connect
-> +Date:		January 2024
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:
-> +		(RW) Writing "1" to this file triggers the TSM to establish a
-> +		secure connection with the device. This typically includes an
-> +		SPDM (DMTF Security Protocols and Data Models) session over PCIe
-> +		DOE (Data Object Exchange) and PCIe IDE (Integrity and Data
-> +		Encryption) establishment. For TSMs and devices that support
-> +		both modes of IDE ("link" and "selective") the "connect_mode"
-> +		attribute selects the mode.
+> +int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+> +			      const unsigned long end);
 > +
-> +What:		/sys/bus/pci/devices/.../tsm/connect_mode
-> +Date:		January 2024
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:
-> +		(RO) Returns the available connection modes optionally with
-> +		brackets around the currently active mode if the device is
-> +		connected. For example it may show "link selective" for a
-> +		disconnected device, "link [selective]" for a selective
-> +		connected device, and it may hide a mode that is not supported
-> +		by the device or TSM.
-> diff --git a/Documentation/ABI/testing/sysfs-class-tsm b/Documentation/ABI/testing/sysfs-class-tsm
-> index 304b50b53e65..77957882738a 100644
-> --- a/Documentation/ABI/testing/sysfs-class-tsm
-> +++ b/Documentation/ABI/testing/sysfs-class-tsm
-> @@ -10,3 +10,26 @@ Description:
->   		For software TSMs instantiated by a software module, @host is a
->   		directory with attributes for that TSM, and those attributes are
->   		documented below.
+>  /*
+>   * Check if the CPU can handle C2 and deeper
+>   */
+> diff --git a/arch/x86/kernel/acpi/Makefile b/arch/x86/kernel/acpi/Makefile
+> index fc17b3f136fe..8c7329c88a75 100644
+> --- a/arch/x86/kernel/acpi/Makefile
+> +++ b/arch/x86/kernel/acpi/Makefile
+> @@ -1,11 +1,12 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  
+> -obj-$(CONFIG_ACPI)		+= boot.o
+> -obj-$(CONFIG_ACPI_SLEEP)	+= sleep.o wakeup_$(BITS).o
+> -obj-$(CONFIG_ACPI_APEI)		+= apei.o
+> -obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc.o
+> +obj-$(CONFIG_ACPI)			+= boot.o
+> +obj-$(CONFIG_ACPI_SLEEP)		+= sleep.o wakeup_$(BITS).o
+> +obj-$(CONFIG_ACPI_APEI)			+= apei.o
+> +obj-$(CONFIG_ACPI_CPPC_LIB)		+= cppc.o
+> +obj-$(CONFIG_X86_ACPI_MADT_WAKEUP)	+= madt_wakeup.o
+>  
+>  ifneq ($(CONFIG_ACPI_PROCESSOR),)
+> -obj-y				+= cstate.o
+> +obj-y					+= cstate.o
+>  endif
+>  
+> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+> index 85a3ce2a3666..df3384dc42c7 100644
+> --- a/arch/x86/kernel/acpi/boot.c
+> +++ b/arch/x86/kernel/acpi/boot.c
+> @@ -67,13 +67,6 @@ static bool has_lapic_cpus __initdata;
+>  static bool acpi_support_online_capable;
+>  #endif
+>  
+> -#ifdef CONFIG_X86_64
+> -/* Physical address of the Multiprocessor Wakeup Structure mailbox */
+> -static u64 acpi_mp_wake_mailbox_paddr;
+> -/* Virtual address of the Multiprocessor Wakeup Structure mailbox */
+> -static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
+> -#endif
+> -
+>  #ifdef CONFIG_X86_IO_APIC
+>  /*
+>   * Locks related to IOAPIC hotplug
+> @@ -370,60 +363,6 @@ acpi_parse_lapic_nmi(union acpi_subtable_headers * header, const unsigned long e
+>  
+>  	return 0;
+>  }
+> -
+> -#ifdef CONFIG_X86_64
+> -static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+> -{
+> -	/*
+> -	 * Remap mailbox memory only for the first call to acpi_wakeup_cpu().
+> -	 *
+> -	 * Wakeup of secondary CPUs is fully serialized in the core code.
+> -	 * No need to protect acpi_mp_wake_mailbox from concurrent accesses.
+> -	 */
+> -	if (!acpi_mp_wake_mailbox) {
+> -		acpi_mp_wake_mailbox = memremap(acpi_mp_wake_mailbox_paddr,
+> -						sizeof(*acpi_mp_wake_mailbox),
+> -						MEMREMAP_WB);
+> -	}
+> -
+> -	/*
+> -	 * Mailbox memory is shared between the firmware and OS. Firmware will
+> -	 * listen on mailbox command address, and once it receives the wakeup
+> -	 * command, the CPU associated with the given apicid will be booted.
+> -	 *
+> -	 * The value of 'apic_id' and 'wakeup_vector' must be visible to the
+> -	 * firmware before the wakeup command is visible.  smp_store_release()
+> -	 * ensures ordering and visibility.
+> -	 */
+> -	acpi_mp_wake_mailbox->apic_id	    = apicid;
+> -	acpi_mp_wake_mailbox->wakeup_vector = start_ip;
+> -	smp_store_release(&acpi_mp_wake_mailbox->command,
+> -			  ACPI_MP_WAKE_COMMAND_WAKEUP);
+> -
+> -	/*
+> -	 * Wait for the CPU to wake up.
+> -	 *
+> -	 * The CPU being woken up is essentially in a spin loop waiting to be
+> -	 * woken up. It should not take long for it wake up and acknowledge by
+> -	 * zeroing out ->command.
+> -	 *
+> -	 * ACPI specification doesn't provide any guidance on how long kernel
+> -	 * has to wait for a wake up acknowledgement. It also doesn't provide
+> -	 * a way to cancel a wake up request if it takes too long.
+> -	 *
+> -	 * In TDX environment, the VMM has control over how long it takes to
+> -	 * wake up secondary. It can postpone scheduling secondary vCPU
+> -	 * indefinitely. Giving up on wake up request and reporting error opens
+> -	 * possible attack vector for VMM: it can wake up a secondary CPU when
+> -	 * kernel doesn't expect it. Wait until positive result of the wake up
+> -	 * request.
+> -	 */
+> -	while (READ_ONCE(acpi_mp_wake_mailbox->command))
+> -		cpu_relax();
+> -
+> -	return 0;
+> -}
+> -#endif /* CONFIG_X86_64 */
+>  #endif /* CONFIG_X86_LOCAL_APIC */
+>  
+>  #ifdef CONFIG_X86_IO_APIC
+> @@ -1159,29 +1098,6 @@ static int __init acpi_parse_madt_lapic_entries(void)
+>  	}
+>  	return 0;
+>  }
+> -
+> -#ifdef CONFIG_X86_64
+> -static int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+> -				     const unsigned long end)
+> -{
+> -	struct acpi_madt_multiproc_wakeup *mp_wake;
+> -
+> -	if (!IS_ENABLED(CONFIG_SMP))
+> -		return -ENODEV;
+> -
+> -	mp_wake = (struct acpi_madt_multiproc_wakeup *)header;
+> -	if (BAD_MADT_ENTRY(mp_wake, end))
+> -		return -EINVAL;
+> -
+> -	acpi_table_print_madt_entry(&header->common);
+> -
+> -	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
+> -
+> -	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
+> -
+> -	return 0;
+> -}
+> -#endif				/* CONFIG_X86_64 */
+>  #endif				/* CONFIG_X86_LOCAL_APIC */
+>  
+>  #ifdef	CONFIG_X86_IO_APIC
+> @@ -1378,7 +1294,7 @@ static void __init acpi_process_madt(void)
+>  				smp_found_config = 1;
+>  			}
+>  
+> -#ifdef CONFIG_X86_64
+> +#ifdef CONFIG_X86_ACPI_MADT_WAKEUP
+>  			/*
+>  			 * Parse MADT MP Wake entry.
+>  			 */
+> diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+> new file mode 100644
+> index 000000000000..7f164d38bd0b
+> --- /dev/null
+> +++ b/arch/x86/kernel/acpi/madt_wakeup.c
+> @@ -0,0 +1,82 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +#include <linux/acpi.h>
+> +#include <linux/io.h>
+> +#include <asm/apic.h>
+> +#include <asm/barrier.h>
+> +#include <asm/processor.h>
 > +
+> +/* Physical address of the Multiprocessor Wakeup Structure mailbox */
+> +static u64 acpi_mp_wake_mailbox_paddr;
 > +
-> +What:		/sys/class/tsm/tsm0/pci/link_capable
-> +Date:		January, 2024
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:
-> +		(RO) When present this returns "1\n" to indicate that the TSM
-> +		supports establishing Link IDE with a given root-port attached
-> +		device. See "tsm/connect_mode" in
-> +		Documentation/ABI/testing/sysfs-bus-pci
+> +/* Virtual address of the Multiprocessor Wakeup Structure mailbox */
+> +static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
 > +
+> +static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+> +{
+> +	/*
+> +	 * Remap mailbox memory only for the first call to acpi_wakeup_cpu().
+> +	 *
+> +	 * Wakeup of secondary CPUs is fully serialized in the core code.
+> +	 * No need to protect acpi_mp_wake_mailbox from concurrent accesses.
+> +	 */
+> +	if (!acpi_mp_wake_mailbox) {
+> +		acpi_mp_wake_mailbox = memremap(acpi_mp_wake_mailbox_paddr,
+> +						sizeof(*acpi_mp_wake_mailbox),
+> +						MEMREMAP_WB);
+> +	}
 > +
-> +What:		/sys/class/tsm/tsm0/pci/selective_streams
-> +Date:		January, 2024
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:
-> +		(RO) When present this returns the number of currently available
-> +		selective IDE streams available to the TSM. When a stream id is
-> +		allocated this number is decremented and a link to the PCI
-> +		device(s) consuming the stream(s) appears alonside this
-> +		attribute in the /sys/class/tsm/tsm0/pci/ directory. See
-> +		"tsm/connect" and "tsm/connect_mode" in
-> +		Documentation/ABI/testing/sysfs-bus-pci.
-> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-> index a5c3cadddd6f..11d788038d19 100644
-> --- a/drivers/pci/Kconfig
-> +++ b/drivers/pci/Kconfig
-> @@ -129,6 +129,21 @@ config PCI_CMA
->   	  A PCI DOE mailbox is used as transport for DMTF SPDM based
->   	  authentication, measurement and secure channel establishment.
->   
-> +config PCI_TSM
-> +	bool "TEE Security Manager for Device Security"
-> +	depends on PCI_CMA
-> +	depends on TSM
-> +	help
-> +	  The TEE (Trusted Execution Environment) Device Interface
-> +	  Security Protocol (TDISP) defines a "TSM" as a platform agent
-> +	  that manages device authentication, link encryption, link
-> +	  integrity protection, and assignment of PCI device functions
-> +	  (virtual or physical) to confidential computing VMs that can
-> +	  access (DMA) guest private memory.
+> +	/*
+> +	 * Mailbox memory is shared between the firmware and OS. Firmware will
+> +	 * listen on mailbox command address, and once it receives the wakeup
+> +	 * command, the CPU associated with the given apicid will be booted.
+> +	 *
+> +	 * The value of 'apic_id' and 'wakeup_vector' must be visible to the
+> +	 * firmware before the wakeup command is visible.  smp_store_release()
+> +	 * ensures ordering and visibility.
+> +	 */
+> +	acpi_mp_wake_mailbox->apic_id	    = apicid;
+> +	acpi_mp_wake_mailbox->wakeup_vector = start_ip;
+> +	smp_store_release(&acpi_mp_wake_mailbox->command,
+> +			  ACPI_MP_WAKE_COMMAND_WAKEUP);
 > +
-> +	  Say Y to enable the PCI subsystem to enable the IDE and
-> +	  TDISP capabilities of devices via TSM semantics.
+> +	/*
+> +	 * Wait for the CPU to wake up.
+> +	 *
+> +	 * The CPU being woken up is essentially in a spin loop waiting to be
+> +	 * woken up. It should not take long for it wake up and acknowledge by
+> +	 * zeroing out ->command.
+> +	 *
+> +	 * ACPI specification doesn't provide any guidance on how long kernel
+> +	 * has to wait for a wake up acknowledgment. It also doesn't provide
+> +	 * a way to cancel a wake up request if it takes too long.
+> +	 *
+> +	 * In TDX environment, the VMM has control over how long it takes to
+> +	 * wake up secondary. It can postpone scheduling secondary vCPU
+> +	 * indefinitely. Giving up on wake up request and reporting error opens
+> +	 * possible attack vector for VMM: it can wake up a secondary CPU when
+> +	 * kernel doesn't expect it. Wait until positive result of the wake up
+> +	 * request.
+> +	 */
+> +	while (READ_ONCE(acpi_mp_wake_mailbox->command))
+> +		cpu_relax();
 > +
->   config PCI_DOE
->   	bool
->   
-> diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
-> index cc8b5d1d15b9..c4117d67ea83 100644
-> --- a/drivers/pci/Makefile
-> +++ b/drivers/pci/Makefile
-> @@ -38,6 +38,8 @@ obj-$(CONFIG_PCI_CMA)		+= cma.o cma.asn1.o
->   $(obj)/cma.o:			$(obj)/cma.asn1.h
->   $(obj)/cma.asn1.o:		$(obj)/cma.asn1.c $(obj)/cma.asn1.h
->   
-> +obj-$(CONFIG_PCI_TSM)		+= tsm.o
+> +	return 0;
+> +}
 > +
->   # Endpoint library must be initialized before its users
->   obj-$(CONFIG_PCI_ENDPOINT)	+= endpoint/
->   
-> diff --git a/drivers/pci/cma.c b/drivers/pci/cma.c
-> index be7d2bb21b4c..5a69e9919589 100644
-> --- a/drivers/pci/cma.c
-> +++ b/drivers/pci/cma.c
-> @@ -39,6 +39,9 @@ static ssize_t authenticated_store(struct device *dev,
->   	if (!sysfs_streq(buf, "native"))
->   		return -EINVAL;
->   
-> +	if (pci_tsm_authenticated(pdev))
-> +		return -EBUSY;
+> +int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+> +			      const unsigned long end)
+> +{
+> +	struct acpi_madt_multiproc_wakeup *mp_wake;
 > +
->   	rc = pci_cma_reauthenticate(pdev);
->   	if (rc)
->   		return rc;
+> +	mp_wake = (struct acpi_madt_multiproc_wakeup *)header;
+> +	if (BAD_MADT_ENTRY(mp_wake, end))
+> +		return -EINVAL;
+> +
+> +	acpi_table_print_madt_entry(&header->common);
 
-btw is this "native" CMA expected to migrate to tsm_pci_ops? Thanks,
+Do we need add the entry printing for ACPI_MADT_TYPE_MULTIPROC_WAKEUP
+now in acpi_table_print_madt_entry()? Surely it's not related to this
+patch.
 
+FWIW, 
 
+Reviewed-by: Baoquan He <bhe@redhat.com>
 
--- 
-Alexey
+> +
+> +	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
+> +
+> +	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
+> +
+> +	return 0;
+> +}
+> -- 
+> 2.43.0
+> 
 
