@@ -1,69 +1,67 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8D161679
-	for <linux-coco@lists.linux.dev>; Tue, 20 Feb 2024 10:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A5060867
+	for <linux-coco@lists.linux.dev>; Tue, 20 Feb 2024 12:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708424756; cv=none; b=Pp2UTaR1vR5luqdcyp5RKuKByOytHdMsC55NTqglDw1BoEonnSpmoWL+POWgTMC44ZBBE6CXMRD4abEMVn+BI2+gXP99EJWsrim0LRgscuQnagOc0wCA0GM1rKdg51wvMw7gGdhQcvnyFfxeM4HHO9p00TzUu1qaED29I/q4WuU=
+	t=1708432617; cv=none; b=onSemO1XwNys87hq58egACl2RP/nem9Ydd/GWMAl1t/70FknhO5XpDIoa68GkrIdixUnLVXJTgqMSybcx67ejuHgtCMIt/YiGZlPf0EMyW1PtpxuFuJrX5b/tgW5ZAUvAKdMv4A3q+3ewJMdd45kylu11QJWIaU7XU0DdGnXCaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708424756; c=relaxed/simple;
-	bh=wg6VDrurtGdejNdwTV9KCdi+jcJpnILodt2ZkcTdixE=;
+	s=arc-20240116; t=1708432617; c=relaxed/simple;
+	bh=iNBAnZuBMR9OpFb371kjh23uca3k0nUqZwIq/GwOHag=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JFQtpc4lMfV4jlKO1DzEMb2TuVPcyFZyScExvyX23Ldz0iyPyWd03CzWgkEYqoHE3cYEtQCMHWVM3J/Fi/Txd6A7++PDOjJggB/utTnKQrD9bf1SypQjZ+jUeuCNYYg84sxAgmZq53WCS11F0FQXFhQ3XYyrz4hiG205KUMucQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JqetGDFX; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ix9Mdiy93mUDAihq1OciSFuvwu3GpUtd++HrL1UKlOItReUMPYKpaSVvwsfyFkaAhV5zncDWZ4kPxGm0y47sesNVqvQUUhyqGHZeuU3B19RTYm+gOFgNP+4UDGxIGPAFvY2DO410Qx0XTls4kNi8jD7M24v7l5dHCTBkOgXuWyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j+cvAyCi; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JqetGDFX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708424753;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6CJmYxHjSreu7pvbpR786lmw2JKf71InmDGqh/N4n8g=;
-	b=JqetGDFXNVBmfCMIoRkGUr563aecGqqDBLKgiB1VkvMWuLyIPI2AlrsvW4jK/eb0h608nh
-	ANtKeOnbqUp32iULdBvkDCQQ7FGgYW5aIhXhrSL1yPJjNohzzcF2OezjlsoGQv3jOlnP9+
-	50YmjpBkjycfGr5OOZYWpKNLGm+12g8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-IBasa97ZNHaPfAgAfWH0zw-1; Tue, 20 Feb 2024 05:25:48 -0500
-X-MC-Unique: IBasa97ZNHaPfAgAfWH0zw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AC57585A589;
-	Tue, 20 Feb 2024 10:25:47 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.2])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 9EDB91121306;
-	Tue, 20 Feb 2024 10:25:46 +0000 (UTC)
-Date: Tue, 20 Feb 2024 18:25:43 +0800
-From: Baoquan He <bhe@redhat.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j+cvAyCi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708432615; x=1739968615;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iNBAnZuBMR9OpFb371kjh23uca3k0nUqZwIq/GwOHag=;
+  b=j+cvAyCiqxCy8DpmyDqx8X2VDyDElKFIRVQ/yEcOwYEBKUUIdqxofUdo
+   nis0wAiLBLZOQTQzr9njWjXfGhPkHn9qfi+xqfKhUtj3CCKO6oHRmJag3
+   Yi0ZqiAnyD6qPYYzprpqFUGqZZeSxopaARlirK/yW+mGmj/aCoRQM6/2d
+   O7LxRxprmbcvaekKvzN5HgUdhOosRVD3TEsL5dTqoTGA9Cdm49jDfjTSf
+   Brus8vOFM1IMmRedHLU1yQ5W1agpFrr1iC5PZPnWXd6Lgx8jGfllC8bqW
+   LTzC3yfACGlMQkWYU22tvVb32V74pJ9fVuNp85Nfk5mDI3ahN17sX/NbC
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2395637"
+X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
+   d="scan'208";a="2395637"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 04:36:54 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="936448238"
+X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
+   d="scan'208";a="936448238"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 20 Feb 2024 04:36:49 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id D0CCE305; Tue, 20 Feb 2024 14:36:48 +0200 (EET)
+Date: Tue, 20 Feb 2024 14:36:48 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Baoquan He <bhe@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org, 
 	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: [PATCHv7 07/16] x86/mm: Return correct level from
  lookup_address() if pte is none
-Message-ID: <ZdR+JzfHjES3zytp@MiWiFi-R3L-srv>
+Message-ID: <ic4v3q4muffjq2jhlkk3k4lg5xxvjwlw22hctzubl5573euzu2@er3m7ztog2a6>
 References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
  <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
  <ZdLjQCaxhOnR+GzX@MiWiFi-R3L-srv>
  <zhbhgq27kjrhkdgbxomjykjez2i4hckguvmxyptvfvoftue5ca@zowl5qbl6psl>
+ <ZdR+JzfHjES3zytp@MiWiFi-R3L-srv>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -72,89 +70,75 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <zhbhgq27kjrhkdgbxomjykjez2i4hckguvmxyptvfvoftue5ca@zowl5qbl6psl>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+In-Reply-To: <ZdR+JzfHjES3zytp@MiWiFi-R3L-srv>
 
-On 02/19/24 at 03:52pm, Kirill A. Shutemov wrote:
-> On Mon, Feb 19, 2024 at 01:12:32PM +0800, Baoquan He wrote:
-> > On 02/12/24 at 12:44pm, Kirill A. Shutemov wrote:
-> > > lookup_address() only returns correct page table level for the entry if
-> > > the entry is not none.
-> > > 
-> > > Make the helper to always return correct 'level'. It allows to implement
-> > > iterator over kernel page tables using lookup_address().
-> > > 
-> > > Add one more entry into enum pg_level to indicate size of VA covered by
-> > > one PGD entry in 5-level paging mode.
-> > > 
-> > > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > > Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> > > ---
-> > >  arch/x86/include/asm/pgtable_types.h | 1 +
-> > >  arch/x86/mm/pat/set_memory.c         | 8 ++++----
-> > >  2 files changed, 5 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-> > > index 0b748ee16b3d..3f648ffdfbe5 100644
-> > > --- a/arch/x86/include/asm/pgtable_types.h
-> > > +++ b/arch/x86/include/asm/pgtable_types.h
-> > > @@ -548,6 +548,7 @@ enum pg_level {
-> > >  	PG_LEVEL_2M,
-> > >  	PG_LEVEL_1G,
-> > >  	PG_LEVEL_512G,
-> > > +	PG_LEVEL_256T,
-> > >  	PG_LEVEL_NUM
-> > >  };
-> > >  
-> > > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> > > index f92da8c9a86d..3612e3167147 100644
-> > > --- a/arch/x86/mm/pat/set_memory.c
-> > > +++ b/arch/x86/mm/pat/set_memory.c
-> > > @@ -666,32 +666,32 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
-> > 
-> > LGTM,
-> > 
-> > Reviewed-by: Baoquan He <bhe@redhat.com>
-> > 
-> > By the way, we may need update the code comment above function
-> > lookup_address_in_pgd() and function lookup_address() since they don't
-> > reflect the latest behaviour of them.
+On Tue, Feb 20, 2024 at 06:25:43PM +0800, Baoquan He wrote:
+> > I am not sure what part of the comment you see doesn't reflect the
+> > behaviour. From my PoV, changed code matches the comment closer that
+> > original.
 > 
-> I am not sure what part of the comment you see doesn't reflect the
-> behaviour. From my PoV, changed code matches the comment closer that
-> original.
+> Oh, I didn't make it clear. I mean update the code comment for
+> lookup_address(), and add code comment for lookup_address_in_pgd() to
+> mention the level thing. Maybe it's a chance to do that.
+> 
+> ===1>
+> *
+>  * Lookup the page table entry for a virtual address. Return a pointer
+>  * to the entry and the level of the mapping.
+>  *
+>  * Note: We return pud and pmd either when the entry is marked large
+>                    ~~~~~~~~~~~ seems we return p4d too
+>  * or when the present bit is not set. Otherwise we would return a
+>  * pointer to a nonexisting mapping.
+>               ~~~~~~~~~~~~~~~ NULL?
+>  */                          
+> pte_t *lookup_address(unsigned long address, unsigned int *level)
+> {
+>         return lookup_address_in_pgd(pgd_offset_k(address), address, level);
+> }
+> EXPORT_SYMBOL_GPL(lookup_address);
+> ===
+> 
+> ===2>
+> /*
+>  * Lookup the page table entry for a virtual address in a specific pgd.
+>  * Return a pointer to the entry and the level of the mapping.
+>    ~~ also could return NULL if it's none entry. And do we need to
+> mention the level thing?
+>  */
+> pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
+>                              unsigned int *level)
+> ...
+> }
+> 
 
-Oh, I didn't make it clear. I mean update the code comment for
-lookup_address(), and add code comment for lookup_address_in_pgd() to
-mention the level thing. Maybe it's a chance to do that.
+What about this fixup:
 
-===1>
-*
- * Lookup the page table entry for a virtual address. Return a pointer
- * to the entry and the level of the mapping.
- *
- * Note: We return pud and pmd either when the entry is marked large
-                   ~~~~~~~~~~~ seems we return p4d too
- * or when the present bit is not set. Otherwise we would return a
- * pointer to a nonexisting mapping.
-              ~~~~~~~~~~~~~~~ NULL?
- */                          
-pte_t *lookup_address(unsigned long address, unsigned int *level)
-{
-        return lookup_address_in_pgd(pgd_offset_k(address), address, level);
-}
-EXPORT_SYMBOL_GPL(lookup_address);
-===
-
-===2>
-/*
- * Lookup the page table entry for a virtual address in a specific pgd.
- * Return a pointer to the entry and the level of the mapping.
-   ~~ also could return NULL if it's none entry. And do we need to
-mention the level thing?
- */
-pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
-                             unsigned int *level)
-...
-}
-
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 3612e3167147..425ff6e192e6 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -657,7 +657,8 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
+ 
+ /*
+  * Lookup the page table entry for a virtual address in a specific pgd.
+- * Return a pointer to the entry and the level of the mapping.
++ * Return a pointer to the entry and the level of the mapping (or NULL if
++ * the entry is none) and level of the entry.
+  */
+ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
+ 			     unsigned int *level)
+@@ -704,9 +705,8 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
+  * Lookup the page table entry for a virtual address. Return a pointer
+  * to the entry and the level of the mapping.
+  *
+- * Note: We return pud and pmd either when the entry is marked large
+- * or when the present bit is not set. Otherwise we would return a
+- * pointer to a nonexisting mapping.
++ * Note: the function returns p4d, pud and pmd either when the entry is marked
++ * large or when the present bit is not set. Otherwise it returns NULL.
+  */
+ pte_t *lookup_address(unsigned long address, unsigned int *level)
+ {
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
