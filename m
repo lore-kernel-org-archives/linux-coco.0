@@ -1,67 +1,65 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A5060867
-	for <linux-coco@lists.linux.dev>; Tue, 20 Feb 2024 12:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23AA433D0
+	for <linux-coco@lists.linux.dev>; Tue, 20 Feb 2024 12:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708432617; cv=none; b=onSemO1XwNys87hq58egACl2RP/nem9Ydd/GWMAl1t/70FknhO5XpDIoa68GkrIdixUnLVXJTgqMSybcx67ejuHgtCMIt/YiGZlPf0EMyW1PtpxuFuJrX5b/tgW5ZAUvAKdMv4A3q+3ewJMdd45kylu11QJWIaU7XU0DdGnXCaA=
+	t=1708432936; cv=none; b=WA5wx7FI0Asa5mY8L31vHMCoYL2SA7pGlcUKITk0++2M7yBzYkszyAMSVmt/X9+N2FamkyxtZsyUPwWuqARpXcmuC2KefSWG4M4zkZNAhEnEOyVW66oZ6Rvq52VQ4IXd3a5QDfvefVoMpojPogkGr/81c2dxHInlzAsRrBNTcL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708432617; c=relaxed/simple;
-	bh=iNBAnZuBMR9OpFb371kjh23uca3k0nUqZwIq/GwOHag=;
+	s=arc-20240116; t=1708432936; c=relaxed/simple;
+	bh=WQEMa0Zg8JWL+HJp+aoQ8wXzZKQIdgVqIXMBI4Y1QIA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ix9Mdiy93mUDAihq1OciSFuvwu3GpUtd++HrL1UKlOItReUMPYKpaSVvwsfyFkaAhV5zncDWZ4kPxGm0y47sesNVqvQUUhyqGHZeuU3B19RTYm+gOFgNP+4UDGxIGPAFvY2DO410Qx0XTls4kNi8jD7M24v7l5dHCTBkOgXuWyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j+cvAyCi; arc=none smtp.client-ip=192.198.163.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=owb8Lod31AU0QKmQhKtNzq7BzPuZaHFIZno6pEPBmh1PNDFfpaam/pPL0vJDrc7cF3dAdGXpFW8kgitS1ztREn7lS0kzq4BYAt5hbHneBWuF2GdiP2ARzDX5/7UHNIOjx+ZMjGxohvFC492StosepZsikmoYfCV12qbeKWSWO88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DeqOh7qG; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j+cvAyCi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DeqOh7qG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708432615; x=1739968615;
+  t=1708432934; x=1739968934;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=iNBAnZuBMR9OpFb371kjh23uca3k0nUqZwIq/GwOHag=;
-  b=j+cvAyCiqxCy8DpmyDqx8X2VDyDElKFIRVQ/yEcOwYEBKUUIdqxofUdo
-   nis0wAiLBLZOQTQzr9njWjXfGhPkHn9qfi+xqfKhUtj3CCKO6oHRmJag3
-   Yi0ZqiAnyD6qPYYzprpqFUGqZZeSxopaARlirK/yW+mGmj/aCoRQM6/2d
-   O7LxRxprmbcvaekKvzN5HgUdhOosRVD3TEsL5dTqoTGA9Cdm49jDfjTSf
-   Brus8vOFM1IMmRedHLU1yQ5W1agpFrr1iC5PZPnWXd6Lgx8jGfllC8bqW
-   LTzC3yfACGlMQkWYU22tvVb32V74pJ9fVuNp85Nfk5mDI3ahN17sX/NbC
+  bh=WQEMa0Zg8JWL+HJp+aoQ8wXzZKQIdgVqIXMBI4Y1QIA=;
+  b=DeqOh7qGM+W5RKsDjGWHxkdBRLR39fgqRCnl9VPPtJeCvSM7CrlAhxBW
+   2YXcKlblAMAsQ2h8Lp+5j+atWx2owECcSq2sWFdqSCr8yPOeynSx+3vEW
+   l+LyTYnSmGPfMkJC2sYg24Lpu39534yrTwQ/XkkRCIWskFBBAaHcQaz6f
+   iG/3TRoQe+KOWT4yxn42vVIdxaluqognxcWtSPVK9qUIut2vYxR52mSHI
+   na9LpVgtyAJpSmZKtkZ3coiS//8voty58Eu6w1ay33kLdsof1QW6aJls+
+   UMGDE3wa2iDBJ3S6OFi/Kk1A1MTi2Zz1/Lu9GsTRDv+ZCAgsw4sLTE6T5
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2395637"
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2436857"
 X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="2395637"
+   d="scan'208";a="2436857"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 04:36:54 -0800
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 04:42:14 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="936448238"
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="936448498"
 X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="936448238"
+   d="scan'208";a="936448498"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 20 Feb 2024 04:36:49 -0800
+  by fmsmga001.fm.intel.com with ESMTP; 20 Feb 2024 04:42:06 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id D0CCE305; Tue, 20 Feb 2024 14:36:48 +0200 (EET)
-Date: Tue, 20 Feb 2024 14:36:48 +0200
+	id 20702305; Tue, 20 Feb 2024 14:42:05 +0200 (EET)
+Date: Tue, 20 Feb 2024 14:42:05 +0200
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Baoquan He <bhe@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv7 07/16] x86/mm: Return correct level from
- lookup_address() if pte is none
-Message-ID: <ic4v3q4muffjq2jhlkk3k4lg5xxvjwlw22hctzubl5573euzu2@er3m7ztog2a6>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, luto@kernel.org, x86@kernel.org, ardb@kernel.org, hpa@zytor.com, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, rafael@kernel.org, 
+	peterz@infradead.org, adrian.hunter@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, elena.reshetova@intel.com, jun.nakajima@intel.com, 
+	rick.p.edgecombe@intel.com, thomas.lendacky@amd.com, seanjc@google.com, kai.huang@intel.com, 
+	bhe@redhat.com, kexec@lists.infradead.org, linux-coco@lists.linux.dev, 
+	anisinha@redhat.com, michael.roth@amd.com, bdas@redhat.com, vkuznets@redhat.com, 
+	dionnaglaze@google.com, jroedel@suse.de, ashwin.kamat@broadcom.com
+Subject: Re: [PATCH 1/2] x86/mm: Do not zap PMD entry mapping unaccepted
+ memory table during kdump.
+Message-ID: <ictdanmnsdn4qnzg42ett6om4r6qzypmxdc5spjwa2g5gz2s7p@drh7hoqdj4sc>
 References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
- <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
- <ZdLjQCaxhOnR+GzX@MiWiFi-R3L-srv>
- <zhbhgq27kjrhkdgbxomjykjez2i4hckguvmxyptvfvoftue5ca@zowl5qbl6psl>
- <ZdR+JzfHjES3zytp@MiWiFi-R3L-srv>
+ <cover.1708390906.git.ashish.kalra@amd.com>
+ <a0bf771e1472eb1a6a241acd2e16c98ab8ac9253.1708390906.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,75 +68,47 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZdR+JzfHjES3zytp@MiWiFi-R3L-srv>
+In-Reply-To: <a0bf771e1472eb1a6a241acd2e16c98ab8ac9253.1708390906.git.ashish.kalra@amd.com>
 
-On Tue, Feb 20, 2024 at 06:25:43PM +0800, Baoquan He wrote:
-> > I am not sure what part of the comment you see doesn't reflect the
-> > behaviour. From my PoV, changed code matches the comment closer that
-> > original.
+On Tue, Feb 20, 2024 at 01:18:29AM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> Oh, I didn't make it clear. I mean update the code comment for
-> lookup_address(), and add code comment for lookup_address_in_pgd() to
-> mention the level thing. Maybe it's a chance to do that.
+> During crashkernel boot only pre-allocated crash memory is presented as
+> E820_TYPE_RAM. This can cause PMD entry mapping unaccepted memory table
+> to be zapped during phys_pmd_init() as SNP/TDX guest use E820_TYPE_ACPI
+> to store the unaccepted memory table and pass it between the kernels on
+> kexec/kdump.
 > 
-> ===1>
-> *
->  * Lookup the page table entry for a virtual address. Return a pointer
->  * to the entry and the level of the mapping.
->  *
->  * Note: We return pud and pmd either when the entry is marked large
->                    ~~~~~~~~~~~ seems we return p4d too
->  * or when the present bit is not set. Otherwise we would return a
->  * pointer to a nonexisting mapping.
->               ~~~~~~~~~~~~~~~ NULL?
->  */                          
-> pte_t *lookup_address(unsigned long address, unsigned int *level)
-> {
->         return lookup_address_in_pgd(pgd_offset_k(address), address, level);
-> }
-> EXPORT_SYMBOL_GPL(lookup_address);
-> ===
+> E820_TYPE_ACPI covers not only ACPI data, but also EFI tables and might
+> be required by kernel to function properly.
 > 
-> ===2>
-> /*
->  * Lookup the page table entry for a virtual address in a specific pgd.
->  * Return a pointer to the entry and the level of the mapping.
->    ~~ also could return NULL if it's none entry. And do we need to
-> mention the level thing?
->  */
-> pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
->                              unsigned int *level)
-> ...
-> }
+> The problem was discovered during debugging kdump for SNP guest. The
+> unaccepted memory table stored with E820_TYPE_ACPI and passed between
+> the kernels on kdump was getting zapped as the PMD entry mapping this
+> is above the E820_TYPE_RAM range for the reserved crashkernel memory.
 > 
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/mm/init_64.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index a0dffaca6d2b..207c6dddde0c 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -524,7 +524,9 @@ phys_pmd_init(pmd_t *pmd_page, unsigned long paddr, unsigned long paddr_end,
+>  			    !e820__mapped_any(paddr & PMD_MASK, paddr_next,
+>  					     E820_TYPE_RAM) &&
+>  			    !e820__mapped_any(paddr & PMD_MASK, paddr_next,
+> -					     E820_TYPE_RESERVED_KERN))
+> +					     E820_TYPE_RESERVED_KERN) &&
+> +			    !e820__mapped_any(paddr & PMD_MASK, paddr_next,
+> +					     E820_TYPE_ACPI))
+>  				set_pmd_init(pmd, __pmd(0), init);
+>  			continue;
 
-What about this fixup:
+Why do you single out phys_pmd_init()? I think it has to be addressed for
+all page table levels as we do for E820_TYPE_RAM and E820_TYPE_RESERVED_KERN.
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 3612e3167147..425ff6e192e6 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -657,7 +657,8 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
- 
- /*
-  * Lookup the page table entry for a virtual address in a specific pgd.
-- * Return a pointer to the entry and the level of the mapping.
-+ * Return a pointer to the entry and the level of the mapping (or NULL if
-+ * the entry is none) and level of the entry.
-  */
- pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
- 			     unsigned int *level)
-@@ -704,9 +705,8 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
-  * Lookup the page table entry for a virtual address. Return a pointer
-  * to the entry and the level of the mapping.
-  *
-- * Note: We return pud and pmd either when the entry is marked large
-- * or when the present bit is not set. Otherwise we would return a
-- * pointer to a nonexisting mapping.
-+ * Note: the function returns p4d, pud and pmd either when the entry is marked
-+ * large or when the present bit is not set. Otherwise it returns NULL.
-  */
- pte_t *lookup_address(unsigned long address, unsigned int *level)
- {
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
