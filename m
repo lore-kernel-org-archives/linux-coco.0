@@ -1,216 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31ECE47F48;
-	Wed, 21 Feb 2024 12:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8CD7C09C
+	for <linux-coco@lists.linux.dev>; Wed, 21 Feb 2024 14:15:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708518790; cv=none; b=YG8LGNsNIzoLl+gGecuEw1QcUMWBk89yEeBM3Eo9GvQpwGZ4CwJpnIzVCD+c6kUxUXDuQDR7KjX5//pW7QO1TXvADSCzcHkcBzsWe0ptlpD+Rj1IjeQB4YjY2evObIFz81LY1q3kBfM7T8s//6FAxsdCodxg2BtruuARqTqIwZw=
+	t=1708524936; cv=none; b=PBTvki+17Nq6H5vEvQjMWQV+HkNwpPCo9yqtBACI3vM/NbdUpfU8dx3JRcdwaQjUPjcnhhr4NSQ078CBAVnOSVOxknV6pSvPwEKBCLnwX1bTw3Z3I3cXswRY/4iJVTALIqaGSiUxqtqpSQm0IMuPSZlrDoE66pLEsKMe9AOQsl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708518790; c=relaxed/simple;
-	bh=TKxrZ5i8qfUSmWmPOGLDIUAMYtKUR9blFenfplJL0Ig=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GbWLuPaIlGMbs7ZYgEnJgIlZcvLr+4Url1exb9y5HGOKr7JfaACrizRWeqoxRpc3UxvYzwTU29Q4CfIB+yYlWK46Qx6w9Y6bUVeiaL/feWTPLMA7xXHXfeTIqJVJB02V6SJH+S/1I6Wf/eI+V35IkGU3MbUcCiHD6eaQGyDusr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=eGdNzpUb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708524936; c=relaxed/simple;
+	bh=/vYbdGx/biRaDTrw8g8KGes/oIyLAhiiHJyRW4pxB+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ta3DZk4ov3Sq5kOIkMZ9Ju8MDY/rGY48uXnVysa0JxyKb3iGEDLrkmEJYXy745295tGd04SpYJKhs8ezVIrwzOix19U9WbjySwcyDkdfPU1d5SxyAh70ibuKnbzdCaU6U9xMIkRosr6ueeqPFISPHC8lJ+LrfZRK32TEcv/bMNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lpjYdbGP; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="eGdNzpUb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F419C433C7;
-	Wed, 21 Feb 2024 12:33:07 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="eGdNzpUb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1708518784;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=c8L9OYnDMwIamjO8TmzT17Jz/akuQWtAkEn5w1LxguY=;
-	b=eGdNzpUbGU3xkV4rsI7R2mHIuszaFpBv8DB5rgja4laDoQOvtTYLdGpXmX1wF7J/SO/U3H
-	voCiZAN1GhkKJpIZSM1JJSTdZgpZT2e5D+N1pjEySxgUBMynHUfgSzimsxQGzF/jnUoQ9F
-	mI6FFs8jEqotmifjHbFEL/doiAQbkFE=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 02fd8cb8 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Wed, 21 Feb 2024 12:33:04 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Borislav Petkov <bp@alien8.de>,
-	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH v3] x86/coco: Require seeding RNG with RDRAND on CoCo systems
-Date: Wed, 21 Feb 2024 13:32:40 +0100
-Message-ID: <20240221123248.25570-1-Jason@zx2c4.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lpjYdbGP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708524934; x=1740060934;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/vYbdGx/biRaDTrw8g8KGes/oIyLAhiiHJyRW4pxB+Y=;
+  b=lpjYdbGPaZPL7tjqptdduzJ2ckcHht0Yrn5LbBpdqyLNTjazF5RUJWzh
+   LeT7osONuHngXyP35I9g/q19Q7H0KnolkNI43DpSznjxzX0zp0HO4n50h
+   h4Z+6Plv8yVECdjxs7J7PICs+urOLpz/F9Y+oiQu3Bt8OCNuiZa5fAtTm
+   11udXFtdD5qiukSJfavgWdBZ2TbByuK+kaQoJ751qCGnm0mkW32/M/JoC
+   fH5iAaFQsyafOPtiRo48nAN0AoEmlK3UMasDe66tkHuxsci0o/yD5Wxn9
+   t3I/QoJlGIUpIPpBfiqKgUw1SzA2mknV/OlHSAsApKWTWnEKA80ANZuUU
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="6500407"
+X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
+   d="scan'208";a="6500407"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 06:15:33 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="936650868"
+X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
+   d="scan'208";a="936650868"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 21 Feb 2024 06:15:28 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id CEA572AB; Wed, 21 Feb 2024 16:15:27 +0200 (EET)
+Date: Wed, 21 Feb 2024 16:15:27 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Baoquan He <bhe@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv7 07/16] x86/mm: Return correct level from
+ lookup_address() if pte is none
+Message-ID: <p34d7e5r3gkcj2xl5jycyldvpkmcllmhzioaqcmseeugl3eq73@plk43dd4luzu>
+References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
+ <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
+ <ZdLjQCaxhOnR+GzX@MiWiFi-R3L-srv>
+ <zhbhgq27kjrhkdgbxomjykjez2i4hckguvmxyptvfvoftue5ca@zowl5qbl6psl>
+ <ZdR+JzfHjES3zytp@MiWiFi-R3L-srv>
+ <ic4v3q4muffjq2jhlkk3k4lg5xxvjwlw22hctzubl5573euzu2@er3m7ztog2a6>
+ <ZdVh6efExdt687YY@MiWiFi-R3L-srv>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZdVh6efExdt687YY@MiWiFi-R3L-srv>
 
-There are few uses of CoCo that don't rely on working cryptography and
-hence a working RNG. Unfortunately, the CoCo threat model means that the
-VM host cannot be trusted and may actively work against guests to
-extract secrets or manipulate computation. Since a malicious host can
-modify or observe nearly all inputs to guests, the only remaining source
-of entropy for CoCo guests is RDRAND.
+On Wed, Feb 21, 2024 at 10:37:29AM +0800, Baoquan He wrote:
+> > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> > index 3612e3167147..425ff6e192e6 100644
+> > --- a/arch/x86/mm/pat/set_memory.c
+> > +++ b/arch/x86/mm/pat/set_memory.c
+> > @@ -657,7 +657,8 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
+> >  
+> >  /*
+> >   * Lookup the page table entry for a virtual address in a specific pgd.
+> > - * Return a pointer to the entry and the level of the mapping.
+> > + * Return a pointer to the entry and the level of the mapping (or NULL if
+> > + * the entry is none) and level of the entry.
+>                        ^ this right parenthesis may need be moved to the end.
+> 
+> 
+> =======
+>  * Return a pointer to the entry and the level of the mapping (or NULL if
+>  * the entry is none and level of the entry).
+> =======
 
-If RDRAND is broken -- due to CPU hardware fault -- the RNG as a whole
-is meant to gracefully continue on gathering entropy from other sources,
-but since there aren't other sources on CoCo, this is catastrophic.
-This is mostly a concern at boot time when initially seeding the RNG, as
-after that the consequences of a broken RDRAND are much more
-theoretical.
+Emm.. I like my variant more. We return level regardless if the entry none
+or not. I don't see a reason to repeat it twice.
 
-So, try at boot to seed the RNG using 256 bits of RDRAND output. If this
-fails, panic(). This will also trigger if the system is booted without
-RDRAND, as RDRAND is essential for a safe CoCo boot.
+> >   */
+> >  pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
+> >  			     unsigned int *level)
+> > @@ -704,9 +705,8 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
+> >   * Lookup the page table entry for a virtual address. Return a pointer
+> >   * to the entry and the level of the mapping.
+> >   *
+> > - * Note: We return pud and pmd either when the entry is marked large
+> > - * or when the present bit is not set. Otherwise we would return a
+> > - * pointer to a nonexisting mapping.
+> > + * Note: the function returns p4d, pud and pmd either when the entry is marked
+>                                           ~~~
+>                                            ^ s/and/or/
 
-This patch is deliberately written to be "just a CoCo x86 driver
-feature" and not part of the RNG itself. Many device drivers and
-platforms have some desire to contribute something to the RNG, and
-add_device_randomness() is specifically meant for this purpose. Any
-driver can call this with seed data of any quality, or even garbage
-quality, and it can only possibly make the quality of the RNG better or
-have no effect, but can never make it worse. Rather than trying to
-build something into the core of the RNG, this patch interprets the
-particular CoCo issue as just a CoCo issue, and therefore separates this
-all out into driver (well, arch/platform) code.
+Fair enough.
 
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Elena Reshetova <elena.reshetova@intel.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Theodore Ts'o <tytso@mit.edu>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
-Changes v2->v3:
-- Remove patch that handled generic RDRAND failures, because that
-  doesn't really have any implication for the RNG, since it's supposed
-  to run fine on systems without RDRAND anyway, and CoCo is a weird
-  special case. If people still want an extra generic RDRAND failure
-  handler, that's standalone anyway, so we can do that disconnected from
-  this patch. No need to make it a series.
-- Update comments and commit message to reflect this.
-
-Changes v1->v2:
-- panic() instead of BUG_ON(), as suggested by Andi Kleen.
-- Update comments, now that we have info from AMD and Intel.
-
- arch/x86/coco/core.c        | 36 ++++++++++++++++++++++++++++++++++++
- arch/x86/include/asm/coco.h |  2 ++
- arch/x86/kernel/setup.c     |  2 ++
- 3 files changed, 40 insertions(+)
-
-diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-index eeec9986570e..0a5d59966d6d 100644
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -3,13 +3,16 @@
-  * Confidential Computing Platform Capability checks
-  *
-  * Copyright (C) 2021 Advanced Micro Devices, Inc.
-+ * Copyright (C) 2024 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-  *
-  * Author: Tom Lendacky <thomas.lendacky@amd.com>
-  */
- 
- #include <linux/export.h>
- #include <linux/cc_platform.h>
-+#include <linux/random.h>
- 
-+#include <asm/archrandom.h>
- #include <asm/coco.h>
- #include <asm/processor.h>
- 
-@@ -153,3 +156,36 @@ __init void cc_set_mask(u64 mask)
- {
- 	cc_mask = mask;
- }
-+
-+__init void cc_random_init(void)
-+{
-+	unsigned long rng_seed[32 / sizeof(long)];
-+	size_t i, longs;
-+
-+	if (cc_vendor == CC_VENDOR_NONE)
-+		return;
-+
-+	/*
-+	 * Since the CoCo threat model includes the host, the only reliable
-+	 * source of entropy that can be neither observed nor manipulated is
-+	 * RDRAND. Usually, RDRAND failure is considered tolerable, but since
-+	 * CoCo guests have no other unobservable source of entropy, it's
-+	 * important to at least ensure the RNG gets some initial random seeds.
-+	 */
-+	for (i = 0; i < ARRAY_SIZE(rng_seed); i += longs) {
-+		longs = arch_get_random_longs(&rng_seed[i], ARRAY_SIZE(rng_seed) - i);
-+
-+		/*
-+		 * A zero return value means that the guest doesn't have RDRAND
-+		 * or the CPU is physically broken, and in both cases that
-+		 * means most crypto inside of the CoCo instance will be
-+		 * broken, defeating the purpose of CoCo in the first place. So
-+		 * just panic here because it's absolutely unsafe to continue
-+		 * executing.
-+		 */
-+		if (longs == 0)
-+			panic("RDRAND is defective.");
-+	}
-+	add_device_randomness(rng_seed, sizeof(rng_seed));
-+	memzero_explicit(rng_seed, sizeof(rng_seed));
-+}
-diff --git a/arch/x86/include/asm/coco.h b/arch/x86/include/asm/coco.h
-index 76c310b19b11..e9d059449885 100644
---- a/arch/x86/include/asm/coco.h
-+++ b/arch/x86/include/asm/coco.h
-@@ -15,6 +15,7 @@ extern enum cc_vendor cc_vendor;
- void cc_set_mask(u64 mask);
- u64 cc_mkenc(u64 val);
- u64 cc_mkdec(u64 val);
-+void cc_random_init(void);
- #else
- #define cc_vendor (CC_VENDOR_NONE)
- 
-@@ -27,6 +28,7 @@ static inline u64 cc_mkdec(u64 val)
- {
- 	return val;
- }
-+static inline void cc_random_init(void) { }
- #endif
- 
- #endif /* _ASM_X86_COCO_H */
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 84201071dfac..30a653cfc7d2 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -36,6 +36,7 @@
- #include <asm/bios_ebda.h>
- #include <asm/bugs.h>
- #include <asm/cacheinfo.h>
-+#include <asm/coco.h>
- #include <asm/cpu.h>
- #include <asm/efi.h>
- #include <asm/gart.h>
-@@ -994,6 +995,7 @@ void __init setup_arch(char **cmdline_p)
- 	 * memory size.
- 	 */
- 	mem_encrypt_setup_arch();
-+	cc_random_init();
- 
- 	efi_fake_memmap();
- 	efi_find_mirror();
 -- 
-2.43.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
