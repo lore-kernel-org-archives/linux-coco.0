@@ -1,59 +1,52 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0A74F8AB
-	for <linux-coco@lists.linux.dev>; Wed, 21 Feb 2024 15:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FE181742
+	for <linux-coco@lists.linux.dev>; Wed, 21 Feb 2024 15:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708529860; cv=none; b=kGPUcj/Ld0kP7c5fHx27aseRDYn4bIB/AFV+YbR4fr9f5gw0dM/cJmgh+aSsWgtiFkhfISpnxW5RIZJ/S4QtF3O6XzvUBxplJe7vrUe8XicYFEFFJLgDV5Q2YgiuVIYwGdpC6O6qFkBAz0gTfKXy2BRQJUpVld9RCwLJ2bhxaws=
+	t=1708530776; cv=none; b=DKyWaRlTKheI2l4AsZ+JQfF83Kri3vX2n11d/bud3C6LuLAy+2Dl60hZfngPrrO7QdynP0BXcyBwXcGn87EiTWL/Dzx2IcDPVgoBzdYGhY3HFZlFM4ZAj+QM67W0lb6HT0oHNxLscf04XL6bXyY0Fo51dU3LH2bRRoPoQljZcNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708529860; c=relaxed/simple;
-	bh=EoeICkB3hFDxSwcp464+mUrp0AXFd54m6bE/NoDVnvo=;
+	s=arc-20240116; t=1708530776; c=relaxed/simple;
+	bh=Ra9/UKRL6qZi0vZz1rdmAVM+RpYX5dfMa4L3P5pdOAc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AEqskAmVUafwVfZzpYYTe9Fono4+F68BmYm7klPjhSdb411mEbJaLZCGzaO7yCoh16/LNRo3xx6I5UwSMIV6NKXieTBRHUdu2lbwhic37MmUd1S+AqROcjeWITNv7vgIS/9+uLM+8J1mjX3xSSSqbWxKQh7cEhMcTGp3qXaTFds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Te5ZEZOq; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=VMIENI35+HZbygm8rAGdQvIXcuZV18yhViMzz4u8TFVxoAYXRfVeONGoh7jEHEJHnTfV3FEaZqKErw9p40RiAReJzdbqgP9Kn5UUXXEsd/sWsOH6CMKruF5Z3kWmXovYpDheliDTQ0bBSXGhIOeDbLTko7jnFgR4+Ev2nTB4FKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=ki+ifFrU; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Te5ZEZOq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708529857; x=1740065857;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=EoeICkB3hFDxSwcp464+mUrp0AXFd54m6bE/NoDVnvo=;
-  b=Te5ZEZOqZHHvDsCfaql1V7449h/C+9OGUYWcBXN1ikfOLzqpFezcHwvx
-   Kiq2SiqK9HgeYnrg21H2A3OsSSIncHgJDMrQlbCvUvAgCF9ZC+BB2IeUQ
-   fzHAang252f2rXxVFpYKaeUsmoV3kEiGDL3Tl1ZG4OSnFwoeYd14yqyUe
-   jOHsw2XJ7zR+xppulmbW0PQyhCCI/HzE2euKlX6HaRGJogcIRgYyJuvAg
-   /AYRXNA41b9+gN2YYQvZSaV/jT4TZFAnrks8TQQ4amC7nNcYo7kV37vOg
-   3qTW5RfiySxCphfOxTmrULz3mLIVntYEm38UWxg5+lXlTb1ksLFIKmMm7
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="25158289"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="25158289"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 07:37:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="936660356"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="936660356"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 21 Feb 2024 07:37:33 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 2C3822A0; Wed, 21 Feb 2024 17:37:32 +0200 (EET)
-Date: Wed, 21 Feb 2024 17:37:32 +0200
-From: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="ki+ifFrU"
+Received: from cwcc.thunk.org (pool-173-48-102-198.bstnma.fios.verizon.net [173.48.102.198])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 41LFpwMs001015
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Feb 2024 10:51:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1708530721; bh=efKwvL9uolpwwXii1YLcblvLBk1Mkbsw9Oy9VotAMtk=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=ki+ifFrU+r4cRsszgtOQQkvuU8AnK11ChkT5VsV8okX/4tPPZv/N0zZwFcraoxJcX
+	 xXwHcov90zmAowqGIJ4yZiC8WPGoFN7WAxYbfa9Ro5H2nY9JOLn8RALnRzQLMz4mXi
+	 PSvltheY44N+df/l11hoGrSkvVM6hcD1/kP6+yeFdEQhyNDFO44Bbd0wZ1UBTcOciP
+	 Be9ufPu6gYU02l+7GS/I8nF1rQxUALOkWsFfbRtFdYqU6AxKkvhtYccJvCNfFeMbz3
+	 Gl+Ag+qhnQ2MRd5dcj1zcOBxWTNkLXH+uCnhSY/FNrFZxI4pzRF0wr1EZLYHNQO3KQ
+	 uJE9Yj0ro6KfA==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id DA42915C0336; Wed, 21 Feb 2024 10:51:57 -0500 (EST)
+Date: Wed, 21 Feb 2024 10:51:57 -0500
+From: "Theodore Ts'o" <tytso@mit.edu>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, 
-	Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Elena Reshetova <elena.reshetova@intel.com>, "H . Peter Anvin" <hpa@zytor.com>, 
-	Ingo Molnar <mingo@redhat.com>, Theodore Ts'o <tytso@mit.edu>, 
-	Thomas Gleixner <tglx@linutronix.de>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+        Borislav Petkov <bp@alien8.de>,
+        Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Elena Reshetova <elena.reshetova@intel.com>,
+        "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>
 Subject: Re: [PATCH v3] x86/coco: Require seeding RNG with RDRAND on CoCo
  systems
-Message-ID: <ja7dptjwhshsjjcgwxivq4tmfs52owlueqexz2ubnnir6mbflh@bjooemgy7ml2>
+Message-ID: <20240221155157.GB594407@mit.edu>
 References: <20240221123248.25570-1-Jason@zx2c4.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -107,7 +100,6 @@ On Wed, Feb 21, 2024 at 01:32:40PM +0100, Jason A. Donenfeld wrote:
 > Cc: Thomas Gleixner <tglx@linutronix.de>
 > Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Theodore Ts'o <tytso@mit.edu>
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+						- Ted
