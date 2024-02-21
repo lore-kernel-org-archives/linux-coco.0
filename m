@@ -1,424 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A0181213
-	for <linux-coco@lists.linux.dev>; Wed, 21 Feb 2024 16:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369747FBC4
+	for <linux-coco@lists.linux.dev>; Wed, 21 Feb 2024 16:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708532224; cv=none; b=RrfBDBy9znifJ7hQHaFeyJVc6AmUsBpzM8YJSLRfTjseYQT5a/RIuOHbLpXPjVWj5Ikm4NqIYrDqPl0mdzK3Gv+ZW8GWpJhjsDfVnAUHUH5vVYJEknbZsv5zR/gEz0vEOc68sc5BDrUOQClLYQHy52hiw25Bgm3A8SBYZVfzPAc=
+	t=1708534528; cv=none; b=gv4xVkyrMkusyw0MZTTbtAjvyceke9eXSDa/Fh33APaByt0y3U7d5wi73Gkdo1l1mZIVZRWkLCbPI+ql7jvEtH/GZ91tvJ8Z0k3b6IOtWzGTGn7QP8x90up4/3IqSxGJPy9/6tt4KtquYDlVU3dIcJ7Xi6+IIGuUUasr4y/D768=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708532224; c=relaxed/simple;
-	bh=6fOBDO7iJ8ftT39BIy1ZtWkOJ30pe6Fq4tEA+QJBOqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=URWoUOJU4eDe6d9OIAnvLdh60r/i+2lATxay7WrenstMsDh8hBBYW/MZsvXUFM1EFC+KDLrcgmg0AGNiKqbGA5tkN1uhGzqJTO1OSG9TPBi8xMHwVG4CLtR+OhcmCSH57yTCwhDfy5ky5nAzWV5NUttenk1fhoYHpAEO+0z2Yp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GcbRNF9h; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1708534528; c=relaxed/simple;
+	bh=9A2NkYvXqxZrDii8D/Ri7QZZYFt4/LusxalkSWfJdg8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pa0Xstv82NHBCjNr0+w1P1MO5LIRwPzvseFih4w00miUgA2c1g71P9aPD4ffsdpzcpnOsWp5jCBU03+F6NImvHgT8yiaYcy+A+8HBgwCBCL36P+LHc/I1S8ajElKn6C4IskC4/geEbNscdo4/G6fvmgksZKuz+6HvdHOQX2Jepk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k1yVo2a/; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GcbRNF9h"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k1yVo2a/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708532222; x=1740068222;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6fOBDO7iJ8ftT39BIy1ZtWkOJ30pe6Fq4tEA+QJBOqs=;
-  b=GcbRNF9hdgbRzRt+gNUAQzEUSdy1hkA/j+A/67JFaRpXhCIBHH+JrulC
-   DWp5RlU9Jlt+3UFPEpiDk1+NebPe/Nt2BNOimtMYqrkYjeel2+3Pcz7j/
-   0VjAJphtn5rvregm041wxHfUCyN7Dh5EnGhQBZrmTCB78f2Sm9c4Vxi/k
-   05eRNEO1IoE2JRBgZibwDs/YOdpxU2Wu5UXwB/ggm0mKcfR2yXnJLWDFD
-   T4J0Auc/pKIr83nNnVBVgbHlQm2zpCVc/O4B6oGD86ae+CKavnCKemdpL
-   /kHZ8Z0Ho5EUIrqBzzKFrJNv9lBeGpxjGgVODr6bwGFj9c+11wfkR9gmP
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="28142856"
+  t=1708534527; x=1740070527;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=9A2NkYvXqxZrDii8D/Ri7QZZYFt4/LusxalkSWfJdg8=;
+  b=k1yVo2a/8mQSTByNBLcnW8BSmei4WnwcR25aRvy4J3ZwLbhRCZC7SREn
+   JHnleRag/ffLmnY2VRlowlDvgRGgKVuNeakD4CIVTp7fEdgdIXfoAH4Si
+   rk6WBp6GFQhua9EtxUypdfzSNcyD8fH5IOfBwuRTCZew+bFVPXcozcu0J
+   DhaqGqnevWxrWVPYQPvCwAENPDOndCq6/AXGWXLbfwGk0RVohg/mX9NHt
+   eZS4go1cx+V8tE0e0jpxJKaDOG4T3LU2C6EFPI9eNvyRj3LD016tDlomo
+   jXlG9G8nfagn3JW3+Oj2xf1yl/9/SWm45RLlNBwlPMrz72vMyjUkHcM6a
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="20249545"
 X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
-   d="scan'208";a="28142856"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 08:17:02 -0800
+   d="scan'208";a="20249545"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 08:55:26 -0800
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="827377914"
 X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
-   d="scan'208";a="36202107"
-Received: from slisovsk-mobl.ger.corp.intel.com (HELO himmelriiki) ([10.249.44.9])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 08:16:57 -0800
-Date: Wed, 21 Feb 2024 18:16:47 +0200
-From: Mikko Ylinen <mikko.ylinen@linux.intel.com>
-To: Samuel Ortiz <sameo@rivosinc.com>
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Qinkun Bao <qinkun@google.com>,
-	"Yao, Jiewen" <jiewen.yao@intel.com>,
-	"Xing, Cedric" <cedric.xing@intel.com>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>, biao.lu@intel.com,
-	linux-coco@lists.linux.dev, linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/4] tsm: Add RTMRs to the configfs-tsm hierarchy
-Message-ID: <ZdYh73NVJ_OR4M9i@himmelriiki>
-References: <20240128212532.2754325-1-sameo@rivosinc.com>
- <20240128212532.2754325-3-sameo@rivosinc.com>
+   d="scan'208";a="827377914"
+Received: from remiller-mobl1.amr.corp.intel.com (HELO [10.209.48.179]) ([10.209.48.179])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 08:55:25 -0800
+Message-ID: <eada8acd-9341-401b-b6c9-a05848eb91d6@intel.com>
+Date: Wed, 21 Feb 2024 08:55:26 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240128212532.2754325-3-sameo@rivosinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] x86/coco: Require seeding RNG with RDRAND on CoCo
+ systems
+Content-Language: en-US
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: Borislav Petkov <bp@alien8.de>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Theodore Ts'o <tytso@mit.edu>, Thomas Gleixner <tglx@linutronix.de>
+References: <20240221123248.25570-1-Jason@zx2c4.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20240221123248.25570-1-Jason@zx2c4.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On Sun, Jan 28, 2024 at 10:25:21PM +0100, Samuel Ortiz wrote:
-> RTMRs are defined and managed by their corresponding TSM provider. As
-> such, they can be configured through the TSM configfs root.
-> 
-> An additional `rtmrs` directory is added by default under the `tsm` one,
-> where each supported RTMR can be configured:
-> 
-> mkdir /sys/kernel/config/tsm/rtmrs/rtmr0
-> echo 0 > /sys/kernel/config/tsm/rtmrs/rtmr0/index
-
-I implemented the plumbing for TDX to experiment with this patchset a bit
-and to try out some ideas for the event logging.
-
-The first mkdir triggers the following, FYI:
-
-[  353.984801] ======================================================
-[  353.984805] WARNING: possible circular locking dependency detected
-[  353.984808] 6.8.0-rc5+ #14 Not tainted
-[  353.984812] ------------------------------------------------------
-[  353.984814] mkdir/3374 is trying to acquire lock:
-[  353.984817] ffffffff8ae59d90 (tsm_rwsem){++++}-{3:3}, at: tsm_rtmrs_make_item+0x26/0xa0
-[  353.984830] 
-               but task is already holding lock:
-[  353.984832] ffffffff8ae59890 (tsm_configfs.su_mutex){+.+.}-{3:3}, at: configfs_mkdir+0x188/0x470
-[  353.984842] 
-               which lock already depends on the new lock.
-
-[  353.984845] 
-               the existing dependency chain (in reverse order) is:
-[  353.984848] 
-               -> #1 (tsm_configfs.su_mutex){+.+.}-{3:3}:
-[  353.984853]        __lock_acquire+0x4d1/0xbb0
-[  353.984861]        lock_acquire+0xcb/0x2b0
-[  353.984863]        __mutex_lock+0x9b/0xb80
-[  353.984874]        mutex_lock_nested+0x1f/0x30
-[  353.984878]        configfs_register_group+0x7b/0x1d0
-[  353.984880]        configfs_register_default_group+0x54/0x90
-[  353.984883]        tsm_rtmr_register+0xb9/0x140
-[  353.984886]        tsm_register+0x89/0xc0
-[  353.984888]        tdx_guest_init+0x81/0x110
-[  353.984896]        do_one_initcall+0x62/0x370
-[  353.984903]        do_initcalls+0xe3/0x1a0
-[  353.984909]        kernel_init_freeable+0x2ea/0x400
-[  353.984912]        kernel_init+0x1e/0x1c0
-[  353.984915]        ret_from_fork+0x3e/0x60
-[  353.984921]        ret_from_fork_asm+0x11/0x20
-[  353.984925] 
-               -> #0 (tsm_rwsem){++++}-{3:3}:
-[  353.984929]        check_prev_add+0xed/0xc60
-[  353.984931]        validate_chain+0x488/0x530
-[  353.984933]        __lock_acquire+0x4d1/0xbb0
-[  353.984936]        lock_acquire+0xcb/0x2b0
-[  353.984938]        down_read+0x45/0x190
-[  353.984941]        tsm_rtmrs_make_item+0x26/0xa0
-[  353.984944]        configfs_mkdir+0x349/0x470
-[  353.984946]        vfs_mkdir+0x1a5/0x260
-[  353.984955]        do_mkdirat+0x83/0x140
-[  353.984958]        __x64_sys_mkdir+0x4e/0x70
-[  353.984960]        do_syscall_64+0x67/0x110
-[  353.984964]        entry_SYSCALL_64_after_hwframe+0x63/0x6b
-[  353.984972] 
-               other info that might help us debug this:
-
-[  353.984975]  Possible unsafe locking scenario:
-
-[  353.984977]        CPU0                    CPU1
-[  353.984980]        ----                    ----
-[  353.984982]   lock(tsm_configfs.su_mutex);
-[  353.984985]                                lock(tsm_rwsem);
-[  353.984988]                                lock(tsm_configfs.su_mutex);
-[  353.984991]   rlock(tsm_rwsem);
-[  353.984993] 
-                *** DEADLOCK ***
-
-[  353.984996] 3 locks held by mkdir/3374:
-[  353.984998]  #0: ff3af65b4ae05408 (sb_writers#13){.+.+}-{0:0}, at: filename_create+0x61/0x190
-[  353.985006]  #1: ff3af65b492a97f8 (&sb->s_type->i_mutex_key#6/1){+.+.}-{3:3}, at: filename_create+0x9d/
-0x190
-[  353.985014]  #2: ffffffff8ae59890 (tsm_configfs.su_mutex){+.+.}-{3:3}, at: configfs_mkdir+0x188/0x470
-[  353.985020]
-               stack backtrace:
-[  353.985023] CPU: 36 PID: 3374 Comm: mkdir Not tainted 6.8.0-rc5+ #14
-[  353.985027] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 2023.05-2+tdx1.0 11/05/2023
-[  353.985031] Call Trace:
-[  353.985033]  <TASK>
-[  353.985034]  dump_stack_lvl+0x4e/0x90
-[  353.985041]  dump_stack+0x14/0x20
-[  353.985044]  print_circular_bug+0xec/0x110
-[  353.985047]  check_noncircular+0x130/0x150
-[  353.985051]  check_prev_add+0xed/0xc60
-[  353.985053]  ? add_chain_cache+0x10e/0x2d0
-[  353.985059]  validate_chain+0x488/0x530
-[  353.985062]  __lock_acquire+0x4d1/0xbb0
-[  353.985065]  lock_acquire+0xcb/0x2b0
-[  353.985067]  ? tsm_rtmrs_make_item+0x26/0xa0
-[  353.985071]  down_read+0x45/0x190
-[  353.985074]  ? tsm_rtmrs_make_item+0x26/0xa0
-[  353.985094]  tsm_rtmrs_make_item+0x26/0xa0
-[  353.985097]  configfs_mkdir+0x349/0x470
-[  353.985100]  vfs_mkdir+0x1a5/0x260
-[  353.985105]  do_mkdirat+0x83/0x140
-[  353.985109]  __x64_sys_mkdir+0x4e/0x70
-[  353.985112]  do_syscall_64+0x67/0x110
-[  353.985116]  entry_SYSCALL_64_after_hwframe+0x63/0x6b
-[  353.985119] RIP: 0033:0x7f35aad19d4b
-[  353.985124] Code: 0f 1e fa 48 89 f2 b9 00 01 00 00 48 89 fe bf 9c ff ff ff e9 d7 c6 ff ff 0f 1f 80 00 0
-0 00 00 f3 0f 1e fa b8 53 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 05 c3 0f 1f 40 00 48 8b 15 99 40 0e 00 f7
-d8
-[  353.985132] RSP: 002b:00007ffc3f2ccc78 EFLAGS: 00000246 ORIG_RAX: 0000000000000053
-[  353.985139] RAX: ffffffffffffffda RBX: 00007ffc3f2cd5a5 RCX: 00007f35aad19d4b
-[  353.985143] RDX: 0000000000000000 RSI: 00000000000001ff RDI: 00007ffc3f2cd5a5
-[  353.985147] RBP: 00000000000001ff R08: 00000000000001ff R09: 0000000000000000
-[  353.985151] R10: 0000556f33617249 R11: 0000000000000246 R12: 0000000000000000
-[  353.985155] R13: 00007ffc3f2cce18 R14: 0000000000000000 R15: 00007ffc3f2cd5a5
-[  353.985161]  </TASK>
-
-> 
-> An RTMR can not be extended nor read before its configured by assigning
-> it an index. It is the TSM backend responsibility and choice to map that
-> index to a hardware RTMR.
-> 
-> Signed-off-by: Samuel Ortiz <sameo@rivosinc.com>
-> ---
->  Documentation/ABI/testing/configfs-tsm |  11 ++
->  drivers/virt/coco/tsm.c                | 164 +++++++++++++++++++++++++
->  2 files changed, 175 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/configfs-tsm b/Documentation/ABI/testing/configfs-tsm
-> index dd24202b5ba5..590e103a9bcd 100644
-> --- a/Documentation/ABI/testing/configfs-tsm
-> +++ b/Documentation/ABI/testing/configfs-tsm
-> @@ -80,3 +80,14 @@ Contact:	linux-coco@lists.linux.dev
->  Description:
->  		(RO) Indicates the minimum permissible value that can be written
->  		to @privlevel.
-> +
-> +What:		/sys/kernel/config/tsm/rtmrs/$name/index
-> +Date:		January, 2024
-> +KernelVersion:	v6.8
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:
-> +		(RW) A Runtime Measurement Register (RTMR) hardware index.
-> +                Once created under /sys/kernel/config/tsm/rtmrs/, an RTMR entry
-> +                can be mapped to a hardware RTMR by writing into its index
-> +                attribute. The TSM provider will then map the configfs entry to
-> +                its corresponding hardware register.
-> diff --git a/drivers/virt/coco/tsm.c b/drivers/virt/coco/tsm.c
-> index 1a8c3c096120..bb9ed2d2accc 100644
-> --- a/drivers/virt/coco/tsm.c
-> +++ b/drivers/virt/coco/tsm.c
-> @@ -419,6 +419,108 @@ static const struct config_item_type tsm_reports_type = {
->  	.ct_group_ops = &tsm_report_group_ops,
->  };
->  
-> +static ssize_t tsm_rtmr_index_store(struct config_item *cfg,
-> +				    const char *buf, size_t len)
+On 2/21/24 04:32, Jason A. Donenfeld wrote:
+> +__init void cc_random_init(void)
 > +{
-> +	struct tsm_rtmr_state *rtmr_state = to_tsm_rtmr_state(cfg);
-> +	const struct tsm_ops *ops;
-> +	unsigned int val;
-> +	int rc;
-> +
-> +	rc = kstrtouint(buf, 0, &val);
-> +	if (rc)
-> +		return rc;
-> +
-> +	guard(rwsem_write)(&tsm_rwsem);
-> +
-> +	/* Index can only be configured once */
-> +	if (is_rtmr_configured(rtmr_state))
-> +		return -EBUSY;
-> +
-> +	/* Check that index stays within the TSM provided capabilities */
-> +	ops = provider.ops;
-> +	if (!ops)
-> +		return -ENOTTY;
-> +
-> +	if (val > ops->capabilities.num_rtmrs - 1)
-> +		return -EINVAL;
-> +
-> +	/* Check that this index is available */
-> +	if (tsm_rtmrs->rtmrs[val])
-> +		return -EINVAL;
-> +
-> +	rtmr_state->index = val;
-> +	rtmr_state->alg = ops->capabilities.rtmrs[val].hash_alg;
-> +
-> +	tsm_rtmrs->rtmrs[val] = rtmr_state;
-> +
-> +	return len;
-> +}
-> +
-> +static ssize_t tsm_rtmr_index_show(struct config_item *cfg,
-> +				   char *buf)
-> +{
-> +	struct tsm_rtmr_state *rtmr_state = to_tsm_rtmr_state(cfg);
-> +
-> +	guard(rwsem_read)(&tsm_rwsem);
-> +
-> +	/* An RTMR is not available if it has not been configured */
-> +	if (!is_rtmr_configured(rtmr_state))
-> +		return -ENXIO;
-> +
-> +	return sysfs_emit(buf, "%u\n", rtmr_state->index);
-> +}
-> +CONFIGFS_ATTR(tsm_rtmr_, index);
-> +
-> +static struct configfs_attribute *tsm_rtmr_attrs[] = {
-> +	&tsm_rtmr_attr_index,
-> +	NULL,
-> +};
-> +
-> +static void tsm_rtmr_item_release(struct config_item *cfg)
-> +{
-> +	struct tsm_rtmr_state *state = to_tsm_rtmr_state(cfg);
-> +
-> +	kfree(state);
-> +}
-> +
-> +static struct configfs_item_operations tsm_rtmr_item_ops = {
-> +	.release = tsm_rtmr_item_release,
-> +};
-> +
-> +const struct config_item_type tsm_rtmr_type = {
-> +	.ct_owner = THIS_MODULE,
-> +	.ct_attrs = tsm_rtmr_attrs,
-> +	.ct_item_ops = &tsm_rtmr_item_ops,
-> +};
-> +
-> +static struct config_item *tsm_rtmrs_make_item(struct config_group *group,
-> +					       const char *name)
-> +{
-> +	struct tsm_rtmr_state *state;
-> +
-> +	guard(rwsem_read)(&tsm_rwsem);
-> +	if (!(provider.ops && (provider.ops->capabilities.num_rtmrs > 0)))
-> +		return ERR_PTR(-ENXIO);
-> +
-> +	state = kzalloc(sizeof(*state), GFP_KERNEL);
-> +	if (!state)
-> +		return ERR_PTR(-ENOMEM);
-> +	state->index = U32_MAX;
-> +
-> +	config_item_init_type_name(&state->cfg, name, &tsm_rtmr_type);
-> +	return &state->cfg;
-> +}
-> +
-> +static struct configfs_group_operations tsm_rtmrs_group_ops = {
-> +	.make_item = tsm_rtmrs_make_item,
-> +};
-> +
-> +static const struct config_item_type tsm_rtmrs_type = {
-> +	.ct_owner = THIS_MODULE,
-> +	.ct_group_ops = &tsm_rtmrs_group_ops,
-> +};
-> +
->  static const struct config_item_type tsm_root_group_type = {
->  	.ct_owner = THIS_MODULE,
->  };
-> @@ -433,10 +535,48 @@ static struct configfs_subsystem tsm_configfs = {
->  	.su_mutex = __MUTEX_INITIALIZER(tsm_configfs.su_mutex),
->  };
->  
-> +static int tsm_rtmr_register(const struct tsm_ops *ops)
-> +{
-> +	struct config_group *rtmrs_group;
-> +
-> +	lockdep_assert_held_write(&tsm_rwsem);
-> +
-> +	if (!ops || !ops->capabilities.num_rtmrs)
-> +		return 0;
-> +
-> +	if (ops->capabilities.num_rtmrs > TSM_MAX_RTMR)
-> +		return -EINVAL;
-> +
-> +	tsm_rtmrs = kzalloc(sizeof(struct tsm_rtmrs_state), GFP_KERNEL);
-> +	if (!tsm_rtmrs)
-> +		return -ENOMEM;
-> +
-> +	tsm_rtmrs->rtmrs = kcalloc(ops->capabilities.num_rtmrs,
-> +				   sizeof(struct tsm_rtmr_state *),
-> +				   GFP_KERNEL);
-> +	if (!tsm_rtmrs->rtmrs) {
-> +		kfree(tsm_rtmrs);
-> +		return -ENOMEM;
-> +	}
-> +
-> +	rtmrs_group = configfs_register_default_group(&tsm_configfs.su_group, "rtmrs",
-> +						      &tsm_rtmrs_type);
-> +	if (IS_ERR(rtmrs_group)) {
-> +		kfree(tsm_rtmrs->rtmrs);
-> +		kfree(tsm_rtmrs);
-> +		return PTR_ERR(rtmrs_group);
-> +	}
-> +
-> +	tsm_rtmrs->group = rtmrs_group;
-> +
-> +	return 0;
-> +}
-> +
->  int tsm_register(const struct tsm_ops *ops, void *priv,
->  		 const struct config_item_type *type)
->  {
->  	const struct tsm_ops *conflict;
-> +	int rc;
->  
->  	if (!type)
->  		type = &tsm_report_default_type;
-> @@ -450,6 +590,10 @@ int tsm_register(const struct tsm_ops *ops, void *priv,
->  		return -EBUSY;
->  	}
->  
-> +	rc = tsm_rtmr_register(ops);
-> +	if (rc < 0)
-> +		return rc;
-> +
->  	provider.ops = ops;
->  	provider.data = priv;
->  	provider.type = type;
-> @@ -457,11 +601,31 @@ int tsm_register(const struct tsm_ops *ops, void *priv,
->  }
->  EXPORT_SYMBOL_GPL(tsm_register);
->  
-> +static int tsm_rtmr_unregister(const struct tsm_ops *ops)
-> +{
-> +	lockdep_assert_held_write(&tsm_rwsem);
-> +
-> +	if ((ops) && (ops->capabilities.num_rtmrs > 0)) {
-> +		configfs_unregister_default_group(tsm_rtmrs->group);
-> +		kfree(tsm_rtmrs->rtmrs);
-> +		kfree(tsm_rtmrs);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  int tsm_unregister(const struct tsm_ops *ops)
->  {
-> +	int rc;
-> +
->  	guard(rwsem_write)(&tsm_rwsem);
->  	if (ops != provider.ops)
->  		return -EBUSY;
-> +
-> +	rc = tsm_rtmr_unregister(ops);
-> +	if (rc < 0)
-> +		return rc;
-> +
->  	provider.ops = NULL;
->  	provider.data = NULL;
->  	provider.type = NULL;
-> -- 
-> 2.42.0
-> 
+> +	unsigned long rng_seed[32 / sizeof(long)];
 
--- Regards, Mikko
+My only nit with this is the magic "32".
+
+Why not 16?  Or 64?
