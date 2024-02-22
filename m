@@ -1,176 +1,126 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7E47174E
-	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 20:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F287B6AF94
+	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 21:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708634468; cv=none; b=LVC2QRXECFeHZE67ZoT0GnvPuh0nsYa7/lzRfdQTWkPmJBy98VjmO4X8g9T8toR2ySiSNZY5j91eGZuAd4TcDTtb0eR0g0U2HmH9aoxC0h1Lnu+QT/sMfLJ0tCWnHwXiTJy0T/y7mdFYAG+rnLPlMPPpB6FmPdJvx7ZIexExRjU=
+	t=1708636509; cv=none; b=oWmI1Htx9359O5M+nkY6RrdEpJi33VrzKT710j8QFRH1Tm0T9JQo65OLL5PNXMnIE+8WnWeHy6QhSDtzeyWjtOaVZeWWy8UjPT4ZAFQEwbT6wAZjXta6+w7lFVadGtn6mJx0tUXT3ZDNUbjNPgXXxPEbGwAHLg0V5/xO6E0AQhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708634468; c=relaxed/simple;
-	bh=Q25YWzyNxF/3XAunjCUhzH+lE8FRgGWMvmbdobYKats=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KJHD7es1xvnZX2XGQhhU6e034V8CU5v2Hn0H6fSSCE4r78YF70Rqj2kskrjsOW96W6/tTrZ5hAVkY+PxaBjnYq2bmANE9P6svJ1nTuxtR0dKhzRc5g7EpzhaxcpZAquCry2ll6/9XrV5DbKTJZfqRKFN086lAtOdM4Yz55ay6Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Eq2Iy0KN; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Eq2Iy0KN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708634467; x=1740170467;
-  h=subject:from:to:cc:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Q25YWzyNxF/3XAunjCUhzH+lE8FRgGWMvmbdobYKats=;
-  b=Eq2Iy0KNvDp4ts+eidwERr0eBKriU7fTGaS+t/fUZLi9tsMp3Q5+K6t4
-   SNv/zLHniX1MfxRkCIhEykWXH+aR/pkG/QjeSWYXiCe/e7Tafd+nRxlf3
-   sKn1AYISq95y0rA/WsbTMJQz+MltzQGen/Fd5E7UnM88FqgVI7Sw2z9sR
-   3MJRPXaezYJBx6I3G1aSe8xVJx7VmW9OoIRg7Y6dTDMNbza4lS+Xjv0Mp
-   nzIn0ioC7EL1+0Ua8fMqKhA/WB12oInMe2j6HK2XD3fouu9vyBs1DA8gY
-   rUnEqrf+oa+36Dwsafibgq/Xq9dnZzN5DBS975g2x+YRKPc3IYyJSosxS
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="25358684"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="25358684"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 12:41:07 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="913585407"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="913585407"
-Received: from wyeh-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.209.77.87])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 12:41:06 -0800
-Subject: [PATCH 3/3] sysfs: Introduce DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE()
-From: Dan Williams <dan.j.williams@intel.com>
-To: gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-coco@lists.linux.dev, alsa-devel@alsa-project.org
-Date: Thu, 22 Feb 2024 12:41:06 -0800
-Message-ID: <170863446625.1479840.10593839479268727913.stgit@dwillia2-xfh.jf.intel.com>
-In-Reply-To: <170863444851.1479840.10249410842428140526.stgit@dwillia2-xfh.jf.intel.com>
-References: <170863444851.1479840.10249410842428140526.stgit@dwillia2-xfh.jf.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	s=arc-20240116; t=1708636509; c=relaxed/simple;
+	bh=+xIXD/2/oxIWEfrv3yIZldxrY3+fcQ19267trFYIMr4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hp7FO/qskfYpGcY5iuqg9U4kKMqb/0XrWsn6Nie2QpUtkiRImt0kZnUdlXVEqjuO/aoidANOBPG2rOhnPOHJOm6jf+mfn+Yg3eY1lJNmjD0y4ybio2ZNswKMeW4fVSPRmwI/iwusGpjuI9dtoWmQfWfFSIqEndnjVWS4D3t8fkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-59fc31c57easo55764eaf.1
+        for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 13:15:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708636507; x=1709241307;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Iwu0gmTsePp7o8N8/VmTdIjFEQ9vkLhfKTZRszY+BUE=;
+        b=UAeNzy5LQM/KQ1zWkHJIOoUYYLVpMsH8sKwniZWfIWw8VsZ8qekqQZSoErSObQJPmM
+         zr9/vGKt2j3sOzVe2VTlAlzSOK6PklyYpiA9j/r/IDar1TNJh1OfkyU2uR14cSv979m/
+         BJnhImnNHVmNdY56Vk8tj9W/TT/LTUC2KRm5v0cAqA87/mmOCF5GUVnXQATEf+c2rkwE
+         OEZhYhv7SDiwleJcIp1+aWKXUd0yVUhJGEw2f0ClTY0HjJj9SES2/0f3WFO8BkVqRF88
+         VFuVRBBggAAZV8O2EfJNAr1a90mIisGTRtIMFVVZwg2JOiGQiwbXoJRL1klYvTzM01He
+         yhJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXD1f1mRrU9Znjae3OHn0PYcn5oOaB91xTYMDr3NFtPp6QmotR0vb3Z/bowkoCTNlNctezMOAIeMi4cWLWd20lshA0PevhvPckJaw==
+X-Gm-Message-State: AOJu0Yz5Kz4h8tz+CpZmpvZDMvRrq2lv9hOZt76TI/ZeUf42LN8izXFO
+	iSyuR/DmLsJfximu5zXYiBqxral7+GRMa4EL9a20K6fFVANv/9CaUKtqH0sADrqfrn0SVtal+Ux
+	Jku+baD9/nHDOEr8KhaSqih41I2g=
+X-Google-Smtp-Source: AGHT+IFBhFMeTig5AOkgadvukvOfwWjQ8r353Lb0HZrWECBBPfGC+Dj9rZuEDuEVrBus6h6V0upsu6tQaky4nxbghaA=
+X-Received: by 2002:a4a:e757:0:b0:5a0:3c8a:4940 with SMTP id
+ n23-20020a4ae757000000b005a03c8a4940mr162016oov.1.1708636507038; Thu, 22 Feb
+ 2024 13:15:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <170863444851.1479840.10249410842428140526.stgit@dwillia2-xfh.jf.intel.com>
+ <170863445442.1479840.1818801787239831650.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <170863445442.1479840.1818801787239831650.stgit@dwillia2-xfh.jf.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 22 Feb 2024 22:14:55 +0100
+Message-ID: <CAJZ5v0hmD+7iSKKexpUccvMUtjNpd9fHo3vRrshD_s=rb5Vq_w@mail.gmail.com>
+Subject: Re: [PATCH 1/3] sysfs: Fix crash on empty group attributes array
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: gregkh@linuxfoundation.org, 
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, 
+	Marc Herbert <marc.herbert@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-coco@lists.linux.dev, 
+	alsa-devel@alsa-project.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-One of the first users of DEFINE_SYSFS_GROUP_VISIBLE() did this:
+On Thu, Feb 22, 2024 at 9:40=E2=80=AFPM Dan Williams <dan.j.williams@intel.=
+com> wrote:
+>
+> It turns out that arch/x86/events/intel/core.c makes use of "empty"
+> attributes.
+>
+>         static struct attribute *empty_attrs;
+>
+>         __init int intel_pmu_init(void)
+>         {
+>                 struct attribute **extra_skl_attr =3D &empty_attrs;
+>                 struct attribute **extra_attr =3D &empty_attrs;
+>                 struct attribute **td_attr    =3D &empty_attrs;
+>                 struct attribute **mem_attr   =3D &empty_attrs;
+>                 struct attribute **tsx_attr   =3D &empty_attrs;
+>                 ...
+>
+> That breaks the assumption __first_visible() that expects that if
+> grp->attrs is set then grp->attrs[0] must also be set and results in
+> backtraces like:
+>
+>     BUG: kernel NULL pointer dereference, address: 00rnel mode
+>     #PF: error_code(0x0000) - not-present ] PREEMPT SMP NOPTI
+>     CPU: 1 PID: 1 Comm: swapper/IP: 0010:exra_is_visible+0x14/0x20
+>      ? exc_page_fault+0x68/0x190
+>      internal_create_groups+0x42/0xa0
+>      pmu_dev_alloc+0xc0/0xe0
+>      perf_event_sysfs_init+0x580000000000 ]---
+>     RIP: 0010:exra_is_visible+0x14/0
+>
+> Check for non-empty attributes array before calling is_visible().
+>
+> Reported-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> Closes: https://github.com/thesofproject/linux/pull/4799#issuecomment-195=
+8537212
+> Fixes: 70317fd24b41 ("sysfs: Introduce a mechanism to hide static attribu=
+te_groups")
 
-	static umode_t dp0_attr_visible(struct kobject *kobj,
-					struct attribute *attr,
-					int n)
-	{
-		struct sdw_slave *slave = dev_to_sdw_dev(kobj_to_dev(kobj));
+This is not in the mainline, so linux-next I suppose?
 
-		if (slave->prop.dp0_prop)
-			return attr->mode;
-		return 0;
-	}
-
-	static bool dp0_group_visible(struct kobject *kobj)
-	{
-		struct sdw_slave *slave = dev_to_sdw_dev(kobj_to_dev(kobj));
-
-		if (slave->prop.dp0_prop)
-			return true;
-		return false;
-	}
-	DEFINE_SYSFS_GROUP_VISIBLE(dp0);
-
-...i.e. the _group_visible() helper is identical to the _attr_visible()
-helper. Use the "simple" helper to reduce that to:
-
-	static bool dp0_group_visible(struct kobject *kobj)
-	{
-		struct sdw_slave *slave = dev_to_sdw_dev(kobj_to_dev(kobj));
-
-		if (slave->prop.dp0_prop)
-			return true;
-		return false;
-	}
-	DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE(dp0);
-
-Remove the need to specify per attribute visibility if the goal is to
-hide the entire group.
-
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- include/linux/sysfs.h |   45 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
-index dabf7f4f3581..326341c62385 100644
---- a/include/linux/sysfs.h
-+++ b/include/linux/sysfs.h
-@@ -140,7 +140,9 @@ struct attribute_group {
-  * };
-  *
-  * Note that it expects <name>_attr_visible and <name>_group_visible to
-- * be defined.
-+ * be defined. For cases where individual attributes do not need
-+ * separate visibility consideration, only entire group visibility at
-+ * once, see DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE().
-  */
- #define DEFINE_SYSFS_GROUP_VISIBLE(name)                             \
- 	static inline umode_t sysfs_group_visible_##name(            \
-@@ -151,6 +153,38 @@ struct attribute_group {
- 		return name##_attr_visible(kobj, attr, n);           \
- 	}
- 
-+/*
-+ * DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE(name):
-+ *	A helper macro to pair with SYSFS_GROUP_VISIBLE() that like
-+ *	DEFINE_SYSFS_GROUP_VISIBLE() controls group visibility, but does
-+ *	not require the implementation of a per-attribute visibility
-+ *	callback.
-+ * Ex.
-+ *
-+ * static bool example_group_visible(struct kobject *kobj)
-+ * {
-+ *       if (example_group_condition)
-+ *               return false;
-+ *       return true;
-+ * }
-+ *
-+ * DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE(example);
-+ *
-+ * static struct attribute_group example_group = {
-+ *       .name = "example",
-+ *       .is_visible = SYSFS_GROUP_VISIBLE(example),
-+ *       .attrs = &example_attrs,
-+ * };
-+ */
-+#define DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE(name)                   \
-+	static inline umode_t sysfs_group_visible_##name(         \
-+		struct kobject *kobj, struct attribute *a, int n) \
-+	{                                                         \
-+		if (n == 0 && !name##_group_visible(kobj))        \
-+			return SYSFS_GROUP_INVISIBLE;             \
-+		return a->mode;                                   \
-+	}
-+
- /*
-  * Same as DEFINE_SYSFS_GROUP_VISIBLE, but for groups with only binary
-  * attributes. If an attribute_group defines both text and binary
-@@ -166,6 +200,15 @@ struct attribute_group {
- 		return name##_attr_visible(kobj, attr, n);               \
- 	}
- 
-+#define DEFINE_SIMPLE_SYSFS_BIN_GROUP_VISIBLE(name)                   \
-+	static inline umode_t sysfs_group_visible_##name(             \
-+		struct kobject *kobj, struct bin_attribute *a, int n) \
-+	{                                                             \
-+		if (n == 0 && !name##_group_visible(kobj))            \
-+			return SYSFS_GROUP_INVISIBLE;                 \
-+		return a->mode;                                       \
-+	}
-+
- #define SYSFS_GROUP_VISIBLE(fn) sysfs_group_visible_##fn
- 
- /*
-
+> Cc: Marc Herbert <marc.herbert@intel.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  fs/sysfs/group.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/fs/sysfs/group.c b/fs/sysfs/group.c
+> index ccb275cdabcb..8c63ba3cfc47 100644
+> --- a/fs/sysfs/group.c
+> +++ b/fs/sysfs/group.c
+> @@ -33,10 +33,10 @@ static void remove_files(struct kernfs_node *parent,
+>
+>  static umode_t __first_visible(const struct attribute_group *grp, struct=
+ kobject *kobj)
+>  {
+> -       if (grp->attrs && grp->is_visible)
+> +       if (grp->attrs && grp->attrs[0] && grp->is_visible)
+>                 return grp->is_visible(kobj, grp->attrs[0], 0);
+>
+> -       if (grp->bin_attrs && grp->is_bin_visible)
+> +       if (grp->bin_attrs && grp->bin_attrs[0] && grp->is_bin_visible)
+>                 return grp->is_bin_visible(kobj, grp->bin_attrs[0], 0);
+>
+>         return 0;
+>
