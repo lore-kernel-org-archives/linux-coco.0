@@ -1,66 +1,73 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CE139AED
-	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 10:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C6E40BED
+	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 11:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708599022; cv=none; b=t4wdcH+7wisKBb+gVgsasEKjJuSrntm/fqKC4wDiDK3iSjz4qzK/Skm59P1oVUdIWru7doRlUaVv9/HU2gKO7MZ4prNzUdLd2WgTMaED04XbmuE9s/gzgbnssvBwOq22gL8XZFWZdXYm/vSEZS41kQxXu6VNwF7d/3JPPWj07A0=
+	t=1708599712; cv=none; b=jlKWsEf+Ib2n4T1HQ239vfAdW99peFYiZwSgmbWsBAQ33qJiJDHGwzK+Gt8omhFg/fjY5VLS9OARppwZ/6fV30lIpZ7J3qpPQwkwT2T8m/MSt/i9S7Sncme8mhHQuFZn/bNcxPqUXeFn6DT4YJqVPhgE9Tf05jUq72QM1dhRYug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708599022; c=relaxed/simple;
-	bh=MlCX4WJP2SCKY4u/hH+Za0aayaGTr+j+qDw+YgB04Vc=;
+	s=arc-20240116; t=1708599712; c=relaxed/simple;
+	bh=WI+8ToSVJ6JGQhk6slvgL1Ffo12svsX2MFuD22j76uY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RFiXvOeGJLnKIOYo+8dt21YXRPrHn2vk90LkNZCQNCDgABqI09fHfeY7x7CEd36YextI6V6ote/sVqzotxaYbVaXyosv4JH74DzAKFdqEud5DuAkzHNr6WNovJ8WytbyMNoYMH1gtgXZ0OCJM7uS/RwqE7RXLX9ybuxsLp8t0vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SPWqyZAh; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=rvNECTB6pZsaNdePwb9PG3r8xGoqdGtYjkdCnSBYO36gMfhBMuxkdHBlE0XCCglbmX2z8Sc77VA8AyK8slohz5eyo4rlrdpURmwbOShqkKTz9pZgTT1O+0/1iXKRBHUlb1krPOPfX9fZ8nEKEPVjNHVRFS5dLc9HE4zDlIdPglI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BHmfZ+5k; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SPWqyZAh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708599021; x=1740135021;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MlCX4WJP2SCKY4u/hH+Za0aayaGTr+j+qDw+YgB04Vc=;
-  b=SPWqyZAh5fwmniuFaxYiRDyTcApicoq1q44bFHOA4a79LOD5ttYIbkeC
-   DR94rmCclp/ruRL8d7Il1DoXHRvFJw2sgwnza3vOy87iY2FwUoC77jPtU
-   5wTRsQRkyrv76EdefRk6Y5ZVSUQm5GdAaPRfDec7KQnV6ZB9R+03+Cb0R
-   oTb+1lds/2RSzm/mQrXXOG0iJuaKYgfexWvLWwZIkB+s7jYE/9b5VZkam
-   8HCgLgAjleTC5n3KMgb85YVZqPmV5V45vePxmp1RXIBaMvrKbh+XWCVQc
-   qPHyIYVklgxN8g0QyFzhXrQz3eW0v8R5tCMTv/F1cwk+p2aFwNhLPKCcK
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="14232496"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="14232496"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 02:50:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="936832910"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="936832910"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 22 Feb 2024 02:50:13 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id EB8B42AB; Thu, 22 Feb 2024 12:50:11 +0200 (EET)
-Date: Thu, 22 Feb 2024 12:50:11 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, luto@kernel.org, 
-	x86@kernel.org, ardb@kernel.org, hpa@zytor.com, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rafael@kernel.org, peterz@infradead.org, adrian.hunter@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, elena.reshetova@intel.com, jun.nakajima@intel.com, 
-	rick.p.edgecombe@intel.com, seanjc@google.com, kai.huang@intel.com, bhe@redhat.com, 
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev, anisinha@redhat.com, 
-	michael.roth@amd.com, bdas@redhat.com, vkuznets@redhat.com, dionnaglaze@google.com, 
-	jroedel@suse.de, ashwin.kamat@broadcom.com
-Subject: Re: [PATCH 2/2] x86/snp: Convert shared memory back to private on
- kexec
-Message-ID: <amk4ozai3l65d6ef3k2rsnapaislbvlwpfx7p35tqqhesmc4w7@5vmi52a3qv3o>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BHmfZ+5k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708599709;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VFwcHVEtiDhTvRigoTq212XHeG8ky/6AjwT+KI1KNaQ=;
+	b=BHmfZ+5kLckbl5zoDQxiMDySoLkFU2sNQvELgzltft8HofS6ou+7fvAIynPZcS0oAHCnJC
+	A3z4h7cbYVEp+cSUXAG35DgayOjMQlire/KR36jCyIRSXxXxRJojAZ1jCp9SORN8QGdPSd
+	L7mfzuJK0lLmFO1VviZVRLeMgYuY1E0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-375-OcOjjzq9PGa9bb85kAn-jA-1; Thu,
+ 22 Feb 2024 06:01:46 -0500
+X-MC-Unique: OcOjjzq9PGa9bb85kAn-jA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26A20386A0A0;
+	Thu, 22 Feb 2024 11:01:45 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.2])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 73904492BD7;
+	Thu, 22 Feb 2024 11:01:44 +0000 (UTC)
+Date: Thu, 22 Feb 2024 19:01:41 +0800
+From: Baoquan He <bhe@redhat.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv7 07/16] x86/mm: Return correct level from
+ lookup_address() if pte is none
+Message-ID: <ZdcplT8Xb5eevu/9@MiWiFi-R3L-srv>
 References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
- <cover.1708390906.git.ashish.kalra@amd.com>
- <aa633d7439885da7e54c41db07d65f8e177bcf51.1708390906.git.ashish.kalra@amd.com>
- <97a7d69f-03e1-4ecc-a0ce-10bfe148509c@amd.com>
+ <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
+ <ZdLjQCaxhOnR+GzX@MiWiFi-R3L-srv>
+ <zhbhgq27kjrhkdgbxomjykjez2i4hckguvmxyptvfvoftue5ca@zowl5qbl6psl>
+ <ZdR+JzfHjES3zytp@MiWiFi-R3L-srv>
+ <ic4v3q4muffjq2jhlkk3k4lg5xxvjwlw22hctzubl5573euzu2@er3m7ztog2a6>
+ <ZdVh6efExdt687YY@MiWiFi-R3L-srv>
+ <p34d7e5r3gkcj2xl5jycyldvpkmcllmhzioaqcmseeugl3eq73@plk43dd4luzu>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,40 +76,39 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <97a7d69f-03e1-4ecc-a0ce-10bfe148509c@amd.com>
+In-Reply-To: <p34d7e5r3gkcj2xl5jycyldvpkmcllmhzioaqcmseeugl3eq73@plk43dd4luzu>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 
-On Wed, Feb 21, 2024 at 02:35:13PM -0600, Tom Lendacky wrote:
-> > @@ -906,6 +917,206 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
-> >   	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
-> >   }
-> > +static inline bool pte_decrypted(pte_t pte)
-> > +{
-> > +	return cc_mkdec(pte_val(pte)) == pte_val(pte);
-> > +}
-> > +
+On 02/21/24 at 04:15pm, Kirill A. Shutemov wrote:
+> On Wed, Feb 21, 2024 at 10:37:29AM +0800, Baoquan He wrote:
+> > > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> > > index 3612e3167147..425ff6e192e6 100644
+> > > --- a/arch/x86/mm/pat/set_memory.c
+> > > +++ b/arch/x86/mm/pat/set_memory.c
+> > > @@ -657,7 +657,8 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
+> > >  
+> > >  /*
+> > >   * Lookup the page table entry for a virtual address in a specific pgd.
+> > > - * Return a pointer to the entry and the level of the mapping.
+> > > + * Return a pointer to the entry and the level of the mapping (or NULL if
+> > > + * the entry is none) and level of the entry.
+> >                        ^ this right parenthesis may need be moved to the end.
+> > 
+> > 
+> > =======
+> >  * Return a pointer to the entry and the level of the mapping (or NULL if
+> >  * the entry is none and level of the entry).
+> > =======
 > 
-> This is duplicated in TDX code, arch/x86/coco/tdx/tdx.c, looks like
-> something that can go in a header file, maybe mem_encrypt.h.
-> 
+> Emm.. I like my variant more. We return level regardless if the entry none
+> or not. I don't see a reason to repeat it twice.
 
-I think <asm/pgtable.h> is a better fit.
 
-> > +void snp_kexec_stop_conversion(bool crash)
-> > +{
-> > +	/* Stop new private<->shared conversions */
-> > +	conversion_allowed = false;
-> > +	crash_requested = crash;
-> > +
-> > +	/*
-> > +	 * Make sure conversion_allowed is cleared before checking
-> > +	 * conversions_in_progress.
-> > +	 */
-> > +	barrier();
-> 
-> This should be smp_wmb().
-> 
+ * Lookup the page table entry for a virtual address in a specific pgd.
+ * Return a pointer to the entry and the level of the mapping (or NULL if
+ * the entry is none) and level of the entry.
 
-Why?
+Hmm, I am confused. Why do we need to stress the level of the mapping
+and level of the entry? Wondering what is the difference. I must miss
+something.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
