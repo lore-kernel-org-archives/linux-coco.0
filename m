@@ -1,81 +1,125 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B7373F22
-	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 22:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F63117BD9
+	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 23:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708639499; cv=none; b=qBXx+d9geXLlJcrYYU+Ml+21Erm/zE2HLshjTuB1Zi2Hjwv8nyr/iBz/GNFhkGQJyt/MRQjsj4XwLKt8IV2PM0QCD6u/DXDocgOXewvXKTSm0CqU1LqEnwfq+7BE7nws3JgyXaRncD6pLwd55pqtz8iqAJ0IqQkP67OEOdwxmUc=
+	t=1708643343; cv=none; b=h3aMNLvXBjJX6jWzdSbUUemHS5KfWgp1ZsMZMootTvQ3q+rVxlv3REpYwPhxy2piryrhDPrUFQSWTPVpaKCDq6AA6B2o0ebKNkiR4anogXBOiKw4jA+OYucmGJ/ZPqQWZYvhmcfK8CNpCcdof+l0mokkyEUoVA9ZG/eKExWeMcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708639499; c=relaxed/simple;
-	bh=xXS+uiHmPKxW40P0P65T09ha/nNwEp1FEeNKV9lC8Jg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=R8ysItm/v1m2Lj8AUtnMzJC8ZpczTIGHj/4tu140g6ETJMBDH5zblEeUZB1q6ozdaiRgKwz8TjqBB/8Uxq3tfxfYtl0995kLkxS4QHxC8P/j4Ug3AUUrCua7+DxdLiD2hKVMtHrPi2VpCVnhrtLDF/cgHdrwNAslL2UONFNqm4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=m/2dyR85; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3P0A8iIY; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1708643343; c=relaxed/simple;
+	bh=CUEbmC3xxg97bqbF8nhMBRdSGGgUTSxwxVsPeikIJGo=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=toi6I+/OUbj4vL8OLkyCY0N7JJFFSUpE/uzELayce5uaHf6+dsZ8FRjrwYbJtWqv/UVZwOUpYdGkYMeCA1Gu9h+84k4aBwdYsSVfcfdcxULXA1Jh6SaUVxOfLOE0heLdR62tFsLKVqKqM8+383R5bEURLC1PTI+qV9sV8VKX1WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WCaHFbZw; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="m/2dyR85";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3P0A8iIY"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708639496;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xXS+uiHmPKxW40P0P65T09ha/nNwEp1FEeNKV9lC8Jg=;
-	b=m/2dyR85JIcCZGGQAeMJdxKDF024ImfMz99e5pyEMaUY+Fdv9HkWyfwbGViJcw/1GsTU9C
-	8DlytIkC6CfziPrs7KYoFvgFP3/Sx/czcK21SfpTS2DjTbyfhPk8O1OszRPXJQflOgeomK
-	UiqPbaS4/7VjEl7989ZoaPpKS4NAJJQRqCRnvMCPRgLc04BR1OZrWH+dCx99XRPneivpeY
-	Ki6y92Dd/pC+o+66J2I6p5mayn0z/fVgF6ejdRp2EOqY8uL7ewCuvnNmknT4Y4Y3t6rzM3
-	TZ3yF+FHuyOyV6NXNQVcgplxcJ0ZhSMrJv4VXiuFn9SD1CyP0kf0SKih2T7T6w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708639496;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xXS+uiHmPKxW40P0P65T09ha/nNwEp1FEeNKV9lC8Jg=;
-	b=3P0A8iIYNJKmKCEkHPb/QvfbAasAull6AWDpa1ZTYuv6xCjlo8gStKpcoFEdANi6im3piH
-	WcGG495WSr94wCAw==
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima
- <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom
- Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, "Huang,
- Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
- kexec@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, "Kirill A. Shutemov"
- <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCHv7 05/16] x86/kexec: Keep CR4.MCE set during kexec for
- TDX guest
-In-Reply-To: <20240212104448.2589568-6-kirill.shutemov@linux.intel.com>
-References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
- <20240212104448.2589568-6-kirill.shutemov@linux.intel.com>
-Date: Thu, 22 Feb 2024 23:04:56 +0100
-Message-ID: <87le7cduk7.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WCaHFbZw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708643341; x=1740179341;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=CUEbmC3xxg97bqbF8nhMBRdSGGgUTSxwxVsPeikIJGo=;
+  b=WCaHFbZwyiEKDrBeuJWZNqt7vtiL341LVfYjouLZzJO0zzuSghYiX+/e
+   0cPRErL2POOY+ueGSxy2xSC5sj5Cm534n1K67v43b2im26VCwkj7KcuzP
+   wtzF9qjc1/8lzLUDQ6ejKOMztrWVk9nlYSP4woe3YCzTNtD0zrlf3FIpn
+   jN1QssvPfmK30KPVPD0aYVR8m/C/g1Ce1t62cBT1xdpwG56tmVn9bl94U
+   dA4MFseVTBVHTYwKu09JkIha2VriGnyJPLETmQ2YW/0wvzHXcDDcnsGjH
+   Q5mmGsAAOfCBR/NRInfOaNU2tMS0dQEFzFfXadJR5QYm+rA/rHbENvlif
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="6689155"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
+   d="scan'208";a="6689155"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 15:09:01 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="936918708"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
+   d="scan'208";a="936918708"
+Received: from rdegger-desk1.amr.corp.intel.com (HELO [10.209.74.18]) ([10.209.74.18])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 15:08:52 -0800
+Message-ID: <3e237f17-7992-4852-8888-7a6e5a6de31c@linux.intel.com>
+Date: Thu, 22 Feb 2024 15:08:52 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] virt: tdx-guest: Handle GetQuote request error code
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+To: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, x86@kernel.org
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+References: <20240111033245.2632484-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20240111033245.2632484-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 12 2024 at 12:44, Kirill A. Shutemov wrote:
+Hi x86 Maintainers,
 
-> TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
-> to #VE.
+On 1/10/24 7:32 PM, Kuppuswamy Sathyanarayanan wrote:
+> During the TDX guest attestation process, TSM ConfigFS ABI is used by
+> the user attestation agent to get the signed VM measurement data (a.k.a
+> Quote), which can be used by a remote verifier to validate the
+> trustworthiness of the guest. When a user requests for the Quote data
+> via the ConfigFS ABI, the TDX Quote generation handler
+> (tdx_report_new()) forwards the request to VMM (or QE) via a hypercall,
+> and then shares the output with the user.
 >
-> Use alternatives to keep the flag during kexec for TDX guests.
+> Currently, when handling the Quote generation request, tdx_report_new()
+> handler only checks whether the VMM successfully processed the request
+> and if it is true it returns success and shares the output to the user
+> without actually validating the output data. Since the VMM can return
+> error even after processing the Quote request, always returning success
+> for the processed requests is incorrect and will create confusion to
+> the user. Although for the failed request, output buffer length will
+> be zero and can also be used by the user to identify the failure case,
+> it will be more clear to return error for all failed cases.
 >
-> The change doesn't affect non-TDX-guest environments.
+> Validate the Quote data output status and return error code for all
+> failed cases.
 >
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
+> Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+> Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Closes: https://lore.kernel.org/linux-coco/6bdf569c-684a-4459-af7c-4430691804eb@linux.intel.com/T/#u
+> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> ---
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Can you consider merging this fix? It already got acks from Kirill, Kai and Li. Do
+you want me rebase it and resend it with updated tags?
+
+>
+> Changes since v1:
+>  * Updated the commit log (Kirill)
+>
+>  drivers/virt/coco/tdx-guest/tdx-guest.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> index 1253bf76b570..61368318fa39 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -228,6 +228,12 @@ static int tdx_report_new(struct tsm_report *report, void *data)
+>  		goto done;
+>  	}
+>  
+> +	if (quote_buf->status != GET_QUOTE_SUCCESS) {
+> +		pr_err("GetQuote request failed, ret %llx\n", quote_buf->status);
+> +		ret = -EIO;
+> +		goto done;
+> +	}
+> +
+>  	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
+>  	if (!buf) {
+>  		ret = -ENOMEM;
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
