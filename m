@@ -1,151 +1,87 @@
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39CA150997
-	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 15:54:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347DC6AF8B
+	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 20:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708617301; cv=none; b=ac8xPU5v8zmuTdNeEIkEUAj1eqL1dKqOkHvMI6UEYcSeXt8zL9iHnoUAUSzSeL0rNYuQzI2Vib1BQeSyLnfxTmFFy4NhIQb3wG1n9nWu4q6QHkQ7S53IY9ywASqOEvlUz6fMGqZLzCVRGuzX5WeEiCvyrINl+cqwFeUqkQ3DehQ=
+	t=1708634451; cv=none; b=bdpK/0IXSRu0ZOueh25o9wWm5SVwNXfpuL44lMkjFCE+2J6DvvyngWt5T6lGRAfXlURMGLPEjlsH1SAhPJMp8aioDiom55IzltkIdrOkas1IbGTtOq3S2JYPlL9OemVZ9+8nkhKTCuhG9lzNDgYL5xIIlD7v6V7/lg6dt06UlxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708617301; c=relaxed/simple;
-	bh=gluI6aLWg3nMLpFfEKPO6lsypiaxhhT0+Fr929aqaTI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UN1U0dFTlwJ8K3iVEA8gU3RGGpDciPe3trBT4g8/1QoXbsGD0biBh9dNcf1HkEoYm8+BCwzptxqTykLgeMzpPy5M9GTI8WmySU6KmIMEs7mV4DlAHx/ffFS/zRrahMNk+vhHhK8m4jbxnsG8nwSXJzNRG0Pndri5M/suXNibVkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 097AD2800B1CD;
-	Thu, 22 Feb 2024 16:45:30 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id ECB1B53E15B; Thu, 22 Feb 2024 16:45:29 +0100 (CET)
-Date: Thu, 22 Feb 2024 16:45:29 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Xing, Cedric" <cedric.xing@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dan Middleton <dan.middleton@linux.intel.com>,
-	Samuel Ortiz <sameo@rivosinc.com>, Qinkun Bao <qinkun@google.com>,
-	"Yao, Jiewen" <jiewen.yao@intel.com>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>, biao.lu@intel.com,
-	linux-coco@lists.linux.dev, linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
-Message-ID: <20240222154529.GA9465@wunner.de>
-References: <a255bc36-2438-41b7-b304-bcf7a6628bef@linux.intel.com>
- <42e14f74d3819c95fdb97cd2e9b2829dcb1b1563.camel@HansenPartnership.com>
- <1557f98a-3d52-4a02-992b-4401c7c85dd7@linux.intel.com>
- <85b7a4a679eada1d17b311bf004c2d9e18ab5cd3.camel@HansenPartnership.com>
- <b8140cc8-a56b-40f6-a593-7be49db14c77@intel.com>
- <fe1722c3618a8216cb53b8fd3f1b7cbb6fdff5a0.camel@HansenPartnership.com>
- <65c2e4aa54a0_d4122947f@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <22088ed3-51a4-415f-932c-db84c92a2812@intel.com>
- <527da630-4952-4b1d-80c0-5a87997ff9fd@linux.intel.com>
- <332775d7218843d6cc168c963d76e6841eab5d5b.camel@HansenPartnership.com>
+	s=arc-20240116; t=1708634451; c=relaxed/simple;
+	bh=jeAQTPQrhXpg49xvZysNAxqhbPsEr5aAB0AbuUICJgI=;
+	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=NgQC09pRGdYPA8caKdPIXclq6f3PkViAf2qLr9/NnwiTMVwNPtP0RKOfv4cvHOhNwqoBFRWpGuXkgZ+jDijZ++MPPMUHd8+YEQ657+0s84OOYJ0QbdMQSeCalUZT0X4KLin36DsY5/cJlluBLuW0bTS6z+sQ0jiPucmOFaIve7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FBCEBsZO; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FBCEBsZO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708634450; x=1740170450;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=jeAQTPQrhXpg49xvZysNAxqhbPsEr5aAB0AbuUICJgI=;
+  b=FBCEBsZO2YBkg1tE7Q5bj4p7HcX5XA/KomeEgKgUhB3XRKbdt4vnpCZI
+   BWBk+7Iqut+NJ32HlQGiYuF6MdgZEfavKi4KArm25O0Rsk2OaqpNhjs1x
+   UaN2opVxzR/YzywA3M6fs+W9ODXoTwWgNlPLj9RVoSTkT86bdiuqhvs93
+   /jYr2dru5RGPUYP9FKqMyKLGbmmBQWhwinJZL+VKxTTFHBjhH8AxKl187
+   8Ybmk0Qwj+u1J68FPO0QSZS2nqP23T4zDY7rD65iwR5iSUwa+E+YoejtF
+   LmWXEs2bWq0zGptVAkJmWOfm+Lo42NuFiyYoA5smpKgMQHIl1SzGspClT
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="25358630"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
+   d="scan'208";a="25358630"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 12:40:50 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="913585365"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
+   d="scan'208";a="913585365"
+Received: from wyeh-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.209.77.87])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 12:40:49 -0800
+Subject: [PATCH 0/3] sysfs: Group visibility fixups
+From: Dan Williams <dan.j.williams@intel.com>
+To: gregkh@linuxfoundation.org
+Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ Marc Herbert <marc.herbert@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-coco@lists.linux.dev, alsa-devel@alsa-project.org
+Date: Thu, 22 Feb 2024 12:40:48 -0800
+Message-ID: <170863444851.1479840.10249410842428140526.stgit@dwillia2-xfh.jf.intel.com>
+User-Agent: StGit/0.18-3-g996c
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <332775d7218843d6cc168c963d76e6841eab5d5b.camel@HansenPartnership.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Hi James,
+Hey Greg,
 
-On Wed, Feb 07, 2024 at 04:46:36PM -0500, James Bottomley wrote:
-> Just to correct this: IMA uses its own log format, but I think this was
-> a mistake long ago and the new log should use TCG2 format so all the
-> tools know how to parse it.
+Marc was able to get me a backtrace for that bootup hang scenario that
+Pierre noted here [1]. A Tested-by is still pending, but I am certain
+this is the issue, and it may impact more than just the one platform if
+that "empty_attrs" pattern has been repeated anywhere else in the
+kernel.
 
-At last year's Plumbers BoF on PCI device authentication & encryption,
-you requested that the kernel exposes proof of SPDM signature validation
-so that user space can verify after the fact that the kernel did
-everything correctly.
+I also took some time to document how to use the helpers a bit better,
+and introduce DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE() for cases where all
+that matters is group visibility and not per attribute visibility.
 
-Your above comment seems to indicate that you prefer TCG2 CEL as the
-format to expose the information, however the format seems ill-suited
-for the purpose:
+[1]: http://lore.kernel.org/r/b93ec9c2-23f5-486b-a3dc-ed9b960df359@linux.intel.com
 
-Per TCG PFP v1.06r52 sec 3.3.7, an SPDM CHALLENGE event merely logs
-the nonce used.  That's not sufficient to verify the signature:
-The signature is computed over a hash of the concatenation of all
-the messages exchanged with the device:
+---
 
-* GET_VERSION request + VERSION response
-* GET_CAPABILITIES request + CAPABILITIES response
-* NEGOTIATE_ALGORITHMS request + ALGORITHMS response
-* GET_DIGESTS request + DIGESTS response
-* GET_CERTIFICATE request + CERTIFICATE response (can be multiple)
-* CHALLENGE request + CHALLENGE_AUTH response
+Dan Williams (3):
+      sysfs: Fix crash on empty group attributes array
+      sysfs: Document new "group visible" helpers
+      sysfs: Introduce DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE()
 
-The content of those SPDM messages is not necessarily static:
-E.g. the SPDM requester (the kernel) presents all supported algorithms
-and the SPDM responder (the device) selects one of them.
 
-If only the nonce is saved in the log, the verifier in user space would
-need to know exactly which algorithms were supported by the SPDM requester
-at the time the request was sent (could since have changed through a
-kernel update).  It also needs to know exactly which algorithm the
-SPDM responder picked.
+ fs/sysfs/group.c      |    4 +-
+ include/linux/sysfs.h |   85 +++++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 84 insertions(+), 5 deletions(-)
 
-Armed with the knowledge which algorithm bits were set, the verifier
-would have to reconstruct the messages that were exchanged between
-SPDM requester and responder so that it can calculate the hash over
-their concatenation and verify the signature.
-
-The algorithm selection is but one example of bits that can vary between
-different requesters/responders and between different points in time.
-The SPDM protocol allows a great deal of flexibility/agility here.
-
-The nonces sent by requester and responder are not the only bits that are
-variable, is what I'm trying to say.  Storing the nonces in the log is
-sufficient to prove their freshness, but it is not sufficient to prove
-correct validation of the signature.
-
-I'd have to store the full concatenation of all exchanged SPDM messages
-in the log to facilitate that.  Personally I have no problem doing so,
-but it won't be possible with the CEL format as currently specified by TCG.
-
-So on the one hand I'd like to fulfil your Plumbers request to expose
-proof of correct signature validation and on the other hand you're
-requesting CEL format which is insufficient to fulfil the request.
-I don't really know how to reconcile that.
-
-I do see value in exposing the full concatenation of all exchanged
-SPDM messages:  It would allow piping that into wireshark or tshark
-to decode the messages into human-readable form, which might be useful
-for debugging SPDM communication with the device.
-
-In fact, an SPDM dissector for wireshark already exists, though it's
-not up-to-date (last change 3 years ago) and probably needs a cleanup
-before it can be upstreamed:  https://github.com/jyao1/wireshark-spdm/
-
-I'm considering adding a custom sysfs interface which exposes the last,
-say, 64 SPDM events of each device, comprising:
-
-* type of event (CHALLENGE or GET_MEASUREMENTS)
-* timestamp
-* all exchanged messages
-* hash of all exchanged messages
-* hash algorithm used
-* signature received from device
-* certificate chain used for signature validation
-
-The memory consumption for all that data would be significant and the
-format wouldn't be TCG2 CEL, but it would fulfil your request to provide
-proof of signature verification.
-
-Thoughts?
-
-Thanks,
-
-Lukas
+base-commit: 70317fd24b419091aa0a6dc3ea3ec7bb50c37c32
