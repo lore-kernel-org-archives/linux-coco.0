@@ -1,147 +1,131 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF1185290
-	for <linux-coco@lists.linux.dev>; Wed, 21 Feb 2024 23:35:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB48D13FFA
+	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 02:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708558531; cv=none; b=VF+JN0OpEnMZE+cA8Zsmbimgr7CT4MjM0RwnIIClDtypLzD1XgDMRbyGfCtGUoPiwonWR6rQkWY4BU7ftWsbmpcSTYG/HKl0tjDr6LXA/v44P8vLGsHB4tvt4RYlSxkGE+b5jdWDlqrhQqNChFm5KfLgC1an2xVRhZeIEE+8E+w=
+	t=1708567552; cv=none; b=TU5HuUi8BYt0SqYEWr4kgGmNQIM+Q3PIixL/4vIbSJKDl+vMhGuxj5T3l8YM25JURvuBx2TNRQYJDoq6ufERk4+EBti7knXDoKgbNrT9UGnpjSgYVU1fsgG4u1SGBIptD7Q2gnvDj2shDryVa1O4WkYoVYgq1WO1Ktw9anPSRZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708558531; c=relaxed/simple;
-	bh=7OauMgVsT3HrSDBYzevjreykklBEY0CoOi6bqg94xpI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eCoBV1mnaIEBIZWRI8dTL7AznO+KA9K1oGzG8G0WOkh43/blICDrfzFzLUOmD7/16ApS/8eQeiAxhrK98PcBUbYAPEEhj20/70BDUSAR3BbCfU14atIrvbuXGQ9BtuxLwiYGQTIl31ERizhLJLELAryxFWzZASyoO8+axM9o90E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZiC3pkZB; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1708567552; c=relaxed/simple;
+	bh=ozCZhRUwbru42YhRIa9D6DyDB6aCfOEQUSg9R1xBB10=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=DPLfQMoIsH/F60N+wmDdBnBNkmIh9i+EcPEE4/0JA1zwuwRVHMpPhj9uwUGoSb1MPuNtt4S3mDBe9rnkOWRfyP5/eUO/Ye9rBGMuUyfj2A6yJ5SvK5F2y8BAcuzHE/TmUbA+N8+JLG+CQ357EfEEEYt1kN2vwFY6WzsGII97XhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RUs92IZm; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZiC3pkZB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708558529; x=1740094529;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=7OauMgVsT3HrSDBYzevjreykklBEY0CoOi6bqg94xpI=;
-  b=ZiC3pkZBJtn/pnxMrQvTpdajtcTGfJCQsHRpvU0RKGjD8qF2wwh6GcLN
-   gLjEToQSo+JMslDe4rRpvco7BwZTvc+DrVMRU4FORHhs2H4YIo8XICRXD
-   nEWYvwSodMKcQ8pVezXqK1N2PmySrOq4HGXt8Q3o8asDo0+MhdN/fRrbh
-   8v95ZgXOIPG85OxmKmQ8/CBGy/W/O6nFRwvAQnsL51GfsRtFrQQfNayxl
-   jBAnS4RSFbxqbeKT3llAQxRqKEjet2YOFnT57+8KfAabMZRzQtzOveXlI
-   3el9zAKdy6/OqBnpAj43PQtjAq/dkqbIeOb6OI0HkhNEI2P2+nzIACDuR
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2666179"
-X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
-   d="scan'208";a="2666179"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 15:35:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="936722442"
-X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
-   d="scan'208";a="936722442"
-Received: from remiller-mobl1.amr.corp.intel.com (HELO [10.209.48.179]) ([10.209.48.179])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 15:35:26 -0800
-Message-ID: <5648f43d-76e4-4396-b626-411d60657c93@intel.com>
-Date: Wed, 21 Feb 2024 15:35:28 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RUs92IZm"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc746178515so12217292276.2
+        for <linux-coco@lists.linux.dev>; Wed, 21 Feb 2024 18:05:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1708567550; x=1709172350; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wYRM8eOs48YYKU37Y3bVOmsx2y3KEiVB2XVZoknd41E=;
+        b=RUs92IZmdlTZR/8P/meshxDOfNh6PVBg+2Tz7NmTPzVukAOaZPXxl7cywbz3/E1cq1
+         LUk1EJ7tIlOzMYlzIegrJZvQMxdLgwpWSbECPlpzt8BGifh7ADN+Fv2arXwR2p3jxCXH
+         PYjcpiUjUc4FOXrP55ys8H17tlcGkCGuvLHWrA9zVbwMgIpFnHRgmk57UB/E5VX8q+T5
+         J1/HR1MNC128jl5kUR8IKoV6aqfQfVYQoH2BOv9LhBuFeW7xQoDZow8UkHdvS3mAZLUt
+         6qIFXCJ2SkSgRGwjSEx2Owwa4HZ2i+qEdRTnqAn+dDVQUBhBRM0kh7udd3hhyoTQy1bS
+         m+8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708567550; x=1709172350;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wYRM8eOs48YYKU37Y3bVOmsx2y3KEiVB2XVZoknd41E=;
+        b=Qsxy0Pn4Z/jTIOI1eftVQj/Nl2aSDEU2h2wJOcidkcIfKWfoFzmQMIxtIhGInFGns6
+         D2BGKkc5bF6t7TLZj7nQrkvzX9baI0ZUWkIz/8A/mYB/YaSLtaipJKuP1dQ0vvZLgIcd
+         HJc7IJMurVKTDdBL1462pF1XM2PQ+BrvBFGlXH7YwZA9P7dDG1sQqy6CNd3DoPn75DtQ
+         XHW9+nm5Rp/7RgDWUqvAm6A9wYAZDwLUVNceHc2U2J9BjZVWv2O/82d2i0/F0Y5lRYD8
+         ZQyAaPjhsL7AHLYsFzQDeoes9YEenmMgEUqyXEgc5GVigrd2vpYHCzTfylAAcXu1umza
+         8O0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWp1BL9ehzyU/AjKDaZESoPmhUi4rXs/SyYlqf1I/+vQCHtUyXdJb+9Dk+kiaJmXOKGxzNPuX1ymlc+NqZU8ifkoEhuldngSYAoXw==
+X-Gm-Message-State: AOJu0YwQ03M7kkopm7dKZSn6SCZMXvkQvG/uNEl5W9sw2KJkjTeRZqZZ
+	mccOw/bidWq/5eyjJ+08LjeghteVQR0qnMJx4sfwhFPJLH08Tp7CpofrrIO7vp57C3RxahiFP7X
+	DOg==
+X-Google-Smtp-Source: AGHT+IGLZRXp0J9qN8JJcoB3W0uf+vPPo31BgwKOSu3YKTJjr76LRxvOfOEDc1mZvTNorZoF2DnNDi6XZz8=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6902:134d:b0:dcb:e4a2:1ab1 with SMTP id
+ g13-20020a056902134d00b00dcbe4a21ab1mr276046ybu.11.1708567549779; Wed, 21 Feb
+ 2024 18:05:49 -0800 (PST)
+Date: Wed, 21 Feb 2024 18:05:48 -0800
+In-Reply-To: <20230722005227.GK25699@ls.amr.corp.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] x86/coco: Require seeding RNG with RDRAND on CoCo
- systems
-Content-Language: en-US
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>, "H . Peter Anvin"
- <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- Theodore Ts'o <tytso@mit.edu>, Thomas Gleixner <tglx@linutronix.de>
-References: <20240221123248.25570-1-Jason@zx2c4.com>
- <eada8acd-9341-401b-b6c9-a05848eb91d6@intel.com>
- <CAHmME9o75KzsfMRDtr2K0+N-UM-MX7MWL4AZhy27CedZRNd2Tg@mail.gmail.com>
- <7a8c04bb-214b-4031-bdd6-59dad62f88a7@intel.com>
- <CAHmME9rCQgY_DMmpOEJWO8qytNw3ErJNy9L-E7WzEKYHVyqCHA@mail.gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <CAHmME9rCQgY_DMmpOEJWO8qytNw3ErJNy9L-E7WzEKYHVyqCHA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <cover.1689893403.git.isaku.yamahata@intel.com>
+ <f474282d701aca7af00e4f7171445abb5e734c6f.1689893403.git.isaku.yamahata@intel.com>
+ <ZLqSH/lEbHEnQ9i8@google.com> <20230722005227.GK25699@ls.amr.corp.intel.com>
+Message-ID: <Zdar_PrV4rzHpcGc@google.com>
+Subject: Re: [RFC PATCH v4 04/10] KVM: x86: Introduce PFERR_GUEST_ENC_MASK to
+ indicate fault is private
+From: Sean Christopherson <seanjc@google.com>
+To: Isaku Yamahata <isaku.yamahata@gmail.com>
+Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Michael Roth <michael.roth@amd.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, Sagi Shahar <sagis@google.com>, 
+	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
+	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 2/21/24 15:09, Jason A. Donenfeld wrote:
-> On Wed, Feb 21, 2024 at 11:47 PM Dave Hansen <dave.hansen@intel.com> wrote:
->> OK, so we're trying to get 256 bits of seed data from RDRAND?
+On Fri, Jul 21, 2023, Isaku Yamahata wrote:
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
+> Date: Wed, 14 Jun 2023 12:34:00 -0700
+> Subject: [PATCH 4/8] KVM: x86: Use PFERR_GUEST_ENC_MASK to indicate fault is
+>  private
 > 
-> Yes. This fills a 32-byte buffer of longs up with output from
-> arch_get_random_longs().
-
-That's what it's doing mechanically, but what's the end goal?
-
->> But no pattern I could discern.  Did you mean something different by
->> "platform drivers"?
+> SEV-SNP defines PFERR_GUEST_ENC_MASK (bit 32) in page-fault error bits to
+> represent the guest page is encrypted.  Use the bit to designate that the
+> page fault is private and that it requires looking up memory attributes.
+> The vendor kvm page fault handler should set PFERR_GUEST_ENC_MASK bit based
+> on their fault information.  It may or may not use the hardware value
+> directly or parse the hardware value to set the bit.
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/um/kernel/um_arch.c#n413
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/char/random.c#n655
-
-Gotcha.
-
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/scripts/gcc-plugins/latent_entropy_plugin.c#n90
-
-Isn't that one 32 HOST_WIDE_INTs and not 32 bytes? :)
-
->> If we're going to have arch/x86-specific crud, it would be great to make
->> it obvious and straightforward to those of us simple folk that are
->> familiar with arch/x86 code.
+> For KVM_X86_SW_PROTECTED_VM, ask memory attributes for the fault
+> privateness.  For async page fault, carry the bit and use it for kvm page
+> fault handler.
 > 
-> If you insist, I'll stick a local `enum { RANDOM_BYTES_COUNT = 32 }`
-> in that function or something. Seems unnecessary to me but if that's
-> what you need no problem. Would that suffice? Or a different variable
-> name? Or a comment on "what is 32 about?"
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 
-"what is 32 about?" would be great.  What's the goal, and why is 32
-enough to reach that goal?
+...
+
+> @@ -4315,7 +4316,8 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
+>  	      work->arch.cr3 != kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu))
+>  		return;
+>  
+> -	kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, 0, true, NULL);
+> +	kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, work->arch.error_code,
+> +			      true, NULL);
+
+This is unnecessary, KVM doesn't suppoort async page fault behavior for private
+memory (and doesn't need to, because guest_memmfd() doesn't support swap).
+
+> diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+> index 7f9ec1e5b136..3a423403af01 100644
+> --- a/arch/x86/kvm/mmu/mmu_internal.h
+> +++ b/arch/x86/kvm/mmu/mmu_internal.h
+> @@ -295,13 +295,13 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+>  		.user = err & PFERR_USER_MASK,
+>  		.prefetch = prefetch,
+>  		.is_tdp = likely(vcpu->arch.mmu->page_fault == kvm_tdp_page_fault),
+> +		.is_private = err & PFERR_GUEST_ENC_MASK,
+
+This breaks SEV and SEV-ES guests, because AFAICT, the APM is lying by defining
+PFERR_GUEST_ENC_MASK in the context of SNP.  The flag isn't just set when running
+SEV-SNP guests, it's set for all C-bit=1 effective accesses when running on SNP
+capable hardware (at least, that's my observation).
+
+Grumpiness about discovering yet another problem that I would have expected
+_someone_ to stumble upon...
+
+FYI, I'm going to post a rambling series to cleanup code in the page fault path
+(it started as a cleanup of the "no slot" code and then grew a few more heads).
+One of the patches I'm going to include is something that looks like this patch,
+but I'm going to use a KVM-defined synthetic bit, because stuffing a bit that KVM
+would need _clear_ on _some_ hardware is gross.
