@@ -1,73 +1,39 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C6E40BED
-	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 11:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEED81350D0;
+	Thu, 22 Feb 2024 13:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708599712; cv=none; b=jlKWsEf+Ib2n4T1HQ239vfAdW99peFYiZwSgmbWsBAQ33qJiJDHGwzK+Gt8omhFg/fjY5VLS9OARppwZ/6fV30lIpZ7J3qpPQwkwT2T8m/MSt/i9S7Sncme8mhHQuFZn/bNcxPqUXeFn6DT4YJqVPhgE9Tf05jUq72QM1dhRYug=
+	t=1708608174; cv=none; b=U9w4paxxfh1/OmQlkU9lqAuBbg5LlF7lKarBklvqyUEiG0ixy7PeTTTxb1FLa8QBWshxMvxPRGlY4+lMaDDCwe0H3HSWl3ds0XMWEmTf3YBRM06fywkAOujgw5F+NSOvqfJ4bETbr7dM4Jwntpm0fVp8m3jy+g4pF3ck1mNmgtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708599712; c=relaxed/simple;
-	bh=WI+8ToSVJ6JGQhk6slvgL1Ffo12svsX2MFuD22j76uY=;
+	s=arc-20240116; t=1708608174; c=relaxed/simple;
+	bh=XZuH5XQs3rFOSh/JkcNgos2WuaMLrOLVTKBK2NilxT0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rvNECTB6pZsaNdePwb9PG3r8xGoqdGtYjkdCnSBYO36gMfhBMuxkdHBlE0XCCglbmX2z8Sc77VA8AyK8slohz5eyo4rlrdpURmwbOShqkKTz9pZgTT1O+0/1iXKRBHUlb1krPOPfX9fZ8nEKEPVjNHVRFS5dLc9HE4zDlIdPglI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BHmfZ+5k; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=qsQEWsCMKkuN/AfLRYq+Sugw+gqCzAOWJAebduW9sLVMpyQK+ltVWP2h88c1iVwn8ejiJsP198z67ddJT60/rZhv/hdIQ1GTM4n24RBDhGdgTy5ISlLkj1v5L+05mNvkoiJDHIJ1nDb2cM1ciIxmXGH8nCLbfRvguTTdb9HiqG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fitR+8tY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BHmfZ+5k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708599709;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VFwcHVEtiDhTvRigoTq212XHeG8ky/6AjwT+KI1KNaQ=;
-	b=BHmfZ+5kLckbl5zoDQxiMDySoLkFU2sNQvELgzltft8HofS6ou+7fvAIynPZcS0oAHCnJC
-	A3z4h7cbYVEp+cSUXAG35DgayOjMQlire/KR36jCyIRSXxXxRJojAZ1jCp9SORN8QGdPSd
-	L7mfzuJK0lLmFO1VviZVRLeMgYuY1E0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-375-OcOjjzq9PGa9bb85kAn-jA-1; Thu,
- 22 Feb 2024 06:01:46 -0500
-X-MC-Unique: OcOjjzq9PGa9bb85kAn-jA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26A20386A0A0;
-	Thu, 22 Feb 2024 11:01:45 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.2])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 73904492BD7;
-	Thu, 22 Feb 2024 11:01:44 +0000 (UTC)
-Date: Thu, 22 Feb 2024 19:01:41 +0800
-From: Baoquan He <bhe@redhat.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv7 07/16] x86/mm: Return correct level from
- lookup_address() if pte is none
-Message-ID: <ZdcplT8Xb5eevu/9@MiWiFi-R3L-srv>
-References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
- <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
- <ZdLjQCaxhOnR+GzX@MiWiFi-R3L-srv>
- <zhbhgq27kjrhkdgbxomjykjez2i4hckguvmxyptvfvoftue5ca@zowl5qbl6psl>
- <ZdR+JzfHjES3zytp@MiWiFi-R3L-srv>
- <ic4v3q4muffjq2jhlkk3k4lg5xxvjwlw22hctzubl5573euzu2@er3m7ztog2a6>
- <ZdVh6efExdt687YY@MiWiFi-R3L-srv>
- <p34d7e5r3gkcj2xl5jycyldvpkmcllmhzioaqcmseeugl3eq73@plk43dd4luzu>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fitR+8tY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB848C433F1;
+	Thu, 22 Feb 2024 13:22:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708608174;
+	bh=XZuH5XQs3rFOSh/JkcNgos2WuaMLrOLVTKBK2NilxT0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fitR+8tYl2AjN+owEFanUHUQTVby3MiIbPqSFgaJQmQkYCK5oW5FpdpWAhNYl3Kd+
+	 9xAE/bJKtycdQwzpxU5VG3yPDLBLK8f4Tu2rDhvQhgg38XTJP3j7jdXnpCHDdsvtH0
+	 4wzahV7sllc7OLmZhRnONb+uwSatCQCI8w/LF8Fk=
+Date: Thu, 22 Feb 2024 14:22:51 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org
+Subject: Re: [RFC PATCH 4/5] sysfs: Introduce a mechanism to hide static
+ attribute_groups
+Message-ID: <2024022227-absolute-condense-44f8@gregkh>
+References: <170660662589.224441.11503798303914595072.stgit@dwillia2-xfh.jf.intel.com>
+ <170660664848.224441.8152468052311375109.stgit@dwillia2-xfh.jf.intel.com>
+ <2024013016-sank-idly-dd6b@gregkh>
+ <65b9285a93e42_5cc6f294ac@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -76,39 +42,113 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <p34d7e5r3gkcj2xl5jycyldvpkmcllmhzioaqcmseeugl3eq73@plk43dd4luzu>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+In-Reply-To: <65b9285a93e42_5cc6f294ac@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 
-On 02/21/24 at 04:15pm, Kirill A. Shutemov wrote:
-> On Wed, Feb 21, 2024 at 10:37:29AM +0800, Baoquan He wrote:
-> > > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> > > index 3612e3167147..425ff6e192e6 100644
-> > > --- a/arch/x86/mm/pat/set_memory.c
-> > > +++ b/arch/x86/mm/pat/set_memory.c
-> > > @@ -657,7 +657,8 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
-> > >  
-> > >  /*
-> > >   * Lookup the page table entry for a virtual address in a specific pgd.
-> > > - * Return a pointer to the entry and the level of the mapping.
-> > > + * Return a pointer to the entry and the level of the mapping (or NULL if
-> > > + * the entry is none) and level of the entry.
-> >                        ^ this right parenthesis may need be moved to the end.
+On Tue, Jan 30, 2024 at 08:48:26AM -0800, Dan Williams wrote:
+> Greg KH wrote:
+> > On Tue, Jan 30, 2024 at 01:24:08AM -0800, Dan Williams wrote:
+> > > Add a mechanism for named attribute_groups to hide their directory at
+> > > sysfs_update_group() time, or otherwise skip emitting the group
+> > > directory when the group is first registered. It piggybacks on
+> > > is_visible() in a similar manner as SYSFS_PREALLOC, i.e. special flags
+> > > in the upper bits of the returned mode. To use it, specify a symbol
+> > > prefix to DEFINE_SYSFS_GROUP_VISIBLE(), and then pass that same prefix
+> > > to SYSFS_GROUP_VISIBLE() when assigning the @is_visible() callback:
+> > > 
+> > > 	DEFINE_SYSFS_GROUP_VISIBLE($prefix)
+> > > 
+> > > 	struct attribute_group $prefix_group = {
+> > > 		.name = $name,
+> > > 		.is_visible = SYSFS_GROUP_VISIBLE($prefix),
+> > > 	};
+> > > 
+> > > SYSFS_GROUP_VISIBLE() expects a definition of $prefix_group_visible()
+> > > and $prefix_attr_visible(), where $prefix_group_visible() just returns
+> > > true / false and $prefix_attr_visible() behaves as normal.
+> > > 
+> > > The motivation for this capability is to centralize PCI device
+> > > authentication in the PCI core with a named sysfs group while keeping
+> > > that group hidden for devices and platforms that do not meet the
+> > > requirements. In a PCI topology, most devices will not support
+> > > authentication, a small subset will support just PCI CMA (Component
+> > > Measurement and Authentication), a smaller subset will support PCI CMA +
+> > > PCIe IDE (Link Integrity and Encryption), and only next generation
+> > > server hosts will start to include a platform TSM (TEE Security
+> > > Manager).
+> > > 
+> > > Without this capability the alternatives are:
+> > > 
+> > > * Check if all attributes are invisible and if so, hide the directory.
+> > >   Beyond trouble getting this to work [1], this is an ABI change for
+> > >   scenarios if userspace happens to depend on group visibility absent any
+> > >   attributes. I.e. this new capability avoids regression since it does
+> > >   not retroactively apply to existing cases.
+> > > 
+> > > * Publish an empty /sys/bus/pci/devices/$pdev/tsm/ directory for all PCI
+> > >   devices (i.e. for the case when TSM platform support is present, but
+> > >   device support is absent). Unfortunate that this will be a vestigial
+> > >   empty directory in the vast majority of cases.
+> > > 
+> > > * Reintroduce usage of runtime calls to sysfs_{create,remove}_group()
+> > >   in the PCI core. Bjorn has already indicated that he does not want to
+> > >   see any growth of pci_sysfs_init() [2].
+> > > 
+> > > * Drop the named group and simulate a directory by prefixing all
+> > >   TSM-related attributes with "tsm_". Unfortunate to not use the naming
+> > >   capability of a sysfs group as intended.
+> > > 
+> > > In comparison, there is a small potential for regression if for some
+> > > reason an @is_visible() callback had dependencies on how many times it
+> > > was called. Additionally, it is no longer an error to update a group
+> > > that does not have its directory already present, and it is no longer a
+> > > WARN() to remove a group that was never visible.
+> > > 
+> > > Link: https://lore.kernel.org/all/2024012321-envious-procedure-4a58@gregkh/ [1]
+> > > Link: https://lore.kernel.org/linux-pci/20231019200110.GA1410324@bhelgaas/ [2]
+> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > > ---
+> > >  fs/sysfs/group.c      |   45 ++++++++++++++++++++++++++++-------
+> > >  include/linux/sysfs.h |   63 ++++++++++++++++++++++++++++++++++++++++---------
+> > >  2 files changed, 87 insertions(+), 21 deletions(-)
 > > 
-> > 
-> > =======
-> >  * Return a pointer to the entry and the level of the mapping (or NULL if
-> >  * the entry is none and level of the entry).
-> > =======
+> > You beat me to this again :)
 > 
-> Emm.. I like my variant more. We return level regardless if the entry none
-> or not. I don't see a reason to repeat it twice.
+> Pardon the spam, was just showing it in context of the patchset I was
+> developing.
+> 
+> > I have tested this patch, and it looks good, I'll send out my series
+> > that uses it for a different subsystem as well.
+> > 
+> > I guess I can take this as a static tag for others to pull from for this
+> > rc development cycle?
+> 
+> That works for me. Thanks Greg!
+
+This is now here for anyone else to pull from, I've put it into my
+driver-core-next branch as well:
 
 
- * Lookup the page table entry for a virtual address in a specific pgd.
- * Return a pointer to the entry and the level of the mapping (or NULL if
- * the entry is none) and level of the entry.
+The following changes since commit b401b621758e46812da61fa58a67c3fd8d91de0d:
 
-Hmm, I am confused. Why do we need to stress the level of the mapping
-and level of the entry? Wondering what is the difference. I must miss
-something.
+  Linux 6.8-rc5 (2024-02-18 12:56:25 -0800)
 
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git tags/sysfs_hidden_attribute_groups-6.9-rc1
+
+for you to fetch changes up to 70317fd24b419091aa0a6dc3ea3ec7bb50c37c32:
+
+  sysfs: Introduce a mechanism to hide static attribute_groups (2024-02-20 10:20:21 +0100)
+
+----------------------------------------------------------------
+sysfs_hidden_attribute_groups persistent tag to pull from
+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+----------------------------------------------------------------
+Dan Williams (1):
+      sysfs: Introduce a mechanism to hide static attribute_groups
+
+ fs/sysfs/group.c      | 45 ++++++++++++++++++++++++++++--------
+ include/linux/sysfs.h | 63 +++++++++++++++++++++++++++++++++++++++++----------
+ 2 files changed, 87 insertions(+), 21 deletions(-)
