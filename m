@@ -1,75 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D50414F9DE
-	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 15:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39CA150997
+	for <linux-coco@lists.linux.dev>; Thu, 22 Feb 2024 15:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708616296; cv=none; b=W5NAmHHL8MkjHszyi17ne/yHhAXzaD/N1xaNVNSFyjZqIO/r0rCVhfRNOiJaUDsk0v2KXMV/lOvHGWm3FiWNUt9Cg+Bli7J3uEwYf0h91NRY5juS+fdtijUaxbopyEmbfmPwJ+/F48p3CCtZsZQ7au+6n+MlW7T3NTg8sVTmhgg=
+	t=1708617301; cv=none; b=ac8xPU5v8zmuTdNeEIkEUAj1eqL1dKqOkHvMI6UEYcSeXt8zL9iHnoUAUSzSeL0rNYuQzI2Vib1BQeSyLnfxTmFFy4NhIQb3wG1n9nWu4q6QHkQ7S53IY9ywASqOEvlUz6fMGqZLzCVRGuzX5WeEiCvyrINl+cqwFeUqkQ3DehQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708616296; c=relaxed/simple;
-	bh=SjlZWaZo4IOCJl163JtnSm92bFyN5RFQkXSgAX+7pwE=;
+	s=arc-20240116; t=1708617301; c=relaxed/simple;
+	bh=gluI6aLWg3nMLpFfEKPO6lsypiaxhhT0+Fr929aqaTI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FJj8yBH4qTegZhwJ5Ww3f1raKlrE3GaSxfFKJuvPtDq3okhqw+0+gs4EIorLZ+rYv1mIyyv2DWKB1J6UfxtW1Mb7ocFZiNV8mUtQQe8hGZDSvSLeVH9LUMzwCGANVVNvPBwf3I02/VIx+k0ipsfBpPI7rZ2nphbuvKol2jrUiTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IGl9Zbri; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IGl9Zbri"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708616293;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z2zLTzF/EaarbV0Ayz1K5vhiNlvZJ6XriwzG+FJ76a8=;
-	b=IGl9ZbribaDEE+j/gqP+PiONHVDraNi4pr1gU90CapXUM3o4Fz0WrT7xxWov5yMPYFFWwC
-	FgzYPs63H29Sax2FTEOpwgwPleNHysEbQywBxF2dBzba7ngG7coshv6Exb3Lb1AInmJYdY
-	3JRnbXMHGRXMYCOh3pPZGzfxIGLUkqc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-542-SDpRsDIIPQCfsD-HL-3ZTA-1; Thu, 22 Feb 2024 10:38:07 -0500
-X-MC-Unique: SDpRsDIIPQCfsD-HL-3ZTA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	 Content-Type:Content-Disposition:In-Reply-To; b=UN1U0dFTlwJ8K3iVEA8gU3RGGpDciPe3trBT4g8/1QoXbsGD0biBh9dNcf1HkEoYm8+BCwzptxqTykLgeMzpPy5M9GTI8WmySU6KmIMEs7mV4DlAHx/ffFS/zRrahMNk+vhHhK8m4jbxnsG8nwSXJzNRG0Pndri5M/suXNibVkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 85A6B830DCC;
-	Thu, 22 Feb 2024 15:38:03 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.2])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id C5F8F40C94A7;
-	Thu, 22 Feb 2024 15:38:02 +0000 (UTC)
-Date: Thu, 22 Feb 2024 23:37:59 +0800
-From: Baoquan He <bhe@redhat.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv7 07/16] x86/mm: Return correct level from
- lookup_address() if pte is none
-Message-ID: <ZddqV4bCtcW0wJWi@MiWiFi-R3L-srv>
-References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
- <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
- <ZdLjQCaxhOnR+GzX@MiWiFi-R3L-srv>
- <zhbhgq27kjrhkdgbxomjykjez2i4hckguvmxyptvfvoftue5ca@zowl5qbl6psl>
- <ZdR+JzfHjES3zytp@MiWiFi-R3L-srv>
- <ic4v3q4muffjq2jhlkk3k4lg5xxvjwlw22hctzubl5573euzu2@er3m7ztog2a6>
- <ZdVh6efExdt687YY@MiWiFi-R3L-srv>
- <p34d7e5r3gkcj2xl5jycyldvpkmcllmhzioaqcmseeugl3eq73@plk43dd4luzu>
- <ZdcplT8Xb5eevu/9@MiWiFi-R3L-srv>
- <k33hshbceai3tb7qe6id6kx3iqf7kjhlyvdijvmuf6knv32krs@kwo3m7dkn5sm>
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 097AD2800B1CD;
+	Thu, 22 Feb 2024 16:45:30 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id ECB1B53E15B; Thu, 22 Feb 2024 16:45:29 +0100 (CET)
+Date: Thu, 22 Feb 2024 16:45:29 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Xing, Cedric" <cedric.xing@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dan Middleton <dan.middleton@linux.intel.com>,
+	Samuel Ortiz <sameo@rivosinc.com>, Qinkun Bao <qinkun@google.com>,
+	"Yao, Jiewen" <jiewen.yao@intel.com>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>, biao.lu@intel.com,
+	linux-coco@lists.linux.dev, linux-integrity@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
+Message-ID: <20240222154529.GA9465@wunner.de>
+References: <a255bc36-2438-41b7-b304-bcf7a6628bef@linux.intel.com>
+ <42e14f74d3819c95fdb97cd2e9b2829dcb1b1563.camel@HansenPartnership.com>
+ <1557f98a-3d52-4a02-992b-4401c7c85dd7@linux.intel.com>
+ <85b7a4a679eada1d17b311bf004c2d9e18ab5cd3.camel@HansenPartnership.com>
+ <b8140cc8-a56b-40f6-a593-7be49db14c77@intel.com>
+ <fe1722c3618a8216cb53b8fd3f1b7cbb6fdff5a0.camel@HansenPartnership.com>
+ <65c2e4aa54a0_d4122947f@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <22088ed3-51a4-415f-932c-db84c92a2812@intel.com>
+ <527da630-4952-4b1d-80c0-5a87997ff9fd@linux.intel.com>
+ <332775d7218843d6cc168c963d76e6841eab5d5b.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -78,49 +56,96 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <k33hshbceai3tb7qe6id6kx3iqf7kjhlyvdijvmuf6knv32krs@kwo3m7dkn5sm>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+In-Reply-To: <332775d7218843d6cc168c963d76e6841eab5d5b.camel@HansenPartnership.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On 02/22/24 at 04:04pm, Kirill A. Shutemov wrote:
-> On Thu, Feb 22, 2024 at 07:01:41PM +0800, Baoquan He wrote:
-> > On 02/21/24 at 04:15pm, Kirill A. Shutemov wrote:
-> > > On Wed, Feb 21, 2024 at 10:37:29AM +0800, Baoquan He wrote:
-> > > > > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> > > > > index 3612e3167147..425ff6e192e6 100644
-> > > > > --- a/arch/x86/mm/pat/set_memory.c
-> > > > > +++ b/arch/x86/mm/pat/set_memory.c
-> > > > > @@ -657,7 +657,8 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
-> > > > >  
-> > > > >  /*
-> > > > >   * Lookup the page table entry for a virtual address in a specific pgd.
-> > > > > - * Return a pointer to the entry and the level of the mapping.
-> > > > > + * Return a pointer to the entry and the level of the mapping (or NULL if
-> > > > > + * the entry is none) and level of the entry.
-> > > >                        ^ this right parenthesis may need be moved to the end.
-> > > > 
-> > > > 
-> > > > =======
-> > > >  * Return a pointer to the entry and the level of the mapping (or NULL if
-> > > >  * the entry is none and level of the entry).
-> > > > =======
-> > > 
-> > > Emm.. I like my variant more. We return level regardless if the entry none
-> > > or not. I don't see a reason to repeat it twice.
-> > 
-> > 
-> >  * Lookup the page table entry for a virtual address in a specific pgd.
-> >  * Return a pointer to the entry and the level of the mapping (or NULL if
-> >  * the entry is none) and level of the entry.
-> > 
-> > Hmm, I am confused. Why do we need to stress the level of the mapping
-> > and level of the entry? Wondering what is the difference. I must miss
-> > something.
-> 
-> My bad. This is way I meant to write:
-> 
->  * Lookup the page table entry for a virtual address in a specific pgd.
->  * Return a pointer to the entry (or NULL if the entry does not exist) and
->  * the level of the entry.
+Hi James,
 
-ACK. Thanks.
+On Wed, Feb 07, 2024 at 04:46:36PM -0500, James Bottomley wrote:
+> Just to correct this: IMA uses its own log format, but I think this was
+> a mistake long ago and the new log should use TCG2 format so all the
+> tools know how to parse it.
 
+At last year's Plumbers BoF on PCI device authentication & encryption,
+you requested that the kernel exposes proof of SPDM signature validation
+so that user space can verify after the fact that the kernel did
+everything correctly.
+
+Your above comment seems to indicate that you prefer TCG2 CEL as the
+format to expose the information, however the format seems ill-suited
+for the purpose:
+
+Per TCG PFP v1.06r52 sec 3.3.7, an SPDM CHALLENGE event merely logs
+the nonce used.  That's not sufficient to verify the signature:
+The signature is computed over a hash of the concatenation of all
+the messages exchanged with the device:
+
+* GET_VERSION request + VERSION response
+* GET_CAPABILITIES request + CAPABILITIES response
+* NEGOTIATE_ALGORITHMS request + ALGORITHMS response
+* GET_DIGESTS request + DIGESTS response
+* GET_CERTIFICATE request + CERTIFICATE response (can be multiple)
+* CHALLENGE request + CHALLENGE_AUTH response
+
+The content of those SPDM messages is not necessarily static:
+E.g. the SPDM requester (the kernel) presents all supported algorithms
+and the SPDM responder (the device) selects one of them.
+
+If only the nonce is saved in the log, the verifier in user space would
+need to know exactly which algorithms were supported by the SPDM requester
+at the time the request was sent (could since have changed through a
+kernel update).  It also needs to know exactly which algorithm the
+SPDM responder picked.
+
+Armed with the knowledge which algorithm bits were set, the verifier
+would have to reconstruct the messages that were exchanged between
+SPDM requester and responder so that it can calculate the hash over
+their concatenation and verify the signature.
+
+The algorithm selection is but one example of bits that can vary between
+different requesters/responders and between different points in time.
+The SPDM protocol allows a great deal of flexibility/agility here.
+
+The nonces sent by requester and responder are not the only bits that are
+variable, is what I'm trying to say.  Storing the nonces in the log is
+sufficient to prove their freshness, but it is not sufficient to prove
+correct validation of the signature.
+
+I'd have to store the full concatenation of all exchanged SPDM messages
+in the log to facilitate that.  Personally I have no problem doing so,
+but it won't be possible with the CEL format as currently specified by TCG.
+
+So on the one hand I'd like to fulfil your Plumbers request to expose
+proof of correct signature validation and on the other hand you're
+requesting CEL format which is insufficient to fulfil the request.
+I don't really know how to reconcile that.
+
+I do see value in exposing the full concatenation of all exchanged
+SPDM messages:  It would allow piping that into wireshark or tshark
+to decode the messages into human-readable form, which might be useful
+for debugging SPDM communication with the device.
+
+In fact, an SPDM dissector for wireshark already exists, though it's
+not up-to-date (last change 3 years ago) and probably needs a cleanup
+before it can be upstreamed:  https://github.com/jyao1/wireshark-spdm/
+
+I'm considering adding a custom sysfs interface which exposes the last,
+say, 64 SPDM events of each device, comprising:
+
+* type of event (CHALLENGE or GET_MEASUREMENTS)
+* timestamp
+* all exchanged messages
+* hash of all exchanged messages
+* hash algorithm used
+* signature received from device
+* certificate chain used for signature validation
+
+The memory consumption for all that data would be significant and the
+format wouldn't be TCG2 CEL, but it would fulfil your request to provide
+proof of signature verification.
+
+Thoughts?
+
+Thanks,
+
+Lukas
