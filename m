@@ -1,46 +1,46 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A204143C45
-	for <linux-coco@lists.linux.dev>; Fri, 23 Feb 2024 18:26:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6710E79E1
+	for <linux-coco@lists.linux.dev>; Fri, 23 Feb 2024 18:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708712818; cv=none; b=clpmptdW8PFCcWQHTDnqCofqCYVryBes9byVgDaRyf4KEwDo1ui0EjqzP3ym7rh9ASbbf07efGzwrTGqU12THQQ4omUy579jN3Mp2sZcynTCOES+lgRxnjP3UDSy13FfwmttEUxhlC1u+ZqxCLMhsNySsykQqOSfSGH7Gd525g0=
+	t=1708713907; cv=none; b=HSwVsL2KfXUc6gBjnUhbFWdJHmbuQ8KNlt0HqlAXNVfE2EI1Hxw8ty4tBmYD7F++1d1VLcz1ae8cAogTlF7tmhNqlUkmdoPvpmsgoHAaLK0xtxaFnhKUef3eA1BJ80ksEKM5ABM8I5lPk1I3tQ7whYToVVfig6jAV+pEyTXmopM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708712818; c=relaxed/simple;
-	bh=3I0hK9FXuXuwfrehyKidcurlcn0VOVX98tX/n0SKocg=;
+	s=arc-20240116; t=1708713907; c=relaxed/simple;
+	bh=EN6OSzntjAVnvO08qDvxNABHPZE0rA7qiMlpeC+o+TE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ltH8ACKwjiB2x4cbkePTE7C74RQapuXZLhEcUNNvEfQie3PogfxrCMYrrdwxr893KfKKArHQw98nvd9+kHObt/++Zl7h0RB0UDtPGlvHEhuzMsLcpclzdlS86C+2HOGWtOdbC1tBVi+a0MQiz2RYSZ4QUotqgposgSwNW4qiVjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WPNjts8P; arc=none smtp.client-ip=192.198.163.11
+	 In-Reply-To:Content-Type; b=YFkTt5h5vWKoJ2hsWNmSDPVcjbg6JVQq6NRslbqMC8KYPKVKrs2bBbmHgvGJ92sxCCXZ2aTxhPaJhg0TZ2SN0quzkcYaJfkN3XkHehSwBvm+Z3Hyjs5jgqcCvdGQGklrB8wu5jTgXA1EZnpjUgNm7i07/Js627JS7bWlQNz3lWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BpMMSTO1; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WPNjts8P"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BpMMSTO1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708712816; x=1740248816;
+  t=1708713905; x=1740249905;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=3I0hK9FXuXuwfrehyKidcurlcn0VOVX98tX/n0SKocg=;
-  b=WPNjts8PL72IBTi6rZK+yTtUgZwYFKT1HAb2HOG3V7A2O0XHoyOyqZE4
-   8DhsraG93uwQDE4TCxMGFV06+bnXAgL+4qaJT19QZPBeZeFPfau20379d
-   BMe3A90PZ6fQuXE2nW8GcYTCRoeY87zBD8MKemEUdDgObhMAeN7yk96AU
-   OnuREgNI392/QcGC9tyHm94Ybnk5dGqFmDAPz3I5YZfXDRbcEfiaNabV4
-   JUv8358g3xtlt3rVEj3nRjmtEeFgMQo+NUhVUGWd3zqp1zxGTmaK/PXrm
-   qPoXzof/5XEhDq7JUK/65hGbD+uXOw6+aheoYGj0Ya+hxFEoa2ZcQEHK6
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="13686655"
+  bh=EN6OSzntjAVnvO08qDvxNABHPZE0rA7qiMlpeC+o+TE=;
+  b=BpMMSTO1Kc25vpWDcVpayJ5gDQGEGMD+f58DW/5WPFmwtPBbsu9nPI8T
+   l9ThXigXpvAavKPsYLucka+0g7+3ylm2Obah1/cpRgT8vTAY8gB1dCqiA
+   k/yOKAyGAdAmjIzgRt5NqH40LMSp1p/kWdKvRKvApiDLPFXIvtSPi4aL1
+   7e6AIh2rIvc0VP16ejrKdYPoGbTWWdeHVsQ6pM8nattjL+tp1tm4xFmSn
+   mDxelGLduUWJ9bqrhgbvaZatiN1JmvG3OLbZurr6yLE/908An3JziIvx9
+   A8xMB2Q3jO/HKpFHY/8vKO/nCO9JPgZNef2nzQp8Xd/Iw6H+3uoAR3VKE
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="25518962"
 X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
-   d="scan'208";a="13686655"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 10:26:55 -0800
+   d="scan'208";a="25518962"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 10:45:05 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
-   d="scan'208";a="6139194"
+   d="scan'208";a="29165824"
 Received: from gtkramer-mobl1.amr.corp.intel.com (HELO [10.209.82.163]) ([10.209.82.163])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 10:26:54 -0800
-Message-ID: <d77d20c6-a4dd-4841-b331-bfb4d6bc29f5@intel.com>
-Date: Fri, 23 Feb 2024 10:26:53 -0800
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 10:45:04 -0800
+Message-ID: <bb5931cf-d361-419b-9e80-8a5ec03f29d7@intel.com>
+Date: Fri, 23 Feb 2024 10:45:02 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -48,8 +48,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv7 06/16] x86/mm: Make
- x86_platform.guest.enc_status_change_*() return errno
+Subject: Re: [PATCHv7 07/16] x86/mm: Return correct level from
+ lookup_address() if pte is none
 Content-Language: en-US
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
@@ -68,7 +68,7 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
  kexec@lists.infradead.org, linux-coco@lists.linux.dev,
  linux-kernel@vger.kernel.org
 References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
- <20240212104448.2589568-7-kirill.shutemov@linux.intel.com>
+ <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -113,17 +113,43 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20240212104448.2589568-7-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 2/12/24 02:44, Kirill A. Shutemov wrote:
-> TDX is going to have more than one reason to fail
-> enc_status_change_prepare().
-> 
-> Change the callback to return errno instead of assuming -EIO;
-> enc_status_change_finish() changed too to keep the interface symmetric.
+> lookup_address() only returns correct page table level for the entry if
+> the entry is not none.
 
-Good riddance to the bools.
+Currently, lookup_address() returns two things:
+  1. A "pte_t" (which might be a p[g4um]d_t)
+  2. The 'level' of the page tables where the "pte_t" was found
+     (returned via a pointer)
+
+If no pte_t is found, 'level' is essentially garbage.
+
+> Make the helper to always return correct 'level'. It allows to implement
+> iterator over kernel page tables using lookup_address().
+
+One nit with this description: What's "correct" isn't immediately
+obvious to me.  It wasn't exactly incorrect before.  I think it would be
+better to say:
+
+	Always fill out the level.  For NULL "pte_t"s, fill in the level
+	where the p*d_none() entry was found mirroring the "found"
+	behavior.
+
+	Always filling out the level allows using lookup_address() to
+	iterate over kernel page tables.
+
+> Add one more entry into enum pg_level to indicate size of VA covered by
+> one PGD entry in 5-level paging mode.
+
+Needs some 'the's:
+
+Add one more entry into enum pg_level to indicate the size of the VA
+covered by one PGD entry in 5-level paging mode.
+
+With that fixed:
 
 Reviewed-by: Dave Hansen <dave.hansen@intel.com>
