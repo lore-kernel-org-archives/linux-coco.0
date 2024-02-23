@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7B41D6B6
-	for <linux-coco@lists.linux.dev>; Fri, 23 Feb 2024 18:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124D4128831
+	for <linux-coco@lists.linux.dev>; Fri, 23 Feb 2024 19:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708714739; cv=none; b=uB3LgBrONcE33PARB3ealJR7vbpRT3goAiRymuSgnaQ8o71j4giXBZZMnXgAfKhXCBehjFGgEGgt1RVqld5KOxyig8A5Ro3XABJCOZdCwyA2Xh+jpINH9EXCxwwgL2yWtr9kVBIsqTew1YDjn0FOVtzU8xPeD2dvLOYrQP5/T10=
+	t=1708715303; cv=none; b=CoJjopS4/6xEts3Emc1KbSxF5WtPt2jg+GsTLRILmTp0gyXySRW5EQqjDb6UP4Um92jsfQSrY70ugSj85pXq2kPDpGXbXXO3IJljHHJxcLWdksiBUrREC4T9sboztWX4DAj9/nej6C0SjPavJjlPYTkKfFLOdC9sbMjsbr3QlcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708714739; c=relaxed/simple;
-	bh=Kaf0RNBKifZxmQBKJDDuFTaXgO5JnmzMcvf2mBmpSm4=;
+	s=arc-20240116; t=1708715303; c=relaxed/simple;
+	bh=7R9RCGEfnv7As+Ov4XdPpDS7BmdZlFCHr3jRKeBO7MA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YR9QvXto8UfPDeT5zmkPW8JKFDJWX8Iu3EsIJKP6DLhruxALclWsmkm4lJ6CxqLYIN5wGFkQUR+NvRTQe4ISlH/aetAY1Q/z4u4X8QOULULoRu4DIe1LDBCDI9nIHV3fUtPVhLjtUUHi+GjuMiDxrj7dKqP0YXLEse1WzddQtpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BF0uMPLf; arc=none smtp.client-ip=192.198.163.9
+	 In-Reply-To:Content-Type; b=O2si8Ln418i19lJNuYxNM8xgnepylF0U+Uo8A3KmvxO+O/WM2pr+6qCsOQDG9Eqs7LCBdDIjgdUYVdOmz/HI+nfRF8L3jkvQVJx00Rp1xdQTBpexKhOLKlIc9T1chgogo5so9Glq5rVnB/Ghe1mECmX9++bZYokpTtrKKFMD26g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TVaOOIAU; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BF0uMPLf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TVaOOIAU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708714738; x=1740250738;
+  t=1708715301; x=1740251301;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=Kaf0RNBKifZxmQBKJDDuFTaXgO5JnmzMcvf2mBmpSm4=;
-  b=BF0uMPLf+HkVu/aQEDmq38M4KWmCYbtSgDZySEh7xYttDKsXaugdyR5z
-   PuLnRSzdzvhcH2BU6Nc9bTaH8HqCfWJ4HsyrfV4JZyGCzseEt8xkTbLP3
-   8ZRT0ROiVcHcBIT/SAk4ESdzo0Nnp3ILPHVPofSNpIgT7pQLyxm3sYYgi
-   HI7d0lc3ngCrtURxRC1hF6UPN2J1I/gGrpsMoq6waqbLM1wgpQMx3j1xg
-   b+OsCOPbTFPVTE6hs11c9qocntcsedHuIHbc2jotATkAP+00w/gCBV2YM
-   71aMwu3sHphbb7Fed+WuyKHx5WBgEsv8MHS3g6O8RIcM+LvSBBOZdhiUO
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="13745712"
+  bh=7R9RCGEfnv7As+Ov4XdPpDS7BmdZlFCHr3jRKeBO7MA=;
+  b=TVaOOIAU+238cg/9AN1eGMPi+SRQn4iWX7W6uODZXoqBUwtwg8y9LXXe
+   m/pruRBj7CHMAByyy7WAJK02wwdlYkKYQkgHfkGRJ9cUCvmyInu6qpzfm
+   egDXAJ8jq9AiXAHEKd/vJ3aAlGvxcPURxQo+Yh5R0BHCbxsOvv5mCIHJn
+   bmw/zw8wpzrNs9Edn17eu0j4p3Y12uCUey1ndssmRvdO79RkBEd7BLAHx
+   hqMyZkN4CGYMwzkBe4chexQFp5NdT6SZ79DifrP2VYJPuag6RdJ7YAD8r
+   gemqesVwz4XXfBnbf80pfIuhHwQec2h8uzl4iVozSzUI2ag9FANRCsmRt
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="13746755"
 X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
-   d="scan'208";a="13745712"
+   d="scan'208";a="13746755"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 10:58:57 -0800
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 11:08:20 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
-   d="scan'208";a="5977964"
+   d="scan'208";a="5979122"
 Received: from gtkramer-mobl1.amr.corp.intel.com (HELO [10.209.82.163]) ([10.209.82.163])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 10:58:56 -0800
-Message-ID: <b01b4506-eb8e-4070-b318-bad68caf534f@intel.com>
-Date: Fri, 23 Feb 2024 10:58:55 -0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 11:08:20 -0800
+Message-ID: <a69a3d67-7352-4bf4-8766-a55ce97e46bd@intel.com>
+Date: Fri, 23 Feb 2024 11:08:18 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -48,8 +48,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv7 07/16] x86/mm: Return correct level from
- lookup_address() if pte is none
+Subject: Re: [PATCHv7 08/16] x86/tdx: Account shared memory
 Content-Language: en-US
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
@@ -68,8 +67,7 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
  kexec@lists.infradead.org, linux-coco@lists.linux.dev,
  linux-kernel@vger.kernel.org
 References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
- <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
- <bb5931cf-d361-419b-9e80-8a5ec03f29d7@intel.com>
+ <20240212104448.2589568-9-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -114,18 +112,98 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <bb5931cf-d361-419b-9e80-8a5ec03f29d7@intel.com>
+In-Reply-To: <20240212104448.2589568-9-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2/23/24 10:45, Dave Hansen wrote:
-> 	Always filling out the level allows using lookup_address() to
-> 	iterate over kernel page tables.
+On 2/12/24 02:44, Kirill A. Shutemov wrote:
+> The kernel will convert all shared memory back to private during kexec.
+> The direct mapping page tables will provide information on which memory
+> is shared.
+> 
+> It is extremely important to convert all shared memory. If a page is
+> missed, it will cause the second kernel to crash when it accesses it.
+> 
+> Keep track of the number of shared pages. This will allow for
+> cross-checking against the shared information in the direct mapping and
+> reporting if the shared bit is lost.
+> 
+> Include a debugfs interface that allows for the check to be performed at
+> any point.
 
-This doesn't parse very well.  How about this instead:
+When I read this, I thought you were going to do some automatic
+checking.  Could you make it more clear here that it's 100% up to the
+user to figure out if the numbers in debugfs match and whether there's a
+problem?  This would also be a great place to mention that the whole
+thing is racy.
 
-	Always filling out the level allows using lookup_address() to
-	precisely skip over holes when walking kernel page tables.
+> +static atomic_long_t nr_shared;
+> +
+> +static inline bool pte_decrypted(pte_t pte)
+> +{
+> +	return cc_mkdec(pte_val(pte)) == pte_val(pte);
+> +}
 
-I think that more accurately captures what you're doing with it in the
-next patch.
+Name this pte_is_decrypted(), please.
+
+>  /* Called from __tdx_hypercall() for unrecoverable failure */
+>  noinstr void __noreturn __tdx_hypercall_failed(void)
+>  {
+> @@ -821,6 +829,11 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+>  	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+>  		return -EIO;
+>  
+> +	if (enc)
+> +		atomic_long_sub(numpages, &nr_shared);
+> +	else
+> +		atomic_long_add(numpages, &nr_shared);
+> +
+>  	return 0;
+>  }
+>  
+> @@ -896,3 +909,59 @@ void __init tdx_early_init(void)
+>  
+>  	pr_info("Guest detected\n");
+>  }
+> +
+> +#ifdef CONFIG_DEBUG_FS
+> +static int tdx_shared_memory_show(struct seq_file *m, void *p)
+> +{
+> +	unsigned long addr, end;
+> +	unsigned long found = 0;
+> +
+> +	addr = PAGE_OFFSET;
+> +	end  = PAGE_OFFSET + get_max_mapped();
+> +
+> +	while (addr < end) {
+> +		unsigned long size;
+> +		unsigned int level;
+> +		pte_t *pte;
+> +
+> +		pte = lookup_address(addr, &level);
+> +		size = page_level_size(level);
+> +
+> +		if (pte && pte_decrypted(*pte))
+> +			found += size / PAGE_SIZE;
+> +
+> +		addr += size;
+> +
+> +		cond_resched();
+> +	}
+
+This is totally racy, right?  Nothing prevents the PTE from
+flip-flopping all over the place.
+
+> +	seq_printf(m, "Number of shared pages in kernel page tables:  %16lu\n",
+> +		   found);
+> +	seq_printf(m, "Number of pages accounted as shared:           %16ld\n",
+> +		   atomic_long_read(&nr_shared));
+> +	return 0;
+> +}
+
+Ditto with 'nr_shared'.  There's nothing to say that the page table walk
+has anything to do with 'nr_shared' by the time we get down here.
+
+That's not _fatal_ for a debug interface, but the pitfalls need to at
+least be discussed.  Better yet would be to make sure this and the cpa
+code don't stomp on each other.
