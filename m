@@ -1,46 +1,46 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6710E79E1
-	for <linux-coco@lists.linux.dev>; Fri, 23 Feb 2024 18:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7B41D6B6
+	for <linux-coco@lists.linux.dev>; Fri, 23 Feb 2024 18:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708713907; cv=none; b=HSwVsL2KfXUc6gBjnUhbFWdJHmbuQ8KNlt0HqlAXNVfE2EI1Hxw8ty4tBmYD7F++1d1VLcz1ae8cAogTlF7tmhNqlUkmdoPvpmsgoHAaLK0xtxaFnhKUef3eA1BJ80ksEKM5ABM8I5lPk1I3tQ7whYToVVfig6jAV+pEyTXmopM=
+	t=1708714739; cv=none; b=uB3LgBrONcE33PARB3ealJR7vbpRT3goAiRymuSgnaQ8o71j4giXBZZMnXgAfKhXCBehjFGgEGgt1RVqld5KOxyig8A5Ro3XABJCOZdCwyA2Xh+jpINH9EXCxwwgL2yWtr9kVBIsqTew1YDjn0FOVtzU8xPeD2dvLOYrQP5/T10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708713907; c=relaxed/simple;
-	bh=EN6OSzntjAVnvO08qDvxNABHPZE0rA7qiMlpeC+o+TE=;
+	s=arc-20240116; t=1708714739; c=relaxed/simple;
+	bh=Kaf0RNBKifZxmQBKJDDuFTaXgO5JnmzMcvf2mBmpSm4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YFkTt5h5vWKoJ2hsWNmSDPVcjbg6JVQq6NRslbqMC8KYPKVKrs2bBbmHgvGJ92sxCCXZ2aTxhPaJhg0TZ2SN0quzkcYaJfkN3XkHehSwBvm+Z3Hyjs5jgqcCvdGQGklrB8wu5jTgXA1EZnpjUgNm7i07/Js627JS7bWlQNz3lWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BpMMSTO1; arc=none smtp.client-ip=198.175.65.9
+	 In-Reply-To:Content-Type; b=YR9QvXto8UfPDeT5zmkPW8JKFDJWX8Iu3EsIJKP6DLhruxALclWsmkm4lJ6CxqLYIN5wGFkQUR+NvRTQe4ISlH/aetAY1Q/z4u4X8QOULULoRu4DIe1LDBCDI9nIHV3fUtPVhLjtUUHi+GjuMiDxrj7dKqP0YXLEse1WzddQtpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BF0uMPLf; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BpMMSTO1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BF0uMPLf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708713905; x=1740249905;
+  t=1708714738; x=1740250738;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=EN6OSzntjAVnvO08qDvxNABHPZE0rA7qiMlpeC+o+TE=;
-  b=BpMMSTO1Kc25vpWDcVpayJ5gDQGEGMD+f58DW/5WPFmwtPBbsu9nPI8T
-   l9ThXigXpvAavKPsYLucka+0g7+3ylm2Obah1/cpRgT8vTAY8gB1dCqiA
-   k/yOKAyGAdAmjIzgRt5NqH40LMSp1p/kWdKvRKvApiDLPFXIvtSPi4aL1
-   7e6AIh2rIvc0VP16ejrKdYPoGbTWWdeHVsQ6pM8nattjL+tp1tm4xFmSn
-   mDxelGLduUWJ9bqrhgbvaZatiN1JmvG3OLbZurr6yLE/908An3JziIvx9
-   A8xMB2Q3jO/HKpFHY/8vKO/nCO9JPgZNef2nzQp8Xd/Iw6H+3uoAR3VKE
+  bh=Kaf0RNBKifZxmQBKJDDuFTaXgO5JnmzMcvf2mBmpSm4=;
+  b=BF0uMPLf+HkVu/aQEDmq38M4KWmCYbtSgDZySEh7xYttDKsXaugdyR5z
+   PuLnRSzdzvhcH2BU6Nc9bTaH8HqCfWJ4HsyrfV4JZyGCzseEt8xkTbLP3
+   8ZRT0ROiVcHcBIT/SAk4ESdzo0Nnp3ILPHVPofSNpIgT7pQLyxm3sYYgi
+   HI7d0lc3ngCrtURxRC1hF6UPN2J1I/gGrpsMoq6waqbLM1wgpQMx3j1xg
+   b+OsCOPbTFPVTE6hs11c9qocntcsedHuIHbc2jotATkAP+00w/gCBV2YM
+   71aMwu3sHphbb7Fed+WuyKHx5WBgEsv8MHS3g6O8RIcM+LvSBBOZdhiUO
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="25518962"
+X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="13745712"
 X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
-   d="scan'208";a="25518962"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 10:45:05 -0800
+   d="scan'208";a="13745712"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 10:58:57 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
-   d="scan'208";a="29165824"
+   d="scan'208";a="5977964"
 Received: from gtkramer-mobl1.amr.corp.intel.com (HELO [10.209.82.163]) ([10.209.82.163])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 10:45:04 -0800
-Message-ID: <bb5931cf-d361-419b-9e80-8a5ec03f29d7@intel.com>
-Date: Fri, 23 Feb 2024 10:45:02 -0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 10:58:56 -0800
+Message-ID: <b01b4506-eb8e-4070-b318-bad68caf534f@intel.com>
+Date: Fri, 23 Feb 2024 10:58:55 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,6 +69,7 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
  linux-kernel@vger.kernel.org
 References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
  <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
+ <bb5931cf-d361-419b-9e80-8a5ec03f29d7@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -113,43 +114,18 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20240212104448.2589568-8-kirill.shutemov@linux.intel.com>
+In-Reply-To: <bb5931cf-d361-419b-9e80-8a5ec03f29d7@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2/12/24 02:44, Kirill A. Shutemov wrote:
-> lookup_address() only returns correct page table level for the entry if
-> the entry is not none.
+On 2/23/24 10:45, Dave Hansen wrote:
+> 	Always filling out the level allows using lookup_address() to
+> 	iterate over kernel page tables.
 
-Currently, lookup_address() returns two things:
-  1. A "pte_t" (which might be a p[g4um]d_t)
-  2. The 'level' of the page tables where the "pte_t" was found
-     (returned via a pointer)
-
-If no pte_t is found, 'level' is essentially garbage.
-
-> Make the helper to always return correct 'level'. It allows to implement
-> iterator over kernel page tables using lookup_address().
-
-One nit with this description: What's "correct" isn't immediately
-obvious to me.  It wasn't exactly incorrect before.  I think it would be
-better to say:
-
-	Always fill out the level.  For NULL "pte_t"s, fill in the level
-	where the p*d_none() entry was found mirroring the "found"
-	behavior.
+This doesn't parse very well.  How about this instead:
 
 	Always filling out the level allows using lookup_address() to
-	iterate over kernel page tables.
+	precisely skip over holes when walking kernel page tables.
 
-> Add one more entry into enum pg_level to indicate size of VA covered by
-> one PGD entry in 5-level paging mode.
-
-Needs some 'the's:
-
-Add one more entry into enum pg_level to indicate the size of the VA
-covered by one PGD entry in 5-level paging mode.
-
-With that fixed:
-
-Reviewed-by: Dave Hansen <dave.hansen@intel.com>
+I think that more accurately captures what you're doing with it in the
+next patch.
