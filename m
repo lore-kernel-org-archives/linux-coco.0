@@ -1,68 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35CD125B3;
-	Fri, 23 Feb 2024 06:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D835D491
+	for <linux-coco@lists.linux.dev>; Fri, 23 Feb 2024 10:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708670006; cv=none; b=Fd3TtKzSUqJWhvsFB9ZCTiNivlUB40wwk6+ZBAlOOUSC/EfTxBD/0AjNRE8JOmUj923w1gNzOMwpkCxMm0LqOF90XuFWetPBf3iQXB5Bam9vNoIaeTfrD80sU/GKOTyxqUGJtSKHXXef4ANHMK3mCVSQNuXU/KZvIkvXZnF+DrQ=
+	t=1708684004; cv=none; b=pDy6sbbAlu3hISZ7nNkCigqKJGyBxJu1xBPTsI444g07XQKbbAyO2m04S4b2wlCYkf/npkrbcDrvaZhnR+eX6fbH/1enKPNObumxJ/tlkgXU60Gm9rH0XXMrZvODp+GHVUOvAKb5Cclsy6U7D7c4w1tX3QrJBLPej+I1R4/u1DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708670006; c=relaxed/simple;
-	bh=dThcPl3XK7RY5dgaObaEGYKBmy4AdP7HURVc8OjMtqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Unuu5gq1S/Uoo2/spxIpBsd0tqqarw+ntxtzcQ/yYvDwvIB8wxEYUSyaI9AZYd3RAdRjdfsxwYMgBxNon8JpZEwcy/homQSnmfkA1F7xUXsdZ5vMRpoKXe67STrdSdysAfq4B/GpXwHqRWEP4WGVbx1t2CWO1y8i3nvwi1xEq0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbGXLkDp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708684004; c=relaxed/simple;
+	bh=Gj+c+z0QQUx5LZDDvpBGXmu7oB3+rGMorguEN/YL7Wk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ZJZQHnKFPQphxLuRpitKewluc2+V0IuSwwbgeyApzXa34vpdxdCYJATpygGHC34erSeeGu6g0I9qraapVNw62T00KmY5+OlF6T7RVqZ/OZs98dou5B5cpKxjE4F7ReLrNn3wwCM8Paqv1fI9SAP+gat66UuTtiWdWKhJTFNtv8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IKYZ2AI4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rUaZd31h; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbGXLkDp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D37C433C7;
-	Fri, 23 Feb 2024 06:33:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708670006;
-	bh=dThcPl3XK7RY5dgaObaEGYKBmy4AdP7HURVc8OjMtqM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bbGXLkDp5iFFUzcPFhjNZZZda8EkIIp350je1FEuGhT5XE9PiyT3g+NZVCSI4OQlr
-	 BXX4mdQwq6AsXhyKzVQIGo1aw0RDEUt2j1Y+Kla2HPDX1pizKfWy/4sdcbYlIIBe3+
-	 4dkOcnvQXydNa9kd53NyHNIzLFoUnBVnHjU20F2c=
-Date: Fri, 23 Feb 2024 07:33:22 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Marc Herbert <marc.herbert@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-coco@lists.linux.dev, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 0/3] sysfs: Group visibility fixups
-Message-ID: <2024022342-unbroken-september-e58d@gregkh>
-References: <170863444851.1479840.10249410842428140526.stgit@dwillia2-xfh.jf.intel.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IKYZ2AI4";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rUaZd31h"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1708684001;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gj+c+z0QQUx5LZDDvpBGXmu7oB3+rGMorguEN/YL7Wk=;
+	b=IKYZ2AI4bvKLy/sS5aIpSZ8CRBJ/Jfmo6Ol8+942g7pqPZIBzVOhKmgHw+CGuqf2E7Lzo4
+	zgmkkqe8bnmI+s04OV5U6Wz3UvVq2BJ7v2bWlMtRxMLEBSGwXauh6C4Y/oSHe7HZ6cdZim
+	Hixfjs+7Zl4tGPcODF7UMnRjbkJ1RqnICoMniYA2d4iVLAxuBdAHbNn1y6MH5WZae69ql8
+	L2Ww4a3DeOOgdtHBc+Re0+dPOhNljA1FZlMelOYZdczVa+B700oxbXCnUPaUTnXM51Yab6
+	PfN0wIKGvC6nPfAWgAl0Xe52jeukQrdntphGe2YL6xjt0DuGOae5Ycp41mV66Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1708684001;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gj+c+z0QQUx5LZDDvpBGXmu7oB3+rGMorguEN/YL7Wk=;
+	b=rUaZd31hVYdpyiWcibb+qKArRGWOQggoYnF9LYPkfghbBc+YFSS1n0Qc3uviJD1OloQhjj
+	28b9Uksre55OI+CQ==
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima
+ <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom
+ Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
+ <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, "Huang,
+ Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
+ kexec@lists.infradead.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, "Kirill A. Shutemov"
+ <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCHv7 14/16] x86/smp: Add smp_ops.stop_this_cpu() callback
+In-Reply-To: <20240212104448.2589568-15-kirill.shutemov@linux.intel.com>
+References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
+ <20240212104448.2589568-15-kirill.shutemov@linux.intel.com>
+Date: Fri, 23 Feb 2024 11:26:40 +0100
+Message-ID: <87sf1jcw7z.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <170863444851.1479840.10249410842428140526.stgit@dwillia2-xfh.jf.intel.com>
+Content-Type: text/plain
 
-On Thu, Feb 22, 2024 at 12:40:48PM -0800, Dan Williams wrote:
-> Hey Greg,
-> 
-> Marc was able to get me a backtrace for that bootup hang scenario that
-> Pierre noted here [1]. A Tested-by is still pending, but I am certain
-> this is the issue, and it may impact more than just the one platform if
-> that "empty_attrs" pattern has been repeated anywhere else in the
-> kernel.
-> 
-> I also took some time to document how to use the helpers a bit better,
-> and introduce DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE() for cases where all
-> that matters is group visibility and not per attribute visibility.
-> 
-> [1]: http://lore.kernel.org/r/b93ec9c2-23f5-486b-a3dc-ed9b960df359@linux.intel.com
+On Mon, Feb 12 2024 at 12:44, Kirill A. Shutemov wrote:
 
-I'll just queue these up now on my normal driver-core-next branch, and
-not worry about a stable tag as I doubt anyone wants that now.  But if
-they do, please let me know and I can provide one.
+> If the helper is defined, it is called instead of halt() to stop the CPU
+> at the end of stop_this_cpu() and on crash CPU shutdown.
+>
+> ACPI MADT will use it to hand over the CPU to BIOS in order to be able
+> to wake it up again after kexec.
+>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Acked-by: Kai Huang <kai.huang@intel.com>
 
-thanks for the quick fixes!
-
-greg k-h
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
