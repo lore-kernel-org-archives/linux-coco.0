@@ -1,48 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7975813ADA
-	for <linux-coco@lists.linux.dev>; Sun, 25 Feb 2024 14:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E5F101F2
+	for <linux-coco@lists.linux.dev>; Sun, 25 Feb 2024 15:54:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708873136; cv=none; b=EhYXpT/NiIL5Zlpm2dsrMCVuCq61E783KqeJFNs8Qu+BYRjU376g5UUSA3+OPt2L8iqXRiTcqYgpMgC6Ka1dhafkzg+c77EP4xQCktFA4EnQiCuYddd+hx0J5MB2AORCx7Ff3aFpKPWtU7JPXXwFp90ZwCW8Czu/87rekgw/eYc=
+	t=1708876486; cv=none; b=IhhZWzON26O4BP/jjbMmDC/q4pTjv9DNj9DFDD+8EaDWAU3lxi8mSRcEN4tbDVpPT2lXAXXPPq2yid5CIvkm07kdKqAgi7Vld2aKMQw3OBufelkXOU3WSaUM5DGicSRm7A+3WlFR3gNPZvTnRmCBJSjQJtj0v3YaTqi3J31IFrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708873136; c=relaxed/simple;
-	bh=jePslZk9gVVhTBiw8BU4nyJ2SOGn6xWwNg6KJ2+6rgk=;
+	s=arc-20240116; t=1708876486; c=relaxed/simple;
+	bh=a8WuHvI6h6kLGhcZUjOjqEaaYOLzg47IYOWKmjJs8cw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J1oTONqZHXhaqOJaMowuaFwCtRZNvt9iIqY8qYH7oGHkfjFRZEB18qVxt96Zc0DaYk2TMCJW8sVH9GP9fDpNdB3bH5chdrv6Dgu9c3we3I0Kwc831EXRTxFFYvo3SbPV47VcM1+MmREJfHlQ+QptIslc3m5VQqfYs8omU/vk4mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=heZI4v8B; arc=none smtp.client-ip=192.198.163.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=W13GRoZ4+/Ckqf0FA7KxqL4rdRb8lxsynQGgxifo4egZwIVs97qGjp6vnqtkT2EPJ+4KWucfb1x6NtInNZyW+scsGioTy0DKV1yy3w3TCS01jfBj7JVHRPfvWqd7Dtkt73gkUgB1VaeUOLRDZXDli94gypGWrzwC12FwUEV7S0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LTNlvJm4; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="heZI4v8B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LTNlvJm4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708873133; x=1740409133;
+  t=1708876483; x=1740412483;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=jePslZk9gVVhTBiw8BU4nyJ2SOGn6xWwNg6KJ2+6rgk=;
-  b=heZI4v8Bh4yz2E47FLKfX4snvsQWy28FwBuoAyY8yg11XIUBLu2suIA9
-   ogARLpmjtrHIstRtYPwbhmvknEkpdrECRFXWLtHOFp7weHyKlDz96RQxE
-   4MxB0ezaCQF6IF9yKbyEDceXHdbUMxJdmcEuW2hEsAatQiSkpdak5fat0
-   2TXQmmy3/QSR4J83CfZDYz99AzT8cR2VDkxEnI3Lfu/aP87FZ1k853RsF
-   GFs1rYD8AMpCwfHbpOTLM+Y/b3GdTCjKag8nLIKZ79CHx+aUGEhBdlp75
-   oDFW86KALQVjH6N0MWTRuWO887jb5hvZ0X+cXZ4PPnlyUYKXfGsgv/I6x
+  bh=a8WuHvI6h6kLGhcZUjOjqEaaYOLzg47IYOWKmjJs8cw=;
+  b=LTNlvJm4il71MKR7KW6lxlggxAIjLTTQ4Wm0NZpIFcQkVvaO1WwCRhLg
+   btvOz9FSuEnucqJ8VFsgauBQa2fJ66B32xtzwanl7LFyJUn1h1GxOBSZJ
+   JJHW1PU1GNXgv6zfrlaGsRkIxlyj8TCHC28xP7aRRTR9PAztM/+RMoKnM
+   e6aEghrOzQNL1zN+hK30+tWfDEmhO1bueJQElw6vzUJkV2BLmDxarieVw
+   85fRcWbonQTB8tvcJxDj51o0vKUnpn20qz8cxIqR244Qccutid9R97RCM
+   wBm36HRE7n+u5HBueP8nIWzmk+poeSAvo42brlrMTXltj05oXPSizBQAf
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="13854507"
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="3296453"
 X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="13854507"
+   d="scan'208";a="3296453"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2024 06:58:52 -0800
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2024 07:54:43 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="937028098"
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="937028120"
 X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="937028098"
+   d="scan'208";a="937028120"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 25 Feb 2024 06:58:47 -0800
+  by fmsmga001.fm.intel.com with ESMTP; 25 Feb 2024 07:54:38 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id AACA838F; Sun, 25 Feb 2024 16:58:46 +0200 (EET)
-Date: Sun, 25 Feb 2024 16:58:46 +0200
+	id B60FB425; Sun, 25 Feb 2024 17:54:36 +0200 (EET)
+Date: Sun, 25 Feb 2024 17:54:36 +0200
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Dave Hansen <dave.hansen@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -54,12 +54,11 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
 	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
 	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv7 10/16] x86/tdx: Convert shared memory back to private
- on kexec
-Message-ID: <3nqc34o54ydpdvo6j7a5hltyjs6kkw5jy5i6dgvivg7f4hzec2@l6jetcopnm6k>
+Subject: Re: [PATCHv7 08/16] x86/tdx: Account shared memory
+Message-ID: <z6dsqhxzj4beyv4vj5uq6khpt6ti4mvs3uxunvli5cvi2hgfmv@rqbyr4wlzb6f>
 References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
- <20240212104448.2589568-11-kirill.shutemov@linux.intel.com>
- <a14bda4a-15ad-4d20-8b60-0ab92b608f2f@intel.com>
+ <20240212104448.2589568-9-kirill.shutemov@linux.intel.com>
+ <a69a3d67-7352-4bf4-8766-a55ce97e46bd@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -68,208 +67,114 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a14bda4a-15ad-4d20-8b60-0ab92b608f2f@intel.com>
+In-Reply-To: <a69a3d67-7352-4bf4-8766-a55ce97e46bd@intel.com>
 
-On Fri, Feb 23, 2024 at 11:39:07AM -0800, Dave Hansen wrote:
+On Fri, Feb 23, 2024 at 11:08:18AM -0800, Dave Hansen wrote:
 > On 2/12/24 02:44, Kirill A. Shutemov wrote:
-> > +static void tdx_kexec_stop_conversion(bool crash)
+> > The kernel will convert all shared memory back to private during kexec.
+> > The direct mapping page tables will provide information on which memory
+> > is shared.
+> > 
+> > It is extremely important to convert all shared memory. If a page is
+> > missed, it will cause the second kernel to crash when it accesses it.
+> > 
+> > Keep track of the number of shared pages. This will allow for
+> > cross-checking against the shared information in the direct mapping and
+> > reporting if the shared bit is lost.
+> > 
+> > Include a debugfs interface that allows for the check to be performed at
+> > any point.
+> 
+> When I read this, I thought you were going to do some automatic
+> checking.  Could you make it more clear here that it's 100% up to the
+> user to figure out if the numbers in debugfs match and whether there's a
+> problem?  This would also be a great place to mention that the whole
+> thing is racy.
+
+What about this:
+
+  Include a debugfs interface to dump the number of shared pages in the
+  direct mapping and the expected number. There is no serialization
+  against memory conversion. The numbers might not match if access to the
+  debugfs interface races with the conversion.
+
+> > +static atomic_long_t nr_shared;
+> > +
+> > +static inline bool pte_decrypted(pte_t pte)
 > > +{
-> > +	/* Stop new private<->shared conversions */
-> > +	conversion_allowed = false;
-> > +
-> > +	/*
-> > +	 * Make sure conversion_allowed is cleared before checking
-> > +	 * conversions_in_progress.
-> > +	 */
-> > +	barrier();
-> > +
-> > +	/*
-> > +	 * Crash kernel reaches here with interrupts disabled: can't wait for
-> > +	 * conversions to finish.
-> > +	 *
-> > +	 * If race happened, just report and proceed.
-> > +	 */
-> > +	if (!crash) {
-> > +		unsigned long timeout;
-> > +
-> > +		/*
-> > +		 * Wait for in-flight conversions to complete.
-> > +		 *
-> > +		 * Do not wait more than 30 seconds.
-> > +		 */
-> > +		timeout = 30 * USEC_PER_SEC;
-> > +		while (atomic_read(&conversions_in_progress) && timeout--)
-> > +			udelay(1);
-> > +	}
-> > +
-> > +	if (atomic_read(&conversions_in_progress))
-> > +		pr_warn("Failed to finish shared<->private conversions\n");
+> > +	return cc_mkdec(pte_val(pte)) == pte_val(pte);
 > > +}
 > 
-> I'd really prefer we find a way to do this with actual locks, especially
-> 'conversion_allowed'.
+> Name this pte_is_decrypted(), please.
+
+But why? pte_decrypted() is consistent with other pte helpers pte_none(),
+pte_present, pte_dirty(), ...
+
+> >  /* Called from __tdx_hypercall() for unrecoverable failure */
+> >  noinstr void __noreturn __tdx_hypercall_failed(void)
+> >  {
+> > @@ -821,6 +829,11 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+> >  	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+> >  		return -EIO;
+> >  
+> > +	if (enc)
+> > +		atomic_long_sub(numpages, &nr_shared);
+> > +	else
+> > +		atomic_long_add(numpages, &nr_shared);
+> > +
+> >  	return 0;
+> >  }
+> >  
+> > @@ -896,3 +909,59 @@ void __init tdx_early_init(void)
+> >  
+> >  	pr_info("Guest detected\n");
+> >  }
+> > +
+> > +#ifdef CONFIG_DEBUG_FS
+> > +static int tdx_shared_memory_show(struct seq_file *m, void *p)
+> > +{
+> > +	unsigned long addr, end;
+> > +	unsigned long found = 0;
+> > +
+> > +	addr = PAGE_OFFSET;
+> > +	end  = PAGE_OFFSET + get_max_mapped();
+> > +
+> > +	while (addr < end) {
+> > +		unsigned long size;
+> > +		unsigned int level;
+> > +		pte_t *pte;
+> > +
+> > +		pte = lookup_address(addr, &level);
+> > +		size = page_level_size(level);
+> > +
+> > +		if (pte && pte_decrypted(*pte))
+> > +			found += size / PAGE_SIZE;
+> > +
+> > +		addr += size;
+> > +
+> > +		cond_resched();
+> > +	}
 > 
-> This is _awfully_ close to being able to be handled by a rwsem where the
-> readers are the converters and tdx_kexec_stop_conversion() takes a write.
+> This is totally racy, right?  Nothing prevents the PTE from
+> flip-flopping all over the place.
 
-Okay, here's what I come up with. It needs more testing.
+Yes.
 
-Any comments?
+> > +	seq_printf(m, "Number of shared pages in kernel page tables:  %16lu\n",
+> > +		   found);
+> > +	seq_printf(m, "Number of pages accounted as shared:           %16ld\n",
+> > +		   atomic_long_read(&nr_shared));
+> > +	return 0;
+> > +}
+> 
+> Ditto with 'nr_shared'.  There's nothing to say that the page table walk
+> has anything to do with 'nr_shared' by the time we get down here.
+> 
+> That's not _fatal_ for a debug interface, but the pitfalls need to at
+> least be discussed.  Better yet would be to make sure this and the cpa
+> code don't stomp on each other.
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index fd212c9bad89..5eb0dac33f37 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -6,8 +6,10 @@
- 
- #include <linux/cpufeature.h>
- #include <linux/debugfs.h>
-+#include <linux/delay.h>
- #include <linux/export.h>
- #include <linux/io.h>
-+#include <linux/kexec.h>
- #include <asm/coco.h>
- #include <asm/tdx.h>
- #include <asm/vmx.h>
-@@ -15,6 +17,7 @@
- #include <asm/insn.h>
- #include <asm/insn-eval.h>
- #include <asm/pgtable.h>
-+#include <asm/set_memory.h>
- 
- /* MMIO direction */
- #define EPT_READ	0
-@@ -837,6 +840,65 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
- 	return 0;
- }
- 
-+static void tdx_kexec_stop_conversion(bool crash)
-+{
-+	/* Stop new private<->shared conversions */
-+	if (!stop_memory_enc_conversion(!crash))
-+		pr_warn("Failed to finish shared<->private conversions\n");
-+}
-+
-+static void tdx_kexec_unshare_mem(void)
-+{
-+	unsigned long addr, end;
-+	long found = 0, shared;
-+
-+	/*
-+	 * Walk direct mapping and convert all shared memory back to private,
-+	 */
-+
-+	addr = PAGE_OFFSET;
-+	end  = PAGE_OFFSET + get_max_mapped();
-+
-+	while (addr < end) {
-+		unsigned long size;
-+		unsigned int level;
-+		pte_t *pte;
-+
-+		pte = lookup_address(addr, &level);
-+		size = page_level_size(level);
-+
-+		if (pte && pte_decrypted(*pte)) {
-+			int pages = size / PAGE_SIZE;
-+
-+			/*
-+			 * Touching memory with shared bit set triggers implicit
-+			 * conversion to shared.
-+			 *
-+			 * Make sure nobody touches the shared range from
-+			 * now on.
-+			 */
-+			set_pte(pte, __pte(0));
-+
-+			if (!tdx_enc_status_changed(addr, pages, true)) {
-+				pr_err("Failed to unshare range %#lx-%#lx\n",
-+				       addr, addr + size);
-+			}
-+
-+			found += pages;
-+		}
-+
-+		addr += size;
-+	}
-+
-+	__flush_tlb_all();
-+
-+	shared = atomic_long_read(&nr_shared);
-+	if (shared != found) {
-+		pr_err("shared page accounting is off\n");
-+		pr_err("nr_shared = %ld, nr_found = %ld\n", shared, found);
-+	}
-+}
-+
- void __init tdx_early_init(void)
- {
- 	struct tdx_module_args args = {
-@@ -896,6 +958,9 @@ void __init tdx_early_init(void)
- 	x86_platform.guest.enc_cache_flush_required  = tdx_cache_flush_required;
- 	x86_platform.guest.enc_tlb_flush_required    = tdx_tlb_flush_required;
- 
-+	x86_platform.guest.enc_kexec_stop_conversion = tdx_kexec_stop_conversion;
-+	x86_platform.guest.enc_kexec_unshare_mem     = tdx_kexec_unshare_mem;
-+
- 	/*
- 	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
- 	 * bringup low level code. That raises #VE which cannot be handled
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-index a5e89641bd2d..9d4a8e548820 100644
---- a/arch/x86/include/asm/set_memory.h
-+++ b/arch/x86/include/asm/set_memory.h
-@@ -48,8 +48,11 @@ int set_memory_wc(unsigned long addr, int numpages);
- int set_memory_wb(unsigned long addr, int numpages);
- int set_memory_np(unsigned long addr, int numpages);
- int set_memory_4k(unsigned long addr, int numpages);
-+
-+bool stop_memory_enc_conversion(bool wait);
- int set_memory_encrypted(unsigned long addr, int numpages);
- int set_memory_decrypted(unsigned long addr, int numpages);
-+
- int set_memory_np_noalias(unsigned long addr, int numpages);
- int set_memory_nonglobal(unsigned long addr, int numpages);
- int set_memory_global(unsigned long addr, int numpages);
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 0d2267ad4e0e..e074b2aca970 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2176,12 +2176,32 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
- 	return ret;
- }
- 
-+static DECLARE_RWSEM(mem_enc_lock);
-+
-+bool stop_memory_enc_conversion(bool wait)
-+{
-+	if (!wait)
-+		return down_write_trylock(&mem_enc_lock);
-+
-+	down_write(&mem_enc_lock);
-+
-+	return true;
-+}
-+
- static int __set_memory_enc_dec(unsigned long addr, int numpages, bool enc)
- {
--	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
--		return __set_memory_enc_pgtable(addr, numpages, enc);
-+	int ret = 0;
- 
--	return 0;
-+	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
-+		if (!down_read_trylock(&mem_enc_lock))
-+			return -EBUSY;
-+
-+		ret =__set_memory_enc_pgtable(addr, numpages, enc);
-+
-+		up_read(&mem_enc_lock);
-+	}
-+
-+	return ret;
- }
- 
- int set_memory_encrypted(unsigned long addr, int numpages)
+Serializing is cumbersome here. I can also just drop the interface.
+
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
