@@ -1,47 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A2C1586E7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9181586F1
 	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709069115; cv=none; b=pjxwMK3hsOj1ODvWdLV1FIGfNqTuWCgtT+DES+3BTRwVyhRxVnWPZTAPlwW6DVhmLaaRirYJ0qhrU992zCyMCzYfRU0DSvtHDs/UJkVHXOlKOGa40XcV9c+UxpSoiSBd18QKJATTS9BXYK6lTGUskTjqVSAQvv+a9Uk6T7EFQSs=
+	t=1709069115; cv=none; b=NvntUW7J1kh4FPINL1xCmb/Xq8XnmuZGFWvglRb+59WSJ8Q/mBe/Rx3ptM54s7vri5d83V8MWNJhselJAPSBBVciXB/cf9QmoAH77Vux/K/HpKHa8KYsddUjHytFl4p/ZcdYyLz8HOWR9RELPdjNupisEhSNcFa6SAwII9o9edc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1709069115; c=relaxed/simple;
-	bh=Qtq8KGe7CLg0f1T+K6clfMVgP4YdYp22V2UayvUSbDw=;
+	bh=R/jnQJ7PA5+pcFQcinQUmyRlg1Ef9fKzEGnFbhwA+qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wg8KMwv0W9IY/MoTtZIr0zC3E5AzxwYWi7wLjMwEinjV4/tFvDJb860UveItbAcH/KO6X4h/3WRUbsbbi0am7dYTPjkfLEDt8rB6ehcCKE90wkCtWJN4NtU7X0cvfNXoiFJUCG1kZBY2tTgWe6cDacwBC/MOW++P5MS6Ks2Ve8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nSPFhWGp; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=BL80suPltz/c8ecjcd+wYDXNjdxwW/bfLh0dbjJz/j7nMr3Uncu1qDhmirmiyDvfR6pNFYEpRIf4rGkJNoFuvr5djpWvDn8w2z5T88g0wIc+ODWvFqHD+P9833byL3uZXy01tQsgNw2IazsYLisIQTT8Atue6F/tRhFP3Raev/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pv99RCFT; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nSPFhWGp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pv99RCFT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1709069114; x=1740605114;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Qtq8KGe7CLg0f1T+K6clfMVgP4YdYp22V2UayvUSbDw=;
-  b=nSPFhWGpPvDMDnh9+qyp8nRyn29vpfnRrH+Wcys254aFfntNauXSioBM
-   r7+R8grwBolnzH6TUlde7nEBKA9cY0SsigoYK5HZH7Lw+O70RXlwDp+He
-   R7KmhNLGMZvuq/zw0hiiPITG9Ara+6bHuS1HAmFnZPDKu7HXKU7tsjATD
-   +rvK1/O+lfnjldx14ZRfulMhTH5VeBY1iXO8LrkGvAw8ey3a0fPa2EjcW
-   FbnpzBCfFkDQdd3lnx+FelcqvsTTEiRNNHgs6GH5/jMJPU3ovqmn2g2f/
-   e4SmZcelkPWfAG1+7MCDKPO0rEHFhWSi1J1eZe9dgknIUR0k389/TBq7Q
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3567035"
+  bh=R/jnQJ7PA5+pcFQcinQUmyRlg1Ef9fKzEGnFbhwA+qE=;
+  b=Pv99RCFTzF4gp1ceu6K+1yfEWA/KeBK5QXaAGJEmPUHfiPc773Zgj5Yx
+   aDEV+qcSn40x13Ejef0Of7q3rcckRjqRPJOOKkT1EsZGkQK5LtDt7SSWB
+   oddTKdX6tcjj9/tYXakvDh5fglXIdpxcIsF9vIZ7ltJUKwkqH9NsDss8A
+   ioYNYx644H/0fUbLInphTfQ4PvGo2rVr8z01IjjR4PB1WeZfrhvATpgS8
+   ORjCPLVpsgHHedODigFP+jM86xmC9girptxLTvBTC9/dghSpnlA75FAFz
+   M5i3XW6PSObvsRsyd0CQf7QOP5yo1qRgDVb7V8Wdn5QHrD+KRkW3ye5vv
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3567038"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="3567035"
+   d="scan'208";a="3567038"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 13:25:09 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032920"
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032922"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="937032920"
+   d="scan'208";a="937032922"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga001.fm.intel.com with ESMTP; 27 Feb 2024 13:25:02 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 2AD0B631; Tue, 27 Feb 2024 23:24:56 +0200 (EET)
+	id 720C6B0D; Tue, 27 Feb 2024 23:24:56 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -65,9 +65,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Dave Hansen <dave.hansen@intel.com>
-Subject: [PATCHv8 06/17] x86/mm: Make x86_platform.guest.enc_status_change_*() return errno
-Date: Tue, 27 Feb 2024 23:24:41 +0200
-Message-ID: <20240227212452.3228893-7-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv8 11/17] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
+Date: Tue, 27 Feb 2024 23:24:46 +0200
+Message-ID: <20240227212452.3228893-12-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
 References: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
@@ -79,199 +79,73 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TDX is going to have more than one reason to fail
-enc_status_change_prepare().
+e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
+things, guides where direct mapping ends. Any memory above max_pfn is
+not going to be present in the direct mapping.
 
-Change the callback to return errno instead of assuming -EIO;
-enc_status_change_finish() changed too to keep the interface symmetric.
+e820__end_of_ram_pfn() finds the end of the ram based on the highest
+E820_TYPE_RAM range. But it doesn't includes E820_TYPE_ACPI ranges into
+calculation.
+
+Despite the name, E820_TYPE_ACPI covers not only ACPI data, but also EFI
+tables and might be required by kernel to function properly.
+
+Usually the problem is hidden because there is some E820_TYPE_RAM memory
+above E820_TYPE_ACPI. But crashkernel only presents pre-allocated crash
+memory as E820_TYPE_RAM on boot. If the preallocated range is small, it
+can fit under the last E820_TYPE_ACPI range.
+
+Modify e820__end_of_ram_pfn() and e820__end_of_low_ram_pfn() to cover
+E820_TYPE_ACPI memory.
+
+The problem was discovered during debugging kexec for TDX guest. TDX
+guest uses E820_TYPE_ACPI to store the unaccepted memory bitmap and pass
+it between the kernels on kexec.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Reviewed-by: Dave Hansen <dave.hansen@intel.com>
 ---
- arch/x86/coco/tdx/tdx.c         | 20 +++++++++++---------
- arch/x86/hyperv/ivm.c           |  9 +++------
- arch/x86/include/asm/x86_init.h |  4 ++--
- arch/x86/kernel/x86_init.c      |  4 ++--
- arch/x86/mm/mem_encrypt_amd.c   |  8 ++++----
- arch/x86/mm/pat/set_memory.c    |  9 +++++----
- 6 files changed, 27 insertions(+), 27 deletions(-)
+ arch/x86/kernel/e820.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index c1cb90369915..26fa47db5782 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -798,28 +798,30 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- 	return true;
- }
- 
--static bool tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
--					  bool enc)
-+static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
-+					 bool enc)
- {
- 	/*
- 	 * Only handle shared->private conversion here.
- 	 * See the comment in tdx_early_init().
- 	 */
--	if (enc)
--		return tdx_enc_status_changed(vaddr, numpages, enc);
--	return true;
-+	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc))
-+		return -EIO;
-+
-+	return 0;
- }
- 
--static bool tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
-+static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
- 					 bool enc)
- {
- 	/*
- 	 * Only handle private->shared conversion here.
- 	 * See the comment in tdx_early_init().
- 	 */
--	if (!enc)
--		return tdx_enc_status_changed(vaddr, numpages, enc);
--	return true;
-+	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
-+		return -EIO;
-+
-+	return 0;
- }
- 
- void __init tdx_early_init(void)
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 7dcbf153ad72..49b4f427268f 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -510,13 +510,12 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
-  * with host. This function works as wrap of hv_mark_gpa_visibility()
-  * with memory base and size.
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index fb8cf953380d..99c80680dc9e 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -827,7 +827,7 @@ u64 __init e820__memblock_alloc_reserved(u64 size, u64 align)
+ /*
+  * Find the highest page frame number we have available
   */
--static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bool enc)
-+static int hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bool enc)
+-static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type type)
++static unsigned long __init e820_end_ram_pfn(unsigned long limit_pfn)
  {
- 	enum hv_mem_host_visibility visibility = enc ?
- 			VMBUS_PAGE_NOT_VISIBLE : VMBUS_PAGE_VISIBLE_READ_WRITE;
- 	u64 *pfn_array;
- 	int ret = 0;
--	bool result = true;
- 	int i, pfn;
+ 	int i;
+ 	unsigned long last_pfn = 0;
+@@ -838,7 +838,8 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
+ 		unsigned long start_pfn;
+ 		unsigned long end_pfn;
  
- 	pfn_array = kmalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
-@@ -530,17 +529,15 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
- 		if (pfn == HV_MAX_MODIFY_GPA_REP_COUNT || i == pagecount - 1) {
- 			ret = hv_mark_gpa_visibility(pfn, pfn_array,
- 						     visibility);
--			if (ret) {
--				result = false;
-+			if (ret)
- 				goto err_free_pfn_array;
--			}
- 			pfn = 0;
- 		}
- 	}
+-		if (entry->type != type)
++		if (entry->type != E820_TYPE_RAM &&
++		    entry->type != E820_TYPE_ACPI)
+ 			continue;
  
-  err_free_pfn_array:
- 	kfree(pfn_array);
--	return result;
-+	return ret;
- }
+ 		start_pfn = entry->addr >> PAGE_SHIFT;
+@@ -864,12 +865,12 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
  
- static bool hv_vtom_tlb_flush_required(bool private)
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index f062715578a0..17104ebab359 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -148,8 +148,8 @@ struct x86_init_acpi {
-  * @enc_cache_flush_required	Returns true if a cache flush is needed before changing page encryption status
-  */
- struct x86_guest {
--	bool (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
--	bool (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
-+	int (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
-+	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
- 	bool (*enc_tlb_flush_required)(bool enc);
- 	bool (*enc_cache_flush_required)(void);
- };
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index a37ebd3b4773..f0f54e109eb9 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -131,8 +131,8 @@ struct x86_cpuinit_ops x86_cpuinit = {
- 
- static void default_nmi_init(void) { };
- 
--static bool enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool enc) { return true; }
--static bool enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return true; }
-+static int enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
-+static int enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
- static bool enc_tlb_flush_required_noop(bool enc) { return false; }
- static bool enc_cache_flush_required_noop(void) { return false; }
- static bool is_private_mmio_noop(u64 addr) {return false; }
-diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-index 70b91de2e053..d314e577836d 100644
---- a/arch/x86/mm/mem_encrypt_amd.c
-+++ b/arch/x86/mm/mem_encrypt_amd.c
-@@ -283,7 +283,7 @@ static void enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
- #endif
- }
- 
--static bool amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool enc)
-+static int amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool enc)
+ unsigned long __init e820__end_of_ram_pfn(void)
  {
- 	/*
- 	 * To maintain the security guarantees of SEV-SNP guests, make sure
-@@ -292,11 +292,11 @@ static bool amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool
- 	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP) && !enc)
- 		snp_set_memory_shared(vaddr, npages);
- 
--	return true;
-+	return 0;
+-	return e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM);
++	return e820_end_ram_pfn(MAX_ARCH_PFN);
  }
  
- /* Return true unconditionally: return value doesn't matter for the SEV side */
--static bool amd_enc_status_change_finish(unsigned long vaddr, int npages, bool enc)
-+static int amd_enc_status_change_finish(unsigned long vaddr, int npages, bool enc)
+ unsigned long __init e820__end_of_low_ram_pfn(void)
  {
- 	/*
- 	 * After memory is mapped encrypted in the page table, validate it
-@@ -308,7 +308,7 @@ static bool amd_enc_status_change_finish(unsigned long vaddr, int npages, bool e
- 	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
- 		enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
- 
--	return true;
-+	return 0;
+-	return e820_end_pfn(1UL << (32 - PAGE_SHIFT), E820_TYPE_RAM);
++	return e820_end_ram_pfn(1UL << (32 - PAGE_SHIFT));
  }
  
- static void __init __set_clr_pte_enc(pte_t *kpte, int level, bool enc)
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index e9b448d1b1b7..f92da8c9a86d 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2152,8 +2152,9 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
- 		cpa_flush(&cpa, x86_platform.guest.enc_cache_flush_required());
- 
- 	/* Notify hypervisor that we are about to set/clr encryption attribute. */
--	if (!x86_platform.guest.enc_status_change_prepare(addr, numpages, enc))
--		return -EIO;
-+	ret = x86_platform.guest.enc_status_change_prepare(addr, numpages, enc);
-+	if (ret)
-+		return ret;
- 
- 	ret = __change_page_attr_set_clr(&cpa, 1);
- 
-@@ -2168,8 +2169,8 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
- 
- 	/* Notify hypervisor that we have successfully set/clr encryption attribute. */
- 	if (!ret) {
--		if (!x86_platform.guest.enc_status_change_finish(addr, numpages, enc))
--			ret = -EIO;
-+		ret = x86_platform.guest.enc_status_change_finish(addr,
-+								  numpages, enc);
- 	}
- 
- 	return ret;
+ static void __init early_panic(char *msg)
 -- 
 2.43.0
 
