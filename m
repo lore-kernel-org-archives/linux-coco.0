@@ -1,47 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B1A14EFF0
-	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0718B153512
+	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709069107; cv=none; b=kgAmciBMnab/nJsw/R/8b1u1aAX3RTjLt8wDTUhUX/h4lepNrieOa/N/SlfJSzP70SCClsqPLZ7KCn2CDhVSB6k1C2rqncEE/s7yIbWjNlmWwu3PkVBcL5RvgQJFjhJpxMUVRWcl6nZ0fY83dRZdOCz36BiaibOaXtwy9oT6gIg=
+	t=1709069110; cv=none; b=o4/47V2W/eewiwZUkXAUZ1h22gJ0wz8qDxLHMYwj2MWFgnAjoErMPW8uG+Z7YyVIudLwgeGyXCFJBXkhJFxrwoZufRHK8BWmR8JHjMdvqbPCdiZSzzeQ0pai1WLfEcgXYmcc0cVDlBLudIkkrDWs9yqWxfXMLBZL3yGQUefW6BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709069107; c=relaxed/simple;
-	bh=G+mf0uc9JWYLESD7E7QcyEIUu6FPmOWbeObWlqzAyE8=;
+	s=arc-20240116; t=1709069110; c=relaxed/simple;
+	bh=7jFuowaz0Vw+N4idIIhc+R9JJKXqB88Qml6sO/pIcmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KwotWAeUjHngAN72XIugARHMqc/MdQlyPdkkawoNFkD066SmNF2DZy4wC69U+nz2a40Wbw7q0zEWJWEtd/5AZLT2EaPeuK9rQjH1Y6BQwlH03cLbmnjZqPvNUAWHhCp/uGL5FiaYOwm8+ThZ1thOo9XBddb2HvpV3Shwnpqs2xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S4lpfobG; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=d5rpcYxl9aRZMaG757nbXKg4eHaZb00jrW0PtoXWXqnNLXCTGp4rBdxZmx+2il0RJHIRK+p7QBJsYftys0Ta5CHN5FzifUVtMEt+8gx/qZqFWS9l84y0puQ4g6shR61U02RL2T4Ekd8lRu0WWpR0hB4HXzL33hNB12oivUaFC7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gHdR11zm; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S4lpfobG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gHdR11zm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709069106; x=1740605106;
+  t=1709069109; x=1740605109;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=G+mf0uc9JWYLESD7E7QcyEIUu6FPmOWbeObWlqzAyE8=;
-  b=S4lpfobGUvWuPjzUv4if/D9whHGjEuVm895FuWttD+MX3dsgwrMp+WSk
-   30A8u+Vm4p5YYuljkJkYl1VttbSDU5nCtC4VbqlhJlM3vqCUnL4pOwjEJ
-   JSyS+Hq+LnMveAFxpA+OKUkyFuZGXQoBx5bnrKgFt5mZyanx6Ozg/bRLY
-   LTV2H2sQl6P9CiczbNpPskkqFjVltvrOenU/48Yd4QM7mGBWmm3yl0Ppk
-   v6xma5eu4L/SoZ2/LvncXSuHdI4MIyt7gw4JHhT/1vWmGYQtwsn/MKLSM
-   Ixcu14qMo+fpBC+vQlyKWly2NGpUWFMdhXPG4mCNwsjW/09Zsy9ctzQ73
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3566932"
+  bh=7jFuowaz0Vw+N4idIIhc+R9JJKXqB88Qml6sO/pIcmM=;
+  b=gHdR11zmEGfhHJrf9TGegn2mkl+le7HDbuxXRnMZgjwousdRAuGIg8p/
+   qAcJJSfrCg5qyrhllBgwI3T0bG1mMmXgAtTge9blvYzbh488NrU230c7y
+   Az7yVf3Fto3aUOhOdH0rd6jSHYJa5dfly5cE+UOjumD7/TPTuYeE5dEHI
+   rDiDSa/e/8w3CDVR5wrTCMIJ1708UtnaOZ7GmvW1L3Si2oyaEMZi86mqa
+   xGgRcAW3lYr2lx0/c//DeguyZJAm9DvShBLB05QacvBXFBbSLFyy999KR
+   9VatQejelLb9Z5MwInSPZSn6yC2iF9nus+CL/PkiJEN1KtQXHJTOuLvIw
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3566979"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="3566932"
+   d="scan'208";a="3566979"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 13:25:03 -0800
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 13:25:09 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032894"
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032906"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="937032894"
+   d="scan'208";a="937032906"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 27 Feb 2024 13:24:57 -0800
+  by fmsmga001.fm.intel.com with ESMTP; 27 Feb 2024 13:25:02 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 00DFC524; Tue, 27 Feb 2024 23:24:55 +0200 (EET)
+	id 1E0E85F5; Tue, 27 Feb 2024 23:24:56 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -64,9 +64,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv8 03/17] cpu/hotplug: Add support for declaring CPU offlining not supported
-Date: Tue, 27 Feb 2024 23:24:38 +0200
-Message-ID: <20240227212452.3228893-4-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv8 05/17] x86/kexec: Keep CR4.MCE set during kexec for TDX guest
+Date: Tue, 27 Feb 2024 23:24:40 +0200
+Message-ID: <20240227212452.3228893-6-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
 References: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
@@ -78,86 +78,49 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ACPI MADT mailbox wakeup method doesn't allow to offline CPU after
-it got woke up.
+TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
+to #VE.
 
-Currently offlining hotplug is prevented based on the confidential
-computing attribute which is set for Intel TDX. But TDX is not
-the only possible user of the wake up method. The MADT wakeup can be
-implemented outside of a confidential computing environment. Offline
-support is a property of the wakeup method, not the CoCo implementation.
+Use alternatives to keep the flag during kexec for TDX guests.
 
-Introduce cpu_hotplug_disable_offlining() that can be called to indicate
-that CPU offlining should be disabled.
-
-This function is going to replace CC_ATTR_HOTPLUG_DISABLED for ACPI
-MADT wakeup method.
+The change doesn't affect non-TDX-guest environments.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- include/linux/cpu.h |  2 ++
- kernel/cpu.c        | 13 ++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ arch/x86/kernel/relocate_kernel_64.S | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index dcb89c987164..aa89ef93a884 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -139,6 +139,7 @@ extern void cpus_read_lock(void);
- extern void cpus_read_unlock(void);
- extern int  cpus_read_trylock(void);
- extern void lockdep_assert_cpus_held(void);
-+extern void cpu_hotplug_disable_offlining(void);
- extern void cpu_hotplug_disable(void);
- extern void cpu_hotplug_enable(void);
- void clear_tasks_mm_cpumask(int cpu);
-@@ -154,6 +155,7 @@ static inline void cpus_read_lock(void) { }
- static inline void cpus_read_unlock(void) { }
- static inline int  cpus_read_trylock(void) { return true; }
- static inline void lockdep_assert_cpus_held(void) { }
-+static inline void cpu_hotplug_disable_offlining(void) { }
- static inline void cpu_hotplug_disable(void) { }
- static inline void cpu_hotplug_enable(void) { }
- static inline int remove_cpu(unsigned int cpu) { return -EPERM; }
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 7b36b3a4e336..ac6af196c6f5 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -483,6 +483,8 @@ static int cpu_hotplug_disabled;
+diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+index 56cab1bb25f5..e144bcf60cbe 100644
+--- a/arch/x86/kernel/relocate_kernel_64.S
++++ b/arch/x86/kernel/relocate_kernel_64.S
+@@ -5,6 +5,8 @@
+  */
  
- DEFINE_STATIC_PERCPU_RWSEM(cpu_hotplug_lock);
- 
-+static bool cpu_hotplug_offline_disabled __ro_after_init;
-+
- void cpus_read_lock(void)
- {
- 	percpu_down_read(&cpu_hotplug_lock);
-@@ -542,6 +544,14 @@ static void lockdep_release_cpus_lock(void)
- 	rwsem_release(&cpu_hotplug_lock.dep_map, _THIS_IP_);
- }
- 
-+/* Declare CPU offlining not supported */
-+void cpu_hotplug_disable_offlining(void)
-+{
-+	cpu_maps_update_begin();
-+	cpu_hotplug_offline_disabled = true;
-+	cpu_maps_update_done();
-+}
-+
- /*
-  * Wait for currently running CPU hotplug operations to complete (if any) and
-  * disable future CPU hotplug (from sysfs). The 'cpu_add_remove_lock' protects
-@@ -1521,7 +1531,8 @@ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
- 	 * If the platform does not support hotplug, report it explicitly to
- 	 * differentiate it from a transient offlining failure.
+ #include <linux/linkage.h>
++#include <linux/stringify.h>
++#include <asm/alternative.h>
+ #include <asm/page_types.h>
+ #include <asm/kexec.h>
+ #include <asm/processor-flags.h>
+@@ -145,12 +147,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
+ 	 * Set cr4 to a known state:
+ 	 *  - physical address extension enabled
+ 	 *  - 5-level paging, if it was enabled before
++	 *  - Machine check exception on TDX guest. Clearing MCE is not allowed
++	 *    in TDX guests.
  	 */
--	if (cc_platform_has(CC_ATTR_HOTPLUG_DISABLED))
-+	if (cc_platform_has(CC_ATTR_HOTPLUG_DISABLED) ||
-+	    cpu_hotplug_offline_disabled)
- 		return -EOPNOTSUPP;
- 	if (cpu_hotplug_disabled)
- 		return -EBUSY;
+ 	movl	$X86_CR4_PAE, %eax
+ 	testq	$X86_CR4_LA57, %r13
+ 	jz	1f
+ 	orl	$X86_CR4_LA57, %eax
+ 1:
++	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %eax), X86_FEATURE_TDX_GUEST
+ 	movq	%rax, %cr4
+ 
+ 	jmp 1f
 -- 
 2.43.0
 
