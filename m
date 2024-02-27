@@ -1,47 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0718B153512
-	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC1314F961
+	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709069110; cv=none; b=o4/47V2W/eewiwZUkXAUZ1h22gJ0wz8qDxLHMYwj2MWFgnAjoErMPW8uG+Z7YyVIudLwgeGyXCFJBXkhJFxrwoZufRHK8BWmR8JHjMdvqbPCdiZSzzeQ0pai1WLfEcgXYmcc0cVDlBLudIkkrDWs9yqWxfXMLBZL3yGQUefW6BI=
+	t=1709069111; cv=none; b=ZKOyFq1dpu5YPPh/iUP+IrUrpR4g0GCqYYMCw5x7ykynT7DACRJgtF/PmKWTbec3nkUgViLGxLyS1RV41Gn2m85EJwsARTo0k2tduDDVf4bvUNR60gU5/TAtSvl7npEFFDNstpiUFnjC3WitoQXhh7YH4aJKtZjptNxbJNRmfjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709069110; c=relaxed/simple;
-	bh=7jFuowaz0Vw+N4idIIhc+R9JJKXqB88Qml6sO/pIcmM=;
+	s=arc-20240116; t=1709069111; c=relaxed/simple;
+	bh=W80pqKoVc1vqxX/XGuHFDF0b+nJhSWWU10+X3joqYlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5rpcYxl9aRZMaG757nbXKg4eHaZb00jrW0PtoXWXqnNLXCTGp4rBdxZmx+2il0RJHIRK+p7QBJsYftys0Ta5CHN5FzifUVtMEt+8gx/qZqFWS9l84y0puQ4g6shR61U02RL2T4Ekd8lRu0WWpR0hB4HXzL33hNB12oivUaFC7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gHdR11zm; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=Jrsg3tTps7ZWdmVkNe0w8WUX/k76a6uFAMsx8vLZnsDo806kuWyh/PFJ5OfDx1+yU4zxtiZglV4YpL1JnCOTMs8SPuuFKimzjDXd0g40qHza7yPCnsHBQ6A8hDBEFj6EV1PykRNOzv9jVj3JbB9yOCzLKVhmjeKWGctZYP1/7iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=glWGcGcH; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gHdR11zm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="glWGcGcH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709069109; x=1740605109;
+  t=1709069110; x=1740605110;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=7jFuowaz0Vw+N4idIIhc+R9JJKXqB88Qml6sO/pIcmM=;
-  b=gHdR11zmEGfhHJrf9TGegn2mkl+le7HDbuxXRnMZgjwousdRAuGIg8p/
-   qAcJJSfrCg5qyrhllBgwI3T0bG1mMmXgAtTge9blvYzbh488NrU230c7y
-   Az7yVf3Fto3aUOhOdH0rd6jSHYJa5dfly5cE+UOjumD7/TPTuYeE5dEHI
-   rDiDSa/e/8w3CDVR5wrTCMIJ1708UtnaOZ7GmvW1L3Si2oyaEMZi86mqa
-   xGgRcAW3lYr2lx0/c//DeguyZJAm9DvShBLB05QacvBXFBbSLFyy999KR
-   9VatQejelLb9Z5MwInSPZSn6yC2iF9nus+CL/PkiJEN1KtQXHJTOuLvIw
+  bh=W80pqKoVc1vqxX/XGuHFDF0b+nJhSWWU10+X3joqYlo=;
+  b=glWGcGcHkVkfgXLFkpEkM+4Sc81tlCHRSyamdvebdUl0xHWwGphHG+Ui
+   bIx9Q/cR2zpt0njp/fwdBZMES1ToTaoabLPirWyxuVBbmxF1tCWgpaUMi
+   UC7404EbZT/qkliDVs7OItY3n++rXK4OKvIi4CG2y1A3X9lQcDV79X0Kw
+   FmXc8A3n8EsFRBJgK7GUkWjwJgSVZULTjJqR9kAvz4Tj+nuTkrHuxTZPw
+   B8qwzrGCep+6l60/MiuzaGnSpB1J/6qf2FxYh8kMl33f77XFMDmCkjTni
+   NgveDMd9Qno7Mtxp6RuWILEmRLdKZLdSeKAASBOQA+1IcoGtj1NCTpRYR
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3566979"
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3566989"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="3566979"
+   d="scan'208";a="3566989"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 13:25:09 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032906"
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032910"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="937032906"
+   d="scan'208";a="937032910"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga001.fm.intel.com with ESMTP; 27 Feb 2024 13:25:02 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 1E0E85F5; Tue, 27 Feb 2024 23:24:56 +0200 (EET)
+	id 48969812; Tue, 27 Feb 2024 23:24:56 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -64,9 +64,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv8 05/17] x86/kexec: Keep CR4.MCE set during kexec for TDX guest
-Date: Tue, 27 Feb 2024 23:24:40 +0200
-Message-ID: <20240227212452.3228893-6-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv8 08/17] x86/tdx: Account shared memory
+Date: Tue, 27 Feb 2024 23:24:43 +0200
+Message-ID: <20240227212452.3228893-9-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
 References: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
@@ -78,49 +78,47 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
-to #VE.
+The kernel will convert all shared memory back to private during kexec.
+The direct mapping page tables will provide information on which memory
+is shared.
 
-Use alternatives to keep the flag during kexec for TDX guests.
+It is extremely important to convert all shared memory. If a page is
+missed, it will cause the second kernel to crash when it accesses it.
 
-The change doesn't affect non-TDX-guest environments.
+Keep track of the number of shared pages. This will allow for
+cross-checking against the shared information in the direct mapping and
+reporting if the shared bit is lost.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/x86/kernel/relocate_kernel_64.S | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/coco/tdx/tdx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
-index 56cab1bb25f5..e144bcf60cbe 100644
---- a/arch/x86/kernel/relocate_kernel_64.S
-+++ b/arch/x86/kernel/relocate_kernel_64.S
-@@ -5,6 +5,8 @@
-  */
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 26fa47db5782..979891e97d83 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -38,6 +38,8 @@
  
- #include <linux/linkage.h>
-+#include <linux/stringify.h>
-+#include <asm/alternative.h>
- #include <asm/page_types.h>
- #include <asm/kexec.h>
- #include <asm/processor-flags.h>
-@@ -145,12 +147,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
- 	 * Set cr4 to a known state:
- 	 *  - physical address extension enabled
- 	 *  - 5-level paging, if it was enabled before
-+	 *  - Machine check exception on TDX guest. Clearing MCE is not allowed
-+	 *    in TDX guests.
- 	 */
- 	movl	$X86_CR4_PAE, %eax
- 	testq	$X86_CR4_LA57, %r13
- 	jz	1f
- 	orl	$X86_CR4_LA57, %eax
- 1:
-+	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %eax), X86_FEATURE_TDX_GUEST
- 	movq	%rax, %cr4
+ #define TDREPORT_SUBTYPE_0	0
  
- 	jmp 1f
++static atomic_long_t nr_shared;
++
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ noinstr void __noreturn __tdx_hypercall_failed(void)
+ {
+@@ -821,6 +823,11 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+ 		return -EIO;
+ 
++	if (enc)
++		atomic_long_sub(numpages, &nr_shared);
++	else
++		atomic_long_add(numpages, &nr_shared);
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
