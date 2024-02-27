@@ -1,47 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB46159575
-	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6909B15A48B
+	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709069119; cv=none; b=ODQKNZhEZAhUsyMxxaL96DOvUYsoxoAiGMqFPKTP3mOA2oKyzYvCacGQNJxLYVVN8sb5JyRT+HrIqPApJmlmEYkagqIX5M8pmMNX5lpni3QKaJN5dOgjql9N2QpHEAVPf10AHKAwVvRpk8g9YlgGkulNhTcEoDoM0onPPvwLY6E=
+	t=1709069121; cv=none; b=aanqDoNhTkSfkg4Zf3Ry0OzbNp0LCNzDNAgftAifmg+FLNDu7SxEV/zOBPIfaIPYc55aJO3r35+Y/XijGTkRVisDPHY0pENlpUYFa2OpFd7Xu2Efw5UXnY/ztLbnSXjTJ6EY9v7DFlD1iOqfP+Wqo92VVlq2AMCqxu0KST9+who=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709069119; c=relaxed/simple;
-	bh=210lCphqYKumbsSKrHahIq5zl6lhgbzI8RmOuXqd25g=;
+	s=arc-20240116; t=1709069121; c=relaxed/simple;
+	bh=wfElhcuLUzOIt/rpQx3fYg+5YYi1jjhrzzGUyBH3dyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVTCFa/l2mgIOGn3vePyXvdi21XDXk3hzkQuIpQgtABeDXOlXa6roXW7UEp4JbiDHdqSbzXokKBqlplEZQ8rLva/a0jt+COI20OGFeHE5QB17V8ZRo9cSjodUA8gBvbwJHYm9TutLX+NwWwbg6gedhkREnYd32bllAZESdD60Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m72Qpcli; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=Y3i5po2a9QeZjwF2ubkFk1sbj69JxWbW1JJf5OJ2aGPetGAINYH4F/p7bWwGh5CEPs9DbrEirwE6Sb5P2grQikMZm+FEBBwLwcQrJxpSKHFEohDqxX/N01p6Dx1/vqPK+0BL8Y66WBu759dC0hr3+qm0oy/Dc7YtjMzmQvG/IJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d5htavVf; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m72Qpcli"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d5htavVf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709069118; x=1740605118;
+  t=1709069120; x=1740605120;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=210lCphqYKumbsSKrHahIq5zl6lhgbzI8RmOuXqd25g=;
-  b=m72QpclinxbP5ePxbP/Dscc0c9VkvMMm2T7/8s/HSTG5I5pot6HEVQIZ
-   iqGjJFad1uvf6IAW29/HKAZGI+jhdXBNulNLYB+/dXZmRTRhYcYGt4/Ae
-   fCfFSkYdZRO/7xCrgdDhSlpBx0cmw1quVmUebTjM9YBhj/fkJF07r671N
-   Mhzy4CG3v3U0jTGHD/H/rXYp4h2PFhfxCJLSCjh1vmHlA5vuxEouYjPcK
-   wW4TDfjhCMk/urSAlX8Ca1B1D6RZlTRrcUQp2YC5LImR0eDQaBC3/lEfQ
-   PbyInx5qcdLiYmOahAsTYU6RzZmEfTajp0uw7nQRnUxkpZe1o4+FYKwp7
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3567082"
+  bh=wfElhcuLUzOIt/rpQx3fYg+5YYi1jjhrzzGUyBH3dyE=;
+  b=d5htavVfh4u7Y2SzqMnvLs0NzMF/pR9hIVZlnC0PGCYAa4mocgYHxp2V
+   GikQuwSvozU+ElU86D98dUue8+gdDKEDenbDdgWooEqt5J04lpJiBvi1C
+   Dk6M+Psn4BxuyESr+sRWqzJDEe7je30bT6C2YknpfkRQWxmg+BbwpZTu3
+   hzQ6LhtrnyEybh42gTZi662hvgnGIY2czfRbVHUS2zo3Rk12OYo+wRqtf
+   sl4QDKp9pdn8c1OWCyB5bBNWcPnIx9qotgdSz2ugwY02SCnYJuYsPEtgG
+   GGyEjDUHu2QMow9Q6dfxN7jMIT9kMlrKwqEoa8RWvkHbKYbI+D554Cmq6
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3567092"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="3567082"
+   d="scan'208";a="3567092"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 13:25:13 -0800
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 13:25:14 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032929"
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032931"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="937032929"
+   d="scan'208";a="937032931"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga001.fm.intel.com with ESMTP; 27 Feb 2024 13:25:08 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id C91C61210; Tue, 27 Feb 2024 23:24:56 +0200 (EET)
+	id AAD311063; Tue, 27 Feb 2024 23:24:56 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -64,9 +64,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv8 17/17] ACPI: tables: Print MULTIPROC_WAKEUP when MADT is parsed
-Date: Tue, 27 Feb 2024 23:24:52 +0200
-Message-ID: <20240227212452.3228893-18-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv8 15/17] x86/mm: Introduce kernel_ident_mapping_free()
+Date: Tue, 27 Feb 2024 23:24:50 +0200
+Message-ID: <20240227212452.3228893-16-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
 References: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
@@ -78,43 +78,124 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When MADT is parsed, print MULTIPROC_WAKEUP information:
+The helper complements kernel_ident_mapping_init(): it frees the
+identity mapping that was previously allocated. It will be used in the
+error path to free a partially allocated mapping or if the mapping is no
+longer needed.
 
-ACPI: MP Wakeup (version[1], mailbox[0x7fffd000], reset[0x7fffe068])
-
-This debug information will be very helpful during bring up.
+The caller provides a struct x86_mapping_info with the free_pgd_page()
+callback hooked up and the pgd_t to free.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Baoquan He <bhe@redhat.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
 ---
- drivers/acpi/tables.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/x86/include/asm/init.h |  3 ++
+ arch/x86/mm/ident_map.c     | 73 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 76 insertions(+)
 
-diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-index b07f7d091d13..c59a3617bca7 100644
---- a/drivers/acpi/tables.c
-+++ b/drivers/acpi/tables.c
-@@ -198,6 +198,20 @@ void acpi_table_print_madt_entry(struct acpi_subtable_header *header)
- 		}
- 		break;
+diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
+index cc9ccf61b6bd..14d72727d7ee 100644
+--- a/arch/x86/include/asm/init.h
++++ b/arch/x86/include/asm/init.h
+@@ -6,6 +6,7 @@
  
-+	case ACPI_MADT_TYPE_MULTIPROC_WAKEUP:
-+		{
-+			struct acpi_madt_multiproc_wakeup *p =
-+				(struct acpi_madt_multiproc_wakeup *)header;
-+			u64 reset_vector = 0;
+ struct x86_mapping_info {
+ 	void *(*alloc_pgt_page)(void *); /* allocate buf for page table */
++	void (*free_pgt_page)(void *, void *); /* free buf for page table */
+ 	void *context;			 /* context for alloc_pgt_page */
+ 	unsigned long page_flag;	 /* page flag for PMD or PUD entry */
+ 	unsigned long offset;		 /* ident mapping offset */
+@@ -16,4 +17,6 @@ struct x86_mapping_info {
+ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
+ 				unsigned long pstart, unsigned long pend);
+ 
++void kernel_ident_mapping_free(struct x86_mapping_info *info, pgd_t *pgd);
 +
-+			if (p->version >= ACPI_MADT_MP_WAKEUP_VERSION_V1)
-+				reset_vector = p->reset_vector;
+ #endif /* _ASM_X86_INIT_H */
+diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
+index f50cc210a981..bfc6611fd98d 100644
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -4,6 +4,79 @@
+  * included by both the compressed kernel and the regular kernel.
+  */
+ 
++static void free_pte(struct x86_mapping_info *info, pmd_t *pmd)
++{
++	pte_t *pte = pte_offset_kernel(pmd, 0);
 +
-+			pr_debug("MP Wakeup (version[%d], mailbox[%#llx], reset[%#llx])\n",
-+				 p->version, p->mailbox_address, reset_vector);
-+		}
-+		break;
++	info->free_pgt_page(pte, info->context);
++}
 +
- 	case ACPI_MADT_TYPE_CORE_PIC:
- 		{
- 			struct acpi_madt_core_pic *p = (struct acpi_madt_core_pic *)header;
++static void free_pmd(struct x86_mapping_info *info, pud_t *pud)
++{
++	pmd_t *pmd = pmd_offset(pud, 0);
++	int i;
++
++	for (i = 0; i < PTRS_PER_PMD; i++) {
++		if (!pmd_present(pmd[i]))
++			continue;
++
++		if (pmd_leaf(pmd[i]))
++			continue;
++
++		free_pte(info, &pmd[i]);
++	}
++
++	info->free_pgt_page(pmd, info->context);
++}
++
++static void free_pud(struct x86_mapping_info *info, p4d_t *p4d)
++{
++	pud_t *pud = pud_offset(p4d, 0);
++	int i;
++
++	for (i = 0; i < PTRS_PER_PUD; i++) {
++		if (!pud_present(pud[i]))
++			continue;
++
++		if (pud_leaf(pud[i]))
++			continue;
++
++		free_pmd(info, &pud[i]);
++	}
++
++	info->free_pgt_page(pud, info->context);
++}
++
++static void free_p4d(struct x86_mapping_info *info, pgd_t *pgd)
++{
++	p4d_t *p4d = p4d_offset(pgd, 0);
++	int i;
++
++	for (i = 0; i < PTRS_PER_P4D; i++) {
++		if (!p4d_present(p4d[i]))
++			continue;
++
++		free_pud(info, &p4d[i]);
++	}
++
++	if (pgtable_l5_enabled())
++		info->free_pgt_page(pgd, info->context);
++}
++
++void kernel_ident_mapping_free(struct x86_mapping_info *info, pgd_t *pgd)
++{
++	int i;
++
++	for (i = 0; i < PTRS_PER_PGD; i++) {
++		if (!pgd_present(pgd[i]))
++			continue;
++
++		free_p4d(info, &pgd[i]);
++	}
++
++	info->free_pgt_page(pgd, info->context);
++}
++
+ static void ident_pmd_init(struct x86_mapping_info *info, pmd_t *pmd_page,
+ 			   unsigned long addr, unsigned long end)
+ {
 -- 
 2.43.0
 
