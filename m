@@ -1,47 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9181586F1
-	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30ECA14EFE1
+	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709069115; cv=none; b=NvntUW7J1kh4FPINL1xCmb/Xq8XnmuZGFWvglRb+59WSJ8Q/mBe/Rx3ptM54s7vri5d83V8MWNJhselJAPSBBVciXB/cf9QmoAH77Vux/K/HpKHa8KYsddUjHytFl4p/ZcdYyLz8HOWR9RELPdjNupisEhSNcFa6SAwII9o9edc=
+	t=1709069116; cv=none; b=N7DpC1HkJ4/eiU7SzeFkVn4Pc4NwqcFEv4/HjNI25iKDXfotjxhWVSi2+1bBydv28oLfJ3L46jIiBxk+XSilPc/vSXs8dReheBWBkrLN0FEwawDS+X8SRjxTs2IMofU1Z2EMCQ3J4e64Xn/adPNYMO7s2YuFrLHxBfqIMjj12O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709069115; c=relaxed/simple;
-	bh=R/jnQJ7PA5+pcFQcinQUmyRlg1Ef9fKzEGnFbhwA+qE=;
+	s=arc-20240116; t=1709069116; c=relaxed/simple;
+	bh=4OahAA5tbkCWt5kWDDzHkciJDRb/0EhPa8AF3hktH9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BL80suPltz/c8ecjcd+wYDXNjdxwW/bfLh0dbjJz/j7nMr3Uncu1qDhmirmiyDvfR6pNFYEpRIf4rGkJNoFuvr5djpWvDn8w2z5T88g0wIc+ODWvFqHD+P9833byL3uZXy01tQsgNw2IazsYLisIQTT8Atue6F/tRhFP3Raev/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pv99RCFT; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=HHkh2ZWOWDT4D/D7yDuiJoOOEdkVot3ctvV7EkoxqzdNVyhIkHnrOYHsnr47O/dC882s/baqHwEwzsKdeIJqgKFOPW1KPh8jtxgmgqvpPSvbZob/YC1XvShWBQ121GWYdZGAAP6nbzRIF3OiGIVUy4jFyKXyM3TWAQCztskpDrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HDninA54; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pv99RCFT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HDninA54"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709069114; x=1740605114;
+  t=1709069115; x=1740605115;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=R/jnQJ7PA5+pcFQcinQUmyRlg1Ef9fKzEGnFbhwA+qE=;
-  b=Pv99RCFTzF4gp1ceu6K+1yfEWA/KeBK5QXaAGJEmPUHfiPc773Zgj5Yx
-   aDEV+qcSn40x13Ejef0Of7q3rcckRjqRPJOOKkT1EsZGkQK5LtDt7SSWB
-   oddTKdX6tcjj9/tYXakvDh5fglXIdpxcIsF9vIZ7ltJUKwkqH9NsDss8A
-   ioYNYx644H/0fUbLInphTfQ4PvGo2rVr8z01IjjR4PB1WeZfrhvATpgS8
-   ORjCPLVpsgHHedODigFP+jM86xmC9girptxLTvBTC9/dghSpnlA75FAFz
-   M5i3XW6PSObvsRsyd0CQf7QOP5yo1qRgDVb7V8Wdn5QHrD+KRkW3ye5vv
+  bh=4OahAA5tbkCWt5kWDDzHkciJDRb/0EhPa8AF3hktH9I=;
+  b=HDninA54RCOeFWgQ+iv2uMmqkvnXSd96s67sH9FRXPyXQbef5HokzamR
+   gBEVoT+L+CpA48fYrGdc0x+l2JMvu3VGoN0hK+2kbY7Sl05cfoFLwOoga
+   mfmWyPWK9xg44Hs+h2qiRFBaa6p8A6e4ShDh7G1qR90+p0U+Tbr5TBMRA
+   2vwMnc5Ds4NSTSg3DtjZTA1oUOS3fmuH64TauBusBeCUE04IY6vgVUJ1I
+   axUEJfrqtehuCr1dEyanDLcuJlsF/17nER3Y6j6ZJueX2t5MVbpOZyAAo
+   aJS3uzjFHVnQnkgikKz19g3hkXHbsMHxzzDmxf0n7N7nh+RUT0cpUGRuc
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3567038"
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3567030"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="3567038"
+   d="scan'208";a="3567030"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 13:25:09 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032922"
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032918"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="937032922"
+   d="scan'208";a="937032918"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga001.fm.intel.com with ESMTP; 27 Feb 2024 13:25:02 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 720C6B0D; Tue, 27 Feb 2024 23:24:56 +0200 (EET)
+	id 90B3BF27; Tue, 27 Feb 2024 23:24:56 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -63,11 +63,10 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	kexec@lists.infradead.org,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@intel.com>
-Subject: [PATCHv8 11/17] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
-Date: Tue, 27 Feb 2024 23:24:46 +0200
-Message-ID: <20240227212452.3228893-12-kirill.shutemov@linux.intel.com>
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv8 13/17] x86/acpi: Do not attempt to bring up secondary CPUs in kexec case
+Date: Tue, 27 Feb 2024 23:24:48 +0200
+Message-ID: <20240227212452.3228893-14-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
 References: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
@@ -79,73 +78,82 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
-things, guides where direct mapping ends. Any memory above max_pfn is
-not going to be present in the direct mapping.
+ACPI MADT doesn't allow to offline a CPU after it was onlined. This
+limits kexec: the second kernel won't be able to use more than one CPU.
 
-e820__end_of_ram_pfn() finds the end of the ram based on the highest
-E820_TYPE_RAM range. But it doesn't includes E820_TYPE_ACPI ranges into
-calculation.
+To prevent a kexec kernel from onlining secondary CPUs invalidate the
+mailbox address in the ACPI MADT wakeup structure which prevents a
+kexec kernel to use it.
 
-Despite the name, E820_TYPE_ACPI covers not only ACPI data, but also EFI
-tables and might be required by kernel to function properly.
+This is safe as the booting kernel has the mailbox address cached
+already and acpi_wakeup_cpu() uses the cached value to bring up the
+secondary CPUs.
 
-Usually the problem is hidden because there is some E820_TYPE_RAM memory
-above E820_TYPE_ACPI. But crashkernel only presents pre-allocated crash
-memory as E820_TYPE_RAM on boot. If the preallocated range is small, it
-can fit under the last E820_TYPE_ACPI range.
-
-Modify e820__end_of_ram_pfn() and e820__end_of_low_ram_pfn() to cover
-E820_TYPE_ACPI memory.
-
-The problem was discovered during debugging kexec for TDX guest. TDX
-guest uses E820_TYPE_ACPI to store the unaccepted memory bitmap and pass
-it between the kernels on kexec.
+Note: This is a Linux specific convention and not covered by the
+      ACPI specification.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/x86/kernel/e820.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/kernel/acpi/madt_wakeup.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index fb8cf953380d..99c80680dc9e 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -827,7 +827,7 @@ u64 __init e820__memblock_alloc_reserved(u64 size, u64 align)
- /*
-  * Find the highest page frame number we have available
-  */
--static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type type)
-+static unsigned long __init e820_end_ram_pfn(unsigned long limit_pfn)
+diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+index 004801b9b151..30820f9de5af 100644
+--- a/arch/x86/kernel/acpi/madt_wakeup.c
++++ b/arch/x86/kernel/acpi/madt_wakeup.c
+@@ -14,6 +14,11 @@ static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox __ro_afte
+ 
+ static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
  {
- 	int i;
- 	unsigned long last_pfn = 0;
-@@ -838,7 +838,8 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
- 		unsigned long start_pfn;
- 		unsigned long end_pfn;
- 
--		if (entry->type != type)
-+		if (entry->type != E820_TYPE_RAM &&
-+		    entry->type != E820_TYPE_ACPI)
- 			continue;
- 
- 		start_pfn = entry->addr >> PAGE_SHIFT;
-@@ -864,12 +865,12 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
- 
- unsigned long __init e820__end_of_ram_pfn(void)
- {
--	return e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM);
-+	return e820_end_ram_pfn(MAX_ARCH_PFN);
++	if (!acpi_mp_wake_mailbox_paddr) {
++		pr_warn_once("No MADT mailbox: cannot bringup secondary CPUs. Booting with kexec?\n");
++		return -EOPNOTSUPP;
++	}
++
+ 	/*
+ 	 * Remap mailbox memory only for the first call to acpi_wakeup_cpu().
+ 	 *
+@@ -64,6 +69,28 @@ static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+ 	return 0;
  }
  
- unsigned long __init e820__end_of_low_ram_pfn(void)
++static void acpi_mp_disable_offlining(struct acpi_madt_multiproc_wakeup *mp_wake)
++{
++	cpu_hotplug_disable_offlining();
++
++	/*
++	 * ACPI MADT doesn't allow to offline a CPU after it was onlined. This
++	 * limits kexec: the second kernel won't be able to use more than one CPU.
++	 *
++	 * To prevent a kexec kernel from onlining secondary CPUs invalidate the
++	 * mailbox address in the ACPI MADT wakeup structure which prevents a
++	 * kexec kernel to use it.
++	 *
++	 * This is safe as the booting kernel has the mailbox address cached
++	 * already and acpi_wakeup_cpu() uses the cached value to bring up the
++	 * secondary CPUs.
++	 *
++	 * Note: This is a Linux specific convention and not covered by the
++	 *       ACPI specification.
++	 */
++	mp_wake->mailbox_address = 0;
++}
++
+ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+ 			      const unsigned long end)
  {
--	return e820_end_pfn(1UL << (32 - PAGE_SHIFT), E820_TYPE_RAM);
-+	return e820_end_ram_pfn(1UL << (32 - PAGE_SHIFT));
- }
+@@ -77,7 +104,7 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
  
- static void __init early_panic(char *msg)
+ 	acpi_mp_wake_mailbox_paddr = mp_wake->mailbox_address;
+ 
+-	cpu_hotplug_disable_offlining();
++	acpi_mp_disable_offlining(mp_wake);
+ 
+ 	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
+ 
 -- 
 2.43.0
 
