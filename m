@@ -1,47 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1682156975
-	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2013157E83
+	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709069112; cv=none; b=JA2VkPV2cSO2cG0TZC4JXtzcVQJIqOJj7cfrEfPdi3w3ioA/x4806Rmzz4b5LpbwQvNqo2xBhk+61BDYkiLrBLyZM2rpGLPeNrtKNJCM6LBfMzHUN3npk6p0usxAhEZJ2HMv+9troohQB0b1wRmnQgzSoXAZ/Os3ZdMXdrNL9sw=
+	t=1709069113; cv=none; b=a67ihSxOFrtkofKDBZqa/44/fQWSk2ytjvHo006/BtUZjTqK4VDhciFc3fGb+tfPQlDGM//glHptGm2qBkGbh9qXfwVJ4KuiotTS60QmhYJWVQprqd10Dj2VeP3+h7loY+KBRcQJW0N2GDgeFci8aq9nVl7c6qs6yiSYrz3krno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709069112; c=relaxed/simple;
-	bh=D4SysnZaXorUFc+XF+aGbS1csNj7xK6JLwiHqGE+3Sk=;
+	s=arc-20240116; t=1709069113; c=relaxed/simple;
+	bh=pJgXfq63C3arXvCjRGyfK5PtseQeqyNecMgpXB9cqPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TmhFNDeNWHHxu9dn9Bg1EDfjtsh9h0gu8N4+U/g5LWj+4gRm8H0GeB4FgET62/aELncZdPnjbwS1wEA4LhrxjefVDcXM4dtKT8QjVADt/9+Y/Rg7f6xWqoKF4C57Xjepwz0huCk4sHA3NdBDsV26LtUWtpZ3vigOveNIFLnGQ3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nEITkrJV; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=qIh+oYI1V4fIDpJDYmMro6x9R7XqjNpsk7c7iNUmIVVCp7xYLdi+uz3Mt73zMu0PpARUPw3vXh9420FFTwwgawhuqSs6b3NYapzPpTq1GOSwGBn8t7EiorONMVW11/UivlKu3JRGEJ9u/xTc8Kg0rsuAnlMO6HJh4E8eOefX4wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IeecxPUz; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nEITkrJV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IeecxPUz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709069111; x=1740605111;
+  t=1709069112; x=1740605112;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=D4SysnZaXorUFc+XF+aGbS1csNj7xK6JLwiHqGE+3Sk=;
-  b=nEITkrJV/OBTgCaMXyCBbPiWPNexdkzclgO1sRIY42j6XaM/E3Fl7bRf
-   E//kkEJEoE7L4N2TTwReq/7LLw6/Hhmnsrdb7RWGCtDCoHCWzZg4FaTYo
-   N1P8W6wy56YypZy/Ejrm/8bKIglPKPYeayr2RMflQBSAMy19zMFCmbowR
-   NULPC+g780UchnDJjdj1c+/qXz6jjFoHlQTBTUuJV7adHoePsh30v/2aL
-   iwyTb880yCCj3m0IfO64Bhu7FR/3EfCOf+HNViEXzChB0tBDmk0KBmovU
-   IXh9rtMqhj6XJ2BMdMJ80WNoFuY2Xbzl83FHvzFhdd68o3o2jNxxTpFbX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3567001"
+  bh=pJgXfq63C3arXvCjRGyfK5PtseQeqyNecMgpXB9cqPk=;
+  b=IeecxPUzNgw5aVaqPt20TRxf/yFcKtu5raVOONDCq3V4EFmzHE8is6Z7
+   k6qElGgSncmGU7B0Sz841r9tEruoRFuy+IKxx1YcZHqNLgN39HdPw7K9m
+   rh2A+VKeeyD/rEqnqiD4efzproaUmL5Ylh+WTJ7C1AwYYS2IdqFyC5lD5
+   T/oWqwlBme9FT2KVZv0PTKhN7SPRvIzsFaQ2RPhcLATOndIOCW/QSXSns
+   Tl+Sakd3gtYPXnuuBly6BVBDh0igVzzWcGAwGjWdb2ro1rRtUPWLxclKJ
+   XlJNSzarB/7LfmHh1an2+UrhGVtHpPI3Fvl8XZV0WeB08svsENk82nKLl
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3567014"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="3567001"
+   d="scan'208";a="3567014"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 13:25:09 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032914"
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032916"
 X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="937032914"
+   d="scan'208";a="937032916"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga001.fm.intel.com with ESMTP; 27 Feb 2024 13:25:02 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 9E2D31033; Tue, 27 Feb 2024 23:24:56 +0200 (EET)
+	id 83282EFB; Tue, 27 Feb 2024 23:24:56 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -64,9 +64,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv8 14/17] x86/smp: Add smp_ops.stop_this_cpu() callback
-Date: Tue, 27 Feb 2024 23:24:49 +0200
-Message-ID: <20240227212452.3228893-15-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv8 12/17] x86/acpi: Rename fields in acpi_madt_multiproc_wakeup structure
+Date: Tue, 27 Feb 2024 23:24:47 +0200
+Message-ID: <20240227212452.3228893-13-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
 References: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
@@ -78,68 +78,58 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If the helper is defined, it is called instead of halt() to stop the CPU
-at the end of stop_this_cpu() and on crash CPU shutdown.
+To prepare for the addition of support for MADT wakeup structure version
+1, it is necessary to provide more appropriate names for the fields in
+the structure.
 
-ACPI MADT will use it to hand over the CPU to BIOS in order to be able
-to wake it up again after kexec.
+The field 'mailbox_version' renamed as 'version'. This field signifies
+the version of the structure and the related protocols, rather than the
+version of the mailbox. This field has not been utilized in the code
+thus far.
+
+The field 'base_address' renamed as 'mailbox_address' to clarify the
+kind of address it represents. In version 1, the structure includes the
+reset vector address. Clear and distinct naming helps to prevent any
+confusion.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/x86/include/asm/smp.h | 1 +
- arch/x86/kernel/process.c  | 7 +++++++
- arch/x86/kernel/reboot.c   | 6 ++++++
- 3 files changed, 14 insertions(+)
+ arch/x86/kernel/acpi/madt_wakeup.c | 2 +-
+ include/acpi/actbl2.h              | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-index 4fab2ed454f3..390d53fd34f9 100644
---- a/arch/x86/include/asm/smp.h
-+++ b/arch/x86/include/asm/smp.h
-@@ -38,6 +38,7 @@ struct smp_ops {
- 	int (*cpu_disable)(void);
- 	void (*cpu_die)(unsigned int cpu);
- 	void (*play_dead)(void);
-+	void (*stop_this_cpu)(void);
+diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+index d222be8d7a07..004801b9b151 100644
+--- a/arch/x86/kernel/acpi/madt_wakeup.c
++++ b/arch/x86/kernel/acpi/madt_wakeup.c
+@@ -75,7 +75,7 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
  
- 	void (*send_call_func_ipi)(const struct cpumask *mask);
- 	void (*send_call_func_single_ipi)(int cpu);
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index ab49ade31b0d..00c1b957476d 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -835,6 +835,13 @@ void __noreturn stop_this_cpu(void *dummy)
- 	 */
- 	cpumask_clear_cpu(cpu, &cpus_stop_mask);
+ 	acpi_table_print_madt_entry(&header->common);
  
-+#ifdef CONFIG_SMP
-+	if (smp_ops.stop_this_cpu) {
-+		smp_ops.stop_this_cpu();
-+		unreachable();
-+	}
-+#endif
-+
- 	for (;;) {
- 		/*
- 		 * Use native_halt() so that memory contents don't change
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 0574d4ad6b41..0a75efe579c0 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -880,6 +880,12 @@ static int crash_nmi_callback(unsigned int val, struct pt_regs *regs)
- 	cpu_emergency_disable_virtualization();
+-	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
++	acpi_mp_wake_mailbox_paddr = mp_wake->mailbox_address;
  
- 	atomic_dec(&waiting_for_crash_ipi);
-+
-+	if (smp_ops.stop_this_cpu) {
-+		smp_ops.stop_this_cpu();
-+		unreachable();
-+	}
-+
- 	/* Assume hlt works */
- 	halt();
- 	for (;;)
+ 	cpu_hotplug_disable_offlining();
+ 
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index 9775384d61c6..e1a395af7591 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -1117,9 +1117,9 @@ struct acpi_madt_generic_translator {
+ 
+ struct acpi_madt_multiproc_wakeup {
+ 	struct acpi_subtable_header header;
+-	u16 mailbox_version;
++	u16 version;
+ 	u32 reserved;		/* reserved - must be zero */
+-	u64 base_address;
++	u64 mailbox_address;
+ };
+ 
+ #define ACPI_MULTIPROC_WAKEUP_MB_OS_SIZE        2032
 -- 
 2.43.0
 
