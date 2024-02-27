@@ -1,67 +1,72 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085A138DE7
-	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709068430; cv=none; b=rHvd5ZNCsFPIB+gY4Vr1moVLRQ/r+U4MVmAgCAHWcyMQ2AhINqntfCkxy4J3yUbNsU2DDa1CLqLIaMG6K9H3hwMKBTkPpJvZ7ileDGTghoj+3QjY/8CbhTJ7q7MBDcpjQSRx1mpkr3D574x2KZWQ3i+rwKnMiRKQi61Z+ski5F4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709068430; c=relaxed/simple;
-	bh=fgGXEIHKAQ6AVGyFmJKoFVavgCwqWxfUAdkGFgNJzTM=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=V+9ru01ud36+TJqFWP99OZ3pYKyPjBd0MhCrxGZq21fYs+SwxX5xr4Eomg41d1O+8DiRhDAq+rs3KrNXqVx9YcIs82IZwj6plPAbDL4ujH3Kk+ivJdJskEh9/YBxuoKQ282pP5JzH+gG32KgmL3ShDmv4tflKq0nhJsPVHMlNhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=pAajOW6O; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="pAajOW6O"
-Received: from 8bytes.org (p4ffe0c3c.dip0.t-ipconnect.de [79.254.12.60])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 9A2081C4D1D;
-	Tue, 27 Feb 2024 22:13:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1709068420;
-	bh=fgGXEIHKAQ6AVGyFmJKoFVavgCwqWxfUAdkGFgNJzTM=;
-	h=Date:From:To:Subject:From;
-	b=pAajOW6OGNQcAoLB+nSFN/qTUKQylBXC7u5VpC7rr2uhL53b/QmQp31FkICaOsulF
-	 /EAwGaXdd/ApQNFDrvVqAI1xbwS97J6fFGCqI3ZRKKbMZaBnf0QhsyaRfkWBl4F/sz
-	 OtmD9pQqJtIK3lh+tsTJmIWEBo8+/a1W4RXuAXV8ak6eWfUE6nfeHLGpekB8RVz2XK
-	 A/LpZ8z7BZMimpX+vsh6mgjoFVUeXzdun9Ik7NiEk0Jv7zFQ8g9TCK/+V3vvs94w6K
-	 h5dnIqmUpSCtqVZZk9THZwJfrTgp4WREIabj0tEj4ld5HX9zAQqAoL/i+ZVTSgtUvZ
-	 FMUS/aIReaMlg==
-Date: Tue, 27 Feb 2024 22:13:39 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: SVSM Devel Call Feb. 28th, 2024
-Message-ID: <Zd5Qgw4vAr_Rs7r0@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0B714E2C6
+	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 21:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709068907; cv=none; b=Qb5oFmaga0OxHL2CznntxAs1iNr46YDmzNw1MypxsK9kL0awiv0hxjAFkZazNk/fLR91gOYMrIDFtJc0iqSUPkvt+OJYML7FWX+ww8hHTdwuH4nMGJ3BQKyxpFBsCf4ttfUoK0/b8SgYedC8/pi9RAwdeghzoC9zRLybzXMmBdk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709068907; c=relaxed/simple;
+	bh=3yo6NVAS2DQ8uW8SbPYTo+nl5dHAveFgn5FWpm9zTbU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WmkHdn4RlifgUWOLXTq2XqVFwPL05nqh/HpKHJfwvDJjon7gbxX0kl2Dw+1KROb7mrKSexD0UL7pJNIyezxV3P7cIRC9Gd74t838z6Q3duobLFMS++gKJG5VGAuVoHedsRwcRQQ4ogd2dynSb7Ou8xB0nL0A6+sPIXbWTupntnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PhFEbu9g; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PhFEbu9g"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709068907; x=1740604907;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3yo6NVAS2DQ8uW8SbPYTo+nl5dHAveFgn5FWpm9zTbU=;
+  b=PhFEbu9gziJkgbSo/VD1FOaLK/4Y73BJi02Z+8sYDhivXHGY/DZCCpW3
+   sl7/8TLz+vdcL5pGhBm1QtFa8rMNBRhRyz/GAW9f8gbcmhqONnww5xISB
+   HZff1EYLipdZlFfyO8FL1gYPdCznqE7rBtMg0OpaGG/jVn/NrEj7qjsfC
+   oFeU9q7asUgP0aaVAiEl7cglqN+l/doEUP/dfe4lk0sD3hgn/yqdvkgmh
+   cCGnFeiRDMoam3ZP6bYo1gCtrfPMry/0XIraZgxL7eVpIrTwXxNNQAs2E
+   Hj0dmnY8dMgIIx2zmc71PKNebjaihj3b2MeAra0ufRbpAI8cebLFhmJmp
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3566514"
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
+   d="scan'208";a="3566514"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 13:21:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032879"
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
+   d="scan'208";a="937032879"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 27 Feb 2024 13:21:40 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id B0AE12E6; Tue, 27 Feb 2024 23:21:39 +0200 (EET)
+Date: Tue, 27 Feb 2024 23:21:39 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv8 00/16] x86/tdx: Add kexec support
+Message-ID: <cael54ieynou5fskoeea72wjt4yfttwv23emgog2gopl7j4mq2@tis765ccaqpm>
+References: <20240227181616.3032032-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240227181616.3032032-1-kirill.shutemov@linux.intel.com>
 
-Hi,
+Please disregard. I've sent old patches by mistake.
 
-here is the usual call for agenda items for todays SVSM development
-call. I don't have any particular items yet, if you have please let me
-know via email or in the meeting.
-
-The meeting today is at 9am PST/12pm ET/6pm CET. Join using this GMeet
-link:
-
-	https://meet.google.com/ppv-xehx-dvb
-
-The public Google calendar link with all meetings is:
-
-	https://calendar.google.com/calendar/embed?src=c_55a38f3460c638762a75d4fd6eda3b1cf455ec4cfd7f83201e3cbf817b420dd8%40group.calendar.google.com&ctz=Europe%2FBerlin
-
-See you all there.
-
-Regards,
-
-	Jörg
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
