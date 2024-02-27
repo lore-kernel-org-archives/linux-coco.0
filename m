@@ -1,425 +1,231 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2053.outbound.protection.outlook.com [40.107.95.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF22F1534F3
-	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 18:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709057831; cv=none; b=iy74tStczKWR6l9bVZkS1o8G8wdB73wSCIxTakXvVm69SPklSSh014Ml+Q4KkQPk8+6eT0An3wBvm3oHqnrh4/zPqQvQUynzrnpdLwdXiZc9GSup/dkximxVY5VWzCBbG98bOs+aXCOAGzALii86y1bwavNv6dLzisTVP0CuqOg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709057831; c=relaxed/simple;
-	bh=5rPhka26cuxx92EnGqjwsdfPdCSUmQ6iGaqaueVO7cw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=savz0PjmZZsefmObsGV4s9XmTuR9mqvHcx0oE9dgTlNxvG+rbVz20ZM1TlY4uY7JQqcbQJwdoaOgGnbGdT8agbEKzR1mKiv9+n4oJytvc82kzX8WoU3qPhZlCpDfzFOn5PFmJJ/HjQ/kdYcM0vevQWnu/1GfCtRY3JHqxwHgygo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ebitvuAb; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416E8149DEE
+	for <linux-coco@lists.linux.dev>; Tue, 27 Feb 2024 19:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709063630; cv=fail; b=GqK0QcpC5AUyER2FW9JOgkc0bBPA69O+v3jzpnqHZ6qkis1E0lw/LTuXDUCeBmIIcj2JEDVC0UGr37K4dnoHN7Wtfhb2hrGBb9wqPoizxlge2JA4Xylo4+gKHH/a1zzgSF56sM3JCc7sln/6mQ4UKjfC0Blxzhp5kNJGvy0ChX4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709063630; c=relaxed/simple;
+	bh=4jIUCQexiU64zLWWTkbYwelazNpNinAxl8dQQKNXyHM=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bx4qy/udGlcC+ZH4FRocXJB3Rc/KD4TCsIfcZ+T4E+8oc1WfNyKK3dsGaAvFDJVbI/fkSb1g8gvLxo0SFTY2fUE8VfWiiDmcJt80BLunx54KZnCxSStUZJOxK7iXbJSbhxYdPzdWMBFjiJ7rQZuMdICVB2HCW7XMd5lEIsAxTNg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uiQUs9IL; arc=fail smtp.client-ip=40.107.95.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ebitvuAb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709057828; x=1740593828;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5rPhka26cuxx92EnGqjwsdfPdCSUmQ6iGaqaueVO7cw=;
-  b=ebitvuAbCVj30Cvlv9oXdgtToYo+2EQk65al671v5S1v7j7v81pYFDAr
-   W2rk8IT1yDxJ/6n7RMbV/Z2l6+BCHjDD+4ZZg+9iI5mOWODhGeU4qq865
-   Wj07YyohwwE8lneM1iffyjjKJycznuSMBOC7TTXwquaHMouWfLkMMrey1
-   lpVfTZm5q3MeRg1ibAv8v4YG9WQxxxVSX0QmmYOH5kx3Rm0kmB7kISgOd
-   tw+f82Yr+eb5NNM2l/gdTEATHWPogzUlB8Z/G6KN4nQb2m0YkAjDGMCJy
-   zcclYBQJdOtvij71XKLb5971sRi7jFtrqds12EO4RkU15oZidP/aFMd70
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="20966215"
-X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="20966215"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 10:16:36 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937032749"
-X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
-   d="scan'208";a="937032749"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 27 Feb 2024 10:16:31 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 0FA48B0A; Tue, 27 Feb 2024 20:16:20 +0200 (EET)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe  <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>,
-	Baoquan He <bhe@redhat.com>,
-	kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv8 16/16] x86/acpi: Add support for CPU offlining for ACPI MADT wakeup method
-Date: Tue, 27 Feb 2024 20:16:16 +0200
-Message-ID: <20240227181616.3032032-17-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240227181616.3032032-1-kirill.shutemov@linux.intel.com>
-References: <20240227181616.3032032-1-kirill.shutemov@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uiQUs9IL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eUbS4l6nrdzH92VuzXWz5nuUvUji4d8bUB3wIuIKHToO3C5hFOim30QLRch14F87wJGz2WcBv0Ba+5nj6p1YmitLbEER1uGy0uNJYRYeAgY7iaWYpyBPgZ9fbE7C7xFO8Y96FQkfgaoEwrwa+ZRD6LrsVRcCfiTWcbQEF40kAnfICYRqoVwkN4k0ATTuc7N4mMfFZcuXvZFWW93FwvOkWTYwWrtl21NA+THj/ULDqDmJEBXmB7r7fcCnbJUR+RfNlB/xHnWmlo9l2kxQ77LLHs6T5RSJcxJEy6tv5OgsnU3tjnwPps8W0vJ4acVdqbuLe8H0lyAnX867Uj1oxn3FTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G0BhK26vu7YbhX7MyJ9OslCgO0qD5qzzPGTwVuFkgwY=;
+ b=oGu7g9TfzvIDTFcB/0pY/LjUeFZzVUt9WKa5er6oMq9eNldFz6xwOEaTQSs+ywmN26nh4gHEKytHPydsWWXV30dAjMhbCO97EE8nOnDRgFyNXurpMTlqi/EvMQsiyYGuk9x9P5h3sQeXDalKu6MDN4DmobsWvEKbU2C3hYbP3BcGtn5tge9UpDBHsZselAw4Frz3rxlgRNjYvZuTTCd8HOcPTh4EnRpu6Afad851ytJxWWLuvXS67G20NcIQRGaar8VMdIbFlPHPJEJ3GAjKQsXeTOaeAO5jjyV8yW2zLN7BDTd4Tf3csyyNFgZiEPHY2OmKbqmuA+MYs5Mrs0DqMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G0BhK26vu7YbhX7MyJ9OslCgO0qD5qzzPGTwVuFkgwY=;
+ b=uiQUs9ILH13/U+eq+ZLaQ4IWrdmTolaMqNqp+Fwh9C6GOr8kZ53eLaGW+0GvfeOxPE5hgf4tKlg5l3+3g15I7lHRGhUoQs7Wit5YrEpR/XF/n3CWmQpAGuLBCUpt4YgzGXS/h2zhqFy6WKcdOf042MRJeyzMcGkwWYcwgf01nkFq4GIf+Puol/cXE0O/NcDMsHA3a7bfmv7hJmSQXGrgzv5V+Ipdh/xHvWtEn+4zWwC28RE3K7CY/65aKEeOpZH0AKFHw+eePs/A9MCm+AC/G9cHdsiqzy1CuozI7z3Qs6Ubgtejlui8xUTnGtUtw8HZ5j/f1GyYAg3/P+Cn3nYIvg==
+Received: from BYAPR04CA0014.namprd04.prod.outlook.com (2603:10b6:a03:40::27)
+ by LV3PR12MB9257.namprd12.prod.outlook.com (2603:10b6:408:1b7::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Tue, 27 Feb
+ 2024 19:53:42 +0000
+Received: from SJ5PEPF000001D3.namprd05.prod.outlook.com
+ (2603:10b6:a03:40:cafe::26) by BYAPR04CA0014.outlook.office365.com
+ (2603:10b6:a03:40::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.49 via Frontend
+ Transport; Tue, 27 Feb 2024 19:53:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ5PEPF000001D3.mail.protection.outlook.com (10.167.242.55) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7292.25 via Frontend Transport; Tue, 27 Feb 2024 19:53:41 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 27 Feb
+ 2024 11:53:26 -0800
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 27 Feb
+ 2024 11:53:25 -0800
+Received: from localhost (10.127.8.13) by mail.nvidia.com (10.129.68.9) with
+ Microsoft SMTP Server id 15.2.1258.12 via Frontend Transport; Tue, 27 Feb
+ 2024 11:53:22 -0800
+Date: Tue, 27 Feb 2024 21:53:22 +0200
+From: Zhi Wang <zhiw@nvidia.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, Wu Hao <hao.wu@intel.com>, Yilun Xu
+	<yilun.xu@intel.com>, Lukas Wunner <lukas@wunner.de>, Samuel Ortiz
+	<sameo@rivosinc.com>, Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas
+	<bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
+	<gregkh@linuxfoundation.org>, <zhiwang@kernel.org>, <gdhanuskodi@nvidia.com>,
+	<cjia@nvidia.com>, <acurrid@nvidia.com>
+Subject: Re: [RFC PATCH 5/5] PCI/TSM: Authenticate devices via platform TSM
+Message-ID: <20240227215322.00001f46.zhiw@nvidia.com>
+In-Reply-To: <65dd828e928d5_1138c7294b2@dwillia2-xfh.jf.intel.com.notmuch>
+References: <170660662589.224441.11503798303914595072.stgit@dwillia2-xfh.jf.intel.com>
+	<170660665391.224441.13963835575448844460.stgit@dwillia2-xfh.jf.intel.com>
+	<20240226133708.00005e8e.zhiw@nvidia.com>
+	<65dd828e928d5_1138c7294b2@dwillia2-xfh.jf.intel.com.notmuch>
+Organization: NVIDIA
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D3:EE_|LV3PR12MB9257:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b23e4d0-440d-4ca8-7b82-08dc37cdcc97
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	cD1R4t3dj9u60cUJAjLQcW3ZzKL8Wv+aKThy1TwJN4MFAfv1h3ckWtFP1FhRjBQc5vkGnR7IOqoc2xnghGO+azep0Cfowgk6TG+UeVbjcZGr97N7rZKIskRtr3gjLYk6apA2+0kwrghbv25CQgNBbNzU9BlkYBymGvDyewojnR285nsM62n8fB6sY1HmmO+sd8mgL0BL7Gvbe1OuajflTEsquuXrL36v75woJPdSIqzycEWQ5nI9D/xb++gb9xLEJHpfgvTa3rLmI7BuCDauI9TyiV/umT+GQfisDVZIAuc8lEzfwr4NIrlIjEVZJ7VrDbRRQRcib3RyQQz1uwHIoQTaB2thnEZuEK4xJiI7ucTlW1EbNMC2kC3uMi3ymi+KVAQMUltx8jAEOi3jWLk5CQMr+iwAnd0e27PETg61b0SXaJmq2xWhXEiF/HlpC+ERBBrPGp+6dkFBI9NRjOPRZWbYGht2JwbkfPbaCwuqUZJByAiGTiEC08h1hH4BIjNDbXiXxMIcMjiVtw0IW28OBvCAKBWJR4ifvS87Qiqd9ZRe6F3ysdRLjf/wudSKcy+q+YnhnMOvwiK4Ia07yWKwfF1+cwLgVVOaBoNluQUhAjfe0QlRfmn00yqXTQXOmkEWPXMaWfsWD6CD2c/39nwplA3Zj/fq1ccnipbc/Z71alD+sATU/EP0im3BAkTrA0ElUt7PpSVJ8v+GMclDmMxh1z2tBEUmKq1g2spZj/pvpHUzpntMBJsyPKkRPolOc9Yj
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(82310400014)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2024 19:53:41.8351
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b23e4d0-440d-4ca8-7b82-08dc37cdcc97
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001D3.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9257
 
-MADT Multiprocessor Wakeup structure version 1 brings support of CPU
-offlining: BIOS provides a reset vector where the CPU has to jump to
-for offlining itself. The new TEST mailbox command can be used to test
-whether the CPU offlined itself which means the BIOS has control over
-the CPU and can online it again via the ACPI MADT wakeup method.
+On Mon, 26 Feb 2024 22:34:54 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-Add CPU offling support for the ACPI MADT wakeup method by implementing
-custom cpu_die(), play_dead() and stop_this_cpu() SMP operations.
+> Zhi Wang wrote:
+> [..]
+> > Hey Dan,
+> > 
+> > 1) What is the expectation of using the device connect and
+> > disconnect in the guest-driven secure I/O enlightenment?
+> 
+> "Connect" is state of the link that can be automatically maintained
+> over events like reset and error recovery. The guest is responsible
+> for Bind / Unbind.
+> 
+> Now, the host can optionally "Connect" in response to a "Bind" event,
+> but it is not clear that such a mechanism is needed. It likely is
+> going to depend on how error handling is implemented, and whether an
+> event that causes disconnect can be recovered. We may get there, but
+> likely not in the initial phases of the implementation.
+> 
+> > In the last device security meeting, you said the sysfs interface
+> > was mostly for higher level software stacks, like virt-manager. I
+> > was wondering what would be the picture looks like when coping these
+> > statement with the guest-driven model. Are we expecting the device
+> > connect triggered by QEMU when extracting the guest request from the
+> > secure channel in this case?
+> 
+> I think it is simplest for now if "Connect" is a pre-requisite for
+> guest-triggered "Bind".
+>
 
-CPU offlining makes is possible to hand over secondary CPUs over kexec,
-not limiting the second kernel to a single CPU.
+Thanks so much for the reply. 
 
-The change conforms to the approved ACPI spec change proposal. See the
-Link.
+IIUC, it means a guest assumes the device is in "connect" state when
+noticing a TDI, and it has the awareness that the "connect" state will
+be taken care by host until it needs to step in error recovery?
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/all/13356251.uLZWGnKmhe@kreacher
-Acked-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
----
- arch/x86/include/asm/acpi.h          |   2 +
- arch/x86/kernel/acpi/Makefile        |   2 +-
- arch/x86/kernel/acpi/madt_playdead.S |  28 ++++
- arch/x86/kernel/acpi/madt_wakeup.c   | 184 ++++++++++++++++++++++++++-
- include/acpi/actbl2.h                |  15 ++-
- 5 files changed, 227 insertions(+), 4 deletions(-)
- create mode 100644 arch/x86/kernel/acpi/madt_playdead.S
+I am more thinking of how device driver talks with the PCI core.
 
-diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-index 2625b915ae7f..021cafa214c2 100644
---- a/arch/x86/include/asm/acpi.h
-+++ b/arch/x86/include/asm/acpi.h
-@@ -81,6 +81,8 @@ union acpi_subtable_headers;
- int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
- 			      const unsigned long end);
- 
-+void asm_acpi_mp_play_dead(u64 reset_vector, u64 pgd_pa);
-+
- /*
-  * Check if the CPU can handle C2 and deeper
-  */
-diff --git a/arch/x86/kernel/acpi/Makefile b/arch/x86/kernel/acpi/Makefile
-index 8c7329c88a75..37b1f28846de 100644
---- a/arch/x86/kernel/acpi/Makefile
-+++ b/arch/x86/kernel/acpi/Makefile
-@@ -4,7 +4,7 @@ obj-$(CONFIG_ACPI)			+= boot.o
- obj-$(CONFIG_ACPI_SLEEP)		+= sleep.o wakeup_$(BITS).o
- obj-$(CONFIG_ACPI_APEI)			+= apei.o
- obj-$(CONFIG_ACPI_CPPC_LIB)		+= cppc.o
--obj-$(CONFIG_X86_ACPI_MADT_WAKEUP)	+= madt_wakeup.o
-+obj-$(CONFIG_X86_ACPI_MADT_WAKEUP)	+= madt_wakeup.o madt_playdead.o
- 
- ifneq ($(CONFIG_ACPI_PROCESSOR),)
- obj-y					+= cstate.o
-diff --git a/arch/x86/kernel/acpi/madt_playdead.S b/arch/x86/kernel/acpi/madt_playdead.S
-new file mode 100644
-index 000000000000..4e498d28cdc8
---- /dev/null
-+++ b/arch/x86/kernel/acpi/madt_playdead.S
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#include <linux/linkage.h>
-+#include <asm/nospec-branch.h>
-+#include <asm/page_types.h>
-+#include <asm/processor-flags.h>
-+
-+	.text
-+	.align PAGE_SIZE
-+
-+/*
-+ * asm_acpi_mp_play_dead() - Hand over control of the CPU to the BIOS
-+ *
-+ * rdi: Address of the ACPI MADT MPWK ResetVector
-+ * rsi: PGD of the identity mapping
-+ */
-+SYM_FUNC_START(asm_acpi_mp_play_dead)
-+	/* Turn off global entries. Following CR3 write will flush them. */
-+	movq	%cr4, %rdx
-+	andq	$~(X86_CR4_PGE), %rdx
-+	movq	%rdx, %cr4
-+
-+	/* Switch to identity mapping */
-+	movq	%rsi, %cr3
-+
-+	/* Jump to reset vector */
-+	ANNOTATE_RETPOLINE_SAFE
-+	jmp	*%rdi
-+SYM_FUNC_END(asm_acpi_mp_play_dead)
-diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
-index 30820f9de5af..6cfe762be28b 100644
---- a/arch/x86/kernel/acpi/madt_wakeup.c
-+++ b/arch/x86/kernel/acpi/madt_wakeup.c
-@@ -1,10 +1,19 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- #include <linux/acpi.h>
- #include <linux/cpu.h>
-+#include <linux/delay.h>
- #include <linux/io.h>
-+#include <linux/kexec.h>
-+#include <linux/memblock.h>
-+#include <linux/pgtable.h>
-+#include <linux/sched/hotplug.h>
- #include <asm/apic.h>
- #include <asm/barrier.h>
-+#include <asm/init.h>
-+#include <asm/intel_pt.h>
-+#include <asm/nmi.h>
- #include <asm/processor.h>
-+#include <asm/reboot.h>
- 
- /* Physical address of the Multiprocessor Wakeup Structure mailbox */
- static u64 acpi_mp_wake_mailbox_paddr __ro_after_init;
-@@ -12,6 +21,154 @@ static u64 acpi_mp_wake_mailbox_paddr __ro_after_init;
- /* Virtual address of the Multiprocessor Wakeup Structure mailbox */
- static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox __ro_after_init;
- 
-+static u64 acpi_mp_pgd __ro_after_init;
-+static u64 acpi_mp_reset_vector_paddr __ro_after_init;
-+
-+static void acpi_mp_stop_this_cpu(void)
++static int pci_tsm_connect(struct pci_dev *pdev)
 +{
-+	asm_acpi_mp_play_dead(acpi_mp_reset_vector_paddr, acpi_mp_pgd);
-+}
++	struct pci_tsm_req *req __free(req_free) = NULL;
 +
-+static void acpi_mp_play_dead(void)
-+{
-+	play_dead_common();
-+	asm_acpi_mp_play_dead(acpi_mp_reset_vector_paddr, acpi_mp_pgd);
-+}
++	/* opportunistic state checks to skip allocating a request */
++	if (pdev->tsm->state >= PCI_TSM_CONNECT)
++		return 0;
 +
-+static void acpi_mp_cpu_die(unsigned int cpu)
-+{
-+	u32 apicid = per_cpu(x86_cpu_to_apicid, cpu);
-+	unsigned long timeout;
+
+As this patch is triggered by userspace through sysfs, I am wondering
+would it be a good idea to let the device driver step in around the
+device connect/disconnect flow in the future? as a device might needs to
+be switched to different states before it is ready to handle SPDM and
+IDE.
+
+Maybe the PCI core (pci_tsm_{connect, disconnect, error_handling}())
+should broadcast the event through a notifier when checking the connect
+state. An example kernel user of that notifier can forward the event to
+the userspace as udev events via PF_NETLINK.
+
++	req = tsm_ops->req_alloc(pdev, PCI_TSM_OP_CONNECT);
++	if (!req)
++		return -ENOMEM;
 +
-+	/*
-+	 * Use TEST mailbox command to prove that BIOS got control over
-+	 * the CPU before declaring it dead.
-+	 *
-+	 * BIOS has to clear 'command' field of the mailbox.
-+	 */
-+	acpi_mp_wake_mailbox->apic_id = apicid;
-+	smp_store_release(&acpi_mp_wake_mailbox->command,
-+			  ACPI_MP_WAKE_COMMAND_TEST);
++	scoped_cond_guard(mutex_intr, return -EINTR, tsm_ops->lock) {
++		enum pci_tsm_op_status status;
 +
-+	/* Don't wait longer than a second. */
-+	timeout = USEC_PER_SEC;
-+	while (READ_ONCE(acpi_mp_wake_mailbox->command) && --timeout)
-+		udelay(1);
++		/* revalidate state */
++		if (pdev->tsm->state >= PCI_TSM_CONNECT)
++			return 0;
++		if (pdev->tsm->state < PCI_TSM_INIT)
++			return -ENXIO;
 +
-+	if (!timeout)
-+		pr_err("Failed to hand over CPU %d to BIOS\n", cpu);
-+}
++		do {
++			status = tsm_ops->exec(pdev, req);
++			req->seq++;
++		} while (status == PCI_TSM_SPDM_REQ);
 +
-+/* The argument is required to match type of x86_mapping_info::alloc_pgt_page */
-+static void __init *alloc_pgt_page(void *dummy)
-+{
-+	return memblock_alloc(PAGE_SIZE, PAGE_SIZE);
-+}
-+
-+static void __init free_pgt_page(void *pgt, void *dummy)
-+{
-+	return memblock_free(pgt, PAGE_SIZE);
-+}
-+
-+/*
-+ * Make sure asm_acpi_mp_play_dead() is present in the identity mapping at
-+ * the same place as in the kernel page tables. asm_acpi_mp_play_dead() switches
-+ * to the identity mapping and the function has be present at the same spot in
-+ * the virtual address space before and after switching page tables.
-+ */
-+static int __init init_transition_pgtable(pgd_t *pgd)
-+{
-+	pgprot_t prot = PAGE_KERNEL_EXEC_NOENC;
-+	unsigned long vaddr, paddr;
-+	p4d_t *p4d;
-+	pud_t *pud;
-+	pmd_t *pmd;
-+	pte_t *pte;
-+
-+	vaddr = (unsigned long)asm_acpi_mp_play_dead;
-+	pgd += pgd_index(vaddr);
-+	if (!pgd_present(*pgd)) {
-+		p4d = (p4d_t *)alloc_pgt_page(NULL);
-+		if (!p4d)
-+			return -ENOMEM;
-+		set_pgd(pgd, __pgd(__pa(p4d) | _KERNPG_TABLE));
++		if (status == PCI_TSM_FAIL)
++			return -EIO;
++		pdev->tsm->state = PCI_TSM_CONNECT;
 +	}
-+	p4d = p4d_offset(pgd, vaddr);
-+	if (!p4d_present(*p4d)) {
-+		pud = (pud_t *)alloc_pgt_page(NULL);
-+		if (!pud)
-+			return -ENOMEM;
-+		set_p4d(p4d, __p4d(__pa(pud) | _KERNPG_TABLE));
-+	}
-+	pud = pud_offset(p4d, vaddr);
-+	if (!pud_present(*pud)) {
-+		pmd = (pmd_t *)alloc_pgt_page(NULL);
-+		if (!pmd)
-+			return -ENOMEM;
-+		set_pud(pud, __pud(__pa(pmd) | _KERNPG_TABLE));
-+	}
-+	pmd = pmd_offset(pud, vaddr);
-+	if (!pmd_present(*pmd)) {
-+		pte = (pte_t *)alloc_pgt_page(NULL);
-+		if (!pte)
-+			return -ENOMEM;
-+		set_pmd(pmd, __pmd(__pa(pte) | _KERNPG_TABLE));
-+	}
-+	pte = pte_offset_kernel(pmd, vaddr);
-+
-+	paddr = __pa(vaddr);
-+	set_pte(pte, pfn_pte(paddr >> PAGE_SHIFT, prot));
-+
 +	return 0;
 +}
-+
-+static int __init acpi_mp_setup_reset(u64 reset_vector)
-+{
-+	struct x86_mapping_info info = {
-+		.alloc_pgt_page = alloc_pgt_page,
-+		.free_pgt_page	= free_pgt_page,
-+		.page_flag      = __PAGE_KERNEL_LARGE_EXEC,
-+		.kernpg_flag    = _KERNPG_TABLE_NOENC,
-+	};
-+	pgd_t *pgd;
-+
-+	pgd = alloc_pgt_page(NULL);
-+	if (!pgd)
-+		return -ENOMEM;
-+
-+	for (int i = 0; i < nr_pfn_mapped; i++) {
-+		unsigned long mstart, mend;
-+
-+		mstart = pfn_mapped[i].start << PAGE_SHIFT;
-+		mend   = pfn_mapped[i].end << PAGE_SHIFT;
-+		if (kernel_ident_mapping_init(&info, pgd, mstart, mend)) {
-+			kernel_ident_mapping_free(&info, pgd);
-+			return -ENOMEM;
-+		}
-+	}
-+
-+	if (kernel_ident_mapping_init(&info, pgd,
-+				      PAGE_ALIGN_DOWN(reset_vector),
-+				      PAGE_ALIGN(reset_vector + 1))) {
-+		kernel_ident_mapping_free(&info, pgd);
-+		return -ENOMEM;
-+	}
-+
-+	if (init_transition_pgtable(pgd)) {
-+		kernel_ident_mapping_free(&info, pgd);
-+		return -ENOMEM;
-+	}
-+
-+	smp_ops.play_dead = acpi_mp_play_dead;
-+	smp_ops.stop_this_cpu = acpi_mp_stop_this_cpu;
-+	smp_ops.cpu_die = acpi_mp_cpu_die;
-+
-+	acpi_mp_reset_vector_paddr = reset_vector;
-+	acpi_mp_pgd = __pa(pgd);
-+
-+	return 0;
-+}
-+
- static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
- {
- 	if (!acpi_mp_wake_mailbox_paddr) {
-@@ -97,14 +254,37 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
- 	struct acpi_madt_multiproc_wakeup *mp_wake;
  
- 	mp_wake = (struct acpi_madt_multiproc_wakeup *)header;
--	if (BAD_MADT_ENTRY(mp_wake, end))
-+
-+	/*
-+	 * Cannot use the standard BAD_MADT_ENTRY() to sanity check the @mp_wake
-+	 * entry.  'sizeof (struct acpi_madt_multiproc_wakeup)' can be larger
-+	 * than the actual size of the MP wakeup entry in ACPI table because the
-+	 * 'reset_vector' is only available in the V1 MP wakeup structure.
-+	 */
-+	if (!mp_wake)
-+		return -EINVAL;
-+	if (end - (unsigned long)mp_wake < ACPI_MADT_MP_WAKEUP_SIZE_V0)
-+		return -EINVAL;
-+	if (mp_wake->header.length < ACPI_MADT_MP_WAKEUP_SIZE_V0)
- 		return -EINVAL;
- 
- 	acpi_table_print_madt_entry(&header->common);
- 
- 	acpi_mp_wake_mailbox_paddr = mp_wake->mailbox_address;
- 
--	acpi_mp_disable_offlining(mp_wake);
-+	if (mp_wake->version >= ACPI_MADT_MP_WAKEUP_VERSION_V1 &&
-+	    mp_wake->header.length >= ACPI_MADT_MP_WAKEUP_SIZE_V1) {
-+		if (acpi_mp_setup_reset(mp_wake->reset_vector)) {
-+			pr_warn("Failed to setup MADT reset vector\n");
-+			acpi_mp_disable_offlining(mp_wake);
-+		}
-+	} else {
-+		/*
-+		 * CPU offlining requires version 1 of the ACPI MADT wakeup
-+		 * structure.
-+		 */
-+		acpi_mp_disable_offlining(mp_wake);
-+	}
- 
- 	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
- 
-diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-index e1a395af7591..2aedda70ef88 100644
---- a/include/acpi/actbl2.h
-+++ b/include/acpi/actbl2.h
-@@ -1120,8 +1120,20 @@ struct acpi_madt_multiproc_wakeup {
- 	u16 version;
- 	u32 reserved;		/* reserved - must be zero */
- 	u64 mailbox_address;
-+	u64 reset_vector;
- };
- 
-+/* Values for Version field above */
-+
-+enum acpi_madt_multiproc_wakeup_version {
-+	ACPI_MADT_MP_WAKEUP_VERSION_NONE = 0,
-+	ACPI_MADT_MP_WAKEUP_VERSION_V1 = 1,
-+	ACPI_MADT_MP_WAKEUP_VERSION_RESERVED = 2, /* 2 and greater are reserved */
-+};
-+
-+#define ACPI_MADT_MP_WAKEUP_SIZE_V0	16
-+#define ACPI_MADT_MP_WAKEUP_SIZE_V1	24
-+
- #define ACPI_MULTIPROC_WAKEUP_MB_OS_SIZE        2032
- #define ACPI_MULTIPROC_WAKEUP_MB_FIRMWARE_SIZE  2048
- 
-@@ -1134,7 +1146,8 @@ struct acpi_madt_multiproc_wakeup_mailbox {
- 	u8 reserved_firmware[ACPI_MULTIPROC_WAKEUP_MB_FIRMWARE_SIZE];	/* reserved for firmware use */
- };
- 
--#define ACPI_MP_WAKE_COMMAND_WAKEUP    1
-+#define ACPI_MP_WAKE_COMMAND_WAKEUP	1
-+#define ACPI_MP_WAKE_COMMAND_TEST	2
- 
- /* 17: CPU Core Interrupt Controller (ACPI 6.5) */
- 
--- 
-2.43.0
+> > 2) How does the device-specific logic fit into the new TSM
+> > services? E.g. when the TDISP connect is triggered by userspace, a
+> > device needs to perform quirks before/after/inside the verbs, or a
+> > device needs an interface to tell TSM service when it is able to
+> > response to some verbs. Do you think we needs to have a set of
+> > callbacks from the device side for the PCI TSM service to call?
+> 
+> True "quirks" would be driven by bug reports. Outside of that likely
 
+Yup, I was just thinking another approach for the device specific code
+to step in for pci_tsm_{connect,disconnect}() without a driver and
+pci-quirks just popped up. :)
+
+> the attestation information needs to have multiple validation entry
+> points for userspace, PCI core, and endpoint drivers to each have a
+> chance to deploy some attestation policy. Some of these questions
+> will need have common answers developed between the native CMA
+> implementation and the TSM implementation since CMA needs to solve
+> some of ABI issues of making measurements available to attestation
+> agents.
+> 
+> At Plumbers I had been thinking "golden measurements" injected into
+> the kernel ahead of interface validation gives the kernel the most
+> autonomy, but questions about measurement nonce and other concerns
+> tempered my thinking there. Plenty to still talk about and navigate.
+
+Yes. We had been discussing that a lot. :) I also carefully watched the
+playback of LPC Confidential MC, quite a lot nice discussions. Out
+of curiosity, were folks think eBPF a good fit or an overkill here? :)
+
+Thanks,
+Zhi.
