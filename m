@@ -1,61 +1,60 @@
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578156A035
-	for <linux-coco@lists.linux.dev>; Fri,  1 Mar 2024 09:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C576BB25
+	for <linux-coco@lists.linux.dev>; Fri,  1 Mar 2024 09:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709285182; cv=none; b=RRou93sI4qb9AZNQlMalmf9BHlOhgTXlRP05Dl4qmxorBOF4CtdVF2R98IJAfFPag6fR8eIn0DE+7WnWJ5nzOyGPiM81Ww7jxHCXEd2RAnuMblRCu25xvb200Wt4J7HERKsPRpirhapaQTjcQgGIQD26rgYt96DmSvwAGR2plns=
+	t=1709285202; cv=none; b=Tpv1/dVz2hvpNwConaEgRhO/1p8nBhLaDCoo4KxUNzPzYz0IIA8r7swEEQ8vaEYFVjSlUxnwXNqyADUHB1BzpMk7fHVbcTqglnJ31VxzFy5XJZJaoVIsfRBKDnrExMJBEotpCX+2hvnhYYzGY8T1x5u90LnzSU67FEj8BR8ZTj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709285182; c=relaxed/simple;
-	bh=MnXxYdim+ErAvLCa4ek2QvDPq8ga9LS4BaAHVYX3eow=;
+	s=arc-20240116; t=1709285202; c=relaxed/simple;
+	bh=0wdFpKbEyNhuu/RpjYvuz8KPZKT0kttiGp+cGiKwHZk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ObO3qmJPHSJBifwm7HBbp/cYFuk+7ix4iPrhWdkweUQZMEVsz1r1taxwlJfrQ7HZQuaPNTWcYI7FHb55jtFA24x4zjC3hQmh2C4fMBY1cA6CojpzNiZ/xmEBi2JPefjQHbij+fsDwvh/2QVClEFhkIaYlt6BCo0wds5Rq8xTIVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.51
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uq1Uhv/kX4HOYZfg2hSTmyY5DZtbb94XbzEPjtnO78rFUI/jWwbWzLhTutYhh9QfQcpkEdLCYoGOZWBLdj5eM1lGMRjupXZx1CrUqcQKdj1DUuEsk8sxRjzJeYxrIc/gqhfjtkpy9NdqR2hCVC/9dtJBfC9BY6D/bMzu9biuVcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-22007fe465bso1000449fac.1
-        for <linux-coco@lists.linux.dev>; Fri, 01 Mar 2024 01:26:21 -0800 (PST)
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-5cddc5455aeso1497154a12.1
+        for <linux-coco@lists.linux.dev>; Fri, 01 Mar 2024 01:26:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709285180; x=1709889980;
+        d=1e100.net; s=20230601; t=1709285201; x=1709890001;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HdJCGnsr1PgomKAYNsHyEsd3dtv9l/bjbY6EGM5JJ3k=;
-        b=j5lAP2Q9WhobLoL1BcfaTxNvtlp5WilmKDzrNQcZt7ovKhU6o/IzHvDnoOm+G5fl9l
-         3q4NjxP3Gva0Ttk10leib3+pxETpcUnYyviy31Ggxfu61ekz0F4ZpjIrBJXvMRJ4ux3U
-         q0xIINVZvXqN6EWP6Z8LXb25reeuf9kzXu7TdytrBtNB9nA7UchaPT7/pcGGelMc9VZq
-         Mz2on57+1T40t9b0hp/TqeveDFV8DWopfW9FqgrmwP0fuq1vk25Ks3CvARIELJRpVa1f
-         FkZinsUZPyXhysKBomYfnBPhwVxwHMLxBqMUEtohg8AOWPWEXZXQY174+AseqegKZu/6
-         EE9g==
-X-Forwarded-Encrypted: i=1; AJvYcCWnjV7vDA3hnscSjfx7BfDivRxF18EWuqX2ejEu1WWB1esDDF0MqEl07lb1cVWzGikniivm0cB0agHXKS9/0oCK2nKe4HSg5wN0jg==
-X-Gm-Message-State: AOJu0YzqfMz2HvqI4NS0+VtIiZmyBX6IYhIG6HIgWEH/zX4kNyOo/b0p
-	3a32hkV2SIBeOSUJjTJXgsGjQyYdTJqB3SGmaRtu2qBRpS8+e4id
-X-Google-Smtp-Source: AGHT+IGQI9dLrMg4IIQbS5TRKDxZlX5ExuzhnqXLR2XHjV3/BPtjzMkzXsLqatBT2Fy0YdDZABUovw==
-X-Received: by 2002:a05:6870:bb06:b0:220:9f9c:2bd8 with SMTP id nw6-20020a056870bb0600b002209f9c2bd8mr1050514oab.4.1709285180319;
-        Fri, 01 Mar 2024 01:26:20 -0800 (PST)
+        bh=7fp76SLNrOitLz2IPJZxtYaUARyA39f42XEHvT3cwYM=;
+        b=FOLZMPvm3gXe0QthMa7dqW59wCCY5pT21HnvmQE9G1iaZ76vuq52T8TzotegvIoKMh
+         p1bDSrYhUsMu0nTYoqAWIcRi2hPHhwMgsaA/wnHdfNIkhpizDOiKA+p2xsSQMvW9TKag
+         1dQIrlAyD5gWH2rEx/IlmSF6ci2XixHngLUpKXItyYYSSHUkfoeAHi9gyBLRk6CHLrZO
+         pe+UjAOMgJ2hL/TawnE7Dm8hZEROLJ+3GrL1V8htHf5+c85hQ9rEFZuHVKRbXNd8Cx3s
+         Tbz1bmBM8+ULv1iH24f+Bf3w12e3EWfjIcI8PD0OvvoB+Y4XGuKe2z/zv/NzgszckARp
+         VP/w==
+X-Forwarded-Encrypted: i=1; AJvYcCWYLjrMUD5T55am8tKvyCwibMLpvU10D/bbmoAvx83jreekj/nBZSC1yyHXZoyrKa20uH2hPPgo7yLvjBw+HYztMld4WvvNVc05Cg==
+X-Gm-Message-State: AOJu0YwrXIWL4Ia7RRrm4Zj6S4YQEDP8UUTOHq0peaG4IEz31VpI1Yh9
+	ArQgJuQq91I9bPClycwGybLsHQyV9uWjZuWIXhOYaGnbiiDF4cVs
+X-Google-Smtp-Source: AGHT+IFzP30XgcgRz16jjeqSQMfVBbG9kjUBn2FuxIWeyBnM+Cs+BqPA7eeqULcAd7TXur4Xy4bBMg==
+X-Received: by 2002:a05:6a20:7343:b0:1a1:2f17:1bc2 with SMTP id v3-20020a056a20734300b001a12f171bc2mr989042pzc.35.1709285200822;
+        Fri, 01 Mar 2024 01:26:40 -0800 (PST)
 Received: from liuwe-devbox-debian-v2 ([20.69.120.36])
-        by smtp.gmail.com with ESMTPSA id it2-20020a056a00458200b006e508b6a13dsm2525245pfb.58.2024.03.01.01.26.19
+        by smtp.gmail.com with ESMTPSA id d11-20020a170902cecb00b001d739667fc3sm2947317plg.207.2024.03.01.01.26.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Mar 2024 01:26:19 -0800 (PST)
-Date: Fri, 1 Mar 2024 09:26:18 +0000
+        Fri, 01 Mar 2024 01:26:40 -0800 (PST)
+Date: Fri, 1 Mar 2024 09:26:38 +0000
 From: Wei Liu <wei.liu@kernel.org>
-To: mhklinux@outlook.com
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	kirill.shutemov@linux.intel.com, haiyangz@microsoft.com,
-	wei.liu@kernel.org, decui@microsoft.com, luto@kernel.org,
-	peterz@infradead.org, akpm@linux-foundation.org, urezki@gmail.com,
-	hch@infradead.org, lstoakes@gmail.com, thomas.lendacky@amd.com,
-	ardb@kernel.org, jroedel@suse.de, seanjc@google.com,
-	rick.p.edgecombe@intel.com,
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, mhklinux@outlook.com,
+	linux-hyperv@vger.kernel.org, gregkh@linuxfoundation.org,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	kirill.shutemov@linux.intel.com, dave.hansen@linux.intel.com,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
 	sathyanarayanan.kuppuswamy@linux.intel.com,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-hyperv@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 0/3] x86/hyperv: Mark CoCo VM pages not present when
- changing encrypted state
-Message-ID: <ZeGfOiizl5o-PNLZ@liuwe-devbox-debian-v2>
-References: <20240116022008.1023398-1-mhklinux@outlook.com>
+	elena.reshetova@intel.com
+Subject: Re: [RFC RFT PATCH 1/4] hv: Leak pages if set_memory_encrypted()
+ fails
+Message-ID: <ZeGfTtlx0JOj9gVS@liuwe-devbox-debian-v2>
+References: <20240222021006.2279329-1-rick.p.edgecombe@intel.com>
+ <20240222021006.2279329-2-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -64,124 +63,70 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240116022008.1023398-1-mhklinux@outlook.com>
+In-Reply-To: <20240222021006.2279329-2-rick.p.edgecombe@intel.com>
 
-On Mon, Jan 15, 2024 at 06:20:05PM -0800, mhkelley58@gmail.com wrote:
-> From: Michael Kelley <mhklinux@outlook.com>
+On Wed, Feb 21, 2024 at 06:10:03PM -0800, Rick Edgecombe wrote:
+> On TDX it is possible for the untrusted host to cause
+> set_memory_encrypted() or set_memory_decrypted() to fail such that an
+> error is returned and the resulting memory is shared. Callers need to take
+> care to handle these errors to avoid returning decrypted (shared) memory to
+> the page allocator, which could lead to functional or security issues.
 > 
-> In a CoCo VM, when transitioning memory from encrypted to decrypted, or
-> vice versa, the caller of set_memory_encrypted() or set_memory_decrypted()
-> is responsible for ensuring the memory isn't in use and isn't referenced
-> while the transition is in progress.  The transition has multiple steps,
-> and the memory is in an inconsistent state until all steps are complete.
-> A reference while the state is inconsistent could result in an exception
-> that can't be cleanly fixed up.
-> 
-> However, the kernel load_unaligned_zeropad() mechanism could cause a stray
-> reference that can't be prevented by the caller of set_memory_encrypted()
-> or set_memory_decrypted(), so there's specific code to handle this case.
-> But a CoCo VM running on Hyper-V may be configured to run with a paravisor,
-> with the #VC or #VE exception routed to the paravisor. There's no
-> architectural way to forward the exceptions back to the guest kernel, and
-> in such a case, the load_unaligned_zeropad() specific code doesn't work.
-> 
-> To avoid this problem, mark pages as "not present" while a transition
-> is in progress. If load_unaligned_zeropad() causes a stray reference, a
-> normal page fault is generated instead of #VC or #VE, and the
-> page-fault-based fixup handlers for load_unaligned_zeropad() resolve the
-> reference. When the encrypted/decrypted transition is complete, mark the
-> pages as "present" again.
-> 
-> This version of the patch series marks transitioning pages "not present"
-> only when running as a Hyper-V guest with a paravisor. Previous
-> versions[1] marked transitioning pages "not present" regardless of the
-> hypervisor and regardless of whether a paravisor is in use.  That more
-> general use had the benefit of decoupling the load_unaligned_zeropad()
-> fixup from CoCo VM #VE and #VC exception handling.  But the implementation
-> was problematic for SEV-SNP because the SEV-SNP hypervisor callbacks
-> require a valid virtual address, not a physical address like with TDX and
-> the Hyper-V paravisor.  Marking the transitioning pages "not present"
-> causes the virtual address to not be valid, and the PVALIDATE
-> instruction in the SEV-SNP callback fails. Constructing a temporary
-> virtual address for this purpose is slower and adds complexity that
-> negates the benefits of the more general use. So this version narrows
-> the applicability of the approach to just where it is required
-> because of the #VC and #VE exceptions being routed to a paravisor.
-> 
-> The previous version minimized the TLB flushing done during page
-> transitions between encrypted and decrypted. Because this version
-> marks the pages "not present" in hypervisor specific callbacks and
-> not in __set_memory_enc_pgtable(), doing such optimization is more
-> difficult to coordinate. But the page transitions are not a hot path,
-> so this version eschews optimization of TLB flushing in favor of
-> simplicity.
-> 
-> Since this version no longer touches __set_memory_enc_pgtable(),
-> I've also removed patches that add comments about error handling
-> in that function.  Rick Edgecombe has proposed patches to improve
-> that error handling, and I'll leave those comments to Rick's
-> patches.
-> 
-> Patch 1 handles implications of the hypervisor callbacks needing
-> to do virt-to-phys translations on pages that are temporarily
-> marked not present.
-> 
-> Patch 2 makes the existing set_memory_p() function available for
-> use in the hypervisor callbacks.
-> 
-> Patch 3 is the core change that marks the transitioning pages
-> as not present.
-> 
-> This patch set is based on the linux-next20240103 code tree.
-> 
-> Changes in v4:
-> * Patch 1: Updated comment in slow_virt_to_phys() to reduce the
->   likelihood of the comment becoming stale.  The new comment
->   describes the requirement to work with leaf PTE not present,
->   but doesn't directly reference the CoCo hypervisor callbacks.
->   [Rick Edgecombe]
-> * Patch 1: Decomposed a complex line-wrapped statement into
->   multiple statements for ease of understanding. No functional
->   change compared with v3. [Kirill Shutemov]
-> * Patch 3: Fixed handling of memory allocation errors. [Rick
->   Edgecombe]
-> 
-> Changes in v3:
-> * Major rework and simplification per discussion above.
-> 
-> Changes in v2:
-> * Added Patches 3 and 4 to deal with the failure on SEV-SNP
->   [Tom Lendacky]
-> * Split the main change into two separate patches (Patch 5 and
->   Patch 6) to improve reviewability and to offer the option of
->   retaining both hypervisor callbacks.
-> * Patch 5 moves set_memory_p() out of an #ifdef CONFIG_X86_64
->   so that the code builds correctly for 32-bit, even though it
->   is never executed for 32-bit [reported by kernel test robot]
-> 
-> [1] https://lore.kernel.org/lkml/20231121212016.1154303-1-mhklinux@outlook.com/
-> 
-> Michael Kelley (3):
->   x86/hyperv: Use slow_virt_to_phys() in page transition hypervisor
->     callback
->   x86/mm: Regularize set_memory_p() parameters and make non-static
->   x86/hyperv: Make encrypted/decrypted changes safe for
->     load_unaligned_zeropad()
+> Hyperv could free decrypted/shared pages if set_memory_encrypted() fails.
 
-Applied. Thanks.
+"Hyper-V" throughout.
 
-The changes to mm code are mostly cosmetic. The changes had been pending
-for a while without any objections from the maintainers, so I picked
-them up as well.
-
-If this becomes problematic, please let me know.
-
+> Leak the pages if this happens.
 > 
->  arch/x86/hyperv/ivm.c             | 65 ++++++++++++++++++++++++++++---
->  arch/x86/include/asm/set_memory.h |  1 +
->  arch/x86/mm/pat/set_memory.c      | 24 +++++++-----
->  3 files changed, 75 insertions(+), 15 deletions(-)
+> Only compile tested.
 > 
+> Cc: "K. Y. Srinivasan" <kys@microsoft.com>
+> Cc: Haiyang Zhang <haiyangz@microsoft.com>
+> Cc: Wei Liu <wei.liu@kernel.org>
+> Cc: Dexuan Cui <decui@microsoft.com>
+> Cc: linux-hyperv@vger.kernel.org
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> ---
+>  drivers/hv/connection.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
+> index 3cabeeabb1ca..e39493421bbb 100644
+> --- a/drivers/hv/connection.c
+> +++ b/drivers/hv/connection.c
+> @@ -315,6 +315,7 @@ int vmbus_connect(void)
+>  
+>  void vmbus_disconnect(void)
+>  {
+> +	int ret;
+>  	/*
+>  	 * First send the unload request to the host.
+>  	 */
+> @@ -337,11 +338,13 @@ void vmbus_disconnect(void)
+>  		vmbus_connection.int_page = NULL;
+>  	}
+>  
+> -	set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[0], 1);
+> -	set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[1], 1);
+> +	ret = set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[0], 1);
+> +	ret |= set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[1], 1);
+>  
+> -	hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
+> -	hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
+> +	if (!ret) {
+> +		hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
+> +		hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
+> +	}
+
+This silently leaks the pages if set_memory_encrypted() fails.  I think
+there should print some warning or error messages here.
+
+Thanks,
+Wei.
+
+>  	vmbus_connection.monitor_pages[0] = NULL;
+>  	vmbus_connection.monitor_pages[1] = NULL;
+>  }
 > -- 
-> 2.25.1
+> 2.34.1
 > 
