@@ -1,127 +1,68 @@
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0461429F
-	for <linux-coco@lists.linux.dev>; Tue,  5 Mar 2024 17:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FE741760
+	for <linux-coco@lists.linux.dev>; Tue,  5 Mar 2024 22:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709659156; cv=none; b=ngTREVPeSQREjBkC3xoZYLfh7J0DJJOPnzNGUCkOSl6WUIOI6j/XlM2XCAMTDJd6egRcLAiasn5KNC4MeHfGU8JSwHcEUycAm+LTk7BoVcMW2mc36tdvQead5HsUGr2DV5ZazW1zVDlCyNS/+cd2pAFYl3ufWjnt0RwRMhSbQR8=
+	t=1709676167; cv=none; b=G7s07XouZhVGR5YTIWAKVEY/jREk/HQPD6KMD9AmOzrQw/c8V73nCgvalgNqDa6odyAdmcj13oxy3Y651QFaG5Pu4UyMXh/DaFBqfQwHU6mk16HQj9PfsHp7s5EdMFSBXv6JeMdiRL6N81Qg+tpXXSM1kg2IfIYPROPeAfnBjQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709659156; c=relaxed/simple;
-	bh=35W0xkiyIW+h4I7uaqpD3yZaGe3eGIyUIL9pgPlFMFg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=neiiCQQM7IQVvRZK7x1FgOK96gO4qv2asx0EUf+9l5Gl+0/Tq81bS8U0crDwaRmm/D0V5VwyjoLNnEARTyXUJYrFGYLLr9+QaSBGw2Ryyc1lFXi17xr4wV1ivc17OmkrCZv3kQd+r9+LxPrGAumtKkteXVZqBhwWHu2NKqYGof8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o6rsnOer; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1709676167; c=relaxed/simple;
+	bh=HkIcF+dkaFKtjzBFwAQbeAtGTgoAMcfWJvQ1UsJP2IU=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=TzUGYCc/LISLYJGq3Roa+qmZCZpaQEjlIW4mbGAtkjf2l1rbL5RgxWhtkTwslrCJVvaIEBGBrP4H6nGaG2zJX8gm5b7G2VVMecXTXmuL84IWSSBgRpuLElWp8GV2FQL6SsTip3nfPAqviXT5lKs5myOmVwTuplWUjmdV/E0Op0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=dcRLHExf; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o6rsnOer"
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5a143047a4aso399909eaf.0
-        for <linux-coco@lists.linux.dev>; Tue, 05 Mar 2024 09:19:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709659154; x=1710263954; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+QaobAGWVH6S5E9EJzoRHvFL79d1fgtq8p8ecN7tgGg=;
-        b=o6rsnOerzYUJo1A90xu7rRjY+Fe7zgsWQKNl02HtUDfhfV0azAxM80c5aUyRmrhPan
-         bom4Ysg6wCryBSSkH0FqP7yR8HENhzc6flfIIYmUpUMkWxhWDDADM3Eeba1Tp8WmZj90
-         qMZHrlxSIF805g5qDjwV3fPqZS0nQSOb3DkmW8QTT/e97Gxed6Ypn4osgsyxt3nFeeMO
-         F5ui/ZdAfHNiRiArxInAVNMSFWqmmHj99snzyhgjq77jT6yKnaAiJcn7GWCPp4Nl/pWw
-         zkP49rLoteuh174M82+Zqe2I9tDhGfHKfSlod1Q7X0W/yGSsMegfcg3fTf5i9qLliMUV
-         nGWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709659154; x=1710263954;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+QaobAGWVH6S5E9EJzoRHvFL79d1fgtq8p8ecN7tgGg=;
-        b=szAwOi0AFNejPR6cyIjrYBL8kQo/ZFdp1zIsOSz7uFpBf7Dr1KLQpuDS4oMs60t+t7
-         fD2BcCFFHjMUtIVHW0gA5N1ZL2mjOwlQeFI129kkQBRt5Yl4cEcBKCpeBnm8sYTc0gH3
-         Df6TCEmkWfy7+yliMyfMPgQEUToIUsSSD5ckJE8HfWCNcCROPX0MXmtoWfsmfC8ZnIOd
-         bkRHU6SYxuNuPPFY8nQK85yjZeXnox7vgwcwik04vOCE10pYx+Jp1AqNVpfrLKHYwlbs
-         gD5zcc3dPcPf4OKw7N5GMp/r+UKdFu7l44Ggm0WxOZkoTZCIfR9iKDJHgD1gwzwsR8nd
-         1pyA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/RwGBFnaTft+lhzInCRUcYx44wnzaKenVmizXYFTUjXSLiurH/FBvaBbCP4fa5JD2ORRDtEKCoj8R2iVwOu1jjIO9/KNFAPs70A==
-X-Gm-Message-State: AOJu0YwV+Kow8MfzW8/fntX8g7X0HNud5ffSiOaX6R0QRYBW1vWBYtDa
-	9TToKFbx/0XaCy0YeR8JM520FBPoN0c5XCcK/0vct5p1MTTN98r+9EX7VPn7US0ssu6F9fRnrPT
-	or+GFUEqR94mS1PpfMm2EwNhVuEs/e9QApShP
-X-Google-Smtp-Source: AGHT+IEFsxok2qYjPGM8WG7zzaRYUAHjkHuadWtw7qIkVbdF0GYy27xbG5BOekp2bznsc7bcEKBI8II7uSjtyoF/Gzc=
-X-Received: by 2002:a05:6359:4103:b0:17a:d4c0:d59f with SMTP id
- kh3-20020a056359410300b0017ad4c0d59fmr2914394rwc.4.1709659153881; Tue, 05 Mar
- 2024 09:19:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="dcRLHExf"
+Received: from 8bytes.org (p4ffe0c3c.dip0.t-ipconnect.de [79.254.12.60])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 0D5BE1C803A;
+	Tue,  5 Mar 2024 23:02:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1709676163;
+	bh=HkIcF+dkaFKtjzBFwAQbeAtGTgoAMcfWJvQ1UsJP2IU=;
+	h=Date:From:To:Subject:From;
+	b=dcRLHExf8i+yPYpu4Z+I9JYlqJ6XK/CkbpKNo/4EWZCaC7xJSITkNpE+CUCAVt5vF
+	 Eq3XoQBW7Sq7+HvTxTBrlfkh/lUu4xabs12xLLUOJjrbbLlj6+POQ/FTpkjL1tCiAo
+	 zPQk1bqHmWBhxE/LUaQrxMWDj6ysHe3Gnl69Euxk2P8CJb8JAiKsC6PI2AJNnOKZ0F
+	 0IFTSqYJKPnX5RLXODvkWSOPbrMD58/L0l9/mQbkm1UC8MGoRrvHNgxb+P7sOmQwfe
+	 w0k/s6IhoJHC1N4mhj7ruWf8v411NJK5vvV6RFBB1GHtfSlXup49w3Rsv9otOiPcIp
+	 CLp9B79kPv0FQ==
+Date: Tue, 5 Mar 2024 23:02:41 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: SVSM Devel Call March 6th, 2024
+Message-ID: <ZeeWgVCN6ZdRGxJ3@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240112055251.36101-1-vannapurve@google.com> <20240112055251.36101-2-vannapurve@google.com>
- <etvf2mon464whscbxqktdd7bputnqmmwmoeg7ssixsk4kljfek@4wngbgzbbmck>
- <CAGtprH-95FEUzpc-yxQMo87gpqgMxyz9W8tiWtu_ZHhMW-jjuA@mail.gmail.com> <8a6dabdf-dc11-4989-b6b4-b49871ff9ca6@amazon.com>
-In-Reply-To: <8a6dabdf-dc11-4989-b6b4-b49871ff9ca6@amazon.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 5 Mar 2024 09:19:00 -0800
-Message-ID: <CAGtprH8LOgvtO_rjFzASbp240P=yBvODCBU22sN_+uhdumueiQ@mail.gmail.com>
-Subject: Re: [RFC V1 1/5] swiotlb: Support allocating DMA memory from SWIOTLB
-To: Alexander Graf <graf@amazon.com>
-Cc: "Kirill A. Shutemov" <kirill@shutemov.name>, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	pbonzini@redhat.com, rientjes@google.com, seanjc@google.com, 
-	erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
-	sagis@google.com, oupton@google.com, peterx@redhat.com, vkuznets@redhat.com, 
-	dmatlack@google.com, pgonda@google.com, michael.roth@amd.com, 
-	thomas.lendacky@amd.com, dave.hansen@linux.intel.com, 
-	linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
-	isaku.yamahata@gmail.com, andrew.jones@linux.dev, corbet@lwn.net, hch@lst.de, 
-	m.szyprowski@samsung.com, rostedt@goodmis.org, iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 15, 2024 at 3:14=E2=80=AFPM Alexander Graf <graf@amazon.com> wr=
-ote:
-> > ...
-> > The issue with aligning the pool areas to hugepages is that hugepage
-> > allocation at runtime is not guaranteed. Guaranteeing the hugepage
-> > allocation might need calculating the upper bound in advance, which
-> > defeats the purpose of enabling dynamic SWIOTLB. I am open to
-> > suggestions here.
->
->
-> You could allocate a max bound at boot using CMA and then only fill into
-> the CMA area when SWIOTLB size requirements increase? The CMA region
-> will allow movable allocations as long as you don't require the CMA space=
-.
+Hi,
 
-Thanks Alex for the inputs, I wanted to understand CMA better before
-responding here.
+Here is the usual call for agenda items for this weeks SVSM development
+call. I don't have any particular items yet, if you have please let me
+know via email or in the meeting.
 
-I am trying to get the following requirements satisfied:
-1) SWIOTLB pools are aligned to hugepage sizes.
-2) SWIOTLB pool areas can be scaled up dynamically on demand to avoid
-pre-allocating large memory ranges.
+Details of the meeting (GMeet and Calendar links, meeting time) can be
+found in our shiny new governance repository at:
 
-Using CMA to back SWIOTLB pools for CoCo VMs as per this suggestion would n=
-eed:
-1) Pre-configuring CMA areas with a certain amount at boot either with,
-   - command line argument to the kernel (tedious to specify with
-different memory shapes) or
-   - kernel init time hook called by architecture specific code to
-setup CMA areas according to the amount of memory available (Possibly
-a percentage of memory as done for SWIOTLB configuration)
-2) SWIOTLB pool dynamic allocation logic can first scan for CMA areas
-to find the hugepage aligned ranges,  and if not found, can fall back
-to allocate the ranges using buddy allocator (which should ideally
-happen after depleting the CMA area).
-3) SWIOTLB pool regions would need to be allocatable from >4G ranges as wel=
-l.
+	https://github.com/coconut-svsm/governance
 
-Setting up a suitable percentage of memory for CMA area in case of
-CoCo VMs will allow larger SWIOTLB pool area additions, this should
-help alleviate Michael Kelley's concern about spin lock contention due
-to smaller pool areas. This will need some analysis of shared memory
-usage with current devices in use with CoCo VMs, especially GPUs which
-might need large amounts of shared memory.
+Please note that the meeting will be recorded and the recording
+eventually published.
 
->
->
-> Alex
+Next week will be no meeting as it conflicts with the OC3 conference.
+
+See you all there.
+
+Regards,
+
+	Jörg
