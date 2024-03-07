@@ -1,212 +1,189 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10olkn2042.outbound.protection.outlook.com [40.92.42.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AC212FF73
-	for <linux-coco@lists.linux.dev>; Thu,  7 Mar 2024 16:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709829706; cv=none; b=KlfBLmqK0dO0aSkYuG3f8bewzdY0GGxwTB6k2mes+9XQomL7GOUEZirAabaAIE1cuWo2xe/3su8zazBvaoekPexSXgzX5jd8C14L997q+EjI4MqwxN4hQ6K3vOhngS7S8M3dYxZ1yaK000JIxjjTG8EEBtM4XE2yajn2r1tQ2P0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709829706; c=relaxed/simple;
-	bh=P3wkd5RFNRjH7Vt6TkrFqc1anD2XYqsHKX9EBPrmLa0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hESWiMWycpQCxZAvAV6qmAYNY4TfE3LmHFBhDkr5S97ik2lE/yMzn2jQvKtiZIjqqLKUCcGmdrtP6Rcfh3+QXH9grM5OAqTeMMmROQtexQ1CJr9PeGBTFyDYAvUqg/Y+MEw2CTwHh9oauJ2FJr1WRaWAkAgpL+TQXNkY15kteno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TrFSK2dL6z6JB6l;
-	Fri,  8 Mar 2024 00:41:37 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id CC4A4140DB0;
-	Fri,  8 Mar 2024 00:41:40 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 7 Mar
- 2024 16:41:40 +0000
-Date: Thu, 7 Mar 2024 16:41:39 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, Xiaoyao Li <xiaoyao.li@intel.com>, "Isaku
- Yamahata" <isaku.yamahata@intel.com>, Alexey Kardashevskiy <aik@amd.com>, "Wu
- Hao" <hao.wu@intel.com>, Yilun Xu <yilun.xu@intel.com>, Tom Lendacky
-	<thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>,
-	<linux-pci@vger.kernel.org>, <gregkh@linuxfoundation.org>
-Subject: Re: [RFC PATCH 3/5] coco/tsm: Introduce a shared class device for
- TSMs
-Message-ID: <20240307164139.000049aa@Huawei.com>
-In-Reply-To: <170660664287.224441.947018257307932138.stgit@dwillia2-xfh.jf.intel.com>
-References: <170660662589.224441.11503798303914595072.stgit@dwillia2-xfh.jf.intel.com>
-	<170660664287.224441.947018257307932138.stgit@dwillia2-xfh.jf.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7036C130AC0
+	for <linux-coco@lists.linux.dev>; Thu,  7 Mar 2024 17:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.42.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709831508; cv=fail; b=M0XqvjKDVbN3W+fXhXAwYJCx5iMhMMl9s7J584XZfsfQANtObwqS8ywlb1Eok9dSrz9hA8wboKhKwADFp8SlFAFebtGqnHVtG9EQ77UvVwW899CUGnXEzUD2ZRmIGlkG8mqZ+Le8HRqrdb5n3a7XbtuWFqgLga6bkPr2VVY7A3Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709831508; c=relaxed/simple;
+	bh=Ug5BaFYwQpY5dJpOzzj6zgR5yhv9vGCwAPBoiiCJOJo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tJVTyHSQ3rIpY+xuUrUADoKX7uaxWg0GsSdowS09CdldbRcyy8RNscLdteXVhZ4FOb52tR1lSfC7tWZTncONt4BSFDUq9OMbF3j5CBA/J2CTxnxu6TRHvSZg+8pXkPHZ7N46VJN55ninYL3aNgfGOeg+338gb94ekt4IwOi3SUI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=O18NOmG3; arc=fail smtp.client-ip=40.92.42.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="O18NOmG3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GrnxwZ4jSkA79IptxOrL+0MZbK7tyynvco/nw6e6QxuD/YvMFjblNw19wEaRdTj8tNgwrnbAeuCV+7v9WCiLI+dYvnTOPt2Cs+l7jeA8hxYl9k1qV8qI5kcrRY/fvBTggQHSei/tE5HVo9iR8gCxMNdRaK31hjcoE+gYlx80Op8jKjU3RFi+mHJRpqIrR+YQkNWxRQmAU6a/qCx3ENhBfIG04BYvM+RKdXULhkqwi5NNlbJJ4Bdp3tj3SFykJXk/9KjSmnwba0rRLNCd4Q+c1lHk5Vz6sm+PxaiWqGhJFVgEICWsw8+9OP2ZDyYVXArldsCFgAGNITX9W/rBumegSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jyEw3+TZ8Cb/DL7MMUUI+H4SQ8Mo3kN2cAfnrECi7UA=;
+ b=M93Cx3ei5FgXxiJ6wWYO0VHxUkn66uzDVU6Ec0T4DDJleCUuV3ndfMoDSqRSiw1VDNPXNh6mMlp6TEdNfJYQU+hKOfYp3cRyrTy8vWxsL9nQW9muYm66//o6iDuGIcK16xKH0KtsZkCwORkd2oVAHBMk7Vzi+qfLdDc6waFwpHeprMJ5V8torJK88reT0QfmX3gRFoOdc98S3U0IcDHd/T4T7V5HL5RJNJnToxnH47h+2QfXED17C39DCqz4xat/Xgz5dztJAuQssJo1djI0TffItvKJRN7tlXb5nqOR7snokbyKpRkt9en4QqUEK+HAqmntfSctdwkr5zPThfJm7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jyEw3+TZ8Cb/DL7MMUUI+H4SQ8Mo3kN2cAfnrECi7UA=;
+ b=O18NOmG3Zk99dIPDSr+o/BfbLKvbqs4sDPegexGM68bCZttKD3re+E4yWp/Pkp4ROE80iIWcT8DeXEkbv2P4HZ26IrEb2HynAF4ZmcEps8OrVjk/JUMztL/mvMiZRMBkQZlCwJt3tVBrhlpNati3or7vVJrpjBz4RfqEBGDqKUtKAVxOwI7+1wb9bxyyNdYonSN2UOjfpT6GIooXG/SdeWJt4EasJ4Tr4Z9ZL5iPgRhT+3iUMspcKQg/CFo0sQoM15sRfCPG36PKLbphxGk4WZEwBhLEd68GBGsryJ1xvnJu7rH6ejggQoqhLw3e9TFdTUUnslWiaYfrS9C904uP7g==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by LV3PR02MB10150.namprd02.prod.outlook.com (2603:10b6:408:197::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Thu, 7 Mar
+ 2024 17:11:42 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::67a9:f3c0:f57b:86dd]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::67a9:f3c0:f57b:86dd%5]) with mapi id 15.20.7362.024; Thu, 7 Mar 2024
+ 17:11:42 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, "kys@microsoft.com"
+	<kys@microsoft.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>, "decui@microsoft.com"
+	<decui@microsoft.com>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "gregkh@linuxfoundation.org"
+	<gregkh@linuxfoundation.org>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC: "sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "elena.reshetova@intel.com"
+	<elena.reshetova@intel.com>
+Subject: RE: [RFC RFT PATCH 0/4] Handle  set_memory_XXcrypted() errors in
+ hyperv
+Thread-Topic: [RFC RFT PATCH 0/4] Handle  set_memory_XXcrypted() errors in
+ hyperv
+Thread-Index: AQHaZTRXjdPXYbhP4karQ0dDTiSBNbEjNf9QgAlhAAA=
+Date: Thu, 7 Mar 2024 17:11:41 +0000
+Message-ID:
+ <SN6PR02MB4157AFF080839DB55294F5E9D4202@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20240222021006.2279329-1-rick.p.edgecombe@intel.com>
+ <SN6PR02MB41575BD90488B63426A5CAB4D45E2@SN6PR02MB4157.namprd02.prod.outlook.com>
+In-Reply-To:
+ <SN6PR02MB41575BD90488B63426A5CAB4D45E2@SN6PR02MB4157.namprd02.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tmn: [5PYBSSLBB9owHJIEI6l2DZKlq2VXLzCP]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|LV3PR02MB10150:EE_
+x-ms-office365-filtering-correlation-id: ca2c74d8-7fa0-454c-386c-08dc3ec9a8b7
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ lLiq/D11Ksn/zRK7JqfGWm8q9wjy4Cxmohs7SUAvqXeqdu5DRHAELZn9ZGjajhdbUGKOXjZYSX8MrwgbhGsLnYMxYCdIXcxC67+b/do2Qp4UBAFeUUpAvrb5YA8Rf4VVh2oj99HZRM7tbDhhGTC2p+Eu31m2MafBVeOshc9UMLlc+A3/Y2M/6WCMcqc/WQVOA1DYUldg+gehjC2NJ+0xEG+avfDy0Y7xOi9JBl6+CEepICfFKE4gTvp/kHXZ6CO73fBlSeXy8R6wVdyeReCbm7nju9yZ1nHfwl2gVon5X+XbJGsS16GQFlPZSh2te+xUrDFE3CafD3EwMFJ6OqILLyGEu74IbB+4sH3iEa8gtD7aMAyKOw0jvK2i0yaeYf8xn8hXmE0j5jKO9IX3WavYfJT154fSgKQRvQRfs0RBrAc/XDLEVENuyKzlCWwEFt0l8vzvXmmSPVcYeM8DkNvL6/QT9tkncdjLYx0VwkfFcpXkX+FPwLdtwkAjlUTMaukI8Yr1yPlWgLxJfrId65W3vPoJwKRqxcKJ//ySRDcvbCEQonkG5UIqgckiPfZs0G5K
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?EO+MFclRxBiWZmd+3al1ovZRJCH0si8Dn9BgPZFyZQY/57xcV+7NLqt4d9Ql?=
+ =?us-ascii?Q?G/0MU8phe0fQhAwrqeTUJGwFO+b/z9F84E24cAHBL5I1W5mW4vpJR7+4Dzdi?=
+ =?us-ascii?Q?cOMvoiJGSnBg1WPS2yHczmoGO5b2DF77r6OE0SO418tK60CH2P9Lg+HgPS1X?=
+ =?us-ascii?Q?tl8JvCmk5mPe/9sYkKJEa9EMZdbZ7frdtxvvlpLibe4Op6g7z3alRDi2m/gm?=
+ =?us-ascii?Q?3kRXEnUKpWa+q8JvlzXIiEPdy/3/NiIutisrIk+Fz2nDwyfp9Ab0NB1mWuPE?=
+ =?us-ascii?Q?RqSJDwnlJPOWVtjLLT/DEUoK4JL/BN+Sc8BTQOZyGja/fI9RmWFOTpQVdM99?=
+ =?us-ascii?Q?8d3KeL9y1t50WGMvsfOejHcckPC9WcErdNSPxPOgaAhqgfWpysQdTILMJ3IC?=
+ =?us-ascii?Q?+FUTiJCx0lL4no2J6Soidq74QARErxs/YTs9lVg+uTbRZXZVRAJjSVtSkYdI?=
+ =?us-ascii?Q?SIjS5YHhyMvIjRahAcWMEtUnyXt1vS4jZFWifLpf5Kh9hXEwFgRy/YRTCkwR?=
+ =?us-ascii?Q?Q5nK8W+bAzeR/EXaG6EMTRq1OPEOiTjXkly6/2ukGWLPOaOxD7auRbxUK2uF?=
+ =?us-ascii?Q?C4KNxY5lfWpnnnqZ9AH32K1+aKh+JNStlSydHNNZaNRiBhtNVJj6I6lGzdsO?=
+ =?us-ascii?Q?cvB1MEH95fCdOADTfX9tQkeA2//F5vh8KUwozkjTAcwsZcUzGiaQbOotm4bU?=
+ =?us-ascii?Q?BYyKo/ir+wrBf6J3mQzCklYMO4V+dZ9hXSCQJnnKXBXPiTZF9a/QAEJ3WQXF?=
+ =?us-ascii?Q?7EmgNWsG8blTC2oWwnpAd9q7XHRXkfw0VNW2vsK1GpdurQUYX+pFdrjIPajC?=
+ =?us-ascii?Q?ZgP164j6z8c99Par0iOXVD221qSU/wwBOB1VGNM8vNjtSpeYcuw2fNdxBv1e?=
+ =?us-ascii?Q?lI2kmUNdu1yuviWkirs6jV1qNyB25CQE4LCOTmBizqXAaxc5tXt1dmPPIQYv?=
+ =?us-ascii?Q?NXTuTKKEbcI0MFWTOPvnnDd2OvrSe/PTV+y3BO/ioe9jOFQktgsCIylOeDHR?=
+ =?us-ascii?Q?z/w6orQ3fpGv9Xhd8tso5/HBQ9zVyDH7xVyDf3b8tuXKRJmVSKJNY4oRSNNr?=
+ =?us-ascii?Q?AFwJieRr1WAxYYArcth+t2kSwlmykJ9TLzgm/UjW9eAjTS/Gr6qybe1gl58A?=
+ =?us-ascii?Q?m/seVAZ5nGGavlIif3eOyRsVqSEQskH6Ks4IRJxvkmsyz3jUnOw0sms/BUMc?=
+ =?us-ascii?Q?l5qcyoZ8TYCpLXrItKEdf3B+7BtCx7KfnPVYAA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca2c74d8-7fa0-454c-386c-08dc3ec9a8b7
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Mar 2024 17:11:41.9311
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR02MB10150
 
-On Tue, 30 Jan 2024 01:24:02 -0800
-Dan Williams <dan.j.williams@intel.com> wrote:
+From: Michael Kelley <mhklinux@outlook.com> Sent: Friday, March 1, 2024 11:=
+00 AM
+> >
+> > IMPORTANT NOTE:
+> > I don't have a setup to test tdx hyperv changes. These changes are comp=
+ile
+> > tested only. Previously Michael Kelley suggested some folks at MS might=
+ be
+> > able to help with this.
+>=20
+> Thanks for doing these changes.  Overall they look pretty good,
+> modulo a few comments.  The "decrypted" flag in the vmbus_gpadl
+> structure is a good way to keep track of the encryption status of
+> the associated memory.
+>=20
+> The memory passed to the gpadl (Guest Physical Address Descriptor
+> List) functions may allocated and freed directly by the driver, as in
+> the netvsc and UIO cases.  You've handled that case. But memory
+> may also be allocated by vmbus_alloc_ring() and freed by
+> vmbus_free_ring().  Your patch set needs an additional change
+> to check the "decrypted" flag in vmbus_free_ring().
+>=20
+> In reviewing the code, I also see some unrelated memory freeing
+> issues in error paths.  They are outside the scope of your changes.
+> I'll make a note of these for future fixing.
+>=20
+> For testing, I'll do two things:
+>=20
+> 1) Verify that the non-error paths still work correctly with the
+> changes.  That should be relatively straightforward as the
+> changes are pretty much confined to the error paths.
+>=20
+> 2) Hack set_memory_encrypted() to always fail.  I hope Linux
+> still boots in that case, but just leaks some memory.  Then if
+> I unbind a Hyper-V synthetic device, that should exercise the
+> path where set_memory_encrypted() is called.  Failures
+> should be handled cleanly, albeit while leaking the memory.
+>=20
+> I should be able to test in a normal VM, a TDX VM, and an
+> SEV-SNP VM.
+>=20
 
-> A "tsm" is a platform component that provides an API for securely
-> provisioning resources for a confidential guest (TVM) to consume. "TSM"
-> also happens to be the acronym the PCI specification uses to define the
-> platform agent that carries out device-security operations. That
-> platform capability is commonly called TEE I/O. It is this arrival of
-> TEE I/O platforms that requires the "tsm" concept to grow from a
-> low-level arch-specific detail of TVM instantiation, to a frontend
-> interface to mediate device setup and interact with general purpose
-> kernel subsystems outside of arch/ like the PCI core.
-> 
-> Provide a virtual (as in /sys/devices/virtual) class device interface to
-> front all of the aspects of a TSM and TEE I/O that are
-> cross-architecture common. This includes mechanisms like enumerating
-> available platform TEE I/O capabilities and provisioning connections
-> between the platform TSM and device DSMs.
-> 
-> It is expected to handle hardware TSMs, like AMD SEV-SNP and ARM CCA
-> where there is a physical TEE coprocessor device running firmware, as
-> well as software TSMs like Intel TDX and RISC-V COVE, where there is a
-> privileged software module loaded at runtime.
-> 
-> For now this is just the scaffolding for registering a TSM device and/or
-> TSM-specific attribute groups.
-> 
-> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-> Cc: Isaku Yamahata <isaku.yamahata@intel.com>
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Cc: Wu Hao <hao.wu@intel.com>
-> Cc: Yilun Xu <yilun.xu@intel.com>
-> Cc: Tom Lendacky <thomas.lendacky@amd.com>
-> Cc: John Allen <john.allen@amd.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Rick --
 
-A few drive by comments because I was curious.
+Using your patches plus the changes in my comments, I've
+done most of the testing described above. The normal
+paths work, and when I hack set_memory_encrypted()
+to fail, the error paths correctly did not free the memory.
+I checked both the ring buffer memory and the additional
+vmalloc memory allocated by the netvsc driver and the uio
+driver.  The memory status can be checked after-the-fact
+via /proc/vmmallocinfo and /proc/buddyinfo since these
+are mostly large allocations. As expected, the drivers
+output their own error messages after the failures to
+teardown the GPADLs.
 
+I did not test the vmbus_disconnect() path since that
+effectively kills the VM.
 
-> diff --git a/drivers/virt/coco/tsm/class.c b/drivers/virt/coco/tsm/class.c
-> new file mode 100644
-> index 000000000000..a569fa6b09eb
-> --- /dev/null
-> +++ b/drivers/virt/coco/tsm/class.c
-> @@ -0,0 +1,100 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-> +
-> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> +
-> +#include <linux/tsm.h>
-> +#include <linux/rwsem.h>
-> +#include <linux/device.h>
-> +#include <linux/module.h>
-> +#include <linux/cleanup.h>
-> +
-> +static DECLARE_RWSEM(tsm_core_rwsem);
-> +struct class *tsm_class;
-> +struct tsm_subsys {
-> +	struct device dev;
-> +	const struct tsm_info *info;
-> +} *tsm_subsys;
-> +
-> +int tsm_register(const struct tsm_info *info)
-> +{
-> +	struct device *dev __free(put_device) = NULL;
+I tested in a normal VM, and in an SEV-SNP VM.  I didn't
+specifically test in a TDX VM, but given that Hyper-V CoCo
+guests run with a paravisor, the guest sees the same thing
+either way.
 
-I think it would be appropriate to move this down to where
-you set dev so it is moderately obvious where it comes from.
-This only becomes valid cleanup after the call to device_register()
-with it's device_initialize - which is ugly. 
-Maybe we should just use split device_initialize() / device_add()
-when combining with __free(put_device);
-
-The ideal would be something like.
-
-	struct device *dev __free(put_device) = device_initialize(&subsys->dev);
-
-with device_initialize() returning the dev parameter.
-
-For the really adventurous maybe even the overkill option of the following
-(I know it's currently pointless complexity - given no error paths between
- the kzalloc and device_initialize())
-
-	struct tsm_subsys *subsys __free(kfree) = kzalloc(sizeof(*subsys), GFP_KERNEL);
-
-//Now safe to exit here.
-
-	struct device *dev __free(put_device) = device_initialize(&no_free_ptr(subsys)->dev);
-
-// Also good to exit here with no double free etc though subsys is now inaccessible breaking
-the one place it's used later ;)
-
-Maybe I'm over thinking things and I doubt cleanup.h discussions
-was really what you wanted from this RFC :)
-
-
-> +	struct tsm_subsys *subsys;
-> +	int rc;
-> +
-> +	guard(rwsem_write)(&tsm_core_rwsem);
-> +	if (tsm_subsys) {
-> +		pr_warn("failed to register: \"%s\", \"%s\" already registered\n",
-> +			info->name, tsm_subsys->info->name);
-> +		return -EBUSY;
-> +	}
-> +
-> +	subsys = kzalloc(sizeof(*subsys), GFP_KERNEL);
-> +	if (!subsys)
-> +		return -ENOMEM;
-> +
-> +	subsys->info = info;
-> +	dev = &subsys->dev;
-> +	dev->class = tsm_class;
-> +	dev->groups = info->groups;
-> +	dev_set_name(dev, "tsm0");
-> +	rc = device_register(dev);
-> +	if (rc)
-> +		return rc;
-> +
-> +	if (info->host) {
-> +		rc = sysfs_create_link(&dev->kobj, &info->host->kobj, "host");
-
-Why not parent it from there?  If it has a logical parent, that would be
-nicer than using a virtual device.
-
-> +		if (rc)
-> +			return rc;
-> +	}
-> +
-> +	/* don't auto-free @dev */
-> +	dev = NULL;
-> +	tsm_subsys = subsys;
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(tsm_register);
-
-Seems appropriate to namespace these from the start.
-
-> +
-> +void tsm_unregister(const struct tsm_info *info)
-> +{
-> +	guard(rwsem_write)(&tsm_core_rwsem);
-> +	if (!tsm_subsys || info != tsm_subsys->info) {
-> +		pr_warn("failed to unregister: \"%s\", not currently registered\n",
-> +			info->name);
-> +		return;
-> +	}
-> +
-> +	if (info->host)
-> +		sysfs_remove_link(&tsm_subsys->dev.kobj, "host");
-> +	device_unregister(&tsm_subsys->dev);
-> +	tsm_subsys = NULL;
-> +}
-> +EXPORT_SYMBOL_GPL(tsm_unregister);
-
-
-
+Michael
