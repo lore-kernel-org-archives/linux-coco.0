@@ -1,189 +1,436 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10olkn2042.outbound.protection.outlook.com [40.92.42.42])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7036C130AC0
-	for <linux-coco@lists.linux.dev>; Thu,  7 Mar 2024 17:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.42.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709831508; cv=fail; b=M0XqvjKDVbN3W+fXhXAwYJCx5iMhMMl9s7J584XZfsfQANtObwqS8ywlb1Eok9dSrz9hA8wboKhKwADFp8SlFAFebtGqnHVtG9EQ77UvVwW899CUGnXEzUD2ZRmIGlkG8mqZ+Le8HRqrdb5n3a7XbtuWFqgLga6bkPr2VVY7A3Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709831508; c=relaxed/simple;
-	bh=Ug5BaFYwQpY5dJpOzzj6zgR5yhv9vGCwAPBoiiCJOJo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tJVTyHSQ3rIpY+xuUrUADoKX7uaxWg0GsSdowS09CdldbRcyy8RNscLdteXVhZ4FOb52tR1lSfC7tWZTncONt4BSFDUq9OMbF3j5CBA/J2CTxnxu6TRHvSZg+8pXkPHZ7N46VJN55ninYL3aNgfGOeg+338gb94ekt4IwOi3SUI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=O18NOmG3; arc=fail smtp.client-ip=40.92.42.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="O18NOmG3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GrnxwZ4jSkA79IptxOrL+0MZbK7tyynvco/nw6e6QxuD/YvMFjblNw19wEaRdTj8tNgwrnbAeuCV+7v9WCiLI+dYvnTOPt2Cs+l7jeA8hxYl9k1qV8qI5kcrRY/fvBTggQHSei/tE5HVo9iR8gCxMNdRaK31hjcoE+gYlx80Op8jKjU3RFi+mHJRpqIrR+YQkNWxRQmAU6a/qCx3ENhBfIG04BYvM+RKdXULhkqwi5NNlbJJ4Bdp3tj3SFykJXk/9KjSmnwba0rRLNCd4Q+c1lHk5Vz6sm+PxaiWqGhJFVgEICWsw8+9OP2ZDyYVXArldsCFgAGNITX9W/rBumegSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jyEw3+TZ8Cb/DL7MMUUI+H4SQ8Mo3kN2cAfnrECi7UA=;
- b=M93Cx3ei5FgXxiJ6wWYO0VHxUkn66uzDVU6Ec0T4DDJleCUuV3ndfMoDSqRSiw1VDNPXNh6mMlp6TEdNfJYQU+hKOfYp3cRyrTy8vWxsL9nQW9muYm66//o6iDuGIcK16xKH0KtsZkCwORkd2oVAHBMk7Vzi+qfLdDc6waFwpHeprMJ5V8torJK88reT0QfmX3gRFoOdc98S3U0IcDHd/T4T7V5HL5RJNJnToxnH47h+2QfXED17C39DCqz4xat/Xgz5dztJAuQssJo1djI0TffItvKJRN7tlXb5nqOR7snokbyKpRkt9en4QqUEK+HAqmntfSctdwkr5zPThfJm7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jyEw3+TZ8Cb/DL7MMUUI+H4SQ8Mo3kN2cAfnrECi7UA=;
- b=O18NOmG3Zk99dIPDSr+o/BfbLKvbqs4sDPegexGM68bCZttKD3re+E4yWp/Pkp4ROE80iIWcT8DeXEkbv2P4HZ26IrEb2HynAF4ZmcEps8OrVjk/JUMztL/mvMiZRMBkQZlCwJt3tVBrhlpNati3or7vVJrpjBz4RfqEBGDqKUtKAVxOwI7+1wb9bxyyNdYonSN2UOjfpT6GIooXG/SdeWJt4EasJ4Tr4Z9ZL5iPgRhT+3iUMspcKQg/CFo0sQoM15sRfCPG36PKLbphxGk4WZEwBhLEd68GBGsryJ1xvnJu7rH6ejggQoqhLw3e9TFdTUUnslWiaYfrS9C904uP7g==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by LV3PR02MB10150.namprd02.prod.outlook.com (2603:10b6:408:197::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Thu, 7 Mar
- 2024 17:11:42 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::67a9:f3c0:f57b:86dd]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::67a9:f3c0:f57b:86dd%5]) with mapi id 15.20.7362.024; Thu, 7 Mar 2024
- 17:11:42 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>, "kys@microsoft.com"
-	<kys@microsoft.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>, "decui@microsoft.com"
-	<decui@microsoft.com>, "linux-hyperv@vger.kernel.org"
-	<linux-hyperv@vger.kernel.org>, "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: "sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "elena.reshetova@intel.com"
-	<elena.reshetova@intel.com>
-Subject: RE: [RFC RFT PATCH 0/4] Handle  set_memory_XXcrypted() errors in
- hyperv
-Thread-Topic: [RFC RFT PATCH 0/4] Handle  set_memory_XXcrypted() errors in
- hyperv
-Thread-Index: AQHaZTRXjdPXYbhP4karQ0dDTiSBNbEjNf9QgAlhAAA=
-Date: Thu, 7 Mar 2024 17:11:41 +0000
-Message-ID:
- <SN6PR02MB4157AFF080839DB55294F5E9D4202@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20240222021006.2279329-1-rick.p.edgecombe@intel.com>
- <SN6PR02MB41575BD90488B63426A5CAB4D45E2@SN6PR02MB4157.namprd02.prod.outlook.com>
-In-Reply-To:
- <SN6PR02MB41575BD90488B63426A5CAB4D45E2@SN6PR02MB4157.namprd02.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-tmn: [5PYBSSLBB9owHJIEI6l2DZKlq2VXLzCP]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|LV3PR02MB10150:EE_
-x-ms-office365-filtering-correlation-id: ca2c74d8-7fa0-454c-386c-08dc3ec9a8b7
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- lLiq/D11Ksn/zRK7JqfGWm8q9wjy4Cxmohs7SUAvqXeqdu5DRHAELZn9ZGjajhdbUGKOXjZYSX8MrwgbhGsLnYMxYCdIXcxC67+b/do2Qp4UBAFeUUpAvrb5YA8Rf4VVh2oj99HZRM7tbDhhGTC2p+Eu31m2MafBVeOshc9UMLlc+A3/Y2M/6WCMcqc/WQVOA1DYUldg+gehjC2NJ+0xEG+avfDy0Y7xOi9JBl6+CEepICfFKE4gTvp/kHXZ6CO73fBlSeXy8R6wVdyeReCbm7nju9yZ1nHfwl2gVon5X+XbJGsS16GQFlPZSh2te+xUrDFE3CafD3EwMFJ6OqILLyGEu74IbB+4sH3iEa8gtD7aMAyKOw0jvK2i0yaeYf8xn8hXmE0j5jKO9IX3WavYfJT154fSgKQRvQRfs0RBrAc/XDLEVENuyKzlCWwEFt0l8vzvXmmSPVcYeM8DkNvL6/QT9tkncdjLYx0VwkfFcpXkX+FPwLdtwkAjlUTMaukI8Yr1yPlWgLxJfrId65W3vPoJwKRqxcKJ//ySRDcvbCEQonkG5UIqgckiPfZs0G5K
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?EO+MFclRxBiWZmd+3al1ovZRJCH0si8Dn9BgPZFyZQY/57xcV+7NLqt4d9Ql?=
- =?us-ascii?Q?G/0MU8phe0fQhAwrqeTUJGwFO+b/z9F84E24cAHBL5I1W5mW4vpJR7+4Dzdi?=
- =?us-ascii?Q?cOMvoiJGSnBg1WPS2yHczmoGO5b2DF77r6OE0SO418tK60CH2P9Lg+HgPS1X?=
- =?us-ascii?Q?tl8JvCmk5mPe/9sYkKJEa9EMZdbZ7frdtxvvlpLibe4Op6g7z3alRDi2m/gm?=
- =?us-ascii?Q?3kRXEnUKpWa+q8JvlzXIiEPdy/3/NiIutisrIk+Fz2nDwyfp9Ab0NB1mWuPE?=
- =?us-ascii?Q?RqSJDwnlJPOWVtjLLT/DEUoK4JL/BN+Sc8BTQOZyGja/fI9RmWFOTpQVdM99?=
- =?us-ascii?Q?8d3KeL9y1t50WGMvsfOejHcckPC9WcErdNSPxPOgaAhqgfWpysQdTILMJ3IC?=
- =?us-ascii?Q?+FUTiJCx0lL4no2J6Soidq74QARErxs/YTs9lVg+uTbRZXZVRAJjSVtSkYdI?=
- =?us-ascii?Q?SIjS5YHhyMvIjRahAcWMEtUnyXt1vS4jZFWifLpf5Kh9hXEwFgRy/YRTCkwR?=
- =?us-ascii?Q?Q5nK8W+bAzeR/EXaG6EMTRq1OPEOiTjXkly6/2ukGWLPOaOxD7auRbxUK2uF?=
- =?us-ascii?Q?C4KNxY5lfWpnnnqZ9AH32K1+aKh+JNStlSydHNNZaNRiBhtNVJj6I6lGzdsO?=
- =?us-ascii?Q?cvB1MEH95fCdOADTfX9tQkeA2//F5vh8KUwozkjTAcwsZcUzGiaQbOotm4bU?=
- =?us-ascii?Q?BYyKo/ir+wrBf6J3mQzCklYMO4V+dZ9hXSCQJnnKXBXPiTZF9a/QAEJ3WQXF?=
- =?us-ascii?Q?7EmgNWsG8blTC2oWwnpAd9q7XHRXkfw0VNW2vsK1GpdurQUYX+pFdrjIPajC?=
- =?us-ascii?Q?ZgP164j6z8c99Par0iOXVD221qSU/wwBOB1VGNM8vNjtSpeYcuw2fNdxBv1e?=
- =?us-ascii?Q?lI2kmUNdu1yuviWkirs6jV1qNyB25CQE4LCOTmBizqXAaxc5tXt1dmPPIQYv?=
- =?us-ascii?Q?NXTuTKKEbcI0MFWTOPvnnDd2OvrSe/PTV+y3BO/ioe9jOFQktgsCIylOeDHR?=
- =?us-ascii?Q?z/w6orQ3fpGv9Xhd8tso5/HBQ9zVyDH7xVyDf3b8tuXKRJmVSKJNY4oRSNNr?=
- =?us-ascii?Q?AFwJieRr1WAxYYArcth+t2kSwlmykJ9TLzgm/UjW9eAjTS/Gr6qybe1gl58A?=
- =?us-ascii?Q?m/seVAZ5nGGavlIif3eOyRsVqSEQskH6Ks4IRJxvkmsyz3jUnOw0sms/BUMc?=
- =?us-ascii?Q?l5qcyoZ8TYCpLXrItKEdf3B+7BtCx7KfnPVYAA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DD0130AD7
+	for <linux-coco@lists.linux.dev>; Thu,  7 Mar 2024 17:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709831898; cv=none; b=BAYAWkTvOMjc6LsgD6YBvtVRJnwLM7/9rKHz85rwXJOv7vGSrqMW7T2mif787v+4g//LsnqCX8LcOPeXf6DwJ4a/mt7K6Qa2eTFAkP4ATUmbr9FdLU7a4RkUDHhW3JsDeN4kIrOjYjMXHLOrCvJgDocPb8Ai1MhBVt35BUttDkE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709831898; c=relaxed/simple;
+	bh=a3+cJo0Fq4XYdGiDA3lt5G21MCjkGoSCbTNRKlZD5+8=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CFSwbiEpT2t/F6fGuFYzCBJ2U10pP5exZLh68HoNbIf5vdESqdUHHHi2KJOBruQlhcFceNXKQrs3y+cpMKbvFFEHQ/mirIg/D7J67pJPjGviixRegS5WJHLjHvECASyelmTuDuV6pXUb5PonMJhb5uH5vIpFynOVSPH0zEkrIoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TrG9w6qmmz6K7F9;
+	Fri,  8 Mar 2024 01:14:12 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9342D140FB1;
+	Fri,  8 Mar 2024 01:18:11 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 7 Mar
+ 2024 17:18:11 +0000
+Date: Thu, 7 Mar 2024 17:18:10 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, Wu Hao <hao.wu@intel.com>, Yilun Xu
+	<yilun.xu@intel.com>, Lukas Wunner <lukas@wunner.de>, Samuel Ortiz
+	<sameo@rivosinc.com>, Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas
+	<bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
+	<gregkh@linuxfoundation.org>
+Subject: Re: [RFC PATCH 5/5] PCI/TSM: Authenticate devices via platform TSM
+Message-ID: <20240307171810.0000396c@Huawei.com>
+In-Reply-To: <170660665391.224441.13963835575448844460.stgit@dwillia2-xfh.jf.intel.com>
+References: <170660662589.224441.11503798303914595072.stgit@dwillia2-xfh.jf.intel.com>
+	<170660665391.224441.13963835575448844460.stgit@dwillia2-xfh.jf.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca2c74d8-7fa0-454c-386c-08dc3ec9a8b7
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Mar 2024 17:11:41.9311
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR02MB10150
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-From: Michael Kelley <mhklinux@outlook.com> Sent: Friday, March 1, 2024 11:=
-00 AM
-> >
-> > IMPORTANT NOTE:
-> > I don't have a setup to test tdx hyperv changes. These changes are comp=
-ile
-> > tested only. Previously Michael Kelley suggested some folks at MS might=
- be
-> > able to help with this.
->=20
-> Thanks for doing these changes.  Overall they look pretty good,
-> modulo a few comments.  The "decrypted" flag in the vmbus_gpadl
-> structure is a good way to keep track of the encryption status of
-> the associated memory.
->=20
-> The memory passed to the gpadl (Guest Physical Address Descriptor
-> List) functions may allocated and freed directly by the driver, as in
-> the netvsc and UIO cases.  You've handled that case. But memory
-> may also be allocated by vmbus_alloc_ring() and freed by
-> vmbus_free_ring().  Your patch set needs an additional change
-> to check the "decrypted" flag in vmbus_free_ring().
->=20
-> In reviewing the code, I also see some unrelated memory freeing
-> issues in error paths.  They are outside the scope of your changes.
-> I'll make a note of these for future fixing.
->=20
-> For testing, I'll do two things:
->=20
-> 1) Verify that the non-error paths still work correctly with the
-> changes.  That should be relatively straightforward as the
-> changes are pretty much confined to the error paths.
->=20
-> 2) Hack set_memory_encrypted() to always fail.  I hope Linux
-> still boots in that case, but just leaks some memory.  Then if
-> I unbind a Hyper-V synthetic device, that should exercise the
-> path where set_memory_encrypted() is called.  Failures
-> should be handled cleanly, albeit while leaking the memory.
->=20
-> I should be able to test in a normal VM, a TDX VM, and an
-> SEV-SNP VM.
->=20
+On Tue, 30 Jan 2024 01:24:14 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-Rick --
+> The PCIe 6.1 specification, section 11, introduces the Trusted
+> Execution Environment (TEE) Device Interface Security Protocol (TDISP).
+> This interface definition builds upon CMA, component measurement and
+> authentication, and IDE, link integrity and data encryption. It adds
+> support for establishing virtual functions within a device that can be
+> assigned to a confidential VM such that the assigned device is enabled
+> to access guest private memory protected by technologies like Intel TDX,
+> AMD SEV-SNP, RISCV COVE, or ARM CCA.
+> 
+> The "TSM" (TEE Security Manager) is a concept in the TDISP specification
+> of an agent that mediates between a device security manager (DSM) and
+> system software in both a VMM and a VM. From a Linux perspective the TSM
+> abstracts many of the details of TDISP, IDE, and CMA. Some of those
+> details leak through at times, but for the most part TDISP is an
+> internal implementation detail of the TSM.
+> 
+> Similar to the PCI core extensions to support CONFIG_PCI_CMA,
+> CONFIG_PCI_TSM builds upon that to reuse the "authenticated" sysfs
+> attribute, and add more properties + controls in a tsm/ subdirectory of
+> the PCI device sysfs interface. Unlike CMA that can depend on a local to
+> the PCI core implementation, PCI_TSM needs to be prepared for late
+> loading of the platform TSM driver. Consider that the TSM driver may
+> itself be a PCI driver. Userspace can depend on the common TSM device
+> uevent to know when the PCI core has TSM services enabled. The PCI
+> device tsm/ subdirectory is supplemented by the TSM device pci/
+> directory for platform global TSM properties + controls.
+> 
+> All vendor TSM implementations share the property of asking the VMM to
+> perform DOE mailbox operations on behalf of the TSM. That common
+> capability is centralized in PCI core code that invokes an ->exec()
+> operation callback potentially multiple times to service a given request
+> (struct pci_tsm_req). Future operations / verbs will be handled
+> similarly with the "request + exec" model. For now, only "connect" and
+> "disconnect" are implemented which at a minimum is expected to establish
+> IDE for the link.
+> 
+> In addition to requests the low-level TSM implementation is notified of
+> device arrival and departure events so that it can filter devices that
+> the TSM is not prepared to support, or otherwise setup and teardown
+> per-device context.
+> 
+> Cc: Wu Hao <hao.wu@intel.com>
+> Cc: Yilun Xu <yilun.xu@intel.com>
+> Cc: Lukas Wunner <lukas@wunner.de>
+> Cc: Samuel Ortiz <sameo@rivosinc.com>
+> Cc: Alexey Kardashevskiy <aik@amd.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-Using your patches plus the changes in my comments, I've
-done most of the testing described above. The normal
-paths work, and when I hack set_memory_encrypted()
-to fail, the error paths correctly did not free the memory.
-I checked both the ring buffer memory and the additional
-vmalloc memory allocated by the netvsc driver and the uio
-driver.  The memory status can be checked after-the-fact
-via /proc/vmmallocinfo and /proc/buddyinfo since these
-are mostly large allocations. As expected, the drivers
-output their own error messages after the failures to
-teardown the GPADLs.
+Superficial comments inline - noticed whilst getting my head
+around the basic structure.
 
-I did not test the vmbus_disconnect() path since that
-effectively kills the VM.
 
-I tested in a normal VM, and in an SEV-SNP VM.  I didn't
-specifically test in a TDX VM, but given that Hyper-V CoCo
-guests run with a paravisor, the guest sees the same thing
-either way.
 
-Michael
+
+> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+> new file mode 100644
+> index 000000000000..f74de0ee49a0
+> --- /dev/null
+> +++ b/drivers/pci/tsm.c
+> @@ -0,0 +1,346 @@
+
+> +
+> +DEFINE_FREE(req_free, struct pci_tsm_req *, if (_T) tsm_ops->req_free(_T))
+> +
+> +static int pci_tsm_disconnect(struct pci_dev *pdev)
+> +{
+> +	struct pci_tsm_req *req __free(req_free) = NULL;
+
+As below. I'll stop commenting on these.
+
+> +
+> +	/* opportunistic state checks to skip allocating a request */
+> +	if (pdev->tsm->state < PCI_TSM_CONNECT)
+> +		return 0;
+> +
+> +	req = tsm_ops->req_alloc(pdev, PCI_TSM_OP_DISCONNECT);
+> +	if (!req)
+> +		return -ENOMEM;
+> +
+> +	scoped_cond_guard(mutex_intr, return -EINTR, tsm_ops->lock) {
+> +		enum pci_tsm_op_status status;
+> +
+> +		/* revalidate state */
+> +		if (pdev->tsm->state < PCI_TSM_CONNECT)
+> +			return 0;
+> +		if (pdev->tsm->state < PCI_TSM_INIT)
+> +			return -ENXIO;
+> +
+> +		do {
+> +			status = tsm_ops->exec(pdev, req);
+> +			req->seq++;
+> +			/* TODO: marshal SPDM request */
+> +		} while (status == PCI_TSM_SPDM_REQ);
+> +
+> +		if (status == PCI_TSM_FAIL)
+> +			return -EIO;
+> +		pdev->tsm->state = PCI_TSM_INIT;
+> +	}
+> +	return 0;
+> +}
+> +
+> +static int pci_tsm_connect(struct pci_dev *pdev)
+> +{
+> +	struct pci_tsm_req *req __free(req_free) = NULL;
+
+Push down a few lines to put it where the allocation happens.
+
+> +
+> +	/* opportunistic state checks to skip allocating a request */
+> +	if (pdev->tsm->state >= PCI_TSM_CONNECT)
+> +		return 0;
+> +
+> +	req = tsm_ops->req_alloc(pdev, PCI_TSM_OP_CONNECT);
+> +	if (!req)
+> +		return -ENOMEM;
+> +
+> +	scoped_cond_guard(mutex_intr, return -EINTR, tsm_ops->lock) {
+
+What could possibly go wrong? Everyone loves scoped_cond_guard ;)
+
+> +		enum pci_tsm_op_status status;
+> +
+> +		/* revalidate state */
+> +		if (pdev->tsm->state >= PCI_TSM_CONNECT)
+> +			return 0;
+> +		if (pdev->tsm->state < PCI_TSM_INIT)
+> +			return -ENXIO;
+> +
+> +		do {
+> +			status = tsm_ops->exec(pdev, req);
+> +			req->seq++;
+> +		} while (status == PCI_TSM_SPDM_REQ);
+> +
+> +		if (status == PCI_TSM_FAIL)
+> +			return -EIO;
+> +		pdev->tsm->state = PCI_TSM_CONNECT;
+> +	}
+> +	return 0;
+> +}
+
+...
+
+> + size_t connect_mode_store(struct device *dev,
+> +				  struct device_attribute *attr,
+> +				  const char *buf, size_t len)
+> +{
+> +	struct pci_dev *pdev = to_pci_dev(dev);
+> +	int i;
+> +
+> +	guard(mutex)(tsm_ops->lock);
+> +	if (pdev->tsm->state >= PCI_TSM_CONNECT)
+> +		return -EBUSY;
+> +	for (i = 0; i < ARRAY_SIZE(pci_tsm_modes); i++)
+> +		if (sysfs_streq(buf, pci_tsm_modes[i]))
+> +			break;
+> +	if (i == PCI_TSM_MODE_LINK) {
+> +		if (pdev->tsm->link_capable)
+> +			pdev->tsm->mode = PCI_TSM_MODE_LINK;
+
+Error in all real paths paths?
+Also, maybe a switch will be more sensible here.
+
+> +		return -EOPNOTSUPP;
+> +	} else if (i == PCI_TSM_MODE_SELECTIVE) {
+> +		if (pdev->tsm->selective_capable)
+> +			pdev->tsm->mode = PCI_TSM_MODE_SELECTIVE;
+> +		return -EOPNOTSUPP;
+> +	} else
+> +		return -EINVAL;
+> +	return len;
+> +}
+
+
+> +
+> +void pci_tsm_init(struct pci_dev *pdev)
+> +{
+> +	u16 ide_cap;
+> +	int rc;
+> +
+> +	if (!pdev->cma_capable)
+> +		return;
+> +
+> +	ide_cap = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_IDE);
+> +	if (!ide_cap)
+> +		return;
+> +
+> +	struct pci_tsm *tsm __free(kfree) = kzalloc(sizeof(*tsm), GFP_KERNEL);
+> +	if (!tsm)
+> +		return;
+> +
+> +	tsm->ide_cap = ide_cap;
+> +
+> +	rc = xa_insert(&pci_tsm_devs, (unsigned long)pdev, pdev, GFP_KERNEL);
+
+This is an unusual pattern with the key and the value matching.
+Feels like xarray might for once not be the best choice of structure.
+
+> +	if (rc) {
+> +		pci_dbg(pdev, "failed to register tsm capable device\n");
+> +		return;
+> +	}
+> +
+> +	guard(rwsem_write)(&pci_tsm_rwsem);
+> +	pdev->tsm = no_free_ptr(tsm);
+> +	pci_tsm_add(pdev);
+> +}
+> +
+> +void pci_tsm_destroy(struct pci_dev *pdev)
+> +{
+> +	guard(rwsem_write)(&pci_tsm_rwsem);
+> +	pci_tsm_del(pdev);
+> +	xa_erase(&pci_tsm_devs, (unsigned long)pdev);
+> +	kfree(pdev->tsm);
+> +	pdev->tsm = NULL;
+> +}
+
+
+
+> diff --git a/drivers/virt/coco/tsm/class.c b/drivers/virt/coco/tsm/class.c
+> index a569fa6b09eb..a459e51c0892 100644
+> --- a/drivers/virt/coco/tsm/class.c
+> +++ b/drivers/virt/coco/tsm/class.c
+
+> +static const struct attribute_group *tsm_attr_groups[] = {
+> +#ifdef CONFIG_PCI_TSM
+> +	&tsm_pci_attr_group,
+> +#endif
+> +	NULL,
+Trivial but, no point in that comma as we will never chase it with anything.
+> +};
+> +
+>  static int __init tsm_init(void)
+>  {
+>  	tsm_class = class_create("tsm");
+> @@ -86,6 +97,7 @@ static int __init tsm_init(void)
+>  		return PTR_ERR(tsm_class);
+>  
+>  	tsm_class->dev_release = tsm_release;
+> +	tsm_class->dev_groups = tsm_attr_groups;
+>  	return 0;
+>  }
+>  module_init(tsm_init)
+> diff --git a/drivers/virt/coco/tsm/pci.c b/drivers/virt/coco/tsm/pci.c
+> new file mode 100644
+> index 000000000000..b3684ad7114f
+> --- /dev/null
+> +++ b/drivers/virt/coco/tsm/pci.c
+
+> +
+> +static bool tsm_pci_group_visible(struct kobject *kobj)
+> +{
+> +	struct device *dev = kobj_to_dev(kobj);
+> +	struct tsm_subsys *subsys = container_of(dev, typeof(*subsys), dev);
+Give this a macro probably.
+ dev_to_tsm_subsys(kobj_to_dev(kobj));
+
+> +
+> +	if (subsys->info->pci_ops)
+> +		return true;
+
+	return subsys->info->pci->ops;
+maybe
+
+> +	return false;
+> +}
+> +DEFINE_SYSFS_GROUP_VISIBLE(tsm_pci);
+> +
+> +static struct attribute *tsm_pci_attrs[] = {
+> +	&dev_attr_link_capable.attr,
+> +	&dev_attr_selective_streams.attr,
+> +	NULL,
+> +};
+> +
+> +const struct attribute_group tsm_pci_attr_group = {
+> +	.name = "pci",
+> +	.attrs = tsm_pci_attrs,
+> +	.is_visible = SYSFS_GROUP_VISIBLE(tsm_pci),
+> +};
+> +
+> +int tsm_pci_init(const struct tsm_info *info)
+> +{
+> +	if (!info->pci_ops)
+> +		return 0;
+> +
+> +	return pci_tsm_register(info->pci_ops);
+> +}
+> +
+> +void tsm_pci_destroy(const struct tsm_info *info)
+> +{
+> +	pci_tsm_unregister(info->pci_ops);
+> +}
+> diff --git a/drivers/virt/coco/tsm/tsm.h b/drivers/virt/coco/tsm/tsm.h
+> new file mode 100644
+> index 000000000000..407c388a109b
+> --- /dev/null
+> +++ b/drivers/virt/coco/tsm/tsm.h
+> @@ -0,0 +1,28 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __TSM_CORE_H
+> +#define __TSM_CORE_H
+> +
+> +#include <linux/device.h>
+> +
+> +struct tsm_info;
+> +struct tsm_subsys {
+> +	struct device dev;
+> +	const struct tsm_info *info;
+> +};
+
+I know people like to build up patch sets, but I think defining this here
+from patch 3 would just reduce noise.
+
+> +
+> +#ifdef CONFIG_PCI_TSM
+> +int tsm_pci_init(const struct tsm_info *info);
+> +void tsm_pci_destroy(const struct tsm_info *info);
+> +extern const struct attribute_group tsm_pci_attr_group;
+> +#else
+> +static inline int tsm_pci_init(const struct tsm_info *info)
+> +{
+> +	return 0;
+> +}
+> +static inline void tsm_pci_destroy(const struct tsm_info *info)
+> +{
+> +}
+> +#endif
+> +
+> +#endif /* TSM_CORE_H */
+
+> diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+> index 8cb8a661ba41..f5dbdfa65d8d 100644
+> --- a/include/linux/tsm.h
+> +++ b/include/linux/tsm.h
+> @@ -4,11 +4,15 @@
+>  
+>  #include <linux/sizes.h>
+>  #include <linux/types.h>
+> +#include <linux/mutex.h>
+
+struct mutex;
+instead given you only have a pointer I think.
+
+
+>  
+>  struct tsm_info {
+>  	const char *name;
+>  	struct device *host;
+>  	const struct attribute_group **groups;
+> +	const struct tsm_pci_ops *pci_ops;
+> +	unsigned int nr_selective_streams;
+> +	unsigned int link_stream_capable:1;
+>  };
+
+
+> +struct pci_dev;
+> +/**
+> + * struct tsm_pci_ops - Low-level TSM-exported interface to the PCI core
+> + * @add: accept device for tsm operation, locked
+> + * @del: teardown tsm context for @pdev, locked
+> + * @req_alloc: setup context for given operation, unlocked
+> + * @req_free: teardown context for given request, unlocked
+> + * @exec: run @req, may be invoked multiple times per @req, locked
+> + * @lock: tsm work is one device and one op at a time
+> + */
+> +struct tsm_pci_ops {
+> +	int (*add)(struct pci_dev *pdev);
+> +	void (*del)(struct pci_dev *pdev);
+> +	struct pci_tsm_req *(*req_alloc)(struct pci_dev *pdev,
+> +					 enum pci_tsm_op op);
+> +	struct pci_tsm_req *(*req_free)(struct pci_tsm_req *req);
+> +	enum pci_tsm_op_status (*exec)(struct pci_dev *pdev,
+> +				       struct pci_tsm_req *req);
+> +	struct mutex *lock;
+
+Mixing data with what would otherwise be likely to be constant pointers
+probably best avoided.  Maybe wrap the lock in another op instead?
+
+
+> +};
+
