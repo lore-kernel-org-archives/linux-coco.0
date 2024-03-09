@@ -1,46 +1,42 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D611E49B;
-	Sat,  9 Mar 2024 05:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6451D69E;
+	Sat,  9 Mar 2024 11:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709960521; cv=none; b=F4wb2U7pVfMq+IP7zz4afR40HqTxcPeo2Q9H7iYvdEvPjSHwfxA1RKsUQY9mKdDJMK8xpAWmf0QhxbHWrF8CFgUoFauZKS6OY2nMl7bQXBpANvy+rUhAzUFZGl8UxVen0cA8ZzsEEHE8p7Z2NREuknOuyOHY0HwxH1L1Gj2pxNY=
+	t=1709982924; cv=none; b=f1goCM8wyLYH13qFfBm0QSmMAubIQtRWeBXrPK9zul3nC57ilvgCeJHiv3DNPYycmLcNMBfJkp/TRR5vr1INxJTqaIrGRDs6wQETk2FLzyrl46+uzjiddf6XeZUcwnwNoYsN7sPRFS6PJXgFnPNNDjNoqnIp3CwxxFhjhqjdMxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709960521; c=relaxed/simple;
-	bh=q/mKtUyIHp2P1tXA8EgYGneMh+II7SaGDgn8hCOM4Zs=;
+	s=arc-20240116; t=1709982924; c=relaxed/simple;
+	bh=YaUuuk7Crsl2a1PUUVlftTiGcGES7hvpa0gsLJH4zXA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mJ9usRDzdPwhj3OmzkCMwY271JdIP88ptlpegFkOXJ5BflK9qG6Df8T1H6VlXsvoT02ebF37JljgJXF8Jrp1Gxu6fhdsvKOKUEvslYRV6zUYPLOJ6mkvURUg3NjyuSHJQvuzF00GfTKplEIEoGWEPiLVBWTCLnPotHNKzS6/QTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=eRJRVBpP; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=aa/W+KdyCHtD4zxfoUmF1tR5LrH9XJ/amfL8r2d8YlNodYG4Q67T3aCuB6IBQfLgHs5VSozdFySLft8HYmfuC+bcVahQcttrkXk/ED8mH/pTAN7Weg6/Q/PnW/e7Az+QrC+KOjAlKXyybbQZPguqmtBmags1677YStdoYIngl2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rl9M6geC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eRJRVBpP"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=+dmMM5sP7jm3IQ10EcQ/oF53RCutABKC3zszuGrAmug=; b=eRJRVBpP+hDPeoTydnpfcslrF5
-	OKFRYKTa5B6RZFEBTEK6/4mjHjm28ta2hKtmtGrqjxGKR5O734E0NeGJmlm7ExuM2STIynpmddZ9H
-	qO8ZldGhRT0e1F6gZPRniijUVk0O+fBLf1pg06nGeYsL+0mcB/0raj038qT01w/YGdX0qjqJ8YeQt
-	woBYG23ofHBQd1n1UALctDWDNUNohTngFj1uTLmnn31gMErQOZ2xlbFW/LMNQsPG2daE8JQDEHeW2
-	RJOJ4cJJAouXMC0fwU/wHVZlFwOQTNDearcplJIJuDsDRdR576zbwrra/FDh9Ne3MLTh9A8/t2JUa
-	BZxbM+cA==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rioq9-0000000D3Cq-1PKl;
-	Sat, 09 Mar 2024 05:01:45 +0000
-Date: Sat, 9 Mar 2024 05:01:45 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: "Gowans, James" <jgowans@amazon.com>
-Cc: "seanjc@google.com" <seanjc@google.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rl9M6geC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB0EC433C7;
+	Sat,  9 Mar 2024 11:15:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709982923;
+	bh=YaUuuk7Crsl2a1PUUVlftTiGcGES7hvpa0gsLJH4zXA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rl9M6geC4ebyRSg/d2wRXYZOIlzGBGevef0ILal/PwLTfJYHxWnepu1EFQhJSJqp1
+	 dqKzS8GKxJ+rhJToGRkhboVOZdHt+vU98vtpuGtVx1OYquHCjgIoWOt5kIIIUgUdkA
+	 zVhFg8xuVaI+nt//g1J0r8SZk/3Q7xTmCC8eOzhi9FBsQ9Y0h+puyEVimWTJnC8oYu
+	 Y7MxIveJTBKivuvGizPHVxJlu5YPSGFls3TxEPBEiRf30S5/tAKcIhqs0kqyYQkT4I
+	 tS6X5kYMX/52fcixiE4zhGRDtQidSASFWNKNftwdz9lcEYoKUFz7B7hl+61ijvjwHK
+	 DHGPLi3zffCQA==
+Date: Sat, 9 Mar 2024 13:14:24 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: James Gowans <jgowans@amazon.com>,
 	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"Roy, Patrick" <roypat@amazon.co.uk>,
+	Patrick Roy <roypat@amazon.co.uk>,
 	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>,
-	"Manwaring, Derek" <derekmn@amazon.com>,
-	"rppt@kernel.org" <rppt@kernel.org>,
+	Derek Manwaring <derekmn@amazon.com>,
 	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"Woodhouse, David" <dwmw@amazon.co.uk>,
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Nikita Kalyazin <kalyazin@amazon.co.uk>,
 	"lstoakes@gmail.com" <lstoakes@gmail.com>,
 	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
 	"linux-mm@kvack.org" <linux-mm@kvack.org>,
@@ -48,12 +44,13 @@ Cc: "seanjc@google.com" <seanjc@google.com>,
 	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
 	"vbabka@suse.cz" <vbabka@suse.cz>,
 	"mst@redhat.com" <mst@redhat.com>, "somlo@cmu.edu" <somlo@cmu.edu>,
-	"Graf (AWS), Alexander" <graf@amazon.de>,
+	Alexander Graf <graf@amazon.de>,
 	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
 Subject: Re: Unmapping KVM Guest Memory from Host Kernel
-Message-ID: <ZevtORMrVbTsauzn@casper.infradead.org>
+Message-ID: <ZexEkGkNe_7UY7w6@kernel.org>
 References: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
+ <ZeudRmZz7M6fWPVM@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -63,21 +60,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
+In-Reply-To: <ZeudRmZz7M6fWPVM@google.com>
 
-On Fri, Mar 08, 2024 at 03:50:05PM +0000, Gowans, James wrote:
-> Currently when using anonymous memory for KVM guest RAM, the memory all
-> remains mapped into the kernel direct map. We are looking at options to
-> get KVM guest memory out of the kernel’s direct map as a principled
-> approach to mitigating speculative execution issues in the host kernel.
-> Our goal is to more completely address the class of issues whose leak
-> origin is categorized as "Mapped memory" [1].
+On Fri, Mar 08, 2024 at 03:22:50PM -0800, Sean Christopherson wrote:
+> On Fri, Mar 08, 2024, James Gowans wrote:
+> > However, memfd_secret doesn’t work out the box for KVM guest memory; the
+> > main reason seems to be that the GUP path is intentionally disabled for
+> > memfd_secret, so if we use a memfd_secret backed VMA for a memslot then
+> > KVM is not able to fault the memory in. If it’s been pre-faulted in by
+> > userspace then it seems to work.
+> 
+> Huh, that _shouldn't_ work.  The folio_is_secretmem() in gup_pte_range() is
+> supposed to prevent the "fast gup" path from getting secretmem pages.
 
-One of the things that is holding Linux back is the inability to do I/O
-to memory which is not part of memmap.  _So Much_ of our infrastructure
-is based on having a struct page available to stick into an sglist, bio,
-skb_frag, or whatever.  The solution to this is to move to a (phys_addr,
-length) tuple instead of (page, offset, len) tuple.  I call this "phyr"
-and I've written about it before.  I'm not working on this as I have
-quite enough to do with the folio work, but I hope somebody works on it
-before I get time to.
+I suspect this works because KVM only calls gup on faults and if the memory
+was pre-faulted via memfd_secret there won't be faults and no gups from
+KVM.
+ 
+> > With this in mind, what’s the best way to solve getting guest RAM out of
+> > the direct map? Is memfd_secret integration with KVM the way to go, or
+> > should we build a solution on top of guest_memfd, for example via some
+> > flag that causes it to leave memory in the host userspace’s page tables,
+> > but removes it from the direct map? 
+> 
+> memfd_secret obviously gets you a PoC much faster, but in the long term I'm quite
+> sure you'll be fighting memfd_secret all the way.  E.g. it's not dumpable, it
+> deliberately allocates at 4KiB granularity (though I suspect the bug you found
+> means that it can be inadvertantly mapped with 2MiB hugepages), it has no line
+> of sight to taking userspace out of the equation, etc.
+> 
+> With guest_memfd on the other hand, everyone contributing to and maintaining it
+> has goals that are *very* closely aligned with what you want to do.
+
+I agree with Sean, guest_memfd seems a better interface to use. It's
+integrated by design with KVM and removing guest memory from the direct map
+looks like a natural enhancement to guest_memfd. 
+
+Unless I'm missing something, for fast-and-dirty POC it'll be a oneliner
+that adds set_memory_np() to kvm_gmem_get_folio() and then figuring out
+what to do with virtio :)
+
+-- 
+Sincerely yours,
+Mike.
