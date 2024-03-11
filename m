@@ -1,134 +1,179 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5432B17561
-	for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 09:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6E0482CD
+	for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 16:16:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710149400; cv=none; b=PavmZiq8XE4u0JL25CgzDA5Zfrffn/2htAScie36FOLOzYiqU/+60RIKYx2NMAEAQHLzrjK4eYiaj3TUDGWbYXtrKgApsdrRL8VO9d0jY9bBUoq5lJ6UE8NpTgUmHzTITIruYTKEywmtwLwXuaX+EOxIUeA5JaeSnyjOPsejxBk=
+	t=1710173788; cv=none; b=M2kXSyH1n8DB39J/gVmYPy0sPb2r74DcoEQxJ5LgB6Stp9Ks3FAEGQ3lEjqFjvBkbxGTBrXsFwEO5bG2fhtI9b2z5TUX92FwtqQqb6voDJKYKXjBIVh3H4uq/x8HFvLxwn6MC5JkKqZtr2L1QZo0Z/Va258LmaElgiKEbquHFGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710149400; c=relaxed/simple;
-	bh=yYwZNAyl9eI8xnn6G8iPccTROZ3bREOUqaEgbZaMdn4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F+Sjo8OMrnuvkF0fCep+Sk1raoaPB4hCJlONQ5xAq1ds+3KzNlf85v0RHe6+Ev4EypUvwRSXOaLddg8a3QAH2+N/OmTriMdNGf+Uhi3D3NUDacAE4T/I3Q6cPFi7y+v0Y5xthFx3U/cZUPtS9BwgJAa9uDbDmA1OlB8hGuCUCpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aIvetu5A; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1710173788; c=relaxed/simple;
+	bh=u41R1/z/aMOcSfYC5FfDMYjUC+WpOX9ZGT07yO69ORc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=GAV6Z/+t3sGvfPBW6eJbVj7mkeRacM33a2LovvJ52WzqBnEb2yAOQSiAD7eQKj+gbr+qmkWEw9iXfK6WZbg00hrPDmejnb9S4iRZPAVxJ0EzumBCxGoVkENICeEfM7ftb2OFSyiloQkT6HEsnD9kXAHaumRtBNB1kULBvOqU5PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LPF1AL70; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aIvetu5A"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-33e8e9a4edaso1702055f8f.2
-        for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 02:29:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LPF1AL70"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6e64997a934so3542770b3a.0
+        for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 09:16:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1710149397; x=1710754197; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yYwZNAyl9eI8xnn6G8iPccTROZ3bREOUqaEgbZaMdn4=;
-        b=aIvetu5AKR3Tg8SgLGT4E1QPhiQORuDxdK8whnZztvHyTPHtd1xOR0YGQaBMExbMe2
-         NyXe4tP1mak26dXwwoMvC2c9ULStSfVqChrHTZorYy98t7fvYVGFVeZRwk/G+mmUj/W/
-         qWkFh8uzq/O4xxYnO2Lx2wBkRfhawSetE1gBATLoqebaN/R6ZFcZZpUidfilMXxV5mFB
-         LnTO73DhjbTPXgljVyO4uub84jIV7VYG8rVJMYMTHt2DIN2GkJL/AH2Rd71SM8d4bWrM
-         tpW+mbzqHWLdcSot6mbBEpK0mBKZBbP5OzCcGMEOKaJquYMc2r5/oSjFoqAq7vTO+tgL
-         r2uQ==
+        d=gmail.com; s=20230601; t=1710173784; x=1710778584; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:reply-to:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/AMRNASf24/etkhelqi2/rcH+v+7JaskxvtUiwcImk8=;
+        b=LPF1AL70U1yvgGpk0kRhfIta6Kz5PKNlVXZvSobtvvSlzujsooXnIx3FvLyJBGWoFD
+         zjKqe2psYiDwuvlHhEYBbpLOAaaimF/8ZuBG/0zHoR8u+swO9zSeIubecE9hTfe3lE/V
+         HgKa2G927ZdMJnRI6OOUWDdU8d2uM5R8oEt2UUxurgF66KUGH3YI3jLL3o8Drt3tU4vf
+         kMmGVmbuMRJq8xvrqDGIMlqbbOf8J/uS8u042Ma2E7HctLpTct0pIa2CENXtqEF4bhlu
+         8UYJnl+1dOGoKsAhsIgyA5l4rlI9GwAQguJG/a5eu7XfVCMoPUHyMnDEu8ceKprS2azJ
+         WYgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710149397; x=1710754197;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yYwZNAyl9eI8xnn6G8iPccTROZ3bREOUqaEgbZaMdn4=;
-        b=JH2l2jO/1Cae9D5iO+sodc+hrtRbS/e9AtUHxZkQkQAduJ6WMUPRlyRz02CCw2L7W+
-         Obk8vjGIDwRKIbRkR9BzhhtL9tt/o74zjg7Cp/OKMwqOsFrZz5BXVC7EiWc4StaC06Yx
-         3tuBpX982pIZ+RY+PN9MByyfhhRm0RMjCkmgRz/oAM4JiywLj2UR2zbJSh4qt7ipHP2q
-         vnroCn1yb1Xq6sqODtgsZMNrjpEiyYOC7VVR+6k+AaqmOhaxG4tHzmLlubeTrhEGSLRl
-         7UmGlplpai8KvXoSDeMh+5uArv6baDLZWlzgfIyEw/3HjSjYpoeTzuMv3aYpfFpzImPQ
-         atZg==
-X-Forwarded-Encrypted: i=1; AJvYcCWgVrqvLPyCOOo7gkgcT7EmUrWEyXywvEXNB68uawk+o5FkQ/EEBS9/Hs3Qh7RhtplbFy+af6MgwjCWX5A1N7KBohQJkwEK9Cy3+w==
-X-Gm-Message-State: AOJu0YxcYg0xqV9PFsDxpjoj8MVr8Gd0GBDrruohFxgp7enIElUzCPR6
-	OyS0k5w5xQSS2rElDIQWgvh4SdTvVy33dhiYAu8FB9AVXf3tc6ig7QEOpiu4QUDjmXwjAD1UCSx
-	iZoMyTnOjGk9VQsQM3mfX3WWyS6/djlbgSRR2
-X-Google-Smtp-Source: AGHT+IHSfs26GHVI09JkKNk9HoDRqOW4oeQ0rJHE/UNYx/wsSmfgrD7ev79myOziiYJpopiGSTSS0pKlBEG+6nVcKtI=
-X-Received: by 2002:a5d:5188:0:b0:33d:e1d2:2694 with SMTP id
- k8-20020a5d5188000000b0033de1d22694mr3718979wrv.63.1710149396551; Mon, 11 Mar
- 2024 02:29:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1710173784; x=1710778584;
+        h=content-transfer-encoding:mime-version:reply-to:message-id:date
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/AMRNASf24/etkhelqi2/rcH+v+7JaskxvtUiwcImk8=;
+        b=UTGMfNFcbWeAeChtpMikQ0QaQnS19Ti/EUPWWG4u/fB6jbQp+jPpuyeHuZz/q6X5ff
+         mvbHmZi4jqnY4DKWENSb/yJLsQqcL7s2YRruoJfYIlszC+J3JNqoUOSbrjWw8kVGi0LX
+         00c514E6wmerI4xTwVsdwaoxONi23UHV6W+jOOeORy814hGSPGDL4W5G3BFFcw0sV4T3
+         dQ6aXI2BrNPeZbza3ejpVG2LuzbvQTbDEN7qj6Dtl6Q4IAorSuEWvA1NWOnZ/gMziqjs
+         LUschpYvQ/lDwsnkA70/H8ZPBjQoGugb4773haTQ5DM7WZO4k3CjWN+WVcYvEnFgiJsQ
+         IOqw==
+X-Forwarded-Encrypted: i=1; AJvYcCWnoVKdjhcOfErWSkPAR1vo8pibZEvE11Jqp7lQCRna6XLB723thxtO6Y61ct27dw8+Qr44jGJCV7uwnvHgnX47+Vug/+TuyF8Qnw==
+X-Gm-Message-State: AOJu0YyL9skYWcjN48lDyt96uEWyJUmzfIpO11jjxTpBwEyGQ+Yx2zce
+	7WJjECUndE+WMb0I8XfPE1aj10zPo+q81QuPaVcyTUtUkjjKWPNN
+X-Google-Smtp-Source: AGHT+IE8Qf0qy9YfHTX5yZH+MvkpBowKO2nlgBRR4/DNOeI2LZr0IiapRKmZUPnBWkeXc9ZQ9NbneQ==
+X-Received: by 2002:a05:6a20:d387:b0:1a2:f4fd:b1cb with SMTP id iq7-20020a056a20d38700b001a2f4fdb1cbmr1033665pzb.55.1710173784131;
+        Mon, 11 Mar 2024 09:16:24 -0700 (PDT)
+Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
+        by smtp.gmail.com with ESMTPSA id m22-20020a056a00081600b006e52ce4ee2fsm4576325pfk.20.2024.03.11.09.16.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Mar 2024 09:16:23 -0700 (PDT)
+From: mhkelley58@gmail.com
+X-Google-Original-From: mhklinux@outlook.com
+To: rick.p.edgecombe@intel.com,
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	gregkh@linuxfoundation.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kirill.shutemov@linux.intel.com,
+	dave.hansen@linux.intel.com,
+	linux-kernel@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Cc: sathyanarayanan.kuppuswamy@linux.intel.com,
+	elena.reshetova@intel.com
+Subject: [PATCH 0/5] Handle set_memory_XXcrypted() errors in Hyper-V
+Date: Mon, 11 Mar 2024 09:15:53 -0700
+Message-Id: <20240311161558.1310-1-mhklinux@outlook.com>
+X-Mailer: git-send-email 2.25.1
+Reply-To: mhklinux@outlook.com
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <335E21FA-7F1E-4540-8A70-01A63D8C72FA@amazon.com> <CA+EHjTxpBM6LyqGfE_y--Uy1oR4oP7Ozcp3mBwFvAijOZe0i+Q@mail.gmail.com>
-In-Reply-To: <CA+EHjTxpBM6LyqGfE_y--Uy1oR4oP7Ozcp3mBwFvAijOZe0i+Q@mail.gmail.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Mon, 11 Mar 2024 09:29:11 +0000
-Message-ID: <CA+EHjTyqjTHN+b42THuppBwabbbPTE7+s3+4gzELN=SVddVtDg@mail.gmail.com>
-Subject: Re: Unmapping KVM Guest Memory from Host Kernel
-To: "Manwaring, Derek" <derekmn@amazon.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, David Matlack <dmatlack@google.com>, 
-	Brendan Jackman <jackmanb@google.com>, "qperret@google.com" <qperret@google.com>, 
-	"jason.cj.chen@intel.com" <jason.cj.chen@intel.com>, "Gowans, James" <jgowans@amazon.com>, 
-	"seanjc@google.com" <seanjc@google.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"Roy, Patrick" <roypat@amazon.co.uk>, 
-	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "rppt@kernel.org" <rppt@kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, 
-	"lstoakes@gmail.com" <lstoakes@gmail.com>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "vbabka@suse.cz" <vbabka@suse.cz>, 
-	"mst@redhat.com" <mst@redhat.com>, "somlo@cmu.edu" <somlo@cmu.edu>, "Graf (AWS), Alexander" <graf@amazon.de>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	"kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 11, 2024 at 9:26=E2=80=AFAM Fuad Tabba <tabba@google.com> wrote=
-:
->
-> Hi,
->
-> On Fri, Mar 8, 2024 at 9:05=E2=80=AFPM Manwaring, Derek <derekmn@amazon.c=
-om> wrote:
-> >
-> > On 2024-03-08 at 10:46-0700, David Woodhouse wrote:
-> > > On Fri, 2024-03-08 at 09:35 -0800, David Matlack wrote:
-> > > > I think what James is looking for (and what we are also interested
-> > > > in), is _eliminating_ the ability to access guest memory from the
-> > > > direct map entirely. And in general, eliminate the ability to acces=
-s
-> > > > guest memory in as many ways as possible.
-> > >
-> > > Well, pKVM does that...
-> >
-> > Yes we've been looking at pKVM and it accomplishes a lot of what we're =
-trying
-> > to do. Our initial inclination is that we want to stick with VHE for th=
-e lower
-> > overhead. We also want flexibility across server parts, so we would nee=
-d to
-> > get pKVM working on Intel & AMD if we went this route.
-> >
-> > Certainly there are advantages of pKVM on the perf side like the in-pla=
-ce
-> > memory sharing rather than copying as well as on the security side by s=
-imply
-> > reducing the TCB. I'd be interested to hear others' thoughts on pKVM vs
-> > memfd_secret or general ASI.
->
-> The work we've done for pKVM is still an RFC [*], but there is nothing
-> in it that limits it to nVHE (at least not intentionally). It should
-> work with VHE and hVHE as well. On respinning the patch series [*], we
-> plan on adding support for normal VMs to use guest_memfd() as well in
-> arm64, mainly for testing, and to make it easier for others to base
-> their work on it.
+From: Michael Kelley <mhklinux@outlook.com>
 
-Just to clarify, I am referring specifically to the work we did in
-porting guest_memfd() to pKVM/arm64. pKVM itself works only in nVHE
-mode.
->
-> Cheers,
-> /fuad
->
-> [*] https://lore.kernel.org/all/20240222161047.402609-1-tabba@google.com
-> >
-> > Derek
-> >
+Shared (decrypted) pages should never be returned to the page allocator,
+lest future usage of the pages store data that should not be exposed to
+the host. They may also cause the guest to crash if the page is used in
+a way disallowed by HW (i.e. for executable code or as a page table).
+
+Normally set_memory() call failures are rare. But in CoCo VMs
+set_memory_XXcrypted() may involve calls to the untrusted host, and an
+attacker could fail these calls such that:
+ 1. set_memory_encrypted() returns an error and leaves the pages fully
+    shared.
+ 2. set_memory_decrypted() returns an error, but the pages are actually
+    full converted to shared.
+
+This means that patterns like the below can cause problems:
+void *addr = alloc();
+int fail = set_memory_decrypted(addr, 1);
+if (fail)
+	free_pages(addr, 0);
+
+And:
+void *addr = alloc();
+int fail = set_memory_decrypted(addr, 1);
+if (fail) {
+	set_memory_encrypted(addr, 1);
+	free_pages(addr, 0);
+}
+
+Unfortunately these patterns appear in the kernel. And what the
+set_memory() callers should do in this situation is not clear either. They
+shouldn’t use them as shared because something clearly went wrong, but
+they also need to fully reset the pages to private to free them. But, the
+kernel needs the host's help to do this and the host is already being
+uncooperative around the needed operations. So this isn't guaranteed to
+succeed and the caller is kind of stuck with unusable pages.
+
+The only choice is to panic or leak the pages. The kernel tries not to
+panic if at all possible, so just leak the pages at the call sites.
+Separately there is a patch[1] to warn if the guest detects strange host
+behavior around this. It is stalled, so in the mean time I’m proceeding
+with fixing the callers to leak the pages. No additional warnings are
+added, because the plan is to warn in a single place in x86 set_memory()
+code.
+
+This series fixes the cases in the Hyper-V code.
+
+This is the non-RFC/RFT version of Rick Edgecombe's previous series.[2]
+Rick asked me to do this version based on my comments and the testing
+I did. I've tested most of the error paths by hacking
+set_memory_encrypted() to fail, and observing /proc/vmallocinfo and
+/proc/buddyinfo to confirm that the memory is leaked as expected
+instead of freed.
+
+Changes in this version:
+* Expanded commit message references to "TDX" to be "CoCo VMs" since
+  set_memory_encrypted() could fail in other configurations, such as
+  Hyper-V CoCo guests running with a paravisor on SEV-SNP processors.
+* Changed "Subject:" prefixes to match historical practice in Hyper-V
+  related source files
+* Patch 1: Added handling of set_memory_decrypted() failure
+* Patch 2: Changed where the "decrypted" flag is set so that
+  error cases not related to set_memory_encrypted() are handled
+  correctly
+* Patch 2: Fixed the polarity of the test for set_memory_encrypted()
+  failing
+* Added Patch 5 to the series to properly handle free'ing of
+  ring buffer memory
+* Fixed a few typos throughout
+
+[1] https://lore.kernel.org/lkml/20240122184003.129104-1-rick.p.edgecombe@intel.com/
+[2] https://lore.kernel.org/linux-hyperv/20240222021006.2279329-1-rick.p.edgecombe@intel.com/
+
+Michael Kelley (1):
+  Drivers: hv: vmbus: Don't free ring buffers that couldn't be
+    re-encrypted
+
+Rick Edgecombe (4):
+  Drivers: hv: vmbus: Leak pages if set_memory_encrypted() fails
+  Drivers: hv: vmbus: Track decrypted status in vmbus_gpadl
+  hv_netvsc: Don't free decrypted memory
+  uio_hv_generic: Don't free decrypted memory
+
+ drivers/hv/channel.c         | 16 ++++++++++++----
+ drivers/hv/connection.c      | 11 +++++++----
+ drivers/net/hyperv/netvsc.c  |  7 +++++--
+ drivers/uio/uio_hv_generic.c | 12 ++++++++----
+ include/linux/hyperv.h       |  1 +
+ 5 files changed, 33 insertions(+), 14 deletions(-)
+
+-- 
+2.25.1
+
