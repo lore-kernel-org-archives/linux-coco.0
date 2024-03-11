@@ -1,55 +1,57 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CB04AEEA
-	for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 16:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3060447F7C
+	for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 16:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710173862; cv=none; b=eSqfhBrG7f0ZNRb7x53rzFhAibrr4dzy2INwo0Vcjfn1dzWXwJaiUc3U3yyJ7VUgS+xePsLZIZ39qWsPWfiVImoxpfhvvYlXGCXTEOtSNmNW0O6o6gPf0jeG9XItxy0iRQmONNlbPlVLnD4LAaplk8/L/JaGDzQJzvtyEFTc3L0=
+	t=1710173863; cv=none; b=REkLnqL0zCT7klUxxBzRnPGSiyiUxzMaC9GvMenI8xmdDyF/kOfyp8Dj/v91uIBc4ofUvUU4LwsOdA0G6Fzv/fA+6I4/cXxn4YgdBzNFoaN9gpd3GYZdbgcdy+4/vekLYkKstGZfTlk4gCFmZx2ceJO1VywZIUe0cErA6o66Zpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710173862; c=relaxed/simple;
-	bh=dZ0oYtFBE/0c+pXjkBPcJJBxvUJ6uPY7Lm71TuKqwyo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Xsb/XSGKiqHccxt00wDy4DAK1+DMoQEZqJGboKMAwS+RTTpDwLA26xncpKuoQzRX+U6wA6buX3Ax89mSNqzjpHNXZWfV+EWuWZ+DnDwCA1bwc6BtVG3t3Rm0LGBfombiFmx8nZNor2XJ6Pyx2nnDhYPi9BKFiC34++mwILBn9FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UorTBTmb; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1710173863; c=relaxed/simple;
+	bh=O7+7NlF04kH+flJ8PFFQ/Uf7/4ZUwoDJWMeFRdvOBmg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=iOeraSa7t/gZab0uR8R5ZiOmvMiShlsNWQ8uD4M0HWzUq/SqV0gyyyPw30xu6aWUP4L7UWFgWndIWXL/bpjye3O+V7+x5KW09HVTtJBO1st5o8F+DSzvIX4e3Jkwg+78yQliGktDjZqBEWFbarNl3e9D8d/RafEn+7i0px/WY1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HUBoCrJY; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UorTBTmb"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4133100bccdso890735e9.0
-        for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 09:17:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HUBoCrJY"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-33e70d71756so2350813f8f.1
+        for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 09:17:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710173852; x=1710778652; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KhgroYwDHirsSK6NEpHEOPOQNxUnb5y1s4Aku7Fobs0=;
-        b=UorTBTmb/oi8X0sytnf7lByUFj3/5EdimZ37LbhosWPEDfNiBCIjVorN5G8PoTCisM
-         DkdMkYTNhzuNh8edCmSsGS0SgyMcL3LWdZqFKbCv+SBbVW+pb2+l+WBtlfdlx3uyXKSm
-         74vcPAWyv1N19nUaypHTgHEzdq50580RGQhME6jsqtLYNN16KckUO1OaPU4L7qmtazuz
-         1a2MbHV2udclu4NdzHcwjORSjF5laJVugaVtdCcnKbvgOUi+vo87zQpi+As9lQrUfhwB
-         YyIv2SUQQkegDzQxHo9KK+d1AHiOI9TfdcQJwr6X24F84DE04aCn0oHNjkWRRK8HRbrI
-         Ohvw==
+        d=gmail.com; s=20230601; t=1710173858; x=1710778658; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XlT6S3JYLHvAwK8UNEHcgb4bZEoZMmzJ4tC7ZUpRS9U=;
+        b=HUBoCrJYGmXI3Y+DwNpIVuDWlIig9pM1Z5SadJi7CQlY/KkQ1ZSWjXSdk+9xAchgP5
+         hBI6/zSFDPnVWQP+WPsGT1uLozBxciVxdBxQQtlUwb1mAc5sLnNfSJgrZbUapHKd/CFo
+         JABESaCIshUvBfOqWYqd5MNWpDH8bY9AEON1t8qcnOIiIrxWPIqwhdJF7QT9hLI9Ull7
+         oMs0rulZ+qTbuvtZid9clrpAQcG4b1FButVSRj4rKhhbesEhWzLePc74Eso4T65PGGQt
+         4hnVL3lVFMsPp4bIAe/acTjIqiCd+MZlG322LJtcdc5QGPj+LyRptgkdroHyNIXhOrDM
+         as/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710173852; x=1710778652;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KhgroYwDHirsSK6NEpHEOPOQNxUnb5y1s4Aku7Fobs0=;
-        b=Q3quu3lrufH/5e4il7Af+RaR34CB+1H2XWMPyRfWuGj9+sbZiTnfZ8sMu/SwYAGK+W
-         wNRtMSm/6QLBvo+uzTPwEFDwCPATGtgcSpxtxVomwO6LNCNNBxHzq34jvKOVwfF86zHz
-         O2Nk1gXtYm7t6VpErgo8AbZtCtmLGFqMkiIzln/jzC3fakmHDiafcozopOGFpNiPNhAZ
-         sR9ZZEQHrntOJwHHxG5Tn/+r3oBgCiBrq48944nur4vbCh+l50zQH8/CldfYolrvvklv
-         KDYo6qvWvfyieJhXM+Tkp5suaHIhZw0VNvPqFtrvmXs77Sh/QXAkWOO2u3PJUf/vQIjc
-         r9GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWzjmGZyrteJnWdYEOeFeYebZnK/p0GU/59ql99cAYeTRRwk00UgOcXiC4TNonp9TOhIkF4ITOywR8Eb57cNWc1ruHeuW+UTcrK9Q==
-X-Gm-Message-State: AOJu0YwQlInm5aDmCK1aWCQeFeAAMQ85BZkDQgTTLcqht8cYDNZo+SXq
-	x6e3CqzvkZDxPs04387dCxP3o96jQJFvwtYc0T1fTSO5YnoVADUp
-X-Google-Smtp-Source: AGHT+IFOXZkK2STurIgXVxbzpgve2av/2k7r2YA7lYoWxFHnDOWhnUJF1kkXWaz1HUNUDRTofP3laA==
-X-Received: by 2002:a05:600c:5011:b0:413:2bcf:de2c with SMTP id n17-20020a05600c501100b004132bcfde2cmr1743625wmr.9.1710173852290;
-        Mon, 11 Mar 2024 09:17:32 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1710173858; x=1710778658;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XlT6S3JYLHvAwK8UNEHcgb4bZEoZMmzJ4tC7ZUpRS9U=;
+        b=lbhAmhdMS8YqW7oe2nDX7FCYxogJ8GzqvYQ+orUh8UruOlfQxjKmpctEg1nUWDd9pq
+         mR0aTFwbH+iapxy1rWGQoS/417Zo+DeoEkW6po7SCt1YS0acQmifuSAF1G6SvrWZv1yV
+         x9Gq1Aggvg+X2rff6pbUvLJSpygKzPhIRuknO1bxukIntEMKOgDFbHFqmJpp2XaX7vbv
+         fM1akboEa/bf5+d5znZV8OGR9hK9/5jS2oNMpHrB0zuFFSSRlitAxpMJYJvaSp8mNtdo
+         o27l5BPHQIj8n5IrczRluyZPn+H6Hl/rQMJUPkncjI650ZZI4N133iC06p9GdKapV4pt
+         1Vqg==
+X-Forwarded-Encrypted: i=1; AJvYcCVLjIdOraOP9jXonQK6FJg2agvPMduaTB7Z+hK6FWfoUwfyX8BvTjzhYrZvRFnBkb/RaShxQBI/r+xgOS75rB15puihwx1gpZp5ew==
+X-Gm-Message-State: AOJu0YwgHE1yB7kC4Sp3ih3umzYNEICbyKlgOeeI+czFmQ4W1kvqQb00
+	pRgVknt0eyXA9Ig9G4FfVcmgGtpBD5UmAU3VTsGoLbNAehA9Fz5e
+X-Google-Smtp-Source: AGHT+IGuJ0ezgEW2A+EibLRPcyJku2mclY2jd0WWCArpGKEld6s3E0aT4whoamD7AkrHp4sMqLpR7Q==
+X-Received: by 2002:a5d:61ce:0:b0:33e:7b41:fd9b with SMTP id q14-20020a5d61ce000000b0033e7b41fd9bmr6794615wrv.22.1710173858084;
+        Mon, 11 Mar 2024 09:17:38 -0700 (PDT)
 Received: from vasant-suse.suse.cz ([2001:9e8:ab47:8200:c3b9:43af:f8e1:76f9])
-        by smtp.gmail.com with ESMTPSA id ba14-20020a0560001c0e00b0033e96fe9479sm2823815wrb.89.2024.03.11.09.17.30
+        by smtp.gmail.com with ESMTPSA id ba14-20020a0560001c0e00b0033e96fe9479sm2823815wrb.89.2024.03.11.09.17.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Mar 2024 09:17:31 -0700 (PDT)
+        Mon, 11 Mar 2024 09:17:37 -0700 (PDT)
 From: Vasant Karasulli <vsntk18@gmail.com>
 To: x86@kernel.org
 Cc: joro@8bytes.org,
@@ -77,11 +79,14 @@ Cc: joro@8bytes.org,
 	stable@vger.kernel.org,
 	thomas.lendacky@amd.com,
 	virtualization@lists.linux-foundation.org,
+	Joerg Roedel <jroedel@suse.de>,
 	Vasant Karasulli <vkarasulli@suse.de>
-Subject: [PATCH v4 0/9] x86/sev: KEXEC/KDUMP support for SEV-ES guests
-Date: Mon, 11 Mar 2024 17:17:18 +0100
-Message-Id: <20240311161727.14916-1-vsntk18@gmail.com>
+Subject: [PATCH v4 4/9] x86/sev: Setup code to park APs in the AP Jump Table
+Date: Mon, 11 Mar 2024 17:17:22 +0100
+Message-Id: <20240311161727.14916-5-vsntk18@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240311161727.14916-1-vsntk18@gmail.com>
+References: <20240311161727.14916-1-vsntk18@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -90,123 +95,509 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Vasant Karasulli <vkarasulli@suse.de>
+From: Joerg Roedel <jroedel@suse.de>
 
-Hi,
+The AP jump table under SEV-ES contains the reset vector where non-boot
+CPUs start executing when coming out of reset. This means that a CPU
+coming out of the AP-reset-hold VMGEXIT also needs to start executing at
+the reset vector stored in the AP jump table.
 
-here are changes to enable kexec/kdump in SEV-ES guests. The biggest
-problem for supporting kexec/kdump under SEV-ES is to find a way to
-hand the non-boot CPUs (APs) from one kernel to another.
+The problem is to find a safe place to put the real-mode code which
+executes the VMGEXIT and jumps to the reset vector. The code can not be
+in kernel memory, because after kexec that memory is owned by the new
+kernel and the code might have been overwritten.
 
-Without SEV-ES the first kernel parks the CPUs in a HLT loop until
-they get reset by the kexec'ed kernel via an INIT-SIPI-SIPI sequence.
-For virtual machines the CPU reset is emulated by the hypervisor,
-which sets the vCPU registers back to reset state.
+Fortunately the AP jump table itself is a safe place, because the
+memory is not owned by the OS and will not be overwritten by a new
+kernel started through kexec. The table is 4k in size and only the
+first 4 bytes are used for the reset vector. This leaves enough space
+for some 16-bit code to do the job and even a small stack.
 
-This does not work under SEV-ES, because the hypervisor has no access
-to the vCPU registers and can't make modifications to them. So an
-SEV-ES guest needs to reset the vCPU itself and park it using the
-AP-reset-hold protocol. Upon wakeup the guest needs to jump to
-real-mode and to the reset-vector configured in the AP-Jump-Table.
+The AP jump table must be 4K in size, in encrypted memory and it must
+be 4K (page) aligned. There can only be one AP jump table and it
+should reside in memory that has been marked as reserved by UEFI.
 
-The code to do this is the main part of this patch-set. It works by
-placing code on the AP Jump-Table page itself to park the vCPU and for
-jumping to the reset vector upon wakeup. The code on the AP Jump Table
-runs in 16-bit protected mode with segment base set to the beginning
-of the page. The AP Jump-Table is usually not within the first 1MB of
-memory, so the code can't run in real-mode.
+Install 16-bit code into the AP jump table under SEV-ES.
+The code will do an AP-reset-hold VMGEXIT and jump to the
+reset vector after being woken up.
 
-The AP Jump-Table is the best place to put the parking code, because
-the memory is owned, but read-only by the firmware and writeable by
-the OS. Only the first 4 bytes are used for the reset-vector, leaving
-the rest of the page for code/data/stack to park a vCPU. The code
-can't be in kernel memory because by the time the vCPU wakes up the
-memory will be owned by the new kernel, which might have overwritten it
-already.
-
-The other patches add initial GHCB Version 2 protocol support, because
-kexec/kdump need the MSR-based (without a GHCB) AP-reset-hold VMGEXIT,
-which is a GHCB protocol version 2 feature.
-
-The kexec'ed kernel is also entered via the decompressor and needs
-MMIO support there, so this patch-set also adds MMIO #VC support to
-the decompressor and support for handling CLFLUSH instructions.
-
-Finally there is also code to disable kexec/kdump support at runtime
-when the environment does not support it (e.g. no GHCB protocol
-version 2 support or AP Jump Table over 4GB).
-
-The diffstat looks big, but most of it is moving code for MMIO #VC
-support around to make it available to the decompressor.
-
-The previous version of this patch-set can be found here:
-
-	https://lore.kernel.org/lkml/20220127101044.13803-1-joro@8bytes.org/
-
-Please review.
-
-Thanks,
-   Vasant
-
-Changes v3->v4:
-        - Rebased to v6.8 kernel
-	- Applied review comments by Sean Christopherson
-	- Combined sev_es_setup_ap_jump_table() and sev_setup_ap_jump_table()
-          into a single function which makes caching jump table address
-          unnecessary
-        - annotated struct sev_ap_jump_table_header with __packed attribute
-	- added code to set up real mode data segment at boot time instead of
-          hardcoding the value.
-
-Changes v2->v3:
-
-	- Rebased to v5.17-rc1
-	- Applied most review comments by Boris
-	- Use the name 'AP jump table' consistently
-	- Make kexec-disabling for unsupported guests x86-specific
-	- Cleanup and consolidate patches to detect GHCB v2 protocol
-	  support
-
-Joerg Roedel (9):
-  x86/kexec/64: Disable kexec when SEV-ES is active
-  x86/sev: Save and print negotiated GHCB protocol version
-  x86/sev: Set GHCB data structure version
-  x86/sev: Setup code to park APs in the AP Jump Table
-  x86/sev: Park APs on AP Jump Table with GHCB protocol version 2
-  x86/sev: Use AP Jump Table blob to stop CPU
-  x86/sev: Add MMIO handling support to boot/compressed/ code
-  x86/sev: Handle CLFLUSH MMIO events
-  x86/kexec/64: Support kexec under SEV-ES with AP Jump Table Blob
-
- arch/x86/boot/compressed/sev.c          |  45 +-
- arch/x86/include/asm/insn-eval.h        |   1 +
- arch/x86/include/asm/realmode.h         |   5 +
- arch/x86/include/asm/sev-ap-jumptable.h |  30 +
- arch/x86/include/asm/sev.h              |   7 +
- arch/x86/kernel/machine_kexec_64.c      |  12 +
- arch/x86/kernel/process.c               |   8 +
- arch/x86/kernel/sev-shared.c            | 234 +++++-
- arch/x86/kernel/sev.c                   | 372 +++++-----
- arch/x86/lib/insn-eval-shared.c         | 912 ++++++++++++++++++++++++
- arch/x86/lib/insn-eval.c                | 911 +----------------------
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Vasant Karasulli <vkarasulli@suse.de>
+---
+ arch/x86/include/asm/realmode.h         |   2 +
+ arch/x86/include/asm/sev-ap-jumptable.h |  30 ++++++
+ arch/x86/kernel/sev.c                   |  94 ++++++++++++++---
  arch/x86/realmode/Makefile              |   9 +-
- arch/x86/realmode/rm/Makefile           |  11 +-
- arch/x86/realmode/rm/header.S           |   3 +
- arch/x86/realmode/rm/sev.S              |  85 +++
- arch/x86/realmode/rmpiggy.S             |   6 +
- arch/x86/realmode/sev/Makefile          |  33 +
- arch/x86/realmode/sev/ap_jump_table.S   | 131 ++++
- arch/x86/realmode/sev/ap_jump_table.lds |  24 +
- 19 files changed, 1695 insertions(+), 1144 deletions(-)
+ arch/x86/realmode/rmpiggy.S             |   6 ++
+ arch/x86/realmode/sev/Makefile          |  33 ++++++
+ arch/x86/realmode/sev/ap_jump_table.S   | 131 ++++++++++++++++++++++++
+ arch/x86/realmode/sev/ap_jump_table.lds |  24 +++++
+ 8 files changed, 316 insertions(+), 13 deletions(-)
  create mode 100644 arch/x86/include/asm/sev-ap-jumptable.h
- create mode 100644 arch/x86/lib/insn-eval-shared.c
- create mode 100644 arch/x86/realmode/rm/sev.S
  create mode 100644 arch/x86/realmode/sev/Makefile
  create mode 100644 arch/x86/realmode/sev/ap_jump_table.S
  create mode 100644 arch/x86/realmode/sev/ap_jump_table.lds
 
+diff --git a/arch/x86/include/asm/realmode.h b/arch/x86/include/asm/realmode.h
+index 87e5482acd0d..bd54a48fe077 100644
+--- a/arch/x86/include/asm/realmode.h
++++ b/arch/x86/include/asm/realmode.h
+@@ -63,6 +63,8 @@ extern unsigned long initial_code;
+ extern unsigned long initial_stack;
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ extern unsigned long initial_vc_handler;
++extern unsigned char rm_ap_jump_table_blob[];
++extern unsigned char rm_ap_jump_table_blob_end[];
+ #endif
 
-base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
+ extern u32 *trampoline_lock;
+diff --git a/arch/x86/include/asm/sev-ap-jumptable.h b/arch/x86/include/asm/sev-ap-jumptable.h
+new file mode 100644
+index 000000000000..17b07fb19297
+--- /dev/null
++++ b/arch/x86/include/asm/sev-ap-jumptable.h
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * AMD Encrypted Register State Support
++ *
++ * Author: Joerg Roedel <jroedel@suse.de>
++ */
++#ifndef __ASM_SEV_AP_JUMPTABLE_H
++#define __ASM_SEV_AP_JUMPTABLE_H
++
++#define	SEV_APJT_CS16	0x8
++#define	SEV_APJT_DS16	0x10
++#define	SEV_RM_DS	0x18
++
++#define SEV_APJT_ENTRY	0x10
++
++#ifndef __ASSEMBLY__
++
++/*
++ * The reset_ip and reset_cs members are fixed and defined through the GHCB
++ * specification. Do not change or move them around.
++ */
++struct sev_ap_jump_table_header {
++	u16	reset_ip;
++	u16	reset_cs;
++	u16	ap_jumptable_gdt;
++} __packed;
++
++#endif /* !__ASSEMBLY__ */
++
++#endif /* __ASM_SEV_AP_JUMPTABLE_H */
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 179ab6eab0be..aa114a4f3dfc 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -25,6 +25,7 @@
+ #include <linux/psp-sev.h>
+ #include <uapi/linux/sev-guest.h>
+
++#include <asm/sev-ap-jumptable.h>
+ #include <asm/cpu_entry_area.h>
+ #include <asm/stacktrace.h>
+ #include <asm/sev.h>
+@@ -71,6 +72,9 @@ static struct ghcb *boot_ghcb __section(".data");
+ /* Bitmap of SEV features supported by the hypervisor */
+ static u64 sev_hv_features __ro_after_init;
+
++/* Whether the AP jump table blob was successfully installed */
++static bool sev_ap_jumptable_blob_installed __ro_after_init;
++
+ /* #VC handler runtime per-CPU data */
+ struct sev_es_runtime_data {
+ 	struct ghcb ghcb_page;
+@@ -649,12 +653,12 @@ static u64 __init get_snp_jump_table_addr(void)
+ 	return addr;
+ }
+
+-static u64 __init get_jump_table_addr(void)
++static phys_addr_t __init get_jump_table_addr(void)
+ {
+ 	struct ghcb_state state;
+ 	unsigned long flags;
+ 	struct ghcb *ghcb;
+-	u64 ret = 0;
++	phys_addr_t jump_table_pa;
+
+ 	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+ 		return get_snp_jump_table_addr();
+@@ -673,13 +677,13 @@ static u64 __init get_jump_table_addr(void)
+
+ 	if (ghcb_sw_exit_info_1_is_valid(ghcb) &&
+ 	    ghcb_sw_exit_info_2_is_valid(ghcb))
+-		ret = ghcb->save.sw_exit_info_2;
++		jump_table_pa = ghcb->save.sw_exit_info_2;
+
+ 	__sev_put_ghcb(&state);
+
+ 	local_irq_restore(flags);
+
+-	return ret;
++	return jump_table_pa;
+ }
+
+ static void early_set_pages_state(unsigned long vaddr, unsigned long paddr,
+@@ -1128,38 +1132,104 @@ void __init snp_set_wakeup_secondary_cpu(void)
+ 	apic_update_callback(wakeup_secondary_cpu, wakeup_cpu_via_vmgexit);
+ }
+
++/*
++ * Make the necessary runtime changes to the AP jump table blob.  For now this
++ * only sets up the GDT used while the code executes. The GDT needs to contain
++ * 16-bit code and data segments with a base that points to AP jump table page.
++ */
++void __init sev_es_setup_ap_jump_table_data(void *base, u32 pa)
++{
++	struct sev_ap_jump_table_header *header;
++	struct desc_ptr *gdt_descr;
++	u64 *ap_jumptable_gdt;
++
++	header = base;
++
++	/*
++	 * Setup 16-bit protected mode code and data segments for AP jump table.
++	 * Set the segment limits to 0xffff to already be compatible with
++	 * real-mode.
++	 */
++	ap_jumptable_gdt = (u64 *)(base + header->ap_jumptable_gdt);
++	ap_jumptable_gdt[SEV_APJT_CS16 / 8] = GDT_ENTRY(0x9b, pa, 0xffff);
++	ap_jumptable_gdt[SEV_APJT_DS16 / 8] = GDT_ENTRY(0x93, pa, 0xffff);
++	ap_jumptable_gdt[SEV_RM_DS / 8] = GDT_ENTRY(0x93, 0, 0xffff);
++
++	/* Write correct GDT base address into GDT descriptor */
++	gdt_descr = (struct desc_ptr *)(base + header->ap_jumptable_gdt);
++	gdt_descr->address += pa;
++}
++
++/*
++ * Set up the AP jump table blob which contains code which runs in 16-bit
++ * protected mode to park an AP. After the AP is woken up again the code will
++ * disable protected mode and jump to the reset vector which is also stored in
++ * the AP jump table.
++ *
++ * The jump table is a safe place to park an AP, because it is owned by the
++ * BIOS and writable by the OS. Putting the code in kernel memory would break
++ * with kexec, because by the time the APs wake up the memory is owned by
++ * the new kernel, and possibly already overwritten.
++ *
++ * Kexec is also the reason this function is an init-call after SMP bringup.
++ * Only after all CPUs are up there is a guarantee that no AP is still parked in
++ * AP jump-table code.
++ */
+ int __init sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
+ {
+ 	u16 startup_cs, startup_ip;
+-	phys_addr_t jump_table_pa;
+-	u64 jump_table_addr;
+ 	u16 __iomem *jump_table;
++	phys_addr_t pa;
++	size_t blob_size = rm_ap_jump_table_blob_end - rm_ap_jump_table_blob;
++
++	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
++		return 0;
+
+-	jump_table_addr = get_jump_table_addr();
++	if (ghcb_info.vm_proto < 2) {
++		pr_warn("AP jump table parking requires at least GHCB protocol version 2\n");
++		return 0;
++	}
++
++	pa = get_jump_table_addr();
+
+ 	/* On UP guests there is no jump table so this is not a failure */
+-	if (!jump_table_addr)
++	if (!pa)
+ 		return 0;
+
+-	/* Check if AP Jump Table is page-aligned */
+-	if (jump_table_addr & ~PAGE_MASK)
++	/* Check if AP jump table is page-aligned */
++	if (pa & ~PAGE_MASK)
+ 		return -EINVAL;
+
+-	jump_table_pa = jump_table_addr & PAGE_MASK;
++	/* Check overflow and size for untrusted jump table address */
++	if (pa + PAGE_SIZE < pa || pa + PAGE_SIZE > SZ_4G) {
++		pr_info("AP jump table is above 4GB or address overflow - not enabling AP jump table parking\n");
++		return -EINVAL;
++	}
+
+ 	startup_cs = (u16)(rmh->trampoline_start >> 4);
+ 	startup_ip = (u16)(rmh->sev_es_trampoline_start -
+ 			   rmh->trampoline_start);
+
+-	jump_table = ioremap_encrypted(jump_table_pa, PAGE_SIZE);
++	jump_table = ioremap_encrypted(pa, PAGE_SIZE);
+ 	if (!jump_table)
+ 		return -EIO;
+
++	/* Install AP jump table Blob with real mode AP parking code */
++	memcpy_toio(jump_table, rm_ap_jump_table_blob, blob_size);
++
++	/* Setup AP jump table GDT */
++	sev_es_setup_ap_jump_table_data(jump_table, (u32)pa);
++
+ 	writew(startup_ip, &jump_table[0]);
+ 	writew(startup_cs, &jump_table[1]);
+
+ 	iounmap(jump_table);
+
++	pr_info("AP jump table Blob successfully set up\n");
++
++	/* Mark AP jump table blob as available */
++	sev_ap_jumptable_blob_installed = true;
++
+ 	return 0;
+ }
+
+diff --git a/arch/x86/realmode/Makefile b/arch/x86/realmode/Makefile
+index a0b491ae2de8..00f3cceb9580 100644
+--- a/arch/x86/realmode/Makefile
++++ b/arch/x86/realmode/Makefile
+@@ -11,12 +11,19 @@
+ KASAN_SANITIZE			:= n
+ KCSAN_SANITIZE			:= n
+
++RMPIGGY-y				 = $(obj)/rm/realmode.bin
++RMPIGGY-$(CONFIG_AMD_MEM_ENCRYPT)	+= $(obj)/sev/ap_jump_table.bin
++
+ subdir- := rm
++subdir- := sev
+
+ obj-y += init.o
+ obj-y += rmpiggy.o
+
+-$(obj)/rmpiggy.o: $(obj)/rm/realmode.bin
++$(obj)/rmpiggy.o: $(RMPIGGY-y)
+
+ $(obj)/rm/realmode.bin: FORCE
+ 	$(Q)$(MAKE) $(build)=$(obj)/rm $@
++
++$(obj)/sev/ap_jump_table.bin: FORCE
++	$(Q)$(MAKE) $(build)=$(obj)/sev $@
+diff --git a/arch/x86/realmode/rmpiggy.S b/arch/x86/realmode/rmpiggy.S
+index c8fef76743f6..a659f98617ff 100644
+--- a/arch/x86/realmode/rmpiggy.S
++++ b/arch/x86/realmode/rmpiggy.S
+@@ -17,3 +17,9 @@ SYM_DATA_END_LABEL(real_mode_blob, SYM_L_GLOBAL, real_mode_blob_end)
+ SYM_DATA_START(real_mode_relocs)
+ 	.incbin	"arch/x86/realmode/rm/realmode.relocs"
+ SYM_DATA_END(real_mode_relocs)
++
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++SYM_DATA_START(rm_ap_jump_table_blob)
++	.incbin "arch/x86/realmode/sev/ap_jump_table.bin"
++SYM_DATA_END_LABEL(rm_ap_jump_table_blob, SYM_L_GLOBAL, rm_ap_jump_table_blob_end)
++#endif
+diff --git a/arch/x86/realmode/sev/Makefile b/arch/x86/realmode/sev/Makefile
+new file mode 100644
+index 000000000000..7cf5f31f6419
+--- /dev/null
++++ b/arch/x86/realmode/sev/Makefile
+@@ -0,0 +1,33 @@
++# SPDX-License-Identifier: GPL-2.0
++
++# Sanitizer runtimes are unavailable and cannot be linked here.
++KASAN_SANITIZE			:= n
++KCSAN_SANITIZE			:= n
++OBJECT_FILES_NON_STANDARD	:= y
++
++# Prevents link failures: __sanitizer_cov_trace_pc() is not linked in.
++KCOV_INSTRUMENT		:= n
++
++always-y 	:= ap_jump_table.bin
++ap_jump_table-y	+= ap_jump_table.o
++targets		+= $(ap_jump_table-y)
++
++APJUMPTABLE_OBJS = $(addprefix $(obj)/,$(ap_jump_table-y))
++
++LDFLAGS_ap_jump_table.elf := -m elf_i386 -T
++
++targets 	+= ap_jump_table.elf
++$(obj)/ap_jump_table.elf: $(obj)/ap_jump_table.lds $(APJUMPTABLE_OBJS) FORCE
++	$(call if_changed,ld)
++
++OBJCOPYFLAGS_ap_jump_table.bin := -O binary
++
++targets 	+= ap_jump_table.bin
++$(obj)/ap_jump_table.bin: $(obj)/ap_jump_table.elf FORCE
++	$(call if_changed,objcopy)
++
++# ---------------------------------------------------------------------------
++
++KBUILD_AFLAGS	:= $(REALMODE_CFLAGS) -D__ASSEMBLY__
++GCOV_PROFILE := n
++UBSAN_SANITIZE := n
+diff --git a/arch/x86/realmode/sev/ap_jump_table.S b/arch/x86/realmode/sev/ap_jump_table.S
+new file mode 100644
+index 000000000000..b3523612a9b0
+--- /dev/null
++++ b/arch/x86/realmode/sev/ap_jump_table.S
+@@ -0,0 +1,131 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#include <linux/linkage.h>
++#include <asm/msr-index.h>
++#include <asm/sev-ap-jumptable.h>
++
++/*
++ * This file contains the source code for the binary blob which gets copied to
++ * the SEV-ES AP jump table to park APs while offlining CPUs or booting a new
++ * kernel via KEXEC.
++ *
++ * The AP jump table is the only safe place to put this code, as any memory the
++ * kernel allocates will be owned (and possibly overwritten) by the new kernel
++ * once the APs are woken up.
++ *
++ * This code runs in 16-bit protected mode, the CS, DS, and SS segment bases are
++ * set to the beginning of the AP jump table page.
++ *
++ * Since the GDT will also be gone when the AP wakes up, this blob contains its
++ * own GDT, which is set up by the AP jump table setup code with the correct
++ * offsets.
++ *
++ * Author: Joerg Roedel <jroedel@suse.de>
++ */
++
++	.text
++	.org 0x0
++	.code16
++SYM_DATA_START(ap_jumptable_header)
++	.word	0			/* reset IP */
++	.word	0			/* reset CS */
++	.word	ap_jumptable_gdt	/* GDT Offset   */
++SYM_DATA_END(ap_jumptable_header)
++
++	.org	SEV_APJT_ENTRY
++SYM_CODE_START(ap_park)
++
++	/* Switch to AP jump table GDT first */
++	lgdtl	ap_jumptable_gdt
++
++	/* Reload CS */
++	ljmpw	$SEV_APJT_CS16, $1f
++1:
++
++	/* Reload DS and SS */
++	movl	$SEV_APJT_DS16, %ecx
++	movl	%ecx, %ds
++	movl	%ecx, %ss
++
++	/*
++	 * Setup a stack pointing to the end of the AP jump table page.
++	 * The stack is needed to reset EFLAGS after wakeup.
++	 */
++	movl	$0x1000, %esp
++
++	/* Execute AP reset hold VMGEXIT */
++2:	xorl	%edx, %edx
++	movl	$0x6, %eax
++	movl	$MSR_AMD64_SEV_ES_GHCB, %ecx
++	wrmsr
++	rep; vmmcall
++	rdmsr
++	movl	%eax, %ecx
++	andl	$0xfff, %ecx
++	cmpl	$0x7, %ecx
++	jne	2b
++	shrl	$12, %eax
++	jnz	3f
++	testl	%edx, %edx
++	jnz	3f
++	jmp	2b
++3:
++	/*
++	 * Successfully woken up - patch the correct target into the far jump at
++	 * the end. An indirect far jump does not work here, because at the time
++	 * the jump is executed DS is already loaded with real-mode values.
++	 */
++
++	/* Jump target is at address 0x0 - copy it to the far jump instruction */
++	movl	$0, %ecx
++	movl	(%ecx), %eax
++	movl	%eax, jump_target
++
++	/* Set EFLAGS to reset value (bit 1 is hard-wired to 1) */
++	pushl	$2
++	popfl
++
++	/* Setup DS and SS for real-mode */
++	movl	$0x18, %ecx
++	movl	%ecx, %ds
++	movl	%ecx, %ss
++
++	/* Reset remaining registers */
++	movl	$0, %esp
++	movl	$0, %eax
++	movl	$0, %ebx
++	movl	$0, %edx
++
++	/* Set CR0 to reset value to drop out of protected mode */
++	movl	$0x60000010, %ecx
++	movl	%ecx, %cr0
++
++	/*
++	 * The below sums up to a far-jump instruction which jumps to the reset
++	 * vector configured in the AP jump table and to real-mode. An indirect
++	 * jump would be cleaner, but requires a working DS base/limit. DS is
++	 * already loaded with real-mode values, therefore a direct far jump is
++	 * used which got the correct target patched in.
++	 */
++	.byte	0xea
++SYM_DATA_LOCAL(jump_target, .long 0)
++
++SYM_CODE_END(ap_park)
++	/* Here comes the GDT */
++	.balign	16
++SYM_DATA_START_LOCAL(ap_jumptable_gdt)
++	/* Offset zero used for GDT descriptor */
++	.word	ap_jumptable_gdt_end - ap_jumptable_gdt - 1
++	.long	ap_jumptable_gdt
++	.word	0
++
++	/* 16 bit code segment - setup at boot */
++	.quad 0
++
++	/* 16 bit data segment - setup at boot */
++	.quad 0
++
++	/* Offset 0x18 - real-mode data segment - setup at boot */
++	.long	0
++	.long	0
++SYM_DATA_END_LABEL(ap_jumptable_gdt, SYM_L_LOCAL, ap_jumptable_gdt_end)
+diff --git a/arch/x86/realmode/sev/ap_jump_table.lds b/arch/x86/realmode/sev/ap_jump_table.lds
+new file mode 100644
+index 000000000000..4e47f1a6eb4e
+--- /dev/null
++++ b/arch/x86/realmode/sev/ap_jump_table.lds
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * ap_jump_table.lds
++ *
++ * Linker script for the SEV-ES AP jump table code
++ */
++
++OUTPUT_FORMAT("elf32-i386")
++OUTPUT_ARCH(i386)
++ENTRY(ap_park)
++
++SECTIONS
++{
++	. = 0;
++	.text : {
++		*(.text)
++		*(.text.*)
++	}
++
++	/DISCARD/ : {
++		*(.note*)
++		*(.debug*)
++	}
++}
 --
 2.34.1
 
