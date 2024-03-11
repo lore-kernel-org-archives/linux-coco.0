@@ -1,57 +1,57 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFB64AEC9
-	for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 16:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825CA4CDEC
+	for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 16:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710173791; cv=none; b=qUY4BOTZOqkfB2FDBtG1+lmFy9RCCPzMtO8r4n6+BFHT5qPI9DBHiY+3EzfS8JWAz7s7ztHkLeqs/0dLCIuXC2HNLMhZsfjMyEnzc5RYx2wpQTEEdAhmV5TCdrgGmaaUyYmUaQY3vqElFCny0eRcZHVLUsNNAjBOy6nmJ3gZgMc=
+	t=1710173792; cv=none; b=V4y6XTdUKfxhBb7TnOgCDmfrh+Hx9yjFT7LWyabdjw5zSP+umW6A+Y+oisdbXhNalsAzEjPX8VITHfKWUgNqVZkeDmopMFlVHUXY5bA3JokqlZyS7IsyL3+/RsP8DbHv0Pd4h007ggX7lu6dJR9N1ftVhUCwl5jNGVzCQCbdN6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710173791; c=relaxed/simple;
-	bh=stJGWSegiQhc7Ody3a64Zh+xIaryAD6Z92WIxHEheKs=;
+	s=arc-20240116; t=1710173792; c=relaxed/simple;
+	bh=NygHFgsfK9/f07Xn51o7Jdn2t0u6vgatLn5MNtO4zD8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=U9Lax0k0qE0422BA0Z9iME4mRszAYDG4Om78YFsXjEzR2Uh970zA18W0YTSErx/t0m3JSo65kQY8t02Ereo2OGUrhvVPdG6JSudlYgQDUuRs+3xqjPrNAhGQajt6uaYcZ88nsLPRCDer/Z+5Y9avdFjPJTRR8PEacB2Q2bisVDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ca59Qi6Z; arc=none smtp.client-ip=209.85.210.175
+	 MIME-Version; b=CPky9wFWTPMyZJBSmu+vNeyf+Jd1tN1+uZvXj/uwn9xANNek9aXkGytLIjNDm8+iTuYUMau129JHSvDfnm8tnIkSYh2Eicb/5GbkpD6XEQqx/qF1/jJTM2dgg2+GJoSQxOFftN0yJ/HorlFBfhn0lsJzSkFENr8L1lfFW9F4G8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=buSSKcsd; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ca59Qi6Z"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6e6381df003so3973585b3a.0
-        for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 09:16:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="buSSKcsd"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6e6277f72d8so3006804b3a.1
+        for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 09:16:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710173789; x=1710778589; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1710173790; x=1710778590; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=NIwRgw8kRdMYFrUfI8kD4ryRzVUpHboxNK6cHHvDbvA=;
-        b=ca59Qi6ZvUH9CTPiyKCeRYrX4f0mOVl6XSNc9Xyp2AmQtIaWGbKXlDtXQywguSFG1T
-         plPOrL46aS0JPJC/Ux9KwEo79qxSrR2iqqnSnDQv24Uycih2+MZxgSV4Mq7rtsY+GzFc
-         PCmECncULV9RWAUtbRTfgJxpoNq5EsiS+frYYUNbujhwPnuF7lYBBKDzaIrz9/PmZgCX
-         UXMIw6w1Y/yF9zwR9ASK0lhUayZ+oZVMPHpK3PnDxUDXg2rUU6ASdRQAyQjd0IMiOqyZ
-         xz4nWHPyzJML1mT8gBqgE/utvtyJOVjM0j8Mqh7FGMW6ygDKmnzhvGsQwXqyWiQQwNS6
-         1gNQ==
+        bh=Wigfq/6aRq72xOj/aIlxvJ6fFfc6HnyBCglftePM4e4=;
+        b=buSSKcsdXAeICE/omslF95XlCTurpXgvI4ox0kJwEPWIvTWeD6yF5qm2oMcXGPLSlV
+         QWg3VvAEdE19N7aMi5z5D8h1pJRjE/5XV4muEKspWTl1N6FE/Zyv7MwZJwNxSYhgVupa
+         UYTVoRksL0z4SjeLideRtrO5XaRdcWoiBbm9rZCI1ClcflDmr6dRLMsC8/6NDzkRM6Wl
+         RWGa0uALS9wHdUnTs86lzlMwfgFSpgUrxOvsZQ0vlCO6UKRraysPvLEHmEH6//KeKCON
+         EP3HkqMJ8jEVgTzN0imKZp1J8uM41kzVuR1h8ej4ODhhVHlzhZGn6vnTFJ1EYTtfv5hX
+         io0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710173789; x=1710778589;
+        d=1e100.net; s=20230601; t=1710173790; x=1710778590;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=NIwRgw8kRdMYFrUfI8kD4ryRzVUpHboxNK6cHHvDbvA=;
-        b=eV973B3zmXPduPDBP14Lh+znsgzfi58PuIdx+r2/vnOlzVrHFnxOKrCbXaBq6CPA0W
-         IKZShWUNEUauCz4D1JVl7bZi5Tw8cfN43bx4aw3tIt4xyQKYNcYyKJn1c7kqDgiSyZtl
-         r7Dxlf+erXfHxrPDkLPD4ywFscKGdScIF92NbKa+sWfQSZ/D7U2na06u4WrHhoD318OS
-         4+g/+PsCDZhKYl/AOcHrIdfAoCAukoYHnZe6MH8MSjB6bL9VAoAe/9erIiGF1Jg2dMJ6
-         4zmlsLYxp1HWJ4L8QliA3/DXE2zlctVanDrGeO9V9OdjAuForglz88uG468YguKxSHIB
-         Ac4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVzThTLEEZ+LqbxnfhYzBkBH5sROaGmyO0ayWeujMQuBMX7DA91TnuPeK/ECN+azgHNf1rEifMHSKtO1RAn7NL3ysFVbDdOdEEARg==
-X-Gm-Message-State: AOJu0YyfRIQNMd2gtlm5CqLVas/LxPve/l/bm0QvLv6hXEvP1WCyxFYV
-	KMbeQaZSG5D29G7+z3NFZuPlT9mSHlQKClwEwWZ6GM+55WQCtSDp
-X-Google-Smtp-Source: AGHT+IHJXkyc8/rW8os/YonzW2lIIoxEg+dw8CwCQc3gKfPn2zBsjIBZ5quHxjxhCcbXMpD+u4DtBg==
-X-Received: by 2002:a05:6a21:6da2:b0:1a1:4fce:8ee1 with SMTP id wl34-20020a056a216da200b001a14fce8ee1mr8357364pzb.8.1710173788984;
-        Mon, 11 Mar 2024 09:16:28 -0700 (PDT)
+        bh=Wigfq/6aRq72xOj/aIlxvJ6fFfc6HnyBCglftePM4e4=;
+        b=euHM0HCxwSUw/zZCVgAXD4dKYYDKV6ZsvZJ9QC9y0e5WXPgAgPhERk7ZCksvV3jq5y
+         HpiiWBcvFVp3LNeekJIhrMqfXWooNbKL+lZI6ZOEhjuk6bDiWcA+7s27tiH9Dzeh3vHt
+         tyZ2AysK/PmYr+TEqDCMQkI673YkWZRY1VaqkaaX8ducuPDBc7lzD8uOqcku0rQCDqco
+         xVkOsW9QhHdAXoebLm/xrePXtPTB3J4OwAsUbCQmeaPiq0G418MxIR5UzzKD1qZNQHa6
+         flx2rtkZm1IhsOnObY5+IFDJiuNjbjp3ZRZDGxTyyuDVT1VLkrK+IcuJ3rwg7lFZM482
+         5FAg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrn8GD5IJt6/EoEWiY4bgIx5EtDVfyd/q2r3unShWAIwTGpcdfxQ87UWAy+fBQMnXsfy/QjyhISYXv285npQkdBx+adfE2//plFA==
+X-Gm-Message-State: AOJu0Yw5TYa4QYjfWXkTTi3B6VOkdpvWCcNJ0venA+V0sBA4xuDeaFCj
+	stMMi5hwF+jquH2mpA/NarQ+4wP7FaPhqmzDQ1ER50/xmxso07o+
+X-Google-Smtp-Source: AGHT+IGYeEcPUzCbQFJrHGPuOeb50x9Z9GqcTz5epYFi2KgNUbGR2sGlA+8oJcaOvFdPFMhABQHcYQ==
+X-Received: by 2002:a05:6a20:3d87:b0:1a1:4848:98af with SMTP id s7-20020a056a203d8700b001a1484898afmr5407838pzi.1.1710173789816;
+        Mon, 11 Mar 2024 09:16:29 -0700 (PDT)
 Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
-        by smtp.gmail.com with ESMTPSA id m22-20020a056a00081600b006e52ce4ee2fsm4576325pfk.20.2024.03.11.09.16.28
+        by smtp.gmail.com with ESMTPSA id m22-20020a056a00081600b006e52ce4ee2fsm4576325pfk.20.2024.03.11.09.16.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Mar 2024 09:16:28 -0700 (PDT)
+        Mon, 11 Mar 2024 09:16:29 -0700 (PDT)
 From: mhkelley58@gmail.com
 X-Google-Original-From: mhklinux@outlook.com
 To: rick.p.edgecombe@intel.com,
@@ -72,9 +72,9 @@ To: rick.p.edgecombe@intel.com,
 	linux-coco@lists.linux.dev
 Cc: sathyanarayanan.kuppuswamy@linux.intel.com,
 	elena.reshetova@intel.com
-Subject: [PATCH v2 4/5] uio_hv_generic: Don't free decrypted memory
-Date: Mon, 11 Mar 2024 09:15:57 -0700
-Message-Id: <20240311161558.1310-5-mhklinux@outlook.com>
+Subject: [PATCH v2 5/5] Drivers: hv: vmbus: Don't free ring buffers that couldn't be re-encrypted
+Date: Mon, 11 Mar 2024 09:15:58 -0700
+Message-Id: <20240311161558.1310-6-mhklinux@outlook.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240311161558.1310-1-mhklinux@outlook.com>
 References: <20240311161558.1310-1-mhklinux@outlook.com>
@@ -87,7 +87,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
 In CoCo VMs it is possible for the untrusted host to cause
 set_memory_encrypted() or set_memory_decrypted() to fail such that an
@@ -96,57 +96,30 @@ take care to handle these errors to avoid returning decrypted (shared)
 memory to the page allocator, which could lead to functional or security
 issues.
 
-The VMBus device UIO driver could free decrypted/shared pages if
-set_memory_decrypted() fails. Check the decrypted field in the gpadl
-to decide whether to free the memory.
+The VMBus ring buffer code could free decrypted/shared pages if
+set_memory_decrypted() fails. Check the decrypted field in the struct
+vmbus_gpadl for the ring buffers to decide whether to free the memory.
 
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Michael Kelley <mhklinux@outlook.com>
 ---
- drivers/uio/uio_hv_generic.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/hv/channel.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
-index 20d9762331bd..6be3462b109f 100644
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -181,12 +181,14 @@ hv_uio_cleanup(struct hv_device *dev, struct hv_uio_private_data *pdata)
- {
- 	if (pdata->send_gpadl.gpadl_handle) {
- 		vmbus_teardown_gpadl(dev->channel, &pdata->send_gpadl);
--		vfree(pdata->send_buf);
-+		if (!pdata->send_gpadl.decrypted)
-+			vfree(pdata->send_buf);
- 	}
+diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
+index bb5abdcda18f..47e1bd8de9fc 100644
+--- a/drivers/hv/channel.c
++++ b/drivers/hv/channel.c
+@@ -153,7 +153,9 @@ void vmbus_free_ring(struct vmbus_channel *channel)
+ 	hv_ringbuffer_cleanup(&channel->inbound);
  
- 	if (pdata->recv_gpadl.gpadl_handle) {
- 		vmbus_teardown_gpadl(dev->channel, &pdata->recv_gpadl);
--		vfree(pdata->recv_buf);
-+		if (!pdata->recv_gpadl.decrypted)
-+			vfree(pdata->recv_buf);
- 	}
- }
- 
-@@ -295,7 +297,8 @@ hv_uio_probe(struct hv_device *dev,
- 	ret = vmbus_establish_gpadl(channel, pdata->recv_buf,
- 				    RECV_BUFFER_SIZE, &pdata->recv_gpadl);
- 	if (ret) {
--		vfree(pdata->recv_buf);
-+		if (!pdata->recv_gpadl.decrypted)
-+			vfree(pdata->recv_buf);
- 		goto fail_close;
- 	}
- 
-@@ -317,7 +320,8 @@ hv_uio_probe(struct hv_device *dev,
- 	ret = vmbus_establish_gpadl(channel, pdata->send_buf,
- 				    SEND_BUFFER_SIZE, &pdata->send_gpadl);
- 	if (ret) {
--		vfree(pdata->send_buf);
-+		if (!pdata->send_gpadl.decrypted)
-+			vfree(pdata->send_buf);
- 		goto fail_close;
- 	}
- 
+ 	if (channel->ringbuffer_page) {
+-		__free_pages(channel->ringbuffer_page,
++		/* In a CoCo VM leak the memory if it didn't get re-encrypted */
++		if (!channel->ringbuffer_gpadlhandle.decrypted)
++			__free_pages(channel->ringbuffer_page,
+ 			     get_order(channel->ringbuffer_pagecount
+ 				       << PAGE_SHIFT));
+ 		channel->ringbuffer_page = NULL;
 -- 
 2.25.1
 
