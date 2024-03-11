@@ -1,105 +1,252 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6451D69E;
-	Sat,  9 Mar 2024 11:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49852747F
+	for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 05:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709982924; cv=none; b=f1goCM8wyLYH13qFfBm0QSmMAubIQtRWeBXrPK9zul3nC57ilvgCeJHiv3DNPYycmLcNMBfJkp/TRR5vr1INxJTqaIrGRDs6wQETk2FLzyrl46+uzjiddf6XeZUcwnwNoYsN7sPRFS6PJXgFnPNNDjNoqnIp3CwxxFhjhqjdMxA=
+	t=1710136227; cv=none; b=By84a060gt4dSFFsoyhueYqJFHDiylUHFNDyBfJ/571dTbWC3BvOWuv28/WB4zWwyDZh2o1XBWsnKORm3DzxebCTcFEQJJpnmnFsG50csKmI7awL8ZekH2+Z2/IlBsPf1c6iw5BgsPKVBEnAwYdjXFBkNqvAQkJP03VYQLmotDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709982924; c=relaxed/simple;
-	bh=YaUuuk7Crsl2a1PUUVlftTiGcGES7hvpa0gsLJH4zXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aa/W+KdyCHtD4zxfoUmF1tR5LrH9XJ/amfL8r2d8YlNodYG4Q67T3aCuB6IBQfLgHs5VSozdFySLft8HYmfuC+bcVahQcttrkXk/ED8mH/pTAN7Weg6/Q/PnW/e7Az+QrC+KOjAlKXyybbQZPguqmtBmags1677YStdoYIngl2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rl9M6geC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1710136227; c=relaxed/simple;
+	bh=tFTkwIHFbMWF1tG+3qp3PfDm3XDtdHkyKYz9/9EFam0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=llCyjm4C7YFp83rCEng/GkPdO6vDzTwWe/NZPptBXbGSaPmed0Xh9tlCD1XyBvuZB4oiJsspu3y0h1dw9NVEi2UjnO4fL5yOwEZkjE1LEnt0jw6U0cGW2PYrVM+giSx0EekkVOh2m5Pi0/q2hpG3XEF3LVc01N4uwXOTfPBaa/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OWbVlM1t; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rl9M6geC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB0EC433C7;
-	Sat,  9 Mar 2024 11:15:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709982923;
-	bh=YaUuuk7Crsl2a1PUUVlftTiGcGES7hvpa0gsLJH4zXA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rl9M6geC4ebyRSg/d2wRXYZOIlzGBGevef0ILal/PwLTfJYHxWnepu1EFQhJSJqp1
-	 dqKzS8GKxJ+rhJToGRkhboVOZdHt+vU98vtpuGtVx1OYquHCjgIoWOt5kIIIUgUdkA
-	 zVhFg8xuVaI+nt//g1J0r8SZk/3Q7xTmCC8eOzhi9FBsQ9Y0h+puyEVimWTJnC8oYu
-	 Y7MxIveJTBKivuvGizPHVxJlu5YPSGFls3TxEPBEiRf30S5/tAKcIhqs0kqyYQkT4I
-	 tS6X5kYMX/52fcixiE4zhGRDtQidSASFWNKNftwdz9lcEYoKUFz7B7hl+61ijvjwHK
-	 DHGPLi3zffCQA==
-Date: Sat, 9 Mar 2024 13:14:24 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: James Gowans <jgowans@amazon.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	Patrick Roy <roypat@amazon.co.uk>,
-	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>,
-	Derek Manwaring <derekmn@amazon.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Nikita Kalyazin <kalyazin@amazon.co.uk>,
-	"lstoakes@gmail.com" <lstoakes@gmail.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"mst@redhat.com" <mst@redhat.com>, "somlo@cmu.edu" <somlo@cmu.edu>,
-	Alexander Graf <graf@amazon.de>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: Re: Unmapping KVM Guest Memory from Host Kernel
-Message-ID: <ZexEkGkNe_7UY7w6@kernel.org>
-References: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
- <ZeudRmZz7M6fWPVM@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OWbVlM1t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710136225; x=1741672225;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=tFTkwIHFbMWF1tG+3qp3PfDm3XDtdHkyKYz9/9EFam0=;
+  b=OWbVlM1tCE2rB3GofoblqhgrhrN6pTzilUaOhiNRqqDQwq4BJ7h107Zx
+   4HpAEW0kcvZ7sJOEzJsGbpnim8549JAUyyG687qW9ypNASSSTNEHoWg3w
+   RGLDG4Cji+cU5oQ072YLuPLzxnGw3B1j6GibJ4iKGUiVwRoDE2kS/rJY/
+   Ju8ZrVLSHzj2c3QjZn84Uq6FyXejpHkW1z57LO7B6Ni7KHnd18eZ8Yyg0
+   cUSer9GkkTdCiDE28+AhpFqkaOnU60EiMoDCr5RaCQqipbFlzIe0T2rU5
+   nbNOiOLAnIG6cyNVeKv2PDPWG5gkIOut1rKtBnIzI4ZLo5S+WHyCzynM7
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="27252735"
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; 
+   d="scan'208";a="27252735"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2024 22:50:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; 
+   d="scan'208";a="15757161"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.238.8.198]) ([10.238.8.198])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2024 22:50:16 -0700
+Message-ID: <75151ba8-87fe-444a-b855-0d2e21b36e05@linux.intel.com>
+Date: Mon, 11 Mar 2024 13:50:13 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZeudRmZz7M6fWPVM@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 28/35] KVM: SEV: Implement gmem hook for initializing
+ private pages
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+ dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
+ kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+ jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+ pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com
+References: <20231230172351.574091-1-michael.roth@amd.com>
+ <20231230172351.574091-29-michael.roth@amd.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20231230172351.574091-29-michael.roth@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 08, 2024 at 03:22:50PM -0800, Sean Christopherson wrote:
-> On Fri, Mar 08, 2024, James Gowans wrote:
-> > However, memfd_secret doesn’t work out the box for KVM guest memory; the
-> > main reason seems to be that the GUP path is intentionally disabled for
-> > memfd_secret, so if we use a memfd_secret backed VMA for a memslot then
-> > KVM is not able to fault the memory in. If it’s been pre-faulted in by
-> > userspace then it seems to work.
-> 
-> Huh, that _shouldn't_ work.  The folio_is_secretmem() in gup_pte_range() is
-> supposed to prevent the "fast gup" path from getting secretmem pages.
 
-I suspect this works because KVM only calls gup on faults and if the memory
-was pre-faulted via memfd_secret there won't be faults and no gups from
-KVM.
- 
-> > With this in mind, what’s the best way to solve getting guest RAM out of
-> > the direct map? Is memfd_secret integration with KVM the way to go, or
-> > should we build a solution on top of guest_memfd, for example via some
-> > flag that causes it to leave memory in the host userspace’s page tables,
-> > but removes it from the direct map? 
-> 
-> memfd_secret obviously gets you a PoC much faster, but in the long term I'm quite
-> sure you'll be fighting memfd_secret all the way.  E.g. it's not dumpable, it
-> deliberately allocates at 4KiB granularity (though I suspect the bug you found
-> means that it can be inadvertantly mapped with 2MiB hugepages), it has no line
-> of sight to taking userspace out of the equation, etc.
-> 
-> With guest_memfd on the other hand, everyone contributing to and maintaining it
-> has goals that are *very* closely aligned with what you want to do.
 
-I agree with Sean, guest_memfd seems a better interface to use. It's
-integrated by design with KVM and removing guest memory from the direct map
-looks like a natural enhancement to guest_memfd. 
+On 12/31/2023 1:23 AM, Michael Roth wrote:
+> This will handle RMP table updates and direct map changes needed to put
+> a page into a private state before mapping it into an SEV-SNP guest.
+>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>   arch/x86/kvm/Kconfig   |  1 +
+>   arch/x86/kvm/svm/sev.c | 98 ++++++++++++++++++++++++++++++++++++++++++
+>   arch/x86/kvm/svm/svm.c |  2 +
+>   arch/x86/kvm/svm/svm.h |  1 +
+>   virt/kvm/guest_memfd.c |  4 +-
+>   5 files changed, 104 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+> index 4ec53d6d5773..79c002e1bb5c 100644
+> --- a/arch/x86/kvm/Kconfig
+> +++ b/arch/x86/kvm/Kconfig
+> @@ -125,6 +125,7 @@ config KVM_AMD_SEV
+>   	depends on KVM_AMD && X86_64
+>   	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
+>   	select KVM_GENERIC_PRIVATE_MEM
+> +	select HAVE_KVM_GMEM_PREPARE
+>   	help
+>   	  Provides support for launching Encrypted VMs (SEV) and Encrypted VMs
+>   	  with Encrypted State (SEV-ES) on AMD processors.
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index b2ac696c436a..91f53f4a6059 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -4154,3 +4154,101 @@ void handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+>   out:
+>   	put_page(pfn_to_page(pfn));
+>   }
+> +
+> +static bool is_pfn_range_shared(kvm_pfn_t start, kvm_pfn_t end)
+> +{
+> +	kvm_pfn_t pfn = start;
+> +
+> +	while (pfn < end) {
+> +		int ret, rmp_level;
+> +		bool assigned;
+> +
+> +		ret = snp_lookup_rmpentry(pfn, &assigned, &rmp_level);
+> +		if (ret) {
+> +			pr_warn_ratelimited("SEV: Failed to retrieve RMP entry: PFN 0x%llx GFN start 0x%llx GFN end 0x%llx RMP level %d error %d\n",
+> +					    pfn, start, end, rmp_level, ret);
+> +			return false;
+> +		}
+> +
+> +		if (assigned) {
+> +			pr_debug("%s: overlap detected, PFN 0x%llx start 0x%llx end 0x%llx RMP level %d\n",
+> +				 __func__, pfn, start, end, rmp_level);
+> +			return false;
+> +		}
+> +
+> +		pfn++;
 
-Unless I'm missing something, for fast-and-dirty POC it'll be a oneliner
-that adds set_memory_np() to kvm_gmem_get_folio() and then figuring out
-what to do with virtio :)
+rmp_level can be got from snp_lookup_rmpentry().
+I think the pfn can be updated according to rmp_level to avoid unnecessary
+loops for 2MB large page, right?
 
--- 
-Sincerely yours,
-Mike.
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +static u8 max_level_for_order(int order)
+> +{
+> +	if (order >= KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M))
+> +		return PG_LEVEL_2M;
+> +
+> +	return PG_LEVEL_4K;
+> +}
+> +
+> +static bool is_large_rmp_possible(struct kvm *kvm, kvm_pfn_t pfn, int order)
+> +{
+> +	kvm_pfn_t pfn_aligned = ALIGN_DOWN(pfn, PTRS_PER_PMD);
+> +
+> +	/*
+> +	 * If this is a large folio, and the entire 2M range containing the
+> +	 * PFN is currently shared, then the entire 2M-aligned range can be
+> +	 * set to private via a single 2M RMP entry.
+> +	 */
+> +	if (max_level_for_order(order) > PG_LEVEL_4K &&
+> +	    is_pfn_range_shared(pfn_aligned, pfn_aligned + PTRS_PER_PMD))
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+> +int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
+> +{
+> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+> +	kvm_pfn_t pfn_aligned;
+> +	gfn_t gfn_aligned;
+> +	int level, rc;
+> +	bool assigned;
+> +
+> +	if (!sev_snp_guest(kvm))
+> +		return 0;
+> +
+> +	rc = snp_lookup_rmpentry(pfn, &assigned, &level);
+> +	if (rc) {
+> +		pr_err_ratelimited("SEV: Failed to look up RMP entry: GFN %llx PFN %llx error %d\n",
+> +				   gfn, pfn, rc);
+> +		return -ENOENT;
+> +	}
+> +
+> +	if (assigned) {
+> +		pr_debug("%s: already assigned: gfn %llx pfn %llx max_order %d level %d\n",
+> +			 __func__, gfn, pfn, max_order, level);
+> +		return 0;
+> +	}
+> +
+> +	if (is_large_rmp_possible(kvm, pfn, max_order)) {
+> +		level = PG_LEVEL_2M;
+> +		pfn_aligned = ALIGN_DOWN(pfn, PTRS_PER_PMD);
+> +		gfn_aligned = ALIGN_DOWN(gfn, PTRS_PER_PMD);
+> +	} else {
+> +		level = PG_LEVEL_4K;
+> +		pfn_aligned = pfn;
+> +		gfn_aligned = gfn;
+> +	}
+> +
+> +	rc = rmp_make_private(pfn_aligned, gfn_to_gpa(gfn_aligned), level, sev->asid, false);
+> +	if (rc) {
+> +		pr_err_ratelimited("SEV: Failed to update RMP entry: GFN %llx PFN %llx level %d error %d\n",
+> +				   gfn, pfn, level, rc);
+> +		return -EINVAL;
+> +	}
+> +
+> +	pr_debug("%s: updated: gfn %llx pfn %llx pfn_aligned %llx max_order %d level %d\n",
+> +		 __func__, gfn, pfn, pfn_aligned, max_order, level);
+> +
+> +	return 0;
+> +}
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 240518f8d6c7..32cef8626b57 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -5065,6 +5065,8 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+>   	.vcpu_deliver_sipi_vector = svm_vcpu_deliver_sipi_vector,
+>   	.vcpu_get_apicv_inhibit_reasons = avic_vcpu_get_apicv_inhibit_reasons,
+>   	.alloc_apic_backing_page = svm_alloc_apic_backing_page,
+> +
+> +	.gmem_prepare = sev_gmem_prepare,
+>   };
+>   
+>   /*
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index d953ae41c619..9ece9612dbb9 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -725,6 +725,7 @@ void sev_es_unmap_ghcb(struct vcpu_svm *svm);
+>   struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu);
+>   void handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code);
+>   void sev_snp_init_protected_guest_state(struct kvm_vcpu *vcpu);
+> +int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+>   
+>   /* vmenter.S */
+>   
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index feec0da93d98..ddea45279fef 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -66,8 +66,8 @@ static int kvm_gmem_prepare_folio(struct inode *inode, pgoff_t index, struct fol
+>   		gfn = slot->base_gfn + index - slot->gmem.pgoff;
+>   		rc = kvm_arch_gmem_prepare(kvm, gfn, pfn, compound_order(compound_head(page)));
+>   		if (rc) {
+> -			pr_warn_ratelimited("gmem: Failed to prepare folio for index %lx, error %d.\n",
+> -					    index, rc);
+> +			pr_warn_ratelimited("gmem: Failed to prepare folio for index %lx GFN %llx PFN %llx error %d.\n",
+> +					    index, gfn, pfn, rc);
+>   			return rc;
+>   		}
+>   	}
+
