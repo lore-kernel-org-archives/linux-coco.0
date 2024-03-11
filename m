@@ -1,57 +1,57 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054784F205
-	for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 16:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E20456B86
+	for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 16:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710173868; cv=none; b=AT/1wiqsxrBrEn7ExzOVuxCh32CFtQyjLDIk4Z8hjy4ZD/TwDxLMwNwxINn7GVd2a6+MwOs+D2glEsoL7FiOSnSITM220+uvoF6vribakLpJnk8p1RD4ZP6u4JM+XozZ8JfWRqP2qx6j2/+TAlTTXi0RGyx9AxPSD12xG1Ess5Y=
+	t=1710173869; cv=none; b=jM++a2VVXw2VFY2VJgzDH1AI8SeoYhrk9DZvOGXP9ueYZStv1WkdXhZsw0ChHTYoMqtMWT8JUj4QmF6+i/kE50+mjREKDTa+3Ed30t32KYrfMN7E8zqm+NeOpZDW6Gd4fNK1h+7o/jJZtU9Pi8TNOfPijx/WJyC9qYBqSSahh1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710173868; c=relaxed/simple;
-	bh=llvDKlG/ax7CEpz4qGsKLKsgPZfmj8Qxs/13kcLEhp8=;
+	s=arc-20240116; t=1710173869; c=relaxed/simple;
+	bh=ruyWOEutbzTX21I1GbtMMknQjZcW/AmsekAFWxYC848=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BINuQrqMD7E4MR1WN0gLDmQliKl9U99jr4BpkcrHx5duFHvsnpBXeou1a5qg26ymn2FMx35Ny95e3ACCcHMXBJhfBYwif/fP2d+LOtPGeYlgutR/lfACf4BNRhaVcL0fvpHQOpk6xq0PgcWMB5R0faDOvsrI+fD9HG02dN8Igoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hhMx+Amo; arc=none smtp.client-ip=209.85.221.48
+	 MIME-Version; b=SxrQiH4Hvjj5rAqGuF30njOjwuApsi0iUxiLNEVLQlz45OOe+IDrdXaeaMTl3gRkXSNgwhPqs6+T96239Go+ZiZN3/Rxr6DdGxXfEli4yfYGM0jmS28Mrf0NG8fkvocEa+bMjO4cm8rx6Chwl8OpakUg72rjD8OizCBGAr4aOY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HPqpJSS0; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hhMx+Amo"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-33e570ef661so2458493f8f.1
-        for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 09:17:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HPqpJSS0"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-33e9ba0eadcso628966f8f.2
+        for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 09:17:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710173864; x=1710778664; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1710173866; x=1710778666; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VD+5e2rjcMTAqm1lLiHG9HKUMBAWFA80T0od8hhMD6s=;
-        b=hhMx+Amorjzx/pMxa0GsnuEOLjpKQWaPeTmicWru45MIW/sh0EtbehXUo1exePsyOg
-         E9xmDbtvI/oN6zXn3SeEGtYM6lgdnX+R0LKKI5Bv53aHMve9wa2T8ArYfpPfF1A4qhyn
-         fXF5gFDM3rv863B/510nmZbG/n5ykoXbI8mLl63VvFKr0Z21d3hSvSD6w+OkS6xundNj
-         5Cf9CxSBO+TzWOGS/XMlUDotesh3EpWi4+4wQQslSGSI1jrL4+vjx2lRdqMY7NPP+lD3
-         rvZSf2JrXs6wVRV5KfwaQCVSzjO6XPjOIFbJI0k2y07x8UykNZGfuQUqLLquiyTB6MKt
-         mq+w==
+        bh=ImRzpHgQ7+uutfuh8SJRk0DTE4K/6LtArW0nv9lfM+k=;
+        b=HPqpJSS0JLK8BA9FKyCIxP93s2yEhyATzho8xcLV0dlUYgN1YxTgjDe2wujaCXPWQM
+         k2V4FhJuZAd+hr5g07t3wlSmnhGFZBluJHABb58FSM+crYBNGHuQC4Z2QbsyJyCBcUh/
+         MMvNscBa/qj9uqXBWIyCwzlDxWvDM58A2hG5cVsLUgmG5QIzbePbJM7g7PY6cit4sFMd
+         VjW/fy2zOtAvLRSqvxKbwIrIOaJLl05+PvBPGtcEUyvM+E3Tx5qVzwdozX+sV2FgYLcB
+         99fuU2f+Ps6LdtLwFxOd+FlTPDX81M3Xw1GeDmUhWt1y6pl3NT0KNxAODpRVPG6OIzqE
+         DYqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710173864; x=1710778664;
+        d=1e100.net; s=20230601; t=1710173866; x=1710778666;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VD+5e2rjcMTAqm1lLiHG9HKUMBAWFA80T0od8hhMD6s=;
-        b=Qrp0Yeb610+sqH1QVpDOUgSLZKWSuqI49ApKuOV3R/hlqZmEU58xIOcx+ZCPaFQq2G
-         4lJqrvvK7xTsoEYRcUOPka+ddDoDi44vPQizX3aTw9LjjIfFY7okVvvHtKTSGWMY7Z2O
-         CyxIPjcLwOrwUvY//49Q/eSUiwGwBJK5FNEkz9kdgzhrbiRXViOJdhz9LBeZJW0lGfWw
-         sJcAyssLEUjwbdOin8qUK3MT2zvycaIDn219eCoa5XTI7/an0RNnPJ4c/VFKTm3hcCXh
-         VTVXx2Rjpy7FOh8KzVi5xOrVa6A2Y/x0KziSxJUfgIrkBEs9ks6qHu0LqTtJILacVyE1
-         iEdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVUKTlwxkYX6LYsTBEvpRaltShqdJt91LoicJp8XyR5b5OJgvRX9kfIUiOpCWhvXVtm2PKhWw4QLq1jjveRd1wTB5qkWKIYpAAsTg==
-X-Gm-Message-State: AOJu0Yze6B3QgUTqdH2jbs+RRcgHlQZIgKWEcpr6fQBIiowckmslW/22
-	tnMolIwKn3jYX2h9cCsZ+iaN8mPsrrTTGfroaKU0EpbhkNAq0954
-X-Google-Smtp-Source: AGHT+IHYTDHzYrXzvp4OecC7PPYjSNE0zn/Q41wyIcFJBRWeQZQzaCiAotWHf7DRRVcFdGjRxY3S1Q==
-X-Received: by 2002:a05:6000:cd2:b0:33e:82b9:5cc7 with SMTP id dq18-20020a0560000cd200b0033e82b95cc7mr603908wrb.6.1710173864253;
-        Mon, 11 Mar 2024 09:17:44 -0700 (PDT)
+        bh=ImRzpHgQ7+uutfuh8SJRk0DTE4K/6LtArW0nv9lfM+k=;
+        b=dZzNFMEWhhQCoDv9dJY898W6CbJWjc7UPWgUJj+OadaWuwpaRQ6FRK4ztvmZueRNZl
+         IFnEgwrhc+xpG3dTQcroVAG2Agkxi5Q/gckZAiE9UDMdbYNNTLacMgSXuWAYnehQw8um
+         A1Xt1ST6StAXjQE8ZgtbUyrawip5RdVsCqsVaqvCLENbOvXQyUlscn9Z2np5+oWJacKV
+         Qvr0qntsX5j81NbqGYHJWBiao0+pCRUwmPV0lW26XhvEy70/mcha0hjLLrhJSIsPsKrO
+         HeyEhzRE5mPEJY47aMA8uWH326Mg7s4F4Y7MC8AfxbXkrF4O7o1wZyr6EQDqPj0ZYlGH
+         uCCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDzRNvdNn6/RWaZ7nM7VTGFjIZbZeapcixMKIgiDYJetZgSC26PA8Ke+HVlxvpqeEEq+kYHm8xAEw4xf1zAnH3Q1o6XbzItGHo1Q==
+X-Gm-Message-State: AOJu0Yw2q+T7kiCMT19j7fQ/lmYwonqwAjZKk/mkP0tLOv2dGKmGPzlG
+	2lWwGVCH8DvuWWORFtlTI8ARvEY4FRz7lgiOFl2ss5aFMCUjpWlq
+X-Google-Smtp-Source: AGHT+IEG0QdNGOuIWSe9NXJvczTc8p7SlmtsuTs9Nh46GFsp/syoRmIiV9TumgTcGzwe4lIUdTQkcw==
+X-Received: by 2002:a5d:6611:0:b0:33e:5a33:b169 with SMTP id n17-20020a5d6611000000b0033e5a33b169mr4250288wru.28.1710173865721;
+        Mon, 11 Mar 2024 09:17:45 -0700 (PDT)
 Received: from vasant-suse.suse.cz ([2001:9e8:ab47:8200:c3b9:43af:f8e1:76f9])
-        by smtp.gmail.com with ESMTPSA id ba14-20020a0560001c0e00b0033e96fe9479sm2823815wrb.89.2024.03.11.09.17.42
+        by smtp.gmail.com with ESMTPSA id ba14-20020a0560001c0e00b0033e96fe9479sm2823815wrb.89.2024.03.11.09.17.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Mar 2024 09:17:43 -0700 (PDT)
+        Mon, 11 Mar 2024 09:17:45 -0700 (PDT)
 From: Vasant Karasulli <vsntk18@gmail.com>
 To: x86@kernel.org
 Cc: joro@8bytes.org,
@@ -81,9 +81,9 @@ Cc: joro@8bytes.org,
 	virtualization@lists.linux-foundation.org,
 	Joerg Roedel <jroedel@suse.de>,
 	Vasant Karasulli <vkarasulli@suse.de>
-Subject: [PATCH v4 8/9] x86/sev: Handle CLFLUSH MMIO events
-Date: Mon, 11 Mar 2024 17:17:26 +0100
-Message-Id: <20240311161727.14916-9-vsntk18@gmail.com>
+Subject: [PATCH v4 9/9] x86/kexec/64: Support kexec under SEV-ES with AP Jump Table Blob
+Date: Mon, 11 Mar 2024 17:17:27 +0100
+Message-Id: <20240311161727.14916-10-vsntk18@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311161727.14916-1-vsntk18@gmail.com>
 References: <20240311161727.14916-1-vsntk18@gmail.com>
@@ -97,62 +97,85 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-Handle CLFLUSH instruction to MMIO memory in the #VC handler. The
-instruction is ignored by the handler, as the Hypervisor is
-responsible for cache management of emulated MMIO memory.
+When the AP jump table blob is installed the kernel can hand over the
+APs from the old to the new kernel. Enable kexec when the AP jump
+table blob has been installed.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Vasant Karasulli <vkarasulli@suse.de>
 ---
- arch/x86/include/asm/insn-eval.h | 1 +
- arch/x86/kernel/sev-shared.c     | 3 +++
- arch/x86/lib/insn-eval-shared.c  | 7 +++++++
- 3 files changed, 11 insertions(+)
+ arch/x86/include/asm/sev.h         |  2 ++
+ arch/x86/kernel/machine_kexec_64.c |  3 ++-
+ arch/x86/kernel/sev.c              | 15 +++++++++++++++
+ 3 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/insn-eval.h b/arch/x86/include/asm/insn-eval.h
-index 54368a43abf6..3bcea641913a 100644
---- a/arch/x86/include/asm/insn-eval.h
-+++ b/arch/x86/include/asm/insn-eval.h
-@@ -40,6 +40,7 @@ enum insn_mmio_type {
- 	INSN_MMIO_READ_ZERO_EXTEND,
- 	INSN_MMIO_READ_SIGN_EXTEND,
- 	INSN_MMIO_MOVS,
-+	INSN_MMIO_IGNORE,
- };
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 2dbd2238325a..26027083a2a9 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -217,6 +217,7 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end);
+ u64 snp_get_unsupported_features(u64 status);
+ u64 sev_get_status(void);
+ void sev_es_stop_this_cpu(void);
++bool sev_kexec_supported(void);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+@@ -246,6 +247,7 @@ static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
+ static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
+ static inline u64 sev_get_status(void) { return 0; }
+ static inline void sev_es_stop_this_cpu(void) { }
++static inline bool sev_kexec_supported(void) { return true; }
+ #endif
 
- enum insn_mmio_type insn_decode_mmio(struct insn *insn, int *bytes);
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index e9a959c1c11d..ac0704055d58 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -1164,6 +1164,9 @@ static enum es_result vc_handle_mmio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
- 	if (mmio == INSN_MMIO_DECODE_FAILED)
- 		return ES_DECODE_FAILED;
+ #endif
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index 3671ea1a5045..6013ba6fc16e 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -28,6 +28,7 @@
+ #include <asm/setup.h>
+ #include <asm/set_memory.h>
+ #include <asm/cpu.h>
++#include <asm/sev.h>
 
-+	if (mmio == INSN_MMIO_IGNORE)
-+		return ES_OK;
+ #ifdef CONFIG_ACPI
+ /*
+@@ -269,7 +270,7 @@ static void load_segments(void)
+
+ static bool machine_kexec_supported(void)
+ {
+-	if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
++	if (!sev_kexec_supported())
+ 		return false;
+
+ 	return true;
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 73477eeb7de2..66e85b82d170 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -1456,6 +1456,21 @@ static void __init sev_es_setup_play_dead(void)
+ static inline void sev_es_setup_play_dead(void) { }
+ #endif
+
++bool sev_kexec_supported(void)
++{
++	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
++		return true;
 +
- 	if (mmio != INSN_MMIO_WRITE_IMM && mmio != INSN_MMIO_MOVS) {
- 		reg_data = insn_get_modrm_reg_ptr(insn, ctxt->regs);
- 		if (!reg_data)
-diff --git a/arch/x86/lib/insn-eval-shared.c b/arch/x86/lib/insn-eval-shared.c
-index efc9755573db..3d71a947e562 100644
---- a/arch/x86/lib/insn-eval-shared.c
-+++ b/arch/x86/lib/insn-eval-shared.c
-@@ -897,6 +897,13 @@ enum insn_mmio_type insn_decode_mmio(struct insn *insn, int *bytes)
- 				*bytes = 2;
- 			type = INSN_MMIO_READ_SIGN_EXTEND;
- 			break;
-+		case 0xae: /* CLFLUSH */
-+			/*
-+			 * Ignore CLFLUSHes - those go to emulated MMIO anyway and the
-+			 * hypervisor is responsible for cache management.
-+			 */
-+			type = INSN_MMIO_IGNORE;
-+			break;
- 		}
- 		break;
- 	}
++	/*
++	 * KEXEC with SEV-ES and more than one CPU is only supported
++	 * when the AP jump table is installed.
++	 */
++	if (num_possible_cpus() > 1)
++		return sev_ap_jumptable_blob_installed;
++	else
++		return true;
++}
++
+ static void __init alloc_runtime_data(int cpu)
+ {
+ 	struct sev_es_runtime_data *data;
 --
 2.34.1
 
