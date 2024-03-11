@@ -1,57 +1,57 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B559F482E5
-	for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 16:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFB64AEC9
+	for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 16:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710173790; cv=none; b=Ho5r9RV/TjrHYmVOMHBXS8miXF6kKyB4eI/5uWfEv4Asze+KxlkCkbRyZmiH4NEUZ8fDkb+etAVQEaZhuTYSWCkkR8rwafRLOvAl1QcOzqQ3vTMOjQPSnegeyo2O6DKrxrHHGo05Aw9X43jbYr8LMSMCg6fwakaQHzEUdeRgaDw=
+	t=1710173791; cv=none; b=qUY4BOTZOqkfB2FDBtG1+lmFy9RCCPzMtO8r4n6+BFHT5qPI9DBHiY+3EzfS8JWAz7s7ztHkLeqs/0dLCIuXC2HNLMhZsfjMyEnzc5RYx2wpQTEEdAhmV5TCdrgGmaaUyYmUaQY3vqElFCny0eRcZHVLUsNNAjBOy6nmJ3gZgMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710173790; c=relaxed/simple;
-	bh=+2KIvQZzubEuGFm8VhvXKT8vwofQa29dh7mcoeFR1GM=;
+	s=arc-20240116; t=1710173791; c=relaxed/simple;
+	bh=stJGWSegiQhc7Ody3a64Zh+xIaryAD6Z92WIxHEheKs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DDXIzi9wnvpQq4U+VNKtBFthDWmQ2VXuCpP27+1HPm6Y0LegoJiczs3MT3KN84a1nh6yryoC58q/Iuft3uwsMT4NngkkyBTsuXht5V1cXUqjWlh1gq5N/xpld6earjaKyyHZ/EnFKs2FttAU4y+cUwGiehnS6bHyMwGAmvPTRfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RIlJ7p6I; arc=none smtp.client-ip=209.85.210.171
+	 MIME-Version; b=U9Lax0k0qE0422BA0Z9iME4mRszAYDG4Om78YFsXjEzR2Uh970zA18W0YTSErx/t0m3JSo65kQY8t02Ereo2OGUrhvVPdG6JSudlYgQDUuRs+3xqjPrNAhGQajt6uaYcZ88nsLPRCDer/Z+5Y9avdFjPJTRR8PEacB2Q2bisVDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ca59Qi6Z; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RIlJ7p6I"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6e64647af39so4310612b3a.1
-        for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 09:16:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ca59Qi6Z"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6e6381df003so3973585b3a.0
+        for <linux-coco@lists.linux.dev>; Mon, 11 Mar 2024 09:16:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710173788; x=1710778588; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1710173789; x=1710778589; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=kId0KpnR3Bb1OkqKYK5w5Z53gK8zkbuePvbtyjE183w=;
-        b=RIlJ7p6ICMQm5xfZ/kwHXw40q2QieXpi8U4nahyyX2pY+I0RU9Tk2ARNqYPeukidFn
-         pilb/q/s7KvYtO1Or9NrMBZcbOKpR+RTbatEtQH1/e7Uz8DozN0jCAn06YA+sk33AW8o
-         vlMNjD8VtY26WfzQ4jLB3Omub6OWzMldKtukdWQxZNl5GwOHt0Ze9aaWg2aSrjDWgf41
-         19FzmY+4OsSiZTLOQe5uQGTlMBEVcZ05CQkKcKZPALUDrmTQWm0uuRwIDKpmWBzPn10r
-         JNY5zQVYyLj0REmMXT2HF6aj+d+ebOItfGsLsZOmcdmNXSFY6WhhY/lNnFPoLDlzNsLT
-         46xg==
+        bh=NIwRgw8kRdMYFrUfI8kD4ryRzVUpHboxNK6cHHvDbvA=;
+        b=ca59Qi6ZvUH9CTPiyKCeRYrX4f0mOVl6XSNc9Xyp2AmQtIaWGbKXlDtXQywguSFG1T
+         plPOrL46aS0JPJC/Ux9KwEo79qxSrR2iqqnSnDQv24Uycih2+MZxgSV4Mq7rtsY+GzFc
+         PCmECncULV9RWAUtbRTfgJxpoNq5EsiS+frYYUNbujhwPnuF7lYBBKDzaIrz9/PmZgCX
+         UXMIw6w1Y/yF9zwR9ASK0lhUayZ+oZVMPHpK3PnDxUDXg2rUU6ASdRQAyQjd0IMiOqyZ
+         xz4nWHPyzJML1mT8gBqgE/utvtyJOVjM0j8Mqh7FGMW6ygDKmnzhvGsQwXqyWiQQwNS6
+         1gNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710173788; x=1710778588;
+        d=1e100.net; s=20230601; t=1710173789; x=1710778589;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=kId0KpnR3Bb1OkqKYK5w5Z53gK8zkbuePvbtyjE183w=;
-        b=O2HnG+rzMDVXy0WXujBPD6J3MMJee8Tniho/+fpeuoI/JIP+AED/VGaSy1SLnB+Io+
-         0EcFsvJHBgJMlMgNHNZZmIb2hrlqlBWTbaThyCaAvSzEh3fM2NZS7FfkC2Uu2C+fj89P
-         oItVP180NFFJyqS+Sjt1h++lG09tPBOkVhRqDsV4Dy6C4/qgx4+AOHDwqXuT81CYxzdP
-         mZ9kH6iifwuWJOSHPigKGbwXYF3Y/o6ezTN4glzNvBuRrGgHKJKA2ZjQ9hb9JHZMSAFT
-         6gjaJdVkjXoJK6MImQBcey7qpGGIZi3QXOPnojUi5A//I8kdx/d8j7Rx3SKL5JwHdpyz
-         fteQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWrwWiS/Urg8HZ6jk63jqzhjad69OR8uVvt7G91ciqwDvg6v3yKLe1yHLQHcdp7Sa2kW6KQNn/vk5bRDZSf/Q174+Pqj7luvEq7KQ==
-X-Gm-Message-State: AOJu0YwJnSfzKrurfXrzUFKum+xbxCp/Hf2FwkZi+pz+NHqHfpDox0fb
-	/xSwhOW+QLYuFmb13KJxfrNqpgA0g6qgRNj+tK0xz67v7cyKPRUI
-X-Google-Smtp-Source: AGHT+IFXwmvMu8mIEtQPLNF4LE9yE+Q2fMuFXOwJM8gp5UVU39VY1u8SaVJxQRqEQgy8EyINe4adPw==
-X-Received: by 2002:a05:6a20:3d01:b0:1a3:1129:9b2 with SMTP id y1-20020a056a203d0100b001a3112909b2mr6139316pzi.46.1710173788046;
+        bh=NIwRgw8kRdMYFrUfI8kD4ryRzVUpHboxNK6cHHvDbvA=;
+        b=eV973B3zmXPduPDBP14Lh+znsgzfi58PuIdx+r2/vnOlzVrHFnxOKrCbXaBq6CPA0W
+         IKZShWUNEUauCz4D1JVl7bZi5Tw8cfN43bx4aw3tIt4xyQKYNcYyKJn1c7kqDgiSyZtl
+         r7Dxlf+erXfHxrPDkLPD4ywFscKGdScIF92NbKa+sWfQSZ/D7U2na06u4WrHhoD318OS
+         4+g/+PsCDZhKYl/AOcHrIdfAoCAukoYHnZe6MH8MSjB6bL9VAoAe/9erIiGF1Jg2dMJ6
+         4zmlsLYxp1HWJ4L8QliA3/DXE2zlctVanDrGeO9V9OdjAuForglz88uG468YguKxSHIB
+         Ac4A==
+X-Forwarded-Encrypted: i=1; AJvYcCVzThTLEEZ+LqbxnfhYzBkBH5sROaGmyO0ayWeujMQuBMX7DA91TnuPeK/ECN+azgHNf1rEifMHSKtO1RAn7NL3ysFVbDdOdEEARg==
+X-Gm-Message-State: AOJu0YyfRIQNMd2gtlm5CqLVas/LxPve/l/bm0QvLv6hXEvP1WCyxFYV
+	KMbeQaZSG5D29G7+z3NFZuPlT9mSHlQKClwEwWZ6GM+55WQCtSDp
+X-Google-Smtp-Source: AGHT+IHJXkyc8/rW8os/YonzW2lIIoxEg+dw8CwCQc3gKfPn2zBsjIBZ5quHxjxhCcbXMpD+u4DtBg==
+X-Received: by 2002:a05:6a21:6da2:b0:1a1:4fce:8ee1 with SMTP id wl34-20020a056a216da200b001a14fce8ee1mr8357364pzb.8.1710173788984;
         Mon, 11 Mar 2024 09:16:28 -0700 (PDT)
 Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
-        by smtp.gmail.com with ESMTPSA id m22-20020a056a00081600b006e52ce4ee2fsm4576325pfk.20.2024.03.11.09.16.27
+        by smtp.gmail.com with ESMTPSA id m22-20020a056a00081600b006e52ce4ee2fsm4576325pfk.20.2024.03.11.09.16.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Mar 2024 09:16:27 -0700 (PDT)
+        Mon, 11 Mar 2024 09:16:28 -0700 (PDT)
 From: mhkelley58@gmail.com
 X-Google-Original-From: mhklinux@outlook.com
 To: rick.p.edgecombe@intel.com,
@@ -72,9 +72,9 @@ To: rick.p.edgecombe@intel.com,
 	linux-coco@lists.linux.dev
 Cc: sathyanarayanan.kuppuswamy@linux.intel.com,
 	elena.reshetova@intel.com
-Subject: [PATCH v2 3/5] hv_netvsc: Don't free decrypted memory
-Date: Mon, 11 Mar 2024 09:15:56 -0700
-Message-Id: <20240311161558.1310-4-mhklinux@outlook.com>
+Subject: [PATCH v2 4/5] uio_hv_generic: Don't free decrypted memory
+Date: Mon, 11 Mar 2024 09:15:57 -0700
+Message-Id: <20240311161558.1310-5-mhklinux@outlook.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240311161558.1310-1-mhklinux@outlook.com>
 References: <20240311161558.1310-1-mhklinux@outlook.com>
@@ -96,34 +96,57 @@ take care to handle these errors to avoid returning decrypted (shared)
 memory to the page allocator, which could lead to functional or security
 issues.
 
-The netvsc driver could free decrypted/shared pages if
+The VMBus device UIO driver could free decrypted/shared pages if
 set_memory_decrypted() fails. Check the decrypted field in the gpadl
 to decide whether to free the memory.
 
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Michael Kelley <mhklinux@outlook.com>
 ---
- drivers/net/hyperv/netvsc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/uio/uio_hv_generic.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
-index 82e9796c8f5e..70b7f91fb96b 100644
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -154,8 +154,11 @@ static void free_netvsc_device(struct rcu_head *head)
- 	int i;
+diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
+index 20d9762331bd..6be3462b109f 100644
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -181,12 +181,14 @@ hv_uio_cleanup(struct hv_device *dev, struct hv_uio_private_data *pdata)
+ {
+ 	if (pdata->send_gpadl.gpadl_handle) {
+ 		vmbus_teardown_gpadl(dev->channel, &pdata->send_gpadl);
+-		vfree(pdata->send_buf);
++		if (!pdata->send_gpadl.decrypted)
++			vfree(pdata->send_buf);
+ 	}
  
- 	kfree(nvdev->extension);
--	vfree(nvdev->recv_buf);
--	vfree(nvdev->send_buf);
-+
-+	if (!nvdev->recv_buf_gpadl_handle.decrypted)
-+		vfree(nvdev->recv_buf);
-+	if (!nvdev->send_buf_gpadl_handle.decrypted)
-+		vfree(nvdev->send_buf);
- 	bitmap_free(nvdev->send_section_map);
+ 	if (pdata->recv_gpadl.gpadl_handle) {
+ 		vmbus_teardown_gpadl(dev->channel, &pdata->recv_gpadl);
+-		vfree(pdata->recv_buf);
++		if (!pdata->recv_gpadl.decrypted)
++			vfree(pdata->recv_buf);
+ 	}
+ }
  
- 	for (i = 0; i < VRSS_CHANNEL_MAX; i++) {
+@@ -295,7 +297,8 @@ hv_uio_probe(struct hv_device *dev,
+ 	ret = vmbus_establish_gpadl(channel, pdata->recv_buf,
+ 				    RECV_BUFFER_SIZE, &pdata->recv_gpadl);
+ 	if (ret) {
+-		vfree(pdata->recv_buf);
++		if (!pdata->recv_gpadl.decrypted)
++			vfree(pdata->recv_buf);
+ 		goto fail_close;
+ 	}
+ 
+@@ -317,7 +320,8 @@ hv_uio_probe(struct hv_device *dev,
+ 	ret = vmbus_establish_gpadl(channel, pdata->send_buf,
+ 				    SEND_BUFFER_SIZE, &pdata->send_gpadl);
+ 	if (ret) {
+-		vfree(pdata->send_buf);
++		if (!pdata->send_gpadl.decrypted)
++			vfree(pdata->send_buf);
+ 		goto fail_close;
+ 	}
+ 
 -- 
 2.25.1
 
