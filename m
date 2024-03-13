@@ -1,155 +1,151 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CDA142907
-	for <linux-coco@lists.linux.dev>; Tue, 12 Mar 2024 20:26:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CD0612FB
+	for <linux-coco@lists.linux.dev>; Wed, 13 Mar 2024 17:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710275206; cv=none; b=TjQp7dVwsOpxinDrZ39nBWt/US5W1mQMviUvcY2py9dGhkC3hOVgFhQPW+juBznUrdaglkAJW4DwJazefAqkWGcCwERomasV97esk7RnLlFG0aIgDXTv7iw6yuzjOJZPf8UDxO7A74GcT1EIAMjZoEXB0yzDE1Hhn5gG7BX0ly0=
+	t=1710349898; cv=none; b=GjnuHwPOr7MEl7t35TTIVWt5x0DHjznT1VPmNfDCVclpTBdiSR/NryZNm8AB0gkc9Zbk2F8TNotFXHNICJ9iyEya2qEHHtW8gi2PG+XawSMShskAEvxi9iAk5J8MrLiYgqUwbSyI4QxzYAXjkSz1X1aBjs4ThLhFEFoMLJjxNB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710275206; c=relaxed/simple;
-	bh=Yh+LhS5yhRkoUraEclEvC+FapyUA4I8kLPY2KFzzQ6E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZVrvBTY1Pk8FLeM8FYZacUyNZanUJ3oQX9zbCXKDcVCtFDyiKGfwm8XyuQgLYDcxU+1j5Z5KbZvXVTWaEXEKNwWtXq5fGwq5ke6Q1tkGl+xoVQ1G7eK/Pq9E9CoD7GHhRNULlEZxAq4nRqG7ufJaZUPgG9AMp4wOIrgcNx75fFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ypnUqsk8; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ypnUqsk8"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dcbee93a3e1so7728366276.3
-        for <linux-coco@lists.linux.dev>; Tue, 12 Mar 2024 13:26:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1710275203; x=1710880003; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qkdeVHiZ4dO2mKNOI6prWlI/035w5V9mRcS9wJoax+0=;
-        b=ypnUqsk8aEdl6KaClbSa5CfSByiDcJitoSKWKD5ncFFmRCkk7kXjiskZU0KqjhNTKU
-         tJx/8+baM+zZ4zw8Rp8oXnoX7R7mn3kyjZdNw84UZ686enIxy3k1wtuXK0i5dZz1rSF0
-         g3ccUUyfIP3wTK/lztHyw8eNroTVNGDOqF+51E+J19mtRcC4DOtLNnQJUbl9ZVukQ8vs
-         w6KWMRlZIdUh8jHM+4Xox8u+x66VRStJEj97dTOisMPjpkxxLa0DWwm3nHF4uuTWw9MU
-         hSguC0Dzu4VVDPRGED4XQghlQ1L5B3eAlQUDoc5t0ZUzTM2Sb++E58o1gL5Bi84zqAOn
-         Xkmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710275203; x=1710880003;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qkdeVHiZ4dO2mKNOI6prWlI/035w5V9mRcS9wJoax+0=;
-        b=sXLqlVZm+f5MYfBY5UrG3GSOb8uNfFr60FDlyK5J38FB9IM0NfkwbX+tluYGanQKEc
-         vf+joN2P7jQgQ2B1c7rJyNAQud3aszK8wxc+TT8itH7iv3podV+AQLilmHbhYdAxcuv3
-         qqnv2k1yF0ug8qDSiW2UI8QjfZNTuKy26U+KuA1OZYASNTWH4hnUI7OzP8YUFBSDbMuQ
-         7TWPsT9rA9zjuf3viK9uuyWivHH5A/QOwDASnV9WC/cp9NrTWUjxbXfywB0e1rEQCsq5
-         NkCRf9111og2QUQe7XYr/obgWlyZsuqISG3+yqnbsN6rxcFV/f10YxMRzT7dMhrmDxQp
-         mPRw==
-X-Forwarded-Encrypted: i=1; AJvYcCXxDVarkkILzIGvE572vGWtNBYfofgLQhSchHxYygYFI0uYDSK7QWdsLMsjgZFscjaB48m1NgVkG1ox61ZXMFg+4rZp4GkLCrk0Gw==
-X-Gm-Message-State: AOJu0YzBKBzkjHipwHBEgOD6H2n7H+4/5iLP4uMgvBTRownTRQkCkUQQ
-	eAqbf2MdfWIrsqeLcZ3W6EuDEv52LapWDRGbGJ0dlvsI/q4lKYqumyXfyj+zNz0k2U6RYZFh7Ej
-	nFQ==
-X-Google-Smtp-Source: AGHT+IFUmGhOgcd89e4lrqvlrIUFlYT8TKtqW8wVsN51aYrWhEhHnUI06gztJWUkIbtg80Ly0GbAPRIO8Ug=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:114a:b0:dc6:d890:1a97 with SMTP id
- p10-20020a056902114a00b00dc6d8901a97mr59614ybu.9.1710275203718; Tue, 12 Mar
- 2024 13:26:43 -0700 (PDT)
-Date: Tue, 12 Mar 2024 13:26:42 -0700
-In-Reply-To: <20240311172431.zqymfqd4xlpd3pft@amd.com>
+	s=arc-20240116; t=1710349898; c=relaxed/simple;
+	bh=o3yUCeYnmGTYvzE+DYAY+ANpaPKcBEzwnq4w44cGrVw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LqwTZydkwXDx+cKMD+QOopTzqTeIOXxs2TDbGTJ8UkZwZQrctTfJbFeO7gr1Wk1y8jFvRq/HPHGLZ39L1PXJha3GKXPalTo1GKtHyTbAaJJmWnS3alfmauyX+PVPnGKn8iJ6rtmrImfG5oNmPFrFIUbcfJLudAWtqsWcjCiAPyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C30631007;
+	Wed, 13 Mar 2024 10:12:11 -0700 (PDT)
+Received: from [10.57.15.67] (unknown [10.57.15.67])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BA6BE3F73F;
+	Wed, 13 Mar 2024 10:11:31 -0700 (PDT)
+Message-ID: <c21e247f-3140-4812-9516-f8b9d0ceea2d@arm.com>
+Date: Wed, 13 Mar 2024 17:11:29 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20231016115028.996656-1-michael.roth@amd.com> <20231016115028.996656-5-michael.roth@amd.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC gmem v1 4/8] KVM: x86: Add gmem hook for invalidating
+ memory
+To: Sean Christopherson <seanjc@google.com>,
+ Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ "tabba@google.com" <tabba@google.com>, linux-coco@lists.linux.dev,
+ linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ pbonzini@redhat.com, isaku.yamahata@intel.com, ackerleytng@google.com,
+ vbabka@suse.cz, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+ jroedel@suse.de, pankaj.gupta@amd.com
+References: <20231016115028.996656-1-michael.roth@amd.com>
+ <20231016115028.996656-5-michael.roth@amd.com>
  <e7125fcb-52b1-4942-9ae7-c85049e92e5c@arm.com> <ZcY2VRsRd03UQdF7@google.com>
- <84d62953-527d-4837-acf8-315391f4b225@arm.com> <ZcZBCdTA2kBoSeL8@google.com> <20240311172431.zqymfqd4xlpd3pft@amd.com>
-Message-ID: <ZfC6gnqVhZQJnB_3@google.com>
-Subject: Re: [PATCH RFC gmem v1 4/8] KVM: x86: Add gmem hook for invalidating memory
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, "tabba@google.com" <tabba@google.com>, linux-coco@lists.linux.dev, 
-	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	pbonzini@redhat.com, isaku.yamahata@intel.com, ackerleytng@google.com, 
-	vbabka@suse.cz, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	jroedel@suse.de, pankaj.gupta@amd.com
-Content-Type: text/plain; charset="us-ascii"
+ <84d62953-527d-4837-acf8-315391f4b225@arm.com> <ZcZBCdTA2kBoSeL8@google.com>
+ <20240311172431.zqymfqd4xlpd3pft@amd.com> <ZfC6gnqVhZQJnB_3@google.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <ZfC6gnqVhZQJnB_3@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 11, 2024, Michael Roth wrote:
-> On Fri, Feb 09, 2024 at 07:13:13AM -0800, Sean Christopherson wrote:
-> > On Fri, Feb 09, 2024, Steven Price wrote:
-> > > >> One option that I've considered is to implement a seperate CCA ioctl to
-> > > >> notify KVM whether the memory should be mapped protected.
-> > > > 
-> > > > That's what KVM_SET_MEMORY_ATTRIBUTES+KVM_MEMORY_ATTRIBUTE_PRIVATE is for, no?
-> > > 
-> > > Sorry, I really didn't explain that well. Yes effectively this is the
-> > > attribute flag, but there's corner cases for destruction of the VM. My
-> > > thought was that if the VMM wanted to tear down part of the protected
-> > > range (without making it shared) then a separate ioctl would be needed
-> > > to notify KVM of the unmap.
-> > 
-> > No new uAPI should be needed, because the only scenario time a benign VMM should
-> > do this is if the guest also knows the memory is being removed, in which case
-> > PUNCH_HOLE will suffice.
-> > 
-> > > >> This 'solves' the problem nicely except for the case where the VMM
-> > > >> deliberately punches holes in memory which the guest is using.
-> > > > 
-> > > > I don't see what problem there is to solve in this case.  PUNCH_HOLE is destructive,
-> > > > so don't do that.
-> > > 
-> > > A well behaving VMM wouldn't PUNCH_HOLE when the guest is using it, but
-> > > my concern here is a VMM which is trying to break the host. In this case
-> > > either the PUNCH_HOLE needs to fail, or we actually need to recover the
-> > > memory from the guest (effectively killing the guest in the process).
-> > 
-> > The latter.  IIRC, we talked about this exact case somewhere in the hour-long
-> > rambling discussion on guest_memfd at PUCK[1].  And we've definitely discussed
-> > this multiple times on-list, though I don't know that there is a single thread
-> > that captures the entire plan.
-> > 
-> > The TL;DR is that gmem will invoke an arch hook for every "struct kvm_gmem"
-> > instance that's attached to a given guest_memfd inode when a page is being fully
-> > removed, i.e. when a page is being freed back to the normal memory pool.  Something
-> > like this proposed SNP patch[2].
-> > 
-> > Mike, do have WIP patches you can share?
+On 12/03/2024 20:26, Sean Christopherson wrote:
+> On Mon, Mar 11, 2024, Michael Roth wrote:
+>> On Fri, Feb 09, 2024 at 07:13:13AM -0800, Sean Christopherson wrote:
+>>> On Fri, Feb 09, 2024, Steven Price wrote:
+>>>>>> One option that I've considered is to implement a seperate CCA ioctl to
+>>>>>> notify KVM whether the memory should be mapped protected.
+>>>>>
+>>>>> That's what KVM_SET_MEMORY_ATTRIBUTES+KVM_MEMORY_ATTRIBUTE_PRIVATE is for, no?
+>>>>
+>>>> Sorry, I really didn't explain that well. Yes effectively this is the
+>>>> attribute flag, but there's corner cases for destruction of the VM. My
+>>>> thought was that if the VMM wanted to tear down part of the protected
+>>>> range (without making it shared) then a separate ioctl would be needed
+>>>> to notify KVM of the unmap.
+>>>
+>>> No new uAPI should be needed, because the only scenario time a benign VMM should
+>>> do this is if the guest also knows the memory is being removed, in which case
+>>> PUNCH_HOLE will suffice.
+>>>
+>>>>>> This 'solves' the problem nicely except for the case where the VMM
+>>>>>> deliberately punches holes in memory which the guest is using.
+>>>>>
+>>>>> I don't see what problem there is to solve in this case.  PUNCH_HOLE is destructive,
+>>>>> so don't do that.
+>>>>
+>>>> A well behaving VMM wouldn't PUNCH_HOLE when the guest is using it, but
+>>>> my concern here is a VMM which is trying to break the host. In this case
+>>>> either the PUNCH_HOLE needs to fail, or we actually need to recover the
+>>>> memory from the guest (effectively killing the guest in the process).
+>>>
+>>> The latter.  IIRC, we talked about this exact case somewhere in the hour-long
+>>> rambling discussion on guest_memfd at PUCK[1].  And we've definitely discussed
+>>> this multiple times on-list, though I don't know that there is a single thread
+>>> that captures the entire plan.
+>>>
+>>> The TL;DR is that gmem will invoke an arch hook for every "struct kvm_gmem"
+>>> instance that's attached to a given guest_memfd inode when a page is being fully
+>>> removed, i.e. when a page is being freed back to the normal memory pool.  Something
+>>> like this proposed SNP patch[2].
+>>>
+>>> Mike, do have WIP patches you can share?
+>>
+>> Sorry, I missed this query earlier. I'm a bit confused though, I thought
+>> the kvm_arch_gmem_invalidate() hook provided in this patch was what we
+>> ended up agreeing on during the PUCK call in question.
 > 
-> Sorry, I missed this query earlier. I'm a bit confused though, I thought
-> the kvm_arch_gmem_invalidate() hook provided in this patch was what we
-> ended up agreeing on during the PUCK call in question.
-
-Heh, I trust your memory of things far more than I trust mine.  I'm just proving
-Cunningham's Law.  :-)
-
-> There was an open question about what to do if a use-case came along
-> where we needed to pass additional parameters to
-> kvm_arch_gmem_invalidate() other than just the start/end PFN range for
-> the pages being freed, but we'd determined that SNP and TDX did not
-> currently need this, so I didn't have any changes planned in this
-> regard.
+> Heh, I trust your memory of things far more than I trust mine.  I'm just proving
+> Cunningham's Law.  :-)
 > 
-> If we now have such a need, what we had proposed was to modify
-> __filemap_remove_folio()/page_cache_delete() to defer setting
-> folio->mapping to NULL so that we could still access it in
-> kvm_gmem_free_folio() so that we can still access mapping->i_private_list
-> to get the list of gmem/KVM instances and pass them on via
-> kvm_arch_gmem_invalidate().
+>> There was an open question about what to do if a use-case came along
+>> where we needed to pass additional parameters to
+>> kvm_arch_gmem_invalidate() other than just the start/end PFN range for
+>> the pages being freed, but we'd determined that SNP and TDX did not
+>> currently need this, so I didn't have any changes planned in this
+>> regard.
+>>
+>> If we now have such a need, what we had proposed was to modify
+>> __filemap_remove_folio()/page_cache_delete() to defer setting
+>> folio->mapping to NULL so that we could still access it in
+>> kvm_gmem_free_folio() so that we can still access mapping->i_private_list
+>> to get the list of gmem/KVM instances and pass them on via
+>> kvm_arch_gmem_invalidate().
+> 
+> Yeah, this is what I was remembering.  I obviously forgot that we didn't have a
+> need to iterate over all bindings at this time.
+> 
+>> So that's doable, but it's not clear from this discussion that that's
+>> needed.
+> 
+> Same here.  And even if it is needed, it's not your problem to solve.  The above
+> blurb about needing to preserve folio->mapping being free_folio() is sufficient
+> to get the ARM code moving in the right direction.
+> 
+> Thanks!
+> 
+>> If the idea to block/kill the guest if VMM tries to hole-punch,
+>> and ARM CCA already has plans to wire up the shared/private flags in
+>> kvm_unmap_gfn_range(), wouldn't that have all the information needed to
+>> kill that guest? At that point, kvm_gmem_free_folio() can handle
+>> additional per-page cleanup (with additional gmem/KVM info plumbed in
+>> if necessary).
 
-Yeah, this is what I was remembering.  I obviously forgot that we didn't have a
-need to iterate over all bindings at this time.
+Yes, the missing piece of the puzzle was provided by "KVM: Prepare for
+handling only shared mappings in mmu_notifier events"[1] - namely the
+"only_shared" flag. We don't need to actually block/kill the guest until
+it attempts access to the memory which has been removed from the guest -
+at that point the guest cannot continue because the security properties
+have been violated (the protected memory contents have been lost) so
+attempts to continue the guest will fail.
 
-> So that's doable, but it's not clear from this discussion that that's
-> needed.
+You can ignore most of my other ramblings - as long as everyone is happy
+with that flag then Arm CCA should be fine. I was just looking at other
+options.
 
-Same here.  And even if it is needed, it's not your problem to solve.  The above
-blurb about needing to preserve folio->mapping being free_folio() is sufficient
-to get the ARM code moving in the right direction.
+Thanks,
 
-Thanks!
+Steve
 
-> If the idea to block/kill the guest if VMM tries to hole-punch,
-> and ARM CCA already has plans to wire up the shared/private flags in
-> kvm_unmap_gfn_range(), wouldn't that have all the information needed to
-> kill that guest? At that point, kvm_gmem_free_folio() can handle
-> additional per-page cleanup (with additional gmem/KVM info plumbed in
-> if necessary).
+[1]
+https://lore.kernel.org/lkml/20231027182217.3615211-13-seanjc@google.com/
