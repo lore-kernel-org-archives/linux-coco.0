@@ -1,41 +1,55 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFF25EE64;
-	Wed, 13 Mar 2024 23:34:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F171A41A80
+	for <linux-coco@lists.linux.dev>; Thu, 14 Mar 2024 11:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710372848; cv=none; b=S5iLXgZ1xmptVwMA6i5sUwDI4TLWoPf3hzSki45IMZ7+NNGdVbK2SwUMDZgmSDjFq2+9p4kBFwL4TlDZubTOhOM434Dcshgcdf358TKIt3U+JQ21H4eDRaRUy5PIsY7yspMDDgIvdAt3zR+UiTsLuve2lAWH1Y66OGntCNj2QHg=
+	t=1710414881; cv=none; b=IZ8PvKwKT/qjONmdCSwACT3ZvRMY3vPVak7cxhXVv99w3hS6eLZTVh7lyB+NQLbSGTEQ/1e7Fg5ltUYEx8xHLR99T0NZFFxtuyS+/HFF1mTuHFq5feBZZNt6HXxKGv5rgaedYC9hLUPO9/YkHE+Hd1admXNe+oYlA3oxRZiT52U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710372848; c=relaxed/simple;
-	bh=whkIXUwacmK25UpsXAzYc6urI2QdGo2r/V3+fH0Eoxw=;
+	s=arc-20240116; t=1710414881; c=relaxed/simple;
+	bh=JYThXvFfSUt8bn/u7QVtG0aC+rU3gXJs6BreV0Jsjis=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dWXsEMbxMJK4qWzMAG9GssDHb7eNOfI/8bdFwdmfQW2pBjo9R4KJOirnckPiJeB1HhHlucZCHBH1zZdUz8oHO19T9pyxXqE5SGVnhmHkilY/oasHwy1Il/kVB1T4Nk/aVur2BNjsQeLgtnHMAcJIJy+GiBzD6ByKSyfCn20uLao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=MMtq5M5M; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=N0yuJ7UdKYmy4Em/45nOUJ8GQhPFmOtNAb9xVtieoFqfb8jziuUBX1FfknZ7NafeAVSfU+7qEI+Vk5LUjhus54CBDuby4UHg08KvhOH0zytEBzfL1DqOSzMptC5ABF0/Z+tuadtNJ8PN/yjHV5a4lhDFB/oIe3mszbO+VyZQU5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=e8hcjDqj; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="MMtq5M5M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F86C433C7;
-	Wed, 13 Mar 2024 23:34:06 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="MMtq5M5M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1710372844;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p3zmeXxzdCToZqnWjGmQGSAP39p4sNEysp0MFtFKYJM=;
-	b=MMtq5M5MQcos/Ph8psXzmSyXjTuUQ/ubznxBpoI2RhOlajKhs39s8O+ntSa6Q20xd7UVKZ
-	5DRGlUxFw+rTlqzXUtni5BbBDWqvtaJkFfLyQarKQ8OYpPtZNLzJ1sSW1b1cWwareRuAi1
-	DRMEYR3P7NSr51tsYEZ3ATK8PMKciB0=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 6a922124 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Wed, 13 Mar 2024 23:34:04 +0000 (UTC)
-Date: Thu, 14 Mar 2024 00:34:03 +0100
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: Borislav Petkov <bp@alien8.de>,
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="e8hcjDqj"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3746240E0028;
+	Thu, 14 Mar 2024 11:14:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id cDZD0dZP4nXi; Thu, 14 Mar 2024 11:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1710414873; bh=W6YiMJ4KVuTlhdWm5TtH44BSuR5hnaHMB6oOqeEuhNE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e8hcjDqjGJgU6UnJ56h1yfC0EpbT8zm/zqKVR5mgJF83np8lgdA42pCp+Rp0gg3nD
+	 psadm7lJ8SSeBBFwcrsIco+XfdjQ1J5O/LUaH8Toh4qlyqHLNOvXpZbPhLAqHHMBXu
+	 NquAaQbSzuC1TEMBgisSrSibPd2fCaJngqRnKMF8say/HsDtCDiCcET7gJ4ofo4IeG
+	 RfTPGUB4bk1btF6VLLWRDD4P//4o28rN/H3y2ZV92IkTsphUW/8FqzO0xva0qo/hPk
+	 ypmyj6oKVDAld5rSdrtlaelQAiQacGmQI+LEqTTzngD1oIwsWK3GJHxglLY0n8HkoE
+	 dsXZF76Qt3tqpohkOVZNHAz5Uhs9U10asL92OHCMRCQrordgw/A06TrS+X2l6gef5m
+	 QBhY+RguKkCiZdDrXKF9VhYKAV5XdRANak8m4b/66/VTV0K97oZF5AxWl3lblCtxYV
+	 4FjqjsVNEprPJSaUtksJ4DRxrsEy6zadNk9yVJt8lft4jNeFnmuExRZu9EfdU+NhM1
+	 hcEO2FcK571AAyeXxd0xkskdpWvrosSXWTgScISYmysZSVpPXXPLy7AKSAcorcsQm5
+	 xkEhQJzn0yKpdi+EFtfyADQW5BQmX+XQWpoNPwLqBri/eW3JdFaECGf3j02ABwfYCI
+	 8oVjq9oc5M2EB5FPPnMRdqvU=
+Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9729940E016B;
+	Thu, 14 Mar 2024 11:14:19 +0000 (UTC)
+Date: Thu, 14 Mar 2024 12:14:18 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
@@ -46,9 +60,10 @@ Cc: Borislav Petkov <bp@alien8.de>,
 	Theodore Ts'o <tytso@mit.edu>
 Subject: Re: [PATCH v5] x86/coco: Require seeding RNG with RDRAND on CoCo
  systems
-Message-ID: <ZfI366mQplePkvHv@zx2c4.com>
+Message-ID: <20240314111418.GBZfLcCskn7Xjra4mu@fat_crate.local>
 References: <CAHmME9oN+7rbLYcvQN=+KMjwrokvARy_7khLWJvDK=K_S5uHqg@mail.gmail.com>
  <20240224011921.2663985-1-Jason@zx2c4.com>
+ <ZfI366mQplePkvHv@zx2c4.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -57,57 +72,19 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240224011921.2663985-1-Jason@zx2c4.com>
+In-Reply-To: <ZfI366mQplePkvHv@zx2c4.com>
 
-Hi Borislav,
+Hi Jason,
 
-On Sat, Feb 24, 2024 at 02:18:56AM +0100, Jason A. Donenfeld wrote:
-> There are few uses of CoCo that don't rely on working cryptography and
-> hence a working RNG. Unfortunately, the CoCo threat model means that the
-> VM host cannot be trusted and may actively work against guests to
-> extract secrets or manipulate computation. Since a malicious host can
-> modify or observe nearly all inputs to guests, the only remaining source
-> of entropy for CoCo guests is RDRAND.
-> 
-> If RDRAND is broken -- due to CPU hardware fault -- the RNG as a whole
-> is meant to gracefully continue on gathering entropy from other sources,
-> but since there aren't other sources on CoCo, this is catastrophic.
-> This is mostly a concern at boot time when initially seeding the RNG, as
-> after that the consequences of a broken RDRAND are much more
-> theoretical.
-> 
-> So, try at boot to seed the RNG using 256 bits of RDRAND output. If this
-> fails, panic(). This will also trigger if the system is booted without
-> RDRAND, as RDRAND is essential for a safe CoCo boot.
-> 
-> This patch is deliberately written to be "just a CoCo x86 driver
-> feature" and not part of the RNG itself. Many device drivers and
-> platforms have some desire to contribute something to the RNG, and
-> add_device_randomness() is specifically meant for this purpose. Any
-> driver can call this with seed data of any quality, or even garbage
-> quality, and it can only possibly make the quality of the RNG better or
-> have no effect, but can never make it worse. Rather than trying to
-> build something into the core of the RNG, this patch interprets the
-> particular CoCo issue as just a CoCo issue, and therefore separates this
-> all out into driver (well, arch/platform) code.
-> 
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Daniel P. Berrangé <berrange@redhat.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: H. Peter Anvin <hpa@zytor.com>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Tom Lendacky <thomas.lendacky@amd.com>
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Elena Reshetova <elena.reshetova@intel.com>
-> Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Theodore Ts'o <tytso@mit.edu>
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+On Thu, Mar 14, 2024 at 12:34:03AM +0100, Jason A. Donenfeld wrote:
+> This has been sitting on the list for a while with a few positive
+> reviews and no outstanding objections, afaict. Can you merge this to
+> tip?
 
-This has been sitting on the list for a while with a few positive
-reviews and no outstanding objections, afaict. Can you merge this to
-tip?
+the tip tree is open for new code after the merge window is over.
 
-Thanks,
-Jason
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
