@@ -1,66 +1,109 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD425D75A
-	for <linux-coco@lists.linux.dev>; Thu, 14 Mar 2024 14:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710427489; cv=none; b=fQZxMX1aIWZMS6lJhMzSN4SPImkF63wHXawfwnXSdcE7UVbh/P2jn3sdfnIFWMqAueC3R+qYyssGenamBxrhHKfV6qkV75CXaEd5wN7TzuhgdGKinq2xLqdfl997lljRLX9Q32NCgusp3eAqcwgfsANbHFpa5iQgiMuqSp3cMMk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710427489; c=relaxed/simple;
-	bh=NMU1o5HTSN8heZw0ktuw5A5NjoDzqs44cHYJS7DvABA=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=JkYUCGTkxHnXDiqpWxGG4K47BJk0N5XubZUqhDHYQCENx3bYEcBZLuahRj04ApYlMSdU1l+D15lUOOL+p27paMcSnJk8hOIvMyoRbC2jbCJhbQ09E8UwkuTy8ZfLpUW6k4sIeKolg8b6vSsfSwxm2b2a2CleaccTAfWaEkvEMUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=6D0xTnln; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="6D0xTnln"
-Received: from smtpclient.apple (p4ffe0c3c.dip0.t-ipconnect.de [79.254.12.60])
+Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 12E041E2546;
-	Thu, 14 Mar 2024 15:44:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1710427479;
-	bh=NMU1o5HTSN8heZw0ktuw5A5NjoDzqs44cHYJS7DvABA=;
-	h=From:Subject:Date:Cc:To:From;
-	b=6D0xTnlnfAdVnhj+3oujVPK+BUvV95XRegbTGz6sv3VbVMwiq7lDWiNhbSsalyQsL
-	 C3DdzvPZ6Yw2tFf+9/gkgtzQSYdJ/Yu9Ru77815RuorK1zcBMGPP6JQnwyY0Kyz6Yp
-	 3MJidk9TtsId7EEH4mR6GRdI/0w2Lom/2J6SiPyg2Byf7sLkvY+yKgMKV8Z54P8E+L
-	 8zrubCgS2K+J3yFk3dRkRnNH4X9nsm7dz4jDY6P2tNEMV18ew6FEeJF/vERrELdNn8
-	 2YxL7Cb2u1gjHov94wuilGwjhnmoOJdSbLsRXNHn0AIFfsXLGvrdwA1EfNcKSHvQAx
-	 cm4Y7eJg4k0pA==
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85E374E21;
+	Thu, 14 Mar 2024 21:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.190.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710452747; cv=none; b=PwRugFeBqNFYXIbQ4BH3LyYgCV18Jukwu/2NoPI4esU7vgrIWDubpGn4FiWFYOtzaDbibYkO7BpCSpYJ/mVuceVBOoSLfgn//RVavgSR9rel2S6eK9RLqdEiepmAcSBSyKgt0GuU15V92+YccFLgy2Q7l4AJ4fi+NqlzUhahJd8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710452747; c=relaxed/simple;
+	bh=vp3hGSwgMbzRk72sOUpHptWRQ85XgRAAacWGIwKWzDg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=j0Qm6fk8dxKl/2kG+zQog0jfbqEZ5YFu9899VEoyct8+Z6xCj2cQ6/vky0toEvSu0qhWSc19xmCssisxarIf2DtPq6wd4eAzAKjyjb1zPIHgiujsm9yRNuBjBpNtcdFpLjnp++BSEpqWCyBEVv4btW91x0r4PeEPOfo5lpB8mFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Tuf8XY1U; arc=none smtp.client-ip=207.171.190.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Tuf8XY1U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1710452746; x=1741988746;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=vp3hGSwgMbzRk72sOUpHptWRQ85XgRAAacWGIwKWzDg=;
+  b=Tuf8XY1UJImoeIpp2nYoC3VB9tJ6uCOPQAbDPuMKToRLWt9cIXfoW/iX
+   09JBGG0k78MjrBdT7vnOo0LKWzTkILY1aOcSJtpa6H4UzTkJS6BCjfwqW
+   cKUCLDIXOAOqDuCcHcBPucRcyQhWp6mICtR5LGwm0ABhNp9MXuFn4/Yna
+   I=;
+X-IronPort-AV: E=Sophos;i="6.07,126,1708387200"; 
+   d="scan'208";a="332923184"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 21:45:43 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.7.35:4706]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.8.10:2525] with esmtp (Farcaster)
+ id b3e2a354-b5d8-40da-9532-79da56e6a481; Thu, 14 Mar 2024 21:45:42 +0000 (UTC)
+X-Farcaster-Flow-ID: b3e2a354-b5d8-40da-9532-79da56e6a481
+Received: from EX19D003UWC002.ant.amazon.com (10.13.138.169) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Thu, 14 Mar 2024 21:45:35 +0000
+Received: from [10.119.229.181] (10.119.229.181) by
+ EX19D003UWC002.ant.amazon.com (10.13.138.169) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Thu, 14 Mar 2024 21:45:34 +0000
+Message-ID: <404fec0f-430b-44f1-8cdf-13573f0ae522@amazon.com>
+Date: Thu, 14 Mar 2024 14:45:33 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
-Subject: SVSM vTPM state
-Message-Id: <4C094744-BB2C-4102-9593-67B8C38E0C97@8bytes.org>
-Date: Thu, 14 Mar 2024 15:44:25 +0100
-Cc: Claudio Siqueira de Carvalho <cclaudio@ibm.com>
-To: svsm-devel@coconut-svsm.dev,
- linux-coco@lists.linux.dev
-X-Mailer: Apple Mail (2.3774.400.31)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Unmapping KVM Guest Memory from Host Kernel
+To: Sean Christopherson <seanjc@google.com>, James Gowans <jgowans@amazon.com>
+CC: "akpm@linux-foundation.org" <akpm@linux-foundation.org>, Patrick Roy
+	<roypat@amazon.co.uk>, "chao.p.peng@linux.intel.com"
+	<chao.p.peng@linux.intel.com>, "rppt@kernel.org" <rppt@kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, David Woodhouse
+	<dwmw@amazon.co.uk>, Nikita Kalyazin <kalyazin@amazon.co.uk>,
+	"lstoakes@gmail.com" <lstoakes@gmail.com>, "Liam.Howlett@oracle.com"
+	<Liam.Howlett@oracle.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>, "mst@redhat.com" <mst@redhat.com>,
+	"somlo@cmu.edu" <somlo@cmu.edu>, Alexander Graf <graf@amazon.de>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, <xmarcalx@amazon.com>, <tabba@google.com>,
+	<qperret@google.com>, <kvmarm@lists.linux.dev>
+References: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
+ <ZeudRmZz7M6fWPVM@google.com>
+Content-Language: en-US
+From: "Manwaring, Derek" <derekmn@amazon.com>
+In-Reply-To: <ZeudRmZz7M6fWPVM@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EX19D042UWB002.ant.amazon.com (10.13.139.175) To
+ EX19D003UWC002.ant.amazon.com (10.13.138.169)
 
-Hi,
+On Fri, 8 Mar 2024 15:22:50 -0800, Sean Christopherson wrote:
+> On Fri, Mar 08, 2024, James Gowans wrote:
+> > We are also aware of ongoing work on guest_memfd. The current
+> > implementation unmaps guest memory from VMM address space, but leaves it
+> > in the kernel’s direct map. We’re not looking at unmapping from VMM
+> > userspace yet; we still need guest RAM there for PV drivers like virtio
+> > to continue to work. So KVM’s gmem doesn’t seem like the right solution?
+>
+> We (and by "we", I really mean the pKVM folks) are also working on allowing
+> userspace to mmap() guest_memfd[*].  pKVM aside, the long term vision I have for
+> guest_memfd is to be able to use it for non-CoCo VMs, precisely for the security
+> and robustness benefits it can bring.
+>
+> What I am hoping to do with guest_memfd is get userspace to only map memory it
+> needs, e.g. for emulated/synthetic devices, on-demand.  I.e. to get to a state
+> where guest memory is mapped only when it needs to be.
 
-In the last days I looked at Claudio=E2=80=99s vTPM PR and tested it.  =
-That went well and I left a few minor review comments, other than that =
-the changes look good to go.
+Thank you for the direction, this is super helpful.
 
-This means, if there are no further objections, I *plan* to merge the =
-code into the SVSM main branch next week (not before our development =
-call). This gives everyone some time for final review and testing to =
-make the merge as smooth as possible. If there are any objections, =
-please raise them in the PR or via email.
+We are new to the guest_memfd space, and for simplicity we'd prefer to
+leave guest_memfd completely mapped in userspace. Even in the long term,
+we actually don't have any use for unmapping from host userspace. The
+current form of marking pages shared doesn't quite align with what we're
+trying to do either since it also shares the pages with the host kernel.
 
- As a side note, I already updated the Linux and EDK2 repositories in =
-the COCONUT project to include the vTPM drivers.
+What are your thoughts on a flag for KVM_CREATE_GUEST_MEMFD that only
+removes from the host kernel's direct map, but leaves everything mapped
+in userspace?
 
-Regards,
-
-J=C3=B6rg=
+Derek
