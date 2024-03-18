@@ -1,211 +1,330 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896BF1FB5;
-	Mon, 18 Mar 2024 14:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0A856B8C
+	for <linux-coco@lists.linux.dev>; Mon, 18 Mar 2024 21:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710771285; cv=none; b=gF+SlWiCX2n3IyvBJ42j1kUsJpp8IL2EVJtU9lqycZ7J6EeT72+kq8cuLODuQya7ME7xUxDsuxJusRGY5iePb2SCVMkHilFqu0F6OWjbJGlvEySUN3gB/3FGuxCHRlH+ehQnce/fuCkJ9cudaXR0eFnQnyFcmL8YBX+Bf093l3E=
+	t=1710795743; cv=none; b=X+xUcHzcrSSD9D+J25y5rXoumJtJ5Nos0tH+Vl83srEwVlVq34GDblPrdRadHyNF2v6JcRH7Kv3T/CxddlVJLTbaCU5lcvx/ywokl7BsJVj9OLke7HThXkUZI5fst+Xfm+msnNRokg7jaRT/QMvUCZ7b7gSn/rnKe9WmKBsX0r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710771285; c=relaxed/simple;
-	bh=UO+5wsSGymUVPt4vVeQZ8EDKQ64Wom2tgJ8iYeh7rSY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CVGaMUbC009+QGrJKfbbY5UoezHR5rwHizkhKUMjhOznuXXf3nAxS7cD+bnLEBUiDdGSgsCY6jt8LnjbQvjfM/Xslrtb1HRzbgUieiL1QlKXOtIETITKAeSQarrVtjcF9v4g0vVqdZ4IdtucSFyminYx8OupXOoy35eDo2024io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C94DBDA7;
-	Mon, 18 Mar 2024 07:15:17 -0700 (PDT)
-Received: from [10.57.12.69] (unknown [10.57.12.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8F1013F67D;
-	Mon, 18 Mar 2024 07:14:39 -0700 (PDT)
-Message-ID: <fff76a4f-28c3-4e46-945f-54554441a93c@arm.com>
-Date: Mon, 18 Mar 2024 14:14:40 +0000
+	s=arc-20240116; t=1710795743; c=relaxed/simple;
+	bh=BXZLP7MOa5Xo2y9G1WmsmS2tlN82SwZ5joLRxkLlD8Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FGi12jFJxqvGSQ21EutJknvzzlHwRq5jYKj077vMDKgc3NhW0MSp7vGV+Q1ScEBF1UmeqsNPVNF4FJIOhdSYMxFBQ/XpY6spNN+YAwP81OPg5s+fKoOD0qyHJkfED74ce+dH8Ymj+FvY1u91kCCYCW7oG8eJY2moYSW637/68s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jz/bvX4G; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jz/bvX4G"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-56b8d2056fbso921a12.1
+        for <linux-coco@lists.linux.dev>; Mon, 18 Mar 2024 14:02:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1710795740; x=1711400540; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O5gZjTRSl4x8yAd+Qw3jrLTaZ/uMFzSSgIEwAnGQaeg=;
+        b=jz/bvX4GhC13uYulJA6q2QrcQw4jbPdyoLSeM5OdE2ctcAYq/gmvUXOueHQYEDYFct
+         0XtcxGFD0oBcqHnbGr+RbEtq7jFSuDusnW6Ump94bZYM+Nny/Q54dTYNTG2VGgKqk5X8
+         2P+hUUdKBskfVMNyCBZtR6MBXbzhOQMm9/GaT2GIU6JEMO840AutBEdAKJn7qw5lhijD
+         iRxv1XWyTIrvikSyYA78Rwr1YjxRH1gGTztaAviKRWoCq0uoTfxGEpbXS4fuD+LkfCDU
+         m71+VFnpnjlcYbOUt6dqY/4GFNIhMAX/oHvtnItU+Ri/rfLDCdgHJLevaRVkH/oNq17D
+         UAFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710795740; x=1711400540;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O5gZjTRSl4x8yAd+Qw3jrLTaZ/uMFzSSgIEwAnGQaeg=;
+        b=uWhi1NeqRvRK7pNTw5uukjcAI+SHQr885bfAfnVjjULvXof4utVE+kPhNXd5xNnnwp
+         rluLOKu0lsKTeKyWnoAGNvkE17M6Z9w+kFnSHowBDBfB+AcIbigwCBT5eQuf/i0Kt2Rh
+         m/E7COHkg9QN9JEZ6AXvfw2NiWVn/SkjGGiy7mC7F7kM9kKgmSY4pKncH4dVqpK1ymiq
+         qzDyEjITHAXCwUVrtp2jof2nt0uH6/fdygv/6oghH1hjoWtV4ZIVYqAImE5Egn/TBGzk
+         GsrC/ssdWc7IgwYlr3X5Xeqg3OsbMD09qlCt50/x7cVW8DZreb4H5hTY6RPdpfhObJgG
+         C5jQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVoQsnw5vUbWPpe8DS87P/vW8gz6SRHq5U1uq5r8SLgDQgx154djxfss8rx5B/A8cwtADW+AW8ISm2FwE4eQX9IFmqKFmODd5y08A==
+X-Gm-Message-State: AOJu0YywflFypQ1jiIexugY9krFlWGbVciGSCRuvUGqoaukNd0fyG5rO
+	Jysa833uQcvyd5aBklblWzfcrTubtlcidiSQIigzgu1jdtmxemQO3uuWdGU83Dyt88gTvu4N3EL
+	+snoS5BLwbe+shXK1u+t4P/JfCd86dna622LA6I/ud6L6p7OlZeujNPQ=
+X-Google-Smtp-Source: AGHT+IFivxti4l4UI/CAm+HxOzS2U25vJiH0+czbF7e4DZfoW53/wo+Dx8ivStQaqHTTVwkli/GuvoWdN+oEvPRUZQE=
+X-Received: by 2002:aa7:c3d0:0:b0:568:ce1e:94e5 with SMTP id
+ l16-20020aa7c3d0000000b00568ce1e94e5mr17596edr.5.1710795739649; Mon, 18 Mar
+ 2024 14:02:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 12/28] KVM: arm64: Support timers in realm RECs
-Content-Language: en-GB
-To: Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev
-References: <20230127112248.136810-1-suzuki.poulose@arm.com>
- <20230127112932.38045-1-steven.price@arm.com>
- <20230127112932.38045-13-steven.price@arm.com>
- <9ae4b453-4d5b-4537-b004-4db60183019a@os.amperecomputing.com>
-From: Steven Price <steven.price@arm.com>
-In-Reply-To: <9ae4b453-4d5b-4537-b004-4db60183019a@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20231230172351.574091-1-michael.roth@amd.com> <20231230172351.574091-19-michael.roth@amd.com>
+In-Reply-To: <20231230172351.574091-19-michael.roth@amd.com>
+From: Peter Gonda <pgonda@google.com>
+Date: Mon, 18 Mar 2024 15:02:04 -0600
+Message-ID: <CAMkAt6qtnfkhU_Ks6=U-Zg7r-k7CT2WzVPLq5xdLML9JHr5rhQ@mail.gmail.com>
+Subject: Re: [PATCH v11 18/35] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
+	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, peterz@infradead.org, 
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com, 
+	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, 
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com, 
+	Brijesh Singh <brijesh.singh@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 18/03/2024 11:28, Ganapatrao Kulkarni wrote:
-> 
-> 
-> On 27-01-2023 04:59 pm, Steven Price wrote:
->> The RMM keeps track of the timer while the realm REC is running, but on
->> exit to the normal world KVM is responsible for handling the timers.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->>   arch/arm64/kvm/arch_timer.c  | 53 ++++++++++++++++++++++++++++++++----
->>   include/kvm/arm_arch_timer.h |  2 ++
->>   2 files changed, 49 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
->> index bb24a76b4224..d4af9ee58550 100644
->> --- a/arch/arm64/kvm/arch_timer.c
->> +++ b/arch/arm64/kvm/arch_timer.c
->> @@ -130,6 +130,11 @@ static void timer_set_offset(struct
->> arch_timer_context *ctxt, u64 offset)
->>   {
->>       struct kvm_vcpu *vcpu = ctxt->vcpu;
->>   +    if (kvm_is_realm(vcpu->kvm)) {
->> +        WARN_ON(offset);
->> +        return;
->> +    }
->> +
->>       switch(arch_timer_ctx_index(ctxt)) {
->>       case TIMER_VTIMER:
->>           __vcpu_sys_reg(vcpu, CNTVOFF_EL2) = offset;
->> @@ -411,6 +416,21 @@ static void kvm_timer_update_irq(struct kvm_vcpu
->> *vcpu, bool new_level,
->>       }
->>   }
->>   +void kvm_realm_timers_update(struct kvm_vcpu *vcpu)
->> +{
->> +    struct arch_timer_cpu *arch_timer = &vcpu->arch.timer_cpu;
->> +    int i;
->> +
->> +    for (i = 0; i < NR_KVM_TIMERS; i++) {
-> 
-> Do we required to check for all timers, is realm/rmm uses hyp timers?
+On Sat, Dec 30, 2023 at 10:27=E2=80=AFAM Michael Roth <michael.roth@amd.com=
+> wrote:
+>
+> From: Brijesh Singh <brijesh.singh@amd.com>
+>
+> The KVM_SEV_SNP_LAUNCH_UPDATE command can be used to insert data into
+> the guest's memory. The data is encrypted with the cryptographic context
+> created with the KVM_SEV_SNP_LAUNCH_START.
+>
+> In addition to the inserting data, it can insert a two special pages
+> into the guests memory: the secrets page and the CPUID page.
+>
+> While terminating the guest, reclaim the guest pages added in the RMP
+> table. If the reclaim fails, then the page is no longer safe to be
+> released back to the system and leak them.
+>
+> For more information see the SEV-SNP specification.
+>
+> Co-developed-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  .../virt/kvm/x86/amd-memory-encryption.rst    |  28 +++
+>  arch/x86/kvm/svm/sev.c                        | 181 ++++++++++++++++++
+>  include/uapi/linux/kvm.h                      |  19 ++
+>  3 files changed, 228 insertions(+)
+>
+> diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Docum=
+entation/virt/kvm/x86/amd-memory-encryption.rst
+> index b1beb2fe8766..d4325b26724c 100644
+> --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> @@ -485,6 +485,34 @@ Returns: 0 on success, -negative on error
+>
+>  See the SEV-SNP specification for further detail on the launch input.
+>
+> +20. KVM_SNP_LAUNCH_UPDATE
+> +-------------------------
+> +
+> +The KVM_SNP_LAUNCH_UPDATE is used for encrypting a memory region. It als=
+o
+> +calculates a measurement of the memory contents. The measurement is a si=
+gnature
+> +of the memory contents that can be sent to the guest owner as an attesta=
+tion
+> +that the memory was encrypted correctly by the firmware.
 
-Good point, the realm guest can't use the hyp timers, so this should be
-NR_KVM_EL0_TIMERS. The hyp timers are used by the host to interrupt the
-guest execution. I think this code was written before NV support added
-the extra timers.
+Nit: The measurement is a rolling hash of all the launch updated pages
+and their metadata. The attestation quote contains a signature of
+information about the SNP VM including this measurement.
 
->> +        struct arch_timer_context *timer = &arch_timer->timers[i];
->> +        bool status = timer_get_ctl(timer) & ARCH_TIMER_CTRL_IT_STAT;
->> +        bool level = kvm_timer_irq_can_fire(timer) && status;
->> +
->> +        if (level != timer->irq.level)
->> +            kvm_timer_update_irq(vcpu, level, timer);
->> +    }
->> +}
->> +
->>   /* Only called for a fully emulated timer */
->>   static void timer_emulate(struct arch_timer_context *ctx)
->>   {
->> @@ -621,6 +641,11 @@ void kvm_timer_vcpu_load(struct kvm_vcpu *vcpu)
->>       if (unlikely(!timer->enabled))
->>           return;
->>   +    kvm_timer_unblocking(vcpu);
->> +
->> +    if (vcpu_is_rec(vcpu))
->> +        return;
->> +
-> 
-> For realm, timer->enabled is not set, load returns before this check.
+Also technically the attestation doesn't confirm to the guest owner
+the memory was encrypted correctly, I don't think we can
+cryptographically prove that. But the attestation does provide the
+guest owner confirmation about the exact steps the ASP took in
+creating the SNP VMs initial memory context. If the ASP firmware is
+bug free and follows the spec, your 'memory was encrypted correctly by
+the firmware' line is implied.
 
-True, this can be simplified. Thanks.
+> +
+> +Parameters (in): struct  kvm_snp_launch_update
+> +
+> +Returns: 0 on success, -negative on error
+> +
+> +::
+> +
+> +        struct kvm_sev_snp_launch_update {
+> +                __u64 start_gfn;        /* Guest page number to start fr=
+om. */
+> +                __u64 uaddr;            /* userspace address need to be =
+encrypted */
+> +                __u32 len;              /* length of memory region */
+> +                __u8 imi_page;          /* 1 if memory is part of the IM=
+I */
+> +                __u8 page_type;         /* page type */
+> +                __u8 vmpl3_perms;       /* VMPL3 permission mask */
+> +                __u8 vmpl2_perms;       /* VMPL2 permission mask */
+> +                __u8 vmpl1_perms;       /* VMPL1 permission mask */
+> +        };
+> +
+> +See the SEV-SNP spec for further details on how to build the VMPL permis=
+sion
+> +mask and page type.
+> +
+>  References
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index e2f4d4bc125c..d60209e6e68b 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -245,6 +245,36 @@ static void sev_decommission(unsigned int handle)
+>         sev_guest_decommission(&decommission, NULL);
+>  }
+>
+> +static int snp_page_reclaim(u64 pfn)
+> +{
+> +       struct sev_data_snp_page_reclaim data =3D {0};
+> +       int err, rc;
+> +
+> +       data.paddr =3D __sme_set(pfn << PAGE_SHIFT);
+> +       rc =3D sev_do_cmd(SEV_CMD_SNP_PAGE_RECLAIM, &data, &err);
+> +       if (rc) {
+> +               /*
+> +                * If the reclaim failed, then page is no longer safe
+> +                * to use.
+> +                */
+> +               snp_leak_pages(pfn, 1);
+> +       }
+> +
+> +       return rc;
+> +}
+> +
+> +static int host_rmp_make_shared(u64 pfn, enum pg_level level, bool leak)
+> +{
+> +       int rc;
+> +
+> +       rc =3D rmp_make_shared(pfn, level);
+> +       if (rc && leak)
+> +               snp_leak_pages(pfn,
+> +                              page_level_size(level) >> PAGE_SHIFT);
+> +
+> +       return rc;
+> +}
+> +
+>  static void sev_unbind_asid(struct kvm *kvm, unsigned int handle)
+>  {
+>         struct sev_data_deactivate deactivate;
+> @@ -1990,6 +2020,154 @@ static int snp_launch_start(struct kvm *kvm, stru=
+ct kvm_sev_cmd *argp)
+>         return rc;
+>  }
+>
+> +static int snp_launch_update_gfn_handler(struct kvm *kvm,
+> +                                        struct kvm_gfn_range *range,
+> +                                        void *opaque)
+> +{
+> +       struct kvm_sev_info *sev =3D &to_kvm_svm(kvm)->sev_info;
+> +       struct kvm_memory_slot *memslot =3D range->slot;
+> +       struct sev_data_snp_launch_update data =3D {0};
+> +       struct kvm_sev_snp_launch_update params;
+> +       struct kvm_sev_cmd *argp =3D opaque;
+> +       int *error =3D &argp->error;
+> +       int i, n =3D 0, ret =3D 0;
+> +       unsigned long npages;
+> +       kvm_pfn_t *pfns;
+> +       gfn_t gfn;
+> +
+> +       if (!kvm_slot_can_be_private(memslot)) {
+> +               pr_err("SEV-SNP requires private memory support via guest=
+_memfd.\n");
+> +               return -EINVAL;
+> +       }
+> +
+> +       if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data,=
+ sizeof(params))) {
+> +               pr_err("Failed to copy user parameters for SEV-SNP launch=
+.\n");
+> +               return -EFAULT;
+> +       }
+> +
+> +       data.gctx_paddr =3D __psp_pa(sev->snp_context);
+> +
+> +       npages =3D range->end - range->start;
+> +       pfns =3D kvmalloc_array(npages, sizeof(*pfns), GFP_KERNEL_ACCOUNT=
+);
+> +       if (!pfns)
+> +               return -ENOMEM;
+> +
+> +       pr_debug("%s: GFN range 0x%llx-0x%llx, type %d\n", __func__,
+> +                range->start, range->end, params.page_type);
+> +
+> +       for (gfn =3D range->start, i =3D 0; gfn < range->end; gfn++, i++)=
+ {
+> +               int order, level;
+> +               bool assigned;
+> +               void *kvaddr;
+> +
+> +               ret =3D __kvm_gmem_get_pfn(kvm, memslot, gfn, &pfns[i], &=
+order, false);
+> +               if (ret)
+> +                       goto e_release;
+> +
+> +               n++;
+> +               ret =3D snp_lookup_rmpentry((u64)pfns[i], &assigned, &lev=
+el);
+> +               if (ret || assigned) {
+> +                       pr_err("Failed to ensure GFN 0x%llx is in initial=
+ shared state, ret: %d, assigned: %d\n",
+> +                              gfn, ret, assigned);
+> +                       return -EFAULT;
+> +               }
+> +
+> +               kvaddr =3D pfn_to_kaddr(pfns[i]);
+> +               if (!virt_addr_valid(kvaddr)) {
+> +                       pr_err("Invalid HVA 0x%llx for GFN 0x%llx\n", (ui=
+nt64_t)kvaddr, gfn);
+> +                       ret =3D -EINVAL;
+> +                       goto e_release;
+> +               }
+> +
+> +               ret =3D kvm_read_guest_page(kvm, gfn, kvaddr, 0, PAGE_SIZ=
+E);
+> +               if (ret) {
+> +                       pr_err("Guest read failed, ret: 0x%x\n", ret);
 
-Steve
+Should these be pr_debugs()?  This could get noisy.
 
->>       get_timer_map(vcpu, &map);
->>         if (static_branch_likely(&has_gic_active_state)) {
->> @@ -633,8 +658,6 @@ void kvm_timer_vcpu_load(struct kvm_vcpu *vcpu)
->>         set_cntvoff(timer_get_offset(map.direct_vtimer));
->>   -    kvm_timer_unblocking(vcpu);
->> -
->>       timer_restore_state(map.direct_vtimer);
->>       if (map.direct_ptimer)
->>           timer_restore_state(map.direct_ptimer);
->> @@ -668,6 +691,9 @@ void kvm_timer_vcpu_put(struct kvm_vcpu *vcpu)
->>       if (unlikely(!timer->enabled))
->>           return;
->>   +    if (vcpu_is_rec(vcpu))
->> +        goto out;
->> +
->>       get_timer_map(vcpu, &map);
->>         timer_save_state(map.direct_vtimer);
->> @@ -686,9 +712,6 @@ void kvm_timer_vcpu_put(struct kvm_vcpu *vcpu)
->>       if (map.emul_ptimer)
->>           soft_timer_cancel(&map.emul_ptimer->hrtimer);
->>   -    if (kvm_vcpu_is_blocking(vcpu))
->> -        kvm_timer_blocking(vcpu);
->> -
->>       /*
->>        * The kernel may decide to run userspace after calling
->> vcpu_put, so
->>        * we reset cntvoff to 0 to ensure a consistent read between user
->> @@ -697,6 +720,11 @@ void kvm_timer_vcpu_put(struct kvm_vcpu *vcpu)
->>        * virtual offset of zero, so no need to zero CNTVOFF_EL2 register.
->>        */
->>       set_cntvoff(0);
->> +
->> +out:
->> +    if (kvm_vcpu_is_blocking(vcpu))
->> +        kvm_timer_blocking(vcpu);
->> +
->>   }
->>     /*
->> @@ -785,12 +813,18 @@ void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu)
->>       struct arch_timer_cpu *timer = vcpu_timer(vcpu);
->>       struct arch_timer_context *vtimer = vcpu_vtimer(vcpu);
->>       struct arch_timer_context *ptimer = vcpu_ptimer(vcpu);
->> +    u64 cntvoff;
->>         vtimer->vcpu = vcpu;
->>       ptimer->vcpu = vcpu;
->>   +    if (kvm_is_realm(vcpu->kvm))
->> +        cntvoff = 0;
->> +    else
->> +        cntvoff = kvm_phys_timer_read();
->> +
->>       /* Synchronize cntvoff across all vtimers of a VM. */
->> -    update_vtimer_cntvoff(vcpu, kvm_phys_timer_read());
->> +    update_vtimer_cntvoff(vcpu, cntvoff);
->>       timer_set_offset(ptimer, 0);
->>         hrtimer_init(&timer->bg_timer, CLOCK_MONOTONIC,
->> HRTIMER_MODE_ABS_HARD);
->> @@ -1265,6 +1299,13 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
->>           return -EINVAL;
->>       }
->>   +    /*
->> +     * We don't use mapped IRQs for Realms because the RMI doesn't allow
->> +     * us setting the LR.HW bit in the VGIC.
->> +     */
->> +    if (vcpu_is_rec(vcpu))
->> +        return 0;
->> +
->>       get_timer_map(vcpu, &map);
->>         ret = kvm_vgic_map_phys_irq(vcpu,
->> diff --git a/include/kvm/arm_arch_timer.h b/include/kvm/arm_arch_timer.h
->> index cd6d8f260eab..158280e15a33 100644
->> --- a/include/kvm/arm_arch_timer.h
->> +++ b/include/kvm/arm_arch_timer.h
->> @@ -76,6 +76,8 @@ int kvm_arm_timer_set_attr(struct kvm_vcpu *vcpu,
->> struct kvm_device_attr *attr);
->>   int kvm_arm_timer_get_attr(struct kvm_vcpu *vcpu, struct
->> kvm_device_attr *attr);
->>   int kvm_arm_timer_has_attr(struct kvm_vcpu *vcpu, struct
->> kvm_device_attr *attr);
->>   +void kvm_realm_timers_update(struct kvm_vcpu *vcpu);
->> +
->>   u64 kvm_phys_timer_read(void);
->>     void kvm_timer_vcpu_load(struct kvm_vcpu *vcpu);
-> 
-> Thanks,
-> Ganapat
+> +                       goto e_release;
+> +               }
+> +
+> +               ret =3D rmp_make_private(pfns[i], gfn << PAGE_SHIFT, PG_L=
+EVEL_4K,
+> +                                      sev_get_asid(kvm), true);
+> +               if (ret) {
+> +                       ret =3D -EFAULT;
+> +                       goto e_release;
+> +               }
+> +
+> +               data.address =3D __sme_set(pfns[i] << PAGE_SHIFT);
+> +               data.page_size =3D PG_LEVEL_TO_RMP(PG_LEVEL_4K);
+> +               data.page_type =3D params.page_type;
+> +               data.vmpl3_perms =3D params.vmpl3_perms;
+> +               data.vmpl2_perms =3D params.vmpl2_perms;
+> +               data.vmpl1_perms =3D params.vmpl1_perms;
+> +               ret =3D __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_LAUNCH_=
+UPDATE,
+> +                                     &data, error);
+> +               if (ret) {
+> +                       pr_err("SEV-SNP launch update failed, ret: 0x%x, =
+fw_error: 0x%x\n",
+> +                              ret, *error);
+> +                       snp_page_reclaim(pfns[i]);
+> +
+> +                       /*
+> +                        * When invalid CPUID function entries are detect=
+ed, the firmware
+> +                        * corrects these entries for debugging purpose a=
+nd leaves the
+> +                        * page unencrypted so it can be provided users f=
+or debugging
+> +                        * and error-reporting.
+> +                        *
+> +                        * Copy the corrected CPUID page back to shared m=
+emory so
+> +                        * userpsace can retrieve this information.
 
+Typo: userpsace
