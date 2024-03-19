@@ -1,153 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B047BB12
-	for <linux-coco@lists.linux.dev>; Tue, 19 Mar 2024 04:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA4280039
+	for <linux-coco@lists.linux.dev>; Tue, 19 Mar 2024 13:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710820837; cv=none; b=KSD8prRKlEM8CbGpK2dca7TcXWt5CIX5hL+Qf3jgJFhBuQeZs8dqSTq6wbHfQncvF4IQzfRb0hbCIOXFOzTN1LDffwVi04ZEnjtDPQplV/24KmaBhr0WuEsSGnMfmJt7rIWHZsLzX1nVi/5FXZAY8/FiHDGYvM0f4Ve97TmP5KE=
+	t=1710853949; cv=none; b=aYwr6+n6PcAXP6hci8jYEQJ5Lk3AlIFrTQEcprCMmwHcEtL3UqyJl3u2UH5sps1rvxwOAQkMsqnO/r96WSa+1xcUHSCtXXSO//2zDgWOz2ixyepI7eKwn9n7QeLwMYOiicKfPQr/spw1fZUTSFqC864Cqow+UgQ2Zy0S20creiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710820837; c=relaxed/simple;
-	bh=em1tayWATecsjQCbVE06v1UJF8h/Yfzd2A6qPpmeTQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=StvbVynR0z64IZoe4HcuCpXvjnTUtXT/UBTJQERcxzFRh/Lmvu9A57a0wl++5SbaD4T6Q2JNyTGQ/vj6vS7eKsYPyXZjSu4L44aC3H7GGXKx0xKJzkyrOk/iLhyWVEGQas46t7S3hXV/rpEupE8gCbWSiaI2uTvipVOuxA9robQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hqHL56Jq; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1710853949; c=relaxed/simple;
+	bh=KtTY1vRYNAvCOPSh96eqSezTk9RjOAm75dFIb9H5Jx8=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=o+vGszDu+P+DwVYiFcFwyiq5oO6LGQF2uVpe0gchdHBHtTJYToQhjPlxpuI1h/cqVpdkAeI776qAE2jdMwKURWS7dAQd42m/rLEh5JhYJSk8kTyC25y43yJ2WkRdwA0HN7WJGTsnuDE86heUz6ltN1f9AAil2e7Y+aFrIkwlogE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=j0AkF1cH; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hqHL56Jq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710820835;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VCuT+KF0CFKXEteYACtgcd0bLY6/wFRR3VLA/HmQm5k=;
-	b=hqHL56Jqicv3KCrs7a8X/ztyhDrw+Rzwt4Hkzm6hIOXpSimcShzMHCka9Ii4VyDT3VyYuI
-	O3c+2RgcgEGsEjB5Cw2/3ql8yA88dYfadqiLWxe+4flkP+ES7DihH4+UOkjj/iMS7tIK3e
-	ONBWeDCW9z8O6Hw4QNEsxrMuxiOGecg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-uhYCHd1lOYC1LAIgkUewmA-1; Tue, 19 Mar 2024 00:00:30 -0400
-X-MC-Unique: uhYCHd1lOYC1LAIgkUewmA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="j0AkF1cH"
+Received: from 8bytes.org (p4ffe0c3c.dip0.t-ipconnect.de [79.254.12.60])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 565D3852002;
-	Tue, 19 Mar 2024 04:00:28 +0000 (UTC)
-Received: from darkstar.users.ipa.redhat.com (unknown [10.72.116.87])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 859973C20;
-	Tue, 19 Mar 2024 04:00:16 +0000 (UTC)
-Date: Tue, 19 Mar 2024 12:00:15 +0800
-From: Dave Young <dyoung@redhat.com>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-	rafael@kernel.org, peterz@infradead.org, adrian.hunter@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	elena.reshetova@intel.com, jun.nakajima@intel.com,
-	rick.p.edgecombe@intel.com, thomas.lendacky@amd.com,
-	seanjc@google.com, michael.roth@amd.com, kai.huang@intel.com,
-	bhe@redhat.com, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kirill.shutemov@linux.intel.com, bdas@redhat.com,
-	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
-	jroedel@suse.de, Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH v2 1/3] efi/x86: skip efi_arch_mem_reserve() in case of
- kexec.
-Message-ID: <ZfkNzyGl4J1ZxaGj@darkstar.users.ipa.redhat.com>
-References: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
- <cover.1710744412.git.ashish.kalra@amd.com>
- <7c2e6ae663da2e5eb41527f0d854f59a56b91ecd.1710744412.git.ashish.kalra@amd.com>
+	by mail.8bytes.org (Postfix) with ESMTPSA id B05B41E238B;
+	Tue, 19 Mar 2024 14:12:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1710853936;
+	bh=KtTY1vRYNAvCOPSh96eqSezTk9RjOAm75dFIb9H5Jx8=;
+	h=Date:From:To:Subject:From;
+	b=j0AkF1cHi+aizii3MUbNLOQ11b28VrOjzr1U5Q5Ma4UfBb0qlEZ9fdduM37kVQHWT
+	 EsJP2oG8N55Sqvf4tnfBy0ZsA2d775jCB3ztRNxcXHMsMqvEzY5kO/xz/TY+0600Ix
+	 XE14FBK5sTozC+PHN0I2VZlteujiDXR6SSmmO+ap9J4akVLO5oojb5Ioinme1pmkeQ
+	 0G29d7Vw9ExUqZSz/6phik8B0xElwi37pQaJ6FmEWUs2l6ySD8fZyn3Zyn8mo1yAyH
+	 qrn36iBJ4kdSOvbMIQ4SzdyIOzuzbMEZTs4LRPlNWUPv1UyUWaV/kzfEH3nGEZyqw9
+	 QhCRI1mkj60LA==
+Date: Tue, 19 Mar 2024 14:12:01 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call March 20th, 2024
+Message-ID: <ZfmPIXGDd-69c9xp@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <7c2e6ae663da2e5eb41527f0d854f59a56b91ecd.1710744412.git.ashish.kalra@amd.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Added Ard in cc.
+Here is the usual call for agenda items for this weeks SVSM development
+call. My agenda so far is:
 
-On 03/18/24 at 07:02am, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> For kexec use case, need to use and stick to the EFI memmap passed
-> from the first kernel via boot-params/setup data, hence,
-> skip efi_arch_mem_reserve() during kexec.
-> 
-> Additionally during SNP guest kexec testing discovered that EFI memmap
-> is corrupted during chained kexec. kexec_enter_virtual_mode() during
-> late init will remap the efi_memmap physical pages allocated in
-> efi_arch_mem_reserve() via memboot & then subsequently cause random
-> EFI memmap corruption once memblock is freed/teared-down.
-> 
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> ---
->  arch/x86/platform/efi/quirks.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> index f0cc00032751..d4562d074371 100644
-> --- a/arch/x86/platform/efi/quirks.c
-> +++ b/arch/x86/platform/efi/quirks.c
-> @@ -258,6 +258,16 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
->  	int num_entries;
->  	void *new;
->  
-> +	/*
-> +	 * For kexec use case, we need to use the EFI memmap passed from the first
-> +	 * kernel via setup data, so we need to skip this.
-> +	 * Additionally kexec_enter_virtual_mode() during late init will remap
-> +	 * the efi_memmap physical pages allocated here via memboot & then
-> +	 * subsequently cause random EFI memmap corruption once memblock is freed.
+	* vTPM merge
+	* SVSM attestation architecture
+	* Vendored dependencies in the repo
 
-Can you elaborate a bit about the corruption, is it reproducible without
-SNP?
+Not sure if we can discuss all of these items, if not they will be moved
+to the next meeting.
 
-> +	 */
-> +	if (efi_setup)
-> +		return;
-> +
+Details of the meeting (GMeet and Calendar links, meeting time) can be
+found in our shiny new governance repository at:
 
-How about checking the md attribute instead of checking the efi_setup,
-personally I feel it a bit better, something like below:
+	https://github.com/coconut-svsm/governance
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index f0cc00032751..699332b075bb 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -255,15 +255,24 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
- 	struct efi_memory_map_data data = { 0 };
- 	struct efi_mem_range mr;
- 	efi_memory_desc_t md;
--	int num_entries;
-+	int num_entries, ret;
- 	void *new;
- 
--	if (efi_mem_desc_lookup(addr, &md) ||
--	    md.type != EFI_BOOT_SERVICES_DATA) {
-+	ret = efi_mem_desc_lookup(addr, &md);
-+	if (ret) {
- 		pr_err("Failed to lookup EFI memory descriptor for %pa\n", &addr);
- 		return;
- 	}
- 
-+	if (md.type != EFI_BOOT_SERVICES_DATA) {
-+		pr_err("Skil reserving non EFI Boot Service Data memory for %pa\n", &addr);
-+		return;
-+	}
-+
-+	/* Kexec copied the efi memmap from the 1st kernel, thus skip the case. */
-+	if (md.attribute & EFI_MEMORY_RUNTIME)
-+		return;
-+
- 	if (addr + size > md.phys_addr + (md.num_pages << EFI_PAGE_SHIFT)) {
- 		pr_err("Region spans EFI memory descriptors, %pa\n", &addr);
- 		return;
+Please note that the meeting will be recorded and the recording
+eventually published.
 
+See you all there.
+
+Regards,
+
+	Jörg
