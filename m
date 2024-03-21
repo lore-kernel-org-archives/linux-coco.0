@@ -1,41 +1,63 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BB612B81
-	for <linux-coco@lists.linux.dev>; Thu, 21 Mar 2024 09:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711011841; cv=none; b=hV2y6ww5x4NReK/2svXDCvuC9B5vsjrHAOU1UdvooUItPauSiNeMHjZmYr/BQl4aH8ash3ChNGyxXlxdl77mawTzzQCL+wsfBk2cKxsx27/JOg7N5DiNBGgIfC1qGQRAL/ZrITbr1wXJShy/1N5f9KHHUvnZG7d35c/Si40GPTM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711011841; c=relaxed/simple;
-	bh=AJ3BI9q3sqKDu5mZLBaz+AdZIMACsA/POWCGQanq/RE=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ktr1F7gcgNR5y7x64FnWF5mfSzzZUthlhz7CI6+oTN6v10WKhvgZV1QjOM0UV7+UaONodjn5GVsXGG17MLx9E8o5MgLpw3g2x2FB6qPjmNVutNTT7od3Wyu3lp5NmMvW8/ZUiGFlAPJGptLRXelj9UqIGE2sevU1CRcpUGv02vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=nSPiLIax; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="nSPiLIax"
-Received: from 8bytes.org (p4ffe0c3c.dip0.t-ipconnect.de [79.254.12.60])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 9FB2D1E238E;
-	Thu, 21 Mar 2024 10:03:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1711011830;
-	bh=AJ3BI9q3sqKDu5mZLBaz+AdZIMACsA/POWCGQanq/RE=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=nSPiLIaxZ+LLoglHBDcJluvfG1FQtkd1qt4asVpNl09PXrYEHUAMVh/XfhDOWZKZG
-	 +kkzeuuGzoO/gHKoLLbFx74YSSKqhCR1B86wWdGj+O0W34BcXDlcJK2n8T5Ye2FYCE
-	 N3F4+QPZg/pkOYOKK5qgCWlAEOtiSN3Yb9xl7zEYLHWXu9neq3G6Nm8ngPUH8ygluY
-	 QKgwejwnYVqQYnPk3Fjgo3sOzEQzWhwfA1CeSx/BObf8/1kcBPZM6vI0nOB+6ydzaT
-	 T/h652XqvvDMtVPlOnaqLvSjy2i/ub5Sy/pPmWk17Drj9UVlPXDECL1ylZ2YyFzVH7
-	 oRK+C4SjIMWQQ==
-Date: Thu, 21 Mar 2024 10:03:49 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: Re: [svsm-devel] SVSM Development Call March 20th, 2024
-Message-ID: <Zfv39SFXe49LyQOs@8bytes.org>
-References: <ZfmPIXGDd-69c9xp@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E81385952
+	for <linux-coco@lists.linux.dev>; Thu, 21 Mar 2024 14:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711033143; cv=none; b=QIvY+WvOVeqdC9ZSE2AEq3Tk9aguIDSz1RUf4VLnIGgscCs+DxaPyo4HGRkRu2qb0Mh23oxcamo5aEkruMl+iUgWNiOCkXgHxu0WqFh96n+QdKP8WmZOX0BszbHxvFxxY4+mnVJ/fVrEQ1CAZdPZgONkZBXO9aBalJrNpElfDhs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711033143; c=relaxed/simple;
+	bh=7eBq8ekEO6vw2vSin9bneMav1VFWO6ZkBD957BgambQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BZGuFlqeMzhWJQQKs0dOvszUjmXjN3eSK8dpcy3sYx8tRVPetgAk49MPQXGEw7bN7LYB2/V82AsJqlmwliYrzkvKWLXrJVrEsTEFYrCa0siQ2P/MfEaqgpGr7/KhQ39oXKgPVZq/1WqSVldhFyyoytu9oFbs3ymHF/5in7NR9RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=diMiwbZP; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="diMiwbZP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711033140; x=1742569140;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7eBq8ekEO6vw2vSin9bneMav1VFWO6ZkBD957BgambQ=;
+  b=diMiwbZPNkNHXOLhSHX/rJBLgXAXEpwmZsJ6uIejc2U9bSLINJ9wtzyi
+   HqRnVhl7MNfdjpHsLNF1VUMrJqHIOb3Rum1Z1xvVZCmUO+MaYim3+5aCx
+   V5x3S7tDeKH3SLruhel8F2UTv5IDDoK+HEvdCl1y3lmy8hIWeOt/nEFgH
+   8JaJ8rnn2dPn593YNZjzll4MVatUmefohR1d9i1G/PuVNgHJzhSog5Jse
+   LMJdkXteFxPhM4R2Zjt6hQiLEZzt8RwZRLigQ0eSdPXt0K+Oqb2byYdVO
+   XBcrpDfmxq822Tj4pW/Yl6B1IDLJBfksk85QSFP8+2IMsAWgbC7mqy1oJ
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="5879066"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
+   d="scan'208";a="5879066"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 07:58:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="937065372"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
+   d="scan'208";a="937065372"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 21 Mar 2024 07:58:53 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 7C090791; Thu, 21 Mar 2024 16:58:52 +0200 (EET)
+Date: Thu, 21 Mar 2024 16:58:52 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com, 
+	rafael@kernel.org, peterz@infradead.org, adrian.hunter@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, elena.reshetova@intel.com, jun.nakajima@intel.com, 
+	rick.p.edgecombe@intel.com, thomas.lendacky@amd.com, seanjc@google.com, michael.roth@amd.com, 
+	kai.huang@intel.com, bhe@redhat.com, kexec@lists.infradead.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, bdas@redhat.com, 
+	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com, jroedel@suse.de
+Subject: Re: [PATCH v2 2/3] x86/mm: Do not zap page table entries mapping
+ unaccepted memory table during kdump.
+Message-ID: <opa56dnwlyllrrnlfrhtbavnwmhxxatiuzifvx3bquv5qksidn@v2qxrvvw53jl>
+References: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
+ <cover.1710744412.git.ashish.kalra@amd.com>
+ <8e11825bb3e4a7472bf0cb30c72ae013c25ac8c9.1710744412.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -44,14 +66,32 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZfmPIXGDd-69c9xp@8bytes.org>
+In-Reply-To: <8e11825bb3e4a7472bf0cb30c72ae013c25ac8c9.1710744412.git.ashish.kalra@amd.com>
 
-Hi,
+On Mon, Mar 18, 2024 at 07:02:45AM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> During crashkernel boot only pre-allocated crash memory is presented as
+> E820_TYPE_RAM. This can cause page table entries mapping unaccepted memory
+> table to be zapped during phys_pte_init(), phys_pmd_init(), phys_pud_init()
+> and phys_p4d_init() as SNP/TDX guest use E820_TYPE_ACPI to store the
+> unaccepted memory table and pass it between the kernels on
+> kexec/kdump.
+> 
+> E820_TYPE_ACPI covers not only ACPI data, but also EFI tables and might
+> be required by kernel to function properly.
+> 
+> The problem was discovered during debugging kdump for SNP guest. The
+> unaccepted memory table stored with E820_TYPE_ACPI and passed between
+> the kernels on kdump was getting zapped as the PMD entry mapping this
+> is above the E820_TYPE_RAM range for the reserved crashkernel memory.
+> 
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 
-PR with meeting minutes from yesterdays call is now ready for review:
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-	https://github.com/coconut-svsm/governance/pull/7
+I guess it would be better if I take this patch into my kexec patchset. I
+guess I just got lucky not to step onto the issue.
 
-Regards,
-
-	Joerg
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
