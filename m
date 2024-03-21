@@ -1,216 +1,57 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FED42057
-	for <linux-coco@lists.linux.dev>; Wed, 20 Mar 2024 17:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BB612B81
+	for <linux-coco@lists.linux.dev>; Thu, 21 Mar 2024 09:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710955730; cv=none; b=JBLSogp6zO+OAUFpbQWWepmNUolWMoUGXd4koExWcNIcsiKSj5lWYO4rFGzsMC1kzMwIHw2ANnZEAitst0JevoAuvMRSTqao8Dz69GUTfrT6kJgQuMnjvT6Ls9PwCSSp1IrWb6vZTYFBpi+SJ3Ug9/UPeNNtwBSrZNb6KHTGphI=
+	t=1711011841; cv=none; b=hV2y6ww5x4NReK/2svXDCvuC9B5vsjrHAOU1UdvooUItPauSiNeMHjZmYr/BQl4aH8ash3ChNGyxXlxdl77mawTzzQCL+wsfBk2cKxsx27/JOg7N5DiNBGgIfC1qGQRAL/ZrITbr1wXJShy/1N5f9KHHUvnZG7d35c/Si40GPTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710955730; c=relaxed/simple;
-	bh=hKG7tJgsPh9DORRVzqkKky8GGHViWeO7vjjgD7DkukQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aY2ufQb+iMI74dbzOTwNn5cy+dBAW1v/9qagAAQr6UFMf8gYFlJLRs46pQNco/DANvE6N6/xsjFq6pEy0SBWacEjtxEJfuafj9Ib29zW/lnM4MJFwE2vgOJ/bazftmMSHLCiY2jxKrZERGWjhzk1oiMUwXbffpXQHB1u52vjAsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XFwMMHf2; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1711011841; c=relaxed/simple;
+	bh=AJ3BI9q3sqKDu5mZLBaz+AdZIMACsA/POWCGQanq/RE=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ktr1F7gcgNR5y7x64FnWF5mfSzzZUthlhz7CI6+oTN6v10WKhvgZV1QjOM0UV7+UaONodjn5GVsXGG17MLx9E8o5MgLpw3g2x2FB6qPjmNVutNTT7od3Wyu3lp5NmMvW8/ZUiGFlAPJGptLRXelj9UqIGE2sevU1CRcpUGv02vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=nSPiLIax; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XFwMMHf2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710955727;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jTNbtMbxpop+bQq0JJOZBsIfXIIEPcHQLvpxIITRNNI=;
-	b=XFwMMHf2ocjbThPNtrmaIoxULWWYMJ/NovK4NiH86INK1WyAlOXFdpVNVpM/ugq5TwMbrC
-	1Tze2VMYp2dNoMTZ24C9pUPEHw1fUcXW7kfefs6Mh4Q18jybCjirOysQQEGHMRULorAksT
-	D/qJxP0r67M1sAqWJF9DHz8aCD7I6Mc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-MxvwwPshPbe8FA3eMYn5wQ-1; Wed, 20 Mar 2024 13:28:46 -0400
-X-MC-Unique: MxvwwPshPbe8FA3eMYn5wQ-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-41407d66b11so378805e9.1
-        for <linux-coco@lists.linux.dev>; Wed, 20 Mar 2024 10:28:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710955724; x=1711560524;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jTNbtMbxpop+bQq0JJOZBsIfXIIEPcHQLvpxIITRNNI=;
-        b=A9JodiNP2AmI4M7SBzln8COc2zzZ+FR3q3GBFXIhqMZtgKlOvYMsaf/hkskWvImE3b
-         QRfhRzFlWpHM6nrPCWu5ggKJkWbR/xUZEcgakUQvdJmU7f4XDcqmC3B9phqDF9YoyJgz
-         Gr5Q6CvoFeOknLvC9JhnOd6xxVi+HRMbJaaXa+OW9pvFG/P7U/YJITPwt2kxurxJLuV+
-         iPD+v5MR01Pxe+pFPXsBl+Wibv8wbvElnhLp26ktvlbTYHa+qc8J9MHaBmrn6NB40d4G
-         e+WkhCasCuZ9WDi5Qjf308yzOI2Htqt5yU68E4iZOo4TiMXCqQurfeJOSa5Re1cYb8dc
-         obxg==
-X-Forwarded-Encrypted: i=1; AJvYcCWKWjfkJ4LlqGpou0S62qyU49uOwbNRJT5h0ARuVga2vbXS9f+rMYe8EdsjwFKzsKvbL4xqtTk6PEO5G1qOXAs+6QZxpUN2v4dyDw==
-X-Gm-Message-State: AOJu0YwjvkIn2CDjwLis4vb00jp5cWTSml/n3OerrLcWTt2lldTYfnPm
-	Oj1gQZefHLBINLAtZ0dy2kwR1gHHpZKtkywMNRlpg8m9xK6WXp5IyhlGUxaYBujUD4mFwwiVwYf
-	6Yc60/56cbngtdFzOvR9QVK3/5Qj0T2Hh7yycLFCxqIlHDcHcVPNVA6a5WYaUsKLiheraxQBhXb
-	Imczc2C+YW0LdWw+gq76QbfKUy8Rk/4ecIPQ==
-X-Received: by 2002:adf:fd04:0:b0:33e:781d:88c3 with SMTP id e4-20020adffd04000000b0033e781d88c3mr1975576wrr.48.1710955724608;
-        Wed, 20 Mar 2024 10:28:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHUSonEpkqIs6UvTEipW/i/Sb8XB2/SyAe+307wQ/mxm28QibJaC/seZsljP+J8ad6yvrWbyDhh8OGlVlaKSgE=
-X-Received: by 2002:adf:fd04:0:b0:33e:781d:88c3 with SMTP id
- e4-20020adffd04000000b0033e781d88c3mr1975551wrr.48.1710955724132; Wed, 20 Mar
- 2024 10:28:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="nSPiLIax"
+Received: from 8bytes.org (p4ffe0c3c.dip0.t-ipconnect.de [79.254.12.60])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 9FB2D1E238E;
+	Thu, 21 Mar 2024 10:03:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1711011830;
+	bh=AJ3BI9q3sqKDu5mZLBaz+AdZIMACsA/POWCGQanq/RE=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=nSPiLIaxZ+LLoglHBDcJluvfG1FQtkd1qt4asVpNl09PXrYEHUAMVh/XfhDOWZKZG
+	 +kkzeuuGzoO/gHKoLLbFx74YSSKqhCR1B86wWdGj+O0W34BcXDlcJK2n8T5Ye2FYCE
+	 N3F4+QPZg/pkOYOKK5qgCWlAEOtiSN3Yb9xl7zEYLHWXu9neq3G6Nm8ngPUH8ygluY
+	 QKgwejwnYVqQYnPk3Fjgo3sOzEQzWhwfA1CeSx/BObf8/1kcBPZM6vI0nOB+6ydzaT
+	 T/h652XqvvDMtVPlOnaqLvSjy2i/ub5Sy/pPmWk17Drj9UVlPXDECL1ylZ2YyFzVH7
+	 oRK+C4SjIMWQQ==
+Date: Thu, 21 Mar 2024 10:03:49 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: Re: [svsm-devel] SVSM Development Call March 20th, 2024
+Message-ID: <Zfv39SFXe49LyQOs@8bytes.org>
+References: <ZfmPIXGDd-69c9xp@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231230172351.574091-1-michael.roth@amd.com> <20231230172351.574091-16-michael.roth@amd.com>
-In-Reply-To: <20231230172351.574091-16-michael.roth@amd.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 20 Mar 2024 18:28:32 +0100
-Message-ID: <CABgObfatM3QoT6WYj4MU60XY_T2xeekn_DcKh0_RhN5-B0Xs9A@mail.gmail.com>
-Subject: Re: [PATCH v11 15/35] KVM: SEV: Add KVM_SNP_INIT command
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
-	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com, 
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com, 
-	Brijesh Singh <brijesh.singh@amd.com>, Pavan Kumar Paluri <papaluri@amd.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZfmPIXGDd-69c9xp@8bytes.org>
 
-On Sat, Dec 30, 2023 at 6:26=E2=80=AFPM Michael Roth <michael.roth@amd.com>=
- wrote:
-> +        struct kvm_snp_init {
-> +                __u64 flags;
-> +        };
-> +
-> +The flags bitmap is defined as::
-> +
-> +   /* enable the restricted injection */
-> +   #define KVM_SEV_SNP_RESTRICTED_INJET   (1<<0)
-> +
-> +   /* enable the restricted injection timer */
-> +   #define KVM_SEV_SNP_RESTRICTED_TIMER_INJET   (1<<1)
+Hi,
 
-The flags are the same as the vmsa_features introduced by
-KVM_SEV_INIT2, which is great - SNP does not need any change in this
-department and this patch almost entirely goes away.
+PR with meeting minutes from yesterdays call is now ready for review:
 
->         if (sev_es_debug_swap_enabled)
->                 save->sev_features |=3D SVM_SEV_FEAT_DEBUG_SWAP;
->
-> +       /* Enable the SEV-SNP feature */
-> +       if (sev_snp_guest(svm->vcpu.kvm))
-> +               save->sev_features |=3D SVM_SEV_FEAT_SNP_ACTIVE;
+	https://github.com/coconut-svsm/governance/pull/7
 
-... on the other hand this begs the question whether
-SVM_SEV_FEAT_SNP_ACTIVE should be exposed in the
-KVM_X86_SEV_VMSA_FEATURES attribute. I think it shouldn't.
+Regards,
 
-This means that this patch becomes a two-liner change to
-sev_guest_init() that you can squash in patch 14 ("KVM: SEV: Add
-initial SEV-SNP support"):
-
-     sev->es_active =3D es_active;
-     sev->vmsa_features =3D data->vmsa_features;
-+    if (vm_type =3D=3D KVM_X86_SNP_VM)
-+        sev->vmsa_features |=3D SVM_SEV_FEAT_SNP_ACTIVE
-
-Also, since there is now sev->vmsa_features (that wasn't there at the
-time of your posting), I'd even drop sev->snp_active in favor of
-"sev->vmsa_features & SVM_SEV_FEAT_SNP_ACTIVE". It's only ever used in
-sev_snp_guest() so it's a useless duplication.
-
-Looking forward to see v12. :)  If you have any problems rebasing on
-top of https://lore.kernel.org/kvm/20240227232100.478238-1-pbonzini@redhat.=
-com/,
-please shout.
-
-Paolo
-
-
->         pr_debug("Virtual Machine Save Area (VMSA):\n");
->         print_hex_dump_debug("", DUMP_PREFIX_NONE, 16, 1, save, sizeof(*s=
-ave), false);
->
-> @@ -1883,6 +1914,12 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user=
- *argp)
->         }
->
->         switch (sev_cmd.id) {
-> +       case KVM_SEV_SNP_INIT:
-> +               if (!sev_snp_enabled) {
-> +                       r =3D -ENOTTY;
-> +                       goto out;
-> +               }
-> +               fallthrough;
->         case KVM_SEV_ES_INIT:
->                 if (!sev_es_enabled) {
->                         r =3D -ENOTTY;
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index a3e27c82866b..07a9eb5b6ce5 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -76,6 +76,9 @@ enum {
->  /* TPR and CR2 are always written before VMRUN */
->  #define VMCB_ALWAYS_DIRTY_MASK ((1U << VMCB_INTR) | (1U << VMCB_CR2))
->
-> +/* Supported init feature flags */
-> +#define SEV_SNP_SUPPORTED_FLAGS                0x0
-> +
->  struct kvm_sev_info {
->         bool active;            /* SEV enabled guest */
->         bool es_active;         /* SEV-ES enabled guest */
-> @@ -91,6 +94,7 @@ struct kvm_sev_info {
->         struct list_head mirror_entry; /* Use as a list entry of mirrors =
-*/
->         struct misc_cg *misc_cg; /* For misc cgroup accounting */
->         atomic_t migration_in_progress;
-> +       u64 snp_init_flags;
->  };
->
->  struct kvm_svm {
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index c3308536482b..73702e9b9d76 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1869,6 +1869,9 @@ enum sev_cmd_id {
->         /* Guest Migration Extension */
->         KVM_SEV_SEND_CANCEL,
->
-> +       /* SNP specific commands */
-> +       KVM_SEV_SNP_INIT,
-> +
->         KVM_SEV_NR_MAX,
->  };
->
-> @@ -1965,6 +1968,16 @@ struct kvm_sev_receive_update_data {
->         __u32 trans_len;
->  };
->
-> +/* enable the restricted injection */
-> +#define KVM_SEV_SNP_RESTRICTED_INJET   (1 << 0)
-> +
-> +/* enable the restricted injection timer */
-> +#define KVM_SEV_SNP_RESTRICTED_TIMER_INJET   (1 << 1)
-> +
-> +struct kvm_snp_init {
-> +       __u64 flags;
-> +};
-> +
->  #define KVM_DEV_ASSIGN_ENABLE_IOMMU    (1 << 0)
->  #define KVM_DEV_ASSIGN_PCI_2_3         (1 << 1)
->  #define KVM_DEV_ASSIGN_MASK_INTX       (1 << 2)
-> --
-> 2.25.1
->
-
+	Joerg
