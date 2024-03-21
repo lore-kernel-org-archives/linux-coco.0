@@ -1,97 +1,210 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E81385952
-	for <linux-coco@lists.linux.dev>; Thu, 21 Mar 2024 14:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F294A13540B
+	for <linux-coco@lists.linux.dev>; Thu, 21 Mar 2024 16:59:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711033143; cv=none; b=QIvY+WvOVeqdC9ZSE2AEq3Tk9aguIDSz1RUf4VLnIGgscCs+DxaPyo4HGRkRu2qb0Mh23oxcamo5aEkruMl+iUgWNiOCkXgHxu0WqFh96n+QdKP8WmZOX0BszbHxvFxxY4+mnVJ/fVrEQ1CAZdPZgONkZBXO9aBalJrNpElfDhs=
+	t=1711040383; cv=none; b=gkmWIOSE6NBuU6h11HPCvg4uUztIg2e29gvoe9xk1OY2jcRgtiTAHO/0e+Sdw3e8rqlqQlPp7Xhfs3BE+dMnSmPxy4YW/zogC7e14v07NuQQFCpLur00e1Vup3aK/1HueGwOldV8v4FwiPSLG3hW+c4gsTJNJQ2KXcjvyk6Mqw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711033143; c=relaxed/simple;
-	bh=7eBq8ekEO6vw2vSin9bneMav1VFWO6ZkBD957BgambQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BZGuFlqeMzhWJQQKs0dOvszUjmXjN3eSK8dpcy3sYx8tRVPetgAk49MPQXGEw7bN7LYB2/V82AsJqlmwliYrzkvKWLXrJVrEsTEFYrCa0siQ2P/MfEaqgpGr7/KhQ39oXKgPVZq/1WqSVldhFyyoytu9oFbs3ymHF/5in7NR9RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=diMiwbZP; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1711040383; c=relaxed/simple;
+	bh=oprXBsEMb82JAendFlEaUtFMpOly2KMb5BVycREDcK4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=isSTvMev/1KXCz8D2pyO/0OYlN1t9LRBI4tGwo3NmDduWof+70065HBH1dJzsj6XvLqzlQ81sVftlpXmwxAWvST0WWesFe8MC5xr56l+TyAdObDsRIzhihSlhGpmuwRmVlo6WZX8naLcUmG8uPUH44iUZXI37K4Xp4W8I3UQALI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--qinkun.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vu3Rrhfl; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--qinkun.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="diMiwbZP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711033140; x=1742569140;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7eBq8ekEO6vw2vSin9bneMav1VFWO6ZkBD957BgambQ=;
-  b=diMiwbZPNkNHXOLhSHX/rJBLgXAXEpwmZsJ6uIejc2U9bSLINJ9wtzyi
-   HqRnVhl7MNfdjpHsLNF1VUMrJqHIOb3Rum1Z1xvVZCmUO+MaYim3+5aCx
-   V5x3S7tDeKH3SLruhel8F2UTv5IDDoK+HEvdCl1y3lmy8hIWeOt/nEFgH
-   8JaJ8rnn2dPn593YNZjzll4MVatUmefohR1d9i1G/PuVNgHJzhSog5Jse
-   LMJdkXteFxPhM4R2Zjt6hQiLEZzt8RwZRLigQ0eSdPXt0K+Oqb2byYdVO
-   XBcrpDfmxq822Tj4pW/Yl6B1IDLJBfksk85QSFP8+2IMsAWgbC7mqy1oJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="5879066"
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="5879066"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 07:58:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="937065372"
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="937065372"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 21 Mar 2024 07:58:53 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 7C090791; Thu, 21 Mar 2024 16:58:52 +0200 (EET)
-Date: Thu, 21 Mar 2024 16:58:52 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com, 
-	rafael@kernel.org, peterz@infradead.org, adrian.hunter@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, elena.reshetova@intel.com, jun.nakajima@intel.com, 
-	rick.p.edgecombe@intel.com, thomas.lendacky@amd.com, seanjc@google.com, michael.roth@amd.com, 
-	kai.huang@intel.com, bhe@redhat.com, kexec@lists.infradead.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, bdas@redhat.com, 
-	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com, jroedel@suse.de
-Subject: Re: [PATCH v2 2/3] x86/mm: Do not zap page table entries mapping
- unaccepted memory table during kdump.
-Message-ID: <opa56dnwlyllrrnlfrhtbavnwmhxxatiuzifvx3bquv5qksidn@v2qxrvvw53jl>
-References: <20240227212452.3228893-1-kirill.shutemov@linux.intel.com>
- <cover.1710744412.git.ashish.kalra@amd.com>
- <8e11825bb3e4a7472bf0cb30c72ae013c25ac8c9.1710744412.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vu3Rrhfl"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dcbee93a3e1so1901085276.3
+        for <linux-coco@lists.linux.dev>; Thu, 21 Mar 2024 09:59:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1711040381; x=1711645181; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ejdsIgCs0lNb6RId6zCAz77FLolzFUTJO8XFtWSKmc8=;
+        b=vu3Rrhfl/Qxd9gk6I3yb3Zksq6A3V1tDUPf8jApRgIGitOppyw9OBa9TmakWTg/vMB
+         GcTv4r8TWbun8X2Vn6IiUDpM/KP6ondvOjQpcp4NH8jdTBWYM7pDgHfWTwkbelkuQ1y7
+         jexxaQiqxUD8w9lgQ3H4b3+kvX21N1urXBRac1w0bNsqVQWKk7K9EAYW4RaRHsdtY1gF
+         mt7HZG+loEKLcm9EvndhcXcVGxWGURCoUrGDlWoDT/nXvXIpS1l6Ouk97Veg6BaxZqmJ
+         MRy/7NYcElN4bBmYL+Ga3Ebcxf3FhqlaeHSTQK5msBbGVHaH7qvsZm5uyD96gC5Qjnw5
+         B2HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711040381; x=1711645181;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ejdsIgCs0lNb6RId6zCAz77FLolzFUTJO8XFtWSKmc8=;
+        b=Du626ibqJt9XQo3n3gSMqCnKzoRdqN/BxeGIOYKaYWtwEL38gjcniXXhxOXFMLtANN
+         wWdrCVF8qOCK0gAU309+fx+edAp0DfdSPInXXJ/TVJkYxJ7zWCbjf49SrySTtIMrLGkY
+         9UeF/OCu0dJO1s5UKSWyGJd86R5FUvjx8hzvu2ESQWgyJmiF309wFbdQ2c2J82Kddz9c
+         FDusHaDT8bXLIXY+SPcx61JylRSLUFHVR66F3Paq5ePc6Sz1O1W0dtzaF3JUsriJ+PaQ
+         lCoh4fimvGkocLRLyd8mF75j5m7M+cm891/K2K2G9wblsMdZJTeAuKkegH/DLZ0g3lJn
+         tyTQ==
+X-Gm-Message-State: AOJu0Yw5IZVVjFSo0Kl1Nux3pr5tNs6UXq/iWwVAoiKvqYhexsONRfbC
+	74YAtjPYyycQkkxmExkumqQKkscoKuMj9wj/acwRuHjyF9VMUBqPnwU5bY9w4s2I3HBYzlh9Vyq
+	hVg==
+X-Google-Smtp-Source: AGHT+IHKb2wvuObmot2f8B27NKxbHC4r8SBwwqsePGxDouTk5yUjAODv5egoOIJzYDlUP8+dQp3Sdivu8UA=
+X-Received: from qinkun.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:6ec])
+ (user=qinkun job=sendgmr) by 2002:a05:6902:11c4:b0:dc6:d890:1a97 with SMTP id
+ n4-20020a05690211c400b00dc6d8901a97mr1144253ybu.9.1711040381010; Thu, 21 Mar
+ 2024 09:59:41 -0700 (PDT)
+Date: Thu, 21 Mar 2024 16:59:04 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8e11825bb3e4a7472bf0cb30c72ae013c25ac8c9.1710744412.git.ashish.kalra@amd.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.396.g6e790dbe36-goog
+Message-ID: <94521f20aa2872c1b8f018b7db31eca4a2b8222d.1711039409.git.qinkun@google.com>
+Subject: [RFC PATCH] OvmfPkg/SecurityPkg: Add build option for coexistance of
+ vTPM and RTMR.
+From: qinkun Bao <qinkun@google.com>
+To: devel@edk2.groups.io
+Cc: linux-coco@lists.linux.dev, Erdem Aktas <erdemaktas@google.com>, 
+	Jiewen Yao <jiewen.yao@intel.com>, Ard Biesheuvel <ardb@kernel.org>, Peter Gonda <pgonda@google.com>, 
+	Dionna Glaze <dionnaglaze@google.com>, Qinkun Bao <qinkun@google.com>, 
+	James Bottomley <jejb@linux.ibm.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 18, 2024 at 07:02:45AM +0000, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> During crashkernel boot only pre-allocated crash memory is presented as
-> E820_TYPE_RAM. This can cause page table entries mapping unaccepted memory
-> table to be zapped during phys_pte_init(), phys_pmd_init(), phys_pud_init()
-> and phys_p4d_init() as SNP/TDX guest use E820_TYPE_ACPI to store the
-> unaccepted memory table and pass it between the kernels on
-> kexec/kdump.
-> 
-> E820_TYPE_ACPI covers not only ACPI data, but also EFI tables and might
-> be required by kernel to function properly.
-> 
-> The problem was discovered during debugging kdump for SNP guest. The
-> unaccepted memory table stored with E820_TYPE_ACPI and passed between
-> the kernels on kdump was getting zapped as the PMD entry mapping this
-> is above the E820_TYPE_RAM range for the reserved crashkernel memory.
-> 
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+From: Qinkun Bao <qinkun@google.com>
 
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+The UEFI v2.10 spec defines the protocol EFI_CC_MEASUREMENT_PROTOCOL
+to enable (for example) RTMR-based boot measurement for TDX VMs.
+With the current UEFI spec=E2=80=99s =E2=80=9Cshould not=E2=80=9D wording a=
+nd EDK2
+implementation, TPM measurement in TDVF is disabled when
+RTMR measurement is enabled.
 
-I guess it would be better if I take this patch into my kexec patchset. I
-guess I just got lucky not to step onto the issue.
+Mutual exclusion of the CC measurement protocol and TCG measurement
+protocol breaks backwards compatibility, which makes adoption of RTMRs
+challenging. A virtualized TPM device (vTPM) managed by the host VMM
+makes boot measurements visible to the VMM operator, but this is an
+oft-requested feature that users can choose to accept.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+The TPM has been a standard for over a decade and many existing
+applications rely on the TPM. Both inside and outside Google,
+we have many users that require vTPM, including features that are
+not easily available via RTMRs (e.g. sealing using keys that the
+guest OS cannot access).
+
+This patch adds a non-default build option to allow the coexistence
+of both the CC measurement and TCG protocols. Not included is a
+vendor-specific measured event in the CC event log that indicates
+whether a vTPM is attached or not.
+
+Cc: Erdem Aktas <erdemaktas@google.com>
+Cc: James Bottomley <jejb@linux.ibm.com>
+Cc: Jiewen Yao <jiewen.yao@intel.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Qinkun Bao <qinkun@google.com>
+---
+ OvmfPkg/OvmfPkgX64.dsc                               |  9 ++++++++-
+ .../DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.c    | 12 +++++++++++-
+ .../DxeTpmMeasurementLib/DxeTpmMeasurementLib.c      |  6 ++++++
+ 3 files changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/OvmfPkg/OvmfPkgX64.dsc b/OvmfPkg/OvmfPkgX64.dsc
+index 56c920168d..9bcee45047 100644
+--- a/OvmfPkg/OvmfPkgX64.dsc
++++ b/OvmfPkg/OvmfPkgX64.dsc
+@@ -32,7 +32,8 @@
+   DEFINE SECURE_BOOT_ENABLE      =3D FALSE
+   DEFINE SMM_REQUIRE             =3D FALSE
+   DEFINE SOURCE_DEBUG_ENABLE     =3D FALSE
+-  DEFINE CC_MEASUREMENT_ENABLE   =3D FALSE
++  DEFINE CC_MEASUREMENT_ENABLE   =3D TRUE
++  DEFINE CC_MEASUREMENT_AND_TCG2_COEXIST  =3D FASLE
+=20
+ !include OvmfPkg/Include/Dsc/OvmfTpmDefines.dsc.inc
+=20
+@@ -99,6 +100,11 @@
+   INTEL:*_*_X64_GENFW_FLAGS =3D --keepexceptiontable
+ !endif
+   RELEASE_*_*_GENFW_FLAGS =3D --zero
++!if $(CC_MEASUREMENT_ENABLE) =3D=3D TRUE && $(CC_MEASUREMENT_AND_TCG2_COEX=
+IST) =3D=3D TRUE
++  MSFT:*_*_*_CC_FLAGS =3D /D CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
++  INTEL:*_*_*_CC_FLAGS =3D /D CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
++  GCC:*_*_*_CC_FLAGS =3D -D CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
++!endif
+=20
+   #
+   # Disable deprecated APIs.
+@@ -1045,6 +1051,7 @@
+   }
+ !endif
+=20
++
+   #
+   # TPM support
+   #
+diff --git a/SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLi=
+b.c b/SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.c
+index 73719f3b96..4c9bc8ab4a 100644
+--- a/SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.c
++++ b/SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.c
+@@ -325,7 +325,12 @@ Tcg2MeasureGptTable (
+     }
+=20
+     DEBUG ((DEBUG_INFO, "DxeTpm2MeasureBootHandler - Cc MeasureGptTable - =
+%r\n", Status));
++#ifdef CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
++  }
++  if (Tcg2Protocol !=3D NULL) {
++#else
+   } else if (Tcg2Protocol !=3D NULL) {
++#endif
+     //
+     // If Tcg2Protocol is installed, then Measure GPT data with this proto=
+col.
+     //
+@@ -493,7 +498,12 @@ Tcg2MeasurePeImage (
+                            CcEvent
+                            );
+     DEBUG ((DEBUG_INFO, "DxeTpm2MeasureBootHandler - Cc MeasurePeImage - %=
+r\n", Status));
+-  } else if (Tcg2Protocol !=3D NULL) {
++#ifdef CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
++   }
++   if (Tcg2Protocol !=3D NULL) {
++#else
++   } else if (Tcg2Protocol !=3D NULL) {
++#endif
+     Status =3D Tcg2Protocol->HashLogExtendEvent (
+                              Tcg2Protocol,
+                              PE_COFF_IMAGE,
+diff --git a/SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.=
+c b/SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.c
+index 6f287b31fc..b1c6198b4b 100644
+--- a/SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.c
++++ b/SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.c
+@@ -261,7 +261,11 @@ TpmMeasureAndLogData (
+                HashData,
+                HashDataLen
+                );
++#ifdef CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
++  }
++#else
+   } else {
++#endif
+     //
+     // Try to measure using Tpm20 protocol
+     //
+@@ -287,7 +291,9 @@ TpmMeasureAndLogData (
+                  HashDataLen
+                  );
+     }
++#ifndef CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
+   }
++#endif
+=20
+   return Status;
+ }
+--=20
+2.44.0.291.gc1ea87d7ee-goog
+
