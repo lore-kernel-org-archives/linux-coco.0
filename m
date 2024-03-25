@@ -1,106 +1,127 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685441F5F3
-	for <linux-coco@lists.linux.dev>; Mon, 25 Mar 2024 15:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43991C06
+	for <linux-coco@lists.linux.dev>; Mon, 25 Mar 2024 15:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711380552; cv=none; b=deqcl+15rkWle7GyE/UNOPBEuLPX1BRRGxfOpEXy3x+SiAwIBlLPA/1D62/GELFUL2wdGqXMoTpTSiFsc9U3hHzwnYeEuP2H94oFvQXp7kawMrvAEp0Y3BaO4aA8YAsymhvo5j5qD9Unovpih7iassmDYDx1uKap2XFySrAWXrE=
+	t=1711381441; cv=none; b=aNFxFZuCVCz9trZnL5cu8TGD1jW9c/n1A8cJQuj+tKrXhl2dqpyqRsYQah2XzJ9cbM+cL7MIg22soldzewZQJtqyK0Y/juvWD2YgBatgtNyV+T7HzFgsHwoLGLv84A1KXHOXG0kTag36W0vO7JtgyPR117Zu8a/Jha9AJiubN9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711380552; c=relaxed/simple;
-	bh=im0r/VPFlCPZusE4oQsVY9J4lWIP4Ymkchn+ok81tWA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qCYOFyjZSox5I5RaYq8r7CNLude2K6Dv4hdnb3+Yg4I9WXu0IEkamZ/xBDj+DQHA0N9zq8guwyG0UvGeTgXKKf5nc3er7iM979VndyfVEP8kDn97HO0L6Ps2zONchCrdTieSRv7Wz/HSeLZfP7ceUYW84D/raJuHblu7f1nMsNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Oufwyqzb; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1711381441; c=relaxed/simple;
+	bh=kHE0zX1DU3TTa6UNYPRNZ7cQSTALakcksyGuk61DVw0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o5jdvy96Sav3aRNy8p1ujynGvDBh4TlME9s64q27sMFT10icNAUQXD9qWscfH/Lx4TZY5MJRn9sfHSzsnV0o8U7jxSzIFQFuIG6sLYrTwDbD0bhghv4BvoxI+AjK5f03+BhT/njHTh55mh3OSLJP4DTSPp3moCMsNrA+Y+6VEWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gjbATJsz; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Oufwyqzb"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-56bde8ea904so18282a12.0
-        for <linux-coco@lists.linux.dev>; Mon, 25 Mar 2024 08:29:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711380549; x=1711985349; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=im0r/VPFlCPZusE4oQsVY9J4lWIP4Ymkchn+ok81tWA=;
-        b=OufwyqzbZ/Y7cXyy5OPa6OCqlwmLGFsYwiXbMB0ZiGkQn4V4MhcoGFG4W7y+zb3wTU
-         5sbKEgM384oVVm1wS/QPkcA7GrbgTIF7c/c7tjwBly8KMUL4n1AVjn8+4q3IkeLCZKIC
-         xkuh6f+YuykgFL+5MLCKIv8sNz9R2lalf7TGdWvHPUyqBmutOwn5jUJ6//bOX46m4kJM
-         GQpY39DSE/SUIcPsNLm1x2f4PBt4E5WBJ/ke4AB2i9dX6LkMYTKARWdbA216EIMStAML
-         l+5vUlpp741+GFJyjD7Pyyd8ATVtSmqozEnJ0OjixO2VjI1wMqO/1eGfi7WPaPzGmkgd
-         ZqoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711380549; x=1711985349;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=im0r/VPFlCPZusE4oQsVY9J4lWIP4Ymkchn+ok81tWA=;
-        b=PNR9MYCL3Sf0P6NCRdFXqG8AYZje8C56AZ8YyIlOpy7Z70LZ/JQnwqrnD83x6hXfPh
-         +7V/QXAtw+lTNcgxbnHRXfs60201DS66IjRVMNttwkQjeH5tkzYu2jF0mc1EuBREJkxi
-         Rih22jYkxrKJVFg+s6fCQ0wp0u5SeL0mVYc1lj6O4/Dj5VwcfpKrrd6kY2RoKc6BWgWf
-         MtZSmboxQOsXrs5PxVKp05/yg7LDqcu/4Hd+EBAPzm8yH0/ZpFkYh7qFCXZHMQ56Dfce
-         qZTZh9F+4U63omJ5F71iierLPTbf41bbVPDFAijeGHgTaVLx7HH9j8aoxWZi4D4JAx94
-         m5vg==
-X-Forwarded-Encrypted: i=1; AJvYcCU67FKsJVyJ7Upg13fWg4NBP5lGAFkKI9GtQiEBEjRDP2NVVn4FHugIqNBo2qGqN85kyXQXmvkc7T9ADqLV6n65sEJ+tZQOqNijLQ==
-X-Gm-Message-State: AOJu0YxTsBuu6/yE+HB1kx5inNBVM9poIa0kRsbmLW46OnPHrXpPDykF
-	8ApNJ7lvSNGWDlpDPuLVYSjsrFzPuywQg/1LyjrAjxvnxkyOWCV5o8fRr+FqqY6DYy5ZCbS0I7S
-	Caryr5x7EtNmy3mnmnUmfE48Da1W6sFlyVk37
-X-Google-Smtp-Source: AGHT+IFpqflVgVTUXihee3xrpVsWhSlvEH1aIPr32YOZa4JnoRA/iVmWC9sloN6Yf0ZWfeod3zX7SsfL6RJ+Wf6Hars=
-X-Received: by 2002:aa7:c441:0:b0:56c:d96:8db2 with SMTP id
- n1-20020aa7c441000000b0056c0d968db2mr148005edr.6.1711380548383; Mon, 25 Mar
- 2024 08:29:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gjbATJsz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711381439; x=1742917439;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=kHE0zX1DU3TTa6UNYPRNZ7cQSTALakcksyGuk61DVw0=;
+  b=gjbATJszyTrKpOy683b2dzwyrrHkeEqQLM/qa63zRcM0GgJMcufk1lwJ
+   +5QVsAKJ2KY7ahUKIqaIIesJ6yDrpfFYZtDJSZYrAU9PMW39c04XVf4aM
+   bdobzUQxdR90ZEDKNbn7k3HlQcIjk697wrzXPgNZ/dpAKiuIKokc8sgFL
+   yacDtU3l4lQVnD+k6j9av3uW51W/1gn77ugZeR0c9tkUuxuR0IjOwK8IZ
+   Vq7XRloEpMJHDPQjO+HRHreKp5UVya5uQrLi2MW1ekZC6gaga6IQKSZPl
+   KX+TaRxPj56kQzVh7bqYzEvcGNrwXPr48B15dv1wu466fVuL7JpssVKMN
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="23877007"
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
+   d="scan'208";a="23877007"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 08:43:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
+   d="scan'208";a="15526038"
+Received: from dvidmant-mobl.amr.corp.intel.com (HELO [10.209.80.233]) ([10.209.80.233])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 08:43:58 -0700
+Message-ID: <f71223cb-2de9-4872-8a68-09eb43215789@linux.intel.com>
+Date: Mon, 25 Mar 2024 08:43:57 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <94521f20aa2872c1b8f018b7db31eca4a2b8222d.1711039409.git.qinkun@google.com>
- <CAAH4kHbAi=Jn7Lw82idGGmQYnAhJnhoS9u8wBMOZsp7iLiOWxw@mail.gmail.com>
- <PH0PR11MB587959168F72B20E0AC836438C312@PH0PR11MB5879.namprd11.prod.outlook.com>
- <u76teout4bwpg5yoklah6xfkrpcn4lw5nosw5lmph7sfjipqnz@gagzyh3xrkie>
- <CAAH4kHbeGborxwDOzxeMbTjU4Xo79v-OVSHXYWQiJxg-yWQfWQ@mail.gmail.com> <ZgF3ACjFj8LtUWgv@himmelriiki>
-In-Reply-To: <ZgF3ACjFj8LtUWgv@himmelriiki>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Mon, 25 Mar 2024 08:28:54 -0700
-Message-ID: <CAAH4kHbqpaCgZJpF55x2NGWL22rz1ucRewYmR=K2chw2kP6sKA@mail.gmail.com>
-Subject: Re: [RFC PATCH] OvmfPkg/SecurityPkg: Add build option for coexistance
- of vTPM and RTMR.
-To: Mikko Ylinen <mikko.ylinen@linux.intel.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Yao, Jiewen" <jiewen.yao@intel.com>, 
-	qinkun Bao <qinkun@google.com>, "devel@edk2.groups.io" <devel@edk2.groups.io>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Aktas, Erdem" <erdemaktas@google.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Peter Gonda <pgonda@google.com>, 
-	James Bottomley <jejb@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Michael Roth <michael.roth@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv9 08/17] x86/tdx: Account shared memory
+Content-Language: en-US
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>,
+ Jun Nakajima <jun.nakajima@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
+ <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
+ "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
+ kexec@lists.infradead.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
+ <20240325103911.2651793-9-kirill.shutemov@linux.intel.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20240325103911.2651793-9-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 25, 2024 at 6:07=E2=80=AFAM Mikko Ylinen
-<mikko.ylinen@linux.intel.com> wrote:
+
+On 3/25/24 3:39 AM, Kirill A. Shutemov wrote:
+> The kernel will convert all shared memory back to private during kexec.
+> The direct mapping page tables will provide information on which memory
+> is shared.
 >
-> > >
-> > > Looking at systemd-boot I see it will likewise not measure to both RT=
-MR
-> > > and vTPM, but with reversed priority (use vTPM not RTMR in case both =
-are
-> > > present).
-> > >
-> >
-> > Interesting. Thanks for this report. We'll push for the changed
-> > semantics here if the spec is indeed changed, and request partner
-> > distros in the CCC to include the updated systemd-boot.
+> It is extremely important to convert all shared memory. If a page is
+> missed, it will cause the second kernel to crash when it accesses it.
 >
-> FWIW, my RTMRs patch to systemd was merged quite recently so it's not
-> included in any systemd release yet. (It was mainly implemented for the
-> UKI case that allows TDVF to boot a UKI image directly and then have the
-> image sections measured separately.)
+> Keep track of the number of shared pages. This will allow for
+> cross-checking against the shared information in the direct mapping and
+> reporting if the shared bit is lost.
 >
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
 
-Thank you, I've proposed a change in
-https://github.com/systemd/systemd/pull/31939
+Looks good to me.
 
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
---=20
--Dionna Glaze, PhD (she/her)
+>  arch/x86/coco/tdx/tdx.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 26fa47db5782..979891e97d83 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -38,6 +38,8 @@
+>  
+>  #define TDREPORT_SUBTYPE_0	0
+>  
+> +static atomic_long_t nr_shared;
+> +
+>  /* Called from __tdx_hypercall() for unrecoverable failure */
+>  noinstr void __noreturn __tdx_hypercall_failed(void)
+>  {
+> @@ -821,6 +823,11 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+>  	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+>  		return -EIO;
+>  
+> +	if (enc)
+> +		atomic_long_sub(numpages, &nr_shared);
+> +	else
+> +		atomic_long_add(numpages, &nr_shared);
+> +
+>  	return 0;
+>  }
+>  
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
