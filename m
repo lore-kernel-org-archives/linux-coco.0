@@ -1,47 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C45E149C7F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2AD14A4CA
 	for <linux-coco@lists.linux.dev>; Mon, 25 Mar 2024 10:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711363221; cv=none; b=ibzf6FPj2v7BqXWO41kQ04sj1GAaVG1XKxHw1TEDJDfVnvN2yE17GKBnOaIpGKZOOrj+BSKvtdnI6wtfUp5trRP01AX2wT/XuWQMVlPKyFzgekN9aT6VpB/KtKzlnRs6es0waflEPGrPmf3vRea2UATnLv51fPj/Rm0YLIoNKCg=
+	t=1711363223; cv=none; b=ZcAvSuoY90icKPHHlk1Rzs8Bd0fqHNVVXIQ9b01D2+oIGprLkW6eV76sIoEc8TM4EgV4u2EsNzGljqTaGUZPZR4sm2pFI3L1UvlVNWU7NqnKpv0/Lx4jTwUUbqqEVUC4JBgupBkTnT/WqCd08hQJViRQ0DYpGzaRTJ8NMzTnwQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711363221; c=relaxed/simple;
-	bh=W80pqKoVc1vqxX/XGuHFDF0b+nJhSWWU10+X3joqYlo=;
+	s=arc-20240116; t=1711363223; c=relaxed/simple;
+	bh=afEHAj6Ona/U1R3Hzh9Y6aqHqs5rMx6ECTCC4WyRrfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9DbVOqkgK/u+IoI5gGpYdeEAWIFsBl45otvEOQiPHzIZyvJJCLVZZU1/RhJ4+1lPXmjBUEsGwafR1Cx+6OcFW1/TJogYAk1HcIXAqQhtJl3OiFr74gC6zUAh68clLcD7SxpVXOoW85iBCQA8NiI6Nszhetn6hK+uHXbe07AiZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kVgaYoP/; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=bF6YmHW5Rt4Zs5O/bnmVywrViP6jzHVL3GpNAvXx1hE+TpEmlznk1hYS3lBaKxERdZw1z+LONRtBD1f6LXtkx1/ATsQwFLF/MBfJ346Q/F8PTQeKVZa8TRj/fQn5uW3q5TyKo/3XSclGFiOsfpVHPd4IBR2SEZFac/OxGHNtID0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VK4CJNTw; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kVgaYoP/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VK4CJNTw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711363219; x=1742899219;
+  t=1711363220; x=1742899220;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=W80pqKoVc1vqxX/XGuHFDF0b+nJhSWWU10+X3joqYlo=;
-  b=kVgaYoP/RQVM4QalQ4ikU8U8zDyDgxRg2asnGOByJN3fMMa8UrxWPx+u
-   b4UhTaaDrs3nl2dfTk01gsrlWV57CLMAfuQ6YdY3j7NNWup3PV9G0b8Pf
-   BEO4kbhnONI0o27V9olLo6MbtBdMyazLg96dY5VAYRKDqefw9A3Rprrn2
-   Vly4pLYLzDo90PZsfyqjPDtLAnPoU/n/X/I5SWPSMB4yn/tqTlZjlBD4N
-   RpjjacjgNnl6loqUMtQEIXghNqr1RA4fYzpDCBlndIUvM89fGZpBKjFq/
-   yUoHRBW9Y1NSuCDQxPe2J3OSW7oLB3J5Dt3/3eYA4QsOLI7WblD6kZ5aG
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6561378"
+  bh=afEHAj6Ona/U1R3Hzh9Y6aqHqs5rMx6ECTCC4WyRrfQ=;
+  b=VK4CJNTwL6dv0K7mdgZDpsU5gkdQyAK7pOkIvHG+stjQg+VLlXl8/Tj1
+   PkfFK5my+pbPpyszfxEe9LOifxR2fXZHQbqZiAuVoBgumc4iNtgznQB/d
+   bH2puFuQR8W5yUWSs61KpDrJOqIvE5mSp9ufFpQztOI209sa2nKD01yKK
+   zSh2XPMUxiVJJa6Zornqj+m0mLFW2V149nNQNEQkcqNsC/rv9SavZVSw7
+   Pi6987YdxrQoaaFUtf5ZY/WBnBT58C2EUW6v6l0FwAcfPiELKe7RISyNS
+   0N4NEN5AZ8bOKD6Cw32RWdOdguCpM9O0MF0RlA3TFU5LQ/CxEEk78v7Lt
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6561398"
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="6561378"
+   d="scan'208";a="6561398"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 03:40:17 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="937070153"
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="937070157"
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="937070153"
+   d="scan'208";a="937070157"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 25 Mar 2024 03:40:11 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 25 Mar 2024 03:40:12 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 3F720815; Mon, 25 Mar 2024 12:40:05 +0200 (EET)
+	id A40251026; Mon, 25 Mar 2024 12:40:05 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -64,9 +64,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv9 08/17] x86/tdx: Account shared memory
-Date: Mon, 25 Mar 2024 12:39:02 +0200
-Message-ID: <20240325103911.2651793-9-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv9 14/17] x86/smp: Add smp_ops.stop_this_cpu() callback
+Date: Mon, 25 Mar 2024 12:39:08 +0200
+Message-ID: <20240325103911.2651793-15-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
 References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
@@ -78,47 +78,68 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The kernel will convert all shared memory back to private during kexec.
-The direct mapping page tables will provide information on which memory
-is shared.
+If the helper is defined, it is called instead of halt() to stop the CPU
+at the end of stop_this_cpu() and on crash CPU shutdown.
 
-It is extremely important to convert all shared memory. If a page is
-missed, it will cause the second kernel to crash when it accesses it.
-
-Keep track of the number of shared pages. This will allow for
-cross-checking against the shared information in the direct mapping and
-reporting if the shared bit is lost.
+ACPI MADT will use it to hand over the CPU to BIOS in order to be able
+to wake it up again after kexec.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/x86/coco/tdx/tdx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/include/asm/smp.h | 1 +
+ arch/x86/kernel/process.c  | 7 +++++++
+ arch/x86/kernel/reboot.c   | 6 ++++++
+ 3 files changed, 14 insertions(+)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 26fa47db5782..979891e97d83 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -38,6 +38,8 @@
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index a35936b512fe..ca073f40698f 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -35,6 +35,7 @@ struct smp_ops {
+ 	int (*cpu_disable)(void);
+ 	void (*cpu_die)(unsigned int cpu);
+ 	void (*play_dead)(void);
++	void (*stop_this_cpu)(void);
  
- #define TDREPORT_SUBTYPE_0	0
+ 	void (*send_call_func_ipi)(const struct cpumask *mask);
+ 	void (*send_call_func_single_ipi)(int cpu);
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index b8441147eb5e..f63f8fd00a91 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -835,6 +835,13 @@ void __noreturn stop_this_cpu(void *dummy)
+ 	 */
+ 	cpumask_clear_cpu(cpu, &cpus_stop_mask);
  
-+static atomic_long_t nr_shared;
++#ifdef CONFIG_SMP
++	if (smp_ops.stop_this_cpu) {
++		smp_ops.stop_this_cpu();
++		unreachable();
++	}
++#endif
 +
- /* Called from __tdx_hypercall() for unrecoverable failure */
- noinstr void __noreturn __tdx_hypercall_failed(void)
- {
-@@ -821,6 +823,11 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
- 	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
- 		return -EIO;
+ 	for (;;) {
+ 		/*
+ 		 * Use native_halt() so that memory contents don't change
+diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
+index 1ec478f40963..293ded05a4b0 100644
+--- a/arch/x86/kernel/reboot.c
++++ b/arch/x86/kernel/reboot.c
+@@ -880,6 +880,12 @@ static int crash_nmi_callback(unsigned int val, struct pt_regs *regs)
+ 	cpu_emergency_disable_virtualization();
  
-+	if (enc)
-+		atomic_long_sub(numpages, &nr_shared);
-+	else
-+		atomic_long_add(numpages, &nr_shared);
+ 	atomic_dec(&waiting_for_crash_ipi);
 +
- 	return 0;
- }
- 
++	if (smp_ops.stop_this_cpu) {
++		smp_ops.stop_this_cpu();
++		unreachable();
++	}
++
+ 	/* Assume hlt works */
+ 	halt();
+ 	for (;;)
 -- 
 2.43.0
 
