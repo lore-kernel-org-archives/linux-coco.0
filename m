@@ -1,47 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DD6149DE2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B4114A4CE
 	for <linux-coco@lists.linux.dev>; Mon, 25 Mar 2024 10:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711363225; cv=none; b=bhwJuOaTM3VDHqRavgg1xG6OcTFUc+y+Uy0dD0/1TyrqGe/jM0bd8w3XUdfsewFB/UvRzUhKRawT0861XTKsY7p0ApWcWtTDNHJUimzztKU75mhvU7I9eJ2jXQ7cOHdwaEFN5LPK0FCFboIPljKM+9OfsbWVDotXBeYlvoQ7W+U=
+	t=1711363225; cv=none; b=f+AS1Dk3B8VzZ7JK61CFZjsMk5e1xjaQjGzWdrs8GXeIwsC7IzKBL3CtPkJJW5f7yOf1QUpkByvVlr7Bsh/+cEaOZvz9YvQ4lrjgbp4OC3Zr3usf9ZxurzcgwzIlVy2wsI4BmbwLlC9jvzS6RfsRHskcDcJErkHEEqufp9iCWIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1711363225; c=relaxed/simple;
-	bh=ACL3RNhnKJDcGNWbnTjXRL1Ph76rTdi3HzpsJi8OSZs=;
+	bh=yAqWzbGmFNX9PCf901KN8YCyCCxd1h65J2N/iDwm1h8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ptsoMRkvSTYZnIjzHO7JMhYdwFEU/NMMiy6xSK6WmbQnc+riJ7giVJIXa6bLzF0C5/dhugOR15dJhny4GmMiSeOptIXJ6FJKq0FHVhodzMNh28CO6AqxzWPqfJf9VUspz6aBSaYzhL5GbFEu72kU0mgAz25KvP86U0kaJHv8XLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IGy+WQEG; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=iLI/MZfDNhmxof8R2tVkBTzFPm3eD9lVFqjxKmcfhsMOrL8wpgzEpYQoUnvKHra1kAwDmoT8MndrqqjaKMRUiY5/XBwyGrOxOvO+iy5vCP+OFjoKts1DvRwBl3SbYn/76zOGQOtKaiSJrVIRXrObQ/Yg5SHGqFk6u0hgR32icDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NKIHjEnI; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IGy+WQEG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NKIHjEnI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711363223; x=1742899223;
+  t=1711363224; x=1742899224;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ACL3RNhnKJDcGNWbnTjXRL1Ph76rTdi3HzpsJi8OSZs=;
-  b=IGy+WQEGxa9Blutpe/sQXxJSaffa7jQc0Exq/m2P6FKadC52vE8eZv7b
-   xllN8epKPoatx6IcBwNSSoAQqUKrEcwZM53nrwA/Mp8+324WXBqNVnB5/
-   Bu8BmJjfq9myXhKUYmA1DrDGcke8SwV0pcpKCj5SC2V107PNh++uUpmtg
-   FTVrqMjNDzWKUUzoRqgV3/xpA/ALdKx0MqT21ldtU33+Ydbn2MWHjNLs8
-   6iLmq7pVkngMwsybxwimvlarPAHr9B8F+dGENogL0jlmY302H4+FUjgbU
-   xjXt2ROs7BPFFPOBGxsUDOGnKdtvrqxOQVm7EmGOJ5p3KXTCZv0FDwwYt
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6561449"
+  bh=yAqWzbGmFNX9PCf901KN8YCyCCxd1h65J2N/iDwm1h8=;
+  b=NKIHjEnIr3zDkpH/TpqhepkoZEyRdN/fU8zU7qv/vah7kPeV7LOnDGjP
+   /l1fIx462J9CIf86bV5MhSBbxH5T6XyKQLtps8I8B6eqzWofao+lJ4Z2q
+   Xr5OFE70gTeJQQrZNDO90I8Y29ZhBFJVEVvOyXnhdevIxim2pPlShcRht
+   0vPHTcda8TAjiaVNqwILJhPyt5HInAmxgIjB9iuGgn5TMzbeMliv2ybl4
+   qZzxRkjtAhpj5Gi01h9N56F4xn/a7HAjZiWkeGbfLNWSgAG8BXm0DWsxH
+   A/h0sB4bf7OkldRO7UveFpXcbfw4BUcfSAbe0Wf6lRpqdmgHI+VT88E6c
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6561440"
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="6561449"
+   d="scan'208";a="6561440"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 03:40:17 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="937070169"
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="937070165"
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="937070169"
+   d="scan'208";a="937070165"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga001.fm.intel.com with ESMTP; 25 Mar 2024 03:40:11 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 32B706AF; Mon, 25 Mar 2024 12:40:05 +0200 (EET)
+	id 4C97C233; Mon, 25 Mar 2024 12:40:05 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -64,10 +64,10 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@intel.com>
-Subject: [PATCHv9 07/17] x86/mm: Return correct level from lookup_address() if pte is none
-Date: Mon, 25 Mar 2024 12:39:01 +0200
-Message-ID: <20240325103911.2651793-8-kirill.shutemov@linux.intel.com>
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: [PATCHv9 09/17] x86/mm: Adding callbacks to prepare encrypted memory for kexec
+Date: Mon, 25 Mar 2024 12:39:03 +0200
+Message-ID: <20240325103911.2651793-10-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
 References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
@@ -79,109 +79,123 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently, lookup_address() returns two things:
-  1. A "pte_t" (which might be a p[g4um]d_t)
-  2. The 'level' of the page tables where the "pte_t" was found
-     (returned via a pointer)
+AMD SEV and Intel TDX guests allocate shared buffers for performing I/O.
+This is done by allocating pages normally from the buddy allocator and
+then converting them to shared using set_memory_decrypted().
 
-If no pte_t is found, 'level' is essentially garbage.
+On kexec, the second kernel is unaware of which memory has been
+converted in this manner. It only sees E820_TYPE_RAM. Accessing shared
+memory as private is fatal.
 
-Always fill out the level.  For NULL "pte_t"s, fill in the level where
-the p*d_none() entry was found mirroring the "found" behavior.
+Therefore, the memory state must be reset to its original state before
+starting the new kernel with kexec.
 
-Always filling out the level allows using lookup_address() to precisely
-skip over holes when walking kernel page tables.
+The process of converting shared memory back to private occurs in two
+steps:
 
-Add one more entry into enum pg_level to indicate the size of the VA
-covered by one PGD entry in 5-level paging mode.
+- enc_kexec_stop_conversion() stops new conversions.
 
-Update comments for lookup_address() and lookup_address_in_pgd() to
-reflect changes in the interface.
+- enc_kexec_unshare_mem() unshares all existing shared memory, reverting
+  it back to private.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Baoquan He <bhe@redhat.com>
-Reviewed-by: Dave Hansen <dave.hansen@intel.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>x
 ---
- arch/x86/include/asm/pgtable_types.h |  1 +
- arch/x86/mm/pat/set_memory.c         | 16 ++++++++--------
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/x86_init.h |  2 ++
+ arch/x86/kernel/crash.c         |  6 ++++++
+ arch/x86/kernel/reboot.c        | 12 ++++++++++++
+ arch/x86/kernel/x86_init.c      |  4 ++++
+ 4 files changed, 24 insertions(+)
 
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index 0b748ee16b3d..3f648ffdfbe5 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -548,6 +548,7 @@ enum pg_level {
- 	PG_LEVEL_2M,
- 	PG_LEVEL_1G,
- 	PG_LEVEL_512G,
-+	PG_LEVEL_256T,
- 	PG_LEVEL_NUM
+diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
+index 4770af4d6015..f7c7d692407f 100644
+--- a/arch/x86/include/asm/x86_init.h
++++ b/arch/x86/include/asm/x86_init.h
+@@ -154,6 +154,8 @@ struct x86_guest {
+ 	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
+ 	bool (*enc_tlb_flush_required)(bool enc);
+ 	bool (*enc_cache_flush_required)(void);
++	void (*enc_kexec_stop_conversion)(bool crash);
++	void (*enc_kexec_unshare_mem)(void);
  };
  
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index e5b454036bf3..6c49f69c0368 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -657,7 +657,8 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
+ /**
+diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+index e74d0c4286c1..7a1560d7e62d 100644
+--- a/arch/x86/kernel/crash.c
++++ b/arch/x86/kernel/crash.c
+@@ -128,6 +128,12 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
+ #ifdef CONFIG_HPET_TIMER
+ 	hpet_disable();
+ #endif
++
++	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
++		x86_platform.guest.enc_kexec_stop_conversion(true);
++		x86_platform.guest.enc_kexec_unshare_mem();
++	}
++
+ 	crash_save_cpu(regs, safe_smp_processor_id());
+ }
  
- /*
-  * Lookup the page table entry for a virtual address in a specific pgd.
-- * Return a pointer to the entry and the level of the mapping.
-+ * Return a pointer to the entry (or NULL if the entry does not exist) and
-+ * the level of the entry.
-  */
- pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
- 			     unsigned int *level)
-@@ -666,32 +667,32 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
- 	pud_t *pud;
- 	pmd_t *pmd;
+diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
+index f3130f762784..1ec478f40963 100644
+--- a/arch/x86/kernel/reboot.c
++++ b/arch/x86/kernel/reboot.c
+@@ -12,6 +12,7 @@
+ #include <linux/delay.h>
+ #include <linux/objtool.h>
+ #include <linux/pgtable.h>
++#include <linux/kexec.h>
+ #include <acpi/reboot.h>
+ #include <asm/io.h>
+ #include <asm/apic.h>
+@@ -716,6 +717,14 @@ static void native_machine_emergency_restart(void)
  
--	*level = PG_LEVEL_NONE;
-+	*level = PG_LEVEL_256T;
- 
- 	if (pgd_none(*pgd))
- 		return NULL;
- 
-+	*level = PG_LEVEL_512G;
- 	p4d = p4d_offset(pgd, address);
- 	if (p4d_none(*p4d))
- 		return NULL;
- 
--	*level = PG_LEVEL_512G;
- 	if (p4d_leaf(*p4d) || !p4d_present(*p4d))
- 		return (pte_t *)p4d;
- 
-+	*level = PG_LEVEL_1G;
- 	pud = pud_offset(p4d, address);
- 	if (pud_none(*pud))
- 		return NULL;
- 
--	*level = PG_LEVEL_1G;
- 	if (pud_leaf(*pud) || !pud_present(*pud))
- 		return (pte_t *)pud;
- 
-+	*level = PG_LEVEL_2M;
- 	pmd = pmd_offset(pud, address);
- 	if (pmd_none(*pmd))
- 		return NULL;
- 
--	*level = PG_LEVEL_2M;
- 	if (pmd_leaf(*pmd) || !pmd_present(*pmd))
- 		return (pte_t *)pmd;
- 
-@@ -704,9 +705,8 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
-  * Lookup the page table entry for a virtual address. Return a pointer
-  * to the entry and the level of the mapping.
-  *
-- * Note: We return pud and pmd either when the entry is marked large
-- * or when the present bit is not set. Otherwise we would return a
-- * pointer to a nonexisting mapping.
-+ * Note: the function returns p4d, pud or pmd either when the entry is marked
-+ * large or when the present bit is not set. Otherwise it returns NULL.
-  */
- pte_t *lookup_address(unsigned long address, unsigned int *level)
+ void native_machine_shutdown(void)
  {
++	/*
++	 * Call enc_kexec_stop_conversion() while all CPUs are still active and
++	 * interrupts are enabled. This will allow all in-flight memory
++	 * conversions to finish cleanly.
++	 */
++	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) && kexec_in_progress)
++		x86_platform.guest.enc_kexec_stop_conversion(false);
++
+ 	/* Stop the cpus and apics */
+ #ifdef CONFIG_X86_IO_APIC
+ 	/*
+@@ -752,6 +761,9 @@ void native_machine_shutdown(void)
+ #ifdef CONFIG_X86_64
+ 	x86_platform.iommu_shutdown();
+ #endif
++
++	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) && kexec_in_progress)
++		x86_platform.guest.enc_kexec_unshare_mem();
+ }
+ 
+ static void __machine_emergency_restart(int emergency)
+diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
+index 69413ca37bfe..ab97d9b57636 100644
+--- a/arch/x86/kernel/x86_init.c
++++ b/arch/x86/kernel/x86_init.c
+@@ -136,6 +136,8 @@ static int enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool
+ static int enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
+ static bool enc_tlb_flush_required_noop(bool enc) { return false; }
+ static bool enc_cache_flush_required_noop(void) { return false; }
++static void enc_kexec_stop_conversion_noop(bool crash) {}
++static void enc_kexec_unshare_mem_noop(void) {}
+ static bool is_private_mmio_noop(u64 addr) {return false; }
+ 
+ struct x86_platform_ops x86_platform __ro_after_init = {
+@@ -159,6 +161,8 @@ struct x86_platform_ops x86_platform __ro_after_init = {
+ 		.enc_status_change_finish  = enc_status_change_finish_noop,
+ 		.enc_tlb_flush_required	   = enc_tlb_flush_required_noop,
+ 		.enc_cache_flush_required  = enc_cache_flush_required_noop,
++		.enc_kexec_stop_conversion = enc_kexec_stop_conversion_noop,
++		.enc_kexec_unshare_mem     = enc_kexec_unshare_mem_noop,
+ 	},
+ };
+ 
 -- 
 2.43.0
 
