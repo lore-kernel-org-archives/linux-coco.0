@@ -1,185 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813C455C13
-	for <linux-coco@lists.linux.dev>; Tue, 26 Mar 2024 10:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711449153; cv=fail; b=XLWwNkJW57LGjnxBeajurfMam/+Fy9BOfIRQoIkeG9HgQtsksYm+fuMbUObSrrGU4WDACzM+bHK0ygAQQqR+tfxC1TOiGtPRfLK1FT3+u9l0c3OA5xIlvCHTJM4w8124Hgb4tnFWTKt3kbULiksmdhLwjyDq6/4YIX8808p/niA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711449153; c=relaxed/simple;
-	bh=F4BzJNCl6lDbTIiUUgQUCNHR8KK19OFL7QXBPRFxk5o=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Y5pJPRocvmMRFjckdWJzY3hP9h1R0Zx/TBLJnAhsCCNzSXdtJKZ5Y7QdMZvhsB7dRA3/qBwRRDcJRrFys/Z1wE76+RbQeNLZ5dFDwoI/VFABH2U4zIzyvh6ZTTfINbzil2D96b0LCyTJ/MekAxWWRPbE5oBcZz24e8LN2gWeqk0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eDTX30pe; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64EADDBC
+	for <linux-coco@lists.linux.dev>; Tue, 26 Mar 2024 11:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711452125; cv=none; b=GiPfjwU5E018Eu0CilLyI1Vlp6dzJA6hZiwRWVpAFsyMbmVJ5O+xTi71A3WYx48Amz+UA0+U0zAX0zv3/AeH3eWEpSdkSTFrgHXfJbQgDsRMuwpg6mC6O/OS59kpjcwFugcJDDc8C9ZyXGekczWDCqfJwsy49wKJ2R01wPTq7co=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711452125; c=relaxed/simple;
+	bh=Ga+xwbpBO/hlGb01zxGPxIvFBmt8yPbMcDjpoO97q3M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RFflxrW0uoUdlfxm2Y6Fone1zkKEuKHJNniYtNxMIzbcOyXMAgk3oBZcgExsKK2uU6RewHDvXfvoX8UVLllYsjlL+fg//6XWFQTLZKkc5IOIUmlTYoW9uYLD4bx1XheS1LjmILieLazuJ0abCOdTdZfMyOliyudQ/caVF8a7hZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=c3YBRnf2 reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eDTX30pe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711449152; x=1742985152;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=F4BzJNCl6lDbTIiUUgQUCNHR8KK19OFL7QXBPRFxk5o=;
-  b=eDTX30peT3mvpUG4/1myQeA+afTMVLR/blwmj6XSCPmpzBTEMGeV+0oi
-   8pPr6RW7y9EoL47idrAWGAezpC01eq1SQHZ/2hG5FfbSYtS35efO50jn2
-   cDuecWSZiufrOkWPpxFV03KmNOEPIxPFtQWUO3IKhBMnbxPp+B1tEVBpf
-   DQkNmS9Ayi8ra40kRVPLz9zDqTvsXNkuBB94ygrbrM1urdft941RWQlpU
-   oVGIhDozM9pY2Knnz5u4dUkBqCBpGYeZ8PdwNuUhFr6GKY7u7bC5LkoJh
-   ElTcXnhtEegpw6Ww9g6ZsxA0DbaGXoCqnXawmxAn2ii0wB2fgffPeUt5U
-   w==;
-X-CSE-ConnectionGUID: gA0okgJHQiiysYkOg0M/kg==
-X-CSE-MsgGUID: WiuX7WSxSfiHmphdd3VDqA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6703778"
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="6703778"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 03:32:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="20605899"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 26 Mar 2024 03:32:14 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 26 Mar 2024 03:32:13 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 26 Mar 2024 03:32:12 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 26 Mar 2024 03:32:12 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.168)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 26 Mar 2024 03:32:12 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AX2dqyBX5nIrd3UgkGNM3aT3mWiamktNRGW6dLe9ztNJpYgh3qI0Obee0a82roE/FGo9oUMvHQlIOmQXASkQwKWD/av+4xrfKdAMdkd+snlN5tDRREJVNbqg5ShmqmrrdTQbDEQp5vqksKmMrr+5P1anc8U7QsJuVMDBtHpVabFNCVVJA3MO5toTUzEOFOI0BtBQq9d8Y8fXdrhDZf1kjtj6bpWmrXocEusjXD+iOnls+h0lnON7llQaw2YTVqEHmNz75+T2oe/RkeMdMm1sj0dYkr7v0Rv5wJhAZj5r8xGxjGYSv/bG49XrjuYfK+gHojr3+higgCo71eS4Ey+c3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F4BzJNCl6lDbTIiUUgQUCNHR8KK19OFL7QXBPRFxk5o=;
- b=bYZ4UvBWQg15NGTkbY4KacnaEycDxPAAbpPzn39LggEDg8rreUwGRu9ODNPhjqsaWUnbylEW3Qp8KnNFK4qzNhnPsTboL7P6FB8fRKFz92mPue6PTODLVaGD1J3IivnXtkE/JtKSRCp2Y/6Ks6V+jGQxfHY4eqS/78R6bUChGXwvP+2h5JVqsm4rjgik+HeDob0tv8Sq2pum8ORGuJzyOddGZFpltDwIlgmZ1cIZhCKcTh61PMwXhFWU3/NR0q4JEsMD4IBTKVcde7ZYxlx8cgPgfN2yZrSHtBr+rlVv/TtcaiCVw0zAiICYgcXqlO136KddTQGLstQQbXySWzL23A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
- by DM4PR11MB5279.namprd11.prod.outlook.com (2603:10b6:5:38a::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.33; Tue, 26 Mar
- 2024 10:32:11 +0000
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::ef2c:d500:3461:9b92]) by BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::ef2c:d500:3461:9b92%4]) with mapi id 15.20.7409.031; Tue, 26 Mar 2024
- 10:32:11 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
-	<mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de"
-	<bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-CC: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "Reshetova, Elena"
-	<elena.reshetova@intel.com>, "Nakajima, Jun" <jun.nakajima@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>, "peterz@infradead.org"
-	<peterz@infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "Hunter, Adrian"
-	<adrian.hunter@intel.com>, "thomas.lendacky@amd.com"
-	<thomas.lendacky@amd.com>, "ashish.kalra@amd.com" <ashish.kalra@amd.com>,
-	"kexec@lists.infradead.org" <kexec@lists.infradead.org>, "seanjc@google.com"
-	<seanjc@google.com>, "bhe@redhat.com" <bhe@redhat.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: Re: [PATCHv9 17/17] ACPI: tables: Print MULTIPROC_WAKEUP when MADT is
- parsed
-Thread-Topic: [PATCHv9 17/17] ACPI: tables: Print MULTIPROC_WAKEUP when MADT
- is parsed
-Thread-Index: AQHafqDjblKdq2s7JkOzh/IXxCQbELFJ1HMA
-Date: Tue, 26 Mar 2024 10:32:11 +0000
-Message-ID: <48ca0ef4f3208cebe8ab816b24ab8665ce96d457.camel@intel.com>
-References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
-	 <20240325103911.2651793-18-kirill.shutemov@linux.intel.com>
-In-Reply-To: <20240325103911.2651793-18-kirill.shutemov@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.50.3 (3.50.3-1.fc39) 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|DM4PR11MB5279:EE_
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: vydTtcU7heMVjerQP+ldOww5fTC2elfB8F7SB0hvJwbBNXA+d9mP4MpqyWCPulp2pJ4l4x6fIKpTSAOxKhaFq7jqB/SY+qM3ZiimzQQt53Q4YVirVoXPfSlOZsRiPzM9MquUlMsV5LFq4Wfz2vYjiKTxWSVS+mHoEUd0NeNCya+lKn+6MOzbVx0O8/7D35I/4YQbj7v8NaltipWWNf2NXLXAu//3CVm9b8E1F6+wuevkscHOOG1Bmu8swQkA4cCMv2PCwV8nUz/V8uS86dIhq/Cck557YB/Y4DYXIcWA+ey9kesRHrt04e8xLvd473Mr+Y6mKX/WVCybaPTbxqsN4JaOZe1C5mkdWpnKCOduR7PKGA2uNorNHAtneEI/c2VoudNFGpKw2nAM1Kq8IAueDilHjlks0Jc0i5gDVadKs1Q8k8a3GX2D9BMVJqecEQeQ/RkUJ0ydrb3nJtmvzcbihX95b9CVSQN8bFjmIoSlbqE9bHn9fAP351QLAsZzTrXUkxGK4DAEbCYwWS87MAwRSuNL7DWx1Fy/s12EUcCmhaE6V5cbI28fhxB5ugvnhsB8wGeP7hzdJOaWDBPNa3kBk3TxXgkdRRL9xAmgMKLAoZhASc1RgdjYAkH9bO8Nf4i9odMFOVpbFPfVXOKvwAxIXrfJV9leBhp39IZMTleVhv8=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(7416005)(1800799015);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Ry9QNlNDZS9PM2M3RkV1Tk16WjBCcnV4MEZMWEJISFlHREFSWEkxb0ltb1Rp?=
- =?utf-8?B?b21teGRkaDNnZi9ra3RVNU05ZTIvQ3JiaktmSjdhcGJHTFB5R21ISENnM2dX?=
- =?utf-8?B?MkxTdEh0M3FNRHhhMjdobHR1cGMyYkZCL1dHenVFeWRFMjBEd3BqeHJpczNR?=
- =?utf-8?B?bjhzUUg0M0JrVUZCUWk2WldjQThEVy84VlNVRldqZjhQY2VTQThYVVlsTlRH?=
- =?utf-8?B?S1hQT1cyeWJlVjVyZDBiQXpWNlRLRzFCNGp5eWE3QzZrQkRhYUhDWnNnZGtP?=
- =?utf-8?B?YTVGcDdqVGhISHl3dk5xRVNGTTNGL2xpZUJaUWs2cjdYcGNhMVdCa1daS3Vs?=
- =?utf-8?B?aFcyL2l1cnNLekRtSXFlV094K2xpTjZLTjFCb3NGS0UyMXByS3VVRlA1L3FN?=
- =?utf-8?B?TEFFdFVhWm0rUThhNHdsa1RmTXptQllhV29KMU5wcFdXdFIzMmVLVG9YSWFs?=
- =?utf-8?B?THdkcWpCRGV4NU8rVDU0b0JKbXpzek03bVpnWWdGcEtlUDJCeXFpNENCQ1dS?=
- =?utf-8?B?TGtjR2ZuWnhTRy9EeXRqUDBSNXFRYjZqaU85SFp1OGZ3dWVxME9NeEh2OG9S?=
- =?utf-8?B?L2ZNMkV2Zy9BUEJaZWtwMDQ3c0pRL1hGbUt0dFB0V05ySFV1elZhbUhPeFhz?=
- =?utf-8?B?eFk3UEd0blFERE1nT2dMeFBNYVJLRzkxSUQ0R2Zua2lSMjhqdGY1c09renQr?=
- =?utf-8?B?MUpDUm5jRnBzMWh2QzhwR1VxVWhRY0NrUm14ODJqSGF3MVNGNmExWldMbG0r?=
- =?utf-8?B?djFIL1FINjI2cVU1dHhRNCs0UjAzMm9QWEhLc284eVBmbWpON2dpYm1tc1c5?=
- =?utf-8?B?dmZpbmZiUHNKRXk4MXRhWm9LTTVPcWJ5Y2JDUC8yUXhnNDNiVDJDMHF5Sitq?=
- =?utf-8?B?L3ppZEVNcm8zZWtGa3J4RlkrSWY5dk5zNEEwT0dCS3ZzSkIxOFkyK28rZUdo?=
- =?utf-8?B?ZTRxbEc3bXFuZjFKUXhnSDdPcUkwSGRrQ0gvaXBOS3U3Z29IaS8yU3B4dGc2?=
- =?utf-8?B?WGN3bW0xTmMwb2hDdEdsaFNEcGcvREdRNG5OZEhIc09MRDVqYjFzTlFmSFFT?=
- =?utf-8?B?b0U2WGhlL3RSb0pqWXQ0ZHhQUFBQdzE3dVBmNVVUWXZkVnU3cHlvdkdRYUpN?=
- =?utf-8?B?NkRSQko5aEttaVdVQVd4UDdCOXNqVndSWnJHUEZmNnI0c2oyRE5td1JUem16?=
- =?utf-8?B?Y01wa2tPd3duOWNHVG9pR2Q4aTFoaWkyRERQQTROSXk0R2x5bFE3aDlYaHVq?=
- =?utf-8?B?a0hGV1kwMGFMTXlscWR1VU1TMDNyN0NYaC9rRzV4OWhOQmg0eVBGZm5ZTHYw?=
- =?utf-8?B?UmMvQXFLYWlPQ1R4am8yZE9PcTRjVHhReGZqQVZOMGJDemRFYVdKTUFLSTJE?=
- =?utf-8?B?eXluOE1FbGttamJpdWliNFFmOVhwQ1dxb1VNRkNPSFdtZ0ZERHNPck55UnV0?=
- =?utf-8?B?WWkrM3IvVVAzc2VLcXpEU3VHZklGOVVrMTB5bUVyUzFicnJWa1RSVzVDeUdM?=
- =?utf-8?B?VU5yU1FTbUwrME5xRHNQY3lIb1MybWtiZ1ZNTTYzcHZkTkhjaVkrejYvUlll?=
- =?utf-8?B?dFRlbWFQVnRuYmo1Z2dsTzd0czBmeWZrWEtyUGlUU2tzdE9DRnR1QXZTRmxL?=
- =?utf-8?B?Sk1PRlI1UjZlWldWMmh4ZVROMG82TEJxbkZxYXBlaFpzTHpVWEh3TEhWY3N2?=
- =?utf-8?B?b0luUnkzaFdTa2xnSlR4T2Q2QTg0OVpGWGx6UUFpbWpvMXlHUmJIekpJR2JT?=
- =?utf-8?B?R01obHE1YlM4Y3ZUUS8wTVFRc2U4ZVBzeHViSkxkdjkyWXIxOVZ6NDhtTG11?=
- =?utf-8?B?czNIM2hLY3NELy9DWmZDbm4zWmdlRUhydnBxcldBU3pjM0VwZ09zNHFScEo1?=
- =?utf-8?B?Q3pKczR4bHhDa0cyY1FHVGUrbjdpZ1FIT3I0WGhMSVg4c0IvdERXd2JRY0pz?=
- =?utf-8?B?Z0RFYUNUaFBtVUJrRTd4bEh6SHBTem5mUllIREJ0VGlSdGx2WXBVd0c0TDZv?=
- =?utf-8?B?V0hQRW1WZzh6a0FFcWF4MXA5M0NYMTdCaGZSU0lZNThMSzZ6YlJodHlaV3dV?=
- =?utf-8?B?VTFvS1FSRzFPTm5SODF5bEw0WG40dW9HL3k1eUdwUHJKWWVEWEJ1V1UydnlE?=
- =?utf-8?B?V2UvK2F5emlLSndZMG83MUN4bWlBblZncGU0L0xnWXRDbFhIVUZqTkRWbC9i?=
- =?utf-8?B?c0E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AB8A93C56C0D404F9A7CEBF8FFBFE4D6@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="c3YBRnf2"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 88B8240E024C;
+	Tue, 26 Mar 2024 11:22:01 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id xqH6euSnifRy; Tue, 26 Mar 2024 11:21:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1711452116; bh=5xySxgxUex7yGo/N3CjIUaOQ92oGCY0B9c5aUdVDJHw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c3YBRnf2JupbhmiWyx3+d7vnRmROs10DZoQ+00EoYLMSAZhZhoPfdydM9S8QMOO/T
+	 Cn6d2qmXnIoYZiHiAVBZuCUhngqF/1Bup3PsSLiNuvNoVxbZM6zjdHw+vDM8+iueuD
+	 aXfragH1pM6MyY3kiJYACfWxgzbenIp1Ifl4pkRO35KdIQ7SAdPGUV49Skb9QKAwIR
+	 kwCLSN0yr3jYdsmF+gLgtT1UTRUCMaOkwzg0selKbaLBlbAs8e2iFZ2hTqBYCl3C52
+	 StTZq7gUnHjtVfRTOkIxtuBQYeLY7hE3i0wbV9/CqgEF2PgGCqKQuyjLgRYpfoPrpU
+	 OaxaRqEeFZPZX0axI1SqptsS3K7pJ4ftGdGjHJwHWp37WcEhR/8bRl0cZI6HzVH4V7
+	 dTryPnhHdJILUk6BrQmnePC0OaVjEBH3ao+Vf4Qp0p4//xko6PoFG7s57vTNVXDuIG
+	 DT3zbb9Iin0K3cz6vD4KHnldUpvaDmMYLcGOFrRSz+SN+9KRh24SrgMCUXMVJrDczn
+	 vZRG2JouUOtxUzPIP4DxrGu8kj/IuFbvVlEz/nrTQOz8w4iOc6hk/2Wz9WycEg6g8f
+	 V+Oyk7OQt4zaum9UFJg41HowMRyM9GzzMfkTLZlS0Su2PlzzOgfB3mqBWqa9Ikr/xb
+	 CvqaUFRHJsmKINNES/a1x4ZU=
+Received: from zn.tnic (p5de8ecf7.dip0.t-ipconnect.de [93.232.236.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7966F40E00B2;
+	Tue, 26 Mar 2024 11:21:42 +0000 (UTC)
+Date: Tue, 26 Mar 2024 12:21:37 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>, stable@vger.kernel.org,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Theodore Ts'o <tytso@mit.edu>
+Subject: Re: [PATCH v5] x86/coco: Require seeding RNG with RDRAND on CoCo
+ systems
+Message-ID: <20240326112137.GDZgKvwRHD4yQs3Zm-@fat_crate.local>
+References: <CAHmME9oN+7rbLYcvQN=+KMjwrokvARy_7khLWJvDK=K_S5uHqg@mail.gmail.com>
+ <20240224011921.2663985-1-Jason@zx2c4.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69499e44-62d2-4fa5-9983-08dc4d7ffee9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Mar 2024 10:32:11.2615
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: DxxAteAUIU8WAu2CYas1CP88UiIigHBuO+TpNOKdDJgSK5uS+TWkNw5ZKxReAB+S9/IA0uOdkA8BVrtgaltgHQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5279
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240224011921.2663985-1-Jason@zx2c4.com>
+Content-Transfer-Encoding: quoted-printable
 
-T24gTW9uLCAyMDI0LTAzLTI1IGF0IDEyOjM5ICswMjAwLCBLaXJpbGwgQS4gU2h1dGVtb3Ygd3Jv
-dGU6DQo+IFdoZW4gTUFEVCBpcyBwYXJzZWQsIHByaW50IE1VTFRJUFJPQ19XQUtFVVAgaW5mb3Jt
-YXRpb246DQo+IA0KPiBBQ1BJOiBNUCBXYWtldXAgKHZlcnNpb25bMV0sIG1haWxib3hbMHg3ZmZm
-ZDAwMF0sIHJlc2V0WzB4N2ZmZmUwNjhdKQ0KPiANCj4gVGhpcyBkZWJ1ZyBpbmZvcm1hdGlvbiB3
-aWxsIGJlIHZlcnkgaGVscGZ1bCBkdXJpbmcgYnJpbmcgdXAuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5
-OiBLaXJpbGwgQS4gU2h1dGVtb3YgPGtpcmlsbC5zaHV0ZW1vdkBsaW51eC5pbnRlbC5jb20+DQo+
-IFJldmlld2VkLWJ5OiBCYW9xdWFuIEhlIDxiaGVAcmVkaGF0LmNvbT4NCg0KUmV2aWV3ZWQtYnk6
-IEthaSBIdWFuZyA8a2FpLmh1YW5nQGludGVsLmNvbT4NCg0K
+On Sat, Feb 24, 2024 at 02:18:56AM +0100, Jason A. Donenfeld wrote:
+> +__init void cc_random_init(void)
+> +{
+> +	/*
+> +	 * The seed is 32 bytes (in units of longs), which is 256 bits, which
+> +	 * is the security level that the RNG is targeting.
+> +	 */
+> +	unsigned long rng_seed[32 / sizeof(long)];
+> +	size_t i, longs;
+> +
+> +	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> +		return;
+> +
+> +	/*
+> +	 * Since the CoCo threat model includes the host, the only reliable
+> +	 * source of entropy that can be neither observed nor manipulated is
+> +	 * RDRAND. Usually, RDRAND failure is considered tolerable, but since
+> +	 * CoCo guests have no other unobservable source of entropy, it's
+> +	 * important to at least ensure the RNG gets some initial random seed=
+s.
+> +	 */
+> +	for (i =3D 0; i < ARRAY_SIZE(rng_seed); i +=3D longs) {
+> +		longs =3D arch_get_random_longs(&rng_seed[i], ARRAY_SIZE(rng_seed) -=
+ i);
+> +
+> +		/*
+> +		 * A zero return value means that the guest doesn't have RDRAND
+> +		 * or the CPU is physically broken, and in both cases that
+> +		 * means most crypto inside of the CoCo instance will be
+> +		 * broken, defeating the purpose of CoCo in the first place. So
+> +		 * just panic here because it's absolutely unsafe to continue
+> +		 * executing.
+> +		 */
+> +		if (longs =3D=3D 0)
+> +			panic("RDRAND is defective.");
+> +	}
+> +	add_device_randomness(rng_seed, sizeof(rng_seed));
+> +	memzero_explicit(rng_seed, sizeof(rng_seed));
+
+Please redo your patch ontop of latest tip/master:
+
+arch/x86/coco/core.c: In function =E2=80=98cc_random_init=E2=80=99:
+arch/x86/coco/core.c:189:9: error: implicit declaration of function =E2=80=
+=98memzero_explicit=E2=80=99 [-Werror=3Dimplicit-function-declaration]
+  189 |         memzero_explicit(rng_seed, sizeof(rng_seed));
+      |         ^~~~~~~~~~~~~~~~
+cc1: some warnings being treated as errors
+make[4]: *** [scripts/Makefile.build:244: arch/x86/coco/core.o] Error 1
+make[3]: *** [scripts/Makefile.build:485: arch/x86/coco] Error 2
+make[3]: *** Waiting for unfinished jobs....
+make[2]: *** [scripts/Makefile.build:485: arch/x86] Error 2
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [/mnt/kernel/kernel/2nd/linux/Makefile:1919: .] Error 2
+make: *** [Makefile:240: __sub-make] Error 2
+
+Thx.
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
