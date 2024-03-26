@@ -1,126 +1,71 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5FE1CF8A
-	for <linux-coco@lists.linux.dev>; Tue, 26 Mar 2024 17:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB5023CB
+	for <linux-coco@lists.linux.dev>; Tue, 26 Mar 2024 22:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711475624; cv=none; b=UoTuwPJ3cMc1ka6SZKOWuNcwr9gnsAfpqUzHAjcYzeuGXC37YkdOUics4FyZ6aMeA2oheW1dl12yJlvzThP0p2rR6mNViqCYnXHBIOqCmu1GaKq7FgBo0qBRQpT5UjnET0D5kpste9W2fG9KftzE89DJ9wCeVF4FRcQw4yTJneA=
+	t=1711490577; cv=none; b=ZcTVhXqSUbFg0+OO0HzA/sZfUFi+0wKYTtt1EJIkOvd7SIsOy5pk1asXiezjFd8+oWWJvITZJTEtnjGeOr2cuSiukJW8oxYqqcNX32oBDCo79xe13zEz5VaAHeHDHVLs163l+PvXfGo9ngrGV2baYR7erPvl8XWYC2CiDlha9aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711475624; c=relaxed/simple;
-	bh=wU0JE4kouoaua5oyHsX4nd5C2asEXFa3mxPJlgLUrxk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WeNlnzXvIYViYwO5DdyAzfYvT2zkdFxbopuuhITRcO4GU8JyfqjUjA2uU414luEYbngTX6BJ4uil7x/TI3qOXkAF4sj93HsOKATp4uEsI80CFrE/OC+A5048jP3vKWWzcCu3zkNemcNPcd5eYHfwAkHbqaLiZ4LVJJgJ6NrduOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CkH3rksW; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1711490577; c=relaxed/simple;
+	bh=P3DXFyzwz8jHC5kc++zBatCXMn3hvgrvpzhmKOPCw0I=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=tV6t0lHlbSMJ/j9jfPqSkHyvRbOmcBuyORuxzlOHeo9RasjGHvInFnvNqYY5WZvgIPW/Woigmd1PblBMOqo4v+0pMPNKkDYWG5LaJlk4VDb/sf3vnFwaKRus/nzVLnoraFM/WI4WKQs/xgFXSHP7pDugxCkbZ+u7ulTQ18GgPaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=239EdJ32; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CkH3rksW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711475623; x=1743011623;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=wU0JE4kouoaua5oyHsX4nd5C2asEXFa3mxPJlgLUrxk=;
-  b=CkH3rksWFToklrlhsBu3OQ5aD2+UVWouyqlRSLfZE/SMLPfKi1Ql3Uur
-   iIO0FWwjFU5QG/5S47khpe5bWOnZ5xWBUwzO7YgBK9yHC8Ns2cx61B2Sl
-   q8nICMaqoPdBbpEYRaJhzhJoORha5oVXOhtDVegf2ghatOoq8h37Fv9rd
-   5BC4eZQOLNPU22vQTID/SVK/Lh24Nj/niPkL+Gdz6LtltxyHgKwWBbBYj
-   jjzRdgK3rsIA+8BZCl1fl/HCU4nprzZQ8CQX0ipqQR8O4oF4PLlYVRwzD
-   BmDWbfZEBu6tZ3s6mXkzlRgUIiQJdYf7Ho7rOOH1bAjH7D4v/BGQk/qGI
-   A==;
-X-CSE-ConnectionGUID: EbhtItXYRlq+oqHR+yWEBA==
-X-CSE-MsgGUID: lcw0axH6ShaKWwBjOmZ0sw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6651558"
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="6651558"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 10:53:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="53500100"
-Received: from pwimalas-mobl.amr.corp.intel.com (HELO [10.251.11.118]) ([10.251.11.118])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 10:53:41 -0700
-Message-ID: <0582b182-3293-43d5-a4be-5e0c6e97f7ff@linux.intel.com>
-Date: Tue, 26 Mar 2024 10:53:39 -0700
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="239EdJ32"
+Received: from 8bytes.org (p4ffe0c3c.dip0.t-ipconnect.de [79.254.12.60])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 74A5F1E9668;
+	Tue, 26 Mar 2024 22:56:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1711490191;
+	bh=P3DXFyzwz8jHC5kc++zBatCXMn3hvgrvpzhmKOPCw0I=;
+	h=Date:From:To:Subject:From;
+	b=239EdJ32zhXkgtS7C2LjSqpPueuDs9GHtsYdwEthYwjcmkTmmDDAJNhSxdVuVMBSU
+	 +unTAkpSdHdMALJn5udty6nyZIyBMzOXx3aXGYoE8EAb8V5eP+5Bz7TvjfbzBbDck3
+	 fUHXQD3X+5b4KIkjARGVfE25E30evcQiG4jmsteXmvfT5X8mGA01nDlczkfE3S1/dX
+	 8b9FTgICGUwlA+gbH7Y7/5PBQubwvjrwj4aP6xDoFeoASVwUDJv5sXCxtn1NBVDck8
+	 mkPcpMwSylt5wp6gwMk52lVnuvaOWXoozkzzp7J2lIJhZW3myQ635bPzwhwZBgVC5d
+	 c6YQEMQ1/mxrg==
+Date: Tue, 26 Mar 2024 22:56:28 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call March 27th, 2024
+Message-ID: <ZgNEjFQmGlrTTEcS@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv9 17/17] ACPI: tables: Print MULTIPROC_WAKEUP when MADT is
- parsed
-Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>,
- Jun Nakajima <jun.nakajima@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
- "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
- kexec@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
- <20240325103911.2651793-18-kirill.shutemov@linux.intel.com>
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20240325103911.2651793-18-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
+Hi,
 
-On 3/25/24 3:39 AM, Kirill A. Shutemov wrote:
-> When MADT is parsed, print MULTIPROC_WAKEUP information:
->
-> ACPI: MP Wakeup (version[1], mailbox[0x7fffd000], reset[0x7fffe068])
->
-> This debug information will be very helpful during bring up.
->
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Baoquan He <bhe@redhat.com>
-> ---
+Here is the usual call for agenda items for this weeks SVSM development
+call. My agenda so far is:
 
-Looks good to me.
+	* vTPM merge status
+	* Vendored dependencies
+	* Fallible allocators
 
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+The items we can not cover during the meeting will be deferred to the
+next meeting.
 
->  drivers/acpi/tables.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->
-> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-> index b976e5fc3fbc..9e1b01c35070 100644
-> --- a/drivers/acpi/tables.c
-> +++ b/drivers/acpi/tables.c
-> @@ -198,6 +198,20 @@ void acpi_table_print_madt_entry(struct acpi_subtable_header *header)
->  		}
->  		break;
->  
-> +	case ACPI_MADT_TYPE_MULTIPROC_WAKEUP:
-> +		{
-> +			struct acpi_madt_multiproc_wakeup *p =
-> +				(struct acpi_madt_multiproc_wakeup *)header;
-> +			u64 reset_vector = 0;
-> +
-> +			if (p->version >= ACPI_MADT_MP_WAKEUP_VERSION_V1)
-> +				reset_vector = p->reset_vector;
-> +
-> +			pr_debug("MP Wakeup (version[%d], mailbox[%#llx], reset[%#llx])\n",
-> +				 p->version, p->mailbox_address, reset_vector);
-> +		}
-> +		break;
-> +
->  	case ACPI_MADT_TYPE_CORE_PIC:
->  		{
->  			struct acpi_madt_core_pic *p = (struct acpi_madt_core_pic *)header;
+Details of the meeting (GMeet and Calendar links, meeting time) can be
+found in our governance repository at:
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+	https://github.com/coconut-svsm/governance
 
+The meeting will be recorded and the recording eventually published.
+
+See you all there.
+
+Regards,
+
+	Jörg
