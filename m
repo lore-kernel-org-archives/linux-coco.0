@@ -1,177 +1,153 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2245F876
-	for <linux-coco@lists.linux.dev>; Thu, 28 Mar 2024 09:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C519B7EEED
+	for <linux-coco@lists.linux.dev>; Thu, 28 Mar 2024 12:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711617139; cv=none; b=q8sjLK8cJcxc+g3GnvkHgZLVSYmeQHCFmkq2aKQzlpS0bTIBWVsNHO/5fg/doWDF1BDVTZAv4sReLyo4AKuG14QNGe+cWdK8cVv7XRmHi40+4IT14AWQvk/6DquKEXRPlj6wCY30HjQSYeXIAi0CiGUxcsP9wZprpq1/GWA4no4=
+	t=1711627403; cv=none; b=slJTepbWGrHxgQPTGHZQcjtHftZn5+NA94wh42nvgBGaG3aUpOk+GY6/S8+BlFGFrARfh5LtOI3sFK8r3wq2sxgGN4d41mPYsxtIfr1xA0vhO0DdXMvygHCL8pi5V8rIDhigIWv00S6N2fbH5PgIJDevHrDK63U/6mlBsrHN64I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711617139; c=relaxed/simple;
-	bh=J9qjVWR/ECBphclbsZxM/Qk+RFImlRA4yNn8p/wU394=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=UvzVDwRhPL34TN3gZ1F7mfCehOk5BlQrMJpdM8/GAM3AO+Fc56ncSgnOVekl7be8k9o4yqP0+1pq78k/DP4hjFlmn3oq/WkS9nG9IWtiyUkVhuMP7dsgwx78rp6b0lobFKyB6bBxURYseR5tGf1t5jPcIDqufYOhKjwiQ8HYYs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=SUTeCQ5P; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1711627403; c=relaxed/simple;
+	bh=dsSGS+f6A2rJHuOj06Zwlky9ftEWj/uVUsruJ+0aFU8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NBkAeqLvDqxyjbEGKwSlCkaOJZ2nRb+NI8KffilNka1zlD8SxGcg06BHBKHuRxuScQSp2ArMaCd+0yhUVjS7a3QM2lL8J6lAtap6CzXf11ZnJlCXm4+X4lm4BNSyTM7oof2PUAjM07tYncbwfJdEV5itjJzGqvpx7XQbzaran84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=D8yErm4x; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="SUTeCQ5P"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-41544650225so3065595e9.2
-        for <linux-coco@lists.linux.dev>; Thu, 28 Mar 2024 02:12:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1711617135; x=1712221935; darn=lists.linux.dev;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J9qjVWR/ECBphclbsZxM/Qk+RFImlRA4yNn8p/wU394=;
-        b=SUTeCQ5PyBNDy2jLFrpg3iOFvTkZ98q+EU895NkWJYuQwPOt7ZFawGyWzJQzVLY5d3
-         KKDZrAnymUkUEEgwQh+EShcK4xrRZKRAgTHPj7mAUzstT1WM+appKNd/yLN6/j8LE3hU
-         yd0xwSU20ILKVSqTlxGVvNbYn9sGwD83m28DBars0bYIC5o3UDahLAMiJDGHQewlI2dj
-         vjIg1LzCjp6B6u8daJgcslxwqfH97p7kKXRjeCMVEBdTa1K9UcGw8B1Blkr914WKiLy5
-         Vy37jl8r0JbfxOaH4IpqQajXdjK05OgM77CAfT8K+2Y3zRGIl9bbC+adlw4w524rhMmr
-         3Q3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711617135; x=1712221935;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J9qjVWR/ECBphclbsZxM/Qk+RFImlRA4yNn8p/wU394=;
-        b=It4DiXMISRPxRk4ISjLZry+0GWoiv8KAzPB2GH+mmMK+Q9FwfEnFPc6SYye4VOw8/0
-         RZzApcJmPhnp/ODm88M8kznQXTded8uYFLrONhyH4N8LdlTG0wTMPhqKrVf/WhSEiGQZ
-         Itu0fjmgMwN5gvFprPmW4fDd0VFJFtmg7L7EZyHYMw43rxby3VcWS9VU14+E3VmFejW0
-         Z6GUyzZwpGwnXTmMIWp4XYIXsDQkNGe3xbtrM8DKXFfQedYpbca8Hz6vV4IxEDHf8212
-         jrvzw0LYTvBXR/dE8PJPKqrkSS1Ol3h02V3T16vClbM/HyP8P980/2dRf9HCeOtrvqiz
-         5ikA==
-X-Forwarded-Encrypted: i=1; AJvYcCX5E8ZNzBIhxQr/lgYS5+Y4Nb3NPVsTVwYNtHwmm7n1MBEyv+XPuf8kcJu8WsK/mHro/TWOvMZGxap1svNpiV60yab4qRUJRW6+Nw==
-X-Gm-Message-State: AOJu0YzW7Sj0zWqsb+Bb/WLdxE5it8JaZCY66+IjsOYH7hvuXId7Di/z
-	TPvM/+TjdRvc5zPg2J1ZwxoBTt9/DyJ6+qhjdFkPE/ti6hszq6uU+w4v3EeM7QE=
-X-Google-Smtp-Source: AGHT+IF5Xi3vEgmmfFRP7akAW7dCHrhX2Z26khY9xuSGH6toF+fZ8+Fgx6IH3+TlxbfMv0kMI3F67g==
-X-Received: by 2002:a05:600c:310f:b0:414:1363:539f with SMTP id g15-20020a05600c310f00b004141363539fmr1445125wmo.8.1711617135544;
-        Thu, 28 Mar 2024 02:12:15 -0700 (PDT)
-Received: from smtpclient.apple (p200300f6af1695007d0c1ecb0a297a7e.dip0.t-ipconnect.de. [2003:f6:af16:9500:7d0c:1ecb:a29:7a7e])
-        by smtp.gmail.com with ESMTPSA id u8-20020a05600c19c800b0041478393b8fsm4721839wmq.42.2024.03.28.02.12.14
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 28 Mar 2024 02:12:15 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="D8yErm4x"
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42SBRisC004397;
+	Thu, 28 Mar 2024 12:03:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : content-transfer-encoding : mime-version; s=pp1;
+ bh=bYhxhtxAjbypuLMg0AQNwVJkplG/0QL0xekjVajQdy0=;
+ b=D8yErm4x4LW/hbODK8R786Wjn16jQoOZhhfdF5yPHuN49eIo/bYMv40U7l3uXj/VRP82
+ 1NetPCPwZGEuqpfWB3S+IMJMhNkgCkOgOu6cgXVdV/Vhud740kUq6ZYYqqDwv/P92CcX
+ H7zCxOpR3mihv4yTujzo5u1jNyH0kaqURPFH4EGr7uCzD4sbSqNRxXnF0xM7QtJnSh5i
+ uCzjwtnSKAqBXz+T5Q39vzKjRZmzRUubTVvwpn5iz4V4Jqs/pUdWMcgWg/h9WThBGRPp
+ foXxeBHMjQiY3Vy6RB66KaXvpyEdUhMhR5yvSQ44AexnChL681S/Tqi/eTGcsqUb/rH3 oQ== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x57pg82p7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 Mar 2024 12:03:18 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42SAD66E013370;
+	Thu, 28 Mar 2024 12:03:17 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x29t0wfkc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 Mar 2024 12:03:17 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42SC3EGR30671612
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 Mar 2024 12:03:17 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E542C5805F;
+	Thu, 28 Mar 2024 12:03:14 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1E59A58051;
+	Thu, 28 Mar 2024 12:03:13 +0000 (GMT)
+Received: from lingrow.int.hansenpartnership.com (unknown [9.67.36.124])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 28 Mar 2024 12:03:12 +0000 (GMT)
+Message-ID: <e2912269a273824e05714174fc04d45361ce71b5.camel@linux.ibm.com>
+Subject: Re: question on vTPM interface in coconut-svsm
+From: James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To: "Yao, Jiewen" <jiewen.yao@intel.com>,
+        "linux-coco@lists.linux.dev"
+	 <linux-coco@lists.linux.dev>
+Cc: Claudio Siqueira de Carvalho <cclaudio@ibm.com>,
+        Joerg Roedel
+ <jroedel@suse.com>, "Lange, Jon" <jlange@microsoft.com>,
+        "Dong, Eddie"
+ <eddie.dong@intel.com>,
+        "Johnson, Simon P" <simon.p.johnson@intel.com>,
+        "Reshetova, Elena" <elena.reshetova@intel.com>,
+        "Nakajima, Jun"
+ <jun.nakajima@intel.com>
+Date: Thu, 28 Mar 2024 08:03:11 -0400
+In-Reply-To: <MW4PR11MB58727350055C0E00D6CA0DC08C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
+References: 
+	<MW4PR11MB5872CE9BEF8361203F72EDFD8C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
+	 <MW4PR11MB58727350055C0E00D6CA0DC08C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: miULvpt2kaSvgYmsy41vtpQ7QLYZKKjY
+X-Proofpoint-GUID: miULvpt2kaSvgYmsy41vtpQ7QLYZKKjY
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
-Subject: Re: question on vTPM interface in coconut-svsm
-From: Joerg Roedel <jroedel@suse.com>
-In-Reply-To: <DM8PR11MB5750F62889411B10570C61AEE73B2@DM8PR11MB5750.namprd11.prod.outlook.com>
-Date: Thu, 28 Mar 2024 10:11:59 +0100
-Cc: Jiewen Yao <jiewen.yao@intel.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- James Bottomley <jejb@linux.ibm.com>,
- Claudio Siqueira de Carvalho <cclaudio@ibm.com>,
- Jon Lange <jlange@microsoft.com>,
- Eddie Dong <eddie.dong@intel.com>,
- Simon P Johnson <simon.p.johnson@intel.com>,
- Jun Nakajima <jun.nakajima@intel.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <86C30BC3-4111-465C-8AA2-DA8EF12D36CD@suse.com>
-References: <MW4PR11MB5872CE9BEF8361203F72EDFD8C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
- <MW4PR11MB58727350055C0E00D6CA0DC08C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
- <DM8PR11MB5750F62889411B10570C61AEE73B2@DM8PR11MB5750.namprd11.prod.outlook.com>
-To: Elena Reshetova <elena.reshetova@intel.com>
-X-Mailer: Apple Mail (2.3774.400.31)
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-28_11,2024-03-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 mlxlogscore=999 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403210000 definitions=main-2403280082
 
-Hi Elena,
+On Thu, 2024-03-28 at 06:29 +0000, Yao, Jiewen wrote:
+[...]
+> At same time, we have also prototyped vTPM support for TD-
+> partitioning based on coconut-svsm [1]. For vTPM interface, we just
+> reused the original TCG defined CRB interface in TCG PTP
+> specification [7]. 
 
-In the end COCONUT-SVSM will support both modes, emulating devices for =
-enlightened OSes which require those to implement an SVSM specific =
-protocol and the unenlightened OS (paravisor) mode where the SVSM =
-emulates the interfaces of real devices.
+If I could ask: where's the code for this?  We also did a CRB prototype
+for the first papers on SVSM vTPM:
 
-Which devices to emulate in which mode and what mode specific emulations =
-support is another question, though.
+https://dl.acm.org/doi/abs/10.1145/3627106.3627112
 
-Regards,
+But we found several difficulties with the CRB interface that doing a
+platform one overcomes.
 
-J=C3=B6rg
+> We modified coconut-svsm to provide TPM CRB device model + TPM2
+> library reference code. It is similar to [3]. The only difference is
+> that we don't use vTPM protocol [4], but use TPM CRB interface [7].
+> We mapped the TPM CRB MMIO (0xfed40000) as private MMIO which is only
+> accessible between trusted L1-VMM (coconut-SVSM) and L2-Guest
+> (Linux).
 
-> Am 28.03.2024 um 09:11 schrieb Reshetova, Elena =
-<elena.reshetova@intel.com>:
->=20
->> Hello
->> Since Intel is planning to use coconut-svsm [1] for TD-partitioning, =
-I am evaluating
->> the vTPM support for coconut-svsm and L2-Guest for Intel TDX. As =
-EDKII
->> SecurityPkg and OvmfPkg maintainer, I am also evaluating the impact =
-to EDKII
->> project [2].
->>=20
->> Currently, the PR for vTPM in coconut-svsm [3] is using the AMD SVSM =
-defined
->> vTPM protocol - SVSM_VTPM_CMD Call [4]. It is a brand new =
-communication
->> mechanism. As such, we need a special SVSM vTPM driver in EDKII =
-OVMF[5] and
->> Linux Guest [6].
->>=20
->> At same time, we have also prototyped vTPM support for =
-TD-partitioning based
->> on coconut-svsm [1]. For vTPM interface, we just reused the original =
-TCG defined
->> CRB interface in TCG PTP specification [7].
->> We modified coconut-svsm to provide TPM CRB device model + TPM2 =
-library
->> reference code. It is similar to [3]. The only difference is that we =
-don=E2=80=99t use vTPM
->> protocol [4], but use TPM CRB interface [7].
->> We mapped the TPM CRB MMIO (0xfed40000) as private MMIO which is only
->> accessible between trusted L1-VMM (coconut-SVSM) and L2-Guest =
-(Linux). The
->> untrusted host VMM cannot access the TPM CRB MMIO.
->> The TPM CRB interface is reported via TCG defined TPM2 ACPI table =
-[8]. The
->> TPM2 ACPI table exposes StartMethod as
->> EFI_TPM2_ACPI_TABLE_START_METHOD_COMMAND_RESPONSE_BUFFER_INTER
->> FACE (6), see [9]. And we don=E2=80=99t need _DSM for StartMethod, =
-see [10].
->> After those change, we can run vTPM in OVMF and Linux Guest =
-successfully on
->> top of coconut-SVSM, with minimal change on TPM device driver.
->>=20
->> Questions:
->> With this POC, it seems TCG CRB interface [7] is a feasible option =
-for vTPM in
->> coconut-svsm. We are NOT clear what is the motivation to have a new =
-vTPM
->> protocol [4].
->> Would you please educate us on that? Why not reuse TCG CRB interface =
-[7], but
->> introduce a new one [4]?
->>=20
->> What is opinion from Linux TPM driver maintainer? I believe we would =
-like to
->> align for vTPM support in EDKII and Linux.
->=20
-> To go one step further, it is important to note that while the current =
-#1 usecase
-> is vTPM, we can envision in the future other devices that coconut-svsm =
-might
-> emulate for security purposes. So, whatever direction we decide here, =
-it must
-> be scalable and acceptable beyond just TPM usecase/maintainers.=20
->=20
-> For example, are we ready to commit to write and support a new set of =
-Linux/EDKII
-> drivers for any existing device that someone's security =
-usecase/deployment might
-> require to be now emulated in coconut-svsm? Or do we want to develop a =
-secure
-> way to use the existing drivers for what is essentially the same =
-device (function-wise),
-> but emulated by different environments?
-> Both choices are possible and each has its own set of tradeoffs that =
-we must discuss imo.=20
->=20
-> Best Regards,
-> Elena.=20
+So how do you do this? we had the CRB ACPI tables set up by QEMU for
+the above, which requires modifying QEMU to provide the TPM description
+but not activate any backend interface (i.e. a new configuration flag).
+
+The second problem is that ACPI described regions are by default, being
+device buffers, shared not private (i.e. anyone can snoop the TPM
+commands).  You can modify the OS to override this, but then you need a
+very specific recognition of the TPM as being provided by the SVSM not
+QEMU otherwise you'll block any emulated or real CRB TPM device when
+total memory encryption is enabled.
+
+Finally the start mechanisms are bit or ASL method based.  The bit
+based one is just too much overhead if you handle the fault in the SVSM
+and the start method doesn't provide enough sophistication to activate
+the SVSM entry protocol.  We eventually modified the CRB driver to do
+the SVSM start but, again, this is hard to reconcile with a standard
+CRB interface.
+
+>  The untrusted host VMM cannot access the TPM CRB MMIO.
+> The TPM CRB interface is reported via TCG defined TPM2 ACPI table
+> [8]. The TPM2 ACPI table exposes StartMethod as
+> EFI_TPM2_ACPI_TABLE_START_METHOD_COMMAND_RESPONSE_BUFFER_INTERFACE
+> (6), see [9]. And we don't need _DSM for StartMethod, see [10].
+
+So publishing the code for this would allow us to evaluate whether it
+might work for SEV-SNP as well but our experience above tells us it was
+a lot of code modification in the OS and QEMU and even more (which we
+didn't do) to make the CRB driver still work with non-SVSM devices,
+which is why it's easier to do a small and simple platform device which
+requires small OS modifications, no QEMU changes and an easy attach
+when the SVSM is present.
+
+James
 
