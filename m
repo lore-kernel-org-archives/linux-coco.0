@@ -1,129 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EB754777
-	for <linux-coco@lists.linux.dev>; Fri, 29 Mar 2024 15:21:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302EE11721
+	for <linux-coco@lists.linux.dev>; Fri, 29 Mar 2024 16:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711725706; cv=none; b=tdVbdZdi+xpOCva930vqQIrqS+RbUA5W/nDlSdBgL6sNYZeYFppNvvlharS6q6mB9Uo5q8uXAFxoZzF5CcaDYDMsHbk5T37wjV9CR2juyd4pAl58s1PE0C2wImtu2c57HKWDDLjjuFZT9l7s8hvVvzItO5sbHojgJoBiBjcfOy8=
+	t=1711730909; cv=none; b=gbRG1j141ljUedRcDFT0h1jvidDaTCzhsOfj7FG9LijQc7kMwoZI+aXALnetxW/3Qc/Kiamtuia+9UDntS+gOcRDZZWGrBTidKY/OT1HxkUkzY571F14jJCdPMTk2rcZzYM6Ol1ql2ruTTbNCLtjeMbrjYxkUaidVQvHhTNGA38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711725706; c=relaxed/simple;
-	bh=xIhz1fc0gd8bUoWk1Yba/XGwSpCgbpumuPmPXecDCog=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mOC2Ja4MNT8+TRA92k8gQ9GRojGKXvs9MXKtdsJyqspgxIZLW1bZFozsf/svGYyOtuqgxNMw+Hsi8yW8oC0U5ySWSFXL3dgGfFEF6YCUn22/tyAn3u5sVvJ7PR7HlsOy1SXyxSjrk3OBe3v+vLZwuinwghFO/0O23xwd0jqnmpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZJKtspY0; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1711730909; c=relaxed/simple;
+	bh=VHSFCeLmDsuoG8JZu78Wui4erUPAkz/n1mlCxxF71tE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HbzXTioIBMA57IqLm4h6FgaDKkTeu1IBnJd/F3NAfBv9Xjgs0VX6HejiFgpj+0+wmz6F2M+kqoRncOXR+aT4sQZ4qAFtEzA17yxnG/eqYBLLnEgoI8BxkyD+btbALVve28rYlo6Mj2DscfsHGtoBZzrLadXFqyj7gliNw65WNHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k7sGzsX5; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZJKtspY0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k7sGzsX5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711725702; x=1743261702;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=xIhz1fc0gd8bUoWk1Yba/XGwSpCgbpumuPmPXecDCog=;
-  b=ZJKtspY0jsFuTnIcc6aqcoRMvX4hnpNMkAHa5QnXVSPxFrU2xUe//mUN
-   hPzYbvxgu2NUyV4XP5JArSs4yuSM0ERKdwcEyprikmgz0swbmV9wz4mS+
-   XIjqWkYXyC9zekGb4Vd1YEgKQRg20DtwbovEfwHUBn+v2GEC2+APKRcdi
-   G5M7AzgQr0tZoa6ty6lgxXeE5mDCm/JM8m/n8aMFIJs/yU74dOpgJcjjr
-   AJJj7vsVCKNbSuyQhu0ytbdvf1eYFV4Yc7C+W3lCCwTsdvtcWVFwus49l
-   LzBsCvWV9PHcLziiOrO2G4JjCJv157ckdYjL9RIwcycHttjXxZiQoWhm9
-   Q==;
-X-CSE-ConnectionGUID: 265PdfyTSxaDag1RaOW+xA==
-X-CSE-MsgGUID: MXk0ti4/TTm+bcRIK4ycZA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="17472613"
+  t=1711730908; x=1743266908;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VHSFCeLmDsuoG8JZu78Wui4erUPAkz/n1mlCxxF71tE=;
+  b=k7sGzsX5crwd+fw9ENSYhKlFKR+2dnE/EnsRycLASfz6Zr+Pb6lrrDH/
+   3neB3JkfjlXG0O1DCT1zO2w8PZzd1UmLm6LHxle8oiltHCmKC3lBMGdoA
+   rMD3a8OhN5r1Ol7sDrXmonOfDuP2D4VjGnKKNlCbICFaLGVkxL+lEhOp1
+   5kYzxWAEsc4qtGpPBY7uPjWAM6hwnSjn/JmJXNzeSmuhXC5VJBgwc2pPN
+   D3V6EcPDxEGIIrABBTVKvxllPx1zINq6Dv1g4b7tZwRSUcMOVry5aAWbp
+   fEsggD3irfk99LM/gWU1ZvV+LI7ybHhkEfkRlaCd/Lxgipwsxip891M2/
+   w==;
+X-CSE-ConnectionGUID: R98gg+ZuRkek1TpUV5msFQ==
+X-CSE-MsgGUID: Aw6QC8vXRIm1+5qyNuVfxQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="24385637"
 X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; 
-   d="scan'208";a="17472613"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 08:21:41 -0700
+   d="scan'208";a="24385637"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 09:48:27 -0700
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="937078212"
 X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; 
-   d="scan'208";a="17636665"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.224.7]) ([10.124.224.7])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 08:21:36 -0700
-Message-ID: <b94c81ef-50f2-4e66-9533-461791777d10@intel.com>
-Date: Fri, 29 Mar 2024 23:21:32 +0800
+   d="scan'208";a="937078212"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 29 Mar 2024 09:48:22 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 59EA818F; Fri, 29 Mar 2024 18:48:21 +0200 (EET)
+Date: Fri, 29 Mar 2024 18:48:21 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv9 05/17] x86/kexec: Keep CR4.MCE set during kexec for TDX
+ guest
+Message-ID: <dlixf7bld4efdh5goir5nreabkgtcwfbvv2rovjqrvjttplqss@auuqnt4h2llj>
+References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
+ <20240325103911.2651793-6-kirill.shutemov@linux.intel.com>
+ <b94c81ef-50f2-4e66-9533-461791777d10@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv9 05/17] x86/kexec: Keep CR4.MCE set during kexec for TDX
- guest
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>,
- Jun Nakajima <jun.nakajima@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
- "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
- kexec@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
- <20240325103911.2651793-6-kirill.shutemov@linux.intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20240325103911.2651793-6-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b94c81ef-50f2-4e66-9533-461791777d10@intel.com>
 
-On 3/25/2024 6:38 PM, Kirill A. Shutemov wrote:
-> TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
-> to #VE.
-
-Will we consider making it more safe and compatible for future to guard 
-against X86_FEATURE_MCE as well?
-
-If in the future, MCE becomes configurable for TD guest, then CR4.MCE 
-might not be fixed1.
-
-> Use alternatives to keep the flag during kexec for TDX guests.
+On Fri, Mar 29, 2024 at 11:21:32PM +0800, Xiaoyao Li wrote:
+> On 3/25/2024 6:38 PM, Kirill A. Shutemov wrote:
+> > TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
+> > to #VE.
 > 
-> The change doesn't affect non-TDX-guest environments.
+> Will we consider making it more safe and compatible for future to guard
+> against X86_FEATURE_MCE as well?
 > 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-> ---
->   arch/x86/kernel/relocate_kernel_64.S | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
-> index 56cab1bb25f5..e144bcf60cbe 100644
-> --- a/arch/x86/kernel/relocate_kernel_64.S
-> +++ b/arch/x86/kernel/relocate_kernel_64.S
-> @@ -5,6 +5,8 @@
->    */
->   
->   #include <linux/linkage.h>
-> +#include <linux/stringify.h>
-> +#include <asm/alternative.h>
->   #include <asm/page_types.h>
->   #include <asm/kexec.h>
->   #include <asm/processor-flags.h>
-> @@ -145,12 +147,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
->   	 * Set cr4 to a known state:
->   	 *  - physical address extension enabled
->   	 *  - 5-level paging, if it was enabled before
-> +	 *  - Machine check exception on TDX guest. Clearing MCE is not allowed
-> +	 *    in TDX guests.
->   	 */
->   	movl	$X86_CR4_PAE, %eax
->   	testq	$X86_CR4_LA57, %r13
->   	jz	1f
->   	orl	$X86_CR4_LA57, %eax
->   1:
-> +	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %eax), X86_FEATURE_TDX_GUEST
->   	movq	%rax, %cr4
->   
->   	jmp 1f
+> If in the future, MCE becomes configurable for TD guest, then CR4.MCE might
+> not be fixed1.
 
+Good point.
+
+I guess we can leave it clear if it was clear. This should be easy
+enough. But we might want to clear even if was set if clearing is allowed.
+
+It would require some kind of indication that clearing MCE is fine. We
+don't have such indication yet. Not sure we can reasonably future-proof
+the code at this point.
+
+But let me think more.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
