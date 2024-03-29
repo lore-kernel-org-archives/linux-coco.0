@@ -1,46 +1,46 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2079.outbound.protection.outlook.com [40.107.237.79])
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2042.outbound.protection.outlook.com [40.107.101.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840C238FAD
-	for <linux-coco@lists.linux.dev>; Fri, 29 Mar 2024 21:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B94013EFED
+	for <linux-coco@lists.linux.dev>; Fri, 29 Mar 2024 22:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711747865; cv=fail; b=RVMYJ9/J3StMsBmJ4kNrsxjXXbMNxGHFawqpNRZCpTpUMoXsO17hJlByDmmCHE/mcM9JKlAgulClybD+d8sZ8Qa/KiK2K4S7lPTFeAYPhrRYxvAnW+0EKFuJhkWm7Z84NDyeiC2Bgj40/vvwcQIgqZzlJ/21Hv5aD1zOpIuKGFo=
+	t=1711753153; cv=fail; b=pQIiBBhKd/3XHC0ewnAFqeBfziYXLxFeUJ3g9KZb+czUT9TqP7cfspVha7tgqseo4URq1bv6zbyPSM0uzempLqXmgyrgCmuXbiFKFyrYH8FsHh2DAIPLrqtm093E+JFnaPW2nIQeWrWHLbyWrZR8Ycw2ZwZyTkKBizCmxPkIMYE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711747865; c=relaxed/simple;
-	bh=lNtCR0A1c6b5FZaYMd40gScah5uy1hgosrD7l+hIo0w=;
+	s=arc-20240116; t=1711753153; c=relaxed/simple;
+	bh=32N0Xx4fpPiGgE4gdCbkfdfNikRkU8p14GCc9880qic=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QTARjv6C+KbwcHNtblzNvvhs/lp0Z020LNX+putszDwVxIHeh1T+yNbyr5KTliqx5AK5XCwEnxlP7VyWULVSbalf8cotggsYWEeUeyucq3otrCY/VOcEBldiXL4nXX1hQ/87dZSAl6CwPTrrlPvUxj6t+Llx12X26gJafWVomqo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=f1jbCNR+; arc=fail smtp.client-ip=40.107.237.79
+	 MIME-Version:Content-Type; b=X6h1fEpizL+9h9BpHNiFVub3+3P5w3JD0lfdk8PZptPGziwiP5AnrmvxqeGRjE4W5Le1zkKGCVue4EUqS+y04Y+rXUZSUK9J9lyDqkdMCJHY1wU1Byy/7PBF40xIkza8bvGO9bcWbA8C/FJ2d55TKdQO+/guAX1pBzwbXtegNUk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=q9r7dIZC; arc=fail smtp.client-ip=40.107.101.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="f1jbCNR+"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="q9r7dIZC"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RqUaU/h8ZP5PBw9z0lxOh+Zw/4m9pVFhy/Y5qv2mzLt6192RVUDvGeZaDPjYcwvCfmpboT5Dnr7LTHZ1jYHWTczCkMHIywrPxhTcOmzmvaa9lq7xiybui62Dumt+GL2anngWDj/Q42QmWe01/z6iSFF1Pk5C4uJb6uMWZI3Xv3N2Fo0Qw1s8H3rZCqbSBKDXETZnCQgXaq9TuGWDgVkrB5YNK4UPBigpalathiDzSpER6/qSvBEZMNbxa7Qgf8QZw4DS6Z5XXa0NcMzKVWf5Wn57d5mNBs6WO7Lux2VL8Vg3ok/K4bC952HRQQSObWoVlEAjtkKclQQut+3o14ch1Q==
+ b=CA9+EpoNiZ9ayMmuF+uTwSeBjPBlCFrkeWODbOoFlUQYPDABUEHwtqo28a8PW/imB4XHrnE6Mt7E6/eCJocLwL2ciZisEmC7AJ22GL9xbPbPArTsRqEhdNCCbYLP8qWdMy7FpFKDiSu99P3EtkWJOVuZR6wJ1zXPkVsxJAHxQ1NZ77Qa85K/ObPQ8AXhBmWwf+YD98Gd+ZIg+6gXsRxooicVQa7Y3DkW94F4Dp2asJhZho3IOy1uRIKUanolI+9CLEqcJE1wd8Pj9ElUfYP1G1okbc8A1YOlkTe5b9ULGwMufalRk2pkDIBD7XR36PUU/mnLms1Qwwj+VM+0nGkajg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hFtBDS2no1Ul0Q4qQCB1DyAo8Aqu1dKOcg07pwJhEVM=;
- b=hjSPiattuXzlYaXHt9Xq56ft8sjLFX6I4V6UD3KBrUe5rFFacwjj5IlpmD13mzHnbaTil9bWb5WbCb9GmH2ZQx5fzJhACztw7d4MR/dUVadR9PZTLrJkPM7eV9pbvslCCKXznedNVD0MdZF5piGpZgmnApBZw32WFlwFBbJosFC6eq5pcxczf53sRrmGFGhEP3pZ5YACtyw+BYXcHN0LMr/lx8jiXu1DwnuEvh4/Geh8ZcC5r4rpWUlGY0xfyKuKol0/Bb60xNj3YMOB+GBmvX3kvfIRYMMI0gsMmDUJ+/W7htDaBzdiR+9lLBsIxiMcP+ds5essGq2F/G0sKLn7tw==
+ bh=85xfxLH74OdKCMM2bG4Ka/efKmeDa+urj4S6khYBEhI=;
+ b=XUVPXyEnaWzdYWoJNkvqerhl6Svq2T8m2knayzG2+AeIbpHftkICKGYxj3BhyGshE2fO6TH9GpjHVrVPkK/+CpJ64AIdKw86jsY6ZbM8HQwf8klvQ5RxPozzGqx8MCi//iIwzzm3KPNqhj3Ww+jF4+8AE9bU9otOpkMOebIPanjg1MidwxVrLnfjkq7hfRkk/I+aj940z2p1XCAH17I0WNoHu8EhR4AyoCVtX/44RDF24bsnopzDbUsoOPAjhJ/fk/qtp+XVd5ANyraXcDOdxzpXNzWDFF6h5vNh9oBEnYh/p27lBZGuXOhT4rZfFcCDSYu2vULKOAr2b0ovUb+ebg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hFtBDS2no1Ul0Q4qQCB1DyAo8Aqu1dKOcg07pwJhEVM=;
- b=f1jbCNR+EJ0MSfQ1UDy3v2RHCVUbl9ATQEPs3k9dBXXhqzHbbo/BMR+neA4cSvowVvf/ui3l+/w2Qplb75FS4nu82IEO7xUCjzslz2uI3e8NUrN05v23sJMiFVeyLvpiWKpyusQydRZA9Urw9q/a9CFpaDpvRagYpyhFaw5DgPk=
-Received: from SJ0PR05CA0180.namprd05.prod.outlook.com (2603:10b6:a03:339::35)
- by PH7PR12MB7212.namprd12.prod.outlook.com (2603:10b6:510:207::18) with
+ bh=85xfxLH74OdKCMM2bG4Ka/efKmeDa+urj4S6khYBEhI=;
+ b=q9r7dIZCmGAMsb5Qf5qevjsO+u2qguOTQwgvMMQeTMWFxL30f5651Ih1rIv4M6gqyWlZAEDGO0VJA6/trmWh7JWA1JQmddseBxmacNU4bozvpuXx54+2xHpPUF3BfBuyIDYp3RuPMt3lUtS6+dQfKoYUuLkX31Den1QT9hFH4FA=
+Received: from DS7PR03CA0074.namprd03.prod.outlook.com (2603:10b6:5:3bb::19)
+ by SN7PR12MB6861.namprd12.prod.outlook.com (2603:10b6:806:266::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.40; Fri, 29 Mar
- 2024 21:30:59 +0000
-Received: from SJ5PEPF000001CA.namprd05.prod.outlook.com
- (2603:10b6:a03:339:cafe::37) by SJ0PR05CA0180.outlook.office365.com
- (2603:10b6:a03:339::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.41 via Frontend
- Transport; Fri, 29 Mar 2024 21:30:59 +0000
+ 2024 22:59:07 +0000
+Received: from CY4PEPF0000FCC4.namprd03.prod.outlook.com
+ (2603:10b6:5:3bb:cafe::79) by DS7PR03CA0074.outlook.office365.com
+ (2603:10b6:5:3bb::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.40 via Frontend
+ Transport; Fri, 29 Mar 2024 22:59:02 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,25 +48,36 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ5PEPF000001CA.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ CY4PEPF0000FCC4.mail.protection.outlook.com (10.167.242.106) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7409.10 via Frontend Transport; Fri, 29 Mar 2024 21:30:59 +0000
+ 15.20.7409.10 via Frontend Transport; Fri, 29 Mar 2024 22:59:01 +0000
 Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 29 Mar
- 2024 16:30:56 -0500
+ 2024 17:59:00 -0500
 From: Michael Roth <michael.roth@amd.com>
 To: <kvm@vger.kernel.org>
-CC: <linux-coco@lists.linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, Sean
- Christopherson <seanjc@google.com>, Isaku Yamahata
-	<isaku.yamahata@linux.intel.com>, Xu Yilun <yilun.xu@linux.intel.com>, Binbin
- Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH gmem 6/6] KVM: guest_memfd: Add interface for populating gmem pages with user data
-Date: Fri, 29 Mar 2024 16:24:44 -0500
-Message-ID: <20240329212444.395559-7-michael.roth@amd.com>
+CC: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+	<bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
+	<ak@linux.intel.com>, <tony.luck@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, Brijesh Singh
+	<brijesh.singh@amd.com>
+Subject: [PATCH v12 09/29] KVM: SEV: Add initial SEV-SNP support
+Date: Fri, 29 Mar 2024 17:58:15 -0500
+Message-ID: <20240329225835.400662-10-michael.roth@amd.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240329212444.395559-1-michael.roth@amd.com>
-References: <20240329212444.395559-1-michael.roth@amd.com>
+In-Reply-To: <20240329225835.400662-1-michael.roth@amd.com>
+References: <20240329225835.400662-1-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -79,151 +90,200 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CA:EE_|PH7PR12MB7212:EE_
-X-MS-Office365-Filtering-Correlation-Id: d078135d-9400-4a37-0907-08dc503786af
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC4:EE_|SN7PR12MB6861:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8a450cd9-fdcd-4e47-ed16-08dc5043d334
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	a/6IEK7LA25fwn30gqlHpbIvyUmYKkiv9J1GdoqDoiQXKkHiQQsZRLKgCmjjACgb0oZz+57k6Ad0Z+1ipT43fhGP+hDBsZGfhZLC4YAlLwYtHLX3xzqeDcj/YFJqikvBSPhB1jDs/G+SE5UMroyMGqwRJ48IaEbQ3z1ftRUu2vql0mg423htKJWCx1kXYJlx3AGw/JEGUow1xTWcu2/xtc+ZadajqHaMNfqDJDSeSQ79PouC3uy7qrR9aTjgRttTK0CHs5OauDgxFfUpA3qRU71e1qRpalMpxS9ewrsguGomi64Xzxo1ieKv75DLvYFmwxGR2iIqis9Ugt6q86RG92o1vJLIC9gloS9Adm5KBzIoA2ENKBTtMVf1/m+t5fbXvO9xF/iRojfn5qIOP/XJdUq0jWBvhuzl6dGkWf6N0tcqBs1XLoSQO70hO9QG+27QqiTGIqvdK9YDhW40Q1q/A65uv6ERjFtuqghYEl/l4fKoTPJ0US9ntqejkffrx4oZS3/mAi1HyH70nQ1eISbRQr2QdF+Tnr4fJADN6fo8IU5R3d+bDTAX/kGuZzIJZ7Zt4bl8Vm2LXfEg/TyQ7XIURHNFcHFHBXNvUm/SuaNWnezx6KCNKH/Ga9EQH9Kp114t4MAj/GjJadENNsDhJLw/AoJD41FFVuK/j9NgpPYfQ36dlax5E+VHu/wnjt7PJpcA2cW4LE6VC0E5JtItoxZAbDSEg0IGpu4ORC9Jhv9aqDqQox84pVziZkgaLhAykdjA
+	nsYawN22RK6vpJl8VU3uLdBNz2wKwfigLe9u15MYJjT0NXQV3Yzjn6a1OjYj4LPzeDO8cf52t0bld23f73IhgDjhPepqbc7IwHTzPhZ/pO0fb1Dc4F6dPKSdnsPrwbyyhJI21uoEBXlb9DpAIEIBOyVjZmH+wtq/OnN34HGIHNnAASx0iEdmOS44o1oEugf+lFgXmiA6AQWu+IikoKRj2YItSH3Txq0G7BC/TRGiWq2KqdmgFh+n5Hsot5lhcjxEP+iWzkso8UiBcRHFE8Sju6gjTCdVv1uIDSSjI3OvUAubuGZeTloeeL4ALMLAdXglcVDTAeML83k7xVUpdU2UJQx0wb/97jBfBau1zhrRC78B3NehLm2mU8sjwnExhuP/MfHsbmuX5VvLn2CPH9T81lSMjdxVYlZI/ytN2lzlTQ6vcxI+8hSPG9PpG923elprnKSAI7fsLuCaIOF+SPmZqnI+RcAfIX4fms89ZDSC6lffhLHDFAraZ3I86fN9ZemKTUgctwPvboQCfEG3mDxYzLPPQYhchCxYb1wWaG8jFR5sFSVsrE7JQ/SDBGTYpRHKn9KLxD3rVWSX7nTCof7mJAPHXd2W0DPkpcx9TiDMdcZ4+2WH9Ez1YUqwMRjAYVmxwirJl9RK3NI4in6GXQmovhcw4JB7RQikwOS3iiudBKTtfKGD6mR80tiSkJb9G8Bw9pvoQHQlT6bQl8BXfRTgx5cMzVuv0ny3ytgj4cr3PKrxvNDbOm6IUcK3cMc8E9Ls
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(376005)(36860700004)(82310400014)(1800799015);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400014)(1800799015)(7416005)(376005)(36860700004);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2024 21:30:59.1559
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2024 22:59:01.5166
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d078135d-9400-4a37-0907-08dc503786af
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a450cd9-fdcd-4e47-ed16-08dc5043d334
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001CA.namprd05.prod.outlook.com
+	CY4PEPF0000FCC4.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7212
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6861
 
-During guest run-time, kvm_arch_gmem_prepare() is issued as needed to
-prepare newly-allocated gmem pages prior to mapping them into the guest.
-In the case of SEV-SNP, this mainly involves setting the pages to
-private in the RMP table.
+SEV-SNP builds upon existing SEV and SEV-ES functionality while adding
+new hardware-based security protection. SEV-SNP adds strong memory
+encryption and integrity protection to help prevent malicious
+hypervisor-based attacks such as data replay, memory re-mapping, and
+more, to create an isolated execution environment.
 
-However, for the GPA ranges comprising the initial guest payload, which
-are encrypted/measured prior to starting the guest, the gmem pages need
-to be accessed prior to setting them to private in the RMP table so they
-can be initialized with the userspace-provided data. Additionally, an
-SNP firmware call is needed afterward to encrypt them in-place and
-measure the contents into the guest's launch digest.
+Define a new KVM_X86_SNP_VM type which makes use of these capabilities
+and extend the KVM_SEV_INIT2 ioctl to support it. Also add a basic
+helper to check whether SNP is enabled.
 
-While it is possible to bypass the kvm_arch_gmem_prepare() hooks so that
-this handling can be done in an open-coded/vendor-specific manner, this
-may expose more gmem-internal state/dependencies to external callers
-than necessary. Try to avoid this by implementing an interface that
-tries to handle as much of the common functionality inside gmem as
-possible, while also making it generic enough to potentially be
-usable/extensible for use-cases beyond just SEV-SNP.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+[mdr: commit fixups, use similar ASID reporting as with SEV/SEV-ES]
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 ---
- include/linux/kvm_host.h | 40 ++++++++++++++++++++++++++++++++++++++++
- virt/kvm/guest_memfd.c   | 40 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 80 insertions(+)
+ arch/x86/include/asm/svm.h      |  3 ++-
+ arch/x86/include/uapi/asm/kvm.h |  1 +
+ arch/x86/kvm/svm/sev.c          | 21 ++++++++++++++++++++-
+ arch/x86/kvm/svm/svm.c          |  3 ++-
+ arch/x86/kvm/svm/svm.h          | 12 ++++++++++++
+ arch/x86/kvm/x86.c              |  2 +-
+ 6 files changed, 38 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 5b8308b5e4af..8a75787090f3 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2473,4 +2473,44 @@ bool kvm_arch_gmem_prepare_needed(struct kvm *kvm);
- void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
- #endif
+diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+index 728c98175b9c..544a43c1cf11 100644
+--- a/arch/x86/include/asm/svm.h
++++ b/arch/x86/include/asm/svm.h
+@@ -285,7 +285,8 @@ static_assert((X2AVIC_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AVIC_
  
-+/**
-+ * kvm_gmem_populate_args - kvm_gmem_populate() argument structure
-+ *
-+ * @gfn: starting GFN to be populated
-+ * @src: userspace-provided buffer containing data to copy into GFN range
-+ * @npages: number of pages to copy from userspace-buffer
-+ * @do_memcpy: whether to do a direct memcpy of the data prior to issuing
-+ *             the post-populate callback
-+ * @post_populate: callback to issue for each gmem page that backs the GPA
-+ *                 range (which will be filled with corresponding contents from
-+ *                 @src if @do_memcpy was set)
-+ * @opaque: opaque data to pass to @post_populate callback
-+ */
-+struct kvm_gmem_populate_args {
-+	gfn_t gfn;
-+	void __user *src;
-+	int npages;
-+	bool do_memcpy;
-+	int (*post_populate)(struct kvm *kvm, struct kvm_memory_slot *slot,
-+			     gfn_t gfn, kvm_pfn_t pfn, void __user *src, int order,
-+			     void *opaque);
-+	void *opaque;
-+};
+ #define AVIC_HPA_MASK	~((0xFFFULL << 52) | 0xFFF)
+ 
+-#define SVM_SEV_FEAT_DEBUG_SWAP                        BIT(5)
++#define SVM_SEV_FEAT_SNP_ACTIVE				BIT(0)
++#define SVM_SEV_FEAT_DEBUG_SWAP				BIT(5)
+ 
+ struct vmcb_seg {
+ 	u16 selector;
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+index 51b13080ed4b..725b75cfe9ff 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -868,5 +868,6 @@ struct kvm_hyperv_eventfd {
+ #define KVM_X86_SW_PROTECTED_VM	1
+ #define KVM_X86_SEV_VM		2
+ #define KVM_X86_SEV_ES_VM	3
++#define KVM_X86_SNP_VM		4
+ 
+ #endif /* _ASM_X86_KVM_H */
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 1e65f5634ad3..3d9771163562 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -46,6 +46,9 @@ module_param_named(sev, sev_enabled, bool, 0444);
+ static bool sev_es_enabled = true;
+ module_param_named(sev_es, sev_es_enabled, bool, 0444);
+ 
++/* enable/disable SEV-SNP support */
++static bool sev_snp_enabled;
 +
-+/**
-+ * kvm_gmem_populate() - Populate/prepare a GPA range with guest data
-+ *
-+ * @kvm: KVM instance
-+ * @slot: slot containing the GPA range being prepared
-+ * @args: argument structure
-+ *
-+ * This is primarily intended for cases where a gmem-backed GPA range needs
-+ * to be initialized with userspace-provided data prior to being mapped into
-+ * the guest as a private page. This should be called with the slots->lock
-+ * held so that caller-enforced invariants regarding the expected memory
-+ * attributes of the GPA range do not race with KVM_SET_MEMORY_ATTRIBUTES.
-+ */
-+int kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
-+		      struct kvm_gmem_populate_args *args);
+ /* enable/disable SEV-ES DebugSwap support */
+ static bool sev_es_debug_swap_enabled = true;
+ module_param_named(debug_swap, sev_es_debug_swap_enabled, bool, 0444);
+@@ -275,6 +278,9 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+ 	sev->es_active = es_active;
+ 	sev->vmsa_features = data->vmsa_features;
+ 
++	if (vm_type == KVM_X86_SNP_VM)
++		sev->vmsa_features |= SVM_SEV_FEAT_SNP_ACTIVE;
 +
- #endif
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 3668a5f1d82b..3e3c4b7fff3b 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -643,3 +643,43 @@ int kvm_gmem_undo_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	return r;
- }
- EXPORT_SYMBOL_GPL(kvm_gmem_undo_get_pfn);
-+
-+int kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
-+		      struct kvm_gmem_populate_args *args)
-+{
-+	int ret, max_order, i;
-+
-+	for (i = 0; i < args->npages; i += (1 << max_order)) {
-+		void __user *src = args->src + i * PAGE_SIZE;
-+		gfn_t gfn = args->gfn + i;
-+		kvm_pfn_t pfn;
-+
-+		ret = __kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &max_order, false);
-+		if (ret)
-+			break;
-+
-+		if (!IS_ALIGNED(gfn, (1 << max_order)) ||
-+		    (args->npages - i) < (1 << max_order))
-+			max_order = 0;
-+
-+		if (args->do_memcpy && args->src) {
-+			ret = copy_from_user(pfn_to_kaddr(pfn), src, (1 << max_order) * PAGE_SIZE);
-+			if (ret)
-+				goto e_release;
-+		}
-+
-+		if (args->post_populate) {
-+			ret = args->post_populate(kvm, slot, gfn, pfn, src, max_order,
-+						  args->opaque);
-+			if (ret)
-+				goto e_release;
-+		}
-+e_release:
-+		put_page(pfn_to_page(pfn));
-+		if (ret)
-+			break;
+ 	ret = sev_asid_new(sev);
+ 	if (ret)
+ 		goto e_no_asid;
+@@ -326,7 +332,8 @@ static int sev_guest_init2(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 		return -EINVAL;
+ 
+ 	if (kvm->arch.vm_type != KVM_X86_SEV_VM &&
+-	    kvm->arch.vm_type != KVM_X86_SEV_ES_VM)
++	    kvm->arch.vm_type != KVM_X86_SEV_ES_VM &&
++	    kvm->arch.vm_type != KVM_X86_SNP_VM)
+ 		return -EINVAL;
+ 
+ 	if (copy_from_user(&data, u64_to_user_ptr(argp->data), sizeof(data)))
+@@ -2297,11 +2304,16 @@ void __init sev_set_cpu_caps(void)
+ 		kvm_cpu_cap_set(X86_FEATURE_SEV_ES);
+ 		kvm_caps.supported_vm_types |= BIT(KVM_X86_SEV_ES_VM);
+ 	}
++	if (sev_snp_enabled) {
++		kvm_cpu_cap_set(X86_FEATURE_SEV_SNP);
++		kvm_caps.supported_vm_types |= BIT(KVM_X86_SNP_VM);
 +	}
+ }
+ 
+ void __init sev_hardware_setup(void)
+ {
+ 	unsigned int eax, ebx, ecx, edx, sev_asid_count, sev_es_asid_count;
++	bool sev_snp_supported = false;
+ 	bool sev_es_supported = false;
+ 	bool sev_supported = false;
+ 
+@@ -2382,6 +2394,7 @@ void __init sev_hardware_setup(void)
+ 	sev_es_asid_count = min_sev_asid - 1;
+ 	WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV_ES, sev_es_asid_count));
+ 	sev_es_supported = true;
++	sev_snp_supported = sev_snp_enabled && cc_platform_has(CC_ATTR_HOST_SEV_SNP);
+ 
+ out:
+ 	if (boot_cpu_has(X86_FEATURE_SEV))
+@@ -2394,9 +2407,15 @@ void __init sev_hardware_setup(void)
+ 		pr_info("SEV-ES %s (ASIDs %u - %u)\n",
+ 			sev_es_supported ? "enabled" : "disabled",
+ 			min_sev_asid > 1 ? 1 : 0, min_sev_asid - 1);
++	if (boot_cpu_has(X86_FEATURE_SEV_SNP))
++		pr_info("SEV-SNP %s (ASIDs %u - %u)\n",
++			sev_snp_supported ? "enabled" : "disabled",
++			min_sev_asid > 1 ? 1 : 0, min_sev_asid - 1);
+ 
+ 	sev_enabled = sev_supported;
+ 	sev_es_enabled = sev_es_supported;
++	sev_snp_enabled = sev_snp_supported;
 +
-+	return ret;
+ 	if (!sev_es_enabled || !cpu_feature_enabled(X86_FEATURE_DEBUG_SWAP) ||
+ 	    !cpu_feature_enabled(X86_FEATURE_NO_NESTED_DATA_BP))
+ 		sev_es_debug_swap_enabled = false;
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 0f3b59da0d4a..2c162f6a1d78 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4890,7 +4890,8 @@ static int svm_vm_init(struct kvm *kvm)
+ 
+ 	if (type != KVM_X86_DEFAULT_VM &&
+ 	    type != KVM_X86_SW_PROTECTED_VM) {
+-		kvm->arch.has_protected_state = (type == KVM_X86_SEV_ES_VM);
++		kvm->arch.has_protected_state =
++			(type == KVM_X86_SEV_ES_VM || type == KVM_X86_SNP_VM);
+ 		to_kvm_sev_info(kvm)->need_init = true;
+ 	}
+ 
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 157eb3f65269..4a01a81dd9b9 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -348,6 +348,18 @@ static __always_inline bool sev_es_guest(struct kvm *kvm)
+ #endif
+ }
+ 
++static __always_inline bool sev_snp_guest(struct kvm *kvm)
++{
++#ifdef CONFIG_KVM_AMD_SEV
++	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
++
++	return (sev->vmsa_features & SVM_SEV_FEAT_SNP_ACTIVE) &&
++	       !WARN_ON_ONCE(!sev_es_guest(kvm));
++#else
++	return false;
++#endif
 +}
-+EXPORT_SYMBOL_GPL(kvm_gmem_populate);
++
+ static inline void vmcb_mark_all_dirty(struct vmcb *vmcb)
+ {
+ 	vmcb->control.clean = 0;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 64eda7949f09..f85735b6235d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12603,7 +12603,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ 
+ 	kvm->arch.vm_type = type;
+ 	kvm->arch.has_private_mem =
+-		(type == KVM_X86_SW_PROTECTED_VM);
++		(type == KVM_X86_SW_PROTECTED_VM || type == KVM_X86_SNP_VM);
+ 
+ 	ret = kvm_page_track_init(kvm);
+ 	if (ret)
 -- 
 2.25.1
 
