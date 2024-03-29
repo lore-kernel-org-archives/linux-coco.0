@@ -1,98 +1,172 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2074.outbound.protection.outlook.com [40.107.220.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302EE11721
-	for <linux-coco@lists.linux.dev>; Fri, 29 Mar 2024 16:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711730909; cv=none; b=gbRG1j141ljUedRcDFT0h1jvidDaTCzhsOfj7FG9LijQc7kMwoZI+aXALnetxW/3Qc/Kiamtuia+9UDntS+gOcRDZZWGrBTidKY/OT1HxkUkzY571F14jJCdPMTk2rcZzYM6Ol1ql2ruTTbNCLtjeMbrjYxkUaidVQvHhTNGA38=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711730909; c=relaxed/simple;
-	bh=VHSFCeLmDsuoG8JZu78Wui4erUPAkz/n1mlCxxF71tE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HbzXTioIBMA57IqLm4h6FgaDKkTeu1IBnJd/F3NAfBv9Xjgs0VX6HejiFgpj+0+wmz6F2M+kqoRncOXR+aT4sQZ4qAFtEzA17yxnG/eqYBLLnEgoI8BxkyD+btbALVve28rYlo6Mj2DscfsHGtoBZzrLadXFqyj7gliNw65WNHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k7sGzsX5; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30E76A346
+	for <linux-coco@lists.linux.dev>; Fri, 29 Mar 2024 21:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711747738; cv=fail; b=CWuyG0J8KZJMWJnFqibo8jqX+dHs1i1qrNmKXxWjb2ShEh9mg0A4ie4L0scB9b+yKh9C64Jjgp9kGuf9HR5y35W/Zpq/E53YNrxG1++t7jswZaS++exoDIlcV9a4VT5PemEKgJVdyaAWI7qVuFAQgEmz3wRc9rQ7b+RU4HjEg9o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711747738; c=relaxed/simple;
+	bh=kErsm08yxXmUyl0hbfMy5p+9q0XrPrFe1bTpP+ywr0Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PSLs1Vym5fwfop+4TzBBN+CP7zjtEdIMIiSzg5nD4mahxNUrf8mMK7SgnBcpH0yhkNaM64VC2lnkNn2NKwSSaD5TasZeCkB8g9yC/rTSZeegj2uCmcUm0lzlGyy9BxppSIsp+g+eAQeukGuZ1JX9nl7V2NNYs/LR4WSYFwrdefc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=dqo8rnBO; arc=fail smtp.client-ip=40.107.220.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k7sGzsX5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711730908; x=1743266908;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VHSFCeLmDsuoG8JZu78Wui4erUPAkz/n1mlCxxF71tE=;
-  b=k7sGzsX5crwd+fw9ENSYhKlFKR+2dnE/EnsRycLASfz6Zr+Pb6lrrDH/
-   3neB3JkfjlXG0O1DCT1zO2w8PZzd1UmLm6LHxle8oiltHCmKC3lBMGdoA
-   rMD3a8OhN5r1Ol7sDrXmonOfDuP2D4VjGnKKNlCbICFaLGVkxL+lEhOp1
-   5kYzxWAEsc4qtGpPBY7uPjWAM6hwnSjn/JmJXNzeSmuhXC5VJBgwc2pPN
-   D3V6EcPDxEGIIrABBTVKvxllPx1zINq6Dv1g4b7tZwRSUcMOVry5aAWbp
-   fEsggD3irfk99LM/gWU1ZvV+LI7ybHhkEfkRlaCd/Lxgipwsxip891M2/
-   w==;
-X-CSE-ConnectionGUID: R98gg+ZuRkek1TpUV5msFQ==
-X-CSE-MsgGUID: Aw6QC8vXRIm1+5qyNuVfxQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="24385637"
-X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; 
-   d="scan'208";a="24385637"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 09:48:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="937078212"
-X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; 
-   d="scan'208";a="937078212"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 29 Mar 2024 09:48:22 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 59EA818F; Fri, 29 Mar 2024 18:48:21 +0200 (EET)
-Date: Fri, 29 Mar 2024 18:48:21 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv9 05/17] x86/kexec: Keep CR4.MCE set during kexec for TDX
- guest
-Message-ID: <dlixf7bld4efdh5goir5nreabkgtcwfbvv2rovjqrvjttplqss@auuqnt4h2llj>
-References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
- <20240325103911.2651793-6-kirill.shutemov@linux.intel.com>
- <b94c81ef-50f2-4e66-9533-461791777d10@intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dqo8rnBO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CSeVGqBRphoLnLG0B7D7pfosnyk6RX/FSvrMyXyHA4VNtEqU0+a70vx8fcFcM1hMnDV4Lk62UrkuvdGGTPmaxph9ssanjDIS+2z2nciXUO5iEuqz2FjOkcEXQUMhZ4x9Sco/+jzZeFt/6cK0u9yaGcGMMA44iVXSHziI09pb0VF0y5kDXpAAVdMhMI/YCdWAAaHFm2B+Hx7Jm+AMYJW6M9cQHUC5rGmsO1OrLfZ2uwwDDsNX4wjz4fKrO4KrI0LBdpd/rDDk54tujQvCkfASGclNBdtuRpOuQv4MsvNJV+EJe4wh8xlJPgnLrPYdeRo1sTMkH5N79gO36baSIkQ+ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LRIVW2LnEW8X8ToyIMb93QMRO8ipYRgPVLFD+yidL8w=;
+ b=P8fCl8iw4vrfsDNuNx8P/c+mb/vhVBd4rV6HdQNogSx7ivm6vxO8NKRPEIxbAjuQ6ROpiAKbeTEY8n511bdMqFvZHFo+oh8GJVhmGAktXku2/lKFo5vvnCpbQC5NNUdMNz6imw3HkiYanANidhf5lOWw6StO20bz4V/Fvg0SZs/HuYFElI4cMvD2qc1gWXZQe3GHfQ9nTVUczqjwIqfyXXv/cDd2UVWo6J9PXr5QWLQqK6B207xOCpt583oZn+AeiWqf3ydPNmSXrypbH51Qk3GCgSpI/YaNSQWR5bdBSFdDOBDMLu64y75vdSomKmWmg97s3XRDHSYvQIY4MHI0KA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LRIVW2LnEW8X8ToyIMb93QMRO8ipYRgPVLFD+yidL8w=;
+ b=dqo8rnBOclzfl5qD72CqGBgfE2/3mmHDUogNxsfam+O5KMLOuqeY+FcFxgY/5ACeVzyTU2cZnPT8IgDxeXX4eeu90XOnq4q7epokfT/gMavF/6fYFn9DUsf5vAyui7XGb9pwgPX/5GsN33f49eGOjUoInnryTri21t/56iAS3qI=
+Received: from BL1P221CA0006.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:2c5::22)
+ by SN7PR12MB7177.namprd12.prod.outlook.com (2603:10b6:806:2a5::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.31; Fri, 29 Mar
+ 2024 21:28:51 +0000
+Received: from BL02EPF0001A0FA.namprd03.prod.outlook.com
+ (2603:10b6:208:2c5:cafe::5b) by BL1P221CA0006.outlook.office365.com
+ (2603:10b6:208:2c5::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.13 via Frontend
+ Transport; Fri, 29 Mar 2024 21:28:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF0001A0FA.mail.protection.outlook.com (10.167.242.101) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7409.10 via Frontend Transport; Fri, 29 Mar 2024 21:28:51 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 29 Mar
+ 2024 16:28:50 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: <kvm@vger.kernel.org>
+CC: <linux-coco@lists.linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, Sean
+ Christopherson <seanjc@google.com>, Isaku Yamahata
+	<isaku.yamahata@linux.intel.com>, Xu Yilun <yilun.xu@linux.intel.com>, Binbin
+ Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, Matthew
+ Wilcox <willy@infradead.org>
+Subject: [PATCH gmem 0/6] gmem fix-ups and interfaces for populating gmem pages
+Date: Fri, 29 Mar 2024 16:24:38 -0500
+Message-ID: <20240329212444.395559-1-michael.roth@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b94c81ef-50f2-4e66-9533-461791777d10@intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FA:EE_|SN7PR12MB7177:EE_
+X-MS-Office365-Filtering-Correlation-Id: 10a1011e-df9c-4ee6-82a2-08dc50373a71
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	E9xeflZ8QOJKKsQgiGljmdnrFImcsyNG99RIZenPc4Aoe0wtvXwESGeGL5iOJK9aWVvtCURV1+fEh+Um1IP1TjWRIjbA+YJsgQUwWtLznBFdn//R8nLZnLcnOvjL2MfdL0uE5hJAPGfWXl3fMhCO15cB0x2rzT+KY7SULT25rOTnxdtYclJqKjJlYC1zFxJMnxnKXFsRSzwYRYGVWSc8QmGzxxNKPgIuDSiiALd0yvN7XXb3tFgsPGYyIK47Ur2b1snmdr1DmIbPfBo5DLcMzuDvlSOW3LoynhYHaT5Xv9egybZ26DQRRwBdHPdQwmFQztLH3pnuvP7I7wuMGEzUx+ztzQAjXqkYdjcrLUNFbXNJTTZXJSnf9BSfFv3pmUl+waJuL2xLEP+QjNMckiKBJdklclRJtHA3eDbdAr3B1f4/encRmOX+zm93gSYvA34Bw330TfuCZKMgQ2m7AnDZ2g0uy+hQo4u2eRfUCQw9OjnvYrnzJH3lEYnUSmi1gmqz++6GpsSVdPT0tGK/GlgGbf6fVHrccNv6j9Jyjinf/BTryKdERhXkU9RyKvOrkA7WqETfWaEz6ovXtpej8IuQDn52s871VBaVMCJC4DYcvuHNwzHzKOZFR3B8XSfm+JONC7AEmKwSN+sRGo5AyHPqiv5hgr1nnmOiPefd6xdFb5BlEjo474sRbpqsAFGz5W97aOwadje4AE0napYptSJ/Ug==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(376005)(82310400014)(1800799015);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2024 21:28:51.3239
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10a1011e-df9c-4ee6-82a2-08dc50373a71
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A0FA.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7177
 
-On Fri, Mar 29, 2024 at 11:21:32PM +0800, Xiaoyao Li wrote:
-> On 3/25/2024 6:38 PM, Kirill A. Shutemov wrote:
-> > TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
-> > to #VE.
-> 
-> Will we consider making it more safe and compatible for future to guard
-> against X86_FEATURE_MCE as well?
-> 
-> If in the future, MCE becomes configurable for TD guest, then CR4.MCE might
-> not be fixed1.
+These patches are based on top of:
 
-Good point.
+  https://git.kernel.org/pub/scm/virt/kvm/kvm.git/log/?h=kvm-coco-queue
 
-I guess we can leave it clear if it was clear. This should be easy
-enough. But we might want to clear even if was set if clearing is allowed.
+and are also available from:
+  
+  https://github.com/AMDESE/linux/commits/kvm-gmem-common-v1/
+  
 
-It would require some kind of indication that clearing MCE is fine. We
-don't have such indication yet. Not sure we can reasonably future-proof
-the code at this point.
+Overview
+--------
 
-But let me think more.
+This is a small collection of patches that addresses some review comments
+from Paolo's series:
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+  [PATCH 00/21] TDX/SNP part 1 of n, for 6.9
+  https://lore.kernel.org/lkml/20240227232100.478238-1-pbonzini@redhat.com/
+
+and also introduces some flags and interfaces that might also be relevant to
+the scope of that series.
+
+I'm posting these together initially as they comprise what may be the last
+batch of SNP dependencies that are potentially relevant to TDX and a common
+CoCo tree, but can split out or move back into SNP series, whatever is
+deemed preferable.
+
+
+Patch Layout
+------------
+
+1-3: These are smaller fix-ups to address various review comments pertaining
+     to the gmem hooks that were originally part of the SNP hypervisor
+     postings. In each case they can be potentially squashed into the
+     corresponding patches in kvm-coco-queue if that's preferable.
+
+4-5: This introduces an AS_INACCESSIBLE flag that prevents unexpected
+     accesses to hole-punched gmem pages before invalidation hooks have had
+     a chance to make them safely accessible to the host again.
+
+6:   This implements an interface that was proposed by Sean during this[1]
+     discussion regarding SNP_LAUNCH_UPDATE and discussed in more detail
+     during the PUCK session "Finalizing internal guest_memfd APIs for
+     SNP/TDX". It is not verbatim what was discussed, but is hopefully a
+     reasonable starting point to handle use-cases like SNP_LAUNCH_UPDATE.
+     It may also avoid the need to export kvm_gmem_get_uninit_pfn() as an
+     external interface if SNP_LAUNCH_UPDATE is still the only
+     known/planned user.
+
+
+Thanks!
+
+[1] https://lore.kernel.org/lkml/Zb1yv67h6gkYqqv9@google.com/
+
+
+----------------------------------------------------------------
+Michael Roth (6):
+      KVM: guest_memfd: Fix stub for kvm_gmem_get_uninit_pfn()
+      KVM: guest_memfd: Only call kvm_arch_gmem_prepare hook if necessary
+      KVM: x86: Pass private/shared fault indicator to gmem_validate_fault
+      mm: Introduce AS_INACCESSIBLE for encrypted/confidential memory
+      KVM: guest_memfd: Use AS_INACCESSIBLE when creating guest_memfd inode
+      KVM: guest_memfd: Add interface for populating gmem pages with user data
+
+ arch/x86/include/asm/kvm_host.h |  3 ++-
+ arch/x86/kvm/mmu/mmu.c          |  3 ++-
+ include/linux/kvm_host.h        | 45 +++++++++++++++++++++++++++++++++++-
+ include/linux/pagemap.h         |  1 +
+ mm/truncate.c                   |  3 ++-
+ virt/kvm/guest_memfd.c          | 51 +++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 102 insertions(+), 4 deletions(-)
+
+
