@@ -1,65 +1,65 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1278841C93
-	for <linux-coco@lists.linux.dev>; Sat, 30 Mar 2024 19:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDA91D526
+	for <linux-coco@lists.linux.dev>; Sat, 30 Mar 2024 20:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711828734; cv=none; b=HVd5F1jYfNlKsjNBwvWrmvkwiJf4kMGsT6Dx/xukjROHghDl6fnyYmwBIJCcrO9w7dn19TgrCGczWryJyFJXZP+Dm5ci9unERPuWS4vR+6tBqvMBoO68apXueID/0nKIvwyvJIpdMvtToW6SbDLxRvSH6/U/sicnf0S2HbmCixg=
+	t=1711830038; cv=none; b=FaAeHunEsaRWwiF97Kgx5/JOMXTgpD9wgnDXf4kzH3MW0drnLob1JM81sfzoz9/0rrIe1blfwnnuTDynr3dmbBF6Zj6kgD62+ea/ERnJjAuCJ2VRS/jGHZc8DaogqO8zAu72Wi+ucARuvkd9ly4NcGAWou6fMcrT+qY1vbb1Hyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711828734; c=relaxed/simple;
-	bh=hf3cXG5C0fUquGqLTgPc2V579FQipFG2QTQsJrAH3ko=;
+	s=arc-20240116; t=1711830038; c=relaxed/simple;
+	bh=oxdPWe+ybLFjcrHDDH17LDCwEaRt9Ub+u4pYIQ6Evnc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fBGg48xeYnshhNAYogGcBL6JXtiK/7Q+RkakR10QTF2FtAF+aXnRWbhavowjs+B/bfnTnfgZ9Ke7zoGKbCRk5Or/GoojwgzQEv4xkPSvbWufGS2HR2L/NYVViLB/AR8eMRwr8JR/ag7NiHmDymOV14za95r18uqDmn6VtP932/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PoyE1v9N; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=MWUhXVZwrCbnr9zMzv0PqlfxXeZ8JwSGVG0MD6WcKR+N0vfa/IxpABeykXe9Sx6/LRzqwBW18QTgeglFKP890fpeG1ijtfo8uEIqVWaPNa32eItmg1DugRJZaUYiHDY+fsjP/tSv0E3j2z7Z+WSPQwTEB8mAqOPE+Q2HEY9mhVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XVxaULe+; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PoyE1v9N"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XVxaULe+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711828732;
+	s=mimecast20190719; t=1711830036;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YCminwhNWaoRY7+GIgboB+tGovxzzkyeTmQzRWRZumA=;
-	b=PoyE1v9NXDKGvDwX+RJ80CJBV0O+XrnDzgN03rWRZwPrhPGzkX5IJupy/L3qUJYKgUDhFW
-	vo6hT2tpN0XpyXOp6/Mo/wu28z+lVZ+JzfMuim1/V3YGiSpIXIz4LWwZA1KOLH9z8Z9+ap
-	X1iLRIcS5niZ1uDRDY1UmYdaZs+nggw=
+	bh=zjsXt6/XI2fGcxfOy299lQeB6mbSKKFDwTLuof4Ifvg=;
+	b=XVxaULe+rEs3zJbA9wB4CT+eezhJTU6xMbR09iS1dsh4ei5qlkRmEz12/vALFQF62yPMYU
+	axDfPx4sy0OHYThb/mvR43ZBTRB9lfFdf12mjbGJqZBTYBvd/FGq/5LEeeMfuG09VkysJV
+	VwhE6nYr23BK1x5TRdzO9n2wQRp/OYY=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-83-LK6bMEwgOv-GyHEi04Utng-1; Sat, 30 Mar 2024 15:58:48 -0400
-X-MC-Unique: LK6bMEwgOv-GyHEi04Utng-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a4455ae71fcso162955166b.3
-        for <linux-coco@lists.linux.dev>; Sat, 30 Mar 2024 12:58:47 -0700 (PDT)
+ us-mta-651-CQj7dUI4MAKT6BYLxhDYzA-1; Sat, 30 Mar 2024 16:20:33 -0400
+X-MC-Unique: CQj7dUI4MAKT6BYLxhDYzA-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a4e49d250b6so37459266b.3
+        for <linux-coco@lists.linux.dev>; Sat, 30 Mar 2024 13:20:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711828727; x=1712433527;
+        d=1e100.net; s=20230601; t=1711830032; x=1712434832;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YCminwhNWaoRY7+GIgboB+tGovxzzkyeTmQzRWRZumA=;
-        b=NvysRRoRm5aC8H2aQ6GEXIbNxU8wpCOnIiotJDqeWQR9HpdDIXFfYTfWc57bIls+12
-         dbTYhW3pm8iNPO3gwhOJ4U0WyIESDFXa5a3apmHbE2TZrg2QXv4ey1oqsTu3ENHFNTGn
-         eXLEaug2V/n0az6hrvnjN0f57y78E8iOZ4lZctyawyV2DirFpumekmyO2EP+R4UXPbqf
-         2luFIMEr0LlHDKHVA5e2nIl+7lEVdgSXC8sxRUO7/38DGQf2af+BJHjaysqGj5Z9M+fq
-         5NwWiG4sbQBaVlat2UoTHFNTNZpKF06DF5ng4LSw4m5PI2MtlhqIHJ0SvxiNoPGL2Kkt
-         q2AA==
-X-Gm-Message-State: AOJu0Yw0Y9lvb2XWMC8LdIjnmacb9L9g1D416WneXzLvM0WR/8ibek0F
-	Oh76dXWSwVMcN9xzplT88i9v5OeBoEx5vfnRB4AKNyMWZCy6x1/qSB5+snm4eDHjwGs+T90ywIo
-	C6m4y7JoUDsQQhxvMg9U5oKiHvEL9xpVE9o/ruo3k295QO4OoXxYBEttxamA=
-X-Received: by 2002:a17:906:1c4a:b0:a4e:42f3:3c87 with SMTP id l10-20020a1709061c4a00b00a4e42f33c87mr2570785ejg.60.1711828727078;
-        Sat, 30 Mar 2024 12:58:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHy+R3udwrEk7qE8kYGBy3X2m7ot4CCo2QHYfwudjqdFowZGSCCNoO42aevE6XNUz55Zs9VnA==
-X-Received: by 2002:a17:906:1c4a:b0:a4e:42f3:3c87 with SMTP id l10-20020a1709061c4a00b00a4e42f33c87mr2570749ejg.60.1711828726490;
-        Sat, 30 Mar 2024 12:58:46 -0700 (PDT)
+        bh=zjsXt6/XI2fGcxfOy299lQeB6mbSKKFDwTLuof4Ifvg=;
+        b=qrK/rRn5gwcdM7xcFPKLfdpV9mmxLo4CtEw7kRhHJ8S77cNJB5k116/48EruoJSo7f
+         XcZiazcIL64Zy0UdsiO2XPzkl6jshWXHZ9X9sGSU+0TNFWLlNgpkMNDUGY15HGUvHbhS
+         loL9Le3wozrsfXgTzb3YDxzkQfb2zyNdcrRwQodygBd762uxNV7r0HCbIIwFedkG9eY3
+         O/BEGUFROsoUZONmCukxNGXjEwhfdRtC+f7B2sM052bfXHLC9422rYba6TgTJ3SvlDjL
+         mSQdLBsj94qdTezZa/UPDi8ZLu/jBY96AEhqTZ4J1YkhHrRjTPB1iUdvw0epPf3/ine9
+         CVaw==
+X-Gm-Message-State: AOJu0Yww6rqN6PfN1Y85Ok7gdvB5v65uSO5t2g142dgK2TH372U0sblO
+	9vkWufZ7eQ7JkWCNPy8WleVsiabdj7Q2rrCEGGIzi9JuZ3HF6FIPH1TU9JprsNuc2ZdXO9Q0Jeh
+	X9D/GhUqw5hOSq9aVXnbXw/z73wQm/oCngN57udC5bnzJbu7V6PTxG9kxogs=
+X-Received: by 2002:a17:907:77cb:b0:a46:8c9f:f783 with SMTP id kz11-20020a17090777cb00b00a468c9ff783mr3882541ejc.67.1711830032705;
+        Sat, 30 Mar 2024 13:20:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwEafgXikWAWtw1l42yL+gRcN9KYUDKlUA2NmDTs4b3edtP1dqIWZjSciSUbc7uQ5J6ws3jw==
+X-Received: by 2002:a17:907:77cb:b0:a46:8c9f:f783 with SMTP id kz11-20020a17090777cb00b00a468c9ff783mr3882522ejc.67.1711830032343;
+        Sat, 30 Mar 2024 13:20:32 -0700 (PDT)
 Received: from [192.168.10.4] ([151.95.49.219])
-        by smtp.googlemail.com with ESMTPSA id wk8-20020a170907054800b00a4e2d7dd2d8sm2617304ejb.182.2024.03.30.12.58.44
+        by smtp.googlemail.com with ESMTPSA id xc4-20020a170907074400b00a4e5ab88803sm274929ejb.183.2024.03.30.13.20.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 Mar 2024 12:58:45 -0700 (PDT)
-Message-ID: <1296cfd8-3986-4c2f-be94-771ae3fb84f2@redhat.com>
-Date: Sat, 30 Mar 2024 20:58:43 +0100
+        Sat, 30 Mar 2024 13:20:31 -0700 (PDT)
+Message-ID: <9507220f-1552-4105-93e4-9485dc9500c8@redhat.com>
+Date: Sat, 30 Mar 2024 21:20:28 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,7 +67,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 09/29] KVM: SEV: Add initial SEV-SNP support
+Subject: Re: [PATCH v12 10/29] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_START command
 To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
 Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
  linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
@@ -83,7 +83,7 @@ Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
  nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com,
  Brijesh Singh <brijesh.singh@amd.com>
 References: <20240329225835.400662-1-michael.roth@amd.com>
- <20240329225835.400662-10-michael.roth@amd.com>
+ <20240329225835.400662-11-michael.roth@amd.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -120,7 +120,7 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20240329225835.400662-10-michael.roth@amd.com>
+In-Reply-To: <20240329225835.400662-11-michael.roth@amd.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -128,181 +128,34 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 3/29/24 23:58, Michael Roth wrote:
-> SEV-SNP builds upon existing SEV and SEV-ES functionality while adding
-> new hardware-based security protection. SEV-SNP adds strong memory
-> encryption and integrity protection to help prevent malicious
-> hypervisor-based attacks such as data replay, memory re-mapping, and
-> more, to create an isolated execution environment.
+> From: Brijesh Singh <brijesh.singh@amd.com>
 > 
-> Define a new KVM_X86_SNP_VM type which makes use of these capabilities
-> and extend the KVM_SEV_INIT2 ioctl to support it. Also add a basic
-> helper to check whether SNP is enabled.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> [mdr: commit fixups, use similar ASID reporting as with SEV/SEV-ES]
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->   arch/x86/include/asm/svm.h      |  3 ++-
->   arch/x86/include/uapi/asm/kvm.h |  1 +
->   arch/x86/kvm/svm/sev.c          | 21 ++++++++++++++++++++-
->   arch/x86/kvm/svm/svm.c          |  3 ++-
->   arch/x86/kvm/svm/svm.h          | 12 ++++++++++++
->   arch/x86/kvm/x86.c              |  2 +-
->   6 files changed, 38 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-> index 728c98175b9c..544a43c1cf11 100644
-> --- a/arch/x86/include/asm/svm.h
-> +++ b/arch/x86/include/asm/svm.h
-> @@ -285,7 +285,8 @@ static_assert((X2AVIC_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AVIC_
->   
->   #define AVIC_HPA_MASK	~((0xFFFULL << 52) | 0xFFF)
->   
-> -#define SVM_SEV_FEAT_DEBUG_SWAP                        BIT(5)
-> +#define SVM_SEV_FEAT_SNP_ACTIVE				BIT(0)
-> +#define SVM_SEV_FEAT_DEBUG_SWAP				BIT(5)
->   
->   struct vmcb_seg {
->   	u16 selector;
-> diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-> index 51b13080ed4b..725b75cfe9ff 100644
-> --- a/arch/x86/include/uapi/asm/kvm.h
-> +++ b/arch/x86/include/uapi/asm/kvm.h
-> @@ -868,5 +868,6 @@ struct kvm_hyperv_eventfd {
->   #define KVM_X86_SW_PROTECTED_VM	1
->   #define KVM_X86_SEV_VM		2
->   #define KVM_X86_SEV_ES_VM	3
-> +#define KVM_X86_SNP_VM		4
->   
->   #endif /* _ASM_X86_KVM_H */
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 1e65f5634ad3..3d9771163562 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -46,6 +46,9 @@ module_param_named(sev, sev_enabled, bool, 0444);
->   static bool sev_es_enabled = true;
->   module_param_named(sev_es, sev_es_enabled, bool, 0444);
->   
-> +/* enable/disable SEV-SNP support */
-> +static bool sev_snp_enabled;
-> +
->   /* enable/disable SEV-ES DebugSwap support */
->   static bool sev_es_debug_swap_enabled = true;
->   module_param_named(debug_swap, sev_es_debug_swap_enabled, bool, 0444);
-> @@ -275,6 +278,9 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
->   	sev->es_active = es_active;
->   	sev->vmsa_features = data->vmsa_features;
->   
-> +	if (vm_type == KVM_X86_SNP_VM)
-> +		sev->vmsa_features |= SVM_SEV_FEAT_SNP_ACTIVE;
-> +
->   	ret = sev_asid_new(sev);
->   	if (ret)
->   		goto e_no_asid;
-> @@ -326,7 +332,8 @@ static int sev_guest_init2(struct kvm *kvm, struct kvm_sev_cmd *argp)
->   		return -EINVAL;
->   
->   	if (kvm->arch.vm_type != KVM_X86_SEV_VM &&
-> -	    kvm->arch.vm_type != KVM_X86_SEV_ES_VM)
-> +	    kvm->arch.vm_type != KVM_X86_SEV_ES_VM &&
-> +	    kvm->arch.vm_type != KVM_X86_SNP_VM)
->   		return -EINVAL;
->   
->   	if (copy_from_user(&data, u64_to_user_ptr(argp->data), sizeof(data)))
-> @@ -2297,11 +2304,16 @@ void __init sev_set_cpu_caps(void)
->   		kvm_cpu_cap_set(X86_FEATURE_SEV_ES);
->   		kvm_caps.supported_vm_types |= BIT(KVM_X86_SEV_ES_VM);
->   	}
-> +	if (sev_snp_enabled) {
-> +		kvm_cpu_cap_set(X86_FEATURE_SEV_SNP);
-> +		kvm_caps.supported_vm_types |= BIT(KVM_X86_SNP_VM);
-> +	}
->   }
->   
->   void __init sev_hardware_setup(void)
->   {
->   	unsigned int eax, ebx, ecx, edx, sev_asid_count, sev_es_asid_count;
-> +	bool sev_snp_supported = false;
->   	bool sev_es_supported = false;
->   	bool sev_supported = false;
->   
-> @@ -2382,6 +2394,7 @@ void __init sev_hardware_setup(void)
->   	sev_es_asid_count = min_sev_asid - 1;
->   	WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV_ES, sev_es_asid_count));
->   	sev_es_supported = true;
-> +	sev_snp_supported = sev_snp_enabled && cc_platform_has(CC_ATTR_HOST_SEV_SNP);
->   
->   out:
->   	if (boot_cpu_has(X86_FEATURE_SEV))
-> @@ -2394,9 +2407,15 @@ void __init sev_hardware_setup(void)
->   		pr_info("SEV-ES %s (ASIDs %u - %u)\n",
->   			sev_es_supported ? "enabled" : "disabled",
->   			min_sev_asid > 1 ? 1 : 0, min_sev_asid - 1);
-> +	if (boot_cpu_has(X86_FEATURE_SEV_SNP))
-> +		pr_info("SEV-SNP %s (ASIDs %u - %u)\n",
-> +			sev_snp_supported ? "enabled" : "disabled",
-> +			min_sev_asid > 1 ? 1 : 0, min_sev_asid - 1);
->   
->   	sev_enabled = sev_supported;
->   	sev_es_enabled = sev_es_supported;
-> +	sev_snp_enabled = sev_snp_supported;
-> +
->   	if (!sev_es_enabled || !cpu_feature_enabled(X86_FEATURE_DEBUG_SWAP) ||
->   	    !cpu_feature_enabled(X86_FEATURE_NO_NESTED_DATA_BP))
->   		sev_es_debug_swap_enabled = false;
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 0f3b59da0d4a..2c162f6a1d78 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -4890,7 +4890,8 @@ static int svm_vm_init(struct kvm *kvm)
->   
->   	if (type != KVM_X86_DEFAULT_VM &&
->   	    type != KVM_X86_SW_PROTECTED_VM) {
-> -		kvm->arch.has_protected_state = (type == KVM_X86_SEV_ES_VM);
-> +		kvm->arch.has_protected_state =
-> +			(type == KVM_X86_SEV_ES_VM || type == KVM_X86_SNP_VM);
->   		to_kvm_sev_info(kvm)->need_init = true;
->   	}
->   
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index 157eb3f65269..4a01a81dd9b9 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -348,6 +348,18 @@ static __always_inline bool sev_es_guest(struct kvm *kvm)
->   #endif
->   }
->   
-> +static __always_inline bool sev_snp_guest(struct kvm *kvm)
-> +{
-> +#ifdef CONFIG_KVM_AMD_SEV
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +
-> +	return (sev->vmsa_features & SVM_SEV_FEAT_SNP_ACTIVE) &&
-> +	       !WARN_ON_ONCE(!sev_es_guest(kvm));
-> +#else
-> +	return false;
-> +#endif
-> +}
-> +
->   static inline void vmcb_mark_all_dirty(struct vmcb *vmcb)
->   {
->   	vmcb->control.clean = 0;
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 64eda7949f09..f85735b6235d 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -12603,7 +12603,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
->   
->   	kvm->arch.vm_type = type;
->   	kvm->arch.has_private_mem =
-> -		(type == KVM_X86_SW_PROTECTED_VM);
-> +		(type == KVM_X86_SW_PROTECTED_VM || type == KVM_X86_SNP_VM);
->   
->   	ret = kvm_page_track_init(kvm);
->   	if (ret)
+> KVM_SEV_SNP_LAUNCH_START begins the launch process for an SEV-SNP guest.
+> The command initializes a cryptographic digest context used to construct
+> the measurement of the guest. Other commands can then at that point be
+> used to load/encrypt data into the guest's initial launch image.
 
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+Does KVM_SEV_LAUNCH_START fail for SNP guests, or should we take care of 
+forbidding it?
+
+> +	if (params.policy & SNP_POLICY_MASK_SINGLE_SOCKET) {
+> +		pr_debug("SEV-SNP hypervisor does not support limiting guests to a single socket.");
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (!(params.policy & SNP_POLICY_MASK_SMT)) {
+> +		pr_debug("SEV-SNP hypervisor does not support limiting guests to a single SMT thread.");
+> +		return -EINVAL;
+> +	}
+
+Since you're forbidding some bits, KVM should also check that undefined 
+bits (63:25) are zero.
+
+Also what about checking that the major version is equal to the one that 
+KVM supports?  From the docs it's not even clear what ABI version they 
+document (QEMU uses 0).
+
+Otherwise looks good.
 
 Paolo
 
