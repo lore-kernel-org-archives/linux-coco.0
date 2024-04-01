@@ -1,103 +1,48 @@
-Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF8314A63B
-	for <linux-coco@lists.linux.dev>; Sun, 31 Mar 2024 16:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=62.96.220.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711903488; cv=fail; b=B1Df6mG+YZsn8v11ioNgiZW7UfMzhr5Gg+zs2AmnVNJEQaipTpeVVd96Ng4R/Cijm+pdFPWBEAd9rwWOuykglbHArKfxmrBuXlaM7OAsL1gts0fUXmZrFHg7bFPxfmCr7MrB7RZh+pl0KHi34ZI/crqQZNw2M0z7KOySUcbdrm0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711903488; c=relaxed/simple;
-	bh=NkjiezxAaZaPI1yrP2fG5rfm/MdY5PFEZBgt+yk7cAo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B816443D
+	for <linux-coco@lists.linux.dev>; Mon,  1 Apr 2024 05:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711947975; cv=none; b=HDmTwowBz69DNXWTXsCpnWHXranDUmk7lG11esg6cjjHBEhwhIpA+vX4/T1eahdWNL5HbTrXhXALZp4ZklDjo0GiQGn392gboWakTe8BLDEwVLvMgqy1KZrdWtbn2ETRLwEJun/KFWZU6ZT9hvJ/RDc05jpkilafMnaukuZ4MIY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711947975; c=relaxed/simple;
+	bh=lAnFIXPsMqEx1PIRHECT6EIpKl4ob5ivc4XO1J5She8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oIQUK3sso5i41ZLSF4lCmt5Ld+y557NLArnlFQhiHvV7tu1eZsNnObkOgGHcTmfJjPo5d2syYrNjWeBolhTgF9Amskdwae2ooS0GLkUky5Vj/B6HZndx/0t1Vw7FjqWItx4bpJ3I63+m6jGcwOEHaVJw3qaKEn/S51eNOt+JN9Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=redhat.com; spf=fail smtp.mailfrom=redhat.com; dkim=fail (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hu+tg7qO reason="signature verification failed"; arc=none smtp.client-ip=170.10.133.124; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; arc=fail smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=gpBtODzy9Hryop8wkq7niWNGQiH/5QAQ+I4Yc7mRaloUecTCBYqiqHhQsWg2QnbGzph93nfroZ3b0J0FZBBXm28AwnplJ1pXlFVftzmM8e1XQiEk+3jx+T5hiRYu2SK8q5NPZxiKySdA1BsvZJUpxb5kjScR0DhBY3o/Sm0M+Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S8claIly; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hu+tg7qO"
-Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id 1208A207D5;
-	Sun, 31 Mar 2024 18:44:45 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from a.mx.secunet.com ([127.0.0.1])
-	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 7Np8Y2VQhUMV; Sun, 31 Mar 2024 18:44:44 +0200 (CEST)
-Received: from mailout2.secunet.com (mailout2.secunet.com [62.96.220.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id 84EB02083B;
-	Sun, 31 Mar 2024 18:44:44 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 84EB02083B
-Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
-	by mailout2.secunet.com (Postfix) with ESMTP id 76BFA800061;
-	Sun, 31 Mar 2024 18:44:44 +0200 (CEST)
-Received: from mbx-essen-01.secunet.de (10.53.40.197) by
- cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 31 Mar 2024 18:44:44 +0200
-Received: from Pickup by mbx-essen-01.secunet.de with Microsoft SMTP Server id
- 15.1.2507.17; Sun, 31 Mar 2024 16:37:05 +0000
-X-sender: <linux-kernel+bounces-125893-steffen.klassert=secunet.com@vger.kernel.org>
-X-Receiver: <steffen.klassert@secunet.com> ORCPT=rfc822;steffen.klassert@secunet.com
-X-CreatedBy: MSExchange15
-X-HeloDomain: mbx-dresden-01.secunet.de
-X-ExtendedProps: BQBjAAoArWQFfe5Q3AgFADcAAgAADwA8AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5NYWlsUmVjaXBpZW50Lk9yZ2FuaXphdGlvblNjb3BlEQAAAAAAAAAAAAAAAAAAAAAADwA/AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5EaXJlY3RvcnlEYXRhLk1haWxEZWxpdmVyeVByaW9yaXR5DwADAAAATG93
-X-Source: SMTP:Default MBX-ESSEN-02
-X-SourceIPAddress: 10.53.40.199
-X-EndOfInjectedXHeaders: 13732
-X-Virus-Scanned: by secunet
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=147.75.199.223; helo=ny.mirrors.kernel.org; envelope-from=linux-kernel+bounces-125893-steffen.klassert=secunet.com@vger.kernel.org; receiver=steffen.klassert@secunet.com 
-DKIM-Filter: OpenDKIM Filter v2.11.0 b.mx.secunet.com 489042025D
-Authentication-Results: b.mx.secunet.com;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hu+tg7qO"
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711834316; cv=none; b=G3p9CFPbVp0VXEUyZo5IiFi5SvOwdcKSSeI0rtbFQNkoB+H4Lu3KvEkRdXm9U30awfGzsTln2UtOiaS40ZDVpyEXthZtvIDMB+1gw/P5sETJQCN6G9gVT2Nt7JOv7869fDeFJemWtQr8L1Pf3q6kBOWt9icCpBDng32iJK5XDWQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711834316; c=relaxed/simple;
-	bh=t1KY6wPgvCWcWD2NOTNvE0vD4k8SIvXspJg1UZfO6R0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I8MgwMWfkZ70ClUhNdirX7OjjzUN+ChPioz9Xi7p5D0HT7V6vponoVF5u+ai0TsCGc+jh9J7pv/eToum7iPl7wNC7kSnP8BdlYiJ3PzsJkFGzsAYrWr/WNP98b7m5XYqJPQQ7Vx87BfJvxgM52HdXU5HOpJSztf1vF3IgNRn2PE=
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hu+tg7qO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711834314;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2Lxl+j+xR8FWVtx6+a/UxVWMhMmDhnJi8YYlIddCdSo=;
-	b=hu+tg7qOLER5yPfsR3AgmPc7bLp6V8ATXtv1Zy2kOfDYvOmyO1uFeEbMW3nLwdw3msibIz
-	KDQnkqa58ANIRIPvcR2CTinXE+vKPKB56c4HmkWVeECAjOo7FNhi20GuLgIRIz69HCPU98
-	a0RFkh9bWf++ervOXti9R6M2WshEI7o=
-X-MC-Unique: NA3hJCigMBWwPeo_eVOzUA-1
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711834311; x=1712439111;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2Lxl+j+xR8FWVtx6+a/UxVWMhMmDhnJi8YYlIddCdSo=;
-        b=tHRjme0u2zj3uWrus62Z6fRXMGH2qcZQPiMn9WKvqlO1NiYDdogCuP24Vy99Necd/C
-         g7gBmGq2QAVJDMAwSqoHCU3gLGe7ErZXpCUQPgAv3eL0aXOIlO/dxiPyRO3YLo4HeYEP
-         H1FY58vY5LggCO8xmfdOPCr3w+PRtbtRMn3CAjn20MpCIeSfydKl4Mflurgia7FuypgF
-         Gtdz/0d8opx72ytMR22gQ/voi/nNIkdU3yFGduLXO6yOJ0xnPTAbVb41ylRhHEepbRQo
-         PFBIiUvdXD/WcfVUOX7h/qq6CVSru+0Pk15A06/14uQ0K59YJ2UbnVRoYhpBIY9QeK+1
-         SiLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVQFM5SCn27EibMN2Wrv/PPQb6bxkdMKDXxlUF7NWOJWiCq0MZoYAMtUVnw0diUUXiZ8zAfRL0OSkb6jhELvBT+1cEMJfSwcveqkGCh
-X-Gm-Message-State: AOJu0YxbkEJnkO5uWcml1P7bc0JhQpH4d+lReMqe6814CJGKbWpYXoKT
-	E2rrzFYk7S3qY5ZpWLM2NKASLks2oF5TQfAZw5HMgQraxMeeRbqVYr0meWBvF+2OP4qsYyW7AK4
-	n4LSkeN6RE4jNgiwOvZU6Qd27cSBsWIWNR7MH4p7GDTSZ0HBv2Djy1HJIxnWSxA==
-X-Received: by 2002:a17:907:9693:b0:a4e:17c5:9944 with SMTP id hd19-20020a170907969300b00a4e17c59944mr4619535ejc.61.1711834311163;
-        Sat, 30 Mar 2024 14:31:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH4ZTkjUa1qAw9ZLrLn5Cmk/KIYm4xouooLm1o+DG2vC/bIdk1gQWLiRdSLYKS8JVSoO2kgWw==
-X-Received: by 2002:a17:907:9693:b0:a4e:17c5:9944 with SMTP id hd19-20020a170907969300b00a4e17c59944mr4619522ejc.61.1711834310761;
-        Sat, 30 Mar 2024 14:31:50 -0700 (PDT)
-Message-ID: <f1e5aef5-989c-4f07-82af-9ed54cc192be@redhat.com>
-Date: Sat, 30 Mar 2024 22:31:47 +0100
-Precedence: bulk
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S8claIly"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711947973; x=1743483973;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=lAnFIXPsMqEx1PIRHECT6EIpKl4ob5ivc4XO1J5She8=;
+  b=S8claIlyAW5d8hb9SnvIRPiFmlslUkyjUUzYHzud4KzMK/dQyQI0TnmV
+   bnEt6mWSaS59A/xdqLfunqn6NjjC5Y/zRhN80V2EOcYF2U2Urv9CtP2Oy
+   Sz4sZhKpn8pNfFqRcP3PXdn9+2PVaAkQ+jvI9BpXZF8lelgNzKq8GwMkZ
+   q41LN78Xd6iuCKx4Hx+t2R/6/D9CT+qsQlk4fyZ6UtmM6zipx/lx+ErhU
+   NVC+xHjSEkH0xIitnmno0dSLcXVWKeaF4PyJpfz4zbaKvrwIdHzq2SNoI
+   duf1rRJpA8rY+mmlUMCZfPDHbKNDxZLyRf/gwOrjwyqHOzQLz9equaPv2
+   Q==;
+X-CSE-ConnectionGUID: jEilh8D7S260+tEcNFYoDQ==
+X-CSE-MsgGUID: atYHM63ASFGmOt7Gr7i66Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11030"; a="17686545"
+X-IronPort-AV: E=Sophos;i="6.07,171,1708416000"; 
+   d="scan'208";a="17686545"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2024 22:06:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,171,1708416000"; 
+   d="scan'208";a="48586391"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.238.10.225]) ([10.238.10.225])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2024 22:06:10 -0700
+Message-ID: <297fd9b8-9321-40e3-816b-2de92cb1a3ae@linux.intel.com>
+Date: Mon, 1 Apr 2024 13:06:07 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -105,88 +50,91 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 22/29] KVM: SEV: Implement gmem hook for invalidating
- private pages
+Subject: Re: [PATCH gmem 2/6] KVM: guest_memfd: Only call
+ kvm_arch_gmem_prepare hook if necessary
 To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com,
- vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
- dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
- peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
- rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de,
- vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
- tony.luck@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
- nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com
-References: <20240329225835.400662-1-michael.roth@amd.com>
- <20240329225835.400662-23-michael.roth@amd.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20240329225835.400662-23-michael.roth@amd.com>
+Cc: linux-coco@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Isaku Yamahata <isaku.yamahata@linux.intel.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>
+References: <20240329212444.395559-1-michael.roth@amd.com>
+ <20240329212444.395559-3-michael.roth@amd.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20240329212444.395559-3-michael.roth@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
-Message-ID: <20240330213147.rqAiwQV94wEg1RmsCifX4fxddNo6xO5TGzEaZXjiaSg@z>
 
-On 3/29/24 23:58, Michael Roth wrote:
-> +		/*
-> +		 * If an unaligned PFN corresponds to a 2M region assigned as a
-> +		 * large page in he RMP table, PSMASH the region into individual
-> +		 * 4K RMP entries before attempting to convert a 4K sub-page.
-> +		 */
-> +		if (!use_2m_update && rmp_level > PG_LEVEL_4K) {
-> +			rc = snp_rmptable_psmash(pfn);
-> +			if (rc)
-> +				pr_err_ratelimited("SEV: Failed to PSMASH RMP entry for PFN 0x%llx error %d\n",
-> +						   pfn, rc);
-> +		}
 
-Ignoring the PSMASH failure is pretty scary...  At this point 
-free_folio cannot fail, should the psmash part of this patch be done in 
-kvm_gmem_invalidate_begin() before kvm_mmu_unmap_gfn_range()?
 
-Also, can you get PSMASH_FAIL_INUSE and if so what's the best way to 
-address it?  Should fallocate() return -EBUSY?
+On 3/30/2024 5:24 AM, Michael Roth wrote:
+> It has been reported that the internal workings of
+> kvm_gmem_prepare_folio() incurs noticeable overhead for large guests
+> even for platforms where kvm_arch_gmem_prepare() is a no-op.
+>
+> Provide a new kvm_arch_gmem_prepare_needed() hook so that architectures
+> that set CONFIG_HAVE_KVM_GMEM_PREPARE can still opt-out of issuing the
+> kvm_arch_gmem_prepare() callback
 
-Thanks,
+Just wondering which part has big impact on performance,
+the issue of kvm_arch_gmem_prepare() callback or the preparation code for
+the kvm_arch_gmem_prepare()?
 
-Paolo
 
+> if the particular KVM instance doesn't
+> require any sort of special preparation of its gmem pages prior to use.
+>
+> Link: https://lore.kernel.org/lkml/20240228202906.GB10568@ls.amr.corp.intel.com/
+> Suggested-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>   include/linux/kvm_host.h |  1 +
+>   virt/kvm/guest_memfd.c   | 10 ++++++++++
+>   2 files changed, 11 insertions(+)
+>
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 2f5074eff958..5b8308b5e4af 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2466,6 +2466,7 @@ static inline int kvm_gmem_undo_get_pfn(struct kvm *kvm,
+>   
+>   #ifdef CONFIG_HAVE_KVM_GMEM_PREPARE
+>   int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order);
+> +bool kvm_arch_gmem_prepare_needed(struct kvm *kvm);
+>   #endif
+>   
+>   #ifdef CONFIG_HAVE_KVM_GMEM_INVALIDATE
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 74e19170af8a..4ce0056d1149 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -13,6 +13,13 @@ struct kvm_gmem {
+>   	struct list_head entry;
+>   };
+>   
+> +#ifdef CONFIG_HAVE_KVM_GMEM_PREPARE
+> +bool __weak kvm_arch_gmem_prepare_needed(struct kvm *kvm)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
+>   static int kvm_gmem_prepare_folio(struct inode *inode, pgoff_t index, struct folio *folio)
+>   {
+>   #ifdef CONFIG_HAVE_KVM_GMEM_PREPARE
+> @@ -27,6 +34,9 @@ static int kvm_gmem_prepare_folio(struct inode *inode, pgoff_t index, struct fol
+>   		gfn_t gfn;
+>   		int rc;
+>   
+> +		if (!kvm_arch_gmem_prepare_needed(kvm))
+> +			continue;
+
+Can multiple gmems (if any) bound to the same inode's address space 
+belong to different kvm instances?
+If not, just return here?
+
+> +
+>   		slot = xa_load(&gmem->bindings, index);
+>   		if (!slot)
+>   			continue;
 
