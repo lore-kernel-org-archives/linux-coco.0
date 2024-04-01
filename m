@@ -1,140 +1,173 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2072.outbound.protection.outlook.com [40.107.243.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B816443D
-	for <linux-coco@lists.linux.dev>; Mon,  1 Apr 2024 05:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711947975; cv=none; b=HDmTwowBz69DNXWTXsCpnWHXranDUmk7lG11esg6cjjHBEhwhIpA+vX4/T1eahdWNL5HbTrXhXALZp4ZklDjo0GiQGn392gboWakTe8BLDEwVLvMgqy1KZrdWtbn2ETRLwEJun/KFWZU6ZT9hvJ/RDc05jpkilafMnaukuZ4MIY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711947975; c=relaxed/simple;
-	bh=lAnFIXPsMqEx1PIRHECT6EIpKl4ob5ivc4XO1J5She8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gpBtODzy9Hryop8wkq7niWNGQiH/5QAQ+I4Yc7mRaloUecTCBYqiqHhQsWg2QnbGzph93nfroZ3b0J0FZBBXm28AwnplJ1pXlFVftzmM8e1XQiEk+3jx+T5hiRYu2SK8q5NPZxiKySdA1BsvZJUpxb5kjScR0DhBY3o/Sm0M+Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S8claIly; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3C131A94
+	for <linux-coco@lists.linux.dev>; Mon,  1 Apr 2024 22:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712010185; cv=fail; b=XO1Xe1qVFN7n6AWpWYKY78aN8CCkSLEWeBQtz+zCu3J7dEnF4pVwAE5Edc25onc473Yv3/Y2nNVgJeg7ewprMQgD7wRw4IaPfvWwKm4evhMx68s8yLzwFapspRZwMAQXJo/XVVxaXJ8Xu4J8cJYw8QQS2ggq6ORttW0563SdD+M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712010185; c=relaxed/simple;
+	bh=9awq9AKTdgSn7CRyOrgRlvrOr60UIj7X6QJxqX4g8TA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rDc8xwK9NT837hDyC7lEKyCDf+UQLij5wxQu1y9OpR6Pq6JpQcpFsiJpALKduIWaFpAx5sPwA8np+tfqH6EqDUo4nRmFqpNmbiu73PfDGzQuKqYgUz4SW8hVXkqoPzcSEEDm5wzN2HTzTSqNvb2Tk+/8qwRIeCI930O88Neold4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=yRW90wHy; arc=fail smtp.client-ip=40.107.243.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S8claIly"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711947973; x=1743483973;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=lAnFIXPsMqEx1PIRHECT6EIpKl4ob5ivc4XO1J5She8=;
-  b=S8claIlyAW5d8hb9SnvIRPiFmlslUkyjUUzYHzud4KzMK/dQyQI0TnmV
-   bnEt6mWSaS59A/xdqLfunqn6NjjC5Y/zRhN80V2EOcYF2U2Urv9CtP2Oy
-   Sz4sZhKpn8pNfFqRcP3PXdn9+2PVaAkQ+jvI9BpXZF8lelgNzKq8GwMkZ
-   q41LN78Xd6iuCKx4Hx+t2R/6/D9CT+qsQlk4fyZ6UtmM6zipx/lx+ErhU
-   NVC+xHjSEkH0xIitnmno0dSLcXVWKeaF4PyJpfz4zbaKvrwIdHzq2SNoI
-   duf1rRJpA8rY+mmlUMCZfPDHbKNDxZLyRf/gwOrjwyqHOzQLz9equaPv2
-   Q==;
-X-CSE-ConnectionGUID: jEilh8D7S260+tEcNFYoDQ==
-X-CSE-MsgGUID: atYHM63ASFGmOt7Gr7i66Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11030"; a="17686545"
-X-IronPort-AV: E=Sophos;i="6.07,171,1708416000"; 
-   d="scan'208";a="17686545"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2024 22:06:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,171,1708416000"; 
-   d="scan'208";a="48586391"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.238.10.225]) ([10.238.10.225])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2024 22:06:10 -0700
-Message-ID: <297fd9b8-9321-40e3-816b-2de92cb1a3ae@linux.intel.com>
-Date: Mon, 1 Apr 2024 13:06:07 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="yRW90wHy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=b/bJ2/a/4DxCEQdWkZl8F1yFad/MJgJt3jUi3NuxEBVmkGQo1h1xK6msc4/cEuOePjjyU0bt2dLK5/1M1bXgISR1Oa5uPlZ8e7kzcqiu7kQxBt3j8kKe2vdWV8ukoKMaYnkNKa2llDSY07gF7NUzqe9WmLmMNQvEcEacoh5w7Y67YS/G6x8clM3qYUg7SaG+mLP+DwV8qU1E3z73QgpoPDMmMrjy8yisWdEMT4/f0LwxjRkemQ6wCPH+oXlaQHH3olMXCwTQnGd8k09BUQk69ZQ1wMXyNXR7TKC/hdEWzXPrQjPjKWLH6vF1bEjxPSh217XcDJsJd4uu1IrsQt/I9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k0N8Vaj10N0dSIsXzzDqTH4AangxrFBtBRt3deKak0U=;
+ b=eZMUtMzBPM553rjA+YA5Zc6zq1oy0h4RMf4t1PKXm0r3uWAxNbKOr6jWiMnNAzQbIh9UM9LGFXkgiuDY55ZSjJss3HfhmuqzRwYerI9FMPJdUKtGaH1tNGACeds3zuxTRZYGYRcOcC50TBhWNf/7CgPQNDLJKLLYz9lIi9dAgRYf7Mp2VlXQyPBb5vHKkp3aWY7Q1yIQ3amCmTiRl1lSd72qw7v0z46qDhtsP/Ka5SfZMnbE9Q8D2qcTAgY7mfl9QK3POmZ4GAGEXXlcDssn3nGRWYEXVeF5IR/24OCB7gtQWRgFIpUey6Dp80yuczKjfZj8CsOZBPGO0cv/SC1Tmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=k0N8Vaj10N0dSIsXzzDqTH4AangxrFBtBRt3deKak0U=;
+ b=yRW90wHygAtZCvp5N1ujSDHEK4mY7Zss8ymANofV/3JZvvobZrRRjeD/3gYzu6QtNJMhWFtF3Yk7ljTUEbJR35o9zHUPXTVnQ4sldNZ0+qg6vz3OKJ0uLELcVyeMp2urykH1Sby4ULM6gGmPSDnwiydk4X23lpVHClW7v4pTcB0=
+Received: from CH2PR16CA0008.namprd16.prod.outlook.com (2603:10b6:610:50::18)
+ by IA1PR12MB8222.namprd12.prod.outlook.com (2603:10b6:208:3f2::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Mon, 1 Apr
+ 2024 22:22:52 +0000
+Received: from CH1PEPF0000AD7D.namprd04.prod.outlook.com
+ (2603:10b6:610:50:cafe::38) by CH2PR16CA0008.outlook.office365.com
+ (2603:10b6:610:50::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46 via Frontend
+ Transport; Mon, 1 Apr 2024 22:22:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH1PEPF0000AD7D.mail.protection.outlook.com (10.167.244.86) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7452.22 via Frontend Transport; Mon, 1 Apr 2024 22:22:52 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 1 Apr
+ 2024 17:22:50 -0500
+Date: Mon, 1 Apr 2024 17:22:29 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <seanjc@google.com>, <vkuznets@redhat.com>,
+	<jmattson@google.com>, <luto@kernel.org>, <dave.hansen@linux.intel.com>,
+	<slp@redhat.com>, <pgonda@google.com>, <peterz@infradead.org>,
+	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
+	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
+	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, Brijesh Singh
+	<brijesh.singh@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, Binbin Wu
+	<binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: Re: [PATCH v12 11/29] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command
+Message-ID: <20240401222229.qpnpozdsr6b2sntk@amd.com>
+References: <20240329225835.400662-1-michael.roth@amd.com>
+ <20240329225835.400662-12-michael.roth@amd.com>
+ <8c3685a6-833c-4b3c-83f4-c0bd78bba36e@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH gmem 2/6] KVM: guest_memfd: Only call
- kvm_arch_gmem_prepare hook if necessary
-To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Isaku Yamahata <isaku.yamahata@linux.intel.com>,
- Xu Yilun <yilun.xu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>
-References: <20240329212444.395559-1-michael.roth@amd.com>
- <20240329212444.395559-3-michael.roth@amd.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20240329212444.395559-3-michael.roth@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <8c3685a6-833c-4b3c-83f4-c0bd78bba36e@redhat.com>
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD7D:EE_|IA1PR12MB8222:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3a43d095-3e4e-417d-b0d8-08dc529a455a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	4Ct9tPtFn37krlC2vECNzi4QxEfzsNZIqi7hseJJogkgpd9mMvY9UxfB/TTTot23lXHeNLaSbuKR9VPOmYvuMYj1/hltw3uO14lsxGfPlG+isUkQ/1NGt7htpusU1oZZOodgdEAR/RzS/1dPVPhP4Ah7hcxsUi1soQjf0UjFbXW6/coRoWpbPBPoktCTOlm5x4jCjabrtKpEa/vlJEM7xsNNhZqs8WXGWoXr7eI8bql8Uc7H1O+ADN8ZDejSE1rBSg/jFi21fzUYZuei4dbvk9FC1d9nk9Xr9b8I6Hmbl5X1TRasnlbwevcnMkm+pPyJEJ/67m+hRovPpQvYMNykxp1Mh+iW1FPhpXXSK0VbNmEL4mcvvbTaIlEbsW6Rv49A+FHO+DmA4AC8CmVfPxbU2OtnsCHPaLgyS4VTi5njk/YFkVqyhdHrwyBp8uH8SFP9nR6yT3K7YFAnzNc0LDjwGG2rzIVGhS7qVQ6vfVK2ul5KrffPZA9IjCUCC3V0IKrtMueIXyIubezFeuRQzfTziyHU291P+LmDtrY9EK+AygR0PkI4S4fyYPEf5xUFCX2a4gnYFPHS8XgcTpJH74dC8i82g91Gt+xN+Z6qFUrwExCFV++qjgXMeQYEawbh6X7xNt8QNlUlvG0jYZFWQvcjbKBd3Hu9NaC/rR8ubfmq1PnP0f80M/ryLTa/3/OCHFb8DN5AuHxcgi7C+Dj+OObEiw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(376005)(1800799015)(7416005)(36860700004)(82310400014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2024 22:22:52.0061
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3a43d095-3e4e-417d-b0d8-08dc529a455a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000AD7D.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8222
+
+On Sat, Mar 30, 2024 at 09:31:40PM +0100, Paolo Bonzini wrote:
+> On 3/29/24 23:58, Michael Roth wrote:
+
+Cc'ing some more TDX folks.
+
+> > +	memslot = gfn_to_memslot(kvm, params.gfn_start);
+> > +	if (!kvm_slot_can_be_private(memslot)) {
+> > +		ret = -EINVAL;
+> > +		goto out;
+> > +	}
+> > +
+> 
+> This can be moved to kvm_gmem_populate.
+
+That does seem nicer, but I hadn't really seen that pattern for
+kvm_gmem_get_pfn()/etc. so wasn't sure if that was by design or not. I
+suppose in those cases the memslot is already available at the main
+KVM page-fault call-sites so maybe it was just unecessary to do the
+lookup internally there.
+
+> 
+> > +	populate_args.src = u64_to_user_ptr(params.uaddr);
+> 
+> This is not used if !do_memcpy, and in fact src is redundant with do_memcpy.
+> Overall the arguments can be "kvm, gfn, src, npages, post_populate, opaque"
+> which are relatively few and do not need the struct.
+
+This was actually a consideration for TDX that was discussed during the
+"Finalizing internal guest_memfd APIs for SNP/TDX" PUCK call. In that
+case, they have a TDH_MEM_PAGE_ADD seamcall that takes @src and encrypts
+it, loads it into the destination page, and then maps it into SecureEPT
+through a single call. So in that particular case, @src would be
+initialized, but the memcpy() would be unecessary.
+
+It's not actually clear TDX plans to use this interface. In v19 they still
+used a KVM MMU hook (set_private_spte) that gets triggered through a call
+to KVM_MAP_MEMORY->kvm_mmu_map_tdp_page() prior to starting the guest. But
+more recent discussion[1] suggests that KVM_MAP_MEMORY->kvm_mmu_map_tdp_page()
+would now only be used to create upper levels of SecureEPT, and the
+actual mapping/encrypting of the leaf page would be handled by a
+separate TDX-specific interface.
+
+With that model, the potential for using kvm_gmem_populate() seemed
+plausible to I was trying to make it immediately usable for that
+purpose. But maybe the TDX folks can confirm whether this would be
+usable for them or not. (kvm_gmem_populate was introduced here[2] for
+reference/background)
+
+-Mike
+
+[1] https://lore.kernel.org/kvm/20240319155349.GE1645738@ls.amr.corp.intel.com/T/#m8580d8e39476be565534d6ff5f5afa295fe8d4f7
+[2] https://lore.kernel.org/kvm/20240329212444.395559-3-michael.roth@amd.com/T/#m3aeba660fcc991602820d3703b1265722b871025)
 
 
-
-On 3/30/2024 5:24 AM, Michael Roth wrote:
-> It has been reported that the internal workings of
-> kvm_gmem_prepare_folio() incurs noticeable overhead for large guests
-> even for platforms where kvm_arch_gmem_prepare() is a no-op.
->
-> Provide a new kvm_arch_gmem_prepare_needed() hook so that architectures
-> that set CONFIG_HAVE_KVM_GMEM_PREPARE can still opt-out of issuing the
-> kvm_arch_gmem_prepare() callback
-
-Just wondering which part has big impact on performance,
-the issue of kvm_arch_gmem_prepare() callback or the preparation code for
-the kvm_arch_gmem_prepare()?
-
-
-> if the particular KVM instance doesn't
-> require any sort of special preparation of its gmem pages prior to use.
->
-> Link: https://lore.kernel.org/lkml/20240228202906.GB10568@ls.amr.corp.intel.com/
-> Suggested-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->   include/linux/kvm_host.h |  1 +
->   virt/kvm/guest_memfd.c   | 10 ++++++++++
->   2 files changed, 11 insertions(+)
->
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 2f5074eff958..5b8308b5e4af 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2466,6 +2466,7 @@ static inline int kvm_gmem_undo_get_pfn(struct kvm *kvm,
->   
->   #ifdef CONFIG_HAVE_KVM_GMEM_PREPARE
->   int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order);
-> +bool kvm_arch_gmem_prepare_needed(struct kvm *kvm);
->   #endif
->   
->   #ifdef CONFIG_HAVE_KVM_GMEM_INVALIDATE
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 74e19170af8a..4ce0056d1149 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -13,6 +13,13 @@ struct kvm_gmem {
->   	struct list_head entry;
->   };
->   
-> +#ifdef CONFIG_HAVE_KVM_GMEM_PREPARE
-> +bool __weak kvm_arch_gmem_prepare_needed(struct kvm *kvm)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->   static int kvm_gmem_prepare_folio(struct inode *inode, pgoff_t index, struct folio *folio)
->   {
->   #ifdef CONFIG_HAVE_KVM_GMEM_PREPARE
-> @@ -27,6 +34,9 @@ static int kvm_gmem_prepare_folio(struct inode *inode, pgoff_t index, struct fol
->   		gfn_t gfn;
->   		int rc;
->   
-> +		if (!kvm_arch_gmem_prepare_needed(kvm))
-> +			continue;
-
-Can multiple gmems (if any) bound to the same inode's address space 
-belong to different kvm instances?
-If not, just return here?
-
-> +
->   		slot = xa_load(&gmem->bindings, index);
->   		if (!slot)
->   			continue;
-
+> 
+> I'll do that when posting the next version of the patches in kvm-coco-queue.
+> 
+> Paolo
+> 
