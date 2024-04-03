@@ -1,174 +1,74 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D823047A53
-	for <linux-coco@lists.linux.dev>; Tue,  2 Apr 2024 22:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E0313848F
+	for <linux-coco@lists.linux.dev>; Wed,  3 Apr 2024 11:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712098724; cv=none; b=VNA99uRmaIKNYuA5rqLs3wQh7rzXzjLRiYOi19pWVy9wSuqnXyTQ/+gCdoLaB49Whj+wOCKFCUYdQzS31d0efDQZW+iOX0sX93JJ+Bu+Px4aIV17GFMcqd6vR+3ZJvBlRbdunkyug+oZ4B+tSv5bZBySx4jw2CMg/72HmabdcAw=
+	t=1712143231; cv=none; b=sVBTEiwfkz6nyilN55xJnagm4u9pQb1DS6AMsdlM9T6Kc8FsfMV7XFV/KvZl1WyOzibTa9pPZCpxCFJo2bGO9CF1ibV6ISXWHBLhjKGohnB98MgKgYl0eVcjF0zcVW2HDq1S2ly6CJxnOxdiFUsdhi5BmmNRV06yWynrRUICBpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712098724; c=relaxed/simple;
-	bh=n9PG5Gd9QCdKP+TIsy1Z2jPRkRgvC7X2SZe2L3r5+MM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f/CWpOr0L5hsGQxSZ6cFk80kqj8jJ32l2h7VsDf9yREDBhB0VUrYJclsUV/blmHxCWcOzCl/VbFOdxclX2XM3oTinPPplhmqyvggbqEVV+GFvUE2Ch+KbVBGW/Gn2L6x2ov0yi7tiAwNI0+rrXBoWAKz34nGx6+4ZkaOpeokXXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XIxUAIsf; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1712143231; c=relaxed/simple;
+	bh=Q+0d3QLYSAKT24pMf5w49gK2Ew6aWzMbitLv1/LRZtE=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=keLgYRb0I/oWSpnAh6M+K5s2B1niQuum9eTmxxSSuqA+DCzVVFcXs++8eTaSDHR1WjbqE+WFNgz3/BE8wEmq5CyzNCqWWllqgMR9GvJ3qGFFAMlSGqXb3IYQp2jh/5HV88LxsiVSMTVg4axq+asrdwH2/d4bIaofzPUa+IT/50E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=jLqOZlkz; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XIxUAIsf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712098723; x=1743634723;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=n9PG5Gd9QCdKP+TIsy1Z2jPRkRgvC7X2SZe2L3r5+MM=;
-  b=XIxUAIsfwatXWsk4GUiREKxtgYU1ZlWAI+Ot0B3xiZSnfncipP0Le+jI
-   WJihhgwX9UUFNgnayNk1CqGx5ncImsQks1bY3gYo1GdYrxJmrbs8R3xm9
-   jhUmbmgV5cEg7oMzSbaFxpK03bl1Yov3paPYuKyWWZk9fpdTqroKbSean
-   GSyWbgOAYO2aHiAsb1u/VN/LtCn5SqK2h9WXhQYIniKAh3bx9BMYEryN8
-   kDg83tp48ZvCtsVSUQTMfZ8YE0P62Xhvpi+QnPUsxYUfPrU2ZtF/mMbkA
-   F0gUShIPh5vHYMkPnsdTOf2X8Tolwahh2/QMB0pLcz7GWvUx9q5fsGoF0
-   Q==;
-X-CSE-ConnectionGUID: Wg78UjQXQeGuO0rFbofOeQ==
-X-CSE-MsgGUID: 7JrUlOxbTvaITaERviuDIg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="18747108"
-X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
-   d="scan'208";a="18747108"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 15:58:42 -0700
-X-CSE-ConnectionGUID: G+hY9GcpQa2do2OYHO31bA==
-X-CSE-MsgGUID: yZLG52nDTMerl9bXyvsizQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
-   d="scan'208";a="22978988"
-Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 15:58:41 -0700
-Date: Tue, 2 Apr 2024 15:58:40 -0700
-From: Isaku Yamahata <isaku.yamahata@intel.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, seanjc@google.com, vkuznets@redhat.com,
-	jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
-	slp@redhat.com, pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com, liam.merwick@oracle.com,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>, isaku.yamahata@intel.com,
-	isaku.yamahata@linux.intel.com
-Subject: Re: [PATCH v12 11/29] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command
-Message-ID: <20240402225840.GB2444378@ls.amr.corp.intel.com>
-References: <20240329225835.400662-1-michael.roth@amd.com>
- <20240329225835.400662-12-michael.roth@amd.com>
- <8c3685a6-833c-4b3c-83f4-c0bd78bba36e@redhat.com>
- <20240401222229.qpnpozdsr6b2sntk@amd.com>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="jLqOZlkz"
+Received: from 8bytes.org (p4ffe1eea.dip0.t-ipconnect.de [79.254.30.234])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 0C6362818A6;
+	Wed,  3 Apr 2024 13:20:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1712143221;
+	bh=Q+0d3QLYSAKT24pMf5w49gK2Ew6aWzMbitLv1/LRZtE=;
+	h=Date:From:To:Subject:From;
+	b=jLqOZlkzbxwS0415SiTutxRuSAFFLq+aG1UvTGtdfomwYHft6xjBO3NmWT4rfAzDP
+	 1F6ep4ilSPpfqh60X9Jm1wRCEDugngFrXxxbISbnxK0IyU84R2dgjDRDsJ+WCN4GsG
+	 l6JUNl1sCEaRk9exATF96zAZiUABc1QcAcpkQUOcuDUtAV2pZZdBCchgR+fQAmj5TM
+	 8Q1/GbC8OVuCvM0cUCJ5XFKy4qfaWL0XSiTVRtOrFQ3twXLJ6pFISU4PVUB5nOyAND
+	 He4ZSdP7XQvvWykQ44aGIERJbo2RyEXEjZbzt5CDb2rZqazf1k756AWBJnQqmAjbrj
+	 3mEdvvYfOltuw==
+Date: Wed, 3 Apr 2024 13:20:19 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call April 3rd, 2024
+Message-ID: <Zg07c6Y5a_Ak5oXs@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240401222229.qpnpozdsr6b2sntk@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 01, 2024 at 05:22:29PM -0500,
-Michael Roth <michael.roth@amd.com> wrote:
+Hi,
 
-> On Sat, Mar 30, 2024 at 09:31:40PM +0100, Paolo Bonzini wrote:
-> > On 3/29/24 23:58, Michael Roth wrote:
-> 
-> Cc'ing some more TDX folks.
-> 
-> > > +	memslot = gfn_to_memslot(kvm, params.gfn_start);
-> > > +	if (!kvm_slot_can_be_private(memslot)) {
-> > > +		ret = -EINVAL;
-> > > +		goto out;
-> > > +	}
-> > > +
-> > 
-> > This can be moved to kvm_gmem_populate.
-> 
-> That does seem nicer, but I hadn't really seen that pattern for
-> kvm_gmem_get_pfn()/etc. so wasn't sure if that was by design or not. I
-> suppose in those cases the memslot is already available at the main
-> KVM page-fault call-sites so maybe it was just unecessary to do the
-> lookup internally there.
-> 
-> > 
-> > > +	populate_args.src = u64_to_user_ptr(params.uaddr);
-> > 
-> > This is not used if !do_memcpy, and in fact src is redundant with do_memcpy.
-> > Overall the arguments can be "kvm, gfn, src, npages, post_populate, opaque"
-> > which are relatively few and do not need the struct.
-> 
-> This was actually a consideration for TDX that was discussed during the
-> "Finalizing internal guest_memfd APIs for SNP/TDX" PUCK call. In that
-> case, they have a TDH_MEM_PAGE_ADD seamcall that takes @src and encrypts
-> it, loads it into the destination page, and then maps it into SecureEPT
-> through a single call. So in that particular case, @src would be
-> initialized, but the memcpy() would be unecessary.
-> 
-> It's not actually clear TDX plans to use this interface. In v19 they still
-> used a KVM MMU hook (set_private_spte) that gets triggered through a call
-> to KVM_MAP_MEMORY->kvm_mmu_map_tdp_page() prior to starting the guest. But
-> more recent discussion[1] suggests that KVM_MAP_MEMORY->kvm_mmu_map_tdp_page()
-> would now only be used to create upper levels of SecureEPT, and the
-> actual mapping/encrypting of the leaf page would be handled by a
-> separate TDX-specific interface.
+Here is the usual call for agenda items for this weeks SVSM development
+call. My agenda so far is:
 
-I think TDX can use it with slight change. Pass vcpu instead of KVM, page pin
-down and mmu_lock.  TDX requires non-leaf Secure page tables to be populated
-before adding a leaf.  Maybe with the assumption that vcpu doesn't run, GFN->PFN
-relation is stable so that mmu_lock isn't needed? What about punch hole?
+	* vTPM merge fallout
+	* Security issue mitigations
 
-The flow would be something like as follows.
+The items we can not cover during the meeting will be deferred to the
+next meeting.
 
-- lock slots_lock
+Please note that Europe is now also on summer time, so the meeting will
+be at its usual time spot again. The definitive time is always in the
+Google calendar I shared below.
 
-- kvm_gmem_populate(vcpu)
-  - pin down source page instead of do_memcopy.
-  - get pfn with __kvm_gmem_get_pfn()
+Details of the meeting (GMeet and Calendar links, meeting time) can be
+found in our governance repository at:
 
-  - read lock mmu_lock
-  - in the post_populate callback
-    - lookup tdp mmu page table to check if the table is populated.
-      lookup only version of kvm_tdp_mmu_map().
-      We need vcpu instead of kvm.
-    - TDH_MEM_PAGE_ADD
-  - read unlock mmu_lock
+	https://github.com/coconut-svsm/governance
 
-- unlock slots_lock
+The meeting will be recorded and the recording eventually published.
 
-Thanks,
+See you all there.
 
-> With that model, the potential for using kvm_gmem_populate() seemed
-> plausible to I was trying to make it immediately usable for that
-> purpose. But maybe the TDX folks can confirm whether this would be
-> usable for them or not. (kvm_gmem_populate was introduced here[2] for
-> reference/background)
-> 
-> -Mike
-> 
-> [1] https://lore.kernel.org/kvm/20240319155349.GE1645738@ls.amr.corp.intel.com/T/#m8580d8e39476be565534d6ff5f5afa295fe8d4f7
-> [2] https://lore.kernel.org/kvm/20240329212444.395559-3-michael.roth@amd.com/T/#m3aeba660fcc991602820d3703b1265722b871025)
-> 
-> 
-> > 
-> > I'll do that when posting the next version of the patches in kvm-coco-queue.
-> > 
-> > Paolo
-> > 
-> 
+Regards,
 
--- 
-Isaku Yamahata <isaku.yamahata@intel.com>
+	Jörg
