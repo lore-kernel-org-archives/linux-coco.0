@@ -1,132 +1,131 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294E4149E14
-	for <linux-coco@lists.linux.dev>; Wed,  3 Apr 2024 15:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10E41DFE4
+	for <linux-coco@lists.linux.dev>; Wed,  3 Apr 2024 15:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712157836; cv=none; b=W8qeF1MAzZoVKK1ZFojw86H2/SxdftIIAvHJBCE8BZVAbGmvshP80qOSLQGnwvHYCVgYyvWmQUS5QQ18eo2Pze7Z2mZQN0Wc1tfbh1ze15zsbCHSbqMIgUWpXjo4gbx6kUGOFpgzGBC6PlS4xBHdC6laieKIIQ8aL1HsuHUsNYc=
+	t=1712158662; cv=none; b=XlUdXbaAAmmu+8lOjMCPNH5r2bRtkFZGaH3rbs76MKq3YY2r7TZGQ/qLWmnDBVO7Qku+QgGLvFHhduEuxTMuqPKSjfWTlRGmYkn6JDJg9OYiUauIZaxWUJR1ZzyZDkCFbNZEHfxVFR2U9m+XQWN7en/RLTXxWJ4PkIz/VAg1wvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712157836; c=relaxed/simple;
-	bh=c+HYWu5qoda4Xr/d7iNbf5Be/CK/oiDAbZU/Qi/e4y4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0Kw5j5W2QU1G0zZE5Gti0cgaP9Grj/nnu8AGsSj3yTfaUDq8NZIRLpwBaatomFs6Hz97Ti91dzIthkQI0T4m3tjvxgrBTSGqBnCeT0KW4wWOPwSGvZ6kuMYv2F0lFVRDw7VlhgPkTvivBiRX9Ye31vW/fbzaT8jNlc0CzQ5wgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P9Dkczu4; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+	s=arc-20240116; t=1712158662; c=relaxed/simple;
+	bh=QJChaVAp28BDDX83PqbBHFkbmbYUNuu15HZqdJSXkew=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yq+ouACWrd9a+RGUo2tgQN4iuxguQskAXobLtP1F5hoTV4bCjOD245qUwUyCgc96CRB8uuoRl7uuYEmW4VKSMuXptFKddGzsPFWQQZawGYnO15LXGyGU1ROYOGzwJb/fQ4fNske1nSsZYkM317KtPqRw+A2kz+g6NNp4GTFo76M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ie2IcwL4; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P9Dkczu4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ie2IcwL4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712157836; x=1743693836;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=c+HYWu5qoda4Xr/d7iNbf5Be/CK/oiDAbZU/Qi/e4y4=;
-  b=P9Dkczu41FplzeQPvPgcaYLSAvPh8ntcn3sJHNA0x+YGiWW253sj6FOm
-   dcsqKbW8bjzmNsR22C0nGztZw59mvR4hNX6tMxSafldT+dIvhBRhWyDTQ
-   d8JZufTi6+MCFlbsXD9oazLsGHVAiz63dO6f6ut5ImlF1nn1/GcX3krjp
-   WBN2Uuz9c22as2BtkSvKfKhklENoKfsmzmnzjmkq2b9/XAXdwE1AKfZCW
-   z+set9s6jVN8vYpWxMcIIjd3U968cjnaiigLgNwxHmgYuTOfTuPmsTMsB
-   Fj70OUYnYGShThujt6vn6fuR5B+FLmI8YQDjxXCuB5jyaaStXXGvkM1PL
-   w==;
-X-CSE-ConnectionGUID: Ncf9vf2qQB2DxfPwCOGkVQ==
-X-CSE-MsgGUID: ICpgu0LvTRWTwnpN+gHGQQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="29877899"
+  t=1712158661; x=1743694661;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=QJChaVAp28BDDX83PqbBHFkbmbYUNuu15HZqdJSXkew=;
+  b=Ie2IcwL4Q7B8mbHEdOUHjfU5XEkJY4D9o82CDnKqJXJlHNX85xbZuZIP
+   HYPbaGjZ0SL/U0juSHptSQN+aC3gbFnojAZ2KQvCYK+5ag9iFbjOrseaK
+   cNDe25mf0o/Jn7po8OEslU0kdKbUA0AygEnLmQW7+KTLvpphDVRbBKOJa
+   nYlK/43Ye28L1BOsl2vXBuivCVN/0vexCfSPyo0uEksXaFBENaRZwvBhI
+   9Tpm1RQxZo+UVMVUimVYHAIfslJmy1Vvbal+VGVaomTcvuKx3ASBuIlaz
+   /anQR21aEr9eFH2/QLO6aOHR9Q9ZqFJo3FZbePgoiGODkE48aq/08b2mQ
+   Q==;
+X-CSE-ConnectionGUID: eexnupusRNKdpSst5pprBg==
+X-CSE-MsgGUID: NaI4T4uKRS2wQ7fpLM/KRA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="7978850"
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="29877899"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 08:23:55 -0700
+   d="scan'208";a="7978850"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 08:37:40 -0700
+X-CSE-ConnectionGUID: C9r8JNIGTH6X/XyVwhZi2g==
+X-CSE-MsgGUID: 1aG80udaTneHuT7+mWUbTQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="937085208"
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="937085208"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 03 Apr 2024 08:23:49 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id A9B1D3E5; Wed,  3 Apr 2024 18:23:48 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: kirill.shutemov@linux.intel.com
-Cc: adrian.hunter@intel.com,
-	ashish.kalra@amd.com,
-	bhe@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	elena.reshetova@intel.com,
-	jun.nakajima@intel.com,
-	kai.huang@intel.com,
-	kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	rafael@kernel.org,
-	rick.p.edgecombe@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	seanjc@google.com,
-	tglx@linutronix.de,
-	thomas.lendacky@amd.com
-Subject: [PATCHv9.1 05/17] x86/kexec: Keep CR4.MCE set during kexec for TDX guest
-Date: Wed,  3 Apr 2024 18:23:42 +0300
-Message-ID: <20240403152342.918612-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240325103911.2651793-6-kirill.shutemov@linux.intel.com>
-References: <20240325103911.2651793-6-kirill.shutemov@linux.intel.com>
+   d="scan'208";a="23177428"
+Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 08:37:39 -0700
+Date: Wed, 3 Apr 2024 08:37:38 -0700
+From: Isaku Yamahata <isaku.yamahata@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Isaku Yamahata <isaku.yamahata@intel.com>,
+	Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, seanjc@google.com, vkuznets@redhat.com,
+	jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+	slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>, isaku.yamahata@linux.intel.com
+Subject: Re: [PATCH v12 11/29] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command
+Message-ID: <20240403153738.GC2444378@ls.amr.corp.intel.com>
+References: <20240329225835.400662-1-michael.roth@amd.com>
+ <20240329225835.400662-12-michael.roth@amd.com>
+ <8c3685a6-833c-4b3c-83f4-c0bd78bba36e@redhat.com>
+ <20240401222229.qpnpozdsr6b2sntk@amd.com>
+ <20240402225840.GB2444378@ls.amr.corp.intel.com>
+ <CABgObfb4fQpUTzhpX9Bkcu0_+bOcCSCtuy+5-rttTLm-bY8i2w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABgObfb4fQpUTzhpX9Bkcu0_+bOcCSCtuy+5-rttTLm-bY8i2w@mail.gmail.com>
 
-Depending on setup, TDX guests might be allowed to clear CR4.MCE.
-Attempt to clear it leads to #VE.
+On Wed, Apr 03, 2024 at 02:51:59PM +0200,
+Paolo Bonzini <pbonzini@redhat.com> wrote:
 
-Use alternatives to keep the flag during kexec for TDX guests.
+> On Wed, Apr 3, 2024 at 12:58 AM Isaku Yamahata <isaku.yamahata@intel.com> wrote:
+> > I think TDX can use it with slight change. Pass vcpu instead of KVM, page pin
+> > down and mmu_lock.  TDX requires non-leaf Secure page tables to be populated
+> > before adding a leaf.  Maybe with the assumption that vcpu doesn't run, GFN->PFN
+> > relation is stable so that mmu_lock isn't needed? What about punch hole?
+> >
+> > The flow would be something like as follows.
+> >
+> > - lock slots_lock
+> >
+> > - kvm_gmem_populate(vcpu)
+> >   - pin down source page instead of do_memcopy.
+> 
+> Both pinning the source page and the memcpy can be done in the
+> callback.  I think the right thing to do is:
+> 
+> 1) eliminate do_memcpy, letting AMD code taking care of
+>    copy_from_user.
+> 
+> 2) pass to the callback only gfn/pfn/src, where src is computed as
+> 
+>     args->src ? args->src + i * PAGE_SIZE : NULL
+> 
+> If another architecture/vendor needs do_memcpy, they can add
+> something like kvm_gmem_populate_copy.
+> 
+> >   - get pfn with __kvm_gmem_get_pfn()
+> >   - read lock mmu_lock
+> >   - in the post_populate callback
+> >     - lookup tdp mmu page table to check if the table is populated.
+> >       lookup only version of kvm_tdp_mmu_map().
+> >       We need vcpu instead of kvm.
+> 
+> Passing vcpu can be done using the opaque callback argument to
+> kvm_gmem_populate.
+> 
+> Likewise, the mmu_lock can be taken by the TDX post_populate
+> callback.
 
-The change doesn't affect non-TDX-guest environments.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
-
-v9.1:
-  - Preserve CR4.MCE instead of setting it unconditionally.
-
----
- arch/x86/kernel/relocate_kernel_64.S | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
-index 56cab1bb25f5..8e2037d78a1f 100644
---- a/arch/x86/kernel/relocate_kernel_64.S
-+++ b/arch/x86/kernel/relocate_kernel_64.S
-@@ -5,6 +5,8 @@
-  */
- 
- #include <linux/linkage.h>
-+#include <linux/stringify.h>
-+#include <asm/alternative.h>
- #include <asm/page_types.h>
- #include <asm/kexec.h>
- #include <asm/processor-flags.h>
-@@ -145,11 +147,17 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
- 	 * Set cr4 to a known state:
- 	 *  - physical address extension enabled
- 	 *  - 5-level paging, if it was enabled before
-+	 *  - Machine check exception on TDX guest, if it was enabled before.
-+	 *    Clearing MCE might not allowed in TDX guests, depending on setup.
- 	 */
- 	movl	$X86_CR4_PAE, %eax
- 	testq	$X86_CR4_LA57, %r13
- 	jz	1f
- 	orl	$X86_CR4_LA57, %eax
-+1:
-+	testq	$X86_CR4_MCE, %r13
-+	jz	1f
-+	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %eax), X86_FEATURE_TDX_GUEST
- 1:
- 	movq	%rax, %cr4
- 
+Yes, it should work.  Let me give it a try.
 -- 
-2.43.0
-
+Isaku Yamahata <isaku.yamahata@intel.com>
