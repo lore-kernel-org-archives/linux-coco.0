@@ -1,81 +1,80 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85A2147C8E
-	for <linux-coco@lists.linux.dev>; Wed,  3 Apr 2024 12:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA64147C90
+	for <linux-coco@lists.linux.dev>; Wed,  3 Apr 2024 12:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712148738; cv=none; b=f3KCnob24UQ+2puJrDMlNjfybs3oZKfYUJgDs7fLWmOz1Hzewtuh4nsd7rDGi8wXNZzb79qZqVR+CQUmFcC5Akn/2xwVs4eefuU2JUn8JgUJk5VHp5kUlVyfFkVAgEpahSQ7NW2rZf0CBWMVKmomFqdOzyg3bwAEpxAABz2lSFo=
+	t=1712149003; cv=none; b=cLL2siQiBD1ZT3TVLO+kno/412dlpdLICZOXYD1MvZ1IWPpG5tt7MHxqjPtyeHIf97YRZKmh+Yh3O/erlZm7dVD+YlAH09fRZiP5sdovbHjno9NWeKm1BHCyVZR6xgw7PivCxC06js/W5yBLZmZCDFpCFfPLsEiDNvdncn3sQYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712148738; c=relaxed/simple;
-	bh=KTbI/ksSemO199S8nZZfV3jPhmS7kS2sBWwVojZaqVc=;
+	s=arc-20240116; t=1712149003; c=relaxed/simple;
+	bh=k75X6e+xXR/2CHetkCcWpWKqu9lH9n9uyWfcUV8by6c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WYX2ZO5vpq4/4X5DfJL5uIZZtfflsTqrlhHOIW3KOG+rOaXoPbezfDM9fS0SREFIHRquL3r0vDbocQwH4CPcLAWtGNiX28jrX9iNHND1dQ8rNlL6pzCF80IEpht6RmQCzkV3R5BtUOWA498J4vs2m4hPPxDTh/17Uq3LXwxZpnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R1uATYUA; arc=none smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=K8VoPTquZ9fB3lEK4zH0xg5XrPZAMa49w44fmxfcVHDYYXSgLjmP9kyigAun7jgf1HUbM0+WgbjSUIf2lu0Ls5WfFKw+0+pxCnihlry7gqJbUhfsVGEMeakZWpC/tfIrNErqpipxnrQFR5WSUNZWHKDZemr8FVdOZgRF5mP4V50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fSZBEQOv; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R1uATYUA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fSZBEQOv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712148735;
+	s=mimecast20190719; t=1712148999;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Lzo04337+pWNqFR9KY5np7872oqctqWVTvayomhrVIY=;
-	b=R1uATYUA4ggZ7o57HmejgazGydMQqrOhLAogWxV9VLIPXHzT5jZ6huaOOhjOtULG4uYXi3
-	Hml9yLdtEpkBkDYxWuxBmef8sVhIkTEfeE8Pc3K0NeS+lF6Ef6XgCRc0ODDSSlDyioS4iC
-	be2DDKCT6N9CTqkfqjCES5AZTDW5gTo=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=8yewPQMR0S+4mdQyXSXgCBzYxRYzMDeDenPXpOjBMmY=;
+	b=fSZBEQOvTc0wfYf0KXWHfNGI8sImRmBBDuHVj2nAs4CJ1LAudBlDctCdQx45y61a1zzeNd
+	v9euQ2ATcxDfxfKciRK5TdKspHEcJsTEr+blmT4vEe5rooEwHsJQIpzMRKKlOuStz6+60B
+	YfND0lCs7lROtGgzMjx5rgKx/E1YvPo=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-385-iLbaamH-P-WeK2Xo2EX4Ww-1; Wed, 03 Apr 2024 08:52:13 -0400
-X-MC-Unique: iLbaamH-P-WeK2Xo2EX4Ww-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3436714e286so1193186f8f.0
-        for <linux-coco@lists.linux.dev>; Wed, 03 Apr 2024 05:52:12 -0700 (PDT)
+ us-mta-546-tvGtzbWkMpuEQ8xBU-Zu_Q-1; Wed, 03 Apr 2024 08:56:38 -0400
+X-MC-Unique: tvGtzbWkMpuEQ8xBU-Zu_Q-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-33d8d208be9so4109355f8f.2
+        for <linux-coco@lists.linux.dev>; Wed, 03 Apr 2024 05:56:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712148732; x=1712753532;
+        d=1e100.net; s=20230601; t=1712148997; x=1712753797;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Lzo04337+pWNqFR9KY5np7872oqctqWVTvayomhrVIY=;
-        b=exfiXNO6DDi6mldVM8u4IY5/ex/nUt3TD7UY1iRkNK1x/xUGyD9t+k2QR19bKMcdE9
-         +zVA85sXwvezAb0LikiA7JgG3vNTQH2UNhnFMbdwlzM/LOixT5fgLytSgSAnwFKeaBIS
-         b6juWuS9cBLtOzhSXEh4zIJ+EM0MKxQAoSUyvgIQY+CoR06hfUNUbkM6zZt3t4e9W81U
-         Y5RX+WBKegVBTu0nT3UaFAYZgZk0MOWyq7JkZJUMtKlrvhrbYYChEUcm6iKpJMRn0y2v
-         2XKEUBNoUEJPK8RNKVfOPo0KOMeVpL30TE26xZfy+TtAmN6wH6VPWd0nYWAwUhE6gDpG
-         Xgtw==
-X-Forwarded-Encrypted: i=1; AJvYcCUccbiSAgg8iztoZuHxSRZuPJlgXz601TRKiH/tgh3KnB0lQc64I1QCK9MkNVE1jDFZ43tlklLf41iczQ8m1EgiDnX8DkOzPBNUvg==
-X-Gm-Message-State: AOJu0YytJ1uGdjY9/G0D6L6Mc43wEJ4UBZlDmF0Qiq6ttdVa8Mz1xHnc
-	ITr0MJMHLGYgv2UWuY1oZX7F2kIxLG2665lTDgCZG5a2gmp6562n/e1A9Ap9rWa5z4jKD1y2Cr8
-	Vq1aZCUv48A+CRKxlktujhaHG7xDj3fw5svLXF/g/H1zKKmQT4EfOF0lJ6xQAym7ngBXTiL1DkW
-	gQTAmJsX0wzexduegj3W8LYDmDjJ8NrlMruw==
-X-Received: by 2002:a5d:48cc:0:b0:33e:ca29:5a3 with SMTP id p12-20020a5d48cc000000b0033eca2905a3mr10071641wrs.23.1712148731982;
-        Wed, 03 Apr 2024 05:52:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF2UoNabPuQYMXaCFPaD8DdCLeElDGS9RU+nviM9wFLu/qKDV0J6kv+wy2lYCLkobeqVDalIcJhUKiwuGQdPuY=
-X-Received: by 2002:a5d:48cc:0:b0:33e:ca29:5a3 with SMTP id
- p12-20020a5d48cc000000b0033eca2905a3mr10071597wrs.23.1712148731603; Wed, 03
- Apr 2024 05:52:11 -0700 (PDT)
+        bh=8yewPQMR0S+4mdQyXSXgCBzYxRYzMDeDenPXpOjBMmY=;
+        b=huQ2IFpwVbIL6LM1KRs2DAfN6ig6frOdHhXHfJ9WeDafSB2/dHtPyVNZLCGsHaf5V0
+         f+Jk9LzY0MdT5+pUnXNUg1EO5RMxUFx8r71aZ63XyR9eLpTQnIy5sPtWMre4QOHmwQjh
+         /64axX/lNUTB1QcpmIOU9GgJNs+868yTmoDGTVJ/7y20KkBzE7lfjmU4BDXz5hY1y+xD
+         z9mOfDTgBts9BgilT4jvV1saoTQgmK/VAqdBaCLIg/sBpmsf8KEvlff+ybNPSudEnX3Q
+         rAAFjvFR2fu1t6H6QbrNzDIf3sTRm9STx510jH5oY3NL8icSUo4iI2L9h4bCcmoHtMov
+         bRmg==
+X-Forwarded-Encrypted: i=1; AJvYcCVIWYY28JInUdvKutCuo4ZkHkn6dtrprePQGv0iipJhQZ7h2rWyx5zK2rm4UpSPe6OXkvKdP3jmpeGW3L2GDD4Lo4xFYblZg+Bl9g==
+X-Gm-Message-State: AOJu0YzK5sj+PgmzX7jsec7KvGZ9ZuMkEzS77ea+M1PJJ+RKmrXATes1
+	Qis2mMJF7x8yh6wMKbXe3Ql7kkMrQJv3mB6XycEalC18UFyloxinFi+LAqslUOIDhXETO4ZdlV0
+	lhHQMMZKA/q0MKtvHFGaRcDjjukHrZUk5ww93vnBl9jFNMQQyXz60xjyui6GSMiFcd66qForqwW
+	KRrB6cLJItROZwr6Aby4TrshTexNOb0csn0Q==
+X-Received: by 2002:a5d:6585:0:b0:343:8551:8d90 with SMTP id q5-20020a5d6585000000b0034385518d90mr2514201wru.34.1712148996807;
+        Wed, 03 Apr 2024 05:56:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFE6EvC96kkgT6mLgn0vUrYteEazg+ord6iBHG8W1WaPauUUkwzs1ek0iVVbDOhQrMvTDS6MXHEqaCEHyYWr0U=
+X-Received: by 2002:a5d:6585:0:b0:343:8551:8d90 with SMTP id
+ q5-20020a5d6585000000b0034385518d90mr2514173wru.34.1712148996414; Wed, 03 Apr
+ 2024 05:56:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240329225835.400662-1-michael.roth@amd.com> <20240329225835.400662-12-michael.roth@amd.com>
- <8c3685a6-833c-4b3c-83f4-c0bd78bba36e@redhat.com> <20240401222229.qpnpozdsr6b2sntk@amd.com>
- <20240402225840.GB2444378@ls.amr.corp.intel.com>
-In-Reply-To: <20240402225840.GB2444378@ls.amr.corp.intel.com>
+References: <20240329225835.400662-1-michael.roth@amd.com> <20240329225835.400662-13-michael.roth@amd.com>
+ <40382494-7253-442b-91a8-e80c38fb4f2c@redhat.com> <20240401231731.kjvse7m7oqni7uyg@amd.com>
+In-Reply-To: <20240401231731.kjvse7m7oqni7uyg@amd.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 3 Apr 2024 14:51:59 +0200
-Message-ID: <CABgObfb4fQpUTzhpX9Bkcu0_+bOcCSCtuy+5-rttTLm-bY8i2w@mail.gmail.com>
-Subject: Re: [PATCH v12 11/29] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command
-To: Isaku Yamahata <isaku.yamahata@intel.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, 
-	seanjc@google.com, vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+Date: Wed, 3 Apr 2024 14:56:25 +0200
+Message-ID: <CABgObfYPT8yLvCDdc0B+4t4xCbk8deZg_G0_QVY_DcR_7--xSw@mail.gmail.com>
+Subject: Re: [PATCH v12 12/29] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
+	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com, 
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
 	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
 	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
 	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
@@ -83,76 +82,51 @@ Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.l
 	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
 	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
 	pankaj.gupta@amd.com, liam.merwick@oracle.com, 
-	Brijesh Singh <brijesh.singh@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	isaku.yamahata@linux.intel.com
+	Brijesh Singh <brijesh.singh@amd.com>, Harald Hoyer <harald@profian.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 3, 2024 at 12:58=E2=80=AFAM Isaku Yamahata <isaku.yamahata@inte=
-l.com> wrote:
-> I think TDX can use it with slight change. Pass vcpu instead of KVM, page=
- pin
-> down and mmu_lock.  TDX requires non-leaf Secure page tables to be popula=
-ted
-> before adding a leaf.  Maybe with the assumption that vcpu doesn't run, G=
-FN->PFN
-> relation is stable so that mmu_lock isn't needed? What about punch hole?
+On Tue, Apr 2, 2024 at 1:18=E2=80=AFAM Michael Roth <michael.roth@amd.com> =
+wrote:
 >
-> The flow would be something like as follows.
+> On Sat, Mar 30, 2024 at 09:41:30PM +0100, Paolo Bonzini wrote:
+> > On 3/29/24 23:58, Michael Roth wrote:
+> > >
+> > > +           /* Handle boot vCPU first to ensure consistent measuremen=
+t of initial state. */
+> > > +           if (!boot_vcpu_handled && vcpu->vcpu_id !=3D 0)
+> > > +                   continue;
+> > > +
+> > > +           if (boot_vcpu_handled && vcpu->vcpu_id =3D=3D 0)
+> > > +                   continue;
+> >
+> > Why was this not necessary for KVM_SEV_LAUNCH_UPDATE_VMSA?  Do we need =
+it
+> > now?
 >
-> - lock slots_lock
->
-> - kvm_gmem_populate(vcpu)
->   - pin down source page instead of do_memcopy.
+> I tried to find the original discussion for more context, but can't seem =
+to
+> locate it. But AIUI, there are cases where a VMM may create AP vCPUs earl=
+ier
+> than it does the BSP, in which case kvm_for_each_vcpu() might return an A=
+P
+> as it's first entry and cause that VMSA to get measured before, leading
+> to a different measurement depending on the creation ordering.
 
-Both pinning the source page and the memcpy can be done in the
-callback.  I think the right thing to do is:
+I think that would be considered a bug in either the VMM or the
+"thing" that computes the measurement.
 
-1) eliminate do_memcpy, letting AMD code taking care of
-   copy_from_user.
+If that hasn't been a problem for SEV-ES, I'd rather keep the code simple.
 
-2) pass to the callback only gfn/pfn/src, where src is computed as
+> We could however limit the change to KVM_X86_SEV_ES_VM and
+> document that as part of KVM_SEV_INIT2, since there is similarly chance
+> for measurement changes their WRT to the new FPU/XSAVE sync'ing that was
+> added.
 
-    args->src ? args->src + i * PAGE_SIZE : NULL
-
-If another architecture/vendor needs do_memcpy, they can add
-something like kvm_gmem_populate_copy.
-
->   - get pfn with __kvm_gmem_get_pfn()
->   - read lock mmu_lock
->   - in the post_populate callback
->     - lookup tdp mmu page table to check if the table is populated.
->       lookup only version of kvm_tdp_mmu_map().
->       We need vcpu instead of kvm.
-
-Passing vcpu can be done using the opaque callback argument to
-kvm_gmem_populate.
-
-Likewise, the mmu_lock can be taken by the TDX post_populate
-callback.
+Hmm, I need to double check that the FPU/XSAVE syncing doesn't break
+existing measurements, too.
 
 Paolo
-
->     - TDH_MEM_PAGE_ADD
->   - read unlock mmu_lock
->
-> - unlock slots_lock
->
-> Thanks,
->
-> > With that model, the potential for using kvm_gmem_populate() seemed
-> > plausible to I was trying to make it immediately usable for that
-> > purpose. But maybe the TDX folks can confirm whether this would be
-> > usable for them or not. (kvm_gmem_populate was introduced here[2] for
-> > reference/background)
-> >
-> > -Mike
-> >
-> > [1] https://lore.kernel.org/kvm/20240319155349.GE1645738@ls.amr.corp.in=
-tel.com/T/#m8580d8e39476be565534d6ff5f5afa295fe8d4f7
-> > [2] https://lore.kernel.org/kvm/20240329212444.395559-3-michael.roth@am=
-d.com/T/#m3aeba660fcc991602820d3703b1265722b871025)
 
