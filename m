@@ -1,61 +1,136 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482F948CCC
-	for <linux-coco@lists.linux.dev>; Thu,  4 Apr 2024 08:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712217847; cv=none; b=hsf6ELkdIHC36d8p7nDwNrAzd070Ul0O4NzEI6NE7bkH0Dv2mnm/HKVFqlVaLhOi/kM5hYMxUNZRdmAIGX0OZIzu0N9kkVTjXPrjL7EH4hA0ljsNOSxeA52Hjq4h+kL2uyWWkZuv/b/nTLnonWtHpUXMfivAOaordcHYRZlk5kI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712217847; c=relaxed/simple;
-	bh=R8LcxvfTc1DjuB+zF4WPxuwk747NekCsbw0Gms40h4I=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NwQ3hHAy4H85yqEMxf1qBKkkjzpLE82Ql3aaBVZep6RwMjfi5sOCFLFb41+ztXf28mRsNdRF8jXtgX76LlmcP7PZ5GJNDmCEriA92mlEJI2mh2HDgSVytoAMAoZaflRQvdGm9oSSHaNhGyaIuhW/El9OemSoBjnMF7i6AxA68Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=R9UhIKjX; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="R9UhIKjX"
-Received: from 8bytes.org (p4ffe1eea.dip0.t-ipconnect.de [79.254.30.234])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id BA8092813C5;
-	Thu,  4 Apr 2024 10:04:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1712217843;
-	bh=R8LcxvfTc1DjuB+zF4WPxuwk747NekCsbw0Gms40h4I=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=R9UhIKjXIqN9MCNGxmgpgd77jqOXOakrh5SFHDgiWnxQl/R7wBZfWSYFvXdTHuGoD
-	 7JLcWdGdBR3YgsgNtS4SRqlEPvdplzxGlpfwDBEK3sILwMWGmfalML7/b7Qdik8Lj4
-	 ZyKdDSuW5g8MJq9FBq85INTuHpbUErE37JYmPGA2vN2h8lhZKNypHhoEzXOYe3XVVb
-	 dEaYk9h26vUmxTgMn0uM4BU9c+VoVM6Je2dFK6I/4HfXokXDaxPOOMyYDZBWlnG+tg
-	 7O5NUSl8Q51oiHdVBmCYnQkDYyB1LCNhU7OLO+cCIBrYc9lOjekry3Fc6QDOCgIT+U
-	 XhrPoIwwRVvvw==
-Date: Thu, 4 Apr 2024 10:04:02 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: Re: [svsm-devel] SVSM Development Call April 3rd, 2024
-Message-ID: <Zg5e8k3KwZFQK6NQ@8bytes.org>
-References: <Zg07c6Y5a_Ak5oXs@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C4074BFE
+	for <linux-coco@lists.linux.dev>; Thu,  4 Apr 2024 09:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712223181; cv=none; b=Xkp8ekoXV7hBEAHoHZGhkVbRGAO5LJU7Pg2Ls+qCTyt2PjK7A2fkUxN3yxVbqnVORFAVbWfAhi5nPUhojSyDs1W6/yR+jXjdF2wd1r4iZdOcZKTXBi4CnmmhVp6BmiKgEQ20U+Nt4uzzGeQivei5L+xpwds7ZzTFpEEkZf7Pb7s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712223181; c=relaxed/simple;
+	bh=DMeWIz1Du52cE1BkXc9SPzON+93nq6RzYRZOTm7qPd8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C10A6EqU174Limu9MYLBl5cnVMNqpUYTXhw1EAnf7iXLQEc1RMZ/V2NsEMs3X473uCw2kE5YsY+ON7YHL9kPdZJRhpQcSgE/6o1Uho5/coMupWc4OGDWfoz12b56PjK5GiQKh9mvbJi+pdZsZTf1i7ziVPOrIFe3zqSrAXAXTrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LS1puUbm; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LS1puUbm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712223179; x=1743759179;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DMeWIz1Du52cE1BkXc9SPzON+93nq6RzYRZOTm7qPd8=;
+  b=LS1puUbmudJkTQFdhgBVnd+bSlmS1aQVmf/UYHGVrZHF0OUWdXlpNGIk
+   XPAx4MID+jaGt2GvsD5h89gR2m5JNZOBitvce4xV3aPlJKo1KxOAzlxwc
+   5L2iM9FqG+uBo/41yGgmu4StoOb7GtLrMBrv+aP+y0C88EaaAC1pAvRp+
+   D1OEn92amJiaSNAPM0foI2QpEKX9A4SEMSiyBuJpzt9caDlCZ68GxQsdH
+   WWx4mDYOS6Sa1RIIzVcOy8/QzebLTx5FBqIznBuM7l08GV7zanYNh2Ut1
+   QTY+I1DbXzA7ab5XKWVmGKQNgFHh9qsmuuMa5GKWHytaQy4i44/3+FmQ4
+   w==;
+X-CSE-ConnectionGUID: 1JkmPum2QWGisOZON+P2hg==
+X-CSE-MsgGUID: xwm8I1WtQEyNalckM8lYGA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="11267027"
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
+   d="scan'208";a="11267027"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 02:32:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="937086251"
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
+   d="scan'208";a="937086251"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 04 Apr 2024 02:32:53 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 4079A12C; Thu,  4 Apr 2024 12:32:52 +0300 (EEST)
+Date: Thu, 4 Apr 2024 12:32:52 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv9 05/17] x86/kexec: Keep CR4.MCE set during kexec for TDX
+ guest
+Message-ID: <cxwixclmgbx3xidn6g6keihampcbzcbosog6r6lyoa4hs3teu2@sqntzeltdajc>
+References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
+ <20240325103911.2651793-6-kirill.shutemov@linux.intel.com>
+ <b94c81ef-50f2-4e66-9533-461791777d10@intel.com>
+ <dlixf7bld4efdh5goir5nreabkgtcwfbvv2rovjqrvjttplqss@auuqnt4h2llj>
+ <j4s4n5slt6a234w5o5r4zjmb3xj53odnmwekt6ihotfzotd7ur@ghyvphwcki57>
+ <8e4e1d80-11ef-472f-befc-f61310281f18@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zg07c6Y5a_Ak5oXs@8bytes.org>
+In-Reply-To: <8e4e1d80-11ef-472f-befc-f61310281f18@intel.com>
 
-On Wed, Apr 03, 2024 at 01:20:19PM +0200, Jörg Rödel wrote:
+On Thu, Apr 04, 2024 at 10:40:34AM +1300, Huang, Kai wrote:
 > 
-> 	https://github.com/coconut-svsm/governance
 > 
+> On 3/04/2024 4:42 am, Kirill A. Shutemov wrote:
+> > On Fri, Mar 29, 2024 at 06:48:21PM +0200, Kirill A. Shutemov wrote:
+> > > On Fri, Mar 29, 2024 at 11:21:32PM +0800, Xiaoyao Li wrote:
+> > > > On 3/25/2024 6:38 PM, Kirill A. Shutemov wrote:
+> > > > > TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
+> > > > > to #VE.
+> > > > 
+> > > > Will we consider making it more safe and compatible for future to guard
+> > > > against X86_FEATURE_MCE as well?
+> > > > 
+> > > > If in the future, MCE becomes configurable for TD guest, then CR4.MCE might
+> > > > not be fixed1.
+> > > 
+> > > Good point.
+> > > 
+> > > I guess we can leave it clear if it was clear. This should be easy
+> > > enough. But we might want to clear even if was set if clearing is allowed.
+> > > 
+> > > It would require some kind of indication that clearing MCE is fine. We
+> > > don't have such indication yet. Not sure we can reasonably future-proof
+> > > the code at this point.
+> > > 
+> > > But let me think more.
+> > 
+> > I think I will go with the variant below.
+> > 
+> > diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+> > index 56cab1bb25f5..8e2037d78a1f 100644
+> > --- a/arch/x86/kernel/relocate_kernel_64.S
+> > +++ b/arch/x86/kernel/relocate_kernel_64.S
+> > @@ -5,6 +5,8 @@
+> >    */
+> >   #include <linux/linkage.h>
+> > +#include <linux/stringify.h>
+> > +#include <asm/alternative.h>
+> >   #include <asm/page_types.h>
+> >   #include <asm/kexec.h>
+> >   #include <asm/processor-flags.h>
+> > @@ -145,11 +147,17 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
+> >   	 * Set cr4 to a known state:
+> >   	 *  - physical address extension enabled
+> >   	 *  - 5-level paging, if it was enabled before
+> > +	 *  - Machine check exception on TDX guest, if it was enabled before.
+> > +	 *    Clearing MCE might not allowed in TDX guests, depending on setup.
+> 
+> Nit:  Perhaps we can just call out:
+> 
+> 	Clearing MCE is not allowed if it _was_ enabled before.
+> 
+> Which is always true I suppose.
 
-PR with the meeting minutes from yesterdays call is now posted:
+It is true now. Future TDX will allow to clear CR4.MCE and we don't want
+to flip it back on in this case.
 
-	https://github.com/coconut-svsm/governance/pull/9
-
-Regards,
-
-	Joerg
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
