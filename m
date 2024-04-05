@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D0B5A4DC
-	for <linux-coco@lists.linux.dev>; Fri,  5 Apr 2024 17:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E1B17164E
+	for <linux-coco@lists.linux.dev>; Fri,  5 Apr 2024 17:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712336598; cv=none; b=HIuS05fb3aqNJuYySUY2d3iK31SlUxCkNuOIGJn5FC18izj9iGWOKop5ktG8DDuszm7OUXXEUqENvLLIvLv2FYKswKTeC6mRGDU9840E1eYvYFkenuo3tZ/eNiq7YZDLI/GFS1JDSVSmIxIbq932/hZAJVCFWXUnzJcz89nqtVg=
+	t=1712336727; cv=none; b=ZXucpCjJWqXfDp1hKnTXb77+XeiCBrbvgOG4FsUO5ByKvMkXnHdqz5LRtiD/KlVyy69fCnHSZdaT3ykJVdrL7HIb3+8Lygu3M9pm30WayB+IDiuW9EQB8rjQeuhJ+nf+CHrsc1PyqMu2dlbwCIt+/7CRYMgIkBL1nidGRHxHE9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712336598; c=relaxed/simple;
-	bh=A2gJT9MPNiiRXZ3I1nDIIjh5qrMf6fMPCrzE1goQE7g=;
+	s=arc-20240116; t=1712336727; c=relaxed/simple;
+	bh=/AEsABMgIL9oKeChIdc/eQy55s/yNzx6q1zHRQyyKiI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VUa7PxeO1wTEfu1G4P56hS7pTqSP+SPyjieGUzHirviwdUs5n/xPnuuswvDIfoumxQcm+gdDvXhcUH2FyBXxAg/F0JgKF2l4CXbm1thT4NXLge5OamUpJIQ0jBpnWwwBnf0JVHSmn/tvg16vKmtd6qHPbrM0aszW/kgNzSTkUpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L+Z8/UQ2; arc=none smtp.client-ip=192.198.163.7
+	 In-Reply-To:Content-Type; b=k+J/xRwmICPanUHIA0rY9mVqWHWKTl+TO39WPB07eivPE/YNgZzMbFTsiO5WOGYSex6ahH68kzDBG73FW113zU06qDxmvoIHltlhTZZsCxcOKr3DxPwhc0omDqCUxeYIg0W/xnXK+So5UdXRZIcTyYGlzP8shJZEoS6KrUmCbW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yu2jtznq; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L+Z8/UQ2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yu2jtznq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712336597; x=1743872597;
+  t=1712336726; x=1743872726;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=A2gJT9MPNiiRXZ3I1nDIIjh5qrMf6fMPCrzE1goQE7g=;
-  b=L+Z8/UQ2QJ3h2s9a0bybRlZrhJKUJ8lppTlamJui3RbGN760oP0ARIDC
-   tfeVRDwSzz3qkm9QCsOyrw18pvR+/EZDO11VnNRhnpj1yyk1Jm8dztghJ
-   r2Eaj4U8CG4IbCc51zuYGObwPR8xMmXcsUE4z4K5llS+IXvbFN75kiFFj
-   xgkNvNK7pzlJaUiefKcjbvCU32UC4EE31Fzx10wdLiH3/TsVohTobiEJi
-   pfOtMlY6ZXOgr0yx8Pj0JYAkOeSo4U24sY1+dA90DmTcBUPO94NwoooyB
-   z5sltL95/Fu7jlz8cvKJ4o06GWI6r4Hep1WKDww5LKAfFkbHaVDYjx9WN
+  bh=/AEsABMgIL9oKeChIdc/eQy55s/yNzx6q1zHRQyyKiI=;
+  b=Yu2jtznqHUwMkZG96jcpuNusGlgFDV1Hi9US78/DmaegWr/6F6GROIHK
+   OrVpmCNdFHsGEfWQ3w8CxmG2omIHFJVdz/D34pPHcfJwBa4K/1w1iIM8h
+   frS2utrEvBdVICAcsqstEo0NXJJBmhtb4/ynQTJHs4N4HMGPOJcImyxYr
+   QTIKH7KCGdXSxni7E4VImsiLblFf9PoHTu2hyoWK1wh1H9bN6Arf2Q02R
+   wweR921hE+9dlKztT6bfJNC4aEebaauji5DzY7vzJkH/iXkVFMBE311Dj
+   Xhca6njpSFIFIX8PhN8qvlWMxaCfEBU1mQTvSczH3up4JJLvo/4+6zBPG
    A==;
-X-CSE-ConnectionGUID: BSF2uhc1SbK1CkJN7KNZqQ==
-X-CSE-MsgGUID: WvO5eT/kSUmraUYnnGifvw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="33075451"
+X-CSE-ConnectionGUID: 4eend8UxSS2ToermB9cu6w==
+X-CSE-MsgGUID: M4YtnSdWT0asI+GXqYwrJA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="18284825"
 X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="33075451"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 10:03:16 -0700
-X-CSE-ConnectionGUID: FR0NuFbmTRaj/tKSyh8wNA==
-X-CSE-MsgGUID: 4MeI8IxHSqy4FTP2KXFNVA==
+   d="scan'208";a="18284825"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 10:05:26 -0700
+X-CSE-ConnectionGUID: +MFNCUHzRv2kuSn9OWymFg==
+X-CSE-MsgGUID: prsXshp8Tu6fZbMcXuf3OQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="23941500"
+   d="scan'208";a="19659692"
 Received: from twwright-mobl1.amr.corp.intel.com (HELO [10.209.65.212]) ([10.209.65.212])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 10:03:15 -0700
-Message-ID: <9322f040-d2f9-4bdc-a85a-edf0082aea46@linux.intel.com>
-Date: Fri, 5 Apr 2024 10:03:15 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 10:05:25 -0700
+Message-ID: <7cd4b4d5-a7b4-41d9-8bd3-ad41401fec61@linux.intel.com>
+Date: Fri, 5 Apr 2024 10:05:24 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] x86/sev: add sev_es_enabled() function.
+Subject: Re: [PATCH v3 3/4] x86/boot/compressed: Skip Video Memory access in
+ Decompressor for SEV-ES/SNP.
 To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
  mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org
 Cc: rafael@kernel.org, peterz@infradead.org, adrian.hunter@intel.com,
@@ -64,10 +65,10 @@ Cc: rafael@kernel.org, peterz@infradead.org, adrian.hunter@intel.com,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
  <cover.1712270975.git.ashish.kalra@amd.com>
- <e14edff1b22705de6b66f4cbde5df3dc68eb10c1.1712270976.git.ashish.kalra@amd.com>
+ <1027427fafa350a41234f5061c8c48fc77c58326.1712270976.git.ashish.kalra@amd.com>
 Content-Language: en-US
 From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <e14edff1b22705de6b66f4cbde5df3dc68eb10c1.1712270976.git.ashish.kalra@amd.com>
+In-Reply-To: <1027427fafa350a41234f5061c8c48fc77c58326.1712270976.git.ashish.kalra@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -75,9 +76,24 @@ Content-Transfer-Encoding: 7bit
 On 4/4/24 4:11 PM, Ashish Kalra wrote:
 > From: Ashish Kalra <ashish.kalra@amd.com>
 >
-> Add sev_es_enabled() function to detect if SEV-ES
-> support is enabled.
+> Accessing guest video memory/RAM during kernel decompressor
+> causes guest termination as boot stage2 #VC handler for
+> SEV-ES/SNP systems does not support MMIO handling.
 >
+> This issue is observed with SEV-ES/SNP guest kexec as
+> kexec -c adds screen_info to the boot parameters
+> passed to the kexec kernel, which causes console output to
+> be dumped to both video and serial.
+>
+> As the decompressor output gets cleared really fast, it is
+> preferable to get the console output only on serial, hence,
+> skip accessing video RAM during decompressor stage to
+> prevent guest termination.
+>
+> Serial console output during decompressor stage works as
+> boot stage2 #VC handler already supports handling port I/O.
+>
+> Suggested-by: Thomas Lendacy <thomas.lendacky@amd.com>
 > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 > ---
 
@@ -85,44 +101,39 @@ Looks good to me.
 
 Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
->  arch/x86/boot/compressed/sev.c | 5 +++++
->  arch/x86/boot/compressed/sev.h | 2 ++
->  2 files changed, 7 insertions(+)
+>  arch/x86/boot/compressed/misc.c | 6 ++++--
+>  arch/x86/boot/compressed/misc.h | 1 +
+>  2 files changed, 5 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-> index ec71846d28c9..4ae4cc51e6b8 100644
-> --- a/arch/x86/boot/compressed/sev.c
-> +++ b/arch/x86/boot/compressed/sev.c
-> @@ -134,6 +134,11 @@ bool sev_snp_enabled(void)
->  	return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
->  }
+> diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+> index b70e4a21c15f..47b4db200e1f 100644
+> --- a/arch/x86/boot/compressed/misc.c
+> +++ b/arch/x86/boot/compressed/misc.c
+> @@ -427,8 +427,10 @@ asmlinkage __visible void *extract_kernel(void *rmode, unsigned char *output)
+>  		vidport = 0x3d4;
+>  	}
 >  
-> +bool sev_es_enabled(void)
-> +{
-> +	return sev_status & MSR_AMD64_SEV_ES_ENABLED;
-> +}
-> +
->  static void __page_state_change(unsigned long paddr, enum psc_op op)
->  {
->  	u64 val;
-> diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
-> index fc725a981b09..5008c80e66e6 100644
-> --- a/arch/x86/boot/compressed/sev.h
-> +++ b/arch/x86/boot/compressed/sev.h
-> @@ -11,11 +11,13 @@
->  #ifdef CONFIG_AMD_MEM_ENCRYPT
+> -	lines = boot_params_ptr->screen_info.orig_video_lines;
+> -	cols = boot_params_ptr->screen_info.orig_video_cols;
+> +	if (!sev_es_enabled()) {
+> +		lines = boot_params_ptr->screen_info.orig_video_lines;
+> +		cols = boot_params_ptr->screen_info.orig_video_cols;
+> +	}
 >  
->  bool sev_snp_enabled(void);
-> +bool sev_es_enabled(void);
->  void snp_accept_memory(phys_addr_t start, phys_addr_t end);
+>  	init_default_io_ops();
 >  
->  #else
+> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+> index b353a7be380c..3c12ca987554 100644
+> --- a/arch/x86/boot/compressed/misc.h
+> +++ b/arch/x86/boot/compressed/misc.h
+> @@ -37,6 +37,7 @@
+>  #include <asm/desc_defs.h>
 >  
->  static inline bool sev_snp_enabled(void) { return false; }
-> +static inline bool sev_es_enabled(void) { return false; }
->  static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
+>  #include "tdx.h"
+> +#include "sev.h"
 >  
->  #endif
+>  #define BOOT_CTYPE_H
+>  #include <linux/acpi.h>
 
 -- 
 Sathyanarayanan Kuppuswamy
