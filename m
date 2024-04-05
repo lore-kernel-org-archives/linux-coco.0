@@ -1,148 +1,143 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698CA16C68C;
-	Fri,  5 Apr 2024 11:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C410F16FF49
+	for <linux-coco@lists.linux.dev>; Fri,  5 Apr 2024 17:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712317011; cv=none; b=b2vWSnmUprdo70D4nZTqt9bTZgm0HYlFNM7YVJlvauLzPijOSxJt4mKZ0baSJv7Hr9h/HDj8gEH/wrTvFMn05IQa1zkhlktHK0atJnCknXv388+UDo6S8NUOaL9Y4NCsC88Qim0KArrhxzlCyrGdOe3paFCE9ZIA5iAZGiuliPQ=
+	t=1712336556; cv=none; b=efy4gs1sJ8aU3zsV+JwREIu9d5N9qoRwSFsopw9m873tgrzRvqvut1l5jkipBihJCUfUpqgdSzr67ra7Z+vXFriVKKL3nFKkVr5PlTe8bCWMcbU9lzHZedTueJ05WRi7uEVrukj6RKsSXUgZ4ojyKbIhkBI+PdARlf6jwBxwZaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712317011; c=relaxed/simple;
-	bh=Sg12EAx3ICVX5lOqralz4pA5DQW+y0y4c7gHeCPwJD4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lWLvRjihJSbZrDO6uxgDHCrX06XMi4Mm3MpuSa7fq27ia/hQoaSzbeDGWuD3tSc4Wqc2NOMiaGuIdigF53HECKnnXca0uTVX/cYhFQAK/buA1eU1LF5o+tNE/608UFq70SF38qr6OsQr3hUNBY1OElkAxNQElPOp728nn0hdlH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mBA4z7sD; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1712336556; c=relaxed/simple;
+	bh=MOYV1921efHrJ07Pg46Tj17i+5Tr+D9vo4vTZzq2bUc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gIMOhTJKaxAvtFJmDdb9sK7J2Dlbv6tCQBvZWHPKxMfYHZXP98bEwyC00lcOM0Eq9EDvEnUowX3Rw1K/dBLtEO/j+V6w0JfD7qsHct5N9cRESLsrPTTXTeZncvneJBF03FLSRPz42X7PGqdWCWP/UDVDdXN66niiJsL1qGcCVNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DNqnRYxO; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mBA4z7sD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DNqnRYxO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712317010; x=1743853010;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Sg12EAx3ICVX5lOqralz4pA5DQW+y0y4c7gHeCPwJD4=;
-  b=mBA4z7sDqkYCvNhKr1+dRFu0J/WbKMsV5V78kawYWXhjwcbz5N35fRS1
-   FiZNVTxdwcGABOP2dcsOm6Tf09InRQaBLK+J2zoQwVveYkU0VNBHhtptX
-   cOe9jNmvap9cJGjvv8Z7sLYO/Ph9I+a29pbLlcAQTqLspvWo6XnWS2P9R
-   qSxRQF5QjJcUyt2DZxsaCxkhZs4TtqOWZqy2Kr30JfIrA/jOA9O+7Id2m
-   qIbwtFAhuQVHd0GkPKVUI1jVFwqda0YcC+AQJjGy6fCZNqr6yGpoyJUCq
-   4+Md+J0dqujr6UeEOWGa/N266nfAnv0rCJEv0k4KAUNuD4/5y9OdC1ksG
-   w==;
-X-CSE-ConnectionGUID: ei1q9BITQAuUSi0yHgGLKA==
-X-CSE-MsgGUID: TJ6EmnYgQjO1bxsSpCIYDg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="7875562"
+  t=1712336554; x=1743872554;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=MOYV1921efHrJ07Pg46Tj17i+5Tr+D9vo4vTZzq2bUc=;
+  b=DNqnRYxO2A4Oc6X3AWTisNTEklcqfKIIq81OUn+jdzBLFZKFC2gNqiz5
+   s7NKWN9ZQzdPbP6x2gPSA4LC1UPSzOOqsMKePYHdJQj1aIIypdTt7nC8b
+   pwmintZZfzdjBxIJOq+OzoGomN2nSXNHPOR7tu7JjQoGyb8lrr7/T0Rju
+   eaE95ferQ7RStrDQ46yDNUrMyTVtLwh0XQdZW6wqtTButnSwFfqzoipYb
+   2kPMC4SwMU8IkID6ioxBJ29VNtUv4BsNQlc1uZf1l5Y+cQtvQPb7DGu/L
+   KUsLNb0kGHsU6JltKiFlhrVdKbiG7tKotGoaKSGYFsFV4q+8AHh7ZmFFw
+   g==;
+X-CSE-ConnectionGUID: 6SwHz3sQS/mPXFnhmFa61g==
+X-CSE-MsgGUID: c9sJMdK6Q1ir3zuPszXLHQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="33075382"
 X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="7875562"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 04:36:49 -0700
-X-CSE-ConnectionGUID: FdXcbv0BS7OEke4j78pCPw==
-X-CSE-MsgGUID: /HKD6oOtRniCRwO9R7X0qw==
+   d="scan'208";a="33075382"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 10:02:34 -0700
+X-CSE-ConnectionGUID: ue9lL3lvQfORewbsYQn0Iw==
+X-CSE-MsgGUID: mxkQdWVLS7uJsFH/c2LUZA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="56602327"
-Received: from lkp-server01.sh.intel.com (HELO e61807b1d151) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 05 Apr 2024 04:36:43 -0700
-Received: from kbuild by e61807b1d151 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rshs8-0002DT-1p;
-	Fri, 05 Apr 2024 11:36:40 +0000
-Date: Fri, 5 Apr 2024 19:36:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, rafael@kernel.org,
-	adrian.hunter@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	jun.nakajima@intel.com, rick.p.edgecombe@intel.com,
-	thomas.lendacky@amd.com, michael.roth@amd.com, seanjc@google.com,
-	kai.huang@intel.com, bhe@redhat.com,
-	kirill.shutemov@linux.intel.com, bdas@redhat.com,
-	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
-	jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] x86/snp: Convert shared memory back to private on
- kexec
-Message-ID: <202404051917.mk4DoDkI-lkp@intel.com>
-References: <41db1ebbe58fb082dbe848f1c666ed23e83f1752.1712270976.git.ashish.kalra@amd.com>
+   d="scan'208";a="23941152"
+Received: from twwright-mobl1.amr.corp.intel.com (HELO [10.209.65.212]) ([10.209.65.212])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 10:02:32 -0700
+Message-ID: <c6e8a19b-e6a6-4fa0-81dc-d8747ba648c0@linux.intel.com>
+Date: Fri, 5 Apr 2024 10:02:33 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41db1ebbe58fb082dbe848f1c666ed23e83f1752.1712270976.git.ashish.kalra@amd.com>
-
-Hi Ashish,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on efi/next]
-[also build test WARNING on linus/master v6.9-rc2 next-20240405]
-[cannot apply to tip/x86/core tip/master tip/x86/mm tip/auto-latest]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Ashish-Kalra/efi-x86-skip-efi_arch_mem_reserve-in-case-of-kexec/20240405-071346
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-patch link:    https://lore.kernel.org/r/41db1ebbe58fb082dbe848f1c666ed23e83f1752.1712270976.git.ashish.kalra%40amd.com
-patch subject: [PATCH v3 4/4] x86/snp: Convert shared memory back to private on kexec
-config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20240405/202404051917.mk4DoDkI-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240405/202404051917.mk4DoDkI-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202404051917.mk4DoDkI-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   arch/x86/kernel/sev.c:1006:14: error: call to undeclared function 'pte_decrypted'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1006 |                 if (pte && pte_decrypted(*pte) && !pte_none(*pte)) {
-         |                            ^
-   arch/x86/kernel/sev.c:1035:16: error: call to undeclared function 'pte_decrypted'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1035 |                 if (!pte || !pte_decrypted(*pte) || pte_none(*pte))
-         |                              ^
->> arch/x86/kernel/sev.c:1025:16: warning: variable 'size' set but not used [-Wunused-but-set-variable]
-    1025 |         unsigned long size;
-         |                       ^
-   arch/x86/kernel/sev.c:1056:7: error: call to undeclared function 'stop_memory_enc_conversion'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1056 |         if (!stop_memory_enc_conversion(wait_for_lock))
-         |              ^
-   1 warning and 3 errors generated.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/4] efi/x86: skip efi_arch_mem_reserve() in case of
+ kexec.
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org
+Cc: rafael@kernel.org, peterz@infradead.org, adrian.hunter@intel.com,
+ jun.nakajima@intel.com, rick.p.edgecombe@intel.com, thomas.lendacky@amd.com,
+ michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com,
+ bhe@redhat.com, kirill.shutemov@linux.intel.com, bdas@redhat.com,
+ vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
+ jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
+ <cover.1712270975.git.ashish.kalra@amd.com>
+ <7ca8179d7671a149f2808d8d081b6e736eea4394.1712270976.git.ashish.kalra@amd.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <7ca8179d7671a149f2808d8d081b6e736eea4394.1712270976.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
-vim +/size +1025 arch/x86/kernel/sev.c
+On 4/4/24 4:11 PM, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+>
+> For kexec use case, need to use and stick to the EFI memmap passed
+> from the first kernel via boot-params/setup data, hence,
+> skip efi_arch_mem_reserve() during kexec.
+>
+> Additionally during SNP guest kexec testing discovered that EFI memmap
+> is corrupted during chained kexec. kexec_enter_virtual_mode() during
+> late init will remap the efi_memmap physical pages allocated in
+> efi_arch_mem_reserve() via memblock & then subsequently cause random
+> EFI memmap corruption once memblock is freed/teared-down.
+>
+> Suggested-by: Dave Young <dyoung@redhat.com>
+> [Dave Young: checking the md attribute instead of checking the efi_setup]
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/platform/efi/quirks.c | 23 ++++++++++++++++++++---
+>  1 file changed, 20 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+> index f0cc00032751..2b65b3863912 100644
+> --- a/arch/x86/platform/efi/quirks.c
+> +++ b/arch/x86/platform/efi/quirks.c
+> @@ -255,15 +255,32 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+>  	struct efi_memory_map_data data = { 0 };
+>  	struct efi_mem_range mr;
+>  	efi_memory_desc_t md;
+> -	int num_entries;
+> +	int num_entries, ret;
+>  	void *new;
+>  
+> -	if (efi_mem_desc_lookup(addr, &md) ||
+> -	    md.type != EFI_BOOT_SERVICES_DATA) {
+> +	/*
+> +	 * For kexec use case, we need to use the EFI memmap passed from the first
+> +	 * kernel via setup data, so we need to skip this.
+> +	 * Additionally kexec_enter_virtual_mode() during late init will remap
+> +	 * the efi_memmap physical pages allocated here via memboot & then
+> +	 * subsequently cause random EFI memmap corruption once memblock is freed.
+> +	 */
+> +
+> +	ret = efi_mem_desc_lookup(addr, &md);
 
-  1021	
-  1022	static void unshare_all_bss_decrypted_memory(void)
-  1023	{
-  1024		unsigned long vaddr, vaddr_end;
-> 1025		unsigned long size;
-  1026		unsigned int level;
-  1027		unsigned int npages;
-  1028		pte_t *pte;
-  1029	
-  1030		vaddr = (unsigned long)__start_bss_decrypted;
-  1031		vaddr_end = (unsigned long)__start_bss_decrypted_unused;
-  1032		npages = (vaddr_end - vaddr) >> PAGE_SHIFT;
-  1033		for (; vaddr < vaddr_end; vaddr += PAGE_SIZE) {
-  1034			pte = lookup_address(vaddr, &level);
-  1035			if (!pte || !pte_decrypted(*pte) || pte_none(*pte))
-  1036				continue;
-  1037	
-  1038			size = page_level_size(level);
-  1039			set_pte_enc(pte, level, (void *)vaddr);
-  1040		}
-  1041		vaddr = (unsigned long)__start_bss_decrypted;
-  1042		snp_set_memory_private(vaddr, npages);
-  1043	}
-  1044	
+Since you are not using ret, why not directly use if (efi_mem_desc_lookup(..))?
+
+> +	if (ret) {
+>  		pr_err("Failed to lookup EFI memory descriptor for %pa\n", &addr);
+>  		return;
+>  	}
+>  
+> +	if (md.type != EFI_BOOT_SERVICES_DATA) {
+> +		pr_err("Skip reserving non EFI Boot Service Data memory for %pa\n", &addr);
+> +		return;
+> +	}
+> +
+> +	/* Kexec copied the efi memmap from the first kernel, thus skip the case */
+> +	if (md.attribute & EFI_MEMORY_RUNTIME)
+> +		return;
+> +
+>  	if (addr + size > md.phys_addr + (md.num_pages << EFI_PAGE_SHIFT)) {
+>  		pr_err("Region spans EFI memory descriptors, %pa\n", &addr);
+>  		return;
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
