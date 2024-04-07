@@ -1,141 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E1B17164E
-	for <linux-coco@lists.linux.dev>; Fri,  5 Apr 2024 17:05:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6880C1EEE0
+	for <linux-coco@lists.linux.dev>; Sun,  7 Apr 2024 15:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712336727; cv=none; b=ZXucpCjJWqXfDp1hKnTXb77+XeiCBrbvgOG4FsUO5ByKvMkXnHdqz5LRtiD/KlVyy69fCnHSZdaT3ykJVdrL7HIb3+8Lygu3M9pm30WayB+IDiuW9EQB8rjQeuhJ+nf+CHrsc1PyqMu2dlbwCIt+/7CRYMgIkBL1nidGRHxHE9I=
+	t=1712505334; cv=none; b=l91VSrgCex7AlO3KdMV7yu/pzvqqEfRqfmdABNj/5AznuEQKphTNN5Kb4Bq0R+Nq8PMw+rF8QWl7pN+dFw+NEUmqh2EuD/GYi4KIUD2ylXrjbOrIzKLPm1o1fJjVlorF77YDfp/9UwzY61J/jVHUAgqYBJS5/YbrRIXchV0Wvs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712336727; c=relaxed/simple;
-	bh=/AEsABMgIL9oKeChIdc/eQy55s/yNzx6q1zHRQyyKiI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k+J/xRwmICPanUHIA0rY9mVqWHWKTl+TO39WPB07eivPE/YNgZzMbFTsiO5WOGYSex6ahH68kzDBG73FW113zU06qDxmvoIHltlhTZZsCxcOKr3DxPwhc0omDqCUxeYIg0W/xnXK+So5UdXRZIcTyYGlzP8shJZEoS6KrUmCbW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yu2jtznq; arc=none smtp.client-ip=192.198.163.11
+	s=arc-20240116; t=1712505334; c=relaxed/simple;
+	bh=6kkPJdu5raGq+lO4qJBmb+P54LbJQkkF985xzuXyRbo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HH9kggHbpctthiiORugUjdLnPrlcZZ/T7LOx7BzMa192PmYXEUKlNhxeQMknauA4Du7VRRfx0i07tksUKFht0ahccVXnIQXMXBm0wlmL9nz6nBzk91ecvqHgHS/Vid4N6J29rfRg2My+u3LpZBhBOPDawzGPE26YU7WJfuNaPlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l3c/UYLL; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yu2jtznq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l3c/UYLL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712336726; x=1743872726;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/AEsABMgIL9oKeChIdc/eQy55s/yNzx6q1zHRQyyKiI=;
-  b=Yu2jtznqHUwMkZG96jcpuNusGlgFDV1Hi9US78/DmaegWr/6F6GROIHK
-   OrVpmCNdFHsGEfWQ3w8CxmG2omIHFJVdz/D34pPHcfJwBa4K/1w1iIM8h
-   frS2utrEvBdVICAcsqstEo0NXJJBmhtb4/ynQTJHs4N4HMGPOJcImyxYr
-   QTIKH7KCGdXSxni7E4VImsiLblFf9PoHTu2hyoWK1wh1H9bN6Arf2Q02R
-   wweR921hE+9dlKztT6bfJNC4aEebaauji5DzY7vzJkH/iXkVFMBE311Dj
-   Xhca6njpSFIFIX8PhN8qvlWMxaCfEBU1mQTvSczH3up4JJLvo/4+6zBPG
-   A==;
-X-CSE-ConnectionGUID: 4eend8UxSS2ToermB9cu6w==
-X-CSE-MsgGUID: M4YtnSdWT0asI+GXqYwrJA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="18284825"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="18284825"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 10:05:26 -0700
-X-CSE-ConnectionGUID: +MFNCUHzRv2kuSn9OWymFg==
-X-CSE-MsgGUID: prsXshp8Tu6fZbMcXuf3OQ==
+  t=1712505333; x=1744041333;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6kkPJdu5raGq+lO4qJBmb+P54LbJQkkF985xzuXyRbo=;
+  b=l3c/UYLLpPtWMcrABbHo96I+eUcX+PPpe0JujCCQZ2sHs7urs+F92LAm
+   rMwxA0tGZmx3dx0fstrI0o4VfA79T6VHdAHMUznyU9FAZaxmbVBnOdQQp
+   MK9u6RheBowuCmJSJTMIF/wkUxxhzASZCxeYARc1K5e8m/xTAykkzvLzc
+   42PdSMwTbPOSdcuUK0H84m1aDgaJDn/Tn1xSV20gAPSOgmmIK7G6Sq9TF
+   g5yH7S55iYdM3Ll2YhFkZx7/8yZ3RBd+ON2VSusVMTAKAXrPN5VVcChdU
+   t8aTGmOHxPErwf5tXoIp2OaS0+q8ME+z0xvOlsSuvj9e21Yl/7MIh87A9
+   Q==;
+X-CSE-ConnectionGUID: fLRR8ppcTKu8ZvkzDkEgxA==
+X-CSE-MsgGUID: Z1xGXKaJQBCaUKmSJtAnNw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11037"; a="30271182"
+X-IronPort-AV: E=Sophos;i="6.07,185,1708416000"; 
+   d="scan'208";a="30271182"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2024 08:55:33 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="19659692"
-Received: from twwright-mobl1.amr.corp.intel.com (HELO [10.209.65.212]) ([10.209.65.212])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 10:05:25 -0700
-Message-ID: <7cd4b4d5-a7b4-41d9-8bd3-ad41401fec61@linux.intel.com>
-Date: Fri, 5 Apr 2024 10:05:24 -0700
+X-IronPort-AV: E=McAfee;i="6600,9927,11037"; a="937090007"
+X-IronPort-AV: E=Sophos;i="6.07,185,1708416000"; 
+   d="scan'208";a="937090007"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 07 Apr 2024 08:55:28 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 2E8AF1CB; Sun,  7 Apr 2024 18:55:27 +0300 (EEST)
+Date: Sun, 7 Apr 2024 18:55:27 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Sean Christopherson <seanjc@google.com>, 
+	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv9 00/17] x86/tdx: Add kexec support
+Message-ID: <da7hfavumtb4nyp6se2pwwkq3idxgzpehnn67qsjdgigh6xq7f@lk4w5o7o6ama>
+References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
+ <bdeda1f9-b7d2-4bc3-ad20-342478be464b@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] x86/boot/compressed: Skip Video Memory access in
- Decompressor for SEV-ES/SNP.
-To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org
-Cc: rafael@kernel.org, peterz@infradead.org, adrian.hunter@intel.com,
- jun.nakajima@intel.com, rick.p.edgecombe@intel.com, thomas.lendacky@amd.com,
- michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com,
- bhe@redhat.com, kirill.shutemov@linux.intel.com, bdas@redhat.com,
- vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
- jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240325103911.2651793-1-kirill.shutemov@linux.intel.com>
- <cover.1712270975.git.ashish.kalra@amd.com>
- <1027427fafa350a41234f5061c8c48fc77c58326.1712270976.git.ashish.kalra@amd.com>
-Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <1027427fafa350a41234f5061c8c48fc77c58326.1712270976.git.ashish.kalra@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bdeda1f9-b7d2-4bc3-ad20-342478be464b@amd.com>
 
+On Thu, Apr 04, 2024 at 01:27:47PM -0500, Kalra, Ashish wrote:
+> The cover letter mention the inclusion of the following patch - Keep page
+> tables that maps E820_TYPE_ACPI (Ashish)
+> 
+> But i don't this patch included in your patch-set.
 
-On 4/4/24 4:11 PM, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
->
-> Accessing guest video memory/RAM during kernel decompressor
-> causes guest termination as boot stage2 #VC handler for
-> SEV-ES/SNP systems does not support MMIO handling.
->
-> This issue is observed with SEV-ES/SNP guest kexec as
-> kexec -c adds screen_info to the boot parameters
-> passed to the kexec kernel, which causes console output to
-> be dumped to both video and serial.
->
-> As the decompressor output gets cleared really fast, it is
-> preferable to get the console output only on serial, hence,
-> skip accessing video RAM during decompressor stage to
-> prevent guest termination.
->
-> Serial console output during decompressor stage works as
-> boot stage2 #VC handler already supports handling port I/O.
->
-> Suggested-by: Thomas Lendacy <thomas.lendacky@amd.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> ---
-
-Looks good to me.
-
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-
->  arch/x86/boot/compressed/misc.c | 6 ++++--
->  arch/x86/boot/compressed/misc.h | 1 +
->  2 files changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-> index b70e4a21c15f..47b4db200e1f 100644
-> --- a/arch/x86/boot/compressed/misc.c
-> +++ b/arch/x86/boot/compressed/misc.c
-> @@ -427,8 +427,10 @@ asmlinkage __visible void *extract_kernel(void *rmode, unsigned char *output)
->  		vidport = 0x3d4;
->  	}
->  
-> -	lines = boot_params_ptr->screen_info.orig_video_lines;
-> -	cols = boot_params_ptr->screen_info.orig_video_cols;
-> +	if (!sev_es_enabled()) {
-> +		lines = boot_params_ptr->screen_info.orig_video_lines;
-> +		cols = boot_params_ptr->screen_info.orig_video_cols;
-> +	}
->  
->  	init_default_io_ops();
->  
-> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-> index b353a7be380c..3c12ca987554 100644
-> --- a/arch/x86/boot/compressed/misc.h
-> +++ b/arch/x86/boot/compressed/misc.h
-> @@ -37,6 +37,7 @@
->  #include <asm/desc_defs.h>
->  
->  #include "tdx.h"
-> +#include "sev.h"
->  
->  #define BOOT_CTYPE_H
->  #include <linux/acpi.h>
+Ouch. My bad. Will fix in v10.
 
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+  Kiryl Shutsemau / Kirill A. Shutemov
