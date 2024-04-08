@@ -1,57 +1,57 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329CB495CB
-	for <linux-coco@lists.linux.dev>; Mon,  8 Apr 2024 07:41:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA294CB5B
+	for <linux-coco@lists.linux.dev>; Mon,  8 Apr 2024 07:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712562083; cv=none; b=pCfC8YIcOXfaLoYPr8SXq48EaddSbgMAHBNz3Ih2M4Bso7LNPOH1xoijjZr5MaW9qpisPPGXXTRacJS7Vi41VmBvNFax7IIkZRHg8QhSUUvKTXHXmIjTARuIWLadeMofIiZ1n0EkQfmu2mP45zrIVByuJdkRnORcPmTBuCk0scM=
+	t=1712562084; cv=none; b=Xs3xqckjNvnipUJ3x976EMkdfMOtUeB9YJsBbjku3Eg+/rbA3WEUEeXpngKb+p8dgtRANOFOmu4w/i+PfV8f5R/y2fOl7xLtKUTDTun1XLRUYD9VIn6gbAdxQVCMMU2TCuGY+Qm71iY1qHx8zs1up+shUlwZlhwSVFDoqK0r7p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712562083; c=relaxed/simple;
-	bh=zYcb4/9WEShY0XRHnrQbKJ01pXJ2G8yIwcM+DsGPPXc=;
+	s=arc-20240116; t=1712562084; c=relaxed/simple;
+	bh=nraWtElHPDcy4J/h0QtFNZ3iGaE/9eKaPhhvDhuTS7E=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AN1RQgoP6UPbvHwg6OxKgrn/rG8qnMTAIfAE8rf1XTNaf7OuwKMuMnv/bbvlpGHb8oww+bN2x3pQwJeqdB5lG3ESwcroWZMN55E2qPsxrjuuiWW7icHh7jkj4poXiwDF4EQ8EYB/7BL4neAIvgD7dFAqGo+0bK6Q6s1EdqTDZ28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yss7K6Rd; arc=none smtp.client-ip=209.85.221.49
+	 MIME-Version; b=rtp+XXSgKdpxWm1FBW264DLZGx/7rfYWXxBj2Oyyl2Nfst1Jh2wX28c+m1+0JriFv40E2ACXgHcLjKy3mbXfJeUEG9gSiYVcJavh9XILZc1ttlmN8SAZ8QPZaKGO4lr6nyxpvcJdvvKj0N3yxwtStfz3TPr1sp6ZR1LaK0ZVirc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N4WOQQea; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yss7K6Rd"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-343e46ec237so2260805f8f.2
-        for <linux-coco@lists.linux.dev>; Mon, 08 Apr 2024 00:41:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N4WOQQea"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-343e986aa6cso817197f8f.1
+        for <linux-coco@lists.linux.dev>; Mon, 08 Apr 2024 00:41:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712562079; x=1713166879; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1712562082; x=1713166882; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PtkyqKxJvkp9IMsnHYE4l6zbbRyMrAgNbiaeWO9SXiI=;
-        b=Yss7K6RdsdnV1ZWM3h8UH15rmJCNsEHFdt+H7iMCgB4oIhQ2IIOybCi9zSJtyipXmj
-         vWy0+Fxb/NXk70/Gg97sGHKOP6vROiIpSg+PebBP9cfnBel9TZaxI7vE4zHTCEUjofvg
-         GeD0nRQMUbfYDTIuzUVL7GhFfDaozukpakBogG7RTtUExhJVtwOGl0hOqTny0cAksehK
-         PnSK/KL+CNA+gtGW8ApnX3rcg9Zd2wQtaFIk1MGos8ZwQ9rzGkSlgYR4CvbushEzXKB8
-         wNFs4IFVl0auTgIRbOoManE2V0q8VyhtCwgk8ofFZ/JWX4P+omx6B28gIeIuGSXEuQGx
-         GT6g==
+        bh=vffWxrDfGUfj6Dj40L1W41htTqoat8lNT1P/loOuIyQ=;
+        b=N4WOQQeadjhRAaJif3IBdWh8gkKLlT8NYgJWgpC0kGNR0vvxFh3rGlsemXwDKxz95A
+         fBoo3P/MgCQb6piEIq6TOkZE54CPfHswOMrRappYu2N4RpIbjg/5+cn4eMhouQW3lNLH
+         PzQPX8cfGaPTkPIHq/mLQBcS/QnCDhY0hH4LOQK4Ne2edPGgr3zS9ywC9L0jSH1rIZ0X
+         PxZWX5jOnom/ku9EWXCEDQZrWDzo4IT9gYALsyfIpvRZ4hmo80B519VwZ01bV4nYRObV
+         m6qB5yhKjg0kie/CEApKxdo+7sJ6HyqmXxfk7MsKBfhXRoBn4C4aW68yOGx8MhJVe+cp
+         8Hmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712562079; x=1713166879;
+        d=1e100.net; s=20230601; t=1712562082; x=1713166882;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PtkyqKxJvkp9IMsnHYE4l6zbbRyMrAgNbiaeWO9SXiI=;
-        b=O8EiaHPmTI3Y8Rs5TBo1WqPAYMVAAAQNQPorwPIvdhypqUAEjsOvlbvYRWlT/YPvjy
-         idOyp5IGmMETNHVKS02IUDEfLSSuEfuA2clUx4yK4sG4/+/HgXUTwtK2BdBM3exjbl5W
-         3yJO1SjiR48mps2/qN4mihtR/ijU5+EzAj2xhHV1gR2jRZJguwoq5uSblS7OsQEcUbtO
-         zBSfxYnJoSrqhJEMbn/K0RFBt/pepJ+4BiYp2oL6CsajnW6RJGBvc+4iFJvzE4oH6pLl
-         PzlLtNSPrVBZCCg1Bgp8m5lqbG9rY8Kze1OdIDXIErzu1MN2drU1MX3DzpgU2xQE/HvR
-         BdTA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+IoRK0uQmuwqQTFKxhX5qCMww4VwL8HG7xaz/K9BzFOAsHVOqVKdWwRSX1L4AK4KJjuqfeyyrOwHaDHlDIW76MdgtL5AEx+FYgg==
-X-Gm-Message-State: AOJu0YzAJV+mR1+qa1NmXE3ubKwZOTZkvAataUI/ET597FJWOmJUNhcJ
-	7o8JPGvmMIxFLrPHrCEfHvN4MCjml1/8oehjwyOrdXKFOxhoZtv6
-X-Google-Smtp-Source: AGHT+IHCtTgtguJAV1/c4MkfZce3ouAm8nkkV1k3lPxle87h5W00nuVVJEZORfw/dl/4V3xbzdiheA==
-X-Received: by 2002:a5d:5f46:0:b0:345:bcd4:bc99 with SMTP id cm6-20020a5d5f46000000b00345bcd4bc99mr1264651wrb.11.1712562079618;
-        Mon, 08 Apr 2024 00:41:19 -0700 (PDT)
+        bh=vffWxrDfGUfj6Dj40L1W41htTqoat8lNT1P/loOuIyQ=;
+        b=F6cJIj2KfNt9/povAmXYyT3vBN848TSGGxVf90fK5kZSm6VByvltObk36qy8ZrVMgB
+         nOYZ+UylTGSP5fQKUZVmcp6U56pp3iSpza9hYbRsa7604tK3l29TKbNplKjnIDrhknEx
+         YXhslFuIelv5C0NHTCwF/VZlhhbfxl5C9nfkCeOukQUFU+aErRuxWwdJpVTVmvi1vuKG
+         wDTAVNGH6eZyPmmTVyK0IogwZyAL/xUz0zubEg2WtT1vftW4SwCypaALpTuWXQrNqA42
+         yYiZ0azZhGyHf0v9iSeVq9eOOPQSbGjYoBMEs6M0iTXMBbp87nxrmDriX9Z4TiBVfK+4
+         Ji/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW1LXZD5n4j7xjG51ZaWsHYzwIiBMQ3fs2+1s0PmisfbyRz9NcD3uCp5C/iiGcOcQhCC0mryxvT1Fbp98+CvOIBa2E0/hU6KpmVUA==
+X-Gm-Message-State: AOJu0Yz5EkV589xiknF2k8RXmFDKM6mQTRCFTSIZ44dffWtGQ+VjUNTl
+	GX2H7WcEEWA++NbXFx4NmyxJzhDotTt+3Nvn5FNUNzOmFrEmwMM1
+X-Google-Smtp-Source: AGHT+IFJ4+QJwRhaWOkJ+xi/SDRYHJSS+dNKUjJlrOrr+g4LrjWQZtOQ6FOdPmbvQsUHzg88XvrMoA==
+X-Received: by 2002:a5d:64a2:0:b0:345:b238:534d with SMTP id m2-20020a5d64a2000000b00345b238534dmr1768262wrp.28.1712562081667;
+        Mon, 08 Apr 2024 00:41:21 -0700 (PDT)
 Received: from vasant-suse.suse.cz ([2001:9e8:ab70:9c00:7f0b:c18e:56a6:4f2])
-        by smtp.gmail.com with ESMTPSA id j3-20020adfff83000000b00341e2146b53sm8271413wrr.106.2024.04.08.00.41.17
+        by smtp.gmail.com with ESMTPSA id j3-20020adfff83000000b00341e2146b53sm8271413wrr.106.2024.04.08.00.41.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Apr 2024 00:41:19 -0700 (PDT)
+        Mon, 08 Apr 2024 00:41:20 -0700 (PDT)
 From: vsntk18@gmail.com
 To: x86@kernel.org
 Cc: cfir@google.com,
@@ -84,9 +84,9 @@ Cc: cfir@google.com,
 	michael.roth@amd.com,
 	Borislav.Petkov@amd.com,
 	Dhaval.Giani@amd.com
-Subject: [PATCH v5 09/10] x86/kexec/64: Support kexec under SEV-ES with AP Jump Table Blob
-Date: Mon,  8 Apr 2024 09:40:48 +0200
-Message-Id: <20240408074049.7049-10-vsntk18@gmail.com>
+Subject: [PATCH v5 10/10] x86/sev: Exclude AP jump table related code for SEV-SNP guests
+Date: Mon,  8 Apr 2024 09:40:49 +0200
+Message-Id: <20240408074049.7049-11-vsntk18@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408074049.7049-1-vsntk18@gmail.com>
 References: <20240408074049.7049-1-vsntk18@gmail.com>
@@ -98,87 +98,58 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Joerg Roedel <jroedel@suse.de>
+From: Vasant Karasulli <vkarasulli@suse.de>
 
-When the AP jump table blob is installed the kernel can hand over the
-APs from the old to the new kernel. Enable kexec when the AP jump
-table blob has been installed.
+Unlike SEV-ES, AP jump table technique is not used in SEV-SNP
+when transitioning from one layer of code to another
+(e.g. when going from UEFI to the OS).
 
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Vasant Karasulli <vkarasulli@suse.de>
 ---
- arch/x86/include/asm/sev.h         |  2 ++
- arch/x86/kernel/machine_kexec_64.c |  3 ++-
- arch/x86/kernel/sev.c              | 15 +++++++++++++++
- 3 files changed, 19 insertions(+), 1 deletion(-)
+ arch/x86/kernel/sev.c    | 6 +++++-
+ arch/x86/realmode/init.c | 5 +++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index dba6cad1f7d3..9c773c272986 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -234,6 +234,7 @@ u64 sev_get_status(void);
- void kdump_sev_callback(void);
- void sev_show_status(void);
- void sev_es_stop_this_cpu(void);
-+bool sev_kexec_supported(void);
- #else
- static inline void sev_es_ist_enter(struct pt_regs *regs) { }
- static inline void sev_es_ist_exit(void) { }
-@@ -265,6 +266,7 @@ static inline u64 sev_get_status(void) { return 0; }
- static inline void kdump_sev_callback(void) { }
- static inline void sev_show_status(void) { }
- static inline void sev_es_stop_this_cpu(void) { }
-+static inline bool sev_kexec_supported(void) { return true; }
- #endif
- 
- #ifdef CONFIG_KVM_AMD_SEV
-diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-index 4696e149d70d..558266d9bf1d 100644
---- a/arch/x86/kernel/machine_kexec_64.c
-+++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -28,6 +28,7 @@
- #include <asm/setup.h>
- #include <asm/set_memory.h>
- #include <asm/cpu.h>
-+#include <asm/sev.h>
- 
- #ifdef CONFIG_ACPI
- /*
-@@ -269,7 +270,7 @@ static void load_segments(void)
- 
- static bool machine_kexec_supported(void)
- {
--	if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
-+	if (!sev_kexec_supported())
- 		return false;
- 
- 	return true;
 diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 36181bb26e25..aa53e8eb4cd5 100644
+index aa53e8eb4cd5..d915d9158926 100644
 --- a/arch/x86/kernel/sev.c
 +++ b/arch/x86/kernel/sev.c
-@@ -1463,6 +1463,21 @@ static void __init sev_es_setup_play_dead(void)
- static inline void sev_es_setup_play_dead(void) { }
- #endif
- 
-+bool sev_kexec_supported(void)
-+{
-+	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
-+		return true;
-+
-+	/*
-+	 * KEXEC with SEV-ES and more than one CPU is only supported
-+	 * when the AP jump table is installed.
-+	 */
-+	if (num_possible_cpus() > 1)
-+		return sev_ap_jumptable_blob_installed;
-+	else
-+		return true;
-+}
-+
- static void __init alloc_runtime_data(int cpu)
+@@ -1392,7 +1392,8 @@ STACK_FRAME_NON_STANDARD(sev_jumptable_ap_park);
+ void sev_es_stop_this_cpu(void)
  {
- 	struct sev_es_runtime_data *data;
--- 
+ 	if (!(cc_vendor == CC_VENDOR_AMD) ||
+-	    !cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
++	    !cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT) ||
++	     cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+ 		return;
+
+ 	/* Only park in the AP jump table when the code has been installed */
+@@ -1468,6 +1469,9 @@ bool sev_kexec_supported(void)
+ 	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
+ 		return true;
+
++	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++		return false;
++
+ 	/*
+ 	 * KEXEC with SEV-ES and more than one CPU is only supported
+ 	 * when the AP jump table is installed.
+diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
+index f9bc444a3064..ed798939be5d 100644
+--- a/arch/x86/realmode/init.c
++++ b/arch/x86/realmode/init.c
+@@ -80,8 +80,9 @@ static void __init sme_sev_setup_real_mode(struct trampoline_header *th)
+ 		 */
+ 		th->start = (u64) secondary_startup_64_no_verify;
+
+-		if (sev_es_setup_ap_jump_table(real_mode_header))
+-			panic("Failed to get/update SEV-ES AP Jump Table");
++		if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++			if (sev_es_setup_ap_jump_table(real_mode_header))
++				panic("Failed to get/update SEV-ES AP Jump Table");
+ 	}
+ #endif
+ }
+--
 2.34.1
 
