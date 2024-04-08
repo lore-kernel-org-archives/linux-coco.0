@@ -1,57 +1,57 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC772E3F7
-	for <linux-coco@lists.linux.dev>; Mon,  8 Apr 2024 07:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044A2381DF
+	for <linux-coco@lists.linux.dev>; Mon,  8 Apr 2024 07:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712562068; cv=none; b=fP8mjGiZEYFex0MdNmkLF2uvpGrUg+mVA6vI2LVSb3O7LFVP7ttcaP0uuKOc4pN0GpAWE9xbzQnSlyMP7edgNfUbk1o4uAcCopMX3SPixhrGCFUmantRJ2JhesBhxyNrDJhKWdedztpUbRwgCp6OPcB6HSGyKukuWSw2ncZN1Ug=
+	t=1712562070; cv=none; b=BoJdjY5r97zHNdRYL+vjUGGW3Comb2XIxJdJVU4dQjpqD8LEBhb4j3bNly3Y1U+xaGtbHv8ZC7uXFzKn4/jx0FKB8T241JHhd4YNo+uPuUN3voWDNvmDrlD1LhOd7c1kQwWy8CGxfHCIesUaE5I1ZPhw4f3EAarYPK9yJ6XLtuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712562068; c=relaxed/simple;
-	bh=U3via5+ZoR4Ic6ASsrA6NJhP2Y5mxiSHxXsiW+DpVzk=;
+	s=arc-20240116; t=1712562070; c=relaxed/simple;
+	bh=PA9tlwrHq9EaQDOrpwGW0uMmK8o23cX/zpKO//Uv5ZE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pta4FBLyYEQ2apcVKf2n/mdGqjv+oAoRW3OvBk7jcC/rl81Vj1viUd5bsv8P1VYYWrsxgKZBSDDBXHyyakRArwluU61+s9zzFb56s+dWKVmvUdObaR1ttybn/8yjbyqrwX3lGA+u2gzhGFOkEh4/pu7XCX4B9W65RFE7Sb/gUF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iYPmBVbT; arc=none smtp.client-ip=209.85.167.49
+	 MIME-Version; b=nJiDiYh+rPmmJy591/xNX25rPAcSIBNXJV2qavLHhMC4Q4STJXI+CqVH3n0peS9po0E2h9NTbeEFgcy9RN9yA8otJhfN6NtDNm0fnB088bpz/vQGXD380mBH4MVadY2uR6qGy8tsBewXGLT3F5UxK+osVVDEIMPDVX0M9b9OuGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nbs1qMLL; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iYPmBVbT"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-516d0161e13so4400818e87.3
-        for <linux-coco@lists.linux.dev>; Mon, 08 Apr 2024 00:41:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nbs1qMLL"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-343cfe8cae1so2538621f8f.3
+        for <linux-coco@lists.linux.dev>; Mon, 08 Apr 2024 00:41:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712562065; x=1713166865; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1712562067; x=1713166867; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZqnE+JA2AKP6TMVqtzdhtB8i3JdyW6VDhV209Iwbv/8=;
-        b=iYPmBVbTtjVk7oZKH2kfjbRQrtVqEk4U1IsaW703wfAnYokiC2lvmqQ2hhirN7O/oV
-         fCfCSflF2S1OdQaMlrRo5IuMUOv6Rwo3Awjdypi3SqCuY+ySoLRYT9n5coicccSXZxfm
-         Ncp2L5uxV/OrTJnWgJC2hU1K0SqUHMMl+wBbBkIU+FXCOeIeZXwIssPNb35K5lDMmLf/
-         5jIjmCRXkiXp7BH9Ei4MhPfeEikixCP9MzleHihC2pI/i6iuM0rfEf/uKVWjSXPQcVLD
-         sBJ3H2i0Y40B7OVCEvFSc52prfbE9tJSL2go5UkjgFERm7tEQqmJiuMI+yAE0mbANiTc
-         R6CA==
+        bh=1lm8IoXJe0WYSRwtdxW3X+Cv5dkEchtxnhEW0S0YWJc=;
+        b=nbs1qMLL+17ggAyk2UlgbRPMvgVwu4oSiJYsamoA3Uhb47GzvN5Dlb8GwYgkoIsIzD
+         2oFQuhoXRMD4uNoVXxDEQtwC1c2tMYy/JLvuEgUlXlcqbuofylxiIK437WCloEkp3k17
+         LUvqP7wZ7ykSqI84x2oQBoqy3SzfF5oUymVyJeouHzXA8si6jmCmqdnw3DjTrNZRVoVv
+         cfoP9nWw/Gcj3fZ02oxEopWO1aaJbqXbZ6SgbjpKSuV7RA9himIjMp16qG2haEvr1WvX
+         E3WmnfJrMd0omfEhdlrdjgodj2zVL+J0pP6dm2mACLCIKOdqWCOZFOWjkCd2eIl6vMWC
+         xwqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712562065; x=1713166865;
+        d=1e100.net; s=20230601; t=1712562067; x=1713166867;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZqnE+JA2AKP6TMVqtzdhtB8i3JdyW6VDhV209Iwbv/8=;
-        b=X7+6Olm3k9CKosep86WwQ0tQuVUdbStaB+DFE9WXlNU2Bq0EllqgZULdljtJwliyZP
-         X4O6kTuK2ChrQSw/8JuybPFid4e38dZzf/8alccGsXUF4qJD6tx0ed1QYOJq2ftg71nw
-         eSyjWUGvBKLeU8FLa0l0xIt/CPK99bBgBMSmOZ+u4FHTelR/vA5jt9hqy58/FExpCgoS
-         Dx+MMmNpyyukgAFWS0XHDqI8bRlaLUef0oRlPRoM++RMF/bzF72lmuZbtaLmpeaNaJR6
-         bLcSi406Ya9H1WKz2nuA/rP3OpCjxtd1OHeN+lE+5nhaEViII9ztA80Q+apiGGEhiwh8
-         Otxg==
-X-Forwarded-Encrypted: i=1; AJvYcCW6SiqkAai1EcZE1vnI9MKG8yVzWidPqubmCQa2bwxqYZCnVvk/N1jXPTrmlmM+a+XLuFehfo4BeqYMuWzugL1vq6ceXP7dlxeNBQ==
-X-Gm-Message-State: AOJu0Yz+n/uwi5mSSybCsZagNEXnbxOrChel/rdCFEhvsnZ6zdJ/RgEz
-	gm+H9HI5oKblDeh/2dPgqmVSvXfU+Opv3A3yn0etcS8I0s3NyREu
-X-Google-Smtp-Source: AGHT+IH2pJfyzX54b/TYrms4jG+/yAMqvvcGc6GwZPjgH3mJKkcZm/KCxWXEZlTYThTHzthqKdB71Q==
-X-Received: by 2002:ac2:4db2:0:b0:515:d31f:ce2b with SMTP id h18-20020ac24db2000000b00515d31fce2bmr5757819lfe.15.1712562065111;
-        Mon, 08 Apr 2024 00:41:05 -0700 (PDT)
+        bh=1lm8IoXJe0WYSRwtdxW3X+Cv5dkEchtxnhEW0S0YWJc=;
+        b=twWg90frG62fOoQ8yg5SfjzBZ5ia8lTKUUDGWCYHm65tXPYERq6/FpiwysTB8lZ4M8
+         Q51PbU/wGXR/BZhNQg1/xqB4uzSpfmBMQt3p5K1zXhVN2/Em0YrCPWRQlCcgHUzNyvZF
+         okUgy67VYp3bD08sQ/xFvDObjJ/W306nAuN0NahN6k3X6B+5B7RnkTvX9L47xA7T5PTT
+         cRAUw7rIFEvTdj9/pLky/Fm9TOmECJwPdFkwiOQzRiyyRfAU/IYWU8eelac4aUci5/EZ
+         hvMUnwGSdSKL04y/LMmR1OUJkBW3b2wkbgVYKwpaWZHqLaH2jZhn7jnRP1B944xKZlSn
+         wqTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWbO1h8yi4Pu13w8n9uwzl/cFYwxoPGy1pXPMT9+W9kwRQWBMuVU2li62q+lLHvJ/kqUXS6qIh9fTRY7JTV1HrLAOytyE29KUefgA==
+X-Gm-Message-State: AOJu0YysulgqR1JFLJz7t+Uy/pvKGcG4tRsP6A2vWWTYlC4aHHZSMaRW
+	cJgvL01SU4FrkHL8dOClx3gfOMX2eYQRpkQKqP4uOs5ke1S9+SSa
+X-Google-Smtp-Source: AGHT+IHsw0MqJncrkEsTav8GeBQKVLnnHHhYYl9/Fi+5JZD1076agLCl079JWImEZPXFh0LSDyynKw==
+X-Received: by 2002:adf:e44c:0:b0:343:d06e:51cc with SMTP id t12-20020adfe44c000000b00343d06e51ccmr5136276wrm.66.1712562067341;
+        Mon, 08 Apr 2024 00:41:07 -0700 (PDT)
 Received: from vasant-suse.suse.cz ([2001:9e8:ab70:9c00:7f0b:c18e:56a6:4f2])
-        by smtp.gmail.com with ESMTPSA id j3-20020adfff83000000b00341e2146b53sm8271413wrr.106.2024.04.08.00.41.03
+        by smtp.gmail.com with ESMTPSA id j3-20020adfff83000000b00341e2146b53sm8271413wrr.106.2024.04.08.00.41.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Apr 2024 00:41:04 -0700 (PDT)
+        Mon, 08 Apr 2024 00:41:06 -0700 (PDT)
 From: vsntk18@gmail.com
 To: x86@kernel.org
 Cc: cfir@google.com,
@@ -84,9 +84,9 @@ Cc: cfir@google.com,
 	michael.roth@amd.com,
 	Borislav.Petkov@amd.com,
 	Dhaval.Giani@amd.com
-Subject: [PATCH v5 02/10] x86/sev: Save and print negotiated GHCB protocol version
-Date: Mon,  8 Apr 2024 09:40:41 +0200
-Message-Id: <20240408074049.7049-3-vsntk18@gmail.com>
+Subject: [PATCH v5 03/10] x86/sev: Set GHCB data structure version
+Date: Mon,  8 Apr 2024 09:40:42 +0200
+Message-Id: <20240408074049.7049-4-vsntk18@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408074049.7049-1-vsntk18@gmail.com>
 References: <20240408074049.7049-1-vsntk18@gmail.com>
@@ -100,94 +100,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-Save the results of the GHCB protocol negotiation into a data structure
-and print information about versions supported and used to the kernel
-log.
-
-This is useful for debugging kexec issues in SEV-ES guests down the
-road to quickly spot whether kexec is supported on the given host.
+It turned out that the GHCB->protocol field does not declare the
+version of the guest-hypervisor communication protocol, but rather the
+version of the GHCB data structure. Reflect that in the define used to
+set the protocol field.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Vasant Karasulli <vkarasulli@suse.de>
 ---
- arch/x86/kernel/sev-shared.c | 33 +++++++++++++++++++++++++++++++--
- arch/x86/kernel/sev.c        |  8 ++++++++
- 2 files changed, 39 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/sev.h   | 3 +++
+ arch/x86/kernel/sev-shared.c | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 07e125f32528..829650bdd455 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -19,6 +19,9 @@
+ #define GHCB_PROTOCOL_MAX	2ULL
+ #define GHCB_DEFAULT_USAGE	0ULL
+ 
++/* Version of the GHCB data structure */
++#define GHCB_VERSION		1
++
+ #define	VMGEXIT()			{ asm volatile("rep; vmmcall\n\r"); }
+ 
+ struct boot_params;
 diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 8b04958da5e7..ba51005ddde2 100644
+index ba51005ddde2..fb62e1582703 100644
 --- a/arch/x86/kernel/sev-shared.c
 +++ b/arch/x86/kernel/sev-shared.c
-@@ -23,6 +23,23 @@
- #define sev_printk_rtl(fmt, ...)
- #endif
+@@ -264,7 +264,7 @@ static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
+ 					  u64 exit_info_2)
+ {
+ 	/* Fill in protocol and format specifiers */
+-	ghcb->protocol_version = ghcb_version;
++	ghcb->protocol_version = GHCB_VERSION;
+ 	ghcb->ghcb_usage       = GHCB_DEFAULT_USAGE;
  
-+/*
-+ * struct ghcb_info - Used to return GHCB protocol
-+ *				   negotiation details.
-+ *
-+ * @hv_proto_min:	Minimum GHCB protocol version supported by Hypervisor
-+ * @hv_proto_max:	Maximum GHCB protocol version supported by Hypervisor
-+ * @vm_proto:		Protocol version the VM (this kernel) will use
-+ */
-+struct ghcb_info {
-+	unsigned int hv_proto_min;
-+	unsigned int hv_proto_max;
-+	unsigned int vm_proto;
-+};
-+
-+/* Negotiated GHCB protocol version */
-+static struct ghcb_info ghcb_info __ro_after_init;
-+
- /* I/O parameters for CPUID-related helpers */
- struct cpuid_leaf {
- 	u32 fn;
-@@ -159,12 +176,24 @@ static bool sev_es_negotiate_protocol(void)
- 	if (GHCB_MSR_INFO(val) != GHCB_MSR_SEV_INFO_RESP)
- 		return false;
- 
--	if (GHCB_MSR_PROTO_MAX(val) < GHCB_PROTOCOL_MIN ||
--	    GHCB_MSR_PROTO_MIN(val) > GHCB_PROTOCOL_MAX)
-+	/* Sanity check untrusted input */
-+	if (GHCB_MSR_PROTO_MIN(val) > GHCB_MSR_PROTO_MAX(val))
- 		return false;
- 
-+	/* Use maximum supported protocol version */
- 	ghcb_version = min_t(size_t, GHCB_MSR_PROTO_MAX(val), GHCB_PROTOCOL_MAX);
- 
-+	/*
-+	 * Hypervisor does not support any protocol version required for this
-+	 * kernel.
-+	 */
-+	if (ghcb_version < GHCB_MSR_PROTO_MIN(val))
-+		return false;
-+
-+	ghcb_info.hv_proto_min = GHCB_MSR_PROTO_MIN(val);
-+	ghcb_info.hv_proto_max = GHCB_MSR_PROTO_MAX(val);
-+	ghcb_info.vm_proto     = ghcb_version;
-+
- 	return true;
- }
- 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 7e1e63cc48e6..098f590f7bec 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -1399,6 +1399,14 @@ void __init sev_es_init_vc_handling(void)
- 
- 	/* Secondary CPUs use the runtime #VC handler */
- 	initial_vc_handler = (unsigned long)kernel_exc_vmm_communication;
-+
-+	/*
-+	 * Print information about supported and negotiated GHCB protocol
-+	 * versions.
-+	 */
-+	pr_info("Hypervisor GHCB protocol version support: min=%u max=%u\n",
-+		ghcb_info.hv_proto_min, ghcb_info.hv_proto_max);
-+	pr_info("Using GHCB protocol version %u\n", ghcb_info.vm_proto);
- }
- 
- static void __init vc_early_forward_exception(struct es_em_ctxt *ctxt)
+ 	ghcb_set_sw_exit_code(ghcb, exit_code);
 -- 
 2.34.1
 
