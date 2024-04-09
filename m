@@ -1,305 +1,166 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2059.outbound.protection.outlook.com [40.107.223.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2815E1386C0
-	for <linux-coco@lists.linux.dev>; Tue,  9 Apr 2024 19:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712690217; cv=none; b=MuPNBKrfDv44mUpDz0C6isbaD1TpmX4rnfebAq/aWgwU0TEyu2ssSv/PnU0IDGViq16GGDK1gDU2Saq5oV1BiDnzIvqwBFIRzfYz/ZelpvLGnwGtx2GMX1w+HfrP6UHqT6epbCF8S96t9WOXiEjzYveoGXQrT4x6FyeEBSezyKA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712690217; c=relaxed/simple;
-	bh=PH4nC1pa0C4D+FPMgNRgxTvMaCqf5Uac7HioL5v2jtU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uzySpbrxQuNBBvQ1E7imI6eskYE4mjL8lnvJmW+GFdRcc6AoOfNWhr5OYnHoc0QcZKxaD+oymJQ6FmYGvM27KAWZ4otgTnf97468/4hKle+MmMtnZenyZ+r5I8UMdO+sV7FCRfBH1qmtg0A5Ide9CWAxcp9dmK/RU6UQ+wtYzU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H9mNbU8Y; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68326158209
+	for <linux-coco@lists.linux.dev>; Tue,  9 Apr 2024 20:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712695349; cv=fail; b=KsTYxfa+PywXWFKbGQ88VPjn4depcpFtzsmrsXO9M1/fD7TX1wkCZvlos3Pvjr4UN5BiCPJXF2RBszKn1a4Uj9P9vX9TgdvIqe3qOEjfpOJ3irlECaJW/DxLvUmA/HTOVJFRdx94zfEDuRangzJu4S9rqFaEzBZYtj55JQxerwc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712695349; c=relaxed/simple;
+	bh=ckupJ1AEqIvoPYI+QZfDfhgy1lZJoEHpvrxtgu31qew=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LBDGIPe5Vsg0bc9/N+VyHytgv4UI/YtLZy9sDohE1PuCdu/8qa6f2NyjtxPhI+DWfivT/m8AlqiA6VXGh1SZYHepBHrsopi+8OZlNfKNZrPKEvA3MLOtUpjtFyHVx7bJ9pvHwJkBjMcJSEgnGxW2jaTqdBXcOWcxoa4VJchB8ko=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=se/ttn4j; arc=fail smtp.client-ip=40.107.223.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H9mNbU8Y"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-56e85b7d2d1so3973a12.1
-        for <linux-coco@lists.linux.dev>; Tue, 09 Apr 2024 12:16:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712690213; x=1713295013; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qBXDENZnVSmXgi1Xqk18wr2L5fg7CCpBBgFQrEIjUtk=;
-        b=H9mNbU8YpO4DQs05dCmcY8irBZeD3jBUDp8olkljO9rkTPElDos2YIiKluHjsgC/bm
-         6INYhxKsIxqIwaeduONGqakCBzEPHSzhshLGeuYMVz3DxwHrc/OqQNWbXiKQFg1ub98N
-         WDAkZt8YIuHdzdHfQTQAfLRm18m6O4RM59CPbHjw4uh9HFMQqozEcj1Qg7/nw7ZCNIxs
-         oCRuPAVfED6Vx0ch25AeFn2w2iyR31vBvEu94NboHednYhGgSe+Ed3PVbmv+3+sfB2bX
-         BqXG42qRDEkzSQ3zbroUo9DVNeWFiDMfiGhzdP01ltozpRRa762+SRmcMbyMe9aa3GR7
-         qo5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712690213; x=1713295013;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qBXDENZnVSmXgi1Xqk18wr2L5fg7CCpBBgFQrEIjUtk=;
-        b=ePlaxTqQxV8IJ0qX90L336zqRRi0GO+G8GDneKX+r3jao8A9oHZSjfuSytrKNJeqPh
-         HzxERCZQErljE5VesSczGZ7ljUuY3fyiGEkdIFQ4ySLQiaPuKvOBj0h/zxxKUVPgrCIE
-         pmFdt27kQos3anRs+mq+MAUAf5kx4nKjVP2XHO2L1GrTlcOFxHpbHgt3qOPIicvrcZ/u
-         D0+5FFrDaK2ot9yf0DUlDwxft8hNcv40sFXpSDVpwf8W35Z48TLun1HNtQBk8uo3f0+g
-         OXo2H/W9UqX9V2MM9b4dcwQmSCLbAxXD/HqJqC8lebvfCowaUMw0LL70p7Cm270vqf1N
-         uY8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV8AuUZxQrFHOuBcmWUNX1nPV36KyAonV4vl+dqKLo7lyutvTz4+koP13ygbvcGghE3bQYmnjRlF+oU9FJBT8pWJE50TFyth4cjnQ==
-X-Gm-Message-State: AOJu0YwTZ4O6gQnmDQEjeGb3EYn5ikNA0AW+RetJNc2oEo17Yp8IF0jR
-	8+Y7nRb1MEiqQ+2PgtujKy0ZCBKOLTGNGgtxL27iNRZD6ZNtXSELqeZbIP77T6SD1j+VPBn15KU
-	VeCPE4ca/FM7la5cwcP10mr8KlQTl9U9KIRJv
-X-Google-Smtp-Source: AGHT+IFUkjRUQ7716ygpqXajutA1DnnioFCSZzrH71rZ+4puIGM4SBl8vhzR+fSpKb4d5K1105cMePvMNK+uO8MftUM=
-X-Received: by 2002:aa7:d3c7:0:b0:56e:76e:6ea9 with SMTP id
- o7-20020aa7d3c7000000b0056e076e6ea9mr28102edr.6.1712690213037; Tue, 09 Apr
- 2024 12:16:53 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="se/ttn4j"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NWQrF3r/jIIBDXYzeYxJkU03XS6/EpUx0pIYX6CTTmD89GxkyuI+8sk2PaXycizBZoA8IJCoNcWMGJZcs/MXSvmB+e0OJina6ReFhKjesWyYRxbM3Foewv+mhKFb0fEhHu7ERhRkoOVFiAqGYiApcIp7N6pfrJuR5+ka/i9Sa1SbjfSjT0nTehT/AF0l2ac9C06/s7SQdMy1piBWpYjBhgqyLDLBe9XRncTQ9jlpdejFXJSg+BMNmenP1tOjwYJWvQ93ZszZGyOgVacG/NsfHPw+YwwWcvBAtEAGe6NDeHOzMdt6zcN1U+T2iDuzJdWxzkNYghDJo+oZ6Pac+filzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r+VW4y73FrLHpfUH7m6j5ssx1LBS1HYrfuBzPx9FKGc=;
+ b=PKahphnMtefMPdr0jkcLNeSqXMd+Y1s5iqrMRvyY2l9O94UAAGEXzPqexxs0B5wt5hwXxkp21QYXIgF7VKN0KiAIJNKpL50IKs4UyBqghghQC9xlN2ewALN7sOp7m/hoN8S4fogjVx2piNIJLqdpGDYyvEw2eDtPhiX7S7eorwld6itQz4CKwBpHQ0F4s6oIgfmkibfWfm9PAczjsaIH/djSoWiOS9uqOehIJfeClLFRr6AfldZpobViCAXkF1ZUW01XrIBffa126FWPSNAAFHavMEoK9LJymVTHCt1j6ilc/5BxWhJACp+h+sj56tcQItg9pItKll7IShxMEAhLOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linutronix.de smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r+VW4y73FrLHpfUH7m6j5ssx1LBS1HYrfuBzPx9FKGc=;
+ b=se/ttn4ju7OMH1BiIV9Ao0ZkjB1c/UA/+Q7+QQ1IQoMZ2MhAH7UkQo+qAms0aQTlnoAe1oA6AEe1q7d9fI8vwu6zlOsICiTl/444iKze9GR/qMttIz4Nu/diyQBF6nNuBZv22iLXGnzvhT0gZh+YaFIni/FqIqa/1bom0OfeapQ=
+Received: from DM6PR07CA0088.namprd07.prod.outlook.com (2603:10b6:5:337::21)
+ by MN0PR12MB6103.namprd12.prod.outlook.com (2603:10b6:208:3c9::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Tue, 9 Apr
+ 2024 20:42:23 +0000
+Received: from CY4PEPF0000E9DA.namprd05.prod.outlook.com
+ (2603:10b6:5:337:cafe::c8) by DM6PR07CA0088.outlook.office365.com
+ (2603:10b6:5:337::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.19 via Frontend
+ Transport; Tue, 9 Apr 2024 20:42:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000E9DA.mail.protection.outlook.com (10.167.241.79) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7452.22 via Frontend Transport; Tue, 9 Apr 2024 20:42:20 +0000
+Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 9 Apr
+ 2024 15:42:18 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>
+CC: <rafael@kernel.org>, <peterz@infradead.org>, <adrian.hunter@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <jun.nakajima@intel.com>,
+	<rick.p.edgecombe@intel.com>, <thomas.lendacky@amd.com>,
+	<michael.roth@amd.com>, <seanjc@google.com>, <kai.huang@intel.com>,
+	<bhe@redhat.com>, <kirill.shutemov@linux.intel.com>, <bdas@redhat.com>,
+	<vkuznets@redhat.com>, <dionnaglaze@google.com>, <anisinha@redhat.com>,
+	<jroedel@suse.de>, <ardb@kernel.org>, <kexec@lists.infradead.org>,
+	<linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v4 0/4] x86/snp: Add kexec support
+Date: Tue, 9 Apr 2024 20:42:09 +0000
+Message-ID: <cover.1712694667.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
+References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <94521f20aa2872c1b8f018b7db31eca4a2b8222d.1711039409.git.qinkun@google.com>
- <17C329C4A6D0CD18.8175@lists.confidentialcomputing.io> <CAOjUGWcNedJ7iNjGCKL6qZeZo3aSt_8U5BN=9JUN2f2vjD+O4w@mail.gmail.com>
- <CA+2DEOoc1Ckn2S-=57HiRsAd0W4YGRWVQQG-gOBR3Fc8nfX+Nw@mail.gmail.com>
-In-Reply-To: <CA+2DEOoc1Ckn2S-=57HiRsAd0W4YGRWVQQG-gOBR3Fc8nfX+Nw@mail.gmail.com>
-From: Qinkun Bao <qinkun@google.com>
-Date: Tue, 9 Apr 2024 09:16:40 -1000
-Message-ID: <CAOjUGWfMAxpZvMub=tqdAtinEFop6nRUrzFBwcn4Ke-f+erVtw@mail.gmail.com>
-Subject: Fwd: [External] Re: [linux-collab] [CCC][tac] [RFC PATCH]
- OvmfPkg/SecurityPkg: Add build option for coexistance of vTPM and RTMR.
-To: PH0PR11MB587959168F72B20E0AC836438C312@ph0pr11mb5879.namprd11.prod.outlook.com
-Cc: Dionna Glaze <dionnaglaze@google.com>, Ard Biesheuvel <ardb@kernel.org>, devel@edk2.groups.io, 
-	Erdem Aktas <erdemaktas@google.com>, James Bottomley <jejb@linux.ibm.com>, 
-	"Yao, Jiewen" <jiewen.yao@intel.com>, Gerd Hoffmann <kraxel@redhat.com>, linux-coco@lists.linux.dev, 
-	Michael Roth <michael.roth@amd.com>, Peter Gonda <pgonda@google.com>, Qinkun Bao <qinkun@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Cfir Cohen <cfir@google.com>, 
-	Chris Fenner <cfenn@google.com>, Ronald Aigner <ronaldaigner@google.com>, mingshen.sun@tiktok.com, 
-	mikko.ylinen@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DA:EE_|MN0PR12MB6103:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96af7323-6e3f-4b0f-0041-08dc58d58d5e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	sClr8Q5fnBHiNR5IX/a9YkScucPTX24toSdXq1oMyl22Uboniqp87fXZRAmJj3YqM6azxEFoIHZ8w2T1iWbZiEZhIfB/eBdd51oNJsF1foEsaTwOCnU7fkx4sZa1V29Tx7hoIDnLvMOL9OQEAWT/H3yrFNB9Q7Xyqf9dwCG1/aMCM7VS5UBAVJcY1d2R4nxhEm9pqwD6XCdEYn22J57M2bk5CJ0GVbIS9LpjCoRgGLGiSUK+nefvOzsg6HjoK5E+4Uq3Q9N7CT6ouV708zlMQ01JScD+qf3xo0tEj6HJ15jbPgK4a679TF/N6cUiFm4CGCFLVWXRo7O75W1oYFG73ZTa9A9yLt4z4+SwyMEnrpwJWFCJSF+QWRAcOFhl0MFGkFaXVv3l8o9xez/eB4lIAnIdPa3G9oigCLmFkGcP8VDK2ZJdaAAVUIyAcqlexkgCtAlZNBRjfKJkQ1M4J7+OajucsUSvssa41EDLcCtEwrfjWT4A14Czn537qVuH2L/TBOVDzYTA4KL5X6XU/ti4b/mYlw1FF8OlhPhyo8Go2m43tPNSoBMk3D/MiJ5Rr93jzFD3yrA8JlNJpTd9ixBUk8TqoYwV8ipjvH6K8CFb1y351JRh7OjnIWx49UBdm3JOG6lpbvDdvV6YUHCADqX1PPK4iIu33roWc0zM+7iOqiPhftasx7Q+o3E/0M0HbrggwKFHSQ8WM7auFHrSX3AFZtuNZo6mS4z6XGC1S7o+Rnqt4574F5CRy878orUYSYsD
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(7416005)(36860700004)(1800799015)(376005)(82310400014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2024 20:42:20.1700
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96af7323-6e3f-4b0f-0041-08dc58d58d5e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000E9DA.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6103
 
-I brought the RFC into the CCC community
-(https://github.com/confidential-computing/governance) and received
-some comments.
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-Forward the email into the EDK2 dev and linux-coco.
+The patchset adds bits and pieces to get kexec (and crashkernel) work on
+SNP guest.
 
-Thanks,
-Qinkun
+v4:
+- Rebased to current tip/master.
+- Reviewed-bys from Sathya.
+- Remove snp_kexec_unprep_rom_memory() as it is not needed any more as 
+  SEV-SNP code is not validating the ROM range in probe_roms() anymore.
+- Fix kernel test robot build error/warnings.
 
----------- Forwarded message ---------
-From: Mingshen Sun <mingshen.sun@tiktok.com>
-Date: Thu, Apr 4, 2024 at 1:43=E2=80=AFPM
-Subject: Re: [External] Re: [linux-collab] [CCC][tac] [RFC PATCH]
-OvmfPkg/SecurityPkg: Add build option for coexistance of vTPM and
-RTMR.
-To: <qinkun@google.com>
-Cc: <tac@lists.confidentialcomputing.io>,
-<linux-collab@lists.confidentialcomputing.io>
+v3:
+- Rebased;
+- moved Keep page tables that maps E820_TYPE_ACPI patch to Kirill's tdx
+  guest kexec patch series.
+- checking the md attribute instead of checking the efi_setup for
+  detecting if running under kexec kernel.
+- added new sev_es_enabled() function.
+- skip video memory access in decompressor for SEV-ES/SNP systems to 
+  prevent guest termination as boot stage2 #VC handler does not handle
+  MMIO.
 
+v2:
+- address zeroing of unaccepted memory table mappings at all page table levels
+  adding phys_pte_init(), phys_pud_init() and phys_p4d_init().
+- include skip efi_arch_mem_reserve() in case of kexec as part of this 
+  patch set.
+- rename last_address_shd_kexec to a more appropriate 
+  kexec_last_address_to_make_private.
+- remove duplicate code shared with TDX and use common interfaces
+  defined for SNP and TDX for kexec/kdump.
+- remove set_pte_enc() dependency on pg_level_to_pfn() and make the 
+  function simpler.
+- rename unshare_pte() to make_pte_private().
+- clarify and make the comment for using kexec_last_address_to_make_private  
+  more understandable.
+- general cleanup. 
 
-Hi Qinkun,
+Ashish Kalra (4):
+  efi/x86: skip efi_arch_mem_reserve() in case of kexec.
+  x86/sev: add sev_es_enabled() function.
+  x86/boot/compressed: Skip Video Memory access in Decompressor for
+    SEV-ES/SNP.
+  x86/snp: Convert shared memory back to private on kexec
 
-Thanks for bringing this to the CCC community.
+ arch/x86/boot/compressed/misc.c |   6 +-
+ arch/x86/boot/compressed/misc.h |   1 +
+ arch/x86/boot/compressed/sev.c  |   5 +
+ arch/x86/boot/compressed/sev.h  |   2 +
+ arch/x86/include/asm/sev.h      |   4 +
+ arch/x86/kernel/sev.c           | 161 ++++++++++++++++++++++++++++++++
+ arch/x86/mm/mem_encrypt_amd.c   |   3 +
+ arch/x86/platform/efi/quirks.c  |  20 +++-
+ 8 files changed, 198 insertions(+), 4 deletions(-)
 
-I think the proposal makes sense to me. RTMR and vTPM measurements
-shouldn't be mutually exclusive.
+-- 
+2.34.1
 
-Under certain threat models (e.g., workload operator is not trusted),
-both of them may be valid.
-1. Measurements of RTMR and vTPM can be used for cross validation with
-different root-of-trust.
-2. Key sealing feature provided by vTPM is not available in the
-current TEE ecosystem.
-
-Mingshen
-
-
-On Thu, Apr 4, 2024 at 12:32=E2=80=AFPM qinkun Bao via
-
-
-lists.confidentialcomputing.io
-<qinkun=3Dgoogle.com@lists.confidentialcomputing.io> wrote:
->
-> Hello,
->
-> The current TDVF implementation does not extend to the vTPM if the
-> RTMR attestation is enabled. We are working on proposals to address
-> the issue. We would like to get the feedback from the CCC community
-> about the proposal.
->
-> Thanks,
-> Qinkun
->
-> On Thu, Apr 4, 2024 at 12:16=E2=80=AFPM qinkun Bao via
-> lists.confidentialcomputing.io
-> <qinkun=3Dgoogle.com@lists.confidentialcomputing.io> wrote:
-> >
-> >
-> >
-> > ---------- Forwarded message ---------
-> > From: qinkun Bao <qinkun@google.com>
-> > Date: Thu, Mar 21, 2024 at 9:59=E2=80=AFAM
-> > Subject: [RFC PATCH] OvmfPkg/SecurityPkg: Add build option for coexista=
-nce of vTPM and RTMR.
-> > To: <devel@edk2.groups.io>
-> > Cc: <linux-coco@lists.linux.dev>, Erdem Aktas <erdemaktas@google.com>, =
-Jiewen Yao <jiewen.yao@intel.com>, Ard Biesheuvel <ardb@kernel.org>, Peter =
-Gonda <pgonda@google.com>, Dionna Glaze <dionnaglaze@google.com>, Qinkun Ba=
-o <qinkun@google.com>, James Bottomley <jejb@linux.ibm.com>, Gerd Hoffmann =
-<kraxel@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <=
-michael.roth@amd.com>
-> >
-> >
-> > From: Qinkun Bao <qinkun@google.com>
-> >
-> > The UEFI v2.10 spec defines the protocol EFI_CC_MEASUREMENT_PROTOCOL
-> > to enable (for example) RTMR-based boot measurement for TDX VMs.
-> > With the current UEFI spec=E2=80=99s =E2=80=9Cshould not=E2=80=9D wordi=
-ng and EDK2
-> > implementation, TPM measurement in TDVF is disabled when
-> > RTMR measurement is enabled.
-> >
-> > Mutual exclusion of the CC measurement protocol and TCG measurement
-> > protocol breaks backwards compatibility, which makes adoption of RTMRs
-> > challenging. A virtualized TPM device (vTPM) managed by the host VMM
-> > makes boot measurements visible to the VMM operator, but this is an
-> > oft-requested feature that users can choose to accept.
-> >
-> > The TPM has been a standard for over a decade and many existing
-> > applications rely on the TPM. Both inside and outside Google,
-> > we have many users that require vTPM, including features that are
-> > not easily available via RTMRs (e.g. sealing using keys that the
-> > guest OS cannot access).
-> >
-> > This patch adds a non-default build option to allow the coexistence
-> > of both the CC measurement and TCG protocols. Not included is a
-> > vendor-specific measured event in the CC event log that indicates
-> > whether a vTPM is attached or not.
-> >
-> > Cc: Erdem Aktas <erdemaktas@google.com>
-> > Cc: James Bottomley <jejb@linux.ibm.com>
-> > Cc: Jiewen Yao <jiewen.yao@intel.com>
-> > Cc: Gerd Hoffmann <kraxel@redhat.com>
-> > Cc: Tom Lendacky <thomas.lendacky@amd.com>
-> > Cc: Michael Roth <michael.roth@amd.com>
-> > Signed-off-by: Qinkun Bao <qinkun@google.com>
-> > ---
-> >  OvmfPkg/OvmfPkgX64.dsc                               |  9 ++++++++-
-> >  .../DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.c    | 12 +++++++++++-
-> >  .../DxeTpmMeasurementLib/DxeTpmMeasurementLib.c      |  6 ++++++
-> >  3 files changed, 25 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/OvmfPkg/OvmfPkgX64.dsc b/OvmfPkg/OvmfPkgX64.dsc
-> > index 56c920168d..9bcee45047 100644
-> > --- a/OvmfPkg/OvmfPkgX64.dsc
-> > +++ b/OvmfPkg/OvmfPkgX64.dsc
-> > @@ -32,7 +32,8 @@
-> >    DEFINE SECURE_BOOT_ENABLE      =3D FALSE
-> >    DEFINE SMM_REQUIRE             =3D FALSE
-> >    DEFINE SOURCE_DEBUG_ENABLE     =3D FALSE
-> > -  DEFINE CC_MEASUREMENT_ENABLE   =3D FALSE
-> > +  DEFINE CC_MEASUREMENT_ENABLE   =3D TRUE
-> > +  DEFINE CC_MEASUREMENT_AND_TCG2_COEXIST  =3D FASLE
-> >
-> >  !include OvmfPkg/Include/Dsc/OvmfTpmDefines.dsc.inc
-> >
-> > @@ -99,6 +100,11 @@
-> >    INTEL:*_*_X64_GENFW_FLAGS =3D --keepexceptiontable
-> >  !endif
-> >    RELEASE_*_*_GENFW_FLAGS =3D --zero
-> > +!if $(CC_MEASUREMENT_ENABLE) =3D=3D TRUE && $(CC_MEASUREMENT_AND_TCG2_=
-COEXIST) =3D=3D TRUE
-> > +  MSFT:*_*_*_CC_FLAGS =3D /D CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
-> > +  INTEL:*_*_*_CC_FLAGS =3D /D CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
-> > +  GCC:*_*_*_CC_FLAGS =3D -D CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
-> > +!endif
-> >
-> >    #
-> >    # Disable deprecated APIs.
-> > @@ -1045,6 +1051,7 @@
-> >    }
-> >  !endif
-> >
-> > +
-> >    #
-> >    # TPM support
-> >    #
-> > diff --git a/SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBo=
-otLib.c b/SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.c
-> > index 73719f3b96..4c9bc8ab4a 100644
-> > --- a/SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.c
-> > +++ b/SecurityPkg/Library/DxeTpm2MeasureBootLib/DxeTpm2MeasureBootLib.c
-> > @@ -325,7 +325,12 @@ Tcg2MeasureGptTable (
-> >      }
-> >
-> >      DEBUG ((DEBUG_INFO, "DxeTpm2MeasureBootHandler - Cc MeasureGptTabl=
-e - %r\n", Status));
-> > +#ifdef CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
-> > +  }
-> > +  if (Tcg2Protocol !=3D NULL) {
-> > +#else
-> >    } else if (Tcg2Protocol !=3D NULL) {
-> > +#endif
-> >      //
-> >      // If Tcg2Protocol is installed, then Measure GPT data with this p=
-rotocol.
-> >      //
-> > @@ -493,7 +498,12 @@ Tcg2MeasurePeImage (
-> >                             CcEvent
-> >                             );
-> >      DEBUG ((DEBUG_INFO, "DxeTpm2MeasureBootHandler - Cc MeasurePeImage=
- - %r\n", Status));
-> > -  } else if (Tcg2Protocol !=3D NULL) {
-> > +#ifdef CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
-> > +   }
-> > +   if (Tcg2Protocol !=3D NULL) {
-> > +#else
-> > +   } else if (Tcg2Protocol !=3D NULL) {
-> > +#endif
-> >      Status =3D Tcg2Protocol->HashLogExtendEvent (
-> >                               Tcg2Protocol,
-> >                               PE_COFF_IMAGE,
-> > diff --git a/SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurement=
-Lib.c b/SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.c
-> > index 6f287b31fc..b1c6198b4b 100644
-> > --- a/SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.c
-> > +++ b/SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.c
-> > @@ -261,7 +261,11 @@ TpmMeasureAndLogData (
-> >                 HashData,
-> >                 HashDataLen
-> >                 );
-> > +#ifdef CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
-> > +  }
-> > +#else
-> >    } else {
-> > +#endif
-> >      //
-> >      // Try to measure using Tpm20 protocol
-> >      //
-> > @@ -287,7 +291,9 @@ TpmMeasureAndLogData (
-> >                   HashDataLen
-> >                   );
-> >      }
-> > +#ifndef CC_MEASUREMENT_AND_TCG2_COEXIST_FEATURE
-> >    }
-> > +#endif
-> >
-> >    return Status;
-> >  }
-> > --
-> > 2.44.0.291.gc1ea87d7ee-goog
-> >
-> >
->
->
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#2): https://lists.confidentialcomputing.io/g/linux-co=
-llab/message/2
-> Mute This Topic: https://lists.confidentialcomputing.io/mt/105336026/7779=
-031
-> Group Owner: linux-collab+owner@lists.confidentialcomputing.io
-> Unsubscribe: https://lists.confidentialcomputing.io/g/linux-collab/unsub =
-[mingshen.sun@tiktok.com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->
->
