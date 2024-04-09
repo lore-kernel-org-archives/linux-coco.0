@@ -1,49 +1,49 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B81512EBE3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14B012F36C
 	for <linux-coco@lists.linux.dev>; Tue,  9 Apr 2024 11:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712662235; cv=none; b=JIEmdXiIkvJZ2nSbdmEaUKnvgEe1bbB09IhyzrirPlEcbCq+JLVOGo9jLOMqEIFI82SVwF0+uhGIJcvJNBtGSq+qqIozplrcHVxFS2y/jEbHeDjjTizpR6wNGZpWVS4uR0iIIGWQhinUtqgc3sA765flx5cADQOzYdtrphGRFEM=
+	t=1712662235; cv=none; b=KO3B0UmzIir0wATiAN7qV85sQ8G8fVDcZ4fwTbPDJAMJCYZg1QDiOhPcUATJXckj2ZNx8Ru1ubQa0c6AOBBIIeNnLE7OsKUFu24HzMRzJsooiLqM9tLdf1glj9jHU2n7dmd7295bgzRdAfA7OAlUHj5On0GT5OvB44AsuS0458w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1712662235; c=relaxed/simple;
-	bh=nTkqIKFbFNF7KIfvSjwb+TYQAkwBV6/1sk3/m2T/8JA=;
+	bh=HYQcRDjwuubK7Sq3dwYtItnV9wch/fOBnHCCGhl7Y4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m64+0dPHvPFHq5KpZOaetlhMGdWcwboNERVCEp/78LtNKLOORY7rs3ESHUg6nsdyeZ73epqnylL5qFBhGnCIb3ZrgExkuduxx34A+Ta/IIUI8YwTpl5rZUu5FLLZztSxXeZfxsv0dZtXg9aMPbImRk0hg9X5ouH4SFT9yRwp7IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DN+XHNXb; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=FB/XQs17sc0qXwGSpctU/s7bFgF1HHkm7EWn9PpzGrd+CvKLUQWb2P7iTNgsMaD96tNFI7qryJEiAoSwfjUj3KBcT4FDNUSCzBZQFpNjvC5wRyHD/EcikKfyBQZebCszzqg9LWG8/rndinW0R0GLY4e0xh6JlWpL0ogepVOLLVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S3/9iCsu; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DN+XHNXb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S3/9iCsu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712662234; x=1744198234;
+  t=1712662235; x=1744198235;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=nTkqIKFbFNF7KIfvSjwb+TYQAkwBV6/1sk3/m2T/8JA=;
-  b=DN+XHNXbSxhXQk/JUm1ptrqYwi15KP7JZmlXmZzK+ijgTFm/Kd9RhFFV
-   hmNBKqJYZzp4xhtF6QuBvN2vrrwmxkxfBvVpeaRTwBL/2Pj1tA9Y1xLhl
-   K+vtV+pS+iS3SfFQEswerQLgP/IQ/YKQQQERXtFKljCh7D25aTYUDKJW3
-   tfWisr+fo6OolQqS8VP+5Hcr7mWQZJeyfcpM3tIclByp+h2HjPTAzNkRn
-   enjXlXxDKdZAZ9CFwGOwMV12EhvIrFY1cav4WSj78Qy+VE4Szm/Q2HD5n
-   VDuq9+QrwimhljK8yc92OgaRKUj83pMaHO8yfaCFG9oxEYfPrY2gJAyYJ
-   A==;
-X-CSE-ConnectionGUID: RzjgNL8cRpWoFmkfdwq18g==
-X-CSE-MsgGUID: ghj4TVewRq+m8GA6ZTKUcw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="30460427"
+  bh=HYQcRDjwuubK7Sq3dwYtItnV9wch/fOBnHCCGhl7Y4M=;
+  b=S3/9iCsumG26BZQvAuzoIn7e+6Il9MApxr2spZXHQKpD/Zb5JzM5F6d8
+   YDMljD1Ynd4fla18HZFTfvU4JrTGAIEL9tY2aWSx+T9Q4CY1DaiTYVBiU
+   kY31Z1rHcMUVVi2DJNd0WB9tnqs3viqwlG06IUTRNaPi8XiqnRwI9EK3C
+   5dKed4xWkOYxSM8LDqI2tXSDm2V5VXDDngB1MZ7j0XHhHeaj8bCGKi0Lm
+   cOpD1D53f9KGcgD/UF0+g88iY9p7if2C+mW3EDp9C+El/wqdZu2RLhkSB
+   MKz/kDsDi1hZAd+Y1mG6jAciZgHlG7OQY7cHC2UHg5Y5X3nDEdWg930uG
+   g==;
+X-CSE-ConnectionGUID: yO5Y6zP3SLK2AbVMY0Tr/g==
+X-CSE-MsgGUID: jKNO2e2PQeSCpAHoz9nIog==
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="30460437"
 X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; 
-   d="scan'208";a="30460427"
+   d="scan'208";a="30460437"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 04:30:30 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="937093342"
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="937093345"
 X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; 
-   d="scan'208";a="937093342"
+   d="scan'208";a="937093345"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga001.fm.intel.com with ESMTP; 09 Apr 2024 04:30:24 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id DAE3DBC4; Tue,  9 Apr 2024 14:30:17 +0300 (EEST)
+	id 24CB6F69; Tue,  9 Apr 2024 14:30:18 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -66,11 +66,10 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
 	Tao Liu <ltao@redhat.com>
-Subject: [PATCHv10 09/18] x86/mm: Adding callbacks to prepare encrypted memory for kexec
-Date: Tue,  9 Apr 2024 14:30:01 +0300
-Message-ID: <20240409113010.465412-10-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv10 13/18] x86/acpi: Rename fields in acpi_madt_multiproc_wakeup structure
+Date: Tue,  9 Apr 2024 14:30:05 +0300
+Message-ID: <20240409113010.465412-14-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
 References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
@@ -82,125 +81,59 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-AMD SEV and Intel TDX guests allocate shared buffers for performing I/O.
-This is done by allocating pages normally from the buddy allocator and
-then converting them to shared using set_memory_decrypted().
+To prepare for the addition of support for MADT wakeup structure version
+1, it is necessary to provide more appropriate names for the fields in
+the structure.
 
-On kexec, the second kernel is unaware of which memory has been
-converted in this manner. It only sees E820_TYPE_RAM. Accessing shared
-memory as private is fatal.
+The field 'mailbox_version' renamed as 'version'. This field signifies
+the version of the structure and the related protocols, rather than the
+version of the mailbox. This field has not been utilized in the code
+thus far.
 
-Therefore, the memory state must be reset to its original state before
-starting the new kernel with kexec.
-
-The process of converting shared memory back to private occurs in two
-steps:
-
-- enc_kexec_stop_conversion() stops new conversions.
-
-- enc_kexec_unshare_mem() unshares all existing shared memory, reverting
-  it back to private.
+The field 'base_address' renamed as 'mailbox_address' to clarify the
+kind of address it represents. In version 1, the structure includes the
+reset vector address. Clear and distinct naming helps to prevent any
+confusion.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>x
 Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Tao Liu <ltao@redhat.com>
 ---
- arch/x86/include/asm/x86_init.h |  2 ++
- arch/x86/kernel/crash.c         |  6 ++++++
- arch/x86/kernel/reboot.c        | 12 ++++++++++++
- arch/x86/kernel/x86_init.c      |  4 ++++
- 4 files changed, 24 insertions(+)
+ arch/x86/kernel/acpi/madt_wakeup.c | 2 +-
+ include/acpi/actbl2.h              | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index 28ac3cb9b987..c731e6bc4343 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -155,6 +155,8 @@ struct x86_guest {
- 	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
- 	bool (*enc_tlb_flush_required)(bool enc);
- 	bool (*enc_cache_flush_required)(void);
-+	void (*enc_kexec_stop_conversion)(bool crash);
-+	void (*enc_kexec_unshare_mem)(void);
+diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+index d222be8d7a07..004801b9b151 100644
+--- a/arch/x86/kernel/acpi/madt_wakeup.c
++++ b/arch/x86/kernel/acpi/madt_wakeup.c
+@@ -75,7 +75,7 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+ 
+ 	acpi_table_print_madt_entry(&header->common);
+ 
+-	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
++	acpi_mp_wake_mailbox_paddr = mp_wake->mailbox_address;
+ 
+ 	cpu_hotplug_disable_offlining();
+ 
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index 9775384d61c6..e1a395af7591 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -1117,9 +1117,9 @@ struct acpi_madt_generic_translator {
+ 
+ struct acpi_madt_multiproc_wakeup {
+ 	struct acpi_subtable_header header;
+-	u16 mailbox_version;
++	u16 version;
+ 	u32 reserved;		/* reserved - must be zero */
+-	u64 base_address;
++	u64 mailbox_address;
  };
  
- /**
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index e74d0c4286c1..7a1560d7e62d 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -128,6 +128,12 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
- #ifdef CONFIG_HPET_TIMER
- 	hpet_disable();
- #endif
-+
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
-+		x86_platform.guest.enc_kexec_stop_conversion(true);
-+		x86_platform.guest.enc_kexec_unshare_mem();
-+	}
-+
- 	crash_save_cpu(regs, safe_smp_processor_id());
- }
- 
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index f3130f762784..1ec478f40963 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -12,6 +12,7 @@
- #include <linux/delay.h>
- #include <linux/objtool.h>
- #include <linux/pgtable.h>
-+#include <linux/kexec.h>
- #include <acpi/reboot.h>
- #include <asm/io.h>
- #include <asm/apic.h>
-@@ -716,6 +717,14 @@ static void native_machine_emergency_restart(void)
- 
- void native_machine_shutdown(void)
- {
-+	/*
-+	 * Call enc_kexec_stop_conversion() while all CPUs are still active and
-+	 * interrupts are enabled. This will allow all in-flight memory
-+	 * conversions to finish cleanly.
-+	 */
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) && kexec_in_progress)
-+		x86_platform.guest.enc_kexec_stop_conversion(false);
-+
- 	/* Stop the cpus and apics */
- #ifdef CONFIG_X86_IO_APIC
- 	/*
-@@ -752,6 +761,9 @@ void native_machine_shutdown(void)
- #ifdef CONFIG_X86_64
- 	x86_platform.iommu_shutdown();
- #endif
-+
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) && kexec_in_progress)
-+		x86_platform.guest.enc_kexec_unshare_mem();
- }
- 
- static void __machine_emergency_restart(int emergency)
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index a7143bb7dd93..045ce1c70070 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -138,6 +138,8 @@ static int enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool
- static int enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
- static bool enc_tlb_flush_required_noop(bool enc) { return false; }
- static bool enc_cache_flush_required_noop(void) { return false; }
-+static void enc_kexec_stop_conversion_noop(bool crash) {}
-+static void enc_kexec_unshare_mem_noop(void) {}
- static bool is_private_mmio_noop(u64 addr) {return false; }
- 
- struct x86_platform_ops x86_platform __ro_after_init = {
-@@ -161,6 +163,8 @@ struct x86_platform_ops x86_platform __ro_after_init = {
- 		.enc_status_change_finish  = enc_status_change_finish_noop,
- 		.enc_tlb_flush_required	   = enc_tlb_flush_required_noop,
- 		.enc_cache_flush_required  = enc_cache_flush_required_noop,
-+		.enc_kexec_stop_conversion = enc_kexec_stop_conversion_noop,
-+		.enc_kexec_unshare_mem     = enc_kexec_unshare_mem_noop,
- 	},
- };
- 
+ #define ACPI_MULTIPROC_WAKEUP_MB_OS_SIZE        2032
 -- 
 2.43.0
 
