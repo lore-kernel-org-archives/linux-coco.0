@@ -1,49 +1,49 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7807712F38E
-	for <linux-coco@lists.linux.dev>; Tue,  9 Apr 2024 11:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659B312F5A3
+	for <linux-coco@lists.linux.dev>; Tue,  9 Apr 2024 11:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712662236; cv=none; b=LC+/4XEqJD2BXtkK+3JgI5KYz02ZLtE8iAAajNZU9N8GiyrOI5tewRlCfh8RfCuTLNWK8oNyKSWR+OwHnRUlNrPlWh840bLzUQfHE23PDd210YGBIGAqnv0vAR4zeNfB4Mv4/d4qRQ/e9PxFP/xuVsk5YErTB75vnaHxm5f/VGc=
+	t=1712662237; cv=none; b=WQg10p4cxxl3FQ1GtOEE/yh8J48bM3xdi9+2CHp4qbVymRORMYfsyRufR4Osd4s7t+jMGZWMb8hngCmg86aHLPv1OK7jKkn5D/Nng2rmkA/+/GwE665ofXHIT27NProVq16+z8Eer3aSlHCTJIQkqlHJ15kVctbvIcWp2v3/W4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712662236; c=relaxed/simple;
-	bh=xtXGFEbyV1MUQviSE1XFEbU8TkliEYOxKs3K/oQH2hk=;
+	s=arc-20240116; t=1712662237; c=relaxed/simple;
+	bh=H/0XoETYjiBwKYOVVwyFe+gG1mMRMbLkWrG5a87I6pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKARSdrHde5QWtAuA3a/yzxNFl0ueRBObfddp+EQI8syEKrWZfVlpRE92zWoa3zXXR5ux5dee/ArLbnqMLFHKhpQg8lLnb+pyS4AuDbg2Q9FwOi/S/kW1aahPBGhS06iCnxFqf7RNes+KjuHSNRUGq830hHrXMEOX3gkzs9xEBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wg1ozo/3; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=UcASOWW+SKU8xnHxuwT4x/PDw0Jxxlc5zPKgITmV7cXRD4lCWRiqQPynRtieia/SR++xeSdEdNkahMQBB2dsWp/vqbc1Lgj+iZql7sES4aK7z5oUqakpVTW464J+zBWqIt171tfvfMkB1seGdfiDfJMQjRYmCIu/I/RxHDMG9mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dsWfpm/8; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wg1ozo/3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dsWfpm/8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712662235; x=1744198235;
+  t=1712662236; x=1744198236;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xtXGFEbyV1MUQviSE1XFEbU8TkliEYOxKs3K/oQH2hk=;
-  b=Wg1ozo/3/GmYh6k/DVR5A7qnnmVk3tuntvcbKssXXR79Hwxpwz1Zg/Sb
-   kh+FZ+RMR09I8GI4ENK8tPBKc1ftcarzr4A/rqZEiVoimfFcwNZa1kiR0
-   W5FN8BClknNkzckDhnjHtShct5L1anCe2ohK6v2ORIOwq91QKnDm21KX9
-   /y2Z6XIOSf2cBXn4WS0kdGAnymkgUBWXmtk1Bwz/8xLS+QhThMiGgg1Ny
-   O3hVscb6tNEqTa7Yot95RpDTfz0xIsrVU7Z/wFX9LMCQmcu9RSG3dnIW5
-   4PGXGff9OkMXEAy+Kd2Vh6C7Tgtpm8tt8TY3Qa4ft+QUUoE98x0D7hdWI
-   Q==;
-X-CSE-ConnectionGUID: 9hrG7HaeSjWxNVk6O+BsEA==
-X-CSE-MsgGUID: WZ4ykAbwR5G/uJY6KQHOqQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="30460448"
+  bh=H/0XoETYjiBwKYOVVwyFe+gG1mMRMbLkWrG5a87I6pg=;
+  b=dsWfpm/8Afbu2vhJJQOu49JmWsDKATS7FIiHRtuJNEGV36t4JR+CDHIL
+   wPjUStNkU88NoqlzK4OwMmOOpAeGtVGHSOnJPD5T52AQ59GcmrZW7vFEc
+   shJZE3wQJfnThNParIstt6fbn0kerkMuK+H7Mnvd7XViXfuHVEa3V2yn9
+   U9rW/EjtzgwvB8jSZRFGwJwomlx591AQFGyij0Dbu+SoBIFlpcVtboF+D
+   zZOA18pERZys1yAtG1zp3ExhZZ4TbvMWvPkptV7OaHeDU0n9w4nsk8t3N
+   TMBMwEyQAK/c0lL2cKRa/jSriTfouf+3bOHNHm4aUPW4K/3sjhlsVZgIe
+   g==;
+X-CSE-ConnectionGUID: fJ50VKrySO+NG/Yognv+Sw==
+X-CSE-MsgGUID: DL2JVdCeT/6RX6gLW3gq7g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="30460470"
 X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; 
-   d="scan'208";a="30460448"
+   d="scan'208";a="30460470"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 04:30:30 -0700
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 04:30:34 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="937093349"
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="937093351"
 X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; 
-   d="scan'208";a="937093349"
+   d="scan'208";a="937093351"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 09 Apr 2024 04:30:24 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 09 Apr 2024 04:30:29 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 078D6EA4; Tue,  9 Apr 2024 14:30:18 +0300 (EEST)
+	id 3D2FA1090; Tue,  9 Apr 2024 14:30:18 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -66,11 +66,10 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@intel.com>,
 	Tao Liu <ltao@redhat.com>
-Subject: [PATCHv10 11/18] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
-Date: Tue,  9 Apr 2024 14:30:03 +0300
-Message-ID: <20240409113010.465412-12-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv10 15/18] x86/smp: Add smp_ops.stop_this_cpu() callback
+Date: Tue,  9 Apr 2024 14:30:07 +0300
+Message-ID: <20240409113010.465412-16-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
 References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
@@ -82,74 +81,69 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
-things, guides where direct mapping ends. Any memory above max_pfn is
-not going to be present in the direct mapping.
+If the helper is defined, it is called instead of halt() to stop the CPU
+at the end of stop_this_cpu() and on crash CPU shutdown.
 
-e820__end_of_ram_pfn() finds the end of the ram based on the highest
-E820_TYPE_RAM range. But it doesn't includes E820_TYPE_ACPI ranges into
-calculation.
-
-Despite the name, E820_TYPE_ACPI covers not only ACPI data, but also EFI
-tables and might be required by kernel to function properly.
-
-Usually the problem is hidden because there is some E820_TYPE_RAM memory
-above E820_TYPE_ACPI. But crashkernel only presents pre-allocated crash
-memory as E820_TYPE_RAM on boot. If the preallocated range is small, it
-can fit under the last E820_TYPE_ACPI range.
-
-Modify e820__end_of_ram_pfn() and e820__end_of_low_ram_pfn() to cover
-E820_TYPE_ACPI memory.
-
-The problem was discovered during debugging kexec for TDX guest. TDX
-guest uses E820_TYPE_ACPI to store the unaccepted memory bitmap and pass
-it between the kernels on kexec.
+ACPI MADT will use it to hand over the CPU to BIOS in order to be able
+to wake it up again after kexec.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@intel.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Tao Liu <ltao@redhat.com>
 ---
- arch/x86/kernel/e820.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/smp.h | 1 +
+ arch/x86/kernel/process.c  | 7 +++++++
+ arch/x86/kernel/reboot.c   | 6 ++++++
+ 3 files changed, 14 insertions(+)
 
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index 6f1b379e3b38..f29969428443 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -827,7 +827,7 @@ u64 __init e820__memblock_alloc_reserved(u64 size, u64 align)
- /*
-  * Find the highest page frame number we have available
-  */
--static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type type)
-+static unsigned long __init e820_end_ram_pfn(unsigned long limit_pfn)
- {
- 	int i;
- 	unsigned long last_pfn = 0;
-@@ -838,7 +838,8 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
- 		unsigned long start_pfn;
- 		unsigned long end_pfn;
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index a35936b512fe..ca073f40698f 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -35,6 +35,7 @@ struct smp_ops {
+ 	int (*cpu_disable)(void);
+ 	void (*cpu_die)(unsigned int cpu);
+ 	void (*play_dead)(void);
++	void (*stop_this_cpu)(void);
  
--		if (entry->type != type)
-+		if (entry->type != E820_TYPE_RAM &&
-+		    entry->type != E820_TYPE_ACPI)
- 			continue;
+ 	void (*send_call_func_ipi)(const struct cpumask *mask);
+ 	void (*send_call_func_single_ipi)(int cpu);
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index b8441147eb5e..f63f8fd00a91 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -835,6 +835,13 @@ void __noreturn stop_this_cpu(void *dummy)
+ 	 */
+ 	cpumask_clear_cpu(cpu, &cpus_stop_mask);
  
- 		start_pfn = entry->addr >> PAGE_SHIFT;
-@@ -864,12 +865,12 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
++#ifdef CONFIG_SMP
++	if (smp_ops.stop_this_cpu) {
++		smp_ops.stop_this_cpu();
++		unreachable();
++	}
++#endif
++
+ 	for (;;) {
+ 		/*
+ 		 * Use native_halt() so that memory contents don't change
+diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
+index 1ec478f40963..293ded05a4b0 100644
+--- a/arch/x86/kernel/reboot.c
++++ b/arch/x86/kernel/reboot.c
+@@ -880,6 +880,12 @@ static int crash_nmi_callback(unsigned int val, struct pt_regs *regs)
+ 	cpu_emergency_disable_virtualization();
  
- unsigned long __init e820__end_of_ram_pfn(void)
- {
--	return e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM);
-+	return e820_end_ram_pfn(MAX_ARCH_PFN);
- }
- 
- unsigned long __init e820__end_of_low_ram_pfn(void)
- {
--	return e820_end_pfn(1UL << (32 - PAGE_SHIFT), E820_TYPE_RAM);
-+	return e820_end_ram_pfn(1UL << (32 - PAGE_SHIFT));
- }
- 
- static void __init early_panic(char *msg)
+ 	atomic_dec(&waiting_for_crash_ipi);
++
++	if (smp_ops.stop_this_cpu) {
++		smp_ops.stop_this_cpu();
++		unreachable();
++	}
++
+ 	/* Assume hlt works */
+ 	halt();
+ 	for (;;)
 -- 
 2.43.0
 
