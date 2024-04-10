@@ -1,65 +1,204 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA40A125CD
-	for <linux-coco@lists.linux.dev>; Wed, 10 Apr 2024 09:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712742244; cv=none; b=f59b2PdSen5A3cQoeVQMTjm9IPMEQHm3VKw0XhspV8i0OXL6QYbsC6gCS65OQ1JWOi3HPZg5RMhO59deWwyJ2MIki89C5r0j5xhvMy/L2gyLvgzG1B1k74Usu3fVNsfBHgjJVWBn9JGF3DqmTI4cq7GMw6bqdu4L3Ss48YS/9wY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712742244; c=relaxed/simple;
-	bh=Du6d+4K2uSuGLJ6RxdHzex/2jByGFhyn0QEIDqOMQkM=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=aDsil33Ks2LRlOmBmeS+ihir0FZF8PZqznt6JcOOY2Y0kW5/uyB4F9KYXWUATC56pj88qIKFnCaWqwbId+Fp+f7yuqg3zWjEGng2YfV6oUuJJ80nezF1t+UeITblqdHiUhLzQV3pMPrnOKtwLDbr+arRVW+JG26/2FWuD5vMjLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=OMvxnkHx; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="OMvxnkHx"
-Received: from 8bytes.org (p4ffe0bdf.dip0.t-ipconnect.de [79.254.11.223])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 65E22281C79;
-	Wed, 10 Apr 2024 11:43:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1712742235;
-	bh=Du6d+4K2uSuGLJ6RxdHzex/2jByGFhyn0QEIDqOMQkM=;
-	h=Date:From:To:Subject:From;
-	b=OMvxnkHxyyejQkt1QzYcdDI+fUl+e8TaZ2b9ZIWuEbifLE8Llt5Nsu2lV8pAqs5uA
-	 ujyztaTLxLRGNhCL1lYAzvUUvMLiwlkxf30cfi56pQPZBVB9n2Acme18oZBxa3xzt1
-	 Eq6RgtZs/nv7Dj52gj8qaeMwqAJiCCtq7NOPQW63IdYzUGebyIAxhCRfWwxF/sRWDU
-	 xqyq8U6ogw3A7brJwCNKpoePSOCo0GfTVi+gDtIHd4rdzCTCn6YhzqfJ9LHclrKpJH
-	 GyafV4wgaNBXH6Kd6ezesLarapo/2mELUkoZu/3IlrzTwqpM853PopEIStI2J6Z6JM
-	 AXCDQbQBl5zZQ==
-Date: Wed, 10 Apr 2024 11:43:54 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call April 10th, 2024
-Message-ID: <ZhZfWhyOQ4ZmTdVP@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16FE15B12A;
+	Wed, 10 Apr 2024 14:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712758699; cv=none; b=AXsPxsg+dWxBz0VRaPJ9p1RrpQR3GCtk1rN68+UnOzFoKW0ak2urA9hW5zs3/LqszJuxgEyNRhv++fAt9JE4gZsqhQK1WOyAocb8f7daKyO7sxnZY9FpjNS9kddl5nMivnPeL0PxaRidKSuIZgeCH5RZmvqOJJ2DLc2PoHyB7n4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712758699; c=relaxed/simple;
+	bh=FznTubYp6w0r5q/3QmPodUzEX1aM7IcFEf7XrPzXaes=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pOMfpzhbRg7Rkte3qnV6i4ITBs+7NA4MHbyM0Ow8d/h506SvhlizBK0VXRssN4IT9nPS9GRuTmEq2Xn4bDX7yKmWHn05FkSDZO/z4skt0j/2vjnPS3s31rEePlfFTEuzWlJBN5h74/UC6F0QxEYRzfCKMOEgxuhg64Pduh4czGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XBPXOjef; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XBPXOjef"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712758698; x=1744294698;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FznTubYp6w0r5q/3QmPodUzEX1aM7IcFEf7XrPzXaes=;
+  b=XBPXOjef6hJ8EX957x8TSuGmgYg3RqwiwuKrkqtChgGU71B+OA5pfNho
+   ocbxq1toldr5vX+ZWTrCfP2NCkOHoAeWVWTvxno+c0O1E/eZ+rxzLFsM+
+   bFLeAi9UXt1tURVYLTDywMSfbAkTgu5vDwwEXVal3EU9zxyX8Sm8eAceG
+   SpbmQi3wur9MC4cFuH0mulMViGjApl/wxuuFBNYYjCvE5t3qFn5hF0ZU+
+   fmeSRgEIZEX2oG0rk4ONglP5asXc311Zlbwu2G3xHjeVnb2sLRHR1AWYc
+   BOP5y1JmXecUeAMMQ/C/ME5BPOMBiByLUY3JC2cjbtNO+cYFZEEyTsY6+
+   g==;
+X-CSE-ConnectionGUID: Z0kkYwbWQpKA0X7kVrV/OA==
+X-CSE-MsgGUID: /as97Sl1Tu6iBGornmAZ3g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8286829"
+X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
+   d="scan'208";a="8286829"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 07:18:17 -0700
+X-CSE-ConnectionGUID: BUWEHUgZRwyulQxO+uFnOg==
+X-CSE-MsgGUID: ahXft4hoT/KZOy0wF0d8Hw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
+   d="scan'208";a="51550060"
+Received: from lkp-server01.sh.intel.com (HELO e61807b1d151) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 10 Apr 2024 07:18:10 -0700
+Received: from kbuild by e61807b1d151 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ruYm8-0007U8-0L;
+	Wed, 10 Apr 2024 14:18:08 +0000
+Date: Wed, 10 Apr 2024 22:17:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, rafael@kernel.org,
+	peterz@infradead.org, adrian.hunter@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, jun.nakajima@intel.com,
+	rick.p.edgecombe@intel.com, thomas.lendacky@amd.com,
+	michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com,
+	bhe@redhat.com, kirill.shutemov@linux.intel.com, bdas@redhat.com,
+	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
+	jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 4/4] x86/snp: Convert shared memory back to private on
+ kexec
+Message-ID: <202404102232.UKwWHSTE-lkp@intel.com>
+References: <b24885f5495f6b8ba2f9e825fda9188fcbf28231.1712694667.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <b24885f5495f6b8ba2f9e825fda9188fcbf28231.1712694667.git.ashish.kalra@amd.com>
 
-Hi,
+Hi Ashish,
 
-Here is the usual call for agenda items for this weeks SVSM development
-call. I don't have agenda items so far, please send me yours or raise
-them during the meeting.
+kernel test robot noticed the following build errors:
 
-Details of the meeting (GMeet and Calendar links, meeting time) can be
-found in our governance repository at:
+[auto build test ERROR on tip/master]
+[also build test ERROR on linus/master next-20240410]
+[cannot apply to tip/x86/core tip/x86/mm tip/auto-latest]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-	https://github.com/coconut-svsm/governance
+url:    https://github.com/intel-lab-lkp/linux/commits/Ashish-Kalra/efi-x86-skip-efi_arch_mem_reserve-in-case-of-kexec/20240410-044512
+base:   tip/master
+patch link:    https://lore.kernel.org/r/b24885f5495f6b8ba2f9e825fda9188fcbf28231.1712694667.git.ashish.kalra%40amd.com
+patch subject: [PATCH v4 4/4] x86/snp: Convert shared memory back to private on kexec
+config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20240410/202404102232.UKwWHSTE-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240410/202404102232.UKwWHSTE-lkp@intel.com/reproduce)
 
-The meeting will be recorded and the recording eventually published.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202404102232.UKwWHSTE-lkp@intel.com/
 
-See you all there.
+All errors (new ones prefixed by >>):
 
-Regards,
+>> arch/x86/kernel/sev.c:993:14: error: call to undeclared function 'pte_decrypted'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     993 |                 if (pte && pte_decrypted(*pte) && !pte_none(*pte)) {
+         |                            ^
+   arch/x86/kernel/sev.c:1021:16: error: call to undeclared function 'pte_decrypted'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    1021 |                 if (!pte || !pte_decrypted(*pte) || pte_none(*pte))
+         |                              ^
+>> arch/x86/kernel/sev.c:1041:7: error: call to undeclared function 'stop_memory_enc_conversion'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    1041 |         if (!stop_memory_enc_conversion(wait_for_lock))
+         |              ^
+   3 errors generated.
+--
+>> arch/x86/mm/mem_encrypt_amd.c:471:21: error: no member named 'enc_kexec_stop_conversion' in 'struct x86_guest'
+     471 |         x86_platform.guest.enc_kexec_stop_conversion = snp_kexec_stop_conversion;
+         |         ~~~~~~~~~~~~~~~~~~ ^
+>> arch/x86/mm/mem_encrypt_amd.c:472:21: error: no member named 'enc_kexec_unshare_mem' in 'struct x86_guest'
+     472 |         x86_platform.guest.enc_kexec_unshare_mem     = snp_kexec_unshare_mem;
+         |         ~~~~~~~~~~~~~~~~~~ ^
+   2 errors generated.
 
-	Jörg
+
+vim +/pte_decrypted +993 arch/x86/kernel/sev.c
+
+   970	
+   971	static void unshare_all_memory(void)
+   972	{
+   973		unsigned long addr, end;
+   974	
+   975		/*
+   976		 * Walk direct mapping and convert all shared memory back to private,
+   977		 */
+   978	
+   979		addr = PAGE_OFFSET;
+   980		end  = PAGE_OFFSET + get_max_mapped();
+   981	
+   982		while (addr < end) {
+   983			unsigned long size;
+   984			unsigned int level;
+   985			pte_t *pte;
+   986	
+   987			pte = lookup_address(addr, &level);
+   988			size = page_level_size(level);
+   989	
+   990			/*
+   991			 * pte_none() check is required to skip physical memory holes in direct mapped.
+   992			 */
+ > 993			if (pte && pte_decrypted(*pte) && !pte_none(*pte)) {
+   994				int pages = size / PAGE_SIZE;
+   995	
+   996				if (!make_pte_private(pte, addr, pages, level)) {
+   997					pr_err("Failed to unshare range %#lx-%#lx\n",
+   998					       addr, addr + size);
+   999				}
+  1000	
+  1001			}
+  1002	
+  1003			addr += size;
+  1004		}
+  1005		__flush_tlb_all();
+  1006	
+  1007	}
+  1008	
+  1009	static void unshare_all_bss_decrypted_memory(void)
+  1010	{
+  1011		unsigned long vaddr, vaddr_end;
+  1012		unsigned int level;
+  1013		unsigned int npages;
+  1014		pte_t *pte;
+  1015	
+  1016		vaddr = (unsigned long)__start_bss_decrypted;
+  1017		vaddr_end = (unsigned long)__start_bss_decrypted_unused;
+  1018		npages = (vaddr_end - vaddr) >> PAGE_SHIFT;
+  1019		for (; vaddr < vaddr_end; vaddr += PAGE_SIZE) {
+  1020			pte = lookup_address(vaddr, &level);
+  1021			if (!pte || !pte_decrypted(*pte) || pte_none(*pte))
+  1022				continue;
+  1023	
+  1024			set_pte_enc(pte, level, (void *)vaddr);
+  1025		}
+  1026		vaddr = (unsigned long)__start_bss_decrypted;
+  1027		snp_set_memory_private(vaddr, npages);
+  1028	}
+  1029	
+  1030	/* Stop new private<->shared conversions */
+  1031	void snp_kexec_stop_conversion(bool crash)
+  1032	{
+  1033		/*
+  1034		 * Crash kernel reaches here with interrupts disabled: can't wait for
+  1035		 * conversions to finish.
+  1036		 *
+  1037		 * If race happened, just report and proceed.
+  1038		 */
+  1039		bool wait_for_lock = !crash;
+  1040	
+> 1041		if (!stop_memory_enc_conversion(wait_for_lock))
+  1042			pr_warn("Failed to finish shared<->private conversions\n");
+  1043	}
+  1044	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
