@@ -1,82 +1,93 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAB313DDC3
-	for <linux-coco@lists.linux.dev>; Thu, 11 Apr 2024 07:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712820034; cv=none; b=dxXLFlJ47t8chQPbb0YhOVuIdI0jcvNoFF/vpOG3p+LJmNTQpQfhJdhhKWvQXzq53xTwzTCbxvhNYtuyQ0v46BOV/OpeLCLCbrTMmfUqDkaax2+Yi9ZHs1Cp/VwPmEPQVRfWdlEIZhsPKIzuk4572lWaziubOU+j7DC9gQ8XnqQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712820034; c=relaxed/simple;
-	bh=cSZYzF/iDcqRCw0d2nrGpVH85ffngUb2ApA03sRi8K8=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uZf+6mbH6+XR54glvIJLCOuI/D0Wdg3lCX2hvFITRVDAal/Mgp/kKKgB+D+TSBz2Vl1f5mJ/URH/2LxAAgnUOBSB1aAQLYUXYBkfFRpd3Ih37Dapm11DRh+JyUtJGgd4p8mEEkV+bj01eMTmki781D7JHvMfgw8XX4w0wMOMDVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=xA7x/sKY; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="xA7x/sKY"
-Received: from 8bytes.org (p4ffe0bdf.dip0.t-ipconnect.de [79.254.11.223])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id BBA7D281ACA;
-	Thu, 11 Apr 2024 09:20:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1712820030;
-	bh=cSZYzF/iDcqRCw0d2nrGpVH85ffngUb2ApA03sRi8K8=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=xA7x/sKYtKgQtJmjgaX3nMUAOGezHU7+FwnSWvXyvgRUwqU515xi7sej1QBH3Qct9
-	 wmotO9Bg3TmfZmg2iszXw1NcJ6aV0yKfES8Y4p/kPvYnKHLvqZBaeOvygIbL3o4iwd
-	 m6FecvoFtEi/oKzGY2i2T+H6f1DxbXsUE7Zclw6JNI4DnOFb1LYR0VKpie05RKEP6T
-	 IHES8qSJ2xXEgSVEGZb2HiS5yezKtN5llIRGlu485CVRpOzgTHciuCAm709giYqlLK
-	 CB2LCNQB11ojiwT991FmgWBLIFeU0SeZOMPBzOxF4AO5ptwVNZHja5fX0YCzTACkuT
-	 U62/Ppd9JIUkg==
-Date: Thu, 11 Apr 2024 09:20:29 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: Re: [svsm-devel] SVSM Development Call April 10th, 2024
-Message-ID: <ZhePPeKoq-LzJ-Hv@8bytes.org>
-References: <ZhZfWhyOQ4ZmTdVP@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD1E13E88A
+	for <linux-coco@lists.linux.dev>; Thu, 11 Apr 2024 08:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712822866; cv=none; b=NcG5U/PVyhUq+tLahOW7IBAywaxSNexhB3eiLg4mKJkXkdsI09E1kRXWodj/JAe1q8CCBV0I5EFLFTr9Bxzxfdnf3KGUsxOnKY8bgtUWk4ICRhQiqExvu8rCSRB5gG+qMVo2G/0LSAVthkWDSkAY7VSu45hx6S9co+YC9S+bpvc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712822866; c=relaxed/simple;
+	bh=ca/nt2V5qaX2dfFGVwQ22EiAMlsLfoTg3NdMS8YcHFY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=J5VQz7HnuZpvETysQ3beOVlI+LDiKDyPR2jx9QOH8Hqa8rpKeoUCY6QBnq3T+lvLPSgzCQkuqtCAdKYLm0jI2AE9T1KildZ9DbsG5OFfvZeBRugygtfcZw9spRK4TttAmYxvNGOenMj6LibaIIgcysg23m6FSVpgWnsB+SIPiZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WfzIaxja; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WfzIaxja"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712822864;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6LHkEhkC59rSd4+t3EPgjeW61RKMZNWhL6bQeRFcAJo=;
+	b=WfzIaxjaval6Q9e03EHiugVQ9g4XxnglybWiOMw+9zBysZFj9YuzWHZJ+MIolPXg5PIczl
+	2t2kSgBi9i+8Ka03QUeqVYptzKwPzqBZFlXkOgz/VedfCGqDiQ4iPH0YK8FAB37saiL6eJ
+	hKSN1EulL4q6J74RovWYtvdvE14kiG8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-288-ZiOPhE-kM2e92CpHVFCwYA-1; Thu, 11 Apr 2024 04:07:37 -0400
+X-MC-Unique: ZiOPhE-kM2e92CpHVFCwYA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 32AB288B3C4;
+	Thu, 11 Apr 2024 08:07:37 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.204])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 9300DC28102;
+	Thu, 11 Apr 2024 08:07:36 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id 63290180063D; Thu, 11 Apr 2024 10:07:31 +0200 (CEST)
+Date: Thu, 11 Apr 2024 10:07:31 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: devel@edk2.groups.io, jiewen.yao@intel.com, 
+	Dionna Amalie Glaze <dionnaglaze@google.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
+	James Bottomley <jejb@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, qinkun Bao <qinkun@google.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Aktas, Erdem" <erdemaktas@google.com>, 
+	Peter Gonda <pgonda@google.com>, "Johnson, Simon P" <simon.p.johnson@intel.com>, 
+	"Xiang, Qinglan" <qinglan.xiang@intel.com>
+Subject: Re: [edk2-devel] [RFC PATCH] OvmfPkg/SecurityPkg: Add build option
+ for coexistance of vTPM and RTMR.
+Message-ID: <dd6vsgt7aayspdhzkqrjsthuiexig4apvhc4ikoeewx62iqmva@rajndsnzoppq>
+References: <94521f20aa2872c1b8f018b7db31eca4a2b8222d.1711039409.git.qinkun@google.com>
+ <CAAH4kHbAi=Jn7Lw82idGGmQYnAhJnhoS9u8wBMOZsp7iLiOWxw@mail.gmail.com>
+ <PH0PR11MB587959168F72B20E0AC836438C312@PH0PR11MB5879.namprd11.prod.outlook.com>
+ <u76teout4bwpg5yoklah6xfkrpcn4lw5nosw5lmph7sfjipqnz@gagzyh3xrkie>
+ <CAAH4kHbeGborxwDOzxeMbTjU4Xo79v-OVSHXYWQiJxg-yWQfWQ@mail.gmail.com>
+ <ZgF3ACjFj8LtUWgv@himmelriiki>
+ <CAAH4kHbqpaCgZJpF55x2NGWL22rz1ucRewYmR=K2chw2kP6sKA@mail.gmail.com>
+ <MW4PR11MB5872BBA0D379C40E071300B98C052@MW4PR11MB5872.namprd11.prod.outlook.com>
+ <CAMj1kXGm5RPNAzshaTAb7fnB80m8S+q0gbNxWSA3i9Dp-AL8uw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+In-Reply-To: <CAMj1kXGm5RPNAzshaTAb7fnB80m8S+q0gbNxWSA3i9Dp-AL8uw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZhZfWhyOQ4ZmTdVP@8bytes.org>
 
-Hi,
+  Hi,
+ 
+> Given that RTMR is a proper subset of vTPM (modulo the PCR/RTMR index
+> conversion), I feel that it should be the CoCo firmware's
+> responsibility to either:
+> - expose RTMR and not vTPM
+> - expose vTPM, and duplicate each measurement into RTMR as they are taken
 
-The PR adding the meeting minutes for yesterdays call is now posted:
+That approach looks good to me.  It will make sure vTPM and RTMR
+measurements are consistent and it also solves the event log issue
+(we don't need separate vTPM and RTMR entries then).
 
-	https://github.com/coconut-svsm/governance/pull/10
+take care,
+  Gerd
 
-Regards,
-
-	Joerg
-
-On Wed, Apr 10, 2024 at 11:43:54AM +0200, Jörg Rödel wrote:
-> Hi,
-> 
-> Here is the usual call for agenda items for this weeks SVSM development
-> call. I don't have agenda items so far, please send me yours or raise
-> them during the meeting.
-> 
-> Details of the meeting (GMeet and Calendar links, meeting time) can be
-> found in our governance repository at:
-> 
-> 	https://github.com/coconut-svsm/governance
-> 
-> The meeting will be recorded and the recording eventually published.
-> 
-> See you all there.
-> 
-> Regards,
-> 
-> 	Jörg
-> -- 
-> Svsm-devel mailing list
-> Svsm-devel@coconut-svsm.dev
-> https://mail.8bytes.org/cgi-bin/mailman/listinfo/svsm-devel
