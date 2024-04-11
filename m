@@ -1,114 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AF813D88D
-	for <linux-coco@lists.linux.dev>; Thu, 11 Apr 2024 06:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAB313DDC3
+	for <linux-coco@lists.linux.dev>; Thu, 11 Apr 2024 07:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712818351; cv=none; b=aI8gYnYWgczu/1hCVd6TMbHxm8qzrLJjNqAsWnNPe6Dy8EwMwF+81vuNGt4aUgCHACx46/Aow969trJsQfWHPwJorLYg0UyGQj9CwSjI0ML93JT+/pticgOnThsh4TVd1N8MtE+x/4KnEr6t5+NOczhq992JRc6idQCQzLD9wwc=
+	t=1712820034; cv=none; b=dxXLFlJ47t8chQPbb0YhOVuIdI0jcvNoFF/vpOG3p+LJmNTQpQfhJdhhKWvQXzq53xTwzTCbxvhNYtuyQ0v46BOV/OpeLCLCbrTMmfUqDkaax2+Yi9ZHs1Cp/VwPmEPQVRfWdlEIZhsPKIzuk4572lWaziubOU+j7DC9gQ8XnqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712818351; c=relaxed/simple;
-	bh=ghnELJC0GfTCfK7ElI0acGLPWYIYIMMYR/SOyJ8s+2k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tXDtY4TnwbRw7jWG5kT8ik3O2AwRHfctGxs5tsk8fQpX2USX1/FGbHTioXAKmUKMs8qbDX9pT6H5D5PYCONRPgkXpuJlLuQU24No/j7hY+F0FjCdpZ6ASdxS732Pv0CwFw8O5eRqbA2y8HN9TOkD1JQhgLXDLRxunclHyBJP0j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2tWTta0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712820034; c=relaxed/simple;
+	bh=cSZYzF/iDcqRCw0d2nrGpVH85ffngUb2ApA03sRi8K8=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uZf+6mbH6+XR54glvIJLCOuI/D0Wdg3lCX2hvFITRVDAal/Mgp/kKKgB+D+TSBz2Vl1f5mJ/URH/2LxAAgnUOBSB1aAQLYUXYBkfFRpd3Ih37Dapm11DRh+JyUtJGgd4p8mEEkV+bj01eMTmki781D7JHvMfgw8XX4w0wMOMDVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=xA7x/sKY; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2tWTta0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1452EC433F1
-	for <linux-coco@lists.linux.dev>; Thu, 11 Apr 2024 06:52:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712818351;
-	bh=ghnELJC0GfTCfK7ElI0acGLPWYIYIMMYR/SOyJ8s+2k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=K2tWTta0VFWOefGZt8EYsGKpYoHBIKZyLwplMG/uFE55DZVTghZiDAtcLjcJusaWG
-	 jzq6Awe3v4VLi43//npdhjxPfGgZK9FWQ0LxzB5yDqqHlrfoIdIXZ9eTcFm14zLczO
-	 p3vXuWMTbTyy4UWvUk3MB2FsaYZmBldF5/5LI6+SEOK/n1Jn4j1eXeieD9d47dh0cB
-	 dtAOyctSqFFPi7FTa5LwaGhvBo4xHCRCchYegU4s70m6P3Nx3eJ7VVoxQg+YVXvfnb
-	 uLjihg/+0DKlJElieLGx3+tYwKUXzzUlerNoLTGtXAbDfiBlXFTwFNPba23v85Khw7
-	 opdXft3DIn80g==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2d4979cd8c8so5509351fa.0
-        for <linux-coco@lists.linux.dev>; Wed, 10 Apr 2024 23:52:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCViIJyBTrI1EmZY9Lp372lNlnnawyBF6TNz9RGjXMK1D+Jz/D1keJ2HOwplYfLNmnBaphBjy2fDDVWV8n+2dF2Soso1VV78k71HPw==
-X-Gm-Message-State: AOJu0YxWkIF0szFK4Hj6uiXhjoJ19wovHmlxoALjA13sdDNyG+dGHHCw
-	bMdzJAO20w0cziHb2+hV56l1yB6kx3lv0q2JmT5tI2X3X5xUpRiQa0hPIuTwqiRVsL8o0pfSimR
-	oZANlu0W/WNsDMwuJ3InID2yH974=
-X-Google-Smtp-Source: AGHT+IFKDCw/NSdLmra/1Cj8XpPZCTo+x6Gzw8roXQU3rVSRa81n5/yBGik2741Mk2eI8JxzAOtNrJ7O3LQGGJkdBUE=
-X-Received: by 2002:a05:651c:4ca:b0:2d8:c9f:59fe with SMTP id
- e10-20020a05651c04ca00b002d80c9f59femr576484lji.12.1712818349369; Wed, 10 Apr
- 2024 23:52:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="xA7x/sKY"
+Received: from 8bytes.org (p4ffe0bdf.dip0.t-ipconnect.de [79.254.11.223])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id BBA7D281ACA;
+	Thu, 11 Apr 2024 09:20:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1712820030;
+	bh=cSZYzF/iDcqRCw0d2nrGpVH85ffngUb2ApA03sRi8K8=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=xA7x/sKYtKgQtJmjgaX3nMUAOGezHU7+FwnSWvXyvgRUwqU515xi7sej1QBH3Qct9
+	 wmotO9Bg3TmfZmg2iszXw1NcJ6aV0yKfES8Y4p/kPvYnKHLvqZBaeOvygIbL3o4iwd
+	 m6FecvoFtEi/oKzGY2i2T+H6f1DxbXsUE7Zclw6JNI4DnOFb1LYR0VKpie05RKEP6T
+	 IHES8qSJ2xXEgSVEGZb2HiS5yezKtN5llIRGlu485CVRpOzgTHciuCAm709giYqlLK
+	 CB2LCNQB11ojiwT991FmgWBLIFeU0SeZOMPBzOxF4AO5ptwVNZHja5fX0YCzTACkuT
+	 U62/Ppd9JIUkg==
+Date: Thu, 11 Apr 2024 09:20:29 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: Re: [svsm-devel] SVSM Development Call April 10th, 2024
+Message-ID: <ZhePPeKoq-LzJ-Hv@8bytes.org>
+References: <ZhZfWhyOQ4ZmTdVP@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <94521f20aa2872c1b8f018b7db31eca4a2b8222d.1711039409.git.qinkun@google.com>
- <CAAH4kHbAi=Jn7Lw82idGGmQYnAhJnhoS9u8wBMOZsp7iLiOWxw@mail.gmail.com>
- <PH0PR11MB587959168F72B20E0AC836438C312@PH0PR11MB5879.namprd11.prod.outlook.com>
- <u76teout4bwpg5yoklah6xfkrpcn4lw5nosw5lmph7sfjipqnz@gagzyh3xrkie>
- <CAAH4kHbeGborxwDOzxeMbTjU4Xo79v-OVSHXYWQiJxg-yWQfWQ@mail.gmail.com>
- <ZgF3ACjFj8LtUWgv@himmelriiki> <CAAH4kHbqpaCgZJpF55x2NGWL22rz1ucRewYmR=K2chw2kP6sKA@mail.gmail.com>
- <MW4PR11MB5872BBA0D379C40E071300B98C052@MW4PR11MB5872.namprd11.prod.outlook.com>
-In-Reply-To: <MW4PR11MB5872BBA0D379C40E071300B98C052@MW4PR11MB5872.namprd11.prod.outlook.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 11 Apr 2024 08:52:18 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGm5RPNAzshaTAb7fnB80m8S+q0gbNxWSA3i9Dp-AL8uw@mail.gmail.com>
-Message-ID: <CAMj1kXGm5RPNAzshaTAb7fnB80m8S+q0gbNxWSA3i9Dp-AL8uw@mail.gmail.com>
-Subject: Re: [edk2-devel] [RFC PATCH] OvmfPkg/SecurityPkg: Add build option
- for coexistance of vTPM and RTMR.
-To: devel@edk2.groups.io, jiewen.yao@intel.com
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
-	Gerd Hoffmann <kraxel@redhat.com>, James Bottomley <jejb@linux.ibm.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, 
-	qinkun Bao <qinkun@google.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Aktas, Erdem" <erdemaktas@google.com>, 
-	Peter Gonda <pgonda@google.com>, "Johnson, Simon P" <simon.p.johnson@intel.com>, 
-	"Xiang, Qinglan" <qinglan.xiang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZhZfWhyOQ4ZmTdVP@8bytes.org>
 
-Hello all,
+Hi,
 
-On Thu, 11 Apr 2024 at 03:20, Yao, Jiewen <jiewen.yao@intel.com> wrote:
->
-> Hi Dionna/Qinkun
-> I am not sure if systemd is the last software in guest we need to patch t=
-o support coexistence to extend the measurement.
-> Are you aware of any other Linux guest software needs to be updated? Such=
- as Linux IMA (Integrity Measurement Architecture)?
->
-> To move this forward.
->
-> In Intel, we had discussed and we did see the potential security risk. As=
- I mentioned in the first email, "In case that any the guest component only=
- knows one of vTPM or RTMR, and only extends one of vTPM or RTMR, but the o=
-ther one only verifies the other, then the chain of trust is broken."
->
-> At same time, we also respect that it might be a valid use case for Googl=
-e.
-> I would like to ask the opinion in the EDKII community, especially the OV=
-MF and CC maintainer and reviewer.
->
->
-> Hi Ard Biesheuvel
-> Do you think Kernel is OK with this coexistence proposal?
-> Are you willing to give "reviewed-by"?
->
+The PR adding the meeting minutes for yesterdays call is now posted:
 
-I think it is a bad idea to go and apply changes all across the boot
-software ecosystem to measure the same assets into different
-measurement protocols. I'mm afraid it creates technical debt that will
-come and bite us in the future.
+	https://github.com/coconut-svsm/governance/pull/10
 
-Given that RTMR is a proper subset of vTPM (modulo the PCR/RTMR index
-conversion), I feel that it should be the CoCo firmware's
-responsibility to either:
-- expose RTMR and not vTPM
-- expose vTPM, and duplicate each measurement into RTMR as they are taken
+Regards,
 
-However, I understand that this is only viable for execution under the
-UEFI boot services, and after that, the vTPM and RTMR are exposed in
-different ways to the OS.
+	Joerg
 
-Could someone explain how that piece of the puzzle is supposed to
-work? Do we measure into RTMR after ExitBootServices()?
+On Wed, Apr 10, 2024 at 11:43:54AM +0200, Jörg Rödel wrote:
+> Hi,
+> 
+> Here is the usual call for agenda items for this weeks SVSM development
+> call. I don't have agenda items so far, please send me yours or raise
+> them during the meeting.
+> 
+> Details of the meeting (GMeet and Calendar links, meeting time) can be
+> found in our governance repository at:
+> 
+> 	https://github.com/coconut-svsm/governance
+> 
+> The meeting will be recorded and the recording eventually published.
+> 
+> See you all there.
+> 
+> Regards,
+> 
+> 	Jörg
+> -- 
+> Svsm-devel mailing list
+> Svsm-devel@coconut-svsm.dev
+> https://mail.8bytes.org/cgi-bin/mailman/listinfo/svsm-devel
