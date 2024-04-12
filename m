@@ -1,109 +1,176 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B048135A6F;
-	Fri, 12 Apr 2024 08:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4A153816
+	for <linux-coco@lists.linux.dev>; Fri, 12 Apr 2024 08:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712911502; cv=none; b=lwEsVdjz2HicJDdTQBH0MmGa2afyGXrrbTpVPsI37kgM2BqJw6YaIV81qn4h5T4RfwgrFrem2bYOE6rdeeXlosHUyuWJp0QlLzLh26aGQcdh6oiaB5OUMFwgXYEOMvgdBh5oeAdI+kJemdC0rAi3X2u3r2MC3b7ZMI3ggKRl3t0=
+	t=1712911906; cv=none; b=mN65JljkSaFZQaK9a62RyjlP/CZM3iTCC1QK/yjt+RgoaFBsVlqWM2hK4/IfQDiY3juE7NxGfwfF/8EDa7/6yp/4zXqKAyHom3S57jPk0lg7jxg/R53btvd7a4fqZRsvjsZwz759S7yovFHTVg+jqP5SPi3zBah1cWmvI7TKwUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712911502; c=relaxed/simple;
-	bh=D/cy798s+xsV45CJTqoGeQMFhiJNyrqboCxmbKmTJgo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PHnmaLl2+1A6l28jQFqDvDdUEvvM+MskYS+YW9lxTBNuVjRAap51w40qg1oWZ7Q+P9o3cgdc5kd5maUl8UklNIAKzFlytpn8Sd4MuXTk+Ro3mhOZlmqQuTYnQrsLBWFL59q9xpHA53KjJIuptSTllqZTjlwRwQBvMqXdgtXNnrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B12CC339;
-	Fri, 12 Apr 2024 01:45:29 -0700 (PDT)
-Received: from e112269-lin.cambridge.arm.com (e112269-lin.cambridge.arm.com [10.1.194.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 551093F6C4;
-	Fri, 12 Apr 2024 01:44:58 -0700 (PDT)
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: [PATCH v2 43/43] KVM: arm64: Allow activating realms
-Date: Fri, 12 Apr 2024 09:43:09 +0100
-Message-Id: <20240412084309.1733783-44-steven.price@arm.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240412084309.1733783-1-steven.price@arm.com>
-References: <20240412084056.1733704-1-steven.price@arm.com>
- <20240412084309.1733783-1-steven.price@arm.com>
+	s=arc-20240116; t=1712911906; c=relaxed/simple;
+	bh=qDcp4lyReDJ40MmcSzMB7x5FG1dP6FNsaEiiicdIDeU=;
+	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=AUngM71EibYXHjFCed/+NmaftelhL3Xvu3xIq+72rDQ0J22PD76K+tdOD1hetDjC6zyoE1uBIk20hGGFRpSZJXVVOH2TOyV45jihiLMtxSfmrdR9PvKRkqb0vfIsAThD7CVwPWV6ohc9GKzGQzkfECgihr3Htc+MeD34LxIGOJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CcZKZmms; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CcZKZmms"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712911905; x=1744447905;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qDcp4lyReDJ40MmcSzMB7x5FG1dP6FNsaEiiicdIDeU=;
+  b=CcZKZmmsGSHf2VX3aZGSwCcPfk1mH1rYA3uAq4jYjSAWMp35ntK2z52b
+   qcIkQAXpaE0Xay9PQn9xpiPCtdiQfupYZ2XgkUAJ+cgJ99O/xOJpPkih/
+   YNA/x45WYcIoVEOWmdg7Zzb97pyOrTAZM8EhS/vFvDJ+OhAB4c6gs+bEH
+   bstz5LsfkGhgAC3aRh2SV1t2MBo/r/7JVOOeNIIxHnROY/rlRsiHoXrK7
+   0tpEKjPTNUZhPogBXXy5vwqn8dqseS3ybRY6xPFLZa+KfpDjp70YvbI4b
+   7M+JViTs8uDu4HkYZLS/rgTYhKzorFWO9Z1us/+uFfBRRJN8xsjEfIC0u
+   A==;
+X-CSE-ConnectionGUID: 2yKaJSa4TqKSdcIhPBnLrA==
+X-CSE-MsgGUID: D4w/+FVkQjCsxTRFsI3bvw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="25815284"
+X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
+   d="scan'208";a="25815284"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 01:51:44 -0700
+X-CSE-ConnectionGUID: DscWwm+9RVq41CXGFW9CNA==
+X-CSE-MsgGUID: ViZA8zDrRYGf9XRoJ8WkcQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
+   d="scan'208";a="21751058"
+Received: from aclausch-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.251.15.202])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 01:51:44 -0700
+Subject: [RFC PATCH v2 0/6] Towards a shared TSM sysfs-ABI for Confidential
+ Computing
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-coco@lists.linux.dev
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Samuel Ortiz <sameo@rivosinc.com>, Lukas Wunner <lukas@wunner.de>,
+ Wu Hao <hao.wu@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>,
+ Yilun Xu <yilun.xu@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+ John Allen <john.allen@amd.com>, bhelgaas@google.com, kevin.tian@intel.com,
+ gregkh@linuxfoundation.org, linux-pci@vger.kernel.org, lukas@wunner.de
+Date: Fri, 12 Apr 2024 01:51:43 -0700
+Message-ID: <171291190324.3532867.13480405752065082171.stgit@dwillia2-xfh.jf.intel.com>
+User-Agent: StGit/0.18-3-g996c
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Add the ioctl to activate a realm and set the static branch to enable
-access to the realm functionality if the RMM is detected.
+Here is a revised attempt at creating a shared sysfs-ABI for the concept
+of a TSM (TEE Security Manager) as described by PCIe TDISP (PCIe 6.2
+Section 11 TEE Device Interface Security Protocol). It remains an RFC
+until at least one vendor (Intel, AMD, Rivos...) completes integration
+with their low level TSM driver. I am actively working on that with Hao
+Wu and Yilun Xu, but if another vendor adopts this before us, great.
 
-Signed-off-by: Steven Price <steven.price@arm.com>
+Changes since v1: [1]
+* Major simplifications:
+  * Drop the 'struct pci_tsm_req' concept (Yilun), but keep a common
+    @exec entry point from the PCI core to the low level driver.
+  * Drop Link IDE and related sysfs attributes (Alexey). This
+    sophistication may come back later, but no need to tackle that
+    complexity now.
+  * Move policy choice of requiring native CMA before TSM connection
+    to userspace policy. This removes the need to build on top of the
+    moving CMA baseline, and these series can now be considered on
+    indpendent timelines.
+* Create a guest/ vs host/ split in drivers/virt/coco/ (Sathya)
+* Require a parent device for the common TSM class device (Jonathan)
+* Create a 'tdx' virtual bus and 'tdx_tsm' device to parent the TSM
+  class device
+* Create a 'tdx_tsm' for the low-level TDX calls
+* Rebase on v6.9-rc1 that includes a DEFINE_SYSFS_GROUP_VISIBLE()
+* Cleanup usage of __free() to match the proposed style guide [2]
+  (Jonathan)
+* Cleanup, clarifications, and fixes (Kevin)
+* Improve the cover letter prose below (Bjorn, Kevin)
+
+[1]: http://lore.kernel.org/r/170660662589.224441.11503798303914595072.stgit@dwillia2-xfh.jf.intel.com
+[2]: http://lore.kernel.org/r/171140738438.1574931.15717256954707430472.stgit@dwillia2-xfh.jf.intel.com
+
+Confidential Computing (CC) introduces the concept of hardware protected
+(integrity and confidentiality) guest private memory. The next phase of
+that journey is private memory access for guest assigned devices. To
+date, assigned devices for CC guests are constrained to accessing shared
+memory, unprotected clear-text memory. That mode incurs a bounce buffer
+performance penalty as every DMA (direct-memory-access) performed by the
+device must be later copied from shared-to-private memory for
+device-write and private-to-shared copies for device-reads.
+
+The PCIe TEE Device Interface Security Protocol (TDISP) arranges for
+devices to be permitted to DMA to private memory directly, but it
+requires significant infrastructure to authenticate, validate, and
+provision a virtual-device interface to be used in CC guest.
+
+TDISP specifies a TEE Security Manager (TSM) as a platform agent that
+can manage the IOMMU, PCI host, and endpoint Device Security Manager
+capabilities to convert an guest assigned device (physical function or
+sriov-virtual function) into private mode operation.
+
+What follows is common shared infrastructure for the PCI core to
+interface with the platform TSM and a TDX as an example low level
+consumer of these core capabilities.
+
+Enable the PCI core to export a "connect" verb via sysfs for a given
+device which, when the low level platform implementation is added,
+arranges for the device to be authenticated and its link protected by
+encryption and integrity checks.
+
 ---
- arch/arm64/kvm/rme.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-index 93aab6caddf5..5901d57ca9d0 100644
---- a/arch/arm64/kvm/rme.c
-+++ b/arch/arm64/kvm/rme.c
-@@ -1167,6 +1167,20 @@ static int kvm_init_ipa_range_realm(struct kvm *kvm,
- 	return ret;
- }
- 
-+static int kvm_activate_realm(struct kvm *kvm)
-+{
-+	struct realm *realm = &kvm->arch.realm;
-+
-+	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
-+		return -EINVAL;
-+
-+	if (rmi_realm_activate(virt_to_phys(realm->rd)))
-+		return -ENXIO;
-+
-+	WRITE_ONCE(realm->state, REALM_STATE_ACTIVE);
-+	return 0;
-+}
-+
- /* Protects access to rme_vmid_bitmap */
- static DEFINE_SPINLOCK(rme_vmid_lock);
- static unsigned long *rme_vmid_bitmap;
-@@ -1314,6 +1328,9 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
- 		r = kvm_populate_realm(kvm, &args);
- 		break;
- 	}
-+	case KVM_CAP_ARM_RME_ACTIVATE_REALM:
-+		r = kvm_activate_realm(kvm);
-+		break;
- 	default:
- 		r = -EINVAL;
- 		break;
-@@ -1567,7 +1584,7 @@ int kvm_init_rme(void)
- 	if (ret)
- 		return ret;
- 
--	/* Future patch will enable static branch kvm_rme_is_available */
-+	static_branch_enable(&kvm_rme_is_available);
- 
- 	return 0;
- }
--- 
-2.34.1
+Dan Williams (6):
+      configfs-tsm: Namespace TSM report symbols
+      coco/guest: Move shared guest CC infrastructure to drivers/virt/coco/guest/
+      x86/tdx: Introduce a "tdx" subsystem and "tsm" device
+      coco/tsm: Introduce a class device for TEE Security Managers
+      PCI/TSM: Authenticate devices via platform TSM
+      tdx_tsm: TEE Security Manager driver for TDX
 
+
+ Documentation/ABI/testing/sysfs-bus-pci |   46 +++++
+ MAINTAINERS                             |    7 +
+ arch/x86/include/asm/shared/tdx.h       |    3 
+ arch/x86/virt/vmx/tdx/tdx.c             |   70 ++++++++
+ drivers/pci/Kconfig                     |   13 +
+ drivers/pci/Makefile                    |    2 
+ drivers/pci/pci-sysfs.c                 |    4 
+ drivers/pci/pci.h                       |   10 +
+ drivers/pci/probe.c                     |    1 
+ drivers/pci/remove.c                    |    1 
+ drivers/pci/tsm.c                       |  270 +++++++++++++++++++++++++++++++
+ drivers/virt/coco/Kconfig               |    8 -
+ drivers/virt/coco/Makefile              |    3 
+ drivers/virt/coco/guest/Kconfig         |    7 +
+ drivers/virt/coco/guest/Makefile        |    2 
+ drivers/virt/coco/guest/tsm_report.c    |   32 ++--
+ drivers/virt/coco/host/Kconfig          |   12 +
+ drivers/virt/coco/host/Makefile         |    8 +
+ drivers/virt/coco/host/tdx_tsm.c        |   68 ++++++++
+ drivers/virt/coco/host/tsm-core.c       |  131 +++++++++++++++
+ drivers/virt/coco/sev-guest/sev-guest.c |    8 -
+ drivers/virt/coco/tdx-guest/tdx-guest.c |    8 -
+ include/linux/pci-tsm.h                 |   80 +++++++++
+ include/linux/pci.h                     |   11 +
+ include/linux/tsm.h                     |   31 ++--
+ include/uapi/linux/pci_regs.h           |    4 
+ 26 files changed, 795 insertions(+), 45 deletions(-)
+ create mode 100644 drivers/pci/tsm.c
+ create mode 100644 drivers/virt/coco/guest/Kconfig
+ create mode 100644 drivers/virt/coco/guest/Makefile
+ rename drivers/virt/coco/{tsm.c => guest/tsm_report.c} (92%)
+ create mode 100644 drivers/virt/coco/host/Kconfig
+ create mode 100644 drivers/virt/coco/host/Makefile
+ create mode 100644 drivers/virt/coco/host/tdx_tsm.c
+ create mode 100644 drivers/virt/coco/host/tsm-core.c
+ create mode 100644 include/linux/pci-tsm.h
+
+base-commit: 4cece764965020c22cff7665b18a012006359095
