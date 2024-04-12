@@ -1,69 +1,73 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2045.outbound.protection.outlook.com [40.107.236.45])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2072.outbound.protection.outlook.com [40.107.92.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F061474B7
-	for <linux-coco@lists.linux.dev>; Fri, 12 Apr 2024 15:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FA4148829
+	for <linux-coco@lists.linux.dev>; Fri, 12 Apr 2024 15:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.72
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712935729; cv=fail; b=GVCucOrHEaCL09+ZQXR05HNuibG7pNT993kP9wUzp78q+rrI2FeztNeqlVC8XyJF0RKAn8E1HkjfQDQFHr+2czDbQTawtX7Nn2X0swweBvqYUIpa68ZIXyGzq1mLgd8DWoyVnsBRJ/0QKluXg13cbCttVymbwCISaovBcKELrO0=
+	t=1712937168; cv=fail; b=RwzLd8ri5kM5cMf7KM5EN4CH4n3TRW5+I3OoKFDLRI5XdKirdeANVwORc6Vw49hPxX4MMmTx1VZVALS8XfEdkKDpSgdFtk3mxRphRdbm9xIh+jiAI5qTAd6RVOZLXRpKREJ4Gp3Um8fqT0DMuShSuovboAeP8ZTQSm3CIOJUwhU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712935729; c=relaxed/simple;
-	bh=PCPPrVnY0uo1afgkQg5+/97AT8veYYDtMPFu+E6IRYI=;
+	s=arc-20240116; t=1712937168; c=relaxed/simple;
+	bh=okLufqXGPKtylXVl8sNesoOmUQkASBZXB7rYMFl+n1c=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=jICla0b6XX97eCGzvasC0dBG/ahBdIVDf1PN6Oow6cD2bsidySUGbXhkFjV+EpG2AwBrC5ctV2HAvG5I9k0JTrsuMlgXMmPwx5GjrWOGlaprjWUNiPYTdxr5R8jUWPRoN15KSkPaSO9WIyDj3Xik23qYd/wQejdSO/BCrdjoqgg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=MAnqQC6Z; arc=fail smtp.client-ip=40.107.236.45
+	 Content-Type:MIME-Version; b=c/tKabYp2j4EmHdpLBu5FZobOwo+njYyqoTz2PXPqm+AV2NcDQdx72iTwXmaaDgdlvo1cwRJZpRet5i11q7yZT2/vbSm7clZM+UWr18GD5pBBFx/Vh+YyCbNVutKcLvGfOvjYbuDYt9i6GJkHp8o02B8G0kMzRsQplv3fj+QJg8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mdeUb6K9; arc=fail smtp.client-ip=40.107.92.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="MAnqQC6Z"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mdeUb6K9"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BjX8uCwplm7Tt7ZxlkXFIGOS01rHmsDOc7159EjwaHxrJbQLw5z9o+gj3hUjorqP0wNk7isap7Cd3SGkmHyoRb/1jyS57yKcU+Qs1j/2F20eg+nY8Ysq/pdxu2FHdZVhZo+zrteqdST0/7m6IFRe7FJrzq/Jk+6sKv58yoN5s8MnSulx/xx6kkdXWkZKXDwllTrbji68eVOkyYuUj4DJgFBc1q/FPHBhCSnFljktJUNL7Ahy1W/xhadyYKe9XtKtmbRYHemrynup7yLK+WmsiJE5NqWRPdUQqhd48zqjZBvU7mZTKCyU9IkX34qU4VZJW2tTQwlNla7UFGEvcZxU7w==
+ b=OtsYqjBiCcjB/1neYGRhHjDxRXWyOSCUXzpqEPerjk1GRRakHN4tsNXsITkruoXcz8FyKuk9yQKWwN+pZ0X2cLx8qK+JQMvptwLTQcUkz3kdCd9y1KQA25y8J1f3azzmaYIdeZYqXg+OIO5qBJputbx19kNof8tctLmTxTLVh9Qewro6vuaaLNPrDnHJ0YuhQl3kNv5ROrjY/hu0vnjRWXSbIGgSoq3sQ/wPiRCmqvJwSkFGfubCX4fvSVwKNEWNUA2KON1kjo+okzrl+QlSDNOI8edBKN+LTyI7MhmPZpSTH44lEyKCOF0RNia9u7f9IwwJr/WjZGm6lTlArjygWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PIynRI23SjYwOmj/NqhNupTVM+w8GN2SP5OP9eFGduU=;
- b=DPaEbH59v9IhNeviLqgwr+c8GTrkTBkS2OOdgwgaep1EbwJSLjzvVjSNwZXuM3bNKW0j44HXcTGxdmzULw6fBH3q3mcw/LGYWN+HuGPgDCZL8phYSP6sz/Jj3rUZz1/prOuhW7zZeWLfzseN/tHgo1VczOoAMNmfJuEr23W427VtnvBLRaXn87JvPqVn+LiEDrSyP/PkMnozv2RgKpFRWfSwsFrkeYQsHtD+zd3tEHXbSkcoqscmwziCZlCk8P1aylEbaCtWRZ9wabwkN5asct//FkUXgKOYpweu6EBdov7DqqhiGTe/a+2OoVT8iT+ZI4svrqu8q5PCuepzehca1g==
+ bh=bBcAPA3PSbuCASCghD8Amfazdu4/aMtn1ZMbaS61Y58=;
+ b=Nv5Pf8Ks84V/hxRjJn0N8kLuXeJWPLj0qv5dhCUUt8DUfJymdE+GknZeqYttofoh9+2m6iQWPQioIfWOlxFqxsOz9Ks3q5EoNJmEz8txsgh0SLk3qmpFSDG0Gl5uRsi4gps4yeDALJIWEuRKaz54BONjERHSbu9WYMZKY/SxTBq1DeruCeRx4DaAMycTR2DsArwmML44uSAdA/6B3IjB/opWq50RAsF/6FXfEjTyECP8aPkHtzORrsQg7vHrmt89ya4PVe1oyoKyMxX39t1D8ITWTLtr6M9bHFuGG75P4wAg7eHRJlhbtEPZTTD9AMYFuU/oHP1/yoDl56Rqs5wQdw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PIynRI23SjYwOmj/NqhNupTVM+w8GN2SP5OP9eFGduU=;
- b=MAnqQC6Z/RJg0jShxF5aOnaNZeeVIPTD2/QTnIOkGgjCxKDWo6EQySmv4rbuQfZ1p27Pwa0utn4MsDkufLUPIX95TdTvPhf3aLDPY4PgIuZHvI6tkBXI/hvHnhcmta4QDVyXocfhxY5aNJahzJlidCIICB6Kg8h2Q8Beoalv940=
+ bh=bBcAPA3PSbuCASCghD8Amfazdu4/aMtn1ZMbaS61Y58=;
+ b=mdeUb6K9NcdpTqHLHqq4J7VorxToOIt0OHGnC84trRv7kVdPs22oHPIXKAff3PYelMG/e0N3q4nGutnwiQJNFcRD1yvruxv1nEbgKP0Su1IsCTosNjZp7D0jkmYhE4kAJisnY113mG1nty0eCQkyH1VKMY5gQjW1UNqgJOaxvwg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM6PR12MB2810.namprd12.prod.outlook.com (2603:10b6:5:41::21) by
- CYYPR12MB8854.namprd12.prod.outlook.com (2603:10b6:930:b8::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7409.55; Fri, 12 Apr 2024 15:28:41 +0000
-Received: from DM6PR12MB2810.namprd12.prod.outlook.com
- ([fe80::8af6:1232:41ce:24a3]) by DM6PR12MB2810.namprd12.prod.outlook.com
- ([fe80::8af6:1232:41ce:24a3%7]) with mapi id 15.20.7409.053; Fri, 12 Apr 2024
- 15:28:41 +0000
-Message-ID: <c17d72ad-544f-0c3c-e250-a78041bfcc16@amd.com>
-Date: Fri, 12 Apr 2024 17:28:12 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 06/14] x86/sev: Use the SVSM to create a vCPU when not
- in VMPL0
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
+ by BL1PR12MB5851.namprd12.prod.outlook.com (2603:10b6:208:396::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Fri, 12 Apr
+ 2024 15:52:43 +0000
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::1032:4da5:7572:508]) by BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::1032:4da5:7572:508%6]) with mapi id 15.20.7409.042; Fri, 12 Apr 2024
+ 15:52:43 +0000
+Message-ID: <19d69960-e548-a2e6-87d9-c463f2851613@amd.com>
+Date: Fri, 12 Apr 2024 10:52:40 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v3 13/14] x86/sev: Hide SVSM attestation entries if not
+ running under an SVSM
 Content-Language: en-US
-To: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
+ svsm-devel@coconut-svsm.dev
 Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
  "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>,
  Dan Williams <dan.j.williams@intel.com>, Michael Roth
- <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>
+ <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>,
+ Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>
 References: <cover.1711405593.git.thomas.lendacky@amd.com>
- <b91122a1faf096ec89bb49653d7959158a614528.1711405593.git.thomas.lendacky@amd.com>
-From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
-In-Reply-To: <b91122a1faf096ec89bb49653d7959158a614528.1711405593.git.thomas.lendacky@amd.com>
+ <67893f352bc54de61160bfe251cba0bdf0431f37.1711405593.git.thomas.lendacky@amd.com>
+ <1f6f4477-0f2a-434a-8c89-3b5d51d61581@linux.intel.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <1f6f4477-0f2a-434a-8c89-3b5d51d61581@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0027.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:1c::14) To DM6PR12MB2810.namprd12.prod.outlook.com
- (2603:10b6:5:41::21)
+X-ClientProxiedBy: SN6PR2101CA0014.namprd21.prod.outlook.com
+ (2603:10b6:805:106::24) To BL1PR12MB5732.namprd12.prod.outlook.com
+ (2603:10b6:208:387::17)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,225 +75,187 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB2810:EE_|CYYPR12MB8854:EE_
-X-MS-Office365-Filtering-Correlation-Id: 398bee66-0022-4b61-468f-08dc5b053b8e
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|BL1PR12MB5851:EE_
+X-MS-Office365-Filtering-Correlation-Id: 95100450-afe0-4003-a556-08dc5b089712
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	+W9XAxyqAPJifDIwX6VNjm70Faq9ydfZQ0uPm8BxdST0zDU8jejqnVu1iZgkHhcK7w8aQsNnzm9djKMlPZdbLhPCPL9MD/ndkFQLJjuxbGW4igfCtbKpCU3K4tjIPLdpOgl+YPPRijOb8JLTAmI8lqUfnJHfmsKtNdlb5RUZj/SaaEglRSLY8WNm2ydz2Bfh1YQ2ftp9tV2hWiTy5SrnrBdK7BxbqdAO6EkynTTU4+OYr1RcwlRP26qK99IdEVz/i87IpME0BOIqlD7pH77ndrxMiy9qGxAGRsxbg5C/pVcJnxAdd9w6Upqy4Xj0xx2K/NpUL8hukML31rhANiRc4Hi6pNXUi0HgZBZsz4BWwb/DV9oUuSNM2dRF8mJdEa0ZlW8/ii0iTLwsJrzJVfBmKxOk6zQiyIcqhUKSafmrVEhNSIDBZ9+VxPWjQNMTrt3HC1cqxPm3pKHZUiBffZMtoXAGqQ+0SoCysKMq5DVQy991B+Ss9HSWHKAQLKuT0vSs8PxiC03KDK4qkdp4pesKu1SfrDNk3+FRjQEYY8sibpl0yI7vOlRkueEOACpET2RuksCpK5IkkTvI6a1h///vmGD3RU8tUy+KD8rVDd2GRifyK7aUm5y1nRNVlTb9H/hmxugyZA+0CQZ5hQKU9hCk/QF4/ORlEW4Hi9rsMaKxPDw=
+	UU/RqnDQEDLGGVzJrk1KBdaT/E0RSX+DQdMQ8Fshnwb0B6GFdVzPNUzZ/zEETLv+X/TKJsCpPhBzTyPJbpggiWzgeyAkc+7TQqClWEeMm7E/7/YxPrTKmmgVJBvznk5l5HVey4PJ/oSOeatyu5FTke5OAhWt1d/wCu4L1/fFAh/65UIp3hvvoNOAZ3ZOhvMX4C+w48zLzxonAui5lF9SSwGp6q/28g/S9E34LWW3SUlBN7+J/2piUw44YNaBeWmvwAOWeY2U6T6z4/kiDWHhhlkll9OTum35C6J32lY1FORH+f8Wf03srF6qdEZmSaxm60/Q7snq5pdQoGpsr9G1ed5B5rf7tnytY5mKSb8tZcAP60jpTAEmddLZwvWnx4eOSSUGmVRP8sE9Xim26EYRkQgFK8H1xkcpVKD9nIFS6WZNWGoVb1JcB7KzCo5GKHAw0QX3ELLCGs2uUW2lB7+p2K5BUiQYEnZVL9ccLBBXCVy37VA3GpH5DXxPZWRrNsW5Nsc2JVVsX5LPteI2TcXhEzijAbTGrj3jP3kXEAt6j5bQF1dMVa56+Qh5W6rJyK78JWy4t0W2Jzr8uTehiyuN6NMNUtdc1lxLL9Hr4mHm2ugaz1gZLsiGzZuWOtXAQXHunAbaTG4e0N0FQqB2t8p4Mv5NfptmSaY8prRyeLsIVkk=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2810.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(7416005)(366007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(7416005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cVNsbGRYYTZCUzA4bHlBcEFrQnZKQU81S0FvQVU0TFR3YlF2NHNsU3g4SXVv?=
- =?utf-8?B?dmlGYVlSc1N2cVA1bG52UW83RSs1NUJPMloyb2FkUzFTYmtOdUpDcTlGSGpT?=
- =?utf-8?B?UU9QK2laSk4yNDh1U2kyODUrNlBzbE9NOFEvYi9JNGFPYWRBV1NqRmZ1TDFO?=
- =?utf-8?B?Nmo5VGZPMGE5WmRnOERJS1pEM1JBQ0ZpdGtqRUcwR1J2VndoMlVoTHFOQnNj?=
- =?utf-8?B?OUE1cDNUaFRwbGdodThmR0lwYnVEcU9xRWd5b0NkaW5jcTNFdy80NHhPMm5s?=
- =?utf-8?B?ZTZxcUswM1ZuSFVWSC9xZG1EekZKSDJVSGFwdGZZSjlpL3d1RnBzSzV4Nmxo?=
- =?utf-8?B?TkRBN2xPa3hCRkN3NkNlMVpCQUYrVWQ1Z0NCVkJWa05qZ1k0RGVjMFpVQ1di?=
- =?utf-8?B?Mnd6KzBPYy9Gc1MzU0RwdVRFWlVmNm5oZWZ6Qk9jRTh2a2VpeG9MY0NkNisz?=
- =?utf-8?B?RmZTUXdZRWxvL21WaXVXTFhBN2MrZC95KytjNk4yR3c2TjlZUlhlQkEwNWEw?=
- =?utf-8?B?Z3M4dDk2cWJpNkZxcjlKTW9IV1hhRVcwOHV5R3plNEsycXJ4RmdxWEhCc3pP?=
- =?utf-8?B?RWVwTGx2d2p5SXdxOW5YbDZTak4wV21WZStYUWVENWViSnpFang0UVdCY2g1?=
- =?utf-8?B?QmJka3U1MXMyNjBLZkRhUjRsZFBCcERqekV6MC9seXc5UGF6a3BKeWs3cWZL?=
- =?utf-8?B?WkM2V0MzVmlwNmY3ZGt1UVNTdGhSZzN3NjhWZUM4MHJDNG9HN3diWFdHa0dR?=
- =?utf-8?B?NXpGZ0YzRXBZRWQ4RnV4TU5jams4L3RwQ3RvaWU3blJqYVNwQUZWeSt3YUJh?=
- =?utf-8?B?MEptV0tXbFFEaHVOVkRUOHhjczY5MmQwSWVIbFZxcUxNRG5GMHc5NjAwOE8y?=
- =?utf-8?B?L0NQaTlNeENxOGlTMm9ESUo4Wk9YMzhSczd6dE9vTlU5Ujd3eVNhdENnR25M?=
- =?utf-8?B?ZEx6YnJGUVBTWU0wUVZDNTR4SDVZQUk4dkgrVDcwUmNrRnFUY01CcmNJa0pv?=
- =?utf-8?B?Rjc3Y1BQN1NhNlh6NFJBTUNJL0RKMEdXbE9MWVlGYmNpYTdmQzlGK1pDU0gz?=
- =?utf-8?B?TnNzRk5MZUhtcjVoSTRzNzJtWVNCMXl3UFNyU2dNdkowTTB0YjZRMHpuTnFr?=
- =?utf-8?B?N1dnOTY0UVVSejZiK3Byd0Nsb0hkWnV4b09IRDJZdGszcDNvK1ZTUnVwU3ls?=
- =?utf-8?B?V1JOY1lBcHZjK0M2eWpJMC81YUNNSlB1bzRTd2xleHpNSDBVL1NSUnpEUUw0?=
- =?utf-8?B?ejlvZlgrV1VoY2JzY0hFanBRd1p4cThucUJzNHhTZHdEUVJ4WVlLa1gxNno3?=
- =?utf-8?B?V2phbjEvM2NMcUw0YTBtNWxDTlJkKzMwV1ZnSGFQYUpaNVh4MmFJakFzU2Fw?=
- =?utf-8?B?R3Y5blYyaTJRck9GcVpmMzlIVlVkb1RjYy9adzlZWDRPL0krZUJaQ0prcXpk?=
- =?utf-8?B?aUlIMGFKcUV5dVJQanA3citpczRxQ2t0VTgySDRFVzhpbFcxZks3QlJIY0Rh?=
- =?utf-8?B?S2hlZnJUWkxRb1pyL2g3SHFlQ2QybW02T2V2aUdBUXdRaHVzaXBXZ2Uxbmdx?=
- =?utf-8?B?RGhVM2NwWjZHckdGM3VzdnNaWkpGbjhVMmpxaDlieURxV0lyMURUWUsrRVdx?=
- =?utf-8?B?NllxZDgzaXorMVFPZXk3eUVoK1dJTEZTSWVRTzNzaXozNjJBUGhHdjdNSjgw?=
- =?utf-8?B?ZWRMMDh1MTkyeUJxUTRjRzVmVnNnRDVuL3Y5dStwdE9aNHpnUWxOaVNsY0ky?=
- =?utf-8?B?b1FvM25jZDVXM203dzhVTVZERUt1NExzTHJOeWZnc0FBMHpNL3RWY1FoOU5L?=
- =?utf-8?B?aTVoVVJsMWwxMkFRZklSTmVYN2pzbmg5SEhwdkVYSGN5TmdWaG5nV3Nld0p2?=
- =?utf-8?B?OHJMR0NadUExQ3JmWTNlZ1BVMC9RVUZCeU9YMzgzOE5rRTE1bjdRZGFiUkJv?=
- =?utf-8?B?S0ZYWTFza3A1czNFL2ZzYktjU2VLZXZ5MFlhMURHM0JVRlJWWkg1aUV6OElp?=
- =?utf-8?B?RGlZczJKdElwTGgycUtjR0pCL25RYXFUQ0F0dG9MVnFDM0dkbGhUUDZHb1FT?=
- =?utf-8?B?L3ZtZ1pKSzRqMDAxbml1SWdRalBlUzZVcXFKeTRwbUJMcThlaE9ERURtYXVH?=
- =?utf-8?Q?aMwzjTDFJKVe/0EdHYSKIcZib?=
+	=?utf-8?B?WEZEM0pNY1QvcDhoVnJXVFBUUGh5OVg2K1Fwak13U1RSb0hUWXlBUFZtaW1m?=
+ =?utf-8?B?TWhoby83K1BvWGZNVXQ0NkUvM2ZvYmcxVjg2TXFuOHY5cmZBdnl2QWwwRXM4?=
+ =?utf-8?B?OVI3ODZCTnBRVmRmQUZ0bjljSmo3b21ucXJXYkthRzRybGtHYkpiekhBNGtU?=
+ =?utf-8?B?ZC9lUmxGNEcvRTVnYTdiVGt6ZE00SG1kT3YwQi9MTkZTbStjZWExVGloYkl2?=
+ =?utf-8?B?RE9uaUVzdk1NZkdwTkdjcWVQcGl3eFN1RE54anZYcGk0d3E0cDIvRDljUzYx?=
+ =?utf-8?B?M1g0OGJNWE5KTHFMdnVKQy92Z1JxakFmbVBsT043Z0tuTHpJaXloZ1pIUVRQ?=
+ =?utf-8?B?bkRGVlVRUmgrN2N5cDZyVmo1RzRqQVhUWm5Qd29JSkdvZGREb2haK2dSV251?=
+ =?utf-8?B?Vmplc0RzZ2x2WHdFODY4S3NqM0RRSmhuMm1xNnltaTJzZTI4RDRaS0FDRzN4?=
+ =?utf-8?B?NVF1S2lOSk5MSlFib0lSSnBpYkxMUmxoQUpHcGRwUlllVlNpSkF1aWtUWTNI?=
+ =?utf-8?B?enJzbXV1eEU0aHVGcHgzN1BaQm1BVVBCMEhpdkZDSDRHK0JwSEErTkk4WVN3?=
+ =?utf-8?B?NUVOcW56aGxCZXdQRTVJV3VVajFsYWx3dm14RitDdU4yUVVUcitJVU9vZUFZ?=
+ =?utf-8?B?Ylo1Z2hjV2ZqQ2hqUzVQRzg0cjRaY2hVUDE5SERrMVBjdk9FeWhCN0JxQ09H?=
+ =?utf-8?B?cStqYjF0RFFqWlV3bHUvc0Q1MXFhQ3kzcVNWWjhOSG5BV1U5OW9IVnFIR0Ns?=
+ =?utf-8?B?SEgxSHY1OHZyWVlKa1VmcVcrV2kyQVQ3dVNOTlhmMTZpM2QxajdxZEQvajZT?=
+ =?utf-8?B?M0ErcXo1TVpSR0VtL0s5RjZNcnN4NlNxK09FZDJ5bWtZMXhVSkJWNS9DTUcr?=
+ =?utf-8?B?d2IxMXhvNmxuYWRUSGlsdHkwVnhCVjZYZmV5dTNuLzhaU2Ura2EzaENYQkxq?=
+ =?utf-8?B?akF0MGdXWnVkTmR1eVdOL1pXZW40YXE2bWViN2wxRlErZWpTUlo2RmxRRVpB?=
+ =?utf-8?B?MkMzNzAzM2w4cDNXMHA4ekhPcnhLQldKUUFCeVpHb0pYZ01qWTJ4Wk9mZng0?=
+ =?utf-8?B?SEwwalhQalUzYWJyOWlVcjdoa3M0My9ZVDg4cTFVMVNZS1NyTVppVmRrWDU1?=
+ =?utf-8?B?MVBrQzRTSk1QWUJBaTRrL0U1NDBGZ250V1hPaDJoN2ZPc0trUmhhaytPWG8w?=
+ =?utf-8?B?QS9hUkxnQkdZRXVDNUl6enpXUkgxemlpT3Q1NmpHczBMeFZyckNldmk0NFpQ?=
+ =?utf-8?B?Tm42YzNyUU5WMUdqa3JaNlk3QXdUZVRjZWpiS2JEdm1QNjlCQ043Z0hNMXI3?=
+ =?utf-8?B?cDRuRVl2OEsvNThxbzJkRk5tVExtekJoWk5mWlNxL0tad0d6S0FQRSt5enU3?=
+ =?utf-8?B?aEdkdHVxYnBieWpoLy9jOS9EUU90bGZiNVhaeHFkR0ZuN2RQa0oycGZUUG5r?=
+ =?utf-8?B?VEtCelVYZnJodlo4K3ZzcnpFVUEySnhGTFNhZkZqMXVXellRUHNwYjRucjVj?=
+ =?utf-8?B?VmlKdlc2SmJ4UzNlblRxZlhTZVhYZEdjT3FXV1RUZnNZRmcrK09ZRStzWVhU?=
+ =?utf-8?B?OGdhOSszVXFZektlUjJ2Ty9NNStvYzh0T3BNOGpoVElweGU1amdOSmhxTFV3?=
+ =?utf-8?B?M0JMelBSQjVTQnlWZlpjS015dFRPMXNMOUhwYVZ6ZWFHbmVtVHBmcytuZEFt?=
+ =?utf-8?B?ZWtWOHR3YnYrcGlGMm1UUTVmYU1ZSnVpdTV2cW5hbDNKZUxHZzhUdjBmSkJX?=
+ =?utf-8?B?eGNUUkRqZU8ydDBYY1BJWEw5em5LQmxQbGtHa0ZMNDBlcGZOcWNuc0tnTGJV?=
+ =?utf-8?B?ajJ5dUU2R0ZxY3dqTDVVZXg0cTBDeElheHRiRnRraEloRkZnWHJxdkdKbmRn?=
+ =?utf-8?B?OW8vMFd6WnBydUkwQ0VFcVNKem9hSjFWQTA2LzVIMFRhWkViSWlVQ21QS1M2?=
+ =?utf-8?B?eWt2dFlLeURFSXJVazBEMXhlKzhQb05LbDNHcmw0SG1SK2l4UzZLbkYxMGlq?=
+ =?utf-8?B?RjJ4UlB3NXkrLzdsNHJCV3NnS24xMndwNEdLZ1BwOWNVYTJKUFVwVTVzbnFa?=
+ =?utf-8?B?TTMvRi9QN29aWm4yMlpOcVFiUkx4Qko0MWxWbmZjWW1SVU9CZk9nalFWR0xa?=
+ =?utf-8?Q?Ut3PB+7GTtJxY9T09RqNdz1hb?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 398bee66-0022-4b61-468f-08dc5b053b8e
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2810.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95100450-afe0-4003-a556-08dc5b089712
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2024 15:28:41.3405
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2024 15:52:43.4060
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y+lWIlFiQEvm9P0l9gISZZV9MV5916d5/+BYF1D1h6DQrz/GwzocIyMgMINntE+ThnvwNX9ifCwzeoaMJUW2Lg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8854
+X-MS-Exchange-CrossTenant-UserPrincipalName: TJ297CwTXkljKOCc54y9mJufJicdu5U34EWoDhYlEgvijDzrXiWNi1e8rE1OZu+RFt7bwPP9jy05FfHCdj6PwA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5851
 
-On 3/25/2024 11:26 PM, Tom Lendacky wrote:
-> Using the RMPADJUST instruction, the VSMA attribute can only be changed
-> at VMPL0. An SVSM will be present when running at VMPL1 or a lower
-> privilege level.
+On 4/9/24 13:12, Kuppuswamy Sathyanarayanan wrote:
 > 
-> When an SVSM is present, use the SVSM_CORE_CREATE_VCPU call or the
-> SVSM_CORE_DESTROY_VCPU call to perform VMSA attribute changes. Use the
-> VMPL level supplied by the SVSM within the VMSA and when starting the
-> AP.
+> On 3/25/24 3:26 PM, Tom Lendacky wrote:
+>> Config-fs provides support to hide individual attribute entries. Using
+>> this support, base the display of the SVSM related entries on the presence
+>> of an SVSM.
+>>
+>> Cc: Joel Becker <jlbec@evilplan.org>
+>> Cc: Christoph Hellwig <hch@lst.de>
+>> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+>> ---
+>>   arch/x86/coco/core.c        |  4 ++++
+>>   drivers/virt/coco/tsm.c     | 14 ++++++++++----
+>>   include/linux/cc_platform.h |  8 ++++++++
+>>   3 files changed, 22 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
+>> index d07be9d05cd0..efa0f648f754 100644
+>> --- a/arch/x86/coco/core.c
+>> +++ b/arch/x86/coco/core.c
+>> @@ -12,6 +12,7 @@
+>>   
+>>   #include <asm/coco.h>
+>>   #include <asm/processor.h>
+>> +#include <asm/sev.h>
+>>   
+>>   enum cc_vendor cc_vendor __ro_after_init = CC_VENDOR_NONE;
+>>   u64 cc_mask __ro_after_init;
+>> @@ -78,6 +79,9 @@ static bool noinstr amd_cc_platform_has(enum cc_attr attr)
+>>   	case CC_ATTR_GUEST_STATE_ENCRYPT:
+>>   		return sev_status & MSR_AMD64_SEV_ES_ENABLED;
+>>   
+>> +	case CC_ATTR_GUEST_SVSM_PRESENT:
+>> +		return snp_get_vmpl();
+>> +
+>>   	/*
+>>   	 * With SEV, the rep string I/O instructions need to be unrolled
+>>   	 * but SEV-ES supports them through the #VC handler.
+>> diff --git a/drivers/virt/coco/tsm.c b/drivers/virt/coco/tsm.c
+>> index 46f230bf13ac..d30471874e87 100644
+>> --- a/drivers/virt/coco/tsm.c
+>> +++ b/drivers/virt/coco/tsm.c
+>> @@ -64,6 +64,12 @@ static struct tsm_report_state *to_state(struct tsm_report *report)
+>>   	return container_of(report, struct tsm_report_state, report);
+>>   }
+>>   
+>> +static bool provider_visibility(const struct config_item *item,
+>> +				const struct configfs_attribute *attr)
+>> +{
+>> +	return cc_platform_has(CC_ATTR_GUEST_SVSM_PRESENT);
+>> +}
+>> +
 > 
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Any comment about the following query? I think introducing a CC flag for this use
+> case is over kill.
+> 
+> https://lore.kernel.org/lkml/6b90b223-46e0-4e6d-a17c-5caf72e3c949@linux.intel.com/
 
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+If you don't think TDX will be able to make use of the SVSM attribute I 
+can look at adding a callback. But I was waiting to see if anyone else had 
+comments, for or against, before re-doing it all.
 
-> ---
->   arch/x86/include/asm/sev.h |  2 ++
->   arch/x86/kernel/sev.c      | 60 +++++++++++++++++++++++++++++++++-----
->   2 files changed, 54 insertions(+), 8 deletions(-)
+Thanks,
+Tom
+
 > 
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index 204f0a4857d6..d7be613b7372 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -229,6 +229,8 @@ struct svsm_call {
->   #define SVSM_CORE_CALL(x)		((0ULL << 32) | (x))
->   #define SVSM_CORE_REMAP_CA		0
->   #define SVSM_CORE_PVALIDATE		1
-> +#define SVSM_CORE_CREATE_VCPU		2
-> +#define SVSM_CORE_DELETE_VCPU		3
->   
->   #ifdef CONFIG_AMD_MEM_ENCRYPT
->   extern void __sev_es_ist_enter(struct pt_regs *regs);
-> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> index d3e182d69d65..ea8b43a0f01b 100644
-> --- a/arch/x86/kernel/sev.c
-> +++ b/arch/x86/kernel/sev.c
-> @@ -1016,7 +1016,7 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
->   	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
->   }
->   
-> -static int snp_set_vmsa(void *va, bool vmsa)
-> +static int base_snp_set_vmsa(void *va, bool vmsa)
->   {
->   	u64 attrs;
->   
-> @@ -1034,6 +1034,40 @@ static int snp_set_vmsa(void *va, bool vmsa)
->   	return rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
->   }
->   
-> +static int svsm_snp_set_vmsa(void *va, void *caa, int apic_id, bool vmsa)
-> +{
-> +	struct svsm_call call = {};
-> +	unsigned long flags;
-> +	int ret;
-> +
-> +	local_irq_save(flags);
-> +
-> +	call.caa = this_cpu_read(svsm_caa);
-> +	call.rcx = __pa(va);
-> +
-> +	if (vmsa) {
-> +		/* Protocol 0, Call ID 2 */
-> +		call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
-> +		call.rdx = __pa(caa);
-> +		call.r8  = apic_id;
-> +	} else {
-> +		/* Protocol 0, Call ID 3 */
-> +		call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
-> +	}
-> +
-> +	ret = svsm_protocol(&call);
-> +
-> +	local_irq_restore(flags);
-> +
-> +	return ret;
-> +}
-> +
-> +static int snp_set_vmsa(void *va, void *caa, int apic_id, bool vmsa)
-> +{
-> +	return vmpl ? svsm_snp_set_vmsa(va, caa, apic_id, vmsa)
-> +		    : base_snp_set_vmsa(va, vmsa);
-> +}
-> +
->   #define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
->   #define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
->   #define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
-> @@ -1065,11 +1099,11 @@ static void *snp_alloc_vmsa_page(void)
->   	return page_address(p + 1);
->   }
->   
-> -static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa)
-> +static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
->   {
->   	int err;
->   
-> -	err = snp_set_vmsa(vmsa, false);
-> +	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
->   	if (err)
->   		pr_err("clear VMSA page failed (%u), leaking page\n", err);
->   	else
-> @@ -1080,6 +1114,7 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
->   {
->   	struct sev_es_save_area *cur_vmsa, *vmsa;
->   	struct ghcb_state state;
-> +	struct svsm_ca *caa;
->   	unsigned long flags;
->   	struct ghcb *ghcb;
->   	u8 sipi_vector;
-> @@ -1126,6 +1161,12 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
->   	if (!vmsa)
->   		return -ENOMEM;
->   
-> +	/*
-> +	 * If an SVSM is present, then the SVSM CAA per-CPU variable will
-> +	 * have a value, otherwise it will be NULL.
-> +	 */
-> +	caa = per_cpu(svsm_caa, cpu);
-> +
->   	/* CR4 should maintain the MCE value */
->   	cr4 = native_read_cr4() & X86_CR4_MCE;
->   
-> @@ -1173,11 +1214,11 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
->   	 *   VMPL level
->   	 *   SEV_FEATURES (matches the SEV STATUS MSR right shifted 2 bits)
->   	 */
-> -	vmsa->vmpl		= 0;
-> +	vmsa->vmpl		= vmpl;
->   	vmsa->sev_features	= sev_status >> 2;
->   
->   	/* Switch the page over to a VMSA page now that it is initialized */
-> -	ret = snp_set_vmsa(vmsa, true);
-> +	ret = snp_set_vmsa(vmsa, caa, apic_id, true);
->   	if (ret) {
->   		pr_err("set VMSA page failed (%u)\n", ret);
->   		free_page((unsigned long)vmsa);
-> @@ -1193,7 +1234,10 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
->   	vc_ghcb_invalidate(ghcb);
->   	ghcb_set_rax(ghcb, vmsa->sev_features);
->   	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
-> -	ghcb_set_sw_exit_info_1(ghcb, ((u64)apic_id << 32) | SVM_VMGEXIT_AP_CREATE);
-> +	ghcb_set_sw_exit_info_1(ghcb,
-> +				((u64)apic_id << 32)	|
-> +				((u64)vmpl << 16)	|
-> +				SVM_VMGEXIT_AP_CREATE);
->   	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
->   
->   	sev_es_wr_ghcb_msr(__pa(ghcb));
-> @@ -1211,13 +1255,13 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
->   
->   	/* Perform cleanup if there was an error */
->   	if (ret) {
-> -		snp_cleanup_vmsa(vmsa);
-> +		snp_cleanup_vmsa(vmsa, apic_id);
->   		vmsa = NULL;
->   	}
->   
->   	/* Free up any previous VMSA page */
->   	if (cur_vmsa)
-> -		snp_cleanup_vmsa(cur_vmsa);
-> +		snp_cleanup_vmsa(cur_vmsa, apic_id);
->   
->   	/* Record the current VMSA page */
->   	per_cpu(sev_vmsa, cpu) = vmsa;
+>>   static int try_advance_write_generation(struct tsm_report *report)
+>>   {
+>>   	struct tsm_report_state *state = to_state(report);
+>> @@ -144,7 +150,7 @@ static ssize_t tsm_report_service_provider_store(struct config_item *cfg,
+>>   
+>>   	return len;
+>>   }
+>> -CONFIGFS_ATTR_WO(tsm_report_, service_provider);
+>> +CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_provider, provider_visibility);
+>>   
+>>   static ssize_t tsm_report_service_guid_store(struct config_item *cfg,
+>>   					     const char *buf, size_t len)
+>> @@ -165,7 +171,7 @@ static ssize_t tsm_report_service_guid_store(struct config_item *cfg,
+>>   
+>>   	return len;
+>>   }
+>> -CONFIGFS_ATTR_WO(tsm_report_, service_guid);
+>> +CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_guid, provider_visibility);
+>>   
+>>   static ssize_t tsm_report_service_manifest_version_store(struct config_item *cfg,
+>>   							 const char *buf, size_t len)
+>> @@ -186,7 +192,7 @@ static ssize_t tsm_report_service_manifest_version_store(struct config_item *cfg
+>>   
+>>   	return len;
+>>   }
+>> -CONFIGFS_ATTR_WO(tsm_report_, service_manifest_version);
+>> +CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_manifest_version, provider_visibility);
+>>   
+>>   static ssize_t tsm_report_inblob_write(struct config_item *cfg,
+>>   				       const void *buf, size_t count)
+>> @@ -333,7 +339,7 @@ static ssize_t tsm_report_manifestblob_read(struct config_item *cfg, void *buf,
+>>   
+>>   	return tsm_report_read(report, buf, count, TSM_MANIFEST);
+>>   }
+>> -CONFIGFS_BIN_ATTR_RO(tsm_report_, manifestblob, NULL, TSM_OUTBLOB_MAX);
+>> +CONFIGFS_BIN_ATTR_VISIBLE_RO(tsm_report_, manifestblob, NULL, TSM_OUTBLOB_MAX, provider_visibility);
+>>   
+>>   #define TSM_DEFAULT_ATTRS() \
+>>   	&tsm_report_attr_generation, \
+>> diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
+>> index cb0d6cd1c12f..f1b4266c1484 100644
+>> --- a/include/linux/cc_platform.h
+>> +++ b/include/linux/cc_platform.h
+>> @@ -90,6 +90,14 @@ enum cc_attr {
+>>   	 * Examples include TDX Guest.
+>>   	 */
+>>   	CC_ATTR_HOTPLUG_DISABLED,
+>> +
+>> +	/**
+>> +	 * @CC_ATTR_GUEST_SVSM_PRESENT: Guest is running under an SVSM
+>> +	 *
+>> +	 * The platform/OS is running as a guest/virtual machine and is
+>> +	 * running under a Secure VM Service Module (SVSM).
+>> +	 */
+>> +	CC_ATTR_GUEST_SVSM_PRESENT,
+>>   };
+>>   
+>>   #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
+> 
