@@ -1,291 +1,151 @@
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EB81B28D
-	for <linux-coco@lists.linux.dev>; Sat, 13 Apr 2024 03:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F994A33
+	for <linux-coco@lists.linux.dev>; Sat, 13 Apr 2024 09:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712978579; cv=none; b=nUEWgLtKCRY1T7X3/LwvW0It+6QWf+jWKscT71FR5r85xTPxCQs/ORPOUEWMLBdDdf8sxunySV8/e9dHPAC9+LsItHrqS0vs/XF6Hij5W00sJcBmFYA8S81TZiknY/NKKQkK3o+wfwHvtdCmZrlHP47veZmF39urY3Zf/3Q2dac=
+	t=1713001031; cv=none; b=DICz25kaaRnpsi/K5OK119DUCETvPHltztRxYvaRbdsAYJT4OtvgMVko7POba4DBjbi5y4fxFZA/JzV954FD4eOFVLSN/TlqPIxt70pbsbv0fhaoKwiOMJEiDLoGmZUkQ1N+4cQ5sptQFaqs0gySQ7l9sT1VJLQwz1NtjFmAkMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712978579; c=relaxed/simple;
-	bh=SCyDfC2Wmhsb4lLU3PzB0nKmdPQ0luzom0M5kYzTjIQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hm48HJEoPR9YN5EDmGwmnD+B7/tRPhJLWj87zVPi7l43Hfv+7gZT8ebfiZKicoMOJtQ+2AUW8WSXOUN2TR7peFIIKYzwFhnnkKeI9lQKTd2Iw/Fn8MEc8FWVq2FdyMILhyQ59jAixWWDX1ImP1K67taJcLBsXZe+o+yVbJh5OrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KTL2Evxv; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1713001031; c=relaxed/simple;
+	bh=oErCdTasF7hv9fXBCxAH6miASvfHakI/7pAV7fsDIYs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I6ngASk9nWhgPwgMjH5BWjhIB6vjQ17GKEITC3dMN8LFfZE5kb/CdeyvmTmJDIj+Wg/QIaWgCzHI+zgMsjeZNAaUnNuw6I0diNcke4Q6qogGbZVhe+18UfoYyPWVHBGHQ61YKjxS5CD4UmSSZbePSyX2W9yyiDmRMUH/i0ltVZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QDGTCtaI; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KTL2Evxv"
-Date: Thu, 11 Apr 2024 01:17:28 +0900
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1712978575;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Oz320CoGCQmvXhdcOMPOAChCWDxikVcascNwYK/M4XM=;
-	b=KTL2Evxvxfc5FCbFnPNAbGBqGjKrOD/UpfxiF0vY3RjeOdegk0lmRP6iVcemmXwvpIq6bh
-	KfA16IHj8ExZ32rr2bMkDgYePCl7QC4Jbml8F0amHHdu5/XG6GRdFlvg6sXPQTSR8NLHMv
-	b/FGAYuulDfNYLfsN/jt0jtWOFb6BzQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Itaru Kitayama <itaru.kitayama@linux.dev>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, maz@kernel.org,
-	alexandru.elisei@arm.com, joey.gouly@arm.com, steven.price@arm.com,
-	james.morse@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com,
-	andrew.jones@linux.dev, eric.auger@redhat.com
-Subject: Re: [kvm-unit-tests PATCH 00/33] Support for Arm Confidential
- Compute Architecture
-Message-ID: <Zha7mFYTPJk34+cO@vm3>
-References: <20240412103408.2706058-1-suzuki.poulose@arm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QDGTCtaI"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-41699bbfb91so26995e9.0
+        for <linux-coco@lists.linux.dev>; Sat, 13 Apr 2024 02:37:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1713001028; x=1713605828; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mb0cGnRlNEkqOZzA5+KN1D2mlc1t+ivqPoTfdz+X3Yk=;
+        b=QDGTCtaI0YawEtz633vjvFLd3U6b1Mvmkk84/1NsLzfd4lBX5bMjJ7XfIDfyvplumO
+         A214ydM+QlgQDYBd3avzwMH9x/H55DXslg+JyosmL+ag7PyfCrrQfWm752ambmJgfP5x
+         TSCG+ZOePymHutXj1CPumHUrlA5pqWWkZEs52ddUZvZKGAbWfha3xmw3xMRL4tLDxDbN
+         D1FuZvsKlxHZNj0wOPefy2M5qf0hXjdLY/gshAHMCrrHPeSfqnCoAOG23g410db0uzwz
+         q/tOTNuwlYPWdL9x7GiiAoJ02jEf6ZcdljfuWO+dqHRATanvjbKIyA91UDc2z9OBZEw7
+         XAuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713001028; x=1713605828;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mb0cGnRlNEkqOZzA5+KN1D2mlc1t+ivqPoTfdz+X3Yk=;
+        b=b+rR/lDoYTwvkns8IKgNovnM+eIPpeHQWrErOoTe0ZsqKcWPF6VBl4INLoVkdK3ogX
+         mDvYCe7dLnzlegKu/ABezHrY1k1iw6wEgaBk92pLsMxj/I6iJxsavP9N8Q6VFgMkDFt7
+         nwffU4DfptCfTwSF0HMl8JXLqh+k0uw8q20X4ZZYmPUaKAbq2Vlqgi/NoXNguBznbPvj
+         29NYPbbeqCQUwwfFw8yXgFvSCa63AStky+FI306FUWY+H/mlYzk+Iw9OOuPAthdaf0S8
+         w5elihsThQ3q8farJ/pmyssRydskiOyFHoFtFgGDV2B/TJSuL6F1phBW9zYa1zNvgo20
+         iQ/A==
+X-Forwarded-Encrypted: i=1; AJvYcCWSw8mNAYxH41nyrNO+fXo+jfxu/GAcdnZNsB8OPnqZkiKY0pfZYNysKK0hZXQxQEzVnAAuu55cYunjxe7pHNwSDEs/KXHfCwQTWw==
+X-Gm-Message-State: AOJu0YzYUkafgFs1LljK7epK1xkaaguB7MY2b18t3ikjhcUXkoRVJK1q
+	8c/8A6xvFxXlgZ6NuhyL+9tFtqM0DXpNqWbEy4r5f/1M9QZqdfr3Goa1uItFo39qAFHqFPVJScc
+	zmIUIzCwlEpa5uE8nKNWf1IHtBJzp8M5EKgXO
+X-Google-Smtp-Source: AGHT+IHjYfY12OJgL/Vp71SvbVWmwj6vslJbyKiG9vfzmqYf34SWhnl77PDlvujuhycWNqrTkW1ER4uBLOpbtyQAaRI=
+X-Received: by 2002:a05:600c:45cb:b0:416:7385:b675 with SMTP id
+ s11-20020a05600c45cb00b004167385b675mr72884wmo.7.1713001027409; Sat, 13 Apr
+ 2024 02:37:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240412103408.2706058-1-suzuki.poulose@arm.com>
-X-Migadu-Flow: FLOW_OUT
+References: <94521f20aa2872c1b8f018b7db31eca4a2b8222d.1711039409.git.qinkun@google.com>
+ <CAAH4kHbAi=Jn7Lw82idGGmQYnAhJnhoS9u8wBMOZsp7iLiOWxw@mail.gmail.com>
+ <PH0PR11MB587959168F72B20E0AC836438C312@PH0PR11MB5879.namprd11.prod.outlook.com>
+ <u76teout4bwpg5yoklah6xfkrpcn4lw5nosw5lmph7sfjipqnz@gagzyh3xrkie>
+ <CAAH4kHbeGborxwDOzxeMbTjU4Xo79v-OVSHXYWQiJxg-yWQfWQ@mail.gmail.com>
+ <ZgF3ACjFj8LtUWgv@himmelriiki> <CAAH4kHbqpaCgZJpF55x2NGWL22rz1ucRewYmR=K2chw2kP6sKA@mail.gmail.com>
+ <MW4PR11MB5872BBA0D379C40E071300B98C052@MW4PR11MB5872.namprd11.prod.outlook.com>
+ <CAMj1kXGm5RPNAzshaTAb7fnB80m8S+q0gbNxWSA3i9Dp-AL8uw@mail.gmail.com>
+In-Reply-To: <CAMj1kXGm5RPNAzshaTAb7fnB80m8S+q0gbNxWSA3i9Dp-AL8uw@mail.gmail.com>
+From: Qinkun Bao <qinkun@google.com>
+Date: Fri, 12 Apr 2024 23:36:55 -1000
+Message-ID: <CAOjUGWckeov-K45R1Mf=MvEYG7vDetrUh-ifQwZDTLMEVEmhpA@mail.gmail.com>
+Subject: Re: [edk2-devel] [RFC PATCH] OvmfPkg/SecurityPkg: Add build option
+ for coexistance of vTPM and RTMR.
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: devel@edk2.groups.io, jiewen.yao@intel.com, 
+	Dionna Amalie Glaze <dionnaglaze@google.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
+	Gerd Hoffmann <kraxel@redhat.com>, James Bottomley <jejb@linux.ibm.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Aktas, Erdem" <erdemaktas@google.com>, 
+	Peter Gonda <pgonda@google.com>, "Johnson, Simon P" <simon.p.johnson@intel.com>, 
+	"Xiang, Qinglan" <qinglan.xiang@intel.com>, Cfir Cohen <cfir@google.com>, 
+	"Madhanagopal, Ranga" <ranga.madhanagopal@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Suzuki,
+Hi all,
 
-On Fri, Apr 12, 2024 at 11:33:35AM +0100, Suzuki K Poulose wrote:
-> This series adds support for running the kvm-unit-tests in the Arm CCA reference
-> software architecture.
-> 
-> 
-> The changes involve enlightening the boot/setup code with the Realm Service Interface
-> (RSI). The series also includes new test cases that exercise the RSI calls.
-> 
-> Currently we only support "kvmtool" as the VMM for running Realms. There was
-> an attempt to add support for running the test scripts using with kvmtool here [1],
-> which hasn't progressed. It would be good to have that resolved, so that we can
-> run all the tests without manually specifying the commandlines for each run.
-> 
-> For the purposes of running the Realm specific tests, we have added a "temporary"
-> script "run-realm-tests" until the kvmtool support is added. We do not expect
-> this to be merged.
-> 
-> 
-> Base Realm Support
-> -------------------
-> 
-> Realm IPA Space
-> ---------------
-> When running on in Realm world, the (Guest) Physical Address - aka Intermediate
-> Physical Address (IPA) in Arm terminology - space of the VM is split into two halves,
-> protected (lower half) and un-protected (upper half). A protected IPA will
-> always map pages in the "realm world" and  the contents are not accessible to
-> the host. An unprotected IPA on the other hand can be mapped to page in the
-> "normal world" and thus shared with the host. All host emulated MMIO ranges must
-> be in unprotected IPA space.
-> 
-> Realm can query the Realm Management Monitor for the configuration via RSI call
-> (RSI_REALM_CONFIG) and identify the "boundary" of the "IPA" split.
-> 
-> As far as the hyp/VMM is concerned, there is only one "IPA space" (the lower
-> half) of memory map. The "upper half" is "unprotected alias" of the memory map.
-> 
-> In the guest, this is achieved by "treating the MSB (1 << (IPA_WIDTH - 1))" as
-> a protection attribute (we call it - PTE_NS_SHARED), where the Realm applies this
-> to any address, it thinks is acccessed/managed by host (e.g., MMIO, shared pages).
-> Given that this is runtime variable (but fixed for a given Realm), uses a
-> variable to track the value.
-> 
-> All I/O regions are marked as "shared". Care is taken to ensure I/O access (uart)
-> with MMU off uses the "Unprotected Physical address".
-> 
-> 
-> Realm IPA State
-> ---------------
-> Additionally, each page (4K) in the protected IPA space has a state associated
-> (Realm IPA State - RIPAS) with it. It is either of :
->    RIPAS_EMPTY
->    RIPAS_RAM
-> 
-> Any IPA backed by RAM, must be marked as RIPAS_RAM before an access is made to
-> it. The hypervisor/VMM does this for the initial image loaded into the Realm
-> memory before the Realm starts execution. Given the kvm-unit-test flat files do
-> not contain a metadata header (e.g., like the arm64 Linux kernel Image),
-> indicating the "actual image size in memory", the VMM cannot transition the
-> area towards the end of the image (e.g., bss, stack) which are accessed very
-> early during boot. Thus the early boot assembly code will mark the area upto
-> the stack as RAM.
-> 
-> Once we land in the C code, we mark target relocation area for FDT and
-> initrd as RIPAS_RAM. At this point, we can scan the FDT and mark all RAM memory
-> blocks as RIPAS_RAM.
-> 
-> TODO: It would be good to add an image header to the flat files indicating the
-> size, which can take the burden off doing the early assembly boot code RSI calls.
-> 
-> Shared Memory support
-> ---------------------
-> Given the "default" memory of a VM is not accessible to host, we add new page
-> alloc/free routines for "memory shared" with the host. e.g., GICv3-ITS must use
-> shared pages for ITS emulation.
-> 
-> RSI Test suites
-> --------------
-> There are new testcases added to exercise the RSI interfaces and the RMM flows.
-> 
-> Attestation and measurement services related RSI tests require parsing tokens
-> and claims returned by the RMM. This is achieved with the help of QCBOR library
-> [2], which is added as a submodule to the project. We have also added a wrapper
-> library - libtokenverifier - around the QCBOR to parse the tokens according to
-> the RMM specifications.
-> 
-> Running Arm CCA Stack
-> -------------------
-> 
-> See more details on Arm CCA and how to build/run the entire stack here[0]
-> The easiest way to run the Arm CCA stack is using shrinkwrap and the details
-> are available in [0].
-> 
-> 
-> The patches are also available here :
-> 
->  https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca cca/v1
-> 
-> 
-> Changes since rfc:
->   [ https://lkml.kernel.org/r/20230127114108.10025-1-joey.gouly@arm.com ]
->   - Add support for RMM-v1.0-EAC5, changes to RSI ABIs
->   - Some hardening checks (FDT overlapping the BSS sections)
->   - Selftest for memory stress
->   - Enable PMU/SVE tests for Realms
-> 
->  [0] https://lkml.kernel.org/r/20240412084056.1733704-1-steven.price@arm.com
->  [1] https://lkml.kernel.org/r/20210702163122.96110-1-alexandru.elisei@arm.com
->  [2] https://github.com/laurencelundblade/QCBOR
-> 
-> Alexandru Elisei (3):
->   arm64: Expand SMCCC arguments and return values
->   arm: selftest: realm: skip pabt test when running in a realm
->   NOT-FOR-MERGING: add run-realm-tests
-> 
-> Djordje Kovacevic (1):
->   arm: realm: Add tests for in realm SEA
-> 
-> Gareth Stockwell (1):
->   arm: realm: add hvc and RSI_HOST_CALL tests
-> 
-> Jean-Philippe Brucker (1):
->   arm: Move io_init after vm initialization
-> 
-> Joey Gouly (10):
->   arm: Make physical address mask dynamic
->   arm64: Introduce NS_SHARED PTE attribute
->   arm: realm: Add RSI interface header
->   arm: realm: Make uart available before MMU is enabled
->   arm: realm: Add RSI version test
->   arm64: add ESR_ELx EC.SVE
->   arm64: enable SVE at startup
->   arm64: selftest: add realm SVE VL test
->   lib/alloc_page: Add shared page allocation support
->   arm: Add memtest support
-> 
-> Mate Toth-Pal (2):
->   arm: Add a library to verify tokens using the QCBOR library
->   arm: realm: Add Realm attestation tests
-> 
-> Subhasish Ghosh (1):
->   arm: realm: Add test for FPU/SIMD context save/restore
-> 
-> Suzuki K Poulose (14):
->   arm: Add necessary header files in asm/pgtable.h
->   arm: Detect FDT overlap with uninitialised data
->   arm: realm: Realm initialisation
->   arm: realm: Add support for changing the state of memory
->   arm: realm: Set RIPAS state for RAM
->   arm: realm: Early memory setup
->   arm: gic-v3-its: Use shared pages wherever needed
->   arm: realm: Enable memory encryption
->   qcbor: Add QCBOR as a submodule
->   arm: Add build steps for QCBOR library
->   arm: realm: add RSI interface for attestation measurements
->   arm: realm: Add helpers to decode RSI return codes
->   arm: realm: Add Realm attestation tests
->   arm: realm: Add a test for shared memory
-> 
->  .gitmodules                         |    3 +
->  arm/Makefile.arm64                  |   25 +-
->  arm/cstart.S                        |   49 +-
->  arm/cstart64.S                      |  154 +++-
->  arm/fpu.c                           |  424 +++++++++
->  arm/realm-attest.c                  | 1251 +++++++++++++++++++++++++++
->  arm/realm-ns-memory.c               |   86 ++
->  arm/realm-rsi.c                     |  159 ++++
->  arm/realm-sea.c                     |  143 +++
->  arm/run-realm-tests                 |  112 +++
->  arm/selftest.c                      |  138 ++-
->  arm/unittests.cfg                   |   96 +-
->  lib/alloc_page.c                    |   20 +-
->  lib/alloc_page.h                    |   24 +
->  lib/arm/asm/arm-smccc.h             |   44 +
->  lib/arm/asm/io.h                    |    6 +
->  lib/arm/asm/pgtable.h               |    9 +
->  lib/arm/asm/psci.h                  |   13 +-
->  lib/arm/asm/rsi.h                   |   21 +
->  lib/arm/asm/sve-vl-test.h           |    9 +
->  lib/arm/gic-v3.c                    |    6 +-
->  lib/arm/io.c                        |   24 +-
->  lib/arm/mmu.c                       |   80 +-
->  lib/arm/psci.c                      |   19 +-
->  lib/arm/setup.c                     |   26 +-
->  lib/arm64/asm/arm-smccc.h           |    6 +
->  lib/arm64/asm/esr.h                 |    1 +
->  lib/arm64/asm/io.h                  |    6 +
->  lib/arm64/asm/pgtable-hwdef.h       |    6 -
->  lib/arm64/asm/pgtable.h             |   20 +
->  lib/arm64/asm/processor.h           |   34 +
->  lib/arm64/asm/rsi.h                 |   89 ++
->  lib/arm64/asm/smc-rsi.h             |  173 ++++
->  lib/arm64/asm/sve-vl-test.h         |   28 +
->  lib/arm64/asm/sysreg.h              |    7 +
->  lib/arm64/gic-v3-its.c              |    6 +-
->  lib/arm64/processor.c               |    1 +
->  lib/arm64/rsi.c                     |  188 ++++
->  lib/asm-generic/io.h                |   12 +
->  lib/libcflat.h                      |    1 +
->  lib/qcbor                           |    1 +
->  lib/token_verifier/attest_defines.h |   50 ++
->  lib/token_verifier/token_dumper.c   |  157 ++++
->  lib/token_verifier/token_dumper.h   |   15 +
->  lib/token_verifier/token_verifier.c |  591 +++++++++++++
->  lib/token_verifier/token_verifier.h |   77 ++
->  46 files changed, 4355 insertions(+), 55 deletions(-)
->  create mode 100644 .gitmodules
->  create mode 100644 arm/fpu.c
->  create mode 100644 arm/realm-attest.c
->  create mode 100644 arm/realm-ns-memory.c
->  create mode 100644 arm/realm-rsi.c
->  create mode 100644 arm/realm-sea.c
->  create mode 100755 arm/run-realm-tests
->  create mode 100644 lib/arm/asm/arm-smccc.h
->  create mode 100644 lib/arm/asm/rsi.h
->  create mode 100644 lib/arm/asm/sve-vl-test.h
->  create mode 100644 lib/arm64/asm/arm-smccc.h
->  create mode 100644 lib/arm64/asm/rsi.h
->  create mode 100644 lib/arm64/asm/smc-rsi.h
->  create mode 100644 lib/arm64/asm/sve-vl-test.h
->  create mode 100644 lib/arm64/rsi.c
->  create mode 160000 lib/qcbor
->  create mode 100644 lib/token_verifier/attest_defines.h
->  create mode 100644 lib/token_verifier/token_dumper.c
->  create mode 100644 lib/token_verifier/token_dumper.h
->  create mode 100644 lib/token_verifier/token_verifier.c
->  create mode 100644 lib/token_verifier/token_verifier.h
+Thank you all for the feedback.
 
-Thanks for the update! I'll go through the series one by one in the
-coming weeks. Just curious one thing - do you guys wish to add Realm tests to the kvm-unit-test package, but not to kselftests?
+> > In Intel, we had discussed and we did see the potential security risk. =
+As I mentioned in the first email, "In case that any the guest component on=
+ly knows one of vTPM or RTMR, and only extends one of vTPM or RTMR, but the=
+ other one only verifies the other, then the chain of trust is broken."
+> >
 
-Thanks,
-Itaru.
+Thank you for bringing it up. Unfortunately, it is the current status
+even without this patch.
+On a TDX VM with Grub boot:
+TDVF, Shim, Grub extend their measurements into RTMR.
+Shim, Grub extend their measurements into TPM.
+We are seeking to add a non-default, build-time option that makes TDVF
+also extend its measurement into TPM.
 
-> 
-> -- 
-> 2.34.1
-> 
+The measurement skew should not be a huge security concern.  Yes, some
+environments won't be able to successfully attest. Again, we are
+talking about TDX VMs. The security property of a TEE should be based
+on the attestation results. The attestation verifier/service (e.g.,
+Intel ITA) should examine the quote and check if the chain of trust is
+broken. And the end user should only be trusting attestations that
+contain full boot chains that are known to correctly measure every
+step into the relevant device.
+
+
+>
+> I think it is a bad idea to go and apply changes all across the boot
+> software ecosystem to measure the same assets into different
+> measurement protocols. I'mm afraid it creates technical debt that will
+> come and bite us in the future.
+
+Could you shed some lights on why it creates technical debts?
+
+>
+> Given that RTMR is a proper subset of vTPM (modulo the PCR/RTMR index
+> conversion), I feel that it should be the CoCo firmware's
+> responsibility to either:
+> - expose RTMR and not vTPM
+> - expose vTPM, and duplicate each measurement into RTMR as they are taken
+>
+> However, I understand that this is only viable for execution under the
+> UEFI boot services, and after that, the vTPM and RTMR are exposed in
+> different ways to the OS.
+
+Yes, they are exposed in different ways. In Linux, the TPM driver uses
+the mmio interface rather than the EFI service. Even if
+EFI_TCG2_PROTOCOL is not installed, the TPM as a device is still
+visible to the guest. The RTMR values are included in the TD report
+and could be extended through a TDCALL. The security concern caused by
+not measuring into every device that is available is a concern. Please
+see CVE-2021-42299.
+
+>
+> Could someone explain how that piece of the puzzle is supposed to
+> work? Do we measure into RTMR after ExitBootServices()?
+
+Yes, we still measure into RTMR after ExitBootServices() [1]. One
+example is measuring container images into RTMR2 during the loading
+[2].
+
+Link:
+[1] https://lore.kernel.org/lkml/20240128212532.2754325-1-sameo@rivosinc.co=
+m/
+[2] https://github.com/confidential-containers/guest-components/pull/467/
