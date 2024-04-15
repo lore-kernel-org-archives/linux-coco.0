@@ -1,61 +1,54 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2066.outbound.protection.outlook.com [40.107.236.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8CF71B50
-	for <linux-coco@lists.linux.dev>; Mon, 15 Apr 2024 19:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713210536; cv=none; b=kJMNHwJFQdyv733eOnpBcFGkxfa/aQmZa3R9MJTe5U07nx0MnJUeFDMBtuYV1YBctVINNVGVmp6ZAyBEb3X7+8k+NWxWTr/LGr8L4A7FhjdbKI93H3ANphGm+EoA44fYETsyXGF32AvUNaiMg+uXHWgLcWEDWBClszGBlYTpC8Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713210536; c=relaxed/simple;
-	bh=q0sbCTHeKaCNFlvnNihawFqmT1VNSl+qyaeuwVCRiwA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lC2P14MnXSc+Pc7fNzvrMvQM0QWyNmF1whv/Hx4DVC83kCgWkg9rU+znYCOUruDDlMELgaUEiXpDWu73Dd+M0IgsFBFuDyEhC0A/Clt2qdNKGRkG3piKnvzM7ieZu267nNItv320ZDiVqqwDyMtjcbWI+o/H+3KO8eDAV9fbqQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I+ekvTbT; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E5D156652
+	for <linux-coco@lists.linux.dev>; Mon, 15 Apr 2024 20:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713212007; cv=fail; b=Jkw+xsfQiQH+LJe0iLqLbNxGjTOt/fTKcurTzTmdeCCyOIJDEZggjXC5v2Y25cJm4rlG7jVjWyUtpOzSWaUl/3C6krcdxzCljoBEkicDSq1cQeSnRvIjRve34IOCbEoGus/33QYW3tO+aiFRkQJWGE+QKKlZnmwxqjm/iHKOeQ0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713212007; c=relaxed/simple;
+	bh=TZnPvEe2v8zT938AhuCpo6g2xsJ0/49rzJwb1YrYUjw=;
+	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
+	 Content-Type:MIME-Version; b=nXFPvJt7FrLVp7eL8V6MseqpYdu2dh0B2Totkwf5pF2Mct7QpulCBbeNfmsTJkzdBsd6R2On/pJXLPL4VvKjp8DRHoHVK2aYPNBFRKJToXsQgUN0t7TRXjneFFczgH4tj90THfmNW6v/LWRNaftRwYqp4Ad/jYekmWXOSBcmOfU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Bn+yEgDh; arc=fail smtp.client-ip=40.107.236.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I+ekvTbT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713210535; x=1744746535;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=q0sbCTHeKaCNFlvnNihawFqmT1VNSl+qyaeuwVCRiwA=;
-  b=I+ekvTbTR0w4Ciue8VTuoAaJQUNvCsUY0tUmBkvRSV8XaEk9mMWezw52
-   nK8ODsPIAtpgXvDiK/3Ff1dNjO2CWu37J1cNMJM/hbev3NtFY3ciZI1xF
-   4KlObGzB+vzOX40uAQBvy3OIuhVEliFuXGuP/w/7BWZiuPn6vDNZAU50M
-   3kuR0dkffvyGs0NTEjW+J/tnQfm1qBBYQGxF7OAoRxTH0dUjJCdh/kFLc
-   fZm+y9LNiPRxZSeHTkxx9X26ydoH42OluiapFUqTI74Jz0S2LXT+y9Rlf
-   +rh1MuPw4aTmlnM5eqlDPkpwzFQ5KK2MiBeuyIvDI0MMszVw/oVPE9z7l
-   g==;
-X-CSE-ConnectionGUID: BDQGu8wqQfGAf0lpXiT4Hw==
-X-CSE-MsgGUID: 0TRAYNRpR0OsM5zZ69GesA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="9171583"
-X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
-   d="scan'208";a="9171583"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 12:48:54 -0700
-X-CSE-ConnectionGUID: kiXzAfI0RXSFChYee4qjTQ==
-X-CSE-MsgGUID: kZd874CxQHi00P0mYIP0bA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
-   d="scan'208";a="22006525"
-Received: from garumuga-mobl1.amr.corp.intel.com (HELO [10.209.93.175]) ([10.209.93.175])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 12:48:53 -0700
-Message-ID: <81d05bd9-ef8f-4a3a-a5df-384a82be49f5@linux.intel.com>
-Date: Mon, 15 Apr 2024 12:48:53 -0700
-Precedence: bulk
-X-Mailing-List: linux-coco@lists.linux.dev
-List-Id: <linux-coco.lists.linux.dev>
-List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/14] x86/sev: Hide SVSM attestation entries if not
- running under an SVSM
-To: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Bn+yEgDh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=d+dZ/axVGqk9w1Sc6bvhPnep0vFLZy00drHWZtnPj1lBILoR5oyOV+5CFhKvjT5ANCpZN/NkryPllDv/tdEQW1tx2Ww2cZMCNrDfo5Ch/GHtoiUSfsKwILt+DpWzxrQCn+Cahxb6DcRcNyP3Tde7evf1NT17829P/ISJYpgtr6Hma5HiiDG2gOgzBr8j8bpZ+1R38ZlehO9Lz2IzH8uE+Wnl2+tbF1RvUWYKnBFYxN+KF+Ys3LRJlFMk2N7V2/XLtshx1R9lmwapVVxoKaw5uj4Y6KKfUOD0L7SCewz8HyaX/5kzHLRuP4GGIVkDutq7cos4sDHbfM0EpTLzzJWC/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5Ip9zoYwq2tHposTIs3lNXTJyAww9VNhk8Y8ABOEht4=;
+ b=X0q0mHQpVgx4hc8abcoRAmukGTk6Q+3E4Lj2wUgRTWmjLMVgPcNm4CfdCIIvA46B9Paz5EOqB2JGumMzuYvDhn/0hstgFCE/Cqp9ZJKOt4W/xGzwqcl7Rz9YgQDrJYQgmZP8htBNt2Ym2temRhy3gcBkUgq2rmjs89khUOcTvehSPyW5np1o/nI5fxIC/2TJXk2HTSFGSHNdiUW38mxUHzODNW+3Jxiq2AbZu4w0vhPIMGVd1mIm1V3i+iEBDe9axJPI7sfnaf46ZuyGfg6c9UF32dSiSr7CIIQF8P3z5zuaW+Chi9L5vPPOHrnlbcPncT8M+A4OzT1zJEjb+hs5ng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5Ip9zoYwq2tHposTIs3lNXTJyAww9VNhk8Y8ABOEht4=;
+ b=Bn+yEgDhyo3eS1gDQZ6Om8rKViM5eL9TmpNTElcrbRlmJ23khyvRtfSxVbaJYG8ReJoFcaWySuD8xS28uJi+bATysX25bserbz34xWgk71AreW/sZujFjDrobzACUjUVULst+8IbKxSGAd+pMxwOUCqD4WIwFgClBP9ObQseDoo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
+ by CYXPR12MB9442.namprd12.prod.outlook.com (2603:10b6:930:e3::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.56; Mon, 15 Apr
+ 2024 20:13:18 +0000
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::bf0:d462:345b:dc52]) by BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::bf0:d462:345b:dc52%6]) with mapi id 15.20.7452.046; Mon, 15 Apr 2024
+ 20:13:18 +0000
+Message-ID: <490a6a10-47d0-0689-432a-cbf22de11ad6@amd.com>
+Date: Mon, 15 Apr 2024 15:13:14 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Content-Language: en-US
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
+ svsm-devel@coconut-svsm.dev
 Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
  "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
@@ -68,258 +61,164 @@ References: <cover.1711405593.git.thomas.lendacky@amd.com>
  <1f6f4477-0f2a-434a-8c89-3b5d51d61581@linux.intel.com>
  <19d69960-e548-a2e6-87d9-c463f2851613@amd.com>
  <e286883d-40ef-d749-26a8-7ec6fbd81eae@amd.com>
-Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <e286883d-40ef-d749-26a8-7ec6fbd81eae@amd.com>
-Content-Type: text/plain; charset=UTF-8
+ <81d05bd9-ef8f-4a3a-a5df-384a82be49f5@linux.intel.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH v3 13/14] x86/sev: Hide SVSM attestation entries if not
+ running under an SVSM
+In-Reply-To: <81d05bd9-ef8f-4a3a-a5df-384a82be49f5@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DM6PR07CA0112.namprd07.prod.outlook.com
+ (2603:10b6:5:330::27) To BL1PR12MB5732.namprd12.prod.outlook.com
+ (2603:10b6:208:387::17)
+Precedence: bulk
+X-Mailing-List: linux-coco@lists.linux.dev
+List-Id: <linux-coco.lists.linux.dev>
+List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|CYXPR12MB9442:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9c0c192-1c46-435b-691f-08dc5d887d38
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	rmdHGrH1jHFLMD9YkeKzkdjqklT9qIbnmILOPM7q3VHj/30WdRNSHz2nvQ9J1zkqmJYo872Y6NaveFeFe3tvSLjxLaycGskORoJj1Lbpx6Zr2OGAJHHRCWeaUDitJ1iP9oaNX9/JgVEK9TI4+k7pKvFrY6AgVKHclLA4v8pcNRwMTxPwQD6r6WvRmySunylumwq7y1VGrQ6Ks63WdmAvlmnBHWEkC5CDHqXvW18pfsVeF/nz8awOisdKW11ObYoqy7kiuR7Fl3SJ/rIRx9UXNQLLTAq9CwDWLHrILHWD8e3HHCkMkWjP9KBx+O4tyUHpdXjfjPlA+fpWMuVwa2DFSiB/WhMdkO0s+3pV0Eiybx/O5uACM4HSMQGrCf43PaTgAD+/aq2WFFKeY/kner8OnoeAwlAGxcUbx0rQGtnW+LDBNYuQzXE3kLqD3t0pnDYQzaE45Szm3a+xiHxjaZWFJR7TXcHcBKaj7++5gaST18cANiScUKZOFwMN87KbMldeMfLXj8BQgoJs5ce0uhwG6rTTFGICW4NXdCkClzFPIIl93McNuMGnrAvXjqLFmB5cZm8J+n5O4JPGMt4ym2seOyiTWFbD3K2AqGUblqhTv2kNPLI9hAnk6VXkqBL0ZZZQq1T9aDGwH81b9U30Um4ZS8W6kNCB+XtbYfkUYdVj1MQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(7416005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MkpheEVEdERLRlFSUk01YVhMS2tKY3ZOSTM1SUwyRGZMYlU3bGtNcnEzMmVI?=
+ =?utf-8?B?dTV5ZExFUjFHYSswVjlrQ0pYZC9IalB5bG1tTlp5MEJCYXptTml5eVRKdE9Q?=
+ =?utf-8?B?am5EeGFQUVJuazNYeW5lemZqT1FBTHBWOFA4dGR2RytRZkdYaFZLRVNpSDQy?=
+ =?utf-8?B?RUs2cDFXVSszSzMvK3ozeWtSV0w5YmFLeVFFeGplNDdMRWVuN2JHYjRZQ0Zz?=
+ =?utf-8?B?YVV5a2JEdmRaT3M0ZUhJTmxtWVhsSm5BMURjUWNyaXFETnlMWHNVdzRvRmV6?=
+ =?utf-8?B?UWFlYllwb1V3bnZPREg2d05sSzVGWjVDTHJyNUQ0bUY5NTN3UjJVazlwd1Nh?=
+ =?utf-8?B?Y3FteUF0RjVVY2FGNldSSG85eWVjck55dERrWDdLdm5Tcm12QlMwMGtSOGdI?=
+ =?utf-8?B?eU4vVE45M1V5QmdBcVVySkdKQ2tGNnptS0hBVXdnZzl5UDg4VFUyS3FWc3JW?=
+ =?utf-8?B?YjZXVEN6L2hVYys0OU5kVjZGZDB4MlVja2JIYTQ5UjZVZjdhR0VPaEF6eWhj?=
+ =?utf-8?B?S1B2eDdaaE12ZitWQjZuVmVyenY2VFplYkwrSXE5bHJHeFZpTXJvOWtJT2Q3?=
+ =?utf-8?B?bTlKREIvamU3UjdyWDJ5RjdCY2t1TDBVc2hxaStoalBDSFFESFdtckFhSGZP?=
+ =?utf-8?B?cGV5cUNKQzR0WjJIV3UzMk5qTVdTZk5EYXJ4c1RpdGZ1cmN5MCtjblh4cENp?=
+ =?utf-8?B?ZkptS0dGTzZuTnpNWWcxWlB5Y3F6K2VTM21lVHNJa0kyNnNRaE16Ym5vdHBz?=
+ =?utf-8?B?N2hVMk1aNm9nRnRxWEhTNWtJbVVWenVHVU52UHp3V21yRDZEcFhnTVhtdmNL?=
+ =?utf-8?B?ZDFiWW9yL3EyQjlVdVR6dHJ6eXk2VEc4a3RZVGFOUzZ3ZGxSRWk0R0t6TVAx?=
+ =?utf-8?B?TlNzMWpwZTByZVF3dEdOUEhISUV3bkZwMUpzaFVuZzdVWEgrZUZjc3dsTVVy?=
+ =?utf-8?B?L0dBZS81N1FzUnVSVVFKMU9LY1VXcmN6SFhESDhqUGlmamtxeDFHaDdTQnpj?=
+ =?utf-8?B?OGRPYXZXV09HS3dDZG1SU1U3TjlxbHBpSmpDN202azhJOWhZRDdvdGJHUEhv?=
+ =?utf-8?B?T285Y1QwelQzaENnY3VoNTlZWkhXZ1NRMGpEczVETktiM0xsU2RHTzJtWG54?=
+ =?utf-8?B?M00xVlh2dHVXS0xhcUxuQkhaSWlSS0dpcVVOUVpNaXVjZEQrTjJhY05adlpm?=
+ =?utf-8?B?RHU2Y1FZdWhkVVBiQUpxTFQyRXNTZ1VZRWJEVXVBeUF3enNVTHFpWnpoZzFM?=
+ =?utf-8?B?aG5Fc0s2NWR2aEhTbks2dkgwWWwwcUFqQ1lUbWRYc014ek5DUGY5R2duTGtH?=
+ =?utf-8?B?K0VBN0J5Y0ZUMjhTVVBEQmpRakFsZ0h6aEV2NmtGa1p2dy9zV1o4WGFqSTVn?=
+ =?utf-8?B?SHF3QzR3WEtNK0l0T2hXVjJGV25FM2FpSVFndTJxaGhZRmtLK0E0M1F1Y3pI?=
+ =?utf-8?B?L240alBpMUVRb0xtbVBMWEk2VUR4M1J0VEN0Tm1iY3kvbWR3RkNvN1UrajRx?=
+ =?utf-8?B?VHpHblhhWHlkVEkrOUJTcHpianlERXNxZDJuOHllZS9KcG00TmNOa3hZRnBD?=
+ =?utf-8?B?SmsyMmdJcTlWNkpOck5zUGVtVmQ5b2JOTDVSeUhBcXRVZ1ErZW5QYVgzTCtB?=
+ =?utf-8?B?a0JaOW55MmJ2RmRFWUxJSno0UHJUNDUzdTlOWnRlY2tmalMrRzVCSkgwV2ZZ?=
+ =?utf-8?B?RndnL0ZKWTNPVmJ0L1N0SUsyZGNBRllNbFF2aXFvZWx3OGNwN29qd3d6NE9H?=
+ =?utf-8?B?N1ByUmkweWlzc2dVeXUxTnRGdXM3MHJmK3ZibWhqWDkwWjVqUHJuRlIrUGt4?=
+ =?utf-8?B?YVhNa1RQRjBqemM5QkFXTkRLMldJS0o1QUVxcElKQ0FxbVFIMXlONnhkdGxR?=
+ =?utf-8?B?NFJETGZmQnNMeVJsTFZldStnSlVua2NBVE1NRmpWMHBaSmxKZGRlblNseWYz?=
+ =?utf-8?B?VEpJZXkrSWxmWkVMN2xuZzJoWnhYMFNMd0dQMysvcEEzRVVjVHFPVnlJQlBy?=
+ =?utf-8?B?clBnYnhqTUJVUG1IYlFCa2RtYWdoMTZTWk9TZ0RFZXZCRHg5bEZtOFhhNVlY?=
+ =?utf-8?B?ZDh0Y2RBYTlrK1RLeDRhbHJqcHBJZ1NxVjVrN1NBOUhPbmlkbTljbStlZ2hZ?=
+ =?utf-8?Q?NZ5GKG6AB1MhHy1tH0dn4ixAt?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9c0c192-1c46-435b-691f-08dc5d887d38
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2024 20:13:17.9304
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QCwLXVMOa3uMjDKrR8tHUxrrlLAPs/fyvGCqr3SWEufVYDIVasWOUb1ty2C4Yvo9VWtVM0/+4Xf3WHI/815Aaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9442
 
-Hi,
-
-On 4/15/24 12:16 PM, Tom Lendacky wrote:
-> On 4/12/24 10:52, Tom Lendacky wrote:
->> On 4/9/24 13:12, Kuppuswamy Sathyanarayanan wrote:
->>> On 3/25/24 3:26 PM, Tom Lendacky wrote:
->>>> Config-fs provides support to hide individual attribute entries. Using
->>>> this support, base the display of the SVSM related entries on the presence
->>>> of an SVSM.
+On 4/15/24 14:48, Kuppuswamy Sathyanarayanan wrote:
+> Hi,
+> 
+> On 4/15/24 12:16 PM, Tom Lendacky wrote:
+>> On 4/12/24 10:52, Tom Lendacky wrote:
+>>> On 4/9/24 13:12, Kuppuswamy Sathyanarayanan wrote:
+>>>> On 3/25/24 3:26 PM, Tom Lendacky wrote:
+>>>>> Config-fs provides support to hide individual attribute entries. Using
+>>>>> this support, base the display of the SVSM related entries on the presence
+>>>>> of an SVSM.
+>>>>>
+>>>>> Cc: Joel Becker <jlbec@evilplan.org>
+>>>>> Cc: Christoph Hellwig <hch@lst.de>
+>>>>> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+>>>>> ---
+>>>>>    arch/x86/coco/core.c        |  4 ++++
+>>>>>    drivers/virt/coco/tsm.c     | 14 ++++++++++----
+>>>>>    include/linux/cc_platform.h |  8 ++++++++
+>>>>>    3 files changed, 22 insertions(+), 4 deletions(-)
+>>>>>
+>>
 >>>>
->>>> Cc: Joel Becker <jlbec@evilplan.org>
->>>> Cc: Christoph Hellwig <hch@lst.de>
->>>> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
->>>> ---
->>>>   arch/x86/coco/core.c        |  4 ++++
->>>>   drivers/virt/coco/tsm.c     | 14 ++++++++++----
->>>>   include/linux/cc_platform.h |  8 ++++++++
->>>>   3 files changed, 22 insertions(+), 4 deletions(-)
+>>>> Any comment about the following query? I think introducing a CC flag for this use
+>>>> case is over kill.
 >>>>
->
+>>>> https://lore.kernel.org/lkml/6b90b223-46e0-4e6d-a17c-5caf72e3c949@linux.intel.com/
 >>>
->>> Any comment about the following query? I think introducing a CC flag for this use
->>> case is over kill.
+>>> If you don't think TDX will be able to make use of the SVSM attribute I can look at adding a callback. But I was waiting to see if anyone else had comments, for or against, before re-doing it all.
 >>>
->>> https://lore.kernel.org/lkml/6b90b223-46e0-4e6d-a17c-5caf72e3c949@linux.intel.com/
 >>
->> If you don't think TDX will be able to make use of the SVSM attribute I can look at adding a callback. But I was waiting to see if anyone else had comments, for or against, before re-doing it all.
+>> What about something like this (applied on top of patch 13):
 >>
->
-> What about something like this (applied on top of patch 13):
->
-> diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-> index efa0f648f754..d07be9d05cd0 100644
-> --- a/arch/x86/coco/core.c
-> +++ b/arch/x86/coco/core.c
-> @@ -12,7 +12,6 @@
->  
->  #include <asm/coco.h>
->  #include <asm/processor.h>
-> -#include <asm/sev.h>
->  
->  enum cc_vendor cc_vendor __ro_after_init = CC_VENDOR_NONE;
->  u64 cc_mask __ro_after_init;
-> @@ -79,9 +78,6 @@ static bool noinstr amd_cc_platform_has(enum cc_attr attr)
->      case CC_ATTR_GUEST_STATE_ENCRYPT:
->          return sev_status & MSR_AMD64_SEV_ES_ENABLED;
->  
-> -    case CC_ATTR_GUEST_SVSM_PRESENT:
-> -        return snp_get_vmpl();
-> -
->      /*
->       * With SEV, the rep string I/O instructions need to be unrolled
->       * but SEV-ES supports them through the #VC handler.
-> diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-> index 0d2c9926a97c..68c881a50026 100644
-> --- a/drivers/virt/coco/sev-guest/sev-guest.c
-> +++ b/drivers/virt/coco/sev-guest/sev-guest.c
-> @@ -1036,6 +1036,17 @@ static int sev_report_new(struct tsm_report *report, void *data)
->      return 0;
->  }
->  
-> +static bool sev_tsm_visibility(enum tsm_type type)
-> +{
-> +    /* Check for SVSM-related attributes */
-> +    switch (type) {
-> +    case TSM_TYPE_SERVICE_PROVIDER:
-> +        return snp_get_vmpl();
-> +    default:
-> +        return false;
-> +    }
-> +}
-> +
->  static struct tsm_ops sev_tsm_ops = {
->      .name = KBUILD_MODNAME,
->      .report_new = sev_report_new,
-> @@ -1126,7 +1137,8 @@ static int __init sev_guest_probe(struct platform_device *pdev)
->      /* Set the privlevel_floor attribute based on the current VMPL */
->      sev_tsm_ops.privlevel_floor = snp_get_vmpl();
->  
-> -    ret = tsm_register(&sev_tsm_ops, snp_dev, &tsm_report_extra_type);
-> +    ret = tsm_register(&sev_tsm_ops, snp_dev, &tsm_report_extra_type,
-> +               sev_tsm_visibility);
->      if (ret)
->          goto e_free_cert_data;
->  
-> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> index 1253bf76b570..0fd8e60d7bee 100644
-> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> @@ -301,7 +301,7 @@ static int __init tdx_guest_init(void)
->          goto free_misc;
->      }
->  
-> -    ret = tsm_register(&tdx_tsm_ops, NULL, NULL);
-> +    ret = tsm_register(&tdx_tsm_ops, NULL, NULL, NULL);
->      if (ret)
->          goto free_quote;
->  
-> diff --git a/drivers/virt/coco/tsm.c b/drivers/virt/coco/tsm.c
-> index d30471874e87..e73840aed13d 100644
-> --- a/drivers/virt/coco/tsm.c
-> +++ b/drivers/virt/coco/tsm.c
-> @@ -16,6 +16,7 @@ static struct tsm_provider {
->      const struct tsm_ops *ops;
->      const struct config_item_type *type;
->      void *data;
-> +    tsm_visibility_t visibility;
->  } provider;
->  static DECLARE_RWSEM(tsm_rwsem);
->  
-> @@ -64,10 +65,13 @@ static struct tsm_report_state *to_state(struct tsm_report *report)
->      return container_of(report, struct tsm_report_state, report);
->  }
->  
-> -static bool provider_visibility(const struct config_item *item,
-> -                const struct configfs_attribute *attr)
-> +static bool service_provider_visibility(const struct config_item *item,
-> +                    const struct configfs_attribute *attr)
->  {
-> -    return cc_platform_has(CC_ATTR_GUEST_SVSM_PRESENT);
-> +    if (!provider.visibility)
-> +        return true;
-> +
-> +    return provider.visibility(TSM_TYPE_SERVICE_PROVIDER);
->  }
->  
->  static int try_advance_write_generation(struct tsm_report *report)
-> @@ -150,7 +154,7 @@ static ssize_t tsm_report_service_provider_store(struct config_item *cfg,
->  
->      return len;
->  }
-> -CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_provider, provider_visibility);
-> +CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_provider, service_provider_visibility);
->  
->  static ssize_t tsm_report_service_guid_store(struct config_item *cfg,
->                           const char *buf, size_t len)
-> @@ -171,7 +175,7 @@ static ssize_t tsm_report_service_guid_store(struct config_item *cfg,
->  
->      return len;
->  }
-> -CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_guid, provider_visibility);
-> +CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_guid, service_provider_visibility);
->  
->  static ssize_t tsm_report_service_manifest_version_store(struct config_item *cfg,
->                               const char *buf, size_t len)
-> @@ -192,7 +196,7 @@ static ssize_t tsm_report_service_manifest_version_store(struct config_item *cfg
->  
->      return len;
->  }
-> -CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_manifest_version, provider_visibility);
-> +CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_manifest_version, service_provider_visibility);
->  
->  static ssize_t tsm_report_inblob_write(struct config_item *cfg,
->                         const void *buf, size_t count)
-> @@ -339,7 +343,8 @@ static ssize_t tsm_report_manifestblob_read(struct config_item *cfg, void *buf,
->  
->      return tsm_report_read(report, buf, count, TSM_MANIFEST);
->  }
-> -CONFIGFS_BIN_ATTR_VISIBLE_RO(tsm_report_, manifestblob, NULL, TSM_OUTBLOB_MAX, provider_visibility);
-> +CONFIGFS_BIN_ATTR_VISIBLE_RO(tsm_report_, manifestblob, NULL, TSM_OUTBLOB_MAX,
-> +                 service_provider_visibility);
->  
->  #define TSM_DEFAULT_ATTRS() \
->      &tsm_report_attr_generation, \
-> @@ -449,7 +454,8 @@ static struct configfs_subsystem tsm_configfs = {
->  };
->  
->  int tsm_register(const struct tsm_ops *ops, void *priv,
-> -         const struct config_item_type *type)
-> +         const struct config_item_type *type,
-> +         tsm_visibility_t visibility)
->  {
->      const struct tsm_ops *conflict;
->  
-> @@ -468,6 +474,7 @@ int tsm_register(const struct tsm_ops *ops, void *priv,
->      provider.ops = ops;
->      provider.data = priv;
->      provider.type = type;
-> +    provider.visibility = visibility;
->      return 0;
->  }
->  EXPORT_SYMBOL_GPL(tsm_register);
-> @@ -480,6 +487,7 @@ int tsm_unregister(const struct tsm_ops *ops)
->      provider.ops = NULL;
->      provider.data = NULL;
->      provider.type = NULL;
-> +    provider.visibility = NULL;
->      return 0;
->  }
->  EXPORT_SYMBOL_GPL(tsm_unregister);
-> diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
-> index f1b4266c1484..cb0d6cd1c12f 100644
-> --- a/include/linux/cc_platform.h
-> +++ b/include/linux/cc_platform.h
-> @@ -90,14 +90,6 @@ enum cc_attr {
->       * Examples include TDX Guest.
->       */
->      CC_ATTR_HOTPLUG_DISABLED,
-> -
-> -    /**
-> -     * @CC_ATTR_GUEST_SVSM_PRESENT: Guest is running under an SVSM
-> -     *
-> -     * The platform/OS is running as a guest/virtual machine and is
-> -     * running under a Secure VM Service Module (SVSM).
-> -     */
-> -    CC_ATTR_GUEST_SVSM_PRESENT,
->  };
->  
->  #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
-> diff --git a/include/linux/tsm.h b/include/linux/tsm.h
-> index 27cc97fe8dcd..5aaf626d178d 100644
-> --- a/include/linux/tsm.h
-> +++ b/include/linux/tsm.h
-> @@ -74,7 +74,20 @@ extern const struct config_item_type tsm_report_default_type;
->  /* publish @privlevel, @privlevel_floor, and @auxblob attributes */
->  extern const struct config_item_type tsm_report_extra_type;
->  
-> +/*
-> + * Used to indicate the attribute group type to the visibility callback to
-> + * avoid the callback having to examine the attribute name.
 
-Checking the attribute name will give more flexibility, right? Since it is one time
-check, it should not be costly, right?
+>> diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+>> index 27cc97fe8dcd..5aaf626d178d 100644
+>> --- a/include/linux/tsm.h
+>> +++ b/include/linux/tsm.h
+>> @@ -74,7 +74,20 @@ extern const struct config_item_type tsm_report_default_type;
+>>   /* publish @privlevel, @privlevel_floor, and @auxblob attributes */
+>>   extern const struct config_item_type tsm_report_extra_type;
+>>   
+>> +/*
+>> + * Used to indicate the attribute group type to the visibility callback to
+>> + * avoid the callback having to examine the attribute name.
+> 
+> Checking the attribute name will give more flexibility, right? Since it is one time
+> check, it should not be costly, right?
 
-> +enum tsm_type {
-> +    TSM_TYPE_SERVICE_PROVIDER,
-> +
-> +    TSM_TYPE_MAX
-> +};
-> +
-> +typedef bool (*tsm_visibility_t)(enum tsm_type type);
-> +
->  int tsm_register(const struct tsm_ops *ops, void *priv,
-> -         const struct config_item_type *type);
-> +         const struct config_item_type *type,
-> +         tsm_visibility_t visibility);
->  int tsm_unregister(const struct tsm_ops *ops);
->  #endif /* __TSM_H */
->
+I thought about checking the name(s), but what if in the future another 
+attribute is added, then you have to remember to update multiple places. 
+This way you have an enum that represents the related attributes. Is 
+there a scenario where you would want to not hide all attributes that 
+are related? String comparisons just seem awkward to me.
 
-Why not add a callback in tsm_ops?
+I suppose the config_item and configfs_attr could also be supplied on 
+the callback if that's a requirement.
 
->> Thanks,
->> Tom
+> 
+>> +enum tsm_type {
+>> +    TSM_TYPE_SERVICE_PROVIDER,
+>> +
+>> +    TSM_TYPE_MAX
+>> +};
+>> +
+>> +typedef bool (*tsm_visibility_t)(enum tsm_type type);
+>> +
+>>   int tsm_register(const struct tsm_ops *ops, void *priv,
+>> -         const struct config_item_type *type);
+>> +         const struct config_item_type *type,
+>> +         tsm_visibility_t visibility);
+>>   int tsm_unregister(const struct tsm_ops *ops);
+>>   #endif /* __TSM_H */
 >>
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+> 
+> Why not add a callback in tsm_ops?
 
+That's an option, too. Either way works for me.
+
+Thanks,
+Tom
+
+> 
+>>> Thanks,
+>>> Tom
+>>>
