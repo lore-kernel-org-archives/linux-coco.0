@@ -1,133 +1,242 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2044.outbound.protection.outlook.com [40.107.101.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DAB762C9
-	for <linux-coco@lists.linux.dev>; Mon, 15 Apr 2024 14:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713192157; cv=none; b=CxbZi5LJ98WF1gnJmKstAnOYnJI3Y3yAPpJWI49/DrpLAlXwH3YfiyGn8GjafGs/cDca0U4e17aoWhgU+XkzGm1fP+a+PeHYYs53P458+JDQnX5xFnVpp12o0Gy4YfuckxFlh6uToNXFtuMkKhwnTVzDNCTE6vpF9pSbh3znrCw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713192157; c=relaxed/simple;
-	bh=jtpF0oWJ78OXdBwHokeg6uJX/abNlnNrtUA3wlmFgkg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MDJ79Oe2lu1D70GI2faJyb/N2ccV6Ow3lMebOza7ZQsJKBYnL3XYwrzjiPUO3bF7GAKJxGHjj9Uvb/FoxdXd7GHqarPDPpRN1V0+jJ2hGlv1Ul8xiudTno86u2CLAa5oHUhSwWWh5xnqD+uCAXyHIAZYGqhHmkSJVw1ndNlM2R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iIEuGK0h; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA7A8249B
+	for <linux-coco@lists.linux.dev>; Mon, 15 Apr 2024 16:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713197613; cv=fail; b=AmkZWV3kcj4zfSVh6+uzkDMsOEQSImGoJawnRPav2cLro/jJVx3CDOJFQGpW+YYYqt0xYVUul5+cy40hF+G3fj24KuOaxyGcNg7SDpRJKtxkobHEpRsHhJote9pack5hSuUPcN8F7iFm16llidroxHbeGnd4drTDzxXH1jxKjYM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713197613; c=relaxed/simple;
+	bh=lPMqZnSkXLyGXXlv5YWZbgStEfY+WWNDqyNK6aE+jPs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=UF7eP73BrJlQofphnGHNWDC/YPC9TVFRMpBkffjyFJlNgWf/BDxpypgRVSt39+3iyoPq+PgBKRvyEhG+o6RzAoXINfq8pyQt06frlupczm+HFVEPsQhyGpT9XkSZEjvZopiRuHLu4g4UIdPBF/pA7joagyCA6ps6x7GNRJY+Sv0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=uOYtQVf4; arc=fail smtp.client-ip=40.107.101.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iIEuGK0h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09137C113CC
-	for <linux-coco@lists.linux.dev>; Mon, 15 Apr 2024 14:42:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713192157;
-	bh=jtpF0oWJ78OXdBwHokeg6uJX/abNlnNrtUA3wlmFgkg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iIEuGK0he2d4AtcAtSwcJA+e7ggfnpgwYqIZWu8/REMtzkFY1+9ClPE4GBMvkdAjk
-	 d147odESONJfhA3KoWbQZRIJ46hge813lXinw/1XRssaZuNUznHZbYTCEirn8W6TrB
-	 19g/S6gqpcRPGoowhsAlthreu3So5fjQj2/MNMdrPj554GPtLaB8F91nAPca/IiA/l
-	 qDzNKb3m5IvkLEbrDJA6qYJnRsUD+kW8vKvrXlb4AmCPf1WZLTeJL6j1TwBbiHNQlN
-	 oAIbfPRX9dWKe1J8nHtGwtkCPcOSVWgQALl+MPeXU7E4WG9iGDUbGXaitIWw0sgQ5K
-	 ybEoMQr/MQa+A==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-518e5a74702so690195e87.1
-        for <linux-coco@lists.linux.dev>; Mon, 15 Apr 2024 07:42:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVlJe0yAJJm1rRcv4ok/YLc76/c4YnLqBvAKVRTHxwlDF48BD9efMuwgL56OdwjaVAwhgIqNgNrSlU+QACisxtwICwlfcshb00mkQ==
-X-Gm-Message-State: AOJu0YwUW+QuEjrbiLZny35pSVFCvUZ7fkxa0OosfbQrPK2G1GB8Nxkw
-	1BINZIk7ag93bHD89fcuTckF7W0h//4TPVbnmoE7NT5Db+yAU5rwCnbCnLdgAjtlZY23xSnL31d
-	RglWvBRZIo+lswjTw+pT6XGGeQpY=
-X-Google-Smtp-Source: AGHT+IF+/5AXxrZyIZ0w3+GlcRqRzaGxJ6MW6BTytHxiQXM3Qhl0B0tR5Bpsv76OONgPhjKSCQOitahz/pOf92VMC6w=
-X-Received: by 2002:a05:651c:2209:b0:2da:6ca:bddb with SMTP id
- y9-20020a05651c220900b002da06cabddbmr3506689ljq.19.1713192155412; Mon, 15 Apr
- 2024 07:42:35 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="uOYtQVf4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=c8vTV0gQNgRih0AJSDxjztqw0BXj3ZYW4EpT9zyh/rzeoktSs6NZor4ERfWqJuhxKJQcV8IUrs6vwEVPrsODjC84r0TYY6h10ZTzpKHH8RbN463ayvhBXLAsJPpjieq1GYwg20N4prQuh2RMm0M2Jz40iOdGzWib0etpDg904AlZ2ek1WCNTRuW/Og8yyuR35B5+/U9QFUM6nIwgdx3UU7BMQUttz/J2xUU6iGz5Gp2TqqjGh99jW+DSstTLzqz/v9uws/AeXUHQUVJxb51Ft+D3/0Puiw1mDWe94fTBk2vreB6UxXwgYxARrIuIsADNJCn+RMvxrI/u9heS8b+hXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BEoVM24Md+GnoHGBd5Y80is/GDfuJaMzUALqiF0RXM4=;
+ b=jmrBMymZqnraEqhgE8JCcVuFTZP5ot06NHcJWJIu9mE1kQ60FJe1sxHvC19PklzOKvF4NeSOPS18T2q63yuQ68ssL3c0JgxDzKGSpIYnELmqtiHrTRAz/t8B2BnIzKQlV9CY5j/cdP5QF+zBUJ7HFlbPvteJW1u7UB6NwVCMTkk2PyiR/IbO01CjOlCqr2b9VXAa7FcU7PMm4Ig/rTZm3cpV0gSSQQajhSfJbFa3Fxsor1P0KWcwSTJZrQLzl9tYKhfBk7HW/xbzXVCf7KcyN9sNRyiWE7g72Kob8zu/TWK7hYFpE0syACr77dxsTNHH0DD6zriASTTjkOvaGEzUIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BEoVM24Md+GnoHGBd5Y80is/GDfuJaMzUALqiF0RXM4=;
+ b=uOYtQVf4qO6QKmjXCo+OnQAO9XprAePh1pGMAlpw1G7GbqOQi19hzbIiyTTACkSswl01dk7FVZ638nopE25Rskeeld2MNd3LtiioBgRKGcJW04Y80Jz4H3TR2EojOtVJaCslXZn6USA0wQkf8yrj1XpMyMBePilPCnwVd9zVzW4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB2810.namprd12.prod.outlook.com (2603:10b6:5:41::21) by
+ SA1PR12MB5670.namprd12.prod.outlook.com (2603:10b6:806:239::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7452.50; Mon, 15 Apr 2024 16:13:29 +0000
+Received: from DM6PR12MB2810.namprd12.prod.outlook.com
+ ([fe80::8af6:1232:41ce:24a3]) by DM6PR12MB2810.namprd12.prod.outlook.com
+ ([fe80::8af6:1232:41ce:24a3%7]) with mapi id 15.20.7409.053; Mon, 15 Apr 2024
+ 16:13:29 +0000
+Message-ID: <df3cd8a6-8e9e-2403-9995-267cd05b0fda@amd.com>
+Date: Mon, 15 Apr 2024 18:12:44 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 07/14] x86/sev: Provide SVSM discovery support
+Content-Language: en-US
+To: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Dan Williams <dan.j.williams@intel.com>, Michael Roth
+ <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>
+References: <cover.1711405593.git.thomas.lendacky@amd.com>
+ <6468ce125086997ffb043238d12a347f77c7a3fa.1711405593.git.thomas.lendacky@amd.com>
+From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
+In-Reply-To: <6468ce125086997ffb043238d12a347f77c7a3fa.1711405593.git.thomas.lendacky@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR04CA0094.eurprd04.prod.outlook.com
+ (2603:10a6:803:64::29) To DM6PR12MB2810.namprd12.prod.outlook.com
+ (2603:10b6:5:41::21)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <94521f20aa2872c1b8f018b7db31eca4a2b8222d.1711039409.git.qinkun@google.com>
- <CAAH4kHbAi=Jn7Lw82idGGmQYnAhJnhoS9u8wBMOZsp7iLiOWxw@mail.gmail.com>
- <PH0PR11MB587959168F72B20E0AC836438C312@PH0PR11MB5879.namprd11.prod.outlook.com>
- <u76teout4bwpg5yoklah6xfkrpcn4lw5nosw5lmph7sfjipqnz@gagzyh3xrkie>
- <CAAH4kHbeGborxwDOzxeMbTjU4Xo79v-OVSHXYWQiJxg-yWQfWQ@mail.gmail.com>
- <ZgF3ACjFj8LtUWgv@himmelriiki> <CAAH4kHbqpaCgZJpF55x2NGWL22rz1ucRewYmR=K2chw2kP6sKA@mail.gmail.com>
- <MW4PR11MB5872BBA0D379C40E071300B98C052@MW4PR11MB5872.namprd11.prod.outlook.com>
- <CAMj1kXGm5RPNAzshaTAb7fnB80m8S+q0gbNxWSA3i9Dp-AL8uw@mail.gmail.com> <CAOjUGWckeov-K45R1Mf=MvEYG7vDetrUh-ifQwZDTLMEVEmhpA@mail.gmail.com>
-In-Reply-To: <CAOjUGWckeov-K45R1Mf=MvEYG7vDetrUh-ifQwZDTLMEVEmhpA@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 15 Apr 2024 16:42:24 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHoFyy2T0TxgPMOVxGujCwbCVXBw-z+AcCydProwMGOcw@mail.gmail.com>
-Message-ID: <CAMj1kXHoFyy2T0TxgPMOVxGujCwbCVXBw-z+AcCydProwMGOcw@mail.gmail.com>
-Subject: Re: [edk2-devel] [RFC PATCH] OvmfPkg/SecurityPkg: Add build option
- for coexistance of vTPM and RTMR.
-To: Qinkun Bao <qinkun@google.com>
-Cc: devel@edk2.groups.io, jiewen.yao@intel.com, 
-	Dionna Amalie Glaze <dionnaglaze@google.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
-	Gerd Hoffmann <kraxel@redhat.com>, James Bottomley <jejb@linux.ibm.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Aktas, Erdem" <erdemaktas@google.com>, 
-	Peter Gonda <pgonda@google.com>, "Johnson, Simon P" <simon.p.johnson@intel.com>, 
-	"Xiang, Qinglan" <qinglan.xiang@intel.com>, Cfir Cohen <cfir@google.com>, 
-	"Madhanagopal, Ranga" <ranga.madhanagopal@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB2810:EE_|SA1PR12MB5670:EE_
+X-MS-Office365-Filtering-Correlation-Id: bb4ae96c-be8f-4d9c-993a-08dc5d66fccf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	Cw8QzSU+yE00hzBq6hsmHWqdfmqjYv4P81Uhj3/WzjCTLB9Tf+MFyVBFmvNNMBo5DQJGD2/r5QqZImVXyR1QeAyPfy7+pdsTC82DZvVZkkGLIVssTLPYI7ePTjWwyM/irhIFXWBYDnUfshXiX6gZi2MchwQ+0apu6DILbROD3p+o4zQa9QZkLf0uTM+lsUpxl0ShO7PTaCb21Okm2d+p0PZsv9k6YUj7cyjE3zTUTU8WvXTh7ODjc9TjFP/vXuKTKNaet3IS4SdpAUF7rPAHZGLaUQTjqMGwszfIpxM8+FHj/KemvQpcrnO8hRN5zWxc1bettEx0gshMJlBcWbu+SOxQiIk9V53yY2aXQp9WH4Sszb1LzMaE7/Z5Lg1vI/cfvMfQOvVoq5Gg0LQmJrlDMlBhSQiNQ/lldEq3GeK3sCssbw92gn2Roo+xb89KbQUNftf2XF+IqfZszU1CeuaSlX8grrcusSBFCLjzJyM5Bh3ulLGfv1CSsJuS8+9wTldFjrqWJ5eXvU+cQHkZOhh894ko1eGIL3XZB+bYUM8Mf0TslPmbLBVN6SuoU4+dB9bOP4wMShJAIS4K5p9u1WH6doPucQg1eVnwerq30B3XdZH0x64tY4FSgoTZwgs0+7KwPE2pmmuQkHSzvi2NzLjqg+Va5eqRcvCD/K8w4WWMeXc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2810.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Qi9jd1ZuMXlseDYvbU95YXRLU1BuOVVYN28xS1U2SGVVaGZibGU1OU1xcFdW?=
+ =?utf-8?B?bkFnV2VUMUUyR0Nuc21iUGt4dElscjJGczVlZUorQWtBNGVpMUo2dkh2Vktx?=
+ =?utf-8?B?MjgyVmVvSWFYVThnOG9aY0VkTHpiYlNtZHludnNpQndxSjB3SGEwZVNpNlFn?=
+ =?utf-8?B?UnlGemRHc2R4Z08vSElJVVd3NVdsMHFaS2g3NXVqOWpTNXpLRENWc0ZHWloz?=
+ =?utf-8?B?czBFZ0JsdmtEeXZPejR5a1VMQ3NOVVpQSUZ3SXdFdy90anhZTzU0RTMvOE0z?=
+ =?utf-8?B?dy9GT09vVCtzOFNNRjdsUUcvamtmQW9UOG05SWEwR20xaVd0RWE0WTJCeE1o?=
+ =?utf-8?B?NmFCQjRDMGI0RVpibXBPNHI4K0d2ZHRJWFdSWXQ2UTI3STZxZkhSenA0WU1G?=
+ =?utf-8?B?UGtIZDF0VUdlN3E2cDluWWI3UVlNK0NrLyt6OStSOUU0UW1Vcmg1Vm1seTRu?=
+ =?utf-8?B?RGlKS20ySklwMjF2aTJ4MHRNRm9nRUJKeUtYUnRnSGxMZmxnWS8rZjZYVkhu?=
+ =?utf-8?B?MmdNMWx6VFlKZEdUZmNUYzRsTTJaa2JERjVPNmlnTDhmK3FXUHJINVBxQVEx?=
+ =?utf-8?B?WHZTVDJadk14cFdTbmFZN1JPVEIzVlZDNVVGUmVqQnRXOEwvTVhqK2xic3Fk?=
+ =?utf-8?B?ODdtZmY5dEdMQzA1ZjdXaVVkcGEyenc5ejZnSHlpaEFUSFRZNjcrajRjb3Vn?=
+ =?utf-8?B?WGpubThoRER6dllMK283eUlKQk44a0hNT3g1dVgzdmNBanFNY0F6djU0MHg3?=
+ =?utf-8?B?eTZINjlvRUlEeTJtVWcxMnFSYWxjdS9JR0RUSnRRS1lkR29LbHh5MDNabVU2?=
+ =?utf-8?B?S211TU1MQkRhaE9Wd3pBQnIrdmFUa2xoYW41dGZsMTBhazNaTGFBWEdqWHVu?=
+ =?utf-8?B?bmdvRmhMVm1POWd4NjhNVmgwWFZmQ2NpQzZ3SmpaZGdGd1RVZTdlekpWR05M?=
+ =?utf-8?B?WkFFRG13cEZzalFvRWM3YTdNclBHNjdadjBPQjl1Y0tmTDArd0dUbm4vdlVy?=
+ =?utf-8?B?U0YyYSt6bjA4RzFpSXA0dlFHY1dMUVhWcGZJOWlmMG1OMTQ5eEFmcDRTUnh0?=
+ =?utf-8?B?akQ3clVGL2p0a21ON0sveCtvdHpGVzYyN211VDRQY3QzOE5xcjB2aVZlTlFs?=
+ =?utf-8?B?UHpQSEdxYm5ab3p6cXdFRC85M1JCWlcvaFdLRE94V3RBRU1RWlJJcnArcEQx?=
+ =?utf-8?B?eXp5dTV3NDRRL241QWExdUtNc2dNSFM2eVBiNTF1MXdXNW10bElOMzMyWmpu?=
+ =?utf-8?B?Zzcycm9Fd3NsRnhiS245cTN2QnBTMkZYUmtUblNZYmNlNHJCSW9GZ3ZJTUFN?=
+ =?utf-8?B?ZmNUamdTYTBaeU94aUlPVjRPdThoSHljYUxjQ3RiVFlQbzNTRVB3aUhDaktJ?=
+ =?utf-8?B?RTlMSncyMytDdVZ2MlNwM1ppMUo3Uzd2T2RyT0prZUNmMFlKYU5HUG5Ka1Yw?=
+ =?utf-8?B?bmgraXM1SlRiNUd5Rkpka2o3YTkzd1dOTW9oM0tJSmFwVjV4VC9kQVVlU3Z2?=
+ =?utf-8?B?bWtrR2MzTldSenlQTjZCUVAwWU9nVFdySUh2YTkwSVRTVlpKZ0EwNWs2bVVO?=
+ =?utf-8?B?UUliTkJvVDhxSm1Nb0J0bCtkd0gyWlEyTGRqSW5pR2MvUk5nZ0k5SXRLRUI4?=
+ =?utf-8?B?aHVXMlFwTTYxeXlJWWxhSXJ5U3ZSWGxyWnhXSC84VWdpbFYxZzl3aGkvVlZI?=
+ =?utf-8?B?c1U0d2JHbEt1TGlhTGszRmErQnhxQko3RDhpVmZYaDUxTFdEZ294MHZLUnp5?=
+ =?utf-8?B?S3daQXFhbFlRVE10RmwwVjdnRWdVU3NDZ09La3BnbHJ6UzREb2dLRlY1eG1F?=
+ =?utf-8?B?TmdidFpNRk0zandaQi9BTlJJNUtjTFFOd0xIMFIxQWhXMFdmYzVESDZiRG9v?=
+ =?utf-8?B?enRuTFVzQldnYjhXay85WUZFQlVISkJHZnBFaFhzdThmRUxvUWc0VEY5Umw5?=
+ =?utf-8?B?a3JDOWpaSDlFL0FuczlqQWIvcFNSa01NeVdNeXc2ajVYdzFRYmZVZ0dZT0xh?=
+ =?utf-8?B?eVRvMjdaSWMwNXRGQlRpa1NQdVp2cWZ3NG5oeG8yanU2SkM1SHhaZEZYSHor?=
+ =?utf-8?B?cFY3UzhoSzhiSURJbC9FTDR2ZkZ4cEI4b1VJbm1zbU5XQW94ZkVaeW5JVExl?=
+ =?utf-8?Q?cvyVHbtBai8dgiiNAowEGIxHH?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb4ae96c-be8f-4d9c-993a-08dc5d66fccf
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2810.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2024 16:13:29.1970
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1ZEyy5TmpsbenLA4rR3xqwDGuD4yWh9LUWENTtNYhWLPjBiTwSagAXnfmL7jRLYcSZ2vh7i1N907cdDrC27OxQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5670
 
-On Sat, 13 Apr 2024 at 11:37, Qinkun Bao <qinkun@google.com> wrote:
->
-...
-> >
-> > I think it is a bad idea to go and apply changes all across the boot
-> > software ecosystem to measure the same assets into different
-> > measurement protocols. I'mm afraid it creates technical debt that will
-> > come and bite us in the future.
->
-> Could you shed some lights on why it creates technical debts?
->
+On 3/25/2024 11:26 PM, Tom Lendacky wrote:
+> The SVSM specification documents an alternative method of discovery for
+> the SVSM using a reserved CPUID bit and a reserved MSR.
+> 
+> For the CPUID support, the SNP CPUID table is updated to set bit 28 of
+> the EAX register of the 0x8000001f leaf when an SVSM is present. This bit
+> has been reserved for use in this capacity.
+> 
+> For the MSR support, a new reserved MSR 0xc001f000 has been defined. A #VC
+> should be generated when accessing this MSR. The #VC handler is expected
+> to ignore writes to this MSR and return the physical calling area address
+> (CAA) on reads of this MSR.
+> 
+> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 
-If it is so vitally important that measurements are taken into both
-the TPM PCRs and the RTMRs if both are available, can we really trust
-all those boot components to do the right thing? And do we really want
-to have to reason about that?
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
 
-Given that the guest system firmware exposes both protocols anyway,
-wouldn't it make more sense to make it the guest firmware's job to
-duplicate measurements into the RTMRs and only expose the TCG protocol
-to the guest OS stack?
+> ---
+>   arch/x86/include/asm/cpufeatures.h |  1 +
+>   arch/x86/include/asm/msr-index.h   |  2 ++
+>   arch/x86/kernel/sev-shared.c       | 11 +++++++++++
+>   arch/x86/kernel/sev.c              | 17 +++++++++++++++++
+>   4 files changed, 31 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index a38f8f9ba657..51e7c879f057 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -446,6 +446,7 @@
+>   #define X86_FEATURE_V_TSC_AUX		(19*32+ 9) /* "" Virtual TSC_AUX */
+>   #define X86_FEATURE_SME_COHERENT	(19*32+10) /* "" AMD hardware-enforced cache coherency */
+>   #define X86_FEATURE_DEBUG_SWAP		(19*32+14) /* AMD SEV-ES full debug state swap support */
+> +#define X86_FEATURE_SVSM_PRESENT	(19*32+28) /* "" SNP SVSM is present */
+>   
+>   /* AMD-defined Extended Feature 2 EAX, CPUID level 0x80000021 (EAX), word 20 */
+>   #define X86_FEATURE_NO_NESTED_DATA_BP	(20*32+ 0) /* "" No Nested Data Breakpoints */
+> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+> index 05956bd8bacf..cc4de3379265 100644
+> --- a/arch/x86/include/asm/msr-index.h
+> +++ b/arch/x86/include/asm/msr-index.h
+> @@ -654,6 +654,8 @@
+>   #define MSR_AMD64_RMP_BASE		0xc0010132
+>   #define MSR_AMD64_RMP_END		0xc0010133
+>   
+> +#define MSR_SVSM_CAA			0xc001f000
+> +
+>   /* AMD Collaborative Processor Performance Control MSRs */
+>   #define MSR_AMD_CPPC_CAP1		0xc00102b0
+>   #define MSR_AMD_CPPC_ENABLE		0xc00102b1
+> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+> index e63c0a6eccd6..17eb42c4ae71 100644
+> --- a/arch/x86/kernel/sev-shared.c
+> +++ b/arch/x86/kernel/sev-shared.c
+> @@ -1559,6 +1559,8 @@ static enum es_result vc_check_opcode_bytes(struct es_em_ctxt *ctxt,
+>   static void __head setup_svsm_ca(const struct cc_blob_sev_info *cc_info)
+>   {
+>   	struct snp_secrets_page_layout *secrets_page;
+> +	struct snp_cpuid_table *cpuid_table;
+> +	unsigned int i;
+>   	u64 caa;
+>   
+>   	BUILD_BUG_ON(sizeof(*secrets_page) != PAGE_SIZE);
+> @@ -1596,4 +1598,13 @@ static void __head setup_svsm_ca(const struct cc_blob_sev_info *cc_info)
+>   	 */
+>   	boot_svsm_caa = (struct svsm_ca *)caa;
+>   	boot_svsm_caa_pa = caa;
+> +
+> +	/* Advertise the SVSM presence via CPUID. */
+> +	cpuid_table = (struct snp_cpuid_table *)snp_cpuid_get_table();
+> +	for (i = 0; i < cpuid_table->count; i++) {
+> +		struct snp_cpuid_fn *fn = &cpuid_table->fn[i];
+> +
+> +		if (fn->eax_in == 0x8000001f)
+> +			fn->eax |= BIT(28);
+> +	}
+>   }
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index ea8b43a0f01b..7f399ea87a3c 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -1347,12 +1347,29 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
+>   	return 0;
+>   }
+>   
+> +static enum es_result vc_handle_svsm_caa_msr(struct es_em_ctxt *ctxt)
+> +{
+> +	struct pt_regs *regs = ctxt->regs;
+> +
+> +	/* Writes to the SVSM CAA msr are ignored */
+> +	if (ctxt->insn.opcode.bytes[1] == 0x30)
+> +		return ES_OK;
+> +
+> +	regs->ax = lower_32_bits(this_cpu_read(svsm_caa_pa));
+> +	regs->dx = upper_32_bits(this_cpu_read(svsm_caa_pa));
+> +
+> +	return ES_OK;
+> +}
+> +
+>   static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+>   {
+>   	struct pt_regs *regs = ctxt->regs;
+>   	enum es_result ret;
+>   	u64 exit_info_1;
+>   
+> +	if (regs->cx == MSR_SVSM_CAA)
+> +		return vc_handle_svsm_caa_msr(ctxt);
+> +
+>   	/* Is it a WRMSR? */
+>   	exit_info_1 = (ctxt->insn.opcode.bytes[1] == 0x30) ? 1 : 0;
+>   
 
-The hybrid model of trusting the host (and using a vTPM) and not
-trusting the host (and therefore relying on TDX/RTMRs) at the same
-time seems a bit odd to me in any case: under which circumstances
-would a guest distrust the host but still rely on the vTPM?
-
-
-> >
-> > Given that RTMR is a proper subset of vTPM (modulo the PCR/RTMR index
-> > conversion), I feel that it should be the CoCo firmware's
-> > responsibility to either:
-> > - expose RTMR and not vTPM
-> > - expose vTPM, and duplicate each measurement into RTMR as they are taken
-> >
-> > However, I understand that this is only viable for execution under the
-> > UEFI boot services, and after that, the vTPM and RTMR are exposed in
-> > different ways to the OS.
->
-> Yes, they are exposed in different ways. In Linux, the TPM driver uses
-> the mmio interface rather than the EFI service. Even if
-> EFI_TCG2_PROTOCOL is not installed, the TPM as a device is still
-> visible to the guest. The RTMR values are included in the TD report
-> and could be extended through a TDCALL. The security concern caused by
-> not measuring into every device that is available is a concern.
-
-That does not imply that each and every component should be
-responsible for taking both measurements.
-
-> Please
-> see CVE-2021-42299.
->
-> >
-> > Could someone explain how that piece of the puzzle is supposed to
-> > work? Do we measure into RTMR after ExitBootServices()?
->
-> Yes, we still measure into RTMR after ExitBootServices() [1]. One
-> example is measuring container images into RTMR2 during the loading
-> [2].
->
-
-Fair enough. So keeping RTMRs and PCRs in sync after EBS() is going to
-be problematic :-(
