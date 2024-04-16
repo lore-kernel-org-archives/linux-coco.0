@@ -1,151 +1,344 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCD612838C
-	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 11:53:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E59412A177;
+	Tue, 16 Apr 2024 12:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713268422; cv=none; b=WbBS30elaUhO9KbOrcw3IEl7qzJCB2OuMtBrlAlFsDjvU4hm1U2Jhpp1rrHyrlIk3ERpA/aWAzLlEEhVxRJDj8iR2zgUSaGFXrrJ312KgipcaxcG33kal87utpf0+5qowIO+v3QJSWwXrBqpXWeWQlgyh94BbF3izxR46k+mKBg=
+	t=1713271139; cv=none; b=rMIeKux87WGUGAFobu6IuG/ACHRihIi2avbMtuecYXH+mEmEmLk/p2tq1/3cEVyevY3TbX9RBVtT+8CNhckz2yZBHFeUC0MUqGKU4BJV4JaMIyhgTQi+wPRE4WOYYQ8rL0H2dwj3EDQT69m2MKII4LGaj/5/oyDp56g7mNcjlgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713268422; c=relaxed/simple;
-	bh=2B/0TZrDQ88vv16W4Pq06pS4UHrWwoD7Zfiru7x/BQY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k8rTklOjYN3UTSuSSGjjuyKhGRxCcIO0WuP+zoSDELnXBHh3rBgknboRNdGcYeVECa5gVTy2v9/x5zqD5sNreo8xoMDiOD+H0GYUaJTt2DY+Jw87Sl68PyoabBbsi/7qHDas0uy8PNKpASczb6G6R1UE8A1BrUwxYp/ahWKZmGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FOOfRSOf; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FOOfRSOf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713268420;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/Ux9rBA1E+x/XqOx1Zfa/TZpS8q2CNQskPcvct4f8Ic=;
-	b=FOOfRSOftFf7fhoMc4TpIQezLMhUYYtKJfhT0Selmj8q1YxzZhQVzkda4t2WnOHO46k9jB
-	Bqcrx915UQ8sIZTSoGOWb5TLLlVKoyPrGLtOxgPbaDn0JQj98351b46tZ9Jn611/oioAmn
-	2sSaITtBcglV/aT0vNIYR6h3xGhHxYA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-4qknxS3NOXmmBlOm77BvjA-1; Tue, 16 Apr 2024 07:53:37 -0400
-X-MC-Unique: 4qknxS3NOXmmBlOm77BvjA-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-343bc1e4ef3so3303632f8f.1
-        for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 04:53:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713268416; x=1713873216;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/Ux9rBA1E+x/XqOx1Zfa/TZpS8q2CNQskPcvct4f8Ic=;
-        b=pCeo7xI7iIsuFIILqz53584l6NmzqJ8Iy538/BimtxpVnuR4mg2Mkpy+52RhsJzt/7
-         6fCBTOJdxtaKBFxC2WU3Z+3rw/KjdTbZLLozof9nuetTZ/p0FHVPHfd5MZny76q+HT6Y
-         gFGdH4QI6fpOcxRSjTj/+dQ16gSHVAfYCKM9gTd50WcmXsWQ2mnQi721Ght6VRUxgYqT
-         4rQZ4znSSp8vT6MMMcfcY0UIG9oRmVTj2OrXPk3QqsFWIZVSgEYO0H8sIvpaQ1bRVQ3W
-         lRXJjUEr92w+D2gH2WB18YGwaNMtBg6o0Bgh/jQaTgwjiWShO+gtiG43brNORsLH98V3
-         XdyQ==
-X-Gm-Message-State: AOJu0YzwuIZV5Ixfwft1hauYSQdofse+HKXtgOacIY7npd0P4wixkarF
-	l6sUhFqTkAUacBoGzm1PlscjI3smFZEz0sHR4m+RDdc+ljt9jce9dn3inCoCihF6EEOl18hFrQ4
-	ZRdePssKZvPo/s7+tw4/i7Xjue3tn2P8+JoQCrpYDvPlHqDbSWrVZ+i1OR9jh0BKRHNB+3E9J2u
-	PeB0x53hfbP/tBcaHQtGi5WqCAzcuqnyxJDA==
-X-Received: by 2002:adf:cd11:0:b0:348:b435:2736 with SMTP id w17-20020adfcd11000000b00348b4352736mr1845180wrm.51.1713268416621;
-        Tue, 16 Apr 2024 04:53:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHboei6CWQ68/kX4VWiS3hHyg54DT0hUEvoN+DvTUse7RMopQtT/6X8ZHkV5bkVVsxqb/R4glDVv0DZOX9sF8E=
-X-Received: by 2002:adf:cd11:0:b0:348:b435:2736 with SMTP id
- w17-20020adfcd11000000b00348b4352736mr1845167wrm.51.1713268416287; Tue, 16
- Apr 2024 04:53:36 -0700 (PDT)
+	s=arc-20240116; t=1713271139; c=relaxed/simple;
+	bh=Wn1oi3HNvkWuFzc1P/9TrLuABi6hae0ecEko9TXGDdQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Iv+3SLIW0aT1q65I18KOXxDVAebjrPXlAuznH6sq2S0QLKh3hNjSNQ2jNZ6GaE/WvYoZE4peNfJRPA66WLINuXGJHPWdurwl+sNVl0VdQvrnaNPsTqBWTkwEFZs0xlpQKXujZriZcI2W2Y+B2ihTOVxeyQvmRJW2p4lrZIz5usI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B330339;
+	Tue, 16 Apr 2024 05:39:23 -0700 (PDT)
+Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 76D673F738;
+	Tue, 16 Apr 2024 05:38:52 -0700 (PDT)
+Message-ID: <e6ece61d-ceb6-44f3-a17c-c678b4562991@arm.com>
+Date: Tue, 16 Apr 2024 13:38:51 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240329225835.400662-1-michael.roth@amd.com> <20240329225835.400662-19-michael.roth@amd.com>
- <67685ec7-ca61-43f1-8ecd-120ec137e93a@redhat.com>
-In-Reply-To: <67685ec7-ca61-43f1-8ecd-120ec137e93a@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 16 Apr 2024 13:53:24 +0200
-Message-ID: <CABgObfZNVR-VKst8dDFZ4gs_zSWE8NE2gj5-Y4TNh0AnBfti7w@mail.gmail.com>
-Subject: Re: [PATCH v12 18/29] KVM: SEV: Use a VMSA physical address variable
- for populating VMCB
-To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
-	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com, 
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/43] arm64: RME: Add SMC definitions for calling the
+ RMM
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+References: <20240412084056.1733704-1-steven.price@arm.com>
+ <20240412084309.1733783-1-steven.price@arm.com>
+ <20240412084309.1733783-6-steven.price@arm.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20240412084309.1733783-6-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, Mar 30, 2024 at 10:01=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com=
-> wrote:
->
-> On 3/29/24 23:58, Michael Roth wrote:
-> > From: Tom Lendacky<thomas.lendacky@amd.com>
-> >
-> > In preparation to support SEV-SNP AP Creation, use a variable that hold=
-s
-> > the VMSA physical address rather than converting the virtual address.
-> > This will allow SEV-SNP AP Creation to set the new physical address tha=
-t
-> > will be used should the vCPU reset path be taken.
-> >
-> > Signed-off-by: Tom Lendacky<thomas.lendacky@amd.com>
-> > Signed-off-by: Ashish Kalra<ashish.kalra@amd.com>
-> > Signed-off-by: Michael Roth<michael.roth@amd.com>
-> > ---
->
-> I'll get back to this one after Easter, but it looks like Sean had some
-> objections at https://lore.kernel.org/lkml/ZeCqnq7dLcJI41O9@google.com/.
+Hi Steven
 
-So IIUC the gist of the solution here would be to replace
+On 12/04/2024 09:42, Steven Price wrote:
+> The RMM (Realm Management Monitor) provides functionality that can be
+> accessed by SMC calls from the host.
+> 
+> The SMC definitions are based on DEN0137[1] version 1.0-eac5
+> 
+> [1] https://developer.arm.com/documentation/den0137/1-0eac5/
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>   arch/arm64/include/asm/rmi_smc.h | 250 +++++++++++++++++++++++++++++++
+>   1 file changed, 250 insertions(+)
+>   create mode 100644 arch/arm64/include/asm/rmi_smc.h
+> 
+> diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/rmi_smc.h
+> new file mode 100644
+> index 000000000000..c205efdb18d8
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/rmi_smc.h
+> @@ -0,0 +1,250 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright (C) 2023 ARM Ltd.
+> + *
+> + * The values and structures in this file are from the Realm Management Monitor
+> + * specification (DEN0137) version A-bet0:
+> + * https://developer.arm.com/documentation/den0137/1-0bet0/
 
-   /* Use the new VMSA */
-   svm->sev_es.vmsa_pa =3D pfn_to_hpa(pfn);
-   svm->vmcb->control.vmsa_pa =3D svm->sev_es.vmsa_pa;
+This should now point to eac5 instead.
 
-with something like
+> + */
+> +
+> +#ifndef __ASM_RME_SMC_H
+> +#define __ASM_RME_SMC_H
+> +
+> +#include <linux/arm-smccc.h>
+> +
+> +#define SMC_RxI_CALL(func)				\
+> +	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,		\
+> +			   ARM_SMCCC_SMC_64,		\
+> +			   ARM_SMCCC_OWNER_STANDARD,	\
+> +			   (func))
+> +
+> +#define SMC_RMI_DATA_CREATE		SMC_RxI_CALL(0x0153)
+> +#define SMC_RMI_DATA_CREATE_UNKNOWN	SMC_RxI_CALL(0x0154)
+> +#define SMC_RMI_DATA_DESTROY		SMC_RxI_CALL(0x0155)
+> +#define SMC_RMI_FEATURES		SMC_RxI_CALL(0x0165)
+> +#define SMC_RMI_GRANULE_DELEGATE	SMC_RxI_CALL(0x0151)
+> +#define SMC_RMI_GRANULE_UNDELEGATE	SMC_RxI_CALL(0x0152)
+> +#define SMC_RMI_PSCI_COMPLETE		SMC_RxI_CALL(0x0164)
+> +#define SMC_RMI_REALM_ACTIVATE		SMC_RxI_CALL(0x0157)
+> +#define SMC_RMI_REALM_CREATE		SMC_RxI_CALL(0x0158)
+> +#define SMC_RMI_REALM_DESTROY		SMC_RxI_CALL(0x0159)
+> +#define SMC_RMI_REC_AUX_COUNT		SMC_RxI_CALL(0x0167)
+> +#define SMC_RMI_REC_CREATE		SMC_RxI_CALL(0x015a)
+> +#define SMC_RMI_REC_DESTROY		SMC_RxI_CALL(0x015b)
+> +#define SMC_RMI_REC_ENTER		SMC_RxI_CALL(0x015c)
+> +#define SMC_RMI_RTT_CREATE		SMC_RxI_CALL(0x015d)
+> +#define SMC_RMI_RTT_DESTROY		SMC_RxI_CALL(0x015e)
+> +#define SMC_RMI_RTT_FOLD		SMC_RxI_CALL(0x0166)
+> +#define SMC_RMI_RTT_INIT_RIPAS		SMC_RxI_CALL(0x0168)
+> +#define SMC_RMI_RTT_MAP_UNPROTECTED	SMC_RxI_CALL(0x015f)
+> +#define SMC_RMI_RTT_READ_ENTRY		SMC_RxI_CALL(0x0161)
+> +#define SMC_RMI_RTT_SET_RIPAS		SMC_RxI_CALL(0x0169)
+> +#define SMC_RMI_RTT_UNMAP_UNPROTECTED	SMC_RxI_CALL(0x0162)
+> +#define SMC_RMI_VERSION			SMC_RxI_CALL(0x0150)
+> +
+> +#define RMI_ABI_MAJOR_VERSION	1
+> +#define RMI_ABI_MINOR_VERSION	0
+> +
+> +#define RMI_UNASSIGNED			0
+> +#define RMI_ASSIGNED			1
+> +#define RMI_TABLE			2
+> +
+> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
+> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
+> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
+> +
+> +#define RMI_RETURN_STATUS(ret)		((ret) & 0xFF)
+> +#define RMI_RETURN_INDEX(ret)		(((ret) >> 8) & 0xFF)
+> +
+> +#define RMI_SUCCESS		0
+> +#define RMI_ERROR_INPUT		1
+> +#define RMI_ERROR_REALM		2
+> +#define RMI_ERROR_REC		3
+> +#define RMI_ERROR_RTT		4
+> +
+> +#define RMI_EMPTY		0
+> +#define RMI_RAM			1
+> +#define RMI_DESTROYED		2
+> +
+> +#define RMI_NO_MEASURE_CONTENT	0
+> +#define RMI_MEASURE_CONTENT	1
+> +
+> +#define RMI_FEATURE_REGISTER_0_S2SZ		GENMASK(7, 0)
+> +#define RMI_FEATURE_REGISTER_0_LPA2		BIT(8)
+> +#define RMI_FEATURE_REGISTER_0_SVE_EN		BIT(9)
+> +#define RMI_FEATURE_REGISTER_0_SVE_VL		GENMASK(13, 10)
+> +#define RMI_FEATURE_REGISTER_0_NUM_BPS		GENMASK(17, 14)
+> +#define RMI_FEATURE_REGISTER_0_NUM_WPS		GENMASK(21, 18)
+> +#define RMI_FEATURE_REGISTER_0_PMU_EN		BIT(22)
+> +#define RMI_FEATURE_REGISTER_0_PMU_NUM_CTRS	GENMASK(27, 23)
+> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_256	BIT(28)
+> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_512	BIT(29)
+> +
+> +#define RMI_REALM_PARAM_FLAG_LPA2		BIT(0)
+> +#define RMI_REALM_PARAM_FLAG_SVE		BIT(1)
+> +#define RMI_REALM_PARAM_FLAG_PMU		BIT(2)
+> +
+> +/*
+> + * Note many of these fields are smaller than u64 but all fields have u64
+> + * alignment, so use u64 to ensure correct alignment.
+> + */
+> +struct realm_params {
+> +	union { /* 0x0 */
+> +		struct {
+> +			u64 flags;
+> +			u64 s2sz;
+> +			u64 sve_vl;
+> +			u64 num_bps;
+> +			u64 num_wps;
+> +			u64 pmu_num_ctrs;
+> +			u64 hash_algo;
+> +		};
+> +		u8 padding_1[0x400];
+> +	};
+> +	union { /* 0x400 */
+> +		u8 rpv[64];
+> +		u8 padding_2[0x400];
+> +	};
+> +	union { /* 0x800 */
+> +		struct {
+> +			u64 vmid;
+> +			u64 rtt_base;
+> +			s64 rtt_level_start;
+> +			u64 rtt_num_start;
+> +		};
+> +		u8 padding_3[0x800];
+> +	};
+> +};
+> +
+> +/*
+> + * The number of GPRs (starting from X0) that are
+> + * configured by the host when a REC is created.
+> + */
+> +#define REC_CREATE_NR_GPRS		8
+> +
+> +#define REC_PARAMS_FLAG_RUNNABLE	BIT_ULL(0)
+> +
+> +#define REC_PARAMS_AUX_GRANULES		16
+> +
+> +struct rec_params {
+> +	union { /* 0x0 */
+> +		u64 flags;
+> +		u8 padding1[0x100];
+> +	};
+> +	union { /* 0x100 */
+> +		u64 mpidr;
+> +		u8 padding2[0x100];
+> +	};
+> +	union { /* 0x200 */
+> +		u64 pc;
+> +		u8 padding3[0x100];
+> +	};
+> +	union { /* 0x300 */
+> +		u64 gprs[REC_CREATE_NR_GPRS];
+> +		u8 padding4[0x500];
+> +	};
+> +	union { /* 0x800 */
+> +		struct {
+> +			u64 num_rec_aux;
+> +			u64 aux[REC_PARAMS_AUX_GRANULES];
+> +		};
+> +		u8 padding5[0x800];
+> +	};
+> +};
+> +
+> +#define RMI_EMULATED_MMIO		BIT(0)
+> +#define RMI_INJECT_SEA			BIT(1)
+> +#define RMI_TRAP_WFI			BIT(2)
+> +#define RMI_TRAP_WFE			BIT(3)
 
-   /* Use the new VMSA */
-   __free_page(virt_to_page(svm->sev_es.vmsa));
-   svm->sev_es.vmsa =3D pfn_to_kaddr(pfn);
-   svm->vmcb->control.vmsa_pa =3D __pa(svm->sev_es.vmsa);
+For completeness, we could add :
 
-and wrap the __free_page() in sev_free_vcpu() with "if
-(!svm->sev_es.snp_ap_create)".
+#define RMI_RIPAS_RESPONSE		BIT(4)
 
-This should remove the need for svm->sev_es.vmsa_pa. It is always
-equal to svm->vmcb->control.vmsa_pa anyway.
+Not sure if we use it later in the series.
 
-Also, it's possible to remove
+> +
+> +#define REC_RUN_GPRS			31
+> +#define REC_GIC_NUM_LRS			16
+> +
+> +struct rec_entry {
+> +	union { /* 0x000 */
+> +		u64 flags;
+> +		u8 padding0[0x200];
+> +	};
+> +	union { /* 0x200 */
+> +		u64 gprs[REC_RUN_GPRS];
+> +		u8 padding2[0x100];
+> +	};
+> +	union { /* 0x300 */
+> +		struct {
+> +			u64 gicv3_hcr;
+> +			u64 gicv3_lrs[REC_GIC_NUM_LRS];
+> +		};
+> +		u8 padding3[0x100];
+> +	};
+> +	u8 padding4[0x400];
+> +};
+> +
+> +struct rec_exit {
+> +	union { /* 0x000 */
+> +		u8 exit_reason;
+> +		u8 padding0[0x100];
+> +	};
+> +	union { /* 0x100 */
+> +		struct {
+> +			u64 esr;
+> +			u64 far;
+> +			u64 hpfar;
+> +		};
+> +		u8 padding1[0x100];
+> +	};
+> +	union { /* 0x200 */
+> +		u64 gprs[REC_RUN_GPRS];
+> +		u8 padding2[0x100];
+> +	};
+> +	union { /* 0x300 */
+> +		struct {
+> +			u64 gicv3_hcr;
+> +			u64 gicv3_lrs[REC_GIC_NUM_LRS];
+> +			u64 gicv3_misr;
+> +			u64 gicv3_vmcr;
+> +		};
+> +		u8 padding3[0x100];
+> +	};
+> +	union { /* 0x400 */
+> +		struct {
+> +			u64 cntp_ctl;
+> +			u64 cntp_cval;
+> +			u64 cntv_ctl;
+> +			u64 cntv_cval;
+> +		};
+> +		u8 padding4[0x100];
+> +	};
+> +	union { /* 0x500 */
+> +		struct {
+> +			u64 ripas_base;
+> +			u64 ripas_top;
+> +			u64 ripas_value;
+> +		};
+> +		u8 padding5[0x100];
+> +	};
+> +	union { /* 0x600 */
+> +		u16 imm;
+> +		u8 padding6[0x100];
+> +	};
+> +	union { /* 0x700 */
+> +		struct {
+> +			u64 pmu_ovf_status;
 
-   /*
-    * gmem pages aren't currently migratable, but if this ever
-    * changes then care should be taken to ensure
-    * svm->sev_es.vmsa_pa is pinned through some other means.
-    */
-   kvm_release_pfn_clean(pfn);
+This is u8 as per section B4.4.10 RmiPmuOverflowStatus type.
 
-if sev_free_vcpu() does
+> +		};
+> +		u8 padding7[0x100];
+> +	};
+> +};
+> +
+> +struct rec_run {
+> +	struct rec_entry entry;
+> +	struct rec_exit exit;
+> +};
+> +
+> +#define RMI_EXIT_SYNC			0x00
+> +#define RMI_EXIT_IRQ			0x01
+> +#define RMI_EXIT_FIQ			0x02
+> +#define RMI_EXIT_PSCI			0x03
+> +#define RMI_EXIT_RIPAS_CHANGE		0x04
+> +#define RMI_EXIT_HOST_CALL		0x05
+> +#define RMI_EXIT_SERROR			0x06
 
-   if (svm->sev_es.snp_ap_create) {
-     __free_page(virt_to_page(svm->sev_es.vmsa));
-   } else {
-     put_page(virt_to_page(svm->sev_es.vmsa));
-   }
+Minor nit: Like the other definitions, it may be good to keep the 
+defintions of the "exit_reason" above the field declaration.
 
-and while at it, please reverse the polarity of snp_ap_create and
-rename it to snp_ap_created.
 
-Paolo
+Rest looks fine to me.
+
+Suzuki
+> +
+> +#endif
 
