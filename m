@@ -1,82 +1,86 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47421539C
-	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 05:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C465539C
+	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 05:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713246376; cv=fail; b=ntkaDWJTZEzoRX27Cd4ujnWy0WQUg6Xz/Y5jDubs3Bf3ckeqHUTVZD81zNy668Vkz4WaiwpFdwnJASA6u8fYvHCNfNB63EP3XjYfXi+ucZhl4gHioOziC7En2KPldC8JFtrW6G+JMXlNaYXunnK51aOVWAraVwEyHLEWGF3V+to=
+	t=1713246479; cv=fail; b=T6QCjtm7rT4lIVlkm0dnGf42qSa9idsPzwjmhhxp/67dcDnGj74l01AJq77DgOlSs8iDkWQPAdcJJkNgX0XBDkQzNOk8ovPgtZKzunliwzl8ApNFDc3MLhHcgLD7kJbEQ/f9m/JwtoW3CDmdRjmTAFG6Xv2ZMIk+jUmVT0/YU9I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713246376; c=relaxed/simple;
-	bh=n/cfkZ+paF4kOllDL4zziNwucxTSYvJXPwjbMiS8Ois=;
+	s=arc-20240116; t=1713246479; c=relaxed/simple;
+	bh=tUTRSyxKYM7em+7cZ0j8poHb+i0bTHAKNPIBGGia9+o=;
 	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=oU4BcvsgsbqrOFXTF6vY9ABVZFzVWOZWzfOiENliWs1jaqXN0MNC7lUPbcfjjo+WwCJ910TOhZ3V3fw7NfFzXjEWMBX+uvrWQxbVxR3METLF0IyMWmCivY9GB/MLAQDnR3/59hWY5zLGbqQbty8MDODcIf+mModtU4PYuVfR1N8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NvSpzMQO; arc=fail smtp.client-ip=198.175.65.21
+	 Content-Disposition:In-Reply-To:MIME-Version; b=H/6dLGXD8wIdy59T7PHoQhhSIWJffjmN2GZ/VNt8z2UEVktShPQzryu6rpxXfE+Ke0PFS/tBv0UV6kFvJkWOrFq4lgEDDKoj8B2RNKPLB4DlmyhyhGsIQsZIW7Du+LM+Q/Pq6bvnbwhAStOiH8g8n0lypQXbbpwzelitl8ZVioA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H0NziSDQ; arc=fail smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NvSpzMQO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H0NziSDQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713246375; x=1744782375;
+  t=1713246478; x=1744782478;
   h=date:from:to:cc:subject:message-id:references:
    in-reply-to:mime-version;
-  bh=n/cfkZ+paF4kOllDL4zziNwucxTSYvJXPwjbMiS8Ois=;
-  b=NvSpzMQOXhcgOV4Le7G6eQ5DAXaHHFQ+ZFpuCuboAlc+8cFMKEy2zSxh
-   kHG0W9xVWhpY9INoHBlWsOTI3WNcgt9mjNwF3DJaTdWR15IqkvKSVvnfp
-   lBX0VHr/KlXDnKTthHvRECoP5p7zclGI1StoycAMObcx0FM04cGZE8aBv
-   VeLUKOWvc7RYd5eCHy6MY2+eo778g/YhcaCDGucl59rlpUnOaW8ytWR7j
-   g+rcBOZDuHovT6/nCTpsT8AbDWjG++4RBEQwOc0BBzN36+sWNHvfsBSkj
-   QvuuCEayKZ5UTriJTt/I9XAw3e7Hh2Rz9AzPbY28Ii2LKfHZqOI61tPHK
-   A==;
-X-CSE-ConnectionGUID: WMkcN3ZPSP+4Wxs+vRMieA==
-X-CSE-MsgGUID: yo3xSfm1TESKliV9eTCS2g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="8583874"
+  bh=tUTRSyxKYM7em+7cZ0j8poHb+i0bTHAKNPIBGGia9+o=;
+  b=H0NziSDQes5HKGc2KJoQ4UMvJ1TpcZGRB6hYi2MOSabOMl+E7a0n1UKO
+   ogLRo2ZVhaSVM6yfD5WMq4L9rZpP0QfRpwyZb1opNilz7RCRAMILmowjv
+   KNZC4yfHEuTYf82MPI4p9V1egXRmnNhHNdybHk/k9jiCZMfJaRYBC2Cju
+   Y2b0BCx562Xn1LJja0h+vz9XBWt3SyX+Fz8YgGgYKbwfICGO2tTQfzFze
+   I3c54xXCWBKQW4/LEucBvND6qZfxJ56j5OfrEEgGTq93/RmevpVPGP0BA
+   GDplJPnQbSNfKDtdatBEwUuLdk2Nl2n02groCeKVVT9uR9/7PUN+OIgdk
+   Q==;
+X-CSE-ConnectionGUID: 4GfG2WhZRIyjVH+ZhKwBRw==
+X-CSE-MsgGUID: 8fCRBnkHT9iiV3u30O6DUw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="8584124"
 X-IronPort-AV: E=Sophos;i="6.07,205,1708416000"; 
-   d="scan'208";a="8583874"
+   d="scan'208";a="8584124"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 22:46:14 -0700
-X-CSE-ConnectionGUID: oc/soXleTpiBzvCcO19VjQ==
-X-CSE-MsgGUID: Eb9Vfwb+Sl+lgL4U0X0SAw==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 22:47:57 -0700
+X-CSE-ConnectionGUID: FQxcGQ6xRFORsZalsNpKoA==
+X-CSE-MsgGUID: td3t6l0/TjSqwF1r/1fTOA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,205,1708416000"; 
-   d="scan'208";a="22222992"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 15 Apr 2024 22:46:13 -0700
+   d="scan'208";a="22223296"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 15 Apr 2024 22:47:57 -0700
 Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 15 Apr 2024 22:46:13 -0700
+ 15.1.2507.35; Mon, 15 Apr 2024 22:47:56 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 15 Apr 2024 22:47:56 -0700
 Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
  fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Mon, 15 Apr 2024 22:46:13 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ 15.1.2507.35 via Frontend Transport; Mon, 15 Apr 2024 22:47:56 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.100)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 15 Apr 2024 22:46:13 -0700
+ 15.1.2507.35; Mon, 15 Apr 2024 22:47:56 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UtJolMbidBbD+WIE+pyY3y+tx9gTlSyjUX4TN1cHsOFx3v4qyTAV3B0eiv8c6HisoozHPrD6h+DArYLTr/T7E3fahMJkK3C6FWiHlal9l30ZLPrETw+wXFWRZTD52BSBZBTJuHqVUwDHKE5FcgfXMgrWmRZNfIreiuqftKccpIscE4U+krlLYe9Z3FPUvYBhKgHkM9ENYT9yL+levECP5zc6MwCTXIRI1lwQYmxzwuzThr69CZyvsDfzq2z9i/Xiwr4HoBe7tfaQmyu+RDJEqvSJ7sL8YLU1lZWHOs5RitMFojGM+lflURc1ycRHL87NRwawS5T9FppZlTBLh16/Yw==
+ b=XvAKANVs6zR73+SS17iFpzN0dXdwrTfyTorT8xL6MUoLuUXiFrh/GXrFuOrtYuXwv3Uyg/IBuHbSs4HJeBySOD7L5jkN4W/1QyARuoaikLNxw5vRv8RMU5xLILfyZ84grG6KesZp1YKPdMr+nWJTNvfqLjmPZ4PPaSTWv6631kWpfB40WY+LD1Ti7PE8yvtpCEWWdQJQX/p1vbGKZHdgYhAVYraCMt5B07xjSZMgsOnQrxtCQ2uL2fEGoRngB0XGmpVkXNdid8X6fb6jsTxrgc0C81SDxC9YNCOLYVgiK4VYcTRTgoVu7RS5BTKlzAvZzBe3H89gCDhwzh7f244F/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DCS8fdOVVqOcKIGr+Ak95E5bnVEA+LjYz4t9afwAO/U=;
- b=CDiUCG+dxIMi+Do3vA0E2T7uKDvbxlfQLf9fqCHikq3CFZsC2BX3IkGpzKKVHW9lBj4FOzU0HhafAJrEDwDtKBCITANpxbo+/g+Q1hKCsmUa8nsStTaQ4/q29/Lxf27asw2Yi7JslsCIvcsjFoGU8ivpTCk8F/IrgqdL/qL8LSgcwFvhHQ69+oFi7jT4HJBfmc9OWBqllwfKW1wFAQlj2+PGe4xVj9IIWYKR9Watg8moWq8VCtmZCXYDTsfqBrOSdNpfHICEV/i4ZRGO3nsYRopdE3V3FntwE6cr7hXINFAKkHAdXpD3gbcMh+PFZrdRK9EkRwfXrbcxhtqBgTGDKw==
+ bh=TruajbSghbJIBrwh0mHpj3/gl0v8MEhfG1lvzrRWFRE=;
+ b=P6EfqzPfIrlI5LVZycY4+sjv8vAubBrvEUMEPBnxNXaPCql5+w/ItRvJnm7oIxqtCqgJ8OEKhyPaD4FfZesAUcqeXE5TvFLSXFVuCmB2T1JILbddpdoPoNbWJ22AvN+O0OFyvRb5k4Hf1c7rqz8tsE/wYU7mWrRELPWWlyXRTw1lDXeCQXfeyBXMnzRpQ6UnoG+1VqQzCFHIE970BodhiCvn9th+Y2HKANPLf7fHQUtA/kzIhnEUm6YcjwBR/WX9O8FQtZsezNlusBtrThSrNoN7GhlyB5q75rNWXKu1V+oBAz6ePcSDTPS8GAYkpMYskuDLfs9WbdmkCvLN83PHFQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by BL3PR11MB6385.namprd11.prod.outlook.com (2603:10b6:208:3b5::20) with
+ by BN9PR11MB5322.namprd11.prod.outlook.com (2603:10b6:408:137::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.43; Tue, 16 Apr
- 2024 05:46:11 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.28; Tue, 16 Apr
+ 2024 05:47:54 +0000
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com
  ([fe80::82fd:75df:40d7:ed71]) by PH8PR11MB8107.namprd11.prod.outlook.com
  ([fe80::82fd:75df:40d7:ed71%4]) with mapi id 15.20.7452.046; Tue, 16 Apr 2024
- 05:46:11 +0000
-Date: Mon, 15 Apr 2024 22:46:08 -0700
+ 05:47:53 +0000
+Date: Mon, 15 Apr 2024 22:47:47 -0700
 From: Dan Williams <dan.j.williams@intel.com>
 To: Tom Lendacky <thomas.lendacky@amd.com>, <linux-kernel@vger.kernel.org>,
 	<x86@kernel.org>, <linux-coco@lists.linux.dev>, <svsm-devel@coconut-svsm.dev>
@@ -86,16 +90,16 @@ CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Zijlstra" <peterz@infradead.org>, Dan Williams <dan.j.williams@intel.com>,
 	Michael Roth <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>,
 	Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v3 12/14] fs/configfs: Add a callback to determine
- attribute visibility
-Message-ID: <661e10a01f1d8_4d561294d0@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Subject: Re: [PATCH v3 13/14] x86/sev: Hide SVSM attestation entries if not
+ running under an SVSM
+Message-ID: <661e110326bd2_4d5612949a@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 References: <cover.1711405593.git.thomas.lendacky@amd.com>
- <e881a70fda1da98882241fc46fd57c3063fde55f.1711405593.git.thomas.lendacky@amd.com>
+ <67893f352bc54de61160bfe251cba0bdf0431f37.1711405593.git.thomas.lendacky@amd.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <e881a70fda1da98882241fc46fd57c3063fde55f.1711405593.git.thomas.lendacky@amd.com>
-X-ClientProxiedBy: MW4PR03CA0016.namprd03.prod.outlook.com
- (2603:10b6:303:8f::21) To PH8PR11MB8107.namprd11.prod.outlook.com
+In-Reply-To: <67893f352bc54de61160bfe251cba0bdf0431f37.1711405593.git.thomas.lendacky@amd.com>
+X-ClientProxiedBy: BN9PR03CA0792.namprd03.prod.outlook.com
+ (2603:10b6:408:13f::17) To PH8PR11MB8107.namprd11.prod.outlook.com
  (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -104,121 +108,140 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|BL3PR11MB6385:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7dbbdfe1-53ce-4edb-307a-08dc5dd8855c
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|BN9PR11MB5322:EE_
+X-MS-Office365-Filtering-Correlation-Id: d67f88df-645f-4483-0159-08dc5dd8c202
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9/E71Ifh856uzU5E0siJwcB0ptnwaXCc2VnFwgsyjPD7KH8UnRdaoEKV+EEa6CwZE5jQP5iHrHM40WIU8TjMExaM/OO9VHvCofzb1LlFrvmRcSdCIYWZr4L4nuWqeyPSRtB3oifdGePrHcceCsP4wKOgHrymPaC2n1OrZHGi0uyIn5wypESwsYA90n/AvMLGZhiPSsjoTnZVglh0NfS//iLwgIe1C/XAo/wL3jTeNAO9AAUVk5S9/D5obgTK2+RRt5DPVT97sVBSWrLZONcmnevi9+l4aI6IgrqeG7dFmVZGceiUTLfPIGToSxPSr7g5EyaAiECfZ1j12DMfoa+7NwO1gZ/9SfygFDkTgVmuaGQybaahfYi4f+B5CrtxIg+BzTSkhWBzlTx+Tyik3j8zXeqWKur5In2Yv8ZXGojj9S4mvG1ZS0y170CZGdEda1NwfNEPwfWxdYyTddhQHvOs7bmAv5IQTZMYC5Av5GpqdqO89oP5k7Sg5p8Zf0Xko+QzHMx70zPMRdSQ2egA/eBeLTfo5gkxd9HHWsWeRlx4SD26Uy9AczP5TLrscfy4sm8dypViIIcUg+8aXKZisy36WkdPGjkyhxNEfRTow6JvMq7cODwWs57K3qtyGAWXFD5ER+C8xnbMT+BX/LqRcczFqnsi8oZdjw4LuQmr1ybJ3hc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(7416005)(366007);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: +ePQXI7PktzVKJoDIrDWnWlOZSzu4vdf6E4BuhxKEFPBiLm/T0kJssjKKyedgC7G1fhyP2Pge+3qG18nnWXIg4WQ8DWZeduTElIsJlNc7n0zDZrvCqIxDF0TQ8ADGp+RM9eQj19ZOwLgEU17hLNdlBeSWeD04PfPary4FTBbccyMXmr5YNWPK2/nDf6NYVJarCyRByRrlc6DeM1L8h2w0lEaizF8kT0h3WNyDJ3fzmJlDCD9Z8Rth1io2XfJazWfS6Btb4TnobSqDKgNjmoaiax/zEOSdmJC9jbKBG9o2m+h69Pr+ou5GXh9hrxdCPGupPnG7Lx2jd6eZgLz4EfiZoY8yuDHQE6RJYWtaSe5lSqAvzRV4Pycnuoqd+a1/pAIOdIpAqaL1rf4nZpS83febjBsuWvlKJeamLXYmU6++w404OWY/pDPm0zg4pOxq5W/pkLhVV8VtyrJznTgaQRDpUW6CPqFgVMCqWx+EQIagyYYdlZfXfbxKDrBElvZx0Hwpd3sE2j3QNk9ngeRhVi7MfBuFzBqi5Cb/jEX+QdfwBf5yV+hBOI8xvRI9A1S7vCshgACyWkcMsCjizZGCd+IYGyNs9+4ZbJZcKYRDXYHfgyOop468QQ+ieclRCieR0ECbwJS7d4j4buzexvlVdKfYA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(366007)(1800799015);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?lSfhtnvzhXaCXSfYYE3E9wxJ/8lehWGqbXpuZ7+2ewV4yLuGMDzL4tN3SB1U?=
- =?us-ascii?Q?7Fi+DRUDkiAVD3lyYf7VN4tWdjMJUp1QLTRoqzI1l38xszNbi6NRN4Hdz+PE?=
- =?us-ascii?Q?GOKPnjtqtLl69vqlYNqe0uW4SXx/NS4cFOIEkKRHY5zXaZgDzRBiqZLg3vai?=
- =?us-ascii?Q?qo0gb0Kh8s2Qiipzid0D+f4omaEj2hBHMCe8BLrrYxkbvkCnk2ELZ/gKeVWo?=
- =?us-ascii?Q?CjYNvJ9U+Ylo+NjeINp1dsCs9pbjpKlVuWHPmPRBKCYzSGAlRg5/AQMnkjZB?=
- =?us-ascii?Q?XcYyhuP8ZkKZBR/Nwmt+27zMmNYt71T40GzKo5gTLt9UJP1n971Td4BpdjLI?=
- =?us-ascii?Q?V28lwRfvUPHfXBUbtW7v5S7RtrkPqEeBdgLmrFQMZepL6Cl2d1fMRB1W54Xz?=
- =?us-ascii?Q?P1hCwYulf3D9OEcIfpS1Di04Z8dA3v1eaePWItarU69QjO5IPr8bNT3A4fRL?=
- =?us-ascii?Q?wAj8B4W/8DQvifOzXXg7bHQXgj/rrKiWTIynixChs0fXpT7ZVLSe5rz3FnQL?=
- =?us-ascii?Q?S/RUwhWVnIg2CKcVyEzvkZwCOz8A4VPUaEYPPJlSvVWTQgY8nBFMtw+jjJVw?=
- =?us-ascii?Q?Eh5uslDGEucZ1QssNDs2h6nwLGI+J2itHU2jJzc0PBPPVEtLA5d+gm+WHxFA?=
- =?us-ascii?Q?7/YTaegOACIp7R1G0QpJoQaU0XssmtaT4AEjQPVDocNFBZCJq8q8We+YlDrJ?=
- =?us-ascii?Q?44u2Jy4hqIDeg7iQTtlXA8ScxJiTMHNHRIEmBtRZ2/aje8Pji/cK93E1OATB?=
- =?us-ascii?Q?U9I6qt/G5p52Fh9BT7K7fxjYpM78ehswONTrxFrqoZ8z3j7+3gQBID7L/5Op?=
- =?us-ascii?Q?wArjlGZsp9519+Ehcwrx9jH9zKiQY9t42MdhoxjoTXmUETRgFEKdaOLcPhzk?=
- =?us-ascii?Q?y7k4gz1YwdFGjAGR/e2Xth7J3u9TLVJBCxO6gHHMQDn1IT08U4PKs533PMV+?=
- =?us-ascii?Q?P+gQB5U1FkRFqz/3IwhxqEXf3kRitMk3+rSGgjAYfEXxqz7ux1dx3awyC07g?=
- =?us-ascii?Q?dug5OeU3Z7aA2v7QCk8oCBHdXZg5WRjUZwM6eGs2vO8+UvX6ujlB4J0N1eeI?=
- =?us-ascii?Q?rSXHez7cxhx8kFNnuI7yzVkIV6FPvjNqkk3TPopLn8k0Np29T26CIn2SMLv+?=
- =?us-ascii?Q?hpIuYqgNPUtH76nqAed7DnToGzlbrv73jm1lMBR9IXMMsNo777jkKn05ipty?=
- =?us-ascii?Q?NbWdG/pAhQxNnsNZ8XLto2noixQLF+hZtYVV+DdW0Qdze7bRBjC3euYg62vc?=
- =?us-ascii?Q?Yt2ctWAV59iPflOdD+RXSxzASpiyZoiYObWsZ1sOsGNe2RmVL/mG82Qr8ESq?=
- =?us-ascii?Q?51IEzPoYJ1SGbY9MDAj0xIdOxnww+Fr5xcAJA2dBGJyOSBCxZ7gHxINmmgFA?=
- =?us-ascii?Q?vVXzuROM0PMFK88tVfDyXV2b4mMHV39HjyMCtWjKFOUnFf/GlPE+js2EB2Vs?=
- =?us-ascii?Q?3/I8xX9BBQlmwwK5ta4/xLTAVInkongn71hoPbZEJsSkUwMDNXSZWeHIl38C?=
- =?us-ascii?Q?UIoFRf2NLm4IEJ4WnFiOmMKJIfH55Cnyo87Mr9/DBrQSPhKf4POY/T8JpNtZ?=
- =?us-ascii?Q?r0fkxfq2sRPQBZgcabKn/DIETM/w0AssTVUfIgRW6Yij86zaAKYoy1Rtmlk4?=
- =?us-ascii?Q?cQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7dbbdfe1-53ce-4edb-307a-08dc5dd8855c
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/2OmrA8wKpgTHK7QfRVVMjbw3/1sPSBEKWyPx8ok0vZ+BdJML3BZum6QSgnp?=
+ =?us-ascii?Q?v2zEoSzUwKQPAUy/hv6dQwtv1U/PTf0E6BuMoOCiE3raltSkFumR/gK0THzB?=
+ =?us-ascii?Q?FWVvuPiEaIxQRW0E8qcRdEu/JGDLfeR/J3PmnAszc/3Yhm3VyrnFFq6QSbii?=
+ =?us-ascii?Q?c6O8BbCnI1TEyCIitmeWOc3RQ5r+i8sOzoZzeZl8S7oldPhYulJOBAeOXK5V?=
+ =?us-ascii?Q?CLMMrnCzMpVJ02NC8FG0HmBRTFtxnaFiS1PRKxO2nXw2TqcPe2cQ/hafta30?=
+ =?us-ascii?Q?O4uOy98qT6waDNz9+yat+2DsCno9YnK5F2mylr4NyH+6oEgpNSLBLkUlyzKy?=
+ =?us-ascii?Q?4nDATIiftKF/dZortQYEir7NMHJd7hnzKrEdRypX52td2vCiTnX9EaVzS2l4?=
+ =?us-ascii?Q?fREdjKGQXt7/sgElLYNu69+DK81mW9DiavfGQM/2lpA8chRwvNQD8PZyS137?=
+ =?us-ascii?Q?ejpMHrfyYXwHJ3tNIotLoivgbnRVdp5pqeIqJZbGhckEThq8f8mmkPE+wxt5?=
+ =?us-ascii?Q?S4UQlQivX2x+HTKDyDNmG5/XL4cq/lJ1epgBJyI72SNO8GdIG6jcQKaIueC/?=
+ =?us-ascii?Q?P86nNFIfTHiWqpqiGGOncGkx17hcXuWFuzzz4UdBE2SQGu60I9QpC/ZjBHG7?=
+ =?us-ascii?Q?iRPHhIa3HbtZw33hXFp4pPlkDaPZhCUaaV8Ut9Ik2cw17pYFXrKPvog2MPvz?=
+ =?us-ascii?Q?rztzG0HGRmJTQVpymSmDvytOdKGJOsZv0tiVG3FeXNf4OAiihvJUJISoLBHy?=
+ =?us-ascii?Q?ZQD0f02uljr12IsG4xfdy+hhxZcoyeU6P9DTrAFQvzgqotV9fgjYxXQFL9GF?=
+ =?us-ascii?Q?CX4LbxGHD8TesIQuhbaB1tsvKmButjPmKSHsyrbzIq/lhNNnvfAuv6487adg?=
+ =?us-ascii?Q?rFswIUsy3rApOupjFUsHz6gPlEyIkbcKHj0CbXL02ExysTX4eoYJcr/RTACk?=
+ =?us-ascii?Q?FJB9H7t/jpxN41ddu2I2P+Wkp9g9HIqbQgrmcDWpFeJIAxj8P/9t+UjhCLpA?=
+ =?us-ascii?Q?68CE1ezZU2tuWhLbDrYB1qDM/2qUY81+CDHU142Ss6EoWUg0cmh3qQyNs0iD?=
+ =?us-ascii?Q?gADDj3dw3+syQZS97FXPfyjObuuGIA4qSQWIZpQefugQ2iZ3aKE+JTEuTr9X?=
+ =?us-ascii?Q?ntUEVdG74wzKNo3OAgkJy4uE0jIlNVeWmPM16rMGjVPTGRdrRSd8PY9WdPl4?=
+ =?us-ascii?Q?VSZ39fyBAjRA6LEmnrlqSKuqUfLtS8o2qz8B4xdtur6lrlslbJstSJTi2viJ?=
+ =?us-ascii?Q?0wF1ZPIA1yZDWAUcJRle4mXHEPHDuMG4853awCMo7PsdAr2H95Jki5n5Tu9V?=
+ =?us-ascii?Q?kCOGLAxTXZ7xY/d2poUW/k75YGScKkwVOFsryLEkeKOSYEcFnjtwqY/fArOh?=
+ =?us-ascii?Q?rfJkr8kVby5ahTUaeroDPPHaNKpOHhDNrRX6DxY04YUeGbzTHYjw5EYZweXC?=
+ =?us-ascii?Q?Uc/ssIPz69BCXskuiCPl098WcOKS7XhKvfVZnAlFFKKp3o9UPnxJYwpjDpGJ?=
+ =?us-ascii?Q?Yy3MsAb4ZjNIM8VqvQV3Hpvu9X8S//q+FVc1/rZIrxzauh2MSAbVegUE66za?=
+ =?us-ascii?Q?ZCE4pdu344tm0H6HbtseLWpIXvNnbJPmaXhobsRtA+JW69QNFMJpVhZexakv?=
+ =?us-ascii?Q?Kg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d67f88df-645f-4483-0159-08dc5dd8c202
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 05:46:11.2857
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 05:47:52.9812
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /CzOTbw6SLpN8dRt+BJZWz2FRtD+KMZDVzjgzeIFUN45CkCpvMm2Boyk80pK7GN+PPJorzGvsEfZO9GgvA8peauQzzMxnNmuC0e4v4MtrRg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6385
+X-MS-Exchange-CrossTenant-UserPrincipalName: Zai/OhcCnysKvadDQjz+O5fbN8cCqr1pKRjYhQObgFXHMpOIj8L5jetwvtuYnh0CK56c3U9JsOskcnHxUGazDkjuqHf+YVwL324MroGSpjA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5322
 X-OriginatorOrg: intel.com
 
 Tom Lendacky wrote:
-> In order to support dynamic decisions as to whether an attribute should be
-> created, add a callback that returns a bool to indicate whether the
-> attribute should be display. If no callback is registered, the attribute
-
-s/display/displayed/
-
-> is displayed by default.
+> Config-fs provides support to hide individual attribute entries. Using
+> this support, base the display of the SVSM related entries on the presence
+> of an SVSM.
 > 
 > Cc: Joel Becker <jlbec@evilplan.org>
 > Cc: Christoph Hellwig <hch@lst.de>
 > Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 > ---
->  fs/configfs/file.c       |   7 +++
->  include/linux/configfs.h | 111 +++++++++++++++++++++++++++------------
->  2 files changed, 84 insertions(+), 34 deletions(-)
+>  arch/x86/coco/core.c        |  4 ++++
+>  drivers/virt/coco/tsm.c     | 14 ++++++++++----
+>  include/linux/cc_platform.h |  8 ++++++++
+>  3 files changed, 22 insertions(+), 4 deletions(-)
 > 
-> diff --git a/fs/configfs/file.c b/fs/configfs/file.c
-> index 0ad32150611e..a976c183756c 100644
-> --- a/fs/configfs/file.c
-> +++ b/fs/configfs/file.c
-> @@ -451,6 +451,9 @@ int configfs_create_file(struct config_item * item, const struct configfs_attrib
->  	umode_t mode = (attr->ca_mode & S_IALLUGO) | S_IFREG;
->  	int error = 0;
+> diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
+> index d07be9d05cd0..efa0f648f754 100644
+> --- a/arch/x86/coco/core.c
+> +++ b/arch/x86/coco/core.c
+> @@ -12,6 +12,7 @@
 >  
-> +	if (attr->is_visible && !attr->is_visible(item, attr))
-> +		return 0;
+>  #include <asm/coco.h>
+>  #include <asm/processor.h>
+> +#include <asm/sev.h>
+>  
+>  enum cc_vendor cc_vendor __ro_after_init = CC_VENDOR_NONE;
+>  u64 cc_mask __ro_after_init;
+> @@ -78,6 +79,9 @@ static bool noinstr amd_cc_platform_has(enum cc_attr attr)
+>  	case CC_ATTR_GUEST_STATE_ENCRYPT:
+>  		return sev_status & MSR_AMD64_SEV_ES_ENABLED;
+>  
+> +	case CC_ATTR_GUEST_SVSM_PRESENT:
+> +		return snp_get_vmpl();
 > +
->  	inode_lock_nested(d_inode(dir), I_MUTEX_NORMAL);
->  	error = configfs_make_dirent(parent_sd, NULL, (void *) attr, mode,
->  				     CONFIGFS_ITEM_ATTR, parent_sd->s_frag);
-> @@ -470,9 +473,13 @@ int configfs_create_bin_file(struct config_item *item,
+>  	/*
+>  	 * With SEV, the rep string I/O instructions need to be unrolled
+>  	 * but SEV-ES supports them through the #VC handler.
+> diff --git a/drivers/virt/coco/tsm.c b/drivers/virt/coco/tsm.c
+> index 46f230bf13ac..d30471874e87 100644
+> --- a/drivers/virt/coco/tsm.c
+> +++ b/drivers/virt/coco/tsm.c
+> @@ -64,6 +64,12 @@ static struct tsm_report_state *to_state(struct tsm_report *report)
+>  	return container_of(report, struct tsm_report_state, report);
+>  }
+>  
+> +static bool provider_visibility(const struct config_item *item,
+> +				const struct configfs_attribute *attr)
+> +{
+> +	return cc_platform_has(CC_ATTR_GUEST_SVSM_PRESENT);
+> +}
+> +
+>  static int try_advance_write_generation(struct tsm_report *report)
 >  {
->  	struct dentry *dir = item->ci_dentry;
->  	struct configfs_dirent *parent_sd = dir->d_fsdata;
-> +	const struct configfs_attribute *attr = &bin_attr->cb_attr;
->  	umode_t mode = (bin_attr->cb_attr.ca_mode & S_IALLUGO) | S_IFREG;
->  	int error = 0;
+>  	struct tsm_report_state *state = to_state(report);
+> @@ -144,7 +150,7 @@ static ssize_t tsm_report_service_provider_store(struct config_item *cfg,
 >  
-> +	if (attr->is_visible && !attr->is_visible(item, attr))
-> +		return 0;
-> +
->  	inode_lock_nested(dir->d_inode, I_MUTEX_NORMAL);
->  	error = configfs_make_dirent(parent_sd, NULL, (void *) bin_attr, mode,
->  				     CONFIGFS_ITEM_BIN_ATTR, parent_sd->s_frag);
-> diff --git a/include/linux/configfs.h b/include/linux/configfs.h
-> index 2606711adb18..c836d7bc7c9e 100644
-> --- a/include/linux/configfs.h
-> +++ b/include/linux/configfs.h
-> @@ -116,35 +116,57 @@ struct configfs_attribute {
->  	const char		*ca_name;
->  	struct module 		*ca_owner;
->  	umode_t			ca_mode;
-> +	bool (*is_visible)(const struct config_item *, const struct configfs_attribute *);
->  	ssize_t (*show)(struct config_item *, char *);
->  	ssize_t (*store)(struct config_item *, const char *, size_t);
->  };
+>  	return len;
+>  }
+> -CONFIGFS_ATTR_WO(tsm_report_, service_provider);
+> +CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_provider, provider_visibility);
 >  
-> -#define CONFIGFS_ATTR(_pfx, _name)			\
-> +#define __CONFIGFS_ATTR(_pfx, _name, _vis)		\
->  static struct configfs_attribute _pfx##attr_##_name = {	\
->  	.ca_name	= __stringify(_name),		\
->  	.ca_mode	= S_IRUGO | S_IWUSR,		\
->  	.ca_owner	= THIS_MODULE,			\
-> +	.is_visible	= _vis,				\
->  	.show		= _pfx##_name##_show,		\
->  	.store		= _pfx##_name##_store,		\
+>  static ssize_t tsm_report_service_guid_store(struct config_item *cfg,
+>  					     const char *buf, size_t len)
+> @@ -165,7 +171,7 @@ static ssize_t tsm_report_service_guid_store(struct config_item *cfg,
+>  
+>  	return len;
+>  }
+> -CONFIGFS_ATTR_WO(tsm_report_, service_guid);
+> +CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_guid, provider_visibility);
+>  
+>  static ssize_t tsm_report_service_manifest_version_store(struct config_item *cfg,
+>  							 const char *buf, size_t len)
+> @@ -186,7 +192,7 @@ static ssize_t tsm_report_service_manifest_version_store(struct config_item *cfg
+>  
+>  	return len;
+>  }
+> -CONFIGFS_ATTR_WO(tsm_report_, service_manifest_version);
+> +CONFIGFS_ATTR_VISIBLE_WO(tsm_report_, service_manifest_version, provider_visibility);
+>  
+>  static ssize_t tsm_report_inblob_write(struct config_item *cfg,
+>  				       const void *buf, size_t count)
+> @@ -333,7 +339,7 @@ static ssize_t tsm_report_manifestblob_read(struct config_item *cfg, void *buf,
+>  
+>  	return tsm_report_read(report, buf, count, TSM_MANIFEST);
+>  }
+> -CONFIGFS_BIN_ATTR_RO(tsm_report_, manifestblob, NULL, TSM_OUTBLOB_MAX);
+> +CONFIGFS_BIN_ATTR_VISIBLE_RO(tsm_report_, manifestblob, NULL, TSM_OUTBLOB_MAX, provider_visibility);
 
-Shouldn't this operation live in configfs_group_operations? That would
-mirror the sysfs organization, and likely saves some memory.
+Yeah the same callback specified multiple times feels like something
+that should only happen once at the group level.
