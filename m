@@ -1,71 +1,108 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2066.outbound.protection.outlook.com [40.107.237.66])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA00A13174B
-	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 16:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41094130E44
+	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 16:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713284266; cv=fail; b=dmzrFjQVKeQN1d73KFbFiLyyM1POzPUmZZJISDTxe2lQcmeSwDn0ip+Gls23dWPe1Bkd1B8Q0PoEXWMBaxvXWV0/BZ1mhuq3Lh9/ZPWmkkEpXYEuoKMkBCWllYSwif0JNtm44QBjOQGF66X/nb7xzGJ6UMRq6soY9+HRTJhstCY=
+	t=1713284407; cv=fail; b=a0Sk0XVdnjO/P8hftF3wgjhFLtdEQ7d6IjsJgsAM/4zHO4jAMNyJ+v1/FlzDAolnBsoMxrIZU6vsfN8D/IV5uZCnbYPwbp0uM3s8tkZPJ3pA/sEhFWy8xAm9RvCc5EJNhxqgbnvwkscHlmZPTKhDJQkXLjk5OA3ADFJBjKYY0Sg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713284266; c=relaxed/simple;
-	bh=Od9L+I+4nR/RorJhpqxRxteGKOyvLUmF4MEPfOSaYzg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ewy0rjL1oWA3GUjO192uhuB4PYRnbLBxr0TudqlZ6R1Vayg9MRrSGG92cR+Jhfh35Q+TtU6+rMRZO4J+3Ccfz1vpeDE3kyobgawdUWJhksrOeeEdDmbMRTNQmIQD3UxjqzWglW2LNJu2ntACOAxl2TZX6IGqRpktfVrkOXsYe5U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hhDylQkD; arc=fail smtp.client-ip=40.107.237.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1713284407; c=relaxed/simple;
+	bh=tqnHBt08iPmhzxbME0xHsYae6YSGaA7ncoXD6G3ZAB4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=g1cOe6YF85csLo3mXHCTwuunWMijI+TG7p1oNkORyWi8VcY0IyFEZk/l5fRnU+pxjewZslS4KX39Km2xVQ3u4RfcE9ONkwNYrLhEDdFm61lDO0HTq7sCO576U8rsZsS1c/wvIxZTmKw6hdWc/4o4ZKLbg0jEd2+Dko5cqvICLvk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WG5DK3+S; arc=fail smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hhDylQkD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WG5DK3+S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713284405; x=1744820405;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=tqnHBt08iPmhzxbME0xHsYae6YSGaA7ncoXD6G3ZAB4=;
+  b=WG5DK3+S59gzC6INaSFSIb0KYxn2QKe/xcrb9Yy5GQEunp3N/xifu7g9
+   Xv7nWQFeCOjR2Yb4MhHY+GmDdu8xn8AIThD138YGKN61xOokdmIZVvoYO
+   299ueB4NFoo62q9aSLc+tfms2Js77WulopKuSZHAtGKqUf6rweH2E//dV
+   qNaO+0/f0MoQoCFETnrrdobQp4DEqpxCLoa87f6pYeH5/QOiLg3k/TTdo
+   pG5bBsgBj2Bk8xJEC0hUaRJnscqhmcwOq6MKmz6Vk1OFaZE7HcMR8CtaV
+   pF2/KevXyRc+GF3gUfMmvdXWHWtZW3zIq6F4EtD11oW4d81bW2+Nw9rU9
+   w==;
+X-CSE-ConnectionGUID: jQI8PvWHS8anwse/4ZeJTw==
+X-CSE-MsgGUID: S0+kVH5ZRRq73tRRBLmnKw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="8615157"
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
+   d="scan'208";a="8615157"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 09:20:03 -0700
+X-CSE-ConnectionGUID: vMVSO4A6S6STifvm7nD4fg==
+X-CSE-MsgGUID: /yEsQkVjRtasZham0Sx9rg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
+   d="scan'208";a="22380119"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 16 Apr 2024 09:20:03 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 16 Apr 2024 09:20:01 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 16 Apr 2024 09:20:01 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 16 Apr 2024 09:20:01 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.101)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 16 Apr 2024 09:20:00 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GbAyjbLugWVSSidV09i+4fEHkzoh2FXaIYd/3PsnIvsGlpBBUjTZfB+5AyGHWWtieEEZ6qoxhykG2UIBFJN7jJfNc6awlC3QfGO0ccsrUg/1bA9GIc0y7sIGJLJy+0OiNg7NfIoE3goYXgg/wmmEzlMcTmX7AgSDCadK0XM9DSHKaaspGPjSixK5LQmHGSkllWHEJCbY2gUcrSDqdatrtGDTQBILUGKtYNQrz0dDS4Tj217cEbjklQI1nlBOuZrSExKcyYR+uiJDhlRw9DnepCEKgy8RYMVX2FP2toAPuGqRH1/CVKhXnYpyPAgdrKVJajq+6KgAXogJVDvU4P2M8g==
+ b=N2YxWBzSPsYK/TH6F/2BxoWGYsQ09T2dY76LbEdYhEQA5FDtedp48kKXT8Eu6Vgda3TcTSUDG0odqfOrSVDoV9ck+wkRMRggTD2tNeMlF9/K3LCX22vvvwy2ViCDPnQ8EUVk7CXXwR8TyUdxQnhRj2Gdg4igCQMcs94DRyFXdtk7aHVnHQBV5UzajeZ99CyiqUZSgPa0/iNJveoAs3kmpjr6TP2Wj9CV3AA5x50lZWxx9MZWWcQPVgL+YlIZeJbKFVETBr4tkV0EMGeVswifmdKD4cQN8lbfJNqy2pCrAc3SUSaF/NerKe1/8X8jgAfZ5T2i5bFGvoQGUraZBDXfIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tM1tEwro2rjm4FGZZZCeUi509ZVthQoM1tWA6AA7Sbo=;
- b=l9cn6tPtnbkoJj8kYsvKaSHWU26YhDCHK7oOJJHexv+T0awLa1axSHXOoklbyfGOPh2yvmE/VK/4Dv24O4QGsvbcBLqEyMojCYDpX+/hm/m0zEwzoxHWPi4Tn4xTILR1tQmbW8T1kfDAJpII2/YTP7ZFGT2i2qGcacah2UkSTnx759T6C+C35AYZjuqUgAEUKD3s2E0U9wqy/yOu+VDGV3jwJN6bfhKJRlyQS89E4PvknNtA5BW820AO5V/VdTyudzVzHBhiJ6PO6XmJeQtvM09snvBiaLTOtS6TDxlD6OgezVtPay5Kgrvt40A7YFPfENP1l3JW5nsdEgPxE3uDKw==
+ bh=7beU0BVULEWkxfb/DMmOTEx/TdIliJ0sTn7ro4i/Mx4=;
+ b=e9fgffA3lWd9+OeKL8KuMSx9UP117gx6IvlmxnRsomAwJ7di0I+lcKcdZw0qJ5gJ0aJwmAIvLiksIvBkyr42MNpXXIR4v/W90euSjFAz88/S/Ac1SpF120s9F23oijh+S6mIFXMM7wGYrQ8dzbQKIENitkbo7FLmOevseo0SvDok3rCLva/uxXhdiasLGMlBxU0cjgY65i+6UwP4pxLAG0KAjaE2bCQA6UMlkbI6bMXNbHz4JHnpQdzAYqpCC3mwhdgIodNajBGaH4XcGSCH/a7g1u2Msr08Xmkq22IaucoicW1fQGqe22LBoPOtLz4byDSxrES5uVA3BYLFNLodQQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tM1tEwro2rjm4FGZZZCeUi509ZVthQoM1tWA6AA7Sbo=;
- b=hhDylQkDH7+uZc1J7PU2tcSsfkre+y+ziye8Y6ZlRMpHw7amVWRDX2mY0q+ABb1XvyIyPN5fORpwC1AJhEWyunlAGQvpQT9etKAkRGWMIO6MjPxRZ9fEWXYKbvRAasdcL5W/eE8eV9L/vCG5Vj/pmIfFa+wXTfHQhQldYlaICzA=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
- by DS7PR12MB8372.namprd12.prod.outlook.com (2603:10b6:8:eb::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7452.50; Tue, 16 Apr 2024 16:17:41 +0000
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52]) by BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52%6]) with mapi id 15.20.7452.049; Tue, 16 Apr 2024
- 16:17:41 +0000
-Message-ID: <2be81e12-9c62-7fa0-5f3c-ab195406b6b6@amd.com>
-Date: Tue, 16 Apr 2024 11:17:38 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v3 10/14] configfs-tsm: Allow the privlevel_floor
- attribute to be updated
-Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Michael Roth <michael.roth@amd.com>,
- Ashish Kalra <ashish.kalra@amd.com>
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA3PR11MB7535.namprd11.prod.outlook.com (2603:10b6:806:307::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.28; Tue, 16 Apr
+ 2024 16:19:57 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::82fd:75df:40d7:ed71]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::82fd:75df:40d7:ed71%4]) with mapi id 15.20.7452.046; Tue, 16 Apr 2024
+ 16:19:57 +0000
+Date: Tue, 16 Apr 2024 09:19:54 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>, Dan Williams
+	<dan.j.williams@intel.com>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<linux-coco@lists.linux.dev>, <svsm-devel@coconut-svsm.dev>
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, "Peter
+ Zijlstra" <peterz@infradead.org>, Michael Roth <michael.roth@amd.com>, Ashish
+ Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v3 11/14] x86/sev: Extend the config-fs attestation
+ support for an SVSM
+Message-ID: <661ea52a53541_4d56129416@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 References: <cover.1711405593.git.thomas.lendacky@amd.com>
- <bb088b1409283cd323515138feda224759a247ec.1711405593.git.thomas.lendacky@amd.com>
- <661e04cd345af_4d56129468@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <061802e1-7c95-f1f0-b462-3aca27583d76@amd.com>
- <661ea007d1844_4d5612948c@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <661ea007d1844_4d5612948c@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA0PR13CA0004.namprd13.prod.outlook.com
- (2603:10b6:806:130::9) To BL1PR12MB5732.namprd12.prod.outlook.com
- (2603:10b6:208:387::17)
+ <1ca853e149fe37be748c028a9b0d00237eb73938.1711405593.git.thomas.lendacky@amd.com>
+ <661e0e9418862_4d5612941c@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <3732b0d2-0471-48ce-89b8-43f425040846@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <3732b0d2-0471-48ce-89b8-43f425040846@amd.com>
+X-ClientProxiedBy: MW4PR04CA0093.namprd04.prod.outlook.com
+ (2603:10b6:303:83::8) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,126 +110,194 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|DS7PR12MB8372:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5fc44203-06aa-42d5-92a0-08dc5e30bdad
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA3PR11MB7535:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8b350771-add9-482d-19d6-08dc5e310e92
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	yZEmqPdcQkofu8qbO8LzXNaQ8xCjIaaWgtX25aAqe9kVPI1UWKMsxIOpA7pSfQ28BAxs69mmGYw8Xu0sqdslko5nlcuvCqc+9zvAxxyWE2/AM3UI3inXNyvutr3IryvgkGt8T1gZHgZoFriE775qyDQZfNpvQA2D4vtjcVrAE0r3KIg+wtBnHO9pN+ZZVPgFfOdiL3h4sjq8OZka37lxZ18bCZMaWnWKJULxRe1jSBPgExs6YN7xTuKObizbGqvCJJEOG18o8ZgFasS3KXgcNihpMk6tIbTAAp8Rk55sPVJWe7qYgb6N79juFnTNnHtThuKIT2XJQYTF4sCWSebw49RNCjWklljDvSUnK3U9Ny5zsP17trUWVoVgUnh3cNIQ/vxUC9HDtaIcEfPMxOlv8bxtO4FlDX8ytFxPQRDxHZ8f3jc3t5HFhfNY49UuJ1hMhZcUj9JAReUT8WJuC6gp47rTfijLLnFXMzUJ34+jSP/g9YmEbb8Jh0kYmA0Ny4FTJzIHUjPLzg1h2VWLExaEKb364xBloTy1ehFCGlOj2k6sx0LSSWkDYozJM6FKrRtTwq7knjVys+DgmNNeGXctiACsidVF4jfixjCOGLyjxhpmnlu++g4VuzIuN+fPg0HQWrvVGS/CaaFdYOAI7NQAcrxSPnOAftvspk2Zz0I0O/4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(7416005)(1800799015);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: vXhMDVJmN/B8wAssoWK7XGlWf2sYQPKbUUdYva1jh0FoNXmgdAFvJj9+r/6aQOtjGk8sYoY4nKfBsq4fP7cTKKuj2zEk0t/MxfYdb+kgUAmQ4fVCr2TFfv/34SSXwIek7bY7ldN99qwGfFPkR5g/R9vXjATkuFfK0YQC3x9GLq93U7KE2CwdVrzC5wytZw783O4C1oH0H3SrJLgEDgLchWju0o8uVxJApeLhRqllfW0ZI2AZ45BxA89FHZ7b9DhLgi+Z2ZQBpQqWW6LIPMPhOoevxusGEUAvWCU09uPIxjvhYDlLPnBjKdwcvZXy5Z83ZwIIZ8nP6qpjH08btKrLBdesDgapGGtOTyJM3kAtdudLH3bDfcwe6JFsLnw5pvMLeQKj268sijvs/NCC87BBnTO7on6QWfmPk0tZtsB8RU4LKzo1XLY1lxZmCsBgDiSnkoEU/IkIO4dV0DCPTz7XRGjdc9hDAw6ZxTclYuixfGN5FgkZNvjEWFIA4qrdKzvV5hPBDITIwLW405XQdYp64z478kqjESrtBHiBLAZeKyCbH5pAQBJP10P2rKB76Y/QEUgZZ1fikKx6CmfU5steJG68ZVYG5gAOtqbH3S1DoFc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(7416005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZjVQQ1NZdXRJMVhycWVuRGh0dDZBZDhGYnJUWTJrSmdvVlB0MDFtUU00ZGM5?=
- =?utf-8?B?ZzEwaGUyYkVUMVNyN1dIL24vR29YdUlHajNLU3lLSzl0cDZpb2JlZ2dGR1Fo?=
- =?utf-8?B?VWh1R0dTZDRMOW1oUVNEOU9lZXdHbWJuUUw1WFF3ZmFhanpiYkJBUXVOdTFM?=
- =?utf-8?B?ZnJvaGs5Z1NFdXg1RzRnbEVEUkFGWGlvM0w1RDE0MVJUNFJIL1VWbmpZaUgr?=
- =?utf-8?B?TW1CV0lNdVh6M0VMcWs2dXBWSzBZRmtFa3hWeVdZU3JSWFVtZFd1Yzh0eUtj?=
- =?utf-8?B?Qk4zN1R1Wmx0cDRYOU1RdG54Y0xtb1ZaZ3FWN2FIQnNRZFVlVmN5dXE0WjVh?=
- =?utf-8?B?MkF4UUFCR0lIQy9YZnJXbUNRZmNSZVI5Znc3Qm5SNjQ2aVRreDVueTUxK1VD?=
- =?utf-8?B?em9IMHcxWXl1UUpoNkxtYjJGazFrQzZ6UWlBZFhQL1V5U3B1cmsraVNTcXk1?=
- =?utf-8?B?ZGVWalI4N3hzZmhuSERmNG42WUMwUWhoc3FxK2V3UHMyY3lSUDFVZ0FIM0Js?=
- =?utf-8?B?emQycE8wbU1RTkNydGQzRXZONFVXdXFnTEtVTlY3UTdabHlMQUsxUFplbXgv?=
- =?utf-8?B?UWxXemp1YTNzM3E2MVZKdDVrRUErdjZZWFBHdGZvc2VhRWcydjRzNFkvL3Zl?=
- =?utf-8?B?bU13bVpBbStabWhGQ3FzUVdBYVZCeFdSeXVRS3V2WFdQUWRoK3FoZnFvdlNj?=
- =?utf-8?B?L3FZbTF5bmRTMldvOVM0SmZoVXdPV1dqR0FJS09tTUdneG5rd3VZZkVkdlpD?=
- =?utf-8?B?QjZDZUhML29qZk5KMjJTNTlieW5wZ2c0eEdqY3hHY1ZLU21Ea3JpbisvUC9s?=
- =?utf-8?B?S0pGcWRVVHVLNmxhNHRReGt3SHp2MkpUY2VTb3RKSWFONzNDeS9ZbkhDRWV6?=
- =?utf-8?B?cTVXRWVwVVRRcmRpVnJHNENvd25MWDNyamdaSlRseHc2MWFrUmlvU0dPenJO?=
- =?utf-8?B?RnFNRDVvY0w3R0dpcUVBSDg1MU1SblkwMVZQd2tvSnFUby9jVFBzVmNQOEto?=
- =?utf-8?B?TUhBZ0Fhb3R6eUxIUFlsSTZNUFFlMXNvaWN2QmJ5RU9GK3hiRU1zaE42Rmh0?=
- =?utf-8?B?aWh5VkVla2dsaU5GUk9sWUNDNjI0OEZkT2kxQXR4bW1IbHpPZmVTVzloOVpu?=
- =?utf-8?B?d1JMSGJWZzN1OGxsWW5NWWV4Vk41SnVqczBqV3lBbkNQUDA2eDR1SEtEQ0h6?=
- =?utf-8?B?VEFsd3RpY2ZPUWw0NHQrY25naFQxU1VBSkJEcGQ0NUdtN0E5SlF6ZkUrSXZB?=
- =?utf-8?B?YkVjSHdxY1NFWk9xMDhWTHVtd2E1SjJqVktaMmVJcmQ5dlFOVDA3aTRhaHow?=
- =?utf-8?B?WEcyS21saUxmREtmQTdKMmRmWnczUGxjdHNDQ0FNdmNUSkJsZ0w4RFU5VTRX?=
- =?utf-8?B?Y2JYNERBWW5iQXd0NTRzdHFSNWdWSE1EZXlSMW5XbGRjRlhXbjlQRWJUQjZa?=
- =?utf-8?B?YnJNTDZnOXh2bGg2YkRpcE5vVXIyeWJlRHhLSXFGaTdjOVVHMlJXMXFYY3Bj?=
- =?utf-8?B?TGhVVExzVmJ3RSswbC80LzZ5Mmc3ZUlJK3ZUVXlHelk2SThpSlc1Y0tDUk8z?=
- =?utf-8?B?NHUrYTRNQnBCdWExeG82MDNsVlVvcTFraytVdlIvOWRTdUxtMWtQWVhZOENu?=
- =?utf-8?B?QWRrN2dNN0U1ZmZDS1RpdTVGWXhhcFdocHltQTV6MGxiaXN2U3BYb1pXTWx1?=
- =?utf-8?B?OEVuVFRKd3JLd1hSR1MySVozL1h3ZCt2aWs0VCtqVytXN3huOEk4OEVLMk0r?=
- =?utf-8?B?Y0E5enU0aE82aEJ1MDE1dmtzSGJXRms3QWU2S0dhVGk3V2pPMEFQOGNNV3N3?=
- =?utf-8?B?RlU3MlhLNExBOGRMY1BEQ2RrTTBRMkdtZTF0TXh3cExjWmdIN3RnRWtLS2JD?=
- =?utf-8?B?dUtTZWZVbHpjczZ0THNWOG5HTURzYWkrT1lVK0pQSGZzbExjTWpNUUdYZ2pI?=
- =?utf-8?B?Ylh2aE1OWkh2K0d0WlJlN1REMGlmc200NHNvbW9DdE9wZTdVUEhzYUNteEdP?=
- =?utf-8?B?dUdJL2kvWkM3WmR0WWUvRGFZOERDSzNKY1dqTXJUK29uVFRkditUTFd4WmNw?=
- =?utf-8?B?MmRWR0VGL3RSUkVEK3V5ZnV1RHUydEFaak81RzhnTnBsMTdqeGpvendabDF3?=
- =?utf-8?Q?G0/YAlebHa4gtcyyDdHF7AsiO?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5fc44203-06aa-42d5-92a0-08dc5e30bdad
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DoqthFbhLYZDPWVxN4/uSSeJky44OhYmTaXvKJMx3Z6H9o2d0k/3QV2eGft3?=
+ =?us-ascii?Q?dD6m5cAAxiIKALhYlLe/1Ab2HxmR9/RaSy7fxjm2umOE2fs4UZINo4evuzdZ?=
+ =?us-ascii?Q?EYmVd0WDVLxPSs6gMgHrSN0nGcbfRvxwUeXUEaPSQlvoGMpKoEGPHZ1zMVHO?=
+ =?us-ascii?Q?fOYHTpId7vugXGX4PMOxhZT/Yr709w1y7Z8wZuKIeztgnjYKEtfApfZm7wqk?=
+ =?us-ascii?Q?ZrO5f48IeBnAt6Vo2FBIbLP1idRPQ0iFQmmsHAQkNkt5fJfkU8+LGRLYBLfC?=
+ =?us-ascii?Q?lpmgqGqMoBrpmCyCBYsWcOkP+D6PvBkrOQ+tt2C+ukpE5bGoRKzUxatqM4qd?=
+ =?us-ascii?Q?gMeYlswITTfRRcKNwmEQD0XQRqDx8JXGGqLcXspEVroX0fRtlRkoh/MRO1FW?=
+ =?us-ascii?Q?zo/bCu3YK2AhFRu/YOaMFVM0im2EiayeWS7zhOPcV1J+egmOgonRp5Jphboi?=
+ =?us-ascii?Q?fbAP3u+SLNQpSXkiBlmEQ1keDQziJkQskt86XjoFexMtuqlPJuE8zPQ882i0?=
+ =?us-ascii?Q?GKG7j/F1C6tjIUfLhBGPukINGbWGKug5MTeP03tXU3Mj7Uyd51U8ekGMrwyz?=
+ =?us-ascii?Q?LxKHyA2e61BXiODBZK+Pr7h0DXQC0Icu3gNt7xcs97n+XRQBSottzPydwV1z?=
+ =?us-ascii?Q?LqhpU1OU72UKi05lnTDUBLEQhu0bwWytq+aMJeSzRy2VoAyhTZIynzqn06rO?=
+ =?us-ascii?Q?Tmq6X3miAJOyFqCPkI+fPfYWn+v2K8JN5l+tqkgN2DcruE7O362qORbH4MqD?=
+ =?us-ascii?Q?TUvFlowVSe/CZ4UWtpF15W52oyj+20QVi39ZWlSGi1wMcqN69nXIinkGXCAd?=
+ =?us-ascii?Q?5LmPgH8ZwElc9KrfHUUjJXK4mlIzyr9HJ7ihbjKj0qYKRo0dKEgZIBUosD+g?=
+ =?us-ascii?Q?8EbYob63HbzSIVIzQt14HV/MirBuT1LxP7GYhvxAVZeD6225j0+yZ+sBotD8?=
+ =?us-ascii?Q?YVfiVWaFP1bsJlsP1GDy5sIy1V10sxv0OA+4CPVz3PsF2KNzCzj04QNMkg1R?=
+ =?us-ascii?Q?ocMMahKYKaI5dRooOOUNCtahluvKm8u1u9ltfwgUtVJnBGneLYLUB4MbeQBK?=
+ =?us-ascii?Q?rXlgLismyDlaAheMILyugYzYUHksv7BbutMUOnYnv7/gk5UdsFL+4vVUxtOm?=
+ =?us-ascii?Q?tWumcMWCEwS9QmDWM5PI/zQn4U8VVABDp2bDca5MLun5HBJKhgfWID961dPt?=
+ =?us-ascii?Q?7bcdF5Nbbp2NO1y0XDgGAbXVisCHWtpzAuCIzd8nnoIzkssHyi7u94FPNuP2?=
+ =?us-ascii?Q?I1HzIgiMYEMCIgnIQssN8RhxjAlJ5t9wW/+hyzimtW9wUODM4SeUYWF59MuC?=
+ =?us-ascii?Q?baO+Eqb2T46C7xJEXen/oqTzxt/NRoVeEpXKGQ39T486+JT/QheR1kBUMjt8?=
+ =?us-ascii?Q?Z0V3tAE41SfIpdKy4qbGqBot7rN5Ok/7P9u7eUpT5mVnasX/XHTNaeD9Ju22?=
+ =?us-ascii?Q?p7uTKTXbd/hiVEuIE+oli+hmTENyqMR0+bau5thhdnOdCdgmBwy9q7t/Pzwx?=
+ =?us-ascii?Q?XR1z4Lk7baqWvKbeDVDZ2VR0LJOftrhD0IJoKmBVW4PmbX2DCVYo/VE92GZV?=
+ =?us-ascii?Q?OuUDA6gTbV3vpaiRupBwqM4pJlwxeMHWkyFGFiHbdtHd+3/DxBzovaJa2/vc?=
+ =?us-ascii?Q?EQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b350771-add9-482d-19d6-08dc5e310e92
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 16:17:41.5014
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 16:19:57.2018
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qtcILDQwWjvPWbe8oWK4dq2DnpimzwmAEDt5pP881JAEjdHO3uVHob0C7cxOYc6Mw8QZtkYQHP+/Zbno/yFI6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8372
+X-MS-Exchange-CrossTenant-UserPrincipalName: PoThPnt/+o/H1K3m1K+9ihI3FjgDzQzUwxN0ENApeonUw3TXaOw/r9GXx5MADidKCNaof7AwNjmpAtzIBfQVG+G5S3WWDpFknsDj8Z7/lVg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7535
+X-OriginatorOrg: intel.com
 
-On 4/16/24 10:57, Dan Williams wrote:
-> Tom Lendacky wrote:
->> On 4/15/24 23:55, Dan Williams wrote:
->>> Tom Lendacky wrote:
->>>> With the introduction of an SVSM, Linux will be running at a non-zero
->>>> VMPL. Any request for an attestation report at a higher priviledge VMPL
->>>> than what Linux is currently running will result in an error. Allow for
->>>> the privlevel_floor attribute to be updated dynamically so that the
->>>> attribute may be set dynamically.
->>>>
->>>> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
->>>> ---
->>>>    drivers/virt/coco/sev-guest/sev-guest.c | 5 ++++-
->>>>    include/linux/tsm.h                     | 2 +-
->>>>    2 files changed, 5 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
->>>> index 1ff897913bf4..bba6531cb606 100644
->>>> --- a/drivers/virt/coco/sev-guest/sev-guest.c
->>>> +++ b/drivers/virt/coco/sev-guest/sev-guest.c
->>>> @@ -885,7 +885,7 @@ static int sev_report_new(struct tsm_report *report, void *data)
->>>>    	return 0;
->>>>    }
->>>>    
->>>> -static const struct tsm_ops sev_tsm_ops = {
->>>> +static struct tsm_ops sev_tsm_ops = {
->>>>    	.name = KBUILD_MODNAME,
->>>>    	.report_new = sev_report_new,
->>>>    };
->>>> @@ -972,6 +972,9 @@ static int __init sev_guest_probe(struct platform_device *pdev)
->>>>    	snp_dev->input.resp_gpa = __pa(snp_dev->response);
->>>>    	snp_dev->input.data_gpa = __pa(snp_dev->certs_data);
->>>>    
->>>> +	/* Set the privlevel_floor attribute based on the current VMPL */
->>>> +	sev_tsm_ops.privlevel_floor = snp_get_vmpl();
->>>
->>> Why is this not vmpck_id?
->>
->> Good catch, this probably should be pulled out separately and submitted
->> as a Fixes: against the current support. If you think it's important
->> enough, I can do that and put this at the beginning of the series. Or I
->> can just modify this to use the vmpck_id value. Any preference?
+Tom Lendacky wrote:
+> On 4/16/24 00:37, Dan Williams wrote:
+> > Tom Lendacky wrote:
+> >> When an SVSM is present, the guest can also request attestation reports
+> >> from the SVSM. These SVSM attestation reports can be used to attest the
+> >> SVSM and any services running within the SVSM.
+> >>
+> >> Extend the config-fs attestation support to allow for an SVSM attestation
+> >> report. This involves creating four (4) new config-fs attributes:
+> >>
+> >>    - 'service-provider' (input)
+> >>      This attribute is used to determine whether the attestation request
+> >>      should be sent to the specified service provider or to the SEV
+> >>      firmware. The SVSM service provider is represented by the value
+> >>      'svsm'.
+> >>
+> >>    - 'service_guid' (input)
+> >>      Used for requesting the attestation of a single service within the
+> >>      service provider. A null GUID implies that the SVSM_ATTEST_SERVICES
+> >>      call should be used to request the attestation report. A non-null
+> >>      GUID implies that the SVSM_ATTEST_SINGLE_SERVICE call should be used.
+> >>
+> >>    - 'service_manifest_version' (input)
+> >>      Used with the SVSM_ATTEST_SINGLE_SERVICE call, the service version
+> >>      represents a specific service manifest version be used for the
+> >>      attestation report.
+> >>
+> >>    - 'manifestblob' (output)
+> >>      Used to return the service manifest associated with the attestation
+> >>      report.
+> >>
+> >> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+[..]
+> >> +What:		/sys/kernel/config/tsm/report/$name/service_provider
+> >> +Date:		January, 2024
+> >> +KernelVersion:	v6.10
+> >> +Contact:	linux-coco@lists.linux.dev
+> >> +Description:
+> >> +		(WO) Attribute is visible if a TSM implementation provider
+> >> +		supports the concept of attestation reports from a service
+> >> +		provider for TVMs, like SEV-SNP running under an SVSM.
+> >> +		Specifying the service provider via this attribute will create
+> >> +		an attestation report as specified by the service provider.
+> >> +		Currently supported service-providers are:
+> >> +			svsm
+> >> +
+> >> +		For the SVSM service provider, see the Secure VM Service Module
+> >> +		for SEV-SNP Guests v1.00 Section 7.
+> >> +		https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58019.pdf
+> > 
+> > Given "SVSM" is a cross vendor concept should this explicitly
+> > callout: "For provider.service_provider == sev_guest.svsm" as
+> > preparation for other implementations defining their "svsm" manifest
+> > format?
 > 
-> I dunno, you tell me. What breaks if privlevel_floor is mismatched vs
-> vmpl and/or vmpck_id? If it warrants a "Fixes:" it should probably be
-> broken out.
+> I'm not sure. Do we need to get that specific? If SVSM is cross vendor, 
+> will it be using / adding to the existing SVSM specification? If not, 
+> then each vendor is likely to have its own name for the SVSM concept 
+> that would be unique enough...
+
+Yeah, I guess we can kick can that down the road and see what other
+vendors do. I know the coconut-svsm project is cross vendor, but I do
+not know the details.
+
+> >> +
+> >> +What:		/sys/kernel/config/tsm/report/$name/service_manifest_version
+> >> +Date:		January, 2024
+> >> +KernelVersion:	v6.10
+> >> +Contact:	linux-coco@lists.linux.dev
+> >> +Description:
+> >> +		(WO) Attribute is visible if a TSM implementation provider
+> >> +		supports the concept of attestation reports from a service
+> >> +		provider for TVMs, like SEV-SNP running under an SVSM.
+> >> +		Indicates the service manifest version requested for the
+> >> +		attestation report. If this field is not set by the user,
+> >> +		the default manifest version of the service (the service's
+> >> +		initial/first manifest version) is returned. The initial
+> >> +		manifest version is always available.
+> > 
+> > ...and that number is zero? Is there any expectation that the kernel
 > 
-> However, I *guess* it is just adding some sanity checking precision to
-> userspace requests and makes some input validation not catch errors when
-> userspace tries to generate reports from the wrong level, right? I.e.
-> privlevel_floor may be lower than expected, but userspace should not be
-> depending on that since the report generation will fail.
+> Yes, that number is zero.
+> 
+> > sanity checks this version, or how does the user figure out they need to
+> > roll this request back?
+> 
+> Right now there aren't any non-zero versions, so there is nothing for 
+> the user to figure out. However, the service will determine when it 
+> creates a new version and then the user will need to understand what the 
+> reason for that is and decide. I'm not sure I can give you a specific 
+> answer at this stage, but we need to allow for a change in the manifest 
+> without affecting existing users.
 
-Yeah, it just results in a different type of error. If the VMPL 
-specified by the user is numerically lower than the vmpck_id, then the 
-request will fail with a specific return code value. With the change to 
-privlevel_floor to use vmpck_id, then you would just get the error that 
-much sooner when trying to set a value that is lower than the floor.
+Right, but it feels odd that userspace could write UINT_MAX to this
+value and the kernel says, "yup, looks like a valid manifest version to
+me".
 
-Since I don't think the vmpck_id module parameter is a common case 
-today, let's just leave that change in this patch.
+> And since the spec has been approved already, I can't really go back and 
+> add a requirement that manifest format always be additive.
 
-Thanks,
-Tom
+Those breaking changes have not arrived yet so still a chance to
+influence, no?
+
+The documentation here at least guarantees that the initial manifest
+version is always valid, and I expect the spec authors to realize that
+the kernel has a role to play in not breaking existing userspace. I.e.
+it is not in the spec's interest to disallow fallback to any
+version between 0 and N-1 where N is the latest.
+
+The kernel need not tolerate version induced breakage from ACPI
+specification updates because that spec is committed to compatibility,
+why does this spec need to be less disciplined than that?
+
+> >> +
+> >> +		For the SVSM service provider, see the Secure VM Service Module
+> >> +		for SEV-SNP Guests v1.00 Section 7.
+> >> +		https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58019.pdf
+> > 
+> 
+> >> +static ssize_t tsm_report_service_provider_store(struct config_item *cfg,
+> >> +						 const char *buf, size_t len)
+> >> +{
+> >> +	struct tsm_report *report = to_tsm_report(cfg);
+> >> +	size_t sp_len;
+> >> +	char *sp;
+> >> +	int rc;
+> >> +
+> >> +	guard(rwsem_write)(&tsm_rwsem);
+> >> +	rc = try_advance_write_generation(report);
+> >> +	if (rc)
+> >> +		return rc;
+> >> +
+> >> +	sp_len = (buf[len - 1] != '\n') ? len : len - 1;
+> > 
+> > This feels like it wants a sysfs_strdup().
+> 
+> If there start to be more string oriented operations in the file, then 
+> it might be worth it. For now I don't really see a reason.
+
+To be clear I was thinking of occurrences of this patten outside of this
+file. Turns out this pattern is not as prevalent as I would have
+guessed, resource_alignment_store() was the only occurrence I could
+find. Skip for now works for me.
