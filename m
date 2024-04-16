@@ -1,334 +1,232 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEA612C478;
-	Tue, 16 Apr 2024 13:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713274214; cv=none; b=nUS9Pi7/SjeS4yW7Td+an47cUrvAr1Acy4rTqscDODStS4JdnQsgACOlHJmoD7Oqb+pZiCozvo77BERMBqPIi/4AEqZ72nV4NCttaXfjuIQr45/88/+PB++9fqPRmeQMwxPk2u7zVAlr1RDXLWR3I5g+isepctSavlnX0S93gFY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713274214; c=relaxed/simple;
-	bh=+j/6gM3a937z2BzVy5L+xPXIwJaTO68RZyd2qEEbv9U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n0Y/tHmHx1XNTMJlCoA8YgmE//vFesQZZEOMMqYF630YX1O3fpYNalW9STbE1UkQyShJcszm6cl3oUrgkovIAgP4DFlXCu0yzBT3ItZ/3AZ9zwP/fR0cvEnvOncBJfVNm1FqFTt/35laDbCO6kRt42/lrdhMCc++ayMmc+mRebg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 68DE4339;
-	Tue, 16 Apr 2024 06:30:40 -0700 (PDT)
-Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1EB303F738;
-	Tue, 16 Apr 2024 06:30:07 -0700 (PDT)
-Message-ID: <37fa1ff5-9e94-4def-afd6-fb9ea9356977@arm.com>
-Date: Tue, 16 Apr 2024 14:30:04 +0100
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2043.outbound.protection.outlook.com [40.107.212.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00916132C3B
+	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 14:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713277537; cv=fail; b=AfXaMYq8ApnNU1bHTpXeJS0eSM2JdO5R89dPcEuirVZWZEVcBpGw2ussMejDDo8oYGkWkVmFUPWCZ7D33JSZFOr67IS8BA01NKJEdlLCwgJ+Mf5OP6PdU0pKbeEsHaSmtjscHVrtChWNxQ+Pr7DeuOMPZ0AzFetJI8moQvmYifs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713277537; c=relaxed/simple;
+	bh=SINcn+IWiUapG/JuKjRSFB3ciWs6abn1FmX9SC8WA5I=;
+	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
+	 Content-Type:MIME-Version; b=AYUc1Qr+UGF8NtYNYIYNVyjROP1P8EXhpFqwtJyONIDP47mZd5B69jGB1YrgGayepRy8wVytBba3AyVCKvm1ilq6EDcSyt8IC2rPddfcD2FuRcxJTE7+ItX+hsRxKkvq5yS3TJzkszAhbQAaTxtvwAvqb/8y11Pimnrz56DnBu0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hN9U4pEL; arc=fail smtp.client-ip=40.107.212.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hN9U4pEL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CaMyHmr08roor3pp7WUljX8WZ0BPuOn+l5hTX+IANcORxnV8q86Jhw0Pmt4594b0qhfvnRh6sn9bzseNbR/sBthO29CuRekJj0lGNKeZux5MHBP9rA+7bhcC2FQYwNRK20Tk8J0uHhfI1ySiC7bV4MyA8lsP3SQB+k1JYGI48jP52xxO63BjCOhik8lFYpZJAiQQoFQoAvyGCF+4UQbr8704ENtjjl94+ZggSc4BFCYjOD0amEP3yAwy/8Y3vL25ta45jytRNDpoPwx4dJx9ZHyzv2q1gyCHHqcp/G4psLO9xxzH+prtIDI1ImpJYYRHDKBKylsPasePa5rB1P2Gwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wOeFlxviTMUT/VW2LboJqvhxAs+bBmfWBhWo79jkbq8=;
+ b=VMJoCXK6+hKnlkYgImUyLcDUjD1dbPrmciRZLRXLgADXvRpr9PR2qgEdVtCGlYhjKc0k24ow/PdQhNixwjNvbfiUBideazyttN+cKJveU9z4MrkSe8FEgK8P2URMa8cb71fQcTFsyQDFrqXHgzfwo8zPYAfY8yV3UlXFLYmWik8RTFwql15LS30NS8oxh4dZjMDIqqfvZkUEKPc66FX/jZDRLYRG7umfLtl7PwlR2GGxjiv+NbOxf75Et/JMdAYnbV/2m2WwYHuCz4IZWAPg1akfHia4yl0xsnobD03qoNtP132surfRhJDRrs10dfkaEZZkjpTMXDBGEKNQqfYAzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wOeFlxviTMUT/VW2LboJqvhxAs+bBmfWBhWo79jkbq8=;
+ b=hN9U4pELANIFKqV5yjkI2WmeS0gfz+kDtP4/lky3MrN2kd3Vkj84+QSST13PLltQ2mMqVz8xMJfiOBcgO7fA6uECn9wT03FDjF8A3qLNOwfOFfedU2T30Yqlui8UqF7Z+NtLt8yaJxIcDwcnwVHYmKT2kDqqhpa21QKj3en2GbU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
+ by CY8PR12MB7706.namprd12.prod.outlook.com (2603:10b6:930:85::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Tue, 16 Apr
+ 2024 14:25:13 +0000
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::bf0:d462:345b:dc52]) by BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::bf0:d462:345b:dc52%6]) with mapi id 15.20.7452.049; Tue, 16 Apr 2024
+ 14:25:13 +0000
+Message-ID: <758c876d-ff77-0633-7b3e-965d863d5a93@amd.com>
+Date: Tue, 16 Apr 2024 09:25:09 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ kvm@vger.kernel.org
+Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, hpa@zytor.com,
+ ardb@kernel.org, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+ dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
+ kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+ jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+ pankaj.gupta@amd.com, liam.merwick@oracle.com
+References: <20240329225835.400662-1-michael.roth@amd.com>
+ <20240329225835.400662-19-michael.roth@amd.com>
+ <67685ec7-ca61-43f1-8ecd-120ec137e93a@redhat.com>
+ <CABgObfZNVR-VKst8dDFZ4gs_zSWE8NE2gj5-Y4TNh0AnBfti7w@mail.gmail.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH v12 18/29] KVM: SEV: Use a VMSA physical address variable
+ for populating VMCB
+In-Reply-To: <CABgObfZNVR-VKst8dDFZ4gs_zSWE8NE2gj5-Y4TNh0AnBfti7w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DM6PR17CA0015.namprd17.prod.outlook.com
+ (2603:10b6:5:1b3::28) To BL1PR12MB5732.namprd12.prod.outlook.com
+ (2603:10b6:208:387::17)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/43] arm64: RME: Check for RME support at KVM init
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240412084056.1733704-1-steven.price@arm.com>
- <20240412084309.1733783-1-steven.price@arm.com>
- <20240412084309.1733783-8-steven.price@arm.com>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20240412084309.1733783-8-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|CY8PR12MB7706:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b11a470-3eaa-42dd-606a-08dc5e210752
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	bFr7YG6nJ4r5KgDaKBGuMHlVeBX4FytK6XOTsNaHPSLd+/uZaSVNJ6EBycadnYyyKsCweBzMX+7p0dToZVrgDkSgW8Q9xHX4Uh2/5EjbEJN88DAIKF/+BN2YkHXA026QegjX/53kjG1yZ5Ap+zbpO70+m28ISn/L8FPMnGgHSztMi9MH28gu0T6CpiL2gpI/6QF2HdZCM3slQleRwfvejXt95H/op44ZllRK0q5K0jzmBfh/hZmd4sbKgvtxMWPFQHZ1RqMNhaZBEmVoLeXfYEWj6DV/XlFNqLWiEgIeFacHmkTAUvhHsREsdGKZgQAd04BRnffAeAmjci4lB2Ot0T0Fx1/pyqosgqu4x4LwDQ6YR4gPOKoAvvYArtLPvHL8yn6lpuSnQvQq9ajmU5MjyrOKpKih4SOLkpaTP2sF0Ca4JpzFxYs+hc9Z8TiGYcDFLg65UPkN2woSjfj6W6TuC1ZAMJbnEqVkhPNdehBqw5EdbkB1UZKV0d1dsRUaXli3guVbZi3yhI2tG1LnjSJlIC9m55UkgHt7NfkQy0ak03Jl6RFWmbqJ9dLIVsDeMywJbf4k1dawQIb+P4mpEPq6lZ5DXVHXmRwCCAkut0Fs2c3a3xzkRmCI1AABMbH7Pf6E7mXNsukb9huI1YgSkt6jSFCp8hZQXSWXcUZpHXbaKbI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(376005)(1800799015)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T2gwdHc1QXplbW1kUVVjNk5kNm1hSTNqTlp3dTF2WDR6bmNoTjNXZFVpZDdQ?=
+ =?utf-8?B?TVlKcG5FaFlMN3NQSjJXNmFrbnRhazZmcXRHOU5xY0tmVXhXRWtxazVjby9q?=
+ =?utf-8?B?N3dNRUpyVHRsOVhHd3FpbW5HcmVpdlFxL3p5a1UvbTlMY0tFUnIwVG1JL2Er?=
+ =?utf-8?B?WUFOanBYUU55aFU0RlIrY0FZM1pxTU1GcVlwcW1wOHlkcllFQW4xaFBZV2sx?=
+ =?utf-8?B?UmtvRk9wMHI5a1czRGs0WDNYbGdYWGpmemsxVDllUTdtRDVqUjIvdkMvdDNn?=
+ =?utf-8?B?dFJVMXI0ZW9jOWZodUZmbVdoNVdHQVVKWVROaFpQWHl2S0tZa205RWNKS3RH?=
+ =?utf-8?B?NjJUM0xCR0podi94YkVGdjhsYjI0ZFQ5NmtOUFlpSnFCdkl5NUZwaGxiYm1K?=
+ =?utf-8?B?WUNNU1g3T2Q4bmlrUDd6VTYrTmJIbzVtbXgrdE1vQlNQSWpHK3FPK1kxd0R3?=
+ =?utf-8?B?UGJIVGlRNXNDcllCNzRZSHBiL0JUWTM5TnFYZHFtMnNFSGlaNjJjaXQvcnlG?=
+ =?utf-8?B?VGxqNW9JeUVXNmNsZTlEYU56Zm9jaktCTXRmUDY5UjY1Zi9xY09zck1HVThH?=
+ =?utf-8?B?N1JuM0lYRm5tZldkMVVzWi9PS2o5UFhFbHhYT1hPeEpqWkxnV1h5cTUyVUNK?=
+ =?utf-8?B?S1FqNWQ4bnJXU1dwOUxiYk41azB0LzYrUEc1UG1VR2ZoRnZYNml1SGowbmp4?=
+ =?utf-8?B?bjVwbnJOQnA4WWtUWWlvZTJ4V1h4c2llbkFKRzd5SGh5L1VMb0I2cVdkOEVm?=
+ =?utf-8?B?clNXTzBKYmttMGQvU3lBdFBwcDdYUGwzVGVzYWtDdWFGakdFZWVPMzZxL21n?=
+ =?utf-8?B?c2NkRHdzMksvWGpMRk8zU1JpYnJoL2FvL1diSDR6TC9DS2Z1bSsxQllROU1s?=
+ =?utf-8?B?cHpWNkk1UUhycHY3S1VZNmpVd1hpR29CRHV0eXRXSlFzekRzUDByVDNCRm1Y?=
+ =?utf-8?B?RzR5V3JaSjhkZ2hXTFZIY3lFNjE3NU5vVlp6RG9EQVZkME40WkpVOUU3eFJk?=
+ =?utf-8?B?YTIvbzJoaG1samhkV0hmOXB5MmpHZEZJNmFJMFA2NHVVVmkzKytDdGdWT2pH?=
+ =?utf-8?B?d3dQaHM0UFJBWXBQd1lFdGp6c3JYR3MvNHdYUGJxZXRxZzZ2S2g2dldOMU94?=
+ =?utf-8?B?V29OTEViNjI4MFpYMVp3dlBURXRRSUd6d3g2bW50NW9qTFRzQVNlbTl6Qk1j?=
+ =?utf-8?B?Ykx4b3VOdllFclQ0bkhicDdVcU9GSnIxcFBRcHNXMk4zK0FpUXhjVmtxZDFj?=
+ =?utf-8?B?WHRXL2htc004a3NtbU91dkJpWkpmeXR1NU0vN3JsRmpKNEZLVU8zQ3VMdHU0?=
+ =?utf-8?B?VGlRSEFwd1VxZEVqYktVNVZxZ1FSblJIV1NQZU1LUDJTVFRmbFNKRytHWmZZ?=
+ =?utf-8?B?SlB6U3J4ZTRoM2tpT29RejkxOVBtWlFlb2QySVpJVkVzampXeWZ5TGc1T0pC?=
+ =?utf-8?B?TWl4S2dyN1FDa1FVRlpqUGlCTUk1Z1o5WSt3WmlUc1BSVllESTI4ZVU2SG9K?=
+ =?utf-8?B?WG1NWVEvanNYQ280M2hFaEJhTTM4Q3B1dW5hYm1yTXJzZVhsbGFiNHg5bDRa?=
+ =?utf-8?B?VkFiREh2WGtvVTIxOE5lQm5TMzU0WHU0WTNJQ3RJREU1a1NTeklwaEUzbXh6?=
+ =?utf-8?B?R0F2NjIvM1dkOTg1R2VmZDhtZGtSUWxsN1REOENVREtlV0hvdnVja1l4MHVk?=
+ =?utf-8?B?TTg2RGQwVXlOSlFCb1kyZEZIU09QVXBTWWR5NVVDTDhNRVdBeTkvUTdFMmRp?=
+ =?utf-8?B?K3NQWEdpWHh2M2k5RlQ4MGU3T2JGYXR3RmgzV2kxNUN2NllrNFNKVmNhSHpP?=
+ =?utf-8?B?ek14TDFoL01OaVZJUERiTW5xcXZyL1ZKd0ZDV1ltWVNBOUY3bDQyQStnV3VH?=
+ =?utf-8?B?ZmVzZzEvd3Jxc0tWMEUzcVZiMHc0d2lwdXlPS1FSVVJRbXI0TWRnemJuYnhn?=
+ =?utf-8?B?a3cyVmpobGtEdlV3a0xlQ1dJa010dklzMXJGbXBvRFlhcmFNY2NXQ1p6aDFF?=
+ =?utf-8?B?b0htU0NydWVvSW50WXdobTVtMXhrMXZvT0d0emFzb2hVOFZjdW5RcHV3dnIy?=
+ =?utf-8?B?VFhZVkhEQmdTazQwL2tnU0dtU2VZY3JXWm9DUW9ndVpybEdMajEyd01jRklW?=
+ =?utf-8?Q?ecgwpSGOlUD0UYW+DfE5021do?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b11a470-3eaa-42dd-606a-08dc5e210752
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 14:25:13.0948
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2kQI/y5vz/idGOLiBkB+EkKeiXbdEPOSDoCL41hiB1N5HpAkoTNHHyv0ggouHoO71MkASvYCh6s5fvtkaFbpZw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7706
 
-Hi Steven
-
-On 12/04/2024 09:42, Steven Price wrote:
-> Query the RMI version number and check if it is a compatible version. A
-> static key is also provided to signal that a supported RMM is available.
+On 4/16/24 06:53, Paolo Bonzini wrote:
+> On Sat, Mar 30, 2024 at 10:01 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
+>>
+>> On 3/29/24 23:58, Michael Roth wrote:
+>>> From: Tom Lendacky<thomas.lendacky@amd.com>
+>>>
+>>> In preparation to support SEV-SNP AP Creation, use a variable that holds
+>>> the VMSA physical address rather than converting the virtual address.
+>>> This will allow SEV-SNP AP Creation to set the new physical address that
+>>> will be used should the vCPU reset path be taken.
+>>>
+>>> Signed-off-by: Tom Lendacky<thomas.lendacky@amd.com>
+>>> Signed-off-by: Ashish Kalra<ashish.kalra@amd.com>
+>>> Signed-off-by: Michael Roth<michael.roth@amd.com>
+>>> ---
+>>
+>> I'll get back to this one after Easter, but it looks like Sean had some
+>> objections at https://lore.kernel.org/lkml/ZeCqnq7dLcJI41O9@google.com/.
 > 
-> Functions are provided to query if a VM or VCPU is a realm (or rec)
-> which currently will always return false.
+
+Note that AP create is called multiple times per vCPU under OVMF with 
+and added call by the kernel when booting the APs.
+
+> So IIUC the gist of the solution here would be to replace
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
->   arch/arm64/include/asm/kvm_emulate.h | 18 +++++++++
->   arch/arm64/include/asm/kvm_host.h    |  4 ++
->   arch/arm64/include/asm/kvm_rme.h     | 56 ++++++++++++++++++++++++++++
->   arch/arm64/include/asm/virt.h        |  1 +
->   arch/arm64/kvm/Makefile              |  3 +-
->   arch/arm64/kvm/arm.c                 |  9 +++++
->   arch/arm64/kvm/rme.c                 | 52 ++++++++++++++++++++++++++
->   7 files changed, 142 insertions(+), 1 deletion(-)
->   create mode 100644 arch/arm64/include/asm/kvm_rme.h
->   create mode 100644 arch/arm64/kvm/rme.c
+>     /* Use the new VMSA */
+>     svm->sev_es.vmsa_pa = pfn_to_hpa(pfn);
+>     svm->vmcb->control.vmsa_pa = svm->sev_es.vmsa_pa;
 > 
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> index 975af30af31f..6f08398537e2 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
-> @@ -611,4 +611,22 @@ static __always_inline void kvm_reset_cptr_el2(struct kvm_vcpu *vcpu)
->   
->   	kvm_write_cptr_el2(val);
->   }
-> +
-> +static inline bool kvm_is_realm(struct kvm *kvm)
-> +{
-> +	if (static_branch_unlikely(&kvm_rme_is_available))
-> +		return kvm->arch.is_realm;
-> +	return false;
-> +}
-> +
-> +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
-> +{
-> +	return READ_ONCE(kvm->arch.realm.state);
-> +}
-> +
-> +static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
-> +{
-> +	return false;
-> +}
-> +
->   #endif /* __ARM64_KVM_EMULATE_H__ */
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index 9e8a496fb284..63b68b85db3f 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -27,6 +27,7 @@
->   #include <asm/fpsimd.h>
->   #include <asm/kvm.h>
->   #include <asm/kvm_asm.h>
-> +#include <asm/kvm_rme.h>
->   #include <asm/vncr_mapping.h>
->   
->   #define __KVM_HAVE_ARCH_INTC_INITIALIZED
-> @@ -348,6 +349,9 @@ struct kvm_arch {
->   	 * the associated pKVM instance in the hypervisor.
->   	 */
->   	struct kvm_protected_vm pkvm;
-> +
-> +	bool is_realm;
-> +	struct realm realm;
->   };
->   
->   struct kvm_vcpu_fault_info {
-> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
-> new file mode 100644
-> index 000000000000..922da3f47227
-> --- /dev/null
-> +++ b/arch/arm64/include/asm/kvm_rme.h
-> @@ -0,0 +1,56 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2023 ARM Ltd.
-> + */
-> +
-> +#ifndef __ASM_KVM_RME_H
-> +#define __ASM_KVM_RME_H
-> +
-> +/**
-> + * enum realm_state - State of a Realm
-> + */
-> +enum realm_state {
-> +	/**
-> +	 * @REALM_STATE_NONE:
-> +	 *      Realm has not yet been created. rmi_realm_create() may be
-> +	 *      called to create the realm.
-> +	 */
-> +	REALM_STATE_NONE,
-> +	/**
-> +	 * @REALM_STATE_NEW:
-> +	 *      Realm is under construction, not eligible for execution. Pages
-> +	 *      may be populated with rmi_data_create().
-> +	 */
-> +	REALM_STATE_NEW,
-> +	/**
-> +	 * @REALM_STATE_ACTIVE:
-> +	 *      Realm has been created and is eligible for execution with
-> +	 *      rmi_rec_enter(). Pages may no longer be populated with
-> +	 *      rmi_data_create().
-> +	 */
-> +	REALM_STATE_ACTIVE,
-> +	/**
-> +	 * @REALM_STATE_DYING:
-> +	 *      Realm is in the process of being destroyed or has already been
-> +	 *      destroyed.
-> +	 */
-> +	REALM_STATE_DYING,
-> +	/**
-> +	 * @REALM_STATE_DEAD:
-> +	 *      Realm has been destroyed.
-> +	 */
-> +	REALM_STATE_DEAD
-> +};
-> +
-> +/**
-> + * struct realm - Additional per VM data for a Realm
-> + *
-> + * @state: The lifetime state machine for the realm
-> + */
-> +struct realm {
-> +	enum realm_state state;
-> +};
-> +
-> +int kvm_init_rme(void);
-> +
-> +#endif
-> diff --git a/arch/arm64/include/asm/virt.h b/arch/arm64/include/asm/virt.h
-> index 261d6e9df2e1..12cf36c38189 100644
-> --- a/arch/arm64/include/asm/virt.h
-> +++ b/arch/arm64/include/asm/virt.h
-> @@ -81,6 +81,7 @@ void __hyp_reset_vectors(void);
->   bool is_kvm_arm_initialised(void);
->   
->   DECLARE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
-> +DECLARE_STATIC_KEY_FALSE(kvm_rme_is_available);
->   
->   /* Reports the availability of HYP mode */
->   static inline bool is_hyp_mode_available(void)
-> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
-> index c0c050e53157..1c1d8cdf381f 100644
-> --- a/arch/arm64/kvm/Makefile
-> +++ b/arch/arm64/kvm/Makefile
-> @@ -20,7 +20,8 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
->   	 vgic/vgic-v3.o vgic/vgic-v4.o \
->   	 vgic/vgic-mmio.o vgic/vgic-mmio-v2.o \
->   	 vgic/vgic-mmio-v3.o vgic/vgic-kvm-device.o \
-> -	 vgic/vgic-its.o vgic/vgic-debug.o
-> +	 vgic/vgic-its.o vgic/vgic-debug.o \
-> +	 rme.o
->   
->   kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu.o
->   
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 3dee5490eea9..2056c660c5ee 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -38,6 +38,7 @@
->   #include <asm/kvm_mmu.h>
->   #include <asm/kvm_nested.h>
->   #include <asm/kvm_pkvm.h>
-> +#include <asm/kvm_rme.h>
->   #include <asm/kvm_emulate.h>
->   #include <asm/sections.h>
->   
-> @@ -47,6 +48,8 @@
->   
->   static enum kvm_mode kvm_mode = KVM_MODE_DEFAULT;
->   
-> +DEFINE_STATIC_KEY_FALSE(kvm_rme_is_available);
-> +
->   DECLARE_KVM_HYP_PER_CPU(unsigned long, kvm_hyp_vector);
->   
->   DEFINE_PER_CPU(unsigned long, kvm_arm_hyp_stack_page);
-> @@ -2562,6 +2565,12 @@ static __init int kvm_arm_init(void)
->   
->   	in_hyp_mode = is_kernel_in_hyp_mode();
->   
-> +	if (in_hyp_mode) {
-> +		err = kvm_init_rme();
-> +		if (err)
-> +			return err;
-> +	}
-> +
->   	if (cpus_have_final_cap(ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE) ||
->   	    cpus_have_final_cap(ARM64_WORKAROUND_1508412))
->   		kvm_info("Guests without required CPU erratum workarounds can deadlock system!\n" \
-> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-> new file mode 100644
-> index 000000000000..3dbbf9d046bf
-> --- /dev/null
-> +++ b/arch/arm64/kvm/rme.c
-> @@ -0,0 +1,52 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2023 ARM Ltd.
-> + */
-> +
-> +#include <linux/kvm_host.h>
-> +
-> +#include <asm/rmi_cmds.h>
-> +#include <asm/virt.h>
-> +
-> +static int rmi_check_version(void)
-> +{
-> +	struct arm_smccc_res res;
-> +	int version_major, version_minor;
-> +	unsigned long host_version = RMI_ABI_VERSION(RMI_ABI_MAJOR_VERSION,
-> +						     RMI_ABI_MINOR_VERSION);
-> +
-> +	arm_smccc_1_1_invoke(SMC_RMI_VERSION, host_version, &res);
-> +
-> +	if (res.a0 == SMCCC_RET_NOT_SUPPORTED)
-> +		return -ENXIO;
-> +
-> +	version_major = RMI_ABI_VERSION_GET_MAJOR(res.a1);
-> +	version_minor = RMI_ABI_VERSION_GET_MINOR(res.a1);
-> +
+> with something like
+> 
+>     /* Use the new VMSA */
+>     __free_page(virt_to_page(svm->sev_es.vmsa));
 
-We don't seem to be using the res.a0 to determin if the RMM supports our
-requested version. As per RMM spec, section B4.3.23 :
+This should only be called for the page that KVM allocated during vCPU 
+creation. After that, the VMSA page from an AP create is a guest page 
+and shouldn't be freed by KVM.
 
-"
-The status code and lower revision output values indicate which of the 
-following is true, in order of precedence:
-  a) The RMM supports an interface revision which is compatible with the
-     requested revision.
-      • The status code is RMI_SUCCESS.
-      • The lower revision is equal to the requested revision.
-  b) The RMM does not support an interface revision which is compatible
-     with the requested revision The RMM supports an interface revision
-     which is incompatible with and less than the requested revision.
-      • The status code is RMI_ERROR_INPUT.
-      • The lower revision is the highest interface revision which is
-        both less than the requested revision and supported by the RMM.
+>     svm->sev_es.vmsa = pfn_to_kaddr(pfn);
+>     svm->vmcb->control.vmsa_pa = __pa(svm->sev_es.vmsa);
+> 
+> and wrap the __free_page() in sev_free_vcpu() with "if
+> (!svm->sev_es.snp_ap_create)".
+> 
+> This should remove the need for svm->sev_es.vmsa_pa. It is always
+> equal to svm->vmcb->control.vmsa_pa anyway.
 
-  c) The RMM does not support an interface revision which is compatible
-     with the requested revision The RMM supports an interface revision
-     which is incompatible with and greater than the requested revision.
-      • The status code is RMI_ERROR_INPUT.
-      • The lower revision is equal to the higher revision.
+Yeah, a little bit of multiple VMPL support worked its way in there 
+where the VMSA per VMPL level is maintained.
 
-So, we could simply check the res.a0 for RMI_SUCCESS and proceed with
-marking RMM available.
+But I believe that Sean wants a separate KVM object per VMPL level, so 
+that would disappear anyway (Joerg and I want to get on the PUCK 
+schedule to talk about multi-VMPL level support soon.)
 
+> 
+> Also, it's possible to remove
+> 
+>     /*
+>      * gmem pages aren't currently migratable, but if this ever
+>      * changes then care should be taken to ensure
+>      * svm->sev_es.vmsa_pa is pinned through some other means.
+>      */
+>     kvm_release_pfn_clean(pfn);
 
-> +	if (version_major != RMI_ABI_MAJOR_VERSION) {
-> +		kvm_err("Unsupported RMI ABI (v%d.%d) host supports v%d.%d\n",
-> +			version_major, version_minor,
-> +			RMI_ABI_MAJOR_VERSION,
-> +			RMI_ABI_MINOR_VERSION);
-> +		return -ENXIO;
-> +	}
-> +
-> +	kvm_info("RMI ABI version %d.%d\n", version_major, version_minor);
-> +
-> +	return 0;
-> +}
-> +
-> +int kvm_init_rme(void)
-> +{
-> +	if (PAGE_SIZE != SZ_4K)
-> +		/* Only 4k page size on the host is supported */
-> +		return 0;
-> +
-> +	if (rmi_check_version())
-> +		/* Continue without realm support */
-> +		return 0;
-> +
-> +	/* Future patch will enable static branch kvm_rme_is_available */
-> +
-> +	return 0;
+Removing this here will cause any previous guest VMSA page(s) to remain 
+pinned, that's the reason for unpinning here. OVMF re-uses the VMSA, but 
+that isn't a requirement for a firmware, and the kernel will create a 
+new VMSA page.
 
-Do we ever expect this to fail the kvm initialisation ? Otherwise, we
-could leave it as a void ?
+> 
+> if sev_free_vcpu() does
+> 
+>     if (svm->sev_es.snp_ap_create) {
+>       __free_page(virt_to_page(svm->sev_es.vmsa));
+>     } else {
+>       put_page(virt_to_page(svm->sev_es.vmsa));
+>     }
+> 
+> and while at it, please reverse the polarity of snp_ap_create and
+> rename it to snp_ap_created.
 
-Suzuki
-> +}
+The snp_ap_create flag gets cleared once the new VMSA is put in place, 
+it doesn't remain. So the flag usage will have to be altered in order 
+for this function to work properly.
 
+Thanks,
+Tom
+
+> 
+> Paolo
+> 
