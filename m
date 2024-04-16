@@ -1,157 +1,489 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D351512F36F
-	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 17:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713286875; cv=none; b=l0GCy/H1H4zSCAxhPFp7p9VvaGzOqaMWuX+C9bCy8bs1OkQrpyW/MjQonk+izTDqJUCLtzOMJx6WvRoGHlKCvzfeCvVkDrfFPWfo3djtczOY7v9+limykiiPShqFFdGGc05xK7+Dx7c4mZmdhlkgnTDMr7jJBz2pMQ+mn371tCE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713286875; c=relaxed/simple;
-	bh=d8yfNDlD2slCnTX5YrNTAPoVtr6kE/Nqrv0NiCbczaQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SmVSBuWPtAZCOzb7KyRpU1t4BdMWxEAE5ySzsjOuYK2Yf8CujWpEWYTrzsDNfvjCMsrYpKCnn5Sj6IqsWtxuI3awoMGzVZYWYKuopBEg8X5hG2jIPcQ1TYobXw5357xt+bCUAWzGk7qumZlF/4cuhI7tpPiuB+gjzbWvoxTgykk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J5XZr4ca; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B5B13343F
+	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 18:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713291935; cv=fail; b=AnjeHxY9Mkx9MRjiXk3ri6dvrHuyQp7CtoUW85Iszks8bm0L1CfTe89bOSGJ684H2cax70ugyp7E+0cQ6Uu7qPQNaIvXeyJz/Ojbt0cW9EgiwzUt3MISADECLNBCwB0jFZBvLyL/LGX5hkVjNle9FQvtIE4xzjRRM+mfbq81fGs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713291935; c=relaxed/simple;
+	bh=84b2d6yQjSL+1xt0eessl3M2pnesgInUfPzwTd/SCi0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=o4DqZlPZy1W6KWv+S5x1jkBPIioqMuJaxOs0incviwdAR8X5ntmip2giBKPanHC4toGjFl9YvPPCYzePv9K9jQZfyQirm2sTlkGezYUTs/TH1gRkk1+B7wZa3OkeHfFGYRhT3tb6B0lsu0yPBhPuDZPwOysmqcFg3zn3ypB+amM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z/mKn9Ul; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J5XZr4ca"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713286872;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YV3huxxwV4cNX30vuhj/67sfqzzrbon2fJPguOJkhQA=;
-	b=J5XZr4caQsS1UhDSLgg52waYa8GhX+uuIoOCQqtzkAkQEr0WIdRjtis9HXBmTNlmPe+oFj
-	teKH4L/hn0nP6GpeHKnSqnwW/T7SKZ/p/TbXkyvSLC2wizwByhs0t+dieOWkfgPB/7TA2A
-	Pr3e9PNweeUuAHo59g6eUFWabLV5XP4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-403-c_iU-PrrMoiLX41ZfaWXIg-1; Tue, 16 Apr 2024 13:01:11 -0400
-X-MC-Unique: c_iU-PrrMoiLX41ZfaWXIg-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-34954c03af1so465002f8f.2
-        for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 10:01:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713286870; x=1713891670;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YV3huxxwV4cNX30vuhj/67sfqzzrbon2fJPguOJkhQA=;
-        b=Q0HfgbzSlOw0E4JmPcVOq0699n+q4iSmnBv+qWPomDVCIRxkB72uFmfUQ8awwA8m6F
-         UmZN+tZLwinNWJzb8pcg4XovAy2d2Vdr8tNrgWQSglRicGrlz/ehtwDcKWjh4kr/t31Q
-         +46oyC/bgPhca8qLA/hVNE3MFtBF7Gv3VyBrMEDVVEamTmM5f1v69Ab5oAbciKmSAMSt
-         hdKCgIwUx+zy4181VWYfo/fUmONyI2pcct5tBHrw2bFDFrsjyPsjBMobsESoyvw1rt9D
-         DVfFBdeSmhOEtgmxpuWei66rvJpLTRC5EeafntyMaTjW37zxjBqqDTh9Ac8QODuSbpyW
-         eoNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW0xzkPtbd+/9AF3FNuD6yogwrHq4vAlyWPUri8NCRqIJMXv32lmMXwUm5QKG6MVLZwLtf3yUmuzcfy56yFp98udpKJrVivIhH4kg==
-X-Gm-Message-State: AOJu0YwAdxjh+ybYIXVigUJSOAwRaTGJqraDaaDGa/mxFJYRcwjeQsxw
-	QDSjgpOgG5p7qe2YuMj8isPECgmszkyf5H7udMZsQ5KPtFQNRzbqCapzk1x1PFT7Jqxk09889Co
-	lfvsb5x3b9o5bnueRfPLdygrigvvGydANd8AlwcZ7zXmzKlDM2pObD7GyNCqSu+6EVoFXsj19JN
-	gOIamfwdvnnTfBJqB2vmQatzMt8XdQ5FlJ+A==
-X-Received: by 2002:a5d:6247:0:b0:348:5e40:62aa with SMTP id m7-20020a5d6247000000b003485e4062aamr2053437wrv.2.1713286870095;
-        Tue, 16 Apr 2024 10:01:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG6fYFk6xl1nuI2T7KirzQuQyw/sEuJB0A3gheWB+RJwuSGwFc7r4/2ReNv9v/wLow5jcYtNYlNsRKa11DX2JM=
-X-Received: by 2002:a5d:6247:0:b0:348:5e40:62aa with SMTP id
- m7-20020a5d6247000000b003485e4062aamr2053410wrv.2.1713286869755; Tue, 16 Apr
- 2024 10:01:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z/mKn9Ul"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713291934; x=1744827934;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=84b2d6yQjSL+1xt0eessl3M2pnesgInUfPzwTd/SCi0=;
+  b=Z/mKn9Ulz94wJG6hjr3syDCoN7LBD1PHF1o9ZnXSFOAUhT4ZWcEGq7c2
+   IDxU6V5SzUkgQIpI8QAV45KpVIcF7X7xy+7Opm3EcxMQHumEKqJT/pXCs
+   wYTWW7+SvGSUeBfJNc7isXQMp+sIhL0BU92n6HEgG1e0w4UrYnA+Z9E8i
+   oRyA5xPNidvc+fj7OArb/9Q8P/9x59zTc5UfJ2y4qtxLRjmMpwTTDBTPZ
+   n9h59fC9M24SahgDr5q08M2t+ysVa6XP9x47Yc361JxXqG8KYVXT0T+7b
+   fHS12J1Po2xoG1RhEPEqYfkFB0Ko7IVjKlst5lPiKehrAcCJAV8IMF6Sw
+   g==;
+X-CSE-ConnectionGUID: T6buEILnRueZTv8re9uwYg==
+X-CSE-MsgGUID: QD9DMvkBRg23kCDoTyrbGQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="19310600"
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
+   d="scan'208";a="19310600"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 11:25:33 -0700
+X-CSE-ConnectionGUID: aGCiLp9nTWaDILoSpzBqyA==
+X-CSE-MsgGUID: stT5hoZvRl+ucdmQub3jeg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
+   d="scan'208";a="53328366"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 16 Apr 2024 11:25:32 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 16 Apr 2024 11:25:31 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 16 Apr 2024 11:25:31 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 16 Apr 2024 11:25:31 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KH1YesHWbBrpXTRwvZoOkCewaIwXQ4tdaF+uRS9CMm3qJnQut/DYvaAcgLL158C5uJZ/oXsb43x7A85im4OjtYqS4R3OVM9/lYInatke9VZedoUPuhc6gldGFukG+SxGeVJp+4X6HsXwb5UBzHiISNnUZZbje06kZPjjaMzE0gBv42tIIcPm4+UNxRW0jCJTnMf3W+0TXSGTayFbePe1PPwLMB5B5jL10+WZSC/z++mbhvZ91x73+xYGTdcF6nwuLraaa6ESmdTEad0QAT6DdbbIJ48vK6U7w8OuBR575z5b29FFJ2VcI6n32lmkl9ih8MNg2KewoKnOX8UhsXUDjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=npaQ8f+bjvM39soiyyoIH5RhvgGLqb6WMfoaVVBljII=;
+ b=WktQk73HuCu4HPkAzTQ1uS1VM8WryUzBDTbbJH7w4xfM973VuuhYiCLJq1j7/X5/XlgkzQDY5LLG9ZrvVEjhB9uiTVLFBpLXXfIAUv96awdlub91Zyx1hOKFCB7K+8xQDarlW9DOa1V5pluIkBPHgN4WqsbB+luoiem1RCjWyXkMFSLB6COBUPTPjP1DPeDNTOcD657oqD91gzwXbhIZBGCA4KEr4+iPcExp3o67y7CPvftfxRun9Myf+sPLEPXfg+DuqjtTZ9ODfmrs6hQ/gXg4yIiaU1jJZbPo4yXm5HOKaNjWaT1e1fBpOuqsBOJdfdEs5R4FUddtQmvvu9nPXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by IA1PR11MB7388.namprd11.prod.outlook.com (2603:10b6:208:420::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.26; Tue, 16 Apr
+ 2024 18:25:29 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::82fd:75df:40d7:ed71]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::82fd:75df:40d7:ed71%4]) with mapi id 15.20.7452.046; Tue, 16 Apr 2024
+ 18:25:29 +0000
+Date: Tue, 16 Apr 2024 11:25:26 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>, Dan Williams
+	<dan.j.williams@intel.com>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<linux-coco@lists.linux.dev>, <svsm-devel@coconut-svsm.dev>
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, "Peter
+ Zijlstra" <peterz@infradead.org>, Michael Roth <michael.roth@amd.com>,
+	"Ashish Kalra" <ashish.kalra@amd.com>, Joel Becker <jlbec@evilplan.org>,
+	"Christoph Hellwig" <hch@lst.de>
+Subject: Re: [PATCH v3 12/14] fs/configfs: Add a callback to determine
+ attribute visibility
+Message-ID: <661ec2968fa55_4d56129470@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <cover.1711405593.git.thomas.lendacky@amd.com>
+ <e881a70fda1da98882241fc46fd57c3063fde55f.1711405593.git.thomas.lendacky@amd.com>
+ <661e10a01f1d8_4d561294d0@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <7fc4e7d4-dfa8-b626-76c7-1f8993304a2d@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <7fc4e7d4-dfa8-b626-76c7-1f8993304a2d@amd.com>
+X-ClientProxiedBy: MW4PR04CA0144.namprd04.prod.outlook.com
+ (2603:10b6:303:84::29) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240329225835.400662-1-michael.roth@amd.com> <20240329225835.400662-19-michael.roth@amd.com>
- <67685ec7-ca61-43f1-8ecd-120ec137e93a@redhat.com> <CABgObfZNVR-VKst8dDFZ4gs_zSWE8NE2gj5-Y4TNh0AnBfti7w@mail.gmail.com>
- <758c876d-ff77-0633-7b3e-965d863d5a93@amd.com>
-In-Reply-To: <758c876d-ff77-0633-7b3e-965d863d5a93@amd.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 16 Apr 2024 19:00:58 +0200
-Message-ID: <CABgObfbhNce22iuqjS3bF9V4aD1vpBg3oUcV6SLVHgvL+-UUmA@mail.gmail.com>
-Subject: Re: [PATCH v12 18/29] KVM: SEV: Use a VMSA physical address variable
- for populating VMCB
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	jroedel@suse.de, hpa@zytor.com, ardb@kernel.org, seanjc@google.com, 
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|IA1PR11MB7388:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24215d4d-96f3-42d3-b87b-08dc5e429837
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 1r010CV2nCTpwDSNXcvK0oXoHbzc+FFUrkHtDtViBPqNiyPoqv4TbVm6le2cjTm0Ebl2Klso/N75qsPoioAG57VDZLCn9NH8n36DYcZcjM13XlYuZCRQ4bjd0IG6q0wfsdyEMJzLt+JSbR7V8K5KMcKcsn8cUd6+B5ncwQfPvOQkMS3BdONQsNTEhOaLfAQlBylejprOVeX2X1irk41PxlHCAPjiW+Bu4h+OhzR80DNAzVGq4ctybIclR8cNxoc4EjygUVYHz5OVXuh5CRqffs+9gjOj1mKTWI8J7dvghSCg25PTBDZouj2TPFE3oDQc1UDPfHIVcW7J0ySAsaFve6nUnPl993h4Ne+pfF33mr4H6nNI0n0IFoiy1OtnlVdD1kdhMpGPGyjtiZCA0IB8plVb3RwOyL9WviRynguOA29J8GZHfzYMUzF8osX4Wu/9UhQV5rGRf4oZnVJ43ACGw4qdb1OLujx0iCaZAcTF9FdVZC1LqpAal0YdxPilLD07mnmi1AjVACzEwtCbVRzhQhydXyhgoKoChs8LbKZZavZh8T82dnhbH4TsuEKgDgDJBRs8yZX+bE1F1pPj+JiAAA916PLyEKCbIs4JValaMAq2+hqkXzOXrb5WlnNMRB761w1Ifi45hrvnxF5BKxP3sRZG0szNWcomXLqHcl9NjCI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(7416005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mLPUWF2vfK0/bai6/8/oIOVA+khlzrPzk1gI2F46nQrl3tBQGYLf++f3S0IE?=
+ =?us-ascii?Q?v/g283S391yl1AJW1JblyH/aZ0tStcoI1SUOwjU09rYe5n59UXCBf7HDpDXO?=
+ =?us-ascii?Q?SHCNn1eWD3hXhFaYH/+JMm99Q7XK47tYUDx9PsQ+YR5zTFcfovZNX0iQkazM?=
+ =?us-ascii?Q?Knewhl2mooRtsVcz2EaPvOY5t9yiKMaC9P7/zyYMgV8cIBZOgrQ3owuWNg0c?=
+ =?us-ascii?Q?xJlcgx8B8GR7+GHRR4qku3gLxfSalJHZ606ysfGG3iFVH5i3V8wTv4QSR0EW?=
+ =?us-ascii?Q?yR9lh21nG6ghlxa+JPGR4P6Cdj/ZCDLYcVcipDpHhZJAQzxFPo0AG975mbAO?=
+ =?us-ascii?Q?XaH79h3XzxOBcTDIm7XGgvm5Qfl+b4ZU7Ffr05FOTUQcwoyuvIkZNBh3azwJ?=
+ =?us-ascii?Q?LZunJNrY3DUfbb512KM6gmtrHPLWaJv6b1u9Rig+/4WirbxzE646ICUUkYhd?=
+ =?us-ascii?Q?2mTKuthpoHpKkT+IrGbLD4drIv3+stSXUJ+8gcmCbVTEOTHphod9ueQxGoL/?=
+ =?us-ascii?Q?UfMmb1dfs5elWClhfK+qwYAFOZS9zn0/4h5ggltzcH+qy5J5jx39d9fY8OiW?=
+ =?us-ascii?Q?JV2DY8ZNpK7EMSDRDLnUasVFqwj4yeYhCu+Ab+ht/5HcrvfXcGMUCUechkbZ?=
+ =?us-ascii?Q?c+K8Wy83zJ6CKSrEfYxHT60dmSTVOlwbTJ5DZJJZT7iqt7xJWIcdnIcho+kV?=
+ =?us-ascii?Q?8L8C6QyqINU00BxdALfOVWnsIjuJGwtdBQgptQ5ZUGaGK1p6swAtNoaB6cw0?=
+ =?us-ascii?Q?B+J+qb8gIByCMgA3Me8awv+wkDL6tUi6mutoqqcdR1QdIRxiqHmtZzZxAoc9?=
+ =?us-ascii?Q?f8HntbWNTeTP7SAHHTFXYbS+vNPbXgD7YzCAVQ5VZ1ZCrEZVimK+oFoDGjkD?=
+ =?us-ascii?Q?+S2qq78uOO8KoUQ8RxNla0z1LQCuHAecw1e48vnTk1jkx2VeEcvEixq+YWnp?=
+ =?us-ascii?Q?FQWXAyt4bGlsoVPNd4F1qviX8WKzLT0P0YrivO6U6qewhozSXpeD9wVznQCZ?=
+ =?us-ascii?Q?dkEiLEVx2nyajt2zMt6qj+qLevI+MOR4+QqmT0ykS4fuTjanN2x0SdkN/2QU?=
+ =?us-ascii?Q?vMjIyqHXcEOB59aj5skNyPiYDpiL4oiHGeGB/7opRDGMGia962CK/Ox9gOdW?=
+ =?us-ascii?Q?DUr8R1D0FI62J7tgGpMELdObn2bJNiErirzJRJm6T97shO2VEKyALlT4HrZY?=
+ =?us-ascii?Q?AkNE9tKDY22hFv3lQKyiCbkoLVCiB7m3PLjzH4DKuo98fPJjrhoQIUZUK0NO?=
+ =?us-ascii?Q?4ZRQmDzssibPeYhQBM+cbyuSQWk+rgTh+4Rv9p1mPJaqwod9a7ccE++JtpQV?=
+ =?us-ascii?Q?32SAIHQafJbJofP1LztCAGMZSOFbHH01EgMHoqhb3xaDc0KggdD6ccMVHEFP?=
+ =?us-ascii?Q?QbKenDbnYUOO8LovTMOJ9zrpzKZbKXBR1I6XqcO4w1M8Vbkd0vv3tBWi01/g?=
+ =?us-ascii?Q?izwV6aBqcmNDYOxQz2+uQ+yGp1EGian2THjJDpD/alPfF5tny10J6DxXIVhu?=
+ =?us-ascii?Q?DvHpGoxRAEf+o5fbp8v0ohdqi58epEx+HK+Iht9mH2ZJSNuXyuzfN7YgPl0R?=
+ =?us-ascii?Q?PIFBU/LHVbDfcdj80b2j0Wbp1g4cuPyMcygmPO+hCI82iLt5hrA5tovID4xl?=
+ =?us-ascii?Q?sg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24215d4d-96f3-42d3-b87b-08dc5e429837
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 18:25:29.6024
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eFEhPX66Uk5xVJrPruhW1s/tFgWXw/JI6Ve2A2EdIPWfbIQzBJ2QEJtnoX/3LA31/eWnBqqPrHt2/glQyTgHbWst5nbot05xeQZ7oObiHVY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7388
+X-OriginatorOrg: intel.com
 
-On Tue, Apr 16, 2024 at 4:25=E2=80=AFPM Tom Lendacky <thomas.lendacky@amd.c=
-om> wrote:
->
-> On 4/16/24 06:53, Paolo Bonzini wrote:
-> > On Sat, Mar 30, 2024 at 10:01=E2=80=AFPM Paolo Bonzini <pbonzini@redhat=
-.com> wrote:
+Tom Lendacky wrote:
+> On 4/16/24 00:46, Dan Williams wrote:
+> > Tom Lendacky wrote:
+> >> In order to support dynamic decisions as to whether an attribute should be
+> >> created, add a callback that returns a bool to indicate whether the
+> >> attribute should be display. If no callback is registered, the attribute
+[..]
+> >> Cc: Joel Becker <jlbec@evilplan.org>
+> >> Cc: Christoph Hellwig <hch@lst.de>
+> >> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> >> ---
+> >>   fs/configfs/file.c       |   7 +++
+> >>   include/linux/configfs.h | 111 +++++++++++++++++++++++++++------------
+> >>   2 files changed, 84 insertions(+), 34 deletions(-)
 > >>
-> >> On 3/29/24 23:58, Michael Roth wrote:
-> >>> From: Tom Lendacky<thomas.lendacky@amd.com>
-> >>>
-> >>> In preparation to support SEV-SNP AP Creation, use a variable that ho=
-lds
-> >>> the VMSA physical address rather than converting the virtual address.
-> >>> This will allow SEV-SNP AP Creation to set the new physical address t=
-hat
-> >>> will be used should the vCPU reset path be taken.
-> >>>
-> >>> Signed-off-by: Tom Lendacky<thomas.lendacky@amd.com>
-> >>> Signed-off-by: Ashish Kalra<ashish.kalra@amd.com>
-> >>> Signed-off-by: Michael Roth<michael.roth@amd.com>
-> >>> ---
-> >>
-> >> I'll get back to this one after Easter, but it looks like Sean had som=
-e
-> >> objections at https://lore.kernel.org/lkml/ZeCqnq7dLcJI41O9@google.com=
-/.
-> >
->
-> Note that AP create is called multiple times per vCPU under OVMF with
-> and added call by the kernel when booting the APs.
+[..]
+> >> diff --git a/include/linux/configfs.h b/include/linux/configfs.h
+> >> index 2606711adb18..c836d7bc7c9e 100644
+> >> --- a/include/linux/configfs.h
+> >> +++ b/include/linux/configfs.h
+> >> @@ -116,35 +116,57 @@ struct configfs_attribute {
+> >>   	const char		*ca_name;
+> >>   	struct module 		*ca_owner;
+> >>   	umode_t			ca_mode;
+> >> +	bool (*is_visible)(const struct config_item *, const struct configfs_attribute *);
+> >>   	ssize_t (*show)(struct config_item *, char *);
+> >>   	ssize_t (*store)(struct config_item *, const char *, size_t);
+> >>   };
+> >>   
+> >> -#define CONFIGFS_ATTR(_pfx, _name)			\
+> >> +#define __CONFIGFS_ATTR(_pfx, _name, _vis)		\
+> >>   static struct configfs_attribute _pfx##attr_##_name = {	\
+> >>   	.ca_name	= __stringify(_name),		\
+> >>   	.ca_mode	= S_IRUGO | S_IWUSR,		\
+> >>   	.ca_owner	= THIS_MODULE,			\
+> >> +	.is_visible	= _vis,				\
+> >>   	.show		= _pfx##_name##_show,		\
+> >>   	.store		= _pfx##_name##_store,		\
+> > 
+> > Shouldn't this operation live in configfs_group_operations? That would
+> > mirror the sysfs organization, and likely saves some memory.
+> 
+> I suppose it can, but then you lose the grouping of attributes within 
+> the same directory, right? A configfs group will result in moving the 
+> entries into a subdirectory, right? If we go with the group level, then 
+> we will be moving the existing TSM extra attributes and the new TSM SVSM 
+> attributes into new, separate sub-directories.
 
-Oooh, I somehow thought that
+I am not following the concern about "losing the grouping"? Here is what
+I was thinking with having the visibility routines in group operations.
+This is just the broard strokes, it compiles, but still needs the finer
+detail work to make tdx-guest skip all the attributes that do not apply
+to it.  Might need to be broken up a bit more, but hopefully conveys the
+idea. Does this address your grouping concern?
 
-+ target_svm->sev_es.snp_vmsa_gpa =3D INVALID_PAGE;
-+ target_svm->sev_es.snp_ap_create =3D true;
-
-was in svm_create_vcpu().
-
-So there should be separate "snp_ap_waiting_for_reset" and
-"snp_has_guest_vmsa" flags. The latter is set once in
-__sev_snp_update_protected_guest_state and is what governs whether the
-VMSA page was allocated or just refcounted.
-
-> But I believe that Sean wants a separate KVM object per VMPL level, so
-> that would disappear anyway (Joerg and I want to get on the PUCK
-> schedule to talk about multi-VMPL level support soon.)
-
-Yes, agreed on both counts.
-
-> >     /*
-> >      * gmem pages aren't currently migratable, but if this ever
-> >      * changes then care should be taken to ensure
-> >      * svm->sev_es.vmsa_pa is pinned through some other means.
-> >      */
-> >     kvm_release_pfn_clean(pfn);
->
-> Removing this here will cause any previous guest VMSA page(s) to remain
-> pinned, that's the reason for unpinning here. OVMF re-uses the VMSA, but
-> that isn't a requirement for a firmware, and the kernel will create a
-> new VMSA page.
-
-Yes, and once you understand that I was thinking of a set-once flag
-"snp_has_guest_vmsa" it should all make a lot more sense.
-
-Paolo
-
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index 87f241825bc3..39b8455f0ba5 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -968,7 +968,7 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+ 	snp_dev->input.resp_gpa = __pa(snp_dev->response);
+ 	snp_dev->input.data_gpa = __pa(snp_dev->certs_data);
+ 
+-	ret = tsm_register(&sev_tsm_ops, snp_dev, &tsm_report_extra_type);
++	ret = tsm_register(&sev_tsm_ops, snp_dev);
+ 	if (ret)
+ 		goto e_free_cert_data;
+ 
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index 1253bf76b570..654d20ea524a 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -301,7 +301,7 @@ static int __init tdx_guest_init(void)
+ 		goto free_misc;
+ 	}
+ 
+-	ret = tsm_register(&tdx_tsm_ops, NULL, NULL);
++	ret = tsm_register(&tdx_tsm_ops, NULL);
+ 	if (ret)
+ 		goto free_quote;
+ 
+diff --git a/drivers/virt/coco/tsm.c b/drivers/virt/coco/tsm.c
+index d1c2db83a8ca..b31be0e61728 100644
+--- a/drivers/virt/coco/tsm.c
++++ b/drivers/virt/coco/tsm.c
+@@ -14,7 +14,6 @@
+ 
+ static struct tsm_provider {
+ 	const struct tsm_ops *ops;
+-	const struct config_item_type *type;
+ 	void *data;
+ } provider;
+ static DECLARE_RWSEM(tsm_rwsem);
+@@ -252,34 +251,18 @@ static ssize_t tsm_report_auxblob_read(struct config_item *cfg, void *buf,
+ }
+ CONFIGFS_BIN_ATTR_RO(tsm_report_, auxblob, NULL, TSM_OUTBLOB_MAX);
+ 
+-#define TSM_DEFAULT_ATTRS() \
+-	&tsm_report_attr_generation, \
+-	&tsm_report_attr_provider
+-
+ static struct configfs_attribute *tsm_report_attrs[] = {
+-	TSM_DEFAULT_ATTRS(),
+-	NULL,
+-};
+-
+-static struct configfs_attribute *tsm_report_extra_attrs[] = {
+-	TSM_DEFAULT_ATTRS(),
+-	&tsm_report_attr_privlevel,
+-	&tsm_report_attr_privlevel_floor,
++	[TSM_REPORT_GENERATION] = &tsm_report_attr_generation,
++	[TSM_REPORT_PROVIDER] = &tsm_report_attr_provider,
++	[TSM_REPORT_PRIVLEVEL] = &tsm_report_attr_privlevel,
++	[TSM_REPORT_PRIVLEVEL_FLOOR] = &tsm_report_attr_privlevel_floor,
+ 	NULL,
+ };
+ 
+-#define TSM_DEFAULT_BIN_ATTRS() \
+-	&tsm_report_attr_inblob, \
+-	&tsm_report_attr_outblob
+-
+ static struct configfs_bin_attribute *tsm_report_bin_attrs[] = {
+-	TSM_DEFAULT_BIN_ATTRS(),
+-	NULL,
+-};
+-
+-static struct configfs_bin_attribute *tsm_report_bin_extra_attrs[] = {
+-	TSM_DEFAULT_BIN_ATTRS(),
+-	&tsm_report_attr_auxblob,
++	[TSM_REPORT_INBLOB] = &tsm_report_attr_inblob,
++	[TSM_REPORT_OUTBLOB] = &tsm_report_attr_outblob,
++	[TSM_REPORT_AUXBLOB] = &tsm_report_attr_auxblob,
+ 	NULL,
+ };
+ 
+@@ -297,21 +280,12 @@ static struct configfs_item_operations tsm_report_item_ops = {
+ 	.release = tsm_report_item_release,
+ };
+ 
+-const struct config_item_type tsm_report_default_type = {
++static const struct config_item_type tsm_report_type = {
+ 	.ct_owner = THIS_MODULE,
+ 	.ct_bin_attrs = tsm_report_bin_attrs,
+ 	.ct_attrs = tsm_report_attrs,
+ 	.ct_item_ops = &tsm_report_item_ops,
+ };
+-EXPORT_SYMBOL_GPL(tsm_report_default_type);
+-
+-const struct config_item_type tsm_report_extra_type = {
+-	.ct_owner = THIS_MODULE,
+-	.ct_bin_attrs = tsm_report_bin_extra_attrs,
+-	.ct_attrs = tsm_report_extra_attrs,
+-	.ct_item_ops = &tsm_report_item_ops,
+-};
+-EXPORT_SYMBOL_GPL(tsm_report_extra_type);
+ 
+ static struct config_item *tsm_report_make_item(struct config_group *group,
+ 						const char *name)
+@@ -326,12 +300,38 @@ static struct config_item *tsm_report_make_item(struct config_group *group,
+ 	if (!state)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	config_item_init_type_name(&state->cfg, name, provider.type);
++	config_item_init_type_name(&state->cfg, name, &tsm_report_type);
+ 	return &state->cfg;
+ }
+ 
++static bool tsm_report_attr_visible(struct configfs_attribute *attr, int n)
++{
++	guard(rwsem_read)(&tsm_rwsem);
++	if (!provider.ops)
++		return false;
++
++	if (!provider.ops->is_visible)
++		return true;
++
++	return provider.ops->is_visible(n);
++}
++
++static bool tsm_report_bin_attr_visible(struct configfs_bin_attribute *attr,
++					int n)
++{
++	if (!provider.ops)
++		return false;
++
++	if (!provider.ops->is_bin_visible)
++		return true;
++
++	return provider.ops->is_bin_visible(n);
++}
++
+ static struct configfs_group_operations tsm_report_group_ops = {
+ 	.make_item = tsm_report_make_item,
++	.is_visible = tsm_report_attr_visible,
++	.is_bin_visible = tsm_report_bin_attr_visible,
+ };
+ 
+ static const struct config_item_type tsm_reports_type = {
+@@ -353,16 +353,10 @@ static struct configfs_subsystem tsm_configfs = {
+ 	.su_mutex = __MUTEX_INITIALIZER(tsm_configfs.su_mutex),
+ };
+ 
+-int tsm_register(const struct tsm_ops *ops, void *priv,
+-		 const struct config_item_type *type)
++int tsm_register(const struct tsm_ops *ops, void *priv)
+ {
+ 	const struct tsm_ops *conflict;
+ 
+-	if (!type)
+-		type = &tsm_report_default_type;
+-	if (!(type == &tsm_report_default_type || type == &tsm_report_extra_type))
+-		return -EINVAL;
+-
+ 	guard(rwsem_write)(&tsm_rwsem);
+ 	conflict = provider.ops;
+ 	if (conflict) {
+@@ -372,7 +366,6 @@ int tsm_register(const struct tsm_ops *ops, void *priv,
+ 
+ 	provider.ops = ops;
+ 	provider.data = priv;
+-	provider.type = type;
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(tsm_register);
+@@ -384,7 +377,6 @@ int tsm_unregister(const struct tsm_ops *ops)
+ 		return -EBUSY;
+ 	provider.ops = NULL;
+ 	provider.data = NULL;
+-	provider.type = NULL;
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(tsm_unregister);
+diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
+index 18677cd4e62f..213e88f4cec2 100644
+--- a/fs/configfs/dir.c
++++ b/fs/configfs/dir.c
+@@ -580,6 +580,7 @@ static void detach_attrs(struct config_item * item)
+ static int populate_attrs(struct config_item *item)
+ {
+ 	const struct config_item_type *t = item->ci_type;
++	struct configfs_group_operations *ops = t->ct_group_ops;
+ 	struct configfs_attribute *attr;
+ 	struct configfs_bin_attribute *bin_attr;
+ 	int error = 0;
+@@ -589,12 +590,17 @@ static int populate_attrs(struct config_item *item)
+ 		return -EINVAL;
+ 	if (t->ct_attrs) {
+ 		for (i = 0; (attr = t->ct_attrs[i]) != NULL; i++) {
++			if (ops && ops->is_visible && !ops->is_visible(attr, i))
++				continue;
+ 			if ((error = configfs_create_file(item, attr)))
+ 				break;
+ 		}
+ 	}
+ 	if (t->ct_bin_attrs) {
+ 		for (i = 0; (bin_attr = t->ct_bin_attrs[i]) != NULL; i++) {
++			if (ops && ops->is_bin_visible &&
++			    !ops->is_bin_visible(bin_attr, i))
++				continue;
+ 			error = configfs_create_bin_file(item, bin_attr);
+ 			if (error)
+ 				break;
+diff --git a/fs/configfs/file.c b/fs/configfs/file.c
+index 0ad32150611e..356d23b6b9cf 100644
+--- a/fs/configfs/file.c
++++ b/fs/configfs/file.c
+@@ -444,7 +444,8 @@ const struct file_operations configfs_bin_file_operations = {
+  *	@attr:	atrribute descriptor.
+  */
+ 
+-int configfs_create_file(struct config_item * item, const struct configfs_attribute * attr)
++int configfs_create_file(struct config_item *item,
++			 const struct configfs_attribute *attr)
+ {
+ 	struct dentry *dir = item->ci_dentry;
+ 	struct configfs_dirent *parent_sd = dir->d_fsdata;
+diff --git a/include/linux/configfs.h b/include/linux/configfs.h
+index 2606711adb18..31553f12db7c 100644
+--- a/include/linux/configfs.h
++++ b/include/linux/configfs.h
+@@ -216,6 +216,8 @@ struct configfs_group_operations {
+ 	struct config_group *(*make_group)(struct config_group *group, const char *name);
+ 	void (*disconnect_notify)(struct config_group *group, struct config_item *item);
+ 	void (*drop_item)(struct config_group *group, struct config_item *item);
++	bool (*is_visible)(struct configfs_attribute *attr, int n);
++	bool (*is_bin_visible)(struct configfs_bin_attribute *attr, int n);
+ };
+ 
+ struct configfs_subsystem {
+diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+index de8324a2223c..a45b12943223 100644
+--- a/include/linux/tsm.h
++++ b/include/linux/tsm.h
+@@ -42,6 +42,19 @@ struct tsm_report {
+ 	u8 *auxblob;
+ };
+ 
++enum tsm_attr_index {
++	TSM_REPORT_GENERATION,
++	TSM_REPORT_PROVIDER,
++	TSM_REPORT_PRIVLEVEL,
++	TSM_REPORT_PRIVLEVEL_FLOOR,
++};
++
++enum tsm_bin_attr_index {
++	TSM_REPORT_INBLOB,
++	TSM_REPORT_OUTBLOB,
++	TSM_REPORT_AUXBLOB,
++};
++
+ /**
+  * struct tsm_ops - attributes and operations for tsm instances
+  * @name: tsm id reflected in /sys/kernel/config/tsm/report/$report/provider
+@@ -55,15 +68,11 @@ struct tsm_report {
+ struct tsm_ops {
+ 	const char *name;
+ 	const unsigned int privlevel_floor;
++	bool (*is_visible)(enum tsm_attr_index index);
++	bool (*is_bin_visible)(enum tsm_bin_attr_index index);
+ 	int (*report_new)(struct tsm_report *report, void *data);
+ };
+ 
+-extern const struct config_item_type tsm_report_default_type;
+-
+-/* publish @privlevel, @privlevel_floor, and @auxblob attributes */
+-extern const struct config_item_type tsm_report_extra_type;
+-
+-int tsm_register(const struct tsm_ops *ops, void *priv,
+-		 const struct config_item_type *type);
++int tsm_register(const struct tsm_ops *ops, void *priv);
+ int tsm_unregister(const struct tsm_ops *ops);
+ #endif /* __TSM_H */
