@@ -1,25 +1,25 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E59412A177;
-	Tue, 16 Apr 2024 12:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3347712BF29;
+	Tue, 16 Apr 2024 13:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713271139; cv=none; b=rMIeKux87WGUGAFobu6IuG/ACHRihIi2avbMtuecYXH+mEmEmLk/p2tq1/3cEVyevY3TbX9RBVtT+8CNhckz2yZBHFeUC0MUqGKU4BJV4JaMIyhgTQi+wPRE4WOYYQ8rL0H2dwj3EDQT69m2MKII4LGaj/5/oyDp56g7mNcjlgM=
+	t=1713273286; cv=none; b=KeQimzu5VDS7k0zHyLi8Y7so7TY7hAr4fJOKcdD/RH45jZcufXAHuVADN31hVW5duZsBMQ2jLhKSqza+FeBTNoOm+tBEJQsWgF1/UjiRdatXgzyeyQLb27qcUwkRwgSsRSycMruJPsQgUCn3I2YP08yaGNWSXa9XAKoFUrkVQ/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713271139; c=relaxed/simple;
-	bh=Wn1oi3HNvkWuFzc1P/9TrLuABi6hae0ecEko9TXGDdQ=;
+	s=arc-20240116; t=1713273286; c=relaxed/simple;
+	bh=gu/7yEmTZO3eRUr56dElM2gFoo/BiAjK7fnL+Q6GZV0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Iv+3SLIW0aT1q65I18KOXxDVAebjrPXlAuznH6sq2S0QLKh3hNjSNQ2jNZ6GaE/WvYoZE4peNfJRPA66WLINuXGJHPWdurwl+sNVl0VdQvrnaNPsTqBWTkwEFZs0xlpQKXujZriZcI2W2Y+B2ihTOVxeyQvmRJW2p4lrZIz5usI=
+	 In-Reply-To:Content-Type; b=e20y1uCKO/YZyBEsYoY0uq2NyxhsXn0xzKJBGO4xfZuMAd2ibKYi1jgzCpzm1ZBGrBp+chPg1E7BuTW5LcB2X/KeyWjo3UZR2jG5BBuVgB2qWh+Nipe1AZesYPvbhKelSaiDdrY0hRMDpINI2ktZA+oNL9KWfQV8raZfqu2hoKc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B330339;
-	Tue, 16 Apr 2024 05:39:23 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B3C19DA7;
+	Tue, 16 Apr 2024 06:15:11 -0700 (PDT)
 Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 76D673F738;
-	Tue, 16 Apr 2024 05:38:52 -0700 (PDT)
-Message-ID: <e6ece61d-ceb6-44f3-a17c-c678b4562991@arm.com>
-Date: Tue, 16 Apr 2024 13:38:51 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 458AF3F738;
+	Tue, 16 Apr 2024 06:14:41 -0700 (PDT)
+Message-ID: <b8019da1-d361-445b-a224-0761640aa616@arm.com>
+Date: Tue, 16 Apr 2024 14:14:37 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,8 +27,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/43] arm64: RME: Add SMC definitions for calling the
- RMM
+Subject: Re: [PATCH v2 06/43] arm64: RME: Add wrappers for RMI calls
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
@@ -41,304 +40,176 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
 References: <20240412084056.1733704-1-steven.price@arm.com>
  <20240412084309.1733783-1-steven.price@arm.com>
- <20240412084309.1733783-6-steven.price@arm.com>
+ <20240412084309.1733783-7-steven.price@arm.com>
 Content-Language: en-US
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20240412084309.1733783-6-steven.price@arm.com>
+In-Reply-To: <20240412084309.1733783-7-steven.price@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 Hi Steven
 
 On 12/04/2024 09:42, Steven Price wrote:
-> The RMM (Realm Management Monitor) provides functionality that can be
-> accessed by SMC calls from the host.
+> The wrappers make the call sites easier to read and deal with the
+> boiler plate of handling the error codes from the RMM.
 > 
-> The SMC definitions are based on DEN0137[1] version 1.0-eac5
-> 
-> [1] https://developer.arm.com/documentation/den0137/1-0eac5/
-> 
+
+I have compared the parameters and output values to that of the RMM spec
+and they match. There are some minor nits below.
+
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
->   arch/arm64/include/asm/rmi_smc.h | 250 +++++++++++++++++++++++++++++++
->   1 file changed, 250 insertions(+)
->   create mode 100644 arch/arm64/include/asm/rmi_smc.h
+>   arch/arm64/include/asm/rmi_cmds.h | 509 ++++++++++++++++++++++++++++++
+>   1 file changed, 509 insertions(+)
+>   create mode 100644 arch/arm64/include/asm/rmi_cmds.h
 > 
-> diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/rmi_smc.h
+> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
 > new file mode 100644
-> index 000000000000..c205efdb18d8
+> index 000000000000..c21414127e8e
 > --- /dev/null
-> +++ b/arch/arm64/include/asm/rmi_smc.h
-> @@ -0,0 +1,250 @@
+> +++ b/arch/arm64/include/asm/rmi_cmds.h
+> @@ -0,0 +1,509 @@
 > +/* SPDX-License-Identifier: GPL-2.0 */
 > +/*
 > + * Copyright (C) 2023 ARM Ltd.
-> + *
-> + * The values and structures in this file are from the Realm Management Monitor
-> + * specification (DEN0137) version A-bet0:
-> + * https://developer.arm.com/documentation/den0137/1-0bet0/
-
-This should now point to eac5 instead.
-
 > + */
 > +
-> +#ifndef __ASM_RME_SMC_H
-> +#define __ASM_RME_SMC_H
+> +#ifndef __ASM_RMI_CMDS_H
+> +#define __ASM_RMI_CMDS_H
 > +
 > +#include <linux/arm-smccc.h>
 > +
-> +#define SMC_RxI_CALL(func)				\
-> +	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,		\
-> +			   ARM_SMCCC_SMC_64,		\
-> +			   ARM_SMCCC_OWNER_STANDARD,	\
-> +			   (func))
+> +#include <asm/rmi_smc.h>
 > +
-> +#define SMC_RMI_DATA_CREATE		SMC_RxI_CALL(0x0153)
-> +#define SMC_RMI_DATA_CREATE_UNKNOWN	SMC_RxI_CALL(0x0154)
-> +#define SMC_RMI_DATA_DESTROY		SMC_RxI_CALL(0x0155)
-> +#define SMC_RMI_FEATURES		SMC_RxI_CALL(0x0165)
-> +#define SMC_RMI_GRANULE_DELEGATE	SMC_RxI_CALL(0x0151)
-> +#define SMC_RMI_GRANULE_UNDELEGATE	SMC_RxI_CALL(0x0152)
-> +#define SMC_RMI_PSCI_COMPLETE		SMC_RxI_CALL(0x0164)
-> +#define SMC_RMI_REALM_ACTIVATE		SMC_RxI_CALL(0x0157)
-> +#define SMC_RMI_REALM_CREATE		SMC_RxI_CALL(0x0158)
-> +#define SMC_RMI_REALM_DESTROY		SMC_RxI_CALL(0x0159)
-> +#define SMC_RMI_REC_AUX_COUNT		SMC_RxI_CALL(0x0167)
-> +#define SMC_RMI_REC_CREATE		SMC_RxI_CALL(0x015a)
-> +#define SMC_RMI_REC_DESTROY		SMC_RxI_CALL(0x015b)
-> +#define SMC_RMI_REC_ENTER		SMC_RxI_CALL(0x015c)
-> +#define SMC_RMI_RTT_CREATE		SMC_RxI_CALL(0x015d)
-> +#define SMC_RMI_RTT_DESTROY		SMC_RxI_CALL(0x015e)
-> +#define SMC_RMI_RTT_FOLD		SMC_RxI_CALL(0x0166)
-> +#define SMC_RMI_RTT_INIT_RIPAS		SMC_RxI_CALL(0x0168)
-> +#define SMC_RMI_RTT_MAP_UNPROTECTED	SMC_RxI_CALL(0x015f)
-> +#define SMC_RMI_RTT_READ_ENTRY		SMC_RxI_CALL(0x0161)
-> +#define SMC_RMI_RTT_SET_RIPAS		SMC_RxI_CALL(0x0169)
-> +#define SMC_RMI_RTT_UNMAP_UNPROTECTED	SMC_RxI_CALL(0x0162)
-> +#define SMC_RMI_VERSION			SMC_RxI_CALL(0x0150)
+> +struct rtt_entry {
+> +	unsigned long walk_level;
+> +	unsigned long desc;
+> +	int state;
+> +	int ripas;
+> +};
 > +
-> +#define RMI_ABI_MAJOR_VERSION	1
-> +#define RMI_ABI_MINOR_VERSION	0
-> +
-> +#define RMI_UNASSIGNED			0
-> +#define RMI_ASSIGNED			1
-> +#define RMI_TABLE			2
-> +
-> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
-> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
-> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
-> +
-> +#define RMI_RETURN_STATUS(ret)		((ret) & 0xFF)
-> +#define RMI_RETURN_INDEX(ret)		(((ret) >> 8) & 0xFF)
-> +
-> +#define RMI_SUCCESS		0
-> +#define RMI_ERROR_INPUT		1
-> +#define RMI_ERROR_REALM		2
-> +#define RMI_ERROR_REC		3
-> +#define RMI_ERROR_RTT		4
-> +
-> +#define RMI_EMPTY		0
-> +#define RMI_RAM			1
-> +#define RMI_DESTROYED		2
-> +
-> +#define RMI_NO_MEASURE_CONTENT	0
-> +#define RMI_MEASURE_CONTENT	1
-> +
-> +#define RMI_FEATURE_REGISTER_0_S2SZ		GENMASK(7, 0)
-> +#define RMI_FEATURE_REGISTER_0_LPA2		BIT(8)
-> +#define RMI_FEATURE_REGISTER_0_SVE_EN		BIT(9)
-> +#define RMI_FEATURE_REGISTER_0_SVE_VL		GENMASK(13, 10)
-> +#define RMI_FEATURE_REGISTER_0_NUM_BPS		GENMASK(17, 14)
-> +#define RMI_FEATURE_REGISTER_0_NUM_WPS		GENMASK(21, 18)
-> +#define RMI_FEATURE_REGISTER_0_PMU_EN		BIT(22)
-> +#define RMI_FEATURE_REGISTER_0_PMU_NUM_CTRS	GENMASK(27, 23)
-> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_256	BIT(28)
-> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_512	BIT(29)
-> +
-> +#define RMI_REALM_PARAM_FLAG_LPA2		BIT(0)
-> +#define RMI_REALM_PARAM_FLAG_SVE		BIT(1)
-> +#define RMI_REALM_PARAM_FLAG_PMU		BIT(2)
-> +
-> +/*
-> + * Note many of these fields are smaller than u64 but all fields have u64
-> + * alignment, so use u64 to ensure correct alignment.
+
+...
+
+> +/**
+> + * rmi_data_destroy() - Destroy a Data Granule
+> + * @rd: PA of the RD
+> + * @ipa: IPA at which the granule is mapped in the guest
+> + * @data_out: PA of the granule which was destroyed
+> + * @top_out: Top IPA of non-live RTT entries
+> + *
+> + * Transitions the granule to DESTROYED state, the address cannot be used by
+> + * the guest for the lifetime of the Realm.
+> + *
+> + * Return: RMI return code
 > + */
-> +struct realm_params {
-> +	union { /* 0x0 */
-> +		struct {
-> +			u64 flags;
-> +			u64 s2sz;
-> +			u64 sve_vl;
-> +			u64 num_bps;
-> +			u64 num_wps;
-> +			u64 pmu_num_ctrs;
-> +			u64 hash_algo;
-> +		};
-> +		u8 padding_1[0x400];
-> +	};
-> +	union { /* 0x400 */
-> +		u8 rpv[64];
-> +		u8 padding_2[0x400];
-> +	};
-> +	union { /* 0x800 */
-> +		struct {
-> +			u64 vmid;
-> +			u64 rtt_base;
-> +			s64 rtt_level_start;
-> +			u64 rtt_num_start;
-> +		};
-> +		u8 padding_3[0x800];
-> +	};
-> +};
+> +static inline int rmi_data_destroy(unsigned long rd, unsigned long ipa,
+> +				   unsigned long *data_out,
+> +				   unsigned long *top_out)
+> +{
+> +	struct arm_smccc_res res;
 > +
-> +/*
-> + * The number of GPRs (starting from X0) that are
-> + * configured by the host when a REC is created.
+> +	arm_smccc_1_1_invoke(SMC_RMI_DATA_DESTROY, rd, ipa, &res);
+> +
+> +	*data_out = res.a1;
+> +	*top_out = res.a2;
+
+minor nit: Do we need to be safer by checking the parameters before 
+filling them in ? i.e.,
+
+	if (ptr)
+		*ptr = result_out;
+
+This applies for others calls below.
+
+> +
+> +	return res.a0;
+> +}
+
+> +
+> +/**
+> + * rmi_realm_destroy() - Destroy a Realm
+> + * @rd: PA of the RD
+> + *
+> + * Destroys a Realm, all objects belonging to the Realm must be destroyed first.
+> + *
+> + * Return: RMI return code
 > + */
-> +#define REC_CREATE_NR_GPRS		8
+> +static inline int rmi_realm_destroy(unsigned long rd)
+> +{
+> +	struct arm_smccc_res res;
 > +
-> +#define REC_PARAMS_FLAG_RUNNABLE	BIT_ULL(0)
+> +	arm_smccc_1_1_invoke(SMC_RMI_REALM_DESTROY, rd, &res);
 > +
-> +#define REC_PARAMS_AUX_GRANULES		16
+> +	return res.a0;
+> +}
 > +
-> +struct rec_params {
-> +	union { /* 0x0 */
-> +		u64 flags;
-> +		u8 padding1[0x100];
+> +/**
+> + * rmi_rec_aux_count() - Get number of auxiliary Granules required
+> + * @rd: PA of the RD
+> + * @aux_count: Number of pages written to this pointer
+> + *
+> + * A REC may require extra auxiliary pages to be delegateed for the RMM to
+
+minor nit: "s/delegateed/delegated/"
+
+...
+
+> +/**
+> + * rmi_rtt_read_entry() - Read an RTTE
+> + * @rd: PA of the RD
+> + * @ipa: IPA for which to read the RTTE
+> + * @level: RTT level at which to read the RTTE
+> + * @rtt: Output structure describing the RTTE
+> + *
+> + * Reads a RTTE (Realm Translation Table Entry).
+> + *
+> + * Return: RMI return code
+> + */
+> +static inline int rmi_rtt_read_entry(unsigned long rd, unsigned long ipa,
+> +				     long level, struct rtt_entry *rtt)
+> +{
+> +	struct arm_smccc_1_2_regs regs = {
+> +		SMC_RMI_RTT_READ_ENTRY,
+> +		rd, ipa, level
 > +	};
-> +	union { /* 0x100 */
-> +		u64 mpidr;
-> +		u8 padding2[0x100];
-> +	};
-> +	union { /* 0x200 */
-> +		u64 pc;
-> +		u8 padding3[0x100];
-> +	};
-> +	union { /* 0x300 */
-> +		u64 gprs[REC_CREATE_NR_GPRS];
-> +		u8 padding4[0x500];
-> +	};
-> +	union { /* 0x800 */
-> +		struct {
-> +			u64 num_rec_aux;
-> +			u64 aux[REC_PARAMS_AUX_GRANULES];
-> +		};
-> +		u8 padding5[0x800];
-> +	};
-> +};
 > +
-> +#define RMI_EMULATED_MMIO		BIT(0)
-> +#define RMI_INJECT_SEA			BIT(1)
-> +#define RMI_TRAP_WFI			BIT(2)
-> +#define RMI_TRAP_WFE			BIT(3)
-
-For completeness, we could add :
-
-#define RMI_RIPAS_RESPONSE		BIT(4)
-
-Not sure if we use it later in the series.
-
+> +	arm_smccc_1_2_smc(&regs, &regs);
 > +
-> +#define REC_RUN_GPRS			31
-> +#define REC_GIC_NUM_LRS			16
+> +	rtt->walk_level = regs.a1;
+> +	rtt->state = regs.a2 & 0xFF;
+
+minor nit: We mask the state, but not the "ripas". Both of them are u8. 
+For consistency, we should mask both or neither.
+
+> +	rtt->desc = regs.a3;
+> +	rtt->ripas = regs.a4;
 > +
-> +struct rec_entry {
-> +	union { /* 0x000 */
-> +		u64 flags;
-> +		u8 padding0[0x200];
-> +	};
-> +	union { /* 0x200 */
-> +		u64 gprs[REC_RUN_GPRS];
-> +		u8 padding2[0x100];
-> +	};
-> +	union { /* 0x300 */
-> +		struct {
-> +			u64 gicv3_hcr;
-> +			u64 gicv3_lrs[REC_GIC_NUM_LRS];
-> +		};
-> +		u8 padding3[0x100];
-> +	};
-> +	u8 padding4[0x400];
-> +};
+> +	return regs.a0;
+> +}
 > +
-> +struct rec_exit {
-> +	union { /* 0x000 */
-> +		u8 exit_reason;
-> +		u8 padding0[0x100];
-> +	};
-> +	union { /* 0x100 */
-> +		struct {
-> +			u64 esr;
-> +			u64 far;
-> +			u64 hpfar;
-> +		};
-> +		u8 padding1[0x100];
-> +	};
-> +	union { /* 0x200 */
-> +		u64 gprs[REC_RUN_GPRS];
-> +		u8 padding2[0x100];
-> +	};
-> +	union { /* 0x300 */
-> +		struct {
-> +			u64 gicv3_hcr;
-> +			u64 gicv3_lrs[REC_GIC_NUM_LRS];
-> +			u64 gicv3_misr;
-> +			u64 gicv3_vmcr;
-> +		};
-> +		u8 padding3[0x100];
-> +	};
-> +	union { /* 0x400 */
-> +		struct {
-> +			u64 cntp_ctl;
-> +			u64 cntp_cval;
-> +			u64 cntv_ctl;
-> +			u64 cntv_cval;
-> +		};
-> +		u8 padding4[0x100];
-> +	};
-> +	union { /* 0x500 */
-> +		struct {
-> +			u64 ripas_base;
-> +			u64 ripas_top;
-> +			u64 ripas_value;
-> +		};
-> +		u8 padding5[0x100];
-> +	};
-> +	union { /* 0x600 */
-> +		u16 imm;
-> +		u8 padding6[0x100];
-> +	};
-> +	union { /* 0x700 */
-> +		struct {
-> +			u64 pmu_ovf_status;
 
-This is u8 as per section B4.4.10 RmiPmuOverflowStatus type.
+...
 
-> +		};
-> +		u8 padding7[0x100];
-> +	};
-> +};
-> +
-> +struct rec_run {
-> +	struct rec_entry entry;
-> +	struct rec_exit exit;
-> +};
-> +
-> +#define RMI_EXIT_SYNC			0x00
-> +#define RMI_EXIT_IRQ			0x01
-> +#define RMI_EXIT_FIQ			0x02
-> +#define RMI_EXIT_PSCI			0x03
-> +#define RMI_EXIT_RIPAS_CHANGE		0x04
-> +#define RMI_EXIT_HOST_CALL		0x05
-> +#define RMI_EXIT_SERROR			0x06
+> +/**
+> + * rmi_rtt_get_phys() - Get the PA from a RTTE
+> + * @rtt: The RTTE
+> + *
+> + * Return: the physical address from a RTT entry.
+> + */
+> +static inline phys_addr_t rmi_rtt_get_phys(struct rtt_entry *rtt)
+> +{
+> +	return rtt->desc & GENMASK(47, 12);
+> +}
 
-Minor nit: Like the other definitions, it may be good to keep the 
-defintions of the "exit_reason" above the field declaration.
+I guess this may need to change with the LPA2 support in RMM and must be
+used in conjunction with the "realm" object to make the correct
+conversion.
 
-
-Rest looks fine to me.
 
 Suzuki
+
+
 > +
 > +#endif
 
