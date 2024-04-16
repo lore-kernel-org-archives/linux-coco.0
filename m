@@ -1,82 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8DF3B78B
-	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 06:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BB93BBEC
+	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 06:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713247538; cv=fail; b=d3J/0MubeSLVObp3kyHs2kxkZY5QG1shUIyC/3UbHSabiGoQ8OzP8p47hC2U98v4EsJXctT3ArcvBq6O4x1TxhnYnzuZs7lt7tohmmdqKklq9P49AK7RFvFBgtotblAX6e0kPeHT/IVP9cEEIFkOuZ7Um6/qyEE/YhHbgVZb+Ds=
+	t=1713247732; cv=fail; b=JcuRe2DXj2VLKmLn9MZlob/vFAdXub53ryzUQ0nJdJ+idf51+GNnBODmquWLkYtpLhEb01ol6iNTFytSkYa4+NRx1z7a5iyfemjdTNKeEPdW4EvzSxNoqSk81sTFga8KOXW4Q4TDzpjgq8tLW0lGBVJ5jzvBYRwIgWDj2/J6hLU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713247538; c=relaxed/simple;
-	bh=z7BeCgqNwItHEh+VWcJoDfPbJSfS3PBNu/ZQaTkEvGo=;
+	s=arc-20240116; t=1713247732; c=relaxed/simple;
+	bh=oR2nklHpfqP+1RFRLk1stTLPp9Mi7wfnwj/amIZVZuY=;
 	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=hdm8/jncNGFqG3Gf8MYXnXIRQ3wwBAPePdoaUELbIC5ouHSxB48nzjGNyAWEGvpYuvELyCQLtl60lYO13QguqoKmKKsDb2l00bQNuTPEvtWDE+leKwERU2Xl6R2OGms+Audlm7LLLwRF5a6w09BUh7C8z6VzRxlS0/vyJhr6L+4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TB1US/iV; arc=fail smtp.client-ip=198.175.65.19
+	 Content-Disposition:In-Reply-To:MIME-Version; b=F+VJfr3WkoWxKQ9K4x2H1bPVpdiVt+XFcSt/+Z6ldx6lkVvzscgJ8hQFIa3HxDqpRzm12e3MIVKN4+tP0GJieHdWqlgRM1nTJ7AmddXuwf/OfB8dK6N/pjJM0zJi7z50o7MgANHpPrV1xtclEgNZJkEHGzfPAV2lNNQvI1hiaWA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B7fCl3aR; arc=fail smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TB1US/iV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B7fCl3aR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713247536; x=1744783536;
+  t=1713247731; x=1744783731;
   h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=z7BeCgqNwItHEh+VWcJoDfPbJSfS3PBNu/ZQaTkEvGo=;
-  b=TB1US/iVmVg1bn5A4CWJ1IkUYqvdbRApdfdWVRLKziWGnifQWMw9IxbS
-   dTmMfMKL8cact+iGtiP/RlY/E1KRtP5nJZCGbYWNJJW7yb3FuBRBIOjX1
-   7B3jRje+xw72hvnO9GZbWlOZcL+/Bri8Xmv+X9q1X+3HF5VI0pfRiq4UA
-   0mzZfk4J9UwxrlLwPp7wUnGVNUGxeGN8+ZAJrVSWit3rRxXvwg0jjJClD
-   4xkbWaktMcEaPKIomvmOIxTcwQgL426fJwP+nzaqu0D2XKTzuAZw/WN1F
-   BULJCZQL44s9E/Lk1EXNOWvK3hBaTAYxktyACqDxpo5/dqi2/PfGzd/h9
-   Q==;
-X-CSE-ConnectionGUID: wPdgSjwaRlqi3xbRGIlsBQ==
-X-CSE-MsgGUID: mghiSaDMRBaH4Q5LV1NwtQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="8545772"
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=oR2nklHpfqP+1RFRLk1stTLPp9Mi7wfnwj/amIZVZuY=;
+  b=B7fCl3aRa3jpimzYAfFSFDBPFrCZAGVrnVUh1xP92lS48Y5woPqj0mBO
+   gsZF1XZDb8610SjldhrmlIbAX3FgohFTGb/eKUnTu/3Qq3nvP7dlXYZeG
+   lyzdQoAGcMJhRMNMYge5jOVfWlkwgd06Fts0Hy004lerAxjHZreS5mMFc
+   30SrMgy5FsZm2ZzSCy/0OmE5wvPM9ciFRSrtKNPSHJrzesJMscG9niqxS
+   b1ac/hfVktI1q9NWKlSlrICixRjH+FZCBhPYuVhme5QeFVFf3+sBI4O3q
+   YXJSeWRFpLK7ral+/QaE4PIQULwfpIl1ee50OE9hLIud2OjCXexYhN5JA
+   g==;
+X-CSE-ConnectionGUID: cM2yBmHLSrO+O9rOAc5u2A==
+X-CSE-MsgGUID: k6WOWX/wR5uKLyfHWG8eyQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="11613402"
 X-IronPort-AV: E=Sophos;i="6.07,205,1708416000"; 
-   d="scan'208";a="8545772"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 23:05:35 -0700
-X-CSE-ConnectionGUID: BEazFD0MQU+W9vDxWxlSUQ==
-X-CSE-MsgGUID: KOfLgmjeQKq83BMtfbUfaw==
+   d="scan'208";a="11613402"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 23:08:50 -0700
+X-CSE-ConnectionGUID: v4THmzhPSlmLjS1nYBjfsg==
+X-CSE-MsgGUID: itSQZ52ZSNK3vXA9L+zBww==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,205,1708416000"; 
-   d="scan'208";a="26806784"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 15 Apr 2024 23:05:34 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+   d="scan'208";a="22053792"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 15 Apr 2024 23:08:50 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 15 Apr 2024 23:05:34 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.1.2507.35; Mon, 15 Apr 2024 23:08:49 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Mon, 15 Apr 2024 23:05:34 -0700
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.41) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ 15.1.2507.35 via Frontend Transport; Mon, 15 Apr 2024 23:08:49 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 15 Apr 2024 23:05:34 -0700
+ 15.1.2507.35; Mon, 15 Apr 2024 23:08:49 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SMYtITZvZPUYhRMR+f0hsh1KwYRPjQurvWPU1zO9dj491d9tJw91qWtJcUzFytSPANIjwwtYOkxiMxM2rt3uzYGEFBJduu4HvMkfi9/4lep3F786v0HgXeYTCSPOJDouPyzpvrHl7k+a2DyPzQLI8DI53G83SLef6Z+G1W9IwVxKIE0m4W8Bg/62E2bWgGIwoEEOWcE/gI5VTrOMiLiQvnX/7g+CHLBBxW8DuGJkz4hqTSalPRh6LCmiP0sQBGiybknrD41Inozc7vcAflQDfqMJWSbKf0jDpqDWa65N3ItDuLqgS0iGCd3q8FIn/OqbFntYyGWHsYDFjYgf8H4DBQ==
+ b=jPFdw4jtaucYzPq6yswXphOBJ+JLVAhVReirYzAq+ge+ArH6tQCydqRcqRVHWrcmv1FZzd4EVdNxCaNzHVRtaTqIkNUQUrfegI7syN7UvZ6mNSIlIfQbgtMMszYRmr20Pun7Kgz9Zm4tPgIdAbhI+yEMI/JsgdIYir4SHXHafOx6L+bsfp21aRUo1e/4br3qgnHxZANcA2BTr/fZCCbJRUqhNMEvEOmxQHj8NIk2hQYigLLfXWYY852nsu238XocSzbdnYoz5GVpQe6txeeuLtRUY64JfOEOe7NovFg61WTcvBH+Fc8+BPymbMfLZyaFCqWJeUCjqPROzoKsURsUsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y2Kqp7AAO/+3T03+7NcRrxzngrbG+g26MsZktvHyD/I=;
- b=N4YDkXuZzdFBbRbvgLxkEOlCQJzEAQ1eEn8bsrlrhQIm0v16erH0cn9MIL+z+ck+8e7N8wDGg/dtRa+VA2HTNegYuKKrdHetMCOD5KHVRvfDvbod3vY/z2MRRyWLZ5yQcTOe37OTcrCx3PRi8vP4Yd9UzH0S+ilvtN/oZt6OY3t/r1SbbQrg0fFWXfPkyhZRn20i+k5gPxAP1MGPFEl7UFpabKVmKSWyc8YLunHQzQqP/6qChem3V9dwEJKk+nt5jqXCNI51buLWWx7lBHM4xzdABcFP8km1H5fBR79GCZiSe79QccFBwzqX8Hzo/ILK2EzaNiTCHmIhmpVaJvN+fQ==
+ bh=VJur6LmriFNK4l6e9bIawSB4AITIAdrXYD3HfjCbk4A=;
+ b=cbN5ssS1nc/TAhw5LuZp76AACxV4iKMxgu5IHsBXfZRywyWUgTocJ2qOau0f8pVqAERceQW6xov1oYQ2KkD8iVo+4c6E1p+FvSYvaDMoYkb3N10TVhdozy+B1p4T2Uv3VQVETfRRjG9WgFkIMkmsUlXgFyj6Q1iG0WqAd6BoJ5BL6t4hu4d3FlBxWjMSIvvolvSnH8gKdOIC4dQ1KC2bkC0Sp7263ihf/FsfEXRSBwMji6WVbH6X8YCet331mEc25fXqF0K+tEBVrnt2QJ0y5Dh9YPoScKd1wa9AOzUloTucPhF5WapcDs6FWuSgs1za9FELMypVApOA+lmbPzP+Ow==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SJ2PR11MB8471.namprd11.prod.outlook.com (2603:10b6:a03:578::5) with
+ by PH0PR11MB5029.namprd11.prod.outlook.com (2603:10b6:510:30::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.28; Tue, 16 Apr
- 2024 06:05:32 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.31; Tue, 16 Apr
+ 2024 06:08:44 +0000
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com
  ([fe80::82fd:75df:40d7:ed71]) by PH8PR11MB8107.namprd11.prod.outlook.com
  ([fe80::82fd:75df:40d7:ed71%4]) with mapi id 15.20.7452.046; Tue, 16 Apr 2024
- 06:05:32 +0000
-Date: Mon, 15 Apr 2024 23:05:29 -0700
+ 06:08:43 +0000
+Date: Mon, 15 Apr 2024 23:08:38 -0700
 From: Dan Williams <dan.j.williams@intel.com>
 To: Tom Lendacky <thomas.lendacky@amd.com>, Kuppuswamy Sathyanarayanan
 	<sathyanarayanan.kuppuswamy@linux.intel.com>, <linux-kernel@vger.kernel.org>,
@@ -89,17 +89,20 @@ CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>
 Subject: Re: [PATCH v3 13/14] x86/sev: Hide SVSM attestation entries if not
  running under an SVSM
-Message-ID: <661e15292be3_4d561294d6@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Message-ID: <661e15e690003_4d561294a1@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 References: <cover.1711405593.git.thomas.lendacky@amd.com>
  <67893f352bc54de61160bfe251cba0bdf0431f37.1711405593.git.thomas.lendacky@amd.com>
  <1f6f4477-0f2a-434a-8c89-3b5d51d61581@linux.intel.com>
  <19d69960-e548-a2e6-87d9-c463f2851613@amd.com>
  <e286883d-40ef-d749-26a8-7ec6fbd81eae@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+ <81d05bd9-ef8f-4a3a-a5df-384a82be49f5@linux.intel.com>
+ <490a6a10-47d0-0689-432a-cbf22de11ad6@amd.com>
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
-In-Reply-To: <e286883d-40ef-d749-26a8-7ec6fbd81eae@amd.com>
-X-ClientProxiedBy: MW4PR03CA0083.namprd03.prod.outlook.com
- (2603:10b6:303:b6::28) To PH8PR11MB8107.namprd11.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <490a6a10-47d0-0689-432a-cbf22de11ad6@amd.com>
+X-ClientProxiedBy: MW4PR04CA0367.namprd04.prod.outlook.com
+ (2603:10b6:303:81::12) To PH8PR11MB8107.namprd11.prod.outlook.com
  (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -108,138 +111,115 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ2PR11MB8471:EE_
-X-MS-Office365-Filtering-Correlation-Id: c45fab62-0804-4954-e1f1-08dc5ddb3938
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH0PR11MB5029:EE_
+X-MS-Office365-Filtering-Correlation-Id: b51da159-6da8-41ee-4f69-08dc5ddbab5e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 8Wt+0wT0NDTn8XmLuv5uMp/vO46/MFlXxhu6HlSRF7pCxnaWdfgO3a2F3Ja5Z/Lh9rPNAXZ0PIp8n+/9y/2OwglddXaTUMULl7mMaGYuXCz997Asrg2zI0G0YMtEJftNXxLxpEN55m0dMclvBP4bUSbxpkBZhDyAQNe5lCpXWPlEjBcH0/DoDqiiWlttym5pTD1SpmZEZ4xIRoPajx0DhZHCHDBVpcN6ltr5qQCOKSAuazHB5ZTnLeyPPIF4cBakhNspqFuKvbRoU5G6v+QPhYwGr3XYCd8QAUaHYjillNII6yFBCp8vyd0GFiycslXsSvZvh3Usbxut26HgDr9vb1Ob/HtFgDB/PS/ZJFuDkoL2NFaw2S1azRERwiBEblM0mhaGzAdcMa2peblKGXNJIdtba938Jjxw9RuPjB3NdvyNz2NdC1LLHhIO2hkhs+oaVoEjAi0WiuU4mV7KWOITCDLFLpp56zh1YgwHSW9Xrk6FEmXy6LfULk3q29BrHM9+9MmjEXZJbJPJOdwSVkKlEXqsZVMEuVpK2oVzsiV1xiDPM2ZTDJBnKHnpQBoDiOrzMqxb6+pnq0hwYHxuLxT9qq05f84HeYAj5XpzTd4iWNHQQoSAmHzbM/EPB1jIY0vx56Tdg3y1YHC21nN36GZ6uiDrx87aObUbg03+35Zl5hA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(366007)(1800799015);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: YpnMf5ih1VGdapaZvuaX9WY3Md6PuABuTwtgb7w+RpeOJ3wsBZqxmTFTaglSer9bplpCONfQxDONwqLYPruojCcKlf4idkBmUZhqHxaRZhB9lituSxytyJUrPLZY3/dLKa7OvouuNn/6nWNYMXr/fZ3l/fIFIFyGyuS8c8LIb2VAkIzge/5H6hcLJsJkh/csUpuccZJIV85ee1HbphR0S8ZfZ8tg4R0n37+0tUOIOMa9T9ljNiICXBmzM1f+lCs/SHcAfQAH4G+AskYrIPGja9VfndoPRtyEiZoapw0rrzLYumhrp2O9kKf/jBsRCIA+m/1540PJC3jj8s6BWaabIotm9wV7E2MbiGXusqbQzw7MPOuzoA8vejj8Mx//F48ZhK1TJ8N6odKhamT5JUrqN8k4pfHTS/SQ3r71MlmUjfChuOywaGtA6wZtN1b+j6sU8+/B03MT+xADnGLP67jIb4zzPLQSaukJ0xzFv5hTqa3ww0fqmywK0vZxvPc6d1lxDPWp+ZnlMLeanFJ80VVo1UEmSe+DKw6lKYT3ZJzPWkp+2lIsqRLTa9/ptL/too9W6XoQ381ike1IHIPXKAp61lQczD1qhV63BKJ/JTnyCvlEz5HaN3gdCbGd5JMjOzeBgF7hf8SUC43h/1yrffQwUvB388+5dEM/Hc4+LeV4Q0U=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ruSPQLLPY1V1oo1sSFEjw45ot2Z+a7vFZlkVZuM30rdKJNFJetjn3Bxkvb8K?=
- =?us-ascii?Q?+xfr2rDyL7L7iWcakM0rGRQQsdh9ZMRSgP1TvbJ5Ho/oImvbmzM97+ohV5md?=
- =?us-ascii?Q?BPASrlOYBgtYhyY88gM8zLAJBn1fOSoKDNn4QJrY/j5BeiO56TAvRj05GWVc?=
- =?us-ascii?Q?y8wp9zMc87c2yFXtrAycABc05oj0KyACasOwt3HjHMXmzbUg4LP13FQbL0IU?=
- =?us-ascii?Q?YaSr4G9ONdURKcCLZJ9IYx73zj3ClHNvKwGf9GeC/iPgO+Hjg+BzCY4sMCit?=
- =?us-ascii?Q?rM51FMV42N9xXCbclLnhHIID/AZYmzpHGEvgI5yyBha47eRrSJfx5iy31t1b?=
- =?us-ascii?Q?ppM3kxM21MXKEvqSeOQ+fDRSegGaOqCjP+h4C368uAkxaJJVdXKulYzdkX/R?=
- =?us-ascii?Q?Eset9I57AMoGfe2MF1BoIMHv8aNWNUi6QPCouYpYRFd08DgJ6Y8w76Wb1H/Z?=
- =?us-ascii?Q?nIYcFIvH2t9m8lgDoW9XARaJsVSOUzRiVU7xpYtK8JzJvVabla/BCm5xj5yK?=
- =?us-ascii?Q?qGIbXW33OonjyBgGMeKIPPXwvek/gRoLL4xVXVBCWXybC8I+2FPoK8vVxdns?=
- =?us-ascii?Q?kfRZq0XgeA+1x2xGQYABjAek7+JUxA0hk140akvnkLpjP3dNd+4pe9V4SthF?=
- =?us-ascii?Q?8fCxmB9rIVDBQtAuRRM+JGLyKGJ8i1jLgQo8UiXj2jybOcCsG0cqkySAtE7Q?=
- =?us-ascii?Q?0Md/yNQQVtl9K7NWkvZ4pnJH9xoSllcVCXO2tdloRc1+T+fpXYs+PVbc3+pH?=
- =?us-ascii?Q?mHoPnjucFBt5ss0t0pA8reLgt9vJ2ahYtJu7EPTCptxsStVmvSHDZAe9sqUC?=
- =?us-ascii?Q?fpcLhimJBQHQfMhVPA5868pVez+gUNOtXLtDU7ipQHwUvur35OUAHSnPe8hu?=
- =?us-ascii?Q?TrF4apyKVhH76elv3+yvGmbLjJszcffKCF7tcUwhBYBXwXQ8w7xdwZOcbmmG?=
- =?us-ascii?Q?kN/3EdeyN9RziSHPctT1aJCEsaL3hyyrozwuojTwLnPQRnlMvYSZnogJGnaI?=
- =?us-ascii?Q?hK7kOzcOf8QlN0unIChao5XRBeNXRobUPD5HRZ1xoHEIaE853FPTM6tO8RkG?=
- =?us-ascii?Q?a5NGerPkHdG3Ez4i/TUj/nycoI9VwWBeeauoaMJmcNeKEOC19/NEi7LWo9hR?=
- =?us-ascii?Q?3KN0hKPxmJ15bUGQu6b3OhqzrshNED1rNzsunfaYM6A4ua2NINSrflPIN2ml?=
- =?us-ascii?Q?aJEw6Z3RoXZD57zwuUOIM3W0eHLAKw+ll8bM1A0GaZQAgA9Qc23LG1DNoukJ?=
- =?us-ascii?Q?DqgfxyW6XXQJlq4Zl+78jyADVefGss/GiWqDF6mn42k6D30hCBUIzwtmgDhT?=
- =?us-ascii?Q?VXsbUczukQ28pTb7Rd3B/f/YOpvyVsrYJbkZ4qMvKx+HnVsU0yKo5RTboiyk?=
- =?us-ascii?Q?0LtXyXqF1r/UUUqXBe3KnvxNI93d51kAWt/Lrs9jcMDIpJyBkxNSY7Hqmg3v?=
- =?us-ascii?Q?lDLakC1BorlEMtX/ype1BQuy/2Q3wn0Qa9F0ibPqoJ9BVdJLuxubteRTdZ0N?=
- =?us-ascii?Q?8cho0d88S99Sy7JZLPhxvN6aMZPcAAGdxzOdw+Xo2CYMHQ0xUUP+sZ9zNbWH?=
- =?us-ascii?Q?g8FT1k5hFORtOww2dsoV8KHUMprrdO0Xshhz5WfOJDbGDEdlh9QLl9+6TZAw?=
- =?us-ascii?Q?gg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: c45fab62-0804-4954-e1f1-08dc5ddb3938
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?Of57iW3QL8jmPsDZWhdbzYG7Gim+tOK1AKIE/NLiEOMdrny93Xe2pYVtJb?=
+ =?iso-8859-1?Q?C7CvmsMwMpB41OJyxTXvrg9m+zUg5v5LHGgiXoKn4O8VzdyAg12qXExnlb?=
+ =?iso-8859-1?Q?n16dPJAOtItGueSRWBpGZfII3BuCaGs8CYB6NsvD1qFnPN6MY+oymtN8M4?=
+ =?iso-8859-1?Q?IvEOhZvChyZaG5xKK6QjCRJWEvWfPY02zGp01HMm2aa1uEmHCGIqEuy3RD?=
+ =?iso-8859-1?Q?CVvACuIBh7T76B/vj3MALIliEnadlqyS3wqpmopu4kgXb+O0J0KKqAkQzB?=
+ =?iso-8859-1?Q?9+t0givn86VHUuQX61iesyOjrbD2LR1BU8tcVU6cNQQaoIgWZTWGEVKMiD?=
+ =?iso-8859-1?Q?2H9UWVvmf86E8Q69/nYTdspFGtYVjRUQ2TzRIA6BiCYG7eM1QiST9duK5R?=
+ =?iso-8859-1?Q?E/MEjYNjqFaCOlwj4VdqLnPHNyyd+eCPj8vId3JUVs2RDd3WKwErGmWcYv?=
+ =?iso-8859-1?Q?e+Xy8xhayo2waaig+CvVyESuUa1zkejeSilMmVs4OKCuWFa/VAMSIJVJBx?=
+ =?iso-8859-1?Q?vYotc1qz28Wt1ZTiOQ82XPQuPudK3wavJmvUvnRnXWKm2JX/MIj5FwmkpS?=
+ =?iso-8859-1?Q?234qVbbHoKbTAAlZ/ewfTG38o/mxsNkTiJWpCEAYaSWvG7B/9DMrQD72J+?=
+ =?iso-8859-1?Q?dl31p4i6BLBEFUO6HAGr+32JZA1sbwDPgpumpocs7AuswHY30yMjzGZ6Xt?=
+ =?iso-8859-1?Q?MebAyDW93tduZadKRAanr84G/sisY9/OBDJe1Eq1vmhNQnSq2A+NNbL3KP?=
+ =?iso-8859-1?Q?SGggkLwEURRKh9HrmgCKKd3ztSSwRy7v99fZPe9c2N01S4sIevwLqjqLL1?=
+ =?iso-8859-1?Q?FY9QfvZjNzW5SCXbjbmCRJ+8qiiE8fxnAoJB3DqXv05jKSXyQE8Zl1d/0R?=
+ =?iso-8859-1?Q?60LqNhSB5C6/+/NdRvvHukDuBpiB7PJDgdrk+YxS93I/sunYQMjukx7BBp?=
+ =?iso-8859-1?Q?7QjsB915UMChxqTwJkN95pxvgDkxSrM7hZP1kP/YIdFXkCM4O+1brScbNT?=
+ =?iso-8859-1?Q?5JYMwxWS6MYnHX7MXWDcQSICsGIjpw+y3umSjwSQy5nx3oWPjiNRUOgFUS?=
+ =?iso-8859-1?Q?/BTgmNX3Burp0PcXyjsTP9aHoVTJ6K93zbAAG+Gg31cR8zICdro0WETvGE?=
+ =?iso-8859-1?Q?a3lRDlUdtaP0647i2LtUEm6mAXT3MrRVsrP0Dx5pO1omD4FhHFi69S19Pw?=
+ =?iso-8859-1?Q?rMnji3qpM6AraePNkVxOFiRjYXvLG1ozP1LOikiummPVSUrBEv+wmLfP86?=
+ =?iso-8859-1?Q?DllbNdkv8GdTTgYE2WAeWYNxSHSljvUo0HVyBiQgtNEU1o9Hh7sVwOL7bq?=
+ =?iso-8859-1?Q?5OIPJILKKNcmYhUP0aK4EkR7glftuLU6dxw0YvkdJsTWgtzrcd5i6eRHpF?=
+ =?iso-8859-1?Q?zLBkzUjzvvwGzhfolR/eu691l/1kHLbdZEekdBKKWTRdRhWcCCdS8FtmHC?=
+ =?iso-8859-1?Q?b0W13Hp0nrBeBOyBhjsoZ4HPfXGhk7fmMtLdZidsfBoIHFhRPwLe935YtU?=
+ =?iso-8859-1?Q?WVEvpUJOfxCzfwRfKObMyRpJlwNAItrg+qiPDjiL9cp4ftE1yX8Uj1CkAK?=
+ =?iso-8859-1?Q?Z3Bc2U/7ygQo+LvWGsm+ZQ6C6D3TQ2MqIYQWkFcl6drF1MDIGaasLpQVY3?=
+ =?iso-8859-1?Q?0WC13/yLXscHgA1jEHNAQsgU0VMBHxKpBx5sgWGcVHjf763K6fRjh9Pg?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b51da159-6da8-41ee-4f69-08dc5ddbab5e
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 06:05:32.0419
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 06:08:43.5263
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: knAF3hXh1FRfFpRxZffRerOcsJy2xJvbEg1aOcik4OcNgmlr16j2G6boL+5HjtDs5pQrfF175eaCUlCwwXYC8i7wY9wW1gkoCmHG9K6RcaM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8471
+X-MS-Exchange-CrossTenant-UserPrincipalName: dt6sMwxIO5UIEL2PEwymdXN6iRBkP9kN6hfEnVmiMineoW2CCZin0/dsKvbvjfjUtKQtrY4VynLdQs7lq+nSReNWPsbERj/l5nAtxz9q/Y0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5029
 X-OriginatorOrg: intel.com
 
 Tom Lendacky wrote:
-> On 4/12/24 10:52, Tom Lendacky wrote:
-> > On 4/9/24 13:12, Kuppuswamy Sathyanarayanan wrote:
-> >> On 3/25/24 3:26 PM, Tom Lendacky wrote:
-> >>> Config-fs provides support to hide individual attribute entries. Using
-> >>> this support, base the display of the SVSM related entries on the 
-> >>> presence
-> >>> of an SVSM.
-> >>>
-> >>> Cc: Joel Becker <jlbec@evilplan.org>
-> >>> Cc: Christoph Hellwig <hch@lst.de>
-> >>> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> >>> ---
-> >>>   arch/x86/coco/core.c        |  4 ++++
-> >>>   drivers/virt/coco/tsm.c     | 14 ++++++++++----
-> >>>   include/linux/cc_platform.h |  8 ++++++++
-> >>>   3 files changed, 22 insertions(+), 4 deletions(-)
-> >>>
-> 
-> >>
-> >> Any comment about the following query? I think introducing a CC flag 
-> >> for this use
-> >> case is over kill.
-> >>
-> >> https://lore.kernel.org/lkml/6b90b223-46e0-4e6d-a17c-5caf72e3c949@linux.intel.com/
+> On 4/15/24 14:48, Kuppuswamy Sathyanarayanan wrote:
+> > Hi,
 > > 
-> > If you don't think TDX will be able to make use of the SVSM attribute I 
-> > can look at adding a callback. But I was waiting to see if anyone else 
-> > had comments, for or against, before re-doing it all.
+> > On 4/15/24 12:16 PM, Tom Lendacky wrote:
+> >> On 4/12/24 10:52, Tom Lendacky wrote:
+> >>> On 4/9/24 13:12, Kuppuswamy Sathyanarayanan wrote:
+> >>>> On 3/25/24 3:26 PM, Tom Lendacky wrote:
+> >>>>> Config-fs provides support to hide individual attribute entries. Using
+> >>>>> this support, base the display of the SVSM related entries on the presence
+> >>>>> of an SVSM.
+> >>>>>
+> >>>>> Cc: Joel Becker <jlbec@evilplan.org>
+> >>>>> Cc: Christoph Hellwig <hch@lst.de>
+> >>>>> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> >>>>> ---
+> >>>>>    arch/x86/coco/core.c        |  4 ++++
+> >>>>>    drivers/virt/coco/tsm.c     | 14 ++++++++++----
+> >>>>>    include/linux/cc_platform.h |  8 ++++++++
+> >>>>>    3 files changed, 22 insertions(+), 4 deletions(-)
+> >>>>>
+> >>
+> >>>>
+> >>>> Any comment about the following query? I think introducing a CC flag for this use
+> >>>> case is over kill.
+> >>>>
+> >>>> https://lore.kernel.org/lkml/6b90b223-46e0-4e6d-a17c-5caf72e3c949@linux.intel.com/
+> >>>
+> >>> If you don't think TDX will be able to make use of the SVSM attribute I can look at adding a callback. But I was waiting to see if anyone else had comments, for or against, before re-doing it all.
+> >>>
+> >>
+> >> What about something like this (applied on top of patch 13):
+> >>
+> 
+> >> diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+> >> index 27cc97fe8dcd..5aaf626d178d 100644
+> >> --- a/include/linux/tsm.h
+> >> +++ b/include/linux/tsm.h
+> >> @@ -74,7 +74,20 @@ extern const struct config_item_type tsm_report_default_type;
+> >>   /* publish @privlevel, @privlevel_floor, and @auxblob attributes */
+> >>   extern const struct config_item_type tsm_report_extra_type;
+> >>   
+> >> +/*
+> >> + * Used to indicate the attribute group type to the visibility callback to
+> >> + * avoid the callback having to examine the attribute name.
 > > 
+> > Checking the attribute name will give more flexibility, right? Since it is one time
+> > check, it should not be costly, right?
 > 
-> What about something like this (applied on top of patch 13):
-> 
-> diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-> index efa0f648f754..d07be9d05cd0 100644
-> --- a/arch/x86/coco/core.c
-> +++ b/arch/x86/coco/core.c
-> @@ -12,7 +12,6 @@
->   
->   #include <asm/coco.h>
->   #include <asm/processor.h>
-> -#include <asm/sev.h>
->   
->   enum cc_vendor cc_vendor __ro_after_init = CC_VENDOR_NONE;
->   u64 cc_mask __ro_after_init;
-> @@ -79,9 +78,6 @@ static bool noinstr amd_cc_platform_has(enum cc_attr attr)
->   	case CC_ATTR_GUEST_STATE_ENCRYPT:
->   		return sev_status & MSR_AMD64_SEV_ES_ENABLED;
->   
-> -	case CC_ATTR_GUEST_SVSM_PRESENT:
-> -		return snp_get_vmpl();
-> -
->   	/*
->   	 * With SEV, the rep string I/O instructions need to be unrolled
->   	 * but SEV-ES supports them through the #VC handler.
-> diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-> index 0d2c9926a97c..68c881a50026 100644
-> --- a/drivers/virt/coco/sev-guest/sev-guest.c
-> +++ b/drivers/virt/coco/sev-guest/sev-guest.c
-> @@ -1036,6 +1036,17 @@ static int sev_report_new(struct tsm_report *report, void *data)
->   	return 0;
->   }
->   
-> +static bool sev_tsm_visibility(enum tsm_type type)
-> +{
-> +	/* Check for SVSM-related attributes */
-> +	switch (type) {
-> +	case TSM_TYPE_SERVICE_PROVIDER:
-> +		return snp_get_vmpl();
-> +	default:
-> +		return false;
-> +	}
-> +}
-> +
->   static struct tsm_ops sev_tsm_ops = {
->   	.name = KBUILD_MODNAME,
->   	.report_new = sev_report_new,
-> @@ -1126,7 +1137,8 @@ static int __init sev_guest_probe(struct platform_device *pdev)
->   	/* Set the privlevel_floor attribute based on the current VMPL */
->   	sev_tsm_ops.privlevel_floor = snp_get_vmpl();
->   
-> -	ret = tsm_register(&sev_tsm_ops, snp_dev, &tsm_report_extra_type);
-> +	ret = tsm_register(&sev_tsm_ops, snp_dev, &tsm_report_extra_type,
-> +			   sev_tsm_visibility);
+> I thought about checking the name(s), but what if in the future another 
+> attribute is added, then you have to remember to update multiple places. 
+> This way you have an enum that represents the related attributes. Is 
+> there a scenario where you would want to not hide all attributes that 
+> are related? String comparisons just seem awkward to me.
 
-I would have expected this in tsm_ops, but yes I think a callback lets
-this fixup the ugly "extra" attributes situation as well.
+An enum that matches an attribute index matches what sysfs offers. I.e.
+sysfs is_visible callbacks either do pointer comparisons, or attribute
+index number, but not names. So I agree with you about not using an
+attribute name as the key.
+
+Using the index however does mean that providers need to assume that all
+attributes are in one array (and one bin_attribute array), but I think
+that's ok.
