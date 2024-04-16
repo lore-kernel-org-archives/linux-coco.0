@@ -1,303 +1,157 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41094130E44
-	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 16:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713284407; cv=fail; b=a0Sk0XVdnjO/P8hftF3wgjhFLtdEQ7d6IjsJgsAM/4zHO4jAMNyJ+v1/FlzDAolnBsoMxrIZU6vsfN8D/IV5uZCnbYPwbp0uM3s8tkZPJ3pA/sEhFWy8xAm9RvCc5EJNhxqgbnvwkscHlmZPTKhDJQkXLjk5OA3ADFJBjKYY0Sg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713284407; c=relaxed/simple;
-	bh=tqnHBt08iPmhzxbME0xHsYae6YSGaA7ncoXD6G3ZAB4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=g1cOe6YF85csLo3mXHCTwuunWMijI+TG7p1oNkORyWi8VcY0IyFEZk/l5fRnU+pxjewZslS4KX39Km2xVQ3u4RfcE9ONkwNYrLhEDdFm61lDO0HTq7sCO576U8rsZsS1c/wvIxZTmKw6hdWc/4o4ZKLbg0jEd2+Dko5cqvICLvk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WG5DK3+S; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D351512F36F
+	for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 17:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713286875; cv=none; b=l0GCy/H1H4zSCAxhPFp7p9VvaGzOqaMWuX+C9bCy8bs1OkQrpyW/MjQonk+izTDqJUCLtzOMJx6WvRoGHlKCvzfeCvVkDrfFPWfo3djtczOY7v9+limykiiPShqFFdGGc05xK7+Dx7c4mZmdhlkgnTDMr7jJBz2pMQ+mn371tCE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713286875; c=relaxed/simple;
+	bh=d8yfNDlD2slCnTX5YrNTAPoVtr6kE/Nqrv0NiCbczaQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SmVSBuWPtAZCOzb7KyRpU1t4BdMWxEAE5ySzsjOuYK2Yf8CujWpEWYTrzsDNfvjCMsrYpKCnn5Sj6IqsWtxuI3awoMGzVZYWYKuopBEg8X5hG2jIPcQ1TYobXw5357xt+bCUAWzGk7qumZlF/4cuhI7tpPiuB+gjzbWvoxTgykk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J5XZr4ca; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WG5DK3+S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713284405; x=1744820405;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=tqnHBt08iPmhzxbME0xHsYae6YSGaA7ncoXD6G3ZAB4=;
-  b=WG5DK3+S59gzC6INaSFSIb0KYxn2QKe/xcrb9Yy5GQEunp3N/xifu7g9
-   Xv7nWQFeCOjR2Yb4MhHY+GmDdu8xn8AIThD138YGKN61xOokdmIZVvoYO
-   299ueB4NFoo62q9aSLc+tfms2Js77WulopKuSZHAtGKqUf6rweH2E//dV
-   qNaO+0/f0MoQoCFETnrrdobQp4DEqpxCLoa87f6pYeH5/QOiLg3k/TTdo
-   pG5bBsgBj2Bk8xJEC0hUaRJnscqhmcwOq6MKmz6Vk1OFaZE7HcMR8CtaV
-   pF2/KevXyRc+GF3gUfMmvdXWHWtZW3zIq6F4EtD11oW4d81bW2+Nw9rU9
-   w==;
-X-CSE-ConnectionGUID: jQI8PvWHS8anwse/4ZeJTw==
-X-CSE-MsgGUID: S0+kVH5ZRRq73tRRBLmnKw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="8615157"
-X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
-   d="scan'208";a="8615157"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 09:20:03 -0700
-X-CSE-ConnectionGUID: vMVSO4A6S6STifvm7nD4fg==
-X-CSE-MsgGUID: /yEsQkVjRtasZham0Sx9rg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
-   d="scan'208";a="22380119"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 16 Apr 2024 09:20:03 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 16 Apr 2024 09:20:01 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 16 Apr 2024 09:20:01 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 16 Apr 2024 09:20:01 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.101)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 16 Apr 2024 09:20:00 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=N2YxWBzSPsYK/TH6F/2BxoWGYsQ09T2dY76LbEdYhEQA5FDtedp48kKXT8Eu6Vgda3TcTSUDG0odqfOrSVDoV9ck+wkRMRggTD2tNeMlF9/K3LCX22vvvwy2ViCDPnQ8EUVk7CXXwR8TyUdxQnhRj2Gdg4igCQMcs94DRyFXdtk7aHVnHQBV5UzajeZ99CyiqUZSgPa0/iNJveoAs3kmpjr6TP2Wj9CV3AA5x50lZWxx9MZWWcQPVgL+YlIZeJbKFVETBr4tkV0EMGeVswifmdKD4cQN8lbfJNqy2pCrAc3SUSaF/NerKe1/8X8jgAfZ5T2i5bFGvoQGUraZBDXfIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7beU0BVULEWkxfb/DMmOTEx/TdIliJ0sTn7ro4i/Mx4=;
- b=e9fgffA3lWd9+OeKL8KuMSx9UP117gx6IvlmxnRsomAwJ7di0I+lcKcdZw0qJ5gJ0aJwmAIvLiksIvBkyr42MNpXXIR4v/W90euSjFAz88/S/Ac1SpF120s9F23oijh+S6mIFXMM7wGYrQ8dzbQKIENitkbo7FLmOevseo0SvDok3rCLva/uxXhdiasLGMlBxU0cjgY65i+6UwP4pxLAG0KAjaE2bCQA6UMlkbI6bMXNbHz4JHnpQdzAYqpCC3mwhdgIodNajBGaH4XcGSCH/a7g1u2Msr08Xmkq22IaucoicW1fQGqe22LBoPOtLz4byDSxrES5uVA3BYLFNLodQQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SA3PR11MB7535.namprd11.prod.outlook.com (2603:10b6:806:307::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.28; Tue, 16 Apr
- 2024 16:19:57 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::82fd:75df:40d7:ed71]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::82fd:75df:40d7:ed71%4]) with mapi id 15.20.7452.046; Tue, 16 Apr 2024
- 16:19:57 +0000
-Date: Tue, 16 Apr 2024 09:19:54 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>, Dan Williams
-	<dan.j.williams@intel.com>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<linux-coco@lists.linux.dev>, <svsm-devel@coconut-svsm.dev>
-CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, "Peter
- Zijlstra" <peterz@infradead.org>, Michael Roth <michael.roth@amd.com>, Ashish
- Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v3 11/14] x86/sev: Extend the config-fs attestation
- support for an SVSM
-Message-ID: <661ea52a53541_4d56129416@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-References: <cover.1711405593.git.thomas.lendacky@amd.com>
- <1ca853e149fe37be748c028a9b0d00237eb73938.1711405593.git.thomas.lendacky@amd.com>
- <661e0e9418862_4d5612941c@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <3732b0d2-0471-48ce-89b8-43f425040846@amd.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <3732b0d2-0471-48ce-89b8-43f425040846@amd.com>
-X-ClientProxiedBy: MW4PR04CA0093.namprd04.prod.outlook.com
- (2603:10b6:303:83::8) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J5XZr4ca"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713286872;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YV3huxxwV4cNX30vuhj/67sfqzzrbon2fJPguOJkhQA=;
+	b=J5XZr4caQsS1UhDSLgg52waYa8GhX+uuIoOCQqtzkAkQEr0WIdRjtis9HXBmTNlmPe+oFj
+	teKH4L/hn0nP6GpeHKnSqnwW/T7SKZ/p/TbXkyvSLC2wizwByhs0t+dieOWkfgPB/7TA2A
+	Pr3e9PNweeUuAHo59g6eUFWabLV5XP4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-403-c_iU-PrrMoiLX41ZfaWXIg-1; Tue, 16 Apr 2024 13:01:11 -0400
+X-MC-Unique: c_iU-PrrMoiLX41ZfaWXIg-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-34954c03af1so465002f8f.2
+        for <linux-coco@lists.linux.dev>; Tue, 16 Apr 2024 10:01:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713286870; x=1713891670;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YV3huxxwV4cNX30vuhj/67sfqzzrbon2fJPguOJkhQA=;
+        b=Q0HfgbzSlOw0E4JmPcVOq0699n+q4iSmnBv+qWPomDVCIRxkB72uFmfUQ8awwA8m6F
+         UmZN+tZLwinNWJzb8pcg4XovAy2d2Vdr8tNrgWQSglRicGrlz/ehtwDcKWjh4kr/t31Q
+         +46oyC/bgPhca8qLA/hVNE3MFtBF7Gv3VyBrMEDVVEamTmM5f1v69Ab5oAbciKmSAMSt
+         hdKCgIwUx+zy4181VWYfo/fUmONyI2pcct5tBHrw2bFDFrsjyPsjBMobsESoyvw1rt9D
+         DVfFBdeSmhOEtgmxpuWei66rvJpLTRC5EeafntyMaTjW37zxjBqqDTh9Ac8QODuSbpyW
+         eoNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW0xzkPtbd+/9AF3FNuD6yogwrHq4vAlyWPUri8NCRqIJMXv32lmMXwUm5QKG6MVLZwLtf3yUmuzcfy56yFp98udpKJrVivIhH4kg==
+X-Gm-Message-State: AOJu0YwAdxjh+ybYIXVigUJSOAwRaTGJqraDaaDGa/mxFJYRcwjeQsxw
+	QDSjgpOgG5p7qe2YuMj8isPECgmszkyf5H7udMZsQ5KPtFQNRzbqCapzk1x1PFT7Jqxk09889Co
+	lfvsb5x3b9o5bnueRfPLdygrigvvGydANd8AlwcZ7zXmzKlDM2pObD7GyNCqSu+6EVoFXsj19JN
+	gOIamfwdvnnTfBJqB2vmQatzMt8XdQ5FlJ+A==
+X-Received: by 2002:a5d:6247:0:b0:348:5e40:62aa with SMTP id m7-20020a5d6247000000b003485e4062aamr2053437wrv.2.1713286870095;
+        Tue, 16 Apr 2024 10:01:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG6fYFk6xl1nuI2T7KirzQuQyw/sEuJB0A3gheWB+RJwuSGwFc7r4/2ReNv9v/wLow5jcYtNYlNsRKa11DX2JM=
+X-Received: by 2002:a5d:6247:0:b0:348:5e40:62aa with SMTP id
+ m7-20020a5d6247000000b003485e4062aamr2053410wrv.2.1713286869755; Tue, 16 Apr
+ 2024 10:01:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA3PR11MB7535:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b350771-add9-482d-19d6-08dc5e310e92
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vXhMDVJmN/B8wAssoWK7XGlWf2sYQPKbUUdYva1jh0FoNXmgdAFvJj9+r/6aQOtjGk8sYoY4nKfBsq4fP7cTKKuj2zEk0t/MxfYdb+kgUAmQ4fVCr2TFfv/34SSXwIek7bY7ldN99qwGfFPkR5g/R9vXjATkuFfK0YQC3x9GLq93U7KE2CwdVrzC5wytZw783O4C1oH0H3SrJLgEDgLchWju0o8uVxJApeLhRqllfW0ZI2AZ45BxA89FHZ7b9DhLgi+Z2ZQBpQqWW6LIPMPhOoevxusGEUAvWCU09uPIxjvhYDlLPnBjKdwcvZXy5Z83ZwIIZ8nP6qpjH08btKrLBdesDgapGGtOTyJM3kAtdudLH3bDfcwe6JFsLnw5pvMLeQKj268sijvs/NCC87BBnTO7on6QWfmPk0tZtsB8RU4LKzo1XLY1lxZmCsBgDiSnkoEU/IkIO4dV0DCPTz7XRGjdc9hDAw6ZxTclYuixfGN5FgkZNvjEWFIA4qrdKzvV5hPBDITIwLW405XQdYp64z478kqjESrtBHiBLAZeKyCbH5pAQBJP10P2rKB76Y/QEUgZZ1fikKx6CmfU5steJG68ZVYG5gAOtqbH3S1DoFc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(7416005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DoqthFbhLYZDPWVxN4/uSSeJky44OhYmTaXvKJMx3Z6H9o2d0k/3QV2eGft3?=
- =?us-ascii?Q?dD6m5cAAxiIKALhYlLe/1Ab2HxmR9/RaSy7fxjm2umOE2fs4UZINo4evuzdZ?=
- =?us-ascii?Q?EYmVd0WDVLxPSs6gMgHrSN0nGcbfRvxwUeXUEaPSQlvoGMpKoEGPHZ1zMVHO?=
- =?us-ascii?Q?fOYHTpId7vugXGX4PMOxhZT/Yr709w1y7Z8wZuKIeztgnjYKEtfApfZm7wqk?=
- =?us-ascii?Q?ZrO5f48IeBnAt6Vo2FBIbLP1idRPQ0iFQmmsHAQkNkt5fJfkU8+LGRLYBLfC?=
- =?us-ascii?Q?lpmgqGqMoBrpmCyCBYsWcOkP+D6PvBkrOQ+tt2C+ukpE5bGoRKzUxatqM4qd?=
- =?us-ascii?Q?gMeYlswITTfRRcKNwmEQD0XQRqDx8JXGGqLcXspEVroX0fRtlRkoh/MRO1FW?=
- =?us-ascii?Q?zo/bCu3YK2AhFRu/YOaMFVM0im2EiayeWS7zhOPcV1J+egmOgonRp5Jphboi?=
- =?us-ascii?Q?fbAP3u+SLNQpSXkiBlmEQ1keDQziJkQskt86XjoFexMtuqlPJuE8zPQ882i0?=
- =?us-ascii?Q?GKG7j/F1C6tjIUfLhBGPukINGbWGKug5MTeP03tXU3Mj7Uyd51U8ekGMrwyz?=
- =?us-ascii?Q?LxKHyA2e61BXiODBZK+Pr7h0DXQC0Icu3gNt7xcs97n+XRQBSottzPydwV1z?=
- =?us-ascii?Q?LqhpU1OU72UKi05lnTDUBLEQhu0bwWytq+aMJeSzRy2VoAyhTZIynzqn06rO?=
- =?us-ascii?Q?Tmq6X3miAJOyFqCPkI+fPfYWn+v2K8JN5l+tqkgN2DcruE7O362qORbH4MqD?=
- =?us-ascii?Q?TUvFlowVSe/CZ4UWtpF15W52oyj+20QVi39ZWlSGi1wMcqN69nXIinkGXCAd?=
- =?us-ascii?Q?5LmPgH8ZwElc9KrfHUUjJXK4mlIzyr9HJ7ihbjKj0qYKRo0dKEgZIBUosD+g?=
- =?us-ascii?Q?8EbYob63HbzSIVIzQt14HV/MirBuT1LxP7GYhvxAVZeD6225j0+yZ+sBotD8?=
- =?us-ascii?Q?YVfiVWaFP1bsJlsP1GDy5sIy1V10sxv0OA+4CPVz3PsF2KNzCzj04QNMkg1R?=
- =?us-ascii?Q?ocMMahKYKaI5dRooOOUNCtahluvKm8u1u9ltfwgUtVJnBGneLYLUB4MbeQBK?=
- =?us-ascii?Q?rXlgLismyDlaAheMILyugYzYUHksv7BbutMUOnYnv7/gk5UdsFL+4vVUxtOm?=
- =?us-ascii?Q?tWumcMWCEwS9QmDWM5PI/zQn4U8VVABDp2bDca5MLun5HBJKhgfWID961dPt?=
- =?us-ascii?Q?7bcdF5Nbbp2NO1y0XDgGAbXVisCHWtpzAuCIzd8nnoIzkssHyi7u94FPNuP2?=
- =?us-ascii?Q?I1HzIgiMYEMCIgnIQssN8RhxjAlJ5t9wW/+hyzimtW9wUODM4SeUYWF59MuC?=
- =?us-ascii?Q?baO+Eqb2T46C7xJEXen/oqTzxt/NRoVeEpXKGQ39T486+JT/QheR1kBUMjt8?=
- =?us-ascii?Q?Z0V3tAE41SfIpdKy4qbGqBot7rN5Ok/7P9u7eUpT5mVnasX/XHTNaeD9Ju22?=
- =?us-ascii?Q?p7uTKTXbd/hiVEuIE+oli+hmTENyqMR0+bau5thhdnOdCdgmBwy9q7t/Pzwx?=
- =?us-ascii?Q?XR1z4Lk7baqWvKbeDVDZ2VR0LJOftrhD0IJoKmBVW4PmbX2DCVYo/VE92GZV?=
- =?us-ascii?Q?OuUDA6gTbV3vpaiRupBwqM4pJlwxeMHWkyFGFiHbdtHd+3/DxBzovaJa2/vc?=
- =?us-ascii?Q?EQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b350771-add9-482d-19d6-08dc5e310e92
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 16:19:57.2018
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PoThPnt/+o/H1K3m1K+9ihI3FjgDzQzUwxN0ENApeonUw3TXaOw/r9GXx5MADidKCNaof7AwNjmpAtzIBfQVG+G5S3WWDpFknsDj8Z7/lVg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7535
-X-OriginatorOrg: intel.com
+References: <20240329225835.400662-1-michael.roth@amd.com> <20240329225835.400662-19-michael.roth@amd.com>
+ <67685ec7-ca61-43f1-8ecd-120ec137e93a@redhat.com> <CABgObfZNVR-VKst8dDFZ4gs_zSWE8NE2gj5-Y4TNh0AnBfti7w@mail.gmail.com>
+ <758c876d-ff77-0633-7b3e-965d863d5a93@amd.com>
+In-Reply-To: <758c876d-ff77-0633-7b3e-965d863d5a93@amd.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 16 Apr 2024 19:00:58 +0200
+Message-ID: <CABgObfbhNce22iuqjS3bF9V4aD1vpBg3oUcV6SLVHgvL+-UUmA@mail.gmail.com>
+Subject: Re: [PATCH v12 18/29] KVM: SEV: Use a VMSA physical address variable
+ for populating VMCB
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	jroedel@suse.de, hpa@zytor.com, ardb@kernel.org, seanjc@google.com, 
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Tom Lendacky wrote:
-> On 4/16/24 00:37, Dan Williams wrote:
-> > Tom Lendacky wrote:
-> >> When an SVSM is present, the guest can also request attestation reports
-> >> from the SVSM. These SVSM attestation reports can be used to attest the
-> >> SVSM and any services running within the SVSM.
+On Tue, Apr 16, 2024 at 4:25=E2=80=AFPM Tom Lendacky <thomas.lendacky@amd.c=
+om> wrote:
+>
+> On 4/16/24 06:53, Paolo Bonzini wrote:
+> > On Sat, Mar 30, 2024 at 10:01=E2=80=AFPM Paolo Bonzini <pbonzini@redhat=
+.com> wrote:
 > >>
-> >> Extend the config-fs attestation support to allow for an SVSM attestation
-> >> report. This involves creating four (4) new config-fs attributes:
+> >> On 3/29/24 23:58, Michael Roth wrote:
+> >>> From: Tom Lendacky<thomas.lendacky@amd.com>
+> >>>
+> >>> In preparation to support SEV-SNP AP Creation, use a variable that ho=
+lds
+> >>> the VMSA physical address rather than converting the virtual address.
+> >>> This will allow SEV-SNP AP Creation to set the new physical address t=
+hat
+> >>> will be used should the vCPU reset path be taken.
+> >>>
+> >>> Signed-off-by: Tom Lendacky<thomas.lendacky@amd.com>
+> >>> Signed-off-by: Ashish Kalra<ashish.kalra@amd.com>
+> >>> Signed-off-by: Michael Roth<michael.roth@amd.com>
+> >>> ---
 > >>
-> >>    - 'service-provider' (input)
-> >>      This attribute is used to determine whether the attestation request
-> >>      should be sent to the specified service provider or to the SEV
-> >>      firmware. The SVSM service provider is represented by the value
-> >>      'svsm'.
-> >>
-> >>    - 'service_guid' (input)
-> >>      Used for requesting the attestation of a single service within the
-> >>      service provider. A null GUID implies that the SVSM_ATTEST_SERVICES
-> >>      call should be used to request the attestation report. A non-null
-> >>      GUID implies that the SVSM_ATTEST_SINGLE_SERVICE call should be used.
-> >>
-> >>    - 'service_manifest_version' (input)
-> >>      Used with the SVSM_ATTEST_SINGLE_SERVICE call, the service version
-> >>      represents a specific service manifest version be used for the
-> >>      attestation report.
-> >>
-> >>    - 'manifestblob' (output)
-> >>      Used to return the service manifest associated with the attestation
-> >>      report.
-> >>
-> >> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-[..]
-> >> +What:		/sys/kernel/config/tsm/report/$name/service_provider
-> >> +Date:		January, 2024
-> >> +KernelVersion:	v6.10
-> >> +Contact:	linux-coco@lists.linux.dev
-> >> +Description:
-> >> +		(WO) Attribute is visible if a TSM implementation provider
-> >> +		supports the concept of attestation reports from a service
-> >> +		provider for TVMs, like SEV-SNP running under an SVSM.
-> >> +		Specifying the service provider via this attribute will create
-> >> +		an attestation report as specified by the service provider.
-> >> +		Currently supported service-providers are:
-> >> +			svsm
-> >> +
-> >> +		For the SVSM service provider, see the Secure VM Service Module
-> >> +		for SEV-SNP Guests v1.00 Section 7.
-> >> +		https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58019.pdf
-> > 
-> > Given "SVSM" is a cross vendor concept should this explicitly
-> > callout: "For provider.service_provider == sev_guest.svsm" as
-> > preparation for other implementations defining their "svsm" manifest
-> > format?
-> 
-> I'm not sure. Do we need to get that specific? If SVSM is cross vendor, 
-> will it be using / adding to the existing SVSM specification? If not, 
-> then each vendor is likely to have its own name for the SVSM concept 
-> that would be unique enough...
+> >> I'll get back to this one after Easter, but it looks like Sean had som=
+e
+> >> objections at https://lore.kernel.org/lkml/ZeCqnq7dLcJI41O9@google.com=
+/.
+> >
+>
+> Note that AP create is called multiple times per vCPU under OVMF with
+> and added call by the kernel when booting the APs.
 
-Yeah, I guess we can kick can that down the road and see what other
-vendors do. I know the coconut-svsm project is cross vendor, but I do
-not know the details.
+Oooh, I somehow thought that
 
-> >> +
-> >> +What:		/sys/kernel/config/tsm/report/$name/service_manifest_version
-> >> +Date:		January, 2024
-> >> +KernelVersion:	v6.10
-> >> +Contact:	linux-coco@lists.linux.dev
-> >> +Description:
-> >> +		(WO) Attribute is visible if a TSM implementation provider
-> >> +		supports the concept of attestation reports from a service
-> >> +		provider for TVMs, like SEV-SNP running under an SVSM.
-> >> +		Indicates the service manifest version requested for the
-> >> +		attestation report. If this field is not set by the user,
-> >> +		the default manifest version of the service (the service's
-> >> +		initial/first manifest version) is returned. The initial
-> >> +		manifest version is always available.
-> > 
-> > ...and that number is zero? Is there any expectation that the kernel
-> 
-> Yes, that number is zero.
-> 
-> > sanity checks this version, or how does the user figure out they need to
-> > roll this request back?
-> 
-> Right now there aren't any non-zero versions, so there is nothing for 
-> the user to figure out. However, the service will determine when it 
-> creates a new version and then the user will need to understand what the 
-> reason for that is and decide. I'm not sure I can give you a specific 
-> answer at this stage, but we need to allow for a change in the manifest 
-> without affecting existing users.
++ target_svm->sev_es.snp_vmsa_gpa =3D INVALID_PAGE;
++ target_svm->sev_es.snp_ap_create =3D true;
 
-Right, but it feels odd that userspace could write UINT_MAX to this
-value and the kernel says, "yup, looks like a valid manifest version to
-me".
+was in svm_create_vcpu().
 
-> And since the spec has been approved already, I can't really go back and 
-> add a requirement that manifest format always be additive.
+So there should be separate "snp_ap_waiting_for_reset" and
+"snp_has_guest_vmsa" flags. The latter is set once in
+__sev_snp_update_protected_guest_state and is what governs whether the
+VMSA page was allocated or just refcounted.
 
-Those breaking changes have not arrived yet so still a chance to
-influence, no?
+> But I believe that Sean wants a separate KVM object per VMPL level, so
+> that would disappear anyway (Joerg and I want to get on the PUCK
+> schedule to talk about multi-VMPL level support soon.)
 
-The documentation here at least guarantees that the initial manifest
-version is always valid, and I expect the spec authors to realize that
-the kernel has a role to play in not breaking existing userspace. I.e.
-it is not in the spec's interest to disallow fallback to any
-version between 0 and N-1 where N is the latest.
+Yes, agreed on both counts.
 
-The kernel need not tolerate version induced breakage from ACPI
-specification updates because that spec is committed to compatibility,
-why does this spec need to be less disciplined than that?
+> >     /*
+> >      * gmem pages aren't currently migratable, but if this ever
+> >      * changes then care should be taken to ensure
+> >      * svm->sev_es.vmsa_pa is pinned through some other means.
+> >      */
+> >     kvm_release_pfn_clean(pfn);
+>
+> Removing this here will cause any previous guest VMSA page(s) to remain
+> pinned, that's the reason for unpinning here. OVMF re-uses the VMSA, but
+> that isn't a requirement for a firmware, and the kernel will create a
+> new VMSA page.
 
-> >> +
-> >> +		For the SVSM service provider, see the Secure VM Service Module
-> >> +		for SEV-SNP Guests v1.00 Section 7.
-> >> +		https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58019.pdf
-> > 
-> 
-> >> +static ssize_t tsm_report_service_provider_store(struct config_item *cfg,
-> >> +						 const char *buf, size_t len)
-> >> +{
-> >> +	struct tsm_report *report = to_tsm_report(cfg);
-> >> +	size_t sp_len;
-> >> +	char *sp;
-> >> +	int rc;
-> >> +
-> >> +	guard(rwsem_write)(&tsm_rwsem);
-> >> +	rc = try_advance_write_generation(report);
-> >> +	if (rc)
-> >> +		return rc;
-> >> +
-> >> +	sp_len = (buf[len - 1] != '\n') ? len : len - 1;
-> > 
-> > This feels like it wants a sysfs_strdup().
-> 
-> If there start to be more string oriented operations in the file, then 
-> it might be worth it. For now I don't really see a reason.
+Yes, and once you understand that I was thinking of a set-once flag
+"snp_has_guest_vmsa" it should all make a lot more sense.
 
-To be clear I was thinking of occurrences of this patten outside of this
-file. Turns out this pattern is not as prevalent as I would have
-guessed, resource_alignment_store() was the only occurrence I could
-find. Skip for now works for me.
+Paolo
+
