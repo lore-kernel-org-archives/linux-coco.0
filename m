@@ -1,95 +1,220 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2049.outbound.protection.outlook.com [40.107.220.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7767047A7D
-	for <linux-coco@lists.linux.dev>; Wed, 17 Apr 2024 20:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713387078; cv=none; b=UGJSN4V+xYIfH4uiwSqVmYhJLJKcxo7EesL+qzYQV5OjazBN/RZmTtkpF9/9frXD1OK+6vTMhwjJ02zy7sJLPrOXkLuD1rzykwuUqPC2tfBQICTH3cCN45Tloinz8R+ZAyCXhHLxW+UDLZy3HZC8annR9eLkmzLAyCKuOC8PXX8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713387078; c=relaxed/simple;
-	bh=25na2u5dqSMwdfKH+InG17crUdYa9TxiMOwoUCyo2Zg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MHa+5eFU/jggYPw8xMiuMaXhzXavldVOq67lqX8fmYvJfVM6kPyUBGspF7slkWhxVDVRrDJDy7hFAE6rQ0MkPAgSLBVfkFvyPaBlNDQFnUf+/Y/v+pJlw6UUVttoWp3+eWZ+I4Yk4B/UQfExytBPZj6swHm0rSgNvDnh1ycwAOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E478040E0177;
-	Wed, 17 Apr 2024 20:51:14 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id WjHW1JqznPJz; Wed, 17 Apr 2024 20:51:09 +0000 (UTC)
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 21AF640E00B2;
-	Wed, 17 Apr 2024 20:50:54 +0000 (UTC)
-Date: Wed, 17 Apr 2024 22:50:48 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v3 02/14] x86/sev: Make the VMPL0 checking function more
- generic
-Message-ID: <20240417205048.GHZiA2KGbFFTQFyTAM@fat_crate.local>
-References: <cover.1711405593.git.thomas.lendacky@amd.com>
- <1b0d8ec8e671ad957a2ad888725ce24edeedf74a.1711405593.git.thomas.lendacky@amd.com>
- <20240417114658.GHZh-2sk47TZgCp4Mb@fat_crate.local>
- <505dcf34-93ff-643c-b149-8ef9ce90c023@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477F93D967
+	for <linux-coco@lists.linux.dev>; Wed, 17 Apr 2024 20:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713387534; cv=fail; b=V3zPALKiggrkPny/7gBh6WSXcRUBVbJer995zFcZxV/zFeNzX9JsEJDyUweZbzu5zi//P+dYyB7MQ/wbYtGm4EzoKBVy9gJYrH9vrAMi8rbGATakdX5qdRDvTvkTwq1UI3zLLMMJDTlSPe04FiFtQxRapVKp9t2nJ6cVBSO/qFE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713387534; c=relaxed/simple;
+	bh=4u5hn2Hh/87JQ7UPtjEmuh6lj8l9zAnHa0b3wr8ltHo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LngSUySeu+OSkrk3oDr/CBffLVXRXAc6oU0MEjkF/CiDSNeIjyJEC4ElApd7zsxqtOc8f0kwHonVZnzShqN95SXxDiSjhHbCGjGNq/IYSR96z1ZIGK1DixEzzbgCYCl+Xv1hrMSS3DcDGoWXBfq5hjknGHsBXz+6TXpMjzvQlrk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zgWBFdbE; arc=fail smtp.client-ip=40.107.220.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zgWBFdbE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I8dv82kSCk21qZKiuMhTBbwFiaDycANa/hONJZBAVnpKQGxXNabYZzbiLxfCjSUnF0Q11cdPO2xlPSb5R+2XsH4GGlbkoefvhlxDtAH18b68yw5Lo9j/GDkCHW5U7A5OEriL4toce78mgT5UHo9EuKHda3W1Z16E/I7z6tX0F3m6NQ20vvJ9UZSxlEZeRSgPFm32zdkl0NlllS2fgrbwMK5oxWPmCb1eEwnCnfE3xBI+BKpsCK3V0GEWL0b3OR1gA/cbj/XuUYbRCfBvBNqcog5S0wvIfROJSWcnMEnz1NJ6xoIgw3Fjbe4sNX8lVfp+Oq3vmTUCMAnAujXh59+mUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZAHI1MdqIYTTn8gAftj1rCysaOC6m3lFRtlh7aH/OcU=;
+ b=a+EuRZ1Mt9rF2bviFIFzgUglHfPXy1sK7EXQKfmpTM7dvf8HoXIWeZYg/sRNTC7tGSF4rjsxFZmxjdEmty+VvZBFe7/j1AjXbqcenrD/zgY6G+cjXRUj5+6d7pW3td5sadr4wHNyI+D9kp//r5DnwHrhiudmOJz/6++OF9URUDluQXlqzE6t2RcBlVhsayBM+vnlpmPf66d/42msAgYv+XLpDBeDiDhAZbUSjhTAGN2k5jQ4jXJ7+tW7eI8KOPBWp7E/0kAJr5UYeDR2/x36aoWtdc7aJu7s5YPFist8mPGoxsVUoJgzFw7xy4sR/58yyPcJBfoDB+6oghLAGXg+hA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZAHI1MdqIYTTn8gAftj1rCysaOC6m3lFRtlh7aH/OcU=;
+ b=zgWBFdbE0DJXtalccsxSvcBttSQWr3qd0W0OxnVQss7VZDTzIdOzqTFWL3O6nFAzjvkLajKPFFpnY4zQcyl5JobnZQea7J9B9EkiaTZP4EMyo0Bwayo8oDfFNCMDBiqVjL29EJVs29dfYsX1xnWNpwdJUt3LBzQVbXhkFQdcrJU=
+Received: from BN9PR03CA0322.namprd03.prod.outlook.com (2603:10b6:408:112::27)
+ by IA1PR12MB7637.namprd12.prod.outlook.com (2603:10b6:208:427::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Wed, 17 Apr
+ 2024 20:57:41 +0000
+Received: from BN2PEPF000044AA.namprd04.prod.outlook.com
+ (2603:10b6:408:112:cafe::4e) by BN9PR03CA0322.outlook.office365.com
+ (2603:10b6:408:112::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7495.20 via Frontend
+ Transport; Wed, 17 Apr 2024 20:57:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN2PEPF000044AA.mail.protection.outlook.com (10.167.243.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7452.22 via Frontend Transport; Wed, 17 Apr 2024 20:57:41 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 17 Apr
+ 2024 15:57:41 -0500
+Date: Wed, 17 Apr 2024 15:57:25 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <seanjc@google.com>, <vkuznets@redhat.com>,
+	<jmattson@google.com>, <luto@kernel.org>, <dave.hansen@linux.intel.com>,
+	<slp@redhat.com>, <pgonda@google.com>, <peterz@infradead.org>,
+	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
+	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
+	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>
+Subject: Re: [PATCH v12 18/29] KVM: SEV: Use a VMSA physical address variable
+ for populating VMCB
+Message-ID: <20240417205725.yougm6og3cuea2hu@amd.com>
+References: <20240329225835.400662-1-michael.roth@amd.com>
+ <20240329225835.400662-19-michael.roth@amd.com>
+ <67685ec7-ca61-43f1-8ecd-120ec137e93a@redhat.com>
+ <CABgObfZNVR-VKst8dDFZ4gs_zSWE8NE2gj5-Y4TNh0AnBfti7w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <505dcf34-93ff-643c-b149-8ef9ce90c023@amd.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABgObfZNVR-VKst8dDFZ4gs_zSWE8NE2gj5-Y4TNh0AnBfti7w@mail.gmail.com>
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044AA:EE_|IA1PR12MB7637:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7f78c637-caa7-4eee-2cd3-08dc5f2105da
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	H/ArEvv3lMhSwBveKfeWg81I2KSLtJMLAxMLZrk7gCoSKk7WEt73DJQhF1nc2VKew1I/fJ8Z/jBzrITn6Gr0mm7EdinY64Fe8XoJD4QvDbOCTeLa8YRVhzKuvCaE81JSYevoBb6S58Mv1zniRKMelAHzNVZ5ZXo6ydWKV0Jkh9Hz3JnHW6+t0bTU4dNDVvUgUq2EQcGJUTpe/dPMMyjmt7YGSgsdIQ+Bho8CX8ZtOtlyZnv9G9tUg5vF06KTYHXfN032wPL21/rfb8GofyUCkODPudiZum8pPXiZSQU/dNhiDErsAzPN0VTtwHBN32IWrddwCTG0lPV2Vx3a6x0jY0/YBVolytMKOCE3gd+QJsknxJNhK1rNRZzYhTEoWdZZqyzeHvHLKwNyom3iSfmSmh3KDBOPmU+tD0iq8qJKLc5RlMA74idTjZtfgpUm2FknfFknVxiy6HUnhvn2BKWckPpT/htwdmJNRLHLueW9ZMsrvnMLwT0iHE6qRt0NusgkZvsegWWE4l9++39whBWlTNqAyPyQA0RrjXfm4Ieos77aZs+VaoSBYJrNfGP4oihtlCcxmArAy0c1WVfSbv4mPUuvHKL8jGXCiI+tMkKH9OVb9ie762v8RpnZXHVSzso5t3VI6DuMhFSifFAsPfAOY46SX8JuuxhmNYtqFODRnYqD58/34CgG5kOU7u3jH9plASuNiLznfoNCziSpW6LYDA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(376005)(7416005)(82310400014)(1800799015);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2024 20:57:41.5730
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7f78c637-caa7-4eee-2cd3-08dc5f2105da
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044AA.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7637
 
-On Wed, Apr 17, 2024 at 03:35:53PM -0500, Tom Lendacky wrote:
-> Well, it doesn't really modify any permissions that matter. It tries to
-> change the permission of a lesser privileged VMPL level.
+On Tue, Apr 16, 2024 at 01:53:24PM +0200, Paolo Bonzini wrote:
+> On Sat, Mar 30, 2024 at 10:01 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
+> >
+> > On 3/29/24 23:58, Michael Roth wrote:
+> > > From: Tom Lendacky<thomas.lendacky@amd.com>
+> > >
+> > > In preparation to support SEV-SNP AP Creation, use a variable that holds
+> > > the VMSA physical address rather than converting the virtual address.
+> > > This will allow SEV-SNP AP Creation to set the new physical address that
+> > > will be used should the vCPU reset path be taken.
+> > >
+> > > Signed-off-by: Tom Lendacky<thomas.lendacky@amd.com>
+> > > Signed-off-by: Ashish Kalra<ashish.kalra@amd.com>
+> > > Signed-off-by: Michael Roth<michael.roth@amd.com>
+> > > ---
+> >
+> > I'll get back to this one after Easter, but it looks like Sean had some
+> > objections at https://lore.kernel.org/lkml/ZeCqnq7dLcJI41O9@google.com/.
+> 
+> So IIUC the gist of the solution here would be to replace
+> 
+>    /* Use the new VMSA */
+>    svm->sev_es.vmsa_pa = pfn_to_hpa(pfn);
+>    svm->vmcb->control.vmsa_pa = svm->sev_es.vmsa_pa;
+> 
+> with something like
+> 
+>    /* Use the new VMSA */
+>    __free_page(virt_to_page(svm->sev_es.vmsa));
 
-Potato potato. :-P
+One downside to free'ing VMSA at this point is there are a number of
+additional cleanup routines like wbinvd_on_all_cpus() and in sev_free_vcpu()
+which will need to be called before we are able to safely free the page back
+to the system.
 
-> Since the kernel only runs at a single VMPL it would never be
-> effected. The operation performed here is to update VMPL1 permission
-> levels (which can only be done successfully at VMPL0) and return the
-> result of the operation.  A success implies running at VMPL0 and
-> failure implies not running at VMPL0.
+It would be simple to wrap all that up in an sev_free_vmsa() helper and
+also call it here rather than defer it, but from a performance
+perspective it would be nice to defer it to shutdown path.
 
-Yap.
 
-The point is, it is calling RMPADJUST. And it does modify RMP
-permissions of a guest page.
+>    svm->sev_es.vmsa = pfn_to_kaddr(pfn);
+>    svm->vmcb->control.vmsa_pa = __pa(svm->sev_es.vmsa);
 
-Thus, if you prefer, you can go all out and call the helper
+It turns out sev_es_init_vmcb() always ends up setting control.vmsa_pa
+again using the new vmsa stored in sev_es.vmsa before the AP re-enters the
+guest:
 
-	rmp_adjust_permissions(unsigned int tgt_vmpl, void *pa)
+  svm->vmcb->control.vmsa_pa = __pa(svm->sev_es.vmsa);
 
-and make it generic from the get-go.
+If we modify that code to instead do:
 
-And then have the macro wrap around it in order to explain that
-particular use with the macro name.
+  if (!svm->sev_es.snp_has_guest_vmsa)
+    svm->vmcb->control.vmsa_pa = __pa(svm->sev_es.vmsa);
+      
+Then it will instead continue to use the control.vmsa_pa set here in
+__sev_snp_update_protected_guest_state(), in which case svm->sev_es.vmsa
+will only ever be used to store the initial VMSA that was allocated by KVM.
+Given that...
 
-If it is still not clear what I mean, lemme know and I'll do a diff
-ontop.
+> 
+> and wrap the __free_page() in sev_free_vcpu() with "if
+> (!svm->sev_es.snp_ap_create)".
 
-Thx.
+If we take the deferred approach above, then no checks are needed here
+and the KVM-allocated VMSA is cleaned up the same way it is handled for
+SEV-ES. SNP never needs to piggy-back off of sev_es.vmsa to pass around
+VMSAs that reside in guest memory.
 
--- 
-Regards/Gruss,
-    Boris.
+I can still rework things to free KVM-allocated VMSA immediately here if
+you prefer but for now I have things implemented as above to keep
+SEV-ES/SNP handling similar and avoid performance penalty during guest
+boot. I've pushed the revised AP creation patch here for reference:
 
-https://people.kernel.org/tglx/notes-about-netiquette
+  https://github.com/mdroth/linux/commit/5a7e76231a7629ba62f8b0bba8039d93d3595ecb
+
+Thanks for the suggestions, this all looks a good bit cleaner either way.
+
+-Mike
+
+> 
+> This should remove the need for svm->sev_es.vmsa_pa. It is always
+> equal to svm->vmcb->control.vmsa_pa anyway.
+> 
+> Also, it's possible to remove
+> 
+>    /*
+>     * gmem pages aren't currently migratable, but if this ever
+>     * changes then care should be taken to ensure
+>     * svm->sev_es.vmsa_pa is pinned through some other means.
+>     */
+>    kvm_release_pfn_clean(pfn);
+> 
+> if sev_free_vcpu() does
+> 
+>    if (svm->sev_es.snp_ap_create) {
+>      __free_page(virt_to_page(svm->sev_es.vmsa));
+>    } else {
+>      put_page(virt_to_page(svm->sev_es.vmsa));
+>    }
+> 
+> and while at it, please reverse the polarity of snp_ap_create and
+> rename it to snp_ap_created.
+> 
+> Paolo
+> 
