@@ -1,25 +1,25 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCDC15AAC1;
-	Thu, 18 Apr 2024 09:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6052C7D3F4;
+	Thu, 18 Apr 2024 13:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713432644; cv=none; b=KjbM8/0+iXP179rGP7jxVJrtTzDLssnmPDF9uVLdlQr5OITAYxUDcVbGnVIcA9MoVrRf/3XiPGQatD9Vn9c5C6FZbhx6g3c4ztOGTw1ldRMNspWlsRtOxfB0vp019StwSHHMju/fMKzY4JaXTIUZoH8VgRWP5Z4GpSVAXrczpjo=
+	t=1713446243; cv=none; b=EsQFAWHkweGWbENOO8ElD1q8db0dJWcRXALxVZYr0QKJp3TD9brE08PqIC1rDrjuVsWP7Vp0IiNLxGU08Eafp3hbEB5g+7fiO5DuneRaksK9EmhK04ANnDqGJNBNR4Sz/2C7o9TA3xAuaPcmHfoMkv0FGft0rz0pqgUhsXIJp80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713432644; c=relaxed/simple;
-	bh=jkUdI1l7jyx9l2Q/C9KSmfjWLcjVVTRQwdO0plAvfWU=;
+	s=arc-20240116; t=1713446243; c=relaxed/simple;
+	bh=JwQ6WKAgwkgGDjlwTjWbko4n+LA0bmKAxcEWpDK1XLo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HOqLyJI0cnZkm5ZMtlikL7JQhJwQgEEyOYrhsj/WqRdkcLc2WB8vE9j/cVFfB4/hhJ7UHCkkvg/BG9XniwKjecTMR7V+I5EXsOfHtulcperzac0YcH+uHQB8An2xwu95c9a8NF3OcMlbbZV1ZBeIDXORhZp1qyG2FFQGUJzpaTg=
+	 In-Reply-To:Content-Type; b=Rpaix53Ro6RmvASn0VLuJFRCxAUAgk07WFGQlGWB/rQ7PvnSf4sOiBYs5mCg1Mgxx0CG9PMhkXBrJU9cxdss90TrnFEBeu+r64qnN6O3ATrBtKxwUDRDwgvVrxtxiQwJbKyavt7E426yQWYA5Lz7p7y76dTFTZ2wtcKF2Y8cyiw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D4500339;
-	Thu, 18 Apr 2024 02:31:09 -0700 (PDT)
-Received: from [10.57.84.16] (unknown [10.57.84.16])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AA4E33F64C;
-	Thu, 18 Apr 2024 02:30:39 -0700 (PDT)
-Message-ID: <785075df-4a0e-4cd3-bace-a59db7caa746@arm.com>
-Date: Thu, 18 Apr 2024 10:30:38 +0100
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 97EC8339;
+	Thu, 18 Apr 2024 06:17:48 -0700 (PDT)
+Received: from [10.1.35.34] (e122027.cambridge.arm.com [10.1.35.34])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DAEDF3F738;
+	Thu, 18 Apr 2024 06:17:16 -0700 (PDT)
+Message-ID: <f934c0ae-336a-4529-9eaa-71f69291dc71@arm.com>
+Date: Thu, 18 Apr 2024 14:17:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,9 +27,9 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 16/43] KVM: arm64: Support timers in realm RECs
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+Subject: Re: [PATCH v2 04/43] arm64: RME: Handle Granule Protection Faults
+ (GPFs)
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
@@ -41,147 +41,102 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
 References: <20240412084056.1733704-1-steven.price@arm.com>
  <20240412084309.1733783-1-steven.price@arm.com>
- <20240412084309.1733783-17-steven.price@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20240412084309.1733783-17-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <20240412084309.1733783-5-steven.price@arm.com>
+ <d452859e-8b35-4aac-83d5-5b8d44ed4406@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <d452859e-8b35-4aac-83d5-5b8d44ed4406@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 12/04/2024 09:42, Steven Price wrote:
-> The RMM keeps track of the timer while the realm REC is running, but on
-> exit to the normal world KVM is responsible for handling the timers.
+On 16/04/2024 12:17, Suzuki K Poulose wrote:
+> On 12/04/2024 09:42, Steven Price wrote:
+>> If the host attempts to access granules that have been delegated for use
+>> in a realm these accesses will be caught and will trigger a Granule
+>> Protection Fault (GPF).
+>>
+>> A fault during a page walk signals a bug in the kernel and is handled by
+>> oopsing the kernel. A non-page walk fault could be caused by user space
+>> having access to a page which has been delegated to the kernel and will
+>> trigger a SIGBUS to allow debugging why user space is trying to access a
+>> delegated page.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>>   arch/arm64/mm/fault.c | 29 ++++++++++++++++++++++++-----
+>>   1 file changed, 24 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+>> index 8251e2fea9c7..91da0f446dd9 100644
+>> --- a/arch/arm64/mm/fault.c
+>> +++ b/arch/arm64/mm/fault.c
+>> @@ -765,6 +765,25 @@ static int do_tag_check_fault(unsigned long far,
+>> unsigned long esr,
+>>       return 0;
+>>   }
+>>   +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct
+>> pt_regs *regs)
+>> +{
+>> +    const struct fault_info *inf = esr_to_fault_info(esr);
+>> +
+>> +    die_kernel_fault(inf->name, far, esr, regs);
+>> +    return 0;
+>> +}
+>> +
+>> +static int do_gpf(unsigned long far, unsigned long esr, struct
+>> pt_regs *regs)
+>> +{
+>> +    const struct fault_info *inf = esr_to_fault_info(esr);
+>> +
+>> +    if (!is_el1_instruction_abort(esr) && fixup_exception(regs))
+>> +        return 0;
+>> +
+>> +    arm64_notify_die(inf->name, regs, inf->sig, inf->code, far, esr);
+>> +    return 0;
+>> +}
+>> +
+>>   static const struct fault_info fault_info[] = {
+>>       { do_bad,        SIGKILL, SI_KERNEL,    "ttbr address size
+>> fault"    },
+>>       { do_bad,        SIGKILL, SI_KERNEL,    "level 1 address size
+>> fault"    },
+>> @@ -802,11 +821,11 @@ static const struct fault_info fault_info[] = {
+>>       { do_alignment_fault,    SIGBUS,  BUS_ADRALN,    "alignment
+>> fault"        },
+>>       { do_bad,        SIGKILL, SI_KERNEL,    "unknown 34"            },
+>>       { do_bad,        SIGKILL, SI_KERNEL,    "unknown 35"            },
 > 
+> Should this also be converted to do_gpf_ptw, "GPF at level -1", given we
+> support LPA2 ?
 
-minor nit: It may be worth mentioning this will be hooked in, when we
-add the Realm exit handling.
+Ah, yes I somehow missed that. Although something has gone majorly wrong
+if this triggers! ;)
 
-Otherwise looks good to me.
+Steve
 
-
-Suzuki
-
-
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
->   arch/arm64/kvm/arch_timer.c  | 45 ++++++++++++++++++++++++++++++++----
->   include/kvm/arm_arch_timer.h |  2 ++
->   2 files changed, 43 insertions(+), 4 deletions(-)
+>> -    { do_bad,        SIGKILL, SI_KERNEL,    "unknown 36"            },
+>> -    { do_bad,        SIGKILL, SI_KERNEL,    "unknown 37"            },
+>> -    { do_bad,        SIGKILL, SI_KERNEL,    "unknown 38"            },
+>> -    { do_bad,        SIGKILL, SI_KERNEL,    "unknown 39"            },
+>> -    { do_bad,        SIGKILL, SI_KERNEL,    "unknown 40"            },
+>> +    { do_gpf_ptw,        SIGKILL, SI_KERNEL,    "Granule Protection
+>> Fault at level 0" },
+>> +    { do_gpf_ptw,        SIGKILL, SI_KERNEL,    "Granule Protection
+>> Fault at level 1" },
+>> +    { do_gpf_ptw,        SIGKILL, SI_KERNEL,    "Granule Protection
+>> Fault at level 2" },
+>> +    { do_gpf_ptw,        SIGKILL, SI_KERNEL,    "Granule Protection
+>> Fault at level 3" },
+>> +    { do_gpf,        SIGBUS,  SI_KERNEL,    "Granule Protection Fault
+>> not on table walk" },
+>>       { do_bad,        SIGKILL, SI_KERNEL,    "level -1 address size
+>> fault"    },
+>>       { do_bad,        SIGKILL, SI_KERNEL,    "unknown 42"            },
+>>       { do_translation_fault,    SIGSEGV, SEGV_MAPERR,    "level -1
+>> translation fault"    },
 > 
-> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-> index 879982b1cc73..0b2be34a9ba3 100644
-> --- a/arch/arm64/kvm/arch_timer.c
-> +++ b/arch/arm64/kvm/arch_timer.c
-> @@ -162,6 +162,13 @@ static void timer_set_cval(struct arch_timer_context *ctxt, u64 cval)
->   
->   static void timer_set_offset(struct arch_timer_context *ctxt, u64 offset)
->   {
-> +	struct kvm_vcpu *vcpu = ctxt->vcpu;
-> +
-> +	if (kvm_is_realm(vcpu->kvm)) {
-> +		WARN_ON(offset);
-> +		return;
-> +	}
-> +
->   	if (!ctxt->offset.vm_offset) {
->   		WARN(offset, "timer %ld\n", arch_timer_ctx_index(ctxt));
->   		return;
-> @@ -460,6 +467,21 @@ static void kvm_timer_update_irq(struct kvm_vcpu *vcpu, bool new_level,
->   	}
->   }
->   
-> +void kvm_realm_timers_update(struct kvm_vcpu *vcpu)
-> +{
-> +	struct arch_timer_cpu *arch_timer = &vcpu->arch.timer_cpu;
-> +	int i;
-> +
-> +	for (i = 0; i < NR_KVM_EL0_TIMERS; i++) {
-> +		struct arch_timer_context *timer = &arch_timer->timers[i];
-> +		bool status = timer_get_ctl(timer) & ARCH_TIMER_CTRL_IT_STAT;
-> +		bool level = kvm_timer_irq_can_fire(timer) && status;
-> +
-> +		if (level != timer->irq.level)
-> +			kvm_timer_update_irq(vcpu, level, timer);
-> +	}
-> +}
-> +
->   /* Only called for a fully emulated timer */
->   static void timer_emulate(struct arch_timer_context *ctx)
->   {
-> @@ -831,6 +853,8 @@ void kvm_timer_vcpu_load(struct kvm_vcpu *vcpu)
->   	if (unlikely(!timer->enabled))
->   		return;
->   
-> +	kvm_timer_unblocking(vcpu);
-> +
->   	get_timer_map(vcpu, &map);
->   
->   	if (static_branch_likely(&has_gic_active_state)) {
-> @@ -844,8 +868,6 @@ void kvm_timer_vcpu_load(struct kvm_vcpu *vcpu)
->   		kvm_timer_vcpu_load_nogic(vcpu);
->   	}
->   
-> -	kvm_timer_unblocking(vcpu);
-> -
->   	timer_restore_state(map.direct_vtimer);
->   	if (map.direct_ptimer)
->   		timer_restore_state(map.direct_ptimer);
-> @@ -988,7 +1010,9 @@ static void timer_context_init(struct kvm_vcpu *vcpu, int timerid)
->   
->   	ctxt->vcpu = vcpu;
->   
-> -	if (timerid == TIMER_VTIMER)
-> +	if (kvm_is_realm(vcpu->kvm))
-> +		ctxt->offset.vm_offset = NULL;
-> +	else if (timerid == TIMER_VTIMER)
->   		ctxt->offset.vm_offset = &kvm->arch.timer_data.voffset;
->   	else
->   		ctxt->offset.vm_offset = &kvm->arch.timer_data.poffset;
-> @@ -1011,13 +1035,19 @@ static void timer_context_init(struct kvm_vcpu *vcpu, int timerid)
->   void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu)
->   {
->   	struct arch_timer_cpu *timer = vcpu_timer(vcpu);
-> +	u64 cntvoff;
->   
->   	for (int i = 0; i < NR_KVM_TIMERS; i++)
->   		timer_context_init(vcpu, i);
->   
-> +	if (kvm_is_realm(vcpu->kvm))
-> +		cntvoff = 0;
-> +	else
-> +		cntvoff = kvm_phys_timer_read();
-> +
->   	/* Synchronize offsets across timers of a VM if not already provided */
->   	if (!test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &vcpu->kvm->arch.flags)) {
-> -		timer_set_offset(vcpu_vtimer(vcpu), kvm_phys_timer_read());
-> +		timer_set_offset(vcpu_vtimer(vcpu), cntvoff);
->   		timer_set_offset(vcpu_ptimer(vcpu), 0);
->   	}
->   
-> @@ -1525,6 +1555,13 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
->   		return -EINVAL;
->   	}
->   
-> +	/*
-> +	 * We don't use mapped IRQs for Realms because the RMI doesn't allow
-> +	 * us setting the LR.HW bit in the VGIC.
-> +	 */
-> +	if (vcpu_is_rec(vcpu))
-> +		return 0;
-> +
->   	get_timer_map(vcpu, &map);
->   
->   	ret = kvm_vgic_map_phys_irq(vcpu,
-> diff --git a/include/kvm/arm_arch_timer.h b/include/kvm/arm_arch_timer.h
-> index c819c5d16613..d8ab297560d0 100644
-> --- a/include/kvm/arm_arch_timer.h
-> +++ b/include/kvm/arm_arch_timer.h
-> @@ -112,6 +112,8 @@ int kvm_arm_timer_set_attr(struct kvm_vcpu *vcpu, struct kvm_device_attr *attr);
->   int kvm_arm_timer_get_attr(struct kvm_vcpu *vcpu, struct kvm_device_attr *attr);
->   int kvm_arm_timer_has_attr(struct kvm_vcpu *vcpu, struct kvm_device_attr *attr);
->   
-> +void kvm_realm_timers_update(struct kvm_vcpu *vcpu);
-> +
->   u64 kvm_phys_timer_read(void);
->   
->   void kvm_timer_vcpu_load(struct kvm_vcpu *vcpu);
+> 
+> Rest looks fine to me.
+> 
+> Suzuki
 
