@@ -1,374 +1,88 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A447D3F4;
-	Thu, 18 Apr 2024 13:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6974E1DFD8
+	for <linux-coco@lists.linux.dev>; Thu, 18 Apr 2024 14:37:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713446250; cv=none; b=WoXmJcqE+LVjGR+MDabpwj2OKqptkSUR2Ftm439L/c6iwUeoAtnkVPloTpWpVFhtwYDnNBT7APNb/nQal8FQeyZpn/Ll8AyWmhwK+av30d2lYlAN4KsJxWVwGxvHHM7UFXIeWH2VPoOlmZ6XrUPQIg17/RQPXFdsprq+Y7AsOPU=
+	t=1713451069; cv=none; b=G7CSMmvUadLQxTb634fzinz0/9g0gW8YIk6AW7QWdDIE/SLRco6Wji55dxD8huJnSPASSimzKbAjkWh5D/Q6IteROg8pyuv3RKoeaanJCb15/P2V0uUmvJ8piDILUj3bzowvDufypRsuBcAEDYmepBGGotWusme3TgDtKoWdfVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713446250; c=relaxed/simple;
-	bh=uFBVCzKTwIgEfdvC7/2meAWUHLTgMbNu/QYppjfZugI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YAJl6lxOJF9eh0FCivvtZKueUtxrbPxRI9qmPuWFawCTq3AFBHzwjM0pMIwjM29H/+/B+sP0OVM/CAHoPAt4gVDbapj+8gSXI8vP0cBxYa95xFC9IQQi2QTL0iPwF6tJvqhr7LkCubxuzzp5iv5ub8MNxJS3TWoXmRzfgKOPq2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AB529DA7;
-	Thu, 18 Apr 2024 06:17:55 -0700 (PDT)
-Received: from [10.1.35.34] (e122027.cambridge.arm.com [10.1.35.34])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EFCFF3F738;
-	Thu, 18 Apr 2024 06:17:23 -0700 (PDT)
-Message-ID: <f5b87486-89b5-4c86-aadb-47204fb39bea@arm.com>
-Date: Thu, 18 Apr 2024 14:17:23 +0100
+	s=arc-20240116; t=1713451069; c=relaxed/simple;
+	bh=4HHwt9Fq69zLSpKRQ37mv7ZHBJdcC0buZ3fmQOAY1jg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QHTZ/z1l0wUVYepDV7EmYoMYkGUvOtvUaBhzxtFNwy4kNWaKZcSl6FO9OjDPx/HGWybwEWO67GvbBZhMcKPt+u/jIJOW+GahhDybJyNnqDE0qWYVdzDHfZK4wAXalVCfX3Nvi8RDHg9inpA4kIUgmnuGKDub8admr8LXzl4s/tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DE60E40E02A7;
+	Thu, 18 Apr 2024 14:37:42 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Kvp4ItEFaEkt; Thu, 18 Apr 2024 14:37:37 +0000 (UTC)
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6149940E0187;
+	Thu, 18 Apr 2024 14:37:15 +0000 (UTC)
+Date: Thu, 18 Apr 2024 16:37:09 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
+Subject: Re: [PATCHv10 03/18] cpu/hotplug: Add support for declaring CPU
+ offlining not supported
+Message-ID: <20240418143709.GJZiEwFejGQY3jiwsp@fat_crate.local>
+References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
+ <20240409113010.465412-4-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/43] arm64: RME: Add SMC definitions for calling the
- RMM
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240412084056.1733704-1-steven.price@arm.com>
- <20240412084309.1733783-1-steven.price@arm.com>
- <20240412084309.1733783-6-steven.price@arm.com>
- <e6ece61d-ceb6-44f3-a17c-c678b4562991@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <e6ece61d-ceb6-44f3-a17c-c678b4562991@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240409113010.465412-4-kirill.shutemov@linux.intel.com>
 
-On 16/04/2024 13:38, Suzuki K Poulose wrote:
-> Hi Steven
-> 
-> On 12/04/2024 09:42, Steven Price wrote:
->> The RMM (Realm Management Monitor) provides functionality that can be
->> accessed by SMC calls from the host.
->>
->> The SMC definitions are based on DEN0137[1] version 1.0-eac5
->>
->> [1] https://developer.arm.com/documentation/den0137/1-0eac5/
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->>   arch/arm64/include/asm/rmi_smc.h | 250 +++++++++++++++++++++++++++++++
->>   1 file changed, 250 insertions(+)
->>   create mode 100644 arch/arm64/include/asm/rmi_smc.h
->>
->> diff --git a/arch/arm64/include/asm/rmi_smc.h
->> b/arch/arm64/include/asm/rmi_smc.h
->> new file mode 100644
->> index 000000000000..c205efdb18d8
->> --- /dev/null
->> +++ b/arch/arm64/include/asm/rmi_smc.h
->> @@ -0,0 +1,250 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +/*
->> + * Copyright (C) 2023 ARM Ltd.
->> + *
->> + * The values and structures in this file are from the Realm
->> Management Monitor
->> + * specification (DEN0137) version A-bet0:
->> + * https://developer.arm.com/documentation/den0137/1-0bet0/
-> 
-> This should now point to eac5 instead.
+On Tue, Apr 09, 2024 at 02:29:55PM +0300, Kirill A. Shutemov wrote:
+> +/* Declare CPU offlining not supported */
+> +void cpu_hotplug_disable_offlining(void)
+> +{
+> +	cpu_maps_update_begin();
 
-Typical - I searched through the commit logs, but forgot I'd put a
-reference in the code too! Thanks for spotting.
+"/*
+ * The following two APIs (cpu_maps_update_begin/done) must be used when
+ * attempting to serialize the updates to cpu_online_mask & cpu_present_mask.
+ */
+void cpu_maps_update_begin(void)
+..."
 
->> + */
->> +
->> +#ifndef __ASM_RME_SMC_H
->> +#define __ASM_RME_SMC_H
->> +
->> +#include <linux/arm-smccc.h>
->> +
->> +#define SMC_RxI_CALL(func)                \
->> +    ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,        \
->> +               ARM_SMCCC_SMC_64,        \
->> +               ARM_SMCCC_OWNER_STANDARD,    \
->> +               (func))
->> +
->> +#define SMC_RMI_DATA_CREATE        SMC_RxI_CALL(0x0153)
->> +#define SMC_RMI_DATA_CREATE_UNKNOWN    SMC_RxI_CALL(0x0154)
->> +#define SMC_RMI_DATA_DESTROY        SMC_RxI_CALL(0x0155)
->> +#define SMC_RMI_FEATURES        SMC_RxI_CALL(0x0165)
->> +#define SMC_RMI_GRANULE_DELEGATE    SMC_RxI_CALL(0x0151)
->> +#define SMC_RMI_GRANULE_UNDELEGATE    SMC_RxI_CALL(0x0152)
->> +#define SMC_RMI_PSCI_COMPLETE        SMC_RxI_CALL(0x0164)
->> +#define SMC_RMI_REALM_ACTIVATE        SMC_RxI_CALL(0x0157)
->> +#define SMC_RMI_REALM_CREATE        SMC_RxI_CALL(0x0158)
->> +#define SMC_RMI_REALM_DESTROY        SMC_RxI_CALL(0x0159)
->> +#define SMC_RMI_REC_AUX_COUNT        SMC_RxI_CALL(0x0167)
->> +#define SMC_RMI_REC_CREATE        SMC_RxI_CALL(0x015a)
->> +#define SMC_RMI_REC_DESTROY        SMC_RxI_CALL(0x015b)
->> +#define SMC_RMI_REC_ENTER        SMC_RxI_CALL(0x015c)
->> +#define SMC_RMI_RTT_CREATE        SMC_RxI_CALL(0x015d)
->> +#define SMC_RMI_RTT_DESTROY        SMC_RxI_CALL(0x015e)
->> +#define SMC_RMI_RTT_FOLD        SMC_RxI_CALL(0x0166)
->> +#define SMC_RMI_RTT_INIT_RIPAS        SMC_RxI_CALL(0x0168)
->> +#define SMC_RMI_RTT_MAP_UNPROTECTED    SMC_RxI_CALL(0x015f)
->> +#define SMC_RMI_RTT_READ_ENTRY        SMC_RxI_CALL(0x0161)
->> +#define SMC_RMI_RTT_SET_RIPAS        SMC_RxI_CALL(0x0169)
->> +#define SMC_RMI_RTT_UNMAP_UNPROTECTED    SMC_RxI_CALL(0x0162)
->> +#define SMC_RMI_VERSION            SMC_RxI_CALL(0x0150)
->> +
->> +#define RMI_ABI_MAJOR_VERSION    1
->> +#define RMI_ABI_MINOR_VERSION    0
->> +
->> +#define RMI_UNASSIGNED            0
->> +#define RMI_ASSIGNED            1
->> +#define RMI_TABLE            2
->> +
->> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
->> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
->> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
->> +
->> +#define RMI_RETURN_STATUS(ret)        ((ret) & 0xFF)
->> +#define RMI_RETURN_INDEX(ret)        (((ret) >> 8) & 0xFF)
->> +
->> +#define RMI_SUCCESS        0
->> +#define RMI_ERROR_INPUT        1
->> +#define RMI_ERROR_REALM        2
->> +#define RMI_ERROR_REC        3
->> +#define RMI_ERROR_RTT        4
->> +
->> +#define RMI_EMPTY        0
->> +#define RMI_RAM            1
->> +#define RMI_DESTROYED        2
->> +
->> +#define RMI_NO_MEASURE_CONTENT    0
->> +#define RMI_MEASURE_CONTENT    1
->> +
->> +#define RMI_FEATURE_REGISTER_0_S2SZ        GENMASK(7, 0)
->> +#define RMI_FEATURE_REGISTER_0_LPA2        BIT(8)
->> +#define RMI_FEATURE_REGISTER_0_SVE_EN        BIT(9)
->> +#define RMI_FEATURE_REGISTER_0_SVE_VL        GENMASK(13, 10)
->> +#define RMI_FEATURE_REGISTER_0_NUM_BPS        GENMASK(17, 14)
->> +#define RMI_FEATURE_REGISTER_0_NUM_WPS        GENMASK(21, 18)
->> +#define RMI_FEATURE_REGISTER_0_PMU_EN        BIT(22)
->> +#define RMI_FEATURE_REGISTER_0_PMU_NUM_CTRS    GENMASK(27, 23)
->> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_256    BIT(28)
->> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_512    BIT(29)
->> +
->> +#define RMI_REALM_PARAM_FLAG_LPA2        BIT(0)
->> +#define RMI_REALM_PARAM_FLAG_SVE        BIT(1)
->> +#define RMI_REALM_PARAM_FLAG_PMU        BIT(2)
->> +
->> +/*
->> + * Note many of these fields are smaller than u64 but all fields have
->> u64
->> + * alignment, so use u64 to ensure correct alignment.
->> + */
->> +struct realm_params {
->> +    union { /* 0x0 */
->> +        struct {
->> +            u64 flags;
->> +            u64 s2sz;
->> +            u64 sve_vl;
->> +            u64 num_bps;
->> +            u64 num_wps;
->> +            u64 pmu_num_ctrs;
->> +            u64 hash_algo;
->> +        };
->> +        u8 padding_1[0x400];
->> +    };
->> +    union { /* 0x400 */
->> +        u8 rpv[64];
->> +        u8 padding_2[0x400];
->> +    };
->> +    union { /* 0x800 */
->> +        struct {
->> +            u64 vmid;
->> +            u64 rtt_base;
->> +            s64 rtt_level_start;
->> +            u64 rtt_num_start;
->> +        };
->> +        u8 padding_3[0x800];
->> +    };
->> +};
->> +
->> +/*
->> + * The number of GPRs (starting from X0) that are
->> + * configured by the host when a REC is created.
->> + */
->> +#define REC_CREATE_NR_GPRS        8
->> +
->> +#define REC_PARAMS_FLAG_RUNNABLE    BIT_ULL(0)
->> +
->> +#define REC_PARAMS_AUX_GRANULES        16
->> +
->> +struct rec_params {
->> +    union { /* 0x0 */
->> +        u64 flags;
->> +        u8 padding1[0x100];
->> +    };
->> +    union { /* 0x100 */
->> +        u64 mpidr;
->> +        u8 padding2[0x100];
->> +    };
->> +    union { /* 0x200 */
->> +        u64 pc;
->> +        u8 padding3[0x100];
->> +    };
->> +    union { /* 0x300 */
->> +        u64 gprs[REC_CREATE_NR_GPRS];
->> +        u8 padding4[0x500];
->> +    };
->> +    union { /* 0x800 */
->> +        struct {
->> +            u64 num_rec_aux;
->> +            u64 aux[REC_PARAMS_AUX_GRANULES];
->> +        };
->> +        u8 padding5[0x800];
->> +    };
->> +};
->> +
->> +#define RMI_EMULATED_MMIO        BIT(0)
->> +#define RMI_INJECT_SEA            BIT(1)
->> +#define RMI_TRAP_WFI            BIT(2)
->> +#define RMI_TRAP_WFE            BIT(3)
-> 
-> For completeness, we could add :
-> 
-> #define RMI_RIPAS_RESPONSE        BIT(4)
-> 
-> Not sure if we use it later in the series.
+> +	cpu_hotplug_offline_disabled = true;
 
-Yes, I'll add for completeness. Currently KVM will never reject a RIPAS
-change request from the guest. I'm not sure in what situation it would
-make sense to do such a thing. The current uABI doesn't allow the VMM to
-have a say in it either as the RIPAS change is completed before the exit
-to the VMM. The expectation is therefore that the VMM would simply
-terminate a Realm guest that attempted a RIPAS change that it disagreed
-with.
+but this doesn't do that here.
 
->> +
->> +#define REC_RUN_GPRS            31
->> +#define REC_GIC_NUM_LRS            16
->> +
->> +struct rec_entry {
+Are we doing a one-off here for that variable or what?
 
-While I'm reading this (and the spec) again - I notice that the spec
-says "RecEnter" not 'entry' - I'll rename this to be consistent.
+> +	cpu_maps_update_done();
 
->> +    union { /* 0x000 */
->> +        u64 flags;
->> +        u8 padding0[0x200];
->> +    };
->> +    union { /* 0x200 */
->> +        u64 gprs[REC_RUN_GPRS];
->> +        u8 padding2[0x100];
->> +    };
->> +    union { /* 0x300 */
->> +        struct {
->> +            u64 gicv3_hcr;
->> +            u64 gicv3_lrs[REC_GIC_NUM_LRS];
->> +        };
->> +        u8 padding3[0x100];
->> +    };
->> +    u8 padding4[0x400];
->> +};
->> +
->> +struct rec_exit {
->> +    union { /* 0x000 */
->> +        u8 exit_reason;
->> +        u8 padding0[0x100];
->> +    };
->> +    union { /* 0x100 */
->> +        struct {
->> +            u64 esr;
->> +            u64 far;
->> +            u64 hpfar;
->> +        };
->> +        u8 padding1[0x100];
->> +    };
->> +    union { /* 0x200 */
->> +        u64 gprs[REC_RUN_GPRS];
->> +        u8 padding2[0x100];
->> +    };
->> +    union { /* 0x300 */
->> +        struct {
->> +            u64 gicv3_hcr;
->> +            u64 gicv3_lrs[REC_GIC_NUM_LRS];
->> +            u64 gicv3_misr;
->> +            u64 gicv3_vmcr;
->> +        };
->> +        u8 padding3[0x100];
->> +    };
->> +    union { /* 0x400 */
->> +        struct {
->> +            u64 cntp_ctl;
->> +            u64 cntp_cval;
->> +            u64 cntv_ctl;
->> +            u64 cntv_cval;
->> +        };
->> +        u8 padding4[0x100];
->> +    };
->> +    union { /* 0x500 */
->> +        struct {
->> +            u64 ripas_base;
->> +            u64 ripas_top;
->> +            u64 ripas_value;
->> +        };
->> +        u8 padding5[0x100];
->> +    };
->> +    union { /* 0x600 */
->> +        u16 imm;
->> +        u8 padding6[0x100];
->> +    };
->> +    union { /* 0x700 */
->> +        struct {
->> +            u64 pmu_ovf_status;
-> 
-> This is u8 as per section B4.4.10 RmiPmuOverflowStatus type.
+-- 
+Regards/Gruss,
+    Boris.
 
-Indeed - I'm not sure where I got u64 from - it was probably to provide
-padding in an older version of the spec.
-
->> +        };
->> +        u8 padding7[0x100];
->> +    };
->> +};
->> +
->> +struct rec_run {
->> +    struct rec_entry entry;
->> +    struct rec_exit exit;
->> +};
->> +
->> +#define RMI_EXIT_SYNC            0x00
->> +#define RMI_EXIT_IRQ            0x01
->> +#define RMI_EXIT_FIQ            0x02
->> +#define RMI_EXIT_PSCI            0x03
->> +#define RMI_EXIT_RIPAS_CHANGE        0x04
->> +#define RMI_EXIT_HOST_CALL        0x05
->> +#define RMI_EXIT_SERROR            0x06
-> 
-> Minor nit: Like the other definitions, it may be good to keep the
-> defintions of the "exit_reason" above the field declaration.
-
-Yes, makes sense - I'll move these.
-
-Thanks for the review!
-
-Steve
-
-> 
-> Rest looks fine to me.
-> 
-> Suzuki
->> +
->> +#endif
-> 
-
+https://people.kernel.org/tglx/notes-about-netiquette
