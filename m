@@ -1,162 +1,333 @@
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2055.outbound.protection.outlook.com [40.107.102.55])
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2043.outbound.protection.outlook.com [40.107.101.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76ACB17335B
-	for <linux-coco@lists.linux.dev>; Thu, 18 Apr 2024 20:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E006F194C7C
+	for <linux-coco@lists.linux.dev>; Thu, 18 Apr 2024 21:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713470602; cv=fail; b=PI4RWYeKZaddARDXNZ10XDOb71kfcY4Mp3eiCzwRL5V4eAgFqjv1UXb8BC8ZK5GVghGqP1Knpu/xzI4M9HgrcvSElfRYS6Wl9LxdUkaV+7cNE617xqForNEBtTD6UpOrJNwXPHb7WWXTUiH51+0NzPOW05fytpCAbp13zeW5dec=
+	t=1713475066; cv=fail; b=tYyMb6q9eGP+nOToW4QNlUr3+R5RM894lHaoN9ZvLhzH+vM5ECXVT9uetNutJ/Qp9fnP0q8VIpzfpvGJuQyysCzeBvQ4PiU/VzC6N5Uw7nll6W9+N0xpN3HetEOhIfCDCEYix1/obzLGwlRBdsb0+UEWwvdWhHDBN50WK6ZTA1k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713470602; c=relaxed/simple;
-	bh=052H+aW9suF3VfJSnAm85r92IAzTRYyjmGREvPhhEJM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nUTlOffoZLihrAwG6Fu0S59iiDEjzKeKwJkvLUQ2R/bJ/E/3U6xJ1YZIU3DISAR76ZoOGa1Bfu+8IcJi7yBQJ1sOb8b1yV47esvzn1rOXZfwKGxN+FelDsmFU13ykRjGlzSKfboF2oEyl3hzrbjnxuIwHM125BJrgDFAdo0hDU0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gdHx1lqI; arc=fail smtp.client-ip=40.107.102.55
+	s=arc-20240116; t=1713475066; c=relaxed/simple;
+	bh=8SytdTa5kiMcZ8H0cMcfSzRAGQxf2o9rO0dGccIpLKg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=BJkLzy7pZrkGuVkQvWWG+pf8PvdDfZ7dMGlfmf/Ndb8/+hNG9eGFMgXNxbD3Z+zlPJqHMqgu+h+1g03t2fet9xeO8GLAfddxahLxVdA2yGC185RDFrUCmArbt7F7FOUbcfpVAvWseW0jHhI/T7ggfhPaHNFqGicQczghTXFB+NQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=pqsoOZMl; arc=fail smtp.client-ip=40.107.101.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gdHx1lqI"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="pqsoOZMl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AGhP7uiwuD8meaSLEgq6eNWYi5WcHZWypPagBUFVSB6RoU4F8MDVMjU/LqaBcTkfsyhjGIZ/U9Yb2ph9tpIH1ooYxXbS4XEq0Om1QvXpoW3+NRxW3klq2fHpzJzhxx8OJGY0p4TeFAQdGfBz9sutQ2KoZPB9T/DUS12t8qOvp5vNXwqTSO+m5JlCfHAP/UcT9TD2KDNqQckfPBhFL7vMR9+PhDTAIjz4/278HnfCNybIcN3tQo7VZVkS5eu4vGryX1HjPQ9tU/f+4bRWmJ4scOTRXQQWvd1dTzz0rOo31ZRE+QkLx4QmmmUDaH5VU5DSJsJg4ZTakG/5R44EoGzSOw==
+ b=ajcAPMcfLrbETAKID42AmpThW2FUsjqEDEOcn2X2Dg3WPEp886WPyICKVkcg+RL/qFQtr07tWDSyTnwHGKiuTmndioujpJEAjIKVb9NepWmymSVbrmic7gIGFY0V+NN3pi3FKULLhxbc/dZeSBwRl5qpLK30P8tTYnPPnPFjTuoXvLEbOCPyN3FMSEeJhm8hx6cRnLS9p8ZM2dnm2FuQwKqaw/pw7N2Rx8eGRFdsKnydo4v9DLwdPJ/kzJWxp/uyHJjet066O8A6ykhmV0ZpTUL2NEyMz0id1jStpk48YDtEmXU1IozndihZEY3kaxvFBvhX8JZmivDw6+ZFmr7Zyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mWUZwqBM7GZGVd9g4qAU12o35H4l74rP3aHiyiVwwp0=;
- b=Qblz3eH4nNts/lZFkkD2NsrPGjD6zbYXMfHW63tVzAK1S4Kh5APnXj5YLfA2mxSpFbrQmC6IRtiBV6+DxJvnhBFF58/Wr0YFzRWVEKnfgxkvL+wjJ2WLJU0z+NahOYQLEm9IddyO4Y+EFIfe7OhxOYc7oPaTxQypr+cysdQCghrC0feEmCTEH0g7SshmOpoEf9cdyluh6x5DR5FMjE//mrCVsAygkeVP+ERqIjk+8rgV7nxvUjekbt0qKHZN512arkYPlOt6jsxiDoDLqITkaeUKiB9Ah5rEXoeC3gxj8dzvL6x4GnsKgKFcI88GfhNfZRbVnL7eS7q0l4kNE0Tt5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
+ bh=hKWDpv9Kpf43XfKqVuz7a6XFWdGXYlTu4VBAt8MxXzE=;
+ b=Yu1R/pNvIQAbJ0yS6yBfg6Nk9J81JhQx5beLhZunyNTm3m7ts7Eu/orKNH4lUiEsBLN8HyxYDTQ5mo/yQGvO2lKWS2Wr5Vl1z6nbUEjiWmEsS/zLexPlqFnz02Svuz9lpfw4T/bxoTfh/iCxvhvMI1qv/DJ8PDS7ulIC0/pdBjJdIk0hHCau3S0uNcAqb2unkVgLvlALwUFnUuF5zAKUih93//tO8QTtzMI9foDHTjPAWZOuPexqzpo6W0v9Qqm77UNJtRtHCoNowlgMsEs4r8D4cYRRjutO8aUGCo4A3JKgwiaaq98KPvmgG3HPxjSLQr1TRdpmN0NfgIgHIt4PVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mWUZwqBM7GZGVd9g4qAU12o35H4l74rP3aHiyiVwwp0=;
- b=gdHx1lqIxigYH474PYgDlI2vDqyZ4z+EKe7BFPoKPEKX5X2nrr1bvqNNKXE74hH/uJjeWkeFgoTpxDrjrvMrWiEI7F/kK7/uC7DvCKkS0P0JSAUyb27a0XMCS21mMqnDeCMy0KBuPj3JXOE8XsrTa56QqlmYFi+gPIxZcfEj9Es=
-Received: from MN2PR18CA0001.namprd18.prod.outlook.com (2603:10b6:208:23c::6)
- by DM4PR12MB8521.namprd12.prod.outlook.com (2603:10b6:8:17e::6) with
+ bh=hKWDpv9Kpf43XfKqVuz7a6XFWdGXYlTu4VBAt8MxXzE=;
+ b=pqsoOZMlHZFZBxVtetlwY5/qvtaCtwA1gh2yCa3O9q0mYwrZ89JIGDWEA04e7Hm6sa+HbsO+JuWFZccLg3zYgqH+82g1Iz3KWK4HwtIB6h0GJ0mDWKOmdiDDM6AyIxGUWCNDY9sNxeAcl0plt5BPbhnQVuz77+P+grcCvz6hDHU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
+ by IA1PR12MB6212.namprd12.prod.outlook.com (2603:10b6:208:3e4::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Thu, 18 Apr
- 2024 20:03:15 +0000
-Received: from MN1PEPF0000ECDB.namprd02.prod.outlook.com
- (2603:10b6:208:23c:cafe::19) by MN2PR18CA0001.outlook.office365.com
- (2603:10b6:208:23c::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7495.26 via Frontend
- Transport; Thu, 18 Apr 2024 20:03:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MN1PEPF0000ECDB.mail.protection.outlook.com (10.167.242.139) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7452.22 via Frontend Transport; Thu, 18 Apr 2024 20:03:15 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 18 Apr
- 2024 15:03:14 -0500
-Date: Thu, 18 Apr 2024 14:57:54 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
-	<ardb@kernel.org>, <seanjc@google.com>, <vkuznets@redhat.com>,
-	<jmattson@google.com>, <luto@kernel.org>, <dave.hansen@linux.intel.com>,
-	<slp@redhat.com>, <pgonda@google.com>, <peterz@infradead.org>,
-	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
-	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
-	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
-	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
-	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>
-Subject: Re: [PATCH v12 22/29] KVM: SEV: Implement gmem hook for invalidating
- private pages
-Message-ID: <20240418195754.h6gl5qd62kas7crx@amd.com>
-References: <20240329225835.400662-1-michael.roth@amd.com>
- <20240329225835.400662-23-michael.roth@amd.com>
- <f1e5aef5-989c-4f07-82af-9ed54cc192be@redhat.com>
+ 2024 21:17:41 +0000
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::bf0:d462:345b:dc52]) by BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::bf0:d462:345b:dc52%6]) with mapi id 15.20.7452.049; Thu, 18 Apr 2024
+ 21:17:39 +0000
+Message-ID: <d525f2ef-d8f0-a694-401f-8cb964dcdaed@amd.com>
+Date: Thu, 18 Apr 2024 16:17:36 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v3 03/14] x86/sev: Check for the presence of an SVSM in
+ the SNP Secrets page
+Content-Language: en-US
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
+ svsm-devel@coconut-svsm.dev, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Dan Williams <dan.j.williams@intel.com>, Michael Roth
+ <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>
+References: <cover.1711405593.git.thomas.lendacky@amd.com>
+ <e8d4877f3b7248031931ed193c026c42dd3363ef.1711405593.git.thomas.lendacky@amd.com>
+ <20240417204030.GIZiAzvuLG6qcFFMyT@fat_crate.local>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <20240417204030.GIZiAzvuLG6qcFFMyT@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DM5PR08CA0052.namprd08.prod.outlook.com
+ (2603:10b6:4:60::41) To BL1PR12MB5732.namprd12.prod.outlook.com
+ (2603:10b6:208:387::17)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <f1e5aef5-989c-4f07-82af-9ed54cc192be@redhat.com>
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECDB:EE_|DM4PR12MB8521:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4012ab85-c981-4eab-f4e6-08dc5fe295a2
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|IA1PR12MB6212:EE_
+X-MS-Office365-Filtering-Correlation-Id: fed6356a-9660-46da-3b39-08dc5fecfa0b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	YzpMOCb/tgZpKgq6eE8r5BNSDeWJt2o4Yg9Smzth5/FJTwpiH9MUp6rj2xRIpTur8IaHEL2t8TNyNtzefBdWy2GEiHzQrrRn4Ealkm2QYHQZaLwn75B1UmfArVMkQPSe2JwgUmYf5+DefztPZcBJy9i9kWRfZad+oKrN4IxwwrX0Q/6rmEwtVMBr58tx6lJrVX9qVXcXWifnfG4mD5obuq9/UpA3kvecnVVp6nPkVSnDGqeqeM1R0FlVj4Mw/JpNdVVy9cqp2mwn59jGGrhIGcAIkStv+4Z7qxXVIxUz0PqcEOnpAO5hSQUA5SgBlDPNNqEly5phg21cyF7JCP+VFoQ+8sgAIKm60VGDXi7tfxUBbrPmdM/VrZYSwaHftz9FuhcQiNEEWb48XpSU4wmU++xVIOGVxDLRm2ZBNrSuw9U0qbZlPo1iljG2IK78NasMFznlpoMI1uE8GqDxpO9mzi5iHWtuDCdP/gGC6r2BAxbmm/wjwBNz3jTHgHhMNHzF90Tln9RnatyEwVCev+X0bA+ZXTViPS1FdY1hLS6X8amjSs4SJ5J41WQA6D4EpeF+9tUKYfYkOsz/ICI+8dEjFVqsgRqHZQSqQwv91E6O3ZOqa47pQzMnp5790v1mHdPj3SIyq7Gso/nE30kX6UPNFvACqv2lsGxNh8Q9JtULXFkrmSg1g4QHqYgX2TBRW7DFMQSj/oGcM1aY9QLJGK97fg==
+	lGZjiuGhAyCdMTVDE7/280m0Loiu2AUFQ/pFLd4TM83XjE5s79HkeB5hrSJ/otyf4s6ZA1Zqc3vpCpitC4e43anJ+hiz/voNgDBBMsLykKMTYXjDnUzz23fkmy7F6GYMOpVFazdCm+tynLJHgDG7TB30hKdmII+tGuDKDfgKJOUL0l2mg51BXROJfBUkqVMxUmLSq2GcBGgjJCo5l5E9k7MR2l5rer8COnSIGH2g9PMgtf4P/jn95FeVXqSKZJmSDMYCEelyDyQSJDsxWrvkkLgb4cspJ434bHdVkvkc3an9aYy6WEuxGnrgxmfsCbvRv3oqJGSljHbFhO64ZKnZU5E1NqQ2kiFC8cpNtJp35Znl8nvBqRSB+Rz2qG1SK857TcERyYDq/NBsmjQAL6Q3kq4SGLI3QohYs13/K6iOBKpxxVySuAmTOBhGnkuD8aI9d8EGjHpcGC7w7WxHAlxa6b0O9MZ6FOnXtFxoncWEsffgM8jm6hs9mTX6V2qdOFuA1rGvpmj5gZsmpSj/AGStPRF0QBjJ8qwdBwnROzb8C8Uvqak5t6kWrriIJog8Clfsu+SmZKR6c1vuUjGKYpMY3JMuumZDgoCDmw/9HZ8YkbM=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(1800799015)(82310400014)(376005)(7416005)(36860700004);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(7416005)(1800799015);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZVowSElzbDhTd2R1Z0xpZitTcW4zMEIxT2lYOFhTYkt3REQzbmVoVEtNSDI1?=
+ =?utf-8?B?MVVRYTY0S3YzZkUyWDFGTzkwVittdlV6L2g5VG4xQm1iRVEwdlc3VlZlMHJl?=
+ =?utf-8?B?N004aHpGOTlKQWxKMVVvWjRqMHk4c3VaUjBRSWtHR1NSMGVxOW1HaytVQUdj?=
+ =?utf-8?B?TXNIbnVVcTZFR3o5VU5WT0E2dndsaXhUM29pZ2YvUmFuaEpRU1ViVkdPTkdQ?=
+ =?utf-8?B?UU5QUmdPdHhXZnFKaTBzK3BySzUzb0Y0emUyM0sxQkNydXZJM1diR29RR29M?=
+ =?utf-8?B?dktzSXdOTUROLzlSaFRCVjBRL0NMbXprandaYWVrTjF2Sk1oMDFyc2VNbk8z?=
+ =?utf-8?B?YWIxaGpnM1VxbEQwcmV4TWdGcjdSV3VnVVM5RXB1Tms2K2plMzNKNWcxVmdT?=
+ =?utf-8?B?ZjVoU0pHOG5NSDcyUTVBYVJ2d2Z2a1I0cEgvRTh3bU0zUU9UTVFrekVHZ0Ri?=
+ =?utf-8?B?Z0s1QnFCNjZESG51ZzJodHArSnF4Y0h1YVlhM3paVjZBR2h6d1NBL3dOc09x?=
+ =?utf-8?B?WVlESTRSWnN2YXN3eFlRQ1piQS9RcENDYWc2bXZ2R05QY3hieHplTVJDR3V0?=
+ =?utf-8?B?SVNtS0Q2d3FXSUs0MEdXR1V0TTdndnVRQkp5SjJKRzJIVmNPS1BuVHVQeGc2?=
+ =?utf-8?B?bWY1TVdhOW51OUVpL1gvU0M0YzVXaWMvTHpuMUl1SlZJZmxVaUUrQldLMGp3?=
+ =?utf-8?B?MmVmU0FaUERUSGFHclV4d0QwaUV6QUgyck1GL2paVnhFcEtkb2NPVTBDU0U4?=
+ =?utf-8?B?MVI0bzB1UGk2SEszTHNVdThTMzZNazV3dkkxQjZoakFhWnhubEcrbVRMQmpN?=
+ =?utf-8?B?R1pWdHJDTXpYYVo4dGlUMk1YVnc0RDdyaGNLZXowQzVCSWVPMDdwNlM1TG4y?=
+ =?utf-8?B?czFMKzUyYmVVZDNSeHp2VTZQTnNkRGFubEZObHhBdVFZQnp2U3VHM0tjZHVE?=
+ =?utf-8?B?QWxBeVl3OE1pdDFZUjhjN1kxYUkzSnRiT2VrcU5lb3ZRU1FscDEzOTIzRHRq?=
+ =?utf-8?B?aTlrWXY2SEJUVEZsalN2NDVTQ0MxUG1uOUp2WmRzU3phY0x0cGVuWWhBUG9p?=
+ =?utf-8?B?UGIzZ0EyRlYwK0NMcEZGaHpJcU04dE1aakcxWFBwWThhcFRqdmIvZVA3OWpn?=
+ =?utf-8?B?UEY1ZWNiUTg0MlRlN09SVXlJRjlLQ1lPbC9wMkhaZEJVTGl1ZktuU1VCTjYz?=
+ =?utf-8?B?NzZjcWNvT09vd0RlQUlBaGlJOHZjR3JiZWxlVzZhOHpkbWwzUWQwNmxWUURL?=
+ =?utf-8?B?T3Jkb3c1L2ZzZm1aTCtpbWVrbFZqOW1zd2FkL0ZvUTlHNkI1aHZXWU5ROXhC?=
+ =?utf-8?B?T09PNjNKTlR0VW9uSXdHRXYwQjAzVExjMExySlBUeFI4K2RmNjBlYklmKzRj?=
+ =?utf-8?B?U0hLVi9sV2x4T1AzVGJRazhNcURaR0RDWEh1M0M1c0s2cFlEZStzaUFIc3ZI?=
+ =?utf-8?B?aUNVZXd0R056T1Vsa0xFaG01TEt2akpKN2VCU3Fsa1p4eWZTbEpuRVgxZ3lu?=
+ =?utf-8?B?MDBpbFZuWXZDc081THhCQitZR2c4K2F1TXVKWEgzZEVFMnNjTndraVVYcENs?=
+ =?utf-8?B?OERMaFRjOVBSTml4dy9MVXVJK1ZRc0ZiZTdTTWJIRkhRZE1NZm14Z2VDTDBS?=
+ =?utf-8?B?aWduTkE1Ylo5aUhWaGxNSmZzNStGZnZURHlNVDBmU2l3dytHRXJvZHdVZVdl?=
+ =?utf-8?B?dkw3Z3RlS3IwUGFHTTlpR0ZWeDR6Z3lwM3dickgrTkJ3LzJGTnpFVEJmUmkx?=
+ =?utf-8?B?Um04b2dYdjNUWXJyazdKMkNIekwyMG90Rzd0cUFlbEV6ZU03VTdBRDhEeGpO?=
+ =?utf-8?B?a3BpckdkT3F5NXQ2SzlzSWJJSHQ3ZUo2T29RSXlrMXUwTis3K1JHb1pBNzg5?=
+ =?utf-8?B?N2oydVI0MUp1ejBYZlNrUGlTaFhOeDZuaUJNODY2MmRDbEtpWWF1cm5IdU9t?=
+ =?utf-8?B?VDVXbThzTExmQlhsZjVjRG04QURheWJERjR6SnJBR0hsQTBBSk8zK2JaNTB5?=
+ =?utf-8?B?VTBZTkJJRjhDd1F2N0RtR1lhYXlzYTdmazJGZlNEeTJuV0tWdnIzTnVSSjJH?=
+ =?utf-8?B?T0NxTlVYR2ZXSDUrZnpBU2RJLzZjaU1hbm02QkVQaElmNU8wcWV1dU5PdnlO?=
+ =?utf-8?Q?Lh+n0z6womOF0gHuZfrOQpy/c?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 20:03:15.5937
+X-MS-Exchange-CrossTenant-Network-Message-Id: fed6356a-9660-46da-3b39-08dc5fecfa0b
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 21:17:39.2782
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4012ab85-c981-4eab-f4e6-08dc5fe295a2
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000ECDB.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8521
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qB/Kgwvyrk7cVaOd1q8vtVYpSQy0x/jgtASZUTDx+FOPiDkpF/KleJF9VeqR6N7LVB6E0GekWrnSESWcRyPQDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6212
 
-On Sat, Mar 30, 2024 at 10:31:47PM +0100, Paolo Bonzini wrote:
-> On 3/29/24 23:58, Michael Roth wrote:
-> > +		/*
-> > +		 * If an unaligned PFN corresponds to a 2M region assigned as a
-> > +		 * large page in he RMP table, PSMASH the region into individual
-> > +		 * 4K RMP entries before attempting to convert a 4K sub-page.
-> > +		 */
-> > +		if (!use_2m_update && rmp_level > PG_LEVEL_4K) {
-> > +			rc = snp_rmptable_psmash(pfn);
-> > +			if (rc)
-> > +				pr_err_ratelimited("SEV: Failed to PSMASH RMP entry for PFN 0x%llx error %d\n",
-> > +						   pfn, rc);
-> > +		}
+On 4/17/24 15:40, Borislav Petkov wrote:
+> On Mon, Mar 25, 2024 at 05:26:22PM -0500, Tom Lendacky wrote:
+>> During early boot phases, check for the presence of an SVSM when running
+>> as an SEV-SNP guest.
+>>
+>> An SVSM is present if the 64-bit value at offset 0x148 into the secrets
+>> page is non-zero. If an SVSM is present, save the SVSM Calling Area
+>> address (CAA), located at offset 0x150 into the secrets page, and set
+>> the VMPL level of the guest, which should be non-zero, to indicate the
+>> presence of an SVSM.
 > 
-> Ignoring the PSMASH failure is pretty scary...  At this point .free_folio
-> cannot fail, should the psmash part of this patch be done in
-> kvm_gmem_invalidate_begin() before kvm_mmu_unmap_gfn_range()?
+> Where are we pointing to the SVSM spec?
 > 
-> Also, can you get PSMASH_FAIL_INUSE and if so what's the best way to address
-> it?  Should fallocate() return -EBUSY?
+> This is in the 0th message
+> 
+> https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58019.pdf
+> 
+> but pls add it to our documentation here:
+> 
+> Documentation/arch/x86/amd-memory-encryption.rst
 
-FAIL_INUSE shouldn't occur since at this point the pages have been unmapped
-from NPT and only the task doing the cleanup should be attempting to
-access/PSMASH this particular 2M HPA range at this point.
-
-However, since FAIL_INUSE is transient, there isn't a good reason why we
-shouldn't retry until it clears itself up rather than risk hosing the
-system if some unexpected case ever did pop up, so I've updated
-snp_rmptable_psmash() to handle that case automatically and simplify the
-handling in sev_handle_rmp_fault() as well. (in the case of #NPF RMP
-faults there is actually potential for PSMASH errors other than
-FAIL_INUSE due to races with other vCPU threads which can interleave and
-put the RMP entry in an unexpected state, so there's additional
-handling/reporting to deal with those cases, but here they are not expected
-and will trigger WARN_*ONCE()'s now)
-
-I used this hacked up version of Sean's original patch to re-enable 2MB
-hugepage support in gmem for the purposes of re-testing this:
-
-  https://github.com/mdroth/linux/commit/15aa4f81811485997953130fc184e829ba4399d2
-
--Mike
+Do you want it added as a in this patch or in a documentation patch at the 
+end of the series?
 
 > 
-> Thanks,
+>> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+>> ---
+>>   arch/x86/boot/compressed/sev.c    | 35 ++++++++---------
+>>   arch/x86/include/asm/sev-common.h |  4 ++
+>>   arch/x86/include/asm/sev.h        | 25 +++++++++++-
+>>   arch/x86/kernel/sev-shared.c      | 64 +++++++++++++++++++++++++++++++
+>>   arch/x86/kernel/sev.c             | 16 ++++++++
+>>   5 files changed, 125 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+>> index 49dc9661176d..fe61ff630c7e 100644
+>> --- a/arch/x86/boot/compressed/sev.c
+>> +++ b/arch/x86/boot/compressed/sev.c
+>> @@ -12,6 +12,7 @@
+>>    */
+>>   #include "misc.h"
+>>   
+>> +#include <linux/mm.h>
+>>   #include <asm/bootparam.h>
+>>   #include <asm/pgtable_types.h>
+>>   #include <asm/sev.h>
+>> @@ -29,6 +30,15 @@
+>>   static struct ghcb boot_ghcb_page __aligned(PAGE_SIZE);
+>>   struct ghcb *boot_ghcb;
+>>   
+>> +/*
+>> + * SVSM related information:
+>> + *   When running under an SVSM, the VMPL that Linux is executing at must be
+>> + *   non-zero. The VMPL is therefore used to indicate the presence of an SVSM.
+>> + */
+>> +static u8 vmpl __section(".data");
+>> +static u64 boot_svsm_caa_pa __section(".data");
+>> +static struct svsm_ca *boot_svsm_caa __section(".data");
 > 
-> Paolo
+> Explain what those last 2 are in comments above it pls.
+
+Will do.
+
 > 
+>>   /*
+>>    * SNP_FEATURES_IMPL_REQ is the mask of SNP features that will need
+>>    * guest side implementation for proper functioning of the guest. If any
+>> @@ -480,6 +472,13 @@ static bool early_snp_init(struct boot_params *bp)
+>>   	 */
+>>   	setup_cpuid_table(cc_info);
+>>   
+>> +	/*
+>> +	 * Record the SVSM Calling Area address (CAA) if the guest is not
+> 
+> 			Calling Area (CA) address
+> 
+>> +	 * running at VMPL0. The CA will be used to communicate with the
+> 
+> and then you can use "CA" here.
+
+Will do.
+
+> 
+>> +	 * SVSM to perform the SVSM services.
+>> +	 */
+>> +	setup_svsm_ca(cc_info);
+>> +
+>>   	/*
+>>   	 * Pass run-time kernel a pointer to CC info via boot_params so EFI
+>>   	 * config table doesn't need to be searched again during early startup
+>> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+>> index b463fcbd4b90..68a8cdf6fd6a 100644
+>> --- a/arch/x86/include/asm/sev-common.h
+>> +++ b/arch/x86/include/asm/sev-common.h
+>> @@ -159,6 +159,10 @@ struct snp_psc_desc {
+>>   #define GHCB_TERM_NOT_VMPL0		3	/* SNP guest is not running at VMPL-0 */
+>>   #define GHCB_TERM_CPUID			4	/* CPUID-validation failure */
+>>   #define GHCB_TERM_CPUID_HV		5	/* CPUID failure during hypervisor fallback */
+>> +#define GHCB_TERM_SECRETS_PAGE		6	/* Secrets page failure */
+>> +#define GHCB_TERM_NO_SVSM		7	/* SVSM is not advertised in the secrets page */
+>> +#define GHCB_TERM_SVSM_VMPL0		8	/* SVSM is present but has set VMPL to 0 */
+>> +#define GHCB_TERM_SVSM_CAA		9	/* SVSM is present but the CA is not page aligned */
+> 
+> "CAA" in the comment I guess. :)
+
+Will do.
+
+> 
+>> +/*
+>> + * Maintain the GPA of the SVSM Calling Area (CA) in order to utilize the SVSM
+>> + * services needed when not running in VMPL0.
+>> + */
+>> +static void __head setup_svsm_ca(const struct cc_blob_sev_info *cc_info)
+>> +{
+>> +	struct snp_secrets_page_layout *secrets_page;
+> 
+> Why was that thing ever called "_layout" and not simply
+> snp_secrets_page?
+> 
+> Fix it?
+
+Sure, I can change that as a pre-patch to the series.
+
+> 
+>> +	u64 caa;
+>> +
+>> +	BUILD_BUG_ON(sizeof(*secrets_page) != PAGE_SIZE);
+> 
+> Put it in the header under the struct definition I guess.
+
+It can't stand on it's own in the header file. I'd have to put it in a 
+#define or an inline function and then use that in some code. So it's 
+probably best to keep it here.
+
+> 
+>> +	/*
+>> +	 * Use __pa() since this routine is running identity mapped when
+>> +	 * called, both by the decompressor code and the early kernel code.
+>> +	 */
+>> +	if (running_at_vmpl0((void *)__pa(&boot_ghcb_page)))
+>> +		return;
+>> +
+>> +	/*
+>> +	 * Not running at VMPL0, ensure everything has been properly supplied
+>> +	 * for running under an SVSM.
+>> +	 */
+>> +	if (!cc_info || !cc_info->secrets_phys || cc_info->secrets_len != PAGE_SIZE)
+>> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SECRETS_PAGE);
+>> +
+>> +	secrets_page = (struct snp_secrets_page_layout *)cc_info->secrets_phys;
+>> +	if (!secrets_page->svsm_size)
+>> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NO_SVSM);
+>> +
+>> +	if (!secrets_page->svsm_guest_vmpl)
+>> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SVSM_VMPL0);
+>> +
+>> +	vmpl = secrets_page->svsm_guest_vmpl;
+>> +
+>> +	caa = secrets_page->svsm_caa;
+>> +	if (!PAGE_ALIGNED(caa))
+>> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SVSM_CAA);
+>> +
+>> +	/*
+>> +	 * The CA is identity mapped when this routine is called, both by the
+>> +	 * decompressor code and the early kernel code.
+>> +	 */
+>> +	boot_svsm_caa = (struct svsm_ca *)caa;
+>> +	boot_svsm_caa_pa = caa;
+>> +}
+>> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+>> index b59b09c2f284..64799a04feb4 100644
+>> --- a/arch/x86/kernel/sev.c
+>> +++ b/arch/x86/kernel/sev.c
+>> @@ -135,6 +135,15 @@ struct ghcb_state {
+>>   static DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
+>>   static DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
+>>   
+>> +/*
+>> + * SVSM related information:
+>> + *   When running under an SVSM, the VMPL that Linux is executing at must be
+>> + *   non-zero. The VMPL is therefore used to indicate the presence of an SVSM.
+>> + */
+>> +static u8 vmpl __ro_after_init;
+>> +static struct svsm_ca *boot_svsm_caa __ro_after_init;
+>> +static u64 boot_svsm_caa_pa __ro_after_init;
+> 
+> Uff, duplication.
+> 
+> Let's put them in sev-shared.c pls and avoid that.
+
+Ok, but it will require moving some functions after the inclusion of 
+sev-shared.c and then (later) adding some advance function declarations.
+
+Thanks,
+Tom
+
+> 
+> Thx.
 > 
