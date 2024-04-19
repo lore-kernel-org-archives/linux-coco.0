@@ -1,342 +1,382 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB8141C66;
-	Fri, 19 Apr 2024 13:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E3B8624B
+	for <linux-coco@lists.linux.dev>; Fri, 19 Apr 2024 13:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713532659; cv=none; b=bsq/zqhhDzSNcTNhSnS1ua0qY1PcR2We7TnhiSLF6WH0WdAL9cG6JQUfI6bHqrmSoN8CsfJ+dwNtsx4POWNrUp52BVr4RfIxVIca9eEpPJHDW7IVMu21DZjtrA73biWIh7xarbs2FTApAdl0mMy6LBSh47opM6NMbVzw1ALo4mg=
+	t=1713533314; cv=none; b=S5y86SfkBTqAd0YE4YZUxSEbkIVeSKn08KwLbqTfO/ywNnD1Ii8kepeKHDBh5Fw4GXiSzxpKaIf1wetxQvoSMe+C/sVuBkrqQ9LD2Zk1nMf40oHpAz8IKndlEr1HTyC/2OGwEjHa+TpuZ6Cmsi4HjyLxnQElrF6I5U82cnbG0Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713532659; c=relaxed/simple;
-	bh=KNEnmnjXcdjG/45CnWUWM7KCLSgLT4ZKgUXAsuvu8Zc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=szuHNoBaP27NaECchuzFawRjq2Df+LzYaMY6FXTTJcEwmex5UPYNayu8EkvYrPcpv+1CXTS7Me+/wTSH6irNikFgX1XQ3+iUjC3xF1v2fnaZyWvKYSevr/XKIpuXySFCitLaEWXncXAf6eAW6Z2nIY7IFJS8Q/uXSQoc7UsZqhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 23FF12F;
-	Fri, 19 Apr 2024 06:18:05 -0700 (PDT)
-Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 410FF3F64C;
-	Fri, 19 Apr 2024 06:17:34 -0700 (PDT)
-Message-ID: <9b37b844-d3b1-4b9f-b37e-36b0c347206e@arm.com>
-Date: Fri, 19 Apr 2024 14:17:32 +0100
+	s=arc-20240116; t=1713533314; c=relaxed/simple;
+	bh=/RG5qBxdULyRKxsA28Wpo5X45cb7aAWaUcDEA+9wmsM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ac+gElkDCMrNRQ/8zMl9lts1BfWfWf7P076/YvMWIakNVvGvPDAfzIYX9KwI+Hh4toWYG1zzdI7UkqBajUzRZBGoTj3rmnCqNYweiwQbwhY89o2PPrYlcmNHIBPUdINhkQ+s02AYHdkefAEISq2mNAn2lvi+4tZEkjDN3CBGTRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q7GFCHWK; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q7GFCHWK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713533312; x=1745069312;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/RG5qBxdULyRKxsA28Wpo5X45cb7aAWaUcDEA+9wmsM=;
+  b=Q7GFCHWKOZtvtkO45qNiQd8MptzwfNjFXDzEuJkPE8MzHfTVyDyOgswt
+   iVKlq7FZiumr97KpOuY9EcHGiWg2946MqUIxNcW6AQ7NIMEkLBxfxxxgc
+   hwGiBYtB/tQTujADPhZ5Ur89XgAKRrdNEve/Ie+PGtqPu+tqmeTIkdDgn
+   CwHCxz8bpX3FVqNynWT+MfXGoQaKPK9PufLNQFseHjQUWrh7Yq966upyd
+   1mh+IokdCiGtBJWmGdd80lf++bVJMcR9ldKCFogKCwLKv32CUL0iTQcT5
+   zZpxFGZltGktJpc+bzyhNKkVLkEAs4KDACSBhQWOBN9XqqmlgdUsNZrY8
+   Q==;
+X-CSE-ConnectionGUID: PPa6GYZNQN+xc8Hv8BxFVw==
+X-CSE-MsgGUID: FP2j0vzCR9eKFDsxnHCYgg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11049"; a="34531950"
+X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; 
+   d="scan'208";a="34531950"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2024 06:28:31 -0700
+X-CSE-ConnectionGUID: KtBqwECzQqSH2sV4He1iOg==
+X-CSE-MsgGUID: 7j1cWn0ZS+WMSGDgRdQ80w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; 
+   d="scan'208";a="23949961"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa008.jf.intel.com with ESMTP; 19 Apr 2024 06:28:25 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id B1F50FD; Fri, 19 Apr 2024 16:28:24 +0300 (EEST)
+Date: Fri, 19 Apr 2024 16:28:24 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Tao Liu <ltao@redhat.com>
+Subject: Re: [PATCHv10 01/18] x86/acpi: Extract ACPI MADT wakeup code into a
+ separate file
+Message-ID: <lmlwekkninlquabuganez5v22yopz5beavlmflcuyyeydceicz@k3v6y3iblid6>
+References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
+ <20240409113010.465412-2-kirill.shutemov@linux.intel.com>
+ <20240418160324.GKZiFETI8U1WeaUS7_@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 20/43] arm64: RME: Allow populating initial contents
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240412084056.1733704-1-steven.price@arm.com>
- <20240412084309.1733783-1-steven.price@arm.com>
- <20240412084309.1733783-21-steven.price@arm.com>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20240412084309.1733783-21-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240418160324.GKZiFETI8U1WeaUS7_@fat_crate.local>
 
-On 12/04/2024 09:42, Steven Price wrote:
-> The VMM needs to populate the realm with some data before starting (e.g.
-> a kernel and initrd). This is measured by the RMM and used as part of
-> the attestation later on.
+On Thu, Apr 18, 2024 at 06:03:24PM +0200, Borislav Petkov wrote:
+> On Tue, Apr 09, 2024 at 02:29:53PM +0300, Kirill A. Shutemov wrote:
+> > diff --git a/arch/x86/kernel/acpi/Makefile b/arch/x86/kernel/acpi/Makefile
+> > index fc17b3f136fe..8c7329c88a75 100644
+> > --- a/arch/x86/kernel/acpi/Makefile
+> > +++ b/arch/x86/kernel/acpi/Makefile
+> > @@ -1,11 +1,12 @@
+> >  # SPDX-License-Identifier: GPL-2.0
+> >  
+> > -obj-$(CONFIG_ACPI)		+= boot.o
+> > -obj-$(CONFIG_ACPI_SLEEP)	+= sleep.o wakeup_$(BITS).o
+> > -obj-$(CONFIG_ACPI_APEI)		+= apei.o
+> > -obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc.o
+> > +obj-$(CONFIG_ACPI)			+= boot.o
+> > +obj-$(CONFIG_ACPI_SLEEP)		+= sleep.o wakeup_$(BITS).o
+> > +obj-$(CONFIG_ACPI_APEI)			+= apei.o
+> > +obj-$(CONFIG_ACPI_CPPC_LIB)		+= cppc.o
+> > +obj-$(CONFIG_X86_ACPI_MADT_WAKEUP)	+= madt_wakeup.o
 > 
-> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
->   arch/arm64/kvm/rme.c | 234 +++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 234 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-> index 0a3f823b2446..4aab507f896e 100644
-> --- a/arch/arm64/kvm/rme.c
-> +++ b/arch/arm64/kvm/rme.c
-> @@ -4,6 +4,7 @@
->    */
->   
->   #include <linux/kvm_host.h>
-> +#include <linux/hugetlb.h>
->   
->   #include <asm/kvm_emulate.h>
->   #include <asm/kvm_mmu.h>
-> @@ -547,6 +548,227 @@ void kvm_realm_unmap_range(struct kvm *kvm, unsigned long ipa, u64 size,
->   	realm_fold_rtt_range(realm, ipa, end);
->   }
->   
-> +static int realm_create_protected_data_page(struct realm *realm,
-> +					    unsigned long ipa,
-> +					    struct page *dst_page,
-> +					    struct page *src_page,
-> +					    unsigned long flags)
-> +{
-> +	phys_addr_t dst_phys, src_phys;
-> +	int ret;
-> +
-> +	dst_phys = page_to_phys(dst_page);
-> +	src_phys = page_to_phys(src_page);
-> +
-> +	if (rmi_granule_delegate(dst_phys))
-> +		return -ENXIO;
-> +
-> +	ret = rmi_data_create(virt_to_phys(realm->rd), dst_phys, ipa, src_phys,
-> +			      flags);
-> +
-> +	if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
-> +		/* Create missing RTTs and retry */
-> +		int level = RMI_RETURN_INDEX(ret);
-> +
-> +		ret = realm_create_rtt_levels(realm, ipa, level,
-> +					      RME_RTT_MAX_LEVEL, NULL);
-> +		if (ret)
-> +			goto err;
-> +
-> +		ret = rmi_data_create(virt_to_phys(realm->rd), dst_phys, ipa,
-> +				      src_phys, flags);
-> +	}
-> +
-> +	if (ret)
-> +		goto err;
+> If you drop the "_X86" from the config symbol, you won't have to
+> re-align them. And the other config symbols don't have to have "_X86" in
+> them either because this is all in arch/x86/.
 
-ultra minor nit:
+Okay, fair enough. Updated patch is below.
 
-	if (!ret)
-		return 0;
+From b020800f89ea4fce8f3698bd4ef290bba8f40b37 Mon Sep 17 00:00:00 2001
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Date: Fri, 1 Sep 2023 15:42:55 +0300
+Subject: [PATCHv10.1 01/18] x86/acpi: Extract ACPI MADT wakeup code into a separate file
 
-> +
-> +	return 0;
-> +
-> +err:
-> +	if (WARN_ON(rmi_granule_undelegate(dst_phys))) {
-> +		/* Page can't be returned to NS world so is lost */
-> +		get_page(dst_page);
-> +	}
-> +	return -ENXIO;
-> +}
-> +
-> +static int fold_rtt(struct realm *realm, unsigned long addr, int level)
-> +{
-> +	phys_addr_t rtt_addr;
-> +	int ret;
-> +
-> +	ret = realm_rtt_fold(realm, addr, level + 1, &rtt_addr);
-> +	if (ret)
-> +		return ret;
-> +
-> +	free_delegated_page(realm, rtt_addr);
-> +
-> +	return 0;
-> +}
-> +
-> +static int populate_par_region(struct kvm *kvm,
-> +			       phys_addr_t ipa_base,
-> +			       phys_addr_t ipa_end,
-> +			       u32 flags)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	struct kvm_memory_slot *memslot;
-> +	gfn_t base_gfn, end_gfn;
-> +	int idx;
-> +	phys_addr_t ipa;
-> +	int ret = 0;
-> +	struct page *tmp_page;
-> +	unsigned long data_flags = 0;
-> +
-> +	base_gfn = gpa_to_gfn(ipa_base);
-> +	end_gfn = gpa_to_gfn(ipa_end);
-> +
-> +	if (flags & KVM_ARM_RME_POPULATE_FLAGS_MEASURE)
-> +		data_flags = RMI_MEASURE_CONTENT;
-> +
-> +	idx = srcu_read_lock(&kvm->srcu);
-> +	memslot = gfn_to_memslot(kvm, base_gfn);
-> +	if (!memslot) {
-> +		ret = -EFAULT;
-> +		goto out;
-> +	}
-> +
-> +	/* We require the region to be contained within a single memslot */
-> +	if (memslot->base_gfn + memslot->npages < end_gfn) {
-> +		ret = -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	tmp_page = alloc_page(GFP_KERNEL);
-> +	if (!tmp_page) {
-> +		ret = -ENOMEM;
-> +		goto out;
-> +	}
-> +
-> +	mmap_read_lock(current->mm);
-> +
-> +	ipa = ipa_base;
-> +	while (ipa < ipa_end) {
-> +		struct vm_area_struct *vma;
-> +		unsigned long map_size;
-> +		unsigned int vma_shift;
-> +		unsigned long offset;
-> +		unsigned long hva;
-> +		struct page *page;
-> +		kvm_pfn_t pfn;
-> +		int level;
-> +
-> +		hva = gfn_to_hva_memslot(memslot, gpa_to_gfn(ipa));
-> +		vma = vma_lookup(current->mm, hva);
-> +		if (!vma) {
-> +			ret = -EFAULT;
-> +			break;
-> +		}
-> +
-> +		if (is_vm_hugetlb_page(vma))
-> +			vma_shift = huge_page_shift(hstate_vma(vma));
-> +		else
-> +			vma_shift = PAGE_SHIFT;
-> +
-> +		map_size = 1 << vma_shift;
-> +
-> +		/*
-> +		 * FIXME: This causes over mapping, but there's no good
-> +		 * solution here with the ABI as it stands
-> +		 */
-> +		ipa = ALIGN_DOWN(ipa, map_size);
-> +
-> +		switch (map_size) {
-> +		case RME_L2_BLOCK_SIZE:
-> +			level = 2;
-> +			break;
-> +		case PAGE_SIZE:
-> +			level = 3;
-> +			break;
-> +		default:
-> +			WARN_ONCE(1, "Unsupport vma_shift %d", vma_shift);
+In order to prepare for the expansion of support for the ACPI MADT
+wakeup method, move the relevant code into a separate file.
 
-Do we really need this WARNing  ? Could we not fallback to the next 
-possible mapping size ? e.g: if 1G, we could at least try 2M. I guess
-this is more or less similar to what we would do on a fault and it may
-be a good idea to see if could reuse the core bits from user_mem_abort ?
+Introduce a new configuration option to clearly indicate dependencies
+without the use of ifdefs.
 
-> +			ret = -EFAULT;
-> +			break;
-> +		}
-> +
-> +		pfn = gfn_to_pfn_memslot(memslot, gpa_to_gfn(ipa));
-> +
-> +		if (is_error_pfn(pfn)) {
-> +			ret = -EFAULT;
-> +			break;
-> +		}
-> +
-> +		if (level < RME_RTT_MAX_LEVEL) {
-> +			/*
-> +			 * A temporary RTT is needed during the map, precreate
-> +			 * it, however if there is an error (e.g. missing
-> +			 * parent tables) this will be handled in the
-> +			 * realm_create_protected_data_page() call.
-> +			 */
-> +			realm_create_rtt_levels(realm, ipa, level,
-> +						RME_RTT_MAX_LEVEL, NULL);
-> +		}
-> +
-> +		page = pfn_to_page(pfn);
-> +
-> +		for (offset = 0; offset < map_size && !ret;
-> +		     offset += PAGE_SIZE, page++) {
-> +			phys_addr_t page_ipa = ipa + offset;
-> +
-> +			ret = realm_create_protected_data_page(realm, page_ipa,
-> +							       page, tmp_page,
-> +							       data_flags);
-> +		}
-> +		if (ret)
-> +			goto err_release_pfn;
-> +
-> +		if (level == 2) {
-> +			ret = fold_rtt(realm, ipa, level);
-> +			if (ret)
-> +				goto err_release_pfn;
+There have been no functional changes.
 
-Do we care about the FOLD error here ? Ideally we shouldn't hit an 
-error, but unable to fold is not an error case ? We could live with
-L3 mappings ?
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Tao Liu <ltao@redhat.com>
+---
+ arch/x86/Kconfig                   |  7 +++
+ arch/x86/include/asm/acpi.h        |  5 ++
+ arch/x86/kernel/acpi/Makefile      |  1 +
+ arch/x86/kernel/acpi/boot.c        | 86 +-----------------------------
+ arch/x86/kernel/acpi/madt_wakeup.c | 82 ++++++++++++++++++++++++++++
+ 5 files changed, 96 insertions(+), 85 deletions(-)
+ create mode 100644 arch/x86/kernel/acpi/madt_wakeup.c
 
-
-Suzuki
-
-
-> +		}
-> +
-> +		ipa += map_size;
-> +		kvm_release_pfn_dirty(pfn);
-> +err_release_pfn:
-> +		if (ret) {
-> +			kvm_release_pfn_clean(pfn);
-> +			break;
-> +		}
-> +	}
-> +
-> +	mmap_read_unlock(current->mm);
-> +	__free_page(tmp_page);
-> +
-> +out:
-> +	srcu_read_unlock(&kvm->srcu, idx);
-> +	return ret;
-> +}
-> +
-> +static int kvm_populate_realm(struct kvm *kvm,
-> +			      struct kvm_cap_arm_rme_populate_realm_args *args)
-> +{
-> +	phys_addr_t ipa_base, ipa_end;
-> +
-> +	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
-> +		return -EINVAL;
-> +
-> +	if (!IS_ALIGNED(args->populate_ipa_base, PAGE_SIZE) ||
-> +	    !IS_ALIGNED(args->populate_ipa_size, PAGE_SIZE))
-> +		return -EINVAL;
-> +
-> +	if (args->flags & ~RMI_MEASURE_CONTENT)
-> +		return -EINVAL;
-> +
-> +	ipa_base = args->populate_ipa_base;
-> +	ipa_end = ipa_base + args->populate_ipa_size;
-> +
-> +	if (ipa_end < ipa_base)
-> +		return -EINVAL;
-> +
-> +	return populate_par_region(kvm, ipa_base, ipa_end, args->flags);
-> +}
-> +
->   static int find_map_level(struct realm *realm,
->   			  unsigned long start,
->   			  unsigned long end)
-> @@ -808,6 +1030,18 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
->   		r = kvm_init_ipa_range_realm(kvm, &args);
->   		break;
->   	}
-> +	case KVM_CAP_ARM_RME_POPULATE_REALM: {
-> +		struct kvm_cap_arm_rme_populate_realm_args args;
-> +		void __user *argp = u64_to_user_ptr(cap->args[1]);
-> +
-> +		if (copy_from_user(&args, argp, sizeof(args))) {
-> +			r = -EFAULT;
-> +			break;
-> +		}
-> +
-> +		r = kvm_populate_realm(kvm, &args);
-> +		break;
-> +	}
->   	default:
->   		r = -EINVAL;
->   		break;
-
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2dac256b6e8d..723cd5285781 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1116,6 +1116,13 @@ config X86_LOCAL_APIC
+ 	depends on X86_64 || SMP || X86_32_NON_STANDARD || X86_UP_APIC || PCI_MSI
+ 	select IRQ_DOMAIN_HIERARCHY
+ 
++config ACPI_MADT_WAKEUP
++	def_bool y
++	depends on X86_64
++	depends on ACPI
++	depends on SMP
++	depends on X86_LOCAL_APIC
++
+ config X86_IO_APIC
+ 	def_bool y
+ 	depends on X86_LOCAL_APIC || X86_UP_IOAPIC
+diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+index f896eed4516c..2625b915ae7f 100644
+--- a/arch/x86/include/asm/acpi.h
++++ b/arch/x86/include/asm/acpi.h
+@@ -76,6 +76,11 @@ static inline bool acpi_skip_set_wakeup_address(void)
+ 
+ #define acpi_skip_set_wakeup_address acpi_skip_set_wakeup_address
+ 
++union acpi_subtable_headers;
++
++int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
++			      const unsigned long end);
++
+ /*
+  * Check if the CPU can handle C2 and deeper
+  */
+diff --git a/arch/x86/kernel/acpi/Makefile b/arch/x86/kernel/acpi/Makefile
+index fc17b3f136fe..2feba7257665 100644
+--- a/arch/x86/kernel/acpi/Makefile
++++ b/arch/x86/kernel/acpi/Makefile
+@@ -4,6 +4,7 @@ obj-$(CONFIG_ACPI)		+= boot.o
+ obj-$(CONFIG_ACPI_SLEEP)	+= sleep.o wakeup_$(BITS).o
+ obj-$(CONFIG_ACPI_APEI)		+= apei.o
+ obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc.o
++obj-$(CONFIG_ACPI_MADT_WAKEUP)	+= madt_wakeup.o
+ 
+ ifneq ($(CONFIG_ACPI_PROCESSOR),)
+ obj-y				+= cstate.o
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 4bf82dbd2a6b..9f4618dcd704 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -67,13 +67,6 @@ static bool has_lapic_cpus __initdata;
+ static bool acpi_support_online_capable;
+ #endif
+ 
+-#ifdef CONFIG_X86_64
+-/* Physical address of the Multiprocessor Wakeup Structure mailbox */
+-static u64 acpi_mp_wake_mailbox_paddr;
+-/* Virtual address of the Multiprocessor Wakeup Structure mailbox */
+-static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
+-#endif
+-
+ #ifdef CONFIG_X86_IO_APIC
+ /*
+  * Locks related to IOAPIC hotplug
+@@ -341,60 +334,6 @@ acpi_parse_lapic_nmi(union acpi_subtable_headers * header, const unsigned long e
+ 
+ 	return 0;
+ }
+-
+-#ifdef CONFIG_X86_64
+-static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+-{
+-	/*
+-	 * Remap mailbox memory only for the first call to acpi_wakeup_cpu().
+-	 *
+-	 * Wakeup of secondary CPUs is fully serialized in the core code.
+-	 * No need to protect acpi_mp_wake_mailbox from concurrent accesses.
+-	 */
+-	if (!acpi_mp_wake_mailbox) {
+-		acpi_mp_wake_mailbox = memremap(acpi_mp_wake_mailbox_paddr,
+-						sizeof(*acpi_mp_wake_mailbox),
+-						MEMREMAP_WB);
+-	}
+-
+-	/*
+-	 * Mailbox memory is shared between the firmware and OS. Firmware will
+-	 * listen on mailbox command address, and once it receives the wakeup
+-	 * command, the CPU associated with the given apicid will be booted.
+-	 *
+-	 * The value of 'apic_id' and 'wakeup_vector' must be visible to the
+-	 * firmware before the wakeup command is visible.  smp_store_release()
+-	 * ensures ordering and visibility.
+-	 */
+-	acpi_mp_wake_mailbox->apic_id	    = apicid;
+-	acpi_mp_wake_mailbox->wakeup_vector = start_ip;
+-	smp_store_release(&acpi_mp_wake_mailbox->command,
+-			  ACPI_MP_WAKE_COMMAND_WAKEUP);
+-
+-	/*
+-	 * Wait for the CPU to wake up.
+-	 *
+-	 * The CPU being woken up is essentially in a spin loop waiting to be
+-	 * woken up. It should not take long for it wake up and acknowledge by
+-	 * zeroing out ->command.
+-	 *
+-	 * ACPI specification doesn't provide any guidance on how long kernel
+-	 * has to wait for a wake up acknowledgement. It also doesn't provide
+-	 * a way to cancel a wake up request if it takes too long.
+-	 *
+-	 * In TDX environment, the VMM has control over how long it takes to
+-	 * wake up secondary. It can postpone scheduling secondary vCPU
+-	 * indefinitely. Giving up on wake up request and reporting error opens
+-	 * possible attack vector for VMM: it can wake up a secondary CPU when
+-	 * kernel doesn't expect it. Wait until positive result of the wake up
+-	 * request.
+-	 */
+-	while (READ_ONCE(acpi_mp_wake_mailbox->command))
+-		cpu_relax();
+-
+-	return 0;
+-}
+-#endif /* CONFIG_X86_64 */
+ #endif /* CONFIG_X86_LOCAL_APIC */
+ 
+ #ifdef CONFIG_X86_IO_APIC
+@@ -1124,29 +1063,6 @@ static int __init acpi_parse_madt_lapic_entries(void)
+ 	}
+ 	return 0;
+ }
+-
+-#ifdef CONFIG_X86_64
+-static int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+-				     const unsigned long end)
+-{
+-	struct acpi_madt_multiproc_wakeup *mp_wake;
+-
+-	if (!IS_ENABLED(CONFIG_SMP))
+-		return -ENODEV;
+-
+-	mp_wake = (struct acpi_madt_multiproc_wakeup *)header;
+-	if (BAD_MADT_ENTRY(mp_wake, end))
+-		return -EINVAL;
+-
+-	acpi_table_print_madt_entry(&header->common);
+-
+-	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
+-
+-	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
+-
+-	return 0;
+-}
+-#endif				/* CONFIG_X86_64 */
+ #endif				/* CONFIG_X86_LOCAL_APIC */
+ 
+ #ifdef	CONFIG_X86_IO_APIC
+@@ -1343,7 +1259,7 @@ static void __init acpi_process_madt(void)
+ 				smp_found_config = 1;
+ 			}
+ 
+-#ifdef CONFIG_X86_64
++#ifdef CONFIG_ACPI_MADT_WAKEUP
+ 			/*
+ 			 * Parse MADT MP Wake entry.
+ 			 */
+diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+new file mode 100644
+index 000000000000..7f164d38bd0b
+--- /dev/null
++++ b/arch/x86/kernel/acpi/madt_wakeup.c
+@@ -0,0 +1,82 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++#include <linux/acpi.h>
++#include <linux/io.h>
++#include <asm/apic.h>
++#include <asm/barrier.h>
++#include <asm/processor.h>
++
++/* Physical address of the Multiprocessor Wakeup Structure mailbox */
++static u64 acpi_mp_wake_mailbox_paddr;
++
++/* Virtual address of the Multiprocessor Wakeup Structure mailbox */
++static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
++
++static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
++{
++	/*
++	 * Remap mailbox memory only for the first call to acpi_wakeup_cpu().
++	 *
++	 * Wakeup of secondary CPUs is fully serialized in the core code.
++	 * No need to protect acpi_mp_wake_mailbox from concurrent accesses.
++	 */
++	if (!acpi_mp_wake_mailbox) {
++		acpi_mp_wake_mailbox = memremap(acpi_mp_wake_mailbox_paddr,
++						sizeof(*acpi_mp_wake_mailbox),
++						MEMREMAP_WB);
++	}
++
++	/*
++	 * Mailbox memory is shared between the firmware and OS. Firmware will
++	 * listen on mailbox command address, and once it receives the wakeup
++	 * command, the CPU associated with the given apicid will be booted.
++	 *
++	 * The value of 'apic_id' and 'wakeup_vector' must be visible to the
++	 * firmware before the wakeup command is visible.  smp_store_release()
++	 * ensures ordering and visibility.
++	 */
++	acpi_mp_wake_mailbox->apic_id	    = apicid;
++	acpi_mp_wake_mailbox->wakeup_vector = start_ip;
++	smp_store_release(&acpi_mp_wake_mailbox->command,
++			  ACPI_MP_WAKE_COMMAND_WAKEUP);
++
++	/*
++	 * Wait for the CPU to wake up.
++	 *
++	 * The CPU being woken up is essentially in a spin loop waiting to be
++	 * woken up. It should not take long for it wake up and acknowledge by
++	 * zeroing out ->command.
++	 *
++	 * ACPI specification doesn't provide any guidance on how long kernel
++	 * has to wait for a wake up acknowledgment. It also doesn't provide
++	 * a way to cancel a wake up request if it takes too long.
++	 *
++	 * In TDX environment, the VMM has control over how long it takes to
++	 * wake up secondary. It can postpone scheduling secondary vCPU
++	 * indefinitely. Giving up on wake up request and reporting error opens
++	 * possible attack vector for VMM: it can wake up a secondary CPU when
++	 * kernel doesn't expect it. Wait until positive result of the wake up
++	 * request.
++	 */
++	while (READ_ONCE(acpi_mp_wake_mailbox->command))
++		cpu_relax();
++
++	return 0;
++}
++
++int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
++			      const unsigned long end)
++{
++	struct acpi_madt_multiproc_wakeup *mp_wake;
++
++	mp_wake = (struct acpi_madt_multiproc_wakeup *)header;
++	if (BAD_MADT_ENTRY(mp_wake, end))
++		return -EINVAL;
++
++	acpi_table_print_madt_entry(&header->common);
++
++	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
++
++	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
++
++	return 0;
++}
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
