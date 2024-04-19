@@ -1,235 +1,129 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937BB839EB;
-	Fri, 19 Apr 2024 11:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADDE82D99
+	for <linux-coco@lists.linux.dev>; Fri, 19 Apr 2024 11:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713525510; cv=none; b=ZhZ5dWQZNv6l72OfLHntrR4RNVkInrTxP3xx+VnNwQm1fzurQeL3qdj7Js9pI6EgIif4yod/RrS63DqxhylYHS5vZt5fA3gNbdLlRFObEPuFuW+J811u0X55f6E7NOKVFgAEqkiS3yPFNIpBRJkiHbImVsc46080M7C0c8Pu+nc=
+	t=1713527563; cv=none; b=glyh1ba5ylwzDxYfBdkp20IJC2gNOuQJCAzsqleYhrd9jTmbMGD9OhNPt1yw5yYOxVFV2WTTqNcm529PObe21HegKKeNMZI/TPju732bIvTjnTS0BDhlqNPcVGjng/ihxg2qw4BFBZDKacE+6mxRPrOPsWXbCLouj9NWD+N0JWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713525510; c=relaxed/simple;
-	bh=qdD+zvfn8A8+Jt0/OJZ4b0GtvV63He1oE6Vd2NNNvac=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cWeeRXsGRbdmbmyS24uxnIagBk+dctKTeFgO2NCAq+wBDrVMCBHISqfd66UkgC+l0sZ8pXzwHxyQu0rdvRVF67LBxQ1NuhMtmrLOLzaK5nkEhVdEQUto5pHeVhBvG0Oniub/292NPmVajJTUGGr3Pb6lPvbN+zkMJdgqsGkd6uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 345AD2F;
-	Fri, 19 Apr 2024 04:18:55 -0700 (PDT)
-Received: from [10.1.32.31] (e122027.cambridge.arm.com [10.1.32.31])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7F78D3F792;
-	Fri, 19 Apr 2024 04:18:23 -0700 (PDT)
-Message-ID: <3ee316c9-0660-4b21-a02c-cda8fe9fd118@arm.com>
-Date: Fri, 19 Apr 2024 12:18:21 +0100
+	s=arc-20240116; t=1713527563; c=relaxed/simple;
+	bh=+HnpYIljW903ODlD5/xLD4aOITxYFLDumzggzFZ3LXU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=livPMAwRC7KeHYJxW1eTjQMhAygwcO7hXRUzjayyYZ/5s0XD4xhOZuQOsV9/CA4feLlBGayOTt2tC2Z0x3/CPQJTUktOmTKEzYBjiwUCpiyJTQjIOTdEKnAf5oxSvcLL+yHoA+//5gzWDNrUQv7miPV3sy6VFV5n0lF98ILZXM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KsIpYx5u; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KsIpYx5u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713527561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+9gAW74TdLSgAKKdOeHRcIuNI+2QlXI+dYyfePDOsqM=;
+	b=KsIpYx5uQs30IWmOQqq4s+NVf4mygzvyBiEdQ8gmq9zEorf1S0WvYQKToiWguG40b5Pwzy
+	4SA7SdEVL5/2ssINRcUcxB3ulBGoynqgqo8sJTt/yEsGINy+MHGoSUib8bigTjdFjtkHgk
+	S7OBK8o7fYBMXdwImCmY7EB52dYIHSc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-423-mYpUD6BmOw6-pC0fecLCGQ-1; Fri, 19 Apr 2024 07:52:37 -0400
+X-MC-Unique: mYpUD6BmOw6-pC0fecLCGQ-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-34a49f5a6baso586846f8f.3
+        for <linux-coco@lists.linux.dev>; Fri, 19 Apr 2024 04:52:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713527557; x=1714132357;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+9gAW74TdLSgAKKdOeHRcIuNI+2QlXI+dYyfePDOsqM=;
+        b=Bm9d7o+Tzoli6V8rKQBJ0AMxhNbqXEbDvBBitSkp/Ptv6jy/uoKxGpaVcxZB5e7eP7
+         F9TnLbFTLgbZLoh/HPC/xo1yo8yZSlN88PJkARR3uMklfhMqyclyge4/cyjxyVcytWo5
+         kR7gr6AsdE7dkm02/DXBSC6rphyy+yE4MncAwoSaFARmrjd0UG9hwfdm9lRj6HE8cySy
+         k+1//vfWINxficqNfMjtOjr/4ZZJs4pOK7Z9S5Ml3USc9Rr4UiKggxsvmXSQZ00b7Itx
+         QxA0QR0P+G7udU5S0GVaBMsJ1xmoJKMrwRUMBmCJ4hMbJ4XEcFOhAC+M2wKm7y20jsZJ
+         l5+g==
+X-Forwarded-Encrypted: i=1; AJvYcCUf3wukOS93VOToRgusQcKb3wG1vFyNs0ECI6GgbdUQeUOJqtwbtH0mkVPZAqPbce1yr5/SLMaKrkaVHuX21JuYqcJ31fAEeN7Lxg==
+X-Gm-Message-State: AOJu0YzG6ivKhCCxjVvzPEDhUnxT8BZw3b9LBfXXVTK9uQgQ/J4sobnI
+	GvjsW4sYi5W7O+S/3NBjf5DuMkEhds+H0xNcxGcMvl8F6SdX6V/opIiGAbNTBZV/ZtUS6OSvHKj
+	6xcRRFBh3NXnDwMG9+tbij8mspzXcTr9rG1C10CLpwOq+eHZxrDPnWfrzLd47xgeOObjGewthbr
+	kyl6CJiRPon/6Zy6o7+5RxAa9XYcACX5eKjQ==
+X-Received: by 2002:adf:e683:0:b0:345:605e:fa38 with SMTP id r3-20020adfe683000000b00345605efa38mr1433591wrm.60.1713527556822;
+        Fri, 19 Apr 2024 04:52:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfUJrGef9Pu8qycGP8hLzLT/FO8q371w7fw92YbXK5+2PaDsTI6UQGUVVeBTULcSVYlzzGDl9d79lt6LyM70w=
+X-Received: by 2002:adf:e683:0:b0:345:605e:fa38 with SMTP id
+ r3-20020adfe683000000b00345605efa38mr1433571wrm.60.1713527556446; Fri, 19 Apr
+ 2024 04:52:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/43] arm64: RME: Add wrappers for RMI calls
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240412084056.1733704-1-steven.price@arm.com>
- <20240412084309.1733783-1-steven.price@arm.com>
- <20240412084309.1733783-7-steven.price@arm.com>
- <b8019da1-d361-445b-a224-0761640aa616@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <b8019da1-d361-445b-a224-0761640aa616@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240418194133.1452059-1-michael.roth@amd.com> <20240418194133.1452059-10-michael.roth@amd.com>
+In-Reply-To: <20240418194133.1452059-10-michael.roth@amd.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 19 Apr 2024 13:52:24 +0200
+Message-ID: <CABgObfYztTP+qoTa-tuPC8Au-aKhwiBkcvHni4T+n6MCD-P9Dw@mail.gmail.com>
+Subject: Re: [PATCH v13 09/26] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_START command
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
+	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com, 
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, 
+	Brijesh Singh <brijesh.singh@amd.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 16/04/2024 14:14, Suzuki K Poulose wrote:
-> Hi Steven
-> 
-> On 12/04/2024 09:42, Steven Price wrote:
->> The wrappers make the call sites easier to read and deal with the
->> boiler plate of handling the error codes from the RMM.
->>
-> 
-> I have compared the parameters and output values to that of the RMM spec
-> and they match. There are some minor nits below.
-> 
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->>   arch/arm64/include/asm/rmi_cmds.h | 509 ++++++++++++++++++++++++++++++
->>   1 file changed, 509 insertions(+)
->>   create mode 100644 arch/arm64/include/asm/rmi_cmds.h
->>
->> diff --git a/arch/arm64/include/asm/rmi_cmds.h
->> b/arch/arm64/include/asm/rmi_cmds.h
->> new file mode 100644
->> index 000000000000..c21414127e8e
->> --- /dev/null
->> +++ b/arch/arm64/include/asm/rmi_cmds.h
->> @@ -0,0 +1,509 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +/*
->> + * Copyright (C) 2023 ARM Ltd.
->> + */
->> +
->> +#ifndef __ASM_RMI_CMDS_H
->> +#define __ASM_RMI_CMDS_H
->> +
->> +#include <linux/arm-smccc.h>
->> +
->> +#include <asm/rmi_smc.h>
->> +
->> +struct rtt_entry {
->> +    unsigned long walk_level;
->> +    unsigned long desc;
->> +    int state;
->> +    int ripas;
->> +};
->> +
-> 
-> ...
-> 
->> +/**
->> + * rmi_data_destroy() - Destroy a Data Granule
->> + * @rd: PA of the RD
->> + * @ipa: IPA at which the granule is mapped in the guest
->> + * @data_out: PA of the granule which was destroyed
->> + * @top_out: Top IPA of non-live RTT entries
->> + *
->> + * Transitions the granule to DESTROYED state, the address cannot be
->> used by
->> + * the guest for the lifetime of the Realm.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_data_destroy(unsigned long rd, unsigned long ipa,
->> +                   unsigned long *data_out,
->> +                   unsigned long *top_out)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_DATA_DESTROY, rd, ipa, &res);
->> +
->> +    *data_out = res.a1;
->> +    *top_out = res.a2;
-> 
-> minor nit: Do we need to be safer by checking the parameters before
-> filling them in ? i.e.,
-> 
->     if (ptr)
->         *ptr = result_out;
-> 
-> This applies for others calls below.
+On Thu, Apr 18, 2024 at 9:42=E2=80=AFPM Michael Roth <michael.roth@amd.com>=
+ wrote:
+> +/* As defined by SEV-SNP Firmware ABI, under "Guest Policy". */
+> +#define SNP_POLICY_MASK_API_MAJOR      GENMASK_ULL(15, 8)
+> +#define SNP_POLICY_MASK_API_MINOR      GENMASK_ULL(7, 0)
+> +
+> +#define SNP_POLICY_MASK_VALID          (SNP_POLICY_MASK_SMT            |=
+ \
+> +                                        SNP_POLICY_MASK_RSVD_MBO       |=
+ \
+> +                                        SNP_POLICY_MASK_DEBUG          |=
+ \
+> +                                        SNP_POLICY_MASK_SINGLE_SOCKET  |=
+ \
+> +                                        SNP_POLICY_MASK_API_MAJOR      |=
+ \
+> +                                        SNP_POLICY_MASK_API_MINOR)
+> +
+> +/* KVM's SNP support is compatible with 1.51 of the SEV-SNP Firmware ABI=
+. */
+> +#define SNP_POLICY_API_MAJOR           1
+> +#define SNP_POLICY_API_MINOR           51
 
-I had taken the approach of making all the out-parameters required (i.e.
-non-NULL). But I guess I can switch over to allowing NULL - hopefully
-the compiler will optimise these checks away, but there are some
-situations where we are currently ignoring the extra out-parameters that
-could be tidied up.
+> +static inline bool sev_version_greater_or_equal(u8 major, u8 minor)
+> +{
+> +       if (major < SNP_POLICY_API_MAJOR)
+> +               return true;
 
-> 
->> +
->> +    return res.a0;
->> +}
-> 
->> +
->> +/**
->> + * rmi_realm_destroy() - Destroy a Realm
->> + * @rd: PA of the RD
->> + *
->> + * Destroys a Realm, all objects belonging to the Realm must be
->> destroyed first.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_realm_destroy(unsigned long rd)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_REALM_DESTROY, rd, &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rec_aux_count() - Get number of auxiliary Granules required
->> + * @rd: PA of the RD
->> + * @aux_count: Number of pages written to this pointer
->> + *
->> + * A REC may require extra auxiliary pages to be delegateed for the
->> RMM to
-> 
-> minor nit: "s/delegateed/delegated/"
-> 
-> ...
-> 
->> +/**
->> + * rmi_rtt_read_entry() - Read an RTTE
->> + * @rd: PA of the RD
->> + * @ipa: IPA for which to read the RTTE
->> + * @level: RTT level at which to read the RTTE
->> + * @rtt: Output structure describing the RTTE
->> + *
->> + * Reads a RTTE (Realm Translation Table Entry).
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rtt_read_entry(unsigned long rd, unsigned long
->> ipa,
->> +                     long level, struct rtt_entry *rtt)
->> +{
->> +    struct arm_smccc_1_2_regs regs = {
->> +        SMC_RMI_RTT_READ_ENTRY,
->> +        rd, ipa, level
->> +    };
->> +
->> +    arm_smccc_1_2_smc(&regs, &regs);
->> +
->> +    rtt->walk_level = regs.a1;
->> +    rtt->state = regs.a2 & 0xFF;
-> 
-> minor nit: We mask the state, but not the "ripas". Both of them are u8.
-> For consistency, we should mask both or neither.
+Should it perhaps refuse version 0.x? With something like a
 
-Good point - I'll mask ripas as well. I suspect this is a bug that crept
-in when I was updating for the new RIPAS state.
+#define SNP_POLICY_API_MAJOR_MIN    1
 
->> +    rtt->desc = regs.a3;
->> +    rtt->ripas = regs.a4;
->> +
->> +    return regs.a0;
->> +}
->> +
-> 
-> ...
-> 
->> +/**
->> + * rmi_rtt_get_phys() - Get the PA from a RTTE
->> + * @rtt: The RTTE
->> + *
->> + * Return: the physical address from a RTT entry.
->> + */
->> +static inline phys_addr_t rmi_rtt_get_phys(struct rtt_entry *rtt)
->> +{
->> +    return rtt->desc & GENMASK(47, 12);
->> +}
-> 
-> I guess this may need to change with the LPA2 support in RMM and must be
-> used in conjunction with the "realm" object to make the correct
-> conversion.
+to make it a bit more future proof (and testable).
 
-Actually this is currently unused, and there's a potential bug lurking
-in realm_map_protected() where rtt->desc is assumed to be a valid
-physical address. I'll move the function there and fix it up by also
-taking a realm argument. I've tried to keep the realm structure out of
-this file.
+> +       major =3D (params.policy & SNP_POLICY_MASK_API_MAJOR);
 
-Thanks,
+This should be >> 8. Do the QEMU patches not set the API version? :)
 
-Steve
+Paolo
 
