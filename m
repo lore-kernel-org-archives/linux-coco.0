@@ -1,51 +1,51 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E3B8624B
-	for <linux-coco@lists.linux.dev>; Fri, 19 Apr 2024 13:28:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3638624B
+	for <linux-coco@lists.linux.dev>; Fri, 19 Apr 2024 13:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713533314; cv=none; b=S5y86SfkBTqAd0YE4YZUxSEbkIVeSKn08KwLbqTfO/ywNnD1Ii8kepeKHDBh5Fw4GXiSzxpKaIf1wetxQvoSMe+C/sVuBkrqQ9LD2Zk1nMf40oHpAz8IKndlEr1HTyC/2OGwEjHa+TpuZ6Cmsi4HjyLxnQElrF6I5U82cnbG0Qs=
+	t=1713533507; cv=none; b=khNLPL95Gwbl3C+V9vJ76DoT2Kts1kvDrqVtszhoUSnXgWJvK9cxvmrf4bB9Gk8gWTWfA72FzWKs1TN5aMuRkqPZrDkFitqo37G++tFJiJOoHWJeh+NziMzu0rnqQ/QdyQoF6iOaZUAlVXgdf1VzUQK1sv51XdiTAFgF5nsfqdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713533314; c=relaxed/simple;
-	bh=/RG5qBxdULyRKxsA28Wpo5X45cb7aAWaUcDEA+9wmsM=;
+	s=arc-20240116; t=1713533507; c=relaxed/simple;
+	bh=q8sLxUQXTmO+zQlO+Nq2zQY8GKJ0uOrx6YdkifWv8s8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ac+gElkDCMrNRQ/8zMl9lts1BfWfWf7P076/YvMWIakNVvGvPDAfzIYX9KwI+Hh4toWYG1zzdI7UkqBajUzRZBGoTj3rmnCqNYweiwQbwhY89o2PPrYlcmNHIBPUdINhkQ+s02AYHdkefAEISq2mNAn2lvi+4tZEkjDN3CBGTRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q7GFCHWK; arc=none smtp.client-ip=192.198.163.7
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gjl6rDNn2MO+9sC+KNUh8zeW7k6jj0JYm/DtoNfTvSex8Lxnm5YxD5mZfUw/Q0grd2EQuqHHzgBKwcYBKKo7VmCoLv3oKFOJKKZdvXhTj9AS+3IjuuPbwa9Y9oLY3H/Ww9lexOhLf3m8DeXAO5cEmMPDwGOF5m3UXyOTQ3bdQQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LXMJLVNv; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q7GFCHWK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LXMJLVNv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713533312; x=1745069312;
+  t=1713533506; x=1745069506;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=/RG5qBxdULyRKxsA28Wpo5X45cb7aAWaUcDEA+9wmsM=;
-  b=Q7GFCHWKOZtvtkO45qNiQd8MptzwfNjFXDzEuJkPE8MzHfTVyDyOgswt
-   iVKlq7FZiumr97KpOuY9EcHGiWg2946MqUIxNcW6AQ7NIMEkLBxfxxxgc
-   hwGiBYtB/tQTujADPhZ5Ur89XgAKRrdNEve/Ie+PGtqPu+tqmeTIkdDgn
-   CwHCxz8bpX3FVqNynWT+MfXGoQaKPK9PufLNQFseHjQUWrh7Yq966upyd
-   1mh+IokdCiGtBJWmGdd80lf++bVJMcR9ldKCFogKCwLKv32CUL0iTQcT5
-   zZpxFGZltGktJpc+bzyhNKkVLkEAs4KDACSBhQWOBN9XqqmlgdUsNZrY8
-   Q==;
-X-CSE-ConnectionGUID: PPa6GYZNQN+xc8Hv8BxFVw==
-X-CSE-MsgGUID: FP2j0vzCR9eKFDsxnHCYgg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11049"; a="34531950"
+  bh=q8sLxUQXTmO+zQlO+Nq2zQY8GKJ0uOrx6YdkifWv8s8=;
+  b=LXMJLVNvMh7kLIg+OQpGV3kIW52FsgOxk4V2z9Zj+eo63+Wvzc4hxwEh
+   DcCUGRysIJ82uybKP+4zUq9Xbjt90+A62OCQeyhmKT2QUVzuc1xMvF9gD
+   ZMlkpJsAIgYuduZTNGC3yh+N2mJUTh3DcKiIo4mAmn10SLaBnhRjVwzSP
+   s0XDpCfZdosoXZRq+ELaRLYZZO5w59wHEWnc59x9Mm8+wE7K2g1VxTqKu
+   E5oRqWgoe4M2CVtARlJ2jSZdS7L/vL20DFIV0HCOWStGQySy7PSF8auAw
+   eOo579oO/oxKfcizcMBUPL6oWIhcd+qaHTMw0Rrsz/PsW3Sex9Zs8Yt3q
+   A==;
+X-CSE-ConnectionGUID: EUECL0dyS8+MLdz2Fg5k1Q==
+X-CSE-MsgGUID: uTkdqNIaRIypL9BzhjnPzg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11049"; a="19829821"
 X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; 
-   d="scan'208";a="34531950"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2024 06:28:31 -0700
-X-CSE-ConnectionGUID: KtBqwECzQqSH2sV4He1iOg==
-X-CSE-MsgGUID: 7j1cWn0ZS+WMSGDgRdQ80w==
+   d="scan'208";a="19829821"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2024 06:31:45 -0700
+X-CSE-ConnectionGUID: 8EhFIYEkSGmj4XmvSB/OuA==
+X-CSE-MsgGUID: 32PEEwedQ4ewi5StWKTDOw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; 
-   d="scan'208";a="23949961"
+   d="scan'208";a="23411447"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa008.jf.intel.com with ESMTP; 19 Apr 2024 06:28:25 -0700
+  by fmviesa008.fm.intel.com with ESMTP; 19 Apr 2024 06:31:40 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id B1F50FD; Fri, 19 Apr 2024 16:28:24 +0300 (EEST)
-Date: Fri, 19 Apr 2024 16:28:24 +0300
+	id CEE59FD; Fri, 19 Apr 2024 16:31:39 +0300 (EEST)
+Date: Fri, 19 Apr 2024 16:31:39 +0300
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>
 Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -57,12 +57,12 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
 	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv10 01/18] x86/acpi: Extract ACPI MADT wakeup code into a
- separate file
-Message-ID: <lmlwekkninlquabuganez5v22yopz5beavlmflcuyyeydceicz@k3v6y3iblid6>
+Subject: Re: [PATCHv10 03/18] cpu/hotplug: Add support for declaring CPU
+ offlining not supported
+Message-ID: <rju6u37prtr5nf4upcntcy4jcnul6atqmbh6impzqdn3dlo2pj@lqodxa7elohz>
 References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <20240409113010.465412-2-kirill.shutemov@linux.intel.com>
- <20240418160324.GKZiFETI8U1WeaUS7_@fat_crate.local>
+ <20240409113010.465412-4-kirill.shutemov@linux.intel.com>
+ <20240418143709.GJZiEwFejGQY3jiwsp@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,312 +71,31 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240418160324.GKZiFETI8U1WeaUS7_@fat_crate.local>
+In-Reply-To: <20240418143709.GJZiEwFejGQY3jiwsp@fat_crate.local>
 
-On Thu, Apr 18, 2024 at 06:03:24PM +0200, Borislav Petkov wrote:
-> On Tue, Apr 09, 2024 at 02:29:53PM +0300, Kirill A. Shutemov wrote:
-> > diff --git a/arch/x86/kernel/acpi/Makefile b/arch/x86/kernel/acpi/Makefile
-> > index fc17b3f136fe..8c7329c88a75 100644
-> > --- a/arch/x86/kernel/acpi/Makefile
-> > +++ b/arch/x86/kernel/acpi/Makefile
-> > @@ -1,11 +1,12 @@
-> >  # SPDX-License-Identifier: GPL-2.0
-> >  
-> > -obj-$(CONFIG_ACPI)		+= boot.o
-> > -obj-$(CONFIG_ACPI_SLEEP)	+= sleep.o wakeup_$(BITS).o
-> > -obj-$(CONFIG_ACPI_APEI)		+= apei.o
-> > -obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc.o
-> > +obj-$(CONFIG_ACPI)			+= boot.o
-> > +obj-$(CONFIG_ACPI_SLEEP)		+= sleep.o wakeup_$(BITS).o
-> > +obj-$(CONFIG_ACPI_APEI)			+= apei.o
-> > +obj-$(CONFIG_ACPI_CPPC_LIB)		+= cppc.o
-> > +obj-$(CONFIG_X86_ACPI_MADT_WAKEUP)	+= madt_wakeup.o
+On Thu, Apr 18, 2024 at 04:37:09PM +0200, Borislav Petkov wrote:
+> On Tue, Apr 09, 2024 at 02:29:55PM +0300, Kirill A. Shutemov wrote:
+> > +/* Declare CPU offlining not supported */
+> > +void cpu_hotplug_disable_offlining(void)
+> > +{
+> > +	cpu_maps_update_begin();
 > 
-> If you drop the "_X86" from the config symbol, you won't have to
-> re-align them. And the other config symbols don't have to have "_X86" in
-> them either because this is all in arch/x86/.
+> "/*
+>  * The following two APIs (cpu_maps_update_begin/done) must be used when
+>  * attempting to serialize the updates to cpu_online_mask & cpu_present_mask.
+>  */
+> void cpu_maps_update_begin(void)
+> ..."
+> 
+> > +	cpu_hotplug_offline_disabled = true;
+> 
+> but this doesn't do that here.
+> 
+> Are we doing a one-off here for that variable or what?
 
-Okay, fair enough. Updated patch is below.
+Yes, it is one-off. I guess we could use READ_ONCE()/WRITE_ONCE() to
+access the variable with the same result. I am not sure why it would be
+better.
 
-From b020800f89ea4fce8f3698bd4ef290bba8f40b37 Mon Sep 17 00:00:00 2001
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Date: Fri, 1 Sep 2023 15:42:55 +0300
-Subject: [PATCHv10.1 01/18] x86/acpi: Extract ACPI MADT wakeup code into a separate file
-
-In order to prepare for the expansion of support for the ACPI MADT
-wakeup method, move the relevant code into a separate file.
-
-Introduce a new configuration option to clearly indicate dependencies
-without the use of ifdefs.
-
-There have been no functional changes.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Baoquan He <bhe@redhat.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Tao Liu <ltao@redhat.com>
----
- arch/x86/Kconfig                   |  7 +++
- arch/x86/include/asm/acpi.h        |  5 ++
- arch/x86/kernel/acpi/Makefile      |  1 +
- arch/x86/kernel/acpi/boot.c        | 86 +-----------------------------
- arch/x86/kernel/acpi/madt_wakeup.c | 82 ++++++++++++++++++++++++++++
- 5 files changed, 96 insertions(+), 85 deletions(-)
- create mode 100644 arch/x86/kernel/acpi/madt_wakeup.c
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2dac256b6e8d..723cd5285781 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1116,6 +1116,13 @@ config X86_LOCAL_APIC
- 	depends on X86_64 || SMP || X86_32_NON_STANDARD || X86_UP_APIC || PCI_MSI
- 	select IRQ_DOMAIN_HIERARCHY
- 
-+config ACPI_MADT_WAKEUP
-+	def_bool y
-+	depends on X86_64
-+	depends on ACPI
-+	depends on SMP
-+	depends on X86_LOCAL_APIC
-+
- config X86_IO_APIC
- 	def_bool y
- 	depends on X86_LOCAL_APIC || X86_UP_IOAPIC
-diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-index f896eed4516c..2625b915ae7f 100644
---- a/arch/x86/include/asm/acpi.h
-+++ b/arch/x86/include/asm/acpi.h
-@@ -76,6 +76,11 @@ static inline bool acpi_skip_set_wakeup_address(void)
- 
- #define acpi_skip_set_wakeup_address acpi_skip_set_wakeup_address
- 
-+union acpi_subtable_headers;
-+
-+int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
-+			      const unsigned long end);
-+
- /*
-  * Check if the CPU can handle C2 and deeper
-  */
-diff --git a/arch/x86/kernel/acpi/Makefile b/arch/x86/kernel/acpi/Makefile
-index fc17b3f136fe..2feba7257665 100644
---- a/arch/x86/kernel/acpi/Makefile
-+++ b/arch/x86/kernel/acpi/Makefile
-@@ -4,6 +4,7 @@ obj-$(CONFIG_ACPI)		+= boot.o
- obj-$(CONFIG_ACPI_SLEEP)	+= sleep.o wakeup_$(BITS).o
- obj-$(CONFIG_ACPI_APEI)		+= apei.o
- obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc.o
-+obj-$(CONFIG_ACPI_MADT_WAKEUP)	+= madt_wakeup.o
- 
- ifneq ($(CONFIG_ACPI_PROCESSOR),)
- obj-y				+= cstate.o
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 4bf82dbd2a6b..9f4618dcd704 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -67,13 +67,6 @@ static bool has_lapic_cpus __initdata;
- static bool acpi_support_online_capable;
- #endif
- 
--#ifdef CONFIG_X86_64
--/* Physical address of the Multiprocessor Wakeup Structure mailbox */
--static u64 acpi_mp_wake_mailbox_paddr;
--/* Virtual address of the Multiprocessor Wakeup Structure mailbox */
--static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
--#endif
--
- #ifdef CONFIG_X86_IO_APIC
- /*
-  * Locks related to IOAPIC hotplug
-@@ -341,60 +334,6 @@ acpi_parse_lapic_nmi(union acpi_subtable_headers * header, const unsigned long e
- 
- 	return 0;
- }
--
--#ifdef CONFIG_X86_64
--static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
--{
--	/*
--	 * Remap mailbox memory only for the first call to acpi_wakeup_cpu().
--	 *
--	 * Wakeup of secondary CPUs is fully serialized in the core code.
--	 * No need to protect acpi_mp_wake_mailbox from concurrent accesses.
--	 */
--	if (!acpi_mp_wake_mailbox) {
--		acpi_mp_wake_mailbox = memremap(acpi_mp_wake_mailbox_paddr,
--						sizeof(*acpi_mp_wake_mailbox),
--						MEMREMAP_WB);
--	}
--
--	/*
--	 * Mailbox memory is shared between the firmware and OS. Firmware will
--	 * listen on mailbox command address, and once it receives the wakeup
--	 * command, the CPU associated with the given apicid will be booted.
--	 *
--	 * The value of 'apic_id' and 'wakeup_vector' must be visible to the
--	 * firmware before the wakeup command is visible.  smp_store_release()
--	 * ensures ordering and visibility.
--	 */
--	acpi_mp_wake_mailbox->apic_id	    = apicid;
--	acpi_mp_wake_mailbox->wakeup_vector = start_ip;
--	smp_store_release(&acpi_mp_wake_mailbox->command,
--			  ACPI_MP_WAKE_COMMAND_WAKEUP);
--
--	/*
--	 * Wait for the CPU to wake up.
--	 *
--	 * The CPU being woken up is essentially in a spin loop waiting to be
--	 * woken up. It should not take long for it wake up and acknowledge by
--	 * zeroing out ->command.
--	 *
--	 * ACPI specification doesn't provide any guidance on how long kernel
--	 * has to wait for a wake up acknowledgement. It also doesn't provide
--	 * a way to cancel a wake up request if it takes too long.
--	 *
--	 * In TDX environment, the VMM has control over how long it takes to
--	 * wake up secondary. It can postpone scheduling secondary vCPU
--	 * indefinitely. Giving up on wake up request and reporting error opens
--	 * possible attack vector for VMM: it can wake up a secondary CPU when
--	 * kernel doesn't expect it. Wait until positive result of the wake up
--	 * request.
--	 */
--	while (READ_ONCE(acpi_mp_wake_mailbox->command))
--		cpu_relax();
--
--	return 0;
--}
--#endif /* CONFIG_X86_64 */
- #endif /* CONFIG_X86_LOCAL_APIC */
- 
- #ifdef CONFIG_X86_IO_APIC
-@@ -1124,29 +1063,6 @@ static int __init acpi_parse_madt_lapic_entries(void)
- 	}
- 	return 0;
- }
--
--#ifdef CONFIG_X86_64
--static int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
--				     const unsigned long end)
--{
--	struct acpi_madt_multiproc_wakeup *mp_wake;
--
--	if (!IS_ENABLED(CONFIG_SMP))
--		return -ENODEV;
--
--	mp_wake = (struct acpi_madt_multiproc_wakeup *)header;
--	if (BAD_MADT_ENTRY(mp_wake, end))
--		return -EINVAL;
--
--	acpi_table_print_madt_entry(&header->common);
--
--	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
--
--	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
--
--	return 0;
--}
--#endif				/* CONFIG_X86_64 */
- #endif				/* CONFIG_X86_LOCAL_APIC */
- 
- #ifdef	CONFIG_X86_IO_APIC
-@@ -1343,7 +1259,7 @@ static void __init acpi_process_madt(void)
- 				smp_found_config = 1;
- 			}
- 
--#ifdef CONFIG_X86_64
-+#ifdef CONFIG_ACPI_MADT_WAKEUP
- 			/*
- 			 * Parse MADT MP Wake entry.
- 			 */
-diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
-new file mode 100644
-index 000000000000..7f164d38bd0b
---- /dev/null
-+++ b/arch/x86/kernel/acpi/madt_wakeup.c
-@@ -0,0 +1,82 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+#include <linux/acpi.h>
-+#include <linux/io.h>
-+#include <asm/apic.h>
-+#include <asm/barrier.h>
-+#include <asm/processor.h>
-+
-+/* Physical address of the Multiprocessor Wakeup Structure mailbox */
-+static u64 acpi_mp_wake_mailbox_paddr;
-+
-+/* Virtual address of the Multiprocessor Wakeup Structure mailbox */
-+static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
-+
-+static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
-+{
-+	/*
-+	 * Remap mailbox memory only for the first call to acpi_wakeup_cpu().
-+	 *
-+	 * Wakeup of secondary CPUs is fully serialized in the core code.
-+	 * No need to protect acpi_mp_wake_mailbox from concurrent accesses.
-+	 */
-+	if (!acpi_mp_wake_mailbox) {
-+		acpi_mp_wake_mailbox = memremap(acpi_mp_wake_mailbox_paddr,
-+						sizeof(*acpi_mp_wake_mailbox),
-+						MEMREMAP_WB);
-+	}
-+
-+	/*
-+	 * Mailbox memory is shared between the firmware and OS. Firmware will
-+	 * listen on mailbox command address, and once it receives the wakeup
-+	 * command, the CPU associated with the given apicid will be booted.
-+	 *
-+	 * The value of 'apic_id' and 'wakeup_vector' must be visible to the
-+	 * firmware before the wakeup command is visible.  smp_store_release()
-+	 * ensures ordering and visibility.
-+	 */
-+	acpi_mp_wake_mailbox->apic_id	    = apicid;
-+	acpi_mp_wake_mailbox->wakeup_vector = start_ip;
-+	smp_store_release(&acpi_mp_wake_mailbox->command,
-+			  ACPI_MP_WAKE_COMMAND_WAKEUP);
-+
-+	/*
-+	 * Wait for the CPU to wake up.
-+	 *
-+	 * The CPU being woken up is essentially in a spin loop waiting to be
-+	 * woken up. It should not take long for it wake up and acknowledge by
-+	 * zeroing out ->command.
-+	 *
-+	 * ACPI specification doesn't provide any guidance on how long kernel
-+	 * has to wait for a wake up acknowledgment. It also doesn't provide
-+	 * a way to cancel a wake up request if it takes too long.
-+	 *
-+	 * In TDX environment, the VMM has control over how long it takes to
-+	 * wake up secondary. It can postpone scheduling secondary vCPU
-+	 * indefinitely. Giving up on wake up request and reporting error opens
-+	 * possible attack vector for VMM: it can wake up a secondary CPU when
-+	 * kernel doesn't expect it. Wait until positive result of the wake up
-+	 * request.
-+	 */
-+	while (READ_ONCE(acpi_mp_wake_mailbox->command))
-+		cpu_relax();
-+
-+	return 0;
-+}
-+
-+int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
-+			      const unsigned long end)
-+{
-+	struct acpi_madt_multiproc_wakeup *mp_wake;
-+
-+	mp_wake = (struct acpi_madt_multiproc_wakeup *)header;
-+	if (BAD_MADT_ENTRY(mp_wake, end))
-+		return -EINVAL;
-+
-+	acpi_table_print_madt_entry(&header->common);
-+
-+	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
-+
-+	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
-+
-+	return 0;
-+}
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
