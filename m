@@ -1,333 +1,639 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2043.outbound.protection.outlook.com [40.107.101.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E006F194C7C
-	for <linux-coco@lists.linux.dev>; Thu, 18 Apr 2024 21:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713475066; cv=fail; b=tYyMb6q9eGP+nOToW4QNlUr3+R5RM894lHaoN9ZvLhzH+vM5ECXVT9uetNutJ/Qp9fnP0q8VIpzfpvGJuQyysCzeBvQ4PiU/VzC6N5Uw7nll6W9+N0xpN3HetEOhIfCDCEYix1/obzLGwlRBdsb0+UEWwvdWhHDBN50WK6ZTA1k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713475066; c=relaxed/simple;
-	bh=8SytdTa5kiMcZ8H0cMcfSzRAGQxf2o9rO0dGccIpLKg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=BJkLzy7pZrkGuVkQvWWG+pf8PvdDfZ7dMGlfmf/Ndb8/+hNG9eGFMgXNxbD3Z+zlPJqHMqgu+h+1g03t2fet9xeO8GLAfddxahLxVdA2yGC185RDFrUCmArbt7F7FOUbcfpVAvWseW0jHhI/T7ggfhPaHNFqGicQczghTXFB+NQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=pqsoOZMl; arc=fail smtp.client-ip=40.107.101.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="pqsoOZMl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ajcAPMcfLrbETAKID42AmpThW2FUsjqEDEOcn2X2Dg3WPEp886WPyICKVkcg+RL/qFQtr07tWDSyTnwHGKiuTmndioujpJEAjIKVb9NepWmymSVbrmic7gIGFY0V+NN3pi3FKULLhxbc/dZeSBwRl5qpLK30P8tTYnPPnPFjTuoXvLEbOCPyN3FMSEeJhm8hx6cRnLS9p8ZM2dnm2FuQwKqaw/pw7N2Rx8eGRFdsKnydo4v9DLwdPJ/kzJWxp/uyHJjet066O8A6ykhmV0ZpTUL2NEyMz0id1jStpk48YDtEmXU1IozndihZEY3kaxvFBvhX8JZmivDw6+ZFmr7Zyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hKWDpv9Kpf43XfKqVuz7a6XFWdGXYlTu4VBAt8MxXzE=;
- b=Yu1R/pNvIQAbJ0yS6yBfg6Nk9J81JhQx5beLhZunyNTm3m7ts7Eu/orKNH4lUiEsBLN8HyxYDTQ5mo/yQGvO2lKWS2Wr5Vl1z6nbUEjiWmEsS/zLexPlqFnz02Svuz9lpfw4T/bxoTfh/iCxvhvMI1qv/DJ8PDS7ulIC0/pdBjJdIk0hHCau3S0uNcAqb2unkVgLvlALwUFnUuF5zAKUih93//tO8QTtzMI9foDHTjPAWZOuPexqzpo6W0v9Qqm77UNJtRtHCoNowlgMsEs4r8D4cYRRjutO8aUGCo4A3JKgwiaaq98KPvmgG3HPxjSLQr1TRdpmN0NfgIgHIt4PVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hKWDpv9Kpf43XfKqVuz7a6XFWdGXYlTu4VBAt8MxXzE=;
- b=pqsoOZMlHZFZBxVtetlwY5/qvtaCtwA1gh2yCa3O9q0mYwrZ89JIGDWEA04e7Hm6sa+HbsO+JuWFZccLg3zYgqH+82g1Iz3KWK4HwtIB6h0GJ0mDWKOmdiDDM6AyIxGUWCNDY9sNxeAcl0plt5BPbhnQVuz77+P+grcCvz6hDHU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
- by IA1PR12MB6212.namprd12.prod.outlook.com (2603:10b6:208:3e4::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Thu, 18 Apr
- 2024 21:17:41 +0000
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52]) by BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52%6]) with mapi id 15.20.7452.049; Thu, 18 Apr 2024
- 21:17:39 +0000
-Message-ID: <d525f2ef-d8f0-a694-401f-8cb964dcdaed@amd.com>
-Date: Thu, 18 Apr 2024 16:17:36 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v3 03/14] x86/sev: Check for the presence of an SVSM in
- the SNP Secrets page
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- svsm-devel@coconut-svsm.dev, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Dan Williams <dan.j.williams@intel.com>, Michael Roth
- <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>
-References: <cover.1711405593.git.thomas.lendacky@amd.com>
- <e8d4877f3b7248031931ed193c026c42dd3363ef.1711405593.git.thomas.lendacky@amd.com>
- <20240417204030.GIZiAzvuLG6qcFFMyT@fat_crate.local>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20240417204030.GIZiAzvuLG6qcFFMyT@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DM5PR08CA0052.namprd08.prod.outlook.com
- (2603:10b6:4:60::41) To BL1PR12MB5732.namprd12.prod.outlook.com
- (2603:10b6:208:387::17)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CC442AAF;
+	Fri, 19 Apr 2024 09:34:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713519287; cv=none; b=OKxuQxzYYtvlJdkbZ7YDs5SkX620JjbtW+2C/Ws66MXoRBJTC3sT5oMgLYmnbna45Iy48xbkD0f4lfRQS04suQyhj0wbBPDcK7rjctASO6dGdlRHifV61Ujs0aWIgc+Yzmov5FtQmMxqux3iUpyG8RNBUCQlknNSJ2yD4FkSzxk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713519287; c=relaxed/simple;
+	bh=zU0jjGRQguAwVr5ZX8Al2UZoAuRAB63WFb4PkTBmn/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I38Zlq42O82DR9NFBmA6B+5qxsfIvCo5J7BuHrTYZ5dYZtEAjM0VUxfAFNOg48Lq2tY33Ef7a7257COEsyx2gpwZWupAQfMBC/hm+I8IBStT7VMC6mkOWmb2/p1l0rseacg2pHcAA2NLNs85DZ594XGDWqGhFcMVUckfjA0SKNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 228B72F;
+	Fri, 19 Apr 2024 02:35:12 -0700 (PDT)
+Received: from [10.57.84.16] (unknown [10.57.84.16])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 497DC3F792;
+	Fri, 19 Apr 2024 02:34:41 -0700 (PDT)
+Message-ID: <d2957090-fcf0-4dff-901e-d8ea975f2452@arm.com>
+Date: Fri, 19 Apr 2024 10:34:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|IA1PR12MB6212:EE_
-X-MS-Office365-Filtering-Correlation-Id: fed6356a-9660-46da-3b39-08dc5fecfa0b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	lGZjiuGhAyCdMTVDE7/280m0Loiu2AUFQ/pFLd4TM83XjE5s79HkeB5hrSJ/otyf4s6ZA1Zqc3vpCpitC4e43anJ+hiz/voNgDBBMsLykKMTYXjDnUzz23fkmy7F6GYMOpVFazdCm+tynLJHgDG7TB30hKdmII+tGuDKDfgKJOUL0l2mg51BXROJfBUkqVMxUmLSq2GcBGgjJCo5l5E9k7MR2l5rer8COnSIGH2g9PMgtf4P/jn95FeVXqSKZJmSDMYCEelyDyQSJDsxWrvkkLgb4cspJ434bHdVkvkc3an9aYy6WEuxGnrgxmfsCbvRv3oqJGSljHbFhO64ZKnZU5E1NqQ2kiFC8cpNtJp35Znl8nvBqRSB+Rz2qG1SK857TcERyYDq/NBsmjQAL6Q3kq4SGLI3QohYs13/K6iOBKpxxVySuAmTOBhGnkuD8aI9d8EGjHpcGC7w7WxHAlxa6b0O9MZ6FOnXtFxoncWEsffgM8jm6hs9mTX6V2qdOFuA1rGvpmj5gZsmpSj/AGStPRF0QBjJ8qwdBwnROzb8C8Uvqak5t6kWrriIJog8Clfsu+SmZKR6c1vuUjGKYpMY3JMuumZDgoCDmw/9HZ8YkbM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(7416005)(1800799015);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZVowSElzbDhTd2R1Z0xpZitTcW4zMEIxT2lYOFhTYkt3REQzbmVoVEtNSDI1?=
- =?utf-8?B?MVVRYTY0S3YzZkUyWDFGTzkwVittdlV6L2g5VG4xQm1iRVEwdlc3VlZlMHJl?=
- =?utf-8?B?N004aHpGOTlKQWxKMVVvWjRqMHk4c3VaUjBRSWtHR1NSMGVxOW1HaytVQUdj?=
- =?utf-8?B?TXNIbnVVcTZFR3o5VU5WT0E2dndsaXhUM29pZ2YvUmFuaEpRU1ViVkdPTkdQ?=
- =?utf-8?B?UU5QUmdPdHhXZnFKaTBzK3BySzUzb0Y0emUyM0sxQkNydXZJM1diR29RR29M?=
- =?utf-8?B?dktzSXdOTUROLzlSaFRCVjBRL0NMbXprandaYWVrTjF2Sk1oMDFyc2VNbk8z?=
- =?utf-8?B?YWIxaGpnM1VxbEQwcmV4TWdGcjdSV3VnVVM5RXB1Tms2K2plMzNKNWcxVmdT?=
- =?utf-8?B?ZjVoU0pHOG5NSDcyUTVBYVJ2d2Z2a1I0cEgvRTh3bU0zUU9UTVFrekVHZ0Ri?=
- =?utf-8?B?Z0s1QnFCNjZESG51ZzJodHArSnF4Y0h1YVlhM3paVjZBR2h6d1NBL3dOc09x?=
- =?utf-8?B?WVlESTRSWnN2YXN3eFlRQ1piQS9RcENDYWc2bXZ2R05QY3hieHplTVJDR3V0?=
- =?utf-8?B?SVNtS0Q2d3FXSUs0MEdXR1V0TTdndnVRQkp5SjJKRzJIVmNPS1BuVHVQeGc2?=
- =?utf-8?B?bWY1TVdhOW51OUVpL1gvU0M0YzVXaWMvTHpuMUl1SlZJZmxVaUUrQldLMGp3?=
- =?utf-8?B?MmVmU0FaUERUSGFHclV4d0QwaUV6QUgyck1GL2paVnhFcEtkb2NPVTBDU0U4?=
- =?utf-8?B?MVI0bzB1UGk2SEszTHNVdThTMzZNazV3dkkxQjZoakFhWnhubEcrbVRMQmpN?=
- =?utf-8?B?R1pWdHJDTXpYYVo4dGlUMk1YVnc0RDdyaGNLZXowQzVCSWVPMDdwNlM1TG4y?=
- =?utf-8?B?czFMKzUyYmVVZDNSeHp2VTZQTnNkRGFubEZObHhBdVFZQnp2U3VHM0tjZHVE?=
- =?utf-8?B?QWxBeVl3OE1pdDFZUjhjN1kxYUkzSnRiT2VrcU5lb3ZRU1FscDEzOTIzRHRq?=
- =?utf-8?B?aTlrWXY2SEJUVEZsalN2NDVTQ0MxUG1uOUp2WmRzU3phY0x0cGVuWWhBUG9p?=
- =?utf-8?B?UGIzZ0EyRlYwK0NMcEZGaHpJcU04dE1aakcxWFBwWThhcFRqdmIvZVA3OWpn?=
- =?utf-8?B?UEY1ZWNiUTg0MlRlN09SVXlJRjlLQ1lPbC9wMkhaZEJVTGl1ZktuU1VCTjYz?=
- =?utf-8?B?NzZjcWNvT09vd0RlQUlBaGlJOHZjR3JiZWxlVzZhOHpkbWwzUWQwNmxWUURL?=
- =?utf-8?B?T3Jkb3c1L2ZzZm1aTCtpbWVrbFZqOW1zd2FkL0ZvUTlHNkI1aHZXWU5ROXhC?=
- =?utf-8?B?T09PNjNKTlR0VW9uSXdHRXYwQjAzVExjMExySlBUeFI4K2RmNjBlYklmKzRj?=
- =?utf-8?B?U0hLVi9sV2x4T1AzVGJRazhNcURaR0RDWEh1M0M1c0s2cFlEZStzaUFIc3ZI?=
- =?utf-8?B?aUNVZXd0R056T1Vsa0xFaG01TEt2akpKN2VCU3Fsa1p4eWZTbEpuRVgxZ3lu?=
- =?utf-8?B?MDBpbFZuWXZDc081THhCQitZR2c4K2F1TXVKWEgzZEVFMnNjTndraVVYcENs?=
- =?utf-8?B?OERMaFRjOVBSTml4dy9MVXVJK1ZRc0ZiZTdTTWJIRkhRZE1NZm14Z2VDTDBS?=
- =?utf-8?B?aWduTkE1Ylo5aUhWaGxNSmZzNStGZnZURHlNVDBmU2l3dytHRXJvZHdVZVdl?=
- =?utf-8?B?dkw3Z3RlS3IwUGFHTTlpR0ZWeDR6Z3lwM3dickgrTkJ3LzJGTnpFVEJmUmkx?=
- =?utf-8?B?Um04b2dYdjNUWXJyazdKMkNIekwyMG90Rzd0cUFlbEV6ZU03VTdBRDhEeGpO?=
- =?utf-8?B?a3BpckdkT3F5NXQ2SzlzSWJJSHQ3ZUo2T29RSXlrMXUwTis3K1JHb1pBNzg5?=
- =?utf-8?B?N2oydVI0MUp1ejBYZlNrUGlTaFhOeDZuaUJNODY2MmRDbEtpWWF1cm5IdU9t?=
- =?utf-8?B?VDVXbThzTExmQlhsZjVjRG04QURheWJERjR6SnJBR0hsQTBBSk8zK2JaNTB5?=
- =?utf-8?B?VTBZTkJJRjhDd1F2N0RtR1lhYXlzYTdmazJGZlNEeTJuV0tWdnIzTnVSSjJH?=
- =?utf-8?B?T0NxTlVYR2ZXSDUrZnpBU2RJLzZjaU1hbm02QkVQaElmNU8wcWV1dU5PdnlO?=
- =?utf-8?Q?Lh+n0z6womOF0gHuZfrOQpy/c?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fed6356a-9660-46da-3b39-08dc5fecfa0b
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 21:17:39.2782
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qB/Kgwvyrk7cVaOd1q8vtVYpSQy0x/jgtASZUTDx+FOPiDkpF/KleJF9VeqR6N7LVB6E0GekWrnSESWcRyPQDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6212
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 17/43] arm64: RME: Allow VMM to set RIPAS
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+References: <20240412084056.1733704-1-steven.price@arm.com>
+ <20240412084309.1733783-1-steven.price@arm.com>
+ <20240412084309.1733783-18-steven.price@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20240412084309.1733783-18-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 4/17/24 15:40, Borislav Petkov wrote:
-> On Mon, Mar 25, 2024 at 05:26:22PM -0500, Tom Lendacky wrote:
->> During early boot phases, check for the presence of an SVSM when running
->> as an SEV-SNP guest.
->>
->> An SVSM is present if the 64-bit value at offset 0x148 into the secrets
->> page is non-zero. If an SVSM is present, save the SVSM Calling Area
->> address (CAA), located at offset 0x150 into the secrets page, and set
->> the VMPL level of the guest, which should be non-zero, to indicate the
->> presence of an SVSM.
+On 12/04/2024 09:42, Steven Price wrote:
+> Each page within the protected region of the realm guest can be marked
+> as either RAM or EMPTY. Allow the VMM to control this before the guest
+> has started and provide the equivalent functions to change this (with
+> the guest's approval) at runtime.
 > 
-> Where are we pointing to the SVSM spec?
-> 
-> This is in the 0th message
-> 
-> https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58019.pdf
-> 
-> but pls add it to our documentation here:
-> 
-> Documentation/arch/x86/amd-memory-encryption.rst
+> When transitioning from RIPAS RAM (1) to RIPAS EMPTY (0) the memory is
+> unmapped from the guest and undelegated allowing the memory to be reused
+> by the host. When transitioning to RIPAS RAM the actual population of
+> the leaf RTTs is done later on stage 2 fault, however it may be
+> necessary to allocate additional RTTs to represent the range requested.
 
-Do you want it added as a in this patch or in a documentation patch at the 
-end of the series?
+minor nit: To give a bit more context:
+
+"however it may be necessary to allocate additional RTTs in order for
+the RMM to track the RIPAS for the requested range".
 
 > 
->> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
->> ---
->>   arch/x86/boot/compressed/sev.c    | 35 ++++++++---------
->>   arch/x86/include/asm/sev-common.h |  4 ++
->>   arch/x86/include/asm/sev.h        | 25 +++++++++++-
->>   arch/x86/kernel/sev-shared.c      | 64 +++++++++++++++++++++++++++++++
->>   arch/x86/kernel/sev.c             | 16 ++++++++
->>   5 files changed, 125 insertions(+), 19 deletions(-)
->>
->> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
->> index 49dc9661176d..fe61ff630c7e 100644
->> --- a/arch/x86/boot/compressed/sev.c
->> +++ b/arch/x86/boot/compressed/sev.c
->> @@ -12,6 +12,7 @@
->>    */
->>   #include "misc.h"
->>   
->> +#include <linux/mm.h>
->>   #include <asm/bootparam.h>
->>   #include <asm/pgtable_types.h>
->>   #include <asm/sev.h>
->> @@ -29,6 +30,15 @@
->>   static struct ghcb boot_ghcb_page __aligned(PAGE_SIZE);
->>   struct ghcb *boot_ghcb;
->>   
->> +/*
->> + * SVSM related information:
->> + *   When running under an SVSM, the VMPL that Linux is executing at must be
->> + *   non-zero. The VMPL is therefore used to indicate the presence of an SVSM.
->> + */
->> +static u8 vmpl __section(".data");
->> +static u64 boot_svsm_caa_pa __section(".data");
->> +static struct svsm_ca *boot_svsm_caa __section(".data");
+> When freeing a block mapping it is necessary to temporarily unfold the
+> RTT which requires delegating an extra page to the RMM, this page can
+> then be recovered once the contents of the block mapping have been
+> freed. A spare, delegated page (spare_page) is used for this purpose.
 > 
-> Explain what those last 2 are in comments above it pls.
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>   arch/arm64/include/asm/kvm_rme.h |  16 ++
+>   arch/arm64/kvm/mmu.c             |   8 +-
+>   arch/arm64/kvm/rme.c             | 390 +++++++++++++++++++++++++++++++
+>   3 files changed, 411 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
+> index 915e76068b00..cc8f81cfc3c0 100644
+> --- a/arch/arm64/include/asm/kvm_rme.h
+> +++ b/arch/arm64/include/asm/kvm_rme.h
+> @@ -96,6 +96,14 @@ void kvm_realm_destroy_rtts(struct kvm *kvm, u32 ia_bits);
+>   int kvm_create_rec(struct kvm_vcpu *vcpu);
+>   void kvm_destroy_rec(struct kvm_vcpu *vcpu);
+>   
+> +void kvm_realm_unmap_range(struct kvm *kvm,
+> +			   unsigned long ipa,
+> +			   u64 size,
+> +			   bool unmap_private);
+> +int realm_set_ipa_state(struct kvm_vcpu *vcpu,
+> +			unsigned long addr, unsigned long end,
+> +			unsigned long ripas);
+> +
+>   #define RME_RTT_BLOCK_LEVEL	2
+>   #define RME_RTT_MAX_LEVEL	3
+>   
+> @@ -114,4 +122,12 @@ static inline unsigned long rme_rtt_level_mapsize(int level)
+>   	return (1UL << RME_RTT_LEVEL_SHIFT(level));
+>   }
+>   
+> +static inline bool realm_is_addr_protected(struct realm *realm,
+> +					   unsigned long addr)
+> +{
+> +	unsigned int ia_bits = realm->ia_bits;
+> +
+> +	return !(addr & ~(BIT(ia_bits - 1) - 1));
+> +}
+> +
+>   #endif
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 46f0c4e80ace..8a7b5449697f 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -310,6 +310,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
+>    * @start: The intermediate physical base address of the range to unmap
+>    * @size:  The size of the area to unmap
+>    * @may_block: Whether or not we are permitted to block
+> + * @only_shared: If true then protected mappings should not be unmapped
+>    *
+>    * Clear a range of stage-2 mappings, lowering the various ref-counts.  Must
+>    * be called while holding mmu_lock (unless for freeing the stage2 pgd before
+> @@ -317,7 +318,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
+>    * with things behind our backs.
+>    */
+>   static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64 size,
+> -				 bool may_block)
+> +				 bool may_block, bool only_shared)
+>   {
+>   	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>   	phys_addr_t end = start + size;
+> @@ -330,7 +331,7 @@ static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64
+>   
+>   static void unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64 size)
+>   {
+> -	__unmap_stage2_range(mmu, start, size, true);
+> +	__unmap_stage2_range(mmu, start, size, true, false);
+>   }
+>   
+>   static void stage2_flush_memslot(struct kvm *kvm,
+> @@ -1771,7 +1772,8 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+>   
+>   	__unmap_stage2_range(&kvm->arch.mmu, range->start << PAGE_SHIFT,
+>   			     (range->end - range->start) << PAGE_SHIFT,
+> -			     range->may_block);
+> +			     range->may_block,
+> +			     range->only_shared);
+>   
+>   	return false;
+>   }
+> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+> index 629a095bea61..9e5983c51393 100644
+> --- a/arch/arm64/kvm/rme.c
+> +++ b/arch/arm64/kvm/rme.c
+> @@ -79,6 +79,12 @@ static phys_addr_t __alloc_delegated_page(struct realm *realm,
+>   	return phys;
+>   }
+>   
+> +static phys_addr_t alloc_delegated_page(struct realm *realm,
+> +					struct kvm_mmu_memory_cache *mc)
+> +{
+> +	return __alloc_delegated_page(realm, mc, GFP_KERNEL);
+> +}
+> +
+>   static void free_delegated_page(struct realm *realm, phys_addr_t phys)
+>   {
+>   	if (realm->spare_page == PHYS_ADDR_MAX) {
+> @@ -94,6 +100,151 @@ static void free_delegated_page(struct realm *realm, phys_addr_t phys)
+>   	free_page((unsigned long)phys_to_virt(phys));
+>   }
+>   
+> +static int realm_rtt_create(struct realm *realm,
+> +			    unsigned long addr,
+> +			    int level,
+> +			    phys_addr_t phys)
+> +{
+> +	addr = ALIGN_DOWN(addr, rme_rtt_level_mapsize(level - 1));
+> +	return rmi_rtt_create(virt_to_phys(realm->rd), phys, addr, level);
+> +}
+> +
+> +static int realm_rtt_fold(struct realm *realm,
+> +			  unsigned long addr,
+> +			  int level,
+> +			  phys_addr_t *rtt_granule)
+> +{
+> +	unsigned long out_rtt;
+> +	int ret;
+> +
+> +	ret = rmi_rtt_fold(virt_to_phys(realm->rd), addr, level, &out_rtt);
+> +
+> +	if (RMI_RETURN_STATUS(ret) == RMI_SUCCESS && rtt_granule)
+> +		*rtt_granule = out_rtt;
+> +
+> +	return ret;
+> +}
+> +
+> +static int realm_destroy_protected(struct realm *realm,
+> +				   unsigned long ipa,
+> +				   unsigned long *next_addr)
+> +{
+> +	unsigned long rd = virt_to_phys(realm->rd);
+> +	unsigned long addr;
+> +	phys_addr_t rtt;
+> +	int ret;
+> +
+> +loop:
+> +	ret = rmi_data_destroy(rd, ipa, &addr, next_addr);
+> +	if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+> +		if (*next_addr > ipa)
+> +			return 0; /* UNASSIGNED */
+> +		rtt = alloc_delegated_page(realm, NULL);
+> +		if (WARN_ON(rtt == PHYS_ADDR_MAX))
+> +			return -1;
+> +		/* ASSIGNED - ipa is mapped as a block, so split */
+> +		ret = realm_rtt_create(realm, ipa,
+> +				       RMI_RETURN_INDEX(ret) + 1, rtt);
 
-Will do.
+Could we not go all the way to L3 (rather than 1 level deeper) and try
+again ? That way, we are covered for block mappings at L1 (1G).
 
-> 
->>   /*
->>    * SNP_FEATURES_IMPL_REQ is the mask of SNP features that will need
->>    * guest side implementation for proper functioning of the guest. If any
->> @@ -480,6 +472,13 @@ static bool early_snp_init(struct boot_params *bp)
->>   	 */
->>   	setup_cpuid_table(cc_info);
->>   
->> +	/*
->> +	 * Record the SVSM Calling Area address (CAA) if the guest is not
-> 
-> 			Calling Area (CA) address
-> 
->> +	 * running at VMPL0. The CA will be used to communicate with the
-> 
-> and then you can use "CA" here.
+> +		if (WARN_ON(ret)) {
+> +			free_delegated_page(realm, rtt);
+> +			return -1;
+> +		}
+> +		/* retry */
+> +		goto loop;
+> +	} else if (WARN_ON(ret)) {
+> +		return -1;
+> +	}
+> +	ret = rmi_granule_undelegate(addr);
+> +
+> +	/*
+> +	 * If the undelegate fails then something has gone seriously
+> +	 * wrong: take an extra reference to just leak the page
+> +	 */
+> +	if (WARN_ON(ret))
+> +		get_page(phys_to_page(addr));
+> +
+> +	return 0;
+> +}
+> +
+> +static void realm_unmap_range_shared(struct kvm *kvm,
+> +				     int level,
+> +				     unsigned long start,
+> +				     unsigned long end)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	unsigned long rd = virt_to_phys(realm->rd);
+> +	ssize_t map_size = rme_rtt_level_mapsize(level);
+> +	unsigned long next_addr, addr;
+> +	unsigned long shared_bit = BIT(realm->ia_bits - 1);
+> +
+> +	if (WARN_ON(level > RME_RTT_MAX_LEVEL))
+> +		return;
+> +
+> +	start |= shared_bit;
+> +	end |= shared_bit;
+> +
+> +	for (addr = start; addr < end; addr = next_addr) {
+> +		unsigned long align_addr = ALIGN(addr, map_size);
+> +		int ret;
+> +
+> +		next_addr = ALIGN(addr + 1, map_size);
+> +
+> +		if (align_addr != addr || next_addr > end) {
+> +			/* Need to recurse deeper */
+> +			if (addr < align_addr)
+> +				next_addr = align_addr;
+> +			realm_unmap_range_shared(kvm, level + 1, addr,
+> +						 min(next_addr, end));
+> +			continue;
+> +		}
+> +
+> +		ret = rmi_rtt_unmap_unprotected(rd, addr, level, &next_addr);
 
-Will do.
+minor nit: We could potentially use rmi_rtt_destroy() to tear down
+shared mappings without unmapping them individually, if the range
+is big enough. All such optimisations could come later though.
 
-> 
->> +	 * SVSM to perform the SVSM services.
->> +	 */
->> +	setup_svsm_ca(cc_info);
->> +
->>   	/*
->>   	 * Pass run-time kernel a pointer to CC info via boot_params so EFI
->>   	 * config table doesn't need to be searched again during early startup
->> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
->> index b463fcbd4b90..68a8cdf6fd6a 100644
->> --- a/arch/x86/include/asm/sev-common.h
->> +++ b/arch/x86/include/asm/sev-common.h
->> @@ -159,6 +159,10 @@ struct snp_psc_desc {
->>   #define GHCB_TERM_NOT_VMPL0		3	/* SNP guest is not running at VMPL-0 */
->>   #define GHCB_TERM_CPUID			4	/* CPUID-validation failure */
->>   #define GHCB_TERM_CPUID_HV		5	/* CPUID failure during hypervisor fallback */
->> +#define GHCB_TERM_SECRETS_PAGE		6	/* Secrets page failure */
->> +#define GHCB_TERM_NO_SVSM		7	/* SVSM is not advertised in the secrets page */
->> +#define GHCB_TERM_SVSM_VMPL0		8	/* SVSM is present but has set VMPL to 0 */
->> +#define GHCB_TERM_SVSM_CAA		9	/* SVSM is present but the CA is not page aligned */
-> 
-> "CAA" in the comment I guess. :)
+> +		switch (RMI_RETURN_STATUS(ret)) {
+> +		case RMI_SUCCESS:
+> +			break;
+> +		case RMI_ERROR_RTT:
+> +			if (next_addr == addr) {
 
-Will do.
+At this point we have a block aligned address, but the mapping is
+further deep. Given, start from top to down, we implicitly handle
+the case of block mappings. Not sure if that needs to be in a comment
+here.
 
-> 
->> +/*
->> + * Maintain the GPA of the SVSM Calling Area (CA) in order to utilize the SVSM
->> + * services needed when not running in VMPL0.
->> + */
->> +static void __head setup_svsm_ca(const struct cc_blob_sev_info *cc_info)
->> +{
->> +	struct snp_secrets_page_layout *secrets_page;
-> 
-> Why was that thing ever called "_layout" and not simply
-> snp_secrets_page?
-> 
-> Fix it?
+> +				next_addr = ALIGN(addr + 1, map_size);
 
-Sure, I can change that as a pre-patch to the series.
+Reset to the "actual next" as it was overwritten by the RMI call.
 
-> 
->> +	u64 caa;
->> +
->> +	BUILD_BUG_ON(sizeof(*secrets_page) != PAGE_SIZE);
-> 
-> Put it in the header under the struct definition I guess.
+> +				realm_unmap_range_shared(kvm, level + 1, addr,
+> +							 next_addr);
+> +			}
+> +			break;
+> +		default:
+> +			WARN_ON(1);
+> +		}
+> +	}
+> +}
+> +
+> +static void realm_unmap_range_private(struct kvm *kvm,
+> +				      unsigned long start,
+> +				      unsigned long end)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	ssize_t map_size = RME_PAGE_SIZE;
+> +	unsigned long next_addr, addr;
+> +
+> +	for (addr = start; addr < end; addr = next_addr) {
+> +		int ret;
+> +
+> +		next_addr = ALIGN(addr + 1, map_size);
+> +
+> +		ret = realm_destroy_protected(realm, addr, &next_addr);
+> +
+> +		if (WARN_ON(ret))
+> +			break;
+> +	}
+> +}
+> +
+> +static void realm_unmap_range(struct kvm *kvm,
+> +			      unsigned long start,
+> +			      unsigned long end,
+> +			      bool unmap_private)
+> +{
+> +	realm_unmap_range_shared(kvm, RME_RTT_MAX_LEVEL - 1, start, end);
 
-It can't stand on it's own in the header file. I'd have to put it in a 
-#define or an inline function and then use that in some code. So it's 
-probably best to keep it here.
+minor nit: We already have a helper to find a suitable start level
+(defined below), may be we could use that ? And even do the rtt_destroy 
+optimisation for unprotected range.
 
-> 
->> +	/*
->> +	 * Use __pa() since this routine is running identity mapped when
->> +	 * called, both by the decompressor code and the early kernel code.
->> +	 */
->> +	if (running_at_vmpl0((void *)__pa(&boot_ghcb_page)))
->> +		return;
->> +
->> +	/*
->> +	 * Not running at VMPL0, ensure everything has been properly supplied
->> +	 * for running under an SVSM.
->> +	 */
->> +	if (!cc_info || !cc_info->secrets_phys || cc_info->secrets_len != PAGE_SIZE)
->> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SECRETS_PAGE);
->> +
->> +	secrets_page = (struct snp_secrets_page_layout *)cc_info->secrets_phys;
->> +	if (!secrets_page->svsm_size)
->> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NO_SVSM);
->> +
->> +	if (!secrets_page->svsm_guest_vmpl)
->> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SVSM_VMPL0);
->> +
->> +	vmpl = secrets_page->svsm_guest_vmpl;
->> +
->> +	caa = secrets_page->svsm_caa;
->> +	if (!PAGE_ALIGNED(caa))
->> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SVSM_CAA);
->> +
->> +	/*
->> +	 * The CA is identity mapped when this routine is called, both by the
->> +	 * decompressor code and the early kernel code.
->> +	 */
->> +	boot_svsm_caa = (struct svsm_ca *)caa;
->> +	boot_svsm_caa_pa = caa;
->> +}
->> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
->> index b59b09c2f284..64799a04feb4 100644
->> --- a/arch/x86/kernel/sev.c
->> +++ b/arch/x86/kernel/sev.c
->> @@ -135,6 +135,15 @@ struct ghcb_state {
->>   static DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
->>   static DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
->>   
->> +/*
->> + * SVSM related information:
->> + *   When running under an SVSM, the VMPL that Linux is executing at must be
->> + *   non-zero. The VMPL is therefore used to indicate the presence of an SVSM.
->> + */
->> +static u8 vmpl __ro_after_init;
->> +static struct svsm_ca *boot_svsm_caa __ro_after_init;
->> +static u64 boot_svsm_caa_pa __ro_after_init;
-> 
-> Uff, duplication.
-> 
-> Let's put them in sev-shared.c pls and avoid that.
+> +	if (unmap_private)
+> +		realm_unmap_range_private(kvm, start, end);
+> +}
+> +
+>   u32 kvm_realm_ipa_limit(void)
+>   {
+>   	return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_S2SZ);
+> @@ -190,6 +341,30 @@ static int realm_rtt_destroy(struct realm *realm, unsigned long addr,
+>   	return ret;
+>   }
+>   
+> +static int realm_create_rtt_levels(struct realm *realm,
+> +				   unsigned long ipa,
+> +				   int level,
+> +				   int max_level,
+> +				   struct kvm_mmu_memory_cache *mc)
+> +{
+> +	if (WARN_ON(level == max_level))
+> +		return 0;
+> +
+> +	while (level++ < max_level) {
+> +		phys_addr_t rtt = alloc_delegated_page(realm, mc);
+> +
+> +		if (rtt == PHYS_ADDR_MAX)
+> +			return -ENOMEM;
+> +
+> +		if (realm_rtt_create(realm, ipa, level, rtt)) {
+> +			free_delegated_page(realm, rtt);
+> +			return -ENXIO;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>   static int realm_tear_down_rtt_level(struct realm *realm, int level,
+>   				     unsigned long start, unsigned long end)
+>   {
+> @@ -265,6 +440,68 @@ static int realm_tear_down_rtt_range(struct realm *realm,
+>   					 start, end);
+>   }
+>   
+> +/*
+> + * Returns 0 on successful fold, a negative value on error, a positive value if
+> + * we were not able to fold all tables at this level.
+> + */
+> +static int realm_fold_rtt_level(struct realm *realm, int level,
+> +				unsigned long start, unsigned long end)
+> +{
+> +	int not_folded = 0;
+> +	ssize_t map_size;
+> +	unsigned long addr, next_addr;
+> +
+> +	if (WARN_ON(level > RME_RTT_MAX_LEVEL))
+> +		return -EINVAL;
+> +
+> +	map_size = rme_rtt_level_mapsize(level - 1);
+> +
+> +	for (addr = start; addr < end; addr = next_addr) {
+> +		phys_addr_t rtt_granule;
+> +		int ret;
+> +		unsigned long align_addr = ALIGN(addr, map_size);
+> +
+> +		next_addr = ALIGN(addr + 1, map_size);
+> +
+> +		ret = realm_rtt_fold(realm, align_addr, level, &rtt_granule);
+> +
+> +		switch (RMI_RETURN_STATUS(ret)) {
+> +		case RMI_SUCCESS:
+> +			if (!WARN_ON(rmi_granule_undelegate(rtt_granule)))
+> +				free_page((unsigned long)phys_to_virt(rtt_granule));
 
-Ok, but it will require moving some functions after the inclusion of 
-sev-shared.c and then (later) adding some advance function declarations.
+minor nit: Do we need a wrapper function for things like this, abd 
+leaking the page if undelegate fails, something like
+rme_reclaim_delegated_page()  ?
 
-Thanks,
-Tom
 
-> 
-> Thx.
-> 
+> +			break;
+> +		case RMI_ERROR_RTT:
+> +			if (level == RME_RTT_MAX_LEVEL ||
+> +			    RMI_RETURN_INDEX(ret) < level) {
+> +				not_folded++;
+> +				break;
+> +			}
+> +			/* Recurse a level deeper */
+> +			ret = realm_fold_rtt_level(realm,
+> +						   level + 1,
+> +						   addr,
+> +						   next_addr);
+> +			if (ret < 0)
+> +				return ret;
+> +			else if (ret == 0)
+> +				/* Try again at this level */
+> +				next_addr = addr;
+> +			break;
+> +		default:
+> +			return -ENXIO;
+> +		}
+> +	}
+> +
+> +	return not_folded;
+> +}
+> +
+> +static int realm_fold_rtt_range(struct realm *realm,
+> +				unsigned long start, unsigned long end)
+> +{
+> +	return realm_fold_rtt_level(realm, get_start_level(realm) + 1,
+> +				    start, end);
+> +}
+> +
+>   static void ensure_spare_page(struct realm *realm)
+>   {
+>   	phys_addr_t tmp_rtt;
+> @@ -295,6 +532,147 @@ void kvm_realm_destroy_rtts(struct kvm *kvm, u32 ia_bits)
+>   	WARN_ON(realm_tear_down_rtt_range(realm, 0, (1UL << ia_bits)));
+>   }
+>   
+> +void kvm_realm_unmap_range(struct kvm *kvm, unsigned long ipa, u64 size,
+> +			   bool unmap_private)
+> +{
+> +	unsigned long end = ipa + size;
+> +	struct realm *realm = &kvm->arch.realm;
+> +
+> +	end = min(BIT(realm->ia_bits - 1), end);
+> +
+> +	ensure_spare_page(realm);
+> +
+> +	realm_unmap_range(kvm, ipa, end, unmap_private);
+> +
+> +	realm_fold_rtt_range(realm, ipa, end);
+
+Shouldn't this be :
+
+	if (unmap_private)
+		realm_fold_rtt_range(realm, ipa, end);
+
+Also it is fine to reclaim RTTs from the protected space, not the
+unprotected half, as long as we use RTT_DESTROY in unmap_shared routine.
+
+> +}
+> +
+> +static int find_map_level(struct realm *realm,
+> +			  unsigned long start,
+> +			  unsigned long end)
+> +{
+> +	int level = RME_RTT_MAX_LEVEL;
+> +
+> +	while (level > get_start_level(realm)) {
+> +		unsigned long map_size = rme_rtt_level_mapsize(level - 1);
+> +
+> +		if (!IS_ALIGNED(start, map_size) ||
+> +		    (start + map_size) > end)
+> +			break;
+> +
+> +		level--;
+> +	}
+> +
+> +	return level;
+> +}
+> +
+> +int realm_set_ipa_state(struct kvm_vcpu *vcpu,
+> +			unsigned long start,
+> +			unsigned long end,
+> +			unsigned long ripas)
+> +{
+> +	struct kvm *kvm = vcpu->kvm;
+> +	struct realm *realm = &kvm->arch.realm;
+> +	struct realm_rec *rec = &vcpu->arch.rec;
+> +	phys_addr_t rd_phys = virt_to_phys(realm->rd);
+> +	phys_addr_t rec_phys = virt_to_phys(rec->rec_page);
+> +	struct kvm_mmu_memory_cache *memcache = &vcpu->arch.mmu_page_cache;
+> +	unsigned long ipa = start;
+> +	int ret = 0;
+> +
+> +	while (ipa < end) {
+> +		unsigned long next;
+> +
+> +		ret = rmi_rtt_set_ripas(rd_phys, rec_phys, ipa, end, &next);
+> +
+> +		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+> +			int walk_level = RMI_RETURN_INDEX(ret);
+> +			int level = find_map_level(realm, ipa, end);
+
+Might be worth adding a comment here. Check if the RMM needs tables to
+create deeper level tables.
+
+> +
+> +			if (walk_level < level) {
+> +				ret = realm_create_rtt_levels(realm, ipa,
+> +							      walk_level,
+> +							      level,
+> +							      memcache);
+				/* Retry with RTTs created */
+
+> +				if (!ret)
+> +					continue;
+> +			} else {
+> +				ret = -EINVAL;
+> +			}
+> +
+> +			break;
+> +		} else if (RMI_RETURN_STATUS(ret) != RMI_SUCCESS) {
+> +			WARN(1, "Unexpected error in %s: %#x\n", __func__,
+> +			     ret);
+> +			ret = -EINVAL;
+> +			break;
+> +		}
+> +		ipa = next;
+> +	}
+> +
+> +	if (ripas == RMI_EMPTY && ipa != start)
+> +		kvm_realm_unmap_range(kvm, start, ipa - start, true);
+
+This triggers unmapping the "shared" aliases too, which is not necessary.
+
+> +
+> +	return ret;
+> +}
+> +
+> +static int realm_init_ipa_state(struct realm *realm,
+> +				unsigned long ipa,
+> +				unsigned long end)
+> +{
+> +	phys_addr_t rd_phys = virt_to_phys(realm->rd);
+> +	int ret;
+> +
+> +	while (ipa < end) {
+> +		unsigned long next;
+> +
+> +		ret = rmi_rtt_init_ripas(rd_phys, ipa, end, &next);
+> +
+> +		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+> +			int err_level = RMI_RETURN_INDEX(ret);
+> +			int level = find_map_level(realm, ipa, end);
+> +
+> +			if (WARN_ON(err_level >= level))
+> +				return -ENXIO;
+> +
+> +			ret = realm_create_rtt_levels(realm, ipa,
+> +						      err_level,
+> +						      level, NULL);
+> +			if (ret)
+> +				return ret;
+> +			/* Retry with the RTT levels in place */
+> +			continue;
+> +		} else if (WARN_ON(ret)) {
+> +			return -ENXIO;
+> +		}
+> +
+> +		ipa = next;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int kvm_init_ipa_range_realm(struct kvm *kvm,
+> +				    struct kvm_cap_arm_rme_init_ipa_args *args)
+> +{
+> +	int ret = 0;
+> +	gpa_t addr, end;
+> +	struct realm *realm = &kvm->arch.realm;
+> +
+> +	addr = args->init_ipa_base;
+> +	end = addr + args->init_ipa_size;
+> +
+> +	if (end < addr)
+> +		return -EINVAL;
+> +
+> +	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
+> +		return -EINVAL;
+> +
+> +	ret = realm_init_ipa_state(realm, addr, end);
+> +
+> +	return ret;
+
+super minor nit:
+
+	return realm_init_ipa_state(realm, addr, end);
+
+> +}
+> +
+>   /* Protects access to rme_vmid_bitmap */
+>   static DEFINE_SPINLOCK(rme_vmid_lock);
+>   static unsigned long *rme_vmid_bitmap;
+> @@ -418,6 +796,18 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
+>   	case KVM_CAP_ARM_RME_CREATE_RD:
+>   		r = kvm_create_realm(kvm);
+>   		break;
+> +	case KVM_CAP_ARM_RME_INIT_IPA_REALM: {
+> +		struct kvm_cap_arm_rme_init_ipa_args args;
+> +		void __user *argp = u64_to_user_ptr(cap->args[1]);
+> +
+> +		if (copy_from_user(&args, argp, sizeof(args))) {
+> +			r = -EFAULT;
+> +			break;
+> +		}
+> +
+> +		r = kvm_init_ipa_range_realm(kvm, &args);
+> +		break;
+> +	}
+
+
+Suzuki
