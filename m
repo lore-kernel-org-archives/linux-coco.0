@@ -1,101 +1,218 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2063.outbound.protection.outlook.com [40.107.243.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3638624B
-	for <linux-coco@lists.linux.dev>; Fri, 19 Apr 2024 13:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713533507; cv=none; b=khNLPL95Gwbl3C+V9vJ76DoT2Kts1kvDrqVtszhoUSnXgWJvK9cxvmrf4bB9Gk8gWTWfA72FzWKs1TN5aMuRkqPZrDkFitqo37G++tFJiJOoHWJeh+NziMzu0rnqQ/QdyQoF6iOaZUAlVXgdf1VzUQK1sv51XdiTAFgF5nsfqdM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713533507; c=relaxed/simple;
-	bh=q8sLxUQXTmO+zQlO+Nq2zQY8GKJ0uOrx6YdkifWv8s8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gjl6rDNn2MO+9sC+KNUh8zeW7k6jj0JYm/DtoNfTvSex8Lxnm5YxD5mZfUw/Q0grd2EQuqHHzgBKwcYBKKo7VmCoLv3oKFOJKKZdvXhTj9AS+3IjuuPbwa9Y9oLY3H/Ww9lexOhLf3m8DeXAO5cEmMPDwGOF5m3UXyOTQ3bdQQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LXMJLVNv; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A846512837C
+	for <linux-coco@lists.linux.dev>; Fri, 19 Apr 2024 14:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713536370; cv=fail; b=fqEQkysY2/vnZoV5sKUij9yTQwQ8lbC84tx+btCgS7WgTL9XY1dUfHMp//+emWDqyYurIiB08c9Sj08DAvSnhZoa5P2yRU1YJI9/EqdbiW18NkWK3/0k5LhrbNsdM5Y7StqPoX7UpN8CTMjWuF4+ZZHqXF8yL+lrz3yagqEPYsg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713536370; c=relaxed/simple;
+	bh=gGSpfD/vCz7jYXwK4jkHC5zF/jZGN6lAxOWi4UL8tK8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X1+f0z4OGYks7uOPByJZzw4LecOY6M78t3xB39W53URSpRArcdh7jCgiXzszKqgiPLH1DQfiziqHpJOEdpNxLZ1xkwsdQRe5l06lR2a6W2fgo7fDbLlaFPdBXYL/4DcsSjyV+/o7KqsK+y4anEGTifw2FaSoR3ysrpU9yJWJ9rs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=TiZkFHU9; arc=fail smtp.client-ip=40.107.243.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LXMJLVNv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713533506; x=1745069506;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=q8sLxUQXTmO+zQlO+Nq2zQY8GKJ0uOrx6YdkifWv8s8=;
-  b=LXMJLVNvMh7kLIg+OQpGV3kIW52FsgOxk4V2z9Zj+eo63+Wvzc4hxwEh
-   DcCUGRysIJ82uybKP+4zUq9Xbjt90+A62OCQeyhmKT2QUVzuc1xMvF9gD
-   ZMlkpJsAIgYuduZTNGC3yh+N2mJUTh3DcKiIo4mAmn10SLaBnhRjVwzSP
-   s0XDpCfZdosoXZRq+ELaRLYZZO5w59wHEWnc59x9Mm8+wE7K2g1VxTqKu
-   E5oRqWgoe4M2CVtARlJ2jSZdS7L/vL20DFIV0HCOWStGQySy7PSF8auAw
-   eOo579oO/oxKfcizcMBUPL6oWIhcd+qaHTMw0Rrsz/PsW3Sex9Zs8Yt3q
-   A==;
-X-CSE-ConnectionGUID: EUECL0dyS8+MLdz2Fg5k1Q==
-X-CSE-MsgGUID: uTkdqNIaRIypL9BzhjnPzg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11049"; a="19829821"
-X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; 
-   d="scan'208";a="19829821"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2024 06:31:45 -0700
-X-CSE-ConnectionGUID: 8EhFIYEkSGmj4XmvSB/OuA==
-X-CSE-MsgGUID: 32PEEwedQ4ewi5StWKTDOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; 
-   d="scan'208";a="23411447"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa008.fm.intel.com with ESMTP; 19 Apr 2024 06:31:40 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id CEE59FD; Fri, 19 Apr 2024 16:31:39 +0300 (EEST)
-Date: Fri, 19 Apr 2024 16:31:39 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv10 03/18] cpu/hotplug: Add support for declaring CPU
- offlining not supported
-Message-ID: <rju6u37prtr5nf4upcntcy4jcnul6atqmbh6impzqdn3dlo2pj@lqodxa7elohz>
-References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <20240409113010.465412-4-kirill.shutemov@linux.intel.com>
- <20240418143709.GJZiEwFejGQY3jiwsp@fat_crate.local>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="TiZkFHU9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lhGr1OAx9GT9BZSBS6p1yU8M8X/ja/Z8byapf2A21ymX21UX1Io45yx9NGKZIBuqgBdRqSChwzgBB5ytMMbbnkinjcMrdSOgOv0vs83ztX1yRUx1bczi271D0IBnbTcN9GMZzPKCDl+mda+GT0S0IwYPd+3xfH/Xy0eOcw9w+T7JdlbKvIGDRS98VZtXKa3lDGIlP5d2m5j8DHfx0ps0EcBDQuncahoWMquCWfcsHHTyn+S0swrXVG3ygPzYMlwM63BPW5Oyqf/WltMKNd/ZILuNb2Q5/YoiMsNo91bfmbqTEybD1S0i82PJJiiLRGGrNEphyjL2cIMK6w1H+ek/tQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xCLECH2BTckagVUfu2ZQ3LTaU6lM5yOLfu5mpophMUw=;
+ b=TPRMD5PEAuQ9/+eUpRvMuWKiZ75CrDbvb140ga7ksOnx9AoUyXucVOhBbP1agv3k+CRJ84OVP1W4daJQxhFsyZENDiYwbwPCCZerWT0P0IYb5FBZc5xXUawKcv0GgKij9q07iIKDrs1epgo9fxBIWYmjCIonkesoY9xAZoh96KIFF/PTLsIbI3LRfNggh3DxTsVVNNn6mu1Ek6sGaJhQ3DKhV1pHoQmV6kJ3XrB0dOnonC7C2ZhASK3TBEVlJs9hFwFOswITanDuK+DReiKPawyBmKSxGIfGYlkOUBGSv6iaAiUjE7ouGd9xFIAKSXo4U/2rHHJwdoi+kWAmDveZ/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xCLECH2BTckagVUfu2ZQ3LTaU6lM5yOLfu5mpophMUw=;
+ b=TiZkFHU9Ewohv0QP2wBxV4SGoD5d/+7PqtWnHMfAPP7p4b/XqO4TWlQuNg+kgH8ECeqovWH0dWXYjUJW/jRMKjkMfMADuSWVi50ObpZGo8qQYYtpJXLUwmxPFOC67ZifQ31mKEs+VI3jQ+NCxZKo4TKEFvTVM5hfcCURhC6uiaU=
+Received: from BL1PR13CA0193.namprd13.prod.outlook.com (2603:10b6:208:2be::18)
+ by PH0PR12MB7470.namprd12.prod.outlook.com (2603:10b6:510:1e9::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.43; Fri, 19 Apr
+ 2024 14:19:23 +0000
+Received: from MN1PEPF0000F0DE.namprd04.prod.outlook.com
+ (2603:10b6:208:2be:cafe::be) by BL1PR13CA0193.outlook.office365.com
+ (2603:10b6:208:2be::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.14 via Frontend
+ Transport; Fri, 19 Apr 2024 14:19:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MN1PEPF0000F0DE.mail.protection.outlook.com (10.167.242.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7452.22 via Frontend Transport; Fri, 19 Apr 2024 14:19:23 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 19 Apr
+ 2024 09:19:21 -0500
+Date: Fri, 19 Apr 2024 09:19:20 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <seanjc@google.com>, <vkuznets@redhat.com>,
+	<jmattson@google.com>, <luto@kernel.org>, <dave.hansen@linux.intel.com>,
+	<slp@redhat.com>, <pgonda@google.com>, <peterz@infradead.org>,
+	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
+	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
+	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, Brijesh Singh
+	<brijesh.singh@amd.com>
+Subject: Re: [PATCH v13 09/26] KVM: SEV: Add KVM_SEV_SNP_LAUNCH_START command
+Message-ID: <20240419141920.2djcy6ag3peiiufn@amd.com>
+References: <20240418194133.1452059-1-michael.roth@amd.com>
+ <20240418194133.1452059-10-michael.roth@amd.com>
+ <CABgObfYztTP+qoTa-tuPC8Au-aKhwiBkcvHni4T+n6MCD-P9Dw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20240418143709.GJZiEwFejGQY3jiwsp@fat_crate.local>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABgObfYztTP+qoTa-tuPC8Au-aKhwiBkcvHni4T+n6MCD-P9Dw@mail.gmail.com>
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0DE:EE_|PH0PR12MB7470:EE_
+X-MS-Office365-Filtering-Correlation-Id: 274bf5cf-09f1-440f-9f6c-08dc607bb627
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VGxOOXFPWWY3c2RieUNHcTVKWjRLV1RoWlVUcGNPdDlMY1ZkZzdCdzRVSzB0?=
+ =?utf-8?B?YmVqRDJsQ0U3ZzllME9Xa3AzTURjMUZKbWxhQ3d4djBoWlNKVWN3RU9PTXVQ?=
+ =?utf-8?B?OWFwaGRVSlBML2R4YTVtdGpKaEtBc3FtbVZveThMQmFnSW5RWkhxMHd2NmZr?=
+ =?utf-8?B?TmlWY3A3Y25TUlV1bkhFMGhwbnoyMWc0Z0xsT0FuM1d2Z25XclZaSXBhOXlj?=
+ =?utf-8?B?RzYzUDVKeGo4a2FsemIvcGVFaWdGcUU4Y1BpQ1ZsaXNCQ1Jnek5tOHJQeExI?=
+ =?utf-8?B?a3lKeDIwcHhMM1BsK0MzQlh1aGxJQXlmVUVYa1loZUJ5SWt2OW9KK2p1M0ZS?=
+ =?utf-8?B?ODNZUnhLOFUyN2dLMy9DdXlDTjFmVDZTS2VTRm05OFRNeFZoNndmTkhjeXpY?=
+ =?utf-8?B?OU1TbzBMeDBlMGd5c2NENlZESDBzQjhPeVhSSGhXRzRhZVBXcXFpak1YVjNS?=
+ =?utf-8?B?eUpoYWNxMkpSV3NEdUM4WEtsODdHYmpvdlFqWFNLRS84N2FFem83YUgzUEFa?=
+ =?utf-8?B?MlRZMjJSY1BQMW0vYnd5MWE4T2xTTEkreUs0VnhzTjIrRDlUZlYyVjhSVklU?=
+ =?utf-8?B?VTVlSW5uWWNmNFh1L0FqSHdUUEFMZmRlVjVrbmpscC96WkR2N084c1NvZ3Yx?=
+ =?utf-8?B?eWUwajlTWG1HQk03aWgxUXZjRDNIeGszUFlFN2V0bjU5Vk5JZzh0Ukg3eGsw?=
+ =?utf-8?B?UTNLQWxqUDdXbVFiMk92S29WTWtycExqUmQwQTB6cFliSEhqemQxcE03VDU3?=
+ =?utf-8?B?dDQ2K0Y1MDJaN3V5RU8rTmsxZEZMTWhMRTNHV3d1aG92YmpWZVIwajEvZnVa?=
+ =?utf-8?B?TjRFQmU4K1FPUFVyTUVPMVpvMWtxNkNDTk50SGhEZlE4ZnV0VGlUdUhiRU9H?=
+ =?utf-8?B?OS9qYm9FbHg2VXViYWYyUXcyb2R6ZStRVllOV0NJTzJuSVRRSHp1ZUxsTVJ5?=
+ =?utf-8?B?em1RNjNNbXA5MFNjTlVYdU5QZEYxc0ozMXlBL2YreTByTnJZTjNUbXpvZFRz?=
+ =?utf-8?B?M3JhSkxrL2V5SmtyeGo5S1hHZE1JNVR1OCsweGZZWWFWamZkWnN5SDRmY1Ra?=
+ =?utf-8?B?S3I1eUhkMzN4UTE5OXEwUnZjM3ZGNGVjb1V5T05FN3JIdHQ0cWRPWExUREJH?=
+ =?utf-8?B?a0tSVElQcVpXY3J3WGE5UFVjUUtaM0g5M1IzRzhJZUI1K0oySU8xZmlVdGdw?=
+ =?utf-8?B?NWZJaEdmclVGWWhwZlVJU3VJS1NlaEM5UHdZekxRU0NWNVdMSXFyOWRrZ01E?=
+ =?utf-8?B?bjFtanduYTR3eWYreEdDU3lhZVl4ZHBQZVJhL2xnRGxzQUR0N3U5KzJNR2NN?=
+ =?utf-8?B?VWhCL200WEw5OFM3b3FMYkN1dHcwU1FBUHk1bjlqWG80NklPOURjaE9lWTFi?=
+ =?utf-8?B?eEk4SnBIVk10Z29nNDlHbzM1RythbjhoWW1iUCtkbjF2Q05ncktVN1ZhdHBE?=
+ =?utf-8?B?cU9HNER2TmFoWDlLZHlxWWRsbWx6TmdSV2lsMlZEYlRCMzNtbkx5aDlQbHU0?=
+ =?utf-8?B?bnlUNmRXL0NoRitmY1JmQkppc1RBODVuTmFvN21VdFBKcFlMci9EVGV4Q1d4?=
+ =?utf-8?B?dm9ralJUY2libVc3eFJOdGdGM1RnQk1iZ2E4NEhOREdxZUhPS214SERTUVNu?=
+ =?utf-8?B?aE1OaU1NZDFPV1JBZ1Mrb2p4WGhyWU9NUzRJNjdTNmdVbWR0STFmMzVMMGd6?=
+ =?utf-8?B?S1d5L2dBbE85cHQ4Z0l5M2NxWlhjZENQcVN3WGR1czErRjFPS005dnlldUc3?=
+ =?utf-8?B?Vi91dWI2M3pjR2pkK2t0NzhCTUZUdEMwb2dxSWFoTkVmbGd1Z2tTckVTZE5E?=
+ =?utf-8?B?K3RWclV3NDJnckpUTDBoQ3J5Mll2YU5MbGFSR2w2ekVxLzkyc3ZNdFhHTTJq?=
+ =?utf-8?Q?cY3K7uKXv+SRv?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400014)(376005)(1800799015)(7416005)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2024 14:19:23.2280
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 274bf5cf-09f1-440f-9f6c-08dc607bb627
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000F0DE.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7470
 
-On Thu, Apr 18, 2024 at 04:37:09PM +0200, Borislav Petkov wrote:
-> On Tue, Apr 09, 2024 at 02:29:55PM +0300, Kirill A. Shutemov wrote:
-> > +/* Declare CPU offlining not supported */
-> > +void cpu_hotplug_disable_offlining(void)
+On Fri, Apr 19, 2024 at 01:52:24PM +0200, Paolo Bonzini wrote:
+> On Thu, Apr 18, 2024 at 9:42 PM Michael Roth <michael.roth@amd.com> wrote:
+> > +/* As defined by SEV-SNP Firmware ABI, under "Guest Policy". */
+> > +#define SNP_POLICY_MASK_API_MAJOR      GENMASK_ULL(15, 8)
+> > +#define SNP_POLICY_MASK_API_MINOR      GENMASK_ULL(7, 0)
+> > +
+> > +#define SNP_POLICY_MASK_VALID          (SNP_POLICY_MASK_SMT            | \
+> > +                                        SNP_POLICY_MASK_RSVD_MBO       | \
+> > +                                        SNP_POLICY_MASK_DEBUG          | \
+> > +                                        SNP_POLICY_MASK_SINGLE_SOCKET  | \
+> > +                                        SNP_POLICY_MASK_API_MAJOR      | \
+> > +                                        SNP_POLICY_MASK_API_MINOR)
+> > +
+> > +/* KVM's SNP support is compatible with 1.51 of the SEV-SNP Firmware ABI. */
+> > +#define SNP_POLICY_API_MAJOR           1
+> > +#define SNP_POLICY_API_MINOR           51
+> 
+> > +static inline bool sev_version_greater_or_equal(u8 major, u8 minor)
 > > +{
-> > +	cpu_maps_update_begin();
+> > +       if (major < SNP_POLICY_API_MAJOR)
+> > +               return true;
 > 
-> "/*
->  * The following two APIs (cpu_maps_update_begin/done) must be used when
->  * attempting to serialize the updates to cpu_online_mask & cpu_present_mask.
->  */
-> void cpu_maps_update_begin(void)
-> ..."
+> Should it perhaps refuse version 0.x? With something like a
 > 
-> > +	cpu_hotplug_offline_disabled = true;
+> #define SNP_POLICY_API_MAJOR_MIN    1
 > 
-> but this doesn't do that here.
+> to make it a bit more future proof (and testable).
 > 
-> Are we doing a one-off here for that variable or what?
+> > +       major = (params.policy & SNP_POLICY_MASK_API_MAJOR);
+> 
+> This should be >> 8. Do the QEMU patches not set the API version? :)
 
-Yes, it is one-off. I guess we could use READ_ONCE()/WRITE_ONCE() to
-access the variable with the same result. I am not sure why it would be
-better.
+Argh...it does if you set it via the -object sev-snp-guest,policy=0x...
+option. I tested with reserved ranges and other flags, but not with
+non-zero major/minor API fields. =/
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+But I'm having 2nd thoughts about trying to enforce API version via
+KVM_SEV_SNP_LAUNCH_START. In practice, the only sensible way to really
+interpret it is as "the minimum firmware version that userspace decides
+it is comfortable running a particular guest" on. And that enforcement
+is already handled as part of the SNP_LAUNCH_START firmware command in
+the SNP Firmware ABI: if the policy specifies a higher minimum version
+than what firmware is currently running then it will return as error
+that will be reported by QEMU as:
+
+  sev_snp_launch_start: SNP_LAUNCH_START ret=-5 fw_error=7 'Policy is not allowed'
+
+On the firmware driver side (drivers/crypto/ccp/sev-dev.c), we already
+enforce 1.51 as minimum supported SNP firmware, so that sort of already
+covers the SNP_POLICY_API_MAJOR_MIN case as well. E.g. the test surface
+KVM needs to concern itself with is already effectively 1.51+. In that
+sense, whether the user decides to be less restrictive with what minimum
+firmware version they allow is then totally up to the user, and has no
+bearing on what firmware versions KVM needs to concern itself with.
+
+Then the question of whether or not KVM fully *exposes* a particular
+user-visible feature of a newer version of the firmware/ABI would be a
+separate thing to be handled via the normal KVM capabilities/attributes
+mechanisms.
+
+So my current leaning is to send a v14 that backs out the major/minor
+policy enforcement and let firmware handle that aspect. (and also
+address your other comments).
+
+But let me know if you think that should be handled differently.
+
+Thanks!
+
+-Mike
+
+> 
+> Paolo
+> 
