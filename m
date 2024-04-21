@@ -1,135 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CD912DD97;
-	Fri, 19 Apr 2024 22:07:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E703D27D
+	for <linux-coco@lists.linux.dev>; Sun, 21 Apr 2024 07:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713564452; cv=none; b=hhGUd2b5SE8MoBJn37mlzTk2HuwxMabw+MRm5oElIY6YCP2meUOV9g8P5n6cWzDxVujqkAImN7OKeqBr06LsKwF6YNjqwpL3a8+ZHP5koUxA5VgJSwLyMOfXrJwM0shyyjv8LPQuqeZ3wN4gNmG0bBH1xbS8mx9WbwB69/61tiY=
+	t=1713683566; cv=none; b=ughIO/t7J/bEUY3kBwRQ/YuuBrcelTgxfa8JOVCtie6zLaPHjODdw8eof4tyl6Rwr6t7Nl5YpfNwdPGQO8zSZj2YECgeyjf1uIpkC/+1vKK6w/AmsylUORVAopc3r2ayb5GWvtgkFVAU86kggKLliHkDymzlKKNup8sut/bsnWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713564452; c=relaxed/simple;
-	bh=0HB+VSrg3fy+9fA+uyGYMZ9i5rgFhbUhobjGB8kHAE8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=l/w6aE0l3yRGeKJjbAChu5ayQouAgazKiCl56xPBksUbkkr8lS3MGnNlspPjwFRVIOpDauBvvC/yiXG9XFKDg4SEZGVqaskpDeDrVH1j6NJ8QkXwOixP1G/uKVNzUHcY+rADoQYsjZcHRnrCO3Rg2dT12WwuFt7sBIde+uugH14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DFmPXU6v; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DFmPXU6v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34563C072AA;
-	Fri, 19 Apr 2024 22:07:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713564451;
-	bh=0HB+VSrg3fy+9fA+uyGYMZ9i5rgFhbUhobjGB8kHAE8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=DFmPXU6vV2QYdlwB6/cusdPrw8iXj4keVBYNfCEIwtJpdhOGUo0UsRmOrNsEML16w
-	 j5/ZxChqkBAY1Op2EOxo+TXTTfw9x646z1V94WdNKXyi6LkdSM1hIK3qrY8eRJF0Rm
-	 ndZoeriyRk26dsCuuov0nX3s5K3lKvtNBsDupXwBva8m3vjJ/rUmb0S0xLyCTHjaiT
-	 oKHZDTZydofYog/8txpsY5djG0PoMkUxbgK06hdjlJxgiKQj+KS4JnrrchokR/M6KJ
-	 8wvLfcW7zBqInp+GdjvMa3qFaPW9PIYL4Evo6TscKtBBu31w/3ShEM4kOrVWE37VHo
-	 iTQUnfF0+JY/g==
-Date: Fri, 19 Apr 2024 17:07:29 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, Wu Hao <hao.wu@intel.com>,
-	Yilun Xu <yilun.xu@intel.com>, Lukas Wunner <lukas@wunner.de>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kevin.tian@intel.com,
-	gregkh@linuxfoundation.org, linux-pci@vger.kernel.org
-Subject: Re: [RFC PATCH v2 5/6] PCI/TSM: Authenticate devices via platform TSM
-Message-ID: <20240419220729.GA307280@bhelgaas>
+	s=arc-20240116; t=1713683566; c=relaxed/simple;
+	bh=nWWxXOfco+rjROpQCpzO0Q5BfhYTwDjKeSNYYJlrPC4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gd0P7xwew+PADfNFmFMoH9+EJVTJxcfNEpHDhRYR3dRxGwpj4Q3GERzk09ppRABS9ezlsqmkCfcJX5Jh9HGjq6tXr+bUAWZVrToT6TUxEe7CIu5XRqkPRnCONVApDyWRThrhiRs1W+jPI58lczge8vucMGg0MQ7o8r9GHBYzU9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id EEE2C40E0187;
+	Sun, 21 Apr 2024 07:12:41 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id u6V1THR8SB5r; Sun, 21 Apr 2024 07:12:37 +0000 (UTC)
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 25EA040E0028;
+	Sun, 21 Apr 2024 07:12:23 +0000 (UTC)
+Date: Sun, 21 Apr 2024 09:12:22 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v3 02/14] x86/sev: Make the VMPL0 checking function more
+ generic
+Message-ID: <20240421071126.GAZiS8HoAn5sFLShnf@fat_crate.local>
+References: <cover.1711405593.git.thomas.lendacky@amd.com>
+ <1b0d8ec8e671ad957a2ad888725ce24edeedf74a.1711405593.git.thomas.lendacky@amd.com>
+ <20240417114658.GHZh-2sk47TZgCp4Mb@fat_crate.local>
+ <505dcf34-93ff-643c-b149-8ef9ce90c023@amd.com>
+ <20240417205048.GHZiA2KGbFFTQFyTAM@fat_crate.local>
+ <36453f2f-3a2f-ae8b-215f-da9972f14d6d@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <171291193308.3532867.129739584130889725.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <36453f2f-3a2f-ae8b-215f-da9972f14d6d@amd.com>
 
-On Fri, Apr 12, 2024 at 01:52:13AM -0700, Dan Williams wrote:
-> The PCIe 6.1 specification, section 11, introduces the Trusted Execution
-> Environment (TEE) Device Interface Security Protocol (TDISP).  This
-> interface definition builds upon Component Measurement and
-> Authentication (CMA), and link Integrity and Data Encryption (IDE). It
-> adds support for assigning devices (PCI physical or virtual function) to
-> a confidential VM such that the assigned device is enabled to access
-> guest private memory protected by technologies like Intel TDX, AMD
-> SEV-SNP, RISCV COVE, or ARM CCA.
-> 
-> The "TSM" (TEE Security Manager) is a concept in the TDISP specification
-> of an agent that mediates between a "DSM" (Device Security Manager) and
-> system software in both a VMM and a confidential VM. A VMM uses TSM ABIs
-> to setup link security and assign devices. A confidential VM uses TSM
-> ABIs to transition an assigned device into the TDISP "RUN" state and
-> validate its configuration. From a Linux perspective the TSM abstracts
-> many of the details of TDISP, IDE, and CMA. Some of those details leak
-> through at times, but for the most part TDISP is an internal
-> implementation detail of the TSM.
-> 
-> Similar to the PCI core extensions to support CONFIG_PCI_CMA,
-> CONFIG_PCI_TSM builds upon that to reuse the "authenticated" sysfs
-> attribute, and add more properties + controls in a tsm/ subdirectory of
-> the PCI device sysfs interface. Unlike CMA that can depend on a local to
-> the PCI core implementation, PCI_TSM needs to be prepared for late
-> loading of the platform TSM driver. Consider that the TSM driver may
-> itself be a PCI driver. Userspace can depend on the common TSM device
-> uevent to know when the PCI core has TSM services enabled. The PCI
-> device tsm/ subdirectory is supplemented by the TSM device pci/
-> directory for platform global TSM properties + controls.
-> 
-> The common verbs that the low-level TSM drivers implement are defined by
-> 'enum pci_tsm_cmd'. For now only connect and disconnect are defined for
-> establishing a trust relationship between the host and the device,
-> securing the interconnect (optionally establishing IDE), and tearing
-> that down.
-> 
-> The locking allows for multiple devices to be executing commands
-> simultaneously, one outstanding command per-device and an rwsem flushes
-> all inflight commands when a TSM low-level driver/device is removed.
-> 
-> In addition to commands submitted through an 'exec' operation the
-> low-level TSM driver is notified of device arrival and departure events
-> via 'add' and 'del' operations. With those it can setup per-device
-> context, or filter devices that the TSM is not prepared to support.
-> 
-> Cc: Wu Hao <hao.wu@intel.com>
-> Cc: Yilun Xu <yilun.xu@intel.com>
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: Samuel Ortiz <sameo@rivosinc.com>
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+On Thu, Apr 18, 2024 at 01:38:49PM -0500, Tom Lendacky wrote:
+> I think I'll just eliminate the function then and call rmpadjust directly,
+> that should make it clear.
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>	# PCI parts
+Your call.
 
-> +What:		/sys/bus/pci/devices/.../tsm/
-> +Date:		March 2024
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:
-> +		This directory only appears if a device supports CMA and IDE,
-> +		and only after a TSM driver has loaded and evaluated this
-> +		PCI device. All present devices shall be dispositioned
-> +		after the 'add' event for /sys/class/tsm/tsm0 triggers.
+However, if we're anticipating more uses around RMPADJUST like that we
+might as well design the interface properly from the very beginning.
 
-What does "dispositioned" mean?
+-- 
+Regards/Gruss,
+    Boris.
 
-What devices does "all present devices" cover?
-
-Is "tsm0" a special global thing?  Is there doc for
-/sys/class/tsm/...?
-
-> +++ b/drivers/pci/Makefile
-> @@ -35,6 +35,8 @@ obj-$(CONFIG_VGA_ARB)		+= vgaarb.o
->  obj-$(CONFIG_PCI_DOE)		+= doe.o
->  obj-$(CONFIG_PCI_DYNAMIC_OF_NODES) += of_property.o
->  
-> +obj-$(CONFIG_PCI_TSM)		+= tsm.o
-
-Maybe put it next to CONFIG_PCI_DOE or at least not off in a special
-separate list?
-
-Bjorn
+https://people.kernel.org/tglx/notes-about-netiquette
