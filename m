@@ -1,41 +1,36 @@
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59C25490E
-	for <linux-coco@lists.linux.dev>; Mon, 22 Apr 2024 09:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D561146A9B;
+	Mon, 22 Apr 2024 11:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713777626; cv=none; b=bC+cl7QpBFjrIDxDPMVdEmt+2/FEMRALdM1JNChYQ4KFTVoMFqApSCaBJBlrvil1q0eTvi0V4ktPjRL35rDw3HUwRD35zGLpwc+TEHGBQHI3bSXnWfQHNZagNFGcbOQGjyX/WT+n+oBFm4J9Kkw60TjVZmbcxJ2lADwzuO0sxCQ=
+	t=1713787119; cv=none; b=l+tWMAQFS/mOEguhIbc661wR67Yiezrj91n5vtOXKPuOugfKfnOj0oEuH7tbx/2OLuD0xQEd2uw3wiaMx2BHxuhwI0B5W5sJM1P2P0RfvcR6aRlqULb/F7iUYn7bOqe9a7pSvQdyK9/O8UHMqsRn1K52N7gV2BI3X3V65I4TOxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713777626; c=relaxed/simple;
-	bh=T5tRASABoyAmF4/TwmiQdb4aSxJ5IjEe6kgVUHlghnY=;
+	s=arc-20240116; t=1713787119; c=relaxed/simple;
+	bh=wRCy7nNKitrqvcch8qnvMk12MeBQI+ujPKhDGeFBEEI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T1J9NVUEboMegjPA5eL2FD5jIY+vGAjX97VuS6NdsiEX/P21C0H4YOLuuUn7JVByy2iFm2gYBvN14aUnT1+dRbxt9ega9DyQvSwZsVQbONTXO5m2QNYF/UUBbzZ6CIo4FzVjuLxEIiLOgQByikl4Ao9bYElQQESCaQcDG9rbysA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 2EF4A280108A8;
-	Mon, 22 Apr 2024 11:20:16 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 03FB34D34A; Mon, 22 Apr 2024 11:20:15 +0200 (CEST)
-Date: Mon, 22 Apr 2024 11:20:15 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: gregkh@linuxfoundation.org,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Marc Herbert <marc.herbert@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-coco@lists.linux.dev, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 1/3] sysfs: Fix crash on empty group attributes array
-Message-ID: <ZiYrzzk9Me1aksmE@wunner.de>
-References: <170863444851.1479840.10249410842428140526.stgit@dwillia2-xfh.jf.intel.com>
- <170863445442.1479840.1818801787239831650.stgit@dwillia2-xfh.jf.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=bAeecHRonCltTp3in5p16M0FqSenXbBZfAoSSPavorH848xMmyimOogutG4qtwsluMr120/LA7JfLzi+vTZ3nWmKuj2bKpP2pOwrCyTGaldfjDvB9ke4M5onPBnEyVFBCboBM0+NYs9muwvH5J+uU5LdHLvKvLXc21FEnTwl+bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 117E6339;
+	Mon, 22 Apr 2024 04:59:05 -0700 (PDT)
+Received: from arm.com (unknown [10.57.76.213])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1EA213F7BD;
+	Mon, 22 Apr 2024 04:58:29 -0700 (PDT)
+Date: Mon, 22 Apr 2024 12:58:41 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, maz@kernel.org,
+	joey.gouly@arm.com, steven.price@arm.com, james.morse@arm.com,
+	oliver.upton@linux.dev, yuzenghui@huawei.com,
+	andrew.jones@linux.dev, eric.auger@redhat.com
+Subject: Re: [kvm-unit-tests PATCH 08/33] arm: realm: Make uart available
+ before MMU is enabled
+Message-ID: <ZiZQ8USVlxz0RFs3@arm.com>
+References: <20240412103408.2706058-1-suzuki.poulose@arm.com>
+ <20240412103408.2706058-9-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -44,64 +39,118 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <170863445442.1479840.1818801787239831650.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <20240412103408.2706058-9-suzuki.poulose@arm.com>
 
-On Thu, Feb 22, 2024 at 12:40:54PM -0800, Dan Williams wrote:
-> It turns out that arch/x86/events/intel/core.c makes use of "empty"
-> attributes.
+Hi,
+
+On Fri, Apr 12, 2024 at 11:33:43AM +0100, Suzuki K Poulose wrote:
+> From: Joey Gouly <joey.gouly@arm.com>
 > 
-> 	static struct attribute *empty_attrs;
+> A Realm must access any emulated I/O mappings with the PTE_NS_SHARED bit set.
+> This is modelled as a PTE attribute, but is actually part of the address.
 > 
-> 	__init int intel_pmu_init(void)
-> 	{
-> 	        struct attribute **extra_skl_attr = &empty_attrs;
-> 	        struct attribute **extra_attr = &empty_attrs;
-> 	        struct attribute **td_attr    = &empty_attrs;
-> 	        struct attribute **mem_attr   = &empty_attrs;
-> 	        struct attribute **tsx_attr   = &empty_attrs;
-> 		...
+> So, when MMU is disabled, the "physical address" must reflect this bit set. We
+> access the UART early before the MMU is enabled. So, make sure the UART is
+> accessed always with the bit set.
 > 
-> That breaks the assumption __first_visible() that expects that if
-> grp->attrs is set then grp->attrs[0] must also be set and results in
-> backtraces like:
+> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> ---
+>  lib/arm/asm/pgtable.h   |  5 +++++
+>  lib/arm/io.c            | 24 +++++++++++++++++++++++-
+>  lib/arm64/asm/pgtable.h |  5 +++++
+>  3 files changed, 33 insertions(+), 1 deletion(-)
 > 
->     BUG: kernel NULL pointer dereference, address: 00rnel mode
->     #PF: error_code(0x0000) - not-present ] PREEMPT SMP NOPTI
->     CPU: 1 PID: 1 Comm: swapper/IP: 0010:exra_is_visible+0x14/0x20
->      ? exc_page_fault+0x68/0x190
->      internal_create_groups+0x42/0xa0
->      pmu_dev_alloc+0xc0/0xe0
->      perf_event_sysfs_init+0x580000000000 ]---
->     RIP: 0010:exra_is_visible+0x14/0
-> 
-> Check for non-empty attributes array before calling is_visible().
-[...]
-> --- a/fs/sysfs/group.c
-> +++ b/fs/sysfs/group.c
-> @@ -33,10 +33,10 @@ static void remove_files(struct kernfs_node *parent,
+> diff --git a/lib/arm/asm/pgtable.h b/lib/arm/asm/pgtable.h
+> index 350039ff..7e85e7c6 100644
+> --- a/lib/arm/asm/pgtable.h
+> +++ b/lib/arm/asm/pgtable.h
+> @@ -112,4 +112,9 @@ static inline pte_t *pte_alloc(pmd_t *pmd, unsigned long addr)
+>  	return pte_offset(pmd, addr);
+>  }
 >  
->  static umode_t __first_visible(const struct attribute_group *grp, struct kobject *kobj)
+> +static inline unsigned long arm_shared_phys_alias(void *x)
+> +{
+> +	return ((unsigned long)(x) | PTE_NS_SHARED);
+> +}
+
+Is it allowed for a realm to run in aarch32 mode?
+
+> +
+>  #endif /* _ASMARM_PGTABLE_H_ */
+> diff --git a/lib/arm/io.c b/lib/arm/io.c
+> index 836fa854..127727e4 100644
+> --- a/lib/arm/io.c
+> +++ b/lib/arm/io.c
+> @@ -15,6 +15,8 @@
+>  #include <asm/psci.h>
+>  #include <asm/spinlock.h>
+>  #include <asm/io.h>
+> +#include <asm/mmu-api.h>
+> +#include <asm/pgtable.h>
+>  
+>  #include "io.h"
+>  
+> @@ -30,6 +32,24 @@ static struct spinlock uart_lock;
+>  static volatile u8 *uart0_base = UART_EARLY_BASE;
+>  bool is_pl011_uart;
+>  
+> +static inline volatile u8 *get_uart_base(void)
+> +{
+> +	/*
+> +	 * The address of the UART base may be different
+> +	 * based on whether we are running with/without
+> +	 * MMU enabled.
+> +	 *
+> +	 * For realms, we must force to use the shared physical
+> +	 * alias with MMU disabled, to make sure the I/O can
+> +	 * be emulated.
+> +	 * When the MMU is turned ON, the mappings are created
+> +	 * appropriately.
+> +	 */
+> +	if (mmu_enabled())
+> +		return uart0_base;
+> +	return (u8 *)arm_shared_phys_alias((void *)uart0_base);
+> +}
+> +
+>  static void uart0_init_fdt(void)
 >  {
-> -	if (grp->attrs && grp->is_visible)
-> +	if (grp->attrs && grp->attrs[0] && grp->is_visible)
->  		return grp->is_visible(kobj, grp->attrs[0], 0);
+>  	/*
+> @@ -109,9 +129,11 @@ void io_init(void)
 >  
-> -	if (grp->bin_attrs && grp->is_bin_visible)
-> +	if (grp->bin_attrs && grp->bin_attrs[0] && grp->is_bin_visible)
->  		return grp->is_bin_visible(kobj, grp->bin_attrs[0], 0);
+>  void puts(const char *s)
+>  {
+> +	volatile u8 *uart_base = get_uart_base();
+> +
+>  	spin_lock(&uart_lock);
+>  	while (*s)
+> -		writeb(*s++, uart0_base);
+> +		writeb(*s++, uart_base);
+>  	spin_unlock(&uart_lock);
+>  }
 >  
->  	return 0;
+> diff --git a/lib/arm64/asm/pgtable.h b/lib/arm64/asm/pgtable.h
+> index 5b9f40b0..871c03e9 100644
+> --- a/lib/arm64/asm/pgtable.h
+> +++ b/lib/arm64/asm/pgtable.h
+> @@ -28,6 +28,11 @@ extern unsigned long prot_ns_shared;
+>  */
+>  #define PTE_NS_SHARED		(prot_ns_shared)
+>  
+> +static inline unsigned long arm_shared_phys_alias(void *addr)
+> +{
+> +	return ((unsigned long)addr | PTE_NS_SHARED);
+> +}
 
-I'm wondering why 0 is returned by default and not SYSFS_GROUP_INVISIBLE.
-
-An empty attribute list (containing just the NULL sentinel) will now
-result in the attribute group being visible as an empty directory.
-
-I thought the whole point was to hide such empty directories.
-
-Was it a conscious decision to return 0?
-Did you expect breakage if SYSFS_GROUP_INVISIBLE is returned?
+Have you considered specifying the correct UART address at compile time using
+./configure --earlycon?
 
 Thanks,
-
-Lukas
+Alex
+> +
+>  /*
+>   * Highest possible physical address supported.
+>   */
+> -- 
+> 2.34.1
+> 
