@@ -1,104 +1,66 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B7513540B
-	for <linux-coco@lists.linux.dev>; Tue, 23 Apr 2024 13:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2761BC23
+	for <linux-coco@lists.linux.dev>; Tue, 23 Apr 2024 15:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713878277; cv=none; b=YAEmWxEdBnRLz3RfGW3/UxFFvnnac2Y85ubcVNjfBkmUa0CG/IHBtO974Y0z+ZhS7AC+FhmxGtdjxww2S7y6Mpl3pCLREq+FBvS7oPIvz6xseiGLyjGXNVmC/AZx8/lpsCv/iIaNok0xQjXaE6p+I6SQZP+aULi6QQ/ii4B+A2k=
+	t=1713887910; cv=none; b=N2qGaOm9dOJldu4JJMf6YoiGdvh/TpVAfboHvxpUnNP+C5P/yrF4NCkK7XVOluffxu4ULXwg/mee5iZtDFlNrQjVIQ3eIRQQnHXg9OMRmCsWu4nKYHBYKEv4Gws9elRfN0uubu1lLC+z0xUbQyfdHqjyRsgbQbOLb89va0etHFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713878277; c=relaxed/simple;
-	bh=vAtz/vyrLrp9HhPoiwe05xG1Si8bMFGcN2vusmFCvp0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GBMV6zFXXnyUkaZpgEuRn2V31zxjuP/FxwZwA1F2Ag/Vn+6Y0R0Ziih1rRLBkIIc4UPm0XcsLo05vGStl/+QUX+8pKjaF+ZqiENkfxIbJHyphXtR6yjS3Ts79htbHbt7AB1NXqHYufdzwSwlYIYTWo3ert1i/gjbSGFjjNbCFu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=aEd8+rWo; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1713887910; c=relaxed/simple;
+	bh=OWW7MjJWEQCbbWZesM7QRxgaYgogV/i66VqnLeu8RZA=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=mgvr4xXXZB4TZPQphbNbfi4hH+tEEFSE1MTnixFUNvt8XDm3xlO6ZpLo9/LMWSOWLaPJcUWwtq0vSKkj4faGp0/qcKRgIyty+AiSTdLfdf9V3PQLHcKf6hh8autY9cOm8DySR2d+fQwk5+6KXLkxklUYPkScvdCl2dEHhTFDtF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=zpScNNox; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="aEd8+rWo"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7476E40E0249;
-	Tue, 23 Apr 2024 13:17:52 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ZmmPyGl0kbM1; Tue, 23 Apr 2024 13:17:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1713878268; bh=bGv9rvNJpD/Du1WCJOGw7wL73HyEy9ZaslIxxlYF+L0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aEd8+rWoBs1tm/jlNDLyHiPCgDXZIYMDCzd59OM6O9E3NsADxYrDxSXD7Gn98Dfcb
-	 XqBNHMns7F0jCVwlNXPZSxs1W3h6CWNzEzdPitMGbLggU2c3kc/QoJBdKs4SIZOsw6
-	 B1F6YlJuPEhgeqURMgzNaI25MnI0wrSn7U+3iIuIxKLAHeGBzHO2mNTfpxE3o/mBOQ
-	 uNt0VodVP1wLaANb6Yhdeyh/JlibaJyagFJ/EH1w0zOJ8wyTZZiTBBivSb2ad0/upD
-	 qvBbqZLI5tqGDo1+9gVhDhfG5q6jHa0GMye1l70kWqLkTbj5Lcw3Pa5VNlUi+UziQM
-	 c4eHwxOFiX9GyIJ8AlbkjXCAkBuceg9fFFv75OPJEHNZtfbx7HuUTIRnQ8axRe03+Y
-	 DmI5QzC/V6YTixrwTzDyK0twmRx+0xKZbXYK7BdLKi9qLqYcJ3Hj0DpIttttObKj1a
-	 rhKl6s/LcVdujmQAKnlkfW2IlSm3AHBP6v/s/q1FnB06uPQKd9fwvLKHbWLqEfSfu3
-	 hbdNvUEm5FHycGeSK6QBM+Z3glqFBCMxTA3H0kmTPT20WFEeceXQEcaA0wYHZtkpJy
-	 9BFfWVol1wINcVUC7lRP7Wc88AEjkPSMizpHXgWcbJJnYD+cY9P+eep/SO1/MQ8Uwr
-	 kxr+RwxTI/5xscJgUhKSi2JM=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="zpScNNox"
+Received: from 8bytes.org (p4ffe0bdf.dip0.t-ipconnect.de [79.254.11.223])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5B8AA40E0177;
-	Tue, 23 Apr 2024 13:17:27 +0000 (UTC)
-Date: Tue, 23 Apr 2024 15:17:22 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv10 03/18] cpu/hotplug: Add support for declaring CPU
- offlining not supported
-Message-ID: <20240423131722.GIZie04oK5g5f8Jftr@fat_crate.local>
-References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <20240409113010.465412-4-kirill.shutemov@linux.intel.com>
- <20240418143709.GJZiEwFejGQY3jiwsp@fat_crate.local>
- <rju6u37prtr5nf4upcntcy4jcnul6atqmbh6impzqdn3dlo2pj@lqodxa7elohz>
+	by mail.8bytes.org (Postfix) with ESMTPSA id A4E041C96FB;
+	Tue, 23 Apr 2024 17:52:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1713887564;
+	bh=OWW7MjJWEQCbbWZesM7QRxgaYgogV/i66VqnLeu8RZA=;
+	h=Date:From:To:Subject:From;
+	b=zpScNNoxDPHL8n0b3JtEPRB+nj11DZrDnE267kzv3oCkGJdhuGeLgU7de0QyC5U9c
+	 ZDRxwV36Aw45G2m/Tbrn77J0CRX0uxMjgy3M0sFrY0hsYedNsQhYU/+cFb5xIM6JOY
+	 tQAJZyW4aXPCDlqVKz3PwqaJcna+smgh01tcAzbw9aic0JRevI209hWgekD/Bz4K1C
+	 UDJ5RzEqMgv+Jsy1krt6IparXeWtx/zKk4q5SFB33pom1Oj2GBK5+ESbREOnVngfEX
+	 FilABrwh7TABDiHtwb87YdSpQlKQZF8oMzyOwtjjsOkEau8A0kACGWxgzCkEx5aeUG
+	 3OyUsgWj3HZuA==
+Date: Tue, 23 Apr 2024 17:52:43 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call April 24th, 2024
+Message-ID: <ZifZS6_Rx8bTbceb@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <rju6u37prtr5nf4upcntcy4jcnul6atqmbh6impzqdn3dlo2pj@lqodxa7elohz>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 19, 2024 at 04:31:39PM +0300, Kirill A. Shutemov wrote:
-> Yes, it is one-off. I guess we could use READ_ONCE()/WRITE_ONCE() to
-> access the variable with the same result. I am not sure why it would be
-> better.
+Hi,
 
-Nah, and it is not even the first one-off:
+Here is the usual call for agenda items for this weeks SVSM development
+call. I have one item so far:
 
-cpu_hotplug_disable/_enable() uses the same locking to update
-cpu_hotplug_disabled.
+	* User-mode PR status
 
-I guess we need to update the comment over cpu_maps_update_begin().
+Details of the meeting (GMeet and Calendar links, meeting time) can be
+found in our governance repository at:
 
-I guess this is fine wrt big picture of the CPU hotplug universe. Lemme
-point tglx to it just in case.
+	https://github.com/coconut-svsm/governance
 
-Thx.
+The meeting will be recorded and the recording eventually published.
 
--- 
-Regards/Gruss,
-    Boris.
+See you all there.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Regards,
+
+	Jörg
