@@ -1,110 +1,199 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2071.outbound.protection.outlook.com [40.107.243.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F9513CA81
-	for <linux-coco@lists.linux.dev>; Tue, 23 Apr 2024 16:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713888216; cv=none; b=UdfACMGCXVdg2/YCX+TwI38h2jTTIt+tN80w5Po+MEdET7pzM7OsqKGs8+d5S4vZdnIY4YeYaULcAYcYwSOXdoWITa3sjbSQT1bIEHAb3UG/J2jHCdFLHqXID3GD2c9XUvccJl0amDzNqgtBUCXsydH/yi3sRnUr79Rf/ICpAzc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713888216; c=relaxed/simple;
-	bh=ZsuinK5RhPrAcf4onYz+ohAWbVi3KXroAewewFUGu9E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TlWk5u6a8t3A7m2c//vnSz8JC+RE9j91jW5uKhUFegO7N1kCbGqB9KDS1hf9o8oDeDEjzOp5Ki7lwGnTcVm9Gw6R79jJYvYJP9skP7DgzNSi/qkvIzYoH40f4BqmPmTlnN/YI6BwA9V6L+7gZGu1rN36yq0J3zkdO9YsRrscdOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=TXxdSqMZ; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50DE13DDD0
+	for <linux-coco@lists.linux.dev>; Tue, 23 Apr 2024 16:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713889435; cv=fail; b=jfFPf++bjG9x1yIcoNETszFw702d4Qo9yTSBO+mgyLr+/DgwuVKfV1MuSK9ZqIVdg4byjiIlz/vOm7QNxMfG2bD79VeyQbMnK3d9XAfvjRZCKXCXrwoO6QdcQqBj/L3CNp41PRH5LlkLoLO4KwHAmZGDgKToVwinFHXUVlzVoYc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713889435; c=relaxed/simple;
+	bh=OdTyCTLp5S1scrlfS6SsPoLNAcdeKotLZPehcAHzCIY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hS5T1cctqioFQDweo57o+pna1F+50InFgt5r2qk5geLYC1BxejHWepjsbbtv7N8X/08vLMGEI4OW2eYNcfIwmnlsdHBEPW26tiNRcESfnvCXYzsoQoAPMOMwgebhFyIs8XnJAyeMCd7qNzlKZOeDqvuIWMyu3veHA4MqjLFaBmc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Xhg5CJpY; arc=fail smtp.client-ip=40.107.243.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="TXxdSqMZ"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 86CB540E0192;
-	Tue, 23 Apr 2024 16:03:29 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id SL5JtAOWtOYR; Tue, 23 Apr 2024 16:03:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1713888205; bh=IiD+6XFkDSEK2/f7fOiQcCjp0YlleOKij4PQKeQ0D5I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TXxdSqMZsY+FRKwNdjz4vBICMsm9Enxv0XLC8q9Vup4Qk5tqDG705c2FJ0CMbJj72
-	 igAyWgN4VL9Gxat3hdmABoIFuqaIXwpx2SbRKp258zyIo7xCrs23rKXYAYNgHomacS
-	 Bja2CSfG70JvAre9Ih2CatH4OMJ7QtZeZQYxere7tyjWB+pJmaHDTkf6kEzhKHJCIO
-	 BJFAgQJTgacsbJVFoCBhrBKdWb9UUReauR+Y+iDzP7rmKWIup6yWb4etUVkXbJhlCN
-	 NcmAwWwJwIUNKOC5Sc5BRYyIZcNtTjlqOMjHYaGU4BlJ+MCVMF8BrMr2Dz9OOgKoI9
-	 GVRkRtFFg1brO/ZEriSEsG0arG3Y9sjO8UBNXyt6lAGna3y1m3WonYhhhf+naxNDbd
-	 egDk73cNtbhEPL6+bsS16kkdE35xAk/d+zKp7h61TitpU9SA6wzZQF+KzS9jYVWJ+H
-	 UQTtWDXtZ5gUrvakcZl7NeY6f6UXPPSY7eEnfBiF8oDrBHbWgekiHvAJODMnWrNx8x
-	 o8mEE/Fbobqs2VYNGVtWiSDJC4ZO6XkXdLSANmYt/n6nVGuSR5SoHB/LmET9301nKb
-	 GOv+/sPBfBOEzVxbKb90U7GCNcrCLmH9DBvuA0DhEth7ppx0BhxvR76TZiasaITCTX
-	 tZTDSfBAtksHFfubS2p9o2Iw=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6555840E00B2;
-	Tue, 23 Apr 2024 16:03:04 +0000 (UTC)
-Date: Tue, 23 Apr 2024 18:02:58 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv10 04/18] cpu/hotplug, x86/acpi: Disable CPU offlining
- for ACPI MADT wakeup
-Message-ID: <20240423160258.GBZifbsuoTIbWDapej@fat_crate.local>
-References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <20240409113010.465412-5-kirill.shutemov@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Xhg5CJpY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NbCr9Gb/gRKAYFxDyNXxzsWikQzcWcPOEkvFAlHYTKuQ37litzimRSdHcCZO1MuSz+beTGGYLyKhuhwbTxlbYgbMJUnc8qLwMuyr68ROH02VT3hJs3a1QL38p2/lP7fmfwTj/HuETEl7tAlYuXwK4DH1BlJb33pHJ/L7krWX/Qi6woHH/X3UNxHFeFZtqyiKrNVwec5+73WX7vN6Z5xvnw2DAQBj8d4Cen606gP7hB5uw0qprebw6H6bxHA/hgJmbejRkOC5bY/b0ecF+FpswmylJStc4Z0K4jDCdc5SsW7bQlNndz6Hyiu6nej68Xja/I4hWSWHWFksl71yaYXTpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ukt0dfh46WsP7kqfOQpXbL4+TBUFfUgpVFR7pGR/JeY=;
+ b=klEmjiaO5cFsupyE2wraZK6qVYu6atuKSBnfXfoLeaH0lXwWNUNpo6wMMIsAG7BFfU0jrvTUQfiZ7dpnd9+eWnRlkdDPfEdpfoVjhosApv+xh/2OJqDdur93UWQslrn773dj8KR3hrWlpXFNmDXJF3EcfmyfwZiTEUCQPZMwnmU7pfM6fNPPgPorifVrWeDYuuKWKa8H90yCiH3uZYIwGW6JQeVG06AfAy50hX+jwiwZL2hp2hPeBGZQkWVehFa67zDyefHHEOJ3jEoSAjM4dj72uDidMPlbn3ChVVHbdxmk22nz8qFcmxS+otTgvhhY1VPxgUj/HTQAuo1UmtjCnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ukt0dfh46WsP7kqfOQpXbL4+TBUFfUgpVFR7pGR/JeY=;
+ b=Xhg5CJpY+rwam0zs5F0DtWoJ7yB4LDhAmzZsAm8D++I4i7GQKfXOciHlwByTlnI1Vle59Q+tafHc95Tk8ipNsZZaSLu7ONsJJYbR+OeVzEXP9D0IpEIjoSWQD4WNJjjqjb3QNepjXt376WleFsxEIgTcv1FlgFYPy2xZAXxH10E=
+Received: from DM6PR01CA0025.prod.exchangelabs.com (2603:10b6:5:296::30) by
+ LV8PR12MB9335.namprd12.prod.outlook.com (2603:10b6:408:1fc::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Tue, 23 Apr
+ 2024 16:23:50 +0000
+Received: from CH1PEPF0000AD81.namprd04.prod.outlook.com
+ (2603:10b6:5:296:cafe::80) by DM6PR01CA0025.outlook.office365.com
+ (2603:10b6:5:296::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.22 via Frontend
+ Transport; Tue, 23 Apr 2024 16:23:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH1PEPF0000AD81.mail.protection.outlook.com (10.167.244.89) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7452.22 via Frontend Transport; Tue, 23 Apr 2024 16:23:49 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 23 Apr
+ 2024 11:23:49 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: <kvm@vger.kernel.org>
+CC: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+	<bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
+	<ak@linux.intel.com>, <tony.luck@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>
+Subject: [PATCH v14 23/22] [SQUASH] KVM: SEV: Add support to handle GHCB GPA register VMGEXIT
+Date: Tue, 23 Apr 2024 11:21:38 -0500
+Message-ID: <20240423162144.1780159-1-michael.roth@amd.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240421180122.1650812-1-michael.roth@amd.com>
+References: <20240421180122.1650812-1-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240409113010.465412-5-kirill.shutemov@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD81:EE_|LV8PR12MB9335:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56a7b175-1353-4317-f9f2-08dc63b1c239
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?uFQyLsmnn3kfiH7YOz+EMM1mlUpUBgoxbW+pdJGm04Mn3eKQ63odTbFEidG7?=
+ =?us-ascii?Q?EN2sB+djnnKQNugWcZSdzFUlPmaXunCWwerrZZxgq4znghgHDNpk7bdxObZ6?=
+ =?us-ascii?Q?x9mexPmDb5VKxCXLYxYxkmA0Cy28ez+Id/oGvuCssaPm+IU45YHnbhgIBMby?=
+ =?us-ascii?Q?36MAvJj9U1CWm14GNAXITlkSYPwaqsOf9RTWgFCQM/x+APu2DJMfzgepZWND?=
+ =?us-ascii?Q?m9NPrN0MRjw/irGKbRWEhS3xQzbnOV9UITldpL5Jv+r2HqlkTsvYOBwHzPs6?=
+ =?us-ascii?Q?j9dz9E4xn6aibTK9gc6J5i2nRQdQIc6p5J5jHC4nFDkQLtMryQRNmPZ45bpk?=
+ =?us-ascii?Q?mNzXraLwWD0s36lCf7A5DPHRcAQPdjXbqUziehCL5qOEIPRJ85tM5jo9s9yA?=
+ =?us-ascii?Q?AXHic5VmzKzvo23PnNNI7DzYqbFENyPFJ4a9+lxDJb2e0J+orXglgExl34Rt?=
+ =?us-ascii?Q?6n1tnTJUhKMvmYgbuf5UlPGE76/9VX6hjT4Ciqotb6xx38+nHgfUKUDL4K4g?=
+ =?us-ascii?Q?VTExdaQeVtcEbz7NsCAMl/7SpOPpgbSh8Jd87FkuQwx4B4RB3hgbswMKT2Jb?=
+ =?us-ascii?Q?nL/TfYorKyuWf5nZUey9X9dTn7DtXCnsr2INcM7N6vJMNnphuNEXgZAyB7cl?=
+ =?us-ascii?Q?Wr8fdohygVyROenkS3cm9XobuYQu6L2QU20pB78SSvSpK7NjzfnZYFdd5tS0?=
+ =?us-ascii?Q?3gvYiSXF0/vMpTVDQIc4Sg9nP0JK2YUJtx8YjNdLTeRN6GaPprqjc5slgnyC?=
+ =?us-ascii?Q?RxhHFXFVq4GFhtRt+E4X0Z3J+Y18+ixJUdwZshLCpMyV7G+7LSkV/ZLP7P65?=
+ =?us-ascii?Q?cnfY2em4MlyBynL7LyTsJ2/Iyg9nNY12Or5qZD3ZTI1X2oRuAwDAbb9/FaAE?=
+ =?us-ascii?Q?x6NpQqdOktQewVhZC6Zp0Ch70iZGe1ogpM/KZr3l9axssJRQfwKmKBEIheT2?=
+ =?us-ascii?Q?rcSeAZB8Gc5fwm9Y8PZS/q6Tv+SBy3t/JQlTmgDD7slhT4Tzdxemz5iDmCmo?=
+ =?us-ascii?Q?GEVGlkfaH6K/ynXxF8suJcZZrs3GYlcpowF3EIfYJVA1dHEqouBpx1VOxkSs?=
+ =?us-ascii?Q?+BQq8dqs9aYGtbzV8dOYkcaPEEwaEmlqjM0MUfjwjh1IGoOnXMMdSw4yK4dt?=
+ =?us-ascii?Q?S+39+KVi5C9+mHCjQt+LAmPBl82Ms8jN4yG4d+PTz/JFRobwfWQ7QGzNnMr5?=
+ =?us-ascii?Q?eRPKEYLrN1MH+uq9kuUwK/sfW6r7brd47ZfDF9g3lGsLMF68shc1rTxCKiPL?=
+ =?us-ascii?Q?35uwkP4gIB9Fc1io3QqqBTJ42/88MsD6xtNtaQTb2z5tm8RiVb1/ZpoUY0id?=
+ =?us-ascii?Q?cv+7UEDaVcSuZbJw5G9SyQH6bxWk8zXCgH8xFRdQWqG5Oxve0wtUEINOcuDH?=
+ =?us-ascii?Q?b5U5IUh3W9FJudhAaQv5uyJoaxXS?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(376005)(1800799015)(82310400014)(7416005)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2024 16:23:49.8083
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56a7b175-1353-4317-f9f2-08dc63b1c239
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000AD81.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9335
 
-On Tue, Apr 09, 2024 at 02:29:56PM +0300, Kirill A. Shutemov wrote:
-> ACPI MADT doesn't allow to offline CPU after it got woke up.
+Terminate if an non-SNP guest attempts to register a GHCB page; this
+is an SNP-only GHCB request.
 
-In all your text: s/woke/woken/g
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+---
+ arch/x86/kvm/svm/sev.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-> 
-> Currently CPU hotplug is prevented based on the confidential computing
-> attribute which is set for Intel TDX. But TDX is not the only possible
-> user of the wake up method.
-> 
-> Disable CPU offlining on ACPI MADT wakeup enumeration.
-
-Something's missing in that "justification". It should explain why
-CC_ATTR_HOTPLUG_DISABLED is not needed anymore.
-
-And looking at patch 3, I'm still unclear as to why this change is done.
-Is it that the "ACPI MADT mailbox wakeup method" is going to be used by
-TDX guests now too so that you don't need CC_ATTR_HOTPLUG_DISABLED
-anymore?
-
-It seems that if acpi_parse_mp_wake() finds an ok wakeup entry, then
-offlining is disabled...
-
-Or is it something else?
-
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 1cec466e593b..088eca85a6ac 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3970,6 +3970,9 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
+ 				  GHCB_MSR_INFO_MASK, GHCB_MSR_INFO_POS);
+ 		break;
+ 	case GHCB_MSR_PREF_GPA_REQ:
++		if (!sev_snp_guest(vcpu->kvm))
++			goto out_terminate;
++
+ 		set_ghcb_msr_bits(svm, GHCB_MSR_PREF_GPA_NONE, GHCB_MSR_GPA_VALUE_MASK,
+ 				  GHCB_MSR_GPA_VALUE_POS);
+ 		set_ghcb_msr_bits(svm, GHCB_MSR_PREF_GPA_RESP, GHCB_MSR_INFO_MASK,
+@@ -3978,6 +3981,9 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
+ 	case GHCB_MSR_REG_GPA_REQ: {
+ 		u64 gfn;
+ 
++		if (!sev_snp_guest(vcpu->kvm))
++			goto out_terminate;
++
+ 		gfn = get_ghcb_msr_bits(svm, GHCB_MSR_GPA_VALUE_MASK,
+ 					GHCB_MSR_GPA_VALUE_POS);
+ 
+@@ -4004,12 +4010,7 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
+ 		pr_info("SEV-ES guest requested termination: %#llx:%#llx\n",
+ 			reason_set, reason_code);
+ 
+-		vcpu->run->exit_reason = KVM_EXIT_SYSTEM_EVENT;
+-		vcpu->run->system_event.type = KVM_SYSTEM_EVENT_SEV_TERM;
+-		vcpu->run->system_event.ndata = 1;
+-		vcpu->run->system_event.data[0] = control->ghcb_gpa;
+-
+-		return 0;
++		goto out_terminate;
+ 	}
+ 	default:
+ 		/* Error, keep GHCB MSR value as-is */
+@@ -4020,6 +4021,14 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
+ 					    control->ghcb_gpa, ret);
+ 
+ 	return ret;
++
++out_terminate:
++	vcpu->run->exit_reason = KVM_EXIT_SYSTEM_EVENT;
++	vcpu->run->system_event.type = KVM_SYSTEM_EVENT_SEV_TERM;
++	vcpu->run->system_event.ndata = 1;
++	vcpu->run->system_event.data[0] = control->ghcb_gpa;
++
++	return 0;
+ }
+ 
+ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
 -- 
-Regards/Gruss,
-    Boris.
+2.25.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
