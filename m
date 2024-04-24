@@ -1,77 +1,100 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F083D15CD66;
-	Wed, 24 Apr 2024 13:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AFB15B15C
+	for <linux-coco@lists.linux.dev>; Wed, 24 Apr 2024 13:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713965267; cv=none; b=NMwjNj9UXuRUDAGkOYfOypAYd3oiu6FCKxX4l5iXvCdvQixS3TE44E78NKMyqcg8QkmO1j9VMQ6DnQqeyUnN6LVQ4/U3yP/Efqih0xwnJ8k3E48dPYHyQ+7y7aTNJAToYpTZbG0DqwWpFDKemKxTFtoGzKJkRsmT9XaqNgeg1yw=
+	t=1713966682; cv=none; b=t6bzUji4jfz+wctD6TZqtByfw0aHcEdw4rkQ2Zzrfnuo1jmz69o0TcVbdc9VvXEnwbOY+IOrfIOh5mAFNtrPZB8AKPQqdUhAo7aG9nTR+bGnWxg38dF3NHbm2Dxx72vIuYLn0hi1zznSSsPF5xQaGrFB7GyeVvfwlMIE8IsEKpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713965267; c=relaxed/simple;
-	bh=RHRNpt1GrdBK2G7+COQrLb3IEKD0I7+HfEEcq1CkGtk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j8x3mLOl7QuABUxWIwIzRbS5UkvAphZNdY5zJkz+DluuJ+7dZYhSQw4zxDj4Uf+NvqKdtHyUuGR2NY57QK5I0r6GOMAjdRaQNlK16QQVebsfFj55iE/xDhhXxEKAhn1/8dAVUI/Qbn3f4ZOyHZ5n52frEkAvAzV6DEM0pQWL0wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 190582F;
-	Wed, 24 Apr 2024 06:28:13 -0700 (PDT)
-Received: from [10.57.86.198] (unknown [10.57.86.198])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DCF6A3F64C;
-	Wed, 24 Apr 2024 06:27:42 -0700 (PDT)
-Message-ID: <7c6504dd-ebef-4809-9e1d-7151db647e2a@arm.com>
-Date: Wed, 24 Apr 2024 14:27:41 +0100
+	s=arc-20240116; t=1713966682; c=relaxed/simple;
+	bh=Ru5nWKfEHKjsDt1vpqsF7Uu+ro/kn7zKfZdgh5xVHAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DZ2fYUvK52McCWdpxZNg5B6ZG/+QUWbfrZ3QZZNKNC9/07ksT/RKERtT1xCZxQ2WnELi6uX/wUgQW09WjhbzVsBL+RHqOnaaWrJ6UpAd1811RJn74UZLRD8ATLR+hfikDqL7sk5XJMVKW2NN3c1EGFW6PQxx00uP0KeaaoFLAfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cFuMhfON; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cFuMhfON"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9EE2240E01C5;
+	Wed, 24 Apr 2024 13:51:18 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id JVrBxhuy33_y; Wed, 24 Apr 2024 13:51:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1713966674; bh=EBY9JeX28ZOF1EBVDHZpilQ+UJ4BEt8eGoNz2J+9fsQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cFuMhfONd+yCpmn5H3a445TD59aoAoX05f1TAeGQIrB4wGQTfECpx/JK1k7YIkbRK
+	 qy63iG7uHaFJumJCDLSbblC9RDeQBYmjg/uLL4CDGieFTYubdn1WmCtx0sZ0Gy0juZ
+	 i31C/8Bt7oxGVPOf7uUng1GtjGbVJQTjrapfNosI8FsSwpdlRz73R3d/f5rjkffx9z
+	 o5atlg87BSuqS4mvHRS21tEx8RRLFvk8COOVs5dhmmFa+4QGJtT2AerlH9G80DypJE
+	 vFOZMJsijUu9ck0Rb5ZipCLmh8jxVDOZwoihsDoenjqmgYViideoERJh/Zq/nyHO1b
+	 QPiarPweMFwrKIbo4qH+LXVodOS05jLZDYk0ZeKmONTze40fV3qo9U/KXBfY3tfc+z
+	 4K0wc2hDSL2aTa7SvA3VjOQ0FEK70wgcsJB/S/g8Agt5l99B6SNUW3flSKIpEIGIPl
+	 F3OfGv8pjypcu2gtuQJPJvTJtbkxneTGdqHFUKYvICFmegFcLdzbMn3jaANyKkTJEj
+	 fKGiRW1yd8NM1I2rlaZUy7fSFZtwqffI5aiIguzJCdT/vmV7MA5aK/IL1maDGeq4cO
+	 uCD2ncaKutVGK87r8E3J9d0fnfm9DrqqZJ7mlKr0MhRaA+h9Zd5L7ilqhrIraeqWMW
+	 8J1zOivBIOjWzmyABaT+4+rM=
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 841CE40E0177;
+	Wed, 24 Apr 2024 13:50:53 +0000 (UTC)
+Date: Wed, 24 Apr 2024 15:50:52 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
+Subject: Re: [PATCHv10 04/18] cpu/hotplug, x86/acpi: Disable CPU offlining
+ for ACPI MADT wakeup
+Message-ID: <20240424135052.GDZikOPIOeGxtQRBBc@fat_crate.local>
+References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
+ <20240409113010.465412-5-kirill.shutemov@linux.intel.com>
+ <20240423160258.GBZifbsuoTIbWDapej@fat_crate.local>
+ <k4t62qfiyapfh2hjp4bpnaa4bmtlajpm5q4an3qs4jimhldcwv@wtrp63ofrfk6>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 14/14] virt: arm-cca-guest: TSM_REPORT support for
- realms
-Content-Language: en-GB
-To: Thomas Fossati <thomas.fossati@linaro.org>,
- Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Sami Mujawar <sami.mujawar@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240412084056.1733704-1-steven.price@arm.com>
- <20240412084213.1733764-1-steven.price@arm.com>
- <20240412084213.1733764-15-steven.price@arm.com>
- <CA+1=6ydMVk4Vcouc2ag8G7tfqZy80VWFxWHSHEKF1JaABd=A7A@mail.gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CA+1=6ydMVk4Vcouc2ag8G7tfqZy80VWFxWHSHEKF1JaABd=A7A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <k4t62qfiyapfh2hjp4bpnaa4bmtlajpm5q4an3qs4jimhldcwv@wtrp63ofrfk6>
 
-On 24/04/2024 14:06, Thomas Fossati wrote:
-> Hi Steven, Sami,
-> 
-> On Fri, 12 Apr 2024 at 10:47, Steven Price <steven.price@arm.com> wrote:
->> +/**
->> + * arm_cca_report_new - Generate a new attestation token.
->> + *
->> + * @report: pointer to the TSM report context information.
->> + * @data:  pointer to the context specific data for this module.
->> + *
->> + * Initialise the attestation token generation using the challenge data
->> + * passed in the TSM decriptor.
-> 
-> Here, it'd be good to document two interesting facts about challenge data:
-> 1. It must be at least 32 bytes, and
-> 2. If its size is less than 64 bytes, it will be zero-padded.
+On Wed, Apr 24, 2024 at 11:38:42AM +0300, Kirill A. Shutemov wrote:
+> It was wrong from beginning. If ACPI MADT wake up method is used on the
+> platform, we cannot handle offline, regardless if it is TDX or not.
 
-Agreed !
+Sounds to me like this fact should be a prominent part of the commit
+message and these 1-4 patches should be carved out as a separate set
+fixing that ACPI MADT thing and I should take them separately now...?
 
-Suzuki
+Also, does this need to go to stable although it is kinda big for
+stable. If stable, do we need a smaller fix first which is backportable?
 
-> 
-> cheers!
+Thx.
 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
