@@ -1,100 +1,96 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AFB15B15C
-	for <linux-coco@lists.linux.dev>; Wed, 24 Apr 2024 13:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4341E501
+	for <linux-coco@lists.linux.dev>; Wed, 24 Apr 2024 14:35:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713966682; cv=none; b=t6bzUji4jfz+wctD6TZqtByfw0aHcEdw4rkQ2Zzrfnuo1jmz69o0TcVbdc9VvXEnwbOY+IOrfIOh5mAFNtrPZB8AKPQqdUhAo7aG9nTR+bGnWxg38dF3NHbm2Dxx72vIuYLn0hi1zznSSsPF5xQaGrFB7GyeVvfwlMIE8IsEKpI=
+	t=1713969354; cv=none; b=asu2xV5qo8lGzsGQX0iY5rjW0R1O0qlKhIdehUJ6QXzaJx15ZZs+RB229jhrXiNYsBV/Hj4SUzVGu2RkvESGFfkpzYjY+Bm2aZuxUhoWqyIc2oq9g9D892UTGp/07slYAkecPmx9geraoaxxifM8w9sC1mFbch0XwwhvMFGHTEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713966682; c=relaxed/simple;
-	bh=Ru5nWKfEHKjsDt1vpqsF7Uu+ro/kn7zKfZdgh5xVHAQ=;
+	s=arc-20240116; t=1713969354; c=relaxed/simple;
+	bh=kYUJMj8WambktxnBcdatjza3aKu1bxR5g5szXi3Etjc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DZ2fYUvK52McCWdpxZNg5B6ZG/+QUWbfrZ3QZZNKNC9/07ksT/RKERtT1xCZxQ2WnELi6uX/wUgQW09WjhbzVsBL+RHqOnaaWrJ6UpAd1811RJn74UZLRD8ATLR+hfikDqL7sk5XJMVKW2NN3c1EGFW6PQxx00uP0KeaaoFLAfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cFuMhfON; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=pftVxeydh959qn4MmXZ/eYXKhfbL5NLdiykJpB8OKMPxkaK+wHTvsyq8IbKavkOwxU6RA5SnN9LzgcLzbb4M59Ba4UB5W7SyPWBXgsXOWVkZLrG0J6Y8k2cX1PaeFOYuhd1kHBQibjFD3+jhTX4vpI81zvWgSjbC9eLNuWIAllg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DA7oZmg/; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cFuMhfON"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9EE2240E01C5;
-	Wed, 24 Apr 2024 13:51:18 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id JVrBxhuy33_y; Wed, 24 Apr 2024 13:51:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1713966674; bh=EBY9JeX28ZOF1EBVDHZpilQ+UJ4BEt8eGoNz2J+9fsQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cFuMhfONd+yCpmn5H3a445TD59aoAoX05f1TAeGQIrB4wGQTfECpx/JK1k7YIkbRK
-	 qy63iG7uHaFJumJCDLSbblC9RDeQBYmjg/uLL4CDGieFTYubdn1WmCtx0sZ0Gy0juZ
-	 i31C/8Bt7oxGVPOf7uUng1GtjGbVJQTjrapfNosI8FsSwpdlRz73R3d/f5rjkffx9z
-	 o5atlg87BSuqS4mvHRS21tEx8RRLFvk8COOVs5dhmmFa+4QGJtT2AerlH9G80DypJE
-	 vFOZMJsijUu9ck0Rb5ZipCLmh8jxVDOZwoihsDoenjqmgYViideoERJh/Zq/nyHO1b
-	 QPiarPweMFwrKIbo4qH+LXVodOS05jLZDYk0ZeKmONTze40fV3qo9U/KXBfY3tfc+z
-	 4K0wc2hDSL2aTa7SvA3VjOQ0FEK70wgcsJB/S/g8Agt5l99B6SNUW3flSKIpEIGIPl
-	 F3OfGv8pjypcu2gtuQJPJvTJtbkxneTGdqHFUKYvICFmegFcLdzbMn3jaANyKkTJEj
-	 fKGiRW1yd8NM1I2rlaZUy7fSFZtwqffI5aiIguzJCdT/vmV7MA5aK/IL1maDGeq4cO
-	 uCD2ncaKutVGK87r8E3J9d0fnfm9DrqqZJ7mlKr0MhRaA+h9Zd5L7ilqhrIraeqWMW
-	 8J1zOivBIOjWzmyABaT+4+rM=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 841CE40E0177;
-	Wed, 24 Apr 2024 13:50:53 +0000 (UTC)
-Date: Wed, 24 Apr 2024 15:50:52 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DA7oZmg/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713969354; x=1745505354;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kYUJMj8WambktxnBcdatjza3aKu1bxR5g5szXi3Etjc=;
+  b=DA7oZmg/cVWSbjbWfdVDYpXVEc2VUX7t+ZDMiAlcdmZI1igRiYcoi6vB
+   4X8LPaw/+sax049LJniGDkh5iV70d+hjKGOk4VN4Lbx1FOuPXv1nDsKUm
+   y17w4koiYfd0SSofn/1NLBHZsid7OwsPIL0q2SaD/VQsrgnmU39tcsE5h
+   vvB2Z/TAn9/gkFTlxaYQL22+6bmqtVuomip3hKDOtgOdi5Brhvgzss6zO
+   bqwQGWuZ03+Qs9WyLklKV+O6Q7bdd6Q/daxU7b+dRRrUxllZW6nDHLHGq
+   NDD6KrwP3JnOF8Q5zfJMDkehiJNK/y7oz7llooSg4ugvI53gNODpnOwx5
+   g==;
+X-CSE-ConnectionGUID: JD7Xzi1KTJSe8cmW1MlDVg==
+X-CSE-MsgGUID: al9OCUXpTFeR0CTNZVpBtw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="9825862"
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
+   d="scan'208";a="9825862"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 07:35:53 -0700
+X-CSE-ConnectionGUID: a/dchSKJR/COZIoy8TSfXA==
+X-CSE-MsgGUID: wBqVpR8xRTSjGjiyMjjTRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
+   d="scan'208";a="62191162"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa001.jf.intel.com with ESMTP; 24 Apr 2024 07:35:47 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 715EF1BD; Wed, 24 Apr 2024 17:35:46 +0300 (EEST)
+Date: Wed, 24 Apr 2024 17:35:46 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Tao Liu <ltao@redhat.com>
 Subject: Re: [PATCHv10 04/18] cpu/hotplug, x86/acpi: Disable CPU offlining
  for ACPI MADT wakeup
-Message-ID: <20240424135052.GDZikOPIOeGxtQRBBc@fat_crate.local>
+Message-ID: <svpuqhoglv7s2wtu754i4oicowueen47vq6eobjbznsromb4m3@4h7vy346n4ak>
 References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
  <20240409113010.465412-5-kirill.shutemov@linux.intel.com>
  <20240423160258.GBZifbsuoTIbWDapej@fat_crate.local>
  <k4t62qfiyapfh2hjp4bpnaa4bmtlajpm5q4an3qs4jimhldcwv@wtrp63ofrfk6>
+ <20240424135052.GDZikOPIOeGxtQRBBc@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <k4t62qfiyapfh2hjp4bpnaa4bmtlajpm5q4an3qs4jimhldcwv@wtrp63ofrfk6>
+In-Reply-To: <20240424135052.GDZikOPIOeGxtQRBBc@fat_crate.local>
 
-On Wed, Apr 24, 2024 at 11:38:42AM +0300, Kirill A. Shutemov wrote:
-> It was wrong from beginning. If ACPI MADT wake up method is used on the
-> platform, we cannot handle offline, regardless if it is TDX or not.
+On Wed, Apr 24, 2024 at 03:50:52PM +0200, Borislav Petkov wrote:
+> On Wed, Apr 24, 2024 at 11:38:42AM +0300, Kirill A. Shutemov wrote:
+> > It was wrong from beginning. If ACPI MADT wake up method is used on the
+> > platform, we cannot handle offline, regardless if it is TDX or not.
+> 
+> Sounds to me like this fact should be a prominent part of the commit
+> message and these 1-4 patches should be carved out as a separate set
+> fixing that ACPI MADT thing and I should take them separately now...?
+> 
+> Also, does this need to go to stable although it is kinda big for
+> stable. If stable, do we need a smaller fix first which is backportable?
 
-Sounds to me like this fact should be a prominent part of the commit
-message and these 1-4 patches should be carved out as a separate set
-fixing that ACPI MADT thing and I should take them separately now...?
-
-Also, does this need to go to stable although it is kinda big for
-stable. If stable, do we need a smaller fix first which is backportable?
-
-Thx.
+Correct me, if I am wrong, but I believe TDX guest is the only user of
+ACPI MADT wake up method. At least it was added into kernel for TDX guest.
+So it wouldn't fix anything user-visible. It might affect a future
+platform that uses this wake up method, but it is a guessing game.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+  Kiryl Shutsemau / Kirill A. Shutemov
