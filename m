@@ -1,107 +1,97 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0B9181CEB;
-	Wed, 24 Apr 2024 18:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3454213C9C8
+	for <linux-coco@lists.linux.dev>; Wed, 24 Apr 2024 20:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713982527; cv=none; b=D1ENktOT2qnGid7jUX3ZzXxnzJQED2sqZ/Vpv3hCy6w27kZdd6qML8r6zTr3NiXzsxVHGLtHc3rGH8+S7fJEK+7wJ2A+dzwChODcAxNn4O9b54TbTgUXg6VO41kQx6y5O5Rx+jR3Wafn7o5151MNCOrO9uxMilkbckQ6Arc3oRU=
+	t=1713990114; cv=none; b=hI+2dkOAX3MxF+kRQY7MhknjkTlgKmDjVjNr8llUqFDbHT3qKhBMqQyQfZ6PnTtP5QEwppmilds1es1BAZBL6WPdGyM166NT5IVqTwouLlQBjTezkVGmnlkj4gUqzhgLvaLY2RSCgveNStiE7Ncae/nPCoJzqpEI1IfbxsWcULY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713982527; c=relaxed/simple;
-	bh=zpJumNq7u5KsT133nYF8l88fxW5RaBTIKz2lN9diWJs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wq5ct7ye5UkWqIfAYfP1JbOB1vICeubRai/sH0FNkKhTF0T8YJhhIJS+1nW5u1Qu+dUPXoV0dCRD3976FVoKGzVriFBvJobX+IoaS4OvCClhR4kD9+kaIMeepLctGiIsTygXz+YoztcaUefSCYRX2pZ7z6V9kGK7XBRdX3MM4nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZPaGAXpF; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1713990114; c=relaxed/simple;
+	bh=TGEtv5XOiits4mamBa9OAfqfGV4U4S70ayjHE1cLPf0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Hdj6Cev2R2oNkgBYgx1qHkxug4Twm0zrlEpIebc2auxzo4IAhbdSi/byXeHfX+9S9v2/zujubSM6QtKX43THqOOympN13CoDk8kS9PyO56udUND6Qknv9ZV8w2tJJNd1RAl0MiBCvdEiMnfYSf8zvEToNPdMo33aBM2gaLGmBRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tPoY2U5Z; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZPaGAXpF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713982523; x=1745518523;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=zpJumNq7u5KsT133nYF8l88fxW5RaBTIKz2lN9diWJs=;
-  b=ZPaGAXpFmrF7pCjwqM5CM6QYg5G4ValsGB9sjuvrsfG6bj18GW5VFx4r
-   t98F8NMcEYIvU88SJN/WXS6EBM8GMBcBcFNvlTTNA7CoYxKrhM+TXhpCX
-   1hSIMaOHmS+NoE6KQ5ZGDsBxq88FU9YH4657xViqdo8YGoIFJf4Gvgn+I
-   QT8QWR1b9Z1+jGBtSvETjmDcj4SeCCrnk92CNk1HfYRGO5dcDnD3GaWRq
-   yuHQBe7QZsCm6f6FO+gnZRSggxjeckiZxV+2kY2T+x53ruqecju373V0N
-   uXEo9TTa2YdUC79mQUB4o2Gvp7ORwBs5kOghne9Cw2Mys1FFO9gKOB96g
-   w==;
-X-CSE-ConnectionGUID: wLNc78ayRoimaZluK2jr8A==
-X-CSE-MsgGUID: 0iPA1gZ6RCyP0yyTHoWAjA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="9503546"
-X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
-   d="scan'208";a="9503546"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 11:15:21 -0700
-X-CSE-ConnectionGUID: yLYbQYPRRbq++zx8rXyWIQ==
-X-CSE-MsgGUID: QcLdNXhVRx29TbGdnJqhFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
-   d="scan'208";a="55750135"
-Received: from agluck-desk3.sc.intel.com ([172.25.222.105])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 11:15:21 -0700
-From: Tony Luck <tony.luck@intel.com>
-To: Borislav Petkov <bp@alien8.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	x86@kernel.org
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Tony Luck <tony.luck@intel.com>
-Subject: [PATCH v4 43/71] x86/virt/tdx: Switch to new Intel CPU model defines
-Date: Wed, 24 Apr 2024 11:15:21 -0700
-Message-ID: <20240424181521.41984-1-tony.luck@intel.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240424181245.41141-1-tony.luck@intel.com>
-References: <20240424181245.41141-1-tony.luck@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tPoY2U5Z"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc6b269686aso519792276.1
+        for <linux-coco@lists.linux.dev>; Wed, 24 Apr 2024 13:21:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1713990111; x=1714594911; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kJKivmW0J/DCohVbY4PLH/Gsm5HkrpKk4PumvPQkGTk=;
+        b=tPoY2U5Z67pr7YgCWJAf6bD1cMg91bHhaP5hAHpqh0+zFwfXmLJoPlqaGECTUxuGCM
+         hxtsojmG+yqrkP3KHzvrdcDikk84FLQP6JGmVrX0lN+zeg33Mvs0HB7RWYke/wE2TRyy
+         2cx41JUx8Z+F2+NBP8YXYAAm9itPkRisISMiNhbqOLF1cEc5C7X6dwuHLCHEcerCU8Rq
+         fcQbVcPEhxpRBubz0iCZbqSZoB2gv9Miq3/i8QnCbELDnE+gTOYNGC/1KggX9uqp4xd/
+         duV+6rSrJIIWrEegnPcYwUr/hAT0qdtlotntIPQjwg/7v7T0fBGyFBqjghgXOLTZOs28
+         UHXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713990111; x=1714594911;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kJKivmW0J/DCohVbY4PLH/Gsm5HkrpKk4PumvPQkGTk=;
+        b=wabERGWSo2ZN0dApAhLJRYxWUGQUF2Buw0MHsqwfhm9QAaMxl/fg3rqujOI3QPvpa0
+         7Z0oh2hCuBE64KrI5uiCRAcX6jsPt7P+DdenLCfv5qeRplVthaPyws1vptgXkN2QBGJE
+         UuPpsuWjR0uEhYzElLbQZVdcNcW9utKgnYRGAEffVXO8JC51Xq091mYRgCKy4JWl49od
+         kR2RpZyB7Urf7syjmBq+SaUod8ikqr+U0+ew4T1v28dFKjSKGu5a1RMCfSQsHXR/L1sN
+         cbuCWZZ0oBQNU78qDImsWoUkmOUcS2mDaZUFx+fxcE1g+Ugg6e0eGthtYvW6GguWCU2Y
+         FfZA==
+X-Forwarded-Encrypted: i=1; AJvYcCXAJBZw3nkSmVZLvHhyokSoPSZxpapOXnSSDeJv2N/uMEUCrJDwgNBInq4CtSXoMVBJm5hePEEh1+XjXagBEkA6EdCCwVFPyUPJMA==
+X-Gm-Message-State: AOJu0Yw14Vtg2pCGXqUVAwG3efF4NEgD4WVbl+RfhcnWImv6BdpEEzzK
+	x78fBNjD+K2RCNFMYCBO/s+1sF560xk9n3Y4Tng910+fsV/3kxj9PcyZQSNxLls3OaLOuVqANpC
+	0+w==
+X-Google-Smtp-Source: AGHT+IET29Be+TqLLxR1el2WX7B1TltJHuVLHw4XBc2UEobX1IG760KHrKW5Mr9mGqY0ZbBfjntc+5CKv7o=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:c54c:0:b0:de1:d49:7ff6 with SMTP id
+ v73-20020a25c54c000000b00de10d497ff6mr385878ybe.7.1713990111258; Wed, 24 Apr
+ 2024 13:21:51 -0700 (PDT)
+Date: Wed, 24 Apr 2024 13:21:49 -0700
+In-Reply-To: <20240421180122.1650812-4-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20240421180122.1650812-1-michael.roth@amd.com> <20240421180122.1650812-4-michael.roth@amd.com>
+Message-ID: <Zilp3Sp5S-sljoQE@google.com>
+Subject: Re: [PATCH v14 03/22] KVM: SEV: Add GHCB handling for Hypervisor
+ Feature Support requests
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
+	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com, 
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, 
+	Brijesh Singh <brijesh.singh@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-New CPU #defines encode vendor and family as well as model.
+On Sun, Apr 21, 2024, Michael Roth wrote:
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 6e31cb408dd8..1d2264e93afe 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -33,9 +33,11 @@
+>  #include "cpuid.h"
+>  #include "trace.h"
+>  
+> -#define GHCB_VERSION_MAX	1ULL
+> +#define GHCB_VERSION_MAX	2ULL
+>  #define GHCB_VERSION_MIN	1ULL
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
----
- arch/x86/virt/vmx/tdx/tdx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 4d6826a76f78..ee9a9273b75a 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -34,7 +34,7 @@
- #include <asm/msr.h>
- #include <asm/cpufeature.h>
- #include <asm/tdx.h>
--#include <asm/intel-family.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/processor.h>
- #include <asm/mce.h>
- #include "tdx.h"
-@@ -1427,9 +1427,9 @@ static void __init check_tdx_erratum(void)
- 	 * private memory poisons that memory, and a subsequent read of
- 	 * that memory triggers #MC.
- 	 */
--	switch (boot_cpu_data.x86_model) {
--	case INTEL_FAM6_SAPPHIRERAPIDS_X:
--	case INTEL_FAM6_EMERALDRAPIDS_X:
-+	switch (boot_cpu_data.x86_vfm) {
-+	case INTEL_SAPPHIRERAPIDS_X:
-+	case INTEL_EMERALDRAPIDS_X:
- 		setup_force_cpu_bug(X86_BUG_TDX_PW_MCE);
- 	}
- }
--- 
-2.44.0
-
+This needs a userspace control.  Being unable to limit the GHCB version advertised
+to the guest is going to break live migration of SEV-ES VMs, e.g. if a pool of
+hosts has some kernels running this flavor of KVM, and some hosts running an
+older KVM that doesn't support v2.
