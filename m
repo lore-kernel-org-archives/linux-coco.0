@@ -1,95 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9559020B3E;
-	Tue, 23 Apr 2024 21:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B927C142915
+	for <linux-coco@lists.linux.dev>; Wed, 24 Apr 2024 08:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713908188; cv=none; b=qRpV4cSreDPUruTIcr+3HXowL2KHmV3O7u3dUpw+Awpc6ZJbR8piFT1vsbmlQeRUGWjUZIZLX8taasuuIdz7t4qH26H4wkMfM+ai/R4SkpsPMuz2K0nQV6kuQrVsKAUG/gYQByfZaB8egkJnRAAE5zRw0BVXJPf0VTxkW1Ckq0E=
+	t=1713947930; cv=none; b=GpMGchZ/rt4JeOWYAES+23HbNCXRAtVs5+Hb08UbN/FoMVUjS+HVz65hd4XefYCdM9iFYV9oCH7p6etBVRGRgQhVZySpIudJUFL9fWFp8XGXcv0hYwa4rIDRlZ7PO4BwRnLslE+1RTCKixwZf+8cG7+gLx0SC3GBjPvzDwDxOFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713908188; c=relaxed/simple;
-	bh=kRU/X/dR1S85QfdEA379AVH9Oh6pbj0vz6VEE2p37BI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=hR6EpbTInubxmtZ3DB+/xUA1x3NWkDhDJKlp6omyqQ4Y6Opn8sGAdHE4ykKsQiCkjimVtvJ/6MPQZxCfAfv5pp0NSbcLHa00MZCIz6tZ0pJGCeQbDDBT3Yvl8n+ZJxD5Y6X+xbdbGY7fMCzpGgnk97bsuC1vyhxnGNa+9cVIkxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N64hL5x3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713947930; c=relaxed/simple;
+	bh=hMMvxpDfbjDULv1fmXRnELIn09JQOXoi13BP9n0Ktzo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NfjOoos4lTXCQvk4H0xnEsnsn01zzN+dncE/89QegzM300SpF/tXV82eyLtkfANrkGXxHTw++4+m9/4TM0svsjrENr7aFbAy6JTst8AEqkNn4lFbGQjv2cWQ+62eSR5qzeKp484ucX2E51KZbM1QpAsQfaQrDbj01gGyF2XRSqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=duzIhUsy; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N64hL5x3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA55C116B1;
-	Tue, 23 Apr 2024 21:36:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713908188;
-	bh=kRU/X/dR1S85QfdEA379AVH9Oh6pbj0vz6VEE2p37BI=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=N64hL5x31SGXexnFBS8oye91xqW8qUmC4XtebvTle1CkwE2vK/QxH5HuvgZAj7qmf
-	 mTemwU1pQsIGhRf/RXiaZpSH2CO0ckAqN9UJnW1p/okvqvH9D5+f+iVIIukrx09DK6
-	 EaYnwb8ioGwRK/ewhLyw2d/1wxBNc3DOupbttAw6dJDaAxblnKQIDeDqZPzrRxlid7
-	 3T/jwcpBOYDgbb9S/nCF0rlPn8LyPH39Dgx65fAt0yyFdCY7QS4q6goRSIafjB73HM
-	 SrILFGr9P/iu+QHCpBrAuLs08JIOEBf+KTkfWkgm0jYMBca5mzyU2RCpHEj44Qhhtv
-	 FZtYXCueW4bSg==
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="duzIhUsy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713947929; x=1745483929;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hMMvxpDfbjDULv1fmXRnELIn09JQOXoi13BP9n0Ktzo=;
+  b=duzIhUsyQ6vjwkTaGsJmxpJSFD2i3M5sWE+Yt9+vY4slbPL6D8og1zph
+   0mmYWACGyWP9LB/pgczZSyLASUN4Tx3XG36JoKo+WXzwSnQ9YAvBHph6S
+   y2xNsNxkPVj3j/+0nPTDRUIUq5VEljiBVgv+NQz6N/DRVVP0aTbumjyAK
+   7/G3ruv6F0NBEvt6RcdznEj9yKJ5kXE1FSYF3IrHES5k4Y5199fcZtqx3
+   yygl0Oa1GbOiJSQHWZ66KFJpk5FBh5bRcnI1OFFJUfPaxLv+Br+2Ws034
+   R8agCo8KiKR7aVOsKmeY3zLANL5uWgPojpr0n+/XKgxy4KuYUEXeBc92B
+   Q==;
+X-CSE-ConnectionGUID: gTEGzq22Qs6gksMlsHkyDw==
+X-CSE-MsgGUID: RMz/bFLHR8Sh41CifsgF9A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="13398960"
+X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; 
+   d="scan'208";a="13398960"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 01:38:48 -0700
+X-CSE-ConnectionGUID: +3UgJW18TYqRu6s+Kb1SXw==
+X-CSE-MsgGUID: BmfrGwObTz612CZwmk9qVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; 
+   d="scan'208";a="24711899"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa008.fm.intel.com with ESMTP; 24 Apr 2024 01:38:43 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 3DCFA28A; Wed, 24 Apr 2024 11:38:42 +0300 (EEST)
+Date: Wed, 24 Apr 2024 11:38:42 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Tao Liu <ltao@redhat.com>
+Subject: Re: [PATCHv10 04/18] cpu/hotplug, x86/acpi: Disable CPU offlining
+ for ACPI MADT wakeup
+Message-ID: <k4t62qfiyapfh2hjp4bpnaa4bmtlajpm5q4an3qs4jimhldcwv@wtrp63ofrfk6>
+References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
+ <20240409113010.465412-5-kirill.shutemov@linux.intel.com>
+ <20240423160258.GBZifbsuoTIbWDapej@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Apr 2024 00:36:18 +0300
-Message-Id: <D0RTQRSRDNAZ.LG7O2824KXOW@kernel.org>
-Cc: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
- <linux-crypto@vger.kernel.org>, <x86@kernel.org>,
- <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
- <jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
- <ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
- <vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
- <dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
- <peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
- <rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
- <bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
- <ak@linux.intel.com>, <tony.luck@intel.com>,
- <sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
- <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>, <pankaj.gupta@amd.com>,
- <liam.merwick@oracle.com>
-Subject: Re: [PATCH v14 28/22] [SQUASH] KVM: SEV: Provide support for
- SNP_EXTENDED_GUEST_REQUEST NAE event
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Michael Roth" <michael.roth@amd.com>, <kvm@vger.kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240421180122.1650812-1-michael.roth@amd.com>
- <20240423162144.1780159-1-michael.roth@amd.com>
- <20240423162144.1780159-6-michael.roth@amd.com>
-In-Reply-To: <20240423162144.1780159-6-michael.roth@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240423160258.GBZifbsuoTIbWDapej@fat_crate.local>
 
-On Tue Apr 23, 2024 at 7:21 PM EEST, Michael Roth wrote:
-> Ensure an error is returned if a non-SNP guest attempts to issue an
-> Extended Guest Request. Also add input validation for RAX/RBX.
->
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/kvm/svm/sev.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 2b30b3b0eec8..ff64ed8df301 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -3297,6 +3297,11 @@ static int sev_es_validate_vmgexit(struct vcpu_svm=
- *svm)
->  			goto vmgexit_err;
->  		break;
->  	case SVM_VMGEXIT_EXT_GUEST_REQUEST:
-> +		if (!sev_snp_guest(vcpu->kvm))
-> +			goto vmgexit_err;
-> +		if (!kvm_ghcb_rax_is_valid(svm) ||
-> +		    !kvm_ghcb_rbx_is_valid(svm))
-> +			goto vmgexit_err;
+On Tue, Apr 23, 2024 at 06:02:58PM +0200, Borislav Petkov wrote:
+> > 
+> > Currently CPU hotplug is prevented based on the confidential computing
+> > attribute which is set for Intel TDX. But TDX is not the only possible
+> > user of the wake up method.
+> > 
+> > Disable CPU offlining on ACPI MADT wakeup enumeration.
+> 
+> Something's missing in that "justification". It should explain why
+> CC_ATTR_HOTPLUG_DISABLED is not needed anymore.
 
-Hmm... maybe I'm ignoring something but why this is not just:
+It was wrong from beginning. If ACPI MADT wake up method is used on the
+platform, we cannot handle offline, regardless if it is TDX or not.
 
-	if (!sev_snp_guest(vcpu->kvm) ||
-	    !kvm_ghcb_rax_is_valid(svm) ||
-	    !kvm_ghcb_rbx_is_valid(svm)))
+> And looking at patch 3, I'm still unclear as to why this change is done.
+> Is it that the "ACPI MADT mailbox wakeup method" is going to be used by
+> TDX guests now too so that you don't need CC_ATTR_HOTPLUG_DISABLED
+> anymore?
 
-since they branch to the same location.
+ACPI MADT is the only wakeup method supported in TDX guests. But offline
+is broken is because of ACPI MADT, not because of TDX.
 
-BR, Jarkko
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
