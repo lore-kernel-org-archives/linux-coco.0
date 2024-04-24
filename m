@@ -1,114 +1,107 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B791516C6A5
-	for <linux-coco@lists.linux.dev>; Wed, 24 Apr 2024 16:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0B9181CEB;
+	Wed, 24 Apr 2024 18:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713977535; cv=none; b=XNG9V/+BGNkZSfFVYI53JMR+MAvoPAoW3Naa2h4PE11fdH8IbwI7lkgIoXU/f/bw+s6kZZ6GCnFzZJPSWSGYkkHygZscKibFXZ8f/M558/Fpnh9S3/R+c9zJ3RAKdgVWvKc48pZm110govzWSLwQ2FnQ0vHQTEqb5BPiq2VOmS0=
+	t=1713982527; cv=none; b=D1ENktOT2qnGid7jUX3ZzXxnzJQED2sqZ/Vpv3hCy6w27kZdd6qML8r6zTr3NiXzsxVHGLtHc3rGH8+S7fJEK+7wJ2A+dzwChODcAxNn4O9b54TbTgUXg6VO41kQx6y5O5Rx+jR3Wafn7o5151MNCOrO9uxMilkbckQ6Arc3oRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713977535; c=relaxed/simple;
-	bh=amFktTsYZhx0I8VQucVLkG8QNDwrrrdIfd3JgGF66lA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NqZXkmhZgkaIsP17f5XFKSVMu++xb3xrfzF6SrUasMb/bAKDtv9DajV6fQmbtH6vJ/S72fj7XV8IuHnKozwwc/xJ71qwImtnoUCVytOOIAQkrapF55S1TUJF2BKvFXsHkSRqChtmKvOU3U4b1FqDJFWLKbUaRnUwmFpbwlaUVew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jRsdDjEX; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1713982527; c=relaxed/simple;
+	bh=zpJumNq7u5KsT133nYF8l88fxW5RaBTIKz2lN9diWJs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Wq5ct7ye5UkWqIfAYfP1JbOB1vICeubRai/sH0FNkKhTF0T8YJhhIJS+1nW5u1Qu+dUPXoV0dCRD3976FVoKGzVriFBvJobX+IoaS4OvCClhR4kD9+kaIMeepLctGiIsTygXz+YoztcaUefSCYRX2pZ7z6V9kGK7XBRdX3MM4nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZPaGAXpF; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jRsdDjEX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713977531;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=id9ycaUBE8n/nnS15W/vGnLyEDK1wrwv0iZjSLUyk1Y=;
-	b=jRsdDjEX0jnm7eZRpDe1+bklHVIpYP73FBP1gbmC6OS9vjsYTTpDiHoMG5eihXXeLvcPkV
-	jIExAl0WmKXaoPDxKyHQtZs2DY2JGNkcBQodGXluB5ceNFEwJvlhKvLgVWa5R8rOEcSt3G
-	IaRt8kVT0H9GJyE6kpslXCcpGK1914U=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-540-qILPjmcHNGKJvJAALwaEkg-1; Wed, 24 Apr 2024 12:52:10 -0400
-X-MC-Unique: qILPjmcHNGKJvJAALwaEkg-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3473168c856so4823f8f.1
-        for <linux-coco@lists.linux.dev>; Wed, 24 Apr 2024 09:52:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713977529; x=1714582329;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=id9ycaUBE8n/nnS15W/vGnLyEDK1wrwv0iZjSLUyk1Y=;
-        b=Togk8ofpULt9P5bHmyy2zTlO8ffdtcNcRZEckmceVtZ+2z6ZUsgtAf/0rC/991lM2c
-         Ci83CCHdxoPAGpN/mP75bQd/XUt0UwIwRd56xhcD7e9+kgWbw38tJ28ecxrEdAcX8P5L
-         5E7jgYYhQf10RJ1MMafV3gRvDQGMy8j4GL01NjpUjflUsv1mnD1wdLapUBsXjkWeZOQM
-         nnRrn9LVQ5cthlpAmI4QeCRutMmTTfCL2ajh7f4uoN5HdxP6YApxxHhLNQYDpfooyott
-         2u0U8i3ePApN3f0xHIR86ID9CE+B/U7r+jp9xmuDEyEHtwbx1lI7m4lDmSaaFIlo5TgQ
-         IAZw==
-X-Forwarded-Encrypted: i=1; AJvYcCWp3zgc0l7+I2sGsYceNWD+zjZV4lcS4PdyNDwE8snuuyhabmS7UJDFhuy0DhVNiKrAB4wfEf5fRL2dmwesfwvNIEIdfG+Yd1Yarg==
-X-Gm-Message-State: AOJu0YwIKPtw24wRPKzGk7a466P7VfUmK7r2aILLlcD4rRCBr970p9y/
-	cOZiCa2DoQs6axswG3W0aaSl0rvdbHkjfTYBaIniUKPZD86MWZ6zo2dc6nrjHDEMAQruNJjlz1e
-	V2IXvQNgETF3OUnqlLd7khp66SIdMdRFxN7lBNvYQE7SDJPEZ+43oW2Nb8hKrFR7ZNmDw07A7MV
-	EcqCdzvDgM9gy7fwEExPYHZwG7wccMueMd9A==
-X-Received: by 2002:adf:a2d5:0:b0:34a:ef9b:b6d3 with SMTP id t21-20020adfa2d5000000b0034aef9bb6d3mr1894661wra.33.1713977529050;
-        Wed, 24 Apr 2024 09:52:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFR+Q8XeU6R6xECmEQz4NqbdTNaO1G1EnGJfcOAEAL7aKaYxgGlsEHUag2BDkifl8iK/Ykj8pEtfMPkXRl3N6s=
-X-Received: by 2002:adf:a2d5:0:b0:34a:ef9b:b6d3 with SMTP id
- t21-20020adfa2d5000000b0034aef9bb6d3mr1894619wra.33.1713977528725; Wed, 24
- Apr 2024 09:52:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZPaGAXpF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713982523; x=1745518523;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=zpJumNq7u5KsT133nYF8l88fxW5RaBTIKz2lN9diWJs=;
+  b=ZPaGAXpFmrF7pCjwqM5CM6QYg5G4ValsGB9sjuvrsfG6bj18GW5VFx4r
+   t98F8NMcEYIvU88SJN/WXS6EBM8GMBcBcFNvlTTNA7CoYxKrhM+TXhpCX
+   1hSIMaOHmS+NoE6KQ5ZGDsBxq88FU9YH4657xViqdo8YGoIFJf4Gvgn+I
+   QT8QWR1b9Z1+jGBtSvETjmDcj4SeCCrnk92CNk1HfYRGO5dcDnD3GaWRq
+   yuHQBe7QZsCm6f6FO+gnZRSggxjeckiZxV+2kY2T+x53ruqecju373V0N
+   uXEo9TTa2YdUC79mQUB4o2Gvp7ORwBs5kOghne9Cw2Mys1FFO9gKOB96g
+   w==;
+X-CSE-ConnectionGUID: wLNc78ayRoimaZluK2jr8A==
+X-CSE-MsgGUID: 0iPA1gZ6RCyP0yyTHoWAjA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="9503546"
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
+   d="scan'208";a="9503546"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 11:15:21 -0700
+X-CSE-ConnectionGUID: yLYbQYPRRbq++zx8rXyWIQ==
+X-CSE-MsgGUID: QcLdNXhVRx29TbGdnJqhFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
+   d="scan'208";a="55750135"
+Received: from agluck-desk3.sc.intel.com ([172.25.222.105])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 11:15:21 -0700
+From: Tony Luck <tony.luck@intel.com>
+To: Borislav Petkov <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	x86@kernel.org
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	Tony Luck <tony.luck@intel.com>
+Subject: [PATCH v4 43/71] x86/virt/tdx: Switch to new Intel CPU model defines
+Date: Wed, 24 Apr 2024 11:15:21 -0700
+Message-ID: <20240424181521.41984-1-tony.luck@intel.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240424181245.41141-1-tony.luck@intel.com>
+References: <20240424181245.41141-1-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240421180122.1650812-1-michael.roth@amd.com> <171388991368.1780702.14461882076074410508@amd.com>
-In-Reply-To: <171388991368.1780702.14461882076074410508@amd.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 24 Apr 2024 18:51:56 +0200
-Message-ID: <CABgObfa6vD+DQdmZoq0RYjwQqsYxsCvTS+vvANp5OXXOwS+PPw@mail.gmail.com>
-Subject: Re: [PATCH v14 00/22] Add AMD Secure Nested Paging (SEV-SNP)
- Hypervisor Support
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
-	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com, 
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 23, 2024 at 6:32=E2=80=AFPM Michael Roth <michael.roth@amd.com>=
- wrote:
-> I just sent an additional set of fixups, patches 23-29. These add some
-> additional input validation on GHCB requests, mainly ensuring that
-> SNP-specific requests from non-SNP guests result in an error as soon as
-> they are received rather than reaching an error state indirectly further
-> into the call stack.
->
-> It's a small diff (included below), but a bit of a pain to squash in
-> patch by patch due to close proximity with each other, so I've pushed an
-> updated branch here that already has them squashed in:
->
->   https://github.com/amdese/linux/commits/snp-host-v14b
+New CPU #defines encode vendor and family as well as model.
 
-Thanks, I pushed that to kvm-coco-queue. There was a missing signoff -
-I just added it since you actually added it in the past[1] and the
-patch only differs in context.
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+---
+ arch/x86/virt/vmx/tdx/tdx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Now off to getting those mm acks.
-
-Paolo
-
-[1] https://patchew.org/linux/20231230172351.574091-1-michael.roth@amd.com/=
-20231230172351.574091-33-michael.roth@amd.com/
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 4d6826a76f78..ee9a9273b75a 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -34,7 +34,7 @@
+ #include <asm/msr.h>
+ #include <asm/cpufeature.h>
+ #include <asm/tdx.h>
+-#include <asm/intel-family.h>
++#include <asm/cpu_device_id.h>
+ #include <asm/processor.h>
+ #include <asm/mce.h>
+ #include "tdx.h"
+@@ -1427,9 +1427,9 @@ static void __init check_tdx_erratum(void)
+ 	 * private memory poisons that memory, and a subsequent read of
+ 	 * that memory triggers #MC.
+ 	 */
+-	switch (boot_cpu_data.x86_model) {
+-	case INTEL_FAM6_SAPPHIRERAPIDS_X:
+-	case INTEL_FAM6_EMERALDRAPIDS_X:
++	switch (boot_cpu_data.x86_vfm) {
++	case INTEL_SAPPHIRERAPIDS_X:
++	case INTEL_EMERALDRAPIDS_X:
+ 		setup_force_cpu_bug(X86_BUG_TDX_PW_MCE);
+ 	}
+ }
+-- 
+2.44.0
 
