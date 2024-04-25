@@ -1,200 +1,118 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9B93BBCF
-	for <linux-coco@lists.linux.dev>; Thu, 25 Apr 2024 14:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843C71CF8A;
+	Thu, 25 Apr 2024 15:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714056287; cv=none; b=R3o0asnZlDkk8N/PmKsiOwmilvnppvXAeeASfkOMHc0YB906JMbGsuYCImRBEdvVwL3tYaWEoXlWR0X8UQqvR8z1/VaMxkBN8FJz0w71G1IeJBrxJNV27uhvJf1fVVlCk0cFsEu5XtWCjqAuLYGtHZS99hEXY96Oxj44pLCvne4=
+	t=1714060382; cv=none; b=SWDB96l7g3W94cC/SMVEi4asqOaU8tMKqexuwQDS6d3mwkPnW3omTAbDllWYW6TyZqRcXTDJIOh2Y7HhtFlFvUF0xRHEvLN73r2+KhqrFqHlDnaCV8wH1U37/B8Kt+aOrbHuvyGXouDX2reIB+KRuP0obDh2anUyee0xukb/oQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714056287; c=relaxed/simple;
-	bh=1Vynxfx2D6956dodx3vvYuxa6Pa4BDwN4tyUYPevkxc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tX0Njg7VoU3ht1xu9vncDD/zLwPvLPeQHiQqZlfo7qx38eNAo1mvBbCP5gQ0t4yCgZJV1uLLBWx53uuiNA0U7oYludveJ3ZKqs2VgGG9DLONxJDcnvnmiw11PYD+058+dPJHjOmsz8VdnxBlRXSyc1mYt2AeTN+PR7jAl+jbynE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P0r9qhf1; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P0r9qhf1"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-617d25b2bc4so11317277b3.2
-        for <linux-coco@lists.linux.dev>; Thu, 25 Apr 2024 07:44:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1714056284; x=1714661084; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4XHxss7Od+OfkSKxerbEin0D4Y8XCvJwoXzpIRakjY4=;
-        b=P0r9qhf14FFsRoPMOcTr626gw3zitOEh+BCU7OAQleKj7wes9xrrFxXgJVDGQhTarM
-         DFAq2CWiKozfHMeuv8M4E2ihJUBTByr+BTVdVWuo8ddG8D3rGSaCJosczqae5y9vJU8O
-         fejfYx2t+3Y3oNzqpKbXlWfY0jvTZkA6osgV/WY8dOHxRFNLEKuaE/xjaF1L9CWpDkm1
-         jGUBvOoLK4jbLutYFXpc2y34HokmzBzhSeLcg8UlYcr/t4VrEfQI/6e++sl4+GWg/D/k
-         AcX6hg1zAo2cfiuAIGzpp1ooafJyHTZDMqjty6hB1b42nSxl6Pb2Q/Fq3M2W/VZ8GL+j
-         hkmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714056284; x=1714661084;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4XHxss7Od+OfkSKxerbEin0D4Y8XCvJwoXzpIRakjY4=;
-        b=lrWDRq0oG3kKza3mE9l8ErmQa7cxdLAUwuELvreBKXcYzfUBpyboL1M8Dhm460CozG
-         FtaVpjEE5s2cA6AKn3QA/2+y0dkgftoGVxt83cbr3Bgtvsn8bbiTWfJY7fsHtyrUJJY0
-         4DLpQ66ECzboqI4qaz93UYH2cTfIzK35mJIGRjfYyQWUwFkv0xRRlNJNI4dzNBzlorbY
-         f2lrauSRh43HW9SPwdoJp/ViiwmcCKtS16u9Xkb/wkQ3U1I3ew3xwePqh1kJarpVdEsu
-         +G9oLHGY2bJTCo0/xZEJ4PFJxnKmDM5ncal0ZY1nv+EfCL5nHqSPzaV1eWmBqc4RFHcs
-         Q8uw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVHSGuBhlbcWvqaMt+kXi+ayJwF0aRL+dFW4jZl+Xz7B1d1DcN8u+3+L/azYSFj6G0ypWMYk1AWK55R4etsZWfRvE95UxOD24eAw==
-X-Gm-Message-State: AOJu0Yx/OSd8zZlPXAwXMoLrdt8dngQYOhPf+D3+RAryWcdto/Y6NruV
-	BVzLi1DIvVWAo7BTLzXIyE3L4vX5pF0qmmuHHwjnPcHYeJxNz5R3Uk/OuQjKr8ZKUBiYNDbyMzS
-	fWTXl+4kztdpGsHeRife5EHVGd61hRU3QjUB1
-X-Google-Smtp-Source: AGHT+IHcmWwxfbEJpizD95GcdNN5E+9J6MenReSgJkZTNHD/sQZ17A8KpqOihrS1Id2Tb8PVty4NllCeLHZvLqz87Cw=
-X-Received: by 2002:a05:690c:600a:b0:618:92bd:9334 with SMTP id
- hf10-20020a05690c600a00b0061892bd9334mr6616886ywb.43.1714056284262; Thu, 25
- Apr 2024 07:44:44 -0700 (PDT)
+	s=arc-20240116; t=1714060382; c=relaxed/simple;
+	bh=wpvhhW2gIm86VfAGnDMuFuxo/RtovAFc2eHB/QgqRRQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kW1QzK4KeIZ0sMyWkHkrD0H55G56g8yfTMeiSi/0HTiVdvHCPKOru9KTD4ObKB27yBz801toT9EX3LUdknvIQN6sVnF4pyhptVrbo1jAoGImmfeMToNjn11orKbYVhguEBZWZYG/tuYADapSsACc1eSIKsLXZsuYWBdNxYNSFP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E112D1007;
+	Thu, 25 Apr 2024 08:53:27 -0700 (PDT)
+Received: from [10.57.56.40] (unknown [10.57.56.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AF7D83F73F;
+	Thu, 25 Apr 2024 08:52:55 -0700 (PDT)
+Message-ID: <c3424195-6d9b-4d15-b5c0-f4ef1fdbf160@arm.com>
+Date: Thu, 25 Apr 2024 16:52:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240412084056.1733704-1-steven.price@arm.com>
- <20240412084309.1733783-1-steven.price@arm.com> <20240412084309.1733783-43-steven.price@arm.com>
-In-Reply-To: <20240412084309.1733783-43-steven.price@arm.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 25 Apr 2024 15:44:07 +0100
-Message-ID: <CA+EHjTyGcO=-EdFE75g5DwBKosKWUdmg7CB8VAr1w78C=2PCww@mail.gmail.com>
-Subject: Re: [PATCH v2 42/43] arm64: kvm: Expose support for private memory
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Christoffer Dall <christoffer.dall@arm.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 09/14] arm64: Enable memory encrypt for Realms
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ kernel test robot <lkp@intel.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Emanuele.Rocca@arm.com
+References: <20240412084213.1733764-10-steven.price@arm.com>
+ <202404151003.vkNApJiS-lkp@intel.com>
+ <f11e6d5d-d2b9-400e-96c3-5d1ded827720@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <f11e6d5d-d2b9-400e-96c3-5d1ded827720@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+On 25/04/2024 14:42, Suzuki K Poulose wrote:
+> On 15/04/2024 04:13, kernel test robot wrote:
+>> Hi Steven,
+>>
+>> kernel test robot noticed the following build errors:
+>>
 
-On Fri, Apr 12, 2024 at 9:44=E2=80=AFAM Steven Price <steven.price@arm.com>=
- wrote:
->
-> Select KVM_GENERIC_PRIVATE_MEM and provide the necessary support
-> functions.
->
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
->  arch/arm64/include/asm/kvm_host.h |  4 ++++
->  arch/arm64/kvm/Kconfig            |  1 +
->  arch/arm64/kvm/arm.c              |  5 +++++
->  arch/arm64/kvm/mmu.c              | 19 +++++++++++++++++++
->  4 files changed, 29 insertions(+)
->
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/k=
-vm_host.h
-> index 902923402f6e..93de7f5009fe 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -1259,6 +1259,10 @@ static inline bool kvm_vm_is_protected(struct kvm =
-*kvm)
->         return false;
->  }
->
-> +#ifdef CONFIG_KVM_PRIVATE_MEM
-> +bool kvm_arch_has_private_mem(struct kvm *kvm);
-> +#endif
-> +
+<snip>
 
-I think it might be better to define kvm_arch_has_private_mem() for
-both cases, whether KVM_PRIVATE_MEM is enabled or not, similar to the
-way it's defined in arch/x86/include/asm/kvm_host.h
+>>>> drivers/hv/channel.c:442:8: error: call to undeclared function
+>>>> 'set_memory_decrypted'; ISO C99 and later do not support implicit
+>>>> function declarations [-Wimplicit-function-declaration]
+>>       442 |         ret = set_memory_decrypted((unsigned long)kbuffer,
+>>           |               ^
+>>>> drivers/hv/channel.c:531:3: error: call to undeclared function
+>>>> 'set_memory_encrypted'; ISO C99 and later do not support implicit
+>>>> function declarations [-Wimplicit-function-declaration]
+>>       531 |                 set_memory_encrypted((unsigned long)kbuffer,
+>>           |                 ^
+>>     drivers/hv/channel.c:848:8: error: call to undeclared function
+>> 'set_memory_encrypted'; ISO C99 and later do not support implicit
+>> function declarations [-Wimplicit-function-declaration]
+>>       848 |         ret = set_memory_encrypted((unsigned
+>> long)gpadl->buffer,
+>>           |               ^
+>>     5 warnings and 3 errors generated.
+> 
+> Thats my mistake. The correct place for declaring set_memory_*crypted()
+> is asm/set_memory.h not asm/mem_encrypt.h.
+> 
+> Steven, please could you fold this patch below :
 
->  int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature);
->  bool kvm_arm_vcpu_is_finalized(struct kvm_vcpu *vcpu);
->
-> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-> index 58f09370d17e..8da57e74c86a 100644
-> --- a/arch/arm64/kvm/Kconfig
-> +++ b/arch/arm64/kvm/Kconfig
-> @@ -37,6 +37,7 @@ menuconfig KVM
->         select HAVE_KVM_VCPU_RUN_PID_CHANGE
->         select SCHED_INFO
->         select GUEST_PERF_EVENTS if PERF_EVENTS
-> +       select KVM_GENERIC_PRIVATE_MEM
+Sure, I've folded into my local branch. Thanks for looking into the error.
 
-I don't think this should be enabled by default, but should depend on
-whether RME is configured. That said, I can't find the config option
-for RME...
+Steve
 
->         help
->           Support hosting virtualized guest machines.
->
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 2dd014d3c366..a66d0a6eb4fa 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -89,6 +89,11 @@ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
->         return kvm_vcpu_exiting_guest_mode(vcpu) =3D=3D IN_GUEST_MODE;
->  }
->
-> +bool kvm_arch_has_private_mem(struct kvm *kvm)
-> +{
-> +       return kvm_is_realm(kvm);
-> +}
-> +
+> 
+> diff --git a/arch/arm64/include/asm/mem_encrypt.h
+> b/arch/arm64/include/asm/mem_encrypt.h
+> index 7381f9585321..e47265cd180a 100644
+> --- a/arch/arm64/include/asm/mem_encrypt.h
+> +++ b/arch/arm64/include/asm/mem_encrypt.h
+> @@ -14,6 +14,4 @@ static inline bool force_dma_unencrypted(struct device
+> *dev)
+>         return is_realm_world();
+>  }
+> 
+> -int set_memory_encrypted(unsigned long addr, int numpages);
+> -int set_memory_decrypted(unsigned long addr, int numpages);
+>  #endif
+> diff --git a/arch/arm64/include/asm/set_memory.h
+> b/arch/arm64/include/asm/set_memory.h
+> index 0f740b781187..9561b90fb43c 100644
+> --- a/arch/arm64/include/asm/set_memory.h
+> +++ b/arch/arm64/include/asm/set_memory.h
+> @@ -14,4 +14,6 @@ int set_direct_map_invalid_noflush(struct page *page);
+>  int set_direct_map_default_noflush(struct page *page);
+>  bool kernel_page_present(struct page *page);
+> 
+> +int set_memory_encrypted(unsigned long addr, int numpages);
+> +int set_memory_decrypted(unsigned long addr, int numpages);
+> 
+> 
+> 
+> Suzuki
 
-Related to my earlier comment on kvm_arch_has_private_mem(), and
-considering how often this function is called, wouldn't it be better
-to define this in a way similar to arch/x86/include/asm/kvm_host.h ?
-
-
->  int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
->                             struct kvm_enable_cap *cap)
->  {
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 48c957e21c83..808bceebad4d 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -2171,6 +2171,25 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm=
-,
->         return ret;
->  }
-
-The following two functions should be gated by
-
-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-
-
-> +bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
-> +                                       struct kvm_gfn_range *range)
-> +{
-> +       WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm));
-> +       return false;
-> +}
-> +
-> +bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
-> +                                        struct kvm_gfn_range *range)
-> +{
-> +       WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm));
-
-I think this should return here, not just warn.
-
-Cheers,
-/fuad
-
-> +
-> +       if (range->arg.attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)
-> +               range->only_shared =3D true;
-> +       kvm_unmap_gfn_range(kvm, range);
-> +
-> +       return false;
-> +}
-> +
->  void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot=
-)
->  {
->  }
-> --
-> 2.34.1
->
