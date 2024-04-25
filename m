@@ -1,174 +1,127 @@
 Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36AC155A2B
-	for <linux-coco@lists.linux.dev>; Thu, 25 Apr 2024 22:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A43915573C
+	for <linux-coco@lists.linux.dev>; Thu, 25 Apr 2024 22:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714083224; cv=none; b=sc2g0aRp6IPpvBTj5uBgJerzwLzjg3udLeHF3HkapP8Wtf2eYYyz5YvYwtb60QT6/Ms2dHKOizRL0UX8RGaafS+YJWnG50MLtja7qxAsFA0RZe3ugjhx3rCvLwAkbbNH2ftheI/u5LP2ZYlmqnmLaC4y4GCgrgUdfR2ZW9W3krU=
+	t=1714085794; cv=none; b=t4Dpj/PCEzL8NBseZcxrkizmu1pBvz7ZKRJg2oE6IttsS5bg5dFx/s8LxpZXu6SuVsN+bgB9Gu8NPl881ZlsYGzvFm9Rs/Apwo0HQIRlB0LVyzbWMG3k6tjOCLRxiTnZJeY5Wt+y+CtATJhz9TFdXyo9+gYQ96GCdHsdildfzis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714083224; c=relaxed/simple;
-	bh=cbz4VgLAc5b9NzezYzcfU9eqcXCaDYCWqPxj/avxGRE=;
+	s=arc-20240116; t=1714085794; c=relaxed/simple;
+	bh=KYtF1y9QVO5lRyrlFu3LypLQR8DFwKeNUbD5+t8eWAo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=R/vtnEzAOTgWm3TEvremrJIFRilKLP4uKDwUjdt+zO/gCrM3EslNXRG1y3SmT/t604FM84fmX6rG1wcOWy1vxI2z/NN8S0qvkwji7SyVHUlMdjIxUIy9sKUpQj3BVgeVg+Re3SC/Z38zXIFuLeBYUvI8mHPALhqyAPQKgiysWck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=roqGIK2P; arc=none smtp.client-ip=209.85.128.201
+	 To:Cc:Content-Type; b=LLpbXqoujAwWBX5yL2ORNrrhckGKOlnY3oj2+fjnysMUUYiCmiXybz61NCBOnKERBSbCim/YnxRjQxzaZGLxJHFvNjvpFWbJ5F7WR4VoqnC9OrPBIYv61SpahskZE3xJfdttN5a7vhgg1uPZJjLw9HZKvguNQ+NFjFhfMut2fws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o0/S1fyy; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="roqGIK2P"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-61b330409b7so28672997b3.0
-        for <linux-coco@lists.linux.dev>; Thu, 25 Apr 2024 15:13:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o0/S1fyy"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-61b2abd30fdso28507287b3.2
+        for <linux-coco@lists.linux.dev>; Thu, 25 Apr 2024 15:56:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1714083222; x=1714688022; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VlD1vrF3NmiYyeEP9cJyDUHce3FgvPJuIrigqLvvs0A=;
-        b=roqGIK2PpkcXHUSknNYS31+jE3iuOm6YESuvNBN0Hj4ykQ/+/YS0tpHEX3Q9R6VMov
-         Ag4IPFRn2C6MJejX5uu06QdwjxC+wWc5vl9hW0cwGbF4V+3BAfU/ZTDMC43JsmfR5Zij
-         UGB5TVlc5+4q+EQ4tdmTruEwg4hIWzYjJ/t2325siyTlkCdSfs60BsNlKd7p/wJw542K
-         UlDGWJY9DviqQFV/kRVBMRNu2vRNejTM9C3d9B3dzCPydh5Mv7bIksnFqZYxYmCEFi4P
-         eDsAAAKylkCptOA/CeM0PF+n/TJiK4zXSmE/QRH08DgHnz6IQ9mf7qXa13yZXMVzN5W1
-         bOQQ==
+        d=google.com; s=20230601; t=1714085790; x=1714690590; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kkB0Oe3ETNpX0Q3btEZQH9RDe4KISQYsNCkxgD0xRNI=;
+        b=o0/S1fyyXHIA7p6gsN7ZrcQUC/41bgVL93yI0v4S/pxoqmHHjDSj1VlPrT8x2+OUFW
+         YUd4TWQA+DJf3j2NEUEUwmJElgt/GQNPFP9eQP22GabOvhh1StS+EO016BZxSYlOItKw
+         WM8+baVTTY58RTHAd17AxAqQTXPJ8X9DP/e2hk2AB6Mqy162kEkWctTLbUHx4Mu7fxrA
+         5rdo9YefVqttI4LPsATnmSZ6Y2eAOlS3sNLH6cygOO2HvZl93QtvMekhFV3eGzJiugxW
+         WajnfIj0/XURwVWVCwsd0r4a4CWzPDpKv2orDNKkSFoCE+py/vuNINFGGJve8etocexj
+         ao+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714083222; x=1714688022;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VlD1vrF3NmiYyeEP9cJyDUHce3FgvPJuIrigqLvvs0A=;
-        b=eVVY7PapC/JyZxTEPS7CAvPW1cQaIlXx5ynDb5AHGULr1JzYPoMr3Y1FeWOiXuh7qy
-         Pra+PpebOvlLS6cQUyI2hZ57M+aUxR2FdXU6Em1qeKgsqZtTkjFQFyGHHKUzf8B688db
-         cdP6CD4r+DgzuE8WjoHAFr8gehiTmQFjI3Lnmp/dM4pzH+ooOrN2Ugn+ZfTftqLJFlHC
-         Xy/TNE6mqh6OHkV2AucRY80JlWgIHOWbToGPOMrN/4DyOH2m2HljYPFWpWcEA++FCj8A
-         EPZcM7sC7tz6lFYxCrhplOfXbljMDJBB63WwsPlyimyw1roy63nb7ekrbJQyhIqYuwFs
-         OYew==
-X-Forwarded-Encrypted: i=1; AJvYcCXnbgLImM1SIFBGYCeznhBiqNyqI21HFg0IuFh92Q6j2o8uUZ3ElRlncVInzsUb5VRo/33LVRt+UHy8keBuSnH8WwR0FUhxolEemA==
-X-Gm-Message-State: AOJu0YxrC0aOd2TS8xeh10l5yJuiAbrUkwwXM/LAIMeoNcwk+TO6fJq+
-	OHvGx2fMDk7r+Uym2FdZF6YHWkO5Npb8qghA6p2LDqEadl1n0nxpg1/0wjt1kW7T54gjkk+wyyI
-	dUQ==
-X-Google-Smtp-Source: AGHT+IHzHjxcfIPYRO/0ZR+/PU18iR8U2AlUK3bDXYPmThs8oWF6MVloZCgQa8+8/V5cYRymgqjaTVn5F6o=
+        d=1e100.net; s=20230601; t=1714085790; x=1714690590;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=kkB0Oe3ETNpX0Q3btEZQH9RDe4KISQYsNCkxgD0xRNI=;
+        b=FusQi7QFASTtTMocBlhgPq9KEb0ViDz14+3o7abrJKMBIgGI9Y0W+7+lXGBwX2a6rZ
+         tlICzvzZ5kK7I6IAdhcs8knkNm0ud7ChhBNCNmMEZ03MIJJlmovCBrb0u3ztX6cQNlHv
+         3hNN4+qH8i5rdh3DaVaKNWpInWnpZqQJQSRu4/RJyKxa8zK4fTGWF0Z3sFlUOGGdt0t/
+         q+kXODU4GFmJcDrh1F/m1eFKt2bjSD6aTs1t3sMYrPnHt5mAc0YCm3q9pL3QGhqLmqHY
+         drsdUl4uD/9ComkMIM08/Gx/xM6gJiQYgQKXVF2A4xAZTetovga9q1cilv3tNhx/HNf/
+         nskg==
+X-Forwarded-Encrypted: i=1; AJvYcCVTD+Q5oGmR7Guv4HI7WuVBg07u5HcPVvyVM+V3BeuIGlKaY14JXFhE0UbhFsiDgff47mXYNR6cFwBHTIS8LNK4ufjIaA5px+Wtsw==
+X-Gm-Message-State: AOJu0YxRSVq9sY42lGjESVTrDb1CmLZ/AsXdLf8uJICwQOgP8sZ0qM1P
+	/aN7HYoZcmSi5VzRfnyLV8i7FI3GbKBwmBymI7q3YhFEihNoT77l79cxnwQY7O7wArIla0LheFA
+	8mQ==
+X-Google-Smtp-Source: AGHT+IFK9QispM2ICO/aS/Bc4lsJTNQ0CRIQjWqhFAfzup1zpNtFb4vtBZLcBygyOTGdpJexadd4ZWJU6fQ=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:a097:0:b0:61a:b41a:2ef5 with SMTP id
- x145-20020a81a097000000b0061ab41a2ef5mr194759ywg.10.1714083221862; Thu, 25
- Apr 2024 15:13:41 -0700 (PDT)
-Date: Thu, 25 Apr 2024 15:13:40 -0700
-In-Reply-To: <20240425220008.boxnurujlxbx62pg@amd.com>
+ (user=seanjc job=sendgmr) by 2002:a05:690c:15:b0:61a:b2d4:a3fb with SMTP id
+ bc21-20020a05690c001500b0061ab2d4a3fbmr220432ywb.8.1714085790530; Thu, 25 Apr
+ 2024 15:56:30 -0700 (PDT)
+Date: Thu, 25 Apr 2024 15:56:28 -0700
+In-Reply-To: <4195a811-7084-42fe-ad10-27d898fb3196@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20240421180122.1650812-1-michael.roth@amd.com>
- <20240421180122.1650812-10-michael.roth@amd.com> <ZilyxFnJvaWUJOkc@google.com>
- <20240425220008.boxnurujlxbx62pg@amd.com>
-Message-ID: <ZirVlF-zQPNOOahU@google.com>
-Subject: Re: [PATCH v14 09/22] KVM: SEV: Add support to handle MSR based Page
- State Change VMGEXIT
+References: <20240412084056.1733704-1-steven.price@arm.com>
+ <20240412084309.1733783-1-steven.price@arm.com> <20240412084309.1733783-2-steven.price@arm.com>
+ <CA+EHjTwDaP6qULmjEGH=Eye=vjFikr9iJHEyzzX+cr_sH57vcA@mail.gmail.com> <4195a811-7084-42fe-ad10-27d898fb3196@arm.com>
+Message-ID: <ZirfnPFPo1cMwFQc@google.com>
+Subject: Re: [PATCH v2 01/43] KVM: Prepare for handling only shared mappings
+ in mmu_notifier events
 From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
-	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com, 
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, 
-	Brijesh Singh <brijesh.singh@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+To: Steven Price <steven.price@arm.com>
+Cc: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Christoffer Dall <christoffer.dall@arm.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 25, 2024, Michael Roth wrote:
-> On Wed, Apr 24, 2024 at 01:59:48PM -0700, Sean Christopherson wrote:
-> > On Sun, Apr 21, 2024, Michael Roth wrote:
-> > > +static int snp_begin_psc_msr(struct kvm_vcpu *vcpu, u64 ghcb_msr)
-> > > +{
-> > > +	u64 gpa = gfn_to_gpa(GHCB_MSR_PSC_REQ_TO_GFN(ghcb_msr));
-> > > +	u8 op = GHCB_MSR_PSC_REQ_TO_OP(ghcb_msr);
-> > > +	struct vcpu_svm *svm = to_svm(vcpu);
-> > > +
-> > > +	if (op != SNP_PAGE_STATE_PRIVATE && op != SNP_PAGE_STATE_SHARED) {
-> > > +		set_ghcb_msr(svm, GHCB_MSR_PSC_RESP_ERROR);
-> > > +		return 1; /* resume guest */
-> > > +	}
-> > > +
-> > > +	vcpu->run->exit_reason = KVM_EXIT_VMGEXIT;
-> > > +	vcpu->run->vmgexit.type = KVM_USER_VMGEXIT_PSC_MSR;
-> > > +	vcpu->run->vmgexit.psc_msr.gpa = gpa;
-> > > +	vcpu->run->vmgexit.psc_msr.op = op;
-> > 
-> > Argh, no.
-> > 
-> > This is the same crud that TDX tried to push[*].  Use KVM's existing user exits,
-> > and extend as *needed*.  There is no good reason page state change requests need
-> > *two* exit reasons.  The *only* thing KVM supports right now is private<=>shared
-> > conversions, and that can be handled with either KVM_HC_MAP_GPA_RANGE or
-> > KVM_EXIT_MEMORY_FAULT.
-> > 
-> > The non-MSR flavor can batch requests, but I'm willing to bet that the overwhelming
-> > majority of requests are contiguous, i.e. can be combined into a range by KVM,
-> > and that handling any outliers by performing multiple exits to userspace will
-> > provide sufficient performance.
-> 
-> That does tend to be the case. We won't have as much granularity with
-> the per-entry error codes, but KVM_SET_MEMORY_ATTRIBUTES would be
-> expected to be for the entire range anyway, and if that fails for
-> whatever reason then we KVM_BUG_ON() anyway. We do have to have handling
-> for cases where the entries aren't contiguous however, which would
-> involve multiple KVM_EXIT_HYPERCALLs until everything is satisfied. But
-> not a huge deal since it doesn't seem to be a common case.
+On Thu, Apr 25, 2024, Steven Price wrote:
+> On 25/04/2024 10:48, Fuad Tabba wrote:
+> > On Fri, Apr 12, 2024 at 9:43=E2=80=AFAM Steven Price <steven.price@arm.=
+com> wrote:
+> >>  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range=
+);
+> >> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> >> index fb49c2a60200..3486ceef6f4e 100644
+> >> --- a/virt/kvm/kvm_main.c
+> >> +++ b/virt/kvm/kvm_main.c
+> >> @@ -633,6 +633,13 @@ static __always_inline kvm_mn_ret_t __kvm_handle_=
+hva_range(struct kvm *kvm,
+> >>                          * the second or later invocation of the handl=
+er).
+> >>                          */
+> >>                         gfn_range.arg =3D range->arg;
+> >> +
+> >> +                       /*
+> >> +                        * HVA-based notifications aren't relevant to =
+private
+> >> +                        * mappings as they don't have a userspace map=
+ping.
+> >> +                        */
+> >> +                       gfn_range.only_private =3D false;
+> >> +                       gfn_range.only_shared =3D true;
+> >>                         gfn_range.may_block =3D range->may_block;
+> >=20
+> > I'd discussed this with Sean when he posted this earlier. Having two
+> > booleans to encode three valid states could be confusing. In response,
+> > Sean suggested using an enum instead:
+> > https://lore.kernel.org/all/ZUO1Giju0GkUdF0o@google.com/
+>=20
+> That would work fine too! Unless I've missed it Sean hasn't posted an
+> updated patch. My assumption is that this will get merged (in whatever
+> form) before the rest of the series as part of that other series. It
+> shouldn't be too hard to adapt.
 
-If it was less complex overall, I wouldn't be opposed to KVM marshalling everything
-into a buffer, but I suspect it will be simpler to just have KVM loop until the
-PSC request is complete.
+Yeah, there's no updated patch.
 
-> KVM_HC_MAP_GPA_RANGE seems like a nice option because we'd also have the
-> flexibility to just issue that directly within a guest rather than
-> relying on SNP/TDX specific hcalls. I don't know if that approach is
-> practical for a real guest, but it could be useful for having re-usable
-> guest code in KVM selftests that "just works" for all variants of
-> SNP/TDX/sw-protected. (though we'd still want stuff that exercises
-> SNP/TDX->KVM_HC_MAP_GPA_RANGE translation).
-> 
-> I think we'd there is some potential baggage there with the previous SEV
-> live migration use cases. There's some potential that existing guest kernels
-> will use it once it gets advertised and issue them alongside GHCB-based
-> page-state changes. It might make sense to use one of the reserved bits
-> to denote this flavor of KVM_HC_MAP_GPA_RANGE as being for
-> hardware/software-protected VMs and not interchangeable with calls that
-> were used for SEV live migration stuff.
+Fuad, if you have a strong preference, I recommend chiming in on the TDX se=
+ries[*],
+as that is the series that's likely going to be the first user, and I don't=
+ have
+a strong preference on bools versus an enum.
 
-I don't think I follow, what exactly wouldn't be interchangeable, and why?
-
-> If this seems reasonable I'll give it a go and see what it looks like.
-> 
-> > 
-> > And the non-MSR version that comes in later patch is a complete mess.  It kicks
-> > the PSC out to userspace without *any* validation.  As I complained in the TDX
-> > thread, that will create an unmaintable ABI for KVM.
-> > 
-> > KVM needs to have its own, well-defined ABI.  Splitting functionality between
-> > KVM and userspace at seemingly random points is not maintainable.
-> > 
-> > E.g. if/when KVM supports UNSMASH, upgrading to the KVM would arguably break
-> > userspace as PSC requests that previously exited would suddenly be handled by
-> > KVM.  Maybe.  It's impossible to review this because there's no KVM ABI, KVM is
-> > little more than a dumb pipe parroting information to userspace.
-> 
-> It leans on the GHCB spec to avoid re-inventing structs/documentation
-> for things like Page State Change buffers, but do have some control
-> as we want over how much we farm out versus lock into the KVM ABI. For
-> instance the accompanying Documentation/ update mentions we only send a
-> subset of GHCB requests that need to be handled by userspace, so we
-> could handle SMASH/UNSMASH in KVM without breaking expectations (or if
-> SMASH/UNSMASH were intermixed with PSCs, documentation that only PSC
-> opcodes could be updated by userspace).
-> 
-> But I'm certainly not arguing it wouldn't be better to have a
-> guest-agnostic alternative if we can reach an agreement on that, and
-> KVM_HC_MAP_GPA_RANGE seems like it could work.
-
-Yeah, I want to at least _try_ to achieve common ground, because the basic
-functionality of all this stuff is the exact same.
+[*] https://lore.kernel.org/all/e324ff5e47e07505648c0092a5370ac9ddd72f0b.17=
+08933498.git.isaku.yamahata@intel.com
