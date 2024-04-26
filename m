@@ -1,238 +1,263 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2056.outbound.protection.outlook.com [40.107.244.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5722CCB4
-	for <linux-coco@lists.linux.dev>; Fri, 26 Apr 2024 21:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E4E364A0
+	for <linux-coco@lists.linux.dev>; Fri, 26 Apr 2024 22:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714168734; cv=fail; b=BHPj1ZNM4dXa2tziK1HN7Ib4kbFJVWVz+fnYpqr6cjeB/QnRMAH+YwoSRXgVZ1gid9eWEF3eMqKcXp8mr0GRcCSWIRZkSP2IPoTtGbK+VBOgoI6mr24kUTx/sF54N8D4zmvIO3r8mAAwrrDqyjUSxZaegwJ9eggxoRY7qXoso8Y=
+	t=1714170318; cv=fail; b=TfWBHFgeHGpF3Sc3GfxhaqmBt/asZQTs9nwHvlvSJVr85s4weVj1bZaOlbudyRSr1Kn+CpxKSQQV2VnYG/NtgHOAE2jEmyHUSJe8Z+YdIjZfH2O+RqPEYdp0OlOa7EfdvUPfjYdicSb68LG/reo77HVwmqBOdaIUx6ByZee8Nmw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714168734; c=relaxed/simple;
-	bh=GmmfsK5O/zlp7INMUA7Ywz9NUb5G3rW31M5aUneI1C8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=BIzHhwgPjIPRSUrHpcwTl2vl7GQ3uObge/TW74EpiucItJFdUJuGnyetG7dGwf94q9QruGGHUUcjQD95YOx1JIh7kbOoIOMpvNmDyFEJlLWYynDCkhhKvUWOpJAYFMDkwULoBAuDmaHQcCAzFVNd8R0EO23YRpGtd1ifXPY0ZaY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j5ShIp4s; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1714170318; c=relaxed/simple;
+	bh=gAABwnblJkv/7+4mOBba10/6l7+GNsX1u1ddSDkQHgk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m9SXglH6aGMiwPmAcvxJ3zEteaVgcrpgxi8+L1uZ31LpN8YKpUbSxBKdluJZO2DRhf89l+P9KKTbywM7i74/MoRn/EhlTu4zr7h00BfUUyp0NjVUdu2wljKPEG4AdqtjsDRZ2ik3j6w+9MF40N+MDyytb/bBeDpUXAYpQH3WTso=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Dv8sWoXE; arc=fail smtp.client-ip=40.107.244.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j5ShIp4s"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714168733; x=1745704733;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=GmmfsK5O/zlp7INMUA7Ywz9NUb5G3rW31M5aUneI1C8=;
-  b=j5ShIp4scjepS+ASmRiJNh/kc4xmp35L4sY7nHpdRwzGFZoOvcUvs/qL
-   F536VEEuvPgFu1O5ifkpFeABJWxjUANCOWO8xwJTqn6R/75NzrFprXFBj
-   ekO9+cGFgdl7hA2H7v9rN9mRVUWddE/hpnn0D1ZU3ZdHs//eUswBF/JwY
-   9OYTWYT6dAOyZh/kPsVj8J7Kdk/5A1Y8SOM3ha83whSo0XIUrHCseOvLx
-   DmgHWDABTEIRoWzV23kgIhtZkTep0I5/iGG4aLayh2D3UODwzWl+zaK0q
-   HGZLjo/r8f7OFpVQ6H5vgD649q95ZRTiv/ZpxbmOnbOjYTsukTJuG/6gk
-   Q==;
-X-CSE-ConnectionGUID: KtF2XtqVQFa8pCM2qj/o5A==
-X-CSE-MsgGUID: MLEtS2AnRQyoZ01A/fAFqw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="12856330"
-X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; 
-   d="scan'208";a="12856330"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 14:58:52 -0700
-X-CSE-ConnectionGUID: Xcr6PPIvSGGPHU2hWuLBwQ==
-X-CSE-MsgGUID: Nz2XHTBCTPG/badvjrR87Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; 
-   d="scan'208";a="30343288"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 26 Apr 2024 14:58:52 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 26 Apr 2024 14:58:52 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Fri, 26 Apr 2024 14:58:52 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 26 Apr 2024 14:58:51 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Dv8sWoXE"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=I3ba7Jubmo+1RqlERlRtA43OiUBEkZkn5Mr0TI9hFSFR/g3t9knHPXiTwQuuU6bcCdw1bd4Bl+yxTFy8OHa2+tV8n0bnMrET2qCt+OAFwKqaxNfPQ+mcMFluOcHbRE/Mpo0TQlBS5REkpnIxM0Ad7cl9sqoJkGREVit2HMdqvDCoP1/dClw0CNqvUeW2Bm8+h3j7VAtS6fFPUWoCUaEDvfHA0Nw9a+JloO711emYDAHCOZpme8iIfVJJvV4+kUZj5/IMGFVno/tU14P9s1fLhc9tl9QRt7w5LdY3VnjxIYLAHS+ORhALFCufgvgDa+f/Dsz8hXiwkXTDW6bijFEJ5g==
+ b=eSoM1Y7w10E+YQ6zlU/WObs9GY2br1wm+/6LilJJ0dJjeQAqvN4BEZP8oHNWtcBFCmTCcOEufUtk95HI1WUwnvW06w31XRyJSEfayuG6bgUK+t/dj9DMJZFnwTUT20Zj4U6pHgs6LjmNqcUCHnkJqCBFOKFf56yafNhipI81u8D+mwiwh1vgeMxGVPrRR9jgwPagM6VRgEalEhN7x+ASJKcIXgTGENr8a9YHQRRoCuqsAlqCDkxRDEvfzcVECiz58Y94hTg6fvMcUAiK8/ldmoUY14xFrszn/2HMJpoVohGlMAvSXad41PL4H1J2xc4RMZ02rKQFR0WWKv0evkIxNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OSqBHZFpMANnUK1XJvXzCJ57ysgwHuKgupsElfSa/oA=;
- b=XUHzanX8iC9eZYLqsDMXKRw2uobErBuQ4a9zsHUQJkLvSO7500kU6rdr32agL1y9j2Zb2XMQIzQDl/Bx+EXmTo+2zfMTrbPg6RNS2MRR0Y4H5FVur/nPZbYdW7slEemi3SARIc7eKqO/R1kJWqST6rzKYJ7K08cUHaS39o8PUnfod7OpSpLxCn00oMn42T5f3S5PZMuSaV7gvWenf0ai550viIPlDufbyW5Q7ciF4nibhNj2/hX+1aALmxKMSlvoFM+mK3lpn015AYHvnyBVrqa+LjC8aPUqWbfz8uq34sBgqTzUttpwD8cz043BPnOwOunN+KMly88dDQSLJUD8MA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by PH7PR11MB5795.namprd11.prod.outlook.com (2603:10b6:510:132::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.22; Fri, 26 Apr
- 2024 21:58:49 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::82fd:75df:40d7:ed71]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::82fd:75df:40d7:ed71%4]) with mapi id 15.20.7452.046; Fri, 26 Apr 2024
- 21:58:49 +0000
-Date: Fri, 26 Apr 2024 14:58:46 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>, <linux-kernel@vger.kernel.org>,
-	<x86@kernel.org>, <linux-coco@lists.linux.dev>, <svsm-devel@coconut-svsm.dev>
-CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, "Peter
- Zijlstra" <peterz@infradead.org>, Dan Williams <dan.j.williams@intel.com>,
-	Michael Roth <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v4 13/15] x86/sev: Take advantage of configfs visibility
- support in TSM
-Message-ID: <662c239680842_b6e02944b@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-References: <cover.1713974291.git.thomas.lendacky@amd.com>
- <e3143c1f3d0b26fcd8884c6f75644b634a7138e8.1713974291.git.thomas.lendacky@amd.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <e3143c1f3d0b26fcd8884c6f75644b634a7138e8.1713974291.git.thomas.lendacky@amd.com>
-X-ClientProxiedBy: MW4PR03CA0148.namprd03.prod.outlook.com
- (2603:10b6:303:8c::33) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+ bh=Uo/rcYMiAqlLOAfMQoYK2o7sIQzc0lr+8zZ+ExATrOw=;
+ b=Awr5uUucyyZ13IF/alkMos2ZOt3tolrGOAc9y/3Qk3nuKLt0/PLHdRWBVyE2NJ8Y7EGwQgUxZlTs8kIDXzHGIkABhGeEjKPqWpyFl3Md9yoW5XTOQ7kgcM0YaNn6aQQJ4yiiPOo4+xZERnCxX++bbBgggXfOtPqJAnu4zghFCsHJH/D9SwM7PnwparEOuYlkBpRxIETMfpf7V2a3csRWBAzW+q8b6QzjJgOp2ysPccIUOBlLnuaPu5ZBwHSCtty4FSUTBqh7pd1ZnBxql88jDOEGVHgBULRwASfMZJoVEQXQeX2Q5QpNjRcqQU1AfWANvykcbs4Od/GXCYT4eRTsqg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Uo/rcYMiAqlLOAfMQoYK2o7sIQzc0lr+8zZ+ExATrOw=;
+ b=Dv8sWoXEX5QHHx6WkF+/a14IAKLYGs7QMgUaesQ8qnBxky2OQuk9grDB8yKbxeyEJvWzJP8wpmXwdLoYAEoKspn8S8XnGsKfxWwFkQXGK4HiPSsGibazHl/gj/AUcNFLoFVVPH4ni8o+Mfb6AW3ECFg2z1fCDev/QaMt9BeLKes=
+Received: from CH0PR03CA0406.namprd03.prod.outlook.com (2603:10b6:610:11b::14)
+ by DS7PR12MB6336.namprd12.prod.outlook.com (2603:10b6:8:93::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7472.46; Fri, 26 Apr 2024 22:25:12 +0000
+Received: from CH1PEPF0000A347.namprd04.prod.outlook.com
+ (2603:10b6:610:11b:cafe::77) by CH0PR03CA0406.outlook.office365.com
+ (2603:10b6:610:11b::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.29 via Frontend
+ Transport; Fri, 26 Apr 2024 22:25:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH1PEPF0000A347.mail.protection.outlook.com (10.167.244.7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7519.19 via Frontend Transport; Fri, 26 Apr 2024 22:25:11 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 26 Apr
+ 2024 17:25:10 -0500
+Date: Fri, 26 Apr 2024 17:24:57 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <pbonzini@redhat.com>, <vkuznets@redhat.com>,
+	<jmattson@google.com>, <luto@kernel.org>, <dave.hansen@linux.intel.com>,
+	<slp@redhat.com>, <pgonda@google.com>, <peterz@infradead.org>,
+	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
+	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
+	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, Brijesh Singh
+	<brijesh.singh@amd.com>
+Subject: Re: [PATCH v14 09/22] KVM: SEV: Add support to handle MSR based Page
+ State Change VMGEXIT
+Message-ID: <20240426222457.7yn66athor2jxsrj@amd.com>
+References: <20240421180122.1650812-1-michael.roth@amd.com>
+ <20240421180122.1650812-10-michael.roth@amd.com>
+ <ZilyxFnJvaWUJOkc@google.com>
+ <20240425220008.boxnurujlxbx62pg@amd.com>
+ <ZirVlF-zQPNOOahU@google.com>
+ <20240426171644.r6dvvfvduzvlrv5c@amd.com>
+ <ZiwLKI_xtZk3BG_B@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZiwLKI_xtZk3BG_B@google.com>
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH7PR11MB5795:EE_
-X-MS-Office365-Filtering-Correlation-Id: 033ce2a1-b6e5-4207-8fd9-08dc663c0dc0
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000A347:EE_|DS7PR12MB6336:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4c88abb9-92f5-4003-f830-08dc663fbcfb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|7416005|1800799015|366007|376005;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?QvBOraZf7tkF6+w/IkYJ4jeG/gzx8H/p50MIMIUwVouHU4hOIgO1jtWaWZ59?=
- =?us-ascii?Q?3P5lHQLDYn7afgWgyJ9uVPPoYIfCeDsId1p02jOCQTKRYkToEZjP+PnHwhFu?=
- =?us-ascii?Q?h07ivA5KVeai4Ttlx/hM5NTuju5ZnkELLYzsXpnrqZ1MjEn6X3BubyWdqAl3?=
- =?us-ascii?Q?7DJwgv3fcVqJwui6PggVGahhcKwYeURZS+b92Yzo8/Wo6z7YSVDjM4qaWo9P?=
- =?us-ascii?Q?CxGkLr4oop9wj7LbE8HXiRyr6Wpoa6f6TrUCKymmPYX7p3Ci1PbNQlxt42WO?=
- =?us-ascii?Q?71S1CqACEEQlHAe/t6WJxhC5WNyVYk/fRnmqqypocm/UzVjpXUF8Xpn7LPMF?=
- =?us-ascii?Q?nniJJRysr7FcN2B9PH7n3qDlwg47RTQXaoFpZY0DHM7XSAeILuWluF47etdI?=
- =?us-ascii?Q?F3jww03Q5fW1cFFo0NB3JcJRpQ0Gl0vIMWPQSayTNHcCbTtxeObkYUIgf5Rl?=
- =?us-ascii?Q?TqgbNzt63b+FRptmK2l8Kgd0eQaap8tkzn9fXqo52rkTUNy0UrNvtJqG5PQE?=
- =?us-ascii?Q?QWAWkG051Q8h+5SfQ8AX0SUwJY31FAy7udHGHPGL4yV18acbPpRwilXqekuw?=
- =?us-ascii?Q?95eDaMu2pV3yonpyptTFlcjetzaG7O9+bdPynEdBCzO4oZYUDpOIsJwlkbl0?=
- =?us-ascii?Q?ZRjMmT7UfRxT8xMrcLBYw5w/4/XDSbrmNBy5yz4xytosLg4Piw1eNVRFcDSL?=
- =?us-ascii?Q?ns0murov4FswUlbwHmHhT/ZYjJAbjL8f2DXJrrGrFg01JEXP97cF4l27jVwK?=
- =?us-ascii?Q?ys7/KGqsWkHmLUF1cW7NpyCvrJjRKmfF1o0MPX3e0k+cLVxfg6vU2iaOtJPo?=
- =?us-ascii?Q?B5MTCjNJ8A4SZOwvN1qUWhEV9N8MnFqifqszikM0Cj8VhRqUlu/Md1nCZL97?=
- =?us-ascii?Q?+LR3+ll4/AWzNgI1f8JlQiHh1c+NaT5bCKqV8z5qbkiJroA7RRqKxuub3ETW?=
- =?us-ascii?Q?4L4vuEc44dmbOLLjxtw2trci/n+Au30CC5UDjBFIdXRsSV15Hx9aey87mPSp?=
- =?us-ascii?Q?506CWGOs4QqFWSv5daS2hECiFWTZ4PbyUXRN7Dh0ifW1mSK0DbEr1PlrQy05?=
- =?us-ascii?Q?LNRiFUzPBjp3j2ERkXzNUDAdc4V3hrePYfh1zXAfwHXdhPagpAhXuGd3swMC?=
- =?us-ascii?Q?RNxUjUOQk3XbdToJjSAKa+t4ldcA+1XkS+PADC5r8alRKuMd2RR6wBlOTbnB?=
- =?us-ascii?Q?sTQnt1sGUEc5a4KFXn+rQpf3yR4v+We1VMXXY0fF4rUk/bLodOLQR2jf9wtX?=
- =?us-ascii?Q?LykR3a7W2as4LR/eRC/JXfJvKk16gRi7YPdaX5Jzuw=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(366007)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?OZbSC18IFJbRpOW+JVZZOf4nFlYAHbc15+0DhJxR1HeTYyCrjqGa9SixeTgm?=
- =?us-ascii?Q?RJffpjYttd34HmtAMzzZsuNWIeTgTcGKiVnnbmMDFnKLx5TVeCFiFPlKFf8c?=
- =?us-ascii?Q?RRKhNswnXEIoNDmuo+RR6y1nJndDfwt5ASf30Dbj1rzsShaS8Dn3k8sO8kUi?=
- =?us-ascii?Q?TMUZlIy3xhXsB3tLsqYNH/t2qoW2o7QMfgoSOUxMhftDPB6ICV3A/ucPzfXz?=
- =?us-ascii?Q?zn/aM+IqaYR5TPguppaz9vdQCNiYiO/GjtpA2FWED12HSffhkWzJG60PofSX?=
- =?us-ascii?Q?sAeyhyvPsQ3acn+rh/a9GqwVeTP+KYmd+ZOG+XNeiZcy9n57plXsCX7KFVdw?=
- =?us-ascii?Q?AgyMlzfwMW/2PUl+llYqQqkhI062bCJcURYhmsFdSeDS4rkLjHUKDZ8igeV7?=
- =?us-ascii?Q?RQlyz5ytf8h8XinTb8JWyc1c9ixj0WvXGiQe72xgLBO2iW9n/P/Rq30Gh/IF?=
- =?us-ascii?Q?6RUPJ73IvQu2oQZevkMX7Ijzz3pdTxCKbq/mijYMe+0/RGKVhcdI6mxou7Ek?=
- =?us-ascii?Q?h8SVvkMzrS6LATuRUoc49Mkh3JbPSAzThv13qVLgr4ZujCdRY+/XM1qOkfLs?=
- =?us-ascii?Q?iy3XMh/P8XkAbb0IuppdUHFuieNd6ShzRM9wKuXidtVfzxuuH2/WpEvcnn+d?=
- =?us-ascii?Q?6AvvUpO7cc08iLPjoNlJiKJ6bMpWSlF+3lx7RjRUUj/wP+HFdVVAdDy4TXcI?=
- =?us-ascii?Q?s4RfdEH32h1CVKdGRAiX4WyrRvLL9+VB9VwSkqhRCh5x6Z9b63hB6Muv0iup?=
- =?us-ascii?Q?hSeijzFsc6wj9ZMC887wfPYGIJBD4Ye1RZYiHuWoDGc3Dnmrmrl17PNiP4sw?=
- =?us-ascii?Q?GrCiSVeddmUTElC1RGgJzsHfMTDLawpRLuFcpMD5xUB9kL5UatcjVnU7S+dL?=
- =?us-ascii?Q?xoQswcMZLUiUyFEynCD5kyS6HgxU1+FqibrnaJqZtQ/rAmSrpgXqiM6A8x++?=
- =?us-ascii?Q?UNGjoGg8+gPVl5P+IsizqFIBEoOSImUcpUuoj6URJiiukF2B6g+zELCIZmPp?=
- =?us-ascii?Q?S5nvjvBY4+2Q1nmFVjr2yrSS/cIR6M/jUxMF0lF8k7C/pJdoAgcGnVSYBvV3?=
- =?us-ascii?Q?CXvwkJopEZX0yyrjXYqe0WobpM6tuhqvvJVt1y96gmSwGQizxAdZ65iHvkxx?=
- =?us-ascii?Q?zC3Masv0XEnapZP+cudR8zFPHslodliRngDPAZqvdtEcZqf6MsHZGkGsaz/G?=
- =?us-ascii?Q?YZp4UbLBT+BWKBOCDF0dD7ESqHIkvSei3kZxmMz1r4wkWqTlHA/xKcAEjW1U?=
- =?us-ascii?Q?i5FTcsHemgkjF0LcrtAUe5xLgLX5MaTgj12TJ1ErA7pyhWkBiD6UCwCW1Gl/?=
- =?us-ascii?Q?a5QJ/0QRV+bYeOnKdGir5Ye8I2JPhiARZzLhxEshJ5zXlaDpsjuawwGn+YFX?=
- =?us-ascii?Q?u/6hNiPZzaOvdI7WVPjdYw6QaC4QR/jdjmHZOnBkBVOe/RQb5eSOHms1glvG?=
- =?us-ascii?Q?54pQtnloFSl/5pJ97XodSpIzvtDNRLuVG293g9FpoCerTEmW3/HZwzr+xJdz?=
- =?us-ascii?Q?1D3LfXKFG1mjt+F/yoqMfDzB5nNdbRpBD5FZZO7yfvy6tAs11ayEkUbobSeh?=
- =?us-ascii?Q?miDWgmnLaPgdx4lbHWdG3XtAqERtEnxjTiVd/xRL54WyibkAxH8Wn5yuoXKZ?=
- =?us-ascii?Q?bg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 033ce2a1-b6e5-4207-8fd9-08dc663c0dc0
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Apr 2024 21:58:49.6511
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ug+GTrgVwoFcfEQ+S1njCsuZcJp7w4aTjim5krz+1yHO8cI5lw0oAv82VIY/?=
+ =?us-ascii?Q?VYMkd/wjo2fXCQej61bCJVkRJ7feMPdiJzuoxR+y4XBilo9WhEBUK9EBdVSM?=
+ =?us-ascii?Q?h4nXQGr3RF1Okffcc36yfpV71gbmVmr8WEPk3SvlNgWlHK+SVCuwSOoxzPVK?=
+ =?us-ascii?Q?ShggUQr6ZxjcumyVxdZRwQMFPoCl1TsbqLJHcJ+XoEqJTPF1l1/ZlNH/WxBb?=
+ =?us-ascii?Q?YYZ6YXMSFeDeFCmk+8u0e8+X1dQDZN7V6DTKAuJCLuPZ1Oyvz6HXg9gUamPM?=
+ =?us-ascii?Q?2xDiWZAPhlnDXqLUovtbm4dgGEt3IxswovofS/MkiTEfNuHHbqIVgyfamcYw?=
+ =?us-ascii?Q?u7kS5CFDbfWc0ZZ+qoGuX0ZJtgCTN7shubLXgCictbqWbgIwUrcdNcLc59n6?=
+ =?us-ascii?Q?yp6Q9quyQncTWTWMWHiWQO29u8kofBrCVAahgQ4vZXEs76h+cltIZq8U8sXI?=
+ =?us-ascii?Q?0w02CW7SIf6YfxzcNxAqytWS41LGsOrc3V+tmdY4Hhv2hxglk2hWizh132g5?=
+ =?us-ascii?Q?W5n3tgpCWIZz1eDzyPqBph6sxxJ/ZJmnXkER7ExDgdukivpz4/kWZjWA/Sbc?=
+ =?us-ascii?Q?xSRBb7CGZui4/G7rhexF0UfoekM2jAkh38Hbo0kaB9XA0Vx5gNb/Gt8P24Ps?=
+ =?us-ascii?Q?r2lGCZJbIO86pTwLd8aEBcSirI/O/GooPheB8CNZu1o687Ykxsh2he+R3Yjv?=
+ =?us-ascii?Q?p9ABli+E+CTm2LqnYEzbLDL5xHwCycrT4w+QrgsmhA0h28TbKXYLzESXidGE?=
+ =?us-ascii?Q?KcXgjBSuWy+eOexAyy26smol8+jX4bYj55lckrDmpYbaXzp2zl3VdmRr+EHr?=
+ =?us-ascii?Q?tmd5Pws7k9mau5nOKhum5BqSdgNQxwvqoWZOEP7AwC/KmmxR9VOgzlO3+pGu?=
+ =?us-ascii?Q?thyroQGXGzPiXMr7aS7y8Z4DDzeApHgFA/9ZiMoJwLlCqPa9FKNnrdbkHbiq?=
+ =?us-ascii?Q?zdPYj22GLH0wHd2i1JMIY3y0aeiKgzbCCI7oxP4N9i7+Z67N4y6nGNGRmD78?=
+ =?us-ascii?Q?BTDPuUXVsnpRFCx+4KjhliqY0ChJSMtZc55Ddy5hAKFsO/k6zLYR99YG8yDh?=
+ =?us-ascii?Q?4yIdzYu1cqFRCX2lbLO6GElt3fQ7BehrjBKGK3OCZb8j7pEKN7/ktgmuilAr?=
+ =?us-ascii?Q?JVCYV9Bt0sycAaeFCkaaAWn8RQRh5C6zRIivJGsLqoIRMa2aYypiTQiY/B7q?=
+ =?us-ascii?Q?kqwOtOkpKQ1aCXhvKBhENpPqOXyv7WLRGDY0vBYGPqsdy6+xUFs3rSJSnMQJ?=
+ =?us-ascii?Q?/o7V+O1pVbUtmsbUiDBpqq/cXaYsVGvZoqSkF9oXzTfJlvs5v7iwvYyScO1W?=
+ =?us-ascii?Q?eSQAeyM7GsU0evoQ4xj06x87HTnJs0uapfwBHXXg3X/szVp88fKvzKDHO0Gf?=
+ =?us-ascii?Q?KOrhKIKTEpHk2Qcyo9vcUf9NlZEv?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400014)(376005)(7416005)(1800799015)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Apr 2024 22:25:11.8745
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ug64GT8UG5i2WX2E501+aDuwozCE7dZ3W+8+LbcfjKQ2Yjyu6OIDpiPqcMpKjqgmYSZ13rQGtOba6Q/QCraSqyxetmiFYCnkLfrgwacuTew=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5795
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c88abb9-92f5-4003-f830-08dc663fbcfb
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000A347.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6336
 
-Tom Lendacky wrote:
-> The TSM attestation report support provides multiple configfs attribute
-> types (both for standard and binary attributes) to allow for additional
-> attributes to be displayed for SNP as compared to TDX. With the ability
-> to hide attributes via configfs, consoldate the multiple attribute groups
-> into a single standard attribute group and a single binary attribute
-> group. Modify the TDX support to hide the attributes that were previously
-> "hidden" as a result of registering the selective attribute groups.
+On Fri, Apr 26, 2024 at 01:14:32PM -0700, Sean Christopherson wrote:
+> On Fri, Apr 26, 2024, Michael Roth wrote:
+> > On Thu, Apr 25, 2024 at 03:13:40PM -0700, Sean Christopherson wrote:
+> > > On Thu, Apr 25, 2024, Michael Roth wrote:
+> > > > On Wed, Apr 24, 2024 at 01:59:48PM -0700, Sean Christopherson wrote:
+> > > > > On Sun, Apr 21, 2024, Michael Roth wrote:
+> > > > > > +static int snp_begin_psc_msr(struct kvm_vcpu *vcpu, u64 ghcb_msr)
+> > > > > > +{
+> > > > > > +	u64 gpa = gfn_to_gpa(GHCB_MSR_PSC_REQ_TO_GFN(ghcb_msr));
+> > > > > > +	u8 op = GHCB_MSR_PSC_REQ_TO_OP(ghcb_msr);
+> > > > > > +	struct vcpu_svm *svm = to_svm(vcpu);
+> > > > > > +
+> > > > > > +	if (op != SNP_PAGE_STATE_PRIVATE && op != SNP_PAGE_STATE_SHARED) {
+> > > > > > +		set_ghcb_msr(svm, GHCB_MSR_PSC_RESP_ERROR);
+> > > > > > +		return 1; /* resume guest */
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	vcpu->run->exit_reason = KVM_EXIT_VMGEXIT;
+> > > > > > +	vcpu->run->vmgexit.type = KVM_USER_VMGEXIT_PSC_MSR;
+> > > > > > +	vcpu->run->vmgexit.psc_msr.gpa = gpa;
+> > > > > > +	vcpu->run->vmgexit.psc_msr.op = op;
+> > > > > 
+> > > > > Argh, no.
+> > > > > 
+> > > > > This is the same crud that TDX tried to push[*].  Use KVM's existing user exits,
+> > > > > and extend as *needed*.  There is no good reason page state change requests need
+> > > > > *two* exit reasons.  The *only* thing KVM supports right now is private<=>shared
+> > > > > conversions, and that can be handled with either KVM_HC_MAP_GPA_RANGE or
+> > > > > KVM_EXIT_MEMORY_FAULT.
+> > > > > 
+> > > > > The non-MSR flavor can batch requests, but I'm willing to bet that the overwhelming
+> > > > > majority of requests are contiguous, i.e. can be combined into a range by KVM,
+> > > > > and that handling any outliers by performing multiple exits to userspace will
+> > > > > provide sufficient performance.
+> > > > 
+> > > > That does tend to be the case. We won't have as much granularity with
+> > > > the per-entry error codes, but KVM_SET_MEMORY_ATTRIBUTES would be
+> > > > expected to be for the entire range anyway, and if that fails for
+> > > > whatever reason then we KVM_BUG_ON() anyway. We do have to have handling
+> > > > for cases where the entries aren't contiguous however, which would
+> > > > involve multiple KVM_EXIT_HYPERCALLs until everything is satisfied. But
+> > > > not a huge deal since it doesn't seem to be a common case.
+> > > 
+> > > If it was less complex overall, I wouldn't be opposed to KVM marshalling everything
+> > > into a buffer, but I suspect it will be simpler to just have KVM loop until the
+> > > PSC request is complete.
+> > 
+> > Agreed. But *if* we decided to introduce a buffer, where would you
+> > suggest adding it? The kvm_run union fields are set to 256 bytes, and
+> > we'd need close to 4K to handle a full GHCB PSC buffer in 1 go. Would
+> > additional storage at the end of struct kvm_run be acceptable?
 > 
-> Co-developed-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> ---
->  drivers/virt/coco/sev-guest/sev-guest.c |  3 +-
->  drivers/virt/coco/tdx-guest/tdx-guest.c | 29 ++++++++-
->  drivers/virt/coco/tsm.c                 | 82 ++++++++++++-------------
->  include/linux/tsm.h                     | 41 ++++++++++---
->  4 files changed, 102 insertions(+), 53 deletions(-)
-[..]
-> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> index 1253bf76b570..964af57f345c 100644
-> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-[..]
-> @@ -249,6 +250,30 @@ static int tdx_report_new(struct tsm_report *report, void *data)
->  	return ret;
->  }
->  
-> +static bool tdx_report_attr_visible(struct config_item *item,
-> +				    struct configfs_attribute *attr, int n)
-> +{
-> +	switch (n) {
-> +	case TSM_REPORT_GENERATION:
-> +	case TSM_REPORT_PROVIDER:
-> +		return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +static bool tdx_report_bin_attr_visible(struct config_item *item,
-> +					struct configfs_bin_attribute *attr, int n)
-> +{
-> +	switch (n) {
-> +	case TSM_REPORT_INBLOB:
-> +	case TSM_REPORT_OUTBLOB:
-> +		return true;
-> +	}
-> +
-> +	return false;
-> +}
+> Don't even need more memory, just use vcpu->arch.pio_data, which is always
+> allocated and is mmap()able by userspace via KVM_PIO_PAGE_OFFSET.
 
-Why do these callbacks need @item and @attr?
+Nice, that seems like a good option if needed.
 
-[..]
-> +static bool tsm_report_is_visible(struct config_item *item,
-> +				  struct configfs_attribute *attr, int n)
+> 
+> > > > KVM_HC_MAP_GPA_RANGE seems like a nice option because we'd also have the
+> > > > flexibility to just issue that directly within a guest rather than
+> > > > relying on SNP/TDX specific hcalls. I don't know if that approach is
+> > > > practical for a real guest, but it could be useful for having re-usable
+> > > > guest code in KVM selftests that "just works" for all variants of
+> > > > SNP/TDX/sw-protected. (though we'd still want stuff that exercises
+> > > > SNP/TDX->KVM_HC_MAP_GPA_RANGE translation).
+> > > > 
+> > > > I think we'd there is some potential baggage there with the previous SEV
+> > > > live migration use cases. There's some potential that existing guest kernels
+> > > > will use it once it gets advertised and issue them alongside GHCB-based
+> > > > page-state changes. It might make sense to use one of the reserved bits
+> > > > to denote this flavor of KVM_HC_MAP_GPA_RANGE as being for
+> > > > hardware/software-protected VMs and not interchangeable with calls that
+> > > > were used for SEV live migration stuff.
+> > > 
+> > > I don't think I follow, what exactly wouldn't be interchangeable, and why?
+> > 
+> > For instance, if KVM_FEATURE_MIGRATION_CONTROL is advertised, then when
+> > amd_enc_status_change_finish() is triggered as a result of
+> > set_memory_encrypted(), we'd see
+> > 
+> >   1) a GHCB PSC for SNP, which will get forwarded to userspace via
+> >      KVM_HC_MAP_GPA_RANGE
+> >   2) KVM_HC_MAP_GPA_RANGE issued directly by the guest.
+> > 
+> > In that case, we'd be duplicating PSCs but it wouldn't necessarily hurt
+> > anything. But ideally we'd be able to distinguish the 2 cases so we
+> > could rightly treat 1) as only being expected for SNP, and 2) as only
+> > being expected for SEV/SEV-ES.
+> 
+> Why would the guest issue both?  That's a guest bug.  Or if supressing the second
+> hypercall is an issue, simply don't enumerate MIGRATION_CONTROL for SNP guests.
 
-Per the comment on where to find the is_visible() callbacks for a given
-item type, I expect the need to pass @item here goes away when this can
-assume that there is only one way to have is_visible() invoked for
-@attr, right?
+At the time of its inception, KVM_HC_MAP_GPA_RANGE was simply
+KVM_HC_PAGE_ENC_STATUS and got a more generic name over the course of
+development. But its purpose never changed: to inform the hypervisor of
+the current encryption status of a GPA range so VMMs could build up a
+list of shared guest regions that don't need to go through firmware for
+migration.. And it was and still is asynchronous to a degree, since the
+the migration control MSRs signals when that list of shared pages is
+usable.
 
-Other than that, this conversion looks good to me.
+These are very different semantics the proposal to use KVM_HC_MAP_GPA_RANGE
+as a means to set memory attributes via KVM_SET_MEMORY_ATTRIBUTES, and
+the 2 purposes aren't necessarily mutually exclusive to one another. It
+only really becomes a bug if we begin to interpret the original use-case
+as something other than it's initial intent in the case of SNP.
+
+But at the same time, it's hard to imagine this older SEV live migration
+use-case being useful for SNP, since userspace will necessarily have all
+the information it needs to determine what is/isn't shared with relying
+on an additional hypercall.
+
+So treating the older use case as specific to non-SNP and disallowing the
+use of MIGRATION_CONTROL does seems reasonable. But it's really the CPUID
+bit that advertises it, SEV just happens to only use it for when
+MIGRATION_CONTROL is also advertised. So we could disable that as well,
+but I did like the idea of being able to handle guest-issued
+KVM_HC_MAP_GPA_RANGE calls even with SNP/TDX enabled, which is less of an
+option if we can't advertised KVM_HC_MAP_GPA_RANGE via cpuid. But I
+suppose we could do that with KVM selftests which is probably where
+that's more likely to be useful.
+
+-Mike
