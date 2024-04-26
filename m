@@ -1,127 +1,138 @@
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A93BE47
-	for <linux-coco@lists.linux.dev>; Fri, 26 Apr 2024 19:18:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798EF2032A
+	for <linux-coco@lists.linux.dev>; Fri, 26 Apr 2024 19:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714159106; cv=none; b=bSis19HSW+PVP5izWhiktSN2HfAIUdXWvzh5h8ysMS+8+BwPzCklP7RhFdqcC8a2vvTismMTUKOvy+1jDZiRloL32PNd5zBXBFwmlMVlh6D0fjo6aUGaZhrfCgMGxDTex8TcRHzV3CxyQt9xRt+AE6gBFlHw8UqyQ/66yB9GSkI=
+	t=1714161432; cv=none; b=fFmdEQyIhWpZD4nxRtmyOasHFeRhMyVFPs8RLJhSSJU1YheXfCMoiq5gwpKy0RnDy54yVSFigYJ1NjYH1ZVKV/k+IxoEb1bFocVOZn+DjsRsUWd3g91Jh3hDt0soDq7b5vGObipVmvJKI0ajiBs4RCyMV5bc9Ul5OZdfVvEng/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714159106; c=relaxed/simple;
-	bh=438/ZQiq5iRawfVdd1FY58I+HIjcB9icOdPfLvQJQ6M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eN5hYqBi+kyfOUwj1TTlehb6uObbdDJeuZgpK+Rimk6a3vGxVsSk4M5C3Nxz18IrxNAM1HKYFL88KFP1Dxk9OU9oFTU9URpTlBbtFPEwkKOTLuMwES35eoOUpflhaB9BU0GSvozgINKNFhlwrJ7sP32KenMxo7pZCZ1y8Lx3VRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id AE71E100FC294;
-	Fri, 26 Apr 2024 21:18:15 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 5EEC3AF872; Fri, 26 Apr 2024 21:18:15 +0200 (CEST)
-Date: Fri, 26 Apr 2024 21:18:15 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: gregkh@linuxfoundation.org,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Marc Herbert <marc.herbert@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-coco@lists.linux.dev, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 1/3] sysfs: Fix crash on empty group attributes array
-Message-ID: <Ziv9984CJeQ4muZy@wunner.de>
-References: <170863444851.1479840.10249410842428140526.stgit@dwillia2-xfh.jf.intel.com>
- <170863445442.1479840.1818801787239831650.stgit@dwillia2-xfh.jf.intel.com>
- <ZiYrzzk9Me1aksmE@wunner.de>
- <662beb6ad280f_db82d29458@dwillia2-xfh.jf.intel.com.notmuch>
+	s=arc-20240116; t=1714161432; c=relaxed/simple;
+	bh=4Tl6Q7eOW4o1xylpHfLT20dEfliDc3ACOmwo+d+76q8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sl3qHIAXzbyR9ldWv6zliZgznq2US2XbNsXGcisBbKpOmCyvTzKH665Qae30cRYK8OrK3RYfhzRJxZyTfJdA6yxafTtzEnsm/Udm/Jl9rUm1IyZwwsv0AmaTLhI1ieqRBvsoljcTz7o6h4WQBODCJ72RJX1B4+RNTBBu5fCrN24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZToacSJI; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZToacSJI"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-61afb46bad8so32221157b3.0
+        for <linux-coco@lists.linux.dev>; Fri, 26 Apr 2024 12:57:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1714161430; x=1714766230; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7JHOwynv12T0Y/tQm4DZx8daXixOsghTKfdQCt+IwUg=;
+        b=ZToacSJI0NrOqo+Ljmiox+obXs8GjADiY1YI/ey524KCxCQRS8jCqtZg9CK/s9lebr
+         2F1eY395QXxc/tHSqpphKtiG2V1XtbOwakDAq78xcpas6Z6cInJbzWx0VzchMpGb/H7r
+         ihJ5yItav0msf9sehypOAXyQ97HbHGgc7Qc25rKFTSZOnzYWgfmF6r5hYpZ0sQ44Ke8h
+         V9Wyf/1kbd9l/bvVfd+oQhnJgdfHSh/xjn8W4WFdhb3G0fRhLqfo3ORd+MZsJeDU0krz
+         wdKAkELRBHGIbj3VPrHe6jHW8Os9m54Vc8YdiDux/GWsKcKwi9HM8p/JC/DEeCf37Bbh
+         flXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714161430; x=1714766230;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7JHOwynv12T0Y/tQm4DZx8daXixOsghTKfdQCt+IwUg=;
+        b=LGrJf+Ya/rzsl8nvwwaHC4tgtzTTudjjutaDipVbVnQW1xcnw+HJ0Q1WNuSV9FQ4V2
+         u0NtClnI3GRdPN2sqGcTHbf7l5CZ9ef649Q/s+p403bX6OOa1AWoKFYPPoP1KSIuDc1L
+         mLf6N3m7Yrg19RKCuPy+nUDQS5J2rEtFtT3aafv2enZQ5bpHzdgkuXxjS61/9UOQcLDN
+         DGRl9bXcBZVR4E+RSMcyTNqvr9DAcOrqSZTACASSzfVFcBI/CcGEWzI1FtsEe/Madl/P
+         TFPS1oMVQ1lsi+JxKivsu7C3yvXoyavfInRbET19kSuKVNb72U5zhCXR0uSr3sPyK6wH
+         7pVg==
+X-Forwarded-Encrypted: i=1; AJvYcCV7dPQer1gu/nmFEPOOoEam074e78fTyZdYNQVlw2svBgeRxLOHS0/bHf6g2xz2A7THa0sybaryigI7OgNVgoUkTuoVXs0QXX3gfA==
+X-Gm-Message-State: AOJu0YxVfuqD+13TbdRSIhybWaqNmHLlFY7QwHaLdEjpO7AoE8XkgxGH
+	dWr9l2Gvicv6dkUwGXgN7nRAW3U0lriuHk6g2ddoBENAaHT0QMt9l1dC+xCOmLJX1lT8QX+0q3/
+	AAg==
+X-Google-Smtp-Source: AGHT+IGVs0AhQC/2tCuBf1vwuuUKjoCfCrLrEQi6QfgrOK53aglDlk7/orKA5npkCNzcOFKzvJ7EPkWyDNk=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a81:9e13:0:b0:61a:d420:3b57 with SMTP id
+ m19-20020a819e13000000b0061ad4203b57mr174224ywj.0.1714161430548; Fri, 26 Apr
+ 2024 12:57:10 -0700 (PDT)
+Date: Fri, 26 Apr 2024 12:57:08 -0700
+In-Reply-To: <20240426173515.6pio42iqvjj2aeac@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <662beb6ad280f_db82d29458@dwillia2-xfh.jf.intel.com.notmuch>
+Mime-Version: 1.0
+References: <20240421180122.1650812-1-michael.roth@amd.com>
+ <20240421180122.1650812-22-michael.roth@amd.com> <ZimgrDQ_j2QTM6s5@google.com>
+ <20240426173515.6pio42iqvjj2aeac@amd.com>
+Message-ID: <ZiwHFMfExfXvqDIr@google.com>
+Subject: Re: [PATCH v14 21/22] crypto: ccp: Add the SNP_{PAUSE,RESUME}_ATTESTATION
+ commands
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
+	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com, 
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Apr 26, 2024 at 10:59:06AM -0700, Dan Williams wrote:
-> Lukas Wunner wrote:
-> > > --- a/fs/sysfs/group.c
-> > > +++ b/fs/sysfs/group.c
-> > > @@ -33,10 +33,10 @@ static void remove_files(struct kernfs_node *parent,
-> > >  
-> > >  static umode_t __first_visible(const struct attribute_group *grp, struct kobject *kobj)
-> > >  {
-> > > -	if (grp->attrs && grp->is_visible)
-> > > +	if (grp->attrs && grp->attrs[0] && grp->is_visible)
-> > >  		return grp->is_visible(kobj, grp->attrs[0], 0);
-> > >  
-> > > -	if (grp->bin_attrs && grp->is_bin_visible)
-> > > +	if (grp->bin_attrs && grp->bin_attrs[0] && grp->is_bin_visible)
-> > >  		return grp->is_bin_visible(kobj, grp->bin_attrs[0], 0);
-> > >  
-> > >  	return 0;
+On Fri, Apr 26, 2024, Michael Roth wrote:
+> On Wed, Apr 24, 2024 at 05:15:40PM -0700, Sean Christopherson wrote:
+> > On Sun, Apr 21, 2024, Michael Roth wrote:
+> > > These commands can be used to pause servicing of guest attestation
+> > > requests. This useful when updating the reported TCB or signing key with
+> > > commands such as SNP_SET_CONFIG/SNP_COMMIT/SNP_VLEK_LOAD, since they may
+> > > in turn require updates to userspace-supplied certificates, and if an
+> > > attestation request happens to be in-flight at the time those updates
+> > > are occurring there is potential for a guest to receive a certificate
+> > > blob that is out of sync with the effective signing key for the
+> > > attestation report.
+> > > 
+> > > These interfaces also provide some versatility with how similar
+> > > firmware/certificate update activities can be handled in the future.
 > > 
-> > I'm wondering why 0 is returned by default and not SYSFS_GROUP_INVISIBLE.
-> > 
-> > An empty attribute list (containing just the NULL sentinel) will now
-> > result in the attribute group being visible as an empty directory.
-> > 
-> > I thought the whole point was to hide such empty directories.
-> > 
-> > Was it a conscious decision to return 0?
-> > Did you expect breakage if SYSFS_GROUP_INVISIBLE is returned?
+> > Wait, IIUC, this is using the kernel to get two userspace components to not
+> > stomp over each other.   Why is this the kernel's problem to solve?
 > 
-> Yes, the history is here:
+> It's not that they are stepping on each other, but that kernel and
+> userspace need to coordinate on updating 2 components whose updates need
+> to be atomic from a guest perspective. Take an update to VLEK key for
+> instance:
 > 
->     https://lore.kernel.org/all/YwZCPdPl2T+ndzjU@kroah.com/
+>  1) management gets a new VLEK endorsement key from KDS along with
+
+What is "management"?  I assume its some userspace daemon?
+
+>     associated certificate chain
+>  2) management uses SNP_VLEK_LOAD to update key
+>  3) management updates the certs at the path VMM will grab them
+>     from when the EXT_GUEST_REQUEST userspace exit is issued
 > 
-> ...where an initial attempt to hide empty group directories resulted in
-> boot failures. The concern is that there might be user tooling that
-> depends on that empty directory. So the SYSFS_GROUP_INVISIBLE behavior
-> can only be enabled by explicit result from an is_visible() handler.
+> If an attestation request comes in after 2), but before 3), then the
+> guest sees an attestation report signed with the new key, but still
+> gets the old certificate.
 > 
-> That way there is no regression potential for legacy cases where the
-> empty directory might matter.
+> If you reverse the ordering:
+> 
+>  1) management gets a new VLEK endorsement key from KDS along with
+>     associated certificate chain
+>  2) management updates the certs at the path VMM will grab them
+>     from when the EXT_GUEST_REQUEST userspace exit is issued
+>  3) management uses SNP_VLEK_LOAD to update key
+> 
+> then an attestation request between 2) and 3) will result in the guest
+> getting the new cert, but getting an attestation report signed with an old
+> endorsement key.
+> 
+> Providing a way to pause guest attestation requests prior to 2), and
+> resume after 3), provides a straightforward way to make those updates
+> atomic to the guest.
 
-The problem is that no ->is_visible() or ->is_bin_visible() callback
-is ever invoked for an empty attribute group.  So there is nothing
-that could return SYSFS_GROUP_INVISIBLE.
-
-It is thus impossible to hide them.
-
-Even though an attribute group may be declared empty, attributes may
-dynamically be added it to it using sysfs_add_file_to_group().
-
-Case in point:  I'm declaring an empty attribute group named
-"spdm_signatures_group" in this patch, to which attributes are
-dynamically added:
-
-https://github.com/l1k/linux/commit/ca420b22af05
-
-Because it is impossible to hide the group, every PCI device exposes
-it as an empty directory in sysfs, even if it doesn't support CMA
-(PCI device authentication).
-
-Fortunately the next patch in the series adds a single bin_attribute
-"next_requester_nonce" to the attribute group.  Now I can suddenly
-hide the group on devices incapable of CMA, because an
-->is_bin_visible() callback is executed:
-
-https://github.com/l1k/linux/commit/8248bc34630e
-
-So in this case I'm able to dodge the bullet because the empty
-signatures/ directory for CMA-incapable devices is only briefly
-visible in the series.  Nobody will notice unless they apply
-only a subset of the series.
-
-But I want to raise awareness that the inability to hide
-empty attribute groups feels awkward.
-
-Thanks,
-
-Lukas
+Assuming "management" is a userspace component, I still don't see why this
+requires kernel involvement.  "management" can tell VMMs to pause attestation
+without having to bounce through the kernel.  It doesn't even require a push
+model, e.g. wrap/redirect the certs with a file that has a "pause" flag and a
+sequence counter.
