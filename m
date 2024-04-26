@@ -1,215 +1,98 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F041482EF;
-	Fri, 26 Apr 2024 13:52:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA97F1474AC
+	for <linux-coco@lists.linux.dev>; Fri, 26 Apr 2024 14:21:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714139543; cv=none; b=lT/kkCRt3tKDJGeE9n7w0OUFQP2dl8e5UXiGRKwkrOEgVm9pvYvRZ+5ezZ1Of7Mi1qDNx3JYIskis/U8mqaXiUa7t5zh1YGQKGrapEFBMZu8h0amEKOYmZr2u57XbrxeE8F0GGj6s4W2uCFuNSarFB4lv0F9Vabai3kqra2a3Yw=
+	t=1714141321; cv=none; b=WPsLIURqWDtDLOUGmb1vqn8qorP0apNH+2E4nvqVkWHAGCHKQSy79Zt74Fzs4M95FyYeWo8WDLV5kCtqw0YWVM7vLD+Bkl1XJphLO7z7hmUa+mn7QmTNHLnl8iLrVCvZJ/x52aAjm6MbWNn69ULO01erlzdj8FkOAWb1mDV9xho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714139543; c=relaxed/simple;
-	bh=I7DyYnWfaXAhtV3qheVggsvxgrFqxIxpkCx87pssTs8=;
+	s=arc-20240116; t=1714141321; c=relaxed/simple;
+	bh=vDHEzSaszVlCKHMx4cB2NDow9Th6KgxtjK0/CpMgmYs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XQpnQ9cz9Oxf4M7vkls5l67/F7p5X3NUbVyw6TUOu25EbDFm2xnXqLxlryB0KnUmtr8XZ87+wsqzt4xcpLxffogevfBetmidI7H7G0lZobJRNMgXj552GBiJ3oe+B2Eb4HRMP3oLMoBg79iNR1iy2CpE0QfMdSnNrf+//Y49bOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9970C1007;
-	Fri, 26 Apr 2024 06:52:47 -0700 (PDT)
-Received: from arm.com (unknown [10.57.65.161])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C0FAB3F793;
-	Fri, 26 Apr 2024 06:51:38 -0700 (PDT)
-Date: Fri, 26 Apr 2024 14:51:18 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, maz@kernel.org,
-	joey.gouly@arm.com, steven.price@arm.com, james.morse@arm.com,
-	oliver.upton@linux.dev, yuzenghui@huawei.com,
-	andrew.jones@linux.dev, eric.auger@redhat.com
-Subject: Re: [kvm-unit-tests PATCH 08/33] arm: realm: Make uart available
- before MMU is enabled
-Message-ID: <ZiuxVk3l7sM0ukQt@arm.com>
-References: <20240412103408.2706058-1-suzuki.poulose@arm.com>
- <20240412103408.2706058-9-suzuki.poulose@arm.com>
- <ZiaEkwQmPf2dKGwC@arm.com>
- <c485b0b9-b467-469d-a6ef-4df0c52d0987@arm.com>
- <ZiaNJz3WJUcBPWMs@arm.com>
- <3c5e473a-b2ad-45dd-9f3f-6b691ec73a41@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TcWR6T2faYViN9mHQ7lWO8hTHhpaTZ/RrxdGM91OfW6+x/2N4RaXuF6xWx5EOPkbINxV/ad6emdMJdl8Jj/4VgFUIiC+KYHglzjT63AbeNhU57rEPw8Lo5Hc0w9egKTDV0IqWu7eFIZijUA1c5JWMAGxGons2iLPYOc/QBmMf7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=F4nGAP97; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="F4nGAP97"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A561B40E0247;
+	Fri, 26 Apr 2024 14:21:56 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 4nr6ztsoQAeU; Fri, 26 Apr 2024 14:21:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1714141312; bh=S5ZM4B6BQIwAX7AeKzf8qU0S9c3jJ6RtzIBBBo7BmUg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F4nGAP97ss/AfZh+ukrQwTcMEJZtdG1sbwaKNitN20yduwb7gHFd0MAWB/POEXh8D
+	 nozHf/jAPO67nYwIMAWGnobXVH4I9+cQSDjzocW+9DtmEIH1OnvtBm0hFGPV/leG0X
+	 Ce22/yPF/rywQdXZb+wyke3fV0qTBcOd9LnAsuUVudQKKDngFQ9fH/cvs0ttQ4EsJh
+	 wYiSzdh+75NsvdEH6Sh2G1HIoa1f6jov65xVjeSykBAJi4beDoKJwk4OR2xiboE+3s
+	 uGgCvxWXagN5EM3q1csR1gL8/B8V2JPLXyGrI7z6G0ZHtQhRClB2Ue9DOp2r6wXazH
+	 XVZt7T9mHCEYyEjzpAIqYPMvA1/R9QXPHfY4HKZwMaFcr3dOgYEIZJWnlclmdyOd4V
+	 wKcNEziLWXGWpZyTYTJyzLLazZduq/dgqssRKUfbYz5WgZRElloS3+w54ACCPqD1cU
+	 wNxIOYZ2IC1PX3QwwS7jy3XuiOk82910etfsfYTkkzLPa/fXyqrBgPNk1ThrRiRxkY
+	 Fo9lecmpFLaE0M0GHDzFklziwJdgTFEFovOebmwJucq3vUXaGJJBFKgKtsDDgPz4Yc
+	 FGPiAzTjFnyRvFE4L7TLOQlmY5vdAa4jBuPkfW5Q1zeRB+NeMCrYzOeYBUYiRYpwuo
+	 ZD1iBr1Ua0SrdzHG8FVDY10s=
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 42A2140E0177;
+	Fri, 26 Apr 2024 14:21:26 +0000 (UTC)
+Date: Fri, 26 Apr 2024 16:21:19 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, rafael@kernel.org, peterz@infradead.org,
+	adrian.hunter@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	jun.nakajima@intel.com, rick.p.edgecombe@intel.com,
+	thomas.lendacky@amd.com, michael.roth@amd.com, seanjc@google.com,
+	kai.huang@intel.com, bhe@redhat.com,
+	kirill.shutemov@linux.intel.com, bdas@redhat.com,
+	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
+	jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/3] efi/x86: skip efi_arch_mem_reserve() in case of
+ kexec.
+Message-ID: <20240426142119.GEZiu4X8VPK5He4zH1@fat_crate.local>
+References: <cover.1712694667.git.ashish.kalra@amd.com>
+ <cover.1713222642.git.ashish.kalra@amd.com>
+ <a3032e4b7a5406c26aeb66e9380043c410d07e3d.1713222642.git.ashish.kalra@amd.com>
+ <20240424144807.GEZikbp0NjFP5AM_ms@fat_crate.local>
+ <16b34494-7e5f-4feb-8a21-58e7b8fa97e2@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3c5e473a-b2ad-45dd-9f3f-6b691ec73a41@arm.com>
+In-Reply-To: <16b34494-7e5f-4feb-8a21-58e7b8fa97e2@amd.com>
 
-Hi,
+On Wed, Apr 24, 2024 at 04:17:09PM -0500, Kalra, Ashish wrote:
+> With SNP guest kexec and during nested guest kexec, observe the following
+> efi memmap corruption :
 
-On Fri, Apr 26, 2024 at 12:15:53PM +0100, Suzuki K Poulose wrote:
-> On 22/04/2024 17:15, Alexandru Elisei wrote:
-> > Hi,
-> > 
-> > On Mon, Apr 22, 2024 at 05:05:54PM +0100, Suzuki K Poulose wrote:
-> > > On 22/04/2024 16:38, Alexandru Elisei wrote:
-> > > > Hi,
-> > > > 
-> > > > On Fri, Apr 12, 2024 at 11:33:43AM +0100, Suzuki K Poulose wrote:
-> > > > > From: Joey Gouly <joey.gouly@arm.com>
-> > > > > 
-> > > > > A Realm must access any emulated I/O mappings with the PTE_NS_SHARED bit set.
-> > > > 
-> > > > What entity requires that a realm must access I/O mappings with the
-> > > > PTE_NS_SHARED bit set? Is that an architectural requirement? Or is it an
-> > > > implementation choice made by the VMM and/or KVM?
-> > > 
-> > > RMM spec. An MMIO access in the Protected IPA must be emulated by Realm
-> > > world. If an MMIO access must be emulated by NS Host, it must be in the
-> > > Unprotected IPA.
-> > 
-> > That's not exactly what I was asking. I was curious to know how a realm
-> > knows if a MMIO access is emulated by the Realm, and thus it must use a
-> > protected address, or it's emulated by the non-secure host, and it must use
-> > an unprotected address.
-> 
-> With Arm CCA-1.0, there cannot be an emulation in the Realm world.
-> Everything is by the NS Host. It may change in the future, but the
-> RSI version would make the Realm aware of the difference.
+Before we delve any deeper here, lemme make sure I understand this
+correctly:
 
-Wouldn't that be a breaking change for existing software, though? For
-example, existing software running in a realm assumes that all devices use
-unprotected addresses, and when the VMM/KVM/realm manager gets updated to
-implement the newer spec, that ceases to be the case.
+* You're in a SNP guest and you're kexec-ing into a new kernel?
 
-Also, would you mind pointing me to the section in the existing spec where
-that is specified? I'm curious about the exact wording.
+or
 
-Thanks,
-Alex
+* You have a plain hypervisor which runs a non-CoCo guest and that guest
+is a hypervisor too and it starts a level 2 guest and *in* *that* level
+2 guest you kexec a kernel?
 
-> 
-> 
-> Suzuki
-> 
-> 
-> 
-> > 
-> > Thanks,
-> > Alex
-> > 
-> > > 
-> > > Technically, a VMM could create a memory map, where the NS emulated I/O
-> > > are kept in the unprotected (upper) half.
-> > > 
-> > > Or the VMM retains the current model and expects the Realm to use the
-> > > "Unprotected" alias.
-> > > 
-> > > 
-> > > Either way, applying the PTE_NS_SHARED attribute doesn't change anything and
-> > > works for both the models, as far as the Realm is concerned.
-> > > 
-> > > 
-> > > Suzuki
-> > > 
-> > > 
-> > > 
-> > > 
-> > > > 
-> > > > Thanks,
-> > > > Alex
-> > > > 
-> > > > > This is modelled as a PTE attribute, but is actually part of the address.
-> > > > > 
-> > > > > So, when MMU is disabled, the "physical address" must reflect this bit set. We
-> > > > > access the UART early before the MMU is enabled. So, make sure the UART is
-> > > > > accessed always with the bit set.
-> > > > > 
-> > > > > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> > > > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> > > > > ---
-> > > > >    lib/arm/asm/pgtable.h   |  5 +++++
-> > > > >    lib/arm/io.c            | 24 +++++++++++++++++++++++-
-> > > > >    lib/arm64/asm/pgtable.h |  5 +++++
-> > > > >    3 files changed, 33 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/lib/arm/asm/pgtable.h b/lib/arm/asm/pgtable.h
-> > > > > index 350039ff..7e85e7c6 100644
-> > > > > --- a/lib/arm/asm/pgtable.h
-> > > > > +++ b/lib/arm/asm/pgtable.h
-> > > > > @@ -112,4 +112,9 @@ static inline pte_t *pte_alloc(pmd_t *pmd, unsigned long addr)
-> > > > >    	return pte_offset(pmd, addr);
-> > > > >    }
-> > > > > +static inline unsigned long arm_shared_phys_alias(void *x)
-> > > > > +{
-> > > > > +	return ((unsigned long)(x) | PTE_NS_SHARED);
-> > > > > +}
-> > > > > +
-> > > > >    #endif /* _ASMARM_PGTABLE_H_ */
-> > > > > diff --git a/lib/arm/io.c b/lib/arm/io.c
-> > > > > index 836fa854..127727e4 100644
-> > > > > --- a/lib/arm/io.c
-> > > > > +++ b/lib/arm/io.c
-> > > > > @@ -15,6 +15,8 @@
-> > > > >    #include <asm/psci.h>
-> > > > >    #include <asm/spinlock.h>
-> > > > >    #include <asm/io.h>
-> > > > > +#include <asm/mmu-api.h>
-> > > > > +#include <asm/pgtable.h>
-> > > > >    #include "io.h"
-> > > > > @@ -30,6 +32,24 @@ static struct spinlock uart_lock;
-> > > > >    static volatile u8 *uart0_base = UART_EARLY_BASE;
-> > > > >    bool is_pl011_uart;
-> > > > > +static inline volatile u8 *get_uart_base(void)
-> > > > > +{
-> > > > > +	/*
-> > > > > +	 * The address of the UART base may be different
-> > > > > +	 * based on whether we are running with/without
-> > > > > +	 * MMU enabled.
-> > > > > +	 *
-> > > > > +	 * For realms, we must force to use the shared physical
-> > > > > +	 * alias with MMU disabled, to make sure the I/O can
-> > > > > +	 * be emulated.
-> > > > > +	 * When the MMU is turned ON, the mappings are created
-> > > > > +	 * appropriately.
-> > > > > +	 */
-> > > > > +	if (mmu_enabled())
-> > > > > +		return uart0_base;
-> > > > > +	return (u8 *)arm_shared_phys_alias((void *)uart0_base);
-> > > > > +}
-> > > > > +
-> > > > >    static void uart0_init_fdt(void)
-> > > > >    {
-> > > > >    	/*
-> > > > > @@ -109,9 +129,11 @@ void io_init(void)
-> > > > >    void puts(const char *s)
-> > > > >    {
-> > > > > +	volatile u8 *uart_base = get_uart_base();
-> > > > > +
-> > > > >    	spin_lock(&uart_lock);
-> > > > >    	while (*s)
-> > > > > -		writeb(*s++, uart0_base);
-> > > > > +		writeb(*s++, uart_base);
-> > > > >    	spin_unlock(&uart_lock);
-> > > > >    }
-> > > > > diff --git a/lib/arm64/asm/pgtable.h b/lib/arm64/asm/pgtable.h
-> > > > > index 5b9f40b0..871c03e9 100644
-> > > > > --- a/lib/arm64/asm/pgtable.h
-> > > > > +++ b/lib/arm64/asm/pgtable.h
-> > > > > @@ -28,6 +28,11 @@ extern unsigned long prot_ns_shared;
-> > > > >    */
-> > > > >    #define PTE_NS_SHARED		(prot_ns_shared)
-> > > > > +static inline unsigned long arm_shared_phys_alias(void *addr)
-> > > > > +{
-> > > > > +	return ((unsigned long)addr | PTE_NS_SHARED);
-> > > > > +}
-> > > > > +
-> > > > >    /*
-> > > > >     * Highest possible physical address supported.
-> > > > >     */
-> > > > > -- 
-> > > > > 2.34.1
-> > > > > 
-> > > 
-> > > 
-> 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
