@@ -1,271 +1,219 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2074.outbound.protection.outlook.com [40.107.243.74])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431B516DEC3
-	for <linux-coco@lists.linux.dev>; Fri, 26 Apr 2024 17:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791F516DEAE
+	for <linux-coco@lists.linux.dev>; Fri, 26 Apr 2024 17:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714154282; cv=fail; b=U6Ye3KSXc2I6lR4rdyMcl8MtNyd/z47+1pJFfFkHcZ7BwEPhiycfVbnh4LNd1iBo42m5Wt/JXmOz2O6uET3m2fhK/G8e8VplIJWoPne+acOsISbozW1pt9U53MARFaT+nT9nBf8j2CirXWEwd+kvBG1McWfuffrMJKv2DhORGaw=
+	t=1714154355; cv=fail; b=RQ7ZJAY/97fEFDTaYSoQ7fJcwWgQBmuXMgWfsDrFXUydIPNps2rw4QKgVU3Tu9mQeGpc00mw4W08zRSAr4XhHwBTJxNsoZtgtnIcL8TjgdgXGI5oXOxUXzfTNFFj4Srw/aC6GFIUq43RqCcKWTJAzLhLDP1nqdanqW9M6IXnnys=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714154282; c=relaxed/simple;
-	bh=Qg0psVOeueLQ0ruqD9DANG29f8eaFRD4ygCp0h9wk/Q=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QtwYGaZaN2a3rf33rK4J29hj0cstkBQ65PyMDMjcYmkPzgZyyj+NAcI80QMJ8asuMGiVrjUOQpCFrFbOG3O99YKA8998IngBAfe4n4UjvYOYd3ArSYJzbzZvk4nFvRNKRX4i99rLjZDzAUK4v4+L9DNjq08Z54TtyTTVdbjNwFs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZHZAhGnM; arc=fail smtp.client-ip=40.107.243.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1714154355; c=relaxed/simple;
+	bh=dT5boOq0BIAbVb2tOLkkizjeMcJjRG9SBwkMP6o8Jvc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fXAanD8Lc9CIGbIbcaS0HJr57vIytEJelCytovCRrzeAky9Gqm6JSsXHIOiuy3B5LPSQkHCT8rnCz57IrVtNFAu8Q7vUeKLOjmFZG4QVesJfDGLYG6L+9AvoHg0v75GTAHFJSM4iBNOKNTCAlHHTd5g5Jsw9Rr4KVaKESKyUe3s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KVTQAiXH; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZHZAhGnM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KVTQAiXH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714154354; x=1745690354;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=dT5boOq0BIAbVb2tOLkkizjeMcJjRG9SBwkMP6o8Jvc=;
+  b=KVTQAiXHwy8iu9quVb4xvR/a3AEmNofN+dAsQkw3T1N8LmdqBbE1URmM
+   wl+xvTGWig5MTBwDw4AW2r+VMU6ENRuA9sf+f7PjUGGExpWtuDVnq+39G
+   kJ3I5nTX75Ed/sw7yLvGonKkZwuIYIRnzES6+eAUdAW05dSAKL+1PO8ix
+   KC83obhmbD66aKcxpxcIxfbpQIR5QfqimJiz0Q4oVddK/S8YikfDTAyg1
+   08hbm1TN5YWoJJfto2+CRc0dJMbfBd919wX4o9IQplZk6lqWuByjp0u5S
+   i5eIuIsegS2kHCdpJ8rol9dTSmFPnnGNIaWPThj5BgVRb+IgkycZfRm+y
+   A==;
+X-CSE-ConnectionGUID: jnD9UbowSQu4CnsUtQKt/A==
+X-CSE-MsgGUID: wqErxU1bSamInGriV64ILw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="10432209"
+X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; 
+   d="scan'208";a="10432209"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 10:59:13 -0700
+X-CSE-ConnectionGUID: htifvE8RSA6FuOjzlTnnxA==
+X-CSE-MsgGUID: U9mYtCkSQDG2ASSYOSgy1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; 
+   d="scan'208";a="25374915"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 26 Apr 2024 10:59:13 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 26 Apr 2024 10:59:12 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 26 Apr 2024 10:59:11 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Fri, 26 Apr 2024 10:59:11 -0700
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.41) by
+ edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 26 Apr 2024 10:59:11 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TcPZ5FN5E1Ts09+m3nsf73vZGnRnMg8mAcbibWIN0XabGdJPkIR3oEsxXU54+ANAhnz+vUkPmW1eWOxtlPCb+QJSsGnU48VUnbfqLwO0B038BKyTwhAdzhdEUv3nnU5K+ekwxIXnKyL1kEi6juCf3fDN4UqK4+oRQ9opGfL+wMxtNmJfHYQScexI3OyfnLaVWQ+Kn02oqIaimnjuCSHOWV12UL4TIB+aB0M3BnlAutt00y+QgFstRqjPzG4CjD7JfTM9tvqlQX6ALz4Pfd5BUrjiE4iUDCubpssz5xa3ywxu6esgvlGOGKCKG+OKHgRYmj9jsGXrCmmnm5u6ebFBug==
+ b=YWI/dCr9GTWc5tASXBQi2b2UPwueuOGnPYIR647ny9qt8QHFaDnfoc2UYBW3/6dNEEipsK7nX4estH5cVaQz7MYtqhvRRFVFj7V6RcNwG0jT0+Qq3cqEUc0Q9iahPz4wTCjfJs9oF+JGFGggiu51tGkPpJi26+WLZFen6LxCeQENvlCojtsSXmdo8aqbTyXblUu81gXpTbf93Z/Cbih+lDDT3VSKzZfEfJelnAExXQ3PTUl3FJbr0bmy18fM1hmz2omLMUmSuEMNzkWy3uBsAlab7QAPZ68AicvFLehvJwviS72yedSaRgRZszoIPoyILaJRDvZYurj5UPh+Ua5tJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5UJtW8Ae5PZdv1XXt0O5XE/S3fK87MmNLyq27/9ywVQ=;
- b=j+UQnC0AKJnlfhR9nyvDZ8fFhAdfh30KAb5vAbpzYaal4vNBC9AVzH4Nv48tqwvJYDey/sfhQ75/l8Uldg6/gJvcxIVFpY7Ngbn/G/akxeloaKnWf2uDsqRaBXDkvRlzK2NnNNMPTHK8O80NM5gxaGujRbwD3F06zL3JqZijtdIbN3pm1S2r5yHoUR+GdzfnzeXhF8Q0UKOxOSWHC5vCiSeG0j+wRpmkbqOWh2QI7zir1fGc9qhdJo41CmZbtQ3ud/SiaMYL7uZYCsc1EI4GFBM1GNWq8KcA4iu2okBO+2Cl4Olp+5pfLsHMxAwGYrK6pKN9KADUM2IOL+97No/i7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5UJtW8Ae5PZdv1XXt0O5XE/S3fK87MmNLyq27/9ywVQ=;
- b=ZHZAhGnMENCtgXn0iBw2sFKZVd1+BIfd7NiLPDyYPYh9KPkMhcDquBqhy3EWNPQmznZBFipOrasnWyrc43MsQrXPN40cCZtVKPw9mbDQHOI14rGrRi6ONDV/l2lJJkbWKBJXP/OE7PmjQBionxHX/ldfiiNzuDXfhn1hS3tj3SA=
-Received: from BLAPR03CA0176.namprd03.prod.outlook.com (2603:10b6:208:32f::26)
- by CY5PR12MB6204.namprd12.prod.outlook.com (2603:10b6:930:23::19) with
+ bh=1WBbRS3HaXSYkrtnGnuF+0hCjLKOgyS3qVIVNatecIg=;
+ b=ha/A0CSu0vBdiYnUqK+gFCNxZUfN33ZlVWWP+3Yk7Y1tjjFNTbhORgP50t/W0DUYykukjeYm0Fj81j9WUPyIwStojaGCxripnomp23boMMuvwznuU1ODiKT+FjQZaT/fFzowPx6lbA71Cn3Km7uWP4bKAwQ3gZyBLI2qdDZqQaWXxr9Cs5s/PMUN4n2h6AdV305aHvXu69y2RaA1QSF334YEFb7mmeFtJaos2Soui0s3Zkdc/bSc0LOET9JN2XhDAllrv7BWKdzVloPbPw0sqIdG7aukxXiUON54UquraEHKrhR1sSQJWyPTnpufv5Fjyy2YQrK/nDqlIYO4FWuqFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by PH8PR11MB6901.namprd11.prod.outlook.com (2603:10b6:510:22a::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Fri, 26 Apr
- 2024 17:57:58 +0000
-Received: from BL6PEPF0001AB4E.namprd04.prod.outlook.com
- (2603:10b6:208:32f:cafe::5b) by BLAPR03CA0176.outlook.office365.com
- (2603:10b6:208:32f::26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.31 via Frontend
- Transport; Fri, 26 Apr 2024 17:57:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF0001AB4E.mail.protection.outlook.com (10.167.242.72) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7519.19 via Frontend Transport; Fri, 26 Apr 2024 17:57:58 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 26 Apr
- 2024 12:57:57 -0500
-Date: Fri, 26 Apr 2024 12:57:43 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
-	<ardb@kernel.org>, <pbonzini@redhat.com>, <vkuznets@redhat.com>,
-	<jmattson@google.com>, <luto@kernel.org>, <dave.hansen@linux.intel.com>,
-	<slp@redhat.com>, <pgonda@google.com>, <peterz@infradead.org>,
-	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
-	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
-	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
-	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
-	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>
-Subject: Re: [PATCH v14 22/22] KVM: SEV: Provide support for
- SNP_EXTENDED_GUEST_REQUEST NAE event
-Message-ID: <20240426175743.t4cocerwwhaevieh@amd.com>
-References: <20240421180122.1650812-1-michael.roth@amd.com>
- <20240421180122.1650812-23-michael.roth@amd.com>
- <Zimfdyhq3U2HVX0N@google.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.31; Fri, 26 Apr
+ 2024 17:59:09 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::82fd:75df:40d7:ed71]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::82fd:75df:40d7:ed71%4]) with mapi id 15.20.7452.046; Fri, 26 Apr 2024
+ 17:59:09 +0000
+Date: Fri, 26 Apr 2024 10:59:06 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Lukas Wunner <lukas@wunner.de>, Dan Williams <dan.j.williams@intel.com>
+CC: <gregkh@linuxfoundation.org>, Pierre-Louis Bossart
+	<pierre-louis.bossart@linux.intel.com>, Marc Herbert
+	<marc.herbert@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <alsa-devel@alsa-project.org>
+Subject: Re: [PATCH 1/3] sysfs: Fix crash on empty group attributes array
+Message-ID: <662beb6ad280f_db82d29458@dwillia2-xfh.jf.intel.com.notmuch>
+References: <170863444851.1479840.10249410842428140526.stgit@dwillia2-xfh.jf.intel.com>
+ <170863445442.1479840.1818801787239831650.stgit@dwillia2-xfh.jf.intel.com>
+ <ZiYrzzk9Me1aksmE@wunner.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZiYrzzk9Me1aksmE@wunner.de>
+X-ClientProxiedBy: MW4PR03CA0230.namprd03.prod.outlook.com
+ (2603:10b6:303:b9::25) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <Zimfdyhq3U2HVX0N@google.com>
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4E:EE_|CY5PR12MB6204:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b1c03f4-4510-41a5-ef68-08dc661a686a
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH8PR11MB6901:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f6fb6c2-0c69-4666-d5f7-08dc661a9273
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?1Pke6fct7jOcDDw66vilmdbrBV/g9Ga3uX/3yVbRjFFsgA3UrDhm3UFLKadS?=
- =?us-ascii?Q?lYZ8V9LbfT0wrAi8gMr+VkHpeGbpCWqE5RUxmADF/RxtwctaTxRLB6UMdCH9?=
- =?us-ascii?Q?v+G5spRzak342NcGvDaBEOSkitBOt5bjIAouEkBnLaC5EIHcb4+mP51/hitv?=
- =?us-ascii?Q?5XPY5IrP55vBTciqwMiGfzBzfHaLKGfop9T23ctA3bCs7Fz6DFMsucmVhn78?=
- =?us-ascii?Q?Esf91WHWipOyZC66RX23VFfk61TNMeXLLxfMIUVR0BXOT90o6jMnKV47NWg3?=
- =?us-ascii?Q?6t3UG8/jDw28+vv9RaXjwm2MjooIspvPaUB6RjYjA5UTSctU9H/XhvXP7N2X?=
- =?us-ascii?Q?dIAn0Da4m1A51+1k115cktrUJvOpmyodIeBeX7RIOdd+aefdHxJzQ7iay/ly?=
- =?us-ascii?Q?o9e68GLFMNEWnIHqNRZq+fQ0IuB8bpAO0aev4rrHs44s1UBg/TiGzNj9LqV4?=
- =?us-ascii?Q?3bZNbSolSmIB+HD+MVE9dFsEIn4H1uV7STshHVSdf0yC7SzS3JFdGuN5SKEo?=
- =?us-ascii?Q?+ZkJ/ncYszQQmIAL5zCIp1Jzbt7/LYsKq0lX8iSZxZw2US860s0kjyONCaNg?=
- =?us-ascii?Q?nlpSFZGzkDzHlYtSVU5ti508OK8L+Z0iwyTmDATvRZQZPe/0++y6/Td3/soo?=
- =?us-ascii?Q?+SSF5yMcUeFEk2ANfhnkDzWiXNDrTBEPoAB08FfRRteOMEHSzGns+NJ8kjju?=
- =?us-ascii?Q?b2Ufl9Xe/BbVspAdJJ3YTKevoPsIOKdtnyBHUZ37SI+H6/JBFBSGZSiIZA1o?=
- =?us-ascii?Q?4J7co0pDxtEvb12f4VCEc5wVgrCeEqCukWriKM+a9kfLkw08I8t6OgmfMdlP?=
- =?us-ascii?Q?2OzjYszYQMrlHPYlQfn4XgYUhbL88+/OFuisOFuWJ1rBgq6XmUkrjhD3M6Ml?=
- =?us-ascii?Q?wcBbCPeP7F/4zOXdra1lMe08l29UDYL8e1pTYxvUYzdt1YfC2mrh2uZ+C/6a?=
- =?us-ascii?Q?NzhotJlruIxiAysRPd5Tw2Moq+iRmlN1RgDvabX5+hcc1uxg+5POCrLCfkIE?=
- =?us-ascii?Q?lhKA+YvwlU0bdEQKuI7uhuh1PeTrI1SX9q9Y3iTiTCShmb6Oz+EyagezA5yH?=
- =?us-ascii?Q?uXnU+dk3QCqWgswUyYVJu5kXFPTczscehdYLq41Ch1gJoUgeYI88EEF5vPtu?=
- =?us-ascii?Q?mBPbo1ekSykSZliCTwz/p+ca6oB9lzruOo9W3clhu80FPWR9fDyVeT2lPOiZ?=
- =?us-ascii?Q?STWIV4t9trxZ1NsVrSf5anAmeotqhUqSngHUzWbzATEcYxWPLZG5/trieUfb?=
- =?us-ascii?Q?gsRtQqTTNed7TKvA8IUw1qqipsEv+bsmMnUPNoqk8jQ8vZh0U9VsZNw3vt1i?=
- =?us-ascii?Q?Il5relc/62EQlFha2vepXbPrazbTM8ldkmbKASuGw3G872j5DXW/An5eiyN7?=
- =?us-ascii?Q?gLRM6VpN20p6cqlUOldd4KttYlcD?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(82310400014)(376005)(36860700004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Apr 2024 17:57:58.5695
+X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|376005|1800799015;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?/VwLNR6EFcaQaNBdV989YyIw/0pLj6WFkE6ui+PHWKm4zuV9mhq9WInrrUTI?=
+ =?us-ascii?Q?TEbHhh3Un/ms3K4lst1YXHo4fJ5RGBaHYZnX1NVEHUz55CIgOI5IGvjieXH4?=
+ =?us-ascii?Q?5fsN2fvdm1NiOo4cKBAPQajUb8eqjmqm8HyvCGRWr4q3FrbFFfQeQp6NSw4u?=
+ =?us-ascii?Q?KavNRo+7bU2y4cz0Urme0JbDjbacMSraXmwC9VX+tiOS8K0JEphWFIQLqgdr?=
+ =?us-ascii?Q?rBcvZI28p9Lcihpgsr3u4jNPEGV41tBmlYa280TfslU35n8WiPBDNg8dNALq?=
+ =?us-ascii?Q?xHpshDRY6dj/piRr3TLvhX6lVr/ETdySOT4kKkIxWO29nxt+zF7+a8WsIPs6?=
+ =?us-ascii?Q?WYscHZmKVVdrPGa6vGktSC8IIJl0BkkD7Lp4uW5mw5FgOoaExZyVB9rEQNeh?=
+ =?us-ascii?Q?Uff3eY/IR+3m+YbUXS6E1zLExxCCCXkXaEMJfTlmjm0ueX0iY8r/ZHDtghw3?=
+ =?us-ascii?Q?g8F5oCS4SlAI6ePBOQSH2xuI/vGJfLrKwhV9G1ntCN9xnkYfRWuVPxkkJJQr?=
+ =?us-ascii?Q?jIUgajy7VEKrjQ6t+HXETwe8hQXGDv27e3DnGrt+neTrIwFKxXJA7ikRfpT/?=
+ =?us-ascii?Q?fUfwpwyBkKz1ic9AJkVlRJIe+XUiEc8e+j9N3bAVFN/aEH/DLhZ4MsybmRgk?=
+ =?us-ascii?Q?n3po6OG/e72CopiOvERDbm3S+dPcXeKVPbXU8B9ii+K09zh7HYQ5KgPphpYH?=
+ =?us-ascii?Q?i+vuS2tVY6S5+AH2vq8Vg/9lASS2Gn871KkrmmLJ1vvLxBcd6/sPQI1zb6bA?=
+ =?us-ascii?Q?jNrrtIWsNE9zxiu+vHzh6o9cEeg9MJXf2gAXV3EZxdlSwQBhxpnh82CbQL7M?=
+ =?us-ascii?Q?SI+kKqWodgdA9x2B1KCviWukWknhMmKyq1tsDntdRqZ7xmZ62pJCrm6/d00k?=
+ =?us-ascii?Q?59ejFJUT+juEvapnZt9ZpDx/1xPcAnAVRjP3eYxHotVfiPuiQ98I1OEDCoaQ?=
+ =?us-ascii?Q?LVLhJmlEXvHvdwxCUMjtBM3QwtB7UHuA3ffMkea9I78OMt/qAYa9eTrxywPm?=
+ =?us-ascii?Q?ucqEWDD1Zq4Q9T9ipQfAOpcCrHNKv4UkMD73OIux29PrIUs6/ebEguI5kTt5?=
+ =?us-ascii?Q?FU/jA3XeckuDdGN97zbJ0mGmu4BHiDmiM2CM++MNOu9zlHO+K84Hwi+VXnoF?=
+ =?us-ascii?Q?mpGb5bIINovn8Rg8kyeX9p2azpRsAOnu7tTAHfVgG86cEsgu3gUfKl/Ufpri?=
+ =?us-ascii?Q?FoCYyj6+9MJzKyx6CbJBsSIxauOMr7D4gKziaEmio7VNywl9tUZs1yAxfEA?=
+ =?us-ascii?Q?=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?bOa9NpvvXnX+jrclANyH9VkAwze9JdpP/rkd9e3SaHclmOVvhLGhrY0J9jdo?=
+ =?us-ascii?Q?UdToF3o83YF2RpTm6EY4r395Y8uy+gFA7bVphB8dZ05sX5MG2FYP1EnJgiDg?=
+ =?us-ascii?Q?WclYYh9B/TExqcMyhDoB3RKDfPSrwkVIiTtB0UszLq7mRmqV0K4uGJoqRV+K?=
+ =?us-ascii?Q?szOHUW4eiF9DouVFA70FrAReApqtqN3wTtJmBBnzi088kzJE0SBZvYhREfeA?=
+ =?us-ascii?Q?LRDhQNbx7EEQYMYNxBSfnjeysUGMUcpTlumMBkTxhezpCMfSUAhz7GSlJUZa?=
+ =?us-ascii?Q?/ISn3oZYsS4HgRfdVUjzsP7RM2gX3CHkmo19UE07a63rUmb8Bn+1pajViFZD?=
+ =?us-ascii?Q?FJtTBg/tWowIbdGZUs14iDkm79T2HpQwUjkVIWywOWEcxyHkCvKhN/IezcGR?=
+ =?us-ascii?Q?FzsqmhXfcHFOMw8MFJF1V3NxFnV+xJ9IU+g82Rwm+8CkySDGAWRafbwZcS2W?=
+ =?us-ascii?Q?Fst3PNZrGI7bG3YOIitZ7KUgGLTApE0m5o1AVpB0bbVF8V3DO4AEwLYWa2JD?=
+ =?us-ascii?Q?cqQdpkJJcN7Kdv9NcL7AYRTsaoy8rJZGKP/+X0+xBFCRDM6xEgp9NdxwxzBU?=
+ =?us-ascii?Q?P723nHyNOhJaZGmFpoijTQo+w6XU77pdzTMdOXZ7iBhmhgWQECdgSVQXKKsL?=
+ =?us-ascii?Q?4a0bXpHR1q9haLQ6EI731Ma6AAxvx3RjgSKri/UkyP+mzj3Ct8agVoTCvl3K?=
+ =?us-ascii?Q?y/Srvb2I794PHGB91+TYyU7Y6NFKS1QRc2y4eFDkM+/CNZb2wNwOlYY82Pke?=
+ =?us-ascii?Q?gLTO5F0UON4w4nLTlw2mLGEwW5o+KBrj40ULSdpqMWjZkY6IgjnmA58oKppk?=
+ =?us-ascii?Q?c38NL2iPoJx4oGsbEHT/pX9g9afNBy4pJzVC+ognTPaaJC+JRwb7RKzZ7ShR?=
+ =?us-ascii?Q?cxFtf2WetvxpP6DM8uSZvVc1ZYL+0stF9EXpv4WOXOyCXv4AbT4+H4nK8v7J?=
+ =?us-ascii?Q?n4FQrPlhsJmw/hTjZLf8IJVTyCJ7EhpD4JnoYTqPbsTQoGYd53YANEN3IWyi?=
+ =?us-ascii?Q?wPKWr3Wr/mdcLIp4pQZit/zIbrKy3L5GbM47T8n3JuX9w2++ah20ilowjA7A?=
+ =?us-ascii?Q?8TKPNOkA5mpVJ5yRHiMiBF+YafKY9h1RkQ64t9es3ahUYlrMqtRrS+bVvcEg?=
+ =?us-ascii?Q?A8MsjstjxjrdPOLvXgbVK3WlT0W+bbl54rBDzbhfeImofHZJj3I7UM3KoD8K?=
+ =?us-ascii?Q?Huqrw6TDlmrHj6tZun0EqY5Oca6DuM8kspS6rWlQ37XoGqKCZeOeXIsPU/8P?=
+ =?us-ascii?Q?B9NITMvW1fRihshyRdJQZng3KJ2erFqvjjuWF4s59D97lGiENSGiemSQrM8/?=
+ =?us-ascii?Q?ffG/KLlm4xKDJ1oYoporL0w0dlREXUJvVdDDrosc+ZIENbmE9LC+24lvDbSI?=
+ =?us-ascii?Q?rINYa0uT15YZQZZCeyrNVUm4kL/v1XFG9luWKSI/I9pr58PzA3rwViFppl4X?=
+ =?us-ascii?Q?c3QVS/YkgwP7VqAETijIk8Vl7Dclqli9o3M6kT5hUQck+BarYeBwiGdX0bnv?=
+ =?us-ascii?Q?6pWJmXbsL9AdDo6eTlOu/h5w4thTPu5g5Il5ryVBpZi1+MdqtBhbbt1d1ejC?=
+ =?us-ascii?Q?GyvFkyuvDLT8bAXVda4rZxxPM6a0Kpwdu09NOMMGeLGeZQBbTklBW1C+NfYD?=
+ =?us-ascii?Q?Fw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f6fb6c2-0c69-4666-d5f7-08dc661a9273
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Apr 2024 17:59:09.4805
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b1c03f4-4510-41a5-ef68-08dc661a686a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB4E.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6204
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XRmiOD2rda2/k9TZvvr2hpmxr3i8UjvInBzCOKtIF82glPdeNwty8qn7J7Bl+VpJzXHGCsHbm15DP1+34Mt9yOD7Dx1JcZV+6SRJJcIX+xA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6901
+X-OriginatorOrg: intel.com
 
-On Wed, Apr 24, 2024 at 05:10:31PM -0700, Sean Christopherson wrote:
-> On Sun, Apr 21, 2024, Michael Roth wrote:
-> > diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> > index 85099198a10f..6cf186ed8f66 100644
-> > --- a/Documentation/virt/kvm/api.rst
-> > +++ b/Documentation/virt/kvm/api.rst
-> > @@ -7066,6 +7066,7 @@ values in kvm_run even if the corresponding bit in kvm_dirty_regs is not set.
-> >  		struct kvm_user_vmgexit {
-> >  		#define KVM_USER_VMGEXIT_PSC_MSR	1
-> >  		#define KVM_USER_VMGEXIT_PSC		2
-> > +		#define KVM_USER_VMGEXIT_EXT_GUEST_REQ	3
-> 
-> Assuming we can't get massage this into a vendor agnostic exit, there's gotta be
-> a better name than EXT_GUEST_REQ, which is completely meaningless to me and probably
-> most other people that aren't intimately familar with the specs.  Request what?
-
-EXT_CERT_REQ maybe? That's effectively all it boils down to, fetching
-the GHCB-defined certificate blob from userspace.
-
-> 
-> >  			__u32 type; /* KVM_USER_VMGEXIT_* type */
-> >  			union {
-> >  				struct {
-> > @@ -3812,6 +3813,84 @@ static void snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp
-> >  	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, SNP_GUEST_ERR(vmm_ret, fw_err));
-> >  }
+Lukas Wunner wrote:
+[..]
+> > --- a/fs/sysfs/group.c
+> > +++ b/fs/sysfs/group.c
+> > @@ -33,10 +33,10 @@ static void remove_files(struct kernfs_node *parent,
 > >  
-> > +static int snp_complete_ext_guest_req(struct kvm_vcpu *vcpu)
-> > +{
-> > +	struct vcpu_svm *svm = to_svm(vcpu);
-> > +	struct vmcb_control_area *control;
-> > +	struct kvm *kvm = vcpu->kvm;
-> > +	sev_ret_code fw_err = 0;
-> > +	int vmm_ret;
-> > +
-> > +	vmm_ret = vcpu->run->vmgexit.ext_guest_req.ret;
-> > +	if (vmm_ret) {
-> > +		if (vmm_ret == SNP_GUEST_VMM_ERR_INVALID_LEN)
-> > +			vcpu->arch.regs[VCPU_REGS_RBX] =
-> > +				vcpu->run->vmgexit.ext_guest_req.data_npages;
-> > +		goto abort_request;
-> > +	}
-> > +
-> > +	control = &svm->vmcb->control;
-> > +
-> > +	/*
-> > +	 * To avoid the message sequence number getting out of sync between the
-> > +	 * actual value seen by firmware verses the value expected by the guest,
-> > +	 * make sure attestations can't get paused on the write-side at this
-> > +	 * point by holding the lock for the entire duration of the firmware
-> > +	 * request so that there is no situation where SNP_GUEST_VMM_ERR_BUSY
-> > +	 * would need to be returned after firmware sees the request.
-> > +	 */
-> > +	mutex_lock(&snp_pause_attestation_lock);
+> >  static umode_t __first_visible(const struct attribute_group *grp, struct kobject *kobj)
+> >  {
+> > -	if (grp->attrs && grp->is_visible)
+> > +	if (grp->attrs && grp->attrs[0] && grp->is_visible)
+> >  		return grp->is_visible(kobj, grp->attrs[0], 0);
+> >  
+> > -	if (grp->bin_attrs && grp->is_bin_visible)
+> > +	if (grp->bin_attrs && grp->bin_attrs[0] && grp->is_bin_visible)
+> >  		return grp->is_bin_visible(kobj, grp->bin_attrs[0], 0);
+> >  
+> >  	return 0;
 > 
-> Why is this in KVM?  IIUC, KVM only needs to get involved to translate GFNs to
-> PFNs, the rest can go in the sev-dev driver, no?  The whole split is weird,
-> seemingly due to KVM "needing" to take this lock.  E.g. why is core kernel code
-> in arch/x86/virt/svm/sev.c at all dealing with attestation goo, when pretty much
-> all of the actual usage is (or can be) in sev-dev.c
-
-It would be very tempting to have all this locking tucked away in sev-dev
-driver, but KVM is a part of that sequence because it needs to handle fetching
-the certificate that will be returned to the guest as part of the
-attestation request. The transaction ID updates from PAUSE/RESUME
-commands is technically enough satisfy this requirement, in which case
-KVM wouldn't need to take the lock directly, only check that the
-transaction ID isn't stale and report -EBUSY/-EAGAIN to the guest if it
-is.
-
-But if the request actually gets sent to firmware, and then we decide
-after that the transaction is stale and thus the attestation response
-and certificate might not be in sync, then reporting -EBUSY/-EAGAIN will
-permanently hose the guest because the message seq fields will be out of
-sync between firmware and guest kernel. That's why we need to hold the
-lock to actually block a transaction ID update from occuring once we've
-committed to sending the attestation request to firmware.
-
+> I'm wondering why 0 is returned by default and not SYSFS_GROUP_INVISIBLE.
 > 
-> > +
-> > +	if (__snp_transaction_is_stale(svm->snp_transaction_id))
-> > +		vmm_ret = SNP_GUEST_VMM_ERR_BUSY;
-> > +	else if (!__snp_handle_guest_req(kvm, control->exit_info_1,
-> > +					 control->exit_info_2, &fw_err))
-> > +		vmm_ret = SNP_GUEST_VMM_ERR_GENERIC;
-> > +
-> > +	mutex_unlock(&snp_pause_attestation_lock);
-> > +
-> > +abort_request:
-> > +	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, SNP_GUEST_ERR(vmm_ret, fw_err));
-> > +
-> > +	return 1; /* resume guest */
-> > +}
-> > +
-> > +static int snp_begin_ext_guest_req(struct kvm_vcpu *vcpu)
-> > +{
-> > +	int vmm_ret = SNP_GUEST_VMM_ERR_GENERIC;
-> > +	struct vcpu_svm *svm = to_svm(vcpu);
-> > +	unsigned long data_npages;
-> > +	sev_ret_code fw_err;
-> > +	gpa_t data_gpa;
-> > +
-> > +	if (!sev_snp_guest(vcpu->kvm))
-> > +		goto abort_request;
-> > +
-> > +	data_gpa = vcpu->arch.regs[VCPU_REGS_RAX];
-> > +	data_npages = vcpu->arch.regs[VCPU_REGS_RBX];
-> > +
-> > +	if (!IS_ALIGNED(data_gpa, PAGE_SIZE))
-> > +		goto abort_request;
-> > +
-> > +	svm->snp_transaction_id = snp_transaction_get_id();
-> > +	if (snp_transaction_is_stale(svm->snp_transaction_id)) {
+> An empty attribute list (containing just the NULL sentinel) will now
+> result in the attribute group being visible as an empty directory.
 > 
-> Why bother?  I assume this is rare, so why not handle it on the backend, i.e.
-> after userspace does its thing?  Then KVM doesn't even have to care about
-> checking for stale IDs, I think?
-
-That's true, it's little more than a very minor performance optimization
-to do it here rather than on the return path, so could definitely be
-dropped.
-
+> I thought the whole point was to hide such empty directories.
 > 
-> None of this makes much sense to my eyes, e.g. AFAICT, the only thing that can
-> pause attestation is userspace, yet the kernel is responsible for tracking whether
-> or not a transaction is fresh?
+> Was it a conscious decision to return 0?
 
-Pausing is essentially the start of an update transaction initiated by
-userspace. So the kernel is tracking whether there's a potential
-transaction that has been started or completed since it first started
-servicing the attestation request, otherwise there could be a mismatch
-between the endorsement key used for the attestation report versus the
-certificate for the endorsement key that was fetched from userspace.
+Perhaps there should be a comment here because yes, this is on purpose.
 
--Mike
+> Did you expect breakage if SYSFS_GROUP_INVISIBLE is returned?
+
+Yes, the history is here:
+
+    https://lore.kernel.org/all/YwZCPdPl2T+ndzjU@kroah.com/
+
+...where an initial attempt to hide empty group directories resulted in
+boot failures. The concern is that there might be user tooling that
+depends on that empty directory. So the SYSFS_GROUP_INVISIBLE behavior
+can only be enabled by explicit result from an is_visible() handler.
+
+That way there is no regression potential for legacy cases where the
+empty directory might matter.
