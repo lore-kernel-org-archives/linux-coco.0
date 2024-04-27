@@ -1,205 +1,87 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE4D181
-	for <linux-coco@lists.linux.dev>; Sat, 27 Apr 2024 17:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD7CA94A
+	for <linux-coco@lists.linux.dev>; Sat, 27 Apr 2024 21:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714237603; cv=none; b=qXpkfSroc2M31VhdnnB3oIdssFfTzXvfu8VT5SntviyfaYqCQvDRGJwKu6LL3w/nPENJFcaxjEwnfZdVtM4GdtEm/YstsyHRmgyVtnV01oa8h688LB3my8XVOjQDg8wMu8nUd4Rqbh26AVJ/kd+20d1VeMRI4k3tFbWxTlqvn1E=
+	t=1714252474; cv=none; b=c9tJW/0QSfaCo6pT+dwcXbyqIPyxRtaFMQCE5Zfey+WIUf6jl5bFd7PxFDhP1nBHop8/a86ZUU7dEq8HyDOOMooLDdxWMRa26nIfqqlJ7S3wZKnX0/qMfeTHQxYfyD3fhO5OSwi1X0Jw+WKtaYZKa1vhVebht+4Majbf2GV2z78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714237603; c=relaxed/simple;
-	bh=IKwboz6unkUuaspdbL5m2QJO18HfYn+ShzYqre7Wt1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6tc9yefVwev8FWeeYbRbyN9EwG8KIFge7CRMlNlbu49zO8j3fkl6LUyBZxP0Z9m21S1hEz8RSLlG071faeX7g75Fkj12ZUM5mdR6RlgLGf6NiWqVrK4lvS085Ly5OkDmQEgRqs27q8vpMQ2npIWReoXIbTA/UFQnQiiAbfO44g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jayf9poS; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jayf9poS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714237603; x=1745773603;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=IKwboz6unkUuaspdbL5m2QJO18HfYn+ShzYqre7Wt1I=;
-  b=jayf9poSUjDvEOuQDc0PJhkgIQDdBlxbteq6PQyGCOfi0kh+C/gP+tS+
-   uBWThkZDf9NqRiTV6yCRM8EzQ5150dRhWRKlnVAREnyujkH6Zu0qq8r5l
-   moHkK3TmaxxEaB5My+H7/12oaIgVoVqUM7S5oVIx5YYXoNWqWWe+sGnak
-   hpIr6mQZT56FsP5japADoBKdu1eWaidh64an6lUOGJCKG0ppxkCQ1hfZJ
-   YE7blVx4R/SQ75s3FqjmTv1kUFvMwV5f2aa6LBt/Vv2c5Nggt3prFqtWr
-   7osCIlyc8cBEzZjIQSJ3t7R/lZmliBWj+ZTyl/0dEstwHvL5Xmhpjr47R
-   Q==;
-X-CSE-ConnectionGUID: P3hn1X/qSAGKTyIbBeQS8g==
-X-CSE-MsgGUID: eXP+WfYnQmu+QyAN+PoS0Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10063532"
-X-IronPort-AV: E=Sophos;i="6.07,235,1708416000"; 
-   d="scan'208";a="10063532"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2024 10:06:42 -0700
-X-CSE-ConnectionGUID: CF+2/vVlQgucut3jhAcIUQ==
-X-CSE-MsgGUID: b/odNh/XTVue/enrZ7AJgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,235,1708416000"; 
-   d="scan'208";a="25780516"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa010.fm.intel.com with ESMTP; 27 Apr 2024 10:06:37 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 023C8118; Sat, 27 Apr 2024 20:06:35 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: bp@alien8.de
-Cc: adrian.hunter@intel.com,
-	ashish.kalra@amd.com,
-	bhe@redhat.com,
-	dave.hansen@linux.intel.com,
-	elena.reshetova@intel.com,
-	jun.nakajima@intel.com,
-	kai.huang@intel.com,
-	kexec@lists.infradead.org,
-	kirill.shutemov@linux.intel.com,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	ltao@redhat.com,
-	mingo@redhat.com,
-	nik.borisov@suse.com,
-	peterz@infradead.org,
-	rafael@kernel.org,
-	rick.p.edgecombe@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	seanjc@google.com,
-	tglx@linutronix.de,
-	thomas.lendacky@amd.com,
-	x86@kernel.org
-Subject: [PATCHv10.1 09/18] x86/mm: Adding callbacks to prepare encrypted memory for kexec
-Date: Sat, 27 Apr 2024 20:06:34 +0300
-Message-ID: <20240427170634.2397725-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240427164747.GCZi0sM6HBCBYtgWqF@fat_crate.local>
-References: <20240427164747.GCZi0sM6HBCBYtgWqF@fat_crate.local>
+	s=arc-20240116; t=1714252474; c=relaxed/simple;
+	bh=JLb9nkXBuq9tVxjgmesZjvdH2BXz28wXTyP7JHc7zJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=snrzUWs9IggkyY0Ds3a01bUeqinbgXEIZGnrrw0kqNcC4raVR91LEgvmHY0fnE1T2XzwZkWZuJyxrQR/dBaZXIJ2E9sMgvxxGnw/DFDnfASvM2FOn5h0urkVt31GOn0VbCMC/vg+3k6Of1QVvFjRC6FWTuob0a+OC6iqRQ6bkFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id B9A7C2801371D;
+	Sat, 27 Apr 2024 23:14:28 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 8C896190545; Sat, 27 Apr 2024 23:14:28 +0200 (CEST)
+Date: Sat, 27 Apr 2024 23:14:28 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: gregkh@linuxfoundation.org,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Marc Herbert <marc.herbert@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-coco@lists.linux.dev, alsa-devel@alsa-project.org
+Subject: Re: [PATCH 1/3] sysfs: Fix crash on empty group attributes array
+Message-ID: <Zi1qtKNwcyydP4c2@wunner.de>
+References: <170863444851.1479840.10249410842428140526.stgit@dwillia2-xfh.jf.intel.com>
+ <170863445442.1479840.1818801787239831650.stgit@dwillia2-xfh.jf.intel.com>
+ <ZiYrzzk9Me1aksmE@wunner.de>
+ <662beb6ad280f_db82d29458@dwillia2-xfh.jf.intel.com.notmuch>
+ <Ziv9984CJeQ4muZy@wunner.de>
+ <662d2ca522cc6_b6e02942d@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <662d2ca522cc6_b6e02942d@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 
-AMD SEV and Intel TDX guests allocate shared buffers for performing I/O.
-This is done by allocating pages normally from the buddy allocator and
-then converting them to shared using set_memory_decrypted().
+On Sat, Apr 27, 2024 at 09:49:41AM -0700, Dan Williams wrote:
+> Lukas Wunner wrote:
+> > But I want to raise awareness that the inability to hide
+> > empty attribute groups feels awkward.
+> 
+> That is fair, it was definitely some gymnastics to only change user
+> visible behavior for new "invisible aware" attribute groups that opt-in
+> while leaving all the legacy cases alone.
+> 
+> The concern is knowing when it is ok to call an is_visible() callback
+> with a NULL @attr argument, or knowing when an empty array actually
+> means "hide the group directory".
+> 
+> We could add a sentinel value to indicate "I am an empty attribute list
+> *AND* I want my directory hidden by default". However, that's almost
+> identical to requiring a placeholder attribute in the list just to make
+> __first_visible() happy.
+> 
+> Other ideas?
 
-On kexec, the second kernel is unaware of which memory has been
-converted in this manner. It only sees E820_TYPE_RAM. Accessing shared
-memory as private is fatal.
+Perhaps an optional ->is_group_visible() callback in struct attribute_group
+which gets passed only the struct kobject pointer?
 
-Therefore, the memory state must be reset to its original state before
-starting the new kernel with kexec.
+At least for PCI device authentication, that would be sufficient.
+I could get from the kobject to the corresponding struct device,
+then determine whether the device supports authentication or not.
 
-The process of converting shared memory back to private occurs in two
-steps:
+Because it's a new, optional callback, there should be no compatibility
+issues.  The SYSFS_GROUP_INVISIBLE return code from the ->is_visible()
+call for individual attributes would not be needed then, at least in my
+use case.
 
-- enc_kexec_stop_conversion() stops new conversions.
+Thanks,
 
-- enc_kexec_unshare_mem() unshares all existing shared memory, reverting
-  it back to private.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>x
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Tested-by: Tao Liu <ltao@redhat.com>
----
- arch/x86/include/asm/x86_init.h |  2 ++
- arch/x86/kernel/crash.c         |  4 ++++
- arch/x86/kernel/reboot.c        | 12 ++++++++++++
- arch/x86/kernel/x86_init.c      |  4 ++++
- 4 files changed, 22 insertions(+)
-
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index 28ac3cb9b987..c731e6bc4343 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -155,6 +155,8 @@ struct x86_guest {
- 	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
- 	bool (*enc_tlb_flush_required)(bool enc);
- 	bool (*enc_cache_flush_required)(void);
-+	void (*enc_kexec_stop_conversion)(bool crash);
-+	void (*enc_kexec_unshare_mem)(void);
- };
- 
- /**
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index e74d0c4286c1..f1b261be78b4 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -128,6 +128,10 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
- #ifdef CONFIG_HPET_TIMER
- 	hpet_disable();
- #endif
-+
-+	x86_platform.guest.enc_kexec_stop_conversion(true);
-+	x86_platform.guest.enc_kexec_unshare_mem();
-+
- 	crash_save_cpu(regs, safe_smp_processor_id());
- }
- 
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index f3130f762784..c1920ec34f0c 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -12,6 +12,7 @@
- #include <linux/delay.h>
- #include <linux/objtool.h>
- #include <linux/pgtable.h>
-+#include <linux/kexec.h>
- #include <acpi/reboot.h>
- #include <asm/io.h>
- #include <asm/apic.h>
-@@ -716,6 +717,14 @@ static void native_machine_emergency_restart(void)
- 
- void native_machine_shutdown(void)
- {
-+	/*
-+	 * Call enc_kexec_stop_conversion() while all CPUs are still active and
-+	 * interrupts are enabled. This will allow all in-flight memory
-+	 * conversions to finish cleanly.
-+	 */
-+	if (kexec_in_progress)
-+		x86_platform.guest.enc_kexec_stop_conversion(false);
-+
- 	/* Stop the cpus and apics */
- #ifdef CONFIG_X86_IO_APIC
- 	/*
-@@ -752,6 +761,9 @@ void native_machine_shutdown(void)
- #ifdef CONFIG_X86_64
- 	x86_platform.iommu_shutdown();
- #endif
-+
-+	if (kexec_in_progress)
-+		x86_platform.guest.enc_kexec_unshare_mem();
- }
- 
- static void __machine_emergency_restart(int emergency)
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index a7143bb7dd93..045ce1c70070 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -138,6 +138,8 @@ static int enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool
- static int enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
- static bool enc_tlb_flush_required_noop(bool enc) { return false; }
- static bool enc_cache_flush_required_noop(void) { return false; }
-+static void enc_kexec_stop_conversion_noop(bool crash) {}
-+static void enc_kexec_unshare_mem_noop(void) {}
- static bool is_private_mmio_noop(u64 addr) {return false; }
- 
- struct x86_platform_ops x86_platform __ro_after_init = {
-@@ -161,6 +163,8 @@ struct x86_platform_ops x86_platform __ro_after_init = {
- 		.enc_status_change_finish  = enc_status_change_finish_noop,
- 		.enc_tlb_flush_required	   = enc_tlb_flush_required_noop,
- 		.enc_cache_flush_required  = enc_cache_flush_required_noop,
-+		.enc_kexec_stop_conversion = enc_kexec_stop_conversion_noop,
-+		.enc_kexec_unshare_mem     = enc_kexec_unshare_mem_noop,
- 	},
- };
- 
--- 
-2.43.0
-
+Lukas
