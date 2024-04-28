@@ -1,88 +1,157 @@
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B3755E6C
-	for <linux-coco@lists.linux.dev>; Sun, 28 Apr 2024 10:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D42E7317E
+	for <linux-coco@lists.linux.dev>; Sun, 28 Apr 2024 17:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714298934; cv=none; b=LQYoZwgULTlFMwu2D1F+HzuQ16RvrEPun1qFMf53lV/DLiua1KY0O5Oh0gVS3oqpOWTWICbOP/x/fDRezSRKkYhP0ZsyXiTmaD843DaFAHl0pcAoJJFeTz9DCdJSZq5KTR0SImKYylSdAZufl3VZHZntfksPiIZsW3Qj8Uf/xSo=
+	t=1714324315; cv=none; b=Oa1G1DWD20Dw06psgAujxm0TpHt8Ey7xV4eboB5OCfTOI34s7nyOGmJg1MSgV7WZD6jAZA8iUHxg1T2E1yauTcsne0QARZK6zDlWMYYOx3cLonO9DyGf5scR1l3EnrjUDnDBT1erU4hymrXxMeh7AdcNna0Ak+GdkYvBvZSf4ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714298934; c=relaxed/simple;
-	bh=TTARU/Xd9FlQOME2CIODtyLJRuvfgCO/Q3kMmgLEpAg=;
+	s=arc-20240116; t=1714324315; c=relaxed/simple;
+	bh=soAszFChPlMcM9VoBX48/9L1ray/WQw+xMt6+fPLTFc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qdNQCGYj8L1lYuiMw11TX8nlT8CzQEmggXtZVczU3fWUBHhRN1JxYfTrSvVO36/9vpmPjsHZ8hBzQzfVlnW6GnE+pVb1fmMYM0OUhvfHNBZ643A3BCCgS26waUMkxfFX3WkGzL9XCqYftP0zJfr+YVmgwhb9PSq2xkrL3UrwZ7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	 Content-Type:Content-Disposition:In-Reply-To; b=pNtpPtj1ymSdY7Zou8TXNBpX3edSMYWAr9psGA2uOVMjkGP6i6A1rbVEiPYFccIbe19mjDZa+HGzcVrxcWNH7DwvmY14tVa6ha09Aff8EQrxIj0PALz/dH3q5bd7+WrHigpNkN6voo3uwtFO+A9uaWE82lr6tf/rRmkKLXFO10o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=OEd67HJ5; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="OEd67HJ5"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C013740E0249;
+	Sun, 28 Apr 2024 17:11:42 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id yIWMf0eQpAjz; Sun, 28 Apr 2024 17:11:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1714324298; bh=n8m7VXqiGZAmEpF7qkKdr35cuC1UAhOwozx/1g8c2jM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OEd67HJ5UVpQXs5da0WESrtXPALlwXqhQUZVrGi/DN2KQPq2S4s0rzWAcMxM6tvwh
+	 aDIrwaJgOlRGte14D1XMVisCGkRcKu+qX6y8tLPvbrDrArXnX1vuZj0eZBeS3M5ie7
+	 72J7Ap+1GwM+7cXqDSl5/6qYqGsopbzneEJxb0YjmjwdySkz4NsXLzSV3NkjCQYR2q
+	 1+rUxb7c2dJrc9EP55qviYpGBeHQ0QEL5fu4Pb0uZi4paMuPjEgWsvSS/RL8gXvFH8
+	 qseBvfEGKaXeJZ2DCDWQ8+rM3tWOG9vYnb/Af70Wx/BtN1VUxB/jd0tucRfH+ka62A
+	 PifqcmfludHTau0He03VHNKdVNxeNnvv2zH6GdL42FhZmW34stYowBvA4w3vn4Xfhh
+	 xxWgAAv0L6rvZhWK7J0Y7B+g7QYCQbwkrQ9MwaO+9NU0TfaAADAkuyD8A6E3FHmRy6
+	 PmkS3+EQskYjoyB1GXcQ3KwYQMaxEWeSnkYsZvmGWHznhg/rSaU3hqAATxt6R0+v0r
+	 s650kgJTqWduNcZP3XbzBnAfqqeMbq7J/hrjagXD8BmYLUG9r3KhLCu+5Yz/BXRv+T
+	 VHwTyr0McN1lwd/vO8BaHa0+J2AdJf9FknPSidkXCUJp2Dn8FY9gb8iyDRxNhK4xft
+	 mzfV13P/ErHlTuZN6kcbGw8A=
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 83873280072AE;
-	Sun, 28 Apr 2024 12:08:43 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 4D1F555998; Sun, 28 Apr 2024 12:08:43 +0200 (CEST)
-Date: Sun, 28 Apr 2024 12:08:43 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: gregkh@linuxfoundation.org,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Marc Herbert <marc.herbert@intel.com>,
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A991240E016B;
+	Sun, 28 Apr 2024 17:11:17 +0000 (UTC)
+Date: Sun, 28 Apr 2024 19:11:11 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-coco@lists.linux.dev, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 1/3] sysfs: Fix crash on empty group attributes array
-Message-ID: <Zi4gK8rs7jjdJOh8@wunner.de>
-References: <170863444851.1479840.10249410842428140526.stgit@dwillia2-xfh.jf.intel.com>
- <170863445442.1479840.1818801787239831650.stgit@dwillia2-xfh.jf.intel.com>
- <ZiYrzzk9Me1aksmE@wunner.de>
- <662beb6ad280f_db82d29458@dwillia2-xfh.jf.intel.com.notmuch>
- <Ziv9984CJeQ4muZy@wunner.de>
- <662d2ca522cc6_b6e02942d@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <Zi1qtKNwcyydP4c2@wunner.de>
- <662d6f24528d7_b6e0294d2@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Kai Huang <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv10 05/18] x86/kexec: Keep CR4.MCE set during kexec for
+ TDX guest
+Message-ID: <20240428171111.GKZi6DLy_ZwuZsZdFq@fat_crate.local>
+References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
+ <20240409113010.465412-6-kirill.shutemov@linux.intel.com>
+ <ZhVPIDDLkjOB96fI@google.com>
+ <3q6jv3g4tezybmd667mqxio7ty22akxv7okrznmzx3tju2u4qo@2alzjkbgm2lh>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <662d6f24528d7_b6e0294d2@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+In-Reply-To: <3q6jv3g4tezybmd667mqxio7ty22akxv7okrznmzx3tju2u4qo@2alzjkbgm2lh>
 
-On Sat, Apr 27, 2024 at 02:33:24PM -0700, Dan Williams wrote:
-> Lukas Wunner wrote:
-> > Perhaps an optional ->is_group_visible() callback in struct attribute_group
-> > which gets passed only the struct kobject pointer?
-> > 
-> > At least for PCI device authentication, that would be sufficient.
-> > I could get from the kobject to the corresponding struct device,
-> > then determine whether the device supports authentication or not.
-> > 
-> > Because it's a new, optional callback, there should be no compatibility
-> > issues.  The SYSFS_GROUP_INVISIBLE return code from the ->is_visible()
-> > call for individual attributes would not be needed then, at least in my
-> > use case.
+On Tue, Apr 09, 2024 at 06:26:05PM +0300, Kirill A. Shutemov wrote:
+> From 6be428e3b1c6fb494b2c48ba6a7c133514a0b2b4 Mon Sep 17 00:00:00 2001
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+> Date: Fri, 10 Feb 2023 12:53:11 +0300
+> Subject: [PATCHv10.1 05/18] x86/kexec: Keep CR4.MCE set during kexec for TDX guest
 > 
-> That's where I started with this, but decided it was overkill to
-> increase the size of that data structure globally for a small number of
-> use cases.
+> Depending on setup, TDX guests might be allowed to clear CR4.MCE.
+> Attempt to clear it leads to #VE.
+> 
+> Use alternatives to keep the flag during kexec for TDX guests.
+> 
+> The change doesn't affect non-TDX-guest environments.
 
-Memory is cheap and memory-constrained devices can set CONFIG_SYSFS=n.
+This is all fine and dandy but nothing explains *why* TDX needs this
+special dance.
 
-There aren't that many struct attribute_groups and this is just
-8 additional bytes on a 64-bit machine.  (There are way more
-struct attribute than struct attribute_group.)  The contortions
-necessary to overload individual attribute ->is_visible() callbacks
-to also govern the group's visibility aren't worth it.
+Why can't TDX do the usual CR4.MCE diddling like the normal kernel
+during init and needs to do that here immediately?
 
-Having an ->is_group_visible() callback has the additional benefit that
-the mode of directories no longer needs to be hardcoded to 0755 in
-sysfs_create_dir_ns(), but can be set to, say, 0500 or 0700 or 0511,
-depending on the use case.  So more flexibility there as well.
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>  arch/x86/kernel/relocate_kernel_64.S | 15 +++++++++------
+>  1 file changed, 9 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+> index 56cab1bb25f5..90246d544eb1 100644
+> --- a/arch/x86/kernel/relocate_kernel_64.S
+> +++ b/arch/x86/kernel/relocate_kernel_64.S
+> @@ -5,6 +5,8 @@
+>   */
+>  
+>  #include <linux/linkage.h>
+> +#include <linux/stringify.h>
+> +#include <asm/alternative.h>
+>  #include <asm/page_types.h>
+>  #include <asm/kexec.h>
+>  #include <asm/processor-flags.h>
+> @@ -143,14 +145,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
+>  
+>  	/*
+>  	 * Set cr4 to a known state:
+> -	 *  - physical address extension enabled
+>  	 *  - 5-level paging, if it was enabled before
+> +	 *  - Machine check exception on TDX guest, if it was enabled before.
+> +	 *    Clearing MCE might not allowed in TDX guests, depending on setup.
 
-Thanks,
+			 ... might not be allowed ...
 
-Lukas
+> +	 *  - physical address extension enabled
+>  	 */
+> -	movl	$X86_CR4_PAE, %eax
+> -	testq	$X86_CR4_LA57, %r13
+> -	jz	1f
+> -	orl	$X86_CR4_LA57, %eax
+> -1:
+> +	movl	$X86_CR4_LA57, %eax
+> +	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %eax), X86_FEATURE_TDX_GUEST
+> +	andl	%r13d, %eax
+
+%r13 needs a comment here that it contains %cr4 read above in
+relocate_kernel()
+
+> +	orl	$X86_CR4_PAE, %eax
+>  	movq	%rax, %cr4
+>  
+>  	jmp 1f
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
