@@ -1,70 +1,78 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D797441F
-	for <linux-coco@lists.linux.dev>; Mon, 29 Apr 2024 14:29:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361E982D62
+	for <linux-coco@lists.linux.dev>; Mon, 29 Apr 2024 14:45:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714400973; cv=none; b=AbM50ncE9DkoeVV+YpbpOTC5W4IVsB2U1ToNg0qD7GmGAlv9z0+sLo7OQTLbJ4cSZGMvWmYxNBmiCWDQqU5VMjHb3NSGXbHa9kAyYXYYOL3KPxhQcExCSJcSVHBG+uKQBmBozNKp/i44QjrFNGvwW+5f3MJYa8ww8w7OyWhMG+A=
+	t=1714401944; cv=none; b=M3e2Mjz2Rg9z0uvv2q+W+YAtULlUarBI9LhRCfgGh2O28EOIZydTko0d5QbHe3Iy7CPABJ1cYpFZKiEmEwwsfZ2LxVLzhFU+3xg0RvAF4Ng2CsTiAIP3Gmbp0A61mEeKMTyZ24gPWsz2BwYlZBZlAaZrdrSrCAduvO/9qHEjgKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714400973; c=relaxed/simple;
-	bh=lnmpDQnRv6ZNQZTqtUONOeLziTno1c2pGB56FVkEOEE=;
+	s=arc-20240116; t=1714401944; c=relaxed/simple;
+	bh=F3uL5MsmUALtcFiI0QIew6cRHX+r6COGBnKC/XZwBKk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bfDlvnRNYsTs2x6eUrtoniRhGGpzsoUwiRYhDA+wQHHxL3gzTLVK3ZVAWpPW2ktoM5zL7vIM/plPrUKzziiKlgg0uPZkesj+FZEi7V9pQ9u247dw35F7fy6imqkahrUj0vyNblwRKlKRVqKt4FTbr6orx5urbwNpi0vZWyf4PPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MhsklRvn; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=lia8n6cWxzXpMPhnEJbG0lMq9EnF43Il7D4pPO/ItnEtDsqP0bHzl09JkRoBPHda9+BUFoDY0wdHTl7f3E62qrPRSOs1GoGr9cruEeV6UM8HFk+0RP0xIXUCedOHqhgKAqmMrtRGRwLjwHRVsKkS4olwxZ6YNQMAx6ypsfDCcjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=FUNn8bg9; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MhsklRvn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714400971; x=1745936971;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=lnmpDQnRv6ZNQZTqtUONOeLziTno1c2pGB56FVkEOEE=;
-  b=MhsklRvnInyWnHNkOCo7E/1xysn0o6UXvXkCJ6uk9ortHyCT6OOEcszy
-   EswGOE8AvKXVPVy0nesyNPr/64HyaRVsiVS/mogmGbR97f9EOhCOO7OZn
-   Zwj9uhE5Hoi4mol3ZcfezO/XIe+0DCG7GhkOrr2TalKipkHHENmgdYbBA
-   kRSA5/2s1UptmPFcHWCBPb3S7OAOPUJfJdo/MElhAIa/fe3s0LYs7wBxl
-   oZJE5Zl9maJrvrCt+lrvRDUwQAiSQDZAUU11EZA45Gj4PEkPg8dk7LkLA
-   JdjZu67ZAXEyhNI0C473L1lL52xuGfxlGNX0x1pTYxnNB3mC3SZIuqKEO
-   Q==;
-X-CSE-ConnectionGUID: ebRfj9H8TCuMPXvJaEVVAA==
-X-CSE-MsgGUID: 9IkHimYYQtybyjg6RB9ILg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11059"; a="10227691"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="10227691"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 07:29:31 -0700
-X-CSE-ConnectionGUID: jCUPWXxUTdG7tdcGTA0h9w==
-X-CSE-MsgGUID: vwoW0j5TRESQOwxzFM6Tuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="57006944"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa002.jf.intel.com with ESMTP; 29 Apr 2024 07:29:25 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 82C161A0; Mon, 29 Apr 2024 17:29:23 +0300 (EEST)
-Date: Mon, 29 Apr 2024 17:29:23 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Dave Hansen <dave.hansen@intel.com>, Tao Liu <ltao@redhat.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, linux-hyperv@vger.kernel.org
-Subject: Re: [PATCHv10 06/18] x86/mm: Make
- x86_platform.guest.enc_status_change_*() return errno
-Message-ID: <xoksw5s5tl6wso4xirh4u422xmera4pyulptfmn3zeqtp5lmt2@d3y6ucap37da>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="FUNn8bg9"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 988B940E0187;
+	Mon, 29 Apr 2024 14:45:39 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id jEjCQhPIYrru; Mon, 29 Apr 2024 14:45:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1714401934; bh=zZZ5uIl7gam0sGKCdhwGGAI2qvhYN93EKC+r3/GxU7g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FUNn8bg9UGoZX4EhU2jeGeFFFlf7QDHM+ueU/sCj+9gGAJJZ+ukCF7gmLndn3W/T7
+	 4wo6lFaRBzYuoMZxNEOxZDHlaQQVIGpI+JuoAoHdE+y5mL8n+yRz3WhUr6h1PGygj7
+	 ZxwFiqR+ReP4lmSemEYnF2ywcqgTZuZifGr2+Tl51SVgiD8cLnZUhst/8Aet9ARSx8
+	 SyeE44n7EzN9aIHV6RM/VYemsLUZ/mpZiwpawD38w+G9iWJNd48S6WZfxq3S2BbR/e
+	 mHQD1jEOyrd8V3zgfNjviPj3x7Imq5QQ13rDDBvYHsPf8nxZmO4gn53/MPB4/6P/qc
+	 eJ948igKRf4i05fxNhN7XUc6DBmaWnkqk4jb8EqF8ckEJT+Qz/VwpjOAIr8+6FWVc6
+	 a8aegJ1S3eXyZMQspheuU4KSquSlQHkg97gZKZ6fVYfnoIepRMzQzYUg0Thg0eAtP1
+	 3TRwkRehYHz9+Av2qXTC4HhtVzgLw9CMdGeHPulRGTNh+ahz2ptH0WY0tinNdfZHdg
+	 1j0VXg8ljcNktUTniiXGKiW36ISjlip+f/FJbpP19sDGVkpqolIEpHW3lwzqH64T06
+	 YYRwBGaB2Agmht8+OaiU5fRNib5gJAM+FyFqoeVMlkixNUDjda8OwVkFAaFkZ1eqfZ
+	 jXwe/f5Ydu72Ky5gacB+n9Cc=
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A689B40E00C7;
+	Mon, 29 Apr 2024 14:45:14 +0000 (UTC)
+Date: Mon, 29 Apr 2024 16:45:08 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Kai Huang <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv10 05/18] x86/kexec: Keep CR4.MCE set during kexec for
+ TDX guest
+Message-ID: <20240429144454.GHZi-yZkD0boKk5N17@fat_crate.local>
 References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <20240409113010.465412-7-kirill.shutemov@linux.intel.com>
- <20240428172557.GLZi6GpTaSBj-DphCL@fat_crate.local>
+ <20240409113010.465412-6-kirill.shutemov@linux.intel.com>
+ <ZhVPIDDLkjOB96fI@google.com>
+ <3q6jv3g4tezybmd667mqxio7ty22akxv7okrznmzx3tju2u4qo@2alzjkbgm2lh>
+ <20240428171111.GKZi6DLy_ZwuZsZdFq@fat_crate.local>
+ <e35yxpa2xdynm7focg6k4u2bjzojn24bmeaszh2jz52e4szc5f@6mgtrdnkewhe>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,57 +81,27 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240428172557.GLZi6GpTaSBj-DphCL@fat_crate.local>
+In-Reply-To: <e35yxpa2xdynm7focg6k4u2bjzojn24bmeaszh2jz52e4szc5f@6mgtrdnkewhe>
 
-On Sun, Apr 28, 2024 at 07:25:57PM +0200, Borislav Petkov wrote:
-> On Tue, Apr 09, 2024 at 02:29:58PM +0300, Kirill A. Shutemov wrote:
-> > TDX is going to have more than one reason to fail
-> > enc_status_change_prepare().
-> > 
-> > Change the callback to return errno instead of assuming -EIO;
-> > enc_status_change_finish() changed too to keep the interface symmetric.
-> 
-> "Change enc_status_change_finish() too... "
-> 
-> "Describe your changes in imperative mood, e.g. "make xyzzy do frotz"
-> instead of "[This patch] makes xyzzy do frotz" or "[I] changed xyzzy
-> to do frotz", as if you are giving orders to the codebase to change
-> its behaviour."
+On Mon, Apr 29, 2024 at 04:17:38PM +0300, Kirill A. Shutemov wrote:
+> As I mentioned above, clearing CR4.MCE triggers #VE. It is quirk of the
+> platform.
 
-Hm. I considered the sentence to be in imperative mood already. I guess I
-don't fully understand what imperative mood is. Will fix.
+You mean when identity_mapped() runs as part of a kexec-ed kernel, it
+might clear CR4.MCE and that would trigger the #VE?
 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Reviewed-by: Dave Hansen <dave.hansen@intel.com>
-> > Reviewed-by: Kai Huang <kai.huang@intel.com>
-> > Tested-by: Tao Liu <ltao@redhat.com>
-> > ---
-> >  arch/x86/coco/tdx/tdx.c         | 20 +++++++++++---------
-> >  arch/x86/hyperv/ivm.c           | 22 ++++++++++------------
-> >  arch/x86/include/asm/x86_init.h |  4 ++--
-> >  arch/x86/kernel/x86_init.c      |  4 ++--
-> >  arch/x86/mm/mem_encrypt_amd.c   |  8 ++++----
-> >  arch/x86/mm/pat/set_memory.c    |  8 +++++---
-> >  6 files changed, 34 insertions(+), 32 deletions(-)
-> 
-> Another thing you should long know by now: get_maintainer.pl. You do
-> know that when you send a patch which touches multiple different
-> "places", you run it through get_maintainer.pl to get some hints as to
-> who to CC, right?
+So, if that is correct, you basically want to *preserve* the CR4.MCE
+setting across kexec?
 
-You are right, I didn't run get_maintainer.pl this time. I never got it
-integrated properly into my workflow. How do you use it? Is it part of
-'git send-email' hooks or do you do it manually somehow.
+But then __mcheck_cpu_init_generic() will go and set it
+unconditionally.
 
-I don't feel I can trust the script to do The Right Thing™ all the time
-to put into my hooks. I expect it to blow up on tree-wide patches for
-instance.
+So what exactly is the correct flow here?
 
-As result I only run it occasionally, when I remember to which is
-suboptimal.
-
-Any tips?
+Thx.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
