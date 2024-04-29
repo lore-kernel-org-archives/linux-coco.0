@@ -1,153 +1,258 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2079.outbound.protection.outlook.com [40.107.220.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E3956B69
-	for <linux-coco@lists.linux.dev>; Mon, 29 Apr 2024 13:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714396666; cv=none; b=N8ntz/S/2ipPO1gc9tPtfXhD2blZ6XuacBIcIWAlq/xBR+FJbQsWgBbneRrCyBj8IcIFMSIpkIz6/oaK2QHzlPXpmtC6r44vd8rJuxncqORPgwpkOaQXE6XY5Ge1x0Qn38nn8qbEPDhEIRUE2hy3FZ/LVvORMYlE7yu6taUx2Ic=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714396666; c=relaxed/simple;
-	bh=vvnS47Dpfc2lPtfocF2xFFI42fQVbBcxzt1unzaD04A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IwN5xU6qwplLK3cn+ksYqU4q2CehVuUDLQDVgfIxvIZmF91fckEvioGAp5buUc3FuM7DYaGA2IdfvER1ZO4eB+5X1eVRCyvCAjbPmZb1HnGnG5sPBHG17Sriyt3nTxhob8BjYeVkrM6s27olEh7zUqiR5LXdbrmJ/g4quHmQr2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M4X/1p0a; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F10656B6A
+	for <linux-coco@lists.linux.dev>; Mon, 29 Apr 2024 13:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714397216; cv=fail; b=kptVljyX1FUa9Svz/biEaZ37DzA5rhNs1uhmhgIZS0EJUlBZjeiC2fkHOMUhJ/NGXQURX/IhIpOOY0k3mATbzEJI+Dd6+EIVKfN1899PDGfoyvza29QevoRZQAZQJIimb4/i8I9W7YJGvFx1vY4IvjD7+rm2aPOewuNctsUvOpc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714397216; c=relaxed/simple;
+	bh=5uLlIc96AJz0EiIQW522TiYURb6J6QWuJ4C+hur1CBc=;
+	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
+	 Content-Type:MIME-Version; b=MxTIah+Yjgp5sw9ycW4B4QGHQDmaVGejNVXJVkn0KhY9EH6rFprCK/Gdry2d5G7+fgyPHhsHgwuhjZN71zTCPJa+W0/7LexCa1ri60xpIUQmrTpFGYu2r82PfSkIQNk3JtNvQZgdL5T5qTwE95DSrZeyjRBoqtszFSyC5kmU6Cg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4jaUHWoK; arc=fail smtp.client-ip=40.107.220.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M4X/1p0a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714396665; x=1745932665;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vvnS47Dpfc2lPtfocF2xFFI42fQVbBcxzt1unzaD04A=;
-  b=M4X/1p0aiAkbadnx/z5wIIUDVUdQm7eCE2dIz6w3TtotjSpsXyMLMxEy
-   i770O5WFrZ3p0fm/P+8jRIt8sISz9f5i33gOWxFWnvJhpceApJf8df6Hw
-   Qolqya0AMQZfybnrGGkZ5DLt5e8zHbp+U9Up6N0EJRSmxZjSgBIa1qy48
-   6ImfcxIWp7fq8mhoxeZNat44VQdKPeENfBrAXR3tY74utQqI47GBojZzD
-   RrzGO4GgTL60rntOaSmKz0iDpFHPxbjiL/CYFJ4pSTOStGoUzEz7rnI/I
-   gEtTiYQ9CWqqK/AXfB89YB83uZXlZTonANpfuATyAI6f6zSi36uwbPor7
-   w==;
-X-CSE-ConnectionGUID: dv2F+rK9S/67sPO13srQBA==
-X-CSE-MsgGUID: PHgcjEQaTKq7BpTHrZ/ruQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10167083"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="10167083"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 06:17:45 -0700
-X-CSE-ConnectionGUID: 8NOiztBIRTaSIwyN+FuNlw==
-X-CSE-MsgGUID: pfLor2xfQQiqFaB6fEhbAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="26069268"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa009.fm.intel.com with ESMTP; 29 Apr 2024 06:17:39 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 71239179; Mon, 29 Apr 2024 16:17:38 +0300 (EEST)
-Date: Mon, 29 Apr 2024 16:17:38 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Ashish Kalra <ashish.kalra@amd.com>, 
-	Kai Huang <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv10 05/18] x86/kexec: Keep CR4.MCE set during kexec for
- TDX guest
-Message-ID: <e35yxpa2xdynm7focg6k4u2bjzojn24bmeaszh2jz52e4szc5f@6mgtrdnkewhe>
-References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <20240409113010.465412-6-kirill.shutemov@linux.intel.com>
- <ZhVPIDDLkjOB96fI@google.com>
- <3q6jv3g4tezybmd667mqxio7ty22akxv7okrznmzx3tju2u4qo@2alzjkbgm2lh>
- <20240428171111.GKZi6DLy_ZwuZsZdFq@fat_crate.local>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4jaUHWoK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oZJGY/on/EYE7p4T5nog5ExT2+xY7e4HNPzILyu9MzN4TsaN1j57uxVuVfRv16x+2Ewz83f2wM078c8E0ybZ8/ljvKiBaLY/3QB+xymgzkkTqkwC2nmqox3IpfOVvj1PKNsYOvUFfitLukhNu8ZHwf4Mzc0MMF4Oo5pY+9O+4yQkflFNFjSL9M8cHh4Bm7fowbNNGS6Adh14YukEL3ko6oszBHX5NDWvjf0C2ILVK/jaVoUAIu+Pkzyq/qAP2lhHkM6ebjuZ7e/TZYgcNBOp6KkTfldomSlPDp4wNtIV8JfI1YDS1UjA7PI8DbCp2HynPDUm5H+X5KNLNofG7XMCig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lLo8u6qlPWvt0gyKFhT0873gJzWXpBMD9y2XQjtldxw=;
+ b=Cx3NgCsPiqC//2m6M75SwJdJBWZD9t63FROjoEZOTU5yB0F2FfQxxhdqwod78wc+goaBveRgxf3XbqmEaEjS493ETRJIBNmcDLX/aBRe3Ofq5ObIPiyN1oVs2JH/spCH0wIsHk434amSr6+WeOeaJrKsu4NE30at2YLqTeVIfnwLstuu9X49hdMh8PatjE9c1n/gUMipvv0CCMlLDnhPbpI/5xuuMCIK9oH8/Jl5Y4n2Hv4TuK3oKV27YTvIx0peiLr6BxTRcAI1j6CPudrgoRM8NwtqtkV5oLnEmBMKi0EiF3guW4dolNhJprNkW8yaCopYU1lbbizYfYfzaB8xWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lLo8u6qlPWvt0gyKFhT0873gJzWXpBMD9y2XQjtldxw=;
+ b=4jaUHWoKF6HEplvzYEMNCNVhCv0P9fBaRvilQPw6BZiybZK1NdARXX3iw/Lgi7YIuY2lSKgXvyDrc/QrQSiWgVpqidQ06o/M+By1z/zoGb7LMEKa2zEF6vDO/idodqsv+IlCGgKm6o8cFaGwo1mcaPzcSypxeTHCZCL4Ti4GsaI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
+ by CY5PR12MB6646.namprd12.prod.outlook.com (2603:10b6:930:41::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.34; Mon, 29 Apr
+ 2024 13:26:52 +0000
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::bf0:d462:345b:dc52]) by BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::bf0:d462:345b:dc52%7]) with mapi id 15.20.7519.031; Mon, 29 Apr 2024
+ 13:26:52 +0000
+Message-ID: <4fd88c1c-6100-254e-ceec-98a4bcfa015c@amd.com>
+Date: Mon, 29 Apr 2024 08:26:49 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+To: Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Michael Roth <michael.roth@amd.com>,
+ Ashish Kalra <ashish.kalra@amd.com>, Joel Becker <jlbec@evilplan.org>,
+ Christoph Hellwig <hch@lst.de>
+References: <cover.1713974291.git.thomas.lendacky@amd.com>
+ <53e67e416fb4da085f32d8a3626c5c6e656554f9.1713974291.git.thomas.lendacky@amd.com>
+ <662c2147c4fa3_b6e02948d@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Content-Language: en-US
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH v4 12/15] fs/configfs: Add a callback to determine
+ attribute visibility
+In-Reply-To: <662c2147c4fa3_b6e02948d@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DM6PR18CA0013.namprd18.prod.outlook.com
+ (2603:10b6:5:15b::26) To BL1PR12MB5732.namprd12.prod.outlook.com
+ (2603:10b6:208:387::17)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240428171111.GKZi6DLy_ZwuZsZdFq@fat_crate.local>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|CY5PR12MB6646:EE_
+X-MS-Office365-Filtering-Correlation-Id: c6ef3aa3-b22b-48aa-61d0-08dc6850083b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|7416005|1800799015|376005|366007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?V2JFU3ZLc0VhWXN0bFZpeUdlTDFPR21lclorRkk2RllMWEwwTlg5RFc4MU1H?=
+ =?utf-8?B?TlpyV0FLNjUxNUdBWFRLU3cwaFpMUUNCbGgvNk9mbzFkMlpWV2o3S25oNW9O?=
+ =?utf-8?B?enQxS2xvVjJrc2l1eERrOWcrYkpXZnU5bC9YeW8wdFBJWE1sTGZnTHdHTWFZ?=
+ =?utf-8?B?RWp4Rm11VmFZWndWNk5RZGJIZDZNM2Y1RzBLQ2RkQzNPdkUya3p6ckJhVzNW?=
+ =?utf-8?B?eDMreVp0bUMxSjJkOHE2M0tCWU9haDZ6OU1nZXAxTmJNd2xQdEVYazZOUTcv?=
+ =?utf-8?B?aHllYi8xdUgvNCtMT3NvUFpqQ1pWKy90Yk1peG1yOHJJYWhjZmVaYVltQU5C?=
+ =?utf-8?B?ZEF3YVBscjNMS2NMemxzVWpQRUwzeUZYRmxub3hyZEVSY3A2NXNpSmhYWjc1?=
+ =?utf-8?B?c1U3bGt3VE96RnBneXBhWmR2bnlpcXlHTWUzTGlEUTE1MEphY01hRzRFQ05H?=
+ =?utf-8?B?OG5FVjYzemtnU29TTW1OYTMzYzdHWWpYNjFzaTUvazFkRzA5TG5HeFhnbDRD?=
+ =?utf-8?B?c3dmVVYxRjBhb1pFTGZpM1JGT2p3cmVHNVhtenJWZGVDMTN4RHdkY2loNE9X?=
+ =?utf-8?B?MFhJWjhPd3FPVzZTbHpudXNmeU5BdUQ2UVk1UElXL3FITlV1Ym13Y0pwYVA2?=
+ =?utf-8?B?RzRybkUveVJpMzBTWlQzUTBpOXBMQXU2VEV0aWUvbEFsV0pmTlg0eG51VDlj?=
+ =?utf-8?B?QkUrSFZERnh6WHpTMHZETGVsZTY3OC9kWWd5V2RRQUxZbUgzazJWOHR6Vzdr?=
+ =?utf-8?B?Kzl6MnFQenoxaTlia1VFYnBqb1NYbU9DUklBbGtjYjJLYy9LNGkwL0VKVWpM?=
+ =?utf-8?B?MlJXOXlmTnFnRkFTSFJVajRpRVpqWERXcFNSRHh6a09TUkhJSmE5VVE3Vmdk?=
+ =?utf-8?B?djYxYmFwekJQdERwRUQ0ZUtybkVkOXczV1NSSUFDdmRwNm9ITElsdzRONEZh?=
+ =?utf-8?B?VVB2Q1Q1T0ljOGZGYnVRU25DUFFRYSt1NWwxcHg5UkowcnV1YndzVU1oS2dD?=
+ =?utf-8?B?Mmh3d0JBTWp0dWJFNkhnU0lmVFhITVN4Y3IrWXdlSGtHaTlsNzRXcms3U2Qv?=
+ =?utf-8?B?U2poN1V1cUVZalltcm90VWdEV2k4L1Q4UlFoTkpFSk5sYjVxWjlIeTFHVjU5?=
+ =?utf-8?B?dWUvZXpjc0EyZ0F2ZmZsdG9wWHBtSXN5QVB6UUkxcHI5UUJCVEwxQ0h0RXBS?=
+ =?utf-8?B?czZ0U1pJNFd3STZqaTRVV05IT1FDRnJZQXM4UXZkSW5pV0hWODcrd2ZSd0V1?=
+ =?utf-8?B?N0NZRTNGSUJXUk1kZlhQdHd2MlY2d1JUcktSV09lU0xPUFh6SWkzQU9ZZ3ZU?=
+ =?utf-8?B?UmxzWUNmZUZpZ1A2d0QzTjdVSlowUG9BRWhDVHcvNU9BNnFVMC9Cbm1TaXJE?=
+ =?utf-8?B?dEJEcVhlSnZwQnh1WnhYUXlPU1JtaU9zRjM0a2ZZVVlGaEhNNzh3c2IvRzU4?=
+ =?utf-8?B?U2MrOWk1MXJ6LzRCS3VZc2ppZTF1WHdGTFFtK3FIUUV3VUVDRUNMYkNoTEl1?=
+ =?utf-8?B?K0pJSkh3WVRkMWl2SHc1MzFaZG9xSDlyY0RlRENFOHRhUGR3ditOaUJxUHh4?=
+ =?utf-8?B?ajFNY0U2RWRSWmhQbzBZVFl1RUJrR0h3NWU2eTNIY2swTGlQNlZLclpDYjcx?=
+ =?utf-8?B?MXl1d3hwOGdUTWt4M1VxZXZQbXBObUxlWnU4bkFkZTQ4WHBDbUtuYmkvbUpP?=
+ =?utf-8?B?WTRsQjdWdFBXZkdZYXRUeDZ6eG9kUnJjOVBrMjdLUG9nOXloZThZNER3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?a0xKS09Qb0lwWCs3UEM4ZjdlcGVPTk1mZVJpNlFXcHo1YlhDY2JCVFg5c2w5?=
+ =?utf-8?B?Snd2UkVra2tETnRUNjFwWlhMZ0Z0aDZCeEFYMHZNZkRObFFJdGNLRUUvbnFB?=
+ =?utf-8?B?cy9ZOGM5eGdQeGY2dkZvNnN6cm10ZExGWmRhRGErZ2s0bXc4L2hOZUZhWlRX?=
+ =?utf-8?B?MFQ5d2gwSFFjRTdsN2xSOFpPd1VPeHVERVVxTWdEVVljUXRzSEpxM216aXgy?=
+ =?utf-8?B?VlZ2aHdyS1RwNFNsTkhlUXg4aCtVSk1lYnhLTHNKOUgyYU84SzN3ajV6RHRj?=
+ =?utf-8?B?VURaMWZMbmJwTzhpN1lvOXV5SVVkMllLbFcwcWQ3TU5hKzJXSkdqdStzSWhX?=
+ =?utf-8?B?Zmp6SVVsdHorcmNBZUdSc1pkVCtORzVrMlJ1OFlzdGc1b0ppSHBoaUxOYlU1?=
+ =?utf-8?B?YzN0dlAvVTB1bEtocWJ4L0NYS1ZQSCtwYzFsT1VXeWVWd3lyQ1o4VE9VUy9U?=
+ =?utf-8?B?YTBteGhaRVNLVmh3M3d4VytDQ3R1SFR1QzdGSTU2MWgyM1BpcjIvRGREeHZV?=
+ =?utf-8?B?bXNvdU1wSHJXcmNpYmtIb0k0VFlPK2NRVjgxWStQVTlRU1F2WmRhSzFPZTNk?=
+ =?utf-8?B?aGtjWUN1ZVNjeGE5NFFjZVBVaWsvSmRzSEVXU1RlL2Z1MW1aODNzVStmOWs4?=
+ =?utf-8?B?NmEvVExGdElQVEhpeTBRc1FJL0F4dXYvcWtZbWMrSXJDcW14ZThmYU9IV2dE?=
+ =?utf-8?B?emU0dmJCQm1Oa285cDhibmZ1b1JGZk44OVJTNUQwYUJtVzNyakw0WjRMSWpy?=
+ =?utf-8?B?TVJYcG50dUp2S3RYZm5KZ2dwTlVVaXNwa2wyOTNsalh5azZNZnZtQnFLTnNH?=
+ =?utf-8?B?VHdKTTRTZ3luMHhSazVYb1RQQ2VzbUxDZzRpTzlBSDVPMHRXNDM2R0UzRm9U?=
+ =?utf-8?B?QjQ3a1Y1b0U3ZkJLNzVqZk1kSUJEL1FuK2VMQTliVmlveXhqWGdvQUJrZHpI?=
+ =?utf-8?B?UDlhMkI4eWVGVWJwRHdlcGpkZ01qNzdONWQ4VnJmOThzYkxEc2daUzhsdjNU?=
+ =?utf-8?B?UEFFSGNaYStlVW9VaWkzWWEyVytQWndWd1h2MDJKdU54Wm1uc1hKWFg5amVR?=
+ =?utf-8?B?Tis3SVViV2JyeWJTekZsWEtUSXlYMzU3Z1VERHRCblBHZ25Lb1FuU21GUDNR?=
+ =?utf-8?B?THFVdUl4dnMvcFlvbkhkUWVhZXFPMDdMYWczMVlaK2lTS3BGclZ6d3FyR1Fz?=
+ =?utf-8?B?bitKOVh6TTdHeDRVd1A2Q2ErWnpYTnpqc2lrVll3WWFRZlU3TmkrcU1lSnlY?=
+ =?utf-8?B?RG96WnZtQ001S0NkaFljaCtjV2h1RHhwVTNUeEYrZWxGNkNwelY1Z21ySlVw?=
+ =?utf-8?B?bUE1RWxRajJZNHRGWExZNEdFSElCVU4wdnBCZU1GWmJPNzFHQmc2NDBxSndo?=
+ =?utf-8?B?OVNXdU9SUE02SGorZTJrOEtRcUs2blpxRjNBSVVkL1dCRHZmWFZ1UEM0Nm1n?=
+ =?utf-8?B?N2hpWHRwSE16L1cwUW9WWEl1WHN1bENZbWJ4WnJHa1ZXZExlTFp0NlNSUXVw?=
+ =?utf-8?B?b3ZNWGR4T3FQN3BJZkh2WUlpN0tFNm1vZDgxVGU2TDFHRDN5WkRTMWZTanVO?=
+ =?utf-8?B?b1FoWWtxZTU1dTVWeVVHb04zU2RvQThmUUhXb0N3K21aMHhpZWVOQi9YcE5Q?=
+ =?utf-8?B?VjRWN0JiUzNmZ1RtWUc3ZGxiT3pFdUFGQzAwRkdFYWdlSFV6TzdkWXF4V3Fv?=
+ =?utf-8?B?aXl1bmk3Wnh5MGJwclBkMnRFemh1MWtHNDgzZVlCeWZxWjEyUGdoYnRiQUpi?=
+ =?utf-8?B?eStLMlU5bFdxdGxNekhvMGRMSXBzZytLKzVtNVRsakFueThSVG4rMGpRS3JI?=
+ =?utf-8?B?Y08yRlgrY3ZKU1NxdWFxelFqZWk0UWgrbG9mYXpIa1pxTlVWVWJOQkcrYnls?=
+ =?utf-8?B?akpKemhtVllnL3p0RXZDQ2xtVm9rVm14Q3NYRVEvMDAwUVM0Z0dNa3hpZnVB?=
+ =?utf-8?B?dXNBQUZoVEd5MW1pTk81VVowRFZka1pEWEVUaW9BTW9CYmNJK2U3Um9ld1Q3?=
+ =?utf-8?B?cSsxbmtzVUladW1uT0thTlZVTTRYSWFQazdnMXZ2QytTMnFaeHFBMVJNcXJP?=
+ =?utf-8?B?VThpZGl3ckNCbUg4dU01Z2dMOTZRVzYzNFd6NVNSL1RLY3NYVzk3SHZOUGdE?=
+ =?utf-8?Q?M1NCE1vcqQCZk5cW9ELeuBHjq?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6ef3aa3-b22b-48aa-61d0-08dc6850083b
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2024 13:26:52.6186
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1hbJyCQ1YMjLlkfV/HkyfBeCj8xkYKv5eC0l0+0stJi5uiCNWJ8PZxs2GawY5AATi5CIIA0prsN623gIJRffcg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6646
 
-On Sun, Apr 28, 2024 at 07:11:11PM +0200, Borislav Petkov wrote:
-> On Tue, Apr 09, 2024 at 06:26:05PM +0300, Kirill A. Shutemov wrote:
-> > From 6be428e3b1c6fb494b2c48ba6a7c133514a0b2b4 Mon Sep 17 00:00:00 2001
-> > From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-> > Date: Fri, 10 Feb 2023 12:53:11 +0300
-> > Subject: [PATCHv10.1 05/18] x86/kexec: Keep CR4.MCE set during kexec for TDX guest
-> > 
-> > Depending on setup, TDX guests might be allowed to clear CR4.MCE.
-> > Attempt to clear it leads to #VE.
-> > 
-> > Use alternatives to keep the flag during kexec for TDX guests.
-> > 
-> > The change doesn't affect non-TDX-guest environments.
+On 4/26/24 16:48, Dan Williams wrote:
+> Tom Lendacky wrote:
+>> In order to support dynamic decisions as to whether an attribute should be
+>> created, add a callback that returns a bool to indicate whether the
+>> attribute should be displayed. If no callback is registered, the attribute
+>> is displayed by default.
+>>
+>> Cc: Joel Becker <jlbec@evilplan.org>
+>> Cc: Christoph Hellwig <hch@lst.de>
+>> Co-developed-by: Dan Williams <dan.j.williams@intel.com>
+>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+>> ---
+>>   fs/configfs/dir.c        | 20 ++++++++++++++++++++
+>>   include/linux/configfs.h |  3 +++
+>>   2 files changed, 23 insertions(+)
+>>
+>> diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
+>> index 18677cd4e62f..463e66258507 100644
+>> --- a/fs/configfs/dir.c
+>> +++ b/fs/configfs/dir.c
+>> @@ -580,6 +580,7 @@ static void detach_attrs(struct config_item * item)
+>>   static int populate_attrs(struct config_item *item)
+>>   {
+>>   	const struct config_item_type *t = item->ci_type;
+>> +	struct configfs_group_operations *ops;
+>>   	struct configfs_attribute *attr;
+>>   	struct configfs_bin_attribute *bin_attr;
+>>   	int error = 0;
+>> @@ -587,14 +588,33 @@ static int populate_attrs(struct config_item *item)
+>>   
+>>   	if (!t)
+>>   		return -EINVAL;
+>> +
+>> +	ops = t->ct_group_ops;
+>> +	if (!ops) {
+>> +		struct config_group *g = item->ci_group;
+>> +
+>> +		/*
+>> +		 * No item specific group operations, check if the item's group
+>> +		 * has group operations.
+>> +		 */
+>> +		if (g && g->cg_item.ci_type)
+>> +			ops = g->cg_item.ci_type->ct_group_ops;
 > 
-> This is all fine and dandy but nothing explains *why* TDX needs this
-> special dance.
+> Oh, I would not have expected to need to consider any alternate group
+> ops for attribute visibility beyond t->ct_group_ops. However in my RFC
+> example I made this mistake:
+
+Right, that's the question. Do you use the default group ops that are 
+created for TSM report or do you require the ops be part of the 
+attributes. It is definitely easy to do the latter.
+
 > 
-> Why can't TDX do the usual CR4.MCE diddling like the normal kernel
-> during init and needs to do that here immediately?
-
-As I mentioned above, clearing CR4.MCE triggers #VE. It is quirk of the
-platform.
-
-There's plan to allow it in newer TDX modules, but kernel still has to
-assume we cannot touch it in TDX guest case.
-
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > ---
-> >  arch/x86/kernel/relocate_kernel_64.S | 15 +++++++++------
-> >  1 file changed, 9 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
-> > index 56cab1bb25f5..90246d544eb1 100644
-> > --- a/arch/x86/kernel/relocate_kernel_64.S
-> > +++ b/arch/x86/kernel/relocate_kernel_64.S
-> > @@ -5,6 +5,8 @@
-> >   */
-> >  
-> >  #include <linux/linkage.h>
-> > +#include <linux/stringify.h>
-> > +#include <asm/alternative.h>
-> >  #include <asm/page_types.h>
-> >  #include <asm/kexec.h>
-> >  #include <asm/processor-flags.h>
-> > @@ -143,14 +145,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
-> >  
-> >  	/*
-> >  	 * Set cr4 to a known state:
-> > -	 *  - physical address extension enabled
-> >  	 *  - 5-level paging, if it was enabled before
-> > +	 *  - Machine check exception on TDX guest, if it was enabled before.
-> > +	 *    Clearing MCE might not allowed in TDX guests, depending on setup.
+>    static struct configfs_group_operations tsm_report_group_ops = {
+>           .make_item = tsm_report_make_item,
+> +        .is_visible = tsm_report_attr_visible,
+> +        .is_bin_visible = tsm_report_bin_attr_visible,
+>    };
+>   
+> Which in retrospect is the wrong level, and I suspect only reachable if
+> you do the the above awkward indirection ("ops =
+> g->cg_item.ci_type->ct_group_ops"). Instead, I was expecting symmetry
+> with sysfs where the object that carries ->attrs also carries
+> ->is_visible, so something like this:
 > 
-> 			 ... might not be allowed ...
+> + static struct configfs_group_operations tsm_report_attr_group_ops = {
+> +         .is_visible = tsm_report_attr_visible,
+> +         .is_bin_visible = tsm_report_bin_attr_visible,
+> + };
 > 
-
-Oopsie. Thanks.
-
-> > +	 *  - physical address extension enabled
-> >  	 */
-> > -	movl	$X86_CR4_PAE, %eax
-> > -	testq	$X86_CR4_LA57, %r13
-> > -	jz	1f
-> > -	orl	$X86_CR4_LA57, %eax
-> > -1:
-> > +	movl	$X86_CR4_LA57, %eax
-> > +	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %eax), X86_FEATURE_TDX_GUEST
-> > +	andl	%r13d, %eax
+>    const struct config_item_type tsm_report_type = {
+>            .ct_owner = THIS_MODULE,
+>            .ct_bin_attrs = tsm_report_bin_attrs,
+>            .ct_attrs = tsm_report_attrs,
+>            .ct_item_ops = &tsm_report_item_ops,
+> +         .ct_group_ops = &tsm_report_attr_group_ops
+>    };
+>    EXPORT_SYMBOL_GPL(tsm_report_default_type);
 > 
-> %r13 needs a comment here that it contains %cr4 read above in
-> relocate_kernel()
+> ..because is_visible() at the g->cg_item.ci_type->ct_group_ops level
+> would seem to mean parent directory visibility which is mismatched.
+> 
+> However as I stare at this a bit more it sinks in that configfs "group"
+> != sysfs "group". So I am open to the suggestion that ci_item_ops is the
+> right place to house item attribute visibility callbacks, or even a new
+> "ci_attr_ops" expressly for this purpose. Either way my expectation is
+> that config_item_type can get to the visibilty callbacks for its
+> attributes without needing to traverse any other groups or items.
 
-Okay.
+I'll update the patchset to do that.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Thanks,
+Tom
+
+> 
