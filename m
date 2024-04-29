@@ -1,138 +1,111 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C937EEF2
-	for <linux-coco@lists.linux.dev>; Mon, 29 Apr 2024 14:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6961385C7A
+	for <linux-coco@lists.linux.dev>; Mon, 29 Apr 2024 15:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714402469; cv=none; b=uVG0JQ2aeArBvxGwHylCGMrNfEmudW7rWjS80WbDLsLVbc0s3KDzFeG5Y4c2ggZSnxkSpqIxAJPoXzYzLqZBJ/0hpeIKULL7OcX0a2jv6DDgsOgrabj6ciQdHObgK1/9hnWOIR8tHAvKZ7XfenArHXT+1m7U+nJ0uc5PUZjeB7w=
+	t=1714403843; cv=none; b=iohqGEQgb50V0bDzN2qLlXP1HdcoAbc3/7JRe88R6QSN7W/RNsHZ83sW3dQhxH0NfF2olXlPJ+JWQT/egqsMrPH8Y+yErpQdNbHAMRyFYXqKG98c2LLjEUI5flJk7KqhCU88UQq7wIWXrIbnQsCOZhYScAFeCqgs2f2+JQMeN2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714402469; c=relaxed/simple;
-	bh=d0oc8G80VdSpAwcd1EQtmBVCJEcmiX7YwVY7qsonknc=;
+	s=arc-20240116; t=1714403843; c=relaxed/simple;
+	bh=MlSlRGaYiem3SuUQO4BAsBy3xzf+/yW9MMNWdq/F60Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i8MoUqZSc2JaLZhJ3k6VZSIL7WP/4ehg9OBa7gSvIr4/7sfrpl+Ww+Sf5l57NxYmJWP0HTy6t4RtQeKcspnZXMb2RCEwjn8iE/BwabC87dz7aIVgS7nBab2dLs34tMszBQaSlzjJ9ioDLJpXdqdZ5cj826y8k3MfU+QPra1P2fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ZORcMHjz reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=YUCmtTOb6+l9BZWQIF8zrVfvGzVTSNJNuu6DwnZ9TEzQnNNTfi3lYZJBLaDaXubAzbx5CxXnNaICMBA5Dfsm2ZSPtdl5tLTf4HDD7ojN+gzVA21pUHDrFKzFF5IzFwlMY30rqgZffSsvWbDAHCU6+bHF8nus/vKP4KHWl/5QBbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LbISdxnS; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ZORcMHjz"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B335D40E016B;
-	Mon, 29 Apr 2024 14:54:25 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 3XVfKGstbIKd; Mon, 29 Apr 2024 14:54:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1714402459; bh=/OGKprZdYSootanFbGT+iAmhKwb8pptaRzuZ0S3c60k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZORcMHjzGCl+zJPL/bWqyORvPswFKKMXZ4Qkxok344k6zGoSeJ/TuomgqjSut4YJI
-	 DIEyj9pDjnCXYyAAlMFzaJzF6oHVB1FgzjltTOelnOKErr1lhmPIX3RPq+HDmrz92C
-	 bsx6t5hBSDFgHwTp+IOgocsFKkjI81tMH7O0i8i05r7Y9hNZ41kWht7dH5v44RTTLD
-	 yLTPPKCR0U3YyB7t2L+UJEzyQ1Sv3KT3h68oFbK1nY55c68Rsv7YH9Nsg8U6QkTyw1
-	 Hifqk+Duo66bpVmksfda6WkGhnXW5ZADpc2GiKXcANcig6ywCwGyosZyzCfkofu+KE
-	 Fb/Qqq4UuwJLGzc7WhfUnKIJwYOXflUTfINnX1xvYDIt/6z9V3s4LXMassdmY2NjcK
-	 ovMt0ygI/bLDesptnxCgsQE7p5zxprV8u7PllMqCK0mV/jTNoJB9esy3TDmBuh+isM
-	 sg7pXPEX8WUZBkgfEi6iAjR75YDXHOyru1SUNTZCRCI7gEksg5QmCFkzCaLTz8i5WS
-	 DU0c5Re8AhkI7qrte+Ai8CHrbXNxiv60WKxfsbivbH4v9KFzq57xIt7C36+o9sk6i+
-	 gDBsb5FeZZhxWbHBmeASqC1QfttFXH08TxxAKehBf7xV5yqRdWYm8rqAImQdGRrXMK
-	 g2HO5+ta+4tre3sRqqsGiQtg=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8D13D40E00B2;
-	Mon, 29 Apr 2024 14:53:52 +0000 (UTC)
-Date: Mon, 29 Apr 2024 16:53:51 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@intel.com>,
-	Tao Liu <ltao@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	linux-hyperv@vger.kernel.org
-Subject: Re: [PATCHv10 06/18] x86/mm: Make
- x86_platform.guest.enc_status_change_*() return errno
-Message-ID: <20240429145351.GIZi-0fzy7H_UpEJ5w@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LbISdxnS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714403842; x=1745939842;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MlSlRGaYiem3SuUQO4BAsBy3xzf+/yW9MMNWdq/F60Y=;
+  b=LbISdxnSrmWPCv4ZuDaEPbUtejCg5JXzFijVLYfTmqsbnoMKRTl5RnZO
+   rTIMfa8b7AHGAAJkKTtWmY/vrQ+Ys40ZaHYnZOf8WNeTv9M5mHmSvpDFq
+   gatYl13jq4RwjKpx1Hy189jUrzzFLYGQeff5s/E7RgfR898CjzZRYKD4H
+   DO1BPRdjEEVdjlHYGvX4RAKhWMNzo9Dqx1qfMznTsZDYkwj4ggn46vA/W
+   gi7tSnSd+PoVOWxtes1e8veLSPLLykyffU/abSuTQHBatMy7lpHfG2FzM
+   ha9BiSd5sSVQIR17T/giyR/ieK/jKjjNhtYDOv9SBCVdlcBlrUnib+1ux
+   Q==;
+X-CSE-ConnectionGUID: ZNnGGJbPQeuoWeeTWyQlCA==
+X-CSE-MsgGUID: 1tKamFc5QImm0Qmc++/WIA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11059"; a="10187910"
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
+   d="scan'208";a="10187910"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 08:17:01 -0700
+X-CSE-ConnectionGUID: 3l6VczyNSXi1e+hlJ02smw==
+X-CSE-MsgGUID: sLGm4kwkThqjbQ/IHUUlBQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
+   d="scan'208";a="26098655"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa009.fm.intel.com with ESMTP; 29 Apr 2024 08:16:56 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id D0D851A0; Mon, 29 Apr 2024 18:16:54 +0300 (EEST)
+Date: Mon, 29 Apr 2024 18:16:54 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Ashish Kalra <ashish.kalra@amd.com>, 
+	Kai Huang <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv10 05/18] x86/kexec: Keep CR4.MCE set during kexec for
+ TDX guest
+Message-ID: <yh7wbdce5o35l4nkrkml3jp7tyzvzxwnfji2vmvnvaczsl6gdr@6qnwpw7g76a3>
 References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <20240409113010.465412-7-kirill.shutemov@linux.intel.com>
- <20240428172557.GLZi6GpTaSBj-DphCL@fat_crate.local>
- <xoksw5s5tl6wso4xirh4u422xmera4pyulptfmn3zeqtp5lmt2@d3y6ucap37da>
+ <20240409113010.465412-6-kirill.shutemov@linux.intel.com>
+ <ZhVPIDDLkjOB96fI@google.com>
+ <3q6jv3g4tezybmd667mqxio7ty22akxv7okrznmzx3tju2u4qo@2alzjkbgm2lh>
+ <20240428171111.GKZi6DLy_ZwuZsZdFq@fat_crate.local>
+ <e35yxpa2xdynm7focg6k4u2bjzojn24bmeaszh2jz52e4szc5f@6mgtrdnkewhe>
+ <20240429144454.GHZi-yZkD0boKk5N17@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <xoksw5s5tl6wso4xirh4u422xmera4pyulptfmn3zeqtp5lmt2@d3y6ucap37da>
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240429144454.GHZi-yZkD0boKk5N17@fat_crate.local>
 
-On Mon, Apr 29, 2024 at 05:29:23PM +0300, Kirill A. Shutemov wrote:
-> Hm. I considered the sentence to be in imperative mood already. I guess=
- I
-> don't fully understand what imperative mood is. Will fix.
+On Mon, Apr 29, 2024 at 04:45:08PM +0200, Borislav Petkov wrote:
+> On Mon, Apr 29, 2024 at 04:17:38PM +0300, Kirill A. Shutemov wrote:
+> > As I mentioned above, clearing CR4.MCE triggers #VE. It is quirk of the
+> > platform.
+> 
+> You mean when identity_mapped() runs as part of a kexec-ed kernel, it
+> might clear CR4.MCE and that would trigger the #VE?
 
-This:
+Yes, that's what happens in current upstream.
 
-https://en.wikipedia.org/wiki/Imperative_mood
+> So, if that is correct, you basically want to *preserve* the CR4.MCE
+> setting across kexec?
 
-but basically the sentence is a command.
+Yes.
 
-> You are right, I didn't run get_maintainer.pl this time. I never got it
-> integrated properly into my workflow. How do you use it? Is it part of
-> 'git send-email' hooks or do you do it manually somehow.
+> But then __mcheck_cpu_init_generic() will go and set it
+> unconditionally.
 
-So what I do after the whole set is applied, is:
+__mcheck_cpu_init_generic() will not change anything in this case as the
+bit is already set. Everything is hunky-dory.
 
-git diff HEAD~<NUM>.. | ./scripts/get_maintainer.pl
+> So what exactly is the correct flow here?
 
-where <NUM> is the number of patches which belong to the series.
+TDX guest has CR4.MCE set from time 0 and it has to stay this way all the
+time including kexec flow.
 
-IOW, you get a full diff of the set and you run that diff through
-get_maintainer.pl.
+We have already modified early boot code to preserve CR4.MCE. See
+77a512e35db7 ("x86/boot: Avoid #VE during boot for TDX platforms").
+The patch extends it to kexec flow.
 
-It'll give you a whole lot of people but you can go through that list
-and prune it to the people who are really relevant for the set.
-
-And then you do
-
-git send-email --cc-cmd=3Dcccmd.sh ...
-
-and that script simply echoes a "Cc: <name>" one per line. That is, if
-there are a lot of people to Cc. If there are only 1-3ish or so, you can
-supply each with the "--cc" option to git-send-email.
-
-Anyway, this is what I do. Someone has probably a lot better flow tho.
-
-> I don't feel I can trust the script to do The Right Thing=E2=84=A2 all =
-the time
-> to put into my hooks. I expect it to blow up on tree-wide patches for
-> instance.
-
-Yeah, not even going there. :-)
-
-HTH.
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
