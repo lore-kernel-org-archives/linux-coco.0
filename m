@@ -1,238 +1,150 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2084.outbound.protection.outlook.com [40.107.244.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C921C6F53D
-	for <linux-coco@lists.linux.dev>; Mon, 29 Apr 2024 13:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714397747; cv=fail; b=khuP6w9cAxr5//YDjLLFSuq7WrwLAhQ1m0l/4EB2ufyWGj8KVLMC9yz5Z9mB6VFIVvFkQi4pe/HGjSP5Hr13S2hHyb3ZTO/QzPmHs6gadHABKiUOfLgClGUoBNMwdVcq4swZsF66F5PGZnnd8PKpo4a/U3GAP+pDSta1uv3ImT0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714397747; c=relaxed/simple;
-	bh=bckSx2kZt8gILJ9v5+DnwFMTNJqepm8mes25rboVh3Q=;
-	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
-	 Content-Type:MIME-Version; b=IwnOBkJw6A7NBj3IqQk5Dk2YyLOxJsLCMYCM7agSNI0j/yhm2L4mpu/vyLJMnw8/C7Q4GYplyV+lW9u/OtAV8m7XxdZQq8+Xr2/2DR312rvZyBfFKO3ZGdeHbvy2BKC8eTJ50fbsw514qyrvBori3Azoxdarh8kt8I5RVJaiR4c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wLQBpLu3; arc=fail smtp.client-ip=40.107.244.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DBF7441F
+	for <linux-coco@lists.linux.dev>; Mon, 29 Apr 2024 14:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714400846; cv=none; b=URGQt1jNKSZKrkIA8l0gsxuu5rUDJZNK/4VIHbZWCsfjvKe4oNxynrxXGTiGiR4x/dELxUXcHfEu0J4ESxsf31FM8TnWfsW56NkigRHjfE7blkO+DoSEDnN+JF4etCfHL5KDI9lb7Md4HFUFECJ1UT2r1Xhq6qnEIx8hyYMLFTs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714400846; c=relaxed/simple;
+	bh=dOL5MQJEWlm+ALadfwEWLIsuMmXKHK7rNTd6CxqSNA0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=cOdGNNR5ia47c1e5JDXLXckDQORTyGxbCAbum0PFTOtiT4UCHYumLiLYb/YXSaK4E+tzTRg0SMKRou6CCXJcxCOf0LQr5ZExL5xAdF+ymf1q+t7ips7rvgivX8GCX14vsUtdTj1ZlngxXaE5qQ/O07OOKdhwbPDNVz73GL9q3Hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RG2S9SL4; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wLQBpLu3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=g6Rl8Bj3vyXVCi37AkWFhyOdjtr5dNFemdyJ58HKpXe30gnubVHaC9mb2hxq4oooIGGw5xwEZ8oWq1epNATGMpGVEENv1On45aYhHHMUI/afo1l+9zwbycHllIQsokhHQJ/tTTGBLtImfGvUYPNodH413DJ2YSHp+4EIeW4udXhZZ3OosGvw8zHkDyOvV51VXJTShwe2nmekOZc8mPx0fhcr7lqWEmFI6SN8o6EpRk5CKzlSCUwN9EmBQbvwuGlWXqSuX++glwpQ32BxGQCb1021QXgxVhf3UE1YVMPpyvqCzLZn8Tw+FojvYwrb1tcRitxK31vz0vAEzvVAKAJdhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2RlhPCvrEO5WUIKVceaovdKVZO2/HDwAV1pF2cQGqfM=;
- b=iecxk60n8dHU/Ym+VtUvLzVKoST1iYyonCxrruJo/4zpT+C6z7m750TF66R7v0BUBCb5XhtXOPlC2NeN8AOPpY9o3QXojW4wOs7DkJzTfzRy84z/3WAoIs62Z3oaTHl09Cu2wZ0dYYw8BfZH82nK3hNBqdhHVtaqAPqLtldsKJYO0q+5YBHOfmH++6ZMXnQt+x5nX7FmpBaA3pBcQ1N/FMKV/J1oH1az2my3HbXytMcAiXYUMhAdLolG/1ewjGUI4P5dTXfpp5HMWLA57WrElsG9yu8SOKToetxYEoMicKfte24ksDvUbiRdzxvXR5g8Kmgj+3+o1/2Hhhh5E4jKkg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2RlhPCvrEO5WUIKVceaovdKVZO2/HDwAV1pF2cQGqfM=;
- b=wLQBpLu34CesXTK77XPK05hZsFfDUxX3xbpZIo3hKUnQFyId+asbOPs64cXYm+GAGuhmyVmEot6J93vTgKucHIHDnVU6CXHSbqbcYU9Rzc42ib2m/WPihY+c+BDIGXhvnNmaLgfNLkv92zBQqz4uACDaDT3xgCPtinUGLu3YVpk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
- by PH0PR12MB7487.namprd12.prod.outlook.com (2603:10b6:510:1e9::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.35; Mon, 29 Apr
- 2024 13:35:41 +0000
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52]) by BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52%7]) with mapi id 15.20.7519.031; Mon, 29 Apr 2024
- 13:35:41 +0000
-Message-ID: <f6af3a35-7ddd-7f56-d7d9-34c77647614d@amd.com>
-Date: Mon, 29 Apr 2024 08:35:39 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Michael Roth <michael.roth@amd.com>,
- Ashish Kalra <ashish.kalra@amd.com>
-References: <cover.1713974291.git.thomas.lendacky@amd.com>
- <e3143c1f3d0b26fcd8884c6f75644b634a7138e8.1713974291.git.thomas.lendacky@amd.com>
- <662c239680842_b6e02944b@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH v4 13/15] x86/sev: Take advantage of configfs visibility
- support in TSM
-In-Reply-To: <662c239680842_b6e02944b@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR10CA0030.namprd10.prod.outlook.com
- (2603:10b6:806:a7::35) To BL1PR12MB5732.namprd12.prod.outlook.com
- (2603:10b6:208:387::17)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RG2S9SL4"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-5c66a69ec8eso4093417a12.3
+        for <linux-coco@lists.linux.dev>; Mon, 29 Apr 2024 07:27:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1714400844; x=1715005644; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=S3mlM0E1TrjvYHfesQNSkr38bw44gyQq8z5XmrX3EV0=;
+        b=RG2S9SL4gvOyM+sT6U8S4JwjNbQAy9b542IYrFFwOxBpQAQW/vyOn9LGOnX9T35DG+
+         fFkiXy0POwc9+tNsZLAlrQq1nnm64aKjJ4Q4lNZQFy9BpXevRe1g0zO7eUsA+Wfh3V4l
+         Juc3/tYjJVFvcEL5bBFuhUC9fEpeJjA41VtSVDn6JoZG5dHTxvmaMRI20xBT8UtmqDGf
+         tqF+mshP5C04deURnY3CvudBxXXdZo1xsiToYTTNnolwPYxlFQMuAMcDM8PZPjctqqUY
+         08MVJoe4FAEF6rIsDk5KjSMNryr84Gq5H+YUBeqfQ+KH9ufjADYShvT7pK+T8drOxm8w
+         6h/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714400844; x=1715005644;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S3mlM0E1TrjvYHfesQNSkr38bw44gyQq8z5XmrX3EV0=;
+        b=W/q3kcb4qXLKm3eL6OkH+IyzARWluZqhbPAW9t4MWrHUBa4ih5bkVqclxz/qMlydet
+         0DNnh+8deghM1hPzOol3IU91uP8WmfkJMGXuJUh1NoxPVxUh8KtHOzs9JAbDuRYXRkPz
+         BoWlVjHfZIyHzfETg4Bz6/hKu9tbe+ZYjZHJwou/A9xqTHWM7UEZKqJZ6ry7JUaYSLLn
+         zJxrNcih29qDubE1D8vYUKTYsWS5kTq1OS/2KjN5a4QqSVrizbO8+aG9jM1LS80TYa5B
+         HcFlOwDdQpMSY3OA3Nts2xN5Xa0fvVyOPVUSYunaUDWecSROs0KqyaggX85867gK9m7T
+         fvAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXZqJ7R2TP4DpbaEuQB3TtzPgPi9sIsEaqu3JOoIF33mrHtOhx1weUmvEul+GLcQxOVG7Ac1A1czBj6XDzDR+cGPRUaLEk8rMOL3A==
+X-Gm-Message-State: AOJu0YzYwuEJ1JrmsbOJjWymeG/yz+JFqpnLU6/IFpJTqGLgfnAHFHzj
+	8OWDPrOQhk7ONomhunuBJSxgjxGppELTzGPWVciQv6j1/OcQn8/4e37dZbf8QjuaLPoOzcHvBqZ
+	6Tw==
+X-Google-Smtp-Source: AGHT+IFtI1VRsJxmoBaQkkMNkidpPOTCEAStMWY3Kr4rNLpPFTYg7KKAfEudEOmt/GvfkLL4yDTV9xTdh4k=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a63:1e5d:0:b0:5f7:651b:fed8 with SMTP id
+ p29-20020a631e5d000000b005f7651bfed8mr29463pgm.12.1714400843944; Mon, 29 Apr
+ 2024 07:27:23 -0700 (PDT)
+Date: Mon, 29 Apr 2024 07:27:22 -0700
+In-Reply-To: <20240427013210.ioz7mv3yuu2r5un6@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|PH0PR12MB7487:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9ac451dd-7760-4a56-7cef-08dc68514389
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|7416005|366007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bzdvbW5QUXI3U3dvdGdFTTlEMFBFalZJdUhuS3N6cDVFQUErcE10WFVKdllT?=
- =?utf-8?B?WEthLzZpK1k3Z1RrRFlNenhUT2pxZVlBVERhNXZaR3ZlSmYzbXF0YWNGemZF?=
- =?utf-8?B?aldCc1lHb1hPK2RpSk9rd2ZvaVRmYk1BMVpEMnVOelRZRzZEbWRxUHhzaGRU?=
- =?utf-8?B?eEgvMlFQNUdLa2w1cjNWa1FHM2xBVml4MWt6aDdwRWE2RVBuaW5ObDBXMG1X?=
- =?utf-8?B?S2lsVjNqbE14cVZSVWNIalZpMnAyeVJPVXYwTHM0MjMya2RmL1dNSmVTOUFq?=
- =?utf-8?B?clNDdkhwOUNZSkQxOWI2NlJyV1JMdjRUNFBXdlpKbzNDRTZxU2p2RCtUU3hk?=
- =?utf-8?B?WGVzb0RJalNtNStDWjVVSGFPUDhqWnBydy9pc2pWZVhrRys0c1dKeUpJbm1D?=
- =?utf-8?B?b3JXaWlQUEtQSnFrZnRpRFNBbnd2clEzOGM3ZHRZMHpuMUVLYWYraU1MOEQv?=
- =?utf-8?B?Q21vT1RBaTcrUkhWdkJFMEpkNUQ5ZmxqbFFrMDBKZXppZjdvOWhVRm9HWW9y?=
- =?utf-8?B?N0hzU1Nicm5BblpxWWJ5ME0yU3pNSmdZSTNTTnJ2enVIbjlVa3hNT3hnMitO?=
- =?utf-8?B?d0xBOXdKOHpBSlBLTDViaHVXMHJ3dWptcDc3YVdCS2VUVEdFc3NzY3Q5dm9u?=
- =?utf-8?B?MDlsc2IrT1VWUVFSME12dDFwTlJKaDdxakhybFlac0IyR1JsMHR3dzg3YW5F?=
- =?utf-8?B?VGd2Ujlkb3hQS1krQ0NleGw2R2QxM1p6bzNFZXhUczBydGphbTdSdGNKZUt6?=
- =?utf-8?B?dUQwMHJ1WHdjK0drQ3FQQndTSjQxR3B5blNWalRtTElyTnVLd2FrM2IyOXcw?=
- =?utf-8?B?cjFKSDVBOXNlaWgzc2JxSGRCRWMvTW9CUFhNZmhEa1ovNjhTc3VUUW9jYTdB?=
- =?utf-8?B?cDlUTEZzQWVDMkl6bHJjWHFWa2x5S2dkVVRQLzBNbFpuVlBjT1NNMmY1dUMx?=
- =?utf-8?B?OXlyWnhEQ2E4c0FtcURTb0dSeTdwZ3EyTnFlK0M0a0FBdmJ0MU03eWpCSkFp?=
- =?utf-8?B?VVo3RDhETU1rU1NWQjBlTVJRenFlREFCSDhOV1N6Vk5KcjA3NG4wTWhxdWpD?=
- =?utf-8?B?cE5QWFp0Z3pJbGFHUkVCY3ZCdzUrWDVtOUduSTBBWHU1cGtLN1Z4MUw3eGg2?=
- =?utf-8?B?OThHMXVLdndOeENjajYrYkRkSlVDamcybzQ4bmtHVm5TSmNuVU1La0VEdG1a?=
- =?utf-8?B?K1dnS1JEd3lDUWc2Zll3SUdFRnZFdGxyQmFPVkRoL3pBYnVVa0RyV1FmRnNN?=
- =?utf-8?B?NmdGL1B4ckh2bWFyRm9VQVpKQzYzbWZLVVEwY05rbkx4VnZRLzhQekVpb3RD?=
- =?utf-8?B?V1cyRC95V0FFd0lySjQxUWdTczRGUUxpVzBXbTNUUldqMm4rL3ZyNndWeS9p?=
- =?utf-8?B?U01oV1dydWhLZ01SeWtVcGRqUVRIV2dwOGlvTTYySlZsTksraVhJOWdwZlMw?=
- =?utf-8?B?dmtIcWorKzFuSnRjNFVLUnJxUjlpYlRCNzVZRWU4VzJBWHQ4OUN6Yi83TGFU?=
- =?utf-8?B?MnFQWTArWWlJbWx6TmlBQURKQUQ2T0VFSXMybkxqbll6ek1DNGxXaUlROHg1?=
- =?utf-8?B?aG5ndTBwejAra2hVejZUOHZsWGowbHJGS1RKSEF5SFpJZFNoOElSc2g1T3Rj?=
- =?utf-8?B?cFZFb0YxdDc1WS90YkhCMHh3VTZNN0pRaFFTYU80OUd0amFBdTZTMGZBeDJo?=
- =?utf-8?B?NjVwdk1PTXAwOEtjdmxYYVQ0RkIrZnhNelJ3YjJZMmFKU2IzTnNBTmhBPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(7416005)(366007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UWFVejgrV2NoVmpmdW1vYk9HZ25uTkxDVGR0dWY0cDZBNnozK0tPdHRxdTNL?=
- =?utf-8?B?MGVGeFVwQW51OHkyeDFUZDRsQmgxejJOWUMxcjdwSElwMENnUjRtQ3FvY00v?=
- =?utf-8?B?cEx2M0dLb250S1VicC9nWjFxZmVNSXhEeWV3blRiZjBqYXR4aExXOEdkNGF3?=
- =?utf-8?B?MEJGSUhiTWZpRlZxMDQ0WHlLUEJCTjFhYXZYTTV2S0NJeUpPSTBJU01VK1JL?=
- =?utf-8?B?YW10dXh4UXo2S3RyUllDb282alBybE1qSFBiRFVWaCtwRGFsam9OL04wSzZM?=
- =?utf-8?B?MTVkVE4rVmc0VERFRi90MUtraS96bitrKzNaWEQ3SS9YQ2V3WW1jUmV5U0lL?=
- =?utf-8?B?bUsxVGZmMlY2T00yWnBCOUtVclBZTXgzWUM3aXJpSncvK2RBZ2Z2bXgza3Rj?=
- =?utf-8?B?MEdrMkJJeWovRDBEaDh3QW9HZGp0NDFBdFUrQlN0a1FGRTlKNHFDY3ZmcDlr?=
- =?utf-8?B?S3VHbTVVb3ltanVhdXpLVG01eXVRV1p1QnFUM3hLUDdETlBDdkhHWEs1TEVm?=
- =?utf-8?B?ckY1U1pudkYwS0JTKzNDbllna2Q1c3FDVkJ6QU0vbFlkeVgxUHhmb28xdmpR?=
- =?utf-8?B?akdsT3o3UWQ4TXUrSEVUbVRKWDJyMXIzY01zMCsxVGkxa0JtWk1JZjFZdzA3?=
- =?utf-8?B?ZFBaVHAzektUTEViZ093UXVSeS9LN2RlU1ZJdDViZFVNU3NIR3pMUk4xVTQx?=
- =?utf-8?B?R0JucUNrblRhbmtnVEQzSVFwSStZV1NoSWNGQklCb1MzdUFSVlBEdEFZek55?=
- =?utf-8?B?ZVJVNFhGRWg1SVE2VGxLaDdIZXRvSlRCbnN1cUc3Z1IyS1dSL3JpWEhhcmtk?=
- =?utf-8?B?UXJCK0RZYXhmVUNXVUN6TVNWTW1kSkk3RVNmRjFpckNsVmM1NVVub0NaNHlP?=
- =?utf-8?B?OVlFZVRZSjdIQnBhQlJCeWZqWTVTazhsU21IYVJObWl6cE5lVE5oSlZBN2Rv?=
- =?utf-8?B?NFZhU2VRbmxlY2krY3AvVVJ3U0ozQ2VhQlNjZXRuVDNKNHpPWXdCNFh4N0xR?=
- =?utf-8?B?akdPT0xGTWZvWDBuZjFBYUpuMUMzVGZ4ODZNVzlsQjdnQXMrdUlWeGNHcVpy?=
- =?utf-8?B?M2t3Qm5MVzZuanhuYk5SME9jWjBYaHcwdHllTzBZL1RrazBSVGRsV3hLRjN1?=
- =?utf-8?B?NUtHb29BbGxFenhOV0FrUGZKVXdHalNSelNiYURkWjZyMFN2aUszdjdBNDlH?=
- =?utf-8?B?akd6M0Fyd2o0TU42ejI3SjA5MHZXNkhKQTFtQVBpcVJuSzEwaFc2eTU3Qjha?=
- =?utf-8?B?R3MrNXFBeWlQejJMbTZTbEM3M0lQMUFQb1Y1bzNpWWo4MElLTWFEMnJzaWlu?=
- =?utf-8?B?WFhxNVVjSGhXVTBHWkpLZmc4UHJDcytUZFlxL2syaDJsYklIakJaNmJ1aUg1?=
- =?utf-8?B?OVA0TzNYRTAyUlNkSTg3RXczSzhCMjl6WnloSDAxMWQ1b0JnY2NNYzhPNWN6?=
- =?utf-8?B?MkFkQ002VE44SDFIVGlJWFFLZ0pBTDJHWnZKTldrVEZqVWxiVUgyVGZ2VFJO?=
- =?utf-8?B?MkZFdTc0QUhocVV0MXUzRldvYitab3lHQnR4bU92MkY5bk96cXFadk1aSlp1?=
- =?utf-8?B?eEpEQm9LVGl1L1lVMkdPQXROajJpYU1NNXBud0Z2akk1ZElXMVd2eEFqVUZv?=
- =?utf-8?B?WFhPdWdVUDVWcnlWK1E5TmhzMDRqQjFtMmFLMnA1NjRBSkZOYndGY3NXRUVj?=
- =?utf-8?B?UWNSY3RFL3hKZy9OR3d2TTBubGhBTGhnT2FFUFBOOGVucm9aWFRBdmVkLzhm?=
- =?utf-8?B?MzJRZm9LUnVOczV6VlBTSy9Rb0J2UEZ1N1dkL1FiQ095dEZOK2hRSy9mQnUx?=
- =?utf-8?B?a3Uyb0YrRExqTUh6Z0ppTnRUZ25vRXhYNStmWW51SWhoc2pFN3FCcWhWRTRY?=
- =?utf-8?B?VHJKWGJJZ1JBU3NEY1ZBTStpU2J3L0Z2NEZodko2aHArc25lL0UrVkduMkNK?=
- =?utf-8?B?dkV2Zi9NVThWTUR0WXJuRTlYcUdCN2FhVHZCUzlmdmRqU29yUE44Z0cxNnY3?=
- =?utf-8?B?ODdsMllDZy9jQWlJbTZ4QWxsL2RBc3c5cmlsNDBWQ1JDTTJDdldQTENVUUtP?=
- =?utf-8?B?UFQxSzRZQmNnZ2U3WWdjNWJURjRvSVhUKzdSd1YraThXaXdJM3NIM1VPUlU0?=
- =?utf-8?Q?CAd/tCDMa6TXtb+9HDG4L2AA3?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ac451dd-7760-4a56-7cef-08dc68514389
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2024 13:35:41.6444
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OX8NifOWbrw7klPd+AVUaie9KyqW7mduQkn+rEjaV2XJ50sBqiOlZwnpem0/yxCEhI1RotjtL3uDUn6wCyHhAQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7487
+Mime-Version: 1.0
+References: <20240421180122.1650812-1-michael.roth@amd.com>
+ <20240421180122.1650812-22-michael.roth@amd.com> <ZimgrDQ_j2QTM6s5@google.com>
+ <20240426173515.6pio42iqvjj2aeac@amd.com> <ZiwHFMfExfXvqDIr@google.com>
+ <20240426214633.myecxgh6ci3qshmi@amd.com> <ZixCYlKn5OYUFWEq@google.com> <20240427013210.ioz7mv3yuu2r5un6@amd.com>
+Message-ID: <Zi-t65xmCk9x78lb@google.com>
+Subject: Re: [PATCH v14 21/22] crypto: ccp: Add the SNP_{PAUSE,RESUME}_ATTESTATION
+ commands
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
+	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com, 
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, Larry.Dewey@amd.com
+Content-Type: text/plain; charset="us-ascii"
 
-On 4/26/24 16:58, Dan Williams wrote:
-> Tom Lendacky wrote:
->> The TSM attestation report support provides multiple configfs attribute
->> types (both for standard and binary attributes) to allow for additional
->> attributes to be displayed for SNP as compared to TDX. With the ability
->> to hide attributes via configfs, consoldate the multiple attribute groups
->> into a single standard attribute group and a single binary attribute
->> group. Modify the TDX support to hide the attributes that were previously
->> "hidden" as a result of registering the selective attribute groups.
->>
->> Co-developed-by: Dan Williams <dan.j.williams@intel.com>
->> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
->> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
->> ---
->>   drivers/virt/coco/sev-guest/sev-guest.c |  3 +-
->>   drivers/virt/coco/tdx-guest/tdx-guest.c | 29 ++++++++-
->>   drivers/virt/coco/tsm.c                 | 82 ++++++++++++-------------
->>   include/linux/tsm.h                     | 41 ++++++++++---
->>   4 files changed, 102 insertions(+), 53 deletions(-)
-> [..]
->> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
->> index 1253bf76b570..964af57f345c 100644
->> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
->> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> [..]
->> @@ -249,6 +250,30 @@ static int tdx_report_new(struct tsm_report *report, void *data)
->>   	return ret;
->>   }
->>   
->> +static bool tdx_report_attr_visible(struct config_item *item,
->> +				    struct configfs_attribute *attr, int n)
->> +{
->> +	switch (n) {
->> +	case TSM_REPORT_GENERATION:
->> +	case TSM_REPORT_PROVIDER:
->> +		return true;
->> +	}
->> +
->> +	return false;
->> +}
->> +
->> +static bool tdx_report_bin_attr_visible(struct config_item *item,
->> +					struct configfs_bin_attribute *attr, int n)
->> +{
->> +	switch (n) {
->> +	case TSM_REPORT_INBLOB:
->> +	case TSM_REPORT_OUTBLOB:
->> +		return true;
->> +	}
->> +
->> +	return false;
->> +}
+On Fri, Apr 26, 2024, Michael Roth wrote:
+> On Fri, Apr 26, 2024 at 05:10:10PM -0700, Sean Christopherson wrote:
+> > e.g. put the cert in a directory along with a lock.  Actually, IIUC, there doesn't
+> > even need to be a separate lock file.  I know very little about userspace programming,
+> > but common sense and a quick search tells me that file locks are a solved problem.
+> > 
+> > E.g. it took me ~5 minutes of Googling to come up with this, which AFAICT does
+> > exactly what you want.
+> > 
+> > touch ~/vlek.cert
+> > (
+> >   flock -e 200
+> >   echo "Locked the cert, sleeping for 10 seconds"
+> >   sleep 10
+> >   echo "Igor, it's alive!!!!!!"
+> > ) 200< vlek.cert
+> > 
+> > touch ~/vlek.cert
+> > (
+> >   flock -s 201
+> >   echo "Got me a shared lock, no updates for you!"
+> > ) 201< vlek.cert
+> > 
 > 
-> Why do these callbacks need @item and @attr?
-
-It is a generic callback from configfs, so outside of TSM, an 
-implementation may find it useful to have these. But, with the code 
-change to require the callback at the attribute level, now, these can be 
-eliminated.
-
+> Hmm... I did completely miss this option. But I think there are still some
+> issues here. IIUC you're suggesting (for example):
 > 
-> [..]
->> +static bool tsm_report_is_visible(struct config_item *item,
->> +				  struct configfs_attribute *attr, int n)
+>   "Management":
+>   a) writelock vlek.cert
+>   b) perform SNP_LOAD_VLEK and update vlek.cert contents
+>   c) unlock vlek.cert
 > 
-> Per the comment on where to find the is_visible() callbacks for a given
-> item type, I expect the need to pass @item here goes away when this can
-> assume that there is only one way to have is_visible() invoked for
-> @attr, right?
-
-Yes.
-
-Thanks,
-Tom
-
+>   "QEMU":
+>   a) readlock vlek.cert
+>   b) copy cert into guest buffer
+>   c) unlock vlek.cert
 > 
-> Other than that, this conversion looks good to me.
+> The issue is that after "QEMU" unlocks and return the cert to KVM we'll
+> have:
+> 
+>   "KVM"
+>   a) return from EXT_GUEST_REQ exit to userspace
+>   b) issue the attestation report to firmware
+>   c) return the attestation report and cert to the guest
+> 
+> Between a) and b), "Management" can complete another entire update, but
+> the cert that it passes back to the guest will be stale relative to the
+> key used to sign the attestation report.
+
+I was thinking userspace would hold the lock across SEV_CMD_SNP_GUEST_REQUEST.
+
+   QEMU:
+    a) readlock vlek.cert
+    b) copy cert into guest buffer
+    c) set kvm_run->immediate_exit
+    d) invoke KVM_RUN
+    e) KVM sends SEV_CMD_SNP_GUEST_REQUEST to PSP
+    f) KVM exits to userspace with -EINTR
+    g) unlock vlek.cert
+    h) invoke KVM_RUN (resume the guest)
+
+> If we need to take more time to explore other options it's not
+> absolutely necessary to have the kernel solve this now. But every userspace
+> will need to solve it in some way so it seemed like it might be nice to
+> have a simple reference implementation to start with.
+
+Shoving something into the kernel is not a "reference implementation", especially
+not when it impacts the ABI of multiple subsystems.
