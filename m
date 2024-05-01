@@ -1,282 +1,285 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2075.outbound.protection.outlook.com [40.107.94.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4618050292
-	for <linux-coco@lists.linux.dev>; Wed,  1 May 2024 09:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714554575; cv=fail; b=nMw2V64JcN4ojxHxWTqs8DRVAzDgpleGFWlS6cV7bRGbpnCqHWOomrfET3QauiYMgpMJrtG+5VXg8j3a68BhhQwQ1ZZnNXOZfeCAFDkHDMbowJ8Cif+LP9DnPdOcxeEY4sbQ1MHvUN+LypLQFdd6kB1Sc5I/q7PnX1twjLv9xno=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714554575; c=relaxed/simple;
-	bh=836ytDsdBQ7gXrWqPodCXtxsPop0IKrnMf73+Ey6uGA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VuMn7BEyAYUeHmZ3eWePhxrwebSaKS0F21li0CUk6sqctTQJoFIdfZav/C5AozwoUEKdtztCnk84hIrcS8CuQl/cWazd3XUQ562FA8gpKyTtQ/FLcgILn7Ep1UlGUeoVCDe16Xy3NLbHvDXycgRSMDcVrfWbzthnmzr3qpwvnGQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2eyGDdfs; arc=fail smtp.client-ip=40.107.94.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A71912F375
+	for <linux-coco@lists.linux.dev>; Wed,  1 May 2024 14:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714573625; cv=none; b=T7EjLMeEumCCMMygovcJoHL5c81KCzNbKI0HAy7RzKYmT7f0tayVpMHSPR5dlJ2OTG8zaXHmTzmp790tnWOQp+6Yo16hTipE8InnC3D2bgiQfvwyraF7CojPoav8TUgalTuM+00bUW79tiv7cWRmdixusgmGNKgOa/V1WJLQeD0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714573625; c=relaxed/simple;
+	bh=VLDaNGeiHmozD59IvSgOUbhpYMSflJM6reIT+ykbn0Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G9/OmLAnRV1bv6zkmf8W4e0CtBa0seZRawuRiiAD/CYK98Z4cS0rNvcW/oqxuISv5iG8ANE8W2iY9K4Y0udlkuNOc5Ne2HjUnBI7Fx/IMq6U4nSgmcyb0lhyQROr6wP68TAruEYJAwu4+JU2SHGjuJ8WvpStQYnxQUm7TfHrKVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D9rrjMCf; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2eyGDdfs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iehqxKffHJWHxchRrLta++7MmWW93auhdKgF1Qk7lDSjqMAiEYWADCpchLowcfzUbUukIn8y7X2TB5QC+AJrzaEZSuIvTTBNxfGsNiLZbi/w2ZEKngfQMbGqECs50x5aG+r7ESkGlCVxxrXShk6EK5X7I5+J128mg09FLnHD5nDiWztGgIy+tVZZazgrC/hHmY6+z4Hs+PyGlaMk/J0kcbWUVdznJDApTiA16IHAZCiobsQuyZUglDLdSauxMTOf5O5Bu6SyNVHayD/Rpzg5eJ3TPv2iJlI/gPoBJFVs1oVwjH00ZTd61QLMsdeKFdP07yRo1pvKrSnLhmTSXADimw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jmmI4Fmr+tDaQB0oEsfFicY+rShpIyOPOkhjlKpDm2M=;
- b=OIrI9mFe84ej1Mtetqr6M+FkaSv4HPVva7jR8kur3o6yxrcMbou5CudPL6z/qz0UUX5bzzRo3bBSzHJ9OlmgfibhxTuktpPsa8BWwWtg+5CiKamjEFYncM59QtYJXWaPKQjGpLp1H9lmpPDgEqtEqr0TsjhKAGbs2pEQrDiJL3PQTvZKDdObv+OSivC2KPbJqXazV6WjrgziAqdfMH5pAoYy3l8GsP05GjINTIpNAWrx+FAh9eL1c04eoa5/7FHwJ2X2Zm2jxw7QX96xhodKeOMY99rTlGKJSLC8xFieGDyTiArg0PkMGA+kr5MGs0anfOryUKywjFAQ1HFBDFcM4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jmmI4Fmr+tDaQB0oEsfFicY+rShpIyOPOkhjlKpDm2M=;
- b=2eyGDdfsaCRJdX684JzWgEIOKRi1IbDI9qITc1PnHgBhxZAYkFtd57yF1vvoqtE9BdCLKa0YZrmeM3V/IAvv9jzrbDji4UGSg1JxtJ60wThUnRrdMd5RDbHvEgYLz4OBQqhVv8DzY/FItNc4FxR9HpZdk6+YfDeBUqsdo7yDHMM=
-Received: from BN9PR03CA0588.namprd03.prod.outlook.com (2603:10b6:408:10d::23)
- by DS0PR12MB8069.namprd12.prod.outlook.com (2603:10b6:8:f0::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7519.34; Wed, 1 May 2024 09:09:29 +0000
-Received: from BN2PEPF000044A2.namprd02.prod.outlook.com
- (2603:10b6:408:10d:cafe::ae) by BN9PR03CA0588.outlook.office365.com
- (2603:10b6:408:10d::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7495.34 via Frontend
- Transport; Wed, 1 May 2024 09:09:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN2PEPF000044A2.mail.protection.outlook.com (10.167.243.153) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7544.18 via Frontend Transport; Wed, 1 May 2024 09:09:28 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 1 May
- 2024 04:09:28 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: <kvm@vger.kernel.org>
-CC: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
-	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
-	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
-	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
-	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
-	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
-	<bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
-	<ak@linux.intel.com>, <tony.luck@intel.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
-	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
-	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, Brijesh Singh
-	<brijesh.singh@amd.com>
-Subject: [PATCH v15 08/20] KVM: SEV: Add support to handle GHCB GPA register VMGEXIT
-Date: Wed, 1 May 2024 03:51:58 -0500
-Message-ID: <20240501085210.2213060-9-michael.roth@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240501085210.2213060-1-michael.roth@amd.com>
-References: <20240501085210.2213060-1-michael.roth@amd.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D9rrjMCf"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2df83058d48so57434241fa.1
+        for <linux-coco@lists.linux.dev>; Wed, 01 May 2024 07:27:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714573620; x=1715178420; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/ZjthxVOkAIkSgJpgMhl5+EWLLpCqE1AJWtsVBUVw14=;
+        b=D9rrjMCf/sEZKI1mCv6SUffkUyvx/sUQ7CHUeVa7aQhN5jan6R1gEc1QxXkQ1Oo2tf
+         i7qXSqXXF/CSS4ou1y/oXrtF/oCVerw5OTo924EYJ9EGIF1TaevLiTahy1sdGXSFWrMd
+         DZvcmYrg0FJ3bJ6QsrJObc/n9XV9z8wwIVZ1QDcSytL86jl9sr40fa3QW2NaG33qaNSH
+         UTiT/EPW2IoOy2Grp4UCpD8FOF6K3AIavdjtEcS0YbKAxJJnD4rXN8Nvwdbt77YP/+nn
+         teQMUhUJL7IU35G8NBYQQNEq+hkczzr71wFXg/wOV2LT5ME8W/+5mVpjalv6UFxk3e2n
+         2G/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714573620; x=1715178420;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/ZjthxVOkAIkSgJpgMhl5+EWLLpCqE1AJWtsVBUVw14=;
+        b=nrsNjbPaU7P5Q4+U3G1eQvilzQ1dQDdX8N0sQJvTn+PBIvDENvTa0YuhDrhhMLmzKB
+         KsQOWxe22OzzaqPzUONciobQ8cTV/qr+nGCGZtziyzAGa5aDT0EGGEGR30e4yRlV5bIZ
+         4On5r3exnD0SMlvdyAh4emawVdHVb3YVWKLrakBw0YI+e+seXuOu5JSfq8vUfRhc1xeE
+         p4wRydDbs+6HhbeJmpKUL0UiOi8BC//Ny5YZU7+sYUt0KHKgkV/8PgRJ+z1jhGuZcaXY
+         iToLrLYQhAya9U0Y2WlLLMS77bdKsYRcTc2JS/p2V1An5dCR7eLgPvyZ/fBRQxa6TcEm
+         lVSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTca8klfYTYX4lU/pXtYRBTj4CncPvWvMd2hTrH3Bl/A9PYvzgbGYIXNggmYkWkKrZ8jO5QKxZwGl2u6t8ZmO0U5vfQzzO2cfccA==
+X-Gm-Message-State: AOJu0YwqD4QRk2PWrwf7BfxpuayCAflkkmaRujpNoEAHKEbaYXP1NL/D
+	lRhunibWj1IFeheFLcs5xKKkXe+ZTQpGpZtWWeeeQgQgz2rCQ+qSfgw99ctDM0Y=
+X-Google-Smtp-Source: AGHT+IFP00lEVMK3ZoYagazXRbuD0jd0lzZYQqIAYWDPU+So3WVKQ11BgdI+7AOnv7sHvxT3s2Lbbg==
+X-Received: by 2002:a2e:87d6:0:b0:2e0:c6ec:bcf8 with SMTP id v22-20020a2e87d6000000b002e0c6ecbcf8mr1753294ljj.41.1714573620325;
+        Wed, 01 May 2024 07:27:00 -0700 (PDT)
+Received: from myrica ([2.221.137.100])
+        by smtp.gmail.com with ESMTPSA id p18-20020a7bcc92000000b0041bfa2171efsm2340897wma.40.2024.05.01.07.26.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 May 2024 07:26:59 -0700 (PDT)
+Date: Wed, 1 May 2024 15:27:12 +0100
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: Re: [PATCH v2 17/43] arm64: RME: Allow VMM to set RIPAS
+Message-ID: <20240501142712.GB484338@myrica>
+References: <20240412084056.1733704-1-steven.price@arm.com>
+ <20240412084309.1733783-1-steven.price@arm.com>
+ <20240412084309.1733783-18-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A2:EE_|DS0PR12MB8069:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf70d100-2436-4e2a-96da-08dc69be680f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|1800799015|82310400014|7416005|36860700004|376005;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KjOOh29vRC6UQhfcvYqHmaK2jwfQIFkqvW2fYq9f9UYbNn7NpN0MsdBz6TEx?=
- =?us-ascii?Q?iRZMX+ZApTODie6TuexahIhaQkZn2uql+AYWLG+MR3JQfgBS4UHVM/VGz3Qp?=
- =?us-ascii?Q?PT/Wy8mTdapZ127MsELvryob37ffCddL0ciloFk/lYslsa4PfBvh5n/2pGVz?=
- =?us-ascii?Q?8UPNUcoOleq6nPRahlodbGSx1cUw7GAUKXDX3H230ag3L1CdxoWpA0il0nDT?=
- =?us-ascii?Q?T9sKvIMmeAtEkL9tQvHKzaDUW6SQXAsTGMGdbu0Br/qXhJH5QPewCL9ec9hC?=
- =?us-ascii?Q?BacsSl0j8650azeUNc/O4AlMNd07U72e0nIrHYUCvbefGtQTm59yvSiiM7VP?=
- =?us-ascii?Q?hePO6eTg0/YlD2kEeSSEJlQ9rsvxvnoDD9Um0+DZuG8smQDr3wVhzvO6JmDy?=
- =?us-ascii?Q?z40mEjCKJkiOZBM5JRPJekgHcXdhKhIT/HagiwB91782xufKMOFT3EgtR1oF?=
- =?us-ascii?Q?eSrMx0uG4+ToxsCoA3bA8ZZmV1npoWOX8T69JUuBggt8AT1n2StcYd7fzrCA?=
- =?us-ascii?Q?HGyidTjL/Xyw7bNjd6JwmvKjMf0s3CCzeD1f/Z0jMUCUsLQZ/jG6hVukUMDf?=
- =?us-ascii?Q?HOg56C+n/1rCvBVCaMsznVEkiCH1xPZ9VbMNaiMf5op3PkBP0T2/7s9LTYks?=
- =?us-ascii?Q?UHdQrLByykPL1k8GyKtIzq2DCjtUoBpDTgI6HGnpMKG+40EcR1WA1d7LGT2p?=
- =?us-ascii?Q?TsELV7fQ3PTy5ucWPr6kjCpI1TRXREcGhIHKjkFtR0hVqfLXlyuQTPuvYwTL?=
- =?us-ascii?Q?cx4RaGjJra2y2jxxqiKMrPfrym9Y13mxqVsHmJB10z2mddxYWVQ+XLrDbK3I?=
- =?us-ascii?Q?RSdHyo8LNR/KMIoYXFPsfxHEAcDcT4x2zVzFq08Ig+mI3Y0hWQniCioTrL6G?=
- =?us-ascii?Q?rEOTkSIwRft/rkkfFRTgVzcpFMrFW/C5N3UqeqE8O3cuALxsPb/TRe64Iuym?=
- =?us-ascii?Q?xr1qXQgBjR4I/QFyAKkHusfM77fODSRUcXS3P1i/ewfj1i5kjfxBOOj52N2l?=
- =?us-ascii?Q?lgdFxDKMgvdx645XwPXXNjnVG8q1Jii72PyGNax7fq73TctNsJOUKjOX2rPp?=
- =?us-ascii?Q?t0ZUMEPeWmo6ppE9IFD3BrHcOKuVv/mMYlHsJsTGAYw4C7dLndeXEY8Cjq/s?=
- =?us-ascii?Q?qIDWVetJAYk+5IoN2v9U+2Pkf/Qv8mMpp9Pa8JgWcJULy8teLX1aloN/ljmp?=
- =?us-ascii?Q?Oj0RU5GS8JrubOf61nbkHtH94W97sq4yex7eI2ly+xD4JA1TPERa6a8H3Qqq?=
- =?us-ascii?Q?sD0RqWywdBYEZtiBPDTOSMsIo5xLV9ppFFlyDluWEXLPihXw/NwGmzDkaUOU?=
- =?us-ascii?Q?wEzaY5XhrpNApfuNDmzY0Q0vDFClr+FSYjnCvK6KkZvPG9wjty4bfPZK8OA0?=
- =?us-ascii?Q?9ybwuE2AXrwv2di4ufaUm3qytcZb?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(1800799015)(82310400014)(7416005)(36860700004)(376005);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2024 09:09:28.9697
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf70d100-2436-4e2a-96da-08dc69be680f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000044A2.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8069
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240412084309.1733783-18-steven.price@arm.com>
 
-From: Brijesh Singh <brijesh.singh@amd.com>
+On Fri, Apr 12, 2024 at 09:42:43AM +0100, Steven Price wrote:
+> +static inline bool realm_is_addr_protected(struct realm *realm,
+> +					   unsigned long addr)
+> +{
+> +	unsigned int ia_bits = realm->ia_bits;
+> +
+> +	return !(addr & ~(BIT(ia_bits - 1) - 1));
 
-SEV-SNP guests are required to perform a GHCB GPA registration. Before
-using a GHCB GPA for a vCPU the first time, a guest must register the
-vCPU GHCB GPA. If hypervisor can work with the guest requested GPA then
-it must respond back with the same GPA otherwise return -1.
+Is it enough to return !(addr & BIT(realm->ia_bits - 1))?
 
-On VMEXIT, verify that the GHCB GPA matches with the registered value.
-If a mismatch is detected, then abort the guest.
+> +static void realm_unmap_range_shared(struct kvm *kvm,
+> +				     int level,
+> +				     unsigned long start,
+> +				     unsigned long end)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	unsigned long rd = virt_to_phys(realm->rd);
+> +	ssize_t map_size = rme_rtt_level_mapsize(level);
+> +	unsigned long next_addr, addr;
+> +	unsigned long shared_bit = BIT(realm->ia_bits - 1);
+> +
+> +	if (WARN_ON(level > RME_RTT_MAX_LEVEL))
+> +		return;
+> +
+> +	start |= shared_bit;
+> +	end |= shared_bit;
+> +
+> +	for (addr = start; addr < end; addr = next_addr) {
+> +		unsigned long align_addr = ALIGN(addr, map_size);
+> +		int ret;
+> +
+> +		next_addr = ALIGN(addr + 1, map_size);
+> +
+> +		if (align_addr != addr || next_addr > end) {
+> +			/* Need to recurse deeper */
+> +			if (addr < align_addr)
+> +				next_addr = align_addr;
+> +			realm_unmap_range_shared(kvm, level + 1, addr,
+> +						 min(next_addr, end));
+> +			continue;
+> +		}
+> +
+> +		ret = rmi_rtt_unmap_unprotected(rd, addr, level, &next_addr);
+> +		switch (RMI_RETURN_STATUS(ret)) {
+> +		case RMI_SUCCESS:
+> +			break;
+> +		case RMI_ERROR_RTT:
+> +			if (next_addr == addr) {
+> +				next_addr = ALIGN(addr + 1, map_size);
+> +				realm_unmap_range_shared(kvm, level + 1, addr,
+> +							 next_addr);
+> +			}
+> +			break;
+> +		default:
+> +			WARN_ON(1);
 
-Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
----
- arch/x86/include/asm/sev-common.h |  8 ++++++
- arch/x86/kvm/svm/sev.c            | 48 +++++++++++++++++++++++++++----
- arch/x86/kvm/svm/svm.h            |  7 +++++
- 3 files changed, 57 insertions(+), 6 deletions(-)
+In this case we also need to return, because RMM returns with next_addr ==
+0, causing an infinite loop. At the moment a VMM can trigger this easily
+by creating guest memfd before creating a RD, see below
 
-diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-index 5a8246dd532f..1006bfffe07a 100644
---- a/arch/x86/include/asm/sev-common.h
-+++ b/arch/x86/include/asm/sev-common.h
-@@ -59,6 +59,14 @@
- #define GHCB_MSR_AP_RESET_HOLD_RESULT_POS	12
- #define GHCB_MSR_AP_RESET_HOLD_RESULT_MASK	GENMASK_ULL(51, 0)
- 
-+/* Preferred GHCB GPA Request */
-+#define GHCB_MSR_PREF_GPA_REQ		0x010
-+#define GHCB_MSR_GPA_VALUE_POS		12
-+#define GHCB_MSR_GPA_VALUE_MASK		GENMASK_ULL(51, 0)
-+
-+#define GHCB_MSR_PREF_GPA_RESP		0x011
-+#define GHCB_MSR_PREF_GPA_NONE		0xfffffffffffff
-+
- /* GHCB GPA Register */
- #define GHCB_MSR_REG_GPA_REQ		0x012
- #define GHCB_MSR_REG_GPA_REQ_VAL(v)			\
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 797230f810f8..e1ac5af4cb74 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3540,6 +3540,32 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
- 		set_ghcb_msr_bits(svm, GHCB_MSR_HV_FT_RESP,
- 				  GHCB_MSR_INFO_MASK, GHCB_MSR_INFO_POS);
- 		break;
-+	case GHCB_MSR_PREF_GPA_REQ:
-+		if (!sev_snp_guest(vcpu->kvm))
-+			goto out_terminate;
-+
-+		set_ghcb_msr_bits(svm, GHCB_MSR_PREF_GPA_NONE, GHCB_MSR_GPA_VALUE_MASK,
-+				  GHCB_MSR_GPA_VALUE_POS);
-+		set_ghcb_msr_bits(svm, GHCB_MSR_PREF_GPA_RESP, GHCB_MSR_INFO_MASK,
-+				  GHCB_MSR_INFO_POS);
-+		break;
-+	case GHCB_MSR_REG_GPA_REQ: {
-+		u64 gfn;
-+
-+		if (!sev_snp_guest(vcpu->kvm))
-+			goto out_terminate;
-+
-+		gfn = get_ghcb_msr_bits(svm, GHCB_MSR_GPA_VALUE_MASK,
-+					GHCB_MSR_GPA_VALUE_POS);
-+
-+		svm->sev_es.ghcb_registered_gpa = gfn_to_gpa(gfn);
-+
-+		set_ghcb_msr_bits(svm, gfn, GHCB_MSR_GPA_VALUE_MASK,
-+				  GHCB_MSR_GPA_VALUE_POS);
-+		set_ghcb_msr_bits(svm, GHCB_MSR_REG_GPA_RESP, GHCB_MSR_INFO_MASK,
-+				  GHCB_MSR_INFO_POS);
-+		break;
-+	}
- 	case GHCB_MSR_TERM_REQ: {
- 		u64 reason_set, reason_code;
- 
-@@ -3552,12 +3578,7 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
- 		pr_info("SEV-ES guest requested termination: %#llx:%#llx\n",
- 			reason_set, reason_code);
- 
--		vcpu->run->exit_reason = KVM_EXIT_SYSTEM_EVENT;
--		vcpu->run->system_event.type = KVM_SYSTEM_EVENT_SEV_TERM;
--		vcpu->run->system_event.ndata = 1;
--		vcpu->run->system_event.data[0] = control->ghcb_gpa;
--
--		return 0;
-+		goto out_terminate;
- 	}
- 	default:
- 		/* Error, keep GHCB MSR value as-is */
-@@ -3568,6 +3589,14 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
- 					    control->ghcb_gpa, ret);
- 
- 	return ret;
-+
-+out_terminate:
-+	vcpu->run->exit_reason = KVM_EXIT_SYSTEM_EVENT;
-+	vcpu->run->system_event.type = KVM_SYSTEM_EVENT_SEV_TERM;
-+	vcpu->run->system_event.ndata = 1;
-+	vcpu->run->system_event.data[0] = control->ghcb_gpa;
-+
-+	return 0;
- }
- 
- int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
-@@ -3603,6 +3632,13 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 	trace_kvm_vmgexit_enter(vcpu->vcpu_id, svm->sev_es.ghcb);
- 
- 	sev_es_sync_from_ghcb(svm);
-+
-+	/* SEV-SNP guest requires that the GHCB GPA must be registered */
-+	if (sev_snp_guest(svm->vcpu.kvm) && !ghcb_gpa_is_registered(svm, ghcb_gpa)) {
-+		vcpu_unimpl(&svm->vcpu, "vmgexit: GHCB GPA [%#llx] is not registered.\n", ghcb_gpa);
-+		return -EINVAL;
-+	}
-+
- 	ret = sev_es_validate_vmgexit(svm);
- 	if (ret)
- 		return ret;
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index d175059fa7c8..bbfbeed4c676 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -209,6 +209,8 @@ struct vcpu_sev_es_state {
- 	u32 ghcb_sa_len;
- 	bool ghcb_sa_sync;
- 	bool ghcb_sa_free;
-+
-+	u64 ghcb_registered_gpa;
- };
- 
- struct vcpu_svm {
-@@ -362,6 +364,11 @@ static __always_inline bool sev_snp_guest(struct kvm *kvm)
- #endif
- }
- 
-+static inline bool ghcb_gpa_is_registered(struct vcpu_svm *svm, u64 val)
-+{
-+	return svm->sev_es.ghcb_registered_gpa == val;
-+}
-+
- static inline void vmcb_mark_all_dirty(struct vmcb *vmcb)
- {
- 	vmcb->control.clean = 0;
--- 
-2.25.1
+> +		}
+> +	}
+> +}
+> +
+> +static void realm_unmap_range_private(struct kvm *kvm,
+> +				      unsigned long start,
+> +				      unsigned long end)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	ssize_t map_size = RME_PAGE_SIZE;
+> +	unsigned long next_addr, addr;
+> +
+> +	for (addr = start; addr < end; addr = next_addr) {
+> +		int ret;
+> +
+> +		next_addr = ALIGN(addr + 1, map_size);
+> +
+> +		ret = realm_destroy_protected(realm, addr, &next_addr);
+> +
+> +		if (WARN_ON(ret))
+> +			break;
+> +	}
+> +}
+> +
+> +static void realm_unmap_range(struct kvm *kvm,
+> +			      unsigned long start,
+> +			      unsigned long end,
+> +			      bool unmap_private)
+> +{
 
+Should this check for a valid kvm->arch.realm.rd, or a valid realm state?
+I'm not sure what the best place is but none of the RMM calls will succeed
+if the RD is NULL, causing some WARNs.
+
+I can trigger this with set_memory_attributes() ioctls before creating a
+RD for example.
+
+> +	realm_unmap_range_shared(kvm, RME_RTT_MAX_LEVEL - 1, start, end);
+> +	if (unmap_private)
+> +		realm_unmap_range_private(kvm, start, end);
+> +}
+> +
+>  u32 kvm_realm_ipa_limit(void)
+>  {
+>  	return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_S2SZ);
+> @@ -190,6 +341,30 @@ static int realm_rtt_destroy(struct realm *realm, unsigned long addr,
+>  	return ret;
+>  }
+>  
+> +static int realm_create_rtt_levels(struct realm *realm,
+> +				   unsigned long ipa,
+> +				   int level,
+> +				   int max_level,
+> +				   struct kvm_mmu_memory_cache *mc)
+> +{
+> +	if (WARN_ON(level == max_level))
+> +		return 0;
+> +
+> +	while (level++ < max_level) {
+> +		phys_addr_t rtt = alloc_delegated_page(realm, mc);
+> +
+> +		if (rtt == PHYS_ADDR_MAX)
+> +			return -ENOMEM;
+> +
+> +		if (realm_rtt_create(realm, ipa, level, rtt)) {
+> +			free_delegated_page(realm, rtt);
+> +			return -ENXIO;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static int realm_tear_down_rtt_level(struct realm *realm, int level,
+>  				     unsigned long start, unsigned long end)
+>  {
+> @@ -265,6 +440,68 @@ static int realm_tear_down_rtt_range(struct realm *realm,
+>  					 start, end);
+>  }
+>  
+> +/*
+> + * Returns 0 on successful fold, a negative value on error, a positive value if
+> + * we were not able to fold all tables at this level.
+> + */
+> +static int realm_fold_rtt_level(struct realm *realm, int level,
+> +				unsigned long start, unsigned long end)
+> +{
+> +	int not_folded = 0;
+> +	ssize_t map_size;
+> +	unsigned long addr, next_addr;
+> +
+> +	if (WARN_ON(level > RME_RTT_MAX_LEVEL))
+> +		return -EINVAL;
+> +
+> +	map_size = rme_rtt_level_mapsize(level - 1);
+> +
+> +	for (addr = start; addr < end; addr = next_addr) {
+> +		phys_addr_t rtt_granule;
+> +		int ret;
+> +		unsigned long align_addr = ALIGN(addr, map_size);
+> +
+> +		next_addr = ALIGN(addr + 1, map_size);
+> +
+> +		ret = realm_rtt_fold(realm, align_addr, level, &rtt_granule);
+> +
+> +		switch (RMI_RETURN_STATUS(ret)) {
+> +		case RMI_SUCCESS:
+> +			if (!WARN_ON(rmi_granule_undelegate(rtt_granule)))
+> +				free_page((unsigned long)phys_to_virt(rtt_granule));
+> +			break;
+> +		case RMI_ERROR_RTT:
+> +			if (level == RME_RTT_MAX_LEVEL ||
+> +			    RMI_RETURN_INDEX(ret) < level) {
+> +				not_folded++;
+> +				break;
+> +			}
+> +			/* Recurse a level deeper */
+> +			ret = realm_fold_rtt_level(realm,
+> +						   level + 1,
+> +						   addr,
+> +						   next_addr);
+> +			if (ret < 0)
+> +				return ret;
+> +			else if (ret == 0)
+> +				/* Try again at this level */
+> +				next_addr = addr;
+> +			break;
+> +		default:
+
+Maybe this also deserves a WARN() to be consistent with the other RMI
+calls
+
+Thanks,
+Jean
+
+> +			return -ENXIO;
+> +		}
+> +	}
+> +
+> +	return not_folded;
+> +}
