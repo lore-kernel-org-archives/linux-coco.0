@@ -1,122 +1,445 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCF31527BC
-	for <linux-coco@lists.linux.dev>; Tue, 30 Apr 2024 14:49:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBEC2576B
+	for <linux-coco@lists.linux.dev>; Wed,  1 May 2024 05:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714488556; cv=none; b=eZ2Eyn0+Xbmdm3JzTR9CDnzQc/f+u29zfApuTa4SGBHn9pn8jOYCaiPFKTwFbc0QISMrCFwc1cnTTO4uQhTvF/ER1g4uP0dNdBk8MZ7hzsBdNE13eReTJUdWxuE45YBCMZXMd78ZJsPp++fKXKLdlnYmsWeArnn0Vj8F7kI4GzM=
+	t=1714540740; cv=none; b=sSX8Glno107DjMS11Q+IF9u72vjWQZfUhDjmbDFsaxItwEK/LMubw+DkLHsJ523NGDbYt3XoMyo3yYcU9Fl3qxmavQlnya6SiiozsbpgwvdRpzmrwlGra9k7XfadZhU+pjOjmvUbT6JZjcAyJFJv294hGv+qtdzNpw76nZ7RQ1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714488556; c=relaxed/simple;
-	bh=D8fOR3tKfUk/VedpB6Kp/qfPdRU/1bC9Ahf877NrOig=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YLdZ5C1lQSJ1Bmzajs3q/sPTShHFfDajYFBU7u82F/NPeIbanPutN8kqBkER/gxggZhfp8XqWA5tCOFevCoF0eeNe+4xkLvLipGMbfGUspGSaeoDpqS+RYjIqanCDuOH/MLKTc7UXavGNybZCY8m5/VRwkoDtPgi7cEf5rfNNv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z7HekdCa; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z7HekdCa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714488555; x=1746024555;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=D8fOR3tKfUk/VedpB6Kp/qfPdRU/1bC9Ahf877NrOig=;
-  b=Z7HekdCalqrGaUJTwNqA0r5lCyoLDTsBr9dVSkaRUq/XXKG+iKz+tAD6
-   8AIf5iVTQCXWGsf2asNLKaulXmulJxv6BMw0Z2SVloaPu9IEwEVJfNVyD
-   maZzRv9gvPHar+BH/Gp+tuG0RDYwhj8mlLA+qMxpWNHIxmscfpvHZAwFu
-   GN4k30yqrcbFYOrmJloXllM7dl3Izqwv/iLs3BLP1q2PWNX/ROUyeNYpe
-   THv91dLgBf642LIpwpuBKLcdJmoBT8mtgS2nffWYe/aVfJeeQuOpoZTWy
-   JM7aY/OuQFP1X8SiD/ZhjpYy0e6u/LWOEDNwhoAKWXjZ+lPtTXHsjWdKt
-   g==;
-X-CSE-ConnectionGUID: sWyu89YITrqHX6oTf5ijBg==
-X-CSE-MsgGUID: ORLIV5EES2aso+tc99sZeA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="21350244"
-X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
-   d="scan'208";a="21350244"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 07:49:15 -0700
-X-CSE-ConnectionGUID: cK5AUJaAQWiWfFZrIJ3DXA==
-X-CSE-MsgGUID: JhJfI17xS8CacJcZ6ZtrSw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
-   d="scan'208";a="31280904"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa004.jf.intel.com with ESMTP; 30 Apr 2024 07:49:09 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 4FF831A1; Tue, 30 Apr 2024 17:49:08 +0300 (EEST)
-Date: Tue, 30 Apr 2024 17:49:08 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv10 05/18] x86/kexec: Keep CR4.MCE set during kexec for
- TDX guest
-Message-ID: <rneuozes2fafzowtyftfhsqznapdr4tlfwpd5bbuw5ssvflaxo@fq3ufljshsid>
-References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <20240409113010.465412-6-kirill.shutemov@linux.intel.com>
- <20240430130323.GAZjDsG00Xdhv5mv8W@fat_crate.local>
+	s=arc-20240116; t=1714540740; c=relaxed/simple;
+	bh=JgICzKVbJRnODiyB5g1upUhOIHo9/RiVH5oOIbufmro=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dkDaoxXRwjEKsaCuI/raZXF8FVPZqIaPDc2dmAbWdhER6CvQ09LU2mrrthm3/W3p1064GEEqNKzTkjYQIzZUaJL+KECbk0cGwBiLXENgwaTpD8TDZmhuLkWKEwZp5cldtN1AX72mbQjBTeKGWfZL+Xr0GEZ7oYwKCjoLmvHhA14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-56e69a51a33so5835277a12.1
+        for <linux-coco@lists.linux.dev>; Tue, 30 Apr 2024 22:18:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714540736; x=1715145536;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=A9A42FpUeKl1h0kZk+VbwTD7dQutb/e2LYnEIBUFaLI=;
+        b=BzfrmMkm3KADcQCqGc7ZZk/4fLZdmbLphGOpd+sxYibPhC4Rcd5PoYEG5s1JHBcT3B
+         G7bCWRlGsW2wpRD8V40ifjz+lDsHBnwHO0i+oDQxpxcOzRh0Vk6MSYgDfKdTkJLqWNGy
+         pHAuhaiETREbOYw9JK39rL3Ht9PcfpeAZOCVMqOARmAAosEtWvPaAqfymBdz74eyWG9T
+         8Y8kWOIrGqnNXxkNhUabcTjhMNueViD0vt/YjV+JBybpaYle4421k1e8E1C0BokPhnjt
+         fCbe1UMFGNGQNJDZQal7lc25aLz7YhskuI5cQgmCdRrpZT0kB4sHIjOJeaR7WqASa+1h
+         gnqw==
+X-Forwarded-Encrypted: i=1; AJvYcCU++TJs9jJvKROEfi9440Fq3I/1OYYDpscaH/KoaGzp8pye6UEYVxx+rHdh5BhbaNp08PREdqvGdeuzSgi8qI9rO6pf1xKtZbyz7A==
+X-Gm-Message-State: AOJu0YxcSTEx4w0cIVk2i5FnpQ6R+3djpHG3S/rgVvKyxvjQF4Q21V7B
+	EsFN/KsqXSFpE1EKLczEoJRGBngxKpWQ6wgwqzrMpL2Wu0Nc8lH2TsNQN3y2
+X-Google-Smtp-Source: AGHT+IHSxilmVQBsmjLzoM/rs2HHxn2U/WB+dOJ0WGwFDfRnhL3WkEinwM61lnmR0+5ZGF+YnjZizw==
+X-Received: by 2002:a50:d617:0:b0:56d:c295:dde3 with SMTP id x23-20020a50d617000000b0056dc295dde3mr1283935edi.35.1714540735547;
+        Tue, 30 Apr 2024 22:18:55 -0700 (PDT)
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com. [209.85.208.46])
+        by smtp.gmail.com with ESMTPSA id j2-20020aa7de82000000b005720e083878sm10334028edv.49.2024.04.30.22.18.55
+        for <linux-coco@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Apr 2024 22:18:55 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-56e69a51a33so5835266a12.1
+        for <linux-coco@lists.linux.dev>; Tue, 30 Apr 2024 22:18:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVGOFMEy4FxNIBsTUgG0mch2pJU9Y5vtC+lkUcPWMuv2pVSaVkiiTNRtaC7hBIhH84bkVqiqd/9VUOTHgxBJgWVQPyM4b3vdtG4Yw==
+X-Received: by 2002:a17:906:3757:b0:a58:d7d8:2f4d with SMTP id
+ e23-20020a170906375700b00a58d7d82f4dmr1237941ejc.61.1714540734910; Tue, 30
+ Apr 2024 22:18:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240430130323.GAZjDsG00Xdhv5mv8W@fat_crate.local>
+References: <cover.1713974291.git.thomas.lendacky@amd.com> <e3143c1f3d0b26fcd8884c6f75644b634a7138e8.1713974291.git.thomas.lendacky@amd.com>
+In-Reply-To: <e3143c1f3d0b26fcd8884c6f75644b634a7138e8.1713974291.git.thomas.lendacky@amd.com>
+Reply-To: sathyanarayanan.kuppuswamy@linux.intel.com
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Date: Tue, 30 Apr 2024 22:18:43 -0700
+X-Gmail-Original-Message-ID: <CAC41dw-g2=jKkevGOJUqnzYTpxQ8+Z_JxnNNuoLR+CM_yqfRzA@mail.gmail.com>
+Message-ID: <CAC41dw-g2=jKkevGOJUqnzYTpxQ8+Z_JxnNNuoLR+CM_yqfRzA@mail.gmail.com>
+Subject: Re: [PATCH v4 13/15] x86/sev: Take advantage of configfs visibility
+ support in TSM
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	svsm-devel@coconut-svsm.dev, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Dan Williams <dan.j.williams@intel.com>, Michael Roth <michael.roth@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 30, 2024 at 03:03:23PM +0200, Borislav Petkov wrote:
-> On Tue, Apr 09, 2024 at 02:29:57PM +0300, Kirill A. Shutemov wrote:
-> > +1:
-> > +	testq	$X86_CR4_MCE, %r13
-> > +	jz	1f
-> > +	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %eax), X86_FEATURE_TDX_GUEST
-> >  1:
-> 
-> Please add the below patch to your set. Those same-number labels are
-> just abominable.
-> 
-> Thx.
-> 
+On Wed, Apr 24, 2024 at 9:00=E2=80=AFAM Tom Lendacky <thomas.lendacky@amd.c=
+om> wrote:
+>
+> The TSM attestation report support provides multiple configfs attribute
+> types (both for standard and binary attributes) to allow for additional
+> attributes to be displayed for SNP as compared to TDX. With the ability
+> to hide attributes via configfs, consoldate the multiple attribute groups
+> into a single standard attribute group and a single binary attribute
+> group. Modify the TDX support to hide the attributes that were previously
+> "hidden" as a result of registering the selective attribute groups.
+>
+> Co-developed-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 > ---
-> From: "Borislav Petkov (AMD)" <bp@alien8.de>
-> Date: Tue, 30 Apr 2024 15:00:16 +0200
-> Subject: [PATCH] x86/relocate_kernel: Use named labels for less confusion
-> 
-> That identity_mapped() function was loving that "1" label to the point
-> of completely confusing its readers.
-> 
-> Use named labels in each place for clarity.
-> 
-> No functional changes.
-> 
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> ---
->  arch/x86/kernel/relocate_kernel_64.S | 18 ++++++++++--------
->  1 file changed, 10 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
-> index 8e2037d78a1f..0077c9e562a7 100644
-> --- a/arch/x86/kernel/relocate_kernel_64.S
-> +++ b/arch/x86/kernel/relocate_kernel_64.S
-> @@ -152,13 +152,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
->  	 */
->  	movl	$X86_CR4_PAE, %eax
->  	testq	$X86_CR4_LA57, %r13
-> -	jz	1f
-> +	jz	no_la57
->  	orl	$X86_CR4_LA57, %eax
-> -1:
-> +no_la57:
+>  drivers/virt/coco/sev-guest/sev-guest.c |  3 +-
+>  drivers/virt/coco/tdx-guest/tdx-guest.c | 29 ++++++++-
+>  drivers/virt/coco/tsm.c                 | 82 ++++++++++++-------------
+>  include/linux/tsm.h                     | 41 ++++++++++---
+>  4 files changed, 102 insertions(+), 53 deletions(-)
+>
+> diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/=
+sev-guest/sev-guest.c
+> index 2abb51bd034f..ec3d894cfe31 100644
+> --- a/drivers/virt/coco/sev-guest/sev-guest.c
+> +++ b/drivers/virt/coco/sev-guest/sev-guest.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/sockptr.h>
+>  #include <linux/cleanup.h>
+>  #include <linux/uuid.h>
+> +#include <linux/configfs.h>
+>  #include <uapi/linux/sev-guest.h>
+>  #include <uapi/linux/psp-sev.h>
+>
+> @@ -975,7 +976,7 @@ static int __init sev_guest_probe(struct platform_dev=
+ice *pdev)
+>         /* Set the privlevel_floor attribute based on the vmpck_id */
+>         sev_tsm_ops.privlevel_floor =3D vmpck_id;
+>
+> -       ret =3D tsm_register(&sev_tsm_ops, snp_dev, &tsm_report_extra_typ=
+e);
+> +       ret =3D tsm_register(&sev_tsm_ops, snp_dev);
+>         if (ret)
+>                 goto e_free_cert_data;
+>
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/=
+tdx-guest/tdx-guest.c
+> index 1253bf76b570..964af57f345c 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/delay.h>
+>  #include <linux/tsm.h>
+>  #include <linux/sizes.h>
+> +#include <linux/configfs.h>
+>
+>  #include <uapi/linux/tdx-guest.h>
+>
+> @@ -249,6 +250,30 @@ static int tdx_report_new(struct tsm_report *report,=
+ void *data)
+>         return ret;
+>  }
+>
+> +static bool tdx_report_attr_visible(struct config_item *item,
+> +                                   struct configfs_attribute *attr, int =
+n)
+> +{
+> +       switch (n) {
+> +       case TSM_REPORT_GENERATION:
+> +       case TSM_REPORT_PROVIDER:
+> +               return true;
+> +       }
+> +
+> +       return false;
+> +}
+> +
+> +static bool tdx_report_bin_attr_visible(struct config_item *item,
+> +                                       struct configfs_bin_attribute *at=
+tr, int n)
+> +{
+> +       switch (n) {
+> +       case TSM_REPORT_INBLOB:
+> +       case TSM_REPORT_OUTBLOB:
+> +               return true;
+> +       }
+> +
+> +       return false;
+> +}
+> +
+>  static long tdx_guest_ioctl(struct file *file, unsigned int cmd,
+>                             unsigned long arg)
+>  {
+> @@ -281,6 +306,8 @@ MODULE_DEVICE_TABLE(x86cpu, tdx_guest_ids);
+>  static const struct tsm_ops tdx_tsm_ops =3D {
+>         .name =3D KBUILD_MODNAME,
+>         .report_new =3D tdx_report_new,
+> +       .report_attr_visible =3D tdx_report_attr_visible,
+> +       .report_bin_attr_visible =3D tdx_report_bin_attr_visible,
+>  };
+>
+>  static int __init tdx_guest_init(void)
+> @@ -301,7 +328,7 @@ static int __init tdx_guest_init(void)
+>                 goto free_misc;
+>         }
+>
+> -       ret =3D tsm_register(&tdx_tsm_ops, NULL, NULL);
+> +       ret =3D tsm_register(&tdx_tsm_ops, NULL);
+>         if (ret)
+>                 goto free_quote;
+>
+> diff --git a/drivers/virt/coco/tsm.c b/drivers/virt/coco/tsm.c
+> index d1c2db83a8ca..dedb4f582630 100644
+> --- a/drivers/virt/coco/tsm.c
+> +++ b/drivers/virt/coco/tsm.c
+> @@ -14,7 +14,6 @@
+>
+>  static struct tsm_provider {
+>         const struct tsm_ops *ops;
+> -       const struct config_item_type *type;
+>         void *data;
+>  } provider;
+>  static DECLARE_RWSEM(tsm_rwsem);
+> @@ -252,34 +251,18 @@ static ssize_t tsm_report_auxblob_read(struct confi=
+g_item *cfg, void *buf,
+>  }
+>  CONFIGFS_BIN_ATTR_RO(tsm_report_, auxblob, NULL, TSM_OUTBLOB_MAX);
+>
+> -#define TSM_DEFAULT_ATTRS() \
+> -       &tsm_report_attr_generation, \
+> -       &tsm_report_attr_provider
+> -
+>  static struct configfs_attribute *tsm_report_attrs[] =3D {
+> -       TSM_DEFAULT_ATTRS(),
+> +       [TSM_REPORT_GENERATION] =3D &tsm_report_attr_generation,
+> +       [TSM_REPORT_PROVIDER] =3D &tsm_report_attr_provider,
+> +       [TSM_REPORT_PRIVLEVEL] =3D &tsm_report_attr_privlevel,
+> +       [TSM_REPORT_PRIVLEVEL_FLOOR] =3D &tsm_report_attr_privlevel_floor=
+,
+>         NULL,
+>  };
+>
+> -static struct configfs_attribute *tsm_report_extra_attrs[] =3D {
+> -       TSM_DEFAULT_ATTRS(),
+> -       &tsm_report_attr_privlevel,
+> -       &tsm_report_attr_privlevel_floor,
+> -       NULL,
+> -};
+> -
+> -#define TSM_DEFAULT_BIN_ATTRS() \
+> -       &tsm_report_attr_inblob, \
+> -       &tsm_report_attr_outblob
+> -
+>  static struct configfs_bin_attribute *tsm_report_bin_attrs[] =3D {
+> -       TSM_DEFAULT_BIN_ATTRS(),
+> -       NULL,
+> -};
+> -
+> -static struct configfs_bin_attribute *tsm_report_bin_extra_attrs[] =3D {
+> -       TSM_DEFAULT_BIN_ATTRS(),
+> -       &tsm_report_attr_auxblob,
+> +       [TSM_REPORT_INBLOB] =3D &tsm_report_attr_inblob,
+> +       [TSM_REPORT_OUTBLOB] =3D &tsm_report_attr_outblob,
+> +       [TSM_REPORT_AUXBLOB] =3D &tsm_report_attr_auxblob,
+>         NULL,
+>  };
+>
+> @@ -297,21 +280,12 @@ static struct configfs_item_operations tsm_report_i=
+tem_ops =3D {
+>         .release =3D tsm_report_item_release,
+>  };
+>
+> -const struct config_item_type tsm_report_default_type =3D {
+> +static const struct config_item_type tsm_report_type =3D {
+>         .ct_owner =3D THIS_MODULE,
+>         .ct_bin_attrs =3D tsm_report_bin_attrs,
+>         .ct_attrs =3D tsm_report_attrs,
+>         .ct_item_ops =3D &tsm_report_item_ops,
+>  };
+> -EXPORT_SYMBOL_GPL(tsm_report_default_type);
+> -
+> -const struct config_item_type tsm_report_extra_type =3D {
+> -       .ct_owner =3D THIS_MODULE,
+> -       .ct_bin_attrs =3D tsm_report_bin_extra_attrs,
+> -       .ct_attrs =3D tsm_report_extra_attrs,
+> -       .ct_item_ops =3D &tsm_report_item_ops,
+> -};
+> -EXPORT_SYMBOL_GPL(tsm_report_extra_type);
+>
+>  static struct config_item *tsm_report_make_item(struct config_group *gro=
+up,
+>                                                 const char *name)
+> @@ -326,12 +300,40 @@ static struct config_item *tsm_report_make_item(str=
+uct config_group *group,
+>         if (!state)
+>                 return ERR_PTR(-ENOMEM);
+>
+> -       config_item_init_type_name(&state->cfg, name, provider.type);
+> +       config_item_init_type_name(&state->cfg, name, &tsm_report_type);
+>         return &state->cfg;
+>  }
+>
+> +static bool tsm_report_is_visible(struct config_item *item,
+> +                                 struct configfs_attribute *attr, int n)
+> +{
+> +       guard(rwsem_read)(&tsm_rwsem);
+> +       if (!provider.ops)
+> +               return false;
+> +
+> +       if (!provider.ops->report_attr_visible)
+> +               return true;
+> +
+> +       return provider.ops->report_attr_visible(item, attr, n);
+> +}
+> +
+> +static bool tsm_report_is_bin_visible(struct config_item *item,
+> +                                     struct configfs_bin_attribute *attr=
+, int n)
+> +{
+> +       guard(rwsem_read)(&tsm_rwsem);
+> +       if (!provider.ops)
+> +               return false;
+> +
+> +       if (!provider.ops->report_bin_attr_visible)
+> +               return true;
+> +
+> +       return provider.ops->report_bin_attr_visible(item, attr, n);
+> +}
+> +
+>  static struct configfs_group_operations tsm_report_group_ops =3D {
+>         .make_item =3D tsm_report_make_item,
+> +       .is_visible =3D tsm_report_is_visible,
+> +       .is_bin_visible =3D tsm_report_is_bin_visible,
+>  };
+>
+>  static const struct config_item_type tsm_reports_type =3D {
+> @@ -353,16 +355,10 @@ static struct configfs_subsystem tsm_configfs =3D {
+>         .su_mutex =3D __MUTEX_INITIALIZER(tsm_configfs.su_mutex),
+>  };
+>
+> -int tsm_register(const struct tsm_ops *ops, void *priv,
+> -                const struct config_item_type *type)
+> +int tsm_register(const struct tsm_ops *ops, void *priv)
+>  {
+>         const struct tsm_ops *conflict;
+>
+> -       if (!type)
+> -               type =3D &tsm_report_default_type;
+> -       if (!(type =3D=3D &tsm_report_default_type || type =3D=3D &tsm_re=
+port_extra_type))
+> -               return -EINVAL;
+> -
+>         guard(rwsem_write)(&tsm_rwsem);
+>         conflict =3D provider.ops;
+>         if (conflict) {
+> @@ -372,7 +368,6 @@ int tsm_register(const struct tsm_ops *ops, void *pri=
+v,
+>
+>         provider.ops =3D ops;
+>         provider.data =3D priv;
+> -       provider.type =3D type;
+>         return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(tsm_register);
+> @@ -384,7 +379,6 @@ int tsm_unregister(const struct tsm_ops *ops)
+>                 return -EBUSY;
+>         provider.ops =3D NULL;
+>         provider.data =3D NULL;
+> -       provider.type =3D NULL;
+>         return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(tsm_unregister);
+> diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+> index 50c5769657d8..fa19291a9854 100644
+> --- a/include/linux/tsm.h
+> +++ b/include/linux/tsm.h
+> @@ -4,6 +4,7 @@
+>
+>  #include <linux/sizes.h>
+>  #include <linux/types.h>
+> +#include <linux/configfs.h>
+>
+>  #define TSM_INBLOB_MAX 64
+>  #define TSM_OUTBLOB_MAX SZ_32K
+> @@ -42,12 +43,40 @@ struct tsm_report {
+>         u8 *auxblob;
+>  };
+>
+> +/**
+> + * enum tsm_attr_index - index used to reference report attributes
+> + * @TSM_REPORT_GENERATION: index of the report generation number attribu=
+te
+> + * @TSM_REPORT_PROVIDER: index of the provider name attribute
+> + * @TSM_REPORT_PRIVLEVEL: index of the desired privilege level attribute
+> + * @TSM_REPORT_PRIVLEVEL_FLOOR: index of the minimum allowed privileg le=
+vel attribute
 
-I assume all of these new labels have to be prefixed with ".L", right?
+/s/privleg/privlege
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> + */
+> +enum tsm_attr_index {
+> +       TSM_REPORT_GENERATION,
+
+Do we need an index for the generation attribute ? Since it is a core
+function, we can allow it by default.
+
+> +       TSM_REPORT_PROVIDER,
+
+Same as above.
+
+> +       TSM_REPORT_PRIVLEVEL,
+> +       TSM_REPORT_PRIVLEVEL_FLOOR,
+> +};
+> +
+> +/**
+> + * enum tsm_bin_attr_index - index used to reference binary report attri=
+butes
+> + * @TSM_REPORT_INBLOB: index of the binary report input attribute
+> + * @TSM_REPORT_OUTBLOB: index of the binary report output attribute
+> + * @TSM_REPORT_AUXBLOB: index of the binary auxiliary data attribute
+> + */
+> +enum tsm_bin_attr_index {
+> +       TSM_REPORT_INBLOB,
+> +       TSM_REPORT_OUTBLOB,
+> +       TSM_REPORT_AUXBLOB,
+> +};
+
+Why differentiate between bin attr and regular attr? Why not use the same e=
+num?
+
+> +
+>  /**
+>   * struct tsm_ops - attributes and operations for tsm instances
+>   * @name: tsm id reflected in /sys/kernel/config/tsm/report/$report/prov=
+ider
+>   * @privlevel_floor: convey base privlevel for nested scenarios
+>   * @report_new: Populate @report with the report blob and auxblob
+>   * (optional), return 0 on successful population, or -errno otherwise
+> + * @report_attr_visible: show or hide a report attribute entry
+> + * @report_bin_attr_visible: show or hide a report binary attribute entr=
+y
+>   *
+>   * Implementation specific ops, only one is expected to be registered at
+>   * a time i.e. only one of "sev-guest", "tdx-guest", etc.
+> @@ -56,14 +85,12 @@ struct tsm_ops {
+>         const char *name;
+>         unsigned int privlevel_floor;
+>         int (*report_new)(struct tsm_report *report, void *data);
+> +       bool (*report_attr_visible)(struct config_item *item,
+> +                                   struct configfs_attribute *attr, int =
+n);
+> +       bool (*report_bin_attr_visible)(struct config_item *item,
+> +                                       struct configfs_bin_attribute *at=
+tr, int n);
+
+I think we can use a single callback . We don't really gain anything
+with bin attr differentiation.
+
+>  };
+>
+> -extern const struct config_item_type tsm_report_default_type;
+> -
+> -/* publish @privlevel, @privlevel_floor, and @auxblob attributes */
+> -extern const struct config_item_type tsm_report_extra_type;
+> -
+> -int tsm_register(const struct tsm_ops *ops, void *priv,
+> -                const struct config_item_type *type);
+> +int tsm_register(const struct tsm_ops *ops, void *priv);
+>  int tsm_unregister(const struct tsm_ops *ops);
+>  #endif /* __TSM_H */
+> --
+> 2.43.2
+>
