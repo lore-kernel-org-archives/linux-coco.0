@@ -1,394 +1,254 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A007339AC
-	for <linux-coco@lists.linux.dev>; Thu,  2 May 2024 09:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D050256473;
+	Thu,  2 May 2024 10:17:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714642564; cv=none; b=cMsRQ7zZuJ89aP6V+01b/sZbZ0bAsl6cnkogk9G7/5HwXkDUq5DC6bG7aqNEAAGAzskaJn/63a7L7BbVUgkGoR5JFSJnDHX5JJhZY2CkzSLoT3ShwiDmWFjPChaNe26DpPltqEAZmFpNSy4jmckCsnhxCwOYY7SzZxxxvnANhR4=
+	t=1714645022; cv=none; b=RSXEmpGjwzMMLNR9ZYeT44q/6QgMINRohOktHsjJDv5KuNOf3jYkHh8/SHbqIXaZse1p19szdZtNbj7BheTTdO6HsOu8ezkzL3IlqUNU4WsnjFvuiKoAv8u9aWtLe1BNbAO/KP+JkuK/lE36vSv40+DMBNHphHMvzAe6eOanWe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714642564; c=relaxed/simple;
-	bh=2aTCyavI6LshqbkjZ0UFINRrKMQ2FVlXeJ1I7H/hLRM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=icn7KthCnOWSTYDxAy00BWy7oJUawrotmAUor+6tMVZeJWc/jHPscRRVI+DX/VSui+zaZLv80D0M38wQauw37rtjFu+jIhBqVQw54HfUvYLvhrWRQt90OGL3JpQtCFgOgcxT93kVF0ECnbZ32f3IB32M8MfXgK/zbgFuqGv1Cqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Hz+jF8+E reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Hz+jF8+E"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 665ED40E01A3;
-	Thu,  2 May 2024 09:35:46 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id KSB0DJ7EMwkt; Thu,  2 May 2024 09:35:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1714642540; bh=dorBD1OH7eDSHdWk0QDptXqjjj2UqAFZRRg4RSaaZ9o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hz+jF8+EfYoHwvErWGPCRIhERnG5BvJlOZrY6VPTFvBfPS9YUifvjptASlZiC9t3L
-	 hX0qn5voXVVORjxOIbeXVcGgRBE0oKtgJJHv4sZ9zx4MUHXNx68Q5Q5MDq1YpilGIf
-	 qukme+CoVEnUmsyFgUya0wg/7gq6G3Jw/hIAA67iKtoAfDuPgLrJOUNn0w8Bk4JSWl
-	 aSQJdsYMRDLPXrO33X4ZJVkGMwCOo/udwCAVTuS63yF5gqJGif9u5BmuY2FxLF7lqf
-	 t0M0yzdWj3zXDcYhD91CrLs0iwvDfAk4P8iCoi5CBYeYlzKS71b7wAGQyickL5hbhd
-	 laPEANftXQzH/hfTc0T1izzzfjDtUcn+hVka2CdjD1a0/XGU0HqlkmZ+z1FGmdCM1s
-	 Ndd41pngN+DB6OUYhPyS2GZ4ZVcAvx5jOL53LKFzqiozXJ+2bO6+1Q05S5dQTeXfQ5
-	 kbH3YEBmZYCX1gtbtQGqCofaZAuvMXVp9YmhhEg2fbde19p3q+8c0zw0VbtnBVoJVO
-	 VKnQ4Fc8a686iEPWwgTURUVkaV558dMJC1KFdl4IG1QWZQxFWAvKgBQA+sChEV5e8m
-	 cz1v96CTl56vnL6SHFlFxUTavwGhlCPHBCNZbqoFAFpXvRx/J2g+8t9OIbKtBy6Fk5
-	 n/Wj4rx5FIpdWcvAGjhIB50I=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 74D1F40E0192;
-	Thu,  2 May 2024 09:35:26 +0000 (UTC)
-Date: Thu, 2 May 2024 11:35:20 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v4 04/15] x86/sev: Check for the presence of an SVSM in
- the SNP Secrets page
-Message-ID: <20240502093520.GRZjNeWLXU5j2UMOAM@fat_crate.local>
-References: <cover.1713974291.git.thomas.lendacky@amd.com>
- <6cf54cac47f212f4c2b59b123855d8c183989022.1713974291.git.thomas.lendacky@amd.com>
+	s=arc-20240116; t=1714645022; c=relaxed/simple;
+	bh=s66TcP7sDfUVV9MW/afp3T9duv+GA/uOVOZWsntuYLg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m+08px5VI07qiI1f/sZci3U9M+l/dMMs6BWVj1yMAGpBHPUAu6jwsh44HdI5IAGg7cIQkFsLJfR/gzBlkJwcvZuyePwX3NkMvoyW44q1KZRZ6ls08aS8Pt6JjFt2g2iKcR0bmXToEkmGmKKqSA1UY5JKCFfCglYbqFWQT6LD9Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC7B62F4;
+	Thu,  2 May 2024 03:17:25 -0700 (PDT)
+Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D8E5F3F793;
+	Thu,  2 May 2024 03:16:57 -0700 (PDT)
+Message-ID: <85a4bbda-4516-4c2a-ae51-5e8f8c451e3a@arm.com>
+Date: Thu, 2 May 2024 11:16:56 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6cf54cac47f212f4c2b59b123855d8c183989022.1713974291.git.thomas.lendacky@amd.com>
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 17/43] arm64: RME: Allow VMM to set RIPAS
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+References: <20240412084056.1733704-1-steven.price@arm.com>
+ <20240412084309.1733783-1-steven.price@arm.com>
+ <20240412084309.1733783-18-steven.price@arm.com>
+ <d2957090-fcf0-4dff-901e-d8ea975f2452@arm.com>
+ <98ef5e64-2d1e-4fa2-a3da-210ea180f20f@arm.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <98ef5e64-2d1e-4fa2-a3da-210ea180f20f@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 24, 2024 at 10:58:00AM -0500, Tom Lendacky wrote:
-> During early boot phases, check for the presence of an SVSM when runnin=
-g
-> as an SEV-SNP guest.
->=20
-> An SVSM is present if not running at VMPL0 and the 64-bit value at offs=
-et
-> 0x148 into the secrets page is non-zero. If an SVSM is present, save th=
-e
-> SVSM Calling Area address (CAA), located at offset 0x150 into the secre=
-ts
-> page, and set the VMPL level of the guest, which should be non-zero, to
-> indicate the presence of an SVSM.
->=20
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> ---
->  .../arch/x86/amd-memory-encryption.rst        | 22 ++++++
->  arch/x86/boot/compressed/sev.c                |  8 +++
->  arch/x86/include/asm/sev-common.h             |  4 ++
->  arch/x86/include/asm/sev.h                    | 25 ++++++-
->  arch/x86/kernel/sev-shared.c                  | 70 +++++++++++++++++++
->  arch/x86/kernel/sev.c                         |  7 ++
->  6 files changed, 135 insertions(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/arch/x86/amd-memory-encryption.rst b/Documen=
-tation/arch/x86/amd-memory-encryption.rst
-> index 414bc7402ae7..32737718d4a2 100644
-> --- a/Documentation/arch/x86/amd-memory-encryption.rst
-> +++ b/Documentation/arch/x86/amd-memory-encryption.rst
-> @@ -130,4 +130,26 @@ SNP feature support.
-> =20
->  More details in AMD64 APM[1] Vol 2: 15.34.10 SEV_STATUS MSR
-> =20
-> +Secure VM Service Module (SVSM)
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
-> +
-> +SNP provides a feature called Virtual Machine Privilege Levels (VMPL).=
- The most
-> +privileged VMPL is 0 with numerically higher numbers having lesser pri=
-vileges.
-> +More details in AMD64 APM[1] Vol 2: 15.35.7 Virtual Machine Privilege =
-Levels.
-> +
-> +The VMPL feature provides the ability to run software services at a mo=
-re
-> +privileged level than the guest OS is running at. This provides a secu=
-re
+On 01/05/2024 16:47, Steven Price wrote:
+> On 19/04/2024 10:34, Suzuki K Poulose wrote:
+>> On 12/04/2024 09:42, Steven Price wrote:
+>>> Each page within the protected region of the realm guest can be marked
+>>> as either RAM or EMPTY. Allow the VMM to control this before the guest
+>>> has started and provide the equivalent functions to change this (with
+>>> the guest's approval) at runtime.
+>>>
+>>> When transitioning from RIPAS RAM (1) to RIPAS EMPTY (0) the memory is
+>>> unmapped from the guest and undelegated allowing the memory to be reused
+>>> by the host. When transitioning to RIPAS RAM the actual population of
+>>> the leaf RTTs is done later on stage 2 fault, however it may be
+>>> necessary to allocate additional RTTs to represent the range requested.
+>>
+>> minor nit: To give a bit more context:
+>>
+>> "however it may be necessary to allocate additional RTTs in order for
+>> the RMM to track the RIPAS for the requested range".
+> 
+> That is what I meant - but your wording is probably clearer ;)
+> Technically there's also the case where a RIPAS change will cause a
+> block mapping to be split which isn't just about tracking RIPAS but also
+> about breaking up the block mapping for the pages that remain.
+> 
+>>>
+>>> When freeing a block mapping it is necessary to temporarily unfold the
+>>> RTT which requires delegating an extra page to the RMM, this page can
+>>> then be recovered once the contents of the block mapping have been
+>>> freed. A spare, delegated page (spare_page) is used for this purpose.
+>>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> ---
+>>>    arch/arm64/include/asm/kvm_rme.h |  16 ++
+>>>    arch/arm64/kvm/mmu.c             |   8 +-
+>>>    arch/arm64/kvm/rme.c             | 390 +++++++++++++++++++++++++++++++
+>>>    3 files changed, 411 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/include/asm/kvm_rme.h
+>>> b/arch/arm64/include/asm/kvm_rme.h
+>>> index 915e76068b00..cc8f81cfc3c0 100644
+>>> --- a/arch/arm64/include/asm/kvm_rme.h
+>>> +++ b/arch/arm64/include/asm/kvm_rme.h
+>>> @@ -96,6 +96,14 @@ void kvm_realm_destroy_rtts(struct kvm *kvm, u32
+>>> ia_bits);
+>>>    int kvm_create_rec(struct kvm_vcpu *vcpu);
+>>>    void kvm_destroy_rec(struct kvm_vcpu *vcpu);
+>>>    +void kvm_realm_unmap_range(struct kvm *kvm,
+>>> +               unsigned long ipa,
+>>> +               u64 size,
+>>> +               bool unmap_private);
+>>> +int realm_set_ipa_state(struct kvm_vcpu *vcpu,
+>>> +            unsigned long addr, unsigned long end,
+>>> +            unsigned long ripas);
+>>> +
+>>>    #define RME_RTT_BLOCK_LEVEL    2
+>>>    #define RME_RTT_MAX_LEVEL    3
+>>>    @@ -114,4 +122,12 @@ static inline unsigned long
+>>> rme_rtt_level_mapsize(int level)
+>>>        return (1UL << RME_RTT_LEVEL_SHIFT(level));
+>>>    }
+>>>    +static inline bool realm_is_addr_protected(struct realm *realm,
+>>> +                       unsigned long addr)
+>>> +{
+>>> +    unsigned int ia_bits = realm->ia_bits;
+>>> +
+>>> +    return !(addr & ~(BIT(ia_bits - 1) - 1));
+>>> +}
+>>> +
+>>>    #endif
+>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>> index 46f0c4e80ace..8a7b5449697f 100644
+>>> --- a/arch/arm64/kvm/mmu.c
+>>> +++ b/arch/arm64/kvm/mmu.c
+>>> @@ -310,6 +310,7 @@ static void invalidate_icache_guest_page(void *va,
+>>> size_t size)
+>>>     * @start: The intermediate physical base address of the range to unmap
+>>>     * @size:  The size of the area to unmap
+>>>     * @may_block: Whether or not we are permitted to block
+>>> + * @only_shared: If true then protected mappings should not be unmapped
+>>>     *
+>>>     * Clear a range of stage-2 mappings, lowering the various
+>>> ref-counts.  Must
+>>>     * be called while holding mmu_lock (unless for freeing the stage2
+>>> pgd before
+>>> @@ -317,7 +318,7 @@ static void invalidate_icache_guest_page(void *va,
+>>> size_t size)
+>>>     * with things behind our backs.
+>>>     */
+>>>    static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t
+>>> start, u64 size,
+>>> -                 bool may_block)
+>>> +                 bool may_block, bool only_shared)
+>>>    {
+>>>        struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>>>        phys_addr_t end = start + size;
+>>> @@ -330,7 +331,7 @@ static void __unmap_stage2_range(struct kvm_s2_mmu
+>>> *mmu, phys_addr_t start, u64
+>>>      static void unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t
+>>> start, u64 size)
+>>>    {
+>>> -    __unmap_stage2_range(mmu, start, size, true);
+>>> +    __unmap_stage2_range(mmu, start, size, true, false);
+>>>    }
+>>>      static void stage2_flush_memslot(struct kvm *kvm,
+>>> @@ -1771,7 +1772,8 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct
+>>> kvm_gfn_range *range)
+>>>          __unmap_stage2_range(&kvm->arch.mmu, range->start << PAGE_SHIFT,
+>>>                     (range->end - range->start) << PAGE_SHIFT,
+>>> -                 range->may_block);
+>>> +                 range->may_block,
+>>> +                 range->only_shared);
+>>>          return false;
+>>>    }
+>>> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+>>> index 629a095bea61..9e5983c51393 100644
+>>> --- a/arch/arm64/kvm/rme.c
+>>> +++ b/arch/arm64/kvm/rme.c
+>>> @@ -79,6 +79,12 @@ static phys_addr_t __alloc_delegated_page(struct
+>>> realm *realm,
+>>>        return phys;
+>>>    }
+>>>    +static phys_addr_t alloc_delegated_page(struct realm *realm,
+>>> +                    struct kvm_mmu_memory_cache *mc)
+>>> +{
+>>> +    return __alloc_delegated_page(realm, mc, GFP_KERNEL);
+>>> +}
+>>> +
+>>>    static void free_delegated_page(struct realm *realm, phys_addr_t phys)
+>>>    {
+>>>        if (realm->spare_page == PHYS_ADDR_MAX) {
+>>> @@ -94,6 +100,151 @@ static void free_delegated_page(struct realm
+>>> *realm, phys_addr_t phys)
+>>>        free_page((unsigned long)phys_to_virt(phys));
+>>>    }
+>>>    +static int realm_rtt_create(struct realm *realm,
+>>> +                unsigned long addr,
+>>> +                int level,
+>>> +                phys_addr_t phys)
+>>> +{
+>>> +    addr = ALIGN_DOWN(addr, rme_rtt_level_mapsize(level - 1));
+>>> +    return rmi_rtt_create(virt_to_phys(realm->rd), phys, addr, level);
+>>> +}
+>>> +
+>>> +static int realm_rtt_fold(struct realm *realm,
+>>> +              unsigned long addr,
+>>> +              int level,
+>>> +              phys_addr_t *rtt_granule)
+>>> +{
+>>> +    unsigned long out_rtt;
+>>> +    int ret;
+>>> +
+>>> +    ret = rmi_rtt_fold(virt_to_phys(realm->rd), addr, level, &out_rtt);
+>>> +
+>>> +    if (RMI_RETURN_STATUS(ret) == RMI_SUCCESS && rtt_granule)
+>>> +        *rtt_granule = out_rtt;
+>>> +
+>>> +    return ret;
+>>> +}
+>>> +
+>>> +static int realm_destroy_protected(struct realm *realm,
+>>> +                   unsigned long ipa,
+>>> +                   unsigned long *next_addr)
+>>> +{
+>>> +    unsigned long rd = virt_to_phys(realm->rd);
+>>> +    unsigned long addr;
+>>> +    phys_addr_t rtt;
+>>> +    int ret;
+>>> +
+>>> +loop:
+>>> +    ret = rmi_data_destroy(rd, ipa, &addr, next_addr);
+>>> +    if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+>>> +        if (*next_addr > ipa)
+>>> +            return 0; /* UNASSIGNED */
+>>> +        rtt = alloc_delegated_page(realm, NULL);
+>>> +        if (WARN_ON(rtt == PHYS_ADDR_MAX))
+>>> +            return -1;
+>>> +        /* ASSIGNED - ipa is mapped as a block, so split */
+>>> +        ret = realm_rtt_create(realm, ipa,
+>>> +                       RMI_RETURN_INDEX(ret) + 1, rtt);
+>>
+>> Could we not go all the way to L3 (rather than 1 level deeper) and try
+>> again ? That way, we are covered for block mappings at L1 (1G).
+> 
+> I don't think this situation can happen. The spec states that for
+> RMI_ERROR_RTT either top>ipa (UNASSIGNED, in which case we've bailed out
+> above) or top==ipa (ASSIGNED) in which case RMI_RETURN_INDEX(ret) must
+> equal 2.
 
-Too many "provides".
+It could be 1 as RMM spec allows Block mapping at L1. But if we don't
+fold to that level in KVM, the current code may be fine.
 
-> +environment for services within the guest's SNP environment, while pro=
-tecting
-> +the service from hypervisor interference. An example of a secure servi=
-ce
-> +would be a virtual TPM (vTPM). Additionally, certain operations requir=
-e the
-> +guest to be running at VMPL0 in order for them to be performed. For ex=
-ample,
-> +the PVALIDATE instruction is required to be executed at VMPL0.
-> +
-> +When a guest is not running at VMPL0, it needs to communicate with the=
- software
-> +running at VMPL0 to perform privileged operations or to interact with =
-secure
-> +services. This software running at VMPL0 is known as a Secure VM Servi=
-ce Module
-> +(SVSM). Discovery of an SVSM and the API used to communicate with it i=
-s
-> +documented in Secure VM Service Module for SEV-SNP Guests[2].
+> 
+> So in this case realm_rtt_create() will always be called with level=3.
+> 
+> I can simplify this by explicitly passing 3 and adding a WARN_ON() for
+> RMI_RETURN_INDEX(ret) != 2.
 
-This paragraph needs to go second, not third.
+Yes please, if we don't fold all the way up to L1.
 
-Somehow that text is missing "restraint" and is all over the place.
-Lemme try to restructure it:
+Thanks
+Suzuki
 
-"SNP provides a feature called Virtual Machine Privilege Levels (VMPL) wh=
-ich
-defines four privilege levels at which guest software can run. The most
-privileged level is 0 and numerically higher numbers have lesser privileg=
-es.
-More details in the AMD64 APM[1] Vol 2, section "15.35.7 Virtual Machine
-Privilege Levels", docID: 24593.
 
-When using that feature, different services can run at different protecti=
-on
-levels, apart from the guest OS but still within the secure SNP environme=
-nt.
-They can provide services to the guest, like a vTPM, for example.
-
-When a guest is not running at VMPL0, it needs to communicate with the so=
-ftware
-running at VMPL0 to perform privileged operations or to interact with sec=
-ure
-services. An example fur such a privileged operation is PVALIDATE which i=
-s
-*required* to be executed at VMPL0.
-
-In this scenario, the software running at VMPL0 is usually called a Secur=
-e VM
-Service Module (SVSM). Discovery of an SVSM and the API used to communica=
-te
-with it is documented in "Secure VM Service Module for SEV-SNP Guests", d=
-ocID:
-58019."
-
-How's that?
-
-> +
->  [1] https://www.amd.com/content/dam/amd/en/documents/processor-tech-do=
-cs/programmer-references/24593.pdf
-> +[2] https://www.amd.com/content/dam/amd/en/documents/epyc-technical-do=
-cs/specifications/58019.pdf
-
-Yeah, about those links - they get stale pretty quickly. I think it suffi=
-ces to
-explain what the document is and what it is called so that one can find i=
-t by
-searching the web. See what I did above.
-
-> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/=
-sev.c
-> index 0457a9d7e515..cb771b380a6b 100644
-> --- a/arch/x86/boot/compressed/sev.c
-> +++ b/arch/x86/boot/compressed/sev.c
-> @@ -12,6 +12,7 @@
->   */
->  #include "misc.h"
-> =20
-> +#include <linux/mm.h>
-
-Please do not include a kernel-proper header into the decompresssor.
-Those things are solved by exposing the shared *minimal* functionality
-into
-
-arch/x86/include/asm/shared/
-
-There are examples there.
-
-By the looks of it:
-
-In file included from arch/x86/boot/compressed/sev.c:130:
-arch/x86/boot/compressed/../../kernel/sev-shared.c: In function =E2=80=98=
-setup_svsm_ca=E2=80=99:
-arch/x86/boot/compressed/../../kernel/sev-shared.c:1332:14: warning: impl=
-icit declaration of function =E2=80=98PAGE_ALIGNED=E2=80=99; did you mean=
- =E2=80=98IS_ALIGNED=E2=80=99? [-Wimplicit-function-declaration]
- 1332 |         if (!PAGE_ALIGNED(caa))
-      |              ^~~~~~~~~~~~
-      |              IS_ALIGNED
-
-it'll need PAGE_ALIGNED and IS_ALIGNED into an arch/x86/include/asm/share=
-d/mm.h
-header.
-
->  #include <asm/bootparam.h>
->  #include <asm/pgtable_types.h>
->  #include <asm/sev.h>
-
-...
-
-> +static void __head setup_svsm_ca(const struct cc_blob_sev_info *cc_inf=
-o)
-> +{
-> +	struct snp_secrets_page *secrets_page;
-> +	u64 caa;
-> +
-> +	BUILD_BUG_ON(sizeof(*secrets_page) !=3D PAGE_SIZE);
-> +
-> +	/*
-> +	 * RMPADJUST modifies RMP permissions of a lesser-privileged (numeric=
-ally
-> +	 * higher) privilege level. Here, clear the VMPL1 permission mask of =
-the
-> +	 * GHCB page. If the guest is not running at VMPL0, this will fail.
-> +	 *
-> +	 * If the guest is running at VMPL0, it will succeed. Even if that op=
-eration
-> +	 * modifies permission bits, it is still ok to do so currently becaus=
-e Linux
-> +	 * SNP guests running at VMPL0 only run at VMPL0, so VMPL1 or higher
-> +	 * permission mask changes are a don't-care.
-> +	 *
-> +	 * Use __pa() since this routine is running identity mapped when call=
-ed,
-> +	 * both by the decompressor code and the early kernel code.
-> +	 */
-
-Let's not replicate that comment. Diff ontop:
-
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/se=
-v.c
-index cb771b380a6b..cde1890c8843 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -576,18 +576,7 @@ void sev_enable(struct boot_params *bp)
- 		if (!(get_hv_features() & GHCB_HV_FT_SNP))
- 			sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
-=20
--		/*
--		 * Enforce running at VMPL0.
--		 *
--		 * RMPADJUST modifies RMP permissions of a lesser-privileged (numerica=
-lly
--		 * higher) privilege level. Here, clear the VMPL1 permission mask of t=
-he
--		 * GHCB page. If the guest is not running at VMPL0, this will fail.
--		 *
--		 * If the guest is running at VMPL0, it will succeed. Even if that ope=
-ration
--		 * modifies permission bits, it is still ok to do so currently because=
- Linux
--		 * SNP guests running at VMPL0 only run at VMPL0, so VMPL1 or higher
--		 * permission mask changes are a don't-care.
--		 */
-+		/* Enforce running at VMPL0 - see comment above rmpadjust(). */
- 		if (rmpadjust((unsigned long)&boot_ghcb_page, RMP_PG_SIZE_4K, 1))
- 			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NOT_VMPL0);
- 	}
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 350db22e66be..b168403c07be 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -204,6 +204,17 @@ static __always_inline void sev_es_nmi_complete(void=
-)
- extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
- extern void sev_enable(struct boot_params *bp);
-=20
-+/*
-+ * RMPADJUST modifies RMP permissions of a lesser-privileged
-+ * (numerically higher) privilege level. If @attrs=3D=3D0, it will attem=
-pt
-+ * to clear the VMPL1 permission mask of @vaddr. If the guest is not
-+ * running at VMPL0, this will fail.
-+ *
-+ * If the guest is running at VMPL0, it will succeed. Even if that opera=
-tion
-+ * modifies permission bits, it is still ok to do so currently because L=
-inux
-+ * SNP guests running at VMPL0 only run at VMPL0, so VMPL1 or higher
-+ * permission mask changes are a don't-care.
-+ */
- static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigne=
-d long attrs)
- {
- 	int rc;
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 46ea4e5e118a..9ca54bcf0e99 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -1297,17 +1297,9 @@ static void __head setup_svsm_ca(const struct cc_b=
-lob_sev_info *cc_info)
- 	BUILD_BUG_ON(sizeof(*secrets_page) !=3D PAGE_SIZE);
-=20
- 	/*
--	 * RMPADJUST modifies RMP permissions of a lesser-privileged (numerical=
-ly
--	 * higher) privilege level. Here, clear the VMPL1 permission mask of th=
-e
--	 * GHCB page. If the guest is not running at VMPL0, this will fail.
--	 *
--	 * If the guest is running at VMPL0, it will succeed. Even if that oper=
-ation
--	 * modifies permission bits, it is still ok to do so currently because =
-Linux
--	 * SNP guests running at VMPL0 only run at VMPL0, so VMPL1 or higher
--	 * permission mask changes are a don't-care.
--	 *
--	 * Use __pa() since this routine is running identity mapped when called=
-,
--	 * both by the decompressor code and the early kernel code.
-+	 * See comment above rmpadjust() for details. Use __pa() since
-+	 * this routine is running identity mapped when called both by
-+	 * the decompressor code and the early kernel code.
- 	 */
- 	if (!rmpadjust((unsigned long)__pa(&boot_ghcb_page), RMP_PG_SIZE_4K, 1)=
-)
- 		return;
-
-> +	if (!rmpadjust((unsigned long)__pa(&boot_ghcb_page), RMP_PG_SIZE_4K, =
-1))
-> +		return;
-> +
-> +	/*
-> +	 * Not running at VMPL0, ensure everything has been properly supplied
-> +	 * for running under an SVSM.
-> +	 */
-> +	if (!cc_info || !cc_info->secrets_phys || cc_info->secrets_len !=3D P=
-AGE_SIZE)
-> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SECRETS_PAGE);
-> +
-> +	secrets_page =3D (struct snp_secrets_page *)cc_info->secrets_phys;
-> +	if (!secrets_page->svsm_size)
-> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NO_SVSM);
-> +
-> +	if (!secrets_page->svsm_guest_vmpl)
-> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SVSM_VMPL0);
-
-0x15C	1 byte	SVSM_GUEST_VMPL		Indicates the VMPL at which the guest is ex=
-ecuting.
-
-Do I understand it correctly that this contains the VMPL of the guest and=
-  the
-SVSM is running below it?
-
-IOW, SVSM should be at VMPL0 and the guest should be a at a level determi=
-ned by
-that value and it cannot be 0.
-
-Just making sure I'm reading it right.
-
-Thx.
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
