@@ -1,71 +1,106 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2089.outbound.protection.outlook.com [40.107.236.89])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC65615ADB1
-	for <linux-coco@lists.linux.dev>; Thu,  2 May 2024 15:29:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9138A16FF3D
+	for <linux-coco@lists.linux.dev>; Thu,  2 May 2024 17:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714663754; cv=fail; b=c7WDMycCkdKUzHNmfatRjiF2MUXqY0I1/U2eMCB/pVoUgrraehZHxUpVmtKJrEQJPvr10wyLER7iLMGRczAaJ7OBPS2i46YGuVWoi2BOyMi0p8T1X1A9cRpRZ3ACeqlN4pZ3bc1L1kPtTP8iNoCOsHj0t94zySvCdRf/3zaluD0=
+	t=1714671004; cv=fail; b=R8QjG8EVAdTLliLhbwXQ2iJ3B0O9ypeGoM9QP/l9ehaXYz2wj5Kw4Pw6Ikyeb1hYbDfpjdOVhbxHQx8AQLKCIyTpY5bPnI5UWKNsVwfeLcU27k7+5gtrDWxGXr3RDvW0QqEjuTPisZBfVV6aJrvpzrBe4V17MjnfEDiOT9hdJ34=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714663754; c=relaxed/simple;
-	bh=hQ+Z1SnhEV+W3iWvzf3wdl13B4jWOPVOluAxSIjUyuI=;
-	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
-	 Content-Type:MIME-Version; b=ejWgSpWrF4cfxeEQkT8MkNtAhODsGiOa3grta/wreok5/AzcktZtMRDc8mSq1oGxClM83WHSJJryB9m39zQZHlLCyBf0npOmSt6qRSZlGZCs/34XsC7ugLMV3ZO5DV4WfGUu0nb2SavsOFV4JfHr525sF8dGSN7F3RQK/wa9Fbs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GcUMGFYu; arc=fail smtp.client-ip=40.107.236.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1714671004; c=relaxed/simple;
+	bh=Mgfc6IXCSZTUf6HA+pe63+mOjVvJsQUoDTI5o4F5irc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=nxWeWZAsr7cZI7EuKNokW+JAWlTDTIrUEd6lm/2h+CLlZcq8Gi24hYqyLUqDUq+dc+2rRnTaLfrtSqOvOZRpDQWrDfnVvTag0JLFcPnVsOJmouR9NE4O4mUuNeKlGpr+xMn93hYzCBu1H0aUj/zQVMNs5fsNAPEDiFsvonb64Io=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SIEimyef; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GcUMGFYu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SIEimyef"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714671002; x=1746207002;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=Mgfc6IXCSZTUf6HA+pe63+mOjVvJsQUoDTI5o4F5irc=;
+  b=SIEimyef6t9zWONzsQqiWOYX8gly2rJjuqbn6/2CSoOsHbOujTXa+ifX
+   A6b6lt2pD1N2uPrsjaLMcPPka9ur99V3/nTUcywG0Sg4Sf+z+LYaR4ZrV
+   Pk7erUPFZBMVcTg8CjX9spX6Iio3cqE8gV2QZr0Y60dJbJotEPkmraFe1
+   YJjvzitWH1tWAFGKb88h2d5UdeM1qzziNmFr11boET6Zobz/6CDxzZXVK
+   9VikhUJtMhkzJpsCzNvtPlazshbqEQk+KcHAxa8I9yV3TNdrBDcFKpA2q
+   bvqknGeAWNZfWvUAkKP6aol+22AqrcKBP+qfZUEPTMVQNOkUf9aOrKU4Z
+   w==;
+X-CSE-ConnectionGUID: aUcnF61qTP+lpxI3nmsUAA==
+X-CSE-MsgGUID: uGX1+OPaS56LncdpgFDz1w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11062"; a="10579031"
+X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
+   d="scan'208";a="10579031"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 10:30:02 -0700
+X-CSE-ConnectionGUID: DEjczX1aTHaquH3J/2AEEw==
+X-CSE-MsgGUID: 78zrjoBZQM2mCOC3jbG4NQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
+   d="scan'208";a="27201813"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 02 May 2024 10:30:01 -0700
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 2 May 2024 10:30:01 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 2 May 2024 10:30:01 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.168)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 2 May 2024 10:30:00 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Y6bH5AY9EzHAvgr0pNAQbc5nMjcIrGmH/9SSHTXjQzkKsM1z68VDuEKhke0LxcFvZj22H7CLRXvyHVYVk0s0FL8EpyPakQFhz1zSi++r+hTaK5MzTzQk7MSMo8Vi7RmovG4I86byD90gfj6f53ex01cN7iZr3bP1DiVMymF7uKvZZ17burGjOxSGnZfKUpsqCjoqRbkFaTD1RuWsPuFRwKNB1Ed/bKIT5i22510sXa/WP+Tk1bfn0d1eWHnD7vKQNxyOyh0yBkWk1DbfJclriwAALDqFOeVLsszjfPlaFr8ptlQZMq1EM7HkgviIK7fmZYyXhOuAdOh3F1M1HtoM8A==
+ b=ZKohFs7bBSwbTwAlTUJeTJiu5Mf8VRFJUtTq7EnluDH55gk61jmlz2VSyTLfdWt9myn5h+Fc5ZfOZeLR+aYBoIcH9R9DO9dDPAx3y32JwFnpVkjGCUa9zTaCWArvAnkzA+Y7/XSnH1ocUNj6iWTJo7Ijy5hybvCtrQbvBA9llo6t+yy4iJ6RtQcl1NIXXQLoWHSyAvYe2ICTja35mBKaNxD8KUUwoW1UlZlTpHozHv7lDLAp2k44nfVaRGWXGqd3q1pE3cydT5WlHVTLZIAX28R7SWVWMu11sfYgnwn/1SFeyrksdg2ghAnX5DxK7vo7vCEl0q/kN7zhWsNE9v/EYA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FbPYqIz+d/GKs2CemZwwcpNzRLKgkM0Qw40VH7JqDqM=;
- b=SiC6QozTFi1/3w+9rdylBtebMt5Q1kH55DqhDrIuRwoSVFwZNPJymdoTy05srqSZh5PXoX/R3vkYC/Cm9/n4LXSZM55HwMz7XmwVAzZ6e4YxOM8TaMdITFmYPp03Psctge6iu54xSZYqnHgMeKPtKILyTReXUmrcA0+lScbTYJH42La1zJH4T6lP43ro0trFkH5VUe4rawbCSzA+2+g8K6WKHM6ZUc1tzL8Ezu6MQ6jDWpgOMqAb1fQYETmQnLDDy3PEjB7zUqwC4PrsKkv/XAKB7PSF0WFYqqhl+r5xNSl6EPhTBIz0Q+JripHJ2HeZw/JOrw4i2a9i/ICeQip4lA==
+ bh=Mgfc6IXCSZTUf6HA+pe63+mOjVvJsQUoDTI5o4F5irc=;
+ b=KlRpmESqWMOjI5poG5FlzRMhvjIELactEULS5LX39a1K+/M+dzmwXCWrW9bCksZVStK6hkLEVrBZI9lC46jb/S7rISnFOAWd/SJqulf00DBkqcHvKhj3D2Bba2YLHdu2RQEu0Beya/JeiZsbMztbP5EiJkaVcmODlk31+ukWxbCIuTJXEN5JiOf9JRAIu/SVuM4QCIiCqbLy0lYoXeMe/kRZz0rcmJn3EcPXYFFoATG5W0XhbDBtLC/hAkdzYZ+6vYjDp8rZhkfYKFvCsEKbuw1pF76SEhGqtCOitrDy4D+jX4dr7sRScK8fz57FHV7J1DBR4tlWndzzv7jVB5kZMg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FbPYqIz+d/GKs2CemZwwcpNzRLKgkM0Qw40VH7JqDqM=;
- b=GcUMGFYuJa69vZxadTC61GOP6wRK/qFlSYxRCi9q4ytWKu/pFS3epIckkjufvTy60nSj81ubO4Q3df7L7GdaDd7sqQnrkUiD/bhdaFLgY9K1eghfodptaMSFUjtSdJod0wmbapYT96HMJIvdgVgdqQRAyQzOMgIdsNT+un4eNDg=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
- by SA0PR12MB4446.namprd12.prod.outlook.com (2603:10b6:806:71::18) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA2PR11MB5145.namprd11.prod.outlook.com (2603:10b6:806:113::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.29; Thu, 2 May
- 2024 15:29:05 +0000
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52]) by BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52%7]) with mapi id 15.20.7544.029; Thu, 2 May 2024
- 15:29:05 +0000
-Message-ID: <66928741-aa5c-4bbb-9155-dc3a0609c50a@amd.com>
-Date: Thu, 2 May 2024 10:29:02 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- svsm-devel@coconut-svsm.dev, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Dan Williams <dan.j.williams@intel.com>, Michael Roth
- <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.28; Thu, 2 May
+ 2024 17:29:58 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%5]) with mapi id 15.20.7519.031; Thu, 2 May 2024
+ 17:29:58 +0000
+Date: Thu, 2 May 2024 10:29:55 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Dan Williams <dan.j.williams@intel.com>
+CC: Tom Lendacky <thomas.lendacky@amd.com>, <linux-kernel@vger.kernel.org>,
+	<x86@kernel.org>, <linux-coco@lists.linux.dev>,
+	<svsm-devel@coconut-svsm.dev>, Thomas Gleixner <tglx@linutronix.de>, "Ingo
+ Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, "Andy
+ Lutomirski" <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	"Michael Roth" <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v4 13/15] x86/sev: Take advantage of configfs visibility
+ support in TSM
+Message-ID: <6633cd93cd0bc_138462942@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 References: <cover.1713974291.git.thomas.lendacky@amd.com>
- <6cf54cac47f212f4c2b59b123855d8c183989022.1713974291.git.thomas.lendacky@amd.com>
- <20240502093520.GRZjNeWLXU5j2UMOAM@fat_crate.local>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH v4 04/15] x86/sev: Check for the presence of an SVSM in
- the SNP Secrets page
-In-Reply-To: <20240502093520.GRZjNeWLXU5j2UMOAM@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SN4PR0501CA0030.namprd05.prod.outlook.com
- (2603:10b6:803:40::43) To BL1PR12MB5732.namprd12.prod.outlook.com
- (2603:10b6:208:387::17)
+ <e3143c1f3d0b26fcd8884c6f75644b634a7138e8.1713974291.git.thomas.lendacky@amd.com>
+ <CAC41dw-g2=jKkevGOJUqnzYTpxQ8+Z_JxnNNuoLR+CM_yqfRzA@mail.gmail.com>
+ <6632a2e0738d_1384629442@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <CAC41dw_Dnm=suyue+jFx2z8f+YT1K_aWfQEijrU=WH4OLWpOqQ@mail.gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAC41dw_Dnm=suyue+jFx2z8f+YT1K_aWfQEijrU=WH4OLWpOqQ@mail.gmail.com>
+X-ClientProxiedBy: MW4PR03CA0090.namprd03.prod.outlook.com
+ (2603:10b6:303:b6::35) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,388 +108,79 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|SA0PR12MB4446:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a0f48bb-f972-44d0-b1e0-08dc6abc9a1c
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA2PR11MB5145:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d00b07f-6dd8-47e7-75fb-08dc6acd7d7b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|7416005|366007|376005|1800799015;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VVk3MDJBKzhLNjAzaDhVT0srMVRwc3o5NkppdDBBRDIycVY5a3RNVVRhYi9r?=
- =?utf-8?B?MTV2akswZXhoOWpYWm1BUXowM20zbVlrb0hUZTBiZVZZK1RPd1lkQlFoMzla?=
- =?utf-8?B?RGxaK3RBUlIyaWFwQzRKbVk5VTkrWHRMenptU0NyUHRmaStOeU5Pb3lFcFBF?=
- =?utf-8?B?VWhEZE1lL0l4ZDRVVlg3Wnp0UmUvQTZwUG92TnEvWVFuZG5KNzlyR3VkYXNH?=
- =?utf-8?B?czRqbW9aZHVtd2hDb0RJU3Y1Y3MrOUxzM2dYaGUwZ3RNRXY4ME8ycWtEV1pm?=
- =?utf-8?B?YUZDZXZ5M0dXbVlOeVBjdVF1bC8vZzBQVlQ1cGR4WElvSFdwMVhGUXVXMGQz?=
- =?utf-8?B?UmUvTmRybkNwZFcvYWRWTEpWd0xFYmZJaHlOS2tYSVNNL3BFZHRJZXJueTQv?=
- =?utf-8?B?bXEvOWxzQjhXWSt4ZzJaTlNBR2RmeE56WFRqdkdkY1djS3E5QXdvemNYd05U?=
- =?utf-8?B?bUhjQXAyQVJzY05oV3hkSE4zTFd3NDNEbS96NmhOOHlreDlnZDZXblR3UDFL?=
- =?utf-8?B?ODlyOVI2THVEWGMxSDhEenFNR3VwV2xGVTlWK0VIT2FTeUJJRWUwaE5sdHJv?=
- =?utf-8?B?d1hLWjljUi9EVkZlaVpwZS9SUEk5M0g0RlJ4OHRacmlKK3FUSFlDTW4yQnFG?=
- =?utf-8?B?Z3NKYThpUmRMVUFYQjFjTjFHdERkODMwMnRMUE5JRFhvM0xtbnVZUVAvLzE4?=
- =?utf-8?B?VXpFbytwcmtnWXljcFZnZ3p0aDRTTzNodU13T3ZCT0hqRnVNZ2JYSWN0YmNX?=
- =?utf-8?B?dWtONUNkU1cyWlY5NGRRZ2dadVJncVR2ZHJGTUZUWEtzUTB6U25JVXg4d3pD?=
- =?utf-8?B?NjE4NmlKckhiSUZQYlZHNDI5cWJlclRyWGttb1RsTGtLVUZTN0tZbGhuMmZp?=
- =?utf-8?B?VktueUFCczRZaFlETGhVOXY2dlNzelpmRVhnK040MFZCaFJuVGJmQW9Ud1Rm?=
- =?utf-8?B?ZW1QRzVGMWd1VkJGdDltWlhUaGM2UHNzNUFGSlBxVGhhRnJ0WG5sVkk4QzNh?=
- =?utf-8?B?WnV0ZFFFaDEwWVpwS3BlVmdIdlZVV3RuZjY1Q1F3S2dGVk1lMi9GRGEwMlRy?=
- =?utf-8?B?Q010YUxMcVIvdFFrWFlQUG03VjlXZGhWTGVTVi9NOU9HMXNLMTdzOXVJZzRx?=
- =?utf-8?B?YkZOM2w1WUVqZGpzME9PdzIzL1E0MUhzVFc2bVZLZG9WTWN5em11MVRycktU?=
- =?utf-8?B?K0EweXl2RWxlWi8rYVhLS0Q4M3pYd3FjYXhNeXFCY01qeXFueHRzZE50WE5E?=
- =?utf-8?B?dW1MYzBFSmN1czQ5TFEzeEV0NURzK1I1a3Z4bE5mUGlrd29YK0d0MnRTbEZs?=
- =?utf-8?B?SkFXTnZnMGxlS0kxUFpsLzJYZEJoRVhIc3pLYjB5Z20xSVRTeHpDQVhxL2FJ?=
- =?utf-8?B?QUNtSW9Na0ZjWmFiYm5JT1EvenZENkYzSEhVQjFQTkVibTBoVkxXRjF6Q0ow?=
- =?utf-8?B?M3hyWndoN0FnZjhQR2trOU9TWXYybWExNVVoaDIzZmRDQU9DZmM5bHYzMzZz?=
- =?utf-8?B?T0FHWVpBaUdoZzBvb1pYcmZjUGRtRTdSZnRhL2N4ODBqNVdua1VreTIyUUY2?=
- =?utf-8?B?dGkyK29ZNGZyMUMxSVlDbm80Mnhac3Q1OUpqa05RdmJTWTdvTmRxU3JLSThT?=
- =?utf-8?Q?IT4Oww2oK2C9YtPrW5e+YC5j0TS+7JjNh1e0+TCLgN5w=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(366007)(376005)(1800799015);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|7416005|376005|1800799015;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?atN3FSFxXBlFhCpsOFg6QS8cZXpDf6RbVR4RN0uj7+IgsAh2XXf1puzfgMD4?=
+ =?us-ascii?Q?UqjhUQIUzw3QvBbkngQCltAHEBIFZ+5z+lhR8KCgWPuCo9OnGAjnyauSNfEl?=
+ =?us-ascii?Q?UfN5RSB2glHuuZ5qlCT8TNkKlgT/UBR4lZFMEuI4G2lLb6hOvsUtQlP3TZ4B?=
+ =?us-ascii?Q?o7JwEX+eWo+4PxRn8DIvhIKS5z5bV5mk9fN1wlxED49r06P5vGPlspHqdiqq?=
+ =?us-ascii?Q?+IBYvSDlWzZPKyXUUwfrNM848fOPqf3mkgXvk3nW+PGvaD8370pwDrE4IjUh?=
+ =?us-ascii?Q?u8YvWFjA1gwH32/7t6Wpx7AVsyZ1zRwKDm0oN2qLKzAkLzkvBN8oxiMgM+4W?=
+ =?us-ascii?Q?iNCj2NoeXY1Dk4ohpLsoPZKo6fj44uqSzZA0EpfDKoyOerpwHRsGKaUdX6DU?=
+ =?us-ascii?Q?hLV7fDapFHw3fWZWdkjmMc2lu+1lZwDe+JEHj84IABhjEwygc+LobwTX4Lge?=
+ =?us-ascii?Q?S51FiLFihv1wDClnkCHAYCKm8ND7XgGe8y2iRUlo7t6U392Nrs9b1Iy4FL9S?=
+ =?us-ascii?Q?LgrhAH+7KlPm/+bdQ/W1O8+lvL1eMe0+9ySBWnEqrdI7CdDn/RLEEuvuNGSg?=
+ =?us-ascii?Q?zP4/O2inhtKwyvfqJEnlJOkEnkQEV0y99Ch+uIk3TSh9a3VUBp0aI43M5UmX?=
+ =?us-ascii?Q?jF+423T0w3vpmF4UbGNWY1DHK8jnT7T7kbVtzcNPn+PbLlbXw95t93M5QMpg?=
+ =?us-ascii?Q?12VAS0llTHuOb9YdUvtcnQNnjj1WoD9bpfZ629cwMEK0ATABDkOlXEvjOOWc?=
+ =?us-ascii?Q?lPgAfyxVFTid5JCwW7oOJMuWQ+A5NM49X+4mRZFrC/zjaBHqcQZNOw/EQ/qy?=
+ =?us-ascii?Q?8z5ZRwlp6VHIiwPcb0q5BwNGhHGodK9Xdcbl1/ZLpRqPB7i6xf93F5MxPK0O?=
+ =?us-ascii?Q?Zu93snK6KDrBQcG3Uw9ZiL8egwL8i3SgY+SuV9S7BCyULTG/8DLNmfDVOdL7?=
+ =?us-ascii?Q?VvG2j8zXnCKpEm3amtdyjnIHZxESKXbxJTDvtSUBtvPB0hltCcIXUPurCYkg?=
+ =?us-ascii?Q?q1V8FSE5Ii/wOMxUhLJwjbaZdVgVtIwxUEQB9BjBkkp3oiOW1Rvm64gNtube?=
+ =?us-ascii?Q?iZ8lzor/9F1gc19/7Pa0xJan5BPLjjTRUOmyk5ENNqO0+za7dgqUDOrufWjp?=
+ =?us-ascii?Q?n9wrnD/ZfZwGWmU0KKjcSYSPbMOV9uGiAkGVmHVv94trq3l2FlfTzA9eFSRK?=
+ =?us-ascii?Q?ywTKtWqNAS7ucZx26LIipeZwJO3zsHHZdfsnBHm4BapfAys2nFKpCh9mlBhV?=
+ =?us-ascii?Q?samgCH8cCezqG+CjqBeZP5cCEqjrsjzFFVpxeuHTTg=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(7416005)(376005)(1800799015);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RTRsK1Z0VVRMcTZwTGp4dE10azBSd0FyT1YyY1poMVhwc1JIU2MvSS95bFgv?=
- =?utf-8?B?aTIrM2kvNVRvc1pzeTFxZEJmdTN4ZnNlcDNPak10T0g1bEIwRC92blRaRFBt?=
- =?utf-8?B?czhZWm5FSE1NVXFyZWI5ZVFuUFpxWFRzY25QWVY1NUNiNkhkRmFyYUlvZTBn?=
- =?utf-8?B?YUlUbE9oN01WTHhobG8xNSs4aDllaTRtQmxKYzFIS0FZcDd5cC9mN0hYRHFB?=
- =?utf-8?B?NkVhNXJRQ2lWTHc4SE9QeWFoWUtwRXk3ZTRFK0hrREpidFRVZjdhYlhrNHp2?=
- =?utf-8?B?SHUyZ3ZDbVo0cXk4MlV1TDhoWHNzU3grRnJtdDYvQWRERFcvTkJ3eWhJL3By?=
- =?utf-8?B?KzFYUjAyQlZlNkt1OHR6bmc5K3pGWW5uYjgxdVlEOFF1c0V2aHZvUjBYL0ZD?=
- =?utf-8?B?Yjgzd2ZiN0xYNEhENW8yT0w1S2ZlRzdUcVl0c0NEemVadG9pMFhVT01lajQx?=
- =?utf-8?B?L2hIVG5HczNnQlp6ci8xaGtEMjhRTUZKTEVpdXBjN2kzNDJZTEx4UmJldUxm?=
- =?utf-8?B?aXJpTnFqL1hTV0pTM1hTOFJzUWtBYUV3QUxPaDM0NTUzSU9ZSksyQzYzQUJ0?=
- =?utf-8?B?ZlprRmdUV0FVWklQSFR3cGRiSmtCUUFhb0NhWDV6TTh3ZjRWaFFXcmUzMUFk?=
- =?utf-8?B?NWpvRkw0ZWpERkN6SGdDajRxQWJBc2szY1dxMFJoZ3RLblZRb0pvNWE0cTJZ?=
- =?utf-8?B?WjVURi9xZFJxT0NoclZ5ajBqajVTL0lXUHp2UkZSYm1OaFFsNngwNkNpSzA3?=
- =?utf-8?B?QWdlQnBydnBjelpUMjRISlIvRk1SSEg3MUhDaDQxQmRhSFBWM2FwWWwyaERa?=
- =?utf-8?B?WTNERGVKZkM3b3JpOHpTUEZUZDAvRkxpNXd5Y09PUVhtRFAxejlPVDRLalQ1?=
- =?utf-8?B?eFozSWZrenRzZjkwQmk4MkVWbjI4YWNmVnNmeUNKMUNoOU1JWlVDM3liR2w0?=
- =?utf-8?B?TDBQcUxIWVY5dFk5ZW1PTk5PRElRMEJZUGlhN1dQa3M4dEcrUDRkRE5tSEF4?=
- =?utf-8?B?MTd1M21QMnhlTERXajBVcUxXVUoxVnFVNUpwSHlHWExVS2oyVmt4MTErR2N6?=
- =?utf-8?B?RGJNalV0clBOcEo2Mjg1KzNKMUs1NkxPYVdiMjdDTEpndENhRzhKeU9lSFFa?=
- =?utf-8?B?bFhIcUhuUWtCdXdpNEVlYllRR1VZUW0yYjVCZXl0L3A4U3JtZGJOVTQ3TkxL?=
- =?utf-8?B?VjRNWW1CWTVQMlRwaTZLRGRUenFjQTMzSUIrcWtBcXBHa3B5Y0RsN1d0QWpC?=
- =?utf-8?B?cS9iak5XckdRakxtR2pHbGQ3eW1JbWNnWi9VUkJpYXo3MFV4Zk5kdWpUQUd6?=
- =?utf-8?B?bnV4Sjd3dnBueWh1T1lvSFhmUGV6YmtCRWZmazRDQ1MyVWw1eFR5NkJhWWky?=
- =?utf-8?B?V1BrRmxEeEpQMW1aNkhxaU93Ym1SWWo2VU5Ib2llSW9qQ01COFpwY1VKUGZy?=
- =?utf-8?B?T2xlUEYwcHFKZWZqeTRzWnZpM0FxZHlPVDhDSllXd3NVcE4xbyt6VVZiQTJO?=
- =?utf-8?B?QnBjSDZHRno5MnJXb3RaRDByaUdrUmNVK1gvK09USmpzN01mVFRGOFRjTm9L?=
- =?utf-8?B?SVduUUUyejJvc1Q4SGphUW0vZmF2NkovSEtaY1pxcm5BMmFRZnlJT2dUd1FD?=
- =?utf-8?B?SDVNaGxuRlN0cGtuNXNOY00xcStWRHhvakdjVTZQSE1jTmNJcVBFOFRJbm5w?=
- =?utf-8?B?WUhTN0xFZ0k3UGJINTJKN1gwREpYSUZ3TzBzVVZqb21tM0xWc2U1Q0RTRXhm?=
- =?utf-8?B?cXhvQkpUSE96R2ZCR0lVdzJia0pZd0xrMEJRSGsrUDE3eVJtSjhuMFVubFRs?=
- =?utf-8?B?R2FiZzRLYnhBVE1UQzNoazF3dEhEY3F2dEFJSkJ3UE41Rlg5WWRaUXZXc2tK?=
- =?utf-8?B?ck52amZNQ3F2cCszc2FtdVJYSkliMnRNcVV5RVdKdkdkeDhYcTV6dm1lS3Fy?=
- =?utf-8?B?TlJoc3RTT3BZWDhGaTNMZ0hLWWQ4NXU2Snl3Qm1XUWJYaGozbHRxTEV6S25t?=
- =?utf-8?B?cTJmcTNlMW5yWGMxN3lGcGdMZG90TTBQeE15eEIxVFl4TkFRVUhNdUZZQ0NC?=
- =?utf-8?B?d3VLOWV1V3lTVUJyVTREeC90cTJCUHFZTEZFYjZ0ZDdiVDJid1hGbjV3c1p4?=
- =?utf-8?Q?9F2lBlu1h4Ezt83u9qJeaYCGL?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a0f48bb-f972-44d0-b1e0-08dc6abc9a1c
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9Xd6X1F4KXHMOPWZ4G/pBfxDgVsB24YtOnzbazaLeUOCdor577CHxdfQxYmm?=
+ =?us-ascii?Q?oExTkFWcFblR9RDDwb+b/+DFPWkL2gLzSVT6PQy8d/CTI6/panpkzv7gDpOt?=
+ =?us-ascii?Q?2l+iiLjkvLzmWZoR4IPB+QVeVXNG007ZPMAwmPARVubFlcPc7ixXwlrZy0hn?=
+ =?us-ascii?Q?Y0AINXQE74E90Gmfatcl9aWEVko1pRmqFCFxnm8PexlaEO37H1W6vGByh9Vx?=
+ =?us-ascii?Q?jhH5Zx67o/rvOlS1r4/PzEPhmvPDuRQAmFucdcb7A+EPZHqlxoOWvFzkljBf?=
+ =?us-ascii?Q?rbrv4z97m2cB/x5FZc0Iq324rchEpI/5mG/mTyXu8VQRcDOAiSyry7Xnuk/o?=
+ =?us-ascii?Q?eUNosQgQF8C9gacrkpJlcjRn4LEdmhFvpi+KznzduoXPvWjXRYHPlK6NuzCt?=
+ =?us-ascii?Q?XgvobMNHgYyfH8JBk73+MdYTcoC7wBuQeprs7Ees4tIhLgwfOllgbKWobOsA?=
+ =?us-ascii?Q?X88pBS3B22HZw7BMSn3AqEZBt/5k8LPZ9voAxUm4WZ8MZGa9j2+Nb/MjhscC?=
+ =?us-ascii?Q?4JcShPxJ684C0UYD/g45/t1ieQqIlLQ1Nn6kWg2bRF/sGv8kq9Sv193mfvdw?=
+ =?us-ascii?Q?ObkC6OLsMAr5ASEDZpj2/oYKYa8dHQYGrciLjvcETViTD8mo/c5KAHgySF57?=
+ =?us-ascii?Q?Dr5JzfG0ZfC0YhDyeDLTVlC1TcoyURwj0TsbhQOVh/Mz9udFyPHD1aCQdh5A?=
+ =?us-ascii?Q?cGl6DEzK3RMhAA/os2YyoiHvXiTm/vnnl3il4WkvzM8NlVjAH/8/76WozAyW?=
+ =?us-ascii?Q?5LOH2/7n74tBkJ4lbqVl2wzLaJGpB0wNO4mP97fwGjUXLm4x1pWSy7zPACdz?=
+ =?us-ascii?Q?Ol/N9AxHZsKMBnrt9imi99/xNOqUSYfkU2aq05ErsAQoR2sDj/Ckm3V2oHeM?=
+ =?us-ascii?Q?1In9Wocsz3xrTmTD34gjmdFS2uMgJWYd+UWefYN2o17DQBJq4cK2GmYQ37o1?=
+ =?us-ascii?Q?7jf6n3tWG7tkZ3My3W+eKVCY3Y+ovF/bPJPrBluur01tcWdSxtFdWN5Gb1Wo?=
+ =?us-ascii?Q?8EIJjpamnKOXJkxkKLHnWT2+9cd0B0F0w5WISELb0Gj6PPxFug0R0RMQgc4x?=
+ =?us-ascii?Q?lUdDANv2EFWDHJ6qjVXMcTBMLNCnDPLY6aKc7oH4/THXOeaPTuLJHKbZ2Y9Q?=
+ =?us-ascii?Q?3qRt6UUtzMRssG7fw9lGJS/2nln14qdXCSzarXVmLhFltDhq9MJdmPQIS6Rq?=
+ =?us-ascii?Q?y0VvogJnn8AsVdsdlcZKS/18kmSpfTzg3fkL/tOOtzRWpZ0SEAsOKImZ4ruK?=
+ =?us-ascii?Q?MPH3C8i4IG0Gd0sXnppOqQXMVgVAAlMQUNcjonXLW6qzBk2jkwvJwlbImkiY?=
+ =?us-ascii?Q?UdOQNn4HMvGY52Q1mMYJC9MNgfnI6lAG/ZDDJY6I0DgI+Jzy/fxFYKQdW9CA?=
+ =?us-ascii?Q?3aTK1m5/WxEyb9BUteP8ZgWI/7etzRF0cMC7H4uIpfB4xnnKd5EvJglV+W/J?=
+ =?us-ascii?Q?ebI4nEax9TsojuxDZmnG+piNY9IbrR0U4Bswf/6zuF5kMtjx25qC4bihRFJa?=
+ =?us-ascii?Q?wNaw3F0kIph7bciegL7Lmf/3cuhsNcqJjNSL99xc8kgFpY5hzt5vFHalFJHc?=
+ =?us-ascii?Q?CvtOSEKDPzIY2G0xDY6DJZQsmushFlDEpX6MZErfRtt+cggyXZTEjIRCG8Tk?=
+ =?us-ascii?Q?Mg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d00b07f-6dd8-47e7-75fb-08dc6acd7d7b
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2024 15:29:05.3457
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2024 17:29:58.7005
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QLOUWAmh/GnOCYJVrhi6oA/c/9BLbvNmXbz/glSS97lsM8L7FnE6+Ptto2tp7cLScm17LaahToXh6xsxIA8nDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4446
+X-MS-Exchange-CrossTenant-UserPrincipalName: L5KWNrZdCkRjJPvHDY7zYhu1Y+splibXOI/QoQkZ4QwndpFEg0OyXq4UmR9Vi27XzQOMNs208mG1P1pUd0JaA6t08DLw9Md6kG0gLvOnA+Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5145
+X-OriginatorOrg: intel.com
 
-On 5/2/24 04:35, Borislav Petkov wrote:
-> On Wed, Apr 24, 2024 at 10:58:00AM -0500, Tom Lendacky wrote:
->> During early boot phases, check for the presence of an SVSM when running
->> as an SEV-SNP guest.
->>
->> An SVSM is present if not running at VMPL0 and the 64-bit value at offset
->> 0x148 into the secrets page is non-zero. If an SVSM is present, save the
->> SVSM Calling Area address (CAA), located at offset 0x150 into the secrets
->> page, and set the VMPL level of the guest, which should be non-zero, to
->> indicate the presence of an SVSM.
->>
->> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
->> ---
->>   .../arch/x86/amd-memory-encryption.rst        | 22 ++++++
->>   arch/x86/boot/compressed/sev.c                |  8 +++
->>   arch/x86/include/asm/sev-common.h             |  4 ++
->>   arch/x86/include/asm/sev.h                    | 25 ++++++-
->>   arch/x86/kernel/sev-shared.c                  | 70 +++++++++++++++++++
->>   arch/x86/kernel/sev.c                         |  7 ++
->>   6 files changed, 135 insertions(+), 1 deletion(-)
->>
->> diff --git a/Documentation/arch/x86/amd-memory-encryption.rst b/Documentation/arch/x86/amd-memory-encryption.rst
->> index 414bc7402ae7..32737718d4a2 100644
->> --- a/Documentation/arch/x86/amd-memory-encryption.rst
->> +++ b/Documentation/arch/x86/amd-memory-encryption.rst
->> @@ -130,4 +130,26 @@ SNP feature support.
->>   
->>   More details in AMD64 APM[1] Vol 2: 15.34.10 SEV_STATUS MSR
->>   
->> +Secure VM Service Module (SVSM)
->> +===============================
->> +
->> +SNP provides a feature called Virtual Machine Privilege Levels (VMPL). The most
->> +privileged VMPL is 0 with numerically higher numbers having lesser privileges.
->> +More details in AMD64 APM[1] Vol 2: 15.35.7 Virtual Machine Privilege Levels.
->> +
->> +The VMPL feature provides the ability to run software services at a more
->> +privileged level than the guest OS is running at. This provides a secure
-> 
-> Too many "provides".
-> 
->> +environment for services within the guest's SNP environment, while protecting
->> +the service from hypervisor interference. An example of a secure service
->> +would be a virtual TPM (vTPM). Additionally, certain operations require the
->> +guest to be running at VMPL0 in order for them to be performed. For example,
->> +the PVALIDATE instruction is required to be executed at VMPL0.
->> +
->> +When a guest is not running at VMPL0, it needs to communicate with the software
->> +running at VMPL0 to perform privileged operations or to interact with secure
->> +services. This software running at VMPL0 is known as a Secure VM Service Module
->> +(SVSM). Discovery of an SVSM and the API used to communicate with it is
->> +documented in Secure VM Service Module for SEV-SNP Guests[2].
-> 
-> This paragraph needs to go second, not third.
-> 
-> Somehow that text is missing "restraint" and is all over the place.
-> Lemme try to restructure it:
-> 
-> "SNP provides a feature called Virtual Machine Privilege Levels (VMPL) which
-> defines four privilege levels at which guest software can run. The most
-> privileged level is 0 and numerically higher numbers have lesser privileges.
-> More details in the AMD64 APM[1] Vol 2, section "15.35.7 Virtual Machine
-> Privilege Levels", docID: 24593.
-> 
-> When using that feature, different services can run at different protection
-> levels, apart from the guest OS but still within the secure SNP environment.
-> They can provide services to the guest, like a vTPM, for example.
-> 
-> When a guest is not running at VMPL0, it needs to communicate with the software
-> running at VMPL0 to perform privileged operations or to interact with secure
-> services. An example fur such a privileged operation is PVALIDATE which is
-> *required* to be executed at VMPL0.
-> 
-> In this scenario, the software running at VMPL0 is usually called a Secure VM
-> Service Module (SVSM). Discovery of an SVSM and the API used to communicate
-> with it is documented in "Secure VM Service Module for SEV-SNP Guests", docID:
-> 58019."
-> 
-> How's that?
+Kuppuswamy Sathyanarayanan wrote:
+[..]
+> Got it. Makes sense. It is simpler to do it this way. I am just
+> worried that the vendor driver might mistakenly disable some core
+> attributes like inblob, outblob, provider and generation.
 
-Works for me.
-
-> 
->> +
->>   [1] https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24593.pdf
->> +[2] https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58019.pdf
-> 
-> Yeah, about those links - they get stale pretty quickly. I think it suffices to
-> explain what the document is and what it is called so that one can find it by
-> searching the web. See what I did above.
-> 
->> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
->> index 0457a9d7e515..cb771b380a6b 100644
->> --- a/arch/x86/boot/compressed/sev.c
->> +++ b/arch/x86/boot/compressed/sev.c
->> @@ -12,6 +12,7 @@
->>    */
->>   #include "misc.h"
->>   
->> +#include <linux/mm.h>
-> 
-> Please do not include a kernel-proper header into the decompresssor.
-> Those things are solved by exposing the shared *minimal* functionality
-> into
-
-Right, should've known that.
-
-> 
-> arch/x86/include/asm/shared/
-> 
-> There are examples there.
-> 
-> By the looks of it:
-> 
-> In file included from arch/x86/boot/compressed/sev.c:130:
-> arch/x86/boot/compressed/../../kernel/sev-shared.c: In function ‘setup_svsm_ca’:
-> arch/x86/boot/compressed/../../kernel/sev-shared.c:1332:14: warning: implicit declaration of function ‘PAGE_ALIGNED’; did you mean ‘IS_ALIGNED’? [-Wimplicit-function-declaration]
->   1332 |         if (!PAGE_ALIGNED(caa))
->        |              ^~~~~~~~~~~~
->        |              IS_ALIGNED
-> 
-> it'll need PAGE_ALIGNED and IS_ALIGNED into an arch/x86/include/asm/shared/mm.h
-> header.
-
-PAGE_ALIGNED and IS_ALIGNED are from two separate header files (mm.h and 
-align.h) which seems like a lot of extra changes for just one check.
-
-Any objection to either adding this define to sev-shared.c on the "else" 
-patch of the "#ifndef __BOOT_COMPRESSED" check:
-
-#define PAGE_ALIGNED(x) IS_ALIGNED((x), PAGE_SIZE)
-
-or just changing the above check to:
-
-	if (!IS_ALIGNED(caa, PAGE_SIZE))
-
-> 
->>   #include <asm/bootparam.h>
->>   #include <asm/pgtable_types.h>
->>   #include <asm/sev.h>
-> 
-> ..
-> 
->> +static void __head setup_svsm_ca(const struct cc_blob_sev_info *cc_info)
->> +{
->> +	struct snp_secrets_page *secrets_page;
->> +	u64 caa;
->> +
->> +	BUILD_BUG_ON(sizeof(*secrets_page) != PAGE_SIZE);
->> +
->> +	/*
->> +	 * RMPADJUST modifies RMP permissions of a lesser-privileged (numerically
->> +	 * higher) privilege level. Here, clear the VMPL1 permission mask of the
->> +	 * GHCB page. If the guest is not running at VMPL0, this will fail.
->> +	 *
->> +	 * If the guest is running at VMPL0, it will succeed. Even if that operation
->> +	 * modifies permission bits, it is still ok to do so currently because Linux
->> +	 * SNP guests running at VMPL0 only run at VMPL0, so VMPL1 or higher
->> +	 * permission mask changes are a don't-care.
->> +	 *
->> +	 * Use __pa() since this routine is running identity mapped when called,
->> +	 * both by the decompressor code and the early kernel code.
->> +	 */
-> 
-> Let's not replicate that comment. Diff ontop:
-> 
-> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-> index cb771b380a6b..cde1890c8843 100644
-> --- a/arch/x86/boot/compressed/sev.c
-> +++ b/arch/x86/boot/compressed/sev.c
-> @@ -576,18 +576,7 @@ void sev_enable(struct boot_params *bp)
->   		if (!(get_hv_features() & GHCB_HV_FT_SNP))
->   			sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
->   
-> -		/*
-> -		 * Enforce running at VMPL0.
-> -		 *
-> -		 * RMPADJUST modifies RMP permissions of a lesser-privileged (numerically
-> -		 * higher) privilege level. Here, clear the VMPL1 permission mask of the
-> -		 * GHCB page. If the guest is not running at VMPL0, this will fail.
-> -		 *
-> -		 * If the guest is running at VMPL0, it will succeed. Even if that operation
-> -		 * modifies permission bits, it is still ok to do so currently because Linux
-> -		 * SNP guests running at VMPL0 only run at VMPL0, so VMPL1 or higher
-> -		 * permission mask changes are a don't-care.
-> -		 */
-> +		/* Enforce running at VMPL0 - see comment above rmpadjust(). */
-
-Not sure I agree. I'd prefer to keep the comment here because it is 
-specific to this rmpadjust() call. See below.
-
->   		if (rmpadjust((unsigned long)&boot_ghcb_page, RMP_PG_SIZE_4K, 1))
->   			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NOT_VMPL0);
->   	}
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index 350db22e66be..b168403c07be 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -204,6 +204,17 @@ static __always_inline void sev_es_nmi_complete(void)
->   extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
->   extern void sev_enable(struct boot_params *bp);
->   
-> +/*
-> + * RMPADJUST modifies RMP permissions of a lesser-privileged
-> + * (numerically higher) privilege level. If @attrs==0, it will attempt
-> + * to clear the VMPL1 permission mask of @vaddr. If the guest is not
-> + * running at VMPL0, this will fail.
-> + *
-> + * If the guest is running at VMPL0, it will succeed. Even if that operation
-> + * modifies permission bits, it is still ok to do so currently because Linux
-> + * SNP guests running at VMPL0 only run at VMPL0, so VMPL1 or higher
-> + * permission mask changes are a don't-care.
-
-If you want to put a comment here, then it needs to be more generic. The 
-attrs value would be 1 if VMPL0 was attempting to clear VMPL1 
-permissions. Also, you could be running at VMPL2 and successfully clear 
-or set VMPL3 permissions. So this comment doesn't really flow with a 
-generic RMPADJUST function.
-
-/*
-  * RMPAJDUST modifies the RMP permissions of a lesser-privileged
-  * (numerically higher) VMPL. The @attrs option contains the VMPL
-  * level to be modified for @vaddr. The operation will succeed only
-  * if the guest is running at a higher-privileged (numerically lower)
-  * VMPL.
-  */
-
-> + */
->   static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs)
->   {
->   	int rc;
-> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-> index 46ea4e5e118a..9ca54bcf0e99 100644
-> --- a/arch/x86/kernel/sev-shared.c
-> +++ b/arch/x86/kernel/sev-shared.c
-> @@ -1297,17 +1297,9 @@ static void __head setup_svsm_ca(const struct cc_blob_sev_info *cc_info)
->   	BUILD_BUG_ON(sizeof(*secrets_page) != PAGE_SIZE);
->   
->   	/*
-> -	 * RMPADJUST modifies RMP permissions of a lesser-privileged (numerically
-> -	 * higher) privilege level. Here, clear the VMPL1 permission mask of the
-> -	 * GHCB page. If the guest is not running at VMPL0, this will fail.
-> -	 *
-> -	 * If the guest is running at VMPL0, it will succeed. Even if that operation
-> -	 * modifies permission bits, it is still ok to do so currently because Linux
-> -	 * SNP guests running at VMPL0 only run at VMPL0, so VMPL1 or higher
-> -	 * permission mask changes are a don't-care.
-> -	 *
-> -	 * Use __pa() since this routine is running identity mapped when called,
-> -	 * both by the decompressor code and the early kernel code.
-> +	 * See comment above rmpadjust() for details. Use __pa() since
-> +	 * this routine is running identity mapped when called both by
-> +	 * the decompressor code and the early kernel code.
->   	 */
->   	if (!rmpadjust((unsigned long)__pa(&boot_ghcb_page), RMP_PG_SIZE_4K, 1))
->   		return;
-> 
->> +	if (!rmpadjust((unsigned long)__pa(&boot_ghcb_page), RMP_PG_SIZE_4K, 1))
->> +		return;
->> +
->> +	/*
->> +	 * Not running at VMPL0, ensure everything has been properly supplied
->> +	 * for running under an SVSM.
->> +	 */
->> +	if (!cc_info || !cc_info->secrets_phys || cc_info->secrets_len != PAGE_SIZE)
->> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SECRETS_PAGE);
->> +
->> +	secrets_page = (struct snp_secrets_page *)cc_info->secrets_phys;
->> +	if (!secrets_page->svsm_size)
->> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NO_SVSM);
->> +
->> +	if (!secrets_page->svsm_guest_vmpl)
->> +		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SVSM_VMPL0);
-> 
-> 0x15C	1 byte	SVSM_GUEST_VMPL		Indicates the VMPL at which the guest is executing.
-> 
-> Do I understand it correctly that this contains the VMPL of the guest and  the
-> SVSM is running below it?
-
-Right, the SVSM is supposed to place the VMPL level that it starts the 
-guest at in this location.
-
-> 
-> IOW, SVSM should be at VMPL0 and the guest should be a at a level determined by
-> that value and it cannot be 0.
-
-Right. Not sure about the "cannot", more like "must not." The 
-specification states that the guest should run at a VMPL other than 0. 
-If an SVSM starts the guest at VMPL0, then the SVSM would not be 
-protected from guest.
-
-Thanks,
-Tom
-
-> 
-> Just making sure I'm reading it right.
-> 
-> Thx.
-> 
+Then it gets to keep the pieces it broke.
