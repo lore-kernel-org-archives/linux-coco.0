@@ -1,25 +1,49 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D050256473;
-	Thu,  2 May 2024 10:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9966341B
+	for <linux-coco@lists.linux.dev>; Thu,  2 May 2024 12:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714645022; cv=none; b=RSXEmpGjwzMMLNR9ZYeT44q/6QgMINRohOktHsjJDv5KuNOf3jYkHh8/SHbqIXaZse1p19szdZtNbj7BheTTdO6HsOu8ezkzL3IlqUNU4WsnjFvuiKoAv8u9aWtLe1BNbAO/KP+JkuK/lE36vSv40+DMBNHphHMvzAe6eOanWe4=
+	t=1714651280; cv=none; b=n3oj79ZXT1NPqUMvJpruwDsMKJlWQ9NuACUDpsc+kn4s78YFpzhageYOxdZHPJbN/Rnpd4nBDtet7SGVcFtqyhk4nU28Sv1y7nAmx+kxLVHCKIr6MheE/5EcaAm4GGqiKmKL6LCRDl219x5JcVdNZ5ueCet0y8TnMHGWrm1GGDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714645022; c=relaxed/simple;
-	bh=s66TcP7sDfUVV9MW/afp3T9duv+GA/uOVOZWsntuYLg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m+08px5VI07qiI1f/sZci3U9M+l/dMMs6BWVj1yMAGpBHPUAu6jwsh44HdI5IAGg7cIQkFsLJfR/gzBlkJwcvZuyePwX3NkMvoyW44q1KZRZ6ls08aS8Pt6JjFt2g2iKcR0bmXToEkmGmKKqSA1UY5JKCFfCglYbqFWQT6LD9Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC7B62F4;
-	Thu,  2 May 2024 03:17:25 -0700 (PDT)
-Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D8E5F3F793;
-	Thu,  2 May 2024 03:16:57 -0700 (PDT)
-Message-ID: <85a4bbda-4516-4c2a-ae51-5e8f8c451e3a@arm.com>
-Date: Thu, 2 May 2024 11:16:56 +0100
+	s=arc-20240116; t=1714651280; c=relaxed/simple;
+	bh=U6BWz0nJPEgHH7b0DgjM0MSWQOGPd3vZX/l4RXo5JfQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=OVszRzU18oDDSQYkquiUfqEnTJpcxHPHel2nmT/4SfTTG+AGNTnEDK3ArINcohOmNnVZ3el60tjbE3bxyNaEVA+O2702njegrpxdkic96s47THdi08srlJOx9XEZ4oaiYFmIp9aODksrmgnIpg7xzFAQm36DRGcGigF8YhWJNNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=F/GUMhBr; arc=none smtp.client-ip=99.78.197.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="F/GUMhBr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1714651280; x=1746187280;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=e7tDSC9p8oy5ChHErHE1oCbmu4OKOhTaSgDmPzR2GlY=;
+  b=F/GUMhBrY63dO3QywpNrIVzDYlHhO9jATSqmu8sOoDzHjVfF8aFRIe2k
+   ecUmelW4qAMDWHKK625YE0+1ObCWUF6JrPlwE5LqVBnXuoaLiG+hc3YTo
+   KqNU+xEQVqbUdRcxbjz3wRgz0M4AiMkC9Q4nMWW2wQW6AAo83MoQIw+Ef
+   8=;
+X-IronPort-AV: E=Sophos;i="6.07,247,1708387200"; 
+   d="scan'208";a="292197737"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 12:01:18 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:1724]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.23.7:2525] with esmtp (Farcaster)
+ id 74eaa98e-3cdf-42c3-987a-590178113d5b; Thu, 2 May 2024 12:01:17 +0000 (UTC)
+X-Farcaster-Flow-ID: 74eaa98e-3cdf-42c3-987a-590178113d5b
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Thu, 2 May 2024 12:01:16 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Thu, 2 May
+ 2024 12:01:11 +0000
+Message-ID: <26b3b3b5-548d-4ebd-9d21-19580a41e799@amazon.com>
+Date: Thu, 2 May 2024 14:01:08 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,228 +51,65 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 17/43] arm64: RME: Allow VMM to set RIPAS
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240412084056.1733704-1-steven.price@arm.com>
- <20240412084309.1733783-1-steven.price@arm.com>
- <20240412084309.1733783-18-steven.price@arm.com>
- <d2957090-fcf0-4dff-901e-d8ea975f2452@arm.com>
- <98ef5e64-2d1e-4fa2-a3da-210ea180f20f@arm.com>
+Subject: Re: [PATCH v4 0/4] x86/snp: Add kexec support
+To: Ashish Kalra <Ashish.Kalra@amd.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>
+CC: <rafael@kernel.org>, <peterz@infradead.org>, <adrian.hunter@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <jun.nakajima@intel.com>,
+	<rick.p.edgecombe@intel.com>, <thomas.lendacky@amd.com>,
+	<michael.roth@amd.com>, <seanjc@google.com>, <kai.huang@intel.com>,
+	<bhe@redhat.com>, <kirill.shutemov@linux.intel.com>, <bdas@redhat.com>,
+	<vkuznets@redhat.com>, <dionnaglaze@google.com>, <anisinha@redhat.com>,
+	<jroedel@suse.de>, <ardb@kernel.org>, <kexec@lists.infradead.org>,
+	<linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
+ <cover.1712694667.git.ashish.kalra@amd.com>
 Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <98ef5e64-2d1e-4fa2-a3da-210ea180f20f@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <cover.1712694667.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EX19D035UWB002.ant.amazon.com (10.13.138.97) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
 
-On 01/05/2024 16:47, Steven Price wrote:
-> On 19/04/2024 10:34, Suzuki K Poulose wrote:
->> On 12/04/2024 09:42, Steven Price wrote:
->>> Each page within the protected region of the realm guest can be marked
->>> as either RAM or EMPTY. Allow the VMM to control this before the guest
->>> has started and provide the equivalent functions to change this (with
->>> the guest's approval) at runtime.
->>>
->>> When transitioning from RIPAS RAM (1) to RIPAS EMPTY (0) the memory is
->>> unmapped from the guest and undelegated allowing the memory to be reused
->>> by the host. When transitioning to RIPAS RAM the actual population of
->>> the leaf RTTs is done later on stage 2 fault, however it may be
->>> necessary to allocate additional RTTs to represent the range requested.
->>
->> minor nit: To give a bit more context:
->>
->> "however it may be necessary to allocate additional RTTs in order for
->> the RMM to track the RIPAS for the requested range".
-> 
-> That is what I meant - but your wording is probably clearer ;)
-> Technically there's also the case where a RIPAS change will cause a
-> block mapping to be split which isn't just about tracking RIPAS but also
-> about breaking up the block mapping for the pages that remain.
-> 
->>>
->>> When freeing a block mapping it is necessary to temporarily unfold the
->>> RTT which requires delegating an extra page to the RMM, this page can
->>> then be recovered once the contents of the block mapping have been
->>> freed. A spare, delegated page (spare_page) is used for this purpose.
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> ---
->>>    arch/arm64/include/asm/kvm_rme.h |  16 ++
->>>    arch/arm64/kvm/mmu.c             |   8 +-
->>>    arch/arm64/kvm/rme.c             | 390 +++++++++++++++++++++++++++++++
->>>    3 files changed, 411 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/arch/arm64/include/asm/kvm_rme.h
->>> b/arch/arm64/include/asm/kvm_rme.h
->>> index 915e76068b00..cc8f81cfc3c0 100644
->>> --- a/arch/arm64/include/asm/kvm_rme.h
->>> +++ b/arch/arm64/include/asm/kvm_rme.h
->>> @@ -96,6 +96,14 @@ void kvm_realm_destroy_rtts(struct kvm *kvm, u32
->>> ia_bits);
->>>    int kvm_create_rec(struct kvm_vcpu *vcpu);
->>>    void kvm_destroy_rec(struct kvm_vcpu *vcpu);
->>>    +void kvm_realm_unmap_range(struct kvm *kvm,
->>> +               unsigned long ipa,
->>> +               u64 size,
->>> +               bool unmap_private);
->>> +int realm_set_ipa_state(struct kvm_vcpu *vcpu,
->>> +            unsigned long addr, unsigned long end,
->>> +            unsigned long ripas);
->>> +
->>>    #define RME_RTT_BLOCK_LEVEL    2
->>>    #define RME_RTT_MAX_LEVEL    3
->>>    @@ -114,4 +122,12 @@ static inline unsigned long
->>> rme_rtt_level_mapsize(int level)
->>>        return (1UL << RME_RTT_LEVEL_SHIFT(level));
->>>    }
->>>    +static inline bool realm_is_addr_protected(struct realm *realm,
->>> +                       unsigned long addr)
->>> +{
->>> +    unsigned int ia_bits = realm->ia_bits;
->>> +
->>> +    return !(addr & ~(BIT(ia_bits - 1) - 1));
->>> +}
->>> +
->>>    #endif
->>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>> index 46f0c4e80ace..8a7b5449697f 100644
->>> --- a/arch/arm64/kvm/mmu.c
->>> +++ b/arch/arm64/kvm/mmu.c
->>> @@ -310,6 +310,7 @@ static void invalidate_icache_guest_page(void *va,
->>> size_t size)
->>>     * @start: The intermediate physical base address of the range to unmap
->>>     * @size:  The size of the area to unmap
->>>     * @may_block: Whether or not we are permitted to block
->>> + * @only_shared: If true then protected mappings should not be unmapped
->>>     *
->>>     * Clear a range of stage-2 mappings, lowering the various
->>> ref-counts.  Must
->>>     * be called while holding mmu_lock (unless for freeing the stage2
->>> pgd before
->>> @@ -317,7 +318,7 @@ static void invalidate_icache_guest_page(void *va,
->>> size_t size)
->>>     * with things behind our backs.
->>>     */
->>>    static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t
->>> start, u64 size,
->>> -                 bool may_block)
->>> +                 bool may_block, bool only_shared)
->>>    {
->>>        struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
->>>        phys_addr_t end = start + size;
->>> @@ -330,7 +331,7 @@ static void __unmap_stage2_range(struct kvm_s2_mmu
->>> *mmu, phys_addr_t start, u64
->>>      static void unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t
->>> start, u64 size)
->>>    {
->>> -    __unmap_stage2_range(mmu, start, size, true);
->>> +    __unmap_stage2_range(mmu, start, size, true, false);
->>>    }
->>>      static void stage2_flush_memslot(struct kvm *kvm,
->>> @@ -1771,7 +1772,8 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct
->>> kvm_gfn_range *range)
->>>          __unmap_stage2_range(&kvm->arch.mmu, range->start << PAGE_SHIFT,
->>>                     (range->end - range->start) << PAGE_SHIFT,
->>> -                 range->may_block);
->>> +                 range->may_block,
->>> +                 range->only_shared);
->>>          return false;
->>>    }
->>> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
->>> index 629a095bea61..9e5983c51393 100644
->>> --- a/arch/arm64/kvm/rme.c
->>> +++ b/arch/arm64/kvm/rme.c
->>> @@ -79,6 +79,12 @@ static phys_addr_t __alloc_delegated_page(struct
->>> realm *realm,
->>>        return phys;
->>>    }
->>>    +static phys_addr_t alloc_delegated_page(struct realm *realm,
->>> +                    struct kvm_mmu_memory_cache *mc)
->>> +{
->>> +    return __alloc_delegated_page(realm, mc, GFP_KERNEL);
->>> +}
->>> +
->>>    static void free_delegated_page(struct realm *realm, phys_addr_t phys)
->>>    {
->>>        if (realm->spare_page == PHYS_ADDR_MAX) {
->>> @@ -94,6 +100,151 @@ static void free_delegated_page(struct realm
->>> *realm, phys_addr_t phys)
->>>        free_page((unsigned long)phys_to_virt(phys));
->>>    }
->>>    +static int realm_rtt_create(struct realm *realm,
->>> +                unsigned long addr,
->>> +                int level,
->>> +                phys_addr_t phys)
->>> +{
->>> +    addr = ALIGN_DOWN(addr, rme_rtt_level_mapsize(level - 1));
->>> +    return rmi_rtt_create(virt_to_phys(realm->rd), phys, addr, level);
->>> +}
->>> +
->>> +static int realm_rtt_fold(struct realm *realm,
->>> +              unsigned long addr,
->>> +              int level,
->>> +              phys_addr_t *rtt_granule)
->>> +{
->>> +    unsigned long out_rtt;
->>> +    int ret;
->>> +
->>> +    ret = rmi_rtt_fold(virt_to_phys(realm->rd), addr, level, &out_rtt);
->>> +
->>> +    if (RMI_RETURN_STATUS(ret) == RMI_SUCCESS && rtt_granule)
->>> +        *rtt_granule = out_rtt;
->>> +
->>> +    return ret;
->>> +}
->>> +
->>> +static int realm_destroy_protected(struct realm *realm,
->>> +                   unsigned long ipa,
->>> +                   unsigned long *next_addr)
->>> +{
->>> +    unsigned long rd = virt_to_phys(realm->rd);
->>> +    unsigned long addr;
->>> +    phys_addr_t rtt;
->>> +    int ret;
->>> +
->>> +loop:
->>> +    ret = rmi_data_destroy(rd, ipa, &addr, next_addr);
->>> +    if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
->>> +        if (*next_addr > ipa)
->>> +            return 0; /* UNASSIGNED */
->>> +        rtt = alloc_delegated_page(realm, NULL);
->>> +        if (WARN_ON(rtt == PHYS_ADDR_MAX))
->>> +            return -1;
->>> +        /* ASSIGNED - ipa is mapped as a block, so split */
->>> +        ret = realm_rtt_create(realm, ipa,
->>> +                       RMI_RETURN_INDEX(ret) + 1, rtt);
->>
->> Could we not go all the way to L3 (rather than 1 level deeper) and try
->> again ? That way, we are covered for block mappings at L1 (1G).
-> 
-> I don't think this situation can happen. The spec states that for
-> RMI_ERROR_RTT either top>ipa (UNASSIGNED, in which case we've bailed out
-> above) or top==ipa (ASSIGNED) in which case RMI_RETURN_INDEX(ret) must
-> equal 2.
+Hey Ashish,
 
-It could be 1 as RMM spec allows Block mapping at L1. But if we don't
-fold to that level in KVM, the current code may be fine.
+On 09.04.24 22:42, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+>
+> The patchset adds bits and pieces to get kexec (and crashkernel) work on
+> SNP guest.
 
-> 
-> So in this case realm_rtt_create() will always be called with level=3.
-> 
-> I can simplify this by explicitly passing 3 and adding a WARN_ON() for
-> RMI_RETURN_INDEX(ret) != 2.
 
-Yes please, if we don't fold all the way up to L1.
+With this patch set (and similar for the TDX one), you enable the 
+typical kdump case, which is great!
 
-Thanks
-Suzuki
+However, if a user is running with direct kernel boot - which is very 
+typical in SEV-SNP setup, especially for Kata Containers and similar - 
+the initial launch measurement is a natural indicator of the target 
+environment. Kexec basically allows them to completely bypass that: You 
+would be able to run a completely different environment than the one you 
+measure through the launch digest. I'm not sure it's a good idea to even 
+allow that by default in CoCo environments - at least not if the kernel 
+is locked down.
 
+Do you have any plans to build a CoCo native kexec where you allow a VM 
+to create a new VM context with a guest provided seed? The new context 
+could rerun all of the attestation and so enable users to generate a new 
+launch digest. If you then atomically swap into the new context, it 
+would in turn enable them to natively "kexec" into a completely new VM 
+context including measurements.
+
+I understand that an SVSM + TPM implementation may help to some extent 
+here by integrating with IMA and adding the new kernel into the IMA log. 
+But that quickly becomes very convoluted (hence difficult to assess 
+correctness for) and the same measurement question arises just one level 
+up then: How do you update your SVSM while maintaining a full 
+measurement and trust chain?
+
+
+Thanks,
+
+Alex
 
