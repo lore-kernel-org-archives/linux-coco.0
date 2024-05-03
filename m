@@ -1,36 +1,36 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B701E898
-	for <linux-coco@lists.linux.dev>; Fri,  3 May 2024 11:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B3C14534A
+	for <linux-coco@lists.linux.dev>; Fri,  3 May 2024 11:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714736245; cv=none; b=TcjjrotEf87LXKtpWBCs9/3SMCHnk+rughrEXgO+CQx3pF2LMEzAeAi98HI/N9SMYELUe7Hy5EqxnTexYSXQnNa4ZYD1M2ipX5U1UEqRvVNAByCuvwuTR7W5ZIS6Q2+32w7YE2JEbM5Z47XGjGsNh31ZII59tCktxWOZIabvrG0=
+	t=1714736306; cv=none; b=t/cbPu/PkKs5aesM4PWQjeNKdEKSAAgndZi2wIwB1W9RRo9BN2+OMXxzQfeuBm179sRUs2ULob3EnvaLFDU8CW0rZ70fHC5zqnMknJvxOvkmnPEahderoC96BetURd7xcMvWoR+ofKeDLwW6QB1qjAruzEK5vQfVdWYskX9oeS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714736245; c=relaxed/simple;
-	bh=ovvpZtA9Sqmx0FN7EsTrKN/CiL5vmokMEuCX7JrSClo=;
+	s=arc-20240116; t=1714736306; c=relaxed/simple;
+	bh=rBI030nnjBaGuDp119mQ6rF4+O/VVsNKdIq/NQwkRf8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sF0C3cDAO/bb7cbGnq3bXktTd1oC4lMSJjJc8H0H92HjZsB571JnEI94AZVrTDkeQ9BzETwQtkdhOMSVvb7J2Go7J9nNl4AOKxPldhcEFcUkm1xBAJqOjMzZyqFm/3w8ahQzd60UJFRML8ZsVlAlW8I2xC1OiwHJErHmyTtb18s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=QIAhxCij; arc=none smtp.client-ip=85.214.250.239
+	 Content-Type:Content-Disposition:In-Reply-To; b=otEtbTQXxWHkGgGfnUPOVIIxyZ+HDVMIwr6sz9S1Qt0hKAZ2EJYYXD52uHMdVFYOl8wWRjrZCH/LI55VgUPAO0Aq1TeWyhSOA2MReMH4lGPJoh7++Z+Qi9Ct02cTzC0NS+74LMAcS1TTGnCZ0Yibk0Av86tGOwhN9eVM6LV0EbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=4cuJ8QfQ; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="QIAhxCij"
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="4cuJ8QfQ"
 Received: from 8bytes.org (p4ffe0bdf.dip0.t-ipconnect.de [79.254.11.223])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id E7B511C0BCF;
-	Fri,  3 May 2024 13:37:21 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 8A30B1C0D01;
+	Fri,  3 May 2024 13:38:24 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1714736242;
-	bh=ovvpZtA9Sqmx0FN7EsTrKN/CiL5vmokMEuCX7JrSClo=;
+	s=default; t=1714736304;
+	bh=rBI030nnjBaGuDp119mQ6rF4+O/VVsNKdIq/NQwkRf8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QIAhxCijngJFfXNvrSGwWdLpSsgG3+PHsd91CUqlJofGDSJsuxldCb64LQbl8Fuhf
-	 Ii47bjitgT+MbR5xyFSHmN/EZ0zIj+XFkEWRwNx2B7qzXMchTxSRaLgoxuwCubuU62
-	 PR2WV5Kb/0vbR6oi97031EM+r0h6TuMnfrGrBmukpYgPvNkzuVmqZWFm9F9X6RbHr+
-	 u8wRrcs3wyOS0upwjcV46dvHA8uDILHRu7/fEKJ6HaQ/BVdC0zdzIfCFRBTL3FTw8D
-	 s9fu0YZCOPOtMUWdL+wbCQMFyt5lIrO2Wmk7BMkI4Tw0fUuE9TYjeDidZ8omAOfy4s
-	 WuaIuAHuaVmhw==
-Date: Fri, 3 May 2024 13:37:20 +0200
+	b=4cuJ8QfQOgGOa4WUzUJMVUE9bxrwxLie0fgcNzaEjt7JoBadWwPunovk+QEXETfZh
+	 bbOpG6oIKAByFvKq7eq2XgjBauhWYYNwinBbuzl3qHnhCeGW3JMDmLIwTDUB9El+Er
+	 HYnX+PkEsL/UVx9vpYV4M9SBf91X+pFpqn+g625CQbuKrRralVXzcUeQNK0fYdQtzG
+	 CQPqEJbLT5Qk4Q+KDTVadwqZeku0/zRwpgit0O/iyA+ZfbgpIq/XDKS2J1k94J8Y2U
+	 lesfpgcHMN71yeWJXDpt/kmMPgdvmzwXCZdBzN1ZQtD8Q22SPJ0nsPDrGvq5Fo2aWI
+	 DSSurMAzOMRvA==
+Date: Fri, 3 May 2024 13:38:23 +0200
 From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
 To: Tom Lendacky <thomas.lendacky@amd.com>
 Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
@@ -38,15 +38,15 @@ Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
 	Peter Zijlstra <peterz@infradead.org>,
 	Michael Roth <michael.roth@amd.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Christoph Hellwig <hch@lst.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Joel Becker <jlbec@evilplan.org>,
 	Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [svsm-devel] [PATCH v4 15/15] x86/sev: Allow non-VMPL0 execution
- when an SVSM is present
-Message-ID: <ZjTMcC7KTP9xRAqk@8bytes.org>
+Subject: Re: [svsm-devel] [PATCH v4 00/15] Provide SEV-SNP support for
+ running under an SVSM
+Message-ID: <ZjTMr8CAA3STRlDR@8bytes.org>
 References: <cover.1713974291.git.thomas.lendacky@amd.com>
- <e377d148acac799f6905fc544fbb8bf2ed76e078.1713974291.git.thomas.lendacky@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -55,19 +55,26 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e377d148acac799f6905fc544fbb8bf2ed76e078.1713974291.git.thomas.lendacky@amd.com>
+In-Reply-To: <cover.1713974291.git.thomas.lendacky@amd.com>
 
-On Wed, Apr 24, 2024 at 10:58:11AM -0500, Tom Lendacky wrote:
-> +static void __init report_vmpl_level(void)
-> +{
-> +	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-> +		return;
-> +
-> +	pr_info("SNP running at VMPL%u.\n", vmpl);
+On Wed, Apr 24, 2024 at 10:57:56AM -0500, Tom Lendacky wrote:
+> Tom Lendacky (15):
+>   x86/sev: Shorten snp_secrets_page_layout to snp_secrets_page
+>   x86/sev: Rename snp_init() in the boot/compressed/sev.c file
+>   x86/sev: Make the VMPL0 checking more straight forward
+>   x86/sev: Check for the presence of an SVSM in the SNP Secrets page
+>   x86/sev: Use kernel provided SVSM Calling Areas
+>   x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0
+>   x86/sev: Use the SVSM to create a vCPU when not in VMPL0
+>   x86/sev: Provide SVSM discovery support
+>   x86/sev: Provide guest VMPL level to userspace
+>   virt: sev-guest: Choose the VMPCK key based on executing VMPL
+>   configfs-tsm: Allow the privlevel_floor attribute to be updated
+>   fs/configfs: Add a callback to determine attribute visibility
+>   x86/sev: Take advantage of configfs visibility support in TSM
+>   x86/sev: Extend the config-fs attestation support for an SVSM
+>   x86/sev: Allow non-VMPL0 execution when an SVSM is present
 
-Nit: Can this be formated more like "SNP running at VMPL-%u"? That makes
-it easier to parse for me when looking into dmesg :)
+I tested these on latest COCONUT-SVSM upstream and found no issues.
 
-Regards,
-
-	Joerg
+Tested-by: Joerg Roedel <jroedel@suse.de>
