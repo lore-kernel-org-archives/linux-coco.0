@@ -1,135 +1,237 @@
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0738B14A094
-	for <linux-coco@lists.linux.dev>; Fri,  3 May 2024 08:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857A07E766
+	for <linux-coco@lists.linux.dev>; Fri,  3 May 2024 10:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714725147; cv=none; b=e1iW3tr3uCIVOxAcrN+SgA8m/VmIPv9GJipdq1bQh8YuUPDipqkfG/EuNa/6ZdyRSqan7DRqOls3RwXKUK1ZzGZol2nW/VLsKDcQNQMemERXH/PsCRsmEtNTJXOKOiJSwVul7YxW8vzszU6JvpoaN1KK+km7vhI+7cLh3TNGA2g=
+	t=1714732487; cv=none; b=oTkYvihq3cB7Lkj41sqRCjixLwyMlpeDSsVr1Suk+L6YMJK+nX1yn3sLfP5LbQOYrXakBy0YDDLBppKQYcUZ68dbi6XkqzgKSYJRtWh5ALRBXU8PDDZCBmzbDK3gra+YheYw5UGHnPFiOz9/qvluIlJ2FBmO7At4cJw2sHkhtRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714725147; c=relaxed/simple;
-	bh=oetKWZhXbUP/ZBwxmBeFuev6aODxLGweeHR7GrdJFAA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=cwTnxE2Tol/A5O51QXSoyNmLNuepC8Ck13pS4Elxu/HrVcP7AjeHkdXl8tMsSvdHWSUpUAHj1glicTNqptss2RHQTKV5NVgMltTn+2pjKdJ0fQVjN/a61MgTbGFcqeGj0K7F5quB/mV95bEqJNHiD1CLhl8Qrbb482iswiOoiCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=EZ6v2x2H; arc=none smtp.client-ip=72.21.196.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	s=arc-20240116; t=1714732487; c=relaxed/simple;
+	bh=eNvegdv5BEUYvcLicupfBaOtjhE9FEc3Oct1bDpyAqA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dmL7G6Xjzx+u8rLxD9L0a+xCGBj3E0luIvoEi3uPFRCt/PIjFg4n8F+o4kdH1z7PeXHG7nmONlW9dRpQT9DrgstxcDvF48CHqie5es3A0EUqKFBZ7Dm28dkjukXdn2dZALNzTTxu+eBoMTzKURsn0dOjYXpzC9ugscZLTzE15xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=DIOwmEFV; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="EZ6v2x2H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1714725146; x=1746261146;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vgSYT6fxfReVODTChlrLY1yTZjM/kZAB6PbQPgue2kA=;
-  b=EZ6v2x2HJETu/MEzsOQY2VQ/bM6ZzYFz/i9g47i57LUNQzMWnbhC1ugP
-   MR4y6FPv2iBa3Ra+dSKZvhOWWqWyDAaFfMfTjqI7eWjnPQjY6Ed5hvXlg
-   7c17/N+E1NZDjTh/ftTeEtMcqeIfYn17SRKUJadN2DvYbhv3B1Ntn+Doq
-   g=;
-X-IronPort-AV: E=Sophos;i="6.07,247,1708387200"; 
-   d="scan'208";a="398851930"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2024 08:32:22 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.7.35:9532]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.8.38:2525] with esmtp (Farcaster)
- id 26a7d38d-e059-4d36-a735-3275faea70a5; Fri, 3 May 2024 08:32:21 +0000 (UTC)
-X-Farcaster-Flow-ID: 26a7d38d-e059-4d36-a735-3275faea70a5
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Fri, 3 May 2024 08:32:21 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Fri, 3 May
- 2024 08:32:15 +0000
-Message-ID: <c2732461-e768-4356-82ce-a80c73997f02@amazon.com>
-Date: Fri, 3 May 2024 10:32:13 +0200
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="DIOwmEFV"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 87D9A40E01F6;
+	Fri,  3 May 2024 10:34:34 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 2Axz4-7bNS4D; Fri,  3 May 2024 10:34:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1714732470; bh=yoolI6BTv+BQCi2zu/RW+yLYP2FDu5y4KsL/rlMd26M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DIOwmEFVRrnfgfAlB/Pyov49iVCojofkIIOmDwbAnyV3oydu1EGjIT2n1YE25WGMy
+	 3eQwJXgpHIMp+IZfhEfgrZXVxXE3764VJe1rVxKqkJmv6GDxwT5JraLVcPZIHyURkn
+	 NatfIYVc+Wri8V9ohL8XYjeHrIG01kRBdVH3e/rHFlIHnqp363Haa+Ej86fhx2hFcd
+	 lLUUsVrl/j3eTqpXjvPwQtdIl0K8wDDcGVC6aLMsGwNb6xH8zJ8pd20CvSuTpPXqwp
+	 QS3Dov24BvLWLXKHl75UkKcSyQKTaOt+7s13ZJHXZXEQRB7zh783vFeZeemCNweqe9
+	 m8zrJ6ZNzSqPnqUjrZMEgkK0THciDWfTqwr41euW2J0SMKq/EWW/dynrRTRkE2EFEH
+	 PQzrRaX63v7HVAXhXBF3atglGgfm4JkJ7oEXuS+VgIwgUWknSQjmD/uuztmdnNGVpy
+	 63GYJOo5B55lQPqjxYc2JqQQ+dk5POOlgPSX2I102R2xVZ9u1L7B89AWrQxmp6JTOP
+	 1BLogMNBkv9pZuAq8aTpNEvfWqW03ijZ19kEeoLckezKpghYPr5PyluuQEQlZZmP0z
+	 23wQJgs6HF0rFvEub4V/vMrVEQZKZ18ep1a6Dh+lPhRvXToPny3jWv7GQMkC6/Lvzn
+	 1z5IuLhBjvFinls0cyIT+CG8=
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9349D40E0192;
+	Fri,  3 May 2024 10:34:16 +0000 (UTC)
+Date: Fri, 3 May 2024 12:34:07 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v4 05/15] x86/sev: Use kernel provided SVSM Calling Areas
+Message-ID: <20240503103407.GSZjS9n-XMMKi5ZOek@fat_crate.local>
+References: <cover.1713974291.git.thomas.lendacky@amd.com>
+ <07266b47e749267ef9a9ccbc9e8e9df78ed54857.1713974291.git.thomas.lendacky@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/4] x86/snp: Add kexec support
-To: Vitaly Kuznetsov <vkuznets@redhat.com>, Ashish Kalra
-	<Ashish.Kalra@amd.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>
-CC: <rafael@kernel.org>, <peterz@infradead.org>, <adrian.hunter@intel.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <jun.nakajima@intel.com>,
-	<rick.p.edgecombe@intel.com>, <thomas.lendacky@amd.com>,
-	<michael.roth@amd.com>, <seanjc@google.com>, <kai.huang@intel.com>,
-	<bhe@redhat.com>, <kirill.shutemov@linux.intel.com>, <bdas@redhat.com>,
-	<dionnaglaze@google.com>, <anisinha@redhat.com>, <jroedel@suse.de>,
-	<ardb@kernel.org>, <kexec@lists.infradead.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>
-References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <cover.1712694667.git.ashish.kalra@amd.com>
- <26b3b3b5-548d-4ebd-9d21-19580a41e799@amazon.com> <87msp8mmpq.fsf@redhat.com>
-Content-Language: en-US
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <87msp8mmpq.fsf@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: EX19D036UWB002.ant.amazon.com (10.13.139.139) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <07266b47e749267ef9a9ccbc9e8e9df78ed54857.1713974291.git.thomas.lendacky@amd.com>
 
+This one would need multiple review mails.
 
-On 02.05.24 14:18, Vitaly Kuznetsov wrote:
-> Alexander Graf <graf@amazon.com> writes:
->
->> Hey Ashish,
->>
->> On 09.04.24 22:42, Ashish Kalra wrote:
->>> From: Ashish Kalra <ashish.kalra@amd.com>
->>>
->>> The patchset adds bits and pieces to get kexec (and crashkernel) work on
->>> SNP guest.
->>
->> With this patch set (and similar for the TDX one), you enable the
->> typical kdump case, which is great!
->>
->> However, if a user is running with direct kernel boot - which is very
->> typical in SEV-SNP setup, especially for Kata Containers and similar -
->> the initial launch measurement is a natural indicator of the target
->> environment. Kexec basically allows them to completely bypass that: You
->> would be able to run a completely different environment than the one you
->> measure through the launch digest. I'm not sure it's a good idea to even
->> allow that by default in CoCo environments - at least not if the kernel
->> is locked down.
-> Isn't it the same when we just allow loading kernel modules? I'm sure
-> you can also achieve a 'completely different environment' with that :-)
-> With SecureBoot / lockdown we normally require modules to pass signature
-> check, I guess we can employ the same mechanism for kexec. I.e. in
-> lockdown, we require signature check on the kexec-ed kernel. Also, it
-> may make sense to check initramfs too (with direct kernel boot it's also
-> part of launch measurements, right?) and there's UKI for that already).
+Lemme make this part 1.
 
+On Wed, Apr 24, 2024 at 10:58:01AM -0500, Tom Lendacky wrote:
+>  arch/x86/include/asm/sev-common.h |  13 ++
+>  arch/x86/include/asm/sev.h        |  32 +++++
+>  arch/x86/include/uapi/asm/svm.h   |   1 +
+>  arch/x86/kernel/sev-shared.c      |  94 +++++++++++++-
+>  arch/x86/kernel/sev.c             | 207 +++++++++++++++++++++++++-----
 
-Correct. With IMA, you even do exactly that: Enforce a signature check 
-of the next binary with kexec.
+Ok, now would be as good time as any to start moving the SEV guest bits
+to where we want them to live:
 
-The problem is that you typically want to update the system because 
-something is broken; most likely your original environment had a 
-security issue somewhere. From a pure SEV-SNP attestation point of view, 
-you can not distinguish between the patched and unpatched environment: 
-Both look the same.
+arch/x86/coco/sev/
 
-So while kexec isn't the problem, it's the fact that you can't tell 
-anyone that you're now running a fixed version of the code :).
+so pls add the new SVSM guest support bits there:
 
+arch/x86/coco/sev/svsm.c
+arch/x86/coco/sev/svsm-shared.c
 
-> Personally, I believe that if we simply forbid kexec for CoCo in
-> lockdown mode, the feature will become mostly useless in 'full stack'
-> (which boot through firmware) production envrironments.
+I guess.
 
+And things which touch sev.c and sev-shared.c will have to add patches
+which move bits to the new location.
 
-I'm happy for CoCo to stay smoke and mirrors :). But I believe that if 
-you want to genuinely draw a trust chain back to an AMD/Intel 
-certificate, we need to come up with a good way of making updates work 
-with a working trust chain so that whoever checks whether you're running 
-sanctioned code is able to validate the claim.
+>  arch/x86/mm/mem_encrypt_amd.c     |   8 +-
+>  6 files changed, 320 insertions(+), 35 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+> index 1225744a069b..4cc716660d4b 100644
+> --- a/arch/x86/include/asm/sev-common.h
+> +++ b/arch/x86/include/asm/sev-common.h
+> @@ -96,6 +96,19 @@ enum psc_op {
+>  	/* GHCBData[63:32] */				\
+>  	(((u64)(val) & GENMASK_ULL(63, 32)) >> 32)
+>  
+> +/* GHCB Run at VMPL Request/Response */
 
+Run?
 
-Alex
+> +#define GHCB_MSR_VMPL_REQ		0x016
+> +#define GHCB_MSR_VMPL_REQ_LEVEL(v)			\
+> +	/* GHCBData[39:32] */				\
+> +	(((u64)(v) & GENMASK_ULL(7, 0) << 32) |		\
+> +	/* GHCBDdata[11:0] */				\
+> +	GHCB_MSR_VMPL_REQ)
+> +
+> +#define GHCB_MSR_VMPL_RESP		0x017
+> +#define GHCB_MSR_VMPL_RESP_VAL(v)			\
+> +	/* GHCBData[63:32] */				\
+> +	(((u64)(v) & GENMASK_ULL(63, 32)) >> 32)
+> +
+>  /* GHCB Hypervisor Feature Request/Response */
+>  #define GHCB_MSR_HV_FT_REQ		0x080
+>  #define GHCB_MSR_HV_FT_RESP		0x081
 
+...
+
+> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+> index 46ea4e5e118a..6f57eb804e70 100644
+> --- a/arch/x86/kernel/sev-shared.c
+> +++ b/arch/x86/kernel/sev-shared.c
+> @@ -18,9 +18,11 @@
+>  #define sev_printk_rtl(fmt, ...)	printk_ratelimited(fmt, ##__VA_ARGS__)
+>  #else
+>  #undef WARN
+> -#define WARN(condition, format...) (!!(condition))
+> +#define WARN(condition, format...)	(!!(condition))
+>  #define sev_printk(fmt, ...)
+>  #define sev_printk_rtl(fmt, ...)
+> +#undef vc_forward_exception
+> +#define vc_forward_exception(c)		panic("SNP: Hypervisor requested exception\n")
+>  #endif
+>  
+>  /*
+> @@ -244,6 +246,96 @@ static enum es_result verify_exception_info(struct ghcb *ghcb, struct es_em_ctxt
+>  	return ES_VMM_ERROR;
+>  }
+>  
+> +static __always_inline void issue_svsm_call(struct svsm_call *call, u8 *pending)
+
+svsm_issue_call()
+
+I guess.
+
+> +{
+> +	/*
+> +	 * Issue the VMGEXIT to run the SVSM:
+
+... to call the SVSM:" I guess.
+
+> +	 *   - Load the SVSM register state (RAX, RCX, RDX, R8 and R9)
+> +	 *   - Set the CA call pending field to 1
+> +	 *   - Issue VMGEXIT
+> +	 *   - Save the SVSM return register state (RAX, RCX, RDX, R8 and R9)
+> +	 *   - Perform atomic exchange of the CA call pending field
+> +	 */
+
+That goes above the function name.
+
+> +	asm volatile("mov %9, %%r8\n\t"
+> +		     "mov %10, %%r9\n\t"
+> +		     "movb $1, %11\n\t"
+> +		     "rep; vmmcall\n\t"
+> +		     "mov %%r8, %3\n\t"
+> +		     "mov %%r9, %4\n\t"
+> +		     "xchgb %5, %11\n\t"
+> +		     : "=a" (call->rax_out), "=c" (call->rcx_out), "=d" (call->rdx_out),
+> +		       "=m" (call->r8_out), "=m" (call->r9_out),
+> +		       "+r" (*pending)
+> +		     : "a" (call->rax), "c" (call->rcx), "d" (call->rdx),
+> +		       "r" (call->r8), "r" (call->r9),
+> +		       "m" (call->caa->call_pending)
+> +		     : "r8", "r9", "memory");
+> +}
+
+Btw, where are we documenting this calling convention?
+
+Anyway, I think you can do it this way (pasting the whole thing for
+easier review):
+
+static __always_inline void issue_svsm_call(struct svsm_call *call, u8 *pending)
+{
+	register unsigned long r8 asm("r8") = call->r8;
+	register unsigned long r9 asm("r9") = call->r9;
+
+	call->caa->call_pending = 1;
+
+	/*
+	 * Issue the VMGEXIT to run the SVSM:
+	 *   - Load the SVSM register state (RAX, RCX, RDX, R8 and R9)
+	 *   - Set the CA call pending field to 1
+	 *   - Issue VMGEXIT
+	 *   - Save the SVSM return register state (RAX, RCX, RDX, R8 and R9)
+	 *   - Perform atomic exchange of the CA call pending field
+	 */
+	asm volatile("rep; vmmcall\n\t"
+		     "xchgb %[pending], %[call_pending]"
+		     : "=a" (call->rax_out),
+		       "=c" (call->rcx_out),
+		       "=d" (call->rdx_out),
+		       [pending] "+r" (*pending),
+		       "+r" (r8),
+		       "+r" (r9)
+		     : "a" (call->rax),
+		       "c" (call->rcx),
+		       "d" (call->rdx),
+		       [call_pending] "m" (call->caa->call_pending)
+		     : "memory");
+
+	call->r8_out = r8;
+	call->r9_out = r9;
+}
+
+I *think* the asm is the same but it needs more looking in detail. It
+probably could be simplified even more.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
