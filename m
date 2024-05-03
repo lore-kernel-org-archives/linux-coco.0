@@ -1,80 +1,87 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B3C14534A
-	for <linux-coco@lists.linux.dev>; Fri,  3 May 2024 11:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714736306; cv=none; b=t/cbPu/PkKs5aesM4PWQjeNKdEKSAAgndZi2wIwB1W9RRo9BN2+OMXxzQfeuBm179sRUs2ULob3EnvaLFDU8CW0rZ70fHC5zqnMknJvxOvkmnPEahderoC96BetURd7xcMvWoR+ofKeDLwW6QB1qjAruzEK5vQfVdWYskX9oeS8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714736306; c=relaxed/simple;
-	bh=rBI030nnjBaGuDp119mQ6rF4+O/VVsNKdIq/NQwkRf8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=otEtbTQXxWHkGgGfnUPOVIIxyZ+HDVMIwr6sz9S1Qt0hKAZ2EJYYXD52uHMdVFYOl8wWRjrZCH/LI55VgUPAO0Aq1TeWyhSOA2MReMH4lGPJoh7++Z+Qi9Ct02cTzC0NS+74LMAcS1TTGnCZ0Yibk0Av86tGOwhN9eVM6LV0EbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=4cuJ8QfQ; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="4cuJ8QfQ"
-Received: from 8bytes.org (p4ffe0bdf.dip0.t-ipconnect.de [79.254.11.223])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 8A30B1C0D01;
-	Fri,  3 May 2024 13:38:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1714736304;
-	bh=rBI030nnjBaGuDp119mQ6rF4+O/VVsNKdIq/NQwkRf8=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7264AEE5
+	for <linux-coco@lists.linux.dev>; Fri,  3 May 2024 16:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714752288; cv=none; b=douIdVhFPtDt9pKV0iFq4THuhBhCVYd8qKOmR07m1AiccxYv+W7HD6aA6sQjqaNQH1jzOhLsjMJPC10HnOtlSEP0XRnCkP3+QMstXIvk0K9VEY9RbLevMIYNQaZjH5xFM2FklN1KFMTDljIWjoDHmv2hwHZ7jIUNNTgMFHqxcCc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714752288; c=relaxed/simple;
+	bh=HxBaO96K211UiYQ5afvNa23Ez+3lq/l8p8/2SLvqxGY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LHafIMOFtqM1AKyT2hyLL9i2hcfC5eowutEmxrG06gOfYna/Xba1LMiSsQYqrekUbmx1r2hrtNkVxAnb3y0TAQkHoPn4NuspcHll7nt5Sc8uTMfPgaOoekQw+XOmlkTVZmTbv2DqCKF7NRoBUa/vreU22XdKuntNKs4+TQIOm9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=bs/uce9r reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="bs/uce9r"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D89B540E0205;
+	Fri,  3 May 2024 16:04:42 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id NSKdZbyqgaiX; Fri,  3 May 2024 16:04:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1714752279; bh=kgK1Sd7njMaUz6Vs0JsFM7PKN9JL8A16q9TsB9gAF+I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=4cuJ8QfQOgGOa4WUzUJMVUE9bxrwxLie0fgcNzaEjt7JoBadWwPunovk+QEXETfZh
-	 bbOpG6oIKAByFvKq7eq2XgjBauhWYYNwinBbuzl3qHnhCeGW3JMDmLIwTDUB9El+Er
-	 HYnX+PkEsL/UVx9vpYV4M9SBf91X+pFpqn+g625CQbuKrRralVXzcUeQNK0fYdQtzG
-	 CQPqEJbLT5Qk4Q+KDTVadwqZeku0/zRwpgit0O/iyA+ZfbgpIq/XDKS2J1k94J8Y2U
-	 lesfpgcHMN71yeWJXDpt/kmMPgdvmzwXCZdBzN1ZQtD8Q22SPJ0nsPDrGvq5Fo2aWI
-	 DSSurMAzOMRvA==
-Date: Fri, 3 May 2024 13:38:23 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
-	Peter Zijlstra <peterz@infradead.org>,
+	b=bs/uce9rl1p2FswYSj8iEK9JU5VIYnzElPuhETDzrricDQ3pQqqQYLRUGevF4Z8zS
+	 HMcLKq3R2HUhGPrzQejgUqNqEnGkzY5nI2LoO8Cv7HCBJRCMVxZmd7oY3Z786HvE65
+	 Q5upDmSaEEFjqnitdtIbYIpeHNWeS1QEdtwJdYmwx4pAPTw2/bevH5r7GZtV3z9p7b
+	 fi7FhPleZWWI9JAyaj9uvxcQxRAvN5rCR3zyFWi4tQfsq+61+52uwX4pvqNUfZUwz/
+	 khwrjMNNM5niNRo/CloD4K4aBOUML8EnrRKkMtQcZV2o8MXTv4LBOv0xBDEop0Flgo
+	 LbG6PW6YmIyj2QjFC/e9kT9m5d/CwV69sqyra+8r+x1KadkpgxXvR2WD2ymWm7mzen
+	 GK0oNH3djcmOSMJ8Gsuf0vEGY4tDgKjjabdqnQ5e6AwIjAL+IHEqGHqlLX2l63h0vi
+	 k1DY/CFJojQ7wmX6NQhpfkLjipgBlQ6qG8pdkRZYU6MGl1CFXRBTu3UtrEGpZfV59x
+	 Acyj9fs12a02CmaUapVtc0Zif8alECfRpNsRWBJckEBYX3WB36orm6l4+KUn3YlXhR
+	 JRxYRECbxHGkVgI1/R4I5mvvgia0VDtTKppA3lWIT4TbmIJyzYvtLMrJHbqVA8CI5n
+	 YDZL0crKE9IkLhg73GkMq5Vc=
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EAB6940E0192;
+	Fri,  3 May 2024 16:04:24 +0000 (UTC)
+Date: Fri, 3 May 2024 18:04:19 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
+	x86@kernel.org, linux-coco@lists.linux.dev,
+	svsm-devel@coconut-svsm.dev, Peter Zijlstra <peterz@infradead.org>,
 	Michael Roth <michael.roth@amd.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Christoph Hellwig <hch@lst.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, Joel Becker <jlbec@evilplan.org>,
-	Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>, Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [svsm-devel] [PATCH v4 00/15] Provide SEV-SNP support for
- running under an SVSM
-Message-ID: <ZjTMr8CAA3STRlDR@8bytes.org>
+Subject: Re: [svsm-devel] [PATCH v4 15/15] x86/sev: Allow non-VMPL0 execution
+ when an SVSM is present
+Message-ID: <20240503160419.GAZjULA7HhinTfCWZ6@fat_crate.local>
 References: <cover.1713974291.git.thomas.lendacky@amd.com>
+ <e377d148acac799f6905fc544fbb8bf2ed76e078.1713974291.git.thomas.lendacky@amd.com>
+ <ZjTMcC7KTP9xRAqk@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1713974291.git.thomas.lendacky@amd.com>
+In-Reply-To: <ZjTMcC7KTP9xRAqk@8bytes.org>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 24, 2024 at 10:57:56AM -0500, Tom Lendacky wrote:
-> Tom Lendacky (15):
->   x86/sev: Shorten snp_secrets_page_layout to snp_secrets_page
->   x86/sev: Rename snp_init() in the boot/compressed/sev.c file
->   x86/sev: Make the VMPL0 checking more straight forward
->   x86/sev: Check for the presence of an SVSM in the SNP Secrets page
->   x86/sev: Use kernel provided SVSM Calling Areas
->   x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0
->   x86/sev: Use the SVSM to create a vCPU when not in VMPL0
->   x86/sev: Provide SVSM discovery support
->   x86/sev: Provide guest VMPL level to userspace
->   virt: sev-guest: Choose the VMPCK key based on executing VMPL
->   configfs-tsm: Allow the privlevel_floor attribute to be updated
->   fs/configfs: Add a callback to determine attribute visibility
->   x86/sev: Take advantage of configfs visibility support in TSM
->   x86/sev: Extend the config-fs attestation support for an SVSM
->   x86/sev: Allow non-VMPL0 execution when an SVSM is present
+On Fri, May 03, 2024 at 01:37:20PM +0200, J=C3=B6rg R=C3=B6del wrote:
+> Nit: Can this be formated more like "SNP running at VMPL-%u"? That make=
+s
+> it easier to parse for me when looking into dmesg :)
 
-I tested these on latest COCONUT-SVSM upstream and found no issues.
+Hmm, except that all documentation is without a "-"... The APM talks
+about VMPL%d everywhere...
 
-Tested-by: Joerg Roedel <jroedel@suse.de>
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
