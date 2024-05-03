@@ -1,129 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F1E1CA9F
-	for <linux-coco@lists.linux.dev>; Thu,  2 May 2024 23:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0738B14A094
+	for <linux-coco@lists.linux.dev>; Fri,  3 May 2024 08:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714691504; cv=none; b=JuT9w+SagOoDFpuHG3awwWFR7cybIcE6fibo0M7A/esenhzKirzuhA7ZeeCaCW8O4ocaOsi5ObupKj+qpnklrn+vhV/N4gNmnw+7BYPovfgUD+cTsevMjhSIpn3czkQ/8nU/p7Pnj8VvjS89FaXWl+NXurQCpfEKnFkVHURqjq8=
+	t=1714725147; cv=none; b=e1iW3tr3uCIVOxAcrN+SgA8m/VmIPv9GJipdq1bQh8YuUPDipqkfG/EuNa/6ZdyRSqan7DRqOls3RwXKUK1ZzGZol2nW/VLsKDcQNQMemERXH/PsCRsmEtNTJXOKOiJSwVul7YxW8vzszU6JvpoaN1KK+km7vhI+7cLh3TNGA2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714691504; c=relaxed/simple;
-	bh=BCu5DjqXcmPG//vCsbZOiiWzxlLCpxGZ01rex1Oz3Sw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hUt4bvIhPjAAbBbh9Qd8Iz/2xsOkz8CaCbcifehHq/I0yAdP42nP9a2gL9FZIy0JfDzDbHA5mhh5yKuTCikK1QJj6x6QcitDuxD8lbtA1NvhnQRcGTh8LebVrBTT8N+4YCVFJ1kEb1S20+KG1JyIEJmCsv9ebBoPBGBSZ746/uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xqy6CaAq; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1714725147; c=relaxed/simple;
+	bh=oetKWZhXbUP/ZBwxmBeFuev6aODxLGweeHR7GrdJFAA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=cwTnxE2Tol/A5O51QXSoyNmLNuepC8Ck13pS4Elxu/HrVcP7AjeHkdXl8tMsSvdHWSUpUAHj1glicTNqptss2RHQTKV5NVgMltTn+2pjKdJ0fQVjN/a61MgTbGFcqeGj0K7F5quB/mV95bEqJNHiD1CLhl8Qrbb482iswiOoiCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=EZ6v2x2H; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xqy6CaAq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714691503; x=1746227503;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BCu5DjqXcmPG//vCsbZOiiWzxlLCpxGZ01rex1Oz3Sw=;
-  b=Xqy6CaAqLf+VOn44b0AG/O4pMvLF65FU2OqVd/ELXmRd5z9z8JrwEj0C
-   NR8da0OyOGz+WEiKTil1LK4gsrKSxjC260jxNh3U6QPhXIuC8Y5Sod3PF
-   NRy0I4Elc0lZLJC4+cJBWo3FHwrdSi+P5HJKaN9JOfYpjACQBAoyixk9s
-   cLXDFeYwqw3EZZMSGsySMsYIxgHPJMYew50xV2SYDayPTJb4Jyc0x2qvA
-   Ohma0Bezu4vGGfSDcufjLeva48hFaZRzgvSG0cO8c/VhMDtqNESCk/oUH
-   QvnvX7QBnNGprNa/1yJMEYggE37h8bclZPUc3S8Ftj4N0ZLG6QaC0cBXy
-   A==;
-X-CSE-ConnectionGUID: LN4Q9Nw+TgafjEYjIkQqAw==
-X-CSE-MsgGUID: u+H7y+rMRN+uq1Jr2IKMqA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11062"; a="10709725"
-X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
-   d="scan'208";a="10709725"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 16:11:42 -0700
-X-CSE-ConnectionGUID: pZ7LHjPERy2vcF7eAyPTwQ==
-X-CSE-MsgGUID: wVxZ/QkLRjizm+OBuZjfCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
-   d="scan'208";a="31777977"
-Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 16:11:41 -0700
-Date: Thu, 2 May 2024 16:11:40 -0700
-From: Isaku Yamahata <isaku.yamahata@intel.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	bp@alien8.de, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com, liam.merwick@oracle.com,
-	isaku.yamahata@intel.com, isaku.yamahata@linux.intel.com,
-	rick.p.edgecombe@intel.com
-Subject: Re: [PATCH v15 02/20] KVM: x86: Add hook for determining max NPT
- mapping level
-Message-ID: <20240502231140.GC13783@ls.amr.corp.intel.com>
-References: <20240501085210.2213060-1-michael.roth@amd.com>
- <20240501085210.2213060-3-michael.roth@amd.com>
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="EZ6v2x2H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1714725146; x=1746261146;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=vgSYT6fxfReVODTChlrLY1yTZjM/kZAB6PbQPgue2kA=;
+  b=EZ6v2x2HJETu/MEzsOQY2VQ/bM6ZzYFz/i9g47i57LUNQzMWnbhC1ugP
+   MR4y6FPv2iBa3Ra+dSKZvhOWWqWyDAaFfMfTjqI7eWjnPQjY6Ed5hvXlg
+   7c17/N+E1NZDjTh/ftTeEtMcqeIfYn17SRKUJadN2DvYbhv3B1Ntn+Doq
+   g=;
+X-IronPort-AV: E=Sophos;i="6.07,247,1708387200"; 
+   d="scan'208";a="398851930"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2024 08:32:22 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.7.35:9532]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.8.38:2525] with esmtp (Farcaster)
+ id 26a7d38d-e059-4d36-a735-3275faea70a5; Fri, 3 May 2024 08:32:21 +0000 (UTC)
+X-Farcaster-Flow-ID: 26a7d38d-e059-4d36-a735-3275faea70a5
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Fri, 3 May 2024 08:32:21 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Fri, 3 May
+ 2024 08:32:15 +0000
+Message-ID: <c2732461-e768-4356-82ce-a80c73997f02@amazon.com>
+Date: Fri, 3 May 2024 10:32:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240501085210.2213060-3-michael.roth@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/4] x86/snp: Add kexec support
+To: Vitaly Kuznetsov <vkuznets@redhat.com>, Ashish Kalra
+	<Ashish.Kalra@amd.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>
+CC: <rafael@kernel.org>, <peterz@infradead.org>, <adrian.hunter@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <jun.nakajima@intel.com>,
+	<rick.p.edgecombe@intel.com>, <thomas.lendacky@amd.com>,
+	<michael.roth@amd.com>, <seanjc@google.com>, <kai.huang@intel.com>,
+	<bhe@redhat.com>, <kirill.shutemov@linux.intel.com>, <bdas@redhat.com>,
+	<dionnaglaze@google.com>, <anisinha@redhat.com>, <jroedel@suse.de>,
+	<ardb@kernel.org>, <kexec@lists.infradead.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>
+References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
+ <cover.1712694667.git.ashish.kalra@amd.com>
+ <26b3b3b5-548d-4ebd-9d21-19580a41e799@amazon.com> <87msp8mmpq.fsf@redhat.com>
+Content-Language: en-US
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <87msp8mmpq.fsf@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EX19D036UWB002.ant.amazon.com (10.13.139.139) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
 
-On Wed, May 01, 2024 at 03:51:52AM -0500,
-Michael Roth <michael.roth@amd.com> wrote:
 
-...
+On 02.05.24 14:18, Vitaly Kuznetsov wrote:
+> Alexander Graf <graf@amazon.com> writes:
+>
+>> Hey Ashish,
+>>
+>> On 09.04.24 22:42, Ashish Kalra wrote:
+>>> From: Ashish Kalra <ashish.kalra@amd.com>
+>>>
+>>> The patchset adds bits and pieces to get kexec (and crashkernel) work on
+>>> SNP guest.
+>>
+>> With this patch set (and similar for the TDX one), you enable the
+>> typical kdump case, which is great!
+>>
+>> However, if a user is running with direct kernel boot - which is very
+>> typical in SEV-SNP setup, especially for Kata Containers and similar -
+>> the initial launch measurement is a natural indicator of the target
+>> environment. Kexec basically allows them to completely bypass that: You
+>> would be able to run a completely different environment than the one you
+>> measure through the launch digest. I'm not sure it's a good idea to even
+>> allow that by default in CoCo environments - at least not if the kernel
+>> is locked down.
+> Isn't it the same when we just allow loading kernel modules? I'm sure
+> you can also achieve a 'completely different environment' with that :-)
+> With SecureBoot / lockdown we normally require modules to pass signature
+> check, I guess we can employ the same mechanism for kexec. I.e. in
+> lockdown, we require signature check on the kexec-ed kernel. Also, it
+> may make sense to check initramfs too (with direct kernel boot it's also
+> part of launch measurements, right?) and there's UKI for that already).
 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index c6c5018376be..87265b73906a 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1816,6 +1816,7 @@ struct kvm_x86_ops {
->  	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
->  	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
->  	void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
-> +	int (*private_max_mapping_level)(struct kvm *kvm, kvm_pfn_t pfn);
 
-Explicit private prefix is nice.
+Correct. With IMA, you even do exactly that: Enforce a signature check 
+of the next binary with kexec.
+
+The problem is that you typically want to update the system because 
+something is broken; most likely your original environment had a 
+security issue somewhere. From a pure SEV-SNP attestation point of view, 
+you can not distinguish between the patched and unpatched environment: 
+Both look the same.
+
+So while kexec isn't the problem, it's the fact that you can't tell 
+anyone that you're now running a fixed version of the code :).
 
 
->  };
->  
->  struct kvm_x86_nested_ops {
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 510eb1117012..0d556da052f6 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -4271,6 +4271,20 @@ static inline u8 kvm_max_level_for_order(int order)
->  	return PG_LEVEL_4K;
->  }
->  
-> +static u8 kvm_max_private_mapping_level(struct kvm *kvm, kvm_pfn_t pfn,
-> +					u8 max_level, int gmem_order)
-> +{
-> +	if (max_level == PG_LEVEL_4K)
-> +		return PG_LEVEL_4K;
-> +
-> +	max_level = min(kvm_max_level_for_order(gmem_order), max_level);
-> +	if (max_level == PG_LEVEL_4K)
-> +		return PG_LEVEL_4K;
-> +
-> +	return min(max_level,
-> +		   static_call(kvm_x86_private_max_mapping_level)(kvm, pfn));
+> Personally, I believe that if we simply forbid kexec for CoCo in
+> lockdown mode, the feature will become mostly useless in 'full stack'
+> (which boot through firmware) production envrironments.
 
-If we don't implement this hook, OPTIONAL_RET0 causes always PG_LEVEL_NONE.
-Anyway when TDX implements the hook, we can remove OPTIONAL_RET0.
 
-This hook works for TDX by "return PG_LEVEL_4K;".
-Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+I'm happy for CoCo to stay smoke and mirrors :). But I believe that if 
+you want to genuinely draw a trust chain back to an AMD/Intel 
+certificate, we need to come up with a good way of making updates work 
+with a working trust chain so that whoever checks whether you're running 
+sanctioned code is able to validate the claim.
 
--- 
-Isaku Yamahata <isaku.yamahata@intel.com>
+
+Alex
+
