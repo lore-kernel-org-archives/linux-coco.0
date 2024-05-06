@@ -1,127 +1,90 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B4513CF8A
-	for <linux-coco@lists.linux.dev>; Mon,  6 May 2024 14:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24D01552FE
+	for <linux-coco@lists.linux.dev>; Mon,  6 May 2024 15:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715005310; cv=none; b=YxhhFLGYSp5IS36a09PdprHQJ8tokVZx9gidcs8rR0o4rKxyhbNgMZwItpHe4GHl8imZN/20lOQRkHRK8P1bN3F5JBCXzJTD07cfD9ypzdq/THYRL0SL8EHD6LX9yI7THoKH4tr0ZpM86YxHu6LJNcUUKkEPHzzZycufQj8KY7k=
+	t=1715008834; cv=none; b=HPgkCvq4n+HMzcjLUke3I6+Ss6A+Mpsmbbjq1jRIRbBecfRnD3rBnlxMxDuSA26A2zTpv1jDmCY3E9/UxlzUFvmlgusqMYXrfxP8GWf/OgtOcgXYojlUKeUvzP/U7Y1517BKB//2MARnJeFwL0TN02T7vnMqsHdqMhHMKttMR5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715005310; c=relaxed/simple;
-	bh=ZRr6fPqYoTH0sclRmuJEZqEKQMy0r1Bck1MinrSVNpg=;
+	s=arc-20240116; t=1715008834; c=relaxed/simple;
+	bh=omt7yE5xB59LEnIUYaGCpOR6jaRqEtKOc+2HvAGWA1w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kIMOGa+I0FMZtO/OkkpnbtJ6cZQJfFe7Gv1O7DFXgt7n3E83cIi1QJ2ij1fnaLUR9gB/mGQ92cateyv63omV3a5EPEIZV8TR9NtsoBnTV5Wh1FuAoqlsX5RdRpl6tZqGISj/MCfmXQPUS7bbPgVfggQejvRGow2MSBc29iwSSxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=F4Y+fW3Q; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=YGEtPc6pB15eLpLH/HFOTcgveRBAU8mCUGQrUII26WIjFwVQVIEoBYOaKkCelcvSNPvGz8m24JKzoXvFHzFDvDCAZuG4gCkQ6LW7YyP9iWbLICWSnDpQ0mCywnJ4DoJzXunhFaSshd2El4ixd2xH3kjRAhoUvSAWHBuLXD3ZVro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I5pOmVyJ; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="F4Y+fW3Q"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BEB5C40E024D;
-	Mon,  6 May 2024 14:21:46 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id UryTxnO-LRmz; Mon,  6 May 2024 14:21:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1715005303; bh=b+K6cieeRgzZWM9C6IkS52nAd027DkJxG87ZipG8Sho=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F4Y+fW3QTaJ9FV2dDcBUpEOnzrKcNwfhgwOdIB3xCvhdM4huoa4p2KYMwSN2wNmwD
-	 PurLG1CyOa67XmIA7Pxjr2Sq43TnxBriydtwUVv225ZGWLr8aRIerdFKLvNAEki9Ev
-	 QXnergGYbpM8+T3qhaX9/x58MrcWwD71J6vQsKEnlV8KncUGgWfSc0z0LVq8pAhSPA
-	 jhRvlK1uhx3ePYkx9TN9Pnrto+jT1IMuDnXrJB5nW+PpFqOIWkIya0hHmvBcQghQxV
-	 Qpcy4sW0eigQF2LhqQTtyg+uUpaA4mgngA8rRUjITTzYMxjhNPyMZTnIW07xurGum0
-	 EFPpsRZXQJUtWe0+C/HGe/nc6XB0yAZPrv1Vs0Sxr+v1BKJWnv/5mnfPlMEOl9DXQZ
-	 WNWXaDv0Ykm6m+6/KKSSXAT4xuzr7YY8i3V3fOOhqtSIvR8d2wWumKRJLjDrYNUk2H
-	 wsEOEPFJWyHmHsADUmFJY/mHG2hpgpMdKtvSSnaDSQw/dzm+hSfRo6uzIZiqwrD1Y/
-	 1hYGDOpptHLNwXDiEYJSWcNV980028nBBUkVgrWNlt8tJcqln08J8EaS98VWRSAywf
-	 lyf/szhCvZVMfnyBCbRiPEu/QgL4G3rSTsUsaKzxv/5Ezg78hEYQ1docvNMEYS9P6J
-	 FpbHijWXXqLmCFJnbwN3lyRY=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5342240E0187;
-	Mon,  6 May 2024 14:21:21 +0000 (UTC)
-Date: Mon, 6 May 2024 16:21:20 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: adrian.hunter@intel.com, ashish.kalra@amd.com, bhe@redhat.com,
-	dave.hansen@linux.intel.com, elena.reshetova@intel.com,
-	jun.nakajima@intel.com, kai.huang@intel.com,
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, ltao@redhat.com, mingo@redhat.com,
-	nik.borisov@suse.com, peterz@infradead.org, rafael@kernel.org,
-	rick.p.edgecombe@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, seanjc@google.com,
-	tglx@linutronix.de, thomas.lendacky@amd.com, x86@kernel.org
-Subject: Re: [PATCHv10.1 09/18] x86/mm: Adding callbacks to prepare encrypted
- memory for kexec
-Message-ID: <20240506142120.GKZjjnYGMcZkuTLlzG@fat_crate.local>
-References: <20240427164747.GCZi0sM6HBCBYtgWqF@fat_crate.local>
- <20240427170634.2397725-1-kirill.shutemov@linux.intel.com>
- <20240502134506.GDZjOY4guvlKH9-73J@fat_crate.local>
- <ch244dd4k5nu5rcryuwqp4pztl4dduhciqunin5drr7a3yls2h@siisliaoc2f6>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I5pOmVyJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715008833; x=1746544833;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=omt7yE5xB59LEnIUYaGCpOR6jaRqEtKOc+2HvAGWA1w=;
+  b=I5pOmVyJC1Nhl/SQIaJRksWoATLnXMQyA2YUyUK3JtIenKMTVy9iVqgj
+   Sqxc7kRBsXqJiJ7hX+7md09XEammvKg0DIpdTto6MExVP8mQR+sQnHc4N
+   GxU2xhJM0+Y2PB0c5e9Rc0DfelAPDZlcO6EBHC6oW4kcHvsLdUmkyqpBv
+   F4xdmE+tFFXVTOP4o0AcRPrf8q+rb6c54muro2k27/T5ocXT6d1ga5F9h
+   dUysfY16qeCfiGG2l7pAjqjuqQ6r+u7RkDfu+0VJYI/XJ+z2wbStZ9PZG
+   qkRjkoYJ1dqHZYnsxFU11bXqUP++AlHU/E4Q/740f0B43iR4/z1xS3UHI
+   w==;
+X-CSE-ConnectionGUID: +pFl9wGCQQSd+UGBpMFLJg==
+X-CSE-MsgGUID: sTxuFFWpQK6ge7a8GKTOIQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="10914504"
+X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
+   d="scan'208";a="10914504"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 08:20:32 -0700
+X-CSE-ConnectionGUID: TTC0y8iOSo2wfFdVMjPRtQ==
+X-CSE-MsgGUID: Wb1HwRg0SPuoi5+0uFZSww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
+   d="scan'208";a="51379330"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa002.fm.intel.com with ESMTP; 06 May 2024 08:20:30 -0700
+Date: Mon, 6 May 2024 23:14:51 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
+	Wu Hao <hao.wu@intel.com>, Yilun Xu <yilun.xu@intel.com>,
+	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, kevin.tian@intel.com,
+	gregkh@linuxfoundation.org, linux-pci@vger.kernel.org
+Subject: Re: [RFC PATCH v2 5/6] PCI/TSM: Authenticate devices via platform TSM
+Message-ID: <Zjjz60XvF97c+Hea@yilunxu-OptiPlex-7050>
+References: <171291190324.3532867.13480405752065082171.stgit@dwillia2-xfh.jf.intel.com>
+ <171291193308.3532867.129739584130889725.stgit@dwillia2-xfh.jf.intel.com>
+ <fc201452-080e-4942-b5a0-0c64d023ac6b@amd.com>
+ <662c69eb6dbf1_b6e0294d1@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ch244dd4k5nu5rcryuwqp4pztl4dduhciqunin5drr7a3yls2h@siisliaoc2f6>
+In-Reply-To: <662c69eb6dbf1_b6e0294d1@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 
-On Mon, May 06, 2024 at 04:22:02PM +0300, Kirill A. Shutemov wrote:
-> I do. See comment just above enc_kexec_stop_conversion() call.
+> > If (!ide_cap && tee_cap), we get here but doing the below does not make 
+> > sense for TEE (which are likely to be VFs).
+> 
+> The "!ide_cap && tee_cap" case may also be the "TSM wants to setup IDE
+> without TDISP flow".
 
-If you mean this:
+IIUC, should be "TSM wants to setup TDISP without IDE flow"?
 
-        /*
-         * Call enc_kexec_stop_conversion() while all CPUs are still active and
-         * interrupts are enabled. This will allow all in-flight memory
-         * conversions to finish cleanly.
-         */
-        if (kexec_in_progress)
-                x86_platform.guest.enc_kexec_stop_conversion(false);
+But I think aik is talking about VFs (which fit "!ide_cap && tee_cap"),
+VFs should not be rejected by the following:
 
-then no, this is not enough.
+      pci_tsm->doe_mb = pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
+                                             PCI_DOE_PROTO_CMA);
+      if (!pci_tsm->doe_mb)
+              return;
 
-I mean this:
+VF should check its PF's doe/ide/tee cap and then be added to
+pci_tsm_devs, is it?
 
-/**
- * struct x86_guest - Functions used by misc guest incarnations like SEV, TDX, etc.
- *
- * @enc_status_change_prepare   Notify HV before the encryption status of a range is changed
- * @enc_status_change_finish    Notify HV after the encryption status of a range is changed
- * @enc_tlb_flush_required      Returns true if a TLB flush is needed before changing page encryption status
- * @enc_cache_flush_required    Returns true if a cache flush is needed before changing page encryption status
- * @enc_kexec_begin		Begin the two-step process of stopping
- * 				page conversion... <insert reason why it
- * 				needs to happen this way, blabla>
- * @enc_kexec_finish		...
- */
-struct x86_guest {
-        int (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
-        int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
-        bool (*enc_tlb_flush_required)(bool enc);
-        bool (*enc_cache_flush_required)(void);
-        void (*enc_kexec_begin)(bool crash);
-        void (*enc_kexec_finish)(void);
-
-And calling them a _begin and _finish makes a lot more sense to me:
-_begin starts the kexec process for encrypted guests and _finish
-finishes it.
-
-Just from the names you now know what needs to happen and in which
-order.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+Yilun
