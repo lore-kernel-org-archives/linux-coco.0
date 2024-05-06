@@ -1,137 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCDB15A5
-	for <linux-coco@lists.linux.dev>; Mon,  6 May 2024 13:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B51D13664A
+	for <linux-coco@lists.linux.dev>; Mon,  6 May 2024 14:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715001732; cv=none; b=nQCeQqL7LvpW+qAIRY5JV7czwcov8HlI/wh2QyzvrHXr/Y5quZAAYw0eepHwTSStDqzh+ZB/t2vJCMSlcVlu8GWNgEI7qQiufG1ZvAz723VM52BlXMG/uAyA8YkZPjs5wk0tdDfgUkYT4+2K9nN5E2NPWsej7560idBNJ1l06/8=
+	t=1715004895; cv=none; b=eSvaJ04QZgMxeSzy2A8k67Goid8wo+2rpDVhewBwq9L1QTZccRSk7lxLspgsJcDIFy8IvMwUsH36h6B0uCq3oItSZCyhAj2YdKu0TRhBjGrG7tMiTY5QC0sx4ukDhns7WyJRE4y/6ijHxlb45oSt4+K0/Ex4fWhCyXZ7+KvlzQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715001732; c=relaxed/simple;
-	bh=BCuAyhvvdHlZNeT/yRgbvu9IxMPed1+0m8MQqbV2QlI=;
+	s=arc-20240116; t=1715004895; c=relaxed/simple;
+	bh=o3khOYd3PwvSQuTqNQGOIWO5Gc4L0D6qdPe8N/HPXaU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AhaGuhYasZTOqms9m73QhJLKikKL0jp/OrHZh1l3fLZTxauJe2iXQo26Diir7Ql4sVAJmyRM2u5IHQbCFYat0eb0xhUIzBUgcVBhEMXJaMiUWx1EyfXlN/W0/UzkhCp9CvQTtTY5mms1PZstLLU7k76NKtbeNm0gXsAO+W8nCXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gGtMz7uH; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=aqgHcS+8JleNUrZMip104y+lv1vQYPmXNOhdcEKabVu3JFs+VgE8Of2lB6SXDBQQDPRQFuxCwhaUCA/OSujuNrSyYMr0ixIEEpHe+Ji/baFukkZkMNiZXQuO/J5gEsNGxmRwx3xofdUc/Bmb+f5vNGFLXKJWQEz/PrH7frkSEHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=G0tlY3Vz; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gGtMz7uH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715001730; x=1746537730;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BCuAyhvvdHlZNeT/yRgbvu9IxMPed1+0m8MQqbV2QlI=;
-  b=gGtMz7uHVirWTs1RbaZRydGj9Ixi1vnPKozbVf51yfmPIJScwd2Dq164
-   aynYfkVDluj2XK2TkWHn1SKFCIP9yNyCw+b3WcSjoXR8Y186F2TPghhYr
-   S9D7wfCDmmCZ2kRB0tVvD/PQVXuD+wDXm0v3AzV6urNH6uoYyRLkSAsiG
-   R6l2Ln12tXFm9WPTN20UebG8RBYvq5ldBv+rtaOHlNkR2qzYdPL2DS7xv
-   D7YtJRlmV/kPK5RE/TdgBQNtq9Vq491gUB738DsJG3bmlAr4Cjp/Amk+y
-   XRtcL4Jayj/5bEFYb79ho3IHDN5DklG50qerbOigXsV/93I8oDVhqDder
-   A==;
-X-CSE-ConnectionGUID: Avey7UH6Rj+ZXTGxYYuHmw==
-X-CSE-MsgGUID: LtBYNkDRTy2rOIcdnQI8Xg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="21900688"
-X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
-   d="scan'208";a="21900688"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 06:22:09 -0700
-X-CSE-ConnectionGUID: by/aMopuSXyo3mmKnNMsxg==
-X-CSE-MsgGUID: kPhhB31ETkuyZsPTIKNoJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
-   d="scan'208";a="28256756"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa006.fm.intel.com with ESMTP; 06 May 2024 06:22:04 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 0513A12B; Mon, 06 May 2024 16:22:02 +0300 (EEST)
-Date: Mon, 6 May 2024 16:22:02 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: adrian.hunter@intel.com, ashish.kalra@amd.com, bhe@redhat.com, 
-	dave.hansen@linux.intel.com, elena.reshetova@intel.com, jun.nakajima@intel.com, 
-	kai.huang@intel.com, kexec@lists.infradead.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, ltao@redhat.com, mingo@redhat.com, nik.borisov@suse.com, 
-	peterz@infradead.org, rafael@kernel.org, rick.p.edgecombe@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, seanjc@google.com, tglx@linutronix.de, thomas.lendacky@amd.com, 
-	x86@kernel.org
-Subject: Re: [PATCHv10.1 09/18] x86/mm: Adding callbacks to prepare encrypted
- memory for kexec
-Message-ID: <ch244dd4k5nu5rcryuwqp4pztl4dduhciqunin5drr7a3yls2h@siisliaoc2f6>
-References: <20240427164747.GCZi0sM6HBCBYtgWqF@fat_crate.local>
- <20240427170634.2397725-1-kirill.shutemov@linux.intel.com>
- <20240502134506.GDZjOY4guvlKH9-73J@fat_crate.local>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="G0tlY3Vz"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 721DE40E024C;
+	Mon,  6 May 2024 14:14:49 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id R3fD3o6YRpqj; Mon,  6 May 2024 14:14:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1715004886; bh=fL0jWz0y0MdKTiR0U8jxUn73zBq9bUhbVTopKlDLfd4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G0tlY3Vz5Xk6BIUXL6VJT6blz9r12hsvfG4elX4H4AzRdPrFwRYyZUlDg1rbozuhZ
+	 4UWPvtgiZY7Yu6tDYoLgrh0QYcwCFXtRN6qYq5FgrJ2/uWCN5dmYQP2QR9lKlOyaDI
+	 xvncVN/sbMcKtIScUkCOkJrbE1Xhgn4tufWkkfviqJNQan2qijp90xTkaEFih55Sci
+	 it8etOB4NTMeWG24XemazBZb024RkQAEFK+0nvhLucPqxCte55SHlURN0eMGttLsFn
+	 F5XWDudwGUdPNvkrbAZpWyqDKEuSeknRGIV4/Uc9UE7APc+wZHyTSxC/HiNNjIfhES
+	 xwnE4Z2w9TKlXNbvUVAOqTbuNLdwaxZVaQF2Unr7nGExI+kmAv9aA65MmS8xlTGa0K
+	 9kHd0936W2XxOwnBjP2EebQyQaGniA1xBBpd6oI7zxoefmBOcbRUDfb/vu4TdXkCmy
+	 bupelxG5AOqatUKS8+x5jeCGXNg8EMZ/iQ4XUtfqU2BawEFZ0VRQbtApYU9dkATkUW
+	 mNO0kwRrEyRaB+alkZSCtQGD5DFsaSUm3RSKwSWHGVSt77BYOBMPn0cJ2YvgLfG6tw
+	 bE0USZunZvpA9d1YD9RQM6HRaafFiSHJlj8crUDXBke48o5XAeDp8SItWd83sv3+Kf
+	 UKJ7ZgRm/pts2Rd6t6N+Sb6E=
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C4A2440E0249;
+	Mon,  6 May 2024 14:14:31 +0000 (UTC)
+Date: Mon, 6 May 2024 16:14:26 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v4 05/15] x86/sev: Use kernel provided SVSM Calling Areas
+Message-ID: <20240506141426.GJZjjlwuQryahOmSJS@fat_crate.local>
+References: <cover.1713974291.git.thomas.lendacky@amd.com>
+ <07266b47e749267ef9a9ccbc9e8e9df78ed54857.1713974291.git.thomas.lendacky@amd.com>
+ <20240503103407.GSZjS9n-XMMKi5ZOek@fat_crate.local>
+ <20240506100905.GFZjisQTQwbkv2eKsh@fat_crate.local>
+ <c4640af2-a791-848a-bacb-071f0bc8f9b1@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240502134506.GDZjOY4guvlKH9-73J@fat_crate.local>
+In-Reply-To: <c4640af2-a791-848a-bacb-071f0bc8f9b1@amd.com>
 
-On Thu, May 02, 2024 at 03:45:06PM +0200, Borislav Petkov wrote:
-> > diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-> > index e74d0c4286c1..f1b261be78b4 100644
-> > --- a/arch/x86/kernel/crash.c
-> > +++ b/arch/x86/kernel/crash.c
-> > @@ -128,6 +128,10 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
-> >  #ifdef CONFIG_HPET_TIMER
-> >  	hpet_disable();
-> >  #endif
-> > +
-> > +	x86_platform.guest.enc_kexec_stop_conversion(true);
-> > +	x86_platform.guest.enc_kexec_unshare_mem();
-> > +
-> 
-> You call them here back-to-back...
-> 
-> >  	crash_save_cpu(regs, safe_smp_processor_id());
-> >  }
-> >  
-> > diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-> > index f3130f762784..c1920ec34f0c 100644
-> > --- a/arch/x86/kernel/reboot.c
-> > +++ b/arch/x86/kernel/reboot.c
-> > @@ -12,6 +12,7 @@
-> >  #include <linux/delay.h>
-> >  #include <linux/objtool.h>
-> >  #include <linux/pgtable.h>
-> > +#include <linux/kexec.h>
-> >  #include <acpi/reboot.h>
-> >  #include <asm/io.h>
-> >  #include <asm/apic.h>
-> > @@ -716,6 +717,14 @@ static void native_machine_emergency_restart(void)
-> >  
-> >  void native_machine_shutdown(void)
-> >  {
-> > +	/*
-> > +	 * Call enc_kexec_stop_conversion() while all CPUs are still active and
-> > +	 * interrupts are enabled. This will allow all in-flight memory
-> > +	 * conversions to finish cleanly.
-> > +	 */
-> > +	if (kexec_in_progress)
-> > +		x86_platform.guest.enc_kexec_stop_conversion(false);
-> > +
-> >  	/* Stop the cpus and apics */
-> >  #ifdef CONFIG_X86_IO_APIC
-> >  	/*
-> > @@ -752,6 +761,9 @@ void native_machine_shutdown(void)
-> >  #ifdef CONFIG_X86_64
-> >  	x86_platform.iommu_shutdown();
-> >  #endif
-> > +
-> > +	if (kexec_in_progress)
-> > +		x86_platform.guest.enc_kexec_unshare_mem();
-> 
-> ... but they're split here.
-> 
-> And I don't know why and nothing tells me...
+On Mon, May 06, 2024 at 08:14:34AM -0500, Tom Lendacky wrote:
+> This isn't quite right. The xchg has to occur between pending and
+> call->caa->call_pending.
 
-I do. See comment just above enc_kexec_stop_conversion() call.
+Right, you can fix that up in your next revision. :-)
 
-Do you want also comment for enc_kexec_unshare_mem() ?
+I only wanted to show the idea of how to make this a lot more
+readable.
+
+Thx.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
