@@ -1,62 +1,68 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24D01552FE
-	for <linux-coco@lists.linux.dev>; Mon,  6 May 2024 15:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B772F2C
+	for <linux-coco@lists.linux.dev>; Mon,  6 May 2024 15:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715008834; cv=none; b=HPgkCvq4n+HMzcjLUke3I6+Ss6A+Mpsmbbjq1jRIRbBecfRnD3rBnlxMxDuSA26A2zTpv1jDmCY3E9/UxlzUFvmlgusqMYXrfxP8GWf/OgtOcgXYojlUKeUvzP/U7Y1517BKB//2MARnJeFwL0TN02T7vnMqsHdqMhHMKttMR5s=
+	t=1715009847; cv=none; b=pIBsqYbO1mEQpJoUpzvIgvjFeeWHP6+VoW1z+tpAlT9kypLofXmlucSBi1CZ/Dz9JIxXC17tm9ZsZ3g1KImDkxgD+Do+dUR7yInR+SPIxRjpnfEZuabyYIenxaggDUqbIr/T0lDp7r2JWE1DWCYJU+Sc2xUsH+tkYAIYfFG9kUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715008834; c=relaxed/simple;
-	bh=omt7yE5xB59LEnIUYaGCpOR6jaRqEtKOc+2HvAGWA1w=;
+	s=arc-20240116; t=1715009847; c=relaxed/simple;
+	bh=u4Wbi+kWAVVOkhZHAsKkhw70PBDqYs/mFsVXLQcsk3I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YGEtPc6pB15eLpLH/HFOTcgveRBAU8mCUGQrUII26WIjFwVQVIEoBYOaKkCelcvSNPvGz8m24JKzoXvFHzFDvDCAZuG4gCkQ6LW7YyP9iWbLICWSnDpQ0mCywnJ4DoJzXunhFaSshd2El4ixd2xH3kjRAhoUvSAWHBuLXD3ZVro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I5pOmVyJ; arc=none smtp.client-ip=198.175.65.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=szWWIAYql0nccG+5AKTqRHllpJifxOmXXu7cRf9J3SWZIWCmzUceHsi9qkhngsL+5kjm5f4y2PToYzZ07Viy59rIaDDfljetZzKNrFuwWAxQz5tuTvtcihlbXPRx/J8Gls5UG9AZCuhEGb2bPMRjI2+7rHvj2BJ5K1nHpvwECLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BU5s3pTv; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I5pOmVyJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BU5s3pTv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715008833; x=1746544833;
+  t=1715009846; x=1746545846;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=omt7yE5xB59LEnIUYaGCpOR6jaRqEtKOc+2HvAGWA1w=;
-  b=I5pOmVyJC1Nhl/SQIaJRksWoATLnXMQyA2YUyUK3JtIenKMTVy9iVqgj
-   Sqxc7kRBsXqJiJ7hX+7md09XEammvKg0DIpdTto6MExVP8mQR+sQnHc4N
-   GxU2xhJM0+Y2PB0c5e9Rc0DfelAPDZlcO6EBHC6oW4kcHvsLdUmkyqpBv
-   F4xdmE+tFFXVTOP4o0AcRPrf8q+rb6c54muro2k27/T5ocXT6d1ga5F9h
-   dUysfY16qeCfiGG2l7pAjqjuqQ6r+u7RkDfu+0VJYI/XJ+z2wbStZ9PZG
-   qkRjkoYJ1dqHZYnsxFU11bXqUP++AlHU/E4Q/740f0B43iR4/z1xS3UHI
-   w==;
-X-CSE-ConnectionGUID: +pFl9wGCQQSd+UGBpMFLJg==
-X-CSE-MsgGUID: sTxuFFWpQK6ge7a8GKTOIQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="10914504"
+  bh=u4Wbi+kWAVVOkhZHAsKkhw70PBDqYs/mFsVXLQcsk3I=;
+  b=BU5s3pTvTQbvLxo13/pKxVagcRlA+QY6JLZ74zpPHpL5XcQggQczNvVv
+   pgBZ2tFuqUhhhWAUmRCPeiGMCAGqVoxqcbCVTYOtGOqzKebwCIze8bufS
+   q3e8WrUweySQBGxYgYaYbym23o5ycUdhszd6TcgxEDNheekGqY/LZfyYc
+   2Z3put3m3QJTyJXaUGnjfq+V4F89MVfP8t0kI+opoxBWTwqty4077bjMa
+   qj6UmdFQ8nhoHZGJVvyW1G9ZJ5bHBAoKWwL6ngUeCnxWBhOao39Gzf3ZD
+   gCwmLaeRgWxmLramyBsMp2N89kwn4A1WKJ25cDk+hTW4XvzZqRUAc/VLw
+   Q==;
+X-CSE-ConnectionGUID: osyrQj9mSjawtA8K+SWu8A==
+X-CSE-MsgGUID: QzltU6e/QbaBh4bi4k2rmQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="10608289"
 X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
-   d="scan'208";a="10914504"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 08:20:32 -0700
-X-CSE-ConnectionGUID: TTC0y8iOSo2wfFdVMjPRtQ==
-X-CSE-MsgGUID: Wb1HwRg0SPuoi5+0uFZSww==
+   d="scan'208";a="10608289"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 08:37:26 -0700
+X-CSE-ConnectionGUID: 3HZKYHL6T1iq+bktUHzxsg==
+X-CSE-MsgGUID: Qu6O7tEHQ1+L0dn0IGA/aw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
-   d="scan'208";a="51379330"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa002.fm.intel.com with ESMTP; 06 May 2024 08:20:30 -0700
-Date: Mon, 6 May 2024 23:14:51 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	Wu Hao <hao.wu@intel.com>, Yilun Xu <yilun.xu@intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, kevin.tian@intel.com,
-	gregkh@linuxfoundation.org, linux-pci@vger.kernel.org
-Subject: Re: [RFC PATCH v2 5/6] PCI/TSM: Authenticate devices via platform TSM
-Message-ID: <Zjjz60XvF97c+Hea@yilunxu-OptiPlex-7050>
-References: <171291190324.3532867.13480405752065082171.stgit@dwillia2-xfh.jf.intel.com>
- <171291193308.3532867.129739584130889725.stgit@dwillia2-xfh.jf.intel.com>
- <fc201452-080e-4942-b5a0-0c64d023ac6b@amd.com>
- <662c69eb6dbf1_b6e0294d1@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+   d="scan'208";a="59384212"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 06 May 2024 08:37:21 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 9D7D9161; Mon, 06 May 2024 18:37:19 +0300 (EEST)
+Date: Mon, 6 May 2024 18:37:19 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Tao Liu <ltao@redhat.com>
+Subject: Re: [PATCHv10 10/18] x86/tdx: Convert shared memory back to private
+ on kexec
+Message-ID: <bpmagk7v6swftzjjpchplzjwgx3pbdqzklcxybrmrhprqizk45@lxmvva42z36g>
+References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
+ <20240409113010.465412-11-kirill.shutemov@linux.intel.com>
+ <20240505121319.GAZjd337gHC0uhk6aM@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -65,26 +71,144 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <662c69eb6dbf1_b6e0294d1@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+In-Reply-To: <20240505121319.GAZjd337gHC0uhk6aM@fat_crate.local>
 
-> > If (!ide_cap && tee_cap), we get here but doing the below does not make 
-> > sense for TEE (which are likely to be VFs).
+On Sun, May 05, 2024 at 02:13:19PM +0200, Borislav Petkov wrote:
+> On Tue, Apr 09, 2024 at 02:30:02PM +0300, Kirill A. Shutemov wrote:
+> > TDX guests allocate shared buffers to perform I/O. It is done by
+> > allocating pages normally from the buddy allocator and converting them
+> > to shared with set_memory_decrypted().
+> > 
+> > The second kernel has no idea what memory is converted this way. It only
 > 
-> The "!ide_cap && tee_cap" case may also be the "TSM wants to setup IDE
-> without TDISP flow".
+> "The kexec-ed kernel..."
+> 
+> is more precise.
 
-IIUC, should be "TSM wants to setup TDISP without IDE flow"?
+"second kernel" is nomenclature kexec folks are using, but okay.
 
-But I think aik is talking about VFs (which fit "!ide_cap && tee_cap"),
-VFs should not be rejected by the following:
 
-      pci_tsm->doe_mb = pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
-                                             PCI_DOE_PROTO_CMA);
-      if (!pci_tsm->doe_mb)
-              return;
+> > @@ -831,6 +833,73 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+> >  	return 0;
+> >  }
+> >  
+> > +/* Stop new private<->shared conversions */
+> > +static void tdx_kexec_stop_conversion(bool crash)
+> > +{
+> > +	/*
+> > +	 * Crash kernel reaches here with interrupts disabled: can't wait for
+> > +	 * conversions to finish.
+> > +	 *
+> > +	 * If race happened, just report and proceed.
+> > +	 */
+> > +	bool wait_for_lock = !crash;
+> 
+> You don't need that bool - use crash.
 
-VF should check its PF's doe/ide/tee cap and then be added to
-pci_tsm_devs, is it?
+Dave suggested the variable for documentation purposes.
 
-Thanks,
-Yilun
+https://lore.kernel.org/all/0b70ee1e-4bb5-4867-9378-f5723ca091d5@intel.com
+
+I'm fine either way.
+
+> > +
+> > +	addr = PAGE_OFFSET;
+> > +	end  = PAGE_OFFSET + get_max_mapped();
+> > +
+> > +	while (addr < end) {
+> > +		unsigned long size;
+> > +		unsigned int level;
+> > +		pte_t *pte;
+> > +
+> > +		pte = lookup_address(addr, &level);
+> > +		size = page_level_size(level);
+> > +
+> > +		if (pte && pte_decrypted(*pte)) {
+> > +			int pages = size / PAGE_SIZE;
+> > +
+> > +			/*
+> > +			 * Touching memory with shared bit set triggers implicit
+> > +			 * conversion to shared.
+> > +			 *
+> > +			 * Make sure nobody touches the shared range from
+> > +			 * now on.
+> > +			 */
+> 
+> lockdep_assert_irqs_disabled() ?
+
+Yep.
+
+> > +			set_pte(pte, __pte(0));
+> > +
+> > +			if (!tdx_enc_status_changed(addr, pages, true)) {
+> > +				pr_err("Failed to unshare range %#lx-%#lx\n",
+> > +				       addr, addr + size);
+> 
+> Why are we printing something here if we're not really acting up on it?
+> 
+> Who should care here?
+
+The only thing we can do at this point on failure is panic. It think
+it is reasonable to proceed, especially for crash case.
+
+The print leaves a trace in the log to give a clue for debug.
+
+One possible reason for the failure is if kdump raced with memory
+conversion. In this case shared bit in page table got set (or not cleared
+form shared->private conversion), but the page is actually private. So this
+failure is not going to affect the kexec'ed kernel.
+
+> > +static DECLARE_RWSEM(mem_enc_lock);
+> > +
+> > +/*
+> > + * Stop new private<->shared conversions.
+> > + *
+> > + * Taking the exclusive mem_enc_lock waits for in-flight conversions to complete.
+> > + * The lock is not released to prevent new conversions from being started.
+> > + *
+> > + * If sleep is not allowed, as in a crash scenario, try to take the lock.
+> > + * Failure indicates that there is a race with the conversion.
+> > + */
+> > +bool stop_memory_enc_conversion(bool wait)
+> 
+> This is a global function which means, it should be called:
+> 
+> set_memory_enc_stop_conversion()
+> 
+> or so. With the proper prefix and so on.
+
+Sure.
+
+> > +{
+> > +	if (!wait)
+> > +		return down_write_trylock(&mem_enc_lock);
+> > +
+> > +	down_write(&mem_enc_lock);
+> > +
+> > +	return true;
+> > +}
+> > +
+> >  static int __set_memory_enc_dec(unsigned long addr, int numpages, bool enc)
+> >  {
+> > -	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+> > -		return __set_memory_enc_pgtable(addr, numpages, enc);
+> > +	int ret = 0;
+> >  
+> > -	return 0;
+> > +	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
+> > +		if (!down_read_trylock(&mem_enc_lock))
+> > +			return -EBUSY;
+> 
+> This function is called on SEV* and HyperV and the respective folks need
+> to at least ack this new approach.
+> 
+> I see Ashish's patch adds the respective stuff:
+> 
+> https://lore.kernel.org/r/c24516a4636a36d57186ea90ae26495b3c1cfb8b.1714148366.git.ashish.kalra@amd.com
+> 
+> which leaves HyperV. You'd need to Cc them on the next submission.
+
+Okay.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
