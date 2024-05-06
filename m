@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E29D143867
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF17D143C41
 	for <linux-coco@lists.linux.dev>; Mon,  6 May 2024 12:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714997761; cv=none; b=lCcbsDmu2KkNThs4m6sJc5mCUCSuwZs9BMlvLt9B7AH15dOcE2NIBg4pygt3lUZrmSioZOP1W/6ANrTBwN0r6M5AN2xVib0SUqd/db+EkWkrdVcE5kq1cpy37/E+5uyM5BM8S/KyOLmJTE5UAVCnfaKaXD+LAoG0YwUbVtwngDA=
+	t=1714997762; cv=none; b=uVIqT+PNIQVeJWShWRL02HUNhF2n+48/XzTRaxLtFBY6PEhPez811M4K0rTosl7b4tA9VV6jJ9sQ2C1IVZLdhIJl2rqN8KK2yv7/eKxNzj08KkyqquSulAe4gOR8Wm7T5UVMYwd0NbwjpT3jhz5DK0HZLY2k/Vo0D/YWMoHJ3Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714997761; c=relaxed/simple;
-	bh=thgtjAPUlcHd9NBfHBwdSKUpdpm4qAYPqeeCKH2/TjY=;
+	s=arc-20240116; t=1714997762; c=relaxed/simple;
+	bh=UWI7SZcBOgCHA8M9jnJU6XD2NRmEw9ukmCbYEbQq3A4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJBa8xUWA5OXC+ye5ou2gOVQ8EXeP9NWkstYig89wfbNbAFmjOFc1FMiPw28NIguNuWzDtO7nNhjMWv6VjTPBQ+n6c9i4ujLJk2N9m9JOpXY0ilSdK+G48SFFsrrtk4YfOhfJlJcEj0uoPUewbiY772vtiyWAWU4ec5GTqq5iOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C5lWGvX6; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=mKrOqBCRJYNUn6CbknYV9o4TYL32sxi9afjnzT2i1qp5RvR5UyxRLV/n54Aos7jxi7Z6AhbudEXtRKrodD3ZMDoONlJM4eT6mLj36QwYVe78XPIYHBrtLO56g6PlG8M266TQUCjoncP74EIiHamau8/FYGwcZqQ/GzzwfA0JdsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WZQyRCvY; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C5lWGvX6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WZQyRCvY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714997760; x=1746533760;
+  t=1714997761; x=1746533761;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=thgtjAPUlcHd9NBfHBwdSKUpdpm4qAYPqeeCKH2/TjY=;
-  b=C5lWGvX6D+Nm1KWR/VJQn4imniQbHWX+u4ipu5MFHzt7BbN2rYyn7x1c
-   S0JTL2/HvP7LMomdPe/ibDrdmx4E0d55xx4ussCPZX4yB22MaBbfgEiDG
-   ye4Z47/CBf9zxKV6QtK5OynZ4helWAWOBsJrh9iJuY8IUqEaUF/yEGvTj
-   h5XN93dkPSOKRcZmRWJ2+Ou6yvIbw68/x/UqDnE6tjoFoPIpCizGV9usC
-   0wKGXhWCz9ogEcUyRGSVnlWtHsWAmd2fkmKPImiuVbscMP51E2FiHlQ6R
-   emsKQasW0XWNF61H3tLmCAMAF9bFbwzzB04XS8Zl3zB6nFMyd0f9F7WxU
-   A==;
-X-CSE-ConnectionGUID: CYW0BxvGQKCL+fahM9sAhQ==
-X-CSE-MsgGUID: YgWCLwJeS4CTtfBP0aSEMg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="11271854"
+  bh=UWI7SZcBOgCHA8M9jnJU6XD2NRmEw9ukmCbYEbQq3A4=;
+  b=WZQyRCvYOuscXKNIKKPCuJc4zaLZcUDBwpucdV4u5aSQYzrLFUFnnvB0
+   ad2UqMih2aribhxmC79pTPbkPlBQgtf4f8ei5JPUSp8ro5OcA/HeR0JGE
+   mJQHQ87KOXHervo/Mr7LYAWQZW7bgMoL6uWE8fLir8eUVRvqfC63r38pT
+   dJY7mx4qVRYkaaIs5JP6UeH+Gz6IphGtCiTMGUMd+BKBnDR3bOw8oHVl3
+   2rO3uRXh8cMfn9Gpmh0a7Os9b/sZiA2fsVa6sQAyMdLe9muz8cqHrfQ5L
+   C2uhxHPTSe95oDxqUZ2N73yR2j01gEKW4mvHFGbb0TEBQFsWUizZyC8AO
+   w==;
+X-CSE-ConnectionGUID: 3L/w32/ISNWLyUhuBUrlbQ==
+X-CSE-MsgGUID: Dv42TF9TTrOW1uI2YUQ9HA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="14544139"
 X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
-   d="scan'208";a="11271854"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 05:15:58 -0700
-X-CSE-ConnectionGUID: OCeGGIsWT0aQrv1fu/2uwg==
-X-CSE-MsgGUID: +V2NucTLRbG9e9qKnnRqMQ==
+   d="scan'208";a="14544139"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 05:15:58 -0700
+X-CSE-ConnectionGUID: OKLBKEwtQieC/6PqpPobyQ==
+X-CSE-MsgGUID: irIzFggdSm6mCpgEpf1how==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
-   d="scan'208";a="28140603"
+   d="scan'208";a="32951441"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa007.fm.intel.com with ESMTP; 06 May 2024 05:15:56 -0700
+  by orviesa004.jf.intel.com with ESMTP; 06 May 2024 05:15:56 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id E931F2DC; Mon, 06 May 2024 15:15:54 +0300 (EEST)
+	id DC7D5161; Mon, 06 May 2024 15:15:54 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -55,11 +55,11 @@ To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>
 Cc: linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>
-Subject: [PATCHv3 2/4] x86/tdx: Rename tdx_parse_tdinfo() to tdx_setup()
-Date: Mon,  6 May 2024 15:15:51 +0300
-Message-ID: <20240506121553.3824346-3-kirill.shutemov@linux.intel.com>
+	Kai Huang <kai.huang@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: [PATCHv3 1/4] x86/tdx: Factor out TD metadata write TDCALL
+Date: Mon,  6 May 2024 15:15:50 +0300
+Message-ID: <20240506121553.3824346-2-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240506121553.3824346-1-kirill.shutemov@linux.intel.com>
 References: <20240506121553.3824346-1-kirill.shutemov@linux.intel.com>
@@ -71,54 +71,60 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rename tdx_parse_tdinfo() to tdx_setup() and move setting NOTIFY_ENABLES
-there.
+The TDG_VM_WR TDCALL is used to ask the TDX module to change some
+TD-specific VM configuration. There is currently only one user in the
+kernel of this TDCALL leaf.  More will be added shortly.
 
-The function will be extended to adjust TD configuration.
+Refactor to make way for more users of TDG_VM_WR who will need to modify
+other TD configuration values.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 ---
- arch/x86/coco/tdx/tdx.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/x86/coco/tdx/tdx.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index b926221f1264..964149d3be5e 100644
+index 59776ce1c1d7..b926221f1264 100644
 --- a/arch/x86/coco/tdx/tdx.c
 +++ b/arch/x86/coco/tdx/tdx.c
-@@ -179,7 +179,7 @@ static void __noreturn tdx_panic(const char *msg)
- 		__tdx_hypercall(&args);
+@@ -77,6 +77,18 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+ 		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
  }
  
--static void tdx_parse_tdinfo(u64 *cc_mask)
-+static void tdx_setup(u64 *cc_mask)
++/* Write TD-scoped metadata */
++static inline u64 tdg_vm_wr(u64 field, u64 value, u64 mask)
++{
++	struct tdx_module_args args = {
++		.rdx = field,
++		.r8 = value,
++		.r9 = mask,
++	};
++
++	return __tdcall(TDG_VM_WR, &args);
++}
++
+ /**
+  * tdx_mcall_get_report0() - Wrapper to get TDREPORT0 (a.k.a. TDREPORT
+  *                           subtype 0) using TDG.MR.REPORT TDCALL.
+@@ -902,10 +914,6 @@ static void tdx_kexec_unshare_mem(void)
+ 
+ void __init tdx_early_init(void)
  {
- 	struct tdx_module_args args = {};
- 	unsigned int gpa_width;
-@@ -204,6 +204,9 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
- 	gpa_width = args.rcx & GENMASK(5, 0);
- 	*cc_mask = BIT_ULL(gpa_width - 1);
+-	struct tdx_module_args args = {
+-		.rdx = TDCS_NOTIFY_ENABLES,
+-		.r9 = -1ULL,
+-	};
+ 	u64 cc_mask;
+ 	u32 eax, sig[3];
  
-+	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
+@@ -924,7 +932,7 @@ void __init tdx_early_init(void)
+ 	cc_set_mask(cc_mask);
+ 
+ 	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
+-	tdcall(TDG_VM_WR, &args);
 +	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
-+
- 	/*
- 	 * The kernel can not handle #VE's when accessing normal kernel
- 	 * memory.  Ensure that no #VE will be delivered for accesses to
-@@ -928,11 +931,11 @@ void __init tdx_early_init(void)
- 	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
- 
- 	cc_vendor = CC_VENDOR_INTEL;
--	tdx_parse_tdinfo(&cc_mask);
--	cc_set_mask(cc_mask);
- 
--	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
--	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
-+	/* Configure the TD */
-+	tdx_setup(&cc_mask);
-+
-+	cc_set_mask(cc_mask);
  
  	/*
  	 * All bits above GPA width are reserved and kernel treats shared bit
