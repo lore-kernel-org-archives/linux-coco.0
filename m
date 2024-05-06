@@ -1,347 +1,165 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA3C1DA21
-	for <linux-coco@lists.linux.dev>; Sun,  5 May 2024 12:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F8A47F7E
+	for <linux-coco@lists.linux.dev>; Mon,  6 May 2024 07:44:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714911237; cv=none; b=q0Qkm04ifwL9/UZIJ1h2cyvb6r2tME08elYOEJ38kuH4lOFio+dfZMgF5vVHRWMTPQtd0M/Yj1UsgWXXwPIi6QmwJjKvojP1REK8BDcqPEF6GLPDlhOgopIMCswL0udtxvbl8p3Zzq7R4/uEIHRtwa27J64UxuwfEAsakEHfE0E=
+	t=1714981444; cv=none; b=s/rt/b7kP8Eln0UWtipxhaxOwaPUFFLfx9I/txOcKHMqWzsrIf9E6F8D0bVJIvvj8gYPZdxLDfJFfS2CsTdDNzhHY/H8zPu5ffHE/6AEMphnPmC+ML2TnrHYxgj/OoGMFozVy6/K3f8xSKUPACDro5NmN/oG2e266mr8wScybQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714911237; c=relaxed/simple;
-	bh=KN8bntASnPjM7TOcy4xJH/L/kU1+/OyICkgTuMoX9FI=;
+	s=arc-20240116; t=1714981444; c=relaxed/simple;
+	bh=h/+3mmcN4ggtpP++IT6mRKpHt8jDBGI5L76LmwjqGNg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U3IfP5NUl6o5QdyTEAAFKm0FV5lZ6LeSYelqKkrodgklNv1MLuzZo4u/NRUY3O+rUEhVuSi1szPLy0fWPu6PtfH8TP3MpQ/s91YdTmtF6UGk4QrOI2+K1O1vPz+wV5ERMVZ2GMKtMNSWrqa7zOgN5G2ZZKnQaKJEvEl9+Qa0VmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=C2dxPyvi; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=s/PBwkA0CyC5kdbDR+CcIaSpHhs0IDro6y6Es/a1QnB6fxF0J6N7IeZMrxC2MoFHQ+56bTz6BlGN/EQdl+Pk+AlZ5PJOTFurI5763srPbksjOOTT7EWTo5nhW/obOk5nlXnbsxQdEpDWK7GGhe7mvQZcM6D6nwXUksCnl3j80IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LxseSu9t; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RciozrXG; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LxseSu9t; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RciozrXG; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="C2dxPyvi"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1604540E0244;
-	Sun,  5 May 2024 12:13:52 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id gQ7-V4k4tIs6; Sun,  5 May 2024 12:13:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1714911227; bh=iXuHyguEjq+GHMucvMpZ87uVJIcG+yLUxh9sVFXvkHE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C2dxPyvi3Sqg9Z1LdkGhza8vVMmHxp8Md+i+zkn+1EotL5dqt+pVond5T2ABRSNJy
-	 +XVTq99P5he2yHmxcGm5ZZYYBEsq+Yb3xRzGf0dSbkbfLhv3VRKSxBZM5tUSOnZ4TO
-	 xvnexOTY1/5g3Bfzx/Z14AcLhnvAV/POqQXYq8DSsUn0hbwn2ZPxhyhEjHICB3Nssd
-	 6BYnNwDOWC49d8siFpAOLIv9fJx6EeVBSl0rS/1skF5PbiyOHebrUmDz13gIbjJxEj
-	 NJN5U43CgsXmKQRtkJbVloP0v6G38fXumNRWkrmjWPkk2aCG6SCvVa+kBIRmJ2t6I8
-	 bcrLoI/nqKvlBJsXdHUMGwwxjDJgjsvDy/8Uy/WMhXKWoakOmerVGJj/8MHPQMVzNO
-	 Fmyk4oNwtOahs+pGU+sU+3FszuYhK2mZe5+/R8CWa7C3JgjfOSdzNIrW5AHQIvGN+i
-	 UtbL3An6aG+erzleTXWOXV/HI7au55/ozIULyePR4qyBptFlXbcbfPoW+k+N+NfVAH
-	 yUxs/WgoYM3LIVd7febnZWnlv5yuQqTLanlZe5IsV+6vwvlgVmLrUcRSUX8skJbCHX
-	 Btq9axNuZWb6xEYL8KTHISPA2chGh4zdXeFTQlua0yBqsTC7LZ/QniAQmwZp/eI9yC
-	 7Of1o/WQMG+6taOBnkJuzUsA=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LxseSu9t";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="RciozrXG";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LxseSu9t";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="RciozrXG"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3FEFF40E0192;
-	Sun,  5 May 2024 12:13:26 +0000 (UTC)
-Date: Sun, 5 May 2024 14:13:19 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1EE2D37FD0;
+	Mon,  6 May 2024 07:44:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1714981441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QB7X6b8uZ129mfCOeXo2JK4nhvfmoN+Tgyx+uJLesB0=;
+	b=LxseSu9tNynavL8G6eU1ywrNTJ/WGNepkH2nPFBJViNaeQKr9lUzrpQmLARbxmG4kAroAJ
+	3vSgqRKPWquUBjIC04ZNZSIP7ZL7FV7TOVfMk0fqK3s5G11eSyXqAikx8VRaJ7cpSnsPhA
+	HkOjbefBaqvugvqIhF0sqK3X0gX8phk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1714981441;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QB7X6b8uZ129mfCOeXo2JK4nhvfmoN+Tgyx+uJLesB0=;
+	b=RciozrXGAx66sR2lNyVMX4NKFI+ZQAA82jTVhmhDUO8DzBfTAv0JEOcZEjSPeRRBSz/Wt+
+	MbcJsNJduqWj/mBA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LxseSu9t;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RciozrXG
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1714981441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QB7X6b8uZ129mfCOeXo2JK4nhvfmoN+Tgyx+uJLesB0=;
+	b=LxseSu9tNynavL8G6eU1ywrNTJ/WGNepkH2nPFBJViNaeQKr9lUzrpQmLARbxmG4kAroAJ
+	3vSgqRKPWquUBjIC04ZNZSIP7ZL7FV7TOVfMk0fqK3s5G11eSyXqAikx8VRaJ7cpSnsPhA
+	HkOjbefBaqvugvqIhF0sqK3X0gX8phk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1714981441;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QB7X6b8uZ129mfCOeXo2JK4nhvfmoN+Tgyx+uJLesB0=;
+	b=RciozrXGAx66sR2lNyVMX4NKFI+ZQAA82jTVhmhDUO8DzBfTAv0JEOcZEjSPeRRBSz/Wt+
+	MbcJsNJduqWj/mBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C1BDC13A25;
+	Mon,  6 May 2024 07:44:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id MOklLkCKOGZ2XgAAD6G6ig
+	(envelope-from <jroedel@suse.de>); Mon, 06 May 2024 07:44:00 +0000
+Date: Mon, 6 May 2024 09:43:59 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
+To: Borislav Petkov <bp@alien8.de>
+Cc: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv10 10/18] x86/tdx: Convert shared memory back to private
- on kexec
-Message-ID: <20240505121319.GAZjd337gHC0uhk6aM@fat_crate.local>
-References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <20240409113010.465412-11-kirill.shutemov@linux.intel.com>
+	Michael Roth <michael.roth@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+	linux-coco@lists.linux.dev, Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Dan Williams <dan.j.williams@intel.com>,
+	svsm-devel@coconut-svsm.dev
+Subject: Re: [svsm-devel] [PATCH v4 15/15] x86/sev: Allow non-VMPL0 execution
+ when an SVSM is present
+Message-ID: <ZjiKP4Z6nBbvOEQB@suse.de>
+References: <cover.1713974291.git.thomas.lendacky@amd.com>
+ <e377d148acac799f6905fc544fbb8bf2ed76e078.1713974291.git.thomas.lendacky@amd.com>
+ <ZjTMcC7KTP9xRAqk@8bytes.org>
+ <20240503160419.GAZjULA7HhinTfCWZ6@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240409113010.465412-11-kirill.shutemov@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240503160419.GAZjULA7HhinTfCWZ6@fat_crate.local>
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 1EE2D37FD0
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
 
-On Tue, Apr 09, 2024 at 02:30:02PM +0300, Kirill A. Shutemov wrote:
-> TDX guests allocate shared buffers to perform I/O. It is done by
-> allocating pages normally from the buddy allocator and converting them
-> to shared with set_memory_decrypted().
+On Fri, May 03, 2024 at 06:04:19PM +0200, Borislav Petkov wrote:
+> On Fri, May 03, 2024 at 01:37:20PM +0200, Jörg Rödel wrote:
+> > Nit: Can this be formated more like "SNP running at VMPL-%u"? That makes
+> > it easier to parse for me when looking into dmesg :)
 > 
-> The second kernel has no idea what memory is converted this way. It only
+> Hmm, except that all documentation is without a "-"... The APM talks
+> about VMPL%d everywhere...
 
-"The kexec-ed kernel..."
+No strict opinion, I just wanted to point out that there are more
+readable ways of printing the VMPL level than what is used in the APM.
 
-is more precise.
-
-> sees E820_TYPE_RAM.
-> 
-> Accessing shared memory via private mapping is fatal. It leads to
-> unrecoverable TD exit.
-> 
-> On kexec walk direct mapping and convert all shared memory back to
-> private. It makes all RAM private again and second kernel may use it
-> normally.
-> 
-> The conversion occurs in two steps: stopping new conversions and
-> unsharing all memory. In the case of normal kexec, the stopping of
-> conversions takes place while scheduling is still functioning. This
-> allows for waiting until any ongoing conversions are finished. The
-> second step is carried out when all CPUs except one are inactive and
-> interrupts are disabled. This prevents any conflicts with code that may
-> access shared memory.
-
-This is the missing bit of information I was looking for in the previous
-patch. This needs to be documented in the code.
-
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Tested-by: Tao Liu <ltao@redhat.com>
-> ---
->  arch/x86/coco/tdx/tdx.c           | 72 +++++++++++++++++++++++++++++++
->  arch/x86/include/asm/pgtable.h    |  5 +++
->  arch/x86/include/asm/set_memory.h |  3 ++
->  arch/x86/mm/pat/set_memory.c      | 35 +++++++++++++--
->  4 files changed, 112 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index 979891e97d83..59776ce1c1d7 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -7,6 +7,7 @@
->  #include <linux/cpufeature.h>
->  #include <linux/export.h>
->  #include <linux/io.h>
-> +#include <linux/kexec.h>
->  #include <asm/coco.h>
->  #include <asm/tdx.h>
->  #include <asm/vmx.h>
-> @@ -14,6 +15,7 @@
->  #include <asm/insn.h>
->  #include <asm/insn-eval.h>
->  #include <asm/pgtable.h>
-> +#include <asm/set_memory.h>
->  
->  /* MMIO direction */
->  #define EPT_READ	0
-> @@ -831,6 +833,73 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
->  	return 0;
->  }
->  
-> +/* Stop new private<->shared conversions */
-> +static void tdx_kexec_stop_conversion(bool crash)
-> +{
-> +	/*
-> +	 * Crash kernel reaches here with interrupts disabled: can't wait for
-> +	 * conversions to finish.
-> +	 *
-> +	 * If race happened, just report and proceed.
-> +	 */
-> +	bool wait_for_lock = !crash;
-
-You don't need that bool - use crash.
-
-> +
-> +	if (!stop_memory_enc_conversion(wait_for_lock))
-> +		pr_warn("Failed to stop shared<->private conversions\n");
-> +}
-> +
-> +static void tdx_kexec_unshare_mem(void)
-> +{
-> +	unsigned long addr, end;
-> +	long found = 0, shared;
-> +
-> +	/*
-> +	 * Walk direct mapping and convert all shared memory back to private,
-> +	 */
-
-Over the function name and end with a fullstop.
-
-> +
-> +	addr = PAGE_OFFSET;
-> +	end  = PAGE_OFFSET + get_max_mapped();
-> +
-> +	while (addr < end) {
-> +		unsigned long size;
-> +		unsigned int level;
-> +		pte_t *pte;
-> +
-> +		pte = lookup_address(addr, &level);
-> +		size = page_level_size(level);
-> +
-> +		if (pte && pte_decrypted(*pte)) {
-> +			int pages = size / PAGE_SIZE;
-> +
-> +			/*
-> +			 * Touching memory with shared bit set triggers implicit
-> +			 * conversion to shared.
-> +			 *
-> +			 * Make sure nobody touches the shared range from
-> +			 * now on.
-> +			 */
-
-lockdep_assert_irqs_disabled() ?
-
-> +			set_pte(pte, __pte(0));
-> +
-> +			if (!tdx_enc_status_changed(addr, pages, true)) {
-> +				pr_err("Failed to unshare range %#lx-%#lx\n",
-> +				       addr, addr + size);
-
-Why are we printing something here if we're not really acting up on it?
-
-Who should care here?
-
-> +			}
-> +
-> +			found += pages;
-> +		}
-> +
-> +		addr += size;
-> +	}
-> +
-> +	__flush_tlb_all();
-> +
-> +	shared = atomic_long_read(&nr_shared);
-> +	if (shared != found) {
-> +		pr_err("shared page accounting is off\n");
-> +		pr_err("nr_shared = %ld, nr_found = %ld\n", shared, found);
-> +	}
-
-Ok, we failed unsharing. And yet we don't do anything.
-
-But if we fail unsharing, we will die on a unrecoverable TD exit or
-whatever.
-
-Why aren't we failing kexec here?
-
-> +}
-> +
->  void __init tdx_early_init(void)
->  {
->  	struct tdx_module_args args = {
-> @@ -890,6 +959,9 @@ void __init tdx_early_init(void)
->  	x86_platform.guest.enc_cache_flush_required  = tdx_cache_flush_required;
->  	x86_platform.guest.enc_tlb_flush_required    = tdx_tlb_flush_required;
->  
-> +	x86_platform.guest.enc_kexec_stop_conversion = tdx_kexec_stop_conversion;
-> +	x86_platform.guest.enc_kexec_unshare_mem     = tdx_kexec_unshare_mem;
-> +
->  	/*
->  	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
->  	 * bringup low level code. That raises #VE which cannot be handled
-> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-> index 315535ffb258..17f4d97fae06 100644
-> --- a/arch/x86/include/asm/pgtable.h
-> +++ b/arch/x86/include/asm/pgtable.h
-> @@ -140,6 +140,11 @@ static inline int pte_young(pte_t pte)
->  	return pte_flags(pte) & _PAGE_ACCESSED;
->  }
->  
-> +static inline bool pte_decrypted(pte_t pte)
-> +{
-> +	return cc_mkdec(pte_val(pte)) == pte_val(pte);
-> +}
-> +
->  #define pmd_dirty pmd_dirty
->  static inline bool pmd_dirty(pmd_t pmd)
->  {
-> diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-> index 9aee31862b4a..44b6d711296c 100644
-> --- a/arch/x86/include/asm/set_memory.h
-> +++ b/arch/x86/include/asm/set_memory.h
-> @@ -49,8 +49,11 @@ int set_memory_wb(unsigned long addr, int numpages);
->  int set_memory_np(unsigned long addr, int numpages);
->  int set_memory_p(unsigned long addr, int numpages);
->  int set_memory_4k(unsigned long addr, int numpages);
-> +
-> +bool stop_memory_enc_conversion(bool wait);
->  int set_memory_encrypted(unsigned long addr, int numpages);
->  int set_memory_decrypted(unsigned long addr, int numpages);
-> +
->  int set_memory_np_noalias(unsigned long addr, int numpages);
->  int set_memory_nonglobal(unsigned long addr, int numpages);
->  int set_memory_global(unsigned long addr, int numpages);
-> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> index 6c49f69c0368..21835339c0e6 100644
-> --- a/arch/x86/mm/pat/set_memory.c
-> +++ b/arch/x86/mm/pat/set_memory.c
-> @@ -2188,12 +2188,41 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
->  	return ret;
->  }
->  
-
-<--- insert comment here what this thing is guarding.
-
-> +static DECLARE_RWSEM(mem_enc_lock);
-> +
-> +/*
-> + * Stop new private<->shared conversions.
-> + *
-> + * Taking the exclusive mem_enc_lock waits for in-flight conversions to complete.
-> + * The lock is not released to prevent new conversions from being started.
-> + *
-> + * If sleep is not allowed, as in a crash scenario, try to take the lock.
-> + * Failure indicates that there is a race with the conversion.
-> + */
-> +bool stop_memory_enc_conversion(bool wait)
-
-This is a global function which means, it should be called:
-
-set_memory_enc_stop_conversion()
-
-or so. With the proper prefix and so on.
-
-> +{
-> +	if (!wait)
-> +		return down_write_trylock(&mem_enc_lock);
-> +
-> +	down_write(&mem_enc_lock);
-> +
-> +	return true;
-> +}
-> +
->  static int __set_memory_enc_dec(unsigned long addr, int numpages, bool enc)
->  {
-> -	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
-> -		return __set_memory_enc_pgtable(addr, numpages, enc);
-> +	int ret = 0;
->  
-> -	return 0;
-> +	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
-> +		if (!down_read_trylock(&mem_enc_lock))
-> +			return -EBUSY;
-
-This function is called on SEV* and HyperV and the respective folks need
-to at least ack this new approach.
-
-I see Ashish's patch adds the respective stuff:
-
-https://lore.kernel.org/r/c24516a4636a36d57186ea90ae26495b3c1cfb8b.1714148366.git.ashish.kalra@amd.com
-
-which leaves HyperV. You'd need to Cc them on the next submission.
-
-Thx.
-
+Regards,
 
 -- 
-Regards/Gruss,
-    Boris.
+Jörg Rödel
+jroedel@suse.de
 
-https://people.kernel.org/tglx/notes-about-netiquette
+SUSE Software Solutions Germany GmbH
+Frankenstraße 146
+90461 Nürnberg
+Germany
+https://www.suse.com/
+
+Geschäftsführer: Ivo Totev, Andrew McDonald, Werner Knoblich
+(HRB 36809, AG Nürnberg)
