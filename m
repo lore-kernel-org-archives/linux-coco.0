@@ -1,70 +1,69 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B51D13664A
-	for <linux-coco@lists.linux.dev>; Mon,  6 May 2024 14:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B4513CF8A
+	for <linux-coco@lists.linux.dev>; Mon,  6 May 2024 14:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715004895; cv=none; b=eSvaJ04QZgMxeSzy2A8k67Goid8wo+2rpDVhewBwq9L1QTZccRSk7lxLspgsJcDIFy8IvMwUsH36h6B0uCq3oItSZCyhAj2YdKu0TRhBjGrG7tMiTY5QC0sx4ukDhns7WyJRE4y/6ijHxlb45oSt4+K0/Ex4fWhCyXZ7+KvlzQ8=
+	t=1715005310; cv=none; b=YxhhFLGYSp5IS36a09PdprHQJ8tokVZx9gidcs8rR0o4rKxyhbNgMZwItpHe4GHl8imZN/20lOQRkHRK8P1bN3F5JBCXzJTD07cfD9ypzdq/THYRL0SL8EHD6LX9yI7THoKH4tr0ZpM86YxHu6LJNcUUKkEPHzzZycufQj8KY7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715004895; c=relaxed/simple;
-	bh=o3khOYd3PwvSQuTqNQGOIWO5Gc4L0D6qdPe8N/HPXaU=;
+	s=arc-20240116; t=1715005310; c=relaxed/simple;
+	bh=ZRr6fPqYoTH0sclRmuJEZqEKQMy0r1Bck1MinrSVNpg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aqgHcS+8JleNUrZMip104y+lv1vQYPmXNOhdcEKabVu3JFs+VgE8Of2lB6SXDBQQDPRQFuxCwhaUCA/OSujuNrSyYMr0ixIEEpHe+Ji/baFukkZkMNiZXQuO/J5gEsNGxmRwx3xofdUc/Bmb+f5vNGFLXKJWQEz/PrH7frkSEHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=G0tlY3Vz; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=kIMOGa+I0FMZtO/OkkpnbtJ6cZQJfFe7Gv1O7DFXgt7n3E83cIi1QJ2ij1fnaLUR9gB/mGQ92cateyv63omV3a5EPEIZV8TR9NtsoBnTV5Wh1FuAoqlsX5RdRpl6tZqGISj/MCfmXQPUS7bbPgVfggQejvRGow2MSBc29iwSSxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=F4Y+fW3Q; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="G0tlY3Vz"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="F4Y+fW3Q"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 721DE40E024C;
-	Mon,  6 May 2024 14:14:49 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BEB5C40E024D;
+	Mon,  6 May 2024 14:21:46 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id R3fD3o6YRpqj; Mon,  6 May 2024 14:14:46 +0000 (UTC)
+	with ESMTP id UryTxnO-LRmz; Mon,  6 May 2024 14:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1715004886; bh=fL0jWz0y0MdKTiR0U8jxUn73zBq9bUhbVTopKlDLfd4=;
+	t=1715005303; bh=b+K6cieeRgzZWM9C6IkS52nAd027DkJxG87ZipG8Sho=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G0tlY3Vz5Xk6BIUXL6VJT6blz9r12hsvfG4elX4H4AzRdPrFwRYyZUlDg1rbozuhZ
-	 4UWPvtgiZY7Yu6tDYoLgrh0QYcwCFXtRN6qYq5FgrJ2/uWCN5dmYQP2QR9lKlOyaDI
-	 xvncVN/sbMcKtIScUkCOkJrbE1Xhgn4tufWkkfviqJNQan2qijp90xTkaEFih55Sci
-	 it8etOB4NTMeWG24XemazBZb024RkQAEFK+0nvhLucPqxCte55SHlURN0eMGttLsFn
-	 F5XWDudwGUdPNvkrbAZpWyqDKEuSeknRGIV4/Uc9UE7APc+wZHyTSxC/HiNNjIfhES
-	 xwnE4Z2w9TKlXNbvUVAOqTbuNLdwaxZVaQF2Unr7nGExI+kmAv9aA65MmS8xlTGa0K
-	 9kHd0936W2XxOwnBjP2EebQyQaGniA1xBBpd6oI7zxoefmBOcbRUDfb/vu4TdXkCmy
-	 bupelxG5AOqatUKS8+x5jeCGXNg8EMZ/iQ4XUtfqU2BawEFZ0VRQbtApYU9dkATkUW
-	 mNO0kwRrEyRaB+alkZSCtQGD5DFsaSUm3RSKwSWHGVSt77BYOBMPn0cJ2YvgLfG6tw
-	 bE0USZunZvpA9d1YD9RQM6HRaafFiSHJlj8crUDXBke48o5XAeDp8SItWd83sv3+Kf
-	 UKJ7ZgRm/pts2Rd6t6N+Sb6E=
+	b=F4Y+fW3QTaJ9FV2dDcBUpEOnzrKcNwfhgwOdIB3xCvhdM4huoa4p2KYMwSN2wNmwD
+	 PurLG1CyOa67XmIA7Pxjr2Sq43TnxBriydtwUVv225ZGWLr8aRIerdFKLvNAEki9Ev
+	 QXnergGYbpM8+T3qhaX9/x58MrcWwD71J6vQsKEnlV8KncUGgWfSc0z0LVq8pAhSPA
+	 jhRvlK1uhx3ePYkx9TN9Pnrto+jT1IMuDnXrJB5nW+PpFqOIWkIya0hHmvBcQghQxV
+	 Qpcy4sW0eigQF2LhqQTtyg+uUpaA4mgngA8rRUjITTzYMxjhNPyMZTnIW07xurGum0
+	 EFPpsRZXQJUtWe0+C/HGe/nc6XB0yAZPrv1Vs0Sxr+v1BKJWnv/5mnfPlMEOl9DXQZ
+	 WNWXaDv0Ykm6m+6/KKSSXAT4xuzr7YY8i3V3fOOhqtSIvR8d2wWumKRJLjDrYNUk2H
+	 wsEOEPFJWyHmHsADUmFJY/mHG2hpgpMdKtvSSnaDSQw/dzm+hSfRo6uzIZiqwrD1Y/
+	 1hYGDOpptHLNwXDiEYJSWcNV980028nBBUkVgrWNlt8tJcqln08J8EaS98VWRSAywf
+	 lyf/szhCvZVMfnyBCbRiPEu/QgL4G3rSTsUsaKzxv/5Ezg78hEYQ1docvNMEYS9P6J
+	 FpbHijWXXqLmCFJnbwN3lyRY=
 Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C4A2440E0249;
-	Mon,  6 May 2024 14:14:31 +0000 (UTC)
-Date: Mon, 6 May 2024 16:14:26 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5342240E0187;
+	Mon,  6 May 2024 14:21:21 +0000 (UTC)
+Date: Mon, 6 May 2024 16:21:20 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v4 05/15] x86/sev: Use kernel provided SVSM Calling Areas
-Message-ID: <20240506141426.GJZjjlwuQryahOmSJS@fat_crate.local>
-References: <cover.1713974291.git.thomas.lendacky@amd.com>
- <07266b47e749267ef9a9ccbc9e8e9df78ed54857.1713974291.git.thomas.lendacky@amd.com>
- <20240503103407.GSZjS9n-XMMKi5ZOek@fat_crate.local>
- <20240506100905.GFZjisQTQwbkv2eKsh@fat_crate.local>
- <c4640af2-a791-848a-bacb-071f0bc8f9b1@amd.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: adrian.hunter@intel.com, ashish.kalra@amd.com, bhe@redhat.com,
+	dave.hansen@linux.intel.com, elena.reshetova@intel.com,
+	jun.nakajima@intel.com, kai.huang@intel.com,
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, ltao@redhat.com, mingo@redhat.com,
+	nik.borisov@suse.com, peterz@infradead.org, rafael@kernel.org,
+	rick.p.edgecombe@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, seanjc@google.com,
+	tglx@linutronix.de, thomas.lendacky@amd.com, x86@kernel.org
+Subject: Re: [PATCHv10.1 09/18] x86/mm: Adding callbacks to prepare encrypted
+ memory for kexec
+Message-ID: <20240506142120.GKZjjnYGMcZkuTLlzG@fat_crate.local>
+References: <20240427164747.GCZi0sM6HBCBYtgWqF@fat_crate.local>
+ <20240427170634.2397725-1-kirill.shutemov@linux.intel.com>
+ <20240502134506.GDZjOY4guvlKH9-73J@fat_crate.local>
+ <ch244dd4k5nu5rcryuwqp4pztl4dduhciqunin5drr7a3yls2h@siisliaoc2f6>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,16 +72,51 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <c4640af2-a791-848a-bacb-071f0bc8f9b1@amd.com>
+In-Reply-To: <ch244dd4k5nu5rcryuwqp4pztl4dduhciqunin5drr7a3yls2h@siisliaoc2f6>
 
-On Mon, May 06, 2024 at 08:14:34AM -0500, Tom Lendacky wrote:
-> This isn't quite right. The xchg has to occur between pending and
-> call->caa->call_pending.
+On Mon, May 06, 2024 at 04:22:02PM +0300, Kirill A. Shutemov wrote:
+> I do. See comment just above enc_kexec_stop_conversion() call.
 
-Right, you can fix that up in your next revision. :-)
+If you mean this:
 
-I only wanted to show the idea of how to make this a lot more
-readable.
+        /*
+         * Call enc_kexec_stop_conversion() while all CPUs are still active and
+         * interrupts are enabled. This will allow all in-flight memory
+         * conversions to finish cleanly.
+         */
+        if (kexec_in_progress)
+                x86_platform.guest.enc_kexec_stop_conversion(false);
+
+then no, this is not enough.
+
+I mean this:
+
+/**
+ * struct x86_guest - Functions used by misc guest incarnations like SEV, TDX, etc.
+ *
+ * @enc_status_change_prepare   Notify HV before the encryption status of a range is changed
+ * @enc_status_change_finish    Notify HV after the encryption status of a range is changed
+ * @enc_tlb_flush_required      Returns true if a TLB flush is needed before changing page encryption status
+ * @enc_cache_flush_required    Returns true if a cache flush is needed before changing page encryption status
+ * @enc_kexec_begin		Begin the two-step process of stopping
+ * 				page conversion... <insert reason why it
+ * 				needs to happen this way, blabla>
+ * @enc_kexec_finish		...
+ */
+struct x86_guest {
+        int (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
+        int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
+        bool (*enc_tlb_flush_required)(bool enc);
+        bool (*enc_cache_flush_required)(void);
+        void (*enc_kexec_begin)(bool crash);
+        void (*enc_kexec_finish)(void);
+
+And calling them a _begin and _finish makes a lot more sense to me:
+_begin starts the kexec process for encrypted guests and _finish
+finishes it.
+
+Just from the names you now know what needs to happen and in which
+order.
 
 Thx.
 
