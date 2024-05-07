@@ -1,103 +1,66 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE3613C3E6
-	for <linux-coco@lists.linux.dev>; Tue,  7 May 2024 08:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25978161313
+	for <linux-coco@lists.linux.dev>; Tue,  7 May 2024 15:36:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715071933; cv=none; b=kUZ/YUZVltP2nTE/1TnegK7royv34YeQlLMDLS/Kp43uo65aSWhlezf3KyBjdArhcS3r4CI3bIpOQ9V95hWN8zOC/VfAzg7KzKx8Oqbit08MusmtmG+ns5cs7vt1OqPG18xQz8wbG1ZflE4v958CDzIkOWu531j9S51zxu1IBHc=
+	t=1715096176; cv=none; b=gwrN3+UWxaMC75yT64oGtQqnt0MZNA8TbQxh8Ix+KlmH+dXRjK1tpgFMfcQMFjWwwBGOF6JdDVIzOO+6y+goOOrA4T3LeytaJNeLg6/FAkm+9MbqrQV+K4K9klTpqqwkecf7kBJXa5qpRa0AtRJI2ZVyxeJNxarefXhum6/3p9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715071933; c=relaxed/simple;
-	bh=YDDzOdcxhTiQfsbJYeFw5DFyxUfvoEDo0yDosAFBDBQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LkXxdT7AThr6sff0ESl63oBYiYg4Rn6sE2TJNbO9iU21LhCbBcKQTMFDSI5SM4ryLJ7PGaKm6mCkx9HsY5RCshE81o3G8zlzs6yITzY2ekNGR4R860yTgEiigp3Em53NasEf7IGJezUFKKel7DvWE0cRIcTqaJVPNZS+DoICANM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BsEaum78; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1715096176; c=relaxed/simple;
+	bh=1lXgGB0wiDCgyx4/aJqwlDng64yBX2vav+1p70bCa4Y=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=NHWHmWrVBIDnfo2xtqu3e6yOBZ0oaVhXf18rkBhbST5fzLo49INUjXrUHEsNEN3QUdzWtJ5mml5NvOpeQmdUDMEdVCnMQae4gq8l8R9G8vndkLsRucm678QwQzMrOTI9aAfuYIL7KHBOt4G172qEeU9zf2IhOypOLrNPYzDE19E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=i69WYCDH; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BsEaum78"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715071932; x=1746607932;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YDDzOdcxhTiQfsbJYeFw5DFyxUfvoEDo0yDosAFBDBQ=;
-  b=BsEaum78kW7r0sNDkoY804YWqW0JEPNVpTquRdapgEXt5ztobPE21czh
-   wa9ZkCRybUxoiGsM2m97ky8OKo53UgEBhOV9PEtC0a005EsOpflNB6N3L
-   2Zr0ahlSTmf79e6OFqgFwkitoYO7xBcd9D3dP472g40gVTVyhXYyUmrcd
-   VqdF8u8XbEgBBndebHimZ6x5I+qaWcyGfzG7SrO+onQFzo7PAuqwJzA1h
-   +m82PH33R1Lo6tiQGQiyPmHhELsv3bJI1zC067MAFxNGwj+mJG80QlJAn
-   +i/MpMl6vdyH01Md+PkVph2Yj6sZJGCiJqc9c5Tvp9c7wBzru1c1vWLbc
-   g==;
-X-CSE-ConnectionGUID: f9UWDCCzSKK0VtRvFIrS9Q==
-X-CSE-MsgGUID: b6QbfAkcS5+chdRZ7l+apA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="11007015"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; 
-   d="scan'208";a="11007015"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 01:52:12 -0700
-X-CSE-ConnectionGUID: 1caxfnooSt2BK66PvHEAsw==
-X-CSE-MsgGUID: PR4NKLnhSbC+qI+EE9NQtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; 
-   d="scan'208";a="59308698"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa002.jf.intel.com with ESMTP; 07 May 2024 01:52:09 -0700
-Date: Tue, 7 May 2024 16:46:29 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	Wu Hao <hao.wu@intel.com>, Yilun Xu <yilun.xu@intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, kevin.tian@intel.com,
-	gregkh@linuxfoundation.org, linux-pci@vger.kernel.org
-Subject: Re: [RFC PATCH v2 5/6] PCI/TSM: Authenticate devices via platform TSM
-Message-ID: <ZjnqZRPaijFxO9rh@yilunxu-OptiPlex-7050>
-References: <171291190324.3532867.13480405752065082171.stgit@dwillia2-xfh.jf.intel.com>
- <171291193308.3532867.129739584130889725.stgit@dwillia2-xfh.jf.intel.com>
- <fc201452-080e-4942-b5a0-0c64d023ac6b@amd.com>
- <662c69eb6dbf1_b6e0294d1@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="i69WYCDH"
+Received: from 8bytes.org (p4ffe0bdf.dip0.t-ipconnect.de [79.254.11.223])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 103E21C0CFD;
+	Tue,  7 May 2024 17:36:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1715096167;
+	bh=1lXgGB0wiDCgyx4/aJqwlDng64yBX2vav+1p70bCa4Y=;
+	h=Date:From:To:Subject:From;
+	b=i69WYCDHxjw6eZKhg9agknS5+OpAQ9my8JwdtaSYGSY3ayNMtnOR5YXoEPD+PnnPc
+	 nF/e42/FoPWCjmY2sGmBUN+Af+jv2sv96M5azrV8KUa7H3GvRiJ7Ifo0hTN8Hk6FnT
+	 GSZ7afspqry1bvzhS5UTkxfOQRmfJ04SRLJK6OybvUw8oWoF08bEtFiZUoGxMelqMX
+	 TMMOF8fAnKndYArAs0rHLz1rt5jusgTESdOebbRdJ+1LRVCrl6YXhVrlUORjlR9uop
+	 q/a8LTytwR2bZGJHy2g1q7MPArNXNzrS/1HOFcuUBxbJfsIpmf7rj6gEZza0+GLqbp
+	 Su6pOiDGhpefQ==
+Date: Tue, 7 May 2024 17:36:05 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call May 8th, 2024
+Message-ID: <ZjpKZbSjYspLSKVG@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <662c69eb6dbf1_b6e0294d1@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Content-Transfer-Encoding: 8bit
 
-> > > +
-> > > +/* collect TSM capable devices to rendezvous with the tsm driver */
-> > > +static DEFINE_XARRAY(pci_tsm_devs);
-> > 
-> > imho either this or pci_dev::tsm is enough but not necessarily both.
-> 
-> You mean:
-> 
-> s/pci_tsm_devs/tsm_devs/
-> 
-> ?
+Hi,
 
-I don't think the concern is just a renaming. My understanding is, we
-already have a struct pci_tsm embedded in struct pci_dev, we could loop
-and find all TSM capable devices by:
+Here is the usual call for agenda items for this weeks SVSM development
+call. There is one item already:
 
-	for_each_pci_dev(pdev) {
-		if (pdev->tsm)
-			pci_tsm_add/del(pdev);
-	}
+	* SVSM-on-TDX architecture discussion and next steps
 
-A dedicated list for TSM capable devices seems not necessary.
+Details of the meeting (GMeet and Calendar links, meeting time) can be
+found in our governance repository at:
 
-But my concern is about VFs.  VFs are as well TSM capable but not
-applicable for tsm_ops->exec(TSM_EXEC_CONNECT), maybe not applicable
-for tsm_ops->add() either.  One way to distinguish PF/VFs is we only
-collect PFs in pci_tsm_devs, but all TSM capable devices have
-valid pci_dev::tsm pointer.
+	https://github.com/coconut-svsm/governance
 
-TSM capable devices in Guest should not been collected in pci_tsm_devs
-either.
+The meeting will be recorded and the recording eventually published.
 
-Thanks,
-Yilun
+See you all there.
+
+Regards,
+
+	Jörg
