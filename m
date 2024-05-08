@@ -1,67 +1,75 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25518405FC
-	for <linux-coco@lists.linux.dev>; Wed,  8 May 2024 08:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C392823CD
+	for <linux-coco@lists.linux.dev>; Wed,  8 May 2024 12:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715155541; cv=none; b=LAPy3K1JZbjrrkzM6ZQ03SB2Yj0MyHrZTLz2U6t7WJyJhsp/3J4mUI1VNGquS8tB4j821T61VNetP7YWauS4g/G6y7gSUxjFVUem6hzpjIDj11USi/dLM8LDv/BUfDwZJQ7M9Wiik5wuoApQP7xDp9elG9siS39l4Jt1hr8Ioew=
+	t=1715169903; cv=none; b=AZ1YSTjswAm18ZECmEEqEtHRaRLfnLMMzU3NRSJZILl0i54lOfhO7uuRNx4PfrPJu2uo/CMeMCN5OYeA6NjwjYEODPwCCpu+cS8LWAfC7nbyWDy/ujnf2BO4fmXfG8bh2H7O51dh8GUkqHoU3NnntT9kTUZx5iTUsC3963or5PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715155541; c=relaxed/simple;
-	bh=Oin8bC0Za+rMSaZA2VNA8QghpWXvOf5fWRKEJceQGUk=;
+	s=arc-20240116; t=1715169903; c=relaxed/simple;
+	bh=GATzjlivhq8fKMFczIL/3RPrPffvid/SU8NTqPLJYPs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z8Ofr0GhgB4z5M9RpUdmJPh62jFjmXsCZd6z2Qnfomv3LUcDoPi/NqziNbrrISvjx+HdqgY4EKb02sbSC8DcwDO7DaVqSOsyC2uNlFShIZlHAIfwArNnQEkG+V6zvnZaC0yPgYuOnVtfgqVYZMVIDd2bhWfLK+ydsgK5YZfoJLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=VcpCYUGm; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZArFwz0mWJTHKf/6ScB5lo8jQmzzdgQij1kfzYlpttFkYZgCSavlMISLwv475or4JQFueorxc+kEOdjzwoBaUmj9vvJc/mzMkZmhDvLsgMrnIUwH7ilJX55vQ700nDs5L8ko2i5mc3LruOyGkC2LiDEw5RCQNEpTo8ultGOfhuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hdzkpQuz; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="VcpCYUGm"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="hdzkpQuz"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1406140E0177;
-	Wed,  8 May 2024 08:05:34 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9B7D940E0177;
+	Wed,  8 May 2024 12:04:53 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 3bhT1NVtZ5j6; Wed,  8 May 2024 08:05:30 +0000 (UTC)
+	with ESMTP id idHYIoNC5YuF; Wed,  8 May 2024 12:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1715155530; bh=LNXGTaZk9UkXnDOi5iqZUBv+gZjFYV58YF6GqpPoGg0=;
+	t=1715169890; bh=f3BmmZ/ZrWMxvMKQEh/hpc9YGyn7kI0w2PJrN/PFOAo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VcpCYUGmOQALUrqIltbtk+HitoNd08ST0yGp+lNunM3Tisk64JqvmzPlWgzOufeYw
-	 rsLj5BAuVsLGCuUQm+/Tx4pplFBiMH9jiNMUjKpbhCp5eiFXaQm5ciMjJvGb5CfaDZ
-	 rAQR8307R+l3IlLcElZ4TLBLapNOfqBcJkh06IEBBx3SXez3O2NAsksd+C8haUr77T
-	 dQQr0vkKoYeOwYUOttDgs3QOUgfxmN0Wa+hRouL0EH9y8UXianeBp1Jp70ICzUAiOL
-	 yNSc3DichvjV3N2fhz1lcHmXJlJraVxfTiHeHp5lC8XskgRvCg2ryvKUaFBbmNgMrN
-	 YD3NTV5zPNpMFhtk/yNEkF+sPtonSaoHwQQk8UF+oR/4MXBMpuHsmBOjLciDBWdYqj
-	 WKLncIRplOG3KH4GSedOFl4HyYUotPRYJySES2Fqj9LIg7LlsuW6Czlj7XXmKbfMbt
-	 X+4dvaNVjIQMryva3dFOFplBZeSunHjkqTc5+JQqWyM/yxK0hzwBxLSxp8gJ2pZhYM
-	 p75KUFdQ8rzN8k4nYD4ZILy8q6pGqTERr+q/TtMrw4/TPRgCxLoFm8y2+W68LUjiZk
-	 oL2sx2iciRZ/zg5Nk4RKLj/GQaxJ568FNtceUdgqRODTkD2RiG8W4trK3f5QfuQ149
-	 mALghcqMuX/rBZadaOP5BeJY=
+	b=hdzkpQuzF7KWDDuh6lP0sSlhQpJKKXN3IRFkvo17PIvT/MaZa5CIYLCcbCmQNH2B/
+	 w6uMqdIKGEonCdlxDqRXPPPHrxr4/7kTyZ2rJKALlhosuxv0/h7o6S39sYblJTHkbt
+	 pE8cA4tIPM9ED6TNmrMnaeZzDlkd3edEHLOwcviv/BzO+vp9TW5cNA8B2KQoWdH23X
+	 xuEp0e4MWeap7ltCIrBK4Tf8ztkbfwnv5FJKZqEBwUwCY82cg4cc9a/Iw1zFToV8Ft
+	 zd9ghbBhd5rPasz2Bv+mL+qfcf92gy2IDGr3KvsZwOXK7K3Yf7ShaCP7M1ojDwlulf
+	 9p7JpwI2RKdPv5Hi3pxxKAXOJikaPT1xP5pfkgfkaTS2ms8/+ofTyTzKC4wUDY3C4r
+	 Es7IXT2SRD5U6wJ7A5Gfi5dsZykIsNIHmoaIbd6xkK7gMzXaFqcfi/E1cD1zW8HH2h
+	 dAqE1Y38sBwMabDEJmQN8wZwVq4y1iWxRDRkx2vpYrtZW9nZ4QPy7Fhw8ZNCQiUrzp
+	 LhezVj24J5rO9MqhBdGp8eYVrtLGsRtcr3aub4FeBoD7f/sHPXWyMY7Oi/xfMe1wsw
+	 ++b3IRKbcipZ4cfD4r0dVOHzep8SSqnRLNpAJZUU0aGVNnq/87f12Y8GK3N4yZHiOo
+	 SxlSJ1Y8dzrhiyQ7DXWLbvWg=
 Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 55E6B40E01A3;
-	Wed,  8 May 2024 08:05:16 +0000 (UTC)
-Date: Wed, 8 May 2024 10:05:09 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C0CEA40E024C;
+	Wed,  8 May 2024 12:04:28 +0000 (UTC)
+Date: Wed, 8 May 2024 14:04:22 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v4 05/15] x86/sev: Use kernel provided SVSM Calling Areas
-Message-ID: <20240508080509.GWZjsyNS0xBXUzKPUG@fat_crate.local>
-References: <cover.1713974291.git.thomas.lendacky@amd.com>
- <07266b47e749267ef9a9ccbc9e8e9df78ed54857.1713974291.git.thomas.lendacky@amd.com>
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
+Subject: Re: [PATCHv10 10/18] x86/tdx: Convert shared memory back to private
+ on kexec
+Message-ID: <20240508120422.GCZjtqRrSuJeUyByEM@fat_crate.local>
+References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
+ <20240409113010.465412-11-kirill.shutemov@linux.intel.com>
+ <20240505121319.GAZjd337gHC0uhk6aM@fat_crate.local>
+ <bpmagk7v6swftzjjpchplzjwgx3pbdqzklcxybrmrhprqizk45@lxmvva42z36g>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,355 +78,64 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <07266b47e749267ef9a9ccbc9e8e9df78ed54857.1713974291.git.thomas.lendacky@amd.com>
+In-Reply-To: <bpmagk7v6swftzjjpchplzjwgx3pbdqzklcxybrmrhprqizk45@lxmvva42z36g>
 
-On Wed, Apr 24, 2024 at 10:58:01AM -0500, Tom Lendacky wrote:
-> +static int __svsm_msr_protocol(struct svsm_call *call)
+On Mon, May 06, 2024 at 06:37:19PM +0300, Kirill A. Shutemov wrote:
+> "second kernel" is nomenclature kexec folks are using, but okay.
 
-All those protocol functions need a verb in the name:
+And the "third kernel" is the one which got kexec-ed the second time?
 
-__svsm_do_msr_protocol
-__svsm_do_ghcb_protocol
+You can make it: "The second, kexec-ed kernel" and then it is perfectly
+clear.
 
-or something slicker than the silly "do".
+> > > +	/*
+> > > +	 * Crash kernel reaches here with interrupts disabled: can't wait for
+> > > +	 * conversions to finish.
+> > > +	 *
+> > > +	 * If race happened, just report and proceed.
+> > > +	 */
+> > > +	bool wait_for_lock = !crash;
+> > 
+> > You don't need that bool - use crash.
+> 
+> Dave suggested the variable for documentation purposes.
+> 
+> https://lore.kernel.org/all/0b70ee1e-4bb5-4867-9378-f5723ca091d5@intel.com
+> 
+> I'm fine either way.
 
-> +{
-> +	u64 val, resp;
-> +	u8 pending;
-> +
-> +	val = sev_es_rd_ghcb_msr();
-> +
-> +	sev_es_wr_ghcb_msr(GHCB_MSR_VMPL_REQ_LEVEL(0));
-> +
-> +	pending = 0;
+But you have the comment above it which already explains what's going
+on...
 
-Do that assignment above, at declaration.
+> > Why are we printing something here if we're not really acting up on it?
+> > 
+> > Who should care here?
+> 
+> The only thing we can do at this point on failure is panic. It think
+> it is reasonable to proceed, especially for crash case.
+> 
+> The print leaves a trace in the log to give a clue for debug.
 
-> +	issue_svsm_call(call, &pending);
-> +
-> +	resp = sev_es_rd_ghcb_msr();
-> +
-> +	sev_es_wr_ghcb_msr(val);
+Sure but you'll leave a trace if you panic right then and there, on the
+first failure. Why noodle through the pages if the first failure is
+already fatal?
 
-The MSR SVSM protocol is supposed to restore the MSR? A comment pls.
+> One possible reason for the failure is if kdump raced with memory
+> conversion. In this case shared bit in page table got set (or not cleared
+> form shared->private conversion), but the page is actually private. So
+> this failure is not going to affect the kexec'ed kernel.
 
-> +
-> +	if (pending)
-> +		return -EINVAL;
-> +
-> +	if (GHCB_RESP_CODE(resp) != GHCB_MSR_VMPL_RESP)
-> +		return -EINVAL;
-> +
-> +	if (GHCB_MSR_VMPL_RESP_VAL(resp) != 0)
+Lemme make sure I understand what you're saying here:
 
-s/ != 0//
+1. This is a fatal failure and we should panic
 
-> +		return -EINVAL;
-> +
-> +	return call->rax_out;
+However,
 
-rax_out is u64, your function returns int because of the negative
-values. But then it'll truncate the u64 in the success case.
+2. the kexec-ed kernel is using a different page table so there won't be
+   a mismatch between shared/private marking of the page so it doesn't
+   matter
 
-> +}
-> +
-> +static int __svsm_ghcb_protocol(struct ghcb *ghcb, struct svsm_call *call)
-> +{
-> +	struct es_em_ctxt ctxt;
-> +	u8 pending;
-> +
-> +	vc_ghcb_invalidate(ghcb);
-> +
-> +	/* Fill in protocol and format specifiers */
-> +	ghcb->protocol_version = ghcb_version;
-> +	ghcb->ghcb_usage       = GHCB_DEFAULT_USAGE;
-> +
-> +	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_SNP_RUN_VMPL);
-> +	ghcb_set_sw_exit_info_1(ghcb, 0);
-> +	ghcb_set_sw_exit_info_2(ghcb, 0);
-> +
-> +	sev_es_wr_ghcb_msr(__pa(ghcb));
-> +
-> +	pending = 0;
-
-As above.
-
-> +	issue_svsm_call(call, &pending);
-> +
-> +	if (pending)
-> +		return -EINVAL;
-> +
-> +	switch (verify_exception_info(ghcb, &ctxt)) {
-> +	case ES_OK:
-> +		break;
-> +	case ES_EXCEPTION:
-> +		vc_forward_exception(&ctxt);
-> +		fallthrough;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	return call->rax_out;
-
-As above.
-
-> +}
-> +
->  static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
->  					  struct es_em_ctxt *ctxt,
->  					  u64 exit_code, u64 exit_info_1,
-> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> index a500df807e79..21f3cc40d662 100644
-> --- a/arch/x86/kernel/sev.c
-> +++ b/arch/x86/kernel/sev.c
-> @@ -133,8 +133,13 @@ struct ghcb_state {
->  	struct ghcb *ghcb;
->  };
->  
-> +/* For early boot SVSM communication */
-> +static struct svsm_ca boot_svsm_ca_page __aligned(PAGE_SIZE);
-> +
->  static DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
->  static DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
-> +static DEFINE_PER_CPU(struct svsm_ca *, svsm_caa);
-> +static DEFINE_PER_CPU(u64, svsm_caa_pa);
->  
->  struct sev_config {
->  	__u64 debug		: 1,
-> @@ -150,6 +155,15 @@ struct sev_config {
->  	       */
->  	      ghcbs_initialized	: 1,
->  
-> +	      /*
-> +	       * A flag used to indicate when the per-CPU SVSM CA is to be
-
-s/A flag used //
-
-and above.
-
-> +	       * used instead of the boot SVSM CA.
-> +	       *
-> +	       * For APs, the per-CPU SVSM CA is created as part of the AP
-> +	       * bringup, so this flag can be used globally for the BSP and APs.
-> +	       */
-> +	      cas_initialized	: 1,
-> +
->  	      __reserved	: 62;
->  };
->  
-> @@ -572,9 +586,42 @@ static enum es_result vc_ioio_check(struct es_em_ctxt *ctxt, u16 port, size_t si
->  	return ES_EXCEPTION;
->  }
->  
-> +static __always_inline void vc_forward_exception(struct es_em_ctxt *ctxt)
-> +{
-> +	long error_code = ctxt->fi.error_code;
-> +	int trapnr = ctxt->fi.vector;
-> +
-> +	ctxt->regs->orig_ax = ctxt->fi.error_code;
-> +
-> +	switch (trapnr) {
-> +	case X86_TRAP_GP:
-> +		exc_general_protection(ctxt->regs, error_code);
-> +		break;
-> +	case X86_TRAP_UD:
-> +		exc_invalid_op(ctxt->regs);
-> +		break;
-> +	case X86_TRAP_PF:
-> +		write_cr2(ctxt->fi.cr2);
-> +		exc_page_fault(ctxt->regs, error_code);
-> +		break;
-> +	case X86_TRAP_AC:
-> +		exc_alignment_check(ctxt->regs, error_code);
-> +		break;
-> +	default:
-> +		pr_emerg("Unsupported exception in #VC instruction emulation - can't continue\n");
-> +		BUG();
-> +	}
-> +}
-> +
->  /* Include code shared with pre-decompression boot stage */
->  #include "sev-shared.c"
->  
-> +static struct svsm_ca *__svsm_get_caa(void)
-
-Why the "__" prefix?
-
-I gon't see a svsm_get_caa() variant...
-
-> +{
-> +	return sev_cfg.cas_initialized ? this_cpu_read(svsm_caa)
-> +				       : boot_svsm_caa;
-> +}
-> +
->  static noinstr void __sev_put_ghcb(struct ghcb_state *state)
->  {
->  	struct sev_es_runtime_data *data;
-> @@ -600,6 +647,42 @@ static noinstr void __sev_put_ghcb(struct ghcb_state *state)
->  	}
->  }
->  
-> +static int svsm_protocol(struct svsm_call *call)
-
-svsm_issue_protocol_call() or whatnot...
-
-Btw, can all this svsm guest gunk live simply in a separate file? Or is
-it going to need a lot of sev.c stuff exported through an internal.h
-header?
-
-Either that or prefix all SVSM handling functions with "svsm_" so that
-there's at least some visibility which is which.
-
-> +{
-> +	struct ghcb_state state;
-> +	unsigned long flags;
-> +	struct ghcb *ghcb;
-> +	int ret;
-> +
-> +	/*
-> +	 * This can be called very early in the boot, use native functions in
-> +	 * order to avoid paravirt issues.
-> +	 */
-> +	flags = native_save_fl();
-> +	if (flags & X86_EFLAGS_IF)
-> +		native_irq_disable();
-
-Uff, conditional locking.
-
-What's wrong with using local_irq_save/local_irq_restore?
-
-> +
-> +	if (sev_cfg.ghcbs_initialized)
-> +		ghcb = __sev_get_ghcb(&state);
-> +	else if (boot_ghcb)
-> +		ghcb = boot_ghcb;
-> +	else
-> +		ghcb = NULL;
-> +
-> +	do {
-> +		ret = ghcb ? __svsm_ghcb_protocol(ghcb, call)
-> +			   : __svsm_msr_protocol(call);
-> +	} while (ret == SVSM_ERR_BUSY);
-> +
-> +	if (sev_cfg.ghcbs_initialized)
-> +		__sev_put_ghcb(&state);
-> +
-> +	if (flags & X86_EFLAGS_IF)
-> +		native_irq_enable();
-> +
-> +	return ret;
-> +}
-
-...
-
-> @@ -2095,6 +2188,50 @@ static __head struct cc_blob_sev_info *find_cc_blob(struct boot_params *bp)
->  	return cc_info;
->  }
->  
-> +static __head void setup_svsm(struct cc_blob_sev_info *cc_info)
-
-svsm_setup
-
-> +{
-> +	struct svsm_call call = {};
-> +	int ret;
-> +	u64 pa;
-> +
-> +	/*
-> +	 * Record the SVSM Calling Area address (CAA) if the guest is not
-> +	 * running at VMPL0. The CA will be used to communicate with the
-> +	 * SVSM to perform the SVSM services.
-> +	 */
-> +	setup_svsm_ca(cc_info);
-> +
-> +	/* Nothing to do if not running under an SVSM. */
-> +	if (!vmpl)
-> +		return;
-
-You set up stuff above and now you bail out?
-
-Judging by setup_svsm_ca() you don't really need that vmpl var but you
-can check
-
-	if (!boot_svsm_caa)
-		return;
-
-to determine whether a SVSM was detected.
-
-> +
-> +	/*
-> +	 * It is very early in the boot and the kernel is running identity
-> +	 * mapped but without having adjusted the pagetables to where the
-> +	 * kernel was loaded (physbase), so the get the CA address using
-
-s/the //
-
-> +	 * RIP-relative addressing.
-> +	 */
-> +	pa = (u64)&RIP_REL_REF(boot_svsm_ca_page);
-> +
-> +	/*
-> +	 * Switch over to the boot SVSM CA while the current CA is still
-> +	 * addressable. There is no GHCB at this point so use the MSR protocol.
-> +	 *
-> +	 * SVSM_CORE_REMAP_CA call:
-> +	 *   RAX = 0 (Protocol=0, CallID=0)
-> +	 *   RCX = New CA GPA
-> +	 */
-> +	call.caa = __svsm_get_caa();
-> +	call.rax = SVSM_CORE_CALL(SVSM_CORE_REMAP_CA);
-> +	call.rcx = pa;
-> +	ret = svsm_protocol(&call);
-> +	if (ret != SVSM_SUCCESS)
-> +		panic("Can't remap the SVSM CA, ret=%#x (%d)\n", ret, ret);
-> +
-> +	boot_svsm_caa = (struct svsm_ca *)pa;
-> +	boot_svsm_caa_pa = pa;
-
-Huh, setup_svsm_ca() already assigned those...
-
->  bool __head snp_init(struct boot_params *bp)
->  {
->  	struct cc_blob_sev_info *cc_info;
-> @@ -2108,12 +2245,7 @@ bool __head snp_init(struct boot_params *bp)
->  
->  	setup_cpuid_table(cc_info);
->  
-> -	/*
-> -	 * Record the SVSM Calling Area address (CAA) if the guest is not
-> -	 * running at VMPL0. The CA will be used to communicate with the
-> -	 * SVSM to perform the SVSM services.
-> -	 */
-> -	setup_svsm_ca(cc_info);
-> +	setup_svsm(cc_info);
->  
->  	/*
->  	 * The CC blob will be used later to access the secrets page. Cache
-> @@ -2306,3 +2438,12 @@ void sev_show_status(void)
->  	}
->  	pr_cont("\n");
->  }
-> +
-> +void __init snp_remap_svsm_ca(void)
-> +{
-> +	if (!vmpl)
-> +		return;
-> +
-> +	/* Update the CAA to a proper kernel address */
-> +	boot_svsm_caa = &boot_svsm_ca_page;
-> +}
-> diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-> index 422602f6039b..6155020e4d2d 100644
-> --- a/arch/x86/mm/mem_encrypt_amd.c
-> +++ b/arch/x86/mm/mem_encrypt_amd.c
-> @@ -2,7 +2,7 @@
->  /*
->   * AMD Memory Encryption Support
->   *
-> - * Copyright (C) 2016 Advanced Micro Devices, Inc.
-> + * Copyright (C) 2016-2024 Advanced Micro Devices, Inc.
-
-Are we doing that now?
+Close?
 
 -- 
 Regards/Gruss,
