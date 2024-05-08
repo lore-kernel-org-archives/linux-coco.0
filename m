@@ -1,51 +1,51 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C392823CD
-	for <linux-coco@lists.linux.dev>; Wed,  8 May 2024 12:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7629382876
+	for <linux-coco@lists.linux.dev>; Wed,  8 May 2024 12:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715169903; cv=none; b=AZ1YSTjswAm18ZECmEEqEtHRaRLfnLMMzU3NRSJZILl0i54lOfhO7uuRNx4PfrPJu2uo/CMeMCN5OYeA6NjwjYEODPwCCpu+cS8LWAfC7nbyWDy/ujnf2BO4fmXfG8bh2H7O51dh8GUkqHoU3NnntT9kTUZx5iTUsC3963or5PQ=
+	t=1715170368; cv=none; b=KhzaBsnK0C9w5EaLjsQY7KqlHHn/AzTxIp8AdLsgstW8jbijArDagOTHX+6EluY/ZsRQAGVv5xXHua887KAHA6JIzGelzSAgev+2bI8LUOTPofaPwAFDA0tEF3HpEOqYlb6keAF8la8oO9pQL7TxeKQEJE67Kg0ZaJxH16EHpQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715169903; c=relaxed/simple;
-	bh=GATzjlivhq8fKMFczIL/3RPrPffvid/SU8NTqPLJYPs=;
+	s=arc-20240116; t=1715170368; c=relaxed/simple;
+	bh=OB3bNfotTy94ijgLvIlZef+XSj4HmuVlV8OVyMsV6iY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZArFwz0mWJTHKf/6ScB5lo8jQmzzdgQij1kfzYlpttFkYZgCSavlMISLwv475or4JQFueorxc+kEOdjzwoBaUmj9vvJc/mzMkZmhDvLsgMrnIUwH7ilJX55vQ700nDs5L8ko2i5mc3LruOyGkC2LiDEw5RCQNEpTo8ultGOfhuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hdzkpQuz; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=XAXGHIV2xUCgv6MaKqPlZOH2ILQeFfr1I/kLoMBK+M8ztMJOVVf770o/fklq7RtoRcFGm90NH6192es6wqYQp0e8rCwk/oeHrg0A5B0Nk7LVMT4fOVqssOyxtgNRgLF/SIRNDMu3UEZCelIVkBeVDeRtRL5u/F/1DxoF9vneuvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=kr3l/QTG; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="hdzkpQuz"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="kr3l/QTG"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9B7D940E0177;
-	Wed,  8 May 2024 12:04:53 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 228C340E024C;
+	Wed,  8 May 2024 12:12:44 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id idHYIoNC5YuF; Wed,  8 May 2024 12:04:50 +0000 (UTC)
+	with ESMTP id ZMrQa-G91QOC; Wed,  8 May 2024 12:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1715169890; bh=f3BmmZ/ZrWMxvMKQEh/hpc9YGyn7kI0w2PJrN/PFOAo=;
+	t=1715170361; bh=qN/y9cHUEBVLV8pGVkdG+RsChyPSuLA4sQE7tRTsrxs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hdzkpQuzF7KWDDuh6lP0sSlhQpJKKXN3IRFkvo17PIvT/MaZa5CIYLCcbCmQNH2B/
-	 w6uMqdIKGEonCdlxDqRXPPPHrxr4/7kTyZ2rJKALlhosuxv0/h7o6S39sYblJTHkbt
-	 pE8cA4tIPM9ED6TNmrMnaeZzDlkd3edEHLOwcviv/BzO+vp9TW5cNA8B2KQoWdH23X
-	 xuEp0e4MWeap7ltCIrBK4Tf8ztkbfwnv5FJKZqEBwUwCY82cg4cc9a/Iw1zFToV8Ft
-	 zd9ghbBhd5rPasz2Bv+mL+qfcf92gy2IDGr3KvsZwOXK7K3Yf7ShaCP7M1ojDwlulf
-	 9p7JpwI2RKdPv5Hi3pxxKAXOJikaPT1xP5pfkgfkaTS2ms8/+ofTyTzKC4wUDY3C4r
-	 Es7IXT2SRD5U6wJ7A5Gfi5dsZykIsNIHmoaIbd6xkK7gMzXaFqcfi/E1cD1zW8HH2h
-	 dAqE1Y38sBwMabDEJmQN8wZwVq4y1iWxRDRkx2vpYrtZW9nZ4QPy7Fhw8ZNCQiUrzp
-	 LhezVj24J5rO9MqhBdGp8eYVrtLGsRtcr3aub4FeBoD7f/sHPXWyMY7Oi/xfMe1wsw
-	 ++b3IRKbcipZ4cfD4r0dVOHzep8SSqnRLNpAJZUU0aGVNnq/87f12Y8GK3N4yZHiOo
-	 SxlSJ1Y8dzrhiyQ7DXWLbvWg=
+	b=kr3l/QTGRMA0C5rE0e/SeORwk40rtp/+BlatDIUPkby0/3PC8MCiewul76UFf2in2
+	 Ay+annVxKQt1fUIKjlAE9jM5vbfVrJ7kwvX+exRaaDaWUIzhXkcrVAr8RpNie+8Pp0
+	 7x+CWCVvXEIhaPQ/Rtoh5RwlmMNh/c7NKfnmguE6pss4+qMg143hA1L+zgE59wn56d
+	 pvcaw0j9kCRe0Qpve8BNC0VksaR/CzY4ImhJ2ai0G4vu2euysByIjJYc9V521UBSg3
+	 iBFg+YhOhwo5BfeYDWxzhpa6vdducb2lole5f6sE65fX+MOV3EAB23pc3+Zbpln3fg
+	 auKQXjxDb/bB7r9n/N/djgbl9qOOte9b+EraRYAwdcYuS3+sh1v7BYbt//8nISZtOW
+	 /Cv2eGLyOHRJgvvoz52LrVXv6SXFOOOIgRK8iWZB+xGDWNQfF7Ro79R1+pXEOpFVbb
+	 vcRn4Hxiy1Rj1YSUmQPlDMJBJBoeTlpSPZCWODe0ar9r8JW0abP5wYTK2QA/dI1QFm
+	 bpfYE2Syrw3vTkaJg1p9otjauGTDojtkVyqHowuzJvuhhxSdcC8Vb3z8Z0J3xwenIL
+	 mJGdwJbme+2f7xJd7Aa8LDT2ea/zGzWzCJW8YvL/dqG6QeX0t8ZRKD7p4BjTImLPJX
+	 0RKhFREPvR17HSa7OwJ2IY20=
 Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C0CEA40E024C;
-	Wed,  8 May 2024 12:04:28 +0000 (UTC)
-Date: Wed, 8 May 2024 14:04:22 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B01E140E01A3;
+	Wed,  8 May 2024 12:12:18 +0000 (UTC)
+Date: Wed, 8 May 2024 14:12:17 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
@@ -62,14 +62,13 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
 	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
 	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv10 10/18] x86/tdx: Convert shared memory back to private
- on kexec
-Message-ID: <20240508120422.GCZjtqRrSuJeUyByEM@fat_crate.local>
+	linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@intel.com>,
+	Tao Liu <ltao@redhat.com>
+Subject: Re: [PATCHv10 11/18] x86/mm: Make e820_end_ram_pfn() cover
+ E820_TYPE_ACPI ranges
+Message-ID: <20240508121217.GDZjtsIZmROSwirNUF@fat_crate.local>
 References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <20240409113010.465412-11-kirill.shutemov@linux.intel.com>
- <20240505121319.GAZjd337gHC0uhk6aM@fat_crate.local>
- <bpmagk7v6swftzjjpchplzjwgx3pbdqzklcxybrmrhprqizk45@lxmvva42z36g>
+ <20240409113010.465412-12-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -78,64 +77,23 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <bpmagk7v6swftzjjpchplzjwgx3pbdqzklcxybrmrhprqizk45@lxmvva42z36g>
+In-Reply-To: <20240409113010.465412-12-kirill.shutemov@linux.intel.com>
 
-On Mon, May 06, 2024 at 06:37:19PM +0300, Kirill A. Shutemov wrote:
-> "second kernel" is nomenclature kexec folks are using, but okay.
+On Tue, Apr 09, 2024 at 02:30:03PM +0300, Kirill A. Shutemov wrote:
+> Subject: Re: [PATCHv10 11/18] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
+						^^^^^^^
 
-And the "third kernel" is the one which got kexec-ed the second time?
+e820__end_of_ram_pfn()
 
-You can make it: "The second, kexec-ed kernel" and then it is perfectly
-clear.
-
-> > > +	/*
-> > > +	 * Crash kernel reaches here with interrupts disabled: can't wait for
-> > > +	 * conversions to finish.
-> > > +	 *
-> > > +	 * If race happened, just report and proceed.
-> > > +	 */
-> > > +	bool wait_for_lock = !crash;
-> > 
-> > You don't need that bool - use crash.
+> e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
+> things, guides where direct mapping ends. Any memory above max_pfn is
+> not going to be present in the direct mapping.
 > 
-> Dave suggested the variable for documentation purposes.
-> 
-> https://lore.kernel.org/all/0b70ee1e-4bb5-4867-9378-f5723ca091d5@intel.com
-> 
-> I'm fine either way.
+> e820__end_of_ram_pfn() finds the end of the ram based on the highest
 
-But you have the comment above it which already explains what's going
-on...
+RAM
 
-> > Why are we printing something here if we're not really acting up on it?
-> > 
-> > Who should care here?
-> 
-> The only thing we can do at this point on failure is panic. It think
-> it is reasonable to proceed, especially for crash case.
-> 
-> The print leaves a trace in the log to give a clue for debug.
-
-Sure but you'll leave a trace if you panic right then and there, on the
-first failure. Why noodle through the pages if the first failure is
-already fatal?
-
-> One possible reason for the failure is if kdump raced with memory
-> conversion. In this case shared bit in page table got set (or not cleared
-> form shared->private conversion), but the page is actually private. So
-> this failure is not going to affect the kexec'ed kernel.
-
-Lemme make sure I understand what you're saying here:
-
-1. This is a fatal failure and we should panic
-
-However,
-
-2. the kexec-ed kernel is using a different page table so there won't be
-   a mismatch between shared/private marking of the page so it doesn't
-   matter
-
-Close?
+...
 
 -- 
 Regards/Gruss,
