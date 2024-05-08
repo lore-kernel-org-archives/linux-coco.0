@@ -1,151 +1,427 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032AA1A2C25
-	for <linux-coco@lists.linux.dev>; Wed,  8 May 2024 02:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25518405FC
+	for <linux-coco@lists.linux.dev>; Wed,  8 May 2024 08:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715135247; cv=none; b=MlxaTFmQqSuZQYcvPZ7P3Sd0KxSFV2PNWXfbzB+908CLzP3hyulrnFtWKJMRSRQMxq22NNY6z5botRzaHjttGW8JsW5BYyWVNcEQUFxiPkBsiz//H8g6+mOEea2rXMG/xtGw6NsYUH4QzBBvRasRCY9qLsury5eLUo0pUxfsdiU=
+	t=1715155541; cv=none; b=LAPy3K1JZbjrrkzM6ZQ03SB2Yj0MyHrZTLz2U6t7WJyJhsp/3J4mUI1VNGquS8tB4j821T61VNetP7YWauS4g/G6y7gSUxjFVUem6hzpjIDj11USi/dLM8LDv/BUfDwZJQ7M9Wiik5wuoApQP7xDp9elG9siS39l4Jt1hr8Ioew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715135247; c=relaxed/simple;
-	bh=xU6MM4wpMg/XrlyHvzUgme/0wiRaoqcQzd07zoGlfpU=;
+	s=arc-20240116; t=1715155541; c=relaxed/simple;
+	bh=Oin8bC0Za+rMSaZA2VNA8QghpWXvOf5fWRKEJceQGUk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fOYHgjYoiMggsss+YGHQP0hzzIDNj84Kuu5Wr3A3sq2i5+LAnPkrLsmMHmLx2vxO6HaOHcXRGZahHbaOwko2EbghPZuSBLASZvcsy+mBoLt3MGftOA7QrMGGIGujZ2j3zT/Hb4AsVDMrgm06E3O+58shKJl8b1f1yRetZOTOn/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J4Pdv4wP; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z8Ofr0GhgB4z5M9RpUdmJPh62jFjmXsCZd6z2Qnfomv3LUcDoPi/NqziNbrrISvjx+HdqgY4EKb02sbSC8DcwDO7DaVqSOsyC2uNlFShIZlHAIfwArNnQEkG+V6zvnZaC0yPgYuOnVtfgqVYZMVIDd2bhWfLK+ydsgK5YZfoJLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=VcpCYUGm; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J4Pdv4wP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715135246; x=1746671246;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xU6MM4wpMg/XrlyHvzUgme/0wiRaoqcQzd07zoGlfpU=;
-  b=J4Pdv4wPFjdfvGlbuNxhQ3xi9W7yVnlxhDq5yxZjReAfGiS0HpgNt1S+
-   Q7ebWNQABL5eTMm0AHWauVQ/fdPaoga+9zD9QErLyGg5TUVq9ISz0iHm9
-   CQb1QbkXw1cZvR+H0z+egdmvvx9OTuca+bsR1B+kiex+GGVxXvrXerDsH
-   +F7Ztp/jq6waEDwH+CcB/5ZHHua0SOojYV3ZL+6pmHXlg1gjmc7FZ241T
-   xpeDTC2t6qNV4qKeaQFuLOEiarmly4ozGQssInWLY3U0PNFGTUdsrR5AW
-   7RHWDtB9xtphEuuRnRCOOhpINUb3Gfrz9y3WfWbkiYAmPEf8LYZzyjYcX
-   Q==;
-X-CSE-ConnectionGUID: yF8B+7u2T+qGcGqt6v2w5w==
-X-CSE-MsgGUID: THwMqRbbQGeEDCtqiPldTw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="10838039"
-X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; 
-   d="scan'208";a="10838039"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 19:27:25 -0700
-X-CSE-ConnectionGUID: Jc9JefSKSm2LHM8AeRvDFQ==
-X-CSE-MsgGUID: ciV07w9IQSCYEZZhG2s1bA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; 
-   d="scan'208";a="28701986"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa007.fm.intel.com with ESMTP; 07 May 2024 19:27:22 -0700
-Date: Wed, 8 May 2024 10:21:42 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	Wu Hao <hao.wu@intel.com>, Yilun Xu <yilun.xu@intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, kevin.tian@intel.com,
-	gregkh@linuxfoundation.org, linux-pci@vger.kernel.org
-Subject: Re: [RFC PATCH v2 5/6] PCI/TSM: Authenticate devices via platform TSM
-Message-ID: <Zjrhtun8IXtqOFR1@yilunxu-OptiPlex-7050>
-References: <171291190324.3532867.13480405752065082171.stgit@dwillia2-xfh.jf.intel.com>
- <171291193308.3532867.129739584130889725.stgit@dwillia2-xfh.jf.intel.com>
- <fc201452-080e-4942-b5a0-0c64d023ac6b@amd.com>
- <662c69eb6dbf1_b6e0294d1@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <Zjjz60XvF97c+Hea@yilunxu-OptiPlex-7050>
- <663a7131d47b3_354c429489@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="VcpCYUGm"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1406140E0177;
+	Wed,  8 May 2024 08:05:34 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 3bhT1NVtZ5j6; Wed,  8 May 2024 08:05:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1715155530; bh=LNXGTaZk9UkXnDOi5iqZUBv+gZjFYV58YF6GqpPoGg0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VcpCYUGmOQALUrqIltbtk+HitoNd08ST0yGp+lNunM3Tisk64JqvmzPlWgzOufeYw
+	 rsLj5BAuVsLGCuUQm+/Tx4pplFBiMH9jiNMUjKpbhCp5eiFXaQm5ciMjJvGb5CfaDZ
+	 rAQR8307R+l3IlLcElZ4TLBLapNOfqBcJkh06IEBBx3SXez3O2NAsksd+C8haUr77T
+	 dQQr0vkKoYeOwYUOttDgs3QOUgfxmN0Wa+hRouL0EH9y8UXianeBp1Jp70ICzUAiOL
+	 yNSc3DichvjV3N2fhz1lcHmXJlJraVxfTiHeHp5lC8XskgRvCg2ryvKUaFBbmNgMrN
+	 YD3NTV5zPNpMFhtk/yNEkF+sPtonSaoHwQQk8UF+oR/4MXBMpuHsmBOjLciDBWdYqj
+	 WKLncIRplOG3KH4GSedOFl4HyYUotPRYJySES2Fqj9LIg7LlsuW6Czlj7XXmKbfMbt
+	 X+4dvaNVjIQMryva3dFOFplBZeSunHjkqTc5+JQqWyM/yxK0hzwBxLSxp8gJ2pZhYM
+	 p75KUFdQ8rzN8k4nYD4ZILy8q6pGqTERr+q/TtMrw4/TPRgCxLoFm8y2+W68LUjiZk
+	 oL2sx2iciRZ/zg5Nk4RKLj/GQaxJ568FNtceUdgqRODTkD2RiG8W4trK3f5QfuQ149
+	 mALghcqMuX/rBZadaOP5BeJY=
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 55E6B40E01A3;
+	Wed,  8 May 2024 08:05:16 +0000 (UTC)
+Date: Wed, 8 May 2024 10:05:09 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v4 05/15] x86/sev: Use kernel provided SVSM Calling Areas
+Message-ID: <20240508080509.GWZjsyNS0xBXUzKPUG@fat_crate.local>
+References: <cover.1713974291.git.thomas.lendacky@amd.com>
+ <07266b47e749267ef9a9ccbc9e8e9df78ed54857.1713974291.git.thomas.lendacky@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <663a7131d47b3_354c429489@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+In-Reply-To: <07266b47e749267ef9a9ccbc9e8e9df78ed54857.1713974291.git.thomas.lendacky@amd.com>
 
-On Tue, May 07, 2024 at 11:21:37AM -0700, Dan Williams wrote:
-> Xu Yilun wrote:
-> > > > If (!ide_cap && tee_cap), we get here but doing the below does not make 
-> > > > sense for TEE (which are likely to be VFs).
-> > > 
-> > > The "!ide_cap && tee_cap" case may also be the "TSM wants to setup IDE
-> > > without TDISP flow".
-> > 
-> > IIUC, should be "TSM wants to setup TDISP without IDE flow"?
-> 
-> Both are possible. The TSM may need to be involved in IDE key
-> establishment even if the PF or its VFs are ever assigned as TDIs. Also,
-> as you say, it is possible for a TSM to trust that a device does not
-> need IDE established because it is has knowledge that the device is
-> integrated into the SOC without physical exposure of its links.
-> 
-> > But I think aik is talking about VFs (which fit "!ide_cap && tee_cap"),
-> > VFs should not be rejected by the following:
-> > 
-> >       pci_tsm->doe_mb = pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
-> >                                              PCI_DOE_PROTO_CMA);
-> >       if (!pci_tsm->doe_mb)
-> >               return;
-> > 
-> > VF should check its PF's doe/ide/tee cap and then be added to
-> > pci_tsm_devs, is it?
-> 
-> This path should probably skip VFs because the 'connect' operation is a
-> PF-only semantic. I will fix that up.
+On Wed, Apr 24, 2024 at 10:58:01AM -0500, Tom Lendacky wrote:
+> +static int __svsm_msr_protocol(struct svsm_call *call)
 
-Agreed. I drafted some simple changes for the idea, that we keep
-pci_dev::tsm for every TEE capable device (PF & VF) to execute tsm_ops,
-but only adds PFs to pci_tsm_devs for "connect".
+All those protocol functions need a verb in the name:
 
+__svsm_do_msr_protocol
+__svsm_do_ghcb_protocol
 
-diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-index 9c5fb2c46662..31707f0351c6 100644
---- a/drivers/pci/tsm.c
-+++ b/drivers/pci/tsm.c
-@@ -241,9 +241,14 @@ void pci_tsm_init(struct pci_dev *pdev)
-        if (!pci_tsm)
-                return;
+or something slicker than the silly "do".
 
--       pci_tsm->ide_cap = ide_cap;
-        mutex_init(&pci_tsm->exec_lock);
+> +{
+> +	u64 val, resp;
+> +	u8 pending;
+> +
+> +	val = sev_es_rd_ghcb_msr();
+> +
+> +	sev_es_wr_ghcb_msr(GHCB_MSR_VMPL_REQ_LEVEL(0));
+> +
+> +	pending = 0;
 
-+       if (pdev->is_virtfn) {
-+               pdev->tsm = no_free_ptr(pci_tsm);
-+               return;
-+       }
-+
-+       pci_tsm->ide_cap = ide_cap;
-        pci_tsm->doe_mb = pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
-                                               PCI_DOE_PROTO_CMA);
-        if (!pci_tsm->doe_mb)
-@@ -262,9 +267,14 @@ void pci_tsm_init(struct pci_dev *pdev)
+Do that assignment above, at declaration.
 
- void pci_tsm_destroy(struct pci_dev *pdev)
- {
-+       if (!pdev->tsm)
-+               return;
-+
-        guard(rwsem_write)(&pci_tsm_rwsem);
--       pci_tsm_del(pdev);
--       xa_erase(&pci_tsm_devs, pci_tsm_devid(pdev));
-+       if (!pdev->is_virtfn) {
-+               pci_tsm_del(pdev);
-+               xa_erase(&pci_tsm_devs, pci_tsm_devid(pdev));
-+       }
-        kfree(pdev->tsm);
-        pdev->tsm = NULL;
- }
+> +	issue_svsm_call(call, &pending);
+> +
+> +	resp = sev_es_rd_ghcb_msr();
+> +
+> +	sev_es_wr_ghcb_msr(val);
 
-Thanks,
-Yilun
+The MSR SVSM protocol is supposed to restore the MSR? A comment pls.
 
-> 
-> I still think the PF needs to go through an ->add() callback because I
-> do not think we have a cross-vendor unified concept of when IDE without
-> TDISP, or TDISP without IDE is supported.
+> +
+> +	if (pending)
+> +		return -EINVAL;
+> +
+> +	if (GHCB_RESP_CODE(resp) != GHCB_MSR_VMPL_RESP)
+> +		return -EINVAL;
+> +
+> +	if (GHCB_MSR_VMPL_RESP_VAL(resp) != 0)
+
+s/ != 0//
+
+> +		return -EINVAL;
+> +
+> +	return call->rax_out;
+
+rax_out is u64, your function returns int because of the negative
+values. But then it'll truncate the u64 in the success case.
+
+> +}
+> +
+> +static int __svsm_ghcb_protocol(struct ghcb *ghcb, struct svsm_call *call)
+> +{
+> +	struct es_em_ctxt ctxt;
+> +	u8 pending;
+> +
+> +	vc_ghcb_invalidate(ghcb);
+> +
+> +	/* Fill in protocol and format specifiers */
+> +	ghcb->protocol_version = ghcb_version;
+> +	ghcb->ghcb_usage       = GHCB_DEFAULT_USAGE;
+> +
+> +	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_SNP_RUN_VMPL);
+> +	ghcb_set_sw_exit_info_1(ghcb, 0);
+> +	ghcb_set_sw_exit_info_2(ghcb, 0);
+> +
+> +	sev_es_wr_ghcb_msr(__pa(ghcb));
+> +
+> +	pending = 0;
+
+As above.
+
+> +	issue_svsm_call(call, &pending);
+> +
+> +	if (pending)
+> +		return -EINVAL;
+> +
+> +	switch (verify_exception_info(ghcb, &ctxt)) {
+> +	case ES_OK:
+> +		break;
+> +	case ES_EXCEPTION:
+> +		vc_forward_exception(&ctxt);
+> +		fallthrough;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return call->rax_out;
+
+As above.
+
+> +}
+> +
+>  static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
+>  					  struct es_em_ctxt *ctxt,
+>  					  u64 exit_code, u64 exit_info_1,
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index a500df807e79..21f3cc40d662 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -133,8 +133,13 @@ struct ghcb_state {
+>  	struct ghcb *ghcb;
+>  };
+>  
+> +/* For early boot SVSM communication */
+> +static struct svsm_ca boot_svsm_ca_page __aligned(PAGE_SIZE);
+> +
+>  static DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
+>  static DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
+> +static DEFINE_PER_CPU(struct svsm_ca *, svsm_caa);
+> +static DEFINE_PER_CPU(u64, svsm_caa_pa);
+>  
+>  struct sev_config {
+>  	__u64 debug		: 1,
+> @@ -150,6 +155,15 @@ struct sev_config {
+>  	       */
+>  	      ghcbs_initialized	: 1,
+>  
+> +	      /*
+> +	       * A flag used to indicate when the per-CPU SVSM CA is to be
+
+s/A flag used //
+
+and above.
+
+> +	       * used instead of the boot SVSM CA.
+> +	       *
+> +	       * For APs, the per-CPU SVSM CA is created as part of the AP
+> +	       * bringup, so this flag can be used globally for the BSP and APs.
+> +	       */
+> +	      cas_initialized	: 1,
+> +
+>  	      __reserved	: 62;
+>  };
+>  
+> @@ -572,9 +586,42 @@ static enum es_result vc_ioio_check(struct es_em_ctxt *ctxt, u16 port, size_t si
+>  	return ES_EXCEPTION;
+>  }
+>  
+> +static __always_inline void vc_forward_exception(struct es_em_ctxt *ctxt)
+> +{
+> +	long error_code = ctxt->fi.error_code;
+> +	int trapnr = ctxt->fi.vector;
+> +
+> +	ctxt->regs->orig_ax = ctxt->fi.error_code;
+> +
+> +	switch (trapnr) {
+> +	case X86_TRAP_GP:
+> +		exc_general_protection(ctxt->regs, error_code);
+> +		break;
+> +	case X86_TRAP_UD:
+> +		exc_invalid_op(ctxt->regs);
+> +		break;
+> +	case X86_TRAP_PF:
+> +		write_cr2(ctxt->fi.cr2);
+> +		exc_page_fault(ctxt->regs, error_code);
+> +		break;
+> +	case X86_TRAP_AC:
+> +		exc_alignment_check(ctxt->regs, error_code);
+> +		break;
+> +	default:
+> +		pr_emerg("Unsupported exception in #VC instruction emulation - can't continue\n");
+> +		BUG();
+> +	}
+> +}
+> +
+>  /* Include code shared with pre-decompression boot stage */
+>  #include "sev-shared.c"
+>  
+> +static struct svsm_ca *__svsm_get_caa(void)
+
+Why the "__" prefix?
+
+I gon't see a svsm_get_caa() variant...
+
+> +{
+> +	return sev_cfg.cas_initialized ? this_cpu_read(svsm_caa)
+> +				       : boot_svsm_caa;
+> +}
+> +
+>  static noinstr void __sev_put_ghcb(struct ghcb_state *state)
+>  {
+>  	struct sev_es_runtime_data *data;
+> @@ -600,6 +647,42 @@ static noinstr void __sev_put_ghcb(struct ghcb_state *state)
+>  	}
+>  }
+>  
+> +static int svsm_protocol(struct svsm_call *call)
+
+svsm_issue_protocol_call() or whatnot...
+
+Btw, can all this svsm guest gunk live simply in a separate file? Or is
+it going to need a lot of sev.c stuff exported through an internal.h
+header?
+
+Either that or prefix all SVSM handling functions with "svsm_" so that
+there's at least some visibility which is which.
+
+> +{
+> +	struct ghcb_state state;
+> +	unsigned long flags;
+> +	struct ghcb *ghcb;
+> +	int ret;
+> +
+> +	/*
+> +	 * This can be called very early in the boot, use native functions in
+> +	 * order to avoid paravirt issues.
+> +	 */
+> +	flags = native_save_fl();
+> +	if (flags & X86_EFLAGS_IF)
+> +		native_irq_disable();
+
+Uff, conditional locking.
+
+What's wrong with using local_irq_save/local_irq_restore?
+
+> +
+> +	if (sev_cfg.ghcbs_initialized)
+> +		ghcb = __sev_get_ghcb(&state);
+> +	else if (boot_ghcb)
+> +		ghcb = boot_ghcb;
+> +	else
+> +		ghcb = NULL;
+> +
+> +	do {
+> +		ret = ghcb ? __svsm_ghcb_protocol(ghcb, call)
+> +			   : __svsm_msr_protocol(call);
+> +	} while (ret == SVSM_ERR_BUSY);
+> +
+> +	if (sev_cfg.ghcbs_initialized)
+> +		__sev_put_ghcb(&state);
+> +
+> +	if (flags & X86_EFLAGS_IF)
+> +		native_irq_enable();
+> +
+> +	return ret;
+> +}
+
+...
+
+> @@ -2095,6 +2188,50 @@ static __head struct cc_blob_sev_info *find_cc_blob(struct boot_params *bp)
+>  	return cc_info;
+>  }
+>  
+> +static __head void setup_svsm(struct cc_blob_sev_info *cc_info)
+
+svsm_setup
+
+> +{
+> +	struct svsm_call call = {};
+> +	int ret;
+> +	u64 pa;
+> +
+> +	/*
+> +	 * Record the SVSM Calling Area address (CAA) if the guest is not
+> +	 * running at VMPL0. The CA will be used to communicate with the
+> +	 * SVSM to perform the SVSM services.
+> +	 */
+> +	setup_svsm_ca(cc_info);
+> +
+> +	/* Nothing to do if not running under an SVSM. */
+> +	if (!vmpl)
+> +		return;
+
+You set up stuff above and now you bail out?
+
+Judging by setup_svsm_ca() you don't really need that vmpl var but you
+can check
+
+	if (!boot_svsm_caa)
+		return;
+
+to determine whether a SVSM was detected.
+
+> +
+> +	/*
+> +	 * It is very early in the boot and the kernel is running identity
+> +	 * mapped but without having adjusted the pagetables to where the
+> +	 * kernel was loaded (physbase), so the get the CA address using
+
+s/the //
+
+> +	 * RIP-relative addressing.
+> +	 */
+> +	pa = (u64)&RIP_REL_REF(boot_svsm_ca_page);
+> +
+> +	/*
+> +	 * Switch over to the boot SVSM CA while the current CA is still
+> +	 * addressable. There is no GHCB at this point so use the MSR protocol.
+> +	 *
+> +	 * SVSM_CORE_REMAP_CA call:
+> +	 *   RAX = 0 (Protocol=0, CallID=0)
+> +	 *   RCX = New CA GPA
+> +	 */
+> +	call.caa = __svsm_get_caa();
+> +	call.rax = SVSM_CORE_CALL(SVSM_CORE_REMAP_CA);
+> +	call.rcx = pa;
+> +	ret = svsm_protocol(&call);
+> +	if (ret != SVSM_SUCCESS)
+> +		panic("Can't remap the SVSM CA, ret=%#x (%d)\n", ret, ret);
+> +
+> +	boot_svsm_caa = (struct svsm_ca *)pa;
+> +	boot_svsm_caa_pa = pa;
+
+Huh, setup_svsm_ca() already assigned those...
+
+>  bool __head snp_init(struct boot_params *bp)
+>  {
+>  	struct cc_blob_sev_info *cc_info;
+> @@ -2108,12 +2245,7 @@ bool __head snp_init(struct boot_params *bp)
+>  
+>  	setup_cpuid_table(cc_info);
+>  
+> -	/*
+> -	 * Record the SVSM Calling Area address (CAA) if the guest is not
+> -	 * running at VMPL0. The CA will be used to communicate with the
+> -	 * SVSM to perform the SVSM services.
+> -	 */
+> -	setup_svsm_ca(cc_info);
+> +	setup_svsm(cc_info);
+>  
+>  	/*
+>  	 * The CC blob will be used later to access the secrets page. Cache
+> @@ -2306,3 +2438,12 @@ void sev_show_status(void)
+>  	}
+>  	pr_cont("\n");
+>  }
+> +
+> +void __init snp_remap_svsm_ca(void)
+> +{
+> +	if (!vmpl)
+> +		return;
+> +
+> +	/* Update the CAA to a proper kernel address */
+> +	boot_svsm_caa = &boot_svsm_ca_page;
+> +}
+> diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+> index 422602f6039b..6155020e4d2d 100644
+> --- a/arch/x86/mm/mem_encrypt_amd.c
+> +++ b/arch/x86/mm/mem_encrypt_amd.c
+> @@ -2,7 +2,7 @@
+>  /*
+>   * AMD Memory Encryption Support
+>   *
+> - * Copyright (C) 2016 Advanced Micro Devices, Inc.
+> + * Copyright (C) 2016-2024 Advanced Micro Devices, Inc.
+
+Are we doing that now?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
