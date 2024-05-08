@@ -1,51 +1,51 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7629382876
-	for <linux-coco@lists.linux.dev>; Wed,  8 May 2024 12:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E6A839E6
+	for <linux-coco@lists.linux.dev>; Wed,  8 May 2024 12:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715170368; cv=none; b=KhzaBsnK0C9w5EaLjsQY7KqlHHn/AzTxIp8AdLsgstW8jbijArDagOTHX+6EluY/ZsRQAGVv5xXHua887KAHA6JIzGelzSAgev+2bI8LUOTPofaPwAFDA0tEF3HpEOqYlb6keAF8la8oO9pQL7TxeKQEJE67Kg0ZaJxH16EHpQU=
+	t=1715170730; cv=none; b=LxfRiZB+VbfOmjUIBVIF7TaoP22dJNpf7CWY57lyOrxZad2RUJQw+8mgyHlK7Z6+rCBe2A1ESp66OT+VoYEDjhYPzL1pSyz6+lmSzmlsAgXEJCu1Sztd6kF7gmzqxAMYyo0AZRdPEZOZY2JahyM93n6k1/z1rB+2/6Nkqdxnj/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715170368; c=relaxed/simple;
-	bh=OB3bNfotTy94ijgLvIlZef+XSj4HmuVlV8OVyMsV6iY=;
+	s=arc-20240116; t=1715170730; c=relaxed/simple;
+	bh=Ra5CkaV02rMT+W1YZtiiW7W7NSd3M/Nsg4dEl71TtTA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XAXGHIV2xUCgv6MaKqPlZOH2ILQeFfr1I/kLoMBK+M8ztMJOVVf770o/fklq7RtoRcFGm90NH6192es6wqYQp0e8rCwk/oeHrg0A5B0Nk7LVMT4fOVqssOyxtgNRgLF/SIRNDMu3UEZCelIVkBeVDeRtRL5u/F/1DxoF9vneuvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=kr3l/QTG; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qj9cKDPGbsyUYYuT1Lbd2KQQQi3IPXzfBHEZK10xGKH7Njrmh2XOfhZJiCoOnWXz+2STi00PfE6l12fm7TsKG/I+jYlSZcZvPjifNlDMuHF6OAaGATo66IWL2YudQLcQtkYf+8EnnapZnTvVBBzmxtl1EhfVBGVj09axXRMmWjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Zdre9eqm; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="kr3l/QTG"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Zdre9eqm"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 228C340E024C;
-	Wed,  8 May 2024 12:12:44 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id ADCA940E024C;
+	Wed,  8 May 2024 12:18:46 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ZMrQa-G91QOC; Wed,  8 May 2024 12:12:41 +0000 (UTC)
+	with ESMTP id XQyq8Rs12_HQ; Wed,  8 May 2024 12:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1715170361; bh=qN/y9cHUEBVLV8pGVkdG+RsChyPSuLA4sQE7tRTsrxs=;
+	t=1715170722; bh=zAP8WZWIDY0jQdc667ULP2ScBNTHP+zF1XZ2Xi2qwfU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kr3l/QTGRMA0C5rE0e/SeORwk40rtp/+BlatDIUPkby0/3PC8MCiewul76UFf2in2
-	 Ay+annVxKQt1fUIKjlAE9jM5vbfVrJ7kwvX+exRaaDaWUIzhXkcrVAr8RpNie+8Pp0
-	 7x+CWCVvXEIhaPQ/Rtoh5RwlmMNh/c7NKfnmguE6pss4+qMg143hA1L+zgE59wn56d
-	 pvcaw0j9kCRe0Qpve8BNC0VksaR/CzY4ImhJ2ai0G4vu2euysByIjJYc9V521UBSg3
-	 iBFg+YhOhwo5BfeYDWxzhpa6vdducb2lole5f6sE65fX+MOV3EAB23pc3+Zbpln3fg
-	 auKQXjxDb/bB7r9n/N/djgbl9qOOte9b+EraRYAwdcYuS3+sh1v7BYbt//8nISZtOW
-	 /Cv2eGLyOHRJgvvoz52LrVXv6SXFOOOIgRK8iWZB+xGDWNQfF7Ro79R1+pXEOpFVbb
-	 vcRn4Hxiy1Rj1YSUmQPlDMJBJBoeTlpSPZCWODe0ar9r8JW0abP5wYTK2QA/dI1QFm
-	 bpfYE2Syrw3vTkaJg1p9otjauGTDojtkVyqHowuzJvuhhxSdcC8Vb3z8Z0J3xwenIL
-	 mJGdwJbme+2f7xJd7Aa8LDT2ea/zGzWzCJW8YvL/dqG6QeX0t8ZRKD7p4BjTImLPJX
-	 0RKhFREPvR17HSa7OwJ2IY20=
+	b=Zdre9eqm6W74SVfkLa/gHXSJCJs0g9ztPCczJoGzIqos+FM5zlXKPr5JcEl0nHxsr
+	 YTGVnJBUJZ+qNWfG+DW8k801y9m61ZmGnPgxbp4SkmR24tCGiLWsAGFRhC5Ez0hjAi
+	 kyskakZGM7EtPjtxXQNWF+u3j/Nz+plu4qW0Pd6idZVDjvpYXbQsVIl+JWJ91EGJkA
+	 Hx0hNlPOcQ3WNA+6Lr3BXCr3nJXj5wpjz6gKtGmd26vL47o7U+EOyNzNOdEIOe9Qty
+	 JRuOZ0raQ33fKRWQA2p4bMcT5THSTuXzlhwNvp30wP6IyFD44rBnSkxfawRlDGR6Qm
+	 WnGIXOf3zH24ZbeFGFq9YPaTooXZQu4egcyjn4UUCMDpLO5tEyn2Y2/DNbA3tbyrxw
+	 Jez9NkiRwfeXCZB9c8nyuAVSJ5tjNJTvWsSQy5i/O6MPY79C8lVw8FR10aGHiPKF31
+	 dg7/gyJmr9g4dL10a/bzdXSlKaSx+4GU3qgLiQHQpReMwyHRrRWXjD3nzLMNlsGPN4
+	 iRNXSXxPLxIm+TPnd/EXWMLI1B9PlR+QZ+t88PmZuu4+tABSRtayztkQye+WOc14i2
+	 1iJrr3YX2YqPfpx1ICr73bMEMg0ML8GxC7JkBI7FoHSNUtf8yy+mjwSnziX/tsD8ek
+	 vb4vp5/LFwT6LdqKDXgRf4P0=
 Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B01E140E01A3;
-	Wed,  8 May 2024 12:12:18 +0000 (UTC)
-Date: Wed, 8 May 2024 14:12:17 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 141E140E01A3;
+	Wed,  8 May 2024 12:18:21 +0000 (UTC)
+Date: Wed, 8 May 2024 14:18:19 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
@@ -62,13 +62,12 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
 	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
 	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@intel.com>,
-	Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv10 11/18] x86/mm: Make e820_end_ram_pfn() cover
- E820_TYPE_ACPI ranges
-Message-ID: <20240508121217.GDZjtsIZmROSwirNUF@fat_crate.local>
+	linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
+Subject: Re: [PATCHv10 13/18] x86/acpi: Rename fields in
+ acpi_madt_multiproc_wakeup structure
+Message-ID: <20240508121819.GEZjtti1unC6GEFpPZ@fat_crate.local>
 References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <20240409113010.465412-12-kirill.shutemov@linux.intel.com>
+ <20240409113010.465412-14-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -77,23 +76,36 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240409113010.465412-12-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20240409113010.465412-14-kirill.shutemov@linux.intel.com>
 
-On Tue, Apr 09, 2024 at 02:30:03PM +0300, Kirill A. Shutemov wrote:
-> Subject: Re: [PATCHv10 11/18] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
-						^^^^^^^
+On Tue, Apr 09, 2024 at 02:30:05PM +0300, Kirill A. Shutemov wrote:
+> To prepare for the addition of support for MADT wakeup structure version
 
-e820__end_of_ram_pfn()
+"In order to support... "
 
-> e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
-> things, guides where direct mapping ends. Any memory above max_pfn is
-> not going to be present in the direct mapping.
+> 1, it is necessary to provide more appropriate names for the fields in
+> the structure.
 > 
-> e820__end_of_ram_pfn() finds the end of the ram based on the highest
+> The field 'mailbox_version' renamed as 'version'. This field signifies
 
-RAM
+From Documentation/process/submitting-patches.rst:
 
-...
+ "Describe your changes in imperative mood, e.g. "make xyzzy do frotz"
+  instead of "[This patch] makes xyzzy do frotz" or "[I] changed xyzzy
+  to do frotz", as if you are giving orders to the codebase to change
+  its behaviour."
+
+So:
+
+"Rename 'mailbox_version' to 'version' because... "
+
+> the version of the structure and the related protocols, rather than the
+> version of the mailbox. This field has not been utilized in the code
+> thus far.
+> 
+> The field 'base_address' renamed as 'mailbox_address' to clarify the
+
+Ditto.
 
 -- 
 Regards/Gruss,
