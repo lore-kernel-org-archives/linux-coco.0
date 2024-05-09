@@ -1,134 +1,192 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3EB14A4F5
-	for <linux-coco@lists.linux.dev>; Thu,  9 May 2024 09:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C26814A636
+	for <linux-coco@lists.linux.dev>; Thu,  9 May 2024 09:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715246384; cv=none; b=gs2CRQKefHbfhVuzfyZRKx4p6qmYxUxCepCjRD1gH6tOluENZS4UIF9Gy1KG5rSzUrspNtQjoGkh1r6Wkye5tI/69HycauGnurMzWsMKi/nH6rg+XMa/xghFgByASE0weYu9+a+cJ8jzTn4NaCUUCSZd27Tjj/bVSTlGQtHFNQY=
+	t=1715248578; cv=none; b=Ke1lhbaoNJIbplB6WNoLtUeytITKl3bAprY64iDSmdMAr03dvX53K/4qxaW661XBehsqA4H98fy/ErElcMcKXEWhmdHCCOTLfZflQd25paEydsfyqqD6k7QlGu97JtbnAvwSgQnm3vnUxrrHBuU9Ij8IWxyjjYlIekO0mjrT2i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715246384; c=relaxed/simple;
-	bh=jmevKMrzeJi5mvBgez98VR78gzPQTQVp4irn0sMKTDQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RA+EZQoePoDioPI6T8wyFi/e19Qq7G53kaook2exRC3E2fG0n/+PFQxKtGSnme2JKrgv7EHYWIZMs/nQwl64LJdaBFfkKJI3zAlENBW9hYC6rpMZLpYJezYLLM+rYXIxaBiJGqLuH0s/8Q4h616qwqGlyiIgMxgR7cFXetO4HrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UgczYuyB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1715248578; c=relaxed/simple;
+	bh=kkjEihY+JrbuXzccOQshi6V9Y4jUOo4YzRmV+iQdXFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ipxCuLROrDHxxaQ14ZGub+ZivmYBunGmucASdVEP6YYNuOcpEVXbf02kf6vUt7BDLUFXMBlQuF6JWuButjl4G4y6mkITthv47qC1Smcj0U2myo3iHu2GT2o98HNyktmKErqVVxv0furwNjswlsaBu6OlS4GIhouF8DD6dqTLDjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ij5teho5; arc=none smtp.client-ip=95.215.58.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UgczYuyB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1715246381;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Ij5teho5"
+Date: Thu, 9 May 2024 17:56:11 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1715248574;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7vMs94siUkMQ0Z1b8w6GKdXPEsrvSAFnIe75Ff7i9K4=;
-	b=UgczYuyBueQ8GahjpIsZ6loRjIDJDb3ozNvPHqel5T0ArG5ySTGLefRjVKptYDbFvbFgku
-	mGCHwjWquCphlVWD/l/E953dAjGXmRMbX5QNLQ9+g/1Z/Jbis43HElEpNBT+5jywS0gh/6
-	5ET/Yz3nroDh6Q7oVxYBjtx+gWMNLIg=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-450-FA7lb3ltPTSkzx-axZ0LDw-1; Thu, 09 May 2024 05:19:40 -0400
-X-MC-Unique: FA7lb3ltPTSkzx-axZ0LDw-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-349cafdc8f0so364362f8f.1
-        for <linux-coco@lists.linux.dev>; Thu, 09 May 2024 02:19:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715246379; x=1715851179;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7vMs94siUkMQ0Z1b8w6GKdXPEsrvSAFnIe75Ff7i9K4=;
-        b=Z4wg0//NQv4f0jeyNso4oM2Le0gjNHy8W7WmELxdPGiDWrvQDV7ozCsI9TKZCvwXny
-         h5k4zOR8oeItUJvZnCMvKxrr3WAGs+vVjyZVaYsy5K1KVnJIMgNwmWiPpCPuxyl+CBAw
-         JeiFBOctsJjcVx7+KHAYWszVfgXQhukCt/sQHuCmQ/UQ8TbDVXZ+nCRzwhHQJnHZozNJ
-         ptyh7kKwgadGGbk4uoQy+OtGI2rVt/TaGA064w1TZPOmy4eke4lJlyPrF7/Tm/oRU7SX
-         tiO3yw042XiUaUFW6+NborafjFwQQ1G56IO8asYDOyJKNU9VpOKz9yQKW9bmCTRBDCmK
-         IFkg==
-X-Forwarded-Encrypted: i=1; AJvYcCV6x/FXnwr9mRHVFZkE5KQNch7rEOGLityYMXyVDiv4zRlsn0Zl7CaSrNU+z2D0+ZJlflDimzioAv1FjW3FOrjRy5MwamtWBYstzg==
-X-Gm-Message-State: AOJu0YwrgPXIWgUpFbPkhf9efOSzmSHvfUFcoAzrDsfSqFApYOsSlCkd
-	El9H4E8VefNLSl3PwgB33BinrnrXDpXHsb+L7uiAuT9ZPFebbiv2Cl3zXbgqsEyFG40s3nxRIwL
-	VnYdV1tZtCjWI3b6aRfpftNozwL4hgFaDknJ1odVIDJ47cshWoceBaBeJ2iIXMJ9zunDyNiXV
-X-Received: by 2002:a5d:4533:0:b0:34c:72aa:6fe0 with SMTP id ffacd0b85a97d-34fca241368mr4389963f8f.18.1715246379028;
-        Thu, 09 May 2024 02:19:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJh3SuqH3yNbzIZYnYk688DTBqYlucoBOzYmZ3Dv4FrnmITUrIQUfykuQrafBaMOakQpi/Zw==
-X-Received: by 2002:a5d:4533:0:b0:34c:72aa:6fe0 with SMTP id ffacd0b85a97d-34fca241368mr4389931f8f.18.1715246378646;
-        Thu, 09 May 2024 02:19:38 -0700 (PDT)
-Received: from fedora (g2.ign.cz. [91.219.240.8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3502b8a8454sm1172307f8f.56.2024.05.09.02.19.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 May 2024 02:19:37 -0700 (PDT)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: Alexander Graf <graf@amazon.com>, Ashish Kalra <Ashish.Kalra@amd.com>,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org
-Cc: rafael@kernel.org, peterz@infradead.org, adrian.hunter@intel.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, jun.nakajima@intel.com,
- rick.p.edgecombe@intel.com, thomas.lendacky@amd.com, michael.roth@amd.com,
- seanjc@google.com, kai.huang@intel.com, bhe@redhat.com,
- kirill.shutemov@linux.intel.com, bdas@redhat.com, dionnaglaze@google.com,
- anisinha@redhat.com, jroedel@suse.de, ardb@kernel.org,
- kexec@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/4] x86/snp: Add kexec support
-In-Reply-To: <c2732461-e768-4356-82ce-a80c73997f02@amazon.com>
-References: <20240409113010.465412-1-kirill.shutemov@linux.intel.com>
- <cover.1712694667.git.ashish.kalra@amd.com>
- <26b3b3b5-548d-4ebd-9d21-19580a41e799@amazon.com>
- <87msp8mmpq.fsf@redhat.com>
- <c2732461-e768-4356-82ce-a80c73997f02@amazon.com>
-Date: Thu, 09 May 2024 11:19:36 +0200
-Message-ID: <877cg3fil3.fsf@redhat.com>
+	bh=eavQZFD4au3dlPwrV1ymL1bS61CYH03uO5yiejStr2A=;
+	b=Ij5teho5U1KSmt4XbjvZiGl0K3hmrd0r3eKQgIMljouTYknOOI+CObgps9hz9B91cKKnTZ
+	fbZuHkgVTgAEHmRoeUN43EBPkou5m/e2c0EQDfXccD73atIomUt0SUSKRAWlRoVuD1oOIi
+	Aa++DYFcUXN2m0rke1ZWIsyumYluch8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ruirui Yang <ruirui.yang@linux.dev>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, rafael@kernel.org,
+	hpa@zytor.com, peterz@infradead.org, adrian.hunter@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, jun.nakajima@intel.com,
+	rick.p.edgecombe@intel.com, thomas.lendacky@amd.com,
+	michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com,
+	bhe@redhat.com, kirill.shutemov@linux.intel.com, bdas@redhat.com,
+	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
+	jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 1/3] efi/x86: Fix EFI memory map corruption with kexec
+Message-ID: <Zjydu25Z26dH81NX@darkstar.users.ipa.redhat.com>
+References: <cover.1712694667.git.ashish.kalra@amd.com>
+ <cover.1714148366.git.ashish.kalra@amd.com>
+ <6dfe98fb95d7193ba2d692a2b6900a4d5d73db26.1714148366.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6dfe98fb95d7193ba2d692a2b6900a4d5d73db26.1714148366.git.ashish.kalra@amd.com>
+X-Migadu-Flow: FLOW_OUT
 
-Alexander Graf <graf@amazon.com> writes:
+On Fri, Apr 26, 2024 at 04:33:48PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> With SNP guest kexec observe the following efi memmap corruption :
+> 
+> [    0.000000] efi: EFI v2.7 by EDK II
+> [    0.000000] efi: SMBIOS=0x7e33f000 SMBIOS 3.0=0x7e33d000 ACPI=0x7e57e000 ACPI 2.0=0x7e57e014 MEMATTR=0x7cc3c018 Unaccepted=0x7c09e018
+> [    0.000000] efi: [Firmware Bug]: Invalid EFI memory map entries:
+> [    0.000000] efi: mem03: [type=269370880|attr=0x0e42100e42180e41] range=[0x0486200e41038c18-0x200e898a0eee713ac17] (invalid)
+> [    0.000000] efi: mem04: [type=12336|attr=0x0e410686300e4105] range=[0x100e420000000176-0x8c290f26248d200e175] (invalid)
+> [    0.000000] efi: mem06: [type=1124304408|attr=0x000030b400000028] range=[0x0e51300e45280e77-0xb44ed2142f460c1e76] (invalid)
+> [    0.000000] efi: mem08: [type=68|attr=0x300e540583280e41] range=[0x0000011affff3cd8-0x486200e54b38c0bcd7] (invalid)
+> [    0.000000] efi: mem10: [type=1107529240|attr=0x0e42280e41300e41] range=[0x300e41058c280e42-0x38010ae54c5c328ee41] (invalid)
+> [    0.000000] efi: mem11: [type=189335566|attr=0x048d200e42038e18] range=[0x0000318c00000048-0xe42029228ce4200047] (invalid)
+> [    0.000000] efi: mem12: [type=239142534|attr=0x0000002400000b4b] range=[0x0e41380e0a7d700e-0x80f26238f22bfe500d] (invalid)
+> [    0.000000] efi: mem14: [type=239207055|attr=0x0e41300e43380e0a] range=[0x8c280e42048d200e-0xc70b028f2f27cc0a00d] (invalid)
+> [    0.000000] efi: mem15: [type=239210510|attr=0x00080e660b47080e] range=[0x0000324c0000001c-0xa78028634ce490001b] (invalid)
+> [    0.000000] efi: mem16: [type=4294848528|attr=0x0000329400000014] range=[0x0e410286100e4100-0x80f252036a218f20ff] (invalid)
+> [    0.000000] efi: mem19: [type=2250772033|attr=0x42180e42200e4328] range=[0x41280e0ab9020683-0xe0e538c28b39e62682] (invalid)
+> [    0.000000] efi: mem20: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x00000008ffff4438-0xffff44340090333c437] (invalid)
+> [    0.000000] efi: mem22: [Reserved    |attr=0x000000c1ffff4420] range=[0xffff442400003398-0x1033a04240003f397] (invalid)
+> [    0.000000] efi: mem23: [type=1141080856|attr=0x080e41100e43180e] range=[0x280e66300e4b280e-0x440dc5ee7141f4c080d] (invalid)
+> [    0.000000] efi: mem25: [Reserved    |attr=0x0000000affff44a0] range=[0xffff44a400003428-0x1034304a400013427] (invalid)
+> [    0.000000] efi: mem28: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x0000000affff4488-0xffff448400b034bc487] (invalid)
+> [    0.000000] efi: mem30: [Reserved    |attr=0x0000000affff4470] range=[0xffff447400003518-0x10352047400013517] (invalid)
+> [    0.000000] efi: mem33: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x0000000affff4458-0xffff445400b035ac457] (invalid)
+> [    0.000000] efi: mem35: [type=269372416|attr=0x0e42100e42180e41] range=[0x0486200e44038c18-0x200e8b8a0eee823ac17] (invalid)
+> [    0.000000] efi: mem37: [type=2351435330|attr=0x0e42100e42180e42] range=[0x470783380e410686-0x2002b2a041c2141e685] (invalid)
+> [    0.000000] efi: mem38: [type=1093668417|attr=0x100e420000000270] range=[0x42100e42180e4220-0xfff366a4e421b78c21f] (invalid)
+> [    0.000000] efi: mem39: [type=76357646|attr=0x180e42200e42280e] range=[0x0e410686300e4105-0x4130f251a0710ae5104] (invalid)
+> [    0.000000] efi: mem40: [type=940444268|attr=0x0e42200e42280e41] range=[0x180e42200e42280e-0x300fc71c300b4f2480d] (invalid)
+> [    0.000000] efi: mem41: [MMIO        |attr=0x8c280e42048d200e] range=[0xffff479400003728-0x42138e0c87820292727] (invalid)
+> [    0.000000] efi: mem42: [type=1191674680|attr=0x0000004c0000000b] range=[0x300e41380e0a0246-0x470b0f26238f22b8245] (invalid)
+> [    0.000000] efi: mem43: [type=2010|attr=0x0301f00e4d078338] range=[0x45038e180e42028f-0xe4556bf118f282528e] (invalid)
+> [    0.000000] efi: mem44: [type=1109921345|attr=0x300e44000000006c] range=[0x44080e42100e4218-0xfff39254e42138ac217] (invalid)
+> ...
+> 
+> This EFI memap corruption is happening with efi_arch_mem_reserve() invocation in case of kexec boot.
+> 
+> ( efi_arch_mem_reserve() is invoked with the following call-stack: )
+> 
+> [    0.310010]  efi_arch_mem_reserve+0xb1/0x220
+> [    0.311382]  efi_mem_reserve+0x36/0x60
+> [    0.311973]  efi_bgrt_init+0x17d/0x1a0
+> [    0.313265]  acpi_parse_bgrt+0x12/0x20
+> [    0.313858]  acpi_table_parse+0x77/0xd0
+> [    0.314463]  acpi_boot_init+0x362/0x630
+> [    0.315069]  setup_arch+0xa88/0xf80
+> [    0.315629]  start_kernel+0x68/0xa90
+> [    0.316194]  x86_64_start_reservations+0x1c/0x30
+> [    0.316921]  x86_64_start_kernel+0xbf/0x110
+> [    0.317582]  common_startup_64+0x13e/0x141
+> 
+> efi_arch_mem_reserve() calls efi_memmap_alloc() to allocate memory for
+> EFI memory map and due to early allocation it uses memblock allocation.
+> 
+> Later during boot, efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
+> in case of a kexec-ed kernel boot.
+> 
+> This function kexec_enter_virtual_mode() installs the new EFI memory map by
+> calling efi_memmap_init_late() which remaps the efi_memmap physically allocated
+> in efi_arch_mem_reserve(), but this remapping is still using memblock allocation.
+> 
+> Subsequently, when memblock is freed later in boot flow, this remapped
+> efi_memmap will have random corruption (similar to a use-after-free scenario).
+> 
+> The corrupted EFI memory map is then passed to the next kexec-ed kernel
+> which causes a panic when trying to use the corrupted EFI memory map.
+> 
+> Fix this EFI memory map corruption by skipping efi_arch_mem_reserve() for kexec.
+> 
+> Additionally, skipping this function for kexec altogther makes sense
+> as for kexec use case need to use the the EFI memmap passed from first
+> kernel via setup_data and avoid any additional EFI memory map
+> additions/updates.
+> 
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/platform/efi/quirks.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+> index f0cc00032751..af7126d9c540 100644
+> --- a/arch/x86/platform/efi/quirks.c
+> +++ b/arch/x86/platform/efi/quirks.c
+> @@ -258,6 +258,26 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+>  	int num_entries;
+>  	void *new;
+>  
+> +	/*
+> +	 * efi_arch_mem_reserve() calls efi_memmap_alloc() to allocate memory for
+> +	 * EFI memory map and due to early allocation it uses memblock allocation.
+> +	 * Later during boot, efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
+> +	 * in case of a kexec-ed kernel boot. This function kexec_enter_virtual_mode()
+> +	 * installs the new EFI memory map by calling efi_memmap_init_late() which
+> +	 * remaps the efi_memmap physically allocated here in efi_arch_mem_reserve(),
+> +	 * but this remapping is still using memblock allocation.
+> +	 * Subsequently, when memblock is freed later in boot flow, this remapped
+> +	 * efi_memmap will have random corruption (similar to a use-after-free scenario).
+> +	 * The corrupted EFI memory map is then passed to the next kexec-ed kernel
+> +	 * which causes a panic when trying to use the corrupted EFI memory map.
+> +	 * Additionally, skipping this function for kexec altogther makes sense
+> +	 * as for kexec use case need to use the the EFI memmap passed from first
+> +	 * kernel via setup_data and avoid any additional EFI memory map
+> +	 * additions/updates.
+> +	 */
+> +	if (efi_setup)
+> +		return;
+> +
 
-> Correct. With IMA, you even do exactly that: Enforce a signature check 
-> of the next binary with kexec.
->
-> The problem is that you typically want to update the system because 
-> something is broken; most likely your original environment had a 
-> security issue somewhere. From a pure SEV-SNP attestation point of view, 
-> you can not distinguish between the patched and unpatched environment: 
-> Both look the same.
->
-> So while kexec isn't the problem, it's the fact that you can't tell 
-> anyone that you're now running a fixed version of the code :).
+efi_mem_reserve is used to reserve boot service memory eg. bgrt, but
+it is not necessary for kexec boot, as there are no boot services in
+kexec reboot at all after the 1st kernel ExitBootServices().
 
-...
+The UEFI memmap passed to kexec kernel includes not only the runtime
+service memory map but also the boot service memory ranges which were
+reserved by the 1st kernel with efi_mem_reserve, and those boot service
+memory ranges have already been marked "EFI_MEMORY_RUNTIME" attribute. 
 
->
-> I'm happy for CoCo to stay smoke and mirrors :). 
+Take example of bgrt, the saved memory is there only for people to check
+the bgrt image info via /sys/firmware/acpi/bgrt/*, and it is not used in
+early boot phase by boot services.
 
-"Only a Sith deals in absolutes" :-)
+Above is the reason why the efi_mem_reserve can be skipped for kexec
+booting.  But as I suggested before I personally think that checking
+EFI_MEMORY_RUNTIME attribute set or not looks better than checking
+efi_setup.
 
-> But I believe that if 
-> you want to genuinely draw a trust chain back to an AMD/Intel 
-> certificate, we need to come up with a good way of making updates work 
-> with a working trust chain so that whoever checks whether you're running 
-> sanctioned code is able to validate the claim.
-
-Launch measurements are what they are, they describe the state of your
-guest before it started booting. There are multiple mechanisms in Linux
-which change CPL0 code already: self-modifying code like static keys,
-loadable modules, runtime patching, kexec,... In case some specific
-deployment requires stronger guarantees we can probably introduce
-something like 'full lockdown' mode (as a compile time option, I guess)
-which would disable all of the aforementioned mechanisms. It will still
-not be a hard proof that the running code matches launch measurements
-(because vulnerabilities/bugs may still exist) I guess but could be an
-improvement.
-
-Basically, what I wanted to argue is that kexec does not need to be
-treated 'specially' for CVMs if we keep all other ways to modify kernel
-code. Making these methods 'attestable' is currently a challenge indeed.
-
--- 
-Vitaly
-
+>  	if (efi_mem_desc_lookup(addr, &md) ||
+>  	    md.type != EFI_BOOT_SERVICES_DATA) {
+>  		pr_err("Failed to lookup EFI memory descriptor for %pa\n", &addr);
+> -- 
+> 2.34.1
+> 
+> 
