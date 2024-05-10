@@ -1,252 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8714E17C68;
-	Fri, 10 May 2024 17:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D2C1B285
+	for <linux-coco@lists.linux.dev>; Fri, 10 May 2024 17:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715362554; cv=none; b=YpgQHAHmAWQ/fI/7QZ1P+j+Pym7AgGXxvGaA9YbfhhHL8uOrJiWP5qrPsFXNZsHrbYJRqOAfTSVzfjDLAXQoEMCCUmUrYz9YGGod9wAc0zkYY8qLmaZCvwIP21bdSg3Q+3ln9BDPNYXsoAwg6utGR26esbVIOYaAyoU1ZQuk3ts=
+	t=1715363235; cv=none; b=OzzT2wiE/S1q52zvgyegSXDDt3GPVRw/8uPZTkZAmTEwjDfnzOlMv6IsyydQ7EqpYBU5QYix+IBXIzwTgo43NPBmcK9r1L79n647RxvKBeRjE8fcQFNT0XkoI6UE1sy7mbf0eBkz36E49nd9ajM5CNzf9z+weiUvgZp4vEGkGKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715362554; c=relaxed/simple;
-	bh=/beIqi8bAOLCu4vO/A4YsPuXEwyf7rU71KbEp3qpLE0=;
+	s=arc-20240116; t=1715363235; c=relaxed/simple;
+	bh=1Bjsxi6FLuGOj7RtmewtKis8IikuC8YQFkIP8lxG5to=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EbbDQkfpLra8qBLQjF8HZYbqqXOKVP5XjgWnJpabdEuZ2rXKohgmqj7trQCAgyeaft0kW8AGI8pWdZu/YzEA1B4eqQRNDVMer6dZVj2/VfkoNABCwQKfiyGETwQ5Ifg49s4aC48CrzV4LYznvRhbN/4MAEZpSrfWaYtxvYEmEkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEA9C113CC;
-	Fri, 10 May 2024 17:35:51 +0000 (UTC)
-Date: Fri, 10 May 2024 18:35:48 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: Re: [PATCH v2 02/14] arm64: Detect if in a realm and set RIPAS RAM
-Message-ID: <Zj5a9Kt6r7U9WN5E@arm.com>
-References: <20240412084213.1733764-1-steven.price@arm.com>
- <20240412084213.1733764-3-steven.price@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PZ7pTmR/QGekpQ5vDrwGFMOG/rYlv6TIPV733mYTKaPPiTk7za0e9itmW1o4eB4R3qTN2hJL+GfZ8F+Hpl76vtXjGjTreLRKauzuJntg5QKpUrh4x5xaNiCsmydGapYI9TZCcc2Y8E/hEWMnGzrsKxDGkLeZcWE6MHs1ahd6WDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mo9r8pbZ; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mo9r8pbZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715363233; x=1746899233;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=1Bjsxi6FLuGOj7RtmewtKis8IikuC8YQFkIP8lxG5to=;
+  b=mo9r8pbZaddQo66fKnUFxYa3VXdeT6zw22vXRzy+hrTnO5fvK60sOq7X
+   oTGvodPqOtSKQ61Hs09oCprMqHGmq6TD9BHj7Ggj1XBtP0TXpvu58EvK3
+   47LxBt4bmz5ObdYR78kUqwZdNfmApII5hqmsPU3uZ9ZgDjavOWlfDRVmY
+   ilXBCTgXwYJ0IwTTX8lkgu5Hg1zOD5MEZ74idNXAovMRfHdfI8PS0TlcU
+   7+dLado7JffDbe2plzBOfawUY3VEtTAxHBy4nUPSOZxOOjc75lh3N9QRw
+   po/wZkS9hP1G8emUrTwMZVEbH1H4P6JoWNNj8mDmlI7u5T7eOH+4h0ac4
+   w==;
+X-CSE-ConnectionGUID: 9QHRFw4QQF2uO/s77cto1A==
+X-CSE-MsgGUID: kWHKxz2CRkqPpMG5EHJ3SQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11069"; a="22764924"
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; 
+   d="scan'208";a="22764924"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 10:47:02 -0700
+X-CSE-ConnectionGUID: 9BuGuE57RSmgVyrAKM/GPQ==
+X-CSE-MsgGUID: qwl5bYPFRgeN0WD4/7PfJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; 
+   d="scan'208";a="29540130"
+Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 10:47:01 -0700
+Date: Fri, 10 May 2024 10:47:00 -0700
+From: Isaku Yamahata <isaku.yamahata@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Michael Roth <michael.roth@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, vkuznets@redhat.com, jmattson@google.com,
+	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
+	pgonda@google.com, peterz@infradead.org,
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, papaluri@amd.com,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	isaku.yamahata@linux.intel.com, rick.p.edgecombe@intel.com
+Subject: Re: [PATCH v15 21/23] KVM: MMU: Disable fast path for private
+ memslots
+Message-ID: <20240510174700.GB480079@ls.amr.corp.intel.com>
+References: <20240501085210.2213060-1-michael.roth@amd.com>
+ <20240510015822.503071-1-michael.roth@amd.com>
+ <Zj4lebCMsRvGn7ws@google.com>
+ <CABgObfboqrSw8=+yZMDi_k9d6L3AoiU5o8d-sRb9Y5AXDTmp5w@mail.gmail.com>
+ <20240510152744.ejdy4jqawc2zd2dt@amd.com>
+ <Zj5ETYPTUo9T4Nuf@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240412084213.1733764-3-steven.price@arm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zj5ETYPTUo9T4Nuf@google.com>
 
-On Fri, Apr 12, 2024 at 09:42:01AM +0100, Steven Price wrote:
-> diff --git a/arch/arm64/include/asm/rsi.h b/arch/arm64/include/asm/rsi.h
-> new file mode 100644
-> index 000000000000..3b56aac5dc43
-> --- /dev/null
-> +++ b/arch/arm64/include/asm/rsi.h
-> @@ -0,0 +1,46 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (C) 2023 ARM Ltd.
+On Fri, May 10, 2024 at 08:59:09AM -0700,
+Sean Christopherson <seanjc@google.com> wrote:
 
-You may want to update the year ;).
+> On Fri, May 10, 2024, Michael Roth wrote:
+> > On Fri, May 10, 2024 at 03:50:26PM +0200, Paolo Bonzini wrote:
+> > > On Fri, May 10, 2024 at 3:47 PM Sean Christopherson <seanjc@google.com> wrote:
+> > > >
+> > > > > +      * Since software-protected VMs don't have a notion of a shared vs.
+> > > > > +      * private that's separate from what KVM is tracking, the above
+> > > > > +      * KVM_EXIT_MEMORY_FAULT condition wouldn't occur, so avoid the
+> > > > > +      * special handling for that case for now.
+> > > >
+> > > > Very technically, it can occur if userspace _just_ modified the attributes.  And
+> > > > as I've said multiple times, at least for now, I want to avoid special casing
+> > > > SW-protected VMs unless it is *absolutely* necessary, because their sole purpose
+> > > > is to allow testing flows that are impossible to excercise without SNP/TDX hardware.
+> > > 
+> > > Yep, it is not like they have to be optimized.
+> > 
+> > Ok, I thought there were maybe some future plans to use sw-protected VMs
+> > to get some added protections from userspace. But even then there'd
+> > probably still be extra considerations for how to handle access tracking
+> > so white-listing them probably isn't right anyway.
+> > 
+> > I was also partly tempted to take this route because it would cover this
+> > TDX patch as well:
+> > 
+> >   https://lore.kernel.org/lkml/91c797997b57056224571e22362321a23947172f.1705965635.git.isaku.yamahata@intel.com/
+> 
+> Hmm, I'm pretty sure that patch is trying to fix the exact same issue you are
+> fixing, just in a less precise way.  S-EPT entries only support RWX=0 and RWX=111b,
+> i.e. it should be impossible to have a write-fault to a present S-EPT entry.
+> 
+> And if TDX is running afoul of this code:
+> 
+> 	if (!fault->present)
+> 		return !kvm_ad_enabled();
+> 
+> then KVM should do the sane thing and require A/D support be enabled for TDX.
+> 
+> And if it's something else entirely, that changelog has some explaining to do.
 
-> + */
-> +
-> +#ifndef __ASM_RSI_H_
-> +#define __ASM_RSI_H_
-> +
-> +#include <linux/jump_label.h>
-> +#include <asm/rsi_cmds.h>
-> +
-> +extern struct static_key_false rsi_present;
+Yes, it's for KVM_EXIT_MEMORY_FAULT case.  Because Secure-EPT has non-present or
+all RWX allowed, fast page fault always returns RET_PF_INVALID by
+is_shadow_present_pte() check.
 
-Nitpick: we tend to use DECLARE_STATIC_KEY_FALSE(), it pairs with
-DEFINE_STATIC_KEY_FALSE().
+I lightly tested the patch at [1] and it works for TDX KVM.
 
-> +void arm64_setup_memory(void);
-> +
-> +void __init arm64_rsi_init(void);
-> +static inline bool is_realm_world(void)
-> +{
-> +	return static_branch_unlikely(&rsi_present);
-> +}
-> +
-> +static inline void set_memory_range(phys_addr_t start, phys_addr_t end,
-> +				    enum ripas state)
-> +{
-> +	unsigned long ret;
-> +	phys_addr_t top;
-> +
-> +	while (start != end) {
-> +		ret = rsi_set_addr_range_state(start, end, state, &top);
-> +		BUG_ON(ret);
-> +		BUG_ON(top < start);
-> +		BUG_ON(top > end);
+[1] https://github.com/mdroth/linux/commit/39643f9f6da6265d39d633a703c53997985c1208
 
-Are these always fatal? BUG_ON() is frowned upon in general. The
-alternative would be returning an error code from the function and maybe
-printing a warning here (it seems that some people don't like WARN_ON
-either but it's better than BUG_ON; could use a pr_err() instead). Also
-if something's wrong with the RSI interface to mess up the return
-values, it will be hard to debug just from those BUG_ON().
-
-If there's no chance of continuing beyond the point, add a comment on
-why we have a BUG_ON().
-
-> diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
-> new file mode 100644
-> index 000000000000..1076649ac082
-> --- /dev/null
-> +++ b/arch/arm64/kernel/rsi.c
-> @@ -0,0 +1,58 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2023 ARM Ltd.
-> + */
-> +
-> +#include <linux/jump_label.h>
-> +#include <linux/memblock.h>
-> +#include <asm/rsi.h>
-> +
-> +DEFINE_STATIC_KEY_FALSE_RO(rsi_present);
-> +EXPORT_SYMBOL(rsi_present);
-
-Does this need to be made available to loadable modules?
-
-> +
-> +static bool rsi_version_matches(void)
-> +{
-> +	unsigned long ver;
-> +	unsigned long ret = rsi_get_version(RSI_ABI_VERSION, &ver, NULL);
-
-I wonder whether rsi_get_version() is the right name (I know it was
-introduced in the previous patch but the usage is here, hence my
-comment). From the RMM spec, this looks more like an
-rsi_request_version() to me.
-
-TBH, the RMM spec around versioning doesn't fully make sense to me ;). I
-assume people working on it had some good reasons around the lower
-revision reporting in case of an error.
-
-> +
-> +	if (ret == SMCCC_RET_NOT_SUPPORTED)
-> +		return false;
-> +
-> +	if (ver != RSI_ABI_VERSION) {
-> +		pr_err("RME: RSI version %lu.%lu not supported\n",
-> +		       RSI_ABI_VERSION_GET_MAJOR(ver),
-> +		       RSI_ABI_VERSION_GET_MINOR(ver));
-> +		return false;
-> +	}
-
-The above check matches what the spec says but wouldn't it be clearer to
-just check for ret == RSI_SUCCESS? It saves one having to read the spec
-to figure out what lower revision actually means in the spec (not the
-actual lowest supported but the highest while still lower than the
-requested one _or_ equal to the higher revision if the lower is higher
-than the requested one - if any of this makes sense to people ;), I'm
-sure I missed some other combinations).
-
-> +
-> +	pr_info("RME: Using RSI version %lu.%lu\n",
-> +		RSI_ABI_VERSION_GET_MAJOR(ver),
-> +		RSI_ABI_VERSION_GET_MINOR(ver));
-> +
-> +	return true;
-> +}
-> +
-> +void arm64_setup_memory(void)
-
-I would give this function a better name, something to resemble the RSI
-setup. Similarly for others like set_memory_range_protected/shared().
-Some of the functions have 'rsi' in the name like arm64_rsi_init() but
-others don't and at a first look they'd seem like some generic memory
-setup on arm64, not RSI-specific.
-
-> +{
-> +	u64 i;
-> +	phys_addr_t start, end;
-> +
-> +	if (!static_branch_unlikely(&rsi_present))
-> +		return;
-
-We have an accessor for rsi_present - is_realm_world(). Why not use
-that?
-
-> +
-> +	/*
-> +	 * Iterate over the available memory ranges
-> +	 * and convert the state to protected memory.
-> +	 */
-> +	for_each_mem_range(i, &start, &end) {
-> +		set_memory_range_protected(start, end);
-> +	}
-> +}
-> +
-> +void __init arm64_rsi_init(void)
-> +{
-> +	if (!rsi_version_matches())
-> +		return;
-> +
-> +	static_branch_enable(&rsi_present);
-> +}
-> diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-> index 65a052bf741f..a4bd97e74704 100644
-> --- a/arch/arm64/kernel/setup.c
-> +++ b/arch/arm64/kernel/setup.c
-> @@ -43,6 +43,7 @@
->  #include <asm/cpu_ops.h>
->  #include <asm/kasan.h>
->  #include <asm/numa.h>
-> +#include <asm/rsi.h>
->  #include <asm/scs.h>
->  #include <asm/sections.h>
->  #include <asm/setup.h>
-> @@ -293,6 +294,8 @@ void __init __no_sanitize_address setup_arch(char **cmdline_p)
->  	 * cpufeature code and early parameters.
->  	 */
->  	jump_label_init();
-> +	/* Init RSI after jump_labels are active */
-> +	arm64_rsi_init();
->  	parse_early_param();
-
-Does it need to be this early? It's fine for now but I wonder whether we
-may have some early parameter at some point that could influence what we
-do in the arm64_rsi_init(). I'd move it after or maybe even as part of
-the arm64_setup_memory(), though I haven't read the following patches if
-they update this function.
-
->  
->  	dynamic_scs_init();
-> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> index 03efd86dce0a..786fd6ce5f17 100644
-> --- a/arch/arm64/mm/init.c
-> +++ b/arch/arm64/mm/init.c
-> @@ -40,6 +40,7 @@
->  #include <asm/kvm_host.h>
->  #include <asm/memory.h>
->  #include <asm/numa.h>
-> +#include <asm/rsi.h>
->  #include <asm/sections.h>
->  #include <asm/setup.h>
->  #include <linux/sizes.h>
-> @@ -313,6 +314,7 @@ void __init arm64_memblock_init(void)
->  	early_init_fdt_scan_reserved_mem();
->  
->  	high_memory = __va(memblock_end_of_DRAM() - 1) + 1;
-> +	arm64_setup_memory();
->  }
-
-This feels like a random placement. This function is about memblock
-initialisation. You might as well put it in paging_init(), it could make
-more sense there. But I'd rather keep it in setup_arch() immediately
-after arm64_memblock_init().
-
+Just in case for that patch,
+Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
 -- 
-Catalin
+Isaku Yamahata <isaku.yamahata@intel.com>
