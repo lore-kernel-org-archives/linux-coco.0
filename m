@@ -1,308 +1,430 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2064.outbound.protection.outlook.com [40.107.93.64])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2088.outbound.protection.outlook.com [40.107.96.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669B617BA2
-	for <linux-coco@lists.linux.dev>; Fri, 10 May 2024 18:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5700F481D7
+	for <linux-coco@lists.linux.dev>; Fri, 10 May 2024 19:09:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.88
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715366206; cv=fail; b=YGcMEd9/CMsR5Gtjc/Coz/7Ar+kZcRnw4GQHlX4LDkPGLHuSrVWTtVhH7NIQrG94qiGUpf1AuIRyT+FM8pIKP3C2K9ET5DN3f0UDB5vmnkqQmlc3cmSqWV1IMsEAqTzkCKsJj6UZGbwj6aTX/GJVBKiiJjKjGuo47yfEDD3Td/c=
+	t=1715368149; cv=fail; b=j3YjsYJ9/ty+9oG4iqVCIEy1Ed4bM5nwoeP+tZGDtA0cbpRHoDgA7G6hU9/p9Ig0wJa3+6w3r52OLsJvgfVKZKE9F9qAY1h7n1ht7HkrVzfdVB94lnWcZjejTskWmDRwVzeZ1JDf2VDBPOF87eC2VSEtucZLBeXN6qH+oriOwwc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715366206; c=relaxed/simple;
-	bh=39jQrtdFRTJ8GxcRWGno0d64GrWOKqwSO/yyJK5mPU4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=bPtMUc1FEvdpPmj8OnfDuTi6TknzB4nNsmEF3J8UJwsI6Tp7bg7M1k0A6IAJ3GqX4W8BJ/KErPruGYthWJhXyKUWlOI7qu19ZlVX6bLxy9IL489+SyolzWPpYY6EN5HbLNu3jNXieq++2qZmZgsmIcNRhY+YIJxkEo39/zDJ3hE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wZT1hI6p; arc=fail smtp.client-ip=40.107.93.64
+	s=arc-20240116; t=1715368149; c=relaxed/simple;
+	bh=0ByqADji/+c2K66VLruGUyOTov8ON3fZ71VCLEC6eFk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cHS18rUO8JX+IeuXX6bSC/k0Aq002suO8Fphss7ZiX45tq1wJc9RFoI4ordw0IzstoGZjY3ecyJFWxZbLpQge/fYUOL+f5G/66t2xN4zeh//hT82ZVd3g5u40mpcAule+Dw6zvX1GyTgSBOqkT2Puim3TQH1NamZupy8Gk2Q+tY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=165O5gkM; arc=fail smtp.client-ip=40.107.96.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wZT1hI6p"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="165O5gkM"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L6pyJULv9XhOIIuPFopI0v4tU4gueLpHrE22oaTk6L9TJHS1ctqsfwG/Sqj5nTHs401O67rxzxOfoX85cwlBmvWi/1ECLW3+iYHxpkAIaa6sfZgTEPDPoqpoHgVYt73T8zt1EiLyEwZN3EgbC7QD/ERzG7Z3SAphTFIMqDVr6VWFEN5DESTAPZH3Aw0KUAQq+8Z+Xa2tOzdfQ2h2fHhsH7wFR5Jjq0gxfMlfyc8PUy81k7x/pYbUmXLCYJFHJ0GtPjVX99r0uhs/MtxF7fjTi5uEKX8/hm52z4ANxqJ3h+ZJIdSRwn5/bEdYOACdW3wAplX7BwbFZ4J6MOyGcHSYiQ==
+ b=L2IB6QYsQAqla6mRFKJJBQzjQNh5AJBrmSjB2wHiG/0hQ0XRTXycKwmmMB1rwTxn8hZg7RXqZR+QUiOeLRGlZkJrY3ayyYJ1pnsS6tue0KBsDagel/CW7Y31WxGRreIzBMkeRSOWPnL41sEam9bK7dmrN7t0eKJJ/60Imx2hzRHQtJyB+ZGbuhHDN3oKqfa5s0+/8XG18rP4FWfypJEcRxzO0UVQk4nQMBPdOC5Eeq9E0VoFGrxbo6/VM5yCLdFWj94CF6t1yV+VUkRwlc3aNQf88ni/zXEL152wVZEHHlzE/CMrUv/GFbnqriHLbFbb7xrL9UArXhY1I9TgKbaomg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fonZj/KQCxyy+x7E1h9+pYGVnIBcN6fuWcTQBH2fITc=;
- b=KdMFKCQgFw7t9kCTP5+E3DFzZt3RlnrbvYyNkmYfgxYvJRuimbpS5gD9i8YyJjrzUYL7P2hYFFMkKqkruoSir5D/QRL7pkE00hF/n97ONTgbnwK1yYepVsO1eX6WEsdMHNIJocbbm4QMpCosW3eREgL1frvrnCtetP+ZRjih7/MCSijqP0H2EjNck9Pop5/Dr6A1Y9Zuuk7gfRls1TlzGQomJd63wBKGS3HUNql02VfltAFvlvlpKnRG7FIg/XnpOpYSh673NsJZLitC+WuuiNYmz1DBOtVCptzdfYRHsTNyu2EmxqG1+TC+jCz9y5z9rCRqic+MRAiHDi26JJ0WCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=Xrx6loo7EdKYmH9u5AM9rsavyb7lhvWfgqE+eRctvDs=;
+ b=FnFgI4Ns2kQIACdnQdxe4FMwyW5FIsBJnWH6UlfuUnD0cC5zg3w3E6rJlvpoPz+b3H+PEwLA6dvMu0MmYds9nszLhMGikEI/1fzYDruXPD9/7CHOpqQKJcRYN9DKQjr8KTxpwZQ8sSFgHZcIWE/SRgdwzE1zL4ActAtdi0MOBBMCZg/dd279TYvVlb+oMNil7uvQBpB+ydyIsOzEgx4pF1F6FMYWNsROCopmTzbCI6BW3fZ3wlyB9X4nP07dIfayfzzGkY5qR1cmcQOqz7aBpSHctlqoO+MISI1g7cogXFG3FeudHsPBlKeMEmzfukwkC7fYEkRofz5n9sPYDnM5pA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fonZj/KQCxyy+x7E1h9+pYGVnIBcN6fuWcTQBH2fITc=;
- b=wZT1hI6pQJoEHrTjcTQj+HM/buHqI+WKEmoPTJsblZsPbWKPCS8cydp5jvsDmGK8K+6RujLlS9kh1dApUds3yRq1uYd0VZWHvGqyVlRAVfart6YAyLaBSpDXyOiI9H/JBRuYptkWlH28bcn5LBWc3QdITlc0R0TuCOs4gtOnkWI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
- by PH8PR12MB7184.namprd12.prod.outlook.com (2603:10b6:510:227::14) with
+ bh=Xrx6loo7EdKYmH9u5AM9rsavyb7lhvWfgqE+eRctvDs=;
+ b=165O5gkM5c3qTp6+v4g3zeKaSLZgQ/8cYne+KbC+A4eLkPrEbjSMOlJM0X7u7viGL7KYnKzdhjmn8uSVtWKx1Gu+H38Ycmto7fDCb6mK6UxUV+dFesnC4Ss0VfxI7J6QVQ9LSiDbL6kn2BZdEvCkF827hvMV8T75e+gspyEQ570=
+Received: from BN9PR03CA0797.namprd03.prod.outlook.com (2603:10b6:408:13f::22)
+ by SJ1PR12MB6241.namprd12.prod.outlook.com (2603:10b6:a03:458::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.38; Fri, 10 May
- 2024 18:36:41 +0000
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::d73f:2f29:b54f:3111]) by SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::d73f:2f29:b54f:3111%3]) with mapi id 15.20.7544.048; Fri, 10 May 2024
- 18:36:41 +0000
-Message-ID: <adc782c1-eac9-4525-9f44-cd546dc14beb@amd.com>
-Date: Fri, 10 May 2024 13:36:37 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/3] efi/x86: Fix EFI memory map corruption with kexec
-Content-Language: en-US
-To: Ruirui Yang <ruirui.yang@linux.dev>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, rafael@kernel.org,
- hpa@zytor.com, peterz@infradead.org, adrian.hunter@intel.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, jun.nakajima@intel.com,
- rick.p.edgecombe@intel.com, thomas.lendacky@amd.com, michael.roth@amd.com,
- seanjc@google.com, kai.huang@intel.com, bhe@redhat.com,
- kirill.shutemov@linux.intel.com, bdas@redhat.com, vkuznets@redhat.com,
- dionnaglaze@google.com, anisinha@redhat.com, jroedel@suse.de,
- ardb@kernel.org, kexec@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <cover.1712694667.git.ashish.kalra@amd.com>
- <cover.1714148366.git.ashish.kalra@amd.com>
- <6dfe98fb95d7193ba2d692a2b6900a4d5d73db26.1714148366.git.ashish.kalra@amd.com>
- <Zjydu25Z26dH81NX@darkstar.users.ipa.redhat.com>
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <Zjydu25Z26dH81NX@darkstar.users.ipa.redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN4PR0501CA0118.namprd05.prod.outlook.com
- (2603:10b6:803:42::35) To SN6PR12MB2767.namprd12.prod.outlook.com
- (2603:10b6:805:75::23)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.48; Fri, 10 May
+ 2024 19:09:01 +0000
+Received: from BN3PEPF0000B075.namprd04.prod.outlook.com
+ (2603:10b6:408:13f:cafe::fc) by BN9PR03CA0797.outlook.office365.com
+ (2603:10b6:408:13f::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.48 via Frontend
+ Transport; Fri, 10 May 2024 19:09:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B075.mail.protection.outlook.com (10.167.243.120) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7544.18 via Frontend Transport; Fri, 10 May 2024 19:09:01 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 10 May
+ 2024 14:09:00 -0500
+Date: Fri, 10 May 2024 14:08:43 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <seanjc@google.com>, <vkuznets@redhat.com>,
+	<jmattson@google.com>, <luto@kernel.org>, <dave.hansen@linux.intel.com>,
+	<slp@redhat.com>, <pgonda@google.com>, <peterz@infradead.org>,
+	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
+	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
+	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, <papaluri@amd.com>
+Subject: Re: [PATCH v15 23/23] KVM: SEV: Fix PSC handling for SMASH/UNSMASH
+ and partial update ops
+Message-ID: <20240510190843.yivmiwaj5isvqyph@amd.com>
+References: <20240501085210.2213060-1-michael.roth@amd.com>
+ <20240510015822.503071-1-michael.roth@amd.com>
+ <20240510015822.503071-3-michael.roth@amd.com>
+ <fe5cc86b-43e0-4685-99e7-998e61db333f@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <fe5cc86b-43e0-4685-99e7-998e61db333f@redhat.com>
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|PH8PR12MB7184:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ec9a646-a989-4f34-5058-08dc7120220a
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B075:EE_|SJ1PR12MB6241:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef6650de-1de2-486c-902b-08dc7124a714
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007|7416005;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|82310400017|36860700004|376005|1800799015|7416005;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TEFROXZlWFBrZlFDMmRJaVExRlNEcFUzMUV2cDdPaEk4TDFIQXIxVXpiczB6?=
- =?utf-8?B?UXBzSjVOQWJJY2pnbFJNdXlxQzVmMzFtdGprQlN2cXNoa01XUzAwNFN5ZEtl?=
- =?utf-8?B?YjFpc1NiRG1UYzNhN3lkNUZObEUvOUMxMUJxa3FMeS9kNjNNRCtZVHorUHp6?=
- =?utf-8?B?MVZ1MXV3dGswd0QxTVpMcloyVDNDK1hvY1FmVU9EZ20zTm9ONjZaZ2cwbGFX?=
- =?utf-8?B?U0xMaG1tYTV1Ukgvc1JKVCtzenZ4NHpQZWJSZEhtZHRLWkZLMVN2d0h2UlRo?=
- =?utf-8?B?ZUFqZCtPSWx1d1dZNkRZVC93Si9zcnJqTmptTFpsZ0pyVGlWY043UWM3STRC?=
- =?utf-8?B?bVJNbEJVdnJDYlhZK1RrRElsb3RiNWdldmxKbkUwNHdrdGJlcTNGdDlpME5I?=
- =?utf-8?B?cmRjTzA4b3JZQ1RVa2haTkc3VUgyQldlK1hSRnRKNzU2K3d6cEJiVXRQL2dE?=
- =?utf-8?B?cmF6eDB2YjhZOHQ4b0p2L1RqWGNhelJJOUtaMlpuUlI1YjlnelN5OEdsR2RR?=
- =?utf-8?B?b0JFL0kzWFJrOGpqUk5GZUpIVElKRzNXdVJObGQ4QnJpdm5oN0NpenhpdEIw?=
- =?utf-8?B?YjhHS04vWlNkSVB4Rzk0Ync1TlRtSE0zRjhudFlUemw3Z1dBSHA1SUVoak80?=
- =?utf-8?B?eEVqWlgxaHlUL0ZyWjNtdU5vNmFtZnowQ3NaSlN4dlZYcHBFYmNkTHlZTVdO?=
- =?utf-8?B?RGd2K29SbVUyNGY5QU9IUXZIMnkweDA0NmtlcmFmZXU5MXlhTUpnTVZBKzRN?=
- =?utf-8?B?cDhDNVkvbDJTcUJJeUtoWVZDWXptWk85YWw0OHdaQVVlSUQreEFsTzhadE83?=
- =?utf-8?B?WUZvSWJ6UGwrUGUyR3p3K1JXU3MzU1hEMks0NHR4WkpySzBGd1lJSEhickRt?=
- =?utf-8?B?Ymhld0tTZ3FkTzUrK3lYc2xHNUJGYzlOckNjR0VZNUNKZDhaWjR3QlNzVWdo?=
- =?utf-8?B?WHc5bWQ3dFd0eU1VdHZVeXFQMmVINkZsZ2dJZDBPV0RxYmlrVXRBZFdxV21z?=
- =?utf-8?B?eXFMWDVjQ3dkY2gyTStpUXFoR084b3FxNG5RRWF3enRLUjNUelNnTHhKT3U5?=
- =?utf-8?B?bUNqdEZleFU2YWVLWHRERzhTSmJXZGl2V1ZWTDJrUFpac1lZS1JBZDd0NjhI?=
- =?utf-8?B?eENkYm5nQjQ0MFVxNFlSL3hkUUZQajJidjBYQ2VQdlRjMUhxRkVWTXJFRnFZ?=
- =?utf-8?B?Nyt6NTEzUit1QU5SeG55SmN3UldBZjJ4UWdnT0NRalZ5K3RDdy82S2lIVmFC?=
- =?utf-8?B?bjUraVl2N21tT0owVzJxbzZSODM0Zm0xQVFOTHJkR2JLRGlZYlBmeE9ON2s4?=
- =?utf-8?B?dUNNVm5ZcE53TFVPQ3VySGgxZ3h3WllDVDBnbGR1eVIrVU5wQSt1blFGWHJ1?=
- =?utf-8?B?VnVtWjk4dW9QRDlnSHZ3TTZGclIrWnRhQmY4dWhoMkZEWXNuL01lazZEWjAw?=
- =?utf-8?B?Smp4R0RuYmhlWjlKWnkzOFVIYnpock9Mckt3RmVXWTV2ZkhVajB2V1p0T0xR?=
- =?utf-8?B?azMvYVF4Q1Ayb1RsUWZidkt1N3FwTitQVitBQUcwbFlXOU1xd3BaYVVGdTRS?=
- =?utf-8?B?V1QxaDIwVzQ0YkYvcHFRVDdiMFVGTTBiWnptazRqZ1FjZ083b0V4RTZPblRX?=
- =?utf-8?B?NGFuTGEvNkJONS9YTUlxcUdRUlg1UjJyaHdPd25PNlViZS9scTlPcnFpZ203?=
- =?utf-8?B?RlEzZlFVd0s5OVphdmNabG9DaUorRnlxcWx3R3I4TnBwK3FDdjBZeXFnPT0=?=
+	=?us-ascii?Q?g9NllTG9StPr6fyX6Rffgjd0j+LMafgEO7V2agCTYwvABitcTXeS4nG/G1MW?=
+ =?us-ascii?Q?6OdogbZleJGOFvJ6xJ4roRNpAWqhWQswjxqzQnP1GiMMeZA5hr2hjq83P2uj?=
+ =?us-ascii?Q?jqeEkVlmULiuqtkdlxuFXIoZL7Gc7JhFL44T+4ud0mszLSl13Ks33hp/wc6U?=
+ =?us-ascii?Q?EabgOX02DDvJHioGNUCf9nJEO4QFuBrkm6RzUnB0JzSApGAkYZFV46vIxbRt?=
+ =?us-ascii?Q?yuMexiqRPRzoByWveJP3TXOH9i7pruiSWJL0hXdc0aJdQutOYEsGBLtebO8Z?=
+ =?us-ascii?Q?8A9JFDQPZgrI9QnrNinKVRrYOazqCSnC2U0+JEVp8BzRODcRm1kXspDRDwbL?=
+ =?us-ascii?Q?AwOBdQCrgUGUHgXVWYHtGfsgED4/gHCWiINm8p8c3aAA9S63bPZCGniQGMgY?=
+ =?us-ascii?Q?/IiWmtnWQWQQezoQHpfrYR5ZuyiEz3OeV10riuAwAiXoRajUyMK2EreQNuiN?=
+ =?us-ascii?Q?a5SnLx0OGbIEEtykZOLvgP08PXERlBlytlI9GB8N+e6lpxzMRkF1H6Ex3gMK?=
+ =?us-ascii?Q?3OBirA2DgxSEeL421qPnCva9DlBJCNzjfje0p3dptp8cAhzJAeiRaOnf1uPR?=
+ =?us-ascii?Q?iSwYQGdTXTpZsbxpuxUzWVH2OOQXArH+qNk0HtZgzVrAOB1C3x1gmuH2yJXF?=
+ =?us-ascii?Q?3XlaBSXBIY8u/RXdLoMhu1OqcxgTfr5FGwWB7ogCbmfoJKVT3iCHx2LAB/8T?=
+ =?us-ascii?Q?V/APYljWFc8fq2p3iyleTDFWqQCcZTnyh05pM5pJrW11MlUsZY+ZLoXSlxXf?=
+ =?us-ascii?Q?s8ME+TyukqEhd7C0wndlwpLiha5dAFdJTKGXf/zpqDLwilE5AC9V+h3HMASW?=
+ =?us-ascii?Q?vhjfnGIDkqoaY9JbJsfBJ3YAOTk1nD0gWU7Cn8SRXqCYJKYDa9JsRS1yFyxF?=
+ =?us-ascii?Q?dvrs3zbLezPoggXktN0I0kmUebl30opBFKQK7FPNMzr7EqOTsvyo8BvDaJEK?=
+ =?us-ascii?Q?xvzzvllYEhRTyz3ilYubM50OOOlLrZ1ufemM7452DvoXOh0f1sDorshXwvVu?=
+ =?us-ascii?Q?kL+/zcDatBD+3sPMLJFGDWBhXXhJ1y7/EMzFx/lV3WrFId2LJx7jC/773zLV?=
+ =?us-ascii?Q?Twut7pcTtVIK2uM97UDpIEcjfC6AeWMjgSlzwObNdednh/nsqHKLFpx3zw4Q?=
+ =?us-ascii?Q?nFFf8wLLg7FWMuxyf+OZREwY7XZemQp3QYbiNLlhAOCybKhVK/4lgRtDqa5S?=
+ =?us-ascii?Q?lUzhNieflMkJjZ60ukR9q6CIbZmtKsXBV+xXREegmTxBSzgbRdtUUfmQdgmh?=
+ =?us-ascii?Q?q5WYOeNyzxtdQhr9hQf8rhmXQhuKCqUYihmk1lpAfvr7AmoH3xYq+Xx0Pp+n?=
+ =?us-ascii?Q?pgl5w5VXFdk0VRH+PoFJtnqf?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007)(7416005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZVpQaFF1MnhNSmgyVVZVRkx1bFgzclRtelcxcWo1VWMrL3JCN2s0TTU4dnhv?=
- =?utf-8?B?c1ZhOThiTG1lb0JJTUlPc29xelNiWFgyRmE4MFNrTlR1TjUzWGNVR0xQVDlJ?=
- =?utf-8?B?anlTaFNmamZZNkdRVWo0TnlhT1E2dVNuV1BYU1JwSlZxN2xuYW1Tak9MV0RM?=
- =?utf-8?B?T2VVOVJtYVRJR3FYYkZaQ0J6b0gxZTFPSFVGK1BsWnRzL1dPQlJDZEVNVXRI?=
- =?utf-8?B?TTF1WGdKbmlrODVIaFlvTEU3YUtSWHBZbTBiSHR3Y1ZORUtVRVU4WWNPblRx?=
- =?utf-8?B?M2w4bktONlhJck1JWk81MG1Ybzd4Y1EwWDNyK2pDdmh6NkRTL1hyS2ExS214?=
- =?utf-8?B?SGdCTDFYUTl4eWh0MWFXRnRDZFYvcHVOc21KdUtwRHhyMWxpUWpDL1Zsa2JH?=
- =?utf-8?B?T0hRVFBoaXhlcUxuZzZOVkU0QUZOQ3BCbnFQMTFmeUFoaDhBNlNTYWZnNUlR?=
- =?utf-8?B?eXlCZWo1M1JBc0l4QW5PNzZiMDFqQnFEZnk5MmJWZE5ySldBOGM4aWlXRnJL?=
- =?utf-8?B?eEVOa215U3cyY1FMMVFsM3ZOSDRPTVNlSHRBT3JyS2tXVHE1WnBaQXdKQTNX?=
- =?utf-8?B?U2VZMSs5djJwakt3V3pBaWZFemJlMFg3RlRyRm1idWg4K0V6c2ZOKzVLVGlw?=
- =?utf-8?B?U2ZvdFlIREMvYUpLbGRwQ1d5YlVtMnZBazc5WkFQOEF0V0R4aDNUajdSdGpm?=
- =?utf-8?B?a1dxNUZyRE9XWk13SHpJdmM4UE43aTVFQm5tcVlDNTRnKzVYS0ZCWVJHeUFS?=
- =?utf-8?B?YzBhMHpuU0kwR2tkNzAwc0hlU1QvMmN6VkhnTVdnN2pMK2JYZ1Noa2ljSkhX?=
- =?utf-8?B?a0VCR3Rld3EyMURpSnF0Tk5rbWhxbmM5bWtGRU1UWnNiKzZMMm1qWURvSExK?=
- =?utf-8?B?djFPalRHOGwwYVdqbFdyS2tRTHVLVEFPeEhuem9pNGp0SGl3L2JxTlpzZWlv?=
- =?utf-8?B?TE1WVzliNzF1K0tjSlZpb1NMMWtSZU94TFBnbldTNlJxMkNxVmlkcGpMd2gx?=
- =?utf-8?B?N0k2L3pLekhtU01reElQc2Zkd2d4Y1I3KzZkRzRCdUpCRTNscWtucWgrOEQw?=
- =?utf-8?B?VHNHVXNNVitIQ08vSDJpdTc4NEVCZGZhNitwQ0hVcElkbGdhVTVmQndyZXhi?=
- =?utf-8?B?RDVqUnA3bnhvc0dzVmJyYndFL2cxRy9pMURWU1U1b1FneW5kRWUrd3A5SzhC?=
- =?utf-8?B?OGh6TEN1K0dGZ1ZCMWlicTN6Z3Q5OWNyWHAva093dHlCbU9jN1ZLa1JzWnI0?=
- =?utf-8?B?d0RMbzBsZDIxM3BKaVNLaC9CMExqQmJsNm5wTmdPOHhpWHBYekZtMmIxYUty?=
- =?utf-8?B?dmdJV3d5Yzk1VlhldmFNNm5uYzBnbUxscTgrZjFXZzlneEkvQ3AwUldtTmxs?=
- =?utf-8?B?am9NNzVTRjFLZkMrVUhpanFOUE9sblBNdlhVWFZzZGQ4d0szckZKbFQ4RkF5?=
- =?utf-8?B?UHZGZEkrQll0L3BkT3VIRy9TSGFlQXlXV0F4cTRiRks2c2NOMVA4Tkp1ajB6?=
- =?utf-8?B?eFdiYThxbnFvdlFjUE5GY0hZeUhMU2J1VjFwaERRTElXSlhjOXdPTnRwTG5n?=
- =?utf-8?B?WS9wb1hjTW12QUcvK09Gb1NKVHkyejBjZ0l1MG1lRGQ2Ly9OOXNDdE1WU3oy?=
- =?utf-8?B?VjcrVnF5cDZGR285cVVzYk1nNmgyYVRqci9iYUE0MTMwcXlyOG92eVhjVVZ0?=
- =?utf-8?B?YWl6SGF1clplSEJBTmIyZ05WT3BDaS93bGlpRE1wOUpuTHVmS2dRNkIxRWVw?=
- =?utf-8?B?U1BDVldXZXpyVHhYQURUR3hSQjJoN3p2Y0pVTE1ZS2JkaVVveitLd29GaXVQ?=
- =?utf-8?B?cXhLSnNzN1ZrNGRlck1uVzZnOHZTNHU0QUxlRGVxSDhtZEltbmJRVzA0cUJl?=
- =?utf-8?B?UGtDQnBrVHdHRzFtY0V3aHlKQllReUlRZWszKzJzUXZqYjVxMDV0dno5RWJN?=
- =?utf-8?B?ekM1R1c0V0Njd3FhQm1seUVENjkrL3l4bUhKV1h0VXBXSmdvbTEwNUZEUDF0?=
- =?utf-8?B?VWpBeGhKUHJEdngrNzZ0dE5GQnJYQmhqRS80d05nWE1MR0dFZDJXQ3UySm1O?=
- =?utf-8?B?SzJvLzV2ektkdC8xYktvSkJYRWJXbDNDcS84RFB0citxeEloWWQwdHpHakZn?=
- =?utf-8?Q?3uDa0GPK2w5Lp5uKqgwX6S3bc?=
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400017)(36860700004)(376005)(1800799015)(7416005);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ec9a646-a989-4f34-5058-08dc7120220a
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2024 18:36:41.2112
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2024 19:09:01.4890
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef6650de-1de2-486c-902b-08dc7124a714
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Scg0zI+n/EOlCoFdh60LU7kOxJPg4M0cYRvF4Op8WVwb1u0q9DWRDKz6smNPe2+XEVuCjKejhLAqOQAEGdAq+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7184
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B075.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6241
 
-On 5/9/2024 4:56 AM, Ruirui Yang wrote:
+On Fri, May 10, 2024 at 07:09:07PM +0200, Paolo Bonzini wrote:
+> On 5/10/24 03:58, Michael Roth wrote:
+> > There are a few edge-cases that the current processing for GHCB PSC
+> > requests doesn't handle properly:
+> > 
+> >   - KVM properly ignores SMASH/UNSMASH ops when they are embedded in a
+> >     PSC request buffer which contains other PSC operations, but
+> >     inadvertantly forwards them to userspace as private->shared PSC
+> >     requests if they appear at the end of the buffer. Make sure these are
+> >     ignored instead, just like cases where they are not at the end of the
+> >     request buffer.
+> > 
+> >   - Current code handles non-zero 'cur_page' fields when they are at the
+> >     beginning of a new GPA range, but it is not handling properly when
+> >     iterating through subsequent entries which are otherwise part of a
+> >     contiguous range. Fix up the handling so that these entries are not
+> >     combined into a larger contiguous range that include unintended GPA
+> >     ranges and are instead processed later as the start of a new
+> >     contiguous range.
+> > 
+> >   - The page size variable used to track 2M entries in KVM for inflight PSCs
+> >     might be artifically set to a different value, which can lead to
+> >     unexpected values in the entry's final 'cur_page' update. Use the
+> >     entry's 'pagesize' field instead to determine what the value of
+> >     'cur_page' should be upon completion of processing.
+> > 
+> > While here, also add a small helper for clearing in-flight PSCs
+> > variables and fix up comments for better readability.
+> > 
+> > Fixes: 266205d810d2 ("KVM: SEV: Add support to handle Page State Change VMGEXIT")
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> 
+> There are some more improvements that can be made to the readability of
+> the code... this one is already better than the patch is fixing up, but I
+> don't like the code that is in the loop even though it is unconditionally
+> followed by "break".
+> 
+> Here's my attempt at replacing this patch, which is really more of a
+> rewrite of the whole function...  Untested beyond compilation.
 
-> On Fri, Apr 26, 2024 at 04:33:48PM +0000, Ashish Kalra wrote:
->> From: Ashish Kalra <ashish.kalra@amd.com>
->>
->> With SNP guest kexec observe the following efi memmap corruption :
->>
->> [    0.000000] efi: EFI v2.7 by EDK II
->> [    0.000000] efi: SMBIOS=0x7e33f000 SMBIOS 3.0=0x7e33d000 ACPI=0x7e57e000 ACPI 2.0=0x7e57e014 MEMATTR=0x7cc3c018 Unaccepted=0x7c09e018
->> [    0.000000] efi: [Firmware Bug]: Invalid EFI memory map entries:
->> [    0.000000] efi: mem03: [type=269370880|attr=0x0e42100e42180e41] range=[0x0486200e41038c18-0x200e898a0eee713ac17] (invalid)
->> [    0.000000] efi: mem04: [type=12336|attr=0x0e410686300e4105] range=[0x100e420000000176-0x8c290f26248d200e175] (invalid)
->> [    0.000000] efi: mem06: [type=1124304408|attr=0x000030b400000028] range=[0x0e51300e45280e77-0xb44ed2142f460c1e76] (invalid)
->> [    0.000000] efi: mem08: [type=68|attr=0x300e540583280e41] range=[0x0000011affff3cd8-0x486200e54b38c0bcd7] (invalid)
->> [    0.000000] efi: mem10: [type=1107529240|attr=0x0e42280e41300e41] range=[0x300e41058c280e42-0x38010ae54c5c328ee41] (invalid)
->> [    0.000000] efi: mem11: [type=189335566|attr=0x048d200e42038e18] range=[0x0000318c00000048-0xe42029228ce4200047] (invalid)
->> [    0.000000] efi: mem12: [type=239142534|attr=0x0000002400000b4b] range=[0x0e41380e0a7d700e-0x80f26238f22bfe500d] (invalid)
->> [    0.000000] efi: mem14: [type=239207055|attr=0x0e41300e43380e0a] range=[0x8c280e42048d200e-0xc70b028f2f27cc0a00d] (invalid)
->> [    0.000000] efi: mem15: [type=239210510|attr=0x00080e660b47080e] range=[0x0000324c0000001c-0xa78028634ce490001b] (invalid)
->> [    0.000000] efi: mem16: [type=4294848528|attr=0x0000329400000014] range=[0x0e410286100e4100-0x80f252036a218f20ff] (invalid)
->> [    0.000000] efi: mem19: [type=2250772033|attr=0x42180e42200e4328] range=[0x41280e0ab9020683-0xe0e538c28b39e62682] (invalid)
->> [    0.000000] efi: mem20: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x00000008ffff4438-0xffff44340090333c437] (invalid)
->> [    0.000000] efi: mem22: [Reserved    |attr=0x000000c1ffff4420] range=[0xffff442400003398-0x1033a04240003f397] (invalid)
->> [    0.000000] efi: mem23: [type=1141080856|attr=0x080e41100e43180e] range=[0x280e66300e4b280e-0x440dc5ee7141f4c080d] (invalid)
->> [    0.000000] efi: mem25: [Reserved    |attr=0x0000000affff44a0] range=[0xffff44a400003428-0x1034304a400013427] (invalid)
->> [    0.000000] efi: mem28: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x0000000affff4488-0xffff448400b034bc487] (invalid)
->> [    0.000000] efi: mem30: [Reserved    |attr=0x0000000affff4470] range=[0xffff447400003518-0x10352047400013517] (invalid)
->> [    0.000000] efi: mem33: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x0000000affff4458-0xffff445400b035ac457] (invalid)
->> [    0.000000] efi: mem35: [type=269372416|attr=0x0e42100e42180e41] range=[0x0486200e44038c18-0x200e8b8a0eee823ac17] (invalid)
->> [    0.000000] efi: mem37: [type=2351435330|attr=0x0e42100e42180e42] range=[0x470783380e410686-0x2002b2a041c2141e685] (invalid)
->> [    0.000000] efi: mem38: [type=1093668417|attr=0x100e420000000270] range=[0x42100e42180e4220-0xfff366a4e421b78c21f] (invalid)
->> [    0.000000] efi: mem39: [type=76357646|attr=0x180e42200e42280e] range=[0x0e410686300e4105-0x4130f251a0710ae5104] (invalid)
->> [    0.000000] efi: mem40: [type=940444268|attr=0x0e42200e42280e41] range=[0x180e42200e42280e-0x300fc71c300b4f2480d] (invalid)
->> [    0.000000] efi: mem41: [MMIO        |attr=0x8c280e42048d200e] range=[0xffff479400003728-0x42138e0c87820292727] (invalid)
->> [    0.000000] efi: mem42: [type=1191674680|attr=0x0000004c0000000b] range=[0x300e41380e0a0246-0x470b0f26238f22b8245] (invalid)
->> [    0.000000] efi: mem43: [type=2010|attr=0x0301f00e4d078338] range=[0x45038e180e42028f-0xe4556bf118f282528e] (invalid)
->> [    0.000000] efi: mem44: [type=1109921345|attr=0x300e44000000006c] range=[0x44080e42100e4218-0xfff39254e42138ac217] (invalid)
->> ...
->>
->> This EFI memap corruption is happening with efi_arch_mem_reserve() invocation in case of kexec boot.
->>
->> ( efi_arch_mem_reserve() is invoked with the following call-stack: )
->>
->> [    0.310010]  efi_arch_mem_reserve+0xb1/0x220
->> [    0.311382]  efi_mem_reserve+0x36/0x60
->> [    0.311973]  efi_bgrt_init+0x17d/0x1a0
->> [    0.313265]  acpi_parse_bgrt+0x12/0x20
->> [    0.313858]  acpi_table_parse+0x77/0xd0
->> [    0.314463]  acpi_boot_init+0x362/0x630
->> [    0.315069]  setup_arch+0xa88/0xf80
->> [    0.315629]  start_kernel+0x68/0xa90
->> [    0.316194]  x86_64_start_reservations+0x1c/0x30
->> [    0.316921]  x86_64_start_kernel+0xbf/0x110
->> [    0.317582]  common_startup_64+0x13e/0x141
->>
->> efi_arch_mem_reserve() calls efi_memmap_alloc() to allocate memory for
->> EFI memory map and due to early allocation it uses memblock allocation.
->>
->> Later during boot, efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
->> in case of a kexec-ed kernel boot.
->>
->> This function kexec_enter_virtual_mode() installs the new EFI memory map by
->> calling efi_memmap_init_late() which remaps the efi_memmap physically allocated
->> in efi_arch_mem_reserve(), but this remapping is still using memblock allocation.
->>
->> Subsequently, when memblock is freed later in boot flow, this remapped
->> efi_memmap will have random corruption (similar to a use-after-free scenario).
->>
->> The corrupted EFI memory map is then passed to the next kexec-ed kernel
->> which causes a panic when trying to use the corrupted EFI memory map.
->>
->> Fix this EFI memory map corruption by skipping efi_arch_mem_reserve() for kexec.
->>
->> Additionally, skipping this function for kexec altogther makes sense
->> as for kexec use case need to use the the EFI memmap passed from first
->> kernel via setup_data and avoid any additional EFI memory map
->> additions/updates.
->>
->> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
->> ---
->>   arch/x86/platform/efi/quirks.c | 20 ++++++++++++++++++++
->>   1 file changed, 20 insertions(+)
->>
->> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
->> index f0cc00032751..af7126d9c540 100644
->> --- a/arch/x86/platform/efi/quirks.c
->> +++ b/arch/x86/platform/efi/quirks.c
->> @@ -258,6 +258,26 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
->>   	int num_entries;
->>   	void *new;
->>   
->> +	/*
->> +	 * efi_arch_mem_reserve() calls efi_memmap_alloc() to allocate memory for
->> +	 * EFI memory map and due to early allocation it uses memblock allocation.
->> +	 * Later during boot, efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
->> +	 * in case of a kexec-ed kernel boot. This function kexec_enter_virtual_mode()
->> +	 * installs the new EFI memory map by calling efi_memmap_init_late() which
->> +	 * remaps the efi_memmap physically allocated here in efi_arch_mem_reserve(),
->> +	 * but this remapping is still using memblock allocation.
->> +	 * Subsequently, when memblock is freed later in boot flow, this remapped
->> +	 * efi_memmap will have random corruption (similar to a use-after-free scenario).
->> +	 * The corrupted EFI memory map is then passed to the next kexec-ed kernel
->> +	 * which causes a panic when trying to use the corrupted EFI memory map.
->> +	 * Additionally, skipping this function for kexec altogther makes sense
->> +	 * as for kexec use case need to use the the EFI memmap passed from first
->> +	 * kernel via setup_data and avoid any additional EFI memory map
->> +	 * additions/updates.
->> +	 */
->> +	if (efi_setup)
->> +		return;
->> +
-> efi_mem_reserve is used to reserve boot service memory eg. bgrt, but
-> it is not necessary for kexec boot, as there are no boot services in
-> kexec reboot at all after the 1st kernel ExitBootServices().
->
-> The UEFI memmap passed to kexec kernel includes not only the runtime
-> service memory map but also the boot service memory ranges which were
-> reserved by the 1st kernel with efi_mem_reserve, and those boot service
-> memory ranges have already been marked "EFI_MEMORY_RUNTIME" attribute.
->
-> Take example of bgrt, the saved memory is there only for people to check
-> the bgrt image info via /sys/firmware/acpi/bgrt/*, and it is not used in
-> early boot phase by boot services.
->
-> Above is the reason why the efi_mem_reserve can be skipped for kexec
-> booting.  But as I suggested before I personally think that checking
-> EFI_MEMORY_RUNTIME attribute set or not looks better than checking
-> efi_setup.
+Thanks for the suggested rework. I tested with/without 2MB pages and
+everything worked as-written. This is the full/squashed patch I plan to
+include in the pull request:
 
-Thanks for reviewing the patch.
+  https://github.com/mdroth/linux/commit/91f6d31c4dfc88dd1ac378e2db6117b0c982e63c
 
-I will move back to checking the md attribute instead of checking 
-efi_setup as i was doing previously and resubmit this patch.
+-Mike
 
-Thanks, Ashish
-
->
->>   	if (efi_mem_desc_lookup(addr, &md) ||
->>   	    md.type != EFI_BOOT_SERVICES_DATA) {
->>   		pr_err("Failed to lookup EFI memory descriptor for %pa\n", &addr);
->> -- 
->> 2.34.1
->>
->>
+> 
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 35f0bd91f92e..6e612789c35f 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3555,23 +3555,25 @@ struct psc_buffer {
+>  static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc);
+> -static int snp_complete_psc(struct kvm_vcpu *vcpu)
+> +static void snp_complete_psc(struct vcpu_svm *svm, u64 psc_ret)
+> +{
+> +	svm->sev_es.psc_inflight = 0;
+> +	svm->sev_es.psc_idx = 0;
+> +	svm->sev_es.psc_2m = 0;
+> +	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, psc_ret);
+> +}
+> +
+> +static void __snp_complete_one_psc(struct vcpu_svm *svm)
+>  {
+> -	struct vcpu_svm *svm = to_svm(vcpu);
+>  	struct psc_buffer *psc = svm->sev_es.ghcb_sa;
+>  	struct psc_entry *entries = psc->entries;
+>  	struct psc_hdr *hdr = &psc->hdr;
+> -	__u64 psc_ret;
+>  	__u16 idx;
+> -	if (vcpu->run->hypercall.ret) {
+> -		psc_ret = VMGEXIT_PSC_ERROR_GENERIC;
+> -		goto out_resume;
+> -	}
+> -
+>  	/*
+>  	 * Everything in-flight has been processed successfully. Update the
+> -	 * corresponding entries in the guest's PSC buffer.
+> +	 * corresponding entries in the guest's PSC buffer and zero out the
+> +	 * count of in-flight PSC entries.
+>  	 */
+>  	for (idx = svm->sev_es.psc_idx; svm->sev_es.psc_inflight;
+>  	     svm->sev_es.psc_inflight--, idx++) {
+> @@ -3581,17 +3583,22 @@ static int snp_complete_psc(struct kvm_vcpu *vcpu)
+>  	}
+>  	hdr->cur_entry = idx;
+> +}
+> +
+> +static int snp_complete_one_psc(struct kvm_vcpu *vcpu)
+> +{
+> +	struct vcpu_svm *svm = to_svm(vcpu);
+> +	struct psc_buffer *psc = svm->sev_es.ghcb_sa;
+> +
+> +	if (vcpu->run->hypercall.ret) {
+> +		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_GENERIC);
+> +		return 1; /* resume guest */
+> +	}
+> +
+> +	__snp_complete_one_psc(svm);
+>  	/* Handle the next range (if any). */
+>  	return snp_begin_psc(svm, psc);
+> -
+> -out_resume:
+> -	svm->sev_es.psc_idx = 0;
+> -	svm->sev_es.psc_inflight = 0;
+> -	svm->sev_es.psc_2m = false;
+> -	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, psc_ret);
+> -
+> -	return 1; /* resume guest */
+>  }
+>  static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc)
+> @@ -3601,18 +3608,20 @@ static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc)
+>  	struct psc_hdr *hdr = &psc->hdr;
+>  	struct psc_entry entry_start;
+>  	u16 idx, idx_start, idx_end;
+> -	__u64 psc_ret, gpa;
+> +	u64 gfn;
+>  	int npages;
+> -
+> -	/* There should be no other PSCs in-flight at this point. */
+> -	if (WARN_ON_ONCE(svm->sev_es.psc_inflight)) {
+> -		psc_ret = VMGEXIT_PSC_ERROR_GENERIC;
+> -		goto out_resume;
+> -	}
+> +	bool huge;
+>  	if (!(vcpu->kvm->arch.hypercall_exit_enabled & (1 << KVM_HC_MAP_GPA_RANGE))) {
+> -		psc_ret = VMGEXIT_PSC_ERROR_GENERIC;
+> -		goto out_resume;
+> +		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_GENERIC);
+> +		return 1;
+> +	}
+> +
+> +next_range:
+> +	/* There should be no other PSCs in-flight at this point. */
+> +	if (WARN_ON_ONCE(svm->sev_es.psc_inflight)) {
+> +		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_GENERIC);
+> +		return 1;
+>  	}
+>  	/*
+> @@ -3624,97 +3633,99 @@ static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc)
+>  	idx_end = hdr->end_entry;
+>  	if (idx_end >= VMGEXIT_PSC_MAX_COUNT) {
+> -		psc_ret = VMGEXIT_PSC_ERROR_INVALID_HDR;
+> -		goto out_resume;
+> -	}
+> -
+> -	/* Nothing more to process. */
+> -	if (idx_start > idx_end) {
+> -		psc_ret = 0;
+> -		goto out_resume;
+> +		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_INVALID_HDR);
+> +		return 1;
+>  	}
+>  	/* Find the start of the next range which needs processing. */
+>  	for (idx = idx_start; idx <= idx_end; idx++, hdr->cur_entry++) {
+> -		__u16 cur_page;
+> -		gfn_t gfn;
+> -		bool huge;
+> -
+>  		entry_start = entries[idx];
+> -
+> -		/* Only private/shared conversions are currently supported. */
+> -		if (entry_start.operation != VMGEXIT_PSC_OP_PRIVATE &&
+> -		    entry_start.operation != VMGEXIT_PSC_OP_SHARED)
+> -			continue;
+> -
+>  		gfn = entry_start.gfn;
+> -		cur_page = entry_start.cur_page;
+>  		huge = entry_start.pagesize;
+> +		npages = huge ? 512 : 1;
+> -		if ((huge && (cur_page > 512 || !IS_ALIGNED(gfn, 512))) ||
+> -		    (!huge && cur_page > 1)) {
+> -			psc_ret = VMGEXIT_PSC_ERROR_INVALID_ENTRY;
+> -			goto out_resume;
+> +		if (entry_start.cur_page > npages || !IS_ALIGNED(gfn, npages)) {
+> +			snp_complete_psc(svm, VMGEXIT_PSC_ERROR_INVALID_ENTRY);
+> +			return 1;
+>  		}
+> +		if (entry_start.cur_page) {
+> +			/*
+> +			 * If this is a partially-completed 2M range, force 4K
+> +			 * handling for the remaining pages since they're effectively
+> +			 * split at this point. Subsequent code should ensure this
+> +			 * doesn't get combined with adjacent PSC entries where 2M
+> +			 * handling is still possible.
+> +			 */
+> +			npages -= entry_start.cur_page;
+> +			gfn += entry_start.cur_page;
+> +			huge = false;
+> +		}
+> +		if (npages)
+> +			break;
+> +
+>  		/* All sub-pages already processed. */
+> -		if ((huge && cur_page == 512) || (!huge && cur_page == 1))
+> -			continue;
+> -
+> -		/*
+> -		 * If this is a partially-completed 2M range, force 4K handling
+> -		 * for the remaining pages since they're effectively split at
+> -		 * this point. Subsequent code should ensure this doesn't get
+> -		 * combined with adjacent PSC entries where 2M handling is still
+> -		 * possible.
+> -		 */
+> -		svm->sev_es.psc_2m = cur_page ? false : huge;
+> -		svm->sev_es.psc_idx = idx;
+> -		svm->sev_es.psc_inflight = 1;
+> -
+> -		gpa = gfn_to_gpa(gfn + cur_page);
+> -		npages = huge ? 512 - cur_page : 1;
+> -		break;
+>  	}
+> +	if (idx > idx_end) {
+> +		/* Nothing more to process. */
+> +		snp_complete_psc(svm, 0);
+> +		return 1;
+> +	}
+> +
+> +	svm->sev_es.psc_2m = huge;
+> +	svm->sev_es.psc_idx = idx;
+> +	svm->sev_es.psc_inflight = 1;
+> +
+>  	/*
+>  	 * Find all subsequent PSC entries that contain adjacent GPA
+>  	 * ranges/operations and can be combined into a single
+>  	 * KVM_HC_MAP_GPA_RANGE exit.
+>  	 */
+> -	for (idx = svm->sev_es.psc_idx + 1; idx <= idx_end; idx++) {
+> +	while (++idx <= idx_end) {
+>  		struct psc_entry entry = entries[idx];
+>  		if (entry.operation != entry_start.operation ||
+> -		    entry.gfn != entry_start.gfn + npages ||
+> -		    !!entry.pagesize != svm->sev_es.psc_2m)
+> +		    entry.gfn != gfn + npages ||
+> +		    entry.cur_page ||
+> +		    !!entry.pagesize != huge)
+>  			break;
+>  		svm->sev_es.psc_inflight++;
+> -		npages += entry_start.pagesize ? 512 : 1;
+> +		npages += huge ? 512 : 1;
+>  	}
+> -	vcpu->run->exit_reason = KVM_EXIT_HYPERCALL;
+> -	vcpu->run->hypercall.nr = KVM_HC_MAP_GPA_RANGE;
+> -	vcpu->run->hypercall.args[0] = gpa;
+> -	vcpu->run->hypercall.args[1] = npages;
+> -	vcpu->run->hypercall.args[2] = entry_start.operation == VMGEXIT_PSC_OP_PRIVATE
+> -				       ? KVM_MAP_GPA_RANGE_ENCRYPTED
+> -				       : KVM_MAP_GPA_RANGE_DECRYPTED;
+> -	vcpu->run->hypercall.args[2] |= entry_start.pagesize
+> -					? KVM_MAP_GPA_RANGE_PAGE_SZ_2M
+> -					: KVM_MAP_GPA_RANGE_PAGE_SZ_4K;
+> -	vcpu->arch.complete_userspace_io = snp_complete_psc;
+> +	switch (entry_start.operation) {
+> +	case VMGEXIT_PSC_OP_PRIVATE:
+> +	case VMGEXIT_PSC_OP_SHARED:
+> +		vcpu->run->exit_reason = KVM_EXIT_HYPERCALL;
+> +		vcpu->run->hypercall.nr = KVM_HC_MAP_GPA_RANGE;
+> +		vcpu->run->hypercall.args[0] = gfn_to_gpa(gfn);
+> +		vcpu->run->hypercall.args[1] = npages;
+> +		vcpu->run->hypercall.args[2] = entry_start.operation == VMGEXIT_PSC_OP_PRIVATE
+> +			? KVM_MAP_GPA_RANGE_ENCRYPTED
+> +			: KVM_MAP_GPA_RANGE_DECRYPTED;
+> +		vcpu->run->hypercall.args[2] |= huge
+> +			? KVM_MAP_GPA_RANGE_PAGE_SZ_2M
+> +			: KVM_MAP_GPA_RANGE_PAGE_SZ_4K;
+> +		vcpu->arch.complete_userspace_io = snp_complete_one_psc;
+> -	return 0; /* forward request to userspace */
+> +		return 0; /* forward request to userspace */
+> -out_resume:
+> -	svm->sev_es.psc_idx = 0;
+> -	svm->sev_es.psc_inflight = 0;
+> -	svm->sev_es.psc_2m = false;
+> -	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, psc_ret);
+> +	default:
+> +		/*
+> +		 * Only shared/private PSC operations are currently supported, so if the
+> +		 * entire range consists of unsupported operations (e.g. SMASH/UNSMASH),
+> +		 * then consider the entire range completed and avoid exiting to
+> +		 * userspace. In theory snp_complete_psc() can be called directly
+> +		 * at this point to complete the current range and start the next one,
+> +		 * but that could lead to unexpected levels of recursion.
+> +		 */
+> +		__snp_complete_one_psc(svm);
+> +		goto next_range;
+> +	}
+> -	return 1; /* resume guest */
+> +	unreachable();
+>  }
+>  static int __sev_snp_update_protected_guest_state(struct kvm_vcpu *vcpu)
+> 
+> 
