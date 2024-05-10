@@ -1,221 +1,228 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2061.outbound.protection.outlook.com [40.107.92.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B8B14AD15
-	for <linux-coco@lists.linux.dev>; Thu,  9 May 2024 10:00:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715248824; cv=none; b=DVIBdcziLhR9J6NgQUCKIlNIpZzWt4oe4hmxK6N4H3+F7eDydOIz1Zqv6e8Cw9uKxIr/P8SqMosKVCjIlXY/GddW8tfCStQAcMJ5jxUQotg5XXuXpFxGNPgKst1OY6LiQjQop0sytbeBrYBoeyUetkPTw+4FgZ4THNOAAsOozRc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715248824; c=relaxed/simple;
-	bh=Xx7kEeMcj6Id961yeEABV4+y0Xeq23oXGCIwWr8h3x4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EEVzYvjGgVpCThlC1ITIdBXzzI5kBXdUmy0txtWI5j/5SQFpkHo9v6rJ36UUeUrzBhvm7C95zsLe+tyWptRYCNtysE4ZQwwlfFd7q70DYS/ZZcKydgOeeAQMSlzPhzNkYGihLjUbdrPpXgPC5oIVaUeaRWeiQXFAu9PIr0VLBlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C1fnXQ3d; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F9214885C
+	for <linux-coco@lists.linux.dev>; Fri, 10 May 2024 02:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715308598; cv=fail; b=ZrsanxoC1qSi0aW1nrPFfIP6YfLOMwjGb5d4R3SPurpd7NCEbeaIzZsTjs39Q1lQxdcXKP3MxgcShd7wB1nEuKCqgfSn6fOJD4swjnvcnMu5DVw5WXLoAbcouxGRpqH697VUPoCntJKqWQSVuTHFt9f8R46JdiTQAIptJUEmO4o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715308598; c=relaxed/simple;
+	bh=55rOGSOSrcRZM3UtM+oxDWtePaOWhJq7An03Nsz/miU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=khkPlMmEnh03UkVE7osGiS53iNyCy2Ye54mOQ9JOUujivYcDkZJUZ7l/5/T+eTCJfIHcL8JqwbAZ1nWAZDmQlVYCNe7HUtsdkQDo9RYdKSo49SCiokLSi7p3mgU606jHal1qHq6aIn5UQUUFxVm+2Dz3HNm6sHMPKcp6vV+mKAw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wpApFz8i; arc=fail smtp.client-ip=40.107.92.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C1fnXQ3d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1715248822;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WzXeEK6f1cKA7Dkjnpf3lp68VbxazSREN8UjDp493lg=;
-	b=C1fnXQ3dR/tjp66ZeEWVUNpvdVNvmZwBp0Fi8jRwg5icuRIpd58sr9v46W8rrg5RCvBZgI
-	3FUAB2FiX7oYa8ETprT1BDvTnOu/K7OLmTtAZyNFOwp4Sv4wAXoRZIc3ol5T52zVdBvrjI
-	FCgug1/2QxcRdIyg6HHXhWwvrsgwWuc=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-132-4cfwVOcrOBykCAX3rIb77w-1; Thu, 09 May 2024 06:00:18 -0400
-X-MC-Unique: 4cfwVOcrOBykCAX3rIb77w-1
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-36c854ced78so2092645ab.3
-        for <linux-coco@lists.linux.dev>; Thu, 09 May 2024 03:00:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715248818; x=1715853618;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WzXeEK6f1cKA7Dkjnpf3lp68VbxazSREN8UjDp493lg=;
-        b=euNJyGwF5R/NCSz6CYKL7sO33QpxDvW3qnyFA1bNWGXn9jtOnIHEp32yhqkPlknJKl
-         r6tkkcjsCqfISN8cK8qZkNBEtjY7YTgNZGY23WP27G+6UF4uThU/bVu2SiOsd9o95Tqc
-         Rn5ns30GlJup8Ej14EMBR+uFJtqGwmJiI3sx1PAafV8L6AKLd7gRP45F/S3sioDwSyVq
-         koQXybsA0abQLNPSnt8WEJUV9iH0IAgJ5+XGcHkwDr53pu8CloquS0YB5rhxVZqQrdw0
-         kqmQQ70VpJKO0PphGMd/ReAYghBY5kGyDIMbeMyWQgXFqcQLoZCSE1syd0FI+YdsBh1U
-         mrsg==
-X-Forwarded-Encrypted: i=1; AJvYcCWx/thUKITYtzfF5AI8e9ge2jepEkYyud+A5q8IFNXFFcjcjw5jQ0uVqGVosYBuHW35m7qfbXV3nR84Bmqw058ER8dofnGSjWPEww==
-X-Gm-Message-State: AOJu0YxEdoYXySi/YF1moyWRh5ubuD1XgBuK7iL6gZiDTrvHmJPhytMv
-	zjCOpVivvxcstFXpTP5qHvzQkWQlwGmE6JCkdmVhdgNJHiSa6sRItCwBwljPXq5QuguPmGnB45B
-	FFc3YRr3xZeTr8ynanz1oh7FHjW+PCrjjgHGsaBo3eiGjNyRTAfGlcy+NMYe2D1BlDEQFFbJtf+
-	yWGOUC1WlwTQeD9BsT9+v4XJW8uL5IAHHyRQ==
-X-Received: by 2002:a05:6e02:1647:b0:368:974b:f7c7 with SMTP id e9e14a558f8ab-36caeb48b66mr61416925ab.0.1715248817938;
-        Thu, 09 May 2024 03:00:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8o7D67Q2BZ/V4u6B6QZd+yWTOPQKvS4q4E5XTW9jC90dfP9XAlBUu5L4fxKLchDB0PdAey6VLTz3eGYh6Pw4=
-X-Received: by 2002:a05:6e02:1647:b0:368:974b:f7c7 with SMTP id
- e9e14a558f8ab-36caeb48b66mr61415825ab.0.1715248816153; Thu, 09 May 2024
- 03:00:16 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wpApFz8i"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jvUJ2uQLt5PVmBLnGtBqYs6HYo4SbN01xFxHcMlfRpMHmVlSyvlhwR5HJvfHnGLgu5PejxDGEgL6EUmdGCrn0cLF+MZbLr+HY95j3C5Xtobq9wxpC6V3eXgr23X/F7cykl2cPDfWYx5dX/RwpVrFM5Uqf+o6IpHFqbgfts1yiSSJjvtYoIjfPlW862o7AUT2mcFo7HDmpiVAZ5tp+rBgUbCnQNN/iDnP41u/wl2mK2gXDmCXL9ZLzhpkSmwlbXAZmLF+fCmhRz+ylDeXTa6dQ2T/tPFc9Eel0kMcolEmEyG6vog4BBEEu4HG8HD/69ME9WfyFwcqrr93MOoWwUJ4MQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zvSZolCBykKdQtTZaILW7FQXukMYbhMEQkcghT+tDNw=;
+ b=gqnSKT629gQzl3bOWgWoA6NQ8Kk8nNcc9QaenPmK3em5Qx1v2aEVKQqveewzcI5k24jVcyJUjGopvYAHruM5iOm83fdHdF3uw1Yl1QczLUtNWu3vPNtu1zzkqJVX3dZNUIX3wcQL0jsnuIaAoVBl91s4fkJrpoEGryUY1JGhu2YBPVqTNO1B5R+RiVwJMPwD/VVD4yWFq/YFUq49QNQBKmiktYrQscrke1esN0OXkzNfcUcLTZGverbowNPQCafD4BKKdCQOAcUWbCo8Ssu3zr6e69M23CWRG7ZYh9WWVIpkWFqj7I7RBbgSoyQlmjNQJ1zCMgkBX/WhaxwD/DbbVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zvSZolCBykKdQtTZaILW7FQXukMYbhMEQkcghT+tDNw=;
+ b=wpApFz8iNOpST/ptOBC9jf9MLZ3qXtQowrhszTUfU7ORQRopZHPywvNrq3R34WRFMqHD2zyB52yMBWY176+a0qsF2hCFHJF4dg+HK056ZIy64gJKsNPNVNgaGQE3dod1V6YW8MExwjf8ZvOOwwQ77qkFubmLvupGTCTDT36ir9M=
+Received: from MN2PR11CA0023.namprd11.prod.outlook.com (2603:10b6:208:23b::28)
+ by CH2PR12MB4149.namprd12.prod.outlook.com (2603:10b6:610:7c::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.48; Fri, 10 May
+ 2024 02:36:32 +0000
+Received: from MN1PEPF0000ECD7.namprd02.prod.outlook.com
+ (2603:10b6:208:23b:cafe::bd) by MN2PR11CA0023.outlook.office365.com
+ (2603:10b6:208:23b::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.49 via Frontend
+ Transport; Fri, 10 May 2024 02:36:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MN1PEPF0000ECD7.mail.protection.outlook.com (10.167.242.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7544.18 via Frontend Transport; Fri, 10 May 2024 02:36:32 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 9 May
+ 2024 21:36:30 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: <kvm@vger.kernel.org>
+CC: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+	<bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
+	<ak@linux.intel.com>, <tony.luck@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, <papaluri@amd.com>, "Isaku
+ Yamahata" <isaku.yamahata@intel.com>
+Subject: [PATCH v15 21/23] KVM: MMU: Disable fast path for private memslots
+Date: Thu, 9 May 2024 20:58:20 -0500
+Message-ID: <20240510015822.503071-1-michael.roth@amd.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240501085210.2213060-1-michael.roth@amd.com>
+References: <20240501085210.2213060-1-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1712694667.git.ashish.kalra@amd.com> <cover.1714148366.git.ashish.kalra@amd.com>
- <6dfe98fb95d7193ba2d692a2b6900a4d5d73db26.1714148366.git.ashish.kalra@amd.com>
- <Zjydu25Z26dH81NX@darkstar.users.ipa.redhat.com>
-In-Reply-To: <Zjydu25Z26dH81NX@darkstar.users.ipa.redhat.com>
-From: Dave Young <dyoung@redhat.com>
-Date: Thu, 9 May 2024 18:00:35 +0800
-Message-ID: <CALu+AoRVoYPjvAgkO0cpCVxvPv48BBar8Kuwc12b0XJ9wDeVRA@mail.gmail.com>
-Subject: Re: [PATCH v6 1/3] efi/x86: Fix EFI memory map corruption with kexec
-To: Ruirui Yang <ruirui.yang@linux.dev>
-Cc: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, rafael@kernel.org, 
-	hpa@zytor.com, peterz@infradead.org, adrian.hunter@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, jun.nakajima@intel.com, 
-	rick.p.edgecombe@intel.com, thomas.lendacky@amd.com, michael.roth@amd.com, 
-	seanjc@google.com, kai.huang@intel.com, bhe@redhat.com, 
-	kirill.shutemov@linux.intel.com, bdas@redhat.com, vkuznets@redhat.com, 
-	dionnaglaze@google.com, anisinha@redhat.com, jroedel@suse.de, ardb@kernel.org, 
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD7:EE_|CH2PR12MB4149:EE_
+X-MS-Office365-Filtering-Correlation-Id: 097b6ffb-7c53-4761-2923-08dc709a00d3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|1800799015|7416005|36860700004|376005|82310400017;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Jcc013T/TnDlncSxcKTAre8nd9XjAKVnDK5/eAD2XzDjCUJY3vEZP4Yb+39O?=
+ =?us-ascii?Q?QKek7B7rYKlQPfXOZAbBfWQieYUOIxNsxt77KDQsGQlyepMOZJzuPKvgycRn?=
+ =?us-ascii?Q?8bcQvDACipdY3J+AxyXxYFyNkUUQthz8ERUW54uh/pXNxW2cB1tl8zb82Li1?=
+ =?us-ascii?Q?TAuzQ6fdwF0sYFNiS03Z7cTpMNAZ+YTTYXJBYWIC1IamzR7r3/ElN0iHmK9H?=
+ =?us-ascii?Q?hpP0xay7f9WbfueybKuA10IzERtAGikLYjpVhMpq6fOAJc83Z+pJLmfGD8/+?=
+ =?us-ascii?Q?lFC1aZhndbzS4hVsaGAI1GHqRrLgQNG2FZ4PWsOvGb8BLRPx86yQ80F6w29I?=
+ =?us-ascii?Q?7dS5+MZ8+HpoXBjf4zcqSMtJfKQF8sDyt8YB7E5GT/uxTqkPgMfGRzJceLaf?=
+ =?us-ascii?Q?zFUu827Oa7P8KQ4uYtD1+csWTKgupWB5jAV2gVjbwH90YLGlmlHmW1C99Mrr?=
+ =?us-ascii?Q?f81IKDLWtXFfwsWdFkV0YphLH6Tlqqf7Q4AkPJfTPdGhkJcgN7BjrIO4yOtd?=
+ =?us-ascii?Q?5PMjmjZTRqAXfnXWfST5r3oDCqRVg0rQktG2XxnL8Cl+pKMaoCYbw/rdvIXe?=
+ =?us-ascii?Q?q6AB9NQ29h2wndTl+RCY+FqGpcyTyFnub61ZhZlgri3uV8AaUrNEBlshvHsV?=
+ =?us-ascii?Q?ZbKrZTG/KWY42rWtSrkttqwvoKNybqevOq117EbG2PkAnM/5mYChfuYTJI6a?=
+ =?us-ascii?Q?6psqv7PgtVVHfPPUslNfUGNpFHwqHZRiBEz1iUHuk0I/vDnNdlzh4TkJCLbt?=
+ =?us-ascii?Q?eqA+q4D7JHQenHhMr1KYbR/PNhDp6igSpw/x7EpKFQgHU7sE3ao7vel7whjO?=
+ =?us-ascii?Q?UjY/ndHzg3NDDQKIShfGJ5sQwJX72nDf/jf9exh+Tyc2iGzHTVXgmbLjjdmG?=
+ =?us-ascii?Q?uapnyskwWqe+Mq6vycId2gLu3PPK4yBwaT1KYzuhBh4lIUk6GZtwnNGyNLUw?=
+ =?us-ascii?Q?RDvHIHCzn4hOKIpAH5Y5Qx4S2M/2y8tWdS0gfM7sPD5XYBTDHIy8lZzxmmVP?=
+ =?us-ascii?Q?t0p7vcIGCNlIknxkjLYWuVqRCiMYa3UJ/rhDmv9gwFuQwybUyJR9DPHTCGZf?=
+ =?us-ascii?Q?+zxtTsySV5sre8+DP6sypPjmueACiexuDLt+n7QO20XD1lF+LpdmZqTecHGy?=
+ =?us-ascii?Q?ofULqIJUXeKe/lee+PnJVVoxcamdHIeJo9/vPRZEPaA6MVvaHm6FTj1aJ4Tk?=
+ =?us-ascii?Q?BFEB7R80fFLmymevZFrQjmA6QjsqdVCABoFNPwkHwADQ6ZrYpcDF5R4DS0Bw?=
+ =?us-ascii?Q?wPLO9J6bQfkshOmvtPD0LoPNz3y+q3yZIP7sjqMMrn0Mp7lm++fHhVnphP88?=
+ =?us-ascii?Q?rysocejpT+vfRdVzXL68uL/QlTy/tLkV67n6yPXL4iUrUncUgrVWfwgwEoGN?=
+ =?us-ascii?Q?olojh8t1cX3d+ZZYrQnn+Usn1mSW?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(36860700004)(376005)(82310400017);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2024 02:36:32.0255
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 097b6ffb-7c53-4761-2923-08dc709a00d3
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000ECD7.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4149
 
-On Thu, 9 May 2024 at 17:56, Ruirui Yang <ruirui.yang@linux.dev> wrote:
->
-> On Fri, Apr 26, 2024 at 04:33:48PM +0000, Ashish Kalra wrote:
-> > From: Ashish Kalra <ashish.kalra@amd.com>
-> >
-> > With SNP guest kexec observe the following efi memmap corruption :
-> >
-> > [    0.000000] efi: EFI v2.7 by EDK II
-> > [    0.000000] efi: SMBIOS=0x7e33f000 SMBIOS 3.0=0x7e33d000 ACPI=0x7e57e000 ACPI 2.0=0x7e57e014 MEMATTR=0x7cc3c018 Unaccepted=0x7c09e018
-> > [    0.000000] efi: [Firmware Bug]: Invalid EFI memory map entries:
-> > [    0.000000] efi: mem03: [type=269370880|attr=0x0e42100e42180e41] range=[0x0486200e41038c18-0x200e898a0eee713ac17] (invalid)
-> > [    0.000000] efi: mem04: [type=12336|attr=0x0e410686300e4105] range=[0x100e420000000176-0x8c290f26248d200e175] (invalid)
-> > [    0.000000] efi: mem06: [type=1124304408|attr=0x000030b400000028] range=[0x0e51300e45280e77-0xb44ed2142f460c1e76] (invalid)
-> > [    0.000000] efi: mem08: [type=68|attr=0x300e540583280e41] range=[0x0000011affff3cd8-0x486200e54b38c0bcd7] (invalid)
-> > [    0.000000] efi: mem10: [type=1107529240|attr=0x0e42280e41300e41] range=[0x300e41058c280e42-0x38010ae54c5c328ee41] (invalid)
-> > [    0.000000] efi: mem11: [type=189335566|attr=0x048d200e42038e18] range=[0x0000318c00000048-0xe42029228ce4200047] (invalid)
-> > [    0.000000] efi: mem12: [type=239142534|attr=0x0000002400000b4b] range=[0x0e41380e0a7d700e-0x80f26238f22bfe500d] (invalid)
-> > [    0.000000] efi: mem14: [type=239207055|attr=0x0e41300e43380e0a] range=[0x8c280e42048d200e-0xc70b028f2f27cc0a00d] (invalid)
-> > [    0.000000] efi: mem15: [type=239210510|attr=0x00080e660b47080e] range=[0x0000324c0000001c-0xa78028634ce490001b] (invalid)
-> > [    0.000000] efi: mem16: [type=4294848528|attr=0x0000329400000014] range=[0x0e410286100e4100-0x80f252036a218f20ff] (invalid)
-> > [    0.000000] efi: mem19: [type=2250772033|attr=0x42180e42200e4328] range=[0x41280e0ab9020683-0xe0e538c28b39e62682] (invalid)
-> > [    0.000000] efi: mem20: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x00000008ffff4438-0xffff44340090333c437] (invalid)
-> > [    0.000000] efi: mem22: [Reserved    |attr=0x000000c1ffff4420] range=[0xffff442400003398-0x1033a04240003f397] (invalid)
-> > [    0.000000] efi: mem23: [type=1141080856|attr=0x080e41100e43180e] range=[0x280e66300e4b280e-0x440dc5ee7141f4c080d] (invalid)
-> > [    0.000000] efi: mem25: [Reserved    |attr=0x0000000affff44a0] range=[0xffff44a400003428-0x1034304a400013427] (invalid)
-> > [    0.000000] efi: mem28: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x0000000affff4488-0xffff448400b034bc487] (invalid)
-> > [    0.000000] efi: mem30: [Reserved    |attr=0x0000000affff4470] range=[0xffff447400003518-0x10352047400013517] (invalid)
-> > [    0.000000] efi: mem33: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x0000000affff4458-0xffff445400b035ac457] (invalid)
-> > [    0.000000] efi: mem35: [type=269372416|attr=0x0e42100e42180e41] range=[0x0486200e44038c18-0x200e8b8a0eee823ac17] (invalid)
-> > [    0.000000] efi: mem37: [type=2351435330|attr=0x0e42100e42180e42] range=[0x470783380e410686-0x2002b2a041c2141e685] (invalid)
-> > [    0.000000] efi: mem38: [type=1093668417|attr=0x100e420000000270] range=[0x42100e42180e4220-0xfff366a4e421b78c21f] (invalid)
-> > [    0.000000] efi: mem39: [type=76357646|attr=0x180e42200e42280e] range=[0x0e410686300e4105-0x4130f251a0710ae5104] (invalid)
-> > [    0.000000] efi: mem40: [type=940444268|attr=0x0e42200e42280e41] range=[0x180e42200e42280e-0x300fc71c300b4f2480d] (invalid)
-> > [    0.000000] efi: mem41: [MMIO        |attr=0x8c280e42048d200e] range=[0xffff479400003728-0x42138e0c87820292727] (invalid)
-> > [    0.000000] efi: mem42: [type=1191674680|attr=0x0000004c0000000b] range=[0x300e41380e0a0246-0x470b0f26238f22b8245] (invalid)
-> > [    0.000000] efi: mem43: [type=2010|attr=0x0301f00e4d078338] range=[0x45038e180e42028f-0xe4556bf118f282528e] (invalid)
-> > [    0.000000] efi: mem44: [type=1109921345|attr=0x300e44000000006c] range=[0x44080e42100e4218-0xfff39254e42138ac217] (invalid)
-> > ...
-> >
-> > This EFI memap corruption is happening with efi_arch_mem_reserve() invocation in case of kexec boot.
-> >
-> > ( efi_arch_mem_reserve() is invoked with the following call-stack: )
-> >
-> > [    0.310010]  efi_arch_mem_reserve+0xb1/0x220
-> > [    0.311382]  efi_mem_reserve+0x36/0x60
-> > [    0.311973]  efi_bgrt_init+0x17d/0x1a0
-> > [    0.313265]  acpi_parse_bgrt+0x12/0x20
-> > [    0.313858]  acpi_table_parse+0x77/0xd0
-> > [    0.314463]  acpi_boot_init+0x362/0x630
-> > [    0.315069]  setup_arch+0xa88/0xf80
-> > [    0.315629]  start_kernel+0x68/0xa90
-> > [    0.316194]  x86_64_start_reservations+0x1c/0x30
-> > [    0.316921]  x86_64_start_kernel+0xbf/0x110
-> > [    0.317582]  common_startup_64+0x13e/0x141
-> >
-> > efi_arch_mem_reserve() calls efi_memmap_alloc() to allocate memory for
-> > EFI memory map and due to early allocation it uses memblock allocation.
-> >
-> > Later during boot, efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
-> > in case of a kexec-ed kernel boot.
-> >
-> > This function kexec_enter_virtual_mode() installs the new EFI memory map by
-> > calling efi_memmap_init_late() which remaps the efi_memmap physically allocated
-> > in efi_arch_mem_reserve(), but this remapping is still using memblock allocation.
-> >
-> > Subsequently, when memblock is freed later in boot flow, this remapped
-> > efi_memmap will have random corruption (similar to a use-after-free scenario).
-> >
-> > The corrupted EFI memory map is then passed to the next kexec-ed kernel
-> > which causes a panic when trying to use the corrupted EFI memory map.
-> >
-> > Fix this EFI memory map corruption by skipping efi_arch_mem_reserve() for kexec.
-> >
-> > Additionally, skipping this function for kexec altogther makes sense
-> > as for kexec use case need to use the the EFI memmap passed from first
-> > kernel via setup_data and avoid any additional EFI memory map
-> > additions/updates.
-> >
-> > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> > ---
-> >  arch/x86/platform/efi/quirks.c | 20 ++++++++++++++++++++
-> >  1 file changed, 20 insertions(+)
-> >
-> > diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> > index f0cc00032751..af7126d9c540 100644
-> > --- a/arch/x86/platform/efi/quirks.c
-> > +++ b/arch/x86/platform/efi/quirks.c
-> > @@ -258,6 +258,26 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
-> >       int num_entries;
-> >       void *new;
-> >
-> > +     /*
-> > +      * efi_arch_mem_reserve() calls efi_memmap_alloc() to allocate memory for
-> > +      * EFI memory map and due to early allocation it uses memblock allocation.
-> > +      * Later during boot, efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
-> > +      * in case of a kexec-ed kernel boot. This function kexec_enter_virtual_mode()
-> > +      * installs the new EFI memory map by calling efi_memmap_init_late() which
-> > +      * remaps the efi_memmap physically allocated here in efi_arch_mem_reserve(),
-> > +      * but this remapping is still using memblock allocation.
-> > +      * Subsequently, when memblock is freed later in boot flow, this remapped
-> > +      * efi_memmap will have random corruption (similar to a use-after-free scenario).
-> > +      * The corrupted EFI memory map is then passed to the next kexec-ed kernel
-> > +      * which causes a panic when trying to use the corrupted EFI memory map.
-> > +      * Additionally, skipping this function for kexec altogther makes sense
-> > +      * as for kexec use case need to use the the EFI memmap passed from first
-> > +      * kernel via setup_data and avoid any additional EFI memory map
-> > +      * additions/updates.
-> > +      */
-> > +     if (efi_setup)
-> > +             return;
-> > +
->
-> efi_mem_reserve is used to reserve boot service memory eg. bgrt, but
-> it is not necessary for kexec boot, as there are no boot services in
-> kexec reboot at all after the 1st kernel ExitBootServices().
->
-> The UEFI memmap passed to kexec kernel includes not only the runtime
-> service memory map but also the boot service memory ranges which were
-> reserved by the 1st kernel with efi_mem_reserve, and those boot service
-> memory ranges have already been marked "EFI_MEMORY_RUNTIME" attribute.
->
-> Take example of bgrt, the saved memory is there only for people to check
-> the bgrt image info via /sys/firmware/acpi/bgrt/*, and it is not used in
-> early boot phase by boot services.
->
-> Above is the reason why the efi_mem_reserve can be skipped for kexec
-> booting.  But as I suggested before I personally think that checking
-> EFI_MEMORY_RUNTIME attribute set or not looks better than checking
-> efi_setup.
->
+For hardware-protected VMs like SEV-SNP guests, certain conditions like
+attempting to perform a write to a page which is not in the state that
+the guest expects it to be in can result in a nested/extended #PF which
+can only be satisfied by the host performing an implicit page state
+change to transition the page into the expected shared/private state.
+This is generally handled by generating a KVM_EXIT_MEMORY_FAULT event
+that gets forwarded to userspace to handle via
+KVM_SET_MEMORY_ATTRIBUTES.
 
-I recently applied the linux.dev mail with my Chinese pinyin name  for
-use when I do not have vpn access.   So just to clarify a bit, I'm the
-same person here :)
+However, the fast_page_fault() code might misconstrue this situation as
+being the result of a write-protected access, and treat it as a spurious
+case when it sees that writes are already allowed for the sPTE. This
+results in the KVM MMU trying to resume the guest rather than taking any
+action to satisfy the real source of the #PF such as generating a
+KVM_EXIT_MEMORY_FAULT, resulting in the guest spinning on nested #PFs.
+
+For now, just skip the fast path for hardware-protected VMs since they
+don't currently utilize any of this access-tracking machinery anyway. In
+the future, these considerations will need to be taken into account if
+there's any need/desire to re-enable the fast path for
+hardware-protected VMs.
+
+Since software-protected VMs don't have a notion of a shared vs. private
+that's separate from what KVM is tracking, the above
+KVM_EXIT_MEMORY_FAULT condition wouldn't occur, so avoid the special
+handling for that case for now.
+
+Cc: Isaku Yamahata <isaku.yamahata@intel.com>
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+---
+ arch/x86/kvm/mmu/mmu.c | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 62ad38b2a8c9..cecd8360378f 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -3296,7 +3296,7 @@ static int kvm_handle_noslot_fault(struct kvm_vcpu *vcpu,
+ 	return RET_PF_CONTINUE;
+ }
+ 
+-static bool page_fault_can_be_fast(struct kvm_page_fault *fault)
++static bool page_fault_can_be_fast(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ {
+ 	/*
+ 	 * Page faults with reserved bits set, i.e. faults on MMIO SPTEs, only
+@@ -3307,6 +3307,32 @@ static bool page_fault_can_be_fast(struct kvm_page_fault *fault)
+ 	if (fault->rsvd)
+ 		return false;
+ 
++	/*
++	 * For hardware-protected VMs, certain conditions like attempting to
++	 * perform a write to a page which is not in the state that the guest
++	 * expects it to be in can result in a nested/extended #PF. In this
++	 * case, the below code might misconstrue this situation as being the
++	 * result of a write-protected access, and treat it as a spurious case
++	 * rather than taking any action to satisfy the real source of the #PF
++	 * such as generating a KVM_EXIT_MEMORY_FAULT. This can lead to the
++	 * guest spinning on a #PF indefinitely.
++	 *
++	 * For now, just skip the fast path for hardware-protected VMs since
++	 * they don't currently utilize any of this machinery anyway. In the
++	 * future, these considerations will need to be taken into account if
++	 * there's any need/desire to re-enable the fast path for
++	 * hardware-protected VMs.
++	 *
++	 * Since software-protected VMs don't have a notion of a shared vs.
++	 * private that's separate from what KVM is tracking, the above
++	 * KVM_EXIT_MEMORY_FAULT condition wouldn't occur, so avoid the
++	 * special handling for that case for now.
++	 */
++	if (kvm_slot_can_be_private(fault->slot) &&
++	    !(IS_ENABLED(CONFIG_KVM_SW_PROTECTED_VM) &&
++	      vcpu->kvm->arch.vm_type == KVM_X86_SW_PROTECTED_VM))
++		return false;
++
+ 	/*
+ 	 * #PF can be fast if:
+ 	 *
+@@ -3407,7 +3433,7 @@ static int fast_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ 	u64 *sptep;
+ 	uint retry_count = 0;
+ 
+-	if (!page_fault_can_be_fast(fault))
++	if (!page_fault_can_be_fast(vcpu, fault))
+ 		return ret;
+ 
+ 	walk_shadow_page_lockless_begin(vcpu);
+-- 
+2.25.1
 
