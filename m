@@ -1,118 +1,112 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9651C680
-	for <linux-coco@lists.linux.dev>; Sun, 12 May 2024 08:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4E5208BC
+	for <linux-coco@lists.linux.dev>; Sun, 12 May 2024 12:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715501844; cv=none; b=Xd0Wqbg6aaeeJSDrrcx7wGomLcmkdy7N4tWltfyeL8SSkiFv5tMR3Y6n54pTOZLAQtNMIUto0VeRej7u2HEI9nYUKvxFWjkP0QWxEXwkxbGnvW5CXxNYnXVOrh8skau86HJEYL3K1Xm/4hAVkejRZJCXzkvcdVvIZGCLfI47oYI=
+	t=1715516523; cv=none; b=mfvMpdKr/0Ug3RVS0eOolGCNh6wdq3juDB/8j6E8A87oOpqOlIWtyA7VqwV/iL0aEyCyFrXbq/b02S97RE3AzmxeEpcOMujzH6hMwFA41VFRPLI3orsaaay+yI93Frdfh3vfpor/MuD6QUPo9vc5Y+DD9X0ews9zIXCkjPpTUSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715501844; c=relaxed/simple;
-	bh=gy1fqqrNliFvIEA/4j3QrSKFmukTGVMtOxoq+znsGwA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Cz2LbwSI6/9KXo+tPIPtlH0LiAqRaT+pWqM5dkKcVUNrcv3K3bLXy2XUB30fzbmrdzju8AMyrh+yoTOyyzn8U9GYD5qAVxMjGFb94V+qGngflItY84mBcDewkmXQhfOcMXj3QMit2ud3nwWQh0dJeb1ZRwcU0rHOAvXkA93nm2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FUTkl5V+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1715516523; c=relaxed/simple;
+	bh=ZAOvzer8llyTrOIiIsdviMMcEDO6WCpQxbwChqobt5Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L0lclqLZKRBa+bW1iW2rn6V0HIuYPNbc8yN+NEEYVBpDEo4TOildYkzPG5EYkDnZ14h1bdzSCzZ8rovS8FuMh93SzLgWABIj00FFhnq1bQUg/LUqvVLDvOIQneOGVgfQ5cugLkBTKHk0OOnZ0WLNZ5fM/MMHtA/a1gqR8CPg5sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bQCZH/lt; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FUTkl5V+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1715501842;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QUSDVa+t4AWwqTmRuepudvFoykXU2aaVqb2V4N5FOvo=;
-	b=FUTkl5V+jie1bCvRqx2dUQwMOvkUIOfFvj0Amc+yuchwABgTBYKR/fqLQptVX7kNLe0uUM
-	yolVWZ2j845xeemeSAkzUqCG6Y7ODMOC+xtJOOc6uj7xkXiGpTDij04q7Z8DOU1h9sS8i8
-	9rvuP6vdeDdTw5kV70NBb+GTy3SHuko=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-237-3RibNb2OM4iSM5WoRpiT-A-1; Sun, 12 May 2024 04:17:20 -0400
-X-MC-Unique: 3RibNb2OM4iSM5WoRpiT-A-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-34eb54c888cso2692279f8f.3
-        for <linux-coco@lists.linux.dev>; Sun, 12 May 2024 01:17:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715501840; x=1716106640;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QUSDVa+t4AWwqTmRuepudvFoykXU2aaVqb2V4N5FOvo=;
-        b=IZnW/wK4tKfwxlvnIc5Ya0c3xQEH/B0Gk/Tpn/lCX4KgqrYkVF7qlGgms2irRRoYZe
-         Ivy6vAq6D5jw9jEoPiq3q18tQc+s7OkdvCwlElncj9v+PzVJK1XgOiEXTMc7AbgKRT/F
-         TED+ewgpP4wIlQCjG3GkPFsUbIx8KMife08bLfi/6OwsSAEW9rIin9CqQqi9rLNCDgU2
-         IkcGLy8TS4LxEKVTGbuXl7KHDowzgvg4zt9bZiKUqCbwrsiM7XWyEzVIFMwm822pyh4U
-         aajpm+q6BY8YkT8ww1S46Qk+z/HbSL/MMU3qacVAGuOTLlzTJeTcHtZ3RXzI+hbCSO5V
-         iesg==
-X-Forwarded-Encrypted: i=1; AJvYcCVzbrY2OGyYV+XpupWUSeHJbizCw8gxxKJDcpBs8lP/3XXIhG7mS7Q4T9lttXQlb+p+B56boawhGlp89RtaEJopUd2Vyq346qRN/A==
-X-Gm-Message-State: AOJu0YwPypv8YjR3MNRSRNhFapLMFo58f2dsK9k9puah07FYFUPwzMUm
-	JTO6V6+KUgurYdKNn1f4js57GDAWALUPCccvA1B85uwejHrdFkGpmnuYVuMLjqNw9l660FWTaSo
-	vAkQxcuicq4Wv5oR3VGU2t1xXPLmP6cvSZEY9iBObpvL15Mgp+US6AG1q0HXetS4MQSI7Qv6/tK
-	vs2By0TfHB4ego6N8Y0hJxKFRCHZVXgz4WGQ==
-X-Received: by 2002:a05:6000:a88:b0:34c:e62a:db70 with SMTP id ffacd0b85a97d-3504aa63447mr6802441f8f.67.1715501839257;
-        Sun, 12 May 2024 01:17:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKCS7P8m0E2FzwUMTNi7Ql+HIEI6NbkihSJrrDNgDeVBjsAxZChtVoPCY2m8yJvJpjjb/lbmUnz6gptq1HRKA=
-X-Received: by 2002:a05:6000:a88:b0:34c:e62a:db70 with SMTP id
- ffacd0b85a97d-3504aa63447mr6802413f8f.67.1715501838935; Sun, 12 May 2024
- 01:17:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bQCZH/lt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715516522; x=1747052522;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZAOvzer8llyTrOIiIsdviMMcEDO6WCpQxbwChqobt5Y=;
+  b=bQCZH/ltCPsIgzCYTUEhr0fzfBdIIHGXCOfh3VwXWWiEc2gCz9RiQzwb
+   EHm+MNfP8thf2q7VMVIgatFRLChmMRMfYOGMMar9ZTmCAESn8LU3vO2Yz
+   ZhFEfcwC+Y/+m6VLDdfNiUXdYVlevOpuLNGn8L6ALd6pZQvQ9ENAV4n+2
+   0+Gue6ohL/b/3B5dqQTZLh8wIz75G4GKReyIXmjhqlUXEZ/LCKY2AUpEK
+   RiTe1u3QnMYS7sC3D8ZD5IGKnX1UcGRMhDTJQSIB549B9z1OdtJd5OQsw
+   pziEyfkA6FaEVB2TmAgBUkaiHX8qn3KQRQFOjxtkDbUVWUH4izv7jXS+R
+   g==;
+X-CSE-ConnectionGUID: +i/6WyYATru90LQDT5UeEQ==
+X-CSE-MsgGUID: 9+NxdRP1TgSUVlgQ9rFQQA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="11594191"
+X-IronPort-AV: E=Sophos;i="6.08,155,1712646000"; 
+   d="scan'208";a="11594191"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2024 05:22:01 -0700
+X-CSE-ConnectionGUID: 9fXbSZ4KShmTdo502S0eig==
+X-CSE-MsgGUID: 9A7JvPKEThecxLCiJe4jjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,155,1712646000"; 
+   d="scan'208";a="61258778"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 12 May 2024 05:21:59 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 03D9424D; Sun, 12 May 2024 15:21:57 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCHv4 0/4] x86/tdx: Adjust TD settings on boot
+Date: Sun, 12 May 2024 15:21:50 +0300
+Message-ID: <20240512122154.2655269-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240510211024.556136-1-michael.roth@amd.com> <CABgObfZxeqfNB4tETpH4PqPTnTi0C4pGmCST73a5cTdRWLO9Yw@mail.gmail.com>
-In-Reply-To: <CABgObfZxeqfNB4tETpH4PqPTnTi0C4pGmCST73a5cTdRWLO9Yw@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sun, 12 May 2024 10:17:06 +0200
-Message-ID: <CABgObfZ=FcDdX=2kT-JZTq=5aYeEAkRQaS4A8Wew44ytQPCS7Q@mail.gmail.com>
-Subject: Re: [PULL 00/19] KVM: Add AMD Secure Nested Paging (SEV-SNP)
- Hypervisor Support
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev, jroedel@suse.de, 
-	thomas.lendacky@amd.com, vkuznets@redhat.com, pgonda@google.com, 
-	rientjes@google.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, 
-	alpergun@google.com, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, papaluri@amd.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, May 12, 2024 at 9:14=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> On Fri, May 10, 2024 at 11:17=E2=80=AFPM Michael Roth <michael.roth@amd.c=
-om> wrote:
-> >
-> > Hi Paolo,
-> >
-> > This pull request contains v15 of the KVM SNP support patchset[1] along
-> > with fixes and feedback from you and Sean regarding PSC request process=
-ing,
-> > fast_page_fault() handling for SNP/TDX, and avoiding uncessary
-> > PSMASH/zapping for KVM_EXIT_MEMORY_FAULT events. It's also been rebased
-> > on top of kvm/queue (commit 1451476151e0), and re-tested with/without
-> > 2MB gmem pages enabled.
->
-> Pulled into kvm-coco-queue, thanks (and sorry for the sev_complete_psc
-> mess up - it seemed too good to be true that the PSC changes were all
-> fine...).
+The patchset adjusts a few TD settings on boot for the optimal functioning
+of the system:
 
-... and there was a missing signoff in "KVM: SVM: Add module parameter
-to enable SEV-SNP" so I ended up not using the pull request. But it
-was still good to have it because it made it simpler to double check
-what you tested vs. what I applied.
+  - Disable EPT violation #VE on private memory if TD can control it
 
-Also I have already received the full set of pull requests for
-submaintainers, so I put it in kvm/next.  It's not impossible that it
-ends up in the 6.10 merge window, so I might as well give it a week or
-two in linux-next.
+    The newer TDX module allows the guest to control whether it wants to
+    see #VE on EPT violation on private memory. The Linux kernel does not
+    want such #VEs and needs to disable them.
 
-Paolo
+  - Enable virtualization of topology-related CPUID leafs X2APIC_APICID MSR;
 
+    The ENUM_TOPOLOGY feature allows the VMM to provide topology
+    information to the guest. Enabling the feature eliminates
+    topology-related #VEs: the TDX module virtualizes accesses to the
+    CPUID leafs and the MSR.
 
-Paolo
+    It allows TDX guest to run with non-trivial topology configuration.
+
+v4:
+ - Drop unnecessary enumeration;
+ - Drop TDG.SYS.RD wrapper;
+ - CC stable@ for SEPT disable patch;
+ - Update commit messages;
+v3:
+  - Update commit messages;
+  - Rework patches 3/4 and 4/4;
+v2:
+  - Rebased;
+  - Allow write to TDCS_TD_CTLS to fail;
+  - Adjust commit messages;
+
+Kirill A. Shutemov (4):
+  x86/tdx: Factor out TD metadata write TDCALL
+  x86/tdx: Rename tdx_parse_tdinfo() to tdx_setup()
+  x86/tdx: Dynamically disable SEPT violations from causing #VEs
+  x86/tdx: Enable CPU topology enumeration
+
+ arch/x86/coco/tdx/tdx.c           | 140 +++++++++++++++++++++++++-----
+ arch/x86/include/asm/shared/tdx.h |  13 ++-
+ 2 files changed, 130 insertions(+), 23 deletions(-)
+
+-- 
+2.43.0
 
