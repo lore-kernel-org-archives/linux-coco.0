@@ -1,120 +1,112 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8D115445B
-	for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 15:39:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E3C147C60
+	for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 16:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715614796; cv=none; b=jQtkgL5lWN7+fCMgQlHiGmTDbYngiV9VOruzsga7tb6wSBDlNVqd3nJXcgGVZ0Xx1NyLmDjvSBb2m6QpgX/QOUUCmuH0KXP9ver1nNa2BJpulr8jI755b1QATVeEtL27eHGi1K7CkHkkkcl3Oe8v9bmjIzJc6w1IZp0UR5n+cPI=
+	t=1715616089; cv=none; b=cjhwaPtFmyxr7tOprOzy/i923V9xDlHiygD/OEWNWf453yosc6s9YXKysr1Y2omyLd8gN0yRAHgtKuKvE3YuIKnT6S0XcnujSzNKUXLB8uXPVTES+C7C8Y6aDYg5Ohn8JJPbTaOtN5ujzA5GppQGjPUY7X4CBdxDBG8JjsKzdOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715614796; c=relaxed/simple;
-	bh=t5/GGoZIm8krsLcMNp3AnUd/RW9fbbrJCuKFgYYH7e8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=n9d7Fu36W964LBSLXtgrk6qf2PeCE7IYq7X+Dtsegh8RrzcuRfZ1lQ/abI2qVdvOAGyoVp91+nI3m75uN2j1rfFOkNEIZnnqtXbx2POgscOzNS4r/tJH25l1Xtuyws4kD3awyC1Wa07I0E5wF5zgQcM5Veja1UCM2HVhzb3PTjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gjKGzFNn; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1715616089; c=relaxed/simple;
+	bh=/ZQi9dOaRQSJ70JtHs5ktPMljCtexhvs6nJFR6ZIOr8=;
+	h=Subject:From:To:CC:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=aTPEps5G3GI4ap+5ZZmZut3q5TJmhROMeDEQtzjWQEzXcxqbMP/6NLdWgKTnHvv3MA4ugwvXemaPfMqF2/gu//KJynChJVZF0U9XJ4fJapIBETCWsloZtlJRYHWb/CdZgWnYBWLBH2Zexd90CQGe9g3Lw9d5YAPD23D/fU74egA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=My//k5o7; arc=none smtp.client-ip=52.119.213.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gjKGzFNn"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc693399655so7389464276.1
-        for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 08:39:55 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="My//k5o7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1715614794; x=1716219594; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=n3Z5PYvhEmOWZdAv2mF8wgraFReVMHPpsbJyP0PVGQk=;
-        b=gjKGzFNndXjL6cPLhzKB2I+zvZCgjBv6ynB5mR3LwCCKbd1Rsx/AOY3suPgsOK+cXB
-         3vsGS81kWayNDkWj/RXamvB/+cd0h5fz2xArV1aSrKpIf1rx/ej/KDMZJWlf1aQXekFi
-         wkEwdfhby3SVFzTYLkMZTBxnN1aDZhMRr8twehJqg1acjF9WsSot/NaO4I1pa26Wv74s
-         CdC1hFGd47jaWG+AWuO4opnmIE16Ci0GITyPbYzUnSPD4w7JSgs4mfnJ1Q/e2o9RtaDx
-         WPI8HbbT/XzqqYWWUU1vxvH/oIMmySsulV5czY7X2Ne0qC+Zj4RTCdJrJoJW6yht8WaA
-         2TSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715614794; x=1716219594;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=n3Z5PYvhEmOWZdAv2mF8wgraFReVMHPpsbJyP0PVGQk=;
-        b=N7qauJzQ1Hty/bB0S6QHH6ZmLcjTebpgO36L23ProY/99IPRNWtJ3dE5W9Y0mNWDAe
-         lnfuxcFrV7yBk7bLnFduWJqRI8L0tZ1G528SbQhU9upRDesnB3vARK2MLJVPCYaHi1A0
-         SMkBhKHtEORXWsPWDyRwErDCN2vCEu3an0peHsazzdt6inptnuU12e7L/SpZ5EXkLSKv
-         RpAfBZ8PBvpjMLJBt6fbQVQgUHw/xxbgdQNltvdYPUDKBNq7U4pLPy7IWR+0BkrFM1SK
-         6DdIQmtlAmh4VpNnlLZdK+3XMeLT6mtCWUDtPiUrNnblJZ9u6ROActUSAqug3ksbg9BL
-         gD0A==
-X-Forwarded-Encrypted: i=1; AJvYcCWZx840zG0uNMNdpI/b1Z0tUtmUJ6fYB4L3+jMvp8W3ADoJwoMfP82G6z1e96tNmeG3yOBwXlMewO8jlxjLetCYc77S4GAC4UmNbg==
-X-Gm-Message-State: AOJu0Yxp0vp6djnS6MWR+9Wiww2SKokYkJKpW7WuIHHacGXmq/+qUSWc
-	NgUV4YDK0x8hzr1gnD7p4uUz/UVkeytMXk73zwFxVqbggDjE8xE84+2dac6u7WPZnnv4UMwb1Py
-	iFA==
-X-Google-Smtp-Source: AGHT+IHuwIc8fyCnlatjoe9Q2CYS4eVJOdzUScq69lTq3aH08Ut4sGUdSzstpLDLmLZVgoWu5DLZoOTvNRM=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:fe0f:0:b0:de4:7be7:1c2d with SMTP id
- 3f1490d57ef6-dee4f31fb93mr2560099276.11.1715614794264; Mon, 13 May 2024
- 08:39:54 -0700 (PDT)
-Date: Mon, 13 May 2024 08:39:52 -0700
-In-Reply-To: <58f39f23-0314-4e34-a8c7-30c3a1ae4777@amazon.co.uk>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1715616088; x=1747152088;
+  h=from:to:cc:date:message-id:references:in-reply-to:
+   content-id:content-transfer-encoding:mime-version:subject;
+  bh=/ZQi9dOaRQSJ70JtHs5ktPMljCtexhvs6nJFR6ZIOr8=;
+  b=My//k5o7FrtSmXKBp9YSy3gbtRniIXQpFrlGAeJ/xgNuok2IqFzuxHF3
+   8GK67+X+hsqqLliRNo6Jl+T3bpiiFeZ2BI/U5WTqvif6L4p/B5/8ngleG
+   /iGQJS5xjL+LT4RNUnjDwHJ06DAjcxV7x0BSvxsZYZiIyWBS21EJHMhZ5
+   A=;
+X-IronPort-AV: E=Sophos;i="6.08,158,1712620800"; 
+   d="scan'208";a="658341340"
+Subject: Re: Unmapping KVM Guest Memory from Host Kernel
+Thread-Topic: Unmapping KVM Guest Memory from Host Kernel
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 16:01:25 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [10.0.17.79:5865]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.14.167:2525] with esmtp (Farcaster)
+ id 1115728c-e447-424e-be56-7a79af17b930; Mon, 13 May 2024 16:01:23 +0000 (UTC)
+X-Farcaster-Flow-ID: 1115728c-e447-424e-be56-7a79af17b930
+Received: from EX19D022EUC004.ant.amazon.com (10.252.51.159) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Mon, 13 May 2024 16:01:23 +0000
+Received: from EX19D014EUC004.ant.amazon.com (10.252.51.182) by
+ EX19D022EUC004.ant.amazon.com (10.252.51.159) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Mon, 13 May 2024 16:01:23 +0000
+Received: from EX19D014EUC004.ant.amazon.com ([fe80::76dd:4020:4ff2:1e41]) by
+ EX19D014EUC004.ant.amazon.com ([fe80::76dd:4020:4ff2:1e41%3]) with mapi id
+ 15.02.1258.028; Mon, 13 May 2024 16:01:23 +0000
+From: "Gowans, James" <jgowans@amazon.com>
+To: "seanjc@google.com" <seanjc@google.com>, "Roy, Patrick"
+	<roypat@amazon.co.uk>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Kalyazin, Nikita"
+	<kalyazin@amazon.co.uk>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+	"rppt@kernel.org" <rppt@kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "somlo@cmu.edu" <somlo@cmu.edu>,
+	"vbabka@suse.cz" <vbabka@suse.cz>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "Liam.Howlett@oracle.com"
+	<Liam.Howlett@oracle.com>, "kirill.shutemov@linux.intel.com"
+	<kirill.shutemov@linux.intel.com>, "Woodhouse, David" <dwmw@amazon.co.uk>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "Graf (AWS), Alexander" <graf@amazon.de>, "Manwaring,
+ Derek" <derekmn@amazon.com>, "chao.p.peng@linux.intel.com"
+	<chao.p.peng@linux.intel.com>, "lstoakes@gmail.com" <lstoakes@gmail.com>,
+	"mst@redhat.com" <mst@redhat.com>
+Thread-Index: AQHapSDFL4wJB6zUokKkOmjg3vQ4V7GVTVUAgAAFhYA=
+Date: Mon, 13 May 2024 16:01:22 +0000
+Message-ID: <aaf684b5eb3a3fe9cfbb6205c16f0973c6f8bb07.camel@amazon.com>
+References: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
+	 <ZeudRmZz7M6fWPVM@google.com> <ZexEkGkNe_7UY7w6@kernel.org>
+	 <58f39f23-0314-4e34-a8c7-30c3a1ae4777@amazon.co.uk>
+	 <ZkI0SCMARCB9bAfc@google.com>
+In-Reply-To: <ZkI0SCMARCB9bAfc@google.com>
+Accept-Language: en-ZA, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <12947CE165AA3241A48C00EB1398EF6F@amazon.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
- <ZeudRmZz7M6fWPVM@google.com> <ZexEkGkNe_7UY7w6@kernel.org> <58f39f23-0314-4e34-a8c7-30c3a1ae4777@amazon.co.uk>
-Message-ID: <ZkI0SCMARCB9bAfc@google.com>
-Subject: Re: Unmapping KVM Guest Memory from Host Kernel
-From: Sean Christopherson <seanjc@google.com>
-To: Patrick Roy <roypat@amazon.co.uk>
-Cc: Mike Rapoport <rppt@kernel.org>, James Gowans <jgowans@amazon.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, Derek Manwaring <derekmn@amazon.com>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, David Woodhouse <dwmw@amazon.co.uk>, 
-	Nikita Kalyazin <kalyazin@amazon.co.uk>, "lstoakes@gmail.com" <lstoakes@gmail.com>, 
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "vbabka@suse.cz" <vbabka@suse.cz>, 
-	"mst@redhat.com" <mst@redhat.com>, "somlo@cmu.edu" <somlo@cmu.edu>, Alexander Graf <graf@amazon.de>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 
-On Mon, May 13, 2024, Patrick Roy wrote:
-
-> For non-CoCo VMs, where memory is not encrypted, and the threat model ass=
-umes a
-> trusted host userspace, we would like to avoid changing the VM model so
-> completely. If we adopt CoCo=E2=80=99s approaches where KVM / Userspace t=
-ouches guest
-> memory we would get all the complexity, yet none of the encryption.
-> Particularly the complexity on the MMIO path seems nasty, but x86 does no=
-t
-
-Uber nit, modern AMD CPUs do provide the byte stream, though there is at le=
-ast
-one related erratum.  Intel CPUs don't provide the byte stream or pre-decod=
-e in
-any way.
-
-> pre-decode instructions on MMIO exits (which are just EPT_VIOLATIONs) lik=
-e it
-> does for PIO exits, so I also don=E2=80=99t really see a way around it in=
- the
-> guest_memfd model.
-
-...
-
-> Sean, you mentioned that you envision guest_memfd also supporting non-CoC=
-o VMs.
-> Do you have some thoughts about how to make the above cases work in the
-> guest_memfd context?
-
-Yes.  The hand-wavy plan is to allow selectively mmap()ing guest_memfd().  =
-There
-is a long thread[*] discussing how exactly we want to do that.  The TL;DR i=
-s that
-the basic functionality is also straightforward; the bulk of the discussion=
- is
-around gup(), reclaim, page migration, etc.
-
-[*] https://lore.kernel.org/all/ZdfoR3nCEP3HTtm1@casper.infradead.org
+T24gTW9uLCAyMDI0LTA1LTEzIGF0IDA4OjM5IC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
+b3RlOg0KPiA+IFNlYW4sIHlvdSBtZW50aW9uZWQgdGhhdCB5b3UgZW52aXNpb24gZ3Vlc3RfbWVt
+ZmQgYWxzbyBzdXBwb3J0aW5nIG5vbi1Db0NvIFZNcy4NCj4gPiBEbyB5b3UgaGF2ZSBzb21lIHRo
+b3VnaHRzIGFib3V0IGhvdyB0byBtYWtlIHRoZSBhYm92ZSBjYXNlcyB3b3JrIGluIHRoZQ0KPiA+
+IGd1ZXN0X21lbWZkIGNvbnRleHQ/DQo+IA0KPiBZZXMuwqAgVGhlIGhhbmQtd2F2eSBwbGFuIGlz
+IHRvIGFsbG93IHNlbGVjdGl2ZWx5IG1tYXAoKWluZyBndWVzdF9tZW1mZCgpLsKgIFRoZXJlDQo+
+IGlzIGEgbG9uZyB0aHJlYWRbKl0gZGlzY3Vzc2luZyBob3cgZXhhY3RseSB3ZSB3YW50IHRvIGRv
+IHRoYXQuwqAgVGhlIFRMO0RSIGlzIHRoYXQNCj4gdGhlIGJhc2ljIGZ1bmN0aW9uYWxpdHkgaXMg
+YWxzbyBzdHJhaWdodGZvcndhcmQ7IHRoZSBidWxrIG9mIHRoZSBkaXNjdXNzaW9uIGlzDQo+IGFy
+b3VuZCBndXAoKSwgcmVjbGFpbSwgcGFnZSBtaWdyYXRpb24sIGV0Yy4NCg0KSSBzdGlsbCBuZWVk
+IHRvIHJlYWQgdGhpcyBsb25nIHRocmVhZCwgYnV0IGp1c3QgYSB0aG91Z2h0IG9uIHRoZSB3b3Jk
+DQoicmVzdHJpY3RlZCIgaGVyZTogZm9yIE1NSU8gdGhlIGluc3RydWN0aW9uIGNhbiBiZSBhbnl3
+aGVyZSBhbmQNCnNpbWlsYXJseSB0aGUgbG9hZC9zdG9yZSBNTUlPIGRhdGEgY2FuIGJlIGFueXdo
+ZXJlLiBEb2VzIHRoaXMgbWVhbiB0aGF0DQpmb3IgcnVubmluZyB1bm1vZGlmaWVkIG5vbi1Db0Nv
+IFZNcyB3aXRoIGd1ZXN0X21lbWZkIGJhY2tlbmQgdGhhdCB3ZSdsbA0KYWx3YXlzIG5lZWQgdG8g
+aGF2ZSB0aGUgd2hvbGUgb2YgZ3Vlc3QgbWVtb3J5IG1tYXBwZWQ/DQoNCkkgZ3Vlc3MgdGhlIGlk
+ZWEgaXMgdGhhdCB0aGlzIHVzZSBjYXNlIHdpbGwgc3RpbGwgYmUgc3ViamVjdCB0byB0aGUNCm5v
+cm1hbCByZXN0cmljdGlvbiBydWxlcywgYnV0IGZvciBhIG5vbi1Db0NvIG5vbi1wS1ZNIFZNIHRo
+ZXJlIHdpbGwgYmUgDQpubyByZXN0cmljdGlvbiBpbiBwcmFjdGljZSwgYW5kIHVzZXJzcGFjZSB3
+aWxsIG5lZWQgdG8gbW1hcCBldmVyeXRoaW5nDQphbHdheXM/DQoNCkl0IHJlYWxseSBzZWVtcyB5
+dWNreSB0byBuZWVkIHRvIGhhdmUgYWxsIG9mIGd1ZXN0IFJBTSBtbWFwcGVkIGFsbCB0aGUNCnRp
+bWUganVzdCBmb3IgTU1JTyB0byB3b3JrLi4uIEJ1dCBJIHN1cHBvc2UgdGhlcmUgaXMgbm8gd2F5
+IGFyb3VuZCB0aGF0DQpmb3IgSW50ZWwgeDg2Lg0KDQpKRw0KDQo+IA0KPiBbKl0gaHR0cHM6Ly9s
+b3JlLmtlcm5lbC5vcmcvYWxsL1pkZm9SM25DRVAzSFR0bTFAY2FzcGVyLmluZnJhZGVhZC5vcmcN
+Cg0K
