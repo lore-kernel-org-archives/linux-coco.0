@@ -1,224 +1,110 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E201DA24
-	for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 20:36:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EBE84D07
+	for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 22:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715632593; cv=none; b=ADgFmH/ZgASLDEgvZG0DQ1BVEi5slKJEtM2rE4qGuXsZLOxMV5Uh65IJW7P0Urb47J8STO5dGKDYwo8zChsiSWaPkKx696ZJrBs8hMAbQub4BeHOg67YpX12mHun4YWkn2UkkzL9AhmFoRTy7mQ5SDUc7MQaIDhNB8SS4EiS8Yk=
+	t=1715637730; cv=none; b=gwUkB/tqJ+SOFaM1EnuQVCD7eJROFX4eSgEPNoQFFhAzFgDJYjTEsIY5A7dTCH0cgFA2XdJC7z4d2s6X8ANyYsrCS45wyfB4KVcxtFWKiY9t5+rV3kDVxY9o/ff2/ILI97EA/1BODssSI+ALxaPQoIsYhYq8leUCclxIhevzLI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715632593; c=relaxed/simple;
-	bh=n4F/ACuUR8nsDfvt1OJ0kqef8cheGQHpaP6RjXXyhBs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GLZm/EXJFlrwqOT70qEY3HIZU6X9MVsbW2dJmzbLw0ok6p0zZrCBOB9Apv/HQ5cKj6HL+mpYJsv1qHtbBeSOmgPGc504H+D2Ol/gYjGu70aCPTFBRyOAXTE2QIoMrCwRPuHfqFEPY7RxAcQiATJRW7xmQW3urTpQ05cUwlZQoVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Slrs1Li2; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1715637730; c=relaxed/simple;
+	bh=5+iQQpOEZdEkzvrHSJ41DjlAjDtbE5SACcQXxQVlFBs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LfBTDmAnqrfrc++gti+DSKc6OtGThF0+ldxHpQKqSQD5ActF7+6/Ded5rsrjQGmhfRROSZ4RAgDbz2jBTYYAzaPqF8rWonnL7s4N9+0o5XnF+vPq/IsFlbo356MoLeS2zj9UrZXzoGEyKyjOk0BO3Npazpk4OP+bkIiYb9O0kAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=gdMDMg0N; arc=none smtp.client-ip=207.171.188.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Slrs1Li2"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-61be5d44307so78457857b3.0
-        for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 13:36:31 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="gdMDMg0N"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1715632591; x=1716237391; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RTqdF/Fyy9v2rp3elmPXvaESz+kmdh+eg2ABVOfbt3w=;
-        b=Slrs1Li2DIulzw/dDfFMZHotDVkWnACKWXGguFq/KoiEyHSoMG0ibTUO7Ydmhbl1Va
-         Sr1Jae9JlkPfs4SYxg2NVMGZDHqb0o8N77whDywKVP722EG7ihChbt1T4uqCDZknisC4
-         xQRcyXZAT5sz9ckckw/vqJnivNfa18VbUjjqc6nYzeRzzQ3biEkKD1NtOCUBfa0dvYhh
-         0ivtqJTj1DlY1wlPy7aIQVzRrQoouRqBas+TcOy9XwTUO+Wo6YEhoAlbwiyqjdJ5eBvd
-         +cfq2Bs+cH7oaXtHJO9pJiGFP/L3tQ7YmSa/1I4TN9krgfV34QvJYaFcroBAz8F7mMNk
-         dteA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715632591; x=1716237391;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RTqdF/Fyy9v2rp3elmPXvaESz+kmdh+eg2ABVOfbt3w=;
-        b=l/wGv6BK8q06vOIn9sIjLpTVLi688uR25EcAEC3xJA56GgzjJrkivlB1mZkYEW9PxM
-         EqdPItZzONgmUBwul0/jukFMja3/wT0D15DM2Pj/zOpCdlZDaWsi0d3TZ5pKoIdqlF55
-         0/Vr145U4NJthb3v1B/mVCdASAUbQblw4tjajdsDcpGua/ob8M8g4f6Nss9ylNdp7v8H
-         ILk5mS7vL0xympXqycELkN5R5vcHidja7apaQkLNcsx5F7fAM5BEtnM61rCGHpjETUQW
-         TTnGuDJmKK/A65yoPjVEnR3194pRdWQjySJKHhKbKCVeu1AvRaFwr987KqHiV5YnsQsF
-         KzQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVkNmrzYJkZ6jNmGuFPeMCqJXz8RbZDZAjRN3Pu5dxnDHCTQpN5UZM65vpP7nrLSVyFwAMGVT+GAoc3WvjPzlfS3C+7NnC4LeInyA==
-X-Gm-Message-State: AOJu0YzOuCzS/nW4/LekeqpGqar786MR9Rsg9j9TYFGPUhMOsunoCuhl
-	cYADOZt2wxMrWypHHR+/3kXYyQY+BVA8C+CDdTUTEjccz0sZUajQv+ZzDIUI2l37+2CtnK427i2
-	F2g==
-X-Google-Smtp-Source: AGHT+IFxSaf5ALbxAjGJ4irStP0T4VQiFrWgBxguuMjd3vTUy8dpIf11/Kw31vWLIOru5J9yUqNrB2dHqIA=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:120d:b0:dee:690f:af35 with SMTP id
- 3f1490d57ef6-dee690fbad4mr609613276.8.1715632590827; Mon, 13 May 2024
- 13:36:30 -0700 (PDT)
-Date: Mon, 13 May 2024 13:36:29 -0700
-In-Reply-To: <f880d0187e2d482bc8a8095cf5b7404ea9d6fb03.camel@amazon.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1715637730; x=1747173730;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5+iQQpOEZdEkzvrHSJ41DjlAjDtbE5SACcQXxQVlFBs=;
+  b=gdMDMg0NHYV3WRAkJcF8/bjHV0cF6CP/mwvwFkDJqPaS+sDvEQv2SCJH
+   wU/QWeJli1AxxJrkJ824D4xMHNZE03aVQI99dDDrm+w9h8Br1/kz4jzJo
+   QcQyZIWIQNY7WjsNrmbBifyQKO4inKgWEzofo9A5sDf7Y12qOL7JYs+01
+   c=;
+X-IronPort-AV: E=Sophos;i="6.08,159,1712620800"; 
+   d="scan'208";a="726172843"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 22:02:08 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:19998]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.44.254:2525] with esmtp (Farcaster)
+ id 166c483a-d211-48eb-b873-34e5ed9da520; Mon, 13 May 2024 22:01:52 +0000 (UTC)
+X-Farcaster-Flow-ID: 166c483a-d211-48eb-b873-34e5ed9da520
+Received: from EX19D003UWC002.ant.amazon.com (10.13.138.169) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Mon, 13 May 2024 22:01:49 +0000
+Received: from [192.168.232.44] (10.106.101.48) by
+ EX19D003UWC002.ant.amazon.com (10.13.138.169) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Mon, 13 May 2024 22:01:48 +0000
+Message-ID: <7107a45b-0635-4040-9f4c-288708b13c04@amazon.com>
+Date: Mon, 13 May 2024 15:01:46 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Unmapping KVM Guest Memory from Host Kernel
+To: Sean Christopherson <seanjc@google.com>, James Gowans <jgowans@amazon.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, Nikita Kalyazin <kalyazin@amazon.co.uk>,
+	"rppt@kernel.org" <rppt@kernel.org>, "qemu-devel@nongnu.org"
+	<qemu-devel@nongnu.org>, Patrick Roy <roypat@amazon.co.uk>, "somlo@cmu.edu"
+	<somlo@cmu.edu>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, David Woodhouse
+	<dwmw@amazon.co.uk>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, Alexander Graf <graf@amazon.de>,
+	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>,
+	"lstoakes@gmail.com" <lstoakes@gmail.com>, "mst@redhat.com" <mst@redhat.com>,
+	Moritz Lipp <mlipp@amazon.at>, Claudio Canella <canellac@amazon.at>
 References: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
  <ZeudRmZz7M6fWPVM@google.com> <ZexEkGkNe_7UY7w6@kernel.org>
- <58f39f23-0314-4e34-a8c7-30c3a1ae4777@amazon.co.uk> <ZkI0SCMARCB9bAfc@google.com>
+ <58f39f23-0314-4e34-a8c7-30c3a1ae4777@amazon.co.uk>
+ <ZkI0SCMARCB9bAfc@google.com>
  <aaf684b5eb3a3fe9cfbb6205c16f0973c6f8bb07.camel@amazon.com>
- <ZkJFIpEHIQvfuzx1@google.com> <f880d0187e2d482bc8a8095cf5b7404ea9d6fb03.camel@amazon.com>
-Message-ID: <ZkJ37uwNOPis0EnW@google.com>
-Subject: Re: Unmapping KVM Guest Memory from Host Kernel
-From: Sean Christopherson <seanjc@google.com>
-To: James Gowans <jgowans@amazon.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Nikita Kalyazin <kalyazin@amazon.co.uk>, 
-	"rppt@kernel.org" <rppt@kernel.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
-	Patrick Roy <roypat@amazon.co.uk>, "somlo@cmu.edu" <somlo@cmu.edu>, "vbabka@suse.cz" <vbabka@suse.cz>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, 
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, David Woodhouse <dwmw@amazon.co.uk>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	Alexander Graf <graf@amazon.de>, Derek Manwaring <derekmn@amazon.com>, 
-	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "lstoakes@gmail.com" <lstoakes@gmail.com>, 
-	"mst@redhat.com" <mst@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+ <ZkJFIpEHIQvfuzx1@google.com>
+ <f880d0187e2d482bc8a8095cf5b7404ea9d6fb03.camel@amazon.com>
+ <ZkJ37uwNOPis0EnW@google.com>
+Content-Language: en-US
+From: "Manwaring, Derek" <derekmn@amazon.com>
+In-Reply-To: <ZkJ37uwNOPis0EnW@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EX19D043UWC001.ant.amazon.com (10.13.139.202) To
+ EX19D003UWC002.ant.amazon.com (10.13.138.169)
 
-On Mon, May 13, 2024, James Gowans wrote:
-> On Mon, 2024-05-13 at 10:09 -0700, Sean Christopherson wrote:
-> > On Mon, May 13, 2024, James Gowans wrote:
-> > > On Mon, 2024-05-13 at 08:39 -0700, Sean Christopherson wrote:
-> > > > > Sean, you mentioned that you envision guest_memfd also supporting=
- non-CoCo VMs.
-> > > > > Do you have some thoughts about how to make the above cases work =
-in the
-> > > > > guest_memfd context?
-> > > >=20
-> > > > Yes.=C2=A0 The hand-wavy plan is to allow selectively mmap()ing gue=
-st_memfd().=C2=A0 There
-> > > > is a long thread[*] discussing how exactly we want to do that.=C2=
-=A0 The TL;DR is that
-> > > > the basic functionality is also straightforward; the bulk of the di=
-scussion is
-> > > > around gup(), reclaim, page migration, etc.
-> > >=20
-> > > I still need to read this long thread, but just a thought on the word
-> > > "restricted" here: for MMIO the instruction can be anywhere and
-> > > similarly the load/store MMIO data can be anywhere. Does this mean th=
-at
-> > > for running unmodified non-CoCo VMs with guest_memfd backend that we'=
-ll
-> > > always need to have the whole of guest memory mmapped?
-> >=20
-> > Not necessarily, e.g. KVM could re-establish the direct map or mremap()=
- on-demand.
-> > There are variation on that, e.g. if ASI[*] were to ever make it's way =
-upstream,
-> > which is a huge if, then we could have guest_memfd mapped into a KVM-on=
-ly CR3.
->=20
-> Yes, on-demand mapping in of guest RAM pages is definitely an option. It
-> sounds quite challenging to need to always go via interfaces which
-> demand map/fault memory, and also potentially quite slow needing to
-> unmap and flush afterwards.=20
->=20
-> Not too sure what you have in mind with "guest_memfd mapped into KVM-
-> only CR3" - could you expand?
+On 2024-05-13 13:36-0700, Sean Christopherson wrote:
+> Hmm, a slightly crazy idea (ok, maybe wildly crazy) would be to support mapping
+> all of guest_memfd into kernel address space, but as USER=1 mappings.  I.e. don't
+> require a carve-out from userspace, but do require CLAC/STAC when access guest
+> memory from the kernel.  I think/hope that would provide the speculative execution
+> mitigation properties you're looking for?
 
-Remove guest_memfd from the kernel's direct map, e.g. so that the kernel at=
--large
-can't touch guest memory, but have a separate set of page tables that have =
-the
-direct map, userspace page tables, _and_ kernel mappings for guest_memfd.  =
-On
-KVM_RUN (or vcpu_load()?), switch to KVM's CR3 so that KVM always map/unmap=
- are
-free (literal nops).
+This is interesting. I'm hesitant to rely on SMAP since it can be
+enforced too late by the microarchitecture. But Canella, et al. [1] did
+say in 2019 that the kernel->user access route seemed to be free of any
+"Meltdown" effects. LASS sounds like it will be even stronger, though
+it's not clear to me from Intel's programming reference that speculative
+scenarios are in scope [2]. AMD does list SMAP specifically as a
+feature that can control speculation [3].
 
-That's an imperfect solution as IRQs and NMIs will run kernel code with KVM=
-'s
-page tables, i.e. guest memory would still be exposed to the host kernel.  =
-And
-of course we'd need to get buy in from multiple architecturs and maintainer=
-s,
-etc.
+I don't see an equivalent read-access control on ARM. It has PXN for
+execute. Read access can probably also be controlled?  But I think for
+the non-CoCo case we should favor solutions that are less dependent on
+hardware-specific protections.
 
-> > > I guess the idea is that this use case will still be subject to the
-> > > normal restriction rules, but for a non-CoCo non-pKVM VM there will b=
-e
-> > > no restriction in practice, and userspace will need to mmap everythin=
-g
-> > > always?
-> > >=20
-> > > It really seems yucky to need to have all of guest RAM mmapped all th=
-e
-> > > time just for MMIO to work... But I suppose there is no way around th=
-at
-> > > for Intel x86.
-> >=20
-> > It's not just MMIO.=C2=A0 Nested virtualization, and more specifically =
-shadowing nested
-> > TDP, is also problematic (probably more so than MMIO).=C2=A0 And there =
-are more cases,
-> > i.e. we'll need a generic solution for this.=C2=A0 As above, there are =
-a variety of
-> > options, it's largely just a matter of doing the work.=C2=A0 I'm not sa=
-ying it's a
-> > trivial amount of work/effort, but it's far from an unsolvable problem.
->=20
-> I didn't even think of nested virt, but that will absolutely be an even
-> bigger problem too. MMIO was just the first roadblock which illustrated
-> the problem.
-> Overall what I'm trying to figure out is whether there is any sane path
-> here other than needing to mmap all guest RAM all the time. Trying to
-> get nested virt and MMIO and whatever else needs access to guest RAM
-> working by doing just-in-time (aka: on-demand) mappings and unmappings
-> of guest RAM sounds like a painful game of whack-a-mole, potentially
-> really bad for performance too.
+Derek
 
-It's a whack-a-mole game that KVM already plays, e.g. for dirty tracking, p=
-ost-copy
-demand paging, etc..  There is still plenty of room for improvement, e.g. t=
-o reduce
-the number of touchpoints and thus the potential for missed cases.  But KVM=
- more
-or less needs to solve this basic problem no matter what, so I don't think =
-that
-guest_memfd adds much, if any, burden.
 
-> Do you think we should look at doing this on-demand mapping, or, for
-> now, simply require that all guest RAM is mmapped all the time and KVM
-> be given a valid virtual addr for the memslots?
-
-I don't think "map everything into userspace" is a viable approach, precise=
-ly
-because it requires reflecting that back into KVM's memslots, which in turn
-means guest_memfd needs to allow gup().  And I don't think we want to allow=
- gup(),
-because that opens a rather large can of worms (see the long thread I linke=
-d).
-
-Hmm, a slightly crazy idea (ok, maybe wildly crazy) would be to support map=
-ping
-all of guest_memfd into kernel address space, but as USER=3D1 mappings.  I.=
-e. don't
-require a carve-out from userspace, but do require CLAC/STAC when access gu=
-est
-memory from the kernel.  I think/hope that would provide the speculative ex=
-ecution
-mitigation properties you're looking for?
-
-Userspace would still have access to guest memory, but it would take a trul=
-y
-malicious userspace for that to matter.  And when CPUs that support LASS co=
-me
-along, userspace would be completely unable to access guest memory through =
-KVM's
-magic mapping.
-
-This too would require a decent amount of buy-in from outside of KVM, e.g. =
-to
-carve out the virtual address range in the kernel.  But the performance ove=
-rhead
-would be identical to the status quo.  And there could be advantages to bei=
-ng
-able to identify accesses to guest memory based purely on kernel virtual ad=
-dress.
+[1] https://www.usenix.org/system/files/sec19-canella.pdf
+[2] https://cdrdv2.intel.com/v1/dl/getContent/671368
+[3] https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/tuning-guides/software-techniques-for-managing-speculation.pdf
