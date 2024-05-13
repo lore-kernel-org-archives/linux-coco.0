@@ -1,140 +1,120 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC42153596
-	for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 14:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8D115445B
+	for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 15:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715609038; cv=none; b=cou21guH9qCsXf+JvKUucpp62vq6tkiwpzbKB+KJa0aAHo+83tApnxuKpAvjcHelQnPZEovbPGss60Td4N6DzfviV63AjfluOV0hDGdkEfmIchKUdbru0MSixHvxbMUDglimV4O876CfRqjhII5lH2ghGp44xPRFbYhj2vlDIrw=
+	t=1715614796; cv=none; b=jQtkgL5lWN7+fCMgQlHiGmTDbYngiV9VOruzsga7tb6wSBDlNVqd3nJXcgGVZ0Xx1NyLmDjvSBb2m6QpgX/QOUUCmuH0KXP9ver1nNa2BJpulr8jI755b1QATVeEtL27eHGi1K7CkHkkkcl3Oe8v9bmjIzJc6w1IZp0UR5n+cPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715609038; c=relaxed/simple;
-	bh=Lgh6G1eAGr1IMo9Vxnj39v+o8JT8rLEQeJcV+88RQik=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=llnAGMNbgRWdep23V2QLaCJcx7YYGg8QcTdYa4gJYc+YhQ/jRtSdU2M4IzOWSfoX1Id4MxSTGiJwQV4YRkvFE+J7aatMdChVm4flhOD6Ko4X/r4hoJTVTlD4fwLe5jrIOfT6qGxrlnXVxGP1LUIjfpHtDZ1qU29zk7vNvb+2RAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=DzShIiKS; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=DzShIiKS; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1715614796; c=relaxed/simple;
+	bh=t5/GGoZIm8krsLcMNp3AnUd/RW9fbbrJCuKFgYYH7e8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=n9d7Fu36W964LBSLXtgrk6qf2PeCE7IYq7X+Dtsegh8RrzcuRfZ1lQ/abI2qVdvOAGyoVp91+nI3m75uN2j1rfFOkNEIZnnqtXbx2POgscOzNS4r/tJH25l1Xtuyws4kD3awyC1Wa07I0E5wF5zgQcM5Veja1UCM2HVhzb3PTjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gjKGzFNn; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="DzShIiKS";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="DzShIiKS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1715609035;
-	bh=Lgh6G1eAGr1IMo9Vxnj39v+o8JT8rLEQeJcV+88RQik=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=DzShIiKSdsasr4E5wVwexE/6FI5q7gmgOCvYJelYgn5BBWydE+yU+fFY6TxQRQK9p
-	 eoCxlHz+3inoYRyYQUU36n7EplsZYAILi0eTMzHY7svMU6X9BcOUCqldaILXNl0S7R
-	 ZpqQSofQA2kPOjl5toD/5mti2kL2wVIXHDv1T1DE=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id A27841286A69;
-	Mon, 13 May 2024 10:03:55 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id fsnPAtpqdWnn; Mon, 13 May 2024 10:03:55 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1715609035;
-	bh=Lgh6G1eAGr1IMo9Vxnj39v+o8JT8rLEQeJcV+88RQik=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=DzShIiKSdsasr4E5wVwexE/6FI5q7gmgOCvYJelYgn5BBWydE+yU+fFY6TxQRQK9p
-	 eoCxlHz+3inoYRyYQUU36n7EplsZYAILi0eTMzHY7svMU6X9BcOUCqldaILXNl0S7R
-	 ZpqQSofQA2kPOjl5toD/5mti2kL2wVIXHDv1T1DE=
-Received: from [172.21.4.27] (unknown [50.204.89.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 069031286A24;
-	Mon, 13 May 2024 10:03:54 -0400 (EDT)
-Message-ID: <a8ea533bf30c658508875948f29341663360db57.camel@HansenPartnership.com>
-Subject: Re: [RFC PATCH v2 4/4] tsm: Allow for extending and reading
- configured RTMRs
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Samuel Ortiz <sameo@rivosinc.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, Kuppuswamy Sathyanarayanan
- <sathyanarayanan.kuppuswamy@linux.intel.com>, Qinkun Bao
- <qinkun@google.com>,  "Yao, Jiewen" <jiewen.yao@intel.com>, "Xing, Cedric"
- <cedric.xing@intel.com>, Dionna Amalie Glaze <dionnaglaze@google.com>,
- biao.lu@intel.com, linux-coco@lists.linux.dev, 
- linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 13 May 2024 08:03:53 -0600
-In-Reply-To: <ZkHoiYMseU0XqEbR@vermeer>
-References: <20240128212532.2754325-1-sameo@rivosinc.com>
-	 <20240128212532.2754325-5-sameo@rivosinc.com>
-	 <ec7edddcf8c74e48cb392db0789b03243ab05692.camel@HansenPartnership.com>
-	 <ZkHoiYMseU0XqEbR@vermeer>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gjKGzFNn"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc693399655so7389464276.1
+        for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 08:39:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1715614794; x=1716219594; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=n3Z5PYvhEmOWZdAv2mF8wgraFReVMHPpsbJyP0PVGQk=;
+        b=gjKGzFNndXjL6cPLhzKB2I+zvZCgjBv6ynB5mR3LwCCKbd1Rsx/AOY3suPgsOK+cXB
+         3vsGS81kWayNDkWj/RXamvB/+cd0h5fz2xArV1aSrKpIf1rx/ej/KDMZJWlf1aQXekFi
+         wkEwdfhby3SVFzTYLkMZTBxnN1aDZhMRr8twehJqg1acjF9WsSot/NaO4I1pa26Wv74s
+         CdC1hFGd47jaWG+AWuO4opnmIE16Ci0GITyPbYzUnSPD4w7JSgs4mfnJ1Q/e2o9RtaDx
+         WPI8HbbT/XzqqYWWUU1vxvH/oIMmySsulV5czY7X2Ne0qC+Zj4RTCdJrJoJW6yht8WaA
+         2TSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715614794; x=1716219594;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=n3Z5PYvhEmOWZdAv2mF8wgraFReVMHPpsbJyP0PVGQk=;
+        b=N7qauJzQ1Hty/bB0S6QHH6ZmLcjTebpgO36L23ProY/99IPRNWtJ3dE5W9Y0mNWDAe
+         lnfuxcFrV7yBk7bLnFduWJqRI8L0tZ1G528SbQhU9upRDesnB3vARK2MLJVPCYaHi1A0
+         SMkBhKHtEORXWsPWDyRwErDCN2vCEu3an0peHsazzdt6inptnuU12e7L/SpZ5EXkLSKv
+         RpAfBZ8PBvpjMLJBt6fbQVQgUHw/xxbgdQNltvdYPUDKBNq7U4pLPy7IWR+0BkrFM1SK
+         6DdIQmtlAmh4VpNnlLZdK+3XMeLT6mtCWUDtPiUrNnblJZ9u6ROActUSAqug3ksbg9BL
+         gD0A==
+X-Forwarded-Encrypted: i=1; AJvYcCWZx840zG0uNMNdpI/b1Z0tUtmUJ6fYB4L3+jMvp8W3ADoJwoMfP82G6z1e96tNmeG3yOBwXlMewO8jlxjLetCYc77S4GAC4UmNbg==
+X-Gm-Message-State: AOJu0Yxp0vp6djnS6MWR+9Wiww2SKokYkJKpW7WuIHHacGXmq/+qUSWc
+	NgUV4YDK0x8hzr1gnD7p4uUz/UVkeytMXk73zwFxVqbggDjE8xE84+2dac6u7WPZnnv4UMwb1Py
+	iFA==
+X-Google-Smtp-Source: AGHT+IHuwIc8fyCnlatjoe9Q2CYS4eVJOdzUScq69lTq3aH08Ut4sGUdSzstpLDLmLZVgoWu5DLZoOTvNRM=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:fe0f:0:b0:de4:7be7:1c2d with SMTP id
+ 3f1490d57ef6-dee4f31fb93mr2560099276.11.1715614794264; Mon, 13 May 2024
+ 08:39:54 -0700 (PDT)
+Date: Mon, 13 May 2024 08:39:52 -0700
+In-Reply-To: <58f39f23-0314-4e34-a8c7-30c3a1ae4777@amazon.co.uk>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
+ <ZeudRmZz7M6fWPVM@google.com> <ZexEkGkNe_7UY7w6@kernel.org> <58f39f23-0314-4e34-a8c7-30c3a1ae4777@amazon.co.uk>
+Message-ID: <ZkI0SCMARCB9bAfc@google.com>
+Subject: Re: Unmapping KVM Guest Memory from Host Kernel
+From: Sean Christopherson <seanjc@google.com>
+To: Patrick Roy <roypat@amazon.co.uk>
+Cc: Mike Rapoport <rppt@kernel.org>, James Gowans <jgowans@amazon.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, Derek Manwaring <derekmn@amazon.com>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, David Woodhouse <dwmw@amazon.co.uk>, 
+	Nikita Kalyazin <kalyazin@amazon.co.uk>, "lstoakes@gmail.com" <lstoakes@gmail.com>, 
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "vbabka@suse.cz" <vbabka@suse.cz>, 
+	"mst@redhat.com" <mst@redhat.com>, "somlo@cmu.edu" <somlo@cmu.edu>, Alexander Graf <graf@amazon.de>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2024-05-13 at 12:16 +0200, Samuel Ortiz wrote:
-> On Fri, May 10, 2024 at 10:57:37PM -0400, James Bottomley wrote:
-> > I'm not really sure where to hang this, since there's no posted
-> > agenda
-> > or materials for the CCC meeting today.
-> 
-> The agenda was posted on the linux-coco ml [1]. I sent a link to the
-> presentation slides [2] to the thread.
+On Mon, May 13, 2024, Patrick Roy wrote:
 
-That's great, thanks.
+> For non-CoCo VMs, where memory is not encrypted, and the threat model ass=
+umes a
+> trusted host userspace, we would like to avoid changing the VM model so
+> completely. If we adopt CoCo=E2=80=99s approaches where KVM / Userspace t=
+ouches guest
+> memory we would get all the complexity, yet none of the encryption.
+> Particularly the complexity on the MMIO path seems nasty, but x86 does no=
+t
 
-> > However, it struck me you missed a third option: use the ima log
-> > format.  This has the advantage that we can define additional
-> > events and have them published with a kernel patch (the IMA log
-> > format is defined in the kernel).  Thanks to the TCG, it's also CEL
-> > compatible but doesn't require any sort of TCG blessing of the
-> > events.  Plus we also have existing kernel infrastructure to log to
-> > that format.
-> 
-> That's an interesting idea. It may avoid having to extend the CEL
-> spec with a new Content Type, but otoh the current spec defines which
-> IMA events are supported. So adding new ones may require to also
-> eventually extend the spec. But I guess since IMA is a Linux kernel
-> subsystem, changing the kernel code and ABI would de-facto extend the
-> TCG CEL IMA spec.
+Uber nit, modern AMD CPUs do provide the byte stream, though there is at le=
+ast
+one related erratum.  Intel CPUs don't provide the byte stream or pre-decod=
+e in
+any way.
 
-That's what I was assuming since the TCG is currently deferring to IMA
-in that regard.
+> pre-decode instructions on MMIO exits (which are just EPT_VIOLATIONs) lik=
+e it
+> does for PIO exits, so I also don=E2=80=99t really see a way around it in=
+ the
+> guest_memfd model.
 
-> Here I assume you're talking about the IMA_TEMPLATE CEL specified
-> format, which is designed to accomodate for the current kernel IMA
-> log format. The main drawback of this format is that the digest does
-> not include the whole content event, making the CEL content type, the
-> IMA tag name and both lengths (for the content event and the IMA
-> content) untrusted for event log verifiers.
+...
 
-That's only because IMA doesn't yet have such an event.  If we're
-assuming effectively designing an IMA log format for non repudiation of
-external events, one can be added.  Although I wouldn't want to be
-hasty: one of the big problems of all options is that no existing log
-format really covers the measure container use case and we're not
-completely sure what other use cases will arise (the firewall rules
-measurements was one that regulated cloud providers seem to think would
-be important ... and that has a periodic rush of events, but there will
-be others).
+> Sean, you mentioned that you envision guest_memfd also supporting non-CoC=
+o VMs.
+> Do you have some thoughts about how to make the above cases work in the
+> guest_memfd context?
 
-However, the current IMA templates (event descriptions) are known by an
-ASCII prefix (they all begin ima-):
+Yes.  The hand-wavy plan is to allow selectively mmap()ing guest_memfd().  =
+There
+is a long thread[*] discussing how exactly we want to do that.  The TL;DR i=
+s that
+the basic functionality is also straightforward; the bulk of the discussion=
+ is
+around gup(), reclaim, page migration, etc.
 
-https://docs.kernel.org/security/IMA-templates.html#supported-template-fields-and-descriptors
-
-So it would be easy to add more with a non ima- prefix.  Note that this
-doc is out of date an IMA does support hashes all the way to SHA256
-although SHA384 isn't currently listed.
-
-The current record fields are defined in
-
-security/integrity/ima/ima_template.c
-
-> CEL defines another IMA format (IMA_TLV), that hashes the whole event
-> content. I think we should at least use that format as our output
-> ABI, if we want to use a TCG specified IMA content type.
-
-Possibly.  Although avoiding double hashing may be a useful performance
-measure (not really sure how fast records will come in yet).
-
-James
-
+[*] https://lore.kernel.org/all/ZdfoR3nCEP3HTtm1@casper.infradead.org
