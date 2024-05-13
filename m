@@ -1,44 +1,45 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2041.outbound.protection.outlook.com [40.107.244.41])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2064.outbound.protection.outlook.com [40.107.94.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3621137152
-	for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 17:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47477381B8
+	for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 18:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715621295; cv=fail; b=cWm+Hb+2eTFfUwOuiemwPzhJL6MNd4iP9q9gn1WiOZ+xRX4WPxCmaDacyzVLJwtBGd9E5r5VKY4PHOqsqPNWKnGDdSMOL2lE+FAg9ko9WHpL+Eu5tJw8VzSfchDfoBtD85FmH/7tTErELEaPv6Lo19gZ8qSGCdJM5qIM/Ib1Okw=
+	t=1715624408; cv=fail; b=IRsNz+R3DUh/3tpj1g7vTrhwJQfarNx5xSatGuGZGHGhOIUwZKQ0peqYkYv0hlqVlq3+uKR3LGwZ91A+urKmx2cTODfcfS05p4ZlexmnM2GS7cTd2TWN9bCoVsQjd28YFXs+B2AER+uv6pxeXRZM3SJKJjE8agMU1g3hjCBoiI0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715621295; c=relaxed/simple;
-	bh=X2TyUZBpKE4CdsOK9sDAFR+FzRu+NGB2oRo1B2XkNA8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Mtiw9dsqbKNBTWjQgEmh7laZRbqhdZKk8FQWvlfdtC9icB1ZyroLL3oJnC2i9RNFhBo16UeiL4UoHa+TImbRTctT05tqvRRrDaCQXltXQ4y7bH0aYTJ+g49dZbpm91b7JNldXAkoni2xopPvW/prBKywOM6dvzdHTMlg2IFXRXw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RktCxG5I; arc=fail smtp.client-ip=40.107.244.41
+	s=arc-20240116; t=1715624408; c=relaxed/simple;
+	bh=IXp105klcdDEAaLR8Ywv1xJLz3hn+QHeyZz15f/UAns=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KyvO4MrbfhZ6z0drn0oGcLtVYLMiAc8FJSoOV0+msCVN8QDBsxl6wbNE9icK2tfOkSKfOoDZQMx9Cmwi5oN30WvxUK8RDU/xl+EkiMjQnQZuil+T8ZWlk/oQidTEwPutDNPYcA5urVMNvDW41KM0Ld3W85Y/JjgY4d52VNZm8Zo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hmOHVHuP; arc=fail smtp.client-ip=40.107.94.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RktCxG5I"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hmOHVHuP"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bP5v+9+F4H92hHZUBO+ExCoDNgR5PokGZ8WhMD0GAFSU7+M0fAxpo9XiXn32x7x3mtT++8wq5YiAnjHV744n9Iv1+qCpNpTuM7sd/c23ei+fFOOLsS6qcYiIEKv4UP9o6EJV7CnWPS+rT0WUzZ1h7gwtgwFY7feD1FbeItxIPTq9WLmrOdRoLGjynglbapLXsGrkz1Yd3Nk10kG5wahSrUxu4SxyokDkCsEqITlVmJFBM70KFt7fstlU9rH4kjOQXUgiBHulW6cj7fnu4sTqW45IR/dhsq52jeHv/8OnNXPSFbQZL9L0ylwiQCRgMcmo+JSEEYjx4qWI5ZivJvrK5A==
+ b=bRaVxPf20gUrTXlS9RGYAEfQZlBVpMvs3dhPespjgLjPSqzDy7r7ASX+bXf4hvJ6BPVNLKwRu8/WfgAIS8yZUkk0ZNcU9lI+HiRnP2kfyZCAMWfwHot6SEiC9Q4HAj9eWLaO/pjaJuIKhmUToldT0t1p0vAI1/EFIuRMvArMo8lWpeYnmxmeBEGk7ySqWohThVZdufcNq39e1/d1l6LM07S7ugDcS9OVYtU1hRPXIaRtJwl1y/02n0SOobsckOQ5XNM+GnDviSKy38i9z7/NO5W+VCqmvvUsKmZiHcg1S/C3spl2MoLQ+jicOqP4S0tkHUAt9YlsLqbtV+PAG/GeGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3lKwFwiQMV+7KnOetMR3uIee8u0G7vmNTmBgib6N/LQ=;
- b=iUgLyO5OqIC7UbHdEdVWi45G+fIEIMXIdDfUC3GDK/8fQQ9TagSdV/rOxzP5pXaM8OIzbGzlZgnAhZeVUpWt5FOTAH/G9mxhYB+TrL0Y4s6UkkrD3F3uOz49Hei2Zewcuh5ZZUal5HBfJeiMu8jvLH2gdgfBb0lqQVqalDhpKvO5KN6+90Xc1jFnnpgcr+dukelIj5vVLWV67df+UhPWQfmfGO0o238URZZWCGGt5qSP8g6psIlj2jvKYcwTrbNd5iku2H62FL9ktXsgi4OyULWfVMuvJf4E5tGXKF1wTDHj/dO0bO9uFrdD2JdOoi7L2KZ6PyzPZDew3X1iBJcchQ==
+ bh=FbgyawJm6sz098MO/ajzKlH6Es8z4+0gm12yCzNVxAU=;
+ b=gTdf6lviGTJtlwN/fDOgOU4EnruXQ4jfEL7OSlmaPPaL4yD4a5ULcnV4D+dUgB6IAGSeQERdeq0uhzjtxRSBXdPMXRPMe2xjD7e2+LidbrmLI8sEyXK/Pc0j5UsG5TVXaox6Lf9otAZUsviBmXwXBaOgOaoldQ25lT0WBTihHv+FMtxZGpcfBuyTS9nozl9aKfHyH3J+vTZSOjeqCscRvM6Ube7BqVizGboqBdKb30b+Z1LS6JrFziqJ+OosMouZa9Uq1uFvlDlHwL2XckYplNKK8Qg0sm0Xvq63tyTGYUc8jZSrm05ZghMuUOGcjAKUPruP4B1oEryF9NGhQZrO+w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3lKwFwiQMV+7KnOetMR3uIee8u0G7vmNTmBgib6N/LQ=;
- b=RktCxG5IbU22lg64dijKjgm9U+jbBotYx9cijI2exUvCvD0Wf0PsoPqs+0V0JPC0Yboq2jQMg3q5avKx7UsLrfMzVAlW3JtWQuEbLpxcTtUksxc6xpff/0RQovptjYgAb4r3k6vwJEyRl/lHf7znU7b2pgIt8IhONLQufOWMESA=
-Received: from DM6PR01CA0021.prod.exchangelabs.com (2603:10b6:5:296::26) by
- SN7PR12MB7882.namprd12.prod.outlook.com (2603:10b6:806:348::16) with
+ bh=FbgyawJm6sz098MO/ajzKlH6Es8z4+0gm12yCzNVxAU=;
+ b=hmOHVHuP3MKyQnGT5UI9caSaVh5zQ3qq+73eGBChO38YzFB9RP3a27yzoZKLn6X3s7RFdJzjT6uIShlm140BE1cLc9wGvwA3C6TAf7iK7yWbXjDzyNTi7tG1ueo06CHUFYBUFtEG+S5cuzvIxJ97MmPg1pdZPStrAgOPTelo7yA=
+Received: from BN0PR04CA0167.namprd04.prod.outlook.com (2603:10b6:408:eb::22)
+ by DM6PR12MB4466.namprd12.prod.outlook.com (2603:10b6:5:2ae::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Mon, 13 May
- 2024 17:28:12 +0000
-Received: from DS1PEPF00017090.namprd03.prod.outlook.com (2603:10b6:5:296::4)
- by DM6PR01CA0021.outlook.office365.com (2603:10b6:5:296::26) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7544.55 via Frontend Transport; Mon, 13 May 2024 17:28:11 +0000
+ 2024 18:20:02 +0000
+Received: from BN2PEPF000044A5.namprd04.prod.outlook.com
+ (2603:10b6:408:eb:cafe::83) by BN0PR04CA0167.outlook.office365.com
+ (2603:10b6:408:eb::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55 via Frontend
+ Transport; Mon, 13 May 2024 18:20:02 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -46,21 +47,20 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS1PEPF00017090.mail.protection.outlook.com (10.167.17.132) with Microsoft
+ BN2PEPF000044A5.mail.protection.outlook.com (10.167.243.104) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7587.21 via Frontend Transport; Mon, 13 May 2024 17:28:11 +0000
+ 15.20.7587.21 via Frontend Transport; Mon, 13 May 2024 18:20:02 +0000
 Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 13 May
- 2024 12:28:10 -0500
+ 2024 13:20:00 -0500
 From: Michael Roth <michael.roth@amd.com>
 To: <kvm@vger.kernel.org>
 CC: <linux-kernel@vger.kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	<linux-coco@lists.linux.dev>, Sean Christopherson <seanjc@google.com>, Nathan
- Chancellor <nathan@kernel.org>
-Subject: [PATCH] KVM: SEV: Fix uninitialized firmware error code
-Date: Mon, 13 May 2024 12:27:04 -0500
-Message-ID: <20240513172704.718533-1-michael.roth@amd.com>
+	<linux-coco@lists.linux.dev>, Sean Christopherson <seanjc@google.com>
+Subject: [PATCH] KVM: SEV: Fix unused variable in guest request handling
+Date: Mon, 13 May 2024 13:19:28 -0500
+Message-ID: <20240513181928.720979-1-michael.roth@amd.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -74,84 +74,78 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017090:EE_|SN7PR12MB7882:EE_
-X-MS-Office365-Filtering-Correlation-Id: 575740f7-1b87-4731-3994-08dc73721023
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A5:EE_|DM6PR12MB4466:EE_
+X-MS-Office365-Filtering-Correlation-Id: 245cd088-b6e3-40fd-c1bf-08dc73794eb2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|376005|82310400017|36860700004|1800799015;
+	BCL:0;ARA:13230031|36860700004|82310400017|1800799015|376005;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?A1O9bZZJK6zrpG6zNOwEN244jZ6U8FmC5cQhrYGSXTZLeXqft4MgRzseZ+D9?=
- =?us-ascii?Q?zwZUhYJ4rUxB8xsnDmnGj6Qd1h+2Tw2zYzN9ICAhJCvbLgRsycwaQoQAnZpT?=
- =?us-ascii?Q?25ZlVFZ2E6AGL6Dhk7TmUZVSITAbRl1nO+RZL6Xv+6uLWlnED+oP+enK+WmD?=
- =?us-ascii?Q?Tapeg3jaMNf2s5Jpx1WSyRslMhmlmtCj32XceyHTwbXwIJiD1lzlzCuf/Zsd?=
- =?us-ascii?Q?scrZm+54k7YKXloLKJ/6DSBmTKKkdYzzg7AMbCfi+WwGWpfoWBub7voelnUv?=
- =?us-ascii?Q?TGe7NYqEn2/rBgk47oT+meUlKHrfhRb7sohxlVXlB3QU8mkUCTlwtanCbHdj?=
- =?us-ascii?Q?DcnLu+3cpShu2/zNcsNpIJTxskJV5vGcspf1EQPJsw/trixVgZx7TMd71wNl?=
- =?us-ascii?Q?TM+Qhd9rzfj8dCx1NVz85F9mmSrkzZrKqPfFTuTXtVLFiE5H6J/B72eNWq4f?=
- =?us-ascii?Q?GWgo3eRw9vtrUqGhBh01hGGRib9PHOovT/jB6NW7G57E2MSWXTGwvZfSc5iE?=
- =?us-ascii?Q?lgzSlalm+u8nv90hKKm0saEzb0ALQhQgqh/17k3fLWxsTmfD6tivGncbkdYj?=
- =?us-ascii?Q?RvM6Z5NaOfNOPI/fs/OTaUluxTz3b+9Zb/+3hsQRDR8ypZewJoEEYiLOOLjP?=
- =?us-ascii?Q?RQQIBAOS0RyyAwlp410yN7nwdX5eqbRWIiOC3MSRRXoAwCe9K2eVXKAKE2ng?=
- =?us-ascii?Q?eIeOipqQPo9k21T4oW1xjS2tgf+erYgDLTcNFGLZYnj+AnM6oAiDQUCmdFZa?=
- =?us-ascii?Q?zye3NKx75bqhXqCkR1SflzZMsy4KqXeGe9G2jeYoZ0ybjU1DWsOgCdBujumu?=
- =?us-ascii?Q?dBq/i08lKh1Yxx/29LUYl0bshCnwO0DjxFXuBZeOmN0PRuZemYFoX8RFA7/H?=
- =?us-ascii?Q?JymQll9iSy3J8grd01WysMNxXilUs+JkSoGKBTefX1rK+VtucxKTHFKbSBNX?=
- =?us-ascii?Q?qYEQJ5ckoHS9ue/3a61X31mrpYfHhJQJaLG3nTOpwNi9WdbPC9S4PKvZaHKe?=
- =?us-ascii?Q?Ccf0HJCBUgC6/4VYgsbwvm7AuuKz27zvt3dTwKmuuy/wX/+jUgX6ouANzNRc?=
- =?us-ascii?Q?Pyk/TG0IeYrcBXuTrI0sxS4+6dq3eZeS3osMdEN57GzvTtWpdxecJjJJQ2OD?=
- =?us-ascii?Q?iSVvtguYsL9rUSo+Jl5EYzSwDzYlWxqJwaqugPHFpI8Co3KdV/vnzpopbktz?=
- =?us-ascii?Q?p3A/rf48tpCoE212oovSQIeuOshgbJ2Dye4XEWEFUJLhuI0DFPiSiWT45b/5?=
- =?us-ascii?Q?Tn22UfGPHbqSytnSPsMHeyAnfFJb68mYkR+6nFAzxo043k1nFxFlecQsv23V?=
- =?us-ascii?Q?CKY0SIkAFF+hBkQR319M0tXF?=
+	=?us-ascii?Q?xdFf62ZoEJaavF/Rtdg4aDHDt0ZUoXLBA/kj3Zf/pMEg8Vp40ILMk1Wz0aav?=
+ =?us-ascii?Q?S27xgUEMHzOyw8/w4ejlxu0Jzhx28h2WKpCuKnh8JRGr2W+IkdBznU8d1sQ6?=
+ =?us-ascii?Q?RxnSoVXno4lCrBHr1lIVWnrMal8HFEDsAzSCfqLw/I9RBeonvWbjKkPBrvzX?=
+ =?us-ascii?Q?yvrgBbsdkDkdZVLyyHKlekJx3Op3Tz3UIcJnpJi9fQQ95JQyOz2eDryohwab?=
+ =?us-ascii?Q?XuRr1nRpC61FK7CphAt2bLegarKOAIIaJju0bxaDu/QRbhMh4CD12DUschWZ?=
+ =?us-ascii?Q?QzbXR3NX+cs89WyhT1jvgPoi6AYmz0I6kk/LnYxVS7QkWhodAvQRLETqYq7c?=
+ =?us-ascii?Q?+tJ7GuzjE46rQbpCmZCRK3NDHo8n5a2nbF/YsBmV3r+CBZvxDoTTDwBDgX3u?=
+ =?us-ascii?Q?t4fRTykRGfL4jZuXlYHt2NWYJwI7LngIP6xTH5iY7mafEoa96xsl2uQoAIfz?=
+ =?us-ascii?Q?QQ760N8qgxQrc6r5/mwaOm+MPTWeoTqba3OFuLiGSKl0k10/a4IbcPTcpf7r?=
+ =?us-ascii?Q?QGT/x6Es3CPNQeW81RtVfPfP+I6VFcrbB0STJOuIXOGQRSvf6wZWTPho8R8j?=
+ =?us-ascii?Q?iAFn0cIFOpH5ESkMpUsugwkixybPLnb+c6rE1gf9QR6RvuSFHDwelqVt+mg5?=
+ =?us-ascii?Q?P584xEUmg2v85c13U+s8xnX3zku/QEBqMqtpEG8tW6B+/SrtILxwLbrVe6qj?=
+ =?us-ascii?Q?M/bSo+2SVDzZndvnou8aatqIWrwOQ+5gsfufkNVerOJXWfMGaqQMrvul8Z4z?=
+ =?us-ascii?Q?aynUIo+3e5sOXsmT2fB0s1ar7nQEmzlsoRqbgFnQqeOPao6Hw3CvfCx7jEzK?=
+ =?us-ascii?Q?rjMU2mNv9BqHdBlxCt4i21qiLI+v8Fy1WABo7i2YgkZZPuG8zSIZa/GJdfId?=
+ =?us-ascii?Q?ZiNkH3pDwLUhKwOMK3+fs7Rt+WsQ9+jlLCmTOLODsoupzh/7ZhGiB8kBm2gx?=
+ =?us-ascii?Q?n/+Dl5iCFmyh2RqSALZZJlm6q40Hnp/X+2qaUq/WiTMxGDkkC/68TqcDvL/X?=
+ =?us-ascii?Q?5SnqAU6dEgJtAJH4K1GOJo2Q4kQZSmluNjNFCDYaIkUb8MKRLTwuRARU1gYY?=
+ =?us-ascii?Q?has3gTyOYzrldCFuCcdaOs+0Czl1TgVlHlLzeMWa6OpgvlUtrcy9PbxNZyUn?=
+ =?us-ascii?Q?9bGcKdlNxH16suMQoZ0pug2SG0NyZd4LlaKyhycojdPvib9gBto8uLmOlmda?=
+ =?us-ascii?Q?5CrxlWSSmKtBSY6155UcHzBGjp2v0/9ZEN/FBtvYQPs731QXErYMAKWLAW9i?=
+ =?us-ascii?Q?WrvNlVVuEg/Bok9V/+huIcex35nhTXIzPlgUFMtEvFtZeXJIV1kTLI2aZm96?=
+ =?us-ascii?Q?Hs/4geWXlJ3r23jSm7QxPp5e7h0pmDPc5Ije5gCETz2r4NEAi/yIlXpjp8BN?=
+ =?us-ascii?Q?K1wa0LE=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(376005)(82310400017)(36860700004)(1800799015);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(82310400017)(1800799015)(376005);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2024 17:28:11.3040
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2024 18:20:02.8030
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 575740f7-1b87-4731-3994-08dc73721023
+X-MS-Exchange-CrossTenant-Network-Message-Id: 245cd088-b6e3-40fd-c1bf-08dc73794eb2
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF00017090.namprd03.prod.outlook.com
+	BN2PEPF000044A5.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7882
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4466
 
-The current code triggers a clang warning due to passing back an
-uninitialized firmware return code in cases where an attestation request
-is aborted before getting sent to userspace. Since firmware has not been
-involved at this point the appropriate value is 0.
+The variable 'sev' is assigned, but never used. Remove it.
 
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://lore.kernel.org/kvm/20240513151920.GA3061950@thelio-3990X/
-Fixes: 32fde9e18b3f ("KVM: SEV: Provide support for SNP_EXTENDED_GUEST_REQUEST NAE event")
+Fixes: 449ead2d1edb ("KVM: SEV: Provide support for SNP_GUEST_REQUEST NAE event")
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 ---
- arch/x86/kvm/svm/sev.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kvm/svm/sev.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 57c2c8025547..59c0d89a4d52 100644
+index 59c0d89a4d52..6cf665c410b2 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -4048,7 +4048,6 @@ static int snp_begin_ext_guest_req(struct kvm_vcpu *vcpu)
- 	int vmm_ret = SNP_GUEST_VMM_ERR_GENERIC;
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	unsigned long data_npages;
--	sev_ret_code fw_err;
- 	gpa_t data_gpa;
+@@ -3965,14 +3965,11 @@ static int __snp_handle_guest_req(struct kvm *kvm, gpa_t req_gpa, gpa_t resp_gpa
+ 				  sev_ret_code *fw_err)
+ {
+ 	struct sev_data_snp_guest_request data = {0};
+-	struct kvm_sev_info *sev;
+ 	int ret;
  
- 	if (!sev_snp_guest(vcpu->kvm))
-@@ -4075,7 +4074,7 @@ static int snp_begin_ext_guest_req(struct kvm_vcpu *vcpu)
- 	return 0; /* forward request to userspace */
+ 	if (!sev_snp_guest(kvm))
+ 		return -EINVAL;
  
- abort_request:
--	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, SNP_GUEST_ERR(vmm_ret, fw_err));
-+	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, SNP_GUEST_ERR(vmm_ret, 0));
- 	return 1; /* resume guest */
- }
- 
+-	sev = &to_kvm_svm(kvm)->sev_info;
+-
+ 	ret = snp_setup_guest_buf(kvm, &data, req_gpa, resp_gpa);
+ 	if (ret)
+ 		return ret;
 -- 
 2.25.1
 
