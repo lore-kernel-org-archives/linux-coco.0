@@ -1,27 +1,27 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8D8156863;
-	Mon, 13 May 2024 16:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA2C208A1;
+	Mon, 13 May 2024 16:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715616851; cv=none; b=BJ/S2XkLQ4P/oi8LRnd8bStrUwowu8VkdDUHEBz91BWQGfut85goQdaiBx2JKRL3yHaKUx62g5uFNqKwc2k9hgDpSxes5KmNPYu7IZG62HkJVgI7K+U+zVfXn6Z1BjOH25J+UbymHgiTPl5R/5/Pvi7gjhg3U7kj5AotjuFdjAY=
+	t=1715618339; cv=none; b=R0H7c09MH9nzalO4YXvQdpsnk0YwSJJ05zZxK3sWanS82DMNNnpdyzFvbLfZJRZGkYL7WCYzzjWFe3RAoCGujq/Y3t5Dd+o84CNVoH32CzF+3zJnGr/zJF/4SOp9hvwi/7ZGxmUDkg0L1sYKkXCP/GwFGE7BgXJV0WtWNfx1Zao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715616851; c=relaxed/simple;
-	bh=tId/JdnTjdfMk77QxFfO67QzK/Kx7mUwVft12OXxf1o=;
+	s=arc-20240116; t=1715618339; c=relaxed/simple;
+	bh=fhiBDdzgfG8w+pcwYov50xsdrVpjMez9OR8PkWTcBTM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gVNk5W7+raqH0eKWJ0l+q+ALlBGtDu/7x8KhSk9qRvXDtoK5uLMJeXQwn0A7rs7MYR++WxeJ1oc9mtQLsye38H4F5heg1cUvVQYn8q/wQkkg4LheKRugIcSDA1b+LQV6K3I6cb3ZCu4GFRNoXXj91I8KB/Mg2F0bJv6oTZTlNp4=
+	 Content-Type:Content-Disposition:In-Reply-To; b=LuoaaTXMH+synXiWwM+oPiOq4coGdBvbAsk3sQA/XothX+1Sf2hqde7ez5Sr2/NZLdDLs8kZhE1X0sWMOXYZ13fzSQnye8V/ZAdD25TaOuI9SDQLQ+YHWNQAqGkHOZaFu7AaHZiCnuOxwoXvlIJoWckNFWfosk89oWLxaBpYvGc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3765C2BD11;
-	Mon, 13 May 2024 16:14:07 +0000 (UTC)
-Date: Mon, 13 May 2024 17:14:05 +0100
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E331C113CC;
+	Mon, 13 May 2024 16:38:56 +0000 (UTC)
+Date: Mon, 13 May 2024 17:38:53 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Steven Price <steven.price@arm.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
 	James Morse <james.morse@arm.com>,
 	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	Joey Gouly <joey.gouly@arm.com>,
@@ -29,10 +29,10 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
 	Christoffer Dall <christoffer.dall@arm.com>,
 	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
 	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: Re: [PATCH v2 06/14] arm64: Override set_fixmap_io
-Message-ID: <ZkI8TZmEKwrEKhe_@arm.com>
+Subject: Re: [PATCH v2 07/14] arm64: Make the PHYS_MASK_SHIFT dynamic
+Message-ID: <ZkJCHcqfXxV1wlB0@arm.com>
 References: <20240412084213.1733764-1-steven.price@arm.com>
- <20240412084213.1733764-7-steven.price@arm.com>
+ <20240412084213.1733764-8-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,30 +41,40 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240412084213.1733764-7-steven.price@arm.com>
+In-Reply-To: <20240412084213.1733764-8-steven.price@arm.com>
 
-On Fri, Apr 12, 2024 at 09:42:05AM +0100, Steven Price wrote:
-> Override the set_fixmap_io to set shared permission for the host
-> in case of a CC guest. For now we mark it shared unconditionally.
-> Future changes could filter the physical address and make the
-> decision accordingly.
-[...]
-> +void set_fixmap_io(enum fixed_addresses idx, phys_addr_t phys)
-> +{
-> +	pgprot_t prot = FIXMAP_PAGE_IO;
-> +
-> +	/*
-> +	 * For now we consider all I/O as non-secure. For future
-> +	 * filter the I/O base for setting appropriate permissions.
-> +	 */
-> +	prot = __pgprot(pgprot_val(prot) | PROT_NS_SHARED);
-> +
-> +	return __set_fixmap(idx, phys, prot);
-> +}
+On Fri, Apr 12, 2024 at 09:42:06AM +0100, Steven Price wrote:
+> diff --git a/arch/arm64/include/asm/kvm_arm.h b/arch/arm64/include/asm/kvm_arm.h
+> index e01bb5ca13b7..9944aca348bd 100644
+> --- a/arch/arm64/include/asm/kvm_arm.h
+> +++ b/arch/arm64/include/asm/kvm_arm.h
+> @@ -398,7 +398,7 @@
+>   * bits in PAR are res0.
+>   */
+>  #define PAR_TO_HPFAR(par)		\
+> -	(((par) & GENMASK_ULL(52 - 1, 12)) >> 8)
+> +	(((par) & GENMASK_ULL(MAX_PHYS_MASK_SHIFT - 1, 12)) >> 8)
 
-I looked through the patches and could not find any place where this
-function does anything different as per the commit log suggestion. Can
-we just update FIXMAP_PAGE_IO for now until you have a clear use-case?
+Why does this need to be changed? It's still a constant not dependent on
+the new dynamic IPA size.
+
+> diff --git a/arch/arm64/include/asm/pgtable-hwdef.h b/arch/arm64/include/asm/pgtable-hwdef.h
+> index ef207a0d4f0d..90dc292bed5f 100644
+> --- a/arch/arm64/include/asm/pgtable-hwdef.h
+> +++ b/arch/arm64/include/asm/pgtable-hwdef.h
+> @@ -206,8 +206,8 @@
+>  /*
+>   * Highest possible physical address supported.
+>   */
+> -#define PHYS_MASK_SHIFT		(CONFIG_ARM64_PA_BITS)
+> -#define PHYS_MASK		((UL(1) << PHYS_MASK_SHIFT) - 1)
+> +#define MAX_PHYS_MASK_SHIFT	(CONFIG_ARM64_PA_BITS)
+> +#define MAX_PHYS_MASK		((UL(1) << PHYS_MASK_SHIFT) - 1)
+
+I prefer to have MAX as suffix in those definitions, it matches other
+places like TASK_SIZE_MAX, PHYS_ADDR_MAX (I know PHYS_MASK_MAX doesn't
+roll off the tongue easily but very few people tend to read the kernel
+aloud ;)).
 
 -- 
 Catalin
