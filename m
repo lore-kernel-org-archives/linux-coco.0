@@ -1,147 +1,87 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C9714A96
-	for <linux-coco@lists.linux.dev>; Tue, 14 May 2024 05:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F320C17999
+	for <linux-coco@lists.linux.dev>; Tue, 14 May 2024 08:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715663305; cv=none; b=Oe74x8OQO9ozCi2DtFtcCAFNIgiW5dLHuQmtNFMyAdywMohmpENM9+sNmqAvZ+8LHryk1nEk0tUrYV3b1c6B2blm+j7VbfupXGkxEKvnEGH/Jvk9P8jG/UxrDfKkkQNf6FtlTpYjgXJ2ajk3IiIh6RTqXp2An8UqZU4aTBE5ltU=
+	t=1715674253; cv=none; b=qktp+wyLUuWpjnbhx1lwx80q00FVcXiN4bAJOGBAgJ4s35irP6haNpDf35aXy/4QR9cm1928VORRxT38cgdbQWd3yAdcSghVRllAuPTf5jMEgcyLI/CwBVQsbHSSfCIfhA+ZSs8cCgrAUOUdHwRw7j4IgxtQx9D7NNjtuk8SAyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715663305; c=relaxed/simple;
-	bh=ieIbWlqpi3qncOa+DKFbV5vGmc6SVatErRwe1s69pQI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OUk/LTwny7+SndXdTq0ZCFB5iZHbvCkLxqQ90hkIo6B7JAhPq0NSw/6Abv1Y1grxrrM9/MELhTg3zCspmxiFCnaM3TRsv9NmB8FqV0EJNmUgVnT9KVMsdKGL4SaR8jFJ8IsCJntGRzDmP8i/hC6GZZoPGR7dQCnHrtZ9mHkoa90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=ZqAEEXmB; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	s=arc-20240116; t=1715674253; c=relaxed/simple;
+	bh=MpHkCTTzT86UodOTRs7438YKurSYodl9BhzbJLYQrFc=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=qsGJ0D2+wLF8CcV2pq2AMeW9XIvx+Y1oscPI/5go4blPY+vNyPyFktg1cEtLSEWVJV9Vi4J1efk+BsE/JqOt8t7Ol2q08w4lG5hTddHc7KrTxRSxa4C5EsJCkALF5c5d1nxSoP6qL38hUk7TlQnQfHsfdkJUjPOvMSPLy0rt+Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=FG5dvltM; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="ZqAEEXmB"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4200ee47de7so19217175e9.2
-        for <linux-coco@lists.linux.dev>; Mon, 13 May 2024 22:08:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1715663301; x=1716268101; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=a19HgSmq/trWYOKDNko6X/3OBusO+lp3rPBD1dWx/PQ=;
-        b=ZqAEEXmB6TSRD7aZsSVNNNop+HLMYXoOVKuSGvXTwNQk9ZSYmNdA7DBYTRwrHf9HVE
-         75LY4XlDfMDMdDkwfTFlTELft5LMxDkrwveXnn9uZe+keDRg0seg6Ct9cQG52ePXEXJU
-         KrYTQMw5lRqs+8rVQJyeqYZIicmKcWxSlJ7smdhnCjFpktwM6NT+wuwCFiI2qhpcQs2X
-         3Go6NqbyNo35uFjsdwlqtAVFZ5gJ+Ec3ywF8p/jsGL9f/I9NztTbwQqe9JWGcuXiuFCG
-         W/7DKVYaC0diGD70bNBNUw+TgE+3bxbESbYI46nEmn7zF78SrU4bwLneJwyUBcrr/59M
-         UkZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715663301; x=1716268101;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a19HgSmq/trWYOKDNko6X/3OBusO+lp3rPBD1dWx/PQ=;
-        b=tnwyvWfTTczqydCGG9+EFlg6jap2Yc1RAVyRdik8lMle4A583I4klnD0AvfyvjwZ8J
-         jqGm3PnHNmpn1q4zTFXAnGheDoJYxKYuqpigbojNEGNxKw4D3fPMen2joEsAMSOfg+sR
-         Xcso5w1OaHp8Kr+JBksBeUk+PYmD7E1OtU2HdCGT3mx6S5hIBSvSXPVuZrqLQKWmr91S
-         S0hXr5fSocTqcSpqDYYQUWhmaeAS61XEFZbW063HCiDmqTaUFZ9dXnZs22XWYOo0I4WY
-         alkVVPqyjhVqBrndkniuyI5xffUOnIJ1M6BtkGblwrQzoumZn4YZk9YlZLy8FEKPMl/a
-         XuNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVgapQBGHx0MrDSY63glGybN9K/d0/ThUiUUNPxpPPMHoaeFKHYG6xh9OD+lhOwhnjVh48h/aFwzsO3gIx3/3W/DYqlmTY838hrSQ==
-X-Gm-Message-State: AOJu0YwxgSZb1iPJPxQoL4EX519wifTWSRd1YCOjPTES4Cel36zggeQd
-	rrESBcVROeDLU9yQqZuvVxYwY3aRsD4hwwcg5zukWid/3VG24qwnQIUqBwTLsmo=
-X-Google-Smtp-Source: AGHT+IGlBf3IWKGC+J9VINEwYnh1B9uENrrXQXg3NIcAKjXjFsRFaHL1ijjFWUAjW3iOtpw9ewXEQw==
-X-Received: by 2002:a05:600c:4f12:b0:420:18e9:86d5 with SMTP id 5b1f17b1804b1-42018e98859mr26458475e9.10.1715663301584;
-        Mon, 13 May 2024 22:08:21 -0700 (PDT)
-Received: from vermeer ([2a01:cb1d:81a9:dd00:b570:b34c:ffd4:c805])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-41f87d20488sm213889265e9.25.2024.05.13.22.08.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 May 2024 22:08:21 -0700 (PDT)
-Date: Tue, 14 May 2024 07:08:17 +0200
-From: Samuel Ortiz <sameo@rivosinc.com>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Qinkun Bao <qinkun@google.com>,
-	"Yao, Jiewen" <jiewen.yao@intel.com>,
-	"Xing, Cedric" <cedric.xing@intel.com>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>, biao.lu@intel.com,
-	linux-coco@lists.linux.dev, linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 4/4] tsm: Allow for extending and reading
- configured RTMRs
-Message-ID: <ZkLxwacH9nt6U9dk@vermeer>
-References: <20240128212532.2754325-1-sameo@rivosinc.com>
- <20240128212532.2754325-5-sameo@rivosinc.com>
- <ec7edddcf8c74e48cb392db0789b03243ab05692.camel@HansenPartnership.com>
- <ZkHoiYMseU0XqEbR@vermeer>
- <a8ea533bf30c658508875948f29341663360db57.camel@HansenPartnership.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="FG5dvltM"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C2B0D40E016A;
+	Tue, 14 May 2024 08:10:46 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 5GgcEjtDY3OT; Tue, 14 May 2024 08:10:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1715674243; bh=t5ROxBLyd57crBiDvNCn5htGvcOSCvJ21aXiNcdc1Jc=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=FG5dvltMk9er4ZGaXvdDhAltrQWcMie0x7swib34kGp8na3+Bm2tQyIU/eewygFVm
+	 TEdg0nVvIBeFvFWtwVzrncxatN2IDrDdN2x2VUtDf58H2j+wK6wpLsuVwFbrXTz8y8
+	 +c30TK9zpPkQYwbMeOcPNVTwShQjJ+3CayDY4PRRwMsp8OVu5iC/ZNh2wq3x2nR7Sg
+	 ulJ7EnZ/MWaH2K8EqRk/lJT0YtcFB6Blo08a0pV0Gvke2PKams9StkGzthkKtxMpd0
+	 xbPcXcdwgvDuSmSQ5aFtIOBm4beqZ8i/LQCuYJVRa9jlnIjohP0B1/GLR8Qylxnhn0
+	 DWy8NAQEx3s1ZIWomP/wAtnmCAhjsQ+gV0v86sPuvo/Qf5xsIHLUWnvtDLFt7gYro8
+	 C94c1cl28IE2QuZuX3px16ws3rkWEPmrjUue0GEaeU1QyxCUbUETG4t/uLnnejFZ8F
+	 q70r8GhLiPwv9oJsHiQMa3NQu+ZelgdueHdKwOz2EHG9YxqfYZJwLUMxvq7KOB+jfR
+	 h60Q4BaIKOIEiwB+YUQhISlLKpkzoldR6RUqovhSCogCNkTsxJS1iPWiO9apfu4xRy
+	 Q7HDaOl41AG07Px788iehUPgEs2ghyswpGSrCARG8MU+B6AiN1bXTeQ5g7hRSIh6St
+	 tmd5zLArc3Gxe5H6VLx3MwIs=
+Received: from [IPv6:::1] (p200300eA973a3496499cB1fE0c65A759.dip0.t-ipconnect.de [IPv6:2003:ea:973a:3496:499c:b1fe:c65:a759])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5FC3240E0192;
+	Tue, 14 May 2024 08:10:04 +0000 (UTC)
+Date: Tue, 14 May 2024 10:10:02 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>
+CC: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de,
+ mingo@redhat.com, jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+ ardb@kernel.org, vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+ dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+ peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+ rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
+ kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+ jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+ pankaj.gupta@amd.com, liam.merwick@oracle.com, papaluri@amd.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v15_22/23=5D_KVM=3A_SEV=3A_Fix_return_c?=
+ =?US-ASCII?Q?ode_interpretation_for_RMP_nested_page_faults?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <a47e7b49-96d2-4e7b-ae39-a3bfe6b0ed83@redhat.com>
+References: <20240501085210.2213060-1-michael.roth@amd.com> <20240510015822.503071-1-michael.roth@amd.com> <20240510015822.503071-2-michael.roth@amd.com> <Zj4oFffc7OQivyV-@google.com> <566b57c0-27cd-4591-bded-9a397a1d44d5@redhat.com> <20240510163719.pnwdwarsbgmcop3h@amd.com> <a47e7b49-96d2-4e7b-ae39-a3bfe6b0ed83@redhat.com>
+Message-ID: <AFCDFEE1-40CF-4780-B129-5AE56057BE41@alien8.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a8ea533bf30c658508875948f29341663360db57.camel@HansenPartnership.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 13, 2024 at 08:03:53AM -0600, James Bottomley wrote:
-> On Mon, 2024-05-13 at 12:16 +0200, Samuel Ortiz wrote:
-> > > However, it struck me you missed a third option: use the ima log
-> > > format.  This has the advantage that we can define additional
-> > > events and have them published with a kernel patch (the IMA log
-> > > format is defined in the kernel).  Thanks to the TCG, it's also CEL
-> > > compatible but doesn't require any sort of TCG blessing of the
-> > > events.  Plus we also have existing kernel infrastructure to log to
-> > > that format.
-> > 
-> > That's an interesting idea. It may avoid having to extend the CEL
-> > spec with a new Content Type, but otoh the current spec defines which
-> > IMA events are supported. So adding new ones may require to also
-> > eventually extend the spec. But I guess since IMA is a Linux kernel
-> > subsystem, changing the kernel code and ABI would de-facto extend the
-> > TCG CEL IMA spec.
-> 
-> That's what I was assuming since the TCG is currently deferring to IMA
-> in that regard.
-> 
-> > Here I assume you're talking about the IMA_TEMPLATE CEL specified
-> > format, which is designed to accomodate for the current kernel IMA
-> > log format. The main drawback of this format is that the digest does
-> > not include the whole content event, making the CEL content type, the
-> > IMA tag name and both lengths (for the content event and the IMA
-> > content) untrusted for event log verifiers.
-> 
-> That's only because IMA doesn't yet have such an event.  If we're
-> assuming effectively designing an IMA log format for non repudiation of
-> external events, one can be added. 
+On May 10, 2024 6:59:37 PM GMT+02:00, Paolo Bonzini <pbonzini@redhat=2Ecom>=
+ wrote:
+>Well, the merge window starts next sunday, doesn't it?  If there's an -rc=
+8 I agree there's some leeway, but that is not too likely=2E
 
-If we were to follow the IMA_TEMPLATE format as our output RTMR ABI for
-the event log, adding one or more IMA events would not change the fact
-that the event and content type would not be hashed into the extended
-digest. Unless we want to specify a different behaviour for each IMA
-event, and then verifiers would have interpret the digest construction
-differently depending on the IMA_TEMPLATE nested event type. And that's
-not pretty IMHO.
+Nah, the merge window just opened yesterday=2E=20
 
-Using the IMA_TLV content type would make that cut cleaner at least. A
-digest is built on the whole content event, for all event types. And the
-content and event types are trusted, i.e. the verifier can securely map
-events to the reported event types.
-
-> Although I wouldn't want to be
-> hasty: one of the big problems of all options is that no existing log
-> format really covers the measure container use case and we're not
-> completely sure what other use cases will arise (the firewall rules
-> measurements was one that regulated cloud providers seem to think would
-> be important ... and that has a periodic rush of events, but there will
-> be others).
-
-Right. A new CEL content type would give us more freedom in that regard,
-as it would allow us to define our own event content value in a more
-flexible way. Instead of the nested TLV approach that IMA_TLV follows,
-having one where the T would be a max length string defining the creator
-of the event (a.k.a. the attester), would avoid having to formally
-define each and every new event. That's where option #2 in the
-presentation was heading to.
-
-Cheers,
-Samuel.
-> 
+--=20
+Sent from a small device: formatting sucks and brevity is inevitable=2E 
