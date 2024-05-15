@@ -1,39 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E7E2AF0E;
-	Wed, 15 May 2024 09:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B926158AC4
+	for <linux-coco@lists.linux.dev>; Wed, 15 May 2024 09:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715763685; cv=none; b=byp15qARUjrw1GdOs9gnM1VVnJQCe4hZjvjeBXSIhn9PwCChJahuqC9wPBeJV7MVJ0GTIeCHQSc5JK6vDXM5jXVGpRnvu+dW/YQvzftnFrcUmx7PwSQ8OzEKfcw0i7Dffbs9XzC8ThYmpryQEWSBHxybzag/dQyTrR0D2d0m7f0=
+	t=1715765462; cv=none; b=sOPLazdOCBr3x76W+ooC/bOp+1kQeOVjdASq4PhCYnEBKtqHap00ZRj1005hTkNTzOJfK3/HF3a4RVOCEO84BXDOR1QW42DbgGbkBOXyzX1PcmR+xaczESGWQFwVK1pP2cLsps4GCHWi6sn8L6IKNS88MEexq66LjmsHr6help4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715763685; c=relaxed/simple;
-	bh=VYvg12eai6+57lr4OCKIvPizXBy8aVBEYV3yUW48rY8=;
+	s=arc-20240116; t=1715765462; c=relaxed/simple;
+	bh=x0WiLqGSoZ3LIOEaEn9qtWswtKOTZTI/9ZmHSmH3WiA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pKWObDykzL13/nVJpq+RaTYU0IC+hz6cLsm6d1zOkE5+8BhgmJYHhFSCTzIFLFYjoqR6wsYRkfFa0KnitBtFC6k3UbDMZbQS2eIkUG/Sp3Ijpm3uwzWIt/pANecKVGOXpn92pGnavT0Am8aDT+w/KZ0G5qJuduNkJXXyZnP+Two=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F46C32781;
-	Wed, 15 May 2024 09:01:21 +0000 (UTC)
-Date: Wed, 15 May 2024 10:01:19 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: Re: [PATCH v2 10/14] arm64: Force device mappings to be non-secure
- shared
-Message-ID: <ZkR535Hmh3WkMYai@arm.com>
-References: <20240412084213.1733764-1-steven.price@arm.com>
- <20240412084213.1733764-11-steven.price@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=AMDPeN/X7JC12Wlte9wxybVxx5WgFZKhYmWEX4D1c6QgNP3q1XBR10Xg1yHscXu5uoRGyvO3ndpChapw4cLnucUIck3FSF66wyY64+HjKfKJtOum53SkOaPRqoV8fGXRg5qAoaNAuV/VrgUn+aotuB56CR0IQpI+X+tBCT9r80s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NNef67uq; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NNef67uq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715765461; x=1747301461;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=x0WiLqGSoZ3LIOEaEn9qtWswtKOTZTI/9ZmHSmH3WiA=;
+  b=NNef67uqwRctz1IzaiLdjyzjK3pa72EbfGsoLR+JBTgSs6owD28UW4/v
+   15t3blYy0696ApdaqgnkL5V0Q8CRkIj0zN6OIwmltbeubGBdfT3vTsEiU
+   w7bAqippbw+UAhvkXO2fxNjareen0OwoAXUkXdKMtaQkRBpYoqXAoYxlC
+   UQdE0L8MzwG/APy295olbapZ71CUQuNj25sAEM/fHmhHLx+VPmqffUemH
+   Amz3qhAVHPZBZmrt12VUwWWBISL/8GGqd6V9ahyvctAd+5S1sgyTzcQBY
+   EiuCcVqPutgn2xkbj140HsEBBYe1ByJmKV2WYnYACoDAL3Hk4lj6KsrX5
+   Q==;
+X-CSE-ConnectionGUID: z8bMibgjQMuKDtXgsGGTYQ==
+X-CSE-MsgGUID: 2X3FkHheSHq6Q1sQZ16YSw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="22386717"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; 
+   d="scan'208";a="22386717"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 02:31:00 -0700
+X-CSE-ConnectionGUID: rmsMv8BmTx6TfL6MlANqLg==
+X-CSE-MsgGUID: BeMOF8duQBW8pYVgEsaE4g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; 
+   d="scan'208";a="31078044"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa006.fm.intel.com with ESMTP; 15 May 2024 02:30:58 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 95B0F327; Wed, 15 May 2024 12:30:56 +0300 (EEST)
+Date: Wed, 15 May 2024 12:30:56 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCHv4 3/4] x86/tdx: Dynamically disable SEPT violations from
+ causing #VEs
+Message-ID: <hlif565xmuj4oqdpap3boizepwg5ch3dssb67zzvy7i7smzp3n@x6hzdyc2qk4y>
+References: <20240512122154.2655269-1-kirill.shutemov@linux.intel.com>
+ <20240512122154.2655269-4-kirill.shutemov@linux.intel.com>
+ <4019eff6-18a9-49b2-9567-096cdb498fb0@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -42,42 +66,36 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240412084213.1733764-11-steven.price@arm.com>
+In-Reply-To: <4019eff6-18a9-49b2-9567-096cdb498fb0@suse.com>
 
-On Fri, Apr 12, 2024 at 09:42:09AM +0100, Steven Price wrote:
-> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+On Tue, May 14, 2024 at 05:56:21PM +0300, Nikolay Borisov wrote:
+> > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> > index 1ff571cb9177..ba37f4306f4e 100644
+> > --- a/arch/x86/coco/tdx/tdx.c
+> > +++ b/arch/x86/coco/tdx/tdx.c
+> > @@ -77,6 +77,20 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+> >   		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
+> >   }
+> > +/* Read TD-scoped metadata */
+> > +static inline u64 tdg_vm_rd(u64 field, u64 *value)
+> > +{
+> > +	struct tdx_module_args args = {
+> > +		.rdx = field,
+> > +	};
+> > +	u64 ret;
+> > +
+> > +	ret = __tdcall_ret(TDG_VM_RD, &args);
+> > +	*value = args.r8;
+> > +
+> > +	return ret;
+> > +}
 > 
-> Device mappings (currently) need to be emulated by the VMM so must be
-> mapped shared with the host.
+> nit: Perhaps this function can be put in the first patch and the description
+> there be made more generic, something along the lines of "introduce
+> functions for tdg_rd/tdg_wr" ?
 
-You say "currently". What's the plan when the device is not emulated?
-How would the guest distinguish what's emulated and what's not to avoid
-setting the PROT_NS_SHARED bit?
-
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
->  arch/arm64/include/asm/pgtable.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index f5376bd567a1..db71c564ec21 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -598,7 +598,7 @@ static inline void set_pud_at(struct mm_struct *mm, unsigned long addr,
->  #define pgprot_writecombine(prot) \
->  	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_NORMAL_NC) | PTE_PXN | PTE_UXN)
->  #define pgprot_device(prot) \
-> -	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_DEVICE_nGnRE) | PTE_PXN | PTE_UXN)
-> +	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_DEVICE_nGnRE) | PTE_PXN | PTE_UXN | PROT_NS_SHARED)
-
-This pgprot_device() is not the only one used to map device resources.
-pgprot_writecombine() is another commonly macro. It feels like a hack to
-plug one but not the other and without any way for the guest to figure
-out what's emulated.
-
-Can the DT actually place those emulated ranges in the higher IPA space
-so that we avoid randomly adding this attribute for devices?
+A static function without an user will generate a build warning. I don't
+think it is good idea.
 
 -- 
-Catalin
+  Kiryl Shutsemau / Kirill A. Shutemov
