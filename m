@@ -1,120 +1,116 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1E685C69
-	for <linux-coco@lists.linux.dev>; Wed, 15 May 2024 13:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C472A8595B
+	for <linux-coco@lists.linux.dev>; Wed, 15 May 2024 13:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715778865; cv=none; b=aYn6VnUGMY+doHE02kuer36PspOosvQsfOaXdIeq9kpBcjrWQ4nSETbydVf0s550GZYTFp1iAFiZfe/8Mxzb//eBQtNoEGKc2VlELzJS2mj+SxYJx7yPOaclAyuMUbgZO2dRrymnkwNH83al/9A5+IP8ESjoAC01ioaYRui5kOA=
+	t=1715779383; cv=none; b=d260i0Mu/Gisf8JaLJ5uN0wzU0ngFytJLt6K/OejHeBhSxoJvSFaGRrqRFRJwVBwcZL/Cy9haqhriit+cT//PLbWKF9gdCxJd87dAfxYqi7WKjoGRAy1nidHHr458V100Ipn9Eota0rKT6FF0Dc0izYsEsYq4ClFQkcZYRku+qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715778865; c=relaxed/simple;
-	bh=s2MsQsbOcEJaFuD6Ni7/NYOLXbHjY6U5QgaDyMhbiHw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pyL5Xi9jk6sYrNCOT9tmY85rguDABy/o0OCvyN+H7dz7NTBBr35Mcxx1ZqNoJ3UG9jX0gRvAB2rrW2XUVhyYN3Kvljx9V7/Z62R3nfwtMhd7Ly+RSX9mzrqmLCKJGI12YTQk2iermDlLgetmCq0CmJmItmfh0bWZZ+MLg9aUJZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=fail smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aMl/Facf; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=suse.com
+	s=arc-20240116; t=1715779383; c=relaxed/simple;
+	bh=Wbg7b4ydt/+8jq5wvj6n6dJOlOXthP31qnywghWhedM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pXGqMLi7Y/H08U+PetUJL/gouzi0Q+f8hFBQZeXUOnIKsTkob+grR09MVFpY079CiOdyia3EyKSZ6BInt96DeR9NakMzsDBj5KkOJcj2fBmqDyXjSQ9sn+45hd0uNl8R+A0sFjSfROukBHOtHqRozakfVxUpeuo3RreTEBnoq9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U5QiQDgM; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aMl/Facf"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-351ae94323aso3368736f8f.0
-        for <linux-coco@lists.linux.dev>; Wed, 15 May 2024 06:14:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1715778860; x=1716383660; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+ZQczyYTUAQqghnJxDKHUmq7P5Cpxuc3TDeJECCySJQ=;
-        b=aMl/FacfeYHgNVUP661++9dPh4fJro1cLwpvgllQRsLyQ5bOvQTMcPFuuYjo5pqbm+
-         UR2UJMGdir/V27uHINOdmZZtIRCZ7wGzON32zSma10aQPjVE2cyEtMq86VfEkewtcv8E
-         VOAGSF9EQmseVFoMSvyC4KwnuTO18c8omsyGiIvNJElqpY+/EV6BSZ8f/Ie4VWcSylnT
-         GGLQL5p9DKMXHPIdDRnnyjCQg1ltw3hShylJ6iZLhlEeF625PYieVdNNO/pI5FKUqK2r
-         ae5LMP6I6PtfRqyzoEQezeDz3T/dv1XUAH8TUe6hfCmdUf0MszqTBRwLYnSvB9mSGVLr
-         pJlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715778860; x=1716383660;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+ZQczyYTUAQqghnJxDKHUmq7P5Cpxuc3TDeJECCySJQ=;
-        b=GyJ0lfcPs2EB/8UR2L2bGfVkxVv03UND5P9SMlPjZQurmgwGPvFRTXqriHAgJI6B44
-         FXJ+cnyc93Bt9Sit5V+Zdzkb5B4PddX+qzwdjOdD48D3x3kZtCVis+DhwEptdeLThLhN
-         JsqR/IAO79KbyIDFVShiD2a4qmlgDro9ik/PtWNvO8bxMWOc0q4VhsMydZIImLBbfvbX
-         rdj8QLns4F47Fbv15neziIbOPEF5whawn1LUHoiI96T/U9M1z6nIbwo/LQwh2b8JI6A9
-         FDXe7YdiKCVKu/71DQEwmZfxib9+/+PfX97CgzNyzFNCU5HDiVfeRd5vH1o8uYRzi1uK
-         JtFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUaFKfmMCA5px6yf0+PBiR3Tl5c+3vnr9Je/jowFcjMxbPPM6R4Mlp7bwvNfVyuuonbF5Qv9rmcquwznxhmdzPRboN5248rbQQfYg==
-X-Gm-Message-State: AOJu0YzsTJzwXCTACpkGwoJOrqEPBWHgPjbs+Z3BNuCnUEbWYX3+Amtx
-	JYaCAJ1fewvDHEuYoZ/GkTXbsYLd4fXP3qVVtG4iugqSuK1dVgIonMf7fQ3cHzU=
-X-Google-Smtp-Source: AGHT+IGQNbYnf8Vfg9Xp8aIPaXFstDshmOgeyDh575lue3C4UTfVAvFlCh57u4sj5r7QTOh4I+0gHQ==
-X-Received: by 2002:a5d:4f04:0:b0:34e:89cf:4576 with SMTP id ffacd0b85a97d-3504a9689b3mr11621359f8f.51.1715778860187;
-        Wed, 15 May 2024 06:14:20 -0700 (PDT)
-Received: from ?IPV6:2a10:bac0:b000:7315:bd27:5d9d:ab1e:9b6f? ([2a10:bac0:b000:7315:bd27:5d9d:ab1e:9b6f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3502bbc5654sm16576757f8f.115.2024.05.15.06.14.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 May 2024 06:14:19 -0700 (PDT)
-Message-ID: <8a5fa107-a055-4c05-bcb1-dc4044be841d@suse.com>
-Date: Wed, 15 May 2024 16:14:18 +0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U5QiQDgM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715779382; x=1747315382;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=Wbg7b4ydt/+8jq5wvj6n6dJOlOXthP31qnywghWhedM=;
+  b=U5QiQDgMPcwIhvE7mimXvooiRK6ny5Co6AzhsB3A74WZHJtYPOlNgAkq
+   JwNnH5897DQEBuA4Mk7DrmTUJYTtbq8b+QR2sQzo1aTfKqH0jB4FdcMbt
+   L/UmTcXEVOLeQPMoxzmXtzQoGmzvTbxshZLTXrfNFn5PweM2YQd8daFoQ
+   bO7gxwBCWpQPjSIHnRPA9nALQSrssbFqaUfwq97YFv4XMZoGuR581s8Dz
+   Q0QYdV4aFWZwy0ON6vy9dkZfggxAbm6CDTzpXZKgNY+7ZJuPESuF75FNj
+   Jqx/9DX0kgqPaB6eykr5njYaOhCOJ5TgvPNZr4Lt0iwOkIh9AtLmyYnrM
+   g==;
+X-CSE-ConnectionGUID: qcjVehq9Sf21wps6T0o6vg==
+X-CSE-MsgGUID: vnyD1KI2Q/u8MlVexoVtNg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="14774804"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; 
+   d="scan'208";a="14774804"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 06:23:01 -0700
+X-CSE-ConnectionGUID: E0PZQ22fSbaKasd2DoLfUg==
+X-CSE-MsgGUID: +xP9Ra5UQF2dyU0evu9TUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; 
+   d="scan'208";a="35935779"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa004.jf.intel.com with ESMTP; 15 May 2024 06:22:59 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 96B6197D; Wed, 15 May 2024 16:22:57 +0300 (EEST)
+Date: Wed, 15 May 2024 16:22:57 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCHv4 3/4] x86/tdx: Dynamically disable SEPT violations from
+ causing #VEs
+Message-ID: <l3yziplqp6cj7bwmimzzsld22bedmtnyj67q5tolbwez6jmpor@35xye7pkfd47>
+References: <20240512122154.2655269-1-kirill.shutemov@linux.intel.com>
+ <20240512122154.2655269-4-kirill.shutemov@linux.intel.com>
+ <4019eff6-18a9-49b2-9567-096cdb498fb0@suse.com>
+ <hlif565xmuj4oqdpap3boizepwg5ch3dssb67zzvy7i7smzp3n@x6hzdyc2qk4y>
+ <8a5fa107-a055-4c05-bcb1-dc4044be841d@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv4 3/4] x86/tdx: Dynamically disable SEPT violations from
- causing #VEs
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Nikolay Borisov <nik.borisov@suse.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240512122154.2655269-1-kirill.shutemov@linux.intel.com>
- <20240512122154.2655269-4-kirill.shutemov@linux.intel.com>
- <4019eff6-18a9-49b2-9567-096cdb498fb0@suse.com>
- <hlif565xmuj4oqdpap3boizepwg5ch3dssb67zzvy7i7smzp3n@x6hzdyc2qk4y>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-In-Reply-To: <hlif565xmuj4oqdpap3boizepwg5ch3dssb67zzvy7i7smzp3n@x6hzdyc2qk4y>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <8a5fa107-a055-4c05-bcb1-dc4044be841d@suse.com>
 
-
-
-On 15.05.24 г. 12:30 ч., Kirill A. Shutemov wrote:
-> On Tue, May 14, 2024 at 05:56:21PM +0300, Nikolay Borisov wrote:
->>> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
->>> index 1ff571cb9177..ba37f4306f4e 100644
->>> --- a/arch/x86/coco/tdx/tdx.c
->>> +++ b/arch/x86/coco/tdx/tdx.c
->>> @@ -77,6 +77,20 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
->>>    		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
->>>    }
->>> +/* Read TD-scoped metadata */
->>> +static inline u64 tdg_vm_rd(u64 field, u64 *value)
->>> +{
->>> +	struct tdx_module_args args = {
->>> +		.rdx = field,
->>> +	};
->>> +	u64 ret;
->>> +
->>> +	ret = __tdcall_ret(TDG_VM_RD, &args);
->>> +	*value = args.r8;
->>> +
->>> +	return ret;
->>> +}
->>
->> nit: Perhaps this function can be put in the first patch and the description
->> there be made more generic, something along the lines of "introduce
->> functions for tdg_rd/tdg_wr" ?
+On Wed, May 15, 2024 at 04:14:18PM +0300, Nikolay Borisov wrote:
 > 
-> A static function without an user will generate a build warning. I don't
-> think it is good idea.
 > 
+> On 15.05.24 г. 12:30 ч., Kirill A. Shutemov wrote:
+> > On Tue, May 14, 2024 at 05:56:21PM +0300, Nikolay Borisov wrote:
+> > > > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> > > > index 1ff571cb9177..ba37f4306f4e 100644
+> > > > --- a/arch/x86/coco/tdx/tdx.c
+> > > > +++ b/arch/x86/coco/tdx/tdx.c
+> > > > @@ -77,6 +77,20 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+> > > >    		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
+> > > >    }
+> > > > +/* Read TD-scoped metadata */
+> > > > +static inline u64 tdg_vm_rd(u64 field, u64 *value)
+> > > > +{
+> > > > +	struct tdx_module_args args = {
+> > > > +		.rdx = field,
+> > > > +	};
+> > > > +	u64 ret;
+> > > > +
+> > > > +	ret = __tdcall_ret(TDG_VM_RD, &args);
+> > > > +	*value = args.r8;
+> > > > +
+> > > > +	return ret;
+> > > > +}
+> > > 
+> > > nit: Perhaps this function can be put in the first patch and the description
+> > > there be made more generic, something along the lines of "introduce
+> > > functions for tdg_rd/tdg_wr" ?
+> > 
+> > A static function without an user will generate a build warning. I don't
+> > think it is good idea.
+> > 
+> 
+> But are those 2 wrappers really static-worthy? Those two interfaces seem to
+> be rather generic and could be used by more things in the future? OTOH when
+> the time comes they can be exposed as needed.
 
-But are those 2 wrappers really static-worthy? Those two interfaces seem 
-to be rather generic and could be used by more things in the future? 
-OTOH when the time comes they can be exposed as needed.
+Generally, functions have to static unless they used outside of the
+translation unit.
 
-Anyway that could be considered a minor thing.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
