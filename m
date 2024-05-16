@@ -1,61 +1,89 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0662942A
-	for <linux-coco@lists.linux.dev>; Thu, 16 May 2024 07:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715842883; cv=none; b=CBVWnNzmrKeBsmN5GBgVbpbNU8ITsSc9Zqz7VUgtxC+AeZEOWDx8VyFb3Ac0roxXAPertvzd7MS4aPMTyEhc+ZQGMJAwJOuQTsvGD09ADges8dL2iFX1Scz19tNvA2bJ/10PymTisr0pk3lJp7fY0n7+ulHrP4i3mevz+wJMnF0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715842883; c=relaxed/simple;
-	bh=w6DGOhCOnfeakkFQ3j858KsPOoi4zWvjYxfJqMQXZL4=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q5ZPFcGrlpa7Q6mD9PeYsQ0GqbzLMS233eOKfR16uX8mmBQNoVjqvGTONCWwbJHzc2IJ2fvQIpwgp5w/+roE0lIo+L4ZRKx3Q+6pVIeIlPk1QY1uh9dkrVD5+EB7zyO2+s0GPuIFlEzCn/gUyTO3kLi6jn07IXgb9wplnsw5xZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=ipUcJB5G; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="ipUcJB5G"
-Received: from 8bytes.org (pd9fe9dd8.dip0.t-ipconnect.de [217.254.157.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id D46551C5A5C;
-	Thu, 16 May 2024 09:01:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1715842873;
-	bh=w6DGOhCOnfeakkFQ3j858KsPOoi4zWvjYxfJqMQXZL4=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=ipUcJB5GS8TEjzizjerj42M3KXzA7QG53WQGQDeWvOGL7ttkMo8Gr1zKnTc/n5/y8
-	 AIcetDVmvKFl17sHnM77iJAUOMEOgDJvLr/35T+T8qC/wR9RzA2rjAWC9FHsJ6GkK8
-	 BWSzTr8yteL/CZfirsdIgrzYvehTWu+JW106SrTbWbY6Nja5JZUornIijAzfsU+qF7
-	 eBA9BR5Bkm0j/NOcws3JoTrx8TYBG4a119Wg+dm6QswzEBrcaWeizRDt8SOKUqkyLI
-	 yG43ibEWuQUfaqP+UCXWUe9YggkxCmehPBltem+JM9n7uLjnan2vZP73nDN1U8IQc6
-	 WGlDa0rgqbh8w==
-Date: Thu, 16 May 2024 09:01:12 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: Re: [svsm-devel] SVSM Development Call May 15th, 2024
-Message-ID: <ZkWvON_Ib_7eA7YR@8bytes.org>
-References: <ZkOKrTyR-ohXjyYL@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D1A2EB10;
+	Thu, 16 May 2024 07:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715845720; cv=none; b=IM7gPUOG4xioYPH6hmu+naZD3FbvD6sRoqtxb15/D1edwPOA8bClFv/MoR3Nugoe04gFo5fRg4QnbGSWvhoDocqeYyNnD5sGbGG91mxUamv1saf9xZM/KjXwiy585pebNtleQZ+mtbhQFMTmUDUxze/X1bwKfOfk+8YQhpd0ipg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715845720; c=relaxed/simple;
+	bh=T4oOZ1LmeWclvKPglpSa/G3iKDDHJ/ls07wv3wVQ2EA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fCfYru8rA1osYyQngV4iyQF1QlOqFJsEl6P1hNu9PIi7Qa3T8qquMgVSewkPU0BgC+FojIdcsYAbrUy2nfhf1DpWWNxupGSTcOZljQx+OWxhdpUfOVKsLuxk8HY9y/voSZDvmYaGGTmCJvV/mJn7LbGRuHWa4TZPSxvrOSJA5I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F562C113CC;
+	Thu, 16 May 2024 07:48:36 +0000 (UTC)
+Date: Thu, 16 May 2024 08:48:34 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: Re: [PATCH v2 09/14] arm64: Enable memory encrypt for Realms
+Message-ID: <ZkW6UgrwJT6G9UN-@arm.com>
+References: <20240412084213.1733764-1-steven.price@arm.com>
+ <20240412084213.1733764-10-steven.price@arm.com>
+ <ZkOmrMIMFCgEKuVw@arm.com>
+ <5b2db977-7f0f-4c3a-b278-f195c7ddbd80@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZkOKrTyR-ohXjyYL@8bytes.org>
+In-Reply-To: <5b2db977-7f0f-4c3a-b278-f195c7ddbd80@arm.com>
 
-Hi,
+On Wed, May 15, 2024 at 11:47:02AM +0100, Suzuki K Poulose wrote:
+> On 14/05/2024 19:00, Catalin Marinas wrote:
+> > On Fri, Apr 12, 2024 at 09:42:08AM +0100, Steven Price wrote:
+> > Can someone summarise what the point of this protection bit is? The IPA
+> > memory is marked as protected/unprotected already via the RSI call and
+> > presumably the RMM disables/permits sharing with a non-secure hypervisor
+> > accordingly irrespective of which alias the realm guest has the linear
+> > mapping mapped to. What does it do with the top bit of the IPA? Is it
+> > that the RMM will prevent (via Stage 2) access if the IPA does not match
+> > the requested protection? IOW, it unmaps one or the other at Stage 2?
+> 
+> The Realm's IPA space is split in half. The lower half is "protected"
+> and all pages backing the "protected" IPA is in the Realm world and
+> thus cannot be shared with the hypervisor. The upper half IPA is
+> "unprotected" (backed by Non-secure PAS pages) and can be accessed
+> by the Host/hyp.
 
-On Tue, May 14, 2024 at 06:00:45PM +0200, Jörg Rödel wrote:
-> The meeting will be recorded and the recording eventually published.
+What about emulated device I/O where there's no backing RAM at an IPA.
+Does it need to have the top bit set?
 
-PR with meeting minutes for this call is now live at:
+> The RSI call (RSI_IPA_STATE_SET) doesn't make an IPA unprotected. It
+> simply "invalidates" a (protected) IPA to "EMPTY" implying the Realm doesn't
+> intend to use the "ipa" as RAM anymore and any access to it from
+> the Realm would trigger an SEA into the Realm. The RSI call triggers an exit
+> to the host with the information and is a hint to the hypervisor to reclaim
+> the page backing the IPA.
+> 
+> Now, given we need dynamic "sharing" of pages (instead of a dedicated
+> set of shared pages), "aliasing" of an IPA gives us shared pages.
+> i.e., If OS wants to share a page "x" (protected IPA) with the host,
+> we mark that as EMPTY via RSI call and then access the "x" with top-bit
+> set (aliasing the IPA x). This fault allows the hyp to map the page backing
+> IPA "x" as "unprotected" at ALIAS(x) address.
 
-	https://github.com/coconut-svsm/governance/pull/13
+Does the RMM sanity-checks that the NS hyp mappings are protected or
+unprotected depending on the IPA range?
 
-Regards,
+I assume that's also the case if the NS hyp is the first one to access a
+page before the realm (e.g. inbound virtio transfer; no page allocated
+yet because of a realm access).
 
-	Joerg
+-- 
+Catalin
