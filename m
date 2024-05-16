@@ -1,90 +1,61 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5838A3BBEA;
-	Wed, 15 May 2024 22:02:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0662942A
+	for <linux-coco@lists.linux.dev>; Thu, 16 May 2024 07:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715810548; cv=none; b=esXow1DpnC5/w7v+Nsm76csOThpG4eiIsEOfhQuYTGvDwq/FWPIfFYNxsxLvNM6SXO+PcE5IIqLG05Bf6PTvwuqjUBSmmFNCeT7Bt0JfcdxrKJeYjS/2y+3+iNPuniHA6mUl64xl9b66hdcr8QNTvjrs/In0OTbWGU3YEjO+mqo=
+	t=1715842883; cv=none; b=CBVWnNzmrKeBsmN5GBgVbpbNU8ITsSc9Zqz7VUgtxC+AeZEOWDx8VyFb3Ac0roxXAPertvzd7MS4aPMTyEhc+ZQGMJAwJOuQTsvGD09ADges8dL2iFX1Scz19tNvA2bJ/10PymTisr0pk3lJp7fY0n7+ulHrP4i3mevz+wJMnF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715810548; c=relaxed/simple;
-	bh=1W2MEncHHKIIZw/gUV3VjWj7F2dfJC8lq475qeKDkvA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qxn5zIGjWOVoxAkLzwgJXE6hgI4u7jhvqx6Agbhd1tGLMGj0CNhZZn12ME89NJRKxXSgMmhktiCLSbLL5zL0YYZRj/lJKY3HPY72RIKN7gsvTBECIdRJGSyCK9R7UIWLChcev/1WLjGkWV2jjXBB2k7qzU9azSg7J/0gp3ysX88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fn3ZfncV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1715842883; c=relaxed/simple;
+	bh=w6DGOhCOnfeakkFQ3j858KsPOoi4zWvjYxfJqMQXZL4=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q5ZPFcGrlpa7Q6mD9PeYsQ0GqbzLMS233eOKfR16uX8mmBQNoVjqvGTONCWwbJHzc2IJ2fvQIpwgp5w/+roE0lIo+L4ZRKx3Q+6pVIeIlPk1QY1uh9dkrVD5+EB7zyO2+s0GPuIFlEzCn/gUyTO3kLi6jn07IXgb9wplnsw5xZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=ipUcJB5G; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fn3ZfncV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83150C116B1;
-	Wed, 15 May 2024 22:02:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715810547;
-	bh=1W2MEncHHKIIZw/gUV3VjWj7F2dfJC8lq475qeKDkvA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fn3ZfncVloDqgYu0adTKnRT6ewnofVsEG2vT0WPV5da4/tR46PXWnYOIIKRHZiKDw
-	 3OUeYRyG9OP28ObCy5xnIZp6SfmZkErHXvBmt5z4cTskN50V+smTnJiK2dNgt155Qa
-	 rXvNlQgcEGnP3q6b2Ud6c8bMRSW8T8Yq/OeVxmGWeMN3TIOjjxch0AaJt5+VzOY51u
-	 d9/VHpHCl3nSxecmI5UgL5KJmlKgzAvRdJMmDlszQNla3zcHVcEue5baH/RFB1iHvm
-	 cEu+vJ9n7T9vM2O3V5Rf67Hkgp97kxXqLu2+OrFTTgItTNPe4bDGS2/qhZXx7jvbp2
-	 Op0gf//ebdfcA==
-Date: Wed, 15 May 2024 15:02:25 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-coco@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH] KVM: SEV: Fix uninitialized firmware error code
-Message-ID: <20240515220225.GA2014948@thelio-3990X>
-References: <20240513172704.718533-1-michael.roth@amd.com>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="ipUcJB5G"
+Received: from 8bytes.org (pd9fe9dd8.dip0.t-ipconnect.de [217.254.157.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id D46551C5A5C;
+	Thu, 16 May 2024 09:01:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1715842873;
+	bh=w6DGOhCOnfeakkFQ3j858KsPOoi4zWvjYxfJqMQXZL4=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=ipUcJB5GS8TEjzizjerj42M3KXzA7QG53WQGQDeWvOGL7ttkMo8Gr1zKnTc/n5/y8
+	 AIcetDVmvKFl17sHnM77iJAUOMEOgDJvLr/35T+T8qC/wR9RzA2rjAWC9FHsJ6GkK8
+	 BWSzTr8yteL/CZfirsdIgrzYvehTWu+JW106SrTbWbY6Nja5JZUornIijAzfsU+qF7
+	 eBA9BR5Bkm0j/NOcws3JoTrx8TYBG4a119Wg+dm6QswzEBrcaWeizRDt8SOKUqkyLI
+	 yG43ibEWuQUfaqP+UCXWUe9YggkxCmehPBltem+JM9n7uLjnan2vZP73nDN1U8IQc6
+	 WGlDa0rgqbh8w==
+Date: Thu, 16 May 2024 09:01:12 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: Re: [svsm-devel] SVSM Development Call May 15th, 2024
+Message-ID: <ZkWvON_Ib_7eA7YR@8bytes.org>
+References: <ZkOKrTyR-ohXjyYL@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240513172704.718533-1-michael.roth@amd.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZkOKrTyR-ohXjyYL@8bytes.org>
 
-On Mon, May 13, 2024 at 12:27:04PM -0500, Michael Roth wrote:
-> The current code triggers a clang warning due to passing back an
-> uninitialized firmware return code in cases where an attestation request
-> is aborted before getting sent to userspace. Since firmware has not been
-> involved at this point the appropriate value is 0.
-> 
-> Reported-by: Nathan Chancellor <nathan@kernel.org>
-> Closes: https://lore.kernel.org/kvm/20240513151920.GA3061950@thelio-3990X/
-> Fixes: 32fde9e18b3f ("KVM: SEV: Provide support for SNP_EXTENDED_GUEST_REQUEST NAE event")
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
+Hi,
 
-This obviously resolves the warning:
+On Tue, May 14, 2024 at 06:00:45PM +0200, Jörg Rödel wrote:
+> The meeting will be recorded and the recording eventually published.
 
-Tested-by: Nathan Chancellor <nathan@kernel.org> # build
+PR with meeting minutes for this call is now live at:
 
-> ---
->  arch/x86/kvm/svm/sev.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 57c2c8025547..59c0d89a4d52 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -4048,7 +4048,6 @@ static int snp_begin_ext_guest_req(struct kvm_vcpu *vcpu)
->  	int vmm_ret = SNP_GUEST_VMM_ERR_GENERIC;
->  	struct vcpu_svm *svm = to_svm(vcpu);
->  	unsigned long data_npages;
-> -	sev_ret_code fw_err;
->  	gpa_t data_gpa;
->  
->  	if (!sev_snp_guest(vcpu->kvm))
-> @@ -4075,7 +4074,7 @@ static int snp_begin_ext_guest_req(struct kvm_vcpu *vcpu)
->  	return 0; /* forward request to userspace */
->  
->  abort_request:
-> -	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, SNP_GUEST_ERR(vmm_ret, fw_err));
-> +	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, SNP_GUEST_ERR(vmm_ret, 0));
->  	return 1; /* resume guest */
->  }
->  
-> -- 
-> 2.25.1
-> 
+	https://github.com/coconut-svsm/governance/pull/13
+
+Regards,
+
+	Joerg
