@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0716F065
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47F56FE2A
 	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 14:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715955606; cv=none; b=ByXaEfntfD6vCg2RkdiVTe8nScRcWl48xRo3ZgMNZkjq3WwDCJqLyCgBO3bLsBhb8Q4o2HV7Zuf/so2xJUzRtCl/dUDRCGJE5mzANa9obaZlV+1B86sTzGjVk/tm+NN3CUW70ENcHSgj2t/wH0IUtXdHoZ+oD5RAZ5sd8UZbVtI=
+	t=1715955607; cv=none; b=eXq7euzZohIjYNG3hlpiNgglVW3sNLYQzPW/rqjwRsDfo9+JR6bWWOfME0W4I9SD8O4jvdhQJmyq+SYcEagr3lETy4vOTS4nCKfFUVp7R1yCHVxsyPJa5R9e+sI0b0ngHJkh0IvpqGxGxue0bImXBI5maw4YfYrZrbwHM5Fq2qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715955606; c=relaxed/simple;
-	bh=/CzwNXVaKGEQ3E9bwjs3O7QSiO6r7/AsWG/VCkB8/H8=;
+	s=arc-20240116; t=1715955607; c=relaxed/simple;
+	bh=0sOCyuIE9yUNs9m+zPMFvR+dpm6EUDIzGSm4n+Yw9H8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EujuvrHgWbEjO05gbWJKqUvB7MVi2/bWt3L8lJzGqUtkd619OjLSn9NfwLt6i4LjohkNDyrVMjmVJ4x93BGbOug7G0ZnRy60KjAXRlWjNIoA9pkhr+I1GGCg0exC/u4BLoovn1nViKz1aedxtQX4CwEq8qVJ6pX9J8IHGvRoRr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AHPBSFqn; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=AN+Z1/MQxsNjmcpqmmKzWMKsSLBZzDG6FtCLucxB2Z2tnffszyZpE1IXB5EuEQHXVKkn3ROvNAT7GW6FNwcFVgDL9ghahPZ4mxOcJF7vkxHC0Sz7Q/q/wr9wGynG2CG+Zjb5yy13gwo98QzowNdO7CHeRqJZ/OdWcBsb3SjBGpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fa+jE+S9; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AHPBSFqn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fa+jE+S9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715955605; x=1747491605;
+  t=1715955606; x=1747491606;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=/CzwNXVaKGEQ3E9bwjs3O7QSiO6r7/AsWG/VCkB8/H8=;
-  b=AHPBSFqngzFVIimkOaZOGLmpRjNEqKr3b9fc5xv3ut9wLTb5j4909y8j
-   /5wI42BJj1E9pgutrwVKgyupBCcwgLvasKdDCjE02keHKU8y+7DHCexqc
-   0cMbnnsZQ/rYBuc76v/rq4lcwfCfHrmIZu52rdfn+UBMuRgPP8otR9Et6
-   z9ktr+0wKnER235OXIJgTsVc/mn0ptI7Oziqe4ZpmySomEkqiumnJgceL
-   GELiOQPdwiiefqAeY7i3XrctL3E/C3MSouWyHhMLwL4KlTqLY+yENDUQW
-   4rn8THx4kwsEB5yqIGqOIZmGQ398NEDRb+7a36OlquLOkVNYPNKIMmWsJ
+  bh=0sOCyuIE9yUNs9m+zPMFvR+dpm6EUDIzGSm4n+Yw9H8=;
+  b=fa+jE+S9VKRCFbxq+aimz5+aVgZPokraQl8xD9uVOcQjnXVfoeIj/2hY
+   iTtD3w+ImUWYJz8xUHMWdCuUHF/83IlKteBtUWji2uWjMnjAm5XUQZluS
+   E2Cc71KsDFM/a/cdd+0QqBbzU/cTs/x9UN+eHC3iCITBafCIBf0iLH03/
+   vltlmwdOpr55EkHH1ETNK6XxeDXDj4CRq4IcTxtYT5qXv0Sc0IQwugqRA
+   XI+92kINmdGIRtedwQlVWX7Xl7W9gpkWlNsZnuJUQynkvglwyLHLkVcax
+   Sh/4ZEwZpYXMaYBzpNNcmQvgI3YcnXIJkrFdJ31skuWmCwwRT1vj2Q7fh
    A==;
-X-CSE-ConnectionGUID: w5Z+scynSoyfi8+fV/EfQQ==
-X-CSE-MsgGUID: OiaOs5v3STGXLoBMm90ZDA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="22808693"
+X-CSE-ConnectionGUID: mPF3tE4TTRWmyLC0RN6Kmw==
+X-CSE-MsgGUID: rxp7xN4ERiayZdAHpJW/yQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="22808734"
 X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
-   d="scan'208";a="22808693"
+   d="scan'208";a="22808734"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 07:20:01 -0700
-X-CSE-ConnectionGUID: O4NnF3dCRe+gATw4xDL+bg==
-X-CSE-MsgGUID: Ps04XFBGQCydR14R0EDIpA==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 07:20:04 -0700
+X-CSE-ConnectionGUID: Yq5WDUTCRuOlXKKW2AH2Qw==
+X-CSE-MsgGUID: KD9wOimsS0GmnoCnwUgOkQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
-   d="scan'208";a="69253384"
+   d="scan'208";a="69253422"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa001.jf.intel.com with ESMTP; 17 May 2024 07:19:56 -0700
+  by orviesa001.jf.intel.com with ESMTP; 17 May 2024 07:20:00 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 1B2CED7B; Fri, 17 May 2024 17:19:50 +0300 (EEST)
+	id 69760F21; Fri, 17 May 2024 17:19:50 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -64,9 +64,9 @@ Cc: linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-hyperv@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 09/20] x86/tdx: Convert MAP_GPA hypercall to use new TDVMCALL macros
-Date: Fri, 17 May 2024 17:19:27 +0300
-Message-ID: <20240517141938.4177174-10-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 15/20] x86/tdx: Convert PAGE_ACCEPT tdcall to use new TDCALL_0() macro
+Date: Fri, 17 May 2024 17:19:33 +0300
+Message-ID: <20240517141938.4177174-16-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
 References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
@@ -78,53 +78,44 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use newly introduced TDVMCALL_1() instead of __tdx_hypercall() to issue
-MAP_GPA hypercall.
+Use newly introduced TDCALL_0() instead of __tdcall() to issue
+PAGE_ACCEPT tdcall.
 
 It cuts code bloat substantially:
 
 Function                                     old     new   delta
-tdx_enc_status_changed                       352     242    -110
-tdx_kexec_finish                             645     530    -115
-tdx_enc_status_change_prepare                326     181    -145
-Total: Before=5553, After=5183, chg -6.66%
+tdx_accept_memory                            592     233    -359
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/coco/tdx/tdx.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ arch/x86/coco/tdx/tdx-shared.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index df3e10d899b3..7c874a50a319 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -797,15 +797,10 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
+diff --git a/arch/x86/coco/tdx/tdx-shared.c b/arch/x86/coco/tdx/tdx-shared.c
+index 1655aa56a0a5..9104e96eeefd 100644
+--- a/arch/x86/coco/tdx/tdx-shared.c
++++ b/arch/x86/coco/tdx/tdx-shared.c
+@@ -5,8 +5,8 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
+ 				    enum pg_level pg_level)
+ {
+ 	unsigned long accept_size = page_level_size(pg_level);
+-	struct tdx_module_args args = {};
+ 	u8 page_size;
++	u64 ret;
+ 
+ 	if (!IS_ALIGNED(start, accept_size))
+ 		return 0;
+@@ -34,8 +34,8 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
+ 		return 0;
  	}
  
- 	while (retry_count < max_retries_per_page) {
--		struct tdx_module_args args = {
--			.r10 = TDX_HYPERCALL_STANDARD,
--			.r11 = TDVMCALL_MAP_GPA,
--			.r12 = start,
--			.r13 = end - start };
--
--		u64 map_fail_paddr;
--		u64 ret = __tdx_hypercall(&args);
-+		u64 map_fail_paddr, ret;
+-	args.rcx = start | page_size;
+-	if (__tdcall(TDG_MEM_PAGE_ACCEPT, &args))
++	ret = TDCALL_0(TDG_MEM_PAGE_ACCEPT, start | page_size, 0, 0, 0);
++	if (ret)
+ 		return 0;
  
-+		ret = TDVMCALL_1(TDVMCALL_MAP_GPA,
-+				 start, end - start, 0, 0, map_fail_paddr);
- 		if (ret != TDVMCALL_STATUS_RETRY)
- 			return !ret;
- 		/*
-@@ -813,7 +808,6 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
- 		 * region starting at the GPA specified in R11. R11 comes
- 		 * from the untrusted VMM. Sanity check it.
- 		 */
--		map_fail_paddr = args.r11;
- 		if (map_fail_paddr < start || map_fail_paddr >= end)
- 			return false;
- 
+ 	return accept_size;
 -- 
 2.43.0
 
