@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F9141C66
-	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 15:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C77C12F581
+	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 15:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715959713; cv=none; b=uGLCHfb055E8oUhf1GLdQWYK+ErqOBmVEHV9TG5ARQiLAZzVZD0qxi74WbS4vovyv69g8Lf+Sv1BYStcOMIGPZIEF1O6T4zfcAI0zkqQ4uuataIZU+EcekbO+R8ZUo46at3lr81+4QuEdtQYEkUcO1JUQj67OKYjMT8wjTjy2As=
+	t=1715960641; cv=none; b=O4vYY/1TqBjvh61iH2CVt+P1oggjuXD6hrVrQJKyYRbnhfMBQjQUpeR0tAx1eaIiqb69xsWqD3ky3dlQqEpM8Cb63/uz5UZ8+5QOdLORI2zsOs1n7DUrooEw+GsgFxJmYXYRnqQ8LJY0/Je7xn6Xscf6t0OzlzrH2O3h3FXFzPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715959713; c=relaxed/simple;
-	bh=g8JS6bBoQYrQ2CsJAX04DJwH1PeKrgcCCBfxu8xCBA8=;
+	s=arc-20240116; t=1715960641; c=relaxed/simple;
+	bh=nBdCzxcZ+QKo5XKE+Klf+3UK2UICBXxeAzGOW92QM5c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AjpuYyQruAFyScipJ2S+xMmkYlMUhgFvtRQPE+HXcT9XT4NiUpegrRGMVapVz1QbhCcQE+fd+98eN+/unhSojkE4Rrqs6jN0Kt0LlP43FoGA9uqIWwS0FWaGvN8zkMNeLp+kwXaiFcqrD8w7M6T/InziXMc1gpqEJ6o6kZ6hmW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NVt7EclR; arc=none smtp.client-ip=198.175.65.20
+	 In-Reply-To:Content-Type; b=bDjfjwPhGlmClgd8P47HmkNhRrY/gjcgnWLntrmQQxBwq6xe33CbnUSRhkcE7s432RAw+bSH4ll+CHfDbeqQLEKpWL9hcd1OtcM1AByC9PjLtVO13y/Y0Um0aqtxrl74wLPW8MDmw1Ldmto7KOO7eVPJ29e/eB3LI+wAq4Nr8ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EIrv6BJd; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NVt7EclR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EIrv6BJd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715959711; x=1747495711;
+  t=1715960640; x=1747496640;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=g8JS6bBoQYrQ2CsJAX04DJwH1PeKrgcCCBfxu8xCBA8=;
-  b=NVt7EclR2IrlUI6bbjxhlLF3IXtqyzUYiXkIwx7lXlR5QlAszXiQJXbF
-   BuYJ1IokkmNld91//0D73JzE+wu6gvhvEoQ3mNuZuoAxUspzWEGGm030n
-   Dt1CSQcoJTWS8aQhhg03K9Iw3gnxoT9Hp6t72I01Jh8E2cnrnAEu18eP6
-   W0gGBk/ynR63xz1FvF8L8futer8ZJ/q3RGBrZ3U4AQyvuRVKpyir4tft5
-   kSydgEhsGntAM279J5gS0A6xbJRbAyy+t42NggqjfEPBgcOrSnO1ccrjL
-   92hGc31MAFdtrYhBe0DDUedwIy//pDDGJh7rSuZhfSeNyGRy46sAFYQx6
+  bh=nBdCzxcZ+QKo5XKE+Klf+3UK2UICBXxeAzGOW92QM5c=;
+  b=EIrv6BJdM0a2xdYCY/jawdRJEcV7Dvt4nuoxI9cBNqixxECVOqJsHlSn
+   m4KoTyep0OsXFkM+S9CJrjsmTUZ+lKlTH72fn7scAjgbSTuZS1ROqNYZf
+   fYwiB5325Zb1gfEXUh4bTN9cqfPSymcRKkNcgVY6MN0VetjFKB5LjN7QM
+   R8etBnC6Gw7YO/8q5LhYRkRLTI2CrO2xDz0vpbwgs+k+AdP7NY4+ePZc/
+   Xznh8gJAagHKS0wcMwfYWN9Fp/8xUnXRS/vqsgiZk+sjwmUmgtJX8/qJt
+   UZoqlQSqGe1z94aKzsNzdQbveuLKvP/GnnDB/XxhVRWP3fadviprSDX9F
    A==;
-X-CSE-ConnectionGUID: bjruPMJMQKi1QwibfR7tyA==
-X-CSE-MsgGUID: 5KBlVGnXQ8yGSLwCP6LW9g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="11984207"
+X-CSE-ConnectionGUID: B4B4eTEjTX+aD1O2Kcp/yw==
+X-CSE-MsgGUID: db5guIl2QTSv85MGJ/oSVQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="11987001"
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="11984207"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:28:30 -0700
-X-CSE-ConnectionGUID: IkdWLzVWSdGak18HA6W0/w==
-X-CSE-MsgGUID: PmKCwDnNSUWuDUlsCzWl0A==
+   d="scan'208";a="11987001"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:44:00 -0700
+X-CSE-ConnectionGUID: o3Z33PjkTtGF0XcFnIOi0A==
+X-CSE-MsgGUID: rdV4DVZYRrGRRcLLfWsfjQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="31817188"
+   d="scan'208";a="36721729"
 Received: from kinlongk-mobl1.amr.corp.intel.com (HELO [10.125.108.204]) ([10.125.108.204])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:28:29 -0700
-Message-ID: <dc292ce2-d450-400c-a0e9-c807aeb671dc@intel.com>
-Date: Fri, 17 May 2024 08:28:28 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:43:59 -0700
+Message-ID: <6df4fb48-9947-46ec-af5a-66fa06d6a83b@intel.com>
+Date: Fri, 17 May 2024 08:43:58 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,23 +52,22 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/20] x86/tdx: Convert port I/O handling to use new
- TDVMCALL macros
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+Subject: Re: [PATCH] x86/kvm/tdx: Save %rbp in TDX_MODULE_CALL
+To: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
+ Dave Hansen <dave.hansen@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-hyperv@vger.kernel.org
-References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
- <20240517141938.4177174-4-kirill.shutemov@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+References: <20240517121450.20420-1-jgross@suse.com>
+ <ohvjbokpaxagc26kxmlrujab7cw3bekgi5ln7dt46cbsaxcqqh@crvqeohfazmf>
+ <f63e1217-3dbe-458d-8c14-7880811d30ba@suse.com>
+ <2a2guben2ysyeb43rzg6zelzpa57o24ufai3mi6ocewwvgu63l@c7dle47q7hzw>
+ <03d27b6a-be96-44d7-b4ea-aa00ccab4cc5@suse.com>
+ <fc0e8ab7-86d4-4428-be31-82e1ece6dd21@intel.com>
+ <c0067319-2653-4cbd-8fee-1ccf21b1e646@suse.com>
 Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -112,27 +111,52 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20240517141938.4177174-4-kirill.shutemov@linux.intel.com>
+In-Reply-To: <c0067319-2653-4cbd-8fee-1ccf21b1e646@suse.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/17/24 07:19, Kirill A. Shutemov wrote:
->  static inline void tdx_io_out(int size, u16 port, u32 value)
->  {
-> -	struct tdx_module_args args = {
-> -		.r10 = TDX_HYPERCALL_STANDARD,
-> -		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
-> -		.r12 = size,
-> -		.r13 = 1,
-> -		.r14 = port,
-> -		.r15 = value,
-> -	};
-> -
-> -	__tdx_hypercall(&args);
-> +	TDVMCALL_0(hcall_func(EXIT_REASON_IO_INSTRUCTION),
-> +		   size, TDX_PORT_WRITE, port, value);
->  }
+On 5/17/24 08:27, Jürgen Groß wrote:
+> On 17.05.24 17:16, Dave Hansen wrote:
+>> On 5/17/24 07:44, Juergen Gross wrote:
+>>> Just another data point: Before using this machine I was testing on
+>>> another one with older firmware. That one really didn't support
+>>> NOM_RBP_MOD
+>>> and I needed to build the kernel with CONFIG_FRAME_POINTER enabled to
+>>> get
+>>> past the check you are mentioning above.
+>>
+>> For all intents and purposes, the modules that intentionally clobber RBP
+>> don't support Linux. If buggy modules are accidentally clobbering RBP,
+>> we can debate how much the kernel should bend over to accommodate them,
+>> but my preference would be to ignore them.
+>>
+>> I'd much rather put a deny list in the kernel than try to tolerate RBP
+>> clobbering universally.
+> 
+> Would you be fine with adding a new X86_FEATURE (or BUG?) allowing
+> to switch RBP save/restore via ALTERNATIVE, controlled by a command
+> line option?
+> 
+> Or maybe by adding a new CONFIG_TDX_MODULE_CAN_CLOBBER_RBP (probably
+> using a shorter name) option?
 
-I actually really like the self-documenting nature of the structures.  I
-don't think it's a win if this is where the lines-of-code savings comes
-from.
+As a last resort maybe.
+
+> TBH I'm slightly puzzled that the firmware I'm using could make it
+> outside Intel. I'm fearing this might happen again.
+
+You're puzzled that the firmware is either old buggy or both? Huh.
+
+Intel ships all kinds of crazy pre-production stuff as development
+platforms. Let's make sure we know what you've got before we go tearing
+up mainline for it.
+
+Because if the options are:
+
+ 1. Maintain code in mainline until the day I die^Wretire
+
+or
+
+ 2. Get Jürgen a BIOS update so he stops sending patches
+
+... it's kinda an easy choice. ;)
