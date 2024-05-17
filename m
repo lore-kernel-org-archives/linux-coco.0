@@ -1,180 +1,109 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27DE38DD6
-	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 17:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BC913FD83
+	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 19:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715967465; cv=none; b=g7iBaQLsKBPu6nV68Qeu1TMO+g85EVyjoXAStj6rhkaUZaszH/qrxHhmzGt5wqFxgnKYEW/lLu44Jh8tQTWY+1RSZbIibfYGEQ9Ml5O3jKRt65FvPpTUeeoVSW6GRBEXlSgk1aHnt4/pqMigRhDn0DdBIBavINGKVDCN91IZ4kI=
+	t=1715973849; cv=none; b=V3Zl27UddB8oYUINds7QQFjb4qY83Rz2iKVDbfRwASRM5K9XLapzo/NgRNPopUvQJel67GD40X1gDsCf/ZdVSDqBhF6L5GA40+fm/e0MrNQHownhopjN4eX6DzvEdqBAQUcgWwu04FJWF8Kj6CqeJrqRLkPdxfMgk6nMJLxoESI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715967465; c=relaxed/simple;
-	bh=4fwMhfzb7fiHGB6Z+7pTdjWRCgM/C43wT1KTzj+itQs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fzTMajW1CMo0hpG7zriPFOwkuKmGKwY2BLaQIr0HmZfAgNhP18+fowjTVP0I2kUaio90Vw5eX+pExTrYRFuiFxFFmFGz1A13A+6urMGAH+iujuM4/X1jijAXhwLkflMRglPl6HXx/MAh5/TE9NpZkfWdKBjpfS5ZQfhFPRFoQWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QvP+5KuS; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1715973849; c=relaxed/simple;
+	bh=jqEKv9YQWGDI6y6rk0fH+p2w4mRzFWQV7kfY811W3+k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W9FrCjKFqFu4jMD/tOUWnV2j0orkkq0/TdMq8UaN9ZNrMo98T3Sal83//AgE8a1cVd175khQuA6zUDiXyqLggdoRPlyZ4/PbYnownrWCui36vkRmpFYeFNBtWPkXT1stlnAaOL3HjYLEh9+IzNK4OR9zi/xRjkg6nIWeex3+ApI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Qt+77uYT; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QvP+5KuS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1715967462;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=NEWIlFygRFbrzz7CO5yPIyO8pAuoM+szqWUDzEi5+48=;
-	b=QvP+5KuSlaz9zD03Y1ZIzstibz3CDRxVPiWEjBzmEYMwR7Vgj7dgvcO4Dzvn2UGNeiAssZ
-	pyRAi2hN/jKyrXnl5WMm9D6X3mJgO5iZ66PPG0mAoSx9Xjt4WgTWNs193gyY8KaRA9arly
-	aDYdue4aVQ5p+4Q34iAZvqofq/nkY14=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-219-01pgC41OPH2fRg4RkD4bQw-1; Fri, 17 May 2024 13:37:41 -0400
-X-MC-Unique: 01pgC41OPH2fRg4RkD4bQw-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a5a812308daso339054166b.0
-        for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 10:37:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715967460; x=1716572260;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NEWIlFygRFbrzz7CO5yPIyO8pAuoM+szqWUDzEi5+48=;
-        b=A0v2WvGRBM1tV3EFHMm75A4npGY1AzyhBpyHn1zZB6Tl+Klp0Z+haqoFdiZ0Zu1p7B
-         F0AtHW7RyDX3HQKMZdXWx+8k+R3legh7WduNbO0U7bdPw4K4wzXCE2twvnAsB80z0H+b
-         coWfXno2LS1Y0UsY7KMBTGupJWUFbtxNLuztTzKolvqDwWYlgAUZN/qOM5Sfj4MtudVO
-         knp3JhRwGoppzJt3so5vxZyENhBieFGjJ8RxT1GKJKWYvloOncZbGxqGTWId9IN2zI/0
-         DWGbYrCHNkUDZvO4E5QDH1FtH8083NgJ9Ke/OWHWhmp23jesPTXPGRouGbci/fLnO4Ch
-         bcrQ==
-X-Gm-Message-State: AOJu0YwIAk5QyIE5N8kpkVn4iHPxQQR8vU7Nph8lpjVkD71Qe7oRT2wW
-	kMsoY4W5/Z1avEVBr/A0/Vg6kCb4sedHopFpF3WQYixKy7h9AYT3l+pvmA3rv+aKdPtCm2/Six7
-	PG0raYT5oye+kRDPT3NBQYrhgquJffbJSY0qihF0obWt1xJjOePVnL+e9+5s=
-X-Received: by 2002:a17:906:37d6:b0:a55:9dec:355f with SMTP id a640c23a62f3a-a5a2d676774mr1371413166b.70.1715967460407;
-        Fri, 17 May 2024 10:37:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKWPixH6mYyA8TAAYupqydQAjnpAf/qhf9Y/XZQ9Jx8TWF9XhpEP0k3m95s88l/5fQaoXnkQ==
-X-Received: by 2002:a17:906:37d6:b0:a55:9dec:355f with SMTP id a640c23a62f3a-a5a2d676774mr1371412066b.70.1715967460070;
-        Fri, 17 May 2024 10:37:40 -0700 (PDT)
-Received: from [192.168.10.81] ([151.95.155.52])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a5cdd444323sm293562366b.183.2024.05.17.10.37.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 May 2024 10:37:39 -0700 (PDT)
-Message-ID: <611a387b-ba7e-46d7-b6bf-84dc6c037d33@redhat.com>
-Date: Fri, 17 May 2024 19:37:38 +0200
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Qt+77uYT"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7863E40E02A7;
+	Fri, 17 May 2024 19:24:05 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id UwbL3muqleYo; Fri, 17 May 2024 19:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1715973842; bh=J7Crj1QNIeK8QjGNMpKjSRCjOYd0KfF9nXq4uixkpfs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Qt+77uYTuH9Iju/AJGYrr2JQWEWTgnbtg+yQ6REinUitmOS9zxjWx1jcQ2ytOTS0e
+	 LNGVS7d3EEt4kLnAMkac4MY9ll6nyKsa0h08GUYpryhFxCdXQIWc2cce02E/waclyg
+	 DebsHPsfMCan4EbeLdPMQmf9lZa/ZpfmmBoka1gIjPcj7YP2/BmledV08TtOpchUtB
+	 5VNtX/G3Mab8A1BVjNKq9VXPOox8KzFgWL2pxoPRL3yD1YUMRRwc49WbRdamQQCyDZ
+	 fVNNHbAvn5DMZoS4MskXg7kIXZ+Rm4WpCg0/+XpFfpVEUFe9NJq6nWxjPqwCEnZO5U
+	 Ac/96sF2Ms0zJFJyYuPqkmhvozYMKAhsFxNMDK8Vm5mXTXTxPGqSQ+drVjxmrVrPHw
+	 T0y/R85jwFogGURtSsskwuvklF1RVsD+/tg2snjm/6wXeW9fgMhB+VzFPwBQefmODS
+	 6BtpiKmgSTy1YeWyy3lIOa1xzEN4eQL6cdbA18AX13yGA1hAh+OrQmXpDHpaZxUt7R
+	 v5MOGiscTRL9O09BPmq+QeWfwmPdU4vCmvtE73foxAXyP/9xy6IaFoLfVapOIpBvn3
+	 ZX0ovKIWwFY+af9zxf6GLq/Sh9UspGQWqimMmKu8DZNOcXmGJVFcfq11IZ3CU7ASOC
+	 OASwOB+HfTsJJTQnOJ73fiuc=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1824840E025E;
+	Fri, 17 May 2024 19:23:48 +0000 (UTC)
+Date: Fri, 17 May 2024 21:23:41 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v4 05/15] x86/sev: Use kernel provided SVSM Calling Areas
+Message-ID: <20240517192341.GXZkeuvZmXug5gSbH7@fat_crate.local>
+References: <cover.1713974291.git.thomas.lendacky@amd.com>
+ <07266b47e749267ef9a9ccbc9e8e9df78ed54857.1713974291.git.thomas.lendacky@amd.com>
+ <20240508080509.GWZjsyNS0xBXUzKPUG@fat_crate.local>
+ <22dc9ceb-4b16-be68-ed8e-c6a222619032@amd.com>
+ <20240508195842.GIZjvZcpRz0bdkiPWA@fat_crate.local>
+ <d3b59450-fdbd-2813-bbc0-58f9dc2ba817@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/20] x86/tdx: Convert port I/O handling to use new
- TDVMCALL macros
-To: Dave Hansen <dave.hansen@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-hyperv@vger.kernel.org
-References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
- <20240517141938.4177174-4-kirill.shutemov@linux.intel.com>
- <dc292ce2-d450-400c-a0e9-c807aeb671dc@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <dc292ce2-d450-400c-a0e9-c807aeb671dc@intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d3b59450-fdbd-2813-bbc0-58f9dc2ba817@amd.com>
 
-On 5/17/24 17:28, Dave Hansen wrote:
-> On 5/17/24 07:19, Kirill A. Shutemov wrote:
->>   static inline void tdx_io_out(int size, u16 port, u32 value)
->>   {
->> -	struct tdx_module_args args = {
->> -		.r10 = TDX_HYPERCALL_STANDARD,
->> -		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
->> -		.r12 = size,
->> -		.r13 = 1,
->> -		.r14 = port,
->> -		.r15 = value,
->> -	};
->> -
->> -	__tdx_hypercall(&args);
->> +	TDVMCALL_0(hcall_func(EXIT_REASON_IO_INSTRUCTION),
->> +		   size, TDX_PORT_WRITE, port, value);
->>   }
+On Wed, May 08, 2024 at 03:09:02PM -0500, Tom Lendacky wrote:
+> If we're not running at VMPL0 (based on the RMPADJUST check) and if the SVSM
+> doesn't advertise a non-zero VMPL value, we will self-terminate. So those
+> values are only set if we are not running at VMPL0 and the SVSM has provided
+> a non-zero value to us.
 > 
-> I actually really like the self-documenting nature of the structures.  I
-> don't think it's a win if this is where the lines-of-code savings comes
-> from.
+> I'm going to turn the function into a bool function so that the call
+> becomes:
 > 
+> 	if (!svsm_setup_caa(cc_info))
+> 		return;
 
-It's just a tradeoff.  For example someone could well have written
+Sure, I guess I'm misled by the
 
-#define TDVMCALL_0(reason, a1, a2, a3, a4) \
-   do { \
-	struct tdx_module_args args = {
-		.r10 = TDX_HYPERCALL_STANDARD,
-		.r11 = reason,
-		.r12 = a1,
-		.r13 = a2,
-		.r14 = a3,
-		.r15 = a4,
-	__tdx_hypercall(&args);
-   } while(0)
+	if (bla)
+		sev_es_terminate()
 
-even with the current __tdx_hypercall() implementation.
+which is a function call but I need to read its name to realize that
+after that point we're either terminated or we have all the stuff
+required to run on a SVSM.
 
-I agree that TDVMCALL_x is somewhat less legible; on the other hand it 
-highlights that these TDVMCALLs all have a common convention for passing 
-parameters / retrieving results, and reduces the potential for silly typos.
+> I do. I think you're missing the RMPADJUST check that causes the function to
+> return early if we're running at VMPL0.
 
-This is also why I asked about the different approaches for TDCALL vs. 
-TDVMCALL.  Given that there are only a handful of appearances for 
-tdvmcall_trampoline, maybe the best of both worlds is just to inline the 
-whole thing?  This way the code in the macros matches the parameter 
-passing convention of the GHCI.
+Yap.
 
-Paolo
+-- 
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
