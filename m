@@ -1,50 +1,65 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031C138DD6
-	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 16:48:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D1413D8A7
+	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 16:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715964522; cv=none; b=hHTs5BCC5G6PLU6epmg5QLGmp2Dc7jwmnd3yV1rHaueI/M73+jcyLhxnYU6qv5al9Xm8s2dlcRAD4CCqbrWRbm7WVkOOe6YsZ5inyFn42XCVliMDQuvWRn1lqYy12wrCy+IhrXr9fm4ElkfpHzO7TQrP3taDeVldsb2gArK8+VU=
+	t=1715964864; cv=none; b=r9ddb7EoC5v7PewuGmbMJ85TYcb5kdzgqmxVSqm3TsFWSr7DQWMruaGB7ox4uL3Yvg5WkBytpq/fh67rj30MBxM1VBSFFYfqqakxgbQyMpoYPsXsV5Zt9MVEdRdWwmKjONWAxkVCtMZos/saooOaLmfJOMKKZzmuYlm1MRoZSbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715964522; c=relaxed/simple;
-	bh=XjEfAMxMjWKCRElBESMbiukPAoJOErDdcfkEdTnxsVE=;
+	s=arc-20240116; t=1715964864; c=relaxed/simple;
+	bh=YoPUOJ5vAGXPmQOgRbq370zFkqkHGyujhuWx2V7WA/M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YfUqwysfKxqiqtuPOKOPvDxFQKaL9NiepcCRZh4alUtI+F94JCjnVPqL0PMGlBeM8x8eJQykiwBuBkp4BCO1rgAVFRcN90a+voH4gYmIqQfafsH25GpYQ9siWv1m2bUzovloUKruSfxakrRXspoOX0bkaSf0jveUsSD867NYlEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ih0CsYrz; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=M1pHgWyPMJTtMP0l1dwAQVvOLbhWOLwQiyP14ov7FtciWh50C3X2Uv0PBK39ucho6AagRzF4O+arKpOoXuVF1agu0LCtzkoN5W8i9imO7YbrhGp6PSQ1sTAs5WMKcoqAIp9tu0AT294lr96SRL5GIMKcoWcn/OPD5cfqDkPG+98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XiDOD0pv; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ih0CsYrz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715964521; x=1747500521;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=XjEfAMxMjWKCRElBESMbiukPAoJOErDdcfkEdTnxsVE=;
-  b=Ih0CsYrzZ2UZHR8l970PQdhP8e6dB4mNoijzhzTHtU/ErN/uhUSdcGAg
-   GW6qD8R0ypjVMlSDJFS/2ZaAVQ+6SYUyGrxzNRvn3KRzReRei0VeZacC0
-   BR59yxJBtqDCd5yZtLXUnIfqY+yI7RHEoqGciIj8nYHiy3yckzxjotDEo
-   hZYbd2xUYKXQGUYGzs5eq3oPGhyTGKJGvxx50QqtzNDdu4Iumco9slENV
-   WeADBZbV91SMerzlsXYZyRBYGUbqpg8jt88Ox9MW1/O8nP7bsj+X2KQda
-   NJW4dO2BBytg3S3OMnCXBsD6UHDJk5SOz/Ijo8j+ZJiv28BMK0wf9Nzek
-   g==;
-X-CSE-ConnectionGUID: 1rN6bEqWTC6K4HZTMRr9kg==
-X-CSE-MsgGUID: JdSxsfaHS5u5xY3gsjJQyA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="12368471"
-X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="12368471"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 09:48:41 -0700
-X-CSE-ConnectionGUID: Tup1exICQwySjZyJ+SinJA==
-X-CSE-MsgGUID: Q1cXKmAsTSiN7cOpte4Ltw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="31859679"
-Received: from kinlongk-mobl1.amr.corp.intel.com (HELO [10.125.108.204]) ([10.125.108.204])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 09:48:39 -0700
-Message-ID: <4b3adb59-50ea-419e-ad02-e19e8ca20dee@intel.com>
-Date: Fri, 17 May 2024 09:48:39 -0700
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XiDOD0pv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1715964862;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GF1WBPKZvZgqchSylvUIsk3qQvjijLvE4tqcy73C8QE=;
+	b=XiDOD0pvTxINF7kEDpN4akaTpKTJk+SjNMgN6adu3W+ZjqjfJiULqvs8pNyIg9MC089BnE
+	V2b6Yn8rXQUE2b9R1mLx9vBcp/tvBdKJeRH+3oY8Wwxe8nw0Mby/zoE0sRnJroDMfR0wRc
+	zrfMBwI/F4uMpCZ8M9am/fmjobvcJaI=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-438-f_1IUpaDM7yQ9rqY9jg4rA-1; Fri, 17 May 2024 12:54:20 -0400
+X-MC-Unique: f_1IUpaDM7yQ9rqY9jg4rA-1
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-574f70ca409so2595304a12.1
+        for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 09:54:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715964859; x=1716569659;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GF1WBPKZvZgqchSylvUIsk3qQvjijLvE4tqcy73C8QE=;
+        b=rFdaFXwodZISZXkuSXFGq4CytsTI+s5uNeEXtdvgpEMg5CpJywLxV8JZmyoGBbcspP
+         lVPugnUJhmFFROPz5IedhBA6UOdT58J/GXOfFZ7FOxpPVHQkHTPwVp8LaDRtcuwPvlZ1
+         TsjWsXCIeOvqp8U67cuC38tRJQrrehN4qOL27nAiJzRv/FtE67sucSjrHym0R3pGPQEf
+         1FGhQAyjYpwBB0MV05a+/FQUTwNvbXZq6SLin0UEqweodGY/3P1JATxu3M6+gytOpF6l
+         DQeHJCnMs+n+8EC09uAXPpGJExW6+9GvJG6eFu3noV44m4y0jHeBsps2TzYCFvIzUQzI
+         PM4g==
+X-Gm-Message-State: AOJu0YyGZrzk132L/R6iuJAS21BeMQzNYN9sUA2oli2d1LlIlkJkONSf
+	dMyHzcusUFZFgd2KFvKXhu4c8QaLnBja/7vad6jCmmJ0n5sv6prHRiocvQ3axV3NHWUlkYiKeq8
+	SNVkCM/EWa2UP1SQxQDe9OU6qRobJt/bo0q23CeF4PBf3we/6200NAv8JNYo=
+X-Received: by 2002:a50:d6d9:0:b0:572:9c4c:2503 with SMTP id 4fb4d7f45d1cf-5734d70378fmr15180740a12.38.1715964859813;
+        Fri, 17 May 2024 09:54:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFU0KHnfopom3+D9iocqjRaYCyCisJHBNEFmDCyMf2L36ipxsnLxIuqinUuhzU12BxKwaZYFA==
+X-Received: by 2002:a50:d6d9:0:b0:572:9c4c:2503 with SMTP id 4fb4d7f45d1cf-5734d70378fmr15180720a12.38.1715964859422;
+        Fri, 17 May 2024 09:54:19 -0700 (PDT)
+Received: from [192.168.10.81] ([151.95.155.52])
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5750d24c8c1sm2249663a12.72.2024.05.17.09.54.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 May 2024 09:54:17 -0700 (PDT)
+Message-ID: <58b02adc-7389-4fcd-a443-1856af7886b7@redhat.com>
+Date: Fri, 17 May 2024 18:54:15 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,83 +67,70 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/kvm/tdx: Save %rbp in TDX_MODULE_CALL
-To: Juergen Gross <jgross@suse.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
+Subject: Re: [PATCH 02/20] x86/tdx: Add macros to generate TDVMCALL wrappers
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>,
  Dave Hansen <dave.hansen@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-References: <20240517121450.20420-1-jgross@suse.com>
- <ohvjbokpaxagc26kxmlrujab7cw3bekgi5ln7dt46cbsaxcqqh@crvqeohfazmf>
- <f63e1217-3dbe-458d-8c14-7880811d30ba@suse.com>
- <2a2guben2ysyeb43rzg6zelzpa57o24ufai3mi6ocewwvgu63l@c7dle47q7hzw>
- <03d27b6a-be96-44d7-b4ea-aa00ccab4cc5@suse.com>
- <fc0e8ab7-86d4-4428-be31-82e1ece6dd21@intel.com>
- <c0067319-2653-4cbd-8fee-1ccf21b1e646@suse.com>
- <6df4fb48-9947-46ec-af5a-66fa06d6a83b@intel.com>
- <86ca805d-7ed7-47dd-8228-5e19fbade53f@suse.com>
- <f7edef9c-5eb5-4664-a193-3bb063674742@intel.com>
- <f02d9ebb-a2b3-4cb3-871b-34324d374d01@suse.com>
-From: Dave Hansen <dave.hansen@intel.com>
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-hyperv@vger.kernel.org
+References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
+ <20240517141938.4177174-3-kirill.shutemov@linux.intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20240517141938.4177174-3-kirill.shutemov@linux.intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <f02d9ebb-a2b3-4cb3-871b-34324d374d01@suse.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 5/17/24 08:58, Juergen Gross wrote:
-> On 17.05.24 17:52, Dave Hansen wrote:
-...
->> Once we have the specific TDX module version, we can go ask the folks
->> who write it if there were any RBP clobbering bugs.
-> 
-> Okay, how to get the TDX module version?
+On 5/17/24 16:19, Kirill A. Shutemov wrote:
+> Introduce a set of macros that allow to generate wrappers for TDVMCALL
+> leafs. The macros uses tdvmcall_trmapoline() and provides SYSV-complaint
+> ABI on top of it.
 
-You need something like this:
+Not really SYSV-compliant, more like "The macros use asm() to call 
+tdvmcall_trampoline with its custom parameter passing convention".
 
-> https://lore.kernel.org/all/20231012134136.1310650-1-yi.sun@intel.com/
+Paolo
 
-... and yeah, this needs to be upstream.
