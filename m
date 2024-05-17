@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6F112F58E
-	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 15:52:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E7C12F598
+	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 15:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715961149; cv=none; b=nJ/3ayJCzDHubmvqaFkuEgsOnNKhwqzkHcnoxAsQqT5XJBTBFZYNGmJXFI7T2swIXS59qr+5M0P1cHyhvDJCyqJ8goEh17XDUOyF+2/WhHRwh39HtnQLmrdrDKpkkECkpeuUVKYcMYh0XVHNDRzDU8espOV1ZoRK2hzszaoKQKY=
+	t=1715961434; cv=none; b=tzcTe8KxznaHds3QkDAbgHEdVluRlmtf9WOdVl7qllrxLNTSwIMLlpzRMzKfebRMA8DVrWJzvwB/fpJaxaIkAK28Y8K3CtU9A1X6kQip8wqlx5WO5cUtu78UTMrX9lCixg/bLktDWzv+ht0iBYYydX313lWMhp3DpywXmd1OBlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715961149; c=relaxed/simple;
-	bh=bVwo95ZZ9630q95yKL71CY7/nlcxZr7VmGR8GK67qc4=;
+	s=arc-20240116; t=1715961434; c=relaxed/simple;
+	bh=/THtfddWNe2X0O3uTjzuAOx1zf4DbLYV51WhztiYedo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pz7+Ml5r/2hiq0sZLC8DV+13oRHGgPV37GKn83vtHe60Ms/qPmxmNUeAZtqmhQhDm8ciyJn/mPiclKEZRZ89LEg8XWJ0lVTZg/u0/hSwe4UPPO+hEFtyhqEZwGFqB8CG6RQKZvtymi9GO+RQdij+bZM4gv/VLGmDYMFeA08GWBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DPFYX/c8; arc=none smtp.client-ip=192.198.163.7
+	 In-Reply-To:Content-Type; b=N2GMA8cGbGEZ0V/7Rq/8Xw3bj3IINAitjWvhk3y6a4Cxl2xCV8sbhsXlpkIOsXBBEYOZKDWkG5cYBU7bHeRryqg2z1fPMGHS5XwjMRy59i803onZk4ShMOQSO8cyYHG6FyCtu0Y1sH7Y9d6mEEiZ6hTq1T+EcGv6XAEYDb9h8LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=krjj7Zb7; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DPFYX/c8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="krjj7Zb7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715961148; x=1747497148;
+  t=1715961433; x=1747497433;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=bVwo95ZZ9630q95yKL71CY7/nlcxZr7VmGR8GK67qc4=;
-  b=DPFYX/c8vOUGqdje3vAOHZbn6ALA3nbM7A+5Xz7ikIZ+f2uZ9oQ1brGj
-   Vo5hcWaeOJrNuH8mTX47WUCKFT2IgVUASKjlPSNrF78Va9p3cl121t+Mw
-   g/cXbBMMYE+CiTVbYdG/tK/TumRcEDjOTm72W/O0D+1r51CvN9CF8a2bn
-   u9dAsjlZ5+FKrGvNufpjdrxv7bn6qDwpLY5lgrAUCO8waLfaWcKJoWsGc
-   Htoj2cqdtML+zJF3ZcGwY6H2TshzogX5E/O8m2Qpp7wRYmk6OdkVS1+8Y
-   3Ye7IZSk23vsOOmnzcSGfHyRWRdAzVq9YfDVue+RdBym2vQh0ZyCYhkg/
-   w==;
-X-CSE-ConnectionGUID: 06lk92ayQ2y9n2QIgn8VVA==
-X-CSE-MsgGUID: 2yUqeksWSUyjvip+4LScZw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="37522165"
+  bh=/THtfddWNe2X0O3uTjzuAOx1zf4DbLYV51WhztiYedo=;
+  b=krjj7Zb7XELS2yLkUZQuiRe1MKcsqoUXy+A5V/KLr4Y04qPD7zTW0ylg
+   k++CDQ9TpGcvI64vb+k2vyFj4k9ttAwPEuRoIXFxLgPSylh3qPVbLXlvh
+   8gMzDZtH5r3eFpjQXoI2F3NmJ1ALsq+QhUBehpuxyyney5FXEkMA1IQlf
+   rdtiVPhD9gEEYN5DcWhvKv4zH4bYi9SbD2x7+pLlRF0uCmVGVLKWSzGmz
+   c5h3RKlmOkCmv+KgIfC8AsCjBML4cY49bS+W6WRVm6fL8Z9OfMIw5cAhk
+   kHRvdhpyEiFi53omY1oEeZ9tIUGSlIjucvVrll8v6PVtfk9UIcDpQwFC2
+   g==;
+X-CSE-ConnectionGUID: l2oesGIuTdKThPz166MEAQ==
+X-CSE-MsgGUID: W0N8LFreTgqqk9NHFxOCRA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="23284587"
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="37522165"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:52:28 -0700
-X-CSE-ConnectionGUID: U80f7BHtSyahkUga+lQhPw==
-X-CSE-MsgGUID: 6VcE2HwqSfOIl8lfo28Xwg==
+   d="scan'208";a="23284587"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:57:12 -0700
+X-CSE-ConnectionGUID: n4bU1dzLT4OY/9YPGl9Wqg==
+X-CSE-MsgGUID: yICPwXpfS9K3ATPuIxaOfg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="63028977"
+   d="scan'208";a="31751403"
 Received: from kinlongk-mobl1.amr.corp.intel.com (HELO [10.125.108.204]) ([10.125.108.204])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:52:27 -0700
-Message-ID: <f7edef9c-5eb5-4664-a193-3bb063674742@intel.com>
-Date: Fri, 17 May 2024 08:52:26 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:57:11 -0700
+Message-ID: <ca2adcf7-5708-4142-bdd5-8700b98b4a5b@intel.com>
+Date: Fri, 17 May 2024 08:57:10 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,22 +52,21 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/kvm/tdx: Save %rbp in TDX_MODULE_CALL
-To: Juergen Gross <jgross@suse.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- Dave Hansen <dave.hansen@linux.intel.com>,
+Subject: Re: [PATCH 16/20] x86/tdx: Convert VP_INFO tdcall to use new
+ TDCALL_5() macro
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-References: <20240517121450.20420-1-jgross@suse.com>
- <ohvjbokpaxagc26kxmlrujab7cw3bekgi5ln7dt46cbsaxcqqh@crvqeohfazmf>
- <f63e1217-3dbe-458d-8c14-7880811d30ba@suse.com>
- <2a2guben2ysyeb43rzg6zelzpa57o24ufai3mi6ocewwvgu63l@c7dle47q7hzw>
- <03d27b6a-be96-44d7-b4ea-aa00ccab4cc5@suse.com>
- <fc0e8ab7-86d4-4428-be31-82e1ece6dd21@intel.com>
- <c0067319-2653-4cbd-8fee-1ccf21b1e646@suse.com>
- <6df4fb48-9947-46ec-af5a-66fa06d6a83b@intel.com>
- <86ca805d-7ed7-47dd-8228-5e19fbade53f@suse.com>
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-hyperv@vger.kernel.org
+References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
+ <20240517141938.4177174-17-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -113,21 +112,19 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <86ca805d-7ed7-47dd-8228-5e19fbade53f@suse.com>
+In-Reply-To: <20240517141938.4177174-17-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 5/17/24 08:48, Juergen Gross wrote:
-> Is the BIOS version printed at boot enough to see what I have?
-> 
-> [    0.000000] DMI: Intel Corporation D50DNP/D50DNP, BIOS
-> SE5C7411.86B.9535.D04.2312270518 12/27/2023
+On 5/17/24 07:19, Kirill A. Shutemov wrote:
+> -	/*
+> -	 * TDINFO TDX module call is used to get the TD execution environment
+> -	 * information like GPA width, number of available vcpus, debug mode
+> -	 * information, etc. More details about the ABI can be found in TDX
+> -	 * Guest-Host-Communication Interface (GHCI), section 2.4.2 TDCALL
+> -	 * [TDG.VP.INFO].
+> -	 */
+> -	tdcall(TDG_VP_INFO, &args);
+> +	tdg_vp_info(&gpa_width, &td_attr);
 
-I honestly don't know.
-
-What we actually need is the TDX module version. I'm not sure how
-tightly tied the TDX module is to the BIOS version. I suspect that
-they're actually completely independent.
-
-Once we have the specific TDX module version, we can go ask the folks
-who write it if there were any RBP clobbering bugs.
+Why is the comment going away?
