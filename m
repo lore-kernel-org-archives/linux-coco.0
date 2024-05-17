@@ -1,65 +1,65 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A8112F5A3
-	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 17:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A336F13D8BA
+	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 17:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715965354; cv=none; b=geCq80k5b7ypmTs7FmCPkL14/qO4MaYC1bS6cLg4FrtCGmMf//pUYFq7Uu0mF6z+U4EoERkz+XJ4ZLSGNiwNzflI8pjIAF85xoa4Ch6VnAP6CSN7eLkedLLlzYe4If0jEhffACdnmuOCHPLpiSIJJ1SXPYLIDU9oMvEOfWnSFsQ=
+	t=1715965512; cv=none; b=gsAbch5VBfcAS5dv+NLILAG9NmiPqMRyGnw2LtIBjKTZ1YJdqk2UpDzflEVzlG46hRNJ/PYWQ0s2P5Ez6rjQAf6c3f0JcyCi0bbWRmb+mQD3DZyAYLS8YoeyFYPlS7BL/Ey9iBsgie4kv2z/GXcEwMe50aB5dPI2UQ+RV0oA0Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715965354; c=relaxed/simple;
-	bh=RujlaPkC5uomwQRFCiv19JY6ekyqruHf/iabfYuDvik=;
+	s=arc-20240116; t=1715965512; c=relaxed/simple;
+	bh=cicBuaDXb0+iJuraKbqW3IUKE/RHOlM5V7//N93fDUE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B0dyAgEK5WPLiOkVq0u7F0l7nltQfqF/YQgimAkRHTYfJwQb4uA5cYYcom8CBPzidCR6QU1rG2eifeyHhPF2iajEd2R0z+BOnVe1O7VXm6TQgu6HdEX8sggv6zi4a51USWql5RdZ3oS87D2JRBWK1xunDYfec1WqUtWiF+gdeUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZnITEk6o; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=a5T1zmpYYVa6habne3Z2DPzZq0lcyTvIHNxJ9ZIXSWLzVVr4s4HBtiXDdVZbiebAKpbXjwWgkaAv9wG2rN/Whm4/jaYIpdb9t/Qd0eS1fO1gelRCl3vnfpuqxepJgb1n3Cq8Qeep4k2aNWLGXdhxp+yLvkGeZt8O//hslLB3u8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZzmFZOeJ; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZnITEk6o"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZzmFZOeJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1715965351;
+	s=mimecast20190719; t=1715965508;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bcBEPXdmgQZyP7M+gSm8KFg/XGQstBv7ECAJLR2IyB0=;
-	b=ZnITEk6oLrD9drw+Aaa/JPpv3aBQbgPqKxGD5ca2d7/oxTqDishBJtEtn4OLh1DDMNb8wv
-	DxA1IieZblQ/75FIYaeRymryDVIt4f+fDYHExBen2CHrQpVsrfab8SDeB7rtSBAQzgySZE
-	WilukGzUMlc7sIqPMfvRTyTJZC4EM68=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=NWyzI/owlrZS3OdD2++L32ikBFzAP0809WyjNtkngNs=;
+	b=ZzmFZOeJkVlklJJGzPP8OAZnsLuzSRtqJKq+e6pqJzRGGupxfXrXjchj/yhxK/LDzLsP1c
+	VrVsNvg7tCvk0U+dKUS08F+s+E1FWOP8yfZIS0tHfEV985zn87GfcSUuee6GfipaMQLbs8
+	PlV+bGOUilbTdjUxbPSFDyLz4kcfz/k=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-L0Z61fHqNwCNFz3355E6JQ-1; Fri, 17 May 2024 13:02:30 -0400
-X-MC-Unique: L0Z61fHqNwCNFz3355E6JQ-1
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-5733eed0c19so1640484a12.2
-        for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 10:02:30 -0700 (PDT)
+ us-mta-595-o5MRjNdFNzWAf2_cU0vSJg-1; Fri, 17 May 2024 13:05:07 -0400
+X-MC-Unique: o5MRjNdFNzWAf2_cU0vSJg-1
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-574b5ae605dso2673415a12.3
+        for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 10:05:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715965348; x=1716570148;
+        d=1e100.net; s=20230601; t=1715965506; x=1716570306;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bcBEPXdmgQZyP7M+gSm8KFg/XGQstBv7ECAJLR2IyB0=;
-        b=wFPzVNohvJgL+Qw1LK4KPU0Ut5enDrUWRAJbZdZgmApA5xU8ajIYS4Klg2twmUfY3Q
-         UzhqDXbjX+I1D/ur2PM4Qf3C2ZXjJr/cPdkQcbbbLSXMd9R6fTsHdJOKBOvrT/0IDino
-         4UZy46/c5DxvzNuL6m7gSOOwMOEF2rRhQotqHVaybmzcpX5FuNkqAWFGb102qu9sAtI3
-         oenmsudsa8L/TAkDvwYVdbA3biQlQllweseLTdBQiPz27LP7lOel5G7THV4HQBRisRZd
-         oHz1qG8DE06wOa7RWZP8hj3vQ3xpWQENKuek7uRRCbHiYLWF1WkXGvFpx8EMLzs9QoOA
-         ke/g==
-X-Gm-Message-State: AOJu0YyfUNifvNCY1yNo/+ecONj3aFydd2U7nBJZYwRaSl5kZvOiI52F
-	sE0iivJZGht8Ul2Ut0K8OQ0rwP2gTAg4s0aVV27T/lWT6ZRoOxHl99n+JZd8TstUbMcR2JsP4ja
-	+WusxAxR5MGvPCbcKBsYc6ITZgKM+7hQdjuiOUP0s1PG+vcci8Cs0LxlAKke5XNEPgw0=
-X-Received: by 2002:a50:bb0e:0:b0:572:df77:c1bf with SMTP id 4fb4d7f45d1cf-5734d5974f2mr16594198a12.3.1715965348653;
-        Fri, 17 May 2024 10:02:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8BxwjPFxnN0vB84qYaxvJvP6JzHa+BW69UJeAQ13Spyes5Hz+DYs0A4puQkEZx1PcRBHdZw==
-X-Received: by 2002:a50:bb0e:0:b0:572:df77:c1bf with SMTP id 4fb4d7f45d1cf-5734d5974f2mr16594173a12.3.1715965348297;
-        Fri, 17 May 2024 10:02:28 -0700 (PDT)
+        bh=NWyzI/owlrZS3OdD2++L32ikBFzAP0809WyjNtkngNs=;
+        b=Ttg7nFAG3AyJEJQYMN/3WEXBNw3CoN45gvjQmV5yM8AMT3KAU8v449M7eCkuSH6nz1
+         +Ws6qkQLTGeJPDCxhPd+aLJZCFxhRlPPE2cDwa1hAUBou1SxKPWxh6ze/+5DtSmrz1JF
+         UmcuckzxKKnSFtI4u+hMKGXAsg3Lic0MeQ7NFTGSzZn6y8qME5vZBcFH3yK0V9Usztmo
+         /lcdruD7k5nxGPf8yGSaEe5rWOc3ACCUPTKJa4uj3YmnP1U0wdS6V3vPXiKF6/1yBlG6
+         GiT/9lCTFMA/Mi/2/PtZ/haW8pAS/5XZqQPbwEX8sfkxf2BXiixwQsbI2RCF+UN+x91b
+         tF4g==
+X-Gm-Message-State: AOJu0YySD1i1AQTCvolmQxO3jITjwWs/rNniIQwpRDcmrMUNMzFLKW76
+	aLPPQZS+ryTpcwjMeuYnyfH5Cr68xRAyDpMx/dIGTWJ09EMNghKDc1vUoLQkCZ552FDcONuVPpX
+	yWOfvSHQZOvvCbpZ23Jl4B1xc42Gr/xHaGAMadLAdSIiQkyezyU5FmQ1MMFE=
+X-Received: by 2002:a50:d7c2:0:b0:572:68a6:97c with SMTP id 4fb4d7f45d1cf-5734d5ccb06mr14616433a12.11.1715965506088;
+        Fri, 17 May 2024 10:05:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHBkw0YYpSkt2yxgiSoGJntzhzh4riVN4usDdXUeWQ9Z+S4uipkj5tqYjRErSZduDCSpNGBXg==
+X-Received: by 2002:a50:d7c2:0:b0:572:68a6:97c with SMTP id 4fb4d7f45d1cf-5734d5ccb06mr14616416a12.11.1715965505723;
+        Fri, 17 May 2024 10:05:05 -0700 (PDT)
 Received: from [192.168.10.81] ([151.95.155.52])
-        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5733bebb6bfsm12089492a12.28.2024.05.17.10.02.25
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5733bea65e2sm12095404a12.19.2024.05.17.10.04.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 May 2024 10:02:26 -0700 (PDT)
-Message-ID: <9cd7f179-673b-4e96-be08-128dc6fb6271@redhat.com>
-Date: Fri, 17 May 2024 19:02:25 +0200
+        Fri, 17 May 2024 10:05:04 -0700 (PDT)
+Message-ID: <05277f00-d5a9-46a4-b11e-8ed6e8885e73@redhat.com>
+Date: Fri, 17 May 2024 19:04:49 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,7 +67,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/20] x86/tdx: Introduce tdvmcall_trampoline()
+Subject: Re: [PATCH 14/20] x86/tdx: Add macros to generate TDCALL wrappers
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Sean Christopherson <seanjc@google.com>,
  Dave Hansen <dave.hansen@linux.intel.com>,
@@ -80,7 +80,7 @@ To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  linux-hyperv@vger.kernel.org
 References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
- <20240517141938.4177174-2-kirill.shutemov@linux.intel.com>
+ <20240517141938.4177174-15-kirill.shutemov@linux.intel.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -117,7 +117,7 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20240517141938.4177174-2-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20240517141938.4177174-15-kirill.shutemov@linux.intel.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -125,11 +125,19 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 5/17/24 16:19, Kirill A. Shutemov wrote:
-> The function will be used from inline assembly to handle most TDVMCALL
-> cases.
+> Introduce a set of macros that allow to generate wrappers for TDCALL
+> leafs.
+> 
+> There are three macros differentiated by number of return parameters.
+> 
+> Signed-off-by: Kirill A. Shutemov<kirill.shutemov@linux.intel.com>
+> ---
+>   arch/x86/include/asm/shared/tdx.h | 58 +++++++++++++++++++++++++++++++
+>   1 file changed, 58 insertions(+)
 
-Perhaps add that the calling convention is designed to allow using the 
-asm constraints a/b/c/d/S/D and keep the asm blocks simpler?
+Can you explain in the commit message why you picked a different 
+approach?  That is, a sequence of inlined movq instructions here vs. 
+compiler-generated movqs + a trampoline for TDVMCALL.
 
 Paolo
 
