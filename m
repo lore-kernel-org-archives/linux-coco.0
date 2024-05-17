@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDBB5C603
-	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 14:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3105C613
+	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 14:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715955598; cv=none; b=DVTFQGpUc2vx3Z9Rbabg6qXqQiqrHvxjI7m/GNtYZtXvbvEYmM67QHBb/i7LIP0d+EN16H16J8hC+LFxrbeENj5yOs89QgSWQs83VWzkMhieuBESPZlA6mSyNDNeTvZFQshJ8VoST9P4qSDiZcwUgEzT0Kk37I1LkSjip6DDYsM=
+	t=1715955598; cv=none; b=uyBNNDByS8F1IrMfBfPwmQbY7E43RB16CKf/obpizFghsHdkbgRoY4IE+Ur6658V/sjsBqfAggIRfeDy7DRQn7y0le6EmFIx24IkypaQoTpUAQz74H0AZ5anZLC3EMKAZBsIQRvo+1ccGXvfRlTgOezC3/Cvok18eyn9Jp2xYZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1715955598; c=relaxed/simple;
-	bh=gUQwV2IPZDrjdWlz6cSzIXD3iiQavq2X5QqqGPE9TCs=;
+	bh=V+o4+Ha3FKRn9857krkLJDLMciI8lqvyQSf3/EAKodM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rU44jJze6pbVQZavzyH7XOmwjyJiwC5CMY7OaJSNlIMpeKSaesYmq4SlpI6lj5IttHtBtgj+Ov1h4xFvPFRMxZWJbpJLLjp+WNSxEsJtpjOcjfHcXfEFHuf/+wzraxB1hZEYv8K8CNI8gqKvIx4xuWI2frabJ5gn9kcHLg9GIt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ur5exFrN; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=D5Qc3DLns9ITF7qCamIUMhYW13ErCTM+I/ydoBmwaQw80RxNVfDbOsr0x6N2FM82ymjH5N4qAAFHAH37djvfx/BdkDYkhxFxSWTtCAlWZhiZjk2LOiSK4QUN4IJs4IzyoJtd8Zgl7Et6gBmL8XPuzWXp1ylwEiCvvJE6LNZoJ1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gMCXSy7E; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ur5exFrN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gMCXSy7E"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1715955597; x=1747491597;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=gUQwV2IPZDrjdWlz6cSzIXD3iiQavq2X5QqqGPE9TCs=;
-  b=Ur5exFrNBid9XakU+PDSHA6MBtbM9HsVlRe7sWuYyftzZdIXvmPeXiD6
-   CiExdonZOp8esSWeF9MJ+BkDUj0Q5YM/VbGq6b6aVSaBGe8K92ENfwhPH
-   D9594x6J3BmhcorV281NuiqEM+10sHns+6xHmJkpAEGXseteiFW9H+PKV
-   dyEbtR2rqOSEBmnhuwJUNPJMskB0Aw7a0cqAjp+HmIBajNrGpKOYSajmh
-   NJthkow80846Ftoo08t7kzh3BnmWV1nfo/J5RfIKe7MeW8NJDWRG44eLr
-   dXq/Jo7oZjjLih9jxtiOvqWHh4FNPrG3xA0fK0rNHVq0nJ2mcHx7y7l+M
-   Q==;
-X-CSE-ConnectionGUID: CDRFgLM7QbySbYeaD67vsw==
-X-CSE-MsgGUID: iC23sUBgR7ScJRxeyn8zGw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="22808562"
+  bh=V+o4+Ha3FKRn9857krkLJDLMciI8lqvyQSf3/EAKodM=;
+  b=gMCXSy7Ew2cu3pADeaAnFO7SL8BQjO/YLX5AQi0YTqLs9xvUoudFfKUY
+   Gu5J0acqvQuSfZLw947mxYdlnp1V3IZRyCtJLRUvqlTEWmyn/pirNNcQc
+   oNGLEVAyUS1z71Q1Re9V2pmS1FYJ612om/TZ5RFT/OXpFk2LsZo4joPD/
+   WzJ+4cIsVynj5UNkTWF5doaF6P9Hgj0FifvTSQELQZd9NYj6lnjr/VIoB
+   aNri2ZQphH6RcU3Zk0wvGImnHGT0yz089jkw44ghc3rPCuNjEemtQ6XK6
+   krFpdxgex6DXmmefevBhBIMz6L5dEmSTSsMQB7sJKqRHTGJpL/GqZg6Pc
+   w==;
+X-CSE-ConnectionGUID: hU+CKcEDSdGWszux2wFyxw==
+X-CSE-MsgGUID: lyj9Qi+CTTCnSQytqGyzKg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="22808579"
 X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
-   d="scan'208";a="22808562"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
+   d="scan'208";a="22808579"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 07:19:55 -0700
-X-CSE-ConnectionGUID: o5lTv1OzQjC7OWiR8ekdMA==
-X-CSE-MsgGUID: fb+T84JAQ2+KBcIRl2f4eg==
+X-CSE-ConnectionGUID: /GvqC1X0Samm8onB6nNcgA==
+X-CSE-MsgGUID: YvXG09S8RqCsj/kVS9vgrA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
-   d="scan'208";a="31944606"
+   d="scan'208";a="69253343"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa009.jf.intel.com with ESMTP; 17 May 2024 07:19:51 -0700
+  by orviesa001.jf.intel.com with ESMTP; 17 May 2024 07:19:50 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id C299BAFB; Fri, 17 May 2024 17:19:49 +0300 (EEST)
+	id B086B97D; Fri, 17 May 2024 17:19:49 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -64,9 +64,9 @@ Cc: linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-hyperv@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 04/20] x86/tdx: Convert HLT handling to use new TDVMCALL_0()
-Date: Fri, 17 May 2024 17:19:22 +0300
-Message-ID: <20240517141938.4177174-5-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 03/20] x86/tdx: Convert port I/O handling to use new TDVMCALL macros
+Date: Fri, 17 May 2024 17:19:21 +0300
+Message-ID: <20240517141938.4177174-4-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
 References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
@@ -78,81 +78,139 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use newly introduced TDVMCALL_0() instead of __tdx_hypercall() to handle
-HLT instruction emulation.
+Use newly introduced TDVMCALL_0() and TDVMCALL_1() instead of
+__tdx_hypercall() to handle port I/O in TDX guest.
 
-It cuts code bloat substantially:
+It cuts handle_io() size in half:
 
 Function                                     old     new   delta
-tdx_safe_halt                                 58      88     +30
-tdx_handle_virt_exception                   2023    2052     +29
-__pfx___halt                                  16       -     -16
-__halt                                       171       -    -171
-Total: Before=6350, After=6222, chg -2.02%
+handle_io                                    436     202    -234
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/coco/tdx/tdx.c | 29 ++++++-----------------------
- 1 file changed, 6 insertions(+), 23 deletions(-)
+ arch/x86/boot/compressed/tdx.c    | 26 +++++++-------------------
+ arch/x86/coco/tdx/tdx.c           | 23 +++++++----------------
+ arch/x86/include/asm/shared/tdx.h |  4 ++++
+ 3 files changed, 18 insertions(+), 35 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 6e0e5648ebd1..dce7d6f9f895 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -350,18 +350,12 @@ static int ve_instr_len(struct ve_info *ve)
- 	}
- }
+diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
+index 8451d6a1030c..0ae05edc7d42 100644
+--- a/arch/x86/boot/compressed/tdx.c
++++ b/arch/x86/boot/compressed/tdx.c
+@@ -18,32 +18,20 @@ void __tdx_hypercall_failed(void)
  
--static u64 __cpuidle __halt(const bool irq_disabled)
-+static int handle_halt(struct ve_info *ve)
+ static inline unsigned int tdx_io_in(int size, u16 port)
  {
 -	struct tdx_module_args args = {
 -		.r10 = TDX_HYPERCALL_STANDARD,
--		.r11 = hcall_func(EXIT_REASON_HLT),
--		.r12 = irq_disabled,
+-		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+-		.r12 = size,
+-		.r13 = 0,
+-		.r14 = port,
 -	};
--
- 	/*
- 	 * Emulate HLT operation via hypercall. More info about ABI
- 	 * can be found in TDX Guest-Host-Communication Interface
--	 * (GHCI), section 3.8 TDG.VP.VMCALL<Instruction.HLT>.
-+	 * (GHCI), section TDG.VP.VMCALL<Instruction.HLT>.
- 	 *
- 	 * The VMM uses the "IRQ disabled" param to understand IRQ
- 	 * enabled status (RFLAGS.IF) of the TD guest and to determine
-@@ -370,14 +364,7 @@ static u64 __cpuidle __halt(const bool irq_disabled)
- 	 * can keep the vCPU in virtual HLT, even if an IRQ is
- 	 * pending, without hanging/breaking the guest.
- 	 */
--	return __tdx_hypercall(&args);
--}
--
--static int handle_halt(struct ve_info *ve)
--{
--	const bool irq_disabled = irqs_disabled();
--
--	if (__halt(irq_disabled))
-+	if (TDVMCALL_0(hcall_func(EXIT_REASON_HLT), irqs_disabled(), 0, 0, 0))
- 		return -EIO;
++	u64 out;
  
- 	return ve_instr_len(ve);
-@@ -385,13 +372,9 @@ static int handle_halt(struct ve_info *ve)
+-	if (__tdx_hypercall(&args))
++	if (TDVMCALL_1(hcall_func(EXIT_REASON_IO_INSTRUCTION),
++		       size, TDX_PORT_READ, port, 0, out)) {
+ 		return UINT_MAX;
++	}
  
- void __cpuidle tdx_safe_halt(void)
- {
--	const bool irq_disabled = false;
--
--	/*
--	 * Use WARN_ONCE() to report the failure.
--	 */
--	if (__halt(irq_disabled))
--		WARN_ONCE(1, "HLT instruction emulation failed\n");
-+	/* See comment in handle_halt() */
-+	WARN_ONCE(TDVMCALL_0(hcall_func(EXIT_REASON_HLT), false, 0, 0, 0),
-+		  "HLT instruction emulation failed");
+-	return args.r11;
++	return out;
  }
  
- static int read_msr(struct pt_regs *regs, struct ve_info *ve)
+ static inline void tdx_io_out(int size, u16 port, u32 value)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+-		.r12 = size,
+-		.r13 = 1,
+-		.r14 = port,
+-		.r15 = value,
+-	};
+-
+-	__tdx_hypercall(&args);
++	TDVMCALL_0(hcall_func(EXIT_REASON_IO_INSTRUCTION),
++		   size, TDX_PORT_WRITE, port, value);
+ }
+ 
+ static inline u8 tdx_inb(u16 port)
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index cadd583d6f62..6e0e5648ebd1 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -21,10 +21,6 @@
+ #define EPT_READ	0
+ #define EPT_WRITE	1
+ 
+-/* Port I/O direction */
+-#define PORT_READ	0
+-#define PORT_WRITE	1
+-
+ /* See Exit Qualification for I/O Instructions in VMX documentation */
+ #define VE_IS_IO_IN(e)		((e) & BIT(3))
+ #define VE_GET_IO_SIZE(e)	(((e) & GENMASK(2, 0)) + 1)
+@@ -612,14 +608,7 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+ 
+ static bool handle_in(struct pt_regs *regs, int size, int port)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+-		.r12 = size,
+-		.r13 = PORT_READ,
+-		.r14 = port,
+-	};
+-	u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
++	u64 mask, out;
+ 	bool success;
+ 
+ 	/*
+@@ -627,12 +616,14 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+ 	 * in TDX Guest-Host-Communication Interface (GHCI) section titled
+ 	 * "TDG.VP.VMCALL<Instruction.IO>".
+ 	 */
+-	success = !__tdx_hypercall(&args);
++	success = !TDVMCALL_1(hcall_func(EXIT_REASON_IO_INSTRUCTION),
++			      size, TDX_PORT_READ, port, 0, out);
+ 
+ 	/* Update part of the register affected by the emulated instruction */
++	mask = GENMASK(BITS_PER_BYTE * size, 0);
+ 	regs->ax &= ~mask;
+ 	if (success)
+-		regs->ax |= args.r11 & mask;
++		regs->ax |= out & mask;
+ 
+ 	return success;
+ }
+@@ -646,8 +637,8 @@ static bool handle_out(struct pt_regs *regs, int size, int port)
+ 	 * in TDX Guest-Host-Communication Interface (GHCI) section titled
+ 	 * "TDG.VP.VMCALL<Instruction.IO>".
+ 	 */
+-	return !_tdx_hypercall(hcall_func(EXIT_REASON_IO_INSTRUCTION), size,
+-			       PORT_WRITE, port, regs->ax & mask);
++	return !TDVMCALL_0(hcall_func(EXIT_REASON_IO_INSTRUCTION),
++			   size, TDX_PORT_WRITE, port, regs->ax & mask);
+ }
+ 
+ /*
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index ddf2cc4a45da..46c299dc9cf0 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -72,6 +72,10 @@
+ #define TDX_PS_1G	2
+ #define TDX_PS_NR	(TDX_PS_1G + 1)
+ 
++/* Port I/O direction */
++#define TDX_PORT_READ	0
++#define TDX_PORT_WRITE	1
++
+ #ifndef __ASSEMBLY__
+ 
+ #include <linux/compiler_attributes.h>
 -- 
 2.43.0
 
