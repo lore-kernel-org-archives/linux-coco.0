@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F3269D31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07B469D2F
 	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 14:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715955603; cv=none; b=HoOxps++1gD29nlWM5eMjVZkM3L+iug6IrBPPrcAhjumoeCLV2J/iV9polP27jRU/vVf1xW3KwUADZIJOU2hyXGsNWNK7KihOim1WW4l/rKzlqYH3o93PwAouqV7FjMVQFoFsfWSPUQlsOWqISmIUE/plfjDJlYaUUAK8ztJYZ4=
+	t=1715955603; cv=none; b=BaYzcAf5XCmQi2RdHTkUDHVkAMDACie3d3R4uE6e92kDJDQ0vFqoeZ7QiYTjxAjANec02UbuTQDzZ9gL9yrIzzlZXLX1bKriySVIY5i1zKVJ7pPXMkXmaoBoVI4XGzh23fWmaFzEKc9ttCqrHyQ3ULUVvf6HL89Bx68Pa14i4Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1715955603; c=relaxed/simple;
-	bh=CcujIUVW1JuDql5JHxHA+AIa8M0XntpfPmL9/r3uwTE=;
+	bh=LfJF40bu9175MoXsqPC9Kp+73oOf88kFkC5j1mad8BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHuqPEkyN6p+BP1OnwGbgA8U1tMswwKGoB4SVmf7k2ZBhWk81o2dw9uMRYsSEP/tLe7092SslE7G+Zpi/KsskDZZDGX5z4FyvTqOrBTMbTNyhyDXnexyc4oXEY44+gGB/tqMDAg/lGth+PWzRMWOboVXfO2drxcElAO0O7IzKB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZnC+YYC6; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=ZcoorXbRlg+uRbLmD9ByQ87Xa5UvIo7yN9dFNTYJdycxQcv/SPQz9ItH3ZQmF2yQoKbf4/hEd7HcDraQC9/2yEoxX3Q+Dwa4CYAU2DHbWnwSauAUTbzE1vb1VHDK5I9ajdmKk7Qqlk8pTa4whuhOyT2A8Z2Q7/MI823ENBAERCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JwHbpvWA; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZnC+YYC6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JwHbpvWA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1715955602; x=1747491602;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=CcujIUVW1JuDql5JHxHA+AIa8M0XntpfPmL9/r3uwTE=;
-  b=ZnC+YYC610PccH4IYQecFO5JgjzVsAmoPxuIi/yPCFMPMpKLiGQHDlaq
-   QgLns4JWs4G1Zo4+ASW+RMPH4cf3JiQ2ZlT6FW+IZOtYIAprg9q2iq35D
-   3yjyCBitMOTK+ZlKPVD+n3ZqtzTTKnPRSEr5OfexpF9sVwSnELFbfv9bn
-   ouTxB6SDjU/FFz7TIkrXPdOiuGUvL2AwpVQN7G9SjSMiEoqRgEXpm4gnd
-   J19MOpwR1r2OXjGTPYipHwfg4u9acDKfIl4cgMjnWCLyOvkj+c26dZGW8
-   Njr9XcpsIbmcGzIaA4RSX59/0CZH/hzVhKDofKUDt3Pns89DJcFpCnvQg
-   w==;
-X-CSE-ConnectionGUID: XNhl0/EpTDKZJhWPLjjOjg==
-X-CSE-MsgGUID: PQtJ6/62SEuvMUcCjkhUSw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="22808649"
+  bh=LfJF40bu9175MoXsqPC9Kp+73oOf88kFkC5j1mad8BY=;
+  b=JwHbpvWAL4dCKw9i3n9cGQeRZWOcU+C1beDGGb1lNrFPOJgMFwQnj05+
+   LJeTlYhLcUkdFNDOGsQgFdVxD3yHghbQagDyYA95BuSyaTLi/Sse7NPUC
+   lxNG0I8gH2nhTkSCoFFisaMIBsXpEurWFaPTU+tnIcnWx4/x9jGPuSkzO
+   ztLVdOpu++ssAIFOumZocJMfd95ESltRV9sKPhyFBWxZGqrwlmCsj7hnO
+   +lBZfsfFGDqoUmgIdibiK+gT5hY0NkxvWLOmo/tYx24tlz19X9WJS/TpA
+   BBuI5hRnGzmW6l01SR0k49PbDx1QreyVj93pGbnreiFNDend2ii8/GDNN
+   A==;
+X-CSE-ConnectionGUID: iv/PfYY2Rc2TDRVikkn/Ow==
+X-CSE-MsgGUID: u0onk7vDSEKgENlcGIUtkg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="22808650"
 X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
-   d="scan'208";a="22808649"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
+   d="scan'208";a="22808650"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
   by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 07:20:00 -0700
-X-CSE-ConnectionGUID: IOisXNc3SImubkKPm9L17Q==
-X-CSE-MsgGUID: tE0r8QJERR+mBnF5pQKlxA==
+X-CSE-ConnectionGUID: YAzxi36sQCyTHCwxlOrAoA==
+X-CSE-MsgGUID: hcJwi3EFQf+FLkPXCWj8Ig==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
-   d="scan'208";a="69253385"
+   d="scan'208";a="31944620"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa001.jf.intel.com with ESMTP; 17 May 2024 07:19:56 -0700
+  by orviesa009.jf.intel.com with ESMTP; 17 May 2024 07:19:57 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 4D265AD3; Fri, 17 May 2024 17:19:50 +0300 (EEST)
+	id 32777E27; Fri, 17 May 2024 17:19:50 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -64,9 +64,9 @@ Cc: linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-hyperv@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 13/20] x86/tdx: Rewrite hv_tdx_hypercall() without __tdx_hypercall()
-Date: Fri, 17 May 2024 17:19:31 +0300
-Message-ID: <20240517141938.4177174-14-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 11/20] x86/tdx: Rewrite tdx_panic() without __tdx_hypercall()
+Date: Fri, 17 May 2024 17:19:29 +0300
+Message-ID: <20240517141938.4177174-12-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
 References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
@@ -78,86 +78,134 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rewrite hv_tdx_hypercall() in assembly to remove one more
-__tdx_hypercall() user.
+tdx_panic() uses REPORT_FATAL_ERROR hypercall to deliver panic message
+in ealy boot. Rewrite it without using __tdx_hypercall().
 
-tdvmcall_trampoline() cannot be used here as Hyper-V uses R8 and RDX to
-pass down parameters which is incompatible with tdvmcall_trampoline()
+REPORT_FATAL_ERROR hypercall is special. It uses pretty much all
+available registers to pass down the error message. TDVMCALL macros are
+not usable here.
 
-The rewrite cuts code bloat substantially:
+Implement the hypercall directly in assembly.
+
+It cuts code bloat substantially:
 
 Function                                     old     new   delta
-hv_tdx_hypercall                             171      42    -129
+tdx_panic                                    222      59    -163
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/coco/tdx/tdcall.S | 30 ++++++++++++++++++++++++++++++
- arch/x86/hyperv/ivm.c      | 14 --------------
- 2 files changed, 30 insertions(+), 14 deletions(-)
+ arch/x86/coco/tdx/tdcall.S | 28 ++++++++++++++++++++++++++++
+ arch/x86/coco/tdx/tdx.c    | 31 +++----------------------------
+ arch/x86/include/asm/tdx.h |  2 ++
+ tools/objtool/noreturns.h  |  1 +
+ 4 files changed, 34 insertions(+), 28 deletions(-)
 
 diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
-index 269e5789672a..5b60b9c8799f 100644
+index 12185fbd33ba..269e5789672a 100644
 --- a/arch/x86/coco/tdx/tdcall.S
 +++ b/arch/x86/coco/tdx/tdcall.S
-@@ -138,3 +138,33 @@ SYM_FUNC_START(tdvmcall_report_fatal_error)
- 
+@@ -110,3 +110,31 @@ SYM_FUNC_START(tdvmcall_trampoline)
  	ud2
- SYM_FUNC_END(tdvmcall_report_fatal_error)
+ SYM_FUNC_END(tdvmcall_trampoline)
+ .popsection
 +
-+#ifdef CONFIG_HYPERV
-+/*
-+ * hv_tdx_hypercall() - Issue Hyper-V hypercall
-+ *
-+ * RDI - Hypercall ID
-+ * RSI - Parameter 1
-+ * RCX - Parameter 2
-+ */
-+SYM_FUNC_START(hv_tdx_hypercall)
-+	movq	%rdi, %r10
-+	movq    %rsi, %rdx
-+	movq    %rcx, %r8
++SYM_FUNC_START(tdvmcall_report_fatal_error)
++	movq	$TDX_HYPERCALL_STANDARD, %r10
++	movq	$TDVMCALL_REPORT_FATAL_ERROR, %r11
++	movq	%rdi, %r12
++	movq	$0, %r13
++
++	movq	%rsi, %rcx
++
++	/* Order according to the GHCI */
++	movq	0*8(%rcx), %r14
++	movq	1*8(%rcx), %r15
++	movq	2*8(%rcx), %rbx
++	movq	3*8(%rcx), %rdi
++	movq	4*8(%rcx), %rsi
++	movq	5*8(%rcx), %r8
++	movq	6*8(%rcx), %r9
++	movq	7*8(%rcx), %rdx
 +
 +	movq	$TDG_VP_VMCALL, %rax
-+	movq    $(TDX_R8 | TDX_R10 | TDX_RDX), %rcx
++	movq	$(TDX_RDX | TDX_RBX | TDX_RSI | TDX_RDI | TDX_R8  | TDX_R9  | \
++		  TDX_R10 | TDX_R11 | TDX_R12 | TDX_R13 | TDX_R14 | TDX_R15), \
++		%rcx
 +
 +	tdcall
 +
-+	/* TDG.VP.VMCALL never fails on correct use. Panic if it fails. */
-+	testq   %rax, %rax
-+	jnz	.Lpanic_hv
-+
-+	movq	%r11, %rax
-+
-+	RET
-+.Lpanic_hv:
 +	ud2
-+SYM_FUNC_END(hv_tdx_hypercall)
-+#endif
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 18d0892d9fc4..562980e19d68 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -401,20 +401,6 @@ static void hv_tdx_msr_read(u64 msr, u64 *val)
- 	if (WARN_ONCE(ret, "Failed to emulate MSR read: %lld\n", ret))
- 		*val = 0;
++SYM_FUNC_END(tdvmcall_report_fatal_error)
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 3f0be1d3cccb..b7299e668564 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -157,37 +157,12 @@ EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
+ 
+ static void __noreturn tdx_panic(const char *msg)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = TDVMCALL_REPORT_FATAL_ERROR,
+-		.r12 = 0, /* Error code: 0 is Panic */
+-	};
+-	union {
+-		/* Define register order according to the GHCI */
+-		struct { u64 r14, r15, rbx, rdi, rsi, r8, r9, rdx; };
+-
+-		char str[64];
+-	} message;
++	char str[64];
+ 
+ 	/* VMM assumes '\0' in byte 65, if the message took all 64 bytes */
+-	strtomem_pad(message.str, msg, '\0');
++	strtomem_pad(str, msg, '\0');
+ 
+-	args.r8  = message.r8;
+-	args.r9  = message.r9;
+-	args.r14 = message.r14;
+-	args.r15 = message.r15;
+-	args.rdi = message.rdi;
+-	args.rsi = message.rsi;
+-	args.rbx = message.rbx;
+-	args.rdx = message.rdx;
+-
+-	/*
+-	 * This hypercall should never return and it is not safe
+-	 * to keep the guest running. Call it forever if it
+-	 * happens to return.
+-	 */
+-	while (1)
+-		__tdx_hypercall(&args);
++	tdvmcall_report_fatal_error(0, str);
  }
--
--u64 hv_tdx_hypercall(u64 control, u64 param1, u64 param2)
--{
--	struct tdx_module_args args = { };
--
--	args.r10 = control;
--	args.rdx = param1;
--	args.r8  = param2;
--
--	(void)__tdx_hypercall(&args);
--
--	return args.r11;
--}
--
- #else
- static inline void hv_tdx_msr_write(u64 msr, u64 value) {}
- static inline void hv_tdx_msr_read(u64 msr, u64 *value) {}
+ 
+ /*
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index eba178996d84..f67e5e6b66ad 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -54,6 +54,8 @@ struct ve_info {
+ 
+ void __init tdx_early_init(void);
+ 
++void __noreturn tdvmcall_report_fatal_error(u64 error_code, const char str[64]);
++
+ void tdx_get_ve_info(struct ve_info *ve);
+ 
+ bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
+diff --git a/tools/objtool/noreturns.h b/tools/objtool/noreturns.h
+index 7ebf29c91184..0670cacf0734 100644
+--- a/tools/objtool/noreturns.h
++++ b/tools/objtool/noreturns.h
+@@ -39,6 +39,7 @@ NORETURN(sev_es_terminate)
+ NORETURN(snp_abort)
+ NORETURN(start_kernel)
+ NORETURN(stop_this_cpu)
++NORETURN(tdvmcall_report_fatal_error)
+ NORETURN(usercopy_abort)
+ NORETURN(x86_64_start_kernel)
+ NORETURN(x86_64_start_reservations)
 -- 
 2.43.0
 
