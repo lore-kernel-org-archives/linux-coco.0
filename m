@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E4912F584
-	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 16:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031C138DD6
+	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 16:48:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715963701; cv=none; b=a/JZjsQNknu91EJ5O1XSHRIFLO5WMwyXetjZ22ud7RNKed+ERqqVOhshzYEB/4sZkbhy5kbuH/EP+lSXHxEy1qIc7WdSlOvLnclQamERuY5n1Cvl1B+iqv6XFw/xD2wvPdMdeVU5T3sTXzOE29ka+2ISXyJmyzQyBsPcCsnltaQ=
+	t=1715964522; cv=none; b=hHTs5BCC5G6PLU6epmg5QLGmp2Dc7jwmnd3yV1rHaueI/M73+jcyLhxnYU6qv5al9Xm8s2dlcRAD4CCqbrWRbm7WVkOOe6YsZ5inyFn42XCVliMDQuvWRn1lqYy12wrCy+IhrXr9fm4ElkfpHzO7TQrP3taDeVldsb2gArK8+VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715963701; c=relaxed/simple;
-	bh=BA8x6XEh2fh9EEuzc6zSptiTyJHxMBczxGYIrCcWGtA=;
+	s=arc-20240116; t=1715964522; c=relaxed/simple;
+	bh=XjEfAMxMjWKCRElBESMbiukPAoJOErDdcfkEdTnxsVE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N8tqN7e5oKNwfKY1dIIUvUf5Q8Ncm4zmVfUIX6u3dvFotojMWDCA7vHXL1LWEKd19/L05rZO2lv4Yvw1RpdoSfY+xOkxdauv0bM0Dr6WEufk7xhYCyIYfpcl1IEs706j1gw8Gm5r/EcKf2ZkrHh1OVsrxmsyRAKeQ85Sr09/cMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jV8YlOfW; arc=none smtp.client-ip=192.198.163.17
+	 In-Reply-To:Content-Type; b=YfUqwysfKxqiqtuPOKOPvDxFQKaL9NiepcCRZh4alUtI+F94JCjnVPqL0PMGlBeM8x8eJQykiwBuBkp4BCO1rgAVFRcN90a+voH4gYmIqQfafsH25GpYQ9siWv1m2bUzovloUKruSfxakrRXspoOX0bkaSf0jveUsSD867NYlEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ih0CsYrz; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jV8YlOfW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ih0CsYrz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715963700; x=1747499700;
+  t=1715964521; x=1747500521;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=BA8x6XEh2fh9EEuzc6zSptiTyJHxMBczxGYIrCcWGtA=;
-  b=jV8YlOfWif02UuwG8B9y2M/1sWmqhj528xs1dMTSTv2raunGh0Uz2IHk
-   06XJXfFjVGAAyo5AL56ZJrObjbPdSVLcZSdHa27Vau7/vLFy1e3D4E91Y
-   d5PlQwljK4UOxLXCr5aizblUjCqV6CgEK+/yGIMlcRs4Yd2iBqLouIqJF
-   bki+cZOpZsji7bnzol6DSL++SfMmXr/n6+J1fTWzjALYzmQngJLIenkSg
-   hadI67Aq6F3kn46Ggpb+1TfjbrfMiHu9iWIsNrpUxXPGoqb5w0nkPuBqz
-   6LCoI5ZvrVCcTbl5u6wOfSv/8GJopGX/mDCIo0SKgYI/IKbEbKqLE3cTT
-   w==;
-X-CSE-ConnectionGUID: +KFFSTAPQ9usji+D83DpbA==
-X-CSE-MsgGUID: RMG1cZrXSo6qzHsI6YkoOQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="12022316"
+  bh=XjEfAMxMjWKCRElBESMbiukPAoJOErDdcfkEdTnxsVE=;
+  b=Ih0CsYrzZ2UZHR8l970PQdhP8e6dB4mNoijzhzTHtU/ErN/uhUSdcGAg
+   GW6qD8R0ypjVMlSDJFS/2ZaAVQ+6SYUyGrxzNRvn3KRzReRei0VeZacC0
+   BR59yxJBtqDCd5yZtLXUnIfqY+yI7RHEoqGciIj8nYHiy3yckzxjotDEo
+   hZYbd2xUYKXQGUYGzs5eq3oPGhyTGKJGvxx50QqtzNDdu4Iumco9slENV
+   WeADBZbV91SMerzlsXYZyRBYGUbqpg8jt88Ox9MW1/O8nP7bsj+X2KQda
+   NJW4dO2BBytg3S3OMnCXBsD6UHDJk5SOz/Ijo8j+ZJiv28BMK0wf9Nzek
+   g==;
+X-CSE-ConnectionGUID: 1rN6bEqWTC6K4HZTMRr9kg==
+X-CSE-MsgGUID: JdSxsfaHS5u5xY3gsjJQyA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="12368471"
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="12022316"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 09:34:58 -0700
-X-CSE-ConnectionGUID: 3+pq9Tw9Q+2jN1UaVgS6jg==
-X-CSE-MsgGUID: h8nRkKpgRdORr0KmTs+lrg==
+   d="scan'208";a="12368471"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 09:48:41 -0700
+X-CSE-ConnectionGUID: Tup1exICQwySjZyJ+SinJA==
+X-CSE-MsgGUID: Q1cXKmAsTSiN7cOpte4Ltw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="31938318"
+   d="scan'208";a="31859679"
 Received: from kinlongk-mobl1.amr.corp.intel.com (HELO [10.125.108.204]) ([10.125.108.204])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 09:34:57 -0700
-Message-ID: <551d2539-91b4-41e1-97e6-701921e83db7@intel.com>
-Date: Fri, 17 May 2024 09:34:56 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 09:48:39 -0700
+Message-ID: <4b3adb59-50ea-419e-ad02-e19e8ca20dee@intel.com>
+Date: Fri, 17 May 2024 09:48:39 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -53,18 +53,25 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] x86/kvm/tdx: Save %rbp in TDX_MODULE_CALL
-To: Sean Christopherson <seanjc@google.com>,
+To: Juergen Gross <jgross@suse.com>,
  "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev,
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
  Dave Hansen <dave.hansen@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
 References: <20240517121450.20420-1-jgross@suse.com>
  <ohvjbokpaxagc26kxmlrujab7cw3bekgi5ln7dt46cbsaxcqqh@crvqeohfazmf>
- <Zkd28IN8KvyD4GIX@google.com>
-Content-Language: en-US
+ <f63e1217-3dbe-458d-8c14-7880811d30ba@suse.com>
+ <2a2guben2ysyeb43rzg6zelzpa57o24ufai3mi6ocewwvgu63l@c7dle47q7hzw>
+ <03d27b6a-be96-44d7-b4ea-aa00ccab4cc5@suse.com>
+ <fc0e8ab7-86d4-4428-be31-82e1ece6dd21@intel.com>
+ <c0067319-2653-4cbd-8fee-1ccf21b1e646@suse.com>
+ <6df4fb48-9947-46ec-af5a-66fa06d6a83b@intel.com>
+ <86ca805d-7ed7-47dd-8228-5e19fbade53f@suse.com>
+ <f7edef9c-5eb5-4664-a193-3bb063674742@intel.com>
+ <f02d9ebb-a2b3-4cb3-871b-34324d374d01@suse.com>
 From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -108,21 +115,20 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <Zkd28IN8KvyD4GIX@google.com>
+In-Reply-To: <f02d9ebb-a2b3-4cb3-871b-34324d374d01@suse.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 5/17/24 09:12, Sean Christopherson wrote:
->> There's a feature in TDX module 1.5 that prevents RBP modification across
->> TDH.VP.ENTER SEAMCALL. See NO_RBP_MOD in TDX Module 1.5 ABI spec.
-> LOL, "feature".  How was clobbering RBP not treated as a bug?  I'm party joking,
-> but also quite serious. 
+On 5/17/24 08:58, Juergen Gross wrote:
+> On 17.05.24 17:52, Dave Hansen wrote:
+...
+>> Once we have the specific TDX module version, we can go ask the folks
+>> who write it if there were any RBP clobbering bugs.
+> 
+> Okay, how to get the TDX module version?
 
-I'm on the same page.  It would have been far simpler for all involved
-to retroactively say that modifying RBP is against the rules and any
-module that does it is buggy. Get a new module if yours is buggy.
+You need something like this:
 
-I _believe_ the intent was to support guest/host combinations that used
-RBP for whatever reason.  But I'm not sure such a combination exists or
-ever existed in practice.
+> https://lore.kernel.org/all/20231012134136.1310650-1-yi.sun@intel.com/
 
+... and yeah, this needs to be upstream.
