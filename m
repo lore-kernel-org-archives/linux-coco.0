@@ -1,65 +1,65 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A336F13D8BA
-	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 17:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27DE38DD6
+	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 17:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715965512; cv=none; b=gsAbch5VBfcAS5dv+NLILAG9NmiPqMRyGnw2LtIBjKTZ1YJdqk2UpDzflEVzlG46hRNJ/PYWQ0s2P5Ez6rjQAf6c3f0JcyCi0bbWRmb+mQD3DZyAYLS8YoeyFYPlS7BL/Ey9iBsgie4kv2z/GXcEwMe50aB5dPI2UQ+RV0oA0Ro=
+	t=1715967465; cv=none; b=g7iBaQLsKBPu6nV68Qeu1TMO+g85EVyjoXAStj6rhkaUZaszH/qrxHhmzGt5wqFxgnKYEW/lLu44Jh8tQTWY+1RSZbIibfYGEQ9Ml5O3jKRt65FvPpTUeeoVSW6GRBEXlSgk1aHnt4/pqMigRhDn0DdBIBavINGKVDCN91IZ4kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715965512; c=relaxed/simple;
-	bh=cicBuaDXb0+iJuraKbqW3IUKE/RHOlM5V7//N93fDUE=;
+	s=arc-20240116; t=1715967465; c=relaxed/simple;
+	bh=4fwMhfzb7fiHGB6Z+7pTdjWRCgM/C43wT1KTzj+itQs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a5T1zmpYYVa6habne3Z2DPzZq0lcyTvIHNxJ9ZIXSWLzVVr4s4HBtiXDdVZbiebAKpbXjwWgkaAv9wG2rN/Whm4/jaYIpdb9t/Qd0eS1fO1gelRCl3vnfpuqxepJgb1n3Cq8Qeep4k2aNWLGXdhxp+yLvkGeZt8O//hslLB3u8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZzmFZOeJ; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=fzTMajW1CMo0hpG7zriPFOwkuKmGKwY2BLaQIr0HmZfAgNhP18+fowjTVP0I2kUaio90Vw5eX+pExTrYRFuiFxFFmFGz1A13A+6urMGAH+iujuM4/X1jijAXhwLkflMRglPl6HXx/MAh5/TE9NpZkfWdKBjpfS5ZQfhFPRFoQWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QvP+5KuS; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZzmFZOeJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QvP+5KuS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1715965508;
+	s=mimecast20190719; t=1715967462;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=NWyzI/owlrZS3OdD2++L32ikBFzAP0809WyjNtkngNs=;
-	b=ZzmFZOeJkVlklJJGzPP8OAZnsLuzSRtqJKq+e6pqJzRGGupxfXrXjchj/yhxK/LDzLsP1c
-	VrVsNvg7tCvk0U+dKUS08F+s+E1FWOP8yfZIS0tHfEV985zn87GfcSUuee6GfipaMQLbs8
-	PlV+bGOUilbTdjUxbPSFDyLz4kcfz/k=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=NEWIlFygRFbrzz7CO5yPIyO8pAuoM+szqWUDzEi5+48=;
+	b=QvP+5KuSlaz9zD03Y1ZIzstibz3CDRxVPiWEjBzmEYMwR7Vgj7dgvcO4Dzvn2UGNeiAssZ
+	pyRAi2hN/jKyrXnl5WMm9D6X3mJgO5iZ66PPG0mAoSx9Xjt4WgTWNs193gyY8KaRA9arly
+	aDYdue4aVQ5p+4Q34iAZvqofq/nkY14=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-o5MRjNdFNzWAf2_cU0vSJg-1; Fri, 17 May 2024 13:05:07 -0400
-X-MC-Unique: o5MRjNdFNzWAf2_cU0vSJg-1
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-574b5ae605dso2673415a12.3
-        for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 10:05:06 -0700 (PDT)
+ us-mta-219-01pgC41OPH2fRg4RkD4bQw-1; Fri, 17 May 2024 13:37:41 -0400
+X-MC-Unique: 01pgC41OPH2fRg4RkD4bQw-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a5a812308daso339054166b.0
+        for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 10:37:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715965506; x=1716570306;
+        d=1e100.net; s=20230601; t=1715967460; x=1716572260;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NWyzI/owlrZS3OdD2++L32ikBFzAP0809WyjNtkngNs=;
-        b=Ttg7nFAG3AyJEJQYMN/3WEXBNw3CoN45gvjQmV5yM8AMT3KAU8v449M7eCkuSH6nz1
-         +Ws6qkQLTGeJPDCxhPd+aLJZCFxhRlPPE2cDwa1hAUBou1SxKPWxh6ze/+5DtSmrz1JF
-         UmcuckzxKKnSFtI4u+hMKGXAsg3Lic0MeQ7NFTGSzZn6y8qME5vZBcFH3yK0V9Usztmo
-         /lcdruD7k5nxGPf8yGSaEe5rWOc3ACCUPTKJa4uj3YmnP1U0wdS6V3vPXiKF6/1yBlG6
-         GiT/9lCTFMA/Mi/2/PtZ/haW8pAS/5XZqQPbwEX8sfkxf2BXiixwQsbI2RCF+UN+x91b
-         tF4g==
-X-Gm-Message-State: AOJu0YySD1i1AQTCvolmQxO3jITjwWs/rNniIQwpRDcmrMUNMzFLKW76
-	aLPPQZS+ryTpcwjMeuYnyfH5Cr68xRAyDpMx/dIGTWJ09EMNghKDc1vUoLQkCZ552FDcONuVPpX
-	yWOfvSHQZOvvCbpZ23Jl4B1xc42Gr/xHaGAMadLAdSIiQkyezyU5FmQ1MMFE=
-X-Received: by 2002:a50:d7c2:0:b0:572:68a6:97c with SMTP id 4fb4d7f45d1cf-5734d5ccb06mr14616433a12.11.1715965506088;
-        Fri, 17 May 2024 10:05:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHBkw0YYpSkt2yxgiSoGJntzhzh4riVN4usDdXUeWQ9Z+S4uipkj5tqYjRErSZduDCSpNGBXg==
-X-Received: by 2002:a50:d7c2:0:b0:572:68a6:97c with SMTP id 4fb4d7f45d1cf-5734d5ccb06mr14616416a12.11.1715965505723;
-        Fri, 17 May 2024 10:05:05 -0700 (PDT)
+        bh=NEWIlFygRFbrzz7CO5yPIyO8pAuoM+szqWUDzEi5+48=;
+        b=A0v2WvGRBM1tV3EFHMm75A4npGY1AzyhBpyHn1zZB6Tl+Klp0Z+haqoFdiZ0Zu1p7B
+         F0AtHW7RyDX3HQKMZdXWx+8k+R3legh7WduNbO0U7bdPw4K4wzXCE2twvnAsB80z0H+b
+         coWfXno2LS1Y0UsY7KMBTGupJWUFbtxNLuztTzKolvqDwWYlgAUZN/qOM5Sfj4MtudVO
+         knp3JhRwGoppzJt3so5vxZyENhBieFGjJ8RxT1GKJKWYvloOncZbGxqGTWId9IN2zI/0
+         DWGbYrCHNkUDZvO4E5QDH1FtH8083NgJ9Ke/OWHWhmp23jesPTXPGRouGbci/fLnO4Ch
+         bcrQ==
+X-Gm-Message-State: AOJu0YwIAk5QyIE5N8kpkVn4iHPxQQR8vU7Nph8lpjVkD71Qe7oRT2wW
+	kMsoY4W5/Z1avEVBr/A0/Vg6kCb4sedHopFpF3WQYixKy7h9AYT3l+pvmA3rv+aKdPtCm2/Six7
+	PG0raYT5oye+kRDPT3NBQYrhgquJffbJSY0qihF0obWt1xJjOePVnL+e9+5s=
+X-Received: by 2002:a17:906:37d6:b0:a55:9dec:355f with SMTP id a640c23a62f3a-a5a2d676774mr1371413166b.70.1715967460407;
+        Fri, 17 May 2024 10:37:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKWPixH6mYyA8TAAYupqydQAjnpAf/qhf9Y/XZQ9Jx8TWF9XhpEP0k3m95s88l/5fQaoXnkQ==
+X-Received: by 2002:a17:906:37d6:b0:a55:9dec:355f with SMTP id a640c23a62f3a-a5a2d676774mr1371412066b.70.1715967460070;
+        Fri, 17 May 2024 10:37:40 -0700 (PDT)
 Received: from [192.168.10.81] ([151.95.155.52])
-        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5733bea65e2sm12095404a12.19.2024.05.17.10.04.53
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a5cdd444323sm293562366b.183.2024.05.17.10.37.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 May 2024 10:05:04 -0700 (PDT)
-Message-ID: <05277f00-d5a9-46a4-b11e-8ed6e8885e73@redhat.com>
-Date: Fri, 17 May 2024 19:04:49 +0200
+        Fri, 17 May 2024 10:37:39 -0700 (PDT)
+Message-ID: <611a387b-ba7e-46d7-b6bf-84dc6c037d33@redhat.com>
+Date: Fri, 17 May 2024 19:37:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,8 +67,10 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/20] x86/tdx: Add macros to generate TDCALL wrappers
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+Subject: Re: [PATCH 03/20] x86/tdx: Convert port I/O handling to use new
+ TDVMCALL macros
+To: Dave Hansen <dave.hansen@intel.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Sean Christopherson <seanjc@google.com>,
  Dave Hansen <dave.hansen@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
@@ -80,7 +82,8 @@ To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  linux-hyperv@vger.kernel.org
 References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
- <20240517141938.4177174-15-kirill.shutemov@linux.intel.com>
+ <20240517141938.4177174-4-kirill.shutemov@linux.intel.com>
+ <dc292ce2-d450-400c-a0e9-c807aeb671dc@intel.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -117,27 +120,61 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20240517141938.4177174-15-kirill.shutemov@linux.intel.com>
+In-Reply-To: <dc292ce2-d450-400c-a0e9-c807aeb671dc@intel.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 5/17/24 16:19, Kirill A. Shutemov wrote:
-> Introduce a set of macros that allow to generate wrappers for TDCALL
-> leafs.
+On 5/17/24 17:28, Dave Hansen wrote:
+> On 5/17/24 07:19, Kirill A. Shutemov wrote:
+>>   static inline void tdx_io_out(int size, u16 port, u32 value)
+>>   {
+>> -	struct tdx_module_args args = {
+>> -		.r10 = TDX_HYPERCALL_STANDARD,
+>> -		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+>> -		.r12 = size,
+>> -		.r13 = 1,
+>> -		.r14 = port,
+>> -		.r15 = value,
+>> -	};
+>> -
+>> -	__tdx_hypercall(&args);
+>> +	TDVMCALL_0(hcall_func(EXIT_REASON_IO_INSTRUCTION),
+>> +		   size, TDX_PORT_WRITE, port, value);
+>>   }
 > 
-> There are three macros differentiated by number of return parameters.
+> I actually really like the self-documenting nature of the structures.  I
+> don't think it's a win if this is where the lines-of-code savings comes
+> from.
 > 
-> Signed-off-by: Kirill A. Shutemov<kirill.shutemov@linux.intel.com>
-> ---
->   arch/x86/include/asm/shared/tdx.h | 58 +++++++++++++++++++++++++++++++
->   1 file changed, 58 insertions(+)
 
-Can you explain in the commit message why you picked a different 
-approach?  That is, a sequence of inlined movq instructions here vs. 
-compiler-generated movqs + a trampoline for TDVMCALL.
+It's just a tradeoff.  For example someone could well have written
+
+#define TDVMCALL_0(reason, a1, a2, a3, a4) \
+   do { \
+	struct tdx_module_args args = {
+		.r10 = TDX_HYPERCALL_STANDARD,
+		.r11 = reason,
+		.r12 = a1,
+		.r13 = a2,
+		.r14 = a3,
+		.r15 = a4,
+	__tdx_hypercall(&args);
+   } while(0)
+
+even with the current __tdx_hypercall() implementation.
+
+I agree that TDVMCALL_x is somewhat less legible; on the other hand it 
+highlights that these TDVMCALLs all have a common convention for passing 
+parameters / retrieving results, and reduces the potential for silly typos.
+
+This is also why I asked about the different approaches for TDCALL vs. 
+TDVMCALL.  Given that there are only a handful of appearances for 
+tdvmcall_trampoline, maybe the best of both worlds is just to inline the 
+whole thing?  This way the code in the macros matches the parameter 
+passing convention of the GHCI.
 
 Paolo
 
