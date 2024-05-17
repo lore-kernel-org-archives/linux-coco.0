@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEF512D779
-	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 15:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2CE12D201
+	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 15:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715958993; cv=none; b=anlEX6Zk7XcZRDPfOlyJ9d/oR8k7fkqtlFh5yXzb83WuuRCcKV7oeyKNPjNwPogubY1xml9qAAvdA6frWqguyo2ReZR/f98IR9+gHqxgZURYfu5XVvbLlCMxYE/t4jk1BXKK1BDCc/M7B/XhS9gXgAtatBDlLmGJGhURpjl4jpA=
+	t=1715959113; cv=none; b=imcqxGbTTxegakOIo6lMi+GaXUP2HPI//WY9bkTZBGeQ3nU7Aj5JKuqLKP+gLXlgEahbrd5B9rFVSknC7mBczL3Ym/RNsYO+EyCRiijOCUi4t9SciiGH9Cu8oyNMUFc+SB6XxhfwvfCWdAxq/jC0rYbM9JhR9FoGiyRFAl+oLA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715958993; c=relaxed/simple;
-	bh=3fPU1fs2JUOtmc5eh1txj+k2TZGaYA4QjWNWwFOsBDU=;
+	s=arc-20240116; t=1715959113; c=relaxed/simple;
+	bh=T9GQWbhT4UmQtK64OZ6UxRaZXk6G7MbRm/XQXvD53qA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MNbJyUcmubFbozf+c7lNEqVdOA3zdi2cA8VY3YEUeTh3PuZS2KchAygy5UoA1PHBcnbYh7ae3V1tZ3gGik3VxxUClMA4RXtFZh59jFccMKlpWZ6M8FOE/QD9WGQEPaZWAPVxn3jmoAtwTSZNaQJ5RFfTspKoSOCdtDRQmMXM2O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HRWg4ABJ; arc=none smtp.client-ip=192.198.163.19
+	 In-Reply-To:Content-Type; b=tc8EbJDsdWY7XBaSTzUXDOGP34/jDpX0JIio90hLBHN4GDpzvDBSAJcNiv8nnkKzQwKZ6Au4RtJhtFm1w71AF5KLReIANBHjz+87yWNG+cjJXiOi3OS/zcQnKyK9aphA9Dc5Ev0UCnuYcyP6gj3ar36b1s9lLs53kobFHEHaDD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aEZEz9sT; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HRWg4ABJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aEZEz9sT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715958991; x=1747494991;
+  t=1715959112; x=1747495112;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=3fPU1fs2JUOtmc5eh1txj+k2TZGaYA4QjWNWwFOsBDU=;
-  b=HRWg4ABJJz9BEJU0hocya+QyaUNBRgiG43qpy0WRhyErIpPnpYCbMwz6
-   OpKaN9cDeufjn13N0/r56B3p48HTemTIod4igoHmUKbHHWy/SJvFdR3/K
-   bwkcozB38ZkWjvuc+LiOOHbPw7s/YYrZkikRTTFQNcdJ/N5VeKkrpBC9G
-   +KSvvcSo0ChIQ+SaBiDTPwJ8qrMscOFeGRiR2YyyTgVA0hzJ5smwOSenx
-   7g8TKgtxY7NrtlFKEPjVJMA/K4s+7dV9G1w8Zq894WNLSfjSHcoE5rp6z
-   cOxvpyczNPyEM6SNqh84F0DqVo7voXjHBkTFXUNxVvfhZcKkdO7o7oCWZ
-   A==;
-X-CSE-ConnectionGUID: pYAIdMbORa28TgtJWmdVUA==
-X-CSE-MsgGUID: Zd+ai310SMeTgzlOwZ17iA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="11983253"
+  bh=T9GQWbhT4UmQtK64OZ6UxRaZXk6G7MbRm/XQXvD53qA=;
+  b=aEZEz9sTV0TRB2moW0d7hvSYM1qI9b0pvZiKtTW5gGpx84Y6QFlN3gMQ
+   ZimssA9OvEdgcx/EOISabVaTpXJkH1WJ00cW0y7DbL6vIYW4Mz28XxrbE
+   kk/cLB903S2DLn9aHdHhZt9pddHwUF4JKL3b9v60STBDWhFpvTjdLlB4z
+   KCYEi7QQSOtStANPhDc8vG2VsaZC8lWhmJemhH55q8BSl8e06LQL+Rv00
+   jEkWNrjkVyXErqT1+Ixx+YcS7ISa7kHJGj738iVhp9EayB+Sw5ekHNfuw
+   Tfe8kjimAtdK0qucPn54DH4uoSTfqDExkSCGpjkLFlNcSp0CBG8q3D7uE
+   Q==;
+X-CSE-ConnectionGUID: ZYfb/SN/RXeiUUvy4A8F6g==
+X-CSE-MsgGUID: tVb6ywpkSkasFm+ntbCriw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="15930215"
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="11983253"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:16:30 -0700
-X-CSE-ConnectionGUID: mBEYuQawSGWknx11GzKz8Q==
-X-CSE-MsgGUID: sXjhf5psSKaqSPXJH8u3aw==
+   d="scan'208";a="15930215"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:18:31 -0700
+X-CSE-ConnectionGUID: 4LzS0qkVTx+ojVmtkWESEg==
+X-CSE-MsgGUID: Y9Q0YWuySzqYwbFEYozPDQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="36713213"
+   d="scan'208";a="36236912"
 Received: from kinlongk-mobl1.amr.corp.intel.com (HELO [10.125.108.204]) ([10.125.108.204])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:16:30 -0700
-Message-ID: <fc0e8ab7-86d4-4428-be31-82e1ece6dd21@intel.com>
-Date: Fri, 17 May 2024 08:16:29 -0700
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:18:31 -0700
+Message-ID: <a8628846-1d87-4191-92b8-c7a1e70cb196@intel.com>
+Date: Fri, 17 May 2024 08:18:29 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,18 +52,19 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/kvm/tdx: Save %rbp in TDX_MODULE_CALL
-To: Juergen Gross <jgross@suse.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- Dave Hansen <dave.hansen@linux.intel.com>,
+Subject: Re: [PATCH 00/20] x86/tdx: Rewrite TDCALL wrappers
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-References: <20240517121450.20420-1-jgross@suse.com>
- <ohvjbokpaxagc26kxmlrujab7cw3bekgi5ln7dt46cbsaxcqqh@crvqeohfazmf>
- <f63e1217-3dbe-458d-8c14-7880811d30ba@suse.com>
- <2a2guben2ysyeb43rzg6zelzpa57o24ufai3mi6ocewwvgu63l@c7dle47q7hzw>
- <03d27b6a-be96-44d7-b4ea-aa00ccab4cc5@suse.com>
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-hyperv@vger.kernel.org
+References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -109,20 +110,21 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <03d27b6a-be96-44d7-b4ea-aa00ccab4cc5@suse.com>
+In-Reply-To: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 5/17/24 07:44, Juergen Gross wrote:
-> Just another data point: Before using this machine I was testing on
-> another one with older firmware. That one really didn't support NOM_RBP_MOD
-> and I needed to build the kernel with CONFIG_FRAME_POINTER enabled to get
-> past the check you are mentioning above.
+On 5/17/24 07:19, Kirill A. Shutemov wrote:
+>  arch/x86/boot/compressed/tdx.c    |  32 +---
+>  arch/x86/coco/tdx/tdcall.S        | 145 ++++++++++-----
+>  arch/x86/coco/tdx/tdx-shared.c    |  26 +--
+>  arch/x86/coco/tdx/tdx.c           | 298 ++++++++----------------------
+>  arch/x86/hyperv/ivm.c             |  33 +---
+>  arch/x86/include/asm/shared/tdx.h | 159 +++++++++++-----
+>  arch/x86/include/asm/tdx.h        |   2 +
+>  arch/x86/virt/vmx/tdx/tdxcall.S   |  29 +--
+>  tools/objtool/noreturns.h         |   2 +-
+>  9 files changed, 322 insertions(+), 404 deletions(-)
 
-For all intents and purposes, the modules that intentionally clobber RBP
-don't support Linux. If buggy modules are accidentally clobbering RBP,
-we can debate how much the kernel should bend over to accommodate them,
-but my preference would be to ignore them.
-
-I'd much rather put a deny list in the kernel than try to tolerate RBP
-clobbering universally.
+I was going to grumble about this being a waste of time, but it looks
+like this gives smaller binaries and less code.  Looks promising so far!
