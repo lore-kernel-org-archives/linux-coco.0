@@ -1,50 +1,59 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A5512C7E1
-	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 15:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A760112DD9F
+	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 15:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715959300; cv=none; b=D5kQxZ7o2l5JF1ErlCFP9joo9p8xlQgUyhR5n0FAJEPCWC90UoyiPl3jxVDa3/FD7OAg4ttyhyd09JVaeg7OAZf6hKlDLm0NvV3hN0d8aBYno/X+ixdLEuIahqFQBvg4XqyeCbeLLb3cIWMUiyzHX/fHKKwZ3tm0CpjFl6kYPqI=
+	t=1715959664; cv=none; b=Yj+qj2AkXmyipaBdZcut6+Hja69ES74nUCJOgJkLgrFMi+tFA64/St0MxYgAV6Pbce2E9AmF0VHD+11tZ+23ZIHy1TwrCF8SuYp+6OEKqO4VC+6nwEQsUvF+GVcoHy3KdPBbF+qhLo5anCoVBcLW/Ir9fbIm1d1QL8ULx8J+gv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715959300; c=relaxed/simple;
-	bh=jpNsC9cI9iGi7aedbr9RL6SWorewOwQj+OYp2jQWsx8=;
+	s=arc-20240116; t=1715959664; c=relaxed/simple;
+	bh=WAuIDB4DY45M+bVTlaGSn+0hYnImjNyHWBTEeeC9auI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ncfec8aomNoWlBh8N14Z7WXCFtf1kC70y8CGzYlflWL+F6SEYrVVd0vZWdatMBKE7JdZrFwv42yRQwKNsAC5X5ICxJiZRcScHPTaHo0Npu0wRE151VLBlJIe/4vEScYD1/ZQxdSqTGKZSScF2tT8c/9fSicrz7xN2Sm9ZzPY6Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cYPrEfsx; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=YNi8a3tvR94qgdFchiZvfIbt6aPqP5cyARFgZVWtl3zDndrK9of7C4h/8OfraoUHTxuC9PkiDSPIG1fo6VHZqKL0MZrVx97mhbLYl78zezGydTvlSaVtE1a8LpLkeLtX360B5uQjmF5RuEHn0XIzWsfdjzoFrQ7NRdLckOQwZn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=GfnKq88c; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cYPrEfsx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715959299; x=1747495299;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=jpNsC9cI9iGi7aedbr9RL6SWorewOwQj+OYp2jQWsx8=;
-  b=cYPrEfsxPp/Ovf1mb6cABpic0qFnlv6lyrnBtrO81cuJfQqXTZvULHRu
-   5an1cnfxWNXTGmaKwqOFhg9sbTqq50cf5f2hxBKdZEvjp4M+BJAdMXKOm
-   etYO/2iafAQ9pcv162d5Rpny4aJRXlo7G7vISm9SQIZK1WdROmT950o7k
-   Zmq8wYuR50MYaVqcC52Y+xe1/D8x2U4zR4lOiLtDmATBwqas2fQIekaNs
-   1dhf2UJAGk7ROOAblNbHOYajUM5WKhSqOnYgAFlGRqzh5WKa5DN2gbEBB
-   xG9swVG8zqZS37UIsQ0QzoWFoKcH46f5nnot1glSjZsoaxxLXLn13a13U
-   w==;
-X-CSE-ConnectionGUID: 2IjGz8bORNS1bQe5/sXxbQ==
-X-CSE-MsgGUID: 8vX9ZdlhREyjU/u2X227mw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="23280076"
-X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="23280076"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:21:39 -0700
-X-CSE-ConnectionGUID: yIfU3bf3Q8agb0Pm4A51zg==
-X-CSE-MsgGUID: 10hV1spdSGC4s6JDTrAs2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="62655258"
-Received: from kinlongk-mobl1.amr.corp.intel.com (HELO [10.125.108.204]) ([10.125.108.204])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:21:38 -0700
-Message-ID: <395850c4-f8a3-46ed-9b0c-b1f47386610c@intel.com>
-Date: Fri, 17 May 2024 08:21:37 -0700
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="GfnKq88c"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a5a1054cf61so549043466b.1
+        for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 08:27:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1715959661; x=1716564461; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CYtZ7UWXlfZ7PHH7Ttm340cmOR2Qtx6Db26PJMdTdRc=;
+        b=GfnKq88c5n76qaEPdxVcRA7BUaa1RbqKiwPNK8g8jsEd8CNzrJt5FeUXTSfy0LkmRd
+         cscHWjue2W6WcDrPsDPAM3bCavm3HDG31Gu97pogmePTMElkC+jt9mt2Vg5EWeGxR2yx
+         9kVe5QOlHiFkSLEeNkYizSBJNx7qULgN280URQwkEiLkgSa+dasadqnFuzLw+vPAPH6Y
+         2A2KdDN2X8PbpO1LaRn9+WI3ihloQt0NTPn8ehyRhMsdbFI5a88NIUP5pKyaxMlZ+tQ5
+         Rs4IVglQVUaDBpJKtV28aeiHilOP7Vw9Q06M1R9vvyltDqpswvwfpRrZ+ptfanEydKrN
+         Gs0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715959661; x=1716564461;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CYtZ7UWXlfZ7PHH7Ttm340cmOR2Qtx6Db26PJMdTdRc=;
+        b=lwe3KQU2sW2XexJRWs0dp/penWxGHZfG3YWzZtNmJzoAOLAk5sS7dMSwWnEhttWfz9
+         Bjcg/YMApSDRiODRh6Oe3fXfkcr6orWNOckg39WFTEt8xqeyNzZlvboviHx3jV+48ilc
+         cjRwUzhQvZ2rliq9hYziGT1rw5ibmBIe7Q4nPeCCdnKVzYWtetEb6Dy2ENsOqij4vAGk
+         0mGILlYeKopFRWZdpH4TzzlBXW3tjHt8uVkh6EDjGcyaSLFSW0SHimk8zt3eQ2wMYaxE
+         AfsxLl+wuxoSRdmsuyXW6w41YDuBY3SO9pEz91sHeA85EoFbfrZOfjcMSCqarTKc+MVx
+         a8UA==
+X-Forwarded-Encrypted: i=1; AJvYcCXd14TJZahueBZ6rNPgsws3x4BP12SIBE7ZZX9WkpOIvbWOiPmb1uSC7sFv5JbElCt4IMeChB6nlD0l3ofb1CzRO7jNqcUIRTKB2Q==
+X-Gm-Message-State: AOJu0YyFTZkCcjG/JrAXR/ezFKHQZQRT2ADjqLh/qXTMZHelrVq4z0wn
+	r+6gNbN2jNcrNrbtdlmWhX1rdU4ugTdsgLuXLW+oe1ZRhrdVK1hxSuhhP/06ogg=
+X-Google-Smtp-Source: AGHT+IEC/tVX5gdvgjdMELjSwKwhEoU8VoXbtk3n4tBN5yocUeBR05+5b+4MM+ubgkd9fbBP9nWoaQ==
+X-Received: by 2002:a17:906:3551:b0:a53:ed1b:f3ba with SMTP id a640c23a62f3a-a5a2d572c03mr2111033966b.28.1715959661067;
+        Fri, 17 May 2024 08:27:41 -0700 (PDT)
+Received: from ?IPV6:2003:e5:873c:a500:6aaf:b7a7:7c29:ae5c? (p200300e5873ca5006aafb7a77c29ae5c.dip0.t-ipconnect.de. [2003:e5:873c:a500:6aaf:b7a7:7c29:ae5c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17b17cc5sm1118947466b.205.2024.05.17.08.27.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 May 2024 08:27:40 -0700 (PDT)
+Message-ID: <c0067319-2653-4cbd-8fee-1ccf21b1e646@suse.com>
+Date: Fri, 17 May 2024 17:27:39 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,80 +61,48 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/20] x86/tdx: Introduce tdvmcall_trampoline()
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+Subject: Re: [PATCH] x86/kvm/tdx: Save %rbp in TDX_MODULE_CALL
+To: Dave Hansen <dave.hansen@intel.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
+ Dave Hansen <dave.hansen@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-hyperv@vger.kernel.org
-References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
- <20240517141938.4177174-2-kirill.shutemov@linux.intel.com>
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+References: <20240517121450.20420-1-jgross@suse.com>
+ <ohvjbokpaxagc26kxmlrujab7cw3bekgi5ln7dt46cbsaxcqqh@crvqeohfazmf>
+ <f63e1217-3dbe-458d-8c14-7880811d30ba@suse.com>
+ <2a2guben2ysyeb43rzg6zelzpa57o24ufai3mi6ocewwvgu63l@c7dle47q7hzw>
+ <03d27b6a-be96-44d7-b4ea-aa00ccab4cc5@suse.com>
+ <fc0e8ab7-86d4-4428-be31-82e1ece6dd21@intel.com>
 Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20240517141938.4177174-2-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+In-Reply-To: <fc0e8ab7-86d4-4428-be31-82e1ece6dd21@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 5/17/24 07:19, Kirill A. Shutemov wrote:
-> TDCALL calls are centralized into a few megawrappers that take the
-> struct tdx_module_args as input. Most of the call sites only use a few
-> arguments, but they have to zero out unused fields in the structure to
-> avoid data leaks to the VMM. This leads to the compiler generating
-> inefficient code: dozens of instructions per call site to clear unused
-> fields of the structure.
+On 17.05.24 17:16, Dave Hansen wrote:
+> On 5/17/24 07:44, Juergen Gross wrote:
+>> Just another data point: Before using this machine I was testing on
+>> another one with older firmware. That one really didn't support NOM_RBP_MOD
+>> and I needed to build the kernel with CONFIG_FRAME_POINTER enabled to get
+>> past the check you are mentioning above.
+> 
+> For all intents and purposes, the modules that intentionally clobber RBP
+> don't support Linux. If buggy modules are accidentally clobbering RBP,
+> we can debate how much the kernel should bend over to accommodate them,
+> but my preference would be to ignore them.
+> 
+> I'd much rather put a deny list in the kernel than try to tolerate RBP
+> clobbering universally.
 
-I agree that this is what the silly compiler does in practice.  But my
-first preference for fixing it would just be an out-of-line memset() or
-a pretty bare REP;MOV.
+Would you be fine with adding a new X86_FEATURE (or BUG?) allowing to switch
+RBP save/restore via ALTERNATIVE, controlled by a command line option?
 
-In other words, I think this as the foundational justification for the
-rest of the series leaves a little to be desired.
+Or maybe by adding a new CONFIG_TDX_MODULE_CAN_CLOBBER_RBP (probably using
+a shorter name) option?
+
+TBH I'm slightly puzzled that the firmware I'm using could make it outside
+Intel. I'm fearing this might happen again.
+
+
+Juergen
