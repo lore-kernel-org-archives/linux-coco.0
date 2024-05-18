@@ -1,109 +1,108 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BC913FD83
-	for <linux-coco@lists.linux.dev>; Fri, 17 May 2024 19:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4093A8CB
+	for <linux-coco@lists.linux.dev>; Sat, 18 May 2024 15:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715973849; cv=none; b=V3Zl27UddB8oYUINds7QQFjb4qY83Rz2iKVDbfRwASRM5K9XLapzo/NgRNPopUvQJel67GD40X1gDsCf/ZdVSDqBhF6L5GA40+fm/e0MrNQHownhopjN4eX6DzvEdqBAQUcgWwu04FJWF8Kj6CqeJrqRLkPdxfMgk6nMJLxoESI=
+	t=1716046146; cv=none; b=nVmJAvBIED8ljotzyHzHs5h8bnelMb3hP87JpxPk2np9Zjpr7PSmjeoIcvmOeT0hM1cIZ/59X273NfFJVCGUlKKp4W35J4GRAC+lWws2bLjbWDnVQ/3GSihv//H1CYqw+LKGI6FN3SLPPEaxuGYIESRSkIPvuLnIXpUMqW+ccuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715973849; c=relaxed/simple;
-	bh=jqEKv9YQWGDI6y6rk0fH+p2w4mRzFWQV7kfY811W3+k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W9FrCjKFqFu4jMD/tOUWnV2j0orkkq0/TdMq8UaN9ZNrMo98T3Sal83//AgE8a1cVd175khQuA6zUDiXyqLggdoRPlyZ4/PbYnownrWCui36vkRmpFYeFNBtWPkXT1stlnAaOL3HjYLEh9+IzNK4OR9zi/xRjkg6nIWeex3+ApI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Qt+77uYT; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1716046146; c=relaxed/simple;
+	bh=0oWWlE3oDhEW0XamtqcFvDPIPwOclTeWmexU0R6AMOg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uWJwa7T8aVY2kUe+wmc15VR2eQP7lVjb3RCuQIbeaXfG77Vn1gQaCTmuZF/C8HZSsE8nJj4hKZA3KTJgOXFV9g2xenT1EvoncJHNieXPgQszT7aEwXevV2MoTmhPpmnQI0RbsFkahk3MRm8iXg2KsyYn2OOUJcMRJelZQnjtaX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TPjy7ljh; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Qt+77uYT"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7863E40E02A7;
-	Fri, 17 May 2024 19:24:05 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id UwbL3muqleYo; Fri, 17 May 2024 19:24:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1715973842; bh=J7Crj1QNIeK8QjGNMpKjSRCjOYd0KfF9nXq4uixkpfs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qt+77uYTuH9Iju/AJGYrr2JQWEWTgnbtg+yQ6REinUitmOS9zxjWx1jcQ2ytOTS0e
-	 LNGVS7d3EEt4kLnAMkac4MY9ll6nyKsa0h08GUYpryhFxCdXQIWc2cce02E/waclyg
-	 DebsHPsfMCan4EbeLdPMQmf9lZa/ZpfmmBoka1gIjPcj7YP2/BmledV08TtOpchUtB
-	 5VNtX/G3Mab8A1BVjNKq9VXPOox8KzFgWL2pxoPRL3yD1YUMRRwc49WbRdamQQCyDZ
-	 fVNNHbAvn5DMZoS4MskXg7kIXZ+Rm4WpCg0/+XpFfpVEUFe9NJq6nWxjPqwCEnZO5U
-	 Ac/96sF2Ms0zJFJyYuPqkmhvozYMKAhsFxNMDK8Vm5mXTXTxPGqSQ+drVjxmrVrPHw
-	 T0y/R85jwFogGURtSsskwuvklF1RVsD+/tg2snjm/6wXeW9fgMhB+VzFPwBQefmODS
-	 6BtpiKmgSTy1YeWyy3lIOa1xzEN4eQL6cdbA18AX13yGA1hAh+OrQmXpDHpaZxUt7R
-	 v5MOGiscTRL9O09BPmq+QeWfwmPdU4vCmvtE73foxAXyP/9xy6IaFoLfVapOIpBvn3
-	 ZX0ovKIWwFY+af9zxf6GLq/Sh9UspGQWqimMmKu8DZNOcXmGJVFcfq11IZ3CU7ASOC
-	 OASwOB+HfTsJJTQnOJ73fiuc=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1824840E025E;
-	Fri, 17 May 2024 19:23:48 +0000 (UTC)
-Date: Fri, 17 May 2024 21:23:41 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v4 05/15] x86/sev: Use kernel provided SVSM Calling Areas
-Message-ID: <20240517192341.GXZkeuvZmXug5gSbH7@fat_crate.local>
-References: <cover.1713974291.git.thomas.lendacky@amd.com>
- <07266b47e749267ef9a9ccbc9e8e9df78ed54857.1713974291.git.thomas.lendacky@amd.com>
- <20240508080509.GWZjsyNS0xBXUzKPUG@fat_crate.local>
- <22dc9ceb-4b16-be68-ed8e-c6a222619032@amd.com>
- <20240508195842.GIZjvZcpRz0bdkiPWA@fat_crate.local>
- <d3b59450-fdbd-2813-bbc0-58f9dc2ba817@amd.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPjy7ljh"
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5b277a61f6fso884067eaf.1
+        for <linux-coco@lists.linux.dev>; Sat, 18 May 2024 08:29:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716046144; x=1716650944; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YcGBSUjyXOA1JpVYvoN1EuahOO06ajza5ZUGXHQ/tYE=;
+        b=TPjy7ljhWFzX+sD02OYE7T4ZnGB+v+CcKfaC+xprGY2cTZ18+O3axAl7LxRcZCXiEe
+         cyJKc8di894x5aL2CMJepsDYStemCHfn7R2WYUglYARyY+LxmP8oeJhtH3aT9v/Fkp+w
+         EZ8jYVZ45c3C3FYLWLhpD/AeuGHO4JsQ0wClHCJnJMr7nU638ts68TzvmJaYLRLQS1eS
+         QCpG/YbIFEwW0SrqzVt6xafLHlEirOeg5nBreOU7HJpbbFn/OLwqM5pfhUiahAIT4O5q
+         JbNAksyuh7BOs8heqxanA+ZL1bmhrnYv5umsqAU9WrN1YeCIF08xQTR9MUC6I8roXJ07
+         LI+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716046144; x=1716650944;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YcGBSUjyXOA1JpVYvoN1EuahOO06ajza5ZUGXHQ/tYE=;
+        b=oi37Woybp83GWtELUGU/prvJlxR8deBNDjdFNGEYjr33JJMZqwJZUUkls5+BmI3V59
+         ERCRvDnKZXP6BEGUnDBbWKBN5wAd81eMv4VfSFa3J+iBfm6bFnycgB+FGc8LWxImmaNO
+         irQKW3nhNq8KDnhyKZP7nwj79/KeHaok59txTFsEsoC/te0d8eSkQZ89Nr2rOga//o33
+         Hv43lgtkfUZj1ulIsS4l4gFk3IajTIjtbQSP0gSLgCgn57YAs1kooU7ttBuK6rh4hjsd
+         a7TVOKIWPMkIp3rVXSR3hz7U8l1H/RJIllQlW7Y9DEA2rHGNeNDHLI5G6xKV+QSFviFl
+         VLtg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPGasjGRgZpm1YFtoVfVFlptkVRg7ZMdTcHXDlerq+64bolWVTSsPB+Blajmday3tIXN7jqFXF2VVqrb+kxzXTAVxlvhG3Kecy/A==
+X-Gm-Message-State: AOJu0YxftF5+BFMXXVLl4Q2zYpHw+KEWtOyWGmvlLGR4tysLtxZ6DWLC
+	QEb6TgGTZlFi3rXEw86Mwr60ffN1TLQPXIktqn6Ewb/DCybuQ44k
+X-Google-Smtp-Source: AGHT+IH71oEJiJAd+qKPw7I30ipuzZqOKbfz9SVHCqEDTVEIWdcivJlGSb6FpPimtRapWLRXuy7gDA==
+X-Received: by 2002:a05:6820:248c:b0:5b2:8deb:98cb with SMTP id 006d021491bc7-5b3299ba504mr933215eaf.2.1716046144372;
+        Sat, 18 May 2024 08:29:04 -0700 (PDT)
+Received: from ?IPV6:2603:8080:2300:de:3d70:f8:6869:93de? ([2603:8080:2300:de:3d70:f8:6869:93de])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5b26ddcc6acsm4088141eaf.24.2024.05.18.08.29.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 May 2024 08:29:04 -0700 (PDT)
+Message-ID: <83b2db44-c7bc-49af-8634-d349b91dfab0@gmail.com>
+Date: Sat, 18 May 2024 10:29:03 -0500
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d3b59450-fdbd-2813-bbc0-58f9dc2ba817@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: SEV: Fix unused variable in guest request handling
+To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-coco@lists.linux.dev, Sean Christopherson <seanjc@google.com>
+References: <20240513181928.720979-1-michael.roth@amd.com>
+Content-Language: en-US
+From: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
+In-Reply-To: <20240513181928.720979-1-michael.roth@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 08, 2024 at 03:09:02PM -0500, Tom Lendacky wrote:
-> If we're not running at VMPL0 (based on the RMPADJUST check) and if the SVSM
-> doesn't advertise a non-zero VMPL value, we will self-terminate. So those
-> values are only set if we are not running at VMPL0 and the SVSM has provided
-> a non-zero value to us.
-> 
-> I'm going to turn the function into a bool function so that the call
-> becomes:
-> 
-> 	if (!svsm_setup_caa(cc_info))
-> 		return;
+On 5/13/24 13:19, Michael Roth wrote:
 
-Sure, I guess I'm misled by the
+> The variable 'sev' is assigned, but never used. Remove it.
+>
+> Fixes: 449ead2d1edb ("KVM: SEV: Provide support for SNP_GUEST_REQUEST NAE event")
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 
-	if (bla)
-		sev_es_terminate()
 
-which is a function call but I need to read its name to realize that
-after that point we're either terminated or we have all the stuff
-required to run on a SVSM.
+Reviewed-by: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
 
-> I do. I think you're missing the RMPADJUST check that causes the function to
-> return early if we're running at VMPL0.
 
-Yap.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> ---
+>  arch/x86/kvm/svm/sev.c | 3 ---
+>  1 file changed, 3 deletions(-)
+>
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 59c0d89a4d52..6cf665c410b2 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3965,14 +3965,11 @@ static int __snp_handle_guest_req(struct kvm *kvm, gpa_t req_gpa, gpa_t resp_gpa
+>  				  sev_ret_code *fw_err)
+>  {
+>  	struct sev_data_snp_guest_request data = {0};
+> -	struct kvm_sev_info *sev;
+>  	int ret;
+>  
+>  	if (!sev_snp_guest(kvm))
+>  		return -EINVAL;
+>  
+> -	sev = &to_kvm_svm(kvm)->sev_info;
+> -
+>  	ret = snp_setup_guest_buf(kvm, &data, req_gpa, resp_gpa);
+>  	if (ret)
+>  		return ret;
