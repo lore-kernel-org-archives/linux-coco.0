@@ -1,59 +1,40 @@
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4093A8CB
-	for <linux-coco@lists.linux.dev>; Sat, 18 May 2024 15:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6661C2E;
+	Sun, 19 May 2024 05:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716046146; cv=none; b=nVmJAvBIED8ljotzyHzHs5h8bnelMb3hP87JpxPk2np9Zjpr7PSmjeoIcvmOeT0hM1cIZ/59X273NfFJVCGUlKKp4W35J4GRAC+lWws2bLjbWDnVQ/3GSihv//H1CYqw+LKGI6FN3SLPPEaxuGYIESRSkIPvuLnIXpUMqW+ccuU=
+	t=1716097831; cv=none; b=rD8J8CwMF74rALt+iYZot6oGO9WMHXchrpQKWS+T8s1/4csYn9XJ7kU05T8ERUr/gKnHsYVEZJkzwNzGXVQTfTEijOv8Lctz6rqhwnlOzxmP7wf+FU46poPQs0hdyybJg6mHaFEIoPTFK7h0ig0TCzAn7RVsT26IKFadMRAHK+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716046146; c=relaxed/simple;
-	bh=0oWWlE3oDhEW0XamtqcFvDPIPwOclTeWmexU0R6AMOg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uWJwa7T8aVY2kUe+wmc15VR2eQP7lVjb3RCuQIbeaXfG77Vn1gQaCTmuZF/C8HZSsE8nJj4hKZA3KTJgOXFV9g2xenT1EvoncJHNieXPgQszT7aEwXevV2MoTmhPpmnQI0RbsFkahk3MRm8iXg2KsyYn2OOUJcMRJelZQnjtaX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TPjy7ljh; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1716097831; c=relaxed/simple;
+	bh=0yvbC3YWgtKvkehK3zxwUez8A5+kamVe/0eOYjtGMTE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=H+fKHUZwfEPWLwtdzmefkcJYnXgXCpFc0a7Ir/jd7gelWANkG/IZcRmVCIhKxgf1m4hCmj0Ge2GMgLZEIAfTpJXStwVp4Sfqc9KdGSOMAvtaSD1vLYwYKuuyuJiIymWFYK285xbX6jAxKUAdqvTTEUPhE8FfOjeU4L1zmzaK6tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=MBvHwGn5; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPjy7ljh"
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5b277a61f6fso884067eaf.1
-        for <linux-coco@lists.linux.dev>; Sat, 18 May 2024 08:29:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716046144; x=1716650944; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YcGBSUjyXOA1JpVYvoN1EuahOO06ajza5ZUGXHQ/tYE=;
-        b=TPjy7ljhWFzX+sD02OYE7T4ZnGB+v+CcKfaC+xprGY2cTZ18+O3axAl7LxRcZCXiEe
-         cyJKc8di894x5aL2CMJepsDYStemCHfn7R2WYUglYARyY+LxmP8oeJhtH3aT9v/Fkp+w
-         EZ8jYVZ45c3C3FYLWLhpD/AeuGHO4JsQ0wClHCJnJMr7nU638ts68TzvmJaYLRLQS1eS
-         QCpG/YbIFEwW0SrqzVt6xafLHlEirOeg5nBreOU7HJpbbFn/OLwqM5pfhUiahAIT4O5q
-         JbNAksyuh7BOs8heqxanA+ZL1bmhrnYv5umsqAU9WrN1YeCIF08xQTR9MUC6I8roXJ07
-         LI+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716046144; x=1716650944;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YcGBSUjyXOA1JpVYvoN1EuahOO06ajza5ZUGXHQ/tYE=;
-        b=oi37Woybp83GWtELUGU/prvJlxR8deBNDjdFNGEYjr33JJMZqwJZUUkls5+BmI3V59
-         ERCRvDnKZXP6BEGUnDBbWKBN5wAd81eMv4VfSFa3J+iBfm6bFnycgB+FGc8LWxImmaNO
-         irQKW3nhNq8KDnhyKZP7nwj79/KeHaok59txTFsEsoC/te0d8eSkQZ89Nr2rOga//o33
-         Hv43lgtkfUZj1ulIsS4l4gFk3IajTIjtbQSP0gSLgCgn57YAs1kooU7ttBuK6rh4hjsd
-         a7TVOKIWPMkIp3rVXSR3hz7U8l1H/RJIllQlW7Y9DEA2rHGNeNDHLI5G6xKV+QSFviFl
-         VLtg==
-X-Forwarded-Encrypted: i=1; AJvYcCUPGasjGRgZpm1YFtoVfVFlptkVRg7ZMdTcHXDlerq+64bolWVTSsPB+Blajmday3tIXN7jqFXF2VVqrb+kxzXTAVxlvhG3Kecy/A==
-X-Gm-Message-State: AOJu0YxftF5+BFMXXVLl4Q2zYpHw+KEWtOyWGmvlLGR4tysLtxZ6DWLC
-	QEb6TgGTZlFi3rXEw86Mwr60ffN1TLQPXIktqn6Ewb/DCybuQ44k
-X-Google-Smtp-Source: AGHT+IH71oEJiJAd+qKPw7I30ipuzZqOKbfz9SVHCqEDTVEIWdcivJlGSb6FpPimtRapWLRXuy7gDA==
-X-Received: by 2002:a05:6820:248c:b0:5b2:8deb:98cb with SMTP id 006d021491bc7-5b3299ba504mr933215eaf.2.1716046144372;
-        Sat, 18 May 2024 08:29:04 -0700 (PDT)
-Received: from ?IPV6:2603:8080:2300:de:3d70:f8:6869:93de? ([2603:8080:2300:de:3d70:f8:6869:93de])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5b26ddcc6acsm4088141eaf.24.2024.05.18.08.29.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 May 2024 08:29:04 -0700 (PDT)
-Message-ID: <83b2db44-c7bc-49af-8634-d349b91dfab0@gmail.com>
-Date: Sat, 18 May 2024 10:29:03 -0500
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="MBvHwGn5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1716097818; x=1716702618; i=markus.elfring@web.de;
+	bh=0yvbC3YWgtKvkehK3zxwUez8A5+kamVe/0eOYjtGMTE=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=MBvHwGn5D8wKrTfcIuMVWEPKNyz5OGw8+xk6J8t5zAX0lxUX4IhLAQ3OR4OIzOsh
+	 gww8LHPLafO2HtjL62UG+vuNpd+a12PVSsjgYgou2453FMBw/TpW1usdkFuE31zMy
+	 +aih5j7EPMSxuM459acLa8LauxwitxrleQlu+jKnOjJkDXYlFCqFqwQg3pAyay5vM
+	 AXv+faCJJKk3CEho8601znrbi3e0DOLcBOliwyauzhH60cf2N600/LuJI3STqC6n4
+	 Qpv5tEiM1Lg2HI+GxVn5r39CkWthmbQcONv5wTXiFvpcEFod0jnXpLsYacegdCUTy
+	 3Gk8z7QQJujvjFk4NA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MGxQX-1sM3hZ1kpf-001zNa; Sun, 19
+ May 2024 07:50:18 +0200
+Message-ID: <76413d53-4572-4a38-baff-8b01f6179c8e@web.de>
+Date: Sun, 19 May 2024 07:50:14 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -61,48 +42,42 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: SEV: Fix unused variable in guest request handling
-To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- linux-coco@lists.linux.dev, Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, linux-coco@lists.linux.dev
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Carlos Bilbao <carlos.bilbao.osdev@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 References: <20240513181928.720979-1-michael.roth@amd.com>
-Content-Language: en-US
-From: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
+Subject: Re: [PATCH] KVM: SEV: Fix unused variable in guest request handling
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
 In-Reply-To: <20240513181928.720979-1-michael.roth@amd.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 5/13/24 13:19, Michael Roth wrote:
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:86xkhBNlc093D6q3cjQlgFMXciyeSHTew5huDwPDpF/M1QEcniy
+ OoNcSNgh8nUXAwTF+r4oqO6RME/I3KJ1ET7oiMUWh2Hycqsd4C9LIym7n9Y8U54aUv6evK/
+ LLFEm+nRuJqGGeCorG4SCSKPKBQ1+XmTaK/cOpSloGbCIQYC1UpQWSQBThymHXd5Rt95vkI
+ GbZ9C5mA7mzozKI+V5Z+g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:lcVEq/oY1Bg=;kyVlebdxuhJMfY0uiZgFoH+b0rv
+ QCfP9AOimSDxeM/p8p95KyMqLiTHTDa9tkZFsExgYnrxg65G5hNaBKI5ulbaNmawy5qHAQbOv
+ 78IuREnkD0tDqo7etBb8zhSC2lty5SpkRflP8iiPe3gwVPwvO+2QZy+R7TSZjSitDrh2t/OZY
+ dWrItoYRshEIq7OenouiAMDCWMVcmCdx97p4FI7MQ/Ev4cAYqgqseAX/uimQe77TJ9lKkGYEW
+ dG1EMAva0LjNPZQ1g4Zf3stRdQ6/Ap0DS0+VROBupSIJSTsX/NVuSW+1l3mXuYt+K8jhXiGiN
+ wqhF9xDEyfxDwmqayab5GqchHSYeYES4hWxmfWr3Mf4eiubuMEfo59DWs8T161zjBEuDyfEeG
+ lyt1OMLA7jt3tLGV5OAw6fZ9JzE3T7NvX7MG/LtY0ek7yX6stDbfhGHioKPO5ZPkMqZZDli4i
+ N111LrJu5WJfvmczOvDVCZLAtqXe4jJ3/ae4Q33f6GeRDFFyHGVIlAdDCH2dk2ZDQBKWRRRin
+ BPxJV2qcAVhtryGoc4jBgEAD3+oYI846ol8J9NjgFwX85a/yE1epAponyWvMT4//rDDkWyBe/
+ Gln1KmBxG9VdKGrha2wESWE5s4Ae0kaB5sZNaEILB96yiMIOdR5cRaULndKww/sJbhn8H6/5P
+ yUQlNCROzbYrPPTZ2p85wdq0d1O5MiPjV4Zf+rH0kSMRO/wI/3kEgWUr4DE7tcRJO3Mjprkr9
+ xRTzyJDdqKQKapMazVyvPVgKPvqXiL7GG5QOSt80uvJXQaumDmOjkzHoaYXZr8UzUxTnUd+6C
+ lekuPcNLkXK00WxnCmdM04R7zrc0siPY2OJuXisq5U5C0=
 
 > The variable 'sev' is assigned, but never used. Remove it.
->
-> Fixes: 449ead2d1edb ("KVM: SEV: Provide support for SNP_GUEST_REQUEST NAE event")
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
 
+Would it be a bit nicer to use the word =E2=80=9COmit=E2=80=9D instead of =
+=E2=80=9CFix=E2=80=9D
+in the summary phrase?
 
-Reviewed-by: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-
-
-> ---
->  arch/x86/kvm/svm/sev.c | 3 ---
->  1 file changed, 3 deletions(-)
->
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 59c0d89a4d52..6cf665c410b2 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -3965,14 +3965,11 @@ static int __snp_handle_guest_req(struct kvm *kvm, gpa_t req_gpa, gpa_t resp_gpa
->  				  sev_ret_code *fw_err)
->  {
->  	struct sev_data_snp_guest_request data = {0};
-> -	struct kvm_sev_info *sev;
->  	int ret;
->  
->  	if (!sev_snp_guest(kvm))
->  		return -EINVAL;
->  
-> -	sev = &to_kvm_svm(kvm)->sev_info;
-> -
->  	ret = snp_setup_guest_buf(kvm, &data, req_gpa, resp_gpa);
->  	if (ret)
->  		return ret;
+Regards,
+Markus
