@@ -1,95 +1,110 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7FF137C38
-	for <linux-coco@lists.linux.dev>; Mon, 20 May 2024 17:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC8B137C28
+	for <linux-coco@lists.linux.dev>; Mon, 20 May 2024 19:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716226527; cv=none; b=qyrIV31li3ArF6BuPZMZ+YdwgDYHfxhAAclujGeJ3HvD3dNYZgt62xGjJRS1IM4QhqOv8qMvijISqGR/PkwxmKwESRLhrXA6Iuv8WiObmGdEXMhW1dUAfZuXq7Fs3cUk5bv/9YE5eJguFJ/CHGpw6WbxyXSi1Va8aqGTGFfwm1w=
+	t=1716232490; cv=none; b=Uv4jqbApbjdSGWlUxFDYSDSPeNYleZqNEw38B26LwHexm8QO+dQCpd8EwtprZTSSPhRqyffqBLx1B4OEHIqqCIOdIDsJEBp/l5nOU5hZDcIVqV4W6X81Nx+VT7xR1cqrWOU5ZcCOAYkJAXAvMWI4Yy6XDviQDDi0m/cwh5yLbMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716226527; c=relaxed/simple;
-	bh=+Tf6AAgN6OqFWz2TdMAtSycAZVzTLTZBPFUHsMMEnjI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UnCNw8Fri2jgHV4doPOlQirIUERQ3Vs7PYYtqwew0RIgmJZjpvq9ZUCfGzTDX+FH9iBla7bCw3MlgdBNcczdmYtaSe8O06WdQRTvrLsfU9Ll6F154+74tjgoUmz6VkRluneQrKBsGe9cHTV8V4VPb/h3LrKNmJKvcf13CXBznyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hN6jsRvG; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1716232490; c=relaxed/simple;
+	bh=JMmxMc4KxFDgWYo64T8S+XbqNNYGK47LMWQHk3hYL4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M96uSuBql/jzFQ0EJWJ++hyaNEwNV7eS47AcYUGPuMXh3NdUZeGi+gmu6C6mL4w8hkdfzgOn4msu05y+IXiXxBA5JgGPfVACA30MCS3zZ7SiTiVyLLrMKKsDvB7KiJv04J29X6q4z8i0yyA3R8YP6fVHl/PECvrPus7obv/5tLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lz++x3Gq; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hN6jsRvG"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-1ed3b77d45aso136875205ad.0
-        for <linux-coco@lists.linux.dev>; Mon, 20 May 2024 10:35:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1716226525; x=1716831325; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KaUIcbCxnT+V1tXho+s6VK2LQCpbrcFbVlZAjQNTw9w=;
-        b=hN6jsRvGpx4tjadj+JMHVbYN3bK8uBZ6HNiH70lnwFoe3PVoyl456aUz+uSWGpTd+X
-         ufzkPLqzkYmzCGo8XPP7KIEV9H5uEOkOc+3ei7WuwcLs2ozdIf1n6LxOjJGU7TpOIf1U
-         78nE5mkZ17mRmynviLL/edIa6U/z1TFH+qPdf5RPOSrnCpVffSGKTeI3ISCkXV3ffHYl
-         AfbtPEz9YcWKeYJtZsOjSEyT6dfXVJLaHEeyKrYm7tHG/irjERDtY1YilRLAPMAeABTu
-         bmuJmwIQ/a+b3LenO3K8l/snBd7RgYSrfp2riVR/r57HZsHofLJHxeriVqgSTPG6U39x
-         /EEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716226525; x=1716831325;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KaUIcbCxnT+V1tXho+s6VK2LQCpbrcFbVlZAjQNTw9w=;
-        b=JTVJNvxm0kjeVpAwgKAB+iwxz+IxmWcHTOYt4GR5rx5Q3MfC7Jfe4VpFsxaAnKH0WJ
-         Lg/lsv4d5XWbFNwYcCWmXFRE44bvWawGXP2ySqlu4EfoyvfWKuEEJg7kXtmfFSJohQX7
-         qh9G2n3EOBE5duOHTJit9U1h4Yag4elJuzwLd0eUs1JA3GI7AXfZlZql/Aku4bLlurti
-         CPLl6EZi4EA1h/jp7Ur46xTXrMkkjD8cBPAleG1R4J7sNtdDVx/q3RTPt6JVwIM0t2fq
-         PWYkdzjGNwHMGA2zEN3uS0dLl/6PISpe073fyJyXlRZALN57RJo3gt0Tx2BoMN2f0YX8
-         NbjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVdoj+5qNmmR+OIFZ+ghUXlo8Zjn0vPXWilpF40chMfdMomILKiX8EVdXvYSpq3DO+Eq9+9ebMJZtyreh9k+gZ0sVlT5b+SDuO6pg==
-X-Gm-Message-State: AOJu0Yysl9mYezYg/T8RbXunRpbps9+9mYZ19kRxWZ/mv77mneLkUCOB
-	4cVy/QFVI/sk3utm6QrdNklkrtD3j2UKa/TEfbf13Mv9Q87Wc7jLSeUMlKzXbp2HskNHLNMrwbQ
-	2Qg==
-X-Google-Smtp-Source: AGHT+IF1taDRJctSSVr2IasIIziXIfKJNIigxZpYaoBlxwyY2AZlY80I/q2z0jdfLZJ5lT9JqTpQH1/QQSk=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:e749:b0:1f3:95f:ba6d with SMTP id
- d9443c01a7336-1f3095fc09fmr1015685ad.5.1716226525207; Mon, 20 May 2024
- 10:35:25 -0700 (PDT)
-Date: Mon, 20 May 2024 10:35:23 -0700
-In-Reply-To: <41d8ba3a48d33de82baa67ef5ee88e5f8995aea8.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lz++x3Gq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716232489; x=1747768489;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JMmxMc4KxFDgWYo64T8S+XbqNNYGK47LMWQHk3hYL4g=;
+  b=Lz++x3Gqebd7BRbH7USCZOiuaLscP+s17VYWiGr0ZABagpIPK9GOhHWV
+   yBwel/EXPBkQQwWKz7DLC9KU0JqZpyGO8ST0UUy1pyleO9HzSqVg1jh5C
+   QJyvVcEiSkk5UXP0VainPi53omG0pYTSGVby9jD+pKse2LTQZrnkpKPmR
+   NNBrN8GFqk06+vqpSeOHnJN3eD1SjGvPu1IyIe1aiYvmZt1Oc1GgNdSqO
+   KTyRhKMZ5Kot8lxCgGaFwdUc4bS4HETaV+VuGAQMGcFcoC3dqzvjURDqA
+   cJOZ+uD1VFZ+8BdzPjRkpTlmzuASdSJP+hWBGhPQXQdv+lfTAkRl0Skp+
+   Q==;
+X-CSE-ConnectionGUID: +IR8Wo60RGm6DmWLbCWeHQ==
+X-CSE-MsgGUID: poxUq0JhQ/yayAhf4/dYZg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12178311"
+X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; 
+   d="scan'208";a="12178311"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 12:14:48 -0700
+X-CSE-ConnectionGUID: hcN/iEklQZy2RiPWZ3fsxw==
+X-CSE-MsgGUID: UFs0ZNCiQ8OklrWpLsAV+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; 
+   d="scan'208";a="63470070"
+Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.54])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 12:14:47 -0700
+Date: Mon, 20 May 2024 12:14:47 -0700
+From: Isaku Yamahata <isaku.yamahata@intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"michael.roth@amd.com" <michael.roth@amd.com>,
+	"pankaj.gupta@amd.com" <pankaj.gupta@amd.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"tobin@ibm.com" <tobin@ibm.com>,
+	"liam.merwick@oracle.com" <liam.merwick@oracle.com>,
+	"alpergun@google.com" <alpergun@google.com>,
+	"Luck, Tony" <tony.luck@intel.com>,
+	"jmattson@google.com" <jmattson@google.com>,
+	"luto@kernel.org" <luto@kernel.org>,
+	"ak@linux.intel.com" <ak@linux.intel.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	"slp@redhat.com" <slp@redhat.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"ashish.kalra@amd.com" <ashish.kalra@amd.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"nikunj.dadhania@amd.com" <nikunj.dadhania@amd.com>,
+	"Rodel, Jorg" <jroedel@suse.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"kirill@shutemov.name" <kirill@shutemov.name>,
+	"jarkko@kernel.org" <jarkko@kernel.org>,
+	"ardb@kernel.org" <ardb@kernel.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	isaku.yamahata@intel.com, isaku.yamahata@linux.intel.com
+Subject: Re: [PATCH v15 13/20] KVM: SEV: Implement gmem hook for initializing
+ private pages
+Message-ID: <20240520191447.GB22775@ls.amr.corp.intel.com>
+References: <20240501085210.2213060-1-michael.roth@amd.com>
+ <20240501085210.2213060-14-michael.roth@amd.com>
+ <41d8ba3a48d33de82baa67ef5ee88e5f8995aea8.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20240501085210.2213060-1-michael.roth@amd.com>
- <20240501085210.2213060-14-michael.roth@amd.com> <41d8ba3a48d33de82baa67ef5ee88e5f8995aea8.camel@intel.com>
-Message-ID: <ZkuJ27DKOCkqogHn@google.com>
-Subject: Re: [PATCH v15 13/20] KVM: SEV: Implement gmem hook for initializing
- private pages
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, "michael.roth@amd.com" <michael.roth@amd.com>, 
-	"pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	"tobin@ibm.com" <tobin@ibm.com>, "liam.merwick@oracle.com" <liam.merwick@oracle.com>, 
-	"alpergun@google.com" <alpergun@google.com>, Tony Luck <tony.luck@intel.com>, 
-	"jmattson@google.com" <jmattson@google.com>, "luto@kernel.org" <luto@kernel.org>, 
-	"ak@linux.intel.com" <ak@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"pgonda@google.com" <pgonda@google.com>, 
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>, "slp@redhat.com" <slp@redhat.com>, 
-	"rientjes@google.com" <rientjes@google.com>, "peterz@infradead.org" <peterz@infradead.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>, 
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"vkuznets@redhat.com" <vkuznets@redhat.com>, "vbabka@suse.cz" <vbabka@suse.cz>, 
-	"ashish.kalra@amd.com" <ashish.kalra@amd.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"nikunj.dadhania@amd.com" <nikunj.dadhania@amd.com>, Jorg Rodel <jroedel@suse.de>, 
-	"mingo@redhat.com" <mingo@redhat.com>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "kirill@shutemov.name" <kirill@shutemov.name>, 
-	"jarkko@kernel.org" <jarkko@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <41d8ba3a48d33de82baa67ef5ee88e5f8995aea8.camel@intel.com>
 
-On Mon, May 20, 2024, Kai Huang wrote:
+On Mon, May 20, 2024 at 10:16:54AM +0000,
+"Huang, Kai" <kai.huang@intel.com> wrote:
+
 > On Wed, 2024-05-01 at 03:52 -0500, Michael Roth wrote:
 > > This will handle the RMP table updates needed to put a page into a
 > > private state before mapping it into an SEV-SNP guest.
@@ -99,13 +114,81 @@ On Mon, May 20, 2024, Kai Huang wrote:
 > [...]
 > 
 > > +int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
-
-...
-
+> > +{
+> > +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+> > +	kvm_pfn_t pfn_aligned;
+> > +	gfn_t gfn_aligned;
+> > +	int level, rc;
+> > +	bool assigned;
+> > +
+> > +	if (!sev_snp_guest(kvm))
+> > +		return 0;
+> > +
+> > +	rc = snp_lookup_rmpentry(pfn, &assigned, &level);
+> > +	if (rc) {
+> > +		pr_err_ratelimited("SEV: Failed to look up RMP entry: GFN %llx PFN %llx error %d\n",
+> > +				   gfn, pfn, rc);
+> > +		return -ENOENT;
+> > +	}
+> > +
+> > +	if (assigned) {
+> > +		pr_debug("%s: already assigned: gfn %llx pfn %llx max_order %d level %d\n",
+> > +			 __func__, gfn, pfn, max_order, level);
+> > +		return 0;
+> > +	}
+> > +
+> > +	if (is_large_rmp_possible(kvm, pfn, max_order)) {
+> > +		level = PG_LEVEL_2M;
+> > +		pfn_aligned = ALIGN_DOWN(pfn, PTRS_PER_PMD);
+> > +		gfn_aligned = ALIGN_DOWN(gfn, PTRS_PER_PMD);
+> > +	} else {
+> > +		level = PG_LEVEL_4K;
+> > +		pfn_aligned = pfn;
+> > +		gfn_aligned = gfn;
+> > +	}
+> > +
+> > +	rc = rmp_make_private(pfn_aligned, gfn_to_gpa(gfn_aligned), level, sev->asid, false);
+> > +	if (rc) {
+> > +		pr_err_ratelimited("SEV: Failed to update RMP entry: GFN %llx PFN %llx level %d error %d\n",
+> > +				   gfn, pfn, level, rc);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	pr_debug("%s: updated: gfn %llx pfn %llx pfn_aligned %llx max_order %d level %d\n",
+> > +		 __func__, gfn, pfn, pfn_aligned, max_order, level);
+> > +
+> > +	return 0;
+> > +}
+> > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> > index b70556608e8d..60783e9f2ae8 100644
+> > --- a/arch/x86/kvm/svm/svm.c
+> > +++ b/arch/x86/kvm/svm/svm.c
+> > @@ -5085,6 +5085,8 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+> >  	.vcpu_deliver_sipi_vector = svm_vcpu_deliver_sipi_vector,
+> >  	.vcpu_get_apicv_inhibit_reasons = avic_vcpu_get_apicv_inhibit_reasons,
+> >  	.alloc_apic_backing_page = svm_alloc_apic_backing_page,
+> > +
+> > +	.gmem_prepare = sev_gmem_prepare,
+> >  };
+> >  
+> > 
+> 
 > +Rick, Isaku,
 > 
 > I am wondering whether this can be done in the KVM page fault handler?
+> 
+> The reason that I am asking is KVM will introduce several new
+> kvm_x86_ops::xx_private_spte() ops for TDX to handle setting up the
+> private mapping, and I am wondering whether SNP can just reuse some of
+> them so we can avoid having this .gmem_prepare():
 
-No, because the state of a pfn in the RMP is tied to the guest_memfd inode, not
-to the file descriptor, i.e. not to an individual VM.  And the NPT page tables
-are treated as ephemeral for SNP.
+Although I can't speak for SNP folks, I guess those hooks doesn't make sense for
+them.  I guess they want to stay away from directly modifying the TDP MMU to add
+hooks to the TDP MMU.  Instead, They intentionally chose to add hooks to
+guest_memfd.  Maybe it's possible for SNP to use those hooks, what's the benefit
+for SNP?
+
+If you're looking for the benefit to allow the hooks of the TDP MMU for shared
+page table, what about other vm type? SW_PROTECTED or future one?
+-- 
+Isaku Yamahata <isaku.yamahata@intel.com>
