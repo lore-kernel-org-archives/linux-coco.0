@@ -1,312 +1,558 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B4514285
-	for <linux-coco@lists.linux.dev>; Mon, 20 May 2024 10:16:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716200220; cv=fail; b=mNq9xohCtGtUPw8wP9MsEe7lwrnSfOqBYVSIcVp+PpFqj1lKTv/N1N8Pt+WE+yIZM3aZfENzz6Po7uJDM2oST6fcpkzC25iq0DhF0BVJfCchH/QRsSddbrvYwK4aIH8mdAxKIqqs4sZ3i83MXdb7LJ4j30f43DZJDeEZgUnl4eY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716200220; c=relaxed/simple;
-	bh=IhXf5cXRr/cLUayF4iCnYqVjTdy8LTmQAxX08YcfySM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=o0x3KLoyt6yBsDjnbEIUSV2Ig/ze/SVYkhY9sk2wHSZQc76olX98MV1nDwvdYfzwJTPEVNMzY1AZ69Va/BFPe65VgDKSHO6HMlSkMNJvfkyOPXL+xS/oibElYTOIlSrI0aWWzGeDZxtS88SZDm6+wQCAdJh3lQ+8Kdz+X3CqbBQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HYDzzWrk; arc=fail smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59BE5337E
+	for <linux-coco@lists.linux.dev>; Mon, 20 May 2024 10:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716201179; cv=none; b=rtjIaC1wuDO789qLXSvzy91abqXHHdQKyoFz59UYL59hTVjE93o8GQqTeAkrArUXd8xGVCmZl5ObGkBObC6Nklim2ZVQ9tJoVUT6HbVjyPWF4H6oCYaAoyTMndCdChHIkO7XwQo5CJNx4pE7PC3mPODrNFDAeRGty4B6SkEyNOg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716201179; c=relaxed/simple;
+	bh=0Hdic5RHbirr9hz/8h75QOTEX+N5EQdQiwaTcDyfSLM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rXG5XklTY1B6B8QKTHii9OySuVIDG2NivtLd7CQPrPz8fZa1fzDSTdFbLIdyOXroQ2+j0YJlAIQdL/NnbdqzX0Zdf2h33ft7LYKd2L/vZz0iVMoTNF+187rzDeisMIRs7ndmfNJHEt4RBrY1B5fBJyWjEv+AbnAdAx14GYjXde0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gp5pLlaY; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HYDzzWrk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gp5pLlaY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716200219; x=1747736219;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=IhXf5cXRr/cLUayF4iCnYqVjTdy8LTmQAxX08YcfySM=;
-  b=HYDzzWrkBjFq+U+mP2t+xNZZCrnHzWO/Sv2YgKTT3KPuecYPLuJq7R/l
-   JY3U8yZDSdvxVekzzQCb4ymHSDxnSNSP9E0EMiDAK0q+blKL9uRkh0JaP
-   CNMinrCTkNOfJvSLy+hVG/KbkFNsym/EfqTPPA1bmofoI5tanwhZ8tIVk
-   c2tJ/UGTJ0arcrOR1iqFugoogwRhGzNaweCsP+CWj158N39yLuX2ayGqA
-   713g7PQ8o8J3feTl2VAAEQ3G1s5BWP5BPcL6OJljqIlGwD2hiRFYp8huF
-   mnMzzhnj8z51rz3KQoPbIEDyGIQNvQDDSqRi1/TuTbxhFmHyd0GD1eFXm
+  t=1716201177; x=1747737177;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0Hdic5RHbirr9hz/8h75QOTEX+N5EQdQiwaTcDyfSLM=;
+  b=Gp5pLlaYrTm+rP2rDzdwGGo4tY3w63U/+k1daolyTnFHaN5Cb9pL1eLY
+   Drb9eAYn+J4wOOmhRCN/JnhjYtxt747cecMogSF0fqLBR6yTQrO2yBo0x
+   4eztxnckrvb6+zTzGxLtTiGr8vGldCb0U70Vh17UyqyJa5exf/7JQcNCi
+   Asq5renlGpZedPH+7IPrHXQX6eLgZmuLZ6CjE+9vt/DiQZBk30yFcpUaQ
+   Qfx+JNaO/2ADITnapOZL1bZd5PyZM80amrirJ9Iop6c46SFAw0OaAYjJo
+   u9d8RMY3s1wdKdczGnixG6WK/BzCjhwQmpr86QQGxppaJCnEzNLkUpRMw
    Q==;
-X-CSE-ConnectionGUID: 5BHdbWb5S/2o6ohZ9H1DcA==
-X-CSE-MsgGUID: h/mwFmnGRi+e0i9wEE0idg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11077"; a="22897345"
+X-CSE-ConnectionGUID: uRtRbAlFS2WC+7Y8dR/2QA==
+X-CSE-MsgGUID: 6EGuS3UdTBu9pNexRu7ZiQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11077"; a="34836004"
 X-IronPort-AV: E=Sophos;i="6.08,174,1712646000"; 
-   d="scan'208";a="22897345"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 03:16:58 -0700
-X-CSE-ConnectionGUID: NvzV5t6XR6aTQfS5BNtWMA==
-X-CSE-MsgGUID: l4QFjB4bQ9yf5TODZMBfWg==
+   d="scan'208";a="34836004"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 03:32:57 -0700
+X-CSE-ConnectionGUID: VTyPAUkJTzqkfxOCmFtoag==
+X-CSE-MsgGUID: csLfqqpcSvqtWoOtTtxH8Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,174,1712646000"; 
-   d="scan'208";a="63321073"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 20 May 2024 03:16:57 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 20 May 2024 03:16:57 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 20 May 2024 03:16:57 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 20 May 2024 03:16:57 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 20 May 2024 03:16:56 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=N4LpqfaJqI69H4HJKUituEl0XdxffIUyhJXnKp6vITO1O72GYeiseqmiAt84yd5yeh2BkAjEXkgByo2CmKSwZaD/isG85wGOZkHIIZ9mAVXnkLYoYuHn1W6SlkzICurrFI8KnTerkqysDAGN2mInNsWWNaG3yH7sz93JWFQpxwWBs8Abp1+R5IbUS9Z81Gf/LGs9+zGkBJi8Uk/rnUiswsdhOjKnKhO0ONRGFr/i1NjeJdiTIir8sTfx1BvvW6m63Z5r2bdirwJ0YnNnSG0TRXYgA0hHbjmvDx7F1/Jjbi+z6wZJnRnz1xJVY+jA/JO6bQEOqM+Jt7xJaBTj7STH0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IhXf5cXRr/cLUayF4iCnYqVjTdy8LTmQAxX08YcfySM=;
- b=oMzF406xNgUXTcsrn1a2YtwHo91tK751juxXDCqD51YnBGB834naWOevnemzJa2biMRREojtD2MZr0a+YEmi7UNp0V2QkyayRRfSGhl9Fyk07PM+l5URo/ECOvNzJuOHyH8TyWS5MXm9TSxdy8mPJU7uDDAFbRZTUWeE1yy8iuA5bf9DD3WSSgj0G/gFHVOIcAGFZocnZ9atEZqBpZVAqMmm8TvDM9BIZiICpWLhFSZRdphf/8Kw348Ot7TXGlnKoXLDMaHhhpXcAqzt/ZJuMJHo6XgjOXem2yn6zSCsObwlU1domLgtKdmrHw/fgxvckgK759iP0KQ4TwirFc1mfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
- by PH8PR11MB8013.namprd11.prod.outlook.com (2603:10b6:510:239::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.41; Mon, 20 May
- 2024 10:16:54 +0000
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::fdb:309:3df9:a06b]) by BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::fdb:309:3df9:a06b%4]) with mapi id 15.20.7587.030; Mon, 20 May 2024
- 10:16:54 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Edgecombe, Rick P"
-	<rick.p.edgecombe@intel.com>, "michael.roth@amd.com" <michael.roth@amd.com>
-CC: "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, "tglx@linutronix.de"
-	<tglx@linutronix.de>, "tobin@ibm.com" <tobin@ibm.com>,
-	"liam.merwick@oracle.com" <liam.merwick@oracle.com>, "alpergun@google.com"
-	<alpergun@google.com>, "Luck, Tony" <tony.luck@intel.com>,
-	"jmattson@google.com" <jmattson@google.com>, "luto@kernel.org"
-	<luto@kernel.org>, "ak@linux.intel.com" <ak@linux.intel.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "pgonda@google.com"
-	<pgonda@google.com>, "srinivas.pandruvada@linux.intel.com"
-	<srinivas.pandruvada@linux.intel.com>, "slp@redhat.com" <slp@redhat.com>,
-	"rientjes@google.com" <rientjes@google.com>, "peterz@infradead.org"
-	<peterz@infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "dovmurik@linux.ibm.com"
-	<dovmurik@linux.ibm.com>, "thomas.lendacky@amd.com"
-	<thomas.lendacky@amd.com>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de"
-	<bp@alien8.de>, "seanjc@google.com" <seanjc@google.com>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>, "vbabka@suse.cz"
-	<vbabka@suse.cz>, "ashish.kalra@amd.com" <ashish.kalra@amd.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"nikunj.dadhania@amd.com" <nikunj.dadhania@amd.com>, "Rodel, Jorg"
-	<jroedel@suse.de>, "mingo@redhat.com" <mingo@redhat.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "kirill@shutemov.name" <kirill@shutemov.name>,
-	"jarkko@kernel.org" <jarkko@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v15 13/20] KVM: SEV: Implement gmem hook for initializing
- private pages
-Thread-Topic: [PATCH v15 13/20] KVM: SEV: Implement gmem hook for initializing
- private pages
-Thread-Index: AQHam6aOns/LzK9t3kqEu3Lp87ntJLGgBlyA
-Date: Mon, 20 May 2024 10:16:54 +0000
-Message-ID: <41d8ba3a48d33de82baa67ef5ee88e5f8995aea8.camel@intel.com>
-References: <20240501085210.2213060-1-michael.roth@amd.com>
-	 <20240501085210.2213060-14-michael.roth@amd.com>
-In-Reply-To: <20240501085210.2213060-14-michael.roth@amd.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.50.3 (3.50.3-1.fc39) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|PH8PR11MB8013:EE_
-x-ms-office365-filtering-correlation-id: 1063172f-37cd-430c-df98-08dc78b5f8fa
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230031|376005|366007|1800799015|7416005|38070700009;
-x-microsoft-antispam-message-info: =?utf-8?B?NFplNUN3WG1KN29RcllWckdDallZazdXQ1QzTGw1b2ZncUdBV0pYdVN5Y1Vv?=
- =?utf-8?B?NEowMXhpS2hRdXNZWlNlQ01ldXkrRkxzWG1jL2RTK2JLVUw1dXdIYmJVTm9H?=
- =?utf-8?B?dXlidzEzRXlLb3NIWlNpbGU2TVdYTElOdXl1Y3hDN3ZQODkyMzE4L2RHZWNi?=
- =?utf-8?B?SVVaei9hRldudTNpVlA3V05YekZjMzBVbEk0eCtsanF5N0NBWDhoLzVWSE9I?=
- =?utf-8?B?M3BQV29OaVVIdGF5dEJvZmFCTnBIdS96RHJuMzVNTzFhOWorcHdvQ1VaU2Vk?=
- =?utf-8?B?UEp3Zjl4MDdVVjFzRzlwdFlrZEpSWEdCYVFaSnhZRlV5ZVBORkZ4R3lLSFhm?=
- =?utf-8?B?WkpJaFN3WG9NVm1sS1RNMkVWN0xydmoxK3dQcEVuTXlsMUFIbElNY0hsd1Bn?=
- =?utf-8?B?TUE2a0dRRU9FZlV3OGx6OVVzMWNFbkJ3dEJjejlhcXExTXFhMU9qS25DVXVF?=
- =?utf-8?B?SDJDTm43TStLYlVsYXY0VEpIc3o4ejVqbm1INFhnQ0ZGNkxKdEhkSG0xQUpP?=
- =?utf-8?B?bzBHSnA5VVZ1N2NEbFNTUEFHeCttRDJmaW9paFVwdUROamdVMFd3bHpBb3Ja?=
- =?utf-8?B?dEdoSmZ3NnFmSVY1MFB1dWZaTFN4QktnUldXdWc3YmVjZEVScE5qOWZkVFlX?=
- =?utf-8?B?NUpPYUhCZTlvb0lSUm9ObCtRb285VTNuKzgwQXJ2WFBEUEIxKzNSemFwT2dO?=
- =?utf-8?B?NG44K01CbUlVTCtaekZzeEp4RnR2cXFESXhaRWpBOUd3dHVCRjgySHhzcC9y?=
- =?utf-8?B?VTFsUkpPM3hoMGNBWWtIb2w0QkpUenpXUVBhTWIrT2VVNjAwMkZIYjY5VzQw?=
- =?utf-8?B?SjdpaUFFdWE5TitIWFc3cUNNc3JRNjhuUnVJdW8xRnpVRjRKTXJFZTBVdHAr?=
- =?utf-8?B?cEd2anlvSVNVTWNha0N0Sm51dVp1ZDBqajdHakR2YTd5YzUxdkJKUit5Tm5K?=
- =?utf-8?B?ZVBpN2xLN3NRU3NpTCtWRlVwYmo5alRJb1R5NXFTV0RxUFR4ajF5WVIzYzlu?=
- =?utf-8?B?YXVoWHJ0VGhoaitLQWllQStvd2NNS2Y1TTN5cXdDcWw2c3QxRE1qS1FERWxq?=
- =?utf-8?B?c200NEV1Umh3ZmhMeVltSHJvVlhQRHUvbmpjR2puOS9KbEVqUXZXRENQS0cy?=
- =?utf-8?B?WDltTk9lYy9leFdYdFg2eVJ3dXY5Tm0rQ1NNaTNocU5TVlpLRnppRFdLSXkx?=
- =?utf-8?B?d3owQmxCdDRlM05oV1g5YTBMdWhFTFFsaGVuRjM2VGlGc3c4dzYrK2tiZDd4?=
- =?utf-8?B?ZzNlRk5zaEdUZGY4OTBWdXlHMTZkOExpYzliOVpoYm40WE8xZGMzZTU5S083?=
- =?utf-8?B?NUNhd1E3aHpLLzJiMzdFSWZYbDU1eGZUa1BKcXhFOFBORVZUV0R1ZG01bDR4?=
- =?utf-8?B?K1R3TTRncXZKa3VqZGk5VlV6WEFVM3VSb3NjVTdmZjRyK2lvczRwWWFST0cy?=
- =?utf-8?B?N2pyTmxvN3hRby9CUE5sZCtaSkpCMFNqUHNzcHlmNXF4UHdHT0syYXJ5VE5H?=
- =?utf-8?B?Q21oenRFcHFXZkFXNVlZR1FERnBLc2NFRG00N1hYdlcrSFE3ZUZnSmxnU044?=
- =?utf-8?B?WDEvNm9rS0h6ZndZY0wxbklTVWgzbjAyNlkwcXQ5STJwTVhnT2hScndYa25P?=
- =?utf-8?B?UUg5WkR5cVhaajNzSEtEWkpWa3NUZmhvVk96VHZyUTFYdzQ0R1cvWS93Z3pv?=
- =?utf-8?B?M041YUppMHNYUzV0a1BGRkxnR05pWTJsaldZRGdNL0RQQU5XVEJpYkRORlVk?=
- =?utf-8?B?VXJzMnRLekZqNzFsdHBKdU56OEhGeGdNOUJNTVcrRmpzdWpwT29lbmlSaHZp?=
- =?utf-8?B?eGhYQjZhUjBKUE9yWVllUT09?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(7416005)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bjYxNVlSeVdIbGp1NTF1MExzdC9ndnRabWQraVFqQ1JhTDBNMnpSR1ExTHpF?=
- =?utf-8?B?d2hmeXRYS0RjYUpXS3poN0YrM2ZKdDVla1pZTW5pY0J0aWFiU3h1ckcrM1dV?=
- =?utf-8?B?SWRVdndQd2t3ZS82U0ZMaUVGTHlGM1dpRVNZU1JEUFcrd0p1Zll6S1NSTlU0?=
- =?utf-8?B?Rk5hRnUxYklqZFpsTEd2UWZFR0pqUE1EdlQ1aC9iSTMvUkx1bTlGZkpxK1hF?=
- =?utf-8?B?UCt6SXoxaUJNTjVlYjd1UGoybFFOUDZieUQ1SU1aaC85UXRuVldQa20vTDNj?=
- =?utf-8?B?Y2hLYnFPYWJremI3L3V1elFOd29oZHY4cG9reXJtQkNJdGwwbWNjL3RITlds?=
- =?utf-8?B?YnNVaWNvOHpneUgyQkJJYXA3b0Zjb1Awb1BNUUUveTJseHAzVUFqbGhDZWFK?=
- =?utf-8?B?SklLN1RCeHE2UTFiR0QxdGtiZWtjMG9WdjRpdW8rd1dwdmhKZTBzUWpVKyty?=
- =?utf-8?B?bmk1bUQ4azZ6eEVyVnNrTW5hdTZOd1RvZTdNd0oxRFR3c3BhNER4UUtlY3lo?=
- =?utf-8?B?d3V0ajNOTnJDblJYbXpGZk93eitlY0I3d2MrVzhIYU10VVdWclR0TTU5T2w1?=
- =?utf-8?B?UW00aXhFVEF4dHRhQ0dZSTFWQk5YVjBNbnNHVDBUdklZUHNXdU42cG14RHFx?=
- =?utf-8?B?VVh6Wk1ibVAyZzRqajNaaXVSZ1BpTWRmeUpSWmQvN1gweC9ZbFI4aGVKNXJU?=
- =?utf-8?B?N0FrZ1dKZlJOSjlEZUxtdDNkQUpwdmVycFhXbE1YZlhLOTFwRXhaVFFuZ0RE?=
- =?utf-8?B?ZHQxdEFmU1lsSmNaSCsvZEl1cUhqWnNVNnNtUUk1WGpkMGY5aU9xK0FoQ2kx?=
- =?utf-8?B?WCtGSklXVXkxTXFNcVNhVjFrbDU1SmhEOEFaTmZnMDlXcmJ1V0NCZDhZL0Ur?=
- =?utf-8?B?b01nSTFZMHBtYmNtQm9WV0NDR2FMWmQ0TVQySmdmbm5hbi83djBvY2JLTXlj?=
- =?utf-8?B?bEtxZ3BIUVMzb1Y0SWIrOXhaUWV6QWQ1TFl2UlRrdWFBL2NmRWxOV2pJTmtP?=
- =?utf-8?B?dEtiVmFHdUFoTGx6R3VFbHo0K1NjUTVyTThQTmY0N1dranRiTCtFZXU2dWgr?=
- =?utf-8?B?S2x1SjlIcml0ZzQ4REVnYVBXNkZtWnlwTGVwcmVRQnMxTjJHS3FiNDRsWWxz?=
- =?utf-8?B?UFBtZXA2dHZ1V1p4YXBUa2ZLSkVFR0xPQlJnWkZJZEo3ak5DYnVUR2EwNENC?=
- =?utf-8?B?K0xLTjM1S2xHSmxZNkI0WElOQ2MwcEtJamhESVdpYWZNaDI2cnMrL0tVOUlQ?=
- =?utf-8?B?S2dJZGlwRHBTT3laVENXS0twOTljcVJsN0FKWjk3aEpTMHlscm5KK0VRanBL?=
- =?utf-8?B?UnN1Qlh0SVpGU1RZL0JsVGprWWFIclQ0azZjNTc4YU9pMGRaNUV6NU85aGpi?=
- =?utf-8?B?S1FoNElHQ2RveDF5OUhlRnp4TzBSSitja0pkVUhWQi9DK0szQk5uU1FmS3BP?=
- =?utf-8?B?RXV0MnhmMWovWVNQUno2VnY1Nm14UCtQSnRJQk8wNXRqUmo3QmVOUnJSSmJI?=
- =?utf-8?B?VlkxQ29ORW0zaVFWQlJVYkRFRFJvQU5yRUhwQ3FOdENwMjNvcnU1TXdRNUpt?=
- =?utf-8?B?aUswWk4zL3R1K2ZKYytXNzcvN1RlMVVEaDJkWUlTOGMzaEljSkZIa1E1THk1?=
- =?utf-8?B?Rm5TdlpMSjQ3elNqNVJzdzYySVdvODVvMkIwZ1E5WDNHL1RTQXdUcWtwZkZy?=
- =?utf-8?B?OVJ4eXJwOGZjYUF3V2M5cmxZRS9GU3BpN0J3SWRSVE9La1o1b1lZd2x0aFlT?=
- =?utf-8?B?TGpZL1dYd1RTNkozVUFHcHVLRFljQVY5NnB2QnBDaWJwZEhNL25BUkhkY3My?=
- =?utf-8?B?YzZsUGZRTnZSVlNEL2play8rVEdHYUYvNXdYKzFWYTRTTUlpTklqMk8vZHl5?=
- =?utf-8?B?NEtXK0ZtWk5icFllV1BrZGRrdFc0V0YxSFhKSDJiQXhKS1pCVlhhREtoNXZW?=
- =?utf-8?B?STVaV1NhUk9UdmVNTy9PRERVdHJyTVJ2SkVUT1E0Z2ZUdHRSOHhHZkFuUFdD?=
- =?utf-8?B?Y2VlSTh4T0l0cUtxNnBQemJrWmxZRlBtUXcyU2NKQ0IvY2dLV1pUK1ZVYlZa?=
- =?utf-8?B?VjAwZFBJSHh1M1lucStuR3NRSS9keTB0N3ZDdDlwaXg1ZVVyUDZqazVoNDA2?=
- =?utf-8?Q?+JBur9rxU1sSlEz/8dJ7dhmIw?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9DDE07AAF42BA847A66598B8BB7A9286@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+   d="scan'208";a="32623237"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa010.fm.intel.com with ESMTP; 20 May 2024 03:32:52 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 119C02AD; Mon, 20 May 2024 13:32:51 +0300 (EEST)
+Date: Mon, 20 May 2024 13:32:51 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org
+Subject: Re: [PATCH 01/20] x86/tdx: Introduce tdvmcall_trampoline()
+Message-ID: <itsl2xhcrwotxrjpm7msfzc7mp73wk47pnwgyfcvbrioj3p3hn@2e7c4p4gtwh4>
+References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
+ <20240517141938.4177174-2-kirill.shutemov@linux.intel.com>
+ <395850c4-f8a3-46ed-9b0c-b1f47386610c@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1063172f-37cd-430c-df98-08dc78b5f8fa
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 May 2024 10:16:54.0979
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 97VR1VTVoCtBgVsJ02NZ+mCct2mwaZBVOR3K6UtcNWaPufU6IHxrg4SmtvwDN6QY9c7fqIDr4fEdYG0e3rmcNQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8013
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <395850c4-f8a3-46ed-9b0c-b1f47386610c@intel.com>
 
-T24gV2VkLCAyMDI0LTA1LTAxIGF0IDAzOjUyIC0wNTAwLCBNaWNoYWVsIFJvdGggd3JvdGU6DQo+
-IFRoaXMgd2lsbCBoYW5kbGUgdGhlIFJNUCB0YWJsZSB1cGRhdGVzIG5lZWRlZCB0byBwdXQgYSBw
-YWdlIGludG8gYQ0KPiBwcml2YXRlIHN0YXRlIGJlZm9yZSBtYXBwaW5nIGl0IGludG8gYW4gU0VW
-LVNOUCBndWVzdC4NCj4gDQo+IA0KDQpbLi4uXQ0KDQo+ICtpbnQgc2V2X2dtZW1fcHJlcGFyZShz
-dHJ1Y3Qga3ZtICprdm0sIGt2bV9wZm5fdCBwZm4sIGdmbl90IGdmbiwgaW50IG1heF9vcmRlcikN
-Cj4gK3sNCj4gKwlzdHJ1Y3Qga3ZtX3Nldl9pbmZvICpzZXYgPSAmdG9fa3ZtX3N2bShrdm0pLT5z
-ZXZfaW5mbzsNCj4gKwlrdm1fcGZuX3QgcGZuX2FsaWduZWQ7DQo+ICsJZ2ZuX3QgZ2ZuX2FsaWdu
-ZWQ7DQo+ICsJaW50IGxldmVsLCByYzsNCj4gKwlib29sIGFzc2lnbmVkOw0KPiArDQo+ICsJaWYg
-KCFzZXZfc25wX2d1ZXN0KGt2bSkpDQo+ICsJCXJldHVybiAwOw0KPiArDQo+ICsJcmMgPSBzbnBf
-bG9va3VwX3JtcGVudHJ5KHBmbiwgJmFzc2lnbmVkLCAmbGV2ZWwpOw0KPiArCWlmIChyYykgew0K
-PiArCQlwcl9lcnJfcmF0ZWxpbWl0ZWQoIlNFVjogRmFpbGVkIHRvIGxvb2sgdXAgUk1QIGVudHJ5
-OiBHRk4gJWxseCBQRk4gJWxseCBlcnJvciAlZFxuIiwNCj4gKwkJCQkgICBnZm4sIHBmbiwgcmMp
-Ow0KPiArCQlyZXR1cm4gLUVOT0VOVDsNCj4gKwl9DQo+ICsNCj4gKwlpZiAoYXNzaWduZWQpIHsN
-Cj4gKwkJcHJfZGVidWcoIiVzOiBhbHJlYWR5IGFzc2lnbmVkOiBnZm4gJWxseCBwZm4gJWxseCBt
-YXhfb3JkZXIgJWQgbGV2ZWwgJWRcbiIsDQo+ICsJCQkgX19mdW5jX18sIGdmbiwgcGZuLCBtYXhf
-b3JkZXIsIGxldmVsKTsNCj4gKwkJcmV0dXJuIDA7DQo+ICsJfQ0KPiArDQo+ICsJaWYgKGlzX2xh
-cmdlX3JtcF9wb3NzaWJsZShrdm0sIHBmbiwgbWF4X29yZGVyKSkgew0KPiArCQlsZXZlbCA9IFBH
-X0xFVkVMXzJNOw0KPiArCQlwZm5fYWxpZ25lZCA9IEFMSUdOX0RPV04ocGZuLCBQVFJTX1BFUl9Q
-TUQpOw0KPiArCQlnZm5fYWxpZ25lZCA9IEFMSUdOX0RPV04oZ2ZuLCBQVFJTX1BFUl9QTUQpOw0K
-PiArCX0gZWxzZSB7DQo+ICsJCWxldmVsID0gUEdfTEVWRUxfNEs7DQo+ICsJCXBmbl9hbGlnbmVk
-ID0gcGZuOw0KPiArCQlnZm5fYWxpZ25lZCA9IGdmbjsNCj4gKwl9DQo+ICsNCj4gKwlyYyA9IHJt
-cF9tYWtlX3ByaXZhdGUocGZuX2FsaWduZWQsIGdmbl90b19ncGEoZ2ZuX2FsaWduZWQpLCBsZXZl
-bCwgc2V2LT5hc2lkLCBmYWxzZSk7DQo+ICsJaWYgKHJjKSB7DQo+ICsJCXByX2Vycl9yYXRlbGlt
-aXRlZCgiU0VWOiBGYWlsZWQgdG8gdXBkYXRlIFJNUCBlbnRyeTogR0ZOICVsbHggUEZOICVsbHgg
-bGV2ZWwgJWQgZXJyb3IgJWRcbiIsDQo+ICsJCQkJICAgZ2ZuLCBwZm4sIGxldmVsLCByYyk7DQo+
-ICsJCXJldHVybiAtRUlOVkFMOw0KPiArCX0NCj4gKw0KPiArCXByX2RlYnVnKCIlczogdXBkYXRl
-ZDogZ2ZuICVsbHggcGZuICVsbHggcGZuX2FsaWduZWQgJWxseCBtYXhfb3JkZXIgJWQgbGV2ZWwg
-JWRcbiIsDQo+ICsJCSBfX2Z1bmNfXywgZ2ZuLCBwZm4sIHBmbl9hbGlnbmVkLCBtYXhfb3JkZXIs
-IGxldmVsKTsNCj4gKw0KPiArCXJldHVybiAwOw0KPiArfQ0KPiBkaWZmIC0tZ2l0IGEvYXJjaC94
-ODYva3ZtL3N2bS9zdm0uYyBiL2FyY2gveDg2L2t2bS9zdm0vc3ZtLmMNCj4gaW5kZXggYjcwNTU2
-NjA4ZThkLi42MDc4M2U5ZjJhZTggMTAwNjQ0DQo+IC0tLSBhL2FyY2gveDg2L2t2bS9zdm0vc3Zt
-LmMNCj4gKysrIGIvYXJjaC94ODYva3ZtL3N2bS9zdm0uYw0KPiBAQCAtNTA4NSw2ICs1MDg1LDgg
-QEAgc3RhdGljIHN0cnVjdCBrdm1feDg2X29wcyBzdm1feDg2X29wcyBfX2luaXRkYXRhID0gew0K
-PiAgCS52Y3B1X2RlbGl2ZXJfc2lwaV92ZWN0b3IgPSBzdm1fdmNwdV9kZWxpdmVyX3NpcGlfdmVj
-dG9yLA0KPiAgCS52Y3B1X2dldF9hcGljdl9pbmhpYml0X3JlYXNvbnMgPSBhdmljX3ZjcHVfZ2V0
-X2FwaWN2X2luaGliaXRfcmVhc29ucywNCj4gIAkuYWxsb2NfYXBpY19iYWNraW5nX3BhZ2UgPSBz
-dm1fYWxsb2NfYXBpY19iYWNraW5nX3BhZ2UsDQo+ICsNCj4gKwkuZ21lbV9wcmVwYXJlID0gc2V2
-X2dtZW1fcHJlcGFyZSwNCj4gIH07DQo+ICANCj4gDQoNCitSaWNrLCBJc2FrdSwNCg0KSSBhbSB3
-b25kZXJpbmcgd2hldGhlciB0aGlzIGNhbiBiZSBkb25lIGluIHRoZSBLVk0gcGFnZSBmYXVsdCBo
-YW5kbGVyPw0KDQpUaGUgcmVhc29uIHRoYXQgSSBhbSBhc2tpbmcgaXMgS1ZNIHdpbGwgaW50cm9k
-dWNlIHNldmVyYWwgbmV3DQprdm1feDg2X29wczo6eHhfcHJpdmF0ZV9zcHRlKCkgb3BzIGZvciBU
-RFggdG8gaGFuZGxlIHNldHRpbmcgdXAgdGhlDQpwcml2YXRlIG1hcHBpbmcsIGFuZCBJIGFtIHdv
-bmRlcmluZyB3aGV0aGVyIFNOUCBjYW4ganVzdCByZXVzZSBzb21lIG9mDQp0aGVtIHNvIHdlIGNh
-biBhdm9pZCBoYXZpbmcgdGhpcyAuZ21lbV9wcmVwYXJlKCk6DQoNCiAgICAgICAgLyogQWRkIGEg
-cGFnZSBhcyBwYWdlIHRhYmxlIHBhZ2UgaW50byBwcml2YXRlIHBhZ2UgdGFibGUgKi8NCiAgICAg
-ICAgaW50ICgqbGlua19wcml2YXRlX3NwdCkoc3RydWN0IGt2bSAqa3ZtLCBnZm5fdCBnZm4swqAN
-CgkJCWVudW0gcGdfbGV2ZWwgbGV2ZWwsIHZvaWQgKnByaXZhdGVfc3B0KTsNCiAgICAgICAgLyoN
-CiAgICAgICAgICogRnJlZSBhIHBhZ2UgdGFibGUgcGFnZSBvZiBwcml2YXRlIHBhZ2UgdGFibGUu
-DQoJICogLi4uDQogICAgICAgICAqLw0KICAgICAgICBpbnQgKCpmcmVlX3ByaXZhdGVfc3B0KShz
-dHJ1Y3Qga3ZtICprdm0sIGdmbl90IGdmbizCoA0KCQkJZW51bSBwZ19sZXZlbCBsZXZlbCwgdm9p
-ZCAqcHJpdmF0ZV9zcHQpOw0KDQogICAgICAgIC8qIEFkZCBhIGd1ZXN0IHByaXZhdGUgcGFnZSBp
-bnRvIHByaXZhdGUgcGFnZSB0YWJsZSAqLw0KICAgICAgICBpbnQgKCpzZXRfcHJpdmF0ZV9zcHRl
-KShzdHJ1Y3Qga3ZtICprdm0sIGdmbl90IGdmbizCoA0KCQkJZW51bSBwZ19sZXZlbCBsZXZlbCwg
-a3ZtX3Bmbl90IHBmbik7DQoNCiAgICAgICAgLyogUmVtb3ZlIGEgZ3Vlc3QgcHJpdmF0ZSBwYWdl
-IGZyb20gcHJpdmF0ZSBwYWdlIHRhYmxlKi8NCiAgICAgICAgaW50ICgqcmVtb3ZlX3ByaXZhdGVf
-c3B0ZSkoc3RydWN0IGt2bSAqa3ZtLCBnZm5fdCBnZm4swqANCgkJCWVudW0gcGdfbGV2ZWwgbGV2
-ZWwsIGt2bV9wZm5fdCBwZm4pOw0KICAgICAgICAvKg0KICAgICAgICAgKiBLZWVwIGEgZ3Vlc3Qg
-cHJpdmF0ZSBwYWdlIG1hcHBlZCBpbiBwcml2YXRlIHBhZ2UgdGFibGUswqANCgkgKiBidXQgY2xl
-YXIgaXRzIHByZXNlbnQgYml0DQogICAgICAgICAqLw0KICAgICAgICBpbnQgKCp6YXBfcHJpdmF0
-ZV9zcHRlKShzdHJ1Y3Qga3ZtICprdm0sIGdmbl90IGdmbiwNCgkJCWVudW0gcGdfbGV2ZWwgbGV2
-ZWwpOw0KDQpUaGUgaWRlYSBiZWhpbmQgdGhlc2UgaXMgaW4gdGhlIGZhdWx0IGhhbmRsZXI6DQoN
-Cglib29sIHVzZV9wcml2YXRlX3B0ID0gZmF1bHQtPmlzX3ByaXZhdGUgJibCoA0KCQkJa3ZtX3Vz
-ZV9wcml2YXRlX3B0KGt2bSk7DQoNCglyb290X3B0ID0gdXNlX3ByaXZhdGVfcHQgPyBtbXUtPnBy
-aXZhdGVfcm9vdF9ocGEgOiBtbXUtPnJvb3RfaHBhOw0KDQoJdGRwX21tdV9mb3JfZWFjaF9wdGUo
-Jml0ZXIsIHJvb3RfcHQsIGdmbiwgZ2ZuKzEsIC4uKSB7DQoNCgkJaWYgKHVzZV9wcml2YXRlX3B0
-KQ0KCQkJa3ZtX3g4Nl9vcHMtPnh4X3ByaXZhdGVfc3B0ZSgpOw0KCQllbHNlDQoJCQkvLyBub3Jt
-YWwgVERQIE1NVSBvcHMNCgl9DQoNCldoaWNoIG1lYW5zOiBpZiB0aGUgZmF1bHQgaXMgZm9yIHBy
-aXZhdGUgR1BBLCBfQU5EXyB3aGVuIHRoZSBWTSBoYXMgYQ0Kc2VwYXJhdGUgcHJpdmF0ZSB0YWJs
-ZSwgdXNlIHRoZSBzcGVjaWZpYyB4eF9wcml2YXRlX3NwdGUoKSBvcHMgdG8gaGFuZGxlDQpwcml2
-YXRlIG1hcHBpbmcuDQoNCkJ1dCBJIGFtIHRoaW5raW5nIHdlIGNhbiB1c2UgdGhvc2UgaG9va3Mg
-Zm9yIFNOUCB0b28sIGJlY2F1c2UNCiJjb25jZXB0dWFsbHkiLCBTTlAgYWxzbyBoYXMgY29uY2Vw
-dCBvZiAicHJpdmF0ZSBHUEEiIGFuZCBtdXN0IGF0IGxlYXN0DQppc3N1ZSBzb21lIGNvbW1hbmQg
-dG8gdXBkYXRlIHRoZSBSTVAgdGFibGUgd2hlbiBwcml2YXRlIG1hcHBpbmcgaXMNCnNldHVwL3Rv
-cm4gZG93bi4NCg0KU28gaWYgd2UgY2hhbmdlIHRoZSBhYm92ZSBsb2dpYyB0byB1c2UgZmF1bHQt
-PmlzX3ByaXZhdGUsIGJ1dCBub3QNCid1c2VfcHJpdmF0ZV9wdCcgdG8gZGVjaWRlIHdoZXRoZXIg
-dG8gaW52b2tlIHRoZQ0Ka3ZtX3g4Nl9vcHM6Onh4X3ByaXZhdGVfc3B0ZSgpLCB0aGVuIHdlIGNh
-biBhbHNvIGltcGxlbWVudCBTTlAgY29tbWFuZHMgaW4NCnRob3NlIGNhbGxiYWNrcyBJSVVDOg0K
-DQoJaWYgKGZhdWx0LT5pc19wcml2YXRlICYmIGt2bV94ODZfb3BzOjp4eF9wcml2YXRlX3NwdGUo
-KSkNCgkJa3ZtX3g4Nl9vcHM6Onh4X3ByaXZhdGVfc3B0ZSgpOw0KCWVsc2UNCgkJLy8gbm9ybWFs
-IFREUCBNTVUgb3BlcmF0aW9uDQoNCkZvciBTTlAsIHRoZXNlIGNhbGxiYWNrcyB3aWxsIG9wZXJh
-dGUgb24gbm9ybWFsIHBhZ2UgdGFibGUgdXNpbmcgdGhlDQpub3JtYWwgVERQIE1NVSBjb2RlLCBi
-dXQgY2FuIGRvIGFkZGl0aW9uYWwgdGhpbmdzIGxpa2UgaXNzdWluZyBjb21tYW5kcyBhcw0Kc2hv
-d24gaW4gdGhpcyBwYXRjaC4NCg0KTXkgdW5kZXJzdGFuZGluZyBpcyBTTlAgZG9lc24ndCBuZWVk
-IHNwZWNpZmljIGhhbmRsaW5nIGZvciBtaWRkbGUgbGV2ZWwNCnBhZ2UgdGFibGUsIGJ1dCBzaG91
-bGQgYmUgYWJsZSB0byB1dGlsaXplIHRoZSBvcHMgd2hlbiBzZXR0aW5nIHVwIC8NCnRlYXJpbmcg
-ZG93biB0aGUgbGVhZiBTUFRFPw0KDQo=
+On Fri, May 17, 2024 at 08:21:37AM -0700, Dave Hansen wrote:
+> On 5/17/24 07:19, Kirill A. Shutemov wrote:
+> > TDCALL calls are centralized into a few megawrappers that take the
+> > struct tdx_module_args as input. Most of the call sites only use a few
+> > arguments, but they have to zero out unused fields in the structure to
+> > avoid data leaks to the VMM. This leads to the compiler generating
+> > inefficient code: dozens of instructions per call site to clear unused
+> > fields of the structure.
+> 
+> I agree that this is what the silly compiler does in practice.  But my
+> first preference for fixing it would just be an out-of-line memset() or
+> a pretty bare REP;MOV.
+> 
+> In other words, I think this as the foundational justification for the
+> rest of the series leaves a little to be desired.
+
+See the patch below. Is it what you had in mind?
+
+This patch saves ~2K of code, comparing to ~3K for my patchset:
+
+add/remove: 0/0 grow/shrink: 1/17 up/down: 8/-2266 (-2258)
+
+But it is considerably simpler.
+
+ arch/x86/boot/compressed/tdx.c    |  32 ++++----
+ arch/x86/coco/tdx/tdx-shared.c    |   3 +-
+ arch/x86/coco/tdx/tdx.c           | 159 +++++++++++++++++++++-----------------
+ arch/x86/hyperv/ivm.c             |  32 ++++----
+ arch/x86/include/asm/shared/tdx.h |  25 ++++--
+ 5 files changed, 142 insertions(+), 109 deletions(-)
+
+diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
+index 8451d6a1030c..a6784a9153e4 100644
+--- a/arch/x86/boot/compressed/tdx.c
++++ b/arch/x86/boot/compressed/tdx.c
+@@ -18,13 +18,14 @@ void __tdx_hypercall_failed(void)
+ 
+ static inline unsigned int tdx_io_in(int size, u16 port)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+-		.r12 = size,
+-		.r13 = 0,
+-		.r14 = port,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION);
++	args.r12 = size;
++	args.r13 = 0;
++	args.r14 = port;
+ 
+ 	if (__tdx_hypercall(&args))
+ 		return UINT_MAX;
+@@ -34,14 +35,15 @@ static inline unsigned int tdx_io_in(int size, u16 port)
+ 
+ static inline void tdx_io_out(int size, u16 port, u32 value)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+-		.r12 = size,
+-		.r13 = 1,
+-		.r14 = port,
+-		.r15 = value,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION);
++	args.r12 = size;
++	args.r13 = 1;
++	args.r14 = port;
++	args.r15 = value;
+ 
+ 	__tdx_hypercall(&args);
+ }
+diff --git a/arch/x86/coco/tdx/tdx-shared.c b/arch/x86/coco/tdx/tdx-shared.c
+index 1655aa56a0a5..b8d1b3d940d2 100644
+--- a/arch/x86/coco/tdx/tdx-shared.c
++++ b/arch/x86/coco/tdx/tdx-shared.c
+@@ -5,7 +5,7 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
+ 				    enum pg_level pg_level)
+ {
+ 	unsigned long accept_size = page_level_size(pg_level);
+-	struct tdx_module_args args = {};
++	struct tdx_module_args args;
+ 	u8 page_size;
+ 
+ 	if (!IS_ALIGNED(start, accept_size))
+@@ -34,6 +34,7 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
+ 		return 0;
+ 	}
+ 
++	tdx_arg_init(&args);
+ 	args.rcx = start | page_size;
+ 	if (__tdcall(TDG_MEM_PAGE_ACCEPT, &args))
+ 		return 0;
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index cadd583d6f62..e8bb8afe04a9 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -53,13 +53,14 @@ noinstr void __noreturn __tdx_hypercall_failed(void)
+ long tdx_kvm_hypercall(unsigned int nr, unsigned long p1, unsigned long p2,
+ 		       unsigned long p3, unsigned long p4)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = nr,
+-		.r11 = p1,
+-		.r12 = p2,
+-		.r13 = p3,
+-		.r14 = p4,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = nr;
++	args.r11 = p1;
++	args.r12 = p2;
++	args.r13 = p3;
++	args.r14 = p4;
+ 
+ 	return __tdx_hypercall(&args);
+ }
+@@ -80,11 +81,12 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+ /* Read TD-scoped metadata */
+ static inline u64 tdg_vm_rd(u64 field, u64 *value)
+ {
+-	struct tdx_module_args args = {
+-		.rdx = field,
+-	};
++	struct tdx_module_args args;
+ 	u64 ret;
+ 
++	tdx_arg_init(&args);
++	args.rdx = field,
++
+ 	ret = __tdcall_ret(TDG_VM_RD, &args);
+ 	*value = args.r8;
+ 
+@@ -94,11 +96,12 @@ static inline u64 tdg_vm_rd(u64 field, u64 *value)
+ /* Write TD-scoped metadata */
+ static inline u64 tdg_vm_wr(u64 field, u64 value, u64 mask)
+ {
+-	struct tdx_module_args args = {
+-		.rdx = field,
+-		.r8 = value,
+-		.r9 = mask,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.rdx = field;
++	args.r8 = value;
++	args.r9 = mask;
+ 
+ 	return __tdcall(TDG_VM_WR, &args);
+ }
+@@ -119,13 +122,14 @@ static inline u64 tdg_vm_wr(u64 field, u64 value, u64 mask)
+  */
+ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
+ {
+-	struct tdx_module_args args = {
+-		.rcx = virt_to_phys(tdreport),
+-		.rdx = virt_to_phys(reportdata),
+-		.r8 = TDREPORT_SUBTYPE_0,
+-	};
++	struct tdx_module_args args;
+ 	u64 ret;
+ 
++	tdx_arg_init(&args);
++	args.rcx = virt_to_phys(tdreport);
++	args.rdx = virt_to_phys(reportdata);
++	args.r8 = TDREPORT_SUBTYPE_0;
++
+ 	ret = __tdcall(TDG_MR_REPORT, &args);
+ 	if (ret) {
+ 		if (TDCALL_RETURN_CODE(ret) == TDCALL_INVALID_OPERAND)
+@@ -160,11 +164,7 @@ EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
+ 
+ static void __noreturn tdx_panic(const char *msg)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = TDVMCALL_REPORT_FATAL_ERROR,
+-		.r12 = 0, /* Error code: 0 is Panic */
+-	};
++	struct tdx_module_args args;
+ 	union {
+ 		/* Define register order according to the GHCI */
+ 		struct { u64 r14, r15, rbx, rdi, rsi, r8, r9, rdx; };
+@@ -175,6 +175,11 @@ static void __noreturn tdx_panic(const char *msg)
+ 	/* VMM assumes '\0' in byte 65, if the message took all 64 bytes */
+ 	strtomem_pad(message.str, msg, '\0');
+ 
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = TDVMCALL_REPORT_FATAL_ERROR;
++	args.r12 = 0; /* Error code: 0 is Panic */
++
+ 	args.r8  = message.r8;
+ 	args.r9  = message.r9;
+ 	args.r14 = message.r14;
+@@ -277,10 +282,12 @@ static void enable_cpu_topology_enumeration(void)
+ 
+ static void tdx_setup(u64 *cc_mask)
+ {
+-	struct tdx_module_args args = {};
++	struct tdx_module_args args;
+ 	unsigned int gpa_width;
+ 	u64 td_attr;
+ 
++	tdx_arg_init(&args);
++
+ 	/*
+ 	 * TDINFO TDX module call is used to get the TD execution environment
+ 	 * information like GPA width, number of available vcpus, debug mode
+@@ -356,11 +363,12 @@ static int ve_instr_len(struct ve_info *ve)
+ 
+ static u64 __cpuidle __halt(const bool irq_disabled)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_HLT),
+-		.r12 = irq_disabled,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_HLT);
++	args.r12 = irq_disabled;
+ 
+ 	/*
+ 	 * Emulate HLT operation via hypercall. More info about ABI
+@@ -400,11 +408,12 @@ void __cpuidle tdx_safe_halt(void)
+ 
+ static int read_msr(struct pt_regs *regs, struct ve_info *ve)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_MSR_READ),
+-		.r12 = regs->cx,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_MSR_READ);
++	args.r12 = regs->cx;
+ 
+ 	/*
+ 	 * Emulate the MSR read via hypercall. More info about ABI
+@@ -421,12 +430,13 @@ static int read_msr(struct pt_regs *regs, struct ve_info *ve)
+ 
+ static int write_msr(struct pt_regs *regs, struct ve_info *ve)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_MSR_WRITE),
+-		.r12 = regs->cx,
+-		.r13 = (u64)regs->dx << 32 | regs->ax,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_MSR_WRITE);
++	args.r12 = regs->cx;
++	args.r13 = (u64)regs->dx << 32 | regs->ax;
+ 
+ 	/*
+ 	 * Emulate the MSR write via hypercall. More info about ABI
+@@ -441,12 +451,13 @@ static int write_msr(struct pt_regs *regs, struct ve_info *ve)
+ 
+ static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_CPUID),
+-		.r12 = regs->ax,
+-		.r13 = regs->cx,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_CPUID);
++	args.r12 = regs->ax;
++	args.r13 = regs->cx;
+ 
+ 	/*
+ 	 * Only allow VMM to control range reserved for hypervisor
+@@ -483,14 +494,15 @@ static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
+ 
+ static bool mmio_read(int size, unsigned long addr, unsigned long *val)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_EPT_VIOLATION),
+-		.r12 = size,
+-		.r13 = EPT_READ,
+-		.r14 = addr,
+-		.r15 = *val,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_EPT_VIOLATION);
++	args.r12 = size;
++	args.r13 = EPT_READ;
++	args.r14 = addr;
++	args.r15 = *val;
+ 
+ 	if (__tdx_hypercall(&args))
+ 		return false;
+@@ -612,16 +624,17 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+ 
+ static bool handle_in(struct pt_regs *regs, int size, int port)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+-		.r12 = size,
+-		.r13 = PORT_READ,
+-		.r14 = port,
+-	};
++	struct tdx_module_args args;
+ 	u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
+ 	bool success;
+ 
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION);
++	args.r12 = size;
++	args.r13 = PORT_READ;
++	args.r14 = port;
++
+ 	/*
+ 	 * Emulate the I/O read via hypercall. More info about ABI can be found
+ 	 * in TDX Guest-Host-Communication Interface (GHCI) section titled
+@@ -706,7 +719,9 @@ __init bool tdx_early_handle_ve(struct pt_regs *regs)
+ 
+ void tdx_get_ve_info(struct ve_info *ve)
+ {
+-	struct tdx_module_args args = {};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
+ 
+ 	/*
+ 	 * Called during #VE handling to retrieve the #VE info from the
+@@ -849,14 +864,16 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
+ 	}
+ 
+ 	while (retry_count < max_retries_per_page) {
+-		struct tdx_module_args args = {
+-			.r10 = TDX_HYPERCALL_STANDARD,
+-			.r11 = TDVMCALL_MAP_GPA,
+-			.r12 = start,
+-			.r13 = end - start };
+-
++		struct tdx_module_args args;
+ 		u64 map_fail_paddr;
+-		u64 ret = __tdx_hypercall(&args);
++		u64 ret;
++
++		tdx_arg_init(&args);
++		args.r10 = TDX_HYPERCALL_STANDARD;
++		args.r11 = TDVMCALL_MAP_GPA;
++		args.r12 = start;
++		args.r13 = end - start;
++		ret = __tdx_hypercall(&args);
+ 
+ 		if (ret != TDVMCALL_STATUS_RETRY)
+ 			return !ret;
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index b4a851d27c7c..38560b006cdf 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -385,27 +385,30 @@ static inline void hv_ghcb_msr_read(u64 msr, u64 *value) {}
+ #ifdef CONFIG_INTEL_TDX_GUEST
+ static void hv_tdx_msr_write(u64 msr, u64 val)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = EXIT_REASON_MSR_WRITE,
+-		.r12 = msr,
+-		.r13 = val,
+-	};
++	struct tdx_module_args args;
++	u64 ret;
+ 
+-	u64 ret = __tdx_hypercall(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = EXIT_REASON_MSR_WRITE;
++	args.r12 = msr;
++	args.r13 = val;
++
++	ret = __tdx_hypercall(&args);
+ 
+ 	WARN_ONCE(ret, "Failed to emulate MSR write: %lld\n", ret);
+ }
+ 
+ static void hv_tdx_msr_read(u64 msr, u64 *val)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = EXIT_REASON_MSR_READ,
+-		.r12 = msr,
+-	};
++	struct tdx_module_args args;
++	u64 ret;
+ 
+-	u64 ret = __tdx_hypercall(&args);
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = EXIT_REASON_MSR_READ;
++	args.r12 = msr;
++
++	ret = __tdx_hypercall(&args);
+ 
+ 	if (WARN_ONCE(ret, "Failed to emulate MSR read: %lld\n", ret))
+ 		*val = 0;
+@@ -415,8 +418,9 @@ static void hv_tdx_msr_read(u64 msr, u64 *val)
+ 
+ u64 hv_tdx_hypercall(u64 control, u64 param1, u64 param2)
+ {
+-	struct tdx_module_args args = { };
++	struct tdx_module_args args;
+ 
++	tdx_arg_init(&args);
+ 	args.r10 = control;
+ 	args.rdx = param1;
+ 	args.r8  = param2;
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index 89f7fcade8ae..fc3082f050dc 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -100,6 +100,14 @@ struct tdx_module_args {
+ 	u64 rsi;
+ };
+ 
++static __always_inline void tdx_arg_init(struct tdx_module_args *args)
++{
++	asm ("rep stosb"
++	     : "+D" (args)
++	     : "c" (sizeof(*args)), "a" (0)
++	     : "memory");
++}
++
+ /* Used to communicate with the TDX module */
+ u64 __tdcall(u64 fn, struct tdx_module_args *args);
+ u64 __tdcall_ret(u64 fn, struct tdx_module_args *args);
+@@ -114,14 +122,15 @@ u64 __tdx_hypercall(struct tdx_module_args *args);
+  */
+ static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = fn,
+-		.r12 = r12,
+-		.r13 = r13,
+-		.r14 = r14,
+-		.r15 = r15,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = fn;
++	args.r12 = r12;
++	args.r13 = r13;
++	args.r14 = r14;
++	args.r15 = r15;
+ 
+ 	return __tdx_hypercall(&args);
+ }
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
