@@ -1,225 +1,278 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02olkn2021.outbound.protection.outlook.com [40.92.44.21])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2063.outbound.protection.outlook.com [40.107.94.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B83D1DDEA;
-	Tue, 21 May 2024 15:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.44.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759A358AA1
+	for <linux-coco@lists.linux.dev>; Tue, 21 May 2024 21:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716307107; cv=fail; b=IyxzoYqJc62Hhg4SmFF4cFNpNBEHtg3cyj9a69PKli5gkkgQct7/ofK0tKdOfrsKnA9h8GrIlROReVdoyjnBZp2tB6aJ2d3dg4/QAVHQDHnfGeevbaaTeJFz9HgEVqdqwa7GkQPGrVW3iSy0cLj89JcUVbNCWbZLw2g2GpI1R2g=
+	t=1716328213; cv=fail; b=hLNqbAb7Kp4VVwhXS3/kgodJQLltw1gzya+7+xa5L2yCps5RhGkYtK8POoo9ym00mt6Ap5WYRomjg1VoxfQvHZDnsQ7OEekvRPKcZ3h5GWlSyewvAWTDPDX3cjR/eILYOoWT+lG2e9PmInItdUFEXzmISc5gKlh+n7c7NRJdf8Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716307107; c=relaxed/simple;
-	bh=zD3PNsBK1JnJ8so8iRWEWNXtVjB6f2MDD06u9yOkilc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Nq7vzh8dlHTaioUQEk5jnbMwTlBxn+lIIOnvM9Vd6lGavsDPOW7/VoSxdrSvavrWFH0rWQgPYApJ6BsuzDJmCoOJERz0/N1pFTvmSV1ZmvkPx3zh+D5Wbii1LwP9DXf82ZRBMyz/RXdh06wxXjKu0j2Yd4HuEC7nFBbygFJ+hMY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=UsanB40S; arc=fail smtp.client-ip=40.92.44.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	s=arc-20240116; t=1716328213; c=relaxed/simple;
+	bh=1j9HU7TKWQG+XG6DmlOPfHSMDisJOt4ywq9VOWn8i5E=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t9VxTumOHCd5ag5Nlz+5kBATiJalQuyJquD+cTOhf9s/4x97UIyp89MoGM9Jdt57/+sFeVWhag7Wpzek3zVzm+Gbp/+XwrHjhevAwQlS+7v2EtADZymXJpMI1aS7suo7W5rqzvU2dSrJLvTA8vmkKHp9bU6LKpviGUr2+LMsWo8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=IHdzH6/7; arc=fail smtp.client-ip=40.107.94.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="UsanB40S"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IHdzH6/7"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eRMpRJboG/2RZnfB25rU7DW9bzR2ksX8wQ0bny8ImSX2cxFyrFrCv0PW6qSDdX54oA+WlelJ24O+SbGsfc+SFbOQDccZqzmtoO1le2ePeht7uOB2Dtpi12Qg23oeZgkKtzahi3VrbT15oCQkrH2LLDIAPH6AoKszG5XFTC745Uc0a+bWzTL7CNOekyN7o+hE6XsIKNFnJwWUa9hz4TiLBTf6LkAlXFi5fB3h84yheUfHs5jBEv0PAJNjhJUIZJOGfjlE2JXafoWMtVKpuLnTRyN6oPZ1zE8JDZSXEyNuvqKWXV0j6xf0zsQbdTh/zXGQtwaZGzBX94/OrAeZGiieVQ==
+ b=gCccnwRW3fjLahBHYVw+c+4+kY3Y5HxYxlkL4mqKKfVGeEEWXWKv71Gro4kAHqPjgkr+1cG9lfywPjxe3FRHm6sDLI0d3a6v/ou8ss34eMa96pamzwxVoenRZBA6T0Xey5oCp1oyJv+DeSEUKuD5coksCIs+WAUy5XpDnOUgwoQwXbXovvjMVCskfKg+byRmaucKnxcXgog1iCCMQID/osYvuJ+/wINcCuE6AovVe+JykV0Jr3+U41cNufVh3+1V/kvfRSH7HF1XINtk2Tr0Pc4bP9FZ16pcyr4CJaAQwqfnJ7BhnBWIzJPTsfvzQ7kTriPPOBMNPuQpMXLYgc86DQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6ob5xk2YJnreaMJErdwOuTIrp5bnMFa/xZAP3EqjzKE=;
- b=Ayjlp1UigjfH6hOBF8uWC1n0ZapZBZiOvfGctTEjd3QKY1dok/K+c4oDEut7Z01uEQ2ySV9qcx3JLW3dQ+cJhSiekOJXXRIFHe2eFMmwo1WO/9j3gAmXm0Fayl6/KmwBPndT2hVPvQg2NA8ZzyRwZcYXRx39p4s8Rd0XVOv4Qe0VGuMaw+9mQeXRavAKzemkbm3GzllAXFjaVqJXIABVT17wbwvzu4JtpP84F18UPHr5X8qlU4tJ3aJws/CMuM7h9GvH7r6D2TYKvSM3P2E6jH4D2gvy/i0C1kGOB3AsV71bhxwxUzU9cTq5v25X1ldKOVS1GcfkAcWdbdUWa+E1Sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
+ bh=wBQhXSIf5/bV10qJtYQEWvygY5ww87h3UADznhCFS14=;
+ b=L5OXYvLuM623l8vmQ1fXIgO/xUMrGKWLQaNsCHU1JASr4VcV29IhlG/ID1M1os/zRdgQ2u5Y68dZoe0FWqiE09TRQoWU9HvXyKywWNd+6dsrIWY76yYo0avsrwEUuNXpWPsnUFDTOVGBZRhD/izPHR/vtqm5utljrjQWVCydhoVwRxvgdjO7Wroba1dykUC9GalDQONM7V18OrpvG3kBcrpVo6jZi85kLWtxKWrtQp80Ve2KESNaP8CVqlPQc2vqBChJ1sx3MJcm/fLDdqXIQPPP3z7JQ7efUr9NaFhlqFmYIR7eOCH1XXZgPrEA0XOyzD3mFhq0OlQF6WKwN3m35g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6ob5xk2YJnreaMJErdwOuTIrp5bnMFa/xZAP3EqjzKE=;
- b=UsanB40SsEXccjkwW90k/k6cCiCzLDDAleCjI2s8psun8f+pqns8Tg+tVa8iG4Vc8te/pv3ZNHfyudcd9I0rnlsjbDIoRsYiwPxeY+KkPkGL5MYqHz9ix/FmtCrLkhKy1RF4VXBxW6HKPH6tidDY0nxBGmJNJKBsQjUZppbKXF1iilRyIAk6c30jp35j53zDC0HewAYaeYLHSJhQyAYSBG3q0vaIPYc3BmtdJKVRMrt6DHHsuGoSuKtynmKSqkQ8uQWOmYNyWb3zBFxowVS/Ia6Q3gu4n1j2NFwKnBhtgPyjEtKsa6PkMmhfdMqyS0tZeWKNPrtlOpEAfRfrPVjhfQ==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by CH2PR02MB6904.namprd02.prod.outlook.com (2603:10b6:610:83::15) with
+ bh=wBQhXSIf5/bV10qJtYQEWvygY5ww87h3UADznhCFS14=;
+ b=IHdzH6/7J0glGFeKrinC5LZm8/9yBbChp2cC+GCYIrqkBsOFlNsX3ZS9Hj/YJ53Y8YhFpvD6Bc1h46Eeo7evhBEwFP1n9lZVg9yt5jpck+AqEh1OpH7ofkYNWbWCPHPb9GPuEtGgPTv1C7+nIWjdixVZcDJacMl5TfrUUV/Shl8=
+Received: from CH0PR03CA0247.namprd03.prod.outlook.com (2603:10b6:610:e5::12)
+ by MW4PR12MB6828.namprd12.prod.outlook.com (2603:10b6:303:209::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.36; Tue, 21 May
- 2024 15:58:22 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df%2]) with mapi id 15.20.7587.035; Tue, 21 May 2024
- 15:58:22 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-CC: Suzuki K Poulose <suzuki.poulose@arm.com>, Steven Price
-	<steven.price@arm.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, Marc Zyngier
-	<maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse
-	<james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu
-	<yuzenghui@huawei.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Joey Gouly <joey.gouly@arm.com>, Alexandru
- Elisei <alexandru.elisei@arm.com>, Christoffer Dall
-	<christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Ganapatrao
- Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: RE: [PATCH v2 09/14] arm64: Enable memory encrypt for Realms
-Thread-Topic: [PATCH v2 09/14] arm64: Enable memory encrypt for Realms
-Thread-Index:
- AQHajLXQMgjFys++30ujzNf0PFm657GXN7YAgAEZTgCACEIGgIAAOLVAgADqG4CAAFyJAA==
-Date: Tue, 21 May 2024 15:58:21 +0000
-Message-ID:
- <SN6PR02MB4157DE40FE34B6FD9AA21FEDD4EA2@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20240412084213.1733764-1-steven.price@arm.com>
- <20240412084213.1733764-10-steven.price@arm.com> <ZkOmrMIMFCgEKuVw@arm.com>
- <5b2db977-7f0f-4c3a-b278-f195c7ddbd80@arm.com> <ZkuABQlGgtbzyQFT@arm.com>
- <SN6PR02MB41578D7BFEDE33BD2E8246EFD4E92@SN6PR02MB4157.namprd02.prod.outlook.com>
- <Zkxz-QfzUM_D0SAm@arm.com>
-In-Reply-To: <Zkxz-QfzUM_D0SAm@arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-tmn: [iXtUZB8A3tAPzWddfJ6FeXvE0KDYeK/W]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|CH2PR02MB6904:EE_
-x-ms-office365-filtering-correlation-id: 62ef91db-a94e-4cd8-e158-08dc79aed6fc
-x-microsoft-antispam:
- BCL:0;ARA:14566002|461199019|102099023|3412199016|440099019;
-x-microsoft-antispam-message-info:
- kLdqP3zlNmQi50v9YiSR9GjSW/Gc81Q2tVn44nq2K5V7RuWjXmWiGcXuPmk2SMpZt1lY6LKPwRQmfV3XbJYBlMdEM8HYmeKwuXSZrrsLS+dX2Nt8kXTdYOQOVxPs2xYN2LxpxbJKZxM+BC8z/Zo3Mjw7nSquWNz/rNVAR1+SMY6HDcreu4uhm9VYFJg2uR6L/bFJgSq+rdCU1ZABPp1VnXmfepV5v9IYiGGM0n03cNAssFWYYUkdHZCj15ZtHiHBD+bMdzagyot35fvv2cyHDN9UqAFWQMA5Q1TMVRbexDFk0GPhqDqycSU3vz2v9cMJGz/bMYNXM62h3bxsTHBus9vySd7ZfrnhUwmqaeWCLNDS98OeunKIqwROFdnhSfOEp1/sud3s/o7D/pYww1DfnEZ9V1AKNPmNKtM7anR15xmgitpGoMQnAKxsVSEEC0VQHOpx+tiF9zEQ9Cw3fLDGCLOHB3YABH8aT4aGnFAJuFsNn7nyxorrxUnb663/REt4dFW/UC604/g1S1+R6ObuRciyFDz38TLiHea/xwhTh8K9b9VxQ71/ZOGhcr/veAxZ
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?IAuw8gCP4KfGYVCoOB6g2+exgvv3ySuaGeNaFnkn1QHVlz1T4p5ZjejLtnbm?=
- =?us-ascii?Q?9hEF5Z+ySDKmsur/3DfRuYJ5ZBJ5EYBEv4nh9h9/ja4M12IZyrGZ5ej7VChL?=
- =?us-ascii?Q?vbmrZUOM+Yqm9FX/0fHfkAnWtWhuZLimbAObRzgnxQrT041asPPDdCNhd5u3?=
- =?us-ascii?Q?k99VVQYlfqvYYe9g0WSXoS3kNWhfkLBLXJdm5tCdDXf0F9awhnUaTNs+Pw6c?=
- =?us-ascii?Q?j1TDeUbKCzQwDt4mF+2VyhAfmkLO17sx3Jf1QlsoabnMh0sa0tHgPwGV5G2a?=
- =?us-ascii?Q?uVKsZTm1qudlSGFCm5dhT03kr3iyrkDRDf2TZnTGuMnwRUlXzBh/QZ73vZQu?=
- =?us-ascii?Q?CthCveFvMiPuG8X8Xd/6pJP8QeqOswVVjbHhxM0N81fwYDIjnHcaxwZoCcql?=
- =?us-ascii?Q?D2pW/7qpDeeS3CBVOwz2qEAhCIyZwAHQLZFu9NsGQrRMVrLS/2lnsjAlre+K?=
- =?us-ascii?Q?THyce2FzkG5hGX2SDPqJwXDER6Klw1KEVT628+sKSN+PRn/FgvxYHXjgQirQ?=
- =?us-ascii?Q?3xd58PHpn09BiBgm+TfUihUiuyG+MIjRd/WG32e5hIxtZRNgRMw041ZeVfH9?=
- =?us-ascii?Q?L5EMH9CxqqmNxAd4ygnkdt26sqGp3f4+U0zoXlhNLqEH76xgI95/IxVNO5Fv?=
- =?us-ascii?Q?icLxhj0sp18V7AwM5WbcgCaxthx5En6e/XnVLaUsTu1s7/Ptkd3ZgFDK/3zP?=
- =?us-ascii?Q?ijD84/nIPbFoVMqTvmSbtE+zHH7TMcJ4ckkJanQogFu/fzHcPCXlTSSClUIm?=
- =?us-ascii?Q?UUwQoPm0hw+Duu1k5RtefgSHFkIfsKduQa1uM+5pFzvcirnrZ2kx/AFnGFMI?=
- =?us-ascii?Q?y/OCKhN4+XLMnrcMxRAD0QZ8xSXmdIoCSf9VXWy/FdnX9stACB7R450GZfRj?=
- =?us-ascii?Q?R7WKXPMok8EVXkLIjJVPRamXwMh3ruqO4LSEqxy9Lk12h6lt8djJxjaumgsb?=
- =?us-ascii?Q?wzFALBCtS1DszjECK8WHkmCSnOJVjMgNBrwq8RocxYj43mebSDUYFgsFPFVC?=
- =?us-ascii?Q?aKELN8HQ1tEer7aJ7oOjnYT8Y94atU16qf+WbcRbY0c5kZQvAJeUY2rs1PAk?=
- =?us-ascii?Q?wnB9j1jjEFAJqjh8ucNR/NEe6RlGZJWE4OMMeeZd8hjvV+rYCbo0454mgQMV?=
- =?us-ascii?Q?cD6lfDExGngVrkgZV6mQQ0hXlr/W3KBu+ObLCMXzssGJ4H8zStwIfb79O2sF?=
- =?us-ascii?Q?TbR1rDdh3Z4NdQfAd2xet0/0zd2qU/+NRzziyA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 2024 21:50:08 +0000
+Received: from CH2PEPF00000141.namprd02.prod.outlook.com
+ (2603:10b6:610:e5:cafe::8f) by CH0PR03CA0247.outlook.office365.com
+ (2603:10b6:610:e5::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.19 via Frontend
+ Transport; Tue, 21 May 2024 21:50:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH2PEPF00000141.mail.protection.outlook.com (10.167.244.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7611.14 via Frontend Transport; Tue, 21 May 2024 21:50:07 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 21 May
+ 2024 16:50:07 -0500
+Date: Tue, 21 May 2024 16:49:52 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <seanjc@google.com>, <vkuznets@redhat.com>,
+	<jmattson@google.com>, <luto@kernel.org>, <dave.hansen@linux.intel.com>,
+	<slp@redhat.com>, <pgonda@google.com>, <peterz@infradead.org>,
+	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
+	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
+	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, Brijesh Singh
+	<brijesh.singh@amd.com>, "Yamahata, Isaku" <isaku.yamahata@intel.com>
+Subject: Re: [PATCH v15 09/20] KVM: SEV: Add support to handle MSR based Page
+ State Change VMGEXIT
+Message-ID: <rczrxq3lhqguarwh4cwxwa35j5riiagbilcw32oaxd7aqpyaq7@6bqrqn6ontba>
+References: <20240501085210.2213060-1-michael.roth@amd.com>
+ <20240501085210.2213060-10-michael.roth@amd.com>
+ <84e8460d-f8e7-46d7-a274-90ea7aec2203@linux.intel.com>
+ <CABgObfaXmMUYHEuK+D+2E9pybKMJqGZsKB033X1aOSQHSEqqVA@mail.gmail.com>
+ <7d6a4320-89f5-48ce-95ff-54b00e7e9597@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 62ef91db-a94e-4cd8-e158-08dc79aed6fc
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2024 15:58:21.7745
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7d6a4320-89f5-48ce-95ff-54b00e7e9597@linux.intel.com>
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000141:EE_|MW4PR12MB6828:EE_
+X-MS-Office365-Filtering-Correlation-Id: a71eca91-3d01-41f5-8e37-08dc79dffb2e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|7416005|82310400017|1800799015|36860700004|376005;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aVk2K0VhTVZ0OHN5WFExYWFuVlRySFRrZHdCa0g2VmthZk84SXNFSTdxVE9N?=
+ =?utf-8?B?MW5PUzZhek5rTzA4MHJKU1Raclp6bzdNc0l1c3hjUjlFZFdMa0lUS0szTXo5?=
+ =?utf-8?B?c3NXVmxja0NDdnF5TDhuc1A3SlhJdys1cFlhNS9EZ0pOTk9aSzY2UzIreDZE?=
+ =?utf-8?B?VVM1S3BMaGZJbEVhbGVFbVkwRERtQmJMQXFtUnRtSTFvQmZkZmplN2g5UmRH?=
+ =?utf-8?B?L2E2dWZ2QmZaN0NaSGZEVnJaRC80RzdRc3YyT3cxemZRS2MrOE1LdTJ2RU9Y?=
+ =?utf-8?B?cC9WMmgwc1JOelg3NVpTdGhQa25LdGVGTFI5TXBmdy9VaDZsOWFjZUZ2NnNm?=
+ =?utf-8?B?cFpaZmNlT0pLSitsSWlPM1hDRlVwdVY3MCs5VVorWEVicTd2anYrQ1owYXM5?=
+ =?utf-8?B?anRTWlBPV2ZNV2hRYlB0Vkc4QXRoSDM2SlFpMWFqOTFEZ2JFYitKenBCRDVk?=
+ =?utf-8?B?ZDBST1VSa0hXS2hXcTNFS2tOZ3FyNmhpUXo1U2l3WGpodmhvRExYTWtyNUtO?=
+ =?utf-8?B?aGFlbTBMVTdTeXlnRkhQSUFrV1hlZkNlUGxuUE8wOE1PY0ZDSFNRSzRlSnRQ?=
+ =?utf-8?B?U0JDREFLRWJSYXR6cjgzenZBU0NzMHArSEtZTkdSdUhvaXNoWFYvN3Bva1ZX?=
+ =?utf-8?B?WGlQRmhHWi9GVGJtTTB4V243YW9tb3NkU0QxWGFDVFRPRjFMSjBMM3VQakdx?=
+ =?utf-8?B?MU42N2R2b0pVdG5vTUgvMHZmYjlZK0xCanorWmlBcjI2YTA4RGxHcUdZZ3Vl?=
+ =?utf-8?B?eFhBejFGaGJHd1c2Y2RQd2g2cU9waGYyTlAxSWtaZGRsamdROWt3cWNick5x?=
+ =?utf-8?B?SjhDZnhDalQwRHFtQVZxMWpDR3JDZzI2UTZSeGFvOThtRk8xMEQ0Uk1hb1dy?=
+ =?utf-8?B?clIzTjYxS0FvVG1qdGpjTkptdVJma3NUY2lyaW1obTJyZmtPdTJrTUF3Mk9x?=
+ =?utf-8?B?N2RMY2pVOWJ4elI5Wnh3Ty9mUWJnMHJUM2V3YjlvUkN3QzRSN0xYd0JHSVk3?=
+ =?utf-8?B?K3Bqczg1Yll3SXR1YUhnWkVaV2NFYXRmemZpeEpBSTNaanNPSHdaalZ3dEtC?=
+ =?utf-8?B?WE9XbW5nVkV2dDkrOWNLc1YvRnBNRE1UYnoyWmFtdXV2OXZYMWFPaDQzbEFE?=
+ =?utf-8?B?K2ZvZllBT1ZLbWZ1WnhkVFhNYmxwZ2pEeWtMQmxYVFVBWFdoWlFUWGVOY2pq?=
+ =?utf-8?B?QjRUMEw5WC9hUGZvc1N3TGVFaVN6NWRVbXFhczdsaVM3Yy96Sks3Wml0ZXM4?=
+ =?utf-8?B?NWFCMkVISmVvdlprYmZRQncxdFRCTEE0bmo3Z2YzWTZtNmtqdVJNWUxTc2hV?=
+ =?utf-8?B?aWRmQmlBMXJkaHBXTkVRNW94c00rOUtzalVDOWYxSytCUUFDWDUxcWhESkJN?=
+ =?utf-8?B?ZjRIa1ZZUnFzd2pybXpsTUVZL1cwbmRxVlE3OFEvSHoyVTJ2TXM2aTIraEJm?=
+ =?utf-8?B?aG5RRGNEZ1VTbHJPUWNCbUc1eUVWQTUwVmY2SU5uOW5OMlM3MEhFRUVzWU1x?=
+ =?utf-8?B?RWdXcUNCcXhQbUlMRzR4dnZZYmpKbmx5dmt6a0pKVUt2VnJXVVBQRzNMdTMz?=
+ =?utf-8?B?dS83SW9IZGVSeFJqYTdHZFJEYTArU2EwVkVjRU9JZnJRZHE2Zk4vYyt4Nlo4?=
+ =?utf-8?B?cUR2SUUvaHlSbm9GSzVXbVdpZ0hPcXpUd2VCQkw4d0hnU1A3NlpKcFNYU2Vm?=
+ =?utf-8?B?dWphb2hIcnRrbDRYYndrTm91TW8wYU9zbFk0SDV4TloyeUs5SEF6QnhLWXVp?=
+ =?utf-8?Q?ZhXQ+PGBq9xymVsVG098wwA48OAASNKBs4YIBdK?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(7416005)(82310400017)(1800799015)(36860700004)(376005);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2024 21:50:07.7943
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6904
+X-MS-Exchange-CrossTenant-Network-Message-Id: a71eca91-3d01-41f5-8e37-08dc79dffb2e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000141.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6828
 
-From: Catalin Marinas <catalin.marinas@arm.com>Sent: Tuesday, May 21, 2024 =
-3:14 AM
->=20
-> On Mon, May 20, 2024 at 08:32:43PM +0000, Michael Kelley wrote:
-> > From: Catalin Marinas <catalin.marinas@arm.com> Sent: Monday, May 20, 2=
-024 9:53 AM
-> > > > > On Fri, Apr 12, 2024 at 09:42:08AM +0100, Steven Price wrote:
-> > > > > >   static int change_page_range(pte_t *ptep, unsigned long addr,=
- void *data)
-> > > > > > @@ -41,6 +45,7 @@ static int change_page_range(pte_t *ptep, uns=
-igned long addr, void *data)
-> > > > > >   	pte =3D clear_pte_bit(pte, cdata->clear_mask);
-> > > > > >   	pte =3D set_pte_bit(pte, cdata->set_mask);
-> > > > > > +	/* TODO: Break before make for PROT_NS_SHARED updates */
-> > > > > >   	__set_pte(ptep, pte);
-> > > > > >   	return 0;
-> [...]
-> > > Thanks for the clarification on RIPAS states and behaviour in one of
-> > > your replies. Thinking about this, since the page is marked as
-> > > RIPAS_EMPTY prior to changing the PTE, the address is going to fault
-> > > anyway as SEA if accessed. So actually breaking the PTE, TLBI, settin=
-g
-> > > the new PTE would not add any new behaviour. Of course, this assumes
-> > > that set_memory_decrypted() is never called on memory being currently
-> > > accessed (can we guarantee this?).
-> >
-> > While I worked on CoCo VM support on Hyper-V for x86 -- both AMD
-> > SEV-SNP and Intel TDX, I haven't ramped up on the ARM64 CoCo
-> > VM architecture yet.  With that caveat in mind, the assumption is that =
-callers
-> > of set_memory_decrypted() and set_memory_encrypted() ensure that
-> > the target memory isn't currently being accessed.   But there's a big
-> > exception:  load_unaligned_zeropad() can generate accesses that the
-> > caller can't control.  If load_unaligned_zeropad() touches a page that =
-is
-> > in transition between decrypted and encrypted, a SEV-SNP or TDX archite=
-ctural
-> > fault could occur.  On x86, those fault handlers detect this case, and
-> > fix things up.  The Hyper-V case requires a different approach, and mar=
-ks
-> > the PTEs as "not present" before initiating a transition between decryp=
-ted
-> > and encrypted, and marks the PTEs "present" again after the transition.
->=20
-> Thanks. The load_unaligned_zeropad() case is a good point. I thought
-> we'd get away with this on arm64 since accessing such decrypted page
-> would trigger a synchronous exception but looking at the code, the
-> do_sea() path never calls fixup_exception(), so we just kill the whole
-> kernel.
->=20
-> > This approach causes a reference generated by load_unaligned_zeropad()
-> > to take the normal page fault route, and use the page-fault-based fixup=
- for
-> > load_unaligned_zeropad(). See commit 0f34d11234868 for the Hyper-V case=
-.
->=20
-> I think for arm64 set_memory_decrypted() (and encrypted) would have to
-> first make the PTE invalid, TLBI, set the RIPAS_EMPTY state, set the new
-> PTE. Any page fault due to invalid PTE would be handled by the exception
-> fixup in load_unaligned_zeropad(). This way we wouldn't get any
-> synchronous external abort (SEA) in standard uses. Not sure we need to
-> do anything hyper-v specific as in the commit above.
+On Tue, May 21, 2024 at 08:49:59AM +0800, Binbin Wu wrote:
+> 
+> 
+> On 5/17/2024 1:23 AM, Paolo Bonzini wrote:
+> > On Thu, May 16, 2024 at 10:29 AM Binbin Wu <binbin.wu@linux.intel.com> wrote:
+> > > 
+> > > 
+> > > On 5/1/2024 4:51 PM, Michael Roth wrote:
+> > > > SEV-SNP VMs can ask the hypervisor to change the page state in the RMP
+> > > > table to be private or shared using the Page State Change MSR protocol
+> > > > as defined in the GHCB specification.
+> > > > 
+> > > > When using gmem, private/shared memory is allocated through separate
+> > > > pools, and KVM relies on userspace issuing a KVM_SET_MEMORY_ATTRIBUTES
+> > > > KVM ioctl to tell the KVM MMU whether or not a particular GFN should be
+> > > > backed by private memory or not.
+> > > > 
+> > > > Forward these page state change requests to userspace so that it can
+> > > > issue the expected KVM ioctls. The KVM MMU will handle updating the RMP
+> > > > entries when it is ready to map a private page into a guest.
+> > > > 
+> > > > Use the existing KVM_HC_MAP_GPA_RANGE hypercall format to deliver these
+> > > > requests to userspace via KVM_EXIT_HYPERCALL.
+> > > > 
+> > > > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > > > Co-developed-by: Brijesh Singh <brijesh.singh@amd.com>
+> > > > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> > > > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> > > > ---
+> > > >    arch/x86/include/asm/sev-common.h |  6 ++++
+> > > >    arch/x86/kvm/svm/sev.c            | 48 +++++++++++++++++++++++++++++++
+> > > >    2 files changed, 54 insertions(+)
+> > > > 
+> > > > diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+> > > > index 1006bfffe07a..6d68db812de1 100644
+> > > > --- a/arch/x86/include/asm/sev-common.h
+> > > > +++ b/arch/x86/include/asm/sev-common.h
+> > > > @@ -101,11 +101,17 @@ enum psc_op {
+> > > >        /* GHCBData[11:0] */                            \
+> > > >        GHCB_MSR_PSC_REQ)
+> > > > 
+> > > > +#define GHCB_MSR_PSC_REQ_TO_GFN(msr) (((msr) & GENMASK_ULL(51, 12)) >> 12)
+> > > > +#define GHCB_MSR_PSC_REQ_TO_OP(msr) (((msr) & GENMASK_ULL(55, 52)) >> 52)
+> > > > +
+> > > >    #define GHCB_MSR_PSC_RESP           0x015
+> > > >    #define GHCB_MSR_PSC_RESP_VAL(val)                  \
+> > > >        /* GHCBData[63:32] */                           \
+> > > >        (((u64)(val) & GENMASK_ULL(63, 32)) >> 32)
+> > > > 
+> > > > +/* Set highest bit as a generic error response */
+> > > > +#define GHCB_MSR_PSC_RESP_ERROR (BIT_ULL(63) | GHCB_MSR_PSC_RESP)
+> > > > +
+> > > >    /* GHCB Hypervisor Feature Request/Response */
+> > > >    #define GHCB_MSR_HV_FT_REQ          0x080
+> > > >    #define GHCB_MSR_HV_FT_RESP         0x081
+> > > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > > > index e1ac5af4cb74..720775c9d0b8 100644
+> > > > --- a/arch/x86/kvm/svm/sev.c
+> > > > +++ b/arch/x86/kvm/svm/sev.c
+> > > > @@ -3461,6 +3461,48 @@ static void set_ghcb_msr(struct vcpu_svm *svm, u64 value)
+> > > >        svm->vmcb->control.ghcb_gpa = value;
+> > > >    }
+> > > > 
+> > > > +static int snp_complete_psc_msr(struct kvm_vcpu *vcpu)
+> > > > +{
+> > > > +     struct vcpu_svm *svm = to_svm(vcpu);
+> > > > +
+> > > > +     if (vcpu->run->hypercall.ret)
+> > > Do we have definition of ret? I didn't find clear documentation about it.
+> > > According to the code, 0 means succssful. Is there any other error codes
+> > > need to or can be interpreted?
+> > They are defined in include/uapi/linux/kvm_para.h
+> > 
+> > #define KVM_ENOSYS        1000
+> > #define KVM_EFAULT        EFAULT /* 14 */
+> > #define KVM_EINVAL        EINVAL /* 22 */
+> > #define KVM_E2BIG        E2BIG /* 7 */
+> > #define KVM_EPERM        EPERM /* 1*/
+> > #define KVM_EOPNOTSUPP        95
+> > 
+> > Linux however does not expect the hypercall to fail for SEV/SEV-ES; and
+> > it will terminate the guest if the PSC operation fails for SEV-SNP.  So
+> > it's best for userspace if the hypercall always succeeds. :)
+> Thanks for the info.
+> 
+> For TDX, it wants to restrict the size of memory range for conversion in one
+> hypercall to avoid a too long latency.
+> Previously, in TDX QEMU patchset v5, the limitation is in userspace and  if
+> the size is too big, the status_code will set to TDG_VP_VMCALL_RETRY and the
+> failed GPA for guest to retry is updated.
+> https://lore.kernel.org/all/20240229063726.610065-51-xiaoyao.li@intel.com/
+> 
+> When TDX converts TDVMCALL_MAP_GPA to KVM_HC_MAP_GPA_RANGE, do you think
+> which is more reasonable to set the restriction? In KVM (TDX specific code)
+> or userspace?
+> If userspace is preferred, then the interface needs to  be extended to
+> support it.
 
-Sounds good to me. I tried to do the same for all the x86 cases (instead of
-just handling the Hyper-V paravisor), since that would completely decouple
-TDX/SEV-SNP from load_unaligned_zeropad(). It worked for TDX. But
-SEV-SNP does the PVALIDATE instruction during a decrypted<->encrypted
-transition, and PVALIDATE inconveniently requires the virtual address as
-input. It only uses the vaddr to translate to the paddr, but with the vaddr
-PTE "not present", PVALIDATE fails. Sigh. This problem will probably come
-back again when/if Coconut or any other paravisor redirects #VC/#VE to
-the paravisor. But I disgress ....
+With SNP we might get a batch of requests in a single GHCB request, and
+potentially each of those requests need to get set out to userspace as 
+a single KVM_HC_MAP_GPA_RANGE. The subsequent patch here handles that in
+a loop by issuing a new KVM_HC_MAP_GPA_RANGE via the completion handler.
+So we also sort of need to split large requests into multiple userspace
+requests in some cases.
 
->=20
-> > > (I did come across the hv_uio_probe() which, if I read correctly, it
-> > > ends up calling set_memory_decrypted() with a vmalloc() address; let'=
-s
-> > > pretend this code doesn't exist ;))
-> >
-> > While the Hyper-V UIO driver is perhaps a bit of an outlier, the Hyper-=
-V
-> > netvsc driver also does set_memory_decrypted() on 16 Mbyte vmalloc()
-> > allocations, and there's not really a viable way to avoid this. The
-> > SEV-SNP and TDX code handles this case.   Support for this case will
-> > probably also be needed for CoCo guests on Hyper-V on ARM64.
->=20
-> Ah, I was hoping we can ignore it. So the arm64 set_memory_*() code will
-> have to detect and change both the vmalloc map and the linear map.
+It seems like TDX should be able to do something similar by limiting the
+size of each KVM_HC_MAP_GPA_RANGE to TDX_MAP_GPA_MAX_LEN, and then
+returning TDG_VP_VMCALL_RETRY to guest if the original size was greater
+than TDX_MAP_GPA_MAX_LEN. But at that point you're effectively done with
+the entire request and can return to guest, so it actually seems a little
+more straightforward than the SNP case above. E.g. TDX has a 1:1 mapping
+between TDG_VP_VMCALL_MAP_GPA and KVM_HC_MAP_GPA_RANGE events. (And even
+similar names :))
 
-Yep.
+So doesn't seem like there's a good reason to expose any of these
+throttling details to userspace, in which case existing
+KVM_HC_MAP_GPA_RANGE interface seems like it should be sufficient.
 
-> Currently this patchset assumes the latter only.
->=20
-> Such buffers may end up in user space as well but I think at the
-> set_memory_decrypted() call there aren't any such mappings and
-> subsequent remap_pfn_range() etc. would handle the permissions properly
-> through the vma->vm_page_prot attributes (assuming that someone set
-> those pgprot attributes).
+-Mike
 
-Yes, I'm pretty sure that's what we've seen on the x86 side.
-
-Michael
+> 
+> 
+> > 
+> > > For TDX, it may also want to use KVM_HC_MAP_GPA_RANGE hypercall  to
+> > > userspace via KVM_EXIT_HYPERCALL.
+> > Yes, definitely.
+> > 
+> > Paolo
+> > 
+> 
