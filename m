@@ -1,188 +1,269 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11020003.outbound.protection.outlook.com [52.101.193.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705FD81E
-	for <linux-coco@lists.linux.dev>; Tue, 21 May 2024 00:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716252613; cv=none; b=N5FxqQDPD+lU2nXlmIEsEFge1+qOVsuqj6PwbzmtkRgM/1aT02f+XqH5B80j53U4DZQbeGxcWuy2IQroo8KbGOwvHorllHdy5U0yXgSCZDH8DwjjvYYv2kJSmx1/qc+k2dASPoz/g9FHbK73yhIx11YC0JHZkIlWjXitQn2i/eg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716252613; c=relaxed/simple;
-	bh=bmp8fr++SX2ZpALlJv3IjLJSzc2ON4Zni7XoFdvDuDY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o+3yBssAhsyMUvth0e9yzQ/UZudwbi6A6ZXFimfPwIZIcGmcyYNPrcKmptBFr8kPcBB8uxNYhvzecoAGWGxFzenStD0psXoH0+dfCdErGFNxYH8Mq5GpFl5Dl61FuSUdEndU6v+uU4VWeU4ak2lwi4NtK+R1MRhI0vCdsULvqMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g8nhCIoG; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A336DD51E
+	for <linux-coco@lists.linux.dev>; Tue, 21 May 2024 02:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716257601; cv=fail; b=KF6Y6Qchvn0jfwaOOszcCmarjJHYEA9Bg0ULt9i0aZbYCOBNIQ7A7bCulih5PSzuoAUS8JCIMLJ9wECaebPyhMyF8HlXhPHrMYmIZDDXlXeDMuFC2/4RQnRdyG9wXP2cePisD2TiuZod4HF3X4YQXOW6heMYuM73/ydupKlx0yY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716257601; c=relaxed/simple;
+	bh=uSlQBDrHTlw3N42DFNwtTZmTye9XNXE2fd7Vv53V8qk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=jt3/gXMFMKl7mHd/jf1KHccWHSKBLxbX+iP9/xrC9N7KrsoXlrwThv+j5ubI2xYC5ZkyLOuZxueI/jLVnO7AoCei9wsypHN50byooJAKeDL6sh4EbV2l7WBi5lr6xdu8K1BtqD0zWsh1Dg/EBjHQljvZqYsvwdFEGViHMsJhQro=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=EYbiWrqf; arc=fail smtp.client-ip=52.101.193.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g8nhCIoG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716252612; x=1747788612;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bmp8fr++SX2ZpALlJv3IjLJSzc2ON4Zni7XoFdvDuDY=;
-  b=g8nhCIoGj53p5WyLh/KnRYXeptfXtd6QimTrfkW3vfDxadNEW0wizKjp
-   9BujN8mOjZyi1rGVHOyUHaz8kEHv4N7cBOME6Fasd3ICj66hLalw6VIIv
-   FK/Fwe5HrxXERgGEeX3qyZMX8oXUY/vE91WOMERcwxitBno+fCc2KG4S+
-   DUTwpopn4Q9wkYOeUPNssdxeqOsce4z04wwdHhyh4AJ8H1ABMV1d5DzUo
-   aOybnRX8Kc5uNivCcIHJetvvsZ5axAmGGq0CNZ9MAYf9H3P3ssDNLeOjw
-   1jH9tISpQOzP7KF9Hxgq6Tk3Mjnd2bc9TWBGV3h8PgIlYAx+plT7LBs/U
-   w==;
-X-CSE-ConnectionGUID: +vZX7St3T5GcY1nw/qU5Tg==
-X-CSE-MsgGUID: AC2x/1VISb2HSHOyGL2+3w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12528650"
-X-IronPort-AV: E=Sophos;i="6.08,176,1712646000"; 
-   d="scan'208";a="12528650"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 17:50:11 -0700
-X-CSE-ConnectionGUID: qEl6I9APROCpPWpfMZ49fw==
-X-CSE-MsgGUID: k0zPN6EnRx2Q9MmHNETa3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,176,1712646000"; 
-   d="scan'208";a="32618014"
-Received: from unknown (HELO [10.238.8.173]) ([10.238.8.173])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 17:50:02 -0700
-Message-ID: <7d6a4320-89f5-48ce-95ff-54b00e7e9597@linux.intel.com>
-Date: Tue, 21 May 2024 08:49:59 +0800
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="EYbiWrqf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cBRHf4q+rzWF9X4v8o35js1IJxfR2LIjCrYZGAYa0TfXcq1cjnid4qZ2lVUV8FZeklXruuXQmdQRgdRAHTSHb7GLiWpb+YSZoRXDlhw/dZYBaQ3U9rGm2Pe+BtDBsPkSHUHqu28B22N2/ZBM2XFEzJFa61xsyaRdM1u/dLWSC/3KJj+Mqm75j/SIudQkNqNn/7MLopJI+f0uEMANlS36iUND1uWMrMf9qcMQG6qe0yZlwM+ZnTPYB/AAWN+Ti3U8EW5ALKRjrmgInluOuk3mfGt8ABfAdpD/fLe9FPlM+pDZUQOjWievR9ng6sUJYnXyY6/GK+tmjiygo+jRgLBxqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XBUTd9CdcHN6fDYgNQw4R53ZbNCowUioiGsfsLqaeKI=;
+ b=bMGUrbSnfPgx/dNa8roZ+WcqOr9JRVHz8SCXmIa++BsaU8Yd5kziKVs26KzZNuAwGQSCvdQqqAZSxUC1DTG1zn1TFLK3qb4NMATtlBd3tIAxZ8PTeuGOs0kEVb0+MdwlVf21GAT5ZUtuDCoVuSa+K9uzV5dVFbTULqrXNC1hi/F3/StNdke2XtpYYKTHc32qAgmqClC2Pf5jFF4NGPhZam1cxPeo4LssbXuid/X3EUCwEohtyC5bf+0AA8FjoIMIPBpXZg6JkgMKzhTioZFYef9zXE7e/SFJuuF8nFmhq1RJFRz64lNAZNfFILuJ9k0qYfE5457TMBf7+ayMAz63Mw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XBUTd9CdcHN6fDYgNQw4R53ZbNCowUioiGsfsLqaeKI=;
+ b=EYbiWrqfqeTV4w+LwJRXdqNdmVlyjM/xuPgRXdeIFeiKsVitr4nIHukabRlSmT471o1ew8/bfPlPHdUYF01rOnvKtltkFNuzkLysvNAMzITLHC4UC17Mzt0sa3hoi36/tYNEMZ21720ZIbWFfJxs6unTvT4vdG8aRhdUpKSiquA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+Received: from SA3PR21MB3915.namprd21.prod.outlook.com (2603:10b6:806:300::22)
+ by MWHPR21MB4429.namprd21.prod.outlook.com (2603:10b6:303:278::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.2; Tue, 21 May
+ 2024 02:13:16 +0000
+Received: from SA3PR21MB3915.namprd21.prod.outlook.com
+ ([fe80::47c8:8c49:be38:ed21]) by SA3PR21MB3915.namprd21.prod.outlook.com
+ ([fe80::47c8:8c49:be38:ed21%3]) with mapi id 15.20.7544.029; Tue, 21 May 2024
+ 02:13:16 +0000
+From: Dexuan Cui <decui@microsoft.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	ak@linux.intel.com,
+	arnd@arndb.de,
+	bp@alien8.de,
+	brijesh.singh@amd.com,
+	dan.j.williams@intel.com,
+	dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	haiyangz@microsoft.com,
+	hpa@zytor.com,
+	jane.chu@oracle.com,
+	kirill.shutemov@linux.intel.com,
+	kys@microsoft.com,
+	luto@kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	rostedt@goodmis.org,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	seanjc@google.com,
+	tglx@linutronix.de,
+	tony.luck@intel.com,
+	wei.liu@kernel.org,
+	Jason@zx2c4.com,
+	nik.borisov@suse.com,
+	mhklinux@outlook.com
+Cc: linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tianyu.Lan@microsoft.com,
+	rick.p.edgecombe@intel.com,
+	andavis@redhat.com,
+	mheslin@redhat.com,
+	vkuznets@redhat.com,
+	xiaoyao.li@intel.com,
+	Dexuan Cui <decui@microsoft.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
+Date: Mon, 20 May 2024 19:12:38 -0700
+Message-Id: <20240521021238.1803-1-decui@microsoft.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: CYZPR14CA0023.namprd14.prod.outlook.com
+ (2603:10b6:930:8f::20) To SA3PR21MB3915.namprd21.prod.outlook.com
+ (2603:10b6:806:300::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 09/20] KVM: SEV: Add support to handle MSR based Page
- State Change VMGEXIT
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com,
- vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
- dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
- peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
- rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de,
- vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
- tony.luck@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
- nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com,
- Brijesh Singh <brijesh.singh@amd.com>,
- "Yamahata, Isaku" <isaku.yamahata@intel.com>
-References: <20240501085210.2213060-1-michael.roth@amd.com>
- <20240501085210.2213060-10-michael.roth@amd.com>
- <84e8460d-f8e7-46d7-a274-90ea7aec2203@linux.intel.com>
- <CABgObfaXmMUYHEuK+D+2E9pybKMJqGZsKB033X1aOSQHSEqqVA@mail.gmail.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <CABgObfaXmMUYHEuK+D+2E9pybKMJqGZsKB033X1aOSQHSEqqVA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR21MB3915:EE_|MWHPR21MB4429:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4ffacd0-1034-4052-85fe-08dc793b92a8
+X-LD-Processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230031|7416005|366007|52116005|1800799015|376005|921011;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?iMl6jadRFBDbmdxnaDDVxVwgNXwB3gVKZWKspCpE6C6d3Xdh0N9DYnr39akJ?=
+ =?us-ascii?Q?W7qW5swzkaX8+xLhHNvD16TbTAVylwSgivsTeG/OztlVIuH1IIURv+Frs0RD?=
+ =?us-ascii?Q?16ocJMYO7WD0o5cbaEq6j+2djDYxr6M/C5XWijUpKhX0h3IjxE93xHdOb5Dk?=
+ =?us-ascii?Q?rKapcT5u7K0ECSTWbParN4KKIEUu6UTwc/AVBao+sgtUczVvQfJ/lb2owzWC?=
+ =?us-ascii?Q?i9ZflVG+/bb7MGR+j0tMMsdo2UkAjMtZjP1klrUkHiVuHAkvTzlKiXH/uYXh?=
+ =?us-ascii?Q?6P4XsdJ8G3ilY0lA+IuCiD3YkQybTmegxoKOGFNx0Of3gYu9kfau0/NwWdoz?=
+ =?us-ascii?Q?ZQbYqLNayiwXuwsYt+yW9V0EWx5aAXg8tVWH0qSS/lRKD60YccjBzS9KHATe?=
+ =?us-ascii?Q?XSwFgKJ3p8bE39d8ZPJTm7A8b8TcFCw/HSQS05+qDrRrkHZqdoTyBBEGzzGa?=
+ =?us-ascii?Q?kZXTKBHfVrWt1j8nNk6HDXvl57/7Ym2oERsYd7a4ypeRgqMTdLeVUX8sb5lp?=
+ =?us-ascii?Q?4NCitrmZnh+LS99IiICBtOW26E5qdG3K2pctACgvkliuqJB/yscF4hTJ7jUt?=
+ =?us-ascii?Q?Iiw1pjf/ACS1t8tlrH+Fh3+cw2yU3EGvGZJ2QkkYfLQ490XHnb0rXoG4ih7G?=
+ =?us-ascii?Q?UstelY8PgjUCuwGQVZrV0ZKtC/VEDdMO4nRuuqaxQDIpskh7Ew5oG8VbGskH?=
+ =?us-ascii?Q?1MmReSMzU24b+vbIECF16dr633UEGmk0T3/zGEjTrK3bL4XveLBC9ez4sQn4?=
+ =?us-ascii?Q?S1uJ+4Wjj3oillpZJ2IGeSLmmO+HFTlRq5a7Y+iuvabGpBGHUayXu5JkuoIl?=
+ =?us-ascii?Q?rNmDnfvTuTdwj9QPC5wwAgOXtp0UWffqtlQxlw7yOJin0Iy3f9um/3y//1VH?=
+ =?us-ascii?Q?8LEHWNFH8f8MVg6LJqCs37H/BXWd17pg4S/JvbT8BafmHecL52/+x/OZStFs?=
+ =?us-ascii?Q?w3OLKrKpQ4Itx9tZuG3LgRcsokFBVWnZnZEFBCRL431LYKF8g7MIbDNI1ZOl?=
+ =?us-ascii?Q?V6TK5fqTBoc/ohtIVuJ4r68F55VPkEGBHFeVFcpG5AFOZDJBlU+32qGClqlZ?=
+ =?us-ascii?Q?3TwxD2beu8ZZ9Gc9mJ18H3rV0pa0tF7SsF0/AoOj3/mOwr7bxKFJL8nTKMvH?=
+ =?us-ascii?Q?MAeCk4/eaHExxrFoTkzp2CdIhBGdz5nvH40UskLI41NKAb4bqZRX3l0EIqWQ?=
+ =?us-ascii?Q?vJT3DITvhRtmlJnP6usK4uk9EqCfP6FIAxg4L9bl/Di0iMdSPGcINIdeUw/1?=
+ =?us-ascii?Q?lGcHwJiigVH0SNF5O5HCwylPgQwOnf6yOXxyVIp1hQ=3D=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR21MB3915.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(366007)(52116005)(1800799015)(376005)(921011);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?X5BV8fpf1XVkGPMjK+9pLk6VMG4EF2+mpjEmhQV7nQgPMwL4VHMi69a+UKM1?=
+ =?us-ascii?Q?Ci9O7oO6p2Qf6+Bjlyj39NyD0PnBqeCM4WDvt6w3ZUidi55vBUA7T6xY+yxU?=
+ =?us-ascii?Q?Lz+68zZMPXTHqbMzlAsPma07jp9Ru23a4+4npGnRfKpWn7N1VH2k9S/M6VFm?=
+ =?us-ascii?Q?U9p5fg3+9YzMP9bjm65s55FjkN143CnQQCrdRhPzXw6eDM3FCNgA6wMIf38X?=
+ =?us-ascii?Q?0c61iUJfI3oRGBiO2pK3Xdxm3kuATBLFhHT96wNHsUd7A1J5OVnxxkbHUkcw?=
+ =?us-ascii?Q?2ZmDEIHjp08w9yystD3aFguERiwSCO2E2Zmue3/ypvAq/HEG80Vz1NPyzHHn?=
+ =?us-ascii?Q?QokheDzoAUEdWmWioONpKHa786qOlFqXyja7vz5WIq0ypxvmz6Xy1ewn+273?=
+ =?us-ascii?Q?jSZVI7qTECDvpacLRjXlHzq+bD6y6tmdGQ7Hj1R+TfaaOy18pTD+i+6LpoCa?=
+ =?us-ascii?Q?HR3Y4Yu0sjXmCDWJaRMQH5VlZ/7ZLtzmRZysfshh3TN4EFHChcSNMw1Z/zBD?=
+ =?us-ascii?Q?ydrbXD/kTb9yvCDtZglL8iv8w4S2h98qoExQz+5HhlMJkefVpvPnQB5WL6MY?=
+ =?us-ascii?Q?vMNw2QlHo//qNBLjsk9QxYh9Aip0/w7IryOv1je4HgdUVEBnuxNqrrA4Px25?=
+ =?us-ascii?Q?lCcoCH1Sv0aJSkQmo4xjJ2b+zbcfvCht6DLNO0H3eHvSjflityR6UiNV/BzY?=
+ =?us-ascii?Q?jojph2SayQtiwe39q4Tqc55Lo6grOJLdekecxcBMpsNYo0YZ2FTKz82zbXAf?=
+ =?us-ascii?Q?AqRcnIBVnTPgb8jW/ACf3MHju1kU9D9qtVoJ3yOdeKgnfWap1JVMPOIGfNhB?=
+ =?us-ascii?Q?7SJtxGX7Wt4K89PY3yZ2hHzi3NBmKEbtNc1Bzj7Yfj5nvaUpILBWAID87bqO?=
+ =?us-ascii?Q?OkxK3Q5OQTxjt1UHDm/GmA+nzMZtqTZolE9NTzHWjXTLK2io92GQDi69p0vW?=
+ =?us-ascii?Q?NBq5G4YhraYLeSl6Q+SDsDijOXH7m+4wDY33HhPRO8Uci3ksKstVcxAsaUvq?=
+ =?us-ascii?Q?3t8kGNj1WkRp6pGbShRKgstgi/BnHfqmyGU/eqwWH+1P+y7ZknZ0LQ/wX6HS?=
+ =?us-ascii?Q?rb215HVoHsiHSHRFVG5C0dY1iSYxF6cYBOhFWZ3BgPH7D4QSFR6ulYN4pdQ7?=
+ =?us-ascii?Q?AEiPHUpjGy4O6hQCyTzwZXvdKJjxolVDHUDfVR9o2iDpDqsNFILArWHUCNVn?=
+ =?us-ascii?Q?skmpXjg1DQyUYrJmmsqKp7xjmKjfHaZY+OxNhWqnw/GaV0y2oyaI42gQQ/fL?=
+ =?us-ascii?Q?6mabnZAWgub2AI4CKqqTk5W53JkFIAgjAFhSVlV2S1661Eq2kpxmQPSKRWJL?=
+ =?us-ascii?Q?sr5o69qEZweb90QaIG1+RaWbRml/OTQKp3yLlo/qIXqA+dEzhT00CirUXL0V?=
+ =?us-ascii?Q?jEt8JA0LtRBNIHb6tEL6JuZmGgZh7hgEgK2sGC8BmD0ZU6pjFvPrqp9yJj1j?=
+ =?us-ascii?Q?MsWZExhZHYDisjiBxu2fiFh0ZD+U1AKC2Vw2cAbkCFs0jnBEOrK1DMQQW+AW?=
+ =?us-ascii?Q?bW7s3JfH80nwp9xmNPIZXlb+gvmoRcwzDoukBcgVdDA7nqH1W2xUz8LIJL27?=
+ =?us-ascii?Q?D8GmTXtJFk56X1/r/JRE9WmQsujuvkVQXqH2O5/J+VI4swneQKjC1BWBZkH1?=
+ =?us-ascii?Q?MiT1ztw3QmNbXidrb1ekDJf/Qxbmw9dBcsUydfJUct7m?=
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4ffacd0-1034-4052-85fe-08dc793b92a8
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR21MB3915.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2024 02:13:15.8041
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: I+KOyFaO/MBahOG+jjJ0gMe1Mp8QXfd0zniXiyiqnKDIHsAQ5pOslMIf71O+mzXh1euXd9A6PVj4fMSL4udpTA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR21MB4429
 
+When a TDX guest runs on Hyper-V, the hv_netvsc driver's netvsc_init_buf()
+allocates buffers using vzalloc(), and needs to share the buffers with the
+host OS by calling set_memory_decrypted(), which is not working for
+vmalloc() yet. Add the support by handling the pages one by one.
 
+Co-developed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Cc: stable@vger.kernel.org # 6.6+
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+---
 
-On 5/17/2024 1:23 AM, Paolo Bonzini wrote:
-> On Thu, May 16, 2024 at 10:29 AM Binbin Wu <binbin.wu@linux.intel.com> wrote:
->>
->>
->> On 5/1/2024 4:51 PM, Michael Roth wrote:
->>> SEV-SNP VMs can ask the hypervisor to change the page state in the RMP
->>> table to be private or shared using the Page State Change MSR protocol
->>> as defined in the GHCB specification.
->>>
->>> When using gmem, private/shared memory is allocated through separate
->>> pools, and KVM relies on userspace issuing a KVM_SET_MEMORY_ATTRIBUTES
->>> KVM ioctl to tell the KVM MMU whether or not a particular GFN should be
->>> backed by private memory or not.
->>>
->>> Forward these page state change requests to userspace so that it can
->>> issue the expected KVM ioctls. The KVM MMU will handle updating the RMP
->>> entries when it is ready to map a private page into a guest.
->>>
->>> Use the existing KVM_HC_MAP_GPA_RANGE hypercall format to deliver these
->>> requests to userspace via KVM_EXIT_HYPERCALL.
->>>
->>> Signed-off-by: Michael Roth <michael.roth@amd.com>
->>> Co-developed-by: Brijesh Singh <brijesh.singh@amd.com>
->>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
->>> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
->>> ---
->>>    arch/x86/include/asm/sev-common.h |  6 ++++
->>>    arch/x86/kvm/svm/sev.c            | 48 +++++++++++++++++++++++++++++++
->>>    2 files changed, 54 insertions(+)
->>>
->>> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
->>> index 1006bfffe07a..6d68db812de1 100644
->>> --- a/arch/x86/include/asm/sev-common.h
->>> +++ b/arch/x86/include/asm/sev-common.h
->>> @@ -101,11 +101,17 @@ enum psc_op {
->>>        /* GHCBData[11:0] */                            \
->>>        GHCB_MSR_PSC_REQ)
->>>
->>> +#define GHCB_MSR_PSC_REQ_TO_GFN(msr) (((msr) & GENMASK_ULL(51, 12)) >> 12)
->>> +#define GHCB_MSR_PSC_REQ_TO_OP(msr) (((msr) & GENMASK_ULL(55, 52)) >> 52)
->>> +
->>>    #define GHCB_MSR_PSC_RESP           0x015
->>>    #define GHCB_MSR_PSC_RESP_VAL(val)                  \
->>>        /* GHCBData[63:32] */                           \
->>>        (((u64)(val) & GENMASK_ULL(63, 32)) >> 32)
->>>
->>> +/* Set highest bit as a generic error response */
->>> +#define GHCB_MSR_PSC_RESP_ERROR (BIT_ULL(63) | GHCB_MSR_PSC_RESP)
->>> +
->>>    /* GHCB Hypervisor Feature Request/Response */
->>>    #define GHCB_MSR_HV_FT_REQ          0x080
->>>    #define GHCB_MSR_HV_FT_RESP         0x081
->>> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
->>> index e1ac5af4cb74..720775c9d0b8 100644
->>> --- a/arch/x86/kvm/svm/sev.c
->>> +++ b/arch/x86/kvm/svm/sev.c
->>> @@ -3461,6 +3461,48 @@ static void set_ghcb_msr(struct vcpu_svm *svm, u64 value)
->>>        svm->vmcb->control.ghcb_gpa = value;
->>>    }
->>>
->>> +static int snp_complete_psc_msr(struct kvm_vcpu *vcpu)
->>> +{
->>> +     struct vcpu_svm *svm = to_svm(vcpu);
->>> +
->>> +     if (vcpu->run->hypercall.ret)
->> Do we have definition of ret? I didn't find clear documentation about it.
->> According to the code, 0 means succssful. Is there any other error codes
->> need to or can be interpreted?
-> They are defined in include/uapi/linux/kvm_para.h
->
-> #define KVM_ENOSYS        1000
-> #define KVM_EFAULT        EFAULT /* 14 */
-> #define KVM_EINVAL        EINVAL /* 22 */
-> #define KVM_E2BIG        E2BIG /* 7 */
-> #define KVM_EPERM        EPERM /* 1*/
-> #define KVM_EOPNOTSUPP        95
->
-> Linux however does not expect the hypercall to fail for SEV/SEV-ES; and
-> it will terminate the guest if the PSC operation fails for SEV-SNP.  So
-> it's best for userspace if the hypercall always succeeds. :)
-Thanks for the info.
+This is basically a repost of the second patch of the 2023 patchset:
+https://lwn.net/ml/linux-kernel/20230811214826.9609-3-decui@microsoft.com/
 
-For TDX, it wants to restrict the size of memory range for conversion in 
-one hypercall to avoid a too long latency.
-Previously, in TDX QEMU patchset v5, the limitation is in userspace and  
-if the size is too big, the status_code will set to TDG_VP_VMCALL_RETRY 
-and the failed GPA for guest to retry is updated.
-https://lore.kernel.org/all/20240229063726.610065-51-xiaoyao.li@intel.com/
+The first patch of the patchset got merged into mainline, but unluckily the
+second patch didn't, and I kind of lost track of it. Sorry.
 
-When TDX converts TDVMCALL_MAP_GPA to KVM_HC_MAP_GPA_RANGE, do you think 
-which is more reasonable to set the restriction? In KVM (TDX specific 
-code) or userspace?
-If userspace is preferred, then the interface needs to  be extended to 
-support it.
+Changes since the previous patchset (please refer to the link above):
+  Added Rick's and Dave's Reviewed-by.
+  Added Kai's Acked-by.
+  Removeda the test "if (offset_in_page(start) != 0)" since we know the
+  'start' is page-aligned: see __set_memory_enc_pgtable().
 
+Please review. Thanks!
+Dexuan
 
->
->> For TDX, it may also want to use KVM_HC_MAP_GPA_RANGE hypercall  to
->> userspace via KVM_EXIT_HYPERCALL.
-> Yes, definitely.
->
-> Paolo
->
+ arch/x86/coco/tdx/tdx.c | 35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index c1cb90369915b..abf3cd591afd3 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -7,6 +7,7 @@
+ #include <linux/cpufeature.h>
+ #include <linux/export.h>
+ #include <linux/io.h>
++#include <linux/mm.h>
+ #include <asm/coco.h>
+ #include <asm/tdx.h>
+ #include <asm/vmx.h>
+@@ -778,6 +779,19 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
+ 	return false;
+ }
+ 
++static bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end,
++					bool enc)
++{
++	if (!tdx_map_gpa(start, end, enc))
++		return false;
++
++	/* shared->private conversion requires memory to be accepted before use */
++	if (enc)
++		return tdx_accept_memory(start, end);
++
++	return true;
++}
++
+ /*
+  * Inform the VMM of the guest's intent for this physical page: shared with
+  * the VMM or private to the guest.  The VMM is expected to change its mapping
+@@ -785,15 +799,22 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
+  */
+ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+ {
+-	phys_addr_t start = __pa(vaddr);
+-	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
++	unsigned long start = vaddr;
++	unsigned long end = start + numpages * PAGE_SIZE;
++	unsigned long step = end - start;
++	unsigned long addr;
+ 
+-	if (!tdx_map_gpa(start, end, enc))
+-		return false;
++	/* Step through page-by-page for vmalloc() mappings */
++	if (is_vmalloc_addr((void *)vaddr))
++		step = PAGE_SIZE;
+ 
+-	/* shared->private conversion requires memory to be accepted before use */
+-	if (enc)
+-		return tdx_accept_memory(start, end);
++	for (addr = start; addr < end; addr += step) {
++		phys_addr_t start_pa = slow_virt_to_phys((void *)addr);
++		phys_addr_t end_pa   = start_pa + step;
++
++		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
++			return false;
++	}
+ 
+ 	return true;
+ }
+-- 
+2.25.1
 
