@@ -1,59 +1,50 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989D6149017
-	for <linux-coco@lists.linux.dev>; Thu, 23 May 2024 12:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3558214B95D
+	for <linux-coco@lists.linux.dev>; Thu, 23 May 2024 14:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716468187; cv=none; b=fRyKNoEn5l2gF6oMr2rhUe1AgqwAFXmkjDJZ0nvQMQoM1FgkiUVevjOwQ35visNfPc6MZ+Mr7I4LYiIgdNQijZOcqaIfpkH0mCuIVLpoLWDV+C+8thRMscJnZNN6X/MFLEsuVJI7NXgIJiqKihCw9WGlNUrI7/rOXBJEp2JgPlY=
+	t=1716474354; cv=none; b=WBLot9NDsz7M7sCvHGJ+KQWSeHsA2Q07zSGne9UZPkt/L41N+FXVa8RsW9pHbaBXDBEa+qsO4M2dd/kIrTbXF6sbkMx3nvpSY5rU6DZJsY2YxjWRUTVibT5zB39DlqQLiChkNBnbnGnmzOIDJXGQoZb8VTw4ZWTrm3JrKgIGsCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716468187; c=relaxed/simple;
-	bh=Am+Z4BgUvZ2qQnjnokwdPyDri0O7L7+cK6gxhAv0Who=;
+	s=arc-20240116; t=1716474354; c=relaxed/simple;
+	bh=zqqqHoQN0IOy0urmSwgIR3OnMNrFGWquOW/a9tJziPc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Fg4tuFrP4xaxDvNzYk92lEMMR38ljVC60KQ1OB7sFSKv9gFrIBIpmsfkqRDWwticq4Zx0XCDBYG84jVLhejfrvab8eUXzA9rEb5vS19BNivHhtrLcYpF+fTwQ+Vziud2fAXG6zBSck4yhJoh+uSSz/AVjdhoHP+driz/sReYsWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=T0g66z5q; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=jK9bkob1vMA+c19yW3UKb3Dq7b2sjEPbzaLi5i5pLNgDHonvaaGBQVipVgGgvKSBZRwqOcT9mKjQfR8ctPNuoF9KIbu2TJL+UGnXg/3I3TJ/bGzzkdF1bIeEQTq/vbq5AtyZJQoBbvjviIBUlbEwAkxAaLSYUddqLtgiEiJJYW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GDJPZLBD; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="T0g66z5q"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5755fafa5a7so6709091a12.1
-        for <linux-coco@lists.linux.dev>; Thu, 23 May 2024 05:43:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1716468184; x=1717072984; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N4cX+NTv9hpMdDSkxc+a//k9Hm9InRM+7YR84Sm8/H0=;
-        b=T0g66z5qzWYmQLqtryNatCJ5sXHeTQ3zXBOV8QK+CV8paXkOnbRGM2Ei2C1wsf6Gx6
-         utiaOMQWUedMGT1aQMDuEQ9f+RU9F4RHKLhSRhjwDPPx54kECamP9GQd6zFUKkDOS5dQ
-         6eOdtFq5rUeUjHaFu/dlcVG1DS4ikKNDFd4+HqkEWuUb4dE3RTVQa2vsZcAwSwdWj0q4
-         VATfUd9dvvIEPe0iQtEMnIqzUqsuMXhIHk7IlztTNpkolGTGCRy/OkHkQtbHfYjxeF3s
-         +5FSQCNPZdc6Z/OsJUXRQiaZRLDbOwPNVv44bSkaIaqf318VG/yEOyvkv0L60vOavd0q
-         2Gdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716468184; x=1717072984;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N4cX+NTv9hpMdDSkxc+a//k9Hm9InRM+7YR84Sm8/H0=;
-        b=t5qKgu6JU7Bkh2eixV+7sJfuCLWtlrz4TNlYhlA5MWsvORvrW6GVujVsqvIRHAT16I
-         LBBTb9vEmcIthxmaTdByZJRCBh1UlhVNz6V5ephucM6prjDsfiP0rDj9Y9xu9MuUe2am
-         IGV6AVbkZjaH4tlg3sb0DGRBq9p4g9Zjo6kevEHEdEJXl73H0X9zBJx2OoFamiSKIw+W
-         faEmN3mUNVc4G5dVux0cHO9DXPpiNNbONmTrXGSBmK/jMAujZBkJGBBHhf0DuC5xJJ8r
-         RXgSsrX+Nyc8WzVMCdnWkXowb2qVOxY5nttcn6C042xBpDKkV1SqKugHzA/ioZhFHu3b
-         vEfg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHO1Djn8rZ9/gntBhZs6SRIAeb+OGeUmiSsjS++yKMLRKLsdN7K6l12KJj8TvMl78lWGl4NTQNBZ9eakIKCrXuais+Cc524ugQ4w==
-X-Gm-Message-State: AOJu0YwU8fKBFw7NRsVQKPPVyiT8JOFX/hUwecdms85AvnPd5zTjchZ+
-	adTirHZvL8/6NnmazajqHg6s84Mgb9U3Avgt53zcAyeiLVNrtIL+enEEl9bSSIQ=
-X-Google-Smtp-Source: AGHT+IFh3XoMLCvilNnePHUX22KFCQNmvjCO79hk0WdRgczhXvKlImFUhKZRuYLhATjWm2zA97zqPQ==
-X-Received: by 2002:a05:6402:348f:b0:578:36f4:cb30 with SMTP id 4fb4d7f45d1cf-57836f4cbdbmr3357155a12.9.1716468183961;
-        Thu, 23 May 2024 05:43:03 -0700 (PDT)
-Received: from ?IPV6:2003:e5:8729:4000:29eb:6d9d:3214:39d2? (p200300e58729400029eb6d9d321439d2.dip0.t-ipconnect.de. [2003:e5:8729:4000:29eb:6d9d:3214:39d2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-574f26d1574sm12297087a12.36.2024.05.23.05.43.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 May 2024 05:43:03 -0700 (PDT)
-Message-ID: <c188878d-ff67-45da-a963-e643bfb927a8@suse.com>
-Date: Thu, 23 May 2024 14:43:02 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GDJPZLBD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716474351; x=1748010351;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=zqqqHoQN0IOy0urmSwgIR3OnMNrFGWquOW/a9tJziPc=;
+  b=GDJPZLBDt4dMaJpHfaOtdlw10CT+1DhJxSKFrPp8oJ+XgNzK5UbG1IIE
+   7SvQb+7RtUYaJAqXIoFEiRPVWNsQK5K1fnKe4V5JO+v2iFYcL/VauLPHc
+   9iUJl9BLsVBsFuA5bo2pMESXlL1CoTcEqnXsOou0XVROjxXZH95kzIpqb
+   OP8zRNR0q4Q83bd96uxAq+UylVpbpwtbGs8UhyG4TYGyDzmJ16KtX+hKw
+   74vD4PCjkmpixzyAEo9TzQtazphJQDYL8ED0Pi4FGNsDfHzZgV+IOHJnz
+   c3l9YQc7usf4buGDt7+dZO7pNfCjA7IAJEiKp+G/4cjt7l/OOmt27vTmW
+   w==;
+X-CSE-ConnectionGUID: pQicctOLSoSCWjtx95+czg==
+X-CSE-MsgGUID: PWuwVTXJTmWwsbYiVBkDJg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="12645875"
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; 
+   d="scan'208";a="12645875"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 07:25:50 -0700
+X-CSE-ConnectionGUID: upTax8BhR1OmoZGEpAmUug==
+X-CSE-MsgGUID: 3GrZC31vRBSSUieTtNvOqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; 
+   d="scan'208";a="33746896"
+Received: from kinlongk-desk.amr.corp.intel.com (HELO [10.125.110.49]) ([10.125.110.49])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 07:25:48 -0700
+Message-ID: <299a83e8-cb13-4599-9737-adb3bb922169@intel.com>
+Date: Thu, 23 May 2024 07:25:47 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -61,122 +52,110 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/kvm/tdx: Save %rbp in TDX_MODULE_CALL
-To: "Huang, Kai" <kai.huang@intel.com>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "Hansen, Dave" <dave.hansen@intel.com>
-Cc: "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>, "x86@kernel.org"
- <x86@kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-References: <20240517121450.20420-1-jgross@suse.com>
- <ohvjbokpaxagc26kxmlrujab7cw3bekgi5ln7dt46cbsaxcqqh@crvqeohfazmf>
- <f63e1217-3dbe-458d-8c14-7880811d30ba@suse.com>
- <2a2guben2ysyeb43rzg6zelzpa57o24ufai3mi6ocewwvgu63l@c7dle47q7hzw>
- <03d27b6a-be96-44d7-b4ea-aa00ccab4cc5@suse.com>
- <fc0e8ab7-86d4-4428-be31-82e1ece6dd21@intel.com>
- <c0067319-2653-4cbd-8fee-1ccf21b1e646@suse.com>
- <6df4fb48-9947-46ec-af5a-66fa06d6a83b@intel.com>
- <86ca805d-7ed7-47dd-8228-5e19fbade53f@suse.com>
- <f7edef9c-5eb5-4664-a193-3bb063674742@intel.com>
- <f02d9ebb-a2b3-4cb3-871b-34324d374d01@suse.com>
- <4b3adb59-50ea-419e-ad02-e19e8ca20dee@intel.com>
- <c7319c0614c9a644fa1f9b349bf654834b615543.camel@intel.com>
- <e2d844ad-182a-4fc0-a06a-d609c9cbef74@suse.com>
- <2e07ebc774bf176ebfab40e6ba8bc14ae6a94e0c.camel@intel.com>
- <a9bbb31e6660343e95d3351febc6e3b9661a7944.camel@intel.com>
+Subject: Re: [RFC PATCH] clocksource: hyper-v: Enable the tsc_page for a TDX
+ VM in TD mode
+To: Dexuan Cui <decui@microsoft.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, bp@alien8.de, dave.hansen@linux.intel.com,
+ haiyangz@microsoft.com, hpa@zytor.com, kirill.shutemov@linux.intel.com,
+ kys@microsoft.com, luto@kernel.org, mingo@redhat.com, peterz@infradead.org,
+ sathyanarayanan.kuppuswamy@linux.intel.com, tglx@linutronix.de,
+ wei.liu@kernel.org, Jason@zx2c4.com, mhklinux@outlook.com,
+ thomas.lendacky@amd.com, tytso@mit.edu, ardb@kernel.org
+Cc: linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Tianyu.Lan@microsoft.com
+References: <20240523022441.20879-1-decui@microsoft.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-In-Reply-To: <a9bbb31e6660343e95d3351febc6e3b9661a7944.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20240523022441.20879-1-decui@microsoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 23.05.24 14:26, Huang, Kai wrote:
-> On Thu, 2024-05-23 at 10:30 +0000, Huang, Kai wrote:
->> On Thu, 2024-05-23 at 07:56 +0200, Jürgen Groß wrote:
->>> On 20.05.24 13:54, Huang, Kai wrote:
->>>> On Fri, 2024-05-17 at 09:48 -0700, Dave Hansen wrote:
->>>>> On 5/17/24 08:58, Juergen Gross wrote:
->>>>>> On 17.05.24 17:52, Dave Hansen wrote:
->>>>> ..
->>>>>>> Once we have the specific TDX module version, we can go ask the folks
->>>>>>> who write it if there were any RBP clobbering bugs.
->>>>>>
->>>>>> Okay, how to get the TDX module version?
->>>>>
->>>>> You need something like this:
->>>>>
->>>>>> https://lore.kernel.org/all/20231012134136.1310650-1-yi.sun@intel.com/
->>>>
->>>> This one prints TDX version info in the TDX guest, but not host.
->>>>
->>>> The attached diff prints the TDX version (something like below) during
->>>> module initialization, and should meet Juergen's needs for temporary use:
->>>>
->>>> [  113.543538] virt/tdx: module verson: major 1, minor 5, internal 0
->>>>
->>>>>
->>>>> .. and yeah, this needs to be upstream.
->>>>>
->>>>
->>>>   From this thread I think it makes sense to add code to the TDX host code
->>>> to print the TDX version during module initialization.  I'll start to work
->>>> on this.
->>>>
->>>> One thing is from the spec TDX has "4 versions": major, minor, update,
->>>> internal.  They are all 16-bit, and the overall version can be written in:
->>>>
->>>> 	<Major>.<Minor>.<Update>.<Internal>, e.g., 1.5.05.01
->>>>
->>>> (see TDX module 1.5 API spec, section 3.3.2 "TDX Module Version".)
->>>>
->>>> The attached diff only prints major, minor and internal, but leaves the
->>>> update out because I believe it is for module runtime update (yet to
->>>> confirm).
->>>>
->>>> Given there are 4 versions, I think it makes sense to implement reading
->>>> them based on this patchset ...
->>>>
->>>> https://lore.kernel.org/kvm/6940c326-bfca-4c67-badf-ab5c086bf492@intel.com/T/
->>>>
->>>> ... which extends the global metadata reading code to support any
->>>> arbitrary struct and all element sizes (although all 4 versions are 16-
->>>> bit)?
->>>
->>> With that I got:
->>>
->>> [   29.328484] virt/tdx: module verson: major 1, minor 5, internal 0
->>>
->>>
->>
->> Let me check TDX module guys on this and get back to you.
-> 
-> Hi Jurgen,
-> 
-> I was told the module starting with "1.5.06." has NO_RBP_MOD support.
-> 
-> And I think I was wrong about the <update> part of the version, and we
-> need that to determine the third part of the module version.
-> 
-> I was also told the 1.5.06 module hasn't been released to public yet, so I
-> guess your module doesn't support it.
-> 
-> I did another patch (attached) to check NO_RBP_MOD and reject module
-> initialization if it is not supported, and print out module version:
-> 
-> [  146.566641] virt/tdx: NO_RBP_MOD feature is not supported
-> [  146.572797] virt/tdx: module verson: 1.5.0.0
-> [  146.577731] virt/tdx: module initialization failed (-22)
-> 
-> You can have another try to verify at your side, if that helps.
-> 
+On 5/22/24 19:24, Dexuan Cui wrote:
+...
+> +static bool noinstr intel_cc_platform_td_l2(enum cc_attr attr)
+> +{
+> +	switch (attr) {
+> +	case CC_ATTR_GUEST_MEM_ENCRYPT:
+> +	case CC_ATTR_MEM_ENCRYPT:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+>  static bool noinstr intel_cc_platform_has(enum cc_attr attr)
+>  {
+> +	if (tdx_partitioned_td_l2)
+> +		return intel_cc_platform_td_l2(attr);
+> +
+>  	switch (attr) {
+>  	case CC_ATTR_GUEST_UNROLL_STRING_IO:
+>  	case CC_ATTR_HOTPLUG_DISABLED:
 
-[   29.362806] virt/tdx: 4071192 KB allocated for PAMT
-[   29.362828] virt/tdx: module verson: 1.5.1.0
-[   29.362830] virt/tdx: module initialized
+On its face, this _looks_ rather troubling.  It just hijacks all of the
+attributes.  It totally bifurcates the code.  Anything that gets added
+to intel_cc_platform_has() now needs to be considered for addition to
+intel_cc_platform_td_l2().
 
+> --- a/arch/x86/mm/mem_encrypt_amd.c
+> +++ b/arch/x86/mm/mem_encrypt_amd.c
+...
+> @@ -529,7 +530,7 @@ void __init mem_encrypt_free_decrypted_mem(void)
+>  	 * CC_ATTR_MEM_ENCRYPT, aren't necessarily equivalent in a Hyper-V VM
+>  	 * using vTOM, where sme_me_mask is always zero.
+>  	 */
+> -	if (sme_me_mask) {
+> +	if (sme_me_mask || (cc_vendor == CC_VENDOR_INTEL && !tdx_partitioned_td_l2)) {
+>  		r = set_memory_encrypted(vaddr, npages);
+>  		if (r) {
+>  			pr_warn("failed to free unused decrypted pages\n");
 
-Juergen
+If _ever_ there were a place for a new CC_ attribute, this would be it.
+It's also a bit concerning that now we've got a (cc_vendor ==
+CC_VENDOR_INTEL) check in an amd.c file.
+
+So all of that on top of Kirill's "why do we need this in the first
+place" questions leave me really scratching my head on this one.
