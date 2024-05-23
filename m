@@ -1,96 +1,81 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAB93C2D
-	for <linux-coco@lists.linux.dev>; Thu, 23 May 2024 09:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7955C13CFB7;
+	Thu, 23 May 2024 09:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716457962; cv=none; b=sTPL0bon2YJFB6EIwYXX26XawG3zM1b/pY+ziYrzWoPky6xARTrG5ycIhl158gmt4urWw7U8BXO3TZvnaTpt4oRGyPG3q8kCLRi0eE6yBFGp0WHW1gOlPfjxdEZfvIBjLlPYZ739K2ROTbVYGYzRHkIrd/916Rl+hhxTA/yiDT4=
+	t=1716458267; cv=none; b=EYSQ8e+lytSu33/uF0ci6I7lPD2/VqY8+hQ7UF1+u7oY6a8n8q6MKeke82Xr2R/VigAiMzyVRnmTbdpBubXhbubh6ryF1I0tOJLHoqOZCOdnL9xgFK3EmNVmZSEPHQI6IjufvqaQt2SKWqNhLP3L5s2zo1dO7OKjftEiumhPr+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716457962; c=relaxed/simple;
-	bh=t72ds1a9tPvIHi+0m7UGqYMr+HpevzYQBBemqmIY8vI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ilBwCQg5DtNTp6ZjyiW0I7oNQNEqv6KDWS2Bs+u59YxcsmKEtLlxMpGTmgP6ds57vsOJklRry9O2E9OXOFB3ww0+u2kF8mUYOfLdops7iJ76izizJLifz33KlalXmQ1dZ/2m5ij9A6Fn/vgc48k3EfiYmhyrTo7YI8X+P2qV0qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=wwDBPo2R; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="wwDBPo2R"
-Received: from 8bytes.org (pd9fe9dd8.dip0.t-ipconnect.de [217.254.157.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 8ACCB1C68CC;
-	Thu, 23 May 2024 11:52:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1716457953;
-	bh=t72ds1a9tPvIHi+0m7UGqYMr+HpevzYQBBemqmIY8vI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wwDBPo2RkdERKWBJDnsmlhNrp3bpZ0WXKSYh2ubzEzCLH7O7gzCGMZIT/Dtsgbh3A
-	 xrwmhCNNrYmMALLP78Ba2lMlgHQx0xfUgg4dNm1MIRP4TdIRPM6+H8R7WXKJPGEx27
-	 RBJkAXnSpxx6yrwYL4nPwHCD5H23QpVJIsiMdOOGPT56t+q312H1R/o0anREjeUTxf
-	 U6oVegerKoY8AWBZXQLp4BE3aEPqi5nP4xmVELWxHJubgMrg8We5ZOYtEimPxMOUb3
-	 45IyUvUpSU9gg8dEi+9CHlE2v/TdMlwURUstgnzr4DedT9SYSdpr0k9C5H5I+XJoL1
-	 Rx8V6Qa2STp+A==
-Date: Thu, 23 May 2024 11:52:32 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: "Rodel, Jorg" <jroedel@suse.de>,
-	"svsm-devel@coconut-svsm.dev" <svsm-devel@coconut-svsm.dev>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: Re: [svsm-devel] Development Plan Document
-Message-ID: <Zk8R4F-etafWOs4a@8bytes.org>
-References: <Zj30Nqq3OS58DwpP@8bytes.org>
- <ZkMpkfepqUWfq1RY@8bytes.org>
- <DM8PR11MB57503B95AFE00B2BC99B3F88E7EC2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <ZkSnP5-FbaApB1Av@suse.de>
- <DM8PR11MB575028924239348043427677E7EE2@DM8PR11MB5750.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1716458267; c=relaxed/simple;
+	bh=pJ+B3e29HJAbTyYyZa4HUjzMSv5Rh0HroDPaliFp3ZY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eXFVU5K9KDFkK2uxiLoyfulhGR1yiYYDvuRafnnx86SzK0hL+aiMrrDiFlT2jFUzMUzxoL/NpHx/evNDpH0SqTOBNw3QutqG37TYuZAZhDTLXh5qNkUEaVWpzDx45ZEAYMfaOn4GgQ8B6Od++27yXZtFYbXo0HEGoLW3s/2XxNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A3C82F4;
+	Thu, 23 May 2024 02:58:06 -0700 (PDT)
+Received: from [10.1.30.34] (e122027.cambridge.arm.com [10.1.30.34])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BF8003F766;
+	Thu, 23 May 2024 02:57:39 -0700 (PDT)
+Message-ID: <c329ae18-2b61-4851-8d6a-9e691a2007c8@arm.com>
+Date: Thu, 23 May 2024 10:57:37 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM8PR11MB575028924239348043427677E7EE2@DM8PR11MB5750.namprd11.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 12/14] arm64: realm: Support nonsecure ITS emulation
+ shared
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Marc Zyngier
+ <maz@kernel.org>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+References: <20240412084213.1733764-1-steven.price@arm.com>
+ <20240412084213.1733764-13-steven.price@arm.com> <ZkSV7Z8QFQYLETzD@arm.com>
+ <74011ac1-34e0-4ee3-a00d-f78ad334fce2@arm.com> <Zk4l2xFBDW_3ImFD@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <Zk4l2xFBDW_3ImFD@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Elena,
+On 22/05/2024 18:05, Catalin Marinas wrote:
+> On Wed, May 22, 2024 at 04:52:45PM +0100, Steven Price wrote:
+>> On 15/05/2024 12:01, Catalin Marinas wrote:
+>>> On Fri, Apr 12, 2024 at 09:42:11AM +0100, Steven Price wrote:
+>>>> @@ -3432,7 +3468,16 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+>>>>  	nr_ites = max(2, nvecs);
+>>>>  	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
+>>>>  	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
+>>>> -	itt = kzalloc_node(sz, GFP_KERNEL, its->numa_node);
+>>>> +	itt_order = get_order(sz);
+>>>> +	page = its_alloc_shared_pages_node(its->numa_node,
+>>>> +					   GFP_KERNEL | __GFP_ZERO,
+>>>> +					   itt_order);
+>>>
+>>> How much do we waste by going for a full page always if this is going to
+>>> be used on the host?
+>>
+>> sz is a minimum of ITS_ITT_ALIGN*2-1 - which is 511 bytes. So
+>> potentially PAGE_SIZE-512 bytes could be wasted here (minus kmalloc
+>> overhead).
+> 
+> That I figured out as well but how many times is this path called with a
+> size smaller than a page?
+> 
 
-On Fri, May 17, 2024 at 10:01:01AM +0000, Reshetova, Elena wrote:
-> Coconut as a service VM closely relates to the concept of service TDs that
-> we have in TDX (for example a Migration TD is an example of a such a service TD).
-> However, in my understanding there was not enough general
-> interest in this model (due to complexities of managing separate service VM
-> in addition to the guest OS VM) but looks like I had a wrong impression.
+That presumably depends on the number of devices in the guest. For my
+test guest setup (using kvmtool) this is called 3 times each with sz=511.
 
-Service VMs might be a niche use-case in the end. But since there is not
-much effort needed to make them work I see no reason to not support
-them.
+Steve
 
-> We are affected by a double accept albeit differently. Since every page
-> that is accepted by a guest starts as a zero page, host/vmm can turn any
-> private page into a zero page (with potential security consequences) at
-> any time if acceptance status for the page is not tracked.
-
-Okay, right. Seems like the attacks work on Intel as well, just with a
-different outcome. Anyway, the mitigation should work on TDX as well.
-
-> Yes, anything that can affect coconut-svsm itself and which can be
-> security-relevant but at the same time stays stable over different boots.
-> Memory map is likely not stable, so i dont think we can measure it, 
-> Coconut-svsm just should sanitize the values. ACPI tables is a candidate.
-> I know that currently coconut-svsm takes very little of such inputs/configurations,
-> but it will probably grow in the future, so having a guidance on what configuration
-> must be measured or not is good to have imo.
-
-We briefly touched that topic in yesterdays development call, it seems
-there are diverging requirements for different platforms. Some platforms
-do not want to measure any configuration data while others want to
-measure at least parts of it.
-
-Currently IGVM is used to pass any configuration data to the SVSM and
-the specification requires this data to be unmeasured. So an IGVM
-extension would be needed as well to pass measured configuration data.
-
-Regards,
-
-	Joerg
