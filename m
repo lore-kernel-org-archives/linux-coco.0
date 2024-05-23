@@ -1,81 +1,87 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7955C13CFB7;
-	Thu, 23 May 2024 09:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A3F13E023
+	for <linux-coco@lists.linux.dev>; Thu, 23 May 2024 10:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716458267; cv=none; b=EYSQ8e+lytSu33/uF0ci6I7lPD2/VqY8+hQ7UF1+u7oY6a8n8q6MKeke82Xr2R/VigAiMzyVRnmTbdpBubXhbubh6ryF1I0tOJLHoqOZCOdnL9xgFK3EmNVmZSEPHQI6IjufvqaQt2SKWqNhLP3L5s2zo1dO7OKjftEiumhPr+E=
+	t=1716459276; cv=none; b=jLolZkiN5wEmOTfMsoPFgWm5bmTa1rc0ZiF0dO+kH/AnLDUCkzQcAHmOlR+rfsKL3lBwA5nuDMtENG6QC5n4rmRU1+rP9hTnWI7R8NNy/5EsZ2Mr1dchOEmCyI/WvVbTId9wJHKqOqtQEDPK9wbIVxfXxh4uBcRDIFZRKkxBXkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716458267; c=relaxed/simple;
-	bh=pJ+B3e29HJAbTyYyZa4HUjzMSv5Rh0HroDPaliFp3ZY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eXFVU5K9KDFkK2uxiLoyfulhGR1yiYYDvuRafnnx86SzK0hL+aiMrrDiFlT2jFUzMUzxoL/NpHx/evNDpH0SqTOBNw3QutqG37TYuZAZhDTLXh5qNkUEaVWpzDx45ZEAYMfaOn4GgQ8B6Od++27yXZtFYbXo0HEGoLW3s/2XxNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A3C82F4;
-	Thu, 23 May 2024 02:58:06 -0700 (PDT)
-Received: from [10.1.30.34] (e122027.cambridge.arm.com [10.1.30.34])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BF8003F766;
-	Thu, 23 May 2024 02:57:39 -0700 (PDT)
-Message-ID: <c329ae18-2b61-4851-8d6a-9e691a2007c8@arm.com>
-Date: Thu, 23 May 2024 10:57:37 +0100
+	s=arc-20240116; t=1716459276; c=relaxed/simple;
+	bh=/iBsBSSY36qg1ntH/L641V63e2jJqPM62jX3pmzZfBI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kd95nNDo8uOxrPr3mivgQokDuehzTzIjD9s49sV/aJfrlDhjuBHI//aucLxJiQjWbwVuHHn7fcqquenmUc/84D0jcPmFnCF7LoS6w/84m8J3HJTOGvs3vq/28FRh8N0Od5cOfI28a0n8Lh7j0XJTLM77qNeGFg4JwDtSTjci+ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aXCKIBQZ; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aXCKIBQZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716459275; x=1747995275;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/iBsBSSY36qg1ntH/L641V63e2jJqPM62jX3pmzZfBI=;
+  b=aXCKIBQZwVEZCZcTtS5jpb4HCsnNM8gTLjGXbQJO1ugLoGtKSt+rN6Or
+   k7P31SNCqBkAPQSFoMmOwpbUtbXUGJcb3C+sWd5Q48ZJKzwwvUn6eUJVk
+   y7xbRM1CGBufGhPXskZHqK6xSKd2jWHI4IqxqW0/bA/UHG0pY926ZaH/I
+   MOm4fBU1rO5tNln0ipdJAR45n11EiGZ7V6UJfQNcepZswitMggeT14Zlt
+   NlQ/qQc4lPSVMS+kzTzG80/NlddyST9e0Fic4vk6N3gAxvDBBOPmIcftv
+   q5owItGmeUzXqrAlIu3tiEtRYB9iGQrE22JR+jKAO2lro2ykj8Y2VR36m
+   Q==;
+X-CSE-ConnectionGUID: W7SsEjKlRX+4SrpVDaSW4Q==
+X-CSE-MsgGUID: X4ej7ySXTFaTcQqATaKfsQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="12994671"
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; 
+   d="scan'208";a="12994671"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 03:14:35 -0700
+X-CSE-ConnectionGUID: J5CZK5LoR4CTGoSR4wse1A==
+X-CSE-MsgGUID: sDpxEzTfQt2U9SNspZFgGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; 
+   d="scan'208";a="64835066"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 23 May 2024 03:14:32 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 0EEA7E7; Thu, 23 May 2024 13:14:30 +0300 (EEST)
+Date: Thu, 23 May 2024 13:14:30 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, cho@microsoft.com, decui@microsoft.com, 
+	John.Starks@microsoft.com
+Subject: Re: [PATCH] x86/tdx: Generate SIGBUS on userspace MMIO
+Message-ID: <ngl63zhudmeskbcga3i3hsdtensd7bfoztnsiu7yj7pxbyzx47@tj5szegw6qrd>
+References: <20240521073505.2190633-1-kirill.shutemov@linux.intel.com>
+ <38dec9ee-1dde-4b3b-87c7-a65161d4a015@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/14] arm64: realm: Support nonsecure ITS emulation
- shared
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Marc Zyngier
- <maz@kernel.org>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240412084213.1733764-1-steven.price@arm.com>
- <20240412084213.1733764-13-steven.price@arm.com> <ZkSV7Z8QFQYLETzD@arm.com>
- <74011ac1-34e0-4ee3-a00d-f78ad334fce2@arm.com> <Zk4l2xFBDW_3ImFD@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <Zk4l2xFBDW_3ImFD@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <38dec9ee-1dde-4b3b-87c7-a65161d4a015@linux.intel.com>
 
-On 22/05/2024 18:05, Catalin Marinas wrote:
-> On Wed, May 22, 2024 at 04:52:45PM +0100, Steven Price wrote:
->> On 15/05/2024 12:01, Catalin Marinas wrote:
->>> On Fri, Apr 12, 2024 at 09:42:11AM +0100, Steven Price wrote:
->>>> @@ -3432,7 +3468,16 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
->>>>  	nr_ites = max(2, nvecs);
->>>>  	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
->>>>  	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
->>>> -	itt = kzalloc_node(sz, GFP_KERNEL, its->numa_node);
->>>> +	itt_order = get_order(sz);
->>>> +	page = its_alloc_shared_pages_node(its->numa_node,
->>>> +					   GFP_KERNEL | __GFP_ZERO,
->>>> +					   itt_order);
->>>
->>> How much do we waste by going for a full page always if this is going to
->>> be used on the host?
->>
->> sz is a minimum of ITS_ITT_ALIGN*2-1 - which is 511 bytes. So
->> potentially PAGE_SIZE-512 bytes could be wasted here (minus kmalloc
->> overhead).
+On Tue, May 21, 2024 at 06:35:49AM -0700, Kuppuswamy Sathyanarayanan wrote:
 > 
-> That I figured out as well but how many times is this path called with a
-> size smaller than a page?
+> On 5/21/24 12:35 AM, Kirill A. Shutemov wrote:
+> > Currently attempt to do MMIO from userspace in TDX guest leads to
+> > warning about unexpect #VE and SIGSEGV being delivered to the process.
+> >
+> > Enlightened userspace might choose to deal with MMIO on their own if
+> > kernel doesn't emulate it.
 > 
+> Any specific use cases ? Like who is using it?
 
-That presumably depends on the number of devices in the guest. For my
-test guest setup (using kvmtool) this is called 3 times each with sz=511.
+Microsoft folks wanted it. Chris, Dexuan, John, any comments?
 
-Steve
+But it is generally right thing to do. SIGBUS is right signal to deliver.
 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
