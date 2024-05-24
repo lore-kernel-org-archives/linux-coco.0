@@ -1,198 +1,246 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11023019.outbound.protection.outlook.com [52.101.56.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9238ED51A
-	for <linux-coco@lists.linux.dev>; Fri, 24 May 2024 05:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716529620; cv=none; b=FGp4GmEdiVsP+Ox0/CG8L+/qfPMT6NjotQHxwp/4fdyPIdLfVxZ0KrLmF3QX29Wmo1/bqVs08XyH0l/Tof19DuGzWH1A+KJdZ9Zxxw5D5J/YfOsZQE+/IcN95DKNlsgAxBoHNCs5+6k9s9e8W1OtfvUJGSHOvzvxzsdQcBy9FuI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716529620; c=relaxed/simple;
-	bh=1DIOq43eTni5xhJN8jtr6RRUFYcuq4+SJJ6O4Vz5yH4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mjxT4VNeJyfIhHhQE2gObcO5F4YrcL40uEk6YqhjTQRXevY3XBal/wSxVv8DLx/5iY3cNbJvAX4DfQXtICpYP/giqs6iTXtIBDH4bXsqmOfoqR2xbZUDdFNXoKTkqabpW56UMKBHrV/tdsLqMZ57kJJAAW8c5WYqbo7MkOGsrhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Tek/aZqV; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A957936AEC
+	for <linux-coco@lists.linux.dev>; Fri, 24 May 2024 08:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716538959; cv=fail; b=hhRP8R6ujjrPROKIVGUy8+cFWBObmX0sE3VM7tNUzXm8klqgdKUFBhgtMcgNKHmqfFvuMLqsyI8WQmn/LNLt5JpLez7u1gt1cq8lLRCUEoIQxON4o9bjzF5JJZwMIeXqhuqOB9gVbnqBNPffNEbIowNGycu9tIDHun6iEt8oIhQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716538959; c=relaxed/simple;
+	bh=OccS24XZHJIjxGWJ97MWQYDVnQSjjcCML12K7CjQKq8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=W094j7mhJd0l60mKXVLp/MsYtsbJzGGitwqZvzx5qHvVrSYeRsOTjkYoMxV2V9V2e2C/yGegTcL8ONPas794UBiRKfFgpKG/BNBRdGouT5B6T6wKdNKlgomuUFxDN0sZpXRLmbnp8EsZX+m2/SZlFCfXUPEMdmKWCCCoCgfGrDs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=Mj1pR8fn; arc=fail smtp.client-ip=52.101.56.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Tek/aZqV"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5785eab8d5dso96780a12.3
-        for <linux-coco@lists.linux.dev>; Thu, 23 May 2024 22:46:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1716529617; x=1717134417; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kVfoXBklPPjvFUj6/UBgo/e5/IuWsV9MVKXB2Yr1nR0=;
-        b=Tek/aZqVKUcfxrnKX6SZ870kO0nhI5Se8sJ2fufG6XnCGtSOU1ErfmWgI0qpZ94vpK
-         aCIh3/PdPc/6u6U564hG2T8jZq9rPL90ZXE0NfYRquc8zy3GFQXumXvp9aXJ4R/WhMTR
-         xbZE7ihqbwC7fmYTCcSzv1CiVsXD7V+yzzgWuSzYO+ukXHMkP+pIuJNcGF3PRT7CTAe7
-         1hM2STmLEn9tCqRAcXleycMYhhs4vWBeVBpu6RIhuib/OYAA66bJHc2kSW2OoamtDhHm
-         8RWTV4k+g82UeIUmz0ggeziclZJLgCyETwC2lKw3LMgDUnYQERWCAa0jKCOU2w+RLyar
-         QBBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716529617; x=1717134417;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kVfoXBklPPjvFUj6/UBgo/e5/IuWsV9MVKXB2Yr1nR0=;
-        b=TEJcWltCP3JlAwimebofiBif0Jwbe58WWVltGI538XU2O58JbNCe5WFwvMm0VpCeAc
-         7nihjMHKUSkkTvL4FBaQdCYeaBksSFYoHMh9c+ZhCYX+7zwp97zCbbuZf4W9EEPzrGZ6
-         z4snqh6Rv1DcxZxcabIW9kS1tAe2lEgCxVmEn1JxbXqJ/VNgU47JBeDWaro2YnEJ7aWY
-         wH5sniPXTA1TDe56Pb2k/+KXax08n5x7weNvyRUqnxNlgiCPu6saklJw0wtujRDwJfE7
-         I4+sY7HQ22CH0Ym/ABEZ4KaCFTNl7m/Ka8M336xMwL0w+IV3tw6bm/wQm+mHrGYvlMji
-         7eRw==
-X-Forwarded-Encrypted: i=1; AJvYcCWcUe3ycVd/vrYSYePE7UOkIY7ezkcq8ihyK56PLftThtcFFXDdw7hC0JGmucqgiVOaDFVhH3rHcBJ4Rw7PfCJ+MGMyBPD5O3IXdg==
-X-Gm-Message-State: AOJu0YxGZjvRHvPTDfViunprZAP784xFQXCDuhLDVuFhXeAY6WGcUUOn
-	N3dUP7tTxxAXvGd3RmXJuskHCFnQ3/I37S734LNzrCRDLjn3d2JHjU/OXuwTNDQ=
-X-Google-Smtp-Source: AGHT+IF7akJNnbPZpRl4yGoq2VbtsDCcTkXOq0cDwdRLpwzNDoiIq/YBDRr/pQQyNqONiIZtTspWXA==
-X-Received: by 2002:a50:c04c:0:b0:578:5cd3:20b8 with SMTP id 4fb4d7f45d1cf-5785cd32a7fmr282897a12.5.1716529616842;
-        Thu, 23 May 2024 22:46:56 -0700 (PDT)
-Received: from ?IPV6:2003:e5:8729:4000:29eb:6d9d:3214:39d2? (p200300e58729400029eb6d9d321439d2.dip0.t-ipconnect.de. [2003:e5:8729:4000:29eb:6d9d:3214:39d2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-578524b5898sm972899a12.82.2024.05.23.22.46.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 May 2024 22:46:56 -0700 (PDT)
-Message-ID: <92f93c2a-e555-4a70-893c-66345f149aa6@suse.com>
-Date: Fri, 24 May 2024 07:46:55 +0200
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="Mj1pR8fn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mOMvvk7KUkjD8K2qVbHzTQXagQQKvPQlWRqBblu0LcuoL167i33KBXLyQrswWg22hKpt+brQSFU6HpVpPniV9b6GkGHQ6pzhzGftGBGEsUKaNbrJQEMDnBTw+sak6P0LgUYKVYUQPi7z2cDm18qNr+9ovHxU0ys0bFt3xm8c9khJC2DUbZh83uIdP+lBA6096JwyAL2S1aPe/g6RkBJ47FQ1saIJUfnZAFoEjJFvMEhoxH3Z7JdMY95YHIkP8sg+w8ndz9+F5INIT46lEeR9FlZi6IALEEl97MrFothDbdQPsvhbDwTzdA2VAYL90kJGoxMawTL43qEZvYk6DfQS8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xtQHB3djsvelPGcAJPaccV6hvHItyo80diS0+o4uMU4=;
+ b=BCWvKYBYzq084zTStedZuAeVhdpLBAJR8im4xG1XPxIk2RCNXnvRwYcT5aQDxBvXehBSJnSKHFHsIdHQq3V7vHtYEf9CXerv3OLK3sjgzozsoF7Cky3mFjXQH/u90f3D61prrjPtXj2THoBtS1INUJw7oZh4MQckw+ggPeH8i1cAS+S8jp0hNuJqL08VnXQSnfE68z74X04FNGfDqwBXu8tEVLiXCf1jTP0zjGPmfE8qLUSy3hRcyF8By4AiFGELxdirkAq2v/ZOe2oPyowWdOh91uaJQUrPVSHkqb7I2KfzV4a3MkKIcW6kYGTJPKkOnOkK5MdcOjmbbgGPYq8Olg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xtQHB3djsvelPGcAJPaccV6hvHItyo80diS0+o4uMU4=;
+ b=Mj1pR8fn7J6IuGDPeV1/uS1fjVrCx2P+FjxZIqnrLcmYooU068/qZN6xikyHhD2tqpEk1HeARrEfCj277dCJoB0P3FlNH5YO66SFNM/IC4VeP7LkmCyDeLv46BUGhnYE0RUi9IUMI8eJCKveGE9sxVZhriD//NNCz8hSkn8Ka5I=
+Received: from SA1PR21MB1317.namprd21.prod.outlook.com (2603:10b6:806:1f0::9)
+ by MW1PEPF0000E7B2.namprd21.prod.outlook.com (2603:10b6:329:400:0:2:0:5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.10; Fri, 24 May
+ 2024 08:22:34 +0000
+Received: from SA1PR21MB1317.namprd21.prod.outlook.com
+ ([fe80::67ed:774d:42d4:f6ef]) by SA1PR21MB1317.namprd21.prod.outlook.com
+ ([fe80::67ed:774d:42d4:f6ef%5]) with mapi id 15.20.7633.001; Fri, 24 May 2024
+ 08:22:34 +0000
+From: Dexuan Cui <decui@microsoft.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+CC: "x86@kernel.org" <x86@kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@intel.com" <dave.hansen@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, Haiyang Zhang
+	<haiyangz@microsoft.com>, "hpa@zytor.com" <hpa@zytor.com>, KY Srinivasan
+	<kys@microsoft.com>, "luto@kernel.org" <luto@kernel.org>, "mingo@redhat.com"
+	<mingo@redhat.com>, "peterz@infradead.org" <peterz@infradead.org>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "wei.liu@kernel.org" <wei.liu@kernel.org>, jason
+	<jason@zx2c4.com>, "mhklinux@outlook.com" <mhklinux@outlook.com>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "tytso@mit.edu"
+	<tytso@mit.edu>, "ardb@kernel.org" <ardb@kernel.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Tianyu Lan
+	<Tianyu.Lan@microsoft.com>, Elena Reshetova <elena.reshetova@intel.com>
+Subject: RE: [RFC PATCH] clocksource: hyper-v: Enable the tsc_page for a TDX
+ VM in TD mode
+Thread-Topic: [RFC PATCH] clocksource: hyper-v: Enable the tsc_page for a TDX
+ VM in TD mode
+Thread-Index: AQHarQmvBFzCpOqjJUiLi0r0Fn45m7Gl/gfQ
+Date: Fri, 24 May 2024 08:22:33 +0000
+Message-ID:
+ <SA1PR21MB1317CD3794E1AAC1FCE77F22BFF52@SA1PR21MB1317.namprd21.prod.outlook.com>
+References: <20240523022441.20879-1-decui@microsoft.com>
+ <7yos4yh6te7zcwga3swddpyjyxlif2c5vqad2rouwf7euw47df@jvouxfoakct6>
+In-Reply-To: <7yos4yh6te7zcwga3swddpyjyxlif2c5vqad2rouwf7euw47df@jvouxfoakct6>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=8a49603b-7362-4b92-a0c5-020edd0643e2;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-05-24T07:29:03Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR21MB1317:EE_|MW1PEPF0000E7B2:EE_
+x-ms-office365-filtering-correlation-id: 7486d029-845d-45b8-6c75-08dc7bcaa995
+x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230031|376005|7416005|1800799015|366007|38070700009;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?KEXTkGnW2MKCc+ZohTbyxA488S8vWjcMry5QRwgS6SsSgrSmb/0DyUPBASME?=
+ =?us-ascii?Q?Z+Y/LEr11UASJslav36eZYW27Vnn+lo+Yd1FctEIVniFiLUYTrOtMfFPGvs/?=
+ =?us-ascii?Q?80+jSFbN0GWbt1zsH6vesuGdK1iG5/gikKwh2VcUUMU+c7/mJuyY4IO1EdLM?=
+ =?us-ascii?Q?3Fv5vXJcITY2FDbHeDNj6Pw7A+sG9Z/wH+iPFYfbUqM0FAfybGGGQzERazI0?=
+ =?us-ascii?Q?GnvrnZHp61RLGqO61Cu95QUROHR2WgfkXSApgnLwbQDEwcl4aIIHN7HwKa6M?=
+ =?us-ascii?Q?G8ohp6mBxPP4KkOq0F1q1SzHOLSuVXnV+k5dDo3WwDkQ3L4BpX/XHP9daa7I?=
+ =?us-ascii?Q?6TRJ9hcJUspcYJNicHsXxnOUzlm3QK2nVDHmaDOvSRKmCpolaSs4cDwKhTAF?=
+ =?us-ascii?Q?C+P4lApvqYaDnJfvWjc6U6/Woq0lurxEqEJ7MpIrT6xY87eAfSYBif04aM4P?=
+ =?us-ascii?Q?B+yk7kQEWH3PkcZLKo/hjqA2SJFMfriOPWNUdQzxvzzGsTWwczJUI+uxSzep?=
+ =?us-ascii?Q?ghjLOP9gkr0VnEqx4IKEWZlyxSrABu4N2F/MXLXgxollb6UKmNb5TI5reCvD?=
+ =?us-ascii?Q?BPmSpQ4r9lMqRJlJzVgoWCeiSfgGsQ5azqSVqJSnc5/oQJ6Nxe5X7eNLEnDX?=
+ =?us-ascii?Q?UyaKI7sKTs+B7mgD+XqEziakusQ4loYNlu14+JxJSu52N+ycTGFmmXki5mcs?=
+ =?us-ascii?Q?Qu/FxgQQVMevhRr5ZjHvvmpW1YVKYaGS1T2qCmI8ZAvmDdS95x6sRuHB8su3?=
+ =?us-ascii?Q?1LC301LOHm38mTLU4CYe5dwjXdL8QztAay8jzONwLuypx6HS2abCZnpm0K3f?=
+ =?us-ascii?Q?Y8C6NfkiaLutRMMzkTq3V1h48fr0urselygO9QMSNvrgkIwLlXhvyEi5MxaH?=
+ =?us-ascii?Q?EUEa+qqC3XX7tcmXvKkdGBfb4xxNfnNgsTZGhTvsJSX9kzQLYgXCJbU1TyRV?=
+ =?us-ascii?Q?2m5fOPrCwDbE1+nWKjjzXXcsxtDC4lY1zFXb8M1P5WoGaq6whMYbpzMqVCmt?=
+ =?us-ascii?Q?ROOhcy+p00dm3kLlL0g5jzJN+mKtDYLYygCVPtm5GeAweubP/JduB/ZEkwN0?=
+ =?us-ascii?Q?9WQn/UeLOeW0NayFUdI0IDX1QG99WaeVqvtdiP2AKRC4wfnLWscUF36PKBgG?=
+ =?us-ascii?Q?v1m0JNmFsZBXScOQIWb+DNbaMB9BWIJgBgazcUHHOlRuD6gGVcTompgrUwao?=
+ =?us-ascii?Q?qPuNpPPtrKAJtysN9l6Rw91lh091XVOPGUjJkO0vHEwZKj+bONs9JFW/6eLh?=
+ =?us-ascii?Q?der3ibEhD7MM7e56YFbLRNEOuqvGb72GXyQRXurto9m/e4dBPYcJaMoQVvU0?=
+ =?us-ascii?Q?4Cj0aKsfcLjsjIsZtT0R8D1HiOq3tVGKA+GgrV33P7oEKg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB1317.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?n85iWO0eWA6MCP2guRSPOkw7Hxxx208YYYLmjiZh6dX9ODHC+PFo4iBcxAwu?=
+ =?us-ascii?Q?pAiObByWsvnBzr9RFcohUfhhg7XH44SWuHJsC5qmwasLNhK/gDaNM0aCIeBw?=
+ =?us-ascii?Q?922l1RxBdwif70zC8idsQ7dVf25cT/oHglrU6iUTMMYNr62OE/KgzWkcZUd8?=
+ =?us-ascii?Q?wLP8HxLVVPqLQDb/dWQ41STj+qrc3nZnsR4WekdYjl/7oXMGUw26VwIeGRZS?=
+ =?us-ascii?Q?8r/LrmMxbBfkhH6aMTbQ3c7FI5s+AVd1QY8OvRRPylszNnRU6PyCgxeNkkPx?=
+ =?us-ascii?Q?30eyaIhPruWhXuBKKogi3UDA9idNuCg51aRvo6ruz5cDTfzfmlsPVoa33DZ8?=
+ =?us-ascii?Q?h8pj89TUBEB7IDxEY3g0vvnZYlis1Yl/QViMrsjMmmko4KZluKUwQ/i4PWYi?=
+ =?us-ascii?Q?U4FQtU8ED0fgmEiRMFla4iLF8fztw4xbKqvCNbQSmC8jVIqU2+Nh6eBL6teP?=
+ =?us-ascii?Q?D1I3lcVZ3kdoIhtUscwxgJHJkE6WeAipHUKeJcYSX8tb5CAZMqgoP7ui10Rr?=
+ =?us-ascii?Q?tJWTFIsOyQBbt2Vxop9JDfyInVbQTK7tB97fyXSrCBWLx8PVUItysOWrspwW?=
+ =?us-ascii?Q?JNnJCeJbH86GIpu1d05IAT5w3hljmj2YiooiuXZZ+7lXxzzL3dtL5ZbsfhA/?=
+ =?us-ascii?Q?v/8yftfdumDIsiEC0asOBmNpt5JU8iSKcTNEPveuAC17bGkpPC0yeEPI/nrP?=
+ =?us-ascii?Q?74mvA2lWdwbAc/vaqW5iMqQg5AGdTgY1pkxy5NfBanu1ndr53HkJX7geULku?=
+ =?us-ascii?Q?1xUsgoBEnnrpKmjq6tQQIELdV0Pyj4UqDL6YMBSAchoHvMBgbqqx0DRYr2l3?=
+ =?us-ascii?Q?Tu6i8zARX24Ht4R9B6O4NB0+wltey/7Sg36mNIPXh1fTEJBOuttp3WsJXNE9?=
+ =?us-ascii?Q?dRyEYGSHFyoYfuh6taeQuERwZjVupCPNNAILSFbETrph+2DbYO/DJqQCfriT?=
+ =?us-ascii?Q?MLyeEhn3gQxNKBU8FvL+TGrQU466hBig1n6Gnvfx3N5Wf6JYPzXAZdznK2YH?=
+ =?us-ascii?Q?zzbpJM+oEsc1kI/m/SV1QZTfONWCohwnDOgYyfkvrJBhmt6cpqNXjC2Xcj8P?=
+ =?us-ascii?Q?+e7EhtYmpnxXnM3s4A04uxIw9+6Pc+1aWBCVCp07TDlhPss8cTMo6iwCPTLf?=
+ =?us-ascii?Q?UplerNH+ZxXmIkUwXp/FcLIeY+9wDFsBzgzeb8yUTuIhA2Hr6h3xfrG6PCJm?=
+ =?us-ascii?Q?XGTPF5E3kK9fLpE9RdCPuPSNRjqLvEy7V2XyPLGfucvpy50BsDzXx41iDr0p?=
+ =?us-ascii?Q?dAyVUoZ/kI+dNQgC4gcdiEALzUts4VGCmmEnd43os8aRtUiPABRbA4V/HcE2?=
+ =?us-ascii?Q?1Qz5lI4vzVdu3x8AxyokEVrFHPcoaYetYP9v59HITl1vbMvs4ZA1iUM8bQQ1?=
+ =?us-ascii?Q?iHCkgOVwuMvQWNYjEEef6CJ9qWs1pnAC+Y+yGeNVSdfSglGIOqNuCJ59wQp1?=
+ =?us-ascii?Q?a1l25Um+sf/tnP6TSPQtFbqGUJYtpfBHFY78BSt/dd43Bkm6ppNlOvrCUirV?=
+ =?us-ascii?Q?r8zou2prUZoOkzS3vwBAJtnAysmOPJCIrJow1keQU34b6SWr2wJXMvavQkRX?=
+ =?us-ascii?Q?xEjwj44eZB+w9Q/uQhQ=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/kvm/tdx: Save %rbp in TDX_MODULE_CALL
-To: "Huang, Kai" <kai.huang@intel.com>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "Hansen, Dave" <dave.hansen@intel.com>
-Cc: "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>, "x86@kernel.org"
- <x86@kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-References: <20240517121450.20420-1-jgross@suse.com>
- <ohvjbokpaxagc26kxmlrujab7cw3bekgi5ln7dt46cbsaxcqqh@crvqeohfazmf>
- <f63e1217-3dbe-458d-8c14-7880811d30ba@suse.com>
- <2a2guben2ysyeb43rzg6zelzpa57o24ufai3mi6ocewwvgu63l@c7dle47q7hzw>
- <03d27b6a-be96-44d7-b4ea-aa00ccab4cc5@suse.com>
- <fc0e8ab7-86d4-4428-be31-82e1ece6dd21@intel.com>
- <c0067319-2653-4cbd-8fee-1ccf21b1e646@suse.com>
- <6df4fb48-9947-46ec-af5a-66fa06d6a83b@intel.com>
- <86ca805d-7ed7-47dd-8228-5e19fbade53f@suse.com>
- <f7edef9c-5eb5-4664-a193-3bb063674742@intel.com>
- <f02d9ebb-a2b3-4cb3-871b-34324d374d01@suse.com>
- <4b3adb59-50ea-419e-ad02-e19e8ca20dee@intel.com>
- <c7319c0614c9a644fa1f9b349bf654834b615543.camel@intel.com>
- <e2d844ad-182a-4fc0-a06a-d609c9cbef74@suse.com>
- <2e07ebc774bf176ebfab40e6ba8bc14ae6a94e0c.camel@intel.com>
- <a9bbb31e6660343e95d3351febc6e3b9661a7944.camel@intel.com>
- <c188878d-ff67-45da-a963-e643bfb927a8@suse.com>
- <cc57bb62-be80-4c97-a8f8-5cd0548c3c11@intel.com>
-Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-In-Reply-To: <cc57bb62-be80-4c97-a8f8-5cd0548c3c11@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB1317.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7486d029-845d-45b8-6c75-08dc7bcaa995
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 May 2024 08:22:33.8220
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Cga/NoRSXSCgfDLYwSRDbXaZ+/QDN5JZbVnPsl0WDV5oYYgaGZeHgboLvcLM6nqhv+rlMzzd7J8j+ioWY/lRTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW1PEPF0000E7B2
 
-On 24.05.24 00:34, Huang, Kai wrote:
-> 
-> 
-> On 24/05/2024 12:43 am, Jürgen Groß wrote:
->> On 23.05.24 14:26, Huang, Kai wrote:
->>> On Thu, 2024-05-23 at 10:30 +0000, Huang, Kai wrote:
->>>> On Thu, 2024-05-23 at 07:56 +0200, Jürgen Groß wrote:
->>>>> On 20.05.24 13:54, Huang, Kai wrote:
->>>>>> On Fri, 2024-05-17 at 09:48 -0700, Dave Hansen wrote:
->>>>>>> On 5/17/24 08:58, Juergen Gross wrote:
->>>>>>>> On 17.05.24 17:52, Dave Hansen wrote:
->>>>>>> ..
->>>>>>>>> Once we have the specific TDX module version, we can go ask the folks
->>>>>>>>> who write it if there were any RBP clobbering bugs.
->>>>>>>>
->>>>>>>> Okay, how to get the TDX module version?
->>>>>>>
->>>>>>> You need something like this:
->>>>>>>
->>>>>>>> https://lore.kernel.org/all/20231012134136.1310650-1-yi.sun@intel.com/
->>>>>>
->>>>>> This one prints TDX version info in the TDX guest, but not host.
->>>>>>
->>>>>> The attached diff prints the TDX version (something like below) during
->>>>>> module initialization, and should meet Juergen's needs for temporary use:
->>>>>>
->>>>>> [  113.543538] virt/tdx: module verson: major 1, minor 5, internal 0
->>>>>>
->>>>>>>
->>>>>>> .. and yeah, this needs to be upstream.
->>>>>>>
->>>>>>
->>>>>>   From this thread I think it makes sense to add code to the TDX host code
->>>>>> to print the TDX version during module initialization.  I'll start to work
->>>>>> on this.
->>>>>>
->>>>>> One thing is from the spec TDX has "4 versions": major, minor, update,
->>>>>> internal.  They are all 16-bit, and the overall version can be written in:
->>>>>>
->>>>>>     <Major>.<Minor>.<Update>.<Internal>, e.g., 1.5.05.01
->>>>>>
->>>>>> (see TDX module 1.5 API spec, section 3.3.2 "TDX Module Version".)
->>>>>>
->>>>>> The attached diff only prints major, minor and internal, but leaves the
->>>>>> update out because I believe it is for module runtime update (yet to
->>>>>> confirm).
->>>>>>
->>>>>> Given there are 4 versions, I think it makes sense to implement reading
->>>>>> them based on this patchset ...
->>>>>>
->>>>>> https://lore.kernel.org/kvm/6940c326-bfca-4c67-badf-ab5c086bf492@intel.com/T/
->>>>>>
->>>>>> ... which extends the global metadata reading code to support any
->>>>>> arbitrary struct and all element sizes (although all 4 versions are 16-
->>>>>> bit)?
->>>>>
->>>>> With that I got:
->>>>>
->>>>> [   29.328484] virt/tdx: module verson: major 1, minor 5, internal 0
->>>>>
->>>>>
->>>>
->>>> Let me check TDX module guys on this and get back to you.
->>>
->>> Hi Jurgen,
->>>
->>> I was told the module starting with "1.5.06." has NO_RBP_MOD support.
->>>
->>> And I think I was wrong about the <update> part of the version, and we
->>> need that to determine the third part of the module version.
->>>
->>> I was also told the 1.5.06 module hasn't been released to public yet, so I
->>> guess your module doesn't support it.
->>>
->>> I did another patch (attached) to check NO_RBP_MOD and reject module
->>> initialization if it is not supported, and print out module version:
->>>
->>> [  146.566641] virt/tdx: NO_RBP_MOD feature is not supported
->>> [  146.572797] virt/tdx: module verson: 1.5.0.0
->>> [  146.577731] virt/tdx: module initialization failed (-22)
->>>
->>> You can have another try to verify at your side, if that helps.
->>>
->>
->> [   29.362806] virt/tdx: 4071192 KB allocated for PAMT
->> [   29.362828] virt/tdx: module verson: 1.5.1.0
->> [   29.362830] virt/tdx: module initialized
-> 
-> Seems your module supports NO_RBP_MOD.
-> 
-> This feature is per-VM and also requires to be explicitly opt-in when creating 
-> the guest.  Could you check in your code whether the setup_tdparams() function 
-> has below code?
-> 
->      td_params->exec_controls = TDX_CONTROL_FLAG_NO_RBP_MOD;
+> From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Sent: Thursday, May 23, 2024 5:06 AM
+> To: Dexuan Cui <decui@microsoft.com>
+> [...]
+> On Wed, May 22, 2024 at 07:24:41PM -0700, Dexuan Cui wrote:
+> > A TDX VM on Hyper-V may run in TD mode or Partitioned TD mode (L2). For
+> > the former, the VM has not enabled the Hyper-V TSC page (which is defin=
+ed
+> > in drivers/clocksource/hyperv_timer.c: "... tsc_pg __bss_decrypted ..."=
+)
+> > because, for such a VM, the hypervisor requires that the page should be
+> > shared, but currently the __bss_decrypted is not working for such a VM
+> > yet.
+>=20
+> I don't see how it is safe. It opens guest clock for manipulations form
+> VMM. Could you elaborate on security implications?
 
-I can confirm that it does have that.
+The intention of the patch is not to enable Hyper-V TSC page as a clocksour=
+ce
+in such a VM. The default clocksource is still TSC.
 
+The intention of the patch is to enable Hyper-V TSC page only for Hyper-V
+timer. My understanding is that: "Hyper-V timer + Hyper-V TSC page" should
+be as safe as "local APIC timer + TSC" because the VM needs the hypervisor
+to emulate the timers, anyway. The guest may get a bad value of Hyper-V
+TSC page from a malicious hypervisor, and consequently the Hyper-V timer
+may fire too early or too late, but the similar thing can also happen to a =
+local
+APIC timer, if a malicious hypervisor decides to deliver the timer interrup=
+t
+too early or too late.
 
-Juergen
+> > Hyper-V TSC page can work as a clocksource device similar to KVM pv
+> > clock, and it's also used by the Hyper-V timer code to get the current
+> > time: see hv_init_tsc_clocksource(), which sets the global function
+> > pointer hv_read_reference_counter to read_hv_clock_tsc(); when
+> > Hyper-V TSC page is not enabled, hv_read_reference_counter defaults to
+> > be drivers/hv/hv_common.c: __hv_read_ref_counter(), which is suboptimal
+> > as it uses the slow MSR interface to get the time info.
+>=20
+> Why can't the guest just read the TSC directly? Why do we need the page?
+> I am confused.
+>=20
+>   Kiryl Shutsemau / Kirill A. Shutemov
+
+Both Hyper-V TSC page and Hyper-V Reference Counter MSR return the
+absolute time in the unit of 0.1us since the VM starts to run, i.e. the "fr=
+equency"
+is 10M, which has a higher resolution than the emulated local APIC timer.=20
+
+Hyper-V timer depends on Hyper-V TSC page or Hyper-V Reference Counter MSR
+as it also uses the absolute time in the unit of 0.1us. We could potentiall=
+y read the
+TSC and convert it to the absolute time in the unit of 0.1us, but the requi=
+red math
+calculation is not very easy and can be unreliable (e.g. I suppose an AP's =
+TSC is 0
+when it's just being brought up online? But the Hyper-V TSC page value on t=
+he AP
+should be much bigger than 0) And, there will be an inaccuracy with the Hyp=
+er-V
+side conversion that may use a slightly different math calculation (e.g. sl=
+ightly
+different TSC frequency or 'multi' or 'shift' values).
+
+It turns out the local APIC timer in such a VM also works! So probably the =
+VM
+can just use local APIC timer and doesn't use Hyper-V timer. However, I not=
+iced a
+strange thing: in my 128-VP VM, each local APIC timer constantly generates
+100 interrupts per second, even if the VM is idle. Trying to find out why. =
+I do
+enable tickles in my .config:
+
+CONFIG_NO_HZ_COMMON=3Dy
+# CONFIG_HZ_PERIODIC is not set
+# CONFIG_NO_HZ_IDLE is not set
+CONFIG_NO_HZ_FULL=3Dy
+CONFIG_NO_HZ=3Dy
+CONFIG_HZ_100=3Dy
+CONFIG_HZ=3D100
+
+Thanks,
+-- Dexuan
