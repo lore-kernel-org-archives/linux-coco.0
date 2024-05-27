@@ -1,224 +1,175 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927B61581E2
-	for <linux-coco@lists.linux.dev>; Mon, 27 May 2024 12:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46D938FA6
+	for <linux-coco@lists.linux.dev>; Mon, 27 May 2024 12:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716812774; cv=none; b=iUb+uBEyqgfJR14Gfd5eKJxBlnjSduIRutvmF0fU64ogasO+qUoKOrP/Rfxh6Iae5b5Epb8nVqlc+RPcRvLXpN6qKFOcjpUnRm/vWRUtV025aYlz8q/02YZKJwVx1ryZ1ok4XgtEPWr7/0Hv/jrv226kewXFwviSECXpY2/pfDA=
+	t=1716813231; cv=none; b=UhsiiOFY/WKEDJcgvAg8HzjApvCd7eugeW7pKYjk1fUZtpSZU33w3pN/JiuUJSvSLEmmWKheyAbllEnjnm87ZKMhl7r4MQQ0QoXx4YnnIAU9Uld2woyWYzn+rJprFSowUSUfk3xQUp+YrSsJ7w9VkuvGvMRUCY4Oro0y+jRVbQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716812774; c=relaxed/simple;
-	bh=/c0n1b92ma2tktOqUNb41OqeN2cWnA5+c1eV0kosDcw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EGvJ/xGqNGz9WPEdX+J6vZjNY6KSTVeURrFzLLuMPpmHkTm940S7v2U63RJvRx1n51paUPY5DcPNJvyUAV13bbJqkFco2EOmtSHghX3e5lpwBUXeOmJnmp3N1QVYXmM9nTNggIk59ZANvr8rc6UD5XzoXUV3ihJOGepnXxWUiq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Na/iw4Px; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1716813231; c=relaxed/simple;
+	bh=0POJpo4op/4WKtBiRoOk3agZ6RzBzkKKvc//+TM5oeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kThVnORZqhgHD9WZP3OP5SPdwgL45d1SUc9N3SxYCcIyVy4ffndlTohfAMvQ6o8WhfkydotL7ZIeQ0wy1BTRsVjnDoPngMHYq2/Yqh3Mapme7xXFBiqRKTS6gYB1zXWnWiI53xX2vHVZYRoQx+ZXis8c+LDJkmkuIZ7Vset+zfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=MDuMiMvO; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Na/iw4Px"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716812772; x=1748348772;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/c0n1b92ma2tktOqUNb41OqeN2cWnA5+c1eV0kosDcw=;
-  b=Na/iw4PxDjFttFzLuc3pbFizpOSj/5m2jKHOtzcqdeZjxA3osPXahTG/
-   Tl52bx49ZFRtTWOcKKoR/x469AOZ1IOTBBeaRHGspI5tpDkSW/ToFgvkk
-   dcDhhn0m9IisJwQ/YTULSCzAwgTcEkDLe/sDpR8KiXX0PNLZ8lf+IATk3
-   SVAgmJbIXiiWohDe5r5kVLwTZVvMv8i/ABAZL2qFPCgMuAGkfaBIjd5zg
-   obgV6ZH2zCSuSmT1Qv2Fjh8+1hQrXYlrZ86A1VFmFCTZj8e9FOwx1/l4+
-   qV+Yf2yisjxW3Mcvaz6xi1/15G+WAgJjC+V6b7vT1WepL6mymGIp0pKQo
-   w==;
-X-CSE-ConnectionGUID: qzZIj9DTT6OTpsuo/z0cxA==
-X-CSE-MsgGUID: s4LS9Lj/RbaMkh1u/sC8GA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="35647265"
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="35647265"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 05:26:11 -0700
-X-CSE-ConnectionGUID: 4RopLxNGRK+EFM85hO/PLQ==
-X-CSE-MsgGUID: KIV1k5CaR5mnjLatSwP3dw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="35245657"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.234.76]) ([10.124.234.76])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 05:26:02 -0700
-Message-ID: <7da9c4a3-8597-44aa-a7ad-cc2bd2a85024@linux.intel.com>
-Date: Mon, 27 May 2024 20:25:59 +0800
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="MDuMiMvO"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 74A3B40E02A9;
+	Mon, 27 May 2024 12:33:47 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id V4U4EjJu8wWB; Mon, 27 May 2024 12:33:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1716813224; bh=+KQ1XXPKYiyM2BBxP7vDHilnO6xgA3d3JBHZpfRVIW8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MDuMiMvOnVl/o/XhDMvbOYg3o/XU5nS45zcZIu2GSiQvmybJVGnSqNbAFYSxButLQ
+	 TU9EyUl57PnV3M/VbRpumxQ0PCa3PRnMbdTnjacqvtWdbdRSLWI3sb5dUzwqSNkIcO
+	 XuKhmSFjvh5q76HZQmNLySdgNY995WBjukkw3DZTz2yqaZVztk0ms4sE9mrDG7xoZl
+	 ELfn5bkcv+fAS4LJGJ829D7tAu9QY4txE+KNAJOubqRxTOW8Q/x32p8OAUIHjlnkpC
+	 ZgPdd3ESyksr++z8T791SxoaxsjTTe0+BLVO04zqBlzMn5QbXDQp4CRTOKszNg7+lT
+	 XAB/4P6u+7nd88NrKqdQmM7Ia9I40RtoHDfO/XUUr8IfXStnyyV/69I0BmnAvcaSz7
+	 FfHunVX2ZgPkuy8kQDoi2jgzfk5bD8QlCS4Wk73VzLlvravgbGP2S8TR9YoZyjGwY3
+	 wj3kwEgS3bAMCP19c/lqGCUXB+stXu1eHjXeRAjLCil/LCuL7AsqU0LNy1qRVZgZlE
+	 4WuXX/MU8xBfiMKqQ22vmhi4+nViNrL/u9mNmPKSE4UAm78qSzBTe3kw73u4AUDISD
+	 1xXvmldfFWufIhU8JgwUZLdEIf1USAstLpdco2YP8ScIPYRFslw3aFUy4FFrL6nRjC
+	 LW9xkVjajInrdwHHrIg7nmtk=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2194E40E016A;
+	Mon, 27 May 2024 12:33:30 +0000 (UTC)
+Date: Mon, 27 May 2024 14:33:24 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v4 07/15] x86/sev: Use the SVSM to create a vCPU when not
+ in VMPL0
+Message-ID: <20240527123304.GBZlR9gBzBIjqEKKo6@fat_crate.local>
+References: <cover.1713974291.git.thomas.lendacky@amd.com>
+ <aa7f311d90efb49dfa6f4589854ee43c049b7b88.1713974291.git.thomas.lendacky@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 09/20] KVM: SEV: Add support to handle MSR based Page
- State Change VMGEXIT
-To: Michael Roth <michael.roth@amd.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com,
- vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
- dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
- peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
- rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de,
- vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
- tony.luck@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
- nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com,
- Brijesh Singh <brijesh.singh@amd.com>,
- "Yamahata, Isaku" <isaku.yamahata@intel.com>
-References: <20240501085210.2213060-1-michael.roth@amd.com>
- <20240501085210.2213060-10-michael.roth@amd.com>
- <84e8460d-f8e7-46d7-a274-90ea7aec2203@linux.intel.com>
- <CABgObfaXmMUYHEuK+D+2E9pybKMJqGZsKB033X1aOSQHSEqqVA@mail.gmail.com>
- <7d6a4320-89f5-48ce-95ff-54b00e7e9597@linux.intel.com>
- <rczrxq3lhqguarwh4cwxwa35j5riiagbilcw32oaxd7aqpyaq7@6bqrqn6ontba>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <rczrxq3lhqguarwh4cwxwa35j5riiagbilcw32oaxd7aqpyaq7@6bqrqn6ontba>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aa7f311d90efb49dfa6f4589854ee43c049b7b88.1713974291.git.thomas.lendacky@amd.com>
 
+On Wed, Apr 24, 2024 at 10:58:03AM -0500, Tom Lendacky wrote:
+> -static int snp_set_vmsa(void *va, bool vmsa)
+> +static int base_snp_set_vmsa(void *va, bool vmsa)
 
+s/base_/__/
 
-On 5/22/2024 5:49 AM, Michael Roth wrote:
-> On Tue, May 21, 2024 at 08:49:59AM +0800, Binbin Wu wrote:
->>
->> On 5/17/2024 1:23 AM, Paolo Bonzini wrote:
->>> On Thu, May 16, 2024 at 10:29 AM Binbin Wu <binbin.wu@linux.intel.com> wrote:
->>>>
->>>> On 5/1/2024 4:51 PM, Michael Roth wrote:
->>>>> SEV-SNP VMs can ask the hypervisor to change the page state in the RMP
->>>>> table to be private or shared using the Page State Change MSR protocol
->>>>> as defined in the GHCB specification.
->>>>>
->>>>> When using gmem, private/shared memory is allocated through separate
->>>>> pools, and KVM relies on userspace issuing a KVM_SET_MEMORY_ATTRIBUTES
->>>>> KVM ioctl to tell the KVM MMU whether or not a particular GFN should be
->>>>> backed by private memory or not.
->>>>>
->>>>> Forward these page state change requests to userspace so that it can
->>>>> issue the expected KVM ioctls. The KVM MMU will handle updating the RMP
->>>>> entries when it is ready to map a private page into a guest.
->>>>>
->>>>> Use the existing KVM_HC_MAP_GPA_RANGE hypercall format to deliver these
->>>>> requests to userspace via KVM_EXIT_HYPERCALL.
->>>>>
->>>>> Signed-off-by: Michael Roth <michael.roth@amd.com>
->>>>> Co-developed-by: Brijesh Singh <brijesh.singh@amd.com>
->>>>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
->>>>> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
->>>>> ---
->>>>>     arch/x86/include/asm/sev-common.h |  6 ++++
->>>>>     arch/x86/kvm/svm/sev.c            | 48 +++++++++++++++++++++++++++++++
->>>>>     2 files changed, 54 insertions(+)
->>>>>
->>>>> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
->>>>> index 1006bfffe07a..6d68db812de1 100644
->>>>> --- a/arch/x86/include/asm/sev-common.h
->>>>> +++ b/arch/x86/include/asm/sev-common.h
->>>>> @@ -101,11 +101,17 @@ enum psc_op {
->>>>>         /* GHCBData[11:0] */                            \
->>>>>         GHCB_MSR_PSC_REQ)
->>>>>
->>>>> +#define GHCB_MSR_PSC_REQ_TO_GFN(msr) (((msr) & GENMASK_ULL(51, 12)) >> 12)
->>>>> +#define GHCB_MSR_PSC_REQ_TO_OP(msr) (((msr) & GENMASK_ULL(55, 52)) >> 52)
->>>>> +
->>>>>     #define GHCB_MSR_PSC_RESP           0x015
->>>>>     #define GHCB_MSR_PSC_RESP_VAL(val)                  \
->>>>>         /* GHCBData[63:32] */                           \
->>>>>         (((u64)(val) & GENMASK_ULL(63, 32)) >> 32)
->>>>>
->>>>> +/* Set highest bit as a generic error response */
->>>>> +#define GHCB_MSR_PSC_RESP_ERROR (BIT_ULL(63) | GHCB_MSR_PSC_RESP)
->>>>> +
->>>>>     /* GHCB Hypervisor Feature Request/Response */
->>>>>     #define GHCB_MSR_HV_FT_REQ          0x080
->>>>>     #define GHCB_MSR_HV_FT_RESP         0x081
->>>>> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
->>>>> index e1ac5af4cb74..720775c9d0b8 100644
->>>>> --- a/arch/x86/kvm/svm/sev.c
->>>>> +++ b/arch/x86/kvm/svm/sev.c
->>>>> @@ -3461,6 +3461,48 @@ static void set_ghcb_msr(struct vcpu_svm *svm, u64 value)
->>>>>         svm->vmcb->control.ghcb_gpa = value;
->>>>>     }
->>>>>
->>>>> +static int snp_complete_psc_msr(struct kvm_vcpu *vcpu)
->>>>> +{
->>>>> +     struct vcpu_svm *svm = to_svm(vcpu);
->>>>> +
->>>>> +     if (vcpu->run->hypercall.ret)
->>>> Do we have definition of ret? I didn't find clear documentation about it.
->>>> According to the code, 0 means succssful. Is there any other error codes
->>>> need to or can be interpreted?
->>> They are defined in include/uapi/linux/kvm_para.h
->>>
->>> #define KVM_ENOSYS        1000
->>> #define KVM_EFAULT        EFAULT /* 14 */
->>> #define KVM_EINVAL        EINVAL /* 22 */
->>> #define KVM_E2BIG        E2BIG /* 7 */
->>> #define KVM_EPERM        EPERM /* 1*/
->>> #define KVM_EOPNOTSUPP        95
->>>
->>> Linux however does not expect the hypercall to fail for SEV/SEV-ES; and
->>> it will terminate the guest if the PSC operation fails for SEV-SNP.  So
->>> it's best for userspace if the hypercall always succeeds. :)
->> Thanks for the info.
->>
->> For TDX, it wants to restrict the size of memory range for conversion in one
->> hypercall to avoid a too long latency.
->> Previously, in TDX QEMU patchset v5, the limitation is in userspace and  if
->> the size is too big, the status_code will set to TDG_VP_VMCALL_RETRY and the
->> failed GPA for guest to retry is updated.
->> https://lore.kernel.org/all/20240229063726.610065-51-xiaoyao.li@intel.com/
->>
->> When TDX converts TDVMCALL_MAP_GPA to KVM_HC_MAP_GPA_RANGE, do you think
->> which is more reasonable to set the restriction? In KVM (TDX specific code)
->> or userspace?
->> If userspace is preferred, then the interface needs to  be extended to
->> support it.
-> With SNP we might get a batch of requests in a single GHCB request, and
-> potentially each of those requests need to get set out to userspace as
-> a single KVM_HC_MAP_GPA_RANGE. The subsequent patch here handles that in
-> a loop by issuing a new KVM_HC_MAP_GPA_RANGE via the completion handler.
-> So we also sort of need to split large requests into multiple userspace
-> requests in some cases.
->
-> It seems like TDX should be able to do something similar by limiting the
-> size of each KVM_HC_MAP_GPA_RANGE to TDX_MAP_GPA_MAX_LEN, and then
-> returning TDG_VP_VMCALL_RETRY to guest if the original size was greater
-> than TDX_MAP_GPA_MAX_LEN. But at that point you're effectively done with
-> the entire request and can return to guest, so it actually seems a little
-> more straightforward than the SNP case above. E.g. TDX has a 1:1 mapping
-> between TDG_VP_VMCALL_MAP_GPA and KVM_HC_MAP_GPA_RANGE events. (And even
-> similar names :))
->
-> So doesn't seem like there's a good reason to expose any of these
-> throttling details to userspace,
+The svsm_-prefixed ones are already a good enough distinction...
 
-The reasons I want to put the throttling in userspace are:
-1. Hardcode the TDX_MAP_GPA_MAX_LEN in kernel may not be preferred.
-2. The throttling thing doesn't need to be TDX specific, it can be 
-generic in userspace.
+>  {
+>  	u64 attrs;
+>  
+> @@ -1013,6 +1013,40 @@ static int snp_set_vmsa(void *va, bool vmsa)
+>  	return rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
+>  }
+>  
+> +static int svsm_snp_set_vmsa(void *va, void *caa, int apic_id, bool vmsa)
+								  ^^^^^^^^^^^
 
-I think we can set a reasonable value in userspace, so that for SNP, it 
-doesn't trigger the throttling since the large request will be split to 
-multiple userspace requests.
+bool create_vmsa or so, to denote what this arg means.
 
+> +{
+> +	struct svsm_call call = {};
+> +	unsigned long flags;
+> +	int ret;
+> +
+> +	local_irq_save(flags);
+> +
+> +	call.caa = this_cpu_read(svsm_caa);
+> +	call.rcx = __pa(va);
+> +
+> +	if (vmsa) {
+> +		/* Protocol 0, Call ID 2 */
+> +		call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
+> +		call.rdx = __pa(caa);
+> +		call.r8  = apic_id;
+> +	} else {
+> +		/* Protocol 0, Call ID 3 */
+> +		call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
+> +	}
+> +
+> +	ret = svsm_protocol(&call);
+> +
+> +	local_irq_restore(flags);
+> +
+> +	return ret;
+> +}
+> +
+> +static int snp_set_vmsa(void *va, void *caa, int apic_id, bool vmsa)
+> +{
+> +	return vmpl ? svsm_snp_set_vmsa(va, caa, apic_id, vmsa)
+> +		    : base_snp_set_vmsa(va, vmsa);
 
-> in which case existing
-> KVM_HC_MAP_GPA_RANGE interface seems like it should be sufficient.
->
-> -Mike
->
->>
->>>> For TDX, it may also want to use KVM_HC_MAP_GPA_RANGE hypercall  to
->>>> userspace via KVM_EXIT_HYPERCALL.
->>> Yes, definitely.
->>>
->>> Paolo
->>>
+Why do you even need helpers if you're not going to use them somewhere
+else? Just put the whole logic inside snp_set_vmsa().
 
+> +}
+> +
+>  #define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
+>  #define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
+>  #define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
+> @@ -1044,11 +1078,11 @@ static void *snp_alloc_vmsa_page(int cpu)
+>  	return page_address(p + 1);
+>  }
+>  
+> -static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa)
+> +static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
+>  {
+>  	int err;
+>  
+> -	err = snp_set_vmsa(vmsa, false);
+> +	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
+>  	if (err)
+>  		pr_err("clear VMSA page failed (%u), leaking page\n", err);
+>  	else
+> @@ -1059,6 +1093,7 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+>  {
+>  	struct sev_es_save_area *cur_vmsa, *vmsa;
+>  	struct ghcb_state state;
+> +	struct svsm_ca *caa;
+>  	unsigned long flags;
+>  	struct ghcb *ghcb;
+>  	u8 sipi_vector;
+> @@ -1105,6 +1140,12 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+>  	if (!vmsa)
+>  		return -ENOMEM;
+>  
+> +	/*
+> +	 * If an SVSM is present, then the SVSM CAA per-CPU variable will
+> +	 * have a value, otherwise it will be NULL.
+> +	 */
+
+	/* If an SVSM is present, the SVSM per-CPU CAA will be !NULL. */
+
+Shorter.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
