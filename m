@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194F916C69F
-	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 09:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD39B16D32C
+	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 09:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716890144; cv=none; b=a+HnviDYS7no3HnVfALkkV8VN4k9WOkN/hqEECKqpBfvhRALMOh7GRH8+7GKpfCMPzqXZ8xhN3Gbu7g8new/xSwcjWKTqQIDMoWtZbKiALnQ1+4368Cr/gx0hLRNacWcqiPTyZjdCWEanVYmhLnIGmnrqYJGzDmkQsUm5K/dCp8=
+	t=1716890148; cv=none; b=U0/HlhSq8SdoovRZpNcw68g/vTzQ3IiFuLJxQXDx2vzhmfI9Q/cTj3XVKefbICtnUnnuQg4+U4C0ZyYvW9kSnVWJPZ8ZEFrZmL1RyetbudMF24s0en0PBP2Lb9Lx20ndakX+mKMQ731YgGULfZ2YZ9295ewDR3I9aBy+kYmp19s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716890144; c=relaxed/simple;
-	bh=ZUiXcW7hC4PknzlHzEIxbEGjZYshXHBK0zojzFc4RxY=;
+	s=arc-20240116; t=1716890148; c=relaxed/simple;
+	bh=r9Wukz3LMtiE4FgG1pnaOuL/XYUpxKOHH2ibiZ96dYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlGDYKqtHN70Y4JixqZ5Po9ptkWSs6dbOsfOqB2u84JWksP+QW/gD0MUGNYpdWKQpr2Ai7sZPAu8jZ5L1I6cFHBG38YRWh2cs63QpIvWWJs2J0flmzpbM2HRR07GUk93HZOq7svQj2MaPkYXr++rt4a6qM4CHvuM57ofgIveaS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YpcPVHk2; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=Eh0YBO5/vnGtiJgyzo1rbxYwabFG587oZQ2TUeORkQOdeegxz5hWC31c5Khlud5i27bUJqixCbIAV2Hiq+rqZeG6NXx155x0hkw1G95mH/Cml52dRWKeGmPs71z1VKxPJ4oB6BQC4o9meZH8zwf6EUnZP0j+sAb3l78TsEu+0Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YzonOTyQ; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YpcPVHk2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YzonOTyQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716890143; x=1748426143;
+  t=1716890147; x=1748426147;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ZUiXcW7hC4PknzlHzEIxbEGjZYshXHBK0zojzFc4RxY=;
-  b=YpcPVHk2gFBIyVYp0XWpMKQ0k6+r/GXCrYNMSU3n3EAZcwSmeQ57T0AD
-   eYE0MvyGOpjr2UN1Tmw3SY1f0kMJF1M1F4by1G23Sg4vbMShmHtOMEc9Z
-   Iyd/Kt/ws03svI5FGchVuGi8uAmehPvfq6pwrvnnLnlIQ8TmzaoBNioWh
-   xyvFIhr6PlzBvNgoSTMbmirnpmUOtqR+qD+txO6oSTf2oqpnMjmXbswU/
-   Oi9UqGmDM5DsDM7pr6iWtkoNuSFvNT3fCptw9x9KBt53c0rbbaS0tBTQn
-   eMBdSmpg2vvehJ/Gb+HHGaDp1qTDjUGggd8okOYPf+PkYGQylbv/imnun
-   w==;
-X-CSE-ConnectionGUID: qQc7HyqER+iMjcDXLs7mhA==
-X-CSE-MsgGUID: spSRB3R1Tp67i/e3ZRnC4g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13097753"
+  bh=r9Wukz3LMtiE4FgG1pnaOuL/XYUpxKOHH2ibiZ96dYY=;
+  b=YzonOTyQ9kb7E4xiRGpld8tzXVOZsrf83yRanLqsLrYXy4CWHVpPmg8P
+   0OWEoYJXT6kRsrouaP17rTNSt4xaENE03t3lvDWpk1dDmpMzgpUM3M4hl
+   5FkMZsb0XLl+EqMwixsfm9lrSWA9wNNxyWV/QzEwi+uWlx5jkaYOzBldf
+   531RKEp6aR+8Onaydtx9NL1AeLpVDvpIMZ72M7ZWwMqIJyGqX+2E790eD
+   hk9aXi9DxgrHY8/y+zCwgSvu6UJ4QB7e/u976TWySwgWheXH4TLap5w2O
+   QC11wHS7cRaHYgyvGpb1CmcXz9KMCqrPWQ5D5HDeJ9mA78K6T9BdN9dkq
+   A==;
+X-CSE-ConnectionGUID: 9J2GUgbfQkmQTzAsSnMesQ==
+X-CSE-MsgGUID: VLOeqRKgR/KkfzCstsBQCw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13172070"
 X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; 
-   d="scan'208";a="13097753"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 02:55:41 -0700
-X-CSE-ConnectionGUID: 9xrhv8WrR22gC93PqHv50g==
-X-CSE-MsgGUID: BEkOX6SDRsSnZMGuSwGRqg==
+   d="scan'208";a="13172070"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 02:55:34 -0700
+X-CSE-ConnectionGUID: S/YF0HKNTieVPdBDuVMg7Q==
+X-CSE-MsgGUID: oruyWRoVTnW99vOGHaDdNA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; 
-   d="scan'208";a="34951754"
+   d="scan'208";a="39984733"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa007.fm.intel.com with ESMTP; 28 May 2024 02:55:35 -0700
+  by orviesa004.jf.intel.com with ESMTP; 28 May 2024 02:55:27 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id C60D98B8; Tue, 28 May 2024 12:55:26 +0300 (EEST)
+	id 68FEE46A; Tue, 28 May 2024 12:55:26 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -74,9 +74,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Tao Liu <ltao@redhat.com>
-Subject: [PATCHv11 11/19] x86/tdx: Convert shared memory back to private on kexec
-Date: Tue, 28 May 2024 12:55:14 +0300
-Message-ID: <20240528095522.509667-12-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv11 04/19] cpu/hotplug, x86/acpi: Disable CPU offlining for ACPI MADT wakeup
+Date: Tue, 28 May 2024 12:55:07 +0300
+Message-ID: <20240528095522.509667-5-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
 References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
@@ -88,227 +88,95 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TDX guests allocate shared buffers to perform I/O. It is done by
-allocating pages normally from the buddy allocator and converting them
-to shared with set_memory_decrypted().
+ACPI MADT doesn't allow to offline CPU after it got woke up.
 
-The second, kexec-ed kernel has no idea what memory is converted this
-way. It only sees E820_TYPE_RAM.
+Currently CPU hotplug is prevented based on the confidential computing
+attribute which is set for Intel TDX. But TDX is not the only possible
+user of the wake up method. Any platform that uses ACPI MADT wakeup
+method cannot offline CPU.
 
-Accessing shared memory via private mapping is fatal. It leads to
-unrecoverable TD exit.
+Disable CPU offlining on ACPI MADT wakeup enumeration.
 
-On kexec walk direct mapping and convert all shared memory back to
-private. It makes all RAM private again and second kernel may use it
-normally.
-
-The conversion occurs in two steps: stopping new conversions and
-unsharing all memory. In the case of normal kexec, the stopping of
-conversions takes place while scheduling is still functioning. This
-allows for waiting until any ongoing conversions are finished. The
-second step is carried out when all CPUs except one are inactive and
-interrupts are disabled. This prevents any conflicts with code that may
-access shared memory.
+The change has no visible effects for users: currently, TDX guest is the
+only platform that uses the ACPI MADT wakeup method.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Tao Liu <ltao@redhat.com>
 ---
- arch/x86/coco/tdx/tdx.c           | 69 +++++++++++++++++++++++++++++++
- arch/x86/include/asm/pgtable.h    |  5 +++
- arch/x86/include/asm/set_memory.h |  3 ++
- arch/x86/mm/pat/set_memory.c      | 41 ++++++++++++++++--
- 4 files changed, 115 insertions(+), 3 deletions(-)
+ arch/x86/coco/core.c               |  1 -
+ arch/x86/kernel/acpi/madt_wakeup.c |  3 +++
+ include/linux/cc_platform.h        | 10 ----------
+ kernel/cpu.c                       |  3 +--
+ 4 files changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 979891e97d83..c0a651fa8963 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -7,6 +7,7 @@
- #include <linux/cpufeature.h>
- #include <linux/export.h>
+diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
+index b31ef2424d19..0f81f70aca82 100644
+--- a/arch/x86/coco/core.c
++++ b/arch/x86/coco/core.c
+@@ -29,7 +29,6 @@ static bool noinstr intel_cc_platform_has(enum cc_attr attr)
+ {
+ 	switch (attr) {
+ 	case CC_ATTR_GUEST_UNROLL_STRING_IO:
+-	case CC_ATTR_HOTPLUG_DISABLED:
+ 	case CC_ATTR_GUEST_MEM_ENCRYPT:
+ 	case CC_ATTR_MEM_ENCRYPT:
+ 		return true;
+diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+index cf79ea6f3007..d222be8d7a07 100644
+--- a/arch/x86/kernel/acpi/madt_wakeup.c
++++ b/arch/x86/kernel/acpi/madt_wakeup.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ #include <linux/acpi.h>
++#include <linux/cpu.h>
  #include <linux/io.h>
-+#include <linux/kexec.h>
- #include <asm/coco.h>
- #include <asm/tdx.h>
- #include <asm/vmx.h>
-@@ -14,6 +15,7 @@
- #include <asm/insn.h>
- #include <asm/insn-eval.h>
- #include <asm/pgtable.h>
-+#include <asm/set_memory.h>
+ #include <asm/apic.h>
+ #include <asm/barrier.h>
+@@ -76,6 +77,8 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
  
- /* MMIO direction */
- #define EPT_READ	0
-@@ -831,6 +833,70 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
+ 
++	cpu_hotplug_disable_offlining();
++
+ 	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
+ 
  	return 0;
- }
+diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
+index 60693a145894..caa4b4430634 100644
+--- a/include/linux/cc_platform.h
++++ b/include/linux/cc_platform.h
+@@ -81,16 +81,6 @@ enum cc_attr {
+ 	 */
+ 	CC_ATTR_GUEST_SEV_SNP,
  
-+/* Stop new private<->shared conversions */
-+static void tdx_kexec_begin(bool crash)
-+{
-+	/*
-+	 * Crash kernel reaches here with interrupts disabled: can't wait for
-+	 * conversions to finish.
-+	 *
-+	 * If race happened, just report and proceed.
-+	 */
-+	if (!set_memory_enc_stop_conversion(!crash))
-+		pr_warn("Failed to stop shared<->private conversions\n");
-+}
-+
-+/* Walk direct mapping and convert all shared memory back to private */
-+static void tdx_kexec_finish(void)
-+{
-+	unsigned long addr, end;
-+	long found = 0, shared;
-+
-+	lockdep_assert_irqs_disabled();
-+
-+	addr = PAGE_OFFSET;
-+	end  = PAGE_OFFSET + get_max_mapped();
-+
-+	while (addr < end) {
-+		unsigned long size;
-+		unsigned int level;
-+		pte_t *pte;
-+
-+		pte = lookup_address(addr, &level);
-+		size = page_level_size(level);
-+
-+		if (pte && pte_decrypted(*pte)) {
-+			int pages = size / PAGE_SIZE;
-+
-+			/*
-+			 * Touching memory with shared bit set triggers implicit
-+			 * conversion to shared.
-+			 *
-+			 * Make sure nobody touches the shared range from
-+			 * now on.
-+			 */
-+			set_pte(pte, __pte(0));
-+
-+			if (!tdx_enc_status_changed(addr, pages, true)) {
-+				pr_err("Failed to unshare range %#lx-%#lx\n",
-+				       addr, addr + size);
-+			}
-+
-+			found += pages;
-+		}
-+
-+		addr += size;
-+	}
-+
-+	__flush_tlb_all();
-+
-+	shared = atomic_long_read(&nr_shared);
-+	if (shared != found) {
-+		pr_err("shared page accounting is off\n");
-+		pr_err("nr_shared = %ld, nr_found = %ld\n", shared, found);
-+	}
-+}
-+
- void __init tdx_early_init(void)
- {
- 	struct tdx_module_args args = {
-@@ -890,6 +956,9 @@ void __init tdx_early_init(void)
- 	x86_platform.guest.enc_cache_flush_required  = tdx_cache_flush_required;
- 	x86_platform.guest.enc_tlb_flush_required    = tdx_tlb_flush_required;
- 
-+	x86_platform.guest.enc_kexec_begin	     = tdx_kexec_begin;
-+	x86_platform.guest.enc_kexec_finish	     = tdx_kexec_finish;
-+
- 	/*
- 	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
- 	 * bringup low level code. That raises #VE which cannot be handled
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 65b8e5bb902c..e39311a89bf4 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -140,6 +140,11 @@ static inline int pte_young(pte_t pte)
- 	return pte_flags(pte) & _PAGE_ACCESSED;
- }
- 
-+static inline bool pte_decrypted(pte_t pte)
-+{
-+	return cc_mkdec(pte_val(pte)) == pte_val(pte);
-+}
-+
- #define pmd_dirty pmd_dirty
- static inline bool pmd_dirty(pmd_t pmd)
- {
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-index 9aee31862b4a..d490db38db9e 100644
---- a/arch/x86/include/asm/set_memory.h
-+++ b/arch/x86/include/asm/set_memory.h
-@@ -49,8 +49,11 @@ int set_memory_wb(unsigned long addr, int numpages);
- int set_memory_np(unsigned long addr, int numpages);
- int set_memory_p(unsigned long addr, int numpages);
- int set_memory_4k(unsigned long addr, int numpages);
-+
-+bool set_memory_enc_stop_conversion(bool wait);
- int set_memory_encrypted(unsigned long addr, int numpages);
- int set_memory_decrypted(unsigned long addr, int numpages);
-+
- int set_memory_np_noalias(unsigned long addr, int numpages);
- int set_memory_nonglobal(unsigned long addr, int numpages);
- int set_memory_global(unsigned long addr, int numpages);
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index a7a7a6c6a3fb..2a548b65ef5f 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2227,12 +2227,47 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
- 	return ret;
- }
- 
-+/*
-+ * The lock serializes conversions between private and shared memory.
-+ *
-+ * It is taken for read on conversion. A write lock guarantees that no
-+ * concurrent conversions are in progress.
-+ */
-+static DECLARE_RWSEM(mem_enc_lock);
-+
-+/*
-+ * Stop new private<->shared conversions.
-+ *
-+ * Taking the exclusive mem_enc_lock waits for in-flight conversions to complete.
-+ * The lock is not released to prevent new conversions from being started.
-+ *
-+ * If sleep is not allowed, as in a crash scenario, try to take the lock.
-+ * Failure indicates that there is a race with the conversion.
-+ */
-+bool set_memory_enc_stop_conversion(bool wait)
-+{
-+	if (!wait)
-+		return down_write_trylock(&mem_enc_lock);
-+
-+	down_write(&mem_enc_lock);
-+
-+	return true;
-+}
-+
- static int __set_memory_enc_dec(unsigned long addr, int numpages, bool enc)
- {
--	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
--		return __set_memory_enc_pgtable(addr, numpages, enc);
-+	int ret = 0;
- 
--	return 0;
-+	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
-+		if (!down_read_trylock(&mem_enc_lock))
-+			return -EBUSY;
-+
-+		ret = __set_memory_enc_pgtable(addr, numpages, enc);
-+
-+		up_read(&mem_enc_lock);
-+	}
-+
-+	return ret;
- }
- 
- int set_memory_encrypted(unsigned long addr, int numpages)
+-	/**
+-	 * @CC_ATTR_HOTPLUG_DISABLED: Hotplug is not supported or disabled.
+-	 *
+-	 * The platform/OS is running as a guest/virtual machine does not
+-	 * support CPU hotplug feature.
+-	 *
+-	 * Examples include TDX Guest.
+-	 */
+-	CC_ATTR_HOTPLUG_DISABLED,
+-
+ 	/**
+ 	 * @CC_ATTR_HOST_SEV_SNP: AMD SNP enabled on the host.
+ 	 *
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 4c15b478e2bc..a609385c7f99 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1481,8 +1481,7 @@ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
+ 	 * If the platform does not support hotplug, report it explicitly to
+ 	 * differentiate it from a transient offlining failure.
+ 	 */
+-	if (cc_platform_has(CC_ATTR_HOTPLUG_DISABLED) ||
+-	    cpu_hotplug_offline_disabled)
++	if (cpu_hotplug_offline_disabled)
+ 		return -EOPNOTSUPP;
+ 	if (cpu_hotplug_disabled)
+ 		return -EBUSY;
 -- 
 2.43.0
 
