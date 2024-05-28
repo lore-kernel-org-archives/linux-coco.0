@@ -1,63 +1,71 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E140A4CB4B
-	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 05:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BAD17BA2
+	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 09:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716874430; cv=none; b=PIl5tV1wr6+r9pl70yn7uJk5CePSWs+x5N1/AZiO/hOxtWlzAldlKeeDuGijbfvacqFh5b1yzPs1EIWdFmeUJNBwC/HCbnmYihtsIoqKLxxStN+aGZQxnCEiWaJywdwQjZ+FzF31x/ncdAX21ZeRsjA4A4+U7kmSwm+UmU6jl/I=
+	t=1716887773; cv=none; b=HLSx9EZ07i1T0uCBI2yt0U6kw11v0kO5fOu+xmN6fx/jnnn1InahuTypsph2RGWs0LwBLQZfRLPvV7Oqwn6L8tLw1w7u76LJG0sT80xpqaU3KAKdNmCzjVFjCMzosvQoUpbeonFcMuytsqsr+zv+Hina+ji1GM2t2KMgZxaQryY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716874430; c=relaxed/simple;
-	bh=s05Frly+jsi9ApRgAMiozaXpR67rihNmFY6csDtyDUg=;
+	s=arc-20240116; t=1716887773; c=relaxed/simple;
+	bh=ODCeOz68Tw5iqfAQ+za+X6Ik/MLNV933HgaQ30waK/4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FhAwOFbkf02D9eUk6uSKnT90TP8IlaG0C3Z5oiNqDLZa5wFT6XIV2pN1LqcnMImbA+JyVjrUOcPSPb1LQU6lgHtjiKMWal6+C4phXZ+572e2YimrlUxmuGVsVdR/WGs2F2G8aUKSOx+591XpUObephZ4Zgs9/lkXS33vAF8TxD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2bdf446f3d1so310284a91.3
-        for <linux-coco@lists.linux.dev>; Mon, 27 May 2024 22:33:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716874428; x=1717479228;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fN6LRL+FsIHhjPUj0yA5DeMxhwLzqKe44DGJ+zjen+s=;
-        b=J73953tuOvgK1QpGmwTsgBRzAu6Mk1jCqWOr3gf6i2kz6l8lYaF85GGGeXvYDR3dxc
-         6Nn4Zbne6ICWehcfJBw+VOhVI1sIDD7U6N4I+jjhAsCHFUP0zSDjO7Ep17m5hiPLK3y8
-         BQDZu6KUhI+TKxZ1D8zSHkgjqqOICXHjbeUQBxBZPZ+eJhotCjENYRtnk04NGan0HVKe
-         W3oBYATn2cSupHlr/5Wva11gqLq09QMOsG2Zdxzd733/eDGfP61KLnQoonqNLrT2CfOQ
-         N6E16nSvqJJKLa5dQQCg+oBPb9PU0CjNvQn+RvPfaRfQzeH/FSui1KtQQgHgl3yIIEAs
-         /zgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVk13+CIm+J1r0eeWET+C1s//1uSkDWf8scUI+Qt+aOhakHVC8nOjVpqGRgOWLoQK/Rzy30XZwzFT+dYHAwmtN4Ql4PjljtFamHPQ==
-X-Gm-Message-State: AOJu0YzEJirKpJ/Bud88hxOd6LCSl/qxbaOpyQQrPgQHFVAPQ+a9BU8i
-	THHwie4wF72yKDlGI7bFQUW5uIyx4z1opcCEZnZpuqHZm26sQmxR
-X-Google-Smtp-Source: AGHT+IHse1I9e6UDY482/9q4rxCeoBsLH1h8sqxmlnuIt2y7ohHDp0RwxMIzcOm0aIibGNazirrQgg==
-X-Received: by 2002:a17:90a:d143:b0:2c0:11d4:b2e0 with SMTP id 98e67ed59e1d1-2c011d4b31bmr354237a91.34.1716874428096;
-        Mon, 27 May 2024 22:33:48 -0700 (PDT)
-Received: from liuwe-devbox-debian-v2 ([20.69.120.36])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2bdd9ed2cc7sm8835972a91.3.2024.05.27.22.33.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 May 2024 22:33:47 -0700 (PDT)
-Date: Tue, 28 May 2024 05:33:46 +0000
-From: Wei Liu <wei.liu@kernel.org>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org
-Subject: Re: [PATCH 06/20] x86/tdx: Convert MSR write handling to use new
- TDVMCALL_0()
-Message-ID: <ZlVsurj64QycDQRr@liuwe-devbox-debian-v2>
-References: <20240517141938.4177174-1-kirill.shutemov@linux.intel.com>
- <20240517141938.4177174-7-kirill.shutemov@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UGhwkSraWu2iI7JvBy6r9WE//kq3jyHGpsebgkRXFqkL4rGASUfGgHoGaSJJKU3LZlNWd/aBaRRDEfYqJ79QVMVe0DmUOzDvTS6j8lrcd1zOTp8NiZLX4fCjYv1RQ6daHVvEW5z3yS/C+cDccwOICZeI9tJX18Sp9YsFohxpbE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bxsOeS6W; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bxsOeS6W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716887772; x=1748423772;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ODCeOz68Tw5iqfAQ+za+X6Ik/MLNV933HgaQ30waK/4=;
+  b=bxsOeS6WEGzt0QHsQEdQA7gDddEgsBm84682Flt11bLuZFnOwBFk1q6I
+   mRjev80Gz0meEImcoXmOqyTOzF731XWt/gHsHBUInAv2fD1aJJyu69RZ3
+   yljYED4NHf4xRJZ+1AhIQpgR6FdN0j6SyRxriNZSZ/LrjS1Y+jWjP5FFQ
+   SRgKC+fgsx8Raun8Ur5aPt77E8VAct9qXFM09YDS2xlR+r9ayH5CK//Er
+   oTkXjpFv4qlTRF+htgYIq/rvniHpT+fpTjue3ujMBEREREeqdkt9/hlGX
+   cn5LAjf11BRfgMWirFrmopMZ+H5dH5aUC166+zkKFgFMkPsKzBbJwaNLr
+   w==;
+X-CSE-ConnectionGUID: 73H2/NP1Tryq4hal9PDNhg==
+X-CSE-MsgGUID: Fxo6asjbT8mbJqj4VlDA2A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="23884591"
+X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; 
+   d="scan'208";a="23884591"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 02:16:11 -0700
+X-CSE-ConnectionGUID: Om5udNsHS6m98j9lL/vqJg==
+X-CSE-MsgGUID: PeGsG56JQ/ehJ5bU6MIA6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; 
+   d="scan'208";a="35093312"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa009.jf.intel.com with ESMTP; 28 May 2024 02:16:07 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 19534184; Tue, 28 May 2024 12:16:05 +0300 (EEST)
+Date: Tue, 28 May 2024 12:16:05 +0300
+From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
+To: Dexuan Cui <decui@microsoft.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	"hpa@zytor.com" <hpa@zytor.com>, KY Srinivasan <kys@microsoft.com>, 
+	"luto@kernel.org" <luto@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"peterz@infradead.org" <peterz@infradead.org>, 
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	"wei.liu@kernel.org" <wei.liu@kernel.org>, jason <jason@zx2c4.com>, 
+	"mhklinux@outlook.com" <mhklinux@outlook.com>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
+	"tytso@mit.edu" <tytso@mit.edu>, "ardb@kernel.org" <ardb@kernel.org>, 
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	Tianyu Lan <Tianyu.Lan@microsoft.com>
+Subject: Re: [RFC PATCH] clocksource: hyper-v: Enable the tsc_page for a TDX
+ VM in TD mode
+Message-ID: <pwwqslpypa4zbyypq25qkvyayu5qpmz7wkjmax7zs6s4f7mr5t@7pf4gq2w6o7u>
+References: <20240523022441.20879-1-decui@microsoft.com>
+ <299a83e8-cb13-4599-9737-adb3bb922169@intel.com>
+ <SA1PR21MB1317CD997CCD64654B438754BFF52@SA1PR21MB1317.namprd21.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -66,20 +74,55 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240517141938.4177174-7-kirill.shutemov@linux.intel.com>
+In-Reply-To: <SA1PR21MB1317CD997CCD64654B438754BFF52@SA1PR21MB1317.namprd21.prod.outlook.com>
 
-On Fri, May 17, 2024 at 05:19:24PM +0300, Kirill A. Shutemov wrote:
-> Use newly introduced TDVMCALL_0() instead of __tdx_hypercall() to handle
-> MSR write emulation.
+On Fri, May 24, 2024 at 08:45:42AM +0000, Dexuan Cui wrote:
+> > From: Dave Hansen <dave.hansen@intel.com>
+> > Sent: Thursday, May 23, 2024 7:26 AM
+> > [...]
+> > On 5/22/24 19:24, Dexuan Cui wrote:
+> > ...
+> > > +static bool noinstr intel_cc_platform_td_l2(enum cc_attr attr)
+> > > +{
+> > > +	switch (attr) {
+> > > +	case CC_ATTR_GUEST_MEM_ENCRYPT:
+> > > +	case CC_ATTR_MEM_ENCRYPT:
+> > > +		return true;
+> > > +	default:
+> > > +		return false;
+> > > +	}
+> > > +}
+> > > +
+> > >  static bool noinstr intel_cc_platform_has(enum cc_attr attr)
+> > >  {
+> > > +	if (tdx_partitioned_td_l2)
+> > > +		return intel_cc_platform_td_l2(attr);
+> > > +
+> > >  	switch (attr) {
+> > >  	case CC_ATTR_GUEST_UNROLL_STRING_IO:
+> > >  	case CC_ATTR_HOTPLUG_DISABLED:
+> > 
+> > On its face, this _looks_ rather troubling.  It just hijacks all of the
+> > attributes.  It totally bifurcates the code.  Anything that gets added
+> > to intel_cc_platform_has() now needs to be considered for addition to
+> > intel_cc_platform_td_l2().
 > 
-> It cuts code bloat substantially:
-> 
-> Function                                     old     new   delta
-> tdx_handle_virt_exception                   1947    1819    -128
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> ---
->  arch/x86/coco/tdx/tdx.c | 9 ++-------
->  arch/x86/hyperv/ivm.c   | 9 ++-------
+> Maybe the bifurcation is necessary?
 
-Acked-by: Wei Liu <wei.liu@kernel.org>
+I would like to keep the same code paths for all TDX guests level, if
+possible.
+
+> TD mode is different from
+> Partitioned TD mode (L2), after all. Another reason for the bifurcation
+> is:  currently online/offline'ing is disallowed for a TD VM, but actually
+> Hyper-V is able to support CPU online/offline'ing for a TD VM in
+> Partitioned TD mode (L2) -- how can we allow online/offline'ing for such
+> a VM?
+
+This is going to be fixed by kexec patchset. It was wrong to block offline
+based on TDX enumeration. It has to be stopped for MADT wake up method, if
+reset vector is not supported.
+
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
