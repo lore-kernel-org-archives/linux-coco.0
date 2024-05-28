@@ -1,88 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9121516B732
-	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 10:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A5013D887
+	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 10:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716890505; cv=none; b=X0Dfg7bvfsqEXigmnNVc6/7J6EBbNBzInsyLVYbA1mbaUgIxSj7wXJWX0FwBZJGLgoYkCTlwlByTc9ho9T9gc5Si+NFfNK2MOQ7MlqSNObT8iCLYg41X/XBg65HRCznA+eiDg7HJQIeIcxlkAuMj+b4Xf+tj67c+EzRHcMfvZCE=
+	t=1716890970; cv=none; b=hjYTY3fPgeKozY6cN2cCERn2HyhMH8eYirjf5YWLHT8F2J232v0CXA2YjktbYfU0SryEs4rp3+ecwydxhpESsN4uioJg66Yt0LwkoBvgOzCyzqFvu6MmPFycfxHWjzv0W7MkTEdF7srGZJ5LvQmPy6vvbhboW5n7v3AqyCP3T+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716890505; c=relaxed/simple;
-	bh=Y2E9LMJOmZGaKwGYezKBuZaUNvib7wYH8wfYOZyvMfg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kGK03OkdQckLcm2ILaj0RbCsJtm/GzloNDZhEtaTptJ9uMdbxScpwpvaOeioEjEpRtTRNHTm06JZHG+DjFY4V499G0jdyu5syiJ/3whgMOQjXxqGypQZrtf/O3B2g9NPVfLYodW8aj90mB8cs66fhJlfdzqMNvMPFw4d+kzLv2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S9MBWC7R; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1716890970; c=relaxed/simple;
+	bh=h19i4uIK303A17Pev7/cmdkTNSROBXXQUVH+EFLdd48=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WjcoQFDFKAFqsZyMFTqPfYHSjZSYiSFR4Eo0jaJDoF+wVLvGTpnRPXHiRPYfII08/XiheQdtRyv1AvmOvVkFCMvyhVfBDx+xcsQp4MvmjqSJGwt7H/Wtu1WA9Z/rXzmERRSv8ny/Wy3FcLilBCCWNA1g3YVwe+BBbZnWRVxmTtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DBu/xc6q; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S9MBWC7R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D967C4AF0F
-	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 10:01:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716890505;
-	bh=Y2E9LMJOmZGaKwGYezKBuZaUNvib7wYH8wfYOZyvMfg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=S9MBWC7RSuhidbunFi1mTZaZNejNJVPTNwja0NCLR0wVZCce5l+mzOL8xKzZmZrLz
-	 48YvBlO1cRZyCk93QJwoC5Vbwj6w4a4XHfuC/liSpBb0Ew1Fomiw1pZEexAWt8NSdm
-	 4xDM+23raWUvURKpmPJ92TKCiSYEIw4QWD9IkpQQb1lYBuR/OvmSMeLV03AQjH4FPX
-	 GN1YxNPLOlC6NoNPHX79dPQjVtMAVg2GFLjNV8XyJcDNQ6v5ooeD7zQMRnrKiT20yu
-	 JE9R8Wk6S8WXf75L6S6pLdLrQlLMu0Ca/zlLHW96SttvgXd+xrYCg0zCm2ReYENyq6
-	 IqEdaDJWnOYUg==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5b335681e82so88988eaf.2
-        for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 03:01:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXvCJZmvy+x4UC+/Kefe2nhNz81AOoQ288QAoRv35nMV5Fh7f9K3jaxknhORdT4NGGXor1ZBqobDx6tNNv5P9x+ZJQbhM3MM2SI5Q==
-X-Gm-Message-State: AOJu0YzspT4oQKPDsZxH5px6dtkD3fsiZpohanLH2SdPek536yS2yO2M
-	H5/mR6/U5LlrOX5neDaODGTNkQSJcc/+4+YkXevscdhA1nHdsNr7Sr5aclFGFik2X4KRdIyevbh
-	wVv91lAfQf6q1LcOtLeDIAWtDXnE=
-X-Google-Smtp-Source: AGHT+IEfjO0Flb77SUHaCU5yQoE4DJGVCO3ob7qAG4UYz8mL7NteXu7Bev8T/M+BiVOKp1HzWSxUqAEZSBrZ2ld8T3I=
-X-Received: by 2002:a05:6820:2e02:b0:5aa:3e4f:f01e with SMTP id
- 006d021491bc7-5b961b691eemr11395573eaf.1.1716890504453; Tue, 28 May 2024
- 03:01:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DBu/xc6q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716890968; x=1748426968;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=h19i4uIK303A17Pev7/cmdkTNSROBXXQUVH+EFLdd48=;
+  b=DBu/xc6q+ZZQ3L9ASYupEnb+2oWaDp+GaimoFzzvsST7GA9Uv0gvGipv
+   eq6DkdQV8eBO3RB7VcgdsTKL4CVqmHmvIvIxOZ6ITDRErKHoKhUmitOiV
+   4t6Z/vzkbxcqZhzRGdvQNnGvDp9T9/AD4D56pO273J5YSTQGUl2iKEGmI
+   fwHRUtrJKcPDuaR308JKEn3rvLPGCq3kvbDK9TpTMcN8gVBov1dXgTDOO
+   8K8LP0bxpe9PtUsT5W1JSoiu+xuFkYCGAlphvuOE/U87TV4UeLuhAb4AA
+   eJ5eHU4C0AUf/Fue+lcF6xmXL/pd2egib7rXICyEv7G4KDHuspiOP8ona
+   A==;
+X-CSE-ConnectionGUID: RCPW72wNQZCZihFqIAm4rQ==
+X-CSE-MsgGUID: BbYT/W9oQ/+PtvPEPWlJWg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="24640898"
+X-IronPort-AV: E=Sophos;i="6.08,195,1712646000"; 
+   d="scan'208";a="24640898"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 03:09:28 -0700
+X-CSE-ConnectionGUID: 2zXrjGVjSJ6A/yX5CpFd2A==
+X-CSE-MsgGUID: JW4ElxonTZCoBCCJj27NQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,195,1712646000"; 
+   d="scan'208";a="39426484"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa005.fm.intel.com with ESMTP; 28 May 2024 03:09:25 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 2E72417E; Tue, 28 May 2024 13:09:24 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	cho@microsoft.com,
+	decui@microsoft.com,
+	John.Starks@microsoft.com
+Subject: [PATCH] x86/tdx: Generate SIGBUS on userspace MMIO
+Date: Tue, 28 May 2024 13:09:19 +0300
+Message-ID: <20240528100919.520881-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
-In-Reply-To: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 28 May 2024 12:01:32 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gUq6n4U50eqKrvdxjYxXxcUbJaYGmuyO4uWWDzc2C_Bg@mail.gmail.com>
-Message-ID: <CAJZ5v0gUq6n4U50eqKrvdxjYxXxcUbJaYGmuyO4uWWDzc2C_Bg@mail.gmail.com>
-Subject: Re: [PATCHv11 00/19] x86/tdx: Add kexec support
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima <jun.nakajima@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
-	"Huang, Kai" <kai.huang@intel.com>, Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org, 
-	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 28, 2024 at 11:55=E2=80=AFAM Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
->
-> The patchset adds bits and pieces to get kexec (and crashkernel) work on
-> TDX guest.
->
-> The last patch implements CPU offlining according to the approved ACPI
-> spec change poposal[1]. It unlocks kexec with all CPUs visible in the tar=
-get
-> kernel. It requires BIOS-side enabling. If it missing we fallback to boot=
-ing
-> 2nd kernel with single CPU.
->
-> Please review. I would be glad for any feedback.
->
-> [1] https://lore.kernel.org/all/13356251.uLZWGnKmhe@kreacher
+Currently, attempting to perform MMIO from userspace in a TDX guest
+leads to a warning about an unexpected #VE and SIGSEGV being delivered
+to the process.
 
-For the ACPI-related changes in the series
+Enlightened userspace may choose to handle MMIO on their own if the
+kernel does not emulate it.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Handle the EPT_VIOLATION exit reason for userspace and deliver SIGBUS
+instead of SIGSEGV. SIGBUS is more appropriate for the MMIO situation.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+
+v2:
+  - Rebased;
+  - Fix grammar;
+---
+ arch/x86/coco/tdx/tdx.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index c1cb90369915..d2aa93cebf5a 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -7,6 +7,7 @@
+ #include <linux/cpufeature.h>
+ #include <linux/export.h>
+ #include <linux/io.h>
++#include <linux/sched/signal.h>
+ #include <asm/coco.h>
+ #include <asm/tdx.h>
+ #include <asm/vmx.h>
+@@ -630,6 +631,11 @@ void tdx_get_ve_info(struct ve_info *ve)
+ 	ve->instr_info  = upper_32_bits(args.r10);
+ }
+ 
++static inline bool is_private_gpa(u64 gpa)
++{
++	return gpa == cc_mkenc(gpa);
++}
++
+ /*
+  * Handle the user initiated #VE.
+  *
+@@ -641,17 +647,20 @@ static int virt_exception_user(struct pt_regs *regs, struct ve_info *ve)
+ 	switch (ve->exit_reason) {
+ 	case EXIT_REASON_CPUID:
+ 		return handle_cpuid(regs, ve);
++	case EXIT_REASON_EPT_VIOLATION:
++		if (is_private_gpa(ve->gpa))
++			panic("Unexpected EPT-violation on private memory.");
++
++		force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)ve->gla);
++
++		/* Return 0 to avoid incrementing RIP */
++		return 0;
+ 	default:
+ 		pr_warn("Unexpected #VE: %lld\n", ve->exit_reason);
+ 		return -EIO;
+ 	}
+ }
+ 
+-static inline bool is_private_gpa(u64 gpa)
+-{
+-	return gpa == cc_mkenc(gpa);
+-}
+-
+ /*
+  * Handle the kernel #VE.
+  *
+-- 
+2.43.0
+
