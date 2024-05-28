@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A1E16D4C7
-	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 09:55:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525E716D9A6
+	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 09:55:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716890149; cv=none; b=f2VrMnjZByDiTFQieoby2/7isKPK4Nzn1ER77Tm4te0ByfPSjNMiWX6tTv8OtKp+eDVmNIc4/WDIzGRBA3DGv/PNPH4W8UOI19GRxoBFwr2Q6AUCWJQCNFxezf6Mi7ptlIe6ZwcOo1Fduf+RW8etWEDQjC1qg4IfvX/Sjn1RXgQ=
+	t=1716890153; cv=none; b=PoTPR/Oyl+sUc+kYwesImFf5YSMtBDNwkGRr9BSxOP4p8e115FE3ywHId53bTfrhvqjE3elV58lpt0YAQ0NIy+/P/vbqIElTkZ3Oh0Cv5s+YzI8/iW29UiQuFInj5Kobr1mTKt3HxxTTyC7K6nAu9G6GtthFNc5Dl6Wj3iw3kPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716890149; c=relaxed/simple;
-	bh=TxEZrVwney4pCeOb1c0lFVUFay3kAApGY+zEuDo/6UA=;
+	s=arc-20240116; t=1716890153; c=relaxed/simple;
+	bh=hHQ9KRFxDt369JBke8P/ZWEer7oQx7aWq4kGcpCYmms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f7lyEJ2JXKUUQ9WthW4vow8nUUSsj4z2769DffAxo3a+jScLxOjiWeb4j4NBNlbjQ8Jz3//V+xqKhz9VEeHAtKS+4WchSOxuCot/Ex5Xkgc5E4bH//+zSvtmk9yLOCv8NFiobb/0RcRlvqQkJms4hx3RbfwQgNZn0ejfAbqOfQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ISSI28J9; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=fHbCxZJlzpc/+NJPPwvhXh0fiIOe3VmK1aLIUhTHvgz76Cfmlf72DEFpF1g/lVtzk32QtA6kcEhMCZ3zUxgbTfKuWja047cjMseMiRXs2U6vCtD8ExD3IbjQp5KFiYb8hP4YgmesVClz9Ijswpv0igx1dgQrmN/H2NvU9jUrnH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HM9ynKYJ; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ISSI28J9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HM9ynKYJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716890148; x=1748426148;
+  t=1716890152; x=1748426152;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=TxEZrVwney4pCeOb1c0lFVUFay3kAApGY+zEuDo/6UA=;
-  b=ISSI28J9J/En6TL2TiA5HKrph5PBi9+w9zvi23WejtHcG1Ex2vrKRLVC
-   Ep/YyFeRWq3ZBF2pukkSed8YZnp4A4I8lG/93jqy2ikfWHxY4gYEPkOQ4
-   rseldJq2Ud9bXCxrR4k8/1BZ5xBXUh0lhGvS8dBU/uzigZmoLSLsNjgRh
-   u1gdUEBEVLcpMzHNqh76QYbUaYecmBCEdkEHIDxqdMapsSaDxpgNkDaLY
-   Hdzep2FX09dQ2ipcSvFiKp7/PRkuF0zRUhxDOGWUrmBmA3Npm+fquDdUB
-   A2MJj6s/jkqrpjCtry+FCT4lZ5CNJ6AkOb4LyX8skiggtJGj3dp9NFi8c
-   w==;
-X-CSE-ConnectionGUID: O8sdlbA1T4u+qbXpqehj2w==
-X-CSE-MsgGUID: f9shP+6vSFGZDoxiBjKFJw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13172082"
+  bh=hHQ9KRFxDt369JBke8P/ZWEer7oQx7aWq4kGcpCYmms=;
+  b=HM9ynKYJNwKdh/1ZWmAp11c6FHple4sJsjanidQHxWX5gOlEGAmRlapb
+   CSK+59GtFdfbW0LLJLk1t1DYV4yWxr6qLrD2b08x7L0hbb38xSgR0u+mX
+   AFAVrCOgA8eekwP6fbPXDpXXlPE+Ur4uzo94mmouPy1pcwjTuVO9N57OB
+   O0NzK5qCWDxfPfjdDtQsrhzqUyLGsXN0AOjmViUbUaulPHVVRWurqewip
+   mSh5I6k/UeVaXBTQ8rwDw6MKwHkjQSZy+WP7uAaqpJwYAo6LnjibBZlBL
+   xKcVQVGxeST3kC7rWQzZUAKn7uLG22Jg4y3ZKQS2xIcxyOgraMtVBm4uX
+   A==;
+X-CSE-ConnectionGUID: p8eN/Mt9RLKlck5nWGFseA==
+X-CSE-MsgGUID: 8DO7ntHlTfadjh9q6V44Qg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13097800"
 X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; 
-   d="scan'208";a="13172082"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 02:55:34 -0700
-X-CSE-ConnectionGUID: LChHeAAwTgClYQS56T0jqA==
-X-CSE-MsgGUID: c3CvS80vRMKDBemgyyhjBQ==
+   d="scan'208";a="13097800"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 02:55:47 -0700
+X-CSE-ConnectionGUID: 7XKH460fSwm5D/IsirCqgA==
+X-CSE-MsgGUID: m26kk0SmSh69XFK2ZB689A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; 
-   d="scan'208";a="39984735"
+   d="scan'208";a="34951819"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa004.jf.intel.com with ESMTP; 28 May 2024 02:55:27 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 28 May 2024 02:55:40 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 4BE1E40F; Tue, 28 May 2024 12:55:26 +0300 (EEST)
+	id 0AA91A19; Tue, 28 May 2024 12:55:27 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -74,9 +74,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Tao Liu <ltao@redhat.com>
-Subject: [PATCHv11 02/19] x86/apic: Mark acpi_mp_wake_* variables as __ro_after_init
-Date: Tue, 28 May 2024 12:55:05 +0300
-Message-ID: <20240528095522.509667-3-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv11 15/19] x86/acpi: Do not attempt to bring up secondary CPUs in kexec case
+Date: Tue, 28 May 2024 12:55:18 +0300
+Message-ID: <20240528095522.509667-16-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
 References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
@@ -88,35 +88,83 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-acpi_mp_wake_mailbox_paddr and acpi_mp_wake_mailbox initialized once
-during ACPI MADT init and never changed.
+ACPI MADT doesn't allow to offline a CPU after it was onlined. This
+limits kexec: the second kernel won't be able to use more than one CPU.
+
+To prevent a kexec kernel from onlining secondary CPUs invalidate the
+mailbox address in the ACPI MADT wakeup structure which prevents a
+kexec kernel to use it.
+
+This is safe as the booting kernel has the mailbox address cached
+already and acpi_wakeup_cpu() uses the cached value to bring up the
+secondary CPUs.
+
+Note: This is a Linux specific convention and not covered by the
+      ACPI specification.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Tao Liu <ltao@redhat.com>
 ---
- arch/x86/kernel/acpi/madt_wakeup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/acpi/madt_wakeup.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
-index 7f164d38bd0b..cf79ea6f3007 100644
+index 004801b9b151..30820f9de5af 100644
 --- a/arch/x86/kernel/acpi/madt_wakeup.c
 +++ b/arch/x86/kernel/acpi/madt_wakeup.c
-@@ -6,10 +6,10 @@
- #include <asm/processor.h>
- 
- /* Physical address of the Multiprocessor Wakeup Structure mailbox */
--static u64 acpi_mp_wake_mailbox_paddr;
-+static u64 acpi_mp_wake_mailbox_paddr __ro_after_init;
- 
- /* Virtual address of the Multiprocessor Wakeup Structure mailbox */
--static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
-+static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox __ro_after_init;
+@@ -14,6 +14,11 @@ static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox __ro_afte
  
  static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
  {
++	if (!acpi_mp_wake_mailbox_paddr) {
++		pr_warn_once("No MADT mailbox: cannot bringup secondary CPUs. Booting with kexec?\n");
++		return -EOPNOTSUPP;
++	}
++
+ 	/*
+ 	 * Remap mailbox memory only for the first call to acpi_wakeup_cpu().
+ 	 *
+@@ -64,6 +69,28 @@ static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+ 	return 0;
+ }
+ 
++static void acpi_mp_disable_offlining(struct acpi_madt_multiproc_wakeup *mp_wake)
++{
++	cpu_hotplug_disable_offlining();
++
++	/*
++	 * ACPI MADT doesn't allow to offline a CPU after it was onlined. This
++	 * limits kexec: the second kernel won't be able to use more than one CPU.
++	 *
++	 * To prevent a kexec kernel from onlining secondary CPUs invalidate the
++	 * mailbox address in the ACPI MADT wakeup structure which prevents a
++	 * kexec kernel to use it.
++	 *
++	 * This is safe as the booting kernel has the mailbox address cached
++	 * already and acpi_wakeup_cpu() uses the cached value to bring up the
++	 * secondary CPUs.
++	 *
++	 * Note: This is a Linux specific convention and not covered by the
++	 *       ACPI specification.
++	 */
++	mp_wake->mailbox_address = 0;
++}
++
+ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+ 			      const unsigned long end)
+ {
+@@ -77,7 +104,7 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+ 
+ 	acpi_mp_wake_mailbox_paddr = mp_wake->mailbox_address;
+ 
+-	cpu_hotplug_disable_offlining();
++	acpi_mp_disable_offlining(mp_wake);
+ 
+ 	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
+ 
 -- 
 2.43.0
 
