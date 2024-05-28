@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C23616D9C9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB1016D9C7
 	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 09:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716890157; cv=none; b=lfP2vd67drtcfNaL//M2vABfErk9ZsAU40IenStL/LLWzAiDEKCGVOQuoOrsHqWfmRlqBuU2p5nob9bX8ySVxDwm2bebCxdvkrUVEB6SvgJRe4RmD2YJLHQOYNP0mv/6/aaBCItNDlbXN68mEeAw36NlRkfRSztU8xcuDz3niDY=
+	t=1716890157; cv=none; b=UcdyzeUL34Ce6A0uRAqay1n9lzW1E2ob1vo9850fpRsCN+31yGuc63Jr5+5UVq453ytRQp2ZarmkkNesp2dD6OLtE4tGAXS/NzLgZF6GTZ75mtpXIxgoTPX1U1VTNLKQxIeN+47A6Cbz8q92T+v8F5HUmP4emg3sGHG1rNahOy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1716890157; c=relaxed/simple;
-	bh=GSg67xlVUPvLYDL37C9OUEs7HbwzTLSXgJBxYPbO+3w=;
+	bh=ggOF5UziCfkAXFWyu9AjZBbe749R0vOnMDQfmgr6Dec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KwS2qTYmoK5ghk7ed1UzcqSBJU4fBSu+TNIuNSVw3o1slrWiEqfS60lBOySdmZUXQsEQArEdN/zH/l+9D1GpB/JZT9nM9BkyPY4OKmhrUSCeViSSddcj5QoAJuldnrZVgGrKzdKhwjWy7huLZ6gdB8nuXX/77xdJmyQVSpbEtOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YcNQH5b1; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=G4ovmjydLQssKh9D2fjE21P/KBd44K5bP6MkmAGHhQ95P1RV+Nny/myWPIqMqf4y38ajF8ZRG/detCUBb45PN5tYC1qMYcKHDvZg1TmXPNWJkjEbx7LjE3Jo4/J1ic98dkRcYyp2iYoAv4dGki6xJejirkGqDLxyBCLoIPYeBZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MxqgJFHn; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YcNQH5b1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MxqgJFHn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1716890156; x=1748426156;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GSg67xlVUPvLYDL37C9OUEs7HbwzTLSXgJBxYPbO+3w=;
-  b=YcNQH5b13IzDn2D9iXHwmPGc0gzi+S+bRxdnXyItmAv/bfi93acFyHRn
-   GZKQI632aIrdgA8X+46fxG50zimL7gkMfQzqbjoMhb2GOBSOho8yNrtOX
-   Fi/8l3WIE+0VjYvCcxZuawF0AsVxVATeU38Uunp4mr33th+KtozbZqn5W
-   Jkju4bKDX4eVtrKOhl/dh/8lJugHAlCt7t0kjZhX2KQcJLnnpO/g/6JYZ
-   9YBgcAlwZcdZsQ/eTOVoVGCPWEHL3OkxjxJ7tZakQ1L7RlYWPcYQbyhf0
-   mYZwGrAo3ItV5CkOV6QAU/SeMtXNv/MO7y8KiO0vPmI5zNLMgZeqgo40R
+  bh=ggOF5UziCfkAXFWyu9AjZBbe749R0vOnMDQfmgr6Dec=;
+  b=MxqgJFHnLtBBREofd9QtLC4uJL4QWYz/YH142ejkWEhLDHKOVnZG4vE1
+   BmUbJaDlzBgiJMIdBoHLlNvqBSDeylM+FHpQOF8SwNanmQn+Hbtq8US73
+   fnwdshO0Vqy7sIORqi+j2BPwBoPWPa+Rx4lAmWZph5xAPghtZAvA7OxO7
+   cUWMAtgHNwkqtOuBE1SZb2ZJJAVHXU6qPeBLmDObSVM4RG4z0YlxAotgj
+   GWCGux3+8AqulQYb1kzwU2R8dVjJiGIg3DPYrlbUD+pB1XVBrrft13u1f
+   H1onWvrQ/MV67O0dByaBnVDTXwb+BISRVXt3aS/edu/7Gj7R+hZjocP/g
    w==;
-X-CSE-ConnectionGUID: aYnbGDJHQfOGKwXQiNzsoA==
-X-CSE-MsgGUID: FoOIaoXFSGiClbSBSMJAMQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13097850"
+X-CSE-ConnectionGUID: XHH/3pE/RtyK5xb8hOAXkw==
+X-CSE-MsgGUID: OADJJRI3RfO17PMu4q/JEA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13172176"
 X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; 
-   d="scan'208";a="13097850"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 02:55:47 -0700
-X-CSE-ConnectionGUID: 7nAdNUDpRICNt8kaeimCAA==
-X-CSE-MsgGUID: muYZWZLMQm6HxxgLAl+xvw==
+   d="scan'208";a="13172176"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 02:55:41 -0700
+X-CSE-ConnectionGUID: J1NSLEg5Q4us7sdnT0LpJA==
+X-CSE-MsgGUID: lwOD5fg7R4aE5sJChWCTtw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; 
-   d="scan'208";a="34951830"
+   d="scan'208";a="39984750"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa007.fm.intel.com with ESMTP; 28 May 2024 02:55:41 -0700
+  by orviesa004.jf.intel.com with ESMTP; 28 May 2024 02:55:34 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 25EA5A5C; Tue, 28 May 2024 12:55:27 +0300 (EEST)
+	id AA54977C; Tue, 28 May 2024 12:55:26 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -74,9 +74,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Tao Liu <ltao@redhat.com>
-Subject: [PATCHv11 17/19] x86/mm: Introduce kernel_ident_mapping_free()
-Date: Tue, 28 May 2024 12:55:20 +0300
-Message-ID: <20240528095522.509667-18-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv11 09/19] x86/tdx: Account shared memory
+Date: Tue, 28 May 2024 12:55:12 +0300
+Message-ID: <20240528095522.509667-10-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
 References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
@@ -88,125 +88,49 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The helper complements kernel_ident_mapping_init(): it frees the
-identity mapping that was previously allocated. It will be used in the
-error path to free a partially allocated mapping or if the mapping is no
-longer needed.
+The kernel will convert all shared memory back to private during kexec.
+The direct mapping page tables will provide information on which memory
+is shared.
 
-The caller provides a struct x86_mapping_info with the free_pgd_page()
-callback hooked up and the pgd_t to free.
+It is extremely important to convert all shared memory. If a page is
+missed, it will cause the second kernel to crash when it accesses it.
+
+Keep track of the number of shared pages. This will allow for
+cross-checking against the shared information in the direct mapping and
+reporting if the shared bit is lost.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
 Tested-by: Tao Liu <ltao@redhat.com>
 ---
- arch/x86/include/asm/init.h |  3 ++
- arch/x86/mm/ident_map.c     | 73 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 76 insertions(+)
+ arch/x86/coco/tdx/tdx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
-index cc9ccf61b6bd..14d72727d7ee 100644
---- a/arch/x86/include/asm/init.h
-+++ b/arch/x86/include/asm/init.h
-@@ -6,6 +6,7 @@
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 26fa47db5782..979891e97d83 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -38,6 +38,8 @@
  
- struct x86_mapping_info {
- 	void *(*alloc_pgt_page)(void *); /* allocate buf for page table */
-+	void (*free_pgt_page)(void *, void *); /* free buf for page table */
- 	void *context;			 /* context for alloc_pgt_page */
- 	unsigned long page_flag;	 /* page flag for PMD or PUD entry */
- 	unsigned long offset;		 /* ident mapping offset */
-@@ -16,4 +17,6 @@ struct x86_mapping_info {
- int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
- 				unsigned long pstart, unsigned long pend);
+ #define TDREPORT_SUBTYPE_0	0
  
-+void kernel_ident_mapping_free(struct x86_mapping_info *info, pgd_t *pgd);
++static atomic_long_t nr_shared;
 +
- #endif /* _ASM_X86_INIT_H */
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index 968d7005f4a7..3996af7b4abf 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -4,6 +4,79 @@
-  * included by both the compressed kernel and the regular kernel.
-  */
- 
-+static void free_pte(struct x86_mapping_info *info, pmd_t *pmd)
-+{
-+	pte_t *pte = pte_offset_kernel(pmd, 0);
-+
-+	info->free_pgt_page(pte, info->context);
-+}
-+
-+static void free_pmd(struct x86_mapping_info *info, pud_t *pud)
-+{
-+	pmd_t *pmd = pmd_offset(pud, 0);
-+	int i;
-+
-+	for (i = 0; i < PTRS_PER_PMD; i++) {
-+		if (!pmd_present(pmd[i]))
-+			continue;
-+
-+		if (pmd_leaf(pmd[i]))
-+			continue;
-+
-+		free_pte(info, &pmd[i]);
-+	}
-+
-+	info->free_pgt_page(pmd, info->context);
-+}
-+
-+static void free_pud(struct x86_mapping_info *info, p4d_t *p4d)
-+{
-+	pud_t *pud = pud_offset(p4d, 0);
-+	int i;
-+
-+	for (i = 0; i < PTRS_PER_PUD; i++) {
-+		if (!pud_present(pud[i]))
-+			continue;
-+
-+		if (pud_leaf(pud[i]))
-+			continue;
-+
-+		free_pmd(info, &pud[i]);
-+	}
-+
-+	info->free_pgt_page(pud, info->context);
-+}
-+
-+static void free_p4d(struct x86_mapping_info *info, pgd_t *pgd)
-+{
-+	p4d_t *p4d = p4d_offset(pgd, 0);
-+	int i;
-+
-+	for (i = 0; i < PTRS_PER_P4D; i++) {
-+		if (!p4d_present(p4d[i]))
-+			continue;
-+
-+		free_pud(info, &p4d[i]);
-+	}
-+
-+	if (pgtable_l5_enabled())
-+		info->free_pgt_page(pgd, info->context);
-+}
-+
-+void kernel_ident_mapping_free(struct x86_mapping_info *info, pgd_t *pgd)
-+{
-+	int i;
-+
-+	for (i = 0; i < PTRS_PER_PGD; i++) {
-+		if (!pgd_present(pgd[i]))
-+			continue;
-+
-+		free_p4d(info, &pgd[i]);
-+	}
-+
-+	info->free_pgt_page(pgd, info->context);
-+}
-+
- static void ident_pmd_init(struct x86_mapping_info *info, pmd_t *pmd_page,
- 			   unsigned long addr, unsigned long end)
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ noinstr void __noreturn __tdx_hypercall_failed(void)
  {
+@@ -821,6 +823,11 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+ 		return -EIO;
+ 
++	if (enc)
++		atomic_long_sub(numpages, &nr_shared);
++	else
++		atomic_long_add(numpages, &nr_shared);
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
