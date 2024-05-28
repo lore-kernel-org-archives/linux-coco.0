@@ -1,143 +1,147 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A5013D887
-	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 10:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBF816B73D
+	for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 10:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716890970; cv=none; b=hjYTY3fPgeKozY6cN2cCERn2HyhMH8eYirjf5YWLHT8F2J232v0CXA2YjktbYfU0SryEs4rp3+ecwydxhpESsN4uioJg66Yt0LwkoBvgOzCyzqFvu6MmPFycfxHWjzv0W7MkTEdF7srGZJ5LvQmPy6vvbhboW5n7v3AqyCP3T+Q=
+	t=1716892795; cv=none; b=I+/m0r5uN+u0qKtxrQDnYVBnFYpqpRQZMBDvPHqHQM4ZPXqVCB3dKrJg8fu5uz9MYRz/a9Vm9NJAZGM1DTy4ynT5ydZXKIbNGX7ia6STZ71/fy5a6fWZ7oI435bLysAA0EPiZXCheBcVQ5yAvAbf4tso2uwq2LiYoeqlqTswu6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716890970; c=relaxed/simple;
-	bh=h19i4uIK303A17Pev7/cmdkTNSROBXXQUVH+EFLdd48=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WjcoQFDFKAFqsZyMFTqPfYHSjZSYiSFR4Eo0jaJDoF+wVLvGTpnRPXHiRPYfII08/XiheQdtRyv1AvmOvVkFCMvyhVfBDx+xcsQp4MvmjqSJGwt7H/Wtu1WA9Z/rXzmERRSv8ny/Wy3FcLilBCCWNA1g3YVwe+BBbZnWRVxmTtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DBu/xc6q; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+	s=arc-20240116; t=1716892795; c=relaxed/simple;
+	bh=aj45SEB7D9ldygzhYKXe3HytaBUsioM0atiT5UJiPD4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h/stb2kXUeAgSt86SSWzyzbCAiN+fUY/JnC4m0HAleGEVzC6XxVD0CpUA1YEQ5Tyxs6VMslcvDN1h/P1gfVSNhzWjzI/v9/yOD5WB1T4QIpsmW/owSrojaIzQsCZRflnPXHAbq5ws0mOwfh7O9P8C6e7gxwowZAEIeT+g5tyxT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U+tkLP95; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DBu/xc6q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716890968; x=1748426968;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=h19i4uIK303A17Pev7/cmdkTNSROBXXQUVH+EFLdd48=;
-  b=DBu/xc6q+ZZQ3L9ASYupEnb+2oWaDp+GaimoFzzvsST7GA9Uv0gvGipv
-   eq6DkdQV8eBO3RB7VcgdsTKL4CVqmHmvIvIxOZ6ITDRErKHoKhUmitOiV
-   4t6Z/vzkbxcqZhzRGdvQNnGvDp9T9/AD4D56pO273J5YSTQGUl2iKEGmI
-   fwHRUtrJKcPDuaR308JKEn3rvLPGCq3kvbDK9TpTMcN8gVBov1dXgTDOO
-   8K8LP0bxpe9PtUsT5W1JSoiu+xuFkYCGAlphvuOE/U87TV4UeLuhAb4AA
-   eJ5eHU4C0AUf/Fue+lcF6xmXL/pd2egib7rXICyEv7G4KDHuspiOP8ona
-   A==;
-X-CSE-ConnectionGUID: RCPW72wNQZCZihFqIAm4rQ==
-X-CSE-MsgGUID: BbYT/W9oQ/+PtvPEPWlJWg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="24640898"
-X-IronPort-AV: E=Sophos;i="6.08,195,1712646000"; 
-   d="scan'208";a="24640898"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 03:09:28 -0700
-X-CSE-ConnectionGUID: 2zXrjGVjSJ6A/yX5CpFd2A==
-X-CSE-MsgGUID: JW4ElxonTZCoBCCJj27NQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,195,1712646000"; 
-   d="scan'208";a="39426484"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa005.fm.intel.com with ESMTP; 28 May 2024 03:09:25 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 2E72417E; Tue, 28 May 2024 13:09:24 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	cho@microsoft.com,
-	decui@microsoft.com,
-	John.Starks@microsoft.com
-Subject: [PATCH] x86/tdx: Generate SIGBUS on userspace MMIO
-Date: Tue, 28 May 2024 13:09:19 +0300
-Message-ID: <20240528100919.520881-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U+tkLP95"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716892792;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cWr5rLzhCiKZuwW7h7YBmazKG48r0xrDo/cGy6it0/4=;
+	b=U+tkLP95NJucXVQjKEObOikJIObI5xa8SLu1c0e0+nLGYFIh+D6YsI1XSh6c07B81CEXKc
+	M2cJVoqsxSMNp2SFVzphurT7KGN8M1jlr4umi/8lPEE9euuDX5+4fFH63YCLLsT1NCUACs
+	IQIYB2Da17MD1wQ7h/WOJDORqEKYkE0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-7-9CVWIcOnPa-fDhhqG6xQrQ-1; Tue, 28 May 2024 06:39:50 -0400
+X-MC-Unique: 9CVWIcOnPa-fDhhqG6xQrQ-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3580f213373so520359f8f.3
+        for <linux-coco@lists.linux.dev>; Tue, 28 May 2024 03:39:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716892789; x=1717497589;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cWr5rLzhCiKZuwW7h7YBmazKG48r0xrDo/cGy6it0/4=;
+        b=RBPpXhpzdzs1oHDFZfCXDGKpMCcSCSe5QChHiDQFHGhj4s/q+8gIWYGqfWZjuy3WPw
+         gT7V2RtnQL+q5dFD8oeUZJJx8jkJ+Ljl213tWC3SV8EblQVKid2720PiWjXEFKC5Y/Od
+         As1GTkdoBpvPKShSAMh2ue+ebl/n9JgzQ66A89eYFSKQTbvuO2xzutzPee9/X4g0dsFY
+         nL4qoO9/fV4Dr44ZAneOK3lXWr4frDhYeFD4iVabLmYzBqIcvTD0hnFn6NnWLd36pQGl
+         XHEV6okpXTwkDnSnCUT57wioyAbkphXH3CfGEEFaoepnOuj1iSsdwiKcZFAQGO/ptCNx
+         441Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWWBR93Cxw+0U3At+uMs8HahIw9XCttbNkN2Ksduf/nr8UFTYffa4YRoO1BqsnHgZz3sFaPDfvdGfFD22Vpzrk6qawQZQtt+KJ+vA==
+X-Gm-Message-State: AOJu0YzhPcsCW1iIyJLm7/UdKSrf7obDKDMsFynXcuhq/gMvZxKRnctp
+	/TBVERnD1Ds6C/duhJZJXi6mVTJ7+Vg5Iju+IUZvCeuE+Zd4itPKTjfHuBOk6jTLQdRmjok/2yG
+	NxF1Dz99XnQ5OyGgBboD+4IMJ30qS/YfYogD8RNOPlFRkJnHzb9jlOcmtpfaUVVw0p5udQMxnm+
+	tWgwFixjjpxN0KOEROIqAuAiNpePSr7/F9TA==
+X-Received: by 2002:adf:f605:0:b0:351:d78e:875e with SMTP id ffacd0b85a97d-35526c271e2mr7836489f8f.14.1716892788873;
+        Tue, 28 May 2024 03:39:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG4hqokdTCBlYq+yxpXGdOajfvNiw6vsJ+NmirTpEeZTh+x8A7CTg2keuO9ed6PBfJTW5YEfW34ZoQ5qL3Gp5w=
+X-Received: by 2002:adf:f605:0:b0:351:d78e:875e with SMTP id
+ ffacd0b85a97d-35526c271e2mr7836445f8f.14.1716892788425; Tue, 28 May 2024
+ 03:39:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240501085210.2213060-1-michael.roth@amd.com>
+ <20240501085210.2213060-10-michael.roth@amd.com> <84e8460d-f8e7-46d7-a274-90ea7aec2203@linux.intel.com>
+ <CABgObfaXmMUYHEuK+D+2E9pybKMJqGZsKB033X1aOSQHSEqqVA@mail.gmail.com>
+ <7d6a4320-89f5-48ce-95ff-54b00e7e9597@linux.intel.com> <rczrxq3lhqguarwh4cwxwa35j5riiagbilcw32oaxd7aqpyaq7@6bqrqn6ontba>
+ <7da9c4a3-8597-44aa-a7ad-cc2bd2a85024@linux.intel.com>
+In-Reply-To: <7da9c4a3-8597-44aa-a7ad-cc2bd2a85024@linux.intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 28 May 2024 12:39:36 +0200
+Message-ID: <CABgObfajCDkbDbK6-QyZABGTh=5rmE5q3ifvHfZD1A2Z+u0v3A@mail.gmail.com>
+Subject: Re: [PATCH v15 09/20] KVM: SEV: Add support to handle MSR based Page
+ State Change VMGEXIT
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, 
+	seanjc@google.com, vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, 
+	Brijesh Singh <brijesh.singh@amd.com>, "Yamahata, Isaku" <isaku.yamahata@intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently, attempting to perform MMIO from userspace in a TDX guest
-leads to a warning about an unexpected #VE and SIGSEGV being delivered
-to the process.
+On Mon, May 27, 2024 at 2:26=E2=80=AFPM Binbin Wu <binbin.wu@linux.intel.co=
+m> wrote:
+> > It seems like TDX should be able to do something similar by limiting th=
+e
+> > size of each KVM_HC_MAP_GPA_RANGE to TDX_MAP_GPA_MAX_LEN, and then
+> > returning TDG_VP_VMCALL_RETRY to guest if the original size was greater
+> > than TDX_MAP_GPA_MAX_LEN. But at that point you're effectively done wit=
+h
+> > the entire request and can return to guest, so it actually seems a litt=
+le
+> > more straightforward than the SNP case above. E.g. TDX has a 1:1 mappin=
+g
+> > between TDG_VP_VMCALL_MAP_GPA and KVM_HC_MAP_GPA_RANGE events. (And eve=
+n
+> > similar names :))
+> >
+> > So doesn't seem like there's a good reason to expose any of these
+> > throttling details to userspace,
 
-Enlightened userspace may choose to handle MMIO on their own if the
-kernel does not emulate it.
+I think userspace should never be worried about throttling. I would
+say it's up to the guest to split the GPA into multiple ranges, but
+that's not how arch/x86/coco/tdx/tdx.c is implemented so instead we
+can do the split in KVM instead. It can be a module parameter or VM
+attribute, establishing the size that will be processed in a single
+TDVMCALL.
 
-Handle the EPT_VIOLATION exit reason for userspace and deliver SIGBUS
-instead of SIGSEGV. SIGBUS is more appropriate for the MMIO situation.
+Paolo
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-
-v2:
-  - Rebased;
-  - Fix grammar;
----
- arch/x86/coco/tdx/tdx.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index c1cb90369915..d2aa93cebf5a 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -7,6 +7,7 @@
- #include <linux/cpufeature.h>
- #include <linux/export.h>
- #include <linux/io.h>
-+#include <linux/sched/signal.h>
- #include <asm/coco.h>
- #include <asm/tdx.h>
- #include <asm/vmx.h>
-@@ -630,6 +631,11 @@ void tdx_get_ve_info(struct ve_info *ve)
- 	ve->instr_info  = upper_32_bits(args.r10);
- }
- 
-+static inline bool is_private_gpa(u64 gpa)
-+{
-+	return gpa == cc_mkenc(gpa);
-+}
-+
- /*
-  * Handle the user initiated #VE.
-  *
-@@ -641,17 +647,20 @@ static int virt_exception_user(struct pt_regs *regs, struct ve_info *ve)
- 	switch (ve->exit_reason) {
- 	case EXIT_REASON_CPUID:
- 		return handle_cpuid(regs, ve);
-+	case EXIT_REASON_EPT_VIOLATION:
-+		if (is_private_gpa(ve->gpa))
-+			panic("Unexpected EPT-violation on private memory.");
-+
-+		force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)ve->gla);
-+
-+		/* Return 0 to avoid incrementing RIP */
-+		return 0;
- 	default:
- 		pr_warn("Unexpected #VE: %lld\n", ve->exit_reason);
- 		return -EIO;
- 	}
- }
- 
--static inline bool is_private_gpa(u64 gpa)
--{
--	return gpa == cc_mkenc(gpa);
--}
--
- /*
-  * Handle the kernel #VE.
-  *
--- 
-2.43.0
+>
+> The reasons I want to put the throttling in userspace are:
+> 1. Hardcode the TDX_MAP_GPA_MAX_LEN in kernel may not be preferred.
+> 2. The throttling thing doesn't need to be TDX specific, it can be
+> generic in userspace.
+>
+> I think we can set a reasonable value in userspace, so that for SNP, it
+> doesn't trigger the throttling since the large request will be split to
+> multiple userspace requests.
+>
+>
+> > in which case existing
+> > KVM_HC_MAP_GPA_RANGE interface seems like it should be sufficient.
+> >
+> > -Mike
+> >
+> >>
+> >>>> For TDX, it may also want to use KVM_HC_MAP_GPA_RANGE hypercall  to
+> >>>> userspace via KVM_EXIT_HYPERCALL.
+> >>> Yes, definitely.
+> >>>
+> >>> Paolo
+> >>>
+>
 
