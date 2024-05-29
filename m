@@ -1,195 +1,150 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AF0181307
-	for <linux-coco@lists.linux.dev>; Wed, 29 May 2024 12:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AF71802BC
+	for <linux-coco@lists.linux.dev>; Wed, 29 May 2024 15:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716986020; cv=none; b=WKNEzntYA9SIA15Wb8Qr3OxVIiT6EQoRTaEKNgUl0OKhc52Io7onCG72BO/hIgRZ/r6t0WEKytu4MvYKhZhvGGIpvpDPBp7P2napPUCeHbk/ZgzJ44wvE6/Meu9N/jMHpxwyVGtJsd8NneCgruO5bN8kDkJuYia2oqk3yKzVf2M=
+	t=1716995775; cv=none; b=EqPbeSgzjOkfI60dD+h22TYjsKasJ1pm4q8coNpVuSoYXMuzttzviRiIdWT3CsrplU5WpxXiY1vTUrO2WUPC8IhcJ4TUOnh1AStIupYuotKS/oVggjO1kQdi8G8/sfaC7hDn1YK/v0g/uyhjpkVNc2FtyWqgs7w5h3fqSHTpBCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716986020; c=relaxed/simple;
-	bh=Kjz4o7E9Vi+goRaYpgYsPsr72HU+LspMKlqcruc8gzU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a8rGMg+/Taw4dnyFWS8/O1PZ2w3t/WhPQFp8FRbIuW14tdCbSX3uJMJ3J2DNzX2PhmKUbw0dJxte/CN+qM14UKFf5PahRjstIqtvZyBcPuXpjV/kwt894XEUK6mjAfdWK2/T4p7zqWXAsxQoD/nl/8fhFISpR2ylBetbNjB3AP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=KLWB0cBf; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
+	s=arc-20240116; t=1716995775; c=relaxed/simple;
+	bh=WtwgqPxIEy4rw+nholzssSrglNHugW0jbWtwXs+eqEU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E7WGhIGbHj+GUhHqKw1aYQXKcLtx3KDv5YL6JZia++3rf93Yc2pp4J+81XkHqatGO+k+jJ1jDIyYHaGMAka65w45uCoB5YULu9lSvTld3mNafxXqAbcPA3FszzCRfRMTwvF35dTGs8L/QhpY8tUZRVevVK/sWaxiGLeHU/xQt8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PdGuX3Gd reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="KLWB0cBf"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a59a609dd3fso160183966b.0
-        for <linux-coco@lists.linux.dev>; Wed, 29 May 2024 05:33:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citrix.com; s=google; t=1716986017; x=1717590817; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kjz4o7E9Vi+goRaYpgYsPsr72HU+LspMKlqcruc8gzU=;
-        b=KLWB0cBfAqIXpS7wY6p7n2Dwe4gtQaUdcS99AzY2NiAC2JCGzMK5iB+oRIt9jVcYtK
-         i3PahGzO714bGpGJImGm8N9mKhQOXBbG+lA3zVeMZjKP5WRzcfiHM+PuTX6VlA7m0xnD
-         Tx2JThxvwRAB+L2AtlWILDkExSbcaBnv3AMos=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716986017; x=1717590817;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kjz4o7E9Vi+goRaYpgYsPsr72HU+LspMKlqcruc8gzU=;
-        b=QaHenT02NT7FISZYDl914s/fTtD1VqY3cxrnlR1PhnM4oKa2QcOxa7aDbs+TWZWV0J
-         kQgqcl/x/e3xlGIYkz+eA9W0CCjBB0QONi6LaVypk6AFyb7b3ye7bv9un3vXX7Ue2I7n
-         me337ZUwFVCZjUnC/mbGi1F5G/GV1Xn6ENr/LNf9UAoigLRrIrscSzTBN/e+u8NRdq3C
-         Llqtpbb6tBYi4CkCCd0B6wee/ocyY5xza2W4TyDJP1xr2j6ZeddmB/EFD5QsoYxZqh0U
-         HgZbOoYhOk2FR4m/G/StWRzDVigKeIWLVQuH3OqQVY6poeLuoe6r3sd/JZ7BPTd+2xi6
-         Hr+A==
-X-Forwarded-Encrypted: i=1; AJvYcCW0ap+UTTm4ILd1F7+sgtuK4ua/Fqc1BA27dOioNpeBi6vbE7l4km66vbN5JJ+RIugdFLYxdESNup6tlXkX8+0M3mrGdificQriGg==
-X-Gm-Message-State: AOJu0YzMaLppgHkJgboxBfIXGjgfnNmdgVAcMlu4ZFYCqU1cr5TzuWgF
-	ix5fDDYfShhuHG+UWIP8gK9gSB0kCgC9KZk25e3ABpeKjo7gG50n5jtEMRRC+zM=
-X-Google-Smtp-Source: AGHT+IGiLc7AgUl827FgV2aZOE13ynn0TtZqmMLpd+MxfDu7nEToYL/rmYy1RVA6e8sosXqFNMmqag==
-X-Received: by 2002:a17:906:40c8:b0:a62:a48c:1123 with SMTP id a640c23a62f3a-a642d2775bamr178860766b.5.1716986017274;
-        Wed, 29 May 2024 05:33:37 -0700 (PDT)
-Received: from [10.125.231.30] ([217.156.233.157])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a637386898bsm95138766b.220.2024.05.29.05.33.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 May 2024 05:33:37 -0700 (PDT)
-Message-ID: <55bc0649-c017-49ab-905d-212f140a403f@citrix.com>
-Date: Wed, 29 May 2024 13:33:35 +0100
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PdGuX3Gd"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 38D7840E01A3;
+	Wed, 29 May 2024 15:16:11 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id NoOJQ2BFJLv9; Wed, 29 May 2024 15:16:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1716995765; bh=JxEAHhbyQDE99cyLseBirGgp8UILWOP5Nko9ahp4ykk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PdGuX3GdGiTa0UBwqDbqBBMWaahwz8CoKM8nSbk04nqa1vJJRShBdhSaMbJOBrOMS
+	 Q2dU9SKv0i+u0By+NNXxoInoL89E8cB/UwRvQmEsbp0t9yeuptVk2+nMPiTa4YcVLS
+	 CjhmDbntRtHeUoH0J/C5Payhj7MEEFDjwF6IvqT1PLULC38ho+iNxbpNPNVzkewdAn
+	 psgdhkReuIkiERedkFSLAyGesfzLJ8F26P1AG+zP8BK+UOya9928tQ3UfRu8SjKw2V
+	 P7sZOzs1ZlQk+rskHq2y7cEwA5kKlcGSFbIjdLoQXts0wDcNuVsJQm0tN1/dwbdkTe
+	 yT8o9AeEw3ief09u3TvxcCEqgfh3D3iiUvUxBHDT+gHUolf0IK7jHToeQCiYz4mE57
+	 DXSXJ6LCXNKvr16AW64LSuVZq1PUZLtjsPuJwLw3zb7H7wpkMI2K2/9zQwQEWDdQ0I
+	 X0hCShNDcG3nur10QB3v3pIOER7veBEKaDBy1oOm8MK81qL16xr6HE20KLek5ES3DK
+	 j2MCIyPKND/pZaSW2T8qfpkFydT2gl/95e+3hc9ThfFPyn0o3J4rbrit+6qSygYqb+
+	 rkF9qhe71TCRmtWM4+jNZI1JKSQoJomFiEC6sNSBg4aDPLoLZivG2TqZWEsf0SxkKc
+	 HvWFFqhKGF+2G/5xqStlY82I=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 73B3740E0177;
+	Wed, 29 May 2024 15:15:37 +0000 (UTC)
+Date: Wed, 29 May 2024 17:15:31 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Andrew Cooper <andrew.cooper3@citrix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
+	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv11 05/19] x86/relocate_kernel: Use named labels for less
+ confusion
+Message-ID: <20240529151531.GDZldGk5cBbyPrOBRP@fat_crate.local>
+References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
+ <20240528095522.509667-6-kirill.shutemov@linux.intel.com>
+ <1e1d1aea-7346-4022-9f5f-402d171adfda@suse.com>
+ <t3zx4f6ynru7qp4oel4syza2alcuxz7q7hxqgf2lxusgobnsnh@vtnecqrsxci5>
+ <20240529112852.GBZlcRdI3oqBtjKxAV@fat_crate.local>
+ <55bc0649-c017-49ab-905d-212f140a403f@citrix.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv11 05/19] x86/relocate_kernel: Use named labels for less
- confusion
-To: Borislav Petkov <bp@alien8.de>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Nikolay Borisov <nik.borisov@suse.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>,
- Jun Nakajima <jun.nakajima@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
- "Huang, Kai" <kai.huang@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
- Baoquan He <bhe@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
- linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <20240528095522.509667-6-kirill.shutemov@linux.intel.com>
- <1e1d1aea-7346-4022-9f5f-402d171adfda@suse.com>
- <t3zx4f6ynru7qp4oel4syza2alcuxz7q7hxqgf2lxusgobnsnh@vtnecqrsxci5>
- <20240529112852.GBZlcRdI3oqBtjKxAV@fat_crate.local>
-Content-Language: en-GB
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
- 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
- 6+ahAA==
-In-Reply-To: <20240529112852.GBZlcRdI3oqBtjKxAV@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <55bc0649-c017-49ab-905d-212f140a403f@citrix.com>
+Content-Transfer-Encoding: quoted-printable
 
-On 29/05/2024 12:28 pm, Borislav Petkov wrote:
-> On Wed, May 29, 2024 at 02:17:29PM +0300, Kirill A. Shutemov wrote:
->>> That jmp 1f becomes redundant now as it simply jumps 1 line below.
->>>
->> Nothing changed wrt this jump. It dates back to initial kexec
->> implementation.
->>
->> See 5234f5eb04ab ("[PATCH] kexec: x86_64 kexec implementation").
->>
->> But I don't see functional need in it.
->>
->> Anyway, it is outside of the scope of the patch.
-> Yap, Kirill did what Nikolay should've done - git archeology. Please
-> don't forget to do that next time.
->
-> And back in the day they didn't comment non-obvious things because
-> commenting is for losers. :-\
->
-> So that unconditional forward jump either flushes branch prediction on
-> some old uarch or something else weird, uarch-special.
->
-> I doubt we can remove it just like that.
->
-> Lemme add Andy - he should know.
+On Wed, May 29, 2024 at 01:33:35PM +0100, Andrew Cooper wrote:
+> Seems I've gained a reputation...
 
-Seems I've gained a reputation...
+Yes you have. You have this weird interest in very deep uarch details
+that I can't share. Not at that detail. :-P
 
-jmp 1f dates back to ye olde 8086, which started the whole trend of the
-instruction pointer just being a figment of the ISA's imagination[1].
+> jmp 1f dates back to ye olde 8086, which started the whole trend of the
+> instruction pointer just being a figment of the ISA's imagination[1].
+>=20
+> Hardware maintains the pointer to the next byte to fetch (the prefetch
+> queue was up to 6 bytes), and there was a micro-op to subtract the
+> current length of the prefetch queue from the accumulator.
+>=20
+> In those days, the prefetch queue was not coherent with main memory, an=
+d
+> jumps (being a discontinuity in the instruction stream) simply flushed
+> the prefetch queue.
+>=20
+> This was necessary after modifying executable code, because otherwise
+> you could end up executing stale bytes from the prefetch queue and then
+> non-stale bytes thereafter.=C2=A0 (Otherwise known as the way to distin=
+guish
+> the 8086 from the 8088 because the latter only had a 4 byte prefetch qu=
+eue.)
 
-Hardware maintains the pointer to the next byte to fetch (the prefetch
-queue was up to 6 bytes), and there was a micro-op to subtract the
-current length of the prefetch queue from the accumulator.
+Thanks - that certainly wakes up a long-asleep neuron in the back of my
+mind...
 
-In those days, the prefetch queue was not coherent with main memory, and
-jumps (being a discontinuity in the instruction stream) simply flushed
-the prefetch queue.
+> Anyway.=C2=A0 It's how you used to spell "serialising operation" before=
+ that
+> term ever entered the architecture.=C2=A0 Linux still supports CPUs pri=
+or to
+> the Pentium, so still needs to care about prefetch queues in the 486.
+>=20
+> However, this example appears to be in 64bit code and following a write
+> to CR4 which will be fully serialising, so it's probably copy&paste fro=
+m
+> 32bit code where it would be necessary in principle.
 
-This was necessary after modifying executable code, because otherwise
-you could end up executing stale bytes from the prefetch queue and then
-non-stale bytes thereafter.  (Otherwise known as the way to distinguish
-the 8086 from the 8088 because the latter only had a 4 byte prefetch queue.)
+Yap, fully agreed. We could try to remove it and see what complains.
 
-Anyway.  It's how you used to spell "serialising operation" before that
-term ever entered the architecture.  Linux still supports CPUs prior to
-the Pentium, so still needs to care about prefetch queues in the 486.
+Nikolay, wanna do a patch which properly explains the situation?
 
-However, this example appears to be in 64bit code and following a write
-to CR4 which will be fully serialising, so it's probably copy&paste from
-32bit code where it would be necessary in principle.
+> https://www.righto.com/2023/01/inside-8086-processors-instruction.html#=
+fn:pc
+>=20
+> In fact, anyone who hasn't should read the entire series on the 8086,
+> https://www.righto.com/p/index.html
 
-~Andrew
+Oh yeah, already bookmarked.
 
-[1]
-https://www.righto.com/2023/01/inside-8086-processors-instruction.html#fn:pc
+Thanks Andy!
 
-In fact, anyone who hasn't should read the entire series on the 8086,
-https://www.righto.com/p/index.html
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
