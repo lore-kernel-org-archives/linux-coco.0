@@ -1,59 +1,57 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE6314A61E
-	for <linux-coco@lists.linux.dev>; Wed, 29 May 2024 11:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AF0181307
+	for <linux-coco@lists.linux.dev>; Wed, 29 May 2024 12:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716982780; cv=none; b=NZOjvU9UEilK+S9uI0Rx0kkAc9fJERgpI83ey4wAHaoQghFo+i+8/oFORzzb2Td0DtUjiciHoxVSDM98Mt47Pje3u83WKmP5j4OJcryl8NHghGn15fVlx+y/dWlUjJLAEBTOvxu+/5O1kdf+TAx1ZYMRPP7PX58Q1zEkwKpb8tk=
+	t=1716986020; cv=none; b=WKNEzntYA9SIA15Wb8Qr3OxVIiT6EQoRTaEKNgUl0OKhc52Io7onCG72BO/hIgRZ/r6t0WEKytu4MvYKhZhvGGIpvpDPBp7P2napPUCeHbk/ZgzJ44wvE6/Meu9N/jMHpxwyVGtJsd8NneCgruO5bN8kDkJuYia2oqk3yKzVf2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716982780; c=relaxed/simple;
-	bh=ydja5ABopWv3H3E435qacVly16lftEf0fcwfsjpRf8Y=;
+	s=arc-20240116; t=1716986020; c=relaxed/simple;
+	bh=Kjz4o7E9Vi+goRaYpgYsPsr72HU+LspMKlqcruc8gzU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AqyuR2zdSgp+bMAQOAUagBZWZRRv9X3hYJqPCnwo0eraL2X2vFUSClw7TaDHaOUrI0fmYrzQqt8QlygFyaZs9byYMx9Gda1/OZFqtpMwSlCAvzME8gI1vwPJY4iSaFcIW7/loGTswFnBuyPVXdDgkVCtTjTQiIMmPkQMtQHYfBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cEmHbC4z; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=a8rGMg+/Taw4dnyFWS8/O1PZ2w3t/WhPQFp8FRbIuW14tdCbSX3uJMJ3J2DNzX2PhmKUbw0dJxte/CN+qM14UKFf5PahRjstIqtvZyBcPuXpjV/kwt894XEUK6mjAfdWK2/T4p7zqWXAsxQoD/nl/8fhFISpR2ylBetbNjB3AP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=KLWB0cBf; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cEmHbC4z"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-35502a992c9so2036269f8f.3
-        for <linux-coco@lists.linux.dev>; Wed, 29 May 2024 04:39:37 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="KLWB0cBf"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a59a609dd3fso160183966b.0
+        for <linux-coco@lists.linux.dev>; Wed, 29 May 2024 05:33:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1716982776; x=1717587576; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EdFeXZ0iZQwHyJpJ9sEUFEvxz5pnqM5Lhk7k33g54Ts=;
-        b=cEmHbC4zZphStFU3vvLyP3fNFZdGFp6yaNna8kdbfhMu3xBKnaT8eOc0vjh5735xpM
-         JHPWpTe8R6DcjUcQwnSH2PdB3+CC/1CJQLrVXrC2o3erwd/5xwcY0WpgxJ8EyxkjW7PG
-         U4Pjm0FoYQ86k0OLqPeUJXJxVHmlT3QuPTLeXNv9jt8mKqwlFx331jPYAwaD3OyNTCvJ
-         enRfgwssOvw1JQAJMeNb3BOYhQVojiT6V5OJZgB1cheYCt9uPBmDBr0hIxJVnf3YfnuQ
-         kvwPw1oZlRyQpGBCPqf1ykVt95t74cRPOlqYt2MA9zMUVjsx2cm5W2yAYLuJw+EQSpTQ
-         M15g==
+        d=citrix.com; s=google; t=1716986017; x=1717590817; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kjz4o7E9Vi+goRaYpgYsPsr72HU+LspMKlqcruc8gzU=;
+        b=KLWB0cBfAqIXpS7wY6p7n2Dwe4gtQaUdcS99AzY2NiAC2JCGzMK5iB+oRIt9jVcYtK
+         i3PahGzO714bGpGJImGm8N9mKhQOXBbG+lA3zVeMZjKP5WRzcfiHM+PuTX6VlA7m0xnD
+         Tx2JThxvwRAB+L2AtlWILDkExSbcaBnv3AMos=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716982776; x=1717587576;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EdFeXZ0iZQwHyJpJ9sEUFEvxz5pnqM5Lhk7k33g54Ts=;
-        b=qSZVqUH36rdgcurNcpzK/rTLZY+UPMvFCTIvOaogKz23SCk9P38B6yt98TYQIc4ynu
-         Ne7fglKCfp2kFqQz3r1MlSraJGz0cSThfs9VJEJjCoBMFnuAVmRXu+lz8fgzIqYigf4/
-         HhQlcPDw9bIbK8BpLL0c07QXOj89Mw3yLSbPxU1zJ17dL7Ws4p//LZdhNJVTyc83Z3pb
-         cgxQr43fgmupOxUanJ/Bh6quFptYYtcRvnQNsXHB4vwJowOFaWlxgtLmpo7bYppXuEt7
-         5LQ4RyT2Efn6ElOPWRFCFCDs2+74Hx7+sAhW9c2Dq64YiDpFA7V2KxVsJuJE/O4nu7XF
-         UoOw==
-X-Forwarded-Encrypted: i=1; AJvYcCXQMMdFtlZ61kA4GjnHMk5yohML2Njqm1AlqcXyP0Ps893stQeNmeiDpjmlhuWUQ6zmgCFIF9lp1Yd/5zjoXaYCkpMmuXgWXpWpPA==
-X-Gm-Message-State: AOJu0YxnM+UZXxeARoZibF+zO0r34E+/6pJCeALQ6Yh8umynE+VXo0FK
-	yd9USx+GhsXTuyd2/SpAvXJWu/CC/2x0WRDhC84dkQ0miT06A77QW5HK4GYLUQ0=
-X-Google-Smtp-Source: AGHT+IGhbyPCV7mhFEb+wa2zxVQsRfFFyIuyAeyXPnnporhcsU+et7sVZoAC9sjK3Qz8qHTU2qJsiQ==
-X-Received: by 2002:a5d:62cc:0:b0:354:d098:8d67 with SMTP id ffacd0b85a97d-3552fe179a1mr12680946f8f.57.1716982776439;
-        Wed, 29 May 2024 04:39:36 -0700 (PDT)
-Received: from ?IPV6:2a10:bac0:b000:5de0:ca17:8dd8:7313:d6fd? ([2a10:bac0:b000:5de0:ca17:8dd8:7313:d6fd])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3557a1c93a5sm14633282f8f.70.2024.05.29.04.39.34
+        d=1e100.net; s=20230601; t=1716986017; x=1717590817;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kjz4o7E9Vi+goRaYpgYsPsr72HU+LspMKlqcruc8gzU=;
+        b=QaHenT02NT7FISZYDl914s/fTtD1VqY3cxrnlR1PhnM4oKa2QcOxa7aDbs+TWZWV0J
+         kQgqcl/x/e3xlGIYkz+eA9W0CCjBB0QONi6LaVypk6AFyb7b3ye7bv9un3vXX7Ue2I7n
+         me337ZUwFVCZjUnC/mbGi1F5G/GV1Xn6ENr/LNf9UAoigLRrIrscSzTBN/e+u8NRdq3C
+         Llqtpbb6tBYi4CkCCd0B6wee/ocyY5xza2W4TyDJP1xr2j6ZeddmB/EFD5QsoYxZqh0U
+         HgZbOoYhOk2FR4m/G/StWRzDVigKeIWLVQuH3OqQVY6poeLuoe6r3sd/JZ7BPTd+2xi6
+         Hr+A==
+X-Forwarded-Encrypted: i=1; AJvYcCW0ap+UTTm4ILd1F7+sgtuK4ua/Fqc1BA27dOioNpeBi6vbE7l4km66vbN5JJ+RIugdFLYxdESNup6tlXkX8+0M3mrGdificQriGg==
+X-Gm-Message-State: AOJu0YzMaLppgHkJgboxBfIXGjgfnNmdgVAcMlu4ZFYCqU1cr5TzuWgF
+	ix5fDDYfShhuHG+UWIP8gK9gSB0kCgC9KZk25e3ABpeKjo7gG50n5jtEMRRC+zM=
+X-Google-Smtp-Source: AGHT+IGiLc7AgUl827FgV2aZOE13ynn0TtZqmMLpd+MxfDu7nEToYL/rmYy1RVA6e8sosXqFNMmqag==
+X-Received: by 2002:a17:906:40c8:b0:a62:a48c:1123 with SMTP id a640c23a62f3a-a642d2775bamr178860766b.5.1716986017274;
+        Wed, 29 May 2024 05:33:37 -0700 (PDT)
+Received: from [10.125.231.30] ([217.156.233.157])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a637386898bsm95138766b.220.2024.05.29.05.33.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 May 2024 04:39:36 -0700 (PDT)
-Message-ID: <46ddc54e-f7bb-4de3-b311-faee12e5a6b9@suse.com>
-Date: Wed, 29 May 2024 14:39:33 +0300
+        Wed, 29 May 2024 05:33:37 -0700 (PDT)
+Message-ID: <55bc0649-c017-49ab-905d-212f140a403f@citrix.com>
+Date: Wed, 29 May 2024 13:33:35 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -61,13 +59,14 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv11 06/19] x86/kexec: Keep CR4.MCE set during kexec for TDX
- guest
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+Subject: Re: [PATCHv11 05/19] x86/relocate_kernel: Use named labels for less
+ confusion
+To: Borislav Petkov <bp@alien8.de>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Nikolay Borisov <nik.borisov@suse.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>,
  Adrian Hunter <adrian.hunter@intel.com>,
  Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
@@ -83,26 +82,114 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
  linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <20240528095522.509667-7-kirill.shutemov@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-In-Reply-To: <20240528095522.509667-7-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <20240528095522.509667-6-kirill.shutemov@linux.intel.com>
+ <1e1d1aea-7346-4022-9f5f-402d171adfda@suse.com>
+ <t3zx4f6ynru7qp4oel4syza2alcuxz7q7hxqgf2lxusgobnsnh@vtnecqrsxci5>
+ <20240529112852.GBZlcRdI3oqBtjKxAV@fat_crate.local>
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
+ 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
+ 6+ahAA==
+In-Reply-To: <20240529112852.GBZlcRdI3oqBtjKxAV@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+On 29/05/2024 12:28 pm, Borislav Petkov wrote:
+> On Wed, May 29, 2024 at 02:17:29PM +0300, Kirill A. Shutemov wrote:
+>>> That jmp 1f becomes redundant now as it simply jumps 1 line below.
+>>>
+>> Nothing changed wrt this jump. It dates back to initial kexec
+>> implementation.
+>>
+>> See 5234f5eb04ab ("[PATCH] kexec: x86_64 kexec implementation").
+>>
+>> But I don't see functional need in it.
+>>
+>> Anyway, it is outside of the scope of the patch.
+> Yap, Kirill did what Nikolay should've done - git archeology. Please
+> don't forget to do that next time.
+>
+> And back in the day they didn't comment non-obvious things because
+> commenting is for losers. :-\
+>
+> So that unconditional forward jump either flushes branch prediction on
+> some old uarch or something else weird, uarch-special.
+>
+> I doubt we can remove it just like that.
+>
+> Lemme add Andy - he should know.
 
+Seems I've gained a reputation...
 
-On 28.05.24 г. 12:55 ч., Kirill A. Shutemov wrote:
-> TDX guests run with MCA enabled (CR4.MCE=1b) from the very start. If
-> that bit is cleared during CR4 register reprogramming during boot or
-> kexec flows, a #VE exception will be raised which the guest kernel
-> cannot handle it.
-> 
-> Therefore, make sure the CR4.MCE setting is preserved over kexec too and
-> avoid raising any #VEs.
-> 
-> The change doesn't affect non-TDX-guest environments.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+jmp 1f dates back to ye olde 8086, which started the whole trend of the
+instruction pointer just being a figment of the ISA's imagination[1].
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Hardware maintains the pointer to the next byte to fetch (the prefetch
+queue was up to 6 bytes), and there was a micro-op to subtract the
+current length of the prefetch queue from the accumulator.
+
+In those days, the prefetch queue was not coherent with main memory, and
+jumps (being a discontinuity in the instruction stream) simply flushed
+the prefetch queue.
+
+This was necessary after modifying executable code, because otherwise
+you could end up executing stale bytes from the prefetch queue and then
+non-stale bytes thereafter.  (Otherwise known as the way to distinguish
+the 8086 from the 8088 because the latter only had a 4 byte prefetch queue.)
+
+Anyway.  It's how you used to spell "serialising operation" before that
+term ever entered the architecture.  Linux still supports CPUs prior to
+the Pentium, so still needs to care about prefetch queues in the 486.
+
+However, this example appears to be in 64bit code and following a write
+to CR4 which will be fully serialising, so it's probably copy&paste from
+32bit code where it would be necessary in principle.
+
+~Andrew
+
+[1]
+https://www.righto.com/2023/01/inside-8086-processors-instruction.html#fn:pc
+
+In fact, anyone who hasn't should read the entire series on the 8086,
+https://www.righto.com/p/index.html
