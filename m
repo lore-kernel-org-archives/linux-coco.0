@@ -1,135 +1,59 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6772518E06
-	for <linux-coco@lists.linux.dev>; Wed, 29 May 2024 20:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039966F2E4
+	for <linux-coco@lists.linux.dev>; Thu, 30 May 2024 08:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717012929; cv=none; b=PWdoou/H/FVWKvILkdUtil9uChxrFO0PMduDYngIq/szWrgkT7XBL8BmSO+YSs1y0XiU2kLxx0F9VRhxNRjjw++g4dTIALZOmnXUSKcBulJ4isb/C5/8GWdyya+UhEQzx4rRBmWF69fu4JgGJmC9Wgehngt6ccLWIMxoeMdCFYc=
+	t=1717058837; cv=none; b=RXWRTw+Gx7hP/pRoQg0vR0zMmBrCYlRXMQ8W2NWewvHYsZN56FPtZOHUMz3ZtJ9mQcJTGVSLAmLu7Lcg0ULd534ibqNB8yURWR/rAgO7XJL12FuooFNiNKxWL+Op9JJWpByZO0OifAkrV1i17Md6vrce7ZszDzHmFa/FNjVj20g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717012929; c=relaxed/simple;
-	bh=2hRlvy/RjWARtjo6oSUZO1Wu+DhCOpznFy5U6Li2iQs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=s4EcSlqPFfwn4Inx2nkHXbpUisqsKNb96b27uWouif3DzdVP3cmIe0c3aq+uprwlyDOznIfhQYQaK/TnxWW+di7KKuaYs2HIYt6+GxRmnY9XTpG3+IabAK+uIxj0oJoH1oB8RgM0XFuxYMZobfZUGJ7GwqmsoGxycuJV97JrcP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2HV7Vvs5; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1717058837; c=relaxed/simple;
+	bh=XvOvLXRyULIqUgz/p6/YzkVR0eOhDj4r285TKY15LeQ=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rlrM5Pll3ijfT+J0K6dFAB+scUawCwr8SZOlPGaKiPUe287QqYYll37twX0v0M6c6GuoXal8TiWo/KecZ7OWUFRjBOgrjojIEOJUpU6Ysl73VcQN9U/jBwihM7/cuUjvxj7rl0FNjRWIWYuNwyWOWJBg+559RjN+XWf3bFb1j90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=GR9fofTN; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2HV7Vvs5"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-6bcf28cf82aso120921a12.2
-        for <linux-coco@lists.linux.dev>; Wed, 29 May 2024 13:02:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717012928; x=1717617728; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HB9I1KtyGLGWJZbJtvz+lEDv77A0FrVSDAPAJPLn2YA=;
-        b=2HV7Vvs55IWiuKz2mDHw41OsNd4dOl6cTauKX7UiEi6b9wCowTDNiBdZzz0XRqeq2o
-         mWBRn+iL+7ly455CFW/jx90nvt6icqmuGq838zdSfts/Y0Y9yIQ/3rsyERxKv8nsS6+R
-         znNq4XFGGDQtrn1WdEWt7Iz9I1S46r4sQ3rL5cyf/xdBT/vGtrl+T1fJ+XwF255fl8lJ
-         m2f72WBgSjAs/ulWt0Ag764GNuM3Gp104d0w40sJBgqE0aq6/9+6rtOxvRWxSsdC1HlH
-         IgeC0G5yQB5yI8EOfuPa4unUA856sZxxttIlQTAGDWpqbuohhpy7limYto0+nKs0r1ds
-         xxLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717012928; x=1717617728;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HB9I1KtyGLGWJZbJtvz+lEDv77A0FrVSDAPAJPLn2YA=;
-        b=ipT6BI+6w79qr6oKXsGLm5EsDhFTd45hSO9JdWNZuJqCy0eWDntbnmBeYM0BT/IYfd
-         3gRDwRtc+QMfEmi5wbUIjSUxGUiWLfH45iXw1gkpIAHpfdxdvO+yMZZmWq/GfuOjwAC1
-         WVT75xg2qOdoT5Wbst0n3caWO6OGQdGxAD/OzR7YNwkNlEtm82dj+DOMBBEQ6O9LXlyd
-         jONYi7HoAML0KPuucNbGLkwOKfah0LF7hdPx6luhIyjrIDtJ2EZx9xA+zjW9SppoN330
-         dbWuRvEO/sHA+olQq4rvFu1qoj8WwMxtZoBjOHD2EuDbFcPXe26O158VnqLm4I0JBySY
-         mg9g==
-X-Forwarded-Encrypted: i=1; AJvYcCXzixhcj/DW1+H6nww/4M+I3y2msEMdnoGP+lyv9wKKrN0epD8lz6k+7F1rNt3/EBIOH4E5crGlVF4fxU4/3ZMiGJYzIIn4CjuHcw==
-X-Gm-Message-State: AOJu0YzNPBW2F8Wp0s+i4FhCjanvVsthyU8brlJy1JVVTfBvJX8CxisA
-	FKaV+yWqctoD3nRpvZs3LJsKfq5AkXedJsRtLH2v+l3R/WvM6AkbqlGyhBOAL8oK/jKvq/lT2fT
-	iKw==
-X-Google-Smtp-Source: AGHT+IGnVjGAGUdS+QWuXtFD6JYVk48kHHGOYEmxpJY5fF1LGZtFCwusKyw4nxPICVEtyh7y/Kks5wf6ja0=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:90b:1258:b0:2b8:9aac:2b04 with SMTP id
- 98e67ed59e1d1-2c1abc659ddmr252a91.5.1717012927588; Wed, 29 May 2024 13:02:07
- -0700 (PDT)
-Date: Wed, 29 May 2024 13:02:06 -0700
-In-Reply-To: <CABgObfajCDkbDbK6-QyZABGTh=5rmE5q3ifvHfZD1A2Z+u0v3A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="GR9fofTN"
+Received: from 8bytes.org (pd9fe9dd8.dip0.t-ipconnect.de [217.254.157.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 14C861C680A;
+	Thu, 30 May 2024 10:47:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1717058828;
+	bh=XvOvLXRyULIqUgz/p6/YzkVR0eOhDj4r285TKY15LeQ=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=GR9fofTNui80n54x/gL3OlGW/VAeOX1AZaBP0DdYxyns73VZyMfo46H00IDHs9rAS
+	 dnSREJR5eZjz2JNk0PeN0C3d0uucipgKm9kh4qCGbx+TUMuLFzhUNx7KjaA5WgtrQD
+	 F+HsU+28EZgcG2FlDniYSGGgr9DSt4oB6RvQZMhQwboGpS8fCN8BjbMCUUkBPFsAlK
+	 8lzHPWeKx4pwGfvsJUXvmQ/HVwnv9d2fteRwin8ciu47uDJod9ZNksj7KiSePO9K78
+	 wCvdo35X9IlyTSCX090tuueq6ViqH1yGvcQ13hFEzL/Z1QG1+nxD+zxtf1ciPeJbEO
+	 qy8HT7WaZ7dHQ==
+Date: Thu, 30 May 2024 10:47:06 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: Re: [svsm-devel] SVSM Development Call May 29th, 2024
+Message-ID: <Zlg9CntuwhSORLHJ@8bytes.org>
+References: <ZlY5A4N4S88FeFDQ@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20240501085210.2213060-1-michael.roth@amd.com>
- <20240501085210.2213060-10-michael.roth@amd.com> <84e8460d-f8e7-46d7-a274-90ea7aec2203@linux.intel.com>
- <CABgObfaXmMUYHEuK+D+2E9pybKMJqGZsKB033X1aOSQHSEqqVA@mail.gmail.com>
- <7d6a4320-89f5-48ce-95ff-54b00e7e9597@linux.intel.com> <rczrxq3lhqguarwh4cwxwa35j5riiagbilcw32oaxd7aqpyaq7@6bqrqn6ontba>
- <7da9c4a3-8597-44aa-a7ad-cc2bd2a85024@linux.intel.com> <CABgObfajCDkbDbK6-QyZABGTh=5rmE5q3ifvHfZD1A2Z+u0v3A@mail.gmail.com>
-Message-ID: <ZleJvmCawKqmpFIa@google.com>
-Subject: Re: [PATCH v15 09/20] KVM: SEV: Add support to handle MSR based Page
- State Change VMGEXIT
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Binbin Wu <binbin.wu@linux.intel.com>, Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
-	mingo@redhat.com, jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, 
-	ardb@kernel.org, vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, 
-	Brijesh Singh <brijesh.singh@amd.com>, Isaku Yamahata <isaku.yamahata@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZlY5A4N4S88FeFDQ@8bytes.org>
 
-On Tue, May 28, 2024, Paolo Bonzini wrote:
-> On Mon, May 27, 2024 at 2:26=E2=80=AFPM Binbin Wu <binbin.wu@linux.intel.=
-com> wrote:
-> > > It seems like TDX should be able to do something similar by limiting =
-the
-> > > size of each KVM_HC_MAP_GPA_RANGE to TDX_MAP_GPA_MAX_LEN, and then
-> > > returning TDG_VP_VMCALL_RETRY to guest if the original size was great=
-er
-> > > than TDX_MAP_GPA_MAX_LEN. But at that point you're effectively done w=
-ith
-> > > the entire request and can return to guest, so it actually seems a li=
-ttle
-> > > more straightforward than the SNP case above. E.g. TDX has a 1:1 mapp=
-ing
-> > > between TDG_VP_VMCALL_MAP_GPA and KVM_HC_MAP_GPA_RANGE events. (And e=
-ven
-> > > similar names :))
-> > >
-> > > So doesn't seem like there's a good reason to expose any of these
-> > > throttling details to userspace,
->=20
-> I think userspace should never be worried about throttling. I would
-> say it's up to the guest to split the GPA into multiple ranges,
+On Tue, May 28, 2024 at 10:05:23PM +0200, Jörg Rödel wrote:
+> 	https://github.com/coconut-svsm/governance
 
-I agree in principle, but in practice I can understand not wanting to split=
- up
-the conversion in the guest due to the additional overhead of the world swi=
-tches.
+PR with minutes of yesterdays meeting is now posted here:
 
->  but that's not how arch/x86/coco/tdx/tdx.c is implemented so instead we =
-can
->  do the split in KVM instead. It can be a module parameter or VM attribut=
-e,
->  establishing the size that will be processed in a single TDVMCALL.
+	https://github.com/coconut-svsm/governance/pull/15
 
-Is it just interrupts that are problematic for conversions?  I assume so, b=
-ecause
-I can't think of anything else where telling the guest to retry would be ap=
-propriate
-and useful.
+Regards,
 
-If so, KVM shouldn't need to unconditionally restrict the size for a single
-TDVMCALL, KVM just needs to ensure interrupts are handled soonish.  To do t=
-hat,
-KVM could use a much smaller chunk size, e.g. 64KiB (completely made up num=
-ber),
-and keep processing the TDVMCALL as long as there is no interrupt pending.
-Hopefully that would obviate the need for a tunable.
+	Joerg
