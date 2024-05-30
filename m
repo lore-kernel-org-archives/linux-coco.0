@@ -1,307 +1,98 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2071.outbound.protection.outlook.com [40.107.243.71])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A103D57A
-	for <linux-coco@lists.linux.dev>; Thu, 30 May 2024 16:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717087709; cv=fail; b=PkSgF5XtRYQb8X2tF2Z4FdWom8yRlVn0yA7W3mHOZ2vtnmHeF6JshF4MLrT7nGBm8jr92v2OGfoV7FrJUel3476TM/OMIkmksJu7hKOttxTn49ZljywW/2cMa5PewqI1A+Gn3Du1ut5+E8uVcM/la9UC1amEQaolIgG8qnPuepc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717087709; c=relaxed/simple;
-	bh=W/Q2vbro6sgx7jwWsUn6+RTfBo2Nbf7eM25AEXiF64E=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nJ40sdrJLlZduocdShEFX9vj4+rwKGwthPUz04R4JHGXOGyu7mAGgGqqRJ4buVmVX1QJwPOAou0n1XRNM7T0CWNt5VwyZmTK7VduggCK4wf9bf6uTt025LQH5QRppjnPGfd04GzdYEiv4LsEmFYCMkvhqkccbLSzHKhlEjTXJE0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Bdmuszkh; arc=fail smtp.client-ip=40.107.243.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF12A45BE7
+	for <linux-coco@lists.linux.dev>; Thu, 30 May 2024 17:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717088797; cv=none; b=ZzRpioEA6Jwp7/Y/ldeJGJxNubwigA6x8g6BQ7WoAuID7osG3a/xW0G/3vCXQwrqvgCS73Tk91qfA/SM1GxUmKdeLuCMRJh4Keb7AnuobVEK9SsKr7QZb9zANMbHwSOuWFHsUQCH9v8rdg/tYgYvieX2wwkQByiqUn3Rq1REB20=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717088797; c=relaxed/simple;
+	bh=gtdu0GvAQFq8iw8q+5qfg7hoyhbmRH7qS9rbJZ8b2pg=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=TefXqOkQQFnvWLXSi+n8/HVrQQL+oVHF0n6elLyjecvya8q92rTLJ5acx8ZWObhzetx8fAMhJUtk/Yu1OLwCLm1NGGS2RXVylawomX0SC2U4ZmlMCX9OjwRh6wvJ+WotvfoKFypaYJRO5JLEasdS/AbRGSfg9oIEWU5aprKsyJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=D0hx+6mW; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Bdmuszkh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k9JS5o5JjwBw9Kx129/I/uKu9CxFecgE8RPHHwh9uqZbOGiGI0nUabbVtY62sqKWIEShM7Df6DESZ6ON5uaSEY/eNkS0t0lfcBYtULQApD11iN4XvUE/7wZ4oGcKiwOMLWhDOyl21ox6omwUK7/zmg/O1QDDxOkdSIj9D2HM2m33h/mQLgPQRRWWzwhw003O96gVjwmEjEX01U1t5Y41fsqetHXEeUCmcSXzqyDez7GK9vmk3XXKaD30iLNOVRm2w9b5++avYLkw4VLu0jDvh296AHo0gvmLf+judlys6IObNOo3LrIgo+WDpERNp6Nh87fChIacNx8KyfdbgUhj5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7+/lQipfX4pHlbkV2C/fDtvUeEUskzQiSHgI1DJVy9s=;
- b=G/eG+rbpxnLb2u+N0gVpNmsqREKyMLLXmulefZc4k9bwRPRcYgIoq+m4tJ1W4KtBKZ6UjgvG3uchbuHVv1XHTXZUu7oy7cTD3oslYyBBrlx9rs6Fc6VCsQXIjhRfcVKduGOuu9FFv0bZcGXPPIFRK7mF7IEx/uQfN92UwKbX2dlgh/hfTQrfoa0QsPMWMxk5OCaFHubofFgwiTPBR2tPNtKRHca/fzncPRc0S4L8LspnUNMlY1sJ9e3S+tNulCd7N0ORJ3WA8/k3pOo/s/o3V8T48ZUzLV23zbZGSIhR4oR7eH9MFvgCcsbUrkec5zDXYOw1H0cnK7OyH39hYhSQzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=amd.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7+/lQipfX4pHlbkV2C/fDtvUeEUskzQiSHgI1DJVy9s=;
- b=Bdmuszkhy0s7WYKA60BjcrWQ/7H2f9aTkWB+X6a6V7VkGnBESOe4uMVS9ZnKQL0vsPqmOmE8+hzSQP6nLeTLO3OvwumNMvStLPWNt3GQnWyUcD4whNKCQMt8cniNvZBP6gkfZ8Dd2WcvdEeHnkTYRdVbCD8oyFBAqLB27dD9GKMSHISX5bBIRix0vFi8JuxczyQNEqVRRmiqDL10NhrNGpCwb5o8hK05EOviWawKeAxzBDcvuizvrDYINoC9MXuW0twN1Pm/oWqgsuDtYOdPIXW9/ODOsz+kJDp5H8P/mE+I9dC86BTASOhWSEodTyz3fx+M5cZmf2eZJHgCgwzjFg==
-Received: from CH0PR04CA0040.namprd04.prod.outlook.com (2603:10b6:610:77::15)
- by IA1PR12MB8585.namprd12.prod.outlook.com (2603:10b6:208:451::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.35; Thu, 30 May
- 2024 16:48:24 +0000
-Received: from CH3PEPF00000017.namprd21.prod.outlook.com
- (2603:10b6:610:77:cafe::e7) by CH0PR04CA0040.outlook.office365.com
- (2603:10b6:610:77::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.21 via Frontend
- Transport; Thu, 30 May 2024 16:48:23 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CH3PEPF00000017.mail.protection.outlook.com (10.167.244.122) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7656.0 via Frontend Transport; Thu, 30 May 2024 16:48:23 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 30 May
- 2024 09:48:09 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 30 May
- 2024 09:48:08 -0700
-Received: from localhost (10.127.8.9) by mail.nvidia.com (10.129.68.10) with
- Microsoft SMTP Server id 15.2.1544.4 via Frontend Transport; Thu, 30 May 2024
- 09:48:00 -0700
-Date: Thu, 30 May 2024 19:47:41 +0300
-From: Zhi Wang <zhiw@nvidia.com>
-To: Michael Roth <michael.roth@amd.com>
-CC: Binbin Wu <binbin.wu@linux.intel.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-mm@kvack.org>, <linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
-	<ardb@kernel.org>, <seanjc@google.com>, <vkuznets@redhat.com>,
-	<jmattson@google.com>, <luto@kernel.org>, <dave.hansen@linux.intel.com>,
-	<slp@redhat.com>, <pgonda@google.com>, <peterz@infradead.org>,
-	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
-	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
-	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
-	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
-	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, Brijesh Singh
-	<brijesh.singh@amd.com>, "Yamahata, Isaku" <isaku.yamahata@intel.com>
-Subject: Re: [PATCH v15 09/20] KVM: SEV: Add support to handle MSR based
- Page State Change VMGEXIT
-Message-ID: <20240530194606.00003f3a.zhiw@nvidia.com>
-In-Reply-To: <rczrxq3lhqguarwh4cwxwa35j5riiagbilcw32oaxd7aqpyaq7@6bqrqn6ontba>
-References: <20240501085210.2213060-1-michael.roth@amd.com>
-	<20240501085210.2213060-10-michael.roth@amd.com>
-	<84e8460d-f8e7-46d7-a274-90ea7aec2203@linux.intel.com>
-	<CABgObfaXmMUYHEuK+D+2E9pybKMJqGZsKB033X1aOSQHSEqqVA@mail.gmail.com>
-	<7d6a4320-89f5-48ce-95ff-54b00e7e9597@linux.intel.com>
-	<rczrxq3lhqguarwh4cwxwa35j5riiagbilcw32oaxd7aqpyaq7@6bqrqn6ontba>
-Organization: NVIDIA
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-w64-mingw32)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="D0hx+6mW"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9C87540E0192;
+	Thu, 30 May 2024 17:06:33 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id sNYyHG-YTVhx; Thu, 30 May 2024 17:06:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1717088789; bh=NIJhHBYRXpsOpCMDaZBRg66bIGp2F6TZ3LYJusBswTw=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=D0hx+6mW4KXBs5YWbfF192f9g1dp5vAbEAD0981MrCo83AR/hJgT6La4iNba4zp9B
+	 dFN8/FbZLldqWdoKULCvGhdrRoRS56tWw4L66fKKQyT6VclbzJPERJmkVqwczxVJFO
+	 hKLkBTV7RD0+KeCO6rwcAZWYIL3yXMLgqcAN5ueR94KaIDM7sjw+GbamIQJVQpycO5
+	 rgF3H5FpayfB/FmnKe1ubeOi1AgSntci3VvO+OYk0b5QWwGJVYer4ge0hpyUlwvQfe
+	 wyHkkQ3EFV2qH4Y/DOjLU5UlEDGQF0OPpB2le5gMz8Dc64x2F9KObQkEmmYzskD+ab
+	 60sAn8zCNCcCePMi4gPf5PtuQyWJN5mPo2lr7HJ9MHqjcMYLyZCuLTaGupDCiSm3rU
+	 YaqRw2XxCkwGES2WPBkkwuwLJhYtU71Zj1SrLBWqBe3SvX52VGXGmXGDSuOpo5l5lx
+	 Lxt8TlWT8Ro8e+/aYn2sutgwusaNlapdKQt2i5vSL4j4lItPB4MSO97Etfoax66XiR
+	 jzk/Zik2POMYZWQvXAP4umo9iZ4QL4hFPkxiGSSnST/2Q2PgZ8JONrygfkbMQm9sP+
+	 DChBobSMA5+8kPsHqZ0AtNR64Dr4QIQx4+La2zo88n5AHj/WkHIXWMKjizTK/Viq+8
+	 q6rYMpwgbpXd34TsX+9srG6M=
+Received: from [IPv6:::1] (unknown [IPv6:2a02:3038:20f:938d:41e9:261d:4ad2:487c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6E9C440E0177;
+	Thu, 30 May 2024 17:06:15 +0000 (UTC)
+Date: Thu, 30 May 2024 19:06:12 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+CC: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
+ svsm-devel@coconut-svsm.dev, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Dan Williams <dan.j.williams@intel.com>, Michael Roth <michael.roth@amd.com>,
+ Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v4 09/15] x86/sev: Provide guest VMPL level to userspace
+User-Agent: K-9 Mail for Android
+In-Reply-To: <e7c24be1-dbea-0efd-2661-b626fd655478@amd.com>
+References: <cover.1713974291.git.thomas.lendacky@amd.com> <435f78e07c76e25d2d857138724098bc2a729b0a.1713974291.git.thomas.lendacky@amd.com> <20240527135101.GBZlSPxQ6iBSlMDefY@fat_crate.local> <e7c24be1-dbea-0efd-2661-b626fd655478@amd.com>
+Message-ID: <D5A4D31B-4A37-48B7-8EBC-C8A4062B4813@alien8.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000017:EE_|IA1PR12MB8585:EE_
-X-MS-Office365-Filtering-Correlation-Id: c12050d6-8097-4c92-eb3d-08dc80c85228
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|1800799015|82310400017|7416005|36860700004|376005;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?aG9SWGFRVDBTUnJJSStWQjlHSGlQRk5ISFdTS2J6TjNGbHcrY1lDRzkxcUEw?=
- =?utf-8?B?VFVFeVk0V3N0N04vRXZsdGdINDhyaVVnUis3eDZaUmc0SUVjMXBveFFkWnlF?=
- =?utf-8?B?dDllcGJZSEpXVkNEcGtrV2psSGVnc0xGcHBQQXE4ODZueTFwczlGaDh2Nlcz?=
- =?utf-8?B?aFBMQ0ZOK09sREY5M29ja3lmdk9WTmxLR0NpSTAxeWdtcWJnUUhURXkxZUh1?=
- =?utf-8?B?QkI1V2FBVzdQN2ZRbVVxSHE0ZjJvcnBGdnFmd0hoWVhTdG4zbmZ0NkVhL0tF?=
- =?utf-8?B?d3oxZlNQZDZoUE1rVWZwZVJKV2QzaEJZUkI3a3BneW5MWC9IZzhzcXlFUk41?=
- =?utf-8?B?N1JESnZMQjRxU3ZjQkliSFZ6b2dMOS9MUjNaeGxWcTZKZVpyZm9FYWRDY2hT?=
- =?utf-8?B?SS8zQk5sVGZ4N0x5Q1d3RVlGWXFSMHZDYWFGT2xCQ2xRRjFBNHJyMm53cXVK?=
- =?utf-8?B?YXJpcERIZExwVGNGVWtJbXljZllYdFd6TDV6QjY3UjJSY1FCUlY5YnlkOVN2?=
- =?utf-8?B?RzJXcjdETXcwcDh5UzRmczV3ejFqZ2FEcHFMd1VEa2ZmNkdNNm9ITkJYWm41?=
- =?utf-8?B?TXVtRDd3YUtnMTVPY1RCYmhha3ovUXdJSUNPUy9MNGlLdlRsY2R5T3FIbnNk?=
- =?utf-8?B?ZTJmR1FmZ2dGV2w5NEdJRGRJT1hrU2poWXdMeEhGWmlML0xIRG5xa0xCSjVk?=
- =?utf-8?B?NnpxV2l2V1AxWlE1K0JyaFU4VThHemNaUGxsL3F2OFppNmVpaWdodjdLN3RR?=
- =?utf-8?B?Y2d5dTR0ajFoOTUzV0tLNlFzRVVYdERVL0xHeFptOS85aUM5MnBmWkg1Mit5?=
- =?utf-8?B?VjlwYkl3bnVhbU1sdVhYdUtWZ01ZZk4vOUlrU3czL3JyUUhsY3NveFpRU1E0?=
- =?utf-8?B?RVkrU3o1R3pWZG1Tdm0wWXQ3RkZRUXI4SGNuUkg2a25UcVBYZmc1aFltTTg2?=
- =?utf-8?B?eUZYaURrZlo2bHNGSXdKaENNeWVEaGc2Uis2OGFCZ1JlNTVSbWpBM2RIU2hR?=
- =?utf-8?B?ZmRiVko2V0tLNUIrQkFQS3NjbzZxZlp5VTYzcTBkLzJJSGVHTlROS1d1eDA2?=
- =?utf-8?B?SnR4RUM1TndLdWg5Qyswa3JRdXlIaXRwbVRhTWFSZ0ZNTzVNMm9jbTBtS2tQ?=
- =?utf-8?B?b1FoYUtoSWpsbWQ1MGpvdGlQOWVwclVwL1lmUWdOV3VJMFF6aUpSVUJ4TDF1?=
- =?utf-8?B?VDlYVVFLajhtMktNYW9wcU0rVy9ydW13L1Y0eitrQjc4bW9Ja091dzFrdnQ3?=
- =?utf-8?B?YkZVZUpnN0p5OGsxSHhkaElsOWIxalFDZzZkT0FQa1I1SUZ5czV2Q0VJSFJn?=
- =?utf-8?B?U1BLcEdKdzlqUGw2OUh6WlFIUUgyZXhCSVozSkNsWU56TFk5NnJXd01JMkFL?=
- =?utf-8?B?R0hrOThtcWo0QkR0dUFGWURKb1NaSEVNaXVja0RscC9mNVFyRHlLOXdPZ2tV?=
- =?utf-8?B?R3p0aWMrbDhLWDQ5SDVCd0lNR3YvUzZPTEZMZm1pYjZtcm1IZTR1ZldUQ3Zx?=
- =?utf-8?B?bmR1dkV4UTFXeHNvZHhUejRZZE0yQ2puWnBYam45REZIU29PUzNoZGdRVUVx?=
- =?utf-8?B?eVFqZDIwcW9qZ3RpdkhTMmVieEJnQ0FNSlI4eFl1RVlWRTNwMERuMU1LZk1G?=
- =?utf-8?B?NG5WZE9ZQk9yYnUwcE50cWNQUWE5UHkxUXh6ZUx4SjRxYmVoYkRFc2cvZXlk?=
- =?utf-8?B?c2hxSHdUL0pVOWcvZitEOWwvMEROQi9DdGhnRUthdnBmWXVxVldrTmthRmI0?=
- =?utf-8?B?RjY5eW04alM1VGxHTlo3aG1MZ281UDUxQjFtSjJZSUJ5dEQrSVl2R1NIaWty?=
- =?utf-8?B?TS9TdDd0ZWQ1bjZoVVZFM2MrSXVtV3cvTjJZYnhYNlV4bzZCUTRNc3YzZE1o?=
- =?utf-8?Q?PPPor7U3Ksiv3?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(1800799015)(82310400017)(7416005)(36860700004)(376005);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2024 16:48:23.8589
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c12050d6-8097-4c92-eb3d-08dc80c85228
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF00000017.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8585
 
-On Tue, 21 May 2024 16:49:52 -0500
-Michael Roth <michael.roth@amd.com> wrote:
+On May 28, 2024 11:08:35 PM GMT+02:00, Tom Lendacky <thomas=2Elendacky@amd=
+=2Ecom> wrote:
+>I can move it there=2E Or what about creating a coco folder under /sys/ke=
+rnel/? This would then create /sys/kernel/coco/sev/?
+>
 
-> On Tue, May 21, 2024 at 08:49:59AM +0800, Binbin Wu wrote:
-> >=20
-> >=20
-> > On 5/17/2024 1:23 AM, Paolo Bonzini wrote:
-> > > On Thu, May 16, 2024 at 10:29=E2=80=AFAM Binbin Wu
-> > > <binbin.wu@linux.intel.com> wrote:
-> > > >=20
-> > > >=20
-> > > > On 5/1/2024 4:51 PM, Michael Roth wrote:
-> > > > > SEV-SNP VMs can ask the hypervisor to change the page state
-> > > > > in the RMP table to be private or shared using the Page State
-> > > > > Change MSR protocol as defined in the GHCB specification.
-> > > > >=20
-> > > > > When using gmem, private/shared memory is allocated through
-> > > > > separate pools, and KVM relies on userspace issuing a
-> > > > > KVM_SET_MEMORY_ATTRIBUTES KVM ioctl to tell the KVM MMU
-> > > > > whether or not a particular GFN should be backed by private
-> > > > > memory or not.
-> > > > >=20
-> > > > > Forward these page state change requests to userspace so that
-> > > > > it can issue the expected KVM ioctls. The KVM MMU will handle
-> > > > > updating the RMP entries when it is ready to map a private
-> > > > > page into a guest.
-> > > > >=20
-> > > > > Use the existing KVM_HC_MAP_GPA_RANGE hypercall format to
-> > > > > deliver these requests to userspace via KVM_EXIT_HYPERCALL.
-> > > > >=20
-> > > > > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > > > > Co-developed-by: Brijesh Singh <brijesh.singh@amd.com>
-> > > > > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> > > > > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> > > > > ---
-> > > > >    arch/x86/include/asm/sev-common.h |  6 ++++
-> > > > >    arch/x86/kvm/svm/sev.c            | 48
-> > > > > +++++++++++++++++++++++++++++++ 2 files changed, 54
-> > > > > insertions(+)
-> > > > >=20
-> > > > > diff --git a/arch/x86/include/asm/sev-common.h
-> > > > > b/arch/x86/include/asm/sev-common.h index
-> > > > > 1006bfffe07a..6d68db812de1 100644 ---
-> > > > > a/arch/x86/include/asm/sev-common.h +++
-> > > > > b/arch/x86/include/asm/sev-common.h @@ -101,11 +101,17 @@
-> > > > > enum psc_op { /* GHCBData[11:0] */
-> > > > > \ GHCB_MSR_PSC_REQ)
-> > > > >=20
-> > > > > +#define GHCB_MSR_PSC_REQ_TO_GFN(msr) (((msr) &
-> > > > > GENMASK_ULL(51, 12)) >> 12) +#define
-> > > > > GHCB_MSR_PSC_REQ_TO_OP(msr) (((msr) & GENMASK_ULL(55, 52)) >>
-> > > > > 52) + #define GHCB_MSR_PSC_RESP           0x015
-> > > > >    #define GHCB_MSR_PSC_RESP_VAL(val)                  \
-> > > > >        /* GHCBData[63:32] */                           \
-> > > > >        (((u64)(val) & GENMASK_ULL(63, 32)) >> 32)
-> > > > >=20
-> > > > > +/* Set highest bit as a generic error response */
-> > > > > +#define GHCB_MSR_PSC_RESP_ERROR (BIT_ULL(63) |
-> > > > > GHCB_MSR_PSC_RESP) +
-> > > > >    /* GHCB Hypervisor Feature Request/Response */
-> > > > >    #define GHCB_MSR_HV_FT_REQ          0x080
-> > > > >    #define GHCB_MSR_HV_FT_RESP         0x081
-> > > > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > > > > index e1ac5af4cb74..720775c9d0b8 100644
-> > > > > --- a/arch/x86/kvm/svm/sev.c
-> > > > > +++ b/arch/x86/kvm/svm/sev.c
-> > > > > @@ -3461,6 +3461,48 @@ static void set_ghcb_msr(struct
-> > > > > vcpu_svm *svm, u64 value) svm->vmcb->control.ghcb_gpa =3D value;
-> > > > >    }
-> > > > >=20
-> > > > > +static int snp_complete_psc_msr(struct kvm_vcpu *vcpu)
-> > > > > +{
-> > > > > +     struct vcpu_svm *svm =3D to_svm(vcpu);
-> > > > > +
-> > > > > +     if (vcpu->run->hypercall.ret)
-> > > > Do we have definition of ret? I didn't find clear documentation
-> > > > about it. According to the code, 0 means succssful. Is there
-> > > > any other error codes need to or can be interpreted?
-> > > They are defined in include/uapi/linux/kvm_para.h
-> > >=20
-> > > #define KVM_ENOSYS        1000
-> > > #define KVM_EFAULT        EFAULT /* 14 */
-> > > #define KVM_EINVAL        EINVAL /* 22 */
-> > > #define KVM_E2BIG        E2BIG /* 7 */
-> > > #define KVM_EPERM        EPERM /* 1*/
-> > > #define KVM_EOPNOTSUPP        95
-> > >=20
-> > > Linux however does not expect the hypercall to fail for
-> > > SEV/SEV-ES; and it will terminate the guest if the PSC operation
-> > > fails for SEV-SNP.  So it's best for userspace if the hypercall
-> > > always succeeds. :)
-> > Thanks for the info.
-> >=20
-> > For TDX, it wants to restrict the size of memory range for
-> > conversion in one hypercall to avoid a too long latency.
-> > Previously, in TDX QEMU patchset v5, the limitation is in userspace
-> > and=C2=A0 if the size is too big, the status_code will set to
-> > TDG_VP_VMCALL_RETRY and the failed GPA for guest to retry is
-> > updated.
-> > https://lore.kernel.org/all/20240229063726.610065-51-xiaoyao.li@intel.c=
-om/
-> >=20
-> > When TDX converts TDVMCALL_MAP_GPA to KVM_HC_MAP_GPA_RANGE, do you
-> > think which is more reasonable to set the restriction? In KVM (TDX
-> > specific code) or userspace?
-> > If userspace is preferred, then the interface needs to=C2=A0 be extended
-> > to support it.
->=20
-> With SNP we might get a batch of requests in a single GHCB request,
-> and potentially each of those requests need to get set out to
-> userspace as a single KVM_HC_MAP_GPA_RANGE. The subsequent patch here
-> handles that in a loop by issuing a new KVM_HC_MAP_GPA_RANGE via the
-> completion handler. So we also sort of need to split large requests
-> into multiple userspace requests in some cases.
->=20
-> It seems like TDX should be able to do something similar by limiting
-> the size of each KVM_HC_MAP_GPA_RANGE to TDX_MAP_GPA_MAX_LEN, and then
-> returning TDG_VP_VMCALL_RETRY to guest if the original size was
-> greater than TDX_MAP_GPA_MAX_LEN. But at that point you're
-> effectively done with the entire request and can return to guest, so
-> it actually seems a little more straightforward than the SNP case
-> above. E.g. TDX has a 1:1 mapping between TDG_VP_VMCALL_MAP_GPA and
-> KVM_HC_MAP_GPA_RANGE events. (And even similar names :))
->=20
-> So doesn't seem like there's a good reason to expose any of these
-> throttling details to userspace, in which case existing
-> KVM_HC_MAP_GPA_RANGE interface seems like it should be sufficient.
->=20
+Sysfs hierarchy is special - can't just add stuff willy nilly=2E This doc =
+hints at that:
 
-Is there any rough data about the latency of private-shared and
-shared-private page conversion?
+https://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/torvalds/linux=2Egit/t=
+ree/Documentation/filesystems/sysfs=2Erst
 
-Thanks,
-Zhi.=20
-> -Mike
->=20
-> >=20
-> >=20
-> > >=20
-> > > > For TDX, it may also want to use KVM_HC_MAP_GPA_RANGE hypercall
-> > > >  to userspace via KVM_EXIT_HYPERCALL.
-> > > Yes, definitely.
-> > >=20
-> > > Paolo
-> > >=20
-> >=20
->=20
+And then those things get documented here:
 
+https://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/torvalds/linux=2Egit/t=
+ree/Documentation/ABI
+
+and supported forever and ever until the end of time=2E
+
+So the usage needs to be precisely documented and weighed whether we reall=
+y need it=2E=2E=2E
+
+Thx=2E
+
+--=20
+Sent from a small device: formatting sucks and brevity is inevitable=2E 
