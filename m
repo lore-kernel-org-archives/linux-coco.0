@@ -1,68 +1,78 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842AB1CF9B
-	for <linux-coco@lists.linux.dev>; Fri, 31 May 2024 14:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D4B2D61B
+	for <linux-coco@lists.linux.dev>; Fri, 31 May 2024 15:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717167291; cv=none; b=CYXZH5fr4Q7dC0LVqbOuJ6mx6ou/qjmm0P6ghfo/O4eIc9+0hOTdst9BrVqCykaa7xEgWvlWRhVq+sXOiL/2YrUJuZPVGdkJT0SBIQoKG2djp71Kw0e0BgyCBqr4s6EoeQBYjW4jZJJQNukGkdqOf8z6DA2fFDZx6Uz4KEK+imU=
+	t=1717168523; cv=none; b=d8dfh4gi1ixO1u5Eq8GyDTa1QH1HTb2l4UWEnYFgCt5KjGClgUPKE1784pN6pDzPm2ABod76Qos0+LEkHyuYy0LFW8wClfyaMvaXDSc7jpZza9ZLb23H1h9YQQiCvmeJ4Bh86lqL3VaNJmXILeDFrlqgSy05SOTc0qhUYVb7N0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717167291; c=relaxed/simple;
-	bh=nE6E5FLTG/e2GjVjjRLiE2nCKGeY5JRM73xX44CiF2I=;
+	s=arc-20240116; t=1717168523; c=relaxed/simple;
+	bh=KuFosQ9xJS3QXwL9rRdDEjEMEUkYQVI21lZRTP74w5k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jqvbdAgAtSuluqtEV1jMcyz3Gl/j8SGAOUEAUgNAO8UNP24/n6zPo0a6DEIKQ8olvWov557LfJ9AWxz4a/6f5dnSuAGlZeX8rwt4bWshTh0KmGegzqPCSJVxAWIG+bXQh9mp6akcuSMdEHFtgrDrrdlZxKs8Da3B8wJRFOKi7as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=W0I6x00J; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=qiNmm65nPXEDhDp56xITCm2WqlDnWH+ZXAjxrYVkkdlBO0Zwxj+Z/7EXEkXp4KdmQ9BO6KX8+4U6qN3X+Zhh8NPrsvRNq3lp1lAKz2Y+4EJFDQQHNlX3+OYgRK+uUSFEJSSj3P11PXl3zdTLths0cXoINfGAlCCJdO8YOBsoHFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Q6PLaDRJ; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="W0I6x00J"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Q6PLaDRJ"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 60BC340E0192;
-	Fri, 31 May 2024 14:54:46 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2049540E0192;
+	Fri, 31 May 2024 15:15:19 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id qvqEUXbV9wpc; Fri, 31 May 2024 14:54:43 +0000 (UTC)
+	with ESMTP id FSUEfZbijwTn; Fri, 31 May 2024 15:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1717167283; bh=58EpTMbYkdabimCKAYW9OCshcGz6t3rQsUDOZo5HP9E=;
+	t=1717168515; bh=CimpYdG8QQl3X2QgMhhHzMQn8EofMmTYe+oEbL8ZrvM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W0I6x00J/49wxEJY5mcGi+Ee/7ux9OkCg8FKdonfy6EHM4jhdUVuzdONymdlpKvoa
-	 GC8SiOP7VGH+GsJb9WHz3jJAhEYw24DoZ3L8lc3oS1SEna9SpKZV0cl8AQ3qLKGRBH
-	 pblskE9F1L3aHhMiNkV23IRI16CfGEMtMXzgXWsQaSozT/QEzI2BUOXdfqeP3Hef/b
-	 yYlqImxFw692YnUyWCX34dNyJlQSGj9+LpJdleiNjzYjmuSiF+eDD2p6V0w4rFEXZR
-	 QtUFUvPOxesHvbFgsKtQkq1BVEQdpash+aQUG4CB31lNGuG/g14OVNzrgNZZ35PIGv
-	 TRtfkm5uNgHXVhmFGokaTjZpTpeJfijDwgWQcITARdycPmJpfZXcXYeUjsqvpGUcY7
-	 ChmllTTE/rw3uLw9e3Bla1reamgTVCTBmj7Hia3f+FR2C2NcVtWklys1aK5QX1ddiR
-	 5pKL6DuP/fHP08iXsMEZXYExJu9jieS4Gig6F+vSqbDuPvgclVwANMax9xrUSHPmy4
-	 NW4zWpYjcl0dOiBYF3xfKFxiOlcoHUyMgm+aXcMPfTrigItdAYfzL+R/TjVodZD8X+
-	 wCf/UJJDCSPfgKzzDcXtAxrurLzqETi3D1fzENYGR2p46Tw3f1MT9tzVJDow/ivMV3
-	 yor/Ui+B20oEvb7+cOgWJMaU=
+	b=Q6PLaDRJ86E0OGNAGCUojT3CX1WrSdqZh8RMU8h1+IyOWZ5wR7SbnPUJ9+JopYOFv
+	 q6Fp7di+pKi+J6Crq/DKHAQ+2EGmF+N1koju13pL4DfyJYqefqB3sQqgJYx5+HGISW
+	 6VTzbQeP6POrjfvVR4P5rrQ4oMqOWFKQMIaeAOFhJuA0/PMPI9HWMMxKWusnekNmCP
+	 QoYmcSSfNhePOXGbxoOtwzrcQYoBCx9bspLdrll9T0F+xNAgYMNOVZnjGuqkMGspDP
+	 RN/A/cW8YUxtgTdzfkaxdOMYbTI7Uh2v4FI/FEVyho3WEtZMnSoTAzFSg1vHRQ64A7
+	 cstm5aWVt74OCKGk5mh9a4lKEnCEVC39eTqTx8O7vMWhhRHSwHkN5CpUvbi/5XWzaY
+	 TO9nnirQSbxwiRXDOUP09aArD1c1hXdVDCEGCKIOKLRFL47YJnlcsdICo8O558IfgS
+	 BXElZk75qTe+R78bwi/7qQnfjxrvjasBQoFstD5smrSvO1W7O3NNBxNjMWkFAm6JFd
+	 aap8w2d0O7pwC1loUtrtasJ1MhDev3vvHWwJsG53Bva9khDOU5UmXgkROfJBQMpaNA
+	 8uawK2joAgByCDPLKKjLV+41+FquZPhLac+8bRKLlYLRPDhtPFDm4ptYa0YYyOxThQ
+	 eHGxqsqNGnZSsEix9vDbesbc=
 Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EB2BC40E01E8;
-	Fri, 31 May 2024 14:54:28 +0000 (UTC)
-Date: Fri, 31 May 2024 16:54:23 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9041840E01E8;
+	Fri, 31 May 2024 15:14:48 +0000 (UTC)
+Date: Fri, 31 May 2024 17:14:42 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v4 15/15] x86/sev: Allow non-VMPL0 execution when an SVSM
- is present
-Message-ID: <20240531145423.GLZlnkn4JHSyh4-G8P@fat_crate.local>
-References: <cover.1713974291.git.thomas.lendacky@amd.com>
- <e377d148acac799f6905fc544fbb8bf2ed76e078.1713974291.git.thomas.lendacky@amd.com>
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
+	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Tao Liu <ltao@redhat.com>
+Subject: Re: [PATCHv11 11/19] x86/tdx: Convert shared memory back to private
+ on kexec
+Message-ID: <20240531151442.GMZlnpYkDCRlg1_YS0@fat_crate.local>
+References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
+ <20240528095522.509667-12-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,136 +81,110 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <e377d148acac799f6905fc544fbb8bf2ed76e078.1713974291.git.thomas.lendacky@amd.com>
+In-Reply-To: <20240528095522.509667-12-kirill.shutemov@linux.intel.com>
 
-On Wed, Apr 24, 2024 at 10:58:11AM -0500, Tom Lendacky wrote:
-> @@ -624,8 +626,12 @@ void sev_enable(struct boot_params *bp)
->  		 * modifies permission bits, it is still ok to do so currently because Linux
->  		 * SNP guests running at VMPL0 only run at VMPL0, so VMPL1 or higher
->  		 * permission mask changes are a don't-care.
-> +		 *
-> +		 * Running at VMPL0 is not required if an SVSM is present and the hypervisor
-> +		 * supports the required SVSM GHCB events.
->  		 */
-> -		if (rmpadjust((unsigned long)&boot_ghcb_page, RMP_PG_SIZE_4K, 1))
-> +		if (rmpadjust((unsigned long)&boot_ghcb_page, RMP_PG_SIZE_4K, 1) &&
-> +		    !(vmpl && (hv_features & GHCB_HV_FT_SNP_MULTI_VMPL)))
->  			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NOT_VMPL0);
->  	}
+On Tue, May 28, 2024 at 12:55:14PM +0300, Kirill A. Shutemov wrote:
+> +static void tdx_kexec_finish(void)
+> +{
+> +	unsigned long addr, end;
+> +	long found = 0, shared;
+> +
+> +	lockdep_assert_irqs_disabled();
+> +
+> +	addr = PAGE_OFFSET;
+> +	end  = PAGE_OFFSET + get_max_mapped();
+> +
+> +	while (addr < end) {
+> +		unsigned long size;
+> +		unsigned int level;
+> +		pte_t *pte;
+> +
+> +		pte = lookup_address(addr, &level);
+> +		size = page_level_size(level);
+> +
+> +		if (pte && pte_decrypted(*pte)) {
+> +			int pages = size / PAGE_SIZE;
+> +
+> +			/*
+> +			 * Touching memory with shared bit set triggers implicit
+> +			 * conversion to shared.
+> +			 *
+> +			 * Make sure nobody touches the shared range from
+> +			 * now on.
+> +			 */
+> +			set_pte(pte, __pte(0));
+> +
 
-Let's make that more readable:
+Format the below into a comment here:
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index fb1e60165cd1..157f749faba0 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -610,8 +610,10 @@ void sev_enable(struct boot_params *bp)
- 	 * features.
- 	 */
- 	if (sev_status & MSR_AMD64_SEV_SNP_ENABLED) {
--		u64 hv_features = get_hv_features();
-+		u64 hv_features;
-+		int rmpadj_ret;
- 
-+		hv_features = get_hv_features();
- 		if (!(hv_features & GHCB_HV_FT_SNP))
- 			sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
- 
-@@ -626,11 +628,15 @@ void sev_enable(struct boot_params *bp)
- 		 * modifies permission bits, it is still ok to do so currently because Linux
- 		 * SNP guests running at VMPL0 only run at VMPL0, so VMPL1 or higher
- 		 * permission mask changes are a don't-care.
--		 *
-+		 */
-+		rmpadj_ret = rmpadjust((unsigned long)&boot_ghcb_page, RMP_PG_SIZE_4K, 1);
-+
-+		/*
- 		 * Running at VMPL0 is not required if an SVSM is present and the hypervisor
- 		 * supports the required SVSM GHCB events.
- 		 */
--		if (rmpadjust((unsigned long)&boot_ghcb_page, RMP_PG_SIZE_4K, 1) &&
-+
-+		if (rmpadj_ret &&
- 		    !(vmpl && (hv_features & GHCB_HV_FT_SNP_MULTI_VMPL)))
- 			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NOT_VMPL0);
- 	}
+/* 
 
-> -static int __init report_cpuid_table(void)
-> +static void __init report_cpuid_table(void)
+The only thing one can do at this point on failure is panic. It is
+reasonable to proceed, especially for the crash case because the
+kexec-ed kernel is using a different page table so there won't be
+a mismatch between shared/private marking of the page so it doesn't
+matter.
+
+Also, even if the failure is real and the page cannot be touched as
+private, the kdump kernel will boot fine as it uses pre-reserved memory.
+What happens next depends on what the dumping process does and there's
+a reasonable chance to produce useful dump on crash.
+
+Regardless, the print leaves a trace in the log to give a clue for
+debug.
+
+One possible reason for the failure is if kdump raced with memory
+conversion. In this case shared bit in page table got set (or not
+cleared form shared->private conversion), but the page is actually
+private. So this failure is not going to affect the kexec'ed kernel.
+
+*/
+
+<---
+
+> +			if (!tdx_enc_status_changed(addr, pages, true)) {
+> +				pr_err("Failed to unshare range %#lx-%#lx\n",
+> +				       addr, addr + size);
+> +			}
+> +
+> +			found += pages;
+> +		}
+> +
+> +		addr += size;
+> +	}
+> +
+> +	__flush_tlb_all();
+> +
+> +	shared = atomic_long_read(&nr_shared);
+> +	if (shared != found) {
+> +		pr_err("shared page accounting is off\n");
+> +		pr_err("nr_shared = %ld, nr_found = %ld\n", shared, found);
+> +	}
+> +}
+
+...
+
+>  static int __set_memory_enc_dec(unsigned long addr, int numpages, bool enc)
 >  {
->  	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
+> -	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+> -		return __set_memory_enc_pgtable(addr, numpages, enc);
+> +	int ret = 0;
 >  
->  	if (!cpuid_table->count)
-> -		return 0;
-> +		return;
->  
->  	pr_info("Using SNP CPUID table, %d entries present.\n",
->  		cpuid_table->count);
->  
->  	if (sev_cfg.debug)
->  		dump_cpuid_table();
-> +}
+> -	return 0;
+> +	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
+> +		if (!down_read_trylock(&mem_enc_lock))
+> +			return -EBUSY;
 > +
-> +static void __init report_vmpl_level(void)
-> +{
-> +	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-> +		return;
+> +		ret = __set_memory_enc_pgtable(addr, numpages, enc);
 > +
-> +	pr_info("SNP running at VMPL%u.\n", vmpl);
-> +}
-> +
-> +static int __init report_snp_info(void)
-> +{
-> +	report_vmpl_level();
-> +	report_cpuid_table();
->  
->  	return 0;
->  }
-> -arch_initcall(report_cpuid_table);
-> +arch_initcall(report_snp_info);
+> +		up_read(&mem_enc_lock);
+> +	}
 
-Zap one more silly helper:
+So CC_ATTR_MEM_ENCRYPT is set for SEV* guests too. You need to change
+that code here to take the lock only on TDX, where you want it, not on
+the others.
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 7955c024d5d7..ff5a32b0b21c 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -2356,32 +2356,23 @@ static void dump_cpuid_table(void)
-  * sort of indicator, and there's not really any other good place to do it,
-  * so do it here.
-  */
--static void __init report_cpuid_table(void)
-+static int __init report_snp_info(void)
- {
- 	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
- 
- 	if (!cpuid_table->count)
--		return;
-+		return 0;
- 
- 	pr_info("Using SNP CPUID table, %d entries present.\n",
- 		cpuid_table->count);
- 
- 	if (sev_cfg.debug)
- 		dump_cpuid_table();
--}
- 
--static void __init report_vmpl_level(void)
--{
- 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
--		return;
-+		return 0;
- 
- 	pr_info("SNP running at VMPL%u.\n", vmpl);
--}
--
--static int __init report_snp_info(void)
--{
--	report_vmpl_level();
--	report_cpuid_table();
- 
- 	return 0;
- }
+Thx.
 
 -- 
 Regards/Gruss,
