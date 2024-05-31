@@ -1,132 +1,276 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2084.outbound.protection.outlook.com [40.107.96.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16796FB8
-	for <linux-coco@lists.linux.dev>; Fri, 31 May 2024 01:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717118584; cv=none; b=L/vNuUVWoEnZpV795cM53uOwssywO8YdZCv9an+kdtZEKVcNelFQwAlAziTIHXUqIcGbgtMafG1logrSsLYNV0E65dehXrdkcPPhCc9T8ob/vtl65VbGi7f/4CxDQxLD9aU8wGkT/4FI4zpBBio0p3CDeWSkY6g7bv50yioAiZk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717118584; c=relaxed/simple;
-	bh=nlJxlGmynhU7KREnzEbXx6DTgU2f7pwNSzsU+KcONRc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jR7EnXNoRPR3czusByXxDheyzstM9xfAkEp7KnumzPN2PjcRW7FKGms5YQYEJQQFq0QZ4oQ5e8ARupFcRjSOrV9aVjtCxENo0gQeVEMN0ZJlamrfTzCF1UcCkt42Mxyiw56H5efDptVfxnMe4PZgzBNP0A3H03slMHxxlcNy0JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gctc3cpe; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BDA77F11
+	for <linux-coco@lists.linux.dev>; Fri, 31 May 2024 03:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717125817; cv=fail; b=Pwav0EIpKE73V8r6RAfjGDfVBEPYgd3UlX3ay7Aa88ADJRtNHNQOyYc2PU0qew23JpbWRiTvCjicVF9RUqFP85SEMwjrX/r3hAtmcbJxOX6g7/gHPraed9CibYeiaG5WZB/CirHrIQPPkjFVHZVCzAL8/IpFPQpV1Oi+sivHhhc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717125817; c=relaxed/simple;
+	bh=ZwgiBZqaQI88yroGu5N/MjGk/2gYSLKq3x2Z4iIFJRc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VGcdniPea5eNO7HL2zOciEgFxN63j+Ia/e2ackjMaUCISTiLOX0dhQlIhlWld0qvJKZ0rJ1GtNgEhG2epMHuva8TGLtfNY6nUjc8fYGZbfLVeSx3slpfZ1jS7NP3h4K68veJSQLG6Moz+N86EUat8u29YaEdeUC+kXKtEiYVRhM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=au25WwJW; arc=fail smtp.client-ip=40.107.96.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gctc3cpe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717118582; x=1748654582;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=nlJxlGmynhU7KREnzEbXx6DTgU2f7pwNSzsU+KcONRc=;
-  b=Gctc3cpe6JcGNm4yd1wve0ZwGc6ksMgZ1q8nMoN7/0NUvyjdcck0mcLF
-   QTdHd+EQDKNNByUYC7oPHSPwQgcNUtrWLZJkHAs+UlaiM6gUJeQKa6n9i
-   8ONn8NxzXPpu/ljg+CLJhcg76zJE+BnyIKXOgwQOl5UKIQz/yu4ex3PCa
-   kQkQfxQtMkpHLJSOiGsgvcrOIsuARUMoA9HWTMrWknBoK4hCAduEoL4c3
-   q03g9mNhHoEunL/7m+oqM6JXuTbVuzYxRwwDwmMDpODpzOi2FpYTPkw2e
-   GBCii+P3pJsFXDhz+OXfG3cgCmzfMAxJIUHmJ/0wdST5VUxEbqEgg9veR
-   Q==;
-X-CSE-ConnectionGUID: Ir0cK/zoRrGbjlIspUMmZw==
-X-CSE-MsgGUID: jLzxSDDdTca9VhqKIIpJWQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13813786"
-X-IronPort-AV: E=Sophos;i="6.08,202,1712646000"; 
-   d="scan'208";a="13813786"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 18:23:02 -0700
-X-CSE-ConnectionGUID: JYIBlf2GTXWPxN7j2kb+Tw==
-X-CSE-MsgGUID: 0jVmIHa9Re2o9ypgdTRyTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,202,1712646000"; 
-   d="scan'208";a="67200458"
-Received: from unknown (HELO [10.238.8.173]) ([10.238.8.173])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 18:22:53 -0700
-Message-ID: <3999aadf-92a8-43f9-8d9d-84aa47e7d1ae@linux.intel.com>
-Date: Fri, 31 May 2024 09:22:51 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="au25WwJW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UUg+QoQHupTuXCNM3MFhMvwV9w/BUdnm568RKXNuh5sY0Fi4x4zq0xsu+YO2EfW1coICRuIZT9BGvXNwc5+GTtZmY48lkjMJJkXq+04H9ECe0m03q3795nmF++r/otY0uJxVDhyNzQmzV1D8RqUqltPCtP3poqMR9BCCWl3Rl4lKxQbm6IXpG406cpgBlUDRr8A8SyBV3nzh14AxVHmaMISeAW23lCpWhLnbOsHzg4Op57AXxWCGgaEPn+1OceiwuCpFn4tKzB8s2MRPUwJAe3o7THj+4mt79HtONxDF98VjqLe3ElNmREyKIyFbWLfacyPI9Pxp9VUiiCgjEd1//g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RaEz9Vd5MvS4r6jxNvhE8FeZrfx+dxdrJZwauFqwr7Y=;
+ b=PcXRWd8ubftPIOkQO2A3Pzg9NFXxCzv95RH+xelKhivcEgPClgOXtAPcnvA12Bxdk+6I92LxqrIcQyDtoIOGz69wBm/n4doWmYghz72Gn244xhiVbePdiL9+pBW4fFHzk6l21/uBJg9ombl8xJEOKbu1LRXAkXGFgef6mLbQzk2b4+NAsAhIzVM0+SwufruJ/dyXuLXCKhBi0txu3Yw5KEx3GwRMQ40Cro4c2owii8DkcTKGJZMEhCmVGqgjo2c3dE2AkooR4MDHh+Dwi7mVaqkZwMeshRwpPzcgnEWWW5LY5imzYoimMZZO+5BUJ4hxHN8lANB1ymW56Y5XPt3eow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RaEz9Vd5MvS4r6jxNvhE8FeZrfx+dxdrJZwauFqwr7Y=;
+ b=au25WwJWQhHssjDkgz2903XLUmpxSOWVGZwHHZv2VxLCYYmDNZFCTL4PMgDXiDiL1AdNx5gWiMBMPKKmOiHlKKPWMViVhlZj1cL/BU9Y4z00KRdvNTLJsKKLKzaP/B65G90YOvb8zS5Bzru+CVTvV7jl3GgmGoNoBdo8FiPq/yE=
+Received: from SJ0PR03CA0060.namprd03.prod.outlook.com (2603:10b6:a03:33e::35)
+ by PH8PR12MB7028.namprd12.prod.outlook.com (2603:10b6:510:1bf::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.19; Fri, 31 May
+ 2024 03:23:32 +0000
+Received: from CO1PEPF000042AD.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e:cafe::1e) by SJ0PR03CA0060.outlook.office365.com
+ (2603:10b6:a03:33e::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30 via Frontend
+ Transport; Fri, 31 May 2024 03:23:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000042AD.mail.protection.outlook.com (10.167.243.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7633.15 via Frontend Transport; Fri, 31 May 2024 03:23:32 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 30 May
+ 2024 22:23:27 -0500
+Date: Thu, 30 May 2024 22:22:49 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Sean Christopherson
+	<seanjc@google.com>, <linux-coco@lists.linux.dev>, <jroedel@suse.de>,
+	<thomas.lendacky@amd.com>, <vkuznets@redhat.com>, <pgonda@google.com>,
+	<rientjes@google.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
+	<alpergun@google.com>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, <papaluri@amd.com>
+Subject: Re: [PULL 00/19] KVM: Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
+Message-ID: <6nby33glecw46wrdws7vuokrqz4b72evrzdujcrsm6pujo62b6@xoxstkzsvwrj>
+References: <20240510211024.556136-1-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 09/20] KVM: SEV: Add support to handle MSR based Page
- State Change VMGEXIT
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
- dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
- peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
- rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de,
- vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
- tony.luck@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
- nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com,
- Brijesh Singh <brijesh.singh@amd.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>
-References: <20240501085210.2213060-1-michael.roth@amd.com>
- <20240501085210.2213060-10-michael.roth@amd.com>
- <84e8460d-f8e7-46d7-a274-90ea7aec2203@linux.intel.com>
- <CABgObfaXmMUYHEuK+D+2E9pybKMJqGZsKB033X1aOSQHSEqqVA@mail.gmail.com>
- <7d6a4320-89f5-48ce-95ff-54b00e7e9597@linux.intel.com>
- <rczrxq3lhqguarwh4cwxwa35j5riiagbilcw32oaxd7aqpyaq7@6bqrqn6ontba>
- <7da9c4a3-8597-44aa-a7ad-cc2bd2a85024@linux.intel.com>
- <CABgObfajCDkbDbK6-QyZABGTh=5rmE5q3ifvHfZD1A2Z+u0v3A@mail.gmail.com>
- <ZleJvmCawKqmpFIa@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <ZleJvmCawKqmpFIa@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240510211024.556136-1-michael.roth@amd.com>
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000042AD:EE_|PH8PR12MB7028:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad5fd8c7-3ce2-4e45-c7bf-08dc81210c77
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|7416005|36860700004|82310400017|1800799015|376005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ktLJFypMUenAj332d1Gne1pfumPCb5647XBlcyx7PrET5Vem/vGd85eJvkC5?=
+ =?us-ascii?Q?M4TJZFSdw+b7MdO5kc6kJVzrqeZqc7p7UnJYFW3ax8v4YbeSG4mM0OUwgff7?=
+ =?us-ascii?Q?zyLwXUbn5TW0Z4LQHuJwUa0SvuekOcwsZHHhR3yYmXrpMUh7pchxO9IjlT44?=
+ =?us-ascii?Q?hG8S6A52t+O6SisxHmLjFZax6xpPCoaEIunfn6OR3RECiLuVRJEvqadfdgLW?=
+ =?us-ascii?Q?+RFUOcyoNDfwACfn6vtVVUM98JsCUnrDZg/AccFuS3tTSIt9kNH3KXhwcmXR?=
+ =?us-ascii?Q?JondMPZGyz3ygZune4ui68/GGU4+X3Qu/zPH5UIl7WsEnEtY9lk9VXsyXUg4?=
+ =?us-ascii?Q?pWqBBcX+PradVqZXut1Xsp8HGJaj0VIR6r0W92DLSRjvouKrW3I/zGj85KmG?=
+ =?us-ascii?Q?qphDg+p5moK/rx1LtsDPPT2gPjOwJ0DhMxxK1tpHeT7C2ty4FCElOK5g0/8+?=
+ =?us-ascii?Q?iTXbP7CYuL23n8YV2CEk4CU8EDy8tTqRWprg14ufYYE8DOr9q3WOLoBHIoo4?=
+ =?us-ascii?Q?zG26MMwxVcVGfabinFPfH4JgWvuCGXwOkV7fzzF9o0qjpeyfQQUM/MgmDBSi?=
+ =?us-ascii?Q?7fLBENpbQaQ7bcHPixlcBe+nNh6yhy4k5fynwAe5DRO+NidBoatcC8vIV6zk?=
+ =?us-ascii?Q?n4wXuJZIMfI+fFBvc6jW0gxDfB9b3ucQvnPgAyeq3y0wieayeCrPuzj5u0fi?=
+ =?us-ascii?Q?9bB+u03AUuO0QgLAYic5MW59nc96ftbnDNcK3iiJMlKEfi94xcQjeUW4VHVJ?=
+ =?us-ascii?Q?7LpHvWUwXdn2ZEO+V3g1ZchGC6diD/ZwBUa9sWdqZA3buANHtOPvqFFHK4qp?=
+ =?us-ascii?Q?FykK7BlT3ZZylWlE1HEi9tryNzPdGULH6UIYyT/Ano8aQFUU8iJUK+SHXFRA?=
+ =?us-ascii?Q?mdUGdXS1hfRcBb5v/cEmWC0jMBxv8rRIkjLeNHm2zrFLqZ+YpbYy8on/zV0n?=
+ =?us-ascii?Q?jE7vmYdsoyo+eo9G3rMaLDpcjeGqMF/QkFQq1H+U8QC0bmAL10I0d7qE6SED?=
+ =?us-ascii?Q?dn5zLQVQN64GlBRYai4xOuXFy0Z3nPUyx9kfUP4gkgDUyWsGc/NlnslCuE1f?=
+ =?us-ascii?Q?rdBDH7lDyvF72mm4SrH/W9E4X++ek6aOY2SU35gObae91SV7r1gxzpU7TKtC?=
+ =?us-ascii?Q?awVKc11bmNxkRssRl9EPffvB8GnoFBgLCNSeLv7Mm97pBAcnFiMPqGQuw3z1?=
+ =?us-ascii?Q?1hIxs6XmLEnguxu6OY3h8yV89J60uv0lxlSP3KtqrmH0tSZRG8+MNQhiOToQ?=
+ =?us-ascii?Q?cEyHj4gO3tRIb8CaIf6Y5dAZVpQrr947ma1OGLncqXK5WHr+QWH26JOmF4ht?=
+ =?us-ascii?Q?cyrA7ME9eZUU7+fKBsMEeKi7NurWcuIToudPSqhOg+z3eQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(7416005)(36860700004)(82310400017)(1800799015)(376005);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 03:23:32.1129
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad5fd8c7-3ce2-4e45-c7bf-08dc81210c77
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000042AD.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7028
 
+On Fri, May 10, 2024 at 04:10:05PM -0500, Michael Roth wrote:
+> Hi Paolo,
+> 
+> This pull request contains v15 of the KVM SNP support patchset[1] along
+> with fixes and feedback from you and Sean regarding PSC request processing,
+> fast_page_fault() handling for SNP/TDX, and avoiding uncessary
+> PSMASH/zapping for KVM_EXIT_MEMORY_FAULT events. It's also been rebased
+> on top of kvm/queue (commit 1451476151e0), and re-tested with/without
+> 2MB gmem pages enabled.
 
+As discussed during the PUCK call, here is a branch with fixup patches
+that incorporate the additional review/testing that came in after these
+patches were merged into kvm/next:
 
-On 5/30/2024 4:02 AM, Sean Christopherson wrote:
-> On Tue, May 28, 2024, Paolo Bonzini wrote:
->> On Mon, May 27, 2024 at 2:26 PM Binbin Wu <binbin.wu@linux.intel.com> wrote:
->>>> It seems like TDX should be able to do something similar by limiting the
->>>> size of each KVM_HC_MAP_GPA_RANGE to TDX_MAP_GPA_MAX_LEN, and then
->>>> returning TDG_VP_VMCALL_RETRY to guest if the original size was greater
->>>> than TDX_MAP_GPA_MAX_LEN. But at that point you're effectively done with
->>>> the entire request and can return to guest, so it actually seems a little
->>>> more straightforward than the SNP case above. E.g. TDX has a 1:1 mapping
->>>> between TDG_VP_VMCALL_MAP_GPA and KVM_HC_MAP_GPA_RANGE events. (And even
->>>> similar names :))
->>>>
->>>> So doesn't seem like there's a good reason to expose any of these
->>>> throttling details to userspace,
->> I think userspace should never be worried about throttling. I would
->> say it's up to the guest to split the GPA into multiple ranges,
-> I agree in principle, but in practice I can understand not wanting to split up
-> the conversion in the guest due to the additional overhead of the world switches.
->
->>   but that's not how arch/x86/coco/tdx/tdx.c is implemented so instead we can
->>   do the split in KVM instead. It can be a module parameter or VM attribute,
->>   establishing the size that will be processed in a single TDVMCALL.
-> Is it just interrupts that are problematic for conversions?  I assume so, because
-> I can't think of anything else where telling the guest to retry would be appropriate
-> and useful.
+  https://github.com/mdroth/linux/commits/kvm-next-snp-fixes4/
 
-The concern was the lockup detection in guest.
+They are intended to be squashed in but can also be applied on top if
+that's preferable (but in that case the first 2 patches need to be
+squashed together to maintain build bisectability):
 
->
-> If so, KVM shouldn't need to unconditionally restrict the size for a single
-> TDVMCALL, KVM just needs to ensure interrupts are handled soonish.  To do that,
-> KVM could use a much smaller chunk size, e.g. 64KiB (completely made up number),
-> and keep processing the TDVMCALL as long as there is no interrupt pending.
-> Hopefully that would obviate the need for a tunable.
+ [SQUASH] KVM: SVM: Remove the need to trigger an UNBLOCK event on AP creation
+   - drops handling for KVM_MP_STATE_UNINITIALIZED since no special
+     handling for it will be needed until SVSM support is added in OVMF
+     and the host kernel has the necessary support for running
+     SVSM-enabled guests
+   - to be squashed into:
+     KVM: SEV: Support SEV-SNP AP Creation NAE event
 
-Thanks for the suggestion.
-By this way, interrupt can be injected to guest in time and the lockup 
-detection should not be a problem.
+ [SQUASH] KVM: SEV: Don't WARN() if RMP lookup fails when invalidating gmem pages
+   - address the WARN() that Sean noticed when running guest_memfd_test
+     kselftest on an AMD system without SNP enabled
+   - to be squashed into:
+     KVM: SEV: Implement gmem hook for invalidating private pages
 
-About the chunk size, if it is too small, it will increase the cost of 
-kernel/userspace context switches.
-Maybe 2MB?
+ [SQUASH] KVM: SEV: Use new kvm_rmp_make_shared() naming
+   - fixup to handle helper function being renamed in prior patch
+   - to be squashed into:
+     KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command
+     
+ [SQUASH] KVM: SEV: Automatically switch reclaimed pages to shared
+   - implement suggestion from Sean to always switch reclaimed pages to shared
+     since that's what the callers all end up doing anyway
+   - to be squashed into:
+     KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command
+
+As discussed at PUCK I will resubmit the guest requests patches
+separately will all the pending changes incorporated.
+
+Thanks!
+
+-Mike
+
+> 
+> Thanks!
+> 
+> -Mike
+> 
+> [1] https://lore.kernel.org/kvm/20240501085210.2213060-1-michael.roth@amd.com/
+> 
+> The following changes since commit 1451476151e08e1e83ff07ce69dd0d1d025e976e:
+> 
+>   Merge commit 'kvm-coco-hooks' into HEAD (2024-05-10 13:20:42 -0400)
+> 
+> are available in the Git repository at:
+> 
+>   https://github.com/mdroth/linux.git tags/tags/kvm-queue-snp
+> 
+> for you to fetch changes up to 4b3f0135f759bb1a54bb28d644c38a7780150eda:
+> 
+>   crypto: ccp: Add the SNP_VLEK_LOAD command (2024-05-10 14:44:31 -0500)
+> 
+> ----------------------------------------------------------------
+> Base x86 KVM support for running SEV-SNP guests:
+> 
+>  - add some basic infrastructure and introduces a new KVM_X86_SNP_VM
+>    vm_type to handle differences versus the existing KVM_X86_SEV_VM and
+>    KVM_X86_SEV_ES_VM types.
+> 
+>  - implement the KVM API to handle the creation of a cryptographic
+>    launch context, encrypt/measure the initial image into guest memory,
+>    and finalize it before launching it.
+> 
+>  - implement handling for various guest-generated events such as page
+>    state changes, onlining of additional vCPUs, etc.
+> 
+>  - implement the gmem/mmu hooks needed to prepare gmem-allocated pages
+>    before mapping them into guest private memory ranges as well as
+>    cleaning them up prior to returning them to the host for use as
+>    normal memory. Because those cleanup hooks supplant certain
+>    activities like issuing WBINVDs during KVM MMU invalidations, avoid
+>    duplicating that work to avoid unecessary overhead.
+> 
+>  - add support for the servicing of guest requests to handle things like
+>    attestation, as well as some related host-management interfaces to
+>    handle updating firmware's signing key for attestation requests
+> 
+> ----------------------------------------------------------------
+> Ashish Kalra (1):
+>       KVM: SEV: Avoid WBINVD for HVA-based MMU notifications for SNP
+> 
+> Brijesh Singh (8):
+>       KVM: SEV: Add initial SEV-SNP support
+>       KVM: SEV: Add KVM_SEV_SNP_LAUNCH_START command
+>       KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command
+>       KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command
+>       KVM: SEV: Add support to handle GHCB GPA register VMGEXIT
+>       KVM: SEV: Add support to handle RMP nested page faults
+>       KVM: SVM: Add module parameter to enable SEV-SNP
+>       KVM: SEV: Provide support for SNP_GUEST_REQUEST NAE event
+> 
+> Michael Roth (9):
+>       KVM: MMU: Disable fast path if KVM_EXIT_MEMORY_FAULT is needed
+>       KVM: SEV: Select KVM_GENERIC_PRIVATE_MEM when CONFIG_KVM_AMD_SEV=y
+>       KVM: SEV: Add support to handle MSR based Page State Change VMGEXIT
+>       KVM: SEV: Add support to handle Page State Change VMGEXIT
+>       KVM: SEV: Implement gmem hook for initializing private pages
+>       KVM: SEV: Implement gmem hook for invalidating private pages
+>       KVM: x86: Implement hook for determining max NPT mapping level
+>       KVM: SEV: Provide support for SNP_EXTENDED_GUEST_REQUEST NAE event
+>       crypto: ccp: Add the SNP_VLEK_LOAD command
+> 
+> Tom Lendacky (1):
+>       KVM: SEV: Support SEV-SNP AP Creation NAE event
+> 
+>  Documentation/virt/coco/sev-guest.rst              |   19 +
+>  Documentation/virt/kvm/api.rst                     |   87 ++
+>  .../virt/kvm/x86/amd-memory-encryption.rst         |  110 +-
+>  arch/x86/include/asm/kvm_host.h                    |    2 +
+>  arch/x86/include/asm/sev-common.h                  |   25 +
+>  arch/x86/include/asm/sev.h                         |    3 +
+>  arch/x86/include/asm/svm.h                         |    9 +-
+>  arch/x86/include/uapi/asm/kvm.h                    |   48 +
+>  arch/x86/kvm/Kconfig                               |    3 +
+>  arch/x86/kvm/mmu.h                                 |    2 -
+>  arch/x86/kvm/mmu/mmu.c                             |   25 +-
+>  arch/x86/kvm/svm/sev.c                             | 1546 +++++++++++++++++++-
+>  arch/x86/kvm/svm/svm.c                             |   37 +-
+>  arch/x86/kvm/svm/svm.h                             |   52 +
+>  arch/x86/kvm/trace.h                               |   31 +
+>  arch/x86/kvm/x86.c                                 |   17 +
+>  drivers/crypto/ccp/sev-dev.c                       |   36 +
+>  include/linux/psp-sev.h                            |    4 +-
+>  include/uapi/linux/kvm.h                           |   23 +
+>  include/uapi/linux/psp-sev.h                       |   27 +
+>  include/uapi/linux/sev-guest.h                     |    9 +
+>  virt/kvm/guest_memfd.c                             |    4 +-
+>  22 files changed, 2086 insertions(+), 33 deletions(-)
+> 
+> 
