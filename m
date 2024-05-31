@@ -1,51 +1,51 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BF2158847
-	for <linux-coco@lists.linux.dev>; Fri, 31 May 2024 12:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50768139563
+	for <linux-coco@lists.linux.dev>; Fri, 31 May 2024 12:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717159735; cv=none; b=EH+pduiErF+2yIHKY0jX63Au2FY3QyPr1Gv55tyISWgvfsiMl6B1JQu7SVE23edsFX70EZyqU0N7N+5goDP2qyc2QljdbE564pY8x0WQPAR7pvx2lwIDp31wQwwJXie1KTun7MItzvrP4/PVYnQncdsBESpkPDEM7u4JpkAEGYY=
+	t=1717160125; cv=none; b=Mk9mMahDOAGEIURxf2ZmhO1Ltu2O5jwo0duqo5f2iToihy/oR2p33tjSWSIAOYtQpZluuNpjlRCw4XWf8RJ46o97SU7WOvqAk9mXHdwiaTc7jnFk1l5MOEiB8I2pbM5zc433i/EBQAQI68rE2BqmOCVfQN+T1s9doFolWukNk/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717159735; c=relaxed/simple;
-	bh=iiuNGBj2BQDkNZVFjcFc9hllPApGtuUWnv+F9HYgOWU=;
+	s=arc-20240116; t=1717160125; c=relaxed/simple;
+	bh=a/D3i575KXmjs7d3uP7ukJ/cbXpnBh5AO1m+44Pxc8M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JrY4V+DPuQmEO747w53632Om3AijXLYtOxsCjrngTkWqoxfcCC7bvbiGHppfMgseUhK0hWkN3Zupzyy4CsDrwKz6t2ebDr0I6EjtV31qflV7ZV2wG7zxARhA6BkGAdp8QtFH4XFzozK4hmNFs0Lagc884yr8zSTx2lV1+CMKS/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=O8jCgTB3; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=QJzPYo9gIG4IODbIvrxgdDdgfL5/WtE66o6fvea0OZtYBZSt7wmUygdnjfpFxlEIXo6yrTEKM9rBIF+AG4uQ8zYqodNBuTKpGDs8kmiSc5c2wNcBEhjMAPu6cXVA+1+x6rcw1QhC1vLreM2kQfLokZXZVjr0eHhAO4FI2U/3Mio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=OUyqM52d; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="O8jCgTB3"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="OUyqM52d"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 03C2040E0241;
-	Fri, 31 May 2024 12:48:52 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 301C740E0192;
+	Fri, 31 May 2024 12:55:22 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id q1fJjZY8sWNT; Fri, 31 May 2024 12:48:49 +0000 (UTC)
+	with ESMTP id Luq9wZmn7Uji; Fri, 31 May 2024 12:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1717159728; bh=TY6VcibxdweZqQIFn+missxQLP+1JlXnv47ORNzMTiw=;
+	t=1717160118; bh=h5Et4vSVp4DVw+C0adJbFGCQ6V6GUn+XWLm+lVGgBnk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O8jCgTB3M9+aX8bNkwCg0eDZjy3e61S9TpWBS4rXqtIFK5tHcEisjKoDJkMKniRTt
-	 J5tKGvpDW9cyPvfbHuYGCB/5StUYCosPiPP+kLK5WSKrTW/suSamhrl2y93/yZfiCZ
-	 urjJFBvdZ9C3QiOaNz+wKLSBOj4eppaBXXQanyV/fBDqkNWcu0Qy1swCjsPJaW/diT
-	 z3nbzVfAM27LJKIVeiaSLd76N29aLGFcIl4dIEW9ht8BKSiD49R6BUsKylLg+kLZ/H
-	 3INm01Y4fKvSs0+JWhhtEwXWiBZHTMOIaY5OIhkL5L4qDDkaX3+JY6PRqr0jW+VLTT
-	 sJLJrNwZuWhPiRTpBLWeS7yHtH03dutxd+uhRAJEGpndy/xNlJlC8iClHA2LiT6POJ
-	 NHJVDxGq6BfZgf5NiCwMbMlQqsWxahJmAKe8IT1rQzMHo8N93slh21gHEEgc7kBuW1
-	 DplDRryDV73XWsPJZ1TV5h6iOyU9oS2XE1Xq14OrGMGruFX8YEbhB5Mteb/uqkrtyR
-	 y8DZCL6zFAMFHdKl+LWPQoOs2/mvrEHhEUDed9TvVvx65XRcIi3FK5dfnXVf+iSfv4
-	 ELhhHEYR2X7Ocm0u2G/zjbHViL+d7zas/uklR4VmP604uKOmr4V+LnCdp3Gpk6lDjX
-	 3S8VCws3pa+z7iLCS6KlQZQ0=
+	b=OUyqM52dum33Rm4bkKvFV9lT4IMRj5P2NLWy6zTjXV+somuQez7U/iNXj4yGu9+5Z
+	 QKLIswBH5ncCK/roq29gfqXlpblnYKR+4w3IzICvXJlgdd1udwQt4j5WES8uwaq9A7
+	 35n6J8MslwWOXlkHXbHJpSyRljZmJprqx8S7ohXHtS+imtVNyU2G9nSlAdn2U/WryH
+	 GjVsdhMrfa6toXJkT5IZ/C3kvq+FNmOk4c1bcbij8+m+hRQWVg5uGkaggdb5Q56mP6
+	 cT6X8V6OjNi5ZBuh2A+1A+CiK3Cww8N93/SSLFtTuZkTBlFYfBzB0WgIVTqWJ54i3i
+	 Rz1IZDKQC0p90Uonjpm17cWhpQoBin+uYYMCUwgsH5u9N31xR8sbQkUJCUBMH/0ccX
+	 sNZKooRz1SAXICFiE6w6Pgrv1aNrhO1s/iIBm76y20pKXbX5B/DJpUp9pprMjXDeZo
+	 r8k27UzJpUFmJ/2VF9TA8TZfH6F2RbylTbmOWVQLzLjVGwQPDoUdIjKppi5Lt1//k3
+	 fe4YKzPawWQtBKC7eBG2cB2oBlG8BjiETj4rtIw/4zQrtm5gIZBUnsltJ5CMl/Ey0c
+	 rTt9f9XT4oLKZ0I6z1Jn74FJ3c0p2p4LlDov/8kf+UcA8jOfZ27Ij477oqRMvD5r1L
+	 iLFIl0TfRKO3Q+VyYlXzLkPI=
 Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B4D6240E01E8;
-	Fri, 31 May 2024 12:48:34 +0000 (UTC)
-Date: Fri, 31 May 2024 14:48:29 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AE71140E0177;
+	Fri, 31 May 2024 12:55:04 +0000 (UTC)
+Date: Fri, 31 May 2024 14:55:03 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Tom Lendacky <thomas.lendacky@amd.com>
 Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
@@ -58,12 +58,11 @@ Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
 	Dan Williams <dan.j.williams@intel.com>,
 	Michael Roth <michael.roth@amd.com>,
 	Ashish Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v4 08/15] x86/sev: Provide SVSM discovery support
-Message-ID: <20240531124829.GDZlnHHZnj-oByMTIK@fat_crate.local>
+Subject: Re: [PATCH v4 10/15] virt: sev-guest: Choose the VMPCK key based on
+ executing VMPL
+Message-ID: <20240531125503.GEZlnIp7YobFu7g9iS@fat_crate.local>
 References: <cover.1713974291.git.thomas.lendacky@amd.com>
- <0b460ba621d39fda47694332f09301b440619efc.1713974291.git.thomas.lendacky@amd.com>
- <20240527131022.GAZlSGPm_s0FAu_BRB@fat_crate.local>
- <ab9e93f0-132e-b7cc-48e0-f83463003e21@amd.com>
+ <b8508f57712e3194484aa8695494eea26abe1b73.1713974291.git.thomas.lendacky@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -72,31 +71,33 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ab9e93f0-132e-b7cc-48e0-f83463003e21@amd.com>
+In-Reply-To: <b8508f57712e3194484aa8695494eea26abe1b73.1713974291.git.thomas.lendacky@amd.com>
 
-On Tue, May 28, 2024 at 03:57:10PM -0500, Tom Lendacky wrote:
-> The alternative method is really meant for things like UEFI runtime services
-> (which uses the kernels #VC handler), not the kernel directly.
-> 
-> Some of those checks have to be made very early, I'll see if it is feasible
-> to rely on the CPUID check / cpu_feature_enabled() support.
+On Wed, Apr 24, 2024 at 10:58:06AM -0500, Tom Lendacky wrote:
+> +int snp_get_vmpl(void)
+> +{
+> +	return vmpl;
 
-Put that in the commit message.
+The vmpl doesn't change after init, right?
 
-> We can separate out SVSM vs VMPL, but if the kernel isn't running at VMPL0
-> then it requires that an SVSM be present.
+If so, you can make that vmpl variable __ro_after_init and drop yet
+another parrotting accessor.
 
-Ok, I guess the two things are identical.
+> -static u32 vmpck_id;
+> -module_param(vmpck_id, uint, 0444);
+> +static int vmpck_id = -1;
+> +module_param(vmpck_id, int, 0444);
+>  MODULE_PARM_DESC(vmpck_id, "The VMPCK ID to use when communicating with the PSP.");
 
-> I'll incorporate this, but probably won't change the way exit_info_1 is
-> assigned.
+Can the driver figure out the vmpck_id from the kernel directly instead
+of having to supply it with a module param?
 
-Oh, but we love our '!!' construct:
+This is yet another silly module param which you have to go and engineer
+into the loading and have to know what you're doing.
 
-git grep -E '\s!![^!]' *.[ch] | wc -l
-7776
+If you can automate that, then it is a win-win thing.
 
-At least so many, my pattern is not precise.
+Thx.
 
 -- 
 Regards/Gruss,
