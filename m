@@ -1,175 +1,672 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2068.outbound.protection.outlook.com [40.107.220.68])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885461C680;
-	Sat,  1 Jun 2024 20:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717274457; cv=fail; b=FrihUkoDFK3hD+sXe7pdmm31Q2luEWI57k13jxIAVq1sqYKj1Si2xdCuLATC47wcKIiYdZRHjYjebpBMvVe8qHiWlGiU3nIhDfZe5S390DGztSAg/IZtnk3kAPyW8eIBU8ZNysB5O9j5Kz4IfxF0w5AEbt03VO12gBbk/iJVwxo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717274457; c=relaxed/simple;
-	bh=QQLHFPL9uOsQe3fjyFoHRNLu0qCvjsC0WymP6PzT2xs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=alpOeq8Ealhuwg7R960RLudaAQ7dHqfGzgEctHtpk6H5cYNfpUE3K4gXm8tXNC3XNykJZb2rEFWrKpP49VKqLC9Dcbi/xnFLGXFHJCp6KUIqdNp3eWBuS+2qqwd6nhyz/6m10/p23a3S8gQ0ykNvXnkOZacE3QSlgpPSWAmLcpU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gdF87KPC; arc=fail smtp.client-ip=40.107.220.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787852D60C
+	for <linux-coco@lists.linux.dev>; Sun,  2 Jun 2024 11:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717329293; cv=none; b=EJgiirxCs0t938at6xx0lFxL2J2bahSQrXUxaqaO3JGAQOQ+ajn6QmD8ZxQGaIK3lr7M0qLNiR7gGvFSa/gTPRvDtNpF6LnYjudsJWx0kg5opKqf//OvQdipL3MqXzFlSvUKp5Eb/5T6RWEOZxbT8BrChd3G8mMoVk9bLoexgX4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717329293; c=relaxed/simple;
+	bh=VfNDZ/23SEABl6JDOGyoKSiX0Ud8WzTogA0utA/EhAI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FlaG5ue25WqBIdcGvRSeOHTKm27TrPXl8axwNfkfz2UsBDisx0m2Wf0JHE86zsK3uBXN7jtKJusMEgeSh3PRW84Ki8c1Knh5jlsIvpTRVEzPi57OnzeNqDfQQ6B7yYjGjXO+n8CEMjh2TXFZYgkrfuShx0shtXpBKjrw24D3M2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jrA3B1Kv; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gdF87KPC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kJJo8uoprVsjWxWU74NtmD993ElS4Rss9gN9hsEGjUIbRAliCQlFxbiO5qwxyVM81SFbt6rDN/SSI9HxNP0qVfDvVFbQs2pHP2yNpGpFgvHFJEe6ZXJ9GJxyI5/xsoFHGA+OxpuPFd4KDTOxXf5v9jkiryVqkMN5J4XnJD6qW5PLj849tFcFShh8QivM/Fgl+W6nwWjK71rwldBFSZC0pl5ctmo5Ec4HaXG7aMOPlY+pxUWRYyfgaKDFrXKJLnncpnQpKS9SqgGLJmoDjYsNB1OUfMk9M0kzEh4PBr2X0eJ8Bqkt47xDT0zDIsCi9NMd2Kvz8YLEIv9Q4oMDU0DrsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QQLHFPL9uOsQe3fjyFoHRNLu0qCvjsC0WymP6PzT2xs=;
- b=PDBVpmETiQRQUMVVjOOlEesMGYrd+uIh9ZfBAHVLuotsgZIe54l0ZlwV8u5DbkCD6atYHEzOnl8YGYkBS49er/WSEsteX4hUvKMEHq/+umQ6Zdtad6qN121slTEMV5cCM2YztrKn9Mb6Iv2PASppovcCUHV9snMdef+s9PHAmp6bFM9GnK84a63ACcbQHCWG2I/t0UWlg8zXsZ7CO0FWYfBL6fCOmvtNzDZNEveiIF6cjYXRi8GrPPogye+hfMw+co/28xEvFp6Kbu3ME3AqK+G6oAO/gkVVXa2yXjNP6omwQcJYkyeQn0TMk70nVqzgE4+dAOXSJNmmTNr+LbiXQQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QQLHFPL9uOsQe3fjyFoHRNLu0qCvjsC0WymP6PzT2xs=;
- b=gdF87KPCPZsKgO0KANl9eU+lfEN3IHA9uuz3873IZ/vZAGZ2GD7DvDhEhMdyi7HgmwveiIqNkWbkp9XH0Mr7MT5RAfcq+5k1pz3PZmvAKNDWDvK1ZG9zC/s6MiPZA03t9uQzGfw0nAS4QXyv24W4cOg0b3++stqYSeNNsw8A2Ak47uMyVjODYn6GVo8O2YvsYFHvTsRiHlrIw3SXLWKtynm7LM9WYHnVkrHFTpUaIftZ9dsGHzl7TEscamI5lGYBSGvnQR5JBLR+Dk38J5lEoNq9pmh03QKlOeCmn+HXtKoErUqrr46SPT5/plxdwLtSvQQi28KegrbLjZxF01w1nw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
- by SJ2PR12MB8062.namprd12.prod.outlook.com (2603:10b6:a03:4c8::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.21; Sat, 1 Jun
- 2024 20:40:53 +0000
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::c296:774b:a5fc:965e]) by DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::c296:774b:a5fc:965e%4]) with mapi id 15.20.7633.021; Sat, 1 Jun 2024
- 20:40:51 +0000
-Date: Sat, 1 Jun 2024 17:40:43 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Steven Price <steven.price@arm.com>
-Cc: Itaru Kitayama <itaru.kitayama@linux.dev>, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: Re: [v2] Support for Arm CCA VMs on Linux
-Message-ID: <ZluHS9ZAZwzF85jk@nvidia.com>
-References: <20240412084056.1733704-1-steven.price@arm.com>
- <Zhgx1IDhEYo27OAR@vm3>
- <b2accd2c-15cc-44d9-9191-60224b797814@arm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b2accd2c-15cc-44d9-9191-60224b797814@arm.com>
-X-ClientProxiedBy: BYAPR07CA0096.namprd07.prod.outlook.com
- (2603:10b6:a03:12b::37) To DM6PR12MB3849.namprd12.prod.outlook.com
- (2603:10b6:5:1c7::26)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jrA3B1Kv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717329291; x=1748865291;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=VfNDZ/23SEABl6JDOGyoKSiX0Ud8WzTogA0utA/EhAI=;
+  b=jrA3B1Kv7ncFFdfZibXaaJiQfiSCSi3G0X53SvfReGktKX0ChJ3JCDcr
+   75Syy5q53DQK1b8IDs4I6BHn0hQZbIVOTj9unBRWX57ll3VystvLsEkb+
+   jByl4HTqgWHxyPPb/nwXbbkzQVQ9T2X3z3PHihY6bX1Q/NSFkBrVkCRvF
+   ozx9/pNBoAtRvMQizZ8kUCvyQre7gifDrIyKqYvUWhrK11FHFKBU2UtCq
+   7+nLzeLt5+mWLfpErrRVpu+EVMBZNXQiILm1zsDFI6O6NlZ740t9uX7Hs
+   L4g833lNjz7uBM+O6w3hmJV+YDNqUc7Hxg4ntVqdWkG7aXjTcB9etdX9I
+   A==;
+X-CSE-ConnectionGUID: VOB8kI6vSROhPWSSQmPxNw==
+X-CSE-MsgGUID: 8RAH3jlvTZivc687hTemTQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11090"; a="17673220"
+X-IronPort-AV: E=Sophos;i="6.08,209,1712646000"; 
+   d="scan'208";a="17673220"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2024 04:54:50 -0700
+X-CSE-ConnectionGUID: rb41hFa5Qe6Xx6DqzzTdWA==
+X-CSE-MsgGUID: iqdr4n/6TeO4yM9qUX+mKw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,209,1712646000"; 
+   d="scan'208";a="41047068"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa005.fm.intel.com with ESMTP; 02 Jun 2024 04:54:46 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id A2A771CB; Sun, 02 Jun 2024 14:54:45 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Cc: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCH] x86/tdx: Enhance code generation for TDCALL and SEAMCALL wrappers
+Date: Sun,  2 Jun 2024 14:54:43 +0300
+Message-ID: <20240602115444.1863364-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|SJ2PR12MB8062:EE_
-X-MS-Office365-Filtering-Correlation-Id: f28d2d23-3c83-4ae0-725b-08dc827b204d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|376005|7416005|1800799015;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?IxIQ3V3XK9zMXHjxTiJIc0nnGXHqU/jJ5CUzqM2fJswBHD09Ii+Zg3G0IsRc?=
- =?us-ascii?Q?HYeJHzguGTJQnkD+kbV+NTlfymtR+58Kjo454IfnRT7zO9hzHAu8+JaMLnx6?=
- =?us-ascii?Q?b1wEmgl+pMkSbOjimG48BRpGDDbh19esKeip+fwsiXpLObRbO1RzhRNwk3JZ?=
- =?us-ascii?Q?btDnxxZVZ6hS1BVFUv/99a6z0XFrccccYMC1bi0m8V4bt4P8eoTEh+FefwnK?=
- =?us-ascii?Q?lh3idSbkP4HFQ93EmYywfWxutbZYmxw6FNA62/KNO+w5zOcQYFedOkt5oCcI?=
- =?us-ascii?Q?zNGbIyLtHW8ZWCXDn9Xg/9bUXePitPechKCdfiLs611mbaroXNNnEW//onRI?=
- =?us-ascii?Q?1EohrDwur+eYhX3aGnoHXXCO8eG1zq00m+TSDTWdDU61JgJv4hclB25U5i5u?=
- =?us-ascii?Q?dWkJx3P06a4bIZEt4ZJJgnricBJHdZVFOcNQ7xBFrUUKd1qrFsAHIbWtAf8r?=
- =?us-ascii?Q?46deqr2iL78RaUMo5lZDf4aRUEWF4E0y6MR7dBwnOA4ffbIh83eswuOzZyur?=
- =?us-ascii?Q?ZffV5kDKvAtn1h+ip1ZuRSUhOhioNHqqIfQsyxxWTcNWJ+ahNTKn4YZp2F/A?=
- =?us-ascii?Q?CMzOiOB6Pg5IrWC6P4qQRn7N5977/ghDjoLVPVh2ypD5L4GfY9mwRfoHlVWc?=
- =?us-ascii?Q?JBonlyID19TShM53JeLHjRljfSXslEVd5Pcl10hXBSPwO7mxu2BLXOBoO5B+?=
- =?us-ascii?Q?GfoPAZr9pOwO9MvVc2JYai+FjGM0mpFtdQr1rGRG1NJ5qTB3EovhPLhEYqdD?=
- =?us-ascii?Q?Lw+Oo6P6D/q0S9j77h4W506P5w3ana+5yJIo3joScQKKXnzqbGWd4jIbLVQy?=
- =?us-ascii?Q?sKUKNCQxLxYIKxjnQ2gF6G/ngd29AW2kNquV5Oih9KHrwKBjr+w8ujMlJwcz?=
- =?us-ascii?Q?dUuIcXgkMwnqOBiPhvhqpE40Xm7TR4b+7lgvgGnjOIxFMLuEB15LPAxoE3p5?=
- =?us-ascii?Q?2D/Fda9+n+5MCNepy9pUCB9R7ZcfPxrVYck+xEc2r1IyBxoMWHVHbS5y51t0?=
- =?us-ascii?Q?mMBe5BZpZLYMRX/VxcCdSQmwEoA23SRzhqhV/nUIQiwlNQwqeaM0xZ5jLC3k?=
- =?us-ascii?Q?KEU1rOFtzpPIzScFBU8SB1ESZZHMPGMyw7aoinhsHZ4Yqbe1N78N5CIwNQ6E?=
- =?us-ascii?Q?WikjWctwtPGTEGv8e6XdNwGaZvN//Gyw5UB6s4d57W9Nuu/nCafD3YKyRXsH?=
- =?us-ascii?Q?FAMKv7YMjUL4Cl0JSBowRlU0i/RlDaEHKryqvUXzAqiGsuIoLpDw+3fRfwIA?=
- =?us-ascii?Q?FU3OXYaAYAyMCsZiQ/RFXMUSsHI9MrtrQPntKP4yHA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(7416005)(1800799015);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Aq/xDarG/7y0ZrXaz4R1xYYHYFHOjpovPSJ5CMIMB0MVeCqcNo34k112aBf9?=
- =?us-ascii?Q?ZGeD6sQP74OHClGai8vWw1+le9GiIirRg9CrJ+VFk+A7CFw8oceVMq9yVe5C?=
- =?us-ascii?Q?UqYXGh6F4Z+dwpY2aUQbjR6v4B/ICUFDoIfIUNAotIFiDo4O+6M9GPOKxwiP?=
- =?us-ascii?Q?H6vNHs8vk/ZMT2fFtG7iM/SkVSuY/6LNbXIcpAAyy9WYLEFSw9Wqv2Qr5Fw+?=
- =?us-ascii?Q?oWlYaVdJguBG+JlpNGnKC9iOJNlCAWdizbpoeVqqzgRP5c9oTiwXAuL5RqEP?=
- =?us-ascii?Q?ANg71jbJAOjY/ZQlCu7hxu4yjOAh4rAcmuh+OUQSdjwyo1QubyJ1ibtvFT/G?=
- =?us-ascii?Q?cv5ZwT8+3ioMvpeUSEmhlTmZJC5OT2EHxv6aOwkf/ZtZlZyArW2VmYlMDgHu?=
- =?us-ascii?Q?WqU3EhjTdWtR/1vz1CMwMSnWa0i2I0rZBn1ZzGoMb2iEfaYM7VVvVu220T76?=
- =?us-ascii?Q?IfHQXZbrGs36yiMggiWK4ubjQivm1bQ6aFxN+X/fw9eRAPZaxNXSVFi+52LP?=
- =?us-ascii?Q?k6u0yyZanKwEPe6ivqCRqIoeS3jT2k4H+76GdqPcD87ReWBdnbCLWLPTdabJ?=
- =?us-ascii?Q?6WQI8xliPa1tQ9hXiQ9hFOFThLA/gb2Cm8q5EeF0xaVd+D8HUMhwKZwa5L/G?=
- =?us-ascii?Q?kWH3kMmrSpFMLPYU9w5/TOBXjaenCPhLzuJnlPY342GQsxiDjGIUI56ew8d9?=
- =?us-ascii?Q?0JzvpKDPfSv5qx0bBO0ciLo2PLeyZvFsM9GzXX00jlbuNJIf1Rsz0dS5+5DR?=
- =?us-ascii?Q?YnHKNOMg1uu7X1YByL65h2x+9bB48uwPeXTG9CEPk8npLNC73zFC6l8JbGD/?=
- =?us-ascii?Q?tP+4tCRdEQdCsaPcuAXAW4r2t1czfMFysMqaATZpnOEbJlHviD5ieyv+WmCm?=
- =?us-ascii?Q?Ji/7F4ZwxWiEIF5Ur5yqAzktj3t59/Jnb9cZiUOonn9tXfTg/4uz3mkEDxYd?=
- =?us-ascii?Q?STvtCncijzEm3EXMKpKK0huDjZ6VZbZhT43xUWOy1Mf7jpfmA4AbI2g/zIuL?=
- =?us-ascii?Q?ZTSCzdFeFJUNRMWrNf+SVcRwH5YAPB93APsb3Gh3fQTBtzx5IZv/rEzQ3vtP?=
- =?us-ascii?Q?BOGSvc6pRY3j5pwtWYinbrbDmfG/PF5NK6ALS2CVyRghA6aXK/kiknUUMb/Z?=
- =?us-ascii?Q?145wSJkLRV7Xn2QW7YIfk8MTXssLjdzWjQMLJB6MPJrAbkcruMQw7HWSoYHv?=
- =?us-ascii?Q?2Iyo6CfXjnJkC5Z1cHEAHAwHjrCRxFEmZ4XTydZ7v/WNlCSe7IO+MrW1oFTW?=
- =?us-ascii?Q?ul6hY8heY5oOr9/Lf9JSPMoZEVkkibJFhRCjHDCHYVJfV65qrDv0x+XfKQ6G?=
- =?us-ascii?Q?NHwnUxQmuc1o5AEasiUG9LA4mNaQP5iCUdg2cypuxM+t7WJnXrIK7pNAFeZm?=
- =?us-ascii?Q?BVfgkpYM7u4E7uUtAYSlC0wTM57Wi6g0qCtZwE1EzSe6eP5k3v/ZDdA9YY9Y?=
- =?us-ascii?Q?q35sMCFG12Q/FWW9QL+wcseA4XHY5XRVWEF/J01ace80XFoiuH2TxD38eJ20?=
- =?us-ascii?Q?r6HRxskrKspaOgkGmSlqnKoojASQRWqMc5/19xKCE6stRFyj4ZQ9esOZTJxg?=
- =?us-ascii?Q?7kNB4gsETPKmpALFQntBANi+dXIANXg8LxlPV0Pc?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f28d2d23-3c83-4ae0-725b-08dc827b204d
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2024 20:40:51.7226
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: thpu/S0ipIu+Ph+DVcHqdpLvY4U9U3j2ZCHow/4IXebHSJWsJ8tRQFYn2N1qbril
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8062
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 15, 2024 at 09:14:47AM +0100, Steven Price wrote:
+Sean observed that the compiler is generating inefficient code to clear
+the tdx_module_args struct for TDCALL and SEAMCALL wrappers. The
+compiler is generating numerous instructions at each call site to clear
+the unused fields of the structure.
 
-> The support for running in a guest is (I believe) in a good state
-> and I don't expect to have to iterate much on that before merging -
-> but, as always, that depends on the feedback received.
+To address this issue, avoid using C99-initializer and instead
+explicitly use string instructions to clear the struct.
 
-All the stuff I've been hearing about CC is that timely guest support
-is a really important thing. Right now the majority of the CC world is
-running on propritary hypervisors, it is the guest enablement that is
-something a wide group of people will be able to actually consume and
-use.
+With Clang, this change results in a savings of approximately 3K with my
+configuration:
 
-It needs to get into mainline to be able to reach distros about a year
-before anyone offers an ARM CC VM to the public. Various x86 guest
-only parts for CC are already merged.
+add/remove: 0/0 grow/shrink: 0/21 up/down: 0/-3187 (-3187)
 
-The KVM side is absolutely really important as well, but x86 has
-managed for a long time now with KVM being out of tree. The KVM side
-is far more complex at least.
+With GCC, the savings are less significant at around 300 bytes:
 
-So I'd split out the guest side and just send it, I saw a few comments
-already, but it looks like it shouldn't be an issue to make it this
-cycle or next? Keep sending guest enablement updates when the spec is
-stable and you have some way to do basic test.
+add/remove: 0/0 grow/shrink: 3/22 up/down: 17/-313 (-296)
 
-Jason
+GCC tends to generate string instructions more frequently to clear the
+struct.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/boot/compressed/tdx.c    |  32 ++++---
+ arch/x86/coco/tdx/tdx-shared.c    |   3 +-
+ arch/x86/coco/tdx/tdx.c           | 150 +++++++++++++++++-------------
+ arch/x86/hyperv/ivm.c             |  33 ++++---
+ arch/x86/include/asm/shared/tdx.h |  25 +++--
+ arch/x86/virt/vmx/tdx/tdx.c       |  28 +++---
+ 6 files changed, 155 insertions(+), 116 deletions(-)
+
+diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
+index 8451d6a1030c..a6784a9153e4 100644
+--- a/arch/x86/boot/compressed/tdx.c
++++ b/arch/x86/boot/compressed/tdx.c
+@@ -18,13 +18,14 @@ void __tdx_hypercall_failed(void)
+ 
+ static inline unsigned int tdx_io_in(int size, u16 port)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+-		.r12 = size,
+-		.r13 = 0,
+-		.r14 = port,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION);
++	args.r12 = size;
++	args.r13 = 0;
++	args.r14 = port;
+ 
+ 	if (__tdx_hypercall(&args))
+ 		return UINT_MAX;
+@@ -34,14 +35,15 @@ static inline unsigned int tdx_io_in(int size, u16 port)
+ 
+ static inline void tdx_io_out(int size, u16 port, u32 value)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+-		.r12 = size,
+-		.r13 = 1,
+-		.r14 = port,
+-		.r15 = value,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION);
++	args.r12 = size;
++	args.r13 = 1;
++	args.r14 = port;
++	args.r15 = value;
+ 
+ 	__tdx_hypercall(&args);
+ }
+diff --git a/arch/x86/coco/tdx/tdx-shared.c b/arch/x86/coco/tdx/tdx-shared.c
+index 1655aa56a0a5..b8d1b3d940d2 100644
+--- a/arch/x86/coco/tdx/tdx-shared.c
++++ b/arch/x86/coco/tdx/tdx-shared.c
+@@ -5,7 +5,7 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
+ 				    enum pg_level pg_level)
+ {
+ 	unsigned long accept_size = page_level_size(pg_level);
+-	struct tdx_module_args args = {};
++	struct tdx_module_args args;
+ 	u8 page_size;
+ 
+ 	if (!IS_ALIGNED(start, accept_size))
+@@ -34,6 +34,7 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
+ 		return 0;
+ 	}
+ 
++	tdx_arg_init(&args);
+ 	args.rcx = start | page_size;
+ 	if (__tdcall(TDG_MEM_PAGE_ACCEPT, &args))
+ 		return 0;
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index c1cb90369915..8112b2910ca2 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -49,13 +49,14 @@ noinstr void __noreturn __tdx_hypercall_failed(void)
+ long tdx_kvm_hypercall(unsigned int nr, unsigned long p1, unsigned long p2,
+ 		       unsigned long p3, unsigned long p4)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = nr,
+-		.r11 = p1,
+-		.r12 = p2,
+-		.r13 = p3,
+-		.r14 = p4,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = nr;
++	args.r11 = p1;
++	args.r12 = p2;
++	args.r13 = p3;
++	args.r14 = p4;
+ 
+ 	return __tdx_hypercall(&args);
+ }
+@@ -89,13 +90,14 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+  */
+ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
+ {
+-	struct tdx_module_args args = {
+-		.rcx = virt_to_phys(tdreport),
+-		.rdx = virt_to_phys(reportdata),
+-		.r8 = TDREPORT_SUBTYPE_0,
+-	};
++	struct tdx_module_args args;
+ 	u64 ret;
+ 
++	tdx_arg_init(&args);
++	args.rcx = virt_to_phys(tdreport);
++	args.rdx = virt_to_phys(reportdata);
++	args.r8 = TDREPORT_SUBTYPE_0;
++
+ 	ret = __tdcall(TDG_MR_REPORT, &args);
+ 	if (ret) {
+ 		if (TDCALL_RETURN_CODE(ret) == TDCALL_INVALID_OPERAND)
+@@ -130,11 +132,7 @@ EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
+ 
+ static void __noreturn tdx_panic(const char *msg)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = TDVMCALL_REPORT_FATAL_ERROR,
+-		.r12 = 0, /* Error code: 0 is Panic */
+-	};
++	struct tdx_module_args args;
+ 	union {
+ 		/* Define register order according to the GHCI */
+ 		struct { u64 r14, r15, rbx, rdi, rsi, r8, r9, rdx; };
+@@ -145,6 +143,11 @@ static void __noreturn tdx_panic(const char *msg)
+ 	/* VMM assumes '\0' in byte 65, if the message took all 64 bytes */
+ 	strtomem_pad(message.str, msg, '\0');
+ 
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = TDVMCALL_REPORT_FATAL_ERROR;
++	args.r12 = 0; /* Error code: 0 is Panic */
++
+ 	args.r8  = message.r8;
+ 	args.r9  = message.r9;
+ 	args.r14 = message.r14;
+@@ -165,10 +168,12 @@ static void __noreturn tdx_panic(const char *msg)
+ 
+ static void tdx_parse_tdinfo(u64 *cc_mask)
+ {
+-	struct tdx_module_args args = {};
++	struct tdx_module_args args;
+ 	unsigned int gpa_width;
+ 	u64 td_attr;
+ 
++	tdx_arg_init(&args);
++
+ 	/*
+ 	 * TDINFO TDX module call is used to get the TD execution environment
+ 	 * information like GPA width, number of available vcpus, debug mode
+@@ -252,11 +257,12 @@ static int ve_instr_len(struct ve_info *ve)
+ 
+ static u64 __cpuidle __halt(const bool irq_disabled)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_HLT),
+-		.r12 = irq_disabled,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_HLT);
++	args.r12 = irq_disabled;
+ 
+ 	/*
+ 	 * Emulate HLT operation via hypercall. More info about ABI
+@@ -296,11 +302,12 @@ void __cpuidle tdx_safe_halt(void)
+ 
+ static int read_msr(struct pt_regs *regs, struct ve_info *ve)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_MSR_READ),
+-		.r12 = regs->cx,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_MSR_READ);
++	args.r12 = regs->cx;
+ 
+ 	/*
+ 	 * Emulate the MSR read via hypercall. More info about ABI
+@@ -317,12 +324,13 @@ static int read_msr(struct pt_regs *regs, struct ve_info *ve)
+ 
+ static int write_msr(struct pt_regs *regs, struct ve_info *ve)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_MSR_WRITE),
+-		.r12 = regs->cx,
+-		.r13 = (u64)regs->dx << 32 | regs->ax,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_MSR_WRITE);
++	args.r12 = regs->cx;
++	args.r13 = (u64)regs->dx << 32 | regs->ax;
+ 
+ 	/*
+ 	 * Emulate the MSR write via hypercall. More info about ABI
+@@ -337,12 +345,13 @@ static int write_msr(struct pt_regs *regs, struct ve_info *ve)
+ 
+ static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_CPUID),
+-		.r12 = regs->ax,
+-		.r13 = regs->cx,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_CPUID);
++	args.r12 = regs->ax;
++	args.r13 = regs->cx;
+ 
+ 	/*
+ 	 * Only allow VMM to control range reserved for hypervisor
+@@ -379,14 +388,15 @@ static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
+ 
+ static bool mmio_read(int size, unsigned long addr, unsigned long *val)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_EPT_VIOLATION),
+-		.r12 = size,
+-		.r13 = EPT_READ,
+-		.r14 = addr,
+-		.r15 = *val,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_EPT_VIOLATION);
++	args.r12 = size;
++	args.r13 = EPT_READ;
++	args.r14 = addr;
++	args.r15 = *val;
+ 
+ 	if (__tdx_hypercall(&args))
+ 		return false;
+@@ -508,16 +518,17 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+ 
+ static bool handle_in(struct pt_regs *regs, int size, int port)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
+-		.r12 = size,
+-		.r13 = PORT_READ,
+-		.r14 = port,
+-	};
++	struct tdx_module_args args;
+ 	u64 mask = GENMASK(BITS_PER_BYTE * size, 0);
+ 	bool success;
+ 
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION);
++	args.r12 = size;
++	args.r13 = PORT_READ;
++	args.r14 = port;
++
+ 	/*
+ 	 * Emulate the I/O read via hypercall. More info about ABI can be found
+ 	 * in TDX Guest-Host-Communication Interface (GHCI) section titled
+@@ -602,7 +613,9 @@ __init bool tdx_early_handle_ve(struct pt_regs *regs)
+ 
+ void tdx_get_ve_info(struct ve_info *ve)
+ {
+-	struct tdx_module_args args = {};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
+ 
+ 	/*
+ 	 * Called during #VE handling to retrieve the #VE info from the
+@@ -745,14 +758,16 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
+ 	}
+ 
+ 	while (retry_count < max_retries_per_page) {
+-		struct tdx_module_args args = {
+-			.r10 = TDX_HYPERCALL_STANDARD,
+-			.r11 = TDVMCALL_MAP_GPA,
+-			.r12 = start,
+-			.r13 = end - start };
+-
++		struct tdx_module_args args;
+ 		u64 map_fail_paddr;
+-		u64 ret = __tdx_hypercall(&args);
++		u64 ret;
++
++		tdx_arg_init(&args);
++		args.r10 = TDX_HYPERCALL_STANDARD;
++		args.r11 = TDVMCALL_MAP_GPA;
++		args.r12 = start;
++		args.r13 = end - start;
++		ret = __tdx_hypercall(&args);
+ 
+ 		if (ret != TDVMCALL_STATUS_RETRY)
+ 			return !ret;
+@@ -824,10 +839,8 @@ static bool tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 
+ void __init tdx_early_init(void)
+ {
+-	struct tdx_module_args args = {
+-		.rdx = TDCS_NOTIFY_ENABLES,
+-		.r9 = -1ULL,
+-	};
++	struct tdx_module_args args;
++
+ 	u64 cc_mask;
+ 	u32 eax, sig[3];
+ 
+@@ -846,6 +859,9 @@ void __init tdx_early_init(void)
+ 	cc_set_mask(cc_mask);
+ 
+ 	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
++	tdx_arg_init(&args);
++	args.rdx = TDCS_NOTIFY_ENABLES;
++	args.r9 = -1ULL;
+ 	tdcall(TDG_VM_WR, &args);
+ 
+ 	/*
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index 768d73de0d09..4a49d09b23ad 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -385,27 +385,31 @@ static inline void hv_ghcb_msr_read(u64 msr, u64 *value) {}
+ #ifdef CONFIG_INTEL_TDX_GUEST
+ static void hv_tdx_msr_write(u64 msr, u64 val)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = EXIT_REASON_MSR_WRITE,
+-		.r12 = msr,
+-		.r13 = val,
+-	};
++	struct tdx_module_args args;
++	u64 ret;
+ 
+-	u64 ret = __tdx_hypercall(&args);
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = EXIT_REASON_MSR_WRITE;
++	args.r12 = msr;
++	args.r13 = val;
++
++	ret = __tdx_hypercall(&args);
+ 
+ 	WARN_ONCE(ret, "Failed to emulate MSR write: %lld\n", ret);
+ }
+ 
+ static void hv_tdx_msr_read(u64 msr, u64 *val)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = EXIT_REASON_MSR_READ,
+-		.r12 = msr,
+-	};
++	struct tdx_module_args args;
++	u64 ret;
+ 
+-	u64 ret = __tdx_hypercall(&args);
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = EXIT_REASON_MSR_READ;
++	args.r12 = msr;
++
++	ret = __tdx_hypercall(&args);
+ 
+ 	if (WARN_ONCE(ret, "Failed to emulate MSR read: %lld\n", ret))
+ 		*val = 0;
+@@ -415,8 +419,9 @@ static void hv_tdx_msr_read(u64 msr, u64 *val)
+ 
+ u64 hv_tdx_hypercall(u64 control, u64 param1, u64 param2)
+ {
+-	struct tdx_module_args args = { };
++	struct tdx_module_args args;
+ 
++	tdx_arg_init(&args);
+ 	args.r10 = control;
+ 	args.rdx = param1;
+ 	args.r8  = param2;
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index fdfd41511b02..0519dd7cbb92 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -89,6 +89,14 @@ struct tdx_module_args {
+ 	u64 rsi;
+ };
+ 
++static __always_inline void tdx_arg_init(struct tdx_module_args *args)
++{
++	asm ("rep stosb"
++	     : "+D" (args)
++	     : "c" (sizeof(*args)), "a" (0)
++	     : "memory");
++}
++
+ /* Used to communicate with the TDX module */
+ u64 __tdcall(u64 fn, struct tdx_module_args *args);
+ u64 __tdcall_ret(u64 fn, struct tdx_module_args *args);
+@@ -103,14 +111,15 @@ u64 __tdx_hypercall(struct tdx_module_args *args);
+  */
+ static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
+ {
+-	struct tdx_module_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = fn,
+-		.r12 = r12,
+-		.r13 = r13,
+-		.r14 = r14,
+-		.r15 = r15,
+-	};
++	struct tdx_module_args args;
++
++	tdx_arg_init(&args);
++	args.r10 = TDX_HYPERCALL_STANDARD;
++	args.r11 = fn;
++	args.r12 = r12;
++	args.r13 = r13;
++	args.r14 = r14;
++	args.r15 = r15;
+ 
+ 	return __tdx_hypercall(&args);
+ }
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 4e2b2e2ac9f9..50d1ff9d874f 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -103,7 +103,7 @@ static inline int sc_retry_prerr(sc_func_t func, sc_err_func_t err_func,
+  */
+ static int try_init_module_global(void)
+ {
+-	struct tdx_module_args args = {};
++	struct tdx_module_args args;
+ 	static DEFINE_RAW_SPINLOCK(sysinit_lock);
+ 	static bool sysinit_done;
+ 	static int sysinit_ret;
+@@ -115,6 +115,8 @@ static int try_init_module_global(void)
+ 	if (sysinit_done)
+ 		goto out;
+ 
++	tdx_arg_init(&args);
++
+ 	/* RCX is module attributes and all bits are reserved */
+ 	args.rcx = 0;
+ 	sysinit_ret = seamcall_prerr(TDH_SYS_INIT, &args);
+@@ -146,7 +148,7 @@ static int try_init_module_global(void)
+  */
+ int tdx_cpu_enable(void)
+ {
+-	struct tdx_module_args args = {};
++	struct tdx_module_args args;
+ 	int ret;
+ 
+ 	if (!boot_cpu_has(X86_FEATURE_TDX_HOST_PLATFORM))
+@@ -166,6 +168,7 @@ int tdx_cpu_enable(void)
+ 	if (ret)
+ 		return ret;
+ 
++	tdx_arg_init(&args);
+ 	ret = seamcall_prerr(TDH_SYS_LP_INIT, &args);
+ 	if (ret)
+ 		return ret;
+@@ -252,7 +255,7 @@ static int build_tdx_memlist(struct list_head *tmb_list)
+ 
+ static int read_sys_metadata_field(u64 field_id, u64 *data)
+ {
+-	struct tdx_module_args args = {};
++	struct tdx_module_args args;
+ 	int ret;
+ 
+ 	/*
+@@ -260,6 +263,7 @@ static int read_sys_metadata_field(u64 field_id, u64 *data)
+ 	 *  - RDX (in): the field to read
+ 	 *  - R8 (out): the field data
+ 	 */
++	tdx_arg_init(&args);
+ 	args.rdx = field_id;
+ 	ret = seamcall_prerr_ret(TDH_SYS_RD, &args);
+ 	if (ret)
+@@ -955,7 +959,7 @@ static int construct_tdmrs(struct list_head *tmb_list,
+ 
+ static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
+ {
+-	struct tdx_module_args args = {};
++	struct tdx_module_args args;
+ 	u64 *tdmr_pa_array;
+ 	size_t array_sz;
+ 	int i, ret;
+@@ -977,6 +981,7 @@ static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
+ 	for (i = 0; i < tdmr_list->nr_consumed_tdmrs; i++)
+ 		tdmr_pa_array[i] = __pa(tdmr_entry(tdmr_list, i));
+ 
++	tdx_arg_init(&args);
+ 	args.rcx = __pa(tdmr_pa_array);
+ 	args.rdx = tdmr_list->nr_consumed_tdmrs;
+ 	args.r8 = global_keyid;
+@@ -990,8 +995,9 @@ static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
+ 
+ static int do_global_key_config(void *unused)
+ {
+-	struct tdx_module_args args = {};
++	struct tdx_module_args args;
+ 
++	tdx_arg_init(&args);
+ 	return seamcall_prerr(TDH_SYS_KEY_CONFIG, &args);
+ }
+ 
+@@ -1056,11 +1062,11 @@ static int init_tdmr(struct tdmr_info *tdmr)
+ 	 * TDMR in each call.
+ 	 */
+ 	do {
+-		struct tdx_module_args args = {
+-			.rcx = tdmr->base,
+-		};
++		struct tdx_module_args args;
+ 		int ret;
+ 
++		tdx_arg_init(&args);
++		args.rcx = tdmr->base;
+ 		ret = seamcall_prerr_ret(TDH_SYS_TDMR_INIT, &args);
+ 		if (ret)
+ 			return ret;
+@@ -1284,15 +1290,15 @@ static bool is_pamt_page(unsigned long phys)
+  */
+ static bool paddr_is_tdx_private(unsigned long phys)
+ {
+-	struct tdx_module_args args = {
+-		.rcx = phys & PAGE_MASK,
+-	};
++	struct tdx_module_args args;
+ 	u64 sret;
+ 
+ 	if (!boot_cpu_has(X86_FEATURE_TDX_HOST_PLATFORM))
+ 		return false;
+ 
+ 	/* Get page type from the TDX module */
++	tdx_arg_init(&args);
++	args.rcx = phys & PAGE_MASK;
+ 	sret = __seamcall_ret(TDH_PHYMEM_PAGE_RDMD, &args);
+ 
+ 	/*
+-- 
+2.43.0
+
