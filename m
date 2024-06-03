@@ -1,54 +1,35 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1FC12F382
-	for <linux-coco@lists.linux.dev>; Mon,  3 Jun 2024 17:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BA2137902;
+	Mon,  3 Jun 2024 17:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717434789; cv=none; b=JgXgqUlzmwDGFKz5KE0I0rRGdaBAtwUw0u4V3JbHwiHcPH209D/ErpPS1qC3mJAxZ5ME7HomJ8gSZ6TjxN1+0H/sUix53de2EJ3iUvoBOGQSCa5GekDPuUIUP9jsWdXG4XoYfQ0sJ1j+Y4ks621kn9j8BtYrEa2VNZbij6ZAeV0=
+	t=1717436611; cv=none; b=HkrdqHG56+80PIqJDO4JMnyOTRS6oFurV0cD0j34bFBD/JCeU3UKup4TwTzs33pOh29qKkceAIYMe0eP1E0ZfOkWODZmxiF5rMiHBca8gQqWj+QbQ14hRJeCAI6Y0MouRZ5Ajbh90i1GBuMHMzZs3W3/6AOjUGhsq9sVoxtgGt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717434789; c=relaxed/simple;
-	bh=rarbm4FivPkK3sgMveXhHZcTE4JvgYqXKWIDIqdUVhY=;
+	s=arc-20240116; t=1717436611; c=relaxed/simple;
+	bh=j2giooDoELICQ3uc1GkFOkfhcLltnqQzqVBJAIjeHJE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LCf+J4igHKTFZLhA7PcSnWfSOE2OyH4Dqx+X2XcWUipu7XLnwPIQBybObYc37puMXHhcOixYiCoILs2x9wX5+iF1H8aZ89VMZ7c62EdtzQjhPCDF3NFO/vik5GsZEh5RUbqDPOg+LY3oWhHBcByO8BIgrg9stcnjQwD1ThWRp3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UoaF02iA; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=IdOooymZc6TTtU0AU+vKKVRnGfai5E6EF6cS2taPfmov5Z/oFCotkDEHr8CgMw9gQXJL4zkjQt+vYwbfkv6PLblWpmwVfn2m44tYnH8Yd9pw27Ybg1lhqHm9XoNT6LgmXZYOl2sZo2YeaygisfM0M3fZfwa/thFkWL20d2zbDFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dn9hWA6d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UoaF02iA"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6CDD140E0177;
-	Mon,  3 Jun 2024 17:13:05 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id zLdRqpM4nFQ2; Mon,  3 Jun 2024 17:13:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1717434781; bh=wOb77vMkzvVjJuhfqxH+VEthZC7Q6K8Sm8HZ2/2VE40=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dn9hWA6d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B072AC2BD10;
+	Mon,  3 Jun 2024 17:43:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717436610;
+	bh=j2giooDoELICQ3uc1GkFOkfhcLltnqQzqVBJAIjeHJE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UoaF02iA3K/R2Ga4rSD8TjWmvRmhPDxfX3vDeaXd+3U9e5ZSUahv33jd7fe/EXJJM
-	 8FTXfVfhfDQ4u+ust1pO7uax3JgQB5Uy44DW5H0XNR2lM4uBglT0SYhpNdQfMFj9qB
-	 k0p9ZBF7cXCZMVWwKeNuM4XF5sM6uu4n3WfmKQ81sXI7yr2lBKmGDYgoaeSTMsGYYs
-	 K2PA9a7pxIqXSvg1/+10b+ty69rzST/Zxs2Zcc6OrhoS4wljm2MTV/KBFKTGiA52hf
-	 ONf5o4GGnDJQy6MKh97jSpYf6SdlTqR2OyYNR1cUbO+Z7YCoQexsCcuGXASVFspuEM
-	 jGXqeZp6cHr3WIcHxQNJTH1jPIj/A7p96BHaU2FtwDkolplAUBoPsC31O/DnJSdB5v
-	 IVDfUcdNnyxZBmfkhHsndJMdywSZ1ZapwYxABiZ6HNZfxs8yvqmOB+xKhG3fBlDuIM
-	 la4gCiMeTcbV9X5vmPNcpFoPDuaDNiH0+8uED+H9Hwe4J2gmUbf531rX6Ep1y3yuMy
-	 +NIPKYBNT8e8/wcXaeLzVN2mBe+kCUM3n9EYAUBlLs62YERvkpwRJKpUoQfKoZcRQC
-	 j9nOG6K/KO1JGOpwggSeu95jo3dbAmo5xBRBi91Ag8xR3he86BMG6WLrTrqrdUV0CV
-	 Dz1+sR6jE5uHY8WXwPpf0LsA=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5AFA940E016A;
-	Mon,  3 Jun 2024 17:12:32 +0000 (UTC)
-Date: Mon, 3 Jun 2024 19:12:31 +0200
-From: Borislav Petkov <bp@alien8.de>
+	b=dn9hWA6dMSiBGPUDMEWP9UIEij5v/bfQHq6dKecKjdLT4o4xF9krfA07ri6VVunxE
+	 4bkjIi0t07Rdx0fuUbeoNfVqxtHB4jCTCodT21dDg9EwLF+sHwtOvTxZaBDdYHu7A+
+	 MPZ6I1itabOTmR5aSmjeztm99+G3aBKTXTa/6KY4kZh+KqC65MRO+arsYQtsH8Q7w6
+	 aL9f1v1HYECrErCeXbf99FAoSpo/PGu3LFHJ64hsUnzXNU56M+VPjGrWrGUHlJ2W3w
+	 buv7fKlUVL+U8OQFLzz1tfcCMEXCVv6CnEfVZ5emUTfC9xIY1d+5mObAeNL2faM4le
+	 a1J8qUIjctEEA==
+Date: Mon, 3 Jun 2024 20:41:29 +0300
+From: Mike Rapoport <rppt@kernel.org>
 To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: Mike Rapoport <rppt@kernel.org>, tglx@linutronix.de, mingo@redhat.com,
+Cc: Borislav Petkov <bp@alien8.de>, tglx@linutronix.de, mingo@redhat.com,
 	dave.hansen@linux.intel.com, x86@kernel.org, rafael@kernel.org,
 	hpa@zytor.com, peterz@infradead.org, adrian.hunter@intel.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com, jun.nakajima@intel.com,
@@ -57,37 +38,122 @@ Cc: Mike Rapoport <rppt@kernel.org>, tglx@linutronix.de, mingo@redhat.com,
 	bhe@redhat.com, kirill.shutemov@linux.intel.com, bdas@redhat.com,
 	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
 	jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Dave Young <dyoung@redhat.com>
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v7 1/3] efi/x86: Fix EFI memory map corruption with kexec
-Message-ID: <20240603171231.GJZl35f-BHvU2Pk3lb@fat_crate.local>
-References: <f4be03b8488665f56a1e5c6e6459f447352dfcf5.1717111180.git.ashish.kalra@amd.com>
+Message-ID: <Zl4ASZfWMkvAcJXO@kernel.org>
+References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
+ <cover.1717111180.git.ashish.kalra@amd.com>
+ <f4be03b8488665f56a1e5c6e6459f447352dfcf5.1717111180.git.ashish.kalra@amd.com>
  <20240603085654.GBZl2FVjPd-gagt-UA@fat_crate.local>
  <8e3dfc15-f609-4839-85c7-1cc8cefd7acc@amd.com>
  <Zl3HfiQ6oHdTdOdA@kernel.org>
  <1ef36309-8d7f-447b-a54a-3cdafeccca64@amd.com>
- <20240603144639.GCZl3XTwmFHwi-KUZW@fat_crate.local>
- <Zl3hwYL2GDiyUfGo@kernel.org>
- <7eb4ca99-679c-4f23-9562-a39b966c28a0@amd.com>
- <20240603165747.GGZl32C9yrmXJ4nhPT@fat_crate.local>
- <2343889c-887a-49ce-86df-343737d70d37@amd.com>
+ <Zl3hPefvOwPv0Mjn@kernel.org>
+ <141a9666-f3cf-4323-9536-4367f489be43@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2343889c-887a-49ce-86df-343737d70d37@amd.com>
+In-Reply-To: <141a9666-f3cf-4323-9536-4367f489be43@amd.com>
 
-On Mon, Jun 03, 2024 at 12:08:48PM -0500, Kalra, Ashish wrote:
-> efi_arch_mem_reserve().
+On Mon, Jun 03, 2024 at 11:56:01AM -0500, Kalra, Ashish wrote:
+> On 6/3/2024 10:29 AM, Mike Rapoport wrote:
+> 
+> > On Mon, Jun 03, 2024 at 09:01:49AM -0500, Kalra, Ashish wrote:
+> > > On 6/3/2024 8:39 AM, Mike Rapoport wrote:
+> > > 
+> > > > On Mon, Jun 03, 2024 at 08:06:56AM -0500, Kalra, Ashish wrote:
+> > > > > On 6/3/2024 3:56 AM, Borislav Petkov wrote
+> > > > > 
+> > > > > > > EFI memory map and due to early allocation it uses memblock allocation.
+> > > > > > > 
+> > > > > > > Later during boot, efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
+> > > > > > > in case of a kexec-ed kernel boot.
+> > > > > > > 
+> > > > > > > This function kexec_enter_virtual_mode() installs the new EFI memory map by
+> > > > > > > calling efi_memmap_init_late() which remaps the efi_memmap physically allocated
+> > > > > > > in efi_arch_mem_reserve(), but this remapping is still using memblock allocation.
+> > > > > > > 
+> > > > > > > Subsequently, when memblock is freed later in boot flow, this remapped
+> > > > > > > efi_memmap will have random corruption (similar to a use-after-free scenario).
+> > > > > > > 
+> > > > > > > The corrupted EFI memory map is then passed to the next kexec-ed kernel
+> > > > > > > which causes a panic when trying to use the corrupted EFI memory map.
+> > > > > > This sounds fishy: memblock allocated memory is not freed later in the
+> > > > > > boot - it remains reserved. Only free memory is freed from memblock to
+> > > > > > the buddy allocator.
+> > > > > > 
+> > > > > > Or is the problem that memblock-allocated memory cannot be memremapped
+> > > > > > because *raisins*?
+> > > > > This is what seems to be happening:
+> > > > > 
+> > > > > efi_arch_mem_reserve() calls efi_memmap_alloc() to allocate memory for
+> > > > > EFI memory map and due to early allocation it uses memblock allocation.
+> > > > > 
+> > > > > And later efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
+> > > > > in case of a kexec-ed kernel boot.
+> > > > > 
+> > > > > This function kexec_enter_virtual_mode() installs the new EFI memory map by
+> > > > > calling efi_memmap_init_late() which does memremap() on memblock-allocated memory.
+> > > > Does the issue happen only with SNP?
+> > > This is observed under SNP as efi_arch_mem_reserve() is only being called
+> > > with SNP enabled and then efi_arch_mem_reserve() allocates EFI memory map
+> > > using memblock.
+> > I don't see how efi_arch_mem_reserve() is only called with SNP. What did I
+> > miss?
+> 
+> This is the call stack for efi_arch_mem_reserve():
+> 
+> [    0.310010]  efi_arch_mem_reserve+0xb1/0x220
+> [    0.311382]  efi_mem_reserve+0x36/0x60
+> [    0.311973]  efi_bgrt_init+0x17d/0x1a0
+> [    0.313265]  acpi_parse_bgrt+0x12/0x20
+> [    0.313858]  acpi_table_parse+0x77/0xd0
+> [    0.314463]  acpi_boot_init+0x362/0x630
+> [    0.315069]  setup_arch+0xa88/0xf80
+> [    0.315629]  start_kernel+0x68/0xa90
+> [    0.316194]  x86_64_start_reservations+0x1c/0x30
+> [    0.316921]  x86_64_start_kernel+0xbf/0x110
+> [    0.317582]  common_startup_64+0x13e/0x141
+> 
+> So, probably it is being invoked specifically for AMD platform ?
 
-Now it only remains for you to explain why...
+AFAIU, efi_bgrt_init() can be called for any x86 platform, with or without
+encryption. 
+So if my understating is correct, efi_arch_mem_reserve() will be called with SNP
+disabled as well. And if kexec works ok without SNP but fails with SNP this
+may give as a clue to the root cause of the failure.
+ 
+> > > If we skip efi_arch_mem_reserve() (which should probably be anyway skipped
+> > > for kexec case), then for kexec boot, EFI memmap is memremapped in the same
+> > > virtual address as the first kernel and not the allocated memblock address.
+> > Maybe we should skip efi_arch_mem_reserve() for kexec case, but I think we
+> > still need to understand what's causing memory corruption.
+> 
+> When, efi_arch_mem_reserve() allocates memory for EFI memory map using
+> memblock and then later in boot, kexec_enter_virtual_mode() does memremap on
+> this memblock allocated memory, subsequently after this i see EFI memory map
+> corruption, so are there are any issues doing memremap on memblock-allocated
+> memory ?
+
+memblock-allocated memory is just RAM, so my take is that memremap() cannot
+figure out the encryption bits properly.
+
+You can check if there are issues with memrmapp()ing memblock-allocated
+memory by sticking memblock_phys_alloc() somewhere, filling that memory with a
+pattern and then calling memremap(addr, size, MEMREMAP_WB) and checking if
+the pattern is still there.
+ 
+> Thanks, Ashish
+> 
+> > > > I didn't really dig, but my theory would be that it has something to do
+> > > > with arch_memremap_can_ram_remap() in arch/x86/mm/ioremap.c
+> > > > > Thanks, Ashish
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Sincerely yours,
+Mike.
