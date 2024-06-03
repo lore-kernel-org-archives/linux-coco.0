@@ -1,169 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FBB15C3
-	for <linux-coco@lists.linux.dev>; Mon,  3 Jun 2024 13:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18F612DD8A;
+	Mon,  3 Jun 2024 13:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717421869; cv=none; b=a/shoZ9w6oX1qnyg+3rNlXbK7u3hau5Axsnz0aWtILludn2CItKXRojAtIwMa98sLuH3yUC61wTqW3USqVG2Kt9ax/w3J4NHHo99luRdOeFhfHph5bQvuQKnn6eAwRE8gMs3xXElu4J+Z1UUw5LI4OZuf42En9NmVTzoU7RQPC8=
+	t=1717422070; cv=none; b=bna4rhpjOY0Xxmaie7c0hRz0arZySf36MDU6qzBeWmXw5Cxd0ZeFbKNaVSjHuxL/TQotRf7W+ss3mPiOvX16Dzy6sBAeYd3dtDfTu1l7hXm0PFnrx1U15pk2WTmOCriskGVaWogvdocC0O1y2SSKWBqfAEYThZJb/fJTzfML0fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717421869; c=relaxed/simple;
-	bh=HlV1JYmTkGuDRNbsB9qr/fO7nygHIol5hw422pO5L4M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a6Ps8OlkxUD/4t5rZJxN4EEYQoCnCq87osM6bH+rpenOI2WAuslElEyq6QljUcteASBv3+m0gHBryUj6SvpJGI2zJVnEXW9N8rvxwLu96aMCo/GlVGR+k9Pbu8Pe5HFlFxSF+ubBy85HSE+lEtSIaJFymjH1LkJAnPKTmz1JTSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E4mVGPXY; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1717422070; c=relaxed/simple;
+	bh=Ha1Vb6zLDIgl3FT1iTLBIO/NlIPS2ToAgX6Msao0hhY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sPTw9LZEEqY6LSq+6mtfwi63i9NdVNpdC+WkyNGX/zi81XvURL16KnwU0T3Lw1FflLWC4Pu/CHTjFVmykqlywkNUVJNj8XhrmNbb1ov5519TJB09Y7wdVd57BgjyrE4VsTjoSLmLrNzYSJOfzSDLb6wl1zqSHji+yxDnKNGEtKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ESftPgcR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E4mVGPXY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717421868; x=1748957868;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=HlV1JYmTkGuDRNbsB9qr/fO7nygHIol5hw422pO5L4M=;
-  b=E4mVGPXYtprinpWFDcxUdmsMUESXDQqPRImq2D90CxZF8G4Ri+llMWTN
-   D/nZAxPQC+5m/OZtmLFxPg5WliRy9DX0vkkPhdmUBURxhWjUFfGispWkR
-   PdzlD5sI8IYgjNW6yczMBl4074o+O8SMLVJQomWCjLmo02S8nCrKj3NcN
-   Js5l1zuOlpYeWa2dGLrUgn3wkY1rqLaStlj/rx2mNs0hlcZuDs/cf+O/6
-   6x+1zncNLLsP1aNlFxbvwRkxEq10hI0UzFrxndvgkIp0adR83v9bCi2Zu
-   CWv5eY2s099YaT+rWISaSEJb2E0Pwpx5ZTseRRga1clFzDgMSFGPF6ATx
-   Q==;
-X-CSE-ConnectionGUID: Hw8u9QpzRue+GgciQUqYBA==
-X-CSE-MsgGUID: lyYKZQYsSy691jSzaG4e8g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="25312986"
-X-IronPort-AV: E=Sophos;i="6.08,211,1712646000"; 
-   d="scan'208";a="25312986"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2024 06:37:47 -0700
-X-CSE-ConnectionGUID: e3PY2hWTRwGwd4Jzk9FnEg==
-X-CSE-MsgGUID: eaPVAzSiQQmJ8pD3Nwl74Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,211,1712646000"; 
-   d="scan'208";a="36862228"
-Received: from ibganev-desk.amr.corp.intel.com (HELO [10.125.108.143]) ([10.125.108.143])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2024 06:37:46 -0700
-Message-ID: <8992921e-7343-4279-9953-0c042d8baf90@intel.com>
-Date: Mon, 3 Jun 2024 06:37:45 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ESftPgcR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E95C32781;
+	Mon,  3 Jun 2024 13:41:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717422069;
+	bh=Ha1Vb6zLDIgl3FT1iTLBIO/NlIPS2ToAgX6Msao0hhY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ESftPgcRwAW263OfIBCOhYLZOuMreNuvfXqqXkvt6Cmf7vzo5PeOYZ6DoRRNP3JZ/
+	 lyssP0SZncpQ3xya77ugCf4jlN8PPSxFKMqvywN23AcgXS4MgFIt3AFzpnqHG4mj1C
+	 qfrjFZKJql+XdFwMAueRJ+8ZVDQa7J+DnJOZ6tD1EH+tLJyZ7R38rmczDS421jq+c/
+	 PWNGF2/EOyVowAxI+Y9wWYMJkq7H0TD+iI17mH1o9U/MOfm2TP6nvmVx6wUKyY2wBp
+	 WlwNjnjt9JamFdbyy2R0Vk4kEIQnx47+nuTqhjSjYBgTkYWPrN2VD6hbTNUPEJW2Uj
+	 jqsetzuLS3xPQ==
+Date: Mon, 3 Jun 2024 16:39:10 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: Borislav Petkov <bp@alien8.de>, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, x86@kernel.org, rafael@kernel.org,
+	hpa@zytor.com, peterz@infradead.org, adrian.hunter@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, jun.nakajima@intel.com,
+	rick.p.edgecombe@intel.com, thomas.lendacky@amd.com,
+	michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com,
+	bhe@redhat.com, kirill.shutemov@linux.intel.com, bdas@redhat.com,
+	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
+	jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 1/3] efi/x86: Fix EFI memory map corruption with kexec
+Message-ID: <Zl3HfiQ6oHdTdOdA@kernel.org>
+References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
+ <cover.1717111180.git.ashish.kalra@amd.com>
+ <f4be03b8488665f56a1e5c6e6459f447352dfcf5.1717111180.git.ashish.kalra@amd.com>
+ <20240603085654.GBZl2FVjPd-gagt-UA@fat_crate.local>
+ <8e3dfc15-f609-4839-85c7-1cc8cefd7acc@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/tdx: Enhance code generation for TDCALL and SEAMCALL
- wrappers
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-hyperv@vger.kernel.org
-References: <20240602115444.1863364-1-kirill.shutemov@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20240602115444.1863364-1-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8e3dfc15-f609-4839-85c7-1cc8cefd7acc@amd.com>
 
-On 6/2/24 04:54, Kirill A. Shutemov wrote:
-> Sean observed that the compiler is generating inefficient code to clear
-> the tdx_module_args struct for TDCALL and SEAMCALL wrappers. The
-> compiler is generating numerous instructions at each call site to clear
-> the unused fields of the structure.
+On Mon, Jun 03, 2024 at 08:06:56AM -0500, Kalra, Ashish wrote:
+> On 6/3/2024 3:56 AM, Borislav Petkov wrote
 > 
-> To address this issue, avoid using C99-initializer and instead
-> explicitly use string instructions to clear the struct.
+> > > EFI memory map and due to early allocation it uses memblock allocation.
+> > > 
+> > > Later during boot, efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
+> > > in case of a kexec-ed kernel boot.
+> > > 
+> > > This function kexec_enter_virtual_mode() installs the new EFI memory map by
+> > > calling efi_memmap_init_late() which remaps the efi_memmap physically allocated
+> > > in efi_arch_mem_reserve(), but this remapping is still using memblock allocation.
+> > > 
+> > > Subsequently, when memblock is freed later in boot flow, this remapped
+> > > efi_memmap will have random corruption (similar to a use-after-free scenario).
+> > > 
+> > > The corrupted EFI memory map is then passed to the next kexec-ed kernel
+> > > which causes a panic when trying to use the corrupted EFI memory map.
+> > This sounds fishy: memblock allocated memory is not freed later in the
+> > boot - it remains reserved. Only free memory is freed from memblock to
+> > the buddy allocator.
+> > 
+> > Or is the problem that memblock-allocated memory cannot be memremapped
+> > because *raisins*?
 > 
-> With Clang, this change results in a savings of approximately 3K with my
-> configuration:
+> This is what seems to be happening:
 > 
-> add/remove: 0/0 grow/shrink: 0/21 up/down: 0/-3187 (-3187)
+> efi_arch_mem_reserve() calls efi_memmap_alloc() to allocate memory for
+> EFI memory map and due to early allocation it uses memblock allocation.
 > 
-> With GCC, the savings are less significant at around 300 bytes:
+> And later efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
+> in case of a kexec-ed kernel boot.
 > 
-> add/remove: 0/0 grow/shrink: 3/22 up/down: 17/-313 (-296)
-> 
-> GCC tends to generate string instructions more frequently to clear the
-> struct.
+> This function kexec_enter_virtual_mode() installs the new EFI memory map by
+> calling efi_memmap_init_late() which does memremap() on memblock-allocated memory.
 
-<shrug>
+Does the issue happen only with SNP?
 
-I don't think moving away from perfectly normal C struct initialization
-is worth it for 300 bytes of text in couple of slow paths.
+I didn't really dig, but my theory would be that it has something to do
+with arch_memremap_can_ram_remap() in arch/x86/mm/ioremap.c
+ 
+> Thanks, Ashish
 
-If someone out there is using clang, is confident that it is doing the
-right thing and not just being silly, _and_ is horribly bothered by its
-code generation, then please speak up.
-
-> +static __always_inline void tdx_arg_init(struct tdx_module_args *args)
-> +{
-> +	asm ("rep stosb"
-> +	     : "+D" (args)
-> +	     : "c" (sizeof(*args)), "a" (0)
-> +	     : "memory");
-> +}
-
-The inline assembly also has the side-effect of tripping up the
-compiler.  The compiler can't optimize across these at all and it
-probably has the effect of bloating the code.
-
-Oh, and if we're going to leave this weirdo initialization idiom for
-TDX, it needs to be well commented:
-
-/*
- * Using normal " = {};" to initialize tdx_module_args results in
- * bloated hard-to-read assembly.  Zero it using the most compact way
- * available.
- */
-
-Eh?
+-- 
+Sincerely yours,
+Mike.
