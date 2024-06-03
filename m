@@ -1,112 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636C012FF73;
-	Mon,  3 Jun 2024 15:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0787E8
+	for <linux-coco@lists.linux.dev>; Mon,  3 Jun 2024 16:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717428793; cv=none; b=IKMCw81AEydc1sWBryQp9ftJhZd/y16HfO7sxqsoBYZFGBfYNg/sbeyK6pfyA7RW3b5sbmzgDh07GTE2sY4y2IsP1T5F0DJKe6OAjgdRYiGC6GtKTIk/93V/m1jRPZCUkoRiY9F/0dAAvmsBa/v34DfHZLwI6RTebzEXMhICIuY=
+	t=1717433087; cv=none; b=EqErg0xsxtsMMT3fm+rtzFPmbV8yBGDgHtSPjTk6VBMyiqONMNy8MnsBEO22FSq6dcYobTL+1pJaIMdnyu425thuG3ax36038fvl/lxC5ELoeEBk5K72DWPOglLrEeDpGxE2xcpnQOkeETeCGjoEJT6cN9fP7iw09n6ZjDQntsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717428793; c=relaxed/simple;
-	bh=OgWlnRG7yqy7Yvp/hofY3k+TP4mvTMnfi5TRon+rND4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dZcNkKWNoz1PAwA+QVf0ArVHbuPuEX+9WLgaxH4i54iSlKy8a+90QNnxs40CAsysis5Kp2wJ0uqx64bYFMWQ6smrudRdf9Mk51ZwDm2IMtd+aH9FbFPC+29483ECTGTsD8DtxkYlvY2DbCWqX/RopUUNajeU5NPQ/ixTSkIJUwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V78vWfJn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717433087; c=relaxed/simple;
+	bh=t4eoPsxvhm/UX72ypmID6dj2keloK0/DxVJPrFRAldI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bqJgL3XRz/3omtoje6ih3vDOQNgGb7ju/Mi8ROsXTGwxehaSgNR5c3Pq7t5WcX2qGRD80IPp8qZXLH/ao9TmY5Qcv4KsaA+dzPcTn0+QNqAyocpS0xUwiOdv52b3ABFGxqjwynNYpTj9CoyDSgeVf41ELZhKBZmrxDFBjtMAqRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GYNPW4aq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V78vWfJn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E44C2BD10;
-	Mon,  3 Jun 2024 15:33:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717428793;
-	bh=OgWlnRG7yqy7Yvp/hofY3k+TP4mvTMnfi5TRon+rND4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V78vWfJnvZewwuSibFDHSbCkT7UuQxhh7H/3SePSqXD1IHensUS8575I57nhRRGNm
-	 uDOgM18EICY1RU5BGasMfeKdxeRj3rrm2PDIut5kb5N6LTjgQt4lmtZpEoxnd4D/NG
-	 DFR4YbrHY4UahiNnkq8kYpIUnqE0jLjoUVsHEudhor2/ijmq3hhwTvR/6TzD+CSeXk
-	 70VXT93b0/xJnbu9pKur+08cmupOp+QAg40GAQgg9mAJ18lSAUQwwZQ5MgypDm/HJX
-	 A3mtO4WABeasmB7CgPZkv6Qg4s3KxOUWiaz18mYJUJb7SAL8aYxu1BywfFZ6bIqfaX
-	 CkQFqvbp/2bJA==
-Date: Mon, 3 Jun 2024 18:31:13 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: "Kalra, Ashish" <ashish.kalra@amd.com>, tglx@linutronix.de,
-	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
-	rafael@kernel.org, hpa@zytor.com, peterz@infradead.org,
-	adrian.hunter@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	jun.nakajima@intel.com, rick.p.edgecombe@intel.com,
-	thomas.lendacky@amd.com, michael.roth@amd.com, seanjc@google.com,
-	kai.huang@intel.com, bhe@redhat.com,
-	kirill.shutemov@linux.intel.com, bdas@redhat.com,
-	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
-	jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/3] efi/x86: Fix EFI memory map corruption with kexec
-Message-ID: <Zl3hwYL2GDiyUfGo@kernel.org>
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <cover.1717111180.git.ashish.kalra@amd.com>
- <f4be03b8488665f56a1e5c6e6459f447352dfcf5.1717111180.git.ashish.kalra@amd.com>
- <20240603085654.GBZl2FVjPd-gagt-UA@fat_crate.local>
- <8e3dfc15-f609-4839-85c7-1cc8cefd7acc@amd.com>
- <Zl3HfiQ6oHdTdOdA@kernel.org>
- <1ef36309-8d7f-447b-a54a-3cdafeccca64@amd.com>
- <20240603144639.GCZl3XTwmFHwi-KUZW@fat_crate.local>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GYNPW4aq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1717433084;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zkJhM79a8R11avJivbxxdE1EejxLWPTC2S55x7A+4us=;
+	b=GYNPW4aqLpFo/iAc20n/bks/7poqRsi9zFi0DUTjPSGxpuEy3/VaFgRbVg7TGpMZglHGMb
+	WEBkH8Zz1lH36sDac0TGOzyqkgpe/HhjBsaeiOZ0Mtowao3eRzr0AhakL38LvpEzDm1yg5
+	XQZn7eKTACw5XP2UwqmQR9FFFKAzStw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-34-eikmY5w4Pe-HhQm8zuTQZw-1; Mon, 03 Jun 2024 12:44:43 -0400
+X-MC-Unique: eikmY5w4Pe-HhQm8zuTQZw-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4212e3418b1so19022805e9.0
+        for <linux-coco@lists.linux.dev>; Mon, 03 Jun 2024 09:44:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717433081; x=1718037881;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zkJhM79a8R11avJivbxxdE1EejxLWPTC2S55x7A+4us=;
+        b=HcpaMxjfc+1FV5X3Bs8ZXF53e0Mvs2taImNUACAk9ocroH3syZlKhY5Y3QcGPEHNLm
+         eC8XsraNtwAH3IPdZCjUr1RzVYfG0uvTwUKRUWMoXqPV915JI8n9I4rjkrra6maTYO1A
+         vgrCZO+bgCgH3pdXOPaLf3u/QsfjV6FI0/xC2W5GXYR4sqg3OXwhmjZxVZ4DXJnpOqop
+         xi81rC5TWyKeSQKDTIiyK6eRSP8TR/ts3fg4W5KDmcVTlUzFKhUQn4p77XcuHMguBLTT
+         iWfRL8GMACyMAUDxTEqm0GD+AgQPf15Nms9EM8Qda240h9OD/DJD/tRigJJZ7CNrQ3Zm
+         pViA==
+X-Forwarded-Encrypted: i=1; AJvYcCW7sz3IdmZ2BzA1bKrSaH6BfFj4z836K/V8PuccMSDDBseaYba6nTPQRRNYQDf/TvI5l8QCmHplQRo5kBaVwYTH6Ow9JOcyOcK7gA==
+X-Gm-Message-State: AOJu0YyOSZcNq4XkXY7ivcoMHcDeov4EgnKq+lgoR3DhPX3f6Akv9ByY
+	5n2QncDGuZ9LfC2o07sGbyMiIQ/QU8d2aL9hEnDWrypy1uJVwioSswPlzRbfEyZWNG8VW0Vh49Y
+	NQL+SimSEBcqdJ0MyrcpvVKY/RAFu0YztpIycdUfMnnb6TO091qz7X0aovcL8c5euhxNiro9maw
+	oKKt4MS1raelWl6iFsvT17YeKZOW+Za/ySmA==
+X-Received: by 2002:a05:600c:4744:b0:420:2983:2229 with SMTP id 5b1f17b1804b1-4212e07530emr82210815e9.22.1717433081485;
+        Mon, 03 Jun 2024 09:44:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMCnI5M+sIjdtgeYl/SuU7qEpdctfImP4SJ6aepSaIJ9r0QcVVw+D6lCCYSXtw8KRc+Y06WU8alk5VEuqo8TA=
+X-Received: by 2002:a05:600c:4744:b0:420:2983:2229 with SMTP id
+ 5b1f17b1804b1-4212e07530emr82210525e9.22.1717433081090; Mon, 03 Jun 2024
+ 09:44:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240603144639.GCZl3XTwmFHwi-KUZW@fat_crate.local>
+References: <20240510211024.556136-1-michael.roth@amd.com> <6nby33glecw46wrdws7vuokrqz4b72evrzdujcrsm6pujo62b6@xoxstkzsvwrj>
+In-Reply-To: <6nby33glecw46wrdws7vuokrqz4b72evrzdujcrsm6pujo62b6@xoxstkzsvwrj>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 3 Jun 2024 18:44:29 +0200
+Message-ID: <CABgObfbT_v23LbP7Mp-PfbnakHYrZ7+g3KfUA_BOnsp+7ivMYQ@mail.gmail.com>
+Subject: Re: [PULL 00/19] KVM: Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev, jroedel@suse.de, 
+	thomas.lendacky@amd.com, vkuznets@redhat.com, pgonda@google.com, 
+	rientjes@google.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, 
+	alpergun@google.com, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, papaluri@amd.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 03, 2024 at 04:46:39PM +0200, Borislav Petkov wrote:
-> On Mon, Jun 03, 2024 at 09:01:49AM -0500, Kalra, Ashish wrote:
-> > If we skip efi_arch_mem_reserve() (which should probably be anyway skipped
-> > for kexec case), then for kexec boot, EFI memmap is memremapped in the same
-> > virtual address as the first kernel and not the allocated memblock address.
-> 
-> Are you saying that we should simply do
-> 
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index fdf07dd6f459..410cb0743289 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -577,6 +577,9 @@ void __init efi_mem_reserve(phys_addr_t addr, u64 size)
->  	if (WARN_ON_ONCE(efi_enabled(EFI_PARAVIRT)))
->  		return;
->  
-> +	if (kexec_in_progress)
-> +		return;
-> +
->  	if (!memblock_is_region_reserved(addr, size))
->  		memblock_reserve(addr, size);
->  
-> and skip that whole call?
+On Fri, May 31, 2024 at 5:23=E2=80=AFAM Michael Roth <michael.roth@amd.com>=
+ wrote:
+> As discussed during the PUCK call, here is a branch with fixup patches
+> that incorporate the additional review/testing that came in after these
+> patches were merged into kvm/next:
+>
+>   https://github.com/mdroth/linux/commits/kvm-next-snp-fixes4/
+>
+> They are intended to be squashed in but can also be applied on top if
+> that's preferable (but in that case the first 2 patches need to be
+> squashed together to maintain build bisectability):
 
-I think Ashish suggested rather 
+Yes, I'd rather not rebase kvm/next again so I applied them on top.
+None of the issues are so egregiously bad.
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index fdf07dd6f459..eccc10ab15a4 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -580,6 +580,9 @@ void __init efi_mem_reserve(phys_addr_t addr, u64 size)
- 	if (!memblock_is_region_reserved(addr, size))
- 		memblock_reserve(addr, size);
- 
-+	if (kexec_in_progress)
-+		return;
-+
- 	/*
- 	 * Some architectures (x86) reserve all boot services ranges
- 	 * until efi_free_boot_services() because of buggy firmware
- 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
+Paolo
 
--- 
-Sincerely yours,
-Mike.
