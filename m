@@ -1,325 +1,202 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2074.outbound.protection.outlook.com [40.107.244.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66BA84A50
-	for <linux-coco@lists.linux.dev>; Mon,  3 Jun 2024 12:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717419016; cv=none; b=IYmD+8lh/PoPKtlvVic5qWdl8twBvY2o5Oz3U48dokw8KKMd+XB398ppe/JAlvHne0GrBLywTe3G7F7LpfLjEhlISBa0+f+oWLglH4gE3PvBkojwkJOqECXCIcVywzTFgWnPbnfSyXVUxImmfnEpTXldrtsqM+A7TrXpOhM8pbQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717419016; c=relaxed/simple;
-	bh=VjNeEbnN0FVmtiaDzOSOBuYno++KB0/3wB4rghkte3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=Yy4yFLU0cQtAcuLVSbCEXZb/+Je9vhPEJxB1TaEYsvUigRA0f3iriPAnYeFmGNE5XhOaA09DV4PjFmrAXLaJcjVtZXjgPacKUMOquatl26qJpGeE8LNG92OmMsJZuMENR2cB+SFNfnBhT22LjpZiK6RjwmbJvNSp7t3EACHds+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DTy8bHql; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E88C12C52E
+	for <linux-coco@lists.linux.dev>; Mon,  3 Jun 2024 13:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717420025; cv=fail; b=XCGc3Bq0NwYiFbdcKepPAwR1zILrPPfBH666tNOZrRrGhf0/3zRohsySmJvC+ViR2dy8SMHn962MOcM7NBI/dQib1aDRSH+wUabjH1MZYsdFcJzBtVCK5lSmqMtoW4s4EIca3AEV7YLhiDEZoetJQkCgnIy89waIKbHP0ELzJ8w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717420025; c=relaxed/simple;
+	bh=zZz+0qfucC3nmXbva/Uio85a91kFwbaaJgUYbpskoiQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=p9x2tMiC0Sau26G8NjvoJT6wP/MMVm+PACKfvh+m28V4Z50kfN7rpJO5r5g05q/llwQlaobq8BW37wfhja0jC0O3pNp2OYVZ9m0U21sbjQuuzYv0B0xr45r54WyRwxBWf82wqGXo9sJOalziEUPN6kIXnjOVDDVcqeqkkLtYEk8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=359Uva2S; arc=fail smtp.client-ip=40.107.244.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DTy8bHql"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717419012;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vvVHIigXFPVUayvTKyguWiQDKu5Se4crNY0w/f8to1o=;
-	b=DTy8bHqlHaXkd9zLH371dLSJgNa9XLH4JQvrZbX1lsG7DwaKHYMdhyfbI9xWqob8WaSK/2
-	+YF8Wwh0Y/kkrrGE5OHIpj2WYGy2spzg3VnyEuiyiZbfii4au2NkPPXFUbtY4CVWermeYd
-	yAcWbiAlkp3/4e2A1qq3Zb8z+iyBcz0=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-7u7pJI9qPLaey1GCuH1xDg-1; Mon, 03 Jun 2024 08:50:11 -0400
-X-MC-Unique: 7u7pJI9qPLaey1GCuH1xDg-1
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-52b998cb52eso876187e87.3
-        for <linux-coco@lists.linux.dev>; Mon, 03 Jun 2024 05:50:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717419009; x=1718023809;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vvVHIigXFPVUayvTKyguWiQDKu5Se4crNY0w/f8to1o=;
-        b=Xg/i0gqg0Kl/Ubi+qIvuc5aRe/i0TvF1bzziWsZFFOTMp6YSSAi2MIh4cn/1qYO7YT
-         INSxYiyfZeNrFggHY40+BSIoW8PqERp9+0jU8WbsW88psqGi9Aq3pe7rB/ygV89p2Dt7
-         VofESnj0qCDXXRtqv76eGNhTgWiUoBcXd/ge8pizQoOpH0FkmaEsRPI3rFIpGMX8kF4H
-         islcfW7mPG1pLQy/+fALDy8petZuXr7tvCHpUrQZy6GfqArDovNww8fPmIVeOMxDBvR7
-         Mwtp4uRzOPCFMiB+urxqfwqQJ6DsO+j3UWt4IupES+ruwCU05ijMoZVzLg8R8mkALq8N
-         qZkA==
-X-Forwarded-Encrypted: i=1; AJvYcCX8l1g/5nnUVBcQBa2U2o46JDeyEINkmY2SIWUa8S+31T6nUQ8oIIkfxcfLMuls1FFWvCnEZOykWxQvuydVL8InehkP4wanHXsf7A==
-X-Gm-Message-State: AOJu0YyfgMlPvtfsArnzqJQj5Lqujbz3Ter11kyYbBbPIRWS5BHPYl64
-	KKVGxrKje+rIMjRoLz8GFqJLCG3DIPrmWXHWIA0iKp7blH0D/B80gW/skkmDb9BFt5Ti5T8HdGN
-	pZC5Ns10viIF1uZ0CyD8/Wiq4uDihUfe6qwjIcsefSonAsCLmAABTcPA9bfM=
-X-Received: by 2002:ac2:4e04:0:b0:52b:9e2b:9e1 with SMTP id 2adb3069b0e04-52b9e2b0a7fmr1162469e87.23.1717419009554;
-        Mon, 03 Jun 2024 05:50:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF/4loIAmGneGuSGjjPByhWJ3wNrwgncuMeG06rKtBOo1enZwiQTfx1ktZLyUSK/6jo9r1N4A==
-X-Received: by 2002:ac2:4e04:0:b0:52b:9e2b:9e1 with SMTP id 2adb3069b0e04-52b9e2b0a7fmr1162441e87.23.1717419009014;
-        Mon, 03 Jun 2024 05:50:09 -0700 (PDT)
-Received: from fedora (lmontsouris-659-1-55-176.w193-248.abo.wanadoo.fr. [193.248.58.176])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42134ab5ebasm87037245e9.42.2024.06.03.05.50.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jun 2024 05:50:08 -0700 (PDT)
-Date: Mon, 3 Jun 2024 14:50:06 +0200
-From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, maz@kernel.org,
-	alexandru.elisei@arm.com, joey.gouly@arm.com, steven.price@arm.com,
-	james.morse@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com,
-	andrew.jones@linux.dev, eric.auger@redhat.com
-Subject: Re: [kvm-unit-tests PATCH 00/33] Support for Arm Confidential
- Compute Architecture
-Message-ID: <Zl27/vDnqzXan+G1@fedora>
-References: <20240412103408.2706058-1-suzuki.poulose@arm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="359Uva2S"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=S5de58JP0Z607J58SZllKw40mKNdI+ejL9/gGQc+hW9pUfLoHmpBU3UUi3vJQbx+FmsvdC50GNTXGiyXEvpk1ihLtkcMBFLGEaT/ErzY6ulcCPbP4dwTlmvc/5GL3vB3W0Ft3I/1sn7AZrRZJVEua0OQZS7gnw5ICU1iCQC9kQtuhqQheReLRYb5QZg2jUZtCpNlYoyfnj/ym6QOX5OxZV+j0BQ+bzATwybLAqVQgxLNU+PksaadmVGGCOsSSUgUAn2ncpClMk/wWm4jHtsBNglcjdEX+LKhog4yTxpA6KCaVMy18u8PIsJumKY97ZYgowqBYxPrcvKLG+R/WZw+YA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zZz+0qfucC3nmXbva/Uio85a91kFwbaaJgUYbpskoiQ=;
+ b=edPCB0gYJHub/zIZ3nnK/pDY/DMKPRXe5YhWoyLcSttIGSMDZXCj+/Xy4SaLfR/jEVEUJSf9n6WpCkrNwDE+w5dZv/g4YC/5TNjLk3XYT7YZLWAkQ7IcdYYX/QH2YSdyFDsOQNPSz9lV1NxdcIUoHphUZ9N62R7r30JDoc/r1+30imyGBzBiZz6Fy1zJCquhsLSWROCM/q4LMM5QCn72XvZ/bOcvNp215Zp+A4FkmbZqV3DcSwoYknQpQzbOvmOSu41blY8cHyFrC0xAY8Y/Cru6kV4/aeVy0m6kL6n8N7l+QAoZTWE8/2JHeGAUQ+UXHopgIsL+sPCqQs/Ez1CG8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zZz+0qfucC3nmXbva/Uio85a91kFwbaaJgUYbpskoiQ=;
+ b=359Uva2SL6NePRwfeXePMrZGYzU3yvbDaAD3opW/s9/VucXQse2pOovc9HhH/BqCcsEiqhkI75bIGfP65O95COzIxyXmglQ1VCUWZsgRGRrVLjoP+wXHs+drQv1LFSz/Ptze5YPDvrsMmCOyx1O9DxyEWwGSzFgaeB7Wb8uxX/0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by SJ2PR12MB9161.namprd12.prod.outlook.com (2603:10b6:a03:566::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.22; Mon, 3 Jun
+ 2024 13:07:01 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::e441:89a7:4dd:dce7]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::e441:89a7:4dd:dce7%5]) with mapi id 15.20.7633.021; Mon, 3 Jun 2024
+ 13:07:01 +0000
+Message-ID: <8e3dfc15-f609-4839-85c7-1cc8cefd7acc@amd.com>
+Date: Mon, 3 Jun 2024 08:06:56 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/3] efi/x86: Fix EFI memory map corruption with kexec
+Content-Language: en-US
+To: Borislav Petkov <bp@alien8.de>, Mike Rapoport <rppt@kernel.org>
+Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+ x86@kernel.org, rafael@kernel.org, hpa@zytor.com, peterz@infradead.org,
+ adrian.hunter@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ jun.nakajima@intel.com, rick.p.edgecombe@intel.com, thomas.lendacky@amd.com,
+ michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com,
+ bhe@redhat.com, kirill.shutemov@linux.intel.com, bdas@redhat.com,
+ vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
+ jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
+ <cover.1717111180.git.ashish.kalra@amd.com>
+ <f4be03b8488665f56a1e5c6e6459f447352dfcf5.1717111180.git.ashish.kalra@amd.com>
+ <20240603085654.GBZl2FVjPd-gagt-UA@fat_crate.local>
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+In-Reply-To: <20240603085654.GBZl2FVjPd-gagt-UA@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DM6PR07CA0057.namprd07.prod.outlook.com
+ (2603:10b6:5:74::34) To SN6PR12MB2767.namprd12.prod.outlook.com
+ (2603:10b6:805:75::23)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20240412103408.2706058-1-suzuki.poulose@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|SJ2PR12MB9161:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7de18f8e-e8db-4b14-d3ea-08dc83ce0e84
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|7416005|366007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VnRoTzJDMWdCUzA2d3FxaE43VzNjZjhlYlh5bHNOUllPaXFEYTVuWFhsbWg4?=
+ =?utf-8?B?Z0VGS2tERk94c2VmczdrMlpydmFxb3A2VFMyN1htMW5paU41SHNKRTEzQzc0?=
+ =?utf-8?B?cjI2M3ZSNU85THFvdXEvcWljL0V5N05UUGRuVzdndVBzK2VJazNWd2t0ZmZ1?=
+ =?utf-8?B?Wk1LM0dDVi94QmhZWm5pKzRLVDdnNVpUVVZIdkJkVjdlL0ltc1VYZFpNbzVu?=
+ =?utf-8?B?L0FJcVA4WFljN0FsZVFydUdENWg3R0sxMDcxOXo5dUxRb0x0TFl5M3pzUmNh?=
+ =?utf-8?B?eHUwV2d3ZzBHNlBMVUw1L0JiUmoxRTB5WnFhMjNHanNlOTJzLzNBSDR1VTkz?=
+ =?utf-8?B?VkZaVnMxWkFOdXBWVFJxR25XOHBWZG9CVzhBeDVkRjR6K01oZ0xocWE5MFdi?=
+ =?utf-8?B?UVRIZTRDbVE2M1l1a1EvbC9Ua0Y4WTc2WVhBb1dnSWowMXpqTDkrMHUyQ2dv?=
+ =?utf-8?B?ZmxtYWhhOElvdmk2MmQ2NTBHWEZiMU96bVJvZXl6aXFXaW5HTytvNisyUVQ5?=
+ =?utf-8?B?Q25CRmtnalJ5Sy9Yb25OR0YrWUFpQXF2Wk5tZVZqdlRYMkd0aU1ET0c4VG9m?=
+ =?utf-8?B?ZldLSmVTc2lHUG9PU2NuYUtuQ0dLaEdXVDZmYXJkZFlzNVkzN0VFQXRzZWZH?=
+ =?utf-8?B?bmxjVE9zQ0cwam9ubHNZK2VoRnU0aEMyU0Y4c01XZ1lkM25ObmVkSi94T0py?=
+ =?utf-8?B?UHRhNlFubFFVZWhjTHpTWUxoQjFzby9yZlBya2N4S0Z4Vng4ZjM0ZXJkOW9S?=
+ =?utf-8?B?RUZqWXkrODd2OGlNRWFaODRDVkVRVkhvdkZqQ0ZKT3VUOHQ1cHM2RGJCU2Jr?=
+ =?utf-8?B?SUo3OVUxdlVxNU9IZGpxNVFkRUgyNzZ2Y3lnTlJYVUFRVWdNUGVQZWNWdytw?=
+ =?utf-8?B?L3J3UUhsWm45TjQrc05sWk1FOUJ0clA3bmtjZTZnKzFGaW1QOG9XQTR0TlBt?=
+ =?utf-8?B?eXRxaE11UnhwWHRTamk0cTdjY1NWUDU3THUrcDRRWTJXTUVXekRidW9uVldB?=
+ =?utf-8?B?cHBPYkI4RDZURUpITlZFWnppY0JCU1NjL1A3Sk9IcEcwLytCdzZFWlIwSUp4?=
+ =?utf-8?B?TFR5R3o2S0xoVzRSQkp5cDA4T0IyeTNhUkRZdWdhaWQrUHZWNmFPSncxdGJ3?=
+ =?utf-8?B?cmR3VmlKNEwwak9JSlFoeEx5bWZWclhNbG9Gb25vYXllQ1YxSVFCOGVpbDM4?=
+ =?utf-8?B?L2pPWWtQbUFSUm91RHZMd2oxYjE0ZlZKeDVFMmdBa0F0WXNmNGZ3NWxqQlNo?=
+ =?utf-8?B?QUNoYUJNdElpWjIxWjBlZVN5dmd2MmRGUXliZ1NqQnhod0R6OUhjS3NOZUtx?=
+ =?utf-8?B?VzVPOXgxbnI3a3BhZHlqYVZZRjdkWlBGTGFYRWNTZlRSUy9ITm8wLzI0YzR4?=
+ =?utf-8?B?L2Q5UFFnNEh1ekJkT1EvQmpPVWQrdnZiZXZIbnNkMkNnR1h6RUl0NGJsOHA3?=
+ =?utf-8?B?TGVlcmx2L2x4eExDZ0M3Rkh0c1U1RldvY3ArQUVMRVhaY1g4TGFzVWpnNW5E?=
+ =?utf-8?B?Y05yR0lvUkVRVThWTzhUVllXTk1xa0UwamIyTHNGNmRjRjdDQ3E3RUtQZGo1?=
+ =?utf-8?B?b1UvUkF5L0hzR0M3OUcrdG1wY09yS3JnUUUwQXJuV0M1aWZLLy8xSmdDVGVw?=
+ =?utf-8?B?Vkpidmk4aEp1ekVFQXFJVzU1UXpMaXFHNFNZeDhSU3Z1aVRFdlo5NHlCaWhD?=
+ =?utf-8?B?SUZTL3lidFVhNXRVREtDM1RqWVdVVlkrbkJvQmtrSWMvclZpUWV6Q1hRPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(7416005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NlFqUFNCNWd5a0JZN2Fnb3poRjlXdzdCVy9ZMmhUeWE1MUZZMjQwN2puWEZE?=
+ =?utf-8?B?aU9pNmI3d1JLb0VWN0hhank2U0wwaVc1NlhCNENFa2tBUEhHS29JTG1QSEFE?=
+ =?utf-8?B?aFRNelJleDl3ZnFuU0xhK1gwazRZT3kwOXhWRjRNdHEvMVNKdG1SNUh0cDhn?=
+ =?utf-8?B?QXFtWTF5cWhzc0t0cE1UeFkrNC8zT1JvamRuSG1WeWVpY2F5eTcwZW0xZXhD?=
+ =?utf-8?B?RytsNjJlVXlYK2w2MVVzeENoeVEzOXhIR245QTJpczlhNEtWS056OGhrdWlq?=
+ =?utf-8?B?SkNtVEZHbmluZE9LZUhCYmZTby9rSXRUdUZxaW9QWnNWM1g3c0xzODQ0TjQw?=
+ =?utf-8?B?VHdUMUE2SXZocllaaXZ0SzF4QWVqSWtuUzNGTjU3Y3ZEY1Iwd0JyOHBiMW9o?=
+ =?utf-8?B?RXJpL1hmWlJZdzV2U3dTTC9SeGRiSkY2VGVKSjc5WTlBeVFIMDhLZ05RU2d2?=
+ =?utf-8?B?L0lwbVRVWTF4K0VtQmVaNXZFSXd6aU1mQnE4cUlWMTR2TG1IbTN3K1lJVnE4?=
+ =?utf-8?B?NFJ3eVFKdGdIWlF4NjFldHc4S0ZDNWpmTTVWZGRkVFF6a2V5dzlHLzc3MDF3?=
+ =?utf-8?B?clk1SThZbGxQbTN2WmFkcStwc0FVaWIvWWxrcnE5TkJ2MUFBTXhHNzhrTWFn?=
+ =?utf-8?B?YW9sT05nSnJZeW4yTmxHYkNsZkFUZTRydHpkbXFYRzlZem83dG5DTHpZZ3Ex?=
+ =?utf-8?B?Z0g2czE0NVQyVnFOUkFyVDR1aGFXM1dnbkhJWHA5SXh2Ylk5bGhicGx2VWFN?=
+ =?utf-8?B?YlY4TmIxbEhkbkJxL25FdWxyK2wwZUZzVTJyelc0TTJYRjNzc3VXRWdDRXRG?=
+ =?utf-8?B?aXpoaVJockR0WXI3cHFoa0d1M0hrUFpOS2k0WjBBOHViL2kxbGpUTXlvTFRq?=
+ =?utf-8?B?MkRyREVtRGtYM1I1WWpaaCtnVE9UMjlySTV6UEJFOE5YMU5aL1NKMWhucmtY?=
+ =?utf-8?B?UWlLVlZaVWNKUmhiR2M5NDBJMmNBelI0VUVIdm8wMCtjYk9kMTV0RElFTUYx?=
+ =?utf-8?B?ZytiR3FnTTNEVXk0ekd2L0lwd2lRUWdNTDFVWlFCQnRDRmUvUWhZVHhuOWVX?=
+ =?utf-8?B?TWQ3cE9ERVFPalU5RlhYRytvcm5OajJFaHBXR0dvcU81SXo3Y1ZaM2dNbWtt?=
+ =?utf-8?B?UUtMUDlvN2Q4VFhjSVpwQ1VpcGE1SHJUMzdEQ0RHaGVuQTQyNXIwbVFRcmlv?=
+ =?utf-8?B?Ry9RRUhEeFJSeGh3RG0wU0ZiMG0ycWZwSkM2dDhOR3E2SzUza0pWM25YdDh3?=
+ =?utf-8?B?OGMwVDVjaFVrRFFuVzFhcG5PY2hQQ3RjMzFTb3Awc2NpWHVFUzFucnFEVUpl?=
+ =?utf-8?B?Y01XS3FsbERUY2RPMEdWQUFwK3hTQ0lWdHBhcmVtSXVtZFRxcmIvVVY1NjFp?=
+ =?utf-8?B?WHViaXl3OHBnelJyeDBVaG5zY1NJNUpaL2o1azNSWjRqVlgvY3NVUm9VMlhU?=
+ =?utf-8?B?a2N2a2pIYWxsZ3RZaVZSSWdIOTRWSlE3QldpY0FCQkkyaXFSUmJjZk9aelpq?=
+ =?utf-8?B?SElnWU1pSTBObVdTSGxJTm1Pa3R0b3QyOGIyUXBHemViMjk4M3Y2ZVNtY3JH?=
+ =?utf-8?B?QVZUMStCMnRtRTVmb1dRNFpuWXBQMmNOWkw1dDl6WEZwTkg3eTJrZVNNMTFV?=
+ =?utf-8?B?bUhCdk1IWmowYWRvQmpUS3QrUTRSVWpSUHRqNW8zdk1aOSthWXZreGV2TzBu?=
+ =?utf-8?B?alI5U2haL3ZuaVpnL0d4dnlpWi9FaHhWZXVmQnRVbGF4QXl5bWY1LzFnT3Na?=
+ =?utf-8?B?NmU3MlpyQmJIWmZ5TmxpM1FoUGZSN21BMHFFc09tajhnVXEvOFMyZHBvT1BE?=
+ =?utf-8?B?bnNwUGhObG41RlB1bVFFQ0Nqci91WjgvbnRleVcwN25HRjNQRmVEcUVoeDds?=
+ =?utf-8?B?TW1uL0ZhQXJ0T20yTHBlcnZmeGE3T2hwcytHNlpKeDlGc2V1SkROdFlkV1Na?=
+ =?utf-8?B?WWZDcG5EU2hkN2hTRGdMZkI4MzZMMmtTdmxiRTRrak1KTWpXYkJlc3B0L0V0?=
+ =?utf-8?B?MkZwTm1LTGxNQTZmTmlyZHdETUEvYzFia1B4dkM3WEZ0TkUxL3FhdXV2dzBs?=
+ =?utf-8?B?dXNlSVFZK3ZGN2ZEM3NhMWlTVGxkU1Y3NmZ2K2lTSXVObnc2T0JtVWE1a0Zz?=
+ =?utf-8?Q?HgIsAtWPrmj96SPAUtp7cMyqN?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7de18f8e-e8db-4b14-d3ea-08dc83ce0e84
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2024 13:07:01.1599
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CaOIGH8srzmzEn8UcX3eNYrL2S4y9sk/v5hFRfcLeHCpJnaX5KaCwcS071N++V4yA6BdzCOyWY+njREDapCYiQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9161
 
-Hello,
+On 6/3/2024 3:56 AM, Borislav Petkov wrote
 
-I tried this series by using kvmtool[1] and Linux/KVM with series "[v2]
-Support for Arm CCA VMs on Linux". To try it, I ran "run-realm-tests" in
-the FVP model. All tests seem to have passed successfully.
+>> EFI memory map and due to early allocation it uses memblock allocation.
+>>
+>> Later during boot, efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
+>> in case of a kexec-ed kernel boot.
+>>
+>> This function kexec_enter_virtual_mode() installs the new EFI memory map by
+>> calling efi_memmap_init_late() which remaps the efi_memmap physically allocated
+>> in efi_arch_mem_reserve(), but this remapping is still using memblock allocation.
+>>
+>> Subsequently, when memblock is freed later in boot flow, this remapped
+>> efi_memmap will have random corruption (similar to a use-after-free scenario).
+>>
+>> The corrupted EFI memory map is then passed to the next kexec-ed kernel
+>> which causes a panic when trying to use the corrupted EFI memory map.
+> This sounds fishy: memblock allocated memory is not freed later in the
+> boot - it remains reserved. Only free memory is freed from memblock to
+> the buddy allocator.
+>
+> Or is the problem that memblock-allocated memory cannot be memremapped
+> because *raisins*?
 
-Tested-by: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+This is what seems to be happening:
 
-[1] https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v2
+efi_arch_mem_reserve() calls efi_memmap_alloc() to allocate memory for
+EFI memory map and due to early allocation it uses memblock allocation.
 
-On Fri, Apr 12, 2024 at 11:33:35AM +0100, Suzuki K Poulose wrote:
-> This series adds support for running the kvm-unit-tests in the Arm CCA reference
-> software architecture.
-> 
-> 
-> The changes involve enlightening the boot/setup code with the Realm Service Interface
-> (RSI). The series also includes new test cases that exercise the RSI calls.
-> 
-> Currently we only support "kvmtool" as the VMM for running Realms. There was
-> an attempt to add support for running the test scripts using with kvmtool here [1],
-> which hasn't progressed. It would be good to have that resolved, so that we can
-> run all the tests without manually specifying the commandlines for each run.
-> 
-> For the purposes of running the Realm specific tests, we have added a "temporary"
-> script "run-realm-tests" until the kvmtool support is added. We do not expect
-> this to be merged.
-> 
-> 
-> Base Realm Support
-> -------------------
-> 
-> Realm IPA Space
-> ---------------
-> When running on in Realm world, the (Guest) Physical Address - aka Intermediate
-> Physical Address (IPA) in Arm terminology - space of the VM is split into two halves,
-> protected (lower half) and un-protected (upper half). A protected IPA will
-> always map pages in the "realm world" and  the contents are not accessible to
-> the host. An unprotected IPA on the other hand can be mapped to page in the
-> "normal world" and thus shared with the host. All host emulated MMIO ranges must
-> be in unprotected IPA space.
-> 
-> Realm can query the Realm Management Monitor for the configuration via RSI call
-> (RSI_REALM_CONFIG) and identify the "boundary" of the "IPA" split.
-> 
-> As far as the hyp/VMM is concerned, there is only one "IPA space" (the lower
-> half) of memory map. The "upper half" is "unprotected alias" of the memory map.
-> 
-> In the guest, this is achieved by "treating the MSB (1 << (IPA_WIDTH - 1))" as
-> a protection attribute (we call it - PTE_NS_SHARED), where the Realm applies this
-> to any address, it thinks is acccessed/managed by host (e.g., MMIO, shared pages).
-> Given that this is runtime variable (but fixed for a given Realm), uses a
-> variable to track the value.
-> 
-> All I/O regions are marked as "shared". Care is taken to ensure I/O access (uart)
-> with MMU off uses the "Unprotected Physical address".
-> 
-> 
-> Realm IPA State
-> ---------------
-> Additionally, each page (4K) in the protected IPA space has a state associated
-> (Realm IPA State - RIPAS) with it. It is either of :
->    RIPAS_EMPTY
->    RIPAS_RAM
-> 
-> Any IPA backed by RAM, must be marked as RIPAS_RAM before an access is made to
-> it. The hypervisor/VMM does this for the initial image loaded into the Realm
-> memory before the Realm starts execution. Given the kvm-unit-test flat files do
-> not contain a metadata header (e.g., like the arm64 Linux kernel Image),
-> indicating the "actual image size in memory", the VMM cannot transition the
-> area towards the end of the image (e.g., bss, stack) which are accessed very
-> early during boot. Thus the early boot assembly code will mark the area upto
-> the stack as RAM.
-> 
-> Once we land in the C code, we mark target relocation area for FDT and
-> initrd as RIPAS_RAM. At this point, we can scan the FDT and mark all RAM memory
-> blocks as RIPAS_RAM.
-> 
-> TODO: It would be good to add an image header to the flat files indicating the
-> size, which can take the burden off doing the early assembly boot code RSI calls.
-> 
-> Shared Memory support
-> ---------------------
-> Given the "default" memory of a VM is not accessible to host, we add new page
-> alloc/free routines for "memory shared" with the host. e.g., GICv3-ITS must use
-> shared pages for ITS emulation.
-> 
-> RSI Test suites
-> --------------
-> There are new testcases added to exercise the RSI interfaces and the RMM flows.
-> 
-> Attestation and measurement services related RSI tests require parsing tokens
-> and claims returned by the RMM. This is achieved with the help of QCBOR library
-> [2], which is added as a submodule to the project. We have also added a wrapper
-> library - libtokenverifier - around the QCBOR to parse the tokens according to
-> the RMM specifications.
-> 
-> Running Arm CCA Stack
-> -------------------
-> 
-> See more details on Arm CCA and how to build/run the entire stack here[0]
-> The easiest way to run the Arm CCA stack is using shrinkwrap and the details
-> are available in [0].
-> 
-> 
-> The patches are also available here :
-> 
->  https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca cca/v1
-> 
-> 
-> Changes since rfc:
->   [ https://lkml.kernel.org/r/20230127114108.10025-1-joey.gouly@arm.com ]
->   - Add support for RMM-v1.0-EAC5, changes to RSI ABIs
->   - Some hardening checks (FDT overlapping the BSS sections)
->   - Selftest for memory stress
->   - Enable PMU/SVE tests for Realms
-> 
->  [0] https://lkml.kernel.org/r/20240412084056.1733704-1-steven.price@arm.com
->  [1] https://lkml.kernel.org/r/20210702163122.96110-1-alexandru.elisei@arm.com
->  [2] https://github.com/laurencelundblade/QCBOR
-> 
-> Alexandru Elisei (3):
->   arm64: Expand SMCCC arguments and return values
->   arm: selftest: realm: skip pabt test when running in a realm
->   NOT-FOR-MERGING: add run-realm-tests
-> 
-> Djordje Kovacevic (1):
->   arm: realm: Add tests for in realm SEA
-> 
-> Gareth Stockwell (1):
->   arm: realm: add hvc and RSI_HOST_CALL tests
-> 
-> Jean-Philippe Brucker (1):
->   arm: Move io_init after vm initialization
-> 
-> Joey Gouly (10):
->   arm: Make physical address mask dynamic
->   arm64: Introduce NS_SHARED PTE attribute
->   arm: realm: Add RSI interface header
->   arm: realm: Make uart available before MMU is enabled
->   arm: realm: Add RSI version test
->   arm64: add ESR_ELx EC.SVE
->   arm64: enable SVE at startup
->   arm64: selftest: add realm SVE VL test
->   lib/alloc_page: Add shared page allocation support
->   arm: Add memtest support
-> 
-> Mate Toth-Pal (2):
->   arm: Add a library to verify tokens using the QCBOR library
->   arm: realm: Add Realm attestation tests
-> 
-> Subhasish Ghosh (1):
->   arm: realm: Add test for FPU/SIMD context save/restore
-> 
-> Suzuki K Poulose (14):
->   arm: Add necessary header files in asm/pgtable.h
->   arm: Detect FDT overlap with uninitialised data
->   arm: realm: Realm initialisation
->   arm: realm: Add support for changing the state of memory
->   arm: realm: Set RIPAS state for RAM
->   arm: realm: Early memory setup
->   arm: gic-v3-its: Use shared pages wherever needed
->   arm: realm: Enable memory encryption
->   qcbor: Add QCBOR as a submodule
->   arm: Add build steps for QCBOR library
->   arm: realm: add RSI interface for attestation measurements
->   arm: realm: Add helpers to decode RSI return codes
->   arm: realm: Add Realm attestation tests
->   arm: realm: Add a test for shared memory
-> 
->  .gitmodules                         |    3 +
->  arm/Makefile.arm64                  |   25 +-
->  arm/cstart.S                        |   49 +-
->  arm/cstart64.S                      |  154 +++-
->  arm/fpu.c                           |  424 +++++++++
->  arm/realm-attest.c                  | 1251 +++++++++++++++++++++++++++
->  arm/realm-ns-memory.c               |   86 ++
->  arm/realm-rsi.c                     |  159 ++++
->  arm/realm-sea.c                     |  143 +++
->  arm/run-realm-tests                 |  112 +++
->  arm/selftest.c                      |  138 ++-
->  arm/unittests.cfg                   |   96 +-
->  lib/alloc_page.c                    |   20 +-
->  lib/alloc_page.h                    |   24 +
->  lib/arm/asm/arm-smccc.h             |   44 +
->  lib/arm/asm/io.h                    |    6 +
->  lib/arm/asm/pgtable.h               |    9 +
->  lib/arm/asm/psci.h                  |   13 +-
->  lib/arm/asm/rsi.h                   |   21 +
->  lib/arm/asm/sve-vl-test.h           |    9 +
->  lib/arm/gic-v3.c                    |    6 +-
->  lib/arm/io.c                        |   24 +-
->  lib/arm/mmu.c                       |   80 +-
->  lib/arm/psci.c                      |   19 +-
->  lib/arm/setup.c                     |   26 +-
->  lib/arm64/asm/arm-smccc.h           |    6 +
->  lib/arm64/asm/esr.h                 |    1 +
->  lib/arm64/asm/io.h                  |    6 +
->  lib/arm64/asm/pgtable-hwdef.h       |    6 -
->  lib/arm64/asm/pgtable.h             |   20 +
->  lib/arm64/asm/processor.h           |   34 +
->  lib/arm64/asm/rsi.h                 |   89 ++
->  lib/arm64/asm/smc-rsi.h             |  173 ++++
->  lib/arm64/asm/sve-vl-test.h         |   28 +
->  lib/arm64/asm/sysreg.h              |    7 +
->  lib/arm64/gic-v3-its.c              |    6 +-
->  lib/arm64/processor.c               |    1 +
->  lib/arm64/rsi.c                     |  188 ++++
->  lib/asm-generic/io.h                |   12 +
->  lib/libcflat.h                      |    1 +
->  lib/qcbor                           |    1 +
->  lib/token_verifier/attest_defines.h |   50 ++
->  lib/token_verifier/token_dumper.c   |  157 ++++
->  lib/token_verifier/token_dumper.h   |   15 +
->  lib/token_verifier/token_verifier.c |  591 +++++++++++++
->  lib/token_verifier/token_verifier.h |   77 ++
->  46 files changed, 4355 insertions(+), 55 deletions(-)
->  create mode 100644 .gitmodules
->  create mode 100644 arm/fpu.c
->  create mode 100644 arm/realm-attest.c
->  create mode 100644 arm/realm-ns-memory.c
->  create mode 100644 arm/realm-rsi.c
->  create mode 100644 arm/realm-sea.c
->  create mode 100755 arm/run-realm-tests
->  create mode 100644 lib/arm/asm/arm-smccc.h
->  create mode 100644 lib/arm/asm/rsi.h
->  create mode 100644 lib/arm/asm/sve-vl-test.h
->  create mode 100644 lib/arm64/asm/arm-smccc.h
->  create mode 100644 lib/arm64/asm/rsi.h
->  create mode 100644 lib/arm64/asm/smc-rsi.h
->  create mode 100644 lib/arm64/asm/sve-vl-test.h
->  create mode 100644 lib/arm64/rsi.c
->  create mode 160000 lib/qcbor
->  create mode 100644 lib/token_verifier/attest_defines.h
->  create mode 100644 lib/token_verifier/token_dumper.c
->  create mode 100644 lib/token_verifier/token_dumper.h
->  create mode 100644 lib/token_verifier/token_verifier.c
->  create mode 100644 lib/token_verifier/token_verifier.h
-> 
-> -- 
-> 2.34.1
-> 
+And later efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
+in case of a kexec-ed kernel boot.
 
+This function kexec_enter_virtual_mode() installs the new EFI memory map by
+calling efi_memmap_init_late() which does memremap() on memblock-allocated memory.
+
+Thanks, Ashish
+
+>
+> Mike?
+>
