@@ -1,39 +1,39 @@
-Received: from terminus.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276FB46434
-	for <linux-coco@lists.linux.dev>; Mon,  3 Jun 2024 23:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D078061F
+	for <linux-coco@lists.linux.dev>; Mon,  3 Jun 2024 23:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717458446; cv=none; b=J+kfpfJAGCD3gHwz7mUPT77sjJYUj3x2KcNkZICHDD9d7io8WDT/iUpbSuYuql0PVclibIne7sR5v9cjqgXfcH+ZDq8a8BHJNjrT8fzQxuIm3QzMr0q3q3lSFHx8jyj1pwIGafSo7+8C3OmGtFW/QJmZEfHM8wuhbQfptv6H2QA=
+	t=1717458447; cv=none; b=RTqvhI/swzNjIif4vOGVXltXhuZXOORGXdLFmjta99HVdhs8dgpihZ3wQatLj6WYvqnBkRaCBSvr5c0rUTTpUqMf0Ol2v1SxHh+DotBx7VPeZTc7FBbPTJVny0fi2nkfdwSKaxQFH2BKNQD0vnqIPWilPadvqbdD4hRCIhCUnvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717458446; c=relaxed/simple;
-	bh=6bEpQgcxUVGW2oHLoP+LTHY1R7E8TDG7aTpirGPEYG4=;
+	s=arc-20240116; t=1717458447; c=relaxed/simple;
+	bh=kSZeBvRXuEwaL+IlHMDX4WGJNsrJcRdd9a4wOhfLKfY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X+1OmYBRl3+hbiOMdVE8uZa3Q7/3JT9slGjYbT+ooVv5IMFlcJ4+3MbOlc9+LKIHuFAzBafE3pCYJyNcUCcvVxIanX8TH9QJkO3uk8qKKEebZKcoLKqlO+OX7agKZQ0LMb4EoAVryF+LhZcuZC7Lhj1VBKK6ZZFLR4xXwrIIGgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=F6kPfk5m; arc=none smtp.client-ip=198.137.202.136
+	 In-Reply-To:Content-Type; b=K8yKVtkWetUxXE5TFm4Eq47jurs8Na8CrH9S0L+RNu2HrN2UsudzIHJfYJAWB3r/WBdUTwavLIsLtEy3ae7/Mx4Ps4N3fEOO0piY1QUoroyWGsFJUchkCv2R80Ouy00e6g6Q/lJNVUVFnPf8rgt5kybQxIpxylh/wJhuYcuxQM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=FBToC2O4; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="F6kPfk5m"
-Received: from [IPV6:2601:646:8002:4641:eb14:ad94:2806:1c1a] ([IPv6:2601:646:8002:4641:eb14:ad94:2806:1c1a])
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="FBToC2O4"
+Received: from [IPV6:2607:fb90:3707:40b:a32e:4449:b3a:891d] ([IPv6:2607:fb90:3707:40b:a32e:4449:b3a:891d])
 	(authenticated bits=0)
-	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 453EhCwn3610090
+	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 453MhgU5475578
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 3 Jun 2024 07:43:12 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 453EhCwn3610090
+	Mon, 3 Jun 2024 15:43:42 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 453MhgU5475578
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024051501; t=1717425794;
-	bh=sOv2pml39rCUmYtq263pd0Mke6ArsY5AX7diMAElB7o=;
+	s=2024051501; t=1717454626;
+	bh=wuD6WLaEWhP4n3Qasi9wvzUCa2upP1PV62NIREW0BKw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=F6kPfk5mkSk5h0hAkB5UJ45Gs5fwkaIkIuhFTy8KR1NFWRKyqxjf62B+INqAcQtYS
-	 1K1lC+HHZJuFQJH2hrVwQHOc06tWtoXdTqdjxCtihWqxWYG502lPDyIQ4rkBMhLEhX
-	 K5hZO67HdOTy/G6fEJulnDhrID0NSaitVzskOa4cHmaexkEmC7pQImZo+W84PK6HAo
-	 bnuJkaQAPQoM+KjEcz2CDmaFd2wNeI3Zuz5LkufhuWzQsKUTxlzUbNf3l2hZnESq6D
-	 qE+/LWd5MSggxOHt2HBe0b+7WMwUp6U2gtRzKKnfqNHrh1XhfRO17fyfW7MrCcVKLc
-	 kcU1XkhpOZnLg==
-Message-ID: <5d7dca1e-5889-4440-b3a0-48610f11200e@zytor.com>
-Date: Mon, 3 Jun 2024 07:43:06 -0700
+	b=FBToC2O4KGQk197cIv7t84JmESw/VZTY3yCo3LqaSIXdLNAqfkAdoAN+wohABjwpV
+	 GG8YdHXGo0U45ht4clybrH6eJ/AiZIL2nz1YNbWGmte1xbtzL3wkn7penFxvDyij1J
+	 w1sPlUp39rOPmBXa3KDRfbxxVxioSumuNPHXOXJoU60YnM/WXbT8vWyCloinAqoZ+E
+	 lAArupSy4TdrTTju+IaHtBBQsQHt8qzCikfK/2TAoD86qTyqGlwTzhL4m2ipVvPsk+
+	 mp0olUR+8EO4Z6RjUV5pc3lZiwOYm3IvGz1v+NNFEsPXVh1CpFmDZisWBu3BX+ytNL
+	 s7upucbc1rdrQ==
+Message-ID: <2b661d91-badc-4c90-9a9a-fe82635cf514@zytor.com>
+Date: Mon, 3 Jun 2024 15:43:41 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -93,21 +93,16 @@ On 5/29/24 03:47, Nikolay Borisov wrote:
 >>       movq    %rax, %cr4
 >>       jmp 1f
 > 
-> That jmp 1f becomes redundant now as it simply jumps 1 line below.
-> 
 
-Uh... am I the only person to notice that ALL that is needed here is:
+Sorry if this is a duplicate; something strange happened with my email.
 
-	andl $(X86_CR4_PAE|X86_CR4_LA57), %r13d
-	movq %r13, %rax
+If you are cleaning up this code anyway...
 
-... since %r13 is dead afterwards, and PAE *will* have been set in %r13 
-already?
+this whole piece of code can be simplified to:
 
-I don't believe that this specific jmp is actually needed -- there are 
-several more synchronizing jumps later -- but it doesn't hurt.
+	and $(X86_CR4_PAE | X86_CR4_LA57), %r13d
+	mov %r13, %cr4
 
-However, if the effort is for improving the readability, it might be 
-worthwhile to encapsulate the "jmp 1f; 1:" as a macro, e.g. "SYNC_CODE".
+The PAE bit in %r13 is guaranteed to be set, and %r13 is dead after this.
 
 	-hpa
