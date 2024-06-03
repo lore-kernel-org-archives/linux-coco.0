@@ -1,46 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A37A126F1F;
-	Mon,  3 Jun 2024 15:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636C012FF73;
+	Mon,  3 Jun 2024 15:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717428662; cv=none; b=r027nUcWBGcrIngpGDAViAhhBso13SiBWFgMe2JjsoPf5PTh6yidyuYkajjwsftEUuQkDkKveR45MARNyGSadC//C7+XeM0ssnwm8ZwJjodnnzsPXSaxPBMK4Vq8fvyHUOsbwS+jddEC/TcYOKPwQ7Qxfdx7JB0WfE+LmbS+svE=
+	t=1717428793; cv=none; b=IKMCw81AEydc1sWBryQp9ftJhZd/y16HfO7sxqsoBYZFGBfYNg/sbeyK6pfyA7RW3b5sbmzgDh07GTE2sY4y2IsP1T5F0DJKe6OAjgdRYiGC6GtKTIk/93V/m1jRPZCUkoRiY9F/0dAAvmsBa/v34DfHZLwI6RTebzEXMhICIuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717428662; c=relaxed/simple;
-	bh=odR2yE0PrRaovS85NwYBENVHPZalKhxFjP3osPFtmGI=;
+	s=arc-20240116; t=1717428793; c=relaxed/simple;
+	bh=OgWlnRG7yqy7Yvp/hofY3k+TP4mvTMnfi5TRon+rND4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EPEhuZtmf5qH8xN3dpYKnzFc4nX5G/7o6022T5x1ewAgFEv3aO9t4y2UbUJDxWLoPVK5s/nSf6WmPbUiAD1DydI7StVR910ZySWnEt21wsJ/kIxRLbloqTmSllfEJhTgKbsXhHb3T36LJlbeUJ+aeXtyShYtpBQ762OjOcoY1qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHlX5b47; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=dZcNkKWNoz1PAwA+QVf0ArVHbuPuEX+9WLgaxH4i54iSlKy8a+90QNnxs40CAsysis5Kp2wJ0uqx64bYFMWQ6smrudRdf9Mk51ZwDm2IMtd+aH9FbFPC+29483ECTGTsD8DtxkYlvY2DbCWqX/RopUUNajeU5NPQ/ixTSkIJUwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V78vWfJn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHlX5b47"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CFBC2BD10;
-	Mon,  3 Jun 2024 15:30:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V78vWfJn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E44C2BD10;
+	Mon,  3 Jun 2024 15:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717428662;
-	bh=odR2yE0PrRaovS85NwYBENVHPZalKhxFjP3osPFtmGI=;
+	s=k20201202; t=1717428793;
+	bh=OgWlnRG7yqy7Yvp/hofY3k+TP4mvTMnfi5TRon+rND4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OHlX5b47nBaH+NbFGZWsM5ISVowFzvmzrSp6y4oP/rXvG5yYP6L8HH2LG6uKupMz5
-	 tXCTbOgWYebcYp+bv2SlxdC1QnUrmnM15cvJaB5TrIyeEeQa2b7jHgACz39soaomFg
-	 czTkykzix1LIgAv4l04GRBPZZF/bISMNW6FumlIKXv4+q3MWD0/Aa16hh5Qq1QTrlc
-	 GLd2HPiz+KJJTTvCq+LHa2KNUPmLzVuc1WNSDZwtcYPeRaWQIwHnNEeWy8vcIGMGwa
-	 tggzcPBCL+1/NVikvspB//QMd31Jcf7dvIpxmL+QStiyrMo4rpj2BxxCUq8/bVf4C9
-	 uvJRpjW0kmoDw==
-Date: Mon, 3 Jun 2024 18:29:01 +0300
+	b=V78vWfJnvZewwuSibFDHSbCkT7UuQxhh7H/3SePSqXD1IHensUS8575I57nhRRGNm
+	 uDOgM18EICY1RU5BGasMfeKdxeRj3rrm2PDIut5kb5N6LTjgQt4lmtZpEoxnd4D/NG
+	 DFR4YbrHY4UahiNnkq8kYpIUnqE0jLjoUVsHEudhor2/ijmq3hhwTvR/6TzD+CSeXk
+	 70VXT93b0/xJnbu9pKur+08cmupOp+QAg40GAQgg9mAJ18lSAUQwwZQ5MgypDm/HJX
+	 A3mtO4WABeasmB7CgPZkv6Qg4s3KxOUWiaz18mYJUJb7SAL8aYxu1BywfFZ6bIqfaX
+	 CkQFqvbp/2bJA==
+Date: Mon, 3 Jun 2024 18:31:13 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: Borislav Petkov <bp@alien8.de>, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, x86@kernel.org, rafael@kernel.org,
-	hpa@zytor.com, peterz@infradead.org, adrian.hunter@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, jun.nakajima@intel.com,
-	rick.p.edgecombe@intel.com, thomas.lendacky@amd.com,
-	michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com,
-	bhe@redhat.com, kirill.shutemov@linux.intel.com, bdas@redhat.com,
+To: Borislav Petkov <bp@alien8.de>
+Cc: "Kalra, Ashish" <ashish.kalra@amd.com>, tglx@linutronix.de,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	rafael@kernel.org, hpa@zytor.com, peterz@infradead.org,
+	adrian.hunter@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	jun.nakajima@intel.com, rick.p.edgecombe@intel.com,
+	thomas.lendacky@amd.com, michael.roth@amd.com, seanjc@google.com,
+	kai.huang@intel.com, bhe@redhat.com,
+	kirill.shutemov@linux.intel.com, bdas@redhat.com,
 	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
 	jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
 	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v7 1/3] efi/x86: Fix EFI memory map corruption with kexec
-Message-ID: <Zl3hPefvOwPv0Mjn@kernel.org>
+Message-ID: <Zl3hwYL2GDiyUfGo@kernel.org>
 References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
  <cover.1717111180.git.ashish.kalra@amd.com>
  <f4be03b8488665f56a1e5c6e6459f447352dfcf5.1717111180.git.ashish.kalra@amd.com>
@@ -48,6 +49,7 @@ References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
  <8e3dfc15-f609-4839-85c7-1cc8cefd7acc@amd.com>
  <Zl3HfiQ6oHdTdOdA@kernel.org>
  <1ef36309-8d7f-447b-a54a-3cdafeccca64@amd.com>
+ <20240603144639.GCZl3XTwmFHwi-KUZW@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -56,66 +58,54 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1ef36309-8d7f-447b-a54a-3cdafeccca64@amd.com>
+In-Reply-To: <20240603144639.GCZl3XTwmFHwi-KUZW@fat_crate.local>
 
-On Mon, Jun 03, 2024 at 09:01:49AM -0500, Kalra, Ashish wrote:
-> On 6/3/2024 8:39 AM, Mike Rapoport wrote:
+On Mon, Jun 03, 2024 at 04:46:39PM +0200, Borislav Petkov wrote:
+> On Mon, Jun 03, 2024 at 09:01:49AM -0500, Kalra, Ashish wrote:
+> > If we skip efi_arch_mem_reserve() (which should probably be anyway skipped
+> > for kexec case), then for kexec boot, EFI memmap is memremapped in the same
+> > virtual address as the first kernel and not the allocated memblock address.
 > 
-> > On Mon, Jun 03, 2024 at 08:06:56AM -0500, Kalra, Ashish wrote:
-> > > On 6/3/2024 3:56 AM, Borislav Petkov wrote
-> > > 
-> > > > > EFI memory map and due to early allocation it uses memblock allocation.
-> > > > > 
-> > > > > Later during boot, efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
-> > > > > in case of a kexec-ed kernel boot.
-> > > > > 
-> > > > > This function kexec_enter_virtual_mode() installs the new EFI memory map by
-> > > > > calling efi_memmap_init_late() which remaps the efi_memmap physically allocated
-> > > > > in efi_arch_mem_reserve(), but this remapping is still using memblock allocation.
-> > > > > 
-> > > > > Subsequently, when memblock is freed later in boot flow, this remapped
-> > > > > efi_memmap will have random corruption (similar to a use-after-free scenario).
-> > > > > 
-> > > > > The corrupted EFI memory map is then passed to the next kexec-ed kernel
-> > > > > which causes a panic when trying to use the corrupted EFI memory map.
-> > > > This sounds fishy: memblock allocated memory is not freed later in the
-> > > > boot - it remains reserved. Only free memory is freed from memblock to
-> > > > the buddy allocator.
-> > > > 
-> > > > Or is the problem that memblock-allocated memory cannot be memremapped
-> > > > because *raisins*?
-> > > This is what seems to be happening:
-> > > 
-> > > efi_arch_mem_reserve() calls efi_memmap_alloc() to allocate memory for
-> > > EFI memory map and due to early allocation it uses memblock allocation.
-> > > 
-> > > And later efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
-> > > in case of a kexec-ed kernel boot.
-> > > 
-> > > This function kexec_enter_virtual_mode() installs the new EFI memory map by
-> > > calling efi_memmap_init_late() which does memremap() on memblock-allocated memory.
-> > Does the issue happen only with SNP?
+> Are you saying that we should simply do
 > 
-> This is observed under SNP as efi_arch_mem_reserve() is only being called
-> with SNP enabled and then efi_arch_mem_reserve() allocates EFI memory map
-> using memblock.
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index fdf07dd6f459..410cb0743289 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -577,6 +577,9 @@ void __init efi_mem_reserve(phys_addr_t addr, u64 size)
+>  	if (WARN_ON_ONCE(efi_enabled(EFI_PARAVIRT)))
+>  		return;
+>  
+> +	if (kexec_in_progress)
+> +		return;
+> +
+>  	if (!memblock_is_region_reserved(addr, size))
+>  		memblock_reserve(addr, size);
+>  
+> and skip that whole call?
 
-I don't see how efi_arch_mem_reserve() is only called with SNP. What did I
-miss?
+I think Ashish suggested rather 
+
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index fdf07dd6f459..eccc10ab15a4 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -580,6 +580,9 @@ void __init efi_mem_reserve(phys_addr_t addr, u64 size)
+ 	if (!memblock_is_region_reserved(addr, size))
+ 		memblock_reserve(addr, size);
  
-> If we skip efi_arch_mem_reserve() (which should probably be anyway skipped
-> for kexec case), then for kexec boot, EFI memmap is memremapped in the same
-> virtual address as the first kernel and not the allocated memblock address.
-
-Maybe we should skip efi_arch_mem_reserve() for kexec case, but I think we
-still need to understand what's causing memory corruption.
-
-> Thanks, Ashish
++	if (kexec_in_progress)
++		return;
++
+ 	/*
+ 	 * Some architectures (x86) reserve all boot services ranges
+ 	 * until efi_free_boot_services() because of buggy firmware
+ 
+> -- 
+> Regards/Gruss,
+>     Boris.
 > 
-> > 
-> > I didn't really dig, but my theory would be that it has something to do
-> > with arch_memremap_can_ram_remap() in arch/x86/mm/ioremap.c
-> > > Thanks, Ashish
+> https://people.kernel.org/tglx/notes-about-netiquette
 
 -- 
 Sincerely yours,
