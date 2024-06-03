@@ -1,158 +1,325 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2852A74297
-	for <linux-coco@lists.linux.dev>; Mon,  3 Jun 2024 08:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66BA84A50
+	for <linux-coco@lists.linux.dev>; Mon,  3 Jun 2024 12:50:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717405056; cv=none; b=Uht2tDRnN1FNuM8hSJOFwQv+PDD0k59yFIubXOUq2JDmSaJdHrm7mSZoN4qHs8Ixpgebg0/BVj8d62GVx4YQY3nQ6DDAY9s0/tVE3B90kCrSjr5tArIjEoi4eTF/F1GIRHupwBfGYXuWxUKqP4bQoOOuGDcK5jsQ/3jIvVA1k/k=
+	t=1717419016; cv=none; b=IYmD+8lh/PoPKtlvVic5qWdl8twBvY2o5Oz3U48dokw8KKMd+XB398ppe/JAlvHne0GrBLywTe3G7F7LpfLjEhlISBa0+f+oWLglH4gE3PvBkojwkJOqECXCIcVywzTFgWnPbnfSyXVUxImmfnEpTXldrtsqM+A7TrXpOhM8pbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717405056; c=relaxed/simple;
-	bh=UF7GEyvhqcbKor7NWpdXQr/eBjMCmrS/6YXBZDlgVcE=;
+	s=arc-20240116; t=1717419016; c=relaxed/simple;
+	bh=VjNeEbnN0FVmtiaDzOSOBuYno++KB0/3wB4rghkte3I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mdcXYuzc3DHLeUGgqog9KHeaVDx9wditHfgJxGYrR8cDD5toZhC7eNVb1dssZRCtmhz0uPzamSfKsu5FWYhAVPqQzl+kRJ1X1V5w3Rlqat4Pc0fD4AXEq1t+cgX81xbhc7bpd6p8Lgvgy0sKFulaQClRqLQ5GeGZz+RKz8lJMu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=OSF1zqIM; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 In-Reply-To:Content-Type:Content-Disposition; b=Yy4yFLU0cQtAcuLVSbCEXZb/+Je9vhPEJxB1TaEYsvUigRA0f3iriPAnYeFmGNE5XhOaA09DV4PjFmrAXLaJcjVtZXjgPacKUMOquatl26qJpGeE8LNG92OmMsJZuMENR2cB+SFNfnBhT22LjpZiK6RjwmbJvNSp7t3EACHds+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DTy8bHql; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="OSF1zqIM"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B12D740E016C;
-	Mon,  3 Jun 2024 08:57:32 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id zGAmA0O46_9c; Mon,  3 Jun 2024 08:57:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1717405048; bh=GyBQ5SXnE1RzW/N5I1Wn7zbXD9oRCwC1eq8lbd2HzJc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OSF1zqIMZVCcb5JWqcBkvdQBKDcF8chNTLMxdhEAiOY4ySKNJNLQ9RqqlLVP3rB1Y
-	 i73YmyTaods7SbGN+8Bm6CmqaY8k0JhbTkzRM7uGXPelTEnebJs1QuKxyQHN+6W9rf
-	 NBjYJbIfcUVjLy86usbrP/7AoSHnm1f0La1hSmGkd+RXLe6RJ92zZrFlOef61GtoNc
-	 Rw00r9Kl//pRs/+oe6g2pNUMpvhNdQpScx+te13P3HxaBNCivgATJXF0IH0P8lSQlh
-	 pDZo+vSO4M0rJ+2xAGuyqXfnqrNQvq5guxYmFxB2ySRF2d1Jr0vi4788leWC1oD9Kg
-	 oKc32uNDI5BrGLt5o0ODqf/UIpLl+KFrqVc5B2tjgsz46TqyJMgem2jLH2LXIGLd4z
-	 Q4KoFIZwba1FlH+oQMPxkOMLJcIIwzVAtx4vHMgbMutzMdmmplybQRlrUG3zGJEQXV
-	 oab/aNxmcuwC8kXIm4AldDB7joUD4dRARB+JO4mVhhGXa8jUf6uaNmSt+1g6G28nr6
-	 7xC/76tW/mgC6YtHRGYTPsLiuBapXQPl+fE4o0YaOiuZq534g67uiSonOn8rP9FkTH
-	 6lEgHJBpg/AJPT6Y9Z/Lu11qJpu2fnKLhC72PuljWLNFnNL/ZvJZqu5weQseS7JCSD
-	 ddjvZWAoA//i0aWENHpI5/xA=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B210A40E00C9;
-	Mon,  3 Jun 2024 08:56:59 +0000 (UTC)
-Date: Mon, 3 Jun 2024 10:56:54 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>, Mike Rapoport <rppt@kernel.org>
-Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, rafael@kernel.org, hpa@zytor.com,
-	peterz@infradead.org, adrian.hunter@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, jun.nakajima@intel.com,
-	rick.p.edgecombe@intel.com, thomas.lendacky@amd.com,
-	michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com,
-	bhe@redhat.com, kirill.shutemov@linux.intel.com, bdas@redhat.com,
-	vkuznets@redhat.com, dionnaglaze@google.com, anisinha@redhat.com,
-	jroedel@suse.de, ardb@kernel.org, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/3] efi/x86: Fix EFI memory map corruption with kexec
-Message-ID: <20240603085654.GBZl2FVjPd-gagt-UA@fat_crate.local>
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <cover.1717111180.git.ashish.kalra@amd.com>
- <f4be03b8488665f56a1e5c6e6459f447352dfcf5.1717111180.git.ashish.kalra@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DTy8bHql"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1717419012;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vvVHIigXFPVUayvTKyguWiQDKu5Se4crNY0w/f8to1o=;
+	b=DTy8bHqlHaXkd9zLH371dLSJgNa9XLH4JQvrZbX1lsG7DwaKHYMdhyfbI9xWqob8WaSK/2
+	+YF8Wwh0Y/kkrrGE5OHIpj2WYGy2spzg3VnyEuiyiZbfii4au2NkPPXFUbtY4CVWermeYd
+	yAcWbiAlkp3/4e2A1qq3Zb8z+iyBcz0=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-694-7u7pJI9qPLaey1GCuH1xDg-1; Mon, 03 Jun 2024 08:50:11 -0400
+X-MC-Unique: 7u7pJI9qPLaey1GCuH1xDg-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-52b998cb52eso876187e87.3
+        for <linux-coco@lists.linux.dev>; Mon, 03 Jun 2024 05:50:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717419009; x=1718023809;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vvVHIigXFPVUayvTKyguWiQDKu5Se4crNY0w/f8to1o=;
+        b=Xg/i0gqg0Kl/Ubi+qIvuc5aRe/i0TvF1bzziWsZFFOTMp6YSSAi2MIh4cn/1qYO7YT
+         INSxYiyfZeNrFggHY40+BSIoW8PqERp9+0jU8WbsW88psqGi9Aq3pe7rB/ygV89p2Dt7
+         VofESnj0qCDXXRtqv76eGNhTgWiUoBcXd/ge8pizQoOpH0FkmaEsRPI3rFIpGMX8kF4H
+         islcfW7mPG1pLQy/+fALDy8petZuXr7tvCHpUrQZy6GfqArDovNww8fPmIVeOMxDBvR7
+         Mwtp4uRzOPCFMiB+urxqfwqQJ6DsO+j3UWt4IupES+ruwCU05ijMoZVzLg8R8mkALq8N
+         qZkA==
+X-Forwarded-Encrypted: i=1; AJvYcCX8l1g/5nnUVBcQBa2U2o46JDeyEINkmY2SIWUa8S+31T6nUQ8oIIkfxcfLMuls1FFWvCnEZOykWxQvuydVL8InehkP4wanHXsf7A==
+X-Gm-Message-State: AOJu0YyfgMlPvtfsArnzqJQj5Lqujbz3Ter11kyYbBbPIRWS5BHPYl64
+	KKVGxrKje+rIMjRoLz8GFqJLCG3DIPrmWXHWIA0iKp7blH0D/B80gW/skkmDb9BFt5Ti5T8HdGN
+	pZC5Ns10viIF1uZ0CyD8/Wiq4uDihUfe6qwjIcsefSonAsCLmAABTcPA9bfM=
+X-Received: by 2002:ac2:4e04:0:b0:52b:9e2b:9e1 with SMTP id 2adb3069b0e04-52b9e2b0a7fmr1162469e87.23.1717419009554;
+        Mon, 03 Jun 2024 05:50:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/4loIAmGneGuSGjjPByhWJ3wNrwgncuMeG06rKtBOo1enZwiQTfx1ktZLyUSK/6jo9r1N4A==
+X-Received: by 2002:ac2:4e04:0:b0:52b:9e2b:9e1 with SMTP id 2adb3069b0e04-52b9e2b0a7fmr1162441e87.23.1717419009014;
+        Mon, 03 Jun 2024 05:50:09 -0700 (PDT)
+Received: from fedora (lmontsouris-659-1-55-176.w193-248.abo.wanadoo.fr. [193.248.58.176])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42134ab5ebasm87037245e9.42.2024.06.03.05.50.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jun 2024 05:50:08 -0700 (PDT)
+Date: Mon, 3 Jun 2024 14:50:06 +0200
+From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, maz@kernel.org,
+	alexandru.elisei@arm.com, joey.gouly@arm.com, steven.price@arm.com,
+	james.morse@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com,
+	andrew.jones@linux.dev, eric.auger@redhat.com
+Subject: Re: [kvm-unit-tests PATCH 00/33] Support for Arm Confidential
+ Compute Architecture
+Message-ID: <Zl27/vDnqzXan+G1@fedora>
+References: <20240412103408.2706058-1-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20240412103408.2706058-1-suzuki.poulose@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f4be03b8488665f56a1e5c6e6459f447352dfcf5.1717111180.git.ashish.kalra@amd.com>
 
-On Thu, May 30, 2024 at 11:36:55PM +0000, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> With SNP guest kexec observe the following efi memmap corruption :
-> 
-> [    0.000000] efi: EFI v2.7 by EDK II
-> [    0.000000] efi: SMBIOS=0x7e33f000 SMBIOS 3.0=0x7e33d000 ACPI=0x7e57e000 ACPI 2.0=0x7e57e014 MEMATTR=0x7cc3c018 Unaccepted=0x7c09e018
-> [    0.000000] efi: [Firmware Bug]: Invalid EFI memory map entries:
-> [    0.000000] efi: mem03: [type=269370880|attr=0x0e42100e42180e41] range=[0x0486200e41038c18-0x200e898a0eee713ac17] (invalid)
-> [    0.000000] efi: mem04: [type=12336|attr=0x0e410686300e4105] range=[0x100e420000000176-0x8c290f26248d200e175] (invalid)
-> [    0.000000] efi: mem06: [type=1124304408|attr=0x000030b400000028] range=[0x0e51300e45280e77-0xb44ed2142f460c1e76] (invalid)
-> [    0.000000] efi: mem08: [type=68|attr=0x300e540583280e41] range=[0x0000011affff3cd8-0x486200e54b38c0bcd7] (invalid)
-> [    0.000000] efi: mem10: [type=1107529240|attr=0x0e42280e41300e41] range=[0x300e41058c280e42-0x38010ae54c5c328ee41] (invalid)
-> [    0.000000] efi: mem11: [type=189335566|attr=0x048d200e42038e18] range=[0x0000318c00000048-0xe42029228ce4200047] (invalid)
-> [    0.000000] efi: mem12: [type=239142534|attr=0x0000002400000b4b] range=[0x0e41380e0a7d700e-0x80f26238f22bfe500d] (invalid)
-> [    0.000000] efi: mem14: [type=239207055|attr=0x0e41300e43380e0a] range=[0x8c280e42048d200e-0xc70b028f2f27cc0a00d] (invalid)
-> [    0.000000] efi: mem15: [type=239210510|attr=0x00080e660b47080e] range=[0x0000324c0000001c-0xa78028634ce490001b] (invalid)
-> [    0.000000] efi: mem16: [type=4294848528|attr=0x0000329400000014] range=[0x0e410286100e4100-0x80f252036a218f20ff] (invalid)
-> [    0.000000] efi: mem19: [type=2250772033|attr=0x42180e42200e4328] range=[0x41280e0ab9020683-0xe0e538c28b39e62682] (invalid)
-> [    0.000000] efi: mem20: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x00000008ffff4438-0xffff44340090333c437] (invalid)
-> [    0.000000] efi: mem22: [Reserved    |attr=0x000000c1ffff4420] range=[0xffff442400003398-0x1033a04240003f397] (invalid)
-> [    0.000000] efi: mem23: [type=1141080856|attr=0x080e41100e43180e] range=[0x280e66300e4b280e-0x440dc5ee7141f4c080d] (invalid)
-> [    0.000000] efi: mem25: [Reserved    |attr=0x0000000affff44a0] range=[0xffff44a400003428-0x1034304a400013427] (invalid)
-> [    0.000000] efi: mem28: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x0000000affff4488-0xffff448400b034bc487] (invalid)
-> [    0.000000] efi: mem30: [Reserved    |attr=0x0000000affff4470] range=[0xffff447400003518-0x10352047400013517] (invalid)
-> [    0.000000] efi: mem33: [type=16|   |  |  |  |  |  |  |  |  |   |WB|  |WC|  ] range=[0x0000000affff4458-0xffff445400b035ac457] (invalid)
-> [    0.000000] efi: mem35: [type=269372416|attr=0x0e42100e42180e41] range=[0x0486200e44038c18-0x200e8b8a0eee823ac17] (invalid)
-> [    0.000000] efi: mem37: [type=2351435330|attr=0x0e42100e42180e42] range=[0x470783380e410686-0x2002b2a041c2141e685] (invalid)
-> [    0.000000] efi: mem38: [type=1093668417|attr=0x100e420000000270] range=[0x42100e42180e4220-0xfff366a4e421b78c21f] (invalid)
-> [    0.000000] efi: mem39: [type=76357646|attr=0x180e42200e42280e] range=[0x0e410686300e4105-0x4130f251a0710ae5104] (invalid)
-> [    0.000000] efi: mem40: [type=940444268|attr=0x0e42200e42280e41] range=[0x180e42200e42280e-0x300fc71c300b4f2480d] (invalid)
-> [    0.000000] efi: mem41: [MMIO        |attr=0x8c280e42048d200e] range=[0xffff479400003728-0x42138e0c87820292727] (invalid)
-> [    0.000000] efi: mem42: [type=1191674680|attr=0x0000004c0000000b] range=[0x300e41380e0a0246-0x470b0f26238f22b8245] (invalid)
-> [    0.000000] efi: mem43: [type=2010|attr=0x0301f00e4d078338] range=[0x45038e180e42028f-0xe4556bf118f282528e] (invalid)
-> [    0.000000] efi: mem44: [type=1109921345|attr=0x300e44000000006c] range=[0x44080e42100e4218-0xfff39254e42138ac217] (invalid)
-> ...
-> 
-> This EFI memap corruption is happening with efi_arch_mem_reserve() invocation in case of kexec boot.
-> 
-> ( efi_arch_mem_reserve() is invoked with the following call-stack: )
-> 
-> [    0.310010]  efi_arch_mem_reserve+0xb1/0x220
-> [    0.311382]  efi_mem_reserve+0x36/0x60
-> [    0.311973]  efi_bgrt_init+0x17d/0x1a0
-> [    0.313265]  acpi_parse_bgrt+0x12/0x20
-> [    0.313858]  acpi_table_parse+0x77/0xd0
-> [    0.314463]  acpi_boot_init+0x362/0x630
-> [    0.315069]  setup_arch+0xa88/0xf80
-> [    0.315629]  start_kernel+0x68/0xa90
-> [    0.316194]  x86_64_start_reservations+0x1c/0x30
-> [    0.316921]  x86_64_start_kernel+0xbf/0x110
-> [    0.317582]  common_startup_64+0x13e/0x141
-> 
-> efi_arch_mem_reserve() calls efi_memmap_alloc() to allocate memory for
-> EFI memory map and due to early allocation it uses memblock allocation.
-> 
-> Later during boot, efi_enter_virtual_mode() calls kexec_enter_virtual_mode()
-> in case of a kexec-ed kernel boot.
-> 
-> This function kexec_enter_virtual_mode() installs the new EFI memory map by
-> calling efi_memmap_init_late() which remaps the efi_memmap physically allocated
-> in efi_arch_mem_reserve(), but this remapping is still using memblock allocation.
-> 
-> Subsequently, when memblock is freed later in boot flow, this remapped
-> efi_memmap will have random corruption (similar to a use-after-free scenario).
-> 
-> The corrupted EFI memory map is then passed to the next kexec-ed kernel
-> which causes a panic when trying to use the corrupted EFI memory map.
+Hello,
 
-This sounds fishy: memblock allocated memory is not freed later in the
-boot - it remains reserved. Only free memory is freed from memblock to
-the buddy allocator.
+I tried this series by using kvmtool[1] and Linux/KVM with series "[v2]
+Support for Arm CCA VMs on Linux". To try it, I ran "run-realm-tests" in
+the FVP model. All tests seem to have passed successfully.
 
-Or is the problem that memblock-allocated memory cannot be memremapped
-because *raisins*?
+Tested-by: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
 
-Mike?
+[1] https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v2
 
--- 
-Regards/Gruss,
-    Boris.
+On Fri, Apr 12, 2024 at 11:33:35AM +0100, Suzuki K Poulose wrote:
+> This series adds support for running the kvm-unit-tests in the Arm CCA reference
+> software architecture.
+> 
+> 
+> The changes involve enlightening the boot/setup code with the Realm Service Interface
+> (RSI). The series also includes new test cases that exercise the RSI calls.
+> 
+> Currently we only support "kvmtool" as the VMM for running Realms. There was
+> an attempt to add support for running the test scripts using with kvmtool here [1],
+> which hasn't progressed. It would be good to have that resolved, so that we can
+> run all the tests without manually specifying the commandlines for each run.
+> 
+> For the purposes of running the Realm specific tests, we have added a "temporary"
+> script "run-realm-tests" until the kvmtool support is added. We do not expect
+> this to be merged.
+> 
+> 
+> Base Realm Support
+> -------------------
+> 
+> Realm IPA Space
+> ---------------
+> When running on in Realm world, the (Guest) Physical Address - aka Intermediate
+> Physical Address (IPA) in Arm terminology - space of the VM is split into two halves,
+> protected (lower half) and un-protected (upper half). A protected IPA will
+> always map pages in the "realm world" and  the contents are not accessible to
+> the host. An unprotected IPA on the other hand can be mapped to page in the
+> "normal world" and thus shared with the host. All host emulated MMIO ranges must
+> be in unprotected IPA space.
+> 
+> Realm can query the Realm Management Monitor for the configuration via RSI call
+> (RSI_REALM_CONFIG) and identify the "boundary" of the "IPA" split.
+> 
+> As far as the hyp/VMM is concerned, there is only one "IPA space" (the lower
+> half) of memory map. The "upper half" is "unprotected alias" of the memory map.
+> 
+> In the guest, this is achieved by "treating the MSB (1 << (IPA_WIDTH - 1))" as
+> a protection attribute (we call it - PTE_NS_SHARED), where the Realm applies this
+> to any address, it thinks is acccessed/managed by host (e.g., MMIO, shared pages).
+> Given that this is runtime variable (but fixed for a given Realm), uses a
+> variable to track the value.
+> 
+> All I/O regions are marked as "shared". Care is taken to ensure I/O access (uart)
+> with MMU off uses the "Unprotected Physical address".
+> 
+> 
+> Realm IPA State
+> ---------------
+> Additionally, each page (4K) in the protected IPA space has a state associated
+> (Realm IPA State - RIPAS) with it. It is either of :
+>    RIPAS_EMPTY
+>    RIPAS_RAM
+> 
+> Any IPA backed by RAM, must be marked as RIPAS_RAM before an access is made to
+> it. The hypervisor/VMM does this for the initial image loaded into the Realm
+> memory before the Realm starts execution. Given the kvm-unit-test flat files do
+> not contain a metadata header (e.g., like the arm64 Linux kernel Image),
+> indicating the "actual image size in memory", the VMM cannot transition the
+> area towards the end of the image (e.g., bss, stack) which are accessed very
+> early during boot. Thus the early boot assembly code will mark the area upto
+> the stack as RAM.
+> 
+> Once we land in the C code, we mark target relocation area for FDT and
+> initrd as RIPAS_RAM. At this point, we can scan the FDT and mark all RAM memory
+> blocks as RIPAS_RAM.
+> 
+> TODO: It would be good to add an image header to the flat files indicating the
+> size, which can take the burden off doing the early assembly boot code RSI calls.
+> 
+> Shared Memory support
+> ---------------------
+> Given the "default" memory of a VM is not accessible to host, we add new page
+> alloc/free routines for "memory shared" with the host. e.g., GICv3-ITS must use
+> shared pages for ITS emulation.
+> 
+> RSI Test suites
+> --------------
+> There are new testcases added to exercise the RSI interfaces and the RMM flows.
+> 
+> Attestation and measurement services related RSI tests require parsing tokens
+> and claims returned by the RMM. This is achieved with the help of QCBOR library
+> [2], which is added as a submodule to the project. We have also added a wrapper
+> library - libtokenverifier - around the QCBOR to parse the tokens according to
+> the RMM specifications.
+> 
+> Running Arm CCA Stack
+> -------------------
+> 
+> See more details on Arm CCA and how to build/run the entire stack here[0]
+> The easiest way to run the Arm CCA stack is using shrinkwrap and the details
+> are available in [0].
+> 
+> 
+> The patches are also available here :
+> 
+>  https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca cca/v1
+> 
+> 
+> Changes since rfc:
+>   [ https://lkml.kernel.org/r/20230127114108.10025-1-joey.gouly@arm.com ]
+>   - Add support for RMM-v1.0-EAC5, changes to RSI ABIs
+>   - Some hardening checks (FDT overlapping the BSS sections)
+>   - Selftest for memory stress
+>   - Enable PMU/SVE tests for Realms
+> 
+>  [0] https://lkml.kernel.org/r/20240412084056.1733704-1-steven.price@arm.com
+>  [1] https://lkml.kernel.org/r/20210702163122.96110-1-alexandru.elisei@arm.com
+>  [2] https://github.com/laurencelundblade/QCBOR
+> 
+> Alexandru Elisei (3):
+>   arm64: Expand SMCCC arguments and return values
+>   arm: selftest: realm: skip pabt test when running in a realm
+>   NOT-FOR-MERGING: add run-realm-tests
+> 
+> Djordje Kovacevic (1):
+>   arm: realm: Add tests for in realm SEA
+> 
+> Gareth Stockwell (1):
+>   arm: realm: add hvc and RSI_HOST_CALL tests
+> 
+> Jean-Philippe Brucker (1):
+>   arm: Move io_init after vm initialization
+> 
+> Joey Gouly (10):
+>   arm: Make physical address mask dynamic
+>   arm64: Introduce NS_SHARED PTE attribute
+>   arm: realm: Add RSI interface header
+>   arm: realm: Make uart available before MMU is enabled
+>   arm: realm: Add RSI version test
+>   arm64: add ESR_ELx EC.SVE
+>   arm64: enable SVE at startup
+>   arm64: selftest: add realm SVE VL test
+>   lib/alloc_page: Add shared page allocation support
+>   arm: Add memtest support
+> 
+> Mate Toth-Pal (2):
+>   arm: Add a library to verify tokens using the QCBOR library
+>   arm: realm: Add Realm attestation tests
+> 
+> Subhasish Ghosh (1):
+>   arm: realm: Add test for FPU/SIMD context save/restore
+> 
+> Suzuki K Poulose (14):
+>   arm: Add necessary header files in asm/pgtable.h
+>   arm: Detect FDT overlap with uninitialised data
+>   arm: realm: Realm initialisation
+>   arm: realm: Add support for changing the state of memory
+>   arm: realm: Set RIPAS state for RAM
+>   arm: realm: Early memory setup
+>   arm: gic-v3-its: Use shared pages wherever needed
+>   arm: realm: Enable memory encryption
+>   qcbor: Add QCBOR as a submodule
+>   arm: Add build steps for QCBOR library
+>   arm: realm: add RSI interface for attestation measurements
+>   arm: realm: Add helpers to decode RSI return codes
+>   arm: realm: Add Realm attestation tests
+>   arm: realm: Add a test for shared memory
+> 
+>  .gitmodules                         |    3 +
+>  arm/Makefile.arm64                  |   25 +-
+>  arm/cstart.S                        |   49 +-
+>  arm/cstart64.S                      |  154 +++-
+>  arm/fpu.c                           |  424 +++++++++
+>  arm/realm-attest.c                  | 1251 +++++++++++++++++++++++++++
+>  arm/realm-ns-memory.c               |   86 ++
+>  arm/realm-rsi.c                     |  159 ++++
+>  arm/realm-sea.c                     |  143 +++
+>  arm/run-realm-tests                 |  112 +++
+>  arm/selftest.c                      |  138 ++-
+>  arm/unittests.cfg                   |   96 +-
+>  lib/alloc_page.c                    |   20 +-
+>  lib/alloc_page.h                    |   24 +
+>  lib/arm/asm/arm-smccc.h             |   44 +
+>  lib/arm/asm/io.h                    |    6 +
+>  lib/arm/asm/pgtable.h               |    9 +
+>  lib/arm/asm/psci.h                  |   13 +-
+>  lib/arm/asm/rsi.h                   |   21 +
+>  lib/arm/asm/sve-vl-test.h           |    9 +
+>  lib/arm/gic-v3.c                    |    6 +-
+>  lib/arm/io.c                        |   24 +-
+>  lib/arm/mmu.c                       |   80 +-
+>  lib/arm/psci.c                      |   19 +-
+>  lib/arm/setup.c                     |   26 +-
+>  lib/arm64/asm/arm-smccc.h           |    6 +
+>  lib/arm64/asm/esr.h                 |    1 +
+>  lib/arm64/asm/io.h                  |    6 +
+>  lib/arm64/asm/pgtable-hwdef.h       |    6 -
+>  lib/arm64/asm/pgtable.h             |   20 +
+>  lib/arm64/asm/processor.h           |   34 +
+>  lib/arm64/asm/rsi.h                 |   89 ++
+>  lib/arm64/asm/smc-rsi.h             |  173 ++++
+>  lib/arm64/asm/sve-vl-test.h         |   28 +
+>  lib/arm64/asm/sysreg.h              |    7 +
+>  lib/arm64/gic-v3-its.c              |    6 +-
+>  lib/arm64/processor.c               |    1 +
+>  lib/arm64/rsi.c                     |  188 ++++
+>  lib/asm-generic/io.h                |   12 +
+>  lib/libcflat.h                      |    1 +
+>  lib/qcbor                           |    1 +
+>  lib/token_verifier/attest_defines.h |   50 ++
+>  lib/token_verifier/token_dumper.c   |  157 ++++
+>  lib/token_verifier/token_dumper.h   |   15 +
+>  lib/token_verifier/token_verifier.c |  591 +++++++++++++
+>  lib/token_verifier/token_verifier.h |   77 ++
+>  46 files changed, 4355 insertions(+), 55 deletions(-)
+>  create mode 100644 .gitmodules
+>  create mode 100644 arm/fpu.c
+>  create mode 100644 arm/realm-attest.c
+>  create mode 100644 arm/realm-ns-memory.c
+>  create mode 100644 arm/realm-rsi.c
+>  create mode 100644 arm/realm-sea.c
+>  create mode 100755 arm/run-realm-tests
+>  create mode 100644 lib/arm/asm/arm-smccc.h
+>  create mode 100644 lib/arm/asm/rsi.h
+>  create mode 100644 lib/arm/asm/sve-vl-test.h
+>  create mode 100644 lib/arm64/asm/arm-smccc.h
+>  create mode 100644 lib/arm64/asm/rsi.h
+>  create mode 100644 lib/arm64/asm/smc-rsi.h
+>  create mode 100644 lib/arm64/asm/sve-vl-test.h
+>  create mode 100644 lib/arm64/rsi.c
+>  create mode 160000 lib/qcbor
+>  create mode 100644 lib/token_verifier/attest_defines.h
+>  create mode 100644 lib/token_verifier/token_dumper.c
+>  create mode 100644 lib/token_verifier/token_dumper.h
+>  create mode 100644 lib/token_verifier/token_verifier.c
+>  create mode 100644 lib/token_verifier/token_verifier.h
+> 
+> -- 
+> 2.34.1
+> 
 
-https://people.kernel.org/tglx/notes-about-netiquette
