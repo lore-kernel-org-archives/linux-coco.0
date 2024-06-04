@@ -1,124 +1,125 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419B0139CFF
-	for <linux-coco@lists.linux.dev>; Tue,  4 Jun 2024 01:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10C3143721
+	for <linux-coco@lists.linux.dev>; Tue,  4 Jun 2024 09:15:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717464225; cv=none; b=a8jk9RSuhQeO+TAM2sQUJ7v3pEEU2+ZBcRlV1T9qCgb9q1R1nbd6zY3xPvXf0Z3FbShwGMfwWLSbmKgOZLYnTpPRG+nuWPhqpi22x5iLC6k8ZFYcl7p8r3CSnRgy8jl8TL8aKRDmjnLGaTCe9xDCKAxJ0PzB4g5cj+XPqSJEqnM=
+	t=1717492554; cv=none; b=OTh+jJiC/9KFMvwa54LhET6iwAOmwU0kpa5OJShMpsOhuwZ6KHCR1QAL1c3vwJ6TlXScYtTQ9F6dFu5Li2xO4bjQAZ7SVPEn0w56LX6E/vMJ5DSQH+19h+UnK4gxT4jVSGObc0yD9wQJapvytFlnQ8dy71kNFvFEIdkojf3SE+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717464225; c=relaxed/simple;
-	bh=aUtGUjE2Un5r4Ipt2J6GL87oe3xhZsTM6lJ9uypAsl0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GjqYOpjhrqkAmwQ9V1Q041UrShB/a85F8FRxQq5WGgPHZgwNUIeAeOyiCGF8yuILINiX5JCZoHDr+1ncgFUUsM0yts94lDbJ+SWSpeyB7FZyJBCLeXcCP0TOZ8HD/5fZ81vtJiTz1p8H+gXB/HZ6Y+1C4+FVLHXcWZ1btypLg4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bxNgsIJR; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1717492554; c=relaxed/simple;
+	bh=Z6h+FaQ2mydG81kK5UyAdLTDhUweVtTAlyL20v2DzGg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qxf6gxt8leRQ3t65TdHadwmjTz4Vcn8uRXvsRNeAfNLifvnPTprpIOtWaNORzOQOHK4PvkrC/AbSmHhE70bLvU2ckt0aL0I4k1AzaX7xuzZk/9ZPTIywHP1RLWoaJdTNSoH0fVAV1NffEfE21rxHGMzkDSNWBFxXV53Q7KOFBzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=iSXAQOJn; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bxNgsIJR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717464222;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S2uM4DFyGxLz048gnN/tqwhjQvWlr4twzxXFxXx0Uho=;
-	b=bxNgsIJRlwUMF+O0XzAevbZV1bO8tXkiDGrAxfGA8T1fl1TY7taNz5mczWEN31wcqd8MPS
-	skpMpLrti9rnV6lpIKOu7esD4xZmAZnip50BF3I4sXBwR7O9K/7Pua0Td3J0Hvl1mZ6awa
-	3kqRCSoEzplxF1PFkSW7JE2Dihr/tUw=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-15-utFK-dKsMFa0KiZ6QgnwVQ-1; Mon, 03 Jun 2024 21:23:40 -0400
-X-MC-Unique: utFK-dKsMFa0KiZ6QgnwVQ-1
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3748f3510b2so6676435ab.3
-        for <linux-coco@lists.linux.dev>; Mon, 03 Jun 2024 18:23:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717464220; x=1718069020;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=S2uM4DFyGxLz048gnN/tqwhjQvWlr4twzxXFxXx0Uho=;
-        b=fkLZVXWwCccu5R1N1T+lCxBGBZdeYZDym1iZmhOnQ+HXDfZIj5V248vzjfR3TZwrfF
-         7z/QbRUUXryC35Dnu8z7Bp5ciQSgzjxsjjl1DIpdvnvpThVxnX8d0GsZvvEzlr4zUrbb
-         OK1VI7USo0uBaez3pNr2orsry5BFZQ5dcpvIdCVXpFu5MoNFNR0SNpKcq7eZWBM6IUYO
-         Z6MtVNW+QzPnvSJ0en26zAYrZ88Md6VWtcpL81bOxH59tJUIbL+b1l1AcOxsrLCOq4JG
-         A1hrcvG6rbXz386z/RMuw9NzyNFnRF9tj3F8eM+pvJYslQigBmE29M9PRK4NHJ3qMywb
-         KAtg==
-X-Forwarded-Encrypted: i=1; AJvYcCXWyRt9/pmHp8bFdnIpfm86FIvYOOwCV9ZYKxJ2bQz/VaY42qjCZJrGodoR78/s+z7uZy1NwOWA3VLNAzq+2fTtRFfnTtM7exbSMg==
-X-Gm-Message-State: AOJu0YyO6UxXtFjezJfcp24MUE6AiiH3DJF/6B12Aj4JSRh09Y04ubvS
-	dZvQ1W5M7IMMVSo4pIzSNjfc7G/8nVSfuX7/ObU4hfmvyJW1ASzJh5t/CJlEjRJEHlZw5Mk4IOu
-	7lVucSRShJ2ql071WPjbBD7f2oiJdFWl20/w6fGqZ3hGJUR1MsMBjx9jrXoCazMxI0mnIdL6UHs
-	OiadJT6ot8kbfLow8YGcMiRoJzZquDNqB5XA==
-X-Received: by 2002:a05:6e02:12cf:b0:36d:cb9d:cc9e with SMTP id e9e14a558f8ab-3748b9cfee7mr107650515ab.2.1717464220133;
-        Mon, 03 Jun 2024 18:23:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHg3MFJebi0AMEiF/DB64qHywmC9po1Ki163doJb0ZzhuVzWAmCpVqYYvMl/8ZsNk38RNQy2ClsQBbegQbN6zk=
-X-Received: by 2002:a05:6e02:12cf:b0:36d:cb9d:cc9e with SMTP id
- e9e14a558f8ab-3748b9cfee7mr107650315ab.2.1717464219826; Mon, 03 Jun 2024
- 18:23:39 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="iSXAQOJn"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A3B6840E0176;
+	Tue,  4 Jun 2024 09:15:43 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ulBYaKGPw-vH; Tue,  4 Jun 2024 09:15:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1717492540; bh=m7NFIk8+6rvmt15s5vCen1cbEwqjokjsUgs57ILsKtA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iSXAQOJn+SPDaD84vEh7wouOYiZfNCaoiWTp8IPjbiadFjeUbQ8PgOq9mgi7jWbuB
+	 Rm3LQjYTbnpdicihxVy1yB07uSul8gr+Z1gaL7WeDAiwfwqkFMzX+2TGECuiXmhDA4
+	 iSlqfTMjYs9AfTUpI055P9dnTsOjXQmdcnM5TeuC0Mbgo5lc56brjSNqBpHib4ypnO
+	 gCmeqhMFDjnpAFTpEriJjZiYIQSt6rWHxHZP91+aq119WX55MnsAV/sDeoUt4lWHJ8
+	 KFxtXI6OcP1YDtpUUwXpwY9rTFm6SOFEm9YUAQrKWrjC0TErYpKinePUPvrMt/AjaG
+	 nhHNfSE9qW+YOI94ONFGWjwJqvQV3wtQUoBLS6TWKQFxhe4OUMqebRCfFLLNCYXcEV
+	 U4g3HjizjUXvjeZLEQ55FODZEJkRqyH/e8O+n0MpgewAno8Fovq7xeyInc2IQS3L8A
+	 k96/PUr5SRZjrEXHGz3hIay6/6WYwAPA5Ut5ILbQCy33psGebm4rsFuXUK5NG3Odlh
+	 wWFWvJWDPZXAr+gwwH0jpG8nriHspHEfS6rXaK8FHG5wDXAo0FmyJUSTTPB6KHfG3Q
+	 WhBJ+sqT/SIm6U9Ic2kvopPHvEQpFhwhmfiB1F3kgoVGjpbH+8W7qL4xFSLk/KWhG2
+	 UKgi1KIS3RI6wwRh5/Bu5Muw=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A28D540E016C;
+	Tue,  4 Jun 2024 09:15:12 +0000 (UTC)
+Date: Tue, 4 Jun 2024 11:15:03 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
+	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv11 05/19] x86/relocate_kernel: Use named labels for less
+ confusion
+Message-ID: <20240604091503.GQZl7bF14qTSAjqUhN@fat_crate.local>
+References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
+ <20240528095522.509667-6-kirill.shutemov@linux.intel.com>
+ <1e1d1aea-7346-4022-9f5f-402d171adfda@suse.com>
+ <t3zx4f6ynru7qp4oel4syza2alcuxz7q7hxqgf2lxusgobnsnh@vtnecqrsxci5>
+ <748d3b70-60b4-44e0-bd81-9117f1ab699d@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <cover.1717111180.git.ashish.kalra@amd.com> <f4be03b8488665f56a1e5c6e6459f447352dfcf5.1717111180.git.ashish.kalra@amd.com>
- <20240603085654.GBZl2FVjPd-gagt-UA@fat_crate.local> <8e3dfc15-f609-4839-85c7-1cc8cefd7acc@amd.com>
- <Zl3HfiQ6oHdTdOdA@kernel.org> <1ef36309-8d7f-447b-a54a-3cdafeccca64@amd.com>
- <20240603144639.GCZl3XTwmFHwi-KUZW@fat_crate.local> <Zl3hwYL2GDiyUfGo@kernel.org>
-In-Reply-To: <Zl3hwYL2GDiyUfGo@kernel.org>
-From: Dave Young <dyoung@redhat.com>
-Date: Tue, 4 Jun 2024 09:23:58 +0800
-Message-ID: <CALu+AoSnA4323QbQG7wrNptosz7tfEfztsE1=o6G=FaLbQ_tKQ@mail.gmail.com>
-Subject: Re: [PATCH v7 1/3] efi/x86: Fix EFI memory map corruption with kexec
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>, "Kalra, Ashish" <ashish.kalra@amd.com>, tglx@linutronix.de, 
-	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org, 
-	rafael@kernel.org, hpa@zytor.com, peterz@infradead.org, 
-	adrian.hunter@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
-	jun.nakajima@intel.com, rick.p.edgecombe@intel.com, thomas.lendacky@amd.com, 
-	michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com, bhe@redhat.com, 
-	kirill.shutemov@linux.intel.com, bdas@redhat.com, vkuznets@redhat.com, 
-	dionnaglaze@google.com, anisinha@redhat.com, jroedel@suse.de, ardb@kernel.org, 
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <748d3b70-60b4-44e0-bd81-9117f1ab699d@zytor.com>
 
-On Mon, 3 Jun 2024 at 23:33, Mike Rapoport <rppt@kernel.org> wrote:
->
-> On Mon, Jun 03, 2024 at 04:46:39PM +0200, Borislav Petkov wrote:
-> > On Mon, Jun 03, 2024 at 09:01:49AM -0500, Kalra, Ashish wrote:
-> > > If we skip efi_arch_mem_reserve() (which should probably be anyway skipped
-> > > for kexec case), then for kexec boot, EFI memmap is memremapped in the same
-> > > virtual address as the first kernel and not the allocated memblock address.
-> >
-> > Are you saying that we should simply do
-> >
-> > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> > index fdf07dd6f459..410cb0743289 100644
-> > --- a/drivers/firmware/efi/efi.c
-> > +++ b/drivers/firmware/efi/efi.c
-> > @@ -577,6 +577,9 @@ void __init efi_mem_reserve(phys_addr_t addr, u64 size)
-> >       if (WARN_ON_ONCE(efi_enabled(EFI_PARAVIRT)))
-> >               return;
-> >
-> > +     if (kexec_in_progress)
-> > +             return;
-> > +
+On Mon, Jun 03, 2024 at 05:24:00PM -0700, H. Peter Anvin wrote:
+> Trying one more time; sorry (again) if someone receives this in duplicate.
+> 
+> > > > 
+> > > > diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+> > > > index 56cab1bb25f5..085eef5c3904 100644
+> > > > --- a/arch/x86/kernel/relocate_kernel_64.S
+> > > > +++ b/arch/x86/kernel/relocate_kernel_64.S
+> > > > @@ -148,9 +148,10 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
+> > > >    	 */
+> > > >    	movl	$X86_CR4_PAE, %eax
+> > > >    	testq	$X86_CR4_LA57, %r13
+> > > > -	jz	1f
+> > > > +	jz	.Lno_la57
+> > > >    	orl	$X86_CR4_LA57, %eax
+> > > > -1:
+> > > > +.Lno_la57:
+> > > > +
+> > > >    	movq	%rax, %cr4
+> 
+> If we are cleaning up this code... the above can simply be:
+> 
+> 	andl $(X86_CR4_PAE | X86_CR4_LA54), %r13
+> 	movq %r13, %cr4
+> 
+> %r13 is dead afterwards, and the PAE bit *will* be set in %r13 anyway.
 
-kexec_in_progress is only for checking if this is in a reboot (kexec) code path.
-But eif_mem_reserve is only called during the boot time so checking
-kexec_in_progress is meaningless here.
-current_kernel_is_booted_via_kexec != is_rebooting_with_kexec
+Yeah, with a proper comment. The testing of bits is not really needed.
 
-The code change below in the patch looks good to me, but I'm not sure
-what caused the memory corruption, it indeed worth some more digging,
-maybe SEV/SNP related.
-+       if (md.attribute & EFI_MEMORY_RUNTIME)
-+               return;
+Thx.
 
-Thanks
-Dave
+-- 
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
