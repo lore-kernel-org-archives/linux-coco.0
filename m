@@ -1,44 +1,75 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B732149C5E
-	for <linux-coco@lists.linux.dev>; Tue,  4 Jun 2024 14:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717512607; cv=none; b=HhjIIBwvR//Zizoz/UgcNEQaj/cdDU1Q5vOXT+uOeU+JlXZGtaHEGZmO4JaHAPLmtvFw8lZXKXso+2oq3pPda4hzVRfGeIwwqTOuKNA/M7Wdldr0jsuFQV74/SXLA7IxBdznwZp2+FCnD05PWp8zInIMJs/LMqt8ql/TLf7HalA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717512607; c=relaxed/simple;
-	bh=LANm07rXulL9ApxBvdsMiKVZhbidRpa5Qu4jlOZvGHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=HWUMfqp4HAXxQzvTAjUbcgN3RSZ6TES2MQwywv06U0xTohWrFWjAp/E4tojcYO7PPYj8mUjETRTQjHrshB8QQHdyzAuVn3ODhvW8VC1jDaO0bDXYsWq9Vm6bSw3IS/+j9oIuBQVjhYR5TqxgxW+/YOojSKb90gMlnX2X4gH0ITU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=FzrN1Kds; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="FzrN1Kds"
-Received: from 8bytes.org (pd9fe9dd8.dip0.t-ipconnect.de [217.254.157.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 223171C78B6;
-	Tue,  4 Jun 2024 16:50:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1717512605;
-	bh=LANm07rXulL9ApxBvdsMiKVZhbidRpa5Qu4jlOZvGHk=;
-	h=Date:From:To:Cc:Subject:From;
-	b=FzrN1Kds631zTIBTSz4dBpVeMvB1pGtIFg7wcRSE572DTLpCGo1I8Bj6AZ9vvsWIr
-	 oBxmB9CutBlPmcRQGSTAN/w2BC0If+ofJfZxFcrBOuPx6tyK4i/kgYkxf9W4hru/sW
-	 dhlh4t+EoIeKgfslE+b4dAFf5Tl2MDKgAyzMSahRVsqVMD5OUF21VqjOP7BxU6vvn9
-	 gLtG1JVMEoZHA30XRr4WZoy5+ySFZMv7zxP3cJQY5d2RZvJ+FaIsyj11h5rwcK9twz
-	 qX6jkBbOSXoZFVpPnSG8yHDwfdSAhdG+GTW9CG5LYIepxfbKWasWTaXvPXeG1P18qC
-	 4jifFXXMXHMgA==
-Date: Tue, 4 Jun 2024 16:50:04 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
-	kvm@vger.kernel.org, linux-sgx@vger.kernel.org,
-	virtualization@lists.linux-foundation.org,
-	linux-kernel@vger.kernel.org
-Cc: Dhaval Giani <dhaval.giani@gmail.com>
-Subject: [CfP] Confidential Computing Microconference @ LPC 2024
-Message-ID: <Zl8pnPS8EVgFgxSR@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD9D13D52C
+	for <linux-coco@lists.linux.dev>; Tue,  4 Jun 2024 15:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717514497; cv=none; b=ibrKubFPX/lfzRhd/OkntwbtfqcBKRmYblohvjIz48pX3P+O0DTG/zjVgreHtPNn6B0U9YxVvm+3Qpt6Azai3wk1ifLbtlsifGJkLrKR4XaGin77gECA53RlTIJNmQnh7kTdFHMXEtNJEkDFsja4Vb+qAdRsl8yozexXMbeMkYI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717514497; c=relaxed/simple;
+	bh=E+b2QUNEozOByn7XosVfo22ORgGbyZc8ikuTipiKM4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kiK2uAPSXHrrgdtcZLuMO2xQoAl7DVK9UxLMpVQpVau8LPNd9/cm/jpW2ajwN/mhVw+Kx+oLdinJdwwdYPj5b7P9ylEsL94eCAy1wRnOhGYeVFxw5WUZmtouK1snDwobpH8v2ZvRAi8y3gLSQ/e7d+1UO74QBzjdSlLa+raAZjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cUL3xnvg; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cUL3xnvg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717514495; x=1749050495;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=E+b2QUNEozOByn7XosVfo22ORgGbyZc8ikuTipiKM4k=;
+  b=cUL3xnvgdNNyX4Q/ZWlnFFRQMr2UXjt54H32JB7n2a2/csmWSY06uvlZ
+   B2WaCIcMkwDK5zXJUrDM42ZttFGRvZCCGrH9Pkbj91IrCRF8ecFgv46B3
+   6xQ0Midjw+1GUr9Y2L+/iYmH0N81yP67aff7JT4orgT/S6ve3A1hLu5yc
+   qxT+fWZwoM9IXmFzGvvD6YsbvtAmiyrD6GWrjDyfp18a1DLrN2L8GIDPa
+   SGpRAdAcQs0HOIKecUtkHcHmC5ZeCjcPdsuoNVtdqGLQVecCRb3HB6G9L
+   inmRYWV+lIyzsjOnfgfC+cyFdA4Xxyuz2rzJFlIWDZGw7A48hIu3uN2m3
+   w==;
+X-CSE-ConnectionGUID: 36uRhWiGTRaIIdEMcsIaUg==
+X-CSE-MsgGUID: ZUZ/Z3e9T5CSzckCc/feLg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="13876551"
+X-IronPort-AV: E=Sophos;i="6.08,214,1712646000"; 
+   d="scan'208";a="13876551"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2024 08:21:35 -0700
+X-CSE-ConnectionGUID: 80QFIjp6QEKsJylgelC6zA==
+X-CSE-MsgGUID: hyN/V+NqSJm6vfhx7CCozg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,214,1712646000"; 
+   d="scan'208";a="37214950"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa010.jf.intel.com with ESMTP; 04 Jun 2024 08:21:28 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id A67F32DC; Tue, 04 Jun 2024 18:21:27 +0300 (EEST)
+Date: Tue, 4 Jun 2024 18:21:27 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, 
+	Nikolay Borisov <nik.borisov@suse.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv11 05/19] x86/relocate_kernel: Use named labels for less
+ confusion
+Message-ID: <ehttxqgg7zhbgty5m5uxkduj3xf7soonrzfu4rfw7hccqgdydl@afki66pnree5>
+References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
+ <20240528095522.509667-6-kirill.shutemov@linux.intel.com>
+ <1e1d1aea-7346-4022-9f5f-402d171adfda@suse.com>
+ <t3zx4f6ynru7qp4oel4syza2alcuxz7q7hxqgf2lxusgobnsnh@vtnecqrsxci5>
+ <748d3b70-60b4-44e0-bd81-9117f1ab699d@zytor.com>
+ <20240604091503.GQZl7bF14qTSAjqUhN@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -47,50 +78,97 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20240604091503.GQZl7bF14qTSAjqUhN@fat_crate.local>
 
-Hi,
+On Tue, Jun 04, 2024 at 11:15:03AM +0200, Borislav Petkov wrote:
+> On Mon, Jun 03, 2024 at 05:24:00PM -0700, H. Peter Anvin wrote:
+> > Trying one more time; sorry (again) if someone receives this in duplicate.
+> > 
+> > > > > 
+> > > > > diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+> > > > > index 56cab1bb25f5..085eef5c3904 100644
+> > > > > --- a/arch/x86/kernel/relocate_kernel_64.S
+> > > > > +++ b/arch/x86/kernel/relocate_kernel_64.S
+> > > > > @@ -148,9 +148,10 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
+> > > > >    	 */
+> > > > >    	movl	$X86_CR4_PAE, %eax
+> > > > >    	testq	$X86_CR4_LA57, %r13
+> > > > > -	jz	1f
+> > > > > +	jz	.Lno_la57
+> > > > >    	orl	$X86_CR4_LA57, %eax
+> > > > > -1:
+> > > > > +.Lno_la57:
+> > > > > +
+> > > > >    	movq	%rax, %cr4
+> > 
+> > If we are cleaning up this code... the above can simply be:
+> > 
+> > 	andl $(X86_CR4_PAE | X86_CR4_LA54), %r13
+> > 	movq %r13, %cr4
+> > 
+> > %r13 is dead afterwards, and the PAE bit *will* be set in %r13 anyway.
+> 
+> Yeah, with a proper comment. The testing of bits is not really needed.
 
-We are pleased to announce the call for presentations for the
-Confidential Computing microconference at the Linux Plumbers Conference,
-happening in Vienna from September 18th to 20th.
+I think it is better fit the next patch.
 
-In this microconference we want to discuss ongoing developments around Linux
-support for memory encryption and confidential computing in general.
+What about this?
 
-Topics of interest include:
+From b45fe48092abad2612c2bafbb199e4de80c99545 Mon Sep 17 00:00:00 2001
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Date: Fri, 10 Feb 2023 12:53:11 +0300
+Subject: [PATCHv11.1 06/19] x86/kexec: Keep CR4.MCE set during kexec for TDX guest
 
+TDX guests run with MCA enabled (CR4.MCE=1b) from the very start. If
+that bit is cleared during CR4 register reprogramming during boot or
+kexec flows, a #VE exception will be raised which the guest kernel
+cannot handle it.
 
-	* Support TEE privilege separation extensions (TDX partitioning and AMD
-	  SEV-SNP VM Privilege Levels) both on the guest and host side.
+Therefore, make sure the CR4.MCE setting is preserved over kexec too and
+avoid raising any #VEs.
 
-	* Secure IRQ delivery
+The change doesn't affect non-TDX-guest environments.
 
-	* Secure VM Service Module (SVSM) support for multiple TEE architectures
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ arch/x86/kernel/relocate_kernel_64.S | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-	* Trusted I/O software architecture
-
-	* Live migration of confidential virtual machines
-
-	* Remote attestation architectures
-
-	* Deployment of Confidential VMs
-
-	* Linux as a CVM operating system across hypervisors
-
-	* Unification of various confidential computing API
-
-Please use the LPC CfP process to submit your proposals. Submissions can
-be made via
-
-	https://lpc.events/event/18/abstracts/
-
-Make sure to select "Confidential Computing MC" as the track and submit
-your session proposal by July 15th. Submissions made after that date
-can not be included into the microconference.
-
-Looking forward to seeing all of you in Vienna in September!
-
-Thanks,
-
-	Dhaval and Joerg
-
+diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+index 085eef5c3904..9c2cf70c5f54 100644
+--- a/arch/x86/kernel/relocate_kernel_64.S
++++ b/arch/x86/kernel/relocate_kernel_64.S
+@@ -5,6 +5,8 @@
+  */
+ 
+ #include <linux/linkage.h>
++#include <linux/stringify.h>
++#include <asm/alternative.h>
+ #include <asm/page_types.h>
+ #include <asm/kexec.h>
+ #include <asm/processor-flags.h>
+@@ -145,14 +147,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
+ 	 * Set cr4 to a known state:
+ 	 *  - physical address extension enabled
+ 	 *  - 5-level paging, if it was enabled before
++	 *  - Machine check exception on TDX guest, if it was enabled before.
++	 *    Clearing MCE might not be allowed in TDX guests, depending on setup.
++	 *
++	 * Use R13 that contains the original CR4 value, read in relocate_kernel().
++	 * PAE is always set in the original CR4.
+ 	 */
+-	movl	$X86_CR4_PAE, %eax
+-	testq	$X86_CR4_LA57, %r13
+-	jz	.Lno_la57
+-	orl	$X86_CR4_LA57, %eax
+-.Lno_la57:
+-
+-	movq	%rax, %cr4
++	andl	$(X86_CR4_PAE | X86_CR4_LA57), %r13d
++	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %r13d), X86_FEATURE_TDX_GUEST
++	movq	%r13, %cr4
+ 
+ 	jmp 1f
+ 1:
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
