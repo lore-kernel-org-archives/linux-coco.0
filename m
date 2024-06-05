@@ -1,246 +1,323 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FBC188CA2
-	for <linux-coco@lists.linux.dev>; Wed,  5 Jun 2024 12:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5125718F2CD;
+	Wed,  5 Jun 2024 13:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717591429; cv=none; b=vFzG2MPk2tWECeAorXEVZVoGWTdRGUmR8kTmuaXa9X17o6CwPirebI+9GyJIuzHxWAvF1tABEGMmIy/uDV6oolrXzqt7LHSnBLhFgYFl0aVDXaiSauzYqyW3Dy9BDV5dQj02T5m7w6l7cYnkfO722Bu/RXVXIViZBRSBUmQAKXg=
+	t=1717594782; cv=none; b=aaiC8A3SUTvG7p8xzscRwLeIOAJbAV8Ycq/p981P1mJ0rzRiRtTcOW7IUq1xcLJV5+aIyytZLsRdiiI7KJzF4cbXNdBsrGyoc4G7njAINYYSMpmVVbex7At71+yj8u3xkE2WVvvs0chLQf/ZXbSotrq1vKaRMh339/vrUFRV9GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717591429; c=relaxed/simple;
-	bh=Ird/7ibDYFzjfXEOhEaNA8pLzi4g/oGwnmrePMvc8zQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YblLySjVxqa91ZLobKH0XJ0gzBewtmW933tVUichRwmWfXd2JFbc6fkG+TycnYX6VYdTod9oO90jjtI4M29uHkkWgtI1TG31MJrY4WaW6RkRzqDtz16vGp5lZafIt5pgcydN8AVftULg2oqm+w8rcbAX8Eo+JZzrIj+pX5669p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DntAXXC+; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1717594782; c=relaxed/simple;
+	bh=RhsbuZVJInfZKJ146CqaCAq41JrtoARkqm29fDz9dZ4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LZF3lLhedd9m7a/rxhqarL82CDnyee/NVsgvwQ9WmPbQEkd+9PMJ1veDDWAz5JG7zs10WJWSZxVMY0mNFNLSFOdEn7EW6n+pRefYOEE9GqNRwoBCikjnl0OW5O7skGJqVvEP/Pgy2mWHaDagJqL/XLbUoLtTXsxP4PDXr8StrtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nfAtTCtx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DntAXXC+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717591427; x=1749127427;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Ird/7ibDYFzjfXEOhEaNA8pLzi4g/oGwnmrePMvc8zQ=;
-  b=DntAXXC+zaumiHybyzMbkMAR7AqW1BOyaelb9j4F6AyhLCDkHJ6Pb5pV
-   SGwjcemssqHxxSbfBfY6PlCNpM1z2TETkXGIZmcB4z1WzShK+3TWqQEmc
-   sEFQQuxN2xsnYxUe8TLIV25wwvbmeA7y0DfPjf9CIHGy12UwmeaVGtVmH
-   2lvYACZeVWJFGTrXSpFakguxAa56yzToV3nbcCJP6U09E+BroRUmtxQ2z
-   jOWV2c3DtqLWRn1jWoZUqTcgtxsOERT323oGhjkpP4gYsOK8dGy7hwDEK
-   xDpYU0rDVvYXyz6X+wCNKV3/hVxJFyAaMBC6I0vmaM2PkvSgRrG8qRypE
-   A==;
-X-CSE-ConnectionGUID: NiNIEnD/TRmS77rK4WGo6A==
-X-CSE-MsgGUID: hLsB/5cDR5KfRlzCyr5C9Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="25603466"
-X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; 
-   d="scan'208";a="25603466"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 05:43:47 -0700
-X-CSE-ConnectionGUID: fqlx1KVQTw22jSK8Bo+f2g==
-X-CSE-MsgGUID: ActVDDhwSRyovQJ4dmAvOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; 
-   d="scan'208";a="42133851"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa004.fm.intel.com with ESMTP; 05 Jun 2024 05:43:41 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id E5C7F1B6; Wed, 05 Jun 2024 15:43:39 +0300 (EEST)
-Date: Wed, 5 Jun 2024 15:43:39 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv11 11/19] x86/tdx: Convert shared memory back to private
- on kexec
-Message-ID: <ass6d7jqmjmttnyfzpdfid6dymqriors2awdtyedwvc7ft4zhg@qzj637lzmjt6>
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <20240528095522.509667-12-kirill.shutemov@linux.intel.com>
- <68943e0b-8d82-42de-8f09-058e97d9a392@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nfAtTCtx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14AFC3277B;
+	Wed,  5 Jun 2024 13:39:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717594781;
+	bh=RhsbuZVJInfZKJ146CqaCAq41JrtoARkqm29fDz9dZ4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nfAtTCtxIlc4xYcYU7jXbW1LvVi11nQrvwLpigNxFCsr9dh6bVkHYar02+guVHCPr
+	 xTaMYwGcMAWji01bc3DUCqjpZCm4YMn6pTNAZd39HXAGP1igw/uJT3wsydZtI7d22e
+	 BhneFmyvWTLuwUvbVCxhGuGsNwOXpwWGQRnFw2Gxlqxz1wRFfsH2kX0lTHZaSEujDV
+	 ugtg1itATs/7CSwh01muDgT6y/zssKQl+9It+QFeNJefuV9AF5C+QMyX9cBYqaagqo
+	 dWEBqkI//IdijEuk/AKcFhqILiAYt5zp9oyd9/nOQjnJIGNUfh3EHDY1lgvZ09KjTc
+	 oVdXkf1xau+1Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sEqrb-000xii-HA;
+	Wed, 05 Jun 2024 14:39:39 +0100
+Date: Wed, 05 Jun 2024 14:39:39 +0100
+Message-ID: <86a5jzld9g.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: Re: [PATCH v3 12/14] arm64: realm: Support nonsecure ITS emulation shared
+In-Reply-To: <20240605093006.145492-13-steven.price@arm.com>
+References: <20240605093006.145492-1-steven.price@arm.com>
+	<20240605093006.145492-13-steven.price@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68943e0b-8d82-42de-8f09-058e97d9a392@intel.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, Jun 04, 2024 at 09:27:59AM -0700, Dave Hansen wrote:
-> On 5/28/24 02:55, Kirill A. Shutemov wrote:
-> > +/* Stop new private<->shared conversions */
-> > +static void tdx_kexec_begin(bool crash)
-> > +{
-> > +	/*
-> > +	 * Crash kernel reaches here with interrupts disabled: can't wait for
-> > +	 * conversions to finish.
-> > +	 *
-> > +	 * If race happened, just report and proceed.
-> > +	 */
-> > +	if (!set_memory_enc_stop_conversion(!crash))
-> > +		pr_warn("Failed to stop shared<->private conversions\n");
-> > +}
-> 
-> I don't like having to pass 'crash' in here.
-> 
-> If interrupts are the problem we have ways of testing for those directly.
-> 
-> If it's being in an oops that's a problem, we have 'oops_in_progress'
-> for that.
-> 
-> In other words, I'd much rather this function (or better yet
-> set_memory_enc_stop_conversion() itself) use some existing API to change
-> its behavior in a crash rather than have the context be passed down and
-> twiddled through several levels of function calls.
-> 
-> There are a ton of these in the console code:
-> 
-> 	if (oops_in_progress)
-> 		foo_trylock();
-> 	else
-> 		foo_lock();
-> 
-> To me, that's a billion times more clear than a 'wait' argument that
-> gets derives from who-knows-what that I have to trace through ten levels
-> of function calls.
+The subject line is... odd. I'd expect something like:
 
-Okay fair enough. Check out the fixup below. Is it what you mean?
+"irqchip/gic-v3-its: Share ITS tables with a non-trusted hypervisor"
 
-One other thing I realized is that these callback are dead code if kernel
-compiled without kexec support. Do we want them to be wrapped with
-#ifdef COFNIG_KEXEC_CORE everywhere? It is going to be ugly.
+because nothing here should be CCA specific.
 
-Any better ideas?
+On Wed, 05 Jun 2024 10:30:04 +0100,
+Steven Price <steven.price@arm.com> wrote:
+> 
+> Within a realm guest the ITS is emulated by the host. This means the
+> allocations must have been made available to the host by a call to
+> set_memory_decrypted(). Introduce an allocation function which performs
+> this extra call.
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 3d23ea0f5d45..1c5aa036b76b 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -834,7 +834,7 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
- }
- 
- /* Stop new private<->shared conversions */
--static void tdx_kexec_begin(bool crash)
-+static void tdx_kexec_begin(void)
- {
- 	/*
- 	 * Crash kernel reaches here with interrupts disabled: can't wait for
-@@ -842,7 +842,7 @@ static void tdx_kexec_begin(bool crash)
- 	 *
- 	 * If race happened, just report and proceed.
- 	 */
--	if (!set_memory_enc_stop_conversion(!crash))
-+	if (!set_memory_enc_stop_conversion())
- 		pr_warn("Failed to stop shared<->private conversions\n");
- }
- 
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-index d490db38db9e..4b2abce2e3e7 100644
---- a/arch/x86/include/asm/set_memory.h
-+++ b/arch/x86/include/asm/set_memory.h
-@@ -50,7 +50,7 @@ int set_memory_np(unsigned long addr, int numpages);
- int set_memory_p(unsigned long addr, int numpages);
- int set_memory_4k(unsigned long addr, int numpages);
- 
--bool set_memory_enc_stop_conversion(bool wait);
-+bool set_memory_enc_stop_conversion(void);
- int set_memory_encrypted(unsigned long addr, int numpages);
- int set_memory_decrypted(unsigned long addr, int numpages);
- 
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index b0f313278967..213cf5379a5a 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -152,8 +152,6 @@ struct x86_init_acpi {
-  * @enc_kexec_begin		Begin the two-step process of converting shared memory back
-  *				to private. It stops the new conversions from being started
-  *				and waits in-flight conversions to finish, if possible.
-- *				The @crash parameter denotes whether the function is being
-- *				called in the crash shutdown path.
-  * @enc_kexec_finish		Finish the two-step process of converting shared memory to
-  *				private. All memory is private after the call when
-  *				the function returns.
-@@ -165,7 +163,7 @@ struct x86_guest {
- 	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
- 	bool (*enc_tlb_flush_required)(bool enc);
- 	bool (*enc_cache_flush_required)(void);
--	void (*enc_kexec_begin)(bool crash);
-+	void (*enc_kexec_begin)(void);
- 	void (*enc_kexec_finish)(void);
- };
- 
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index fc52ea80cdc8..340af8155658 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -137,7 +137,7 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
- 	 * down and interrupts have been disabled. This allows the callback to
- 	 * detect a race with the conversion and report it.
- 	 */
--	x86_platform.guest.enc_kexec_begin(true);
-+	x86_platform.guest.enc_kexec_begin();
- 	x86_platform.guest.enc_kexec_finish();
- 
- 	crash_save_cpu(regs, safe_smp_processor_id());
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 513809b5b27c..0e0a4cf6b5eb 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -723,7 +723,7 @@ void native_machine_shutdown(void)
- 	 * conversions to finish cleanly.
- 	 */
- 	if (kexec_in_progress)
--		x86_platform.guest.enc_kexec_begin(false);
-+		x86_platform.guest.enc_kexec_begin();
- 
- 	/* Stop the cpus and apics */
- #ifdef CONFIG_X86_IO_APIC
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index 8a79fb505303..82b128d3f309 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -138,7 +138,7 @@ static int enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool
- static int enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
- static bool enc_tlb_flush_required_noop(bool enc) { return false; }
- static bool enc_cache_flush_required_noop(void) { return false; }
--static void enc_kexec_begin_noop(bool crash) {}
-+static void enc_kexec_begin_noop(void) {}
- static void enc_kexec_finish_noop(void) {}
- static bool is_private_mmio_noop(u64 addr) {return false; }
- 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 2a548b65ef5f..443a97e515c0 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2240,13 +2240,14 @@ static DECLARE_RWSEM(mem_enc_lock);
-  *
-  * Taking the exclusive mem_enc_lock waits for in-flight conversions to complete.
-  * The lock is not released to prevent new conversions from being started.
-- *
-- * If sleep is not allowed, as in a crash scenario, try to take the lock.
-- * Failure indicates that there is a race with the conversion.
-  */
--bool set_memory_enc_stop_conversion(bool wait)
-+bool set_memory_enc_stop_conversion(void)
- {
--	if (!wait)
-+	/*
-+	 * In a crash scenario, sleep is not allowed. Try to take the lock.
-+	 * Failure indicates that there is a race with the conversion.
-+	 */
-+	if (oops_in_progress)
- 		return down_write_trylock(&mem_enc_lock);
- 
- 	down_write(&mem_enc_lock);
+This doesn't mention that this patch radically changes the allocation
+of some tables.
+
+> 
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v2:
+>  * Drop 'shared' from the new its_xxx function names as they are used
+>    for non-realm guests too.
+>  * Don't handle the NUMA_NO_NODE case specially - alloc_pages_node()
+>    should do the right thing.
+>  * Drop a pointless (void *) cast.
+> ---
+>  drivers/irqchip/irq-gic-v3-its.c | 90 ++++++++++++++++++++++++--------
+>  1 file changed, 67 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+> index 40ebf1726393..ca72f830f4cc 100644
+> --- a/drivers/irqchip/irq-gic-v3-its.c
+> +++ b/drivers/irqchip/irq-gic-v3-its.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/irqdomain.h>
+>  #include <linux/list.h>
+>  #include <linux/log2.h>
+> +#include <linux/mem_encrypt.h>
+>  #include <linux/memblock.h>
+>  #include <linux/mm.h>
+>  #include <linux/msi.h>
+> @@ -27,6 +28,7 @@
+>  #include <linux/of_pci.h>
+>  #include <linux/of_platform.h>
+>  #include <linux/percpu.h>
+> +#include <linux/set_memory.h>
+>  #include <linux/slab.h>
+>  #include <linux/syscore_ops.h>
+>  
+> @@ -163,6 +165,7 @@ struct its_device {
+>  	struct its_node		*its;
+>  	struct event_lpi_map	event_map;
+>  	void			*itt;
+> +	u32			itt_order;
+>  	u32			nr_ites;
+>  	u32			device_id;
+>  	bool			shared;
+> @@ -198,6 +201,30 @@ static DEFINE_IDA(its_vpeid_ida);
+>  #define gic_data_rdist_rd_base()	(gic_data_rdist()->rd_base)
+>  #define gic_data_rdist_vlpi_base()	(gic_data_rdist_rd_base() + SZ_128K)
+>  
+> +static struct page *its_alloc_pages_node(int node, gfp_t gfp,
+> +					 unsigned int order)
+> +{
+> +	struct page *page;
+> +
+> +	page = alloc_pages_node(node, gfp, order);
+> +
+> +	if (page)
+> +		set_memory_decrypted((unsigned long)page_address(page),
+> +				     1 << order);
+
+Please use BIT(order).
+
+> +	return page;
+> +}
+> +
+> +static struct page *its_alloc_pages(gfp_t gfp, unsigned int order)
+> +{
+> +	return its_alloc_pages_node(NUMA_NO_NODE, gfp, order);
+> +}
+> +
+> +static void its_free_pages(void *addr, unsigned int order)
+> +{
+> +	set_memory_encrypted((unsigned long)addr, 1 << order);
+> +	free_pages((unsigned long)addr, order);
+> +}
+> +
+>  /*
+>   * Skip ITSs that have no vLPIs mapped, unless we're on GICv4.1, as we
+>   * always have vSGIs mapped.
+> @@ -2212,7 +2239,8 @@ static struct page *its_allocate_prop_table(gfp_t gfp_flags)
+>  {
+>  	struct page *prop_page;
+>  
+> -	prop_page = alloc_pages(gfp_flags, get_order(LPI_PROPBASE_SZ));
+> +	prop_page = its_alloc_pages(gfp_flags,
+> +				    get_order(LPI_PROPBASE_SZ));
+>  	if (!prop_page)
+>  		return NULL;
+>  
+> @@ -2223,8 +2251,8 @@ static struct page *its_allocate_prop_table(gfp_t gfp_flags)
+>  
+>  static void its_free_prop_table(struct page *prop_page)
+>  {
+> -	free_pages((unsigned long)page_address(prop_page),
+> -		   get_order(LPI_PROPBASE_SZ));
+> +	its_free_pages(page_address(prop_page),
+> +		       get_order(LPI_PROPBASE_SZ));
+>  }
+>  
+>  static bool gic_check_reserved_range(phys_addr_t addr, unsigned long size)
+> @@ -2346,7 +2374,8 @@ static int its_setup_baser(struct its_node *its, struct its_baser *baser,
+>  		order = get_order(GITS_BASER_PAGES_MAX * psz);
+>  	}
+>  
+> -	page = alloc_pages_node(its->numa_node, GFP_KERNEL | __GFP_ZERO, order);
+> +	page = its_alloc_pages_node(its->numa_node,
+> +				    GFP_KERNEL | __GFP_ZERO, order);
+>  	if (!page)
+>  		return -ENOMEM;
+>  
+> @@ -2359,7 +2388,7 @@ static int its_setup_baser(struct its_node *its, struct its_baser *baser,
+>  		/* 52bit PA is supported only when PageSize=64K */
+>  		if (psz != SZ_64K) {
+>  			pr_err("ITS: no 52bit PA support when psz=%d\n", psz);
+> -			free_pages((unsigned long)base, order);
+> +			its_free_pages(base, order);
+>  			return -ENXIO;
+>  		}
+>  
+> @@ -2415,7 +2444,7 @@ static int its_setup_baser(struct its_node *its, struct its_baser *baser,
+>  		pr_err("ITS@%pa: %s doesn't stick: %llx %llx\n",
+>  		       &its->phys_base, its_base_type_string[type],
+>  		       val, tmp);
+> -		free_pages((unsigned long)base, order);
+> +		its_free_pages(base, order);
+>  		return -ENXIO;
+>  	}
+>  
+> @@ -2554,8 +2583,8 @@ static void its_free_tables(struct its_node *its)
+>  
+>  	for (i = 0; i < GITS_BASER_NR_REGS; i++) {
+>  		if (its->tables[i].base) {
+> -			free_pages((unsigned long)its->tables[i].base,
+> -				   its->tables[i].order);
+> +			its_free_pages(its->tables[i].base,
+> +				       its->tables[i].order);
+>  			its->tables[i].base = NULL;
+>  		}
+>  	}
+> @@ -2821,7 +2850,8 @@ static bool allocate_vpe_l2_table(int cpu, u32 id)
+>  
+>  	/* Allocate memory for 2nd level table */
+>  	if (!table[idx]) {
+> -		page = alloc_pages(GFP_KERNEL | __GFP_ZERO, get_order(psz));
+> +		page = its_alloc_pages(GFP_KERNEL | __GFP_ZERO,
+> +				       get_order(psz));
+>  		if (!page)
+>  			return false;
+>  
+> @@ -2940,7 +2970,8 @@ static int allocate_vpe_l1_table(void)
+>  
+>  	pr_debug("np = %d, npg = %lld, psz = %d, epp = %d, esz = %d\n",
+>  		 np, npg, psz, epp, esz);
+> -	page = alloc_pages(GFP_ATOMIC | __GFP_ZERO, get_order(np * PAGE_SIZE));
+> +	page = its_alloc_pages(GFP_ATOMIC | __GFP_ZERO,
+> +			       get_order(np * PAGE_SIZE));
+>  	if (!page)
+>  		return -ENOMEM;
+>  
+> @@ -2986,8 +3017,8 @@ static struct page *its_allocate_pending_table(gfp_t gfp_flags)
+>  {
+>  	struct page *pend_page;
+>  
+> -	pend_page = alloc_pages(gfp_flags | __GFP_ZERO,
+> -				get_order(LPI_PENDBASE_SZ));
+> +	pend_page = its_alloc_pages(gfp_flags | __GFP_ZERO,
+> +				    get_order(LPI_PENDBASE_SZ));
+>  	if (!pend_page)
+>  		return NULL;
+>  
+> @@ -2999,7 +3030,7 @@ static struct page *its_allocate_pending_table(gfp_t gfp_flags)
+>  
+>  static void its_free_pending_table(struct page *pt)
+>  {
+> -	free_pages((unsigned long)page_address(pt), get_order(LPI_PENDBASE_SZ));
+> +	its_free_pages(page_address(pt), get_order(LPI_PENDBASE_SZ));
+>  }
+>  
+>  /*
+> @@ -3334,8 +3365,9 @@ static bool its_alloc_table_entry(struct its_node *its,
+>  
+>  	/* Allocate memory for 2nd level table */
+>  	if (!table[idx]) {
+> -		page = alloc_pages_node(its->numa_node, GFP_KERNEL | __GFP_ZERO,
+> -					get_order(baser->psz));
+> +		page = its_alloc_pages_node(its->numa_node,
+> +					    GFP_KERNEL | __GFP_ZERO,
+> +					    get_order(baser->psz));
+>  		if (!page)
+>  			return false;
+>  
+> @@ -3418,7 +3450,9 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+>  	unsigned long *lpi_map = NULL;
+>  	unsigned long flags;
+>  	u16 *col_map = NULL;
+> +	struct page *page;
+>  	void *itt;
+> +	int itt_order;
+>  	int lpi_base;
+>  	int nr_lpis;
+>  	int nr_ites;
+> @@ -3430,7 +3464,6 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+>  	if (WARN_ON(!is_power_of_2(nvecs)))
+>  		nvecs = roundup_pow_of_two(nvecs);
+>  
+> -	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+>  	/*
+>  	 * Even if the device wants a single LPI, the ITT must be
+>  	 * sized as a power of two (and you need at least one bit...).
+> @@ -3438,7 +3471,16 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+>  	nr_ites = max(2, nvecs);
+>  	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
+>  	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
+> -	itt = kzalloc_node(sz, GFP_KERNEL, its->numa_node);
+> +	itt_order = get_order(sz);
+> +	page = its_alloc_pages_node(its->numa_node,
+> +				    GFP_KERNEL | __GFP_ZERO,
+> +				    itt_order);
+
+So we go from an allocation that was so far measured in *bytes* to
+something that is now at least a page. Per device. This seems a bit
+excessive to me, specially when it isn't conditioned on anything and
+is now imposed on all platforms, including the non-CCA systems (which
+are exactly 100% of the machines).
+
+Another thing is that if we go with page alignment, then the 256 byte
+alignment can obviously be removed everywhere (hint: MAPD needs to
+change).
+
+Thanks,
+
+	M.
+
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Without deviation from the norm, progress is not possible.
