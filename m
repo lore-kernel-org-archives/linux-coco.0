@@ -1,335 +1,259 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B0D45028;
-	Wed,  5 Jun 2024 15:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717600132; cv=none; b=JM+cKEiNvFyBNRYRPfo+qI+eCKtC0NI+YEvqHfyJS/SIKYQVYzxSwRdhHXbjgyj9CvYGdfUL2n1K5kmCab73unfofRlD8/1xKhm4hQMpaZ+IKOGKu8zaOYh6dLkaeHm6WpuvcvkYuwgbwSOaFVUDuLadMjxDGZtdmssQMtBF1FA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717600132; c=relaxed/simple;
-	bh=4aEIt++Ih7LHuORmU/+95bpdtFQCe8Oh7tumk4SKzZY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t+I+/+zSzwurO6i2o8RPhRionIE+/kQXa/fzDJTCBX9VwBQF9IiVuHaExCG45zcBVhNOydvsJ0D38Csl+2aMcpIWNG0h+ltP7egSvJWFbFvYBNx/YR4kpUNf+bjNX5wLUg+Y5tUncPHprSjibLKDf7DhY17nS7pvn/Yxpyt6bHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2192B339;
-	Wed,  5 Jun 2024 08:09:14 -0700 (PDT)
-Received: from [10.57.39.129] (unknown [10.57.39.129])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AB6EE3F64C;
-	Wed,  5 Jun 2024 08:08:46 -0700 (PDT)
-Message-ID: <4c363476-e5b5-42ff-9f30-a02a92b6751b@arm.com>
-Date: Wed, 5 Jun 2024 16:08:49 +0100
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2071.outbound.protection.outlook.com [40.107.236.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34BE17BCD
+	for <linux-coco@lists.linux.dev>; Wed,  5 Jun 2024 15:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717600759; cv=fail; b=k/MVbSRviKq7llbVTSEVM8122ecTUL9Ir+3dT/MKo5wnehqv1P6HHOjqehGJuuVKHeVJFFXxC16sVqIo0iBQoJ/q4sxMHwQku3NBwAJXI6ke1Esh3kBa4yySLrQ+S69rTEgXEH+UJvMT8++QrArJBV8fz9ycAEdCGG0rytgCo9g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717600759; c=relaxed/simple;
+	bh=sEcVZKJ/IL0q7RC4Y/I2Mm5yQBvRKYnd7watFJ6zh9E=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bEkOavtTlTcfdYiY9OR2ZS8l/StpLXW7T1iiGpvimHNKLGYaz4URJzH2TaLQDJZP/Agz4w+8PLswzOjCJXvWrSKpatGHX/UrF/t4mLgT+vFJKSUZYiU0gVJGxMu15WFSZyO9gVMybWg+yOWywVPotWvlAx1/FLGd9AmjgapM8uI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bGuaEnsp; arc=fail smtp.client-ip=40.107.236.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bGuaEnsp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ac6FwFRbChrqP6+HY9ovCoMK36zkYinyDUFJjHL6gsryDogz/3OSJvAzosj3UnO6yQBLglyXpxJBrAeQDIO6z52r5s0syFtxQyZkyrIko+89JdPDYNIG9ln64Ia2XI9t+6Xq/gbYlBH64BCzzue8StqTx9sm3WFpWEQ/FEI7WqFX+wd+cU5NMr738VRubnzZYwNyQ5xlHdj7JXj2DRuyXf8lLPD1DdCDQW2zavQEgTpA4uEwUM8jSMA0sPjKfaDIH2iye59meYhJBZtYYs8by8E6C5KxVxnCUPly9YtlilmCf2mz3rDvBrJi23EO/I3iTXcSEmg+0hzO3ZmljYJRPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Gmh+Tteuz6OrhmSzXqoyz0CkeOHfGpa12bb7FZXfAZ0=;
+ b=mzYnI5VoBD6hsJ2WXYyj3x8CO5PSzPA0qCENP+NkHfQQk4seaoAvOjPRnrcN3+HobaLeu+TkFW4fHgQZcb+/0mJvbTFqhFR0aY3qFIsrud4TOxWaL1eTi+dewAEfGR6yUwOR83aQJ5d9jE28QPMrZbcxs7rR82q+viD5Heo1xaUag8XGJVEBgYeX4EQIpPJHz+CoYJEcoR66sM0Pg/2FiV+QIwiYl85GX7IzOxLKE9oIbKpPw0uUPrkXdkZLtMeAghNPuHsVluo0fEJz1Xge8gdMs1A1IXiKuOkhANYxjgnG/1GSR2ox5wa7o92PdGhKL1rboAW0+m+m5jMXknLnug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Gmh+Tteuz6OrhmSzXqoyz0CkeOHfGpa12bb7FZXfAZ0=;
+ b=bGuaEnspZv42Gl9Twgm0aS8b4x7TlW+hYUOI7PC0ja4TZiMY1CiSuwzvAfIsIJjUikGacAktCCkxCG36a0TvPpmtsPhvtG34LGa7h455FnK7QelDfTtC0TTgV+hazV8GucgcErWr/+xIwC1h9YkMofEwg/0HvB+S6h63rL0wDD4=
+Received: from CH0PR03CA0285.namprd03.prod.outlook.com (2603:10b6:610:e6::20)
+ by SA1PR12MB8988.namprd12.prod.outlook.com (2603:10b6:806:38e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Wed, 5 Jun
+ 2024 15:19:10 +0000
+Received: from CH1PEPF0000A345.namprd04.prod.outlook.com
+ (2603:10b6:610:e6:cafe::44) by CH0PR03CA0285.outlook.office365.com
+ (2603:10b6:610:e6::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7656.18 via Frontend
+ Transport; Wed, 5 Jun 2024 15:19:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH1PEPF0000A345.mail.protection.outlook.com (10.167.244.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7633.15 via Frontend Transport; Wed, 5 Jun 2024 15:19:08 +0000
+Received: from tlendack-t1.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 5 Jun
+ 2024 10:19:07 -0500
+From: Tom Lendacky <thomas.lendacky@amd.com>
+To: <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<linux-coco@lists.linux.dev>, <svsm-devel@coconut-svsm.dev>
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, "Peter
+ Zijlstra" <peterz@infradead.org>, Dan Williams <dan.j.williams@intel.com>,
+	Michael Roth <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>,
+	Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>
+Subject: [PATCH v5 00/13] Provide SEV-SNP support for running under an SVSM
+Date: Wed, 5 Jun 2024 10:18:43 -0500
+Message-ID: <cover.1717600736.git.thomas.lendacky@amd.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/14] arm64: realm: Support nonsecure ITS emulation
- shared
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240605093006.145492-1-steven.price@arm.com>
- <20240605093006.145492-13-steven.price@arm.com>
- <86a5jzld9g.wl-maz@kernel.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <86a5jzld9g.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000A345:EE_|SA1PR12MB8988:EE_
+X-MS-Office365-Filtering-Correlation-Id: d86d8201-a12c-4b8e-47f8-08dc8572d898
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|1800799015|376005|36860700004|7416005|82310400017;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?cfTfoy+F8dkWxBERn3U+8df1rdyDHy5xrxZLCsGPjen3JSA5MsvER8BQ6nZ2?=
+ =?us-ascii?Q?wINE3hRtwqAda15sgx8b58Q2l8LX7UB30Wfb8CViaSNEW9YOSwW0Oo+kzcu2?=
+ =?us-ascii?Q?siclvMTOVovFmqcHNPZYHHDaJ5e6IO10lqJe37+vvD6RXH9DWHtKDih9K2tW?=
+ =?us-ascii?Q?6awR0ZO+WAQIJJgevHCQt8TMxmTNGoWCdHdTuxEUBwn91WTMfyCXp2wGHl3o?=
+ =?us-ascii?Q?6D+bofzfBjQ9D7M9vTmxWUXzTOxkN0YysF/qlRBMZwtb8musdx8KSCQHfSjT?=
+ =?us-ascii?Q?vuOXH4RYAgvihWqBXmSf7v+XsfAfYfZLPoKz7sM+1OvAZceDdAoYRT6Iev1F?=
+ =?us-ascii?Q?11nKBN8vwBXcRxatBmwDb+DwSJY0xNMSCo8II0DNamXNhD4HatUTnJcUCLcv?=
+ =?us-ascii?Q?w367qze+fLepCRStNigxJsICaZMsm4qCYzJxnyY4LAZS6uCNFfE+qsfJ2EB1?=
+ =?us-ascii?Q?tt0XmbUjZUxx0e2B+nzT90yn0Db6TOZkd0XdpawoZEKsOEWAIAHmYcDoAk2Y?=
+ =?us-ascii?Q?CaZnnskI0Vjvk0eDBnaDq4/P/fDvod5wf4IilTzXNG0VH2aB+GALhIGoFDgP?=
+ =?us-ascii?Q?LLL37z8ygT3y18UeMAvULk2hzO9SQTpNkdl/JFo3EqvFoi2muL1zHuJfrKAL?=
+ =?us-ascii?Q?SSBKsUYz9C3VSLhWlcOif0/qVsfvTiMZEug1YdMfcWrx53wnAaIVthC11HBy?=
+ =?us-ascii?Q?kx/NuwhfTYFHZUWJ6pyJATqW2r62eCiyvSpoVU6pJHmKaq8mr5XZutN5CFOF?=
+ =?us-ascii?Q?eQAZgTaB/axfLmTupMRKntai9zZYFqnEhGQcd9J1jySVahUYgvsbsb6M/3FT?=
+ =?us-ascii?Q?ES9L6dVrUkQHwdvXJGuJ8nDfIcLhrj9vPfw98eFoQbegZpjrz0Uf7s1T4d68?=
+ =?us-ascii?Q?6W8Y5y8d6cGs3FxYXSgMXTJbT9Vda3Il/x5bOzvnkO3I5SyrTSn/ZvI0yu2k?=
+ =?us-ascii?Q?YKmBjJPXEv8Tf8nCkvwo2U+X2ANMm8sLQ2z9LYKEA8Lyjgmek89ZJTo+4HpQ?=
+ =?us-ascii?Q?Ns8rni6DiGYovoUoGuw+PFdz1x3ZYToMSAB70P2VN+J8PDF/yYOW6WFDDO8p?=
+ =?us-ascii?Q?lhBhk955P8RmeP/cV8YhrBoRGhmO2ZIdv6IHJ2EfTdZkBvP2Ia7LX17+XVgH?=
+ =?us-ascii?Q?XtHfjJzhFWk/+HGKEeA7hpv/5o2yfcoQhk+ylz8k1Is2klu75eDnd+fIfXco?=
+ =?us-ascii?Q?IXDpuPpabAIf3WBvDqCMimq62OBEU18TXVnmFDwBgf0XRo2L78J4ndX6k236?=
+ =?us-ascii?Q?sGoyihBceNguRPGjLINsRr8REY9nnRJctpWizKilSHpbmi2GtJn/wFcnwX8W?=
+ =?us-ascii?Q?TO7+AIrnVULyNdNhiEtUbYadqAgJdsLl2AwvkyaIS3mAdKoDku23R6qUOZCQ?=
+ =?us-ascii?Q?o9JgolW4pBfRivqXl+/nn47DzDzIJNmEbkoryyLmnSx2x/i1hUsqRDeW7hJ5?=
+ =?us-ascii?Q?gRPMvY/+oBg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(1800799015)(376005)(36860700004)(7416005)(82310400017);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2024 15:19:08.5298
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d86d8201-a12c-4b8e-47f8-08dc8572d898
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000A345.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8988
 
-Hi Marc,
+This series adds SEV-SNP support for running Linux under an Secure VM
+Service Module (SVSM) at a less privileged VM Privilege Level (VMPL).
+By running at a less privileged VMPL, the SVSM can be used to provide
+services, e.g. a virtual TPM, for Linux within the SEV-SNP confidential
+VM (CVM) rather than trust such services from the hypervisor.
 
-On 05/06/2024 14:39, Marc Zyngier wrote:
-> The subject line is... odd. I'd expect something like:
-> 
-> "irqchip/gic-v3-its: Share ITS tables with a non-trusted hypervisor"
-> 
-> because nothing here should be CCA specific.
+Currently, a Linux guest expects to run at the highest VMPL, VMPL0, and
+there are certain SNP related operations that require that VMPL level.
+Specifically, the PVALIDATE instruction and the RMPADJUST instruction
+when setting the VMSA attribute of a page (used when starting APs).
 
-Good point - that's a much better subject.
+If Linux is to run at a less privileged VMPL, e.g. VMPL2, then it must
+use an SVSM (which is running at VMPL0) to perform the operations that
+it is no longer able to perform.
 
-> On Wed, 05 Jun 2024 10:30:04 +0100,
-> Steven Price <steven.price@arm.com> wrote:
->>
->> Within a realm guest the ITS is emulated by the host. This means the
->> allocations must have been made available to the host by a call to
->> set_memory_decrypted(). Introduce an allocation function which performs
->> this extra call.
-> 
-> This doesn't mention that this patch radically changes the allocation
-> of some tables.
+How Linux interacts with and uses the SVSM is documented in the SVSM
+specification [1] and the GHCB specification [2].
 
-I guess that depends on your definition of radical, see below.
+This series introduces support to run Linux under an SVSM. It consists
+of:
+  - Detecting the presence of an SVSM
+  - When not running at VMPL0, invoking the SVSM for page validation and
+    VMSA page creation/deletion
+  - Adding a sysfs entry that specifies the Linux VMPL
+  - Modifying the sev-guest driver to use the VMPCK key associated with
+    the Linux VMPL
+  - Expanding the config-fs TSM support to request attestation reports
+    from the SVSM and allowing attributes to be hidden
+  - Detecting and allowing Linux to run in a VMPL other than 0 when an
+    SVSM is present
 
->>
->> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v2:
->>  * Drop 'shared' from the new its_xxx function names as they are used
->>    for non-realm guests too.
->>  * Don't handle the NUMA_NO_NODE case specially - alloc_pages_node()
->>    should do the right thing.
->>  * Drop a pointless (void *) cast.
->> ---
->>  drivers/irqchip/irq-gic-v3-its.c | 90 ++++++++++++++++++++++++--------
->>  1 file changed, 67 insertions(+), 23 deletions(-)
->>
->> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
->> index 40ebf1726393..ca72f830f4cc 100644
->> --- a/drivers/irqchip/irq-gic-v3-its.c
->> +++ b/drivers/irqchip/irq-gic-v3-its.c
->> @@ -18,6 +18,7 @@
->>  #include <linux/irqdomain.h>
->>  #include <linux/list.h>
->>  #include <linux/log2.h>
->> +#include <linux/mem_encrypt.h>
->>  #include <linux/memblock.h>
->>  #include <linux/mm.h>
->>  #include <linux/msi.h>
->> @@ -27,6 +28,7 @@
->>  #include <linux/of_pci.h>
->>  #include <linux/of_platform.h>
->>  #include <linux/percpu.h>
->> +#include <linux/set_memory.h>
->>  #include <linux/slab.h>
->>  #include <linux/syscore_ops.h>
->>  
->> @@ -163,6 +165,7 @@ struct its_device {
->>  	struct its_node		*its;
->>  	struct event_lpi_map	event_map;
->>  	void			*itt;
->> +	u32			itt_order;
->>  	u32			nr_ites;
->>  	u32			device_id;
->>  	bool			shared;
->> @@ -198,6 +201,30 @@ static DEFINE_IDA(its_vpeid_ida);
->>  #define gic_data_rdist_rd_base()	(gic_data_rdist()->rd_base)
->>  #define gic_data_rdist_vlpi_base()	(gic_data_rdist_rd_base() + SZ_128K)
->>  
->> +static struct page *its_alloc_pages_node(int node, gfp_t gfp,
->> +					 unsigned int order)
->> +{
->> +	struct page *page;
->> +
->> +	page = alloc_pages_node(node, gfp, order);
->> +
->> +	if (page)
->> +		set_memory_decrypted((unsigned long)page_address(page),
->> +				     1 << order);
-> 
-> Please use BIT(order).
+The series is based off of and tested against the tip tree:
+  https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git master
 
-Sure.
+  77db0895e650 ("Merge branch into tip/master: 'x86/percpu'")
 
->> +	return page;
->> +}
->> +
->> +static struct page *its_alloc_pages(gfp_t gfp, unsigned int order)
->> +{
->> +	return its_alloc_pages_node(NUMA_NO_NODE, gfp, order);
->> +}
->> +
->> +static void its_free_pages(void *addr, unsigned int order)
->> +{
->> +	set_memory_encrypted((unsigned long)addr, 1 << order);
->> +	free_pages((unsigned long)addr, order);
->> +}
->> +
->>  /*
->>   * Skip ITSs that have no vLPIs mapped, unless we're on GICv4.1, as we
->>   * always have vSGIs mapped.
->> @@ -2212,7 +2239,8 @@ static struct page *its_allocate_prop_table(gfp_t gfp_flags)
->>  {
->>  	struct page *prop_page;
->>  
->> -	prop_page = alloc_pages(gfp_flags, get_order(LPI_PROPBASE_SZ));
->> +	prop_page = its_alloc_pages(gfp_flags,
->> +				    get_order(LPI_PROPBASE_SZ));
->>  	if (!prop_page)
->>  		return NULL;
->>  
->> @@ -2223,8 +2251,8 @@ static struct page *its_allocate_prop_table(gfp_t gfp_flags)
->>  
->>  static void its_free_prop_table(struct page *prop_page)
->>  {
->> -	free_pages((unsigned long)page_address(prop_page),
->> -		   get_order(LPI_PROPBASE_SZ));
->> +	its_free_pages(page_address(prop_page),
->> +		       get_order(LPI_PROPBASE_SZ));
->>  }
->>  
->>  static bool gic_check_reserved_range(phys_addr_t addr, unsigned long size)
->> @@ -2346,7 +2374,8 @@ static int its_setup_baser(struct its_node *its, struct its_baser *baser,
->>  		order = get_order(GITS_BASER_PAGES_MAX * psz);
->>  	}
->>  
->> -	page = alloc_pages_node(its->numa_node, GFP_KERNEL | __GFP_ZERO, order);
->> +	page = its_alloc_pages_node(its->numa_node,
->> +				    GFP_KERNEL | __GFP_ZERO, order);
->>  	if (!page)
->>  		return -ENOMEM;
->>  
->> @@ -2359,7 +2388,7 @@ static int its_setup_baser(struct its_node *its, struct its_baser *baser,
->>  		/* 52bit PA is supported only when PageSize=64K */
->>  		if (psz != SZ_64K) {
->>  			pr_err("ITS: no 52bit PA support when psz=%d\n", psz);
->> -			free_pages((unsigned long)base, order);
->> +			its_free_pages(base, order);
->>  			return -ENXIO;
->>  		}
->>  
->> @@ -2415,7 +2444,7 @@ static int its_setup_baser(struct its_node *its, struct its_baser *baser,
->>  		pr_err("ITS@%pa: %s doesn't stick: %llx %llx\n",
->>  		       &its->phys_base, its_base_type_string[type],
->>  		       val, tmp);
->> -		free_pages((unsigned long)base, order);
->> +		its_free_pages(base, order);
->>  		return -ENXIO;
->>  	}
->>  
->> @@ -2554,8 +2583,8 @@ static void its_free_tables(struct its_node *its)
->>  
->>  	for (i = 0; i < GITS_BASER_NR_REGS; i++) {
->>  		if (its->tables[i].base) {
->> -			free_pages((unsigned long)its->tables[i].base,
->> -				   its->tables[i].order);
->> +			its_free_pages(its->tables[i].base,
->> +				       its->tables[i].order);
->>  			its->tables[i].base = NULL;
->>  		}
->>  	}
->> @@ -2821,7 +2850,8 @@ static bool allocate_vpe_l2_table(int cpu, u32 id)
->>  
->>  	/* Allocate memory for 2nd level table */
->>  	if (!table[idx]) {
->> -		page = alloc_pages(GFP_KERNEL | __GFP_ZERO, get_order(psz));
->> +		page = its_alloc_pages(GFP_KERNEL | __GFP_ZERO,
->> +				       get_order(psz));
->>  		if (!page)
->>  			return false;
->>  
->> @@ -2940,7 +2970,8 @@ static int allocate_vpe_l1_table(void)
->>  
->>  	pr_debug("np = %d, npg = %lld, psz = %d, epp = %d, esz = %d\n",
->>  		 np, npg, psz, epp, esz);
->> -	page = alloc_pages(GFP_ATOMIC | __GFP_ZERO, get_order(np * PAGE_SIZE));
->> +	page = its_alloc_pages(GFP_ATOMIC | __GFP_ZERO,
->> +			       get_order(np * PAGE_SIZE));
->>  	if (!page)
->>  		return -ENOMEM;
->>  
->> @@ -2986,8 +3017,8 @@ static struct page *its_allocate_pending_table(gfp_t gfp_flags)
->>  {
->>  	struct page *pend_page;
->>  
->> -	pend_page = alloc_pages(gfp_flags | __GFP_ZERO,
->> -				get_order(LPI_PENDBASE_SZ));
->> +	pend_page = its_alloc_pages(gfp_flags | __GFP_ZERO,
->> +				    get_order(LPI_PENDBASE_SZ));
->>  	if (!pend_page)
->>  		return NULL;
->>  
->> @@ -2999,7 +3030,7 @@ static struct page *its_allocate_pending_table(gfp_t gfp_flags)
->>  
->>  static void its_free_pending_table(struct page *pt)
->>  {
->> -	free_pages((unsigned long)page_address(pt), get_order(LPI_PENDBASE_SZ));
->> +	its_free_pages(page_address(pt), get_order(LPI_PENDBASE_SZ));
->>  }
->>  
->>  /*
->> @@ -3334,8 +3365,9 @@ static bool its_alloc_table_entry(struct its_node *its,
->>  
->>  	/* Allocate memory for 2nd level table */
->>  	if (!table[idx]) {
->> -		page = alloc_pages_node(its->numa_node, GFP_KERNEL | __GFP_ZERO,
->> -					get_order(baser->psz));
->> +		page = its_alloc_pages_node(its->numa_node,
->> +					    GFP_KERNEL | __GFP_ZERO,
->> +					    get_order(baser->psz));
->>  		if (!page)
->>  			return false;
->>  
->> @@ -3418,7 +3450,9 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
->>  	unsigned long *lpi_map = NULL;
->>  	unsigned long flags;
->>  	u16 *col_map = NULL;
->> +	struct page *page;
->>  	void *itt;
->> +	int itt_order;
->>  	int lpi_base;
->>  	int nr_lpis;
->>  	int nr_ites;
->> @@ -3430,7 +3464,6 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
->>  	if (WARN_ON(!is_power_of_2(nvecs)))
->>  		nvecs = roundup_pow_of_two(nvecs);
->>  
->> -	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
->>  	/*
->>  	 * Even if the device wants a single LPI, the ITT must be
->>  	 * sized as a power of two (and you need at least one bit...).
->> @@ -3438,7 +3471,16 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
->>  	nr_ites = max(2, nvecs);
->>  	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
->>  	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
->> -	itt = kzalloc_node(sz, GFP_KERNEL, its->numa_node);
->> +	itt_order = get_order(sz);
->> +	page = its_alloc_pages_node(its->numa_node,
->> +				    GFP_KERNEL | __GFP_ZERO,
->> +				    itt_order);
-> 
-> So we go from an allocation that was so far measured in *bytes* to
-> something that is now at least a page. Per device. This seems a bit
-> excessive to me, specially when it isn't conditioned on anything and
-> is now imposed on all platforms, including the non-CCA systems (which
-> are exactly 100% of the machines).
+[1] https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58019.pdf
+[2] https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/56421.pdf
 
-Catalin asked about this in v2:
-https://lore.kernel.org/lkml/c329ae18-2b61-4851-8d6a-9e691a2007c8@arm.com/
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Christoph Hellwig <hch@lst.de>
 
-To be honest, I don't have a great handle on how much memory is being
-wasted here. Within the realm guest I was testing this is rounding up an
-otherwise 511 byte allocation to a 4k page, and there are 3 of them.
-Which seems reasonable from a realm guest perspective.
+---
 
-I can see two options to improve here:
+Changes in v5:
+- Create native versions of local_irq_save()/local_irq_restore().
+- Add RIP_REL_REF() calls to functions executed early in boot.
+- Fix logic around the return value of the SVSM invocations. This required
+  changes where svsm_perform_call_protocol() is invoked to check the
+  SVSM return value in the struct svsm_call variable.
+- Update configfs support to only recognize group attributes associated
+  with a particular item when checking for visibility (don't check for
+  a default group).
+- Move TSM configfs visibility support from the default group to the
+  TSM report attributes.
+- Simplify generated assembly for SVSM protocol invocation.
+- Remove simple VMPL level accessor function and make the vmpl variable
+  global. Rename it from vmpl to snp_vmpl.
+- Miscellaneous updates (i.e. initialize variable when declared, rename
+  functions, shorten variable names, etc.).
+- Documentation updates.
 
-1. Add a !is_realm_world() check and return to the previous behaviour
-when not running in a realm. It's ugly, and doesn't deal with any other
-potential future memory encryption. cc_platform_has(CC_ATTR_MEM_ENCRYPT)
-might be preferable? But this means no impact to non-realm guests.
+Changes in v4:
+- Add a pre-patch to rename the struct snp_secrets_page_layout to just
+  snp_secrets_page.
+- Move the config-fs visibility support to be group based and referenced
+  by an index. Remove the macro changes that set the visibility function
+  for an entry.
+- Make the TSM visibility support vendor specific via an ops callback.
+- Use the rmpadjust() function directly and remove the enforce_vmpl0()
+  function.
+- Consolidate common variables into arch/x86/kernel/sev-shared.c.
 
-2. Use a special (global) memory allocator that does the
-set_memory_decrypted() dance on the pages that it allocates but allows
-packing the allocations. I'm not aware of an existing kernel API for
-this, so it's potentially quite a bit of code. The benefit is that it
-reduces memory consumption in a realm guest, although fragmentation
-still means we're likely to see a (small) growth.
+Changes in v3:
+- Rename decompresor snp_setup() to early_snp_setup() to better indicate
+  when it is called.
+- Rename the "svsm" config-fs attribute into the more generic
+  "service_provider" attribute that takes a name as input.
+- Change config-fs visibility function to be a simple bool return type
+  instead of returning the mode.
+- Switch to using new RIP_REL_REF() macro and __head notation where
+  appropriate.
 
-Any thoughts on what you think would be best?
+Changes in v2:
+- Define X86_FEATURE_SVSM_PRESENT and set the bit in the CPUID table,
+  removing the need to set the CPUID bit in the #VC handler.
+- Rename the TSM service_version attribute to service_manifest_version.
+- Add support to config-fs to hide attributes and hide the SVSM attributes
+  when an SVSM is not present.
 
-> Another thing is that if we go with page alignment, then the 256 byte
-> alignment can obviously be removed everywhere (hint: MAPD needs to
-> change).
 
-Ah, good point - I'll need to look into that, my GIC-foo isn't quite up
-to speed on that.
+Tom Lendacky (13):
+  x86/irqflags: Provide native versions of the
+    local_irq_save()/restore()
+  x86/sev: Check for the presence of an SVSM in the SNP Secrets page
+  x86/sev: Use kernel provided SVSM Calling Areas
+  x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0
+  x86/sev: Use the SVSM to create a vCPU when not in VMPL0
+  x86/sev: Provide SVSM discovery support
+  x86/sev: Provide guest VMPL level to userspace
+  virt: sev-guest: Choose the VMPCK key based on executing VMPL
+  configfs-tsm: Allow the privlevel_floor attribute to be updated
+  fs/configfs: Add a callback to determine attribute visibility
+  x86/sev: Take advantage of configfs visibility support in TSM
+  x86/sev: Extend the config-fs attestation support for an SVSM
+  x86/sev: Allow non-VMPL0 execution when an SVSM is present
 
-Thanks,
+ Documentation/ABI/testing/configfs-tsm        |  63 +++
+ .../ABI/testing/sysfs-devices-system-cpu      |  12 +
+ .../arch/x86/amd-memory-encryption.rst        |  23 +
+ Documentation/virt/coco/sev-guest.rst         |  11 +
+ arch/x86/boot/compressed/sev.c                |  83 +++-
+ arch/x86/include/asm/cpufeatures.h            |   1 +
+ arch/x86/include/asm/irqflags.h               |  20 +
+ arch/x86/include/asm/msr-index.h              |   2 +
+ arch/x86/include/asm/sev-common.h             |  18 +
+ arch/x86/include/asm/sev.h                    | 136 +++++-
+ arch/x86/include/uapi/asm/svm.h               |   1 +
+ arch/x86/kernel/sev-shared.c                  | 457 +++++++++++++++++-
+ arch/x86/kernel/sev.c                         | 442 ++++++++++++++---
+ arch/x86/mm/mem_encrypt_amd.c                 |   8 +-
+ drivers/virt/coco/sev-guest/sev-guest.c       | 203 +++++++-
+ drivers/virt/coco/tdx-guest/tdx-guest.c       |  26 +-
+ drivers/virt/coco/tsm.c                       | 177 +++++--
+ fs/configfs/dir.c                             |  10 +
+ include/linux/configfs.h                      |   3 +
+ include/linux/tsm.h                           |  59 ++-
+ 20 files changed, 1596 insertions(+), 159 deletions(-)
 
-Steve
+-- 
+2.43.2
 
