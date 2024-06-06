@@ -1,190 +1,156 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2044.outbound.protection.outlook.com [40.107.236.44])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF98D13A404
-	for <linux-coco@lists.linux.dev>; Wed,  5 Jun 2024 21:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717622238; cv=fail; b=inqWYhe8wOXLruMZ6+5SMV1nE3z4Cc46fYA2TcROZ7S61keeaSFBxYhJT3cKTUBBCiVlma4jwMBgCfBVOceYSqIZIfk8uUziUsjbTKSEfMK8iTcMduPoneztOhwjE2W1P8lWfz1bEWQED+oe1xcRw2MFD/pQbuNxyxyvoipLi1Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717622238; c=relaxed/simple;
-	bh=Uf1xCwrS5gkhva3iI4wiP9QCm+zJBRtRfO/v8g8NFKY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=XICmTpAj2exWgixWUl6pkfB5csc1F40O5ludkvCziLvj3TnkXAKbCGbO6VJw27hdAdUKEGhNsQEaRWWtR03Kxl9nyKVbzlmXEN9GkcrZ+nHODPvDo4pNe7fhK7o3gNX3bXk++YYg7mMqKRKvzP2Kxdee2G2kTnoFHWXzAK3ddmM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2fpTzhc1; arc=fail smtp.client-ip=40.107.236.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23526D53F
+	for <linux-coco@lists.linux.dev>; Thu,  6 Jun 2024 01:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717638747; cv=none; b=fbX3TYiDFvPVG4RfLtuqeY0ZcM/jVevdRNY5lEHoKd8z26tyFBPZLXp92Rx3cex+hSBKuZdWZAy335CJa31nSroGKxSafuhQwm86Ea+Cnr0iOv8KyoDKA4QWEKPRuMcrUv5lJsiiGqkwNVWQqm4ij/2pLmU/SBs1xbZT1ea2u9I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717638747; c=relaxed/simple;
+	bh=tX9yrJbc8ty7d7Zfg70MPHzZODjknVGIO0Z8Ox9NU4A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HTy8UwWCxPCFnhDlpofJaSHo0UBp+d0XIfvgj1OF9YEAg+E47IDejzAd67ITxpaGKSYQLmUIIZpTL7Op8RXfWZrPAp+8zpK4cza8x1egFqXYNN1TtqXWkmKPcjgUP9hneSBlmRNaa0N986BOHRQ8A8/+EBJJ3jHflQj3vhthAHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iSuX9gwb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2fpTzhc1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DH/W4VrAZlpKv+AbEziiBaLEqhDMDjX4mfX63jIGsuAjuCzt3KhVmo1kOx0ggWUt18WP4ushEtgF0epuz4GVYsym1YlQWPEW7R1iZzoNCHrB/AqG5orbe4mMTXJJO+3n3dBVxZHqsBAOBABIQyj3TfUAmsSrQHAKG8dYib536iDkd7kQYuf0HgjeZ1AJjMhenoqRiYrfxvH9AbAYft0HerIKYtpAgeuTLz5b/BobESGRhbTGWWFTbFsmNagrRxFDcYwq1JRJRO0pFMN5MOjajcUKnPmTO6s97LcfaeRIP/O3m30spbByBKhYxQYqBVMGCrWMmjRgPuIcmH1ej3jNAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L6VNi9Ko125ovRm4ejx2yjyy4wOt9h4J9H1yBqmxlU8=;
- b=KnJTki4coF7CmDZ6JFTWjjx+0lBALslilg8/vmNfZpwbYBloPP/qCLHvRHhIlTuuJ7CMCU+LATVoJchZpvGxYw7yyAnDLETjFcP63kW8egjNUGRIKAaOWciRG6RcC8gI0yeXn98nyqnx2/fE/PAKwVDK+whGq+x+T4MvMgaU3lfLzyEDoLAe7WILmT1MtFocaDky5mUQFyG2xMb3wwxa1d8YSrgcDMFkhE7b+edvshCkOhfgY8gYLkbfA31fgr4gmi2QZmPsFJo2NhVurhnoMNZMb1lb014ghioh4L8FLfhIGk1L36sG/OtZqVwoMLUiUtIwAlIe1HWYqbDvxL7mYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L6VNi9Ko125ovRm4ejx2yjyy4wOt9h4J9H1yBqmxlU8=;
- b=2fpTzhc1oPooe9e2sl7xksQnlJ/AobZm8jWlxcbYBkYxc4buyCHt/pCj4Xpi6ctmwwt0jJHbihkzTbpJd/ajUTdUJGCOxiN+QVtWJTTTg77fPZ5dZp3Hhyf9me13KwF/yRc+VpWNnRAnNdNXYzs0ksiw9lp0Q0XwHu/3yyls5C4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
- by SA1PR12MB7221.namprd12.prod.outlook.com (2603:10b6:806:2bd::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.24; Wed, 5 Jun
- 2024 21:17:09 +0000
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52]) by BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52%7]) with mapi id 15.20.7633.021; Wed, 5 Jun 2024
- 21:17:09 +0000
-Message-ID: <952085da-d209-5144-19ef-26c5e7b03cfb@amd.com>
-Date: Wed, 5 Jun 2024 16:17:07 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v5 02/13] x86/sev: Check for the presence of an SVSM in
- the SNP Secrets page
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- svsm-devel@coconut-svsm.dev, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Dan Williams <dan.j.williams@intel.com>, Michael Roth
- <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>
-References: <cover.1717600736.git.thomas.lendacky@amd.com>
- <9d3fe161be93d4ea60f43c2a3f2c311fe708b63b.1717600736.git.thomas.lendacky@amd.com>
- <20240605193831.GYZmC-twcfjlArW3Hq@fat_crate.local>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20240605193831.GYZmC-twcfjlArW3Hq@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7P220CA0022.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:806:123::27) To BL1PR12MB5732.namprd12.prod.outlook.com
- (2603:10b6:208:387::17)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iSuX9gwb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1717638745;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xp+MGNVSlLui2uLO7pwydVnV86tn/dw5jvwhKRhoHdg=;
+	b=iSuX9gwb0qY0oGvzJCz38QoqTwLrZy20iIzjLTV4pU3O0kmwVDIs9dN9uKng9Fh9CFQ8a6
+	cOgVeFaZlSAwPMhp4spsrV4xiqLFUztSj0t9dBcfkQw2373tg5HYJADmZBHUoKi6Feo0No
+	GFi/J9BSi2yiAKOdER2I/PjffXfp9eg=
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
+ [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-270-GkBS5JOwM66CdVSjQOV6sg-1; Wed, 05 Jun 2024 21:52:22 -0400
+X-MC-Unique: GkBS5JOwM66CdVSjQOV6sg-1
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-37492552bf7so651785ab.1
+        for <linux-coco@lists.linux.dev>; Wed, 05 Jun 2024 18:52:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717638742; x=1718243542;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xp+MGNVSlLui2uLO7pwydVnV86tn/dw5jvwhKRhoHdg=;
+        b=SkaKWDwn/7Uy4acJGSbNfxWVaooLmCahSXC0LjbqB/fB8o+2Xe/8DZhbbRdIRQQuPV
+         HAE6/q+TLcHK8QZBQ3O5s3iHkqdOpt8zIXfCjpRR1hyl2g7wS2h7bXYnx7LcP8NHglvE
+         Wl6JwC6mKq0IspxGToL75vNoih4h8ugvpipP3yxAtInszgJ1SwazsDjgsd4P+O+JJLjE
+         /bwPna9ZYs+Cfre7yvm2RqpjROMUY4oHuWtQvU6bSjRvMsv54Ae3/Z6UGU5i/t52LgCs
+         ZoPOAsV6xSKhK50aNNAhhjWKxRJu16kYsOPKxw3DTRT28zQ6vCod1kk3z+ZOkcpzug7K
+         RyTg==
+X-Forwarded-Encrypted: i=1; AJvYcCUyiKrBac9LQN1RGUK53fdCbN5KhvmR0CgoKdbc2ezJDchAG5u5p95ZV9k+oUNirR0LEFAqK8hmee2zK10qvdHy8+mTgEj/pxQgrw==
+X-Gm-Message-State: AOJu0YypBYWwKUNUnZ0lRtRJEwHWDw6Q8/c+9a0PeFoSq2Ym0cYBCwQz
+	DmWntT5r4d9kaEiZOtb2IyNT2B5+YdM1e5UPISSsOV3Dw24EDmhTnDRO7Nk/z4R5hgmRUUe007E
+	YgOaNUvR9AfsXOF/O+8gYbf8JzE4/yqRqs1HdNnTRuT9JKNwarw87Y6NdBTkh5xuhHti4oQga0G
+	rbX8+zeJVqS1WyoY9OaCy21CasYNumX5t8hA==
+X-Received: by 2002:a05:6e02:2194:b0:374:a102:2948 with SMTP id e9e14a558f8ab-374b1f75c83mr44372955ab.3.1717638742161;
+        Wed, 05 Jun 2024 18:52:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHOj8R29jCyD6uOUyfLwEBMdBJR/YcAvObT1kSbriveNteQJnjE6dpOttRKqAAbOTQ16AYsTtRhV6iMhVxvGOw=
+X-Received: by 2002:a05:6e02:2194:b0:374:a102:2948 with SMTP id
+ e9e14a558f8ab-374b1f75c83mr44372615ab.3.1717638741676; Wed, 05 Jun 2024
+ 18:52:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|SA1PR12MB7221:EE_
-X-MS-Office365-Filtering-Correlation-Id: f9e83b63-c617-49c9-148b-08dc85a4dc30
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|366007|376005|7416005;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cnVLQmF4cno5aXRYUStsbTIyaE5QdzJtWnhsbTV0R2crdk44RmJYdmtKQ3Ju?=
- =?utf-8?B?SWpRQnloMnNLSis3YVdRaExmQlVrdllLdTNjMUJ6aUZ0WnhaNlRRZkhBRUJM?=
- =?utf-8?B?SlNOVGExb0dKbHgraE5BSDVDV3NFR2xmQWp5Rm5tRWx3R2tZN2VGKzJpUU5T?=
- =?utf-8?B?SndyZ0gvMDBJeFoxWVBuMkN5QlZWVGZXMU1pTTROeHlYU0NCMUdGNEdlSDhB?=
- =?utf-8?B?T3I5YTFGSGtGa1MvcThZaWtFL3BEejJZRzFqcUliRGVJbkx3QWMvcDhiN0VO?=
- =?utf-8?B?SFF3dUxjVU5UdzVPRW1OUkI4MlVvZUM0UXloY3c0allwRnVUUkM4U01wOWx5?=
- =?utf-8?B?c2lWaXlhQThMLzhic2FRR29TYU1rRFZqZzJXVlp1U1FONTNTMVZodU4xZVo2?=
- =?utf-8?B?TGUxNmNZNTJyZk5hSHUzSGNQSXVGWVA1SEthSndsZWZJTmRtL1hPUlNTQjZt?=
- =?utf-8?B?T0ZVY2VtLzIySGFzdlMrbkJCdG1rRjRSUjB3ZTc4alByQnNNVlZYUGZtMndp?=
- =?utf-8?B?UDYxbkNJSHRCVGFBUmdJUzIvL3dETlY0aW0xUEdCSUdQS0t5cHdkV0VrUU5l?=
- =?utf-8?B?eFhra0poY2U4TVRTNUFzN3Y5TlhZeUMzcmREV0JJcGowb2o4NlVrRW94Z2Rl?=
- =?utf-8?B?KzZKMDRMNHF6VnVaVklwRUpEQ2UvRGNiMTYxUzNsaUovcjFYdjJLbC9BOWs3?=
- =?utf-8?B?cGw4TUplWEJDMEtnUmZaTlBYTzZINDRFNkFlVFpZa2k0bzBwOUFMQWFmVDhy?=
- =?utf-8?B?NldTVTRkUzlZd0xMQVUvZllhbFhZK1JPSFN5NUlHdFJIemRDYk1tTG9OUVpT?=
- =?utf-8?B?ZzZ6T3VFOE9jOTRjMFI1YkVISUxkMldyV0ZSVkVHckFyT1ppdTVyQ0l5U1du?=
- =?utf-8?B?M3NGcS85bDQ1eHdrK0dQTVdNb0p2cXpNYnhSaTFIQzZxQllobm11aElNands?=
- =?utf-8?B?UlRhREx0UmNjN0d3eDZaUEtWUkVaUjRYYXlTOHpSWjY4dGdqdGJqME1XU3M1?=
- =?utf-8?B?VzdsQVNvQ0M4Y05jWXlRVlFEdDRRRjFaWUpJNXM2VWpmUHNjcTRsVDhTUTNC?=
- =?utf-8?B?MkxCbXNXTUZVd2tuYVBMNjVOdW1QWHVZMHRCL2VGYWNzOUV4d2psTGNLaVZs?=
- =?utf-8?B?Rnk5MnlaRmpkNU5qYUFCbVcraGp6OWJPcmcwUk5YeG8xV09JV2I4ZWJqaXEz?=
- =?utf-8?B?bkFvMjhHKzRjaTVVR1ExeENhZTRsK3hka0tuRE91ZnFQZFFBeUVhUkpHMmJS?=
- =?utf-8?B?ZGg0UmlXZDVBT1EyMldlYmxPcHhaOW9QL3F3MkszWFJlcG8rT01vM1ljZmhX?=
- =?utf-8?B?VmFmeG1ia0NUOE02SW9ZVnJsZ21venRwSzc3UDRxbHdyT3g2TVBCek1JQW13?=
- =?utf-8?B?U1lJYUhON3RyQ2kwNXVyVUk4R3ZnUzRWZU44amhxbVQyZ0FTQlQxRVpJVVN3?=
- =?utf-8?B?TVlwVThhbzJxTDNCenNuWjdKL1d4bmMxZ3N6V2V0SVcvUzBuTWlYVFo1OXE3?=
- =?utf-8?B?WWE1MWFKMndiYXV2WVdZQVFRb1hBektRWll2K1hVL2d1eWQrTmkzYUttK1NW?=
- =?utf-8?B?Ym9BK2hYOWZJNk1IWDNNYU1XOXRrZWNQaFgzWVJnVWpNYkRoOWhldGJsODF1?=
- =?utf-8?B?UndWOWQ0cFZFUmZkNURTNmZ3ZmxkcXdsY3ZNOGhINFBOaGhuYUdpVUlQK3RY?=
- =?utf-8?B?ODAvdVhDUU1yOUdHeEFReVZ0Lyt2UmpNdjh6K1NzWFpXbVdlOEtWbXZRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005)(7416005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Y2R6NlhFSWw1Smp5M2Q3cURPajdpcTlJNWxhcEdjeGJKVDQ2RnhaZlVjaW1w?=
- =?utf-8?B?V2hYWjR3Y0YwNXE4dm5aRWppRmhSalMyb2JTLzVRa3owS1dISWl6ZDcyRUJP?=
- =?utf-8?B?cjIwY2JNNnlDMTBKS0xvb1kyWVdpVzk4Y2RQcU8yT3VaTFZVb2RVTm5nU2VU?=
- =?utf-8?B?dFhhc2QzY0hmNXZRN3NsWndXTzB2Zmo1WVRlZjV4eUs5YnRkelcwek5mQmlk?=
- =?utf-8?B?NW95Z3o2aGI2cUVQVHJaNVkxU2x5b3RWMmtJWW91YTJBb012SzFXNDd2Q2d5?=
- =?utf-8?B?amF1azdNYXdCYkpRY04rRTlod0g3WEtVK04yZVRDOXoxU3ZxZEZweHMvOHpM?=
- =?utf-8?B?WTlSQnNIK1E5YTVjcTdxU2QwSndXSitOOVhKMktTSmJJVFAxSWhTL1dWbUdL?=
- =?utf-8?B?YXNVRmJWVG1XMXRaSlFPTG01bEMyNExkRGRtRjNmZHZOYTQyNmEyZjVtcXdk?=
- =?utf-8?B?TVVIRnhaclpVbSs2Nm0yWGNKZXh0Ri9Ja1FUNXpLTXUrL29KMTQyTGJkc01V?=
- =?utf-8?B?RlF1cVhkWU50TVBOQ1pjdlVoUVVaWTEyUDNSc09FL1pqaVdvRUNFQ0NMdlNN?=
- =?utf-8?B?dDJMK3dKN2tqVFc2Y0hEaFpEd3BicjNaT0xTNHY1UFM2aUFzZWRkQ0M2U1pS?=
- =?utf-8?B?U3c4VXRIVWxUNDZ3UWdIZm5pSGxoZm5hZGU1eUUwOWlMbTNoWjJsK2pZd1BX?=
- =?utf-8?B?VjhSdE5kbkZ1R3ZmV2dFbGFRZ0RkQkN5eUcvQVFqUmtQcnd4eDRCTnE1MnNl?=
- =?utf-8?B?MnlEYk9PcUdlNFRPcVEvM054eXRWMlh2ek0xbUFNTUlNNnZuWjZadTErNlgy?=
- =?utf-8?B?K2VOYmtNUjRXQmF2elJZbk45dTNNbXVVSWRXeklXS1Z6NU00SnVSRUVCYURJ?=
- =?utf-8?B?WUI0bGh4YTAvUHJueDFjWHF1T2llMWM0bE5Ic25sTUFMVENjeWxDUWNQeFpE?=
- =?utf-8?B?M25ucTlnTVdZblJ6WUZEYzFpNDhRVUlUR1hoRVZWMTBpOTl3NDlDUzBNNHpz?=
- =?utf-8?B?d09aSXo2M3BEVy9mU09FeGxtU3lFckt3NmFjZ292aU9kSmVFcHhXdEtRd2Qv?=
- =?utf-8?B?SVEyTlFzN09mNDVnYVJQYmZ4ZEZzYUNHU3p3TkcrcUMya0FFNjVnby9FRjZN?=
- =?utf-8?B?NHBEVkR4R0poZVpYSGwzck5TeFpTWlZYWTZWN2IyK2kzUzdHVHUxdkRjdDhs?=
- =?utf-8?B?aGpVWFhOWUlqMFV6MWZVcUtiRjlpN2VaNmZGSnlmWFBsNjN5RWpxTFhzTkhW?=
- =?utf-8?B?amNPYWJoTHRrQktkQ3NmN2l2aW9FS0JUMXJsa3VQVlgzc3ltcFhQaFFQbnMw?=
- =?utf-8?B?bWhOcnZNK2M0R2NIUXg2SC9pSlQzRlFCR1dMdXdIMEpYZVM5dVdDdmYvQ0Rw?=
- =?utf-8?B?RmRXZ0ZxRDN2OHB2eEJOMFlHVzNQS0k3K294bDF4NEQyb0dJYWtCL0twcitY?=
- =?utf-8?B?YXRrTzJxa0RhMHdyempMOWxDVW1FU0p2TjBLVmtJWXloc1p5bFNpUmFHeENh?=
- =?utf-8?B?VTRpRUdDb2FvNEVVQU43QzVvVWd1aTlBNG0rMFVsNkppUXlZUE9vYlc5aHc4?=
- =?utf-8?B?ZTdQb1FuMlBFcE9hVVMwS3FrNGdTNWlra3J5a2ttcXJhQU41aVZhcFlTUlVC?=
- =?utf-8?B?TTRLalUyZkIxZ0ozT0xZbHhqNHAzYTVJNUhYUjM1N0ZyZHVCbCs5RFM4RWRt?=
- =?utf-8?B?VnMzOHN3bzFydDRza3JBNmMvd2Mxa05kNXNHT2lBVjNHOXlUMXF1NTN5V2sw?=
- =?utf-8?B?RDMrOHM5Z29UQVY3QUtkMWdCSjVmT29YOVk0V0RKNEsrQzlEWmFpUHBGd0Nr?=
- =?utf-8?B?Y2ZnRk1FcHFBZkJkTkJFWGhyMStIdkROQ2xXRDFJR2dETUdEbmFIWjl3MkdO?=
- =?utf-8?B?SzNqV0pMczQyc2ZYaG5ENE5hQnE2MFZFSUhMeDVzQVN5dzNKaWI0d3k2Q1NR?=
- =?utf-8?B?cTRrZUx1MFYyb3RQZUFXQjJGdGo3SnZ3ZzRrNHFPL3lBdVdWdjIxc3BqY3hq?=
- =?utf-8?B?V1RqOUlSc0pubWNDUGJZUExJUFIxallVZWtRYmY1c0taQXNaZ0NBeFZaQ3pN?=
- =?utf-8?B?TzhRQ2NnQ3QrS3plMk1FM0tCeUhGaVlROHZxTmJGd1gvR2tyanZHbk1oR08w?=
- =?utf-8?Q?cR/2c7NOPtReh/BmPDBf7qAMC?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9e83b63-c617-49c9-148b-08dc85a4dc30
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2024 21:17:09.6632
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ngXR0EKkne2uH6ySwokxD/59aM54j3UWyV6TY68gYrlQve6h7PZEL6XZ44ZvYig/MZG0Nqn0nkm60G0mOtzIzA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7221
+References: <7eb4ca99-679c-4f23-9562-a39b966c28a0@amd.com> <20240603165747.GGZl32C9yrmXJ4nhPT@fat_crate.local>
+ <2343889c-887a-49ce-86df-343737d70d37@amd.com> <20240603171231.GJZl35f-BHvU2Pk3lb@fat_crate.local>
+ <ff28e3ea-c492-4db6-8781-abaec6320756@amd.com> <CALu+AoQBXv-y43sx6E28UBVeVHUzRkWEzFxK6jsS5NpN2ho3YQ@mail.gmail.com>
+ <CALu+AoTY2Xxs_vUzCyfsxtk-ov2mzJhzyTbbA9MYeeVkmKTMsw@mail.gmail.com>
+ <CALu+AoSESmasAHqWdCGgQNbsTXfwbfhERBkaqSeaX881zqKtFg@mail.gmail.com>
+ <41e085b8-2b45-40ab-9a6f-f4ad975a0b06@amd.com> <CALu+AoQ2jNjb+5MZfFtpT_Y=2gJRWwqEeWTpQkwNt0-U5fpO_w@mail.gmail.com>
+ <20240605110904.GWZmBHUHSqCJVQYajF@fat_crate.local>
+In-Reply-To: <20240605110904.GWZmBHUHSqCJVQYajF@fat_crate.local>
+From: Dave Young <dyoung@redhat.com>
+Date: Thu, 6 Jun 2024 09:52:39 +0800
+Message-ID: <CALu+AoRvNC9zMFwC+-T7eJDcTkPNUKPdsg5PNEJc11CVb22gUg@mail.gmail.com>
+Subject: Re: [PATCH v7 1/3] efi/x86: Fix EFI memory map corruption with kexec
+To: Borislav Petkov <bp@alien8.de>
+Cc: ardb@kernel.org, dan.j.williams@intel.com, 
+	"Kalra, Ashish" <ashish.kalra@amd.com>, Mike Rapoport <rppt@kernel.org>, tglx@linutronix.de, 
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org, 
+	rafael@kernel.org, hpa@zytor.com, peterz@infradead.org, 
+	adrian.hunter@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	jun.nakajima@intel.com, rick.p.edgecombe@intel.com, thomas.lendacky@amd.com, 
+	michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com, bhe@redhat.com, 
+	kirill.shutemov@linux.intel.com, bdas@redhat.com, vkuznets@redhat.com, 
+	dionnaglaze@google.com, anisinha@redhat.com, jroedel@suse.de, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/5/24 14:38, Borislav Petkov wrote:
-> On Wed, Jun 05, 2024 at 10:18:45AM -0500, Tom Lendacky wrote:
->> During early boot phases, check for the presence of an SVSM when running
->> as an SEV-SNP guest.
->>
->> An SVSM is present if not running at VMPL0 and the 64-bit value at offset
->> 0x148 into the secrets page is non-zero. If an SVSM is present, save the
->> SVSM Calling Area address (CAA), located at offset 0x150 into the secrets
->> page, and set the VMPL level of the guest, which should be non-zero, to
->> indicate the presence of an SVSM.
->>
->> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
->> ---
->>   .../arch/x86/amd-memory-encryption.rst        | 23 ++++++
->>   arch/x86/boot/compressed/sev.c                | 21 +++---
->>   arch/x86/include/asm/sev-common.h             |  4 ++
->>   arch/x86/include/asm/sev.h                    | 34 ++++++++-
->>   arch/x86/kernel/sev-shared.c                  | 71 +++++++++++++++++++
->>   arch/x86/kernel/sev.c                         |  7 ++
->>   6 files changed, 151 insertions(+), 9 deletions(-)
-> 
-> I did some touch-ups ontop:
+On Wed, 5 Jun 2024 at 19:09, Borislav Petkov <bp@alien8.de> wrote:
+>
+> Moving Ard and Dan to To:
+>
+> On Wed, Jun 05, 2024 at 10:28:18AM +0800, Dave Young wrote:
+> > Ok, thanks!  I think the right way is creating two patches,  one to
+> > remove the __efi_memmap_free,
+>
+> Yap, that
+>
+>   f0ef6523475f ("efi: Fix efi_memmap_alloc() leaks")
+>
+> needs revisiting.
+>
+> So AFAIU, the flow is this:
+>
+> In a kexec-ed kernel:
+>
+> 1. efi_arch_mem_reserve() gets called by bgrt, erst, mokvar... whatever
+>    to hold on to boot services regions for longer otherwise EFI
+>    "implementations" explode.
+>
+> 2. On same kexec-ed kernel, we call into kexec_enter_virtual_mode()
+>    because it needs to get the runtime services regions from the first
+>    kernel
+>
+> 3. As part of that call, it'll do
+>    efi_memmap_init_late->__efi_memmap_init():
+>
+>         if (efi.memmap.flags & (EFI_MEMMAP_MEMBLOCK | EFI_MEMMAP_SLAB))
+>                 __efi_memmap_free(efi.memmap.phys_map,
+>
+> and the memory which got allocated in step 1 is gone, thus reverting
+> what efi_arch_mem_reserve() is trying to fix.
+>
+> IOW, we need a
+>
+>         EFI_MEMMAP_DO_NOT_TOUCH_MY_MEMORY
+>
+> flag which'll stop this from happening. But I'd prefer it if Ard decides
+> what the right thing to do here is.
+>
+> > another is  skip efi_arch_mem_reserve when the EFI_MEMORY_RUNTIME bit
+> > was set already.
+>
+> Can that even happen?
 
-Works for me, thanks!
+Yes, let's say we have two different cases both go through
+drivers/firmware/efi/efi-bgrt.c -> efi_mem_reserve ->
+efi_arch_mem_reserve
+1. normal boot (non kexec-ed)
+    The bgrt region is reserved and mark as EFI_MEMORY_RUNTIME with a
+new efi mem range which is inserted in the memmap, later kexec will
+carry over to 2nd kernel (drop those boot service areas without
+EFI_MEMORY_RUNTIME)
+2. kexec-ed boot
+     In the same call path, the previous kernel saved bgrt region has
+already set EFI_MEMORY_RUNTIME, but it is re-reserved with a new mem
+entry in memmap, this is not necessary and duplicate.   I did not
+check the efi boot code if it will de-duplicate the memmap later, but
+anyway this is useless and it should be skipped.
 
-Tom
+Thanks
+Dave
 
-> 
