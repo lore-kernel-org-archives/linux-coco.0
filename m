@@ -1,250 +1,109 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D721B011D
-	for <linux-coco@lists.linux.dev>; Thu,  6 Jun 2024 14:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E78ED515;
+	Thu,  6 Jun 2024 18:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717684755; cv=none; b=hUGe7KUaLMSe3jMe+dv0rv+MV8+uwHkccKUCUdt9/V2O4JJP39M9fxZge2USMHh8aBoD+xguHK6cca86gu+0NGdZq2wBa9wmPLCnC47TwhrgH/EyIZrXVJLwku3lRYH4D0e5UrZgHj5g5Ee2OvR9twt5KEP1i6ol5+/Iq0aeUKY=
+	t=1717699095; cv=none; b=f+ecUDygTGAlxer+gzNg3eM51yjJkjjKPxOJBirk5ov0E5LM6Voz8G5hFZCTnM7jd9Tpjlh56r+WdN2AaxmRvDMAy3ovP+s/wphbFjt0x36BUFNS8RmduIGQcEGiztQ46tJEmSWtdAuvIjopTCUPBG/YANBfWLtYMKDzMS38+ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717684755; c=relaxed/simple;
-	bh=PW0mB/Ap+iosdJhw53tmQWtAwnayyP9uDzO9zkRDuNw=;
+	s=arc-20240116; t=1717699095; c=relaxed/simple;
+	bh=m4y07AqUVhllB8GdQjGhynxMK/W/hDUwql04aVzrTcI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iwFpefjBZ36aJgXp7HEumVMTsLG7dyOFXCWnWXgezx5DG6MILLSzXLXtEN7YydIiVq139u1FgIRXmCoZXGdFU6GvKjZg/X5nCsEsJkIPkqCb4KgWQdBpKQx76I/zeQiDAL9RwPUs0HZoO0qswdBg1TmMoFi65ZDhdfLqHCqqRk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=iUn8bC65; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="iUn8bC65"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2E69240E016C;
-	Thu,  6 Jun 2024 14:39:10 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id bk0JMOZU0YBh; Thu,  6 Jun 2024 14:39:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1717684745; bh=+LG5ed49RtXEviXf/9mwTYPthSUWIdmD9Du5/B+SoL0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iUn8bC65hH12zSAv5Z1ZPeFgEfXppDTQC0RTZhU6a3Dtv3eN0gQ5TIRkgZ6yB7yxF
-	 qIXe0XtDmefjN7K5zKn5wi1Zo4AbaqUtTG6MqDXGK/JCAVcUi4b3E18reLYRcIyOPY
-	 5iQZTkFB3c2oD/yVnYH119lPuEhIrrN10IE3F0WRqqep8H2fBfRYE2n3DNJz6yZepe
-	 tADOSVaT7CcjfNj2xse2+VcVZF/VGrH3xDej3Bp//tnvSVSOHoMrr/jCV45PTOkmNV
-	 n3fUUljocQFNWPbus1Y562aurZ5AjEXdP/lj/8DKL6089kgfMzFyYyBWkCSTXjotxZ
-	 q51dFgeG1iS8F/kiug6ASDvef9qhgyCqGbGqYkGFE7fZNzQvAmjO1/FNEBkNZOOCzl
-	 MLXlyS1a4sT4Z3mIjBBlOW6LsBehDch9/i/aCZvZ5ULDSyhKscjP54Dq5+JzAoa3t6
-	 zvYDtkitTE6dhossGMsmKqkG5kFFzbO7uEKpR/UZ6GNnlgBTJtdfNvyDyHdWy/B5VB
-	 AmOxlIXx0QT6bodV5xRYz8ZUDvrOnn0v6JvRf8agMtJurDqpo6499tT7lsRUNK9U7f
-	 nGVOgO2rc1FdSyaWBvLDbprfpxGOf3DnzpsJvqdAEqrqYVs3w5YR8Vk45RXznDlDE4
-	 7dgC1VghNqaVjDTso2OqoxgQ=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A0A8A40E0027;
-	Thu,  6 Jun 2024 14:38:51 +0000 (UTC)
-Date: Thu, 6 Jun 2024 16:38:44 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v5 04/13] x86/sev: Perform PVALIDATE using the SVSM when
- not at VMPL0
-Message-ID: <20240606143844.GDZmHJ9CK_aNoD3TSe@fat_crate.local>
-References: <cover.1717600736.git.thomas.lendacky@amd.com>
- <4c4017d8b94512d565de9ccb555b1a9f8983c69c.1717600736.git.thomas.lendacky@amd.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LNZ8LOZPPYiogAdFfff/+rt/wVdrNWO7Sceb2vkKVtgkUvDRlYn9HWd+IOQNWAaPt2b+dkWZgcgC2IklmwjBo7CnCIHWj//a+fjSwa0r14S8SQ6L8vYrW3E1yE/3udBbDLQtSC9dJZpQgDTRRdLC1H0C34F78X2XE3Cs7tOEiOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4CBC2BD10;
+	Thu,  6 Jun 2024 18:38:11 +0000 (UTC)
+Date: Thu, 6 Jun 2024 19:38:08 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: Re: [PATCH v3 12/14] arm64: realm: Support nonsecure ITS emulation
+ shared
+Message-ID: <ZmICEN8JvWM7M9Ch@arm.com>
+References: <20240605093006.145492-1-steven.price@arm.com>
+ <20240605093006.145492-13-steven.price@arm.com>
+ <86a5jzld9g.wl-maz@kernel.org>
+ <4c363476-e5b5-42ff-9f30-a02a92b6751b@arm.com>
+ <867cf2l6in.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4c4017d8b94512d565de9ccb555b1a9f8983c69c.1717600736.git.thomas.lendacky@amd.com>
+In-Reply-To: <867cf2l6in.wl-maz@kernel.org>
 
-On Wed, Jun 05, 2024 at 10:18:47AM -0500, Tom Lendacky wrote:
-> The PVALIDATE instruction can only be performed at VMPL0. An SVSM will
-> be present when running at VMPL1 or a lower privilege level.
+On Thu, Jun 06, 2024 at 11:17:36AM +0100, Marc Zyngier wrote:
+> On Wed, 05 Jun 2024 16:08:49 +0100,
+> Steven Price <steven.price@arm.com> wrote:
+> > 2. Use a special (global) memory allocator that does the
+> > set_memory_decrypted() dance on the pages that it allocates but allows
+> > packing the allocations. I'm not aware of an existing kernel API for
+> > this, so it's potentially quite a bit of code. The benefit is that it
+> > reduces memory consumption in a realm guest, although fragmentation
+> > still means we're likely to see a (small) growth.
+> > 
+> > Any thoughts on what you think would be best?
 > 
-> When an SVSM is present, use the SVSM_CORE_PVALIDATE call to perform
-> memory validation instead of issuing the PVALIDATE instruction directly.
-> 
-> The validation of a single 4K page is now explicitly identified as such
-> in the function name, pvalidate_4k_page(). The pvalidate_pages() function
-> is used for validating 1 or more pages at either 4K or 2M in size. Each
-> function, however, determines whether it can issue the PVALIDATE directly
-> or whether the SVSM needs to be invoked.
-> 
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> ---
->  arch/x86/boot/compressed/sev.c |  45 +++++-
->  arch/x86/include/asm/sev.h     |  26 ++++
->  arch/x86/kernel/sev-shared.c   | 250 +++++++++++++++++++++++++++++++--
->  arch/x86/kernel/sev.c          |  30 ++--
->  4 files changed, 325 insertions(+), 26 deletions(-)
+> I would expect that something similar to kmem_cache could be of help,
+> only with the ability to deal with variable object sizes (in this
+> case: minimum of 256 bytes, in increments defined by the
+> implementation, and with a 256 byte alignment).
 
-Some touchups ontop like slimming down indentation levels, etc.
+Hmm, that's doable but not that easy to make generic. We'd need a new
+class of kmalloc-* caches (e.g. kmalloc-decrypted-*) which use only
+decrypted pages together with a GFP_DECRYPTED flag or something to get
+the slab allocator to go for these pages and avoid merging with other
+caches. It would actually be the page allocator parsing this gfp flag,
+probably in post_alloc_hook() to set the page decrypted and re-encrypt
+it in free_pages_prepare(). A slight problem here is that free_pages()
+doesn't get the gfp flag, so we'd need to store some bit in the page
+flags. Maybe the flag is not that bad, do we have something like for
+page_to_phys() to give us the high IPA address for decrypted pages?
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 226b68b4a29f..ce941a9890f8 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -284,11 +284,12 @@ void sev_es_shutdown_ghcb(void)
- 		error("SEV-ES CPU Features missing.");
- 
- 	/*
--	 * This is used to determine whether to use the GHCB MSR protocol or
--	 * the GHCB shared page to perform a GHCB request. Since the GHCB page
--	 * is being changed to encrypted, it can't be used to perform GHCB
--	 * requests. Clear the boot_ghcb variable so that the GHCB MSR protocol
--	 * is used to change the GHCB page over to an encrypted page.
-+	 * This denotes whether to use the GHCB MSR protocol or the GHCB
-+	 * shared page to perform a GHCB request. Since the GHCB page is
-+	 * being changed to encrypted, it can't be used to perform GHCB
-+	 * requests. Clear the boot_ghcb variable so that the GHCB MSR
-+	 * protocol is used to change the GHCB page over to an encrypted
-+	 * page.
- 	 */
- 	boot_ghcb = NULL;
- 
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 8b191e313c0a..b889be32ef9c 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -1220,6 +1220,15 @@ static void __head setup_cpuid_table(const struct cc_blob_sev_info *cc_info)
- 	}
- }
- 
-+static inline void __pval_terminate(u64 pfn, bool action, unsigned int page_size,
-+				    int ret, u64 svsm_ret)
-+{
-+	WARN(1, "PVALIDATE failure: pfn: 0x%llx, action: %u, size: %u, ret: %d, svsm_ret: 0x%llx\n",
-+	     pfn, action, page_size, ret, svsm_ret);
-+
-+	sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PVALIDATE);
-+}
-+
- static void svsm_pval_terminate(struct svsm_pvalidate_call *pc, int ret, u64 svsm_ret)
- {
- 	unsigned int page_size;
-@@ -1230,16 +1239,7 @@ static void svsm_pval_terminate(struct svsm_pvalidate_call *pc, int ret, u64 svs
- 	action = pc->entry[pc->cur_index].action;
- 	page_size = pc->entry[pc->cur_index].page_size;
- 
--	WARN(1, "PVALIDATE failure: pfn 0x%llx, action=%u, size=%u - ret=%d, svsm_ret=0x%llx\n",
--	     pfn, action, page_size, ret, svsm_ret);
--	sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PVALIDATE);
--}
--
--static void pval_terminate(u64 pfn, bool action, unsigned int page_size, int ret)
--{
--	WARN(1, "PVALIDATE failure: pfn 0x%llx, action=%u, size=%u - ret=%d\n",
--	     pfn, action, page_size, ret);
--	sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PVALIDATE);
-+	__pval_terminate(pfn, action, page_size, ret, svsm_ret);
- }
- 
- static void svsm_pval_4k_page(unsigned long paddr, bool validate)
-@@ -1284,7 +1284,7 @@ static void pvalidate_4k_page(unsigned long vaddr, unsigned long paddr, bool val
- 	int ret;
- 
- 	/*
--	 * This can be called very early in the boot, so use rip-relative
-+	 * This can be called very early during boot, so use rIP-relative
- 	 * references as needed.
- 	 */
- 	if (RIP_REL_REF(snp_vmpl)) {
-@@ -1292,7 +1292,7 @@ static void pvalidate_4k_page(unsigned long vaddr, unsigned long paddr, bool val
- 	} else {
- 		ret = pvalidate(vaddr, RMP_PG_SIZE_4K, validate);
- 		if (ret)
--			pval_terminate(PHYS_PFN(paddr), validate, RMP_PG_SIZE_4K, ret);
-+			__pval_terminate(PHYS_PFN(paddr), validate, RMP_PG_SIZE_4K, ret, 0);
- 	}
- }
- 
-@@ -1315,16 +1315,19 @@ static void pval_pages(struct snp_psc_desc *desc)
- 		validate = e->operation == SNP_PAGE_STATE_PRIVATE;
- 
- 		rc = pvalidate(vaddr, size, validate);
-+		if (!rc)
-+			continue;
-+
- 		if (rc == PVALIDATE_FAIL_SIZEMISMATCH && size == RMP_PG_SIZE_2M) {
- 			unsigned long vaddr_end = vaddr + PMD_SIZE;
- 
- 			for (; vaddr < vaddr_end; vaddr += PAGE_SIZE, pfn++) {
- 				rc = pvalidate(vaddr, RMP_PG_SIZE_4K, validate);
- 				if (rc)
--					pval_terminate(pfn, validate, RMP_PG_SIZE_4K, rc);
-+					__pval_terminate(pfn, validate, RMP_PG_SIZE_4K, rc, 0);
- 			}
--		} else if (rc) {
--			pval_terminate(pfn, validate, size, rc);
-+		} else {
-+			__pval_terminate(pfn, validate, size, rc, 0);
- 		}
- 	}
- }
-@@ -1429,24 +1432,26 @@ static void svsm_pval_pages(struct snp_psc_desc *desc)
- 
- 		do {
- 			ret = svsm_perform_call_protocol(&call);
--			if (ret) {
--				/*
--				 * Check if the entry failed because of an RMP mismatch (a
--				 * PVALIDATE at 2M was requested, but the page is mapped in
--				 * the RMP as 4K).
--				 */
--				if (call.rax_out == SVSM_PVALIDATE_FAIL_SIZEMISMATCH &&
--				    pc->entry[pc->cur_index].page_size == RMP_PG_SIZE_2M) {
--					/* Save this entry for post-processing at 4K */
--					pv_4k[pv_4k_count++] = pc->entry[pc->cur_index];
--
--					/* Skip to the next one unless at the end of the list */
--					pc->cur_index++;
--					if (pc->cur_index < pc->num_entries)
--						ret = -EAGAIN;
--					else
--						ret = 0;
--				}
-+			if (!ret)
-+				continue;
-+
-+			/*
-+			 * Check if the entry failed because of an RMP mismatch (a
-+			 * PVALIDATE at 2M was requested, but the page is mapped in
-+			 * the RMP as 4K).
-+			 */
-+
-+			if (call.rax_out == SVSM_PVALIDATE_FAIL_SIZEMISMATCH &&
-+			    pc->entry[pc->cur_index].page_size == RMP_PG_SIZE_2M) {
-+				/* Save this entry for post-processing at 4K */
-+				pv_4k[pv_4k_count++] = pc->entry[pc->cur_index];
-+
-+				/* Skip to the next one unless at the end of the list */
-+				pc->cur_index++;
-+				if (pc->cur_index < pc->num_entries)
-+					ret = -EAGAIN;
-+				else
-+					ret = 0;
- 			}
- 		} while (ret == -EAGAIN);
- 
+Similarly if we go for a kmem_cache (or a few for multiple sizes). One
+can specify a constructor which could set the memory decrypted but
+there's no destructor (and also the constructor is per object, not per
+page, so we'd need some refcounting).
+
+Another approach contained within the driver is to use mempool_create()
+with our own _alloc_fn/_free_fn that sets the memory decrypted/encrypted
+accordingly, though sub-page allocations need additional tracking. Also
+that's fairly similar to kmem_cache, fixed size.
+
+Yet another option would be to wire it somehow in the DMA API but the
+minimum allocation is already a page size, so we don't gain anything.
+
+What gets somewhat closer to what we need is gen_pool. It can track
+different sizes, we just need to populate the chunks as needed. I don't
+think this would work as a generic allocator but may be good enough
+within the ITS code.
+
+If there's a need for such generic allocations in other parts of the
+kernel, my preference would be something around kmalloc caches and a new
+GFP flag (first option; subject to the selling it to the mm folk). But
+that's more of a separate prototyping effort that may or may not
+succeed.
+
+Anyway, we could do some hacking around gen_pool as a temporary solution
+(maybe as a set of patches on top of this series to be easier to revert)
+and start investigating a proper decrypted page allocator in parallel.
+We just need to find a victim that has the page allocator fresh in mind
+(Ryan or Alexandru ;)).
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Catalin
