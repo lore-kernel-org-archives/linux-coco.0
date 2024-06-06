@@ -1,161 +1,201 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F0213BACD;
-	Thu,  6 Jun 2024 09:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B873158848;
+	Thu,  6 Jun 2024 10:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717664613; cv=none; b=XxfYK52rsm2eVdOJaVus6lFiEjq4K089/5Q218G3gOpc4z5CHj4yoglUUk6kIABkUnbBmmbfMs7S6lQMWZqEbJY/wyEIRDeK3uUL1J3+oBy6da0fmavtI87IhrtKydGXtBirgXsaKfPb+xeBp6wM5wfzmAuEhQFOcvo+Kq68hbY=
+	t=1717669060; cv=none; b=FV3/lPzwqTvHWWXqqSmh51ImAbajYrnBfPn++1ZgUweBk0kuAlf38cknp7PRPQSxHScZ88tEOLgaSW/kNSHDysIudbsTd/pEY10X5n185VXmr4wCvqqSqyDkmvACO5WapIRLzshiAtuenHqFkXbiJqhr70gu5BB/1INEhXOhgQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717664613; c=relaxed/simple;
-	bh=zGINutsNe6MmQp12y68+cEwLXsIuxll5jEDC/d7keK4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PtZVjU3ibjWp3EHuQfNEtgoJbjRY3CSkFbbKtTOnd3CwTwkw56OWP3lzG4daXzRRDUDYdOD61mlHYdE0XhKh1dDuBgT6uKzs2blDWvsDosqIeoGkPwHZx2ZmFZS+GWL7YkkmmT3fDlswW5SS49HXVrk4IihWApJokFJ46k51LEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 637B6339;
-	Thu,  6 Jun 2024 02:03:55 -0700 (PDT)
-Received: from [10.1.33.29] (e122027.cambridge.arm.com [10.1.33.29])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9994E3F762;
-	Thu,  6 Jun 2024 02:03:27 -0700 (PDT)
-Message-ID: <c7db4f52-3d14-4d45-8352-d6d9f9e3b286@arm.com>
-Date: Thu, 6 Jun 2024 10:03:25 +0100
+	s=arc-20240116; t=1717669060; c=relaxed/simple;
+	bh=W9kbQ3pOCWummTxiokP7SZcsLeHBrYY6Qzq/MV72KTU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ll5e/OPt2kAbbBDKs6l2nqrJiWbc0ASdP7a8Eki37HA2vrxdkiL+Fm0/7lfXRkeePgYbRGY+r3lzZX6OYiaKOE1aqjwzufpgipqPLZzP7pybbmhI/bpvQnW7+ZtbrWhfb5V0xEyE1Jaiczai9LoOXeGK1YzjYMviJEgIUmLhsEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uiEWhhEz; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uiEWhhEz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96D3C32782;
+	Thu,  6 Jun 2024 10:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717669059;
+	bh=W9kbQ3pOCWummTxiokP7SZcsLeHBrYY6Qzq/MV72KTU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uiEWhhEzoZzCIGqYIZyzZELj/haUQGSJYnc/PlYcDgqUSC+04XGE+M+Tzy36Jqpso
+	 I4B8nKfrhcD+XTJPPvcyuINb4gGoyzJipMtkwRp7X0fqGZw7thxFDzT+qaAd6DOc9T
+	 QBvq9FMfIsHUTsjV38OTk1T8r1ewNiaQYBW/7WFHcCJfVMrArKP4FF2eUjYCCgPsA1
+	 6Tjjgrm9HSl+IZVOcW3vsUHWvSXPOXJA894X2JupawEqiGdJ2N8+LVKJqegLeNFow3
+	 7R9xEkjRyNPAxeI84GiTRczFdUBT8YJCJnuGxyakUMHsf4RiuMWtgfuQ+vATZ5VKwV
+	 C39dwBzegKSSQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sFABd-001G9O-CB;
+	Thu, 06 Jun 2024 11:17:37 +0100
+Date: Thu, 06 Jun 2024 11:17:36 +0100
+Message-ID: <867cf2l6in.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu
+ <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: Re: [PATCH v3 12/14] arm64: realm: Support nonsecure ITS emulation shared
+In-Reply-To: <4c363476-e5b5-42ff-9f30-a02a92b6751b@arm.com>
+References: <20240605093006.145492-1-steven.price@arm.com>
+	<20240605093006.145492-13-steven.price@arm.com>
+	<86a5jzld9g.wl-maz@kernel.org>
+	<4c363476-e5b5-42ff-9f30-a02a92b6751b@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/14] arm64: Support for running as a guest in Arm CCA
-To: Itaru Kitayama <itaru.kitayama@linux.dev>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240605093006.145492-1-steven.price@arm.com>
- <ZmAj26Q2aHj-U9hw@vm3>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <ZmAj26Q2aHj-U9hw@vm3>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 05/06/2024 09:37, Itaru Kitayama wrote:
-> Hi Steven,
-> On Wed, Jun 05, 2024 at 10:29:52AM +0100, Steven Price wrote:
->> This series adds support for running Linux in a protected VM under the
->> Arm Confidential Compute Architecture (CCA). This has been updated
->> following the feedback from the v2 posting[1]. Thanks for the feedback!
->> Individual patches have a change log for v3.
->>
->> The biggest change from v2 is fixing set_memory_{en,de}crypted() to
->> perform a break-before-make sequence. Note that only the virtual address
->> supplied is flipped between shared and protected, so if e.g. a vmalloc()
->> address is passed the linear map will still point to the (now invalid)
->> previous IPA. Attempts to access the wrong address may trigger a
->> Synchronous External Abort. However any code which attempts to access
->> the 'encrypted' alias after set_memory_decrypted() is already likely to
->> be broken on platforms that implement memory encryption, so I don't
->> expect problems.
->>
->> The ABI to the RMM from a realm (the RSI) is based on the final RMM v1.0
->> (EAC 5) specification[2]. Future RMM specifications will be backwards
->> compatible so a guest using the v1.0 specification (i.e. this series)
->> will be able to run on future versions of the RMM without modification.
->>
->> Arm plans to set up a CI system to perform at a minimum boot testing of
->> Linux as a guest within a realm.
->>
->> This series is based on v6.10-rc1. It is also available as a git
->> repository:
->>
->> https://gitlab.arm.com/linux-arm/linux-cca cca-guest/v3
->>
->> This series (the guest side) should be in a good state so please review
->> with the intention that this could be merged soon. The host side (KVM
->> changes) is likely to require some more iteration and I'll post that as
->> a separate series shortly - note that there is no tie between the series
->> (i.e. you can mix and match v2 and v3 postings of the host and guest).
->>
->> Introduction (unchanged from v2 posting)
->> ============
->> A more general introduction to Arm CCA is available on the Arm
->> website[3], and links to the other components involved are available in
->> the overall cover letter.
->>
->> Arm Confidential Compute Architecture adds two new 'worlds' to the
->> architecture: Root and Realm. A new software component known as the RMM
->> (Realm Management Monitor) runs in Realm EL2 and is trusted by both the
->> Normal World and VMs running within Realms. This enables mutual
->> distrust between the Realm VMs and the Normal World.
->>
->> Virtual machines running within a Realm can decide on a (4k)
->> page-by-page granularity whether to share a page with the (Normal World)
->> host or to keep it private (protected). This protection is provided by
->> the hardware and attempts to access a page which isn't shared by the
->> Normal World will trigger a Granule Protection Fault.
->>
->> Realm VMs can communicate with the RMM via another SMC interface known
->> as RSI (Realm Services Interface). This series adds wrappers for the
->> full set of RSI commands and uses them to manage the Realm IPA State
->> (RIPAS) and to discover the configuration of the realm.
->>
->> The VM running within the Realm needs to ensure that memory that is
->> going to use is marked as 'RIPAS_RAM' (i.e. protected memory accessible
->> only to the guest). This could be provided by the VMM (and subject to
->> measurement to ensure it is setup correctly) or the VM can set it
->> itself.  This series includes a patch which will iterate over all
->> described RAM and set the RIPAS. This is a relatively cheap operation,
->> and doesn't require memory donation from the host. Instead, memory can
->> be dynamically provided by the host on fault. An alternative would be to
->> update booting.rst and state this as a requirement, but this would
->> reduce the flexibility of the VMM to manage the available memory to the
->> guest (as the initial RIPAS state is part of the guest's measurement).
->>
->> Within the Realm the most-significant active bit of the IPA is used to
->> select whether the access is to protected memory or to memory shared
->> with the host. This series treats this bit as if it is attribute bit in
->> the page tables and will modify it when sharing/unsharing memory with
->> the host.
->>
->> This top bit usage also necessitates that the IPA width is made more
->> dynamic in the guest. The VMM will choose a width (and therefore which
->> bit controls the shared flag) and the guest must be able to identify
->> this bit to mask it out when necessary. PHYS_MASK_SHIFT/PHYS_MASK are
->> therefore made dynamic.
->>
->> To allow virtio to communicate with the host the shared buffers must be
->> placed in memory which has this top IPA bit set. This is achieved by
->> implementing the set_memory_{encrypted,decrypted} APIs for arm64 and
->> forcing the use of bounce buffers. For now all device access is
->> considered to required the memory to be shared, at this stage there is
->> no support for real devices to be assigned to a realm guest - obviously
->> if device assignment is added this will have to change.
->>
->> Finally the GIC is (largely) emulated by the (untrusted) host. The RMM
->> provides some management (including register save/restore) but the
->> ITS buffers must be placed into shared memory for the host to emulate.
->> There is likely to be future work to harden the GIC driver against a
->> malicious host (along with any other drivers used within a Realm guest).
->>
->> [1] https://lore.kernel.org/r/20240412084213.1733764-1-steven.price%40arm.com
->> [2] https://developer.arm.com/documentation/den0137/1-0eac5/
->> [3] https://www.arm.com/architecture/security-features/arm-confidential-compute-architecture
->>
+On Wed, 05 Jun 2024 16:08:49 +0100,
+Steven Price <steven.price@arm.com> wrote:
 > 
-> The v3 guest built with clang booted fine on FVP backed by v2 host kernel.
+> Hi Marc,
 > 
-> Tested-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+> On 05/06/2024 14:39, Marc Zyngier wrote:
+> > The subject line is... odd. I'd expect something like:
+> > 
+> > "irqchip/gic-v3-its: Share ITS tables with a non-trusted hypervisor"
+> > 
+> > because nothing here should be CCA specific.
+> 
+> Good point - that's a much better subject.
+> 
+> > On Wed, 05 Jun 2024 10:30:04 +0100,
+> > Steven Price <steven.price@arm.com> wrote:
+> >>
+> >> Within a realm guest the ITS is emulated by the host. This means the
+> >> allocations must have been made available to the host by a call to
+> >> set_memory_decrypted(). Introduce an allocation function which performs
+> >> this extra call.
+> > 
+> > This doesn't mention that this patch radically changes the allocation
+> > of some tables.
+> 
+> I guess that depends on your definition of radical, see below.
 
-Thanks for testing!
+It's election time, I'm all about making bold statements!
 
-Steve
+[...]
 
+> >> @@ -3334,8 +3365,9 @@ static bool its_alloc_table_entry(struct its_node *its,
+> >>  
+> >>  	/* Allocate memory for 2nd level table */
+> >>  	if (!table[idx]) {
+> >> -		page = alloc_pages_node(its->numa_node, GFP_KERNEL | __GFP_ZERO,
+> >> -					get_order(baser->psz));
+> >> +		page = its_alloc_pages_node(its->numa_node,
+> >> +					    GFP_KERNEL | __GFP_ZERO,
+> >> +					    get_order(baser->psz));
+> >>  		if (!page)
+> >>  			return false;
+> >>  
+> >> @@ -3418,7 +3450,9 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+> >>  	unsigned long *lpi_map = NULL;
+> >>  	unsigned long flags;
+> >>  	u16 *col_map = NULL;
+> >> +	struct page *page;
+> >>  	void *itt;
+> >> +	int itt_order;
+> >>  	int lpi_base;
+> >>  	int nr_lpis;
+> >>  	int nr_ites;
+> >> @@ -3430,7 +3464,6 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+> >>  	if (WARN_ON(!is_power_of_2(nvecs)))
+> >>  		nvecs = roundup_pow_of_two(nvecs);
+> >>  
+> >> -	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+> >>  	/*
+> >>  	 * Even if the device wants a single LPI, the ITT must be
+> >>  	 * sized as a power of two (and you need at least one bit...).
+> >> @@ -3438,7 +3471,16 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+> >>  	nr_ites = max(2, nvecs);
+> >>  	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
+> >>  	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
+> >> -	itt = kzalloc_node(sz, GFP_KERNEL, its->numa_node);
+> >> +	itt_order = get_order(sz);
+> >> +	page = its_alloc_pages_node(its->numa_node,
+> >> +				    GFP_KERNEL | __GFP_ZERO,
+> >> +				    itt_order);
+> > 
+> > So we go from an allocation that was so far measured in *bytes* to
+> > something that is now at least a page. Per device. This seems a bit
+> > excessive to me, specially when it isn't conditioned on anything and
+> > is now imposed on all platforms, including the non-CCA systems (which
+> > are exactly 100% of the machines).
+> 
+> Catalin asked about this in v2:
+> https://lore.kernel.org/lkml/c329ae18-2b61-4851-8d6a-9e691a2007c8@arm.com/
+> 
+> To be honest, I don't have a great handle on how much memory is being
+> wasted here. Within the realm guest I was testing this is rounding up an
+> otherwise 511 byte allocation to a 4k page, and there are 3 of them.
+> Which seems reasonable from a realm guest perspective.
+
+And not that reasonable on a smaller system, such as my own router VM
+that has a whole lot of devices and very little memory. Not to mention
+that while CCA is stuck with 4k pages (duh!), the world is moving
+towards larger pages, meaning that this is wasting even more memory.
+
+> 
+> I can see two options to improve here:
+> 
+> 1. Add a !is_realm_world() check and return to the previous behaviour
+> when not running in a realm. It's ugly, and doesn't deal with any other
+> potential future memory encryption. cc_platform_has(CC_ATTR_MEM_ENCRYPT)
+> might be preferable? But this means no impact to non-realm guests.
+
+No, this is way too ugly, and doesn't help with things like pKVM.
+
+> 
+> 2. Use a special (global) memory allocator that does the
+> set_memory_decrypted() dance on the pages that it allocates but allows
+> packing the allocations. I'm not aware of an existing kernel API for
+> this, so it's potentially quite a bit of code. The benefit is that it
+> reduces memory consumption in a realm guest, although fragmentation
+> still means we're likely to see a (small) growth.
+> 
+> Any thoughts on what you think would be best?
+
+I would expect that something similar to kmem_cache could be of help,
+only with the ability to deal with variable object sizes (in this
+case: minimum of 256 bytes, in increments defined by the
+implementation, and with a 256 byte alignment).
+
+I don't think the ITS is particularly special here, and we should come
+up with something that is generic enough to support sharing of
+non-page-sized objects.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
