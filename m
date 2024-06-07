@@ -1,153 +1,74 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10olkn2027.outbound.protection.outlook.com [40.92.41.27])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781E911185;
-	Fri,  7 Jun 2024 01:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.41.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717724300; cv=fail; b=aWc3PaUgu/h2Pu48q0E5QBC2LNEkAooGWUrVXS0eaG/pBGdFyazSLMnEUrC8uFH8B6uYGWFHbWhR+swzJ/XHF6QdqeeKyJsjjyADGZpd5uthqr2ViHFj5m3HdfCg+hfpQ9JpAzKp3BRPYKfVSw1H2zH3nI0a0JsMoWxyA7pAH+8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717724300; c=relaxed/simple;
-	bh=5XpPkbvngXUaPP3NdW8EPhNhmfOtRtSATCoMfb//js4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=A0Xiwh+nfMWHRsrSOn2RJSPUiArBauxSYbtOlZWj90JmOvIcjLYAI+1MLwK6MT3WzMIws0KaG4hTlGDj+1AMWcpKu3ynpyqi0hvwzgWW1YUqv76jk728S9GcWlXQmoe77PRmbuvXzBrnSC2XkuWTlrC8BFuMclOv2VMZuZ1yhBA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=l7LXbRY5; arc=fail smtp.client-ip=40.92.41.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18AB194AD6
+	for <linux-coco@lists.linux.dev>; Fri,  7 Jun 2024 14:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717769034; cv=none; b=odY78HQVgercOfcsmJjelS6ERfWb6eHGDi5NN2M6k42iQx/fd/oq31HWGTg7zcUdePX/20oYOIW00PdreG+G0CSrGN42PkmJgRpUX2rEuh2ncGRtYX1t3m7V3ZjcrRTVNnjYdrEm/aQbD9QQ7OC4pqiaiICgsub8oa/UOXP9DFE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717769034; c=relaxed/simple;
+	bh=KlaaOF/7RRdWl7Ek3/y67Wh6c78qhL9KVAsKCLf9ETg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=Z3Hf7bJxtD4qwKa0u9n9sPNjGFQ6ZLhGheFWfC+FmCpQ7NjSAD4oAp4iY7/ZratWoH6hLrQ1hz55XzTFsx/7/W7OORfEqiaoh5AmR9yetVXQrcEAIVfYh/U8N7rDXXTAJugvq5EJFIuZHAgSOpetIS+JKVufAXxjFelzCbtBXi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QJ9OQSn4; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="l7LXbRY5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ntot2qAoCvUZUDiWNXpgqWBl/jHX58QzQZFoeFnI1bnAGRQlgD19FgmABoEyX0IER3YuVKMEXyo2XKHRT8r30zTlEHfo7fbi6nPIeyuRlmNmLnTtahEkvPy0fWtEhykW7JWGWYRqfEj7D7l+0vXme21IwZThRWg+cGqbd60AG2TI9h+yIa6giDgqRPVfnBIW8ftuh/1NrYNDe7/qZZinz/YlTRuIExlBGVluMSwkhuKNotdc1/aNOxTwSr55xkfWpsmaJAYGmO+hj8zACLBxb2TdEJE4hB+7L7GLtKNuZ1VPY+cswNI1REh1pGHNyhIV6HLsYPZWcy4Eh+vVw2NvXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5XpPkbvngXUaPP3NdW8EPhNhmfOtRtSATCoMfb//js4=;
- b=VNo1uwdvngjG3eqLQVoMOvEQYG+HBsotenfgV4d95VJ56Nfw+O2hlEC5m2XYHpzRyj3lF5wuN2/p/Kd8P5/UGWcxmHjR8EsVQ4rIJzSQ4UkJxNxQ1IMdWj7wRaA+qAqxdcHbsErzL7ySEo/yxgdG+2EBN3gq6r6FW1nom38fHJ+lDSSYJPR3qdn8QqTNeJIkMn2gDGKW/xswz6qmOdZ5eUztFMh3fJFwhVBRkMSlZgMgaOUZHeZFzW5sQbt/j6qFMSiXP+cVoiNm2+8NSu061XLTDxKPijdYKEQJDP43xzyczbq+ghxCIdsyAZjXQ4L9+FNIapGPYkxtJA9E/ofFYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5XpPkbvngXUaPP3NdW8EPhNhmfOtRtSATCoMfb//js4=;
- b=l7LXbRY5JOQtaAO60NcHt2Y+aFAtzLWwjdpZBoUmwxW/G936nOSIkFQqcI+eROdX7cxuBeragUK3EcgEuVGb/9EIgOAN4+e+aY3F0/+E+Ntaz1tngUiqpWsFRxk+qnuCzIPmgMmQHYxqE3WZOZB4li77BTccH1xz49sOMpy/CCR3f0+gmF7sJ3SMfr/k3YJJy6Z5rGFaMzh3IAy/0xOwtz6v22sf4uwZn5/Ch3G8OzkFc0TtG0DygkLwRL3cgN0Lrz6ExKtTgLmAa8cE6AQAlwS/u0WSrPpL9LxqLHMgmr9ViE/Oz3xCdjEp7EP45SwltzXpq9c7a/32QgqMrUzDFg==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by CO1PR02MB8444.namprd02.prod.outlook.com (2603:10b6:303:157::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.34; Fri, 7 Jun
- 2024 01:38:15 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df%2]) with mapi id 15.20.7633.033; Fri, 7 Jun 2024
- 01:38:15 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Steven Price <steven.price@arm.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>
-CC: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, Oliver
- Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Joey Gouly <joey.gouly@arm.com>, Alexandru
- Elisei <alexandru.elisei@arm.com>, Christoffer Dall
-	<christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Ganapatrao
- Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: RE: [PATCH v3 00/14] arm64: Support for running as a guest in Arm CCA
-Thread-Topic: [PATCH v3 00/14] arm64: Support for running as a guest in Arm
- CCA
-Thread-Index: AQHatysPRYaUedD8SEOOWptuNOqVvrG7hVGQ
-Date: Fri, 7 Jun 2024 01:38:15 +0000
-Message-ID:
- <SN6PR02MB415739D48B10C26D2673F3FED4FB2@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20240605093006.145492-1-steven.price@arm.com>
-In-Reply-To: <20240605093006.145492-1-steven.price@arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-tmn: [/7FyMFN+y6wC9bfMlT+Cd92p6p6XTb/g]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|CO1PR02MB8444:EE_
-x-ms-office365-filtering-correlation-id: 22786f91-1838-422e-9d70-08dc86927fff
-x-microsoft-antispam:
- BCL:0;ARA:14566002|461199019|440099019|102099023|3412199016;
-x-microsoft-antispam-message-info:
- x/I/eIR+yY3VrxuEnEJw313RHYshF9LluWWy8KY3jwWYFo3GkGqicEvvR7yj9gDtdJvnHYF+GrvDT1K8cUsoO6wxaCDJxlH2rgxWRjHodMx8hf/wYKQsae14V4gB8T66dscsEqrow0tl7jAnd6Zbq5WwaIlaWuHrCDZ8hJ5OXIatdcHHdqisxEmOiLT/6jxBBMe/2h3dodSW5wVXDgmxjxnazSUB+QxUGBk9eWtNqgVsneStb9Ni1y4BHpKhpmBz1U5WqmoPw/n2bCSVF9LL+4h4EdfeMNkVoBg86z6NquXLBJ0i7zHfQKgd++S22SVFcxrfpOgrHNMEyj12MjfPbwA1YLTw5k5EsEdp0CvKVnSfNCUCRjQ2GwWILcig7yIRosVpfzJLtyVXi5qEHEpLOQpVl9yWNv3UvuH6eRZU/ERNOynn1hJHA+dB+f70XLP8BAaD8/LnqHrpJrC2h5Bh4JvGnv3OC+zEdpGt0m/lzIz/TUqqvr3QLT28HEVjwlV+JiwPMI3z/3KQNj/LKesV5kat61LSwVO8uJKf6FJUbqzrbSt6JCXR22bGdHWsz67E
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?b1WVjQngpjHiXVDKPGCvthQx4dWxcjWRnsCSfwDSCgVvR4qRcDCqKNJkqnaz?=
- =?us-ascii?Q?LsLqwQa7AjeD8lns1CLyxNbYj5GbgYDRWOduoNxwB23bDlGQHqF3eW5bsF8S?=
- =?us-ascii?Q?5B7XS1CBcz6p38wIEU82JeWoYCxQARc0y7P58C3CjMefp8G98L1xH3Sc3oX6?=
- =?us-ascii?Q?G8Lp3s/u1l34+1pcEw77mwr2wRbD8xIA/DOB/Ole2akVp445wG7NxZK8621I?=
- =?us-ascii?Q?pbqW7ONlK2Rg58Uy7h9IuMFWhr/VKftI5aeyylNWBbyhD2WX7PQ+MWL/SVGb?=
- =?us-ascii?Q?7pbSh7UQdnzjN0Oqa8huOi65KjrH4rUrcNyw2/dHZCMlGFyygKyV+jZ9JGC+?=
- =?us-ascii?Q?swnU1lNEF1qquTBFNM1bgnrK//nhKkGF6Tt3UOjBE52zhylWHISoklnd38J8?=
- =?us-ascii?Q?kP5nanAvpWuUiMPv8p7pwWBEP3igRuXnuU9b2YZWJtHQXwc2rcmmITUoEFLd?=
- =?us-ascii?Q?EoVB/Zm/rF4CnZ86FN+zwVW21ixFHeXaFjnGdN+h/tMEAHY9hg1xjR7ReaJd?=
- =?us-ascii?Q?J8yHqgm8zazezfiUilZJ3vkIcE5OhAx17v8p1ggxIwQcTGnyCe+x8EwKbCbH?=
- =?us-ascii?Q?avScC35I2LfvdotwBWBlH2GG/VrYurFvtikLJ+novib1aNoPBrG57RzNaT1t?=
- =?us-ascii?Q?9TvhTsdyAkW4QnNdoag9YR9HQIitd8DRhIma4PVSn44kPyLHLP0fVC7xDPQS?=
- =?us-ascii?Q?/QKjU304A7hyxDvqskhulH6g9eJQRrpECWr2N+Sf9EQ0VBjpw0UM0Deh9e5E?=
- =?us-ascii?Q?1Aorj4GPIHpG+XBUw+GR/mIHDm4MJULbUd/xUFe5KcD8DA0+UnvI9Ola9+ZY?=
- =?us-ascii?Q?zlpDf/WOrNVpunYqcI5MdLQQgsVCzQ9ibg34/0w2/y/sJA+J/8Y20YuCy7Eh?=
- =?us-ascii?Q?58vFY32EkelIMxz89FX8D3wOv3MHli/jzZy7YA99F/CIPY9tV2iJiWdRn8Zo?=
- =?us-ascii?Q?2wFzvfAvvOtuXLX3s2RdS6bPBmpg2k6fC+wCZ1umnxBg01XHqLat6A2WV9BG?=
- =?us-ascii?Q?18a4U4U5NqW0WME18+FTQ1GR/GwG5B5HFAPLVD0waeie8EQBBsUil9MlYHXx?=
- =?us-ascii?Q?HM/+afdwmwBXG4nGglkD/6SB8HYM9iJ+LFryRFWbAGib5yqcVByzIjkrA6if?=
- =?us-ascii?Q?x/dVsEg63Id+Kci8Omd/N/nYnVSYHiMrTzAjBUvhcfhH3V3kqy/6ZhDSl5tF?=
- =?us-ascii?Q?XfldcyJEQLbnZxfiQF9wNTKC9azoaVIIlDG4dkCLHuN/znY6urlZHxV/MB8?=
- =?us-ascii?Q?=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QJ9OQSn4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717769033; x=1749305033;
+  h=message-id:date:mime-version:from:subject:to:
+   content-transfer-encoding;
+  bh=KlaaOF/7RRdWl7Ek3/y67Wh6c78qhL9KVAsKCLf9ETg=;
+  b=QJ9OQSn4weuyAosWRwRNmklmbZRaNn9ML/xfWYsU0Tiy2l0+neJ59Uf1
+   8NrkM6JAhHDXXqQlhzmWFeXjBC8sq6CZZ2oIlSAV+Dp8Hts5InvJKBR3Y
+   mA7dYFUO/sdVas9PyZELlIT4xyd+c28uqmqeb3jLVzfFPZ2SWo0zEahwZ
+   I+8p7Oz2iVYxIK1atuFj355LgasQdheQ+NFLaELyHB9SKLzR2r6U2aclQ
+   BddeTIkTAIx/QRha2gZofPLy3jv/FmAskcjcNj9pQ63xYUl+/lwwdCAF2
+   xATETpoZiSw2x5S4hVoy3UiukykdKAXR2o8316+GYLgtaS+5iY5Vzz8th
+   A==;
+X-CSE-ConnectionGUID: 2TYG+ITCRjyrt6a4e5z1lQ==
+X-CSE-MsgGUID: HZbN+QqIT46rYRWbN4mW5w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="31986438"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
+   d="scan'208";a="31986438"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 07:03:52 -0700
+X-CSE-ConnectionGUID: TuvgkAVzSpyErHgTTV8Q/A==
+X-CSE-MsgGUID: wfugFFIhRBGS3rZMePnlZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
+   d="scan'208";a="75817638"
+Received: from unknown (HELO [10.125.208.55]) ([10.125.208.55])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 07:03:52 -0700
+Message-ID: <5c79192c-58c3-40a8-ae11-642de0b9c027@linux.intel.com>
+Date: Fri, 7 Jun 2024 09:03:50 -0500
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 22786f91-1838-422e-9d70-08dc86927fff
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jun 2024 01:38:15.0530
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR02MB8444
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Dan Middleton <dan.middleton@linux.intel.com>
+Subject: CCC Kernel SIG / Device Security call today 2024/06/07
+To: linux-coco@lists.linux.dev
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Steven Price <steven.price@arm.com> Sent: Wednesday, June 5, 2024 2:3=
-0 AM
->=20
-> This series adds support for running Linux in a protected VM under the
-> Arm Confidential Compute Architecture (CCA). This has been updated
-> following the feedback from the v2 posting[1]. Thanks for the feedback!
-> Individual patches have a change log for v3.
->=20
-> The biggest change from v2 is fixing set_memory_{en,de}crypted() to
-> perform a break-before-make sequence. Note that only the virtual address
-> supplied is flipped between shared and protected, so if e.g. a vmalloc()
-> address is passed the linear map will still point to the (now invalid)
-> previous IPA. Attempts to access the wrong address may trigger a
-> Synchronous External Abort. However any code which attempts to access
-> the 'encrypted' alias after set_memory_decrypted() is already likely to
-> be broken on platforms that implement memory encryption, so I don't
-> expect problems.
+You can find today's meeting (and all CCC meetings) here:
 
-In the case of a vmalloc() address, load_unaligned_zeropad() could still
-make an access to the underlying pages through the linear address. In
-CoCo guests on x86, both the vmalloc PTE and the linear map PTE are
-flipped, so the load_unaligned_zeropad() problem can occur only during
-the transition between decrypted and encrypted. But even then, the
-exception handlers have code to fixup this case and allow everything to
-proceed normally.
+https://zoom-lfx.platform.linuxfoundation.org/meetings/ccc
 
-I haven't looked at the code in your patches, but do you handle that case,
-or somehow prevent it?
+I expect more discussion on TEE-IO topics today.
+
+Other topics are welcome too.
+
+Feel free to reply here with them or offer them as we kick-off the meeting.
+
 
 Thanks,
-
-Michael
-
+Dan
 
