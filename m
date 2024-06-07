@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18AB194AD6
-	for <linux-coco@lists.linux.dev>; Fri,  7 Jun 2024 14:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ACB1DFC5
+	for <linux-coco@lists.linux.dev>; Fri,  7 Jun 2024 14:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.190.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717769034; cv=none; b=odY78HQVgercOfcsmJjelS6ERfWb6eHGDi5NN2M6k42iQx/fd/oq31HWGTg7zcUdePX/20oYOIW00PdreG+G0CSrGN42PkmJgRpUX2rEuh2ncGRtYX1t3m7V3ZjcrRTVNnjYdrEm/aQbD9QQ7OC4pqiaiICgsub8oa/UOXP9DFE=
+	t=1717770297; cv=none; b=s9E4EOO1tF8L+RADhJJntpAoOotAcVZ9Bx9Kl134KZfZ5fXsAT+KLzggZSbeHeQ0wFN8sfZG5ADr6llPIwkhI6hYS6fViBEDWoAlgObLpfGFkYR9qk2EC8fQWnFFDaH/9RX8S2s/a98jc6ACOiL+QIQtQpmKmRmraiPN+LbGMEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717769034; c=relaxed/simple;
-	bh=KlaaOF/7RRdWl7Ek3/y67Wh6c78qhL9KVAsKCLf9ETg=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=Z3Hf7bJxtD4qwKa0u9n9sPNjGFQ6ZLhGheFWfC+FmCpQ7NjSAD4oAp4iY7/ZratWoH6hLrQ1hz55XzTFsx/7/W7OORfEqiaoh5AmR9yetVXQrcEAIVfYh/U8N7rDXXTAJugvq5EJFIuZHAgSOpetIS+JKVufAXxjFelzCbtBXi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QJ9OQSn4; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1717770297; c=relaxed/simple;
+	bh=IUPwPMIJbZiG2Sl2pBP2cbykst4lAZExd5Bb9wWSXwo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=eBOFUHva03yXdVTNq0Yj+iNgd0uGrMm6Q/y9Db79Dh/AyDzBXrcYMBOc3zufXD9QOdZgl7cXsZdjunkbFoRd45nDcWgA9Kfs8fJ5Bw48ZvWFqHsdwC3sHhd0irvzFN5fBxxOqLmSjqqdcpea90AjL31fW0Q6W31dosvUtPNTHMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=lqB4ia80; arc=none smtp.client-ip=207.171.190.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QJ9OQSn4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717769033; x=1749305033;
-  h=message-id:date:mime-version:from:subject:to:
-   content-transfer-encoding;
-  bh=KlaaOF/7RRdWl7Ek3/y67Wh6c78qhL9KVAsKCLf9ETg=;
-  b=QJ9OQSn4weuyAosWRwRNmklmbZRaNn9ML/xfWYsU0Tiy2l0+neJ59Uf1
-   8NrkM6JAhHDXXqQlhzmWFeXjBC8sq6CZZ2oIlSAV+Dp8Hts5InvJKBR3Y
-   mA7dYFUO/sdVas9PyZELlIT4xyd+c28uqmqeb3jLVzfFPZ2SWo0zEahwZ
-   I+8p7Oz2iVYxIK1atuFj355LgasQdheQ+NFLaELyHB9SKLzR2r6U2aclQ
-   BddeTIkTAIx/QRha2gZofPLy3jv/FmAskcjcNj9pQ63xYUl+/lwwdCAF2
-   xATETpoZiSw2x5S4hVoy3UiukykdKAXR2o8316+GYLgtaS+5iY5Vzz8th
-   A==;
-X-CSE-ConnectionGUID: 2TYG+ITCRjyrt6a4e5z1lQ==
-X-CSE-MsgGUID: HZbN+QqIT46rYRWbN4mW5w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="31986438"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="31986438"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 07:03:52 -0700
-X-CSE-ConnectionGUID: TuvgkAVzSpyErHgTTV8Q/A==
-X-CSE-MsgGUID: wfugFFIhRBGS3rZMePnlZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="75817638"
-Received: from unknown (HELO [10.125.208.55]) ([10.125.208.55])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 07:03:52 -0700
-Message-ID: <5c79192c-58c3-40a8-ae11-642de0b9c027@linux.intel.com>
-Date: Fri, 7 Jun 2024 09:03:50 -0500
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="lqB4ia80"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1717770297; x=1749306297;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=IUPwPMIJbZiG2Sl2pBP2cbykst4lAZExd5Bb9wWSXwo=;
+  b=lqB4ia80Ss3/rCqn6rKDA4csb5s2L3UCNxFINTYPJZPn0/I7/EClrCDK
+   ez2HLl3n+qBmuSGsqO7Cs8F3ezie70K+kba12k6794Ded1G7xYqL4WHda
+   YaD1ayPSNTCWhmY++B9yMP+HA4/Nhq8InCl5Pw6xO1B+EsOGw3nr5RUOC
+   s=;
+X-IronPort-AV: E=Sophos;i="6.08,221,1712620800"; 
+   d="scan'208";a="349122288"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 14:24:51 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.21.151:26982]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.20.12:2525] with esmtp (Farcaster)
+ id e691e329-edf3-4bac-b9b6-d1a9c6f4bad4; Fri, 7 Jun 2024 14:24:48 +0000 (UTC)
+X-Farcaster-Flow-ID: e691e329-edf3-4bac-b9b6-d1a9c6f4bad4
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Fri, 7 Jun 2024 14:24:40 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.34; Fri, 7 Jun
+ 2024 14:24:39 +0000
+Message-ID: <0ebfe6b4-ee5d-4909-8a3b-bbc1bd7623c7@amazon.com>
+Date: Fri, 7 Jun 2024 16:24:37 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -51,24 +51,33 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: Confidential Computing call May 10: RTMR ABI & TEE I/O
+To: Dan Middleton <dan.middleton@linux.intel.com>,
+	<linux-coco@lists.linux.dev>, "Kalra, Ashish" <ashish.kalra@amd.com>
+References: <61b65115-5945-4e27-89e4-bb6cba657f7f@linux.intel.com>
 Content-Language: en-US
-From: Dan Middleton <dan.middleton@linux.intel.com>
-Subject: CCC Kernel SIG / Device Security call today 2024/06/07
-To: linux-coco@lists.linux.dev
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <61b65115-5945-4e27-89e4-bb6cba657f7f@linux.intel.com>
+X-ClientProxiedBy: EX19D044UWB002.ant.amazon.com (10.13.139.188) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-You can find today's meeting (and all CCC meetings) here:
-
-https://zoom-lfx.platform.linuxfoundation.org/meetings/ccc
-
-I expect more discussion on TEE-IO topics today.
-
-Other topics are welcome too.
-
-Feel free to reply here with them or offer them as we kick-off the meeting.
-
-
-Thanks,
-Dan
+SGkgRGFuLAoKT24gMDMuMDUuMjQgMjE6NTUsIERhbiBNaWRkbGV0b24gd3JvdGU6Cj4KPiBIaQo+
+IE5leHQgRnJpZGF5LCBNYXkgMTB0aCBhdCA5YW0gUERULCB3ZSBoYXZlIGEgQ29uZmlkZW50aWFs
+IENvbXB1dGluZwo+IGRldnNlYyAvIEJvRiAvIERpc2N1c3Npb24gR3JvdXAgLyBTSUcgY2FsbC4g
+RXZlcnlvbmUgaXMgd2VsY29tZS4KPgo+IFRlbnRhdGl2ZSBhZ2VuZGEgaW5jbHVkZXMgUlRNUiBB
+QkkgdjMgZGlyZWN0aW9uIGFuZCBURUUgSS9PIG5leHQgc3RlcHMuCgoKSSBoYXZlbid0IHNlZW4g
+YW4gZW1haWwgZm9yIHRvZGF5J3MgY2FsbCwgc28gbGV0IG1lIHRocm93IG15IHRvcGljIApzdWdn
+ZXN0aW9uIGhlcmU6CgpJIHdvdWxkIGxpa2UgdG8gdGFsayBhYm91dCAiY29uZmlkZW50aWFsIGtl
+eGVjIiB0b2RheTogQSBrZXhlYyBtZWNoYW5pc20gCnRoYXQgYWxsb3dzIHlvdSB0byBkZXN0cm95
+IHRoZSBjb25maWRlbnRpYWwgVk0geW91J3JlIGluIGFuZCByZWNyZWF0ZSBhIApuZXcgb25lIGJh
+c2VkIG9uIGEgcGF5bG9hZCBvZiB0aGUgb2xkIG9uZS4gV2l0aCB0aGF0LCB3ZSB3b3VsZCBoYXZl
+IGEgCnZlcnkgZWFzeSBhbmQgY2xlYW4gbWVjaGFuaXNtIHRvIGJvb3RzdHJhcCBhIFZNIGludG8g
+YSBmdWxseSBtZWFzdXJlZCAKbmV3IGV4ZWN1dGlvbiBzdGFjay4KCgpUaGFua3MsCgpBbGV4CgoK
+CgoKQW1hem9uIFdlYiBTZXJ2aWNlcyBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJICkty
+YXVzZW5zdHIuIDM4CjEwMTE3IEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBT
+Y2hsYWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJs
+b3R0ZW5idXJnIHVudGVyIEhSQiAyNTc3NjQgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBERSAzNjUg
+NTM4IDU5Nwo=
 
