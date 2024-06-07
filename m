@@ -1,426 +1,262 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75056194A68
-	for <linux-coco@lists.linux.dev>; Fri,  7 Jun 2024 15:14:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE80D43AB2;
+	Fri,  7 Jun 2024 15:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717773279; cv=none; b=OKjVpC1vEVXkVZD90WcC6S2QthzlF71GVzgtrXXFGXQDB+hAY4mp8URp50mdLN65FPVtW4a4wyxNa+pClnkCnpstybH0BbtnfRCLimpQb9webXDcv38/lRieTfzneXlTg6NrudEm6263itp9dJEznpAcawZZ/A5lpz6yI/g1YBQ=
+	t=1717775124; cv=none; b=L00Gujp9zR5BLKnfcC7bvrpHtFEtaey503Zl3e1+m6CpGTppcwfYEZrPlaGRD9krpr+H7qSNR/0nUjjv+FY0fRzQitpT+f2fAtHtLJNRthDtAEZ3awsVCFC1hYHLF3SadClB3A/kFifi0NaE3sg8A3cdSvX3XpN2/dlL5ClCkbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717773279; c=relaxed/simple;
-	bh=XXq1CUm0YM3BcuboGgGpWREXpzYqe98jsob87/Kz8JM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wu6aADkBjSgwp/vzoRRlH9bcLpJJnpDcBkOBcxGtWcdLk4dy4hYYd+m3DRamMGhLS5eYWt828J+qHVol62ynVk2vCynOkNByEzGn05mpLZM9QrZbR9FYL0ql/yg7yt/zPwyZNzLx2thNmcoJQl4uPh7qmRB5lrevSGE7dKpDJLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mbP1Lc9b; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mbP1Lc9b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717773277; x=1749309277;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XXq1CUm0YM3BcuboGgGpWREXpzYqe98jsob87/Kz8JM=;
-  b=mbP1Lc9bjz3jlAGWRx2ati9EfYWspYDlb8lauOus/K5Bw2oJ3fuU86Wi
-   G4i4+8mXI3OG/2tzXARuh6O3lt+LOtn5U033tbhowY4S0izuntJ6GmZQM
-   ErwjMSRG4J9i67Mijvd5d6E032SHnTGFwpnrETt3t+tGgIntGy7Qxb1z6
-   g+IgVObLtkGFAg4nUV8a97QWSs882V2Vt7eCDvuZ4fYMkWbWS8DZbktUC
-   BGr6WV3w0N4raI32HlbfCBjqpQKBt88r4cB9asi42xGm2l/bNgmFulLMK
-   5tHwCbowC+62jXSS+TSFXd2nKcbdVo12SAX5bVqV55nBLaLgb6Wk8uRvA
-   A==;
-X-CSE-ConnectionGUID: 4bFjBKwpQ9esackW3euYxA==
-X-CSE-MsgGUID: 2XmOd0blRyW2T5wiO0D4kw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="31994428"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="31994428"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 08:14:36 -0700
-X-CSE-ConnectionGUID: 1DJWudwORySimsNrY6/5dg==
-X-CSE-MsgGUID: AMPzl3/PTV+d/VteOjVbvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="38470479"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa009.fm.intel.com with ESMTP; 07 Jun 2024 08:14:29 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 8D1922DC; Fri, 07 Jun 2024 18:14:28 +0300 (EEST)
-Date: Fri, 7 Jun 2024 18:14:28 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv11 18/19] x86/acpi: Add support for CPU offlining for
- ACPI MADT wakeup method
-Message-ID: <icu4yecqfwhmbexupo4zzei4lbe5sgavsfkm27jd6t6gyjynul@c2wap3jhtik7>
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <20240528095522.509667-19-kirill.shutemov@linux.intel.com>
- <20240603083930.GNZl2BQk2lQ8WtcE4o@fat_crate.local>
+	s=arc-20240116; t=1717775124; c=relaxed/simple;
+	bh=SdgeWxAowhAFLP9MPioaHEfNQKZwAXqR0IToCOG0RTw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PIcN7M8EfKES+9XkxRb1uNRjPeAixoq0tnmzfQrFAZ9xXt9aLWxe+zogODyF558LvY1yKY9iFdQ9LjVoSKF9HgNZLJ6Kcc9JkBM9eBpEksx92dxKajDY4cMO3Fi0+fDND1FKopa+pEEO6MoXimjuXVuAZTEp7Dl9OardHlRe7P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6378715A1;
+	Fri,  7 Jun 2024 08:45:44 -0700 (PDT)
+Received: from [10.1.39.15] (e122027.cambridge.arm.com [10.1.39.15])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A83143F792;
+	Fri,  7 Jun 2024 08:45:16 -0700 (PDT)
+Message-ID: <0ea597d3-6520-4ab3-8050-d967c173bc23@arm.com>
+Date: Fri, 7 Jun 2024 16:45:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240603083930.GNZl2BQk2lQ8WtcE4o@fat_crate.local>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 12/14] arm64: realm: Support nonsecure ITS emulation
+ shared
+To: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Will Deacon
+ <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+References: <20240605093006.145492-1-steven.price@arm.com>
+ <20240605093006.145492-13-steven.price@arm.com>
+ <86a5jzld9g.wl-maz@kernel.org> <4c363476-e5b5-42ff-9f30-a02a92b6751b@arm.com>
+ <867cf2l6in.wl-maz@kernel.org> <ZmICEN8JvWM7M9Ch@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <ZmICEN8JvWM7M9Ch@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 03, 2024 at 10:39:30AM +0200, Borislav Petkov wrote:
-> > +/*
-> > + * Make sure asm_acpi_mp_play_dead() is present in the identity mapping at
-> > + * the same place as in the kernel page tables. asm_acpi_mp_play_dead() switches
-> > + * to the identity mapping and the function has be present at the same spot in
-> > + * the virtual address space before and after switching page tables.
-> > + */
-> > +static int __init init_transition_pgtable(pgd_t *pgd)
+On 06/06/2024 19:38, Catalin Marinas wrote:
+> On Thu, Jun 06, 2024 at 11:17:36AM +0100, Marc Zyngier wrote:
+>> On Wed, 05 Jun 2024 16:08:49 +0100,
+>> Steven Price <steven.price@arm.com> wrote:
+>>> 2. Use a special (global) memory allocator that does the
+>>> set_memory_decrypted() dance on the pages that it allocates but allows
+>>> packing the allocations. I'm not aware of an existing kernel API for
+>>> this, so it's potentially quite a bit of code. The benefit is that it
+>>> reduces memory consumption in a realm guest, although fragmentation
+>>> still means we're likely to see a (small) growth.
+>>>
+>>> Any thoughts on what you think would be best?
+>>
+>> I would expect that something similar to kmem_cache could be of help,
+>> only with the ability to deal with variable object sizes (in this
+>> case: minimum of 256 bytes, in increments defined by the
+>> implementation, and with a 256 byte alignment).
 > 
-> This looks like a generic helper which should be in set_memory.c. And
-> looking at that file, there's populate_pgd() which does pretty much the
-> same thing, if I squint real hard.
+> Hmm, that's doable but not that easy to make generic. We'd need a new
+> class of kmalloc-* caches (e.g. kmalloc-decrypted-*) which use only
+> decrypted pages together with a GFP_DECRYPTED flag or something to get
+> the slab allocator to go for these pages and avoid merging with other
+> caches. It would actually be the page allocator parsing this gfp flag,
+> probably in post_alloc_hook() to set the page decrypted and re-encrypt
+> it in free_pages_prepare(). A slight problem here is that free_pages()
+> doesn't get the gfp flag, so we'd need to store some bit in the page
+> flags. Maybe the flag is not that bad, do we have something like for
+> page_to_phys() to give us the high IPA address for decrypted pages?
 > 
-> Let's tone down the duplication.
+> Similarly if we go for a kmem_cache (or a few for multiple sizes). One
+> can specify a constructor which could set the memory decrypted but
+> there's no destructor (and also the constructor is per object, not per
+> page, so we'd need some refcounting).
+> 
+> Another approach contained within the driver is to use mempool_create()
+> with our own _alloc_fn/_free_fn that sets the memory decrypted/encrypted
+> accordingly, though sub-page allocations need additional tracking. Also
+> that's fairly similar to kmem_cache, fixed size.
+> 
+> Yet another option would be to wire it somehow in the DMA API but the
+> minimum allocation is already a page size, so we don't gain anything.
+> 
+> What gets somewhat closer to what we need is gen_pool. It can track
+> different sizes, we just need to populate the chunks as needed. I don't
+> think this would work as a generic allocator but may be good enough
+> within the ITS code.
+> 
+> If there's a need for such generic allocations in other parts of the
+> kernel, my preference would be something around kmalloc caches and a new
+> GFP flag (first option; subject to the selling it to the mm folk). But
+> that's more of a separate prototyping effort that may or may not
+> succeed.
+> 
+> Anyway, we could do some hacking around gen_pool as a temporary solution
+> (maybe as a set of patches on top of this series to be easier to revert)
+> and start investigating a proper decrypted page allocator in parallel.
+> We just need to find a victim that has the page allocator fresh in mind
+> (Ryan or Alexandru ;)).
 
-Okay, there is a function called kernel_map_pages_in_pgd() in set_memory.c
-that does what we need here.
+Thanks for the suggestions Catalin. I had a go at implementing something
+with gen_pool - the below (very lightly tested) hack seems to work. This
+is on top of the current series.
 
-I tried to use it, but encountered a few issues:
+I *think* it should also be safe to drop the whole alignment part with
+this custom allocator, which could actually save memory. But I haven't
+quite got my head around that yet.
 
-- The code in set_memory.c allocates memory using the buddy allocator,
-  which is not yet ready. We can work around this limitation by delaying
-  the initialization of offlining until later, using a separate
-  early_initcall();
+Steve
 
-- I noticed a complaint that the allocation is being done from an atomic
-  context: a spinlock called cpa_lock is taken when populate_pgd()
-  allocates memory.
-
-  I am not sure why this was not noticed before. kernel_map_pages_in_pgd()
-  has only been used in EFI mapping initialization so far, so maybe it is
-  somehow special, I don't know.
-
-  I was able to address this issue by switching cpa_lock to a mutex.
-  However, this solution will only work if the callers for set_memory
-  interfaces are not called from an atomic context. I need to verify if
-  this is the case.
-
-- The function __flush_tlb_all() in kernel_(un)map_pages_in_pgd() must be
-  called with preemption disabled. Once again, I am unsure why this has
-  not caused issues in the EFI case.
-
-- I discovered a bug in kernel_ident_mapping_free() when it is used on a
-  machine with 5-level paging. I will submit a proper patch to fix this
-  issue.
-
-The fixup is below.
-
-Any comments?
-
-diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
-index 6cfe762be28b..fbbfe78f7f27 100644
---- a/arch/x86/kernel/acpi/madt_wakeup.c
-+++ b/arch/x86/kernel/acpi/madt_wakeup.c
-@@ -59,82 +59,55 @@ static void acpi_mp_cpu_die(unsigned int cpu)
- 		pr_err("Failed to hand over CPU %d to BIOS\n", cpu);
+----8<-----
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index ca72f830f4cc..e78634d4d22c 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -12,6 +12,7 @@
+ #include <linux/crash_dump.h>
+ #include <linux/delay.h>
+ #include <linux/efi.h>
++#include <linux/genalloc.h>
+ #include <linux/interrupt.h>
+ #include <linux/iommu.h>
+ #include <linux/iopoll.h>
+@@ -165,7 +166,7 @@ struct its_device {
+ 	struct its_node		*its;
+ 	struct event_lpi_map	event_map;
+ 	void			*itt;
+-	u32			itt_order;
++	u32			itt_sz;
+ 	u32			nr_ites;
+ 	u32			device_id;
+ 	bool			shared;
+@@ -225,6 +226,50 @@ static void its_free_pages(void *addr, unsigned int order)
+ 	free_pages((unsigned long)addr, order);
  }
  
-+static void acpi_mp_disable_offlining(struct acpi_madt_multiproc_wakeup *mp_wake)
-+{
-+	cpu_hotplug_disable_offlining();
++static struct gen_pool *itt_pool;
 +
-+	/*
-+	 * ACPI MADT doesn't allow to offline a CPU after it was onlined. This
-+	 * limits kexec: the second kernel won't be able to use more than one CPU.
-+	 *
-+	 * To prevent a kexec kernel from onlining secondary CPUs invalidate the
-+	 * mailbox address in the ACPI MADT wakeup structure which prevents a
-+	 * kexec kernel to use it.
-+	 *
-+	 * This is safe as the booting kernel has the mailbox address cached
-+	 * already and acpi_wakeup_cpu() uses the cached value to bring up the
-+	 * secondary CPUs.
-+	 *
-+	 * Note: This is a Linux specific convention and not covered by the
-+	 *       ACPI specification.
-+	 */
-+	mp_wake->mailbox_address = 0;
++static void *itt_alloc_pool(int node, int size)
++{
++	unsigned long addr;
++	struct page *page;
++
++	if (size >= PAGE_SIZE) {
++		page = its_alloc_pages_node(node,
++					    GFP_KERNEL | __GFP_ZERO,
++					    get_order(size));
++
++		return page_address(page);
++	}
++
++	do {
++		addr = gen_pool_alloc(itt_pool, size);
++		if (addr)
++			break;
++
++		page = its_alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO, 1);
++		if (!page)
++			break;
++
++		gen_pool_add(itt_pool, (unsigned long)page_address(page),
++			     PAGE_SIZE, node);
++	} while (!addr);
++
++	return (void*)addr;
 +}
 +
- /* The argument is required to match type of x86_mapping_info::alloc_pgt_page */
- static void __init *alloc_pgt_page(void *dummy)
- {
--	return memblock_alloc(PAGE_SIZE, PAGE_SIZE);
-+	return (void *)get_zeroed_page(GFP_KERNEL);
- }
- 
- static void __init free_pgt_page(void *pgt, void *dummy)
- {
--	return memblock_free(pgt, PAGE_SIZE);
-+	return free_page((unsigned long)pgt);
- }
- 
--/*
-- * Make sure asm_acpi_mp_play_dead() is present in the identity mapping at
-- * the same place as in the kernel page tables. asm_acpi_mp_play_dead() switches
-- * to the identity mapping and the function has be present at the same spot in
-- * the virtual address space before and after switching page tables.
-- */
--static int __init init_transition_pgtable(pgd_t *pgd)
--{
--	pgprot_t prot = PAGE_KERNEL_EXEC_NOENC;
--	unsigned long vaddr, paddr;
--	p4d_t *p4d;
--	pud_t *pud;
--	pmd_t *pmd;
--	pte_t *pte;
--
--	vaddr = (unsigned long)asm_acpi_mp_play_dead;
--	pgd += pgd_index(vaddr);
--	if (!pgd_present(*pgd)) {
--		p4d = (p4d_t *)alloc_pgt_page(NULL);
--		if (!p4d)
--			return -ENOMEM;
--		set_pgd(pgd, __pgd(__pa(p4d) | _KERNPG_TABLE));
--	}
--	p4d = p4d_offset(pgd, vaddr);
--	if (!p4d_present(*p4d)) {
--		pud = (pud_t *)alloc_pgt_page(NULL);
--		if (!pud)
--			return -ENOMEM;
--		set_p4d(p4d, __p4d(__pa(pud) | _KERNPG_TABLE));
--	}
--	pud = pud_offset(p4d, vaddr);
--	if (!pud_present(*pud)) {
--		pmd = (pmd_t *)alloc_pgt_page(NULL);
--		if (!pmd)
--			return -ENOMEM;
--		set_pud(pud, __pud(__pa(pmd) | _KERNPG_TABLE));
--	}
--	pmd = pmd_offset(pud, vaddr);
--	if (!pmd_present(*pmd)) {
--		pte = (pte_t *)alloc_pgt_page(NULL);
--		if (!pte)
--			return -ENOMEM;
--		set_pmd(pmd, __pmd(__pa(pte) | _KERNPG_TABLE));
--	}
--	pte = pte_offset_kernel(pmd, vaddr);
--
--	paddr = __pa(vaddr);
--	set_pte(pte, pfn_pte(paddr >> PAGE_SHIFT, prot));
--
--	return 0;
--}
--
--static int __init acpi_mp_setup_reset(u64 reset_vector)
-+static int __init acpi_mp_setup_reset(union acpi_subtable_headers *header,
-+			      const unsigned long end)
- {
-+	struct acpi_madt_multiproc_wakeup *mp_wake;
- 	struct x86_mapping_info info = {
- 		.alloc_pgt_page = alloc_pgt_page,
- 		.free_pgt_page	= free_pgt_page,
- 		.page_flag      = __PAGE_KERNEL_LARGE_EXEC,
--		.kernpg_flag    = _KERNPG_TABLE_NOENC,
-+		.kernpg_flag    = _KERNPG_TABLE,
- 	};
-+	unsigned long vaddr, pfn;
- 	pgd_t *pgd;
- 
- 	pgd = alloc_pgt_page(NULL);
- 	if (!pgd)
--		return -ENOMEM;
-+		goto err;
- 
- 	for (int i = 0; i < nr_pfn_mapped; i++) {
- 		unsigned long mstart, mend;
-@@ -143,30 +116,45 @@ static int __init acpi_mp_setup_reset(u64 reset_vector)
- 		mend   = pfn_mapped[i].end << PAGE_SHIFT;
- 		if (kernel_ident_mapping_init(&info, pgd, mstart, mend)) {
- 			kernel_ident_mapping_free(&info, pgd);
--			return -ENOMEM;
-+			goto err;
- 		}
- 	}
- 
- 	if (kernel_ident_mapping_init(&info, pgd,
--				      PAGE_ALIGN_DOWN(reset_vector),
--				      PAGE_ALIGN(reset_vector + 1))) {
-+				      PAGE_ALIGN_DOWN(acpi_mp_reset_vector_paddr),
-+				      PAGE_ALIGN(acpi_mp_reset_vector_paddr + 1))) {
- 		kernel_ident_mapping_free(&info, pgd);
--		return -ENOMEM;
-+		goto err;
- 	}
- 
--	if (init_transition_pgtable(pgd)) {
-+	/*
-+	 * Make sure asm_acpi_mp_play_dead() is present in the identity mapping
-+	 * at the same place as in the kernel page tables.
-+	 *
-+	 * asm_acpi_mp_play_dead() switches to the identity mapping and the
-+	 * function has be present at the same spot in the virtual address space
-+	 * before and after switching page tables.
-+	 */
-+	vaddr = (unsigned long)asm_acpi_mp_play_dead;
-+	pfn = __pa(vaddr) >> PAGE_SHIFT;
-+	if (kernel_map_pages_in_pgd(pgd, pfn, vaddr, 1, _KERNPG_TABLE)) {
- 		kernel_ident_mapping_free(&info, pgd);
--		return -ENOMEM;
-+		goto err;
- 	}
- 
- 	smp_ops.play_dead = acpi_mp_play_dead;
- 	smp_ops.stop_this_cpu = acpi_mp_stop_this_cpu;
- 	smp_ops.cpu_die = acpi_mp_cpu_die;
- 
--	acpi_mp_reset_vector_paddr = reset_vector;
- 	acpi_mp_pgd = __pa(pgd);
- 
- 	return 0;
-+err:
-+	pr_warn("Failed to setup MADT reset vector\n");
-+	mp_wake = (struct acpi_madt_multiproc_wakeup *)header;
-+	acpi_mp_disable_offlining(mp_wake);
-+	return -ENOMEM;
-+
- }
- 
- static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
-@@ -226,28 +214,6 @@ static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
- 	return 0;
- }
- 
--static void acpi_mp_disable_offlining(struct acpi_madt_multiproc_wakeup *mp_wake)
--{
--	cpu_hotplug_disable_offlining();
--
--	/*
--	 * ACPI MADT doesn't allow to offline a CPU after it was onlined. This
--	 * limits kexec: the second kernel won't be able to use more than one CPU.
--	 *
--	 * To prevent a kexec kernel from onlining secondary CPUs invalidate the
--	 * mailbox address in the ACPI MADT wakeup structure which prevents a
--	 * kexec kernel to use it.
--	 *
--	 * This is safe as the booting kernel has the mailbox address cached
--	 * already and acpi_wakeup_cpu() uses the cached value to bring up the
--	 * secondary CPUs.
--	 *
--	 * Note: This is a Linux specific convention and not covered by the
--	 *       ACPI specification.
--	 */
--	mp_wake->mailbox_address = 0;
--}
--
- int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
- 			      const unsigned long end)
- {
-@@ -274,10 +240,7 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
- 
- 	if (mp_wake->version >= ACPI_MADT_MP_WAKEUP_VERSION_V1 &&
- 	    mp_wake->header.length >= ACPI_MADT_MP_WAKEUP_SIZE_V1) {
--		if (acpi_mp_setup_reset(mp_wake->reset_vector)) {
--			pr_warn("Failed to setup MADT reset vector\n");
--			acpi_mp_disable_offlining(mp_wake);
--		}
-+		acpi_mp_reset_vector_paddr = mp_wake->reset_vector;
- 	} else {
- 		/*
- 		 * CPU offlining requires version 1 of the ACPI MADT wakeup
-@@ -290,3 +253,13 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
- 
- 	return 0;
- }
-+
-+static int __init acpi_mp_offline_init(void)
++static void itt_free_pool(void *addr, int size)
 +{
-+	if (!acpi_mp_reset_vector_paddr)
-+		return 0;
++	if (!addr)
++		return;
 +
-+	return acpi_table_parse_madt(ACPI_MADT_TYPE_MULTIPROC_WAKEUP,
-+				     acpi_mp_setup_reset, 1);
++	if (size >= PAGE_SIZE) {
++		its_free_pages(addr, get_order(size));
++		return;
++	}
++
++	gen_pool_free(itt_pool, (unsigned long)addr, size);
 +}
-+early_initcall(acpi_mp_offline_init);
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index 3996af7b4abf..c45127265f2f 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -60,7 +60,7 @@ static void free_p4d(struct x86_mapping_info *info, pgd_t *pgd)
++
+ /*
+  * Skip ITSs that have no vLPIs mapped, unless we're on GICv4.1, as we
+  * always have vSGIs mapped.
+@@ -3450,9 +3495,7 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+ 	unsigned long *lpi_map = NULL;
+ 	unsigned long flags;
+ 	u16 *col_map = NULL;
+-	struct page *page;
+ 	void *itt;
+-	int itt_order;
+ 	int lpi_base;
+ 	int nr_lpis;
+ 	int nr_ites;
+@@ -3471,13 +3514,8 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+ 	nr_ites = max(2, nvecs);
+ 	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
+ 	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
+-	itt_order = get_order(sz);
+-	page = its_alloc_pages_node(its->numa_node,
+-				    GFP_KERNEL | __GFP_ZERO,
+-				    itt_order);
+-	if (!page)
+-		return NULL;
+-	itt = page_address(page);
++
++	itt = itt_alloc_pool(its->numa_node, sz);
+ 
+ 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+ 
+@@ -3492,9 +3530,9 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+ 		lpi_base = 0;
  	}
  
- 	if (pgtable_l5_enabled())
--		info->free_pgt_page(pgd, info->context);
-+		info->free_pgt_page(p4d, info->context);
+-	if (!dev || !col_map || (!lpi_map && alloc_lpis)) {
++	if (!dev || !itt || !col_map || (!lpi_map && alloc_lpis)) {
+ 		kfree(dev);
+-		its_free_pages(itt, itt_order);
++		itt_free_pool(itt, sz);
+ 		bitmap_free(lpi_map);
+ 		kfree(col_map);
+ 		return NULL;
+@@ -3504,7 +3542,7 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+ 
+ 	dev->its = its;
+ 	dev->itt = itt;
+-	dev->itt_order = itt_order;
++	dev->itt_sz = sz;
+ 	dev->nr_ites = nr_ites;
+ 	dev->event_map.lpi_map = lpi_map;
+ 	dev->event_map.col_map = col_map;
+@@ -3532,7 +3570,7 @@ static void its_free_device(struct its_device *its_dev)
+ 	list_del(&its_dev->entry);
+ 	raw_spin_unlock_irqrestore(&its_dev->its->lock, flags);
+ 	kfree(its_dev->event_map.col_map);
+-	its_free_pages(its_dev->itt, its_dev->itt_order);
++	itt_free_pool(its_dev->itt, its_dev->itt_sz);
+ 	kfree(its_dev);
  }
  
- void kernel_ident_mapping_free(struct x86_mapping_info *info, pgd_t *pgd)
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 443a97e515c0..72715674f492 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -69,7 +69,7 @@ static const int cpa_warn_level = CPA_PROTECT;
-  * entries change the page attribute in parallel to some other cpu
-  * splitting a large page entry along with changing the attribute.
-  */
--static DEFINE_SPINLOCK(cpa_lock);
-+static DEFINE_MUTEX(cpa_lock);
+@@ -5722,6 +5760,10 @@ int __init its_init(struct fwnode_handle *handle, struct rdists *rdists,
+ 	bool has_v4_1 = false;
+ 	int err;
  
- #define CPA_FLUSHTLB 1
- #define CPA_ARRAY 2
-@@ -1186,10 +1186,10 @@ static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
- 	struct page *base;
++	itt_pool = gen_pool_create(get_order(ITS_ITT_ALIGN), -1);
++	if (!itt_pool)
++		return -ENOMEM;
++
+ 	gic_rdists = rdists;
  
- 	if (!debug_pagealloc_enabled())
--		spin_unlock(&cpa_lock);
-+		mutex_unlock(&cpa_lock);
- 	base = alloc_pages(GFP_KERNEL, 0);
- 	if (!debug_pagealloc_enabled())
--		spin_lock(&cpa_lock);
-+		mutex_lock(&cpa_lock);
- 	if (!base)
- 		return -ENOMEM;
- 
-@@ -1804,10 +1804,10 @@ static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary)
- 			cpa->numpages = 1;
- 
- 		if (!debug_pagealloc_enabled())
--			spin_lock(&cpa_lock);
-+			mutex_lock(&cpa_lock);
- 		ret = __change_page_attr(cpa, primary);
- 		if (!debug_pagealloc_enabled())
--			spin_unlock(&cpa_lock);
-+			mutex_unlock(&cpa_lock);
- 		if (ret)
- 			goto out;
- 
-@@ -2516,7 +2516,9 @@ int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn, unsigned long address,
- 	cpa.mask_set = __pgprot(_PAGE_PRESENT | page_flags);
- 
- 	retval = __change_page_attr_set_clr(&cpa, 1);
-+	preempt_disable();
- 	__flush_tlb_all();
-+	preempt_enable();
- 
- out:
- 	return retval;
-@@ -2551,7 +2553,9 @@ int __init kernel_unmap_pages_in_pgd(pgd_t *pgd, unsigned long address,
- 	WARN_ONCE(num_online_cpus() > 1, "Don't call after initializing SMP");
- 
- 	retval = __change_page_attr_set_clr(&cpa, 1);
-+	preempt_disable();
- 	__flush_tlb_all();
-+	preempt_enable();
- 
- 	return retval;
- }
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+ 	its_parent = parent_domain;
+
