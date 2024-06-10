@@ -1,63 +1,92 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8793383BD
-	for <linux-coco@lists.linux.dev>; Sat,  8 Jun 2024 14:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4968928EA
+	for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 10:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717857677; cv=none; b=OrZHpeimtc2OZcNyD0md+AClUpehJSQyjts8cajD4FRHIQpTVWUsO47K8nP1XqwP3CMyLW3RqTerih4r08rHLIzRD63nRjy5nbAvGIxnTKat8FMA1BXP9CcwDgdARpYcAeAWWgLuwjIkxY+jnF2++1rsnFjhyV9wv/8vrGIfm9Q=
+	t=1718014886; cv=none; b=HO8oCK4+5dxzNoN5KZQ1caUTtWAxmXNdsdq5YLOEz2itKug6tO+dgQ5GhSC8WSh6Oo902oxshhu+vEjU3vdBoXFpm/lZHwcsnd71kelklmzuiLDGHpbeOGYRo+TJtDsg2g9t9E1f6JGL7Huy9jcigchn3dyPSMTBwDSouW0UnII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717857677; c=relaxed/simple;
-	bh=31FwmGanFWt+Vq4kyDltHRpsejAcBQ1KMk+sVDgWobY=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PQrCH4BAJh5q493QwfZOPr/ZVCVtA5yzQR2ZmKiHTVqAfWriFRNt6iRvLbG6AVbq8GluXCPXxoWbQIyy37CW2yuxdpdopIv416a4cimaJBcyCxwGcWKkRKgBc4D2Cxv6AWC8rPAa71yCz0N9THAjieu0n7vqcxL0tyfbxC3JZ0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=X/j7e/ze; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=u2dPEOPt; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1718014886; c=relaxed/simple;
+	bh=y4nHq92fBK7Hncw18w6FXPEZgY5S+YepShIVlJ1gXTo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BvukNyrxqW0ZNgKIY1dMdMN7J1R1K/FhlpWNPZh6hU9MNV7nFgfRr50ZO5h3fiG1jAn/YhVzVnOHkxbzZ2Z/T8A4QY+fNb4+69iarsJHfsMG7EE9QCJW/0WXVQ4xB713ABnoadWUQ8oiTP8pYUA/BaCjOEDzMecQtlcM1AHcscA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lm4Qm/Wu; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="X/j7e/ze";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="u2dPEOPt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1717857675;
-	bh=31FwmGanFWt+Vq4kyDltHRpsejAcBQ1KMk+sVDgWobY=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=X/j7e/zesK8iTUUf27ZUP7pgs+ZknH/9eA9++PjgVD6c3nGph8ssPHTnZaAkl9g0e
-	 ooEAZ6Uq8sYk7oRDO9I2KUMc+j7lm/FFKP8HEQU9LjCFvvFx9PNQbz1ubPxEBUvShW
-	 rD9eqd++RlsyoHkGNvIl10vg1ZCtIBCogySsdjr0=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 0A7CA12813AF;
-	Sat, 08 Jun 2024 10:41:15 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id bHMZ0gz0BJUN; Sat,  8 Jun 2024 10:41:14 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1717857674;
-	bh=31FwmGanFWt+Vq4kyDltHRpsejAcBQ1KMk+sVDgWobY=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=u2dPEOPtbpWU/fLIFtYo/aIATExZP0h1FVvMWw3HgE2Z1N1I5VN5X9ihFlglve6nW
-	 q/vHmj+mhbHhse3ULz5VoStGsMW1y70QRb3/pXw3B+tinkgRVTEPUUFipKlI4FRPZB
-	 pQeEN4wPzVkNnNRlyHD71mIQaenZJg7aMsyayp3c=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 479081280B72;
-	Sat, 08 Jun 2024 10:41:14 -0400 (EDT)
-Message-ID: <88ca715e6234bd7d09cee1b0cb7682cc3e15ed3a.camel@HansenPartnership.com>
-Subject: Re: Confidential Computing call May 10: RTMR ABI & TEE I/O
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Alexander Graf <graf@amazon.com>, "Reshetova, Elena"
- <elena.reshetova@intel.com>, Dan Middleton <dan.middleton@linux.intel.com>,
-  "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Kalra, Ashish"
- <ashish.kalra@amd.com>
-Date: Sat, 08 Jun 2024 10:41:12 -0400
-In-Reply-To: <c3457141-1b62-4a7b-9cba-0ecec4dfb693@amazon.com>
-References: <61b65115-5945-4e27-89e4-bb6cba657f7f@linux.intel.com>
-	 <0ebfe6b4-ee5d-4909-8a3b-bbc1bd7623c7@amazon.com>
-	 <DM8PR11MB5750ECCF396D756D40BABF42E7FB2@DM8PR11MB5750.namprd11.prod.outlook.com>
-	 <c3457141-1b62-4a7b-9cba-0ecec4dfb693@amazon.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lm4Qm/Wu"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a689ad8d1f6so512792866b.2
+        for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 03:21:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718014883; x=1718619683; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LwHIHsN6FOqMaJ0QvL4YUcdXJqzusyELWmCpBOJ4s7U=;
+        b=lm4Qm/Wupe/udd8oMRR5Vj5aXEP4NlZq5tYJUeKlgjhZ2JRW8/nf3HzS2Qscvvlyh2
+         27Z4+adx1dtBE97gQktkrCBGzfcBCXfwmhHik8kWTKPI8L/qLc3Qziam6CDE/ctoV0i9
+         3vKZHEizMNuDjHUj1GC2ts4C4TKCimO/PcrigdcEVJYl7nXoaYsBI7JwSrjHos3g5gfz
+         nN+TQktrk1FbHe2lfZhIS7Rtmcx+GvHSYD639HE0wpy88TRKQ6Zvy4TqkwNACH4y9Idi
+         DT/1LzBctVuoXZXtDKwNkFz0dAT0TT4kBnCkcwVYoJeMFQ7LqNiAf1O2eHes53bO4BtR
+         b3NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718014883; x=1718619683;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LwHIHsN6FOqMaJ0QvL4YUcdXJqzusyELWmCpBOJ4s7U=;
+        b=jN1JkuE1+em3N0w+aMfgYUkx3+2lW/5VIHvwAKiOtC59MYaPU4Hv/XgIlz5qLR37On
+         H/ux37H/5NjBkrslehz2qN9jbz34Bb+nbdWLhVlhxN1bhOxrwYmulSOnt0ov2B6AqlQf
+         9rn6PtDn6viKafZR4VxTm4ipI4FZ+01DWC0Rgy5Gg1JtE2GZLZIhcaVSm14SC1Qr8ubL
+         +yL+x14pq0UUNjGrkcQ5jY46kbfz0m2diQncvMrjrai7q5nv4lIMRjdQhTug6e16pQuy
+         jfxiHlIWcVnZavkMdonM60Z+FtfHUwN5VnsIKFafcASVbhDiYMHmJe1xkxbUoY4lKjAg
+         NWNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWg1ESyioLDNhcc4oBF3otT45b50D4xVCu1hqHJopV6W+kiWfAXYuIAasw1Qe8hkmDk8MLGTIaVexlkDUKG6RX9SoIcxdgAie1nww==
+X-Gm-Message-State: AOJu0YwEfDE2QiCDHPMczezES2mU6smbV6/P/coDfIGeRXGXgYsAEgCn
+	8i4i1m3kkMpK79Jwxw85OpnPXTbcBKQ6ZGNmHkLgJqzBmtSpzH8Q
+X-Google-Smtp-Source: AGHT+IHYtZnMWrJ0IkdZ+MyDgpngsD09lt7KGhzA4zeGHE5BqNwD2tXuke8ut6t0IoCcbB5ZC+9Wmg==
+X-Received: by 2002:a17:906:f198:b0:a6f:e36:aba8 with SMTP id a640c23a62f3a-a6f0e36acd5mr316798066b.33.1718014883287;
+        Mon, 10 Jun 2024 03:21:23 -0700 (PDT)
+Received: from vasant-suse.fritz.box ([2001:9e8:ab68:af00:6f43:17ee:43bd:e0a9])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f0d7b35d5sm290887766b.192.2024.06.10.03.21.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jun 2024 03:21:22 -0700 (PDT)
+From: vsntk18@gmail.com
+To: vsntk18@gmail.com
+Cc: x86@kernel.org,
+	Borislav.Petkov@amd.com,
+	Dhaval.Giani@amd.com,
+	ashish.kalra@amd.com,
+	cfir@google.com,
+	dan.j.williams@intel.com,
+	dave.hansen@linux.intel.com,
+	ebiederm@xmission.com,
+	erdemaktas@google.com,
+	hpa@zytor.com,
+	jgross@suse.com,
+	jroedel@suse.de,
+	jslaby@suse.cz,
+	keescook@chromium.org,
+	kexec@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	luto@kernel.org,
+	martin.b.radev@gmail.com,
+	mhiramat@kernel.org,
+	michael.roth@amd.com,
+	mstunes@vmware.com,
+	nivedita@alum.mit.edu,
+	peterz@infradead.org,
+	rientjes@google.com,
+	seanjc@google.com,
+	stable@vger.kernel.org,
+	thomas.lendacky@amd.com,
+	virtualization@lists.linux-foundation.org,
+	vkarasulli@suse.de
+Subject: [PATCH v6 00/10] x86/sev: KEXEC/KDUMP support for SEV-ES guests
+Date: Mon, 10 Jun 2024 12:21:03 +0200
+Message-Id: <20240610102113.20969-1-vsntk18@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -66,68 +95,126 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Fri, 2024-06-07 at 18:05 +0200, Alexander Graf wrote:
-> 
-> On 07.06.24 16:46, Reshetova, Elena wrote:
-> > > Hi Dan,
-> > > 
-> > > On 03.05.24 21:55, Dan Middleton wrote:
-> > > > Hi
-> > > > Next Friday, May 10th at 9am PDT, we have a Confidential
-> > > > Computing devsec / BoF / Discussion Group / SIG call. Everyone
-> > > > is welcome.
-> > > > 
-> > > > Tentative agenda includes RTMR ABI v3 direction and TEE I/O
-> > > > next steps.
-> > > 
-> > > I haven't seen an email for today's call, so let me throw my
-> > > topic suggestion here:
-> > > 
-> > > I would like to talk about "confidential kexec" today: A kexec
-> > > mechanism that allows you to destroy the confidential VM you're
-> > > in and recreate a new one based on a payload of the old one. With
-> > > that, we would have a very easy and clean mechanism to bootstrap
-> > > a VM into a fully measured  new execution stack.
-> >  
-> > Interesting topic, I am curious of the requirements!
-> > Sounds like you want a local fast migration, i.e. a migration to a
-> > newCoCo VM on the same platform? I guess the difference would be
-> > the absenceof the online migration phase since you are probably ok
-> > stopping the original CoCo VM first.
-> 
-> 
-> Almost. I basically want the VM to be able to provide a new early 
-> measurement. So the opposite of migration: With migration, I want to 
-> preserve previous state. Here, the main motivation is to get rid of
-> any previous state except the new "seed" for the target VM.
-> 
-> There are 2 main use cases for this:
-> 
-> 1) Measurement purely based on initial launch measurements. If the
-> full OS is inside an initramfs, we can provide
-> firmware+kernel+initramfs as "seed". The CoCo env would measure
-> everything and I have an easy path to validate authenticity of my
-> target environment. I also have an easy path  to update the VM and
-> then measure without replaying any event logs.
+From: Vasant Karasulli <vkarasulli@suse.de>
 
-With an SVSM (that you're not replacing, so the initial launch
-measurement remains valid) this one is easy: it can reinit everything
-(including the vTPM) and redo a measured boot.  So here you have
-exactly the same measurements as though it were a clean boot. 
+Hi,
 
-> 2) Update SVSM (or similar). Often today, you want to implement TPMs
-> and inside a higher privileged component that is really part of the
-> VM. To update it, you could use in-VM mechanisms, but that leaves a
-> path where you boot with an old version -> exploit -> update to the
-> new. If we could "reboot"/kexec into a new SVSM, we could reason
-> about its confidentiality with a 100% guarantee.
+here are changes to enable kexec/kdump in SEV-ES guests. The biggest
+problem for supporting kexec/kdump under SEV-ES is to find a way to
+hand the non-boot CPUs (APs) from one kernel to another.
 
-This one's a bit more difficult because the initial launch measurement
-becomes invalid if the SVSM is replaced.  What I'd suggest happens here
-is that the SVSM reinit everything (including the vTPM), then measure a
-"replace SVSM" record containing both the old and new SVSM measurements
-and then do a measured boot.  That way an attesting system can tie the
-old launch measurement to the updated SVSM.
+Without SEV-ES the first kernel parks the CPUs in a HLT loop until
+they get reset by the kexec'ed kernel via an INIT-SIPI-SIPI sequence.
+For virtual machines the CPU reset is emulated by the hypervisor,
+which sets the vCPU registers back to reset state.
 
-James
+This does not work under SEV-ES, because the hypervisor has no access
+to the vCPU registers and can't make modifications to them. So an
+SEV-ES guest needs to reset the vCPU itself and park it using the
+AP-reset-hold protocol. Upon wakeup the guest needs to jump to
+real-mode and to the reset-vector configured in the AP-Jump-Table.
+
+The code to do this is the main part of this patch-set. It works by
+placing code on the AP Jump-Table page itself to park the vCPU and for
+jumping to the reset vector upon wakeup. The code on the AP Jump Table
+runs in 16-bit protected mode with segment base set to the beginning
+of the page. The AP Jump-Table is usually not within the first 1MB of
+memory, so the code can't run in real-mode.
+
+The AP Jump-Table is the best place to put the parking code, because
+the memory is owned, but read-only by the firmware and writeable by
+the OS. Only the first 4 bytes are used for the reset-vector, leaving
+the rest of the page for code/data/stack to park a vCPU. The code
+can't be in kernel memory because by the time the vCPU wakes up the
+memory will be owned by the new kernel, which might have overwritten it
+already.
+
+The other patches add initial GHCB Version 2 protocol support, because
+kexec/kdump need the MSR-based (without a GHCB) AP-reset-hold VMGEXIT,
+which is a GHCB protocol version 2 feature.
+
+The kexec'ed kernel is also entered via the decompressor and needs
+MMIO support there, so this patch-set also adds MMIO #VC support to
+the decompressor and support for handling CLFLUSH instructions.
+
+Finally there is also code to disable kexec/kdump support at runtime
+when the environment does not support it (e.g. no GHCB protocol
+version 2 support or AP Jump Table over 4GB).
+
+The diffstat looks big, but most of it is moving code for MMIO #VC
+support around to make it available to the decompressor.
+
+The previous version of this patch-set can be found here:
+
+	https://lore.kernel.org/kvm/20240408074049.7049-1-vsntk18@gmail.com/
+
+Please review.
+
+Thanks,
+   Vasant
+
+Changes v5->v6:
+        - Rebased to v6.10-rc3 kernel
+   
+Changes v4->v5:
+        - Rebased to v6.9-rc2 kernel
+	- Applied review comments by Tom Lendacky
+	  - Exclude the AP jump table related code for SEV-SNP guests
+
+Changes v3->v4:
+        - Rebased to v6.8 kernel
+	- Applied review comments by Sean Christopherson
+	- Combined sev_es_setup_ap_jump_table() and sev_setup_ap_jump_table()
+          into a single function which makes caching jump table address
+          unnecessary
+        - annotated struct sev_ap_jump_table_header with __packed attribute
+	- added code to set up real mode data segment at boot time instead of
+          hardcoding the value.
+
+Joerg Roedel (9):
+  x86/kexec/64: Disable kexec when SEV-ES is active
+  x86/sev: Save and print negotiated GHCB protocol version
+  x86/sev: Set GHCB data structure version
+  x86/sev: Setup code to park APs in the AP Jump Table
+  x86/sev: Park APs on AP Jump Table with GHCB protocol version 2
+  x86/sev: Use AP Jump Table blob to stop CPU
+  x86/sev: Add MMIO handling support to boot/compressed/ code
+  x86/sev: Handle CLFLUSH MMIO events
+  x86/kexec/64: Support kexec under SEV-ES with AP Jump Table Blob
+
+Vasant Karasulli (1):
+  x86/sev: Exclude AP jump table related code for SEV-SNP guests
+
+ arch/x86/boot/compressed/sev.c          |  45 +-
+ arch/x86/include/asm/insn-eval.h        |   1 +
+ arch/x86/include/asm/realmode.h         |   5 +
+ arch/x86/include/asm/sev-ap-jumptable.h |  30 +
+ arch/x86/include/asm/sev.h              |   7 +
+ arch/x86/kernel/machine_kexec_64.c      |  12 +
+ arch/x86/kernel/process.c               |   8 +
+ arch/x86/kernel/sev-shared.c            | 234 +++++-
+ arch/x86/kernel/sev.c                   | 376 +++++-----
+ arch/x86/lib/insn-eval-shared.c         | 921 ++++++++++++++++++++++++
+ arch/x86/lib/insn-eval.c                | 911 +----------------------
+ arch/x86/realmode/Makefile              |   9 +-
+ arch/x86/realmode/init.c                |   5 +-
+ arch/x86/realmode/rm/Makefile           |  11 +-
+ arch/x86/realmode/rm/header.S           |   3 +
+ arch/x86/realmode/rm/sev.S              |  85 +++
+ arch/x86/realmode/rmpiggy.S             |   6 +
+ arch/x86/realmode/sev/Makefile          |  33 +
+ arch/x86/realmode/sev/ap_jump_table.S   | 131 ++++
+ arch/x86/realmode/sev/ap_jump_table.lds |  24 +
+ 20 files changed, 1711 insertions(+), 1146 deletions(-)
+ create mode 100644 arch/x86/include/asm/sev-ap-jumptable.h
+ create mode 100644 arch/x86/lib/insn-eval-shared.c
+ create mode 100644 arch/x86/realmode/rm/sev.S
+ create mode 100644 arch/x86/realmode/sev/Makefile
+ create mode 100644 arch/x86/realmode/sev/ap_jump_table.S
+ create mode 100644 arch/x86/realmode/sev/ap_jump_table.lds
+
+
+base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
+-- 
+2.34.1
 
