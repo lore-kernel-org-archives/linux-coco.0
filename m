@@ -1,57 +1,57 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3006C7A705
-	for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 10:21:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266017D3F0
+	for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 10:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718014888; cv=none; b=XSmLaaYv6vKK5m1RY291R+BnpyNW3JODOwSrT7oxArYaFmyUBxR5KDa3O2iyWHjjE1go78zhxiLUOvT94g9dOZgDc5T2uDi3wcIVRobGx3TylcQoq3EqP16cGW/GsDa9MFPHLxZvSXqcFpiY8rsGsCizmkmRpoI93R43jeirpC8=
+	t=1718014890; cv=none; b=V5h8qI90omSwHHAHs3fKRHYHjRlqGx0jMGk+5TqEZ4XmqSc5f/SehabR2PhAEg2gX8cVKNfJfU6UZ8iGro4U1DpYQRIzj1+q/QwJqHTh2JREZIEm6gHwMDmv7RCVLM41rHqtgIF2AJQ0jf/GAiv5Bcddqn5eZ7legDE0UOC+7iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718014888; c=relaxed/simple;
-	bh=B2wImS6jYkVNxmJNAz/7Rmlae+jcWsMN5Euy7uX8VsY=;
+	s=arc-20240116; t=1718014890; c=relaxed/simple;
+	bh=sEdqF1TavEfxZMRrq6GYTKhkej+k4AMnxHaUkC+Lmk4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TZLL7lZn2Vl+Pt/Jwmiu6INtBMasAykZHMoAobFCNpyb0hRB5nBLSjuO0fmA6WhUubR2PiKlvCkzjbFnFeW+09l88XMWtrARyQI2vcgNDT/1tsgQ7U4NCWri6rIfvZm9YKiOXa4e+pEvy9UUwu2YWmBhzpDOJIi8haPOpg50bm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LTNm0mEA; arc=none smtp.client-ip=209.85.218.41
+	 MIME-Version; b=hMR0FDcKhHeE3xhneKradARRxRmAhC4GzAkyJCKs9yxZzzqvPa4T7cx5NWJftT3UfY42lwjhvNBdgY2vUAw9OJCamytzAwg65WvefEW7LXVQT5UEFgb5iAK0wg2uWiQYlGDANgigJj8OUUCQC291W36u0G10WNAs9Y4ZY70aBj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R1XvxUVA; arc=none smtp.client-ip=209.85.218.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTNm0mEA"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a68b41ef3f6so462291066b.1
-        for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 03:21:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R1XvxUVA"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a6ef64b092cso246173366b.1
+        for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 03:21:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718014885; x=1718619685; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1718014887; x=1718619687; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iEfSemHRxgSOfPiZYMvW6KyDv2YGLxFXvDUpF+fStco=;
-        b=LTNm0mEA+F+H3irOUdyzZWl1wCa7VJzkttGoIc2OpBDLQod4GMxg7Hlh/PXt69xeI1
-         XD9OPzQCdDS7HGpD1WU2IxvME0FD+gSau1+HjgwnB8tvJ0yt9O/9zobAPPBjmnSWgDYD
-         UaWCPxGTenqKsITHwURHlBqu1j1LQ85tvtkllGk4PhUISGk4n6kncZARivI+5tt4vt9Q
-         JfO7xWFUq32wtQOH6fRXJzvT1tskcjuExhDY+aoiNKya41rBo1Ztw8KcU6XKnmwXftQa
-         VR9B5bykHCFFsAl1KTHj+Ep3WcDyyeHRYF4yTkXzSW9LmPDAaw4cb7mAFva14xwl4e86
-         rFgg==
+        bh=GCL4Vo5CEvbB78AJfWlszJwJfM4IkhVBnCtECteN90M=;
+        b=R1XvxUVAuoxTgfnAk5wvJ22L7qol6oEhiObsnRyZVOZKJQo+Vr5BvFSWtEoxVQVFNe
+         WqMfDldfORy1pJ4jsROnjCFF3SJiEWrybFw066V/mUqI5UsoiXLnw2kqy3wdJY3wbDDj
+         u9q/l0LLYOyNkh70YUgcQ3ywMoyKWn186HMrcgn5T4h4dj1ZzauHVo3soFznHpZVvUCP
+         M0ON3xzrhZWDW3QPqv7rQjUE8Rk/8Orx9WHmA/kzIp0+Qn/0iQr3NdhPCFSgSnEkVukI
+         ghMfnzWgcH57bNyWWE0kwKtkXJxuHOD7T+bJEiFKxs0sZxfk1bxDyZhWNbAvXCCqJ/l2
+         uBHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718014885; x=1718619685;
+        d=1e100.net; s=20230601; t=1718014887; x=1718619687;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iEfSemHRxgSOfPiZYMvW6KyDv2YGLxFXvDUpF+fStco=;
-        b=DxBOJiOof3Dpm3Chfso/UdR/bhLS+uZCVVUq0h3xKPrR773DV+QZkOmR29GiuFS70e
-         2RgvY6PwIB3rQ+lp1yN+cEf425C8lmcUANn9tpeAMnKS9nhnQxG5dSOaR0w2g40fMqMA
-         cPphAfeGhkqtgLHMyWWm+9YL9z8VZTYcjgw13TxJJBC752fZjM+oS0psLid6QQUqrwUC
-         MiC6jYoxV0878Gd+iiP6cWWMfjm7U5u536PEd9hL0OWsnWHv9b73pqOKJGgWNxoLkae/
-         Ki3rUK+HNh2uu9YgCXzG5ymDIQDzZandxHTyIDaRBGbDFCWe08dWH5zipB7zHC8lFk8a
-         T1FA==
-X-Forwarded-Encrypted: i=1; AJvYcCU3IHG46m3myClAvYG79SEO/+fwlkgHqphCVMOc33f8sFnTa+PkyY35feDNb7Qddj89QZW4PAdTR31h9p0P0uVcMeP9e9B3VmuMaA==
-X-Gm-Message-State: AOJu0YwTPcyGtNcHnmwFApCP9LcK9dBkzuyOMpVQVuEyKSLEMapz9s9o
-	Rca/Gr0+tXVqxKKjiAdZvfnN0yhieLxFlXxWIJLXgTXwsFEFjnYA
-X-Google-Smtp-Source: AGHT+IG1u2X9S9HjwLyvUzoKmM04a54bnBw7Lz54/NkJdSpdqT0nvOtendvNpOdVPb71wHGOXHjzEw==
-X-Received: by 2002:a17:906:3289:b0:a69:1a11:d396 with SMTP id a640c23a62f3a-a6cdc0e252amr568492666b.71.1718014885293;
-        Mon, 10 Jun 2024 03:21:25 -0700 (PDT)
+        bh=GCL4Vo5CEvbB78AJfWlszJwJfM4IkhVBnCtECteN90M=;
+        b=jV56jvhYwERgfJKigcpcM3o+sCv0Z8W8leprXxk2q9jqq55vuR6y0D+Y8htiUvHQoF
+         b1M062AdtxEghoRDg1XozzJSixzD0zQPu0VpcMw/t2ZF1kPxeowwllOjE7h+ugXyBngw
+         GjlmF+ElYdcbfAHPcZ6lb0goYU73fpy3g1VFxlO2S+p3pi8htPSGFuynK7T8cUu10CAb
+         2XSve2qEeXByZtvGqSZJLvujKBGE8Mq7AsTrH9mZ/XzxLBQe1L/L5fvOI5zMzAfxK2lV
+         AMX99TDT7ukzWkBlj0O0mLVWBtchwrunu9rT1oCodxcIAlPDvgRFrLyRqyKN4bGPWLiS
+         GPDw==
+X-Forwarded-Encrypted: i=1; AJvYcCWT/+0gclBkNsr4fsNxySLnrzj4unlTgiaasmxFADWSz6K2t0MLwACGUW9uetpFPmUz2VT9aTvcEWq/uxGQfjtTBhnzJdvUCUP1MQ==
+X-Gm-Message-State: AOJu0Yyl6QyT4K4uAImljL51NT2+Ew2kknPwwyrCQK8XB+qwlPgtaMb6
+	JQy5pjbPbN8gJ0ELhuBBIX+LKwM7KRK8N9KcAQeTvmAa5xy61Yid
+X-Google-Smtp-Source: AGHT+IEU4Gid3qf0r8Bb4VtO+jH0s35ne9U0e+dRyHVRPwaSrjMvMMb+EUFXtRe7Fz4xmoBBOgq/kQ==
+X-Received: by 2002:a17:906:150c:b0:a6f:eb8:801a with SMTP id a640c23a62f3a-a6f0eb884afmr308071366b.56.1718014887288;
+        Mon, 10 Jun 2024 03:21:27 -0700 (PDT)
 Received: from vasant-suse.fritz.box ([2001:9e8:ab68:af00:6f43:17ee:43bd:e0a9])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f0d7b35d5sm290887766b.192.2024.06.10.03.21.23
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f0d7b35d5sm290887766b.192.2024.06.10.03.21.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jun 2024 03:21:24 -0700 (PDT)
+        Mon, 10 Jun 2024 03:21:26 -0700 (PDT)
 From: vsntk18@gmail.com
 To: vsntk18@gmail.com
 Cc: x86@kernel.org,
@@ -85,9 +85,9 @@ Cc: x86@kernel.org,
 	thomas.lendacky@amd.com,
 	virtualization@lists.linux-foundation.org,
 	vkarasulli@suse.de
-Subject: [PATCH v6 01/10] x86/kexec/64: Disable kexec when SEV-ES is active
-Date: Mon, 10 Jun 2024 12:21:04 +0200
-Message-Id: <20240610102113.20969-2-vsntk18@gmail.com>
+Subject: [PATCH v6 02/10] x86/sev: Save and print negotiated GHCB protocol version
+Date: Mon, 10 Jun 2024 12:21:05 +0200
+Message-Id: <20240610102113.20969-3-vsntk18@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240610102113.20969-1-vsntk18@gmail.com>
 References: <20240610102113.20969-1-vsntk18@gmail.com>
@@ -101,43 +101,94 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-SEV-ES needs special handling to support kexec. Disable it when SEV-ES
-is active until support is implemented.
+Save the results of the GHCB protocol negotiation into a data structure
+and print information about versions supported and used to the kernel
+log.
 
-Cc: stable@vger.kernel.org
+This is useful for debugging kexec issues in SEV-ES guests down the
+road to quickly spot whether kexec is supported on the given host.
+
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Vasant Karasulli <vkarasulli@suse.de>
 ---
- arch/x86/kernel/machine_kexec_64.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/x86/kernel/sev-shared.c | 33 +++++++++++++++++++++++++++++++--
+ arch/x86/kernel/sev.c        |  8 ++++++++
+ 2 files changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-index cc0f7f70b17b..1dfb47df5c01 100644
---- a/arch/x86/kernel/machine_kexec_64.c
-+++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -267,11 +267,22 @@ static void load_segments(void)
- 		);
- }
+diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+index b4f8fa0f722c..f5717eddf75b 100644
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -23,6 +23,23 @@
+ #define sev_printk_rtl(fmt, ...)
+ #endif
  
-+static bool machine_kexec_supported(void)
-+{
-+	if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
++/*
++ * struct ghcb_info - Used to return GHCB protocol
++ *				   negotiation details.
++ *
++ * @hv_proto_min:	Minimum GHCB protocol version supported by Hypervisor
++ * @hv_proto_max:	Maximum GHCB protocol version supported by Hypervisor
++ * @vm_proto:		Protocol version the VM (this kernel) will use
++ */
++struct ghcb_info {
++	unsigned int hv_proto_min;
++	unsigned int hv_proto_max;
++	unsigned int vm_proto;
++};
++
++/* Negotiated GHCB protocol version */
++static struct ghcb_info ghcb_info __ro_after_init;
++
+ /* I/O parameters for CPUID-related helpers */
+ struct cpuid_leaf {
+ 	u32 fn;
+@@ -159,12 +176,24 @@ static bool sev_es_negotiate_protocol(void)
+ 	if (GHCB_MSR_INFO(val) != GHCB_MSR_SEV_INFO_RESP)
+ 		return false;
+ 
+-	if (GHCB_MSR_PROTO_MAX(val) < GHCB_PROTOCOL_MIN ||
+-	    GHCB_MSR_PROTO_MIN(val) > GHCB_PROTOCOL_MAX)
++	/* Sanity check untrusted input */
++	if (GHCB_MSR_PROTO_MIN(val) > GHCB_MSR_PROTO_MAX(val))
+ 		return false;
+ 
++	/* Use maximum supported protocol version */
+ 	ghcb_version = min_t(size_t, GHCB_MSR_PROTO_MAX(val), GHCB_PROTOCOL_MAX);
+ 
++	/*
++	 * Hypervisor does not support any protocol version required for this
++	 * kernel.
++	 */
++	if (ghcb_version < GHCB_MSR_PROTO_MIN(val))
 +		return false;
 +
-+	return true;
-+}
++	ghcb_info.hv_proto_min = GHCB_MSR_PROTO_MIN(val);
++	ghcb_info.hv_proto_max = GHCB_MSR_PROTO_MAX(val);
++	ghcb_info.vm_proto     = ghcb_version;
 +
- int machine_kexec_prepare(struct kimage *image)
- {
- 	unsigned long start_pgtable;
- 	int result;
+ 	return true;
+ }
  
-+	if (!machine_kexec_supported())
-+		return -ENOSYS;
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 3342ed58e168..f0d87549b1e1 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -1399,6 +1399,14 @@ void __init sev_es_init_vc_handling(void)
+ 
+ 	/* Secondary CPUs use the runtime #VC handler */
+ 	initial_vc_handler = (unsigned long)kernel_exc_vmm_communication;
 +
- 	/* Calculate the offsets */
- 	start_pgtable = page_to_pfn(image->control_code_page) << PAGE_SHIFT;
++	/*
++	 * Print information about supported and negotiated GHCB protocol
++	 * versions.
++	 */
++	pr_info("Hypervisor GHCB protocol version support: min=%u max=%u\n",
++		ghcb_info.hv_proto_min, ghcb_info.hv_proto_max);
++	pr_info("Using GHCB protocol version %u\n", ghcb_info.vm_proto);
+ }
  
+ static void __init vc_early_forward_exception(struct es_em_ctxt *ctxt)
 -- 
 2.34.1
 
