@@ -1,129 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6144278289;
-	Mon, 10 Jun 2024 10:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95F474051
+	for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 12:09:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718015658; cv=none; b=YlDBc7IqFCRIYj7c6H+3ShpY0tH8qMka69a03p7REK89msl8ZWcY9XY8AqnaWB03g2CBLlZzWw7bvN1/1g3+klscoYx13Q0Pxa15OwEKMfRQEvS93MGY0EhEQTf42Pg9aGYySNUo9iY2BmkXxwX3OhV63MP0zSYv8xw/G5XeqYU=
+	t=1718021377; cv=none; b=kEZ0Ex2KGJO3VhJh25qjM373/pEU8tTykQcPhQjJ8ztwNPoEd11N64gCF2K4LH6p8DZfX5raYx8CEqqUh6Lo2Ph+cyb8Kaue+Zdic0YyNd8QVKzecPTrAW1fCLBSyEv2wiLaAHXx77aij7kKEtATiE2OCZVDmytcwyqw5a7uEeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718015658; c=relaxed/simple;
-	bh=XtWJks2i9IAdE5AHADeeOUmGvpns41q5F8q5JRssxmY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=daGmnfa7lEr2p1A4q6XQjdJvdn+44Oi3hr/dqBys5/9btDGquJZMUTOPa3ChNxJXTqBon+oldyaWcCM/wvqpPZsW5lLj2VY6/JRofsJLJmocN4WYrNY19MN2CiwRA4quvOiE5FGdeVlcm3MC7rV/gevuMTjUVwxz1nI2GF49Ba4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C0DC4AF1A;
-	Mon, 10 Jun 2024 10:34:14 +0000 (UTC)
-Date: Mon, 10 Jun 2024 11:34:12 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Steven Price <steven.price@arm.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: Re: [PATCH v3 00/14] arm64: Support for running as a guest in Arm CCA
-Message-ID: <ZmbWpNOc7MiJEjqL@arm.com>
-References: <20240605093006.145492-1-steven.price@arm.com>
- <SN6PR02MB415739D48B10C26D2673F3FED4FB2@SN6PR02MB4157.namprd02.prod.outlook.com>
- <ZmMjam3-L807AFR-@arm.com>
- <SN6PR02MB41571B5C2C9C59B0DF5F4E7ED4FB2@SN6PR02MB4157.namprd02.prod.outlook.com>
+	s=arc-20240116; t=1718021377; c=relaxed/simple;
+	bh=4i9KagyjC98TKztyLA7x7/ffAiAcKbjdkn9nwUz3/qg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=RACvpqenAocAkT1BNK8kCAjKTtYIr6YM/SuNeW5kDR5W6LylyUmOwTx0/yBFGtCprhqjO+5UB9BhVnVvPS+fzQ87ZVB9Uhm2Z7ZVDUd5a+fYc+Jz7My8o07VM6mfTtzoZJhc8sDNHGqPU5ILAMyew5sM5pz/GFGLa3Dfz86iaO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=kRatbaCr; arc=none smtp.client-ip=52.95.48.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="kRatbaCr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1718021376; x=1749557376;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=4i9KagyjC98TKztyLA7x7/ffAiAcKbjdkn9nwUz3/qg=;
+  b=kRatbaCrM6LWBcoZ8jGxEvCPQkjUmJJ7avyEzhkHMhlcfBraYN611NmP
+   DrHb5s0THSbHvTg994EWdpLPr6MdJNfnXmVVgua//auOdUBaBOXbRC7am
+   AHGwDQlCZg5uwMgB7IB3RCKwP5LAJgHf2tMSuuVpDrcnJ3d+U0s5KF2/2
+   g=;
+X-IronPort-AV: E=Sophos;i="6.08,227,1712620800"; 
+   d="scan'208";a="402291761"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2024 12:09:33 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.7.35:47901]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.39.133:2525] with esmtp (Farcaster)
+ id 090d3776-f94e-4e98-862c-2ea0e11f3c35; Mon, 10 Jun 2024 12:09:32 +0000 (UTC)
+X-Farcaster-Flow-ID: 090d3776-f94e-4e98-862c-2ea0e11f3c35
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Mon, 10 Jun 2024 12:09:31 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.34; Mon, 10 Jun
+ 2024 12:09:29 +0000
+Message-ID: <e1a22a93-bf58-4aa7-a94e-9d2907f2ef02@amazon.com>
+Date: Mon, 10 Jun 2024 14:09:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN6PR02MB41571B5C2C9C59B0DF5F4E7ED4FB2@SN6PR02MB4157.namprd02.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Confidential Computing call May 10: RTMR ABI & TEE I/O
+To: James Bottomley <James.Bottomley@HansenPartnership.com>, "Reshetova,
+ Elena" <elena.reshetova@intel.com>, Dan Middleton
+	<dan.middleton@linux.intel.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "Kalra, Ashish" <ashish.kalra@amd.com>
+References: <61b65115-5945-4e27-89e4-bb6cba657f7f@linux.intel.com>
+ <0ebfe6b4-ee5d-4909-8a3b-bbc1bd7623c7@amazon.com>
+ <DM8PR11MB5750ECCF396D756D40BABF42E7FB2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <c3457141-1b62-4a7b-9cba-0ecec4dfb693@amazon.com>
+ <88ca715e6234bd7d09cee1b0cb7682cc3e15ed3a.camel@HansenPartnership.com>
+Content-Language: en-US
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <88ca715e6234bd7d09cee1b0cb7682cc3e15ed3a.camel@HansenPartnership.com>
+X-ClientProxiedBy: EX19D043UWC004.ant.amazon.com (10.13.139.206) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-On Fri, Jun 07, 2024 at 04:36:18PM +0000, Michael Kelley wrote:
-> From: Catalin Marinas <catalin.marinas@arm.com> Sent: Friday, June 7, 2024 8:13 AM
-> > On Fri, Jun 07, 2024 at 01:38:15AM +0000, Michael Kelley wrote:
-> > > In the case of a vmalloc() address, load_unaligned_zeropad() could still
-> > > make an access to the underlying pages through the linear address. In
-> > > CoCo guests on x86, both the vmalloc PTE and the linear map PTE are
-> > > flipped, so the load_unaligned_zeropad() problem can occur only during
-> > > the transition between decrypted and encrypted. But even then, the
-> > > exception handlers have code to fixup this case and allow everything to
-> > > proceed normally.
-> > >
-> > > I haven't looked at the code in your patches, but do you handle that case,
-> > > or somehow prevent it?
-> > 
-> > If we can guarantee that only full a vm_struct area is changed at a
-> > time, the vmap guard page would prevent this issue (not sure we can
-> > though). Otherwise I think we either change the set_memory_*() code to
-> > deal with the other mappings or we handle the exception.
-> 
-> I don't think the vmap guard pages help. The vmalloc() memory consists
-> of individual pages that are scattered throughout the direct map. The stray
-> reference from load_unaligned_zeropad() will originate in a kmalloc'ed
-> memory page that precedes one of these scattered individual pages, and
-> will use a direct map kernel vaddr.  So the guard page in vmalloc space don't
-> come into play. At least in the Hyper-V use case, an entire vmalloc allocation
-> *is* flipped as a unit, so the guard pages do prevent a stray reference from
-> load_unaligned_zeropad() that originates in vmalloc space. At one
-> point I looked to see if load_unaligned_zeropad() is ever used on vmalloc
-> addresses.  I think the answer was "no",  making the guard page question
-> moot, but I'm not sure. :-(
+SGV5IEphbWVzLAoKT24gMDguMDYuMjQgMTY6NDEsIEphbWVzIEJvdHRvbWxleSB3cm90ZToKPgo+
+IE9uIEZyaSwgMjAyNC0wNi0wNyBhdCAxODowNSArMDIwMCwgQWxleGFuZGVyIEdyYWYgd3JvdGU6
+Cj4+IE9uIDA3LjA2LjI0IDE2OjQ2LCBSZXNoZXRvdmEsIEVsZW5hIHdyb3RlOgo+Pj4+IEhpIERh
+biwKPj4+Pgo+Pj4+IE9uIDAzLjA1LjI0IDIxOjU1LCBEYW4gTWlkZGxldG9uIHdyb3RlOgo+Pj4+
+PiBIaQo+Pj4+PiBOZXh0IEZyaWRheSwgTWF5IDEwdGggYXQgOWFtIFBEVCwgd2UgaGF2ZSBhIENv
+bmZpZGVudGlhbAo+Pj4+PiBDb21wdXRpbmcgZGV2c2VjIC8gQm9GIC8gRGlzY3Vzc2lvbiBHcm91
+cCAvIFNJRyBjYWxsLiBFdmVyeW9uZQo+Pj4+PiBpcyB3ZWxjb21lLgo+Pj4+Pgo+Pj4+PiBUZW50
+YXRpdmUgYWdlbmRhIGluY2x1ZGVzIFJUTVIgQUJJIHYzIGRpcmVjdGlvbiBhbmQgVEVFIEkvTwo+
+Pj4+PiBuZXh0IHN0ZXBzLgo+Pj4+IEkgaGF2ZW4ndCBzZWVuIGFuIGVtYWlsIGZvciB0b2RheSdz
+IGNhbGwsIHNvIGxldCBtZSB0aHJvdyBteQo+Pj4+IHRvcGljIHN1Z2dlc3Rpb24gaGVyZToKPj4+
+Pgo+Pj4+IEkgd291bGQgbGlrZSB0byB0YWxrIGFib3V0ICJjb25maWRlbnRpYWwga2V4ZWMiIHRv
+ZGF5OiBBIGtleGVjCj4+Pj4gbWVjaGFuaXNtIHRoYXQgYWxsb3dzIHlvdSB0byBkZXN0cm95IHRo
+ZSBjb25maWRlbnRpYWwgVk0geW91J3JlCj4+Pj4gaW4gYW5kIHJlY3JlYXRlIGEgbmV3IG9uZSBi
+YXNlZCBvbiBhIHBheWxvYWQgb2YgdGhlIG9sZCBvbmUuIFdpdGgKPj4+PiB0aGF0LCB3ZSB3b3Vs
+ZCBoYXZlIGEgdmVyeSBlYXN5IGFuZCBjbGVhbiBtZWNoYW5pc20gdG8gYm9vdHN0cmFwCj4+Pj4g
+YSBWTSBpbnRvIGEgZnVsbHkgbWVhc3VyZWQgIG5ldyBleGVjdXRpb24gc3RhY2suCj4+PiBJbnRl
+cmVzdGluZyB0b3BpYywgSSBhbSBjdXJpb3VzIG9mIHRoZSByZXF1aXJlbWVudHMhCj4+PiBTb3Vu
+ZHMgbGlrZSB5b3Ugd2FudCBhIGxvY2FsIGZhc3QgbWlncmF0aW9uLCBpLmUuIGEgbWlncmF0aW9u
+IHRvIGEKPj4+IG5ld0NvQ28gVk0gb24gdGhlIHNhbWUgcGxhdGZvcm0/IEkgZ3Vlc3MgdGhlIGRp
+ZmZlcmVuY2Ugd291bGQgYmUKPj4+IHRoZSBhYnNlbmNlb2YgdGhlIG9ubGluZSBtaWdyYXRpb24g
+cGhhc2Ugc2luY2UgeW91IGFyZSBwcm9iYWJseSBvawo+Pj4gc3RvcHBpbmcgdGhlIG9yaWdpbmFs
+IENvQ28gVk0gZmlyc3QuCj4+Cj4+IEFsbW9zdC4gSSBiYXNpY2FsbHkgd2FudCB0aGUgVk0gdG8g
+YmUgYWJsZSB0byBwcm92aWRlIGEgbmV3IGVhcmx5Cj4+IG1lYXN1cmVtZW50LiBTbyB0aGUgb3Bw
+b3NpdGUgb2YgbWlncmF0aW9uOiBXaXRoIG1pZ3JhdGlvbiwgSSB3YW50IHRvCj4+IHByZXNlcnZl
+IHByZXZpb3VzIHN0YXRlLiBIZXJlLCB0aGUgbWFpbiBtb3RpdmF0aW9uIGlzIHRvIGdldCByaWQg
+b2YKPj4gYW55IHByZXZpb3VzIHN0YXRlIGV4Y2VwdCB0aGUgbmV3ICJzZWVkIiBmb3IgdGhlIHRh
+cmdldCBWTS4KPj4KPj4gVGhlcmUgYXJlIDIgbWFpbiB1c2UgY2FzZXMgZm9yIHRoaXM6Cj4+Cj4+
+IDEpIE1lYXN1cmVtZW50IHB1cmVseSBiYXNlZCBvbiBpbml0aWFsIGxhdW5jaCBtZWFzdXJlbWVu
+dHMuIElmIHRoZQo+PiBmdWxsIE9TIGlzIGluc2lkZSBhbiBpbml0cmFtZnMsIHdlIGNhbiBwcm92
+aWRlCj4+IGZpcm13YXJlK2tlcm5lbCtpbml0cmFtZnMgYXMgInNlZWQiLiBUaGUgQ29DbyBlbnYg
+d291bGQgbWVhc3VyZQo+PiBldmVyeXRoaW5nIGFuZCBJIGhhdmUgYW4gZWFzeSBwYXRoIHRvIHZh
+bGlkYXRlIGF1dGhlbnRpY2l0eSBvZiBteQo+PiB0YXJnZXQgZW52aXJvbm1lbnQuIEkgYWxzbyBo
+YXZlIGFuIGVhc3kgcGF0aCAgdG8gdXBkYXRlIHRoZSBWTSBhbmQKPj4gdGhlbiBtZWFzdXJlIHdp
+dGhvdXQgcmVwbGF5aW5nIGFueSBldmVudCBsb2dzLgo+IFdpdGggYW4gU1ZTTSAodGhhdCB5b3Un
+cmUgbm90IHJlcGxhY2luZywgc28gdGhlIGluaXRpYWwgbGF1bmNoCgoKVGhhdCBhc3N1bWVzIHlv
+dSB3YW50IGFuIFNWU00gaW4gdGhlIGZpcnN0IHBsYWNlLiBJCgogwqAgYSkgRG9uJ3QgdGhpbmsg
+eW91IHJlYWxseSBuZWVkIHRvIGFuZAogwqAgYikgQmVsaWV2ZSBpdCBzaG91bGQgY29tZSBmcm9t
+IHRoZSBjdXN0b21lciwgbm90IHRoZSBjbG91ZCBwcm92aWRlciwgCmFzIGl0J3MgdGhlIGhpZ2hl
+c3QgcHJpdmlsZWdlZCBwaWVjZSBvZiBjb2RlIGluIHlvdXIgVk0KCgpGb3IgYm90aCwgdGhlIGVh
+c3kgc29sdXRpb24gaXMgdG8gYWxsb3cgYSBjdXN0b21lciB0byByZWJvb3QgaW50byB0aGVpciAK
+b3duICJpbml0aWFsIGxhdW5jaCBtZWFzdXJlbWVudCIgZnJvbSBhIGN1cnJlbnRseSBydW5uaW5n
+IFZNLgoKPiBtZWFzdXJlbWVudCByZW1haW5zIHZhbGlkKSB0aGlzIG9uZSBpcyBlYXN5OiBpdCBj
+YW4gcmVpbml0IGV2ZXJ5dGhpbmcKPiAoaW5jbHVkaW5nIHRoZSB2VFBNKSBhbmQgcmVkbyBhIG1l
+YXN1cmVkIGJvb3QuICBTbyBoZXJlIHlvdSBoYXZlCj4gZXhhY3RseSB0aGUgc2FtZSBtZWFzdXJl
+bWVudHMgYXMgdGhvdWdoIGl0IHdlcmUgYSBjbGVhbiBib290Lgo+Cj4+IDIpIFVwZGF0ZSBTVlNN
+IChvciBzaW1pbGFyKS4gT2Z0ZW4gdG9kYXksIHlvdSB3YW50IHRvIGltcGxlbWVudCBUUE1zCj4+
+IGFuZCBpbnNpZGUgYSBoaWdoZXIgcHJpdmlsZWdlZCBjb21wb25lbnQgdGhhdCBpcyByZWFsbHkg
+cGFydCBvZiB0aGUKPj4gVk0uIFRvIHVwZGF0ZSBpdCwgeW91IGNvdWxkIHVzZSBpbi1WTSBtZWNo
+YW5pc21zLCBidXQgdGhhdCBsZWF2ZXMgYQo+PiBwYXRoIHdoZXJlIHlvdSBib290IHdpdGggYW4g
+b2xkIHZlcnNpb24gLT4gZXhwbG9pdCAtPiB1cGRhdGUgdG8gdGhlCj4+IG5ldy4gSWYgd2UgY291
+bGQgInJlYm9vdCIva2V4ZWMgaW50byBhIG5ldyBTVlNNLCB3ZSBjb3VsZCByZWFzb24KPj4gYWJv
+dXQgaXRzIGNvbmZpZGVudGlhbGl0eSB3aXRoIGEgMTAwJSBndWFyYW50ZWUuCj4gVGhpcyBvbmUn
+cyBhIGJpdCBtb3JlIGRpZmZpY3VsdCBiZWNhdXNlIHRoZSBpbml0aWFsIGxhdW5jaCBtZWFzdXJl
+bWVudAo+IGJlY29tZXMgaW52YWxpZCBpZiB0aGUgU1ZTTSBpcyByZXBsYWNlZC4gIFdoYXQgSSdk
+IHN1Z2dlc3QgaGFwcGVucyBoZXJlCj4gaXMgdGhhdCB0aGUgU1ZTTSByZWluaXQgZXZlcnl0aGlu
+ZyAoaW5jbHVkaW5nIHRoZSB2VFBNKSwgdGhlbiBtZWFzdXJlIGEKPiAicmVwbGFjZSBTVlNNIiBy
+ZWNvcmQgY29udGFpbmluZyBib3RoIHRoZSBvbGQgYW5kIG5ldyBTVlNNIG1lYXN1cmVtZW50cwo+
+IGFuZCB0aGVuIGRvIGEgbWVhc3VyZWQgYm9vdC4gIFRoYXQgd2F5IGFuIGF0dGVzdGluZyBzeXN0
+ZW0gY2FuIHRpZSB0aGUKPiBvbGQgbGF1bmNoIG1lYXN1cmVtZW50IHRvIHRoZSB1cGRhdGVkIFNW
+U00uCgoKVGhpcyBvbmx5IHdvcmtzIGlmIHRoZSBTVlNNIGRvZXNuJ3QgaGF2ZSBhbnkgc2VjdXJp
+dHkgdnVsbmVyYWJpbGl0aWVzLiAKSWYgaXQgZG9lcywgeW91IGNhbid0IHRydXN0IHRoZSBtZWFz
+dXJlbWVudCBhbnltb3JlIGFuZCB5b3VyIHdob2xlIAp1cGRhdGUgcGF0aCBpcyBvdXQgb2YgdGhl
+IHdpbmRvdy4gRm9yIENvQ28sIHdlIG5lZWQgdG8gbWFrZSBzdXJlIHRoYXQgCnRoZXJlIGlzIGEg
+dmlhYmxlIHdheSBmb3IgdXNlcnMgdG8gcnVuIHNlY3VyZSB2ZXJzaW9ucyBvZiBhbGwgY29kZSAK
+d2l0aG91dCBkZXBlbmRpbmcgb24gdGhlIG1lcml0IG9mIHRoZWlyIGluZnJhc3RydWN0dXJlIHBy
+b3ZpZGVyLCBubz8KCgpBbGV4CgoKCgpBbWF6b24gV2ViIFNlcnZpY2VzIERldmVsb3BtZW50IENl
+bnRlciBHZXJtYW55IEdtYkgKS3JhdXNlbnN0ci4gMzgKMTAxMTcgQmVybGluCkdlc2NoYWVmdHNm
+dWVocnVuZzogQ2hyaXN0aWFuIFNjaGxhZWdlciwgSm9uYXRoYW4gV2Vpc3MKRWluZ2V0cmFnZW4g
+YW0gQW10c2dlcmljaHQgQ2hhcmxvdHRlbmJ1cmcgdW50ZXIgSFJCIDI1Nzc2NCBCClNpdHo6IEJl
+cmxpbgpVc3QtSUQ6IERFIDM2NSA1MzggNTk3Cg==
 
-My point was about load_unaligned_zeropad() originating in the vmalloc
-space. What I had in mind is changing the underlying linear map via
-set_memory_*() while we have live vmalloc() mappings. But I forgot about
-the case you mentioned in a previous thread: set_memory_*() being called
-on vmalloc()'ed memory directly:
-
-https://lore.kernel.org/r/SN6PR02MB41578D7BFEDE33BD2E8246EFD4E92@SN6PR02MB4157.namprd02.prod.outlook.com/
-
-I wonder whether something like __GFP_DECRYPTED could be used to get
-shared memory from the allocation time and avoid having to change the
-vmalloc() ranges. This way functions like netvsc_init_buf() would get
-decrypted memory from the start and vmbus_establish_gpadl() would not
-need to call set_memory_decrypted() on a vmalloc() address.
-
-> Another thought: The use of load_unaligned_zeropad() is conditional on
-> CONFIG_DCACHE_WORD_ACCESS. There are #ifdef'ed alternate
-> implementations that don't use load_unaligned_zeropad() if it is not
-> enabled. I looked at just disabling it in CoCo VMs, but I don't know the
-> performance impact. I speculated that the benefits were more noticeable
-> in processors from a decade or more ago, and perhaps less so now, but
-> never did any measurements. There was also a snag in that x86-only
-> code has a usage of load_unaligned_zeropad() without an alternate
-> implementation, so I never went fully down that path. But arm64 would
-> probably "just work" if it were disabled.
-
-We shouldn't penalise the performance, especially as I expect a single
-image to run both as a guest or a host. However, I think now the linear
-map is handled correctly since we make the PTE invalid before making the
-page shared and this would force the fault path through the one that
-safely handles load_unaligned_zeropad(). Steven's patches also currently
-reject non-linear-map addresses, I guess this would be a separate
-addition.
-
-> > We also have potential user mappings, do we need to do anything about
-> > them?
-> 
-> I'm unclear on the scenario here.  Would memory with a user mapping
-> ever be flipped between decrypted and encrypted while the user mapping
-> existed? 
-
-Maybe it doesn't matter. Do we expect it the underlying pages to be
-flipped while live mappings other than the linear map exist? I assume
-not, one would first allocate and configure the memory in the kernel
-before some remap_pfn_range() to user with the appropriate pgprot.
-
--- 
-Catalin
