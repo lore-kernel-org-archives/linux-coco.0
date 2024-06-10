@@ -1,72 +1,150 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81B77F48C;
-	Mon, 10 Jun 2024 14:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC48113213A
+	for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 14:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718029017; cv=none; b=UksmM9LelVygUbXvafifNOGGOHix7wX/C1I4ttRCMjIERivB2LJhWrb3To0lW5k+PSBxWUvSZHlsVcC92BlQNnogHIP5G7l66biZG2BmP6UF3/lASLVya2DNmiSRXS+dBaVP9ZN/HV+jMu1N7xipUqCghxX2M96morkLXREY9r0=
+	t=1718029882; cv=none; b=PMaf+ID5hoqhor9hl9e6AXqu28MVTRJnRMFQEg1VPgG7M9OZ32MHDGYt1XqCeOWCrEx/VCmKSdr36DtfAXnBycbVyJpFVlC6NCOdY6pxy9CVBwM+75kxkAeSU1H2A24w7G9ExV213Zlb6vKG6+0AYOn/Oh07fZfgo/YyQRC9R/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718029017; c=relaxed/simple;
-	bh=4HS81ASWp6hOMozhfLKqK3VhDPIEvMdvM0yobdh++Ys=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O0g0qyDqOzO5CA6Z/smmrldKMFqSB7i9sb/eDzQh1hdu+rbR8QzBsOeCrDtqyYHzNkeCb2qQRzNXLcJeD+12UZ+m2UhzqkTgrYqnO5yu1bI7ciluHcvjGa8cvAM+NuqIIUB77adPNnS/UsLmizTLypjZEWTyJaJ20Ek5r5WXp/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9807A106F;
-	Mon, 10 Jun 2024 07:17:18 -0700 (PDT)
-Received: from [10.1.35.41] (e122027.cambridge.arm.com [10.1.35.41])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 875323F73B;
-	Mon, 10 Jun 2024 07:16:50 -0700 (PDT)
-Message-ID: <dd86dbe3-689e-4488-b2bc-100d0f5fac04@arm.com>
-Date: Mon, 10 Jun 2024 15:16:48 +0100
+	s=arc-20240116; t=1718029882; c=relaxed/simple;
+	bh=V1664uLxF5b82ZVSpeCZtQWSqHB1NRXdy49enW9INw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XP4/gr/SjOnFqbdF73BghX8JfqoL/2whBjm7bmMNfdDtuJ58LCcWBDBzoLbDxyinTNYAeMPaUfpCdUQee+ldQvlA859+hq5YrwR6RGT9JzFxaE6bS43tptpsLnGRz2M+8YlhBALlEvukRJAWCohAv/IsbTtpwGtIKrVuBbozGB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VdpOOJRm; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VdpOOJRm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718029879; x=1749565879;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=V1664uLxF5b82ZVSpeCZtQWSqHB1NRXdy49enW9INw0=;
+  b=VdpOOJRmYj7wRufBUV6ZVxZArimN27EATiGSdbp4my6c23p7GKaZQC6v
+   sboc/9XB1OIXVGKTEa0X6hNjPh1RIZJJ4K4dXvr7bM2ms7kZIfZRq+tti
+   YP/oX6Fly4MCMcXh6X/U7FPZA1BY/4INzlbR9ykCLRsKoOYKiQ6WNiru7
+   ljjHRNrY0BN17NdkVicd7DAhHYEegt3ngQkdZ+yFbeczDPED4tp4lbdTJ
+   vkZQ18jLhU3amTwVigt5NurJCa9h0IZMJoeaYwcrDCiiBO9bcwE0YwzqL
+   9fsggqbRy+fry0lHGl/lYPQj8OZzaE0c+RxU7TmjfLwJTAh8CYZZuxjRd
+   g==;
+X-CSE-ConnectionGUID: 63SYkOc4QeaoCiLu0kVhBg==
+X-CSE-MsgGUID: d0DUM5JsTmGSmKKH8brHSw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="18479013"
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; 
+   d="scan'208";a="18479013"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2024 07:31:19 -0700
+X-CSE-ConnectionGUID: L87bjZU3T/qAYUEqdtGp5A==
+X-CSE-MsgGUID: FnG0LBQfSWOZuDsm57oIyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; 
+   d="scan'208";a="39528182"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa006.jf.intel.com with ESMTP; 10 Jun 2024 07:31:16 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 770921FD; Mon, 10 Jun 2024 17:31:14 +0300 (EEST)
+Date: Mon, 10 Jun 2024 17:31:14 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, cho@microsoft.com, decui@microsoft.com, 
+	John.Starks@microsoft.com
+Subject: Re: [PATCH] x86/tdx: Generate SIGBUS on userspace MMIO
+Message-ID: <ajxusvtisufqbl644hkdnq6c3tpamoppvjifhbj4nqctl4vyt7@nhak7gkergqf>
+References: <20240528100919.520881-1-kirill.shutemov@linux.intel.com>
+ <4df2ebee-40c0-4ea3-8909-13b90f049ff1@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/14] arm64: Detect if in a realm and set RIPAS RAM
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240605093006.145492-1-steven.price@arm.com>
- <20240605093006.145492-3-steven.price@arm.com> <ZmcJmvBDtjaLay5k@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <ZmcJmvBDtjaLay5k@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4df2ebee-40c0-4ea3-8909-13b90f049ff1@intel.com>
 
-On 10/06/2024 15:11, Catalin Marinas wrote:
-> On Wed, Jun 05, 2024 at 10:29:54AM +0100, Steven Price wrote:
->> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
->> index 9b5ab6818f7f..9d8d38e3bee2 100644
->> --- a/arch/arm64/mm/init.c
->> +++ b/arch/arm64/mm/init.c
->> @@ -41,6 +41,7 @@
->>  #include <asm/kvm_host.h>
->>  #include <asm/memory.h>
->>  #include <asm/numa.h>
->> +#include <asm/rsi.h>
->>  #include <asm/sections.h>
->>  #include <asm/setup.h>
->>  #include <linux/sizes.h>
+On Mon, Jun 10, 2024 at 06:55:56AM -0700, Dave Hansen wrote:
+> On 5/28/24 03:09, Kirill A. Shutemov wrote:
+> > Currently, attempting to perform MMIO from userspace in a TDX guest
+> > leads to a warning about an unexpected #VE and SIGSEGV being delivered
+> > to the process.
 > 
-> What's this random include here? It looks like a leftover from the
-> previous version.
+> Does it _always_ result in a #VE?  Or is this only when guests mmap()
+> something like from a driver and the host doesn't back the shared memory?
+
+See below.
+
+> > Enlightened userspace may choose to handle MMIO on their own if the
+> > kernel does not emulate it.
+> > 
+> > Handle the EPT_VIOLATION exit reason for userspace and deliver SIGBUS
+> > instead of SIGSEGV. SIGBUS is more appropriate for the MMIO situation.
 > 
+> Is any userspace _actually_ doing this?  Sure, SIGBUS is more
+> appropriate but in practice unprepared userspace crashes either way.
 
-Whoops - indeed that shouldn't be there.
+Microsoft folks have plans to do this. I don't know if any current code
+handles SIGBUS this way.
 
-Thanks,
-Steve
+> > @@ -641,17 +647,20 @@ static int virt_exception_user(struct pt_regs *regs, struct ve_info *ve)
+> >  	switch (ve->exit_reason) {
+> >  	case EXIT_REASON_CPUID:
+> >  		return handle_cpuid(regs, ve);
+> > +	case EXIT_REASON_EPT_VIOLATION:
+> > +		if (is_private_gpa(ve->gpa))
+> > +			panic("Unexpected EPT-violation on private memory.");
+> > +
+> > +		force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)ve->gla);
+> > +
+> > +		/* Return 0 to avoid incrementing RIP */
+> > +		return 0;
+> 
+> This _really_ needs a comment, probably even a helper function where you
+> can actually explain what is going on.
+> 
+> I could barely remember what this is for today.  There's no hope for me
+> in a couple of years.
+> 
+> Just thinking through the possibilities here:
+> 
+> Private=> Private      	: no #VE
+> Private=> Anything else	: fatal shutdown
+> Shared => Shared	: no #VE
+> Shared => Private	: #VE (end up here)
+> Shared => !Present      : #VE (end up here)
 
+Are you talking about page state vs. page mapping here?
+
+It is wrong frame to think about it.
+
+We get here as result of EPT violation. Either shared or secret EPT.
+So we don't have an present EPT entry for the page or allowed permissions
+doesn't match the access.
+
+The is_private_gpa() check catches cases when private EPT doesn't have a
+valid entry for page accessed via private mapping: page is not accepted or
+removed by VMM. This case is only reachable for debug-TD. In for non-debug
+TD it leads to unrecoverable TD exit. The same story as for kernel
+addresses.
+
+Normal shared memory doesn't cause #VE even if the memory was not
+converted to shared explicitly. On the first access to a page via shared
+mapping VMM will allocate a new page and fill EPT[*]. Except for GPA
+ranges dedicated for MMIO. For these VMM will not fill EPT and it causes
+#VE which interpreted as MMIO access.
+
+Note that only emulated devices require such mechanism to get MMIO
+working. For device passthrough, device MMIO range mapped directly into
+the guest and handled transparently for the guest kernel.
+
+Does it make sense?
+
+[*] I don't like this implicit conversion to shared. I would prefer #VE
+here too, but it is what we have.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
