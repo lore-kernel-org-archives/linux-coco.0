@@ -1,57 +1,57 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A756C80BEC
-	for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 10:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D098286A
+	for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 10:21:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718014900; cv=none; b=RT0hb4fKwRzwZ4fXA5xLWl3N0cjk6nqeixdeb29auf7xE75toDUOYnccBkz8rRQwiXawBGzuTprbS09HnPuXj7Vnyakag1Qj7/u7ISZU55MX4vFxdPSKrTW/QxRcKsjAd9XY0bPnfx3ce42iiPnQQJWfeW1Al//MYkjobabbIyw=
+	t=1718014903; cv=none; b=e9IUVH3Cw/ktzyfGFkF6ftq0D9P3nAfK9PKZoVJHj+0HK93NYkfbUb9rHywBgkcA4vhRiFyL5OIfpuneYooT37eZlzjjgadWdyGGviOMVbLB7DpZTgBGFmeuHUIVxFa5xNW0bC37YoofWV1egkd5K2aVnrEexIZEihkUrE493h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718014900; c=relaxed/simple;
-	bh=mLymI2YoX0b3NV9bnLYtsE9H+OoS+zhSI+TS4E7Vahs=;
+	s=arc-20240116; t=1718014903; c=relaxed/simple;
+	bh=n/Kr224Se4bnUgaKv7FxbMglodNlFAhVuU9INti7pAw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rvPe8M2bpy1GbPiOF/3vtG4Qg0HslIhJOSk27NdSyX+zNDN/laSVTxKFthKo0Xb5O6rRIv+TAPOB7yMJdpX2u3fPDmTzPwDGqzhsBm63qBnJdVplPstU75uEjeA6+ci3XZJoSjnLaYtTYOzcwXM54AlbpMS/jjcntaoWrw0tkDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ejhH3iZ9; arc=none smtp.client-ip=209.85.208.53
+	 MIME-Version; b=nls+rx2oMkacrsRyWYUFOFow8Mcev7+KFnH3izpDRiLtqUE3mHueOfsP+/GzWQn83qxi/GSp+L3djXGSeLE4jgt/Keo72oc8AK6Y8kLsC9+boqcD4aQbhPPNZdWBkLFeEAHqBgX2I8BpgCgC1UeXuaXHon3PUoBCLPKdTS96M1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ppu4h3mW; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ejhH3iZ9"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-57c75464e77so1526696a12.0
-        for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 03:21:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ppu4h3mW"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-57c61165af6so2829603a12.2
+        for <linux-coco@lists.linux.dev>; Mon, 10 Jun 2024 03:21:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718014894; x=1718619694; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1718014900; x=1718619700; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QQ7oMYGDWvKPuxrsHJ0AyJxr89wmDw3wSCbvoeSBHx8=;
-        b=ejhH3iZ99kNuilkornEqe0lvxkhfyftzXTAdJHfxn2JyQjCCh9J8/p57Xy99QedWhv
-         0Vi4sX0q+tOdnvD/WdEb7qPc1/y7sEdrwWp2sXYmq2j/c+F8KABMvj3rkL2FvO3f3525
-         ciOj+1UNSLn6Tu57ycMgNPe2HhqbsB5WDgnxFQTI4UXzVKvzu1eLFUiUYmqbueqMBuC+
-         OBXJTBSvC7qS/CjZpj+/kefDnuuL3qARHQfPIBjCW949hTaeJ8E3Pkfl+X9aGNhvMYUY
-         WE+5tE31d8h+nzPgvXTbMxJupV9QsqPM2jk0hXDa05zCG54RdxPzEPUFwy40BeQH5Lmh
-         UTBA==
+        bh=1h9f1jusJiCVXI0HUFRIPuyM0FJ2eMb2RD0DEq0ZSug=;
+        b=Ppu4h3mW0CNDHNhJSkZ2Neqr2cSDZn+gJDqiXt6oyyOiefOAu0gduhWW4cQ7U+0V3Z
+         akJhVOWz3HRnjSQQGMnmeAJyRk8E56zn8XRzQlUxaSJxT2FAgObCRInOGqVK9jsdWIqD
+         ic51/FqpWECD1crAUOasQKdAVjU7UC2lI/XeMiFtfbVObouapnaSPJljFnF0DPDrEe7D
+         oq3XIxj2r8pYJVrjBTR/mg2D5O8ahjYy9Dlnw69pwCGcJT8L2ZV8GMyXpM2XK/C9iEHc
+         1x5re0W1sxL8jgTey2IaJvdsjCKWbbkmnB/ltWvU6oZT6Bag7x1F2TBWc4onI82S0QA7
+         wwSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718014894; x=1718619694;
+        d=1e100.net; s=20230601; t=1718014900; x=1718619700;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QQ7oMYGDWvKPuxrsHJ0AyJxr89wmDw3wSCbvoeSBHx8=;
-        b=W7xD7Dj4vBUYZQ9z3FtDMf1/EwIC93EnnduwNlU34mQUIqfoJX8QIV81DYU6bCmdms
-         nnkuuCZPocnQ3WwOwcbnujpEoE4taNqJmSZQZy6FAIZoDkslvcqlA9Z2F3p8rdmGJDEi
-         LOkXZSYrdLn83wwOmvWHWA9TL6roqPJQEvxdjXnlUqnuid6Kc2abgFZ3ZmylvdG/biwU
-         UNhz9lTUY6kLutCQcjKIlBbZCcIfLreD/iskBwsb75LfxpDbt01NMZm++9b2aNMzrDno
-         ZHXFu3wc55vAVDiEibhdyjMxmZ7tb7zt9Jhrmel+U3iFgeG8Crh+HI0Va6eewZBicDH6
-         cGCg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCjp9pzJqFNEv/wd8Uf0o0rbfMMfHoEGukmrvN0zxcpByEnUPvYjC4UCGvSdJSQ0AtL2hKBSB8UKJR2GBBBscA5H9usAllT6xDzg==
-X-Gm-Message-State: AOJu0YzqJql9PW+MBv+KhuapKh9C6Mxz5hGz1TnXbLrvPhHvceI04oSq
-	ApdjyhKw6L/B20Bv03m3xSNJHXTXnky891idnJUR9ODU53MSZME7
-X-Google-Smtp-Source: AGHT+IEjbMSU2+suJHGHFq7yEAKbFwmW31zmvuxiyeHo2z4EIwpvWflJZoDXR60H3CgaABGqRX7uog==
-X-Received: by 2002:a17:906:45a:b0:a6f:7c8:4fd6 with SMTP id a640c23a62f3a-a6f07c8518bmr357125966b.0.1718014893650;
-        Mon, 10 Jun 2024 03:21:33 -0700 (PDT)
+        bh=1h9f1jusJiCVXI0HUFRIPuyM0FJ2eMb2RD0DEq0ZSug=;
+        b=tyYO1J7Up/1RtfTZqDVJRl/D4T9TArFiwbHKU9INfTLnGvVnhbbUWzU8K/UwNbVKco
+         F8bS8Ed/idx3+eZs+DLtTR2j6SuoNwBJr4xYT7dsWGzt93bRw6hiQVexINcQ95OBtcf/
+         +pdISQsDJQGKRv/KXfHHtPYQvsh7+M2dis4keR6dOY3GOQ6oPI/x/8P60K1kdNlOuy7P
+         PZMlAlJG9kevU/7eJ9ZM2bOCEN4hCoHYOD5yP49/ZjZzf1gb0XL+RhpA/ihAxNT8xHLe
+         PiyHYqxnhXntFvl2TP5rn71IRnDmXuWjIsdvMDblX+mzHM3Muh9JpJspzoNejANIDTJd
+         8xAg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXCmEtMSwOWjEW7FuQJ1GbdzV4UB6JKMfFuUTjnh7DHbcuNro6MxPHuHUkaT2sxPgEvk0LsY+1Zi7MCATvLjM4Q+Q2X2N/DvdGhg==
+X-Gm-Message-State: AOJu0YyLsjgQWi8KBQnP+z2qhwC5qcjMG1t2aY/E09uAXXvq8XerA3pK
+	rOMseuQcjt76ovsbofi7CWNUhPkstINuxU4GY2mH46qWiKSqnEUT
+X-Google-Smtp-Source: AGHT+IFJiw9+hjS8AaCE8xUhReVnHEw0PrrFH9cPzv9TZmB9phDv2ggpsMiBf14CXAFGLO+4Z9OVRQ==
+X-Received: by 2002:a17:906:fe07:b0:a6d:b66f:7b21 with SMTP id a640c23a62f3a-a6db66f7e7emr709355566b.54.1718014899942;
+        Mon, 10 Jun 2024 03:21:39 -0700 (PDT)
 Received: from vasant-suse.fritz.box ([2001:9e8:ab68:af00:6f43:17ee:43bd:e0a9])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f0d7b35d5sm290887766b.192.2024.06.10.03.21.31
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f0d7b35d5sm290887766b.192.2024.06.10.03.21.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jun 2024 03:21:33 -0700 (PDT)
+        Mon, 10 Jun 2024 03:21:39 -0700 (PDT)
 From: vsntk18@gmail.com
 To: vsntk18@gmail.com
 Cc: x86@kernel.org,
@@ -85,9 +85,9 @@ Cc: x86@kernel.org,
 	thomas.lendacky@amd.com,
 	virtualization@lists.linux-foundation.org,
 	vkarasulli@suse.de
-Subject: [PATCH v6 05/10] x86/sev: Park APs on AP Jump Table with GHCB protocol version 2
-Date: Mon, 10 Jun 2024 12:21:08 +0200
-Message-Id: <20240610102113.20969-6-vsntk18@gmail.com>
+Subject: [PATCH v6 08/10] x86/sev: Handle CLFLUSH MMIO events
+Date: Mon, 10 Jun 2024 12:21:11 +0200
+Message-Id: <20240610102113.20969-9-vsntk18@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240610102113.20969-1-vsntk18@gmail.com>
 References: <20240610102113.20969-1-vsntk18@gmail.com>
@@ -101,257 +101,62 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-GHCB protocol version 2 adds the MSR-based AP-reset-hold VMGEXIT which
-does not need a GHCB. Use that to park APs in 16-bit protected mode on
-the AP jump table.
+Handle CLFLUSH instruction to MMIO memory in the #VC handler. The
+instruction is ignored by the handler, as the Hypervisor is
+responsible for cache management of emulated MMIO memory.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Vasant Karasulli <vkarasulli@suse.de>
 ---
- arch/x86/include/asm/realmode.h |  3 ++
- arch/x86/kernel/sev.c           | 55 ++++++++++++++++++---
- arch/x86/realmode/rm/Makefile   | 11 +++--
- arch/x86/realmode/rm/header.S   |  3 ++
- arch/x86/realmode/rm/sev.S      | 85 +++++++++++++++++++++++++++++++++
- 5 files changed, 146 insertions(+), 11 deletions(-)
- create mode 100644 arch/x86/realmode/rm/sev.S
+ arch/x86/include/asm/insn-eval.h | 1 +
+ arch/x86/kernel/sev-shared.c     | 3 +++
+ arch/x86/lib/insn-eval-shared.c  | 7 +++++++
+ 3 files changed, 11 insertions(+)
 
-diff --git a/arch/x86/include/asm/realmode.h b/arch/x86/include/asm/realmode.h
-index bd54a48fe077..b0a2aa9b8366 100644
---- a/arch/x86/include/asm/realmode.h
-+++ b/arch/x86/include/asm/realmode.h
-@@ -23,6 +23,9 @@ struct real_mode_header {
- 	u32	trampoline_header;
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- 	u32	sev_es_trampoline_start;
-+	u32	sev_ap_park;
-+	u32	sev_ap_park_seg;
-+	u32	sev_ap_park_gdt;
- #endif
- #ifdef CONFIG_X86_64
- 	u32	trampoline_start64;
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index c15d3568cab9..84b79630f065 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -35,6 +35,7 @@
- #include <asm/fpu/xcr.h>
- #include <asm/processor.h>
- #include <asm/realmode.h>
-+#include <asm/tlbflush.h>
- #include <asm/setup.h>
- #include <asm/traps.h>
- #include <asm/svm.h>
-@@ -1147,8 +1148,9 @@ void __init snp_set_wakeup_secondary_cpu(void)
- void __init sev_es_setup_ap_jump_table_data(void *base, u32 pa)
- {
- 	struct sev_ap_jump_table_header *header;
-+	u64 *ap_jumptable_gdt, *sev_ap_park_gdt;
- 	struct desc_ptr *gdt_descr;
--	u64 *ap_jumptable_gdt;
-+	int idx;
+diff --git a/arch/x86/include/asm/insn-eval.h b/arch/x86/include/asm/insn-eval.h
+index 54368a43abf6..3bcea641913a 100644
+--- a/arch/x86/include/asm/insn-eval.h
++++ b/arch/x86/include/asm/insn-eval.h
+@@ -40,6 +40,7 @@ enum insn_mmio_type {
+ 	INSN_MMIO_READ_ZERO_EXTEND,
+ 	INSN_MMIO_READ_SIGN_EXTEND,
+ 	INSN_MMIO_MOVS,
++	INSN_MMIO_IGNORE,
+ };
  
- 	header = base;
+ enum insn_mmio_type insn_decode_mmio(struct insn *insn, int *bytes);
+diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+index 1b25a6cacec7..2a963ad84f10 100644
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -1171,6 +1171,9 @@ static enum es_result vc_handle_mmio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ 	if (mmio == INSN_MMIO_DECODE_FAILED)
+ 		return ES_DECODE_FAILED;
  
-@@ -1158,9 +1160,16 @@ void __init sev_es_setup_ap_jump_table_data(void *base, u32 pa)
- 	 * real-mode.
- 	 */
- 	ap_jumptable_gdt = (u64 *)(base + header->ap_jumptable_gdt);
--	ap_jumptable_gdt[SEV_APJT_CS16 / 8] = GDT_ENTRY(0x9b, pa, 0xffff);
--	ap_jumptable_gdt[SEV_APJT_DS16 / 8] = GDT_ENTRY(0x93, pa, 0xffff);
--	ap_jumptable_gdt[SEV_RM_DS / 8] = GDT_ENTRY(0x93, 0, 0xffff);
-+	sev_ap_park_gdt  = __va(real_mode_header->sev_ap_park_gdt);
++	if (mmio == INSN_MMIO_IGNORE)
++		return ES_OK;
 +
-+	idx = SEV_APJT_CS16 / 8;
-+	ap_jumptable_gdt[idx] = sev_ap_park_gdt[idx] = GDT_ENTRY(0x9b, pa, 0xffff);
-+
-+	idx = SEV_APJT_DS16 / 8;
-+	ap_jumptable_gdt[idx] = sev_ap_park_gdt[idx] = GDT_ENTRY(0x93, pa, 0xffff);
-+
-+	idx = SEV_RM_DS / 8;
-+	ap_jumptable_gdt[idx] = GDT_ENTRY(0x93, 0x0, 0xffff);
- 
- 	/* Write correct GDT base address into GDT descriptor */
- 	gdt_descr = (struct desc_ptr *)(base + header->ap_jumptable_gdt);
-@@ -1349,6 +1358,38 @@ void setup_ghcb(void)
- }
- 
- #ifdef CONFIG_HOTPLUG_CPU
-+void __noreturn sev_jumptable_ap_park(void)
-+{
-+	local_irq_disable();
-+
-+	write_cr3(real_mode_header->trampoline_pgd);
-+
-+	/* Exiting long mode will fail if CR4.PCIDE is set. */
-+	if (cpu_feature_enabled(X86_FEATURE_PCID))
-+		cr4_clear_bits(X86_CR4_PCIDE);
-+
-+	/*
-+	 * Set all GPRs except EAX, EBX, ECX, and EDX to reset state to prepare
-+	 * for software reset.
-+	 */
-+	asm volatile("xorl	%%r15d, %%r15d\n"
-+		     "xorl	%%r14d, %%r14d\n"
-+		     "xorl	%%r13d, %%r13d\n"
-+		     "xorl	%%r12d, %%r12d\n"
-+		     "xorl	%%r11d, %%r11d\n"
-+		     "xorl	%%r10d, %%r10d\n"
-+		     "xorl	%%r9d,  %%r9d\n"
-+		     "xorl	%%r8d,  %%r8d\n"
-+		     "xorl	%%esi, %%esi\n"
-+		     "xorl	%%edi, %%edi\n"
-+		     "xorl	%%esp, %%esp\n"
-+		     "xorl	%%ebp, %%ebp\n"
-+		     "ljmpl	*%0" : :
-+		     "m" (real_mode_header->sev_ap_park));
-+	unreachable();
-+}
-+STACK_FRAME_NON_STANDARD(sev_jumptable_ap_park);
-+
- static void sev_es_ap_hlt_loop(void)
- {
- 	struct ghcb_state state;
-@@ -1385,8 +1426,10 @@ static void sev_es_play_dead(void)
- 	play_dead_common();
- 
- 	/* IRQs now disabled */
--
--	sev_es_ap_hlt_loop();
-+	if (sev_ap_jumptable_blob_installed)
-+		sev_jumptable_ap_park();
-+	else
-+		sev_es_ap_hlt_loop();
- 
- 	/*
- 	 * If we get here, the VCPU was woken up again. Jump to CPU
-diff --git a/arch/x86/realmode/rm/Makefile b/arch/x86/realmode/rm/Makefile
-index a0fb39abc5c8..9c5892219cb1 100644
---- a/arch/x86/realmode/rm/Makefile
-+++ b/arch/x86/realmode/rm/Makefile
-@@ -19,11 +19,12 @@ wakeup-objs	+= video-vga.o
- wakeup-objs	+= video-vesa.o
- wakeup-objs	+= video-bios.o
- 
--realmode-y			+= header.o
--realmode-y			+= trampoline_$(BITS).o
--realmode-y			+= stack.o
--realmode-y			+= reboot.o
--realmode-$(CONFIG_ACPI_SLEEP)	+= $(wakeup-objs)
-+realmode-y				+= header.o
-+realmode-y				+= trampoline_$(BITS).o
-+realmode-y				+= stack.o
-+realmode-y				+= reboot.o
-+realmode-$(CONFIG_ACPI_SLEEP)		+= $(wakeup-objs)
-+realmode-$(CONFIG_AMD_MEM_ENCRYPT)	+= sev.o
- 
- targets	+= $(realmode-y)
- 
-diff --git a/arch/x86/realmode/rm/header.S b/arch/x86/realmode/rm/header.S
-index 2eb62be6d256..17eae256d443 100644
---- a/arch/x86/realmode/rm/header.S
-+++ b/arch/x86/realmode/rm/header.S
-@@ -22,6 +22,9 @@ SYM_DATA_START(real_mode_header)
- 	.long	pa_trampoline_header
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- 	.long	pa_sev_es_trampoline_start
-+	.long	pa_sev_ap_park_asm
-+	.long	__KERNEL32_CS
-+	.long	pa_sev_ap_park_gdt;
- #endif
- #ifdef CONFIG_X86_64
- 	.long	pa_trampoline_start64
-diff --git a/arch/x86/realmode/rm/sev.S b/arch/x86/realmode/rm/sev.S
-new file mode 100644
-index 000000000000..ae6eea2d53f7
---- /dev/null
-+++ b/arch/x86/realmode/rm/sev.S
-@@ -0,0 +1,85 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#include <linux/linkage.h>
-+#include <asm/segment.h>
-+#include <asm/page_types.h>
-+#include <asm/processor-flags.h>
-+#include <asm/msr-index.h>
-+#include <asm/sev-ap-jumptable.h>
-+#include "realmode.h"
-+
-+	.section ".text32", "ax"
-+	.code32
-+/*
-+ * The following code switches to 16-bit protected mode and sets up the
-+ * execution environment for the AP jump table blob. Then it jumps to the AP
-+ * jump table to park the AP.
-+ *
-+ * The code was copied from reboot.S and modified to fit the SEV-ES requirements
-+ * for AP parking. When this code is entered, all registers except %EAX-%EDX are
-+ * in reset state.
-+ *
-+ * %EAX, %EBX, %ECX, %EDX and EFLAGS are undefined. Only use registers %EAX-%EDX and
-+ * %ESP in this code.
-+ */
-+SYM_CODE_START(sev_ap_park_asm)
-+
-+	/* Switch to trampoline GDT as it is guaranteed < 4 GiB */
-+	movl	$__KERNEL_DS, %eax
-+	movl	%eax, %ds
-+	lgdt	pa_tr_gdt
-+
-+	/* Disable paging to drop us out of long mode */
-+	movl	%cr0, %eax
-+	btcl	$X86_CR0_PG_BIT, %eax
-+	movl	%eax, %cr0
-+
-+	ljmpl	$__KERNEL32_CS, $pa_sev_ap_park_paging_off
-+
-+SYM_INNER_LABEL(sev_ap_park_paging_off, SYM_L_GLOBAL)
-+	/* Clear EFER */
-+	xorl	%eax, %eax
-+	xorl	%edx, %edx
-+	movl	$MSR_EFER, %ecx
-+	wrmsr
-+
-+	/* Clear CR3 */
-+	xorl	%ecx, %ecx
-+	movl	%ecx, %cr3
-+
-+	/* Set up the IDT for real mode. */
-+	lidtl	pa_machine_real_restart_idt
-+
-+	/* Load the GDT with the 16-bit segments for the AP jump table */
-+	lgdtl	pa_sev_ap_park_gdt
-+
-+	/* Setup code and data segments for AP jump table */
-+	movw	$SEV_APJT_DS16, %ax
-+	movw	%ax, %ds
-+	movw	%ax, %ss
-+
-+	/* Jump to the AP jump table into 16 bit protected mode */
-+	ljmpw	$SEV_APJT_CS16, $SEV_APJT_ENTRY
-+SYM_CODE_END(sev_ap_park_asm)
-+
-+	.data
-+	.balign	16
-+SYM_DATA_START(sev_ap_park_gdt)
-+	/* Self-pointer */
-+	.word	sev_ap_park_gdt_end - sev_ap_park_gdt - 1
-+	.long	pa_sev_ap_park_gdt
-+	.word	0
-+
-+	/*
-+	 * Offset 0x8
-+	 * 32 bit code segment descriptor pointing to AP jump table base
-+	 * Setup at runtime in sev_es_setup_ap_jump_table_data().
-+	 */
-+	.quad	0
-+
-+	/*
-+	 * Offset 0x10
-+	 * 32 bit data segment descriptor pointing to AP jump table base
-+	 * Setup at runtime in sev_es_setup_ap_jump_table_data().
-+	 */
-+	.quad	0
-+SYM_DATA_END_LABEL(sev_ap_park_gdt, SYM_L_GLOBAL, sev_ap_park_gdt_end)
+ 	if (mmio != INSN_MMIO_WRITE_IMM && mmio != INSN_MMIO_MOVS) {
+ 		reg_data = insn_get_modrm_reg_ptr(insn, ctxt->regs);
+ 		if (!reg_data)
+diff --git a/arch/x86/lib/insn-eval-shared.c b/arch/x86/lib/insn-eval-shared.c
+index 02acdc2921ff..27fd347d84ae 100644
+--- a/arch/x86/lib/insn-eval-shared.c
++++ b/arch/x86/lib/insn-eval-shared.c
+@@ -906,6 +906,13 @@ enum insn_mmio_type insn_decode_mmio(struct insn *insn, int *bytes)
+ 				*bytes = 2;
+ 			type = INSN_MMIO_READ_SIGN_EXTEND;
+ 			break;
++		case 0xae: /* CLFLUSH */
++			/*
++			 * Ignore CLFLUSHes - those go to emulated MMIO anyway and the
++			 * hypervisor is responsible for cache management.
++			 */
++			type = INSN_MMIO_IGNORE;
++			break;
+ 		}
+ 		break;
+ 	}
 -- 
 2.34.1
 
