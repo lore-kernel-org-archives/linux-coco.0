@@ -1,32 +1,39 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B688F376E9
-	for <linux-coco@lists.linux.dev>; Tue, 11 Jun 2024 17:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from terminus.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A41957CB5
+	for <linux-coco@lists.linux.dev>; Tue, 11 Jun 2024 18:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718126733; cv=none; b=LRnbU5S1oezKQYiyu1q/fBOdIbbxvAdhbTBkcCtWzBd32OJvWwu+968lvL/C4y3+o4/0z9JX8POfyUmeyS8LuDIuRx/tTYC6zA4YlJ6jJZeWc8CJYPYabPSYhm1hiz0i1TKZqx4aeod53VlgSz3KUx/rKVd+rloio9QVEnUaXoM=
+	t=1718131479; cv=none; b=Ba04TdwaOAd4tDbnoNCBWFg2Eezsxp2S6lkdpa60eKcaUqS7v2Y/LA0MclkIrCkOnlvfu9sJHj/l+5GHLDRA0LHriZtKYvNQZ92GhTUT8QXlHVlNHj6AiaT8oa3OZS5++jhMcKQJtgYYQXl54b2DNYCHcZ4sdljZ459W7P3E2aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718126733; c=relaxed/simple;
-	bh=sXsOnOsEJkzdxHb0AOeo80FrLDjg8+O7EkvX3iyA3cw=;
+	s=arc-20240116; t=1718131479; c=relaxed/simple;
+	bh=yWm+CV/ol6Yb0FRVj/f//Za7SwasM3ugj7xYp1INfAQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uK1yVR00fdtgovEyKo7XYVeHiud/32Qgo/RFWiB8VHoWAOV31mQTf/zZelhHucnd4NBuX7EDXFdiyhBorjPxcnDWz0pDpfKckucthLVC1BKMzfy+kGSM65dixFw9IW/Q0QlH8v/wwnTgBD+Qr8qrxAuFdTc62fHNFAAGI8baGms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=TfVWZPhu; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	 In-Reply-To:Content-Type; b=G0+gNg7dJm7ps3j5xMGv+c74VyhnfmHfr8icTklxc7mkvO8RTY23MoOwB9rwKjUyuZGrno3pJqOw6N1NqGMo9CI349wa2OI0v5yEVzpHzRzj3B05Q8D4SQG1/4IrGrIXTYvAWOlPRAVDUycuPCH+UfGQiE2vpwrCXIlpoHoYE6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=okEtiCOV; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="TfVWZPhu"
-Received: from [192.168.1.212] (103-24-144-85.ftth.glasoperator.nl [85.144.24.103])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 5FE1F201F17B;
-	Tue, 11 Jun 2024 10:25:28 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5FE1F201F17B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1718126730;
-	bh=hYy9Z7UOfeApYVUUfEu6Uk3cY5SNJtjciFlw18SBFjg=;
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="okEtiCOV"
+Received: from [IPV6:2601:646:8002:4640:7285:c2ff:fefb:fd4] ([IPv6:2601:646:8002:4640:7285:c2ff:fefb:fd4])
+	(authenticated bits=0)
+	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 45BIQOXg3417874
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 11 Jun 2024 11:26:24 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 45BIQOXg3417874
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2024051501; t=1718130387;
+	bh=OHa9DhySlaaVhhVOAe30IsVHYFteIibUy4qxaCqMzfc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TfVWZPhuOEPUhvge2t3eWBrq5Xs+fciFZeQd+9BHY7bmruOwjJwOfWnOef8AzDfjV
-	 KuGF5ntY+kyWuyT8fxcIB/hEQ7ul1pWBgxERnYFoLUc3/AesZ1aysJ6ztqornQFRRU
-	 gC/gGDZoKaF5/05iddjqth0JkF5CsHQ01TJ09oac=
-Message-ID: <31ead5ce-fb38-4c0d-9bf9-606b59d6da09@linux.microsoft.com>
-Date: Tue, 11 Jun 2024 19:25:27 +0200
+	b=okEtiCOVX3HdSiQvDxNYgYr+0HqgJLKnG2m/rlhjGnPh3XRakqH86Oe0HdFjQ8vb8
+	 lCLlJW7zSBSPM1bA8ax15thRrIwWFaFPa+o+EdL0rZXm/4/srmUbr6CHP65bznGV6W
+	 /KqQ2D4aqxtZUQuY/R1ri1KUYKGzgNTcj5gKCQDmB9GzuFD1tce5uDmWNtkEv67UBQ
+	 IMwXQ4AT2ur45vH1k3ay4KEUOfF1/sbHVKDC6HZDl/Rr6CAEEJOpoq0nP6p/4NCCle
+	 bBvwdvwS9QuAK9Xc12EimU7dTn6UCMfkGN+YTd5x4KhT3RxS5dyR7XQZEkI5pnsssf
+	 IW/2FxDzYYpCw==
+Message-ID: <5c8b3ee9-64c2-4ff3-9cca-ba2672b9635e@zytor.com>
+Date: Tue, 11 Jun 2024 11:26:17 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -34,58 +41,104 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [EXTERNAL] Re: [PATCH] x86/tdx: Generate SIGBUS on userspace MMIO
-To: Chris Oo <cho@microsoft.com>, Dave Hansen <dave.hansen@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Dexuan Cui <decui@microsoft.com>, John Starks <John.Starks@microsoft.com>
-References: <20240528100919.520881-1-kirill.shutemov@linux.intel.com>
- <4df2ebee-40c0-4ea3-8909-13b90f049ff1@intel.com>
- <fa788a95-1814-4782-8a36-f9dce7a04b66@intel.com>
- <DS0PR21MB3863B0D93D5F6D8CBE83931BA5C72@DS0PR21MB3863.namprd21.prod.outlook.com>
-Content-Language: en-CA
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <DS0PR21MB3863B0D93D5F6D8CBE83931BA5C72@DS0PR21MB3863.namprd21.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCHv11 05/19] x86/relocate_kernel: Use named labels for less
+ confusion
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>
+Cc: Nikolay Borisov <nik.borisov@suse.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Elena Reshetova <elena.reshetova@intel.com>,
+        Jun Nakajima <jun.nakajima@intel.com>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish"
+ <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "Huang, Kai" <kai.huang@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Baoquan He <bhe@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
+        linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
+ <20240528095522.509667-6-kirill.shutemov@linux.intel.com>
+ <1e1d1aea-7346-4022-9f5f-402d171adfda@suse.com>
+ <t3zx4f6ynru7qp4oel4syza2alcuxz7q7hxqgf2lxusgobnsnh@vtnecqrsxci5>
+ <748d3b70-60b4-44e0-bd81-9117f1ab699d@zytor.com>
+ <20240604091503.GQZl7bF14qTSAjqUhN@fat_crate.local>
+ <ehttxqgg7zhbgty5m5uxkduj3xf7soonrzfu4rfw7hccqgdydl@afki66pnree5>
+Content-Language: en-US
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <ehttxqgg7zhbgty5m5uxkduj3xf7soonrzfu4rfw7hccqgdydl@afki66pnree5>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 11/06/2024 19:17, Chris Oo wrote:
-> We have a usecase where we have device drivers in usermode using vfio that mmap regions of the address space to access device BARs. In this case, when the #VE handler cannot emulate mmio on behalf of usermode, we need the SIGBUS to know if we should retry the attempt via doing a write via the vfio file descriptor. 
+On 6/4/24 08:21, Kirill A. Shutemov wrote:
 > 
-> We don't want to have every mmio go through the vfio file descriptor, because for pages that are actually backed by physical device's BAR we won't take a #VE and introduce a bunch of extra path length, but only if the host has chosen to emulate some page in that BAR. We also don't have any way of knowing which pages will cause a #VE because there's no way for the guest to query which pages the host has chosen to emulate accesses on. 
+>  From b45fe48092abad2612c2bafbb199e4de80c99545 Mon Sep 17 00:00:00 2001
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+> Date: Fri, 10 Feb 2023 12:53:11 +0300
+> Subject: [PATCHv11.1 06/19] x86/kexec: Keep CR4.MCE set during kexec for TDX guest
 > 
-> Chris
+> TDX guests run with MCA enabled (CR4.MCE=1b) from the very start. If
+> that bit is cleared during CR4 register reprogramming during boot or
+> kexec flows, a #VE exception will be raised which the guest kernel
+> cannot handle it.
 > 
-> -----Original Message-----
-> From: Dave Hansen <dave.hansen@intel.com> 
-> Sent: Tuesday, June 11, 2024 9:16 AM
-> To: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>; Dave Hansen <dave.hansen@linux.intel.com>; Thomas Gleixner <tglx@linutronix.de>; Ingo Molnar <mingo@redhat.com>; Borislav Petkov <bp@alien8.de>; x86@kernel.org; H. Peter Anvin <hpa@zytor.com>
-> Cc: linux-coco@lists.linux.dev; linux-kernel@vger.kernel.org; Chris Oo <cho@microsoft.com>; Dexuan Cui <decui@microsoft.com>; John Starks <John.Starks@microsoft.com>
-> Subject: [EXTERNAL] Re: [PATCH] x86/tdx: Generate SIGBUS on userspace MMIO
+> Therefore, make sure the CR4.MCE setting is preserved over kexec too and
+> avoid raising any #VEs.
 > 
-> [Some people who received this message don't often get email from dave.hansen@intel.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> The change doesn't affect non-TDX-guest environments.
 > 
-> On 6/10/24 06:55, Dave Hansen wrote:
->>> Enlightened userspace may choose to handle MMIO on their own if the 
->>> kernel does not emulate it.
->>>
->>> Handle the EPT_VIOLATION exit reason for userspace and deliver SIGBUS 
->>> instead of SIGSEGV. SIGBUS is more appropriate for the MMIO situation.
->> Is any userspace _actually_ doing this?  Sure, SIGBUS is more 
->> appropriate but in practice unprepared userspace crashes either way.
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>   arch/x86/kernel/relocate_kernel_64.S | 17 ++++++++++-------
+>   1 file changed, 10 insertions(+), 7 deletions(-)
 > 
-> I also can't help but wonder if there's a better way to do this.
-> 
-> Just thinking out loud.... Ideally, we'd reject creating a potentially troublesome VMA at mmap() time.  That's way better than, for instance, panic()'ing at some random place in the middle of program execution.
-> 
-> But I guess that's likely not possible because someone could be doing a VM_MIXEDMAP VMA that only has normal private pages and never _actually_ needs or has a shared page mapped.
-> 
-> I'd still love to know what actual kernel drivers and actual userspace would be involved in this whole dance.  It's still way too theoretical for me.
+> diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+> index 085eef5c3904..9c2cf70c5f54 100644
+> --- a/arch/x86/kernel/relocate_kernel_64.S
+> +++ b/arch/x86/kernel/relocate_kernel_64.S
+> @@ -5,6 +5,8 @@
+>    */
+>   
+>   #include <linux/linkage.h>
+> +#include <linux/stringify.h>
+> +#include <asm/alternative.h>
+>   #include <asm/page_types.h>
+>   #include <asm/kexec.h>
+>   #include <asm/processor-flags.h>
+> @@ -145,14 +147,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
+>   	 * Set cr4 to a known state:
+>   	 *  - physical address extension enabled
+>   	 *  - 5-level paging, if it was enabled before
+> +	 *  - Machine check exception on TDX guest, if it was enabled before.
+> +	 *    Clearing MCE might not be allowed in TDX guests, depending on setup.
+> +	 *
+> +	 * Use R13 that contains the original CR4 value, read in relocate_kernel().
+> +	 * PAE is always set in the original CR4.
+>   	 */
+> -	movl	$X86_CR4_PAE, %eax
+> -	testq	$X86_CR4_LA57, %r13
+> -	jz	.Lno_la57
+> -	orl	$X86_CR4_LA57, %eax
+> -.Lno_la57:
+> -
+> -	movq	%rax, %cr4
+> +	andl	$(X86_CR4_PAE | X86_CR4_LA57), %r13d
+> +	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %r13d), X86_FEATURE_TDX_GUEST
+> +	movq	%r13, %cr4
+>   
 
-Is there a reason we can't fix the handler to do the #VE->mmio emulation for userspace too, so that this scenario
-works just like outside of a CVM?
+If this is the case, I don't really see a reason to clear MCE per se as 
+I'm guessing a machine check here will be fatal anyway? It just changes 
+the method of death.
+
+Also, is there a reason to save %cr4, run code, and *then* clear the 
+relevant bits? Wouldn't it be better to sanitize %cr4 as soon as possible?
+
+	-hpa
