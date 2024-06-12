@@ -1,139 +1,114 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B7F16F287
-	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 12:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C92374D3
+	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 12:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718194229; cv=none; b=hVjh/WOXIvIm89Ko8YGfc3FU2KPZzoRqWmhJs79bo3/YItQwbn667U/sAjo0VIk0KQ0uM5xA2zo86OhKwDrKGOffeNiriZfxZ2ZJBSTt9nqhOJM9hS5zWGdqWxf30QoLeZMmBHiBzEJqgTVzLU42fuv3glPMge3QAziXdUsReJc=
+	t=1718194807; cv=none; b=JncL3BMZXh0bsiwDN3rNMJQOWSL7oIQLX/Kz1ntDriO5Ajxfq9TfxWsZP5+zoKHHJgDV3LtAJJnBO6jA+sI57ieIcqAWikH5NYXn1vX0DhjsCCX1ByeVW1pbAkLjBcGz1JNMi/rYEfxCGzUmWWMn889y2uJdshEkaPLLmNPb4eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718194229; c=relaxed/simple;
-	bh=nE4553TxyitFOBDLcCTTvnCeXYTTa0XYRR7Q8BQg9JI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dn39RHjCPh+7ry6Z66BTEXpPha6LY3Q4rq0FoZIp0KsDSOl9LERieghSF5bZJh2TtSaS8qWRwE2w5oKH3TGJJi4qYUdXg/aneUIEcS/lGbCa0/u4fUCG7hZI1+aumJUikSm7z9XUndpTY6QRTFTaWIpAanV0/1fC26F0ByCOlS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=WvpkSjus; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1718194807; c=relaxed/simple;
+	bh=hams3tDzyOgLdRtdhPicGhJSgF2Fx3TGq11heF/U1yE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KDni1DKOdxlZAOOxivZO1XhuOB3UNoxaoz4j5oA88zz9KiGA/XKBnl994DXo50i4mGRzSamqAIftI4lxOEBPItyJF+4hDy1lPAojGXZZYRAFnKhdiEigsvMBZ48YIn43gs1enlwftwvV5SXckz7C+u2S1m//wOFzQaXVzTrCuOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=HvlGWYhk; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Zz+J1FRT; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="WvpkSjus"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42278f3aea4so10437885e9.1
-        for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 05:10:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1718194224; x=1718799024; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Wl1E6gKaYfsGolM4dsZnb6DX/G/+das4ShQn/qg2O/U=;
-        b=WvpkSjusncrAGABNzG9EMFR4d4xPJTSNFcOUJ8iy5OVx0gDBtIp3th12qYKrrBrM7y
-         xRunulBAorxBlvD7DmSPzx3mFa8DVyKjcR7+WE4HKnRmsCCzh7pcxRJ8tBGH7tpWWWF+
-         S7ozHPQvs0Rc+7svrndJBrXIAcnREToAD+/LqC5kysAHSG4fW0pgCiY5soUJ6K9MaGVD
-         kQJXehZOFWVVuEGvDA3mMNz748LvXWPNkmGhf4mvzWDs3A5snJrQi+t0pIlpUv1rLtA0
-         /StWluOueprZH1vb4x4H4E4IrnvqscX9S3Z1rdgD41cyMN39zPg1WTYFQ9s1sGEbc60/
-         rFMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718194224; x=1718799024;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wl1E6gKaYfsGolM4dsZnb6DX/G/+das4ShQn/qg2O/U=;
-        b=oZIgMX+Veb4xsr/eJ0Cyle+r055trc/IuP/s2L6Pc8riwAErQBrsp2mR8fC0p+eQ+q
-         efjhItj/gYgF/QwlpoGbKB+9mKU0p+MmI9GEBn+aIue0jscdZvQBMvlfW2RmgKKEoKj3
-         oseTTw0aLUvLzjFf4I0pIs/SVu4yze9w+aUAbq2Hdbbs2WTZlodmYNI7aPceAdxeHvYs
-         n2bsXPEtRBzQAdwPxZfYCtNucEL2mrO6oESQQvaQ8Ab+KdSl3HuutbRuIWoaR19Ia532
-         tq+Z9J6FS1qMHU9bT9uupovrqMsybwnR/1Il0LP8cd0mZI01FQml5VxR3ZKM2hAJc/L8
-         jEGA==
-X-Forwarded-Encrypted: i=1; AJvYcCXa9zhMihEW6VZj2OmBx+QSIPOqCoDCXknvtLBYQV4AgN+0q1UQsazHJadpv40UKeNfrkU7RExCsyLChZvqfub3PfHL6iwczLgLeQ==
-X-Gm-Message-State: AOJu0Yx/nWespA6X3v1hJ070ZIM9dYbdnKldKdOYawCYkpqyLnJdI25W
-	JE9NE5A5XNCFW6lx96mHXoGEYqI4jXDDIuluo7DmvEKEX4ydxPYXOGP7E7bsUYo=
-X-Google-Smtp-Source: AGHT+IGGKvFvAX2vsyi3iCxH0IVdZ+RZyQGv87uHYkT/9vnp4Qg0weBEeK0OIcuDUpXL8dTTvAYelw==
-X-Received: by 2002:a05:600c:3108:b0:421:7f23:8c5c with SMTP id 5b1f17b1804b1-422866c0c13mr16496455e9.28.1718194224388;
-        Wed, 12 Jun 2024 05:10:24 -0700 (PDT)
-Received: from ?IPV6:2a10:bac0:b000:7579:7285:c2ff:fedd:7e3a? ([2a10:bac0:b000:7579:7285:c2ff:fedd:7e3a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35f0c8f5373sm13444819f8f.6.2024.06.12.05.10.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Jun 2024 05:10:24 -0700 (PDT)
-Message-ID: <6eb5c1b2-64d2-42fd-81c9-97c1ae65713f@suse.com>
-Date: Wed, 12 Jun 2024 15:10:21 +0300
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="HvlGWYhk";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Zz+J1FRT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1718194805;
+	bh=hams3tDzyOgLdRtdhPicGhJSgF2Fx3TGq11heF/U1yE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=HvlGWYhk5GHdRGHbKMEytV9h9KRZKNwXHs7JM7f+G6+2OZBpbko0GdONvFI+Rptz6
+	 MXMRZqULmQWD8z9YtkTtIb1JhDDlMSFLS+hEvdHItHcUB6mtMfOp47tTGSFl9WkzGW
+	 dN5OLRQKFH7m4G/4HmC7cXMd+0lF/Vh16EAuCf3o=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 0A52E1287A74;
+	Wed, 12 Jun 2024 08:20:05 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id 5SzdMoqbnVt1; Wed, 12 Jun 2024 08:20:04 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1718194804;
+	bh=hams3tDzyOgLdRtdhPicGhJSgF2Fx3TGq11heF/U1yE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=Zz+J1FRTzB8J8wxNCwVfDOENdUUlZJRBWcFaDajHg38gNHgdbA3kaxzt5mA/nM1bj
+	 /uzoS238uV45494poZY85HD+zKlWY76kkMEh+BPFSmA+u3m6jY936wpA+kbO0YAbe3
+	 mBr5ELS7CdQJk77x8lg2zSKIR6o+eEuwjEyWeV9k=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 679491286D85;
+	Wed, 12 Jun 2024 08:20:04 -0400 (EDT)
+Message-ID: <8bce2394bc209f1bae708d51c8a233850db699bb.camel@HansenPartnership.com>
+Subject: Re: SVSM Development Call - June 12th, 2024
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Claudio Siqueira de Carvalho <cclaudio@ibm.com>, 
+	"linux-coco@lists.linux.dev"
+	 <linux-coco@lists.linux.dev>, "svsm-devel@coconut-svsm.dev"
+	 <svsm-devel@coconut-svsm.dev>
+Cc: "joro@8bytes.org" <joro@8bytes.org>
+Date: Wed, 12 Jun 2024 08:20:03 -0400
+In-Reply-To: <18df8b3afe39075dd9ab1211d17db83731d39cdf.camel@ibm.com>
+References: <18df8b3afe39075dd9ab1211d17db83731d39cdf.camel@ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv11 05/19] x86/relocate_kernel: Use named labels for less
- confusion
-To: "H. Peter Anvin" <hpa@zytor.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>,
- Jun Nakajima <jun.nakajima@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
- "Huang, Kai" <kai.huang@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
- Baoquan He <bhe@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
- linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <20240528095522.509667-6-kirill.shutemov@linux.intel.com>
- <1e1d1aea-7346-4022-9f5f-402d171adfda@suse.com>
- <5d7dca1e-5889-4440-b3a0-48610f11200e@zytor.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-In-Reply-To: <5d7dca1e-5889-4440-b3a0-48610f11200e@zytor.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
+On Tue, 2024-06-11 at 20:46 +0000, Claudio Siqueira de Carvalho wrote:
+> Hi,
+> 
+> I would like to add two topics to the SVSM meeting agenda:
+> 
+> - What does TPM locality[1] mean for the SVSM vTPM?
 
+Well, unlike the physical TPM, which is locked to locality zero unless
+you do a dynamic launch, the SVSM vTPM protocol supports any locality
+(in that way it's the same as a vTPM attached to a VM).  This would
+allow us to operate userspace and the kernel at different localities
+meaning there could be key sealing policies that won't allow a key to
+unseal in the userspace locality (i.e. kernel only).  Adding
+functionality like this doesn't require the SVSM to police localities
+(the kernel does it).
 
-On 3.06.24 г. 17:43 ч., H. Peter Anvin wrote:
-> On 5/29/24 03:47, Nikolay Borisov wrote:
->>>
->>> diff --git a/arch/x86/kernel/relocate_kernel_64.S 
->>> b/arch/x86/kernel/relocate_kernel_64.S
->>> index 56cab1bb25f5..085eef5c3904 100644
->>> --- a/arch/x86/kernel/relocate_kernel_64.S
->>> +++ b/arch/x86/kernel/relocate_kernel_64.S
->>> @@ -148,9 +148,10 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
->>>        */
->>>       movl    $X86_CR4_PAE, %eax
->>>       testq    $X86_CR4_LA57, %r13
->>> -    jz    1f
->>> +    jz    .Lno_la57
->>>       orl    $X86_CR4_LA57, %eax
->>> -1:
->>> +.Lno_la57:
->>> +
->>>       movq    %rax, %cr4
->>>       jmp 1f
->>
->> That jmp 1f becomes redundant now as it simply jumps 1 line below.
->>
-> 
-> Uh... am I the only person to notice that ALL that is needed here is:
-> 
->      andl $(X86_CR4_PAE|X86_CR4_LA57), %r13d
->      movq %r13, %rax
-> 
-> ... since %r13 is dead afterwards, and PAE *will* have been set in %r13 
-> already?
-> 
-> I don't believe that this specific jmp is actually needed -- there are 
-> several more synchronizing jumps later -- but it doesn't hurt.
-> 
-> However, if the effort is for improving the readability, it might be 
-> worthwhile to encapsulate the "jmp 1f; 1:" as a macro, e.g. "SYNC_CODE".
+Policing localities is more problematic for the SVSM.  It means that
+the SVSM must ensure that a particular locality request comes from a
+particular trust level.  For instance in a dynamic launch, the TIS TPM
+polices localities by replicating register access pages (one for each
+locality) and then the chipset blocks access to some of them as the
+boot continues.
 
+The problem for the SVSM-vTPM is that it's hard to employ this type of
+access sealing mechanism without an additional command and enlightening
+all the OS components to use it, so unless there's a reason to reserve
+a locality exclusively for the SVSM (say to unseal a provided secret
+only for it) 
 
-The preceding move to CR4 is itself a serializing instruction, no?
+> - Is there any SVSM boot event that we want to record in the TPM
+> PCRs/Event log?
+> E.g. a SVSM configuration, the OVMF hash, etc
 
-> 
->      -hpa
+OVMF records all the mandatory TCG measured boot events, including its
+own measurement.  This, unfortunately, includes the static core root of
+trust (SCRT) measurement, which is supposed to be the first entry.  We
+could still add preceding SVSM measurements, but this would be a
+technical spec violation.
+
+Probably what needs to happen is that the SVSM-vTPM should be
+responsible for the SCRT Measurement and OVMF should detect the
+presence of the SVSM and assume it's been done.  That would give us
+scope for adding the SVSM configuration to the SCRT measurement.
+
+Regards,
+
+James
+
