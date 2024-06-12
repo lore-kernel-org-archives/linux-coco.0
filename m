@@ -1,66 +1,63 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BAF2942A
-	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 09:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AA1A34
+	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 09:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718185603; cv=none; b=Nd2YHXKGEuZzzP5py4TlfdbMXteh1dFB+nRc6ft1jPz0+JkE2PxI/PXTdDm7SrL1j/13shMfRb29JOKIgYM5B7kQGme6cHlx6NAZTa2OhSVpN0anty8z9AUMPIy8/CAAYVy9TwsVY4DtpSpHMq22+I7rLCE0CcajNFNms1WP5Qk=
+	t=1718185864; cv=none; b=CbN4cmkZGPWQSWsdCnSiIGHZdMNU6b2TIKYZu8bAacd5T3qEqLDQwjXuSRF/jXB9N+b7/RjeHjE6buCqxSMncLgS77vweEWyjVyE84CWwgrYqAqJg8ZB0lDUTTtWR+qIR5wUXxCzXiumAqH/Ys/lBkLIv7TA2GpKX1XfI3E9mWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718185603; c=relaxed/simple;
-	bh=a7lwZ0mHtGz7Gcc9Okj6FYzGI4uiz2b1f7BH+B8VXes=;
+	s=arc-20240116; t=1718185864; c=relaxed/simple;
+	bh=EHuBceC3NjDWceIKSIK6pbNtuCAqnM4qibuojYESsl8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r71a5EeQt8mSA0MmZTZCQdaEJ2hHGkrcxYC2HprZNDRU+QmemTWs92KXOc+1dP8Z/Rmh0dW27hmtp//C/0BYVLAPxwnI7rY+ATasQ0EfO65Rj2SEOeqATmwz920Z8FqfPllW3P5g3N0xZJ04cFPkbFTenQC/Vl0plF3tnzbdTdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F24CDxpc; arc=none smtp.client-ip=192.198.163.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=IqSKOQixhXtLu3jfnPh8/PabBdXRl1Uh8Q5y755uo9O2nimDmk39MhGYe7Mml4oSF6i1f1PrezGHeKEAo+zDla+l2VigK48Cjmx8umKR9mz4YLuZMe0wWi1A04XmWTkqEAzZr772PohwlK2KoO42tH8KeD+h/pJmJq7TPa+T+tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rg5U1lky; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F24CDxpc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rg5U1lky"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718185603; x=1749721603;
+  t=1718185863; x=1749721863;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=a7lwZ0mHtGz7Gcc9Okj6FYzGI4uiz2b1f7BH+B8VXes=;
-  b=F24CDxpc2eeiBbtDgy3bX5uvdXfwWG5b+xxMgM5jjdY2py6gC1xmKQ/3
-   kWH9ycIKlusMaWJSqxfNgGwkp5wvKQ6jKxQwh9VWNuUAHYyylpg/6sDOs
-   3yXLxhXYIuwvmw76/Equzi1qV8kTw0zxX3pheUkGfzpTeHr1OYA/GohdQ
-   cMBkQGTaJC0b6pk+aRRsgjtwk/VEowEmBsvdgxmidKhh+ZdiURT/91Ipx
-   a7XtsYM7XlNXMMJ5dOys5ObncP06GvfjJ+zr9IZ2cdmOAsXjlrGaoyY6f
-   rjJBA+CiUcfgqt7pNuocn+zaDzXZF6YQPcIluOEMwSpvKMFKcmNO4iv0O
+  bh=EHuBceC3NjDWceIKSIK6pbNtuCAqnM4qibuojYESsl8=;
+  b=Rg5U1lkyGG0MmdYOEhCI7+ijTzMrDarIDBQRi9uvamLUwCvtRqgv6OEh
+   7XKeafDC0JyUwT66yRyieXsk4yLj2+4LqCxTv0v9Yq+SPUnSlcqp7dc0i
+   8kZoZ0nNapNCUSz1F/r05cGJImxwMPFNbeyYin+UWOdgf+6ABx2DEWoPr
+   dFmfjFeE61qI2XAD0h1eXQ7yP40lkUe4RCPwsrTIWhY5ixVQF2BSA0/fy
+   r60hssLLYjYtl0uBjyEbJw3RIxo0mIS6OcJYIYR/L+vuMJYz39NNCw893
+   5EO1YYB9af5hy4IeeoGs85L5pnIEAX6vvJzzujfyutJfNl31mC4LXujsF
    Q==;
-X-CSE-ConnectionGUID: 2CvBk6qlRher75x1EpkV1g==
-X-CSE-MsgGUID: YLf6+pFSS+yIjPkOUWJU6g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="17863443"
+X-CSE-ConnectionGUID: gcUHzxIcT8upSIZWIUCaWw==
+X-CSE-MsgGUID: tn6EiM//T6eDv5m7Q9xAAA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="25515640"
 X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; 
-   d="scan'208";a="17863443"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 02:46:42 -0700
-X-CSE-ConnectionGUID: v+BjPlcWSS25zn6ybtEtbQ==
-X-CSE-MsgGUID: QJvE9afARvSRiV7EDcgmRw==
+   d="scan'208";a="25515640"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 02:50:47 -0700
+X-CSE-ConnectionGUID: qT6IuxotQDGhM6T4gjLDlA==
+X-CSE-MsgGUID: r20d6CkzRe6xjmst9jHkWw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; 
-   d="scan'208";a="40204411"
+   d="scan'208";a="44643649"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa006.jf.intel.com with ESMTP; 12 Jun 2024 02:46:39 -0700
+  by orviesa003.jf.intel.com with ESMTP; 12 Jun 2024 02:50:46 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id B1C44193; Wed, 12 Jun 2024 12:46:37 +0300 (EEST)
-Date: Wed, 12 Jun 2024 12:46:37 +0300
+	id 4E81C193; Wed, 12 Jun 2024 12:50:43 +0300 (EEST)
+Date: Wed, 12 Jun 2024 12:50:43 +0300
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc: Chris Oo <cho@microsoft.com>, Dave Hansen <dave.hansen@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	"x86@kernel.org" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, John Starks <John.Starks@microsoft.com>
-Subject: Re: [EXTERNAL] Re: [PATCH] x86/tdx: Generate SIGBUS on userspace MMIO
-Message-ID: <vunn4hhfwkmxgspbxthy2w2vf67m7662r2dj324td3t6qkiegw@zp5dbgfgqmoh>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, cho@microsoft.com, decui@microsoft.com, 
+	John.Starks@microsoft.com
+Subject: Re: [PATCH] x86/tdx: Generate SIGBUS on userspace MMIO
+Message-ID: <mpbfcnfnqthq32rsn57ge2ypkhzpa3kqxpr2u3rqodxur66voy@zsavzwkxqkhz>
 References: <20240528100919.520881-1-kirill.shutemov@linux.intel.com>
  <4df2ebee-40c0-4ea3-8909-13b90f049ff1@intel.com>
  <fa788a95-1814-4782-8a36-f9dce7a04b66@intel.com>
- <DS0PR21MB3863B0D93D5F6D8CBE83931BA5C72@DS0PR21MB3863.namprd21.prod.outlook.com>
- <31ead5ce-fb38-4c0d-9bf9-606b59d6da09@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,15 +66,30 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <31ead5ce-fb38-4c0d-9bf9-606b59d6da09@linux.microsoft.com>
+In-Reply-To: <fa788a95-1814-4782-8a36-f9dce7a04b66@intel.com>
 
-On Tue, Jun 11, 2024 at 07:25:27PM +0200, Jeremi Piotrowski wrote:
-> Is there a reason we can't fix the handler to do the #VE->mmio emulation
-> for userspace too, so that this scenario works just like outside of a
-> CVM?
+On Tue, Jun 11, 2024 at 09:16:13AM -0700, Dave Hansen wrote:
+> On 6/10/24 06:55, Dave Hansen wrote:
+> >> Enlightened userspace may choose to handle MMIO on their own if the
+> >> kernel does not emulate it.
+> >>
+> >> Handle the EPT_VIOLATION exit reason for userspace and deliver SIGBUS
+> >> instead of SIGSEGV. SIGBUS is more appropriate for the MMIO situation.
+> > Is any userspace _actually_ doing this?  Sure, SIGBUS is more
+> > appropriate but in practice unprepared userspace crashes either way.
+> 
+> I also can't help but wonder if there's a better way to do this.
+> 
+> Just thinking out loud.... Ideally, we'd reject creating a potentially
+> troublesome VMA at mmap() time.  That's way better than, for instance,
+> panic()'ing at some random place in the middle of program execution.
 
-We are looking into it. It requires some groundwork to properly understand
-risks of wider attack surface. I think we will get there, but it will take time.
+I am not sure I follow.
+
+panic() is only for catastrophic cases: VMM pulled memory from under us or
+we mapped unaccepted memory into userspace. It should never happen.
+
+We have the same check is_private_gpa() in virt_exception_kernel().
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
