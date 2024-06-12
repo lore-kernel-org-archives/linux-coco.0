@@ -1,117 +1,83 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A21416D335
-	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 09:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BAF2942A
+	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 09:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718184624; cv=none; b=DXJQkGTLvurjrpMm3m0pFQx05puf9kVZG6PYJ/FYmUftGMwfuospTNb7VRedUl4d12RET8OAvQU7mmNuDRWIpkSbf2e6V4w3N1mAQpHwQm9sd8r1MEtKQTIqsrxLa9+SxZpV5yF6U9jZW/oB9YDkbbrCkdQb/lSOZxHwRoy4jQ4=
+	t=1718185603; cv=none; b=Nd2YHXKGEuZzzP5py4TlfdbMXteh1dFB+nRc6ft1jPz0+JkE2PxI/PXTdDm7SrL1j/13shMfRb29JOKIgYM5B7kQGme6cHlx6NAZTa2OhSVpN0anty8z9AUMPIy8/CAAYVy9TwsVY4DtpSpHMq22+I7rLCE0CcajNFNms1WP5Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718184624; c=relaxed/simple;
-	bh=J/44THBA/dPfsljbhs1f2PJSH+f7JSY48xLWZSBEbX4=;
+	s=arc-20240116; t=1718185603; c=relaxed/simple;
+	bh=a7lwZ0mHtGz7Gcc9Okj6FYzGI4uiz2b1f7BH+B8VXes=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H0Zee/voplIj6up9hTE/BMG6VLNAgCpop044CJbaCSi0q7abNfgdj8oZXJkMhi7OOdNUUQjpLQht1FSpH/phjsbp/HrdA979FmlV/KyJt47UzfZB0IqLFAVwduWXlPYnfOgjo4X4HSg0W8kyu11VMbhVMXCuwnHCc4omUuIU3jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Qsc+AJ2q; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=r71a5EeQt8mSA0MmZTZCQdaEJ2hHGkrcxYC2HprZNDRU+QmemTWs92KXOc+1dP8Z/Rmh0dW27hmtp//C/0BYVLAPxwnI7rY+ATasQ0EfO65Rj2SEOeqATmwz920Z8FqfPllW3P5g3N0xZJ04cFPkbFTenQC/Vl0plF3tnzbdTdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F24CDxpc; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Qsc+AJ2q"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E7E8D40E0176;
-	Wed, 12 Jun 2024 09:30:20 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 4kBlhHtppWTH; Wed, 12 Jun 2024 09:30:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1718184617; bh=bAaBH5qaA/JFcGMfRi72p+tRzwYREYvEMYDRH3DvGZo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qsc+AJ2qmMEYH1GmdJ83828PmwbIvMP3sUK4daOukV73GEF20NSxER0+reGrO19uM
-	 enPkC9nyrprHCoS67qACrJZ6AC236TaKczMgkdfP9ndjVzVMRLBuqJpPl/zUbgIL4F
-	 j7TPT3ohwQ7tErya9eEnipyOdJEg0ctVbZWs+4m632GkVdYeVdekf/qkXvTScifNaY
-	 dX27wFRjeZKQ43p1zAbp64UfA4b/jwZsIqc6R9v1ljrqd/5holDsEmLEsEvM03Iv8d
-	 70HThSZKGtLrQyaaGH7jj9EK0D4oghYcQSt0vGljohHLJyQ+SAjaV97ukJbGIET8/X
-	 Jo9m12QCRFBdDMUXlImk41mbjLSd38G5IY8tlP1WLH3qu2eiguVk57A+GFIFhSGLG1
-	 sJXAeb5KSTM5QCxuKRIKgn7CeddxcPEVgnn0uCEMTRhmfjUyh99Y1TJ+AdytrJJXbg
-	 g7gH6jyMdp7VFB6YFc70bdkKU41w2xcKniRlcbgYbPtyvGM3H04nCbHyo7QNv/xpw7
-	 7XoPxWQnXjNhbBxnnlYyg41SnrbZyzZMjarQGWA0IIHJhMtKjxfJfHPlUZZWWHTevP
-	 3M+3mbFDLsLdTSSTsgPEc2QHFfqberzfPrWjfguIc/dgowqsvgMAtAh8XTehTAIo/L
-	 NqKts/+d049xpp32sa3U8rLY=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BBEAB40E0081;
-	Wed, 12 Jun 2024 09:29:49 +0000 (UTC)
-Date: Wed, 12 Jun 2024 11:29:43 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
-	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv11 18/19] x86/acpi: Add support for CPU offlining for
- ACPI MADT wakeup method
-Message-ID: <20240612092943.GCZmlqh7O662JB-yGu@fat_crate.local>
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <20240528095522.509667-19-kirill.shutemov@linux.intel.com>
- <20240603083930.GNZl2BQk2lQ8WtcE4o@fat_crate.local>
- <icu4yecqfwhmbexupo4zzei4lbe5sgavsfkm27jd6t6gyjynul@c2wap3jhtik7>
- <20240610134020.GCZmcCRFxuObyv1W_d@fat_crate.local>
- <hidvykk3yan5rtlhum6go7j3lwgrcfcgxlwyjug3osfakw2x6f@4ohvo23zaesv>
- <nh7cihzlsjtoddtec6m62biqdn62k3ka5svs6m64qekhpebu5z@dkplwad2urgp>
- <20240611194653.GGZmiprSNzK0JSJL17@fat_crate.local>
- <2kc27uzrsvpevtvos2harqj3bgfkizi5dhhxkigswlylpnogr5@lk6fi2okv53i>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F24CDxpc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718185603; x=1749721603;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a7lwZ0mHtGz7Gcc9Okj6FYzGI4uiz2b1f7BH+B8VXes=;
+  b=F24CDxpc2eeiBbtDgy3bX5uvdXfwWG5b+xxMgM5jjdY2py6gC1xmKQ/3
+   kWH9ycIKlusMaWJSqxfNgGwkp5wvKQ6jKxQwh9VWNuUAHYyylpg/6sDOs
+   3yXLxhXYIuwvmw76/Equzi1qV8kTw0zxX3pheUkGfzpTeHr1OYA/GohdQ
+   cMBkQGTaJC0b6pk+aRRsgjtwk/VEowEmBsvdgxmidKhh+ZdiURT/91Ipx
+   a7XtsYM7XlNXMMJ5dOys5ObncP06GvfjJ+zr9IZ2cdmOAsXjlrGaoyY6f
+   rjJBA+CiUcfgqt7pNuocn+zaDzXZF6YQPcIluOEMwSpvKMFKcmNO4iv0O
+   Q==;
+X-CSE-ConnectionGUID: 2CvBk6qlRher75x1EpkV1g==
+X-CSE-MsgGUID: YLf6+pFSS+yIjPkOUWJU6g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="17863443"
+X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; 
+   d="scan'208";a="17863443"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 02:46:42 -0700
+X-CSE-ConnectionGUID: v+BjPlcWSS25zn6ybtEtbQ==
+X-CSE-MsgGUID: QJvE9afARvSRiV7EDcgmRw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; 
+   d="scan'208";a="40204411"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa006.jf.intel.com with ESMTP; 12 Jun 2024 02:46:39 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id B1C44193; Wed, 12 Jun 2024 12:46:37 +0300 (EEST)
+Date: Wed, 12 Jun 2024 12:46:37 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Cc: Chris Oo <cho@microsoft.com>, Dave Hansen <dave.hansen@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	"x86@kernel.org" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, John Starks <John.Starks@microsoft.com>
+Subject: Re: [EXTERNAL] Re: [PATCH] x86/tdx: Generate SIGBUS on userspace MMIO
+Message-ID: <vunn4hhfwkmxgspbxthy2w2vf67m7662r2dj324td3t6qkiegw@zp5dbgfgqmoh>
+References: <20240528100919.520881-1-kirill.shutemov@linux.intel.com>
+ <4df2ebee-40c0-4ea3-8909-13b90f049ff1@intel.com>
+ <fa788a95-1814-4782-8a36-f9dce7a04b66@intel.com>
+ <DS0PR21MB3863B0D93D5F6D8CBE83931BA5C72@DS0PR21MB3863.namprd21.prod.outlook.com>
+ <31ead5ce-fb38-4c0d-9bf9-606b59d6da09@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2kc27uzrsvpevtvos2harqj3bgfkizi5dhhxkigswlylpnogr5@lk6fi2okv53i>
+In-Reply-To: <31ead5ce-fb38-4c0d-9bf9-606b59d6da09@linux.microsoft.com>
 
-On Wed, Jun 12, 2024 at 12:24:30PM +0300, Kirill A. Shutemov wrote:
-> I will try to deliver it in timely manner.
+On Tue, Jun 11, 2024 at 07:25:27PM +0200, Jeremi Piotrowski wrote:
+> Is there a reason we can't fix the handler to do the #VE->mmio emulation
+> for userspace too, so that this scenario works just like outside of a
+> CVM?
 
-:-P
-
-> > Yeah, we have a bunch of different pagetable manipulating things, all
-> > with their peculiarities and unifying them and having a good set of APIs
-> > which everything else uses, is always a good thing.
-> 
-> Will give it a try.
-> 
-> > And since we're talking cleanups, there's another thing I've been
-> > looking at critically: CONFIG_X86_5LEVEL. Maybe it is time to get rid of
-> > it and make the 5level stuff unconditional. And get rid of a bunch of
-> > code since both vendors support 5level now...
-> 
-> Can do.
-
-Much appreciated, thanks!
+We are looking into it. It requires some groundwork to properly understand
+risks of wider attack surface. I think we will get there, but it will take time.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+  Kiryl Shutsemau / Kirill A. Shutemov
