@@ -1,49 +1,59 @@
-Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3814F16D4D3
-	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 11:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B7F16F287
+	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 12:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718192990; cv=none; b=YNEpe1O4bdU16clC1pluuSUvtUTlfW2Z/Q/5Epp6VE9/YvQoKLSYkLVKjJqkE1VvnkufWAjvps6OXVGL+8eg/XM3867gRQ+rkHj6RT5OeIcQXt9pGsXfnzj455mVfplHVYWHyQGDEbGzxm1dQA+g1FQMZbn38KjthcKgxRrRImo=
+	t=1718194229; cv=none; b=hVjh/WOXIvIm89Ko8YGfc3FU2KPZzoRqWmhJs79bo3/YItQwbn667U/sAjo0VIk0KQ0uM5xA2zo86OhKwDrKGOffeNiriZfxZ2ZJBSTt9nqhOJM9hS5zWGdqWxf30QoLeZMmBHiBzEJqgTVzLU42fuv3glPMge3QAziXdUsReJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718192990; c=relaxed/simple;
-	bh=+1eZacLcmBiznhFmxAJh3LLHcph4DJhkGvscNdey9ag=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=QgzxcDJMWY6C7lHKyI5gV9tDm5QYQy/me49dzbqSWs5dmr17Scr0xZMYQUqCSaIkMgJ7m8b07qtfEDePqTvsqmQpAgUvsfkVENk2NZbr9ttWq9W2nz2N+tuhLpxSiMGka46bCWkyt05Yw5JE+wJFf0ll6/39V2aK4JPyEZidK3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=fbz4103W; arc=none smtp.client-ip=207.171.188.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	s=arc-20240116; t=1718194229; c=relaxed/simple;
+	bh=nE4553TxyitFOBDLcCTTvnCeXYTTa0XYRR7Q8BQg9JI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dn39RHjCPh+7ry6Z66BTEXpPha6LY3Q4rq0FoZIp0KsDSOl9LERieghSF5bZJh2TtSaS8qWRwE2w5oKH3TGJJi4qYUdXg/aneUIEcS/lGbCa0/u4fUCG7hZI1+aumJUikSm7z9XUndpTY6QRTFTaWIpAanV0/1fC26F0ByCOlS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=WvpkSjus; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="fbz4103W"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="WvpkSjus"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42278f3aea4so10437885e9.1
+        for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 05:10:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1718192989; x=1749728989;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=+1eZacLcmBiznhFmxAJh3LLHcph4DJhkGvscNdey9ag=;
-  b=fbz4103W/rwHtV9G+OEkQSaPprVgYt15uJBX4MwHIEx5qj06ruAMgJ4j
-   OCiQBXskBEjNKLcN8l+yXP8iSBA+msUwxn4qqVnwelQGJB/tpHkqB8kWu
-   BArTHcJ5DMJP8CLCD7+AzBPMrElOrWcRaCusitXiodAsC7JRPeywrZ5mM
-   8=;
-X-IronPort-AV: E=Sophos;i="6.08,233,1712620800"; 
-   d="scan'208";a="732996908"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 11:49:43 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.38.20:63882]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.37.96:2525] with esmtp (Farcaster)
- id d5730494-25da-405e-8fc9-6fc6e3a5e5b9; Wed, 12 Jun 2024 11:49:42 +0000 (UTC)
-X-Farcaster-Flow-ID: d5730494-25da-405e-8fc9-6fc6e3a5e5b9
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Wed, 12 Jun 2024 11:49:37 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.34; Wed, 12 Jun
- 2024 11:49:36 +0000
-Message-ID: <98756bac-8de3-4eeb-97b2-9fa0bcf869ff@amazon.com>
-Date: Wed, 12 Jun 2024 13:49:34 +0200
+        d=suse.com; s=google; t=1718194224; x=1718799024; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Wl1E6gKaYfsGolM4dsZnb6DX/G/+das4ShQn/qg2O/U=;
+        b=WvpkSjusncrAGABNzG9EMFR4d4xPJTSNFcOUJ8iy5OVx0gDBtIp3th12qYKrrBrM7y
+         xRunulBAorxBlvD7DmSPzx3mFa8DVyKjcR7+WE4HKnRmsCCzh7pcxRJ8tBGH7tpWWWF+
+         S7ozHPQvs0Rc+7svrndJBrXIAcnREToAD+/LqC5kysAHSG4fW0pgCiY5soUJ6K9MaGVD
+         kQJXehZOFWVVuEGvDA3mMNz748LvXWPNkmGhf4mvzWDs3A5snJrQi+t0pIlpUv1rLtA0
+         /StWluOueprZH1vb4x4H4E4IrnvqscX9S3Z1rdgD41cyMN39zPg1WTYFQ9s1sGEbc60/
+         rFMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718194224; x=1718799024;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wl1E6gKaYfsGolM4dsZnb6DX/G/+das4ShQn/qg2O/U=;
+        b=oZIgMX+Veb4xsr/eJ0Cyle+r055trc/IuP/s2L6Pc8riwAErQBrsp2mR8fC0p+eQ+q
+         efjhItj/gYgF/QwlpoGbKB+9mKU0p+MmI9GEBn+aIue0jscdZvQBMvlfW2RmgKKEoKj3
+         oseTTw0aLUvLzjFf4I0pIs/SVu4yze9w+aUAbq2Hdbbs2WTZlodmYNI7aPceAdxeHvYs
+         n2bsXPEtRBzQAdwPxZfYCtNucEL2mrO6oESQQvaQ8Ab+KdSl3HuutbRuIWoaR19Ia532
+         tq+Z9J6FS1qMHU9bT9uupovrqMsybwnR/1Il0LP8cd0mZI01FQml5VxR3ZKM2hAJc/L8
+         jEGA==
+X-Forwarded-Encrypted: i=1; AJvYcCXa9zhMihEW6VZj2OmBx+QSIPOqCoDCXknvtLBYQV4AgN+0q1UQsazHJadpv40UKeNfrkU7RExCsyLChZvqfub3PfHL6iwczLgLeQ==
+X-Gm-Message-State: AOJu0Yx/nWespA6X3v1hJ070ZIM9dYbdnKldKdOYawCYkpqyLnJdI25W
+	JE9NE5A5XNCFW6lx96mHXoGEYqI4jXDDIuluo7DmvEKEX4ydxPYXOGP7E7bsUYo=
+X-Google-Smtp-Source: AGHT+IGGKvFvAX2vsyi3iCxH0IVdZ+RZyQGv87uHYkT/9vnp4Qg0weBEeK0OIcuDUpXL8dTTvAYelw==
+X-Received: by 2002:a05:600c:3108:b0:421:7f23:8c5c with SMTP id 5b1f17b1804b1-422866c0c13mr16496455e9.28.1718194224388;
+        Wed, 12 Jun 2024 05:10:24 -0700 (PDT)
+Received: from ?IPV6:2a10:bac0:b000:7579:7285:c2ff:fedd:7e3a? ([2a10:bac0:b000:7579:7285:c2ff:fedd:7e3a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35f0c8f5373sm13444819f8f.6.2024.06.12.05.10.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Jun 2024 05:10:24 -0700 (PDT)
+Message-ID: <6eb5c1b2-64d2-42fd-81c9-97c1ae65713f@suse.com>
+Date: Wed, 12 Jun 2024 15:10:21 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -51,107 +61,79 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Confidential Computing call May 10: RTMR ABI & TEE I/O
-To: "Reshetova, Elena" <elena.reshetova@intel.com>, Dan Middleton
-	<dan.middleton@linux.intel.com>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "Kalra, Ashish" <ashish.kalra@amd.com>
-References: <61b65115-5945-4e27-89e4-bb6cba657f7f@linux.intel.com>
- <0ebfe6b4-ee5d-4909-8a3b-bbc1bd7623c7@amazon.com>
- <DM8PR11MB5750ECCF396D756D40BABF42E7FB2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <c3457141-1b62-4a7b-9cba-0ecec4dfb693@amazon.com>
- <DM8PR11MB5750B08CA4CBFD459268A42CE7C02@DM8PR11MB5750.namprd11.prod.outlook.com>
+Subject: Re: [PATCHv11 05/19] x86/relocate_kernel: Use named labels for less
+ confusion
+To: "H. Peter Anvin" <hpa@zytor.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>,
+ Jun Nakajima <jun.nakajima@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
+ <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
+ "Huang, Kai" <kai.huang@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Baoquan He <bhe@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
+ linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
+ <20240528095522.509667-6-kirill.shutemov@linux.intel.com>
+ <1e1d1aea-7346-4022-9f5f-402d171adfda@suse.com>
+ <5d7dca1e-5889-4440-b3a0-48610f11200e@zytor.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <DM8PR11MB5750B08CA4CBFD459268A42CE7C02@DM8PR11MB5750.namprd11.prod.outlook.com>
-X-ClientProxiedBy: EX19D040UWA002.ant.amazon.com (10.13.139.113) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+In-Reply-To: <5d7dca1e-5889-4440-b3a0-48610f11200e@zytor.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-SGkgRWxlbmEsCgpPbiAxMi4wNi4yNCAxMzoxOSwgUmVzaGV0b3ZhLCBFbGVuYSB3cm90ZToKPj4g
-T24gMDcuMDYuMjQgMTY6NDYsIFJlc2hldG92YSwgRWxlbmEgd3JvdGU6Cj4+Pj4gSGkgRGFuLAo+
-Pj4+Cj4+Pj4gT24gMDMuMDUuMjQgMjE6NTUsIERhbiBNaWRkbGV0b24gd3JvdGU6Cj4+Pj4+IEhp
-Cj4+Pj4+IE5leHQgRnJpZGF5LCBNYXkgMTB0aCBhdCA5YW0gUERULCB3ZSBoYXZlIGEgQ29uZmlk
-ZW50aWFsIENvbXB1dGluZwo+Pj4+PiBkZXZzZWMgLyBCb0YgLyBEaXNjdXNzaW9uIEdyb3VwIC8g
-U0lHIGNhbGwuIEV2ZXJ5b25lIGlzIHdlbGNvbWUuCj4+Pj4+Cj4+Pj4+IFRlbnRhdGl2ZSBhZ2Vu
-ZGEgaW5jbHVkZXMgUlRNUiBBQkkgdjMgZGlyZWN0aW9uIGFuZCBURUUgSS9PIG5leHQgc3RlcHMu
-Cj4+Pj4gSSBoYXZlbid0IHNlZW4gYW4gZW1haWwgZm9yIHRvZGF5J3MgY2FsbCwgc28gbGV0IG1l
-IHRocm93IG15IHRvcGljCj4+Pj4gc3VnZ2VzdGlvbiBoZXJlOgo+Pj4+Cj4+Pj4gSSB3b3VsZCBs
-aWtlIHRvIHRhbGsgYWJvdXQgImNvbmZpZGVudGlhbCBrZXhlYyIgdG9kYXk6IEEga2V4ZWMgbWVj
-aGFuaXNtCj4+Pj4gdGhhdCBhbGxvd3MgeW91IHRvIGRlc3Ryb3kgdGhlIGNvbmZpZGVudGlhbCBW
-TSB5b3UncmUgaW4gYW5kIHJlY3JlYXRlIGEKPj4+PiBuZXcgb25lIGJhc2VkIG9uIGEgcGF5bG9h
-ZCBvZiB0aGUgb2xkIG9uZS4gV2l0aCB0aGF0LCB3ZSB3b3VsZCBoYXZlIGEKPj4+PiB2ZXJ5IGVh
-c3kgYW5kIGNsZWFuIG1lY2hhbmlzbSB0byBib290c3RyYXAgYSBWTSBpbnRvIGEgZnVsbHkgbWVh
-c3VyZWQKPj4+PiBuZXcgZXhlY3V0aW9uIHN0YWNrLgo+Pj4gSW50ZXJlc3RpbmcgdG9waWMsIEkg
-YW0gY3VyaW91cyBvZiB0aGUgcmVxdWlyZW1lbnRzIQo+Pj4gU291bmRzIGxpa2UgeW91IHdhbnQg
-YSBsb2NhbCBmYXN0IG1pZ3JhdGlvbiwgaS5lLiBhIG1pZ3JhdGlvbiB0byBhIG5ldwo+Pj4gQ29D
-byBWTSBvbiB0aGUgc2FtZSBwbGF0Zm9ybT8gSSBndWVzcyB0aGUgZGlmZmVyZW5jZSB3b3VsZCBi
-ZSB0aGUgYWJzZW5jZQo+Pj4gb2YgdGhlIG9ubGluZSBtaWdyYXRpb24gcGhhc2Ugc2luY2UgeW91
-IGFyZSBwcm9iYWJseSBvayBzdG9wcGluZyB0aGUKPj4+IG9yaWdpbmFsIENvQ28gVk0gZmlyc3Qu
-Cj4+Cj4+IEFsbW9zdC4gSSBiYXNpY2FsbHkgd2FudCB0aGUgVk0gdG8gYmUgYWJsZSB0byBwcm92
-aWRlIGEgbmV3IGVhcmx5Cj4+IG1lYXN1cmVtZW50LiBTbyB0aGUgb3Bwb3NpdGUgb2YgbWlncmF0
-aW9uOiBXaXRoIG1pZ3JhdGlvbiwgSSB3YW50IHRvCj4+IHByZXNlcnZlIHByZXZpb3VzIHN0YXRl
-LiBIZXJlLCB0aGUgbWFpbiBtb3RpdmF0aW9uIGlzIHRvIGdldCByaWQgb2YgYW55Cj4+IHByZXZp
-b3VzIHN0YXRlIGV4Y2VwdCB0aGUgbmV3ICJzZWVkIiBmb3IgdGhlIHRhcmdldCBWTS4KPj4KPj4g
-VGhlcmUgYXJlIDIgbWFpbiB1c2UgY2FzZXMgZm9yIHRoaXM6Cj4+Cj4+IDEpIE1lYXN1cmVtZW50
-IHB1cmVseSBiYXNlZCBvbiBpbml0aWFsIGxhdW5jaCBtZWFzdXJlbWVudHMuIElmIHRoZSBmdWxs
-Cj4+IE9TIGlzIGluc2lkZSBhbiBpbml0cmFtZnMsIHdlIGNhbiBwcm92aWRlIGZpcm13YXJlK2tl
-cm5lbCtpbml0cmFtZnMgYXMKPj4gInNlZWQiLiBUaGUgQ29DbyBlbnYgd291bGQgbWVhc3VyZSBl
-dmVyeXRoaW5nIGFuZCBJIGhhdmUgYW4gZWFzeSBwYXRoIHRvCj4+IHZhbGlkYXRlIGF1dGhlbnRp
-Y2l0eSBvZiBteSB0YXJnZXQgZW52aXJvbm1lbnQuIEkgYWxzbyBoYXZlIGFuIGVhc3kgcGF0aAo+
-PiB0byB1cGRhdGUgdGhlIFZNIGFuZCB0aGVuIG1lYXN1cmUgd2l0aG91dCByZXBsYXlpbmcgYW55
-IGV2ZW50IGxvZ3MuCj4+Cj4+IDIpIFVwZGF0ZSBTVlNNIChvciBzaW1pbGFyKS4gT2Z0ZW4gdG9k
-YXksIHlvdSB3YW50IHRvIGltcGxlbWVudCBUUE1zIGFuZAo+PiBpbnNpZGUgYSBoaWdoZXIgcHJp
-dmlsZWdlZCBjb21wb25lbnQgdGhhdCBpcyByZWFsbHkgcGFydCBvZiB0aGUgVk0uIFRvCj4+IHVw
-ZGF0ZSBpdCwgeW91IGNvdWxkIHVzZSBpbi1WTSBtZWNoYW5pc21zLCBidXQgdGhhdCBsZWF2ZXMg
-YSBwYXRoIHdoZXJlCj4+IHlvdSBib290IHdpdGggYW4gb2xkIHZlcnNpb24gLT4gZXhwbG9pdCAt
-PiB1cGRhdGUgdG8gdGhlIG5ldy4gSWYgd2UKPj4gY291bGQgInJlYm9vdCIva2V4ZWMgaW50byBh
-IG5ldyBTVlNNLCB3ZSBjb3VsZCByZWFzb24gYWJvdXQgaXRzCj4+IGNvbmZpZGVudGlhbGl0eSB3
-aXRoIGEgMTAwJSBndWFyYW50ZWUuCj4gSSB0aGluayBJIGFtIHN0aWxsIGNvbmZ1c2VkIG9uIHRo
-ZSBwcm9ibGVtIHN0YXRlbWVudC4gWW91IGFyZSBzYXlpbmcgdGhhdAo+IENvQ28gY3VzdG9tZXJz
-IHNob3VsZCBiZSBhYmxlIHRvIHVwZGF0ZSB0aGVpciBjb2NvIFZNcyAod2l0aCBTVlNNIG9yIHdp
-dGhvdXQpCj4gd2l0aG91dCBDU1AgaW50ZXJ2ZW50aW9uLCB3aGljaCBmdWxseSBtYWtlcyBzZW5z
-ZS4gQnV0IGF0IHRoZSBzYW1lIHRpbWUKPiB5b3Ugd2FudCB0byBkbyBpdCB3aXRob3V0IGEgY29j
-byBWTSByZWJvb3QgKHdoaWNoIGlzIHRoZSBlYXNpZXN0IHdheSBvZgo+IHNvbHZpbmcgdGhpcyB3
-aXRoIGV4aXN0aW5nIG1lYW5zKSwgYnV0IHZpYSBzb21lIGtpbmQgb2YgZmFzdCBydW50aW1lIGtl
-eGVjCj4gb2YgdGhlIHdob2xlIG1hY2hpbmU/IFdoeT8gSWYgY3VzdG9tZXIgaXMgdXBkYXRpbmcg
-aXRzIGNvY28gVk0sIGl0IHNob3VsZAo+IGJlIG9rIGZvciB0aGVtIHRvIHNhdmUgZGF0YSBhbmQg
-dGFrZSBhIGZ1bGwgcmVib290LCB3aHkgbm90Pwo+IEkgZG8gYWdyZWUgdGhhdCB0aGVyZSBpcyBh
-bm90aGVyIHByb2JsZW0gY3VycmVudGx5IHdpdGggdGhlIGZhY3QgaG93IGhhcmQKPiBpdCBpcyB0
-byByZWFzb24gYWJvdXQgdGhlIHN0YXRlIG9mIHRoZSBmdWxsIFNXIHN0YWNrIG9mIENvQ28gVk0g
-KG1hbnkKPiBtZWFzdXJlbWVudHMsIG1hbnkgdXBkYXRlZCBjb21wb25lbnRzLCBsb25nIGV2ZW50
-IGxvZywgdGhpbmdzIHRoYXQKPiBtaWdodCBub3QgZ2V0IG1lYXN1cmVkLCBldGMuKSwgYnV0IGl0
-IHNlZW1zIGEgZGlmZmVyZW50IHByb2JsZW0gdG8gdGhlCj4gb25lIHlvdSBhcmUgc3RhdGluZyBv
-cj8KCgpJICp3YW50KiBhIGZ1bGwgY29jbyBWTSByZWJvb3QuIEJ1dCBJIGFsc28gd2FudCB0aGUg
-cHJlLXJlYm9vdCBWTSB0byAKcHJvdmlkZSB0aGUgaW5pdGlhbCBsYXVuY2ggZGF0YSBmb3IgdGhl
-IHBvc3QtcmVib290IFZNLgoKVGhlIHR5cGljYWwgcmVib290IGNhc2UgKENvQ28gb3Igbm90KSBp
-cyB0aGF0IGEgVk0gYWx3YXlzIHN0YXJ0cyB3aXRoIAppbml0aWFsIGxhdW5jaCBkYXRhIHRoYXQg
-dGhlIFZNIHByb3ZpZGVyIHByb3Zpc2lvbnMuIFRoYXQgbWVhbnMgYWdhaW4gCnRoZSAidHlwaWNh
-bCIgcGF0aCBpcyB0aGF0IHlvdSBib290IHdpdGggaW5pdGlhbCBsYXVuY2ggZGF0YSB0aGF0IHlv
-dXIgClZNIHByb3ZpZGVyIGRpY3RhdGVzOiBFaXRoZXIgZXhwbGljaXRseSAobGlrZSBpbiBFQzIs
-IHdoZXJlIHdlIGdpdmUgeW91IAphIHB1YmxpY2x5LCByZXByb2R1Y2libHkgYnVpbHQgT1ZNRiBi
-aW5hcnkpIG9yIGltcGxpY2l0bHkgdGhyb3VnaCBhIApzZWxlY3Rpb24gb2YgImtub3duIGdvb2Qg
-bGF1bmNoIGRhdGEiIHlvdSBjYW4gY2hvb3NlIGZyb20uCgpZb3UgY2FuIGluIHRoZW9yeSBldmVu
-IHNldCB1cCBzaWRlIGNoYW5uZWxzIGZyb20gdGhlIGN1c3RvbWVyIHRvIHlvdXIgCnByb3ZpZGVy
-IHRvIHVwbG9hZCBuZXcgImtub3duIGdvb2QgbGF1bmNoIGRhdGEiLiBCdXQgdGhhdCdzIGNvbXBs
-aWNhdGVkIApmb3IgYWxsIGxheWVycyBiZWNhdXNlIGl0IHJlcXVpcmVzIEFQSSBwcml2aWxlZ2Vz
-IHRoZSBWTSBtYXkgbm90IApvdGhlcndpc2UgcmVxdWlyZSBhbmQgaXQgbWVhbnMgeW91IG5lZWQg
-dG8gc3RvcmUgYW5kIHRyYW5zZmVyIHRoYXQgZGF0YSAKYWNyb3NzIHRoZSBjb250cm9sIHBsYW5l
-IG9mIHRoZSB0YXJnZXQgbGF1bmNoIHN0YWNrLgoKTXkgcHJvcG9zYWwgYWJvdmUgd2FzIHRvIGRv
-IGEgcmVib290LCBidXQgaW5zdGVhZCBvZiBzZWVkaW5nIHRoZSAKImluaXRpYWwgbGF1bmNoIGRh
-dGEiIGZyb20gdGhlIHByb3ZpZGVyLCB5b3UganVzdCBzZWVkIGl0IGZyb20gdGhlIApwcmUtcmVi
-b290IGVudmlyb25tZW50LiBUaGF0IHdheSBjdXN0b21lcnMgY2FuIHJlYm9vdCBpbnRvIGFueSB2
-ZXJzaW9uIApvZiBjb2RlIHRoZXkgbGlrZSBhbmQgMTAwJSBvd24gdGhlaXIgbWVhc3VyZW1lbnRz
-IGluIGEgVk0gcHJvdmlkZXIgCmFnbm9zdGljIHdheS4KCktleGVjIGNvbWVzIGludG8gcGxheSBi
-ZWNhdXNlIGZyb20gYSBjdXN0b21lciBleHBlcmllbmNlLCB0aGUgZmxvdyAKc2hvdWxkIGlkZWFs
-bHkgYmUgYXMgZWFzeSBhcyBzYXlpbmcgImtleGVjIG1lIGludG8gdGhpcyBuZXcgZmlybXdhcmUi
-LiBJIApzYXkga2V4ZWMgaGVyZSBiZWNhdXNlIGl0J3MgdGhlIGNsb3Nlc3QgYW5hbG9neSB3ZSBo
-YXZlIGluIExpbnV4IHRvIAoicmVib290LCBidXQgd2l0aCBhIHByZS1yZWJvb3QgcHJvdmlkZWQg
-cGF5bG9hZCIuIFRoZSBmYWN0IHRoYXQga2V4ZWMgCmRvZXNuJ3QgcGVyZm9ybSBhIHJlYm9vdCB0
-b2RheSBidXQgc2ltdWxhdGVzIGl0IHVzaW5nIGZhbmN5IHN0dW50cyBpcyBhbiAKaW1wbGVtZW50
-YXRpb24gZGV0YWlsIElNSE8uCgoKQWxleAoKCgoKQW1hem9uIFdlYiBTZXJ2aWNlcyBEZXZlbG9w
-bWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVzZW5zdHIuIDM4CjEwMTE3IEJlcmxpbgpHZXNj
-aGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hsYWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVpbmdl
-dHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0ZW5idXJnIHVudGVyIEhSQiAyNTc3NjQgQgpT
-aXR6OiBCZXJsaW4KVXN0LUlEOiBERSAzNjUgNTM4IDU5Nwo=
 
+
+On 3.06.24 г. 17:43 ч., H. Peter Anvin wrote:
+> On 5/29/24 03:47, Nikolay Borisov wrote:
+>>>
+>>> diff --git a/arch/x86/kernel/relocate_kernel_64.S 
+>>> b/arch/x86/kernel/relocate_kernel_64.S
+>>> index 56cab1bb25f5..085eef5c3904 100644
+>>> --- a/arch/x86/kernel/relocate_kernel_64.S
+>>> +++ b/arch/x86/kernel/relocate_kernel_64.S
+>>> @@ -148,9 +148,10 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
+>>>        */
+>>>       movl    $X86_CR4_PAE, %eax
+>>>       testq    $X86_CR4_LA57, %r13
+>>> -    jz    1f
+>>> +    jz    .Lno_la57
+>>>       orl    $X86_CR4_LA57, %eax
+>>> -1:
+>>> +.Lno_la57:
+>>> +
+>>>       movq    %rax, %cr4
+>>>       jmp 1f
+>>
+>> That jmp 1f becomes redundant now as it simply jumps 1 line below.
+>>
+> 
+> Uh... am I the only person to notice that ALL that is needed here is:
+> 
+>      andl $(X86_CR4_PAE|X86_CR4_LA57), %r13d
+>      movq %r13, %rax
+> 
+> ... since %r13 is dead afterwards, and PAE *will* have been set in %r13 
+> already?
+> 
+> I don't believe that this specific jmp is actually needed -- there are 
+> several more synchronizing jumps later -- but it doesn't hurt.
+> 
+> However, if the effort is for improving the readability, it might be 
+> worthwhile to encapsulate the "jmp 1f; 1:" as a macro, e.g. "SYNC_CODE".
+
+
+The preceding move to CR4 is itself a serializing instruction, no?
+
+> 
+>      -hpa
