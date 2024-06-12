@@ -1,257 +1,207 @@
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EDE84FDF
-	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 21:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3B22CCB4
+	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 23:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718227107; cv=none; b=KjvR9+BRUXzHh7BU1jbf6uxw7HCnxwuMsvqRyGfWtB5GlCM8cgzlTLe3gbVadeL1NHjBMNYEtuQYKWTFaBF8Gffvu4DMzNYIz8VM4DNf9ahtFxnQG8W3zhphvmnJY1iECmi9SYYOERj5IbGRB6ob64igSLvjluQMSCquX+jVUlo=
+	t=1718233572; cv=none; b=HyAJDcl8RFSvancS/uWaYxqKEVHT6oLZBU8Gvw2RnYo61hCjhYe4OCn3IvOZJSjkJzkLDB7ezpa4XG0vhzbk6JdhTCcBVlnYzIbyPXUf9IoiP9rH4rNHSVj7v9IIPavYd/bRVPKt7OtWtAbXi+AFa5cEAlq8Hgy2feSsZO7mqnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718227107; c=relaxed/simple;
-	bh=HmkPVMGgXG6hyl19z2yCgSyNpeN02sOFmJSM61ysUGw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hs/nWbcBG3lqaPY0SWaMw8ffB9WBc2TOV79ozh3TX6yXNdC2UJ/K8CxlnlV+MyF+UKu9Kae6yAxsMmsaujb4MpAn23PG1FAk3VjsamBfd+JocMecRcLMxbt/DEkBlQL9lKlttQGG4NfVSpnEKrOzzoBqJMimFEljZEWElWGxVyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i5430ds1; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1718233572; c=relaxed/simple;
+	bh=JQbugJA8jcGelVyE2M9ReTkk0J62dOaLR16rY0Fg4OM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PatE8+7C96SH6FOwu5AXDMnXmWMMBbGlFGaRS1SqrRYTe7lNYt4vIglM8PA4VMyouPw12XddffFEIX9pCqsAZGJlyOPLNoeTGrqFm7QfRkBPgOzTp+gJqiayeAbgEnniTjACCUoVZZFp8/cqnFR+Rvgp2tcFre1F3EF1hq06l+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=kklXzhI3; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i5430ds1"
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-dfa8394d3f4so41229276.2
-        for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 14:18:25 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="kklXzhI3"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4217d451f69so4651015e9.0
+        for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 16:06:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718227104; x=1718831904; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BEOwZmnGSndBKUoCTfCdkAvbTohzwX+ks2aejKL3XsI=;
-        b=i5430ds16cbnDit//qnoF1kLsHL9SMTirvxwd9l7UWJ17Z+eySkhL+66jpoN6XgxSN
-         kz3E+U17YwOTPz8fLP4ewCziu0AwBDWRpRy4LWJcGYh+Y7jTblTOIBQvg3+Jyorx+nYa
-         BXkI5wgZ6FvNS8o4i4uHDQeAw/cad6jhMgHNnawroealH5NjFrgxl1MK1KrfafE2Y2G/
-         BLxTWlmVB/d0Er0YmtOZ3aEvyCjI3izyFHDBABNrnKVhpvNq2Hm/UftQo5XdFue8TQHn
-         y6mgJ/Z/FJvEXQc6fQXgsySD5IzfkRnTxsjn+0VVZLf+GCdG2RkwmLGGFo9RE/Fy+q3b
-         0itw==
+        d=citrix.com; s=google; t=1718233569; x=1718838369; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=nBdu/p+rPedbbedDDyqmAgiBRsCiRDycnW5wqxTyACs=;
+        b=kklXzhI3dweWrVg6V1RpNUyE+q7bKkZDkAyxVrrab56LdWOhE9LMHG7Jvs4viXiX24
+         tOFNL0Ro3PgSMhVDVPsyyGBL+RGrYkfugcIj190khyEX+bGQbAWltcXBVY9tkKTStzB1
+         SMpI8SKUOQaQvE2a5Rh9fTdz+JVXMDUcbj6OM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718227104; x=1718831904;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BEOwZmnGSndBKUoCTfCdkAvbTohzwX+ks2aejKL3XsI=;
-        b=TyuNAeVa2Rws9p+uZ/l1nhdsSTGknq9Z+qC6X420O5A3JyzUwYqSFtGYDd1Cq+M4GF
-         ti9X1/2qWCpSFN3pIUl/BWxpIAp91VLaQCe7Q60Ea1IV0dX/p+0O09pXCwq5n3FibABC
-         OsMSR7myKoJliR92IO6MuV+DNqpzEApjRWLT6ivg4kSFSOrOseyHA6w3vIz+ftoQKcy4
-         ej+5NS4Cayc9wlwKDqLWKobxgB9ZwllSd54EUf+l9GnBKhmn6TLX2uPvGB/l6y5kbwur
-         C2ypPGAaqwUk8pPaFC8s88D4u1SE0epZjzHTSl1NF9JYdeCwtZl4Dz664jnsQFjMXvOG
-         1EWw==
-X-Forwarded-Encrypted: i=1; AJvYcCVd3AUg58JSmf0pxv00azGdZHnc1+3tRTZ33N7iu+YgULnA0YbmOiEgQWPM0Buu+TV3pj9f3GsXVS6Z/J85YHx2/8oBzYAszw1cpg==
-X-Gm-Message-State: AOJu0YyWUdFZTTH7HC3Ld7FKhEc5KxZPu1wXCbbvKUAf7syqjDWGbwAH
-	m0xeOyGaEBRfjbr4o5SuebUvHRzLj00u/0/06KadPzjYMWApg+MsqxcFUVmzUFM2/W5WZfSpDu1
-	xY+W/HMTtISbETgpU7MSuCJwS+eCWkg==
-X-Google-Smtp-Source: AGHT+IEaB+lXJVXf+Xg8CikGCvv6MHGxJKVsSv1q0X5TWQR34W9FLcMvfJIvaJUi846myfmELPisGPmvN4B0oTjWgUI=
-X-Received: by 2002:a25:dc90:0:b0:df7:737e:9d87 with SMTP id
- 3f1490d57ef6-dfe6b184ac2mr2888218276.6.1718227104477; Wed, 12 Jun 2024
- 14:18:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718233569; x=1718838369;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nBdu/p+rPedbbedDDyqmAgiBRsCiRDycnW5wqxTyACs=;
+        b=lqzSVuSovrBt6D+oaQUpi8aHLxN3vfj2GTNRa5LXhFn9Qh7jFAIsteZkl+ENcelyZZ
+         0y0V4QWSVQeDXngEndrKVQ+iy0jgbdDTCe/da4vjLzObY61HlXEZ9lIG17KxnkaVgzOr
+         fMpScpMdhtc9fcEWWWafI+RR0jH8uzw7PxwgZWD0c/6ajHFqj2/j+B3rxfu2mtDv281O
+         OWLIqixN8atsnBTGvzWADbcwu4g3Jz5AA7Eg0sqCroSAnCsYu/kqM/WpYjo4u3K8mTN/
+         EVntuQaek98Z6Qq6B7+jpwxUN0/ZUCtdYME9SnK5a5kiDhGW1XjyrZyySB32rs0zKXxf
+         nGkw==
+X-Forwarded-Encrypted: i=1; AJvYcCVZnpM5OZMchUlUcUyVodNhOdR8Jwgq1VBFH3vLXzmtSfLeK4SRL0zREAO7m/DKvPN21z+Ar8wy1WWcAPFt9J1LtNspC5kIXwRN0g==
+X-Gm-Message-State: AOJu0YyLijVAXcCg7JD9jOtqAT8LIKeUcaJAbjd5xaeTMEMG28snIEEh
+	5Pu7KxGAG1ZuH2zdSCdwYfTcrlUDmqVDRkoMMXCfCVDSblu0jFsJFlkXaXZzjwU=
+X-Google-Smtp-Source: AGHT+IHG+f0o9hNbI+2TQlMCyzttV2QTbaYydAK8N22sR60f8GaXn0G6V6BCroySwbJ4fjWkKL4LsA==
+X-Received: by 2002:a05:600c:45cc:b0:421:21d2:abf5 with SMTP id 5b1f17b1804b1-422865acc67mr27498415e9.31.1718233569336;
+        Wed, 12 Jun 2024 16:06:09 -0700 (PDT)
+Received: from [192.168.1.10] (host-92-26-98-202.as13285.net. [92.26.98.202])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422f641a64bsm2618385e9.46.2024.06.12.16.06.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Jun 2024 16:06:08 -0700 (PDT)
+Message-ID: <addbd29a-66dc-4180-ae45-ef038c2249d1@citrix.com>
+Date: Thu, 13 Jun 2024 00:06:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <61b65115-5945-4e27-89e4-bb6cba657f7f@linux.intel.com>
- <0ebfe6b4-ee5d-4909-8a3b-bbc1bd7623c7@amazon.com> <DM8PR11MB5750ECCF396D756D40BABF42E7FB2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <c3457141-1b62-4a7b-9cba-0ecec4dfb693@amazon.com> <DM8PR11MB5750B08CA4CBFD459268A42CE7C02@DM8PR11MB5750.namprd11.prod.outlook.com>
- <98756bac-8de3-4eeb-97b2-9fa0bcf869ff@amazon.com> <DM8PR11MB5750FB4A0C87D13CACB11D5AE7C02@DM8PR11MB5750.namprd11.prod.outlook.com>
-In-Reply-To: <DM8PR11MB5750FB4A0C87D13CACB11D5AE7C02@DM8PR11MB5750.namprd11.prod.outlook.com>
-From: Steve Rutherford <ruthafjord@gmail.com>
-Date: Wed, 12 Jun 2024 14:18:13 -0700
-Message-ID: <CAN=80Bv1Vvskvty8SW1Fh=99iMzhFZDFOhD9-2K-+P57f1NnyA@mail.gmail.com>
-Subject: Re: Confidential Computing call May 10: RTMR ABI & TEE I/O
-To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: "Graf, Alexander" <graf@amazon.com>, Dan Middleton <dan.middleton@linux.intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Kalra, Ashish" <ashish.kalra@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv11 05/19] x86/relocate_kernel: Use named labels for less
+ confusion
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>
+Cc: Borislav Petkov <bp@alien8.de>, Nikolay Borisov <nik.borisov@suse.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>,
+ Jun Nakajima <jun.nakajima@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
+ <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
+ "Huang, Kai" <kai.huang@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Baoquan He <bhe@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
+ linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
+ <20240528095522.509667-6-kirill.shutemov@linux.intel.com>
+ <1e1d1aea-7346-4022-9f5f-402d171adfda@suse.com>
+ <t3zx4f6ynru7qp4oel4syza2alcuxz7q7hxqgf2lxusgobnsnh@vtnecqrsxci5>
+ <748d3b70-60b4-44e0-bd81-9117f1ab699d@zytor.com>
+ <20240604091503.GQZl7bF14qTSAjqUhN@fat_crate.local>
+ <ehttxqgg7zhbgty5m5uxkduj3xf7soonrzfu4rfw7hccqgdydl@afki66pnree5>
+ <5c8b3ee9-64c2-4ff3-9cca-ba2672b9635e@zytor.com>
+ <nxllu5wfhvfvorxbbt6ll3lc2mr47lw7sduszfawhtryqgtyrd@3qgtci7ocah6>
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
+ 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
+ 6+ahAA==
+In-Reply-To: <nxllu5wfhvfvorxbbt6ll3lc2mr47lw7sduszfawhtryqgtyrd@3qgtci7ocah6>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 12, 2024 at 6:19=E2=80=AFAM Reshetova, Elena
-<elena.reshetova@intel.com> wrote:
+On 12/06/2024 10:22 am, Kirill A. Shutemov wrote:
+> On Tue, Jun 11, 2024 at 11:26:17AM -0700, H. Peter Anvin wrote:
+>> On 6/4/24 08:21, Kirill A. Shutemov wrote:
+>>>  From b45fe48092abad2612c2bafbb199e4de80c99545 Mon Sep 17 00:00:00 2001
+>>> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+>>> Date: Fri, 10 Feb 2023 12:53:11 +0300
+>>> Subject: [PATCHv11.1 06/19] x86/kexec: Keep CR4.MCE set during kexec for TDX guest
+>>>
+>>> TDX guests run with MCA enabled (CR4.MCE=1b) from the very start. If
+>>> that bit is cleared during CR4 register reprogramming during boot or
+>>> kexec flows, a #VE exception will be raised which the guest kernel
+>>> cannot handle it.
+>>>
+>>> Therefore, make sure the CR4.MCE setting is preserved over kexec too and
+>>> avoid raising any #VEs.
+>>>
+>>> The change doesn't affect non-TDX-guest environments.
+>>>
+>>> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+>>> ---
+>>>   arch/x86/kernel/relocate_kernel_64.S | 17 ++++++++++-------
+>>>   1 file changed, 10 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+>>> index 085eef5c3904..9c2cf70c5f54 100644
+>>> --- a/arch/x86/kernel/relocate_kernel_64.S
+>>> +++ b/arch/x86/kernel/relocate_kernel_64.S
+>>> @@ -5,6 +5,8 @@
+>>>    */
+>>>   #include <linux/linkage.h>
+>>> +#include <linux/stringify.h>
+>>> +#include <asm/alternative.h>
+>>>   #include <asm/page_types.h>
+>>>   #include <asm/kexec.h>
+>>>   #include <asm/processor-flags.h>
+>>> @@ -145,14 +147,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
+>>>   	 * Set cr4 to a known state:
+>>>   	 *  - physical address extension enabled
+>>>   	 *  - 5-level paging, if it was enabled before
+>>> +	 *  - Machine check exception on TDX guest, if it was enabled before.
+>>> +	 *    Clearing MCE might not be allowed in TDX guests, depending on setup.
+>>> +	 *
+>>> +	 * Use R13 that contains the original CR4 value, read in relocate_kernel().
+>>> +	 * PAE is always set in the original CR4.
+>>>   	 */
+>>> -	movl	$X86_CR4_PAE, %eax
+>>> -	testq	$X86_CR4_LA57, %r13
+>>> -	jz	.Lno_la57
+>>> -	orl	$X86_CR4_LA57, %eax
+>>> -.Lno_la57:
+>>> -
+>>> -	movq	%rax, %cr4
+>>> +	andl	$(X86_CR4_PAE | X86_CR4_LA57), %r13d
+>>> +	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %r13d), X86_FEATURE_TDX_GUEST
+>>> +	movq	%r13, %cr4
+>> If this is the case, I don't really see a reason to clear MCE per se as I'm
+>> guessing a machine check here will be fatal anyway? It just changes the
+>> method of death.
+> Andrew had a strong opinion on method of death here.
 >
->
-> > Hi Elena,
-> >
-> > On 12.06.24 13:19, Reshetova, Elena wrote:
-> > >> On 07.06.24 16:46, Reshetova, Elena wrote:
-> > >>>> Hi Dan,
-> > >>>>
-> > >>>> On 03.05.24 21:55, Dan Middleton wrote:
-> > >>>>> Hi
-> > >>>>> Next Friday, May 10th at 9am PDT, we have a Confidential Computin=
-g
-> > >>>>> devsec / BoF / Discussion Group / SIG call. Everyone is welcome.
-> > >>>>>
-> > >>>>> Tentative agenda includes RTMR ABI v3 direction and TEE I/O next =
-steps.
-> > >>>> I haven't seen an email for today's call, so let me throw my topic
-> > >>>> suggestion here:
-> > >>>>
-> > >>>> I would like to talk about "confidential kexec" today: A kexec mec=
-hanism
-> > >>>> that allows you to destroy the confidential VM you're in and recre=
-ate a
-> > >>>> new one based on a payload of the old one. With that, we would hav=
-e a
-> > >>>> very easy and clean mechanism to bootstrap a VM into a fully measu=
-red
-> > >>>> new execution stack.
-> > >>> Interesting topic, I am curious of the requirements!
-> > >>> Sounds like you want a local fast migration, i.e. a migration to a =
-new
-> > >>> CoCo VM on the same platform? I guess the difference would be the a=
-bsence
-> > >>> of the online migration phase since you are probably ok stopping th=
-e
-> > >>> original CoCo VM first.
-> > >>
-> > >> Almost. I basically want the VM to be able to provide a new early
-> > >> measurement. So the opposite of migration: With migration, I want to
-> > >> preserve previous state. Here, the main motivation is to get rid of =
-any
-> > >> previous state except the new "seed" for the target VM.
-> > >>
-> > >> There are 2 main use cases for this:
-> > >>
-> > >> 1) Measurement purely based on initial launch measurements. If the f=
-ull
-> > >> OS is inside an initramfs, we can provide firmware+kernel+initramfs =
-as
-> > >> "seed". The CoCo env would measure everything and I have an easy pat=
-h to
-> > >> validate authenticity of my target environment. I also have an easy =
-path
-> > >> to update the VM and then measure without replaying any event logs.
-> > >>
-> > >> 2) Update SVSM (or similar). Often today, you want to implement TPMs=
- and
-> > >> inside a higher privileged component that is really part of the VM. =
-To
-> > >> update it, you could use in-VM mechanisms, but that leaves a path wh=
-ere
-> > >> you boot with an old version -> exploit -> update to the new. If we
-> > >> could "reboot"/kexec into a new SVSM, we could reason about its
-> > >> confidentiality with a 100% guarantee.
-> > > I think I am still confused on the problem statement. You are saying =
-that
-> > > CoCo customers should be able to update their coco VMs (with SVSM or
-> > without)
-> > > without CSP intervention, which fully makes sense. But at the same ti=
-me
-> > > you want to do it without a coco VM reboot (which is the easiest way =
-of
-> > > solving this with existing means), but via some kind of fast runtime =
-kexec
-> > > of the whole machine? Why? If customer is updating its coco VM, it sh=
-ould
-> > > be ok for them to save data and take a full reboot, why not?
-> > > I do agree that there is another problem currently with the fact how =
-hard
-> > > it is to reason about the state of the full SW stack of CoCo VM (many
-> > > measurements, many updated components, long event log, things that
-> > > might not get measured, etc.), but it seems a different problem to th=
-e
-> > > one you are stating or?
-> >
-> >
-> > I *want* a full coco VM reboot. But I also want the pre-reboot VM to
-> > provide the initial launch data for the post-reboot VM.
-> >
-> > The typical reboot case (CoCo or not) is that a VM always starts with
-> > initial launch data that the VM provider provisions. That means again
-> > the "typical" path is that you boot with initial launch data that your
-> > VM provider dictates: Either explicitly (like in EC2, where we give you
-> > a publicly, reproducibly built OVMF binary) or implicitly through a
-> > selection of "known good launch data" you can choose from.
-> >
-> > You can in theory even set up side channels from the customer to your
-> > provider to upload new "known good launch data". But that's complicated
-> > for all layers because it requires API privileges the VM may not
-> > otherwise require and it means you need to store and transfer that data
-> > across the control plane of the target launch stack.
-> >
-> > My proposal above was to do a reboot, but instead of seeding the
-> > "initial launch data" from the provider, you just seed it from the
-> > pre-reboot environment. That way customers can reboot into any version
-> > of code they like and 100% own their measurements in a VM provider
-> > agnostic way.
-> >
-> > Kexec comes into play because from a customer experience, the flow
-> > should ideally be as easy as saying "kexec me into this new firmware". =
-I
-> > say kexec here because it's the closest analogy we have in Linux to
-> > "reboot, but with a pre-reboot provided payload". The fact that kexec
-> > doesn't perform a reboot today but simulates it using fancy stunts is a=
-n
-> > implementation detail IMHO.
->
->
-> Thank you for clarifying this! I think I got too much into thinking of ke=
-xec
-> runtime update. I think this came from you originally saying that you wan=
-t
-> to preserve the *payload of the original VM* in:
->
-> " I would like to talk about "confidential kexec" today: A kexec mechanis=
-m
-> that allows you to destroy the confidential VM you're in and recreate a
-> new one based on a payload of the old one "
->
-> And by VM payload I thought of some state in memory.
->
-> But you just want to provide a way
-> for customer to supply the CoCo VM SW components (somehow, tbd details)
-> and have a way for customer to ask to reboot into this content. The actua=
-l
-> customer data is still comes from protected disk and the full attestation
-> process must be done for this new VM (with customer somehow
-> updating the new target measurement for VM in respected KBS)
->  before it can get access to this disk.
->
-> But still one question: why does this mechanism has to be from *within* t=
-he
-> CoCo VM itself? Is it in order not to design CSP-specific mechanism for
-> doing it via some CSP-provided web interface?
+> https://lore.kernel.org/all/1144340e-dd95-ee3b-dabb-579f9a65b3c7@citrix.com
 
-I have the same question. This design feels like a way to side step
-adding API surface by instead adding an even more inflexible kernel
-ABI surface. And, on top of that, requiring an extra reboot in order
-to initialize a CC VM. Why not skip that step and just initialize the
-VM to the "correct" state in the first place? Interfaces like this
-seem most appropriate at the CSP API level.
+Not sure if I intended it to come across that strongly, but given a
+choice, the !CR4.MCE death is cleaner because at least you're not
+interpreting garbage and trying to use it as a valid IDT.
 
-It also leaves me with latent questions about firmware, since this
-seems to imply customer controlled firmware. Not totally sure this is
-inherently problematic, but it's not something I'm excited to maintain
-compatibility with.
-
-Thanks,
---Steve
-
-
->
-> But I do like the idea in principle, we can indeed currently change only =
-guest
-> kernel via kexec, but we dont have a way to do the same for virtual FW
-> and other potential components included in CoCo VM at least generically.
->
-> Best Regards,
-> Elena.
->
->
-> >
-> >
-> >
-> >
-> > Amazon Web Services Development Center Germany GmbH
-> > Krausenstr. 38
-> > 10117 Berlin
-> > Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-> > Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-> > Sitz: Berlin
-> > Ust-ID: DE 365 538 597
+~Andrew
