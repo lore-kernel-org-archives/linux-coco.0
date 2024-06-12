@@ -1,179 +1,257 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6B017DE2B
-	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 16:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EDE84FDF
+	for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 21:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718208618; cv=none; b=Eeoq/YeRD+MuLujTndTBmHILpj3OBKzoWeKyzAaPXGnL6SbV5vnMP6QKSPYt7SHmyZKNTt/VReoHl7/gjsFcnE9Cy2g8ipPO44UvQfQB6XN4Qji1CoP/VarW5r223hOWe+uR4r8j/yfdo8ZyRuWhIErlSBrxsXOIdSmkxZuKxlA=
+	t=1718227107; cv=none; b=KjvR9+BRUXzHh7BU1jbf6uxw7HCnxwuMsvqRyGfWtB5GlCM8cgzlTLe3gbVadeL1NHjBMNYEtuQYKWTFaBF8Gffvu4DMzNYIz8VM4DNf9ahtFxnQG8W3zhphvmnJY1iECmi9SYYOERj5IbGRB6ob64igSLvjluQMSCquX+jVUlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718208618; c=relaxed/simple;
-	bh=9FjkK63X7UnIqqjlNMXnOdUdp7IseXQXhp451DJFoqA=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=SRcXP4JTaKtIowlYR1yZIjiOt5NpOx2u6vpnAAAThY80x9RdjOP4mPXl7P0zQLnyYPw3Xt0UXybtHoSLS7yjAAVSGcXemUsRuzhNBZ50u8eGA6oOpOJuGYTtuo2ZloTSvvJLjwqam9MA0AewSr+tu8C5gFc7GBKcjuk0h7KrnWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UPY3t7u/; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1718227107; c=relaxed/simple;
+	bh=HmkPVMGgXG6hyl19z2yCgSyNpeN02sOFmJSM61ysUGw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Hs/nWbcBG3lqaPY0SWaMw8ffB9WBc2TOV79ozh3TX6yXNdC2UJ/K8CxlnlV+MyF+UKu9Kae6yAxsMmsaujb4MpAn23PG1FAk3VjsamBfd+JocMecRcLMxbt/DEkBlQL9lKlttQGG4NfVSpnEKrOzzoBqJMimFEljZEWElWGxVyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i5430ds1; arc=none smtp.client-ip=209.85.219.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UPY3t7u/"
-Received: from [192.168.49.54] (c-73-118-245-227.hsd1.wa.comcast.net [73.118.245.227])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 656DB20B7001;
-	Wed, 12 Jun 2024 09:10:09 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 656DB20B7001
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1718208609;
-	bh=RwjazV5sA8GVLo5REZFAAJWRTt27/+09ggocg8Gt8+s=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=UPY3t7u/dFyqZbYJ9STAjRbF7OXVYcuyHIkrTcJJHpuLzxBaCJiqI4frJ6YnI/Bt6
-	 btkUf/VfpLp68lnAzl9evVqiEgFDquWxWtYbaNo2VKYhRTJcxXY0zlH4G8je6dKw94
-	 Kdzvnhm9NDvObXjQVuewOWqOUswTiAhwt7reZXxM=
-Message-ID: <cabdb509-83a2-4de7-8e10-4eea7e4c96f2@linux.microsoft.com>
-Date: Wed, 12 Jun 2024 09:10:09 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i5430ds1"
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-dfa8394d3f4so41229276.2
+        for <linux-coco@lists.linux.dev>; Wed, 12 Jun 2024 14:18:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718227104; x=1718831904; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BEOwZmnGSndBKUoCTfCdkAvbTohzwX+ks2aejKL3XsI=;
+        b=i5430ds16cbnDit//qnoF1kLsHL9SMTirvxwd9l7UWJ17Z+eySkhL+66jpoN6XgxSN
+         kz3E+U17YwOTPz8fLP4ewCziu0AwBDWRpRy4LWJcGYh+Y7jTblTOIBQvg3+Jyorx+nYa
+         BXkI5wgZ6FvNS8o4i4uHDQeAw/cad6jhMgHNnawroealH5NjFrgxl1MK1KrfafE2Y2G/
+         BLxTWlmVB/d0Er0YmtOZ3aEvyCjI3izyFHDBABNrnKVhpvNq2Hm/UftQo5XdFue8TQHn
+         y6mgJ/Z/FJvEXQc6fQXgsySD5IzfkRnTxsjn+0VVZLf+GCdG2RkwmLGGFo9RE/Fy+q3b
+         0itw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718227104; x=1718831904;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BEOwZmnGSndBKUoCTfCdkAvbTohzwX+ks2aejKL3XsI=;
+        b=TyuNAeVa2Rws9p+uZ/l1nhdsSTGknq9Z+qC6X420O5A3JyzUwYqSFtGYDd1Cq+M4GF
+         ti9X1/2qWCpSFN3pIUl/BWxpIAp91VLaQCe7Q60Ea1IV0dX/p+0O09pXCwq5n3FibABC
+         OsMSR7myKoJliR92IO6MuV+DNqpzEApjRWLT6ivg4kSFSOrOseyHA6w3vIz+ftoQKcy4
+         ej+5NS4Cayc9wlwKDqLWKobxgB9ZwllSd54EUf+l9GnBKhmn6TLX2uPvGB/l6y5kbwur
+         C2ypPGAaqwUk8pPaFC8s88D4u1SE0epZjzHTSl1NF9JYdeCwtZl4Dz664jnsQFjMXvOG
+         1EWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVd3AUg58JSmf0pxv00azGdZHnc1+3tRTZ33N7iu+YgULnA0YbmOiEgQWPM0Buu+TV3pj9f3GsXVS6Z/J85YHx2/8oBzYAszw1cpg==
+X-Gm-Message-State: AOJu0YyWUdFZTTH7HC3Ld7FKhEc5KxZPu1wXCbbvKUAf7syqjDWGbwAH
+	m0xeOyGaEBRfjbr4o5SuebUvHRzLj00u/0/06KadPzjYMWApg+MsqxcFUVmzUFM2/W5WZfSpDu1
+	xY+W/HMTtISbETgpU7MSuCJwS+eCWkg==
+X-Google-Smtp-Source: AGHT+IEaB+lXJVXf+Xg8CikGCvv6MHGxJKVsSv1q0X5TWQR34W9FLcMvfJIvaJUi846myfmELPisGPmvN4B0oTjWgUI=
+X-Received: by 2002:a25:dc90:0:b0:df7:737e:9d87 with SMTP id
+ 3f1490d57ef6-dfe6b184ac2mr2888218276.6.1718227104477; Wed, 12 Jun 2024
+ 14:18:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: eahariha@linux.microsoft.com
-Subject: Re: [PATCH 1/1] Documentation: hyperv: Add overview of Confidential
- Computing VM support
-To: mhklinux@outlook.com, kys@microsoft.com, haiyangz@microsoft.com,
- wei.liu@kernel.org, decui@microsoft.com, corbet@lwn.net,
- linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-coco@lists.linux.dev
-References: <20240610202810.193452-1-mhklinux@outlook.com>
-Content-Language: en-US
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-In-Reply-To: <20240610202810.193452-1-mhklinux@outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <61b65115-5945-4e27-89e4-bb6cba657f7f@linux.intel.com>
+ <0ebfe6b4-ee5d-4909-8a3b-bbc1bd7623c7@amazon.com> <DM8PR11MB5750ECCF396D756D40BABF42E7FB2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <c3457141-1b62-4a7b-9cba-0ecec4dfb693@amazon.com> <DM8PR11MB5750B08CA4CBFD459268A42CE7C02@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <98756bac-8de3-4eeb-97b2-9fa0bcf869ff@amazon.com> <DM8PR11MB5750FB4A0C87D13CACB11D5AE7C02@DM8PR11MB5750.namprd11.prod.outlook.com>
+In-Reply-To: <DM8PR11MB5750FB4A0C87D13CACB11D5AE7C02@DM8PR11MB5750.namprd11.prod.outlook.com>
+From: Steve Rutherford <ruthafjord@gmail.com>
+Date: Wed, 12 Jun 2024 14:18:13 -0700
+Message-ID: <CAN=80Bv1Vvskvty8SW1Fh=99iMzhFZDFOhD9-2K-+P57f1NnyA@mail.gmail.com>
+Subject: Re: Confidential Computing call May 10: RTMR ABI & TEE I/O
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: "Graf, Alexander" <graf@amazon.com>, Dan Middleton <dan.middleton@linux.intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Kalra, Ashish" <ashish.kalra@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for adding much needed documentation throughout the tree!
+On Wed, Jun 12, 2024 at 6:19=E2=80=AFAM Reshetova, Elena
+<elena.reshetova@intel.com> wrote:
+>
+>
+> > Hi Elena,
+> >
+> > On 12.06.24 13:19, Reshetova, Elena wrote:
+> > >> On 07.06.24 16:46, Reshetova, Elena wrote:
+> > >>>> Hi Dan,
+> > >>>>
+> > >>>> On 03.05.24 21:55, Dan Middleton wrote:
+> > >>>>> Hi
+> > >>>>> Next Friday, May 10th at 9am PDT, we have a Confidential Computin=
+g
+> > >>>>> devsec / BoF / Discussion Group / SIG call. Everyone is welcome.
+> > >>>>>
+> > >>>>> Tentative agenda includes RTMR ABI v3 direction and TEE I/O next =
+steps.
+> > >>>> I haven't seen an email for today's call, so let me throw my topic
+> > >>>> suggestion here:
+> > >>>>
+> > >>>> I would like to talk about "confidential kexec" today: A kexec mec=
+hanism
+> > >>>> that allows you to destroy the confidential VM you're in and recre=
+ate a
+> > >>>> new one based on a payload of the old one. With that, we would hav=
+e a
+> > >>>> very easy and clean mechanism to bootstrap a VM into a fully measu=
+red
+> > >>>> new execution stack.
+> > >>> Interesting topic, I am curious of the requirements!
+> > >>> Sounds like you want a local fast migration, i.e. a migration to a =
+new
+> > >>> CoCo VM on the same platform? I guess the difference would be the a=
+bsence
+> > >>> of the online migration phase since you are probably ok stopping th=
+e
+> > >>> original CoCo VM first.
+> > >>
+> > >> Almost. I basically want the VM to be able to provide a new early
+> > >> measurement. So the opposite of migration: With migration, I want to
+> > >> preserve previous state. Here, the main motivation is to get rid of =
+any
+> > >> previous state except the new "seed" for the target VM.
+> > >>
+> > >> There are 2 main use cases for this:
+> > >>
+> > >> 1) Measurement purely based on initial launch measurements. If the f=
+ull
+> > >> OS is inside an initramfs, we can provide firmware+kernel+initramfs =
+as
+> > >> "seed". The CoCo env would measure everything and I have an easy pat=
+h to
+> > >> validate authenticity of my target environment. I also have an easy =
+path
+> > >> to update the VM and then measure without replaying any event logs.
+> > >>
+> > >> 2) Update SVSM (or similar). Often today, you want to implement TPMs=
+ and
+> > >> inside a higher privileged component that is really part of the VM. =
+To
+> > >> update it, you could use in-VM mechanisms, but that leaves a path wh=
+ere
+> > >> you boot with an old version -> exploit -> update to the new. If we
+> > >> could "reboot"/kexec into a new SVSM, we could reason about its
+> > >> confidentiality with a 100% guarantee.
+> > > I think I am still confused on the problem statement. You are saying =
+that
+> > > CoCo customers should be able to update their coco VMs (with SVSM or
+> > without)
+> > > without CSP intervention, which fully makes sense. But at the same ti=
+me
+> > > you want to do it without a coco VM reboot (which is the easiest way =
+of
+> > > solving this with existing means), but via some kind of fast runtime =
+kexec
+> > > of the whole machine? Why? If customer is updating its coco VM, it sh=
+ould
+> > > be ok for them to save data and take a full reboot, why not?
+> > > I do agree that there is another problem currently with the fact how =
+hard
+> > > it is to reason about the state of the full SW stack of CoCo VM (many
+> > > measurements, many updated components, long event log, things that
+> > > might not get measured, etc.), but it seems a different problem to th=
+e
+> > > one you are stating or?
+> >
+> >
+> > I *want* a full coco VM reboot. But I also want the pre-reboot VM to
+> > provide the initial launch data for the post-reboot VM.
+> >
+> > The typical reboot case (CoCo or not) is that a VM always starts with
+> > initial launch data that the VM provider provisions. That means again
+> > the "typical" path is that you boot with initial launch data that your
+> > VM provider dictates: Either explicitly (like in EC2, where we give you
+> > a publicly, reproducibly built OVMF binary) or implicitly through a
+> > selection of "known good launch data" you can choose from.
+> >
+> > You can in theory even set up side channels from the customer to your
+> > provider to upload new "known good launch data". But that's complicated
+> > for all layers because it requires API privileges the VM may not
+> > otherwise require and it means you need to store and transfer that data
+> > across the control plane of the target launch stack.
+> >
+> > My proposal above was to do a reboot, but instead of seeding the
+> > "initial launch data" from the provider, you just seed it from the
+> > pre-reboot environment. That way customers can reboot into any version
+> > of code they like and 100% own their measurements in a VM provider
+> > agnostic way.
+> >
+> > Kexec comes into play because from a customer experience, the flow
+> > should ideally be as easy as saying "kexec me into this new firmware". =
+I
+> > say kexec here because it's the closest analogy we have in Linux to
+> > "reboot, but with a pre-reboot provided payload". The fact that kexec
+> > doesn't perform a reboot today but simulates it using fancy stunts is a=
+n
+> > implementation detail IMHO.
+>
+>
+> Thank you for clarifying this! I think I got too much into thinking of ke=
+xec
+> runtime update. I think this came from you originally saying that you wan=
+t
+> to preserve the *payload of the original VM* in:
+>
+> " I would like to talk about "confidential kexec" today: A kexec mechanis=
+m
+> that allows you to destroy the confidential VM you're in and recreate a
+> new one based on a payload of the old one "
+>
+> And by VM payload I thought of some state in memory.
+>
+> But you just want to provide a way
+> for customer to supply the CoCo VM SW components (somehow, tbd details)
+> and have a way for customer to ask to reboot into this content. The actua=
+l
+> customer data is still comes from protected disk and the full attestation
+> process must be done for this new VM (with customer somehow
+> updating the new target measurement for VM in respected KBS)
+>  before it can get access to this disk.
+>
+> But still one question: why does this mechanism has to be from *within* t=
+he
+> CoCo VM itself? Is it in order not to design CSP-specific mechanism for
+> doing it via some CSP-provided web interface?
 
-On 6/10/2024 1:28 PM, mhkelley58@gmail.com wrote:
-> From: Michael Kelley <mhklinux@outlook.com>
-> 
-> Add documentation topic for Confidential Computing (CoCo) VM support
-> in Linux guests on Hyper-V.
-> 
-> Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-> ---
->  Documentation/virt/hyperv/coco.rst  | 258 ++++++++++++++++++++++++++++
->  Documentation/virt/hyperv/index.rst |   1 +
->  2 files changed, 259 insertions(+)
->  create mode 100644 Documentation/virt/hyperv/coco.rst
-> 
-> diff --git a/Documentation/virt/hyperv/coco.rst b/Documentation/virt/hyperv/coco.rst
-> new file mode 100644
-> index 000000000000..ffd6ba7a1d64
-> --- /dev/null
-> +++ b/Documentation/virt/hyperv/coco.rst
-> @@ -0,0 +1,258 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +Confidential Computing VMs
-> +==========================
-> +Hyper-V can create and run Linux guests that are Confidential Computing
-> +(CoCo) VMs. Such VMs cooperate with the physical processor to better protect
-> +the confidentiality and integrity of data in the VM's memory, even in the
-> +face of a hypervisor/VMM that has been compromised and may behave maliciously.
-> +CoCo VMs on Hyper-V share the generic CoCo VM threat model and security
-> +objectives described in Documentation/security/snp-tdx-threat-model.rst. Note
-> +that Hyper-V specific code in Linux refers to CoCo VMs as "isolated VMs" or
-> +"isolation VMs".
+I have the same question. This design feels like a way to side step
+adding API surface by instead adding an even more inflexible kernel
+ABI surface. And, on top of that, requiring an extra reboot in order
+to initialize a CC VM. Why not skip that step and just initialize the
+VM to the "correct" state in the first place? Interfaces like this
+seem most appropriate at the CSP API level.
 
-Thanks for incorporating the link to the threat model!
+It also leaves me with latent questions about firmware, since this
+seems to imply customer controlled firmware. Not totally sure this is
+inherently problematic, but it's not something I'm excited to maintain
+compatibility with.
 
-> +
-> +A Linux CoCo VM on Hyper-V requires the cooperation and interaction of the
-> +following:
-> +
-> +* Physical hardware with a processor that supports CoCo VMs
-> +
-> +* The hardware runs a version of Windows/Hyper-V with support for CoCo VMs
-> +
-> +* The VM runs a version of Linux that supports being a CoCo VM
-> +
-> +The physical hardware requirements are as follows:
-> +
-> +* AMD processor with SEV-SNP. Hyper-V does not run guest VMs with AMD SME,
-> +  SEV, or SEV-ES encryption, and such encryption is not sufficient for a CoCo
-> +  VM on Hyper-V.
-> +
-> +* Intel processor with TDX
-> +
-> +To create a CoCo VM, the "Isolated VM" attribute must be specified to Hyper-V
-> +when the VM is created. A VM cannot be changed from a CoCo VM to a normal VM,
-> +or vice versa, after it is created.
-> +
-> +Operational Modes
-> +-----------------
-> +Hyper-V CoCo VMs can run in two modes. The mode is selected when the VM is
-> +created and cannot be changed during the life of the VM.
-> +
-> +* Fully-enlightened mode. In this mode, the guest operating system is
-> +  enlightened to understand and manage all aspects of running as a CoCo VM.
-> +
-> +* Paravisor mode. In this mode, a paravisor layer between the guest and the
-> +  host provides some operations needed to run as a CoCo VM. The guest operating
-> +  system can have fewer CoCo enlightenments than is required in the
-> +  fully-enlightened case.
-> +
-> +Conceptually, fully-enlightened mode and paravisor mode may be treated as
-> +points on a spectrum spanning the degree of guest enlightenment needed to run
-> +as a CoCo VM. Fully-enlightened mode is one end of the spectrum. A full
-> +implementation of paravisor mode is the other end of the spectrum, where all
-> +aspects of running as a CoCo VM are handled by the paravisor, and a normal
-> +guest OS with no knowledge of memory encryption or other aspects of CoCo VMs
-> +can run successfully. However, the Hyper-V implementation of paravisor mode
-> +does not go this far, and is somewhere in the middle of the spectrum. Some
-> +aspects of CoCo VMs are handled by the Hyper-V paravisor while the guest OS
-> +must be enlightened for other aspects. Unfortunately, there is no
-> +standardized enumeration of feature/functions that might be provided in the
-> +paravisor, and there is no standardized mechanism for a guest OS to query the
-> +paravisor for the feature/functions it provides. The understanding of what
-> +the paravisor provides is hard-coded in the guest OS.
-> +
-> +Paravisor mode has similarities to the Coconut project, which aims to provide
-> +a limited paravisor to provide services to the guest such as a virtual TPM.
+Thanks,
+--Steve
 
-Would it be useful to add an external link to the Coconut project here?
-https://github.com/coconut-svsm/svsm
 
-> +However, the Hyper-V paravisor generally handles more aspects of CoCo VMs
-> +than is currently envisioned for Coconut, and so is further toward the "no
-> +guest enlightenments required" end of the spectrum.
-> +
-> +In the CoCo VM threat model, the paravisor is in the guest security domain
-> +and must be trusted by the guest OS. By implication, the hypervisor/VMM must
-> +protect itself against a potentially malicious paravisor just like it
-> +protects against a potentially malicious guest.
-
-Tangential to this patch, can the guest provide its own paravisor since
-it needs to be trusted and apparently the only way to find out if a
-paravisor will be used is to rely on the (possibly) malicious
-hypervisor/VMM to provide a synthetic MSR?
-
-> +
-> +The hardware architectural approach to fully-enlightened vs. paravisor mode
-> +varies depending on the underlying processor.
-> +
-> +* With AMD SEV-SNP processors, in fully-enlightened mode the guest OS runs in
-> +  VMPL 0 and has full control of the guest context. In paravisor mode, the
-> +  guest OS runs in VMPL 2 and the paravisor runs in VMPL 0. The paravisor
-> +  running in VMPL 0 has privileges that the guest OS in VMPL 2 does not have.
-> +  Certain operations require the guest to invoke the paravisor. Furthermore, in
-> +  paravisor mode the guest OS operates in "virtual Top Of Memory" (vTOM) mode
-> +  as defined by the SEV-SNP architecture. This mode simplifies guest management
-> +  of memory encryption when a paravisor is used.
-> +
-> +* With Intel TDX processor, in fully-enlightened mode the guest OS runs in an
-> +  L1 VM. In paravisor mode, TD partitioning is used. The paravisor runs in the
-> +  L1 VM, and the guest OS runs in a nested L2 VM.
-> +
-> +Hyper-V exposes a synthetic MSR to guests that describes the CoCo mode. This
-> +MSR indicates if the underlying processor uses AMD SEV-SNP or Intel TDX, and
-> +whether a paravisor is being used. It is straightforward to build a single
-> +kernel image that can boot and run properly on either architecture, and in
-> +either mode.
-> +
+>
+> But I do like the idea in principle, we can indeed currently change only =
+guest
+> kernel via kexec, but we dont have a way to do the same for virtual FW
+> and other potential components included in CoCo VM at least generically.
+>
+> Best Regards,
+> Elena.
+>
+>
+> >
+> >
+> >
+> >
+> > Amazon Web Services Development Center Germany GmbH
+> > Krausenstr. 38
+> > 10117 Berlin
+> > Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+> > Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+> > Sitz: Berlin
+> > Ust-ID: DE 365 538 597
