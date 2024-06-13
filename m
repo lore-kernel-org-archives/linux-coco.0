@@ -1,113 +1,118 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A8F148840
-	for <linux-coco@lists.linux.dev>; Thu, 13 Jun 2024 14:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBA626AE4
+	for <linux-coco@lists.linux.dev>; Thu, 13 Jun 2024 16:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718290646; cv=none; b=GytmrOLUwwZF460L7F0JMRj/T89RyM2rIMP83uf4fkmyX3EsZzMVdGRFdFG7qxEkG8TzTD5K/DOJY3witxcHHrJH595Xbc6fobYPDuJquuoq4bal6VjoskrRvWMToclg8Pzu5kW0Wi2Zd4Rf6pX8TRpZ90bHVNJf/krcYhO8Utk=
+	t=1718294862; cv=none; b=TEzbAhugt8+xhcg765QLt1zNcB/CKweyAPRD2yAtsi2RmbgvZCLpuYoslYNBwQrx6IgLz9J2vf/NGeBRdJW48A5w42fZaK/+cE59Aw/k5JAVml4VyNN0ZzYsmspwRYdNgrN5rfE+dRljtZA/61XS52DCMz2GoNvqObtpNqFjMJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718290646; c=relaxed/simple;
-	bh=nGI5SQtPbmjFzz0oS2g0Vv0q9MObkyinZcCMmyUMgc0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fh26RsvfRPL+SrXga36708VA17mccW5gd+F5Pq3skatVx/v55HSoq2MYu85mVZHrMXnmBvg/pclW6IapnTOyXas5lPF5LsSRSRQXH+VmdeaE84FXhHZbPaypk0cBxVbe0y9i9CpreP7PwTd1O2mt040NogFYc+zilw+csosbARo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ja3zVbuE; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1718294862; c=relaxed/simple;
+	bh=4Vfd5XzoLai9SS4IcgdVxHoDzj3MsrnA/q1CthUyODA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=dCXK1dsedyVl+aMIDxCgJRpsbclhKLG+Tvr6mD7HnYF6KgvNzjwh2tNOX+hgs+xrLw3lql6MmEfrqq8YtO+Y4t4yJsIGEdjEF43Tkz3lAMphX2HAlAECd9zrsAe7Nv6heXgrkvQ/o5o+kETGTQBUvS8qXoBJnqZRS9wKCWqPnt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MhiZBgmr; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ja3zVbuE"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 371AB40E00C9;
-	Thu, 13 Jun 2024 14:57:14 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id VxFUwAUY_gPk; Thu, 13 Jun 2024 14:57:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1718290629; bh=4PpkPfFOmQteTZnPUEGfiyHPxl3RB0xgm8bItFqnfk8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ja3zVbuEKXRUlqooI8H7OOrG10geSsCj9PBH5w2Id4s1ieQGglEfA7XJoKDFTF9JX
-	 epVhd/OSmSar4OcKkNykGLcf6rMfDeLqA2tharfM0zkRXHajeBWf4w7K+StiHBaYy+
-	 UmDqQGt6Gj6JW1RRmZEYjjYb9ugcch3i4wkay5YCl94poFAL1newXDTzG4cEGkoLWv
-	 NFTAg/aE+yDOGGuge2S6Ph8C9MIGPr1cm1iHz/TOedm1P4nH3dzgcwu7Oq6QCyNBwk
-	 QYqYkNMfTqbbiiMnckCwDq3Z5e6kt+LlkdDk1O4x9qCwldl17tWmfZ2BUKjgNxXRbB
-	 2/ckNhH1LU+HhGZC8VmO3+KkBDwJ8D7mUE2I63WKZGNOlnQdQt1ZalHutsPPm9fnfa
-	 iiRJCFaTfi8wE5Zdz7IPFHXJpdKwMeCYplQvoz0iM+RgxPC9lN1fMVR9b3Ih9nGfd2
-	 tHvDFD2YFDfqZ4+ljm6uk/Z4rpLfmpRIevGB+ZBZS5tJ12HYHcKp+jttN8SVc+N/uO
-	 lNQqFpWTSFrXj2kUWtXUw/aAhSIR0kw7wNt9hBDphnTPZeQDgkW48SqxzTM10A7j0b
-	 yquOA/Sp4tsEXR60IN3GhEe0pX6itv6tdbmM/O81pLhEwP+hGqkFA2xUtwPTWTTM8k
-	 x1TfveMz3kITMZ845FfSr1YE=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BC90040E0031;
-	Thu, 13 Jun 2024 14:56:41 +0000 (UTC)
-Date: Thu, 13 Jun 2024 16:56:36 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
-	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv11 18/19] x86/acpi: Add support for CPU offlining for
- ACPI MADT wakeup method
-Message-ID: <20240613145636.GGZmsIpHn16R04QlaN@fat_crate.local>
-References: <20240528095522.509667-19-kirill.shutemov@linux.intel.com>
- <20240603083930.GNZl2BQk2lQ8WtcE4o@fat_crate.local>
- <icu4yecqfwhmbexupo4zzei4lbe5sgavsfkm27jd6t6gyjynul@c2wap3jhtik7>
- <20240610134020.GCZmcCRFxuObyv1W_d@fat_crate.local>
- <hidvykk3yan5rtlhum6go7j3lwgrcfcgxlwyjug3osfakw2x6f@4ohvo23zaesv>
- <nh7cihzlsjtoddtec6m62biqdn62k3ka5svs6m64qekhpebu5z@dkplwad2urgp>
- <20240611194653.GGZmiprSNzK0JSJL17@fat_crate.local>
- <2kc27uzrsvpevtvos2harqj3bgfkizi5dhhxkigswlylpnogr5@lk6fi2okv53i>
- <20240612092943.GCZmlqh7O662JB-yGu@fat_crate.local>
- <w6ohbffl5wwmralg255ec7nozxksge4z4nnkmwncthxzhuv46d@qq46r2wrjlog>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MhiZBgmr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718294861; x=1749830861;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=4Vfd5XzoLai9SS4IcgdVxHoDzj3MsrnA/q1CthUyODA=;
+  b=MhiZBgmrrqQrfUFyB6rGmt7xY8QUNmXZxHmiVNSypuRtkeNW2xEX82sG
+   nzy3YV/y4+jSvN0gwqu9S879DEfJdaO5teMdZtpXuLwJSWKeQ+zuNbwdc
+   znSMB6wEUsWJpL2Zq6XQI21rroy1Xo/RsTq7APAa5yFXTssFRuTn8uvsM
+   YLCP5Zh4WlipvX9srDpEncYSK18VQC7Mv2jH8IB5J0PG5jgTFhu8MBH6y
+   tsspSP8iXHlYk2dQK7fvKOuVO4wMEVVQ1fZpQIswYsWgokCU0aDyD0QKq
+   UYzJZo9C3orE2lLlPq7icdl+neUSlYCI3zE2ooDLyQnzNEgKfcCAzoJcN
+   Q==;
+X-CSE-ConnectionGUID: 70I0EWyTRU+qyZMLHrXhPw==
+X-CSE-MsgGUID: 4ItM/arFSfCK7fzD7/7Ogw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11102"; a="15359561"
+X-IronPort-AV: E=Sophos;i="6.08,235,1712646000"; 
+   d="scan'208";a="15359561"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa108.fm.intel.com with ESMTP; 13 Jun 2024 09:07:40 -0700
+X-CSE-ConnectionGUID: MdDWxZK1QGeyPUHtawxmUw==
+X-CSE-MsgGUID: JNyMXj1yQ2+iYIYu6rNZCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,235,1712646000"; 
+   d="scan'208";a="40672880"
+Received: from unknown (HELO [10.125.111.40]) ([10.125.111.40])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2024 09:07:40 -0700
+Message-ID: <32eddae1-14bf-42dd-afdd-7dca8bc8a131@intel.com>
+Date: Thu, 13 Jun 2024 09:07:39 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <w6ohbffl5wwmralg255ec7nozxksge4z4nnkmwncthxzhuv46d@qq46r2wrjlog>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] virt: tdx-guest: Fix the decrypted failure memory free
+To: Li RongQing <lirongqing@baidu.com>, kirill.shutemov@linux.intel.com,
+ dave.hansen@linux.intel.com, x86@kernel.org, linux-coco@lists.linux.dev,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20240613111931.43123-1-lirongqing@baidu.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20240613111931.43123-1-lirongqing@baidu.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 13, 2024 at 04:41:00PM +0300, Kirill A. Shutemov wrote:
-> It is easy enough to do. See the patch below.
+On 6/13/24 04:19, Li RongQing wrote:
+> When set_memory_decrypted() fails, the memory should be encrypted
+> via set_memory_encrypted(); if encrypting the memory fails, leak it
 
-Thanks, will have a look.
+Please, always cc LKML on this stuff.
 
-> But I am not sure if I can justify it properly. If someone doesn't really
-> need 5-level paging, disabling it at compile-time would save ~34K of
-> kernel code with the configuration.
-> 
-> Is it worth saving ~100 lines of code?
-
-Well, it goes both ways: is it worth saving ~34K kernel text and for that make
-the code a lot less conditional, more readable, contain less ugly ifdeffery,
-...?
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Second, Rick was looking in this area, but I'm not sure we ever applied
+his patches.  The idea was to never leak memory silently in these
+failures.  Doesn't this silently leak memory?
