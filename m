@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2905119414D
-	for <linux-coco@lists.linux.dev>; Fri, 14 Jun 2024 09:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6519E19753F
+	for <linux-coco@lists.linux.dev>; Fri, 14 Jun 2024 09:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718359165; cv=none; b=GtzXt9FRDTIeVfYd1n8Pc3AS6e0zx4k+DUgrucKzowRd1dKtO82VjkZ8ZTwVqNNGxstD2xl09iZ1JmD3Nvs9/wYUMhMyTdErMXCo6fQiKtpBzC0Agp+hukuFohHwbTSFXIXHLVcauRvBdEvLexxkYu98ZKZSebdmnQBn8N8Y61Q=
+	t=1718359167; cv=none; b=ICxwkU8ZLpOOaCUffyXWPp0QjiC603I24Mbrbo0Z4Fk1k1eTCJpS9eNSuTqu9nSGmsIQzrHVAdfNARbylmCgeD88Zp3xyuzisPlzkM475rozdit1cUvoUReZD4wpCfl9WgSzCvLzaUo2y8XCS7QANp1UDxih4YduS8920ORoZ8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718359165; c=relaxed/simple;
-	bh=qJsvWrpCuJ9uSiqZE99p8Rix7rLiZtwS71nVuH6DLkM=;
+	s=arc-20240116; t=1718359167; c=relaxed/simple;
+	bh=GBNoyvX8k2tYI1mJoCzKJoFMnhKGkDU51+nOO1XXoCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3cdxVSf6hq0NY/UG3List7DFuEzX/MZDc6rM+JtDPKnc+CM8V3+e1NxiVCYCPcVHAqONQopZ4X7syVXqC91ROR05UbTmL0hUqXk6pppKXMhtCEPdjUzoyYt/P827RQ12yC8Ko3cgvN7QGIP3cUJQzNFfIwbvjmoLM683FGBMGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZFPKdySw; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=mdAqLmOuBbfWLrVAA7IUBeVxs0P6C2gP2EwYTyxur1oPfBylIKjf8HUveaM9HHssn0GBc9kSQQJGdjjSN3ZMlcjcoZvqgS/YcamXsCIiEY+2mgwBlUb2tSFs2MqzPqreKjucghpwLpyofBCRXdc6rPAl877kNkZy4fm5y2czKCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GiJOdvMc; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZFPKdySw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GiJOdvMc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718359164; x=1749895164;
+  t=1718359166; x=1749895166;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qJsvWrpCuJ9uSiqZE99p8Rix7rLiZtwS71nVuH6DLkM=;
-  b=ZFPKdySw0sttu1yV1OcHYt+oqQGMg43TsfK4c2cxcq7BCXQaeKJtXk4y
-   YvtCTYQvueUM6d1vw3aEmRDiiFfo9fh3KXPmZxCKBzjiGnMgnD6eIFdH+
-   LockYpHjL9rwpD09q7V3BWdD/NeXyHGX5DuD702V5fgp0dhsaBtJFZUE5
-   OTmtk10fokjWu43EqVCE5muUSksZ2Y62i4hcVH0N4O+5SkfiE+3+nS3dT
-   O5mwPtig5AJSo/M05hCcyDAZuw3ZeH9RYqNSTeTbXbK/ws85tZ4xNWpkD
-   cbOiH+ALO/C4tc/oNDMfc3Cs1a+x+0NNt2VkRnzC8q0QL0HPqKRuMacxS
+  bh=GBNoyvX8k2tYI1mJoCzKJoFMnhKGkDU51+nOO1XXoCw=;
+  b=GiJOdvMcDFEPSsHZGOXj2fgESHtJdxxCV3oynaorkmjxKO+x6al7gqkk
+   7w8OEZlfGO5MfYZ19oNp8ERzpFshHZegY48sxJUr1YU8N5cw/SZEdSJ5e
+   7ySzulbmKX3RZfCbHqjAiyuZVAM7CEVhCpCjpyZBn5w6DVLM5j9a/6gbX
+   H06DR5oxeN3CgxHc1mU7OR0ZEfLBVPJPJ+7WC/gcb6nLbxoNlA9YMmFh0
+   Mi5NlXoUOkQ3O6hQkM7ytbUiRhUK/ahn90ECSxra+LRf0nErIYadOjbYS
+   aNFrsJmAE/pOKJnLkyK/d2IQbJUIpeLXBCa8yrrjr4rCRAyZmPAUDh8pW
    g==;
-X-CSE-ConnectionGUID: oCMdNOS0TZSbm8i9Nk7zGQ==
-X-CSE-MsgGUID: 6JgDGy/RRqeQs14ZXsx/5g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11102"; a="12072392"
+X-CSE-ConnectionGUID: +pkGhgDcSGec01LxKhYPDg==
+X-CSE-MsgGUID: 4Ksn7OR9SqGUzRa5nrnbqw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11102"; a="12072426"
 X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; 
-   d="scan'208";a="12072392"
+   d="scan'208";a="12072426"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
   by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 02:59:23 -0700
-X-CSE-ConnectionGUID: Yjp77JZ5Qr2OaZCq3O8cFQ==
-X-CSE-MsgGUID: lissGvhmTxicGn76+wsQ5Q==
+X-CSE-ConnectionGUID: UKrVAzwxRaqA17ovcXBFwA==
+X-CSE-MsgGUID: OZVvt+9fR6e41XlUDwF0YA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; 
-   d="scan'208";a="44995854"
+   d="scan'208";a="44995863"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmviesa004.fm.intel.com with ESMTP; 14 Jun 2024 02:59:17 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 05AF02A7B; Fri, 14 Jun 2024 12:59:08 +0300 (EEST)
+	id 387C52B4A; Fri, 14 Jun 2024 12:59:09 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -73,11 +73,11 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-acpi@vger.kernel.org,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Nikolay Borisov <nik.borisov@suse.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Tao Liu <ltao@redhat.com>
-Subject: [PATCHv12 10/19] x86/mm: Add callbacks to prepare encrypted memory for kexec
-Date: Fri, 14 Jun 2024 12:58:55 +0300
-Message-ID: <20240614095904.1345461-11-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv12 14/19] x86/acpi: Rename fields in acpi_madt_multiproc_wakeup structure
+Date: Fri, 14 Jun 2024 12:58:59 +0300
+Message-ID: <20240614095904.1345461-15-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240614095904.1345461-1-kirill.shutemov@linux.intel.com>
 References: <20240614095904.1345461-1-kirill.shutemov@linux.intel.com>
@@ -89,146 +89,58 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-AMD SEV and Intel TDX guests allocate shared buffers for performing I/O.
-This is done by allocating pages normally from the buddy allocator and
-then converting them to shared using set_memory_decrypted().
+In order to support MADT wakeup structure version 1, provide more
+appropriate names for the fields in the structure.
 
-On kexec, the second kernel is unaware of which memory has been
-converted in this manner. It only sees E820_TYPE_RAM. Accessing shared
-memory as private is fatal.
+Rename 'mailbox_version' to 'version'. This field signifies the version
+of the structure and the related protocols, rather than the version of
+the mailbox. This field has not been utilized in the code thus far.
 
-Therefore, the memory state must be reset to its original state before
-starting the new kernel with kexec.
-
-The process of converting shared memory back to private occurs in two
-steps:
-
-- enc_kexec_begin() stops new conversions.
-
-- enc_kexec_finish() unshares all existing shared memory, reverting it
-  back to private.
+Rename 'base_address' to 'mailbox_address' to clarify the kind of
+address it represents. In version 1, the structure includes the reset
+vector address. Clear and distinct naming helps to prevent any
+confusion.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Tao Liu <ltao@redhat.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/include/asm/x86_init.h | 10 ++++++++++
- arch/x86/kernel/crash.c         | 12 ++++++++++++
- arch/x86/kernel/reboot.c        | 12 ++++++++++++
- arch/x86/kernel/x86_init.c      |  4 ++++
- 4 files changed, 38 insertions(+)
+ arch/x86/kernel/acpi/madt_wakeup.c | 2 +-
+ include/acpi/actbl2.h              | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index 28ac3cb9b987..213cf5379a5a 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -149,12 +149,22 @@ struct x86_init_acpi {
-  * @enc_status_change_finish	Notify HV after the encryption status of a range is changed
-  * @enc_tlb_flush_required	Returns true if a TLB flush is needed before changing page encryption status
-  * @enc_cache_flush_required	Returns true if a cache flush is needed before changing page encryption status
-+ * @enc_kexec_begin		Begin the two-step process of converting shared memory back
-+ *				to private. It stops the new conversions from being started
-+ *				and waits in-flight conversions to finish, if possible.
-+ * @enc_kexec_finish		Finish the two-step process of converting shared memory to
-+ *				private. All memory is private after the call when
-+ *				the function returns.
-+ *				It is called on only one CPU while the others are shut down
-+ *				and with interrupts disabled.
-  */
- struct x86_guest {
- 	int (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
- 	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
- 	bool (*enc_tlb_flush_required)(bool enc);
- 	bool (*enc_cache_flush_required)(void);
-+	void (*enc_kexec_begin)(void);
-+	void (*enc_kexec_finish)(void);
+diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+index d222be8d7a07..004801b9b151 100644
+--- a/arch/x86/kernel/acpi/madt_wakeup.c
++++ b/arch/x86/kernel/acpi/madt_wakeup.c
+@@ -75,7 +75,7 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+ 
+ 	acpi_table_print_madt_entry(&header->common);
+ 
+-	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
++	acpi_mp_wake_mailbox_paddr = mp_wake->mailbox_address;
+ 
+ 	cpu_hotplug_disable_offlining();
+ 
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index ae747c89d92c..fa63362469aa 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -1194,9 +1194,9 @@ struct acpi_madt_generic_translator {
+ 
+ struct acpi_madt_multiproc_wakeup {
+ 	struct acpi_subtable_header header;
+-	u16 mailbox_version;
++	u16 version;
+ 	u32 reserved;		/* reserved - must be zero */
+-	u64 base_address;
++	u64 mailbox_address;
  };
  
- /**
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index f06501445cd9..340af8155658 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -128,6 +128,18 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
- #ifdef CONFIG_HPET_TIMER
- 	hpet_disable();
- #endif
-+
-+	/*
-+	 * Non-crash kexec calls enc_kexec_begin() while scheduling is still
-+	 * active. This allows the callback to wait until all in-flight
-+	 * shared<->private conversions are complete. In a crash scenario,
-+	 * enc_kexec_begin() gets called after all but one CPU have been shut
-+	 * down and interrupts have been disabled. This allows the callback to
-+	 * detect a race with the conversion and report it.
-+	 */
-+	x86_platform.guest.enc_kexec_begin();
-+	x86_platform.guest.enc_kexec_finish();
-+
- 	crash_save_cpu(regs, safe_smp_processor_id());
- }
- 
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index f3130f762784..bb7a44af7efd 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -12,6 +12,7 @@
- #include <linux/delay.h>
- #include <linux/objtool.h>
- #include <linux/pgtable.h>
-+#include <linux/kexec.h>
- #include <acpi/reboot.h>
- #include <asm/io.h>
- #include <asm/apic.h>
-@@ -716,6 +717,14 @@ static void native_machine_emergency_restart(void)
- 
- void native_machine_shutdown(void)
- {
-+	/*
-+	 * Call enc_kexec_begin() while all CPUs are still active and
-+	 * interrupts are enabled. This will allow all in-flight memory
-+	 * conversions to finish cleanly.
-+	 */
-+	if (kexec_in_progress)
-+		x86_platform.guest.enc_kexec_begin();
-+
- 	/* Stop the cpus and apics */
- #ifdef CONFIG_X86_IO_APIC
- 	/*
-@@ -752,6 +761,9 @@ void native_machine_shutdown(void)
- #ifdef CONFIG_X86_64
- 	x86_platform.iommu_shutdown();
- #endif
-+
-+	if (kexec_in_progress)
-+		x86_platform.guest.enc_kexec_finish();
- }
- 
- static void __machine_emergency_restart(int emergency)
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index a7143bb7dd93..82b128d3f309 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -138,6 +138,8 @@ static int enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool
- static int enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
- static bool enc_tlb_flush_required_noop(bool enc) { return false; }
- static bool enc_cache_flush_required_noop(void) { return false; }
-+static void enc_kexec_begin_noop(void) {}
-+static void enc_kexec_finish_noop(void) {}
- static bool is_private_mmio_noop(u64 addr) {return false; }
- 
- struct x86_platform_ops x86_platform __ro_after_init = {
-@@ -161,6 +163,8 @@ struct x86_platform_ops x86_platform __ro_after_init = {
- 		.enc_status_change_finish  = enc_status_change_finish_noop,
- 		.enc_tlb_flush_required	   = enc_tlb_flush_required_noop,
- 		.enc_cache_flush_required  = enc_cache_flush_required_noop,
-+		.enc_kexec_begin	   = enc_kexec_begin_noop,
-+		.enc_kexec_finish	   = enc_kexec_finish_noop,
- 	},
- };
- 
+ #define ACPI_MULTIPROC_WAKEUP_MB_OS_SIZE        2032
 -- 
 2.43.0
 
