@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76D8195F01
-	for <linux-coco@lists.linux.dev>; Fri, 14 Jun 2024 09:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF400195FCA
+	for <linux-coco@lists.linux.dev>; Fri, 14 Jun 2024 09:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718359164; cv=none; b=j0cnwwbJoDKFSWmqPDxP1IJ+RiB6guhab/bH5rPZevOdJ9eCAp0BUFhOfOqCi2VXOvve/xqKS5S2AH/qfAcIzYWhmCGwiF4FtzvOzEQJ2XptCpeinT4uJajQBUyUd2GBH6+Kz14PHXI28qCbLv4StQhivovRAiWFIkVT+FX2b3A=
+	t=1718359165; cv=none; b=FyUBpjZSus9K6cgLEhZi+fiIKOHJgMtMVID5NvzMP9EMC9Qm19QR+ZwXMB+boj4vpUJtYLHcXCG+ajVoogfIjuLUKMfpgaRI3UsUDVkp5UKQXnUi0KC834nuX34IOjzy0c3RIkZGXQ0Og21WEPLKnidT2mMXXnhDiYUut6oKyt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718359164; c=relaxed/simple;
-	bh=TPVYWp6K4eYFN3ECeVkCGPve1U6kGjk/ZQY722Hu1c0=;
+	s=arc-20240116; t=1718359165; c=relaxed/simple;
+	bh=vMAUzycpMKArP020PRsibNB/a1B3MTtv6nj6DDJJbg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YK0Y3XHh8rCFBOKiECm9bkPPI9e1Zh7/QAEW6hhEkBfAcl45zbQvVV1m4cQ3cJj+PjLha53zmQtm9sNJ76vSn7K4jQ8ilS9jy+++yo365ug4mnUEWF/kuLxSwcjo96mAHTfbBop16fFDiu32FlJOzs4OdvqmfHbOhj7Wv4Yu43k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bDERvxc5; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=WuX0hzhaGsIqjrcBFJHmJeG7kpzeepDK8tXTmeWN58j0rmdjHgBKD8c5lwlfjYQq6jYPXhetdwg87PWIWEL2FamopKcpi8YdphpHw0XRB8JXAB+1IWaeIEXtg6Bcae1cz4ox8ZiTcwVT556I0OF4t/pv8elTqwdjyKG0kwS2IxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TKo1scMc; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bDERvxc5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TKo1scMc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718359163; x=1749895163;
+  t=1718359164; x=1749895164;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=TPVYWp6K4eYFN3ECeVkCGPve1U6kGjk/ZQY722Hu1c0=;
-  b=bDERvxc5MdbAjnv9Og0Vh08cgLJ9q5poVMvSG7ZrPCVgGMvSkrg404LD
-   X1XBWfifqu9AXpWdR8FiSzhEDlEUmXKmv060n1SukmJR0z7pA9lbpLwME
-   ZhlPElZEX8UTP/fwuyiAgGYbjTflgXBlWt/+Pjugl1tIjw3ByC/LMnBt+
-   IrUvGQGPFpPAY2mAYELNhdOlzcQ+QOs5GieNWCP3KjcLa5xsjRmLAuFzz
-   beLDVmwkBJzNQihzTpCxHLyqqxZ9G6iSi0iMWAeEHyrAO6ed95FKzXZn4
-   rIUCTK0W32GaXgTMSaoP3sbaFlPq3kfNBGvGjrAHK9nYx1n8EHsT/DIgr
-   A==;
-X-CSE-ConnectionGUID: VAsp32bNRHWfO+hV3aHvMQ==
-X-CSE-MsgGUID: Mt68I/bHSUS39tjB4NqE1A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11102"; a="12072344"
+  bh=vMAUzycpMKArP020PRsibNB/a1B3MTtv6nj6DDJJbg4=;
+  b=TKo1scMcC9dCQ5aLaTpcw1tFYO+D2KIQwJVD+o6VPohTylCgCNKiK2+U
+   JcKycP1FXPH2/MMqgiDVrsjSNMRN97eF+29fcgsJO1qKp6YnrS5/v7sda
+   zBbHcyfBd2+X//JtAI7vAIq1/YQkB/8mhWEWLLIk/W/ETtvMlOqEAPgLe
+   xAEK73tJEzDFfYsPjnixeisQyaIRtXZZXJLf3n6mB2cnybNVDggBKjbgv
+   Tv6feY9kL5T0O7Dx29inv1KnmqccbW4P7Y2VRzr775cAMB5v3Kna2jia/
+   uZMwRaOF1Czms6IkcUmXTu5tv1lrgLMgt6WwDaO6YlH94VxETqDK4c6Ln
+   Q==;
+X-CSE-ConnectionGUID: WKA0q3ihQBKHJaMSpg5dow==
+X-CSE-MsgGUID: 5x4N7nHySkevSHffgtI2Nw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11102"; a="12072380"
 X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; 
-   d="scan'208";a="12072344"
+   d="scan'208";a="12072380"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 02:59:22 -0700
-X-CSE-ConnectionGUID: Yn96X/ZzS26geW8DkbHADA==
-X-CSE-MsgGUID: TDAG2v6KTmm206OkgymmAQ==
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 02:59:23 -0700
+X-CSE-ConnectionGUID: yg2GzZ0nR0mCYXIueUV0tQ==
+X-CSE-MsgGUID: CghLlVdVThaOPXPOp4nOSw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; 
-   d="scan'208";a="44995836"
+   d="scan'208";a="44995849"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa004.fm.intel.com with ESMTP; 14 Jun 2024 02:59:16 -0700
+  by fmviesa004.fm.intel.com with ESMTP; 14 Jun 2024 02:59:17 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id B7E102998; Fri, 14 Jun 2024 12:59:08 +0300 (EEST)
+	id EBD162A3B; Fri, 14 Jun 2024 12:59:08 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -72,10 +72,11 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-hyperv@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCHv12 05/19] x86/relocate_kernel: Use named labels for less confusion
-Date: Fri, 14 Jun 2024 12:58:50 +0300
-Message-ID: <20240614095904.1345461-6-kirill.shutemov@linux.intel.com>
+	linux-kernel@vger.kernel.org,
+	Tao Liu <ltao@redhat.com>
+Subject: [PATCHv12 09/19] x86/tdx: Account shared memory
+Date: Fri, 14 Jun 2024 12:58:54 +0300
+Message-ID: <20240614095904.1345461-10-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240614095904.1345461-1-kirill.shutemov@linux.intel.com>
 References: <20240614095904.1345461-1-kirill.shutemov@linux.intel.com>
@@ -87,68 +88,52 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Borislav Petkov <bp@alien8.de>
+The kernel will convert all shared memory back to private during kexec.
+The direct mapping page tables will provide information on which memory
+is shared.
 
-That identity_mapped() functions was loving that "1" label to the point
-of completely confusing its readers.
+It is extremely important to convert all shared memory. If a page is
+missed, it will cause the second kernel to crash when it accesses it.
 
-Use named labels in each place for clarity.
+Keep track of the number of shared pages. This will allow for
+cross-checking against the shared information in the direct mapping and
+reporting if the shared bit is lost.
 
-No functional changes.
+Memory conversion is slow and does not happen often. Global atomic is
+not going to be a bottleneck.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Tested-by: Tao Liu <ltao@redhat.com>
 ---
- arch/x86/kernel/relocate_kernel_64.S | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/x86/coco/tdx/tdx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
-index 54e620021c7e..8b8922de3765 100644
---- a/arch/x86/kernel/relocate_kernel_64.S
-+++ b/arch/x86/kernel/relocate_kernel_64.S
-@@ -148,9 +148,10 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
- 	 */
- 	movl	$X86_CR4_PAE, %eax
- 	testq	$X86_CR4_LA57, %r13
--	jz	1f
-+	jz	.Lno_la57
- 	orl	$X86_CR4_LA57, %eax
--1:
-+.Lno_la57:
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 26fa47db5782..979891e97d83 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -38,6 +38,8 @@
+ 
+ #define TDREPORT_SUBTYPE_0	0
+ 
++static atomic_long_t nr_shared;
 +
- 	movq	%rax, %cr4
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ noinstr void __noreturn __tdx_hypercall_failed(void)
+ {
+@@ -821,6 +823,11 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+ 		return -EIO;
  
- 	/* Flush the TLB (needed?) */
-@@ -162,9 +163,9 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
- 	 * used by kexec. Flush the caches before copying the kernel.
- 	 */
- 	testq	%r12, %r12
--	jz 1f
-+	jz .Lsme_off
- 	wbinvd
--1:
-+.Lsme_off:
++	if (enc)
++		atomic_long_sub(numpages, &nr_shared);
++	else
++		atomic_long_add(numpages, &nr_shared);
++
+ 	return 0;
+ }
  
- 	movq	%rcx, %r11
- 	call	swap_pages
-@@ -184,7 +185,7 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
- 	 */
- 
- 	testq	%r11, %r11
--	jnz 1f
-+	jnz .Lrelocate
- 	xorl	%eax, %eax
- 	xorl	%ebx, %ebx
- 	xorl    %ecx, %ecx
-@@ -205,7 +206,7 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
- 	ret
- 	int3
- 
--1:
-+.Lrelocate:
- 	popq	%rdx
- 	leaq	PAGE_SIZE(%r10), %rsp
- 	ANNOTATE_RETPOLINE_SAFE
 -- 
 2.43.0
 
