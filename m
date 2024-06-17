@@ -1,110 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A909188CD0
-	for <linux-coco@lists.linux.dev>; Mon, 17 Jun 2024 10:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EDB54918
+	for <linux-coco@lists.linux.dev>; Mon, 17 Jun 2024 10:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718618594; cv=none; b=X+ZpmfF+5sN1f/WpU+1XNkp+zNujiZtAm6egJahrtA0fFDLmCHAHy9ozBlzSjC51thQPgCekskd5r/Gz+1FcvW7TZDMpaSZWpctV5E35931zXPkaDTOwuj7jilh9RkvgDQWoXJldK3zZcP09KuHvgBhyzO9UU8utIDZW+mgK/wE=
+	t=1718620066; cv=none; b=CRBiLRiq03h1NqYYDwwLA9wIihhE96kqP2S3iwuHjKxyYdtwaJS60rOjw5vJ83txcTlGxcTAnCAqO8Nh1g/rtfBrcBgcp9Xml//LPTVhvwnRybAno3Zyr77UlVyecM18kPmjg/mE/Xhk6BHOu6M9ZmFcyGnJBMMZ+SX7XIYOyQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718618594; c=relaxed/simple;
-	bh=L5aKYq+K9LHs7OusAkwM8HVmwDPeNKVqgx5oq7ZSd/E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dEfo9ty0zZrxz4AvDxWOUDINgEcQEyq1y/UPcifDGAeoyrAXu8KaKsNVYe+02XAqvrI9rGCMm17ZDbuG3/HlSxryR58Zii11rNccofDrZ9RSxhnxuDoV4oBAFBwj4dki9YM33eeaLtbPG+VlRX6vyEZ2nIk7AiqswEbXMBhamy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JQZ6um2B; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1718620066; c=relaxed/simple;
+	bh=t7JP/HGFJDwk2M/R92BFPhUlm/Hwfwtb8ue0IF8mlwI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NgdXa0Brvc2s2CfVG9I+9fNCrgD0Q57WvyXzLdCgmt7rPpmUtDiebrxf1TK7CLsuDEZnDCurbhdea7N8FAOL46UyUpHKyeEGKt2fvKN7Vp6eeiMcw9CdVyu2TLGVSMXtzqTsIvBLFtlVEWAf/hQq4lO0xl5zFhWmtMoYIZhyTOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gjtQCnwJ; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JQZ6um2B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718618593; x=1750154593;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=L5aKYq+K9LHs7OusAkwM8HVmwDPeNKVqgx5oq7ZSd/E=;
-  b=JQZ6um2Bhuhwabez/q/5ByvcGeDh0xQDwlXmbRv62BMb9123t+2n79cx
-   dMtJ0HOTrdfVUnY/2Ed4p4+6dbXNTDUFqSsMoLdDmR7peYlBW/KGMLxMx
-   UN6RxNgWKSOYzUZJFQD0KLSU5xYifK1dHOxi6qWmJWhCYw5wtzHMmQbFo
-   StULRTV//NIZVZv9yURqqbSoAbYjCoSxF70jZcJSo1S1ZgD441vZx3NIT
-   LZvK43C1vp5P/gQKyqnjfw0bYrJ/t6V4IEzmQLjoUMRMLD4QCUe9/cJa9
-   mou6kiKATMWbNa72eKpEGzZSk7flvTloesE4xlDG1HMaRTC/Ht/skE4n9
-   g==;
-X-CSE-ConnectionGUID: NLnHMPNER7i1jQNAwEp2PQ==
-X-CSE-MsgGUID: HUnXvQJARiSwUvPK6eyYKg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11105"; a="19223105"
-X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; 
-   d="scan'208";a="19223105"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2024 03:03:12 -0700
-X-CSE-ConnectionGUID: H1Q/QF7GTbuFCkwxgUDDKg==
-X-CSE-MsgGUID: jFDmWRUPSL+d49XjExrCZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; 
-   d="scan'208";a="41249743"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa010.fm.intel.com with ESMTP; 17 Jun 2024 03:03:12 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 1A1AB18E; Mon, 17 Jun 2024 13:03:10 +0300 (EEST)
-Date: Mon, 17 Jun 2024 13:03:10 +0300
-From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"lirongqing@baidu.com" <lirongqing@baidu.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH][v2] virt: tdx-guest: Don't free decrypted memory
-Message-ID: <yfoowboa5qwcjkmjggfjx4hm2emhhlwvao3s5rync5anoiyuba@4ezmhhlnb3j7>
-References: <20240614051452.14548-1-lirongqing@baidu.com>
- <c209517e42fa83cbc3f030293f89813a6c1cfce1.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gjtQCnwJ"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-57c73a3b3d7so4718286a12.1
+        for <linux-coco@lists.linux.dev>; Mon, 17 Jun 2024 03:27:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718620062; x=1719224862; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=uXp/Yz17OzdkV2gV0XI8xrmGqd5+ox1Pqhqcmx8WT9w=;
+        b=gjtQCnwJDqN78DTZk6mXht69IUp+HhT8W5B17mqeODWi2yzXwUj98z3ORp7MuhmcM1
+         nRlH1SFVC4E/dVwE9iIm7wazohG8Hacd2zQ1MUbZjumr6jldg66Hl34OlfRBB6Ek67hn
+         1i/Pivw7+kC0/57jGDMGo2atk7ffjefUgvAxS/47tHWT9IujnjdEj80leGnHaSgedB5X
+         Fxr5kRReP7R3s/cHdngSpAH7UCeytMYZUGwRU1AxY/1YVv+CI+iwc0+yHCvZyWCnqRQD
+         Gf6TiJ/mmaRcsPLgHZpdd1Mf6nVihAEClh+kMf9xhCN8I3jD1de0jfWIpcPpnX838FHx
+         UbnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718620062; x=1719224862;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uXp/Yz17OzdkV2gV0XI8xrmGqd5+ox1Pqhqcmx8WT9w=;
+        b=tXPBN2H/++8wmH0HVuN2+oKwvXLc9Eb1LgZ/Kx6BN73eDl0ntrv902BKM28mgflmK1
+         0u5U5li9EPRgo7+4PIzbOP0FuHmH68wrTHhl9dkwOsKUmL8jwFdYTkNnCR9kMtlAtTPi
+         ifRPCgMxFJnL7GUu09hngd9qU6mEizaedN5/PoqgMRzeFx0fPiETcvi/LFw9vAqn4WWb
+         2g/0UKavzIfNVfELXR+Lyj6Xa6kPTM+CBuPBem40X7PxhcQgDfJDxLwGaHDujxbVn5gr
+         pkvBxnT2zAF9Mr3fFoOlmuFM5/R0Dm1Zcaf48SN+TSJXsASWB/g0R1D2D3v6vvkZiXJn
+         otsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUq4Iz1iLdRSKL4v2Ay1oD2C5+HTMrV4fiwLctjgyJwPPRxPhGv1ESuUFuNXfjJwWlqlEXCVEerDPT+A3iQG91SJIBCVX/BkM7mQA==
+X-Gm-Message-State: AOJu0Yyh6xFGjH4o+E7eLfPrXUTYB5DtKEk4XRLgnVrIK9sGG6dPyPa6
+	MJLgduenlyTykeXyNEWu3Dz4MlWlQZVi7KIDdnQHy7ISDJZLHeq7JGljUndJqSBuL1gH9X93iEt
+	2BX+Ha4KWVvDld58afklOufqAk9LQJWtNWQbF1w==
+X-Google-Smtp-Source: AGHT+IHa1KyYv1IKw590sCplWvhogQlO8OvOBxMlNOdOwgi5TbD9kl95KoZfAoxfCiWfEz/NonSQTv/NuyiSNK1pPCg=
+X-Received: by 2002:a50:a458:0:b0:57a:322c:b1a5 with SMTP id
+ 4fb4d7f45d1cf-57cbd6a6d1dmr5332493a12.38.1718620062388; Mon, 17 Jun 2024
+ 03:27:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c209517e42fa83cbc3f030293f89813a6c1cfce1.camel@intel.com>
+References: <20240605093006.145492-1-steven.price@arm.com> <20240605093006.145492-3-steven.price@arm.com>
+ <20240612104023.GB4602@myrica> <3301ddd8-f088-48e3-bfac-460891698eac@arm.com> <20240613105107.GC417776@myrica>
+In-Reply-To: <20240613105107.GC417776@myrica>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 17 Jun 2024 11:27:31 +0100
+Message-ID: <CAFEAcA99bPtEr2OpE45wCgfSArZdtz4tu9rggLNb+=Rujh0ZvQ@mail.gmail.com>
+Subject: Re: [PATCH v3 02/14] arm64: Detect if in a realm and set RIPAS RAM
+To: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jun 14, 2024 at 04:13:46PM +0000, Edgecombe, Rick P wrote:
-> On Fri, 2024-06-14 at 13:14 +0800, Li RongQing wrote:
-> > In CoCo VMs it is possible for the untrusted host to cause
-> > set_memory_decrypted() to fail such that an error is returned
-> > and the resulting memory is shared. Callers need to take care
-> > to handle these errors to avoid returning decrypted (shared)
-> > memory to the page allocator, which could lead to functional
-> > or security issues.
-> > 
-> > So when set_memory_decrypted fails, leak decrypted memory, and
-> > print an error message
-> > 
-> > Signed-off-by: Li RongQing <lirongqing@baidu.com>
-> > ---
-> > diff with v1: leak the page, and print error
-> > 
-> >  drivers/virt/coco/tdx-guest/tdx-guest.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-
-> > guest/tdx-guest.c
-> > index 1253bf7..3a6e76c8 100644
-> > --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-> > +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> > @@ -125,7 +125,7 @@ static void *alloc_quote_buf(void)
-> >                 return NULL;
-> >  
-> >         if (set_memory_decrypted((unsigned long)addr, count)) {
-> > -               free_pages_exact(addr, len);
-> > +               pr_err("Failed to set Quote buffer decrypted, leak the
-> > buffer\n");
-> >                 return NULL;
-> >         }
-> 
-> I'm not sure we need the error message, because the set_memory() failure we are
-> most worried about already has a WARN.
+On Thu, 13 Jun 2024 at 11:50, Jean-Philippe Brucker
+<jean-philippe@linaro.org> wrote:
+>
+> On Wed, Jun 12, 2024 at 11:59:22AM +0100, Suzuki K Poulose wrote:
+> > On 12/06/2024 11:40, Jean-Philippe Brucker wrote:
+> > > On Wed, Jun 05, 2024 at 10:29:54AM +0100, Steven Price wrote:
+> > > > From: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > >
+> > > > Detect that the VM is a realm guest by the presence of the RSI
+> > > > interface.
+> > > >
+> > > > If in a realm then all memory needs to be marked as RIPAS RAM initially,
+> > > > the loader may or may not have done this for us. To be sure iterate over
+> > > > all RAM and mark it as such. Any failure is fatal as that implies the
+> > > > RAM regions passed to Linux are incorrect - which would mean failing
+> > > > later when attempting to access non-existent RAM.
+> > > >
+> > > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > > Co-developed-by: Steven Price <steven.price@arm.com>
+> > > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > >
+> > > > +static bool rsi_version_matches(void)
+> > > > +{
+> > > > + unsigned long ver_lower, ver_higher;
+> > > > + unsigned long ret = rsi_request_version(RSI_ABI_VERSION,
+> > > > +                                         &ver_lower,
+> > > > +                                         &ver_higher);
+> > >
+> > > There is a regression on QEMU TCG (in emulation mode, not running under KVM):
+> > >
+> > >    qemu-system-aarch64 -M virt -cpu max -kernel Image -nographic
+> > >
+> > > This doesn't implement EL3 or EL2, so SMC is UNDEFINED (DDI0487J.a R_HMXQS),
+> > > and we end up with an undef instruction exception. So this patch would
+> > > also break hardware that only implements EL1 (I don't know if it exists).
+> >
+> > Thanks for the report,  Could we not check ID_AA64PFR0_EL1.EL3 >= 0 ? I
+> > think we do this for kvm-unit-tests, we need the same here.
+>
+> Good point, it also fixes this case and is simpler. It assumes RMM doesn't
+> hide this field, but I can't think of a reason it would.
+>
+> This command won't work anymore:
+>
+>   qemu-system-aarch64 -M virt,secure=on -cpu max -kernel Image -nographic
+>
+> implements EL3 and SMC still treated as undef. QEMU has a special case for
+> starting at EL2 in this case, but I couldn't find what this is for.
 
-Yeah, I think we should just remove the pr_err(). It will be shadowed by
-the stack trace and WARN() anyway.
+That's a bit of an odd config, because it says "emulate EL3 but
+never use it". QEMU's boot loader starts the kernel at EL2 because
+the kernel boot protocol requires that (this is more relevant on
+boards other than virt where EL3 is not command-line disableable).
+I have a feeling we've occasionally found that somebody's had some
+corner case reason to use it, though. (eg
+https://gitlab.com/qemu-project/qemu/-/issues/1899
+is from somebody who says they use this when booting Windows 11 because
+it asserts at boot time that EL3 is present and won't boot otherwise.)
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Your underlying problem here seems to be that you don't have
+a way for the firmware to say "hey, SMC works, you can use it" ?
+
+-- PMM
