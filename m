@@ -1,138 +1,168 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EDB54918
-	for <linux-coco@lists.linux.dev>; Mon, 17 Jun 2024 10:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F448194A6D
+	for <linux-coco@lists.linux.dev>; Mon, 17 Jun 2024 11:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718620066; cv=none; b=CRBiLRiq03h1NqYYDwwLA9wIihhE96kqP2S3iwuHjKxyYdtwaJS60rOjw5vJ83txcTlGxcTAnCAqO8Nh1g/rtfBrcBgcp9Xml//LPTVhvwnRybAno3Zyr77UlVyecM18kPmjg/mE/Xhk6BHOu6M9ZmFcyGnJBMMZ+SX7XIYOyQk=
+	t=1718623394; cv=none; b=H2hrkNdSGwH4SwMIfN24t0zSS6N1eZ2YNlgy2Ytl2gMeQy/JzgXsdNCjpAm6GS83OuLJiEDtl8VnSaw5/GGO6djCnAwQMsGEh4b5AbtJpYtO4zhs1V0EHxLA8sWNqy6feeFpr5rA8odSL5uyj3W3SfSdTtnLkcxoi/UPficJtnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718620066; c=relaxed/simple;
-	bh=t7JP/HGFJDwk2M/R92BFPhUlm/Hwfwtb8ue0IF8mlwI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NgdXa0Brvc2s2CfVG9I+9fNCrgD0Q57WvyXzLdCgmt7rPpmUtDiebrxf1TK7CLsuDEZnDCurbhdea7N8FAOL46UyUpHKyeEGKt2fvKN7Vp6eeiMcw9CdVyu2TLGVSMXtzqTsIvBLFtlVEWAf/hQq4lO0xl5zFhWmtMoYIZhyTOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gjtQCnwJ; arc=none smtp.client-ip=209.85.208.46
+	s=arc-20240116; t=1718623394; c=relaxed/simple;
+	bh=StZPGP5/i6bU5Xn6N3H5JCPZRkydWn4sCNBBZMzJ8cs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bHXn210wei+Aj0q6QmMkm7P2Qbzs/r6lUwyAwc001ONPataB6gPr7oiqf6XYkmOs398KgYsearWNdwdJNK7HwB08YHjWrmeSmHXgQCh/lPC/l++wNqEnljd6CKXLn4f2ebgakmFd77L9q+rMcOifQm0gjK3m7so+6pMMLm+59b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=g+WH21i7; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gjtQCnwJ"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-57c73a3b3d7so4718286a12.1
-        for <linux-coco@lists.linux.dev>; Mon, 17 Jun 2024 03:27:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g+WH21i7"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-36087277246so1403701f8f.3
+        for <linux-coco@lists.linux.dev>; Mon, 17 Jun 2024 04:23:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718620062; x=1719224862; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uXp/Yz17OzdkV2gV0XI8xrmGqd5+ox1Pqhqcmx8WT9w=;
-        b=gjtQCnwJDqN78DTZk6mXht69IUp+HhT8W5B17mqeODWi2yzXwUj98z3ORp7MuhmcM1
-         nRlH1SFVC4E/dVwE9iIm7wazohG8Hacd2zQ1MUbZjumr6jldg66Hl34OlfRBB6Ek67hn
-         1i/Pivw7+kC0/57jGDMGo2atk7ffjefUgvAxS/47tHWT9IujnjdEj80leGnHaSgedB5X
-         Fxr5kRReP7R3s/cHdngSpAH7UCeytMYZUGwRU1AxY/1YVv+CI+iwc0+yHCvZyWCnqRQD
-         Gf6TiJ/mmaRcsPLgHZpdd1Mf6nVihAEClh+kMf9xhCN8I3jD1de0jfWIpcPpnX838FHx
-         UbnQ==
+        d=linaro.org; s=google; t=1718623391; x=1719228191; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sM9D3IqfgB50OxP9LSaIkbOJs5yF44MMVnRSPz65e9Q=;
+        b=g+WH21i7gyFr9N0PtL8AM736hM1Iq1TuJi0yysyOORooMt8u16VWHCeExVO/6CtUMP
+         FaVuUYlhBIGVt6lNk/tPglG8pIZyJkYaOySZmBj61kPDq/S/n9QE+H+xNZoUTpWTbqeN
+         FIEW3JH6tpKMANPWzmGKqxN8zhH15znNKaN9eb0hrnYQoT6jK5a6njIQybQU/E0Vo+YO
+         aOojniGcoSrjjSy0oBWDGF97/4TBvLb1o22qkWhn3hsUTLgEcVxYN7Ja5jNySW5ylclH
+         ckk5bN8YPbQcreytmkiWJXmn/ll/0cu0hZnJGhM2uoblPWvLBPsABpYt4//RxRTrW5lq
+         fsdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718620062; x=1719224862;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uXp/Yz17OzdkV2gV0XI8xrmGqd5+ox1Pqhqcmx8WT9w=;
-        b=tXPBN2H/++8wmH0HVuN2+oKwvXLc9Eb1LgZ/Kx6BN73eDl0ntrv902BKM28mgflmK1
-         0u5U5li9EPRgo7+4PIzbOP0FuHmH68wrTHhl9dkwOsKUmL8jwFdYTkNnCR9kMtlAtTPi
-         ifRPCgMxFJnL7GUu09hngd9qU6mEizaedN5/PoqgMRzeFx0fPiETcvi/LFw9vAqn4WWb
-         2g/0UKavzIfNVfELXR+Lyj6Xa6kPTM+CBuPBem40X7PxhcQgDfJDxLwGaHDujxbVn5gr
-         pkvBxnT2zAF9Mr3fFoOlmuFM5/R0Dm1Zcaf48SN+TSJXsASWB/g0R1D2D3v6vvkZiXJn
-         otsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUq4Iz1iLdRSKL4v2Ay1oD2C5+HTMrV4fiwLctjgyJwPPRxPhGv1ESuUFuNXfjJwWlqlEXCVEerDPT+A3iQG91SJIBCVX/BkM7mQA==
-X-Gm-Message-State: AOJu0Yyh6xFGjH4o+E7eLfPrXUTYB5DtKEk4XRLgnVrIK9sGG6dPyPa6
-	MJLgduenlyTykeXyNEWu3Dz4MlWlQZVi7KIDdnQHy7ISDJZLHeq7JGljUndJqSBuL1gH9X93iEt
-	2BX+Ha4KWVvDld58afklOufqAk9LQJWtNWQbF1w==
-X-Google-Smtp-Source: AGHT+IHa1KyYv1IKw590sCplWvhogQlO8OvOBxMlNOdOwgi5TbD9kl95KoZfAoxfCiWfEz/NonSQTv/NuyiSNK1pPCg=
-X-Received: by 2002:a50:a458:0:b0:57a:322c:b1a5 with SMTP id
- 4fb4d7f45d1cf-57cbd6a6d1dmr5332493a12.38.1718620062388; Mon, 17 Jun 2024
- 03:27:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718623391; x=1719228191;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sM9D3IqfgB50OxP9LSaIkbOJs5yF44MMVnRSPz65e9Q=;
+        b=W5VuqoSkthUDkz3sxK646iOGwqJ8zDAKZf0mNVuACRDX1ovTxJ+E6WLMtMqEddK0DQ
+         XwgPaw4aNeMAobbYh8uG3VzLNcKH76ZmxSJvQW7WE+rqfDmFP5CEFKABS1kEEfXiaGNn
+         CQXyIJ+y+w7fiVeE5SO08uQEzHCkn8FXb8y/Azsy8Pxz6jQ7mo8NUELUWhjSXF7Z8bxp
+         AM03QDu3sh6/jKwjvjMaFkMyyYc/o8bym3qkeQoU8vOlqLLRBzdiAmQ84fCNRlJa5IiI
+         m1LEcQgMyLQFjYm5itTH6ywZnT1ABsR6Js+iXawIkmAEt/OSAyGunGaMmLcTQpfkBooa
+         4HeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVbNE3NID108bDca1KCZ9QAGD6mmZOY4ySRy0axFPUAB57vuGzt30EW+9FCrOWoQJTT2AXQbdX1vv05342fLM4EIeiA+r36r3dLNg==
+X-Gm-Message-State: AOJu0YwAkm8gcxKRQ6ZKtCjx/Nr0/T+IkKunjln7M9cg+DhOJzichrZe
+	lQjb767GU4PdbL40s1Xa4uDjNNjWJW5ek5H4xR1e5757JLwFff9pJo92mBuHugI=
+X-Google-Smtp-Source: AGHT+IETE+Maao3JAp1ZfgvsbcmTneajMGOq/KKGP7BvZAyqnGu9qO6mLUlHKQfEume52Ehz/Rt4gQ==
+X-Received: by 2002:adf:f902:0:b0:360:727b:8b47 with SMTP id ffacd0b85a97d-3607a7e7c15mr8074845f8f.63.1718623390738;
+        Mon, 17 Jun 2024 04:23:10 -0700 (PDT)
+Received: from myrica ([2.221.137.100])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-360750acf32sm11673653f8f.49.2024.06.17.04.23.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Jun 2024 04:23:10 -0700 (PDT)
+Date: Mon, 17 Jun 2024 12:23:26 +0100
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	fvogt@suse.de
+Subject: Re: [PATCH v3 02/14] arm64: Detect if in a realm and set RIPAS RAM
+Message-ID: <20240617112326.GA1193@myrica>
+References: <20240605093006.145492-1-steven.price@arm.com>
+ <20240605093006.145492-3-steven.price@arm.com>
+ <20240612104023.GB4602@myrica>
+ <3301ddd8-f088-48e3-bfac-460891698eac@arm.com>
+ <20240613105107.GC417776@myrica>
+ <CAFEAcA99bPtEr2OpE45wCgfSArZdtz4tu9rggLNb+=Rujh0ZvQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240605093006.145492-1-steven.price@arm.com> <20240605093006.145492-3-steven.price@arm.com>
- <20240612104023.GB4602@myrica> <3301ddd8-f088-48e3-bfac-460891698eac@arm.com> <20240613105107.GC417776@myrica>
-In-Reply-To: <20240613105107.GC417776@myrica>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 17 Jun 2024 11:27:31 +0100
-Message-ID: <CAFEAcA99bPtEr2OpE45wCgfSArZdtz4tu9rggLNb+=Rujh0ZvQ@mail.gmail.com>
-Subject: Re: [PATCH v3 02/14] arm64: Detect if in a realm and set RIPAS RAM
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA99bPtEr2OpE45wCgfSArZdtz4tu9rggLNb+=Rujh0ZvQ@mail.gmail.com>
 
-On Thu, 13 Jun 2024 at 11:50, Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
->
-> On Wed, Jun 12, 2024 at 11:59:22AM +0100, Suzuki K Poulose wrote:
-> > On 12/06/2024 11:40, Jean-Philippe Brucker wrote:
-> > > On Wed, Jun 05, 2024 at 10:29:54AM +0100, Steven Price wrote:
-> > > > From: Suzuki K Poulose <suzuki.poulose@arm.com>
-> > > >
-> > > > Detect that the VM is a realm guest by the presence of the RSI
-> > > > interface.
-> > > >
-> > > > If in a realm then all memory needs to be marked as RIPAS RAM initially,
-> > > > the loader may or may not have done this for us. To be sure iterate over
-> > > > all RAM and mark it as such. Any failure is fatal as that implies the
-> > > > RAM regions passed to Linux are incorrect - which would mean failing
-> > > > later when attempting to access non-existent RAM.
-> > > >
-> > > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> > > > Co-developed-by: Steven Price <steven.price@arm.com>
-> > > > Signed-off-by: Steven Price <steven.price@arm.com>
-> > >
-> > > > +static bool rsi_version_matches(void)
-> > > > +{
-> > > > + unsigned long ver_lower, ver_higher;
-> > > > + unsigned long ret = rsi_request_version(RSI_ABI_VERSION,
-> > > > +                                         &ver_lower,
-> > > > +                                         &ver_higher);
-> > >
-> > > There is a regression on QEMU TCG (in emulation mode, not running under KVM):
-> > >
-> > >    qemu-system-aarch64 -M virt -cpu max -kernel Image -nographic
-> > >
-> > > This doesn't implement EL3 or EL2, so SMC is UNDEFINED (DDI0487J.a R_HMXQS),
-> > > and we end up with an undef instruction exception. So this patch would
-> > > also break hardware that only implements EL1 (I don't know if it exists).
+On Mon, Jun 17, 2024 at 11:27:31AM +0100, Peter Maydell wrote:
+> On Thu, 13 Jun 2024 at 11:50, Jean-Philippe Brucker
+> <jean-philippe@linaro.org> wrote:
 > >
-> > Thanks for the report,  Could we not check ID_AA64PFR0_EL1.EL3 >= 0 ? I
-> > think we do this for kvm-unit-tests, we need the same here.
->
-> Good point, it also fixes this case and is simpler. It assumes RMM doesn't
-> hide this field, but I can't think of a reason it would.
->
-> This command won't work anymore:
->
->   qemu-system-aarch64 -M virt,secure=on -cpu max -kernel Image -nographic
->
-> implements EL3 and SMC still treated as undef. QEMU has a special case for
-> starting at EL2 in this case, but I couldn't find what this is for.
+> > On Wed, Jun 12, 2024 at 11:59:22AM +0100, Suzuki K Poulose wrote:
+> > > On 12/06/2024 11:40, Jean-Philippe Brucker wrote:
+> > > > On Wed, Jun 05, 2024 at 10:29:54AM +0100, Steven Price wrote:
+> > > > > From: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > > >
+> > > > > Detect that the VM is a realm guest by the presence of the RSI
+> > > > > interface.
+> > > > >
+> > > > > If in a realm then all memory needs to be marked as RIPAS RAM initially,
+> > > > > the loader may or may not have done this for us. To be sure iterate over
+> > > > > all RAM and mark it as such. Any failure is fatal as that implies the
+> > > > > RAM regions passed to Linux are incorrect - which would mean failing
+> > > > > later when attempting to access non-existent RAM.
+> > > > >
+> > > > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > > > Co-developed-by: Steven Price <steven.price@arm.com>
+> > > > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > > >
+> > > > > +static bool rsi_version_matches(void)
+> > > > > +{
+> > > > > + unsigned long ver_lower, ver_higher;
+> > > > > + unsigned long ret = rsi_request_version(RSI_ABI_VERSION,
+> > > > > +                                         &ver_lower,
+> > > > > +                                         &ver_higher);
+> > > >
+> > > > There is a regression on QEMU TCG (in emulation mode, not running under KVM):
+> > > >
+> > > >    qemu-system-aarch64 -M virt -cpu max -kernel Image -nographic
+> > > >
+> > > > This doesn't implement EL3 or EL2, so SMC is UNDEFINED (DDI0487J.a R_HMXQS),
+> > > > and we end up with an undef instruction exception. So this patch would
+> > > > also break hardware that only implements EL1 (I don't know if it exists).
+> > >
+> > > Thanks for the report,  Could we not check ID_AA64PFR0_EL1.EL3 >= 0 ? I
+> > > think we do this for kvm-unit-tests, we need the same here.
+> >
+> > Good point, it also fixes this case and is simpler. It assumes RMM doesn't
+> > hide this field, but I can't think of a reason it would.
+> >
+> > This command won't work anymore:
+> >
+> >   qemu-system-aarch64 -M virt,secure=on -cpu max -kernel Image -nographic
+> >
+> > implements EL3 and SMC still treated as undef. QEMU has a special case for
+> > starting at EL2 in this case, but I couldn't find what this is for.
+> 
+> That's a bit of an odd config, because it says "emulate EL3 but
+> never use it". QEMU's boot loader starts the kernel at EL2 because
+> the kernel boot protocol requires that (this is more relevant on
+> boards other than virt where EL3 is not command-line disableable).
+> I have a feeling we've occasionally found that somebody's had some
+> corner case reason to use it, though. (eg
+> https://gitlab.com/qemu-project/qemu/-/issues/1899
+> is from somebody who says they use this when booting Windows 11 because
+> it asserts at boot time that EL3 is present and won't boot otherwise.)
 
-That's a bit of an odd config, because it says "emulate EL3 but
-never use it". QEMU's boot loader starts the kernel at EL2 because
-the kernel boot protocol requires that (this is more relevant on
-boards other than virt where EL3 is not command-line disableable).
-I have a feeling we've occasionally found that somebody's had some
-corner case reason to use it, though. (eg
-https://gitlab.com/qemu-project/qemu/-/issues/1899
-is from somebody who says they use this when booting Windows 11 because
-it asserts at boot time that EL3 is present and won't boot otherwise.)
+Thanks for the pointer. In this case it looks like Linux was used as
+reproducer and not the main use-case, though I wonder if some CIs
+regularly boot this particular configuration.
 
-Your underlying problem here seems to be that you don't have
-a way for the firmware to say "hey, SMC works, you can use it" ?
+> 
+> Your underlying problem here seems to be that you don't have
+> a way for the firmware to say "hey, SMC works, you can use it" ?
 
--- PMM
+We do: SMCCC recommends to look at the PSCI conduit declared in DT/ACPI.
+Given that RMM mandates using the SMC conduit for both PSCI and RSI calls,
+we could use this discovery mechanism here. The problem is that we have to
+discover it very early at boot, before the DT infrastructure is ready,
+so the implementation is a little awkward. I did post one earlier in this
+thread but it doesn't yet account for ACPI-only boot, which will need
+something similar. Testing ID_AA64PFR0_EL1.EL3 would be much simpler, but
+it would break this config.
+
+Thanks,
+Jean
+
