@@ -1,90 +1,75 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4DD12D1E7
-	for <linux-coco@lists.linux.dev>; Wed, 19 Jun 2024 10:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+Received: from njjs-sys-mailin01.njjs.baidu.com (mx316.baidu.com [180.101.52.236])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9455B6F2FB
+	for <linux-coco@lists.linux.dev>; Wed, 19 Jun 2024 11:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.101.52.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718793472; cv=none; b=vEc3QTVLEcxuq/IUh7vw1u9LusX6j4gdcT3O48CS6pg5mbFyFbfUVbXxrUj/Ym/hz2uS6sfH8e3+1cTPQynrpMApLegivaJzdbHCj+laO4CDfS0SSpWHka08r5Cz9JnfuHdJakIGGVzvQFcPqBnba+WJ/AVqF5e736MCe66XPwE=
+	t=1718795896; cv=none; b=fjqfw4ZTJWqLqrv+uzo95uGg/Kr3XkTpDDI5KaCDAXtB70BcwrOnY2II2uSiXpOeKkfIxSZaL2ZAxxIx1u8OTnDQiy34e1XXG3AhTas6Dez+Cwb43x5WeCsetPG1ln5eFPN0ArtlICMVAbDJsZODKkPan6m1XuI9ItS6bvLrNLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718793472; c=relaxed/simple;
-	bh=6+ZzL6rs2GfKv3zWcepskLbzkzrPZs+F7QCln1TKk/c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CqV7V7+d4Qki/+s4VXYS/Ru5VZKOoZfAcekPAhjZE1ASgZpO3Y24asNFu76mlVVkdmEPAvr1oDMncdPaIL68doqjjtQxc1Bnd8YIqyoN+FpONHOEgAa3xI3tgft2HLkb6LZ9dF8eYBwsk3CngykuGPwTZ3WzmFBc6l4ZEZx0V14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cMiBtqbr; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cMiBtqbr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718793471; x=1750329471;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6+ZzL6rs2GfKv3zWcepskLbzkzrPZs+F7QCln1TKk/c=;
-  b=cMiBtqbrlq8yNLeV8HaJfSLbEI+uWNJP16tDYflqWjPq+QSLV6eQi0x6
-   7sKSG+r1bhaBFgytDupTByimDttV/0d5+bDy6PtFi7QuXmNMs8RB15SEV
-   YVMzcUADuxsr6okSTHEwT+AECb4ggiiFHDLiBpDN+xTRXOJrFty8/lADE
-   OQ3xRaztNGu2zE4ylmaGk2Ov+sUfKnhm2+/2U42Uius+TwET382zum4pJ
-   Q4cbeBlc0hW1c85Dh0zBcCyHg1evUC6q9bPnV5uJ1xuqaBIC/MqZN7U5Y
-   8TVL7aUs9GEAC2KIyNVSwm5Ru3L6ynsLi6JKkL6vguE32ynxNueSwO2lQ
-   g==;
-X-CSE-ConnectionGUID: Q2aTAkXzRFq3h7KDRyWpRw==
-X-CSE-MsgGUID: +FyFTknfSESe5fGDvsMYSw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="15691565"
-X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; 
-   d="scan'208";a="15691565"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2024 03:37:51 -0700
-X-CSE-ConnectionGUID: 8Vpr9nH1TsWxW/5cZ2/IkA==
-X-CSE-MsgGUID: wyO5WjNOSV2v72V2AJeNGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; 
-   d="scan'208";a="41832687"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa008.fm.intel.com with ESMTP; 19 Jun 2024 03:37:49 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 24F5A241; Wed, 19 Jun 2024 13:37:48 +0300 (EEST)
-Date: Wed, 19 Jun 2024 13:37:48 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Li RongQing <lirongqing@baidu.com>
-Cc: dave.hansen@linux.intel.com, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com
-Subject: Re: [PATCH][v3] virt: tdx-guest: Don't free decrypted memory
-Message-ID: <uggd72vugduczhkifii57aflkv4hxsija5iwyqvxdr24tbysus@nq4xx7putbxg>
-References: <20240619084750.9207-1-lirongqing@baidu.com>
+	s=arc-20240116; t=1718795896; c=relaxed/simple;
+	bh=/uzSBEejCZP3ZuvUlQ+maBnaKGLioRrgetYx6SzumfA=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=sPFWbq4JEdOYEb5QH9BFbwmmvaX8w3T42wbDHWTTdo6ALHsJWE3cKbW8A5czLH1CG4k1n+qMjcBdTGoTIHY4bGkElF62ZiFgYdcfXHuxpfPBDZznNrUWkgrozqp9uNpx8xAd9sydAcKAFJ8NoxfDtveiErjjf3fZh9w3yEUQLdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; arc=none smtp.client-ip=180.101.52.236
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+Received: from localhost (bjhw-sys-rpm015653cc5.bjhw.baidu.com [10.227.53.39])
+	by njjs-sys-mailin01.njjs.baidu.com (Postfix) with ESMTP id 81AFF7F00057;
+	Wed, 19 Jun 2024 19:18:03 +0800 (CST)
+From: Li RongQing <lirongqing@baidu.com>
+To: kirill.shutemov@linux.intel.com,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	rick.p.edgecombe@intel.com
+Cc: Li RongQing <lirongqing@baidu.com>
+Subject: [PATCH][v4] virt: tdx-guest: Don't free decrypted memory
+Date: Wed, 19 Jun 2024 19:18:01 +0800
+Message-Id: <20240619111801.25630-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.9.4
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240619084750.9207-1-lirongqing@baidu.com>
 
-On Wed, Jun 19, 2024 at 04:47:50PM +0800, Li RongQing wrote:
-> In CoCo VMs it is possible for the untrusted host to cause
-> set_memory_decrypted() to fail such that an error is returned
-> and the resulting memory is shared. Callers need to take care
-> to handle these errors to avoid returning decrypted (shared)
-> memory to the page allocator, which could lead to functional
-> or security issues. So leak the decrypted memory when
-> set_memory_decrypted fails, and don't need to print an error
-> since set_memory_decrypted will call WARN_ONCE.
+In CoCo VMs it is possible for the untrusted host to cause
+set_memory_decrypted() to fail such that an error is returned
+and the resulting memory is shared. Callers need to take care
+to handle these errors to avoid returning decrypted (shared)
+memory to the page allocator, which could lead to functional
+or security issues.
 
-Add "()" for set_memory_decrypted() and WARN_ONCE().
+Leak the decrypted memory when set_memory_decrypted() fails,
+and don't need to print an error since set_memory_decrypted()
+will call WARN_ONCE().
 
-And put the solution into a separate paragraph:
-
-s/ So leak/\n\nLeak/
-
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
-
-Otherwise, looks good:
-
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+---
+ diff with v3: modify the commit log as suggested by Kirill
+ diff with v2: remove print error
+ diff with v1: leak the page, and print error
 
+ drivers/virt/coco/tdx-guest/tdx-guest.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index 1253bf7..8575d98 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -124,10 +124,8 @@ static void *alloc_quote_buf(void)
+ 	if (!addr)
+ 		return NULL;
+ 
+-	if (set_memory_decrypted((unsigned long)addr, count)) {
+-		free_pages_exact(addr, len);
++	if (set_memory_decrypted((unsigned long)addr, count))
+ 		return NULL;
+-	}
+ 
+ 	return addr;
+ }
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.9.4
+
