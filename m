@@ -1,136 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CA41E131B
-	for <linux-coco@lists.linux.dev>; Fri, 17 Jan 2025 02:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7021F668C
+	for <linux-coco@lists.linux.dev>; Fri, 17 Jan 2025 06:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737079204; cv=none; b=ANoZd/H0tgrvgVad/+klH4r/VnczQFkJKpmAFResGCJaNhATUFHd+h7Xe1KixWZzeyc5O8L4zoz2tNgWt+cCQ9jFsZ1ILzyVA78FZISH9WmTYAz5Zo2rE029PJrij5PB0rL5gij9ucqec3JU5aT5ZWJ/5XE+8ppIQPB/aBsGWqQ=
+	t=1737096939; cv=none; b=Utyr9dUtZDL47muNQul6h8iSe3IHYPmr84T3AYhrxcIHgAG4MwuUkjg18ZWZpOmnCTl2/ninzdHPb4rqHvMbIYYRnMcNPWhrVCdOZdv6TrNgb99k/1zqmO0DuL7EIU8U3DyERbhyMvMl2XjBjtNnCZmjMqLuXCMV3Q+KMJeW04s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737079204; c=relaxed/simple;
-	bh=5ZUz4QZLDlVa1hMJ47XHMGlOnKcryI3Cj9ggu76axOY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C41z7nscuacDQZsDaYCgWcjYOVUdw2zxuCqOHyYZZimXA9vCfIJCnQ6jJgZe0fiDS8zcdDjc6Lpi9nKMer714fQKA7WOr1lwpKRTVU9k4ohDrs9u9uCq/Jo7IgDGB1BnJhvwxPxd4vS7MKPoJdk1hoaRcqH9lk07JjMTU9CSWvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BolhGzCO; arc=none smtp.client-ip=198.175.65.16
+	s=arc-20240116; t=1737096939; c=relaxed/simple;
+	bh=a0dUK/jQpDvIM8/nBDBU73ylJDOTGNarHp7F4VWxh2Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HnCHSUbzysG/bEvSX0dG7b3Vl5dqtljVCE3ATwYU0I0zV+HYjyi2fVDA20fhn7hqk3AXSKpumXjlYq+/AqEtMhUbwTRyswuid3VHgAxDtJmFU+4PhSNZM1fFPcOmuSJWxRWVtUxTLOTIZGyUgJ1w/Wwj2unWQgDHVUKpe4nwoOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L8iEbRIv; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BolhGzCO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L8iEbRIv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737079203; x=1768615203;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5ZUz4QZLDlVa1hMJ47XHMGlOnKcryI3Cj9ggu76axOY=;
-  b=BolhGzCO5+emxeEY2bbCDWEFk2cPQFkmtwrS15gWqEtCopozwZ/Ptuc9
-   Sr50lPxg9MwQfbG1EfqKEV1iTokGAPIdl8M/4gm7TbvY2ABeDC1cQGVcU
-   CMYOS8LyYNx5diU/GjH5C3yYSCXBIVrhCZQvIjNdLGqDD6j/l3B0YbfVl
-   qQsaAsGlqIVp5BIGlEV4GTGR+6AN9tMDRTFYCIH00DYLHi22aQgF5/BKy
-   RYkB7njyvBJP1qDZt3aXgmSUUbFfrjTe2Ot4kpsmg4glRalQ3AdjfX+8a
-   Kc96wBG8qF9CcGxhStoQwEJM4nxWnTMgArWabDdakjM41GCJhlXWJ5vcO
+  t=1737096938; x=1768632938;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=a0dUK/jQpDvIM8/nBDBU73ylJDOTGNarHp7F4VWxh2Y=;
+  b=L8iEbRIvlAM476FPiCdv7FlB5AZrgkqpo85az6ILO6euxssHyQFwVAhS
+   CSTjipdyBB6qH+Jo3TWmsLcRUjT7v0ggdJdgeWKUrd1KR6fJz3hg/wk/0
+   23/DmmjN5Kdv0WFOr42oHApYQGanMNWoWhrnElLcPwU+z5OW0QP2QRwsY
+   7KIBxkrcB2mXl1iveENy96P+iw3OJ7S8nhjviqLpo7L8ALd2rCPYjcc6S
+   bf6DfEtnWhtiF/rNOJqafoWVU2a7xF2kgAHWX/yqDH0fehB87i8F2cmYK
+   prdicXggXAC1y00EDJ0H7vQ83wEWKO++1qzsgeV0BGhmh3ih+Cmyoc04Z
    g==;
-X-CSE-ConnectionGUID: h1ra9F7BTNmQR5rJSCRIIw==
-X-CSE-MsgGUID: IND7fn5qR36+0WZT5WjEiQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="37653492"
-X-IronPort-AV: E=Sophos;i="6.13,210,1732608000"; 
-   d="scan'208";a="37653492"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 18:00:02 -0800
-X-CSE-ConnectionGUID: q+qN46kgS4eRnBfRJ9Qo0w==
-X-CSE-MsgGUID: pIAKJmATQDajlK90Sjd0tg==
+X-CSE-ConnectionGUID: d7OC0+WxQfi+P00YMgRmnQ==
+X-CSE-MsgGUID: hahylNQGSS+m3icfyp1HzQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="41284407"
+X-IronPort-AV: E=Sophos;i="6.13,211,1732608000"; 
+   d="scan'208";a="41284407"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 22:55:38 -0800
+X-CSE-ConnectionGUID: RxiCzTo0ROmjq7QbZX/TYg==
+X-CSE-MsgGUID: jaCx/4CdQQ2PY/ze4H41mQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="106140512"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 17:59:57 -0800
-Message-ID: <f1ac048f-64b1-4343-ab86-ad98c24a44f5@linux.intel.com>
-Date: Fri, 17 Jan 2025 09:57:40 +0800
+X-IronPort-AV: E=Sophos;i="6.13,211,1732608000"; 
+   d="scan'208";a="106312339"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa009.fm.intel.com with ESMTP; 16 Jan 2025 22:55:32 -0800
+Date: Fri, 21 Jun 2024 06:02:17 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Christoph Hellwig <hch@lst.de>,
+	Leon Romanovsky <leonro@nvidia.com>, kvm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
+	yilun.xu@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
+ kAPI
+Message-ID: <ZnSm6ULbJbxOU27J@yilunxu-OptiPlex-7050>
+References: <20250115133821.GO5556@nvidia.com>
+ <f6c2524f-5ef5-4c2c-a464-a7b195e0bf6c@amd.com>
+ <1afd5049-d1d4-4fd6-8259-e7a5454e6a1d@amd.com>
+ <20250115141458.GP5556@nvidia.com>
+ <c86cfee1-063a-4972-a343-ea0eff2141c9@amd.com>
+ <86afb69a-79bd-4719-898e-c6c2e62103f7@amd.com>
+ <20250115151056.GS5556@nvidia.com>
+ <6f7a14aa-f607-45f9-9e15-759e26079dec@amd.com>
+ <20250115170942.GT5556@nvidia.com>
+ <5f588dac-d3e2-445d-9389-067b875412dc@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
- private device
-To: Jason Gunthorpe <jgg@nvidia.com>, Alexey Kardashevskiy <aik@amd.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
- christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
- alex.williamson@redhat.com, vivek.kasireddy@intel.com,
- dan.j.williams@intel.com, yilun.xu@intel.com, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
- daniel.vetter@ffwll.ch, leon@kernel.org, zhenzhong.duan@intel.com,
- tao1.su@intel.com
-References: <20250108133026.GQ5556@nvidia.com>
- <Z36ulpCoJAllp4fP@yilunxu-OptiPlex-7050> <20250109144051.GX5556@nvidia.com>
- <Z3/7/PQCLi1GE5Ry@yilunxu-OptiPlex-7050> <20250110133116.GF5556@nvidia.com>
- <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050> <20250113164935.GP5556@nvidia.com>
- <ZnDGqww5SLbVD6ET@yilunxu-OptiPlex-7050> <20250114133553.GB5556@nvidia.com>
- <17cd9b77-4620-4883-9a6a-8d1cab822c88@amd.com>
- <20250115130102.GM5556@nvidia.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20250115130102.GM5556@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5f588dac-d3e2-445d-9389-067b875412dc@amd.com>
 
-On 1/15/25 21:01, Jason Gunthorpe wrote:
-> On Wed, Jan 15, 2025 at 11:57:05PM +1100, Alexey Kardashevskiy wrote:
->> On 15/1/25 00:35, Jason Gunthorpe wrote:
->>> On Tue, Jun 18, 2024 at 07:28:43AM +0800, Xu Yilun wrote:
->>>
->>>>> is needed so the secure world can prepare anything it needs prior to
->>>>> starting the VM.
->>>> OK. From Dan's patchset there are some touch point for vendor tsm
->>>> drivers to do secure world preparation. e.g. pci_tsm_ops::probe().
->>>>
->>>> Maybe we could move to Dan's thread for discussion.
->>>>
->>>> https://lore.kernel.org/linux- 
->>>> coco/173343739517.1074769.13134786548545925484.stgit@dwillia2- 
->>>> xfh.jf.intel.com/
->>> I think Dan's series is different, any uapi from that series should
->>> not be used in the VMM case. We need proper vfio APIs for the VMM to
->>> use. I would expect VFIO to be calling some of that infrastructure.
->> Something like this experiment?
->>
->> https://github.com/aik/linux/commit/ 
->> ce052512fb8784e19745d4cb222e23cabc57792e
-> Yeah, maybe, though I don't know which of vfio/iommufd/kvm should be
-> hosting those APIs, the above does seem to be a reasonable direction.
+On Thu, Jan 16, 2025 at 04:13:13PM +0100, Christian König wrote:
+>    Am 15.01.25 um 18:09 schrieb Jason Gunthorpe:
 > 
-> When the various fds are closed I would expect the kernel to unbind
-> and restore the device back.
+>  On Wed, Jan 15, 2025 at 05:34:23PM +0100, Christian König wrote:
+> 
+>     Granted, let me try to improve this.
+>     Here is a real world example of one of the issues we ran into and why
+>     CPU mappings of importers are redirected to the exporter.
+>     We have a good bunch of different exporters who track the CPU mappings
+>     of their backing store using address_space objects in one way or
+>     another and then uses unmap_mapping_range() to invalidate those CPU
+>     mappings.
+>     But when importers get the PFNs of the backing store they can look
+>     behind the curtain and directly insert this PFN into the CPU page
+>     tables.
+>     We had literally tons of cases like this where drivers developers cause
+>     access after free issues because the importer created a CPU mappings on
+>     their own without the exporter knowing about it.
+>     This is just one example of what we ran into. Additional to that
+>     basically the whole synchronization between drivers was overhauled as
+>     well because we found that we can't trust importers to always do the
+>     right thing.
+> 
+>  But this, fundamentally, is importers creating attachments and then
+>  *ignoring the lifetime rules of DMABUF*. If you created an attachment,
+>  got a move and *ignored the move* because you put the PFN in your own
+>  VMA, then you are not following the attachment lifetime rules!
+> 
+>    Move notify is solely for informing the importer that they need to
+>    re-fresh their DMA mappings and eventually block for ongoing DMA to end.
+> 
+>    This semantics doesn't work well for CPU mappings because you need to hold
+>    the reservation lock to make sure that the information stay valid and you
+>    can't hold a lock while returning from a page fault.
 
-I am curious about the value of tsm binding against an iomnufd_vdevice
-instead of the physical iommufd_device.
+Dealing with CPU mapping and resource invalidation is a little hard, but is
+resolvable, by using other types of locks. And I guess for now dma-buf
+exporters should always handle this CPU mapping VS. invalidation contention if
+they support mmap().
 
-It is likely that the kvm pointer should be passed to iommufd during the
-creation of a viommu object. If my recollection is correct, the arm
-smmu-v3 needs it to obtain the vmid to setup the userspace event queue:
+It is resolvable so with some invalidation notify, a decent importers could
+also handle the contention well.
 
-struct iommufd_viommu *arm_vsmmu_alloc(struct device *dev,
-                                        struct iommu_domain *parent,
-                                        struct iommufd_ctx *ictx,
-                                        unsigned int viommu_type)
-{
+IIUC now the only concern is importer device drivers are easier to do
+something wrong, so move CPU mapping things to exporter. But most of the
+exporters are also device drivers, why they are smarter?
 
-[...]
+And there are increasing mapping needs, today exporters help handle CPU primary
+mapping, tomorrow should they also help on all other mappings? Clearly it is
+not feasible. So maybe conditionally give trust to some importers.
 
-         /* FIXME Move VMID allocation from the S2 domain allocation to 
-here */
-         vsmmu->vmid = s2_parent->s2_cfg.vmid;
-
-         return &vsmmu->core;
-}
-
-Intel TDX connect implementation also needs a reference to the kvm
-pointer to obtain the secure EPT information. This is crucial because
-the CPU's page table must be shared with the iommu. I am not sure
-whether the amd architecture has a similar requirement.
-
----
-baolu
+Thanks,
+Yilun
