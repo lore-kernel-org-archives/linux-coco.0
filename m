@@ -1,96 +1,197 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2065.outbound.protection.outlook.com [40.107.244.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C3D19AD9B
-	for <linux-coco@lists.linux.dev>; Mon, 24 Jun 2024 15:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719241337; cv=none; b=RWRh3E8bCYCkc/HaFZNoE9EHAUKKVqLPPSHM5PkmMmhNMiKECs9xrI9ky3U5qkFwsQJhgXIUTvRx3iD1yIUxaGGdV4O33iiPenlErNWvY3NxvMviD/PuEfsi99cO0J1C3ndoluqnWI3mXZaWPdIlcKhcMFpKDqvMENuZXFSUZsc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719241337; c=relaxed/simple;
-	bh=RWPDDMkBBJI5GXg8+0PX2He/GP0QafCNoivJOEpVWro=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bdnx9+SKLDzyWIvbYyqc4r9Xl3SIKn7s9CsnFdvGo9sF4+rItg4jAWhcN/KhHKrF+kGcMvgkDzsfsAOUdIaUFCpO0jT2FSFIqVR6X1OH0+R0IqG155xy8GnkCiRubFukpy9X4bS3KkrUlUgqwz4CiEIRK7Gy7eEly958QZJY6mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ENxM+Ubc; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF6A19B3F7
+	for <linux-coco@lists.linux.dev>; Mon, 24 Jun 2024 15:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719241448; cv=fail; b=T7cMiRrWgLYaealZik73YVeVEyP4PHED3nvgCSDtVaNJdQcipt/AKgfCf7wdQYTRvytgwNMWc/f22PVgJVOgxUIDXxtES6Hrj6Nan6c3IHZ1aasHiPA3bbXrbQbEmzUI0rVobNQSW0RiMXRPNKJJGHBi9u0pbnhRTwT0ypqq6EY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719241448; c=relaxed/simple;
+	bh=zyU+rNCDSga9Uq4VoMCGe2Zvuc4b3RAEr58AnO3681E=;
+	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
+	 Content-Type:MIME-Version; b=TcgTCAbPWM3LCY3OQ9JB5XNhR0573xzFgUhu1/h9ZU2Mr/EPFObmQQdC+oYXNfpdXUbZuERr/cnvEhLQ8pc/lNRbCqBjjttmquXXI6k+iiesxZj5LULKq430w8ejxFsZr8fcEyflVChLMUWYn1Eu4y3D2cuqEUh7lICD9NTJ1+I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4GADix+B; arc=fail smtp.client-ip=40.107.244.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ENxM+Ubc"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-63bab20b9f4so79507097b3.3
-        for <linux-coco@lists.linux.dev>; Mon, 24 Jun 2024 08:02:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719241334; x=1719846134; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=l4T/qiCTXUS9baKPXu/a0D1pfkxykAQu3gzK12/3rIc=;
-        b=ENxM+Ubcl8TzSY/sR8SAnnqlg0tOiYtE+ix7jbWDYsC9vA/xyDK30K2ATMZgM0/kOx
-         CdfwKEaCic2lT7lJeMoSz/qeaUhthATKD8+LqMp1Xl1JdGiPOok4Wfchw1B3/fg+N1Lq
-         Ndth1dB6rGiqddCPrIeYgEkiq8Td6Ht4JKe+0Vn5qSfIARnwOoU0fklUt2m8EUwru8YE
-         XCejpeJVdScqS7P7kO0NYrbWn3j36wXGfrCeoJ4e2XjZYWk58IcJycSC7rRtNGFurhrH
-         ycg/4a2sr1CJJAofYg3vA8IpNXUrv7TjcylpbpnDPHXbTx4kssW4+o+p7UubtzjzwSeD
-         bMoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719241334; x=1719846134;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l4T/qiCTXUS9baKPXu/a0D1pfkxykAQu3gzK12/3rIc=;
-        b=kAFIqTH2l3t0sQBcZDZKpAqi6uaN9ww3XT7jPOypbVharEneOf82jl/rt8hMchNRrF
-         +ybrhK0b+P65YdBQ49sClBPOIbW/RDUL7a+pBZ/NGVFtlezkUkqzCUtv42qQ5LD0h+1G
-         6htuvRtLbi0BDkG4bzqlLMDFqpTOnA4JP+vlDpfBnsC3ZV91KYNxVVTm30n9JTxvpxvH
-         frAVWOyA3LebKvRGrpR8bIL7ctlDKx+2MOMEfl/jX67jX6slAZ+QztF4OBNlxm1AEGUJ
-         V12/0ncXcLnC36Qpq7GvBdTvJKMve6wOjV/HurYjFDSX+0aNDuM5/4hJWKeOvygZW+0V
-         GTZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVK/UWBdn4mE/5MNOErUooo6b5z2mInlqJ1/GGnMHOlgDqoz525pIFERbj1M/HemJk00S8LHtbQOn0jVR453XBdDEhnYCKbw3cRuw==
-X-Gm-Message-State: AOJu0YxzhxApG9tZgSykUhaVvk8UB2lJM9iQMUaVbrmuAUsAyYNGVT4w
-	vrbOS24bHFu5QDC9+76MjvmZTywyewDFzQU0qlpqf0728QNEzIXnVW2iM9oM8LLkxEfxWv3vgGM
-	HYQ==
-X-Google-Smtp-Source: AGHT+IHVuhaaP+AqJkLOnP2nm2zoMNpTnmJWMLB94vD9m0Y86WTHHHaebaE0uZUg+d3sb7uwTDEgx3Svrng=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:102a:b0:df4:d6ca:fed0 with SMTP id
- 3f1490d57ef6-e0303f28704mr13386276.4.1719241334515; Mon, 24 Jun 2024 08:02:14
- -0700 (PDT)
-Date: Mon, 24 Jun 2024 08:02:13 -0700
-In-Reply-To: <545135fe-adbb-bf95-5b60-0646a76afaef@amd.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4GADix+B"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CBgzHIDU7UGd8rFSBAFVD/BwB/T4eh+DzqrXeBJSBr5c/FPJmIZYT8lyHCh8nuYU2EEolf1z9DenB1CP0rzX0RygbvfCofqqqMEvMf99ZNIrwVmAZNjXgo0/duGVN4pL0bX8wTuAlcUwOBWAlJC3te10wPNySIodaodIskgPVZDU9B8Zw2B0T8C6OxbWWvtTur+kEEzDnX8/E5WVh2TrIC9y8SsKwxMeVZ1wd2eBDXQuYvIHi7twnsp2Fp0QfPJtI+sxO0RMXImlL9M/EHYhzj4AJsrAbioiRxATm3XN5uzXkBdC0ED3pZ9bQA7wtoVf8BWnKR23KrDnGhEbnV3SzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5x4ioisHO8noZHX+E9fTa+4ZB3SRbQcYo1rwsvTUR6U=;
+ b=CnBFNsYWCE5e9rTNJ2+7Gdu89kMXPF/UPP2OIgcTs3HDaD5s7z+P6aJVElqtFgi3kic37sv4MM+sQ717Yu8XXZhQ5sAaewUOHXxuCOk76KPn1foonkc8t7JXSW+gHblYVGgs/Gmcq57ZvVaSUrho6C6ZbKPTCEhNgR21zHXTgsYYznN47sgpWutL54A+puFHYjX8Wr6xf6xZjI1+pPNSXCndTWxecAUMFHZehYC//SBOkIi+t0M6aWbYyl0PwcgbnYZw6Wxp7sbfQjnCJo74seKG5F9m+3Thb/IEUGaHt4L78KuNrZ8dVH30jcl17kNxpQ36ABeU1khteaVcNCE0Ug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5x4ioisHO8noZHX+E9fTa+4ZB3SRbQcYo1rwsvTUR6U=;
+ b=4GADix+BJ+wjkNwjiR1qkLUo/S9Eb8KZCpMBurONuqyChD4UKwdvk4SMx9g1x9bvXZwarN5i/OrsKd+dIRr+zXvJqGy/f0SlgmGPzp9nm5lDQpz28FPj0UPNKX6Ppx4oqWIdWco2IwiZPA9IkF/igvzG6jbJHdlDyY4WQA+5QjM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
+ by CY8PR12MB7681.namprd12.prod.outlook.com (2603:10b6:930:84::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.21; Mon, 24 Jun
+ 2024 15:04:01 +0000
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::bf0:d462:345b:dc52]) by BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::bf0:d462:345b:dc52%7]) with mapi id 15.20.7698.025; Mon, 24 Jun 2024
+ 15:04:01 +0000
+Message-ID: <c7bb1de4-604c-5bf3-72fa-7d955df84294@amd.com>
+Date: Mon, 24 Jun 2024 10:03:57 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Content-Language: en-US
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org
+Cc: rafael@kernel.org, hpa@zytor.com, peterz@infradead.org,
+ adrian.hunter@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ jun.nakajima@intel.com, rick.p.edgecombe@intel.com, michael.roth@amd.com,
+ seanjc@google.com, kai.huang@intel.com, bhe@redhat.com,
+ kirill.shutemov@linux.intel.com, bdas@redhat.com, vkuznets@redhat.com,
+ dionnaglaze@google.com, anisinha@redhat.com, jroedel@suse.de,
+ ardb@kernel.org, dyoung@redhat.com, kexec@lists.infradead.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20240614095904.1345461-1-kirill.shutemov@linux.intel.com>
+ <cover.1718920799.git.ashish.kalra@amd.com>
+ <42f56d2405522cc207b59235506c0b5bec67123f.1718920799.git.ashish.kalra@amd.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH v9 2/3] x86/boot: Skip video memory access in the
+ decompressor for SEV-ES/SNP
+In-Reply-To: <42f56d2405522cc207b59235506c0b5bec67123f.1718920799.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA0PR11CA0187.namprd11.prod.outlook.com
+ (2603:10b6:806:1bc::12) To BL1PR12MB5732.namprd12.prod.outlook.com
+ (2603:10b6:208:387::17)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20240621134041.3170480-1-michael.roth@amd.com>
- <20240621134041.3170480-4-michael.roth@amd.com> <daee6ab7-7c1e-45e3-81a5-ea989cc1b099@gmail.com>
- <545135fe-adbb-bf95-5b60-0646a76afaef@amd.com>
-Message-ID: <ZnmHeGU29F-iFeNl@google.com>
-Subject: Re: [PATCH v1 3/5] KVM: SEV: Provide support for SNP_EXTENDED_GUEST_REQUEST
- NAE event
-From: Sean Christopherson <seanjc@google.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>, Michael Roth <michael.roth@amd.com>, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, pbonzini@redhat.com, jroedel@suse.de, pgonda@google.com, 
-	ashish.kalra@amd.com, bp@alien8.de, pankaj.gupta@amd.com, 
-	liam.merwick@oracle.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|CY8PR12MB7681:EE_
+X-MS-Office365-Filtering-Correlation-Id: 58d82168-0816-49b8-4e0c-08dc945ee166
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230037|366013|7416011|376011|1800799021;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RUgrN2dUZ3NIQnd2R1pNZ21XU040R3dTY3c5MzlpVEV4TFpTTTNGUTE4bUZJ?=
+ =?utf-8?B?RXVoTS9ON3lrcEVTSTcvS1RMTWN3NUpyVExBTjQ2SVgwa0NkdC85eEdYNUVV?=
+ =?utf-8?B?U2FPYUFLRi9lS21rc3dTeXhhSU9xTXlTdldtUWJ5UFJhNFVGVkZkcEZPQ0p0?=
+ =?utf-8?B?anZ0UkVFRmtpUkhkWDk5WjZTL0lsendlUnZJSEhBZVZoalEzL2ozWUNsRDNt?=
+ =?utf-8?B?NEN0WWEvZFdYbUlwQ2JQSVMrR1ZjRWw2UHNPNTArV3ZEQjJFc3ppY0tPZU9Z?=
+ =?utf-8?B?R1BPeUpSTGIzRjczSElvQmNrRHdhbkpQeTVJUGczWGpGY2tZYUQxdGNmOHNt?=
+ =?utf-8?B?dVBHcDljRXU5ak8vUWFRcFVNcG5HUllrbzY1cGREMFIvbUMxa0RHbGNKNVlv?=
+ =?utf-8?B?VG1YQ2Yzb2dHamluRGlHTWhMTVFqWFFqNHlFUjEvTWZMNXdkLzdpNEhRV0p5?=
+ =?utf-8?B?b3dUb2YvT0xMRGZIRFZVQnU0ZHg3ZzliYWhNWUxWRk42LzR5T1g0TmhkWjVP?=
+ =?utf-8?B?VU15WjUrWnlKWisxaG5iL0JVU0NxRW5mTDVyR3BtUHhaRTZPcnp3eUNTeS9v?=
+ =?utf-8?B?OTMwODdOa2Z4RXUwcGlENHgreUJFa3FocURvMmY3bnFob0s1OElGUXVVZ2FL?=
+ =?utf-8?B?Wk0yaFFVYk96WlpyYU9TZUd1Z0hrb0Nmc2RTTHI1WE1yc1UyN0JTbEd5L0pH?=
+ =?utf-8?B?aFFXMkM2b0xwcnNRMVNzY09CNC84K3dBYjZQSmViN2VZeWhGRC9aU25VWFA3?=
+ =?utf-8?B?WU5kV1FGTW1pNUdOL0pxdWdOYnJSQVVnc09CZTQ2ZkRzNU5ZdVpyeXQwbWs0?=
+ =?utf-8?B?VWg1OElUMU5DajczQUlCb0dDV2sxRHZvNTVJcWRSREx6czNiTDkzOUhoenpC?=
+ =?utf-8?B?NlZaSVlleUlQV0VjZVVoVlZRZkVKd0xUVWNuWTk4ZlRJUlVhUnZYalUzRGJq?=
+ =?utf-8?B?MEVHeHp2TFdIbHczMVk2TGc4SUppQ0g2WlNsUW5GQnY3L3cyMFl6NXdKc0N1?=
+ =?utf-8?B?dU9RQzdXYkhYZlYrZGRiUjhsZWZKc0J0WDZIb1FFNm5wSmhJVG5TUnE5RWV0?=
+ =?utf-8?B?ZzhCQ09HdDZ2TWNlMk4rZmxWQm9WbkNHZmFubXhvMVBBdnpTQjIzWVgvKzFh?=
+ =?utf-8?B?UFdZdEk2YmJBUlB5NlVDTjFmZ2dMVlN5TmhDN0RPYkIzTWpCUUJwM01ERkdM?=
+ =?utf-8?B?L2pybm4rUnRVN25SajZsMGhSUzBSMUNTTzRtMHJ5bVhPRzZEMkNXOGhGd20y?=
+ =?utf-8?B?bjdDZ2tPYXRoYWs1ay9sL0tmaGxyelRXVzByTVFtWExwcTlYSkEwem9wdmR0?=
+ =?utf-8?B?cEVjU3ptaFR2dkpOdGt1bWMxMHBDdlhuVHVoODl1YjNOWnpmd3BYL3JvQ2FO?=
+ =?utf-8?B?N3dDeVhhK3BNUW1xUDVHdU9mTFNaSTdSc1NHZVZhNG9RN2g1WkpmRHFXbXBo?=
+ =?utf-8?B?N1lRQW9wTGltU1hmTkEzRE9WTTVibTViTW9HaEtZMi9PQ2hnUWtWeTlLalFr?=
+ =?utf-8?B?b1EwMHZ5bkVJaTVDWmJUK1V5d1hNTFhlUlo0aEdCQzZUY05ONnVRWjZJMnBR?=
+ =?utf-8?B?d00rRDgvV0JtdWJHSERSYjd5WlMwTFNXVXJJOWYzcWZmRCt1eEZWWXlWVUdN?=
+ =?utf-8?B?aHNDclZaNkpXOURIMGZoWmw4UWhUbDV1SXJ4TTAzNnVZaXk1cXI5dmtRckVy?=
+ =?utf-8?B?K2ZsWU1rTXJqVWUyRXpyRUkyMHVwUVkyYUROT1Y2cEJ1RVpSbTNyeC9FR2Yx?=
+ =?utf-8?Q?7Eh3NV+LRuL+KIysmDuACttnNtp7orHLOmV3TCl?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(7416011)(376011)(1800799021);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L3dlNEE5MU4vdC9kWHRpYVJqOGRVS2NHMFAvMzJvVDJUMFZpSWFqTDl6a3p1?=
+ =?utf-8?B?WEdDYTh1eWNxbDFiaExqeEZUQ1U0WGxZTnZVcmJwbU1hYjhMaWpIVkZvckpR?=
+ =?utf-8?B?Q25LMGk4VkNzODkxaWh5ckgwblRwVHNvY2o2T0tOWjRic0tHQU5wR1BIRjVL?=
+ =?utf-8?B?M0R1aXFvM09ZVGtCdDBmS0xSb0RjRFFTZXN2N0gzRFgxclJ5RjA0dTFPdjNI?=
+ =?utf-8?B?V1FTNGI5Tmc2Q1hnWWwrZk9HSmtTT0JsdDkxVzUvR2RnN1N6cUNHTjNmeHMv?=
+ =?utf-8?B?M0Q4SW5hS1hKT2ZwNThqK2tBdXpVYXBpNUhsdyt2di84REw3b1BHaHIwbS8r?=
+ =?utf-8?B?elBRYyt2VGNDWUk1VnU3SEJkTlFBTjNtZTFBZk5nSGVqNlgzUXlzRXBPeGxH?=
+ =?utf-8?B?VDA3SUFoUUU1VXIvaUZ2M3NJc2xUTzlPZHIxeUg5YlRjTUhFZERaNXRSUHJt?=
+ =?utf-8?B?dFBkMVc5ZWJSdlVXK2Q1Y2FRK1JwVUpNUVdFQUFqS2JHYVdFdHdKOFRCb0Fm?=
+ =?utf-8?B?ejlRUzZhVmNDOFdhdEo5UHdNNmNoQXhzRHlNZVZETkRDemJQTE92aklNbzUv?=
+ =?utf-8?B?TzJiZzdSWjhsMDlpSnZsQlZuQWFMV0lRdndsSFE5N3Z1ZkFTNTh3WFdLeCtI?=
+ =?utf-8?B?dG9HNjhpcUQ2VWYzemVMQkI3OXFaN01BTWIxNWZTblVET1BjVWNKS0hDNVBx?=
+ =?utf-8?B?blhqVjBmMmNLRUpmOG1vR0NVMGxXbmpXK2hVa2RrSUttZXRZSFltSnVucEdI?=
+ =?utf-8?B?NCt5UXVYQ2NLOGhzMi9NYUgxVlVXbzdldENnbUY3a0xEUXZwTjdlbi9FOGxo?=
+ =?utf-8?B?enlvUVRwOGQ1aFdHeWljZ1EwRmE1Zm9yVGwvSHRuQmYxTHRNandNcGp6V2ls?=
+ =?utf-8?B?Ti90WGMzVUI4dXA4QmNDNE5IeUhOT3FwRS9lVHB0SCtId0hiQ2xKYlI0b0cz?=
+ =?utf-8?B?ZzVzU2RvSDY0UFVoU2JhZ1hzbVBPU1dUeXdRazBVWW9QZjNLa1pySnZFMFRC?=
+ =?utf-8?B?SS81MjVpTG5GWkxZLzhpa2JvNHJzd093RGViL2VXM3RhYWRSdDNWNU1sV1pV?=
+ =?utf-8?B?cHBla3lHUWtEUlJWVTVKbGI1Yk5BTTl5THhuZGF0VVdreVB0bXZPTE9wSGtC?=
+ =?utf-8?B?czgyM2dsM3JKOEFaSEVpeUwwbzRLUnh1Z3NQRUlXNHNDeXRFTTRVMkhsMm1x?=
+ =?utf-8?B?ZGMybngxM0l6RmVoQUJaQjZRYjM0ZG1RdndGOGhMLzNrVm9HSzFHMXM0S0dj?=
+ =?utf-8?B?Yi9nbGYvczBiOEhRd0wzc1c5ZFgzeDAwOXBsOGEvaVVmSzBKV1dFZ29QUXJ2?=
+ =?utf-8?B?SE94N0FHak15WG8zMlFQYjZRVmIrSE9tNkJMeS90VitCSFlyMytnMnNkSUE0?=
+ =?utf-8?B?NlpTdERpMnVDRFdJY1ZJZzJSZnIvUFNyaDRoNWFadGtQdWdRelBPTDdkbW1p?=
+ =?utf-8?B?c1RVbi9rM0VRZUU2SElwcmpJSE1jYUp0U21meG9YNEMvWTg0WU5oSnFYM1lW?=
+ =?utf-8?B?VkloQ2dvdm9WbW1BQmJkVi9kMUtVNEY3dk9rZzkwdGdweXBZM29UN00rbkdC?=
+ =?utf-8?B?NlJqQVVnQkpnQkxuSkVEaW9Hc1g5MTNzMXoxMFVTWWhZQkdES21OT2F6S01U?=
+ =?utf-8?B?c2IvSTVNdVlBRmlWM1R0dlpGSks0enQ1UDBPRjAvQXhNM0FtTGd0QXZwUG0v?=
+ =?utf-8?B?M09VWUtrdi8rZ2ZTM0E0L3ZRMnNlVUlpd3k2cHRaSVE4ek16cGVZY2tiR2Fv?=
+ =?utf-8?B?YUlOQTUvcHZXMFVYVWl3MFdMbWE1azVSNjdHamxvL0ZtQXMxV1k2eGlHNWJi?=
+ =?utf-8?B?NG5ZRFhhTDdoV3lLQkl6UWI5ZnhFb2hIazZPbTJHQnlBRWFJbFBsWENNYWhx?=
+ =?utf-8?B?TUFqTlc3WVIrU3FqcERUdGFNUWhUNXZsVmYxblYrR1M2d2dHUThzeGJzaWI1?=
+ =?utf-8?B?di9taWVrM1h5WUZBMmViOUFhRm9wOENnNDd6MnhxbHQyeWt6Y1FxRCtjYVdU?=
+ =?utf-8?B?TmtpeUVXWnpZTytOZDRPUy9tbGwxeU4zY0xSMzFpVVh3UU5WYU9lRnhpZ3dk?=
+ =?utf-8?B?R080WkM2MTBHc2lObDAxSzVXbWtwdGVPdERacFZRL2MrL0lsRG5zQ1dSbndV?=
+ =?utf-8?Q?sUSYZ3chg7Rh1Nd9UvMWQLM10?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58d82168-0816-49b8-4e0c-08dc945ee166
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2024 15:04:01.2826
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7XA7mH8+2FuwpKetu9CaO4SxROh0cF8cafKZ60auL8F4Y3ihi20EL9DDvFetRpZkLCA+msfB8X1JfMdoBct2iQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7681
 
-On Mon, Jun 24, 2024, Tom Lendacky wrote:
-> On 6/22/24 15:28, Carlos Bilbao wrote:
-> >> +/*
-> >> + * As per GHCB spec (see "SNP Extended Guest Request"), the certificate table
-> >> + * is terminated by 24-bytes of zeroes.
-> >> + */
-> >> +static const u8 empty_certs_table[24];
-> > 
-> > 
-> > Should this be:
-> > staticconstu8 empty_certs_table[24] = { 0};
+On 6/20/24 17:23, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> Statics are always initialized to zero, so not necessary.
+> Accessing guest video memory/RAM in the decompressor causes guest
+> termination as the boot stage2 #VC handler for SEV-ES/SNP systems does
+> not support MMIO handling.
+> 
+> This issue is observed during a SEV-ES/SNP guest kexec as kexec -c adds
+> screen_info to the boot parameters passed to the second kernel, which
+> causes console output to be dumped to both video and serial.
+> 
+> As the decompressor output gets cleared really fast, it is preferable to
+> get the console output only on serial, hence, skip accessing the video
+> RAM during decompressor stage to prevent guest termination.
+> 
+> Serial console output during decompressor stage works as boot stage2 #VC
+> handler already supports handling port I/O.
+> 
+>   [ bp: Massage. ]
+> 
+> Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Suggested-by: Thomas Lendacy <thomas.lendacky@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-Heh, the whole thing is unnecessary.
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 
-	/*
-  	 * As per GHCB spec (see "SNP Extended Guest Request"), the certificate
-	 * table is terminated by 24 bytes of zeroes.
-	 */
-	if (data_npages && kvm_clear_guest(kvm, data_gpa, 24))
-		goto abort_request;
+> ---
+>  arch/x86/boot/compressed/misc.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
