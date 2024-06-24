@@ -1,54 +1,58 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFD93B1A2
-	for <linux-coco@lists.linux.dev>; Mon, 24 Jun 2024 07:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EE1137C2E
+	for <linux-coco@lists.linux.dev>; Mon, 24 Jun 2024 11:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719212868; cv=none; b=fknj2RGrVJZxn6MSNwaMO2OUncDCUFYvEUlTfrfLA7LRe3V+VAJQBvhZ5R8eGvQeukDqrRduulqOAchmKclL8jdDD3pFBbg0ce9SYYwiwtOSdzv4efY8mJVAlISEquVU59RXdzH/bI9N3Ms3c3UGGlgQA4nKku8eGuO4o74kvz4=
+	t=1719228385; cv=none; b=LwxkQBV8nEo7frqZ0UIyCZFlud8NRs3yNVqxcOsUfVT/U/Uq2dx3SbMhyud68D4fN8FFWb7nMbBW5WLPwdqiBCYR2tvCvO304xZmgWLIrl+eli1rwE86BainelyTFeEcLToMElkJScKu72EMzKHpMDGefz7f2hFohTKewJ1RgJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719212868; c=relaxed/simple;
-	bh=DIc2Ek2oqgATcYNtSqSUaLVDknlvsWuPQFBBIIrTz6c=;
+	s=arc-20240116; t=1719228385; c=relaxed/simple;
+	bh=Tm9fAW/AREuzKA/Tkfd7vj68m0jTPVdhUFYZv8Wddfs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C6NM1w9lhaWWt60FgXzV8ElQ9O2P4OuIMiaDJ8y+WctsA3Fu+mkW5hAJSaoscf+2Daki3i3lUNxynn/RUnTJpqUXWgpWuohBYKYVQZOQjEmDFcfPfbQnV0BeInOcthWr6vQ/ojC9SuVvIsGGD//mXKctXZohLG/YZ8CFhfPlTsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1f44b45d6abso30468115ad.0
-        for <linux-coco@lists.linux.dev>; Mon, 24 Jun 2024 00:07:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719212866; x=1719817666;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LSaP9BELHJPncXgtj87yjJDAYd2o3bEQl0Jgoge/tXc=;
-        b=SAUmfF/asaWA8RDfG0HbqZWI7ciOjTqkmQoexbJRv14hbKODxC3Ld7fUlJY8jtAvKX
-         z1vOwulSIuS2OGOv3U3/R00UC4fXnFyw2xBfz3dFICCIfI3mfockrD4LjviNnbsdaExP
-         dmi588ggwXQOd0YcfNHPOFpF415UfTMxE5CTuNJd9Ztpov27ticpdBOiAEwBV3ppclQb
-         AZMmITtC7c1QqHVKrmLBD9p7+fIYIfE7mQYEjhFDr11As+ZsgZki35FH80WcFB4woRGR
-         N7V/ub5YT4xrZNJ8MCvs6kchYEzPxQm10N4nz2hEu4GXn8h6PbIJoRGk6JDtD3KItgSz
-         XVIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVlMu2cbC3yIkYfEEiaG067cXLcIUj+VSuw1KxNWTx2iFNqYETXWtXWRdU6I/cYBvbimQsKdFm05xHkPoRyCvpXlV9V3lc7wmT1vA==
-X-Gm-Message-State: AOJu0YytPO8rbmS17pAJ9bqREsgyBvNLSZ59lAMK6puQC+wee41gOT+y
-	uj1hKabXmuvCeOPDSoG96cw4312P90zRe5nwcbLpkjotTmB05J6Z
-X-Google-Smtp-Source: AGHT+IHn9Nj5BYs7dNR5EX+uaseXHvMuEo1uXR7vTbM98U6YZWH4x3owWhoYUg3Qi/ZZuGVx6QVpQg==
-X-Received: by 2002:a17:902:ccce:b0:1fa:209e:b4f4 with SMTP id d9443c01a7336-1fa209eb5fdmr46453815ad.44.1719212866028;
-        Mon, 24 Jun 2024 00:07:46 -0700 (PDT)
-Received: from liuwe-devbox-debian-v2 ([20.69.120.36])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9ebbc479fsm55530025ad.291.2024.06.24.00.07.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jun 2024 00:07:45 -0700 (PDT)
-Date: Mon, 24 Jun 2024 07:07:38 +0000
-From: Wei Liu <wei.liu@kernel.org>
-To: mhklinux@outlook.com
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, corbet@lwn.net, linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] Documentation: hyperv: Add overview of
- Confidential Computing VM support
-Message-ID: <ZnkbOkWeIcSO-pmt@liuwe-devbox-debian-v2>
-References: <20240618165059.10174-1-mhklinux@outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=b2AJ+8o2q8iMguAMQGAGkYhLr+rutoq5Z7dUlh5UxWSEqYi5WVUgpUM1Qqu4K1VkNIfbgascIC/pMaNffPww+FxVrskLyzNUdgcTlenbt5pWKj+11p1dH5NUqYrWaIEeu1WNPEsh5zUqvpgHwuXZkXa8qinWvxu1Pth0+Z7vPbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WBoWFLFd; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WBoWFLFd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719228383; x=1750764383;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Tm9fAW/AREuzKA/Tkfd7vj68m0jTPVdhUFYZv8Wddfs=;
+  b=WBoWFLFd8fbleS+PXYbQEGUcIqg4VZp3fahOlP42N4SvfMVllLLrWEDu
+   nMneQL73R0Y7Ft3TLp6Th8NfEJmFrBQaGlWvWbr2gztHbZjG1XmLPXU8g
+   taHJCCHT2/iS04/K1d+OlyLffw6LOeEqD+zLcUZL3gl/SWu09WNHY3mmS
+   qIptLSaFyFM6zZyYPNTRcuixngmL6V6gDTCvBj/6E7EPLVgfIANWtnG2B
+   a4TOAMtGnVmevpAL0u10MfZTxTJ1129hiknlyt1RWLPo3HhfQ4DRnnrdh
+   rXQt8ntR5fnYesZL0NiWYab5r0oiB09Bav1TtIZn76fNAlrT38L7ZV1K+
+   A==;
+X-CSE-ConnectionGUID: 8KLiKpXbQ0uRoDVpTg4Vzw==
+X-CSE-MsgGUID: GdH7Nb/PT6SqdT3DQMq5vw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="16317119"
+X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; 
+   d="scan'208";a="16317119"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2024 04:26:23 -0700
+X-CSE-ConnectionGUID: asvPvMNNSP+tBAvd27oXwg==
+X-CSE-MsgGUID: CE0VjRTdRMSn65ma02ofQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; 
+   d="scan'208";a="43354576"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa009.jf.intel.com with ESMTP; 24 Jun 2024 04:26:22 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id CB0CD1BD; Mon, 24 Jun 2024 14:26:20 +0300 (EEST)
+Date: Mon, 24 Jun 2024 14:26:20 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Jun Miao <jun.miao@intel.com>
+Cc: dave.hansen@linux.intel.com, linux-coco@lists.linux.dev
+Subject: Re: [PATCH] x86/virt/tdx: accurately distinguishes TDX module
+ loading situations
+Message-ID: <2sejjb666z5rzxzinqtkvyh2q4726fgaq5cqvxi57xd6mqu2o7@ixhcmkmumxhr>
+References: <20240622175037.2051612-1-jun.miao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -57,14 +61,51 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240618165059.10174-1-mhklinux@outlook.com>
+In-Reply-To: <20240622175037.2051612-1-jun.miao@intel.com>
 
-On Tue, Jun 18, 2024 at 09:50:59AM -0700, mhkelley58@gmail.com wrote:
-> From: Michael Kelley <mhklinux@outlook.com>
+On Sun, Jun 23, 2024 at 01:50:37AM +0800, Jun Miao wrote:
+> The first SEAMCALL is important to response the state of TDX Module/BIOS.
 > 
-> Add documentation topic for Confidential Computing (CoCo) VM support
-> in Linux guests on Hyper-V.
-> 
-> Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+> In actual incorrect BIOS setup or deployment, the sysinit_ret will be
+> -EOPNOTSUPP. But the message "module not loaded" isn`t enough to describe
+> the accurate loading situation when module loaded but SEAMCALL failed
+> for some BIOS wrong setting. So add the error return operation code number.
 
-Applied to hyperv-fixes, thanks.
+Do you want to actually check for EOPNOTSUPP and print a
+user-understandable message for it?
+
+> Signed-off-by: Jun Miao <jun.miao@intel.com>
+> ---
+>  arch/x86/virt/vmx/tdx/tdx.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 4e2b2e2ac9f9..787dfaf44036 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -122,10 +122,14 @@ static int try_init_module_global(void)
+>  	/*
+>  	 * The first SEAMCALL also detects the TDX module, thus
+>  	 * it can fail due to the TDX module is not loaded.
+> -	 * Dump message to let the user know.
+> +	 * Dump more detailed message to let the user know.
+>  	 */
+>  	if (sysinit_ret == -ENODEV)
+>  		pr_err("module not loaded\n");
+> +	else if (sysinit_ret)
+> +		pr_warn("module loaded error ret=%d\n",sysinit_ret);
+
+s/loaded/load/
+
+> +	else
+> +		pr_info("module loaded\n");
+>  
+>  	sysinit_done = true;
+>  out:
+> -- 
+> 2.32.0
+> 
+
+-- 
+  Kiryl Shutse
+  mau / Kirill A. Shutemov
