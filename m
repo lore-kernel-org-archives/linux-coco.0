@@ -1,202 +1,222 @@
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C14753E31
-	for <linux-coco@lists.linux.dev>; Sat, 22 Jun 2024 20:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8AD2EAE1;
+	Mon, 24 Jun 2024 06:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719088128; cv=none; b=D/CRy530Xo1KD4A6pWG3ub5BwyYEsNPfWIdlUKP0ARw0RYCY9SXBtRbCPzGIXgVJSIjUG6Wa1Ck8FLJmjJyZBKnngQOWNNqPgByTWoNz1CagukTFqCV10wPywXbLFUp1m6Dm9i9X/jjJIv3qPrHxtDyqIU/K1zeykyr18FKcL1A=
+	t=1719209613; cv=none; b=sp5LG5RgPZ19Os6V7zWlcoRHi6zfCo3TBjTKruKNwYNkzgojtftgxZWTQRvlmhkBbWX61Nz0LRAxAsYh1gYrtFBOM6ANq1MEsPhSD9lsBbCMhceeusv40G64DaJsJ+6fiXkYBUEB8Yj5y06bXpOnDUJnqnF6SECCBseZyQQew04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719088128; c=relaxed/simple;
-	bh=3naxbCWYWyb12WIaRMFMGCevr88ZJi3vnfvM+hQe39k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DZx16lfFPMJN9+nI2kTBTjrnsp9fE5RoKtK4bIQ+KHIvgaVRa84MP4fICdt+GIBww7xKNOzdT3/FFvrmQBWXKlR6QLwi6yu1cBpJ28GBbp3XDcP4v0Bpdytdh4b+ah/f4HVlhJoFZ2n3JVkV4n/lbWPa086JGLKtMv6GvpX5/nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fnfSdLin; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1719209613; c=relaxed/simple;
+	bh=cdnBedZb4FOnW8quf2UL9Z1D5XyTNQVbVtUhSgGcCfQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kbtJCeIe8Itp4KUnsNZkDiZhBXl8d4rXMjbVvvXQRP/1XBrbc71Yjpee1k1cJCCbSAZQeApQWsCura4EQtPM9UEdKGEr+SybtZrGHPQKvFdVrp4z3GG1uGZOfsMvm8U6hf+m7MLS/GCH6vk32LYVhu62T7BUKK0sQBgRzBFw4Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VRfb7lg8; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fnfSdLin"
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5c1cabcb0c1so1456587eaf.0
-        for <linux-coco@lists.linux.dev>; Sat, 22 Jun 2024 13:28:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719088126; x=1719692926; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Wz5Oa6/rWVrsFAb0cFynFRFfx1R/TSvc0ki+GhEz5L4=;
-        b=fnfSdLinr2a6sMrRuci+uz7a5xIKKCGHwskPjRIQ9OWP7aZQ7/7pcXEuTE6SGzwSmd
-         JczRv8tlnodn7uyLlNs1unQRbUFXz4htPKBmVaNgj/qHPKLNdBeRkL7N//HfXRiIMe+2
-         1YE0TyrprmpUcQ4dEhXF3vxIFr2uoJJsCEdYSnLW01jyjBfNwisuUq5s6CUWQxVug8Xw
-         3aT9SFOK6LLDI1PRfThkbv+aht1wLHTo/ljZpQr8HWsiXD1oqe7MrgdE1h022F3aDFao
-         UPlg7UnynawIu3nXQoIBliICv5HnoLqugEhnfuyVUH+q4O+y9pJ31otzoUdz6Fd027Ui
-         QAdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719088126; x=1719692926;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wz5Oa6/rWVrsFAb0cFynFRFfx1R/TSvc0ki+GhEz5L4=;
-        b=j9LQ4QdPX1fLKPXxfOvOcOeqwf/h+vWmJOd4mLVgtQPipvpayLQz0xQymJhnOwEYrU
-         hdtJMcJp+Qb22ZHlCBfpxhmgsnEY15LKbEpS5Q8pUQzIUkclLeAYKVh4q0jkO+WM8DEs
-         J4yLo7mSbtkDw5FC9Lbke4yqmMHmWlPCBHpacjZwUK6rfftZEQf4s3LmKtNWX8aF5xmv
-         nv7DaA9F7JelCGTwnuLqvXuHqa7ACUoTE7ll6jxYSVMmvV3f5omIHJ/gAKecYHegSlRk
-         cGmY4i7grGnqfZh/NYRDV7glZAFl6+KyyRbEgBn391AOBYShrFQqy6zZ5fuLMhNrje9G
-         z/Tg==
-X-Gm-Message-State: AOJu0Yzw3Dltrfd0S97XUv940hDq9iA0XzzqUsgwhRXDhcMyiWbJR4BA
-	+Bx2j66QbGv2mNbbP9ukXnAjd5ldNMEZTjP5EQeHPkomqueQjRAU
-X-Google-Smtp-Source: AGHT+IE789iTevCzbZ7tRv7egdxCiedgWdhlftr81cGxwdKYHeUeTH4vqoVa4ggmavoKIxtlOnNaaw==
-X-Received: by 2002:a4a:764b:0:b0:5ba:ffcb:c759 with SMTP id 006d021491bc7-5c1eed1072cmr847344eaf.4.1719088125891;
-        Sat, 22 Jun 2024 13:28:45 -0700 (PDT)
-Received: from ?IPV6:2603:8080:2300:de:3d70:f8:6869:93de? ([2603:8080:2300:de:3d70:f8:6869:93de])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5c1d55cd91asm749144eaf.15.2024.06.22.13.28.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jun 2024 13:28:45 -0700 (PDT)
-Message-ID: <daee6ab7-7c1e-45e3-81a5-ea989cc1b099@gmail.com>
-Date: Sat, 22 Jun 2024 15:28:43 -0500
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VRfb7lg8"
+X-Envelope-To: steven.price@arm.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1719209608;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mpJVGKzhAAnl+G7DVS/61CyVmA2jlS1pyMs6oQAf4UY=;
+	b=VRfb7lg8Hm1GPd9QTdSPPyHShzFE4b3gkYZWvz8OB14SOgVYNeJ+o8qx9V4yO4z1/KLz7b
+	g/TdznUFaPtxj0a3jIBg+iO8BLJ9eWuk4fWUm7rbNJwj/Mje3Bcnbrp5HW2Sxj1dfSEEwl
+	7qy95MipRQa7iyzEV93E4wAVu7VK/iM=
+X-Envelope-To: kvm@vger.kernel.org
+X-Envelope-To: kvmarm@lists.linux.dev
+X-Envelope-To: catalin.marinas@arm.com
+X-Envelope-To: maz@kernel.org
+X-Envelope-To: will@kernel.org
+X-Envelope-To: james.morse@arm.com
+X-Envelope-To: oliver.upton@linux.dev
+X-Envelope-To: suzuki.poulose@arm.com
+X-Envelope-To: yuzenghui@huawei.com
+X-Envelope-To: linux-arm-kernel@lists.infradead.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Envelope-To: joey.gouly@arm.com
+X-Envelope-To: alexandru.elisei@arm.com
+X-Envelope-To: christoffer.dall@arm.com
+X-Envelope-To: tabba@google.com
+X-Envelope-To: linux-coco@lists.linux.dev
+X-Envelope-To: gankulkarni@os.amperecomputing.com
+Date: Mon, 24 Jun 2024 15:13:17 +0900
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Itaru Kitayama <itaru.kitayama@linux.dev>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: Re: [v2] Support for Arm CCA VMs on Linux
+Message-ID: <ZnkOfTVAaCJ_-_bG@vm3>
+References: <20240412084056.1733704-1-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/5] KVM: SEV: Provide support for
- SNP_EXTENDED_GUEST_REQUEST NAE event
-To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, jroedel@suse.de,
- thomas.lendacky@amd.com, pgonda@google.com, ashish.kalra@amd.com,
- bp@alien8.de, pankaj.gupta@amd.com, liam.merwick@oracle.com
-References: <20240621134041.3170480-1-michael.roth@amd.com>
- <20240621134041.3170480-4-michael.roth@amd.com>
-Content-Language: en-US
-From: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-In-Reply-To: <20240621134041.3170480-4-michael.roth@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240412084056.1733704-1-steven.price@arm.com>
+X-Migadu-Flow: FLOW_OUT
 
-Hello folks,
+Hi Steven,
+On Fri, Apr 12, 2024 at 09:40:56AM +0100, Steven Price wrote:
+> We are happy to announce the second version of the Arm Confidential
+> Compute Architecture (CCA) support for the Linux stack. The intention is
+> to seek early feedback in the following areas:
+>  * KVM integration of the Arm CCA;
+>  * KVM UABI for managing the Realms, seeking to generalise the
+>    operations where possible with other Confidential Compute solutions;
+>  * Linux Guest support for Realms.
+> 
+> See the previous RFC[1] for a more detailed overview of Arm's CCA
+> solution, or visible the Arm CCA Landing page[2].
+> 
+> This series is based on the final RMM v1.0 (EAC5) specification[3].
+> 
+> Quick-start guide
+> =================
+> 
+> The easiest way of getting started with the stack is by using
+> Shrinkwrap[4]. Currently Shrinkwrap has a configuration for the initial
+> v1.0-EAC5 release[5], so the following overlay needs to be applied to
+> the standard 'cca-3world.yaml' file. Note that the 'rmm' component needs
+> updating to 'main' because there are fixes that are needed and are not
+> yet in a tagged release. The following will create an overlay file and
+> build a working environment:
+> 
+> cat<<EOT >cca-v2.yaml
+> build:
+>   linux:
+>     repo:
+>       revision: cca-full/v2
+>   kvmtool:
+>     repo:
+>       kvmtool:
+>         revision: cca/v2
+>   rmm:
+>     repo:
+>       revision: main
+>   kvm-unit-tests:
+>     repo:
+>       revision: cca/v2
+> EOT
+> 
+> shrinkwrap build cca-3world.yaml --overlay buildroot.yaml --btvar GUEST_ROOTFS='${artifact:BUILDROOT}' --overlay cca-v2.yaml
+> 
+> You will then want to modify the 'guest-disk.img' to include the files
+> necessary for the realm guest (see the documentation in cca-3world.yaml
+> for details of other options):
+> 
+>   cd ~/.shrinkwrap/package/cca-3world
+>   /sbin/e2fsck -fp rootfs.ext2 
+>   /sbin/resize2fs rootfs.ext2 256M
+>   mkdir mnt
+>   sudo mount rootfs.ext2 mnt/
+>   sudo mkdir mnt/cca
+>   sudo cp guest-disk.img KVMTOOL_EFI.fd lkvm Image mnt/cca/
+>   sudo umount mnt 
+>   rmdir mnt/
+> 
+> Finally you can run the FVP with the host:
+> 
+>   shrinkwrap run cca-3world.yaml --rtvar ROOTFS=$HOME/.shrinkwrap/package/cca-3world/rootfs.ext2
+> 
+> And once the host kernel has booted, login (user name 'root') and start
+> a realm guest:
+> 
+>   cd /cca
+>   ./lkvm run --realm --restricted_mem -c 2 -m 256 -k Image -p earlycon
+> 
+> Be patient and you should end up in a realm guest with the host's
+> filesystem mounted via p9.
+> 
+> It's also possible to use EFI within the realm guest, again see
+> cca-3world.yaml within Shrinkwrap for more details.
 
-On 6/21/24 08:40, Michael Roth wrote:
-> Version 2 of GHCB specification added support for the SNP Extended Guest
-> Request Message NAE event. This event serves a nearly identical purpose
-> to the previously-added SNP_GUEST_REQUEST event, but for certain message
-> types it allows the guest to supply a buffer to be used for additional
-> information in some cases.
->
-> Currently the GHCB spec only defines extended handling of this sort in
-> the case of attestation requests, where the additional buffer is used to
-> supply a table of certificate data corresponding to the attestion
-> report's signing key. Support for this extended handling will require
-> additional KVM APIs to handle coordinating with userspace.
->
-> Whether or not the hypervisor opts to provide this certificate data is
-> optional. However, support for processing SNP_EXTENDED_GUEST_REQUEST
-> GHCB requests is required by the GHCB 2.0 specification for SNP guests,
-> so for now implement a stub implementation that provides an empty
-> certificate table to the guest if it supplies an additional buffer, but
-> otherwise behaves identically to SNP_GUEST_REQUEST.
->
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/kvm/svm/sev.c | 60 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 60 insertions(+)
->
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 7338b987cadd..b5dcf36b50f5 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -3323,6 +3323,7 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
->  			goto vmgexit_err;
->  		break;
->  	case SVM_VMGEXIT_GUEST_REQUEST:
-> +	case SVM_VMGEXIT_EXT_GUEST_REQUEST:
->  		if (!sev_snp_guest(vcpu->kvm))
->  			goto vmgexit_err;
->  		break;
-> @@ -4005,6 +4006,62 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
->  	return ret;
->  }
->  
-> +/*
-> + * As per GHCB spec (see "SNP Extended Guest Request"), the certificate table
-> + * is terminated by 24-bytes of zeroes.
-> + */
-> +static const u8 empty_certs_table[24];
+I am trying to see if libvirt can work with the CCA-aware KVM with minimal Ubuntu22.10 filesystem, however virt-install triggers a system failure:
 
+$ sudo virt-install -v --name f39 --ram 4096        --disk path=fedora40.img,cache=none --nographics --os-variant fedora38         --import --arch aarch64 --vcpus 4
+[sudo] password for realm:
+[ 3694.176579] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000e00
+[ 3694.176687] Mem abort info:
+[ 3694.176745]   ESR = 0x0000000096000004
+[ 3694.176817]   EC = 0x25: DABT (current EL), IL = 32 bits
+[ 3694.176907]   SET = 0, FnV = 0
+[ 3694.176978]   EA = 0, S1PTW = 0
+[ 3694.177049]   FSC = 0x04: level 0 translation fault
+[ 3694.177132] Data abort info:
+[ 3694.177189]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[ 3694.177276]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[ 3694.177370]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[ 3694.177544] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000880f6e000
+[ 3694.177649] [0000000000000e00] pgd=0000000000000000, p4d=0000000000000000
+[ 3694.177788] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+[ 3694.177887] Modules linked in:
+[ 3694.177966] CPU: 2 PID: 540 Comm: qemu-system-aar Not tainted 6.10.0-rc1-00058-gd901c27a1783 #149
+[ 3694.178105] Hardware name: FVP Base RevC (DT)
+[ 3694.178180] pstate: 61400009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[ 3694.178315] pc : kvm_vm_ioctl_check_extension+0x1fc/0x3c4
+[ 3694.178447] lr : kvm_vm_ioctl_check_extension_generic+0x34/0x12c
+[ 3694.178587] sp : ffff800081523cb0
+[ 3694.178657] x29: ffff800081523cb0 x28: 0000000000000051 x27: 0000000000000000
+[ 3694.178840] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+[ 3694.179019] x23: 000000000000000a x22: 0000000000000051 x21: ffff000801075f00
+[ 3694.179200] x20: ffff000801075f01 x19: 000000000000ae03 x18: 0000000000000000
+[ 3694.179383] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[ 3694.179565] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[ 3694.179745] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+[ 3694.179923] x8 : 0000000000000000 x7 : ffff000801075f18 x6 : 00000000401c5820
+[ 3694.180106] x5 : 000000000000000a x4 : 0000000000000800 x3 : 0000000000000000
+[ 3694.180285] x2 : 000000000000000b x1 : 0000000100061001 x0 : 0000000000000001
+[ 3694.180465] Call trace:
+[ 3694.180523]  kvm_vm_ioctl_check_extension+0x1fc/0x3c4
+[ 3694.180656]  kvm_vm_ioctl_check_extension_generic+0x34/0x12c
+[ 3694.180794]  kvm_dev_ioctl+0x3c8/0x8b8
+[ 3694.180938]  __arm64_sys_ioctl+0xac/0xf0
+[ 3694.181079]  invoke_syscall+0x48/0x114
+[ 3694.181220]  el0_svc_common.constprop.0+0x40/0xe0
+[ 3694.181367]  do_el0_svc+0x1c/0x28
+[ 3694.181507]  el0_svc+0x34/0xd8
+[ 3694.181608]  el0t_64_sync_handler+0x120/0x12c
+[ 3694.181723]  el0t_64_sync+0x190/0x194
+[ 3694.181865] Code: 17ffffbd 97fffc9d 12001c00 17ffff91 (39780060)
+[ 3694.181955] ---[ end trace 0000000000000000 ]---
 
-Should this be:
-staticconstu8 empty_certs_table[24] = { 0};
-Besides that,
-Reviewed-by: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-
-
-> +
-> +static int snp_handle_ext_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_gpa)
-> +{
-> +	struct kvm *kvm = svm->vcpu.kvm;
-> +	u8 msg_type;
-> +
-> +	if (!sev_snp_guest(kvm) || !PAGE_ALIGNED(req_gpa) || !PAGE_ALIGNED(resp_gpa))
-> +		return -EINVAL;
-> +
-> +	if (kvm_read_guest(kvm, req_gpa + offsetof(struct snp_guest_msg_hdr, msg_type),
-> +			   &msg_type, 1))
-> +		goto abort_request;
-> +
-> +	/*
-> +	 * As per GHCB spec, requests of type MSG_REPORT_REQ also allow for
-> +	 * additional certificate data to be provided alongside the attestation
-> +	 * report via the guest-provided data pages indicated by RAX/RBX. The
-> +	 * certificate data is optional and requires additional KVM enablement
-> +	 * to provide an interface for userspace to provide it, but KVM still
-> +	 * needs to be able to handle extended guest requests either way. So
-> +	 * provide a stub implementation that will always return an empty
-> +	 * certificate table in the guest-provided data pages.
-> +	 */
-> +	if (msg_type == SNP_MSG_REPORT_REQ) {
-> +		struct kvm_vcpu *vcpu = &svm->vcpu;
-> +		u64 data_npages;
-> +		gpa_t data_gpa;
-> +
-> +		if (!kvm_ghcb_rax_is_valid(svm) || !kvm_ghcb_rbx_is_valid(svm))
-> +			goto abort_request;
-> +
-> +		data_gpa = vcpu->arch.regs[VCPU_REGS_RAX];
-> +		data_npages = vcpu->arch.regs[VCPU_REGS_RBX];
-> +
-> +		if (!PAGE_ALIGNED(data_gpa))
-> +			goto abort_request;
-> +
-> +		if (data_npages &&
-> +		    kvm_write_guest(kvm, data_gpa, empty_certs_table,
-> +				    sizeof(empty_certs_table)))
-> +			goto abort_request;
-> +	}
-> +
-> +	return snp_handle_guest_req(svm, req_gpa, resp_gpa);
-> +
-> +abort_request:
-> +	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
-> +				SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_GENERIC, 0));
-> +	return 1; /* resume guest */
-> +}
-> +
->  static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
->  {
->  	struct vmcb_control_area *control = &svm->vmcb->control;
-> @@ -4282,6 +4339,9 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
->  	case SVM_VMGEXIT_GUEST_REQUEST:
->  		ret = snp_handle_guest_req(svm, control->exit_info_1, control->exit_info_2);
->  		break;
-> +	case SVM_VMGEXIT_EXT_GUEST_REQUEST:
-> +		ret = snp_handle_ext_guest_req(svm, control->exit_info_1, control->exit_info_2);
-> +		break;
->  	case SVM_VMGEXIT_UNSUPPORTED_EVENT:
->  		vcpu_unimpl(vcpu,
->  			    "vmgexit: unsupported event - exit_info_1=%#llx, exit_info_2=%#llx\n",
-
+I'd appreciate it if you could take a look at it.
 
 Thanks,
-Carlos
+Itaru.
 
+
+
+> 
+> An branch of kvm-unit-tests including realm-specific tests is provided
+> here:
+>   https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca/-/tree/cca/v2
+> 
+> [1] Previous RFC
+>     https://lore.kernel.org/r/20230127112248.136810-1-suzuki.poulose%40arm.com
+> [2] Arm CCA Landing page (See Key Resources section for various documentation)
+>     https://www.arm.com/architecture/security-features/arm-confidential-compute-architecture
+> [3] RMM v1.0-EAC5 specification
+>     https://developer.arm.com/documentation/den0137/1-0eac5/
+> [4] Shrinkwrap
+>     https://git.gitlab.arm.com/tooling/shrinkwrap
+> [5] Linux support for Arm CCA RMM v1.0-EAC5
+>     https://lore.kernel.org/r/fb259449-026e-4083-a02b-f8a4ebea1f87%40arm.com
