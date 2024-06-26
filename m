@@ -1,25 +1,25 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78067F;
-	Wed, 26 Jun 2024 00:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26508D27A;
+	Wed, 26 Jun 2024 13:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719360757; cv=none; b=bPKpeJSpwLcPnuyYSqdjtXVTyFlW0VPE2I3nv9mUPNp1g/0LHi6q5rwSATEs62cJvA4NuGkXQ88Ucd2cHhNTUJC2cHlLAFRZCiXzX6/WMmX3YGVw+6XUlx4o2ETpNbmtmPIgh5hZaO0vAmZTtcwiR/A+7cyuORJSd2ac+DOPmi0=
+	t=1719409177; cv=none; b=RLCVZoa90FLyouR6YnmEu0X80w7lyFooMJstSjxnDgrK+e5//dlgh8Yrba8Lo36tGjLllboKkM5A2xCNqnI7KGqAOXRglr5H7SjpdAGMTFm5zD0+45z37KkzU4m/rVyQgTqwtCuPSgROHN6NFOCkWH75T7RhfQn8npwYFLi1FHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719360757; c=relaxed/simple;
-	bh=Di2v1aCgxQbeNZ3G+5jaCus/A3dLdp3TNrO30NfoLj8=;
+	s=arc-20240116; t=1719409177; c=relaxed/simple;
+	bh=izszFIllttZq4LwxAkxcg7+OUWyz/ebLgffeWP5hLKk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m7yp60KU5XhgDGiqA/IbpuhY4Piai/qbvh1BWlC+bZ+N/l/Bnc/jyC3ue5MATd+jSOf7pfSLzAntcxS/F3LTRO3jhcvyMeWHCn4Yd3fOLCAx+rSytgMGtwznz1lHzw8IYeeJromUpCzMOeZ5HxyJpKvdsRtOuiuJqgz4+i+NjuE=
+	 In-Reply-To:Content-Type; b=Yv5nNsYcF/UcMUKJz44GLDAFiCy9ZugdCMB58EErMhdu68ioptROdTEOzeq0EaoTNv+0ZNjk1l01eh2l7O4QRLKSDwPvCRj6O0W0aNAty7A69hDQZTMdgXhA2SospxIEux6TdRSZOhmsXzPH9wQUXdCjEORozxMy5sYQY4QtoZA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DADD339;
-	Tue, 25 Jun 2024 17:12:58 -0700 (PDT)
-Received: from [192.168.20.22] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F00693F766;
-	Tue, 25 Jun 2024 17:12:29 -0700 (PDT)
-Message-ID: <ce332c4d-d564-45b5-ae4d-87b569976276@arm.com>
-Date: Tue, 25 Jun 2024 19:12:28 -0500
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8295B339;
+	Wed, 26 Jun 2024 06:39:58 -0700 (PDT)
+Received: from [10.57.42.86] (unknown [10.57.42.86])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B14803F73B;
+	Wed, 26 Jun 2024 06:39:29 -0700 (PDT)
+Message-ID: <c6b49c81-58ba-40fc-9e17-892fdd79431d@arm.com>
+Date: Wed, 26 Jun 2024 14:39:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,84 +27,175 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/14] arm64: Detect if in a realm and set RIPAS RAM
-Content-Language: en-US
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Steven Price <steven.price@arm.com>
+Subject: Re: [v2] Support for Arm CCA VMs on Linux
+To: Itaru Kitayama <itaru.kitayama@linux.dev>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
  Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240605093006.145492-1-steven.price@arm.com>
- <20240605093006.145492-3-steven.price@arm.com> <20240612104023.GB4602@myrica>
-From: Jeremy Linton <jeremy.linton@arm.com>
-In-Reply-To: <20240612104023.GB4602@myrica>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20240412084056.1733704-1-steven.price@arm.com>
+ <ZnkOfTVAaCJ_-_bG@vm3>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <ZnkOfTVAaCJ_-_bG@vm3>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On 6/12/24 05:40, Jean-Philippe Brucker wrote:
-> On Wed, Jun 05, 2024 at 10:29:54AM +0100, Steven Price wrote:
->> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+On 24/06/2024 07:13, Itaru Kitayama wrote:
+> Hi Steven,
+> On Fri, Apr 12, 2024 at 09:40:56AM +0100, Steven Price wrote:
+>> We are happy to announce the second version of the Arm Confidential
+>> Compute Architecture (CCA) support for the Linux stack. The intention is
+>> to seek early feedback in the following areas:
+>>  * KVM integration of the Arm CCA;
+>>  * KVM UABI for managing the Realms, seeking to generalise the
+>>    operations where possible with other Confidential Compute solutions;
+>>  * Linux Guest support for Realms.
 >>
->> Detect that the VM is a realm guest by the presence of the RSI
->> interface.
+>> See the previous RFC[1] for a more detailed overview of Arm's CCA
+>> solution, or visible the Arm CCA Landing page[2].
 >>
->> If in a realm then all memory needs to be marked as RIPAS RAM initially,
->> the loader may or may not have done this for us. To be sure iterate over
->> all RAM and mark it as such. Any failure is fatal as that implies the
->> RAM regions passed to Linux are incorrect - which would mean failing
->> later when attempting to access non-existent RAM.
+>> This series is based on the final RMM v1.0 (EAC5) specification[3].
 >>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Co-developed-by: Steven Price <steven.price@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Quick-start guide
+>> =================
+>>
+>> The easiest way of getting started with the stack is by using
+>> Shrinkwrap[4]. Currently Shrinkwrap has a configuration for the initial
+>> v1.0-EAC5 release[5], so the following overlay needs to be applied to
+>> the standard 'cca-3world.yaml' file. Note that the 'rmm' component needs
+>> updating to 'main' because there are fixes that are needed and are not
+>> yet in a tagged release. The following will create an overlay file and
+>> build a working environment:
+>>
+>> cat<<EOT >cca-v2.yaml
+>> build:
+>>   linux:
+>>     repo:
+>>       revision: cca-full/v2
+>>   kvmtool:
+>>     repo:
+>>       kvmtool:
+>>         revision: cca/v2
+>>   rmm:
+>>     repo:
+>>       revision: main
+>>   kvm-unit-tests:
+>>     repo:
+>>       revision: cca/v2
+>> EOT
+>>
+>> shrinkwrap build cca-3world.yaml --overlay buildroot.yaml --btvar GUEST_ROOTFS='${artifact:BUILDROOT}' --overlay cca-v2.yaml
+>>
+>> You will then want to modify the 'guest-disk.img' to include the files
+>> necessary for the realm guest (see the documentation in cca-3world.yaml
+>> for details of other options):
+>>
+>>   cd ~/.shrinkwrap/package/cca-3world
+>>   /sbin/e2fsck -fp rootfs.ext2 
+>>   /sbin/resize2fs rootfs.ext2 256M
+>>   mkdir mnt
+>>   sudo mount rootfs.ext2 mnt/
+>>   sudo mkdir mnt/cca
+>>   sudo cp guest-disk.img KVMTOOL_EFI.fd lkvm Image mnt/cca/
+>>   sudo umount mnt 
+>>   rmdir mnt/
+>>
+>> Finally you can run the FVP with the host:
+>>
+>>   shrinkwrap run cca-3world.yaml --rtvar ROOTFS=$HOME/.shrinkwrap/package/cca-3world/rootfs.ext2
+>>
+>> And once the host kernel has booted, login (user name 'root') and start
+>> a realm guest:
+>>
+>>   cd /cca
+>>   ./lkvm run --realm --restricted_mem -c 2 -m 256 -k Image -p earlycon
+>>
+>> Be patient and you should end up in a realm guest with the host's
+>> filesystem mounted via p9.
+>>
+>> It's also possible to use EFI within the realm guest, again see
+>> cca-3world.yaml within Shrinkwrap for more details.
 > 
->> +static bool rsi_version_matches(void)
->> +{
->> +	unsigned long ver_lower, ver_higher;
->> +	unsigned long ret = rsi_request_version(RSI_ABI_VERSION,
->> +						&ver_lower,
->> +						&ver_higher);
+> I am trying to see if libvirt can work with the CCA-aware KVM with minimal Ubuntu22.10 filesystem, however virt-install triggers a system failure:
 > 
-> There is a regression on QEMU TCG (in emulation mode, not running under KVM):
+> $ sudo virt-install -v --name f39 --ram 4096        --disk path=fedora40.img,cache=none --nographics --os-variant fedora38         --import --arch aarch64 --vcpus 4
+> [sudo] password for realm:
+> [ 3694.176579] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000e00
+> [ 3694.176687] Mem abort info:
+> [ 3694.176745]   ESR = 0x0000000096000004
+> [ 3694.176817]   EC = 0x25: DABT (current EL), IL = 32 bits
+> [ 3694.176907]   SET = 0, FnV = 0
+> [ 3694.176978]   EA = 0, S1PTW = 0
+> [ 3694.177049]   FSC = 0x04: level 0 translation fault
+> [ 3694.177132] Data abort info:
+> [ 3694.177189]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+> [ 3694.177276]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+> [ 3694.177370]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> [ 3694.177544] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000880f6e000
+> [ 3694.177649] [0000000000000e00] pgd=0000000000000000, p4d=0000000000000000
+> [ 3694.177788] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+> [ 3694.177887] Modules linked in:
+> [ 3694.177966] CPU: 2 PID: 540 Comm: qemu-system-aar Not tainted 6.10.0-rc1-00058-gd901c27a1783 #149
+> [ 3694.178105] Hardware name: FVP Base RevC (DT)
+> [ 3694.178180] pstate: 61400009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+> [ 3694.178315] pc : kvm_vm_ioctl_check_extension+0x1fc/0x3c4
+> [ 3694.178447] lr : kvm_vm_ioctl_check_extension_generic+0x34/0x12c
+> [ 3694.178587] sp : ffff800081523cb0
+> [ 3694.178657] x29: ffff800081523cb0 x28: 0000000000000051 x27: 0000000000000000
+> [ 3694.178840] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+> [ 3694.179019] x23: 000000000000000a x22: 0000000000000051 x21: ffff000801075f00
+> [ 3694.179200] x20: ffff000801075f01 x19: 000000000000ae03 x18: 0000000000000000
+> [ 3694.179383] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+> [ 3694.179565] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+> [ 3694.179745] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+> [ 3694.179923] x8 : 0000000000000000 x7 : ffff000801075f18 x6 : 00000000401c5820
+> [ 3694.180106] x5 : 000000000000000a x4 : 0000000000000800 x3 : 0000000000000000
+> [ 3694.180285] x2 : 000000000000000b x1 : 0000000100061001 x0 : 0000000000000001
+> [ 3694.180465] Call trace:
+> [ 3694.180523]  kvm_vm_ioctl_check_extension+0x1fc/0x3c4
+> [ 3694.180656]  kvm_vm_ioctl_check_extension_generic+0x34/0x12c
+> [ 3694.180794]  kvm_dev_ioctl+0x3c8/0x8b8
+> [ 3694.180938]  __arm64_sys_ioctl+0xac/0xf0
+> [ 3694.181079]  invoke_syscall+0x48/0x114
+> [ 3694.181220]  el0_svc_common.constprop.0+0x40/0xe0
+> [ 3694.181367]  do_el0_svc+0x1c/0x28
+> [ 3694.181507]  el0_svc+0x34/0xd8
+> [ 3694.181608]  el0t_64_sync_handler+0x120/0x12c
+> [ 3694.181723]  el0t_64_sync+0x190/0x194
+> [ 3694.181865] Code: 17ffffbd 97fffc9d 12001c00 17ffff91 (39780060)
+> [ 3694.181955] ---[ end trace 0000000000000000 ]---
 > 
->    qemu-system-aarch64 -M virt -cpu max -kernel Image -nographic
-> 
-> This doesn't implement EL3 or EL2, so SMC is UNDEFINED (DDI0487J.a R_HMXQS),
-> and we end up with an undef instruction exception. So this patch would
-> also break hardware that only implements EL1 (I don't know if it exists).
+> I'd appreciate it if you could take a look at it.
 
-To note: i've found out the hard way this set breaks a qemu+kvm+ACPI 
-setup as well, for roughly the same reason. I imagine we want kernels 
-which can boot in either a realm or a normal guest.
+Thanks for the bug report. I believe this is because 
+kvm_vm_ioctl_check_extension() is being called with kvm==NULL and I've 
+missed some checks. I believe the following should get things working - 
+and it's probably better than attempting to remember to check with the 
+NULL kvm at each call site.
 
-I delayed the version check a bit and then, did enough that 
-arm_smcccc_1_1_invoke() could replace arm_smccc_smc() in 
-invoke_rsi_fn_smc_with_res(). Which naturally gets it booting again, the 
-larger implications i've not considered yet.
+---8<----
+diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+index 27c58bbdf50b..c85e5f566506 100644
+--- a/arch/arm64/include/asm/kvm_emulate.h
++++ b/arch/arm64/include/asm/kvm_emulate.h
+@@ -602,7 +602,7 @@ static __always_inline void kvm_reset_cptr_el2(struct kvm_vcpu *vcpu)
+ 
+ static inline bool kvm_is_realm(struct kvm *kvm)
+ {
+-       if (static_branch_unlikely(&kvm_rme_is_available))
++       if (static_branch_unlikely(&kvm_rme_is_available) && kvm)
+                return kvm->arch.is_realm;
+        return false;
+ }
+---8<----
 
-
-
-
-> 
-> The easiest fix is to detect the SMC conduit through the PSCI node in DT.
-> SMCCC helpers already do this, but we can't use them this early in the
-> boot. I tested adding an early probe to the PSCI driver to check this, see
-> attached patches.
-> 
-> Note that we do need to test the conduit after finding a PSCI node,
-> because even though it doesn't implement EL2 in this configuration, QEMU
-> still accepts PSCI HVCs in order to support SMP.
-> 
-> Thanks,
-> Jean
-> 
-
+Thanks,
+Steve
