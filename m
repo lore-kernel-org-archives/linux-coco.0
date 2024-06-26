@@ -1,131 +1,131 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FD8185091
-	for <linux-coco@lists.linux.dev>; Wed, 26 Jun 2024 14:22:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B835186E20
+	for <linux-coco@lists.linux.dev>; Wed, 26 Jun 2024 14:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719411768; cv=none; b=fEgDOp2omWCxX71ACxDggIUm5qqhc6pDtgyqPAqSs/gHxLIS76bMk8fDCtoPzWC/zSjM8Ba2AVla6NthDaBYDqHyat8NS7XbP6QwhrUsZYqD70T4PbIAwLpNNxPw9Se69C3CXvYUHmTgTiZhiWVM3/84TdS01qiyrsw6MjI8JTU=
+	t=1719412357; cv=none; b=FiIob94uYW/wtwl9LJgUnIaQXkGqtEQT1Ou2+ivc8B4rKHRnoHP2okcku0l6ZEBLr+p+inG7c5y104tCqbGE4ypL5zQ0FarzRBjXX3gmGwkSGim4pYQIWPjo+2ZUBWHOFWkoZE4xNzOsvwIxtnp1UTkWljw1uHMshWSGDDv3F7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719411768; c=relaxed/simple;
-	bh=Md2bQa4i77L1a2ZeCzjEInnWWb4LCcOfrCX9kdzNkqI=;
+	s=arc-20240116; t=1719412357; c=relaxed/simple;
+	bh=ZNPzGDrViZtN+euOTYNGNCvhSBpNIjiT+sYwF77Gmis=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PxhdNKYqmFjP3zDId9YWKhzwiVrAIDwBJeCX3sFzivqJewWYAh4hnkhDeBQog/gC6i8eYxBLY3fjw8sV+uLzMnJsd+ECeEZjcP7d7C0um6jzfO9647B+6hI4m09rVbLQLgAeKqikAXzmnbFj5LVnLNvhYt2mu5ueqFJO0OHf3Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yyL79O7R; arc=none smtp.client-ip=209.85.128.202
+	 To:Cc:Content-Type; b=lAi2glu0Ov+kEv8dFf9jzQU9oR83WDr07JU7MIBlZWitUrvXU7PoJjq88ICg8rZNDqooLkpdaYLcaglKGMCHiMbYAw7p3b4IBd0mW+VOU3CDFnJjE+o9GhNhf/DtRc0frVf4gmSuQbaVshz4H36CQuGLaL22K6YfhwCp2RFMst4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hy0kQ5gY; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yyL79O7R"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6479d38bdfaso36570887b3.0
-        for <linux-coco@lists.linux.dev>; Wed, 26 Jun 2024 07:22:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hy0kQ5gY"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2c7c3401dfdso8589887a91.1
+        for <linux-coco@lists.linux.dev>; Wed, 26 Jun 2024 07:32:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719411765; x=1720016565; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1719412354; x=1720017154; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qp7ZaRBbzBSgQ/146Ma/gHnUZhhaH0ckKss1Vo4y77o=;
-        b=yyL79O7R4lPZ+XwjUpk82FXpLUrEEFmAnGTK0IYv8afdeqageWp7u72Qm7RLRTYl0e
-         FifAEIBUHWIAafSW0Zv+bRruDuHUWoGvPwnEQrVYDqSMsSkpyE6WT5W0QPpKLYMPFGD/
-         sSq5HeJRxm4vo/mTkH1d6eOnJpGBkujZRyHFE6GSyW8oNzeQgoR+zS2F47J1mma1fEIY
-         mLZq35LZ3rnb8sWa+BWOrbRjbD6Wix9RaL8MvdLFBsc30EOuSr2VI7tZ8E/zlOvQ2UO2
-         yeRyVSbjrWO50pDYNtTXrOENuYVyBY6K95EMQDixARZS86Pl3KnInIfnO487stcqVehz
-         5XSQ==
+        bh=6Ymlm/4AWkUfS196/Og/rjOQ+iw7EfhnrK5+wBxuoc0=;
+        b=hy0kQ5gYrKfB1sT9ytT+XZIvW0XWpBjL+Gz0BObslKneqkDinO5+7rBBAdc1vouegT
+         +SQLXUrWCRt6NNteGGeEKaSabQIbFU3sfwrRBSBPdWEYdKnVLJ1tXq/oLroq1MQWwITU
+         c/8ywSk7ZfQBJNMUjQyoHnhqmrhq7hMe14s6Dr8No/vaVijg+AloAD5US9GL1rhyRTtW
+         7ioiUI1X+OoAumdc9P8lPHi/wPGwRDYroyqg+PWy8f1HN9mKsvH0RvC89X8h1iztq2Gu
+         pC/tgYwnQEZ5hHjADTUvuzJVdGZ5qtrdI+o0ofIGPGqZG8g9I46WNy+MnJKs1H/V2u2v
+         pfWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719411765; x=1720016565;
+        d=1e100.net; s=20230601; t=1719412354; x=1720017154;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qp7ZaRBbzBSgQ/146Ma/gHnUZhhaH0ckKss1Vo4y77o=;
-        b=C/wDtemTeVDj9x0+GmOwzYcrq8cXCH3NwsIditoOKZfP7v/rolUBBnAtLRjjqURYWf
-         NGZAStI6baJ4Gu1frQOZ3cROyz53NDOt1Lj0ERY39mJIdb6hnZ3EMy0YDQbNorv9jjUu
-         xJRVa1F4QkL1UxKK/sjdaHW4HzVWfsIQHzkp3g1HswA4MisECS+yuVNzHbBvQJtkHVZn
-         7ud9+cSeFnhjNVakG0MarU76tScV072CG6uwlk17fK519DsPWEBO8DDUKixAJNwQWi5g
-         FCOAaejNn/V9tQAcY3/UGasrDhNj95+J4ZBSQtBtvKXUYqI86f1nWdsCMxo8U1ePIvRb
-         OHxg==
-X-Forwarded-Encrypted: i=1; AJvYcCVwe51FKCL6TjnJxJGayPDQGoCXFbj6KKQ9DFbKWLok4SGv6mHLFD7Yu1pcC1hLW7uGiJrFOtC/pZvBxopt3ZMWPQFuq+AiyKiVLw==
-X-Gm-Message-State: AOJu0YwrcBE6j3YACy/oK1XH1cwgHefVK1Vgb8QAPCe1DZcO0MBsPdXK
-	LSp6F19aNfCM5ssrX5M2kLbjvdkhHwMaeacvPhMwUbasCW+kkaJXew00urM+WQqXpjC0ZpyLgxW
-	laQ==
-X-Google-Smtp-Source: AGHT+IGqcs/EmSI3qabDNZ1kSDkVdc1rK39WP8naNRXVdbTy2XE4VAXP7npVp68Qm95FUBEb4i3B54q0OQc=
+        bh=6Ymlm/4AWkUfS196/Og/rjOQ+iw7EfhnrK5+wBxuoc0=;
+        b=pUzR+EBa7YBE0cK/eeLO6Ji4vHnc/VKKOfepbx18cYc3MEeNtY8RsuxFXQQ0yMjjjB
+         KKoOcfxIgYrrloBu8MO4yyY8SgM9Z0j8avtks+oIGuwQ99A7tnh73IF9DlfB99Y2lzqG
+         51tuveB2oD/uXX3MZTVKVhQtnoArR+MrH6ILkiThWZQ6uxX6jXVDcPo7pafputFIEMja
+         RcP/FtXoBvC8ZKd5frHhTGebfoR+kwh/HFXRShD2QeQBLUxkqBURgW5wjPMa+UKGCCyY
+         BjE9Jyp8T5D8hu46lgTSVTFzKfOyzeT8qEpULz8csWXhB/l6ZYF9Scq5TEnCGdG7mrGU
+         Hlyg==
+X-Forwarded-Encrypted: i=1; AJvYcCUAUASocdsImsC+9uHq9uRajDQfpDyvvUvu0TITDm+VxN7tTEVtGTvdWBsSfSWcS9312gJd8TJp4HbJDJ66tIy8nisdnGsFnclyIg==
+X-Gm-Message-State: AOJu0Yzfm7UYSTglw05Iamq8K7kCyUlr3ivAgLlwig3xwXq+JD9+uNo3
+	Ey57eFfWbBGsAmaUwWB69dDkYTH0XuZK8oQQaVUQSBIa2TuhGbKPxDJ3vWp+5jhROIyDiwp6z6x
+	GOA==
+X-Google-Smtp-Source: AGHT+IHoLpy1haJfmM+o0LmD5U1iZh86EBvuJ5rgP0o2pdMh09BBK9/6PtMelrlOW3VGdks0UySW+x/E2qQ=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:690c:6d0a:b0:62c:fa1a:21d2 with SMTP id
- 00721157ae682-643aaa7d245mr5660817b3.1.1719411765419; Wed, 26 Jun 2024
- 07:22:45 -0700 (PDT)
-Date: Wed, 26 Jun 2024 07:22:43 -0700
-In-Reply-To: <20240621134041.3170480-5-michael.roth@amd.com>
+ (user=seanjc job=sendgmr) by 2002:a17:90a:e7c4:b0:2c2:c6fa:c05d with SMTP id
+ 98e67ed59e1d1-2c86147a695mr30306a91.9.1719412353662; Wed, 26 Jun 2024
+ 07:32:33 -0700 (PDT)
+Date: Wed, 26 Jun 2024 07:32:32 -0700
+In-Reply-To: <20240621171519.3180965-1-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20240621134041.3170480-1-michael.roth@amd.com> <20240621134041.3170480-5-michael.roth@amd.com>
-Message-ID: <ZnwkMyy1kgu0dFdv@google.com>
-Subject: Re: [PATCH v1 4/5] KVM: Introduce KVM_EXIT_COCO exit type
+References: <20240621134041.3170480-2-michael.roth@amd.com> <20240621171519.3180965-1-michael.roth@amd.com>
+Message-ID: <ZnwmgHYWQQ4DP176@google.com>
+Subject: Re: [PATCH v1-revised 1/5] KVM: SEV: Provide support for
+ SNP_GUEST_REQUEST NAE event
 From: Sean Christopherson <seanjc@google.com>
 To: Michael Roth <michael.roth@amd.com>
 Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, x86@kernel.org, pbonzini@redhat.com, 
 	jroedel@suse.de, thomas.lendacky@amd.com, pgonda@google.com, 
 	ashish.kalra@amd.com, bp@alien8.de, pankaj.gupta@amd.com, 
-	liam.merwick@oracle.com
+	liam.merwick@oracle.com, Brijesh Singh <brijesh.singh@amd.com>, 
+	Alexey Kardashevskiy <aik@amd.com>
 Content-Type: text/plain; charset="us-ascii"
 
 On Fri, Jun 21, 2024, Michael Roth wrote:
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index ecfa25b505e7..2eea9828d9aa 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -7122,6 +7122,97 @@ Please note that the kernel is allowed to use the kvm_run structure as the
->  primary storage for certain register types. Therefore, the kernel may use the
->  values in kvm_run even if the corresponding bit in kvm_dirty_regs is not set.
+> diff --git a/include/uapi/linux/sev-guest.h b/include/uapi/linux/sev-guest.h
+> index 154a87a1eca9..7bd78e258569 100644
+> --- a/include/uapi/linux/sev-guest.h
+> +++ b/include/uapi/linux/sev-guest.h
+> @@ -89,8 +89,17 @@ struct snp_ext_report_req {
+>  #define SNP_GUEST_FW_ERR_MASK		GENMASK_ULL(31, 0)
+>  #define SNP_GUEST_VMM_ERR_SHIFT		32
+>  #define SNP_GUEST_VMM_ERR(x)		(((u64)x) << SNP_GUEST_VMM_ERR_SHIFT)
+> +#define SNP_GUEST_FW_ERR(x)		((x) & SNP_GUEST_FW_ERR_MASK)
+> +#define SNP_GUEST_ERR(vmm_err, fw_err)	(SNP_GUEST_VMM_ERR(vmm_err) | \
+> +					 SNP_GUEST_FW_ERR(fw_err))
 >  
-> +::
-> +
-> +		/* KVM_EXIT_COCO */
-> +		struct kvm_exit_coco {
-> +		#define KVM_EXIT_COCO_REQ_CERTS			0
-> +		#define KVM_EXIT_COCO_MAX			1
-> +			__u8 nr;
-> +			__u8 pad0[7];
-> +			union {
-> +				struct {
-> +					__u64 gfn;
-> +					__u32 npages;
-> +		#define KVM_EXIT_COCO_REQ_CERTS_ERR_INVALID_LEN		1
-> +		#define KVM_EXIT_COCO_REQ_CERTS_ERR_GENERIC		(1 << 31)
+> +/*
+> + * The GHCB spec only formally defines INVALID_LEN/BUSY VMM errors, but define
+> + * a GENERIC error code such that it won't ever conflict with GHCB-defined
+> + * errors if any get added in the future.
+> + */
+>  #define SNP_GUEST_VMM_ERR_INVALID_LEN	1
+>  #define SNP_GUEST_VMM_ERR_BUSY		2
+> +#define SNP_GUEST_VMM_ERR_GENERIC	BIT(31)
 
-Unless I'm mistaken, these error codes are defined by the GHCB, which means the
-values matter, i.e. aren't arbitrary KVM-defined values.
+Related to my suggestion to not have KVM-defined error codes, if we go that route,
+then I believe SNP_GUEST_VMM_ERR_GENERIC is unnecessary.
 
-I forget exactly what we discussed in PUCK, but for the error codes, I think KVM
-should either define it's own values that are completely disconnected from any
-"harware" spec, or KVM should very explicitly #define all hardware values and have
-the semantics of "ret" be vendor specific.  A hybrid approach doesn't really work,
-e.g. KVM_EXIT_COCO_REQ_CERTS_ERR_GENERIC isn't used anywhere and and looks quite odd.
+For snp_handle_guest_req(), if sev_issue_cmd() fails, KVM can/should do something
+like:
 
-My vote is for vendor specific error codes, because unlike having a common user
-exit reason+struct, I don't think arch-neutral error codes will minimize KVM's ABI,
-I think it'll do the exact opposite.  The only thing we need to require is that
-'0' == success.
+	/* Forward non-firmware errors to userspace, e.g. if the PSP is dead. */
+	if (ret && !fw_err)
+		goto release_req;
 
-E.g. I think we can end up with something like:
+	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, SNP_GUEST_ERR(0, fw_err));
 
-  static int snp_complete_req_certs(struct kvm_vcpu *vcpu)
-  {
-	struct vcpu_svm *svm = to_svm(vcpu);
-	struct vmcb_control_area *control = &svm->vmcb->control;
+And then in snp_complete_req_certs(), we could either let userspace shove in any
+error code whatsoever, or restrict userspace to known, GHCB-defined error codes,
+e.g.
+	int err;
 
-	if (vcpu->run->coco.req_certs.ret)
-		if (vcpu->run->coco.req_certs.ret == SNP_GUEST_VMM_ERR_INVALID_LEN)
+	err  = READ_ONCE(vcpu->run->coco.req_certs.ret);
+	if (err)
+		if (err != SNP_GUEST_VMM_ERR_INVALID_LEN &&
+		    err != SNP_GUEST_VMM_ERR_BUSY)
+			return -EINVAL;
+
+		if (err == SNP_GUEST_VMM_ERR_INVALID_LEN)
 			vcpu->arch.regs[VCPU_REGS_RBX] = vcpu->run->coco.req_certs.npages;
 
-		ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
-					SNP_GUEST_ERR(vcpu->run->coco.req_certs.ret, 0));
+		ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, SNP_GUEST_ERR(err, 0));
 		return 1;
 	}
 
-	return snp_handle_guest_req(svm, control->exit_info_1, control->exit_info_2);
-  }
 
-> +					__u32 ret;
-> +				} req_certs;
-> +			};
+>  
+>  #endif /* __UAPI_LINUX_SEV_GUEST_H_ */
+> -- 
+> 2.25.1
+> 
