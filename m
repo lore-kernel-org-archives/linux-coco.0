@@ -1,291 +1,198 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2054.outbound.protection.outlook.com [40.107.223.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0208618EFF1
-	for <linux-coco@lists.linux.dev>; Wed, 26 Jun 2024 16:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719417949; cv=fail; b=XeX1oFlhcpMQ6fViAeOcWrkHKwwKgUFrDQvdSspJ6KtMBl0VkBZneHZdzDF4CIds5hySv3Fl8ghlAyczIW90gKprTRmP7jqgYG/cJK+eKmUtxxtAGx7s5YziSQa0zk+jmlGR+1WbFVOLp5eTO6uViJp3y+Pbqe6LaG36ijvLVm0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719417949; c=relaxed/simple;
-	bh=AXu54D/7jELgZgHjOi61LLDAgmkQxRAZClCSabRf2Qk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Io8KyXgdjUVHLK5W9VZnOLlpGHqHjfpsSfC5XEr6EoRf2TjL8KqmPMSEX8SE7XsBGA9LBX0EwAsciXe2njx5Zbqq2K5mTSFXDWh7mDFxTvERAaft4NZJ44uB8e4ozhuxdHHbjR8v4uSjat1pBj5SpWNNb6ant+157y6FHnbJ6AY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jPxUpbne; arc=fail smtp.client-ip=40.107.223.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64EE18FDAD
+	for <linux-coco@lists.linux.dev>; Wed, 26 Jun 2024 17:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719422028; cv=none; b=Y1+utjRbZVvg7j/4iIzo6ECPc1SSaX2jetIfXD0H0iDMuLKhvVjAqLnZr9r5+5Fp0ABdj2nY4deUcgB/YImuAotRdYxUjsboDPPIfqFwockDmnJ599XSvPfK2drxiGLXznE2Drh61EjKCQelBNgXm8c89Rk1enlbCH6AHJ4DkiQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719422028; c=relaxed/simple;
+	bh=7+9pW6VPOl8JWdal9zejXeZCcwzeiZ8F+LDpocNBT84=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=STlyyjX+v+v2vl5jHjpRUFD6OVFNig1il4yOGJYvnJYgY1CVNXGKhPLmsAhbpX+iDELfd4Kytht4ekidkUIR2BiT0csBtF0wmJJtnxjTwD91W0cx+G9EQdHDUNfxylkPsstf5I1RTjxLNquB3hSJZQ5kILz1aBOX9tGatn8F8mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cP9VTRox; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jPxUpbne"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=V1Gmdm2y1TnJYH0Bf+KOn/l0bAPtMkvjuBc9WCHXNcNJHhFuB7Qn+4MeLnRFWS1+7uBuUpuIOxeOTO1138kOOCqFHZLuQZkuN4arwGtpa8q5aunuPF1U3V6N+wUJ4yNY3r4LyyTKNO/TMwe6ESw+9kk6vgljIuqteS6D3U5iSYsyFP+H2oWsfek8I4rZTaZ/G92TLuYv/XL/DFZIkaERHb7KLLkhAvQxLri/I94cYPOMI81nnfkchpVaIEukRfI1ws4EfCk28befsahwtzoLeBSthtukWTJ721oq8TwhTqJNHuDCkmiQRSoI7RxmWdwxuQB1zkarv6OIaQJiTrn58g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b9P0ypJwcNpn/YgqlAdOGUPPzj65wPYbQ+XAKrvOGT0=;
- b=l8/Pg4AgmBG6ZGgu8qV/FKXtrY7/8T9nTGLwEguBrg5szzA0eGp75RxEU95yFFw1PJPLZPGZtfEAL8SNWsmcY+f7FgsKQsSTBa9SEAhFgfUriG+1vVLD/Qdf8xK9TXIk8emYATjCKHj0IpH30wkp40MrVuwBYgaHQmKNmCGshq6z0yB2LzNa7HPekd5g3vPjf+oaH6SLFk9XJoRFFEWp9qLea23+o2eFxKcYoMgMO26ESANZQFuH+g3I1Z5aLmq3p69cwAyzfO+v0y4rgRXu1Fu0qEU+gwq0lb8ol4sSlYZGm+qw1GznsWiYCYHg4fUVGG4prwjDB2h08RwiL14f3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b9P0ypJwcNpn/YgqlAdOGUPPzj65wPYbQ+XAKrvOGT0=;
- b=jPxUpbnej7mGduuUUmjHiM8KYMdAT04g5HOw4RfuvscleItpiLA8agsm7C442AlNH000UQnQ3GeqbwBhs2/oZda+UhX0YMG2kAjQe91B93zEvS5lmAlCdu9F6T5nudXOOumxdY5LWyXOCFC1mrPkFC9tyQ5sZzUZfdAKlCfPDyI=
-Received: from PH8PR20CA0024.namprd20.prod.outlook.com (2603:10b6:510:23c::19)
- by MN0PR12MB5835.namprd12.prod.outlook.com (2603:10b6:208:37a::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.30; Wed, 26 Jun
- 2024 16:05:42 +0000
-Received: from SJ1PEPF0000231B.namprd03.prod.outlook.com
- (2603:10b6:510:23c:cafe::91) by PH8PR20CA0024.outlook.office365.com
- (2603:10b6:510:23c::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.24 via Frontend
- Transport; Wed, 26 Jun 2024 16:05:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ1PEPF0000231B.mail.protection.outlook.com (10.167.242.232) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7677.15 via Frontend Transport; Wed, 26 Jun 2024 16:05:39 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 26 Jun
- 2024 11:05:38 -0500
-Date: Wed, 26 Jun 2024 10:45:31 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>, <pbonzini@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <pgonda@google.com>,
-	<ashish.kalra@amd.com>, <bp@alien8.de>, <pankaj.gupta@amd.com>,
-	<liam.merwick@oracle.com>, Brijesh Singh <brijesh.singh@amd.com>, "Alexey
- Kardashevskiy" <aik@amd.com>
-Subject: Re: [PATCH v1 1/5] KVM: SEV: Provide support for SNP_GUEST_REQUEST
- NAE event
-Message-ID: <6sczq2nmoefcociyffssdtoav2zjtuenzmhybgdtqyyvk5zps6@nnkw2u74j7pu>
-References: <20240621134041.3170480-1-michael.roth@amd.com>
- <20240621134041.3170480-2-michael.roth@amd.com>
- <ZnwecZ5SZ8MrTRRT@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cP9VTRox"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6344d164c35so150273737b3.1
+        for <linux-coco@lists.linux.dev>; Wed, 26 Jun 2024 10:13:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1719422026; x=1720026826; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sq1NG/a/h0TZsAI2XZ3QDBZsq03pVAcY6r8Z/zu7ZOc=;
+        b=cP9VTRox7kZYPvgVjSldIpm+ZbfEYLuKNUsXl8s3k6XGX5UDIIrRCD1/M8aZk9whWm
+         QuIIMCtAcXbPMkUwoZaIEI36yyIKzieKZGOxA2hhReQAKJvNTMjD1+NyJxiSuSH35Hhj
+         WLMaKQ9kdAWYbluGrCpw30slKPBUxiMv+dWRwrdPgh9Ws+/650HbTxw7Da12Y8iW95LA
+         lva/AxBws/0sqtCN18Wdnlik2pzCR4YtkgPdYFeYV3A/XQMZB8Pdr8F8H17zR+iR3/Wv
+         GJjefjI2+8054tSQwNqkU/QcrmWdTCZVyIA+cIRYhxLRaiqkTeRcwtdeXegGFe4QeVza
+         tYTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719422026; x=1720026826;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sq1NG/a/h0TZsAI2XZ3QDBZsq03pVAcY6r8Z/zu7ZOc=;
+        b=UrHzp/0/uQsLdtFoK0x3eTRMjZgOjBmHrMcWTPHw+NBHRcQQrUmaN6O+CLFzbObvIU
+         fy+LEeugNR1kMgRltNpwFxeQALpguccQgRnPGI18qxo0pYiYyEvyj6Sl8f/6FcsnEgFO
+         txWnYGwsfCYq+wCpg/ZhSJG+qiZ+6KP/alKfyFSGnFoZXbIjjzHbzVv685FWXO6nA9fz
+         7nQQJPHttiu7vcpC8DRLyniMo8SpR/2vAzX2IuDiPYDojQ4YvI9rl+rUjOOQf9DRPQK3
+         R2ZTClJqHowCg3+ljUVRA/pGV1tzcV3TS12XBLviUiNMvyAwGLNbLTS+9sqA4QC6434c
+         evyw==
+X-Forwarded-Encrypted: i=1; AJvYcCUgdZeE4GLfQGoe3lQbL/YuyVgQvKMBfd0WHpRH32paUk1mGo1x9vm3My0TAfKI579tDg5W2lQ2XoJoPCgEL1y0Ly0se2V2/9uYPA==
+X-Gm-Message-State: AOJu0Yy4EXKKRCrlmvV59wxpSaqQ8csvorg5I5vt/YOXqr8Su0qrbgkW
+	vdXNaOFe7TDZtZ/ctgCIK3K0VFkWZOF6lSixVUILOP2obkB/DpKh8zL5tiy1g87PchfMbvsqDr3
+	gKw==
+X-Google-Smtp-Source: AGHT+IHHUDL9hDTLZC5TAs8wuSJPSHFY0Nrwjw6weKSINDSTSt97JYC+ahGMUQji6YGhsKw/AdUVsE713nI=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:690c:6e0d:b0:631:d4ea:3749 with SMTP id
+ 00721157ae682-643abe41014mr1520537b3.4.1719422025649; Wed, 26 Jun 2024
+ 10:13:45 -0700 (PDT)
+Date: Wed, 26 Jun 2024 10:13:44 -0700
+In-Reply-To: <6sczq2nmoefcociyffssdtoav2zjtuenzmhybgdtqyyvk5zps6@nnkw2u74j7pu>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20240621134041.3170480-1-michael.roth@amd.com>
+ <20240621134041.3170480-2-michael.roth@amd.com> <ZnwecZ5SZ8MrTRRT@google.com> <6sczq2nmoefcociyffssdtoav2zjtuenzmhybgdtqyyvk5zps6@nnkw2u74j7pu>
+Message-ID: <ZnxMSEVR_2NRKMRy@google.com>
+Subject: Re: [PATCH v1 1/5] KVM: SEV: Provide support for SNP_GUEST_REQUEST
+ NAE event
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, pbonzini@redhat.com, 
+	jroedel@suse.de, thomas.lendacky@amd.com, pgonda@google.com, 
+	ashish.kalra@amd.com, bp@alien8.de, pankaj.gupta@amd.com, 
+	liam.merwick@oracle.com, Brijesh Singh <brijesh.singh@amd.com>, 
+	Alexey Kardashevskiy <aik@amd.com>
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ZnwecZ5SZ8MrTRRT@google.com>
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231B:EE_|MN0PR12MB5835:EE_
-X-MS-Office365-Filtering-Correlation-Id: 724cb405-bf59-401c-2b42-08dc95f9d31f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230038|36860700011|376012|7416012|1800799022|82310400024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8kZJsQddM7zs1YUEj8UMMOlPqfmoXxAux1xsRdW7Y8RBGH0454UxcMEeA+Wp?=
- =?us-ascii?Q?mSwLxgljwNIU+Dqbraqer6PXqyM7JuOJp/xJrEhQ1gJ550N80fSAEiiaEJU2?=
- =?us-ascii?Q?7Qt2kTGOpZMWuFiGTLuFD0iivjj+YwQF5RkcSeIbF9nHGeH4BI9i/j/5VhnT?=
- =?us-ascii?Q?IMSUFBDAg6Gas6F3mLxr4bFnjSixrwSV7teFgkEu55MbLH8OlnkYi/+W/2FO?=
- =?us-ascii?Q?fipAel1/l1yxhskOJj/MjbS0KLlmo1NtYm1C1OXOdakSF1O4ZukopqziRmH/?=
- =?us-ascii?Q?xBQ1dcOYHsU8kiHUfUXc49JnI7b8ZnQOMsJuSzP91Ht7BjVAX2A9uUTPj7O1?=
- =?us-ascii?Q?0Z8rZ79Rv+v8LV17PQzRw7cDuOrEzjKcSIaloQ6VF/sO2Y2snJAHIq9eLyIo?=
- =?us-ascii?Q?ZKCzbspXimcdTHpOsTqZKrd9F33utbKCPdy3HC0A5PQEcc4IZW4zd44Q05K6?=
- =?us-ascii?Q?cj1mWAsFIPqMVE7RYf4dEKB5PwC8wDALsPiPN5LCP4U9rL3217Fi6wkw0Bzu?=
- =?us-ascii?Q?eAyNZbJMVa1foeHlfBzxVbrkdWSRbQ6X/3HfseOO+EvuK4+Dv59iWYm6lWVI?=
- =?us-ascii?Q?HLDM8MZaI8AGx9jwdV7eHI4SdxwIbFhHTHid91QniulM5l+HD6C9WHF0qqtd?=
- =?us-ascii?Q?Rvu+ix2s8AiWUApoKqKI2ip1uvfpOP9G1XK3AnxaGGf5KlVgu+RLS4dlNS5W?=
- =?us-ascii?Q?sJUaFrTb3+f/yg/OxXCmzOmBppUE3X6lAgs7Vh8kcbtYyludysBtEWaigdMx?=
- =?us-ascii?Q?K8TfM8E7lgvr68EgXRgrL7lzRmRSyOi7SUtouUSJ7C+4iB1N/N1qMTHQ6El2?=
- =?us-ascii?Q?y7m6nQusRo7vVDVXdoWa8YOBb3VSTKgegcMiU+T6vzX3wHKtBeLopJc8u32I?=
- =?us-ascii?Q?1elbHQJy2T3q34t2cUgXb1MCkuGvOffFoN335F7z2qnxu1Vm0CgH4JpyeaYK?=
- =?us-ascii?Q?N9RlL7BWKH55oWvwhiyQyjCGf2VhsFYW62sA51uI/SWCc+XGCbIlMukhECQz?=
- =?us-ascii?Q?eAugdY3nNlrNdonh1O8Q5ULJSjqO6vybbVWBfOs8quzV36sMpVgQgZ5Tc61U?=
- =?us-ascii?Q?9KVNBJXpmO6l924paLpfCT6XBM/j+jsH7lSoAwW8EimUaLsGwbjc+0z/2I4n?=
- =?us-ascii?Q?Oa5WFKtsdpFAzsrDg5vJmeXRGIKQF7q12+AP9bcfNZoxzF80N/VItFjPJLX4?=
- =?us-ascii?Q?QCe7WIbxO/Ch3psaLJvZJyBbe/yBS4D9P9uqAPxVZWodeSZThgXGtrpzcora?=
- =?us-ascii?Q?/MABli52L10SWPsesvSeuEqFKmOQcxOXEG6V0xFN6Kdq5auWHYuQxkLnf54l?=
- =?us-ascii?Q?jUPGiuw6kxnDydTXtpnBzdTvSqqxw1kY8eVPS8X5SRc9JPtOlJbEDM3Lm/qy?=
- =?us-ascii?Q?+NqnY4g=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230038)(36860700011)(376012)(7416012)(1800799022)(82310400024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2024 16:05:39.9792
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 724cb405-bf59-401c-2b42-08dc95f9d31f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF0000231B.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5835
 
-On Wed, Jun 26, 2024 at 06:58:09AM -0700, Sean Christopherson wrote:
-> On Fri, Jun 21, 2024, Michael Roth wrote:
-> > @@ -3939,6 +3944,67 @@ static int sev_snp_ap_creation(struct vcpu_svm *svm)
-> >  	return ret;
-> >  }
-> >  
-> > +static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_gpa)
-> > +{
-> > +	struct sev_data_snp_guest_request data = {0};
-> > +	struct kvm *kvm = svm->vcpu.kvm;
-> > +	kvm_pfn_t req_pfn, resp_pfn;
-> > +	sev_ret_code fw_err = 0;
-> > +	int ret;
-> > +
-> > +	if (!sev_snp_guest(kvm) || !PAGE_ALIGNED(req_gpa) || !PAGE_ALIGNED(resp_gpa))
-> > +		return -EINVAL;
-> > +
-> > +	req_pfn = gfn_to_pfn(kvm, gpa_to_gfn(req_gpa));
+On Wed, Jun 26, 2024, Michael Roth wrote:
+> On Wed, Jun 26, 2024 at 06:58:09AM -0700, Sean Christopherson wrote:
+> > [*] https://lore.kernel.org/all/20240229025759.1187910-1-stevensd@google.com
+> > 
+> > > +	if (is_error_noslot_pfn(req_pfn))
+> > > +		return -EINVAL;
+> > > +
+> > > +	resp_pfn = gfn_to_pfn(kvm, gpa_to_gfn(resp_gpa));
+> > > +	if (is_error_noslot_pfn(resp_pfn)) {
+> > > +		ret = EINVAL;
+> > > +		goto release_req;
+> > > +	}
+> > > +
+> > > +	if (rmp_make_private(resp_pfn, 0, PG_LEVEL_4K, 0, true)) {
+> > > +		ret = -EINVAL;
+> > > +		kvm_release_pfn_clean(resp_pfn);
+> > > +		goto release_req;
+> > > +	}
+> > 
+> > I don't see how this is safe.  KVM holds no locks, i.e. can't guarantee that the
+> > resp_pfn stays private for the duration of the operation.  And on the opposite
 > 
-> This is going to sound odd, but I think we should use gfn_to_page(), i.e. require
-> that the page be a refcounted page so that it can be pinned.  Long story short,
-> one of my learnings from the whole non-refcounted pages saga is that doing DMA
-> to unpinned pages outside of mmu_lock is wildly unsafe, and for all intents and
-> purposes the ASP is a device doing DMA.  I'm also pretty sure KVM should actually
-> *pin* pages, as in FOLL_PIN, but I'm ok tackling that later.
+> When the page is set to private with asid=0,immutable=true arguments,
+> this puts the page in a special 'firmware-owned' state that specifically
+> to avoid any changes to the page state happening from under the ASPs feet.
+> The only way to switch the page to any other state at this point is to
+> issue the SEV_CMD_SNP_PAGE_RECLAIM request to the ASP via
+> snp_page_reclaim().
+>
+> I could see the guest shooting itself in the foot by issuing 2 guest
+> requests with the same req_pfn/resp_pfn, but on the KVM side whichever
+> request issues rmp_make_private() first would succeed, and then the
+> 2nd request would generate an EINVAL to userspace.
 > 
-> For now, using gfn_to_pages() would avoid creating ABI (DMA to VM_PFNMAP and/or
-> VM_MIXEDMAP memory) that KVM probably doesn't want to support in the long term.
+> In that sense, rmp_make_private()/snp_page_reclaim() sort of pair to
+> lock/unlock a page that's being handed to the ASP. But this should be
+> better documented either way.
 
-That seems reasonable. Will switch this to gfn_to_page().
+What about the host kernel though?  I don't see anything here that ensures resp_pfn
+isn't "regular" memory, i.e. that ensure the page isn't being concurrently accessed
+by the host kernel (or some other userspace process).
 
+Or is the "private" memory still accessible by the host?
+
+> > resp_pfn stays private for the duration of the operation.  And on the opposite
+> > side, KVM can't guarantee that resp_pfn isn't being actively used by something
+> > in the kernel, e.g. KVM might induce an unexpected #PF(RMP).
+> > 
+> > Why can't KVM require that the response/destination page already be private?  I'm
 > 
-> [*] https://lore.kernel.org/all/20240229025759.1187910-1-stevensd@google.com
+> Hmm. This is a bit tricky. The GHCB spec states:
 > 
-> > +	if (is_error_noslot_pfn(req_pfn))
-> > +		return -EINVAL;
-> > +
-> > +	resp_pfn = gfn_to_pfn(kvm, gpa_to_gfn(resp_gpa));
-> > +	if (is_error_noslot_pfn(resp_pfn)) {
-> > +		ret = EINVAL;
-> > +		goto release_req;
-> > +	}
-> > +
-> > +	if (rmp_make_private(resp_pfn, 0, PG_LEVEL_4K, 0, true)) {
-> > +		ret = -EINVAL;
-> > +		kvm_release_pfn_clean(resp_pfn);
-> > +		goto release_req;
-> > +	}
+>   The Guest Request NAE event requires two unique pages, one page for the
+>   request and one page for the response. Both pages must be assigned to the
+>   hypervisor (shared). The guest must supply the guest physical address of
+>   the pages (i.e., page aligned) as input.
 > 
-> I don't see how this is safe.  KVM holds no locks, i.e. can't guarantee that the
-> resp_pfn stays private for the duration of the operation.  And on the opposite
-
-When the page is set to private with asid=0,immutable=true arguments,
-this puts the page in a special 'firmware-owned' state that specifically
-to avoid any changes to the page state happening from under the ASPs feet.
-The only way to switch the page to any other state at this point is to
-issue the SEV_CMD_SNP_PAGE_RECLAIM request to the ASP via
-snp_page_reclaim().
-
-I could see the guest shooting itself in the foot by issuing 2 guest
-requests with the same req_pfn/resp_pfn, but on the KVM side whichever
-request issues rmp_make_private() first would succeed, and then the
-2nd request would generate an EINVAL to userspace.
-
-In that sense, rmp_make_private()/snp_page_reclaim() sort of pair to
-lock/unlock a page that's being handed to the ASP. But this should be
-better documented either way.
-
-> resp_pfn stays private for the duration of the operation.  And on the opposite
-> side, KVM can't guarantee that resp_pfn isn't being actively used by something
-> in the kernel, e.g. KVM might induce an unexpected #PF(RMP).
+>   The hypervisor must translate the guest physical address (GPA) of each
+>   page into a system physical address (SPA). The SPA is used to verify that
+>   the request and response pages are assigned to the hypervisor.
 > 
-> Why can't KVM require that the response/destination page already be private?  I'm
-
-Hmm. This is a bit tricky. The GHCB spec states:
-
-  The Guest Request NAE event requires two unique pages, one page for the
-  request and one page for the response. Both pages must be assigned to the
-  hypervisor (shared). The guest must supply the guest physical address of
-  the pages (i.e., page aligned) as input.
-
-  The hypervisor must translate the guest physical address (GPA) of each
-  page into a system physical address (SPA). The SPA is used to verify that
-  the request and response pages are assigned to the hypervisor.
-
-At least for req_pfn, this makes sense because the header of the message
-is actually plain text, and KVM does need to parse it to read the message
-type from the header. It's just the req/resp payload that are encrypted
-by the guest/firmware, i.e. it's not relying on hardware-based memory
-encryption in this case.
-
-Because of that though, I think we could potential address this by
-allocating the req/resp page as separate pages outside of guest memory,
-and simply copy the contents to/from the GPAs provided by the guest.
-I'll look more into this approach.
-
-If we go that route I think some of the concerns above go away as well,
-but we might still need to a lock or something to serialize access to
-these separate/intermediate pages to avoid needed to allocate them every
-time or per-request.
-
-> also somewhat confused by the reclaim below.  If KVM converts the response page
-> back to shared, doesn't that clobber the data?  If so, how does the guest actually
-> get the response?  I feel like I'm missing something.
-
-In this case we're just setting it immutable/firmware-owned, which just
-happens to be equivalent (in terms of the RMP table) to a guest-owned page,
-but with rmp_entry.ASID=0/rmp_entry.immutable=true instead of
-rmp_entry.ASID=<guest asid>/rmp_entry.immutable=false. So the contents remain
-intact/readable after the reclaim.
-
+> At least for req_pfn, this makes sense because the header of the message
+> is actually plain text, and KVM does need to parse it to read the message
+> type from the header. It's just the req/resp payload that are encrypted
+> by the guest/firmware, i.e. it's not relying on hardware-based memory
+> encryption in this case.
 > 
-> Regardless of whether or not I'm missing something, this needs comments, and the
-> changelog needs to be rewritten with --verbose to explain what's going on.  
-
-Sure, will add more comments and details in the commit msg for v2.
-
+> Because of that though, I think we could potential address this by
+> allocating the req/resp page as separate pages outside of guest memory,
+> and simply copy the contents to/from the GPAs provided by the guest.
+> I'll look more into this approach.
 > 
-> > +	data.gctx_paddr = __psp_pa(to_kvm_sev_info(kvm)->snp_context);
-> > +	data.req_paddr = __sme_set(req_pfn << PAGE_SHIFT);
-> > +	data.res_paddr = __sme_set(resp_pfn << PAGE_SHIFT);
-> > +
-> > +	ret = sev_issue_cmd(kvm, SEV_CMD_SNP_GUEST_REQUEST, &data, &fw_err);
-> > +	if (ret)
-> > +		return ret;
+> If we go that route I think some of the concerns above go away as well,
+> but we might still need to a lock or something to serialize access to
+> these separate/intermediate pages to avoid needed to allocate them every
+> time or per-request.
 > 
-> This leaks both req_pfn and resp_pfn.
-
-Yes, this one should be fixed up by the v1-revised version of the patch.
-
-Thanks!
-
--Mike
-
+> > also somewhat confused by the reclaim below.  If KVM converts the response page
+> > back to shared, doesn't that clobber the data?  If so, how does the guest actually
+> > get the response?  I feel like I'm missing something.
 > 
-> > +
-> > +	/*
-> > +	 * If reclaim fails then there's a good chance the guest will no longer
-> > +	 * be runnable so just let userspace terminate the guest.
-> > +	 */
-> > +	if (snp_page_reclaim(kvm, resp_pfn)) {
-> > +		return -EIO;
-> > +		goto release_req;
-> > +	}
-> > +
-> > +	/*
-> > +	 * As per GHCB spec, firmware failures should be communicated back to
-> > +	 * the guest via SW_EXITINFO2 rather than be treated as immediately
-> > +	 * fatal.
-> > +	 */
-> > +	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
-> > +				SNP_GUEST_ERR(ret ? SNP_GUEST_VMM_ERR_GENERIC : 0,
-> > +					      fw_err));
-> > +
-> > +	ret = 1; /* resume guest */
-> > +	kvm_release_pfn_dirty(resp_pfn);
-> > +
-> > +release_req:
-> > +	kvm_release_pfn_clean(req_pfn);
-> > +	return ret;
-> > +}
+> In this case we're just setting it immutable/firmware-owned, which just
+> happens to be equivalent (in terms of the RMP table) to a guest-owned page,
+> but with rmp_entry.ASID=0/rmp_entry.immutable=true instead of
+> rmp_entry.ASID=<guest asid>/rmp_entry.immutable=false. So the contents remain
+> intact/readable after the reclaim.
+
+Ah, I see the @asid=0 now.  The @asid=0,@immutable=true should be a separate API,
+because IIUC, this always holds true:
+
+	!asid == immutable
+
+E.g.
+
+static int rmp_assign_pfn(u64 pfn, u64 gpa, enum pg_level level, u32 asid, bool immutable)
+{
+	struct rmp_state state;
+
+	memset(&state, 0, sizeof(state));
+	state.assigned = 1;
+	state.asid = asid;
+	state.immutable = immutable;
+	state.gpa = gpa;
+	state.pagesize = PG_LEVEL_TO_RMP(level);
+
+	return rmpupdate(pfn, &state);	
+}
+
+/* Transition a page to guest-owned/private state in the RMP table. */
+int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, u32 asid)
+{
+	if (WARN_ON_ONCE(!asid))
+		return -EIO;
+
+	return rmp_assign_pfn(pfn, gpa, level, asid, false);
+}
+EXPORT_SYMBOL_GPL(rmp_make_private);
+
+/* Transition a page to AMD-SP owned state in the RMP table. */
+int rmp_make_firmware(u64 pfn, u64 gpa)
+{
+	return rmp_assign_pfn(pfn, gpa, PG_LEVEL_4K, 0, true);
+}
+EXPORT_SYMBOL_GPL(rmp_make_firmware);
