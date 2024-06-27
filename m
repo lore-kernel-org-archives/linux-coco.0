@@ -1,55 +1,81 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC10113BC1B
-	for <linux-coco@lists.linux.dev>; Thu, 27 Jun 2024 09:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7117E1946BB;
+	Thu, 27 Jun 2024 13:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719482357; cv=none; b=Kl3Rxrwbhicwd9ogDUi66obyhYth8PtoxPBJVfghLU0M0av7C3229r4akG6NvPPBjciqnEuE9hL1+caR3nTdUrKiVuwV5yPj4sakb/nFOE5CRQs1xhrkm3iGY9qvNc+Fd6yN+lGk2tGzZg8jsn4z1vKCHLfoSXJHAhmSWqxJGic=
+	t=1719496590; cv=none; b=NCs3eSpXCfgGvO6EtfIFOiN4tvnONS+MBP98I8CSBQFmsYQ85sUegQCVX0JmWQ66UmE8kLpEMqpn9DW4/Kzm/HD6pCNHNzGUypBBzSpXpwnWUR0kLeHRjfH0E6j+u0Zg3HWp21kmU6FVmtg3aRyMkbTBy6eyK+Oa119pgFU9zoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719482357; c=relaxed/simple;
-	bh=ZE5RlYGSFmYnUWlUtGOq4rsN0gJXmUD0Ips8uiH1p+E=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kMXw8qfmFVsASwLy6tBgE6c0ZswpeygWM7/OgOuL+VN9lEq45Gi2RO967KYrZOZqhWp4K6FePUKr58WQKIN/4V9sN37sDBFF8IWIe2Dajo7UcdbJkxrnv4qrs77g3aeigiSO3RnNS5PaWdYVo5v6s5AqA6ZCyiGEO3TxagLQsBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=nbIZzUoO; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="nbIZzUoO"
-Received: from 8bytes.org (pd9fe9dd8.dip0.t-ipconnect.de [217.254.157.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id B1DF91C89A5;
-	Thu, 27 Jun 2024 11:59:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1719482346;
-	bh=ZE5RlYGSFmYnUWlUtGOq4rsN0gJXmUD0Ips8uiH1p+E=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=nbIZzUoOYnydiGMKldMO5Ksu3FiqmYc0h+K7OhbosmDJJvvWKh5APzOkle332N7ou
-	 8W0l8aYfYKq6kE2XJJ7eruUPqGfM0/F2yPjoJw3xl1SWC0lhFUPEnH2Z79E0X7sXdd
-	 Ns3eFqvhFo+Cd0lHZPdgQLKXdT0UXCW1D0jE3e/me+3l6Kay/H4KJ0K/+kuup+XWDi
-	 1spd/6bW1d2ulpuO2d3mW+SF0SUvywEJH4uU2vcM6DLADF2F42nOrfLb/8W9RKRgnn
-	 qrMg77TFqhWorii4zZaEVsvsUNjVo815QXAWFyJRfWionu/FBJUEjk+Il74V2GsSMc
-	 qIR9M9udgKUDw==
-Date: Thu, 27 Jun 2024 11:59:05 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: Re: [svsm-devel] SVSM Development Call June 26th, 2024
-Message-ID: <Zn036RRPSwwxy2db@8bytes.org>
-References: <ZnrnXoCrIAMx_swN@8bytes.org>
+	s=arc-20240116; t=1719496590; c=relaxed/simple;
+	bh=kYrvsf0uqKm88ZvZcePkZ49uLkndvFg7AwD2JBZhy68=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hPw6ffowuRaqCu4BDXQ8k7jIVpr5rm4Zoa+VilzQhXqksvHX6Sjc8VutytmnqWZ5XR0+fcfri9iyY4XEmarrgaeIVtsCHOscUGZTlcZy4U5tEzOhkVpmcggLLmCeBEBrYbmd7KK5V2wEn5x1RxbshxJcm2VdcdsUcu3lF5BaOTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ABD27367;
+	Thu, 27 Jun 2024 06:56:52 -0700 (PDT)
+Received: from [10.1.30.72] (e122027.cambridge.arm.com [10.1.30.72])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8FB513F73B;
+	Thu, 27 Jun 2024 06:56:23 -0700 (PDT)
+Message-ID: <b611bb5f-b6f8-44a4-9b33-a92862974363@arm.com>
+Date: Thu, 27 Jun 2024 14:56:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZnrnXoCrIAMx_swN@8bytes.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/14] arm64: Override set_fixmap_io
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+References: <20240605093006.145492-1-steven.price@arm.com>
+ <20240605093006.145492-7-steven.price@arm.com> <Zmc8x3Xvs8uu9zHp@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <Zmc8x3Xvs8uu9zHp@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The meeting minutes of yesterdays call are now available via this PR:
+On 10/06/2024 18:49, Catalin Marinas wrote:
+> On Wed, Jun 05, 2024 at 10:29:58AM +0100, Steven Price wrote:
+>> +void set_fixmap_io(enum fixed_addresses idx, phys_addr_t phys)
+>> +{
+>> +	pgprot_t prot = FIXMAP_PAGE_IO;
+>> +
+>> +	/*
+>> +	 * For now we consider all I/O as non-secure. For future
+>> +	 * filter the I/O base for setting appropriate permissions.
+>> +	 */
+>> +	prot = __pgprot(pgprot_val(prot) | PROT_NS_SHARED);
+>> +
+>> +	return __set_fixmap(idx, phys, prot);
+>> +}
+> 
+> In v2, Suzuki said that we want to keep this as a function rather than
+> just adding PROT_NS_SHARED to FIXMAP_PAGE_IO in case we want to change
+> this function in the future to allow protected MMIO.
+> 
+> https://lore.kernel.org/linux-arm-kernel/6ba1fd72-3bad-44ca-810d-572b70050772@arm.com/
+> 
+> What I don't understand is that all the other MMIO cases just statically
+> assume unprotected/shard MMIO. Should we drop this patch here as well,
+> adjust FIXMAP_PAGE_IO and think about protected MMIO later when we
+> actually have to do device assignment?
 
-	https://github.com/coconut-svsm/governance/pull/18
+I agree, there's not much point in this patch as it stands. I'll drop it
+(and the previous one) for the next version of the series. We can add it
+back if needed when protected MMIO is a thing.
 
-Regards,
+Thanks,
+Steve
 
-	Joerg
