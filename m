@@ -1,237 +1,131 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2060.outbound.protection.outlook.com [40.107.223.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44337198E60
-	for <linux-coco@lists.linux.dev>; Thu, 27 Jun 2024 14:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719499719; cv=fail; b=Ltm+GrFY3uE8xJvcL3QRK/lpUC8zuMb12Ce3kGdzp46bkW63+CcjyYZzrkNVBFV60DYrB5aYkqfQDjUPpiocm0pLDdSlKHXEONpzG7njUoqeHyQZRrKE1SyeKVFXch77jrskTb+0w2CYHWaGjlFOZElDaktselt2SS4EOJ5atIM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719499719; c=relaxed/simple;
-	bh=txGXWDstyYBIp+fmf4ApJ8QnkObBoh6bv1kLODML/uU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=BVhWzlBPsCPnQ3k4cnXKM5xlFHHphukshZtwYD/UHVJ7dPp9c8sG3V1kayGeLfULoa6+F923iA5Y7haXQ0fModoCmcNprOx5c3OMn+9LY7yY0fJdXX9w/aV/twVYQ0oFsronmuLjL5iFp2Ld6/Ge7B+KO5h7Tyr9K3PyrgZBxE8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wqwF3MRr; arc=fail smtp.client-ip=40.107.223.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF39199246
+	for <linux-coco@lists.linux.dev>; Thu, 27 Jun 2024 15:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719502504; cv=none; b=RxPeGIDHKncKzqHbeGaUyInOsa1fnNZ4vo1CKnA/x2eM9FbLn6WGc6I21PCdyXMM4Z73bZXq2kFHlcKok8iEyE6fj/+xAka65LImaklmsVH2jN8qaud0QyZWH2ms37MXm+/xIXjbl/3X83lGBfyT91WOBPtL6+K5JhB2seodprY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719502504; c=relaxed/simple;
+	bh=B4B+7Qegfc8xqRAIl73gUCcFR/R5LPG8JWLBvTTX94w=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=eXYft0SRNQHte4WyLCa3cm/Qx0GLAae2dvcEGpf10KfyNF8125PfN8VPNbT5GUgo2CJuuFIS5EK+uVKcXOnw1DcjnxacmgpWSUaRDUv348XM/EacsoBvPIYnK/v5iq+xysR6jYZfLYVIGxpolFToejti/fBe3VRVa/taBafG+40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JoMkFn51; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wqwF3MRr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Cr9OGw/WqvZIWjxstVaV1eYEyMCjhgPKZOPvhyshKEKZKQLl1Dkg84z4K0NOSWtFqCNVz1E9R9XJEQH0fF5HxR2LTGnXzDcweHZ0V3/8HwphxP9cqUPRnd+7c0uiHp7DX36UHGE4iFoc2bBDIc/JRW7o3KmEA2/FRq4y9PKcoF8bX8IU/g7fX8hYNHs3bw+Ettwp47GlX8+Ff8Db4QtclM9Aoh6T7dXxNdWyy86iX6l+ruHrDvZT2NsiDNqlRzeIz2OUBIsSm3rf2CLj0meVkERO80BctSU2sGwUde3aPDgdyaO1QoQ9zuOgidwObsgrxagzEQ6QK8SgWebhABCKMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5US8jzrz/gB8B3rmrDc/HkcN7O5uPWIs7YE3LOhXdJA=;
- b=nWMEfbL8WvZp8qLb+q0Pfupvfft4egDCM5w79MaByxLrOr5FZu2zMTmaBiqx1jzLghu3EjcJrdarnWcrnnhFz7kiiTEdCHrhBYfJ1dVM/qz43Yc0HLxHfxtIax01ahmXK19EkfQ5Mui4jlnqUSUHwfTwR22sQvd18orJh2st22WmoqSJwu1pYJ6cR52z9e76jdkAmDQP9vFgG9jJrgBW90dt1ijWZ2kC0xvKrtpyejcZOtbZF601ihT14lVz1UjdsvszudnEehXWdb/ZudCE+Z+n+42ceNWfSC33dN4ML04zU0ruID9ysQordTW6K5uaGjj+LqdfUMseAwylGq1R2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5US8jzrz/gB8B3rmrDc/HkcN7O5uPWIs7YE3LOhXdJA=;
- b=wqwF3MRrYKFGLBX7Fh7xnu7Y8QSSRWGYWFz9NIKdMuGIi+BAzaMqkwfM2SoFe0tzaQ/KjdPI27zXBAlER3fXFr/bPNcSD8kdhrDyuaB326DPCXaADWCKuippYRPlCdxztq7z+NbhKWTMWjXe2VD7HcaGhuzrKYS6hJlFmy0DgVs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
- by DS0PR12MB7704.namprd12.prod.outlook.com (2603:10b6:8:138::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.32; Thu, 27 Jun
- 2024 14:48:34 +0000
-Received: from BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52]) by BL1PR12MB5732.namprd12.prod.outlook.com
- ([fe80::bf0:d462:345b:dc52%7]) with mapi id 15.20.7698.033; Thu, 27 Jun 2024
- 14:48:34 +0000
-Message-ID: <87320ee5-8a66-6437-8c91-c6de1b7d80c1@amd.com>
-Date: Thu, 27 Jun 2024 09:48:33 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v1 1/5] KVM: SEV: Provide support for SNP_GUEST_REQUEST
- NAE event
-Content-Language: en-US
-To: Sean Christopherson <seanjc@google.com>,
- Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org, pbonzini@redhat.com,
- jroedel@suse.de, pgonda@google.com, ashish.kalra@amd.com, bp@alien8.de,
- pankaj.gupta@amd.com, liam.merwick@oracle.com,
- Brijesh Singh <brijesh.singh@amd.com>, Alexey Kardashevskiy <aik@amd.com>
-References: <20240621134041.3170480-1-michael.roth@amd.com>
- <20240621134041.3170480-2-michael.roth@amd.com> <ZnwecZ5SZ8MrTRRT@google.com>
- <6sczq2nmoefcociyffssdtoav2zjtuenzmhybgdtqyyvk5zps6@nnkw2u74j7pu>
- <ZnxMSEVR_2NRKMRy@google.com>
- <fbzi5bals5rmva3efgdpnljsfzdbehg4akwli7b5io7kqs3ikw@qfpdpxfec7ks>
- <ZnxyAWmKIu680R_5@google.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <ZnxyAWmKIu680R_5@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA0PR12CA0023.namprd12.prod.outlook.com
- (2603:10b6:806:6f::28) To BL1PR12MB5732.namprd12.prod.outlook.com
- (2603:10b6:208:387::17)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JoMkFn51"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dfeff1ae480so15047235276.2
+        for <linux-coco@lists.linux.dev>; Thu, 27 Jun 2024 08:35:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1719502502; x=1720107302; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jwfQmZ9NIpbsBfaBGly2IYRr+v7gRdeIIwzA8stq+iM=;
+        b=JoMkFn518G3Gx3IyHamxOYLvNFW8JI3JwjgbPhSMiIGLQdrqRv0BsfcxGHWezl6+Ff
+         0VHhG+pwRB18Uu0smirvEE/swiqULCZuzGkqIBz/XEun8sCgCv+p3BK3w5K6ETmIGIYN
+         nZ8l0Wbtio4uLN0JF60C8HNho+EFq05lZmW8K0VA91ZrdyBxfdK4Mj5kOK+bnSIuwQo0
+         44GTrFWGPqj7i5qbs5drW0B7ZVhBZsWrEcvAf4Uidr+yH671ZFLgtZul3Zx9L987/ZS+
+         Ups7bfNXXFqTX+v3DTElPsF6Ad3L8h3i60xwRUf9vFZ2keSR8nH5TW4XQWb9RGWKJV8n
+         B5Rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719502502; x=1720107302;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jwfQmZ9NIpbsBfaBGly2IYRr+v7gRdeIIwzA8stq+iM=;
+        b=EqR2u4vF81rf9ldeJ8PPJBGBOAFJJNlTiUTYVGN0MUzXI90ahLR7asUh4oYlTYuESD
+         h2KudODht0NbG7Ursqw46MEKwTUBdavDII7gR+TjJ9xE0RR1Bc7a3w5TMcjBOaEmOPM/
+         S68aZuJ0rkpKOzqNHXPs3sesdFwOC5HXdv+RyMeh0bgrPKVL47lvfVaftpzCdDXxiqPO
+         TKiZDVFuTX29Hh6ByNpTeSSZtyIqjGMNZ7klUiBtbMEmElYwFgAvmBR6oegWbKLNG1aq
+         ddn52Lk4hoJ2HPNo6wM7+q8LD4rsYGHmkWnPG5S9JI+28q9M5ppmU4XQUBiPes5b2qbl
+         fM7A==
+X-Forwarded-Encrypted: i=1; AJvYcCXhXx5NCjYan3sSf+RsL04Jm86zCTFEnzgbi+Sh1fbSb2Y5JcolrQqdYbc6VNHlsF+NoCeuhoMbskc5zHp0tiWoZWYpTQ4NIThxCw==
+X-Gm-Message-State: AOJu0Ywb/ouuCm0AfmoIMEbpFcnxojIzbWh553N2+BmVFsEQXbkH8z3Q
+	NGcHAlZk7BJr2pZbhRz7Q6ELEw3iLD5T0yft2Dz+Vnqi+JV3bHy+cD3XKVmGmySaaUiUHzfc5Nw
+	xDQ==
+X-Google-Smtp-Source: AGHT+IHEi2Jyn7G4AkqbarTu97kFAUKrcEOi465mYHsg50AqIgEPtVFdPWfoFGoEoYmptmXIFg5d8pn8ivU=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6902:2b84:b0:e02:c739:367 with SMTP id
+ 3f1490d57ef6-e0303fe4816mr697575276.13.1719502502278; Thu, 27 Jun 2024
+ 08:35:02 -0700 (PDT)
+Date: Thu, 27 Jun 2024 08:35:00 -0700
+In-Reply-To: <87320ee5-8a66-6437-8c91-c6de1b7d80c1@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|DS0PR12MB7704:EE_
-X-MS-Office365-Filtering-Correlation-Id: e757b920-272c-42be-d662-08dc96b8384d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?emg0OFBsVURvVzlTdnRiWFJxK2Nnam5PYm9iQWRYZlppQkhXMWpWVThkMngr?=
- =?utf-8?B?RjZkWmtDZElkbnM5Wk5VOFA1aVZLSEY0MXY2YURacjdrOGFCR2dOcEJJQm1X?=
- =?utf-8?B?YmNwenZZd25hR0l3VGdZQWF6RDVpVXhKOGlYbGhEVzlVRHFicnNJYXVMSnRV?=
- =?utf-8?B?Ykw4ZUx5M3hkbnl0d0FNSXQycWNXYkhjMTVXbElnYUIrQlEyN1RqaFM1OEZU?=
- =?utf-8?B?ZG9DRU9HQXRRTVZwQm5lK3dlMG5hWkVyNmFUQmwya1ZpSmpRekpHc1BsMGRo?=
- =?utf-8?B?VTZBV2ovaGkzUjcxTi8rSGVjVFBsVHppLzRQemt5VDVBTUhlcktzS1lRZ0tP?=
- =?utf-8?B?cXZwOE05WE9LMi9IYnFzZS80U1AvNWlxNkEyUDJVYnZDbm1jcHNzRnp4L3dl?=
- =?utf-8?B?Z0IzMk4xbU1XL2kxd1JmbjFxdS90TU9YTlVJQ2JoTFA4QS9jRnNvTi9vZk9a?=
- =?utf-8?B?Y25oUk5udVVsLzMySDRlRUFRcmt5NTQrS3d1WGg3NW9reUhwb0xvd0FLRm83?=
- =?utf-8?B?OERaL3huczRhSWNxNUhwOCs4Ui9BWFlhUFNCaGcwbmo4akxsbklyUUJvOWJE?=
- =?utf-8?B?Q3pQRGxqeVZMWUo5NjRSUmFiMnZ0V1NublM4WDNoZzlNUUhqRDFObVdXNUZl?=
- =?utf-8?B?TlpycmZKY0s3MVZydDN1amNrQVFiVnJHYzE4ZlNHK1pialRyUFgrRXZWVXIy?=
- =?utf-8?B?ZzZDbTFQSnpPdDZkWjFjZTZEQVowc0RaYnJNemhSUW1yZWN4WGdMWXdoZGFX?=
- =?utf-8?B?S2k3N0xzNlNuby90dGFlWHZJVFV0dmx2amQwQzk5MXNZVCt2K2FtQnZlN2RO?=
- =?utf-8?B?ZmdmcHpqV1RtOFVDbFB3TXo0MkI2T3dZaENNK09WcXJhaDNnaVYzcEVhUVBW?=
- =?utf-8?B?Mjk0ZFY2bVRDd1RVcVhscGM4UGJSc3FhejZGOFRYWGxGbjBKbVJTM3ZuVnkv?=
- =?utf-8?B?TC9kbEpiY0E0NUw2YWU0RVNRVVhlRUovZ09jb1dUNjFxK0dwWlNWTzJPTjhD?=
- =?utf-8?B?c2gxeitTTkxRdG1tYmdNdjdYTzYwWjcvTGpCVFpjWFZNei9rb1pMblphU2xs?=
- =?utf-8?B?YjQvNFFPeGFJb3p1RmNKMHNrWEVrVEJadkxsZmtDQkFHNHlOVzlRMngwTEht?=
- =?utf-8?B?VkFBeDZZak9MM3FMbGZQNk01MUlVcTVwT05mMWU5aXJRbjhJR0RXZGFETTJD?=
- =?utf-8?B?bVFkcEtGaHJjZUNkWDZXMXpGQUNobHdKdVk0enJsbzVVT0VDaVI4Umk2eXJq?=
- =?utf-8?B?bnFlTkcycG5KTWtIUjVNNkdOSlk3Nm1XZlNOTVVLdjY3VVQzZloxamlLZ0ky?=
- =?utf-8?B?bkZTWDgzbTZ2cmg4RnkyQkNoS2pJRDNDVmxrTStuUmtXbXI5bis3azBLUERo?=
- =?utf-8?B?aTZobmJsbUJKOHo1TFRzZTJPUERmOUVxUUgxL1BNUENVbi9ZNXNJMFZqOFBh?=
- =?utf-8?B?K2Y5aHRBd2xOUzl0cXdwNGJaSlhyVmdEKytPWGgwK2tnclBXM3Zrd1d0Ri95?=
- =?utf-8?B?TmpMUERVWnVjVm9NaFNsb3hrWDZKRUhnZVNVMjZyU0IzdHkzbnNyU0tXblNC?=
- =?utf-8?B?WU1wNjBtc29oZllGTzk3OXRwak1DWUdqRGZoa1JYMFM0SjA0VzJMT0dUOVhn?=
- =?utf-8?B?NXp4MDEzUURQMWRKVmRZVE9CbkovK0dUSFZtbFdWc0Zab3QrekxYd29STXpX?=
- =?utf-8?B?V0FGdmh5SjF5ajY4VUcwZFhuWlU4V0tiZjdablBjTFphNFcxOEpYelJnSjNX?=
- =?utf-8?Q?T9USEH9waA4MaP5ixweWA3ZnxPd8OcmPV9Q5E7v?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NmVGRDZEVXkrdzI5dFBBcVlpd2RBWWhPNzJFM1pmSURDRUNuQUVlOE9sUnFr?=
- =?utf-8?B?VGRiN2x0bW0zVkM0VFJaeUMrYVRLcTVySXdydU00bDRmUXhHVTI5eE11dnNs?=
- =?utf-8?B?REtuRE1kNXVqckhSZzBRdUpLYkdWS2RXekFIUGN6TStFL0NYQkFvMGlUT1dG?=
- =?utf-8?B?akJRa0t0YUV5Z0FTeHE2TDZ2dTFWalNlaDhkQVhMV08zRmFEc3N6bjFLeHhn?=
- =?utf-8?B?Zzdjbld4bHRqVDcwYUpUOGNZTlZXamRXNGRDemVOMnBZVWF2MFBvSlVjMUxq?=
- =?utf-8?B?RUZwQVkzem1aNlBIc0FuamRheVVWcVh4YUk0QXZLbDNOZndZU3FGdHdLR3lw?=
- =?utf-8?B?Y2NtcWpTV0hpbnNvVGZUWEVxMDNBVGZoUXRTbU9TdlN2WmNKVHBnSnVyNlgw?=
- =?utf-8?B?L2o4MEh2QTFRbVNvbDhhenBVSDk5b2ViTmQxc3hCQ1RtVDR3Rjlvck5XWTJp?=
- =?utf-8?B?SXRURzVGSUFYRkxTbGtDSGYvcmdvVkEyZm9EbksvTWN3dmd6NzF3bndISm9v?=
- =?utf-8?B?bW9DNFBhbTlRR015UzBuMUswajlrWWFZT0NUTXJha2lzRGtGTHdPWENxaS9j?=
- =?utf-8?B?QkJLU0xud2NUSjVqekVOMWRzMnd2Q0gvUmUxWFFPdXlGTFF3VFpZKzVXSWRO?=
- =?utf-8?B?Sk5sS2NVa1N6TmJHeEdpS21lV2FlMWNvV0lraEpIMU0zU2txY2IzbzBHTDRH?=
- =?utf-8?B?V2tVWnBoS0NhSkxqc0kvREJnZnVrRDIzY1VvOUEwZ0paWEdZdEQ2SjJoTGFK?=
- =?utf-8?B?RWJzZTF3OTljNTJoQ3dZSHhKUm5LcXhIakJHd2NOa1ZLa1FmVTkzMFNoQXlD?=
- =?utf-8?B?TW9kcldjZUFrejh3M2dSYVFqdFpITmcrTFl1TE14VXRQVWg4dkZMZlZkVTBD?=
- =?utf-8?B?WFBJelRoQ2lISTd4a2RNOU5hellEWW5RV09ENHJWd1h0aThZbm9GUGVlSFhs?=
- =?utf-8?B?dUZUc243V0dsbTFNSDM5dktxMkZNK0Q2RS92TnhlRXV6b005cmRMSXdhb2U0?=
- =?utf-8?B?UzJUenhPS24wWEhUd3laa2MycE1yakJKdmFJdG5jS1Vhd2VSY2tCaXlQVGsr?=
- =?utf-8?B?RWZ2elVaV3dmbHA3WWtLM1J3UkIwSHl3M1grUi9PYks2WklXSlo0SThJRkNE?=
- =?utf-8?B?bzVHQkZJSm9oNXJyRUlScDJMSDI5Yjg2VElPTm1mVU1mc24wQnljUXZTSTBu?=
- =?utf-8?B?bVR5WjlVbllCUkY4RDJxZklpVkd0Y2x0c0JEY0xBdnJzSVVXVG9HM0hxdFZr?=
- =?utf-8?B?NGdOYVd2cHR6dkJjaTVYOXhFQWJhRjVpRCtUSjJNTlJKNHRFRXlxNldOVDRu?=
- =?utf-8?B?RTJPQ0hhMHA0bks2czFUR3hCa1cyKzZQYkI1L0NIdXZGVVUzWGNyUzErZWRW?=
- =?utf-8?B?cXQwQ29MSmtiMFR4L29wWTJsMnBNd2UxT293cEhhYTBHcDNyODNRSjQwdmJP?=
- =?utf-8?B?SGRzWDRYYzFYcVRPNi9xSkhuZXFYUm9QNlB3N2l6Z2F4VzBlbzFWSHlZbTBr?=
- =?utf-8?B?WkJYZ29lb2JYdmpkMEZqSVhDYTl3TVVJOG1ybTA0dlBNdDNvQUxuQjBLaWlJ?=
- =?utf-8?B?SG9tWFQrSWxNN2x1U2VjendJaFJMQkNaSWRhaTR6ZlE4WEQ0VHZuT2t1R0tt?=
- =?utf-8?B?bGg0RGFnT0VkaWsxRzJQaXNPa3RiMHp0dlBONGlFSVptNGNsQ0RtUHZEYWlq?=
- =?utf-8?B?Z3dwdVAxUDR5c3V2YlI4NFBwT01NZnh2K3V2ekRITlRZWnNtQ0Y0WDhXOGIx?=
- =?utf-8?B?czJxWWFLdUNmWDNqMnRKMmQxOFFXcnpPSnNnTW5lL3VEWEtpdE1Wdk1vYjZs?=
- =?utf-8?B?MWpIQXhtUHR0aXF2NkJoRGFmcmZoS091V3hjU3p2WUdvbzNUZEs1L2tRUExJ?=
- =?utf-8?B?cVZWS1NxQlo0aysza0tOYWdBMm83ZTg1NVZDTEhvdkozLy9qaXBSdEJSRjB5?=
- =?utf-8?B?M0k5Q01YVHVsRXhwalBUaEgrb1FYNHhGRjhndmYvNzAwczBXRnZDaEI5d0xE?=
- =?utf-8?B?NUFnL1dHY00rc0RudWVNcjVORDRneWpsTlRMc0VvRXhTS2pESXNhU0xPeVh1?=
- =?utf-8?B?UlFEMnpOcW1FQ0pBSi9ybnZXMTBoRENjQkMzWmIrNHJNSWo1dlBpMXA3N0R5?=
- =?utf-8?Q?dheEDxoPvRmKz6gudY17+5HSI?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e757b920-272c-42be-d662-08dc96b8384d
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2024 14:48:34.4265
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bMh1TUAEdgZy8l9TqCqZv+niG3dFAcq5rjHVyh9efXTS6oPPMLHMmluvgEh///9CM9rCoiXhJHJAW8hXW5U6ww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7704
+Mime-Version: 1.0
+References: <20240621134041.3170480-1-michael.roth@amd.com>
+ <20240621134041.3170480-2-michael.roth@amd.com> <ZnwecZ5SZ8MrTRRT@google.com>
+ <6sczq2nmoefcociyffssdtoav2zjtuenzmhybgdtqyyvk5zps6@nnkw2u74j7pu>
+ <ZnxMSEVR_2NRKMRy@google.com> <fbzi5bals5rmva3efgdpnljsfzdbehg4akwli7b5io7kqs3ikw@qfpdpxfec7ks>
+ <ZnxyAWmKIu680R_5@google.com> <87320ee5-8a66-6437-8c91-c6de1b7d80c1@amd.com>
+Message-ID: <Zn2GpHFZkXciuJOw@google.com>
+Subject: Re: [PATCH v1 1/5] KVM: SEV: Provide support for SNP_GUEST_REQUEST
+ NAE event
+From: Sean Christopherson <seanjc@google.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, pbonzini@redhat.com, 
+	jroedel@suse.de, pgonda@google.com, ashish.kalra@amd.com, bp@alien8.de, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, 
+	Brijesh Singh <brijesh.singh@amd.com>, Alexey Kardashevskiy <aik@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 6/26/24 14:54, Sean Christopherson wrote:
-> On Wed, Jun 26, 2024, Michael Roth wrote:
->> On Wed, Jun 26, 2024 at 10:13:44AM -0700, Sean Christopherson wrote:
->>> On Wed, Jun 26, 2024, Michael Roth wrote:
->>>> On Wed, Jun 26, 2024 at 06:58:09AM -0700, Sean Christopherson wrote:
->>>>> [*] https://lore.kernel.org/all/20240229025759.1187910-1-stevensd@google.com
->>>>>
->>>>>> +	if (is_error_noslot_pfn(req_pfn))
->>>>>> +		return -EINVAL;
->>>>>> +
->>>>>> +	resp_pfn = gfn_to_pfn(kvm, gpa_to_gfn(resp_gpa));
->>>>>> +	if (is_error_noslot_pfn(resp_pfn)) {
->>>>>> +		ret = EINVAL;
->>>>>> +		goto release_req;
->>>>>> +	}
->>>>>> +
->>>>>> +	if (rmp_make_private(resp_pfn, 0, PG_LEVEL_4K, 0, true)) {
->>>>>> +		ret = -EINVAL;
->>>>>> +		kvm_release_pfn_clean(resp_pfn);
->>>>>> +		goto release_req;
->>>>>> +	}
->>>>>
->>>>> I don't see how this is safe.  KVM holds no locks, i.e. can't guarantee that the
->>>>> resp_pfn stays private for the duration of the operation.  And on the opposite
->>>>
->>>> When the page is set to private with asid=0,immutable=true arguments,
->>>> this puts the page in a special 'firmware-owned' state that specifically
->>>> to avoid any changes to the page state happening from under the ASPs feet.
->>>> The only way to switch the page to any other state at this point is to
->>>> issue the SEV_CMD_SNP_PAGE_RECLAIM request to the ASP via
->>>> snp_page_reclaim().
->>>>
->>>> I could see the guest shooting itself in the foot by issuing 2 guest
->>>> requests with the same req_pfn/resp_pfn, but on the KVM side whichever
->>>> request issues rmp_make_private() first would succeed, and then the
->>>> 2nd request would generate an EINVAL to userspace.
->>>>
->>>> In that sense, rmp_make_private()/snp_page_reclaim() sort of pair to
->>>> lock/unlock a page that's being handed to the ASP. But this should be
->>>> better documented either way.
->>>
->>> What about the host kernel though?  I don't see anything here that ensures resp_pfn
->>> isn't "regular" memory, i.e. that ensure the page isn't being concurrently accessed
->>> by the host kernel (or some other userspace process).
->>>
->>> Or is the "private" memory still accessible by the host?
->>
->> It's accessible, but it is immutable according to RMP table, so so it would
->> require KVM to be elsewhere doing a write to the page,
+On Thu, Jun 27, 2024, Tom Lendacky wrote:
+> On 6/26/24 14:54, Sean Christopherson wrote:
+> > On Wed, Jun 26, 2024, Michael Roth wrote:
+> >>> What about the host kernel though?  I don't see anything here that ensures resp_pfn
+> >>> isn't "regular" memory, i.e. that ensure the page isn't being concurrently accessed
+> >>> by the host kernel (or some other userspace process).
+> >>>
+> >>> Or is the "private" memory still accessible by the host?
+> >>
+> >> It's accessible, but it is immutable according to RMP table, so so it would
+> >> require KVM to be elsewhere doing a write to the page,
+> > 
+> > I take it "immutable" means "read-only"?  If so, it would be super helpful to
+> > document that in the APM.  I assumed "immutable" only meant that the RMP entry
+> > itself is immutable, and that Assigned=AMD-SP is what prevented host accesses.
 > 
-> I take it "immutable" means "read-only"?  If so, it would be super helpful to
-> document that in the APM.  I assumed "immutable" only meant that the RMP entry
-> itself is immutable, and that Assigned=AMD-SP is what prevented host accesses.
-
-Not quite. It depends on the page state associated with the page. For
-example, Hypervisor-Fixed pages have the immutable bit set, but can be
-read and written.
-
-The page states are documented in the SNP API (Chapter 5, Page
-Management):
-
-https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/56860.pdf
-
-Thanks,
-Tom
-
+> Not quite. It depends on the page state associated with the page. For
+> example, Hypervisor-Fixed pages have the immutable bit set, but can be
+> read and written.
 > 
->> but that seems possible if the guest is misbehaved. So I do think the RMP #PF
->> concerns are warranted, and that looking at using KVM-allocated
->> intermediary/"bounce" pages to pass to firmware is definitely worth looking
->> into for v2 as that's just about the safest way to guarantee nothing else
->> will be writing to the page after it gets set to immutable/firmware-owned.
+> The page states are documented in the SNP API (Chapter 5, Page
+> Management):
+
+Heh, but then that section says:
+
+  Pages in the Firmware state are owned by the firmware. Because the RMP.Immutable
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  bit is set, the hypervisor cannot write to Firmware pages nor alter the RMP entry
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  with the RMPUPDATE instruction.
+
+which to me very clearly suggests that the RMP.Immutable bit is what makes the
+page read-only.
+
+Can you ask^Wbribe someone to add a "Table 11. Page State Properties" or something?
+E.g. to explicitly list out the read vs. write protections and the state of the
+page's data (encrypted, integrity-protected, zeroed?, etc).  I've read through
+all of "5.2 Page States" and genuinely have no clue as to what protections most
+of the states have.
+
+Ah, never mind, I found "Table 15-39. RMP Memory Access Checks" in the APM.  FWIW,
+that somewhat contradicts this blurb from the SNP ABI spec:
+
+  The content of a Context page is encrypted and integrity protected so that the
+  hypervisor cannot read or write to it.
+
+I also find that statement confusing.  IIUC, the fact that the Context page is
+encrypted and integrity protected doesn't actually have anything to do with the
+host's ability to access the data.  The host _can_ read the data, but it will get
+ciphertext.  But the host can't write the data because the page isn't HV-owned.
+
+Actually, isn't the intregrity protected part wrong?  I thought one of the benefits
+of SNP vs. ES is that the RMP means the VMSA doesn't have to be integrity protected,
+and so VMRUN and #VMEXIT transitions are faster because the CPU doesn't need to do
+as much work.
