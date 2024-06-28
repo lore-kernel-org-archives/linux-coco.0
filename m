@@ -1,161 +1,136 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C791509B3;
-	Fri, 28 Jun 2024 09:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712B91103
+	for <linux-coco@lists.linux.dev>; Fri, 28 Jun 2024 10:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719568775; cv=none; b=C0uaRr9kAQRVUYKxBQcNaLqTTNqT+xCqzkjEvnHTcruhl+XlCekYsIaisdzKhLv+nOOfBSe2VmWj7WEwq8H543w6wxMHdJcvngiYDAe9cE6fxLWpoY82//mMwV5IZashH2a9mmAMv67lqkj0rR5AgOCaWzTZ9R6rdpKtS8+zbt8=
+	t=1719569089; cv=none; b=qRpPfZ4EWeUnHmOggJBD7UXRrph5tvccUPhD+ynfOXOV6HFJnQOpHJAONQpuF9K6bWof6MKnabzuCw5HhJIvlPg7YWhj+D6F0CyXCFjiGakj6p2lvTMsl++8iEHjFiMos+WwMU1eC6XCJiBYCxfDj7BLB9RrK0DZ2b6S6eQfiuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719568775; c=relaxed/simple;
-	bh=apYPCiCCBhhW47PGckaJryPnErPTII7yZQmGkZShW+g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VosF7l3cn+3eW5Gy19no9Vql6CuK3olOrkZPh9CxUyp39djg3xYoFqbHLl0lU4unDINbGsj7qZtan+H/58g3bnXeFmBKU3RLF1Q7t9CY/NJk27rlD5utn66HOaYhqw25UCIo3SvZkxK/UDlCLcqS4CrgquEVWhQXm7Mx7E6/jiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4C1B106F;
-	Fri, 28 Jun 2024 02:59:56 -0700 (PDT)
-Received: from [10.1.29.17] (e122027.cambridge.arm.com [10.1.29.17])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 571CF3F6A8;
-	Fri, 28 Jun 2024 02:59:28 -0700 (PDT)
-Message-ID: <01b48dc0-8f69-435c-86c5-bc22ea148e3a@arm.com>
-Date: Fri, 28 Jun 2024 10:59:26 +0100
+	s=arc-20240116; t=1719569089; c=relaxed/simple;
+	bh=27RE7aMAeMSuXKrXKtMiDDZRYnA99jnOQEs5p75D+vQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fJm2xzgbk3zN1HI9kJJghnPUTDeDDm2yMDPJ2FHwWy4XTZQNsOXym1sym1vTkLe/Lsc6otB6J5MtP6p33VFVEsBpBy9PyHVUJG1BLTjkFALXKraZgS8coj6Scsid/PeCSZb3NZ1aehXV/v2oKVTeUdvtK9EQ4Ye6DwwvZff1q2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oFGmusKV; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oFGmusKV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719569087; x=1751105087;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=27RE7aMAeMSuXKrXKtMiDDZRYnA99jnOQEs5p75D+vQ=;
+  b=oFGmusKV84Ky5PgGB+Eba4MggI3TE9MWpTyH3ptNHP2GzwrxJqd30m4T
+   LPhibAcVqkhJs9jY6j/L+ZeJ3sTtlsa/S7W6ZA+WT85rwIzyXtc8GNJhX
+   rQaLW1PKq9v3OWD3QpBYRFkuwDgo1jv6hg3KwHRyOELJsCe7otJjWXtUT
+   FmpMLsRQcL+gTD+d310XFLSgWDdBusuyYrUQQqBgMFVGwj/UQz6Vr9dUC
+   YVVV9LkDJgyRsYEgyrWcFIKCmIbXUplioN9ODvij4Rb35MYAF+TmM5red
+   aiRbSZDeuMSX88U7ccM71VjqSRkHpZvECEZcYdeTrGLrhEdE88kBul2Cz
+   w==;
+X-CSE-ConnectionGUID: Jp83x26oShCPk8kJnj54UA==
+X-CSE-MsgGUID: EQXh5PogSw2KvQayFD2LvQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11116"; a="34282926"
+X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; 
+   d="scan'208";a="34282926"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2024 03:04:47 -0700
+X-CSE-ConnectionGUID: Kil1170XTI+k0keiXikvKA==
+X-CSE-MsgGUID: /CtWA+6ATAqABZBcEzIDUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; 
+   d="scan'208";a="75890944"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 28 Jun 2024 03:04:39 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 91FCB1C7; Fri, 28 Jun 2024 13:04:38 +0300 (EEST)
+Date: Fri, 28 Jun 2024 13:04:38 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dexuan Cui <decui@microsoft.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, ak@linux.intel.com, 
+	arnd@arndb.de, bp@alien8.de, brijesh.singh@amd.com, dan.j.williams@intel.com, 
+	dave.hansen@intel.com, dave.hansen@linux.intel.com, haiyangz@microsoft.com, 
+	hpa@zytor.com, jane.chu@oracle.com, kys@microsoft.com, luto@kernel.org, 
+	mingo@redhat.com, peterz@infradead.org, rostedt@goodmis.org, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, seanjc@google.com, tglx@linutronix.de, tony.luck@intel.com, 
+	wei.liu@kernel.org, Jason@zx2c4.com, nik.borisov@suse.com, mhklinux@outlook.com, 
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, Tianyu.Lan@microsoft.com, 
+	rick.p.edgecombe@intel.com, andavis@redhat.com, mheslin@redhat.com, vkuznets@redhat.com, 
+	xiaoyao.li@intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
+Message-ID: <kjt2m2aqnhmwqgn3ox6bkqtn5qurxawgnx3xyh42pu5sp3mwyj@qwyjttwubfck>
+References: <20240521021238.1803-1-decui@microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/14] arm64: realm: Support nonsecure ITS emulation
- shared
-To: Michael Kelley <mhklinux@outlook.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240605093006.145492-1-steven.price@arm.com>
- <20240605093006.145492-13-steven.price@arm.com>
- <SN6PR02MB415702A53E8516F1BEEC7EDAD4CD2@SN6PR02MB4157.namprd02.prod.outlook.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <SN6PR02MB415702A53E8516F1BEEC7EDAD4CD2@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240521021238.1803-1-decui@microsoft.com>
 
-On 17/06/2024 04:54, Michael Kelley wrote:
-> From: Steven Price <steven.price@arm.com> Sent: Wednesday, June 5, 2024 2:30 AM
->>
->> Within a realm guest the ITS is emulated by the host. This means the
->> allocations must have been made available to the host by a call to
->> set_memory_decrypted(). Introduce an allocation function which performs
->> this extra call.
->>
->> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v2:
->>  * Drop 'shared' from the new its_xxx function names as they are used
->>    for non-realm guests too.
->>  * Don't handle the NUMA_NO_NODE case specially - alloc_pages_node()
->>    should do the right thing.
->>  * Drop a pointless (void *) cast.
->> ---
->>  drivers/irqchip/irq-gic-v3-its.c | 90 ++++++++++++++++++++++++--------
->>  1 file changed, 67 insertions(+), 23 deletions(-)
->>
->> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
->> index 40ebf1726393..ca72f830f4cc 100644
->> --- a/drivers/irqchip/irq-gic-v3-its.c
->> +++ b/drivers/irqchip/irq-gic-v3-its.c
->> @@ -18,6 +18,7 @@
->>  #include <linux/irqdomain.h>
->>  #include <linux/list.h>
->>  #include <linux/log2.h>
->> +#include <linux/mem_encrypt.h>
->>  #include <linux/memblock.h>
->>  #include <linux/mm.h>
->>  #include <linux/msi.h>
->> @@ -27,6 +28,7 @@
->>  #include <linux/of_pci.h>
->>  #include <linux/of_platform.h>
->>  #include <linux/percpu.h>
->> +#include <linux/set_memory.h>
->>  #include <linux/slab.h>
->>  #include <linux/syscore_ops.h>
->>
->> @@ -163,6 +165,7 @@ struct its_device {
->>  	struct its_node		*its;
->>  	struct event_lpi_map	event_map;
->>  	void			*itt;
->> +	u32			itt_order;
->>  	u32			nr_ites;
->>  	u32			device_id;
->>  	bool			shared;
->> @@ -198,6 +201,30 @@ static DEFINE_IDA(its_vpeid_ida);
->>  #define gic_data_rdist_rd_base()	(gic_data_rdist()->rd_base)
->>  #define gic_data_rdist_vlpi_base()	(gic_data_rdist_rd_base() + SZ_128K)
->>
->> +static struct page *its_alloc_pages_node(int node, gfp_t gfp,
->> +					 unsigned int order)
->> +{
->> +	struct page *page;
->> +
->> +	page = alloc_pages_node(node, gfp, order);
->> +
->> +	if (page)
->> +		set_memory_decrypted((unsigned long)page_address(page),
->> +				     1 << order);
-> 
-> There's been considerable discussion on the x86 side about
-> what to do when set_memory_decrypted() or set_memory_encrypted()
-> fails. The conclusions are:
-> 
-> 1) set_memory_decrypted()/encrypted() *could* fail due to a
-> compromised/malicious host, due to a bug somewhere in the
-> software stack, or due to resource constraints (x86 might need to
-> split a large page mapping, and need to allocate additional page
-> table pages, which could fail).
-> 
-> 2) The guest memory that was the target of such a failed call could
-> be left in an indeterminate state that the guest could not reliably
-> undo or correct. The guest's view of the page's decrypted/encrypted
-> state might not match the host's view. Therefore, any such guest
-> memory must be leaked rather than being used or put back on the
-> free list.
-> 
-> 3) After some discussion, we decided not to panic in such a case.
-> Instead, set_memory_decrypted()/encrypted() generates a WARN,
-> as well as returns a failure result. The most security conscious
-> users could set panic_on_warn=1 in their VMs, and thereby stop
-> further operation if there any indication that the transition between
-> encrypted and decrypt is suspect. The caller of these functions
-> also can take explicit action in the case of a failure.
-> 
-> It seems like the same guidelines should apply here. On the x86
-> side we've also cleaned up cases where the return value isn't
-> checked, like here and the use of set_memory_encrypted() below.
+On Mon, May 20, 2024 at 07:12:38PM -0700, Dexuan Cui wrote:
+> @@ -785,15 +799,22 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
+>   */
+>  static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+>  {
+> -	phys_addr_t start = __pa(vaddr);
+> -	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
+> +	unsigned long start = vaddr;
+> +	unsigned long end = start + numpages * PAGE_SIZE;
+> +	unsigned long step = end - start;
+> +	unsigned long addr;
+>  
+> -	if (!tdx_map_gpa(start, end, enc))
+> -		return false;
+> +	/* Step through page-by-page for vmalloc() mappings */
+> +	if (is_vmalloc_addr((void *)vaddr))
+> +		step = PAGE_SIZE;
+>  
+> -	/* shared->private conversion requires memory to be accepted before use */
+> -	if (enc)
+> -		return tdx_accept_memory(start, end);
+> +	for (addr = start; addr < end; addr += step) {
+> +		phys_addr_t start_pa = slow_virt_to_phys((void *)addr);
+> +		phys_addr_t end_pa   = start_pa + step;
+> +
+> +		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
+> +			return false;
+> +	}
+>  
+>  	return true;
+>  }
 
-Very good points - this code was lacking error handling. I think you are
-also right that the correct situation when set_memory_{en,de}crypted()
-fails is to WARN() and leak the page. It's something that shouldn't
-happen with a well behaving host and it's unclear how to safely recover
-the page - so leaking the page is the safest result. And the WARN()
-approach gives the user the option as to whether this is fatal via
-panic_on_warn.
+This patch collied with kexec changes. tdx_kexec_finish() calls
+tdx_enc_status_changed() after clearing pte, so slow_virt_to_phys()
+crashes on in.
 
-Thanks,
-Steve
+Daxuan, could you check if the fixup below works for you on vmalloc
+addresses?
 
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index ef8ec2425998..5e455c883bcc 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -813,8 +813,15 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+ 		step = PAGE_SIZE;
+ 
+ 	for (addr = start; addr < end; addr += step) {
+-		phys_addr_t start_pa = slow_virt_to_phys((void *)addr);
+-		phys_addr_t end_pa   = start_pa + step;
++		phys_addr_t start_pa;
++		phys_addr_t end_pa;
++
++		if (virt_addr_valid(addr))
++			start_pa = __pa(addr);
++		else
++			start_pa = slow_virt_to_phys((void *)addr);
++
++		end_pa = start_pa + step;
+ 
+ 		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
+ 			return false;
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
