@@ -1,104 +1,98 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCADB824A1
-	for <linux-coco@lists.linux.dev>; Sat, 29 Jun 2024 14:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4326D4685
+	for <linux-coco@lists.linux.dev>; Sat, 29 Jun 2024 14:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719669606; cv=none; b=FD7s8z/K++NngZFTAG1OX5iJB/WlYzC1rmMQWuzdyLorLpRoI8lTPpfmJpG8eGF768tsIWRjxV0HX/XxT7DVHhPMKowfrjZ+Mc5FycGo3Zp/qkF62MHEBeyeMq37Ii9l0rnv+UAZUTqO/5HGTIUSl3aHYsxqIrsvuiS7cCZ6GD0=
+	t=1719669854; cv=none; b=K51fy4FC6sqg6INd3UZOFgMo3QR3/JvRxk9nnD2kItoxZZC1ZDdbg+XvKSzZVPb5ESHAzhSK5DolFnyXpoa06ksGoKoAUP2k6O59OdBfXv8Q2TenTG5qMyUP7pgWWgBQ+EBAENxZrHWBbtJ1YrNyjdezCXC1OWbFV7ZVmCePVc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719669606; c=relaxed/simple;
-	bh=y/xyeGuUjLaPRofy+3kI4vniVRvilUhiHIvamon3P08=;
+	s=arc-20240116; t=1719669854; c=relaxed/simple;
+	bh=5BmhQ9F7ttoYPRCcC0d8Lj6aXmR+zf4vxXS4iJbiM18=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PxEcaEI2NP0njGga2ggjq6Jkm1uAAMMvXE5ngXnlz66ASNFDRQN4BBFlh4fb7yUZFrLQBDd+v92INSbhY9/ar/JZj+DjRfk2P3qDC8C2Y2AlZVg222MnJwhF9Sha7x5Q2oTMZVwAq6dch1wIXhOCq8inc0OAwy/fHK/blFk4bmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=aVl2HxFr; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=SBsU01pFeH7fPLGo6ZlRW97IXz7C/ZvQSTK5vzNlUaG5v5WvePza+sIKGO1mtkM4ibaN8uleU3HZeo7eQO3ATelt3yLWO5kKqKmvWFVThQy74bVvsvo07tWCNsHIgrz+Pd9GUz5e8XR23uj7SUcX3ML08WFypZHzvIkkOy7MCxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FuTOzR5t; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="aVl2HxFr"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 26B8340E0192;
-	Sat, 29 Jun 2024 13:59:57 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id wbLqI-ep6Lig; Sat, 29 Jun 2024 13:59:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1719669592; bh=gibAjF9WXEwdjtFDruiFkfc3HZzBGfeCkKLQh8VI33k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aVl2HxFrPm+JnC+QL4Ma1CyS1xk8+2XA5uDPsTYFqA9x2+gIGdZh4zS3NUXxM3kLI
-	 M4VAQcrFho1TLviwU8615H5s51f+Y1ma9aJKZBMIK+3bmmCI94fDfMTQbT0kMzdxxO
-	 IsHMymOSY5AyfvC800/DxzVG0CDId2YDCy6Tr8cUQEhiR+ou13E5rO+zGyDQRiPN8N
-	 1zUECt5rSlIdvOMI9vQqX6jRs3Vo3VlkcZ/WMC2h8cb6f0WMKWwUOgohXt5X4kZEJF
-	 h5ebZOXy+0ay5vVTQRvte9BhbsjmpthNBh9ySdwIthc3knobDOrnPqii0LZ6NWO6FH
-	 S7/OFxeKuD0XT65TVGfCqO/5T0mZoz00u+9MFit6Mlq7fJ4zatkWIl2N0kWPPx280+
-	 kPJUyMA3pxe3qWRBuAsOR9/taIh28ws9Z4ld2ccmpCy49SxOFCHBaYMQlfhqBGHjgm
-	 762EwNdqMe7fk3rRUkW5Br4yeAr3KaLEHjRL/4jsP2cBCoXs0WLi2p2Fk5X4xIdwX1
-	 m+TG3/xv7KzD2Uh6mbVdT5NEdDs/qu+kiWwkhYFcMGYAHuCzwUoiTUzNqrqDcqCnQD
-	 HXvgSLOXhSyhuKMzTeu+Hh2sZ0ugSXgUbrAjYMTL/dgl17b2xTNOnzhqmKrCfi13wt
-	 vj3H/XaRN+28y5gTysV4IJlQ=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6DE2A40E0177;
-	Sat, 29 Jun 2024 13:59:39 +0000 (UTC)
-Date: Sat, 29 Jun 2024 15:59:33 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dexuan Cui <decui@microsoft.com>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FuTOzR5t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719669853; x=1751205853;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5BmhQ9F7ttoYPRCcC0d8Lj6aXmR+zf4vxXS4iJbiM18=;
+  b=FuTOzR5tQFCRRP6ZSlViN+A4dY8dcxdj2Gp3UJ+89O1m/5p6ZKq5CJJb
+   LKBOy0n42GcMcPpYUk5t+PH2nw792wbsN6XgUReBhH88A78cPPNHUKZdZ
+   mZcD2H3ymxGf2dK0ez3QXQop/qZ7wtx888Vbo7IWbk9gcLsK9zw4quftD
+   Iw1sqsYzgIAVqLATq4Xa5yflMak283leRlTifPcUGF1W2x0yCotIdzcuZ
+   6wm827yLOnFZfOFaYJXak3E2qcpMSqaU77O0ZR4ixeSRoNddIC3DwN0Ts
+   jyIMCYcnswuEAlbk6UfncWnLv0QW1jf469MTVgUjJWmRzolbScpwPRFGd
+   Q==;
+X-CSE-ConnectionGUID: Z+6sWuItT7e6CZtobxLLJw==
+X-CSE-MsgGUID: NF69SUnHTwuPIo2TGYu14w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="34379458"
+X-IronPort-AV: E=Sophos;i="6.09,172,1716274800"; 
+   d="scan'208";a="34379458"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2024 07:04:12 -0700
+X-CSE-ConnectionGUID: OmsxdMKDTLCVoCHsvhNQeA==
+X-CSE-MsgGUID: 2osVXlujQSCPsSppXIL39A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,172,1716274800"; 
+   d="scan'208";a="44915433"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa007.fm.intel.com with ESMTP; 29 Jun 2024 07:04:09 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 78317215C; Sat, 29 Jun 2024 17:04:08 +0300 (EEST)
+Date: Sat, 29 Jun 2024 17:04:08 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>, Dexuan Cui <decui@microsoft.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Michael Kelley <mikelley@microsoft.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] x86/tdx: Fix crash on kexec
-Message-ID: <20240629135933.GAZoATRVAubo7ZDdKB@fat_crate.local>
+Message-ID: <poxeykijyqrz5hxrey46s6hh2qd6byirbevwuwec2gtbfq266c@npegk7sn3ot7>
 References: <20240629130621.1671544-1-kirill.shutemov@linux.intel.com>
+ <20240629135933.GAZoATRVAubo7ZDdKB@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240629130621.1671544-1-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20240629135933.GAZoATRVAubo7ZDdKB@fat_crate.local>
 
-On Sat, Jun 29, 2024 at 04:06:20PM +0300, Kirill A. Shutemov wrote:
-> The function tdx_enc_status_changed() was modified to handle vmalloc()
-> mappings. It now utilizes slow_virt_to_phys() to determine the physical
-> address of the page by walking page tables and looking for the physical
-> address in the page table entry.
+On Sat, Jun 29, 2024 at 03:59:33PM +0200, Borislav Petkov wrote:
+> On Sat, Jun 29, 2024 at 04:06:20PM +0300, Kirill A. Shutemov wrote:
+> > The function tdx_enc_status_changed() was modified to handle vmalloc()
+> > mappings. It now utilizes slow_virt_to_phys() to determine the physical
+> > address of the page by walking page tables and looking for the physical
+> > address in the page table entry.
+> > 
+> > However, this adjustment conflicted with the enabling of kexec. The
+> > function tdx_kexec_finish() clears the page table entry before calling
+> > tdx_enc_status_changed(), causing a BUG_ON() error in
+> > slow_virt_to_phys().
+> > 
+> > To address this issue, tdx_enc_status_change() should use __pa() to
+> > obtain physical addresses whenever possible. The virt_addr_valid() check
+> > will handle such cases, while any other scenarios, including vmalloc()
+> > mappings, will resort to slow_virt_to_phys().
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Fixes: e1b8ac3aae58 ("x86/tdx: Support vmalloc() for tdx_enc_status_changed()")
 > 
-> However, this adjustment conflicted with the enabling of kexec. The
-> function tdx_kexec_finish() clears the page table entry before calling
-> tdx_enc_status_changed(), causing a BUG_ON() error in
-> slow_virt_to_phys().
+> I'm going to zap this one from x86/urgent and give you guys ample time to test
+> thus stuff better and longer.
 > 
-> To address this issue, tdx_enc_status_change() should use __pa() to
-> obtain physical addresses whenever possible. The virt_addr_valid() check
-> will handle such cases, while any other scenarios, including vmalloc()
-> mappings, will resort to slow_virt_to_phys().
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Fixes: e1b8ac3aae58 ("x86/tdx: Support vmalloc() for tdx_enc_status_changed()")
+> Also, what is this e1b8ac3aae58 fixing and why is it urgent?
 
-I'm going to zap this one from x86/urgent and give you guys ample time to test
-thus stuff better and longer.
-
-Also, what is this e1b8ac3aae58 fixing and why is it urgent?
-
-AFAICT, it can go through the normal merge window...
+Daxuan, how urgent is this fix for you?
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+  Kiryl Shutsemau / Kirill A. Shutemov
