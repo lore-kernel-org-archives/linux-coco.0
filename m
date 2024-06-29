@@ -1,120 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B9D7F48C
-	for <linux-coco@lists.linux.dev>; Sat, 29 Jun 2024 13:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCADB824A1
+	for <linux-coco@lists.linux.dev>; Sat, 29 Jun 2024 14:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719666390; cv=none; b=eFcGzWQq0YkLJuRMIWeSH/5DerAI83xVUO7GXlymRbYkEX0MT1HKvDgoFoSC0/W9xHMRAY5B/C1EeFbEBmSRwoq1FHJDwcqeJP+0FZ/k1/u5bgRBCuSsy+sY3z2GJHdM8Ahpm5jMcFwRMfovAhkqNWpOxrQf19zHMoxqu341mhU=
+	t=1719669606; cv=none; b=FD7s8z/K++NngZFTAG1OX5iJB/WlYzC1rmMQWuzdyLorLpRoI8lTPpfmJpG8eGF768tsIWRjxV0HX/XxT7DVHhPMKowfrjZ+Mc5FycGo3Zp/qkF62MHEBeyeMq37Ii9l0rnv+UAZUTqO/5HGTIUSl3aHYsxqIrsvuiS7cCZ6GD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719666390; c=relaxed/simple;
-	bh=bzolQ7McCJ0wHotT5r4eTm/vv72nW1TF4Jc1AZfRGbk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XoFOuPS3IoLV1nwO2+km0LoeCPGcx7UlOF96O3i+nvPP2gHEg9fQh7m85xHDYBjljAsY/3GgotZPokkjgIcdffpebcAzXQZ8MOKSD0RH6ZaXsn2pyicTfkRnuhcKqlaMA4HZCpUqzxCzHlBEenA03R69ZAmWFk0mQ3LWHN8C/Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E0cOJvXB; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+	s=arc-20240116; t=1719669606; c=relaxed/simple;
+	bh=y/xyeGuUjLaPRofy+3kI4vniVRvilUhiHIvamon3P08=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PxEcaEI2NP0njGga2ggjq6Jkm1uAAMMvXE5ngXnlz66ASNFDRQN4BBFlh4fb7yUZFrLQBDd+v92INSbhY9/ar/JZj+DjRfk2P3qDC8C2Y2AlZVg222MnJwhF9Sha7x5Q2oTMZVwAq6dch1wIXhOCq8inc0OAwy/fHK/blFk4bmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=aVl2HxFr; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E0cOJvXB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719666389; x=1751202389;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bzolQ7McCJ0wHotT5r4eTm/vv72nW1TF4Jc1AZfRGbk=;
-  b=E0cOJvXBFPUU/Pi4q234lUY9B/HQb3fbubSf2hdFxhJJMSCzdy+2TaaR
-   8usMIyheXYWidX05IfSfDENcEFcHLSzZJmGEvHmj7DvapO2JTQPDrlqEn
-   NjxNG9cf1KqQrfVu0HaYYTIrpitHynNE57R3aVrUJjGdS3dAPNPtv/CQh
-   AvyeiW7dt6Z7K+hcXckZqmMaL8njDpGFR0qjr3o5UkaSD4ErtTImB36Re
-   p0JesuKk2BUtWj3aANQOD1HYI4+lkHfERjHAfY/A6D7q6/P/GEML4JSph
-   Uo49D4lOOqH9V7Zi85OqLnf3EOQah1dvotHWSFjFGXH633i/tz0bY/QHV
-   A==;
-X-CSE-ConnectionGUID: Ykj3pLOkTX2BRZmC2bHdmg==
-X-CSE-MsgGUID: lw2eImySTWqhm7ay2j6mjQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="39354807"
-X-IronPort-AV: E=Sophos;i="6.09,172,1716274800"; 
-   d="scan'208";a="39354807"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2024 06:06:28 -0700
-X-CSE-ConnectionGUID: SkeSC493RTSHS6PaAqz9dQ==
-X-CSE-MsgGUID: HLSy8GRmTMW595+fHL1oFQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,172,1716274800"; 
-   d="scan'208";a="44919239"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa010.jf.intel.com with ESMTP; 29 Jun 2024 06:06:26 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 31A3D1BD; Sat, 29 Jun 2024 16:06:23 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="aVl2HxFr"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 26B8340E0192;
+	Sat, 29 Jun 2024 13:59:57 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id wbLqI-ep6Lig; Sat, 29 Jun 2024 13:59:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1719669592; bh=gibAjF9WXEwdjtFDruiFkfc3HZzBGfeCkKLQh8VI33k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aVl2HxFrPm+JnC+QL4Ma1CyS1xk8+2XA5uDPsTYFqA9x2+gIGdZh4zS3NUXxM3kLI
+	 M4VAQcrFho1TLviwU8615H5s51f+Y1ma9aJKZBMIK+3bmmCI94fDfMTQbT0kMzdxxO
+	 IsHMymOSY5AyfvC800/DxzVG0CDId2YDCy6Tr8cUQEhiR+ou13E5rO+zGyDQRiPN8N
+	 1zUECt5rSlIdvOMI9vQqX6jRs3Vo3VlkcZ/WMC2h8cb6f0WMKWwUOgohXt5X4kZEJF
+	 h5ebZOXy+0ay5vVTQRvte9BhbsjmpthNBh9ySdwIthc3knobDOrnPqii0LZ6NWO6FH
+	 S7/OFxeKuD0XT65TVGfCqO/5T0mZoz00u+9MFit6Mlq7fJ4zatkWIl2N0kWPPx280+
+	 kPJUyMA3pxe3qWRBuAsOR9/taIh28ws9Z4ld2ccmpCy49SxOFCHBaYMQlfhqBGHjgm
+	 762EwNdqMe7fk3rRUkW5Br4yeAr3KaLEHjRL/4jsP2cBCoXs0WLi2p2Fk5X4xIdwX1
+	 m+TG3/xv7KzD2Uh6mbVdT5NEdDs/qu+kiWwkhYFcMGYAHuCzwUoiTUzNqrqDcqCnQD
+	 HXvgSLOXhSyhuKMzTeu+Hh2sZ0ugSXgUbrAjYMTL/dgl17b2xTNOnzhqmKrCfi13wt
+	 vj3H/XaRN+28y5gTysV4IJlQ=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6DE2A40E0177;
+	Sat, 29 Jun 2024 13:59:39 +0000 (UTC)
+Date: Sat, 29 Jun 2024 15:59:33 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
+	Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Michael Kelley <mikelley@microsoft.com>,
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	linux-coco@lists.linux.dev,
+	Kai Huang <kai.huang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dexuan Cui <decui@microsoft.com>, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] x86/tdx: Fix crash on kexec
-Date: Sat, 29 Jun 2024 16:06:20 +0300
-Message-ID: <20240629130621.1671544-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH] x86/tdx: Fix crash on kexec
+Message-ID: <20240629135933.GAZoATRVAubo7ZDdKB@fat_crate.local>
+References: <20240629130621.1671544-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240629130621.1671544-1-kirill.shutemov@linux.intel.com>
 
-The function tdx_enc_status_changed() was modified to handle vmalloc()
-mappings. It now utilizes slow_virt_to_phys() to determine the physical
-address of the page by walking page tables and looking for the physical
-address in the page table entry.
+On Sat, Jun 29, 2024 at 04:06:20PM +0300, Kirill A. Shutemov wrote:
+> The function tdx_enc_status_changed() was modified to handle vmalloc()
+> mappings. It now utilizes slow_virt_to_phys() to determine the physical
+> address of the page by walking page tables and looking for the physical
+> address in the page table entry.
+> 
+> However, this adjustment conflicted with the enabling of kexec. The
+> function tdx_kexec_finish() clears the page table entry before calling
+> tdx_enc_status_changed(), causing a BUG_ON() error in
+> slow_virt_to_phys().
+> 
+> To address this issue, tdx_enc_status_change() should use __pa() to
+> obtain physical addresses whenever possible. The virt_addr_valid() check
+> will handle such cases, while any other scenarios, including vmalloc()
+> mappings, will resort to slow_virt_to_phys().
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Fixes: e1b8ac3aae58 ("x86/tdx: Support vmalloc() for tdx_enc_status_changed()")
 
-However, this adjustment conflicted with the enabling of kexec. The
-function tdx_kexec_finish() clears the page table entry before calling
-tdx_enc_status_changed(), causing a BUG_ON() error in
-slow_virt_to_phys().
+I'm going to zap this one from x86/urgent and give you guys ample time to test
+thus stuff better and longer.
 
-To address this issue, tdx_enc_status_change() should use __pa() to
-obtain physical addresses whenever possible. The virt_addr_valid() check
-will handle such cases, while any other scenarios, including vmalloc()
-mappings, will resort to slow_virt_to_phys().
+Also, what is this e1b8ac3aae58 fixing and why is it urgent?
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: e1b8ac3aae58 ("x86/tdx: Support vmalloc() for tdx_enc_status_changed()")
----
- arch/x86/coco/tdx/tdx.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+AFAICT, it can go through the normal merge window...
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index ef8ec2425998..8f471260924f 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -813,8 +813,16 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- 		step = PAGE_SIZE;
- 
- 	for (addr = start; addr < end; addr += step) {
--		phys_addr_t start_pa = slow_virt_to_phys((void *)addr);
--		phys_addr_t end_pa   = start_pa + step;
-+		phys_addr_t start_pa;
-+		phys_addr_t end_pa;
-+
-+		/* The check fails on vmalloc() mappings */
-+		if (virt_addr_valid(addr))
-+			start_pa = __pa(addr);
-+		else
-+			start_pa = slow_virt_to_phys((void *)addr);
-+
-+		end_pa = start_pa + step;
- 
- 		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
- 			return false;
 -- 
-2.43.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
