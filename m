@@ -1,111 +1,218 @@
-Received: from norbury.hmeau.com (helcar.hmeau.com [216.24.177.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3009D3C6AC;
-	Sun, 30 Jun 2024 22:11:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.24.177.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDD92C859;
+	Mon,  1 Jul 2024 09:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719785476; cv=none; b=ZwZfTyzs82xWn39jP0Ecz7GaX1gEUud/MnKLRWEPq+TcJgHeRXARIDnEp1obrG7r/QI7sa1Y/+Vj6uv77K6Ak5qD9Hz+52JkTxN1Mua3xVwMe9y9OfDpb84xYN9TG1tC3rfYh6TAPOw4PnyHzHEG5sF/GalIrTMHlGWAnCcA76s=
+	t=1719827722; cv=none; b=TQlln4LiYdPffPsoCPlAguacH4Bp0dJVZEeTjXBUSO7uVqhsNH0q7x3ewwz01mF/8/qrPM33HGHPltHVu3t+mWvkSYld1aqu9cSrc22gy2JKcOLoBOTlKtRpfsxzavffirfD1Dqgxj7wE61KdMtNDLgp1CuPJEfg64KRMUrH6LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719785476; c=relaxed/simple;
-	bh=tX6dUOvHGO9gAzRiumYdZMpZA1MkYOpepNhn6QftJI0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=csN5oZ7pQXwvMkdEdx9iYsUStSQVQB//JfxWBykBkHB7gaMyjXBzseERj6d3EKpw3Dgfd1NRghmZtTPiZne8H20fgW84i0c+38pEovbD8L32io1/gQvaxG9vxpquL7dB2pP0uJpElkpyG7xY+/Wfpdu7NXtq16HVE0J6SA9EdXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=216.24.177.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
-	by norbury.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1sO2kR-004qfe-1k;
-	Mon, 01 Jul 2024 08:10:16 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Mon, 01 Jul 2024 08:10:16 +1000
-Date: Mon, 1 Jul 2024 08:10:16 +1000
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Li, Ming" <ming4.li@intel.com>,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dhaval Giani <dhaval.giani@amd.com>,
-	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
-	Jerome Glisse <jglisse@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v2 06/18] crypto: ecdsa - Support P1363 signature encoding
-Message-ID: <ZoHXyGwRzVvYkcTP@gondor.apana.org.au>
-References: <cover.1719771133.git.lukas@wunner.de>
- <d143bb81c65064654af926317f69e6578cf0cdb9.1719771133.git.lukas@wunner.de>
+	s=arc-20240116; t=1719827722; c=relaxed/simple;
+	bh=OggWIOikETqCuIyJ9gVeBHTVrbKuXcdJ+5yR+9XEoSs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TpiMcTKxPmd4i0y1bB3Ti0GCwLEW3k7Rs1Ry92ZWQRHqhDCuCmFUu8gFaLc8ekGIL0IcuWgeKL9c0iekdRnfxNTQn3pTv2yIqGRPXxiKVNAbSHYHK7iv9LM/6oErflS/GSB1y2cXkSbeEHpC8B1n92PhbjyTivzyJfW7rS98QPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C585339;
+	Mon,  1 Jul 2024 02:55:43 -0700 (PDT)
+Received: from e122027.arm.com (unknown [10.57.44.170])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 08CAC3F762;
+	Mon,  1 Jul 2024 02:55:14 -0700 (PDT)
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: [PATCH v4 00/15] arm64: Support for running as a guest in Arm CCA
+Date: Mon,  1 Jul 2024 10:54:50 +0100
+Message-Id: <20240701095505.165383-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d143bb81c65064654af926317f69e6578cf0cdb9.1719771133.git.lukas@wunner.de>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jun 30, 2024 at 09:41:00PM +0200, Lukas Wunner wrote:
->
-> diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
-> index 258fffbf623d..8d412dec917f 100644
-> --- a/crypto/ecdsa.c
-> +++ b/crypto/ecdsa.c
-> @@ -139,6 +139,7 @@ static int ecdsa_verify(struct akcipher_request *req)
->  	struct crypto_akcipher *tfm = crypto_akcipher_reqtfm(req);
->  	struct ecc_ctx *ctx = akcipher_tfm_ctx(tfm);
->  	size_t bufsize = ctx->curve->g.ndigits * sizeof(u64);
-> +	size_t keylen = DIV_ROUND_UP(ctx->curve->nbits, 8);
->  	struct ecdsa_signature_ctx sig_ctx = {
->  		.curve = ctx->curve,
->  	};
-> @@ -159,10 +160,21 @@ static int ecdsa_verify(struct akcipher_request *req)
->  		sg_nents_for_len(req->src, req->src_len + req->dst_len),
->  		buffer, req->src_len + req->dst_len, 0);
->  
-> -	ret = asn1_ber_decoder(&ecdsasignature_decoder, &sig_ctx,
-> -			       buffer, req->src_len);
-> -	if (ret < 0)
-> +	if (strcmp(req->enc, "x962") == 0) {
-> +		ret = asn1_ber_decoder(&ecdsasignature_decoder, &sig_ctx,
-> +				       buffer, req->src_len);
-> +		if (ret < 0)
-> +			goto error;
-> +	} else if (strcmp(req->enc, "p1363") == 0 &&
-> +		   req->src_len == 2 * keylen) {
-> +		ecc_digits_from_bytes(buffer, keylen, sig_ctx.r,
-> +				      ctx->curve->g.ndigits);
-> +		ecc_digits_from_bytes(&buffer[keylen], keylen, sig_ctx.s,
-> +				      ctx->curve->g.ndigits);
-> +	} else {
-> +		ret = -EINVAL;
->  		goto error;
-> +	}
+This series adds support for running Linux in a protected VM under the
+Arm Confidential Compute Architecture (CCA). This has been updated
+following the feedback from the v3 posting[1]. Thanks for the feedback!
+Individual patches have a change log. But things to highlight:
 
-This should be implemented as a template.  Change ecdsa to use a
-"raw" encoding for r/s and then implement x962 and p1363 as templates
-which converts their respective encodings to the raw one.  You
-would then use "x962(ecdsa-nist-XXX)" or "p1363(ecdsa-nist-XXX)"
-to pick the encoding.
+ * a new patch ("firmware/psci: Add psci_early_test_conduit()") to
+   prevent SMC calls being made on systems which don't support them -
+   i.e. systems without EL2/EL3 - thanks Jean-Philippe!
 
-Cheers,
+ * two patches dropped (overriding set_fixmap_io). Instead
+   FIXMAP_PAGE_IO is modified to include PROT_NS_SHARED. When support
+   for assigning hardware devices to a realm guest is added this will
+   need to be brought back in some form. But for now it's just adding
+   complixity and confusion for no gain.
+
+ * a new patch ("arm64: mm: Avoid TLBI when marking pages as valid")
+   which avoids doing an extra TLBI when doing the break-before-make.
+   Note that this changes the behaviour in other cases when making
+   memory valid. This should be safe (and saves a TLBI for those cases),
+   but it's a separate patch in case of regressions.
+
+ * GIC ITT allocation now uses a custom genpool-based allocator. I
+   expect this will be replaced with a generic way of allocating
+   decrypted memory (see [4]), but for now this gets things working
+   without wasting too much memory.
+
+The ABI to the RMM from a realm (the RSI) is based on the final RMM v1.0
+(EAC 5) specification[2]. Future RMM specifications will be backwards
+compatible so a guest using the v1.0 specification (i.e. this series)
+will be able to run on future versions of the RMM without modification.
+
+This series is based on v6.10-rc1. It is also available as a git
+repository:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-guest/v4
+
+This series (the guest side) should be in a good state so please review
+with the intention that this could be merged soon. The host side will
+require more iteration so the versioning of the series will diverge -
+so for now continue to use v3 for the host support.
+
+Introduction (unchanged from v2 posting)
+============
+A more general introduction to Arm CCA is available on the Arm
+website[3], and links to the other components involved are available in
+the overall cover letter.
+
+Arm Confidential Compute Architecture adds two new 'worlds' to the
+architecture: Root and Realm. A new software component known as the RMM
+(Realm Management Monitor) runs in Realm EL2 and is trusted by both the
+Normal World and VMs running within Realms. This enables mutual
+distrust between the Realm VMs and the Normal World.
+
+Virtual machines running within a Realm can decide on a (4k)
+page-by-page granularity whether to share a page with the (Normal World)
+host or to keep it private (protected). This protection is provided by
+the hardware and attempts to access a page which isn't shared by the
+Normal World will trigger a Granule Protection Fault.
+
+Realm VMs can communicate with the RMM via another SMC interface known
+as RSI (Realm Services Interface). This series adds wrappers for the
+full set of RSI commands and uses them to manage the Realm IPA State
+(RIPAS) and to discover the configuration of the realm.
+
+The VM running within the Realm needs to ensure that memory that is
+going to use is marked as 'RIPAS_RAM' (i.e. protected memory accessible
+only to the guest). This could be provided by the VMM (and subject to
+measurement to ensure it is setup correctly) or the VM can set it
+itself.  This series includes a patch which will iterate over all
+described RAM and set the RIPAS. This is a relatively cheap operation,
+and doesn't require memory donation from the host. Instead, memory can
+be dynamically provided by the host on fault. An alternative would be to
+update booting.rst and state this as a requirement, but this would
+reduce the flexibility of the VMM to manage the available memory to the
+guest (as the initial RIPAS state is part of the guest's measurement).
+
+Within the Realm the most-significant active bit of the IPA is used to
+select whether the access is to protected memory or to memory shared
+with the host. This series treats this bit as if it is attribute bit in
+the page tables and will modify it when sharing/unsharing memory with
+the host.
+
+This top bit usage also necessitates that the IPA width is made more
+dynamic in the guest. The VMM will choose a width (and therefore which
+bit controls the shared flag) and the guest must be able to identify
+this bit to mask it out when necessary. PHYS_MASK_SHIFT/PHYS_MASK are
+therefore made dynamic.
+
+To allow virtio to communicate with the host the shared buffers must be
+placed in memory which has this top IPA bit set. This is achieved by
+implementing the set_memory_{encrypted,decrypted} APIs for arm64 and
+forcing the use of bounce buffers. For now all device access is
+considered to required the memory to be shared, at this stage there is
+no support for real devices to be assigned to a realm guest - obviously
+if device assignment is added this will have to change.
+
+Finally the GIC is (largely) emulated by the (untrusted) host. The RMM
+provides some management (including register save/restore) but the
+ITS buffers must be placed into shared memory for the host to emulate.
+There is likely to be future work to harden the GIC driver against a
+malicious host (along with any other drivers used within a Realm guest).
+
+[1] https://lore.kernel.org/lkml/20240605093006.145492-1-steven.price%40arm.com
+[2] https://developer.arm.com/documentation/den0137/1-0eac5/
+[3] https://www.arm.com/architecture/security-features/arm-confidential-compute-architecture
+[4] https://lore.kernel.org/lkml/ZmNJdSxSz-sYpVgI%40arm.com
+
+Jean-Philippe Brucker (1):
+  firmware/psci: Add psci_early_test_conduit()
+
+Sami Mujawar (2):
+  arm64: rsi: Interfaces to query attestation token
+  virt: arm-cca-guest: TSM_REPORT support for realms
+
+Steven Price (7):
+  arm64: realm: Query IPA size from the RMM
+  arm64: Mark all I/O as non-secure shared
+  arm64: Make the PHYS_MASK_SHIFT dynamic
+  arm64: Enforce bounce buffers for realm DMA
+  arm64: mm: Avoid TLBI when marking pages as valid
+  irqchip/gic-v3-its: Share ITS tables with a non-trusted hypervisor
+  irqchip/gic-v3-its: Rely on genpool alignment
+
+Suzuki K Poulose (5):
+  arm64: rsi: Add RSI definitions
+  arm64: Detect if in a realm and set RIPAS RAM
+  arm64: Enable memory encrypt for Realms
+  arm64: Force device mappings to be non-secure shared
+  efi: arm64: Map Device with Prot Shared
+
+ arch/arm64/Kconfig                            |   3 +
+ arch/arm64/include/asm/fixmap.h               |   2 +-
+ arch/arm64/include/asm/io.h                   |   8 +-
+ arch/arm64/include/asm/mem_encrypt.h          |  17 ++
+ arch/arm64/include/asm/pgtable-hwdef.h        |   6 -
+ arch/arm64/include/asm/pgtable-prot.h         |   3 +
+ arch/arm64/include/asm/pgtable.h              |  13 +-
+ arch/arm64/include/asm/rsi.h                  |  64 ++++++
+ arch/arm64/include/asm/rsi_cmds.h             | 134 +++++++++++
+ arch/arm64/include/asm/rsi_smc.h              | 142 ++++++++++++
+ arch/arm64/include/asm/set_memory.h           |   3 +
+ arch/arm64/kernel/Makefile                    |   3 +-
+ arch/arm64/kernel/efi.c                       |   2 +-
+ arch/arm64/kernel/rsi.c                       | 104 +++++++++
+ arch/arm64/kernel/setup.c                     |   8 +
+ arch/arm64/mm/init.c                          |  10 +-
+ arch/arm64/mm/pageattr.c                      |  76 ++++++-
+ drivers/firmware/psci/psci.c                  |  25 +++
+ drivers/irqchip/irq-gic-v3-its.c              | 142 +++++++++---
+ drivers/virt/coco/Kconfig                     |   2 +
+ drivers/virt/coco/Makefile                    |   1 +
+ drivers/virt/coco/arm-cca-guest/Kconfig       |  11 +
+ drivers/virt/coco/arm-cca-guest/Makefile      |   2 +
+ .../virt/coco/arm-cca-guest/arm-cca-guest.c   | 211 ++++++++++++++++++
+ include/linux/psci.h                          |   5 +
+ 25 files changed, 953 insertions(+), 44 deletions(-)
+ create mode 100644 arch/arm64/include/asm/mem_encrypt.h
+ create mode 100644 arch/arm64/include/asm/rsi.h
+ create mode 100644 arch/arm64/include/asm/rsi_cmds.h
+ create mode 100644 arch/arm64/include/asm/rsi_smc.h
+ create mode 100644 arch/arm64/kernel/rsi.c
+ create mode 100644 drivers/virt/coco/arm-cca-guest/Kconfig
+ create mode 100644 drivers/virt/coco/arm-cca-guest/Makefile
+ create mode 100644 drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
+
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.34.1
+
