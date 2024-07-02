@@ -1,167 +1,246 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2060.outbound.protection.outlook.com [40.107.93.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0DC1B5838
-	for <linux-coco@lists.linux.dev>; Tue,  2 Jul 2024 16:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719937057; cv=none; b=c6hRlq99HuBguQ0ttiBlaA8dKDBhCkVIPcmClRibtdmyiSGarp4BiJjqbTXdy5Eghn2/T21w8dHC11h1IcvTcF+R+WveeyQbJ4C2L5oCSQOwK+yNwSviE6ohq28/1qdlGq83Js4nxYAY4E6l0PJN3OtYfJwaUAWDCMooEj7hIL4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719937057; c=relaxed/simple;
-	bh=tvzSqwVzqT2MeN+0OQxjWbM8B/fx4OAm7mNBB19+s0E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q/2HiYS4eH35ihZEkHYKJiCG1MxW3LtJj5SVSbQFUrvb1U5qZNaYFpDWQ5SJpLBjqLaaAha7w1v4oTUgA3scFVEeXVWxSaYnUKonfm8VW5GZRQtJ07RHLKkyXfOSjOr9XcbzM57UK0M3bq6BVK7LhXBYfGtmt5NxHCaNbqvGWKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pu2wWVI5; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9C61BC070
+	for <linux-coco@lists.linux.dev>; Tue,  2 Jul 2024 19:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719950216; cv=fail; b=eBNb59KBkOOQfOi54/1sc18U81s0ZueOYlhEDlwfW2nsJn5EK5ahVL+pyQABzh5u2wiEEkeqC6PsK8skvjdP+KtEJJ0Au4yUzTebKN/zFOpgjnRkLX8/6dSiJbE51oKxZo98iROIkCFN+yP2uUQWeXmNb7pJ8TK+oV+t/NAdHAM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719950216; c=relaxed/simple;
+	bh=WXF83HTo+GhGE/f7+Qr7sNuvxfxB+mX62NEMGUKPfGk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LU24FQLTndu5bVhMbxci4h/oSkbB+xGeIyuHvJM739PbKGEChHcCu+5oOU3dKgJ+nus4UHykPUdGOXTtKVcYBBjeP8Wv0OwqWLmusKFeyN2F5Bvo72VGtGgPIDsJzjHhAdUxT8ZrtzoW/JE4pphvsjrOBKuP19MRcYVJJhQ+l5A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=M9g1BH48; arc=fail smtp.client-ip=40.107.93.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pu2wWVI5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719937056; x=1751473056;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=tvzSqwVzqT2MeN+0OQxjWbM8B/fx4OAm7mNBB19+s0E=;
-  b=Pu2wWVI5+ImLPzb89opL57RyItu3zpofwqCjCgWfwSNU6FgpQJShamLl
-   oExG0dpxXLxOxhhmG9la7gGQXttKJUN3KuinDwVl8etIrfxlQ2tHmcGxT
-   a7aAbLZ2by5pFiNUi8p7DhthLsv1aP1PeBi4YQoigk/nOg3qyLskHYDVz
-   9gJb9wPCvglYyY7F27oLdHoyRvnK2N1sbautmmBc/DcacIkinSCM2A497
-   /yiE7QZutte4tbt7NLjuLMg6LVuuhOCXkla57lMJYPzc9cRNoMw/oAwuI
-   SPKrXdQVFf0ZRF9TQ3e12Bdlle2ghlZYgfkXeJ0EXJdkEazhje0G9PEWn
-   g==;
-X-CSE-ConnectionGUID: DgRu6N3fRO6oPM6Gik2/qQ==
-X-CSE-MsgGUID: lRDviwG8Tm22nHEMYkYotw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="27802812"
-X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; 
-   d="scan'208";a="27802812"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2024 09:17:15 -0700
-X-CSE-ConnectionGUID: q4CqYxW3SWS2V+uD9YkGxA==
-X-CSE-MsgGUID: TGILGBwYQPqrWVg3SvI8dg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; 
-   d="scan'208";a="45731126"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.26]) ([10.124.240.26])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2024 09:17:07 -0700
-Message-ID: <3b28af5e-1274-411e-9536-9ad964e0b25f@intel.com>
-Date: Wed, 3 Jul 2024 00:17:04 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="M9g1BH48"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=c0FiuKV77xy+d7FNuFz/D0C7Aiugxgy3kPhyG4UHuiiYPp9gMLbywe33wP0v0AeQ8Yaf4vCdPCc432qH8+rhDqQo6z9fW9rX4UdjN9f3BdKcEuJaWyuQg9spLCqAiaOlgDcfr2BO5ehgnTaM7cWrq5CYiVm4KeZxM5YxBM9mPBCpJaelAkSMJ/ZQiRX3Rx2Fpy39lRKNcHmFoKjWQOjS6jubi8gatiynH9gCbr076tk83q507e/H/TXzrGm9oj9+IoNxwLU1pjGWB7Yp5cf56L/W4PFLJaCt474gD4ebs/aRgZkpDlDAn+lgqTf/pavBaOoWZA3G3cG8JZ/62/iZGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YmCeDU2fX7yAQjpLbzJlPnbjO+dvR6kRRZmZ1Hwi7C8=;
+ b=mx59FoHCHgjJAIb+/QgR26lu2jhz6JW8uOR64j2uvuU51or67v/o6YLGGV7x9PCMfWsB9Rmct9PiTDVS+H5vxcObK8BMwAeCSingv/m1LXKsPEjSTEcEFnx8K2QSwgVr/d4HRZvZUakUw+uoxOgnnYlZao5x8Aormiit21DJtpUKbu7vPwDCjpv1/pxY2UAJwzPCfaswebPubG7WIL/hkpMJgKj2znYi6OjF2qb+uS1G6qZ9x0HlBV/LUeaw6y8bTPjNoqIlkgj/sjL2NhB+8m61mCW+airRMkCi1B4/s9d5AiFRDYTEl0LugP4Qxb7H+hbOalLiEnVNuW54WLqrWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YmCeDU2fX7yAQjpLbzJlPnbjO+dvR6kRRZmZ1Hwi7C8=;
+ b=M9g1BH481uMpcjTh6urBda8U2/KrQ+Y5T0W00CgP9YCZMHuOcWOeJ1+zE2tsEx0+YlAKbgjWpbhAFJ2uuv/DAguK3Qru2rd0MQnfnxcTe945JoAOnoY2bbewf9cbcoUfX7Rh/AKqgJKAQ+oPnQYcU7goRQOzh5TBWYylGQ4jLuU=
+Received: from CH0P221CA0035.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:11d::22)
+ by PH7PR12MB5878.namprd12.prod.outlook.com (2603:10b6:510:1d6::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.29; Tue, 2 Jul
+ 2024 19:56:46 +0000
+Received: from CH1PEPF0000AD78.namprd04.prod.outlook.com
+ (2603:10b6:610:11d:cafe::66) by CH0P221CA0035.outlook.office365.com
+ (2603:10b6:610:11d::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.23 via Frontend
+ Transport; Tue, 2 Jul 2024 19:56:46 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH1PEPF0000AD78.mail.protection.outlook.com (10.167.244.56) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7741.18 via Frontend Transport; Tue, 2 Jul 2024 19:56:45 +0000
+Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 2 Jul
+ 2024 14:56:43 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <dave.hansen@linux.intel.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<bp@alien8.de>, <x86@kernel.org>
+CC: <hpa@zytor.com>, <rafael@kernel.org>, <peterz@infradead.org>,
+	<adrian.hunter@intel.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	<jun.nakajima@intel.com>, <kirill.shutemov@linux.intel.com>,
+	<rick.p.edgecombe@intel.com>, <linux-kernel@vger.kernel.org>,
+	<thomas.lendacky@amd.com>, <michael.roth@amd.com>, <seanjc@google.com>,
+	<kai.huang@intel.com>, <bhe@redhat.com>, <bdas@redhat.com>,
+	<vkuznets@redhat.com>, <dionnaglaze@google.com>, <anisinha@redhat.com>,
+	<ardb@kernel.org>, <dyoung@redhat.com>, <kexec@lists.infradead.org>,
+	<linux-coco@lists.linux.dev>, <jroedel@suse.de>
+Subject: [PATCH v11 0/3] x86/snp: Add kexec support
+Date: Tue, 2 Jul 2024 19:56:33 +0000
+Message-ID: <cover.1719948376.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240614095904.1345461-1-kirill.shutemov@linux.intel.com>
+References: <20240614095904.1345461-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 4/4] x86/tdx: Enable CPU topology enumeration
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
- <20240624114149.377492-5-kirill.shutemov@linux.intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20240624114149.377492-5-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD78:EE_|PH7PR12MB5878:EE_
+X-MS-Office365-Filtering-Correlation-Id: 284f8e66-5cea-4564-71c1-08dc9ad11a05
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?NLzKCucgRmLH6r+1jp5EvkzNROdRe/+NgSennIsdJYCVacILxp7bhsHqJJXi?=
+ =?us-ascii?Q?ZnI9xuNvcUC3YIf9jWt43pkxqJACt81Y/jA8Xc1+mXzu6bzRPQqH+BO9GHg4?=
+ =?us-ascii?Q?d9sj5hlBH6sUlor6r975uqSxForBhR1xZZdbG8qCftH22vtaKcz6eAPGgsty?=
+ =?us-ascii?Q?PreSdhIIK4ExO39YVx3KKs0ACsSwTe+3/eUaKPj6q5tYL6k9F2Oe9PIIDwbV?=
+ =?us-ascii?Q?D6XCF+ac9zF5p8fOZd3sQpYEJW32/hgtvMvQXCQYD5/BRzFolNsBneDQjR/o?=
+ =?us-ascii?Q?IMkzlUCPoMJGw3cla8CoxFlUjTGolEJOLIS3P1KdFQreW4em58E5C8L91JQW?=
+ =?us-ascii?Q?iNRKLYQxxmTTyxloDTRyrr8dolBNc12VeoVIc+g/tZlgZChlb1R2Z0cHwzr9?=
+ =?us-ascii?Q?RMOH4HQeNk7TeAT+S09RIHDdBw+InH3g+vDVVgNvwxHj0jPegmGHsrBhVaJh?=
+ =?us-ascii?Q?h0HTA6/dkRqwkvX7eXcZWdL8ceMN0W6vxN2vpq+5twRDkDlLDAaMY6BSIcOh?=
+ =?us-ascii?Q?adqB0rzR550RstnydkwMjQ3cHOaw7SuDBF/mMmuZwHbHBkPX3qAJDO7Gf+TI?=
+ =?us-ascii?Q?8R0pcyfBv3Pr9FK5WPJgPi7LMaJnzn06dVj1s079xGrIIa7FhOggI8/EvVhr?=
+ =?us-ascii?Q?equNdR8XWxty4PHfQxXu60bfdoUgVM61hILpW2YKHQQbCGG1wQGiF8zzRfDp?=
+ =?us-ascii?Q?FEX5+Kgnaxx6Y0487urT/6OjuAmGB+mlFE3fYccnDlQNXWWtiSwaFP2Rw8xS?=
+ =?us-ascii?Q?wiHSIG2EwaKlpYu9iO3UwVs3Ct5bMI+RlcupOMrCXRMFMnKqR1yQj4st3lY4?=
+ =?us-ascii?Q?lr8M8uLun73r8t7RjmeK9yz652jf6v4sqAA8ChZl9Tb84b8gSm+ihq2qlcYO?=
+ =?us-ascii?Q?2Qf0Zo2ljpFBKIdO0qNuMUUg08ZB6K8qBJzf6p+FLNV3LPLTXWTGTd4+gNe0?=
+ =?us-ascii?Q?JSfc9P5b1RMW0iuvzpcJUBS2Uky2GpH8y5Vl3lmIuOOXuFbzyZO9EBTmxubA?=
+ =?us-ascii?Q?UdIUZbqE6Ihz+cmPk2B0LmJmlXc/VC3Q+XT7ACxLOBPsuqrvbzwcYF32Qbpb?=
+ =?us-ascii?Q?bOKc/n5GWkE9lZiJeyyAWHTHaqv9aT70A6wl3QPqHsYoJMw3sIcVKDT2KbNd?=
+ =?us-ascii?Q?NbNCWlphKwQ09mIw5n/xcDUDCngz/8g32dPTV+73cr+kvgpBp1ocYH8ePM16?=
+ =?us-ascii?Q?3mIttQeQybMrNkfEOVdDQ5K4ZFhg2HCyHP4ciZwQxoK5czlkQNvADxP7mjBw?=
+ =?us-ascii?Q?u5tK4KhLPN5JWN68vu1PumyW+LdPYw2seF/bf3GI9HbpqdYLF5ECYNqTz9P9?=
+ =?us-ascii?Q?az5Dw5VvCplpz6J7fB0rANCPp55rgaJzKWWP9myiQgg1Wvets6Za7P7fSjgf?=
+ =?us-ascii?Q?49IpnICej4a6Hg8DYFP930EaDxLyiizTiYYROj/+YR3qtj5Urg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2024 19:56:45.4548
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 284f8e66-5cea-4564-71c1-08dc9ad11a05
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000AD78.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5878
 
-On 6/24/2024 7:41 PM, Kirill A. Shutemov wrote:
-> TDX 1.0 defines baseline behaviour of TDX guest platform. In TDX 1.0
-> generates a #VE when accessing topology-related CPUID leafs (0xB and
-> 0x1F) and the X2APIC_APICID MSR. The kernel returns all zeros on CPUID
-> topology. In practice, this means that the kernel can only boot with a
-> plain topology. Any complications will cause problems.
-> 
-> The ENUM_TOPOLOGY feature allows the VMM to provide topology
-> information to the guest. Enabling the feature eliminates
-> topology-related #VEs: the TDX module virtualizes accesses to
-> the CPUID leafs and the MSR.
-> 
-> Enable ENUM_TOPOLOGY if it is available.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> ---
->   arch/x86/coco/tdx/tdx.c           | 27 +++++++++++++++++++++++++++
->   arch/x86/include/asm/shared/tdx.h |  2 ++
->   2 files changed, 29 insertions(+)
-> 
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index ba3103877b21..f6e48119d6fd 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -249,6 +249,32 @@ static void disable_sept_ve(u64 td_attr)
->   	return;
->   }
->   
-> +/*
-> + * TDX 1.0 generates a #VE when accessing topology-related CPUID leafs (0xB and
-> + * 0x1F) and the X2APIC_APICID MSR. The kernel returns all zeros on CPUID #VEs.
-> + * In practice, this means that the kernel can only boot with a plain topology.
-> + * Any complications will cause problems.
-> + *
-> + * The ENUM_TOPOLOGY feature allows the VMM to provide topology information.
-> + * Enabling the feature  eliminates topology-related #VEs: the TDX module
-> + * virtualizes accesses to the CPUID leafs and the MSR.
-> + *
-> + * Enable ENUM_TOPOLOGY if it is available.
-> + */
-> +static void enable_cpu_topology_enumeration(void)
-> +{
-> +	u64 configured;
-> +
-> +	/* Has the VMM provided a valid topology configuration? */
-> +	tdg_vm_rd(TDCS_TOPOLOGY_ENUM_CONFIGURED, &configured);
-> +	if (!configured) {
-> +		pr_err("VMM did not configure X2APIC_IDs properly\n");
-> +		return;
-> +	}
-> +
-> +	tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_ENUM_TOPOLOGY, TD_CTLS_ENUM_TOPOLOGY);
-> +}
-> +
->   static void tdx_setup(u64 *cc_mask)
->   {
->   	struct tdx_module_args args = {};
-> @@ -280,6 +306,7 @@ static void tdx_setup(u64 *cc_mask)
->   	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
->   
->   	disable_sept_ve(td_attr);
-> +	enable_cpu_topology_enumeration();
->   }
->   
->   /*
-> diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-> index fecb2a6e864b..89f7fcade8ae 100644
-> --- a/arch/x86/include/asm/shared/tdx.h
-> +++ b/arch/x86/include/asm/shared/tdx.h
-> @@ -23,12 +23,14 @@
->   #define TDCS_CONFIG_FLAGS		0x1110000300000016
->   #define TDCS_TD_CTLS			0x1110000300000017
->   #define TDCS_NOTIFY_ENABLES		0x9100000000000010
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-The ID for TDCS_NOTIFY_ENABLES I read from TDX spec is
+The patchset adds bits and pieces to get kexec (and crashkernel) work on
+SNP guest.
 
-	0x9110000300000010
-	
-> +#define TDCS_TOPOLOGY_ENUM_CONFIGURED	0x9100000000000019
+This patchset requires the following fix for preventing EFI memory map
+corruption while doing SNP guest kexec:
+  https://lore.kernel.org/all/16131a10-b473-41cc-a96e-d71a4d930353@amd.com/T/#m77f2f33f5521d1369b0e8d461802b99005b4ffd6
 
-and
-	0x9110000000000019
+The series is based off and tested against tree:
+  https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git
 
-for TOPOLOGY_ENUM_CONFIGURED.
+----
 
-Both version of them can work actually. But I'm curious where did you 
-get them? just an old version of spec?
-	
->   /* TDCS_CONFIG_FLAGS bits */
->   #define TDCS_CONFIG_FLEXIBLE_PENDING_VE	BIT_ULL(1)
->   
->   /* TDCS_TD_CTLS bits */
->   #define TD_CTLS_PENDING_VE_DISABLE	BIT_ULL(0)
-> +#define TD_CTLS_ENUM_TOPOLOGY		BIT_ULL(1)
->   
->   /* TDX hypercall Leaf IDs */
->   #define TDVMCALL_MAP_GPA		0x10001
+v11:
+- Refactored __set_clr_pte_enc() and added two new helper functions to
+  set/clear PTE C-bit from early SEV/SNP initialization code and
+  later during normal system operations and shutdown/kexec.
+- Removed kexec_last_addr_to_make_private and now skip per-cpu
+  GHCB addresses when making all pages private and then after 
+  converting all pages to private in snp_kexec_finish(), go over
+  the per-cpu GHCB addresses and convert them to private explicitly.
+- Fixed comments and commit logs as per upstream review.
+
+v10:
+- Removed pr_debug() calls as per upstream review feedback.
+- Add review tags.
+
+v9:
+- Rebased onto current tip/master;
+- Rebased on top of [PATCH] x86/sev: Move SEV compilation units 
+  and uses the coco directory hierarchy for SEV guest kexec patches.
+- Includes the above mentioned patch as part of this patch-set to
+  fix any kernel test robot/build issues.
+- Includes the massaged version of patch 2/3 as per upstream
+  review/feedback.
+
+v8:
+- removed fix EFI memory map corruption with kexec patch as this
+  is a use-after-free bug that is not specific to SNP/TDX or kexec
+  and a generic fix for the same has been posted. 
+- Add new early_sev_detect() and move detection of SEV-ES/SNP guest
+  and skip accessing video RAM during decompressor stage into
+  this function as per feedback from upstream review.
+
+v7:
+- Rebased onto current tip/master;
+- Moved back to checking the md attribute instead of checking the
+  efi_setup for detecting if running under kexec kernel as 
+  suggested in upstream review feedback.
+
+v6:
+- Updated and restructured the commit message for patch 1/3 to
+  explain the issue in detail.
+- Updated inline comments in patch 1/3 to explain the issue in 
+  detail.
+- Moved back to checking efi_setup for detecting if running
+  under kexec kernel.
+
+v5:
+- Removed sev_es_enabled() function and using sev_status directly to
+  check for SEV-ES/SEV-SNP guest.
+- used --base option to generate patches to specify Kirill's TDX guest
+  kexec patches as prerequisite patches to fix kernel test robot
+  build errors.
+
+v4:
+- Rebased to current tip/master.
+- Reviewed-bys from Sathya.
+- Remove snp_kexec_unprep_rom_memory() as it is not needed any more as 
+  SEV-SNP code is not validating the ROM range in probe_roms() anymore.
+- Fix kernel test robot build error/warnings.
+
+v3:
+- Rebased;
+- moved Keep page tables that maps E820_TYPE_ACPI patch to Kirill's tdx
+  guest kexec patch series.
+- checking the md attribute instead of checking the efi_setup for
+  detecting if running under kexec kernel.
+- added new sev_es_enabled() function.
+- skip video memory access in decompressor for SEV-ES/SNP systems to 
+  prevent guest termination as boot stage2 #VC handler does not handle
+  MMIO.
+
+v2:
+- address zeroing of unaccepted memory table mappings at all page table levels
+  adding phys_pte_init(), phys_pud_init() and phys_p4d_init().
+- include skip efi_arch_mem_reserve() in case of kexec as part of this 
+  patch set.
+- rename last_address_shd_kexec to a more appropriate 
+  kexec_last_address_to_make_private.
+- remove duplicate code shared with TDX and use common interfaces
+  defined for SNP and TDX for kexec/kdump.
+- remove set_pte_enc() dependency on pg_level_to_pfn() and make the 
+  function simpler.
+- rename unshare_pte() to make_pte_private().
+- clarify and make the comment for using kexec_last_address_to_make_private  
+  more understandable.
+- general cleanup. 
+
+Ashish Kalra (3):
+  x86/boot: Skip video memory access in the decompressor for SEV-ES/SNP
+  x86/mm: refactor __set_clr_pte_enc()
+  x86/snp: Convert shared memory back to private on kexec
+
+ arch/x86/boot/compressed/misc.c |  15 ++++
+ arch/x86/coco/sev/core.c        | 148 ++++++++++++++++++++++++++++++++
+ arch/x86/include/asm/sev.h      |  13 +++
+ arch/x86/mm/mem_encrypt_amd.c   |  49 +++++++++--
+ 4 files changed, 217 insertions(+), 8 deletions(-)
+
+-- 
+2.34.1
 
