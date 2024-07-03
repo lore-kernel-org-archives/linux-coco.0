@@ -1,51 +1,54 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9BB1849D7
-	for <linux-coco@lists.linux.dev>; Wed,  3 Jul 2024 23:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81520194ACF
+	for <linux-coco@lists.linux.dev>; Wed,  3 Jul 2024 23:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720049315; cv=none; b=MRmdClD4eIez8yP27vQO+6/T3OU9r9norKzh+yKD1YTIaCaqWhaNO5VvPoCqmhmz1i+J0WnXv5j4TXPjfKf2FBoOJrYfGXhlZdJRa6LN1d++toATmFXd6mK8V1hMY3YTYSqGjsrbb9/3S361IHb13QvidijrIhAWMF54AOB9cq4=
+	t=1720049319; cv=none; b=WspA6RX9w0XT2iqXN2MgtDEgu+9MvVz/bSNs93lE8CWPSaAAOCh0LQ3aLYH/BXdc+enODGI1WERJ1jM42SYcDC9OdK51uWQ/AczfNw9r7jD2zmHkR2jB5HaG+ugh2ruk2sVhjytHfICGVs3SbSOkjMimlzXMFeDLSxUFw8pObBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720049315; c=relaxed/simple;
-	bh=K7emvDdPnxid5SAyFTESF/lQg364GGuWtvnljTHbOh4=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=uKEQwfMexu3Vh7OR6SfmnuMWKzsqrMPay/NElsQzaWAb28ODr9Kgbsym7MBgScxOpkaO7ci8Ve52v0WFXORrSOl+6LUmN40cefZVm34tAqWncViIFF7lBCjB1F2v3vLhQtG7eXSZ5QcpkGv1JCVe228flq5vRzyVEQn/xPxbN/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=iHniarjS; arc=none smtp.client-ip=209.85.216.42
+	s=arc-20240116; t=1720049319; c=relaxed/simple;
+	bh=WGb7oFDD7nuqt1oiOLTOMOju7ZPI/CiES1QcbGF5YIM=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Wna2GVemfUzA3FqejAGRmtnvBeqeemBDCO+reAvI7XuEQRX+d1tbkg2WRLuugtcX7aCKkIYk5B6nIUhULGlBlbqT1aC83Wm1rDo2BeeLj/EFHvpG2dRgxqcfDU7rckKPoIPfOhiFjlMfSX1P4VGuNaAL/5+UmZyDKmfVcpn7wzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FIzI2mYY; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="iHniarjS"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2c980b08b4bso69065a91.1
-        for <linux-coco@lists.linux.dev>; Wed, 03 Jul 2024 16:28:33 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="FIzI2mYY"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-706627ff48dso70590b3a.1
+        for <linux-coco@lists.linux.dev>; Wed, 03 Jul 2024 16:28:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1720049313; x=1720654113; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hwsbtQMOS4k6+Oss7Cpgl4Cpjs6vMsFQ0jCc9Uz8oAs=;
-        b=iHniarjSNeBQAw1ut/Y+g/s2DILA3gFdMoXk9lvjPQHwgcOYwMnN9Rs8RLMJ19L8Tj
-         g+pqGWq4jQ7cfb7hd9rmm/5xvZxiN9xBKTUl3q32KChgluC8ejKi+d8N16b1OE0QN1Rn
-         Y2CeeQQzfmmSdE7OezQ7Qqu/TNptJmTlb6BoU=
+        d=broadcom.com; s=google; t=1720049318; x=1720654118; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZIcQrgok9mX0Uon7NauPjlh5g5FgT6+ZQ8nLFfSKoDE=;
+        b=FIzI2mYYEdDDGuX8wmhQXJPVfYcZSiALC1wbT7iIwRmIMBVBRJ5OUkIKbuJVIOWGqI
+         52iE7yumRZXl3SEdeR97oMmrOxJPRl1YKy9Y+hyAN4BY3x8W6SCJMlmuOJ6oslpqdXUR
+         85wC9MB04CGx3l4bjos0/GgugP9yzkFI+ZweU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720049313; x=1720654113;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hwsbtQMOS4k6+Oss7Cpgl4Cpjs6vMsFQ0jCc9Uz8oAs=;
-        b=q0hsWSk4p85hLqFc7p7TpwCu/QXSk3aGbDQtW2J7RrcCLXARYehFvbLdwLrip6KzTx
-         T8QnbkuXtCCETCZKoVEiYDRgYfpR+HdWln0gJMS9jU3cEYiPmEXPHmjOAcmSp93Hk1Gj
-         t83vThBLN3Co8RJKap6mwjyqHn40FOIZKOACRsmpt2Jd6KCULvxs61FQFv6S8mEdhxAc
-         ii/Wb/CuNO9s0brN5QhSlWeZf7DKcBELGsGeqyVrq/sdziFNq5Dk6+rMPdmzQ3c8lH27
-         nI5oG8ilUepedX3mhLvb1JH3CKJrBJ38DbceZG+Q08axUja6c19pfx9xb5mNFmk6+Nmc
-         LPbw==
-X-Forwarded-Encrypted: i=1; AJvYcCXDI1Lg7Xptn771lHUJssb13LoOirNjo4zrlBh3J7ZbR8eeup8LgiJNdEsit7QDS2s3dVctJLa6iKBkwGvigkJe1gL/4I0IUAHbwA==
-X-Gm-Message-State: AOJu0YzGvAYRUujTSvMZJmnraA67nZDViBMxFBdFNTktdzmAM2mDMz5f
-	0qY/yLmJ9On/pDkn+/mDJzHq74mGk3s6t8M7U1fBL6YkQuvSRXPHY/0DF13V/g==
-X-Google-Smtp-Source: AGHT+IFDXbgaXSaqqMX6UdrgdU2QN/tX+qwOwKdsBmygBlfpugT7eTTkgzvnHrtjv7YtX8LnCJTHNQ==
-X-Received: by 2002:a17:90a:d142:b0:2c8:431e:4105 with SMTP id 98e67ed59e1d1-2c93d7215c1mr11055885a91.26.1720049313293;
-        Wed, 03 Jul 2024 16:28:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1720049318; x=1720654118;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZIcQrgok9mX0Uon7NauPjlh5g5FgT6+ZQ8nLFfSKoDE=;
+        b=ihXXDbpykJ9Mkvyrb9sujiL3zwUd8ZnpfeBy2lSp8ExiWxb2sxqi0cKU5zBekobho3
+         g5zVGhJZGk5xfv/TU7mtrX7F/ZHCV2J1TduAfHjAFXZV4zJN695OkGJM5g+fBuNxX9hW
+         OBT9uQh4KSHC0Us73yAI579Ba2kbB7p9zhTtm+npBdAbG48u/MdgpKZAtWiLAqTmIsnb
+         ASCxbA7EPaJYptS5f/BWoD2VsfQllCnzMsdoL/2fZJvflseBaEg5DN2sfft/JFs5+eYi
+         +Vp+Dd0DAmUGN4p9LVPD4pdl9dRbqjkxtZGnZ9tm+zye3UbaCpanq0QByAjmkweGFjOz
+         4eZw==
+X-Forwarded-Encrypted: i=1; AJvYcCXtlf7GU2j/T0UkWkaWK5uLqkbI1IMH6qLH/satkg8PLrXJnFYT3Yk3w2DzE8U6ycds43DFvtZCw7GvBgZvifeQc2MWx43KSDO7lQ==
+X-Gm-Message-State: AOJu0YwbcNeE+EppWdV7oBKnpi4zxj+trC/dP6F5eVNlyY9+DWOCjp7d
+	JPPjPkt3M5cdvSzc/Q+gFP65lS2OKriiHXiEbHwx8GjezRyThqeeDxcqaBdrQg==
+X-Google-Smtp-Source: AGHT+IEoz+vHNVbO8cyfzy0xMc+L4OFVMp5ck+Nfmw1ZPLfpKVkYjPdAin6v88y+B5auU+iIk+XHzw==
+X-Received: by 2002:a05:6a20:918f:b0:1bd:25d1:58eb with SMTP id adf61e73a8af0-1bef6126431mr19202450637.31.1720049317664;
+        Wed, 03 Jul 2024 16:28:37 -0700 (PDT)
 Received: from ubuntu.eng.vmware.com ([66.170.99.1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c99a946fb2sm83793a91.3.2024.07.03.16.28.31
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c99a946fb2sm83793a91.3.2024.07.03.16.28.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 16:28:33 -0700 (PDT)
+        Wed, 03 Jul 2024 16:28:37 -0700 (PDT)
 From: Tim Merrifield <tim.merrifield@broadcom.com>
 To: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -73,10 +76,12 @@ To: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
 	alex.james@broadcom.com,
 	doug.covelli@broadcom.com,
 	jeffrey.sheldon@broadcom.com
-Subject: [PATCH 0/2] Support userspace hypercalls for TDX
-Date: Wed,  3 Jul 2024 23:35:59 +0000
-Message-Id: <cover.1720046911.git.tim.merrifield@broadcom.com>
+Subject: [PATCH 1/2] x86/tdx: Add prctl to allow userlevel TDX hypercalls
+Date: Wed,  3 Jul 2024 23:36:00 +0000
+Message-Id: <90bf00599189c34e77aa77986674be2d5fc19f9c.1720046911.git.tim.merrifield@broadcom.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <cover.1720046911.git.tim.merrifield@broadcom.com>
+References: <cover.1720046911.git.tim.merrifield@broadcom.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -85,43 +90,147 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-VMCALL and VMMCALL instructions are used by x86 guests to request services
-from the host VMM. Both VMCALL and VMMCALL are not restricted to CPL 0.
-This allows userspace software like open-vm-tools to communicate directly
-with the VMM.
+Add a new prctl option to enable/disable user-level hypercalls when
+running in a confidential VM. Add support for checking this flag on
+VMCALL #VE for TDX and transfer control to a hypervisor
+vendor-specific handler.
 
-In the context of confidential VMs, direct communication with the host may
-violate the security model. Existing binaries that make use of hypercalls
-and are not hardened against malicious hypervisors can become a possible
-attack surface. For this reason, user-level VMCALLs are not currently
-forwarded to the host on TDX VMs. This breaks any user-level software that
-use these instructions.
-
-But if user-level software is aware of the risks and has been hardened to
-address any known violations of the security model, then it seems
-reasonable to allow hypercalls from this process to proceed.
-
-This patchset introduces a new x86 process control flag to address this
-concern. By setting the TIF_COCO_USER_HCALL thread information flag, the
-process opts in to user-level hypercalls. When TDX is enabled, the VMCALL
-will #VE and control will be transferred to a hypervisor-specific
-hypercall handler (similar to how things work today for SEV with
-sev_es_hcall_prepare/sev_es_hcall_finish). The flag has no effect on
-non-TDX VMs. Other confidential computing technologies could use this flag
-to provide limited access to user-level hypercalls.
-
-Tim Merrifield (2):
-  x86/tdx: Add prctl to allow userlevel TDX hypercalls
-  x86/vmware: VMware support for TDX userspace hypercalls
-
- arch/x86/coco/tdx/tdx.c            | 18 +++++++++++
+Signed-off-by: Tim Merrifield <tim.merrifield@broadcom.com>
+---
+ arch/x86/coco/tdx/tdx.c            | 18 ++++++++++++++++++
  arch/x86/include/asm/thread_info.h |  2 ++
  arch/x86/include/asm/x86_init.h    |  1 +
- arch/x86/include/uapi/asm/prctl.h  |  3 ++
- arch/x86/kernel/cpu/vmware.c       | 51 +++++++++++++++++++++++-------
- arch/x86/kernel/process.c          | 20 ++++++++++++
- 6 files changed, 84 insertions(+), 11 deletions(-)
+ arch/x86/include/uapi/asm/prctl.h  |  3 +++
+ arch/x86/kernel/process.c          | 20 ++++++++++++++++++++
+ 5 files changed, 44 insertions(+)
 
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index ef8ec2425998..23111e4c1f91 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -239,6 +239,7 @@ static int ve_instr_len(struct ve_info *ve)
+ 	case EXIT_REASON_MSR_WRITE:
+ 	case EXIT_REASON_CPUID:
+ 	case EXIT_REASON_IO_INSTRUCTION:
++	case EXIT_REASON_VMCALL:
+ 		/* It is safe to use ve->instr_len for #VE due instructions */
+ 		return ve->instr_len;
+ 	case EXIT_REASON_EPT_VIOLATION:
+@@ -635,6 +636,21 @@ void tdx_get_ve_info(struct ve_info *ve)
+ 	ve->instr_info  = upper_32_bits(args.r10);
+ }
+ 
++/*
++ * Handle user-initiated, hypervisor-specific VMCALLs.
++ */
++static int handle_user_vmcall(struct pt_regs *regs, struct ve_info *ve)
++{
++	if (x86_platform.hyper.tdx_hcall &&
++	    test_thread_flag(TIF_COCO_USER_HCALL)) {
++		if (!x86_platform.hyper.tdx_hcall(regs))
++			return -EIO;
++		return ve_instr_len(ve);
++	} else {
++		return -EOPNOTSUPP;
++	}
++}
++
+ /*
+  * Handle the user initiated #VE.
+  *
+@@ -646,6 +662,8 @@ static int virt_exception_user(struct pt_regs *regs, struct ve_info *ve)
+ 	switch (ve->exit_reason) {
+ 	case EXIT_REASON_CPUID:
+ 		return handle_cpuid(regs, ve);
++	case EXIT_REASON_VMCALL:
++		return handle_user_vmcall(regs, ve);
+ 	default:
+ 		pr_warn("Unexpected #VE: %lld\n", ve->exit_reason);
+ 		return -EIO;
+diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
+index 12da7dfd5ef1..9f69a26a5e68 100644
+--- a/arch/x86/include/asm/thread_info.h
++++ b/arch/x86/include/asm/thread_info.h
+@@ -106,6 +106,7 @@ struct thread_info {
+ #define TIF_BLOCKSTEP		25	/* set when we want DEBUGCTLMSR_BTF */
+ #define TIF_LAZY_MMU_UPDATES	27	/* task is updating the mmu lazily */
+ #define TIF_ADDR32		29	/* 32-bit address space on 64 bits */
++#define TIF_COCO_USER_HCALL     30      /* Userland hypercalls allowed in CoCo */
+ 
+ #define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
+ #define _TIF_SIGPENDING		(1 << TIF_SIGPENDING)
+@@ -128,6 +129,7 @@ struct thread_info {
+ #define _TIF_BLOCKSTEP		(1 << TIF_BLOCKSTEP)
+ #define _TIF_LAZY_MMU_UPDATES	(1 << TIF_LAZY_MMU_UPDATES)
+ #define _TIF_ADDR32		(1 << TIF_ADDR32)
++#define _TIF_COCO_USER_HCALL    (1 << TIF_COCO_USER_HCALL)
+ 
+ /* flags to check in __switch_to() */
+ #define _TIF_WORK_CTXSW_BASE					\
+diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
+index 213cf5379a5a..52975bedd33e 100644
+--- a/arch/x86/include/asm/x86_init.h
++++ b/arch/x86/include/asm/x86_init.h
+@@ -282,6 +282,7 @@ struct x86_hyper_runtime {
+ 	void (*sev_es_hcall_prepare)(struct ghcb *ghcb, struct pt_regs *regs);
+ 	bool (*sev_es_hcall_finish)(struct ghcb *ghcb, struct pt_regs *regs);
+ 	bool (*is_private_mmio)(u64 addr);
++	bool (*tdx_hcall)(struct pt_regs *regs);
+ };
+ 
+ /**
+diff --git a/arch/x86/include/uapi/asm/prctl.h b/arch/x86/include/uapi/asm/prctl.h
+index 384e2cc6ac19..7fa289a1815b 100644
+--- a/arch/x86/include/uapi/asm/prctl.h
++++ b/arch/x86/include/uapi/asm/prctl.h
+@@ -16,6 +16,9 @@
+ #define ARCH_GET_XCOMP_GUEST_PERM	0x1024
+ #define ARCH_REQ_XCOMP_GUEST_PERM	0x1025
+ 
++#define ARCH_GET_COCO_USER_HCALL        0x1030
++#define ARCH_SET_COCO_USER_HCALL        0x1031
++
+ #define ARCH_XCOMP_TILECFG		17
+ #define ARCH_XCOMP_TILEDATA		18
+ 
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 1b3d417cd6c4..16f8ab6cde2e 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -1039,6 +1039,21 @@ unsigned long __get_wchan(struct task_struct *p)
+ 	return addr;
+ }
+ 
++static int get_coco_user_hcall_mode(void)
++{
++	return !test_thread_flag(TIF_COCO_USER_HCALL);
++}
++
++static int set_coco_user_hcall_mode(unsigned long enabled)
++{
++	if (enabled)
++		set_thread_flag(TIF_COCO_USER_HCALL);
++	else
++		clear_thread_flag(TIF_COCO_USER_HCALL);
++
++	return 0;
++}
++
+ long do_arch_prctl_common(int option, unsigned long arg2)
+ {
+ 	switch (option) {
+@@ -1052,6 +1067,11 @@ long do_arch_prctl_common(int option, unsigned long arg2)
+ 	case ARCH_GET_XCOMP_GUEST_PERM:
+ 	case ARCH_REQ_XCOMP_GUEST_PERM:
+ 		return fpu_xstate_prctl(option, arg2);
++	case ARCH_GET_COCO_USER_HCALL:
++		return get_coco_user_hcall_mode();
++	case ARCH_SET_COCO_USER_HCALL:
++		return set_coco_user_hcall_mode(arg2);
++
+ 	}
+ 
+ 	return -EINVAL;
 -- 
 2.40.1
 
