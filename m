@@ -1,120 +1,161 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540DE137760
-	for <linux-coco@lists.linux.dev>; Wed,  3 Jul 2024 12:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAAA16F8FA
+	for <linux-coco@lists.linux.dev>; Wed,  3 Jul 2024 12:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720009362; cv=none; b=HHkGUNri/roi6hbiHns3aJP0vHqcTdrR0RZUI924b9fGbh2Wb3Hn9aFhzvj6mK2rIaiZozbjAoUDEtbvQa7PZFr8WVBHgid7B3UHA5kZYmWvkt+t5y9VayeAMkMGEq5Gd8SGMUY+wVGFCM3AmdoDp0mM/Qq2LTSDjl/TWnCLgSM=
+	t=1720009998; cv=none; b=X+VDDNjPdpMNVagXE5f3FUr7lyKipeV+BzGSmbcosYT7mPTxGp0eSxxN8OaA+lLLvEsDVP+/Znd9fUYp/P2Owsu0FcvpNwnvz2vCiEDuasQfRHCiYY1TFcIAsVisQKJBPuJCXgX79XIWpxZe4NGG3L5HxXSTczRB0RVzJeXYus8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720009362; c=relaxed/simple;
-	bh=TX2gvgdit2no2Bm4JOYvYuXVgfwUmwr1dfS1rQTimbE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o/S9ja7yHQHTliyfmXvQ6OLQyTIqSzQ2m5vfBAHjY3p+vRY3RP3Gu9YDLu3ta2G90qfnERP2OzCfQxMtkI5PsMExg9UHslAyBOXuanhEpF3tqj+xwFAnCsbtt+cLIw3x+JnPrCBZyPWjsMLL01V4sBLcbYKrtqEAUmMU6lwsQu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=f0CqfjZZ; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1720009998; c=relaxed/simple;
+	bh=IRmYngQr/XgUdsgiEsF8Dd45T99Ru3DiQpjGTuxdYfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GV7U+4q9HqeKgyIBzY4JSqR4anc5Ct7TPx6g4s2cem9NKBRNL9MkXOFV//rC9LpuEsyIjI4lawvEFOF6AIidLs6FjlUhGS0SyE+u4Aj5jcandN4ZTNuUJVAYApieeZCgvBolGPfDDjJ01MjifyRiiEPva7Oubpjs764nVQelYmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YT8dH5W2; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="f0CqfjZZ"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2ee4ae13aabso56093561fa.2
-        for <linux-coco@lists.linux.dev>; Wed, 03 Jul 2024 05:22:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1720009358; x=1720614158; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sYo5IBsgfXZoFfV/jrH0cWY+s6dZqG1CrWcT7nsdClQ=;
-        b=f0CqfjZZ1L34h9fUYiBhgyfcPuqyDlLgXtXvfBz8TH1U3foRMWIiy5jJ4EG0DMxjSy
-         qYM5dDm5QKZX+nxg5scYIsOYKykiuZcJiZmBFL1c8BM+zeapKVMF13pW7f/h+lzwmWLk
-         mzyBTFXVax7yEUsYZNQkXZvwhVsDf4Ud4xfrZ1e3hdklmjHJiw1nPpNWZEenPabRGlD8
-         8er4l4cykSbgBdygi1s2RL12k2Tb3WZu4fWJhaT+AjlTYKNQfWtalx6/qXpyULe36S6V
-         Me3raLusEOCncCSMqmq3X18xfKdhnIW//Peb6XJTjViqSaj0ycHr2SetTMDfp8W6pItX
-         txNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720009358; x=1720614158;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sYo5IBsgfXZoFfV/jrH0cWY+s6dZqG1CrWcT7nsdClQ=;
-        b=TyOsaZVjEoEaG48mPsI3m7F5eSsEtc9wJaVqWWoDTfs7w+YKkM9XJ+FypBaas0h5a4
-         tJadlXJqierYaXrLWBjhOU71YZImwR/jDChTToZWE1tKEIAienSkRSB3t//fmaDKulbu
-         lJ0lIVyEbas8u93pT7yii66NOS9rHZuhpufE4L8YoiGdAH/m7HQZ9sSMrvcXTVo4KoX+
-         lWVvm53aqsvJrjPf5n56ALKuZhjFhzjgL9VE9OG+YE4BSWJb70YH3AvGUkV/Hv+9APOe
-         j/nkyYRfFywb7+VfvRozoLbkXvosXnvOQbxsv3CUg++8pz6y/JIS1710P/3z+p8tTKxV
-         LgBA==
-X-Gm-Message-State: AOJu0YwlF5TjOfmfhoifF/qvcF1aDe8LjO3VZd68bwqi2LNuo7s01O0I
-	4cPxYrXanltKt0haYlpPDKKMnKdtBnsgTTRO8jD3/Ma8JlmEyZ8Tgo/1knlbd8g=
-X-Google-Smtp-Source: AGHT+IHZ4VR/Z2EA5bNROzM44bBxwS+VTMY4KF41urbY5op+dc5ajamiSRVwX7gtAx+LOXib0By3RA==
-X-Received: by 2002:a2e:a902:0:b0:2ee:6062:b559 with SMTP id 38308e7fff4ca-2ee6062b816mr81975241fa.8.1720009358326;
-        Wed, 03 Jul 2024 05:22:38 -0700 (PDT)
-Received: from ?IPV6:2a10:bac0:b000:757f:69b1:bdb0:82db:8b8b? ([2a10:bac0:b000:757f:69b1:bdb0:82db:8b8b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256b064f16sm236821285e9.27.2024.07.03.05.22.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jul 2024 05:22:37 -0700 (PDT)
-Message-ID: <d405c84e-2b8c-4139-b4ea-d716fe53dfca@suse.com>
-Date: Wed, 3 Jul 2024 15:22:35 +0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YT8dH5W2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720009996; x=1751545996;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IRmYngQr/XgUdsgiEsF8Dd45T99Ru3DiQpjGTuxdYfs=;
+  b=YT8dH5W2ZpEYhmaU611bzaPUafXHaFhhEh0LeVDZNbMg34MjVIrhAjzp
+   ZWw3hIi3xLuHOkYtzTb/6/uu7OjKlrg+2+Eq61DwhU/gdPgtxY1xfUcNv
+   cz9NV8J9VTrJyg7gfyxfgO3ABPuY5aNdBwg3AOHtJYRKJg4UB5ThRnUTr
+   PhOUxLs1xpc4btFmmgu12ATbUyrtrAvfGtLVakV5o8tEmMpk0CqW3uL0q
+   ZV3oNnphiMHZTuq895syxVks8kYf3pLPjhOd0zGwG3cWmouuAsg8cl7o7
+   5qfknRLjphSr7am0vgQ5Rb24W5PPMpYHpJ3ILgXCp6ljXqDlzoWtXixo7
+   w==;
+X-CSE-ConnectionGUID: KhgneWGtR66V90pxq1jwoA==
+X-CSE-MsgGUID: YuRgO1QXRRSUvBoGelOiig==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="42663278"
+X-IronPort-AV: E=Sophos;i="6.09,182,1716274800"; 
+   d="scan'208";a="42663278"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 05:33:12 -0700
+X-CSE-ConnectionGUID: YpkvDHMORn6qCSfJIRRgvA==
+X-CSE-MsgGUID: Gnr66Cp8SbiGVxLCtm5Dpg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,182,1716274800"; 
+   d="scan'208";a="46019733"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa006.fm.intel.com with ESMTP; 03 Jul 2024 05:33:10 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 36B5A194; Wed, 03 Jul 2024 15:33:09 +0300 (EEST)
+Date: Wed, 3 Jul 2024 15:33:09 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv5 4/4] x86/tdx: Enable CPU topology enumeration
+Message-ID: <f6b4wziuumuorfp3dbkrqc5kzuv3linrbreptpiw6iwnf3u2rb@ttq3rt6lxntv>
+References: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
+ <20240624114149.377492-5-kirill.shutemov@linux.intel.com>
+ <3b28af5e-1274-411e-9536-9ad964e0b25f@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 3/4] x86/tdx: Dynamically disable SEPT violations from
- causing #VEs
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
- <20240624114149.377492-4-kirill.shutemov@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-In-Reply-To: <20240624114149.377492-4-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3b28af5e-1274-411e-9536-9ad964e0b25f@intel.com>
 
+On Wed, Jul 03, 2024 at 12:17:04AM +0800, Xiaoyao Li wrote:
+> On 6/24/2024 7:41 PM, Kirill A. Shutemov wrote:
+> > TDX 1.0 defines baseline behaviour of TDX guest platform. In TDX 1.0
+> > generates a #VE when accessing topology-related CPUID leafs (0xB and
+> > 0x1F) and the X2APIC_APICID MSR. The kernel returns all zeros on CPUID
+> > topology. In practice, this means that the kernel can only boot with a
+> > plain topology. Any complications will cause problems.
+> > 
+> > The ENUM_TOPOLOGY feature allows the VMM to provide topology
+> > information to the guest. Enabling the feature eliminates
+> > topology-related #VEs: the TDX module virtualizes accesses to
+> > the CPUID leafs and the MSR.
+> > 
+> > Enable ENUM_TOPOLOGY if it is available.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >   arch/x86/coco/tdx/tdx.c           | 27 +++++++++++++++++++++++++++
+> >   arch/x86/include/asm/shared/tdx.h |  2 ++
+> >   2 files changed, 29 insertions(+)
+> > 
+> > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> > index ba3103877b21..f6e48119d6fd 100644
+> > --- a/arch/x86/coco/tdx/tdx.c
+> > +++ b/arch/x86/coco/tdx/tdx.c
+> > @@ -249,6 +249,32 @@ static void disable_sept_ve(u64 td_attr)
+> >   	return;
+> >   }
+> > +/*
+> > + * TDX 1.0 generates a #VE when accessing topology-related CPUID leafs (0xB and
+> > + * 0x1F) and the X2APIC_APICID MSR. The kernel returns all zeros on CPUID #VEs.
+> > + * In practice, this means that the kernel can only boot with a plain topology.
+> > + * Any complications will cause problems.
+> > + *
+> > + * The ENUM_TOPOLOGY feature allows the VMM to provide topology information.
+> > + * Enabling the feature  eliminates topology-related #VEs: the TDX module
+> > + * virtualizes accesses to the CPUID leafs and the MSR.
+> > + *
+> > + * Enable ENUM_TOPOLOGY if it is available.
+> > + */
+> > +static void enable_cpu_topology_enumeration(void)
+> > +{
+> > +	u64 configured;
+> > +
+> > +	/* Has the VMM provided a valid topology configuration? */
+> > +	tdg_vm_rd(TDCS_TOPOLOGY_ENUM_CONFIGURED, &configured);
+> > +	if (!configured) {
+> > +		pr_err("VMM did not configure X2APIC_IDs properly\n");
+> > +		return;
+> > +	}
+> > +
+> > +	tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_ENUM_TOPOLOGY, TD_CTLS_ENUM_TOPOLOGY);
+> > +}
+> > +
+> >   static void tdx_setup(u64 *cc_mask)
+> >   {
+> >   	struct tdx_module_args args = {};
+> > @@ -280,6 +306,7 @@ static void tdx_setup(u64 *cc_mask)
+> >   	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
+> >   	disable_sept_ve(td_attr);
+> > +	enable_cpu_topology_enumeration();
+> >   }
+> >   /*
+> > diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+> > index fecb2a6e864b..89f7fcade8ae 100644
+> > --- a/arch/x86/include/asm/shared/tdx.h
+> > +++ b/arch/x86/include/asm/shared/tdx.h
+> > @@ -23,12 +23,14 @@
+> >   #define TDCS_CONFIG_FLAGS		0x1110000300000016
+> >   #define TDCS_TD_CTLS			0x1110000300000017
+> >   #define TDCS_NOTIFY_ENABLES		0x9100000000000010
+> 
+> The ID for TDCS_NOTIFY_ENABLES I read from TDX spec is
+> 
+> 	0x9110000300000010
 
+> > +#define TDCS_TOPOLOGY_ENUM_CONFIGURED	0x9100000000000019
+> 
+> and
+> 	0x9110000000000019
+> 
+> for TOPOLOGY_ENUM_CONFIGURED.
+> 
+> Both version of them can work actually. But I'm curious where did you get
+> them? just an old version of spec?
 
-On 24.06.24 г. 14:41 ч., Kirill A. Shutemov wrote:
+TDX 1.0 spec had the old value. Newer spec defined meaning to previously
+reserved bits. The changed bits define element size and context code.
+These bits are ignored on read/write by TDX module.
 
-<snip>
-
-
-
-> --- a/arch/x86/include/asm/shared/tdx.h
-> +++ b/arch/x86/include/asm/shared/tdx.h
-> @@ -19,9 +19,17 @@
->   #define TDG_VM_RD			7
->   #define TDG_VM_WR			8
->   
-> -/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
-> +/* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
-> +#define TDCS_CONFIG_FLAGS		0x1110000300000016
-> +#define TDCS_TD_CTLS			0x1110000300000017
->   #define TDCS_NOTIFY_ENABLES		0x9100000000000010
->   
-> +/* TDCS_CONFIG_FLAGS bits */
-> +#define TDCS_CONFIG_FLEXIBLE_PENDING_VE	BIT_ULL(1)
-
-
-So where is this bit documented, because in td_scope_metadata.json 
-CONFIG_FLAGS' individual bits aren't documented. All other TDX docs 
-refer to the ABI .json file.
-
-Landing code for undocumented bits unfortunately precludes any quality 
-review on behalf of independent parties.
-
-> +
-> +/* TDCS_TD_CTLS bits */
-> +#define TD_CTLS_PENDING_VE_DISABLE	BIT_ULL(0)
-
-In contrast the TD_CTLS bits are documented in the same .json file.
-
-> +
->   /* TDX hypercall Leaf IDs */
->   #define TDVMCALL_MAP_GPA		0x10001
->   #define TDVMCALL_GET_QUOTE		0x10002
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
