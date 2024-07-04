@@ -1,66 +1,60 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC6F7E9
-	for <linux-coco@lists.linux.dev>; Thu,  4 Jul 2024 13:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE681AED31;
+	Thu,  4 Jul 2024 13:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720098222; cv=none; b=L4DqS9eF01OSRrFkjuIRBbOJ9XcxUWXMfEm0tnZ1Z0niiP4CicwRXI7MZNQPZ/UCZi7UeXbOfLDd4WZvo8AwGRMXTFNtNSyJyGWlDOmDoUFEQAq9Vh9Hh2zs7wD15ZLxQ5z47r2YmvC5yHcXfdqUPP2IIN6JstPxd+OlfrZQ450=
+	t=1720098335; cv=none; b=P3llhFkUxjhKGCHOxoGEA5kPXeNrnT1Raxk7woqeisuY7FTFZZ679Q6D6EPsfz0ThNEf6rvqwRjCKazhFWRlW9MbNUTtekXdvHhl9n/1bfXMRYRJ95Rmy0TwgsXxBzUwnFBeDrDZoS2Gxq/aTbzU/XHhQ3ATPDRbgCf5WsFPtt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720098222; c=relaxed/simple;
-	bh=uZ9UsEweFbXbxOBABtQ/dWLo0fnez7wNxhKZkX2xznc=;
+	s=arc-20240116; t=1720098335; c=relaxed/simple;
+	bh=VLX+/UE8oDKDooF+ghZH28ShzdJLeLVP+bDPayL7B3M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UzW3XlHPHfAuTimZ/Vv3gsbeQHAM2yDa5U4l7d/+oJxZT9p6JHdOd5fHCvdhhI9GN4JwEcvkWUcroM3fACATHW27o1BrUdXFP8/KYREW0LiTTUAr/VWcjWw2m6g+6fcR5PAa3CaHbv3BqgMJkZLkHQL6eO5T1nGADIKRX+gk9tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MSxntTHM; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=YCbbin/NguOwTwuNzSdHvIYYG7w+VQYiRVouRWb8iu0rrTQMpRAddHH0QWoeQ6EzepQOF0TreBGHi1T8s5ufbvpbhHXSVyVrAWYhWGr0i48GG04+LGaU73No2hPTnZBCZRK3YQ9K1k/c6FaCGjPyp4sBGqdPsMbQCLINbhUjQS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=gowb/ffi; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MSxntTHM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720098221; x=1751634221;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uZ9UsEweFbXbxOBABtQ/dWLo0fnez7wNxhKZkX2xznc=;
-  b=MSxntTHM4MELE4RbKvYvSglpUEN9MrOPcNAL9NEbUO6A65+V5Gqy11ev
-   EijSvw44DysoEwiFzlXVMqlsd9CQWYl8GrZ3hcrZtkavYtdlGJSZhRUXa
-   uU3gHaMOWGdq01YIBdlkOCxmbD+pr87g9s8wLHun1Y7H72myWsYbqhHoR
-   uQtLX/5JQK93RmnHUXOmwTlg28iT5yvceF6WoY8Fwr+AMJibjCr8C+gJB
-   qd1iUrMg4YC3PaQaQPTzzChKWejWMaFf81ieQTK6hLFSpH8uHDgiadfUP
-   ZByIJNAZk3Bws8Rrdh5yvT1LrLVQ6QV8CoIeCISTOeUIjsIxcuhmblluw
-   g==;
-X-CSE-ConnectionGUID: 7dl4CrWWTK+D/wKrzr2FKA==
-X-CSE-MsgGUID: +6gnAUMIQGamvxMF2ww4bw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="27980948"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; 
-   d="scan'208";a="27980948"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2024 06:03:40 -0700
-X-CSE-ConnectionGUID: o/YWOEYtTSOuRT37J1hNvw==
-X-CSE-MsgGUID: +XbghcdiQr67hCyYBw/pcw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; 
-   d="scan'208";a="77335407"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa002.jf.intel.com with ESMTP; 04 Jul 2024 06:03:38 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 783F522B; Thu, 04 Jul 2024 16:03:36 +0300 (EEST)
-Date: Thu, 4 Jul 2024 16:03:36 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Nikolay Borisov <nik.borisov@suse.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCHv5 3/4] x86/tdx: Dynamically disable SEPT violations from
- causing #VEs
-Message-ID: <4sqvd3zghwp5o23r2s47i56qg34obammtggbtneof26ghbwrxv@rskezsmaqgim>
-References: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
- <20240624114149.377492-4-kirill.shutemov@linux.intel.com>
- <05d0b24a-2e21-48c0-85b7-a9dd935ac449@suse.com>
- <oujihwk2ghwpobsuivxlgflalwxigctjp6nld2jdtz4cbwoqnp@7v3s7ap4ul6u>
- <3b164525-f797-478a-a75c-1c2bd83086af@intel.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="gowb/ffi"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=zfd3k+e/2iCQZpiP/1H67Ibzd3SlkkBWIgLCprwuUXY=; b=gowb/ffi2fiTQAxLXhOLHl+gPF
+	98pHv/VFFWSfVSvc4LK8nlNHdz18GJXCrxVVx2EI2DzjpCtc5cAlitlA6eSNLA0e4Ezn/slM7Xk4K
+	s8eCyC4zF4RB1ik6EAsoDIY4KzG9IN1l6ua1boCoVx9s6nprIAymVGGaIm7ZQKcPxULNxDTN+koAb
+	iaSAYs/CuqUyhIZdB+Rc58f4GXG4fvwF+BZOx/SuolHv9yw7+Tp/PvNChf1dMTlxi3B4pDcks3+Yx
+	NicW7UmyRPPjqxupjjHoAFHzEFZ6aqcrqUgQYhvv0sjOjiYF9LlatJ62iI48WJMhcN4w4syo7spN9
+	EbXduQcA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sPM96-0000000ADpW-3LPn;
+	Thu, 04 Jul 2024 13:05:10 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id F358F300694; Thu,  4 Jul 2024 15:05:05 +0200 (CEST)
+Date: Thu, 4 Jul 2024 15:05:05 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Tim Merrifield <tim.merrifield@broadcom.com>
+Cc: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+	Xin Li <xin3.li@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Kai Huang <kai.huang@intel.com>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.amakhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	virtualization@lists.linux.dev, alex.james@broadcom.com,
+	doug.covelli@broadcom.com, jeffrey.sheldon@broadcom.com
+Subject: Re: [PATCH 0/2] Support userspace hypercalls for TDX
+Message-ID: <20240704130505.GT11386@noisy.programming.kicks-ass.net>
+References: <cover.1720046911.git.tim.merrifield@broadcom.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,50 +63,27 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3b164525-f797-478a-a75c-1c2bd83086af@intel.com>
+In-Reply-To: <cover.1720046911.git.tim.merrifield@broadcom.com>
 
-On Wed, Jul 03, 2024 at 07:49:48AM -0700, Dave Hansen wrote:
-> On 7/3/24 06:04, Kirill A. Shutemov wrote:
-> >>> -/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
-> >>> +/* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
-> >>> +#define TDCS_CONFIG_FLAGS		0x1110000300000016
-> >> 0x9110000300000016
-> >>> +#define TDCS_TD_CTLS			0x11104800000017
-> >> 0x9110000300000017
-> > Setting bit 63 in these field id is regression in new TDX spec and TDX
-> > module. It is going to be fixed in next version. Both versions of field
-> > ids are going to be valid.
+On Wed, Jul 03, 2024 at 11:35:59PM +0000, Tim Merrifield wrote:
+> VMCALL and VMMCALL instructions are used by x86 guests to request services
+> from the host VMM. Both VMCALL and VMMCALL are not restricted to CPL 0.
+> This allows userspace software like open-vm-tools to communicate directly
+> with the VMM.
 > 
-> I kinda never liked the big ol' magic numbers approach here.  But could
-> we please introduce some helpers here?
+> In the context of confidential VMs, direct communication with the host may
+> violate the security model. Existing binaries that make use of hypercalls
+> and are not hardened against malicious hypervisors can become a possible
+> attack surface. For this reason, user-level VMCALLs are not currently
+> forwarded to the host on TDX VMs. This breaks any user-level software that
+> use these instructions.
 > 
-> Then we'll end up with something like this (if the 0x111 can't be
-> decomposed):
-> 
-> #define _TDCS_CMD(c)	((0x1110UL << 48) | (c))
-> 
-> #define TDCS_CONFIG_FLAGS _TDCS_CMD(0x16)
-> #define TDCS_TD_CTLS	  _TDCS_CMD(0x17)
-> 
-> Then when folks change their mind about what should be in the TDX spec,
-> we have one place to go fix it up in addition to making this all more
-> readable.
+> But if user-level software is aware of the risks and has been hardened to
+> address any known violations of the security model, then it seems
+> reasonable to allow hypercalls from this process to proceed.
 
-Hm. I am not sure about this. It can be tedious if we want to encode all
-info this way. Like, size of the field, number of elements in the
-field, number of elements in the sequence, etc. It is going to be macro on
-the macro on the macro. I don't think it would improve readability.
+And how are we to ascertain the software using these hooks is deemed
+secure? What security risks are there for the kernel if a malicious
+userspace process asks for these rights?
 
-On related note, I think the TDX 1.5 definitions of field ids are more
-useful as you can infer more info from them. I consider to switching all
-definitions to the new format. It effectively drops TDX 1.0 support as the
-newly used bits are reserved in 1.0.
-
-TDX module 1.0 is no longer supported, but kernel haven't broken anything
-from the guest side yet. I don't think anybody actually uses it and I need
-to jump hoops to get it running for validation.
-
-Any objections for dropping TDX 1.0 support?
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+The kernel must assume malice on the part of userspace.
