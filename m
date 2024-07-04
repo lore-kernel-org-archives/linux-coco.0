@@ -1,60 +1,68 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE681AED31;
-	Thu,  4 Jul 2024 13:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2491B0122
+	for <linux-coco@lists.linux.dev>; Thu,  4 Jul 2024 14:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720098335; cv=none; b=P3llhFkUxjhKGCHOxoGEA5kPXeNrnT1Raxk7woqeisuY7FTFZZ679Q6D6EPsfz0ThNEf6rvqwRjCKazhFWRlW9MbNUTtekXdvHhl9n/1bfXMRYRJ95Rmy0TwgsXxBzUwnFBeDrDZoS2Gxq/aTbzU/XHhQ3ATPDRbgCf5WsFPtt0=
+	t=1720103453; cv=none; b=HJkAKuEfLv13eqwi1+cELTxeo+4IPkycn8sx4FYcMSKdOQzPumj4nQ8VQ2mw7xWUpdRt8p5lEA9Vrj+JZ3x5lISY3IsXrpJ06OZbuNgIxQ+CtyDIIjkL4gBpKma295rtLCfL7EEx+dV+Ohw9mtnJ/qIrkXZ+8pEbdqb/XiWkJIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720098335; c=relaxed/simple;
-	bh=VLX+/UE8oDKDooF+ghZH28ShzdJLeLVP+bDPayL7B3M=;
+	s=arc-20240116; t=1720103453; c=relaxed/simple;
+	bh=el5kjnJ2pJQrRm1foJdMBWWDZ/wQBCkI2BmKTWmW2No=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YCbbin/NguOwTwuNzSdHvIYYG7w+VQYiRVouRWb8iu0rrTQMpRAddHH0QWoeQ6EzepQOF0TreBGHi1T8s5ufbvpbhHXSVyVrAWYhWGr0i48GG04+LGaU73No2hPTnZBCZRK3YQ9K1k/c6FaCGjPyp4sBGqdPsMbQCLINbhUjQS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=gowb/ffi; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=pNIjMOY57QeKyiocKKwhJRDd7uLbqN7gUlu4a3BZKxbKsvJpumLdgIzunAmO6N4z4gbhCWkFjqh3zdbcRJMwy79b6RCGvJLDmVwPschbPxIqkUOTU/hnqEAC5SkVkCZyPngkyHs0u0LCtH51VDkCaf7ivMQ2dQkG0Dqn/70qzsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gg5OXixf; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="gowb/ffi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zfd3k+e/2iCQZpiP/1H67Ibzd3SlkkBWIgLCprwuUXY=; b=gowb/ffi2fiTQAxLXhOLHl+gPF
-	98pHv/VFFWSfVSvc4LK8nlNHdz18GJXCrxVVx2EI2DzjpCtc5cAlitlA6eSNLA0e4Ezn/slM7Xk4K
-	s8eCyC4zF4RB1ik6EAsoDIY4KzG9IN1l6ua1boCoVx9s6nprIAymVGGaIm7ZQKcPxULNxDTN+koAb
-	iaSAYs/CuqUyhIZdB+Rc58f4GXG4fvwF+BZOx/SuolHv9yw7+Tp/PvNChf1dMTlxi3B4pDcks3+Yx
-	NicW7UmyRPPjqxupjjHoAFHzEFZ6aqcrqUgQYhvv0sjOjiYF9LlatJ62iI48WJMhcN4w4syo7spN9
-	EbXduQcA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sPM96-0000000ADpW-3LPn;
-	Thu, 04 Jul 2024 13:05:10 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id F358F300694; Thu,  4 Jul 2024 15:05:05 +0200 (CEST)
-Date: Thu, 4 Jul 2024 15:05:05 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Tim Merrifield <tim.merrifield@broadcom.com>
-Cc: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
-	Xin Li <xin3.li@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.amakhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	virtualization@lists.linux.dev, alex.james@broadcom.com,
-	doug.covelli@broadcom.com, jeffrey.sheldon@broadcom.com
-Subject: Re: [PATCH 0/2] Support userspace hypercalls for TDX
-Message-ID: <20240704130505.GT11386@noisy.programming.kicks-ass.net>
-References: <cover.1720046911.git.tim.merrifield@broadcom.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gg5OXixf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720103452; x=1751639452;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=el5kjnJ2pJQrRm1foJdMBWWDZ/wQBCkI2BmKTWmW2No=;
+  b=Gg5OXixfDFI8CfS1ca+ygfmo21r63VW41BVg3B4VEgQCJDzzCAtZrNvR
+   Y88PCrMTa/C3mJo0PYgW7LPelD0MMOD7h5P77Bj95EwwDSVbVZwoXC4e3
+   /KpoBMjdKSN6ivb9c0GTFQfIsdOJtc4/zJLNFYLaNKi4ixcXl75vEmCQq
+   Lq4RHxYu3IJibEkNu+x3iJ14RWrB4nW5Q0Qu1x/AhPgd0mZxjz+qNQAbq
+   oksGSUVC8LPfM6+G2arhmrpAJyRUvmwATXkcMH1UMuUMsdPWaqVLxV5cU
+   u5nn0zO0GPteyEPdq6t8gBHY9YMYcctBnPhTxSEj4X9FSVtL/gpydOcK7
+   w==;
+X-CSE-ConnectionGUID: UJEN/YYjQYaSn7251TVDag==
+X-CSE-MsgGUID: vGASWnlbRcOlemTAYMlodg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="17522769"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; 
+   d="scan'208";a="17522769"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2024 07:28:36 -0700
+X-CSE-ConnectionGUID: vom8gVcIRMGFBQ/Ef1J3dQ==
+X-CSE-MsgGUID: P2N5QGHFThWwq+PD+b5qcQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; 
+   d="scan'208";a="46690844"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa010.fm.intel.com with ESMTP; 04 Jul 2024 07:28:33 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id C876D22B; Thu, 04 Jul 2024 17:28:31 +0300 (EEST)
+Date: Thu, 4 Jul 2024 17:28:31 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dexuan Cui <decui@microsoft.com>
+Cc: Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Michael Kelley <mikelley@microsoft.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] x86/tdx: Fix crash on kexec
+Message-ID: <nx7jjplwvtmxsq675omsi5hc5oxceiffpmkqx754azuv7ee2zh@7fttse2hssti>
+References: <20240629130621.1671544-1-kirill.shutemov@linux.intel.com>
+ <20240629135933.GAZoATRVAubo7ZDdKB@fat_crate.local>
+ <poxeykijyqrz5hxrey46s6hh2qd6byirbevwuwec2gtbfq266c@npegk7sn3ot7>
+ <SA1PR21MB1317A2E38083B300256AD5F1BFD12@SA1PR21MB1317.namprd21.prod.outlook.com>
+ <20240629194103.GCZoBjTzC4m9a9yw1k@fat_crate.local>
+ <SA1PR21MB1317B5850E4274CC31EDFBF8BFDD2@SA1PR21MB1317.namprd21.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -63,27 +71,38 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1720046911.git.tim.merrifield@broadcom.com>
+In-Reply-To: <SA1PR21MB1317B5850E4274CC31EDFBF8BFDD2@SA1PR21MB1317.namprd21.prod.outlook.com>
 
-On Wed, Jul 03, 2024 at 11:35:59PM +0000, Tim Merrifield wrote:
-> VMCALL and VMMCALL instructions are used by x86 guests to request services
-> from the host VMM. Both VMCALL and VMMCALL are not restricted to CPL 0.
-> This allows userspace software like open-vm-tools to communicate directly
-> with the VMM.
+On Wed, Jul 03, 2024 at 07:16:47PM +0000, Dexuan Cui wrote:
+> > -----Original Message-----
+> > From: Borislav Petkov <bp@alien8.de>
+> > Sent: Saturday, June 29, 2024 12:41 PM
+> > To: Dexuan Cui <decui@microsoft.com>
+> > Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>; Dave Hansen
+> > <dave.hansen@linux.intel.com>; Thomas Gleixner <tglx@linutronix.de>;
+> > Ingo Molnar <mingo@redhat.com>; x86@kernel.org; H. Peter Anvin
+> > <hpa@zytor.com>; Michael Kelley <mikelley@microsoft.com>;
+> > Kuppuswamy Sathyanarayanan
+> > <sathyanarayanan.kuppuswamy@linux.intel.com>; Kai Huang
+> > <kai.huang@intel.com>; Rick Edgecombe <rick.p.edgecombe@intel.com>;
+> > linux-coco@lists.linux.dev; linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH] x86/tdx: Fix crash on kexec
+> > 
+> > On Sat, Jun 29, 2024 at 07:27:57PM +0000, Dexuan Cui wrote:
+> > > It would be great to add e1b8ac3aae58 to the branch x86/tdx.
+> > 
+> > Sure we will, once it is properly tested. This very thread says otherwise.
+> > --
+> > Regards/Gruss,
+> >     Boris.
 > 
-> In the context of confidential VMs, direct communication with the host may
-> violate the security model. Existing binaries that make use of hypercalls
-> and are not hardened against malicious hypervisors can become a possible
-> attack surface. For this reason, user-level VMCALLs are not currently
-> forwarded to the host on TDX VMs. This breaks any user-level software that
-> use these instructions.
-> 
-> But if user-level software is aware of the risks and has been hardened to
-> address any known violations of the security model, then it seems
-> reasonable to allow hypercalls from this process to proceed.
+> Hi Kirill, Dave,
+> Do you think if it's a good idea if I post a new patch that combines
+>     e1b8ac3aae58 ("x86/tdx: Support vmalloc() for tdx_enc_status_changed()")
+> and
+>     your patch "[PATCH] x86/tdx: Fix crash on kexec"?
 
-And how are we to ascertain the software using these hooks is deemed
-secure? What security risks are there for the kernel if a malicious
-userspace process asks for these rights?
+Yeah, IIUC, that's what Borislav wanted. After proper testing.
 
-The kernel must assume malice on the part of userspace.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
