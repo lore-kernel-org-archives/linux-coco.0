@@ -1,100 +1,118 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B8FA41
-	for <linux-coco@lists.linux.dev>; Thu,  4 Jul 2024 10:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC6F7E9
+	for <linux-coco@lists.linux.dev>; Thu,  4 Jul 2024 13:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720088241; cv=none; b=DwswWnVpYx2JvJuwBPOqp772xNSWuEmAmfbIOBQnU+SNssgbgdjY+QleLzsk0YA4dD9hKty/MXiMrod4wIaDHLKzkAbWy4YFhWN9mSh76ze2Hp9J9euFSt1hbDU5ETaZWNovK6q+Z23Gs4nI/yaBnvjVs30aglBEQWuBQlZbxdM=
+	t=1720098222; cv=none; b=L4DqS9eF01OSRrFkjuIRBbOJ9XcxUWXMfEm0tnZ1Z0niiP4CicwRXI7MZNQPZ/UCZi7UeXbOfLDd4WZvo8AwGRMXTFNtNSyJyGWlDOmDoUFEQAq9Vh9Hh2zs7wD15ZLxQ5z47r2YmvC5yHcXfdqUPP2IIN6JstPxd+OlfrZQ450=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720088241; c=relaxed/simple;
-	bh=DaPw7dhtBiHRIOzvHRhBDesbLihBnn9jCUdGqLgQESQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G0EaShz6N5uAfXrD8cYhTn72Kaezhr/VlIK1Vpp/zHbvl6ob44UAwFFY1OTFomuZUqcVPNBJ7SdQ2SDXf+bKnagdsgqQeUQ6grBSokZw2Rem7OYnz0pEck05fqjZDGBdFnZdc3Qt7Zo+FKwxYydd1OC2S5Xla2RyW6EX0shRgh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=AmdDF6p7; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1720098222; c=relaxed/simple;
+	bh=uZ9UsEweFbXbxOBABtQ/dWLo0fnez7wNxhKZkX2xznc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UzW3XlHPHfAuTimZ/Vv3gsbeQHAM2yDa5U4l7d/+oJxZT9p6JHdOd5fHCvdhhI9GN4JwEcvkWUcroM3fACATHW27o1BrUdXFP8/KYREW0LiTTUAr/VWcjWw2m6g+6fcR5PAa3CaHbv3BqgMJkZLkHQL6eO5T1nGADIKRX+gk9tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MSxntTHM; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="AmdDF6p7"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-42561c16ffeso3192125e9.3
-        for <linux-coco@lists.linux.dev>; Thu, 04 Jul 2024 03:17:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1720088238; x=1720693038; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HMZja6vOfH2J15j5h8yKAKCQpQzNHB/MOqCeH7KtdDU=;
-        b=AmdDF6p79auJze9jtivx5URVj+5oFMycYqjcgaokYMcvVN4W5cx4Lhbzo8SjmBcIk1
-         4PxFGYeumT9JJElbOMS9i4H+tlPgj3B4XUFJREOtUYVY0ZIfUuq1vL4ipCaLHs55XRv8
-         qsINTqp4iTqZo88nPkNBWKRmezbZSJkHVJXhpCNtz6lBDE1vLFCWqc3+W9jLVeIDfaXu
-         Qng4ERdtOvXGj6emxHfSnpqkPr098dHx/AwV5OGIh2rPHAhVckzeOy3KiVNRKsburSq3
-         UBFqIoupOqaPgx6Y0WyzSmHZ2ORWvQOTErdk+UXwlcHbTrHvY/KIl/QGWTX2tB1b6gXe
-         DEXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720088238; x=1720693038;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HMZja6vOfH2J15j5h8yKAKCQpQzNHB/MOqCeH7KtdDU=;
-        b=lvTJ6+oPgwtAlvuDmCkeSPYF/rsvfOTnYykMLoVJAReZ9+3qmej6DbP081CeSWkg+Y
-         z1ljzc/CKDM5Pr8qO7BSv6Ofd+jXvc5Cn6VH8JoGM6XyWqfAJ3fm5Kz4SmiwKn1+CX+M
-         HKrZKtd24VDUzBwKVq82oZ/eLFyiRVy9tCj88MFkc1VLktFLELT/8QW5x/PH/B4au9ic
-         8VlZ9cW3NGGzHKkYRTy/QaSXjgr2MJ10vm4zpOXJVWQk3v1howdzU32WBmPvA8NKcMeD
-         QHJ6Mxt+SJnhpum7eci28jCSMvJiD96cgBnfQ2LH+lsiHPGjtGEH5JDDjG2Wc9JwkDja
-         hZsA==
-X-Gm-Message-State: AOJu0Yx1GWfm0EGau/8lqo91NEGNH7UlTn+Y79ZXNJWiBMITrVtuqCnz
-	Tc4/JN4rnFIUa/tEfCnchBWgLkxNCJdGqDdrV9mLJJ/xIIsbTOIBm7HSsU9/6Pc/8mz9Okzd3C2
-	j
-X-Google-Smtp-Source: AGHT+IFLEULmeW45awVMyy9QHpYnbRzyVYZu9WLdgiVWKlySZDlomG45lfDJ0wofXRYQF3bN67KxQQ==
-X-Received: by 2002:a05:600c:2147:b0:424:a516:13f8 with SMTP id 5b1f17b1804b1-4264a4694f1mr7953965e9.35.1720088237904;
-        Thu, 04 Jul 2024 03:17:17 -0700 (PDT)
-Received: from ?IPV6:2a10:bac0:b000:757f:bfc7:3301:6664:5531? ([2a10:bac0:b000:757f:bfc7:3301:6664:5531])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3678a23b349sm6213305f8f.36.2024.07.04.03.17.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jul 2024 03:17:14 -0700 (PDT)
-Message-ID: <499db0a3-186c-4998-a1c6-ce774a2d6c25@suse.com>
-Date: Thu, 4 Jul 2024 13:17:12 +0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MSxntTHM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720098221; x=1751634221;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uZ9UsEweFbXbxOBABtQ/dWLo0fnez7wNxhKZkX2xznc=;
+  b=MSxntTHM4MELE4RbKvYvSglpUEN9MrOPcNAL9NEbUO6A65+V5Gqy11ev
+   EijSvw44DysoEwiFzlXVMqlsd9CQWYl8GrZ3hcrZtkavYtdlGJSZhRUXa
+   uU3gHaMOWGdq01YIBdlkOCxmbD+pr87g9s8wLHun1Y7H72myWsYbqhHoR
+   uQtLX/5JQK93RmnHUXOmwTlg28iT5yvceF6WoY8Fwr+AMJibjCr8C+gJB
+   qd1iUrMg4YC3PaQaQPTzzChKWejWMaFf81ieQTK6hLFSpH8uHDgiadfUP
+   ZByIJNAZk3Bws8Rrdh5yvT1LrLVQ6QV8CoIeCISTOeUIjsIxcuhmblluw
+   g==;
+X-CSE-ConnectionGUID: 7dl4CrWWTK+D/wKrzr2FKA==
+X-CSE-MsgGUID: +6gnAUMIQGamvxMF2ww4bw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="27980948"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; 
+   d="scan'208";a="27980948"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2024 06:03:40 -0700
+X-CSE-ConnectionGUID: o/YWOEYtTSOuRT37J1hNvw==
+X-CSE-MsgGUID: +XbghcdiQr67hCyYBw/pcw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; 
+   d="scan'208";a="77335407"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa002.jf.intel.com with ESMTP; 04 Jul 2024 06:03:38 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 783F522B; Thu, 04 Jul 2024 16:03:36 +0300 (EEST)
+Date: Thu, 4 Jul 2024 16:03:36 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Nikolay Borisov <nik.borisov@suse.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCHv5 3/4] x86/tdx: Dynamically disable SEPT violations from
+ causing #VEs
+Message-ID: <4sqvd3zghwp5o23r2s47i56qg34obammtggbtneof26ghbwrxv@rskezsmaqgim>
+References: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
+ <20240624114149.377492-4-kirill.shutemov@linux.intel.com>
+ <05d0b24a-2e21-48c0-85b7-a9dd935ac449@suse.com>
+ <oujihwk2ghwpobsuivxlgflalwxigctjp6nld2jdtz4cbwoqnp@7v3s7ap4ul6u>
+ <3b164525-f797-478a-a75c-1c2bd83086af@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 0/4] x86/tdx: Adjust TD settings on boot
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-In-Reply-To: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3b164525-f797-478a-a75c-1c2bd83086af@intel.com>
 
+On Wed, Jul 03, 2024 at 07:49:48AM -0700, Dave Hansen wrote:
+> On 7/3/24 06:04, Kirill A. Shutemov wrote:
+> >>> -/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
+> >>> +/* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
+> >>> +#define TDCS_CONFIG_FLAGS		0x1110000300000016
+> >> 0x9110000300000016
+> >>> +#define TDCS_TD_CTLS			0x11104800000017
+> >> 0x9110000300000017
+> > Setting bit 63 in these field id is regression in new TDX spec and TDX
+> > module. It is going to be fixed in next version. Both versions of field
+> > ids are going to be valid.
+> 
+> I kinda never liked the big ol' magic numbers approach here.  But could
+> we please introduce some helpers here?
+> 
+> Then we'll end up with something like this (if the 0x111 can't be
+> decomposed):
+> 
+> #define _TDCS_CMD(c)	((0x1110UL << 48) | (c))
+> 
+> #define TDCS_CONFIG_FLAGS _TDCS_CMD(0x16)
+> #define TDCS_TD_CTLS	  _TDCS_CMD(0x17)
+> 
+> Then when folks change their mind about what should be in the TDX spec,
+> we have one place to go fix it up in addition to making this all more
+> readable.
 
+Hm. I am not sure about this. It can be tedious if we want to encode all
+info this way. Like, size of the field, number of elements in the
+field, number of elements in the sequence, etc. It is going to be macro on
+the macro on the macro. I don't think it would improve readability.
 
-On 24.06.24 г. 14:41 ч., Kirill A. Shutemov wrote:
-> The patchset adjusts a few TD settings on boot for the optimal functioning
-> of the system:
-> 
->    - Disable EPT violation #VE on private memory if TD can control it
-> 
->      The newer TDX module allows the guest to control whether it wants to
->      see #VE on EPT violation on private memory. The Linux kernel does not
->      want such #VEs and needs to disable them.
-> 
->    - Enable virtualization of topology-related CPUID leafs X2APIC_APICID MSR;
-> 
->      The ENUM_TOPOLOGY feature allows the VMM to provide topology
->      information to the guest. Enabling the feature eliminates
->      topology-related #VEs: the TDX module virtualizes accesses to the
->      CPUID leafs and the MSR.
-> 
->      It allows TDX guest to run with non-trivial topology configuration.
+On related note, I think the TDX 1.5 definitions of field ids are more
+useful as you can infer more info from them. I consider to switching all
+definitions to the new format. It effectively drops TDX 1.0 support as the
+newly used bits are reserved in 1.0.
 
+TDX module 1.0 is no longer supported, but kernel haven't broken anything
+from the guest side yet. I don't think anybody actually uses it and I need
+to jump hoops to get it running for validation.
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Any objections for dropping TDX 1.0 support?
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
