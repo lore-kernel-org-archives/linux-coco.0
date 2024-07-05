@@ -1,193 +1,114 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440C4146A8A
-	for <linux-coco@lists.linux.dev>; Fri,  5 Jul 2024 14:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE2A14F102
+	for <linux-coco@lists.linux.dev>; Fri,  5 Jul 2024 16:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720189835; cv=none; b=DXoRRC89ohEcxr6uYBTesVZh/nZuCrHep2TeJvJ++x+4KE9Vq0vtply5WtEXHuram1T2Ac2emUFaahO2UJaXy10A7qbmA0boJVYhPJrGRN8+/xU7CsdJuh8iOkv0nYxcbr6wfgnIeQDiXTjPwgJmLoUTvzoZXCt4TeFGc+n0zV4=
+	t=1720195469; cv=none; b=Tdey2VT3c2xH2tU3z9IF+TCwJWwJIak1qIfibjc6CI7SqUj7jH8skiGlCgybyz+C7/rMX3V4Knarj6nxTazka6UtH5DEmQ0clbmRVKWYahMSbGySww7GsxDDwQIFN6KMfExCUk/iTcz/Ehp7k+gl3maa4ZHe4Txp3ZOxULvZHEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720189835; c=relaxed/simple;
-	bh=R3U1aAfOL8Y9Bu6suftkngTbLFC0mE6lQTEtVPHOJT4=;
+	s=arc-20240116; t=1720195469; c=relaxed/simple;
+	bh=FNTBsX+63uIgnWKLXkG5pwYCpWKOxAZZwqQ8X2x73vU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vDgP2Dr/e5aYXxgviHog9ohRRWhJt6vqvL6C1RQOHWi5DgTCDkVq5dkotkB2zCiF+ivCGdOZg6OI0VRAA12RV9ijxKBRrbNt6uQafRAWGLvsooBX3/aPYp1E1KjndnXxZRfhJydIocqXOA6THC7OZIjlQ+DbXqFws+GbUq9a3A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=gTsd4FL0; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=fcM0RIFzRx7L9zpR3yimlJ2EfKOuxg09EYyjuxMLP36dpQ4KItL2B/smGhmpuoLSDneFm53DtbmhnSiyAnzfHZ2IDbw6to8SJmgpIFOBmrwc0gRFzRc5QB3G8o53Qg3qh3VUF2ZHQR/+eDheKjP/Xy5EUG3UyX+aSL3ZIDmlXBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=J6VAgbO9; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="gTsd4FL0"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7C96B40E0219;
-	Fri,  5 Jul 2024 14:30:31 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id BFFYtxOv6gv2; Fri,  5 Jul 2024 14:30:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1720189827; bh=SUHxe1AHOwJWYYrDHyjgIlUnmFRk9ImUv9nuF924aEs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gTsd4FL0CsyixMOlS8e1NvRtOAvyGHduPKIpatycMYaEaqN7VgaqXu9W3c40b2+9q
-	 Qs6fRL6r8IFz/4RuFJPc3yjIypZhtSeTKbXepLxHDn+KPsdyc65H/k+Rw5BJBpG106
-	 057SCcLUAymtiv0amqNSKUKCS3eETb+vTxPpp6OsHQy/CMyRnSde2P3bcg0uLawT4n
-	 OiHGTX5XcqPK91dB5cmRxfXMtAPQVn5lY3jsokJGcf5bjaMZme/a4Y/emrxoXdxpz5
-	 jpxciBPYyQPoswPPBPOrIgaCYQkq4ThEfgW1E0Zv9J2f8VhcJAyaWTurGQXsKfjhrl
-	 jp2vcUoTy/pqkFOYXDqrEt3jL7CQdJubJ2+7E7umuO/9C2tQTdaA0GmD6zS7FCFwB7
-	 8bzbjP81lnsBt9QKA+Bhi3a3hmncvu0CN29HJ8ox0nIGtN+Def9ftmp1ZrOFI+xY5J
-	 wwoB33MALMi2kxzGF5y0rBcyKWiRZFMlM3lWXQZAl828SuxAosYYhT6Sk32geXAmlX
-	 1KfV74btfbKQ4ahZPM7mADLn99LRjJTnn9WQRUrc0ch5WKHf+1GfMY3ilZmj0M/W0k
-	 NW5ArNil4s0zMb1efw8AO6bhWL+KiEeT7zUILJVnSSaWL+UxnaN2aYOLfw3Z6O5lRD
-	 mCH1R6wU/Y54N4pRpxATXIzw=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 84E9240E0177;
-	Fri,  5 Jul 2024 14:29:59 +0000 (UTC)
-Date: Fri, 5 Jul 2024 16:29:58 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: dave.hansen@linux.intel.com, tglx@linutronix.de, mingo@redhat.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org,
-	peterz@infradead.org, adrian.hunter@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, jun.nakajima@intel.com,
-	kirill.shutemov@linux.intel.com, rick.p.edgecombe@intel.com,
-	linux-kernel@vger.kernel.org, thomas.lendacky@amd.com,
-	michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com,
-	bhe@redhat.com, bdas@redhat.com, vkuznets@redhat.com,
-	dionnaglaze@google.com, anisinha@redhat.com, ardb@kernel.org,
-	dyoung@redhat.com, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, jroedel@suse.de
-Subject: Re: [PATCH v11 3/3] x86/snp: Convert shared memory back to private
- on kexec
-Message-ID: <20240705142958.GCZogDZlbQWU5vHU34@fat_crate.local>
-References: <20240614095904.1345461-1-kirill.shutemov@linux.intel.com>
- <cover.1719948376.git.ashish.kalra@amd.com>
- <ee7d5134e67964bb5c602b5c5d69f5a1decf4597.1719948376.git.ashish.kalra@amd.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="J6VAgbO9"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2c927152b4bso1239346a91.2
+        for <linux-coco@lists.linux.dev>; Fri, 05 Jul 2024 09:04:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1720195467; x=1720800267; darn=lists.linux.dev;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J0j8hAyQWJjGjX5p48jR0ZeFa7oUdUxgMcRMAfmdz3I=;
+        b=J6VAgbO9HzuhZ/FZr4H/PEin/LA11g/TNsXj3wjI9TYkXvdFPxO7sshv8iS1E2Adn2
+         0FR2q1xaORujGaM7ANXeqq4G3KR7a/7V0+FYXvIaJe/pp1cMRCp0tG4FuWu2YojQ6pI3
+         sTC+POvUYzgKum1B2Vwy34sDLcQMMXaNiqB/4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720195467; x=1720800267;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J0j8hAyQWJjGjX5p48jR0ZeFa7oUdUxgMcRMAfmdz3I=;
+        b=Ilrks17s+7k4Uz82lppOmyw3YD2thQ9gtVL/TPEY+ExPmcZRKSfTtvVKX7Q3cK6/rv
+         1C485vSwEixbW/l+OFnp2YcV97sZAIiUL6qb3lSqBKj2LKxtzzkQJvPVeSBAl0yZJqb1
+         DEQ3ejnFj0gviAh4BfCjAQdjYoiA3eAY0Srp7Am8WNMa3EjffYp5v22LvJ4OKM9k2TDk
+         P5pko7OXY2FeETuGKsr8PWgXlPlXkoeyBiIGVk3DwYvOqf9FuKJhDp9ulo38a5s7RSaP
+         cUmbyfwLP+tDMF8iK0wOkvkRY/KBQgMCIDlQguJtKcizMUFWNcsaJiG+uYG7p6fKw8m0
+         eJDg==
+X-Forwarded-Encrypted: i=1; AJvYcCVuiXxi65EV0y+kw3NwWEE2vbeygLUWeRNIJKqFwTC52ZINyQs3wAVEW5HYCgNKAH4sXVc8q/bZn5QweDiDYyBBBrf1UKUzlgWHXQ==
+X-Gm-Message-State: AOJu0YyDVECYLOZeHQiHC4rNEheUWVNFOahDRW+/1RUWDOWRyes+OrKE
+	S4MsL438XAz/3tx1DKB8MitGOqpg8Nmo6oWFcNr0u1oZH0S8I+Z+lLT215SScw==
+X-Google-Smtp-Source: AGHT+IHgkOSaePxDDnJHq1U7KDyApbljJxbvMpXvGQArIGdlvWKuaNaFIdtcRXK3XVmYMcGfw2r45Q==
+X-Received: by 2002:a17:90b:11d4:b0:2c9:74cc:1c1b with SMTP id 98e67ed59e1d1-2c99c504127mr4043383a91.7.1720195467069;
+        Fri, 05 Jul 2024 09:04:27 -0700 (PDT)
+Received: from prme-hs2-i1009 ([66.170.99.1])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c99a992c43sm3576853a91.30.2024.07.05.09.04.25
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 05 Jul 2024 09:04:26 -0700 (PDT)
+Date: Fri, 5 Jul 2024 09:04:17 -0700
+From: Tim Merrifield <tim.merrifield@broadcom.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+	Xin Li <xin3.li@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Kai Huang <kai.huang@intel.com>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.amakhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	virtualization@lists.linux.dev, alex.james@broadcom.com,
+	doug.covelli@broadcom.com, jeffrey.sheldon@broadcom.com
+Subject: Re: [PATCH 0/2] Support userspace hypercalls for TDX
+Message-ID: <20240705160404.GA15452@prme-hs2-i1009>
+References: <cover.1720046911.git.tim.merrifield@broadcom.com>
+ <33874bf0-c115-4185-85ef-684794de3c8e@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ee7d5134e67964bb5c602b5c5d69f5a1decf4597.1719948376.git.ashish.kalra@amd.com>
+In-Reply-To: <33874bf0-c115-4185-85ef-684794de3c8e@intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-On Tue, Jul 02, 2024 at 07:58:11PM +0000, Ashish Kalra wrote:
-> +static bool make_pte_private(pte_t *pte, unsigned long addr, int pages, int level)
-> +{
-> +	struct sev_es_runtime_data *data;
-> +	struct ghcb *ghcb;
-> +	int cpu;
-> +
-> +	/*
-> +	 * Ensure that all the per-cpu GHCBs are made private
-> +	 * at the end of unshared loop so that we continue to use the
-> +	 * optimized GHCB protocol and not force the switch to
-> +	 * MSR protocol till the very end.
-> +	 */
-> +	for_each_possible_cpu(cpu) {
-> +		data = per_cpu(runtime_data, cpu);
-> +		ghcb = &data->ghcb_page;
-> +		/* Check for GHCB for being part of a PMD range */
-> +		if ((unsigned long)ghcb >= addr &&
-> +		    (unsigned long)ghcb <= (addr + (pages * PAGE_SIZE)))
-> +			return true;
-> +	}
-> +
-> +	set_pte_enc(pte, level, (void *)addr);
-> +	snp_set_memory_private(addr, pages);
-> +
-> +	return true;
 
-Zap make_pte_private()
+Thanks for the response, Dave.
+
+On Wed, Jul 03, 2024 at 05:18:22PM -0700, Dave Hansen wrote:
+> 
+> Could we please be frank and transparent about what you actually want
+> here and how you expect this mechanism to be used?
+>
+
+Sorry for being unclear. open-vm-tools is currently broken on TDX and
+the intent here is to fix that. The idea is that versions of open-vm-tools
+that have been audited and restricted to certain hypercalls, would execute
+prctl to mark the process as capable of executing hypercalls.
     
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index f263ceada006..65234ffb1495 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -1022,39 +1022,14 @@ static void set_pte_enc(pte_t *kpte, int level, void *va)
- 	set_pte_enc_mask(kpte, d.pfn, d.new_pgprot);
- }
- 
--static bool make_pte_private(pte_t *pte, unsigned long addr, int pages, int level)
--{
--	struct sev_es_runtime_data *data;
--	struct ghcb *ghcb;
--	int cpu;
--
--	/*
--	 * Ensure that all the per-cpu GHCBs are made private
--	 * at the end of unshared loop so that we continue to use the
--	 * optimized GHCB protocol and not force the switch to
--	 * MSR protocol till the very end.
--	 */
--	for_each_possible_cpu(cpu) {
--		data = per_cpu(runtime_data, cpu);
--		ghcb = &data->ghcb_page;
--		/* Check for GHCB for being part of a PMD range */
--		if ((unsigned long)ghcb >= addr &&
--		    (unsigned long)ghcb <= (addr + (pages * PAGE_SIZE)))
--			return true;
--	}
--
--	set_pte_enc(pte, level, (void *)addr);
--	snp_set_memory_private(addr, pages);
--
--	return true;
--}
--
- /* Walk the direct mapping and convert all shared memory back to private. */
- static void unshare_all_memory(void)
- {
--	unsigned long addr, end, size;
-+	unsigned long addr, end, size, ghcb;
-+	struct sev_es_runtime_data *data;
- 	unsigned int npages, level;
- 	pte_t *pte;
-+	int cpu;
- 
- 	/* Unshare the direct mapping. */
- 	addr = PAGE_OFFSET;
-@@ -1063,17 +1038,28 @@ static void unshare_all_memory(void)
- 	while (addr < end) {
- 		pte = lookup_address(addr, &level);
- 		size = page_level_size(level);
-+		npages = size / PAGE_SIZE;
- 
- 		if (!pte || !pte_decrypted(*pte) || pte_none(*pte)) {
- 			addr += size;
- 			continue;
- 		}
- 
--		npages = size / PAGE_SIZE;
-+		/*
-+		 * Ensure that all the per-cpu GHCBs are made private at the
-+		 * end of unsharing loop so that the switch to the slower MSR
-+		 * protocol happens last.
-+		 */
-+		for_each_possible_cpu(cpu) {
-+			data = per_cpu(runtime_data, cpu);
-+			ghcb = (unsigned long)&data->ghcb_page;
-+
-+			if (addr <= ghcb && ghcb <= addr + size)
-+				continue;
-+		}
- 
--		if (!make_pte_private(pte, addr, npages, level))
--			pr_err("Failed to unshare range %#lx-%#lx\n",
--				addr, addr + size);
-+		set_pte_enc(pte, level, (void *)addr);
-+		snp_set_memory_private(addr, npages);
- 	}
- 
- 	/* Unshare all bss decrypted memory. */
+> This inheritance model seems more suited to wrapping a tiny helper app
+> around an existing binary, a la:
+> 
+> 	prctl(ARCH_SET_COCO_USER_HCALL);
+> 	execve("/existing/binary/that/i/surely/did/not/audit", ...);
+> 
+> ... as opposed to something that you set in new versions of
+> open-vm-tools after an extensive audit and a bug fixing campaign to
+> clean up everything that the audit found.
 
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+I understand the concern about inheritance. I chose prctl primarily
+because of some existing options that seemed similar, mainly speculation
+control. Is there an alternative approach that doesn't suffer from the
+inheritance issue?
