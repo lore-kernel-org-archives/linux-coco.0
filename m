@@ -1,180 +1,290 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2098.outbound.protection.outlook.com [40.107.92.98])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409681B1413
-	for <linux-coco@lists.linux.dev>; Thu,  4 Jul 2024 14:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.98
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720104534; cv=fail; b=ZvOPflv4cco9edo1tNgh1Ti68PsUdm7NdetzdgrQIqrSMmVblzn2nIl+W0gj5DNvg7EX4cYoGxW7GTAWE37nObarTxsxQptKd1j2Ppw06Zy++Qxpqb77ccZtsjgiVQQC4e2oN6QE1qZkFZkrzdptQPeFAZEIFQq85hyIDUeueP0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720104534; c=relaxed/simple;
-	bh=g5yyE802K709ue9hQXrvkB518nYZIa7ZWr4uWw4cj5A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CBdtCTq9vFmeF//vOi7ZVygiOVqKzX42oP/nwAI5kJq5I7GtBQ9vw+2KgGOALxs/aR0lnHm9QBSYlbI9jpKnLZA/78gI+dx7AbjTWmZOni4DWKu7ACGc3NrjKA8VNrhAA7NjGEiCua15gyDjof5nJxyyJxxAHlvU1gW6V76nKHo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=fV7/gnRD; arc=fail smtp.client-ip=40.107.92.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65BB1863C
+	for <linux-coco@lists.linux.dev>; Fri,  5 Jul 2024 14:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720189611; cv=none; b=c4CPLav0cDfvarxu4+0jJbGepRGRyOBJIbHI0mmtvuYEXRQuirTXpfTNNSel1ku4mbDKrCOHZnHygJFJhGOjeZv7mm4YBQew00TVP0Z3/1pzPcPUJApsigpRlRCQtwUGTgVJmY28PwjCsWFVYhdI4UBrWKA6HntVIB/8a0+OlYQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720189611; c=relaxed/simple;
+	bh=Fz6JcQVlyLo+M/+wq0DJI1lPg0Zr6pFUHK/8PoB2AYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sBj+5c3WKgn3EdY2lPHY0xJctnRKPXNDLHDA3eQnN2WWty0M6aeudsV78edDD/NAsDfhVRYzCy2FTbRdqo5dguS2Jbj9x9S5MEz1TjQUlWTHwM2K4dsGbt39JiSTlQVVwAdF8Fm9SAczoH8xr3nLnZJCWJxOo7SsGv3ko4+hU+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=g3y4MqWO; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="fV7/gnRD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YifxAZLN4atoh5KKokbDGxzU/X5L27rmAuXp0TwafT5ashIN0iDYUF8XjUTjhH0oKlLRElB9XnjGFvMU9HIAzbKHue0Bm3YNqdMkfN/Wrsz+l9CVrmwKouo06qsr9Dml/roqs0ovylPZ0pQCbfPD+v43uNQbLp5ohWiFsxkKecQdZgR2Yxx1VOKKy1dJ/yQ48gncq3FzT9DVwGZnMdIY0m3aoDKG56OvayoSarUwFwnwGAMzbUbaD6FFs1tNB4GmdapXR/B7Z4Elrw3NUx9EXCGVPlxAIQOXbV5Ad6H+zB/8/Gk9Efh4SV0qe8mh/sL6H1Mu/iGS/7vYHyEksqeIhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SHd9MdqDM/spPGUI5WzLoK2DoAoLJ+6u3C61zSyStaQ=;
- b=WeaJP7QqKlZ2LYHz1l9a0+Q372G7vpqku8+vwVza/kiyRCZSt2m+ZcaU0C5vXfK/xdLLA9Tq5FWH0VX/sxtwhByX1A9giJg++ddcvqHW4tLYs7ScP24NiwyMsGMxk9zR9nWOFQnkjYNUBOrF67UjiUWqff8RZ8TRDrT6anqzZcpOhyQWwNwFT8nKvp4RlmQ/1WDBnJ96ek9xOoDOxY3ThdeC9kL6QA6T84Rf/ovIpska15JPyOG4YsPOw5unrHIU/tTZfeXSKxWbjTf4iwd0moXlBlhF6KJbN2OXJYcr8L54Mzzkr88GsfBISbIJHeddMf8D3Ae8Z1ZygvEp3a+ULA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SHd9MdqDM/spPGUI5WzLoK2DoAoLJ+6u3C61zSyStaQ=;
- b=fV7/gnRDM3EerFhBIKQFB/AkY+mtxlX+SbGolJ2HuK8TAPgTtzbLU1YQCIg5H3x3B0TOk2m6z7V9Fk8oeYaK6TtXn11sl2qCLo8YA1OJk6fjobL/amCvr1uWmkxuR7sT9bZ2rF66uL81J8FB8FfwZA4SsFCfixC5qRjDiSsmCWY=
-Received: from SA1PR21MB1317.namprd21.prod.outlook.com (2603:10b6:806:1f0::9)
- by DS7PR21MB3774.namprd21.prod.outlook.com (2603:10b6:8:91::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.11; Thu, 4 Jul
- 2024 14:48:49 +0000
-Received: from SA1PR21MB1317.namprd21.prod.outlook.com
- ([fe80::67ed:774d:42d4:f6ef]) by SA1PR21MB1317.namprd21.prod.outlook.com
- ([fe80::67ed:774d:42d4:f6ef%5]) with mapi id 15.20.7762.005; Thu, 4 Jul 2024
- 14:48:49 +0000
-From: Dexuan Cui <decui@microsoft.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-CC: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	"x86@kernel.org" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Michael
- Kelley <mikelley@microsoft.com>, Kuppuswamy Sathyanarayanan
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, Kai Huang
-	<kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] x86/tdx: Fix crash on kexec
-Thread-Topic: [PATCH] x86/tdx: Fix crash on kexec
-Thread-Index: AQHayi08OouzMdQ9yk6RhWa7zn+1QrHfHynwgAAFCYCABj7PgIABRYeAgAAEEjA=
-Date: Thu, 4 Jul 2024 14:48:49 +0000
-Message-ID:
- <SA1PR21MB131745AD18D9E91D2ACA1964BFDE2@SA1PR21MB1317.namprd21.prod.outlook.com>
-References: <20240629130621.1671544-1-kirill.shutemov@linux.intel.com>
- <20240629135933.GAZoATRVAubo7ZDdKB@fat_crate.local>
- <poxeykijyqrz5hxrey46s6hh2qd6byirbevwuwec2gtbfq266c@npegk7sn3ot7>
- <SA1PR21MB1317A2E38083B300256AD5F1BFD12@SA1PR21MB1317.namprd21.prod.outlook.com>
- <20240629194103.GCZoBjTzC4m9a9yw1k@fat_crate.local>
- <SA1PR21MB1317B5850E4274CC31EDFBF8BFDD2@SA1PR21MB1317.namprd21.prod.outlook.com>
- <nx7jjplwvtmxsq675omsi5hc5oxceiffpmkqx754azuv7ee2zh@7fttse2hssti>
-In-Reply-To: <nx7jjplwvtmxsq675omsi5hc5oxceiffpmkqx754azuv7ee2zh@7fttse2hssti>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=2a2a8649-d80a-47d4-af43-64a9a084f741;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-07-04T14:43:05Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR21MB1317:EE_|DS7PR21MB3774:EE_
-x-ms-office365-filtering-correlation-id: 2dc6bf8e-842d-4b11-12f5-08dc9c386a67
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?EwQv0/RlIUBz7xy1wifqIrFEMe9gi9fwRe7fiNaLhKJReU9nTK1WWAYeulgm?=
- =?us-ascii?Q?Wb262cAlMA+LGYQU6DYV8YuPNq9wfZVs3dC9MS2GxRnL0n/qV0dKOgMvSwy1?=
- =?us-ascii?Q?A4I8/Wm3El2WMvuceMKTy1VPF7RkFNYdOuRmruqmIUMVS+f+hj2KeXBbF+mV?=
- =?us-ascii?Q?InDU1Lz2U61fkkgPfP4I1EKD1Lze87pyoi8wpwFJnSQd9O5erufV7aXrHcaH?=
- =?us-ascii?Q?3ulHrr9rt6ih2Gyrv7CBrcsqWA+W/iEy/AY3wkHrVh5Ec4veDDEzqsmcxDlg?=
- =?us-ascii?Q?RC7yteph8GBQpkzVO4TsTbTxlMcalogZMfYHp+pYl+Xn1H4knjVjwCFIgwps?=
- =?us-ascii?Q?dWNlEr0jIDpq1JAu4Lrek89cvPm3j663Hy1DZ41JKQGFPQndVt3JPWqu4JCe?=
- =?us-ascii?Q?f31vz5dVXMEibDEYp+0iLUAHecYI57xmILRLtSGiUTU+QKCWv+aJ9eBpLo7Y?=
- =?us-ascii?Q?MEwLw2mT8bGPM1vnJKGqEnT85PkXLjR7o4xq/ce09Zk2630RESUZIafv0t8v?=
- =?us-ascii?Q?1hkQJV0equj8aXebBwm8VkcMOt/KUUwNO4EY0ttpb5z8X7DNJhO2rIdmN5rw?=
- =?us-ascii?Q?XaJ+uJWMydlzzfqjKnrhya0U74G6Ld0KF9Q/aqZ2HE6D1ljiHS4MB49Un8dQ?=
- =?us-ascii?Q?GudBij9KXW8hY7POvVefGaZSxU717KTwgO2MVGEyh+40GkqjNnuzFchgLCnu?=
- =?us-ascii?Q?4WOYuNuSvxxesFX7LJbDHylxj9h+1HEuTd0poSy0NbXZGTwYlIdbvIPA8n4R?=
- =?us-ascii?Q?doW8DNG+KUOUWOgN+6MwINpakiKNiyXGM7MDo7AaIJlvxRNcphops310SK85?=
- =?us-ascii?Q?DdgRwvCSVs21ABN08w8J2wzVIKUtQaC7Rzrx7Zn29G3LPGQthXBcgxKAMWsy?=
- =?us-ascii?Q?RO7zKtVVbCaFlpxLysVyeR7CqJVnGx6hHpunds83OI7Ditm0dToFH/GxfLrD?=
- =?us-ascii?Q?H6JHYHLLRR64yLyOnzGhvWZFFxAfEGl7+YqMp7GdCYTqSo++/mx1woaRQ1Vw?=
- =?us-ascii?Q?b7pnjUwKUW8//fwqkMFBBIzr0Mt4LjiSCUKijO5XLK9Is561CZ9mGGtE/amn?=
- =?us-ascii?Q?XF0JcU2U2MhJel48bsqtTnlAm7O3q+K2FDPo+eR5TG5TeFAZ+KNhKZx5Lq3D?=
- =?us-ascii?Q?uJWbE2IDsZ0rF/ya6W/rug+pJoir0cqB2tZ1jKmIrvjI/SSySH9BdO2p6Z5h?=
- =?us-ascii?Q?eAHJOieFd80yy2fYbfHIFfg8XjqGZnUKH9JHYwMiwYLyxKs+Db2TuHZ9sPX1?=
- =?us-ascii?Q?iLnDAVoQfAjs6T6696cdf2bOwnhj+yUogUPgtwT50PgakylTjN7IPRKqV1b8?=
- =?us-ascii?Q?OSvsX9Ui17dLAHzyUlydt6RvuB0cWIEttGi+ke3Ylgo2VkhUbYsUVwuEj6Na?=
- =?us-ascii?Q?UIoX3nBC9r5hvyjMvpNHgM+2dEYU/lrZJaauQgZO87vXwm0+PA=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB1317.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?RxG3p89auw5MSN4/dODjfbKYvxUZcUFMRm87uF9Srfw2e4zoAHr+b7YnnFK8?=
- =?us-ascii?Q?f+C2GAZeCm/xIEQEbXoP99oDEgKVEfTDaXfkz0PcrpUZqbtLQLExP1/WNqDH?=
- =?us-ascii?Q?XPXFIxQkk5gUdU5OfXlZEu3mEeP1VMJOGiFYgSVJgyZ1YUhz0zlh5T0iZxWM?=
- =?us-ascii?Q?CbzuZBcocpmsGgNfDt5sUwBbka0WVhfohDemx++qq2wTzQepa1bK+elkrVUZ?=
- =?us-ascii?Q?IOgz72ukeErvXGGgMMxiafABKQ/NYH03wbp1pocPtEBaAxPTae7KIrI/i9l3?=
- =?us-ascii?Q?4BzfvmxZwKVlhxwtxq23hA71PbWxHlV9BLj9QwdHfpymhQSs99XN14CGweHa?=
- =?us-ascii?Q?k5t6qkavATQgYl1M/2evAtbseczOqogBgnyZkPsfL5ux8B9usNZQKYC0EQhs?=
- =?us-ascii?Q?aZgWtAenOsSj2W8z8PWEcK05UAXSdopk2nk++PfHFfkKcv1i32aDfjLqcCB7?=
- =?us-ascii?Q?a2CTeURdLlse3z/nr9h13pIMiuTluaMwMJKy3k0mKzlpIpUjLo/lX1ec+kRl?=
- =?us-ascii?Q?tlQVDERDSvm7MdQ2P2OJITLb0D8IbXaWjzpXau4BHLJ/J0LIFXzzB5Af2Rrc?=
- =?us-ascii?Q?leuaix1ljbzrZgtsTdi8XnmuxwJsmJc1QGCLg09cR+F+JRYZ2hNoz+n8O/5f?=
- =?us-ascii?Q?zBgjQ6G/IB+/Ym9IycKNnIZHMh/ZDbtd4syn5/gm675DfAyXkLPs+sO0Bwl9?=
- =?us-ascii?Q?x/Gd7HzF+Ad4Hls+gKnXfPe6kb2ViFj/E5dwrxLcmpFOkGJhhHR0KNVT2z+O?=
- =?us-ascii?Q?LFDSGJmyh3dTuqeEAZN2/DhFaPiEMOOvWJsdNqHjeRrS9s/HHZX9+Oj3j8XU?=
- =?us-ascii?Q?hiG9F81+Rs4pU3QK/7/kba6GC1olRNsbfphu9+kyDsopiAv8GqmNXrir/2Al?=
- =?us-ascii?Q?G/0didhL+4fsIBgOFBo89t/kIbXX3sPFpg5JCA6rn7vDxAesXX8cOt6d9qHQ?=
- =?us-ascii?Q?Aq+1XE1gzfupH7GkYBQqdfspX+BcctpUw2ipxgdV6GNWES+pEum0E5bkb9LL?=
- =?us-ascii?Q?B84MMr4rbnZZBlaNUaHcWNhvy6f8HdfVBbwb9UlicaPvypKlOi3TImsUKYmg?=
- =?us-ascii?Q?UrndhhG8HZ8WHdc0IbvYj3Rp+6LArI1KKavsuM2b6EyAcXeDJnXfGYAomHd7?=
- =?us-ascii?Q?8TQUfwnnM60qGrG+/sjzXyhcWbnNa0fJCKgY6YjHLQh5gkr+q6IlQDOQN5/y?=
- =?us-ascii?Q?ESOavdN4WE3+3uQvInV5GIyQpMNheuWNoR0FJ0yyXwfh4+In/OZGJ9bR8dc4?=
- =?us-ascii?Q?WzTApyFxM8uhuc1c/PyKP++ixYnf9PluXdd9wh8rZKbvJI6tYH/07GdFKGre?=
- =?us-ascii?Q?FpD9yFK3nDE1OxPhvhS6w5W4puypV0cgGnU+frEGHaDDCxdilFGucSu40Sr3?=
- =?us-ascii?Q?z5g1vHEfOXMx8YibCyPuLk3k+jXXcm69TECdKgfFiISjndcU3bDgbthZSgiK?=
- =?us-ascii?Q?spVMwfeCPFgHLMQa/m5RrIo1bA+z4lBCtbOtJHXko1zoCm+317G1Y3Xxtsmo?=
- =?us-ascii?Q?TtjYTsVaxppbbDwyvfPC5yGGv8aj9EkZ0huWXPW4a8xYuKeYsTarfzcdH/3O?=
- =?us-ascii?Q?86dtB7vk11MARXCiI0Y=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="g3y4MqWO"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9E46240E0187;
+	Fri,  5 Jul 2024 14:26:45 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id t-44_YkbTsu8; Fri,  5 Jul 2024 14:26:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1720189601; bh=7i2R7/VkJeoOTDTwDpDdDrekidEWRlIFfduUba7D268=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g3y4MqWOc2ZSUN7k7BfugPBSm9wWO2Qv6biJlImbrUmB9uquwpzZDy9RlIQGR6Y4t
+	 LeMgHXiZ15vK4TTlq+vcooie3l/9G5PMJwbrzkd/gGfZ2MfBiG2xDqf/IpZJv08DeJ
+	 sNlQQevbU5idK6wbIYmhsyvKXcnTRoJcdPEeJsbnIXQpGEoLbtBG88uzUk1jP8Pugx
+	 0DHhkCXUmKg2yOPQ3N7KIYwK9YAPU/YDmf58KbM2IFpIfwnBSbtwUAjskGD4wN+m4T
+	 j2F33fAP0YG+JYU2HX7/7qVEsbnRdGFxSPODY9iHIaJs3XVcARXQbTjXxA4anx8GYL
+	 AS41SiH3E+EnA97iFqsKlVfHWGFuVij+5S+0TCaieAm6HIBJjqCMXF5lh3XOeSrB8w
+	 oPQhVGtQmbKxHDCTs1aSYcnylCK1uIPCQY9tvefafek2TuZhpG5y/iADVvTKAFh/Mf
+	 fuyoB/ezGEmpBroZhyaYH9j05xUgJLsymz0j9BfjLrjq8rPjZleHflxhigcZ6mKmt7
+	 QxM7cnq+nrFexCNooBxOpdRqLaHaNMT/o/9bsR/Gy4kNsVum9bzAzBEqGTaIizM1uP
+	 fpbPEe67+uYn4+lOWTr3+xzpf8Ed2Pod1d6zglZw4q7A0AAbQ1j4HrQPlfOmUGrY74
+	 aEPv9W/g855nnhh9CQutnrSo=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CA21A40E0177;
+	Fri,  5 Jul 2024 14:26:12 +0000 (UTC)
+Date: Fri, 5 Jul 2024 16:26:07 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: dave.hansen@linux.intel.com, tglx@linutronix.de, mingo@redhat.com,
+	x86@kernel.org, hpa@zytor.com, rafael@kernel.org,
+	peterz@infradead.org, adrian.hunter@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, jun.nakajima@intel.com,
+	kirill.shutemov@linux.intel.com, rick.p.edgecombe@intel.com,
+	linux-kernel@vger.kernel.org, thomas.lendacky@amd.com,
+	michael.roth@amd.com, seanjc@google.com, kai.huang@intel.com,
+	bhe@redhat.com, bdas@redhat.com, vkuznets@redhat.com,
+	dionnaglaze@google.com, anisinha@redhat.com, ardb@kernel.org,
+	dyoung@redhat.com, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, jroedel@suse.de
+Subject: Re: [PATCH v11 2/3] x86/mm: refactor __set_clr_pte_enc()
+Message-ID: <20240705142607.GAZogCf61FRALJxHGZ@fat_crate.local>
+References: <20240614095904.1345461-1-kirill.shutemov@linux.intel.com>
+ <cover.1719948376.git.ashish.kalra@amd.com>
+ <f2152ca66e98cc399681e4964d748306b1845710.1719948376.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB1317.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2dc6bf8e-842d-4b11-12f5-08dc9c386a67
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jul 2024 14:48:49.6782
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AbNZCWGbWxrzjtKqoJ5FALEteGoz/m0bay0vqQcbK6Tw2j4GZjYA1zhBmZ/zAtAtny1XNYDS7bCs5MAJmgepXw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR21MB3774
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <f2152ca66e98cc399681e4964d748306b1845710.1719948376.git.ashish.kalra@amd.com>
 
-> From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > [...]
-> > Hi Kirill, Dave,
-> > Do you think if it's a good idea if I post a new patch that combines
-> >     e1b8ac3aae58 ("x86/tdx: Support vmalloc() for
-> > tdx_enc_status_changed()")
-> > and
-> >     your patch "[PATCH] x86/tdx: Fix crash on kexec"?
->=20
-> Yeah, IIUC, that's what Borislav wanted. After proper testing.
->=20
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
+On Tue, Jul 02, 2024 at 07:57:54PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> Refactor __set_clr_pte_enc() and add two new helper functions to
+> set/clear PTE C-bit from early SEV/SNP initialization code and
+> later during normal system operations and shutdown/kexec.
+> 
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/include/asm/sev.h    |  9 +++++++
+>  arch/x86/mm/mem_encrypt_amd.c | 47 +++++++++++++++++++++++++++++------
+>  2 files changed, 48 insertions(+), 8 deletions(-)
 
-Hi Kirill, =20
-I tested the 2 patches for a Linux VM on Hyper-V and all worked fine.
+Some serious cleanups ontop which reduce the diffstat even more. Untested ofc.
 
-When you finish testing, please let me know so that I can post
-a combined patch; alternatively, it would be better if you can help post
-a combined patch.
+Holler if something's unclear.
 
-Thanks,
-Dexuan
+---
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 0c90a8a74a88..5013c3afb0c4 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -1012,11 +1012,14 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+ 
+ static void set_pte_enc(pte_t *kpte, int level, void *va)
+ {
+-	unsigned long pfn;
+-	pgprot_t new_prot;
+-
+-	prep_set_clr_pte_enc(kpte, level, 1, va, &pfn, NULL, NULL, &new_prot);
+-	set_pte_enc_mask(kpte, pfn, new_prot);
++	struct pte_enc_desc d = {
++		.kpte	   = kpte,
++		.pte_level = level,
++		.va	   = va
++	};
++
++	prepare_pte_enc(&d);
++	set_pte_enc_mask(kpte, d.pfn, d.new_pgprot);
+ }
+ 
+ static bool make_pte_private(pte_t *pte, unsigned long addr, int pages, int level)
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 4f1a6d1e3f4c..68a03fd07665 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -234,6 +234,22 @@ struct svsm_attest_call {
+ 	u8 rsvd[4];
+ };
+ 
++/* PTE descriptor used for the prepare_pte_enc() operations. */
++struct pte_enc_desc {
++	pte_t *kpte;
++	int pte_level;
++	bool encrypt;
++	/* pfn of the kpte above */
++	unsigned long pfn;
++	/* physical address of @pfn */
++	unsigned long pa;
++	/* virtual address of @pfn */
++	void *va;
++	/* memory covered by the pte */
++	unsigned long size;
++	pgprot_t new_pgprot;
++};
++
+ /*
+  * SVSM protocol structure
+  */
+@@ -348,9 +364,7 @@ u64 snp_get_unsupported_features(u64 status);
+ u64 sev_get_status(void);
+ void sev_show_status(void);
+ void snp_update_svsm_ca(void);
+-int prep_set_clr_pte_enc(pte_t *kpte, int level, int enc, void *va,
+-			 unsigned long *ret_pfn, unsigned long *ret_pa,
+-			 unsigned long *ret_size, pgprot_t *ret_new_prot);
++int prepare_pte_enc(struct pte_enc_desc *d);
+ void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot);
+ void snp_kexec_finish(void);
+ void snp_kexec_begin(void);
+@@ -390,10 +404,7 @@ static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
+ static inline u64 sev_get_status(void) { return 0; }
+ static inline void sev_show_status(void) { }
+ static inline void snp_update_svsm_ca(void) { }
+-static inline int
+-prep_set_clr_pte_enc(pte_t *kpte, int level, int enc, void *va,
+-		     unsigned long *ret_pfn, unsigned long *ret_pa,
+-		     unsigned long *ret_size, pgprot_t *ret_new_prot) { }
++static inline int prepare_pte_enc(struct pte_enc_desc *d) { }
+ static inline void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot) { }
+ static inline void snp_kexec_finish(void) { }
+ static inline void snp_kexec_begin(void) { }
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index dec24bb08b09..774f9677458f 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -311,48 +311,37 @@ static int amd_enc_status_change_finish(unsigned long vaddr, int npages, bool en
+ 	return 0;
+ }
+ 
+-int prep_set_clr_pte_enc(pte_t *kpte, int level, int enc, void *va,
+-			 unsigned long *ret_pfn, unsigned long *ret_pa,
+-			 unsigned long *ret_size, pgprot_t *ret_new_prot)
++int prepare_pte_enc(struct pte_enc_desc *d)
+ {
+-	pgprot_t old_prot, new_prot;
+-	unsigned long pfn, pa, size;
++	pgprot_t old_prot;
+ 
+-	pfn = pg_level_to_pfn(level, kpte, &old_prot);
+-	if (!pfn)
++	d->pfn = pg_level_to_pfn(d->pte_level, d->kpte, &old_prot);
++	if (!d->pfn)
+ 		return 1;
+ 
+-	new_prot = old_prot;
+-	if (enc)
+-		pgprot_val(new_prot) |= _PAGE_ENC;
++	d->new_pgprot = old_prot;
++	if (d->encrypt)
++		pgprot_val(d->new_pgprot) |= _PAGE_ENC;
+ 	else
+-		pgprot_val(new_prot) &= ~_PAGE_ENC;
++		pgprot_val(d->new_pgprot) &= ~_PAGE_ENC;
+ 
+ 	/* If prot is same then do nothing. */
+-	if (pgprot_val(old_prot) == pgprot_val(new_prot))
++	if (pgprot_val(old_prot) == pgprot_val(d->new_pgprot))
+ 		return 1;
+ 
+-	pa = pfn << PAGE_SHIFT;
+-	size = page_level_size(level);
++	d->pa = d->pfn << PAGE_SHIFT;
++	d->size = page_level_size(d->pte_level);
+ 
+ 	/*
+-	 * We are going to perform in-place en-/decryption and change the
+-	 * physical page attribute from C=1 to C=0 or vice versa. Flush the
+-	 * caches to ensure that data gets accessed with the correct C-bit.
++	 * In-place en-/decryption and physical page attribute change
++	 * from C=1 to C=0 or vice versa will be performed. Flush the
++	 * caches to ensure that data gets accessed with the correct
++	 * C-bit.
+ 	 */
+-	if (va)
+-		clflush_cache_range(va, size);
++	if (d->va)
++		clflush_cache_range(d->va, d->size);
+ 	else
+-		clflush_cache_range(__va(pa), size);
+-
+-	if (ret_new_prot)
+-		*ret_new_prot = new_prot;
+-	if (ret_size)
+-		*ret_size = size;
+-	if (ret_pfn)
+-		*ret_pfn = pfn;
+-	if (ret_pa)
+-		*ret_pa = pa;
++		clflush_cache_range(__va(d->pa), d->size);
+ 
+ 	return 0;
+ }
+@@ -368,33 +357,36 @@ void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot)
+ 
+ static void __init __set_clr_pte_enc(pte_t *kpte, int level, bool enc)
+ {
+-	unsigned long pfn, pa, size;
+-	pgprot_t new_prot;
++	struct pte_enc_desc d = {
++		.kpte	     = kpte,
++		.pte_level   = level,
++		.encrypt     = enc
++	};
+ 
+-	if (prep_set_clr_pte_enc(kpte, level, enc, NULL, &pfn, &pa, &size, &new_prot))
++	if (prepare_pte_enc(&d))
+ 		return;
+ 
+ 	/* Encrypt/decrypt the contents in-place */
+ 	if (enc) {
+-		sme_early_encrypt(pa, size);
++		sme_early_encrypt(d.pa, d.size);
+ 	} else {
+-		sme_early_decrypt(pa, size);
++		sme_early_decrypt(d.pa, d.size);
+ 
+ 		/*
+ 		 * ON SNP, the page state in the RMP table must happen
+ 		 * before the page table updates.
+ 		 */
+-		early_snp_set_memory_shared((unsigned long)__va(pa), pa, 1);
++		early_snp_set_memory_shared((unsigned long)__va(d.pa), d.pa, 1);
+ 	}
+ 
+-	set_pte_enc_mask(kpte, pfn, new_prot);
++	set_pte_enc_mask(kpte, d.pfn, d.new_pgprot);
+ 
+ 	/*
+ 	 * If page is set encrypted in the page table, then update the RMP table to
+ 	 * add this page as private.
+ 	 */
+ 	if (enc)
+-		early_snp_set_memory_private((unsigned long)__va(pa), pa, 1);
++		early_snp_set_memory_private((unsigned long)__va(d.pa), d.pa, 1);
+ }
+ 
+ static int __init early_set_memory_enc_dec(unsigned long vaddr,
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
