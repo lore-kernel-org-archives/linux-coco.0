@@ -1,51 +1,51 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07FE1581E3
-	for <linux-coco@lists.linux.dev>; Fri,  5 Jul 2024 14:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440C4146A8A
+	for <linux-coco@lists.linux.dev>; Fri,  5 Jul 2024 14:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720189749; cv=none; b=COC+/3/Nxd1/E/rgmXNolTBURHN/4kRNfmghMFr3ChWFiqiaHvwe6wiBYsiL9YJOelrmbz0yQFPczPSwN/VI7+gJylVOn1gaLwg4G9kR+rsdQ08ADnMcF3Qdt8K/ZuEJOGq47EODLGIz/vRTkW9VKaXY141NrxJgAdRYSNhsgOs=
+	t=1720189835; cv=none; b=DXoRRC89ohEcxr6uYBTesVZh/nZuCrHep2TeJvJ++x+4KE9Vq0vtply5WtEXHuram1T2Ac2emUFaahO2UJaXy10A7qbmA0boJVYhPJrGRN8+/xU7CsdJuh8iOkv0nYxcbr6wfgnIeQDiXTjPwgJmLoUTvzoZXCt4TeFGc+n0zV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720189749; c=relaxed/simple;
-	bh=hsj1pV3wI35C4h9vLbUYU+0lqVolpEH+QH3zXGmOwcs=;
+	s=arc-20240116; t=1720189835; c=relaxed/simple;
+	bh=R3U1aAfOL8Y9Bu6suftkngTbLFC0mE6lQTEtVPHOJT4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UxYa0BgAkZ2y0Fo4Jdb9cuA9hcjQ2atiNvBhbymgZKi6qTc7vhn0tZwHUTR2Og4J1upIogtbt88/lnoUUICuvDv+GEXkzhMP50/nr4whlRu5Iv9gxO0eXYXshy2LP3duzNptzMZEI394ojDrLryveZqv1NQt/uvkhY0nLdhuKN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HZhyOtPH; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=vDgP2Dr/e5aYXxgviHog9ohRRWhJt6vqvL6C1RQOHWi5DgTCDkVq5dkotkB2zCiF+ivCGdOZg6OI0VRAA12RV9ijxKBRrbNt6uQafRAWGLvsooBX3/aPYp1E1KjndnXxZRfhJydIocqXOA6THC7OZIjlQ+DbXqFws+GbUq9a3A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=gTsd4FL0; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HZhyOtPH"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="gTsd4FL0"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 779D340E0177;
-	Fri,  5 Jul 2024 14:29:05 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7C96B40E0219;
+	Fri,  5 Jul 2024 14:30:31 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 6cKDbcrtIBvA; Fri,  5 Jul 2024 14:29:02 +0000 (UTC)
+	with ESMTP id BFFYtxOv6gv2; Fri,  5 Jul 2024 14:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1720189742; bh=YF0KsnKaZaCiX1t5IcuNZnzLBHM/kNxnGffyLGgs1r4=;
+	t=1720189827; bh=SUHxe1AHOwJWYYrDHyjgIlUnmFRk9ImUv9nuF924aEs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HZhyOtPHKvgy3VbdAWfjYEx2AfjjYC69QlPTFKTDF3FH8CN7yV3MbvNsXmd7jUP9D
-	 550wAb8nDVjI0kXZosh0axvpbIlBEeZffI1SjrsFrLb5Hrg0a1AwgJ+03RSXwgHI7d
-	 PUx1bBE2YPtea8lvxQPuIOaRPAvGc+uabkNU5XFegE0Zk48WWJB4J/PHql7iVv2oTr
-	 IoQM7VppJgwq/awiaKJJQe0QWSlKp4kNABrnJKFqo/qWdcHZmVqXWPL55MjaT4RqP9
-	 LJf/VHbiDByLyy6w3oBF/vxmJQwyeSIu0abTnBFecBY6/Pii/fvHsPG75HnT5g+xai
-	 QiGBodj7mznM7d/tuYuikzzoK0bCyGpK3lEwre3yLllrdr7IzEa1Tv96U6eWfZ+ZkW
-	 y3b81G0FH3RiK5cw7w5KVz1aFJdkKNFdU6amOFD8V7yws2IV2dnrMjOVqODPMYB6D7
-	 0BrPR9TEp50P3p0ZKieZDuLj2vcaMNLqXZlTdW1vrdHEeq7GGsF3kTY5iu+HwKGvMC
-	 Ak4EXpRK77+ayR86BzN9r7Mo8DYyCQmgCE9TeVVrMFWuk7vaVajZD9HArxzrpfJ2k3
-	 wiHLpDch8bUNtG1ltpqwn95dF9twYXvQGL+PRfa/VDRPYgDHD2jLR3TDSYTEcMYI8Q
-	 pLwa3XXkIjafcMq3f4kd7+1s=
+	b=gTsd4FL0CsyixMOlS8e1NvRtOAvyGHduPKIpatycMYaEaqN7VgaqXu9W3c40b2+9q
+	 Qs6fRL6r8IFz/4RuFJPc3yjIypZhtSeTKbXepLxHDn+KPsdyc65H/k+Rw5BJBpG106
+	 057SCcLUAymtiv0amqNSKUKCS3eETb+vTxPpp6OsHQy/CMyRnSde2P3bcg0uLawT4n
+	 OiHGTX5XcqPK91dB5cmRxfXMtAPQVn5lY3jsokJGcf5bjaMZme/a4Y/emrxoXdxpz5
+	 jpxciBPYyQPoswPPBPOrIgaCYQkq4ThEfgW1E0Zv9J2f8VhcJAyaWTurGQXsKfjhrl
+	 jp2vcUoTy/pqkFOYXDqrEt3jL7CQdJubJ2+7E7umuO/9C2tQTdaA0GmD6zS7FCFwB7
+	 8bzbjP81lnsBt9QKA+Bhi3a3hmncvu0CN29HJ8ox0nIGtN+Def9ftmp1ZrOFI+xY5J
+	 wwoB33MALMi2kxzGF5y0rBcyKWiRZFMlM3lWXQZAl828SuxAosYYhT6Sk32geXAmlX
+	 1KfV74btfbKQ4ahZPM7mADLn99LRjJTnn9WQRUrc0ch5WKHf+1GfMY3ilZmj0M/W0k
+	 NW5ArNil4s0zMb1efw8AO6bhWL+KiEeT7zUILJVnSSaWL+UxnaN2aYOLfw3Z6O5lRD
+	 mCH1R6wU/Y54N4pRpxATXIzw=
 Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3311040E0187;
-	Fri,  5 Jul 2024 14:28:34 +0000 (UTC)
-Date: Fri, 5 Jul 2024 16:28:33 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 84E9240E0177;
+	Fri,  5 Jul 2024 14:29:59 +0000 (UTC)
+Date: Fri, 5 Jul 2024 16:29:58 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Ashish Kalra <Ashish.Kalra@amd.com>
 Cc: dave.hansen@linux.intel.com, tglx@linutronix.de, mingo@redhat.com,
@@ -61,7 +61,7 @@ Cc: dave.hansen@linux.intel.com, tglx@linutronix.de, mingo@redhat.com,
 	linux-coco@lists.linux.dev, jroedel@suse.de
 Subject: Re: [PATCH v11 3/3] x86/snp: Convert shared memory back to private
  on kexec
-Message-ID: <20240705142833.GBZogDEZ1kk5bbDp7C@fat_crate.local>
+Message-ID: <20240705142958.GCZogDZlbQWU5vHU34@fat_crate.local>
 References: <20240614095904.1345461-1-kirill.shutemov@linux.intel.com>
  <cover.1719948376.git.ashish.kalra@amd.com>
  <ee7d5134e67964bb5c602b5c5d69f5a1decf4597.1719948376.git.ashish.kalra@amd.com>
@@ -76,139 +76,114 @@ Content-Disposition: inline
 In-Reply-To: <ee7d5134e67964bb5c602b5c5d69f5a1decf4597.1719948376.git.ashish.kalra@amd.com>
 
 On Tue, Jul 02, 2024 at 07:58:11PM +0000, Ashish Kalra wrote:
-> +static void unshare_all_bss_decrypted_memory(void)
+> +static bool make_pte_private(pte_t *pte, unsigned long addr, int pages, int level)
 > +{
-> +	unsigned long vaddr, vaddr_end;
-> +	unsigned int level;
-> +	unsigned int npages;
-> +	pte_t *pte;
+> +	struct sev_es_runtime_data *data;
+> +	struct ghcb *ghcb;
+> +	int cpu;
 > +
-> +	vaddr = (unsigned long)__start_bss_decrypted;
-> +	vaddr_end = (unsigned long)__start_bss_decrypted_unused;
-> +	npages = (vaddr_end - vaddr) >> PAGE_SHIFT;
-> +	for (; vaddr < vaddr_end; vaddr += PAGE_SIZE) {
-> +		pte = lookup_address(vaddr, &level);
-> +		if (!pte || !pte_decrypted(*pte) || pte_none(*pte))
-> +			continue;
-> +
-> +		set_pte_enc(pte, level, (void *)vaddr);
+> +	/*
+> +	 * Ensure that all the per-cpu GHCBs are made private
+> +	 * at the end of unshared loop so that we continue to use the
+> +	 * optimized GHCB protocol and not force the switch to
+> +	 * MSR protocol till the very end.
+> +	 */
+> +	for_each_possible_cpu(cpu) {
+> +		data = per_cpu(runtime_data, cpu);
+> +		ghcb = &data->ghcb_page;
+> +		/* Check for GHCB for being part of a PMD range */
+> +		if ((unsigned long)ghcb >= addr &&
+> +		    (unsigned long)ghcb <= (addr + (pages * PAGE_SIZE)))
+> +			return true;
 > +	}
-> +	vaddr = (unsigned long)__start_bss_decrypted;
-> +	snp_set_memory_private(vaddr, npages);
-> +}
+> +
+> +	set_pte_enc(pte, level, (void *)addr);
+> +	snp_set_memory_private(addr, pages);
+> +
+> +	return true;
 
-Merge the whole unsharing dance into a single function:
-
+Zap make_pte_private()
+    
 diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 5013c3afb0c4..f263ceada006 100644
+index f263ceada006..65234ffb1495 100644
 --- a/arch/x86/coco/sev/core.c
 +++ b/arch/x86/coco/sev/core.c
-@@ -1049,58 +1049,47 @@ static bool make_pte_private(pte_t *pte, unsigned long addr, int pages, int leve
- 	return true;
+@@ -1022,39 +1022,14 @@ static void set_pte_enc(pte_t *kpte, int level, void *va)
+ 	set_pte_enc_mask(kpte, d.pfn, d.new_pgprot);
  }
  
--static void unshare_all_bss_decrypted_memory(void)
+-static bool make_pte_private(pte_t *pte, unsigned long addr, int pages, int level)
 -{
--	unsigned long vaddr, vaddr_end;
--	unsigned int level;
--	unsigned int npages;
--	pte_t *pte;
--
--	vaddr = (unsigned long)__start_bss_decrypted;
--	vaddr_end = (unsigned long)__start_bss_decrypted_unused;
--	npages = (vaddr_end - vaddr) >> PAGE_SHIFT;
--	for (; vaddr < vaddr_end; vaddr += PAGE_SIZE) {
--		pte = lookup_address(vaddr, &level);
--		if (!pte || !pte_decrypted(*pte) || pte_none(*pte))
--			continue;
--
--		set_pte_enc(pte, level, (void *)vaddr);
--	}
--	vaddr = (unsigned long)__start_bss_decrypted;
--	snp_set_memory_private(vaddr, npages);
--}
--
-+/* Walk the direct mapping and convert all shared memory back to private. */
- static void unshare_all_memory(void)
- {
--	unsigned long addr, end;
+-	struct sev_es_runtime_data *data;
+-	struct ghcb *ghcb;
+-	int cpu;
 -
 -	/*
--	 * Walk direct mapping and convert all shared memory back to private.
+-	 * Ensure that all the per-cpu GHCBs are made private
+-	 * at the end of unshared loop so that we continue to use the
+-	 * optimized GHCB protocol and not force the switch to
+-	 * MSR protocol till the very end.
 -	 */
-+	unsigned long addr, end, size;
-+	unsigned int npages, level;
-+	pte_t *pte;
- 
-+	/* Unshare the direct mapping. */
- 	addr = PAGE_OFFSET;
- 	end  = PAGE_OFFSET + get_max_mapped();
- 
- 	while (addr < end) {
--		unsigned long size;
--		unsigned int level;
--		pte_t *pte;
+-	for_each_possible_cpu(cpu) {
+-		data = per_cpu(runtime_data, cpu);
+-		ghcb = &data->ghcb_page;
+-		/* Check for GHCB for being part of a PMD range */
+-		if ((unsigned long)ghcb >= addr &&
+-		    (unsigned long)ghcb <= (addr + (pages * PAGE_SIZE)))
+-			return true;
+-	}
 -
+-	set_pte_enc(pte, level, (void *)addr);
+-	snp_set_memory_private(addr, pages);
+-
+-	return true;
+-}
+-
+ /* Walk the direct mapping and convert all shared memory back to private. */
+ static void unshare_all_memory(void)
+ {
+-	unsigned long addr, end, size;
++	unsigned long addr, end, size, ghcb;
++	struct sev_es_runtime_data *data;
+ 	unsigned int npages, level;
+ 	pte_t *pte;
++	int cpu;
+ 
+ 	/* Unshare the direct mapping. */
+ 	addr = PAGE_OFFSET;
+@@ -1063,17 +1038,28 @@ static void unshare_all_memory(void)
+ 	while (addr < end) {
  		pte = lookup_address(addr, &level);
  		size = page_level_size(level);
- 
--		if (pte && pte_decrypted(*pte) && !pte_none(*pte)) {
--			int pages = size / PAGE_SIZE;
--
--			if (!make_pte_private(pte, addr, pages, level)) {
--				pr_err("Failed to unshare range %#lx-%#lx\n",
--				       addr, addr + size);
--			}
-+		if (!pte || !pte_decrypted(*pte) || pte_none(*pte)) {
-+			addr += size;
-+			continue;
- 		}
--		addr += size;
-+
 +		npages = size / PAGE_SIZE;
+ 
+ 		if (!pte || !pte_decrypted(*pte) || pte_none(*pte)) {
+ 			addr += size;
+ 			continue;
+ 		}
+ 
+-		npages = size / PAGE_SIZE;
++		/*
++		 * Ensure that all the per-cpu GHCBs are made private at the
++		 * end of unsharing loop so that the switch to the slower MSR
++		 * protocol happens last.
++		 */
++		for_each_possible_cpu(cpu) {
++			data = per_cpu(runtime_data, cpu);
++			ghcb = (unsigned long)&data->ghcb_page;
 +
-+		if (!make_pte_private(pte, addr, npages, level))
-+			pr_err("Failed to unshare range %#lx-%#lx\n",
-+				addr, addr + size);
++			if (addr <= ghcb && ghcb <= addr + size)
++				continue;
++		}
+ 
+-		if (!make_pte_private(pte, addr, npages, level))
+-			pr_err("Failed to unshare range %#lx-%#lx\n",
+-				addr, addr + size);
++		set_pte_enc(pte, level, (void *)addr);
++		snp_set_memory_private(addr, npages);
  	}
  
--	unshare_all_bss_decrypted_memory();
-+	/* Unshare all bss decrypted memory. */
-+	addr = (unsigned long)__start_bss_decrypted;
-+	end  = (unsigned long)__start_bss_decrypted_unused;
-+	npages = (end - addr) >> PAGE_SHIFT;
-+
-+	for (; addr < end; addr += PAGE_SIZE) {
-+		pte = lookup_address(addr, &level);
-+		if (!pte || !pte_decrypted(*pte) || pte_none(*pte))
-+			continue;
-+
-+		set_pte_enc(pte, level, (void *)addr);
-+	}
-+	addr = (unsigned long)__start_bss_decrypted;
-+	snp_set_memory_private(addr, npages);
- 
- 	__flush_tlb_all();
- 
-@@ -1114,8 +1103,9 @@ void snp_kexec_begin(void)
- 
- 	if (!IS_ENABLED(CONFIG_KEXEC_CORE))
- 		return;
-+
- 	/*
--	 * Crash kernel reaches here with interrupts disabled: can't wait for
-+	 * Crash kernel ends up here with interrupts disabled: can't wait for
- 	 * conversions to finish.
- 	 *
- 	 * If race happened, just report and proceed.
-@@ -1124,7 +1114,6 @@ void snp_kexec_begin(void)
- 		pr_warn("Failed to stop shared<->private conversions\n");
- }
- 
--/* Walk direct mapping and convert all shared memory back to private */
- void snp_kexec_finish(void)
- {
- 	struct sev_es_runtime_data *data;
+ 	/* Unshare all bss decrypted memory. */
 
 
 -- 
