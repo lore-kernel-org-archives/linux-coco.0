@@ -1,57 +1,57 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE2A14F102
-	for <linux-coco@lists.linux.dev>; Fri,  5 Jul 2024 16:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C9114A60C
+	for <linux-coco@lists.linux.dev>; Fri,  5 Jul 2024 18:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720195469; cv=none; b=Tdey2VT3c2xH2tU3z9IF+TCwJWwJIak1qIfibjc6CI7SqUj7jH8skiGlCgybyz+C7/rMX3V4Knarj6nxTazka6UtH5DEmQ0clbmRVKWYahMSbGySww7GsxDDwQIFN6KMfExCUk/iTcz/Ehp7k+gl3maa4ZHe4Txp3ZOxULvZHEs=
+	t=1720205760; cv=none; b=WrAmxH6kvObTkbEsFAhxqDbmM8/vD+DXJnS1jt+G+hDV695mBMr/sG0XqwbZlvxISdf/hw9gL75spG6HBj4tPuZkzDTdKEteNLYGR4M3qRRTI0PHhLUVCAkVQIYAXP0xAwYvxVhrqX3MPluXm88owg2PmdTqXEgahIBpXh6bJak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720195469; c=relaxed/simple;
-	bh=FNTBsX+63uIgnWKLXkG5pwYCpWKOxAZZwqQ8X2x73vU=;
+	s=arc-20240116; t=1720205760; c=relaxed/simple;
+	bh=crLFsjy3aYw8IUr9kg3Bgeau9zFg4Rj+PWHrP/Wxqog=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fcM0RIFzRx7L9zpR3yimlJ2EfKOuxg09EYyjuxMLP36dpQ4KItL2B/smGhmpuoLSDneFm53DtbmhnSiyAnzfHZ2IDbw6to8SJmgpIFOBmrwc0gRFzRc5QB3G8o53Qg3qh3VUF2ZHQR/+eDheKjP/Xy5EUG3UyX+aSL3ZIDmlXBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=J6VAgbO9; arc=none smtp.client-ip=209.85.216.42
+	 Content-Type:Content-Disposition:In-Reply-To; b=VJzupnQQz+MQLVVdNp366CqGUGiRl8ZnQYxTo7jbSOpi1DYIFzTmzGqfhQ/ZadoRkrQnuUdYInPgo7RwHvEbidA0pL8wZ3ZLAt9fL5VmMBiWcud9Nn6LMEeDAMrsegKpvCjFg+zH1sKI1ls1JJt2/u9LwFP/6FWKXfajPPaxULw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GC96LAE7; arc=none smtp.client-ip=209.85.215.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="J6VAgbO9"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2c927152b4bso1239346a91.2
-        for <linux-coco@lists.linux.dev>; Fri, 05 Jul 2024 09:04:27 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GC96LAE7"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-70df213542bso1081888a12.3
+        for <linux-coco@lists.linux.dev>; Fri, 05 Jul 2024 11:55:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1720195467; x=1720800267; darn=lists.linux.dev;
+        d=broadcom.com; s=google; t=1720205759; x=1720810559; darn=lists.linux.dev;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J0j8hAyQWJjGjX5p48jR0ZeFa7oUdUxgMcRMAfmdz3I=;
-        b=J6VAgbO9HzuhZ/FZr4H/PEin/LA11g/TNsXj3wjI9TYkXvdFPxO7sshv8iS1E2Adn2
-         0FR2q1xaORujGaM7ANXeqq4G3KR7a/7V0+FYXvIaJe/pp1cMRCp0tG4FuWu2YojQ6pI3
-         sTC+POvUYzgKum1B2Vwy34sDLcQMMXaNiqB/4=
+        bh=RaVLjoHzTdUX4sBfGSImQvpT2vm1WoW6FtbAHmtzZVw=;
+        b=GC96LAE7+OlJUJkrmqQXqblLzEOjSyI/hqwnLHUC1BbDnpQUMcScXYZeSiDofcoQgR
+         xWCwgcdgsLhc9uqLo1+LVhu+L1n+NkQ7b1NLtaIeDmuaXpuo0L/emK0oy+qIqBf3jUmw
+         9nUwfrv1EyYiX4KoLhHkDSwiGs3FLv3+O2V9U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720195467; x=1720800267;
+        d=1e100.net; s=20230601; t=1720205759; x=1720810559;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=J0j8hAyQWJjGjX5p48jR0ZeFa7oUdUxgMcRMAfmdz3I=;
-        b=Ilrks17s+7k4Uz82lppOmyw3YD2thQ9gtVL/TPEY+ExPmcZRKSfTtvVKX7Q3cK6/rv
-         1C485vSwEixbW/l+OFnp2YcV97sZAIiUL6qb3lSqBKj2LKxtzzkQJvPVeSBAl0yZJqb1
-         DEQ3ejnFj0gviAh4BfCjAQdjYoiA3eAY0Srp7Am8WNMa3EjffYp5v22LvJ4OKM9k2TDk
-         P5pko7OXY2FeETuGKsr8PWgXlPlXkoeyBiIGVk3DwYvOqf9FuKJhDp9ulo38a5s7RSaP
-         cUmbyfwLP+tDMF8iK0wOkvkRY/KBQgMCIDlQguJtKcizMUFWNcsaJiG+uYG7p6fKw8m0
-         eJDg==
-X-Forwarded-Encrypted: i=1; AJvYcCVuiXxi65EV0y+kw3NwWEE2vbeygLUWeRNIJKqFwTC52ZINyQs3wAVEW5HYCgNKAH4sXVc8q/bZn5QweDiDYyBBBrf1UKUzlgWHXQ==
-X-Gm-Message-State: AOJu0YyDVECYLOZeHQiHC4rNEheUWVNFOahDRW+/1RUWDOWRyes+OrKE
-	S4MsL438XAz/3tx1DKB8MitGOqpg8Nmo6oWFcNr0u1oZH0S8I+Z+lLT215SScw==
-X-Google-Smtp-Source: AGHT+IHgkOSaePxDDnJHq1U7KDyApbljJxbvMpXvGQArIGdlvWKuaNaFIdtcRXK3XVmYMcGfw2r45Q==
-X-Received: by 2002:a17:90b:11d4:b0:2c9:74cc:1c1b with SMTP id 98e67ed59e1d1-2c99c504127mr4043383a91.7.1720195467069;
-        Fri, 05 Jul 2024 09:04:27 -0700 (PDT)
+        bh=RaVLjoHzTdUX4sBfGSImQvpT2vm1WoW6FtbAHmtzZVw=;
+        b=G9KzN72UkzII9T4m8mMTM3koSGqRy4u3FJEISy155WzgcL3IQAPppxOxJzdB4DWgov
+         83dInrpF/aVBsO+YOpxc42b26LxpsKG4XSw0Tixq0Z/iYfMrqEGJ0w0DDpxNbsuKMKZh
+         cCad87rUTsJpP6AF8cOlvOU5kn7zxHfmSqAKTbmRngtXPiRi9Dp45G/kUphFmhiG9pd3
+         YZq3p8gvRhiZTjfpqiW86ZqlDsxIl89dZWJ9nRtEYscpZwtjbuNaDCp4nvrYDAQygqPK
+         CXX9JnEZp+Dqalx7bNctbYPWkBGQLzNYLYbid/XxdtY/HPsagokjfedvsg46rQqP6/z4
+         PHGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUhk++Q+Q5+hJyslbVgQY03GuD7Wt5oMpSC9fni5a/8M2EgKLqxPljr7lEhdnPQFVN/LdnhFCHC5QXJfzKyBLmkeA8YJjVNccZC7Q==
+X-Gm-Message-State: AOJu0Yx55FLvOh2Gl+oYjJVS/FxmYaVM1v/RjVMwlJ3dFV3Bvgv5zq3i
+	koJaQv9XkO1ddN/CeAvnqlfE+2HQPcl39mtpiJ1rhcVV/KwYNiLFN+RvkfeqsQ==
+X-Google-Smtp-Source: AGHT+IEZDDQ1xVg8ajrF910XkrCyc3T3zygzrPPfal/9dd33RTK+teUfJ40f9RPfqO1AZQzPqLGOmg==
+X-Received: by 2002:a05:6a21:6f01:b0:1c0:defa:b68e with SMTP id adf61e73a8af0-1c0defab8e3mr2032690637.39.1720205758826;
+        Fri, 05 Jul 2024 11:55:58 -0700 (PDT)
 Received: from prme-hs2-i1009 ([66.170.99.1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c99a992c43sm3576853a91.30.2024.07.05.09.04.25
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fb4f6884b6sm15663335ad.48.2024.07.05.11.55.56
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 05 Jul 2024 09:04:26 -0700 (PDT)
-Date: Fri, 5 Jul 2024 09:04:17 -0700
+        Fri, 05 Jul 2024 11:55:58 -0700 (PDT)
+Date: Fri, 5 Jul 2024 11:55:39 -0700
 From: Tim Merrifield <tim.merrifield@broadcom.com>
-To: Dave Hansen <dave.hansen@intel.com>
+To: Peter Zijlstra <peterz@infradead.org>
 Cc: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -65,14 +65,14 @@ Cc: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
 	Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
 	Brian Gerst <brgerst@gmail.com>, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org, Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.amakhalov@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
 	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
 	virtualization@lists.linux.dev, alex.james@broadcom.com,
 	doug.covelli@broadcom.com, jeffrey.sheldon@broadcom.com
 Subject: Re: [PATCH 0/2] Support userspace hypercalls for TDX
-Message-ID: <20240705160404.GA15452@prme-hs2-i1009>
+Message-ID: <20240705185529.GA16769@prme-hs2-i1009>
 References: <cover.1720046911.git.tim.merrifield@broadcom.com>
- <33874bf0-c115-4185-85ef-684794de3c8e@intel.com>
+ <20240704130505.GT11386@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -81,34 +81,31 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <33874bf0-c115-4185-85ef-684794de3c8e@intel.com>
+In-Reply-To: <20240704130505.GT11386@noisy.programming.kicks-ass.net>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 
-
-Thanks for the response, Dave.
-
-On Wed, Jul 03, 2024 at 05:18:22PM -0700, Dave Hansen wrote:
+On Thu, Jul 04, 2024 at 03:05:05PM +0200, Peter Zijlstra wrote:
+> And how are we to ascertain the software using these hooks is deemed
+> secure? What security risks are there for the kernel if a malicious
+> userspace process asks for these rights?
 > 
-> Could we please be frank and transparent about what you actually want
-> here and how you expect this mechanism to be used?
->
+> The kernel must assume malice on the part of userspace.
 
-Sorry for being unclear. open-vm-tools is currently broken on TDX and
-the intent here is to fix that. The idea is that versions of open-vm-tools
-that have been audited and restricted to certain hypercalls, would execute
-prctl to mark the process as capable of executing hypercalls.
-    
-> This inheritance model seems more suited to wrapping a tiny helper app
-> around an existing binary, a la:
-> 
-> 	prctl(ARCH_SET_COCO_USER_HCALL);
-> 	execve("/existing/binary/that/i/surely/did/not/audit", ...);
-> 
-> ... as opposed to something that you set in new versions of
-> open-vm-tools after an extensive audit and a bug fixing campaign to
-> clean up everything that the audit found.
+Thanks, Peter.
+   
+I don't believe there are any additional security risks for the kernel
+itself being introduced here. The kernel is only responsible for
+copying to and from userspace registers for the hypercall, and
+executing the TDCALL. A similar approach already exists for AMD SEV
+(see vc_handle_vmmcall), which does not restrict VMMCALL in the way
+that TDX restricts VMCALL.
 
-I understand the concern about inheritance. I chose prctl primarily
-because of some existing options that seemed similar, mainly speculation
-control. Is there an alternative approach that doesn't suffer from the
-inheritance issue?
+In the case of a malicious binary running in a TDX VM, if it wants to
+communicate with the untrusted hypervisor or other software outside
+of the TD, there are several existing mechanisms it could use, not
+just a VMCALL. I guess the point here is that if the userspace
+program is malicious, is anything gained by restricting VMCALL?
+
+This patchset really only handles the case where a trusted guest
+wants to limit access to VMCALL to binaries that self identify as
+hardened against potential host attacks.
