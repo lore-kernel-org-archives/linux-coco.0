@@ -1,120 +1,92 @@
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4C93FB94
-	for <linux-coco@lists.linux.dev>; Mon,  8 Jul 2024 12:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0351AACC
+	for <linux-coco@lists.linux.dev>; Mon,  8 Jul 2024 13:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720443250; cv=none; b=shzc//4TCz/ShNV6u7dDYnnfZQi0eTfdhyU2vHPO1jjKE6osdUkmG8MMV6pF8nkVbfNW+oUFbOGFputVHdE+lB1fdd28aVmzTi1W6rxFhHyxbGSgtUV4EmPgV8hqFucK8D8JappY5ykH+C3E4qpci/XcRoYa6qIMD0n2298yox8=
+	t=1720445589; cv=none; b=fKunktR+RWYemqPAhudSiwk2dx/Tlc0zFyrpvXTGovqorZyOMHsOwQLNF1+XRW8FXy4tiPYI/KfzvLJ45uMYTgcHVsC+SH7pxOAo7TeJIfEkyaBLhox+/US6kM43XdS+C5fD4ann86/C0PD85VBrb7L++2+qil9I+Ug8Rv3qJno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720443250; c=relaxed/simple;
-	bh=RMVniVhF/wGXXn+M2jkcQzFQemX/je9WFzpBwZlKox4=;
+	s=arc-20240116; t=1720445589; c=relaxed/simple;
+	bh=xJcQFXw7GbGs94C9dDktSR93+HCI0OxcOuc6mKdqD8U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U+BjmM2SSnPhmlmLfBHwEias06XK8wYKCGJJF/2Mht3gmXnQR1YwIRnwpWvSSMihrq25fcujlw7Iley1NUGKvU9qPrE/xoKiDj9rhgdPXKcYTlFMQ0l+IMCERF/I2wqK7MIMGqj4fbP+SX6UXq4EaVVP6NF2R2nJo24o+0/o+k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	 Content-Type:Content-Disposition:In-Reply-To; b=fQrjoAnXjEwCHwYA9cHCVO4HyDGfsmyuSdG7kSVeD9l7QlQX70y4J9uX2z8TOhtkWcbKe8f09t2kJVT1Jpd0vblwaWVm5dCp9i1pAYp6ZnVu2/UT8dUW+D9UuoeX+2YToV5qAKCaw8RNIUmBRHWLI/Sch+bJo/t3ODal/8l3d7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=KWMaaAAT; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="KWMaaAAT"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E6DC540E0177;
+	Mon,  8 Jul 2024 13:33:04 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Yew91bsIZiz1; Mon,  8 Jul 2024 13:33:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1720445581; bh=jphruZogw6SdTXWimkwULPjepibUloAfNYwZTqLiGMg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KWMaaAATX2jxGWynwS7QCC/lRy44BGlC8A2vdzz+JxYJ/vDahwmNbfi4kvfxjqtcJ
+	 VvZPX9UAqyMPH9TPc/ael1hl5/PgVUzxaiJgUHF7QWRiKFs7pNotwxctZHALrXn75P
+	 hz2MxesL6yPGjb9WTgzgaT946No9yLXLSCAMtiwCVbvbiAudlMWkTfiorMeMtS0Nml
+	 Q/aVnG4h04V3zcq/jvJvWjsxpqYJaTZ+luPF+wiQ74gFH910FpNJP1o0ROT7sPvu8G
+	 b4k3A+gHQzEF2pXm1gJMYzAeLYqcXjSPAP0gY82Ayxq5WIDG/VaSmmDjU9v7x13UvV
+	 4vkhVuDcofifq4rMBb3p6fA/l3ZfrfdKNUZ3Gjk5U42xDprbpeAdN5nKQXjGcZSQ+v
+	 XUeX1eGyrF3OfE2If6aIrZyo1dk/FcKEvnNCVOvDIVxIBDIvaNsmIdjs8hxZMbmjUz
+	 mphl4eU2pcHQqlpYhGT8bq8DEEcLIqY52f+n2XGbYUx8/gOqnhBm0W+Xg7/9kbYZJ1
+	 yHt1cMtn9siMW+BvGkvA8BcfrLwjKO0B054qIWLGOEUKScEr8oSU6Sx32f6wLJfnjL
+	 UPMkaGA0v+B97GhyhRAfjjq7Zc8Hvhe+KwuxcfUOcHgPdCLBYQp0uDcnLJZxn4tf7o
+	 uZO5kHdqXd9q1pAQYHnE8q3g=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 89319300000BD;
-	Mon,  8 Jul 2024 14:54:03 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 713143512D; Mon,  8 Jul 2024 14:54:03 +0200 (CEST)
-Date: Mon, 8 Jul 2024 14:54:03 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Li, Ming" <ming4.li@intel.com>,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Dhaval Giani <dhaval.giani@amd.com>,
-	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
-	Jerome Glisse <jglisse@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v2 07/18] spdm: Introduce library to authenticate devices
-Message-ID: <Zovha33CS76PwAMF@wunner.de>
-References: <cover.1719771133.git.lukas@wunner.de>
- <bbbea6e1b7d27463243a0fcb871ad2953312fe3a.1719771133.git.lukas@wunner.de>
- <26715537-5dc4-46c1-bdcd-c760696dd418@amd.com>
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6F8E540E0192;
+	Mon,  8 Jul 2024 13:32:48 +0000 (UTC)
+Date: Mon, 8 Jul 2024 15:32:42 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Dexuan Cui <decui@microsoft.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Michael Kelley <mikelley@microsoft.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] x86/tdx: Fix crash on kexec
+Message-ID: <20240708133242.GCZovqepGsDSL72tjZ@fat_crate.local>
+References: <20240629130621.1671544-1-kirill.shutemov@linux.intel.com>
+ <20240629135933.GAZoATRVAubo7ZDdKB@fat_crate.local>
+ <poxeykijyqrz5hxrey46s6hh2qd6byirbevwuwec2gtbfq266c@npegk7sn3ot7>
+ <SA1PR21MB1317A2E38083B300256AD5F1BFD12@SA1PR21MB1317.namprd21.prod.outlook.com>
+ <20240629194103.GCZoBjTzC4m9a9yw1k@fat_crate.local>
+ <SA1PR21MB1317B5850E4274CC31EDFBF8BFDD2@SA1PR21MB1317.namprd21.prod.outlook.com>
+ <nx7jjplwvtmxsq675omsi5hc5oxceiffpmkqx754azuv7ee2zh@7fttse2hssti>
+ <SA1PR21MB131745AD18D9E91D2ACA1964BFDE2@SA1PR21MB1317.namprd21.prod.outlook.com>
+ <uewczuxr5foiwe6wklhcgzi6ejfwgacxxoa67xadey62s46yro@quwpodezpxh5>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <26715537-5dc4-46c1-bdcd-c760696dd418@amd.com>
+In-Reply-To: <uewczuxr5foiwe6wklhcgzi6ejfwgacxxoa67xadey62s46yro@quwpodezpxh5>
 
-On Mon, Jul 08, 2024 at 07:57:02PM +1000, Alexey Kardashevskiy wrote:
-> > +	rc = spdm_exchange(spdm_state, req, req_sz, rsp, rsp_sz);
-> 
-> rsp_sz is 36 bytes here. And spdm_exchange() cannot return more than 36
-> because this is how pci_doe() works...
-> 
-> > +	if (rc < 0)
-> > +		return rc;
-> > +
-> > +	length = rc;
-> > +	if (length < sizeof(*rsp) ||
-> > +	    length < sizeof(*rsp) + rsp->param1 * sizeof(*req_alg_struct)) {
-> > +		dev_err(spdm_state->dev, "Truncated algorithms response\n");
-> 
-> ... but here you expect more than 36 as realistically rsp->param1 > 0.
-> How was this tested and what do I miss here?
+On Mon, Jul 08, 2024 at 03:34:34PM +0300, Kirill A. Shutemov wrote:
+> Borislav, could you drop the original patch from tip tree?
 
-I assume you tested this patch set against a libspdm responder
-and got a "Truncated algorithms response" error.
+Long gone already.
 
-The short answer is, it's a bug in libspdm and the issue should
-go away once you update libspdm to version 3.1.0 or newer.
+-- 
+Regards/Gruss,
+    Boris.
 
-If you need to stay at an older version, consider cherry-picking
-libspdm commits 941f0ae0d24e ("libspdm_rsp_algorithms: fixup spec
-conformance") and 065fb17b74c7 ("responder: negotiate algorithms
-conformance").
-
-The bug was found and fixed by Wilfred Mallawa when testing the
-in-kernel SPDM implementation against libspdm:
-
-https://github.com/l1k/linux/issues/3
-https://github.com/DMTF/libspdm/pull/2341
-https://github.com/DMTF/libspdm/issues/2344
-https://github.com/DMTF/libspdm/pull/2353
-
-Problem is, most SPDM-enabled products right now are based on
-libspdm (the DMTF reference implementation) and thus are bug-by-bug
-compatible.  However such a software monoculture is dangerous and
-having a from-scratch kernel implementation has already proven useful
-to identify issues like this which otherwise wouldn't have been noticed.
-
-The in-kernel SPDM implementation currently doesn't send any
-ReqAlgStructs and per the spec, the responder isn't supposed to
-send any RespAlgStructs which the requester didn't ask for.
-Yet libspdm always sent a hardcoded array of RespAlgStructs.
-
-So the *reference* implementation wasn't conforming to the spec. :(
-
-Thanks,
-
-Lukas
+https://people.kernel.org/tglx/notes-about-netiquette
