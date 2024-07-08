@@ -1,101 +1,258 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2127.outbound.protection.outlook.com [40.107.237.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3377145A05
-	for <linux-coco@lists.linux.dev>; Mon,  8 Jul 2024 15:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720454293; cv=none; b=Vs8EFn8LsPtv5xV5MeM2bA5yvdakVvMoEFlHDQo0jTiVU1Rt0W9aees5jyxqaUDpsBKAGuwIqr3r5kl04S1Myxn1dXok7Ixfhnca3iFPUYJVi8Emdf8l4byxarEtmKA3Y60fYYw5AP9zH8r02CwzwaP/2TNUw8qCOq9xB1QXpMQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720454293; c=relaxed/simple;
-	bh=Px8xm/hnky3EWRPnHZXwOMv/BlJdcF/mT5OoAzuqNdI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NEendUTwwNzxyfeHCR3afHwWCl13tzgA4a3ZIYQdcXX9amBlstsaLmtdfDHFz2oTm4zapMBVQlE5AjH7FCPw1T4D+uodbcsGnrmWXrgosfoR5zs5LjaIPRR2/wVtmbG/Lj0UJzqvHPPUuHYR78TWT1Eu3i9QL1WwDshuzVCJIY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UXYaEpNa; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97EC146A63
+	for <linux-coco@lists.linux.dev>; Mon,  8 Jul 2024 18:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.127
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720464101; cv=fail; b=evlF35PHo/YnW8EHVJmPVU6swlOXwUG2+i4/35P2hPq8b/Dv3Hb+PL/4k8eTehYax3ow+WaxYEVO9qhiMvF+AGrXWFnO6pQvDcSN8xqwMpjU+LYFl7IGyBZeDiQ9D0dysLiqnmfBbpTMUuAXid2LpFp3C05bP9AN05/IH8GWwyc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720464101; c=relaxed/simple;
+	bh=2WZgdKNtpW+OneTpr/XXQ2vXPaQ/z07eBoAWoBv/r5o=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rq7ikXDNmwLWhWp7rsfSAWp4fAbkqMynXd18Ad39QbfbqN0TNKa4aXLSR/jIz1nKi0ZQ+huG0SHuERV2zXU/xIqxXKPPDhXci1tRKBS4FwVTRu/2zAF8V5fl6G09xZ/NuD/nQxF3Rx+mWhSpPIqVC9Was42SNTtklSXxkpE934Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=M+zlEjg5; arc=fail smtp.client-ip=40.107.237.127
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UXYaEpNa"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8644440E0219;
-	Mon,  8 Jul 2024 15:58:08 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 8S0bYZDvHkH7; Mon,  8 Jul 2024 15:58:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1720454285; bh=0y5PCAzqc/rXTL8LjJDhTpqsGe+rcq9FLHFfAGwW66I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UXYaEpNaaB6jLNNK+1creH7EAXmohenz+ztJdVwgcKtnB0gafVLZYebr/FrOWsnBL
-	 0/425DKlxPtXThVm9IZv/dwgCR+cjJsItON+TAKe8/zPkhBVshApCLDJ8xdfYXTNjp
-	 fUFRlX6wWTSITaXVGdpPliD9MD5sU76hYcuI3/JmU+w/PM0KG9QehF0boNhUGgl/99
-	 4Bsq0KTvlYb8u2F8UI8MVW4qTg2X5V93T41hhq4Sdf2F9oHuGNTnbw9vvx1w83auLW
-	 wmIL6+qImMJnq68cEeZ7V0ItKH4Iv/Z0o+4W+L+NaeVquYtQGx+KxjK9457yzIrH0P
-	 Ol8trcTjAu3IC7jT5IGlGokF6IuL1EZChTiaBQ9sq8QMv4azAG2IOdj1q8/mteQFoe
-	 hekPbCQUZ1XXg1CRWnzp+36bX58i6/LPeAJ/Z+pBIUtPspf/URTBQK+DrToZx9kBGQ
-	 MlETdRS56mB/04nXUYy9oTo3HnjC8x4uKEum3K2r53eqFwtInUVmjNKp3HQ3fJj/08
-	 qiD/3CWgp95ghLzNX2Xvkf0mi6OMOa3ecxuKInmw4V5jbWC6eZ/if0osXzyDyRHnFv
-	 eWM6QHb8md+PCK/rByhiQnHfkLQi1ekUbk6mhuFUBTW0pGqCsRN19mE3g5D1kWczq0
-	 YyP+0j+XceKVY94G66U7hP98=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 56DC440E0177;
-	Mon,  8 Jul 2024 15:57:52 +0000 (UTC)
-Date: Mon, 8 Jul 2024 17:57:47 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Dexuan Cui <decui@microsoft.com>,
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="M+zlEjg5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=llIPk+xVJHo6tI5E3lE2ZbavwqfMvjdPy4234lDTkY6HSOm/3ZLFEWN7+FKf0UaPxg275GLxX3+Q0i4+bsTDkHJkSbP7bQdG2oDFeQa9bii6OzhLpxS4al9OQ+Lh51NvFefRtoIjuFj5bn2orNKbUHt31q28+l9mCJxv02J244pLtzc6JfvjtnUeGUUnhE/7RVLZH/dtVC2RRZAvjA4J8bZIcI5waDGcHz0LKW4/HjR8qw/e9so0Zyl49TpDFXrZzPCzpPHhIrZLCz9+HLZfjsjOi2JBFKUvJmy5x/kzzhhi7s/71rmEQuDLfzmTuUS6mXAc/md62JLHP8jCKcucVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QhM3jk0nTtrM1qoyGwtf/AwVRYhob+LTEmey53LszAQ=;
+ b=xY2aGPot/jtFUTaaA9SBrkXdvA4OwuQioUwU61fFO6flgpmJT5IywyKXjtr7Er3oYLW2oVA/8OlGDkysu9VzhI0p8hNsLgYjmf1WTFDNVyzS5KAXweRP69hWx5d8UPC5HxtGcDBPl3wjDiBhJNcicfRaOxIH8KlIJrJa48/DDmSoCFQU+gNNMd/GM6Ocj2rwOIijLiSWndefCOEZRDl47fUNkyShGx4paPXwwv5kCO1zZYXHeVr0AMx4yHB8TM1/axYCaT5WMyAawT0iB6LmAB6CLTQtZzvIGCpYVDLQ6f1hpd1D8ECj/8EIhezTN6ppUpLCNlngN1Kw7Dch2YgDcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QhM3jk0nTtrM1qoyGwtf/AwVRYhob+LTEmey53LszAQ=;
+ b=M+zlEjg5fRtMowmTYQruLxVV1PGd0MxCf7+OXuEBGKDRBpjhx/lvw92bHuof/3dvpzlaRdbpV8XyXYrRItJQqHlz9U70rxbnhQD3R/GXOjntJnjIG/viIInF8LT9PHkJ2+DTo4HqDzPOav0shJSLe0XxA0zVzaRRlZdwa79+sxY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+Received: from SA3PR21MB3915.namprd21.prod.outlook.com (2603:10b6:806:300::22)
+ by MW4PR21MB2060.namprd21.prod.outlook.com (2603:10b6:303:11f::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.3; Mon, 8 Jul
+ 2024 18:41:35 +0000
+Received: from SA3PR21MB3915.namprd21.prod.outlook.com
+ ([fe80::d498:7336:91d0:7372]) by SA3PR21MB3915.namprd21.prod.outlook.com
+ ([fe80::d498:7336:91d0:7372%3]) with mapi id 15.20.7784.001; Mon, 8 Jul 2024
+ 18:41:35 +0000
+From: Dexuan Cui <decui@microsoft.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
 	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-coco@lists.linux.dev (open list:X86 TRUST DOMAIN EXTENSIONS (TDX)),
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))
+Cc: Dexuan Cui <decui@microsoft.com>,
 	Michael Kelley <mikelley@microsoft.com>,
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] x86/tdx: Fix crash on kexec
-Message-ID: <20240708155747.GEZowMeyE64PF1O9os@fat_crate.local>
-References: <20240629135933.GAZoATRVAubo7ZDdKB@fat_crate.local>
- <poxeykijyqrz5hxrey46s6hh2qd6byirbevwuwec2gtbfq266c@npegk7sn3ot7>
- <SA1PR21MB1317A2E38083B300256AD5F1BFD12@SA1PR21MB1317.namprd21.prod.outlook.com>
- <20240629194103.GCZoBjTzC4m9a9yw1k@fat_crate.local>
- <SA1PR21MB1317B5850E4274CC31EDFBF8BFDD2@SA1PR21MB1317.namprd21.prod.outlook.com>
- <nx7jjplwvtmxsq675omsi5hc5oxceiffpmkqx754azuv7ee2zh@7fttse2hssti>
- <SA1PR21MB131745AD18D9E91D2ACA1964BFDE2@SA1PR21MB1317.namprd21.prod.outlook.com>
- <uewczuxr5foiwe6wklhcgzi6ejfwgacxxoa67xadey62s46yro@quwpodezpxh5>
- <20240708133242.GCZovqepGsDSL72tjZ@fat_crate.local>
- <xa4zdohlxg2xeq3qjpaeycd5ixpkm3b4bjwm6mcoore6dfhiqt@xxbajpzq24je>
+	Kai Huang <kai.huang@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
+Date: Mon,  8 Jul 2024 18:39:45 +0000
+Message-Id: <20240708183946.3991-1-decui@microsoft.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CY5PR03CA0009.namprd03.prod.outlook.com
+ (2603:10b6:930:8::19) To SA3PR21MB3915.namprd21.prod.outlook.com
+ (2603:10b6:806:300::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <xa4zdohlxg2xeq3qjpaeycd5ixpkm3b4bjwm6mcoore6dfhiqt@xxbajpzq24je>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR21MB3915:EE_|MW4PR21MB2060:EE_
+X-MS-Office365-Filtering-Correlation-Id: 86679cd6-df82-4101-4225-08dc9f7d9764
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?5HV5p+Ip+h43SwdMQbqh7ezsuFyIb5/64aSK/YD1j/Ht8Y+fycrzTeHyZltJ?=
+ =?us-ascii?Q?faW2p2xar3w9BL+ZNzpSwqOnO6SGx9Oyhrgwesf8r+I5+wXDZ7IDQH8V4cO6?=
+ =?us-ascii?Q?KYu8OxyapTPneKYjF8jKMdngoAV3zVA8GUmHZBjpoGcN1nosEIijOauTFOVz?=
+ =?us-ascii?Q?0zglvzvfPK8bUnZe3INSs4t8ULtf+hKd1w5qvRICg/3m9+guYraEB3I79S2j?=
+ =?us-ascii?Q?QKNP1XrsjCECzKyJj7pJGk3hds+YSA7wuLzUPLH8oS9ZndJ2O3fAU4T27UXL?=
+ =?us-ascii?Q?RTvbBUi7D/NY5UpMJiytijxa7GF79LR36RokM8F1jB6Ms4KE83u5boTNwbPJ?=
+ =?us-ascii?Q?PVmjkW4WnewBXvF76ABEuw5xDHQYkspautbuvFX6OkHO/p4Ihm8DbwTyJrql?=
+ =?us-ascii?Q?9A5I+uSUBOS59ZhMNYK92OvCCBRS5J9dpe4YIYtgrfwJ7v5kEE+UzvgwKMyq?=
+ =?us-ascii?Q?Fi3MG8iJ5qXqs6svauu/oYwgSngPQETymFX77+toJgI+n3NvrwQntoFMZKm9?=
+ =?us-ascii?Q?OE2K+P8yctROmsKhN3zNkS2VvY2v3+2+/TZ0yVpsmLI0WgWuIN5gE/yqmtov?=
+ =?us-ascii?Q?mbREJVqfUBwd/qVtdplHL3+6w1fsIjboLNVynWnPnqelfVFqU1dIQUW88Yo+?=
+ =?us-ascii?Q?hsPM8a+lFfrLh4f8GLS5CXtCJsJCtQf7LU0tZelu+3iozTl5cPYJZIWxi7NQ?=
+ =?us-ascii?Q?6PG+2ijZIPKIPIyz9zYLVTwmOxFKXb6CgkHnhcpJIcRqCcmFFCjJx51rtxDc?=
+ =?us-ascii?Q?YjDZvyx5roo2YRJ920v6Xi4tj0KT5xoESrzZ5bmby3ONlDrC54K7dBhcsPEd?=
+ =?us-ascii?Q?SJbfYt1A9b7mgFmbztw7mz2J3qgvekuwJRE8LC0MQO5jePqDKcXpAAdGNgeL?=
+ =?us-ascii?Q?cjr3ETkh+GplYiBx2kOpvoyTMPmTqofp0UygfvkOctKTrQbAyjqwdECrIwz4?=
+ =?us-ascii?Q?scPcdbz8KSAvQ4Lqa/N6v6vq1HsFzQn1uE8j018vDqX/Zq2eTzLBiFToT5eE?=
+ =?us-ascii?Q?q3RGAqFCOIFcvT+kJsBqAj6osDt1QnwwY0ua1VcD/hh1E3gP/XohyXvyYpEe?=
+ =?us-ascii?Q?hjuScpaCF09val8XW2uqabzZt0rUnPuH9TuJ5uI7d+Ia76rNLgDqHtOBHx2T?=
+ =?us-ascii?Q?HKCU/w5YX2kNcIs6GBKLgcVADxnmlrMQBvUiTrwhJ2fENhpCIXjhylahOFLt?=
+ =?us-ascii?Q?ecQlWFd7bhCP/51tikEUprPSiAuvxfbghJGB1KedYk5StGvm34KX1kQvi891?=
+ =?us-ascii?Q?QwEhPOnHbDFe3e6WxKcBucHvd4MuIb9KdNDeUFEWPYglVPJdYW3lzZPvHb+U?=
+ =?us-ascii?Q?0dQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR21MB3915.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?EkLfwItuQQeL81EekhoUHVT15GQi4Rz0P6eYK1YEZratuq8DbGh4o9anjPnC?=
+ =?us-ascii?Q?CqM4F2f1tINWdUbgFTAjxcRMU3XC1mlpsFf6JuFsd0JfBACrv1dyMN1ZrCJf?=
+ =?us-ascii?Q?3llN96RBnyr2k0Z4dacIKFRMssbmleo6sJN9seT0wJBZ2sXQf4++CRSXw/h9?=
+ =?us-ascii?Q?wv87PQFib9pcb9wmgXykvmuzHPkFFutit0Fk6G0g5rdbhYd0PF3/kVp8k6+V?=
+ =?us-ascii?Q?0HMKqeJFyJeyPvr2cqHmM+CpbUrtq2ddYIYgdLMXWyh/gNSRKy9x4BHRC5wF?=
+ =?us-ascii?Q?iUetbmRbPUINfoe1hDaKCdUteYg//nXo1U65nOIX4wIGpD46es3OyN0UkiOK?=
+ =?us-ascii?Q?57Gu8QbzsVJTWor1MqlU4OSKWjUg8qmlE5wKQTmvZ1f7MPBDR5z6zp9alGI1?=
+ =?us-ascii?Q?e89QKPqqh8M+9cZ/YT7SOXa5PO/oAOPtoPWvJudpz177TRg30Ts+N193VvwI?=
+ =?us-ascii?Q?DG0um5tvibKH91Sw+hz7/i0/EI6cL1FIVTv/TzVYmTp3eerAIqfyjprCgJhf?=
+ =?us-ascii?Q?OGG/KMvulXSfR6h8kxlcgeBIQVv4iq91VeGOimh3cUoia+sj98f3b6p7LHJK?=
+ =?us-ascii?Q?OdJaANA8ZXbYiDPh0cr13mNgbIaNA2sHSLuhsL2jZzefl6X066sgWNFeXuzQ?=
+ =?us-ascii?Q?oeZBn/SaRPw+a5uQACBRQYc60svE9Ilt6bBEfhLuBIoplvT+EjnAetKx20qo?=
+ =?us-ascii?Q?RhEvme5FYpfLoh8nC6M9EIkHaWlo2pkJsiK3m2Gcuz2UOq7jeSck5b6Ye2k4?=
+ =?us-ascii?Q?e2yW5wIhISJc2JZRN+nPepN8TF396IduxuexRuH56Q23aRbAB8K2uiGb+2JT?=
+ =?us-ascii?Q?fVHuP9/VtgGbiGRSyzORgnNvZFHAt+dYa3Kf3T6ms991hXg6DgSxJYE9kiS5?=
+ =?us-ascii?Q?VJBsbZE42q5XQxoi+tzNPopKbIpTf29M/7stAaE+/K1RXSR8VEp9f9cYuEJG?=
+ =?us-ascii?Q?xNHD966fPbtBJwEAOIu+vRsX5wmjK1Gx9zzb9rYiZiSPOFlYyHLSHc+HGbRv?=
+ =?us-ascii?Q?6+7rHAzzM4XuRFQ8hTzcde+i0O1Q6Ch1uTmb3CdagH+70GzRPlW1mjasqWCo?=
+ =?us-ascii?Q?6TksFtIfzKr+M5Cktmf+fYo3RypYFSwyGIHGVPsUbRsXBrDJgj8B9bCzVL9B?=
+ =?us-ascii?Q?5/YUwiFj7x7j2caDbHfgAl2uYAuQnyqdZQEoITIb0/qO010F6Yv1uDOTt231?=
+ =?us-ascii?Q?uxtPT4fhu54ESB5kDACc8cYHLUlh4WlW3pQp/oWu8NBTP77QF9DzJkljWpj0?=
+ =?us-ascii?Q?A8g9IXLIPmCbJ6bKChdHHhgttuH+LebRob2zyRYJvcXprqynnTUv1eekCR0D?=
+ =?us-ascii?Q?f2E3lNOUV+Rxw3UvNmHG7yl9kT1KnnO6oajG8otx+kLNCr+P5wy/kXEPqSQ5?=
+ =?us-ascii?Q?R5dZO9SpI3i4pzVeOQoMuZQLC5Ow3kfVNo6+qsoe01zswRhqnWPpk0V/q1x0?=
+ =?us-ascii?Q?r8PIrcZrH/YQeOROSprU/sryZ33+uInc4jP9xDBS1+ZIY6NAggCROSTLM1xP?=
+ =?us-ascii?Q?bTx5h8N+KSDacX0xKCA5j4dPOecwrINB/R9lmxiz14l5kgM2rFASj4q3fY0p?=
+ =?us-ascii?Q?hsdJNVqNhxo0PIlpeJnis0NquyBk5WN9NBMP4rNhy6ZeHuhCbxM335+NxY/y?=
+ =?us-ascii?Q?1zBVpoD7QHL5DZ8NTdSuimXLlxNWgncs7RdF2zxkKZer?=
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86679cd6-df82-4101-4225-08dc9f7d9764
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR21MB3915.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2024 18:41:34.9008
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6JbH6trWvxRRIQPEy7vpnQ8rrgwDc2GOAko/NCBHPaz8B6z1Ioj2idaH7VTPUAlZoLZtcDRypDIIp9E8fqeICA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR21MB2060
 
-On Mon, Jul 08, 2024 at 04:51:12PM +0300, Kirill A. Shutemov wrote:
-> On Mon, Jul 08, 2024 at 03:32:42PM +0200, Borislav Petkov wrote:
-> > On Mon, Jul 08, 2024 at 03:34:34PM +0300, Kirill A. Shutemov wrote:
-> > > Borislav, could you drop the original patch from tip tree?
-> > 
-> > Long gone already.
-> 
-> Hm. I still see it in tip/x86/cc branch which is merged in tip/master.
+When a TDX guest runs on Hyper-V, the hv_netvsc driver's netvsc_init_buf()
+allocates buffers using vzalloc(), and needs to share the buffers with the
+host OS by calling set_memory_decrypted(), which is not working for
+vmalloc() yet. Add the support by handling the pages one by one.
 
-Yeah, it should be gone now.
+Co-developed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Cc: stable@vger.kernel.org
+---
 
-Thx.
+Hi Boris, Kirill and all,
+This patch was posted on May 20, 2024:
+Link: https://lore.kernel.org/all/20240521021238.1803-1-decui%40microsoft.com
 
+The patch caused an issue to Kirill's kexec TDX patchset, so Kirill fixed it:
+Link: https://lore.kernel.org/all/uewczuxr5foiwe6wklhcgzi6ejfwgacxxoa67xadey62s46yro@quwpodezpxh5/
+Kirill agreed that I should repost the patch with his fix combined, hence I'm
+posting this new version, which is based on tip's master today (at the moment,
+it's commit aa9d8caba6e4 ("Merge timers/core into tip/master")).
+
+I suppose the patch would go in the branch tip/master or x86/tdx.
+
+Thanks,
+Dexuan
+
+ arch/x86/coco/tdx/tdx.c | 43 ++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 078e2bac25531..8f471260924f7 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -8,6 +8,7 @@
+ #include <linux/export.h>
+ #include <linux/io.h>
+ #include <linux/kexec.h>
++#include <linux/mm.h>
+ #include <asm/coco.h>
+ #include <asm/tdx.h>
+ #include <asm/vmx.h>
+@@ -782,6 +783,19 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
+ 	return false;
+ }
+ 
++static bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end,
++					bool enc)
++{
++	if (!tdx_map_gpa(start, end, enc))
++		return false;
++
++	/* shared->private conversion requires memory to be accepted before use */
++	if (enc)
++		return tdx_accept_memory(start, end);
++
++	return true;
++}
++
+ /*
+  * Inform the VMM of the guest's intent for this physical page: shared with
+  * the VMM or private to the guest.  The VMM is expected to change its mapping
+@@ -789,15 +803,30 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
+  */
+ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+ {
+-	phys_addr_t start = __pa(vaddr);
+-	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
++	unsigned long start = vaddr;
++	unsigned long end = start + numpages * PAGE_SIZE;
++	unsigned long step = end - start;
++	unsigned long addr;
++
++	/* Step through page-by-page for vmalloc() mappings */
++	if (is_vmalloc_addr((void *)vaddr))
++		step = PAGE_SIZE;
++
++	for (addr = start; addr < end; addr += step) {
++		phys_addr_t start_pa;
++		phys_addr_t end_pa;
++
++		/* The check fails on vmalloc() mappings */
++		if (virt_addr_valid(addr))
++			start_pa = __pa(addr);
++		else
++			start_pa = slow_virt_to_phys((void *)addr);
+ 
+-	if (!tdx_map_gpa(start, end, enc))
+-		return false;
++		end_pa = start_pa + step;
+ 
+-	/* shared->private conversion requires memory to be accepted before use */
+-	if (enc)
+-		return tdx_accept_memory(start, end);
++		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
++			return false;
++	}
+ 
+ 	return true;
+ }
 -- 
-Regards/Gruss,
-    Boris.
+2.25.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
