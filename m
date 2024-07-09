@@ -1,25 +1,48 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2FA15699E;
-	Tue,  9 Jul 2024 12:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B2F19D093
+	for <linux-coco@lists.linux.dev>; Tue,  9 Jul 2024 15:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720529745; cv=none; b=F9cDi3PpHgJfZMQ3IDR36tBuyiYov3JG3kFM6iyw/co2suf0ZAKzxsIDEmxxW+yPXZf6eiXIZoEnlp9YKoG/6l2KOLr40qa2Qp188HghlavWYPvl8tnHlgBUM+ZxYBMZ8BfArc2tQPdX3J9o8xqsp1dQB2QorZuKddp/gnwuX/0=
+	t=1720537357; cv=none; b=ZDFmkxcyCNb2pQYqSwM5WwcnKY4xHM37PB4XzqWkgKyfFT37ZysTonLx0sE6kyuiAhY2/SseOUsEhOh5OdV9JMnMTzmvRGzG/viZlcuXCZXy1gKTUJBr2wuFzfDOTbzUY/f6C3FY9tqrUtcXvnqBHmWZSeFkcno3TqL2/Y6+NI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720529745; c=relaxed/simple;
-	bh=1ib2rI8TcyevmjxG6XPjGlEk7kHNo3stbGZC8yibLFw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=scWsyEcdxjOkvo0rWMSdBKZQly5UmfMilsJJuVh+3H3MzcdARh4qpamDR/o6DmJMmN1wt5WOHOjk+J51hgnuRhBSkgQMbhgBn/Arb3AxKcVbj+KPUxk0nyisxys3QgGxTR2oJK1cTnslLPOHpzLNFBdHBzKQcxp8TEmp3KXfi54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4B1E6153B;
-	Tue,  9 Jul 2024 05:56:08 -0700 (PDT)
-Received: from [10.57.74.191] (unknown [10.57.74.191])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 30AFF3F766;
-	Tue,  9 Jul 2024 05:55:40 -0700 (PDT)
-Message-ID: <1ce456b5-0652-4522-98ea-b32d96c1adf4@arm.com>
-Date: Tue, 9 Jul 2024 13:55:38 +0100
+	s=arc-20240116; t=1720537357; c=relaxed/simple;
+	bh=Pve8kD2qR5k9am//RgaYXCPw5RIktwMh8PvUr5OnbUM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Akxrw5EaGQFfzNXWEH4UtRzXK84k8d/BjuHo7yOmhwys3sneDkwS8M6eea8IvTEAm2/b98/gUJSKpyAmWtFPBW+GqbCkEaKe87NZNbj2WwzEY+rfKk1f9Nr8TaY2IDCmrg1P8WsyT1bLhdw41SxJtHg45xXcJfyqsUogede5+GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IpIVAZdU; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IpIVAZdU"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 469AX5Bj021735;
+	Tue, 9 Jul 2024 15:00:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	vrRha6v1MS8bhWVcMku5sIvVckGeI7S6pxyAygH9t40=; b=IpIVAZdU289FVNpJ
+	tZYXIkp4i6652FCJtThP3Q+1S9qxa49qSkbCGQRBUJVKi8Qtuvqxud1xlSDKIpKd
+	NwZ9fyFD0GhC8rmR/7YMm6JYPOlVqkuwkCwTv7zq5WZnwZuXdNSNH9Nvs+pPvYzS
+	fry2xreqboUesoD9BsQ4GrL6F1zxSgGLLG/DJz1cQF/KLKigFdrHgGMwPGER626n
+	iztoZr/HJpJs7aZxncaluxbjHKDzjaaqx/gPXehk++PqnOw2pqbPvSFFc+hLc1dy
+	Rc9mqTpX3fmUklcqH5f9i1FH0+LPQIr+0iQXQjOaLqftU7blP9Sa1bfxD4US/M8H
+	nZTOpg==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 406wgwprf7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jul 2024 15:00:57 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 469F0toM025538
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 9 Jul 2024 15:00:55 GMT
+Received: from [10.81.24.74] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 9 Jul 2024
+ 08:00:54 -0700
+Message-ID: <647515b7-e5a2-46d8-9c03-a2b68c434070@quicinc.com>
+Date: Tue, 9 Jul 2024 08:00:54 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,97 +50,92 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/15] arm64: Make the PHYS_MASK_SHIFT dynamic
-Content-Language: en-GB
-To: Will Deacon <will@kernel.org>, Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240701095505.165383-1-steven.price@arm.com>
- <20240701095505.165383-7-steven.price@arm.com>
- <20240709114337.GB13242@willie-the-truck>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20240709114337.GB13242@willie-the-truck>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 07/18] spdm: Introduce library to authenticate devices
+Content-Language: en-US
+To: Lukas Wunner <lukas@wunner.de>,
+        Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        David
+ Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Woodhouse
+	<dwmw2@infradead.org>,
+        James Bottomley
+	<James.Bottomley@HansenPartnership.com>,
+        <linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
+        <linux-crypto@vger.kernel.org>
+CC: <linuxarm@huawei.com>, David Box <david.e.box@intel.com>,
+        Dan Williams
+	<dan.j.williams@intel.com>,
+        "Li, Ming" <ming4.li@intel.com>,
+        Ilpo Jarvinen
+	<ilpo.jarvinen@linux.intel.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+        Damien Le Moal
+	<dlemoal@kernel.org>,
+        Alexey Kardashevskiy <aik@amd.com>,
+        Dhaval Giani
+	<dhaval.giani@amd.com>,
+        Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
+        Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
+        Jerome
+ Glisse <jglisse@google.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
+        Eric
+ Biggers <ebiggers@google.com>,
+        Stefan Berger <stefanb@linux.ibm.com>
+References: <cover.1719771133.git.lukas@wunner.de>
+ <bbbea6e1b7d27463243a0fcb871ad2953312fe3a.1719771133.git.lukas@wunner.de>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <bbbea6e1b7d27463243a0fcb871ad2953312fe3a.1719771133.git.lukas@wunner.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: yjb8rUAeZdBFm13IhaXy-1T20LJa1kbO
+X-Proofpoint-ORIG-GUID: yjb8rUAeZdBFm13IhaXy-1T20LJa1kbO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-09_04,2024-07-09_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=787 mlxscore=0
+ adultscore=0 malwarescore=0 spamscore=0 bulkscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 priorityscore=1501 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407090098
 
-On 09/07/2024 12:43, Will Deacon wrote:
-> On Mon, Jul 01, 2024 at 10:54:56AM +0100, Steven Price wrote:
->> Make the PHYS_MASK_SHIFT dynamic for Realms. This is only is required
->> for masking the PFN from a pte entry. For a realm phys_mask_shift is
->> reduced if the RMM reports a smaller configured size for the guest.
->>
->> The realm configuration splits the address space into two with the top
->> half being memory shared with the host, and the bottom half being
->> protected memory. We treat the bit which controls this split as an
->> attribute bit and hence exclude it (and any higher bits) from the mask.
->>
->> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->>
->> ---
->> v3: Drop the MAX_PHYS_MASK{,_SHIFT} definitions as they are no longer
->> needed.
->> ---
->>   arch/arm64/include/asm/pgtable-hwdef.h | 6 ------
->>   arch/arm64/include/asm/pgtable.h       | 5 +++++
->>   arch/arm64/kernel/rsi.c                | 5 +++++
->>   3 files changed, 10 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/pgtable-hwdef.h b/arch/arm64/include/asm/pgtable-hwdef.h
->> index 9943ff0af4c9..2e3af0693bd8 100644
->> --- a/arch/arm64/include/asm/pgtable-hwdef.h
->> +++ b/arch/arm64/include/asm/pgtable-hwdef.h
->> @@ -203,12 +203,6 @@
->>    */
->>   #define PTE_S2_MEMATTR(t)	(_AT(pteval_t, (t)) << 2)
->>   
->> -/*
->> - * Highest possible physical address supported.
->> - */
->> -#define PHYS_MASK_SHIFT		(CONFIG_ARM64_PA_BITS)
->> -#define PHYS_MASK		((UL(1) << PHYS_MASK_SHIFT) - 1)
->> -
->>   #define TTBR_CNP_BIT		(UL(1) << 0)
->>   
->>   /*
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->> index f8efbc128446..11d614d83317 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -39,6 +39,11 @@
->>   #include <linux/sched.h>
->>   #include <linux/page_table_check.h>
->>   
->> +extern unsigned int phys_mask_shift;
->> +
->> +#define PHYS_MASK_SHIFT		(phys_mask_shift)
->> +#define PHYS_MASK		((1UL << PHYS_MASK_SHIFT) - 1)
-> 
-> I tried to figure out where this is actually used so I could understand
-> your comment in the commit message:
-> 
->   > This is only is required for masking the PFN from a pte entry
-> 
-> The closest thing I could find is in arch/arm64/mm/mmap.c, where the
-> mask is used as part of valid_mmap_phys_addr_range() which exists purely
-> to filter accesses to /dev/mem. That's pretty niche, so why not just
-> inline the RSI-specific stuff in there behind a static key instead of
-> changing these definitions?
-> 
-> Or did I miss a subtle user somewhere else?
+On 6/30/24 12:42, Lukas Wunner wrote:
+...
+> diff --git a/lib/spdm/core.c b/lib/spdm/core.c
+> new file mode 100644
+> index 000000000000..f06402f6d127
+> --- /dev/null
+> +++ b/lib/spdm/core.c
+> @@ -0,0 +1,425 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * DMTF Security Protocol and Data Model (SPDM)
+> + * https://www.dmtf.org/dsp/DSP0274
+> + *
+> + * Core routines for message exchange, message transcript,
+> + * signature verification and session state lifecycle
+> + *
+> + * Copyright (C) 2021-22 Huawei
+> + *     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> + *
+> + * Copyright (C) 2022-24 Intel Corporation
+> + */
+...
+> +
+> +MODULE_LICENSE("GPL");
 
-We need to prevent ioremap() of addresses beyond that limit too.
+This is missing a MODULE_DESCRIPTION().
 
-Suzuki
-
-> 
-> Will
-
+Building a module without a MODULE_DESCRIPTION() will result in a 
+warning when building with make W=1.
