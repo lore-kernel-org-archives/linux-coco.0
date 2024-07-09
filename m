@@ -1,92 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D80C157A4D;
-	Tue,  9 Jul 2024 10:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E53155303
+	for <linux-coco@lists.linux.dev>; Tue,  9 Jul 2024 11:07:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720522412; cv=none; b=fJ26vVqLT9J0RGMTuaT5fiMSyIOx4SPLhQKF1EVsdX3K6jDPE0RQ/s2Mn7egJ+qbQMcEl9WbkNm1PR55Zhk7aq5DkFaqjzxd7BB7A+BbicS+ZIlGQjo104uGllhsQXg58oBgTbAwlym5HX9h+3oKL22dUkGqCcJPcSgw6Dm1mjw=
+	t=1720523244; cv=none; b=s2pCGiX1e6ln38otZTnzbR3vwLExiOdIovRJvnDE7w6UHxvtd1z4VVI+8re/NlPfnBtAhuZDuDhXdjT7COCCY6YWbKmKNDXPU20iaN3ry4GNVN0VShsSx1hcCohkWQ4ot3UlCfWSipQY9ZSF54zV9YvgKE+q2XPY888vRdOEx7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720522412; c=relaxed/simple;
-	bh=jB14DSl2Zk4On6QHfLrBh2maI9p5JkZn/BI6ssDCVwo=;
+	s=arc-20240116; t=1720523244; c=relaxed/simple;
+	bh=ZQfO6yaxvGPGddmV/JKSFfpd7XOGtVMtsvCFc2pp4LM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EIsTeVdBDZozsKsKC1/TNvLl2HW/tEVgkzjLu3X64Ep+sZF5yHt7irVftJZjJF+em8siZPqDR5ItXCY9JlXZKaKiSEjpzIw9resovt4nfxJtdIBtSVsQ+PJ4hVUsoepAk2EFilbnuHpNhdHrKPIVnaCFg33Mlis7C0/+jPPl9ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZ3sOT2V; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=KBfNX0jVeOatw8uWdsdbfmg6Is5CV9TSA3SUTd5lWo+CKWdKqYRYuRYGGuMKkR+NNp1As8z6YLX3KcdP+MuNYJJF8NEnX7yRvqdXthZ43L4y8X/t3dPa6FFrF2w/6b7lEB7JbGjH2cCFOaJDzPKJ5urbmmt3qUoNk/SaCyxox/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AhhcefCX; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZ3sOT2V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2CBC3277B;
-	Tue,  9 Jul 2024 10:53:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720522412;
-	bh=jB14DSl2Zk4On6QHfLrBh2maI9p5JkZn/BI6ssDCVwo=;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AhhcefCX"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2A8D840E019D;
+	Tue,  9 Jul 2024 11:07:20 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id JulpA9dQV5i9; Tue,  9 Jul 2024 11:07:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1720523235; bh=zM5vw2X4vXpF2Weeo34wNg92YVwfkbif2ErMikAhomk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kZ3sOT2Vc/2HFPrIXm8vo7fe9W5xKNJCoeTHX/jYOlj7cYyMeSbi7YF8PtpyjB2j4
-	 uAYPz9m3YOmhojvX8dtTqdMKZAwpQsBlyCwbPHnVy3t63jSc66PoToqUVfCnG872Wk
-	 SRY/erI94F/9zj5C7NKHAVLbQkBpPgocQsGnoeZ5iKDpHGq7ITjI389yXrzdbmZY/Q
-	 IDIbQMcaNBfe620F7II89RBrLQiSe7QofOe/8uVcZoC1nl4o33dJC+2SrGl8WzvLJu
-	 hmQT5CMCwRPBY0OZANnfFzYxcCSu+y9tGlmdVBYpDEIaDDa/k5dodwwdlrn6HkIEn1
-	 kT5RBKKFozFlA==
-Date: Tue, 9 Jul 2024 11:53:25 +0100
-From: Will Deacon <will@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-Subject: Re: [PATCH v4 04/15] arm64: realm: Query IPA size from the RMM
-Message-ID: <20240709105325.GF12978@willie-the-truck>
-References: <20240701095505.165383-1-steven.price@arm.com>
- <20240701095505.165383-5-steven.price@arm.com>
+	b=AhhcefCX8GcIWDqFu+CTWnaGOI8YROW+o6+kE/EBLRUy8wBbjOwQSMEYWpBjcewtt
+	 Kw3JyPCLj2ge+an+LZvW76/2PJgtXq0Gu/6KWZdgTjErlsPthfe1bRXyXDOqTSJElo
+	 JsLYoTsQkBnLO09zbMXR1QjBdXbyaiIzrOCzlHNgBmvps6DpiR/HMGAi0zY6Qndds7
+	 ngyFkDuacq13fW/JXW7QgwCwCjs6mxHCsR3qCfCJOlpY/f7j7o2bBLmp14Qe/4WIcA
+	 cjMywPLZ2keKPx3AlfAvSfUOj0+42DxBb47K5pX6eY2WaNeG6GN8KE9FQFjPaVhXBf
+	 7K0ZpdQpokWNU1P+W0RXU0AESICYqyIohVQOybFUkl2oNZpBRt2WupCHEOskKZmtp+
+	 jJ5+1jOZx69JRXpIZwWcdik17n7jRf2AeWD2pOXhNkn3eEgN297aCKX255PVst1Gmb
+	 +VJLxcLsgGWcCWY4+Snbe65Dki70zCMaBvKqlK1sGu5tb+jVr7RovLvjLCydf38VyP
+	 Z4xcoYuFM/LZPrpdA0WZLeCEDSMzjjCV+lXOFtgjI5qYktZERz4uVIiaAkm2HaTWi+
+	 yIsQNgx8nLvA0X5Z8vCUffbj0sg+OzzjxG5jVq0QfhPhFz10YxDCr6chy5mFUOtw9B
+	 xRYy6A1TLjpks9S3y0J7VGso=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0282E40E0192;
+	Tue,  9 Jul 2024 11:07:00 +0000 (UTC)
+Date: Tue, 9 Jul 2024 13:06:56 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Dexuan Cui <decui@microsoft.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"open list:X86 TRUST DOMAIN EXTENSIONS (TDX)" <linux-coco@lists.linux.dev>,
+	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
+	Michael Kelley <mikelley@microsoft.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
+Message-ID: <20240709110656.GEZo0Z0EoI4xmHDx9b@fat_crate.local>
+References: <20240708183946.3991-1-decui@microsoft.com>
+ <20240708191703.GJZow7L9DBNZVBXE95@fat_crate.local>
+ <SA1PR21MB1317816DFCE6EF38A92CF254BFDA2@SA1PR21MB1317.namprd21.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240701095505.165383-5-steven.price@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <SA1PR21MB1317816DFCE6EF38A92CF254BFDA2@SA1PR21MB1317.namprd21.prod.outlook.com>
 
-On Mon, Jul 01, 2024 at 10:54:54AM +0100, Steven Price wrote:
-> The top bit of the configured IPA size is used as an attribute to
-> control whether the address is protected or shared. Query the
-> configuration from the RMM to assertain which bit this is.
+On Mon, Jul 08, 2024 at 09:45:24PM +0000, Dexuan Cui wrote:
+> x86/tdx: Fix set_memory_decrypted() for vmalloc() buffers
 > 
-> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v2:
->  * Drop unneeded extra brackets from PROT_NS_SHARED.
->  * Drop the explicit alignment from 'config' as struct realm_config now
->    specifies the alignment.
-> ---
->  arch/arm64/include/asm/pgtable-prot.h | 3 +++
->  arch/arm64/kernel/rsi.c               | 8 ++++++++
->  2 files changed, 11 insertions(+)
+> When a TD mode Linux TDX VM runs on Hyper-V, the Linux hv_netvsc driver
+> needs to share a vmalloc()'d  buffer with the host OS: see
+> netvsc_init_buf() -> vmbus_establish_gpadl() -> ... ->
+> __vmbus_establish_gpadl() -> set_memory_decrypted().
 > 
-> diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
-> index b11cfb9fdd37..6c29f3b32eba 100644
-> --- a/arch/arm64/include/asm/pgtable-prot.h
-> +++ b/arch/arm64/include/asm/pgtable-prot.h
-> @@ -70,6 +70,9 @@
->  #include <asm/pgtable-types.h>
->  
->  extern bool arm64_use_ng_mappings;
-> +extern unsigned long prot_ns_shared;
-> +
-> +#define PROT_NS_SHARED		(prot_ns_shared)
+> Currently set_memory_decrypted() doesn't work for a vmalloc()'d  buffer
+> because tdx_enc_status_changed() uses __pa(vaddr), i.e., it assumes that
+> the 'vaddr' can't be from vmalloc(), and consequently hv_netvsc fails
+> to load.
+> 
+> Fix this by handling the pages one by one.
+> 
+> hv_netvsc is the first user of vmalloc() + set_memory_decrypted(), which
+> is why nobody noticed this until now.
+> 
+> v6.6 is a longterm kernel, which is used by some distros, so I hope
+> this patch can be in v6.6.y and newer, so it won't be carried out of tree.
 
-Since the _vast_ majority of Linux systems won't be running in a realm,
-can we use a static key to avoid loading a constant each time?
+So this is a corner-case thing. I guess CC:stable is ok, we have packported
+similar "fixes" in the past.
 
-Will
+> I think the patch (without Kirill's kexec fix)  has been well tested, e.g.,
+> it has been in Ubuntu's linux-azure kernel for about 2 years. Kirill's 
+> kexec fix works in my testing and it looks safe to me. 
+
+You seem to think that a patch which has been tested in some out-of-tree
+kernel,
+
+- gets modified
+- gets applied to the upstream kernel
+- it *breaks* a use case,
+
+and then it can still be considered tested.
+
+Are you seriously claiming that?!
+
+> I hope this can be in 6.11-rc1 if you see no high risks. 
+> It's also fine to me if you decide to queue the patch after 6.11-rc1.
+
+Yes, it will be after -rc1 because what you consider "tested" and what I do
+consider "tested" can just as well be from two different planets.
+
+> > > Co-developed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> https://lwn.net/ml/linux-kernel/20230412151937.pxfyralfichwzyv6@box/
+
+Since you'd go the length to quote the mail messages which gave you the tags
+but you will not read what I point you to, lemme read it for you:
+
+"Both Tested-by and Reviewed-by tags, once received on mailing list from
+tester or reviewer, should be added by author to the applicable patches when
+sending next versions.  However if the patch has changed substantially in
+following version, these tags might not be applicable anymore and thus should
+be removed.  Usually removal of someone's Tested-by or Reviewed-by tags should
+be mentioned in the patch changelog (after the '---' separator)."
+
+From Documentation/process/submitting-patches.rst
+
+Again, if you want to keep sending patches to the kernel, I'd strongly urge
+you to read that document!
+
+> This is not really a newly submitted patch :-)
+
+If you still think that and you want to keep your tags, all I can give you is
+a big fat NAK until you read and understand how the process works.
+
+Your decision.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
