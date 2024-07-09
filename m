@@ -1,154 +1,122 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E53155303
-	for <linux-coco@lists.linux.dev>; Tue,  9 Jul 2024 11:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E367C149C79;
+	Tue,  9 Jul 2024 11:39:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523244; cv=none; b=s2pCGiX1e6ln38otZTnzbR3vwLExiOdIovRJvnDE7w6UHxvtd1z4VVI+8re/NlPfnBtAhuZDuDhXdjT7COCCY6YWbKmKNDXPU20iaN3ry4GNVN0VShsSx1hcCohkWQ4ot3UlCfWSipQY9ZSF54zV9YvgKE+q2XPY888vRdOEx7k=
+	t=1720525172; cv=none; b=WzNZXCuBbVxjlW+Shy1I5PN0MNseO+w6WviVcSdgjvFASqYCiCDivKgYce8yY8e3bkl61atQP/uU8qVCYak40tTuMNts+A20MSCcCo0CjeLqTdxrxYpRkxsMjdfPDPEU2V40dtfIr/q/+zVV7V+wZUZSWi+1h0jDQpY5S2Fc4sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523244; c=relaxed/simple;
-	bh=ZQfO6yaxvGPGddmV/JKSFfpd7XOGtVMtsvCFc2pp4LM=;
+	s=arc-20240116; t=1720525172; c=relaxed/simple;
+	bh=/gbNQhUzu5NCtcl067Z+7CcqqB4xMXkO1NA71N39dMw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KBfNX0jVeOatw8uWdsdbfmg6Is5CV9TSA3SUTd5lWo+CKWdKqYRYuRYGGuMKkR+NNp1As8z6YLX3KcdP+MuNYJJF8NEnX7yRvqdXthZ43L4y8X/t3dPa6FFrF2w/6b7lEB7JbGjH2cCFOaJDzPKJ5urbmmt3qUoNk/SaCyxox/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AhhcefCX; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=T1Wm5J1uKRR4K5t0H4GO93pJzqZgD0BbqZE7hiU6jhiwS4+4VpGdubEISBupNas/s30keOVOIFqhxZ9yji2I6rPI79nQ4oKPFxSOmjbtojZQTQDhSqwxqbugX456KYmrheqqKBmd8PfyTiKKXZt6Yw8oiUfhCgVoPtZ57QbUTGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWTgVx3s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AhhcefCX"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2A8D840E019D;
-	Tue,  9 Jul 2024 11:07:20 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id JulpA9dQV5i9; Tue,  9 Jul 2024 11:07:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1720523235; bh=zM5vw2X4vXpF2Weeo34wNg92YVwfkbif2ErMikAhomk=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWTgVx3s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EFFC3277B;
+	Tue,  9 Jul 2024 11:39:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720525171;
+	bh=/gbNQhUzu5NCtcl067Z+7CcqqB4xMXkO1NA71N39dMw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AhhcefCX8GcIWDqFu+CTWnaGOI8YROW+o6+kE/EBLRUy8wBbjOwQSMEYWpBjcewtt
-	 Kw3JyPCLj2ge+an+LZvW76/2PJgtXq0Gu/6KWZdgTjErlsPthfe1bRXyXDOqTSJElo
-	 JsLYoTsQkBnLO09zbMXR1QjBdXbyaiIzrOCzlHNgBmvps6DpiR/HMGAi0zY6Qndds7
-	 ngyFkDuacq13fW/JXW7QgwCwCjs6mxHCsR3qCfCJOlpY/f7j7o2bBLmp14Qe/4WIcA
-	 cjMywPLZ2keKPx3AlfAvSfUOj0+42DxBb47K5pX6eY2WaNeG6GN8KE9FQFjPaVhXBf
-	 7K0ZpdQpokWNU1P+W0RXU0AESICYqyIohVQOybFUkl2oNZpBRt2WupCHEOskKZmtp+
-	 jJ5+1jOZx69JRXpIZwWcdik17n7jRf2AeWD2pOXhNkn3eEgN297aCKX255PVst1Gmb
-	 +VJLxcLsgGWcCWY4+Snbe65Dki70zCMaBvKqlK1sGu5tb+jVr7RovLvjLCydf38VyP
-	 Z4xcoYuFM/LZPrpdA0WZLeCEDSMzjjCV+lXOFtgjI5qYktZERz4uVIiaAkm2HaTWi+
-	 yIsQNgx8nLvA0X5Z8vCUffbj0sg+OzzjxG5jVq0QfhPhFz10YxDCr6chy5mFUOtw9B
-	 xRYy6A1TLjpks9S3y0J7VGso=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0282E40E0192;
-	Tue,  9 Jul 2024 11:07:00 +0000 (UTC)
-Date: Tue, 9 Jul 2024 13:06:56 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"open list:X86 TRUST DOMAIN EXTENSIONS (TDX)" <linux-coco@lists.linux.dev>,
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
-Message-ID: <20240709110656.GEZo0Z0EoI4xmHDx9b@fat_crate.local>
-References: <20240708183946.3991-1-decui@microsoft.com>
- <20240708191703.GJZow7L9DBNZVBXE95@fat_crate.local>
- <SA1PR21MB1317816DFCE6EF38A92CF254BFDA2@SA1PR21MB1317.namprd21.prod.outlook.com>
+	b=kWTgVx3svUaQuIYLcUm2926OaFhtxUS/LuZ8p8OO0fR5TB06GkTblfwngWYAFHuo4
+	 /QExltCfzLf6Z9T9rrlvXq5QmMI1YWK+b/5sndtrEbnW8pyuH1ln/56/99Zsj7ZcsF
+	 WVxeeT01940fssv5ebJSukJqg2HVjsMQ4qSJTh2GueuZyu4A5Qx+nRQUF20NmGfkwx
+	 +wBYZuPqlfb0f1lfvz+ejGM+uZJEQnYh8T51ep9iQTxO/0cDK+0EwhA3Qw3IGlHfZy
+	 1xuqhQgg01sdOMTulvsa6hwnC8BpGNwruPPIlVolyHS61XVn/G2pCZVqTZi+HnDp+W
+	 YYfi5FeCJi+rA==
+Date: Tue, 9 Jul 2024 12:39:25 +0100
+From: Will Deacon <will@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: Re: [PATCH v4 05/15] arm64: Mark all I/O as non-secure shared
+Message-ID: <20240709113925.GA13242@willie-the-truck>
+References: <20240701095505.165383-1-steven.price@arm.com>
+ <20240701095505.165383-6-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <SA1PR21MB1317816DFCE6EF38A92CF254BFDA2@SA1PR21MB1317.namprd21.prod.outlook.com>
+In-Reply-To: <20240701095505.165383-6-steven.price@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Mon, Jul 08, 2024 at 09:45:24PM +0000, Dexuan Cui wrote:
-> x86/tdx: Fix set_memory_decrypted() for vmalloc() buffers
+On Mon, Jul 01, 2024 at 10:54:55AM +0100, Steven Price wrote:
+> All I/O is by default considered non-secure for realms. As such
+> mark them as shared with the host.
 > 
-> When a TD mode Linux TDX VM runs on Hyper-V, the Linux hv_netvsc driver
-> needs to share a vmalloc()'d  buffer with the host OS: see
-> netvsc_init_buf() -> vmbus_establish_gpadl() -> ... ->
-> __vmbus_establish_gpadl() -> set_memory_decrypted().
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v3:
+>  * Add PROT_NS_SHARED to FIXMAP_PAGE_IO rather than overriding
+>    set_fixmap_io() with a custom function.
+>  * Modify ioreamp_cache() to specify PROT_NS_SHARED too.
+> ---
+>  arch/arm64/include/asm/fixmap.h | 2 +-
+>  arch/arm64/include/asm/io.h     | 8 ++++----
+>  2 files changed, 5 insertions(+), 5 deletions(-)
 > 
-> Currently set_memory_decrypted() doesn't work for a vmalloc()'d  buffer
-> because tdx_enc_status_changed() uses __pa(vaddr), i.e., it assumes that
-> the 'vaddr' can't be from vmalloc(), and consequently hv_netvsc fails
-> to load.
-> 
-> Fix this by handling the pages one by one.
-> 
-> hv_netvsc is the first user of vmalloc() + set_memory_decrypted(), which
-> is why nobody noticed this until now.
-> 
-> v6.6 is a longterm kernel, which is used by some distros, so I hope
-> this patch can be in v6.6.y and newer, so it won't be carried out of tree.
+> diff --git a/arch/arm64/include/asm/fixmap.h b/arch/arm64/include/asm/fixmap.h
+> index 87e307804b99..f2c5e653562e 100644
+> --- a/arch/arm64/include/asm/fixmap.h
+> +++ b/arch/arm64/include/asm/fixmap.h
+> @@ -98,7 +98,7 @@ enum fixed_addresses {
+>  #define FIXADDR_TOT_SIZE	(__end_of_fixed_addresses << PAGE_SHIFT)
+>  #define FIXADDR_TOT_START	(FIXADDR_TOP - FIXADDR_TOT_SIZE)
+>  
+> -#define FIXMAP_PAGE_IO     __pgprot(PROT_DEVICE_nGnRE)
+> +#define FIXMAP_PAGE_IO     __pgprot(PROT_DEVICE_nGnRE | PROT_NS_SHARED)
+>  
+>  void __init early_fixmap_init(void);
+>  
+> diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
+> index 4ff0ae3f6d66..07fc1801c6ad 100644
+> --- a/arch/arm64/include/asm/io.h
+> +++ b/arch/arm64/include/asm/io.h
+> @@ -277,12 +277,12 @@ static inline void __const_iowrite64_copy(void __iomem *to, const void *from,
+>  
+>  #define ioremap_prot ioremap_prot
+>  
+> -#define _PAGE_IOREMAP PROT_DEVICE_nGnRE
+> +#define _PAGE_IOREMAP (PROT_DEVICE_nGnRE | PROT_NS_SHARED)
+>  
+>  #define ioremap_wc(addr, size)	\
+> -	ioremap_prot((addr), (size), PROT_NORMAL_NC)
+> +	ioremap_prot((addr), (size), (PROT_NORMAL_NC | PROT_NS_SHARED))
+>  #define ioremap_np(addr, size)	\
+> -	ioremap_prot((addr), (size), PROT_DEVICE_nGnRnE)
+> +	ioremap_prot((addr), (size), (PROT_DEVICE_nGnRnE | PROT_NS_SHARED))
 
-So this is a corner-case thing. I guess CC:stable is ok, we have packported
-similar "fixes" in the past.
+Hmm. I do wonder whether you've pushed the PROT_NS_SHARED too far here.
 
-> I think the patch (without Kirill's kexec fix)  has been well tested, e.g.,
-> it has been in Ubuntu's linux-azure kernel for about 2 years. Kirill's 
-> kexec fix works in my testing and it looks safe to me. 
+There's nothing _architecturally_ special about the top address bit.
+Even if the RSI divides the IPA space in half, the CPU doesn't give two
+hoots about it in the hardware. In which case, it feels wrong to bake
+PROT_NS_SHARED into ioremap_prot -- it feels much better to me if the
+ioremap() code OR'd that into the physical address when passing it down
 
-You seem to think that a patch which has been tested in some out-of-tree
-kernel,
+There's a selfish side of that argument, in that we need to hook
+ioremap() for pKVM protected guests, but I do genuinely feel that
+treating address bits as protection bits is arbitrary and doesn't belong
+in these low-level definitions. In a similar vein, AMD has its
+sme_{set,clr}() macros that operate on the PA (e.g. via dma_to_phys()),
+which feels like a more accurate abstraction to me.
 
-- gets modified
-- gets applied to the upstream kernel
-- it *breaks* a use case,
-
-and then it can still be considered tested.
-
-Are you seriously claiming that?!
-
-> I hope this can be in 6.11-rc1 if you see no high risks. 
-> It's also fine to me if you decide to queue the patch after 6.11-rc1.
-
-Yes, it will be after -rc1 because what you consider "tested" and what I do
-consider "tested" can just as well be from two different planets.
-
-> > > Co-developed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> https://lwn.net/ml/linux-kernel/20230412151937.pxfyralfichwzyv6@box/
-
-Since you'd go the length to quote the mail messages which gave you the tags
-but you will not read what I point you to, lemme read it for you:
-
-"Both Tested-by and Reviewed-by tags, once received on mailing list from
-tester or reviewer, should be added by author to the applicable patches when
-sending next versions.  However if the patch has changed substantially in
-following version, these tags might not be applicable anymore and thus should
-be removed.  Usually removal of someone's Tested-by or Reviewed-by tags should
-be mentioned in the patch changelog (after the '---' separator)."
-
-From Documentation/process/submitting-patches.rst
-
-Again, if you want to keep sending patches to the kernel, I'd strongly urge
-you to read that document!
-
-> This is not really a newly submitted patch :-)
-
-If you still think that and you want to keep your tags, all I can give you is
-a big fat NAK until you read and understand how the process works.
-
-Your decision.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Will
