@@ -1,63 +1,51 @@
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D489415381F
-	for <linux-coco@lists.linux.dev>; Tue,  9 Jul 2024 08:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92D614290;
+	Tue,  9 Jul 2024 10:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720514981; cv=none; b=JUA9DRf2rreRveVIFyR/zQsfQBJBmsAGmPFyT+t5lMYSXlXB7w3S2Jqw03+pNJrqiM+IhoPI4bf14ZJ+uDgLwEz7Sv7L8YBiXjZWbkUkg12eWgQiYp3thjBds6wjzLnY7xJif3wwuuIPOOgjGkC9IdYcTgxlAqyOutmmVGDUjhU=
+	t=1720522138; cv=none; b=ulXAOx7Y8OAambgd83XwxT59I1rv2I9FXl0bGxBo5ZnDpvAMPZ7MggIIaydObJw9HSdFlfkhSWjV8VEhCfWhB27NFbZrRoZe4QAJXDaxzA82I7CK+TMOrbKtxYgMhf/7of497SZzjwOqoUXNgjJYOyH/0S9J8EkgKay70+4ixGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720514981; c=relaxed/simple;
-	bh=1LGGttV5i62yDKUecr8vz54XeY4DPh2JWDsYY1rJrOY=;
+	s=arc-20240116; t=1720522138; c=relaxed/simple;
+	bh=+0UCCKX9eTmUCtlh6j65FUsSAck/OtEeFegBRXqawoA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UZNNbMf5Cg+qVVNZxuneJn4qX8WZbc6h/BTW1pA7KtrxLc2oHHnUFRGU+eXxyw81OwZzXSKaxbKqzjDlcUgy3LZqPGcJ5ExRmFY/mF1GX69hhaqSJ3P6OYxVG0R5aQQTunBCaTXt/ndv1zyeS7ADPF1O/L8LenNey3UWA4O3ivg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id AF9F21025A944;
-	Tue,  9 Jul 2024 10:49:36 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 7265B2D31A; Tue,  9 Jul 2024 10:49:36 +0200 (CEST)
-Date: Tue, 9 Jul 2024 10:49:36 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Li, Ming" <ming4.li@intel.com>,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Dhaval Giani <dhaval.giani@amd.com>,
-	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
-	Jerome Glisse <jglisse@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v2 07/18] spdm: Introduce library to authenticate devices
-Message-ID: <Zoz5oHx8HxYLTftQ@wunner.de>
-References: <cover.1719771133.git.lukas@wunner.de>
- <bbbea6e1b7d27463243a0fcb871ad2953312fe3a.1719771133.git.lukas@wunner.de>
- <26715537-5dc4-46c1-bdcd-c760696dd418@amd.com>
- <Zovha33CS76PwAMF@wunner.de>
- <ad7b3e48-2e61-476f-8fea-28424f46d306@amd.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=c9SapNBiHMa5QFDTJOipdci4jrOVm099kJLfEEFGOy+JUEoAfg7zXJQgahyTMNuBjPa7F3/XJxS/GdmQLGqU7zmLPc00HEceVeuEJSXNa9OfMgkajcTLHBh1dxwrzQlxbwkFm9tFPw0Ve33DHOG5HXLpa5/FmFdcCx+pSy41byM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YH2oSUoS; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YH2oSUoS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBF3C3277B;
+	Tue,  9 Jul 2024 10:48:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720522138;
+	bh=+0UCCKX9eTmUCtlh6j65FUsSAck/OtEeFegBRXqawoA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YH2oSUoS8Mrw383mytbFplGa9CwGgWmEBAuIXD1eNNWw4D8cmmis+Ey6BXCcyhJu4
+	 dSUSlQqkWVZoqbU2ratz0Ul7+lyCNt8lJmeFy+hEl8RgcBWlLTxKHSkr6x7QHTphsi
+	 FSpKjRepjzSseN2lHHu+UXddVEyNrKX+oyyOvdT5sSgG23FKJT44aYcNBQ+1kOxtU6
+	 8RG+CQVCSWZpUzpAq3baaIm+lD/O8GT/+BLZLh3rjX8XEdk3tw/Wo+tGOAG8+zdZrS
+	 yCZF/uUk165W3pxsBTnS4IU8KwSwKto9ja749I67GhEjcYLGBg/bgNzUq4NMSLOLbD
+	 WW7gvGuz4JwiQ==
+Date: Tue, 9 Jul 2024 11:48:51 +0100
+From: Will Deacon <will@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: Re: [PATCH v4 02/15] firmware/psci: Add psci_early_test_conduit()
+Message-ID: <20240709104851.GE12978@willie-the-truck>
+References: <20240701095505.165383-1-steven.price@arm.com>
+ <20240701095505.165383-3-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -66,55 +54,76 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ad7b3e48-2e61-476f-8fea-28424f46d306@amd.com>
+In-Reply-To: <20240701095505.165383-3-steven.price@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Tue, Jul 09, 2024 at 10:45:27AM +1000, Alexey Kardashevskiy wrote:
-> On 8/7/24 22:54, Lukas Wunner wrote:
-> > The short answer is, it's a bug in libspdm and the issue should
-> > go away once you update libspdm to version 3.1.0 or newer.
+On Mon, Jul 01, 2024 at 10:54:52AM +0100, Steven Price wrote:
+> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > 
-> Easier to hack lib/spdm/req-authenticate.c just to see how far I can get
-> with my device, now it is "Malformed certificate at slot 0 offset 0".
+> Add a function to test early if PSCI is present and what conduit it
+> uses. Because the PSCI conduit corresponds to the SMCCC one, this will
+> let the kernel know whether it can use SMC instructions to discuss with
+> the Realm Management Monitor (RMM), early enough to enable RAM and
+> serial access when running in a Realm.
+> 
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> v4: New patch
+> ---
+>  drivers/firmware/psci/psci.c | 25 +++++++++++++++++++++++++
+>  include/linux/psci.h         |  5 +++++
+>  2 files changed, 30 insertions(+)
+> 
+> diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
+> index d9629ff87861..a40dcaf17822 100644
+> --- a/drivers/firmware/psci/psci.c
+> +++ b/drivers/firmware/psci/psci.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/errno.h>
+>  #include <linux/linkage.h>
+>  #include <linux/of.h>
+> +#include <linux/of_fdt.h>
+>  #include <linux/pm.h>
+>  #include <linux/printk.h>
+>  #include <linux/psci.h>
+> @@ -767,6 +768,30 @@ int __init psci_dt_init(void)
+>  	return ret;
+>  }
+>  
+> +/*
+> + * Test early if PSCI is supported, and if its conduit matches @conduit
+> + */
+> +bool __init psci_early_test_conduit(enum arm_smccc_conduit conduit)
+> +{
+> +	int len;
+> +	int psci_node;
+> +	const char *method;
+> +	unsigned long dt_root;
+> +
+> +	/* DT hasn't been unflattened yet, we have to work with the flat blob */
+> +	dt_root = of_get_flat_dt_root();
+> +	psci_node = of_get_flat_dt_subnode_by_name(dt_root, "psci");
+> +	if (psci_node <= 0)
+> +		return false;
+> +
+> +	method = of_get_flat_dt_prop(psci_node, "method", &len);
+> +	if (!method)
+> +		return false;
+> +
+> +	return  (conduit == SMCCC_CONDUIT_SMC && strncmp(method, "smc", len) == 0) ||
+> +		(conduit == SMCCC_CONDUIT_HVC && strncmp(method, "hvc", len) == 0);
+> +}
 
-In that case all (up to 8) certificate chains should have been retrieved
-and are available for examination in the certificates/ directory in sysfs
-(below the PCI device's directory).
+Hmm, I don't think this is sufficient to check for SMCCC reliably.
+Instead, I think you need to do something more involved:
 
-You can use ordinary openssl tooling to examine the certificates and
-see what's wrong with them, see the ABI documentation in patch [12/18]
-for examples:
+1. Check for PSCI in the DT
+2. Check that the PSCI major version is >= 1
+3. Use PSCI_FEATURES to check that you have SMCCC
+4. Use SMCCC_VERSION to find out which version of SMCCC you have
 
-https://lore.kernel.org/all/e42905e3e5f1d5be39355e833fefc349acb0b03c.1719771133.git.lukas@wunner.de/
+That's roughly what the PSCI driver does, so we should avoid duplicating
+that logic.
 
-The "Malformed certificate at slot 0 offset 0" message means that the
-first certificate in the chain in slot 0 does not comply with
-requirements set forth in the SPDM spec.  (E.g. Basic Constraints CA
-value shall be false for leaf cert, true for intermediate and root certs
-per SPDM 1.3.0 table 42.)
-
-The expectation is that vendors will test their devices and fix issues
-like this, so that end users never see those messages.
-
-The error message is emitted by spdm_validate_cert_chain().
-The implementation calls that to identify a certificate chain which is
-considered valid by the kernel.  The first one found is used for
-challenge-response authentication.  If none is found valid, the kernel
-will try to perform challenge-response authentication with the first
-*provisioned* slot, regardless of its validity.  That is done to
-expose a signature in sysfs about which user space can make up its
-own mind, see patch [17/18]:
-
-https://lore.kernel.org/all/dff8bcb091a3123e1c7c685f8149595e39bbdb8f.1719771133.git.lukas@wunner.de/
-
-So despite the error message you should see a signature with full SPDM
-transcript and other ancillary data in the signatures/ directory in sysfs.
-
-Not sure yet whether that feature (exposing a signature despite
-cert chains' invalidity from the kernel POV) makes sense.
-We can also discuss adding ABI which allows user space to force
-challenge-response with a specific slot, or to declare a specific
-slot valid.
-
-Thanks,
-
-Lukas
+Will
