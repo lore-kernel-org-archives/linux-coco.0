@@ -1,25 +1,25 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D617719308C;
-	Wed, 10 Jul 2024 15:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792CE1946AD;
+	Wed, 10 Jul 2024 16:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720626239; cv=none; b=Ts+UBnwZxpNqjbCtVltSP3IzMBEizwBDl7PtrCyvckv9aaCF0LUkUwGqBXjS+cdaE2RSujizk+6y17Z5MZ6niXbJ19q5GHM0AkbkwdV1X+Qgw8TJJQXe8o50zAVIQBG6yfq3ELiwQRkV2+nfvKJVc+I9wJRdYti/2RwOXKdr23k=
+	t=1720627496; cv=none; b=Wiv8XFhZUuh9yxARPK4hCGcdrMBXzxTYjAElatL5eO4HyV5vfynKcKuwVVLdWBqxmlvtxn8e6XuPGfCvCKEaEhEVW1zN6a9bNh9dT169RKPse1+jKEOycXSW5CISL4B4HgXOCYFRifLG2ZSG19nygicI0Y0gDZnXn1y9yIh+Z0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720626239; c=relaxed/simple;
-	bh=X1cJ+eZmDv+Rl3CvevwZlNKQLOFIR9YDfRr56MK5cfU=;
+	s=arc-20240116; t=1720627496; c=relaxed/simple;
+	bh=ZT+vmHSzj0V3TRaEXdahnczrOE+RLfpcX61gANIuHEQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wv/fo+r0V2idSE5uxbxaF8w1ztyoDkqC6yG4BdsZXseM21VUXPO/JOgKZ7/Q+40Yu/xxSRRmwi0XZpU2dhOE1rE6Hghw4R6BXA55m+Yrk4rTZD9ZvNCGGBHR6gafaiS/0OKZfF+uUoJKe8iG8a3DW3Rz13yCO4FOaZXz5fWxYC0=
+	 In-Reply-To:Content-Type; b=IxcNcdAnSCtceHY2gAYfnagUoA590x5O05KBCS+7RhD3CoSeSQBIeKJTvkyqJR6UQ6+7gS6MGm+flLFXXQ/f7Mxq/J3n2mlOUY65odc2BSf1qhCHgGa65uMYFDfpXX5r2y3PVOHFTzidHg6KaWqPgQvcnBp/h88y8I6E4aiSG8U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6EDAD106F;
-	Wed, 10 Jul 2024 08:44:22 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1C43A367;
+	Wed, 10 Jul 2024 09:05:19 -0700 (PDT)
 Received: from [10.57.8.115] (unknown [10.57.8.115])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DECA63F766;
-	Wed, 10 Jul 2024 08:43:53 -0700 (PDT)
-Message-ID: <46d29283-af38-4eed-a69f-f7e4555f1a39@arm.com>
-Date: Wed, 10 Jul 2024 16:43:52 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 548B43F762;
+	Wed, 10 Jul 2024 09:04:50 -0700 (PDT)
+Message-ID: <862c600c-6803-4c25-8234-c8d056e94f23@arm.com>
+Date: Wed, 10 Jul 2024 17:04:48 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,7 +27,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/15] arm64: Enforce bounce buffers for realm DMA
+Subject: Re: [PATCH v4 08/15] arm64: mm: Avoid TLBI when marking pages as
+ valid
 To: Will Deacon <will@kernel.org>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
  Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
@@ -40,110 +41,70 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
  linux-coco@lists.linux.dev,
  Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
 References: <20240701095505.165383-1-steven.price@arm.com>
- <20240701095505.165383-8-steven.price@arm.com>
- <20240709115649.GC13242@willie-the-truck>
+ <20240701095505.165383-9-steven.price@arm.com>
+ <20240709115754.GD13242@willie-the-truck>
 From: Steven Price <steven.price@arm.com>
 Content-Language: en-GB
-In-Reply-To: <20240709115649.GC13242@willie-the-truck>
+In-Reply-To: <20240709115754.GD13242@willie-the-truck>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/07/2024 12:56, Will Deacon wrote:
-> On Mon, Jul 01, 2024 at 10:54:57AM +0100, Steven Price wrote:
->> Within a realm guest it's not possible for a device emulated by the VMM
->> to access arbitrary guest memory. So force the use of bounce buffers to
->> ensure that the memory the emulated devices are accessing is in memory
->> which is explicitly shared with the host.
+On 09/07/2024 12:57, Will Deacon wrote:
+> On Mon, Jul 01, 2024 at 10:54:58AM +0100, Steven Price wrote:
+>> When __change_memory_common() is purely setting the valid bit on a PTE
+>> (e.g. via the set_memory_valid() call) there is no need for a TLBI as
+>> either the entry isn't changing (the valid bit was already set) or the
+>> entry was invalid and so should not have been cached in the TLB.
 >>
->> This adds a call to swiotlb_update_mem_attributes() which calls
->> set_memory_decrypted() to ensure the bounce buffer memory is shared with
->> the host. For non-realm guests or hosts this is a no-op.
->>
->> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 >> Signed-off-by: Steven Price <steven.price@arm.com>
 >> ---
->> v3: Simplify mem_init() by using a 'flags' variable.
+>> v4: New patch
 >> ---
->>  arch/arm64/kernel/rsi.c |  2 ++
->>  arch/arm64/mm/init.c    | 10 +++++++++-
->>  2 files changed, 11 insertions(+), 1 deletion(-)
+>>  arch/arm64/mm/pageattr.c | 8 +++++++-
+>>  1 file changed, 7 insertions(+), 1 deletion(-)
 >>
->> diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
->> index 7ac5fc4a27d0..918db258cd4a 100644
->> --- a/arch/arm64/kernel/rsi.c
->> +++ b/arch/arm64/kernel/rsi.c
->> @@ -6,6 +6,8 @@
->>  #include <linux/jump_label.h>
->>  #include <linux/memblock.h>
->>  #include <linux/psci.h>
->> +#include <linux/swiotlb.h>
->> +
->>  #include <asm/rsi.h>
+>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+>> index 0e270a1c51e6..547a9e0b46c2 100644
+>> --- a/arch/arm64/mm/pageattr.c
+>> +++ b/arch/arm64/mm/pageattr.c
+>> @@ -60,7 +60,13 @@ static int __change_memory_common(unsigned long start, unsigned long size,
+>>  	ret = apply_to_page_range(&init_mm, start, size, change_page_range,
+>>  					&data);
 >>  
->>  struct realm_config config;
->> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
->> index 9b5ab6818f7f..1d595b63da71 100644
->> --- a/arch/arm64/mm/init.c
->> +++ b/arch/arm64/mm/init.c
->> @@ -41,6 +41,7 @@
->>  #include <asm/kvm_host.h>
->>  #include <asm/memory.h>
->>  #include <asm/numa.h>
->> +#include <asm/rsi.h>
->>  #include <asm/sections.h>
->>  #include <asm/setup.h>
->>  #include <linux/sizes.h>
->> @@ -369,8 +370,14 @@ void __init bootmem_init(void)
->>   */
->>  void __init mem_init(void)
->>  {
->> +	unsigned int flags = SWIOTLB_VERBOSE;
->>  	bool swiotlb = max_pfn > PFN_DOWN(arm64_dma_phys_limit);
->>  
->> +	if (is_realm_world()) {
->> +		swiotlb = true;
->> +		flags |= SWIOTLB_FORCE;
->> +	}
->> +
->>  	if (IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) && !swiotlb) {
->>  		/*
->>  		 * If no bouncing needed for ZONE_DMA, reduce the swiotlb
->> @@ -382,7 +389,8 @@ void __init mem_init(void)
->>  		swiotlb = true;
->>  	}
->>  
->> -	swiotlb_init(swiotlb, SWIOTLB_VERBOSE);
->> +	swiotlb_init(swiotlb, flags);
->> +	swiotlb_update_mem_attributes();
+>> -	flush_tlb_kernel_range(start, start + size);
+>> +	/*
+>> +	 * If the memory is being made valid without changing any other bits
+>> +	 * then a TLBI isn't required as a non-valid entry cannot be cached in
+>> +	 * the TLB.
+>> +	 */
+>> +	if (pgprot_val(set_mask) != PTE_VALID || pgprot_val(clear_mask))
+>> +		flush_tlb_kernel_range(start, start + size);
+>>  	return ret;
 > 
-> Why do we have to call this so early? Certainly, we won't have probed
-> the hypercalls under pKVM yet and I think it would be a lot cleaner if
-> you could defer your RSI discovery too.
+> Can you elaborate on when this actually happens, please? It feels like a
+> case of "Doctor, it hurts when I do this" rather than something we should
+> be trying to short-circuit in the low-level code.
 
-I don't think we *need* the swiotlb up so early, it was more of a case
-of this seemed a convenient place. We can probably move this later if
-pKVM has a requirement for this.
+This is for the benefit of the following patch. When transitioning a
+page between shared and private we need to change the IPA (to set/clear
+the top bit). This requires a break-before-make - see
+__set_memory_enc_dec() in the following patch.
 
-In terms of RSI discovery then see my reply on patch 2.
+The easiest way of implementing the code was to just call
+__change_memory_common() twice - once to make the entry invalid and then
+again to make it valid with the new IPA. But that led to a double TLBI
+which Catalin didn't like[1].
 
-> Looking forward to the possibility of device assignment in future, how
-> do you see DMA_BOUNCE_UNALIGNED_KMALLOC interacting with a decrypted
-> SWIOTLB buffer? I'm struggling to wrap my head around how to fix that
-> properly.
+So this patch removes the unnecessary second TLBI by detecting that
+we're just making the entry valid. Or at least it would if I hadn't
+screwed up...
 
-Device assignment generally causes problems with bounce buffers. The
-assumption has mostly been that any device which is clever enough to
-deal with device assignment (which in our case means enlightened enough
-to understand the extra bit on the bus) wouldn't need bounce buffers.
+I should have changed the following patch to ensure that the second call
+to __change_memory_common was only setting the PTE_VALID bit and not
+changing anything else (so that the TLBI could be skipped) and forgot to
+do that. So thanks for making me take a look at this again!
 
-Suzuki: Do you know if DMA_BOUNCE_UNALIGNED_KMALLOC has been thought
-about? Can we make the assumption that an assigned device will be coherent?
-
-I have to admit to being a bit worried about current assumption that we
-don't need two sets of bounce buffers - one decrypted for talking to the
-host, and one encrypted for "old fashioned" talking to hardware which
-has hardware limitations.
-
+Thanks,
 Steve
 
+[1] https://lore.kernel.org/lkml/Zmc3euO2YGh-g9Th@arm.com/
