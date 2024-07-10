@@ -1,74 +1,111 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2063.outbound.protection.outlook.com [40.107.94.63])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF7A4F1E2
-	for <linux-coco@lists.linux.dev>; Wed, 10 Jul 2024 20:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE8319149A
+	for <linux-coco@lists.linux.dev>; Wed, 10 Jul 2024 20:35:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720642361; cv=fail; b=RB9V/c3DYhvWQT4PPvh1+MJ3GfRI0kgESunXvnBkyI3X/bv+nf05JmjVfHYVt68n13RRk3itIdkqPsXpp+j7/+iMdGA7+3Q5kylSqUV7qFVjNi/MW+2nA+iZGPbno3RANERRwTF+Yj+UFb5Kqrcsk9TJubrC+9nVIhyHMcCt9kA=
+	t=1720643745; cv=fail; b=Gk1NBZPKGWXpIuPHPo34EsEIlvbSR806urhD4NpRPP8cSYVl7FKMHKQG0ROCcMyUymvlRQctVJX/GjOkzITlEcCaMfn31Xw0lBQs+beuD/YGy5AJIwS129RP6H6XHYXyrFPPgQL+zjaNAfh3l5jV6z6fAPJddYhGL+cv4lsBl4U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720642361; c=relaxed/simple;
-	bh=pQT3A3iFD4t8DDIgBU3kYcsjahbHK8fsGPA+Tr8l4Qw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=pDOsf2L6pLnsvOqie4xlU6liqbvfA5Khhf5ttMnWztyAc4Sij8Y1t1ugoNcX4l1sSEpClfYKKDn2vw09I8Dmi1fXxPYn1moKxwHntol1Z91cIP5c06g0Go76YFbimBa2aJ394KynlDFzQDw+cKrxqx1qGBovLHDJHiN1HwOyY4U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HH4MFtfF; arc=fail smtp.client-ip=40.107.94.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1720643745; c=relaxed/simple;
+	bh=ng12j2gIwprcOfdMlt4RQxzoCNREnlOD0SB01gPyek0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RTLN/iXoHTX1MKgu3t6NLF+/OHvo6DLiZhU7f7g1997Vt7tBDr1tfXSEZ7RG1bCcJ+X1Vjcz9O4VTjqohcqXZ985ojilfbG65xyObtheY5qqtF70bqSlNexC28uOcTq/c5ChbrxbAh3Whmq3xoBdrjex4DJJareguiKN4FML0xA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X3MgSzr8; arc=fail smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HH4MFtfF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X3MgSzr8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720643744; x=1752179744;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=ng12j2gIwprcOfdMlt4RQxzoCNREnlOD0SB01gPyek0=;
+  b=X3MgSzr8UV2nOiES387V+z5bnTwBxujMWkmFCpGtfR7mqs+So+BXAIB1
+   0HRz+hzk9W1aeWtZ+yvcfMccbqUhTyfEEVkXHqKaJste5/pdUv04B5Ehj
+   OBKCovb0njrmfEUQZ+jOH3wNw6MyEo2tUw8UV+a20c1lyC9RyE4pvUr5x
+   BnXQMMmcLo9KseSC9pHOi5uGwlYSAPVBL9Xt2sJdQF8G4hfYbWOTlRC6e
+   4K/n8WKQLImOIK0WMiqESeU93g8aLq8HNOG3vXA/G0a6gSWfgj7Ke54lI
+   Dm11thw6l4vyAbdYi1qe5sbEJOU4GAeWgEYXqIP1BdYstEe/ov2JLo+i6
+   g==;
+X-CSE-ConnectionGUID: hjOWO3vnQgyyAjgWjBXL/A==
+X-CSE-MsgGUID: 75NVbBrSR4CNXtesh9nVtQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="29152427"
+X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; 
+   d="scan'208";a="29152427"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 13:35:25 -0700
+X-CSE-ConnectionGUID: ckcX68UgQaCRMEexInheSg==
+X-CSE-MsgGUID: VfcfCNXtThmQomcHgPi+VA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; 
+   d="scan'208";a="52724696"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 10 Jul 2024 13:35:25 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 10 Jul 2024 13:35:24 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 10 Jul 2024 13:35:24 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 10 Jul 2024 13:35:24 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZmO0BNaKT7r41OAIH0ytmEppE9nk8qI2p0s+zYLafLQsmIsvKVB7RCpa/zEvK0f1EaoVqa/Bb+wdD9tXHPRbBrq6YJoV7Nj2YX3pe+fKx0qYKe1NRUmDOQ9A0pqUV5CbJMVPm8ur2PRpPT0uLp1curRkfN5+GIJscmvTP99HGDEq6iZ9irWYH2JQ80/DvnNBnpbNsJr69k7g8h8Eg4nh4lV15SpvWWYtSiMk5oggpeLGIJgQTR0g0rflxGbV6mmQW9kyiiik4EB9yN6Vh7NVx+wonrzt0hOGk8VgISMlpAHr5oQgaWC/mi7+UJD70bjmRVP4eSXsevrP5aHx191V3A==
+ b=DvPb4OnjjKM4+PafthiKfYs/b3qLpW/kwiHt6V0ruuSoCNuUKnleGTZIquU9CWQOgRzepJuDatrtp+xTem/EldNW6Ctcuqc4KHxsOYNI7fb6+vvTRFpcfmH2I+ltlIenPzh3XkY277G9V0G/fVH/RxKxZpXa4pJMdzO7O64UGGBx7E4JtAkoyxe+eiKq4Rby/ABUez9Yi+8fu/Zcuv39mTFDwzTffR4jMCznfddfhtbT6aZZA1jMn4h2pmL6KhLxnRsO3bERtku5TgyCRiVqbzr6LjT7nHOIjMgMy/lsJIT5LBnfroh71a2u2+lwHAGpaur/VfUB7Ae7WCSk8G0g7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uQo3up3+UVI0yHmsumEvPLphNlq7ubMGqr+Qy+U3fEE=;
- b=FUTXYj5HcKMV4aWQQuV+r/1ohQqnZ+XfmXEqBMnsPRb47xo4D+j9g+oHPYVCEFu9RNistEU2oi1PW1Smwl/ODZGRu1RnGrCr1wMVM2stYH73iuWO1BvWUQrOFOEtwiUOwTSn9WhNO9n90KI+LNVXf6+e6m+wX4Dj6Mote8zWpWY4qNUmkdLGBmesetvgtcMDPE8ZSmzdkSQQPCZZ4HxoLCG6gS6W6wRBoof8sVP9jwLgUtxdYLvUl5iCch7PIp/01BhCGdZaG0IgfcYyD4IYnc/9vuIOxGBF/XAzg8pBkY45VWu+aMLGfKXFmXf2gcSNwbDb+6SGPMj0tQv0K9cDqw==
+ bh=vCs3S+Am8ZIjrvMSuu+EfA17+XMEHf0FRQRRYKP5Au4=;
+ b=KF4r5BOYGx5F9Mso+OlOvsAemAK/DkqdjpHJo71UG2QytHVWsciVB5o9kQZ9FaXXZMWbcVfntA5NC3UbHG8eV3bXHkpeaqqPqxx7hkJ5rNPFGAT5T44DLYjfFq28fOzrJcvRTCFclpA2z330YUh8NJGEVoc/YDQ429yrcRkZwueTTY+KsuFZcQjs8l3LzHJ48XpEiJJuPjCyZllwIxPNo9RG8lI6uFFTIYdW7MUAAK7PFR8sRQKvU/KeGiXZEuzRcL0KXmVsvgSTs43VPizYLi7TYpCokOMLHpphpOxDqew8NPWmrFQlZ+1ahnYqh6uNe+96gggBjBq11l+ogAr1LA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uQo3up3+UVI0yHmsumEvPLphNlq7ubMGqr+Qy+U3fEE=;
- b=HH4MFtfFdtsKP7WsKWzNeHK4fzYy/MXW3f3bpahP+YUqueWfhKigp+6W+i9n3XYwPxPsCu2UOEvdzm0vhVQnDompiUrV8R+d2/axJu5QpWo134UCn47epzsbxkejwkCCrch607W6FVaIa2c5KkbWMIq/zxBg9fA6aLyTp5YLymg=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
- by DM6PR12MB4369.namprd12.prod.outlook.com (2603:10b6:5:2a1::9) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA0PR11MB7160.namprd11.prod.outlook.com (2603:10b6:806:24b::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.20; Wed, 10 Jul
- 2024 20:12:33 +0000
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::e441:89a7:4dd:dce7]) by SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::e441:89a7:4dd:dce7%4]) with mapi id 15.20.7762.016; Wed, 10 Jul 2024
- 20:12:33 +0000
-Message-ID: <570b2f87-2a0a-4a8b-8781-b9a70a1d87a2@amd.com>
-Date: Wed, 10 Jul 2024 15:12:31 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 3/3] x86/snp: Convert shared memory back to private on
- kexec
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-Cc: dave.hansen@linux.intel.com, tglx@linutronix.de, mingo@redhat.com,
- x86@kernel.org, hpa@zytor.com, rafael@kernel.org, peterz@infradead.org,
- adrian.hunter@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- jun.nakajima@intel.com, kirill.shutemov@linux.intel.com,
- rick.p.edgecombe@intel.com, linux-kernel@vger.kernel.org,
- thomas.lendacky@amd.com, michael.roth@amd.com, seanjc@google.com,
- kai.huang@intel.com, bhe@redhat.com, bdas@redhat.com, vkuznets@redhat.com,
- dionnaglaze@google.com, anisinha@redhat.com, ardb@kernel.org,
- dyoung@redhat.com, kexec@lists.infradead.org, linux-coco@lists.linux.dev,
- jroedel@suse.de
-References: <20240614095904.1345461-1-kirill.shutemov@linux.intel.com>
- <cover.1719948376.git.ashish.kalra@amd.com>
- <ee7d5134e67964bb5c602b5c5d69f5a1decf4597.1719948376.git.ashish.kalra@amd.com>
- <20240705142958.GCZogDZlbQWU5vHU34@fat_crate.local>
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <20240705142958.GCZogDZlbQWU5vHU34@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1PR04CA0013.namprd04.prod.outlook.com
- (2603:10b6:806:2ce::19) To SN6PR12MB2767.namprd12.prod.outlook.com
- (2603:10b6:805:75::23)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.35; Wed, 10 Jul
+ 2024 20:35:20 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.7741.027; Wed, 10 Jul 2024
+ 20:35:20 +0000
+Date: Wed, 10 Jul 2024 13:35:16 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Lukas Wunner <lukas@wunner.de>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>, Bjorn Helgaas <helgaas@kernel.org>, "David
+ Howells" <dhowells@redhat.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, David Woodhouse
+	<dwmw2@infradead.org>, James Bottomley
+	<James.Bottomley@hansenpartnership.com>, <linux-pci@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>
+CC: <linuxarm@huawei.com>, David Box <david.e.box@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, "Li, Ming" <ming4.li@intel.com>, Ilpo Jarvinen
+	<ilpo.jarvinen@linux.intel.com>, Alistair Francis <alistair.francis@wdc.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>, Damien Le Moal
+	<dlemoal@kernel.org>, Alexey Kardashevskiy <aik@amd.com>, Dhaval Giani
+	<dhaval.giani@amd.com>, Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>, "Jerome
+ Glisse" <jglisse@google.com>, Sean Christopherson <seanjc@google.com>,
+	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>
+Subject: Re: [PATCH v2 09/18] PCI/CMA: Validate Subject Alternative Name in
+ certificates
+Message-ID: <668ef0845f787_6de22949c@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <cover.1719771133.git.lukas@wunner.de>
+ <8504d6303fac89d2d3a9c0661176d9cd1bb676fe.1719771133.git.lukas@wunner.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <8504d6303fac89d2d3a9c0661176d9cd1bb676fe.1719771133.git.lukas@wunner.de>
+X-ClientProxiedBy: MW4PR03CA0257.namprd03.prod.outlook.com
+ (2603:10b6:303:b4::22) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -76,209 +113,164 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|DM6PR12MB4369:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6842e690-6c30-4472-8987-08dca11ca245
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA0PR11MB7160:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8844d311-fb84-431d-44a0-08dca11fd11b
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YVhWTVNFcng4OWtKNWE1OXZIbEFoSlA1STVTK0toOTVJWUJGb0FlOXVUcEx6?=
- =?utf-8?B?dGhGVGJMekdZdHdlM3hlVzFPcUtPSzFUd2x4QkpORHM4eXBIZml0WlpUa1Ar?=
- =?utf-8?B?ZUs1RFZWUjFabTIreFdCdXNINWE2U0dvUjZSN0ZZZ3VmNXFsc2RpMXVOR3VD?=
- =?utf-8?B?a2U5c1FyR0tuVHZDRmhXclVqdmt3Ymp0V05CUUZtZTN6R1NrQ0VHVUM2Nm5O?=
- =?utf-8?B?cW9MczU0dDB1dkp0VENuWnhuTllWdXJqbGU1cDg2UE5KcE5Ka2pDMjNTQnBy?=
- =?utf-8?B?QTZCUTRMaHBqVVUwSnpTcjRwQU9CWCtpbk0rd3QrRlR4cko1RTNqd2VaNmRp?=
- =?utf-8?B?MVR6TjFjblV5OXhTVS81ZkFaU1BQcGYvbWs0TTVBdDlLRW5ib2RmTmp0bmda?=
- =?utf-8?B?cjdFM1FRWDgxWEZUT3JTOVd3SWdzTlQzRkd5NXR3YTdqR2x0K3FaSVhpTXEx?=
- =?utf-8?B?ZDZzTi9mS2QxWXVUUDR4MjJzNmZ2anNnM2hPZ2RKK211MGhOSE85Qmw5cnlF?=
- =?utf-8?B?OEtka2NvejFCVGVCMHl6VnJXbThwY09hcjVwMUpkQ1hSeWxHTHE0TDBDMXcy?=
- =?utf-8?B?K001UjExR2VsRURqaHI1OENwZ0V6MmhFdk8vV3RPc2RxcGNEblJCRGdncUhs?=
- =?utf-8?B?dzk1aFc0SHBkeDl2eThvL3VQUHEwYjBjZm80SUNnWWhyK1FBKzZjaDB2MUxD?=
- =?utf-8?B?QjRIR2RkUFUycEVPZXhYQlZUNVVMQnFsZWdTVG41WEE1QzlNV09VQjVYVVZy?=
- =?utf-8?B?a0ZSN25xdU1Ya29rSjVSYUdoY01NeDFZZml5NSt4bzNjZ0w0bjNKR29NckYw?=
- =?utf-8?B?SGR6UWdSQWNKWVkybUo0QlpNTEgyeEU5RnAwQXpHdEJLSU1IVitJMU0wU0FO?=
- =?utf-8?B?dVo5dzFVSW1kNXU4NzZBdVpqbHFqVzg5b2J4dEU0aHlMZnBVSHk4VDlVMndB?=
- =?utf-8?B?dkdMTjE2eFdsbU5sbnB3aFhEbHdXOGd2eDAyNTNjeC9WQWRyR2FOdmlYcW5S?=
- =?utf-8?B?ZEh2ejM0eGtaWUdtRnFNU2w3WlBMOERvTVdlaGVxZ2ZXZU1Eck9JZm1EcDJo?=
- =?utf-8?B?QVpCOVNRV1dEWWZLY0RUa3EwZWlndXducDhrcktySUh3Q0Q2YXJWdUxpcTNI?=
- =?utf-8?B?VzN5NFpVU1hxM3BGa3AwcmdWeEF1TkRRNVJDdStpSk05Q0Z3QjJLV0wvR3Rj?=
- =?utf-8?B?aWl5c0FnaUdPekc4M0QzWFpHMXQ0eFptem90dWJPdmFFZXppOXp3UHVUbmVL?=
- =?utf-8?B?WEJsdWdTYjhoM2JjekZBRmZ1S2dDalJVczVBWDN5T3Fzcmp6Ry9MZTRoOHNQ?=
- =?utf-8?B?TDRGV1hWWEdjanNIVGlDMGVOcm5TeDNNbHJCZTdRZ2ZlMlpyOS9rVWl2WU5E?=
- =?utf-8?B?aFh2dzVTMjd3bTQ5Wk4rM2dBQmUwdXNxcHQvYVFzd01TV281WFBiZDIyMXY4?=
- =?utf-8?B?bVJrMU50VWs1UFVtUEdjamp2VDBUd2F6UXJxSHlFK0FuWXB4NWgzZTNEYjFv?=
- =?utf-8?B?aWs2SWhmYklzQldja21XTGU1NjBHaDQ2RzdvQXp1ZjRNUHhJYkdXWjZEL2Y5?=
- =?utf-8?B?U1YxSmpQUjBqdEE5Y1FseHVSWGgva3lxcGFDNnJzMmh0aFdDc01NaEgxUzVB?=
- =?utf-8?B?UWRpNkVhTGpmYmk3UDNKMGF0UUhGZGNrUjFoWE53TDBjS1Z6RmJYSUxxZEEz?=
- =?utf-8?B?a2FNV0pndXRySEo5UUhvMU9OWXFKRFpXcy9NdnZlRyt3MFNJbTREYll1YjFF?=
- =?utf-8?B?VzYwNklHR21ENmljNE15aURIdkN6djgwMWRKYzhrUHBFZVQ2MkVZdEJPSGNa?=
- =?utf-8?B?RERQZldLYklGWkI2K0VMQT09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|921020;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?17GOunAdHG8pdqq+ydV+sO02prH2UCjsyjvAmGFqIbcblrPcsBFXP+iFC1LP?=
+ =?us-ascii?Q?oTlcniCk44DuS1rTFCGJViy+rN9Vhp/z6dvjan6qCGFCQ1uAK+OFuATwKFFU?=
+ =?us-ascii?Q?EYLOL63+C3rokmC0Yf1cWoowufNHodnAmAunLULMjn+NsaWKWZlZNP13RboN?=
+ =?us-ascii?Q?jtp+iU40yKWW4RcDtwDGCaWdI1orkGfH+uJ0DF3O7YXOqDptjC07HJ4vs4r0?=
+ =?us-ascii?Q?E1ceWQIaCkcQxpy1K/9zg4Z0xJAW4IYsJ4TAh22/mxQriOplaFwl+DxKIDM+?=
+ =?us-ascii?Q?ea9SzLKwm/mFGAsO2M7MBSY7G5KHUL8YhNzX1o/pQboO0cSYgBaJlcheiDDZ?=
+ =?us-ascii?Q?l8KKZiic4fB6kjWRhMP0EeIIV3jpZcvwSkTIStTPgAaW6XkIYCV/ajgrHdCy?=
+ =?us-ascii?Q?//rNbB7dAStboqPG4CNqVpRvjoSEaOa2EhFLEq2tmwAtw5OzVYyxixYAFbGN?=
+ =?us-ascii?Q?jPLsbQ22PWg0v2co9LBzrcCU3ZqRRckOVzvrAPLMk8rAo0yd+9vV9LFR55X6?=
+ =?us-ascii?Q?yVdzuLyfhFUhS39ZGpLilp965DTwGEHenaLNrY72AqPMrat5aEfNM678QYvM?=
+ =?us-ascii?Q?Oc5a+iuhzbHUK5j/hgKef7v6ZZw9klHp1g/gN13Nitf6D3wD8QFaaqcE8AjF?=
+ =?us-ascii?Q?efYQFALznTXeiA0vgMPSTqjBS9Pno6TUUWZoRswb+emJnq0nF4r+e0miI5L2?=
+ =?us-ascii?Q?uPVuJoVgb6vLw7XNc8W9wPQMeutB6Xar0D1vC2pwc+NPsmCxnUZvpdun/Ejt?=
+ =?us-ascii?Q?7hwF3IL4a3xH1JihXco/uUGy6iwSbQwJeii8/no1qFo45a9m0VytH+75VSLD?=
+ =?us-ascii?Q?KX/eOUwtOuPcFiYzsoB2yOLF84NFBMTa0fkjZhxd5kGxKcj3z9a8YJFIe/zL?=
+ =?us-ascii?Q?HgoBYmGj6tp04a2Fd88KGpaDT2O9HxNh82zcVZDILHE4d8f1Vknlr/PYh10I?=
+ =?us-ascii?Q?z3S92OmYd7r6vEq7x4uxgAOmCAfdOD3ZogCXwdsejyWepMlcCd5cSE77NrSf?=
+ =?us-ascii?Q?C/ndEOkCZ77roGAU/4pEK9NoGFRQ6dzE3dydtb3jNcxfGmYmZIJQmib0098y?=
+ =?us-ascii?Q?WJ0ahKXBuAJrhsatsRy+D7AzkHLS4LkRODB04GKrT05SfQgVHGWZF+iuH1Tf?=
+ =?us-ascii?Q?Rgx+QgJDjjjLo48MsRE5O9n50Epq9aJPmn2GNHdKQSDKOiDGs+YVbw+TW19d?=
+ =?us-ascii?Q?CQQIwk36jcTc/ucBz9SUzM6iR62ARmqdapJK2903IEbK8rfPg40ujENA26BO?=
+ =?us-ascii?Q?jg2ymzpf46W5T4vqYnIgqCGOa8wXb0XmmPnx3tumyMzgxJaXZIN1A616eFHp?=
+ =?us-ascii?Q?s3LJdfcd2WrT0+KTpQ/hpFH2/GL1SJuICLdffe9cDCCDLw=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QkIzWU12cVltREhaTlJsVmRPN1N3Z3ZJaEJTREMrVzhzSW1GQkJBQmhCNnVw?=
- =?utf-8?B?K2VhamtmejlQTm84aUFqN0x1bXNocXcvTmdpNENDdHZiYlN1OXQ1Y2RxdTcz?=
- =?utf-8?B?RGFTR21DaGhjSlM1YnZZTWFyRkM2KzJhRzErMi8zaUZJUVZ6aXFWVkxTVFJF?=
- =?utf-8?B?OUt3M0sxbFFJSFkrd3JuN1diVDF2NmdKS2hIVmhMbkk0S2dvSG1UT1gyMHl4?=
- =?utf-8?B?a0lMY0NIblBTaTNHM212ejlsSlMvUXdYcit6RGs0RHFTOU5EK1Y4bXV3eWIy?=
- =?utf-8?B?MG9tS3RjbXI4UkUxZGpZRWJKMVdEdU41UGk0MWdXNEgzVW5Qank4YXRWSkl0?=
- =?utf-8?B?TTZKYUxhajhyWlRRWFZYaGZUV2pzQ1MrYjc4Yk5DbC9xTi9MZklBcnhNWm5Y?=
- =?utf-8?B?dVpPaEhOR3c3TVBjeWtOVTZuNVpBYlNXUjNoR010QUx1TmhKKzNUc3F6WmVa?=
- =?utf-8?B?Q2p4QXoyNEs2NTZ4bU5TbktmZGJHSStxQ0pteHJ3bG8rMHVockhYNDFDeThG?=
- =?utf-8?B?cEdzM3JBbXIrYlVFNVptampMNFVjV0dlUUF0VnQ5V1FWTEExaU9pK1NCOEdY?=
- =?utf-8?B?ZXo3eVZrQytaVk1kV242Z1JlN2VjRmMxTlZoUGhXZkFWUFFDNDh6SENueTY0?=
- =?utf-8?B?amRsWUFzNThrK0lkdWVKSGhFSjRyTE5VZzBNWGlkV0lSMlVkQ1ZpS0tCclVG?=
- =?utf-8?B?dW90ZGhVeEp2Tzc3bFRrbXA5QVNVS0VpVlI2eHdFOVc3TGdRQXlGM0lENnA2?=
- =?utf-8?B?eEJmNytMVkZncG5hT01kR0NQYkhlZXFOTUR0bXFPWndUNzJBTWxQcUlPelQ3?=
- =?utf-8?B?WGpZeDdJWGlIRFBmM1o3RU1lT0F0NUNLeUlPZHdQNW94ejl4UmFnWUc2Nnov?=
- =?utf-8?B?ZFhPWU9RWWcwN0ZDL25KOTJQZGZRU080K21nNGFPeHFuemU1TkFOU2dQYWlo?=
- =?utf-8?B?cFdzLzRsZHN5QXR3TVp3RGdxdHRFY1Bxd3cyc21nMkxKcTdidHByV2I2cjk5?=
- =?utf-8?B?Y09xQzhGdUJNeU55SzI5aHA1OU0yQnF1MEpqbVBqblBmdkNxWVV4M2czd0dG?=
- =?utf-8?B?OTN6VCtKbHRDV3dMZ1FoMGhuMXhUdThtUVlMb2xvUzF3RXZldlhNd3NnMG9k?=
- =?utf-8?B?UEZKMTNPaU9zTnp2YmsrY0U5NVJNQTJnZExyNUNIWUN1K0cvMDhVb0RHUkJ4?=
- =?utf-8?B?S2FIVFFxT213NEYyQ3ArcHpJQ0d0eWFTWUpNU3BRU0lCeHFHc0xENGFHVE03?=
- =?utf-8?B?NUVzcUtNeXE5cExYcTVUd1lZYVd4dmY3dkx5d1YzaGE2bVJ3Mk43UExpdEda?=
- =?utf-8?B?ZXdJNEt6RG8xZXRrYWxBUzg3Rkg4NDhWdVZLWGk4TW9xL2tiZ1FIbnF0SjNm?=
- =?utf-8?B?dll3bWRxU2dYa1ZrSDVpcHFLN1V0bjJTeUtNZmJHbjh0MFFaOE5ySjhVNTQy?=
- =?utf-8?B?Q0hsc3B1TkcyT3diWTd0em1LSHRFL0lHSTUzUTNFVlBXVkZBaEVYdDVScXlY?=
- =?utf-8?B?QXU3UzN6TzdGODA2YXpjZFY1QTEvS0hnTGRCOUlHN0szc1QxTDJrcndsTVMw?=
- =?utf-8?B?Z2QreFc5S2JOODNyblhqbkdzNDNZdGRNRUFtZGRmRHpXVHhVcnpiK0xNb3l2?=
- =?utf-8?B?N21lZFdrMHZnbFk2bjlBc2lEM0ZIY2pZU205R3hzRWRtZklxYUhQWWtTb0Q0?=
- =?utf-8?B?ZkQ2UEtraGphajVTQkJqWjIvZEdNNlBSbTZDcTE1NGk5T1RLM09pc1I4anVh?=
- =?utf-8?B?Ym85S0FiaGhYbUViYTArKzlISW5Vc0tMQ01jNmFPbWFvYS90Rk5KZTdKaDF3?=
- =?utf-8?B?TUM5SnRXMUMzb0Z5YjRTQzUzOEJlU2pIcnBCVzF3VC9GVXBrclJTUXp6d2Fo?=
- =?utf-8?B?UjJGZEVXejJ2eFYyYkd2alE5bnB5bzZFc29yL2phdExOVkJMeHkzMjQ1VFZq?=
- =?utf-8?B?QWsyTjJ2ajZlL01xYlRNdjZJWkgzQnVzYzZvcmZRUWxsRHB5OVo2OFNtVytK?=
- =?utf-8?B?VFFuSm9hRXVJWFBOMkNka2QvcEt5OWNnbE9CelA1YkNVVFBmVGpzZjR5WmZC?=
- =?utf-8?B?eDJHU0srZ3RyZzFoZkYzbUpsdFN3cFo1N2E1NHk2YWhmOGJsTXRSMTlKemdZ?=
- =?utf-8?Q?Y/lrergFrgBnqijvvjQgpAPPs?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6842e690-6c30-4472-8987-08dca11ca245
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?MGwTcve+5hxuEwW+1PrJSaXH8D66BTgfmbkScq3T8do/qHxlXsBbv3fnu8Ug?=
+ =?us-ascii?Q?ujEchK05o4ZND9JzRpOVlnxIZDO1aGhDaHz71MVkGshLUVY3R46fim8cubAP?=
+ =?us-ascii?Q?1S2GaF+M21V3Oex7tIUapKSNCY8C+T+GiYQUgnyBANYqUTqZEU0VxoCvd9Nl?=
+ =?us-ascii?Q?9p6CtFURSciHhgPk9H9Y5/yQ0reK0NAuhBN1UjZk5vplddYEep+1sRE2XGvb?=
+ =?us-ascii?Q?1hoLMIaKL9eeEbWyG9NFHeRDyha5eMsC6qfSMgiaovf38TvvpuSkVBgaZtmq?=
+ =?us-ascii?Q?iKaGGxCDRUYgsPctkVk2T/9yhTYO42OD2RsRCMf2yOCopYHji6MZEgE/nlU0?=
+ =?us-ascii?Q?OUu9cRa126AJG4tQ797G78+v4xN1vrXZAtRyymDDmfIlfKKrjr3U3jfOVMw3?=
+ =?us-ascii?Q?JCCa96tRZtQojYKKkO5c03ehXlEkrqE+Iog8B2dgltGPgWddkMQgZkubd7QI?=
+ =?us-ascii?Q?ZqdaLvRS3hnAPGDGJcbmxfG1uDCIBnyviZY18g6tneVYcqRw7S+7crMpQ3ax?=
+ =?us-ascii?Q?EEApPffpqlllO6HE2HHTq7AVm01XX2Wycza/2mRyGz2dF/9IY+EnVGH4Siod?=
+ =?us-ascii?Q?3gAr+9f/wTMvsadxDXKm2GihlEHwpdYKHtWFeV83n78B9+11uMqVt9mdpB9g?=
+ =?us-ascii?Q?vDY8IlDxhz8++OBmdhc7Ob3CQl0RLZegzLMdLGx5YWGuU6sXwAtJ0a3LCyHs?=
+ =?us-ascii?Q?+yQ46D5zhOKWC2wRg0pAe2sOFRxFVx0ka0Rukxo5p/a0RK4K9jwTZh4wrfFM?=
+ =?us-ascii?Q?+VOWKF32BjFAISwaEeP0SwSJLbYqGPv4b2X/jOq4pXrMe6T7JCRYPjF5Ua9q?=
+ =?us-ascii?Q?wChz2IvN4oW9ZStUi6pedt63iXtli1eWfaPL8/g7mx20WEkeiMsc1Vid91My?=
+ =?us-ascii?Q?2OnbPpoJHrW/GCtGF288g0AGF89hTUHunzsgIM/ioi6Vd+3lPjVoAeYYF38X?=
+ =?us-ascii?Q?EmVC1fhS75GgzDeuI87BXjfCN99plmc4GXR6Bkg925Am3wZ8MAJC/+IXhMAD?=
+ =?us-ascii?Q?1sA0rtfATRGnbMgr9ApGV5uHCrKjJBGBnI+YVFbwtbVwMtATLm7ho2fD99nW?=
+ =?us-ascii?Q?QrN6imb29FQjU6/c96iXaXIupzGlkgM5vjk2pCWD2jWHBoJwj7VuC5dg4+Mr?=
+ =?us-ascii?Q?n/xlQzaeYYsKMoF6q5e3+myroSRa3IIKYVW/ej+DMoSXcGTWAPfPmaig6zDl?=
+ =?us-ascii?Q?O01kId/8psJZOGLszH9yV3Rn7I6IS5ysPzOmtV+aFEKNRBdVo22DLwVI/PjP?=
+ =?us-ascii?Q?Va543iBoKOy7B5T6HXn2cjxQv7NvboHrnFZgIHwCv1+f1pU5UCQabAMhzkN0?=
+ =?us-ascii?Q?W4nYpGrg6uwepRgpFgkTCLDmi51+y9E5kasxkl5LUeU6C7su6/mDOe8O11nO?=
+ =?us-ascii?Q?CUxNa4Q98/XbOCxCC06krKC7O3Vu6QjWFKdpWN5Gb7gl2fA7yLF/1y4WoRdE?=
+ =?us-ascii?Q?4Tq9dwZXNMPbU0tYalyUeBJagiF/RO3zsLHCo/WGwKR3JjO6Z1eIdVNmDQHf?=
+ =?us-ascii?Q?cjaYvjBW5l7DA8GwAicytJK8VtUZgzB5PHu3jJAWylHOB96CMLDlYe5o2D8s?=
+ =?us-ascii?Q?jc7/PCtcTV8MKTlBqbPYZ/ZTZXA2/1pqBOtB3OKzvlzP6eSMQPtsalx7PR/X?=
+ =?us-ascii?Q?Nw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8844d311-fb84-431d-44a0-08dca11fd11b
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2024 20:12:33.4661
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2024 20:35:20.5810
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AjS3f+v+UPUi2XTWDpBWEkFiuUT+qDqy3dV1X1Pq8gTgh6U7tFiXLTZo/uvNMqMoIzp53xI35VtVehLCHFN5Cg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4369
+X-MS-Exchange-CrossTenant-UserPrincipalName: EB/2ci1TS6ZOYgylyUqs3aw4SNSzGP6abAz0927WXvm8vLloTULyTiaXcdoqKDxGOZIURAltiXg9puhZZ4KAdGGnoXSyJ6la0yMDWngBRMI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB7160
+X-OriginatorOrg: intel.com
 
-On 7/5/2024 9:29 AM, Borislav Petkov wrote:
+Lukas Wunner wrote:
+> PCIe r6.1 sec 6.31.3 stipulates requirements for Leaf Certificates
+> presented by devices, in particular the presence of a Subject Alternative
+> Name which encodes the Vendor ID, Device ID, Device Serial Number, etc.
+> 
+> This prevents a mismatch between the device identity in Config Space and
+> the certificate.  A device cannot misappropriate a certificate from a
+> different device without also spoofing Config Space.  As a corollary,
+> it cannot dupe an arbitrary driver into binding to it.  Only drivers
+> which bind to the device identity in the Subject Alternative Name work
+> (PCIe r6.1 sec 6.31 "Implementation Note: Overview of Threat Model").
+> 
+> The Subject Alternative Name is signed, hence constitutes a signed copy
+> of a Config Space portion.  It's the same concept as web certificates
+> which contain a set of domain names in the Subject Alternative Name for
+> identity verification.
+> 
+> Parse the Subject Alternative Name using a small ASN.1 module and
+> validate its contents.  The theory of operation is explained in a
+> comment at the top of the newly inserted code.
+> 
+> This functionality is introduced in a separate commit on top of basic
+> CMA-SPDM support to split the code into digestible, reviewable chunks.
+> 
+> The CMA OID added here is taken from the official OID Repository
+> (it's not documented in the PCIe Base Spec):
+> https://oid-rep.orange-labs.fr/get/2.23.147
+> 
+> Side notes:
+> 
+> * PCIe r6.2 removes the spec language on the Subject Alternative Name.
+>   It still "requires the leaf certificate to include the information
+>   typically used by system software for device driver binding", but no
+>   longer specifies how that information is encoded into the certificate.
+> 
+>   According to the editor of the PCIe Base Spec and the author of the
+>   CMA 1.1 ECN (which caused this change), FPGA cards which mutate their
+>   device identity at runtime (due to a firmware update) were thought as
+>   unable to satisfy the previous spec language.  The Protocol Working
+>   Group could not agree on a better solution and therefore dropped the
+>   spec language entirely.  They acknowledge that the requirement is now
+>   under-spec'd.  Because products already exist which adhere to the
+>   Subject Alternative Name requirement per PCIe r6.1 sec 6.31.3, they
+>   recommended to "push through" and use it as the de facto standard.
+> 
+>   The FPGA concerns are easily overcome by reauthenticating the device
+>   after a firmware update, either via sysfs or pci_cma_reauthenticate()
+>   (added by a subsequent commit).
+> 
+> * PCIe r6.1 sec 6.31.3 strongly recommends to verify that "the
+>   information provided in the Subject Alternative Name entry is signed
+>   by the vendor indicated by the Vendor ID."  In other words, the root
+>   certificate on pci_cma_keyring which signs the device's certificate
+>   chain must have been created for a particular Vendor ID.
+> 
+>   Unfortunately the spec neglects to define how the Vendor ID shall be
+>   encoded into the root certificate.  So the recommendation cannot be
+>   implemented at this point and it is thus possible that a vendor signs
+>   device certificates of a different vendor.
+> 
+> * Instead of a Subject Alternative Name, Leaf Certificates may include
+>   "a Reference Integrity Manifest, e.g., see Trusted Computing Group" or
+>   "a pointer to a location where such a Reference Integrity Manifest can
+>   be obtained" (PCIe r6.1 sec 6.31.3).
+> 
+>   A Reference Integrity Manifest contains "golden" measurements which
+>   can be compared to actual measurements retrieved from a device.
+>   It serves a different purpose than the Subject Alternative Name,
+>   hence it is unclear why the spec says only either of them is necessary.
+>   It is also unclear how a Reference Integrity Manifest shall be encoded
+>   into a certificate.
 
-> On Tue, Jul 02, 2024 at 07:58:11PM +0000, Ashish Kalra wrote:
->> +static bool make_pte_private(pte_t *pte, unsigned long addr, int pages, int level)
->> +{
->> +	struct sev_es_runtime_data *data;
->> +	struct ghcb *ghcb;
->> +	int cpu;
->> +
->> +	/*
->> +	 * Ensure that all the per-cpu GHCBs are made private
->> +	 * at the end of unshared loop so that we continue to use the
->> +	 * optimized GHCB protocol and not force the switch to
->> +	 * MSR protocol till the very end.
->> +	 */
->> +	for_each_possible_cpu(cpu) {
->> +		data = per_cpu(runtime_data, cpu);
->> +		ghcb = &data->ghcb_page;
->> +		/* Check for GHCB for being part of a PMD range */
->> +		if ((unsigned long)ghcb >= addr &&
->> +		    (unsigned long)ghcb <= (addr + (pages * PAGE_SIZE)))
->> +			return true;
->> +	}
->> +
->> +	set_pte_enc(pte, level, (void *)addr);
->> +	snp_set_memory_private(addr, pages);
->> +
->> +	return true;
-> Zap make_pte_private()
->     
-> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> index f263ceada006..65234ffb1495 100644
-> --- a/arch/x86/coco/sev/core.c
-> +++ b/arch/x86/coco/sev/core.c
-> @@ -1022,39 +1022,14 @@ static void set_pte_enc(pte_t *kpte, int level, void *va)
->  	set_pte_enc_mask(kpte, d.pfn, d.new_pgprot);
->  }
->  
-> -static bool make_pte_private(pte_t *pte, unsigned long addr, int pages, int level)
-> -{
-> -	struct sev_es_runtime_data *data;
-> -	struct ghcb *ghcb;
-> -	int cpu;
-> -
-> -	/*
-> -	 * Ensure that all the per-cpu GHCBs are made private
-> -	 * at the end of unshared loop so that we continue to use the
-> -	 * optimized GHCB protocol and not force the switch to
-> -	 * MSR protocol till the very end.
-> -	 */
-> -	for_each_possible_cpu(cpu) {
-> -		data = per_cpu(runtime_data, cpu);
-> -		ghcb = &data->ghcb_page;
-> -		/* Check for GHCB for being part of a PMD range */
-> -		if ((unsigned long)ghcb >= addr &&
-> -		    (unsigned long)ghcb <= (addr + (pages * PAGE_SIZE)))
-> -			return true;
-> -	}
-> -
-> -	set_pte_enc(pte, level, (void *)addr);
-> -	snp_set_memory_private(addr, pages);
-> -
-> -	return true;
-> -}
-> -
->  /* Walk the direct mapping and convert all shared memory back to private. */
->  static void unshare_all_memory(void)
->  {
-> -	unsigned long addr, end, size;
-> +	unsigned long addr, end, size, ghcb;
-> +	struct sev_es_runtime_data *data;
->  	unsigned int npages, level;
->  	pte_t *pte;
-> +	int cpu;
->  
->  	/* Unshare the direct mapping. */
->  	addr = PAGE_OFFSET;
-> @@ -1063,17 +1038,28 @@ static void unshare_all_memory(void)
->  	while (addr < end) {
->  		pte = lookup_address(addr, &level);
->  		size = page_level_size(level);
-> +		npages = size / PAGE_SIZE;
->  
->  		if (!pte || !pte_decrypted(*pte) || pte_none(*pte)) {
->  			addr += size;
->  			continue;
->  		}
->  
-> -		npages = size / PAGE_SIZE;
-> +		/*
-> +		 * Ensure that all the per-cpu GHCBs are made private at the
-> +		 * end of unsharing loop so that the switch to the slower MSR
-> +		 * protocol happens last.
-> +		 */
-> +		for_each_possible_cpu(cpu) {
-> +			data = per_cpu(runtime_data, cpu);
-> +			ghcb = (unsigned long)&data->ghcb_page;
-> +
-> +			if (addr <= ghcb && ghcb <= addr + size)
-> +				continue;
+I think this analysis is sufficient to justify the Linux requirement for
+Subject-Alternative-Name. I agree that it seems odd that an FPGA that
+changes its id also does not have a way to provision an updated
+certificate at the same time. Like I would expect if the new bitstream
+is signed then it can also deploy an updated certificate in the same
+bitstream.
 
-There is an issue with this implementation, as continue does not skip the inner loop and then after the inner loop is completed makes the ghcb private instead of skipping it, so instead using a jump here.
+Unless and until commericial devices arrive that violate the expectation
+with no way to update the certificate would Linux need a workaround, and
+even then it would appear to be an explicit quirk.
 
-Thanks, Ashish
+I can see debug scenarios where it would be useful to relax this
+requirement, but that can be achieved with local hacks, no need pressing
+need to ship that debug facility upstream.
 
-> +		}
->  
-> -		if (!make_pte_private(pte, addr, npages, level))
-> -			pr_err("Failed to unshare range %#lx-%#lx\n",
-> -				addr, addr + size);
-> +		set_pte_enc(pte, level, (void *)addr);
-> +		snp_set_memory_private(addr, npages);
->  	}
->  
->  	/* Unshare all bss decrypted memory. */
->
->
+Acked-by: Dan Williams <dan.j.williams@intel.com>
+
+...don't feel comfortable offering a reviewed-by on ASN parsing.
