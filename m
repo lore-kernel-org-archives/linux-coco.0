@@ -1,98 +1,98 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445BC59160
-	for <linux-coco@lists.linux.dev>; Wed, 10 Jul 2024 09:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2E61DDC5;
+	Wed, 10 Jul 2024 13:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720603778; cv=none; b=CXfiubb3zTLQ8yzPsT4S0OUPj5qmUW8Fufq5OBGIX1MbqZj5ysxFmVvZaga6pRbwwyS4lKPISzMH2rr945dO4r8n09cK0wOrhX7FFZb3zg27hSY8k745ve2oPzRxNts6RECiGPMX6QLxKwWTopuHH/l8oVBBcHKXylX8/nfwZ3Y=
+	t=1720617460; cv=none; b=iPu+uD7cZ+MTY7UIXJ+VRNNVLidu0fHKHA3VWfs9RXgZoeP0N9m24lXIoX6WQZjTziz8om4TAIkagU2bD71kPrEczqdAh++I5GQ0oiJianOgfdLRfbOwqWs6TLqn2qP2pg8Wxst7B69fmVRdNITexQPRSmZfYvN/ciOsm/6xmO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720603778; c=relaxed/simple;
-	bh=qrk8NXyiTW0nBxvzS9xj4sUy4pCeUTbEIIlK+lDgQWw=;
+	s=arc-20240116; t=1720617460; c=relaxed/simple;
+	bh=VmKKD27z2aOVSa1CLMwiPu6poVOxX6juNUr5X9b0taU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=khpJTDWrjK9jc+/OQYSuOu0xGAZuCoLEJGE+dNCvCHReFcNr7gwO1QeuT87noBEVshye9vYmCfsa+VzvWAlce9HoAbnIZ07vFhI626g24JUkMq/v7rd/im8f/YTSgdUERmoYSua/B49UyShg2Evqsf7Aedy5zWslNd6tfkxfL4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=b19vBv3x; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=XToNS+q9bHy52JNzo71Bo5ZfixsO2FRxVnnwvfqLslMwqJchmnvSio95AAuzJuv9hBupIKyyGYggHWIoSsHK9qyDxf/btv5lNpFBR5ZZLGRDapHKDwlSDUAKGexaWqZKqosLULIK6xX5CaN523ZbUqKcxloz9C5jHRJoYwMTJJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTTNBMZf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="b19vBv3x"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 24C5D40E019C;
-	Wed, 10 Jul 2024 09:29:35 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id tNn6bnHpsR2I; Wed, 10 Jul 2024 09:29:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1720603771; bh=B5ftZJIE3FPYjKompJae1w7F5CeyPFIf+KZ7NWfDTrc=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTTNBMZf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE85C32781;
+	Wed, 10 Jul 2024 13:17:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720617459;
+	bh=VmKKD27z2aOVSa1CLMwiPu6poVOxX6juNUr5X9b0taU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b19vBv3xz/d1WcEHMfng1K+26ZNzgkioWOvew28E0Ch91cW4MZJb0iTDS0ceE2Vi9
-	 WpsXb15D0PS6Eu+3ZmYdFuipLIXhgMXqBTCoSt8cREmkjZ39K+RQPS0c/K6bNJEkXM
-	 0Yg1uwOVDl2fjJ2ElI7dyhBQ2tDPzOZ1vgVoaKnVQfyDvVGosQ1sPcZat1JDaabh/s
-	 fL8hU6yvP0C2bHZu7zGNzVFs3fZpewi5CbqW60lfl4bdANg61BUxAnvbVtRIYWjbVR
-	 6qq1n5n84/GqFhkZQ0TeiwToaNL7h2DBckIMr56sTAnlf1IWY1EzQ8jINRzz/PrWK0
-	 F2VNapYf7OzrdSxK2cmKdMuMyt1Q7M/ePD5IS31OSceXLu1bDVVeHSKLLiUf6Ac5VY
-	 X4ExU9hznYW9S2To+GCXA+oRdjBLPg3SPAiICx+PvyZvRG38yZ44JbmcuTydtm9dzP
-	 GvI5cE8e3M+Ky4P8cTHurqNIuT5zeDOFjKIsaWyfKBERsogKQb6MVgDpB3cr5IVxIA
-	 uEn0qmXDtESVH+eMOM90SS+xzfLsSlejbDiA0CNTji7jna4b7l+WOaHJRM9EYvbfKk
-	 TPhIyKPxL5Cz3UpXnO2EpsECTUr4+P8qJGWOEG+fGDzw9pN0m8+WnMEPgCAxZdKyIi
-	 wOvXqfRWdGZFrOvtk9h1LEMk=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id ADBB140E0027;
-	Wed, 10 Jul 2024 09:29:17 +0000 (UTC)
-Date: Wed, 10 Jul 2024 11:29:12 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"open list:X86 TRUST DOMAIN EXTENSIONS (TDX)" <linux-coco@lists.linux.dev>,
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
-Message-ID: <20240710092912.GCZo5UaD-JZeuMpIwK@fat_crate.local>
-References: <20240708183946.3991-1-decui@microsoft.com>
- <20240708191703.GJZow7L9DBNZVBXE95@fat_crate.local>
- <SA1PR21MB1317816DFCE6EF38A92CF254BFDA2@SA1PR21MB1317.namprd21.prod.outlook.com>
- <20240709110656.GEZo0Z0EoI4xmHDx9b@fat_crate.local>
- <SA1PR21MB13173395ACC3C0FD6D62E36EBFA42@SA1PR21MB1317.namprd21.prod.outlook.com>
- <20240710081501.GAZo5DBW3nvdzp34AI@fat_crate.local>
- <SA1PR21MB1317C5633D8F537A73A1CE17BFA42@SA1PR21MB1317.namprd21.prod.outlook.com>
+	b=HTTNBMZfK6jQPbUQiR+ZQNJTyFKIzXUwDwG3CxLvDtdvvXlvNs0XOATi7iVLKYn9e
+	 m8JNnSn7CylHOU7YGDW76bP/SAGy2NPMth/avv3ywV2QgxDJ3HYi0/ZA8Nebs6IWI1
+	 8QETJa+mDNGc9DYlKRosmz0ZtQeqClTY4YmXtwmSxa2fmRewamQ2bks755KtcJLf+k
+	 wX2zku7GU1H0KfM6grraBzhxffOcWHGPpTxG8UXhFQ4y2ywXNzBDcKGd4s7yGON3Ia
+	 dHePDZM2Oskj6DKewi5UXiyHXthxYRPUUpDccMQ9/TP1nB4g4Kx9YUrc2YexMe741q
+	 zacACTAkKZAiQ==
+Date: Wed, 10 Jul 2024 14:17:33 +0100
+From: Will Deacon <will@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Subject: Re: [PATCH v4 12/15] irqchip/gic-v3-its: Share ITS tables with a
+ non-trusted hypervisor
+Message-ID: <20240710131732.GA14582@willie-the-truck>
+References: <20240701095505.165383-1-steven.price@arm.com>
+ <20240701095505.165383-13-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <SA1PR21MB1317C5633D8F537A73A1CE17BFA42@SA1PR21MB1317.namprd21.prod.outlook.com>
+In-Reply-To: <20240701095505.165383-13-steven.price@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Wed, Jul 10, 2024 at 09:20:46AM +0000, Dexuan Cui wrote:
-> I didn't expect that 'diff' could generate so many lines of changes :-)
+On Mon, Jul 01, 2024 at 10:55:02AM +0100, Steven Price wrote:
+> Within a realm guest the ITS is emulated by the host. This means the
+> allocations must have been made available to the host by a call to
+> set_memory_decrypted(). Introduce an allocation function which performs
+> this extra call.
+> 
+> For the ITT use a custom genpool-based allocator that calls
+> set_memory_decrypted() for each page allocated, but then suballocates
+> the size needed for each ITT. Note that there is no mechanism
+> implemented to return pages from the genpool, but it is unlikely the
+> peak number of devices will so much larger than the normal level - so
+> this isn't expected to be an issue.
+> 
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v3:
+>  * Use BIT() macro.
+>  * Use a genpool based allocator in its_create_device() to avoid
+>    allocating a full page.
+>  * Fix subject to drop "realm" and use gic-v3-its.
+>  * Add error handling to ITS alloc/free.
+> Changes since v2:
+>  * Drop 'shared' from the new its_xxx function names as they are used
+>    for non-realm guests too.
+>  * Don't handle the NUMA_NO_NODE case specially - alloc_pages_node()
+>    should do the right thing.
+>  * Drop a pointless (void *) cast.
+> ---
+>  drivers/irqchip/irq-gic-v3-its.c | 139 ++++++++++++++++++++++++++-----
+>  1 file changed, 116 insertions(+), 23 deletions(-)
 
-It is not about the number of changed lines - it is about *what* gets changed.
+I gave this (and the following patch) a spin in a protected guest under
+pKVM and was able to use MSIs for my virtio devices, so:
 
-A single character change can invalidate the tags of a patch and a huge
-diffstat solely cleaning up whitespace will not, even though we prefer if
-those get done in a separate patch to ease review.
+Tested-by: Will Deacon <will@kernel.org>
 
-I'm sure you can think of examples.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Will
