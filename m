@@ -1,40 +1,33 @@
-Received: from out.smtpout.orange.fr (out-14.smtpout.orange.fr [193.252.22.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A072717C216
-	for <linux-coco@lists.linux.dev>; Thu, 11 Jul 2024 20:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A9B1FAA;
+	Fri, 12 Jul 2024 00:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720728499; cv=none; b=qjB2PhRYgKsb4DlZWS/HRGi7hw21U1kR5wkxsrcEPQwzwQkttvrROwbEDVsY9Lq8x7dCQts+B7laagZNDEYqQ94foTIXD1nQO1kZlBmN6lYYOaOPnyiGh5Fm/8ryN4/CqrShaoNnil5JxJDFdeZseQTyyMONtPOigflwLhkMLyc=
+	t=1720745405; cv=none; b=iLxARLvmEpuTV5+QE8R7ZbTICi9uMeTUAJV2v2jqFlWmwY1cLxwDLB1OKW3KHH+8UQ9Chk5vfLMv0/5vtuqAbGOq5FPY0MQnhI+P4/uScY1c2ZYQzluNctMPtEnbc1W/D0OBsSKtnkrJ1Ak2QApdP8oBc3dAt4jjbbibOaInETI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720728499; c=relaxed/simple;
-	bh=PIPcWl2CCifRuXxshHehTo5Do8qmkIKVdlPoP/OrbmI=;
+	s=arc-20240116; t=1720745405; c=relaxed/simple;
+	bh=AKWe8Qn+JgzF6EdSjkIYwomkBKCf8Qjz/jTgKFuw+A4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PMq0nZtxDp7ouiVgZMEFO4R65/AnpdopUiKwpiYfFb+GDRT3VHJuKWNaF+c6bxBiQEAnLwMF5yMYLKHB+tCBl24Lrkjl3QkYJPxAxOQ0nAvGzg9OurLaYJa6BJi/f/+UFapZAI36hLg3+eUpoDh12wau3ran7thBrx8oYDBdqkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=EK8dBtGk; arc=none smtp.client-ip=193.252.22.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	 In-Reply-To:Content-Type; b=EqDE8V/2O4K7Kk+f/LdrfdES0bbYe/2BYwaoFCPyF/NDy81hqDFePDqzWIICuSfBe01rjwEM57dVhIbCzkWJMIIOkn4aeEowo501tmVO+taUpeVRI5UmXkyx0FbwLgew7st2JdCN9eBR5E1RZkXtxcva78zHK2WdmDDGuHArigM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HbpzlSAy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="EK8dBtGk"
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id S057sIhAPxIArS057smIeO; Thu, 11 Jul 2024 22:08:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1720728489;
-	bh=x71vc1uHNRWmKQBrU2DUPCSyE3jpac++ydkmAi7B0qw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=EK8dBtGkRHsKpG/puprpm8hFYxgT2JlkAeGLHV+vQtLqpZ1WsLjDuyu/p/gcgdsHr
-	 slQEvDmEKDYmLU1X6U/NvKiBqKnxkf7F37quYcvvXxB8/Q+uyyHxYMZVISmFE0fPno
-	 FE9W7UFOi/n/81En2jAOxqTPH6iaDx/3uDWAMKDH3uZ0943BedhTBOp3meRg2NQcSA
-	 tbh3HY6YxPchnRIy9boORukqYoGWPrm2UjPUo9aalz3R5IdgjtoAjim3h1ItxSdLBO
-	 StPVD5Upix9mfzBOVSybvXls58wwmUt89QOgh+G8M+Qj2/uEa5z8CvZucZ94fCpNyZ
-	 7kiQHdsz0hdOQ==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Thu, 11 Jul 2024 22:08:09 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <45f04f18-0f17-46a3-a8ba-21d1819e560a@wanadoo.fr>
-Date: Thu, 11 Jul 2024 22:07:57 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HbpzlSAy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B95C116B1;
+	Fri, 12 Jul 2024 00:50:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720745405;
+	bh=AKWe8Qn+JgzF6EdSjkIYwomkBKCf8Qjz/jTgKFuw+A4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HbpzlSAyX8ew9mMjrJxUSRnedThOaZaG/esRSUjytCAr8KcAr2xKAlwZwz75GCDci
+	 LHUIOvcxTWYEIDYDP4/iUvN5Ni/7dF7mkibK9bM0g6UpIFjuqeaHgkXkBFJ1WDrBy1
+	 2RS7dNvs7j7ZauC/S6qCn3g2fpSycqr5gUiaMoY4bGvgsHIRQH8yodaWjLHUnifJcH
+	 I2DXnIs7hQshTRrZTzh7xV6TVLgVjmMtYzp8257v/AoV/wPK9NN1HhByB5PKGj4Ofa
+	 gsjWQBKeHPbEKRuWpOSpEDGXR9QMUUv9UFCiBbGyMzThpXhirN0U8XBKEOE0BOgGPT
+	 cl57zrxFnJKog==
+Message-ID: <75b8e594-01e8-4b5c-aa31-810845f894da@kernel.org>
+Date: Fri, 12 Jul 2024 09:50:00 +0900
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -42,108 +35,75 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/13] fs/configfs: Add a callback to determine
- attribute visibility
-To: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Dan Williams <dan.j.williams@intel.com>, Michael Roth
- <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>,
- Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>
-References: <cover.1717600736.git.thomas.lendacky@amd.com>
- <e555c8740a263fab9f83b2cbb44da1af49a2813c.1717600736.git.thomas.lendacky@amd.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <e555c8740a263fab9f83b2cbb44da1af49a2813c.1717600736.git.thomas.lendacky@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 08/18] PCI/CMA: Authenticate devices on enumeration
+To: Dan Williams <dan.j.williams@intel.com>, Lukas Wunner <lukas@wunner.de>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ David Woodhouse <dwmw2@infradead.org>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linuxarm@huawei.com,
+ David Box <david.e.box@intel.com>, "Li, Ming" <ming4.li@intel.com>,
+ Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Wilfred Mallawa <wilfred.mallawa@wdc.com>, Alexey Kardashevskiy
+ <aik@amd.com>, Dhaval Giani <dhaval.giani@amd.com>,
+ Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
+ Jerome Glisse <jglisse@google.com>, Sean Christopherson <seanjc@google.com>,
+ Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>
+References: <Zo_zivacyWmBuQcM@wunner.de>
+ <66901b646bd44_1a7742941d@dwillia2-xfh.jf.intel.com.notmuch>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <66901b646bd44_1a7742941d@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Le 05/06/2024 à 17:18, Tom Lendacky a écrit :
-> In order to support dynamic decisions as to whether an attribute should be
-> created, add a callback that returns a bool to indicate whether the
-> attribute should be displayed. If no callback is registered, the attribute
-> is displayed by default.
+On 7/12/24 02:50, Dan Williams wrote:
+> Lukas Wunner wrote:
+>> On Tue, Jul 09, 2024 at 04:31:30PM -0700, Dan Williams wrote:
+>>> Non-authenticated operation is the status quo. CMA is a building block
+>>> to other security features.
+>>
+>> That's not quite correct:  Products exist which support CMA but neither
+>> IDE nor TDISP.  CMA is not just a building block for IDE or TDISP,
+>> but is useful on its own merits.
 > 
-> Cc: Joel Becker <jlbec@evilplan.org>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Co-developed-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> ---
->   fs/configfs/dir.c        | 10 ++++++++++
->   include/linux/configfs.h |  3 +++
->   2 files changed, 13 insertions(+)
-> 
-> diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
-> index 18677cd4e62f..43d6bde1adcc 100644
-> --- a/fs/configfs/dir.c
-> +++ b/fs/configfs/dir.c
-> @@ -580,6 +580,7 @@ static void detach_attrs(struct config_item * item)
->   static int populate_attrs(struct config_item *item)
->   {
->   	const struct config_item_type *t = item->ci_type;
-> +	struct configfs_group_operations *ops;
->   	struct configfs_attribute *attr;
->   	struct configfs_bin_attribute *bin_attr;
->   	int error = 0;
-> @@ -587,14 +588,23 @@ static int populate_attrs(struct config_item *item)
->   
->   	if (!t)
->   		return -EINVAL;
-> +
-> +	ops = t->ct_group_ops;
-> +
->   	if (t->ct_attrs) {
->   		for (i = 0; (attr = t->ct_attrs[i]) != NULL; i++) {
-> +			if (ops && ops->is_visible && !ops->is_visible(item, attr, i))
-> +				continue;
-> +
->   			if ((error = configfs_create_file(item, attr)))
->   				break;
->   		}
->   	}
->   	if (t->ct_bin_attrs) {
->   		for (i = 0; (bin_attr = t->ct_bin_attrs[i]) != NULL; i++) {
-> +			if (ops && ops->is_bin_visible && !ops->is_bin_visible(item, bin_attr, i))
-> +				continue;
-> +
->   			error = configfs_create_bin_file(item, bin_attr);
->   			if (error)
->   				break;
-> diff --git a/include/linux/configfs.h b/include/linux/configfs.h
-> index 2606711adb18..c771e9d0d0b9 100644
-> --- a/include/linux/configfs.h
-> +++ b/include/linux/configfs.h
-> @@ -216,6 +216,9 @@ struct configfs_group_operations {
->   	struct config_group *(*make_group)(struct config_group *group, const char *name);
->   	void (*disconnect_notify)(struct config_group *group, struct config_item *item);
->   	void (*drop_item)(struct config_group *group, struct config_item *item);
-> +	bool (*is_visible)(struct config_item *item, struct configfs_attribute *attr, int n);
-> +	bool (*is_bin_visible)(struct config_item *item, struct configfs_bin_attribute *attr,
+> Agree it is useful. The use case of signed device inventory at a CSP,
+> that I understand storage vendors are interested, does not demand
+> aggressive forced authentication of all PCI devices in early init. As far
+> as I understand the non PCI-CMA consumers of lib/spdm/ are going to be
+> drivers possibly built as modules.
 
-Hi,
+Yes, and they already are: SCSI/ATA and NVMe command transport for SPDM is being
+defined (SPDM-over-storage using the SECURITY IN/OUT for SCSI and SECURITY
+SEND/RECV commands for NVMe). Authentication of such storage device will require
+the device driver to be loaded first and the device to be scanned and probed to
+discover this feature. So SPDM authentication in this case would not even happen
+early in the device initialization process as we will need the device to already
+be functional to issue the security commands.
 
-Should/could this take a *const* struct configfs_bin_attribute * and a 
-const struct config_item *?
+For PCIe/DOE devices (which could be PCIe NVMe devices not using
+SPDM-over-storage), I do not see why we cannot also do the authentication from
+the device driver context. As you suggested, pci_enable_device() context could
+be the right place to do that, if the device driver opts-in (and that can be
+driven by distro config).
 
-I'm currently looking if if is feasible to constify struct 
-configfs_attribute and co.
+This would result in all calls to lib/spdm authentication for all devices to
+happen at the same timing, i.e. device driver initialization, whenever that
+happens (at boot with kernel built-in or modules loaded later).
 
-In my investigation, I arrived on this new API.
-So, if it makes sense to constify the attr argument, it would avoid some 
-later work if.
+This approach would also likely facilitate handling re-authentication on resume
+since that also involves the device driver, at least for the SPDM-over-storage
+case (e.g. OPAL device locking/unlocking for SCSI already has code to be
+suspend/resume aware).
 
-Just my 2c
-
-CJ
-
-
-
-> +			       int n);
->   };
->   
->   struct configfs_subsystem {
+-- 
+Damien Le Moal
+Western Digital Research
 
