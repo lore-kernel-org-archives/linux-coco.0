@@ -1,30 +1,30 @@
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C68313C3CF
-	for <linux-coco@lists.linux.dev>; Thu, 18 Jul 2024 15:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07CF1448C5
+	for <linux-coco@lists.linux.dev>; Thu, 18 Jul 2024 15:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721316136; cv=none; b=Urw2UrvMtcrM6zgYhNPw/W8Q2ADWV9TZHsAjXDZuN1SBp5fXU5L2nyA9D2Bv9UQJhRqR6U27hqreE/8fA6wnlnypGT94WRG0yBz11KhqXISIAAwdpW8mHkgyYgJ3FNTDlaJ4QVXEwJSmCqTjYmGIDPPM8FbIYQJxH9p6/qvFMuE=
+	t=1721316980; cv=none; b=VyJFeh4HJbUVczWRgGKyp2dpUSskKqPvf2+gsYKJ5j9c8fkVAGVc3ODelBAu66yCboSE7s8sx2GbdLJ1kIf/9fS9NeiDqnKSbGcSH3bK6JLO1eWQHM/JrkE9DyKWSH5EKLku9HH16us0swla1KkyrI6QYNoviuFXMjYOgZiiBB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721316136; c=relaxed/simple;
-	bh=E533HHAhj/uoDBVDUL3yh1xvV9mHBjJwKPZdvRn1GGQ=;
+	s=arc-20240116; t=1721316980; c=relaxed/simple;
+	bh=Tjr91XqziOyw9pAkPN6H/0OP3OMBotGhZiCu+9rQFMc=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=azcF0Jqteskc3Tj9hXzpI+aGP3qO/XXIXark3zT07r5yFNnv7tbJxORunxk7QP5rBSksrDWB+WP3uelZVO62WfNgQiwkgTOi2rl4GcM+1e5tZ9+2W5jB8JEM+1OEtAXDZKNfW1VX4t26dFDMkHQcqGgyjB3jlmMXlmRkBtclat4=
+	 MIME-Version:Content-Type; b=IC8P09e0csCXEYZBg5whKugNyQgJ6sXWveE9Z7Cse+AVzlmFL1klj0GUs0vH9BmBiI7zK5OZgwFs0ala881kx/4xTyyE7DbAI37sGuN7aSguSYrswpOayFNDU9f82NPM3yueajZaCPGbfpCPW8iqfHb3Xl1GHgA3nP1/WHVY/n0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WPxMk1FJQz6HJp8;
-	Thu, 18 Jul 2024 23:20:50 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WPxgD6dJfz6H7xp;
+	Thu, 18 Jul 2024 23:34:16 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id B5CA7140B73;
-	Thu, 18 Jul 2024 23:22:11 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 3563D140B2F;
+	Thu, 18 Jul 2024 23:36:08 +0800 (CST)
 Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 18 Jul
- 2024 16:22:11 +0100
-Date: Thu, 18 Jul 2024 16:22:10 +0100
+ 2024 16:36:07 +0100
+Date: Thu, 18 Jul 2024 16:36:06 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Lukas Wunner <lukas@wunner.de>
 CC: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
@@ -45,12 +45,12 @@ CC: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
  Graf" <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>, "Greg
  Kroah-Hartman" <gregkh@linuxfoundation.org>, Alan Stern
 	<stern@rowland.harvard.edu>
-Subject: Re: [PATCH v2 13/18] sysfs: Allow bin_attributes to be added to
- groups
-Message-ID: <20240718162210.000055ee@Huawei.com>
-In-Reply-To: <16490618cbde91b5aac04873c39c8fb7666ff686.1719771133.git.lukas@wunner.de>
+Subject: Re: [PATCH v2 14/18] sysfs: Allow symlinks to be added between
+ sibling groups
+Message-ID: <20240718163606.000069c4@Huawei.com>
+In-Reply-To: <7b4e324bdcd5910c9460bb5fc37aaf354f596ebf.1719771133.git.lukas@wunner.de>
 References: <cover.1719771133.git.lukas@wunner.de>
-	<16490618cbde91b5aac04873c39c8fb7666ff686.1719771133.git.lukas@wunner.de>
+	<7b4e324bdcd5910c9460bb5fc37aaf354f596ebf.1719771133.git.lukas@wunner.de>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -59,34 +59,104 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Sun, 30 Jun 2024 21:48:00 +0200
+On Sun, 30 Jun 2024 21:49:00 +0200
 Lukas Wunner <lukas@wunner.de> wrote:
 
-> Commit dfa87c824a9a ("sysfs: allow attributes to be added to groups")
-> introduced dynamic addition of sysfs attributes to groups.
->=20
-> Allow the same for bin_attributes, in support of a subsequent commit
-> which adds various bin_attributes every time a PCI device is
-> authenticated.
->=20
-> Addition of bin_attributes to groups differs from regular attributes in
-> that different kernfs_ops are selected by sysfs_add_bin_file_mode_ns()
-> vis-=E0-vis sysfs_add_file_mode_ns().
->=20
-> So call either of those two functions from sysfs_add_file_to_group()
-> based on an additional boolean parameter and add two wrapper functions,
-> one for bin_attributes and another for regular attributes.
->=20
-> Removal of bin_attributes from groups does not require a differentiation
-> for bin_attributes and can use the same code path as regular attributes.
->=20
+> A subsequent commit has the need to create a symlink from an attribute
+> in a first group to an attribute in a second group.  Both groups belong
+> to the same kobject.
+> 
+> More specifically, each signature received from an authentication-
+> capable device is going to be represented by a file in the first group
+> and shall be accompanied by a symlink pointing to the certificate slot
+> in the second group which was used to generate the signature (a device
+> may have multiple certificate slots and each is represented by a
+> separate file in the second group):
+> 
+> /sys/devices/.../signatures/0_certificate_chain -> .../certificates/slot0
+> 
+> There is already a sysfs_add_link_to_group() helper to add a symlink to
+> a group which points to another kobject, but this isn't what's needed
+> here.
+> 
+> So add a new function to add a symlink among sibling groups of the same
+> kobject.
+> 
+> The existing sysfs_add_link_to_group() helper goes through a locking
+> dance of acquiring sysfs_symlink_target_lock in order to acquire a
+> reference on the target kobject.  That's unnecessary for the present
+> use case as the link itself and its target reside below the same
+> kobject.
+> 
+> To simplify error handling in the newly introduced function, add a
+> DEFINE_FREE() clause for kernfs_put().
+> 
 > Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> Cc: Alan Stern <stern@rowland.harvard.edu>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+Nice in general. A few minor comments inline.
+
+
+> ---
+>  fs/sysfs/group.c       | 33 +++++++++++++++++++++++++++++++++
+>  include/linux/kernfs.h |  2 ++
+>  include/linux/sysfs.h  | 10 ++++++++++
+>  3 files changed, 45 insertions(+)
+> 
+> diff --git a/fs/sysfs/group.c b/fs/sysfs/group.c
+> index d22ad67a0f32..0cb52c9b9e19 100644
+> --- a/fs/sysfs/group.c
+> +++ b/fs/sysfs/group.c
+> @@ -445,6 +445,39 @@ void sysfs_remove_link_from_group(struct kobject *kobj, const char *group_name,
+>  }
+>  EXPORT_SYMBOL_GPL(sysfs_remove_link_from_group);
+>  
+> +/**
+> + * sysfs_add_link_to_sibling_group - add a symlink to a sibling attribute group.
+
+> + * @kobj:	The kobject containing the groups.
+> + * @link_grp:	The name of the group in which to create the symlink.
+> + * @link:	The name of the symlink to create.
+
+Maybe should go with the link_name naming used in sysfs_add_link_to group.
+
+> + * @target_grp:	The name of the target group.
+> + * @target:	The name of the target attribute.
+> + *
+> + * Returns 0 on success or error code on failure.
+> + */
+> +int sysfs_add_link_to_sibling_group(struct kobject *kobj,
+> +				    const char *link_grp, const char *link,
+> +				    const char *target_grp, const char *target)
+> +{
+> +	struct kernfs_node *target_grp_kn __free(kernfs_put),
+> +			   *target_kn __free(kernfs_put) = NULL,
+> +			   *link_grp_kn __free(kernfs_put) = NULL;
+
+Maybe just define these when used (similar to earlier reviews)
+rather than in one clump up here.  Given they are all doing the same
+thing maybe it's not worth the effort though.
+
+
+> +
+> +	target_grp_kn = kernfs_find_and_get(kobj->sd, target_grp);
+> +	if (!target_grp_kn)
+> +		return -ENOENT;
+> +
+> +	target_kn = kernfs_find_and_get(target_grp_kn, target);
+> +	if (!target_kn)
+> +		return -ENOENT;
+> +
+> +	link_grp_kn = kernfs_find_and_get(kobj->sd, link_grp);
+> +	if (!link_grp_kn)
+> +		return -ENOENT;
+> +
+> +	return PTR_ERR_OR_ZERO(kernfs_create_link(link_grp_kn, link, target_kn));
+> +}
+> +
 
 
