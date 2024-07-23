@@ -1,356 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CA413957B
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jul 2024 06:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8AF14BF85;
+	Tue, 23 Jul 2024 09:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721715779; cv=none; b=ThGIw4L/wA5+5YPhzhCu4Fg6AI8g5+AS7zWnExGv2PO6AwfFVrTBpyPE7CsEEyMMNyY7dK/4wqIJ/4jikOjI7KqsvdGZgHVr3V8WMfJzDkuY3khqx/UzQEvZG0yzrQ3q2Gt/HYfEBOm1T/hE/CChrZ01Wf6kLe5k0xqeKqc3YBs=
+	t=1721725865; cv=none; b=EfY/GyINJ6hZCl07osuby2FCi+mzL5OfEmCyjp+kZNmxENDUAoQcX4b/QnGrc1fgA7Tei7CPmzY5AQBUkMiMePYklCH1DZ49yYG2ZkAYnLvXyEF1JhA3KiP4EM7Xm7Lz7kFSLHA6vkg8NPeVs7ypzJeYtnrknoqObJi2v/aBjmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721715779; c=relaxed/simple;
-	bh=P92MH8B5c9jvC2bnTPtRev2aH6tP4Y8mmGyv/5o49CY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fIr/ImA89ga1Xcc3MzKI2xvwk3ugW9Iig2vgXH43QtJK0hCwlEgQUOlhgrK5cLNennbBgEufPJOxdzgXEJ3uTUuvf7k6NsjUgZ/zeMlUPDLB82r4xsNhXKnxRVPlcAYJIN00yMwYms0KULtbG6t4rqnlqRDQ/q78rywuQlA/6r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ITRf2ckN; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1721725865; c=relaxed/simple;
+	bh=jdqjGOItlSHafyWCFvP9qk4uY7IydPMlo1p2nmTx/oE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gfpgYeRavwy5Z/5AUCowDfe410cgOJ/yelSn5NQdsNwgLvxe7Z2D+zQVYnDnG10/+atbJdFNLJGgpLwUCp2pQNV6+JpfnIgQP/RQAFNdtOKTuj9hkAixZo+kfnGlhjU7Cx9sSK1W+p604wGAeHwZyz437kJ4R41IDDyEB2S8ZQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZB+f4cmk; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ITRf2ckN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721715777;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hcTfow7Oo6i9Jk5NtqEjESkJCNqoSWX8VZs+T25c+9Y=;
-	b=ITRf2ckNV1dCCHxL7Ho7PYG886JN2kYSJ7wmy8EFv5ApgJ4njEYwDExxVBTLGKZtJnVBw/
-	ZnjMviRT3lVlVcR+mF9kECceTZevwYa04rUtWytxmVV00NygsqdRhzgjIK4PkO0KDMoXRS
-	b8cws2Kj/SGAw5mHdXJ32d+USPHnCAA=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-ez_zEzHPPriWKp4dnzlFsA-1; Tue, 23 Jul 2024 02:22:55 -0400
-X-MC-Unique: ez_zEzHPPriWKp4dnzlFsA-1
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-1fc58790766so3773745ad.3
-        for <linux-coco@lists.linux.dev>; Mon, 22 Jul 2024 23:22:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721715774; x=1722320574;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hcTfow7Oo6i9Jk5NtqEjESkJCNqoSWX8VZs+T25c+9Y=;
-        b=R6pvbfdoSHZnOdhwtaaq6+nTZLAwLlFLXVqbVDfxi26TzFg8ekztDFqAwEj4oq0FcY
-         /tsiWhLEibgpTraVkSd6RfLkiS35HITxWe47f7YSucjs1Ah1REE8x7bb/yo1V7G3pVsV
-         wXnI550j1YFf2ug57UaVt3UNFT8vL3zT+wHwj6rg7Fh8UAnc1zdv8Z7EJVMTHz1cSCdu
-         39jNiVxwyVddFeRLkm6/VNYjaZfx8OYFQpPuIdeZ2J28iLom5boz186Qqv0NPZt0n3Zz
-         Dfoxszyj2JNuw0mS9GbvMtX9llmZvO0dtdEWI7n2dzXs0GdiFcYfoPcHNgsHWR9/oXyX
-         GfyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWwgR5/aIjIAKRPIvnMYNYv7qFZg4LpxItNNzxcywJ++qMe+xnir1ryGczGpdMFU0aYd/bNtPizCxGAl3ta4X+FA0bWVByzmNsKfQ==
-X-Gm-Message-State: AOJu0YxRBDehE/tYy3OwEzNwMVaPxl9PKQB4IanLkcZVt/mrtq7Rshqp
-	RGAJ7FJme8czj4a9bBv51+hcackeXDvJcZzf9T6YE1pHIljHsD/GKgGbq+CLFUuv57bm/RVjWUL
-	uSuVCvjJosWAW0graiKLvF3CRcT+yU0hm2BzQlyVznOofa7KXXuRQ2/KKsxs=
-X-Received: by 2002:a17:902:d50e:b0:1fd:9420:1044 with SMTP id d9443c01a7336-1fdb5f68d70mr21438545ad.16.1721715774005;
-        Mon, 22 Jul 2024 23:22:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFPgJ2CXE7hNWQ1PFo9WoFtLesM4oKaP8B9Rc3wrzBKg8598MOU00D8FtaHIQZCy0PyD/104Q==
-X-Received: by 2002:a17:902:d50e:b0:1fd:9420:1044 with SMTP id d9443c01a7336-1fdb5f68d70mr21438325ad.16.1721715773498;
-        Mon, 22 Jul 2024 23:22:53 -0700 (PDT)
-Received: from [192.168.68.54] ([43.252.112.134])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fd6f484267sm65736445ad.278.2024.07.22.23.22.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jul 2024 23:22:53 -0700 (PDT)
-Message-ID: <a119ad47-11b7-42e5-a1e2-2706660c93d9@redhat.com>
-Date: Tue, 23 Jul 2024 16:22:44 +1000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZB+f4cmk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721725864; x=1753261864;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jdqjGOItlSHafyWCFvP9qk4uY7IydPMlo1p2nmTx/oE=;
+  b=ZB+f4cmkuWikK6BobkP4So67uEiv5iw0M7KdeORWKjEmNNY/WI4K0C5Z
+   52f5HsQYW8256raDL91XOaHdGJ/ukxkB7SF0kGgbVMtXXUtrqR/ksA+Nt
+   a2LCTVjhn2wsyZp1NaRhoYki3VXaHxFpuQHoQP+ZwFRAoFoF4mkt0P7hB
+   RZRVvMHGEu1yCSf5aO1L0JsAttWwNUBne7n8GMdBdNxdgebmsVVjrwNFy
+   KoFKyWvBarW8rvP1YgjXqFS92HWwSk42+wmKyK66w+8FUO+zeSLCieHbW
+   HvSxruS6HHhpS9KDTzigvfSGYzKlh9N/N/oLcikreq4Ua/z5KXWCt27gd
+   g==;
+X-CSE-ConnectionGUID: r9E/l8T/SyaVQhsed8ePwg==
+X-CSE-MsgGUID: VnP1n9AUTQGRPET87JuhiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11141"; a="19488153"
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; 
+   d="scan'208";a="19488153"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2024 02:11:03 -0700
+X-CSE-ConnectionGUID: 5YmBeVQZRzG6jisbnUMdfw==
+X-CSE-MsgGUID: A0EqHtZOSRy7qnvAPp9Nww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,230,1716274800"; 
+   d="scan'208";a="52173029"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa009.jf.intel.com with ESMTP; 23 Jul 2024 02:10:57 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 1393F178; Tue, 23 Jul 2024 12:10:55 +0300 (EEST)
+Date: Tue, 23 Jul 2024 12:10:55 +0300
+From: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+To: Tim Merrifield <tim.merrifield@broadcom.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, Xin Li <xin3.li@intel.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Kai Huang <kai.huang@intel.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Brian Gerst <brgerst@gmail.com>, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, virtualization@lists.linux.dev, alex.james@broadcom.com, 
+	doug.covelli@broadcom.com, jeffrey.sheldon@broadcom.com
+Subject: Re: [PATCH 1/2] x86/tdx: Add prctl to allow userlevel TDX hypercalls
+Message-ID: <wnd5rlqcus3tnmlaybbxq7v4fkdf2xyv7zhqk4euhbylecff72@evzweah55jis>
+References: <cover.1720046911.git.tim.merrifield@broadcom.com>
+ <90bf00599189c34e77aa77986674be2d5fc19f9c.1720046911.git.tim.merrifield@broadcom.com>
+ <wufxrry6smwk25qmsajabx6vgx4vgsrbvtmun2zw4fxz3lo4b4@nfpkscueapt6>
+ <20240723050431.GA10164@prme-hs2-i1009>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/15] arm64: rsi: Add RSI definitions
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240701095505.165383-1-steven.price@arm.com>
- <20240701095505.165383-2-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20240701095505.165383-2-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240723050431.GA10164@prme-hs2-i1009>
 
-On 7/1/24 7:54 PM, Steven Price wrote:
-> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+On Mon, Jul 22, 2024 at 10:04:40PM -0700, Tim Merrifield wrote:
 > 
-> The RMM (Realm Management Monitor) provides functionality that can be
-> accessed by a realm guest through SMC (Realm Services Interface) calls.
+> Thanks for the review, Kirill.
 > 
-> The SMC definitions are based on DEN0137[1] version A-eac5.
+> On Mon, Jul 08, 2024 at 03:19:54PM +0300, Kirill A . Shutemov wrote:
+> > Hm. Per-thread flag is odd. I think it should be per-process.
 > 
-> [1] https://developer.arm.com/documentation/den0137/latest
-> 
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v3:
->   * Drop invoke_rsi_fn_smc_with_res() function and call arm_smccc_smc()
->     directly instead.
->   * Rename header guard in rsi_smc.h to be consistent.
-> Changes since v2:
->   * Rename rsi_get_version() to rsi_request_version()
->   * Fix size/alignment of struct realm_config
-> ---
->   arch/arm64/include/asm/rsi_cmds.h |  38 ++++++++
->   arch/arm64/include/asm/rsi_smc.h  | 142 ++++++++++++++++++++++++++++++
->   2 files changed, 180 insertions(+)
->   create mode 100644 arch/arm64/include/asm/rsi_cmds.h
->   create mode 100644 arch/arm64/include/asm/rsi_smc.h
-> 
+> This is the only point I might need some clarification on. I agree
+> there doesn't seem to be much value in allowing per-thread control,
+> but I don't see any precedence for setting per-process flags through
+> arch_prctl or similar interfaces. Am I missing something?
 
-Some nits and questions like below.
+LAM is per-process. But it can only be enabled while the process has only
+one thread and locks on second thread spawn. See MM_CONTEXT_LOCK_LAM.
 
-> diff --git a/arch/arm64/include/asm/rsi_cmds.h b/arch/arm64/include/asm/rsi_cmds.h
-> new file mode 100644
-> index 000000000000..89e907f3af0c
-> --- /dev/null
-> +++ b/arch/arm64/include/asm/rsi_cmds.h
-> @@ -0,0 +1,38 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (C) 2023 ARM Ltd.
-> + */
-> +
-> +#ifndef __ASM_RSI_CMDS_H
-> +#define __ASM_RSI_CMDS_H
-> +
-> +#include <linux/arm-smccc.h>
-> +
-> +#include <asm/rsi_smc.h>
-> +
-> +static inline unsigned long rsi_request_version(unsigned long req,
-> +						unsigned long *out_lower,
-> +						unsigned long *out_higher)
-> +{
-> +	struct arm_smccc_res res;
-> +
-> +	arm_smccc_smc(SMC_RSI_ABI_VERSION, req, 0, 0, 0, 0, 0, 0, &res);
-> +
-> +	if (out_lower)
-> +		*out_lower = res.a1;
-> +	if (out_higher)
-> +		*out_higher = res.a2;
-> +
-> +	return res.a0;
-> +}
-> +
-> +static inline unsigned long rsi_get_realm_config(struct realm_config *cfg)
-> +{
-> +	struct arm_smccc_res res;
-> +
-> +	arm_smccc_smc(SMC_RSI_REALM_CONFIG, virt_to_phys(cfg),
-> +		      0, 0, 0, 0, 0, 0, &res);
-> +	return res.a0;
-> +}
-> +
-> +#endif
-
-#endif /* __ASM_RSI_CMDS_H */
-
-> diff --git a/arch/arm64/include/asm/rsi_smc.h b/arch/arm64/include/asm/rsi_smc.h
-> new file mode 100644
-> index 000000000000..b3b3aff88f71
-> --- /dev/null
-> +++ b/arch/arm64/include/asm/rsi_smc.h
-> @@ -0,0 +1,142 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (C) 2023 ARM Ltd.
-> + */
-> +
-> +#ifndef __ASM_RSI_SMC_H_
-> +#define __ASM_RSI_SMC_H_
-> +
-> +/*
-> + * This file describes the Realm Services Interface (RSI) Application Binary
-> + * Interface (ABI) for SMC calls made from within the Realm to the RMM and
-> + * serviced by the RMM.
-> + */
-> +
-> +#define SMC_RSI_CALL_BASE		0xC4000000
-> +
-> +/*
-> + * The major version number of the RSI implementation.  Increase this whenever
-> + * the binary format or semantics of the SMC calls change.
-> + */
-> +#define RSI_ABI_VERSION_MAJOR		1
-> +
-> +/*
-> + * The minor version number of the RSI implementation.  Increase this when
-> + * a bug is fixed, or a feature is added without breaking binary compatibility.
-> + */
-> +#define RSI_ABI_VERSION_MINOR		0
-> +
-> +#define RSI_ABI_VERSION			((RSI_ABI_VERSION_MAJOR << 16) | \
-> +					 RSI_ABI_VERSION_MINOR)
-> +
-> +#define RSI_ABI_VERSION_GET_MAJOR(_version) ((_version) >> 16)
-> +#define RSI_ABI_VERSION_GET_MINOR(_version) ((_version) & 0xFFFF)
-> +
-> +#define RSI_SUCCESS			0
-> +#define RSI_ERROR_INPUT			1
-> +#define RSI_ERROR_STATE			2
-> +#define RSI_INCOMPLETE			3
-> +
-
-I think these return values are copied from tf-rmm/lib/smc/include/smc-rsi.h, but
-UL() prefix has been missed. It's still probably worthy to have it to indicate the
-width of the return values. Besides, it seems that RSI_ERROR_COUNT is also missed
-here.
-
-
-> +#define SMC_RSI_FID(_x)			(SMC_RSI_CALL_BASE + (_x))
-> +
-> +#define SMC_RSI_ABI_VERSION			SMC_RSI_FID(0x190)
-> +
-> +/*
-> + * arg1 == Challenge value, bytes:  0 -  7
-> + * arg2 == Challenge value, bytes:  7 - 15
-> + * arg3 == Challenge value, bytes: 16 - 23
-> + * arg4 == Challenge value, bytes: 24 - 31
-> + * arg5 == Challenge value, bytes: 32 - 39
-> + * arg6 == Challenge value, bytes: 40 - 47
-> + * arg7 == Challenge value, bytes: 48 - 55
-> + * arg8 == Challenge value, bytes: 56 - 63
-> + * ret0 == Status / error
-> + * ret1 == Upper bound of token size in bytes
-> + */
-> +#define SMC_RSI_ATTESTATION_TOKEN_INIT		SMC_RSI_FID(0x194)
-> +
-
-In tf-rmm/lib/smc/include/smc-rsi.h, it is SMC_RSI_ATTEST_TOKEN_INIT instead
-of SMC_RSI_ATTESTATION_TOKEN_INIT. The short description for all SMC calls have
-been dropped and I think they're worthy to be kept. At least, it helps readers
-to understand what the SMC call does. For this particular SMC call, the short
-description is something like below:
-
-/*
-  * Initialize the operation to retrieve an attestation token.
-  * :
-  */
-
-> +/*
-> + * arg1 == The IPA of token buffer
-> + * arg2 == Offset within the granule of the token buffer
-> + * arg3 == Size of the granule buffer
-> + * ret0 == Status / error
-> + * ret1 == Length of token bytes copied to the granule buffer
-> + */
-> +#define SMC_RSI_ATTESTATION_TOKEN_CONTINUE	SMC_RSI_FID(0x195)
-> +
-
-SMC_RSI_ATTEST_TOKEN_CONTINUE as defined in tf-rmm.
-
-> +/*
-> + * arg1  == Index, which measurements slot to extend
-> + * arg2  == Size of realm measurement in bytes, max 64 bytes
-> + * arg3  == Measurement value, bytes:  0 -  7
-> + * arg4  == Measurement value, bytes:  7 - 15
-> + * arg5  == Measurement value, bytes: 16 - 23
-> + * arg6  == Measurement value, bytes: 24 - 31
-> + * arg7  == Measurement value, bytes: 32 - 39
-> + * arg8  == Measurement value, bytes: 40 - 47
-> + * arg9  == Measurement value, bytes: 48 - 55
-> + * arg10 == Measurement value, bytes: 56 - 63
-> + * ret0  == Status / error
-> + */
-> +#define SMC_RSI_MEASUREMENT_EXTEND		SMC_RSI_FID(0x193)
-> +
-> +/*
-> + * arg1 == Index, which measurements slot to read
-> + * ret0 == Status / error
-> + * ret1 == Measurement value, bytes:  0 -  7
-> + * ret2 == Measurement value, bytes:  7 - 15
-> + * ret3 == Measurement value, bytes: 16 - 23
-> + * ret4 == Measurement value, bytes: 24 - 31
-> + * ret5 == Measurement value, bytes: 32 - 39
-> + * ret6 == Measurement value, bytes: 40 - 47
-> + * ret7 == Measurement value, bytes: 48 - 55
-> + * ret8 == Measurement value, bytes: 56 - 63
-> + */
-> +#define SMC_RSI_MEASUREMENT_READ		SMC_RSI_FID(0x192)
-> +
-
-The order of these SMC call definitions are sorted based on their corresponding
-function IDs. For example, SMC_RSI_MEASUREMENT_READ would be appearing prior to
-SMC_RSI_MEASUREMENT_EXTEND.
-
-> +#ifndef __ASSEMBLY__
-> +
-> +struct realm_config {
-> +	union {
-> +		struct {
-> +			unsigned long ipa_bits; /* Width of IPA in bits */
-> +			unsigned long hash_algo; /* Hash algorithm */
-> +		};
-> +		u8 pad[0x1000];
-> +	};
-> +} __aligned(0x1000);
-> +
-
-This describes the argument to SMC call RSI_REALM_CONFIG and its address needs to
-be aligned to 0x1000. Otherwise, RSI_ERROR_INPUT is returned. This maybe worthy
-a comment to explain it why we need 0x1000 alignment here.
-
-It seems the only 4KB page size (GRANULE_SIZE) is supported by tf-rmm at present.
-The fixed alignment (0x1000) becomes broken if tf-rmm is extended to support
-64KB in future. Maybe tf-rmm was designed to work with the minimal page size (4KB).
-
-> +#endif /* __ASSEMBLY__ */
-> +
-> +/*
-> + * arg1 == struct realm_config addr
-> + * ret0 == Status / error
-> + */
-> +#define SMC_RSI_REALM_CONFIG			SMC_RSI_FID(0x196)
-> +
-> +/*
-> + * arg1 == Base IPA address of target region
-> + * arg2 == Top of the region
-> + * arg3 == RIPAS value
-> + * arg4 == flags
-> + * ret0 == Status / error
-> + * ret1 == Top of modified IPA range
-> + */
-> +#define SMC_RSI_IPA_STATE_SET			SMC_RSI_FID(0x197)
-> +
-> +#define RSI_NO_CHANGE_DESTROYED			0
-> +#define RSI_CHANGE_DESTROYED			1
-> +
-> +/*
-> + * arg1 == IPA of target page
-> + * ret0 == Status / error
-> + * ret1 == RIPAS value
-> + */
-> +#define SMC_RSI_IPA_STATE_GET			SMC_RSI_FID(0x198)
-> +
-> +/*
-> + * arg1 == IPA of host call structure
-> + * ret0 == Status / error
-> + */
-> +#define SMC_RSI_HOST_CALL			SMC_RSI_FID(0x199)
-> +
-> +#endif /* __ASM_RSI_SMC_H_ */
-
-Thanks,
-Gavin
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
