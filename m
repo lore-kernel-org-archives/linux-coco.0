@@ -1,96 +1,176 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D9E367
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jul 2024 05:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C4613A24A
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jul 2024 05:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721711094; cv=none; b=MEe5Od6i0Me/x8y4LghNArasbD20LLKwtLdRzMVJiFZkvFFRuqGvOqNilWsq6EYYY9Fs7/i1mH5TVbyntZOXZ0LOwrYMlJIK5aAuuh6t2fWaTRACuHIkh4A+N2MMVrCMCS6/neJE56Gyc92J5SQXZaDEnPeTIizc+G62j7B6lvs=
+	t=1721712950; cv=none; b=VnnVoB2AccKhRMoO3HysBUN/ecq4Ty26rI4f3edvnDNLeUXbeFwtLrmWskMko5h28gGBt/Puou/d50fC5l4WDQiFEEQPcvcEuA3gAwxlXlXgE++63kxNza+hdQAA2Ca9cgiCL7+phfX+WuYRxnn1tQ1CUSOu7F7VA+Kaie/Xsp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721711094; c=relaxed/simple;
-	bh=geHnqkq8xk12wPityzUZkTxDWx0eg8t54QFrTLDl80E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UVCftFYE6kj2bdiByBMVWgkadyxSkQ1BX0LX5HQsZfDg4W/5ZNkKzr9MiT5A2p2bQrtzc+VV3gSSY13Va3LOFFrCH1+kO0kfKWGVXDb9FnAQAfhRZhZ7Bdzoth4Cgry3yIl5l3P8MW3MK6+ebrAcGBNJCIxUuSi1YbK6U49b8Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DK4M4ugj; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1721712950; c=relaxed/simple;
+	bh=VtdTtInp8xltP7woCl3ZLIkQdg2goHxfX1mvCYp/CEE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cD8dtDRw+Ry+HY4PlcZr2SQ77OSr8AhwymvWz2AiAVbQZE3Sm9/GR34fa6FAJp3yvmuPfboFJ0KMoHMtFPNYJL2aPjH5/ecNYolYz33JESywsyS2AQ31lGIaC926yd1a8pFbBOBPS9gxuxa3eJba9jbIfKV2QuObirUE7p3lvkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RcRbySwS; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DK4M4ugj"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2cb4c4de4cbso2687508a91.1
-        for <linux-coco@lists.linux.dev>; Mon, 22 Jul 2024 22:04:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1721711092; x=1722315892; darn=lists.linux.dev;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=geHnqkq8xk12wPityzUZkTxDWx0eg8t54QFrTLDl80E=;
-        b=DK4M4ugjKNej3SgrVhI2Lzl6kOPl88qeuClGhzap0slnvbM+uUIKmArQhTds3taPLD
-         lpJFEAn0ahyGzNV2BSBORUqS8O9yuI0VPI6YwbM885V690Wd/rvWm5t9nqwVpsjEh9W7
-         Zo+kOBhLAhBwo7J4UIAhS3NZzxkK2doldWqLU=
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RcRbySwS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721712947;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aW1THt75DeB8IkjnkNQ5OOu8ISWACnD4UYq7Ars9y+U=;
+	b=RcRbySwSlozET+EXv+piXKcb12kDS6f6ED/2Fr0tPy4FzxVo0Ze1KldNT42VaGoW1YaZZI
+	MY1m1Cws7y2I4vO5b21gRp91vNJ2tmaCYgejtswVsQ8UuIw9xtjrcNd4+LWwhUsJMQ7jhq
+	H0vT50uq8gNtgnsHK4a/6L8z6CqHh5Q=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-682-gsoJ8qvRPRSSSFYHZRf1gw-1; Tue, 23 Jul 2024 01:35:43 -0400
+X-MC-Unique: gsoJ8qvRPRSSSFYHZRf1gw-1
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-70d1c28cd89so1735117b3a.1
+        for <linux-coco@lists.linux.dev>; Mon, 22 Jul 2024 22:35:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721711092; x=1722315892;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=geHnqkq8xk12wPityzUZkTxDWx0eg8t54QFrTLDl80E=;
-        b=J+KkXSs1XXV8HRg5WCJgnHXhOIwHJNMQlYrCBUSDcVk377sMhxcBJoYVeK4v3Fqn/B
-         2DhkL9+Yos8gxn3jt4TRcOSsFM9HmO9mraS+9xKtgnV8BoDyT1n4k4PhiIDAS7kMePy9
-         Yk+q5XEhsFekD1+JWOFJU0r2eB4wWsYH5LXuqNu3qTe4d6DWspdhdtabx5jTYOvllg/x
-         BxyITaiUYDPkvVVwwt7FHsaWcoZWF3Gy1TU5JndrhBYbMTmzfKTBQ6/dwx8k8uYEEBDs
-         usAqTASAN24q6WTPNZQ04py26miN6Zmp7H7sYZ6ioM0iIigGFIECTj4PYHuEbb+h2Uaw
-         t65Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXlBn0XqPxZoVooPKbVbXC/AuySVplff4I5HXb7jMSoFwonpSkdvTJDr7r0IlD+6d5Ce+634R2kx6Vyb0QGUVgeYSe5dnQu8g2dug==
-X-Gm-Message-State: AOJu0YyWWxECh5DqM/6eTv8QnqOwbiLZk/bzIdyN8tF4kbxB3bu7o0U4
-	1eyQ+yxm0/792hucjRww7eYb6AKpbRzYo8t25SJnoGfxWLvb9bpgNuQRUS5gsQ==
-X-Google-Smtp-Source: AGHT+IHy5HHrWxb35Qqa7ZXc+sIM2Hmxg63fti34eqUQtbPkpYiSD64YHv5F+p2M5kRN5sYRROf1zA==
-X-Received: by 2002:a17:90a:c593:b0:2c9:81c6:b0e7 with SMTP id 98e67ed59e1d1-2cd274ade2fmr5022887a91.30.1721711091951;
-        Mon, 22 Jul 2024 22:04:51 -0700 (PDT)
-Received: from prme-hs2-i1009 ([66.170.99.1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ccf7b2c5edsm8048204a91.3.2024.07.22.22.04.50
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 22 Jul 2024 22:04:51 -0700 (PDT)
-Date: Mon, 22 Jul 2024 22:04:40 -0700
-From: Tim Merrifield <tim.merrifield@broadcom.com>
-To: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
-	Xin Li <xin3.li@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	virtualization@lists.linux.dev, alex.james@broadcom.com,
-	doug.covelli@broadcom.com, jeffrey.sheldon@broadcom.com
-Subject: Re: [PATCH 1/2] x86/tdx: Add prctl to allow userlevel TDX hypercalls
-Message-ID: <20240723050431.GA10164@prme-hs2-i1009>
-References: <cover.1720046911.git.tim.merrifield@broadcom.com>
- <90bf00599189c34e77aa77986674be2d5fc19f9c.1720046911.git.tim.merrifield@broadcom.com>
- <wufxrry6smwk25qmsajabx6vgx4vgsrbvtmun2zw4fxz3lo4b4@nfpkscueapt6>
+        d=1e100.net; s=20230601; t=1721712942; x=1722317742;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aW1THt75DeB8IkjnkNQ5OOu8ISWACnD4UYq7Ars9y+U=;
+        b=MMcIyT38yQDMKQSFORLUIC2xD0w2r0FNiqYSdkj9zGPrpQILgqtFS5SsIWCVLNeKTV
+         LnKbIEmVg1H7vcGkiVvGInln9vMc8HhRgXlk91mFXXF4eySZ4b42KQu3CxB7hN8KaWDT
+         Re7m285qUFkkB7DWraw5UpoYQbe4r9h43TTO7Inb+oU4nL5FdnWzf6DKirN2RZD0g2/g
+         dmE8ZU0zppkN6qJfbNBeRiMBIKpssLEv/rxdq4LRgQPwSekBOnThHWt0sCyoHGlu250e
+         8W1wFvuXjazgtc5NcD0vsCwiPXxGxeXUqEmzOHvHuLCWOR1ZLdCnBGObsENd1U97bC6V
+         ZQ5w==
+X-Forwarded-Encrypted: i=1; AJvYcCUsyNVu/RD4bsVUTcSnOMSa4ReOcs3X6dml9jf9Y+KT3RCEkO4rH2gxsVRFvc8fJYlEZ0HCm7mHDQzSgrvLK7tk9ugGO4BjgnZKSA==
+X-Gm-Message-State: AOJu0Yxb3sekFkyfzigelC4q6bH4b5lTF8ZNjcQ3rhXC//Uo8AdUDPhI
+	5vtO9g7tU82qxHBMVLm3VTXCo2LzKq8USrorDP4aW9VshkHhTlUVJPS35SvpN9gCMUXUTu/ZcrU
+	E+9L+vzhQDtQBYhw8JhVOyxHAGA27SbakVcWRkPUms1I66GGoWtAY132rwgU=
+X-Received: by 2002:a05:6a20:841c:b0:1c2:9cbf:cc3e with SMTP id adf61e73a8af0-1c4285dfbb7mr8095006637.45.1721712942167;
+        Mon, 22 Jul 2024 22:35:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFUfgk+Po+fWXzUtaVQDwmY3IatFJXFV7UxMV0i7PuLgsZH5vwiyfgOw2C73FeYVdG6yKkjMw==
+X-Received: by 2002:a05:6a20:841c:b0:1c2:9cbf:cc3e with SMTP id adf61e73a8af0-1c4285dfbb7mr8094992637.45.1721712941776;
+        Mon, 22 Jul 2024 22:35:41 -0700 (PDT)
+Received: from [192.168.68.54] ([43.252.112.134])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-79f0ba12970sm4760247a12.50.2024.07.22.22.35.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Jul 2024 22:35:40 -0700 (PDT)
+Message-ID: <682d62b8-6cca-4782-b4e4-ffd2a706fadf@redhat.com>
+Date: Tue, 23 Jul 2024 15:35:33 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <wufxrry6smwk25qmsajabx6vgx4vgsrbvtmun2zw4fxz3lo4b4@nfpkscueapt6>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/15] arm64: rsi: Add RSI definitions
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+References: <20240701095505.165383-1-steven.price@arm.com>
+ <20240701095505.165383-2-steven.price@arm.com>
+ <3b1c8387-f40f-4841-b2b3-9e4dc1e35efc@redhat.com>
+ <3b2ddd79-c7f0-4d41-8795-13d1305e3d08@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <3b2ddd79-c7f0-4d41-8795-13d1305e3d08@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+On 7/11/24 1:34 AM, Steven Price wrote:
+> On 09/07/2024 06:19, Gavin Shan wrote:
+>> On 7/1/24 7:54 PM, Steven Price wrote:
+>>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>
+>>> The RMM (Realm Management Monitor) provides functionality that can be
+>>> accessed by a realm guest through SMC (Realm Services Interface) calls.
+>>>
+>>> The SMC definitions are based on DEN0137[1] version A-eac5.
+>>>
+>>> [1] https://developer.arm.com/documentation/den0137/latest
+>>>
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> ---
+>>> Changes since v3:
+>>>    * Drop invoke_rsi_fn_smc_with_res() function and call arm_smccc_smc()
+>>>      directly instead.
+>>>    * Rename header guard in rsi_smc.h to be consistent.
+>>> Changes since v2:
+>>>    * Rename rsi_get_version() to rsi_request_version()
+>>>    * Fix size/alignment of struct realm_config
+>>> ---
+>>>    arch/arm64/include/asm/rsi_cmds.h |  38 ++++++++
+>>>    arch/arm64/include/asm/rsi_smc.h  | 142 ++++++++++++++++++++++++++++++
+>>>    2 files changed, 180 insertions(+)
+>>>    create mode 100644 arch/arm64/include/asm/rsi_cmds.h
+>>>    create mode 100644 arch/arm64/include/asm/rsi_smc.h
+>>>
+>>
+>> [...]
+>>
+>>> --- /dev/null
+>>> +++ b/arch/arm64/include/asm/rsi_smc.h
+>>> @@ -0,0 +1,142 @@
+>>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>>> +/*
+>>> + * Copyright (C) 2023 ARM Ltd.
+>>> + */
+>>> +
+>>> +#ifndef __ASM_RSI_SMC_H_
+>>> +#define __ASM_RSI_SMC_H_
+>>> +
+>>> +/*
+>>> + * This file describes the Realm Services Interface (RSI) Application
+>>> Binary
+>>> + * Interface (ABI) for SMC calls made from within the Realm to the
+>>> RMM and
+>>> + * serviced by the RMM.
+>>> + */
+>>> +
+>>> +#define SMC_RSI_CALL_BASE        0xC4000000
+>>> +
+>>
+>> These fields have been defined in include/linux/arm-smccc.h. Those definitions
+>> can be reused. Otherwise, it's not obvious to reader what does 0xC4000000 represent.
+>>
+>> #define SMC_RSI_CALL_BASE    ((ARM_SMCCC_FAST_CALL << ARM_SMCCC_TYPE_SHIFT)   | \
+>>                                   (ARM_SMCCC_SMC_64 << ARM_SMCCC_CALL_CONV_SHIFT) | \
+>>                                   (ARM_SMCCC_OWNER_STANDARD << ARM_SMCCC_OWNER_SHIFT))
+>>
+>> or
+>>
+>> #define SMC_RSI_CALL_BASE       ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,            \
+>>                                                     ARM_SMCCC_SMC_64,               \
+>>                                                     ARM_SMCCC_OWNER_STANDARD,       \
+>>                                                     0)
+> 
+> Good point, even better is actually to just drop SMC_RSI_CALL_BASE and
+> just redefine SMC_RSI_FID() in terms of ARM_SMCCC_CALL_VAL().
+> 
 
-Thanks for the review, Kirill.
+Agreed, it's going to be more clear. The point is to reuse the existing definitions
+in include/linux/arm-smccc.h.
 
-On Mon, Jul 08, 2024 at 03:19:54PM +0300, Kirill A . Shutemov wrote:
-> Hm. Per-thread flag is odd. I think it should be per-process.
+Sorry for slow response. I spent some time going through tf-a/tf-rmm implementation
+to understand how GPT and stage-2 page-table are managed in order to review this
+series. I realized it's complicated to manage GPT and stage-2 page-table and lots
+of details still need more time to be figured out.
 
-This is the only point I might need some clarification on. I agree
-there doesn't seem to be much value in allowing per-thread control,
-but I don't see any precedence for setting per-process flags through
-arch_prctl or similar interfaces. Am I missing something?
+Thanks,
+Gavin
+
