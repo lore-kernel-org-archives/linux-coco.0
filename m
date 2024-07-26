@@ -1,194 +1,246 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2045.outbound.protection.outlook.com [40.107.236.45])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1051509AC
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jul 2024 12:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721739517; cv=fail; b=Or5XsnhR2AbjZQmaXU+U+yiXC+Qwz0sSmRZe2mV1XuN8WY+AppNQ5FWVt/93dv5avnXVvhYuPYp/ypNhCkTE6riIA5hyiECHVgHtJgyDUoGnkImbpzz0nn9/4mfEGjXKXh7+TJeNeEwU1nQ6I5ij8euGRf3EjJtmy08f4G7orp4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721739517; c=relaxed/simple;
-	bh=1RiLEFYe+T9epMXAsjZ6aol1q5MeMqyoIzSlP5Wp7pw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=bjPISDtr4fPuspj+i2CWdoqe1MwJrdPkfXziqN8Cbas3uyN2iQkLo2unDWHGyaF14TV1e5rvv5JiEOv29MAcGutLST7qAQjXFK7a10nG39zFCVCbGGPHLqv7h7j+Od2JoyfP13Fb93U3Zth+h03A1R6Xd2MNlVKv6ROQvptpHQQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KvDF2s29; arc=fail smtp.client-ip=40.107.236.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73B8176AA8
+	for <linux-coco@lists.linux.dev>; Fri, 26 Jul 2024 07:15:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721978110; cv=none; b=BVLXgtZj08J1zBdjOgEFvuemCy98OAXhh95HTQf0trBH9RiQv6AV/ROSuCskDqilhRbxQNj+ZFuQ0/1WTX6n7FJegJgxBgtTKDTepGFlEyI01ck8FSwoGY7QL0sSUeHeNYPu/Mx3FtW/wi3nEKOvtzkaEhGBRFtO53OsVs3XRVw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721978110; c=relaxed/simple;
+	bh=RJP92SF2WFoPIDG2hG1+hg5Un5h0Inykr9KdpLr/vGA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AR8vRvVeXw/Qd3SHHXrB/BvycwIQ2gB0k0CHcNoxbgmQVO05p4G1E5U3eQRPEEuQQ9vG5bggMmQn6xSKugszRgi0UKJJIWD5/grZviCCL263K0CR6RSc5lLt7eUu467goF46Fm5spW/e4rDds0dUOC4veYYASiPY4pGupBbVEKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z17srSh+; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KvDF2s29"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hx9RUjalB8FDd30bIrnIlmeco/dLNESjl9JHXZYusi1nSU9aeBxomdcCOr09gU0bvL/gKDgfpye2XKkC7IvvDLF+HUFHlLxMU8VKWQchJi/ItkTWZ6YjeFKo0ke4BZ8/S5suWs4lWl4EaNi4NySWQCyHxNYKGaxwu6bvCkGQEF+oySaKNJnQpT0jKla+5nNxEf41q4hviPVYHq/3y3ZautI2JDx43mm3vLgxU4kxQIwBjbgZB8k33ZR1k/DANG2dUqHGCTUBhfJP+nzW2zAgrTTLVOyc32KU+31m/rE8CKZ5QOpryQyovKXaKv+WomKx+Or8tP1JcjO/fxkuAmzrqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kV1WajA6dvpKaFYvtE7Oh0Mw4BDh3c0g4hCrwIVwDiI=;
- b=eQBzU5+FVa4BYlmiQxv39eTDt7OEZXxC7eBiAyfnGVNLgeMPBJYkUj2dDkXu6TYVpAiNbe+pDuOrwH5in3kkxTmNkRqL6DxknT6BeN0892MqhCRd0IauGv2cwe/MONoBSxQ12grQmsEppbk7RWT2lREpVGrbIo32zCuinB5EVoPEkTddw2YCOdKqkOZAnfgt+gt6/w34Qrq6wnI6cLLp6OwykfOHt2JcBYQcz8Cqmi7CXKw/SMxGRzLg0Umpkr8ahXb/Mn5VjB6L6Xz56UQEHuVh0dND3OsWRXZD4p8+IT9UFWYKVyxDcUY0SC273Rkm2sHUovy3E5sLl8QgdgjKuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kV1WajA6dvpKaFYvtE7Oh0Mw4BDh3c0g4hCrwIVwDiI=;
- b=KvDF2s298c+oyDwDIsASkSwQvaChGkM552FelQPqp9oNsykTahGXsBKqtOQKA2DcGTNg5d/ZQCMIQodbzAqLhAcmplUXLsjXyM1ju6ldiIT1y/fiyGhWNNfAcFreEdvkmLDpLsGbhTEpX/FdCKEtAkEe50mUlp3VjvIgkE1GlB6ZeOl+Dw9xR2hpSHoT6m7uFWHIoYNotZwusSRaIV8k6m+qTCcRJFoaJnwlUjSvhW4gZ6uZGWNmlN9j62e9b7Cc6mOA6J4xxrri9Au2DVF3pWcYmi6JFclU+XWGvn1PutFZdrq5xg1OktBqZa4qyVU1pRm7EBHKMgteWg28fgnaGA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
- by DM4PR12MB6061.namprd12.prod.outlook.com (2603:10b6:8:b3::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7762.29; Tue, 23 Jul 2024 12:58:30 +0000
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::c296:774b:a5fc:965e]) by DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::c296:774b:a5fc:965e%4]) with mapi id 15.20.7784.016; Tue, 23 Jul 2024
- 12:58:29 +0000
-Date: Tue, 23 Jul 2024 09:58:28 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <kees@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>, "Li, Ming" <ming4.li@intel.com>,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Dhaval Giani <dhaval.giani@amd.com>,
-	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
-	Peter Gonda <pgonda@google.com>, Jerome Glisse <jglisse@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v2 08/18] PCI/CMA: Authenticate devices on enumeration
-Message-ID: <20240723125828.GN3371438@nvidia.com>
-References: <20240715181252.GU1482543@nvidia.com>
- <66958850db394_8f74d2942b@dwillia2-xfh.jf.intel.com.notmuch>
- <20240715220206.GV1482543@nvidia.com>
- <6695a7b4a1c14_1bc83294c1@dwillia2-xfh.jf.intel.com.notmuch>
- <20240715232149.GY1482543@nvidia.com>
- <6695b29d204e4_8f74d294f8@dwillia2-xfh.jf.intel.com.notmuch>
- <20240715235510.GA1482543@nvidia.com>
- <b297cfe0-c54f-4205-b102-ba53ec40344b@amd.com>
- <20240722120642.GI1482543@nvidia.com>
- <de1ca8d1-b876-4b0f-9151-9303317b4d2b@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de1ca8d1-b876-4b0f-9151-9303317b4d2b@amd.com>
-X-ClientProxiedBy: BL0PR01CA0020.prod.exchangelabs.com (2603:10b6:208:71::33)
- To DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z17srSh+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721978109; x=1753514109;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=RJP92SF2WFoPIDG2hG1+hg5Un5h0Inykr9KdpLr/vGA=;
+  b=Z17srSh+It12XGrUvaok7S660SgPjKIw4VGS5CeT5KAjA55EtUpUpLDs
+   kg5jxwL3c5N17fOQ7rY3midZvhLcwMBHnAXI9FKq7mVL8BiEYL+mwuBQC
+   FqdK6jSu0/rHhjAFGmi3WRxwCrsYZfm/LOMPPBY4KaHbh8WVtnb2w6hNq
+   lXh3m/5g0NM/HvlovveixU9TdsutmAZwb88T2erJjcviR4hGSvfoKygpd
+   z7h0fu6AVF9r/kdQ6naGOCowfke3lO2d6NrUNw733L2jENWQ8bquuuM+S
+   G/urpR8YSs8CoQbpFhNs9BX52hJZqdrt4dMgIFNTU6CJJP74KgmTNpSgh
+   g==;
+X-CSE-ConnectionGUID: dJqzLEIaRh2Kp+9tKKGiAw==
+X-CSE-MsgGUID: 9a9CAtIGQQO1YppDdkZl5w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="45175956"
+X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; 
+   d="scan'208";a="45175956"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2024 00:15:08 -0700
+X-CSE-ConnectionGUID: VA/vNtmiRl+7516OPD9unw==
+X-CSE-MsgGUID: PVTpmcntRtu0h49j3OarXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; 
+   d="scan'208";a="53196595"
+Received: from taofen1x-mobl1.ccr.corp.intel.com (HELO [10.238.11.85]) ([10.238.11.85])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2024 00:15:04 -0700
+Message-ID: <f8dfeab2-e5f2-4df6-9406-0aff36afc08a@linux.intel.com>
+Date: Fri, 26 Jul 2024 15:15:01 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|DM4PR12MB6061:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5761aa31-ec74-494e-0cc4-08dcab172654
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YAbS22pHfx5qXt5wQYFLx5du98zMx/fPWs+cGli79oGM6qfx1riSN9RLaHpa?=
- =?us-ascii?Q?SSMH3sgnOtanXEy+dLJO0WhG033uTZvsluLFqaWXAGxRO8bejRvZ/v8nr1iP?=
- =?us-ascii?Q?Zqm8eVO6cpF3eby55TxtFYzLj5CyKeA8p/MYTOf40Cp+ujT2Zg10I5+gWISE?=
- =?us-ascii?Q?37KYcseH+8zjk5CjdOwLgKn/FYMsne1BMtTix7QpGLtjQs7/Dlt8FMIfJ4+k?=
- =?us-ascii?Q?+UBi3ug+gE6/rWAXDBZyftF4ODXcEhJzWHPHWtb40ieUNd5Uzigx2TjUybq8?=
- =?us-ascii?Q?+4ns0xMhHGfeIYxm9lxXy35RMP1WUNz+MejLPYX/mgEgoLMp0erT2zWTDTyQ?=
- =?us-ascii?Q?J61koadQRPcHObDFB1ainw+pCphCirayI+yA4Xz6S/X7Wy5sLmZkmU/1xXQ8?=
- =?us-ascii?Q?pp7WaStRc3MqBDZHo/28AMGccEavc4fZtV0p8H50f+ZP/HNJRvYjbmR5b0Sn?=
- =?us-ascii?Q?3fl10Mf76EAyYjHV7lw9Bos0+kBGj97YWXRwxzYlVa07o8O084Rwv4kQm2cj?=
- =?us-ascii?Q?6Uke0sKyhUmj1AdMr2vogpNs5RKxS1J7FJ0lZhl0W90XhmmCH3Veo3JL0jBl?=
- =?us-ascii?Q?LDwYkWCqwDPK9MN5Kq89K0zELrp9OPeT+rtudAzXmaZ0ktClyjTSobWYKt1h?=
- =?us-ascii?Q?ZTpoJkbhdcO+q9YepZ9RbCmW2v0cGrZLBdsVeY8N5ql7HXNtC46sgmmEQLZc?=
- =?us-ascii?Q?Q3qPJw619DxTc0B18yQOtE6AQz5lN9j5EvQ0wytqYjctufy/cDmkxEWTMr4I?=
- =?us-ascii?Q?8VP6J6n2n2stiULjWRX+sPwu9GoOdBBs69NVJAVi8c1j9MPnia+nnUA9OhjT?=
- =?us-ascii?Q?Iu+nyQADwiZdcLusNEP+mduE5BtB9AwcUuSOz/l8pTK/P4KmLRXe9xSAibfp?=
- =?us-ascii?Q?i0+lYH7kFmAeclmUMF85li5aQAT3WHhgtESINITVY9qRQM8F5ggbk0cRr0ha?=
- =?us-ascii?Q?14WheIANgfIEa89Vt+BkmOeBJUPmJVAeOoBI4q8GoyEQDQoLCI7uEGsWlUha?=
- =?us-ascii?Q?Dool1ivc2Ju4ubiPQ9qSlH9XUHb79wGcryIHtit2Lms+aj0fAVFcPNySUVcd?=
- =?us-ascii?Q?gz00jKYUCVVTVAfKIqoCSBjwTFyHav4zjbB+e9K5d7ZxeEe/7slALiI7EyiL?=
- =?us-ascii?Q?DxSvI6YvLOyiHs+f1xOlbcdh0Ljsx6S11lg+zyS7eaeXq208icyqcMxtCcTt?=
- =?us-ascii?Q?qZMuwSmk5Ocj05zvqWQXJdGMD508opkLZjBCHV9roFfFRRdEdI472E9WZsqP?=
- =?us-ascii?Q?NmQr5XGYItTrsJR/M66KG9brTjBRFXZSwVCT/7dOqVJvHtxwpRanebJUKZct?=
- =?us-ascii?Q?KLcadlZc09gVhleO5f4AD6JtU2QwSR6qF+P228QgRNs40g=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4OkarTHbzXndgzatRYBywyI8aF52jKJE5NKjrdEdgmY4afXFvBbQff3fS7hS?=
- =?us-ascii?Q?Mh8EkG5k1znYCNpPwR4b+Wxp4V6n+XDQPBaOGfC2rWAYCXZ4Pa67c7XvI5XF?=
- =?us-ascii?Q?iqVENSxle+f7UBmkBeYgHRMlVTXc0s78RtOk3cA56OfWRvfJMpQCAd3BTxMT?=
- =?us-ascii?Q?5WRCdJA4kJ1dDZcKVJgHtJEh5Q9G1BTI1Q3yiuB1qkIcow6V5Kll6fn2ZF/0?=
- =?us-ascii?Q?DxkF4nTwtbLjX3z3PjwdOAWKCU5r9bUY/YLIQWqIU5TBk+XSgwJHyoEjkoCi?=
- =?us-ascii?Q?vdR0owNKkmv14+SERuq9hi3W0UlxL9wsKEl/Cy/ERCyW2dGMDCN9jy7DG7R8?=
- =?us-ascii?Q?UdVCAga7p+f2cElC5kg0a087trNWqdSpkBsCriQhmdr+rMj4NVKKHlYd+L+3?=
- =?us-ascii?Q?VMaIZL9EkkjSNZ47gCD/wYGJz5gFmrlF2I3CfCL0XWQ/LEIUrRx/1KMOh06x?=
- =?us-ascii?Q?ZeK+fvbxMH2ur857JrslnlO5QXLqRLWF7+4Fhg2fJ2mRbhpu7CiYAR//OshU?=
- =?us-ascii?Q?mqDgz98oZmZf816BieFXwaNvPSy8J9K/bhBJj9MflIvBwkGlBBNGv+9+xCqZ?=
- =?us-ascii?Q?vz8CBhJITG8bNOq7laSmxL0FZmaENOsgXo7GZwv1Tbz/q/5aAM+HcfaI0X2r?=
- =?us-ascii?Q?S57x+n01dhOXxfR2THWV0mgb2zOC3OSfplYA9CA39eRvE1vKXVP95vKODWWH?=
- =?us-ascii?Q?UxKp0ZZWU38QofK4R3XwKdKooSI5ZF4aU308ZiMH6xxtbp4pHoWmIYrJu4fD?=
- =?us-ascii?Q?Xc4Nn3Z0Oh7VgaWHiDgekYAo90QZnWFcZMyOF7eQ1PuakW6siGtAYHff67S2?=
- =?us-ascii?Q?mZygPmpE6uLFKY4+Tv7XcwRDXNTMK4KOFbCrNOqTxsFWJdsj+5dU2c4cTj7+?=
- =?us-ascii?Q?OBE4OYrHat5tkMCRYsU860GB+fQqTlZ6vgPB5oPRQ0M3KlB2Tf0sJLnuc1kF?=
- =?us-ascii?Q?0KJc10uf+cb8CNRlSAYpoOCCCOwHxyLTuEaR0e/FGvWUYYocJPkt7BSqg6kC?=
- =?us-ascii?Q?J0O/oKjSlnWoF9lsupPkTVOYbfXBPQ5WsgU/SdmPNFcV4/GoxddEoGwMVxb2?=
- =?us-ascii?Q?jTPU1vStRShKbCMlv7Flg240ZqfpBwDtFl9RNMuCmIQ+FL9b9brHywYW6ihr?=
- =?us-ascii?Q?0H1KOmVoNlk+h3Sz1gsUDjMiRobUE12uYFL2fugLM0D6loFfcnRXkIbIf88j?=
- =?us-ascii?Q?+yxpHiRmMnVXaDADlJC7CR9d3luC7vuZcLxV6Vm6c8njOmrT0er/ZKbY+ZCH?=
- =?us-ascii?Q?xRUVF9l6IwN04QdOMBNM3DMGxF97Weir7RDEeSBhqdWq+0T7pWpxr4sQJYhP?=
- =?us-ascii?Q?C03dZGWYXtbAAbjBlO+A4xUAZMqKk00srOEKhDhr8FfUd5Y1Z3yNs0snLD7K?=
- =?us-ascii?Q?p20qoZwG1RzUc3+sZ2FbuA8Ua6CyRupcqSe5l5xZUOZfhrLcKvxetTBb6vW+?=
- =?us-ascii?Q?pSMBngeIRBtTuMenfPsZeleYfGnkPhK4w70FhlgA11ZoARqwirPNUITAQ0Sv?=
- =?us-ascii?Q?slvGWlKuGp6IzQ2Fej9Yi8IIPA2WVpG2jgZk05adk5F2vdMacd4EMN7HQYTR?=
- =?us-ascii?Q?7RXNJ08CkTGtOtzdrSBMS0qZX4A1pluo3vvsOJQN?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5761aa31-ec74-494e-0cc4-08dcab172654
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2024 12:58:29.8728
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DUefpdFbuS4ni5PtGpmWunBhjr4hKkXkNcqmH+xcP+og82viAdejA/d2m1EqP9GK
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6061
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 4/5] KVM: Introduce KVM_EXIT_COCO exit type
+To: Michael Roth <michael.roth@amd.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, x86@kernel.org, pbonzini@redhat.com,
+ jroedel@suse.de, thomas.lendacky@amd.com, pgonda@google.com,
+ ashish.kalra@amd.com, bp@alien8.de, pankaj.gupta@amd.com,
+ liam.merwick@oracle.com, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ "Yamahata, Isaku" <isaku.yamahata@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>
+References: <20240621134041.3170480-1-michael.roth@amd.com>
+ <20240621134041.3170480-5-michael.roth@amd.com> <ZnwkMyy1kgu0dFdv@google.com>
+ <r3tffokfww4yaytdfunj5kfy2aqqcsxp7sm3ga7wdytgyb3vnz@pfmstnvtuyg2>
+ <Zn8YM-s0TRUk-6T-@google.com>
+ <r7wqzejwpcvmys6jx7qcio2r6wvxfiideniqmwv5tohbohnvzu@6stwuvmnrkpo>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <r7wqzejwpcvmys6jx7qcio2r6wvxfiideniqmwv5tohbohnvzu@6stwuvmnrkpo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 23, 2024 at 02:26:23PM +1000, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 22/7/24 22:06, Jason Gunthorpe wrote:
-> > On Mon, Jul 22, 2024 at 08:19:23PM +1000, Alexey Kardashevskiy wrote:
-> >
-> > > If there is vIOMMU, then the driver in the VM can decide whether it wants
-> > > private or shared memory for DMA, pass that new flag to dma_map() and 1)
-> > > have DMA memory allocated from the private pool (== no page state changes)
-> > > and 2) have C-bit set in the vIOMMU page table (which is in the VM memory).
-> > 
-> > Not all HW supports a flow like that.
-> 
-> Fair point but still, under what imaginary circumstance a driver could
-> decide to flip T=0/1 when up and running?
 
-It seems some people are thinking they need to do T=0 stuff before
-doing device attestation.
 
-But that wasn't my point, the issue is that the translation is
-different depending on T=0/1. On those implementations T=0 means "all
-shared memory with no vIOMMU" and T=1 means "all memory with a
-vIOMMU".
+On 6/29/2024 8:36 AM, Michael Roth wrote:
+> On Fri, Jun 28, 2024 at 01:08:19PM -0700, Sean Christopherson wrote:
+>> On Wed, Jun 26, 2024, Michael Roth wrote:
+>>> On Wed, Jun 26, 2024 at 07:22:43AM -0700, Sean Christopherson wrote:
+>>>> On Fri, Jun 21, 2024, Michael Roth wrote:
+>>>>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+>>>>> index ecfa25b505e7..2eea9828d9aa 100644
+>>>>> --- a/Documentation/virt/kvm/api.rst
+>>>>> +++ b/Documentation/virt/kvm/api.rst
+>>>>> @@ -7122,6 +7122,97 @@ Please note that the kernel is allowed to use the kvm_run structure as the
+>>>>>   primary storage for certain register types. Therefore, the kernel may use the
+>>>>>   values in kvm_run even if the corresponding bit in kvm_dirty_regs is not set.
+>>>>>   
+>>>>> +::
+>>>>> +
+>>>>> +		/* KVM_EXIT_COCO */
+>>>>> +		struct kvm_exit_coco {
+>>>>> +		#define KVM_EXIT_COCO_REQ_CERTS			0
+>>>>> +		#define KVM_EXIT_COCO_MAX			1
+>>>>> +			__u8 nr;
+>>>>> +			__u8 pad0[7];
+>>>>> +			union {
+>>>>> +				struct {
+>>>>> +					__u64 gfn;
+>>>>> +					__u32 npages;
+>>>>> +		#define KVM_EXIT_COCO_REQ_CERTS_ERR_INVALID_LEN		1
+>>>>> +		#define KVM_EXIT_COCO_REQ_CERTS_ERR_GENERIC		(1 << 31)
+>>>> Unless I'm mistaken, these error codes are defined by the GHCB, which means the
+>>>> values matter, i.e. aren't arbitrary KVM-defined values.
+>>> They do happen to coincide with the GHCB-defined values:
+>>>
+>>>    /*
+>>>     * The GHCB spec only formally defines INVALID_LEN/BUSY VMM errors, but define
+>>>     * a GENERIC error code such that it won't ever conflict with GHCB-defined
+>>>     * errors if any get added in the future.
+>>>     */
+>>>    #define SNP_GUEST_VMM_ERR_INVALID_LEN   1
+>>>    #define SNP_GUEST_VMM_ERR_BUSY          2
+>>>    #define SNP_GUEST_VMM_ERR_GENERIC       BIT(31)
+>>>
+>>> and not totally by accident. But the KVM_EXIT_COCO_REQ_CERTS_ERR_* are
+>>> defined/documented without any reliance on the GHCB spec and are purely
+>>> KVM-defined. I just didn't really see any reason to pick different
+>>> numerical values since it seems like purposely obfuscating things for
+>> For SNP.  For other vendors, the numbers look bizarre, e.g. why bit 31?  And the
+>> fact that it appears to be a mask is even more odd.
+> That's fair. Values 1 and 2 made sense so just re-use, but that results
+> in a awkward value for _GENERIC that's not really necessary for the KVM
+> side.
+>
+>>> no real reason. But the code itself doesn't rely on them being the same
+>>> as the spec defines, so we are free to define these however we'd like as
+>>> far as the KVM API goes.
+>>>> I forget exactly what we discussed in PUCK, but for the error codes, I think KVM
+>>>> should either define it's own values that are completely disconnected from any
+>>>> "harware" spec, or KVM should very explicitly #define all hardware values and have
+>>> I'd gotten the impression that option 1) is what we were sort of leaning
+>>> toward, and that's the approach taken here.
+>>> And if we expose things selectively to keep the ABI small, it's a bit
+>>> awkward too. For instance, KVM_EXIT_COCO_REQ_CERTS_ERR_* basically needs
+>>> a way to indicate success/fail/ENOMEM. Which we have with
+>>> (assuming 0==success):
+>>>
+>>>    #define KVM_EXIT_COCO_REQ_CERTS_ERR_INVALID_LEN         1
+>>>    #define KVM_EXIT_COCO_REQ_CERTS_ERR_GENERIC             (1 << 31)
+>>>
+>>> But the GHCB also defines other values like:
+>>>
+>>>    #define SNP_GUEST_VMM_ERR_BUSY          2
+>>>
+>>> which don't make much sense to handle on the userspace side and doesn't
+>> Why not?  If userspace is waiting on a cert update for whatever reason, why can't
+>> it signal "busy" to the guest?
+> My thinking was that userspace is free to take it's time and doesn't need
+> to report delays back to KVM. But it would reduce the potential for
+> soft-lockups in the guest, so it might make sense to work that into the
+> API.
+>
+> But more to original point, there could be something added in the future
+> that really has nothing to do with anything involving KVM<->userspace
+> interaction and so would make no sense to expose to userspace.
+> Unfortunately I picked a bad example. :)
+>
+>>> really have anything to do with the KVM_EXIT_COCO_REQ_CERTS KVM event,
+>>> which is a separate/self-contained thing from the general guest request
+>>> protocol. So would we expose that as ABI or not? If not then we end up
+>>> with this weird splitting of code. And if yes, then we have to sort of
+>>> give userspace a way to discover whenever new error codes are added to
+>>> the GHCB spec, because KVM needs to understand these value too and
+>> Not necessarily.  So long as KVM doesn't need to manipulate guest state, e.g. to
+>> set RBX (or whatever reg it is) for ERR_INVALID_LEN, then KVM doesn't need to
+>> care/know about the error codes.  E.g. userspace could signal VMM_BUSY and KVM
+>> would happily pass that to the guest.
+> But given we already have an exception to that where KVM does need to
+> intervene for certain errors codes like ERR_INVALID_LEN that require
+> modifying guest state, it doesn't seem like a good starting position
+> to have to hope that it doesn't happen again.
+>
+> It just doesn't seem necessary to put ourselves in a situation where
+> we'd need to be concerned by that at all. If the KVM API is a separate
+> and fairly self-contained thing then these decisions are set in stone
+> until we want to change it and not dictated/modified by changes to
+> anything external without our explicit consideration.
+>
+> I know the certs things is GHCB-specific atm, but when the certs used
+> to live inside the kernel the KVM_EXIT_* wasn't needed at all, so
+> that's why I see this as more of a KVM interface thing rather than
+> a GHCB one. And maybe eventually some other CoCo implementation also
+> needs some interface for fetching certificates/blobs from userspace
+> and is able to re-use it still because it's not too SNP-specific
+> and the behavior isn't dictated by the GHCB spec (e.g.
+> ERR_INVALID_LEN might result in some other state needing to be
+> modified in their case rather than what the GHCB dictates.)
 
-This is quite different from "the VM can decide whether it wants
-private or shared memory", because it kind of can't. The entire device
-is either T=0/1 and that is that.
+TDX GHCI does have a similar PV interface for TDX guest to get quota, i.e.,
+TDG.VP.VMCALL<GetQuote>.  This GetQuote PV interface is designed to invoke
+a request to generate a TD-Quote signing by a service hosting TD-Quoting
+Enclave operating in the host environment for a TD Report passed as a
+parameter by the TD.
+And the request will be forwarded to userspace for handling.
 
-Jason
+So like GHCB, TDX needs to pass a shared buffer to userspace, which is
+specified by GPA and size (4K aligned) and get the error code from
+userspace and forward the error code to guest.
+
+But there are some differences from GHCB interface.
+1. TDG.VP.VMCALL<GetQuote> is a a doorbell-like interface used to queue a
+    request. I.e., it is an asynchronous request.  The error code represents
+    the status of request queuing, *not* the status of TD Quote generation..
+2. Besides the error code returned by userspace for GetQuote interface, the
+    GHCI spec defines a "Status Code" field in the header of the shared 
+buffer.
+    The "Status Code" field is also updated by VMM during the real 
+handling of
+    getting quote (after TDG.VP.VMCALL<GetQuote> returned to guest).
+    After the TDG.VP.VMCALL<GetQuote> returned and back to TD guest, the TD
+    guest can poll the "Status Code" field to check if the processing is
+    in-flight, succeeded or failed.
+    Since the real handling of getting quota is happening in userspace, and
+    it will interact directly with guest, for TDX, it has to expose TDX
+    specific error code to userspace to update the result of quote 
+generation.
+
+Currently, TDX is about to add a new TDX specific KVM exit reason, i.e.,
+KVM_EXIT_TDX_GET_QUOTE and its related data structure based on a previous
+discussion. https://lore.kernel.org/kvm/Zg18ul8Q4PGQMWam@google.com/
+For the error code returned by userspace, KVM simply forward the error code
+to guest without further translation or handling.
+
+I am neutral to have a common KVM exit reason to handle both GHCB for
+REQ_CERTS and GHCI for GET_QUOTE.  But for the error code, can we uses 
+vendor
+specific error codes if KVM cares about the error code returned by userspace
+in vendor specific complete_userspace_io callback?
+
+BTW, here is the plan of 4 hypercalls needing to exit to userspace for
+TDX basic support series:
+TDG.VP.VMCALL<SetupEventNotifyInterrupt>
+- Add a new KVM exit reason KVM_EXIT_TDX_SETUP_EVENT_NOTIFY
+TDG.VP.VMCALL<GetQuote>
+- Add a new KVM exit reason KVM_EXIT_TDX_GET_QUOTE
+TDG.VP.VMCALL<MapGPA>
+- Reuse KVM_EXIT_HYPERCALL with KVM_HC_MAP_GPA_RANGE
+TDG.VP.VMCALL<ReportFatalError>
+- Reuse KVM_EXIT_SYSTEM_EVENT but add a new type
+   KVM_SYSTEM_EVENT_TDX_FATAL_ERROR
+
+
