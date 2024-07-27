@@ -1,196 +1,185 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257A933CC4
-	for <linux-coco@lists.linux.dev>; Fri, 26 Jul 2024 18:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1ACF2C6BD;
+	Sat, 27 Jul 2024 07:14:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722019769; cv=none; b=krk3T/DVVx0/49H1MDs7DsRrVr1z0GU0XP1kyYjEd7G2+3fPC+7ZZvqgW0U0D4PoYLijaPa2oyhFDK2plK+el3XpqHnPonHDx5pxTfVwR2b1SkYGfwOAyeucl2EanmocIzQmA0LfH1hiHpTIib8Yy+pzgnnsNgB0JlmWJWmIZyQ=
+	t=1722064467; cv=none; b=Golppq4h06s0N9qONTlkC/SF8xDzOrBKbRVNq9tGcmWyaQX1NdlqSpesEac1qb2+JUuadlHv5XrEbQZCTIiPwhi+PC88TQtSOGzoU4GV3ITwouIv8ZXWzCOGpPnSpkoGTpNNAyMcEzBpMwpD8rrakQikE7t784wpY+XJYyjE2bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722019769; c=relaxed/simple;
-	bh=F5uTvikwGa469CPiqSv/UwSQuF/Im5tcCJwBQMDUZRs=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ok0FI0a9B/VPoz85SLxtYgziLpBZ+GXZ+Gu7O3is4h2QVua2cU+D4bW2zzkNkCBFeWDxcDeHfRXg0vA88mi6TKppiySDi8qh2oCFWWRZPohlnlHlkCAOrrGNz0NSl7zfO4kj83asP7sem3spOjQQHQBlD0wRQ+JTOBe3HaRL7XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=OehfhKWM; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1722064467; c=relaxed/simple;
+	bh=PDrDSG679tZgrgzWDkMYt0FDb+JhOwYtt2rOW8etHWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dYkypEaiq/0jptIiUaSANfR1u8zhWGNqAVwhlu+hGfbbDlmWq5q5yxpb01UhK9DnoONh+sqflJ4zxyAfF71VWApOXolfcgum6L5Gx2sx9BA1eo9jnNWgRD3BYrrJVyM/gR/b3kGhDIsWIp88+eOxKtJzDB2ynk4zu0FzKeCsJYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RGH90k3i; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="OehfhKWM"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1fc65329979so8619835ad.0
-        for <linux-coco@lists.linux.dev>; Fri, 26 Jul 2024 11:49:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1722019767; x=1722624567; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SP8XMNFql20U92EUMwQ8uLQcBAxfl5BFzyB/ky8QH4M=;
-        b=OehfhKWM3qZUx5psVKDm//P7IRY5fxmEz+2roGgsZcHz8Y54x9IXadOmX8trYSq4Km
-         NTlKFis3vNLHC+OXdmJ1d+Fpve1LGl6NkvxDgajUGJbXyzseZiFrOSRzrikJ22v4QI9T
-         lndB+Ur76BV3IW/OLcDkclfCxyNGh6i6z4B+Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722019767; x=1722624567;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SP8XMNFql20U92EUMwQ8uLQcBAxfl5BFzyB/ky8QH4M=;
-        b=EkcI4mThNynpoGjmyk5PUBaqBTJIQ9tkSWS1m9FeWUL6+nY95XTAes1w3yYikxepbA
-         7C/5lEOwCg3/1EA08RTx/FrZ/pLiQfcn8YxokY42giU5EdWPLr/ystPbHJ5l0MZJ2Xk+
-         rmV1E0o3r8xHH5B7j6kvziuGA66HI+CVtLTO0Oj/4qo6HB9J2V+dJWaCDy7TH61z5Xjz
-         oSU0gQGxDutyjC/XNn3fprqtMsQH9MJDuLIWiMORxb5I+SldxUrfOm2GpNo44WcISLNR
-         3V/bvq9vHj64t8LX71yaamvDEmAsXI8BdJJYi0cN99vNvPOyjEv1f0k3sZ5/Y3OiBhLi
-         hZ7A==
-X-Forwarded-Encrypted: i=1; AJvYcCX0yCcGBTpR0eWQYlbjJx0Ay8KY07FcqjtojkqyqWSnks/79eVpM5POF2IeMmyZcA9Zopbo8zJz/PmhDbnT9A7TM9Rm0P5C4CXoUQ==
-X-Gm-Message-State: AOJu0YxTbfDxknwTuLGhg09NK1Kuu1iISZ4Z2X4Ba0odvrDaQUBCSftZ
-	fDsOPaaEjNporW/KfXzBlSFbLvQC3a3tSyv61j4avh7GKfhXObhyS3zB4SqE/A==
-X-Google-Smtp-Source: AGHT+IHqeFWXvj6c9AvP0XqWmwcnueQalx00FQi4Am7FJWKWloEtv1/6XY/0WZADAvL3M2Abx2ARRQ==
-X-Received: by 2002:a17:903:1245:b0:1fd:93d2:fb76 with SMTP id d9443c01a7336-1ff04852a8emr7839905ad.31.1722019767356;
-        Fri, 26 Jul 2024 11:49:27 -0700 (PDT)
-Received: from ubuntu.eng.vmware.com ([66.170.99.2])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7ee8494sm36285245ad.159.2024.07.26.11.49.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jul 2024 11:49:27 -0700 (PDT)
-From: Tim Merrifield <tim.merrifield@broadcom.com>
-To: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RGH90k3i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1722064465; x=1753600465;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=PDrDSG679tZgrgzWDkMYt0FDb+JhOwYtt2rOW8etHWk=;
+  b=RGH90k3iU6FtjA6LpvOnGZCL6uxS1qWucbsmAHW719fD66t/1MtIlO6g
+   QoMgeHqsJZsBrhU9ZF804cgpJhcWP2nEhnvsjsR0JPuAr/jzIxsA+SvLo
+   CKiJqeadT7zXXhhxULG9+kRNCoEM4nmthUbJq+JOb1F0OBETyjZqXTAgf
+   hJWw3ldxt17x6M7uI6SMhAdvBwDqHLmMOs53d+2daVugRLZoHtsBFb/e0
+   CNghZ41pQZNG+p24j+gNhvMa9c1GyUfTY/ZBRPggpyT+L/TawIPr+GSgb
+   +QN2hxJChCQvJy6MKWx74mfZnv5IB1xZ6Av6j3O7RkhpLDQ6NhgGnILPk
+   w==;
+X-CSE-ConnectionGUID: Z0wVFYPgR7mVcQD4Y1XdKw==
+X-CSE-MsgGUID: 8uc0vySrTT+4T7migFuwUA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11145"; a="30474620"
+X-IronPort-AV: E=Sophos;i="6.09,240,1716274800"; 
+   d="scan'208";a="30474620"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2024 00:14:24 -0700
+X-CSE-ConnectionGUID: K4q1gM87SDGxQEzAl3vBjg==
+X-CSE-MsgGUID: 6QD6XAxERwisc8lAKMYJtw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,240,1716274800"; 
+   d="scan'208";a="53150571"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 27 Jul 2024 00:14:18 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sXbd9-000phs-2e;
+	Sat, 27 Jul 2024 07:14:15 +0000
+Date: Sat, 27 Jul 2024 15:13:52 +0800
+From: kernel test robot <lkp@intel.com>
+To: Tim Merrifield <tim.merrifield@broadcom.com>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Xin Li <xin3.li@intel.com>,
-	Tim Merrifield <tim.merrifield@broadcom.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+	Xin Li <xin3.li@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
 	Kai Huang <kai.huang@intel.com>,
 	Kevin Loughlin <kevinloughlin@google.com>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Ajay Kaher <ajay.kaher@broadcom.com>,
 	Alexey Makhalov <alexey.makhalov@broadcom.com>,
 	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	virtualization@lists.linux.dev,
-	alex.james@broadcom.com,
-	doug.covelli@broadcom.com,
-	jeffrey.sheldon@broadcom.com,
-	kevin.christopher@broadcom.com,
-	aravind-as.srinivasan@broadcom.com,
+	virtualization@lists.linux.dev, alex.james@broadcom.com,
+	doug.covelli@broadcom.com, jeffrey.sheldon@broadcom.com,
+	kevin.christopher@broadcom.com, aravind-as.srinivasan@broadcom.com,
 	ravindra.kumar@broadcom.com
-Subject: [PATCH v2 2/2] x86/vmware: VMware support for TDX userspace hypercalls
-Date: Fri, 26 Jul 2024 18:58:01 +0000
-Message-Id: <0599d2f477dd07483d31a9d1aabdf64d69d29570.1722019360.git.tim.merrifield@broadcom.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <cover.1722019360.git.tim.merrifield@broadcom.com>
-References: <cover.1722019360.git.tim.merrifield@broadcom.com>
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 1/2] Add prctl to allow userlevel TDX hypercalls
+Message-ID: <202407271423.sLLB8VXR-lkp@intel.com>
+References: <651ceb5a89721621d522419e8a5d901632a78a22.1722019360.git.tim.merrifield@broadcom.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <651ceb5a89721621d522419e8a5d901632a78a22.1722019360.git.tim.merrifield@broadcom.com>
 
-This change adds a handler for tdx_hcall in the x86_hyper_runtime type for
-VMware hypervisors which will ultimately invoke __tdx_hypercall. The
-handler (vmware_tdx_user_hcall) does not reuse the existing
-vmware_tdx_hypercall for a couple of reasons.
+Hi Tim,
 
-First, while the few hypercalls that are invoked from the kernel expect
-uint32 outputs, this may not be the case for every backdoor userspace may
-call. So the existing interface is not sufficient. Additionally, we don't
-require the branches based on output arguments. Finally, the
-VMWARE_CMD_MASK employed in vmware_tdx_hypercall is applicable to only
-hypercalls expected from the kernel.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Tim Merrifield <tim.merrifield@broadcom.com>
----
- arch/x86/kernel/cpu/vmware.c | 51 ++++++++++++++++++++++++++++--------
- 1 file changed, 40 insertions(+), 11 deletions(-)
+[auto build test ERROR on tip/x86/vmware]
+[also build test ERROR on tip/x86/tdx linus/master v6.10 next-20240726]
+[cannot apply to tip/x86/core]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index 00189cdeb775..e379facc3a5b 100644
---- a/arch/x86/kernel/cpu/vmware.c
-+++ b/arch/x86/kernel/cpu/vmware.c
-@@ -494,6 +494,24 @@ static bool __init vmware_legacy_x2apic_available(void)
-  * TDCALL[TDG.VP.VMCALL] uses %rax (arg0) and %rcx (arg2). Therefore,
-  * we remap those registers to %r12 and %r13, respectively.
-  */
-+static inline void vmware_init_tdx_args(struct tdx_module_args *args, bool is_user,
-+					unsigned long cmd, unsigned long in1,
-+					unsigned long in3, unsigned long in4,
-+					unsigned long in5, unsigned long in6)
-+{
-+	args->rbx = in1;
-+	args->rdx = in3;
-+	args->rsi = in4;
-+	args->rdi = in5;
-+	args->r10 = VMWARE_TDX_VENDOR_LEAF;
-+	args->r11 = VMWARE_TDX_HCALL_FUNC;
-+	args->r12 = VMWARE_HYPERVISOR_MAGIC;
-+	args->r13 = cmd;
-+	args->r14 = in6;
-+	/* CPL */
-+	args->r15 = is_user ? 3 : 0;
-+}
-+
- unsigned long vmware_tdx_hypercall(unsigned long cmd,
- 				   unsigned long in1, unsigned long in3,
- 				   unsigned long in4, unsigned long in5,
-@@ -512,17 +530,7 @@ unsigned long vmware_tdx_hypercall(unsigned long cmd,
- 		return ULONG_MAX;
- 	}
- 
--	args.rbx = in1;
--	args.rdx = in3;
--	args.rsi = in4;
--	args.rdi = in5;
--	args.r10 = VMWARE_TDX_VENDOR_LEAF;
--	args.r11 = VMWARE_TDX_HCALL_FUNC;
--	args.r12 = VMWARE_HYPERVISOR_MAGIC;
--	args.r13 = cmd;
--	/* CPL */
--	args.r15 = 0;
--
-+	vmware_init_tdx_args(&args, false, cmd, in1, in3, in4, in5, 0);
- 	__tdx_hypercall(&args);
- 
- 	if (out1)
-@@ -539,6 +547,24 @@ unsigned long vmware_tdx_hypercall(unsigned long cmd,
- 	return args.r12;
- }
- EXPORT_SYMBOL_GPL(vmware_tdx_hypercall);
-+
-+static int vmware_tdx_user_hcall(struct pt_regs *regs)
-+{
-+	struct tdx_module_args args = {};
-+
-+	vmware_init_tdx_args(&args, true, regs->cx, regs->bx,
-+			     regs->dx, regs->si, regs->di, regs->bp);
-+	__tdx_hypercall(&args);
-+	regs->ax = args.r12;
-+	regs->bx = args.rbx;
-+	regs->cx = args.r13;
-+	regs->dx = args.rdx;
-+	regs->si = args.rsi;
-+	regs->di = args.rdi;
-+	regs->bp = args.r14;
-+
-+	return 0;
-+}
- #endif
- 
- #ifdef CONFIG_AMD_MEM_ENCRYPT
-@@ -586,4 +612,7 @@ const __initconst struct hypervisor_x86 x86_hyper_vmware = {
- 	.runtime.sev_es_hcall_prepare	= vmware_sev_es_hcall_prepare,
- 	.runtime.sev_es_hcall_finish	= vmware_sev_es_hcall_finish,
- #endif
-+#ifdef CONFIG_INTEL_TDX_GUEST
-+	.runtime.tdx_hcall		= vmware_tdx_user_hcall,
-+#endif
- };
+url:    https://github.com/intel-lab-lkp/linux/commits/Tim-Merrifield/Add-prctl-to-allow-userlevel-TDX-hypercalls/20240727-025221
+base:   tip/x86/vmware
+patch link:    https://lore.kernel.org/r/651ceb5a89721621d522419e8a5d901632a78a22.1722019360.git.tim.merrifield%40broadcom.com
+patch subject: [PATCH v2 1/2] Add prctl to allow userlevel TDX hypercalls
+config: i386-buildonly-randconfig-001-20240727 (https://download.01.org/0day-ci/archive/20240727/202407271423.sLLB8VXR-lkp@intel.com/config)
+compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240727/202407271423.sLLB8VXR-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202407271423.sLLB8VXR-lkp@intel.com/
+
+All error/warnings (new ones prefixed by >>):
+
+   In file included from include/linux/kernel.h:23,
+                    from arch/x86/kernel/process.c:5:
+   arch/x86/kernel/process.c: In function 'get_coco_user_hcall_mode':
+>> arch/x86/kernel/process.c:1041:46: error: 'mm_context_t' has no member named 'flags'
+    1041 |                         &current->mm->context.flags);
+         |                                              ^
+   include/linux/bitops.h:45:44: note: in definition of macro 'bitop'
+      45 |           __builtin_constant_p((uintptr_t)(addr) != (uintptr_t)NULL) && \
+         |                                            ^~~~
+   arch/x86/kernel/process.c:1040:17: note: in expansion of macro 'test_bit'
+    1040 |         return !test_bit(MM_CONTEXT_COCO_USER_HCALL,
+         |                 ^~~~~~~~
+>> arch/x86/kernel/process.c:1041:46: error: 'mm_context_t' has no member named 'flags'
+    1041 |                         &current->mm->context.flags);
+         |                                              ^
+   include/linux/bitops.h:46:23: note: in definition of macro 'bitop'
+      46 |           (uintptr_t)(addr) != (uintptr_t)NULL &&                       \
+         |                       ^~~~
+   arch/x86/kernel/process.c:1040:17: note: in expansion of macro 'test_bit'
+    1040 |         return !test_bit(MM_CONTEXT_COCO_USER_HCALL,
+         |                 ^~~~~~~~
+>> arch/x86/kernel/process.c:1041:46: error: 'mm_context_t' has no member named 'flags'
+    1041 |                         &current->mm->context.flags);
+         |                                              ^
+   include/linux/bitops.h:47:57: note: in definition of macro 'bitop'
+      47 |           __builtin_constant_p(*(const unsigned long *)(addr))) ?       \
+         |                                                         ^~~~
+   arch/x86/kernel/process.c:1040:17: note: in expansion of macro 'test_bit'
+    1040 |         return !test_bit(MM_CONTEXT_COCO_USER_HCALL,
+         |                 ^~~~~~~~
+>> arch/x86/kernel/process.c:1041:46: error: 'mm_context_t' has no member named 'flags'
+    1041 |                         &current->mm->context.flags);
+         |                                              ^
+   include/linux/bitops.h:48:24: note: in definition of macro 'bitop'
+      48 |          const##op(nr, addr) : op(nr, addr))
+         |                        ^~~~
+   arch/x86/kernel/process.c:1040:17: note: in expansion of macro 'test_bit'
+    1040 |         return !test_bit(MM_CONTEXT_COCO_USER_HCALL,
+         |                 ^~~~~~~~
+>> arch/x86/kernel/process.c:1041:46: error: 'mm_context_t' has no member named 'flags'
+    1041 |                         &current->mm->context.flags);
+         |                                              ^
+   include/linux/bitops.h:48:39: note: in definition of macro 'bitop'
+      48 |          const##op(nr, addr) : op(nr, addr))
+         |                                       ^~~~
+   arch/x86/kernel/process.c:1040:17: note: in expansion of macro 'test_bit'
+    1040 |         return !test_bit(MM_CONTEXT_COCO_USER_HCALL,
+         |                 ^~~~~~~~
+   arch/x86/kernel/process.c: In function 'set_coco_user_hcall_mode':
+   arch/x86/kernel/process.c:1048:46: error: 'mm_context_t' has no member named 'flags'
+    1048 |                         &current->mm->context.flags);
+         |                                              ^
+   arch/x86/kernel/process.c:1051:48: error: 'mm_context_t' has no member named 'flags'
+    1051 |                           &current->mm->context.flags);
+         |                                                ^
+   arch/x86/kernel/process.c: In function 'get_coco_user_hcall_mode':
+>> arch/x86/kernel/process.c:1042:1: warning: control reaches end of non-void function [-Wreturn-type]
+    1042 | }
+         | ^
+
+
+vim +1041 arch/x86/kernel/process.c
+
+  1037	
+  1038	static int get_coco_user_hcall_mode(void)
+  1039	{
+  1040		return !test_bit(MM_CONTEXT_COCO_USER_HCALL,
+> 1041				&current->mm->context.flags);
+> 1042	}
+  1043	
+
 -- 
-2.40.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
