@@ -1,498 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050E618A6AC;
-	Tue, 30 Jul 2024 17:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E35978276
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jul 2024 18:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360994; cv=none; b=GLDNyWum1tTRSDmnOzIXS108fAUVOf0+EJTuaZ5WVdZz6hNQ+lSFqP5pmqO/QCoWprf8QDu0wYYE4LBtQkyaJJvpDgdwzWJORIcr7maN4X4Wpmq0yE1NTNkVRf94SWxphGT8IBvJ19YonWKnpKm/4e1qaW38JDteBzJWxJxT7+0=
+	t=1722364279; cv=none; b=FJaBGZvH+BOsVm41cwe348o40kWZwGj2Q/HCxNBQfIDtl1ojtcY9d92OeqGRdRXGaFnWbRKE03rMZ91KX59mRGEdlnxoq4pz9ewe5rg6omvRZRr6mezXpTHlbZDtQFmE8J872HPwNz7usxBPaSt9c2F1+ONLMe1JxNWGEymLE6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360994; c=relaxed/simple;
-	bh=4gmNvshIhA5Sq/t3xitvxYwN5dATcceEcntvV5Tbdm0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDuYmP7zebPz9R/dxFlXwl3PMksjvJdC5L6RHsTLaSsTTp4sm5RZN7jcjrKDKaTQlW/zRFg6ynLPA+dWorwM7yGrpUh3bPKOmGQgdXnJP3WVlv+7tSXsyxAszdCXYCCZ1A5OA5g2gGd2lwxr++WK4GGNdE41/4LWlwA11pHZCHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojjgZ7Tk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722364279; c=relaxed/simple;
+	bh=qjbMSV72ozbsS2EaCpBgSnIUsymHPbRg6KvcPRWySMw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GZrh6PlP0h1ndNT58jc+iYZCL5Mugq7Rok9U1g1cR0DhlGAP/AWkpdkEOmGAIi0zRICJIFgJlj76kZphdGwdolnRzLzrsHMCI0f0rcqxoa23PaPWOyasFljgYGEAled931Qt99wwt1jAm1kqXDuVj0UvKZCtcuJ1OAahm7hbAXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TlH+f4u3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=u6dBhDqt; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojjgZ7Tk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF607C4AF0C;
-	Tue, 30 Jul 2024 17:36:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722360993;
-	bh=4gmNvshIhA5Sq/t3xitvxYwN5dATcceEcntvV5Tbdm0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojjgZ7TkPjiezoupGF7Kfk4AuVW5AZV0nJSD39WvdcqK+zNV67c/usjPygTxHaW93
-	 Hn42dqlghqgOblsw9nUoKCtiYv2CbgQGoG1Xqk+siFlkLU8UhKfIG+ow1F8gLoUpvc
-	 Jt1+svcxy7XTJyq3ajx5Grl27CMH1LTJZf77FmUGWO0r/gO1pgxy/5XOb4jslKRd0+
-	 3U83m0Cfj9uuilhcrZuALH9ij/rBHxfyfXV2l61ws+wzCE9yCKtDwFzofHZcSHD914
-	 o46t2LK7X2JMOSWvKdov37S3ZdRj4fsBlsu27WCBoJN/Cbl95GrS+jKFxgFddhUW8B
-	 SDEpK/DrSyb1A==
-From: "Alexey Gladkov (Intel)" <legion@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yuan Yao <yuan.yao@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Yuntao Wang <ytcoode@gmail.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Baoquan He <bhe@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	cho@microsoft.com,
-	decui@microsoft.com,
-	John.Starks@microsoft.com
-Subject: [PATCH v1 4/4] x86/tdx: Implement movs for MMIO
-Date: Tue, 30 Jul 2024 19:35:59 +0200
-Message-ID: <c24855b0003df4397e3931f35d7ec285db5bc8bf.1722356794.git.legion@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1722356794.git.legion@kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TlH+f4u3";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="u6dBhDqt"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1722364276;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IZh0VLRLVNDot7WgZe2KHKmWYfaY2DBdRJamg3tTgzg=;
+	b=TlH+f4u3GJfRfYAv5iKtno2SKtjd+Iylr8k72jKHBLHFUVa00fgGQv8kNTesM6yLn1dNvb
+	X4ThTWRLTXwiMtTLMwTz/dZgaJ7DsdeXgPZKOEC+BVTKpo0FCIuzh8PROVYB4I7u3ZZyfV
+	+AWXpew5k/y3rW7j4CthttZczbOvFfzs4KSI9/7IoC15zdMz3R2u0ydR8jOJZXjxtEH0/8
+	67Ybp+nJu7H9f2k8zj0jzMXRiFNnlFtXA3wFB7N38CAURNse4/zQFBp09p5vJvaOPioXBD
+	H6sMfSFfPFfukkzzySh/JhCclxUBFNkV3b5U+jjCEKH2kr3KuUi8wDOaRMPHUw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1722364276;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IZh0VLRLVNDot7WgZe2KHKmWYfaY2DBdRJamg3tTgzg=;
+	b=u6dBhDqtDZaV2O7U+QWTBZcAysVuZWio5rgAjBLzkF9MiyBANUk/iEQFmLfuZ5tjgJrWtn
+	InL4XRAGchhG56Bw==
+To: "Alexey Gladkov (Intel)" <legion@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+Cc: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Yuan Yao <yuan.yao@intel.com>, Geert
+ Uytterhoeven <geert@linux-m68k.org>, Yuntao Wang <ytcoode@gmail.com>, Kai
+ Huang <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, Oleg Nesterov
+ <oleg@redhat.com>, cho@microsoft.com, decui@microsoft.com,
+ John.Starks@microsoft.com
+Subject: Re: [PATCH v1 1/4] x86/tdx: Split MMIO read and write operations
+In-Reply-To: <ff7cc8b32ae3829892d0dd5dcd3245d1db2684c0.1722356794.git.legion@kernel.org>
 References: <cover.1722356794.git.legion@kernel.org>
+ <ff7cc8b32ae3829892d0dd5dcd3245d1db2684c0.1722356794.git.legion@kernel.org>
+Date: Tue, 30 Jul 2024 20:31:15 +0200
+Message-ID: <87a5hy7mvg.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Adapt AMD's implementation of the MOVS instruction. Since the
-implementations are similar, it is possible to reuse the code.
+On Tue, Jul 30 2024 at 19:35, Alexey Gladkov wrote:
+> To implement MMIO in userspace, additional memory checks need to be
+> implemented. To avoid overly complicating the handle_mmio() function
+> and to separate checks from actions, it will be split into two separate
+> functions for handling read and write operations.
 
-MOVS emulation consists of dividing it into a series of read and write
-operations, which in turn will be validated separately.
+It will be split? The patch splits it, no?
+>  
+> +static int handle_mmio_write(struct insn *insn, enum insn_mmio_type mmio, int size,
+> +		struct pt_regs *regs, struct ve_info *ve)
 
-Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
----
+Please align the second line argument with the first argument in the
+first line.
 
+> +static int handle_mmio_read(struct insn *insn, enum insn_mmio_type mmio, int size,
+> +		struct pt_regs *regs, struct ve_info *ve)
+> +{
+> +	unsigned long *reg, val;
+> +	int extend_size;
+> +	u8 extend_val = 0;
 
-I don't really understand the reasoning behind AMD's approach of returning to
-userspace after every read/write operation in vc_handle_mmio_movs(). I didn't
-change this so as not to break their implementation.
+https://www.kernel.org/doc/html/latest/process/maintainer-tip.html#variable-declarations
 
-But if this can be changed then the whole vc_handle_mmio_movs() could be used as
-a common helper.
+>  static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+>  {
+> -	unsigned long *reg, val, vaddr;
+> +	unsigned long vaddr;
+>  	char buffer[MAX_INSN_SIZE];
+>  	enum insn_mmio_type mmio;
+>  	struct insn insn = {};
+> -	int size, extend_size;
+> -	u8 extend_val = 0;
+> +	int size;
 
+Ditto
+  
+>  	/* Only in-kernel MMIO is supported */
+>  	if (WARN_ON_ONCE(user_mode(regs)))
+> @@ -428,12 +504,6 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+>  	if (WARN_ON_ONCE(mmio == INSN_MMIO_DECODE_FAILED))
+>  		return -EINVAL;
 
- arch/x86/coco/sev/core.c  | 133 ++++----------------------------------
- arch/x86/coco/tdx/tdx.c   |  56 ++++++++++++++--
- arch/x86/include/asm/io.h |   3 +
- arch/x86/lib/iomem.c      | 132 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 199 insertions(+), 125 deletions(-)
+Thanks,
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 082d61d85dfc..3135c89802e9 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -369,72 +369,17 @@ static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
- static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
- 				   char *dst, char *buf, size_t size)
- {
--	unsigned long error_code = X86_PF_PROT | X86_PF_WRITE;
-+	unsigned long error_code;
-+	int ret = __put_iomem(dst, buf, size);
- 
--	/*
--	 * This function uses __put_user() independent of whether kernel or user
--	 * memory is accessed. This works fine because __put_user() does no
--	 * sanity checks of the pointer being accessed. All that it does is
--	 * to report when the access failed.
--	 *
--	 * Also, this function runs in atomic context, so __put_user() is not
--	 * allowed to sleep. The page-fault handler detects that it is running
--	 * in atomic context and will not try to take mmap_sem and handle the
--	 * fault, so additional pagefault_enable()/disable() calls are not
--	 * needed.
--	 *
--	 * The access can't be done via copy_to_user() here because
--	 * vc_write_mem() must not use string instructions to access unsafe
--	 * memory. The reason is that MOVS is emulated by the #VC handler by
--	 * splitting the move up into a read and a write and taking a nested #VC
--	 * exception on whatever of them is the MMIO access. Using string
--	 * instructions here would cause infinite nesting.
--	 */
--	switch (size) {
--	case 1: {
--		u8 d1;
--		u8 __user *target = (u8 __user *)dst;
--
--		memcpy(&d1, buf, 1);
--		if (__put_user(d1, target))
--			goto fault;
--		break;
--	}
--	case 2: {
--		u16 d2;
--		u16 __user *target = (u16 __user *)dst;
--
--		memcpy(&d2, buf, 2);
--		if (__put_user(d2, target))
--			goto fault;
--		break;
--	}
--	case 4: {
--		u32 d4;
--		u32 __user *target = (u32 __user *)dst;
--
--		memcpy(&d4, buf, 4);
--		if (__put_user(d4, target))
--			goto fault;
--		break;
--	}
--	case 8: {
--		u64 d8;
--		u64 __user *target = (u64 __user *)dst;
-+	if (!ret)
-+		return ES_OK;
- 
--		memcpy(&d8, buf, 8);
--		if (__put_user(d8, target))
--			goto fault;
--		break;
--	}
--	default:
--		WARN_ONCE(1, "%s: Invalid size: %zu\n", __func__, size);
-+	if (ret == -EIO)
- 		return ES_UNSUPPORTED;
--	}
- 
--	return ES_OK;
-+	error_code = X86_PF_PROT | X86_PF_WRITE;
- 
--fault:
- 	if (user_mode(ctxt->regs))
- 		error_code |= X86_PF_USER;
- 
-@@ -448,71 +393,17 @@ static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
- static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
- 				  char *src, char *buf, size_t size)
- {
--	unsigned long error_code = X86_PF_PROT;
-+	unsigned long error_code;
-+	int ret = __get_iomem(src, buf, size);
- 
--	/*
--	 * This function uses __get_user() independent of whether kernel or user
--	 * memory is accessed. This works fine because __get_user() does no
--	 * sanity checks of the pointer being accessed. All that it does is
--	 * to report when the access failed.
--	 *
--	 * Also, this function runs in atomic context, so __get_user() is not
--	 * allowed to sleep. The page-fault handler detects that it is running
--	 * in atomic context and will not try to take mmap_sem and handle the
--	 * fault, so additional pagefault_enable()/disable() calls are not
--	 * needed.
--	 *
--	 * The access can't be done via copy_from_user() here because
--	 * vc_read_mem() must not use string instructions to access unsafe
--	 * memory. The reason is that MOVS is emulated by the #VC handler by
--	 * splitting the move up into a read and a write and taking a nested #VC
--	 * exception on whatever of them is the MMIO access. Using string
--	 * instructions here would cause infinite nesting.
--	 */
--	switch (size) {
--	case 1: {
--		u8 d1;
--		u8 __user *s = (u8 __user *)src;
--
--		if (__get_user(d1, s))
--			goto fault;
--		memcpy(buf, &d1, 1);
--		break;
--	}
--	case 2: {
--		u16 d2;
--		u16 __user *s = (u16 __user *)src;
--
--		if (__get_user(d2, s))
--			goto fault;
--		memcpy(buf, &d2, 2);
--		break;
--	}
--	case 4: {
--		u32 d4;
--		u32 __user *s = (u32 __user *)src;
-+	if (!ret)
-+		return ES_OK;
- 
--		if (__get_user(d4, s))
--			goto fault;
--		memcpy(buf, &d4, 4);
--		break;
--	}
--	case 8: {
--		u64 d8;
--		u64 __user *s = (u64 __user *)src;
--		if (__get_user(d8, s))
--			goto fault;
--		memcpy(buf, &d8, 8);
--		break;
--	}
--	default:
--		WARN_ONCE(1, "%s: Invalid size: %zu\n", __func__, size);
-+	if (ret == -EIO)
- 		return ES_UNSUPPORTED;
--	}
- 
--	return ES_OK;
-+	error_code = X86_PF_PROT;
- 
--fault:
- 	if (user_mode(ctxt->regs))
- 		error_code |= X86_PF_USER;
- 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 26b2e52457be..cf209381d63b 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -499,6 +499,53 @@ static int decode_insn_struct(struct insn *insn, struct pt_regs *regs)
- 	return 0;
- }
- 
-+static int handle_mmio_movs(struct insn *insn, struct pt_regs *regs, int size, struct ve_info *ve)
-+{
-+	unsigned long ds_base, es_base;
-+	unsigned char *src, *dst;
-+	unsigned char buffer[8];
-+	int off, ret;
-+	bool rep;
-+
-+	/*
-+	 * The in-kernel code must use a special API that does not use MOVS.
-+	 * If the MOVS instruction is received from in-kernel, then something
-+	 * is broken.
-+	 */
-+	WARN_ON_ONCE(!user_mode(regs));
-+
-+	ds_base = insn_get_seg_base(regs, INAT_SEG_REG_DS);
-+	es_base = insn_get_seg_base(regs, INAT_SEG_REG_ES);
-+
-+	if (ds_base == -1L || es_base == -1L)
-+		return -EINVAL;
-+
-+	rep = insn_has_rep_prefix(insn);
-+
-+	do {
-+		src = ds_base + (unsigned char *) regs->si;
-+		dst = es_base + (unsigned char *) regs->di;
-+
-+		ret = __get_iomem(src, buffer, size);
-+		if (ret)
-+			return ret;
-+
-+		ret = __put_iomem(dst, buffer, size);
-+		if (ret)
-+			return ret;
-+
-+		off = (regs->flags & X86_EFLAGS_DF) ? -size : size;
-+
-+		regs->si += off;
-+		regs->di += off;
-+
-+		if (rep)
-+			regs->cx -= 1;
-+	} while (rep || regs->cx > 0);
-+
-+	return insn->length;
-+}
-+
- static int handle_mmio_write(struct insn *insn, enum insn_mmio_type mmio, int size,
- 		struct pt_regs *regs, struct ve_info *ve)
- {
-@@ -520,9 +567,8 @@ static int handle_mmio_write(struct insn *insn, enum insn_mmio_type mmio, int si
- 		return insn->length;
- 	case INSN_MMIO_MOVS:
- 		/*
--		 * MMIO was accessed with an instruction that could not be
--		 * decoded or handled properly. It was likely not using io.h
--		 * helpers or accessed MMIO accidentally.
-+		 * MOVS is processed through higher level emulation which breaks
-+		 * this instruction into a sequence of reads and writes.
- 		 */
- 		return -EINVAL;
- 	default:
-@@ -591,6 +637,9 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- 	if (WARN_ON_ONCE(mmio == INSN_MMIO_DECODE_FAILED))
- 		return -EINVAL;
- 
-+	if (mmio == INSN_MMIO_MOVS)
-+		return handle_mmio_movs(&insn, regs, size, ve);
-+
- 	vaddr = (unsigned long)insn_get_addr_ref(&insn, regs);
- 
- 	if (user_mode(regs)) {
-@@ -619,7 +668,6 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- 	switch (mmio) {
- 	case INSN_MMIO_WRITE:
- 	case INSN_MMIO_WRITE_IMM:
--	case INSN_MMIO_MOVS:
- 		ret = handle_mmio_write(&insn, mmio, size, regs, ve);
- 		break;
- 	case INSN_MMIO_READ:
-diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
-index 1d60427379c9..ac01d53466cb 100644
---- a/arch/x86/include/asm/io.h
-+++ b/arch/x86/include/asm/io.h
-@@ -402,4 +402,7 @@ static inline void iosubmit_cmds512(void __iomem *dst, const void *src,
- 	}
- }
- 
-+int __get_iomem(char *src, char *buf, size_t size);
-+int __put_iomem(char *src, char *buf, size_t size);
-+
- #endif /* _ASM_X86_IO_H */
-diff --git a/arch/x86/lib/iomem.c b/arch/x86/lib/iomem.c
-index 5eecb45d05d5..e4919ad22206 100644
---- a/arch/x86/lib/iomem.c
-+++ b/arch/x86/lib/iomem.c
-@@ -2,6 +2,7 @@
- #include <linux/module.h>
- #include <linux/io.h>
- #include <linux/kmsan-checks.h>
-+#include <asm/uaccess.h>
- 
- #define movs(type,to,from) \
- 	asm volatile("movs" type:"=&D" (to), "=&S" (from):"0" (to), "1" (from):"memory")
-@@ -124,3 +125,134 @@ void memset_io(volatile void __iomem *a, int b, size_t c)
- 	}
- }
- EXPORT_SYMBOL(memset_io);
-+
-+int __get_iomem(char *src, char *buf, size_t size)
-+{
-+	/*
-+	 * This function uses __get_user() independent of whether kernel or user
-+	 * memory is accessed. This works fine because __get_user() does no
-+	 * sanity checks of the pointer being accessed. All that it does is
-+	 * to report when the access failed.
-+	 *
-+	 * Also, this function runs in atomic context, so __get_user() is not
-+	 * allowed to sleep. The page-fault handler detects that it is running
-+	 * in atomic context and will not try to take mmap_sem and handle the
-+	 * fault, so additional pagefault_enable()/disable() calls are not
-+	 * needed.
-+	 *
-+	 * The access can't be done via copy_from_user() here because
-+	 * mmio_read_mem() must not use string instructions to access unsafe
-+	 * memory. The reason is that MOVS is emulated by the #VC handler by
-+	 * splitting the move up into a read and a write and taking a nested #VC
-+	 * exception on whatever of them is the MMIO access. Using string
-+	 * instructions here would cause infinite nesting.
-+	 */
-+	switch (size) {
-+	case 1: {
-+		u8 d1;
-+		u8 __user *s = (u8 __user *)src;
-+
-+		if (__get_user(d1, s))
-+			return -EFAULT;
-+		memcpy(buf, &d1, 1);
-+		break;
-+	}
-+	case 2: {
-+		u16 d2;
-+		u16 __user *s = (u16 __user *)src;
-+
-+		if (__get_user(d2, s))
-+			return -EFAULT;
-+		memcpy(buf, &d2, 2);
-+		break;
-+	}
-+	case 4: {
-+		u32 d4;
-+		u32 __user *s = (u32 __user *)src;
-+
-+		if (__get_user(d4, s))
-+			return -EFAULT;
-+		memcpy(buf, &d4, 4);
-+		break;
-+	}
-+	case 8: {
-+		u64 d8;
-+		u64 __user *s = (u64 __user *)src;
-+		if (__get_user(d8, s))
-+			return -EFAULT;
-+		memcpy(buf, &d8, 8);
-+		break;
-+	}
-+	default:
-+		WARN_ONCE(1, "%s: Invalid size: %zu\n", __func__, size);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+int __put_iomem(char *dst, char *buf, size_t size)
-+{
-+	/*
-+	 * This function uses __put_user() independent of whether kernel or user
-+	 * memory is accessed. This works fine because __put_user() does no
-+	 * sanity checks of the pointer being accessed. All that it does is
-+	 * to report when the access failed.
-+	 *
-+	 * Also, this function runs in atomic context, so __put_user() is not
-+	 * allowed to sleep. The page-fault handler detects that it is running
-+	 * in atomic context and will not try to take mmap_sem and handle the
-+	 * fault, so additional pagefault_enable()/disable() calls are not
-+	 * needed.
-+	 *
-+	 * The access can't be done via copy_to_user() here because
-+	 * put_iomem() must not use string instructions to access unsafe
-+	 * memory. The reason is that MOVS is emulated by the #VC handler by
-+	 * splitting the move up into a read and a write and taking a nested #VC
-+	 * exception on whatever of them is the MMIO access. Using string
-+	 * instructions here would cause infinite nesting.
-+	 */
-+	switch (size) {
-+	case 1: {
-+		u8 d1;
-+		u8 __user *target = (u8 __user *)dst;
-+
-+		memcpy(&d1, buf, 1);
-+		if (__put_user(d1, target))
-+			return -EFAULT;
-+		break;
-+	}
-+	case 2: {
-+		u16 d2;
-+		u16 __user *target = (u16 __user *)dst;
-+
-+		memcpy(&d2, buf, 2);
-+		if (__put_user(d2, target))
-+			return -EFAULT;
-+		break;
-+	}
-+	case 4: {
-+		u32 d4;
-+		u32 __user *target = (u32 __user *)dst;
-+
-+		memcpy(&d4, buf, 4);
-+		if (__put_user(d4, target))
-+			return -EFAULT;
-+		break;
-+	}
-+	case 8: {
-+		u64 d8;
-+		u64 __user *target = (u64 __user *)dst;
-+
-+		memcpy(&d8, buf, 8);
-+		if (__put_user(d8, target))
-+			return -EFAULT;
-+		break;
-+	}
-+	default:
-+		WARN_ONCE(1, "%s: Invalid size: %zu\n", __func__, size);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
--- 
-2.45.2
-
+        tglx
