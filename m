@@ -1,58 +1,127 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC691AB502
-	for <linux-coco@lists.linux.dev>; Wed, 31 Jul 2024 15:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722440938; cv=none; b=iPNJYU6L0qnGP7ArXfiuxyLZT8+Jr7dqoyJnJTlLy3sBRjXcSZgYUv1xlelKlaN/PFKzmgVqAp6rZJZAKD0XldbCMKhnV7UeHq6/YN2QbkSKYhfUwRpU2+mSaiOWlrCr/TuTFLg8qV8LwKzCYiLMNIpuV8SnmMscZdyCCvBG4z0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722440938; c=relaxed/simple;
-	bh=8MtVYQJyzMjuD2LgXZtF07C/Bqsnrcvv8Udx91o/HFI=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cGGabFsldlQ0GUh9iSLIxwMOeMHDgqOohyxmzNK6larMznGvYoMy7weF6iBFxAGUXcdddPVjlWngtNNN7QPE3P73ia/dH8p5pISocjTZ5uMQKFIwCQdw6swTORreEFY74IIT1nVq9fFxANfnhtlD86jDKQfhsfENgt6Tu/7y7CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=eT+ie6iw; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="eT+ie6iw"
-Received: from 8bytes.org (pd9fe9dd8.dip0.t-ipconnect.de [217.254.157.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id C92562A3E44;
-	Wed, 31 Jul 2024 17:48:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1722440926;
-	bh=8MtVYQJyzMjuD2LgXZtF07C/Bqsnrcvv8Udx91o/HFI=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=eT+ie6iwguyM33hgurpNTC/3FxV0Q4PtwG9x5PrL9PgyHQE4wSMiRIYO0eD806YH/
-	 HwYAhVKJdxrduTbD395iKaVGLS3DQWbOImmDDgYXcJ53eVH/Q90JLkmeRL9Xt2g3rc
-	 d0eP/Sgf7Dy7j4HezMyeBudSq6qWEDCWnNHbsC56tGGlOoF2uxSQEbfc1W8omqPOSV
-	 WI9+u5tryHLpctbGrZ5jGKCHw/KCdoYsi3iTomDfkRiMRTeRxRo1WTRZZOP1/TzNSg
-	 F5D6YKrkAPNoyMyKd7NPHbHPMsqvRZ3C2ZptRQ72ioN8zADqZZYmXadaLOcz4AZMAV
-	 a0mAcxWO5HM5Q==
-Date: Wed, 31 Jul 2024 17:48:45 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: Re: [svsm-devel] SVSM Development Call July 31st, 2024
-Message-ID: <Zqpc3dbqxorynrHy@8bytes.org>
-References: <ZqkGwtfMx_OisW6q@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB55156CF
+	for <linux-coco@lists.linux.dev>; Wed, 31 Jul 2024 15:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722441052; cv=none; b=l/uOuXUKtRE/ieNzkSStGrcCRuVF++3+PlIxFhzAC/mI+i2m7oKfJonVCShT6MZZVl063jBAHxeVZVrE6cKF0fOd0/J1CtfXjJ88+jaTcVov/tzmc+9CSeUy4njpgV02DrggyXq0Um9jn5V2y2bz8Hp9lg8TRuUhmmwC+zFvKKc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722441052; c=relaxed/simple;
+	bh=FWkJVy9uvBNaOZOV9mRbbaomEWFm1HAXWT08CghSiiE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u7J5dPvWLCUaHAaReY5bpON/kYL2+bnhe/0YnFXe0Iv9Yq5c1qTyugqS24txu9Ga+dc5Zj6fWwtF/IfN3dboXomGqnWlhKHxa+R0l27c84y170DFz8FRbGb/8+6fGiXsDFQKVPXNj2ay3ZtlsYjSo5LeO8i1xT5EwYdSfDsYWJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nyAQODFz; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nyAQODFz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00277C4AF0B;
+	Wed, 31 Jul 2024 15:50:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722441051;
+	bh=FWkJVy9uvBNaOZOV9mRbbaomEWFm1HAXWT08CghSiiE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nyAQODFz9IL2mfqo5QsjnNaFYd8LmZENKCDu9WiID+9imW37tiqIfRVCSzDbK3hEV
+	 5OdSDeD/RF1xUXWd2jVqvhHtkwE28Cy52vmbNSCecTYjrFDhhhXWknSF7W1n34WI/+
+	 1sd+q9OxZZituVv+Uf6pVrXLheuzDzZjdU1GY1ID3bVHW835rzs2s1TQwJ2mJXCdT4
+	 q+fT4/Owv3M38d783MlU7YwhXOxCU1k/EaW7nHVpd864Z/wEvhUBLFxqRwD+VHZ06p
+	 wjbcFfI5xJN8ViEVW+CQou893/lUbfFMYZDKMwoge4ffYN8BdW2NxEUQzOSJwwB387
+	 R+hKAXrxk7NCQ==
+Date: Wed, 31 Jul 2024 16:50:46 +0100
+From: Will Deacon <will@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Suzuki Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>, linux-coco@lists.linux.dev
+Subject: Re: [PATCH 1/6] firmware/smccc: Call arch-specific hook on
+ discovering KVM services
+Message-ID: <20240731155045.GA3296@willie-the-truck>
+References: <20240730151113.1497-1-will@kernel.org>
+ <20240730151113.1497-2-will@kernel.org>
+ <yq5ar0b9tyib.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZqkGwtfMx_OisW6q@8bytes.org>
+In-Reply-To: <yq5ar0b9tyib.fsf@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Tue, Jul 30, 2024 at 05:29:06PM +0200, Jörg Rödel wrote:
-> 	* Can stage1 be removed?
-> 	* Pros and cons for requiring specific stable Rust versions
-> 	  (tied to PR #428)
+On Wed, Jul 31, 2024 at 08:11:16PM +0530, Aneesh Kumar K.V wrote:
+> Will Deacon <will@kernel.org> writes:
+> 
+> > From: Marc Zyngier <maz@kernel.org>
+> >
+> > arm64 will soon require its own callback to initialise services
+> > that are only available on this architecture. Introduce a hook
+> > that can be overloaded by the architecture.
+> >
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > Signed-off-by: Will Deacon <will@kernel.org>
+> > ---
+> >  arch/arm/include/asm/hypervisor.h   | 2 ++
+> >  arch/arm64/include/asm/hypervisor.h | 4 ++++
+> >  drivers/firmware/smccc/kvm_guest.c  | 2 ++
+> >  3 files changed, 8 insertions(+)
+> >
+> > diff --git a/arch/arm/include/asm/hypervisor.h b/arch/arm/include/asm/hypervisor.h
+> > index bd61502b9715..8a648e506540 100644
+> > --- a/arch/arm/include/asm/hypervisor.h
+> > +++ b/arch/arm/include/asm/hypervisor.h
+> > @@ -7,4 +7,6 @@
+> >  void kvm_init_hyp_services(void);
+> >  bool kvm_arm_hyp_service_available(u32 func_id);
+> >  
+> > +static inline void kvm_arch_init_hyp_services(void) { };
+> > +
+> >  #endif
+> > diff --git a/arch/arm64/include/asm/hypervisor.h b/arch/arm64/include/asm/hypervisor.h
+> > index 0ae427f352c8..8cab2ab535b7 100644
+> > --- a/arch/arm64/include/asm/hypervisor.h
+> > +++ b/arch/arm64/include/asm/hypervisor.h
+> > @@ -7,4 +7,8 @@
+> >  void kvm_init_hyp_services(void);
+> >  bool kvm_arm_hyp_service_available(u32 func_id);
+> >  
+> > +static inline void kvm_arch_init_hyp_services(void)
+> > +{
+> > +};
+> > +
+> >  #endif
+> > diff --git a/drivers/firmware/smccc/kvm_guest.c b/drivers/firmware/smccc/kvm_guest.c
+> > index 89a68e7eeaa6..f3319be20b36 100644
+> > --- a/drivers/firmware/smccc/kvm_guest.c
+> > +++ b/drivers/firmware/smccc/kvm_guest.c
+> > @@ -39,6 +39,8 @@ void __init kvm_init_hyp_services(void)
+> >  
+> >  	pr_info("hypervisor services detected (0x%08lx 0x%08lx 0x%08lx 0x%08lx)\n",
+> >  		 res.a3, res.a2, res.a1, res.a0);
+> > +
+> > +	kvm_arch_init_hyp_services();
+> >  }
+> >
+> 
+> That is a bit late to detect RMM? One of the requirements is to
+> figure out the pgprot_t flags for early_ioremap so that "earlycon" will
+> work (by mapping the address as shared alias). To do that we need to
+> make an RSI call to detect PROT_NS_SHARED mask as below. 
+> 
+> 	if (rsi_get_realm_config(&config))
+> 		return;
+> 	prot_ns_shared = BIT(config.ipa_bits - 1);
 
-Two additional items:
+Why can't the earlycon MMIO address just have that high bit set?
 
-	* SVSM BoF at LPC?
-	* Stack unwinder issues update
+I think it's horribly fragile to try detecting all of this stuff before
+we're allowed to touch the console. We don't even bother with pKVM --
+it's the guest firmware's responsibility to MMIO_GUARD the UART if it
+detects a debuggable payload.
+
+Will
