@@ -1,138 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C9E168B8
-	for <linux-coco@lists.linux.dev>; Wed, 31 Jul 2024 15:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CAD1B8EAD
+	for <linux-coco@lists.linux.dev>; Thu,  1 Aug 2024 17:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722441402; cv=none; b=hcR7jAybboQxQBWLVJXXDW5PpKlKkeO/MZGUMChRF+dPrXnZXHNd+RvJZRCRkfGxh/94woFYN2bSKqSvNbXT5rcHf0VWVNaN0oZFgyWOESTb3NegRz3Ve8otsgIAi8u3eZeYRcXWAqfxt94tpxrUryCC+oVNH50G2KvePIL+uFk=
+	t=1722534013; cv=none; b=l8Se/V5cgCkU/tRwuHvaQfCDmdfNOGH6rmazfpt8+GO8CD3b4Lo0vkU+PFDpFkaaxeZWrD3L84HndndQpfgi2Eng3Hs1v28HTMjFk1eJEzyEhGrUujfdh+CgE6jjl8ZbjfMpO/GgM2KPYpQ5ADXIdODZ92jlv28uwVMYIK0F/iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722441402; c=relaxed/simple;
-	bh=yqw3J6CEz/OEDuKIHo31k7KHHrZRY+K3GctDIhvD0+4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PeZWtAE+Ofn0B4hYpbpOQunXf7ekFBJz8nqHSrZVHqTKGVs/qZbHvnZzNommPJd8u9P+VWAcxCzmX4q5wHuHNYVnbP3qczV28Csm0Hc99g3Nij6ifvSKJV9g5v9ao0ajCmdrokEIxeLQPd9WrJ04gZ9liqQTEo0ASUPbbT0ZrM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MHp32bkJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722534013; c=relaxed/simple;
+	bh=gFGo8dOk0VJiQQUAK+INl3O/L32blZxmPO2Im/Zhcug=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SUIpqler3lip+4IADiAF4Cwgok52YUJ3zQRb756TKwETjQ+RqqsaC3q5Y+UuG/NkybSPCoP4+2+qAPTzI0vXm+SelykkN3whnA40I3MXwkX+MkaDFmIzXXNH1jbWCURItCTtuv2EhUU+2Bd0cX0h1NrydHcdKgvByWXahIdkl2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Is5/jEOg; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MHp32bkJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6B6C116B1;
-	Wed, 31 Jul 2024 15:56:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722441401;
-	bh=yqw3J6CEz/OEDuKIHo31k7KHHrZRY+K3GctDIhvD0+4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MHp32bkJ4StG45+nh1lY0Sto53/8fEVtKBgz3vp5BsBomVkGEmfXcFPEl+OjcIRHJ
-	 jC5q7Yuy3eajdRhMHFhpMAWOMDwC0F08J3hElboupvsa11S7P9DI2wbHV26nvx02tb
-	 CxBCVif1XST9p8wQFVQP5A4wCr0zbbiRR9IbPeHZxAUyVapgGY3+NnQiovqwFKyPqt
-	 X7/8DW/qlc4NRe751sZ9rWia3QNWDaBv3bMpwnWFTWbPssKk5fFnLcDQSO9XYMH8+Q
-	 7Odv+o3LjltMxd/wkt0sIRc2OoSgjt12i8M6zg4NibuZI8PPJXlA7i1+DAouvCPSSr
-	 ePfx29NAqRrjA==
-X-Mailer: emacs 31.0.50 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Suzuki Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>, linux-coco@lists.linux.dev
-Subject: Re: [PATCH 1/6] firmware/smccc: Call arch-specific hook on
- discovering KVM services
-In-Reply-To: <yq5ao76dtv6n.fsf@kernel.org>
-References: <20240730151113.1497-1-will@kernel.org>
- <20240730151113.1497-2-will@kernel.org> <yq5ar0b9tyib.fsf@kernel.org>
- <20240731155045.GA3296@willie-the-truck> <yq5ao76dtv6n.fsf@kernel.org>
-Date: Wed, 31 Jul 2024 21:26:31 +0530
-Message-ID: <yq5ale1htv0w.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Is5/jEOg"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2cb77ab2074so7485794a91.1
+        for <linux-coco@lists.linux.dev>; Thu, 01 Aug 2024 10:40:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722534011; x=1723138811; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=L9VNzcyRkgABAvNu7jY6d4RP7mTe7rlkrOwsOOfnmQw=;
+        b=Is5/jEOgeoOSOnZujnZsDJZB66zQ4QyCBuOf0EGW9/OmVGHCb7i4GacvfDmB0iuzes
+         7VvYAAFsqK/v7pIua4a/Uqe27VV/LMEJ/sYUc5d+mt8KYlwls7bGbTaAwLL99gvWg5i/
+         aVa1hwUGO758tprWFzGXGvHwUT8G3lEtK2mg9+0s8ZB4L/nDgeiwnjboHh3bswIQ71vB
+         WqqL1inZnold9RIxUcYbW4FFLm2NT8ft00YY7bLutEc/nmXArFwpWIpiOhLV+PdF3jGz
+         Rh2U99GIx82gGHQbk92qzjmshwHN+hvDtYk4+ELAGygNxxchG6Umrv4/PRtGre5HPD69
+         Nqdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722534011; x=1723138811;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=L9VNzcyRkgABAvNu7jY6d4RP7mTe7rlkrOwsOOfnmQw=;
+        b=uipK9sONpcr6GAoPuSOunVHdBoy204a75uE3OjJQ0E5h/P3hjUM6M7yU0qhdP+folN
+         KbZn7Bjam0tyG03DP4ko7yUF6OD7fE6uB0+PFGQXCgE9DqUm/utM4+E2IsR5Q+kab73h
+         uMdgS0/ao26bkhD34FmfslSRC4FTas3BKn/GkP6q3DRDDXIuMnZ5vjF7wSzTcH3i7XLi
+         O9C9CnPy1o6KVEtnS1iwG1ffk3lFqVLo8Fsv2Rx6p5MkAzD47710JFDtfAmeeotGRynT
+         Qt0p4Dn9gUCt6oIdHewi1f2vC3sRTUEZtwNoEHfPEJlV8QESPN9hZdiOmMI7yE2CQvln
+         HEcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUArwxHf5hJx+7KAIig8wbQMHcYjSx4yBcS3ZVmT6K24zfQo4CFfcLJI+5FVMEPxN21uyYx0Dm8ILTSFbC7S3SH/x/dPAFFIAP6eQ==
+X-Gm-Message-State: AOJu0Yz4USy9iSvMgOnK94VucWRsYFrPlYqN73I84ZOHnbci6c2ESGqs
+	0O2nfgS0iEYAgkfTdr+ItRp/r+883ONryOjx4E8JXGcI/V3vE3oq+x4VZmtatLcJifDmk89FhAq
+	xeTEjtL8BTj25HgnLDGm+zw==
+X-Google-Smtp-Source: AGHT+IGhpTZuKcEDE5QRQXsOfcY0PWgiRoUFns4CRvhbi/uTvBIXM/nvEmpt5cbQN5GWFoFa60I9eNfSq5lwKOiQpw==
+X-Received: from ackerleytng-ctop.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:13f8])
+ (user=ackerleytng job=sendgmr) by 2002:a17:90b:e8a:b0:2cf:deef:4261 with SMTP
+ id 98e67ed59e1d1-2cff954f844mr31201a91.7.1722534011252; Thu, 01 Aug 2024
+ 10:40:11 -0700 (PDT)
+Date: Thu,  1 Aug 2024 17:39:55 +0000
+In-Reply-To: <20240501085210.2213060-3-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20240501085210.2213060-3-michael.roth@amd.com>
+X-Mailer: git-send-email 2.46.0.rc2.264.g509ed76dc8-goog
+Message-ID: <20240801173955.1975034-1-ackerleytng@google.com>
+Subject: [PATCH] Fixes: f32fb32820b1 ("KVM: x86: Add hook for determining max
+ NPT mapping level")
+From: Ackerley Tng <ackerleytng@google.com>
+To: michael.roth@amd.com
+Cc: ak@linux.intel.com, alpergun@google.com, ardb@kernel.org, 
+	ashish.kalra@amd.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	dovmurik@linux.ibm.com, hpa@zytor.com, jarkko@kernel.org, jmattson@google.com, 
+	vannapurve@google.com, erdemaktas@google.com, jroedel@suse.de, 
+	kirill@shutemov.name, kvm@vger.kernel.org, liam.merwick@oracle.com, 
+	linux-coco@lists.linux.dev, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org, 
+	mingo@redhat.com, nikunj.dadhania@amd.com, pankaj.gupta@amd.com, 
+	pbonzini@redhat.com, peterz@infradead.org, pgonda@google.com, 
+	rientjes@google.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	seanjc@google.com, slp@redhat.com, srinivas.pandruvada@linux.intel.com, 
+	tglx@linutronix.de, thomas.lendacky@amd.com, tobin@ibm.com, 
+	tony.luck@intel.com, vbabka@suse.cz, vkuznets@redhat.com, x86@kernel.org, 
+	Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
+The `if (req_max_level)` test was meant ignore req_max_level if
+PG_LEVEL_NONE was returned. Hence, this function should return
+max_level instead of the ignored req_max_level.
 
-> Will Deacon <will@kernel.org> writes:
->
->> On Wed, Jul 31, 2024 at 08:11:16PM +0530, Aneesh Kumar K.V wrote:
->>> Will Deacon <will@kernel.org> writes:
->>> 
->>> > From: Marc Zyngier <maz@kernel.org>
->>> >
->>> > arm64 will soon require its own callback to initialise services
->>> > that are only available on this architecture. Introduce a hook
->>> > that can be overloaded by the architecture.
->>> >
->>> > Signed-off-by: Marc Zyngier <maz@kernel.org>
->>> > Signed-off-by: Will Deacon <will@kernel.org>
->>> > ---
->>> >  arch/arm/include/asm/hypervisor.h   | 2 ++
->>> >  arch/arm64/include/asm/hypervisor.h | 4 ++++
->>> >  drivers/firmware/smccc/kvm_guest.c  | 2 ++
->>> >  3 files changed, 8 insertions(+)
->>> >
->>> > diff --git a/arch/arm/include/asm/hypervisor.h b/arch/arm/include/asm/hypervisor.h
->>> > index bd61502b9715..8a648e506540 100644
->>> > --- a/arch/arm/include/asm/hypervisor.h
->>> > +++ b/arch/arm/include/asm/hypervisor.h
->>> > @@ -7,4 +7,6 @@
->>> >  void kvm_init_hyp_services(void);
->>> >  bool kvm_arm_hyp_service_available(u32 func_id);
->>> >  
->>> > +static inline void kvm_arch_init_hyp_services(void) { };
->>> > +
->>> >  #endif
->>> > diff --git a/arch/arm64/include/asm/hypervisor.h b/arch/arm64/include/asm/hypervisor.h
->>> > index 0ae427f352c8..8cab2ab535b7 100644
->>> > --- a/arch/arm64/include/asm/hypervisor.h
->>> > +++ b/arch/arm64/include/asm/hypervisor.h
->>> > @@ -7,4 +7,8 @@
->>> >  void kvm_init_hyp_services(void);
->>> >  bool kvm_arm_hyp_service_available(u32 func_id);
->>> >  
->>> > +static inline void kvm_arch_init_hyp_services(void)
->>> > +{
->>> > +};
->>> > +
->>> >  #endif
->>> > diff --git a/drivers/firmware/smccc/kvm_guest.c b/drivers/firmware/smccc/kvm_guest.c
->>> > index 89a68e7eeaa6..f3319be20b36 100644
->>> > --- a/drivers/firmware/smccc/kvm_guest.c
->>> > +++ b/drivers/firmware/smccc/kvm_guest.c
->>> > @@ -39,6 +39,8 @@ void __init kvm_init_hyp_services(void)
->>> >  
->>> >  	pr_info("hypervisor services detected (0x%08lx 0x%08lx 0x%08lx 0x%08lx)\n",
->>> >  		 res.a3, res.a2, res.a1, res.a0);
->>> > +
->>> > +	kvm_arch_init_hyp_services();
->>> >  }
->>> >
->>> 
->>> That is a bit late to detect RMM? One of the requirements is to
->>> figure out the pgprot_t flags for early_ioremap so that "earlycon" will
->>> work (by mapping the address as shared alias). To do that we need to
->>> make an RSI call to detect PROT_NS_SHARED mask as below. 
->>> 
->>> 	if (rsi_get_realm_config(&config))
->>> 		return;
->>> 	prot_ns_shared = BIT(config.ipa_bits - 1);
->>
->> Why can't the earlycon MMIO address just have that high bit set?
->>
->> I think it's horribly fragile to try detecting all of this stuff before
->> we're allowed to touch the console. We don't even bother with pKVM --
->> it's the guest firmware's responsibility to MMIO_GUARD the UART if it
->> detects a debuggable payload.
->>
->
-> To mark something shared, we need to know the mask value which is
-> returned via rsi_get_realm_config() call.
->
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Change-Id: I403898aacc379ed98ba5caa41c9f1c52f277adc2
+---
+ arch/x86/kvm/mmu/mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I guess you are suggesting to leave it to firmware to set up the device
-tree "reg-offset" with shared bit set?
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 901be9e420a4..e6b73774645d 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4335,7 +4335,7 @@ static u8 kvm_max_private_mapping_level(struct kvm *kvm, kvm_pfn_t pfn,
+ 	if (req_max_level)
+ 		max_level = min(max_level, req_max_level);
+ 
+-	return req_max_level;
++	return max_level;
+ }
+ 
+ static int kvm_faultin_pfn_private(struct kvm_vcpu *vcpu,
+-- 
+2.46.0.rc2.264.g509ed76dc8-goog
 
--aneesh
