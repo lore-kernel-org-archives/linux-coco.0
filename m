@@ -1,198 +1,121 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A4F1C2BD
-	for <linux-coco@lists.linux.dev>; Fri,  2 Aug 2024 05:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8F545020
+	for <linux-coco@lists.linux.dev>; Fri,  2 Aug 2024 07:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722576223; cv=none; b=AduCpJzzP+xolx+3uLRjJP8OUq5klSPOxuCL811GMeZ+2Ll2jje2GpD5QUxJ1obXMrWXZ+cFn+pzGGIO4qwFJLif7nHpTFdsZJBRGNVdjFlK+IqJx9aZmyE4BH/1a7ELXtbUTcetNZ8irD9gn3TD3KHbh2pSGSzg6wfqYxf9HLQ=
+	t=1722584486; cv=none; b=du4BsidrqW8LlS3W1URkX7syv182qkXALtcUjGDUXKC5YMHxcQBsiTuudB90pnnsnyfVz2pDW1/3M7xmy/obX3/fAG9wgw32iWNSXBqE6G0f/KKIL8opsumaC/cu6hJ47RW6Stwjx7vrRpl1dL86LYjh4yczkMvMIzM/XnKVVDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722576223; c=relaxed/simple;
-	bh=dKrc8q/PaPJ0XphwzhvNfe6ax57YdjsDIjAOlUPEtwU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=caD6mHue2DlJV0+0AWxY6cVwr5EIoFdXvU3VkUcOuDsusYholgUd/Xr7IbMPoA0+tQNk5W9/RN4AJGeAqVp5KAtj+CfXcSwETZXb15GR7IUYaOv3cnAjtwa9M3fMAL95LRV/bDlc0AxbGpXPlD1QoLxYsTF52SUQ8r87SMPLwKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fQkk7EQx; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1722584486; c=relaxed/simple;
+	bh=lWIiKgnb7HkD/XfNp5unduL8AgOpKEyW/X7I3xwLQDo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WZu1ifSfdROkAWGFR+uUISAiiIXCFIyn31uOaHALXe5Cfl7B+LOevWfV0WRCMcui/XuPOovXMhlx7EcJ0vncSb+WKxgykpliU5B1GzibZLL00AMvK/H7ZqOPDBo2eYZleCE8QU1wuzwFPpBsuSv2Trz5PTSP+o8Ah/4HvBojR/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dpDckoGh; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fQkk7EQx"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5a28b61b880so45684a12.1
-        for <linux-coco@lists.linux.dev>; Thu, 01 Aug 2024 22:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722576220; x=1723181020; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gUkHiEfpCJ+cVRCtEwbMAEZ1/PiOksmLFdGOaJ89ffs=;
-        b=fQkk7EQx56S6uWxdhNHX5TWFv44uBdIq1FDRjec6eI8/uLI1FFRkottusHq0tlyFgs
-         m6Erp3PyxVln2tWyOH/rSFe9hlsk+6Bn2t05QmmE3doMK488Y/iw4BUVN8No+1wskDfH
-         c9JXDEzgkYs3yLHzIDRMqN+bselpGHcYGNAcLgjNjs3/b1ARf2MlwafVOo+FoDLtMbpC
-         ZbdGYd0rYJ6YzA8IDTm+AIfPhsY3SRYpOPv8+AP2Bjo9JGsFaoVFosGHYocwk2tjgrQe
-         EjUmNlgf7T0QH0QP0G//09VlS8l+TGNHyp6nre7Ujecyt3N4Cp3w+EkUx3Sg1MZHzhjn
-         9SdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722576220; x=1723181020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gUkHiEfpCJ+cVRCtEwbMAEZ1/PiOksmLFdGOaJ89ffs=;
-        b=Rqfc8P+osEqX4UWmnUziqmYo8Ir3zjZp8O0eLJ2MOsoCNOsvUm++e7rugNsnvbj7MS
-         q2/PJm/8gkXFPU4xNXw4QCJ7rCvmTZwZKTkR0+1THQ7PY3kOH9S2U0J+66sis3GVgKoX
-         R0YIElJDxoELQFwpjEKO0J4xznMHRu9rwyVHaU313DEPiex4w4ARLXWwM/D01VgqnGSM
-         fvavpV+3DbMvoEOynkNS/SUjlrxdDkWPBAX07+nUHwwEM6vst5xu3TgTTJLB0c29mYSE
-         R7xcPhmYjZ0T25nfZZUyVV95lb3p+4W7LHjRzw5mFKHp4PtboC/25zo4Ebl/0gBJBb46
-         hjOw==
-X-Forwarded-Encrypted: i=1; AJvYcCWPGpMzoUYbwrQmT73SWO1+holTPoe0ejCLL7el04sxc7CCAoR9b/WTZXlTqgA94ezYgsgJopdRmYerfWdRoCCynmtJlKEY7YhaiA==
-X-Gm-Message-State: AOJu0YzErguo/W1mZAKR6L2VwJDzsYfUuOsW8w6SZb+K57rUNZBnhNo2
-	E9GmCelkeJpNUuOlW2HsPxirCuAglqF4TOUOvj6qvgQnIPGoHdYmQcBXEny1d34BLzI41a6l+TF
-	cR5TStA0w9ZdaDl0LoDCe6m5pGpvF/MLt7RVZ
-X-Google-Smtp-Source: AGHT+IHZfdxzcVupquuH+mbEQsYfwiXcnEVf313JJBssnE3oDDjDXs61gvGQTCu/Y/7+drQ9x949r91Krj68d81dzA4=
-X-Received: by 2002:a05:6402:40cf:b0:5ac:4ce3:8f6a with SMTP id
- 4fb4d7f45d1cf-5b86bf8e337mr67440a12.6.1722576219642; Thu, 01 Aug 2024
- 22:23:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dpDckoGh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1722584484; x=1754120484;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lWIiKgnb7HkD/XfNp5unduL8AgOpKEyW/X7I3xwLQDo=;
+  b=dpDckoGhJhfFg/+ksADxOOllMBH2OfJcAUIyPJI+2UBC72Zocpx5u1Up
+   3KVOK8n5ccw3lAp4jlokD8nd5Gfz7Tghud5S2YMSIAOrevYQvQyNr4N7S
+   1yCQMGgGXvdcibyVbrnKvD1rsnAv7YHIF9QiNqzhXz/UOTUqBMOEUKqLs
+   iDarbi8na7TJ/KMef+ykmuECNUuooBMSHGcnjrBFmX578aWFI69MRFfYh
+   ZlMA9dnRBAKW8F4Cs7tPsZa0+uk8y1RlJKgpDXo5y3tMcDm1BxwLgBFi+
+   jhLe3G6ywXg5xm8i2HTQe0/ayQSIxJ3VYZKk3lYvbhmrSAJ5HtzRINBZa
+   w==;
+X-CSE-ConnectionGUID: n9n1diqESseNnJV3OeNzHw==
+X-CSE-MsgGUID: q9H47AvgR32a55a0ZvLcTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11151"; a="20172553"
+X-IronPort-AV: E=Sophos;i="6.09,257,1716274800"; 
+   d="scan'208";a="20172553"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2024 00:41:24 -0700
+X-CSE-ConnectionGUID: L1CWsx85QJGZnI8jSN05lA==
+X-CSE-MsgGUID: 43k7dbOpR4+KzcUA1F/hrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,257,1716274800"; 
+   d="scan'208";a="55239840"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa009.jf.intel.com with ESMTP; 02 Aug 2024 00:41:19 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 165ED1F2; Fri, 02 Aug 2024 10:41:18 +0300 (EEST)
+Date: Fri, 2 Aug 2024 10:41:17 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: "Alexey Gladkov (Intel)" <legion@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Yuan Yao <yuan.yao@intel.com>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>, 
+	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>, cho@microsoft.com, 
+	decui@microsoft.com, John.Starks@microsoft.com
+Subject: Re: [PATCH v1 2/4] x86/tdx: Add validation of userspace MMIO
+ instructions
+Message-ID: <mnncaxyk6jsbtlxk6xo5jvs7mzirp3ituyf7anequxy6xjjijm@ogkxlksd4gi6>
+References: <cover.1722356794.git.legion@kernel.org>
+ <855a5d97f0e76373e76c5124f415d3abd7ae3699.1722356794.git.legion@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <MW4PR11MB5872CE9BEF8361203F72EDFD8C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
- <MW4PR11MB58727350055C0E00D6CA0DC08C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
- <e2912269a273824e05714174fc04d45361ce71b5.camel@linux.ibm.com>
- <8c389411-c547-488f-93d2-ac953e212eaf@linux.microsoft.com>
- <f450d9b8c427a7d3c5ac53882d004280fc9b945a.camel@linux.ibm.com>
- <a8536552-c523-47ab-84e6-b2a1210bd366@linux.microsoft.com>
- <900e624ab5ff2ad8c1a69662450b42a442baa828.camel@linux.ibm.com>
- <MW4PR11MB5872A33D7ACFDDB34EEDC6958CDE2@MW4PR11MB5872.namprd11.prod.outlook.com>
- <MW4PR11MB58721C73775C3AD60D8C50338CB22@MW4PR11MB5872.namprd11.prod.outlook.com>
-In-Reply-To: <MW4PR11MB58721C73775C3AD60D8C50338CB22@MW4PR11MB5872.namprd11.prod.outlook.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Thu, 1 Aug 2024 22:23:26 -0700
-Message-ID: <CAAH4kHYCAwsSk_NTdQpYKisG2o2AMd-8rsy8x=yPJYWNREMD4g@mail.gmail.com>
-Subject: Re: Coconut-SVSM - vTPM support for Intel TD Partitioning
-To: "Yao, Jiewen" <jiewen.yao@intel.com>
-Cc: "jejb@linux.ibm.com" <jejb@linux.ibm.com>, Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>, 
-	Claudio Siqueira de Carvalho <cclaudio@ibm.com>, =?UTF-8?B?UsO2ZGVsLCBKw7ZyZw==?= <jroedel@suse.com>, 
-	"Lange, Jon" <jlange@microsoft.com>, "Dong, Eddie" <eddie.dong@intel.com>, 
-	"Johnson, Simon P" <simon.p.johnson@intel.com>, "Reshetova, Elena" <elena.reshetova@intel.com>, 
-	"Nakajima, Jun" <jun.nakajima@intel.com>, "Perez, Ronald" <ronald.perez@intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <855a5d97f0e76373e76c5124f415d3abd7ae3699.1722356794.git.legion@kernel.org>
 
-Thanks for this writeup, Jiewen. I see some parallels to the evTPM
-paper but some divergences that I find a little curious.
+On Tue, Jul 30, 2024 at 07:35:57PM +0200, Alexey Gladkov (Intel) wrote:
+> +static int valid_vaddr(struct ve_info *ve, enum insn_mmio_type mmio, int size,
+> +			unsigned long vaddr)
+> +{
+> +	phys_addr_t phys_addr;
+> +	bool writable = false;
+> +
+> +	/* It's not fatal. This can happen due to swap out or page migration. */
+> +	if (get_phys_addr(vaddr, &phys_addr, &writable) || (ve->gpa != cc_mkdec(phys_addr)))
+> +		return -EAGAIN;
 
-1. The EKpub is ephemeral and fully justified by the TD quote around
-it, so there is no need for an X.509 certificate from within the SVSM.
-There might be some value for the platform to countersign the EKpub
-with some instance information, so if anything I would only consider
-the Service CA-signed EK to make sense. The evTPM paper communicates
-the "EK cert" by stashing the quote that wraps the EKpub in the NVRAM
-index for the EK cert (0x1c00002). Indeed the authors of the paper
-already changed Keylime to verify quotes in this form.
+I think we need big fat comment here why these checks are needed.
 
-By requiring X.509 self-signing, you are now pulling in a bunch of
-unnecessary serialization code. For the CA-signed EK, you can get an
-X.509 cert in response to a Concise-CSR
-https://www.ietf.org/archive/id/draft-ietf-cose-cbor-encoded-cert-07.html#n=
-ame-c509-certificate-signing-re
-where CBOR serialization is much simpler.
+We have ve->gpa and it was valid at the time we got ve_info. But after we
+get ve_info, we enable interrupts allowing tlb shootdown and therefore
+munmap() in parallel thread of the process.
 
-2. I can appreciate the separator events for avoiding an emulation
-attack, but this limits your ability to have multiple L2 VMs with
-their own vTPMs to be launched at different times. It seems more
-appropriate to have a parent key that  each vTPM is underneath, but
-I'm not savvy enough with the available hierarchies to know if that
-parenting relationship is possible. This would actually make an EKcert
-make sense, since it'd be signed by this parent key of the ephemeral
-L1VMM. So, not one of your listed options.
+So by the time we've got here ve->gpa might be unmapped from the process,
+the device it belongs to removed from system and something else could be
+plugged in its place.
 
-This diverges from the evTPM paper since they were targeting SEV-SNP
-without nested VMs.
+That's why we need to re-check if the GPA is still mapped and writable if
+we are going to write to it.
 
-3. Migration isn't discussed much. Do you have a mitigation in mind to
-a platform-hosted attack where a migrated VM is cloned? The null
-hierarchy seeds would be the same but the VMs would evolve differently
-with different traffic and then compromise their security properties.
-Maybe the migration TD just accepts a single connection from the
-target VM and refuses any extra connection?
+> +
+> +	/* Check whether #VE info matches the instruction that was decoded. */
+> +	switch (mmio) {
+> +	case INSN_MMIO_WRITE:
+> +	case INSN_MMIO_WRITE_IMM:
+> +		if (!writable || !(ve->exit_qual & EPT_VIOLATION_ACC_WRITE))
+> +			return -EFAULT;
+> +		break;
+> +	case INSN_MMIO_READ:
+> +	case INSN_MMIO_READ_ZERO_EXTEND:
+> +	case INSN_MMIO_READ_SIGN_EXTEND:
+> +		if (!(ve->exit_qual & EPT_VIOLATION_ACC_READ))
+> +			return -EFAULT;
+> +		break;
+> +	default:
+> +		WARN_ONCE(1, "Unsupported mmio instruction: %d", mmio);
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
 
-4. Clarification question: =C2=A72.6 a new paragraph starts with a
-reference to a "connection between them" but I'm not sure who the
-parties of the "them" are. Is this the connection of the TPM quote to
-the TD quote by means of the TD quote containing a hash of the EKpub?
-I could also read "them" as L1 and L2.
-
-5. Clarification question: is the presence VMCALL's response HOBs for
-the TDVF to add to the hob list for inclusion in the event log so that
-there is no need for SVSM to produce an event log? In this case, why
-in =C2=A72.4 step 3.1 the TDVF creates an event for the SVSM version?
-Wouldn't SVSM be the appropriate one to report its version? Not sure
-what I missed.
-
-I caught some spelling and grammar errors if you'd like me to send
-those off list.
-
-On Thu, Aug 1, 2024 at 3:38=E2=80=AFPM Yao, Jiewen <jiewen.yao@intel.com> w=
-rote:
->
-> Hi
-> As follow up, we have drafted the vTPM document and put to https://github=
-.com/intel-staging/td-partitioning-svsm/blob/svsm-tdp-vtpm/Documentation/TD=
-%20Partitioning%20based%20virtual%20TPM%20Design%20Guide%20Rev%200.5.1.pdf.
-> It describes the current TD Partitioning based vTPM design.
->
-> The chapter 5 described the TDVMCALL between L2 guest and L1 VMM, to dete=
-ct the presence of L1 vTPM service and initial measurement.
-> Please let us know if you have any feedback.
->
-> Thank you
-> Yao, Jiewen
->
-> > -----Original Message-----
-> > From: Yao, Jiewen <jiewen.yao@intel.com>
-> > Sent: Thursday, July 4, 2024 11:08 AM
-> > To: jejb@linux.ibm.com; Jeremi Piotrowski <jpiotrowski@linux.microsoft.=
-com>;
-> > Claudio Siqueira de Carvalho <cclaudio@ibm.com>; R=C3=B6del, J=C3=B6rg
-> > <jroedel@suse.com>
-> > Cc: Lange, Jon <jlange@microsoft.com>; Dong, Eddie <eddie.dong@intel.co=
-m>;
-> > Johnson, Simon P <simon.p.johnson@intel.com>; Reshetova, Elena
-> > <elena.reshetova@intel.com>; Nakajima, Jun <jun.nakajima@intel.com>; Pe=
-rez,
-> > Ronald <ronald.perez@intel.com>; linux-coco@lists.linux.dev
-> > Subject: Coconut-SVSM - vTPM support for Intel TD Partitioning
-> >
-> > Hi
-> > We posted the initial version of vTPM support for Intel TD Partitioning=
- feature to
-> > https://github.com/intel-staging/td-partitioning-svsm/tree/svsm-tdp-vtp=
-m.
-> >
-> > Feature includes:
-> > - vTPM CRB MMIO interface
-> > - vTPM CA generation with TDX remote attestation
-> > - vTPM Endorsement Key certificate and CA provision
-> > - TDP L2 guest vTPM detection through TDVMCALL
-> > - SVSM vTPM startup and measurement (SVSM version and TDVF).
-> > - Ephemeral vTPM NVS
-> >
-> > This is initial version and we are working on the improvement.
-> > Any feedback is welcome!
-> >
-> >
-> > At same time, we find a potential issue https://github.com/coconut-
-> > svsm/svsm/issues/404. If you can take a look and provide your thoughts,=
- that
-> > would be great.
-> >
-> > Thank you
-> > Yao, Jiewen
->
->
-
-
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
