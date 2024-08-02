@@ -1,112 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E8616BE26
-	for <linux-coco@lists.linux.dev>; Fri,  2 Aug 2024 16:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5BB16BE0C
+	for <linux-coco@lists.linux.dev>; Fri,  2 Aug 2024 17:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722615393; cv=none; b=GT+7LI+91xIA+kcG8pN5DnnMJoocf1R4xej1oZ5qqJTq+htyzw4nYQ6g6nwtDe7wbYxha1Siwww5nVV/vjvlMC2VxRlYJmHcd8M9fRHDak/lHc8EBgnUEqFER6MfoGUljknay0dwb0ROpDLpQomA4lNbfs/ZQza5DjToWs3EVLM=
+	t=1722619265; cv=none; b=B1f4ZuMDrrLHCE2be0ryE2WIyPAvhCwebXuW4vLPMXTgRnEgWP78jXtpL09V3MuC8e3+j+Hru6Uwwsocu/L/0IfJ2oorNF4JcGHpIx/yaG//1/T38pQ9YI/ptTPMHFoCqzHs808gW9Ft6q21DkAbh3/u3Kw8I5KAA9xmvmUVLEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722615393; c=relaxed/simple;
-	bh=7tBPJDGBSXQXrJPXcK1OlbhN3CEcxQySVnphOx8+TZY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=U1GNOjJjN0hI/OIHzQC30NrdD/+HRMUhigb+HlSlvGbviBSE4NhVoZk3vpAMDn9dbwoI6JRjDUVuYe5vRfg2xHBdXHGnJB/kJKHOyGVyqnqcamy+WIfmbLEVVpjUTonqWb14U/FDgxBWoG07iBa8FvdUzOQ1nM9sdbMCofAlr+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyuHUg7D; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722619265; c=relaxed/simple;
+	bh=mvPmAJxOCoc3DrlmBzGfaUMFIP6BB3aCZfBH8RkIYyo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=S/DxKms+uRzCkoPiznlfWXWLpLZGac41TsihR2Bi68lWkVUZYknOUgyfp5ET0LNeh17l3OYFp1FoIuJQCZRc9PvtoJ1TXmiu4enV7uk3mRmWEcdPk7ZzDcYSLP+hbHD4HThb7zyon6ZptqAX+EyRlkoubtjhGNEv3IaX2f4q7Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SLU7NFtJ; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyuHUg7D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51FEC32782;
-	Fri,  2 Aug 2024 16:16:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722615392;
-	bh=7tBPJDGBSXQXrJPXcK1OlbhN3CEcxQySVnphOx8+TZY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lyuHUg7D90JWU3TbW78IU7LH8ClvNjA0D1v1UhYw2qsd8JOgCvGUCIh8/xEs8OpCm
-	 5KK4YT1Di2MGWl9khw42YSkN5XcqPPOE3yxQSQlXLtVqxUXhdfXnpqmIHYHaAWXfvy
-	 hgyF5u7Vro3hVkM/hPRw6FQHja/TI4SxwY9yKxBRoGFJ2Tc5HtLMlWnTfqfSdXwO1w
-	 ktVBVf5gJWu5/LgCPy1sxarVqeWXrsXl67SXPQ1f4GXdqn/ZRv5TgmWiivWG89fcHK
-	 7NepxvyRUbfeU6mpeE/55GL2oZqHjNFITZ6DoU7yfOomeTCLHYaUKTs2xDUfZjoWHm
-	 WBq8wstjiurgw==
-X-Mailer: emacs 31.0.50 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Suzuki Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>, linux-coco@lists.linux.dev
-Subject: Re: [PATCH 1/6] firmware/smccc: Call arch-specific hook on
- discovering KVM services
-In-Reply-To: <Zqz-0IosZbF76d0E@arm.com>
-References: <20240730151113.1497-1-will@kernel.org>
- <20240730151113.1497-2-will@kernel.org> <yq5ar0b9tyib.fsf@kernel.org>
- <20240731155045.GA3296@willie-the-truck> <yq5ao76dtv6n.fsf@kernel.org>
- <yq5ale1htv0w.fsf@kernel.org> <Zqz-0IosZbF76d0E@arm.com>
-Date: Fri, 02 Aug 2024 21:46:24 +0530
-Message-ID: <yq5a8qxeuch3.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SLU7NFtJ"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-45029af1408so943881cf.1
+        for <linux-coco@lists.linux.dev>; Fri, 02 Aug 2024 10:21:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722619261; x=1723224061; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wZmgLef/zUEfwhReuJuug+b2TEQamoZ+vRu0K2Q3aJs=;
+        b=SLU7NFtJAeUTJNOqf+Ve943jwo9HXAc/KPcmVO6y2hCX74BfJTb4+cf2/B9PEZIIks
+         62geOv+eDL764jsI4IQB+G6MjqU/NlgnOTtk3i/6xdFqAQBGlmDr9VjIV1WyfShHz6F/
+         BzQwLDTlBN06zBS/fnK9Tyg+PB0oAFkmQTxjoH4VtMwevSFH+RVfmlrwPXbT26sYzr0U
+         Sa58o4x+0uC9qCXe3q8084vI8LkXYht8QAc4OpwKaEZumZ630kaVMUNYJJKkCo9utfmU
+         ALbAZLBQvcDAz7fmowP24mnRQiwf8NXo/MxH6Ioy0dmdOma5YSUygifVntNZomgtNA3l
+         si+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722619261; x=1723224061;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wZmgLef/zUEfwhReuJuug+b2TEQamoZ+vRu0K2Q3aJs=;
+        b=vHaB3A1zi/a64kLh5d7zPn5mMysmNwOOY53MD65jPhmPCc9koXpNn4FKOgOK04LdBA
+         tzQIgSfMLfyXVMk9ukw1Rwpc9oMgG9doy4jpoha4SRkUBRfW1hcZi7U8oF9+LiGFsT2C
+         8rxySixIUfexq9486LyA2ld4BygEQy7zNSYTelGafNqgtK3WbZ3m9WEnzrFqwQ208KfK
+         7hEPeDy3CG3wzt4i/IG4NhfxJ5nDsypenK3xnIkzsOw9VUgPFGpwOrV9BBoW6pikGXkX
+         rIJcxYSvnjU4o9OzZzSxVRn0yZ7dp7YyZre8tVoocXGKQbGtyVffNAW6O3LPUxM0zZLb
+         uwOg==
+X-Gm-Message-State: AOJu0YzBWL4UTM6SiojzYf807C/9urousnYGLVveFKEd4tDvYT3ndRm6
+	+HuS8AdiKNZqN6CC14ycDugW2h9hrrkk9BxZSMNxI8KXPNVVoJsh70muRbLwmE9Y8HVFFFoY3pv
+	R323SvdILIowidYBzHFsohAzmE20HFXJXF+cc5s9jYX1AjuuTzNrN
+X-Google-Smtp-Source: AGHT+IGlTJ32KyOspUTkLvv29bi34mtkuHJJ+juCNqNYRYVszFKECVA1nYmlRmAJPGkyfdsTDG3N2Z81UUKE9PYojWg=
+X-Received: by 2002:a05:622a:1791:b0:447:d78b:fdf6 with SMTP id
+ d75a77b69052e-45198cda14amr1961cf.10.1722619261030; Fri, 02 Aug 2024 10:21:01
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+From: Steve Rutherford <srutherford@google.com>
+Date: Fri, 2 Aug 2024 10:20:23 -0700
+Message-ID: <CABayD+cxw+x77urjEYn1y_mi9DNuBreNNAuApGdYu_s6767NEA@mail.gmail.com>
+Subject: KernelSIG/Devsec Call for August 1st
+To: linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Catalin Marinas <catalin.marinas@arm.com> writes:
+KernelSIG call just finished up (apologies for not sending out a reminder).
 
-> On Wed, Jul 31, 2024 at 09:26:31PM +0530, Aneesh Kumar K.V wrote:
->> Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
->> > Will Deacon <will@kernel.org> writes:
->> >> On Wed, Jul 31, 2024 at 08:11:16PM +0530, Aneesh Kumar K.V wrote:
->> >>> Will Deacon <will@kernel.org> writes:
->> >>> > diff --git a/drivers/firmware/smccc/kvm_guest.c b/drivers/firmware/smccc/kvm_guest.c
->> >>> > index 89a68e7eeaa6..f3319be20b36 100644
->> >>> > --- a/drivers/firmware/smccc/kvm_guest.c
->> >>> > +++ b/drivers/firmware/smccc/kvm_guest.c
->> >>> > @@ -39,6 +39,8 @@ void __init kvm_init_hyp_services(void)
->> >>> >
->> >>> >  	pr_info("hypervisor services detected (0x%08lx 0x%08lx 0x%08lx 0x%08lx)\n",
->> >>> >  		 res.a3, res.a2, res.a1, res.a0);
->> >>> > +
->> >>> > +	kvm_arch_init_hyp_services();
->> >>> >  }
->> >>> >
->> >>>
->> >>> That is a bit late to detect RMM? One of the requirements is to
->> >>> figure out the pgprot_t flags for early_ioremap so that "earlycon" will
->> >>> work (by mapping the address as shared alias). To do that we need to
->> >>> make an RSI call to detect PROT_NS_SHARED mask as below.
->> >>>
->> >>> 	if (rsi_get_realm_config(&config))
->> >>> 		return;
->> >>> 	prot_ns_shared = BIT(config.ipa_bits - 1);
->> >>
->> >> Why can't the earlycon MMIO address just have that high bit set?
->> >>
->> >> I think it's horribly fragile to try detecting all of this stuff before
->> >> we're allowed to touch the console. We don't even bother with pKVM --
->> >> it's the guest firmware's responsibility to MMIO_GUARD the UART if it
->> >> detects a debuggable payload.
->> >
->> > To mark something shared, we need to know the mask value which is
->> > returned via rsi_get_realm_config() call.
->>
->> I guess you are suggesting to leave it to firmware to set up the device
->> tree "reg-offset" with shared bit set?
->
-> As you know, we've been through these options internally and we
-> concluded not to encode this information in the DT for various reasons.
->
+Main topics for today were:
+* Hotloading of TCB components
+* Pending Patch Series
+  * Private Memory Discard Manager
+  * Device Attestation ABI/Device authentication policy
 
-I was trying to find out what a guest firmware-based control means.
+Minutes/agenda for the call:
+https://docs.google.com/document/d/18D820gyt2xe84Jy6dGXgrNThApoozcekDzvIlK2_bd4/edit#heading=h.ga3eq6oielwo
 
->
-> Personally I don't like this IPA split but that's too late to change it
-> now in the RMM spec.
->
-
-Agreed. This also makes supporting both secure and non secure devices
-difficult.
-
--aneesh
+If you want to bring something up for the next call, which will be
+EU-friendly, feel free to add it to the next meeting in the minutes.
+Or feel free to bring it up in the call itself.
