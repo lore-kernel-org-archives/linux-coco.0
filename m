@@ -1,49 +1,49 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC9D2AD13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A5C15F3E0
 	for <linux-coco@lists.linux.dev>; Mon,  5 Aug 2024 18:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722882925; cv=none; b=jOOpqcFaCunFr134SYiNDJbUMhUzk+/cxpi1V84jCssFg6J35Mkmb645m8PNFIbNrcx7NmQ9CRjxeqJkoRk0x5dgi+iLxb7tFxy9E2MfiIPHKI/Wuwnh3qcNozIpD6Y75VoK5iabY/f+ca7m4KOTYKY4FUmHnkasoJwZPk27mqE=
+	t=1722882925; cv=none; b=bAW2wr6n0CPf6Saiudm7A5Bk/NUNFhQh93gJZDODqBS0EqvlXDqn46xaXoq0Fovkwt2pzrm2Rtzd/HgPe6zg3NgZ1lVR0zyzy0kie5VKo9M7XEG0wwofo4S4GF/Zc6J4VVs15z7w6dtbr39qKIIcA016pqKXEZJfXC1fSkbSJZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1722882925; c=relaxed/simple;
-	bh=xS1NHiO6Ad1ehcR/3Bs9Qk0gDA5ntDYTwYFWCrruVmg=;
+	bh=Dc7xBPtMEVYkTHxbGqssJP61RmrrzdZj7DttRv9ZvEk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=ZS7suHv23qTaDVHPJrcko1gd0C6hFZZ35233bSdmr8M8xxabyoO2qTfXDOX+b3kkASEIiWcBgd6mTIKjU0T+U7Vm+XUsb89cXINjxfafvjcdWW968/IDdxnKYnxjOcv3pkhTm+VDNyNBmozueJR0ArCZIfoKR1eEVs4zz2RXu2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nBmip99i; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:To:CC; b=pWni4RtBsL+mAlLRGeXqaIpgEadHIfIj2kb473n6g1rGhmBsbCSkQugngkmnbyL+JkJqRSUkenG7EETNGImK5fu6jl6OGG/BMr43f9LYJ6v4h5VZ8Ieotw6l/L+vccDgOlwLvRnGIlHzAnYngfnmPj5A8G0+SjuLbg6k+hDMceM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TFJbHmIF; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nBmip99i"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 475CS0ZK012626;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TFJbHmIF"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 475IVP7L031919;
 	Mon, 5 Aug 2024 18:35:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	NNwc/yTMOhkA2KsrscwiCYYgyWrv8AnymFPd4NDgii4=; b=nBmip99ie+VKFEV6
-	5BwX9G+Nq9+yRv8Zq/fE+4C2HG6UEfMkYzNf8NiHeaozuwzZ15UEDwhe8R6c339d
-	inq4fkafeIcjMrRDzSxv0NmrGPnLxSeqp6Pz8ijsPgMyfr1l4P/NQ9Y2fmC5VEAx
-	Bm7noiyPlryzZzAjgrRZmP3fnriwS/hqGxpupiitP45l3iM6PGcW53hoP4xkFwcM
-	8o107oX6jhUfwhsClNX0o3UkIBko+h+UaAONRnJkmTuyhWkCq+InSX6m3xshCJ/N
-	PpvfGvdZh5mvem95KOXCvWA6feBRKTv3j9T3fPBasnWPCN2wEboXSLscLE67t0Lz
-	H85zUw==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40sbj6n0k8-1
+	VI8SceDSszYjbEPmaGh0xnvBavYMrOtuUVZ9U4i2+FQ=; b=TFJbHmIF42xpNejp
+	uEiFEeP3sPD26D8spggjdCuJyfOu0jlxa8SYzLC2eQTPX7u9wJP4ia5QsXWmEWsS
+	SmmKNHcrLc3pvEN18/ywtJj/pbGLEQCnQNIknjbgAONxWX8/vouT0oJpJsTqrjHI
+	J9gmm9vFySGTdtaWdnKBAEB7N2/wzg46Yv+PGea5o6e+SE79cX8pw5ACket4tJVJ
+	/46l1exQm31wG5TRfMLTxajnaKVpxbaSBGD4aUBEqV4hjewIyCoYwq4gqUdn0GO0
+	QWEzNjfgnFbOoQ2c53f7004mFKM1sJG/EDoM7V2ya+7A1keYJZCyH8BtLkBfygdu
+	XmsY1w==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40tuhvsmeq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Aug 2024 18:35:15 +0000 (GMT)
+	Mon, 05 Aug 2024 18:35:16 +0000 (GMT)
 Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 475IZEHn024680
+	by NASANPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 475IZF4A029446
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 5 Aug 2024 18:35:14 GMT
+	Mon, 5 Aug 2024 18:35:15 GMT
 Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
  nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1544.9; Mon, 5 Aug 2024 11:35:14 -0700
 From: Elliot Berman <quic_eberman@quicinc.com>
-Date: Mon, 5 Aug 2024 11:34:48 -0700
-Subject: [PATCH RFC 2/4] kvm: Convert to use mm/guest_memfd
+Date: Mon, 5 Aug 2024 11:34:50 -0700
+Subject: [PATCH RFC 4/4] mm: guest_memfd: Add ability for mmap'ing pages
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240805-guest-memfd-lib-v1-2-e5a29a4ff5d7@quicinc.com>
+Message-ID: <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com>
 References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
 In-Reply-To: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -73,498 +73,195 @@ X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
  nasanex01b.na.qualcomm.com (10.46.141.250)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: MTWcnK-X0sCx-AQ_MiaF48nCefXYbKNb
-X-Proofpoint-GUID: MTWcnK-X0sCx-AQ_MiaF48nCefXYbKNb
+X-Proofpoint-ORIG-GUID: sfX1xQ5G9G6F0uigExaJMuPsByDlTZno
+X-Proofpoint-GUID: sfX1xQ5G9G6F0uigExaJMuPsByDlTZno
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-08-05_07,2024-08-02_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- priorityscore=1501 adultscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 clxscore=1011 malwarescore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2408050132
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 spamscore=0 mlxlogscore=999 phishscore=0 clxscore=1015
+ suspectscore=0 adultscore=0 mlxscore=0 malwarescore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408050132
 
-Use the recently created mm/guest_memfd implementation. No functional
-change intended.
+Confidential/protected guest virtual machines want to share some memory
+back with the host Linux. For example, virtqueues allow host and
+protected guest to exchange data. In MMU-only isolation of protected
+guest virtual machines, the transition between "shared" and "private"
+can be done in-place without a trusted hypervisor copying pages.
+
+Add support for this feature and allow Linux to mmap host-accessible
+pages. When the owner provides an ->accessible() callback in the
+struct guest_memfd_operations, guest_memfd allows folios to be mapped
+when the ->accessible() callback returns 0.
+
+To safely make inaccessible:
+
+```
+folio = guest_memfd_grab_folio(inode, index, flags);
+r = guest_memfd_make_inaccessible(inode, folio);
+if (r)
+        goto err;
+
+hypervisor_does_guest_mapping(folio);
+
+folio_unlock(folio);
+```
+
+hypervisor_does_s2_mapping(folio) should make it so
+ops->accessible(...) on those folios fails.
+
+The folio lock ensures atomicity.
 
 Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
 ---
- virt/kvm/Kconfig       |   1 +
- virt/kvm/guest_memfd.c | 299 ++++++++-----------------------------------------
- virt/kvm/kvm_main.c    |   2 -
- virt/kvm/kvm_mm.h      |   6 -
- 4 files changed, 49 insertions(+), 259 deletions(-)
+ include/linux/guest_memfd.h |  7 ++++
+ mm/guest_memfd.c            | 81 ++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 87 insertions(+), 1 deletion(-)
 
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index b14e14cdbfb9..1147e004fcbd 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -106,6 +106,7 @@ config KVM_GENERIC_MEMORY_ATTRIBUTES
- 
- config KVM_PRIVATE_MEM
-        select XARRAY_MULTI
-+       select GUEST_MEMFD
-        bool
- 
- config KVM_GENERIC_PRIVATE_MEM
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 1c509c351261..2fe3ff9e5793 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -1,9 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/backing-dev.h>
--#include <linux/falloc.h>
-+#include <linux/guest_memfd.h>
- #include <linux/kvm_host.h>
- #include <linux/pagemap.h>
--#include <linux/anon_inodes.h>
- 
- #include "kvm_mm.h"
- 
-@@ -13,9 +11,16 @@ struct kvm_gmem {
- 	struct list_head entry;
+diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
+index f9e4a27aed67..edcb4ba60cb0 100644
+--- a/include/linux/guest_memfd.h
++++ b/include/linux/guest_memfd.h
+@@ -16,12 +16,18 @@
+  * @invalidate_end: called after invalidate_begin returns success. Optional.
+  * @prepare: called before a folio is mapped into the guest address space.
+  *           Optional.
++ * @accessible: called after prepare returns success and before it's mapped
++ *              into the guest address space. Returns 0 if the folio can be
++ *              accessed.
++ *              Optional. If not present, assumes folios are never accessible.
+  * @release: Called when releasing the guest_memfd file. Required.
+  */
+ struct guest_memfd_operations {
+ 	int (*invalidate_begin)(struct inode *inode, pgoff_t offset, unsigned long nr);
+ 	void (*invalidate_end)(struct inode *inode, pgoff_t offset, unsigned long nr);
+ 	int (*prepare)(struct inode *inode, pgoff_t offset, struct folio *folio);
++	int (*accessible)(struct inode *inode, struct folio *folio,
++			  pgoff_t offset, unsigned long nr);
+ 	int (*release)(struct inode *inode);
  };
  
--static int kvm_gmem_prepare_folio(struct inode *inode, pgoff_t index, struct folio *folio)
-+static inline struct kvm_gmem *inode_to_kvm_gmem(struct inode *inode)
- {
-+	struct list_head *gmem_list = &inode->i_mapping->i_private_list;
-+
-+	return list_first_entry_or_null(gmem_list, struct kvm_gmem, entry);
-+}
-+
- #ifdef CONFIG_HAVE_KVM_GMEM_PREPARE
-+static int kvm_gmem_prepare_folio(struct inode *inode, pgoff_t index, struct folio *folio)
-+{
- 	struct list_head *gmem_list = &inode->i_mapping->i_private_list;
- 	struct kvm_gmem *gmem;
+@@ -48,5 +54,6 @@ struct file *guest_memfd_alloc(const char *name,
+ 			       const struct guest_memfd_operations *ops,
+ 			       loff_t size, unsigned long flags);
+ bool is_guest_memfd(struct file *file, const struct guest_memfd_operations *ops);
++int guest_memfd_make_inaccessible(struct file *file, struct folio *folio);
  
-@@ -45,57 +50,14 @@ static int kvm_gmem_prepare_folio(struct inode *inode, pgoff_t index, struct fol
- 		}
+ #endif
+diff --git a/mm/guest_memfd.c b/mm/guest_memfd.c
+index e9d8cab72b28..6b5609932ca5 100644
+--- a/mm/guest_memfd.c
++++ b/mm/guest_memfd.c
+@@ -9,6 +9,8 @@
+ #include <linux/pagemap.h>
+ #include <linux/set_memory.h>
+ 
++#include "internal.h"
++
+ static inline int guest_memfd_folio_private(struct folio *folio)
+ {
+ 	unsigned long nr_pages = folio_nr_pages(folio);
+@@ -89,7 +91,7 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
+ 			goto out_err;
  	}
  
--#endif
- 	return 0;
+-	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
++	if (!ops->accessible && (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)) {
+ 		r = guest_memfd_folio_private(folio);
+ 		if (r)
+ 			goto out_err;
+@@ -107,6 +109,82 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
  }
-+#endif
+ EXPORT_SYMBOL_GPL(guest_memfd_grab_folio);
  
--static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index, bool prepare)
--{
--	struct folio *folio;
--
--	/* TODO: Support huge pages. */
--	folio = filemap_grab_folio(inode->i_mapping, index);
--	if (IS_ERR(folio))
--		return folio;
--
--	/*
--	 * Use the up-to-date flag to track whether or not the memory has been
--	 * zeroed before being handed off to the guest.  There is no backing
--	 * storage for the memory, so the folio will remain up-to-date until
--	 * it's removed.
--	 *
--	 * TODO: Skip clearing pages when trusted firmware will do it when
--	 * assigning memory to the guest.
--	 */
--	if (!folio_test_uptodate(folio)) {
--		unsigned long nr_pages = folio_nr_pages(folio);
--		unsigned long i;
--
--		for (i = 0; i < nr_pages; i++)
--			clear_highpage(folio_page(folio, i));
--
--		folio_mark_uptodate(folio);
--	}
--
--	if (prepare) {
--		int r =	kvm_gmem_prepare_folio(inode, index, folio);
--		if (r < 0) {
--			folio_unlock(folio);
--			folio_put(folio);
--			return ERR_PTR(r);
--		}
--	}
--
--	/*
--	 * Ignore accessed, referenced, and dirty flags.  The memory is
--	 * unevictable and there is no storage to write back to.
--	 */
--	return folio;
--}
--
--static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
-+static int kvm_gmem_invalidate_begin(struct inode *inode, pgoff_t start,
- 				      pgoff_t end)
- {
-+	struct kvm_gmem *gmem = inode_to_kvm_gmem(inode);
- 	bool flush = false, found_memslot = false;
- 	struct kvm_memory_slot *slot;
- 	struct kvm *kvm = gmem->kvm;
-@@ -126,11 +88,14 @@ static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
- 
- 	if (found_memslot)
- 		KVM_MMU_UNLOCK(kvm);
++int guest_memfd_make_inaccessible(struct file *file, struct folio *folio)
++{
++	unsigned long gmem_flags = (unsigned long)file->private_data;
++	unsigned long i;
++	int r;
++
++	unmap_mapping_folio(folio);
++
++	/**
++	 * We can't use the refcount. It might be elevated due to
++	 * guest/vcpu trying to access same folio as another vcpu
++	 * or because userspace is trying to access folio for same reason
++	 *
++	 * folio_lock serializes the transitions between (in)accessible
++	 */
++	if (folio_maybe_dma_pinned(folio))
++		return -EBUSY;
++
++	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
++		r = guest_memfd_folio_private(folio);
++		if (r)
++			return r;
++	}
 +
 +	return 0;
- }
- 
--static void kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
-+static void kvm_gmem_invalidate_end(struct inode *inode, pgoff_t start,
- 				    pgoff_t end)
- {
-+	struct kvm_gmem *gmem = inode_to_kvm_gmem(inode);
- 	struct kvm *kvm = gmem->kvm;
- 
- 	if (xa_find(&gmem->bindings, &start, end - 1, XA_PRESENT)) {
-@@ -140,106 +105,9 @@ static void kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
- 	}
- }
- 
--static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
--{
--	struct list_head *gmem_list = &inode->i_mapping->i_private_list;
--	pgoff_t start = offset >> PAGE_SHIFT;
--	pgoff_t end = (offset + len) >> PAGE_SHIFT;
--	struct kvm_gmem *gmem;
--
--	/*
--	 * Bindings must be stable across invalidation to ensure the start+end
--	 * are balanced.
--	 */
--	filemap_invalidate_lock(inode->i_mapping);
--
--	list_for_each_entry(gmem, gmem_list, entry)
--		kvm_gmem_invalidate_begin(gmem, start, end);
--
--	truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
--
--	list_for_each_entry(gmem, gmem_list, entry)
--		kvm_gmem_invalidate_end(gmem, start, end);
--
--	filemap_invalidate_unlock(inode->i_mapping);
--
--	return 0;
--}
--
--static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
-+static int kvm_gmem_release(struct inode *inode)
- {
--	struct address_space *mapping = inode->i_mapping;
--	pgoff_t start, index, end;
--	int r;
--
--	/* Dedicated guest is immutable by default. */
--	if (offset + len > i_size_read(inode))
--		return -EINVAL;
--
--	filemap_invalidate_lock_shared(mapping);
--
--	start = offset >> PAGE_SHIFT;
--	end = (offset + len) >> PAGE_SHIFT;
--
--	r = 0;
--	for (index = start; index < end; ) {
--		struct folio *folio;
--
--		if (signal_pending(current)) {
--			r = -EINTR;
--			break;
--		}
--
--		folio = kvm_gmem_get_folio(inode, index, true);
--		if (IS_ERR(folio)) {
--			r = PTR_ERR(folio);
--			break;
--		}
--
--		index = folio_next_index(folio);
--
--		folio_unlock(folio);
--		folio_put(folio);
--
--		/* 64-bit only, wrapping the index should be impossible. */
--		if (WARN_ON_ONCE(!index))
--			break;
--
--		cond_resched();
--	}
--
--	filemap_invalidate_unlock_shared(mapping);
--
--	return r;
--}
--
--static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
--			       loff_t len)
--{
--	int ret;
--
--	if (!(mode & FALLOC_FL_KEEP_SIZE))
--		return -EOPNOTSUPP;
--
--	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
--		return -EOPNOTSUPP;
--
--	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
--		return -EINVAL;
--
--	if (mode & FALLOC_FL_PUNCH_HOLE)
--		ret = kvm_gmem_punch_hole(file_inode(file), offset, len);
--	else
--		ret = kvm_gmem_allocate(file_inode(file), offset, len);
--
--	if (!ret)
--		file_modified(file);
--	return ret;
--}
--
--static int kvm_gmem_release(struct inode *inode, struct file *file)
--{
--	struct kvm_gmem *gmem = file->private_data;
-+	struct kvm_gmem *gmem = inode_to_kvm_gmem(inode);
- 	struct kvm_memory_slot *slot;
- 	struct kvm *kvm = gmem->kvm;
- 	unsigned long index;
-@@ -265,8 +133,8 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 	 * Zap all SPTEs pointed at by this file.  Do not free the backing
- 	 * memory, as its lifetime is associated with the inode, not the file.
- 	 */
--	kvm_gmem_invalidate_begin(gmem, 0, -1ul);
--	kvm_gmem_invalidate_end(gmem, 0, -1ul);
-+	kvm_gmem_invalidate_begin(inode, 0, -1ul);
-+	kvm_gmem_invalidate_end(inode, 0, -1ul);
- 
- 	list_del(&gmem->entry);
- 
-@@ -293,56 +161,6 @@ static inline struct file *kvm_gmem_get_file(struct kvm_memory_slot *slot)
- 	return get_file_active(&slot->gmem.file);
- }
- 
--static struct file_operations kvm_gmem_fops = {
--	.open		= generic_file_open,
--	.release	= kvm_gmem_release,
--	.fallocate	= kvm_gmem_fallocate,
--};
--
--void kvm_gmem_init(struct module *module)
--{
--	kvm_gmem_fops.owner = module;
--}
--
--static int kvm_gmem_migrate_folio(struct address_space *mapping,
--				  struct folio *dst, struct folio *src,
--				  enum migrate_mode mode)
--{
--	WARN_ON_ONCE(1);
--	return -EINVAL;
--}
--
--static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *folio)
--{
--	struct list_head *gmem_list = &mapping->i_private_list;
--	struct kvm_gmem *gmem;
--	pgoff_t start, end;
--
--	filemap_invalidate_lock_shared(mapping);
--
--	start = folio->index;
--	end = start + folio_nr_pages(folio);
--
--	list_for_each_entry(gmem, gmem_list, entry)
--		kvm_gmem_invalidate_begin(gmem, start, end);
--
--	/*
--	 * Do not truncate the range, what action is taken in response to the
--	 * error is userspace's decision (assuming the architecture supports
--	 * gracefully handling memory errors).  If/when the guest attempts to
--	 * access a poisoned page, kvm_gmem_get_pfn() will return -EHWPOISON,
--	 * at which point KVM can either terminate the VM or propagate the
--	 * error to userspace.
--	 */
--
--	list_for_each_entry(gmem, gmem_list, entry)
--		kvm_gmem_invalidate_end(gmem, start, end);
--
--	filemap_invalidate_unlock_shared(mapping);
--
--	return MF_DELAYED;
--}
--
- #ifdef CONFIG_HAVE_KVM_GMEM_INVALIDATE
- static void kvm_gmem_free_folio(struct folio *folio)
- {
-@@ -354,34 +172,25 @@ static void kvm_gmem_free_folio(struct folio *folio)
- }
- #endif
- 
--static const struct address_space_operations kvm_gmem_aops = {
--	.dirty_folio = noop_dirty_folio,
--	.migrate_folio	= kvm_gmem_migrate_folio,
--	.error_remove_folio = kvm_gmem_error_folio,
-+static const struct guest_memfd_operations kvm_gmem_ops = {
-+	.invalidate_begin = kvm_gmem_invalidate_begin,
-+	.invalidate_end = kvm_gmem_invalidate_end,
-+#ifdef CONFIG_HAVE_KVM_GMEM_PREAPRE
-+	.prepare = kvm_gmem_prepare_folio,
-+#endif
- #ifdef CONFIG_HAVE_KVM_GMEM_INVALIDATE
- 	.free_folio = kvm_gmem_free_folio,
- #endif
-+	.release = kvm_gmem_release,
- };
- 
--static int kvm_gmem_getattr(struct mnt_idmap *idmap, const struct path *path,
--			    struct kstat *stat, u32 request_mask,
--			    unsigned int query_flags)
-+static inline struct kvm_gmem *file_to_kvm_gmem(struct file *file)
- {
--	struct inode *inode = path->dentry->d_inode;
--
--	generic_fillattr(idmap, request_mask, inode, stat);
--	return 0;
--}
-+	if (!is_guest_memfd(file, &kvm_gmem_ops))
-+		return NULL;
- 
--static int kvm_gmem_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
--			    struct iattr *attr)
--{
--	return -EINVAL;
-+	return inode_to_kvm_gmem(file_inode(file));
- }
--static const struct inode_operations kvm_gmem_iops = {
--	.getattr	= kvm_gmem_getattr,
--	.setattr	= kvm_gmem_setattr,
--};
- 
- static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- {
-@@ -401,31 +210,16 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 		goto err_fd;
- 	}
- 
--	file = anon_inode_create_getfile(anon_name, &kvm_gmem_fops, gmem,
--					 O_RDWR, NULL);
-+	file = guest_memfd_alloc(anon_name, &kvm_gmem_ops, size, 0);
- 	if (IS_ERR(file)) {
- 		err = PTR_ERR(file);
- 		goto err_gmem;
- 	}
- 
--	file->f_flags |= O_LARGEFILE;
--
--	inode = file->f_inode;
--	WARN_ON(file->f_mapping != inode->i_mapping);
--
--	inode->i_private = (void *)(unsigned long)flags;
--	inode->i_op = &kvm_gmem_iops;
--	inode->i_mapping->a_ops = &kvm_gmem_aops;
--	inode->i_mode |= S_IFREG;
--	inode->i_size = size;
--	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
--	mapping_set_inaccessible(inode->i_mapping);
--	/* Unmovable mappings are supposed to be marked unevictable as well. */
--	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
--
- 	kvm_get_kvm(kvm);
- 	gmem->kvm = kvm;
- 	xa_init(&gmem->bindings);
-+	inode = file_inode(file);
- 	list_add(&gmem->entry, &inode->i_mapping->i_private_list);
- 
- 	fd_install(fd, file);
-@@ -469,11 +263,8 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	if (!file)
- 		return -EBADF;
- 
--	if (file->f_op != &kvm_gmem_fops)
--		goto err;
--
--	gmem = file->private_data;
--	if (gmem->kvm != kvm)
-+	gmem = file_to_kvm_gmem(file);
-+	if (!gmem || gmem->kvm != kvm)
- 		goto err;
- 
- 	inode = file_inode(file);
-@@ -530,7 +321,9 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
- 	if (!file)
- 		return;
- 
--	gmem = file->private_data;
-+	gmem = file_to_kvm_gmem(file);
-+	if (!gmem)
-+		return;
- 
- 	filemap_invalidate_lock(file->f_mapping);
- 	xa_store_range(&gmem->bindings, start, end - 1, NULL, GFP_KERNEL);
-@@ -548,20 +341,24 @@ static int __kvm_gmem_get_pfn(struct file *file, struct kvm_memory_slot *slot,
- 	struct kvm_gmem *gmem = file->private_data;
- 	struct folio *folio;
- 	struct page *page;
--	int r;
-+	int r, flags = GUEST_MEMFD_GRAB_UPTODATE;
- 
- 	if (file != slot->gmem.file) {
- 		WARN_ON_ONCE(slot->gmem.file);
- 		return -EFAULT;
- 	}
- 
--	gmem = file->private_data;
--	if (xa_load(&gmem->bindings, index) != slot) {
--		WARN_ON_ONCE(xa_load(&gmem->bindings, index));
-+	gmem = file_to_kvm_gmem(file);
-+	if (WARN_ON_ONCE(!gmem))
++}
++
++static vm_fault_t gmem_fault(struct vm_fault *vmf)
++{
++	struct file *file = vmf->vma->vm_file;
++	struct inode *inode = file_inode(file);
++	const struct guest_memfd_operations *ops = inode->i_private;
++	struct folio *folio;
++	pgoff_t off;
++	int r;
++
++	folio = guest_memfd_grab_folio(file, vmf->pgoff, GUEST_MEMFD_GRAB_UPTODATE);
++	if (!folio)
++		return VM_FAULT_SIGBUS;
++
++	off = vmf->pgoff & (folio_nr_pages(folio) - 1);
++	r = ops->accessible(inode, folio, off, 1);
++	if (r) {
++		folio_unlock(folio);
++		folio_put(folio);
++		return VM_FAULT_SIGBUS;
++	}
++
++	guest_memfd_folio_clear_private(folio);
++
++	vmf->page = folio_page(folio, off);
++
++	return VM_FAULT_LOCKED;
++}
++
++static const struct vm_operations_struct gmem_vm_ops = {
++	.fault = gmem_fault,
++};
++
++static int gmem_mmap(struct file *file, struct vm_area_struct *vma)
++{
++	const struct guest_memfd_operations *ops = file_inode(file)->i_private;
++
++	if (!ops->accessible)
++		return -EPERM;
++
++	/* No support for private mappings to avoid COW.  */
++	if ((vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) !=
++	    (VM_SHARED | VM_MAYSHARE))
 +		return -EINVAL;
 +
-+	if (WARN_ON_ONCE(xa_load(&gmem->bindings, index) != slot))
- 		return -EIO;
--	}
- 
--	folio = kvm_gmem_get_folio(file_inode(file), index, prepare);
-+	if (prepare)
-+		flags |= GUEST_MEMFD_PREPARE;
++	file_accessed(file);
++	vma->vm_ops = &gmem_vm_ops;
++	return 0;
++}
 +
-+	folio = guest_memfd_grab_folio(file, index, flags);
- 	if (IS_ERR(folio))
- 		return PTR_ERR(folio);
- 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index d0788d0a72cc..cad798f4e135 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -6516,8 +6516,6 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- 	if (WARN_ON_ONCE(r))
- 		goto err_vfio;
- 
--	kvm_gmem_init(module);
--
- 	/*
- 	 * Registration _must_ be the very last thing done, as this exposes
- 	 * /dev/kvm to userspace, i.e. all infrastructure must be setup!
-diff --git a/virt/kvm/kvm_mm.h b/virt/kvm/kvm_mm.h
-index 715f19669d01..6336a4fdcf50 100644
---- a/virt/kvm/kvm_mm.h
-+++ b/virt/kvm/kvm_mm.h
-@@ -36,17 +36,11 @@ static inline void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm,
- #endif /* HAVE_KVM_PFNCACHE */
- 
- #ifdef CONFIG_KVM_PRIVATE_MEM
--void kvm_gmem_init(struct module *module);
- int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args);
- int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		  unsigned int fd, loff_t offset);
- void kvm_gmem_unbind(struct kvm_memory_slot *slot);
- #else
--static inline void kvm_gmem_init(struct module *module)
--{
--
--}
--
- static inline int kvm_gmem_bind(struct kvm *kvm,
- 					 struct kvm_memory_slot *slot,
- 					 unsigned int fd, loff_t offset)
+ static long gmem_punch_hole(struct file *file, loff_t offset, loff_t len)
+ {
+ 	struct inode *inode = file_inode(file);
+@@ -220,6 +298,7 @@ static int gmem_release(struct inode *inode, struct file *file)
+ static struct file_operations gmem_fops = {
+ 	.open = generic_file_open,
+ 	.llseek = generic_file_llseek,
++	.mmap = gmem_mmap,
+ 	.release = gmem_release,
+ 	.fallocate = gmem_fallocate,
+ 	.owner = THIS_MODULE,
 
 -- 
 2.34.1
