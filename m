@@ -1,152 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B177D1E495;
-	Mon,  5 Aug 2024 12:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3DF36D;
+	Mon,  5 Aug 2024 13:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722862313; cv=none; b=Tht+iJYq+B6GWJxpe3n1MbKRXzPcE/FVeGMc9wxW4GAItIHFOqc4E+UB4w9IObrpwaQFTEysI943O56CydU/BXFLQswvr6wOa9aWFM+v1avKv60lWScuU+qcH41cic0OweMKJQaXqQIN/8A2YYxI6616ZsPeqHCCeDmyqIP+bsc=
+	t=1722864612; cv=none; b=a/j9WHsFSnJhDm9U9ySAOplAKb/iX4PUJBbclMzYZVbOjMn1gjXXA+PNrEjL+nGnEyGk18m9EaVrNlbDYIKYPdMvEbY7mJ3W2lXUkHvOXJo1JkNaEr5IATouCkJP6iqVbAg9M/WTsKHSyijdR/VKZ2Xz6OYCQ1omqJD0we1d0Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722862313; c=relaxed/simple;
-	bh=oKZEK53pQdGjBi5I4ihYLvFYrtWxRVnPOmNnctNMgnY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nKmim/YBRSWiv0mlGIqVE6vgMolb+2qm1rL4vJGoAlibRfr3339NflBtnZSa7ghU+2Z9CK89LwGIs9aEufu19nu3BAFlYjGkkruXGzGDB2S6Cek9j/JPspEdb5ZhZnUOehJZ6YnxntAEkBfMDtlb+8VDxuxCImsAvQjDtH4bbr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iNSBz0B6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722864612; c=relaxed/simple;
+	bh=imRC0CMmPqs/fzBlIFTjW+gL2qURUgVxVhF4BXlMk2k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pZoMOxINvFSVJIlw/OXabU9+iY1hepYKxocu+jYTNB/k21fTKNOxtOP/X7Tp8CI++vp9JVLt1GCZhGujAgye2Bm7N0GME2IdVjV9iFEHOyswzItDOh+dEZWhY9lYFpabteRPXJoeK6XmKTR91KymqZoTgnNKTtHvoWh79YeuPNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZ04miN1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iNSBz0B6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D85C32782;
-	Mon,  5 Aug 2024 12:51:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZ04miN1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EBBEC32782;
+	Mon,  5 Aug 2024 13:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722862313;
-	bh=oKZEK53pQdGjBi5I4ihYLvFYrtWxRVnPOmNnctNMgnY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iNSBz0B6jdUhxnmE+Zu0g+6XsspSvW26Nz9B/Vmk5YeIAynm2u9K7OAjX/UP7wzIT
-	 tPcfLkKEM7MRWOKzTE/aQ3m5snuDG/T1vxbFRSfu30VAeHg/3vWuSRABLHR0sDo5p6
-	 Rsh0FgeYibx9ABUhvohYWJkBEU9LPoIzFkR6OFxn8Hfmv0Wa91p1ZDwtYTUidu2nIm
-	 aVb3jElyf8ZV7INcLqLlDX17QNmrZmWUTFEmdvidI1F0JWUIVqKBRsbCcZhR3/FvfG
-	 MBgI6MkB6WwwFTKyC75G4fhElssmjPKz9mRz44+Wws6YURSkloMspEwFAqd6mN/Av8
-	 Jt12w2NuE142Q==
-Date: Mon, 5 Aug 2024 14:51:45 +0200
-From: Alexey Gladkov <legion@kernel.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	s=k20201202; t=1722864612;
+	bh=imRC0CMmPqs/fzBlIFTjW+gL2qURUgVxVhF4BXlMk2k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TZ04miN1xGVMIUrTYHUrYeoIwdLP+g2a3KrvBxKmVkJumWoL9YcCJ3R4kkRxN/EHM
+	 Th1Dl3w0WJDJkiKNa8zorUCSKEzWGvzjnkyxtAoc1SoAKsD+886yigJmOvLaQ+Vudt
+	 9wLJ5UEUMVBmB6Bqey+a7CEZ+3PoxeIbdx5zNGcabiBzIQKY+yLlohqsSsdCiVkAvx
+	 JFwaC0zXXgbSfI+1s3b7svQVZJ41cdf2sOMwDtm0IHV981OxExbmgBBVyIcsbsPuh1
+	 5LrFHiJ+AkoaUVp+f0obqPISEfDmBC8oI8GXqx+ZejjHBnEh/tSDLIl13OmQn0O6lw
+	 ldRe4XGrrB/FQ==
+From: "Alexey Gladkov (Intel)" <legion@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Yuan Yao <yuan.yao@intel.com>,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>,
-	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>, cho@microsoft.com,
-	decui@microsoft.com, John.Starks@microsoft.com
-Subject: Re: [PATCH v1 4/4] x86/tdx: Implement movs for MMIO
-Message-ID: <ZrDK4bP3LUm17ubK@example.org>
+	Yuntao Wang <ytcoode@gmail.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Baoquan He <bhe@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	cho@microsoft.com,
+	decui@microsoft.com,
+	John.Starks@microsoft.com
+Subject: [PATCH v2 0/5] x86/tdx: Allow MMIO instructions from userspace
+Date: Mon,  5 Aug 2024 15:29:41 +0200
+Message-ID: <cover.1722862355.git.legion@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <cover.1722356794.git.legion@kernel.org>
 References: <cover.1722356794.git.legion@kernel.org>
- <c24855b0003df4397e3931f35d7ec285db5bc8bf.1722356794.git.legion@kernel.org>
- <871q3a7mf7.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <871q3a7mf7.ffs@tglx>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 30, 2024 at 08:41:00PM +0200, Thomas Gleixner wrote:
-> On Tue, Jul 30 2024 at 19:35, Alexey Gladkov wrote:
-> > Adapt AMD's implementation of the MOVS instruction. Since the
-> > implementations are similar, it is possible to reuse the code.
-> >
-> > MOVS emulation consists of dividing it into a series of read and write
-> > operations, which in turn will be validated separately.
-> 
-> Please split this into two patches:
-> 
->     1) Splitting out the AMD code
->     2) Adding it for Intel
+Currently, MMIO inside the TDX guest is allowed from kernel space and access
+from userspace is denied. This becomes a problem when working with virtual
+devices in userspace.
 
-Ok. Make sense.
+In TDX guest MMIO instructions are emulated in #VE. The kernel code uses special
+helpers to access MMIO memory to limit the number of instructions which are
+used.
 
-> > @@ -369,72 +369,17 @@ static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
-> >  static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
-> >  				   char *dst, char *buf, size_t size)
-> >  {
-> > -	unsigned long error_code = X86_PF_PROT | X86_PF_WRITE;
-> > +	unsigned long error_code;
-> > +	int ret = __put_iomem(dst, buf, size);
-> 
-> Variable ordering....
->   
-> > +static int handle_mmio_movs(struct insn *insn, struct pt_regs *regs, int size, struct ve_info *ve)
-> > +{
-> > +	unsigned long ds_base, es_base;
-> > +	unsigned char *src, *dst;
-> > +	unsigned char buffer[8];
-> > +	int off, ret;
-> > +	bool rep;
-> > +
-> > +	/*
-> > +	 * The in-kernel code must use a special API that does not use MOVS.
-> > +	 * If the MOVS instruction is received from in-kernel, then something
-> > +	 * is broken.
-> > +	 */
-> > +	WARN_ON_ONCE(!user_mode(regs));
-> 
-> Then it should return here and not try to continue, no?
+This patchset makes MMIO accessible from userspace. To do this additional checks
+were added to ensure that the emulated instruction will not be compromised.
 
-Oops. I miss it. Thanks!
 
-> > +int __get_iomem(char *src, char *buf, size_t size)
-> > +{
-> > +	/*
-> > +	 * This function uses __get_user() independent of whether kernel or user
-> > +	 * memory is accessed. This works fine because __get_user() does no
-> > +	 * sanity checks of the pointer being accessed. All that it does is
-> > +	 * to report when the access failed.
-> > +	 *
-> > +	 * Also, this function runs in atomic context, so __get_user() is not
-> > +	 * allowed to sleep. The page-fault handler detects that it is running
-> > +	 * in atomic context and will not try to take mmap_sem and handle the
-> > +	 * fault, so additional pagefault_enable()/disable() calls are not
-> > +	 * needed.
-> > +	 *
-> > +	 * The access can't be done via copy_from_user() here because
-> > +	 * mmio_read_mem() must not use string instructions to access unsafe
-> > +	 * memory. The reason is that MOVS is emulated by the #VC handler by
-> > +	 * splitting the move up into a read and a write and taking a nested #VC
-> > +	 * exception on whatever of them is the MMIO access. Using string
-> > +	 * instructions here would cause infinite nesting.
-> > +	 */
-> > +	switch (size) {
-> > +	case 1: {
-> > +		u8 d1;
-> > +		u8 __user *s = (u8 __user *)src;
-> 
-> One line for the variables is enough
-> 
-> 		u8 d1, __user *s = (u8 __user *)src;
-> 
-> No?
+v2:
+- Split into separate patches AMD helpers extraction and MOVS implementation
+  code for intel as suggested by Thomas Gleixner.
+- Fix coding style issues.
 
-Yes.
 
-> > +	case 8: {
-> > +		u64 d8;
-> > +		u64 __user *s = (u64 __user *)src;
-> > +		if (__get_user(d8, s))
-> 
-> Lacks newline between variable declaration and code.
-> 
-> Thanks,
-> 
->         tglx
-> 
+Alexey Gladkov (Intel) (5):
+  x86/tdx: Split MMIO read and write operations
+  x86/tdx: Add validation of userspace MMIO instructions
+  x86/tdx: Allow MMIO from userspace
+  x86/tdx: Move MMIO helpers to common library
+  x86/tdx: Implement movs for MMIO
+
+ arch/x86/coco/sev/core.c  | 135 ++---------------
+ arch/x86/coco/tdx/tdx.c   | 309 +++++++++++++++++++++++++++++++-------
+ arch/x86/include/asm/io.h |   3 +
+ arch/x86/lib/iomem.c      | 125 +++++++++++++++
+ 4 files changed, 398 insertions(+), 174 deletions(-)
 
 -- 
-Rgrds, legion
+2.45.2
 
