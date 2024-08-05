@@ -1,49 +1,50 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A5C15F3E0
-	for <linux-coco@lists.linux.dev>; Mon,  5 Aug 2024 18:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC1A165F0E
+	for <linux-coco@lists.linux.dev>; Mon,  5 Aug 2024 18:35:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722882925; cv=none; b=bAW2wr6n0CPf6Saiudm7A5Bk/NUNFhQh93gJZDODqBS0EqvlXDqn46xaXoq0Fovkwt2pzrm2Rtzd/HgPe6zg3NgZ1lVR0zyzy0kie5VKo9M7XEG0wwofo4S4GF/Zc6J4VVs15z7w6dtbr39qKIIcA016pqKXEZJfXC1fSkbSJZ0=
+	t=1722882937; cv=none; b=rAOQ/3qwrnn2L89nbTBxZGWxlElU4zxOKOpZ/L7qjic3rzQ3sjEa8Dy89xTdo/BugyNPVGQTLKPSHg1GUG/48skj5MFO3oS2Jgbn4vh+zEYNK9FPqIhxQTEvW10QMjeL9CTBtX18w4KN7+WIsMsndg9ch/PSNAjkKjAgWpCp2YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722882925; c=relaxed/simple;
-	bh=Dc7xBPtMEVYkTHxbGqssJP61RmrrzdZj7DttRv9ZvEk=;
+	s=arc-20240116; t=1722882937; c=relaxed/simple;
+	bh=KDfEQXalqiSf5/IeM/csiSOK+UBLbEzbozYvh/q4gwI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=pWni4RtBsL+mAlLRGeXqaIpgEadHIfIj2kb473n6g1rGhmBsbCSkQugngkmnbyL+JkJqRSUkenG7EETNGImK5fu6jl6OGG/BMr43f9LYJ6v4h5VZ8Ieotw6l/L+vccDgOlwLvRnGIlHzAnYngfnmPj5A8G0+SjuLbg6k+hDMceM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TFJbHmIF; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:To:CC; b=fgSuNwBn7tV9nmgIBA7rXqRDjCDY2D5Eg17UFEkPBkptQ8l9fRponl+kgt+g1QxL9hvKBvfofs/iqM0Was4Y4uR4elbQUebYls/38FyQBogRBmQt35dG39s+PRg75mNMBunStYSgY/B/Hxugd4zzqJ8F3GIotz/XRBe0fATgqjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ilp7NFpM; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TFJbHmIF"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 475IVP7L031919;
-	Mon, 5 Aug 2024 18:35:16 GMT
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ilp7NFpM"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 475Ba1wb019108;
+	Mon, 5 Aug 2024 18:35:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	VI8SceDSszYjbEPmaGh0xnvBavYMrOtuUVZ9U4i2+FQ=; b=TFJbHmIF42xpNejp
-	uEiFEeP3sPD26D8spggjdCuJyfOu0jlxa8SYzLC2eQTPX7u9wJP4ia5QsXWmEWsS
-	SmmKNHcrLc3pvEN18/ywtJj/pbGLEQCnQNIknjbgAONxWX8/vouT0oJpJsTqrjHI
-	J9gmm9vFySGTdtaWdnKBAEB7N2/wzg46Yv+PGea5o6e+SE79cX8pw5ACket4tJVJ
-	/46l1exQm31wG5TRfMLTxajnaKVpxbaSBGD4aUBEqV4hjewIyCoYwq4gqUdn0GO0
-	QWEzNjfgnFbOoQ2c53f7004mFKM1sJG/EDoM7V2ya+7A1keYJZCyH8BtLkBfygdu
-	XmsY1w==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40tuhvsmeq-1
+	t1pn8IKt3beAj61svnkSxeGlbod/pIj3zCqhxkMpp1w=; b=ilp7NFpM6DFeBDl8
+	W2bBX1hMzxVSdWfGchUjniGKkx5rbEA43dGS6ywxd2ONUPCRZpNMGRa+FHVK7AdK
+	0z0YnZ0dmjdVjJrbVeeUj0zInLNzMpNvTjqnRKnyj5yteJ4A0XXLRiii8ntFpC9n
+	ayW/9+d5w8HN12VLKzjnbx0EH+ATlOkD8R/Dulbom+eIV71Vryq0BKfZh/BAlWXA
+	HqT6/Grd8PRWUoZjUgozB09K254LwLAojCpuPkVM7IKvyoxZNtfVWVPc0vQccmck
+	/7glP+rY1jC4i76BTW8vCMnFOLjRn3WwRtld+qmUh7B+uBIloCbP50wEYuJnN8tC
+	EvgJ9w==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40scs2vvgj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Aug 2024 18:35:16 +0000 (GMT)
+	Mon, 05 Aug 2024 18:35:26 +0000 (GMT)
 Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 475IZF4A029446
+	by NASANPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 475IZEiA024686
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 5 Aug 2024 18:35:15 GMT
+	Mon, 5 Aug 2024 18:35:14 GMT
 Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
  nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1544.9; Mon, 5 Aug 2024 11:35:14 -0700
 From: Elliot Berman <quic_eberman@quicinc.com>
-Date: Mon, 5 Aug 2024 11:34:50 -0700
-Subject: [PATCH RFC 4/4] mm: guest_memfd: Add ability for mmap'ing pages
+Date: Mon, 5 Aug 2024 11:34:49 -0700
+Subject: [PATCH RFC 3/4] mm: guest_memfd: Add option to remove guest
+ private memory from direct map
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +53,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com>
+Message-ID: <20240805-guest-memfd-lib-v1-3-e5a29a4ff5d7@quicinc.com>
 References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
 In-Reply-To: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -73,195 +74,178 @@ X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
  nasanex01b.na.qualcomm.com (10.46.141.250)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: sfX1xQ5G9G6F0uigExaJMuPsByDlTZno
-X-Proofpoint-GUID: sfX1xQ5G9G6F0uigExaJMuPsByDlTZno
+X-Proofpoint-ORIG-GUID: Km60UcZQKmFHYOSjr87yEZONp7TaX5Yo
+X-Proofpoint-GUID: Km60UcZQKmFHYOSjr87yEZONp7TaX5Yo
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-08-05_07,2024-08-02_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 spamscore=0 mlxlogscore=999 phishscore=0 clxscore=1015
- suspectscore=0 adultscore=0 mlxscore=0 malwarescore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408050132
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ suspectscore=0 adultscore=0 spamscore=0 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 mlxlogscore=885 phishscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408050133
 
-Confidential/protected guest virtual machines want to share some memory
-back with the host Linux. For example, virtqueues allow host and
-protected guest to exchange data. In MMU-only isolation of protected
-guest virtual machines, the transition between "shared" and "private"
-can be done in-place without a trusted hypervisor copying pages.
+This patch was reworked from Patrick's patch:
+https://lore.kernel.org/all/20240709132041.3625501-6-roypat@amazon.co.uk/
 
-Add support for this feature and allow Linux to mmap host-accessible
-pages. When the owner provides an ->accessible() callback in the
-struct guest_memfd_operations, guest_memfd allows folios to be mapped
-when the ->accessible() callback returns 0.
+While guest_memfd is not available to be mapped by userspace, it is
+still accessible through the kernel's direct map. This means that in
+scenarios where guest-private memory is not hardware protected, it can
+be speculatively read and its contents potentially leaked through
+hardware side-channels. Removing guest-private memory from the direct
+map, thus mitigates a large class of speculative execution issues
+[1, Table 1].
 
-To safely make inaccessible:
+Direct map removal do not reuse the `.prepare` machinery, since
+`prepare` can be called multiple time, and it is the responsibility of
+the preparation routine to not "prepare" the same folio twice [2]. Thus,
+instead explicitly check if `filemap_grab_folio` allocated a new folio,
+and remove the returned folio from the direct map only if this was the
+case.
 
-```
-folio = guest_memfd_grab_folio(inode, index, flags);
-r = guest_memfd_make_inaccessible(inode, folio);
-if (r)
-        goto err;
+The patch uses release_folio instead of free_folio to reinsert pages
+back into the direct map as by the time free_folio is called,
+folio->mapping can already be NULL. This means that a call to
+folio_inode inside free_folio might deference a NULL pointer, leaving no
+way to access the inode which stores the flags that allow determining
+whether the page was removed from the direct map in the first place.
 
-hypervisor_does_guest_mapping(folio);
+[1]: https://download.vusec.net/papers/quarantine_raid23.pdf
 
-folio_unlock(folio);
-```
-
-hypervisor_does_s2_mapping(folio) should make it so
-ops->accessible(...) on those folios fails.
-
-The folio lock ensures atomicity.
-
+Cc: Patrick Roy <roypat@amazon.co.uk>
 Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
 ---
- include/linux/guest_memfd.h |  7 ++++
- mm/guest_memfd.c            | 81 ++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 87 insertions(+), 1 deletion(-)
+ include/linux/guest_memfd.h |  8 ++++++
+ mm/guest_memfd.c            | 65 ++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 72 insertions(+), 1 deletion(-)
 
 diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
-index f9e4a27aed67..edcb4ba60cb0 100644
+index be56d9d53067..f9e4a27aed67 100644
 --- a/include/linux/guest_memfd.h
 +++ b/include/linux/guest_memfd.h
-@@ -16,12 +16,18 @@
-  * @invalidate_end: called after invalidate_begin returns success. Optional.
-  * @prepare: called before a folio is mapped into the guest address space.
-  *           Optional.
-+ * @accessible: called after prepare returns success and before it's mapped
-+ *              into the guest address space. Returns 0 if the folio can be
-+ *              accessed.
-+ *              Optional. If not present, assumes folios are never accessible.
-  * @release: Called when releasing the guest_memfd file. Required.
-  */
- struct guest_memfd_operations {
- 	int (*invalidate_begin)(struct inode *inode, pgoff_t offset, unsigned long nr);
- 	void (*invalidate_end)(struct inode *inode, pgoff_t offset, unsigned long nr);
- 	int (*prepare)(struct inode *inode, pgoff_t offset, struct folio *folio);
-+	int (*accessible)(struct inode *inode, struct folio *folio,
-+			  pgoff_t offset, unsigned long nr);
+@@ -25,6 +25,14 @@ struct guest_memfd_operations {
  	int (*release)(struct inode *inode);
  };
  
-@@ -48,5 +54,6 @@ struct file *guest_memfd_alloc(const char *name,
- 			       const struct guest_memfd_operations *ops,
- 			       loff_t size, unsigned long flags);
- bool is_guest_memfd(struct file *file, const struct guest_memfd_operations *ops);
-+int guest_memfd_make_inaccessible(struct file *file, struct folio *folio);
- 
- #endif
++/**
++ * @GUEST_MEMFD_FLAG_NO_DIRECT_MAP: When making folios inaccessible by host, also
++ *                                  remove them from the kernel's direct map.
++ */
++enum {
++	GUEST_MEMFD_FLAG_NO_DIRECT_MAP		= BIT(0),
++};
++
+ /**
+  * @GUEST_MEMFD_GRAB_UPTODATE: Ensure pages are zeroed/up to date.
+  *                             If trusted hyp will do it, can ommit this flag
 diff --git a/mm/guest_memfd.c b/mm/guest_memfd.c
-index e9d8cab72b28..6b5609932ca5 100644
+index 580138b0f9d4..e9d8cab72b28 100644
 --- a/mm/guest_memfd.c
 +++ b/mm/guest_memfd.c
-@@ -9,6 +9,8 @@
+@@ -7,9 +7,55 @@
+ #include <linux/falloc.h>
+ #include <linux/guest_memfd.h>
  #include <linux/pagemap.h>
- #include <linux/set_memory.h>
- 
-+#include "internal.h"
++#include <linux/set_memory.h>
 +
- static inline int guest_memfd_folio_private(struct folio *folio)
- {
- 	unsigned long nr_pages = folio_nr_pages(folio);
-@@ -89,7 +91,7 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
- 			goto out_err;
- 	}
- 
--	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
-+	if (!ops->accessible && (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)) {
- 		r = guest_memfd_folio_private(folio);
- 		if (r)
- 			goto out_err;
-@@ -107,6 +109,82 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
- }
- EXPORT_SYMBOL_GPL(guest_memfd_grab_folio);
- 
-+int guest_memfd_make_inaccessible(struct file *file, struct folio *folio)
++static inline int guest_memfd_folio_private(struct folio *folio)
 +{
-+	unsigned long gmem_flags = (unsigned long)file->private_data;
++	unsigned long nr_pages = folio_nr_pages(folio);
 +	unsigned long i;
 +	int r;
 +
-+	unmap_mapping_folio(folio);
++	for (i = 0; i < nr_pages; i++) {
++		struct page *page = folio_page(folio, i);
 +
-+	/**
-+	 * We can't use the refcount. It might be elevated due to
-+	 * guest/vcpu trying to access same folio as another vcpu
-+	 * or because userspace is trying to access folio for same reason
-+	 *
-+	 * folio_lock serializes the transitions between (in)accessible
-+	 */
-+	if (folio_maybe_dma_pinned(folio))
-+		return -EBUSY;
++		r = set_direct_map_invalid_noflush(page);
++		if (r < 0)
++			goto out_remap;
++	}
 +
++	folio_set_private(folio);
++	return 0;
++out_remap:
++	for (; i > 0; i--) {
++		struct page *page = folio_page(folio, i - 1);
++
++		BUG_ON(set_direct_map_default_noflush(page));
++	}
++	return r;
++}
++
++static inline void guest_memfd_folio_clear_private(struct folio *folio)
++{
++	unsigned long start = (unsigned long)folio_address(folio);
++	unsigned long nr = folio_nr_pages(folio);
++	unsigned long i;
++
++	if (!folio_test_private(folio))
++		return;
++
++	for (i = 0; i < nr; i++) {
++		struct page *page = folio_page(folio, i);
++
++		BUG_ON(set_direct_map_default_noflush(page));
++	}
++	flush_tlb_kernel_range(start, start + folio_size(folio));
++
++	folio_clear_private(folio);
++}
+ 
+ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags)
+ {
++	unsigned long gmem_flags = (unsigned long)file->private_data;
+ 	struct inode *inode = file_inode(file);
+ 	struct guest_memfd_operations *ops = inode->i_private;
+ 	struct folio *folio;
+@@ -43,6 +89,12 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
+ 			goto out_err;
+ 	}
+ 
 +	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
 +		r = guest_memfd_folio_private(folio);
 +		if (r)
-+			return r;
++			goto out_err;
 +	}
 +
-+	return 0;
-+}
-+
-+static vm_fault_t gmem_fault(struct vm_fault *vmf)
-+{
-+	struct file *file = vmf->vma->vm_file;
-+	struct inode *inode = file_inode(file);
-+	const struct guest_memfd_operations *ops = inode->i_private;
-+	struct folio *folio;
-+	pgoff_t off;
-+	int r;
-+
-+	folio = guest_memfd_grab_folio(file, vmf->pgoff, GUEST_MEMFD_GRAB_UPTODATE);
-+	if (!folio)
-+		return VM_FAULT_SIGBUS;
-+
-+	off = vmf->pgoff & (folio_nr_pages(folio) - 1);
-+	r = ops->accessible(inode, folio, off, 1);
-+	if (r) {
-+		folio_unlock(folio);
-+		folio_put(folio);
-+		return VM_FAULT_SIGBUS;
-+	}
-+
+ 	/*
+ 	 * Ignore accessed, referenced, and dirty flags.  The memory is
+ 	 * unevictable and there is no storage to write back to.
+@@ -213,14 +265,25 @@ static bool gmem_release_folio(struct folio *folio, gfp_t gfp)
+ 	if (ops->invalidate_end)
+ 		ops->invalidate_end(inode, offset, nr);
+ 
 +	guest_memfd_folio_clear_private(folio);
 +
-+	vmf->page = folio_page(folio, off);
-+
-+	return VM_FAULT_LOCKED;
-+}
-+
-+static const struct vm_operations_struct gmem_vm_ops = {
-+	.fault = gmem_fault,
-+};
-+
-+static int gmem_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return true;
+ }
+ 
++static void gmem_invalidate_folio(struct folio *folio, size_t offset, size_t len)
 +{
-+	const struct guest_memfd_operations *ops = file_inode(file)->i_private;
++	/* not yet supported */
++	BUG_ON(offset || len != folio_size(folio));
 +
-+	if (!ops->accessible)
-+		return -EPERM;
-+
-+	/* No support for private mappings to avoid COW.  */
-+	if ((vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) !=
-+	    (VM_SHARED | VM_MAYSHARE))
-+		return -EINVAL;
-+
-+	file_accessed(file);
-+	vma->vm_ops = &gmem_vm_ops;
-+	return 0;
++	BUG_ON(!gmem_release_folio(folio, 0));
 +}
 +
- static long gmem_punch_hole(struct file *file, loff_t offset, loff_t len)
- {
- 	struct inode *inode = file_inode(file);
-@@ -220,6 +298,7 @@ static int gmem_release(struct inode *inode, struct file *file)
- static struct file_operations gmem_fops = {
- 	.open = generic_file_open,
- 	.llseek = generic_file_llseek,
-+	.mmap = gmem_mmap,
- 	.release = gmem_release,
- 	.fallocate = gmem_fallocate,
- 	.owner = THIS_MODULE,
+ static const struct address_space_operations gmem_aops = {
+ 	.dirty_folio = noop_dirty_folio,
+ 	.migrate_folio = gmem_migrate_folio,
+ 	.error_remove_folio = gmem_error_folio,
+ 	.release_folio = gmem_release_folio,
++	.invalidate_folio = gmem_invalidate_folio,
+ };
+ 
+ static inline bool guest_memfd_check_ops(const struct guest_memfd_operations *ops)
+@@ -241,7 +304,7 @@ struct file *guest_memfd_alloc(const char *name,
+ 	if (!guest_memfd_check_ops(ops))
+ 		return ERR_PTR(-EINVAL);
+ 
+-	if (flags)
++	if (flags & ~GUEST_MEMFD_FLAG_NO_DIRECT_MAP)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	/*
 
 -- 
 2.34.1
