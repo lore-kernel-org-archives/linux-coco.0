@@ -1,65 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6254D1D54F1
-	for <linux-coco@lists.linux.dev>; Tue,  6 Aug 2024 13:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF94A1D2F50
+	for <linux-coco@lists.linux.dev>; Tue,  6 Aug 2024 13:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722952105; cv=none; b=Kt/hKaJ/3Ra4xiV+AeWnFSaOML76yHkseYWy25D8yESAq6yoRg7DY8J3L2PJPSYekj6kWKDoG6iuk9hekI9JBod5zv5mCd73qTNIuBmGqK6iPKJtkRqTx2f+MIKA/9Z+NlN6vOTAtAdyLMf7pjf1yqgrXydxXjg3VdMa3I4i6mM=
+	t=1722952290; cv=none; b=uNZ3EO37YzWJLgZilbnPqQAeyRb9HDx7U7hbt9yR3iYlUx8x6IKYtcHab0XZ2ca4S4BSyNU0Gg55z95nWDZzFRaHgZK8OndeW3RxePMv0//8zC55YeWEnzhHLTQ4VYgVIhQ+rk1ABunNRKGb0Ihov87b3Z5tv5PRSifh8HpATKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722952105; c=relaxed/simple;
-	bh=xrxM1SqhWYYYwZ09b4/BbXYkJmOGRhJ6d/k55zrOR+Q=;
+	s=arc-20240116; t=1722952290; c=relaxed/simple;
+	bh=rEBQTpBlU5qZsZdAhDM90yzdJFf0K91AKjalTus1ncA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qRkN8EiytiUUQEA8X/dXNQsLZ/mHmbg2ce6xFhQOiOWU0g/wWXadm1QXtSh0HxCsQpmeTAGZbaR076ZW2T361HlIi16MVFIoSWFAMCbKLeGXZoQC+MXgwZIaijODDTJopix/FKngQLMRfPFusfovlbP5qYxtvtrc7B1k/OQIAOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JvbCcLFy; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=oY67aesu9m0uoELnB44p6Cq9qf08FI/3zIrYaaTJNwQVvVBGMhyJWO9puZsp3U4WpmqyfhYY+YNpbQRtE3ngd7hdD+jE+e6diUVeoNmtnNqr/CDMjMXeiSmLu0mLbAmP7O+UmLAUC6xBZt8TAdijvfheew7/RNf3cLCq7rG/6MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jxqk4uOq; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JvbCcLFy"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jxqk4uOq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722952103;
+	s=mimecast20190719; t=1722952287;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gtpU5qSprfJ+UldEW+4kFQXg1kf7NdDamMPmiVRXcoY=;
-	b=JvbCcLFy45H9oRclbDwKkFIbV833D9Kb1KM2R3M2ouuQiZbKbeUXgX+IxQWfZVByE9Wucl
-	IFtL9EcHEHaNJh462oxmoj9jaXuJtdfAcgOh+2a6YnyOy8X8+dfiHV7K7EZfOfo0wbXc/R
-	xpgYHc1A150uthtFQDavn2LPCqfeIzk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=TKxQXuHwcQJALgByJr3flxDLBtQkotXdNCYtFESS9F0=;
+	b=Jxqk4uOqqZhGZXiL2aJ7gYkjiXjJaiOP9K5YLVjKMndsipp4aw19Slj6iSAuyPbr+coEjr
+	WKwdCYBki/Ji+Y0bxpkNEfk4dL+cgpH/Zsi9Exmuu9zLj0u2TvId7wuTc2e/8qs7wO2L3u
+	b4V/A/M2U9llxiSDdEKanoFPOb/pHwk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-gOa8Tw0wNjGZfD47dPhVFg-1; Tue, 06 Aug 2024 09:48:21 -0400
-X-MC-Unique: gOa8Tw0wNjGZfD47dPhVFg-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-36835f6ebdcso480199f8f.1
-        for <linux-coco@lists.linux.dev>; Tue, 06 Aug 2024 06:48:21 -0700 (PDT)
+ us-mta-645-q3tdQyRNPhWyXtHJKeVSiQ-1; Tue, 06 Aug 2024 09:51:25 -0400
+X-MC-Unique: q3tdQyRNPhWyXtHJKeVSiQ-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3679ab94cdbso378806f8f.3
+        for <linux-coco@lists.linux.dev>; Tue, 06 Aug 2024 06:51:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722952101; x=1723556901;
+        d=1e100.net; s=20230601; t=1722952285; x=1723557085;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=gtpU5qSprfJ+UldEW+4kFQXg1kf7NdDamMPmiVRXcoY=;
-        b=c6Dh8UtoueyQa+WGUtmgkyHzpUseDCR81/LB8ROhY8qLJzBU7U496ELXnZ8SgdeW3P
-         EAlJmlsyaYH87DYDjibR6YBFvuCBGIvj2pIkRc993YemkEFTacdKHJ760FqTK2ow1P74
-         bbZLapeFrn7mfp2q46eT+4KxcTU70IkTyCW6AFMRk4+SGxed6uR6iI8UwmYCbQI1TDMD
-         7TfeyZreQ1z2p1x/wJlGzf5lsPt7nRl6uMtmenFvlb3vr8O/4Ql0mvsEJvM4A7QuRaYq
-         NuuH7ECnot0BhRPAnLUSXbSKMn9j7532K9AH4BSm7yw7Zkl0w5lNaXd1729cwGxVIo1W
-         nNWQ==
-X-Gm-Message-State: AOJu0Yzb27Z3oS6CEM9BFQYuDOpmAFyxXvO07GP/yTVeXSd8isa0FHO9
-	q+fFV9gf4fdnw34C0qK+yDZXZTTcMa37Ov2A4W5lb6UPEG3kSA6dngAhqzL6MXfVXBamnFE/H7S
-	PueqUIYvZgU/v5tGLzlAHn73r2vhpikmbKCdwBT0dO9J11eBHkmN3t3wLUaw=
-X-Received: by 2002:a5d:464b:0:b0:367:8e18:535c with SMTP id ffacd0b85a97d-36bbc14f832mr11022297f8f.43.1722952100704;
-        Tue, 06 Aug 2024 06:48:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGPRXCbw4R3JVze/f37dPQWjpfsvw8RLVk7FJ++mKPigRKg6a0Bo+6mw0dqBpIa26xORe/xBA==
-X-Received: by 2002:a5d:464b:0:b0:367:8e18:535c with SMTP id ffacd0b85a97d-36bbc14f832mr11022274f8f.43.1722952100155;
-        Tue, 06 Aug 2024 06:48:20 -0700 (PDT)
+        bh=TKxQXuHwcQJALgByJr3flxDLBtQkotXdNCYtFESS9F0=;
+        b=lo680ngBA3qHUv0Vvb5i5pGv96ODL8lejUBo+ym7F14HcWdL88kG8JTfRhLqtF8thz
+         9Br2XaEf7Vh5jibUy7RayZT3L/BsymwBAUb9MbDWgDBNYC0oYT9c3zhBm//fJbj1Nv/d
+         CPVupiz/tYHovhCWjM9p3EMpHsZ8iGdIGqfSwOKfr9s+SOO+DW71+MRlAkpxO/1KGXPh
+         wAHd4aiuC2naFXjVHKa+eq445Sdd5HXEAuDFyN+du0QhMxT3DlIcdQA1S+oa1zeJIfQ6
+         i0Hk0hsFfCoNx6vfMwR4s1mHAkAUZrZqEBE+r/JZvbtc83aIG1yd+rTZlwWGtRX1zTBZ
+         foeQ==
+X-Gm-Message-State: AOJu0Yzd0N0zywmGQrjWsa1OuQ/k6prGxtCoBoexaMU3hz2XDtL49367
+	Fadf6MYHFBh79hPs8DTn15jMvwnodGWiM6A3G/M+10+MTpjEfeanLsdNkOIlZeeo5S8AlGsCf7x
+	xIKsahKZm6+4YV6C7LuYOG+ExhHfjlipU76EmMyfcFwuS1Y9DbRUp9GxcsUU=
+X-Received: by 2002:a5d:6ace:0:b0:367:9904:e6b9 with SMTP id ffacd0b85a97d-36bbc14f5ddmr7578820f8f.44.1722952284773;
+        Tue, 06 Aug 2024 06:51:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHelcZaOAarnAunkGJ+91tlqo9Er1YHXmnpFNYHx9jhtZLMq3Wf5yH0Osq+mxeHAPytAVNyBQ==
+X-Received: by 2002:a5d:6ace:0:b0:367:9904:e6b9 with SMTP id ffacd0b85a97d-36bbc14f5ddmr7578806f8f.44.1722952284287;
+        Tue, 06 Aug 2024 06:51:24 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c73f:8500:f83c:3602:5300:88af? (p200300cbc73f8500f83c3602530088af.dip0.t-ipconnect.de. [2003:cb:c73f:8500:f83c:3602:5300:88af])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbcf0cc58sm13109166f8f.2.2024.08.06.06.48.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbd06fbfdsm12912183f8f.106.2024.08.06.06.51.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Aug 2024 06:48:19 -0700 (PDT)
-Message-ID: <03db8091-d563-402b-9eec-ad36a364e5d9@redhat.com>
-Date: Tue, 6 Aug 2024 15:48:18 +0200
+        Tue, 06 Aug 2024 06:51:23 -0700 (PDT)
+Message-ID: <4cdd93ba-9019-4c12-a0e6-07b430980278@redhat.com>
+Date: Tue, 6 Aug 2024 15:51:22 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,7 +67,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 1/4] mm: Introduce guest_memfd
+Subject: Re: [PATCH RFC 4/4] mm: guest_memfd: Add ability for mmap'ing pages
 To: Elliot Berman <quic_eberman@quicinc.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
@@ -77,7 +77,7 @@ To: Elliot Berman <quic_eberman@quicinc.com>,
 Cc: linux-coco@lists.linux.dev, linux-arm-msm@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org
 References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
- <20240805-guest-memfd-lib-v1-1-e5a29a4ff5d7@quicinc.com>
+ <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -124,33 +124,41 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240805-guest-memfd-lib-v1-1-e5a29a4ff5d7@quicinc.com>
+In-Reply-To: <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 05.08.24 20:34, Elliot Berman wrote:
-> In preparation for adding more features to KVM's guest_memfd, refactor
-> and introduce a library which abstracts some of the core-mm decisions
-> about managing folios associated with the file. The goal of the refactor
-> serves two purposes:
-> 
-> Provide an easier way to reason about memory in guest_memfd. With KVM
-> supporting multiple confidentiality models (TDX, SEV-SNP, pKVM, ARM
-> CCA), and coming support for allowing kernel and userspace to access
-> this memory, it seems necessary to create a stronger abstraction between
-> core-mm concerns and hypervisor concerns.
-> 
-> Provide a common implementation for other hypervisors (Gunyah) to use.
-> 
-> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+>   
+> -	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
+> +	if (!ops->accessible && (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)) {
+>   		r = guest_memfd_folio_private(folio);
+>   		if (r)
+>   			goto out_err;
+> @@ -107,6 +109,82 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
+>   }
+>   EXPORT_SYMBOL_GPL(guest_memfd_grab_folio);
+>   
+> +int guest_memfd_make_inaccessible(struct file *file, struct folio *folio)
+> +{
+> +	unsigned long gmem_flags = (unsigned long)file->private_data;
+> +	unsigned long i;
+> +	int r;
+> +
+> +	unmap_mapping_folio(folio);
+> +
+> +	/**
+> +	 * We can't use the refcount. It might be elevated due to
+> +	 * guest/vcpu trying to access same folio as another vcpu
+> +	 * or because userspace is trying to access folio for same reason
 
-Instead of "Introduce guest_memfd" and "Convert to use mm/guest_memfd", 
-I suggest a single patch that factors out guest_memfd into core-mm.
+As discussed, that's insufficient. We really have to drive the refcount 
+to 1 -- the single reference we expect.
 
-Or is there any particular reason for the split?
+What is the exact problem you are running into here? Who can just grab a 
+reference and maybe do nasty things with it?
 
 -- 
 Cheers,
