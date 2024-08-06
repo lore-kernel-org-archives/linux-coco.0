@@ -1,65 +1,65 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF94A1D2F50
-	for <linux-coco@lists.linux.dev>; Tue,  6 Aug 2024 13:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7353A18D626
+	for <linux-coco@lists.linux.dev>; Tue,  6 Aug 2024 14:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722952290; cv=none; b=uNZ3EO37YzWJLgZilbnPqQAeyRb9HDx7U7hbt9yR3iYlUx8x6IKYtcHab0XZ2ca4S4BSyNU0Gg55z95nWDZzFRaHgZK8OndeW3RxePMv0//8zC55YeWEnzhHLTQ4VYgVIhQ+rk1ABunNRKGb0Ihov87b3Z5tv5PRSifh8HpATKw=
+	t=1722953313; cv=none; b=l2okvVKntvTF64wMyNUxNScNT/SMfpb+MjgaYmE+Vs483WI8JiDGOtUJFyToPJ3WX4Irb2TZmHdnTmDPppEEAI9cp2LXT/Re2oQlhy5BeVVbQdilnxLHfivHrU9g/Uf4coDGttw8vb01weMNFtSvtZrQdKh1cU6AQonqFkODyuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722952290; c=relaxed/simple;
-	bh=rEBQTpBlU5qZsZdAhDM90yzdJFf0K91AKjalTus1ncA=;
+	s=arc-20240116; t=1722953313; c=relaxed/simple;
+	bh=vlGmBOftKIZpdRBPTZhL4vlLvSmtYIuAmQ+hY+0/2Vc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oY67aesu9m0uoELnB44p6Cq9qf08FI/3zIrYaaTJNwQVvVBGMhyJWO9puZsp3U4WpmqyfhYY+YNpbQRtE3ngd7hdD+jE+e6diUVeoNmtnNqr/CDMjMXeiSmLu0mLbAmP7O+UmLAUC6xBZt8TAdijvfheew7/RNf3cLCq7rG/6MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jxqk4uOq; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=Y/Lj08iWTteHZmX0QDALQ0jx3G4M7JxvcjjHbFGWrR6Jcr4ehEYwpojfpdwe+5x0RPHr70exNnLCCkGMBRoEA3FFWZJ7uAeRONTS/KmAU1LVSwV6/gZhSpiocdA2rBDhuIbi4LhzqYrhMT40JJvOZc+l7SdXP7cJ78brwCooA78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g46kvkU+; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jxqk4uOq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g46kvkU+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722952287;
+	s=mimecast20190719; t=1722953310;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=TKxQXuHwcQJALgByJr3flxDLBtQkotXdNCYtFESS9F0=;
-	b=Jxqk4uOqqZhGZXiL2aJ7gYkjiXjJaiOP9K5YLVjKMndsipp4aw19Slj6iSAuyPbr+coEjr
-	WKwdCYBki/Ji+Y0bxpkNEfk4dL+cgpH/Zsi9Exmuu9zLj0u2TvId7wuTc2e/8qs7wO2L3u
-	b4V/A/M2U9llxiSDdEKanoFPOb/pHwk=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=hbna4654uDKbKfBgT+7Y7s0hXv1oN4OUzzUqS0K6H94=;
+	b=g46kvkU+Rk8v6s7oXVzIy2FrwHvE5QKrX6je26vJ4GUKRFJZyaSbb5xPVYZIZx3nrZJmqj
+	bSrHuIeuSZRj3YyZOJor4/NedpCyIHapu9/0V3heLuo4eSZ2A9JINyYcIrPFs01VpSIjAp
+	e2onHp8SbfSW15+550+6+vl6fMN+jMo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-q3tdQyRNPhWyXtHJKeVSiQ-1; Tue, 06 Aug 2024 09:51:25 -0400
-X-MC-Unique: q3tdQyRNPhWyXtHJKeVSiQ-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3679ab94cdbso378806f8f.3
-        for <linux-coco@lists.linux.dev>; Tue, 06 Aug 2024 06:51:25 -0700 (PDT)
+ us-mta-119-FdTCxzlhPry3knvtIbs0vw-1; Tue, 06 Aug 2024 10:08:29 -0400
+X-MC-Unique: FdTCxzlhPry3knvtIbs0vw-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-369bbbdb5a1so468064f8f.1
+        for <linux-coco@lists.linux.dev>; Tue, 06 Aug 2024 07:08:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722952285; x=1723557085;
+        d=1e100.net; s=20230601; t=1722953308; x=1723558108;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=TKxQXuHwcQJALgByJr3flxDLBtQkotXdNCYtFESS9F0=;
-        b=lo680ngBA3qHUv0Vvb5i5pGv96ODL8lejUBo+ym7F14HcWdL88kG8JTfRhLqtF8thz
-         9Br2XaEf7Vh5jibUy7RayZT3L/BsymwBAUb9MbDWgDBNYC0oYT9c3zhBm//fJbj1Nv/d
-         CPVupiz/tYHovhCWjM9p3EMpHsZ8iGdIGqfSwOKfr9s+SOO+DW71+MRlAkpxO/1KGXPh
-         wAHd4aiuC2naFXjVHKa+eq445Sdd5HXEAuDFyN+du0QhMxT3DlIcdQA1S+oa1zeJIfQ6
-         i0Hk0hsFfCoNx6vfMwR4s1mHAkAUZrZqEBE+r/JZvbtc83aIG1yd+rTZlwWGtRX1zTBZ
-         foeQ==
-X-Gm-Message-State: AOJu0Yzd0N0zywmGQrjWsa1OuQ/k6prGxtCoBoexaMU3hz2XDtL49367
-	Fadf6MYHFBh79hPs8DTn15jMvwnodGWiM6A3G/M+10+MTpjEfeanLsdNkOIlZeeo5S8AlGsCf7x
-	xIKsahKZm6+4YV6C7LuYOG+ExhHfjlipU76EmMyfcFwuS1Y9DbRUp9GxcsUU=
-X-Received: by 2002:a5d:6ace:0:b0:367:9904:e6b9 with SMTP id ffacd0b85a97d-36bbc14f5ddmr7578820f8f.44.1722952284773;
-        Tue, 06 Aug 2024 06:51:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHelcZaOAarnAunkGJ+91tlqo9Er1YHXmnpFNYHx9jhtZLMq3Wf5yH0Osq+mxeHAPytAVNyBQ==
-X-Received: by 2002:a5d:6ace:0:b0:367:9904:e6b9 with SMTP id ffacd0b85a97d-36bbc14f5ddmr7578806f8f.44.1722952284287;
-        Tue, 06 Aug 2024 06:51:24 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c73f:8500:f83c:3602:5300:88af? (p200300cbc73f8500f83c3602530088af.dip0.t-ipconnect.de. [2003:cb:c73f:8500:f83c:3602:5300:88af])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbd06fbfdsm12912183f8f.106.2024.08.06.06.51.23
+        bh=hbna4654uDKbKfBgT+7Y7s0hXv1oN4OUzzUqS0K6H94=;
+        b=PJHzcXq4FYcu9w6l53yavXuFbew8uVLZXFwD6gNBXaTZ5JolpFX8CQrrKqfnP3cZwj
+         xv9+INMPdU3TDDK0ukPEp5N8ZTtbzD9ZeKc/icIOA0kkQCbcRNKhKR+AhDFNrI7vGNWJ
+         f3gcz5s6m0CtBMPsJlzgtmvqUvxV8sFMLWeU03K9mylTL6mBCn9C8n6+XwYfU9x4TihO
+         TTs93X3AjRpGV95LeQ2h+pIFbB4/690H8j4YavZ3GfNgSKHkhnHvcr+j6z/8zF2fh0Sb
+         7iytAWo47sPOcXvRsaVnq3JwX7CNwsj58AQg5jFmfpaioAd87yT4I5EZvfN2rs+OpgAl
+         W9ng==
+X-Gm-Message-State: AOJu0YzKgGUGyL2scHXY4EStI4A4BqM5VJkFKIQPPKbheH9hwDEL2p1H
+	Oc4Em7YFR7Vq/xBKDlyIHOe+1eMjlbMm7kInIOnDPaHp+hJRRlnHWdUVwzw6BhgZurkKl1Hb5TW
+	HNgWITcYUKg5J8uJltFdzavO4fDVI7i9gUwCAY9fyvzf0g+sMOvNl7rDlcN8=
+X-Received: by 2002:a5d:6892:0:b0:362:23d5:3928 with SMTP id ffacd0b85a97d-36bb35c5ecdmr13692107f8f.17.1722953307893;
+        Tue, 06 Aug 2024 07:08:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExCTsj02K2WYXzGt8u2T0xh3iMsv4w2hInseiESktzMOYaBeImfP7qFcOLNkB4yhVrCXP4fw==
+X-Received: by 2002:a5d:6892:0:b0:362:23d5:3928 with SMTP id ffacd0b85a97d-36bb35c5ecdmr13692066f8f.17.1722953307274;
+        Tue, 06 Aug 2024 07:08:27 -0700 (PDT)
+Received: from [192.168.3.141] (p4ff234d2.dip0.t-ipconnect.de. [79.242.52.210])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282bb97fbasm245003675e9.41.2024.08.06.07.08.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Aug 2024 06:51:23 -0700 (PDT)
-Message-ID: <4cdd93ba-9019-4c12-a0e6-07b430980278@redhat.com>
-Date: Tue, 6 Aug 2024 15:51:22 +0200
+        Tue, 06 Aug 2024 07:08:26 -0700 (PDT)
+Message-ID: <c55fc93d-270b-4b11-9b38-b54f350ea6c9@redhat.com>
+Date: Tue, 6 Aug 2024 16:08:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,7 +67,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 4/4] mm: guest_memfd: Add ability for mmap'ing pages
+Subject: Re: [PATCH RFC 3/4] mm: guest_memfd: Add option to remove guest
+ private memory from direct map
 To: Elliot Berman <quic_eberman@quicinc.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
@@ -77,7 +78,7 @@ To: Elliot Berman <quic_eberman@quicinc.com>,
 Cc: linux-coco@lists.linux.dev, linux-arm-msm@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org
 References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
- <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com>
+ <20240805-guest-memfd-lib-v1-3-e5a29a4ff5d7@quicinc.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -124,41 +125,198 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com>
+In-Reply-To: <20240805-guest-memfd-lib-v1-3-e5a29a4ff5d7@quicinc.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+On 05.08.24 20:34, Elliot Berman wrote:
+> This patch was reworked from Patrick's patch:
+> https://lore.kernel.org/all/20240709132041.3625501-6-roypat@amazon.co.uk/
+> 
+> While guest_memfd is not available to be mapped by userspace, it is
+> still accessible through the kernel's direct map. This means that in
+> scenarios where guest-private memory is not hardware protected, it can
+> be speculatively read and its contents potentially leaked through
+> hardware side-channels. Removing guest-private memory from the direct
+> map, thus mitigates a large class of speculative execution issues
+> [1, Table 1].
+
+I think you have to point out here that the speculative execution issues 
+are primarily only an issue when guest_memfd private memory is used 
+without TDX and friends where the memory would be encrypted either way.
+
+Or am I wrong?
+
+> 
+> Direct map removal do not reuse the `.prepare` machinery, since
+> `prepare` can be called multiple time, and it is the responsibility of
+> the preparation routine to not "prepare" the same folio twice [2]. Thus,
+> instead explicitly check if `filemap_grab_folio` allocated a new folio,
+> and remove the returned folio from the direct map only if this was the
+> case.
+> 
+> The patch uses release_folio instead of free_folio to reinsert pages
+> back into the direct map as by the time free_folio is called,
+> folio->mapping can already be NULL. This means that a call to
+> folio_inode inside free_folio might deference a NULL pointer, leaving no
+> way to access the inode which stores the flags that allow determining
+> whether the page was removed from the direct map in the first place.
+> 
+> [1]: https://download.vusec.net/papers/quarantine_raid23.pdf
+> 
+> Cc: Patrick Roy <roypat@amazon.co.uk>
+> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+> ---
+>   include/linux/guest_memfd.h |  8 ++++++
+>   mm/guest_memfd.c            | 65 ++++++++++++++++++++++++++++++++++++++++++++-
+>   2 files changed, 72 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
+> index be56d9d53067..f9e4a27aed67 100644
+> --- a/include/linux/guest_memfd.h
+> +++ b/include/linux/guest_memfd.h
+> @@ -25,6 +25,14 @@ struct guest_memfd_operations {
+>   	int (*release)(struct inode *inode);
+>   };
 >   
-> -	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
-> +	if (!ops->accessible && (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)) {
->   		r = guest_memfd_folio_private(folio);
->   		if (r)
->   			goto out_err;
-> @@ -107,6 +109,82 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
->   }
->   EXPORT_SYMBOL_GPL(guest_memfd_grab_folio);
->   
-> +int guest_memfd_make_inaccessible(struct file *file, struct folio *folio)
+> +/**
+> + * @GUEST_MEMFD_FLAG_NO_DIRECT_MAP: When making folios inaccessible by host, also
+> + *                                  remove them from the kernel's direct map.
+> + */
+
+Should we start introducing the concept of private and shared first, 
+such that we can then say that this only applies to private memory?
+
+> +enum {
+> +	GUEST_MEMFD_FLAG_NO_DIRECT_MAP		= BIT(0),
+> +};
+> +
+>   /**
+>    * @GUEST_MEMFD_GRAB_UPTODATE: Ensure pages are zeroed/up to date.
+>    *                             If trusted hyp will do it, can ommit this flag
+> diff --git a/mm/guest_memfd.c b/mm/guest_memfd.c
+> index 580138b0f9d4..e9d8cab72b28 100644
+> --- a/mm/guest_memfd.c
+> +++ b/mm/guest_memfd.c
+> @@ -7,9 +7,55 @@
+>   #include <linux/falloc.h>
+>   #include <linux/guest_memfd.h>
+>   #include <linux/pagemap.h>
+> +#include <linux/set_memory.h>
+> +
+> +static inline int guest_memfd_folio_private(struct folio *folio)
 > +{
-> +	unsigned long gmem_flags = (unsigned long)file->private_data;
+> +	unsigned long nr_pages = folio_nr_pages(folio);
+
+guest_memfd only supports small folios, this can be simplified.
+
 > +	unsigned long i;
 > +	int r;
 > +
-> +	unmap_mapping_folio(folio);
+> +	for (i = 0; i < nr_pages; i++) {
+> +		struct page *page = folio_page(folio, i);
 > +
-> +	/**
-> +	 * We can't use the refcount. It might be elevated due to
-> +	 * guest/vcpu trying to access same folio as another vcpu
-> +	 * or because userspace is trying to access folio for same reason
+> +		r = set_direct_map_invalid_noflush(page);
+> +		if (r < 0)
+> +			goto out_remap;
+> +	}
+> +
+> +	folio_set_private(folio);
+> +	return 0;
+> +out_remap:
+> +	for (; i > 0; i--) {
+> +		struct page *page = folio_page(folio, i - 1);
+> +
+> +		BUG_ON(set_direct_map_default_noflush(page));
+> +	}
+> +	return r;
+> +}
+> +
+> +static inline void guest_memfd_folio_clear_private(struct folio *folio)
 
-As discussed, that's insufficient. We really have to drive the refcount 
-to 1 -- the single reference we expect.
+Set set/clear private semantics in this context are a bit confusing. I 
+assume you mean "make inaccessible" "make accessible" and using the 
+PG_private flag is just an implementation detail.
 
-What is the exact problem you are running into here? Who can just grab a 
-reference and maybe do nasty things with it?
+> +{
+> +	unsigned long start = (unsigned long)folio_address(folio);
+> +	unsigned long nr = folio_nr_pages(folio);
+> +	unsigned long i;
+> +
+> +	if (!folio_test_private(folio))
+> +		return;
+> +
+> +	for (i = 0; i < nr; i++) {
+> +		struct page *page = folio_page(folio, i);
+> +
+> +		BUG_ON(set_direct_map_default_noflush(page));
+> +	}
+> +	flush_tlb_kernel_range(start, start + folio_size(folio));
+> +
+> +	folio_clear_private(folio);
+> +}
+>   
+>   struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags)
+>   {
+> +	unsigned long gmem_flags = (unsigned long)file->private_data;
+>   	struct inode *inode = file_inode(file);
+>   	struct guest_memfd_operations *ops = inode->i_private;
+>   	struct folio *folio;
+> @@ -43,6 +89,12 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
+>   			goto out_err;
+>   	}
+>   
+> +	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
+> +		r = guest_memfd_folio_private(folio);
+> +		if (r)
+> +			goto out_err;
+> +	}
+> +
+>   	/*
+>   	 * Ignore accessed, referenced, and dirty flags.  The memory is
+>   	 * unevictable and there is no storage to write back to.
+> @@ -213,14 +265,25 @@ static bool gmem_release_folio(struct folio *folio, gfp_t gfp)
+>   	if (ops->invalidate_end)
+>   		ops->invalidate_end(inode, offset, nr);
+>   
+> +	guest_memfd_folio_clear_private(folio);
+> +
+>   	return true;
+>   }
+>   
+> +static void gmem_invalidate_folio(struct folio *folio, size_t offset, size_t len)
+> +{
+> +	/* not yet supported */
+> +	BUG_ON(offset || len != folio_size(folio));
+> +
+> +	BUG_ON(!gmem_release_folio(folio, 0));
+
+In general, no BUG_ON please. WARN_ON_ONCE() is sufficient.
+
+> +}
+> +
+>   static const struct address_space_operations gmem_aops = {
+>   	.dirty_folio = noop_dirty_folio,
+>   	.migrate_folio = gmem_migrate_folio,
+>   	.error_remove_folio = gmem_error_folio,
+>   	.release_folio = gmem_release_folio,
+> +	.invalidate_folio = gmem_invalidate_folio,
+>   };
+>   
+>   static inline bool guest_memfd_check_ops(const struct guest_memfd_operations *ops)
+> @@ -241,7 +304,7 @@ struct file *guest_memfd_alloc(const char *name,
+>   	if (!guest_memfd_check_ops(ops))
+>   		return ERR_PTR(-EINVAL);
+>   
+> -	if (flags)
+> +	if (flags & ~GUEST_MEMFD_FLAG_NO_DIRECT_MAP)
+>   		return ERR_PTR(-EINVAL);
+>   
+>   	/*
+> 
 
 -- 
 Cheers,
