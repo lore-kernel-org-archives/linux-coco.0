@@ -1,134 +1,128 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632D622075
-	for <linux-coco@lists.linux.dev>; Tue,  6 Aug 2024 16:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1458943147
+	for <linux-coco@lists.linux.dev>; Tue,  6 Aug 2024 17:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722961452; cv=none; b=O38MPgndIlncUDrQQeP3Bw7jw8yFVpEq2ui+4MhoCemEB3I+46rPnjd+rTFYleleA4yIaN5uTYi/wO6mYzBXu/rI8iaA+lGI9XfJ0GI23uzjaw8/4gXchg5KWIGpYB0L5DeAOtElsnWQxxbimld/RVicKgGU4y8G4Q0M/X2Iii0=
+	t=1722964482; cv=none; b=g/V1/rjK694pez11s8Oxazu+1dHe295U0kgQtDgBQYUoN+zi/C4NpTkdCTXhcuJX1uF7M9C3hFkdhGMuOlyPI84vkJLZTLPRZ14SmWcwhOywpzUn/Wp+I1Vlt6gkD6D2KizMWlRHxY0dksuKIm5rH3Vg4GfDwuZk6UWU+IAomeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722961452; c=relaxed/simple;
-	bh=WBgRW+DqAPkx6XryG9DIGB7mu9AuewhXDnuGHSdhxnA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NwsYTbdEwTiyyudxdpmb8Ywf/sEcwh0UvNY8APL5153FD3hktUZF+dLDXoFV1VTnN/qKt+cjbOWpbW3NEqHDF3j4iAonNhob1qB9UECb/08266g5VpAOaMfyXwgDmDeaKGm2ZrK3ridwsFyzFthIjHHPcgKVPSn9DogTf1xfIjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=SlYDBXPs; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=SlYDBXPs; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1722964482; c=relaxed/simple;
+	bh=xhS+H7iQiaDB12Ynm2FdXOxJMbniRh+wjTAQWI2WEfo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fmF/YoEP78erVmY3z7aGD9xhMyGfQEtPzXzsm2e9BCsvfHmZoGQMFSaBpdgplEQ7w/hijW3H0tTjCL84ntNvWXQ90vHtcsQhFZIhTR8Hpu8dAzcNkrX1dR92y/EL1N/vYdiFzNC4oAT92pj8jQdyaAXUAx0u/81j0mz+0KsYPjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=WhUE7rvU; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="SlYDBXPs";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="SlYDBXPs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1722961445;
-	bh=WBgRW+DqAPkx6XryG9DIGB7mu9AuewhXDnuGHSdhxnA=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=SlYDBXPsqsipoTdXWTMsFYmgxwxQek3uhUanLm/wS2GcL7IzKLbGOtw9IKa7cOLTV
-	 X3qxy6B03PBHLr3R/PsW7UZGQ8GgMWX/9alwq1AxBPZ/uymDnqsfoG6x4LRZ9ST5xv
-	 H5vOCAC9LV45SSpg1192Dklcg+db9R0prNq/eLiA=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id E7D351286D12;
-	Tue, 06 Aug 2024 12:24:05 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id jMn_YPNX-13A; Tue,  6 Aug 2024 12:24:05 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1722961445;
-	bh=WBgRW+DqAPkx6XryG9DIGB7mu9AuewhXDnuGHSdhxnA=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=SlYDBXPsqsipoTdXWTMsFYmgxwxQek3uhUanLm/wS2GcL7IzKLbGOtw9IKa7cOLTV
-	 X3qxy6B03PBHLr3R/PsW7UZGQ8GgMWX/9alwq1AxBPZ/uymDnqsfoG6x4LRZ9ST5xv
-	 H5vOCAC9LV45SSpg1192Dklcg+db9R0prNq/eLiA=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::db7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 69A221286CAB;
-	Tue, 06 Aug 2024 12:24:04 -0400 (EDT)
-Message-ID: <ead3a13611e209bd994ca688e5ab0a9fa309383a.camel@HansenPartnership.com>
-Subject: Re: Coconut-SVSM - vTPM support for Intel TD Partitioning
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Claudio Siqueira de Carvalho <cclaudio@ibm.com>, 
- "elena.reshetova@intel.com" <elena.reshetova@intel.com>,
- "dionnaglaze@google.com" <dionnaglaze@google.com>
-Cc: "jejb@linux.ibm.com" <jejb@linux.ibm.com>, "jroedel@suse.com"
- <jroedel@suse.com>, "jun.nakajima@intel.com" <jun.nakajima@intel.com>, 
- "jiewen.yao@intel.com" <jiewen.yao@intel.com>,
- "jpiotrowski@linux.microsoft.com" <jpiotrowski@linux.microsoft.com>,
- "eddie.dong@intel.com" <eddie.dong@intel.com>,  "ronald.perez@intel.com"
- <ronald.perez@intel.com>, "jlange@microsoft.com" <jlange@microsoft.com>, 
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "simon.p.johnson@intel.com" <simon.p.johnson@intel.com>
-Date: Tue, 06 Aug 2024 12:23:59 -0400
-In-Reply-To: <003d1f1d654525afc736d84ec9a9e22debde1785.camel@ibm.com>
-References: 
-	<MW4PR11MB5872CE9BEF8361203F72EDFD8C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
-	 <MW4PR11MB58727350055C0E00D6CA0DC08C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
-	 <e2912269a273824e05714174fc04d45361ce71b5.camel@linux.ibm.com>
-	 <8c389411-c547-488f-93d2-ac953e212eaf@linux.microsoft.com>
-	 <f450d9b8c427a7d3c5ac53882d004280fc9b945a.camel@linux.ibm.com>
-	 <a8536552-c523-47ab-84e6-b2a1210bd366@linux.microsoft.com>
-	 <900e624ab5ff2ad8c1a69662450b42a442baa828.camel@linux.ibm.com>
-	 <MW4PR11MB5872A33D7ACFDDB34EEDC6958CDE2@MW4PR11MB5872.namprd11.prod.outlook.com>
-	 <MW4PR11MB58721C73775C3AD60D8C50338CB22@MW4PR11MB5872.namprd11.prod.outlook.com>
-	 <a5911223c2e23283674de4b85395acf0326363b2.camel@HansenPartnership.com>
-	 <CAAH4kHbiDaZjae21b2XPpWyPehBhGghshqz0jYf29G2p_vGKVQ@mail.gmail.com>
-	 <f809dfb51e14d93ec5538fba31d3d1478d69484c.camel@HansenPartnership.com>
-	 <DM8PR11MB575078E846B4E1E70D6A317AE7BE2@DM8PR11MB5750.namprd11.prod.outlook.com>
-	 <ab64151d817e32ae440668ad8fc7b42eddc59d07.camel@HansenPartnership.com>
-	 <DM8PR11MB5750563E06F6E7C278667768E7BF2@DM8PR11MB5750.namprd11.prod.outlook.com>
-	 <003d1f1d654525afc736d84ec9a9e22debde1785.camel@ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WhUE7rvU"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 476H6cpp018995;
+	Tue, 6 Aug 2024 17:14:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=T+n7dvh64qYrN/shgqY+idk4
+	1vC5DMbfjHSVqiAN9yc=; b=WhUE7rvUUoNPuWvxRyP4CZsScWKjmalCjsHGAE2N
+	kRGTHkuk7l9OjwKqFV0HTsxUhvYLXIdRsH78hlg9jmdDt6so6Txmwcg5MaiDF9tF
+	qAPY2W+n9lf5Cv9vmy/KNIEWAgbaWepwP0Y/GJzjsBGee9tLDCzafVUp3OWWFsjr
+	ZJaIjgCCSDNPObNV0ageWipmuTMv4eTl6LYWYq9slF85BHfxuK2qzoXenCj0CLJx
+	xBjLUSv0RlrGd/c47RtOt2njOvegNHPan4B4nuQHFlhiL6DL4MZlU6h3+ChKULBx
+	okImzB0822Dktd1MkZvuzmTZYN+Q1pxvZ7gHaoI0WgZjqw==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40u4cpk51q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 Aug 2024 17:14:27 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 476HEQC6024565
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 6 Aug 2024 17:14:26 GMT
+Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 6 Aug 2024 10:14:26 -0700
+Date: Tue, 6 Aug 2024 10:14:25 -0700
+From: Elliot Berman <quic_eberman@quicinc.com>
+To: David Hildenbrand <david@redhat.com>
+CC: Andrew Morton <akpm@linux-foundation.org>,
+        Paolo Bonzini
+	<pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Fuad Tabba
+	<tabba@google.com>, Patrick Roy <roypat@amazon.co.uk>,
+        <qperret@google.com>, Ackerley Tng <ackerleytng@google.com>,
+        <linux-coco@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <kvm@vger.kernel.org>
+Subject: Re: [PATCH RFC 4/4] mm: guest_memfd: Add ability for mmap'ing pages
+Message-ID: <20240806093625007-0700.eberman@hu-eberman-lv.qualcomm.com>
+References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
+ <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com>
+ <4cdd93ba-9019-4c12-a0e6-07b430980278@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <4cdd93ba-9019-4c12-a0e6-07b430980278@redhat.com>
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: IXdqrJVxXSKqBhFXqNY1RdXvAtHONbC5
+X-Proofpoint-GUID: IXdqrJVxXSKqBhFXqNY1RdXvAtHONbC5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-06_13,2024-08-06_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 phishscore=0 malwarescore=0 bulkscore=0 spamscore=0
+ lowpriorityscore=0 mlxscore=0 clxscore=1015 adultscore=0
+ priorityscore=1501 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2407110000 definitions=main-2408060121
 
-On Tue, 2024-08-06 at 15:51 +0000, Claudio Siqueira de Carvalho wrote:
-> On Tue, 2024-08-06 at 08:21 +0000, Reshetova, Elena wrote:
-> > > On Mon, 2024-08-05 at 09:55 +0000, Reshetova, Elena wrote:
-> > > > > On Fri, 2024-08-02 at 18:54 -0700, Dionna Amalie Glaze wrote:
-> > > [...]
-> > > > > 
-> > > > > That brings me to a curious point: is the Intel TDX SVSM
-> > > > > going to follow the SVSM protocol interface?  because if it
-> > > > > is, it will naturally inherit the enlightened interface (the
-> > > > > code will be present in the kernel, so it only needs
-> > > > > activating).  However, if the Intel SVSM were going to ignore
-> > > > > the SVSM protocol spec then it would have to reinvent
-> > > > > everything and the CRB interface might make more sense.
-> > > > 
-> > > > I cannot speak on behalf of the Intel TDX *SVSM*
-> > > > implementation, but for the Linux guest kernel there is no
-> > > > intention at the moment to support smth like SVSM protocol
-> > > > interface. We have made an evaluation on this during the
-> > > > spring. There are no usecases currently that require such new
-> > > > protocol introduction on Intel TDX and it does bring additional
-> > > > code complexity, etc. If anyone believes otherwise, please let
-> > > > me know.
-> > > 
-> > > If you reinvent the vTPM communication interface, I can see you
-> > > are able to get away without that SVSM communication component.
-> > 
-> > The goal is exactly the opposite, i.e. don't reinvent anything, but
-> > try to stick with exiting ways on how we have been doing things so
-> > far in Linux. In this light SVSM is an invention to do things.
+On Tue, Aug 06, 2024 at 03:51:22PM +0200, David Hildenbrand wrote:
+> > -	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
+> > +	if (!ops->accessible && (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)) {
+> >   		r = guest_memfd_folio_private(folio);
+> >   		if (r)
+> >   			goto out_err;
+> > @@ -107,6 +109,82 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
+> >   }
+> >   EXPORT_SYMBOL_GPL(guest_memfd_grab_folio);
+> > +int guest_memfd_make_inaccessible(struct file *file, struct folio *folio)
+> > +{
+> > +	unsigned long gmem_flags = (unsigned long)file->private_data;
+> > +	unsigned long i;
+> > +	int r;
+> > +
+> > +	unmap_mapping_folio(folio);
+> > +
+> > +	/**
+> > +	 * We can't use the refcount. It might be elevated due to
+> > +	 * guest/vcpu trying to access same folio as another vcpu
+> > +	 * or because userspace is trying to access folio for same reason
 > 
-> How will Intel attest the SVSM services provided?
+> As discussed, that's insufficient. We really have to drive the refcount to 1
+> -- the single reference we expect.
+> 
+> What is the exact problem you are running into here? Who can just grab a
+> reference and maybe do nasty things with it?
+> 
 
-It's in the document they provided at the top of this thread.  I gave
-an analysis here:
+Right, I remember we had discussed it. The problem I faced was if 2
+vcpus fault on same page, they would race to look up the folio in
+filemap, increment refcount, then try to lock the folio. One of the
+vcpus wins the lock, while the other waits. The vcpu that gets the
+lock vcpu will see the elevated refcount.
 
-https://lore.kernel.org/all/13ea31e26a9891722748c5d6e823f77b6c8b7809.camel@HansenPartnership.com/
+I was in middle of writing an explanation why I think this is best
+approach and realized I think it should be possible to do
+shared->private conversion and actually have single reference. There
+would be some cost to walk through the allocated folios and convert them
+to private before any vcpu runs. The approach I had gone with was to
+do conversions as late as possible.
 
-But basically it's the old trick of using a hash of the public EK as
-the nonce for a TDX atestation report and wrapping it in an EK
-certificate.  The problem is it doesn't allow the attesting agent to
-supply the challenge (nonce) so it's not best practice.
-
-Regards,
-
-James
-
+Thanks,
+Elliot
