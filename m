@@ -1,49 +1,53 @@
-Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
+Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF6F376
-	for <linux-coco@lists.linux.dev>; Thu,  8 Aug 2024 00:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B16E18DF9A
+	for <linux-coco@lists.linux.dev>; Thu,  8 Aug 2024 13:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723076057; cv=none; b=AEz4iIEqqZQF6LsSa1SRVkSIRYQMugiIRkWjzWopSEuS6gdj9vgNqlHaWZ84GETRcj2msrfwOXI9PBw4BiGTaxue1WcuQ2Kc0mhI5Lzo3GEPUjR+Rj8pcxJR5AwzxYBcRtcdEtprW7LfOMOSfj4LUMAyF3raGUq4W/5Kd057V1A=
+	t=1723122367; cv=none; b=PVJFBMiWjVGp9edGjfgIkwQrYQC0QJm5KN0lSo5WimrUMzyzOszwnhtBwlP6OPvUj0jEmK+sfI5a4LrN611nFXAT3kk5gIxXSyRCZk+ajYh/48VSfXVZ9ODIsx3w93JoldlL5Q/OmGwrGsjNEoeO8SbUgL3BoJDXdsASVQRM6Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723076057; c=relaxed/simple;
-	bh=rnk6NOm5/KnK6BxpfKd8TEgRBafhnCiGpVfQ3d/QHPs=;
+	s=arc-20240116; t=1723122367; c=relaxed/simple;
+	bh=Z/AFNCPiVJkrk9j7c1DJF4ygTrDpXqXaKLR9fjJprX4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=duj4DYvWsulcw4C0oD8OxpZF78mGVPAqBlFi0fuirRYErXYLYab5td7M0ZjX1rG7wsQbzAHy10II60sOiLSpdzXpHpRCIjZAS5FaiCYfYbe2P9c8n+DnRUiMToKkKRLdTOBHtxg4QVgxn6kgfMXLxArugXZOeQOvIkhKzJ4a5xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=b08Es367; arc=none smtp.client-ip=52.119.213.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	 In-Reply-To:Content-Type; b=Ojvhd9o8QMalr5+cYbeH/qd3Wqf4YeLNqTfKrHUWhOqNbtJwAhGFuzMMlnfB3bD9DSMPyIcZ1U+kDkhARHcGN+CExnZgQb+2/H+LwWLcpfNJgPnnpfEd/YOU8LipzzQyI2f4IB5rLPzrgWTZkQgJq5MOmswAlWaWQzwwrZelrIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=Dkt/PdFJ; arc=none smtp.client-ip=52.119.213.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="b08Es367"
+	dkim=pass (1024-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="Dkt/PdFJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1723076056; x=1754612056;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazon201209; t=1723122362; x=1754658362;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=rnk6NOm5/KnK6BxpfKd8TEgRBafhnCiGpVfQ3d/QHPs=;
-  b=b08Es367ayKGpfJBmbsQt752c9CsU1NGxj4dtSubTJ2XjniSWPn1d9na
-   ulFkCn5p7vxuqhBIcvtEe8NrMDq+ipGjrDX+UlcagGbjJR+ov+xYydtdT
-   dKnvbPQUiktSJD7yjtFkUekXYosc2axAJImqykomu4VjGw/Tt/KgbFeiu
-   Q=;
-X-IronPort-AV: E=Sophos;i="6.09,271,1716249600"; 
-   d="scan'208";a="672677906"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 00:14:14 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.38.20:52573]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.48.252:2525] with esmtp (Farcaster)
- id 95d0d38e-fff9-4f42-8e2e-4808f7d9cca0; Thu, 8 Aug 2024 00:14:13 +0000 (UTC)
-X-Farcaster-Flow-ID: 95d0d38e-fff9-4f42-8e2e-4808f7d9cca0
-Received: from EX19D003UWC002.ant.amazon.com (10.13.138.169) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+  bh=9g61wWgfXANiP3Mk9EmQM853vN4OhDo4yz4sW5Htiuc=;
+  b=Dkt/PdFJfnTfq5LMOfOl35KO/kRfRGKKMhcn2iGTJ1PeRf2l4Th+urri
+   GR1IXAHh4LUCDMnmHPEt2LaH3njHL7Z4n73m0o8+BQXBkwL2oUwmXt0cW
+   SAO9SQw//oWwBO64mN3JPd34kkgoQ7F9YlE+MDg+Loi9eP1gZ7mr9Cyxs
+   I=;
+X-IronPort-AV: E=Sophos;i="6.09,273,1716249600"; 
+   d="scan'208";a="224200239"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:05:59 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [10.0.17.79:21437]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.15.209:2525] with esmtp (Farcaster)
+ id 21dfb1b8-4d13-4b1a-8914-0ab7d48b3223; Thu, 8 Aug 2024 13:05:59 +0000 (UTC)
+X-Farcaster-Flow-ID: 21dfb1b8-4d13-4b1a-8914-0ab7d48b3223
+Received: from EX19D014EUA003.ant.amazon.com (10.252.50.119) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Thu, 8 Aug 2024 00:14:10 +0000
-Received: from [192.168.198.222] (10.106.100.47) by
- EX19D003UWC002.ant.amazon.com (10.13.138.169) with Microsoft SMTP Server
+ Thu, 8 Aug 2024 13:05:58 +0000
+Received: from EX19MTAUEA001.ant.amazon.com (10.252.134.203) by
+ EX19D014EUA003.ant.amazon.com (10.252.50.119) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Thu, 8 Aug 2024 00:14:09 +0000
-Message-ID: <396fb134-f43e-4263-99a8-cfcef82bfd99@amazon.com>
-Date: Wed, 7 Aug 2024 17:14:07 -0700
+ Thu, 8 Aug 2024 13:05:58 +0000
+Received: from [127.0.0.1] (172.19.88.180) by mail-relay.amazon.com
+ (10.252.134.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34 via Frontend
+ Transport; Thu, 8 Aug 2024 13:05:56 +0000
+Message-ID: <7166d51c-7757-44f2-a6f8-36da3e86bf90@amazon.co.uk>
+Date: Thu, 8 Aug 2024 14:05:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -53,95 +57,208 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC 3/4] mm: guest_memfd: Add option to remove guest
  private memory from direct map
-To: David Hildenbrand <david@redhat.com>, Elliot Berman
-	<quic_eberman@quicinc.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
-	"Fuad Tabba" <tabba@google.com>, Patrick Roy <roypat@amazon.co.uk>,
-	<qperret@google.com>, Ackerley Tng <ackerleytng@google.com>
-CC: <linux-coco@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>,
+To: Elliot Berman <quic_eberman@quicinc.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, Fuad Tabba
+	<tabba@google.com>, David Hildenbrand <david@redhat.com>,
+	<qperret@google.com>, Ackerley Tng <ackerleytng@google.com>,
+	<linux-coco@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <kvm@vger.kernel.org>,
-	Alexander Graf <graf@amazon.de>, Moritz Lipp <mlipp@amazon.at>, "Claudio
- Canella" <canellac@amazon.at>
+	James Gowans <jgowans@amazon.com>, "Kalyazin, Nikita"
+	<kalyazin@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>, "Cali,
+ Marco" <xmarcalx@amazon.co.uk>
 References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
  <20240805-guest-memfd-lib-v1-3-e5a29a4ff5d7@quicinc.com>
- <c55fc93d-270b-4b11-9b38-b54f350ea6c9@redhat.com>
+ <3fc11402-53e1-4325-a3ee-5ebd616b5b63@amazon.co.uk>
+ <20240806104702482-0700.eberman@hu-eberman-lv.qualcomm.com>
+ <a43ae745-9907-425f-b09d-a49405d6bc2d@amazon.co.uk>
+ <90886a03-ad62-4e98-bc05-63875faa9ccc@amazon.co.uk>
+ <20240807113514068-0700.eberman@hu-eberman-lv.qualcomm.com>
+From: Patrick Roy <roypat@amazon.co.uk>
 Content-Language: en-US
-From: "Manwaring, Derek" <derekmn@amazon.com>
-In-Reply-To: <c55fc93d-270b-4b11-9b38-b54f350ea6c9@redhat.com>
+Autocrypt: addr=roypat@amazon.co.uk; keydata=
+ xjMEY0UgYhYJKwYBBAHaRw8BAQdA7lj+ADr5b96qBcdINFVJSOg8RGtKthL5x77F2ABMh4PN
+ NVBhdHJpY2sgUm95IChHaXRodWIga2V5IGFtYXpvbikgPHJveXBhdEBhbWF6b24uY28udWs+
+ wpMEExYKADsWIQQ5DAcjaM+IvmZPLohVg4tqeAbEAgUCY0UgYgIbAwULCQgHAgIiAgYVCgkI
+ CwIEFgIDAQIeBwIXgAAKCRBVg4tqeAbEAmQKAQC1jMl/KT9pQHEdALF7SA1iJ9tpA5ppl1J9
+ AOIP7Nr9SwD/fvIWkq0QDnq69eK7HqW14CA7AToCF6NBqZ8r7ksi+QLOOARjRSBiEgorBgEE
+ AZdVAQUBAQdAqoMhGmiXJ3DMGeXrlaDA+v/aF/ah7ARbFV4ukHyz+CkDAQgHwngEGBYKACAW
+ IQQ5DAcjaM+IvmZPLohVg4tqeAbEAgUCY0UgYgIbDAAKCRBVg4tqeAbEAtjHAQDkh5jZRIsZ
+ 7JMNkPMSCd5PuSy0/Gdx8LGgsxxPMZwePgEAn5Tnh4fVbf00esnoK588bYQgJBioXtuXhtom
+ 8hlxFQM=
+In-Reply-To: <20240807113514068-0700.eberman@hu-eberman-lv.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EX19D036UWC004.ant.amazon.com (10.13.139.205) To
- EX19D003UWC002.ant.amazon.com (10.13.138.169)
+Content-Transfer-Encoding: 7bit
 
-On 2024-08-06 07:10-0700 David Hildenbrand wrote:
-> > While guest_memfd is not available to be mapped by userspace, it is
-> > still accessible through the kernel's direct map. This means that in
-> > scenarios where guest-private memory is not hardware protected, it can
-> > be speculatively read and its contents potentially leaked through
-> > hardware side-channels. Removing guest-private memory from the direct
-> > map, thus mitigates a large class of speculative execution issues
-> > [1, Table 1].
+On Wed, 2024-08-07 at 20:06 +0100, Elliot Berman wrote:
+>>>>>>  struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags)
+>>>>>>  {
+>>>>>> +       unsigned long gmem_flags = (unsigned long)file->private_data;
+>>>>>>         struct inode *inode = file_inode(file);
+>>>>>>         struct guest_memfd_operations *ops = inode->i_private;
+>>>>>>         struct folio *folio;
+>>>>>> @@ -43,6 +89,12 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
+>>>>>>                         goto out_err;
+>>>>>>         }
+>>>>>>
+>>>>>> +       if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
+>>>>>> +               r = guest_memfd_folio_private(folio);
+>>>>>> +               if (r)
+>>>>>> +                       goto out_err;
+>>>>>> +       }
+>>>>>> +
+>>>>>
+>>>>> How does a caller of guest_memfd_grab_folio know whether a folio needs
+>>>>> to be removed from the direct map? E.g. how can a caller know ahead of
+>>>>> time whether guest_memfd_grab_folio will return a freshly allocated
+>>>>> folio (which thus needs to be removed from the direct map), vs a folio
+>>>>> that already exists and has been removed from the direct map (probably
+>>>>> fine to remove from direct map again), vs a folio that already exists
+>>>>> and is currently re-inserted into the direct map for whatever reason
+>>>>> (must not remove these from the direct map, as other parts of
+>>>>> KVM/userspace probably don't expect the direct map entries to disappear
+>>>>> from underneath them). I couldn't figure this one out for my series,
+>>>>> which is why I went with hooking into the PG_uptodate logic to always
+>>>>> remove direct map entries on freshly allocated folios.
+>>>>>
+>>>>
+>>>> gmem_flags come from the owner. If the caller (in non-CoCo case) wants
+>>
+>> Ah, oops, I got it mixed up with the new `flags` parameter.
+>>
+>>>> to restore the direct map right away, it'd have to be a direct
+>>>> operation. As an optimization, we could add option that asks for page in
+>>>> "shared" state. If allocating new page, we can return it right away
+>>>> without removing from direct map. If grabbing existing folio, it would
+>>>> try to do the private->shared conversion.
+>>
+>> My concern is more with the implicit shared->private conversion that
+>> happens on every call to guest_memfd_grab_folio (and thus
+>> kvm_gmem_get_pfn) when grabbing existing folios. If something else
+>> marked the folio as shared, then we cannot punch it out of the direct
+>> map again until that something is done using the folio (when working on
+>> my RFC, kvm_gmem_get_pfn was indeed called on existing folios that were
+>> temporarily marked shared, as I was seeing panics because of this). And
+>> if the folio is currently private, there's nothing to do. So either way,
+>> guest_memfd_grab_folio shouldn't touch the direct map entry for existing
+>> folios.
+>>
 >
-> I think you have to point out here that the speculative execution issues
-> are primarily only an issue when guest_memfd private memory is used
-> without TDX and friends where the memory would be encrypted either way.
->
-> Or am I wrong?
+> What I did could be documented/commented better.
 
-Actually, I'm not sure how much protection CoCo solutions offer in this
-regard. I'd love to hear more from Intel and AMD on this, but it looks
-like they are not targeting full coverage for these types of attacks
-(beyond protecting guest mitigation settings from manipulation by the
-host).  For example, see this selection from AMD's 2020 whitepaper [1]
-on SEV-SNP:
+No worries, thanks for taking the time to walk me through understanding
+it!
 
-"There are certain classes of attacks that are not in scope for any of
-these three features. Architectural side channel attacks on CPU data
-structures are not specifically prevented by any hardware means. As with
-standard software security practices, code which is sensitive to such
-side channel attacks (e.g., cryptographic libraries) should be written
-in a way which helps prevent such attacks."
+> If ops->accessible() is *not* provided, all guest_memfd allocations will
+> immediately remove from direct map and treat them immediately like guest
+> private (goal is to match what KVM does today on tip).
 
-And:
+Ah, so if ops->accessible() is not provided, then there will never be
+any shared memory inside gmem (like today, where gmem doesn't support
+shared memory altogether), and thus there's no problems with just
+unconditionally doing set_direct_map_invalid_noflush in
+guest_memfd_grab_folio, because all existing folios already have their
+direct map entry removed. Got it!
 
-"While SEV-SNP offers guests several options when it comes to protection
-from speculative side channel attacks and SMT, it is not able to protect
-against all possible side channel attacks. For example, traditional side
-channel attacks on software such as PRIME+PROBE are not protected by
-SEV-SNP."
+> If ops->accessible() is provided, then guest_memfd allocations start
+> as "shared" and KVM/Gunyah need to do the shared->private conversion
+> when they want to do the private conversion on the folio. "Shared" is
+> the default because that is effectively a no-op.
+> For the non-CoCo case you're interested in, we'd have the
+> ops->accessible() provided and we wouldn't pull out the direct map from
+> gpc.
 
-Intel's docs also indicate guests need to protect themselves in some
-cases saying, "TD software should be aware that potentially untrusted
-software running outside a TD may be able to influence conditional
-branch predictions of software running in a TD" [2] and "a TDX guest VM
-is no different from a legacy guest VM in terms of protecting this
-userspace <-> OS kernel boundary" [3]. But these focus on hardening
-kernel & software within the guest.
+So in pKVM/Gunyah's case, guest memory starts as shared, and at some
+point the guest will issue a hypercall (or similar) to flip it to
+private, at which point it'll get removed from the direct map?
 
-What's not clear to me is what happens during transient execution when
-the host kernel attempts to access a page in physical memory that
-belongs to a guest. I assume if it only happens transiently, it will not
-result in a machine check like it would if the instructions were
-actually retired. As far as I can tell encryption happens between the
-CPU & main memory, so cache contents will be plaintext. This seems to
-leave open the possibility of the host kernel retrieving the plaintext
-cache contents with a transient execution attack. I assume vendors have
-controls in place to stop this, but Foreshadow/L1TF is a good example of
-one place this fell apart for SGX [4].
+That isn't really what we want for our case. We consider the folios as
+private straight away, as we do not let the guest control their state at
+all. Everything is always "accessible" to both KVM and userspace in the
+sense that they can just flip gfns to shared as they please without the
+guest having any say in it.
 
-All that said, we're also dependent on hardware not being subject to
-L1TF-style issues for the currently proposed non-CoCo method to be
-effective.  We're simply clearing the Present bit while the physmap PTE
-still points to the guest physical page. This was found to be
-exploitable across OS & VMM boundaries on Intel server parts before
-Cascade Lake [5] (thanks to Claudio for highlighting this). So that's a
-long way of saying TDX may offer similar protection, but not because of
-encryption.
+I think we should untangle the behavior of guest_memfd_grab_folio from
+the presence of ops->accessible. E.g.  instead of direct map removal
+being dependent on ops->accessible we should have some
+GRAB_FOLIO_RETURN_SHARED flag for gmem_flags, which is set for y'all,
+and not set for us (I don't think we should have a "call
+set_direct_map_invalid_noflush unconditionally in
+guest_memfd_grab_folio" mode at all, because if sharing gmem is
+supported, then that is broken, and if sharing gmem is not supported
+then only removing direct map entries for freshly allocated folios gets
+us the same result of "all folios never in the direct map" while
+avoiding some no-op direct map operations).
 
-Derek
+Because we would still use ->accessible, albeit for us that would be
+more for bookkeeping along the lines of "which gfns does userspace
+currently require to be in the direct map?". I haven't completely
+thought it through, but what I could see working for us would be a pair
+of ioctls for marking ranges accessible/inaccessible, with
+"accessibility" stored in some xarray (somewhat like Fuad's patches, I
+guess? [1]).
 
-[1] https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/SEV-SNP-strengthening-vm-isolation-with-integrity-protection-and-more.pdf#page=19
-[2] https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/best-practices/trusted-domain-security-guidance-for-developers.html
-[3] https://intel.github.io/ccc-linux-guest-hardening-docs/security-spec.html#transient-execution-attacks-and-their-mitigation
-[4] https://foreshadowattack.eu/foreshadow.pdf
-[5] https://foreshadowattack.eu/foreshadow-NG.pdf
+In a world where we have a "sharing refcount", the "make accessible"
+ioctl reinserts into the direct map (if needed), lifts the "sharings
+refcount" for each folio in the given gfn range, and marks the range as
+accessible.  And the "make inaccessible" ioctl would first check that
+userspace has unmapped all those gfns again, and if yes, mark them as
+inaccessible, drop the "sharings refcount" by 1 for each, and removes
+from the direct map again if it held the last reference (if userspace
+still has some gfns mapped, the ioctl would just fail).
+
+I guess for pKVM/Gunyah, there wouldn't be userspace ioctls, but instead
+the above would happen in handlers for share/unshare hypercalls. But the
+overall flow would be similar. The only difference is the default state
+of guest memory (shared for you, private for us). You want a
+guest_memfd_grab_folio that essentially returns folios with "sharing
+refcount == 1" (and thus present in the direct map), while we want the
+opposite.
+
+So I think something like the following should work for both of us
+(modulo some error handling):
+
+static struct folio *__kvm_gmem_get_folio(struct file *file, pgoff_t index, bool prepare, bool *fresh)
+{
+    // as today's kvm_gmem_get_folio, except
+    ...
+    if (!folio_test_uptodate(folio)) {
+        ...
+        if (fresh)
+            *fresh = true
+    }
+    ...
+}
+
+struct folio *kvm_gmem_get_folio(struct file *file, pgoff_t index, bool prepare)
+{
+    bool fresh;
+    unsigned long gmem_flags = /* ... */
+    struct folio *folio = __kvm_gmem_get_folio(file, index, prepare, &fresh);
+    if (gmem_flag & GRAB_FOLIO_RETURN_SHARED != 0) {
+        // if "sharing refcount == 0", inserts back into direct map and lifts refcount, otherwise just lifts refcount
+        guest_memfd_folio_clear_private(folio);
+    } else {
+        if (fresh)
+            guest_memfd_folio_private(folio);
+    }
+    return folio;
+}
+
+Now, thinking ahead, there's probably optimizations here where we defer
+the direct map manipulations to gmem_fault, at which point having a
+guest_memfd_grab_folio that doesn't remove direct map entries for fresh
+folios would be useful in our non-CoCo usecase too. But that should also
+be easily achievable by maybe having a flag to kvm_gmem_get_folio that
+forces the behavior of GRAB_FOLIO_RETURN_SHARED, indendently of whether
+GRAB_FOLIO_RETURN_SHARED is set in gmem_flags.
+
+How does that sound to you?
+
+[1]: https://lore.kernel.org/kvm/20240801090117.3841080-1-tabba@google.com/
+
+> Thanks,
+> Elliot
+
+Best,
+Patrick
