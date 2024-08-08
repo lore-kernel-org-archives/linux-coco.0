@@ -1,176 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B5918DF70;
-	Thu,  8 Aug 2024 16:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E7613F435
+	for <linux-coco@lists.linux.dev>; Thu,  8 Aug 2024 18:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723136008; cv=none; b=oE98uIeN7n9gouDs9bHMtPvvhHWMDMLffYhpmqiD/EPc5Ji612dpocWEKVqWTTkk02/4BBvYS+nBA+YvdKldCqkcTcgbav3Obyd/SL/8Ap2EkUpLBTOVNbXzOlfYNGp7BxpwkfN0SI+9vje37zkcmNduGXZP2I39uGGFDiJGiKs=
+	t=1723142392; cv=none; b=OVTj1Rz/UXS/ZMeIzsHJuv27D7L0U3qB6QdKczgC5iXqSbfG8WOFIMtpCsdFj9J/rbBnyhN+FBTVhRi0LXRn9G+g9GQh/HwBT2XLR7x1Qb1gKYHcVWrjQf6d0xkuEGbSklVwfh9alV6LglfZTHnEKx0041bu2UqU0E+0E+8airk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723136008; c=relaxed/simple;
-	bh=2G8acm99ctNGrHgg9Ur12SMR39ZkWeRqcgqvmBWQQHc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ta8AAo4q2lY0JeM3ZbWF9WBO66J0YL1zkr7tbYQBcIq6ZJejbWhfByqrebtZV3p3zvNlXhQGS94ld0W8t9PV8zsWmSf4uSdCJeAtJ3JnvbjZAH61ethsAIeTAzWRaWmCyL9njhJtXAiW/AHTNx9bIzmKEnUCo7T3vNBBEDUq/E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tijxg9yV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723142392; c=relaxed/simple;
+	bh=RwFJhJLgvF0/ZS2geOC+B9PruxoqhM8ayNYYcVVP5GI=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=ectG1piSLYvCh1UowU3qOVRzeZgw+ImdI2Pr4vxgJ2uaqu77uTULNty2ch9IoOSE+OtmtLm/8is26BWDP+L18WYxl525iojJVZFeU6pkhS93OG5LsK9AH16OZHlGaTaPEyikexS1J+Zpw3Wj9TFbCXHvfJNtgZ8/1syn4+Pb2gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VR9SLvtM; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tijxg9yV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872ADC32782;
-	Thu,  8 Aug 2024 16:53:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723136008;
-	bh=2G8acm99ctNGrHgg9Ur12SMR39ZkWeRqcgqvmBWQQHc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Tijxg9yVJ20yKgrdC4mZ6DbB4+ZrLOD9EmDq25CH2aL2UXtVvCNwUHS1TDBNMNRbH
-	 990b9pDJYh/M9Vz7XVys8q2d6BCdW0KhL44xuuBln40wRPp2K02fHQBq8t2Sdux8D+
-	 Jx3s3lQDdr5GFRcXIs37WqmeKXnHqoRvfkWei3zZUTyg/c2aqUqI7qV3gt4guDy9xy
-	 P30LxibWkKKkDP3mf/nz358Tzb7YKMiI59bTWuJHQVJYhLv8ut/BZE32uNyrwfL2AB
-	 OHieHKADOmd9MHubPOvKKXIT6inZTWnN2sVtPlyZMFc+OFFVILRdk6SiQ/2Crv47tX
-	 oO/EHPJ5Ei8yA==
-Date: Thu, 8 Aug 2024 18:53:20 +0200
-From: Alexey Gladkov <legion@kernel.org>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yuan Yao <yuan.yao@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>,
-	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
-	cho@microsoft.com, decui@microsoft.com, John.Starks@microsoft.com
-Subject: Re: [PATCH v2 5/5] x86/tdx: Implement movs for MMIO
-Message-ID: <ZrT4ABCJWbdO5Ui9@example.org>
-References: <cover.1722356794.git.legion@kernel.org>
- <cover.1722862355.git.legion@kernel.org>
- <83aa03c8f95ef00a6cf2fd6fa768c4b13e533d1c.1722862355.git.legion@kernel.org>
- <bb34abeb-c26e-7f72-2e3f-1c189c1ed871@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VR9SLvtM"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-1fc596b86a6so22494385ad.1
+        for <linux-coco@lists.linux.dev>; Thu, 08 Aug 2024 11:39:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1723142390; x=1723747190; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=rGCKEHWds3nLjc1rwbe/3j/9p13PqyT95btT2PVEHJQ=;
+        b=VR9SLvtMbJ+1DcYxbKg38bRM+CwiKv7qHV8+fBbpH/2xCVlzW8ZOxq3JN1SBdBfBZS
+         I9B4tHLY0QOE+lCCnz59zVe3ueng24w4oPzq5zFOWzfZ5ayAE8EsY/j9IvWaMa3+OUPI
+         P52KgVVH30nQu3lOs+PAIdXeSgGO9mIJaTFiKzxcM4IwYHJjwinvYwhEGXU7VWQx9QXf
+         h4wTYz61XuLARifPpqkJsCSFCyLwHDkMy31HDTrkHTYsSZwIgHA5Quhis+qnuJTS8M5E
+         7CVZzonEzzOSR0KUJFHJvY+kUN6r3gvKu94NzL385lO7prqxrT0F8wa+LsvZaIYUI0/z
+         T5jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723142390; x=1723747190;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rGCKEHWds3nLjc1rwbe/3j/9p13PqyT95btT2PVEHJQ=;
+        b=OF3T87cD9JecZywICj9yAyTHtDf69B5O5odDX3K9Q1AG52dmt7XuHZc0KL4pFrIdHv
+         b0PNEfx8b3lgpPbkM0c5q/+E1wR6P2lInvw3PMbGi3DVbs3Ljp5KZrl/erB0MvrR3IMz
+         mAelsP9TvGc5s+9a6u0Ggav12RWLnXMDnIZVrzK22JfQqqPgBT33h+pq4M2WtvvHdFsk
+         51+ge6Q9jpmME31PNCAJuF7yPncroBtUvbC4iKdksjx4p64Sg8Vc8Sgy6svkLVlstCpW
+         lnbePEKQUZ2LfPh3717CjR9xhwDG+3i8xO1EMWh0acQQmqOnS8qeUpjAinAYW5qOA7h2
+         sGcg==
+X-Forwarded-Encrypted: i=1; AJvYcCUJc9i8mJt65+MBMNl1SvbQ2d+Jbo9LbJSffup4eUGQ54Afg5/Z2G+eqmCD6j2CCdNh7nfPbrVk83sABJ/GIJVGO+ztK23LRWl/ig==
+X-Gm-Message-State: AOJu0YwRHmICdpbx+E2XNt5Ct5VC/BGHL0Cd7RCtlgsjHltSn6RQ1QV5
+	zoEmpP+At5Rjv41HZooZ3cCqS5Eizi8Q4HZ3bnErkmYNQA6j/ilEwIgPq0x/leXMFN1/jW9bSn0
+	AMg5N8dcgl7bApvI02Ygh4g==
+X-Google-Smtp-Source: AGHT+IFHR6HjyQprVWt7cfvq/+n/27mLEEJUa7fdG1j2U7c3HTuf0p1YaAhdrnA4goWQYkAB/MjKv4gqqjBOaHPwkQ==
+X-Received: from ackerleytng-ctop.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:13f8])
+ (user=ackerleytng job=sendgmr) by 2002:a17:903:1105:b0:1fb:526a:5d60 with
+ SMTP id d9443c01a7336-20096d3b493mr1368265ad.4.1723142389804; Thu, 08 Aug
+ 2024 11:39:49 -0700 (PDT)
+Date: Thu, 08 Aug 2024 18:39:48 +0000
+In-Reply-To: <20240805-guest-memfd-lib-v1-1-e5a29a4ff5d7@quicinc.com> (message
+ from Elliot Berman on Mon, 5 Aug 2024 11:34:47 -0700)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bb34abeb-c26e-7f72-2e3f-1c189c1ed871@amd.com>
+Mime-Version: 1.0
+Message-ID: <diqzttfun9jf.fsf@ackerleytng-ctop.c.googlers.com>
+Subject: Re: [PATCH RFC 1/4] mm: Introduce guest_memfd
+From: Ackerley Tng <ackerleytng@google.com>
+To: Elliot Berman <quic_eberman@quicinc.com>
+Cc: akpm@linux-foundation.org, pbonzini@redhat.com, seanjc@google.com, 
+	tabba@google.com, david@redhat.com, roypat@amazon.co.uk, qperret@google.com, 
+	linux-coco@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
+	quic_eberman@quicinc.com, vannapurve@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Aug 08, 2024 at 08:48:26AM -0500, Tom Lendacky wrote:
-> On 8/5/24 08:29, Alexey Gladkov (Intel) wrote:
-> > Add emulation of the MOVS instruction on MMIO regions. MOVS emulation
-> > consists of dividing it into a series of read and write operations,
-> > which in turn will be validated separately.
-> > 
-> > Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
-> > ---
-> >  arch/x86/coco/tdx/tdx.c | 57 ++++++++++++++++++++++++++++++++++++++---
-> >  1 file changed, 53 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> > index 4e2fb9bf83a1..8573cb23837e 100644
-> > --- a/arch/x86/coco/tdx/tdx.c
-> > +++ b/arch/x86/coco/tdx/tdx.c
-> > @@ -509,6 +509,54 @@ static int decode_insn_struct(struct insn *insn, struct pt_regs *regs)
-> >  	return 0;
-> >  }
-> >  
-> > +static int handle_mmio_movs(struct insn *insn, struct pt_regs *regs, int size, struct ve_info *ve)
-> > +{
-> > +	unsigned long ds_base, es_base;
-> > +	unsigned char *src, *dst;
-> > +	unsigned char buffer[8];
-> > +	int off, ret;
-> > +	bool rep;
-> > +
-> > +	/*
-> > +	 * The in-kernel code must use a special API that does not use MOVS.
-> > +	 * If the MOVS instruction is received from in-kernel, then something
-> > +	 * is broken.
-> > +	 */
-> > +	if (WARN_ON_ONCE(!user_mode(regs)))
-> > +		return -EFAULT;
-> > +
-> > +	ds_base = insn_get_seg_base(regs, INAT_SEG_REG_DS);
-> > +	es_base = insn_get_seg_base(regs, INAT_SEG_REG_ES);
-> > +
-> > +	if (ds_base == -1L || es_base == -1L)
-> > +		return -EINVAL;
-> > +
-> > +	rep = insn_has_rep_prefix(insn);
-> > +
-> > +	do {
-> > +		src = ds_base + (unsigned char *) regs->si;
-> > +		dst = es_base + (unsigned char *) regs->di;
-> > +
-> > +		ret = __get_iomem(src, buffer, size);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		ret = __put_iomem(dst, buffer, size);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		off = (regs->flags & X86_EFLAGS_DF) ? -size : size;
-> > +
-> > +		regs->si += off;
-> > +		regs->di += off;
-> > +
-> > +		if (rep)
-> > +			regs->cx -= 1;
-> > +	} while (rep || regs->cx > 0);
-> > +
-> > +	return insn->length;
-> > +}
-> > +
-> >  static int handle_mmio_write(struct insn *insn, enum insn_mmio_type mmio, int size,
-> >  			     struct pt_regs *regs, struct ve_info *ve)
-> >  {
-> > @@ -530,9 +578,8 @@ static int handle_mmio_write(struct insn *insn, enum insn_mmio_type mmio, int si
-> >  		return insn->length;
-> >  	case INSN_MMIO_MOVS:
-> >  		/*
-> > -		 * MMIO was accessed with an instruction that could not be
-> > -		 * decoded or handled properly. It was likely not using io.h
-> > -		 * helpers or accessed MMIO accidentally.
-> > +		 * MOVS is processed through higher level emulation which breaks
-> > +		 * this instruction into a sequence of reads and writes.
-> >  		 */
-> >  		return -EINVAL;
-> >  	default:
-> > @@ -602,6 +649,9 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
-> >  	if (WARN_ON_ONCE(mmio == INSN_MMIO_DECODE_FAILED))
-> >  		return -EINVAL;
-> >  
-> > +	if (mmio == INSN_MMIO_MOVS)
-> > +		return handle_mmio_movs(&insn, regs, size, ve);
-> 
-> You check the address in the non-MOVS case using valid_vaddr(), but you
-> don't seem to be doing that in the MOVS case, was that intentional?
+Elliot Berman <quic_eberman@quicinc.com> writes:
 
-Ah. You mean that read/write operations will be performed in kernel space
-context and no checks will be made.
+> In preparation for adding more features to KVM's guest_memfd, refactor
+> and introduce a library which abstracts some of the core-mm decisions
+> about managing folios associated with the file. The goal of the refactor
+> serves two purposes:
+>
+> Provide an easier way to reason about memory in guest_memfd. With KVM
+> supporting multiple confidentiality models (TDX, SEV-SNP, pKVM, ARM
+> CCA), and coming support for allowing kernel and userspace to access
+> this memory, it seems necessary to create a stronger abstraction between
+> core-mm concerns and hypervisor concerns.
+>
+> Provide a common implementation for other hypervisors (Gunyah) to use.
+>
+> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+> ---
+>  include/linux/guest_memfd.h |  44 +++++++
+>  mm/Kconfig                  |   3 +
+>  mm/Makefile                 |   1 +
+>  mm/guest_memfd.c            | 285 ++++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 333 insertions(+)
+>
+> diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
+> new file mode 100644
+> index 000000000000..be56d9d53067
+> --- /dev/null
+> +++ b/include/linux/guest_memfd.h
+> @@ -0,0 +1,44 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+> + */
+> +
+> +#ifndef _LINUX_GUEST_MEMFD_H
+> +#define _LINUX_GUEST_MEMFD_H
+> +
+> +#include <linux/fs.h>
+> +
+> +/**
+> + * struct guest_memfd_operations - ops provided by owner to manage folios
+> + * @invalidate_begin: called when folios should be unmapped from guest.
+> + *                    May fail if folios couldn't be unmapped from guest.
+> + *                    Required.
+> + * @invalidate_end: called after invalidate_begin returns success. Optional.
+> + * @prepare: called before a folio is mapped into the guest address space.
+> + *           Optional.
+> + * @release: Called when releasing the guest_memfd file. Required.
+> + */
+> +struct guest_memfd_operations {
+> +	int (*invalidate_begin)(struct inode *inode, pgoff_t offset, unsigned long nr);
+> +	void (*invalidate_end)(struct inode *inode, pgoff_t offset, unsigned long nr);
+> +	int (*prepare)(struct inode *inode, pgoff_t offset, struct folio *folio);
+> +	int (*release)(struct inode *inode);
+> +};
+> +
+> +/**
+> + * @GUEST_MEMFD_GRAB_UPTODATE: Ensure pages are zeroed/up to date.
+> + *                             If trusted hyp will do it, can ommit this flag
+> + * @GUEST_MEMFD_PREPARE: Call the ->prepare() op, if present.
+> + */
+> +enum {
+> +	GUEST_MEMFD_GRAB_UPTODATE	= BIT(0),
+> +	GUEST_MEMFD_PREPARE		= BIT(1),
+> +};
 
-I guess you're right.
+I interpreted the current state of the code after patch [1] to mean that
+the definition of the uptodate flag means "prepared for guest use", so
+the two enum values here are probably actually the same thing.
 
-> Thanks,
-> Tom
-> 
-> > +
-> >  	vaddr = (unsigned long)insn_get_addr_ref(&insn, regs);
-> >  
-> >  	if (user_mode(regs)) {
-> > @@ -630,7 +680,6 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
-> >  	switch (mmio) {
-> >  	case INSN_MMIO_WRITE:
-> >  	case INSN_MMIO_WRITE_IMM:
-> > -	case INSN_MMIO_MOVS:
-> >  		ret = handle_mmio_write(&insn, mmio, size, regs, ve);
-> >  		break;
-> >  	case INSN_MMIO_READ:
-> 
+For SEV, this means calling rmp_make_private(), so I guess when the page
+allowed to be faulted in to userspace, rmp_make_shared() would have to
+be called on the page.
 
--- 
-Rgrds, legion
+Shall we continue to have the uptodate flag mean "prepared for guest
+use" (whether prepared for shared or private use)?
 
+Then we can have another enum to request a zeroed page (which will have
+no accompanying page flag)? Or could we remove the zeroing feature,
+since it was meant to be handled by trusted hypervisor or hardware in
+the first place? It was listed as a TODO before being removed in [2].
+
+I like the idea of having flags to control what is done to the page,
+perhaps removing the page from the direct map could be yet another enum.
+
+> +
+> +struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags);
+> +struct file *guest_memfd_alloc(const char *name,
+> +			       const struct guest_memfd_operations *ops,
+> +			       loff_t size, unsigned long flags);
+> +bool is_guest_memfd(struct file *file, const struct guest_memfd_operations *ops);
+> +
+> +#endif
+
+> <snip>
+
+[1] https://lore.kernel.org/all/20240726185157.72821-15-pbonzini@redhat.com/
+[2] https://lore.kernel.org/all/20240726185157.72821-8-pbonzini@redhat.com/
