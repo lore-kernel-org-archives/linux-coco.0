@@ -1,270 +1,255 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABE6145324
-	for <linux-coco@lists.linux.dev>; Thu,  8 Aug 2024 21:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08E615820F
+	for <linux-coco@lists.linux.dev>; Thu,  8 Aug 2024 21:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723153390; cv=none; b=tWUvAmYmmqGZk18EIWsGauYZzPnFWtO9UOwSdf5mb9kLPKu2vhEB7+MyHcUK9Fn3UN2Eamr5otUOvjwnvlFnts/3V6Ku+AHuzWkUxFbhx8kGAcca6ETi7xZvjPRQybHxKgEzWQlIMBsxDVnCeUCO8niP54CNhTvSDNxnOuXjur0=
+	t=1723154123; cv=none; b=iBoh3AFzFOtgx9qP4bQMvA7UWfm3tGj+PyI2fRTeHULuK6W0nMQ85lTqbwKx5IvKz/Wd4B3HRkw0u3eZujL4EYEi4I4h+qUgIHt5o3Zp8c74pHzPi6XM9C2gSYpc6XzuLI/vzvND0QJQk6zdl8Vtt9hKEYGAc8sJnJHyyPP5mVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723153390; c=relaxed/simple;
-	bh=iiVOkB4xyNGt5Ji9BBZS0LrYXkdJzAuatNcxlThBVP8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F5j1bjMseP8/n4WI6mKif9Jr/fve3wFt6RJDjsD+YZ7QR4O3L8lyrh1A0bMeinOXJ7cc+By2reaCZkztLWmo/OUDA5sZkEizO49npsApTpRYmVRptAO8icEsU/5K8J4ZIepdUbvn4GgMO+sHLN2757Cx/VnVHQjMdajadLR1gsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eEVhIfjZ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1723154123; c=relaxed/simple;
+	bh=BMV8MGIwoNq7eg6c5quIkLMm6LIlrHrK3hmh7Z2JRoI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j7P8Zd6zBN4Xs6IYGyVMijVSmPt6ynmOz/xpRHon2oVTO6oMxeDDzUjMiG88z5oHDnlbwxcWlNjWaOKDgD6YcFzHHD6BFndpwzhIwCSB/U8HUZCNMWX5BHcgjcFbYVXvkzAACCu+/PdAFJOp2oSTimCeO8gxNNgwF/I0REQ2LGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DhF7JgGt; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eEVhIfjZ"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 478AgTUL018279;
-	Thu, 8 Aug 2024 21:43:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=/w4EXjUZu5VjQ6P9pS53rZX6
-	79O69cN7CRSEqBYc/6o=; b=eEVhIfjZ+Jko3gqbT23mzlDSqmOt4qv5TjmNpLb9
-	79vj8+wqQjZ4EMaBCrNanYXEBrXj/cpEn/Et3wNWH/tpHE/XYSBSBNlZzuYK3zTo
-	7Ov9ATuBKsAczdv6tJbBa6c2DU9efWF6tnM3rSCRxf4LH/nF16DuAXOgj927q68d
-	kOL/ycSNxKB/zQQnvLF9mnzf7VMqkCBR+P+LAj41DD9d05/GQXCKKEuhPUZUFJ6Q
-	2fb/FacrdG+6FNiZGpL6CNRla7BJZ7dHj3je7OHiNio4m8RL7tLK6JqktAcrpF2A
-	3koSy9sLnEUrTC1YinovWehFgCGHdp1hl0lCVCUXwShXMQ==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40vvgm1n2d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Aug 2024 21:43:00 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 478Lgwtf010204
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 8 Aug 2024 21:42:58 GMT
-Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 8 Aug 2024 14:42:58 -0700
-Date: Thu, 8 Aug 2024 14:42:57 -0700
-From: Elliot Berman <quic_eberman@quicinc.com>
-To: Ackerley Tng <ackerleytng@google.com>
-CC: <akpm@linux-foundation.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
-        <tabba@google.com>, <david@redhat.com>, <roypat@amazon.co.uk>,
-        <qperret@google.com>, <linux-coco@lists.linux.dev>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mm@kvack.org>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH RFC 4/4] mm: guest_memfd: Add ability for mmap'ing pages
-Message-ID: <20240808132450196-0700.eberman@hu-eberman-lv.qualcomm.com>
-References: <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com>
- <diqzr0ayn90d.fsf@ackerleytng-ctop.c.googlers.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DhF7JgGt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1723154120;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=k3wrIksGrEilBm2A+K8GdCmrycdMLC/icwH1wgjwvN4=;
+	b=DhF7JgGtIUUy67e3fDN/+uSIf6S2Pgk47if231JsyzbQs3qNVTWwowSxLvECbmv/YZI38a
+	OnvYnngX6z/jIvQAL7N/hhNf5OD6KQNDRnmOEXWYQEHk5s+XY7hnk9nYz230botzpDL8TV
+	l61US9Y0jaQRSq3cZyCkVCyKGhUb58w=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-18-nTEDCENtMviyJ5ngBd-_BQ-1; Thu, 08 Aug 2024 17:55:18 -0400
+X-MC-Unique: nTEDCENtMviyJ5ngBd-_BQ-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4280e1852f3so10359035e9.3
+        for <linux-coco@lists.linux.dev>; Thu, 08 Aug 2024 14:55:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723154117; x=1723758917;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=k3wrIksGrEilBm2A+K8GdCmrycdMLC/icwH1wgjwvN4=;
+        b=Ncmnh94U+ne0jRMheL0L+nhUj1RDeGU1ArktVvClhYK9Mx/10OwfUqHkIHnPiYUGJM
+         gZQkwfs1n1XiCnAaZ5SkjfpLZkQNugTW3ODjqm2oZ4Vzk+oSsgG792XD0OVOcXgqcT+z
+         IBVaXfQfMQzbRAM8icvTFYKodqicb8lY0pkZZWLhvqjP9+og0YuS/cK40X4C3PJi58xH
+         GW0T76rlFkuO90lyZ6yiUbkQvqf/YugdH8C5+eihgS+TVR3X9+mFiiMI0QO8XNDdGhpn
+         DOS8AKNvCSHzo7v1ITg3fC+XSIznFO5OeEkhOTm+enIWJWJXk43GT28o0Q0gA1JmljFD
+         UZ8w==
+X-Forwarded-Encrypted: i=1; AJvYcCXw5RsNnZuG12vsN3YadaYMP8jeaRcO6DCQRc8fMAeBMmSMNapJWIr4BKa7UY9v/RGCJL9mkFxp4yzkNgDxovD9wvFw5geCFJlC3g==
+X-Gm-Message-State: AOJu0YxCI899Ud3WqjsWRfZ17zKIF/vXhY7njSQQWupv0XUPFDVhDQ5d
+	oUJWRs4/zGykcJLbHbs4NTQ4YLTJwLnvenY4oB4OfF2nKTBtrDD6M+JihR3SbzCN+er2D7mzRbG
+	Mowen+niB5SX9M07lL1YsKSivaNmZ8fOqzwRHcUovLjyHVhsLj8bRlm2uaj4=
+X-Received: by 2002:a05:600c:45d0:b0:426:60d7:d299 with SMTP id 5b1f17b1804b1-4290ae99ac6mr27131765e9.7.1723154117398;
+        Thu, 08 Aug 2024 14:55:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1X2P2ifl7KjEfzzVADvx2Yez3V8VQTV9J7YgJ62njZVhPj0eKKGqXaxHHLuT355LQdF5TmA==
+X-Received: by 2002:a05:600c:45d0:b0:426:60d7:d299 with SMTP id 5b1f17b1804b1-4290ae99ac6mr27131595e9.7.1723154116839;
+        Thu, 08 Aug 2024 14:55:16 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c713:2a00:f151:50f1:7164:32e6? (p200300cbc7132a00f15150f1716432e6.dip0.t-ipconnect.de. [2003:cb:c713:2a00:f151:50f1:7164:32e6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36d2716f333sm3226724f8f.43.2024.08.08.14.55.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Aug 2024 14:55:16 -0700 (PDT)
+Message-ID: <6f3b5c38-fc33-43cd-8ab7-5b0f49169d5c@redhat.com>
+Date: Thu, 8 Aug 2024 23:55:15 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <diqzr0ayn90d.fsf@ackerleytng-ctop.c.googlers.com>
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: wKWq1rQBhn0g9QePO9TgwnTys_nyqsBy
-X-Proofpoint-GUID: wKWq1rQBhn0g9QePO9TgwnTys_nyqsBy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-08_21,2024-08-07_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 impostorscore=0 mlxscore=0 suspectscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 mlxlogscore=999 bulkscore=0
- phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408080155
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 4/4] mm: guest_memfd: Add ability for mmap'ing pages
+To: Elliot Berman <quic_eberman@quicinc.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Fuad Tabba <tabba@google.com>,
+ Patrick Roy <roypat@amazon.co.uk>, qperret@google.com,
+ Ackerley Tng <ackerleytng@google.com>, linux-coco@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kvm@vger.kernel.org
+References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
+ <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com>
+ <4cdd93ba-9019-4c12-a0e6-07b430980278@redhat.com>
+ <20240806093625007-0700.eberman@hu-eberman-lv.qualcomm.com>
+ <a7c5bfc0-1648-4ae1-ba08-e706596e014b@redhat.com>
+ <20240808101944778-0700.eberman@hu-eberman-lv.qualcomm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240808101944778-0700.eberman@hu-eberman-lv.qualcomm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 08, 2024 at 06:51:14PM +0000, Ackerley Tng wrote:
-> Elliot Berman <quic_eberman@quicinc.com> writes:
+On 08.08.24 23:41, Elliot Berman wrote:
+> On Wed, Aug 07, 2024 at 06:12:00PM +0200, David Hildenbrand wrote:
+>> On 06.08.24 19:14, Elliot Berman wrote:
+>>> On Tue, Aug 06, 2024 at 03:51:22PM +0200, David Hildenbrand wrote:
+>>>>> -	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
+>>>>> +	if (!ops->accessible && (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)) {
+>>>>>     		r = guest_memfd_folio_private(folio);
+>>>>>     		if (r)
+>>>>>     			goto out_err;
+>>>>> @@ -107,6 +109,82 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
+>>>>>     }
+>>>>>     EXPORT_SYMBOL_GPL(guest_memfd_grab_folio);
+>>>>> +int guest_memfd_make_inaccessible(struct file *file, struct folio *folio)
+>>>>> +{
+>>>>> +	unsigned long gmem_flags = (unsigned long)file->private_data;
+>>>>> +	unsigned long i;
+>>>>> +	int r;
+>>>>> +
+>>>>> +	unmap_mapping_folio(folio);
+>>>>> +
+>>>>> +	/**
+>>>>> +	 * We can't use the refcount. It might be elevated due to
+>>>>> +	 * guest/vcpu trying to access same folio as another vcpu
+>>>>> +	 * or because userspace is trying to access folio for same reason
+>>>>
+>>>> As discussed, that's insufficient. We really have to drive the refcount to 1
+>>>> -- the single reference we expect.
+>>>>
+>>>> What is the exact problem you are running into here? Who can just grab a
+>>>> reference and maybe do nasty things with it?
+>>>>
+>>>
+>>> Right, I remember we had discussed it. The problem I faced was if 2
+>>> vcpus fault on same page, they would race to look up the folio in
+>>> filemap, increment refcount, then try to lock the folio. One of the
+>>> vcpus wins the lock, while the other waits. The vcpu that gets the
+>>> lock vcpu will see the elevated refcount.
+>>>
+>>> I was in middle of writing an explanation why I think this is best
+>>> approach and realized I think it should be possible to do
+>>> shared->private conversion and actually have single reference. There
+>>> would be some cost to walk through the allocated folios and convert them
+>>> to private before any vcpu runs. The approach I had gone with was to
+>>> do conversions as late as possible.
+>>
+>> We certainly have to support conversion while the VCPUs are running.
+>>
+>> The VCPUs might be able to avoid grabbing a folio reference for the
+>> conversion and only do the folio_lock(): as long as we have a guarantee that
+>> we will disallow freeing the folio in gmem, for example, by syncing against
+>> FALLOC_FL_PUNCH_HOLE.
+>>
+>> So if we can rely on the "gmem" reference to the folio that cannot go away
+>> while we do what we do, we should be fine.
+>>
+>> <random though>
+>>
+>> Meanwhile, I was thinking if we would want to track the references we
+>> hand out to "safe" users differently.
+>>
+>> Safe references would only be references that would survive a
+>> private<->shared conversion, like KVM MMU mappings maybe?
+>>
+>> KVM would then have to be thought to return these gmem references
+>> differently.
+>>
+>> The idea would be to track these "safe" references differently
+>> (page->private?) and only allow dropping *our* guest_memfd reference if all
+>> these "safe" references are gone. That is, FALLOC_FL_PUNCH_HOLE would also
+>> fail if there are any "safe" reference remaining.
+>>
+>> <\random though>
+>>
 > 
-> > Confidential/protected guest virtual machines want to share some memory
-> > back with the host Linux. For example, virtqueues allow host and
-> > protected guest to exchange data. In MMU-only isolation of protected
-> > guest virtual machines, the transition between "shared" and "private"
-> > can be done in-place without a trusted hypervisor copying pages.
-> >
-> > Add support for this feature and allow Linux to mmap host-accessible
-> > pages. When the owner provides an ->accessible() callback in the
-> > struct guest_memfd_operations, guest_memfd allows folios to be mapped
-> > when the ->accessible() callback returns 0.
-> >
-> > To safely make inaccessible:
-> >
-> > ```
-> > folio = guest_memfd_grab_folio(inode, index, flags);
-> > r = guest_memfd_make_inaccessible(inode, folio);
-> > if (r)
-> >         goto err;
-> >
-> > hypervisor_does_guest_mapping(folio);
-> >
-> > folio_unlock(folio);
-> > ```
-> >
-> > hypervisor_does_s2_mapping(folio) should make it so
-> > ops->accessible(...) on those folios fails.
-> >
-> > The folio lock ensures atomicity.
-> 
-> I am also working on determining faultability not based on the
-> private-ness of the page but based on permission given by the
-> guest. I'd like to learn from what you've discovered here.
-> 
-> Could you please elaborate on this? What races is the folio_lock
-> intended to prevent, what operations are we ensuring atomicity of?
+> I didn't find a path in filemap where we can grab folio without
+> increasing its refcount. I liked the idea of keeping track of a "safe"
+> refcount, but I believe there is a small window to race comparing the
+> main folio refcount and the "safe" refcount.
 
-The contention I've been paying most attention to are racing userspace
-and vcpu faults where guest needs the page to be private. There could
-also be multiple vcpus demanding same page.
+There are various possible models. To detect unexpected references, we 
+could either use
 
-We had some chatter about doing the private->shared conversion via
-separate ioctl (mem attributes). I think the same race can happen with
-userspace whether it's vcpu fault or ioctl making the folio "finally
-guest-private".
+folio_ref_count(folio) == gmem_folio_safe_ref_count(folio) + 1
 
-Also, in non-CoCo KVM private guest_memfd, KVM or userspace could also
-convert private->shared and need to make sure that all the tracking for
-the current state is consistent.
+[we increment both ref counter]
 
-> Is this why you did a guest_memfd_grab_folio() before checking
-> ->accessible(), and then doing folio_unlock() if the page is
-> inaccessible?
-> 
+or
 
-Right, I want to guard against userspace being able to fault in a page
-concurrently with that same page doing a shared->private conversion. The
-folio_lock seems like the best fine-grained lock to grab.
+folio_ref_count(folio) == 1
 
-If the shared->private converter wins the folio_lock first, then the
-userspace fault waits and will see ->accessible() == false as desired. 
+[we only increment the safe refcount and let other magic handle it as 
+described]
 
-If userspace fault wins the folio_lock first, it relinquishes the lock
-only after installing the folio in page tables[*]. When the
-shared->private converter finally gets the lock,
-guest_memfd_make_inaccessible() will be able to unmap the folio from any
-userspace page tables (and direct map, if applicable).
+A vcpu could have
+> incremented the main folio refcount and on the way to increment the safe
+> refcount. Before that happens, another thread does the comparison and
+> sees a mismatch.
 
-[*]: I'm not mm expert, but that was what I could find when I went
-digging.
+Likely there won't be a way around coming up with code that is able to 
+deal with such temporary, "speculative" folio references.
 
-Thanks,
-Elliot
+In the simplest case, these references will be obtained from our gmem 
+code only, and we'll have to detect that it happened and retry (a 
+seqcount would be a naive solution).
 
-> >
-> > Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
-> > ---
-> >  include/linux/guest_memfd.h |  7 ++++
-> >  mm/guest_memfd.c            | 81 ++++++++++++++++++++++++++++++++++++++++++++-
-> >  2 files changed, 87 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
-> > index f9e4a27aed67..edcb4ba60cb0 100644
-> > --- a/include/linux/guest_memfd.h
-> > +++ b/include/linux/guest_memfd.h
-> > @@ -16,12 +16,18 @@
-> >   * @invalidate_end: called after invalidate_begin returns success. Optional.
-> >   * @prepare: called before a folio is mapped into the guest address space.
-> >   *           Optional.
-> > + * @accessible: called after prepare returns success and before it's mapped
-> > + *              into the guest address space. Returns 0 if the folio can be
-> > + *              accessed.
-> > + *              Optional. If not present, assumes folios are never accessible.
-> >   * @release: Called when releasing the guest_memfd file. Required.
-> >   */
-> >  struct guest_memfd_operations {
-> >  	int (*invalidate_begin)(struct inode *inode, pgoff_t offset, unsigned long nr);
-> >  	void (*invalidate_end)(struct inode *inode, pgoff_t offset, unsigned long nr);
-> >  	int (*prepare)(struct inode *inode, pgoff_t offset, struct folio *folio);
-> > +	int (*accessible)(struct inode *inode, struct folio *folio,
-> > +			  pgoff_t offset, unsigned long nr);
-> >  	int (*release)(struct inode *inode);
-> >  };
-> >  
-> > @@ -48,5 +54,6 @@ struct file *guest_memfd_alloc(const char *name,
-> >  			       const struct guest_memfd_operations *ops,
-> >  			       loff_t size, unsigned long flags);
-> >  bool is_guest_memfd(struct file *file, const struct guest_memfd_operations *ops);
-> > +int guest_memfd_make_inaccessible(struct file *file, struct folio *folio);
-> >  
-> >  #endif
-> > diff --git a/mm/guest_memfd.c b/mm/guest_memfd.c
-> > index e9d8cab72b28..6b5609932ca5 100644
-> > --- a/mm/guest_memfd.c
-> > +++ b/mm/guest_memfd.c
-> > @@ -9,6 +9,8 @@
-> >  #include <linux/pagemap.h>
-> >  #include <linux/set_memory.h>
-> >  
-> > +#include "internal.h"
-> > +
-> >  static inline int guest_memfd_folio_private(struct folio *folio)
-> >  {
-> >  	unsigned long nr_pages = folio_nr_pages(folio);
-> > @@ -89,7 +91,7 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
-> >  			goto out_err;
-> >  	}
-> >  
-> > -	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
-> > +	if (!ops->accessible && (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)) {
-> >  		r = guest_memfd_folio_private(folio);
-> >  		if (r)
-> >  			goto out_err;
-> > @@ -107,6 +109,82 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
-> >  }
-> >  EXPORT_SYMBOL_GPL(guest_memfd_grab_folio);
-> >  
-> > +int guest_memfd_make_inaccessible(struct file *file, struct folio *folio)
-> > +{
-> > +	unsigned long gmem_flags = (unsigned long)file->private_data;
-> > +	unsigned long i;
-> > +	int r;
-> > +
-> > +	unmap_mapping_folio(folio);
-> > +
-> > +	/**
-> > +	 * We can't use the refcount. It might be elevated due to
-> > +	 * guest/vcpu trying to access same folio as another vcpu
-> > +	 * or because userspace is trying to access folio for same reason
-> > +	 *
-> > +	 * folio_lock serializes the transitions between (in)accessible
-> > +	 */
-> > +	if (folio_maybe_dma_pinned(folio))
-> > +		return -EBUSY;
-> > +
-> > +	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
-> > +		r = guest_memfd_folio_private(folio);
-> > +		if (r)
-> > +			return r;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static vm_fault_t gmem_fault(struct vm_fault *vmf)
-> > +{
-> > +	struct file *file = vmf->vma->vm_file;
-> > +	struct inode *inode = file_inode(file);
-> > +	const struct guest_memfd_operations *ops = inode->i_private;
-> > +	struct folio *folio;
-> > +	pgoff_t off;
-> > +	int r;
-> > +
-> > +	folio = guest_memfd_grab_folio(file, vmf->pgoff, GUEST_MEMFD_GRAB_UPTODATE);
-> 
-> Could grabbing the folio with GUEST_MEMFD_GRAB_UPTODATE cause unintended
-> zeroing of the page if the page turns out to be inaccessible?
-> 
+In the complex case, these references are temporarily obtained from 
+other core-mm code -- using folio_try_get(). We can minimize some of 
+them (speculative references from GUP or the pagecache), and try 
+optimizing others (PFN walkers like page migration).
 
-I assume that if page is inaccessible, it would already have been marked
-up to date and we wouldn't try to zero the page.
+But likely we'll need some retry magic, at least initially.
 
-I'm thinking that if hypervisor zeroes the page when making the page
-private, it would not give the GUEST_MEMFD_GRAB_UPTODATE flag when
-grabbing the folio. I believe the hypervisor should know when grabbing
-the folio if it's about to donate to the guest.
+-- 
+Cheers,
 
-Thanks,
-Elliot
+David / dhildenb
 
