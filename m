@@ -1,283 +1,230 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37E616C878
-	for <linux-coco@lists.linux.dev>; Fri,  9 Aug 2024 07:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E02D194AD8
+	for <linux-coco@lists.linux.dev>; Fri,  9 Aug 2024 13:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723187814; cv=none; b=ShKl3FI/0Ym3EFxiHQ/r3aOnC7iglI5LtiDcXy7dxQ6sO1pNCFQlqUwNPcObgCH8Zwq7jzfxe/K2N22BTsX19TAofEOmi8ALC1B2TWPTFPE6djfGg2L08jE3aK6jR/FHSkfqGrYIZXIObqt7edHSNv+h0azHDBeUj9KIJl2ruzI=
+	t=1723208971; cv=none; b=YLqm/J7aMzsG4l1DP44dFyBk/pLVjztIX/qcvVkvgZmXd0eCYDXdXEfq3hEBxYittRne4v/Eyv8u15Oy7u2Kzyme4cVDA6bTMnMVLB4awFz7WRooCuHLQhY9Kvq7Xur4MB9gXE6tqgr3ZHdBc4EqMaDvehhPdAaz9EeNuhGJbS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723187814; c=relaxed/simple;
-	bh=/IODmwfYieU5IO6p13ZgFbK/dzcp4i/Wgb9xnFF8XhM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ed9tpq0NBsrk3Z2yOVeJc7I02TiSgi7rgTmm3ts6Deq5XGeyP6sSoywWzozGtHZNkh9Rg1SgvKUQWFN1buppjzn+c1WSI143GqeM8xlcLdgHw0EyYcJWscTXDdst756yoA1s9XqroeiFPg5RmAJ6cmm/bLWIXi1WTqXvZ9p62GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V4HV+24A; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1723208971; c=relaxed/simple;
+	bh=RbdVYBMpUql0CacT6O1+T/AB4vC+vtaU3JhJr8gTEt8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cl7FQ6UhcAmQIiBaM2ftq31ATW4iiKU2Nm8kdNJSV39XxqMaOD8gY//kCwJ3b4BH1/ZzbhFOqm/wttHoF25AOOG0YFu5+9ein/wJLc0KxSaLbHKR6oNTnvEsVMtE0Elh3Brazav/eY905nBwS492lzRLbYdiaNP2sbEnG+dmbEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j/HeN0hr; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V4HV+24A"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723187811;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WjJJO1LczwWOlW0BQ8SK5TpK9dJIW736kg5IdhWodDY=;
-	b=V4HV+24AzvH1Nw5gdd+tpuew5yyTgrJAXkJhEJQR7+PAZlPSmfDRS+QjRXgjaBMV5b4x2w
-	PZkOPS6QQf7pHj/489v15Lqxp1fgjnriH5pf6vL1gI3h+FC/7urMbtxDwr40lUuUn+D6Di
-	Cq3EiuIQ69tsRo+Xa5kslyRerYo0zaM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-527-36y5_2-hPjuL-VwRaKDLkw-1; Fri, 09 Aug 2024 03:16:49 -0400
-X-MC-Unique: 36y5_2-hPjuL-VwRaKDLkw-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3686d709f6dso1006787f8f.0
-        for <linux-coco@lists.linux.dev>; Fri, 09 Aug 2024 00:16:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723187808; x=1723792608;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=WjJJO1LczwWOlW0BQ8SK5TpK9dJIW736kg5IdhWodDY=;
-        b=CXqWw2psrRuo+1VSCSRqL/h+HzG/wZKSqX6c5i/FOp2vSzRFdK5sN0XV0UTJZTLZ8o
-         qlhJ/bqaZGuRiXkz0SisGXmptcr1oky1DqV3aHydm9tLbpY5bVt411jwz8jS3sJrl89s
-         nzkbu/FNpjFi1IlyRGnzHVtwBIxrZ4oV3wa3jKwR6kdviY7+d7Rmax7jWLRxgMMuzW2I
-         IQZ4011Bo1U7c6E/aSu05tbPS5PkZv+IyNb7JWIa1ucNopGeE/hh71l3kKYZBFdFZN5B
-         7VYe34Y3Aabqb+dfcJ82shsCmpOZpVqp0VLEoH/3J2AUmaytEP3eArdss6Qswu4wuLPE
-         13kA==
-X-Forwarded-Encrypted: i=1; AJvYcCVd9QJuigfwdkKcSPJF+1hPTSQivAvAk5qCrNPf3Ag3BEYLMqll8TMAT76LrbsuR7X64WYUcLB2AA3v/O/Jh/0Jz6uouF1QRdPvIg==
-X-Gm-Message-State: AOJu0YwwLG2lVYTmdK89HayPgNdCuOVRJnG/xvpVuuL86Mc70w3/V9SN
-	FjZMvYwmBUXhfcwt5WMBPdpTzj5F3vo6NX2lS++nogtQFI2q3XAfRznzjEPGoVRMl7J2EgxwMMk
-	AiGTbXOrBf0XuukCN5wI7ndp5DWxFzYJnSxDdl15Tfla791HTxXPBnSCvVGo=
-X-Received: by 2002:a05:6000:e4b:b0:367:998a:87b3 with SMTP id ffacd0b85a97d-36d5eb03f01mr486166f8f.28.1723187807898;
-        Fri, 09 Aug 2024 00:16:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHYvY502q8JsmqHlkzADp4PV0Gc7OtZMHC9oUZX9AXJME4HJH4mLRZPYW58VetBNsRszDx9zw==
-X-Received: by 2002:a05:6000:e4b:b0:367:998a:87b3 with SMTP id ffacd0b85a97d-36d5eb03f01mr486144f8f.28.1723187807309;
-        Fri, 09 Aug 2024 00:16:47 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c71c:4e00:b097:7075:f6ba:300a? (p200300cbc71c4e00b0977075f6ba300a.dip0.t-ipconnect.de. [2003:cb:c71c:4e00:b097:7075:f6ba:300a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36d2718030bsm4371518f8f.50.2024.08.09.00.16.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Aug 2024 00:16:46 -0700 (PDT)
-Message-ID: <de60f0e4-3ec6-4e33-a4bf-bb438ff1a0e3@redhat.com>
-Date: Fri, 9 Aug 2024 09:16:45 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j/HeN0hr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723208969; x=1754744969;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=RbdVYBMpUql0CacT6O1+T/AB4vC+vtaU3JhJr8gTEt8=;
+  b=j/HeN0hrkr2bEnrse4hWhBBewjzOrOjsnFNB3O3+irb4mIoijPyxCn/A
+   mSbjsVArWYFqNmVSVbF3TcTYPk9GqD2hOHBijftrS02JDmxql11qdKFHc
+   3y5jTy8IKsRIZ4NaaQueVjYDX4pT8BKhzTHrWbV1Qwh4HozF+22RPqYEB
+   ksII1KJTwrGyj10oIEqyPvDWUOPZZlVyULwXgF1AdueHZjO6RUMRarN75
+   uCgzwxmNC5KEtLDzAmsvmCmfEe1iQ71c4TqWR6jMQJM+qrEOSOERn76Gi
+   eTdFROYH5ly9qXaCOT+Db/q26z+Gr8CxEKzOuqjhaCuuS0QgJax0Bp4W9
+   w==;
+X-CSE-ConnectionGUID: iUL0+oMBQlKATX1wMTG6fg==
+X-CSE-MsgGUID: FONMqgIwQx2DOCqSUSoZdg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="32528830"
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; 
+   d="scan'208";a="32528830"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 06:09:29 -0700
+X-CSE-ConnectionGUID: wF/MNSstQLioYfqZAYMZyg==
+X-CSE-MsgGUID: fU0970G6QNONhqDLCL13Zw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; 
+   d="scan'208";a="88437220"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 09 Aug 2024 06:09:26 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 2695097E; Fri, 09 Aug 2024 16:09:25 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCHv5, REBASED 3/4] x86/tdx: Dynamically disable SEPT violations from causing #VEs
+Date: Fri,  9 Aug 2024 16:09:22 +0300
+Message-ID: <20240809130923.3893765-4-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240809130923.3893765-1-kirill.shutemov@linux.intel.com>
+References: <20240809130923.3893765-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 4/4] mm: guest_memfd: Add ability for mmap'ing pages
-To: Elliot Berman <quic_eberman@quicinc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Fuad Tabba <tabba@google.com>,
- Patrick Roy <roypat@amazon.co.uk>, qperret@google.com,
- Ackerley Tng <ackerleytng@google.com>, linux-coco@lists.linux.dev,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, kvm@vger.kernel.org
-References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
- <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com>
- <4cdd93ba-9019-4c12-a0e6-07b430980278@redhat.com>
- <20240806093625007-0700.eberman@hu-eberman-lv.qualcomm.com>
- <a7c5bfc0-1648-4ae1-ba08-e706596e014b@redhat.com>
- <20240808101944778-0700.eberman@hu-eberman-lv.qualcomm.com>
- <6f3b5c38-fc33-43cd-8ab7-5b0f49169d5c@redhat.com>
- <20240808151910630-0700.eberman@hu-eberman-lv.qualcomm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240808151910630-0700.eberman@hu-eberman-lv.qualcomm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 09.08.24 00:26, Elliot Berman wrote:
-> On Thu, Aug 08, 2024 at 11:55:15PM +0200, David Hildenbrand wrote:
->> On 08.08.24 23:41, Elliot Berman wrote:
->>> On Wed, Aug 07, 2024 at 06:12:00PM +0200, David Hildenbrand wrote:
->>>> On 06.08.24 19:14, Elliot Berman wrote:
->>>>> On Tue, Aug 06, 2024 at 03:51:22PM +0200, David Hildenbrand wrote:
->>>>>>> -	if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
->>>>>>> +	if (!ops->accessible && (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)) {
->>>>>>>      		r = guest_memfd_folio_private(folio);
->>>>>>>      		if (r)
->>>>>>>      			goto out_err;
->>>>>>> @@ -107,6 +109,82 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
->>>>>>>      }
->>>>>>>      EXPORT_SYMBOL_GPL(guest_memfd_grab_folio);
->>>>>>> +int guest_memfd_make_inaccessible(struct file *file, struct folio *folio)
->>>>>>> +{
->>>>>>> +	unsigned long gmem_flags = (unsigned long)file->private_data;
->>>>>>> +	unsigned long i;
->>>>>>> +	int r;
->>>>>>> +
->>>>>>> +	unmap_mapping_folio(folio);
->>>>>>> +
->>>>>>> +	/**
->>>>>>> +	 * We can't use the refcount. It might be elevated due to
->>>>>>> +	 * guest/vcpu trying to access same folio as another vcpu
->>>>>>> +	 * or because userspace is trying to access folio for same reason
->>>>>>
->>>>>> As discussed, that's insufficient. We really have to drive the refcount to 1
->>>>>> -- the single reference we expect.
->>>>>>
->>>>>> What is the exact problem you are running into here? Who can just grab a
->>>>>> reference and maybe do nasty things with it?
->>>>>>
->>>>>
->>>>> Right, I remember we had discussed it. The problem I faced was if 2
->>>>> vcpus fault on same page, they would race to look up the folio in
->>>>> filemap, increment refcount, then try to lock the folio. One of the
->>>>> vcpus wins the lock, while the other waits. The vcpu that gets the
->>>>> lock vcpu will see the elevated refcount.
->>>>>
->>>>> I was in middle of writing an explanation why I think this is best
->>>>> approach and realized I think it should be possible to do
->>>>> shared->private conversion and actually have single reference. There
->>>>> would be some cost to walk through the allocated folios and convert them
->>>>> to private before any vcpu runs. The approach I had gone with was to
->>>>> do conversions as late as possible.
->>>>
->>>> We certainly have to support conversion while the VCPUs are running.
->>>>
->>>> The VCPUs might be able to avoid grabbing a folio reference for the
->>>> conversion and only do the folio_lock(): as long as we have a guarantee that
->>>> we will disallow freeing the folio in gmem, for example, by syncing against
->>>> FALLOC_FL_PUNCH_HOLE.
->>>>
->>>> So if we can rely on the "gmem" reference to the folio that cannot go away
->>>> while we do what we do, we should be fine.
->>>>
->>>> <random though>
->>>>
->>>> Meanwhile, I was thinking if we would want to track the references we
->>>> hand out to "safe" users differently.
->>>>
->>>> Safe references would only be references that would survive a
->>>> private<->shared conversion, like KVM MMU mappings maybe?
->>>>
->>>> KVM would then have to be thought to return these gmem references
->>>> differently.
->>>>
->>>> The idea would be to track these "safe" references differently
->>>> (page->private?) and only allow dropping *our* guest_memfd reference if all
->>>> these "safe" references are gone. That is, FALLOC_FL_PUNCH_HOLE would also
->>>> fail if there are any "safe" reference remaining.
->>>>
->>>> <\random though>
->>>>
->>>
->>> I didn't find a path in filemap where we can grab folio without
->>> increasing its refcount. I liked the idea of keeping track of a "safe"
->>> refcount, but I believe there is a small window to race comparing the
->>> main folio refcount and the "safe" refcount.
->>
->> There are various possible models. To detect unexpected references, we could
->> either use
->>
->> folio_ref_count(folio) == gmem_folio_safe_ref_count(folio) + 1
->>
->> [we increment both ref counter]
->>
->> or
->>
->> folio_ref_count(folio) == 1
->>
->> [we only increment the safe refcount and let other magic handle it as
->> described]
->>
->> A vcpu could have
->>> incremented the main folio refcount and on the way to increment the safe
->>> refcount. Before that happens, another thread does the comparison and
->>> sees a mismatch.
->>
->> Likely there won't be a way around coming up with code that is able to deal
->> with such temporary, "speculative" folio references.
->>
->> In the simplest case, these references will be obtained from our gmem code
->> only, and we'll have to detect that it happened and retry (a seqcount would
->> be a naive solution).
->>
->> In the complex case, these references are temporarily obtained from other
->> core-mm code -- using folio_try_get(). We can minimize some of them
->> (speculative references from GUP or the pagecache), and try optimizing
->> others (PFN walkers like page migration).
->>
->> But likely we'll need some retry magic, at least initially.
->>
-> 
-> I thought retry magic would not fly. I'll try this out.
+Memory access #VE's are hard for Linux to handle in contexts like the
+entry code or NMIs.  But other OSes need them for functionality.
+There's a static (pre-guest-boot) way for a VMM to choose one or the
+other.  But VMMs don't always know which OS they are booting, so they
+choose to deliver those #VE's so the "other" OSes will work.  That,
+unfortunately has left us in the lurch and exposed to these
+hard-to-handle #VEs.
 
-Any details why? At least the "other gmem code is currently taking a 
-speculative reference" should be handable, these speculative references 
-all happen from gmem code and it should be under our control.
+The TDX module has introduced a new feature.  Even if the static
+configuration is "send nasty #VE's", the kernel can dynamically request
+that they be disabled.
 
-We can protect against some core-mm speculative references (GUP, 
-page-cache): after we allocated pages for gmem, and a RCU grace period 
-passed, these can no longer happen from old context that previously had 
-these pages allocated before gmem allocated them.
+Check if the feature is available and disable SEPT #VE if possible.
 
-Other folio_try_get() users like memory offlining or page migration are 
-more problematic. In general, the assumption is that they will give up 
-quickly, for example when realizing that a folio is not LRU or non 
-"non-lru-movable" -- which is the case for gmem-allocated pages.
+If the TD allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
+attribute is no longer reliable. It reflects the initial state of the
+control for the TD, but it will not be updated if someone (e.g. bootloader)
+changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
+determine if SEPT #VEs are enabled or disabled.
 
-Yes, no retry magic would be very much preferred, but as soon as we want 
-to map these folios to user space and have GUP work on them (IOW, we 
-have to make the folio refcount usable), we cannot easily block all 
-speculative references from core-mm, for example, by freezing the 
-refcount at 0. Long term, we might find ways to just block these 
-speculative references more efficiently / differently.
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: 373e715e31bf ("x86/tdx: Panic on bad configs that #VE on "private" memory access")
+Cc: stable@vger.kernel.org
+---
+ arch/x86/coco/tdx/tdx.c           | 76 ++++++++++++++++++++++++-------
+ arch/x86/include/asm/shared/tdx.h | 10 +++-
+ 2 files changed, 69 insertions(+), 17 deletions(-)
 
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 08ce488b54d0..ba3103877b21 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -78,7 +78,7 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+ }
+ 
+ /* Read TD-scoped metadata */
+-static inline u64 __maybe_unused tdg_vm_rd(u64 field, u64 *value)
++static inline u64 tdg_vm_rd(u64 field, u64 *value)
+ {
+ 	struct tdx_module_args args = {
+ 		.rdx = field,
+@@ -193,6 +193,62 @@ static void __noreturn tdx_panic(const char *msg)
+ 		__tdx_hypercall(&args);
+ }
+ 
++/*
++ * The kernel cannot handle #VEs when accessing normal kernel memory. Ensure
++ * that no #VE will be delivered for accesses to TD-private memory.
++ *
++ * TDX 1.0 does not allow the guest to disable SEPT #VE on its own. The VMM
++ * controls if the guest will receive such #VE with TD attribute
++ * ATTR_SEPT_VE_DISABLE.
++ *
++ * Newer TDX module allows the guest to control if it wants to receive SEPT
++ * violation #VEs.
++ *
++ * Check if the feature is available and disable SEPT #VE if possible.
++ *
++ * If the TD allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
++ * attribute is no longer reliable. It reflects the initial state of the
++ * control for the TD, but it will not be updated if someone (e.g. bootloader)
++ * changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
++ * determine if SEPT #VEs are enabled or disabled.
++ */
++static void disable_sept_ve(u64 td_attr)
++{
++	const char *msg = "TD misconfiguration: SEPT #VE has to be disabled";
++	bool debug = td_attr & ATTR_DEBUG;
++	u64 config, controls;
++
++	/* Is this TD allowed to disable SEPT #VE */
++	tdg_vm_rd(TDCS_CONFIG_FLAGS, &config);
++	if (!(config & TDCS_CONFIG_FLEXIBLE_PENDING_VE)) {
++		/* No SEPT #VE controls for the guest: check the attribute */
++		if (td_attr & ATTR_SEPT_VE_DISABLE)
++			return;
++
++		/* Relax SEPT_VE_DISABLE check for debug TD for backtraces */
++		if (debug)
++			pr_warn("%s\n", msg);
++		else
++			tdx_panic(msg);
++		return;
++	}
++
++	/* Check if SEPT #VE has been disabled before us */
++	tdg_vm_rd(TDCS_TD_CTLS, &controls);
++	if (controls & TD_CTLS_PENDING_VE_DISABLE)
++		return;
++
++	/* Keep #VEs enabled for splats in debugging environments */
++	if (debug)
++		return;
++
++	/* Disable SEPT #VEs */
++	tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_PENDING_VE_DISABLE,
++		  TD_CTLS_PENDING_VE_DISABLE);
++
++	return;
++}
++
+ static void tdx_setup(u64 *cc_mask)
+ {
+ 	struct tdx_module_args args = {};
+@@ -218,24 +274,12 @@ static void tdx_setup(u64 *cc_mask)
+ 	gpa_width = args.rcx & GENMASK(5, 0);
+ 	*cc_mask = BIT_ULL(gpa_width - 1);
+ 
++	td_attr = args.rdx;
++
+ 	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
+ 	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
+ 
+-	/*
+-	 * The kernel can not handle #VE's when accessing normal kernel
+-	 * memory.  Ensure that no #VE will be delivered for accesses to
+-	 * TD-private memory.  Only VMM-shared memory (MMIO) will #VE.
+-	 */
+-	td_attr = args.rdx;
+-	if (!(td_attr & ATTR_SEPT_VE_DISABLE)) {
+-		const char *msg = "TD misconfiguration: SEPT_VE_DISABLE attribute must be set.";
+-
+-		/* Relax SEPT_VE_DISABLE check for debug TD. */
+-		if (td_attr & ATTR_DEBUG)
+-			pr_warn("%s\n", msg);
+-		else
+-			tdx_panic(msg);
+-	}
++	disable_sept_ve(td_attr);
+ }
+ 
+ /*
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index 7e12cfa28bec..fecb2a6e864b 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -19,9 +19,17 @@
+ #define TDG_VM_RD			7
+ #define TDG_VM_WR			8
+ 
+-/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
++/* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
++#define TDCS_CONFIG_FLAGS		0x1110000300000016
++#define TDCS_TD_CTLS			0x1110000300000017
+ #define TDCS_NOTIFY_ENABLES		0x9100000000000010
+ 
++/* TDCS_CONFIG_FLAGS bits */
++#define TDCS_CONFIG_FLEXIBLE_PENDING_VE	BIT_ULL(1)
++
++/* TDCS_TD_CTLS bits */
++#define TD_CTLS_PENDING_VE_DISABLE	BIT_ULL(0)
++
+ /* TDX hypercall Leaf IDs */
+ #define TDVMCALL_MAP_GPA		0x10001
+ #define TDVMCALL_GET_QUOTE		0x10002
 -- 
-Cheers,
-
-David / dhildenb
+2.43.0
 
