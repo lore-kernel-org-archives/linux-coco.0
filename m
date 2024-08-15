@@ -1,118 +1,91 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6703D179954
-	for <linux-coco@lists.linux.dev>; Thu, 15 Aug 2024 07:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD267710F
+	for <linux-coco@lists.linux.dev>; Thu, 15 Aug 2024 19:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723706713; cv=none; b=VpDM6A4Ed2wpzPKMFfHTWlRKUoVljqgxAeEfyLpHcDTbffMHIp1VdEnd9DLvF4LFvgoPnIXSg2QNeFlxw/fxZHGJEOQ5N+Ke6VrPSkO4bdKLGg9puwdBoDzwaH3jolhlVHzpswzg241grGnwlN8crU44Vui+7ckVyS1CYsG3uVE=
+	t=1723748891; cv=none; b=WVmusEdelpGGQFZS+lcWF63l9B4P4KnNG/IZ1I/sZM2ajdiCCx+PxJRejtghMMAQfi1nMfFQlkkUGOF/0ra2kXsC7DbJnwd3dRVV91DAto6Sl+8Ti/afsC6qFC9hWT6Wn5dCaVo9UUqHOc3E9L6ADa8oBnJL6xE38crMBzTyvcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723706713; c=relaxed/simple;
-	bh=Ow1/2PM/XA+bt7tPUEZgVaKKbLuhy2wTsjK7gDnB3a8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J7iT/5BBQ4tOSH5thQydmN8foYYZCaFQEdANE+vrQiyHSlc+0KUi98q7sO/9YLSpEgPZ9WijfON9YV8aQ3pd86dtK5qERtRk3rb0ETv7JQS2v22qSBdh3oROAJwsVJUTOQPBkYhn/e1SyB8r44MSjMVbqG/kRSPCZoYk95raPn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sh4YeOA8; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1723748891; c=relaxed/simple;
+	bh=tEGEgIcRKXDTkmdRvTVw2CvUW7+3ffACZCr/9mvjZqo=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=MfLmPVBKtiGH6ZTtx0b04HN+IlFlRv+jGhX1lQamDc7Bq3mZYvdA659fh0gvLQpqwBZ8VCEsUI7lwTzg6DnwXLIyT8+oqomdxCgqU7c3th9T9Q86tHDUnfKX6+cdRbDdgKwwDscLQu4LqusfGsc9lQjU0y/ONY9vFPrXVRbSf90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=EhpxBra6; arc=none smtp.client-ip=99.78.197.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sh4YeOA8"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-36d2a601c31so330310f8f.0
-        for <linux-coco@lists.linux.dev>; Thu, 15 Aug 2024 00:25:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="EhpxBra6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723706710; x=1724311510; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fz7V9Tu3EtjBhPrJHgxXfRiSyngyRtnzUolHcCZqMic=;
-        b=sh4YeOA810dACRpwJpDCGfWNWFLcbPvOyocaEnVsSpNkl+GDhi9vBLSTJ8jPDWSUHw
-         l/odZk+wyIe04GMH+8YjfbiXzzhPfxenkzv9kDZ+mErwKMFpay4UGQarV7BJNHw9EnTe
-         lgE0rLUdGC4cdvAIqCst3VQ6m3OrHhwn6WM9LSJjUGGHEh4PkKQt3LLI4Ljr22f/CHoF
-         iJX/D4mR2qkgdf4NjN4sOQCJxtgLdGCAr0ahmBJbpkganHAds/wdBzzL8O++9yTQh9o7
-         wzNNc9uY1nSxiMitkP+n8Gwe+bWsv8xW3pqTmhZ8HKb+QyTAHebWJeQ7pL9G4PLgYgxY
-         4fKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723706710; x=1724311510;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fz7V9Tu3EtjBhPrJHgxXfRiSyngyRtnzUolHcCZqMic=;
-        b=Sc7J94X5fmKRfsV8EAHzgCE5XB2+MsJtdaz55qJgnShYHyqPT8kIFcGZg4c9bN4n82
-         Dcn6+08pILil3NetSzx8SDtH2s6H99pcs2WDbTDxom9GEp6B66M/BTWtN24rLLjbw5tF
-         j1pxBKchaYhXr4clblxyVSFvzzu0+pF6OvZuMu9kMwkm4ZiQvWBz7hJbu398tv0QpJ6i
-         kCAFAxOLza4Wxc771IajjFw7tJy94OimlESQVrYNhlRlKB6tsmePECG1iAcyua42R1HD
-         wF8RfqxUOpD1zM4HjlQp/jwRlvGBJJplds7l2T3kRdjfQGnVv2UPQjUoARti5asbj+Jt
-         OS2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUUMc7ZbTNVg3wINPfIQ5XMLvQoDoqlhR1udao3rFt0ncV2fmO6TKsb5RUhZigyzlFfJfup+v92vuqR+PoB35xvdMqAHr1nuvQbBw==
-X-Gm-Message-State: AOJu0YxqCVWoQllGFahjE1s0PXXzHI5s2Nt1xt5xs0Rnq9c3D1O1v5gv
-	vIWq+ATzdFmT4R7tA11uMTf+KSlCtXfBDOkweICFX/5V+DnnlJuWJEWWivePwznwhoRhHekeikw
-	t5TeROmMJhFpe1y4bVjz39RiLCBiu0C2ViHt/
-X-Google-Smtp-Source: AGHT+IFDY+rlRX/qSGEGOl7eRG+hjtAxUiHzOwQTJK7cDbUC27G98FAuS1SlS95X/zfj/rFIWeJixLWpZK/CGw0VdqU=
-X-Received: by 2002:a5d:660b:0:b0:36d:341d:6ba8 with SMTP id
- ffacd0b85a97d-37177821d90mr2579225f8f.63.1723706709402; Thu, 15 Aug 2024
- 00:25:09 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1723748890; x=1755284890;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=tEGEgIcRKXDTkmdRvTVw2CvUW7+3ffACZCr/9mvjZqo=;
+  b=EhpxBra6vw31bbYRBZ2ZgRjliKc0sS7PH0jjNW7n3BoOuEo9VjA28r0z
+   N7xeEfoPOiCk4dndAit/tUD7s4zc1Hm6JseK2IFT9bf2bOzVB4RKivhqs
+   0/iS2Nn4XhdPGKNiFSgohT3At1nfrXKPetHl1BHQ9PLlcm/6nLtm78Z9s
+   Q=;
+X-IronPort-AV: E=Sophos;i="6.10,149,1719878400"; 
+   d="scan'208";a="115649481"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2024 19:08:09 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.21.151:21068]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.24.187:2525] with esmtp (Farcaster)
+ id 7c28823e-4999-43b1-ba3b-b0e1f64f96e0; Thu, 15 Aug 2024 19:08:09 +0000 (UTC)
+X-Farcaster-Flow-ID: 7c28823e-4999-43b1-ba3b-b0e1f64f96e0
+Received: from EX19D003UWC002.ant.amazon.com (10.13.138.169) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Thu, 15 Aug 2024 19:08:07 +0000
+Received: from [192.168.11.28] (10.106.101.5) by EX19D003UWC002.ant.amazon.com
+ (10.13.138.169) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34; Thu, 15 Aug 2024
+ 19:08:06 +0000
+Message-ID: <3ea89d7f-fc29-4c80-a123-94673e526ca5@amazon.com>
+Date: Thu, 15 Aug 2024 12:08:05 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 3/4] mm: guest_memfd: Add option to remove guest
+ private memory from direct map
+From: "Manwaring, Derek" <derekmn@amazon.com>
+To: David Hildenbrand <david@redhat.com>, Elliot Berman
+	<quic_eberman@quicinc.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
+	"Fuad Tabba" <tabba@google.com>, Patrick Roy <roypat@amazon.co.uk>,
+	<qperret@google.com>, Ackerley Tng <ackerleytng@google.com>
+CC: <linux-coco@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <kvm@vger.kernel.org>,
+	Alexander Graf <graf@amazon.de>, Moritz Lipp <mlipp@amazon.at>, "Claudio
+ Canella" <canellac@amazon.at>
 References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
- <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com> <4cdd93ba-9019-4c12-a0e6-07b430980278@redhat.com>
-In-Reply-To: <4cdd93ba-9019-4c12-a0e6-07b430980278@redhat.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 15 Aug 2024 08:24:32 +0100
-Message-ID: <CA+EHjTxNNinn7EzV_o1X1d0kwhEwrbj_O7H8WgDtEy2CwURZFQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 4/4] mm: guest_memfd: Add ability for mmap'ing pages
-To: David Hildenbrand <david@redhat.com>
-Cc: Elliot Berman <quic_eberman@quicinc.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Patrick Roy <roypat@amazon.co.uk>, qperret@google.com, 
-	Ackerley Tng <ackerleytng@google.com>, linux-coco@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kvm@vger.kernel.org
+ <20240805-guest-memfd-lib-v1-3-e5a29a4ff5d7@quicinc.com>
+ <c55fc93d-270b-4b11-9b38-b54f350ea6c9@redhat.com>
+ <396fb134-f43e-4263-99a8-cfcef82bfd99@amazon.com>
+Content-Language: en-US
+In-Reply-To: <396fb134-f43e-4263-99a8-cfcef82bfd99@amazon.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EX19D039UWB001.ant.amazon.com (10.13.138.119) To
+ EX19D003UWC002.ant.amazon.com (10.13.138.169)
 
-Hi David,
+On 2024-08-07 17:16-0700 Derek Manwaring wrote:
+> All that said, we're also dependent on hardware not being subject to
+> L1TF-style issues for the currently proposed non-CoCo method to be
+> effective. We're simply clearing the Present bit while the physmap PTE
+> still points to the guest physical page.
 
-On Tue, 6 Aug 2024 at 14:51, David Hildenbrand <david@redhat.com> wrote:
->
-> >
-> > -     if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
-> > +     if (!ops->accessible && (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)) {
-> >               r = guest_memfd_folio_private(folio);
-> >               if (r)
-> >                       goto out_err;
-> > @@ -107,6 +109,82 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
-> >   }
-> >   EXPORT_SYMBOL_GPL(guest_memfd_grab_folio);
-> >
-> > +int guest_memfd_make_inaccessible(struct file *file, struct folio *folio)
-> > +{
-> > +     unsigned long gmem_flags = (unsigned long)file->private_data;
-> > +     unsigned long i;
-> > +     int r;
-> > +
-> > +     unmap_mapping_folio(folio);
-> > +
-> > +     /**
-> > +      * We can't use the refcount. It might be elevated due to
-> > +      * guest/vcpu trying to access same folio as another vcpu
-> > +      * or because userspace is trying to access folio for same reason
->
-> As discussed, that's insufficient. We really have to drive the refcount
-> to 1 -- the single reference we expect.
->
-> What is the exact problem you are running into here? Who can just grab a
-> reference and maybe do nasty things with it?
+I was wrong here. The set_direct_map_invalid_noflush implementation
+moves through __change_page_attr and pfn_pte, eventually arriving at
+flip_protnone_guard where the PFN is inverted & thus no longer valid for
+pages marked not present. So we do benefit from that prior work's extra
+protection against L1TF.
 
-I was wondering, why do we need to check the refcount? Isn't it enough
-to check for page_mapped() || page_maybe_dma_pinned(), while holding
-the folio lock?
+Thank you for finding this, Patrick.
 
-Thanks!
-/fuad
-
-> --
-> Cheers,
->
-> David / dhildenb
->
+Derek
