@@ -1,160 +1,143 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5AF1BDA94;
-	Fri, 16 Aug 2024 16:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9CE2BB0D
+	for <linux-coco@lists.linux.dev>; Fri, 16 Aug 2024 16:14:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723824391; cv=none; b=Xobx+jOWS3DzBpzdGt7lV/tTYrqnyJriLLe+QnRSgIFckzhc7Ha5pH0QAky7UN3wyryjz6q7sEF6+wPMXL3OcYI7Y+b3ciwcOtrl1Yrf8g056c5/PlnEfmOrZou/R/OUt3CoaIE/9ftDYYQR23uH+tlbyk9LjjpdTWVcjIhdPPY=
+	t=1723824851; cv=none; b=b3bJBF01m7Gd+LuYjsb5BVofevXBeoxyJvDiGsY57WvvKwp/oDXt7zPDkW2v3o9yztezfV+2YxMO0tsJVK1urAIfylDxnSz2+TMr3q6b6vhbamPwQtGtjM7/B984khE9/ahKknsgILRS04iy5AR6op3fMPdNMSaQVgekkUVnOZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723824391; c=relaxed/simple;
-	bh=37h/oRDfh6L4BPlZhucfApa/80jVTHA6BUgyGnnHCjs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qJauXQkuIrP1lxYLPJbOHtyX/Cu5wl978Sk4e6qjHGn0TogQXGqT624agarnH5v6DIol8HUvCPXV2s6PJoTXyBoH+smBvjl2+gG8JhS1L8oNrf0dkkBMJYm3JHcMX2fDvYkTwISuHrGmuy8aIUC5hrZkEaRgah/oumMAR+VQIJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C928013D5;
-	Fri, 16 Aug 2024 09:06:54 -0700 (PDT)
-Received: from [10.1.34.14] (e122027.cambridge.arm.com [10.1.34.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 44E003F58B;
-	Fri, 16 Aug 2024 09:06:26 -0700 (PDT)
-Message-ID: <27c942e0-0e7c-4e71-b1df-1a8f70df5411@arm.com>
-Date: Fri, 16 Aug 2024 17:06:24 +0100
+	s=arc-20240116; t=1723824851; c=relaxed/simple;
+	bh=cLsbvnBriQrMPr66bR+6PZjFOAgEDYZ0NkFAiqCbHv8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eMmu6b0jBcExIbpvRwAEJDfiPd28j7xjAFhjZu2JDDzm0fjmOQaRv/ZMB8lEoxojVkHEalV/B0nK/im9B8IFhZfRGPoPlvmZnCu/VOnmhjqZNcOLa0HwELrOrh5ylmt1HjZqTgAVhkGVtVBobSAmC+0dMh8KSNOeFHsuvCtXTdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=277MxH+I; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="277MxH+I"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a80eab3945eso245557866b.1
+        for <linux-coco@lists.linux.dev>; Fri, 16 Aug 2024 09:14:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1723824848; x=1724429648; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cLsbvnBriQrMPr66bR+6PZjFOAgEDYZ0NkFAiqCbHv8=;
+        b=277MxH+IMPeXkbMq15J8P4UDmTfLsyhJ3lkjj0/V5Qo/4gXn4z+q03TsKyb36RqamI
+         QB2a3rB/zhcI6bcSKY5BJ6xqVWovm4wj0aXhEFLpaGitZUjbQpwNev5ZO1/7T+694RkO
+         79M0YWOVn64nw7u4Fqzf1FjknfSbYBSJAtYH1ijZZd+Y8OsaeMQ7qe2rfbfBzJx+8zhk
+         qIL0wpWD6mwBDwK9t0hf4ao5TatJnnjwv+qgpFChiscqt2mwjaDIBctG6x21eIBk2oVH
+         m3GvQpwpQ1krAVaWP+BMtqZrNNCVmscjgBpCehLTLnY9KQSxN/ke22S04O01E2DM0MWK
+         6UGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723824848; x=1724429648;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cLsbvnBriQrMPr66bR+6PZjFOAgEDYZ0NkFAiqCbHv8=;
+        b=UeK3ENG7uB6BPAl3LaIf7jHWlvTDPnDk8npjhNq+v05hsjzV5PwKPW3/UwrFfNhVOW
+         aBLPRisyThbGoGlB6NHtKWJpJQDYLms9bBLXsA2g6N0byoClhNxdDOK5XfUsxBobJ6xx
+         DpQ/1Nqg7S2uI+Z+LwMriy+Hdav3mEzVn7ERd9ib3o6DH2BXD/UTzp9HniMIlhQvXKSn
+         1Gbt3X1YOOCFhAGcfU9nEdyHaN5OBAX/9OLIT2AiRuGRUqZ0g+Ay3U8plRTMInuk4grV
+         G8u13DCCSEWd/Yt3FQo0zhqvBI+FUzB8pu5en/25dg+qDpdfPqL4aFxtdEBPCqhyPrAv
+         2IOA==
+X-Forwarded-Encrypted: i=1; AJvYcCUwjO0jwABjtHrYJglcEeQxWxj9YdqccyvUBZbN28PZ/prnb43CFwm3qYEuxqtrW0AzJ4ddVF6BL9N2htln6IAM+FBbL4fASh8cwg==
+X-Gm-Message-State: AOJu0Yx0ptXkR3NAny0Dq30BpQpLvYFQOnQdBrUkKSYpiRyXHkiSpnRb
+	nKJ9rmNRFQ4khdFBKaRrJuuvE4RLDP/3BlmMKxKkAuU6L6k+SMIj5frcDpJ99q9WRORPxsPRdZD
+	MmN1ZPWPZ6Ty0PNT9DB0+MR2bLfqvze96bAHj
+X-Google-Smtp-Source: AGHT+IH+16EpsIq6phBnG7MyjVSPO6Rwn1YDSKcUzwbMELznLfJJdf2PRUXRUtMTOm1Yu45OuXR+BMVskZIfXF3WIi0=
+X-Received: by 2002:a17:907:c7c5:b0:a7d:26ff:aeb0 with SMTP id
+ a640c23a62f3a-a8392952665mr246673566b.30.1723824847854; Fri, 16 Aug 2024
+ 09:14:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/15] arm64: Support for running as a guest in Arm CCA
-To: Shanker Donthineni <sdonthineni@nvidia.com>,
- Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
-References: <20240701095505.165383-1-steven.price@arm.com>
- <ZpDvTXMDq6i+4O0m@fedora> <09fdebd7-32a0-4a88-9002-0f24eebe00a8@nvidia.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <09fdebd7-32a0-4a88-9002-0f24eebe00a8@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <MW4PR11MB5872CE9BEF8361203F72EDFD8C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
+ <MW4PR11MB58727350055C0E00D6CA0DC08C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
+ <e2912269a273824e05714174fc04d45361ce71b5.camel@linux.ibm.com>
+ <8c389411-c547-488f-93d2-ac953e212eaf@linux.microsoft.com>
+ <f450d9b8c427a7d3c5ac53882d004280fc9b945a.camel@linux.ibm.com>
+ <a8536552-c523-47ab-84e6-b2a1210bd366@linux.microsoft.com>
+ <900e624ab5ff2ad8c1a69662450b42a442baa828.camel@linux.ibm.com>
+ <MW4PR11MB5872A33D7ACFDDB34EEDC6958CDE2@MW4PR11MB5872.namprd11.prod.outlook.com>
+ <MW4PR11MB58721C73775C3AD60D8C50338CB22@MW4PR11MB5872.namprd11.prod.outlook.com>
+ <a5911223c2e23283674de4b85395acf0326363b2.camel@HansenPartnership.com>
+ <CAAH4kHbiDaZjae21b2XPpWyPehBhGghshqz0jYf29G2p_vGKVQ@mail.gmail.com>
+ <f809dfb51e14d93ec5538fba31d3d1478d69484c.camel@HansenPartnership.com>
+ <DM8PR11MB575078E846B4E1E70D6A317AE7BE2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <ab64151d817e32ae440668ad8fc7b42eddc59d07.camel@HansenPartnership.com>
+ <DM8PR11MB5750563E06F6E7C278667768E7BF2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <003d1f1d654525afc736d84ec9a9e22debde1785.camel@ibm.com> <ead3a13611e209bd994ca688e5ab0a9fa309383a.camel@HansenPartnership.com>
+ <DM8PR11MB5750F26CA8292B1053722E10E7B82@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <f3de5c989f718ba999d4c3b00ffc6a06a1898c6c.camel@HansenPartnership.com>
+ <DM8PR11MB575007C975ABEFED36C8D027E7B82@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <MW4PR11MB5872C42AA225F66AC0F845928C812@MW4PR11MB5872.namprd11.prod.outlook.com>
+In-Reply-To: <MW4PR11MB5872C42AA225F66AC0F845928C812@MW4PR11MB5872.namprd11.prod.outlook.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Fri, 16 Aug 2024 09:13:55 -0700
+Message-ID: <CAAH4kHYSf_jEKV6uFVBViCYtpLYCXe0S_zF6=+NHzeFRKc+g-Q@mail.gmail.com>
+Subject: Re: Coconut-SVSM - vTPM support for Intel TD Partitioning
+To: "Yao, Jiewen" <jiewen.yao@intel.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Claudio Siqueira de Carvalho <cclaudio@ibm.com>, "jejb@linux.ibm.com" <jejb@linux.ibm.com>, 
+	"jroedel@suse.com" <jroedel@suse.com>, "Nakajima, Jun" <jun.nakajima@intel.com>, 
+	"jpiotrowski@linux.microsoft.com" <jpiotrowski@linux.microsoft.com>, "Dong, Eddie" <eddie.dong@intel.com>, 
+	"Perez, Ronald" <ronald.perez@intel.com>, "Lange, Jon" <jlange@microsoft.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Johnson, Simon P" <simon.p.johnson@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 15/08/2024 23:16, Shanker Donthineni wrote:
-> Hi Steven,
-> 
-> On 7/12/24 03:54, Matias Ezequiel Vara Larsen wrote:
->> On Mon, Jul 01, 2024 at 10:54:50AM +0100, Steven Price wrote:
->>> This series adds support for running Linux in a protected VM under the
->>> Arm Confidential Compute Architecture (CCA). This has been updated
->>> following the feedback from the v3 posting[1]. Thanks for the feedback!
->>> Individual patches have a change log. But things to highlight:
->>>
->>>   * a new patch ("firmware/psci: Add psci_early_test_conduit()") to
->>>     prevent SMC calls being made on systems which don't support them -
->>>     i.e. systems without EL2/EL3 - thanks Jean-Philippe!
->>>
->>>   * two patches dropped (overriding set_fixmap_io). Instead
->>>     FIXMAP_PAGE_IO is modified to include PROT_NS_SHARED. When support
->>>     for assigning hardware devices to a realm guest is added this will
->>>     need to be brought back in some form. But for now it's just adding
->>>     complixity and confusion for no gain.
->>>
->>>   * a new patch ("arm64: mm: Avoid TLBI when marking pages as valid")
->>>     which avoids doing an extra TLBI when doing the break-before-make.
->>>     Note that this changes the behaviour in other cases when making
->>>     memory valid. This should be safe (and saves a TLBI for those
->>> cases),
->>>     but it's a separate patch in case of regressions.
->>>
->>>   * GIC ITT allocation now uses a custom genpool-based allocator. I
->>>     expect this will be replaced with a generic way of allocating
->>>     decrypted memory (see [4]), but for now this gets things working
->>>     without wasting too much memory.
->>>
->>> The ABI to the RMM from a realm (the RSI) is based on the final RMM v1.0
->>> (EAC 5) specification[2]. Future RMM specifications will be backwards
->>> compatible so a guest using the v1.0 specification (i.e. this series)
->>> will be able to run on future versions of the RMM without modification.
->>>
->>> This series is based on v6.10-rc1. It is also available as a git
->>> repository:
->>>
->>> https://gitlab.arm.com/linux-arm/linux-cca cca-guest/v4
-> 
-> Which cca-host branch should I use for testing cca-guest/v4?
-> 
-> I'm getting compilation errors with cca-host/v3 and cca-guest/v4, is there
-> any known WAR or fix to resolve this issue?
+On Thu, Aug 15, 2024 at 8:38=E2=80=AFPM Yao, Jiewen <jiewen.yao@intel.com> =
+wrote:
+>
+> Yes, current intel TDP vTPM design only covers ephemeral vTPM solution. I=
+t is a known limitation.
+>
+> I remember we have discussed persistent vTPM before, but we defer it beca=
+use of complexity.
+>
+> Is there a full persistent vTPM design ready in coconut-svsm now? E.g. ho=
+w to protect the vTPM persistent NVS?
+>
+>
 
-cca-host/v3 should work with cca-guest/v4. I've been working on
-rebasing/updating the branches and should be able to post v4/v5 series
-next week.
+The design is ongoing in the early attestation document [1]. I
+honestly don't think it can fully protect mutable NVS without
+significant TCB increase since avoiding monotonic counter duplication
+and rollback is hard. We can certainly persist an EK and SRK on first
+boot and provision a sealing key for the NVS that's released with
+early attestation, but that buys you... literally nothing? over the
+evTPM solution of instead releasing the persistent SRK to the evTPM on
+boot with early attestation. The EK would mean a "persistent
+identity", but the way that you name the key to release is still going
+to be a platform-controlled aspect. You can't avoid it. So just allow
+your platform to sign an ephemeral EKpub cert with x509 extensions
+that include platform identity information. That's more valuable,
+since then you have a persistent identity that is backed by a
+platform-held secret.
 
-> 
-> arch/arm64/kvm/rme.c: In function ‘kvm_realm_reset_id_aa64dfr0_el1’:
-> ././include/linux/compiler_types.h:487:45: error: call to
-> ‘__compiletime_assert_650’ declared with attribute error: FIELD_PREP:
-> value too large for the field
->   487 |         _compiletime_assert(condition, msg,
-> __compiletime_assert_, __COUNTER__)
->       |                                             ^
-> ././include/linux/compiler_types.h:468:25: note: in definition of macro
-> ‘__compiletime_assert’
->   468 |                         prefix ##
-> suffix();                             \
->       |                         ^~~~~~
-> ././include/linux/compiler_types.h:487:9: note: in expansion of macro
-> ‘_compiletime_assert’
->   487 |         _compiletime_assert(condition, msg,
-> __compiletime_assert_, __COUNTER__)
->       |         ^~~~~~~~~~~~~~~~~~~
-> ./include/linux/build_bug.h:39:37: note: in expansion of macro
-> ‘compiletime_assert’
->    39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond),
-> msg)
->       |                                     ^~~~~~~~~~~~~~~~~~
-> ./include/linux/bitfield.h:68:17: note: in expansion of macro
-> ‘BUILD_BUG_ON_MSG’
->    68 |                 BUILD_BUG_ON_MSG(__builtin_constant_p(_val)
-> ?           \
->       |                 ^~~~~~~~~~~~~~~~
-> ./include/linux/bitfield.h:115:17: note: in expansion of macro
-> ‘__BF_FIELD_CHECK’
->   115 |                 __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP:
-> ");    \
->       |                 ^~~~~~~~~~~~~~~~
-> arch/arm64/kvm/rme.c:315:16: note: in expansion of macro ‘FIELD_PREP’
->   315 |         val |= FIELD_PREP(ID_AA64DFR0_EL1_BRPs_MASK, bps - 1) |
->       |                ^~~~~~~~~~
-> make[5]: *** [scripts/Makefile.build:244: arch/arm64/kvm/rme.o] Error 1
-> make[4]: *** [scripts/Makefile.build:485: arch/arm64/kvm] Error 2
-> make[3]: *** [scripts/Makefile.build:485: arch/arm64] Error 2
-> make[3]: *** Waiting for unfinished jobs....
-> 
-> I'm using gcc-13.3.0 compiler and cross-compiling on X86 machine.
+The EKpub cert is expected to be "signed" by the hardware attestation
+to tie it back to the TEE, so I'm not sure even persisting the EK is
+good from a security perspective since the certificate would have a
+really old quote with no way to challenge it again. It might not be
+best practice to make an ephemeral EKpub cert unchallengable, but at
+least we can't find a flaw in it.
 
-I'm not sure quite how this happens. The 'value' (bps - 1) shouldn't be
-considered constant, so I don't see how the compiler has decided to
-complain here - the __builtin_constant_p() should really be evaluating to 0.
+All this said, I think early attestation releasing some kind of key to
+get access to some encrypted persisted blob is a common need between
+evTPM full disk encryption support and persistent vTPM. We can execute
+towards a standard pstore virtual device (virtio-blk?) to import a
+sealed blob, and a standard network proxy device (virtio-vsock?) to
+import a wrapped SRK from a key management service that has an
+attestation verification policy protecting release.
 
-The only thing I can think of is if the compiler has somehow determined
-that rmm_feat_reg0 is 0 - which in theory it could do if it knew that
-kvm_init_rme() cannot succeed (rmi_features() would never be called, so
-the variable will never be set). Which makes me wonder if you're
-building with a PAGE_SIZE other than 4k?
+[1] https://docs.google.com/document/d/11ZsxP8jsviP3ddp9Hrn0rf6inttNw_Pbnz0=
+psXlxlPs/edit#heading=3Dh.7jvpsq5illyd
 
-Obviously the code should still build if that's the case (so this would
-be a bug) but we don't currently support CCA with PAGE_SIZE != 4k.
-
-Steve
-
+--=20
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
