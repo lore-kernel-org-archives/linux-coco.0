@@ -1,143 +1,154 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9CE2BB0D
-	for <linux-coco@lists.linux.dev>; Fri, 16 Aug 2024 16:14:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEF31C231B
+	for <linux-coco@lists.linux.dev>; Fri, 16 Aug 2024 17:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723824851; cv=none; b=b3bJBF01m7Gd+LuYjsb5BVofevXBeoxyJvDiGsY57WvvKwp/oDXt7zPDkW2v3o9yztezfV+2YxMO0tsJVK1urAIfylDxnSz2+TMr3q6b6vhbamPwQtGtjM7/B984khE9/ahKknsgILRS04iy5AR6op3fMPdNMSaQVgekkUVnOZQ=
+	t=1723830304; cv=none; b=P3Bl3X+6HGEMik/GIwOtEprdd424PytNuMJbssCVmPEHHYb0nwKSHvYAdrNrCLz16Evu6AIbY8JJZc047tsy/azFHnCPT2x0ncjZM6Odk8rcKn3MFgZMhDeyh7NBgxojIHz7N6qtPBJaGQnZ30bA+z7aai301krGSfEyHSETbCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723824851; c=relaxed/simple;
-	bh=cLsbvnBriQrMPr66bR+6PZjFOAgEDYZ0NkFAiqCbHv8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eMmu6b0jBcExIbpvRwAEJDfiPd28j7xjAFhjZu2JDDzm0fjmOQaRv/ZMB8lEoxojVkHEalV/B0nK/im9B8IFhZfRGPoPlvmZnCu/VOnmhjqZNcOLa0HwELrOrh5ylmt1HjZqTgAVhkGVtVBobSAmC+0dMh8KSNOeFHsuvCtXTdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=277MxH+I; arc=none smtp.client-ip=209.85.218.51
+	s=arc-20240116; t=1723830304; c=relaxed/simple;
+	bh=5Q1HgjloIR0MpwBSSkUVVWkbj04/nU+bFDjCRNPuhA0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LSUdguZxffByRpqdebhiIxnyHBAWvQhCg/9vbGCpLAJCjASV61BBeJHU6rVb5STxqJIVp40xhp1mshAk762+5XWVqskB1RODHWu2LcFFY5UTGEHABoAHUYzeaFko8Iv08C4bh2bwBgyvL7apVaikcj8HPUz6ghRXV1QpgamzlMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UeJgC5L4; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="277MxH+I"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a80eab3945eso245557866b.1
-        for <linux-coco@lists.linux.dev>; Fri, 16 Aug 2024 09:14:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UeJgC5L4"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6ad9ffa0d77so42146867b3.2
+        for <linux-coco@lists.linux.dev>; Fri, 16 Aug 2024 10:45:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723824848; x=1724429648; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cLsbvnBriQrMPr66bR+6PZjFOAgEDYZ0NkFAiqCbHv8=;
-        b=277MxH+IMPeXkbMq15J8P4UDmTfLsyhJ3lkjj0/V5Qo/4gXn4z+q03TsKyb36RqamI
-         QB2a3rB/zhcI6bcSKY5BJ6xqVWovm4wj0aXhEFLpaGitZUjbQpwNev5ZO1/7T+694RkO
-         79M0YWOVn64nw7u4Fqzf1FjknfSbYBSJAtYH1ijZZd+Y8OsaeMQ7qe2rfbfBzJx+8zhk
-         qIL0wpWD6mwBDwK9t0hf4ao5TatJnnjwv+qgpFChiscqt2mwjaDIBctG6x21eIBk2oVH
-         m3GvQpwpQ1krAVaWP+BMtqZrNNCVmscjgBpCehLTLnY9KQSxN/ke22S04O01E2DM0MWK
-         6UGw==
+        d=google.com; s=20230601; t=1723830302; x=1724435102; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vLqQ0W+kiaSmHiEqBrEtQ8fcmXJFfIb+9LXgj3vFom8=;
+        b=UeJgC5L4S5W8dumQIu1H8ljiTVpf2/JOPQLy/Jz82SOlb/8DNcELxUTPqx+DmadNVL
+         c1KjVlj8zDPOJ0MhVboBb2UTiQiQhfv7ELk0nS9KKX31iFve/zo1KfZl4bX4UaQMnTi0
+         oWG11MREJ8ZtXlv/MkDrLm6LqkSnfizEYdVHKtLwIFA0WUxFU3IAZ7ZasgqKYhcVoqRJ
+         5PvWMzFwA+/MR2HN3pPvMeICBxFCIFCh9CmgFpyoDcEEKGBfJy00WAfx7lP2ytPVu5VM
+         dUP+dsm1hs/+PNjd2IXeO0Hrm0x1V5nM1LGojSXDHlfe1BZgNBbAIAJXUP0WMqnJKlhY
+         F38w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723824848; x=1724429648;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cLsbvnBriQrMPr66bR+6PZjFOAgEDYZ0NkFAiqCbHv8=;
-        b=UeK3ENG7uB6BPAl3LaIf7jHWlvTDPnDk8npjhNq+v05hsjzV5PwKPW3/UwrFfNhVOW
-         aBLPRisyThbGoGlB6NHtKWJpJQDYLms9bBLXsA2g6N0byoClhNxdDOK5XfUsxBobJ6xx
-         DpQ/1Nqg7S2uI+Z+LwMriy+Hdav3mEzVn7ERd9ib3o6DH2BXD/UTzp9HniMIlhQvXKSn
-         1Gbt3X1YOOCFhAGcfU9nEdyHaN5OBAX/9OLIT2AiRuGRUqZ0g+Ay3U8plRTMInuk4grV
-         G8u13DCCSEWd/Yt3FQo0zhqvBI+FUzB8pu5en/25dg+qDpdfPqL4aFxtdEBPCqhyPrAv
-         2IOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwjO0jwABjtHrYJglcEeQxWxj9YdqccyvUBZbN28PZ/prnb43CFwm3qYEuxqtrW0AzJ4ddVF6BL9N2htln6IAM+FBbL4fASh8cwg==
-X-Gm-Message-State: AOJu0Yx0ptXkR3NAny0Dq30BpQpLvYFQOnQdBrUkKSYpiRyXHkiSpnRb
-	nKJ9rmNRFQ4khdFBKaRrJuuvE4RLDP/3BlmMKxKkAuU6L6k+SMIj5frcDpJ99q9WRORPxsPRdZD
-	MmN1ZPWPZ6Ty0PNT9DB0+MR2bLfqvze96bAHj
-X-Google-Smtp-Source: AGHT+IH+16EpsIq6phBnG7MyjVSPO6Rwn1YDSKcUzwbMELznLfJJdf2PRUXRUtMTOm1Yu45OuXR+BMVskZIfXF3WIi0=
-X-Received: by 2002:a17:907:c7c5:b0:a7d:26ff:aeb0 with SMTP id
- a640c23a62f3a-a8392952665mr246673566b.30.1723824847854; Fri, 16 Aug 2024
- 09:14:07 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723830302; x=1724435102;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vLqQ0W+kiaSmHiEqBrEtQ8fcmXJFfIb+9LXgj3vFom8=;
+        b=YVlzlL3s2HkSYlPGq7Qi/MNbVGWO8dc4g0Kt2R6S28wVEbyytZ2V2EhYAZM+ZCs/ST
+         CEkBtF7TSrsP20+OALG/Sof/x9rTgh9Gx0ZSSrvFXezwgPSIbq7+cuDF0KQ3bLDR+Y4P
+         w4PInFQQfdpxs+RpcWTTtBTn97rPEMD9dxCxmygfoZCUp37xFnucAEl6wvJ4OLJ6NQmY
+         +3c7kxLYjPg57JHb/z7tmyCgMQ68OsL4MPNqxHHg7UfFPm1DMuaea9EGInMd+B/QWf8S
+         YpiueKfvKyT7U9iZWZNmZZRGziXk7WND0EgdfueEQkafOWSLFs/NaBlj2NJSPm4Ie+vM
+         6FYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMSZ29iXtvTXPNur6+vm2Llb7w0nvjyMCkehzgM6s9xhWeFn4TlbFMgCjWlHSmfUobniCpwK5zFuzyCTHoNimrLDV//Iow/E6DBg==
+X-Gm-Message-State: AOJu0Yx6eOc/A7NgCBORoR9q6udwuD7YZyVMpwRhTAcMuaHG7TUmwJxR
+	xj4SviaWedVLBVoFsk1Moq/nXW9bmgiib2HBtn6czHS0nU2pdDO2ieZDKce1Gh70wIf95pVw9fC
+	vDELXTk0KqkKhO26Fe3SZPw==
+X-Google-Smtp-Source: AGHT+IEi4/I6TDzoHhlZG83qsUH/gsU5TYse1nTv7CQbUM47gB6I7o2YM+wF22moMbfN4T1ecnVRfVCm4hd5c3ZkMQ==
+X-Received: from ackerleytng-ctop.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:13f8])
+ (user=ackerleytng job=sendgmr) by 2002:a05:690c:688d:b0:699:d8dc:668d with
+ SMTP id 00721157ae682-6b1bb2899d5mr1670697b3.5.1723830302029; Fri, 16 Aug
+ 2024 10:45:02 -0700 (PDT)
+Date: Fri, 16 Aug 2024 17:45:00 +0000
+In-Reply-To: <aa3b5be8-2c8a-4fe8-8676-a40a9886c715@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <MW4PR11MB5872CE9BEF8361203F72EDFD8C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
- <MW4PR11MB58727350055C0E00D6CA0DC08C3B2@MW4PR11MB5872.namprd11.prod.outlook.com>
- <e2912269a273824e05714174fc04d45361ce71b5.camel@linux.ibm.com>
- <8c389411-c547-488f-93d2-ac953e212eaf@linux.microsoft.com>
- <f450d9b8c427a7d3c5ac53882d004280fc9b945a.camel@linux.ibm.com>
- <a8536552-c523-47ab-84e6-b2a1210bd366@linux.microsoft.com>
- <900e624ab5ff2ad8c1a69662450b42a442baa828.camel@linux.ibm.com>
- <MW4PR11MB5872A33D7ACFDDB34EEDC6958CDE2@MW4PR11MB5872.namprd11.prod.outlook.com>
- <MW4PR11MB58721C73775C3AD60D8C50338CB22@MW4PR11MB5872.namprd11.prod.outlook.com>
- <a5911223c2e23283674de4b85395acf0326363b2.camel@HansenPartnership.com>
- <CAAH4kHbiDaZjae21b2XPpWyPehBhGghshqz0jYf29G2p_vGKVQ@mail.gmail.com>
- <f809dfb51e14d93ec5538fba31d3d1478d69484c.camel@HansenPartnership.com>
- <DM8PR11MB575078E846B4E1E70D6A317AE7BE2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <ab64151d817e32ae440668ad8fc7b42eddc59d07.camel@HansenPartnership.com>
- <DM8PR11MB5750563E06F6E7C278667768E7BF2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <003d1f1d654525afc736d84ec9a9e22debde1785.camel@ibm.com> <ead3a13611e209bd994ca688e5ab0a9fa309383a.camel@HansenPartnership.com>
- <DM8PR11MB5750F26CA8292B1053722E10E7B82@DM8PR11MB5750.namprd11.prod.outlook.com>
- <f3de5c989f718ba999d4c3b00ffc6a06a1898c6c.camel@HansenPartnership.com>
- <DM8PR11MB575007C975ABEFED36C8D027E7B82@DM8PR11MB5750.namprd11.prod.outlook.com>
- <MW4PR11MB5872C42AA225F66AC0F845928C812@MW4PR11MB5872.namprd11.prod.outlook.com>
-In-Reply-To: <MW4PR11MB5872C42AA225F66AC0F845928C812@MW4PR11MB5872.namprd11.prod.outlook.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Fri, 16 Aug 2024 09:13:55 -0700
-Message-ID: <CAAH4kHYSf_jEKV6uFVBViCYtpLYCXe0S_zF6=+NHzeFRKc+g-Q@mail.gmail.com>
-Subject: Re: Coconut-SVSM - vTPM support for Intel TD Partitioning
-To: "Yao, Jiewen" <jiewen.yao@intel.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Claudio Siqueira de Carvalho <cclaudio@ibm.com>, "jejb@linux.ibm.com" <jejb@linux.ibm.com>, 
-	"jroedel@suse.com" <jroedel@suse.com>, "Nakajima, Jun" <jun.nakajima@intel.com>, 
-	"jpiotrowski@linux.microsoft.com" <jpiotrowski@linux.microsoft.com>, "Dong, Eddie" <eddie.dong@intel.com>, 
-	"Perez, Ronald" <ronald.perez@intel.com>, "Lange, Jon" <jlange@microsoft.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Johnson, Simon P" <simon.p.johnson@intel.com>
+Mime-Version: 1.0
+References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
+ <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com> <4cdd93ba-9019-4c12-a0e6-07b430980278@redhat.com>
+ <CA+EHjTxNNinn7EzV_o1X1d0kwhEwrbj_O7H8WgDtEy2CwURZFQ@mail.gmail.com> <aa3b5be8-2c8a-4fe8-8676-a40a9886c715@redhat.com>
+Message-ID: <diqzjzggmkf7.fsf@ackerleytng-ctop.c.googlers.com>
+Subject: Re: [PATCH RFC 4/4] mm: guest_memfd: Add ability for mmap'ing pages
+From: Ackerley Tng <ackerleytng@google.com>
+To: David Hildenbrand <david@redhat.com>, Fuad Tabba <tabba@google.com>
+Cc: Elliot Berman <quic_eberman@quicinc.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Patrick Roy <roypat@amazon.co.uk>, qperret@google.com, linux-coco@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 15, 2024 at 8:38=E2=80=AFPM Yao, Jiewen <jiewen.yao@intel.com> =
-wrote:
+
+David Hildenbrand <david@redhat.com> writes:
+
+> On 15.08.24 09:24, Fuad Tabba wrote:
+>> Hi David,
 >
-> Yes, current intel TDP vTPM design only covers ephemeral vTPM solution. I=
-t is a known limitation.
+> Hi!
 >
-> I remember we have discussed persistent vTPM before, but we defer it beca=
-use of complexity.
+>> 
+>> On Tue, 6 Aug 2024 at 14:51, David Hildenbrand <david@redhat.com> wrote:
+>>>
+>>>>
+>>>> -     if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
+>>>> +     if (!ops->accessible && (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)) {
+>>>>                r = guest_memfd_folio_private(folio);
+>>>>                if (r)
+>>>>                        goto out_err;
+>>>> @@ -107,6 +109,82 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
+>>>>    }
+>>>>    EXPORT_SYMBOL_GPL(guest_memfd_grab_folio);
+>>>>
+>>>> +int guest_memfd_make_inaccessible(struct file *file, struct folio *folio)
+>>>> +{
+>>>> +     unsigned long gmem_flags = (unsigned long)file->private_data;
+>>>> +     unsigned long i;
+>>>> +     int r;
+>>>> +
+>>>> +     unmap_mapping_folio(folio);
+>>>> +
+>>>> +     /**
+>>>> +      * We can't use the refcount. It might be elevated due to
+>>>> +      * guest/vcpu trying to access same folio as another vcpu
+>>>> +      * or because userspace is trying to access folio for same reason
+>>>
+>>> As discussed, that's insufficient. We really have to drive the refcount
+>>> to 1 -- the single reference we expect.
+>>>
+>>> What is the exact problem you are running into here? Who can just grab a
+>>> reference and maybe do nasty things with it?
+>> 
+>> I was wondering, why do we need to check the refcount? Isn't it enough
+>> to check for page_mapped() || page_maybe_dma_pinned(), while holding
+>> the folio lock?
+
+Thank you Fuad for asking!
+
 >
-> Is there a full persistent vTPM design ready in coconut-svsm now? E.g. ho=
-w to protect the vTPM persistent NVS?
+> (folio_mapped() + folio_maybe_dma_pinned())
 >
+> Not everything goes trough FOLL_PIN. vmsplice() is an example, or just 
+> some very simple read/write through /proc/pid/mem. Further, some 
+> O_DIRECT implementations still don't use FOLL_PIN.
+>
+> So if you see an additional folio reference, as soon as you mapped that 
+> thing to user space, you have to assume that it could be someone 
+> reading/writing that memory in possibly sane context. (vmsplice() should 
+> be using FOLL_PIN|FOLL_LONGTERM, but that's a longer discussion)
 >
 
-The design is ongoing in the early attestation document [1]. I
-honestly don't think it can fully protect mutable NVS without
-significant TCB increase since avoiding monotonic counter duplication
-and rollback is hard. We can certainly persist an EK and SRK on first
-boot and provision a sealing key for the NVS that's released with
-early attestation, but that buys you... literally nothing? over the
-evTPM solution of instead releasing the persistent SRK to the evTPM on
-boot with early attestation. The EK would mean a "persistent
-identity", but the way that you name the key to release is still going
-to be a platform-controlled aspect. You can't avoid it. So just allow
-your platform to sign an ephemeral EKpub cert with x509 extensions
-that include platform identity information. That's more valuable,
-since then you have a persistent identity that is backed by a
-platform-held secret.
+Thanks David for the clarification, this example is very helpful!
 
-The EKpub cert is expected to be "signed" by the hardware attestation
-to tie it back to the TEE, so I'm not sure even persisting the EK is
-good from a security perspective since the certificate would have a
-really old quote with no way to challenge it again. It might not be
-best practice to make an ephemeral EKpub cert unchallengable, but at
-least we can't find a flaw in it.
+IIUC folio_lock() isn't a prerequisite for taking a refcount on the
+folio.
 
-All this said, I think early attestation releasing some kind of key to
-get access to some encrypted persisted blob is a common need between
-evTPM full disk encryption support and persistent vTPM. We can execute
-towards a standard pstore virtual device (virtio-blk?) to import a
-sealed blob, and a standard network proxy device (virtio-vsock?) to
-import a wrapped SRK from a key management service that has an
-attestation verification policy protecting release.
+Even if we are able to figure out a "safe" refcount, and check that the
+current refcount == "safe" refcount before removing from direct map,
+what's stopping some other part of the kernel from taking a refcount
+just after the check happens and causing trouble with the folio's
+removal from direct map?
 
-[1] https://docs.google.com/document/d/11ZsxP8jsviP3ddp9Hrn0rf6inttNw_Pbnz0=
-psXlxlPs/edit#heading=3Dh.7jvpsq5illyd
+> (noting that also folio_maybe_dma_pinned() can have false positives in 
+> some cases due to speculative references or *many* references).
 
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+Are false positives (speculative references) okay since it's better to
+be safe than remove from direct map prematurely?
+
+>
+> -- 
+> Cheers,
+>
+> David / dhildenb
