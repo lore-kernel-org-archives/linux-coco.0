@@ -1,252 +1,298 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2071.outbound.protection.outlook.com [40.107.94.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F1F1C3796
-	for <linux-coco@lists.linux.dev>; Fri, 16 Aug 2024 18:08:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723831726; cv=none; b=ADSHKWZflUKJbUGb0rvKgu+ha+Xx4FwbmY82tikyR4p1LH9rPCGu5KaAjCmcqX3lqD28wI5nMy12txdH916KFNGmyWNNiZzzeU2mLtKJXqUfjTl3l7K+3RlxxvdfNkUyPWofL0lOODWYZ1PZvyQ9kikNwkqX2/ZSjZGNIK+uY24=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723831726; c=relaxed/simple;
-	bh=pAGWq6N60Tml4Ne9hgnN3aaua/i7PK/bq3RmX5CZ7O0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VBnFKWvKKOYwuiO6MuW0oeg4QAUlVWmXoBNG2FfMunDGPDx51++BrZHrWYkxbf9REvtNDCKqPOJ882pcrSmxzensdDum9H6jF5YhPqBN22Qb/hsGP2YpsMMrq1ntxCKzdrYpKzuKddBsC77ZasAQP/P70tEU2nwGkbOJibsCkKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GwkhC7Ud; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B594513A899;
+	Fri, 16 Aug 2024 21:13:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723842825; cv=fail; b=jQ1qdpvcUd8+MBok7hYYDnpYeSebGC9fx12q7KUejRw4XSNq7mFmCAIN8uSoHl9JJ8AxvTWe+Ac0BEdXzqwLaV5zuteEGL/Alt5Bi8T14sJ3BoInUQLvkPKJeiITGNlTRYok2kdyM6xAg/V5szXThepFKgwTLsP3zu9lh7GTVlQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723842825; c=relaxed/simple;
+	bh=7L2czX/gOz2JtpdRq/Ye54qRyXp2ugqxsCGhAXTc0d4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=BswdArqnJferY9jR1Fohdvhgc2f3vjs/9yT7G8jESJWjPSTxB+PMioY7niKYrJQ4q2+hTFnHhY6LeqUGUvCCmFOI73osYUovPEuAuGOrBdtj5xSEBXo4mQwzOtKLBQj+xm2+2EqXmb5FPF64hhGj15Gp4yw8rVGOjKJJ3JO6teE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=b29L7JVv; arc=fail smtp.client-ip=40.107.94.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GwkhC7Ud"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723831723;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7LvZHajAoereLQ/n3rjWTKD/n9Ae1jh7vyVQTrCVhi0=;
-	b=GwkhC7UdqnfwZzIO6Cd+nfl1CNGT+wZjxlAzjn+oJr0qA9cM2Xem5bsPtBV3IQLjDXLUsf
-	xXVPpN0VX4lCXCJWhNK6kEJd5JpvWN8w0lOEx3zyulxYmZBbCf1f7nOnUlBYrpFZgYFy3H
-	8zx4uKJC7k2PfFbnHP0uLlLKIs6LvGQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-673-FvhivBw6PqGXBoHqD8OKPg-1; Fri, 16 Aug 2024 14:08:42 -0400
-X-MC-Unique: FvhivBw6PqGXBoHqD8OKPg-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-42809eb7b99so12511815e9.0
-        for <linux-coco@lists.linux.dev>; Fri, 16 Aug 2024 11:08:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723831721; x=1724436521;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7LvZHajAoereLQ/n3rjWTKD/n9Ae1jh7vyVQTrCVhi0=;
-        b=M1VSyDiPVwvTgOto5+pGmM6jMUmwt2gKdsKIj0QpvafI/BI9JB3nKe6NBo8Seo+wVO
-         p/sh25yE9qoAY1BxtgxykEPZfjCcpn3Tr+CvbmSv1gckiDKKk7nwC+diWf+U0Q65njy9
-         4okWDbn4Kraqsfa1+GCc2CdzZOoQYXa5KLhNfT7Mjobi7FtjTB98l/J7Fo7qmRkjQraI
-         hMS+OLedlj+AujBsOsk0WwaJLpw+mAReFhdqwAhzTQGjxDlcyiBrIsAARCmSTCBN6VtS
-         uunxT6Bae9eLpB4fHHedgKoLuqMRajQ1Xzx4Q5AVecNaSMEF5jKJ3+wf4fQ/uyUjf1Ky
-         K10g==
-X-Forwarded-Encrypted: i=1; AJvYcCUN86LcRKFghxSOLd9rELcoAYHGOc7PQKNwCOhCc6FzW76OHjaAY/WDHPgfwOCezYq5J42qtEB5alVv58nlDVQ7wECUWZeUQreAMQ==
-X-Gm-Message-State: AOJu0YzcHKJ5GLGbcC7Zy8jxZ+E5U72JjY6K/RGODADOP34l32bYD2Z5
-	mAxNKAC50PaHlG4NAundyOWH3grPYOZf/LTfzlm4fxTlMYDkccndtLMIp4aAy75ghXv0DuiPGko
-	Pt+T0u/A4qrkitWvs2Yloyw18kJMZYKJaR5KSsr/oSXR6xfg2rZbiodvFfwM=
-X-Received: by 2002:a05:600c:45c3:b0:426:6eb6:1374 with SMTP id 5b1f17b1804b1-429e223b9d3mr60729915e9.0.1723831721044;
-        Fri, 16 Aug 2024 11:08:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGaR7laP3i8PcoK1VQRgylTTtn4SNtF7osOBDTb0u6r4W+A4x3wD2fW6732plT6G8pqs5qaHA==
-X-Received: by 2002:a05:600c:45c3:b0:426:6eb6:1374 with SMTP id 5b1f17b1804b1-429e223b9d3mr60729615e9.0.1723831720535;
-        Fri, 16 Aug 2024 11:08:40 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c721:b900:4f34:b2b7:739d:a650? (p200300cbc721b9004f34b2b7739da650.dip0.t-ipconnect.de. [2003:cb:c721:b900:4f34:b2b7:739d:a650])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded299a9sm81171405e9.18.2024.08.16.11.08.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Aug 2024 11:08:40 -0700 (PDT)
-Message-ID: <94c5d735-821c-40ba-ae85-1881c6f4445d@redhat.com>
-Date: Fri, 16 Aug 2024 20:08:38 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="b29L7JVv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y9zQCMP/3xbpVFCH5vLLrgV7F8p9F3RBELUg36uwqThUMQsScEg+FaslYfSiQNyHNniTZl9oCf4vBlETcmxh9jL8lqDI1UlAy2FCLQTbFWWMEyDA9SRNA/2og+GzMfwVbNZvGh8vuFYxYFoqkDzqgP/51EHxnzEZfAdxLhaTmjHayFHYXoT37CBvVQAhsE7dtv+aG/l+LG/nQKGpC0HjODmgsorXYbdXe5UDK1aQdrGG5MAtS0Np0A2uuRb/OgAJNUFnmHH14tEaqgpcooZ6bb9cX3QxsWBh78ahqRPvSuoP5sXDtgQoMisaeTbO7KG+hNB/GAQ1aOAUfE8tzUdd0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jZoTKqQnwFS02BjtvYctd/vaIf8hnol1M6u/XqC1nr4=;
+ b=v7K42wOOeRkLZoZ7YUdMXB6J6bBJclKk6tiGmXnXTz2xEHB1KoV+hp/64gHRZH/Ev4brwnoGcNleS1znyMacVGCEwadhXNSSxzZNzW5XFjI0BDtPdu7ebKAhV5ejiyDlxs2lXLi/dykDXY/9ez1YYALyW+UwiAqXA6N2rciyrwHD53OerUHSNm3UmylWwZ5EFPtoVlPjW7M73VJo+L4vAW7xNE5u31wuOr+lLSSqdf9yzD/i2ekLOcOR4L7nFLokqWTIHALA27mx/z45njp6uGjlYBUcdED75CXp+Q4vU+RM4o6pTwutQF9OG8fVvvpMVk5fh8EJb6B1/fvhIbLC3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jZoTKqQnwFS02BjtvYctd/vaIf8hnol1M6u/XqC1nr4=;
+ b=b29L7JVvUxIQfoSk9XVodNNseXeUk/w/1UImNXxPX/PwtXKq4Lt9ppMtwpAwPtoHy9k7Xl4hpmYEfiCarb+I+Hk3LtQKViA0tSZzFqSkHiK+Xx/7GbmFEbkjVQDCSGSDjQITRhqgsOZuHWoLX+4zw6byRgHcjUj5v2EihznryQ2P8M6+o2IJiafuLwZA3bSoZQx1Kv/VWTuXAI9o0mqmhVU2+SzEFGoeRsd1MhYXR1ILD7qymBOMIG63h8YZFKZliVxnP6uTrGC7MPF0osORc9/3Uea9UjrJDIZ7m731uZ1J+5STVB/IDoGDe0nNwqMBKh8+kJlSwtQjcGGA9qkaqA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CY8PR12MB8194.namprd12.prod.outlook.com (2603:10b6:930:76::5)
+ by MW3PR12MB4441.namprd12.prod.outlook.com (2603:10b6:303:59::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.19; Fri, 16 Aug
+ 2024 21:13:39 +0000
+Received: from CY8PR12MB8194.namprd12.prod.outlook.com
+ ([fe80::82b9:9338:947f:fc9]) by CY8PR12MB8194.namprd12.prod.outlook.com
+ ([fe80::82b9:9338:947f:fc9%6]) with mapi id 15.20.7875.019; Fri, 16 Aug 2024
+ 21:13:39 +0000
+Message-ID: <aa9a6b53-cfc4-4010-83f5-ccfa396bb75f@nvidia.com>
+Date: Fri, 16 Aug 2024 16:13:35 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/15] arm64: Support for running as a guest in Arm CCA
+To: Steven Price <steven.price@arm.com>,
+ Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+References: <20240701095505.165383-1-steven.price@arm.com>
+ <ZpDvTXMDq6i+4O0m@fedora> <09fdebd7-32a0-4a88-9002-0f24eebe00a8@nvidia.com>
+ <27c942e0-0e7c-4e71-b1df-1a8f70df5411@arm.com>
+Content-Language: en-US
+From: Shanker Donthineni <sdonthineni@nvidia.com>
+In-Reply-To: <27c942e0-0e7c-4e71-b1df-1a8f70df5411@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR03CA0026.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::39) To CY8PR12MB8194.namprd12.prod.outlook.com
+ (2603:10b6:930:76::5)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 4/4] mm: guest_memfd: Add ability for mmap'ing pages
-To: Ackerley Tng <ackerleytng@google.com>, Fuad Tabba <tabba@google.com>
-Cc: Elliot Berman <quic_eberman@quicinc.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Patrick Roy <roypat@amazon.co.uk>, qperret@google.com,
- linux-coco@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org
-References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
- <20240805-guest-memfd-lib-v1-4-e5a29a4ff5d7@quicinc.com>
- <4cdd93ba-9019-4c12-a0e6-07b430980278@redhat.com>
- <CA+EHjTxNNinn7EzV_o1X1d0kwhEwrbj_O7H8WgDtEy2CwURZFQ@mail.gmail.com>
- <aa3b5be8-2c8a-4fe8-8676-a40a9886c715@redhat.com>
- <diqzjzggmkf7.fsf@ackerleytng-ctop.c.googlers.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <diqzjzggmkf7.fsf@ackerleytng-ctop.c.googlers.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR12MB8194:EE_|MW3PR12MB4441:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1a1dcaf-9686-49d1-f33f-08dcbe384c5c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QlhqMEtGRVR4SVlZQzNFSWlUblFWbUc1bGNPdnhlZ1pJNHZkVkxuV21lNmV3?=
+ =?utf-8?B?NFJDUXcxM1lHamxXaTBMcUM0TjM0SnZPejFIR0tMclZ6UHlyQkVVNld5ZTVT?=
+ =?utf-8?B?UjcvbXo3N1ZTeHRDRDFYZjNjaE5kUFBEN0dZdjdKR2tXeUtSMU1kS0VxYm1U?=
+ =?utf-8?B?dS9nUUVndDBhWUgyeXBqS3IzOHl3SDhuUkxFbWZUWXVDS0RTejM4a2hENGRP?=
+ =?utf-8?B?MHp5bm9vTVFsak1HcUlKTnhSVkVTVGNVOWtRQmtQVzlYbmxIeTRvYzAxZ0wr?=
+ =?utf-8?B?MHJWem44R2lXZDhHTG9La3VGOEV3RFhyM2F3dEVQV3h0alRsVU4xMlk0MFJ0?=
+ =?utf-8?B?RHFNQm5yb1dKUFEyMVFPeGltVGtCMWJ4dEJrSldabS9RN1Fna0wra09ESFJX?=
+ =?utf-8?B?Ulhnd0lBWVZGc0NGbzd4N0pkZ0N4Ui9iMzZVY1Mwam1ubEZENmpJT3psZFdU?=
+ =?utf-8?B?ZlNFL3dRRU55RXY5Njg2U2lGMkxrSzVwbVFsZ1VoZlE2anVGa3ZvNmcrS3Z3?=
+ =?utf-8?B?Y1p5cVpMTmMwS2NzN0ROcDYrV2U2dXVEMFV6Q2gvZkJTOC9ONGEzc3hTY0RZ?=
+ =?utf-8?B?VFhCTnU3bXJtZC9veHlpaWFLNVhPclJVMzVkMm9EeXBmRzc3OXIvUWhjeFJy?=
+ =?utf-8?B?ZWNSTnZoNS92VXNvcUQ4T29wQ2JrTldaTGNQL1dYNCs0UXBLbS84OGQ0c0ZB?=
+ =?utf-8?B?djlTMW9BVHVFNFBTc1pvOGwrSjZnbGVSUklMbGRCUnB6bHQ2aC9UN0FWQ1Jk?=
+ =?utf-8?B?Rmc2dnhVTWtuMmkyTXc1cWdjdkR6WHc1Qk1QZ0xUdkcyWXRlVUJ0Y3N3U09x?=
+ =?utf-8?B?UUx1eEFDaDk2aXFncm5nN2FrVW5Cem9DSi9GNTRzMzFxamQ3NCtSbGNSelE3?=
+ =?utf-8?B?ejM2SG9hV0tYVURzUXFxYkJsY3VlSXVYUTZwbkNLdEYzVUthU0lIOFZhM01p?=
+ =?utf-8?B?c3NPS1daWjVvWWNPT3NGQlZlTUhZcUZOdGNLbEdWUW5HMkNKY1Vlbk1LcFVO?=
+ =?utf-8?B?UERUa2dETHZQYlNWRUpqWWZOeVR1bURhVG1ZMFU2NGxXYUZqb1A1WHdORnlj?=
+ =?utf-8?B?WFhBMzRVZ0lmN1phVTQvWHhraWo4TEptMUUxRnovNk9ySUNUVHhKaVBOSFEx?=
+ =?utf-8?B?TzNQQlM1TnFwUTBDUUZYbnVnMGJMWWkrYThXQjFsaE1XTFNLemZHRm9rOVho?=
+ =?utf-8?B?U0ZiQUUzYW9YbzN2dUlFbVZQRWR2VjQ2TU5JOGEybGwrSTg2Wk40cDJCQXpM?=
+ =?utf-8?B?aU43ZVYxQkVkVmVYMnY0NjJRa2Fjc1F0VjArazNFQjB2Uk5RZVNMaU51bXh3?=
+ =?utf-8?B?WHFUQ1IyVzdsUHNCbnpFY3FtTFdjbWtjYlE4OTMvcWdMREhvSitCU1djb2pZ?=
+ =?utf-8?B?SWVScURRRWU2TThDUXRiUlZnY1p2eDMyc0dncXdaeVF3b2drbFlJdE1NbGxH?=
+ =?utf-8?B?TWNlckdwVnZpakN1UWFsL3VoanJZSk9rSGxROHRlL2VPd3dITWd0ang2STMz?=
+ =?utf-8?B?UE40NGlnajhQbTAwQnJDUDhEU0lKZE5vNTFHSGwwOUtOeWs3dHQ5VFA4aXZN?=
+ =?utf-8?B?Q3d6aC9JRFVwdGdSNmMrTXdhb0srUmR5NlVHY2Q2OGJCd25WeTdNRFlKSTlG?=
+ =?utf-8?B?SmNjdEwzc0o5VUFCVFpNQWtWVzFxMXNYa1d1bnJKN08zT2N2RDROMVVhcGh2?=
+ =?utf-8?B?bWpoblBObTY4U2hMU1lGcnZMa1lSSEZwTG05UjFFSDRPaDdENGZEOWlta0VV?=
+ =?utf-8?B?OWVCbkhEV1ZaWmJLR01XQ0R6aXFKWXVnUzZ2aFZ5cDJQbHFkb0lTakc3eWw1?=
+ =?utf-8?B?eitucjVNbmJIcGhyNkZoQT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N1BWTlF6WitMNHVDRFZWTlNEYWhHcGhrUDB4aVBQeUx4c1hWUEpkZThwQ3pQ?=
+ =?utf-8?B?aE5Hd1c0cjJIZlVobkVsWGVEUkU3bDJrd01sNlhDbWd2WHphT0xVV1BkU2cr?=
+ =?utf-8?B?cmlUNDRvMU9NYjFZelcrb3VRR3F4U0d1UlB4aWRSZGRzWGUwZnZ2Y3JSdE5C?=
+ =?utf-8?B?MzVteFQ5TG1wZkJwVzJ4ZUVUNkRzeS9jOGM5M040N1RPV2hjTTVCY3NIM2lM?=
+ =?utf-8?B?ek5PNWt6UFBOaER6SkpuTjdYS0hYYmloQkE4ZEhndHA3RHA4blhPbXV0Snl3?=
+ =?utf-8?B?TjB6K2pUVEV0WUE0ZEUzNUxKcDQxTmJrRWRFdEowUmRSdjgyWGxrRVhPU25W?=
+ =?utf-8?B?NE9hYndOZGNGMjBIRHk1bW5Ka1VpUk1haVl1dTNBUC84UnZMdTBPT1JlN0VC?=
+ =?utf-8?B?ZHdjbUFvTkRTMjlnRmUweXJhVVhvS1p1Zmg2dDBSTmoydUZ5LzBTYzFqeTFP?=
+ =?utf-8?B?bHNzUThjVEZhUnRKbkdIU3g3NnM1ZXNIOUFXaUN4ZlhJaGlKeFFVS3VGRHNo?=
+ =?utf-8?B?d2J3UG93eDBTeU9XcXBIUjlGWlBaQ0FseVp6TGhZNHNQTzhTdFhLUXdsVUxq?=
+ =?utf-8?B?RVVwcVN6TWZ2M2JCYWJRbHd2ZjVDZmRBbEZ0eXJzQVd1RE1FNFFDbFdmQkhD?=
+ =?utf-8?B?c2xIZ2R5QTc3cTBwbG1xV3J5NmFPZ2k5YVZaUEdZRnc0QXpVWFFEZURPZGg5?=
+ =?utf-8?B?bHZlT1R6M1BXdjYweXUycWNBVW5vTXowdktqTUxRU0haSi8yS2FlZ1hxUmNJ?=
+ =?utf-8?B?ZXFnVDRuWnBKdGpYeHFCdU9VYkVlN1dQOVVBOUhYd1hTZ2RDL0N2YkJsc1ln?=
+ =?utf-8?B?VE5kOUwxNFNEVjBQLys3aCsrYks4alRpMVBlS1IyV1pNb1AzdHdUM041SmY4?=
+ =?utf-8?B?VjZJcjJPTm5waFowekpiL1NmRlgyRzNjeDZCZzdZVU02Sy95NGNsajc1UHZH?=
+ =?utf-8?B?ek9IQTNzaVNQSEhOaUtrMnhQVmFRdDVRM2lSd084WFVWOUZUd21lS1U1R293?=
+ =?utf-8?B?VEJmb3ZPTTFmbFZaOGNjZWZlQS94RUdxRmt3RThCZ0ZOT2JjZGp4akgxNDFz?=
+ =?utf-8?B?MjlUSi9iQ2N3REJPM0ZGUE9DSVJ5aldmcFhudytHQk9rZTIrQ1FMUDB0cmMy?=
+ =?utf-8?B?MGFuZjFWNHJTNzRQTnNOeGRpR2V2NE5XRktZYyt6b1FVa0x6S2NaOW1LcVNQ?=
+ =?utf-8?B?dHpadHpZaG55SDNRaVZrNmFzQlYyUlJUQlExWHBqeWRXN25udFB2TUdKbCtJ?=
+ =?utf-8?B?ZUNhSGYwRURMMTYyM21KRDNMTmJKR0J1NmJoYUlQSGFKWWVHRlRGc3FlZ3E0?=
+ =?utf-8?B?U0oxV1BHMk52YU8xSlBCRE9hY3Z1ZDBGMUZ2Q1lGQWI0OUJQeDh2U2d5Qkx5?=
+ =?utf-8?B?a2NRSUo3cWlSdXlReThKdnRodWFEdjJUa0ZYUWlYK28rYmp3a0ViRVo5dmFZ?=
+ =?utf-8?B?dzRhbjEwckV2cTh2MVRSRENnZHY0SU5Dc0RWZC9FTW1BUWxZNEFSRWlUWTVo?=
+ =?utf-8?B?RlBFRzBFL2U1TE4xa3dYTlJ5cnhuRnFjNkNsSVBIM0VkblA5RjlQQ1drQWZw?=
+ =?utf-8?B?cWRpY2ZweFlKcFlld1BvbVNhSmVHNDlLWTRscHkvVk0yUCt2MENwQkVLR0Rv?=
+ =?utf-8?B?L21aTFVqVk14bGJubmRCbDJibEt2SkFFMko2K3pNNlMrRTFVcUkxNGdVM3Bm?=
+ =?utf-8?B?bjREUlZZeXFieVg1Y0VNMWZQWlZjOWhybGo5ZUtraUN6NTAxMUt4RE5hOW9L?=
+ =?utf-8?B?OUQ0alhZMnBLK1c3K2dKdkdKa2ZtdzBUVUFuSmxvdFdPakFXVW1CSEVPemxs?=
+ =?utf-8?B?NEpMRFZPaUo3cU5RakpQemVpS1ppcWdsZGE4UGc2UTZlQytCZC9DZ3dNVDVG?=
+ =?utf-8?B?dXh3R0Q5ZzZiZnJYSS9EVy9WM29UYW00ZEJJQ3d3TUFYZzZzeEZNeU5nTE4z?=
+ =?utf-8?B?czEwTFZyN1NkWWRvSHFrUFg0UC9QWS9xOUQwSEl2cUlUNzhnakxDekVOTnVn?=
+ =?utf-8?B?YXNoNi80NXVYdHlKenhsL3ArRnBnenpjOWU1S09Xcjdqa0tLZHBGaW5XNmVz?=
+ =?utf-8?B?QTBmTkUrK2h0WWZlSnR3NXVqaDRWVXZVeWk0VUVLR1JiVGI4V2dsRlJNbFAy?=
+ =?utf-8?Q?VTaPVwSwIdrRBnuPFr6inLbJR?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1a1dcaf-9686-49d1-f33f-08dcbe384c5c
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2024 21:13:38.9730
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Gxz9lE38hnHxulhts8Opk+eOIIyf8vJofBQTKukKJXHney7ZnZVVrXSfl9ekBu6+kNvYwlueMsbKoZ+Seulorg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4441
 
-On 16.08.24 19:45, Ackerley Tng wrote:
+
+
+On 8/16/24 11:06, Steven Price wrote:
+> External email: Use caution opening links or attachments
 > 
-> David Hildenbrand <david@redhat.com> writes:
 > 
->> On 15.08.24 09:24, Fuad Tabba wrote:
->>> Hi David,
+> On 15/08/2024 23:16, Shanker Donthineni wrote:
+>> Hi Steven,
 >>
->> Hi!
->>
->>>
->>> On Tue, 6 Aug 2024 at 14:51, David Hildenbrand <david@redhat.com> wrote:
+>> On 7/12/24 03:54, Matias Ezequiel Vara Larsen wrote:
+>>> On Mon, Jul 01, 2024 at 10:54:50AM +0100, Steven Price wrote:
+>>>> This series adds support for running Linux in a protected VM under the
+>>>> Arm Confidential Compute Architecture (CCA). This has been updated
+>>>> following the feedback from the v3 posting[1]. Thanks for the feedback!
+>>>> Individual patches have a change log. But things to highlight:
 >>>>
->>>>>
->>>>> -     if (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP) {
->>>>> +     if (!ops->accessible && (gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)) {
->>>>>                 r = guest_memfd_folio_private(folio);
->>>>>                 if (r)
->>>>>                         goto out_err;
->>>>> @@ -107,6 +109,82 @@ struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags
->>>>>     }
->>>>>     EXPORT_SYMBOL_GPL(guest_memfd_grab_folio);
->>>>>
->>>>> +int guest_memfd_make_inaccessible(struct file *file, struct folio *folio)
->>>>> +{
->>>>> +     unsigned long gmem_flags = (unsigned long)file->private_data;
->>>>> +     unsigned long i;
->>>>> +     int r;
->>>>> +
->>>>> +     unmap_mapping_folio(folio);
->>>>> +
->>>>> +     /**
->>>>> +      * We can't use the refcount. It might be elevated due to
->>>>> +      * guest/vcpu trying to access same folio as another vcpu
->>>>> +      * or because userspace is trying to access folio for same reason
+>>>>    * a new patch ("firmware/psci: Add psci_early_test_conduit()") to
+>>>>      prevent SMC calls being made on systems which don't support them -
+>>>>      i.e. systems without EL2/EL3 - thanks Jean-Philippe!
 >>>>
->>>> As discussed, that's insufficient. We really have to drive the refcount
->>>> to 1 -- the single reference we expect.
+>>>>    * two patches dropped (overriding set_fixmap_io). Instead
+>>>>      FIXMAP_PAGE_IO is modified to include PROT_NS_SHARED. When support
+>>>>      for assigning hardware devices to a realm guest is added this will
+>>>>      need to be brought back in some form. But for now it's just adding
+>>>>      complixity and confusion for no gain.
 >>>>
->>>> What is the exact problem you are running into here? Who can just grab a
->>>> reference and maybe do nasty things with it?
->>>
->>> I was wondering, why do we need to check the refcount? Isn't it enough
->>> to check for page_mapped() || page_maybe_dma_pinned(), while holding
->>> the folio lock?
+>>>>    * a new patch ("arm64: mm: Avoid TLBI when marking pages as valid")
+>>>>      which avoids doing an extra TLBI when doing the break-before-make.
+>>>>      Note that this changes the behaviour in other cases when making
+>>>>      memory valid. This should be safe (and saves a TLBI for those
+>>>> cases),
+>>>>      but it's a separate patch in case of regressions.
+>>>>
+>>>>    * GIC ITT allocation now uses a custom genpool-based allocator. I
+>>>>      expect this will be replaced with a generic way of allocating
+>>>>      decrypted memory (see [4]), but for now this gets things working
+>>>>      without wasting too much memory.
+>>>>
+>>>> The ABI to the RMM from a realm (the RSI) is based on the final RMM v1.0
+>>>> (EAC 5) specification[2]. Future RMM specifications will be backwards
+>>>> compatible so a guest using the v1.0 specification (i.e. this series)
+>>>> will be able to run on future versions of the RMM without modification.
+>>>>
+>>>> This series is based on v6.10-rc1. It is also available as a git
+>>>> repository:
+>>>>
+>>>> https://gitlab.arm.com/linux-arm/linux-cca cca-guest/v4
+>>
+>> Which cca-host branch should I use for testing cca-guest/v4?
+>>
+>> I'm getting compilation errors with cca-host/v3 and cca-guest/v4, is there
+>> any known WAR or fix to resolve this issue?
 > 
-> Thank you Fuad for asking!
+> cca-host/v3 should work with cca-guest/v4. I've been working on
+> rebasing/updating the branches and should be able to post v4/v5 series
+> next week.
 > 
 >>
->> (folio_mapped() + folio_maybe_dma_pinned())
+>> arch/arm64/kvm/rme.c: In function ‘kvm_realm_reset_id_aa64dfr0_el1’:
+>> ././include/linux/compiler_types.h:487:45: error: call to
+>> ‘__compiletime_assert_650’ declared with attribute error: FIELD_PREP:
+>> value too large for the field
+>>    487 |         _compiletime_assert(condition, msg,
+>> __compiletime_assert_, __COUNTER__)
+>>        |                                             ^
+>> ././include/linux/compiler_types.h:468:25: note: in definition of macro
+>> ‘__compiletime_assert’
+>>    468 |                         prefix ##
+>> suffix();                             \
+>>        |                         ^~~~~~
+>> ././include/linux/compiler_types.h:487:9: note: in expansion of macro
+>> ‘_compiletime_assert’
+>>    487 |         _compiletime_assert(condition, msg,
+>> __compiletime_assert_, __COUNTER__)
+>>        |         ^~~~~~~~~~~~~~~~~~~
+>> ./include/linux/build_bug.h:39:37: note: in expansion of macro
+>> ‘compiletime_assert’
+>>     39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond),
+>> msg)
+>>        |                                     ^~~~~~~~~~~~~~~~~~
+>> ./include/linux/bitfield.h:68:17: note: in expansion of macro
+>> ‘BUILD_BUG_ON_MSG’
+>>     68 |                 BUILD_BUG_ON_MSG(__builtin_constant_p(_val)
+>> ?           \
+>>        |                 ^~~~~~~~~~~~~~~~
+>> ./include/linux/bitfield.h:115:17: note: in expansion of macro
+>> ‘__BF_FIELD_CHECK’
+>>    115 |                 __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP:
+>> ");    \
+>>        |                 ^~~~~~~~~~~~~~~~
+>> arch/arm64/kvm/rme.c:315:16: note: in expansion of macro ‘FIELD_PREP’
+>>    315 |         val |= FIELD_PREP(ID_AA64DFR0_EL1_BRPs_MASK, bps - 1) |
+>>        |                ^~~~~~~~~~
+>> make[5]: *** [scripts/Makefile.build:244: arch/arm64/kvm/rme.o] Error 1
+>> make[4]: *** [scripts/Makefile.build:485: arch/arm64/kvm] Error 2
+>> make[3]: *** [scripts/Makefile.build:485: arch/arm64] Error 2
+>> make[3]: *** Waiting for unfinished jobs....
 >>
->> Not everything goes trough FOLL_PIN. vmsplice() is an example, or just
->> some very simple read/write through /proc/pid/mem. Further, some
->> O_DIRECT implementations still don't use FOLL_PIN.
->>
->> So if you see an additional folio reference, as soon as you mapped that
->> thing to user space, you have to assume that it could be someone
->> reading/writing that memory in possibly sane context. (vmsplice() should
->> be using FOLL_PIN|FOLL_LONGTERM, but that's a longer discussion)
->>
+>> I'm using gcc-13.3.0 compiler and cross-compiling on X86 machine.
 > 
-> Thanks David for the clarification, this example is very helpful!
+> I'm not sure quite how this happens. The 'value' (bps - 1) shouldn't be
+> considered constant, so I don't see how the compiler has decided to
+> complain here - the __builtin_constant_p() should really be evaluating to 0.
 > 
-> IIUC folio_lock() isn't a prerequisite for taking a refcount on the
-> folio.
-
-Right, to do folio_lock() you only have to guarantee that the folio 
-cannot get freed concurrently. So you piggyback on another reference 
-(you hold indirectly).
-
+> The only thing I can think of is if the compiler has somehow determined
+> that rmm_feat_reg0 is 0 - which in theory it could do if it knew that
+> kvm_init_rme() cannot succeed (rmi_features() would never be called, so
+> the variable will never be set). Which makes me wonder if you're
+> building with a PAGE_SIZE other than 4k?
 > 
-> Even if we are able to figure out a "safe" refcount, and check that the
-> current refcount == "safe" refcount before removing from direct map,
-> what's stopping some other part of the kernel from taking a refcount
-> just after the check happens and causing trouble with the folio's
-> removal from direct map?
-
-Once the page was unmapped from user space, and there were no additional 
-references (e.g., GUP, whatever), any new references can only be 
-(should, unless BUG :) ) temporary speculative references that should 
-not try accessing page content, and that should back off if the folio is 
-not deemed interesting or cannot be locked. (e.g., page 
-migration/compaction/offlining).
-
-Of course, there are some corner cases (kgdb, hibernation, /proc/kcore), 
-but most of these can be dealt with in one way or the other (make these 
-back off and not read/write page content, similar to how we handled it 
-for secretmem).
-
-These (kgdb, /proc/kcore) might not even take a folio reference, they 
-just "access stuff" and we only have to teach them to "not access that".
-
+> Obviously the code should still build if that's the case (so this would
+> be a bug) but we don't currently support CCA with PAGE_SIZE != 4k.
 > 
->> (noting that also folio_maybe_dma_pinned() can have false positives in
->> some cases due to speculative references or *many* references).
+
+I've encountered this error multiple times with both 4K and 64K, but it's
+currently not reproducible. I'll update if the issue reappears. In the
+meantime, I've verified the host-v3 and guest-v4 patches using v6.11.rc3,
+tested Realm boot, CCA-KVM-UNIT-TESTs, and normal VM boot (without CCA).
+No issues have been observed.
+
+Additionally, I've validated Realm and CCA-KVM-UNIT-TESTs on a host with
+PSZ=64K. For testing purposes, I modified KVM64 and KVM-UNIT-TESTS to
+support PSZ=64K.
+
+
+Tested-by: Shanker Donthineni <sdonthineni@nvidia.com>
+
+
+> Steve
 > 
-> Are false positives (speculative references) okay since it's better to
-> be safe than remove from direct map prematurely?
-
-folio_maybe_dma_pinned() is primarily used in fork context. Copying more 
-(if the folio maybe pinned and, therefore, must not get COW-shared with 
-other processes and must instead create a private page copy) is the 
-"better safe than sorry". So false positives (that happen rarely) are 
-tolerable.
-
-Regading the directmap, it would -- just like with additional references 
--- detect that the page cannot currently be removed from the direct map. 
-It's similarly "better safe than sorry", but here means that we likely 
-must retry if we cannot easily fallback to something else like for the 
-fork+COW case.
-
--- 
-Cheers,
-
-David / dhildenb
-
