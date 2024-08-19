@@ -1,108 +1,182 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69E8EEA5
-	for <linux-coco@lists.linux.dev>; Mon, 19 Aug 2024 21:25:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95431D54CA;
+	Mon, 19 Aug 2024 22:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724102758; cv=none; b=YzlfkEn1C2bS+P4lnqbDpdlYpf+48L2qfOhTVMq2nUAQbdnjk0Mtoa+UYU9/mOKIaNKlELcUPyftzRGG0kYg9Wdzzp1k4JaczNxccK01TPQsF+m/+kjJOF0zh709GHd4HSyg1fgDQvjFcOCwIVrluTy9B6OmuvPPsaEKgCSq3is=
+	t=1724105999; cv=none; b=eQdN0DgH27vJaRULVHxVZB/wmSZCCYs71q3aZ+QOSAlI2OZ388XYbr7hzTZ5EZceeY2dO29cHkBnULf5XY3DoJhTHlWgh1qMloc1yBug995GGcfsY6oXl63NueSy6Nble5tKwN9R+hQYmg4meNuBIfupnFZcQfhVE3Htp2ImS8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724102758; c=relaxed/simple;
-	bh=4gcwvsbDbylR6ALk3uIyPQcaqwI4eJ9JCByYJw9qjak=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=cHYa2NpggJMlBLsJD/cnJOfRyXjngzE5cknXhLhNfbiFGJcOcxiXTfyFSS+/VmjL1NpqM1nHMgiXJCszLyRcfLVkh9tv7asQJyBMPakah6Cts/WOJoi8asgZYjqgC3VqBiORP7Boglxw1z6CUUJf9x3dwrYdcDFNG9I8AM+Mca8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0zb4yuXe; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0zb4yuXe"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-201fae21398so27170275ad.1
-        for <linux-coco@lists.linux.dev>; Mon, 19 Aug 2024 14:25:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724102756; x=1724707556; darn=lists.linux.dev;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4gcwvsbDbylR6ALk3uIyPQcaqwI4eJ9JCByYJw9qjak=;
-        b=0zb4yuXeFW/RBQlsnuu/kD6+q+Es3qD8Fo+hRUOLJkQTpNyG1SgQY5lOZeaJ/3QzeG
-         xxjRu6CRwUyxQr/NXLNPCHaxEZC1qcBlwpvf+EKOpvtIADo5MyC6pTIPC2fPcQ+x2vPz
-         6BIeJaBsDU/cCfalDf9yO5aZBrAneIcqmXw1sQ+L1I1/dXaG6zbwWznXVcqfdn1OxGsz
-         OMCeiHjeH7lBC/c+B7vnYJQJpOynwtZuOSTHbKtJQR7Qqzdyieu45qfdDROXo9Ao04pk
-         TYrYQL8776IH+Lhw0jdIS9c/j0tuPrfFAOhmQE022tIzsYj0mBX5VeP5dN5vHDq8nloe
-         ghiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724102756; x=1724707556;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4gcwvsbDbylR6ALk3uIyPQcaqwI4eJ9JCByYJw9qjak=;
-        b=tO/JoGrBSVfrPvx42CPGXDG7FBX52TxVhCyI5AvzKL+zgmH2myEF4xE97F2zZcN6ov
-         EfTjdgio8vkrkd3lURtUl7twExmWhaPDcRvawg5yjSGt9FN6z7Lx/exCUv/yvOOfsy2F
-         mR8MnZLlpt8rhH6BMjC/J6tS9wxvrw2qTLAAmdpi1p3/lr7WD8WkQyCAm75FroTJptrh
-         Di0+aFrW/73ejVu9plPzTtKENdeFs4h1g5drC10/K/S3XMgqaVR4g2ejZVRKh9Wg6qPg
-         3DwhUcU6BjwmRRqgMouCat8Z74c9ypuQTbyEbD/kgE/HKa/7AyoShqqBvzwLZMfLKcwZ
-         5GVw==
-X-Forwarded-Encrypted: i=1; AJvYcCWcXSOO61QwZySCk31Erg95jIrM3YQfYAWcoZWv3LlSURaMRppQhVoj3ofgSv97yOS5haVe43Wuzd/Y@lists.linux.dev
-X-Gm-Message-State: AOJu0YxVs943d8vy2YyIez8L7+tQd38V+Jl2oOY/gJoz1aiKPC/HCPyd
-	s/tI2bpjQfeJBF8japDtLA6BcjdlohafF+Kses990HyKCqSZMagahAOE583GjA==
-X-Google-Smtp-Source: AGHT+IFQHjn7opTqOCiNaxJXDmg60fElwtXeF7Mqy68b4YAgsiN5PqrB96o0Hinj5H+icTZoy+OWwg==
-X-Received: by 2002:a17:902:f644:b0:202:51ca:9831 with SMTP id d9443c01a7336-20251ca9af9mr36829615ad.49.1724102755813;
-        Mon, 19 Aug 2024 14:25:55 -0700 (PDT)
-Received: from smtpclient.apple ([2620:0:1008:1:a1c9:254c:e95d:4199])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f0375acasm66870965ad.161.2024.08.19.14.25.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 19 Aug 2024 14:25:55 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1724105999; c=relaxed/simple;
+	bh=yG1zQUbI2Ajj4i85UdepG+N4h7adB4AVz6eU8zpAAkk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ffqyVFsjBh9vQ4PhUD58No/P05M8lnbx939CN+SxzLxKjrtdl92pzfz2qf99JIyaNfSrDmB56elXmC7fypD24cndHWMlmQ0tGO0N9qZz0KSyA6ONxU663ysEdZbzajPw+0df10ggZyGQXGB3qwtwhGDXaGnCRXaPXE1MQduUmwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1B1A6339;
+	Mon, 19 Aug 2024 15:20:22 -0700 (PDT)
+Received: from [10.57.70.210] (unknown [10.57.70.210])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 02B683F58B;
+	Mon, 19 Aug 2024 15:19:52 -0700 (PDT)
+Message-ID: <dccfad5a-cda8-436b-87c9-b588cf790e86@arm.com>
+Date: Mon, 19 Aug 2024 23:19:51 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
-From: Qinkun Bao <qinkun@google.com>
-In-Reply-To: <c17a31e4fb30f5f9d4a337e5bd8d54cc6f99eef7.camel@HansenPartnership.com>
-Date: Mon, 19 Aug 2024 14:25:15 -0700
-Cc: Dan Williams <dan.j.williams@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "Yao, Jiewen" <jiewen.yao@intel.com>,
- "Xing, Cedric" <cedric.xing@intel.com>,
- biao.lu@intel.com,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- linux-coco@lists.linux.dev,
- linux-integrity@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Vishal Annapurve <vannapurve@google.com>,
- Chong Cai <chongc@google.com>,
- Dan Middleton <dan.middleton@intel.com>,
- Alex Crisan <alex.crisan@intel.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6DEAEC08-420C-46A9-8877-EBF60331A931@google.com>
-References: <20240128212532.2754325-1-sameo@rivosinc.com>
- <c17a31e4fb30f5f9d4a337e5bd8d54cc6f99eef7.camel@HansenPartnership.com>
-To: Samuel Ortiz <sameo@rivosinc.com>
-X-Mailer: Apple Mail (2.3776.700.51)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 17/19] irqchip/gic-v3-its: Share ITS tables with a
+ non-trusted hypervisor
+Content-Language: en-GB
+To: Marc Zyngier <maz@kernel.org>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>
+References: <20240819131924.372366-1-steven.price@arm.com>
+ <20240819131924.372366-18-steven.price@arm.com>
+ <beff9162-e1ba-4f72-91ea-329eaed48dbc@arm.com> <86y14sy1qo.wl-maz@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <86y14sy1qo.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-A gentle ping on this email thread. We have tested the patch series [1] =
-and will release a product based on the patch series.=20
+Hi Marc
 
-If the patch series can not get upstreamed, the whole confidential =
-computing community can not have a way to measure the workload with =
-RTMRs. Without the patch, RTMR3 is completely unused. The patch works =
-perfectly for our usage case (Like the existing TPM ABI, the raw =
-measurement is taken instead of recording the log entry.). Assuming RTMR =
-serves as an alternative to TPM-based measurement, migrating existing =
-software to the RTMR could be greatly simplified by developing an ABI =
-that resembles the TPM.
+On 19/08/2024 16:24, Marc Zyngier wrote:
+> On Mon, 19 Aug 2024 15:51:00 +0100,
+> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>> Hi Steven,
+>>
+>> On 19/08/2024 14:19, Steven Price wrote:
+>>> Within a realm guest the ITS is emulated by the host. This means the
+>>> allocations must have been made available to the host by a call to
+>>> set_memory_decrypted(). Introduce an allocation function which performs
+>>> this extra call.
+>>>
+>>> For the ITT use a custom genpool-based allocator that calls
+>>> set_memory_decrypted() for each page allocated, but then suballocates
+>>> the size needed for each ITT. Note that there is no mechanism
+>>> implemented to return pages from the genpool, but it is unlikely the
+>>> peak number of devices will so much larger than the normal level - so
+>>> this isn't expected to be an issue.
+>>>
+>>
+>> This may not be sufficient to make it future proof. We need to detect if
+>> the GIC is private vs shared, before we make the allocation
+>> choice. Please see below :
+> 
+> What do you mean by that? Do you foresee a *GICv3* implementation on
+> the realm side?
 
-I don=E2=80=99t object to having an ABI to take the log entry. For our =
-usage case, we use the Canonical event log [2] to measure the workload. =
-I do think that we should NOT block the patch series for several months =
-to solve an issue that TPM can not solve.=20
+No, but it may be emulated in the Realm World (by a higher privileged 
+component, with future RMM versions with Planes - Plane0) and this
+"Realm guest" may run in a lesser privileged plane and must use
+"protected" accesses to make sure the accesses are seen by the "Realm
+world" emulator.
 
-Link:
-[1] =
-https://lore.kernel.org/lkml/20240128212532.2754325-1-sameo@rivosinc.com/
-[2] =
-https://trustedcomputinggroup.org/resource/canonical-event-log-format/
+> 
+> [...]
+> 
+>> How about something like this folded into this patch ? Or if this
+>> patch goes in independently, we could carry the following as part of
+>> the CCA
+>> series.
+>>
+>> diff --git a/drivers/irqchip/irq-gic-v3-its.c
+>> b/drivers/irqchip/irq-gic-v3-its.c
+>> index 6f4ddf7faed1..f1a779b52210 100644
+>> --- a/drivers/irqchip/irq-gic-v3-its.c
+>> +++ b/drivers/irqchip/irq-gic-v3-its.c
+>> @@ -209,7 +209,7 @@ static struct page *its_alloc_pages_node(int node,
+>> gfp_t gfp,
+>>
+>>   	page = alloc_pages_node(node, gfp, order);
+>>
+>> -	if (page)
+>> +	if (gic_rdists->is_shared && page)
+>>   		set_memory_decrypted((unsigned long)page_address(page),
+>>   				     BIT(order));
+>>   	return page;
+>> @@ -222,7 +222,8 @@ static struct page *its_alloc_pages(gfp_t gfp,
+>> unsigned int order)
+>>
+>>   static void its_free_pages(void *addr, unsigned int order)
+>>   {
+>> -	set_memory_encrypted((unsigned long)addr, BIT(order));
+>> +	if (gic_rdists->is_shared)
+>> +		set_memory_encrypted((unsigned long)addr, BIT(order));
+>>   	free_pages((unsigned long)addr, order);
+>>   }
+>>
+>> diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+>> index 6fb276504bcc..48c6b2c8dd8c 100644
+>> --- a/drivers/irqchip/irq-gic-v3.c
+>> +++ b/drivers/irqchip/irq-gic-v3.c
+>> @@ -2015,6 +2015,8 @@ static int __init gic_init_bases(phys_addr_t
+>> dist_phys_base,
+>>   	typer = readl_relaxed(gic_data.dist_base + GICD_TYPER);
+>>   	gic_data.rdists.gicd_typer = typer;
+>>
+>> +	gic_data.rdists.is_shared =
+>> !arm64_is_iomem_private(gic_data.dist_phys_base,
+>> +							    PAGE_SIZE);
+> 
+> Why would you base the status of the RDs on that of the distributor?
+
+We expect that, the GIC as a whole is either Realm or non-secure, but
+not split (like most of the devices). The only reason for using rdists
+is because thats shared and available with the ITS driver code. (and
+was an easy hack). Happy to change this to something better.
+
+> 
+>>   	gic_enable_quirks(readl_relaxed(gic_data.dist_base + GICD_IIDR),
+>>   			  gic_quirks, &gic_data);
+>>
+>> diff --git a/include/linux/irqchip/arm-gic-v3.h
+>> b/include/linux/irqchip/arm-gic-v3.h
+>> index 728691365464..1edc33608d52 100644
+>> --- a/include/linux/irqchip/arm-gic-v3.h
+>> +++ b/include/linux/irqchip/arm-gic-v3.h
+>> @@ -631,6 +631,7 @@ struct rdists {
+>>   	bool			has_rvpeid;
+>>   	bool			has_direct_lpi;
+>>   	bool			has_vpend_valid_dirty;
+>> +	bool			is_shared;
+>>   };
+>>
+>>   struct irq_domain;
+>>
+> 
+> I really don't like this.
+> 
+> If we have to go down the route of identifying whether the GIC needs
+> encryption or not based on the platform, then maybe we should bite the
+> bullet and treat it as a first class device, given that we expect
+> devices to be either realm or non-secure.
+
+Agreed and that is exactly we would like. i.e., treat the GIC as either
+Realm or NS (as a whole). Now, how do we make that decision is based on
+whether GIC Distributor area is private or not. Like I mentioned above, 
+we need a cleaner way of making this available in the ITS driver.
+
+Thoughts ? Is that what you were hinting at ?
+
+Suzuki
+
+
+> Thanks,
+> 
+> 	M.
+> 
+
