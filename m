@@ -1,47 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040CE15ECF8;
-	Mon, 19 Aug 2024 10:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC09A154C14
+	for <linux-coco@lists.linux.dev>; Mon, 19 Aug 2024 10:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724062208; cv=none; b=OhoIOZtHIGAdCG75QN+BBS2KylT+gIF+IuVKWFRo82yXfYd2mX9fMdpCDaXWrgmnKe2cbCp/DeZiDPnhGPmZZtgxOd+YbRvpjJsNXgDDdYZwG/omIIqZFu/smpKc2iKQRLdNRhs67hPOyovu8Jvvj+YQuE/SrgqpKVYqlH76sz8=
+	t=1724062752; cv=none; b=BoXdsQOWiuvrPFyeVZXYhMmhDQfXdldJuA1CKf/gYyTPfr7LbsmBacWsDG6ku5UkrrqAZjLOGUZ5NX8wXlLpalOSgYhER4EOv++Zt3811LFvtx8BiZEUYZ+wNvoPMt1oci7yrMM4jhPQfuqQqTEc1DqwYbhAgYD02iHGN4jquGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724062208; c=relaxed/simple;
-	bh=MqrpAk0V4swle/LX6Ozj2eaNefXVewFamWFL4cNI//U=;
+	s=arc-20240116; t=1724062752; c=relaxed/simple;
+	bh=HiGS7tD3nm/qZRC2hpvpf7nPfwvtfE8Ozd1cEfXVz8o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ka1fO9xq9DUyrk8mpT2ta6VG/598Ur4avKFJs+/wP2cxI3KhH1eInT1ZOUZ5RMN1uhtxvRYEk9OEUhw/eAbyaGCV0RoYxacsCuggBXfXpbfUgQ9LYSjWFIC6idXRw8NUyIk4VbMnQ2UR+1KUcqHR0nEkaLIoy83wKM4d3qKvPQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t4sKtkWJ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=CB916XXWyTUvpvilXSep1GulbLzVXqiWTQXSvjZTO9lWHfM+7JeS9MMqnLjoeSjOzgve1WZiaIvnUHsdhsPPJXZ7OyBdHXZBwpBcjLY46+0S3INDDPkldJ8CAr/F7OT9q1f97YGs582xVK9vIBdekelSz1di3SFIvsA9k4t7Qrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZOkaAYor; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t4sKtkWJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DADC4AF0C;
-	Mon, 19 Aug 2024 10:10:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724062207;
-	bh=MqrpAk0V4swle/LX6Ozj2eaNefXVewFamWFL4cNI//U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t4sKtkWJVVCgI2rS4IoPvGbNm65zpijEGUb87xPR92lTxJWadFrmYGp17FlT5BmMw
-	 Raoy/HAEGKk6MiWKgewOFVKgiJ2Cks7Lbo4X3E6B75qiQamcZFSjPoplIQUM3UnUkp
-	 H1Ws0m0vTihHLcXVVp81Y9rj+9UfHfnxT50hqT318+xGVFZ9VlfVqT0uh6uN41KJ7y
-	 oMjgxN2lcg1W3WjJkP6R1gvbtB4nOvxO7hg10DYA4/00n/I8q8wKtdd/Du9hjO7/Ma
-	 Px3EMt9mQEHUvD19cbuoHmbg2nwnntQpkhG88CuF/Z1kGVqVLcdkuirtDdavsBQItj
-	 LvZ3bGVz3R7KQ==
-Date: Mon, 19 Aug 2024 13:09:52 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Elliot Berman <quic_eberman@quicinc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Fuad Tabba <tabba@google.com>, David Hildenbrand <david@redhat.com>,
-	Patrick Roy <roypat@amazon.co.uk>, qperret@google.com,
-	Ackerley Tng <ackerleytng@google.com>, linux-coco@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kvm@vger.kernel.org
-Subject: Re: [PATCH RFC 3/4] mm: guest_memfd: Add option to remove guest
- private memory from direct map
-Message-ID: <ZsMZ8C2lnpMW+BT5@kernel.org>
-References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
- <20240805-guest-memfd-lib-v1-3-e5a29a4ff5d7@quicinc.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZOkaAYor"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724062751; x=1755598751;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HiGS7tD3nm/qZRC2hpvpf7nPfwvtfE8Ozd1cEfXVz8o=;
+  b=ZOkaAYor0AC1vXlSrZlZMxPOJPcULVV3MMsQlZNWW7icR5k8xlQ/KXWD
+   24sxE455fYqPIdCM4tdvwpAhKU16G47oklh87VS6ooKL0Bh/FZlPgycao
+   gc1R1DaHJfVWCgQUcowT8oi6A23/FS6mx+YhEqiJc4t7P0W1oIjAT6oQF
+   WRzGZJnng9AcOj6Nhc+VFtkA2RBNyoR0jVV1Ri/xu5kkrhbKO7+MlpkRo
+   Unb6sOokgrwR4QQTJYnhn6MEKQ1bLqdmv3szCnd7Gv11fuQ5KbNE5mlj7
+   comnyvUVXMylqutXc8KBUi7FER5vnZu1Jq/uBwgm8LYp00YzwiiguWxrQ
+   g==;
+X-CSE-ConnectionGUID: oeN7ikwCTY6sSO7MAq9jZw==
+X-CSE-MsgGUID: 7F4nBpl8SqWWs49DohnTpA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11168"; a="33714853"
+X-IronPort-AV: E=Sophos;i="6.10,158,1719903600"; 
+   d="scan'208";a="33714853"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 03:19:10 -0700
+X-CSE-ConnectionGUID: uWuMSAYwQhS3HdBWP8e8mg==
+X-CSE-MsgGUID: iKqdGccASgqwzBQpwkO4Hg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,158,1719903600"; 
+   d="scan'208";a="60163726"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa010.jf.intel.com with ESMTP; 19 Aug 2024 03:19:05 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 6798A2AA; Mon, 19 Aug 2024 13:19:04 +0300 (EEST)
+Date: Mon, 19 Aug 2024 13:19:04 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Alexey Gladkov <legion@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Yuan Yao <yuan.yao@intel.com>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>, 
+	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>, cho@microsoft.com, 
+	decui@microsoft.com, John.Starks@microsoft.com
+Subject: Re: [PATCH v3 01/10] x86/tdx: Split MMIO read and write operations
+Message-ID: <6yppfuuzhatzgugbme7us6xpgadr3un43s4dmfvpmteh4no7by@lucru5isrpfc>
+References: <cover.1722862355.git.legion@kernel.org>
+ <cover.1723807851.git.legion@kernel.org>
+ <0b5f95e9c7639ddb6e4cbd99b3904e6538e91371.1723807851.git.legion@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -50,130 +68,20 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240805-guest-memfd-lib-v1-3-e5a29a4ff5d7@quicinc.com>
+In-Reply-To: <0b5f95e9c7639ddb6e4cbd99b3904e6538e91371.1723807851.git.legion@kernel.org>
 
-On Mon, Aug 05, 2024 at 11:34:49AM -0700, Elliot Berman wrote:
-> This patch was reworked from Patrick's patch:
-> https://lore.kernel.org/all/20240709132041.3625501-6-roypat@amazon.co.uk/
+On Fri, Aug 16, 2024 at 03:43:51PM +0200, Alexey Gladkov wrote:
+> From: "Alexey Gladkov (Intel)" <legion@kernel.org>
 > 
-> While guest_memfd is not available to be mapped by userspace, it is
-> still accessible through the kernel's direct map. This means that in
-> scenarios where guest-private memory is not hardware protected, it can
-> be speculatively read and its contents potentially leaked through
-> hardware side-channels. Removing guest-private memory from the direct
-> map, thus mitigates a large class of speculative execution issues
-> [1, Table 1].
+> To implement MMIO in userspace, additional memory checks need to be
+> implemented. To avoid overly complicating the handle_mmio() function
+> and to separate checks from actions, it would be better to split this
+> function into two separate functions to handle read and write
+> operations.
 > 
-> Direct map removal do not reuse the `.prepare` machinery, since
-> `prepare` can be called multiple time, and it is the responsibility of
-> the preparation routine to not "prepare" the same folio twice [2]. Thus,
-> instead explicitly check if `filemap_grab_folio` allocated a new folio,
-> and remove the returned folio from the direct map only if this was the
-> case.
-> 
-> The patch uses release_folio instead of free_folio to reinsert pages
-> back into the direct map as by the time free_folio is called,
-> folio->mapping can already be NULL. This means that a call to
-> folio_inode inside free_folio might deference a NULL pointer, leaving no
-> way to access the inode which stores the flags that allow determining
-> whether the page was removed from the direct map in the first place.
-> 
-> [1]: https://download.vusec.net/papers/quarantine_raid23.pdf
-> 
-> Cc: Patrick Roy <roypat@amazon.co.uk>
-> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
-> ---
->  include/linux/guest_memfd.h |  8 ++++++
->  mm/guest_memfd.c            | 65 ++++++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 72 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
-> index be56d9d53067..f9e4a27aed67 100644
-> --- a/include/linux/guest_memfd.h
-> +++ b/include/linux/guest_memfd.h
-> @@ -25,6 +25,14 @@ struct guest_memfd_operations {
->  	int (*release)(struct inode *inode);
->  };
->  
-> +/**
-> + * @GUEST_MEMFD_FLAG_NO_DIRECT_MAP: When making folios inaccessible by host, also
-> + *                                  remove them from the kernel's direct map.
-> + */
-> +enum {
+> Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
 
-please name this enum, otherwise kernel-doc wont' be happy
-
-> +	GUEST_MEMFD_FLAG_NO_DIRECT_MAP		= BIT(0),
-> +};
-> +
->  /**
->   * @GUEST_MEMFD_GRAB_UPTODATE: Ensure pages are zeroed/up to date.
->   *                             If trusted hyp will do it, can ommit this flag
-> diff --git a/mm/guest_memfd.c b/mm/guest_memfd.c
-> index 580138b0f9d4..e9d8cab72b28 100644
-> --- a/mm/guest_memfd.c
-> +++ b/mm/guest_memfd.c
-> @@ -7,9 +7,55 @@
->  #include <linux/falloc.h>
->  #include <linux/guest_memfd.h>
->  #include <linux/pagemap.h>
-> +#include <linux/set_memory.h>
-> +
-> +static inline int guest_memfd_folio_private(struct folio *folio)
-> +{
-> +	unsigned long nr_pages = folio_nr_pages(folio);
-> +	unsigned long i;
-> +	int r;
-> +
-> +	for (i = 0; i < nr_pages; i++) {
-> +		struct page *page = folio_page(folio, i);
-> +
-> +		r = set_direct_map_invalid_noflush(page);
-> +		if (r < 0)
-> +			goto out_remap;
-> +	}
-> +
-> +	folio_set_private(folio);
-> +	return 0;
-> +out_remap:
-> +	for (; i > 0; i--) {
-> +		struct page *page = folio_page(folio, i - 1);
-> +
-> +		BUG_ON(set_direct_map_default_noflush(page));
-> +	}
-> +	return r;
-> +}
-> +
-> +static inline void guest_memfd_folio_clear_private(struct folio *folio)
-> +{
-> +	unsigned long start = (unsigned long)folio_address(folio);
-> +	unsigned long nr = folio_nr_pages(folio);
-> +	unsigned long i;
-> +
-> +	if (!folio_test_private(folio))
-> +		return;
-> +
-> +	for (i = 0; i < nr; i++) {
-> +		struct page *page = folio_page(folio, i);
-> +
-> +		BUG_ON(set_direct_map_default_noflush(page));
-> +	}
-> +	flush_tlb_kernel_range(start, start + folio_size(folio));
-
-I think that TLB flush should come after removing pages from the direct map
-rather than after adding them back.
-
-> +
-> +	folio_clear_private(folio);
-> +}
->  
->  struct folio *guest_memfd_grab_folio(struct file *file, pgoff_t index, u32 flags)
->  {
-> +	unsigned long gmem_flags = (unsigned long)file->private_data;
->  	struct inode *inode = file_inode(file);
->  	struct guest_memfd_operations *ops = inode->i_private;
->  	struct folio *folio;
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
 -- 
-Sincerely yours,
-Mike.
+  Kiryl Shutsemau / Kirill A. Shutemov
