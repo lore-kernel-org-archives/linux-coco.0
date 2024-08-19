@@ -1,266 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BE316B74C;
-	Mon, 19 Aug 2024 12:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA9816C680;
+	Mon, 19 Aug 2024 13:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724071201; cv=none; b=XYxDWbvnlCtOjZJOZGCjQuxDYaTMqkd3vVv3+N4viyrz/zTvaksaqTQTXNfSjZwO4Hh2ue3oBpMVtWrGQ/ngmWf9WoONWinfi0062Ufwmx8o6BpUxiiSHaP8pT6ieJZeqefag2CokKOqqHHgQJpWQQl0OcyCGHpILrdvWZWfL/Y=
+	t=1724073584; cv=none; b=CDFP1sS43SeTN8ci8G89J1iETu8SYjt6YB8z2+x36WCilchwFaZFx+Ftg4gfhCP7kar1TcI4xNgomGcSPuYYHVKiiLT9YFJaB1yntVT+E4jJdNWg0of51bgCdJSXzaVKYF9KdI4q+X32XUTUZeNkbx0NGERJyOKwsVk7l8jjbzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724071201; c=relaxed/simple;
-	bh=/fVH32vHz/WVmeS0OIKKvhxCwD0V14e7/z9dKE0uQN4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s39uIWPiaZCvhIXJG8lQ8y/7HKm8RsNwaUlkj67ZQiVSbiyqeyOdu41Gx0/zcN0KmFCYa5ATxVF3OoWoa2sh38VhizNbSw4EEYjdGf2F3UZfug1oUVKuP1PrwMj5l8u5Y7bEnohp4SkV2GtRimT0uTpUYnaodERqowJwTGGjecg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQujDowC; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQujDowC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DE7C4AF09;
-	Mon, 19 Aug 2024 12:39:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724071201;
-	bh=/fVH32vHz/WVmeS0OIKKvhxCwD0V14e7/z9dKE0uQN4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZQujDowCPw54cF/4PRxg/MOC4XBL5DAeZglRxHU8KpfYxP0J0U3C80OLp8we+9FBN
-	 Gkt9dQjqcbCNWoUxTEUrr4hzgu6mkSryh+1SlDKEA62ABf+jf+n8nd8PLBZtHJqZ9N
-	 nGc+rNrEvnuG9tMegHOpHqRDk7hLd0sO3EWJdQEOWexn7YuDHESWaNyokrQn0wIpMX
-	 hLcu/JukHKTLg6FRe0fwjXTszpugFwWS4+pqOpc7YPSnKEujOj3N0xO4Zjh6PpsSzw
-	 0LbYXYEHCe+GzLlAlgMReVdMVz45Q95ycSAOvv709HV7mCskmEt4esOrrYeOiNjLH1
-	 K7ZsR9sLxjruQ==
-Date: Mon, 19 Aug 2024 14:39:54 +0200
-From: Alexey Gladkov <legion@kernel.org>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yuan Yao <yuan.yao@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>,
-	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
-	cho@microsoft.com, decui@microsoft.com, John.Starks@microsoft.com
-Subject: Re: [PATCH v3 02/10] x86/tdx: Add validation of userspace MMIO
- instructions
-Message-ID: <ZsM9GpHoD-RQNTLN@example.org>
-References: <cover.1722862355.git.legion@kernel.org>
- <cover.1723807851.git.legion@kernel.org>
- <f34a16af07be2bf33730ffa9da0c4eaa777087a1.1723807851.git.legion@kernel.org>
- <3jhsxclq2keesprq43jd7arhiteluppvscutzfdvkwcz3nr5pv@tix36bqw3b5j>
- <ZsMxAGsYskX0o51m@example.org>
- <n64tn2dai56kovscubbajub7ke26njnxnnqqb5n7nsh3rtzfmt@53xi25pcxlec>
+	s=arc-20240116; t=1724073584; c=relaxed/simple;
+	bh=q7n4yox1qlvnzKsPcwva4ELTO5183R23ss6XmWPQJUE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=du1/yx4npMknjjaKQDeChxWtVDGUIeN9wOlK1h0l2jEDUJ0fpry4Pp41sjflLFpOzg9ljoVJubZZDy0ygtEorGUcK/T1xAmkk0AErCIC7+CNkZluXby7QP4W6Nj3WH+H/6yBtioW/LjJgdPDMOcQwkJ1fnGuGkcSGXEO7mRhU/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4372A339;
+	Mon, 19 Aug 2024 06:20:07 -0700 (PDT)
+Received: from e122027.arm.com (unknown [10.57.85.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 33A913F73B;
+	Mon, 19 Aug 2024 06:19:37 -0700 (PDT)
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>
+Subject: [PATCH v5 00/19] arm64: Support for running as a guest in Arm CCA
+Date: Mon, 19 Aug 2024 14:19:05 +0100
+Message-Id: <20240819131924.372366-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <n64tn2dai56kovscubbajub7ke26njnxnnqqb5n7nsh3rtzfmt@53xi25pcxlec>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 19, 2024 at 03:07:50PM +0300, Kirill A. Shutemov wrote:
-> On Mon, Aug 19, 2024 at 01:48:16PM +0200, Alexey Gladkov wrote:
-> > On Mon, Aug 19, 2024 at 01:39:17PM +0300, Kirill A. Shutemov wrote:
-> > > On Fri, Aug 16, 2024 at 03:43:52PM +0200, Alexey Gladkov wrote:
-> > > > From: "Alexey Gladkov (Intel)" <legion@kernel.org>
-> > > > 
-> > > > Instructions from kernel space are considered trusted. If the MMIO
-> > > > instruction is from userspace it must be checked.
-> > > > 
-> > > > For userspace instructions, it is need to check that the INSN has not
-> > > > changed at the time of #VE and before the execution of the instruction.
-> > > 
-> > > Well, we cannot really check if the instruction changed under us. We can
-> > > only check if the parsed instruction does an MMIO operation that is
-> > > allowed for the process.
-> > 
-> > We also check that the memory access (read/write) type matches. Yes, we
-> > can't check the instruction itself, but we check the arguments.
-> > 
-> > > > 
-> > > > Once the userspace instruction parsed is enforced that the address
-> > > > points to mapped memory of current process and that address does not
-> > > > point to private memory.
-> > > > 
-> > > > After parsing the userspace instruction, it is necessary to ensure that:
-> > > > 
-> > > > 1. the operation direction (read/write) corresponds to #VE info;
-> > > > 2. the address still points to mapped memory of current process;
-> > > > 3. the address does not point to private memory.
-> > > 
-> > > I don't see where you check 3.
-> > > 
-> > > I guess you can add pte_decrypted(pte) check to get_phys_addr().
-> > > 
-> > > But I'm not sure it is strictly needed.
-> > 
-> > (ve->gpa != cc_mkdec(phys_addr)
-> > 
-> > The ve->gpa was checked in the virt_exception_user/kernel().
-> 
-> phys_addr doesn't have shared bit. It is masked out on pte_pfn(). That's
-> the reason you use cc_mkdec() to compare with ve->gpa. Otherwise it would
-> fail.
+This series adds support for running Linux in a protected VM under the
+Arm Confidential Compute Architecture (CCA). This has been updated
+following the feedback from the v4 posting[1]. Thanks for the feedback!
+Individual patches have a change log. But things to highlight:
 
-Ok. I think I've confused myself. I will add pte_decrypted(). 
+ * New RMM spec version[2] (v1.0-rel0-rc1). Note that this makes a
+   number of (small) breaking changes so you will need to update the RMM
+   and host too (see below).
 
-> 
-> > 
-> > > 
-> > > > Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
-> > > > ---
-> > > >  arch/x86/coco/tdx/tdx.c | 128 ++++++++++++++++++++++++++++++++++++----
-> > > >  1 file changed, 115 insertions(+), 13 deletions(-)
-> > > > 
-> > > > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> > > > index af0b6c1cacf7..86c22fec97fb 100644
-> > > > --- a/arch/x86/coco/tdx/tdx.c
-> > > > +++ b/arch/x86/coco/tdx/tdx.c
-> > > > @@ -8,6 +8,7 @@
-> > > >  #include <linux/export.h>
-> > > >  #include <linux/io.h>
-> > > >  #include <linux/kexec.h>
-> > > > +#include <linux/mm.h>
-> > > >  #include <asm/coco.h>
-> > > >  #include <asm/tdx.h>
-> > > >  #include <asm/vmx.h>
-> > > > @@ -405,6 +406,84 @@ static bool mmio_write(int size, unsigned long addr, unsigned long val)
-> > > >  			       EPT_WRITE, addr, val);
-> > > >  }
-> > > >  
-> > > > +static inline bool is_private_gpa(u64 gpa)
-> > > > +{
-> > > > +	return gpa == cc_mkenc(gpa);
-> > > > +}
-> > > > +
-> > > > +static int get_phys_addr(unsigned long addr, phys_addr_t *phys_addr, bool *writable)
-> > > > +{
-> > > > +	unsigned int level;
-> > > > +	pgd_t *pgdp;
-> > > > +	pte_t *ptep;
-> > > > +
-> > > > +	/*
-> > > > +	 * Address validation only makes sense for a user process. The lock must
-> > > > +	 * be obtained before validation can begin.
-> > > > +	 */
-> > > > +	mmap_assert_locked(current->mm);
-> > > > +
-> > > > +	pgdp = pgd_offset(current->mm, addr);
-> > > > +
-> > > > +	if (!pgd_none(*pgdp)) {
-> > > > +		ptep = lookup_address_in_pgd(pgdp, addr, &level);
-> > > > +		if (ptep) {
-> > > > +			unsigned long offset;
-> > > > +
-> > > > +			offset = addr & ~page_level_mask(level);
-> > > > +			*phys_addr = PFN_PHYS(pte_pfn(*ptep));
-> > > > +			*phys_addr |= offset;
-> > > > +
-> > > > +			*writable = pte_write(*ptep);
-> > > > +
-> > > > +			return 0;
-> > > > +		}
-> > > > +	}
-> > > > +
-> > > > +	return -EFAULT;
-> > > > +}
-> > > > +
-> > > > +static int valid_vaddr(struct ve_info *ve, enum insn_mmio_type mmio, int size,
-> > > > +		       unsigned long vaddr)
-> > > > +{
-> > > > +	phys_addr_t phys_addr;
-> > > > +	bool writable = false;
-> > > > +
-> > > > +	/* It's not fatal. This can happen due to swap out or page migration. */
-> > > > +	if (get_phys_addr(vaddr, &phys_addr, &writable) || (ve->gpa != cc_mkdec(phys_addr)))
-> > > 
-> > > Too long line?
-> > 
-> > All patches pass checkpatch without warnings.
-> 
-> Checkpatch is not the ultimate authority. But I am neither. :P
-> 
-> > > 
-> > > > +		return -EAGAIN;
-> > > > +
-> > > > +	/*
-> > > > +	 * Re-check whether #VE info matches the instruction that was decoded.
-> > > > +	 *
-> > > > +	 * The ve->gpa was valid at the time ve_info was received. But this code
-> > > > +	 * executed with interrupts enabled, allowing tlb shootdown and therefore
-> > > > +	 * munmap() to be executed in the parallel thread.
-> > > > +	 *
-> > > > +	 * By the time MMIO emulation is performed, ve->gpa may be already
-> > > > +	 * unmapped from the process, the device it belongs to removed from
-> > > > +	 * system and something else could be plugged in its place.
-> > > > +	 */
-> > > > +	switch (mmio) {
-> > > > +	case INSN_MMIO_WRITE:
-> > > > +	case INSN_MMIO_WRITE_IMM:
-> > > > +		if (!writable || !(ve->exit_qual & EPT_VIOLATION_ACC_WRITE))
-> > > > +			return -EFAULT;
-> > > > +		break;
-> > > > +	case INSN_MMIO_READ:
-> > > > +	case INSN_MMIO_READ_ZERO_EXTEND:
-> > > > +	case INSN_MMIO_READ_SIGN_EXTEND:
-> > > > +		if (!(ve->exit_qual & EPT_VIOLATION_ACC_READ))
-> > > > +			return -EFAULT;
-> > > > +		break;
-> > > > +	default:
-> > > > +		WARN_ONCE(1, "Unsupported mmio instruction: %d", mmio);
-> > > > +		return -EINVAL;
-> > > > +	}
-> > > > +
-> > > > +	return 0;
-> > > > +}
-> > > > +
-> > > >  static int handle_mmio_write(struct insn *insn, enum insn_mmio_type mmio, int size,
-> > > >  			     struct pt_regs *regs, struct ve_info *ve)
-> > > >  {
-> > > > @@ -489,7 +568,7 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
-> > > >  	enum insn_mmio_type mmio;
-> > > >  	struct insn insn = {};
-> > > >  	unsigned long vaddr;
-> > > > -	int size;
-> > > > +	int size, ret;
-> > > >  
-> > > >  	/* Only in-kernel MMIO is supported */
-> > > >  	if (WARN_ON_ONCE(user_mode(regs)))
-> > > > @@ -505,6 +584,17 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
-> > > >  	if (WARN_ON_ONCE(mmio == INSN_MMIO_DECODE_FAILED))
-> > > >  		return -EINVAL;
-> > > >  
-> > > > +	vaddr = (unsigned long)insn_get_addr_ref(&insn, regs);
-> > > > +
-> > > > +	if (current->mm) {
-> > > 
-> > > Hm. This path will be taken for any MMIO if it is done in context of a
-> > > process, even in-kernel only. I don't think we want it. It is useless
-> > > overhead.
-> > 
-> > The kthread do not have a current->mm.
-> 
-> I am not talking about kthread. I am talking about initiating MMIO from
-> kernel, but within a process context. Like, you call an ioctl() on a
-> device fd and it triggers MMIO in kernel. This scenario would have
-> current->mm, but it is not userspace MMIO.
+ * 'Borrowed' two commits by Will from the pKVM series which add a
+   dispatcher/hook for mem_encrypt and ioremap. These will hopefully
+   make it easier for CCA to live alongside pKVM.
 
-Ok. I will use user_mode here and in the movs patch I will add a special
-flag to perform checks in case of nested exceptions.
+ * Reworked the code for handling protected/shared MMIO. The new RMM
+   spec adds a new state (RIPAS_IO - although that may get renamed),
+   which is currently unused, but will be used in a later version to
+   signify that a granule is backed by a protected hardware MMIO region.
+   Using this we can now identify whether the top bit should be set when
+   performing an ioremap (or similar).
 
-> > > Use user_mode(regs) instead.
-> > 
-> > I can't use this. When nested exception happens in the handle_mmio_movs()
-> > the regs will be not in the user mode.
-> > 
-> > I can make a flag that will be set either for user_mode or if we have a
-> > nested exception.
-> 
-> Hm. Yeah. This is ugly. Let me think about it.
+The ABI to the RMM from a realm (the RSI) is based on the RMM
+v1.0-rel0-rc1 specification[2]. Future RMM specifications after v1.0
+will be backwards compatible so a guest using the v1.0 specification
+(i.e. this series) will be able to run on future versions of the RMM
+without modification.
 
-Yes, it's not very good.
+This series is based on v6.11-rc1. It is also available as a git
+repository:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-guest/v5
+
+As mentioned above the new RMM specification means that corresponding
+changes need to be made in the RMM, at this time these changes are still
+in review (see 'topics/rmm-1.0-rel0-rc1'). So you'll need to fetch the
+changes[3] from the gerrit instance until they are pushed to the main
+branch.
+
+It has also been pointed out that some documentation would be a good
+idea - I'm afraid it hasn't made this version, but I didn't want to hold
+off posting for any longer.
+
+The new version of the RMM also means you'll need to update the host
+support, a v4 of the host changes will be posted soon, in the mean time
+the code is available from git here:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-host/v4
+
+[1] https://lore.kernel.org/r/20240701095505.165383-1-steven.price%40arm.com
+[2] https://developer.arm.com/-/cdn-downloads/permalink/PDF/Architectures/DEN0137_1.0-rel0-rc1_rmm-arch_external.pdf
+[3] https://review.trustedfirmware.org/c/TF-RMM/tf-rmm/+/30485
+
+Jean-Philippe Brucker (1):
+  firmware/psci: Add psci_early_test_conduit()
+
+Sami Mujawar (1):
+  virt: arm-cca-guest: TSM_REPORT support for realms
+
+Steven Price (6):
+  arm64: realm: Query IPA size from the RMM
+  arm64: Make the PHYS_MASK_SHIFT dynamic
+  arm64: Enforce bounce buffers for realm DMA
+  arm64: mm: Avoid TLBI when marking pages as valid
+  irqchip/gic-v3-its: Share ITS tables with a non-trusted hypervisor
+  irqchip/gic-v3-its: Rely on genpool alignment
+
+Suzuki K Poulose (9):
+  arm64: rsi: Add RSI definitions
+  arm64: Detect if in a realm and set RIPAS RAM
+  arm64: rsi: Add support for checking whether an MMIO is protected
+  fixmap: Allow architecture overriding set_fixmap_io
+  fixmap: Pass down the full phys address for set_fixmap_io
+  arm64: Override set_fixmap_io
+  arm64: rsi: Map unprotected MMIO as decrypted
+  efi: arm64: Map Device with Prot Shared
+  arm64: Enable memory encrypt for Realms
+
+Will Deacon (2):
+  arm64: mm: Add top-level dispatcher for internal mem_encrypt API
+  arm64: mm: Add confidential computing hook to ioremap_prot()
+
+ arch/arm64/Kconfig                            |   4 +
+ arch/arm64/include/asm/fixmap.h               |   2 +
+ arch/arm64/include/asm/io.h                   |  12 +
+ arch/arm64/include/asm/mem_encrypt.h          |  24 ++
+ arch/arm64/include/asm/pgtable-hwdef.h        |   6 -
+ arch/arm64/include/asm/pgtable-prot.h         |   4 +
+ arch/arm64/include/asm/pgtable.h              |  10 +
+ arch/arm64/include/asm/rsi.h                  |  68 ++++++
+ arch/arm64/include/asm/rsi_cmds.h             | 157 +++++++++++++
+ arch/arm64/include/asm/rsi_smc.h              | 189 ++++++++++++++++
+ arch/arm64/include/asm/set_memory.h           |   4 +
+ arch/arm64/kernel/Makefile                    |   3 +-
+ arch/arm64/kernel/efi.c                       |  12 +-
+ arch/arm64/kernel/rsi.c                       | 149 +++++++++++++
+ arch/arm64/kernel/setup.c                     |   8 +
+ arch/arm64/mm/Makefile                        |   2 +-
+ arch/arm64/mm/init.c                          |  10 +-
+ arch/arm64/mm/ioremap.c                       |  23 +-
+ arch/arm64/mm/mem_encrypt.c                   |  50 +++++
+ arch/arm64/mm/mmu.c                           |  17 ++
+ arch/arm64/mm/pageattr.c                      |  84 ++++++-
+ drivers/firmware/psci/psci.c                  |  25 +++
+ drivers/irqchip/irq-gic-v3-its.c              | 142 +++++++++---
+ drivers/tty/serial/earlycon.c                 |   2 +-
+ drivers/virt/coco/Kconfig                     |   2 +
+ drivers/virt/coco/Makefile                    |   1 +
+ drivers/virt/coco/arm-cca-guest/Kconfig       |  11 +
+ drivers/virt/coco/arm-cca-guest/Makefile      |   2 +
+ .../virt/coco/arm-cca-guest/arm-cca-guest.c   | 211 ++++++++++++++++++
+ include/asm-generic/fixmap.h                  |   4 +-
+ include/linux/psci.h                          |   5 +
+ 31 files changed, 1200 insertions(+), 43 deletions(-)
+ create mode 100644 arch/arm64/include/asm/mem_encrypt.h
+ create mode 100644 arch/arm64/include/asm/rsi.h
+ create mode 100644 arch/arm64/include/asm/rsi_cmds.h
+ create mode 100644 arch/arm64/include/asm/rsi_smc.h
+ create mode 100644 arch/arm64/kernel/rsi.c
+ create mode 100644 arch/arm64/mm/mem_encrypt.c
+ create mode 100644 drivers/virt/coco/arm-cca-guest/Kconfig
+ create mode 100644 drivers/virt/coco/arm-cca-guest/Makefile
+ create mode 100644 drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
 
 -- 
-Rgrds, legion
+2.34.1
 
