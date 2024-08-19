@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29631662E7;
-	Mon, 19 Aug 2024 11:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE74169397;
+	Mon, 19 Aug 2024 11:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724068254; cv=none; b=ORMYli5edU1/Q1RBDSVAxMTD5Pah/aEgkZIsHJBo7X3kM4ct0CALWlF96DcSyp4xZQ1VTrQuH1bFYT0wrSpyu+LlxZiQr1V3I6BqgXuMng+BS1gleimugoNDBJP+rNpS8CK+yrLyPtCspAgSdenRgPpB0ILhezM2lKBxLvJSXok=
+	t=1724068573; cv=none; b=S2UTLngYRR00208W/rzBV/t8aKqbDl9mnV/+BvxVwuGPJ5JJL3TxzDXXYLZiSs1nPzzYIFW75D6qiuVmB4podHGIMFuWFjBMT688jd1D0bm5MiZi7sOivLhjTyAESpTj68eSFPLxqpZEaAtfWp4GhRPV0Yn7UaxFmP6zfPFGYBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724068254; c=relaxed/simple;
-	bh=620CqvVhgEg8yAKm2hSicXxxTSPtUohR0aIsNsb7RzE=;
+	s=arc-20240116; t=1724068573; c=relaxed/simple;
+	bh=0+bJyI2if9hUxromHqaWXaxVsRw9UqVdM4W1z9O0p2U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CT/Q56tmknOtdOikVogwKGiqV0hw34jVgbqYSaTSUEYrqWaESYzJlxYU/eklDxYf8BIYRcfboBrSvBNdibGdqkD3myar9PYTCYHhL1AHOomkzqDHZed8OresdUqWiBxxppVKQMLDkyWgBpMJiFH86PldXgZ+DaPVLP1Jq2KLVt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nH7yaaGP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=JwyqMPB+QQmpw5j4ytiG6IQCTlVswwAPgekHEOcinu15IhYHhJeYW37nW49+rP1lMNvZB9RKU/3O5vvmS/ffE8DEtA+K4PYBTUIgxguU1C7vXZv25nh+LCoBInFQHD7roCXgmhwIRkawqC7NDvNbCmg/rnK5/oGhx32us3DuMwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5Ka342Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nH7yaaGP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69E4C32782;
-	Mon, 19 Aug 2024 11:50:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5Ka342Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79678C4AF12;
+	Mon, 19 Aug 2024 11:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724068253;
-	bh=620CqvVhgEg8yAKm2hSicXxxTSPtUohR0aIsNsb7RzE=;
+	s=k20201202; t=1724068572;
+	bh=0+bJyI2if9hUxromHqaWXaxVsRw9UqVdM4W1z9O0p2U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nH7yaaGPw0HJC4yk91YY/FnupXtb/Gi/wXc7UV3gQSNw/QEe3VrlAVKy/ksLlYh4s
-	 pSJaBPezIl6IbeITHf+VHSXGDM23Nvw1X6z0ANpe4JQBW+iet9GCxAy7XMcsH4r+9V
-	 xf+18cTw3rplHMNAdoAnsf0r6cauMhZA9O9qcta0fIVzIW7mqNz8fRDu8+dZsezVIZ
-	 oIb7YocEGhdV8q79AwYqU2hvyXxhbKF4EWXeDgBxPKGZ/1GQfoORr3NO8uFeAY7P9d
-	 G2LJ580EjNIX+mhdpgD/o12RoNX/61a7GllsrSicslJuNZjYJVSZMW0NvkNiMxV7jb
-	 LyKvo3nFMauLg==
-Date: Mon, 19 Aug 2024 13:50:46 +0200
+	b=W5Ka342QT7MMFT4VHoBHGw2KWzngs3FNWUZk+HXO0tvSAyzJMFFTLpuoZPutMbJbY
+	 c08jHOTRsHoplL7lFrEGYK4qsdkYQdHtjg5ELr5mQ9CSkn9BY8Xm+z1svEsInJSQtj
+	 wIb3U0nNO6zIpX0r7A7VW9Zrwrf2esv4cij/x1OMLDffNEEi8re1eWVZlJHgs6pez/
+	 sejV8VTMMX0jILhtodz5igEst7P3uFDixIt96KzbMzE3xurBohAOuf2D4TywF09R7k
+	 HBayOgYH7rqj4nM1hh+ixqEmJ3ferxFzh4h7MuptqQVUN3QvP8tiHuNYwRRFvAlaAK
+	 kl35CkvuYpVww==
+Date: Mon, 19 Aug 2024 13:56:05 +0200
 From: Alexey Gladkov <legion@kernel.org>
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
@@ -39,13 +39,17 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>,
 	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
-	cho@microsoft.com, decui@microsoft.com, John.Starks@microsoft.com
-Subject: Re: [PATCH v3 03/10] x86/tdx: Allow MMIO from userspace
-Message-ID: <ZsMxlu8_D4ZxFFqR@example.org>
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Nikunj A Dadhania <nikunj@amd.com>, cho@microsoft.com,
+	decui@microsoft.com, John.Starks@microsoft.com
+Subject: Re: [PATCH v3 04/10] x86/insn: Read and decode insn without crossing
+ the page boundary
+Message-ID: <ZsMy1YaHI4gaN703@example.org>
 References: <cover.1722862355.git.legion@kernel.org>
  <cover.1723807851.git.legion@kernel.org>
- <2a79d86c268d934644b8e4a5a8c59b4699fa0015.1723807851.git.legion@kernel.org>
- <kzd355wuaf5bphybast36u3svr76glvxr5fni6vfiiwbc7zotv@uikypstswh6h>
+ <9704da6a35d62932d464d33b39953fc5b2fd74ea.1723807851.git.legion@kernel.org>
+ <3xcmaxmpoemmotdqhtr5fu52wyssixyvnmirqbbnvhwpcuss5z@sayg725h5wcz>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -54,30 +58,31 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <kzd355wuaf5bphybast36u3svr76glvxr5fni6vfiiwbc7zotv@uikypstswh6h>
+In-Reply-To: <3xcmaxmpoemmotdqhtr5fu52wyssixyvnmirqbbnvhwpcuss5z@sayg725h5wcz>
 
-On Mon, Aug 19, 2024 at 01:46:34PM +0300, Kirill A. Shutemov wrote:
-> On Fri, Aug 16, 2024 at 03:43:53PM +0200, Alexey Gladkov wrote:
+On Mon, Aug 19, 2024 at 01:48:11PM +0300, Kirill A. Shutemov wrote:
+> On Fri, Aug 16, 2024 at 03:43:54PM +0200, Alexey Gladkov wrote:
 > > From: "Alexey Gladkov (Intel)" <legion@kernel.org>
 > > 
-> > The MMIO emulation is only allowed for kernel space code. It is carried
-> > out through a special API, which uses only certain instructions.
+> > In case the instruction is close to the page boundary, reading
+> > MAX_INSN_SIZE may cross the page boundary. The second page might be
+> > from a different VMA and reading can have side effects.
 > > 
-> > This does not allow userspace to work with virtual devices.
+> > The problem is that the actual size of the instruction is not known.
 > > 
-> > Allow userspace to use the same instructions as kernel space to access
-> > MMIO. So far, no additional checks have been made.
+> > The solution might be to try read the data to the end of the page and
+> > try parse it in the hope that the instruction is smaller than the
+> > maximum buffer size.
 > > 
+> > Co-developed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 > > Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
 > 
-> Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> 
-> And you seem to lost Reviewed-by from Thomas:
-> 
-> https://lore.kernel.org/all/874j867mnd.ffs@tglx
+> I think this and 3 next patches do not belong to this patchset. They
+> address separate issue that is orthogonal to the patchset goal.
 
-No. I removed it because the patch changed a lot after his review. I
-didn't want to mislead anyone.
+Should I drop them from this patchset and send them after this patchset as
+a separate change ?
 
 -- 
 Rgrds, legion
