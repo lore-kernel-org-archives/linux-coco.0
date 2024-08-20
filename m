@@ -1,182 +1,104 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95431D54CA;
-	Mon, 19 Aug 2024 22:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DF318E75F
+	for <linux-coco@lists.linux.dev>; Tue, 20 Aug 2024 13:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724105999; cv=none; b=eQdN0DgH27vJaRULVHxVZB/wmSZCCYs71q3aZ+QOSAlI2OZ388XYbr7hzTZ5EZceeY2dO29cHkBnULf5XY3DoJhTHlWgh1qMloc1yBug995GGcfsY6oXl63NueSy6Nble5tKwN9R+hQYmg4meNuBIfupnFZcQfhVE3Htp2ImS8Y=
+	t=1724159947; cv=none; b=ZEGQXEBUU2mFrrMGq7FXbCEaq1R1zrbYPUCEQX30DdC9rGDDV8Jv9izjDraNBwJ3QmWXY8gPP3UGp+1eDdPH77FJlF6CVQnMVYnPsjrRcES9DJa1UfL6ky58pJaCK/wwYFXcFB6BroxaRR9sEqVpCxRX7g5MNy32nPcpyc66IqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724105999; c=relaxed/simple;
-	bh=yG1zQUbI2Ajj4i85UdepG+N4h7adB4AVz6eU8zpAAkk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ffqyVFsjBh9vQ4PhUD58No/P05M8lnbx939CN+SxzLxKjrtdl92pzfz2qf99JIyaNfSrDmB56elXmC7fypD24cndHWMlmQ0tGO0N9qZz0KSyA6ONxU663ysEdZbzajPw+0df10ggZyGQXGB3qwtwhGDXaGnCRXaPXE1MQduUmwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1B1A6339;
-	Mon, 19 Aug 2024 15:20:22 -0700 (PDT)
-Received: from [10.57.70.210] (unknown [10.57.70.210])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 02B683F58B;
-	Mon, 19 Aug 2024 15:19:52 -0700 (PDT)
-Message-ID: <dccfad5a-cda8-436b-87c9-b588cf790e86@arm.com>
-Date: Mon, 19 Aug 2024 23:19:51 +0100
+	s=arc-20240116; t=1724159947; c=relaxed/simple;
+	bh=jwzNwqi23bxpGTQU9W6ZKRunMeDE8ltL7X3DcNiGD08=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a1+ytMJHfFTx6iOuoWof8z/fYwaFqCvNrf2F7Wjopni3m87FrIIWTjmWsXer8Cl1XJnthu6R5D+0jwZtOeArwhmAAE3KN1gbrs0tr/ggwRFeeIn0dfzHPCxBZxMloy+moi4R5kaMVgi56WiL1fogu4/FHjUZkZQJV6RSVT0FVvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=L/yxpQh9; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="L/yxpQh9"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-36d2a601c31so3183400f8f.0
+        for <linux-coco@lists.linux.dev>; Tue, 20 Aug 2024 06:19:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724159944; x=1724764744; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4jr0wUUNxuwMBzuuDz03CQuikwyocGytAf7u+HScwAk=;
+        b=L/yxpQh9wTdPQaHwJmAWN2XICHdPxUWPQujdCu+GM0jlYBW44G0rGt6Nbntq0wDCdd
+         24KO80TimgEY+9ktnoYYenwEU8yLPkUX1jHTKgYG2RcxB/Af6AkQMaUPhJawjjO4zsJn
+         canAwdfEzAmqKDfNZEinwHsWI2um7E870tQ8Jfhx82PoN90i00w7vzvam430ApYmVqOM
+         0iCftVl52GZY6072eVMyUXbak76yL2EzASEfHvT0gZ4xaO8YD40PqRfZdEElor2q9Nh4
+         d1o26UYJhZM5ue5dV4Yc4EuLM4X+M7HUHRw6GlERaYk9QGLWVhoEJ3FlIRbr795Xwnle
+         TC5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724159944; x=1724764744;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4jr0wUUNxuwMBzuuDz03CQuikwyocGytAf7u+HScwAk=;
+        b=AsTHIUfXQoe14n7y07bdLObylGPzpUGS2ZPYrx3qNT7uxawrp5Z4gIgn1hi2k+eJQC
+         MyHc/2qsb6ARYEBVv0YkvKhsBwOoV3bdQJ4e/EbxZ7aX2J4hYcBIlEgcCCrsWrKQk7wR
+         NWBaxkoc7ddPMeFSsgCjEezsBQc7lolgJvq5mpqP5yJSO7H/iRY925UZImR2Rt/qIiez
+         gRX3Vxo7XC03WwqMIcANgl5hHueP/R2XpXcuGN2a07ktBT3HwnrwxmcKOrPMKjF/uRUC
+         j+s4fSPk9PzK854Me8XkPaDWMRjP4apA7ZOV14uoHs1Nl9I/gE6qrTHoGufnb+8VsMY9
+         44ww==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ1i2qECo8XKaXUCugWiKTyUqnSH0lwYglKUhFjHMwEcQXly85tfoXcE4XQPdnmBzaUbpRLI4XJ/dHE9ZYmiBJlaSEWxB0PnG+pQ==
+X-Gm-Message-State: AOJu0Yy5mRb1lfJ6KYsGNOWuXFoTvxV9OQjBdn/k5jn26cXRV5jBcJxH
+	AiNQQTVuCOCIWM3UsdVtgsXYczdOwqnoxSrofBrm7YW1EejUQoBuNOaraG7FwAo=
+X-Google-Smtp-Source: AGHT+IHjT9qAO+emW/POSF1qBJZ0ZFLKI59tqUdczr2XqRvddNqHnQb3poFA0SPeVno3u8Z7Ce50uA==
+X-Received: by 2002:adf:e552:0:b0:368:7f8c:1b38 with SMTP id ffacd0b85a97d-37194655c7emr7988293f8f.30.1724159943777;
+        Tue, 20 Aug 2024 06:19:03 -0700 (PDT)
+Received: from vermeer.tail79c99.ts.net ([2a01:cb1d:81a9:dd00:b570:b34c:ffd4:c805])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3718983a0eesm13242280f8f.1.2024.08.20.06.19.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Aug 2024 06:19:03 -0700 (PDT)
+Date: Tue, 20 Aug 2024 15:19:00 +0200
+From: Samuel Ortiz <sameo@rivosinc.com>
+To: Qinkun Bao <qinkun@google.com>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Yao, Jiewen" <jiewen.yao@intel.com>,
+	"Xing, Cedric" <cedric.xing@intel.com>, biao.lu@intel.com,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	linux-coco@lists.linux.dev, linux-integrity@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Vishal Annapurve <vannapurve@google.com>,
+	Chong Cai <chongc@google.com>,
+	Dan Middleton <dan.middleton@intel.com>,
+	Alex Crisan <alex.crisan@intel.com>
+Subject: Re: [RFC PATCH v2 0/4] tsm: Runtime measurement registers ABI
+Message-ID: <ZsSXxMn-E7OCvxST@vermeer.tail79c99.ts.net>
+References: <20240128212532.2754325-1-sameo@rivosinc.com>
+ <c17a31e4fb30f5f9d4a337e5bd8d54cc6f99eef7.camel@HansenPartnership.com>
+ <6DEAEC08-420C-46A9-8877-EBF60331A931@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 17/19] irqchip/gic-v3-its: Share ITS tables with a
- non-trusted hypervisor
-Content-Language: en-GB
-To: Marc Zyngier <maz@kernel.org>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>
-References: <20240819131924.372366-1-steven.price@arm.com>
- <20240819131924.372366-18-steven.price@arm.com>
- <beff9162-e1ba-4f72-91ea-329eaed48dbc@arm.com> <86y14sy1qo.wl-maz@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <86y14sy1qo.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6DEAEC08-420C-46A9-8877-EBF60331A931@google.com>
 
-Hi Marc
+Qinkun,
 
-On 19/08/2024 16:24, Marc Zyngier wrote:
-> On Mon, 19 Aug 2024 15:51:00 +0100,
-> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->>
->> Hi Steven,
->>
->> On 19/08/2024 14:19, Steven Price wrote:
->>> Within a realm guest the ITS is emulated by the host. This means the
->>> allocations must have been made available to the host by a call to
->>> set_memory_decrypted(). Introduce an allocation function which performs
->>> this extra call.
->>>
->>> For the ITT use a custom genpool-based allocator that calls
->>> set_memory_decrypted() for each page allocated, but then suballocates
->>> the size needed for each ITT. Note that there is no mechanism
->>> implemented to return pages from the genpool, but it is unlikely the
->>> peak number of devices will so much larger than the normal level - so
->>> this isn't expected to be an issue.
->>>
->>
->> This may not be sufficient to make it future proof. We need to detect if
->> the GIC is private vs shared, before we make the allocation
->> choice. Please see below :
+I am working on a adding a patch that generates and exports a CEL, but
+this takes longer than I was hoping for, mostly due to a lack of
+bandwidth on my side. I will send a PoC for this as soon as I can, and
+folks can improve it from there.
+
+Cheers,
+Samuel.
+
+On Mon, Aug 19, 2024 at 02:25:15PM -0700, Qinkun Bao wrote:
+> A gentle ping on this email thread. We have tested the patch series [1] and will release a product based on the patch series. 
 > 
-> What do you mean by that? Do you foresee a *GICv3* implementation on
-> the realm side?
-
-No, but it may be emulated in the Realm World (by a higher privileged 
-component, with future RMM versions with Planes - Plane0) and this
-"Realm guest" may run in a lesser privileged plane and must use
-"protected" accesses to make sure the accesses are seen by the "Realm
-world" emulator.
-
+> If the patch series can not get upstreamed, the whole confidential computing community can not have a way to measure the workload with RTMRs. Without the patch, RTMR3 is completely unused. The patch works perfectly for our usage case (Like the existing TPM ABI, the raw measurement is taken instead of recording the log entry.). Assuming RTMR serves as an alternative to TPM-based measurement, migrating existing software to the RTMR could be greatly simplified by developing an ABI that resembles the TPM.
 > 
-> [...]
+> I don’t object to having an ABI to take the log entry. For our usage case, we use the Canonical event log [2] to measure the workload. I do think that we should NOT block the patch series for several months to solve an issue that TPM can not solve. 
 > 
->> How about something like this folded into this patch ? Or if this
->> patch goes in independently, we could carry the following as part of
->> the CCA
->> series.
->>
->> diff --git a/drivers/irqchip/irq-gic-v3-its.c
->> b/drivers/irqchip/irq-gic-v3-its.c
->> index 6f4ddf7faed1..f1a779b52210 100644
->> --- a/drivers/irqchip/irq-gic-v3-its.c
->> +++ b/drivers/irqchip/irq-gic-v3-its.c
->> @@ -209,7 +209,7 @@ static struct page *its_alloc_pages_node(int node,
->> gfp_t gfp,
->>
->>   	page = alloc_pages_node(node, gfp, order);
->>
->> -	if (page)
->> +	if (gic_rdists->is_shared && page)
->>   		set_memory_decrypted((unsigned long)page_address(page),
->>   				     BIT(order));
->>   	return page;
->> @@ -222,7 +222,8 @@ static struct page *its_alloc_pages(gfp_t gfp,
->> unsigned int order)
->>
->>   static void its_free_pages(void *addr, unsigned int order)
->>   {
->> -	set_memory_encrypted((unsigned long)addr, BIT(order));
->> +	if (gic_rdists->is_shared)
->> +		set_memory_encrypted((unsigned long)addr, BIT(order));
->>   	free_pages((unsigned long)addr, order);
->>   }
->>
->> diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
->> index 6fb276504bcc..48c6b2c8dd8c 100644
->> --- a/drivers/irqchip/irq-gic-v3.c
->> +++ b/drivers/irqchip/irq-gic-v3.c
->> @@ -2015,6 +2015,8 @@ static int __init gic_init_bases(phys_addr_t
->> dist_phys_base,
->>   	typer = readl_relaxed(gic_data.dist_base + GICD_TYPER);
->>   	gic_data.rdists.gicd_typer = typer;
->>
->> +	gic_data.rdists.is_shared =
->> !arm64_is_iomem_private(gic_data.dist_phys_base,
->> +							    PAGE_SIZE);
-> 
-> Why would you base the status of the RDs on that of the distributor?
-
-We expect that, the GIC as a whole is either Realm or non-secure, but
-not split (like most of the devices). The only reason for using rdists
-is because thats shared and available with the ITS driver code. (and
-was an easy hack). Happy to change this to something better.
-
-> 
->>   	gic_enable_quirks(readl_relaxed(gic_data.dist_base + GICD_IIDR),
->>   			  gic_quirks, &gic_data);
->>
->> diff --git a/include/linux/irqchip/arm-gic-v3.h
->> b/include/linux/irqchip/arm-gic-v3.h
->> index 728691365464..1edc33608d52 100644
->> --- a/include/linux/irqchip/arm-gic-v3.h
->> +++ b/include/linux/irqchip/arm-gic-v3.h
->> @@ -631,6 +631,7 @@ struct rdists {
->>   	bool			has_rvpeid;
->>   	bool			has_direct_lpi;
->>   	bool			has_vpend_valid_dirty;
->> +	bool			is_shared;
->>   };
->>
->>   struct irq_domain;
->>
-> 
-> I really don't like this.
-> 
-> If we have to go down the route of identifying whether the GIC needs
-> encryption or not based on the platform, then maybe we should bite the
-> bullet and treat it as a first class device, given that we expect
-> devices to be either realm or non-secure.
-
-Agreed and that is exactly we would like. i.e., treat the GIC as either
-Realm or NS (as a whole). Now, how do we make that decision is based on
-whether GIC Distributor area is private or not. Like I mentioned above, 
-we need a cleaner way of making this available in the ITS driver.
-
-Thoughts ? Is that what you were hinting at ?
-
-Suzuki
-
-
-> Thanks,
-> 
-> 	M.
-> 
-
+> Link:
+> [1] https://lore.kernel.org/lkml/20240128212532.2754325-1-sameo@rivosinc.com/
+> [2] https://trustedcomputinggroup.org/resource/canonical-event-log-format/
