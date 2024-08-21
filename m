@@ -1,109 +1,108 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C070B1CC891;
-	Wed, 21 Aug 2024 15:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746451386DF
+	for <linux-coco@lists.linux.dev>; Wed, 21 Aug 2024 16:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724254906; cv=none; b=PSTd57By1x/iAH2jeDDAJG48GFGi/Bx/y2PjGZ3DYgBj+1T3SMmX1rGIHlr/dMcuiLv0nTIow4fCR0TX/QDS543zE7ZZiOD14XIivl+owl1wjARfYkYsLjvcP30p1cyOzmxmmhsS7i8l35ZMr5naqQ71R2YZbM8p/KHQaYzCcRg=
+	t=1724258988; cv=none; b=JVrItkWQ3zU0tB4BimFuMxlscHWFkl27TffyGfPZxi96RDxVqwv7rWQoXsMgFS5M3VaBLuAmkZ4M249HPfwgfju6SROz6H9TTSeaiRyMZnqhiYGQgC/C3K+SR0nPbU04AZRSk/w5VGgeodtnSE9a+v4fNTj9H4ZxzTXA3yYUx/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724254906; c=relaxed/simple;
-	bh=BLH9SkxYE4yfg6HFGTT/3WoZIwvr55jwIJ65h/1hzsQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SboxGW6r+TesRT3/3bsjymdXb3VRHB0n4lZobIUAu9JwpvUqLZkP1jvqxpyq3Qa8QKWUiMfP1r4Tb37xOGdS8hXXmrNHBmFav/BZCuRXrqljF9yvwLgVUkDrQWFlMBGsUu8c3o3n4KmJZPnnR/g59O0hi5BiOQS6tyeQKiLPEDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7DD2B152B;
-	Wed, 21 Aug 2024 08:42:10 -0700 (PDT)
-Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.37.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 34ADF3F8A4;
-	Wed, 21 Aug 2024 08:41:41 -0700 (PDT)
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
+	s=arc-20240116; t=1724258988; c=relaxed/simple;
+	bh=gVCczsfFXEHQPlei2oJJ0nXJXjcYso0oIlLwuq+N1r0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=R/7wUprDVGmHmWhdrE73SbwKFFJffsxNVAJf9JHsBvnSWgOUgHj7oiO9CawV/PxhQkHHKtb2TdcnfrhtrLN2MNxKD3G568c8TLbTx/mU0822tSi7+tkvXvqum45pzNYQBgtZSR6UVWxxqvLbbY2zI61YB+/rcoQLu/4RX5TkDlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJoQgt2V; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJoQgt2V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A264C32781;
+	Wed, 21 Aug 2024 16:49:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724258988;
+	bh=gVCczsfFXEHQPlei2oJJ0nXJXjcYso0oIlLwuq+N1r0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FJoQgt2VnSRSEEzoRYbVkV9Z7FJF1bRGrIXhOE9KzVRtyKDiC8b3UiMMS7O3iXCyp
+	 rAfZacBuI8IP1arVNFO9/pOxKwIA5okU9hdbPqSbmmecgNTB2e25+/AxIFgOAlb4qT
+	 3bPooeqiPKHlbfyH9T9OhR3VG2iD83FKhqfZX20T2EV+leiTsGrXsS1abZK1LYUMVJ
+	 xmY1b+gukN5idxxqODlHlXpJvwg0xDbRUUfHabBfwgjdXULSkU7qEpZvsJ1qobT+3B
+	 Aw1smF0GZqTIMmpvYglhUC06RpVZcSkrK4Hfi9qllWjALYI2rEYy7Wp+dnJMCCoHhv
+	 BVtsvS7zEM9/g==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sgoWo-005fhU-1H;
+	Wed, 21 Aug 2024 17:49:46 +0100
+Date: Wed, 21 Aug 2024 17:49:45 +0100
+Message-ID: <86a5h5yg5y.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Suzuki Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
 	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>
-Subject: [PATCH v4 43/43] KVM: arm64: Allow activating realms
-Date: Wed, 21 Aug 2024 16:38:44 +0100
-Message-Id: <20240821153844.60084-44-steven.price@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240821153844.60084-1-steven.price@arm.com>
-References: <20240821153844.60084-1-steven.price@arm.com>
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH 4/6] drivers/virt: pkvm: Hook up mem_encrypt API using pKVM hypercalls
+In-Reply-To: <20240730151113.1497-5-will@kernel.org>
+References: <20240730151113.1497-1-will@kernel.org>
+	<20240730151113.1497-5-will@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: will@kernel.org, linux-arm-kernel@lists.infradead.org, sudeep.holla@arm.com, catalin.marinas@arm.com, lpieralisi@kernel.org, suzuki.poulose@arm.com, steven.price@arm.com, oliver.upton@linux.dev, linux-coco@lists.linux.dev
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Add the ioctl to activate a realm and set the static branch to enable
-access to the realm functionality if the RMM is detected.
+On Tue, 30 Jul 2024 16:11:10 +0100,
+Will Deacon <will@kernel.org> wrote:
+> 
+> If we detect the presence of pKVM's SHARE and UNSHARE hypercalls, then
+> register a backend implementation of the mem_encrypt API so that things
+> like DMA buffers can be shared appropriately with the host.
+> 
+> Signed-off-by: Will Deacon <will@kernel.org>
+> ---
+>  Documentation/virt/kvm/arm/hypercalls.rst     | 50 +++++++++++++++++
+>  drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c | 55 +++++++++++++++++++
+>  include/linux/arm-smccc.h                     | 14 +++++
+>  3 files changed, 119 insertions(+)
+> 
 
-Signed-off-by: Steven Price <steven.price@arm.com>
----
- arch/arm64/kvm/rme.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+[...]
 
-diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-index 9f415411d3b5..1eeef9e15d1c 100644
---- a/arch/arm64/kvm/rme.c
-+++ b/arch/arm64/kvm/rme.c
-@@ -1194,6 +1194,20 @@ static int kvm_init_ipa_range_realm(struct kvm *kvm,
- 	return realm_init_ipa_state(realm, addr, end);
- }
- 
-+static int kvm_activate_realm(struct kvm *kvm)
-+{
-+	struct realm *realm = &kvm->arch.realm;
-+
-+	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
-+		return -EINVAL;
-+
-+	if (rmi_realm_activate(virt_to_phys(realm->rd)))
-+		return -ENXIO;
-+
-+	WRITE_ONCE(realm->state, REALM_STATE_ACTIVE);
-+	return 0;
-+}
-+
- /* Protects access to rme_vmid_bitmap */
- static DEFINE_SPINLOCK(rme_vmid_lock);
- static unsigned long *rme_vmid_bitmap;
-@@ -1343,6 +1357,9 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
- 		r = kvm_populate_realm(kvm, &args);
- 		break;
- 	}
-+	case KVM_CAP_ARM_RME_ACTIVATE_REALM:
-+		r = kvm_activate_realm(kvm);
-+		break;
- 	default:
- 		r = -EINVAL;
- 		break;
-@@ -1599,5 +1616,5 @@ void kvm_init_rme(void)
- 	if (rme_vmid_init())
- 		return;
- 
--	/* Future patch will enable static branch kvm_rme_is_available */
-+	static_branch_enable(&kvm_rme_is_available);
- }
+> diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
+> index 16b6dcc54e02..9cb7c95920b0 100644
+> --- a/include/linux/arm-smccc.h
+> +++ b/include/linux/arm-smccc.h
+> @@ -116,6 +116,8 @@
+>  #define ARM_SMCCC_KVM_FUNC_FEATURES		0
+>  #define ARM_SMCCC_KVM_FUNC_PTP			1
+>  #define ARM_SMCCC_KVM_FUNC_HYP_MEMINFO		2
+> +#define ARM_SMCCC_KVM_FUNC_MEM_SHARE		3
+> +#define ARM_SMCCC_KVM_FUNC_MEM_UNSHARE		4
+>  #define ARM_SMCCC_KVM_FUNC_FEATURES_2		127
+>  #define ARM_SMCCC_KVM_NUM_FUNCS			128
+
+As you will certainly add a bunch of other calls (hopefully soon-ish),
+how about reserving an actual range for those, so that we can
+future-proof the ABI early?
+
+Grab 64 right away, and we don't have to worry about new stuff for a
+while.
+
+What do you think?
+
+	M.
+
 -- 
-2.34.1
-
+Without deviation from the norm, progress is not possible.
