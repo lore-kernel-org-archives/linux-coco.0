@@ -1,189 +1,202 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53CB1B1D73;
-	Wed, 21 Aug 2024 14:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47B413D8B2;
+	Wed, 21 Aug 2024 15:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724250519; cv=none; b=lQmKrqDE5vFOJKYiQEXnNHKT/FiSe25jo+OAS4KO5PR8jK3XOI3bCqW4kUP+ZoRv+4BAr6usvFNGRtMEMZAIg4E/zKLX/nPRBVvDg4Z4CCP3WvNq3deTlwnrmVEa7iTeqYaOFW39xY6k+CT7VxC0Dt9+sNXiSz/T4pQoGbh6Ejc=
+	t=1724254751; cv=none; b=b1GKa9f459HZS6wQblE2tQ7a3/v5p+IKQ2M6+NBBr10mz3CvzaEGvFEMZWiieS2XHjp4OhTndkiO6I8S5BgK1rbPpzNyZbCK//ur6yDAWGmnCS2lEVlQ7ke4ts1dGdTCrXOtCnj5MNkGXA+P2UVwyhw/3iuvjk1OPkx2M8RiJRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724250519; c=relaxed/simple;
-	bh=4j/xNgP1vGlnOe8f12JqGPfxZdJhHY5ZsFrNsEs2y3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hPY/+uDFw6IlvlNYvjOsJr5Go7PMY6hFyxfi4/DZxZkP/mzPQiVdMrLGEuv/vCVlyoQUbe7NQdaYBjh1KbG0XQmq5VMPJgINnTquhJiJibphlaUJXkw/QPvolP4euOgihS8Y9mQyPzzo6DWYkWQXGuNa9hEJvxz+PwgBsb7d7/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RfAawSWT; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RfAawSWT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00F4C32781;
-	Wed, 21 Aug 2024 14:28:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724250518;
-	bh=4j/xNgP1vGlnOe8f12JqGPfxZdJhHY5ZsFrNsEs2y3Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RfAawSWTfoKXWAbO1ubaMfLCuFzfKiZcKRuJ93wChVgh5vH8nFow+yTPgYblIAaxo
-	 TQg1RLAEzqXry4clPa2b0JAtssoCdl60VttoYB+JTbg1Jr380Bpk2kJ8qLus3WUB1y
-	 5bXNVmFkumx0/4/1HPFdjAODdHkye78vqNT6rmG0Ls0O5J6EOL0IVgQVcSXYEDhvSj
-	 pDlHFXCoF+RqjuOjikbzHHcOhwAM+SMTekZD/puddRWDYK9YHrcaLGb6BeUHEDmTC/
-	 2Mqop+D3bC4tvzn1NX2brBZfqTEQ1UE82m7DVyHN31u8+SmRiizsC24Q9nVnDziCY+
-	 gnYK/36zK9eiQ==
-Date: Wed, 21 Aug 2024 17:26:07 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Elliot Berman <quic_eberman@quicinc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Fuad Tabba <tabba@google.com>, David Hildenbrand <david@redhat.com>,
-	Patrick Roy <roypat@amazon.co.uk>, qperret@google.com,
-	Ackerley Tng <ackerleytng@google.com>, linux-coco@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kvm@vger.kernel.org
-Subject: Re: [PATCH RFC 3/4] mm: guest_memfd: Add option to remove guest
- private memory from direct map
-Message-ID: <ZsX4_1TlIu6WNo7r@kernel.org>
-References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
- <20240805-guest-memfd-lib-v1-3-e5a29a4ff5d7@quicinc.com>
- <ZsMZ8C2lnpMW+BT5@kernel.org>
- <20240820094213541-0700.eberman@hu-eberman-lv.qualcomm.com>
+	s=arc-20240116; t=1724254751; c=relaxed/simple;
+	bh=Cmq06yc88KUbQjvW3sBJZKQWcYJ0khTjJ+3FZLoN4gI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=VJxOqB0p/33JeLeKWWEkF8Z+UIOPj2DbDirehyP0E0/9uV0v/vgE2n7bZRLh9hxOeWO5nUb47LFDbGPTC4KCxfQI6rvC4F/IGSN8z4LhWEfk3xG5bSHbiLTIQ4J+wsvcGrEq6VE8saI1PxARNTnoxm7TxGiBgiD8Eejap5Pnu3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27084DA7;
+	Wed, 21 Aug 2024 08:39:34 -0700 (PDT)
+Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.37.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 178503F73B;
+	Wed, 21 Aug 2024 08:39:03 -0700 (PDT)
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>
+Subject: [PATCH v4 00/43] arm64: Support for Arm CCA in KVM
+Date: Wed, 21 Aug 2024 16:38:01 +0100
+Message-Id: <20240821153844.60084-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240820094213541-0700.eberman@hu-eberman-lv.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 20, 2024 at 09:56:10AM -0700, Elliot Berman wrote:
-> On Mon, Aug 19, 2024 at 01:09:52PM +0300, Mike Rapoport wrote:
-> > On Mon, Aug 05, 2024 at 11:34:49AM -0700, Elliot Berman wrote:
-> > > This patch was reworked from Patrick's patch:
-> > > https://lore.kernel.org/all/20240709132041.3625501-6-roypat@amazon.co.uk/
-> > > 
-> > > While guest_memfd is not available to be mapped by userspace, it is
-> > > still accessible through the kernel's direct map. This means that in
-> > > scenarios where guest-private memory is not hardware protected, it can
-> > > be speculatively read and its contents potentially leaked through
-> > > hardware side-channels. Removing guest-private memory from the direct
-> > > map, thus mitigates a large class of speculative execution issues
-> > > [1, Table 1].
-> > > 
-> > > Direct map removal do not reuse the `.prepare` machinery, since
-> > > `prepare` can be called multiple time, and it is the responsibility of
-> > > the preparation routine to not "prepare" the same folio twice [2]. Thus,
-> > > instead explicitly check if `filemap_grab_folio` allocated a new folio,
-> > > and remove the returned folio from the direct map only if this was the
-> > > case.
-> > > 
-> > > The patch uses release_folio instead of free_folio to reinsert pages
-> > > back into the direct map as by the time free_folio is called,
-> > > folio->mapping can already be NULL. This means that a call to
-> > > folio_inode inside free_folio might deference a NULL pointer, leaving no
-> > > way to access the inode which stores the flags that allow determining
-> > > whether the page was removed from the direct map in the first place.
-> > > 
-> > > [1]: https://download.vusec.net/papers/quarantine_raid23.pdf
-> > > 
-> > > Cc: Patrick Roy <roypat@amazon.co.uk>
-> > > Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
-> > > ---
-> > >  include/linux/guest_memfd.h |  8 ++++++
-> > >  mm/guest_memfd.c            | 65 ++++++++++++++++++++++++++++++++++++++++++++-
-> > >  2 files changed, 72 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
-> > > index be56d9d53067..f9e4a27aed67 100644
-> > > --- a/include/linux/guest_memfd.h
-> > > +++ b/include/linux/guest_memfd.h
-> > > @@ -25,6 +25,14 @@ struct guest_memfd_operations {
-> > >  	int (*release)(struct inode *inode);
-> > >  };
-> > >  
-> > > +/**
-> > > + * @GUEST_MEMFD_FLAG_NO_DIRECT_MAP: When making folios inaccessible by host, also
-> > > + *                                  remove them from the kernel's direct map.
-> > > + */
-> > > +enum {
-> > 
-> > please name this enum, otherwise kernel-doc wont' be happy
-> > 
-> > > +	GUEST_MEMFD_FLAG_NO_DIRECT_MAP		= BIT(0),
-> > > +};
-> > > +
-> > >  /**
-> > >   * @GUEST_MEMFD_GRAB_UPTODATE: Ensure pages are zeroed/up to date.
-> > >   *                             If trusted hyp will do it, can ommit this flag
-> > > diff --git a/mm/guest_memfd.c b/mm/guest_memfd.c
-> > > index 580138b0f9d4..e9d8cab72b28 100644
-> > > --- a/mm/guest_memfd.c
-> > > +++ b/mm/guest_memfd.c
-> > > @@ -7,9 +7,55 @@
-> > >  #include <linux/falloc.h>
-> > >  #include <linux/guest_memfd.h>
-> > >  #include <linux/pagemap.h>
-> > > +#include <linux/set_memory.h>
-> > > +
-> > > +static inline int guest_memfd_folio_private(struct folio *folio)
-> > > +{
-> > > +	unsigned long nr_pages = folio_nr_pages(folio);
-> > > +	unsigned long i;
-> > > +	int r;
-> > > +
-> > > +	for (i = 0; i < nr_pages; i++) {
-> > > +		struct page *page = folio_page(folio, i);
-> > > +
-> > > +		r = set_direct_map_invalid_noflush(page);
-> > > +		if (r < 0)
-> > > +			goto out_remap;
-> > > +	}
-> > > +
-> > > +	folio_set_private(folio);
-> > > +	return 0;
-> > > +out_remap:
-> > > +	for (; i > 0; i--) {
-> > > +		struct page *page = folio_page(folio, i - 1);
-> > > +
-> > > +		BUG_ON(set_direct_map_default_noflush(page));
-> > > +	}
-> > > +	return r;
-> > > +}
-> > > +
-> > > +static inline void guest_memfd_folio_clear_private(struct folio *folio)
-> > > +{
-> > > +	unsigned long start = (unsigned long)folio_address(folio);
-> > > +	unsigned long nr = folio_nr_pages(folio);
-> > > +	unsigned long i;
-> > > +
-> > > +	if (!folio_test_private(folio))
-> > > +		return;
-> > > +
-> > > +	for (i = 0; i < nr; i++) {
-> > > +		struct page *page = folio_page(folio, i);
-> > > +
-> > > +		BUG_ON(set_direct_map_default_noflush(page));
-> > > +	}
-> > > +	flush_tlb_kernel_range(start, start + folio_size(folio));
-> > 
-> > I think that TLB flush should come after removing pages from the direct map
-> > rather than after adding them back.
-> > 
-> 
-> Gunyah flushes the tlb when it removes the stage 2 mapping, so we
-> skipped it on removal as a performance optimization. I remember seeing
-> that pKVM does the same (tlb flush for the stage 2 unmap & the
-> equivalent for x86). Patrick had also done the same in their patches.
+This series adds support for running protected VMs using KVM under the
+Arm Confidential Compute Architecture (CCA).
 
-Strictly from the API perspective, unmapping the pages from the direct map
-would imply removing potentially stale TLB entries.
-If all currently anticipated users do it elsewhere, at the very least there
-should be a huge bold comment.
+The related guest support was posted[1] earlier this week. As mentioned
+there this version switches to a newer version of the RMM spec
+(v1.0-rel0-rc1) which involves some (small) binary breaks to the
+interface so you'll need to upgrade both host and guest kernel (and the
+RMM) at the same time.
 
-And what's the point of tlb flush after setting the direct map to default?
-There should not be stale tlb entries for the unmapped pages.
- 
-> Thanks,
-> Elliot
+The focus has been on the guest side, so there's not much in the way of
+big changes this time. The changes since v3[3] fit in three categories:
+
+ 1. Updates caused by the new RMM spec. In particular the 'num_bps' and
+    'num_wps' fields now match the architectural ID_AA64DFR0_EL1
+    register which avoids a number +1 and -1s in the code.
+
+ 2. A bunch of tidy ups handling the cases where kvm is NULL in various
+    places.
+
+ 3. Misc changes due to rebasing (mostly caused by nested virt support).
+
+Major limitations:
+
+ * Only supports 4k host PAGE_SIZE (if PAGE_SIZE != 4k then the realm
+   extensions are disabled).
+
+ * No support for huge pages when mapping the guest's pages. There is
+   some 'dead' code left over from before guest_mem was supported. This
+   is partly a current limitation of guest_memfd.
+
+The ABI to the RMM (the RMI) is based on RMM v1.0-rel0-rc1
+specification[2].
+
+This series is based on v6.11-rc1. It is also available as a git
+repository:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-host/v4
+
+Work in progress changes for kvmtool are available from the git
+repository below, these changes are based on Fuad Tabba's repository for
+pKVM to provide some alignment with the ongoing pKVM work:
+
+https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v2
+
+[1] https://lore.kernel.org/r/20240819131924.372366-1-steven.price%40arm.com
+[2] https://developer.arm.com/-/cdn-downloads/permalink/PDF/Architectures/DEN0137_1.0-rel0-rc1_rmm-arch_external.pdf
+[3] https://lore.kernel.org/r/20240610134202.54893-1-steven.price%40arm.com
+
+Jean-Philippe Brucker (7):
+  arm64: RME: Propagate number of breakpoints and watchpoints to
+    userspace
+  arm64: RME: Set breakpoint parameters through SET_ONE_REG
+  arm64: RME: Initialize PMCR.N with number counter supported by RMM
+  arm64: RME: Propagate max SVE vector length from RMM
+  arm64: RME: Configure max SVE vector length for a Realm
+  arm64: RME: Provide register list for unfinalized RME RECs
+  arm64: RME: Provide accurate register list
+
+Joey Gouly (2):
+  arm64: rme: allow userspace to inject aborts
+  arm64: rme: support RSI_HOST_CALL
+
+Sean Christopherson (1):
+  KVM: Prepare for handling only shared mappings in mmu_notifier events
+
+Steven Price (29):
+  arm64: RME: Handle Granule Protection Faults (GPFs)
+  arm64: RME: Add SMC definitions for calling the RMM
+  arm64: RME: Add wrappers for RMI calls
+  arm64: RME: Check for RME support at KVM init
+  arm64: RME: Define the user ABI
+  arm64: RME: ioctls to create and configure realms
+  arm64: kvm: Allow passing machine type in KVM creation
+  arm64: RME: Keep a spare page delegated to the RMM
+  arm64: RME: RTT tear down
+  arm64: RME: Allocate/free RECs to match vCPUs
+  arm64: RME: Support for the VGIC in realms
+  KVM: arm64: Support timers in realm RECs
+  arm64: RME: Allow VMM to set RIPAS
+  arm64: RME: Handle realm enter/exit
+  KVM: arm64: Handle realm MMIO emulation
+  arm64: RME: Allow populating initial contents
+  arm64: RME: Runtime faulting of memory
+  KVM: arm64: Handle realm VCPU load
+  KVM: arm64: Validate register access for a Realm VM
+  KVM: arm64: Handle Realm PSCI requests
+  KVM: arm64: WARN on injected undef exceptions
+  arm64: Don't expose stolen time for realm guests
+  arm64: RME: Always use 4k pages for realms
+  arm64: rme: Prevent Device mappings for Realms
+  arm_pmu: Provide a mechanism for disabling the physical IRQ
+  arm64: rme: Enable PMU support with a realm guest
+  kvm: rme: Hide KVM_CAP_READONLY_MEM for realm guests
+  arm64: kvm: Expose support for private memory
+  KVM: arm64: Allow activating realms
+
+Suzuki K Poulose (4):
+  kvm: arm64: pgtable: Track the number of pages in the entry level
+  kvm: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+  kvm: arm64: Expose debug HW register numbers for Realm
+  arm64: rme: Allow checking SVE on VM instance
+
+ Documentation/virt/kvm/api.rst       |    3 +
+ arch/arm64/include/asm/kvm_emulate.h |   34 +
+ arch/arm64/include/asm/kvm_host.h    |   16 +-
+ arch/arm64/include/asm/kvm_pgtable.h |    2 +
+ arch/arm64/include/asm/kvm_rme.h     |  155 +++
+ arch/arm64/include/asm/rmi_cmds.h    |  508 ++++++++
+ arch/arm64/include/asm/rmi_smc.h     |  253 ++++
+ arch/arm64/include/asm/virt.h        |    1 +
+ arch/arm64/include/uapi/asm/kvm.h    |   49 +
+ arch/arm64/kvm/Kconfig               |    1 +
+ arch/arm64/kvm/Makefile              |    3 +-
+ arch/arm64/kvm/arch_timer.c          |   45 +-
+ arch/arm64/kvm/arm.c                 |  166 ++-
+ arch/arm64/kvm/guest.c               |   99 +-
+ arch/arm64/kvm/hyp/pgtable.c         |    5 +-
+ arch/arm64/kvm/hypercalls.c          |    4 +-
+ arch/arm64/kvm/inject_fault.c        |    2 +
+ arch/arm64/kvm/mmio.c                |   10 +-
+ arch/arm64/kvm/mmu.c                 |  181 ++-
+ arch/arm64/kvm/pmu-emul.c            |    7 +-
+ arch/arm64/kvm/psci.c                |   29 +
+ arch/arm64/kvm/reset.c               |   23 +-
+ arch/arm64/kvm/rme-exit.c            |  212 ++++
+ arch/arm64/kvm/rme.c                 | 1620 ++++++++++++++++++++++++++
+ arch/arm64/kvm/sys_regs.c            |   83 +-
+ arch/arm64/kvm/vgic/vgic-v3.c        |    8 +-
+ arch/arm64/kvm/vgic/vgic.c           |   37 +-
+ arch/arm64/mm/fault.c                |   31 +-
+ drivers/perf/arm_pmu.c               |   15 +
+ include/kvm/arm_arch_timer.h         |    2 +
+ include/kvm/arm_pmu.h                |    4 +
+ include/kvm/arm_psci.h               |    2 +
+ include/linux/kvm_host.h             |    2 +
+ include/linux/perf/arm_pmu.h         |    5 +
+ include/uapi/linux/kvm.h             |   31 +-
+ virt/kvm/kvm_main.c                  |    7 +
+ 36 files changed, 3555 insertions(+), 100 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_rme.h
+ create mode 100644 arch/arm64/include/asm/rmi_cmds.h
+ create mode 100644 arch/arm64/include/asm/rmi_smc.h
+ create mode 100644 arch/arm64/kvm/rme-exit.c
+ create mode 100644 arch/arm64/kvm/rme.c
 
 -- 
-Sincerely yours,
-Mike.
+2.34.1
+
