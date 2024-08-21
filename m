@@ -1,227 +1,189 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEC31B3B2A;
-	Wed, 21 Aug 2024 14:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53CB1B1D73;
+	Wed, 21 Aug 2024 14:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724250372; cv=none; b=LaCiMXNjVk9S1BxGboM8qe29Ss+9bAC1ky2CFLq41HKedV2xmnnNRhMjHQPiwETL4v342cxTJRY0q5knPB89nI6rd961QZCl2MdmheUByEgTC7y2jHdU7X3nZUfvyILijLMrC3keFQf02G6PLn9sWkEeg/TNxNCFdORT1KhToBw=
+	t=1724250519; cv=none; b=lQmKrqDE5vFOJKYiQEXnNHKT/FiSe25jo+OAS4KO5PR8jK3XOI3bCqW4kUP+ZoRv+4BAr6usvFNGRtMEMZAIg4E/zKLX/nPRBVvDg4Z4CCP3WvNq3deTlwnrmVEa7iTeqYaOFW39xY6k+CT7VxC0Dt9+sNXiSz/T4pQoGbh6Ejc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724250372; c=relaxed/simple;
-	bh=sqVXi89tYI0s7IoD92jonGg926UqsYeyDX6OHzOQkVo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gIC1diRywrRJSG0oIhzdot+N0QHEoZQT2D30zFSnqMScDq5OK9f6WNXFkGm1emxNjgi5zGpnfY8S+PqikeG3BlezhtNJn4YRvo+Qj/QdTtad9oS9x81h6O6GgJp7fuOgDrNYiFdN1GTGpqFOwTobHmPBCoHjkX1RNxbPHKX34Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rX+iGplY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724250519; c=relaxed/simple;
+	bh=4j/xNgP1vGlnOe8f12JqGPfxZdJhHY5ZsFrNsEs2y3Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hPY/+uDFw6IlvlNYvjOsJr5Go7PMY6hFyxfi4/DZxZkP/mzPQiVdMrLGEuv/vCVlyoQUbe7NQdaYBjh1KbG0XQmq5VMPJgINnTquhJiJibphlaUJXkw/QPvolP4euOgihS8Y9mQyPzzo6DWYkWQXGuNa9hEJvxz+PwgBsb7d7/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RfAawSWT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rX+iGplY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7113EC32781;
-	Wed, 21 Aug 2024 14:26:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RfAawSWT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00F4C32781;
+	Wed, 21 Aug 2024 14:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724250372;
-	bh=sqVXi89tYI0s7IoD92jonGg926UqsYeyDX6OHzOQkVo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rX+iGplYwaRwPZ3u5hFLSpySpuM7etMXZeMR0dg9CqRY4P3PkUlYmmomke28wJF5X
-	 TTDlR+7andARIC6sKyvg4yCFiXPL/IYsLTYRyKAogE/ewRFnFP8HxVnfWFapkyhbeG
-	 +gvc6VwEqlM3WjBncVN+Q/qOKlRpbdBjVoXWIjLm8eZ6COuTYS4djJ0uCXUBOxVuss
-	 5Q6eJkbuzvtNflfCPdAvNNPQnB3mCCurL5sccdoTeyZCMxJNb3O7J6v+lTN0ZfV7hh
-	 tgfyQUUWUaik0eJheuU3Wa+il8fKmT5JrLAzf85lDUswYWlhDt5LZeh2dg8XzfPxx/
-	 CXj0iaUX0nFnQ==
-From: Alexey Gladkov <legion@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Cc: "Alexey Gladkov (Intel)" <legion@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yuan Yao <yuan.yao@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Yuntao Wang <ytcoode@gmail.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Baoquan He <bhe@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	cho@microsoft.com,
-	decui@microsoft.com,
-	John.Starks@microsoft.com
-Subject: [PATCH v4 6/6] x86/tdx: Implement movs for MMIO
-Date: Wed, 21 Aug 2024 16:24:38 +0200
-Message-ID: <9320e721e609e55a020d3eb98f48fc856371c561.1724248680.git.legion@kernel.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <cover.1724248680.git.legion@kernel.org>
-References: <cover.1723807851.git.legion@kernel.org> <cover.1724248680.git.legion@kernel.org>
+	s=k20201202; t=1724250518;
+	bh=4j/xNgP1vGlnOe8f12JqGPfxZdJhHY5ZsFrNsEs2y3Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RfAawSWTfoKXWAbO1ubaMfLCuFzfKiZcKRuJ93wChVgh5vH8nFow+yTPgYblIAaxo
+	 TQg1RLAEzqXry4clPa2b0JAtssoCdl60VttoYB+JTbg1Jr380Bpk2kJ8qLus3WUB1y
+	 5bXNVmFkumx0/4/1HPFdjAODdHkye78vqNT6rmG0Ls0O5J6EOL0IVgQVcSXYEDhvSj
+	 pDlHFXCoF+RqjuOjikbzHHcOhwAM+SMTekZD/puddRWDYK9YHrcaLGb6BeUHEDmTC/
+	 2Mqop+D3bC4tvzn1NX2brBZfqTEQ1UE82m7DVyHN31u8+SmRiizsC24Q9nVnDziCY+
+	 gnYK/36zK9eiQ==
+Date: Wed, 21 Aug 2024 17:26:07 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Elliot Berman <quic_eberman@quicinc.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Fuad Tabba <tabba@google.com>, David Hildenbrand <david@redhat.com>,
+	Patrick Roy <roypat@amazon.co.uk>, qperret@google.com,
+	Ackerley Tng <ackerleytng@google.com>, linux-coco@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, kvm@vger.kernel.org
+Subject: Re: [PATCH RFC 3/4] mm: guest_memfd: Add option to remove guest
+ private memory from direct map
+Message-ID: <ZsX4_1TlIu6WNo7r@kernel.org>
+References: <20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com>
+ <20240805-guest-memfd-lib-v1-3-e5a29a4ff5d7@quicinc.com>
+ <ZsMZ8C2lnpMW+BT5@kernel.org>
+ <20240820094213541-0700.eberman@hu-eberman-lv.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240820094213541-0700.eberman@hu-eberman-lv.qualcomm.com>
 
-From: "Alexey Gladkov (Intel)" <legion@kernel.org>
+On Tue, Aug 20, 2024 at 09:56:10AM -0700, Elliot Berman wrote:
+> On Mon, Aug 19, 2024 at 01:09:52PM +0300, Mike Rapoport wrote:
+> > On Mon, Aug 05, 2024 at 11:34:49AM -0700, Elliot Berman wrote:
+> > > This patch was reworked from Patrick's patch:
+> > > https://lore.kernel.org/all/20240709132041.3625501-6-roypat@amazon.co.uk/
+> > > 
+> > > While guest_memfd is not available to be mapped by userspace, it is
+> > > still accessible through the kernel's direct map. This means that in
+> > > scenarios where guest-private memory is not hardware protected, it can
+> > > be speculatively read and its contents potentially leaked through
+> > > hardware side-channels. Removing guest-private memory from the direct
+> > > map, thus mitigates a large class of speculative execution issues
+> > > [1, Table 1].
+> > > 
+> > > Direct map removal do not reuse the `.prepare` machinery, since
+> > > `prepare` can be called multiple time, and it is the responsibility of
+> > > the preparation routine to not "prepare" the same folio twice [2]. Thus,
+> > > instead explicitly check if `filemap_grab_folio` allocated a new folio,
+> > > and remove the returned folio from the direct map only if this was the
+> > > case.
+> > > 
+> > > The patch uses release_folio instead of free_folio to reinsert pages
+> > > back into the direct map as by the time free_folio is called,
+> > > folio->mapping can already be NULL. This means that a call to
+> > > folio_inode inside free_folio might deference a NULL pointer, leaving no
+> > > way to access the inode which stores the flags that allow determining
+> > > whether the page was removed from the direct map in the first place.
+> > > 
+> > > [1]: https://download.vusec.net/papers/quarantine_raid23.pdf
+> > > 
+> > > Cc: Patrick Roy <roypat@amazon.co.uk>
+> > > Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+> > > ---
+> > >  include/linux/guest_memfd.h |  8 ++++++
+> > >  mm/guest_memfd.c            | 65 ++++++++++++++++++++++++++++++++++++++++++++-
+> > >  2 files changed, 72 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
+> > > index be56d9d53067..f9e4a27aed67 100644
+> > > --- a/include/linux/guest_memfd.h
+> > > +++ b/include/linux/guest_memfd.h
+> > > @@ -25,6 +25,14 @@ struct guest_memfd_operations {
+> > >  	int (*release)(struct inode *inode);
+> > >  };
+> > >  
+> > > +/**
+> > > + * @GUEST_MEMFD_FLAG_NO_DIRECT_MAP: When making folios inaccessible by host, also
+> > > + *                                  remove them from the kernel's direct map.
+> > > + */
+> > > +enum {
+> > 
+> > please name this enum, otherwise kernel-doc wont' be happy
+> > 
+> > > +	GUEST_MEMFD_FLAG_NO_DIRECT_MAP		= BIT(0),
+> > > +};
+> > > +
+> > >  /**
+> > >   * @GUEST_MEMFD_GRAB_UPTODATE: Ensure pages are zeroed/up to date.
+> > >   *                             If trusted hyp will do it, can ommit this flag
+> > > diff --git a/mm/guest_memfd.c b/mm/guest_memfd.c
+> > > index 580138b0f9d4..e9d8cab72b28 100644
+> > > --- a/mm/guest_memfd.c
+> > > +++ b/mm/guest_memfd.c
+> > > @@ -7,9 +7,55 @@
+> > >  #include <linux/falloc.h>
+> > >  #include <linux/guest_memfd.h>
+> > >  #include <linux/pagemap.h>
+> > > +#include <linux/set_memory.h>
+> > > +
+> > > +static inline int guest_memfd_folio_private(struct folio *folio)
+> > > +{
+> > > +	unsigned long nr_pages = folio_nr_pages(folio);
+> > > +	unsigned long i;
+> > > +	int r;
+> > > +
+> > > +	for (i = 0; i < nr_pages; i++) {
+> > > +		struct page *page = folio_page(folio, i);
+> > > +
+> > > +		r = set_direct_map_invalid_noflush(page);
+> > > +		if (r < 0)
+> > > +			goto out_remap;
+> > > +	}
+> > > +
+> > > +	folio_set_private(folio);
+> > > +	return 0;
+> > > +out_remap:
+> > > +	for (; i > 0; i--) {
+> > > +		struct page *page = folio_page(folio, i - 1);
+> > > +
+> > > +		BUG_ON(set_direct_map_default_noflush(page));
+> > > +	}
+> > > +	return r;
+> > > +}
+> > > +
+> > > +static inline void guest_memfd_folio_clear_private(struct folio *folio)
+> > > +{
+> > > +	unsigned long start = (unsigned long)folio_address(folio);
+> > > +	unsigned long nr = folio_nr_pages(folio);
+> > > +	unsigned long i;
+> > > +
+> > > +	if (!folio_test_private(folio))
+> > > +		return;
+> > > +
+> > > +	for (i = 0; i < nr; i++) {
+> > > +		struct page *page = folio_page(folio, i);
+> > > +
+> > > +		BUG_ON(set_direct_map_default_noflush(page));
+> > > +	}
+> > > +	flush_tlb_kernel_range(start, start + folio_size(folio));
+> > 
+> > I think that TLB flush should come after removing pages from the direct map
+> > rather than after adding them back.
+> > 
+> 
+> Gunyah flushes the tlb when it removes the stage 2 mapping, so we
+> skipped it on removal as a performance optimization. I remember seeing
+> that pKVM does the same (tlb flush for the stage 2 unmap & the
+> equivalent for x86). Patrick had also done the same in their patches.
 
-Add emulation of the MOVS instruction on MMIO regions. MOVS emulation
-consists of dividing it into a series of read and write operations,
-which in turn will be validated separately.
+Strictly from the API perspective, unmapping the pages from the direct map
+would imply removing potentially stale TLB entries.
+If all currently anticipated users do it elsewhere, at the very least there
+should be a huge bold comment.
 
-Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
----
- arch/x86/coco/tdx/tdx.c          | 84 +++++++++++++++++++++++++++++---
- arch/x86/include/asm/processor.h |  4 ++
- 2 files changed, 80 insertions(+), 8 deletions(-)
+And what's the point of tlb flush after setting the direct map to default?
+There should not be stale tlb entries for the unmapped pages.
+ 
+> Thanks,
+> Elliot
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 65f65015238a..d4bec84de034 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -518,6 +518,62 @@ static int decode_insn_struct(struct insn *insn, struct pt_regs *regs)
- 	return 0;
- }
- 
-+static int handle_mmio_movs(struct insn *insn, struct pt_regs *regs, int size, struct ve_info *ve)
-+{
-+	unsigned long ds_base, es_base;
-+	unsigned char *src, *dst;
-+	unsigned char buffer[8];
-+	int off, ret;
-+	bool rep;
-+
-+	/*
-+	 * The in-kernel code must use a special API that does not use MOVS.
-+	 * If the MOVS instruction is received from in-kernel, then something
-+	 * is broken.
-+	 */
-+	if (WARN_ON_ONCE(!user_mode(regs)))
-+		return -EFAULT;
-+
-+	ds_base = insn_get_seg_base(regs, INAT_SEG_REG_DS);
-+	es_base = insn_get_seg_base(regs, INAT_SEG_REG_ES);
-+
-+	if (ds_base == -1L || es_base == -1L)
-+		return -EINVAL;
-+
-+	rep = insn_has_rep_prefix(insn);
-+
-+	do {
-+		src = ds_base + (unsigned char *) regs->si;
-+		dst = es_base + (unsigned char *) regs->di;
-+
-+		current->thread.mmio_emul = (unsigned long) src;
-+
-+		ret = __get_iomem(src, buffer, size);
-+		if (ret)
-+			goto out;
-+
-+		current->thread.mmio_emul = (unsigned long) dst;
-+
-+		ret = __put_iomem(dst, buffer, size);
-+		if (ret)
-+			goto out;
-+
-+		off = (regs->flags & X86_EFLAGS_DF) ? -size : size;
-+
-+		regs->si += off;
-+		regs->di += off;
-+
-+		if (rep)
-+			regs->cx -= 1;
-+	} while (rep || regs->cx > 0);
-+
-+	ret = insn->length;
-+out:
-+	current->thread.mmio_emul = 0;
-+
-+	return ret;
-+}
-+
- static int handle_mmio_write(struct insn *insn, enum insn_mmio_type mmio, int size,
- 			     struct pt_regs *regs, struct ve_info *ve)
- {
-@@ -539,9 +595,8 @@ static int handle_mmio_write(struct insn *insn, enum insn_mmio_type mmio, int si
- 		return insn->length;
- 	case INSN_MMIO_MOVS:
- 		/*
--		 * MMIO was accessed with an instruction that could not be
--		 * decoded or handled properly. It was likely not using io.h
--		 * helpers or accessed MMIO accidentally.
-+		 * MOVS is processed through higher level emulation which breaks
-+		 * this instruction into a sequence of reads and writes.
- 		 */
- 		return -EINVAL;
- 	default:
-@@ -600,6 +655,7 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- {
- 	enum insn_mmio_type mmio;
- 	struct insn insn = {};
-+	int need_validation;
- 	unsigned long vaddr;
- 	int size, ret;
- 
-@@ -611,14 +667,27 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- 	if (WARN_ON_ONCE(mmio == INSN_MMIO_DECODE_FAILED))
- 		return -EINVAL;
- 
-+	if (mmio == INSN_MMIO_MOVS)
-+		return handle_mmio_movs(&insn, regs, size, ve);
-+
-+	need_validation = user_mode(regs);
-+
- 	if (!user_mode(regs) && !is_kernel_addr(ve->gla)) {
--		WARN_ONCE(1, "Access to userspace address is not supported");
--		return -EINVAL;
-+		/*
-+		 * Access from kernel to userspace addresses is not allowed
-+		 * unless it is a nested exception during MOVS emulation.
-+		 */
-+		if (current->thread.mmio_emul != ve->gla || !current->mm) {
-+			WARN_ONCE(1, "Access to userspace address is not supported");
-+			return -EINVAL;
-+		}
-+
-+		need_validation = 1;
- 	}
- 
- 	vaddr = (unsigned long)insn_get_addr_ref(&insn, regs);
- 
--	if (user_mode(regs)) {
-+	if (need_validation) {
- 		if (mmap_read_lock_killable(current->mm))
- 			return -EINTR;
- 
-@@ -644,7 +713,6 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- 	switch (mmio) {
- 	case INSN_MMIO_WRITE:
- 	case INSN_MMIO_WRITE_IMM:
--	case INSN_MMIO_MOVS:
- 		ret = handle_mmio_write(&insn, mmio, size, regs, ve);
- 		break;
- 	case INSN_MMIO_READ:
-@@ -665,7 +733,7 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- 		ret = -EINVAL;
- 	}
- unlock:
--	if (user_mode(regs))
-+	if (need_validation)
- 		mmap_read_unlock(current->mm);
- 
- 	return ret;
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index a75a07f4931f..45136b1b02cc 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -503,6 +503,10 @@ struct thread_struct {
- 	struct thread_shstk	shstk;
- #endif
- 
-+#ifdef CONFIG_INTEL_TDX_GUEST
-+	unsigned long		mmio_emul;
-+#endif
-+
- 	/* Floating point and extended processor state */
- 	struct fpu		fpu;
- 	/*
 -- 
-2.45.2
-
+Sincerely yours,
+Mike.
