@@ -1,108 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746451386DF
-	for <linux-coco@lists.linux.dev>; Wed, 21 Aug 2024 16:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0931BC39;
+	Thu, 22 Aug 2024 03:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724258988; cv=none; b=JVrItkWQ3zU0tB4BimFuMxlscHWFkl27TffyGfPZxi96RDxVqwv7rWQoXsMgFS5M3VaBLuAmkZ4M249HPfwgfju6SROz6H9TTSeaiRyMZnqhiYGQgC/C3K+SR0nPbU04AZRSk/w5VGgeodtnSE9a+v4fNTj9H4ZxzTXA3yYUx/0=
+	t=1724297533; cv=none; b=eH5TL2Fnpk/DA82lUK8HkMeMJeCyLNbtD03Xf2PTCQlzM1um6ZnLQrHtXpEdSaV7xAcDCePi09I5i2dmsc0VNAB+93xBfSN3o2wj2xFl0mW03Vc4VGST37orTM20qS5PAJgrw/Ljfqu+7WCpQwkS8+kGH4iT7JjaxpxtshCOO9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724258988; c=relaxed/simple;
-	bh=gVCczsfFXEHQPlei2oJJ0nXJXjcYso0oIlLwuq+N1r0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R/7wUprDVGmHmWhdrE73SbwKFFJffsxNVAJf9JHsBvnSWgOUgHj7oiO9CawV/PxhQkHHKtb2TdcnfrhtrLN2MNxKD3G568c8TLbTx/mU0822tSi7+tkvXvqum45pzNYQBgtZSR6UVWxxqvLbbY2zI61YB+/rcoQLu/4RX5TkDlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJoQgt2V; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724297533; c=relaxed/simple;
+	bh=EUR9oo2bOuT8CZglnOhT9XwulidBfPQJemFZwLJ8lIQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=mBRHN3vyRInHEuhsvRFHzSjqW1Hn6rHmRoyH7FQ6+4ksG6fBPtXo1Jfj8lB7GCBfGtecnEAY4FJKEu/CA7yQiEWJN1u+aUVRDUe4VjN73Y1nHuW9RbUoiyjPbHfVLnmwUCAKnsNskDdVd5y5FoQNqXElU+PfABJ7jymxn0wk/2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DTUKwrig; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJoQgt2V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A264C32781;
-	Wed, 21 Aug 2024 16:49:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DTUKwrig"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562F9C4AF09;
+	Thu, 22 Aug 2024 03:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724258988;
-	bh=gVCczsfFXEHQPlei2oJJ0nXJXjcYso0oIlLwuq+N1r0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FJoQgt2VnSRSEEzoRYbVkV9Z7FJF1bRGrIXhOE9KzVRtyKDiC8b3UiMMS7O3iXCyp
-	 rAfZacBuI8IP1arVNFO9/pOxKwIA5okU9hdbPqSbmmecgNTB2e25+/AxIFgOAlb4qT
-	 3bPooeqiPKHlbfyH9T9OhR3VG2iD83FKhqfZX20T2EV+leiTsGrXsS1abZK1LYUMVJ
-	 xmY1b+gukN5idxxqODlHlXpJvwg0xDbRUUfHabBfwgjdXULSkU7qEpZvsJ1qobT+3B
-	 Aw1smF0GZqTIMmpvYglhUC06RpVZcSkrK4Hfi9qllWjALYI2rEYy7Wp+dnJMCCoHhv
-	 BVtsvS7zEM9/g==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sgoWo-005fhU-1H;
-	Wed, 21 Aug 2024 17:49:46 +0100
-Date: Wed, 21 Aug 2024 17:49:45 +0100
-Message-ID: <86a5h5yg5y.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	s=k20201202; t=1724297532;
+	bh=EUR9oo2bOuT8CZglnOhT9XwulidBfPQJemFZwLJ8lIQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DTUKwrigV+YgcDIMbKDEm9Ty3d/Fn5MQIDnW5D1v/J41f4yPWrk4t3DNP+bDZ/4M4
+	 8OV9BJmuKmNRNMvDxOiRKWc1ZgsY8QagxXr6t6kn+iJUsFrrE55Fm6vzdMpHNh1uqY
+	 lZohaPsRYfRFZzX8povg3J8rg7N366nF99+4XTBDBMSOmZzY/v2mGvZbaab9Pr0syS
+	 uiwYWTVrlGZrChyUnzAKXb8p4rPNxc1NS9TCzi4u8kkow8wzfkz3OLUhOtbKZOf0n2
+	 Et355enqRwY1Cz3wtgTWxOTVHeVbS72vjBv0auJkEGt3RRrPpavkcnf83hBDGZPqH2
+	 ZtOV+cnMyxOiA==
+X-Mailer: emacs 31.0.50 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Suzuki Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
 	Oliver Upton <oliver.upton@linux.dev>,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH 4/6] drivers/virt: pkvm: Hook up mem_encrypt API using pKVM hypercalls
-In-Reply-To: <20240730151113.1497-5-will@kernel.org>
-References: <20240730151113.1497-1-will@kernel.org>
-	<20240730151113.1497-5-will@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>
+Subject: Re: [PATCH v4 21/43] arm64: RME: Runtime faulting of memory
+In-Reply-To: <20240821153844.60084-22-steven.price@arm.com>
+References: <20240821153844.60084-1-steven.price@arm.com>
+ <20240821153844.60084-22-steven.price@arm.com>
+Date: Thu, 22 Aug 2024 09:02:00 +0530
+Message-ID: <yq5afrqx2pxr.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: will@kernel.org, linux-arm-kernel@lists.infradead.org, sudeep.holla@arm.com, catalin.marinas@arm.com, lpieralisi@kernel.org, suzuki.poulose@arm.com, steven.price@arm.com, oliver.upton@linux.dev, linux-coco@lists.linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Tue, 30 Jul 2024 16:11:10 +0100,
-Will Deacon <will@kernel.org> wrote:
-> 
-> If we detect the presence of pKVM's SHARE and UNSHARE hypercalls, then
-> register a backend implementation of the mem_encrypt API so that things
-> like DMA buffers can be shared appropriately with the host.
-> 
-> Signed-off-by: Will Deacon <will@kernel.org>
+Steven Price <steven.price@arm.com> writes:
+
+> At runtime if the realm guest accesses memory which hasn't yet been
+> mapped then KVM needs to either populate the region or fault the guest.
+>
+> For memory in the lower (protected) region of IPA a fresh page is
+> provided to the RMM which will zero the contents. For memory in the
+> upper (shared) region of IPA, the memory from the memslot is mapped
+> into the realm VM non secure.
+>
+> Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
->  Documentation/virt/kvm/arm/hypercalls.rst     | 50 +++++++++++++++++
->  drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c | 55 +++++++++++++++++++
->  include/linux/arm-smccc.h                     | 14 +++++
->  3 files changed, 119 insertions(+)
-> 
+> Changes since v2:
+>  * Avoid leaking memory if failing to map it in the realm.
+>  * Correctly mask RTT based on LPA2 flag (see rtt_get_phys()).
+>  * Adapt to changes in previous patches.
+>
 
-[...]
+....
 
-> diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
-> index 16b6dcc54e02..9cb7c95920b0 100644
-> --- a/include/linux/arm-smccc.h
-> +++ b/include/linux/arm-smccc.h
-> @@ -116,6 +116,8 @@
->  #define ARM_SMCCC_KVM_FUNC_FEATURES		0
->  #define ARM_SMCCC_KVM_FUNC_PTP			1
->  #define ARM_SMCCC_KVM_FUNC_HYP_MEMINFO		2
-> +#define ARM_SMCCC_KVM_FUNC_MEM_SHARE		3
-> +#define ARM_SMCCC_KVM_FUNC_MEM_UNSHARE		4
->  #define ARM_SMCCC_KVM_FUNC_FEATURES_2		127
->  #define ARM_SMCCC_KVM_NUM_FUNCS			128
+> -	gfn = ipa >> PAGE_SHIFT;
+> +	gfn = (ipa & ~gpa_stolen_mask) >> PAGE_SHIFT;
+>  	memslot = gfn_to_memslot(vcpu->kvm, gfn);
+> +
+> +	if (kvm_slot_can_be_private(memslot)) {
+> +		ret = private_memslot_fault(vcpu, fault_ipa, memslot);
+> +		if (ret != -EAGAIN)
+> +			goto out;
+> +	}
+>
 
-As you will certainly add a bunch of other calls (hopefully soon-ish),
-how about reserving an actual range for those, so that we can
-future-proof the ABI early?
+Shouldn't this be s/fault_ipa/ipa ?
 
-Grab 64 right away, and we don't have to worry about new stuff for a
-while.
+	ret = private_memslot_fault(vcpu, ipa, memslot);
 
-What do you think?
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+-aneesh
