@@ -1,25 +1,25 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50161CC89A;
-	Thu, 22 Aug 2024 15:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C4612E75;
+	Thu, 22 Aug 2024 15:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724339185; cv=none; b=lFVpbtUohBcPy+Tc5D9lsTuWkLn2eGwFSuNXowWi4jGtiyg7zGpGjJVBjjS6HxXrFEh2Ut/yrMMYlNBQHJhlo+dwg4wqFZVwP5n9FFSic7u0zpUNsBJu1pTaxbwk8y7EE91qiqy1hD5C9lfCzRr9uaL0y6pXNuIyvzW06ZD4k5U=
+	t=1724339666; cv=none; b=ZgKvT8hf1c6dQEqftfFPibH7V8g2kKlPGdkBYEaCAWfmT8ioaWgTRN8aZ8RbzrPoEr8welU22OMMsPt9thhc6CM80T61yuz7JIH4OkPiSWUm2pTxSA24ZTjKP4ZsGmO6lqP0IS+IHuL7VdRjTou8iqOJHugo6tBYW1dhRcWcWZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724339185; c=relaxed/simple;
-	bh=QCgSudnWYAHAbhwqPzcmGR64pvLJdT3jGrGJ7AS7PPI=;
+	s=arc-20240116; t=1724339666; c=relaxed/simple;
+	bh=Z0x+iQbZGRupwKlqBCAsGrzbaayYp2vs4jBrbc+BHTI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BDe3WhN4OJw3dt0tDh2YRow0tXrHIW2yUfJ6XP47MHBrhrEYi2gNwckRpg95oS8bghGyumaGFBAF90Zwj5TN0d8SpUwoofgFcSCu9vp4fdEgvlKDJpFFeGGQ/tXy6JGOoGhjtdwPoZO4g4n+cWNNJh1E4ThqaekTrQJMvGcykDg=
+	 In-Reply-To:Content-Type; b=JLuWTz7M/AUMSM5kQDyeisdZsXE/dSa7EOJWYZ+HwpiD7MbsN7noVWuxY3+ASZadiJuLq0uo65LOyB45yf2W5bx81bg8Ce0mUJYkWFlmapROmwT6KX+6K/HQ45FL7Np5QJH7WdbGmqNWJZAk1p+pAY/s7IAYlkzTqFyoz6kv38Y=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51FF5DA7;
-	Thu, 22 Aug 2024 08:06:49 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB36F169E;
+	Thu, 22 Aug 2024 08:14:50 -0700 (PDT)
 Received: from [10.57.85.214] (unknown [10.57.85.214])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 608E83F58B;
-	Thu, 22 Aug 2024 08:06:18 -0700 (PDT)
-Message-ID: <282a765a-3b42-4175-8d9f-58456d13a37d@arm.com>
-Date: Thu, 22 Aug 2024 16:06:16 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 58C693F58B;
+	Thu, 22 Aug 2024 08:14:20 -0700 (PDT)
+Message-ID: <8c0f787c-35d4-4cb1-84d3-ff3f2e3f003a@arm.com>
+Date: Thu, 22 Aug 2024 16:14:18 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,7 +27,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 18/43] arm64: RME: Handle realm enter/exit
+Subject: Re: [PATCH v4 21/43] arm64: RME: Runtime faulting of memory
 To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
@@ -43,60 +43,54 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
  Alper Gun <alpergun@google.com>
 References: <20240821153844.60084-1-steven.price@arm.com>
- <20240821153844.60084-19-steven.price@arm.com> <yq5a34mx2of7.fsf@kernel.org>
+ <20240821153844.60084-22-steven.price@arm.com> <yq5afrqx2pxr.fsf@kernel.org>
 From: Steven Price <steven.price@arm.com>
 Content-Language: en-GB
-In-Reply-To: <yq5a34mx2of7.fsf@kernel.org>
+In-Reply-To: <yq5afrqx2pxr.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 22/08/2024 05:04, Aneesh Kumar K.V wrote:
+On 22/08/2024 04:32, Aneesh Kumar K.V wrote:
 > Steven Price <steven.price@arm.com> writes:
+> 
+>> At runtime if the realm guest accesses memory which hasn't yet been
+>> mapped then KVM needs to either populate the region or fault the guest.
+>>
+>> For memory in the lower (protected) region of IPA a fresh page is
+>> provided to the RMM which will zero the contents. For memory in the
+>> upper (shared) region of IPA, the memory from the memslot is mapped
+>> into the realm VM non secure.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes since v2:
+>>  * Avoid leaking memory if failing to map it in the realm.
+>>  * Correctly mask RTT based on LPA2 flag (see rtt_get_phys()).
+>>  * Adapt to changes in previous patches.
+>>
 > 
 > ....
 > 
->> +static int rec_exit_ripas_change(struct kvm_vcpu *vcpu)
->> +{
->> +	struct kvm *kvm = vcpu->kvm;
->> +	struct realm *realm = &kvm->arch.realm;
->> +	struct realm_rec *rec = &vcpu->arch.rec;
->> +	unsigned long base = rec->run->exit.ripas_base;
->> +	unsigned long top = rec->run->exit.ripas_top;
->> +	unsigned long ripas = rec->run->exit.ripas_value & 1;
->> +	unsigned long top_ipa;
->> +	int ret = -EINVAL;
+>> -	gfn = ipa >> PAGE_SHIFT;
+>> +	gfn = (ipa & ~gpa_stolen_mask) >> PAGE_SHIFT;
+>>  	memslot = gfn_to_memslot(vcpu->kvm, gfn);
 >> +
->> +	if (realm_is_addr_protected(realm, base) &&
->> +	    realm_is_addr_protected(realm, top - 1)) {
->> +		kvm_mmu_topup_memory_cache(&vcpu->arch.mmu_page_cache,
->> +					   kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu));
->> +		write_lock(&kvm->mmu_lock);
->> +		ret = realm_set_ipa_state(vcpu, base, top, ripas, &top_ipa);
->> +		write_unlock(&kvm->mmu_lock);
+>> +	if (kvm_slot_can_be_private(memslot)) {
+>> +		ret = private_memslot_fault(vcpu, fault_ipa, memslot);
+>> +		if (ret != -EAGAIN)
+>> +			goto out;
 >> +	}
->> +
->> +	WARN(ret && ret != -ENOMEM,
->> +	     "Unable to satisfy SET_IPAS for %#lx - %#lx, ripas: %#lx\n",
->> +	     base, top, ripas);
->> +
->> +	/* Exit to VMM to complete the change */
->> +	kvm_prepare_memory_fault_exit(vcpu, base, top_ipa - base, false, false,
->> +				      ripas == 1);
->> +
->> +	return 0;
->> +}
->> +
+>>
 > 
-> arch/arm64/kvm/rme-exit.c:100:6: warning: variable 'top_ipa' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
->         if (realm_is_addr_protected(realm, base) &&
->             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> arch/arm64/kvm/rme-exit.c:114:44: note: uninitialized use occurs here
->         kvm_prepare_memory_fault_exit(vcpu, base, top_ipa - base, false, false,
->                                                   ^~~~~~~
+> Shouldn't this be s/fault_ipa/ipa ?
 
-I'm not sure why I didn't notice this before, if the condition is false
-then we're hitting the WARN (i.e. this shouldn't happen), but I should
-fix that up to handle the situation better.
+Well they should both be the same unless we're in some scary parallel
+universe where we have nested virtualisation *and* realms at the same
+time (shudder!). But yes "ipa" would be more consistent so I'll change it!
 
 Steve
+
+> 	ret = private_memslot_fault(vcpu, ipa, memslot);
+> 
+> -aneesh
 
