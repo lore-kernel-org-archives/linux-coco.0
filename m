@@ -1,106 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEEB1B970;
-	Thu, 22 Aug 2024 04:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9103914D42C
+	for <linux-coco@lists.linux.dev>; Thu, 22 Aug 2024 07:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724299495; cv=none; b=BwLqTyAWsG8EUBY8w0IYdicozm7vLmeb/q0uXXlURIL8y5Lkqq8tajl66uPHUObmfZBWJS+2XOENaMV44o6inWeX1HRqutarMgklnXzwi4zv4cxaYIV2Y5+Mrhi9JyWPF4SaG5yo0AnVmz+G8NxBB0jcy7DqhAKFv2UM4XMYhQM=
+	t=1724311051; cv=none; b=fbu5lseMCpVG4SLZkTBJS/XoMUM2sBH2/Nz/8B9W8SsRKyivJAtHvc4wMeRdJi1sl6quLv1XcAJKX/SfivYt0jLiK3hiH5ZDWumDIkvF3y7Mu1ViYoaQcenQIqJ6aa+rKO5cUnDYib0xS0a0QcfMwUr0mJSQzdZPtPaaFuKfG9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724299495; c=relaxed/simple;
-	bh=tbe4FZUkzz+iVMQdUiF9BG9MZYXNRR57xKnKHiajJZc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RWpESdh3hlouej7aiE7YGkqpWD7ygmIUqy+sS+/7yEyNiWo53SvJs+jPmzxz+ySLhikibAo1Oa35C6EJlPEke9RxcS4HO0LbNZvNje8udyNP7On4tY9+ilMtNCdakO375zcxu/GcXc8VMDhxL//c8Zyz010yi7lbfkwSIow2rZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFj5BQt9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724311051; c=relaxed/simple;
+	bh=ww0uDpEVuacHer6fVn8p1enrb1h0DCf/XeLTZ5kfw/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gHcLScHWG8rnOR5y9soRf73t1n9rS+40WAxH8ah7jmcxwnf0FGXOq5AC16NffFa32xPunaYg0UBF4qVOR1QpFMeV6AVb0VwDGRfDeLVDJpRXtXSUzBl1P8aDODDs8VGVcj5Gj/QcLj0JhAEkD3Lbx97TrX9j2z9jtRKlqQuzfo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RGMeVz68; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFj5BQt9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72061C4AF09;
-	Thu, 22 Aug 2024 04:04:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724299495;
-	bh=tbe4FZUkzz+iVMQdUiF9BG9MZYXNRR57xKnKHiajJZc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=JFj5BQt989BcieRka9JzUyKpbJpUE0ShZUw/SCgbsDVG7uHs3xVHiYDmFXJm5PNz7
-	 VhpYE3iW91v6e88TQuGd+3ftgW2HnMcU2GKmTfT/aKjGkg0Q+ry4tRQ8W96s0a/9XU
-	 KOpvr2PyR/0YUnJEIQ9MeeIJ46O+IDZil9a6/PWmL5BV5anmL5ZbQLFCHYPhdGOqIf
-	 rB60oYFxM69i+IUGKwVXS4BEnSaRnk98pDx7HFyRuOwM7kXyz97CkLOMvyqbyWvria
-	 WR/cvPhETy/rvHHTBBEBa7RrEn9okX+M8/jxpqD8JLlcTxTK6a38nLqDivtIawDoPO
-	 W4tkDpgsMWNdw==
-X-Mailer: emacs 31.0.50 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>
-Subject: Re: [PATCH v4 18/43] arm64: RME: Handle realm enter/exit
-In-Reply-To: <20240821153844.60084-19-steven.price@arm.com>
-References: <20240821153844.60084-1-steven.price@arm.com>
- <20240821153844.60084-19-steven.price@arm.com>
-Date: Thu, 22 Aug 2024 09:34:44 +0530
-Message-ID: <yq5a34mx2of7.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RGMeVz68"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724311050; x=1755847050;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ww0uDpEVuacHer6fVn8p1enrb1h0DCf/XeLTZ5kfw/0=;
+  b=RGMeVz682miB5DHtLtIkgnobC72Y0TXIKzVfFSmvz0L2kh5Zz2ZysVG6
+   QA8UiF6DJT/S1ULdtpyNxgHaDZ65wIUhT1wPtsyuSn05myeioNQDTQUf9
+   PIn6H3J5LkGKkPBZqR7OdCxyFNGUr2LGSua5OuDwQtNYpyPUBv2gBzrmy
+   N+EgttmptAagauPFa1Aausjn7L+tR2T77SMvsdBU53nBSELTPsfGygbch
+   bRaGWQRWrCHH6EV8zmDzfhsfgcCpeN5Z7FY+PTePk/q4f/0RCRGgV5/9z
+   Y8XGlpAVfIkIlnUEuIXH+pCsINzppnespP65uzSPpw5jUCy7KQnYwmgMj
+   A==;
+X-CSE-ConnectionGUID: 9WDV6MylS3iEPAtnBPN03Q==
+X-CSE-MsgGUID: DD1asqDnRaq/0ZQnQnVKKA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="22860937"
+X-IronPort-AV: E=Sophos;i="6.10,166,1719903600"; 
+   d="scan'208";a="22860937"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2024 00:17:15 -0700
+X-CSE-ConnectionGUID: VJHzCY3SQRmU2H0XNum8Iw==
+X-CSE-MsgGUID: awJnlqw2S/2ypnGxaQCtjA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,166,1719903600"; 
+   d="scan'208";a="66293044"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa004.jf.intel.com with ESMTP; 22 Aug 2024 00:17:10 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 26EF043E; Thu, 22 Aug 2024 10:16:58 +0300 (EEST)
+Date: Thu, 22 Aug 2024 10:16:58 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Alexey Gladkov <legion@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Yuan Yao <yuan.yao@intel.com>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>, 
+	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>, cho@microsoft.com, 
+	decui@microsoft.com, John.Starks@microsoft.com
+Subject: Re: [PATCH v4 2/6] x86/tdx: Add validation of userspace MMIO
+ instructions
+Message-ID: <hyszoppvgphu5ogk6imqjvgwz4et7wlptanxizx4djayuugacy@2o32v5iih235>
+References: <cover.1723807851.git.legion@kernel.org>
+ <cover.1724248680.git.legion@kernel.org>
+ <a71d13bcdd1f5980195a37abcc8d891cfd09dca2.1724248680.git.legion@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a71d13bcdd1f5980195a37abcc8d891cfd09dca2.1724248680.git.legion@kernel.org>
 
-Steven Price <steven.price@arm.com> writes:
+On Wed, Aug 21, 2024 at 04:24:34PM +0200, Alexey Gladkov wrote:
+> From: "Alexey Gladkov (Intel)" <legion@kernel.org>
+> 
+> Instructions from kernel space are considered trusted. If the MMIO
+> instruction is from userspace it must be checked.
+> 
+> For userspace instructions, it is need to check that the INSN has not
+> changed at the time of #VE and before the execution of the instruction.
+> 
+> Once the userspace instruction parsed is enforced that the address
+> points to mapped memory of current process and that address does not
+> point to private memory.
+> 
+> After parsing the userspace instruction, it is necessary to ensure that:
+> 
+> 1. the operation direction (read/write) corresponds to #VE info;
+> 2. the address still points to mapped memory of current process;
+> 3. the address does not point to private memory.
+> 
+> Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
 
-....
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-> +static int rec_exit_ripas_change(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	struct realm *realm = &kvm->arch.realm;
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	unsigned long base = rec->run->exit.ripas_base;
-> +	unsigned long top = rec->run->exit.ripas_top;
-> +	unsigned long ripas = rec->run->exit.ripas_value & 1;
-> +	unsigned long top_ipa;
-> +	int ret = -EINVAL;
-> +
-> +	if (realm_is_addr_protected(realm, base) &&
-> +	    realm_is_addr_protected(realm, top - 1)) {
-> +		kvm_mmu_topup_memory_cache(&vcpu->arch.mmu_page_cache,
-> +					   kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu));
-> +		write_lock(&kvm->mmu_lock);
-> +		ret = realm_set_ipa_state(vcpu, base, top, ripas, &top_ipa);
-> +		write_unlock(&kvm->mmu_lock);
-> +	}
-> +
-> +	WARN(ret && ret != -ENOMEM,
-> +	     "Unable to satisfy SET_IPAS for %#lx - %#lx, ripas: %#lx\n",
-> +	     base, top, ripas);
-> +
-> +	/* Exit to VMM to complete the change */
-> +	kvm_prepare_memory_fault_exit(vcpu, base, top_ipa - base, false, false,
-> +				      ripas == 1);
-> +
-> +	return 0;
-> +}
-> +
-
-arch/arm64/kvm/rme-exit.c:100:6: warning: variable 'top_ipa' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-        if (realm_is_addr_protected(realm, base) &&
-            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-arch/arm64/kvm/rme-exit.c:114:44: note: uninitialized use occurs here
-        kvm_prepare_memory_fault_exit(vcpu, base, top_ipa - base, false, false,
-                                                  ^~~~~~~
-
--aneesh
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
