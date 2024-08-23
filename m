@@ -1,165 +1,144 @@
-Received: from bee.tesarici.cz (bee.tesarici.cz [37.205.15.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FE113F42A;
-	Fri, 23 Aug 2024 08:26:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.15.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FA115FD13
+	for <linux-coco@lists.linux.dev>; Fri, 23 Aug 2024 13:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724401606; cv=none; b=ExdnjF/ctOb3YWfHbstWCISuF2/dpY2shUVSlDbzkijY945txTfOJVtek+QygrpAYhrxDMLRm9V12OLCfMVVCrUi/QWJ7UutaK7CBZIDjk3Ia4oQ4JPqbN8VYxUu1fxreTaQmoOV6pj6sI+swYBMT26cupWlCQDPE9qKboBvyXU=
+	t=1724418814; cv=none; b=gkDVs5P5X6KVQk9pphBgACbte87PmNpK7N0456gFCKS4oD55zOeIET//WP9rijcS1dSGh6Oo4JOnvHJD9lqO9S/kCbjt7zsy91tmSYyoF6NUHW+CKu5muUn5FhocyQJ3zI2nRMwSoJi6h/0d94gfJCoV9HD6AlL0wawQI0q7s9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724401606; c=relaxed/simple;
-	bh=7T7/wu2fTf7TBVQfzGOrguX+PSXn0cZDoDAeHENBD68=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eyGYWYYAhb5mwzviBXHklz44Ii9C7to3DY1GtmiskYoQxDyE1FE/egnN5eB878SGbrx/KIF9X4xSSrpIVv3o4MgJL8iYWP2KR1ynpTCk+xcpubqVKDFd2bbN70UCl0OZ4XHLxummS03YbStQr5zXYNG3OVDFmC3quGQ2iJ0DRR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz; spf=pass smtp.mailfrom=tesarici.cz; dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b=XC9qMPOO; arc=none smtp.client-ip=37.205.15.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tesarici.cz
+	s=arc-20240116; t=1724418814; c=relaxed/simple;
+	bh=eUPl3EghpfIK03KxkCDx4/r/ZIVGhtwPMOIIp/Sbkqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H9CVRQK4pc/0ECF+WV194rT6Bd5gqTUU7Xv19kUXgey2kFjIZSW39OZYpW9o+6/sZFiWoDk6dkrXERnSv0yS6Xj7q/1xBBDPwoiF4eSfvNu2qkfEIpPUzvGytlQ+t2kUxL8+W4ieUBAzRcr6zvpTxWZmBk5zoT6vycBGA6wrNQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y40UTMUT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b="XC9qMPOO"
-Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by bee.tesarici.cz (Postfix) with ESMTPSA id DE4CB1EFCD7;
-	Fri, 23 Aug 2024 10:26:42 +0200 (CEST)
-Authentication-Results: mail.tesarici.cz; dmarc=fail (p=quarantine dis=none) header.from=tesarici.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tesarici.cz; s=mail;
-	t=1724401603; bh=Cb6PqhKpP7ar8ly8cR261dRzbAdFkd8uMnNKWb2a72o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XC9qMPOORHKhGxtuEqYZWhvcUQLSNDTTWFjMy7+rqMjBR9aYZGjGlBG+CmW7OwuBd
-	 79L2I6aLuc6yr04anJqToCOvN8WGrTn4Qj3hDxFjqcIPA19NIw9Qv5BX9fA94+0GLp
-	 l0KLIqCBvO5HvmmGNdpFXIx5W/2SAWYzfdlkVsvrgKK7684mvl3vazypXIiu4q3eT6
-	 ly51l/+pDVIJAnQLo31UocvED2gBi2BKjLawYJsX20XKZjre3ZP5ZDr36H+cLhz3Cq
-	 FS9QfPScXdp/I8kJkYGIub0pHKSC4fz0ZnE8ceUv/MIW5c8GKhp+GCt7HxqKo4RFyf
-	 E3DQF8XeboGVQ==
-Date: Fri, 23 Aug 2024 10:26:42 +0200
-From: Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-To: mhkelley58@gmail.com
-Cc: mhklinux@outlook.com, kbusch@kernel.org, axboe@kernel.dk,
- sagi@grimberg.me, James.Bottomley@HansenPartnership.com,
- martin.petersen@oracle.com, kys@microsoft.com, haiyangz@microsoft.com,
- wei.liu@kernel.org, decui@microsoft.com, robin.murphy@arm.com, hch@lst.de,
- m.szyprowski@samsung.com, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-nvme@lists.infradead.org,
- linux-scsi@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-coco@lists.linux.dev
-Subject: Re: [RFC 7/7] nvme: Enable swiotlb throttling for NVMe PCI devices
-Message-ID: <20240823102642.3f7f893a@meshulam.tesarici.cz>
-In-Reply-To: <20240822183718.1234-8-mhklinux@outlook.com>
-References: <20240822183718.1234-1-mhklinux@outlook.com>
-	<20240822183718.1234-8-mhklinux@outlook.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y40UTMUT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04032C32786;
+	Fri, 23 Aug 2024 13:13:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724418813;
+	bh=eUPl3EghpfIK03KxkCDx4/r/ZIVGhtwPMOIIp/Sbkqw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y40UTMUTkIOoN4CjMWJUvviYXOM6aGa+FtIrJESYEAb7z/mjh0O1ytWPQRd/+EOXV
+	 xDFFJjx9820RHBjIWNs8An26j4RK7s/AKRT504oCWEDx69WV4mgMUyQMp2XhxWQn8D
+	 BZ4upD3hiDvG/tsXjHb5frihJWnLCnXWK2HRh93ZhkfpSfWVtDKyRRZ3Ln4zDm8gyV
+	 hMxD/Y1P3+0hraT1hxD3X/pa7fa4+ecA3kxDDt56u+prfwTXG/f0xXXZ7N2kbBLde0
+	 C4v6YpHsg3EaaVfcD3TbdVlFz98PmPR8AC6BOgeWYBic2WHXjlPrpohkqR2C5INjB6
+	 Mtylk4XFFnaZA==
+Date: Fri, 23 Aug 2024 14:13:28 +0100
+From: Will Deacon <will@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>, linux-coco@lists.linux.dev
+Subject: Re: [PATCH 1/6] firmware/smccc: Call arch-specific hook on
+ discovering KVM services
+Message-ID: <20240823131327.GB32156@willie-the-truck>
+References: <20240730151113.1497-1-will@kernel.org>
+ <20240730151113.1497-2-will@kernel.org>
+ <yq5ar0b9tyib.fsf@kernel.org>
+ <20240731155045.GA3296@willie-the-truck>
+ <6812b889-7002-4615-854d-07e386cba416@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6812b889-7002-4615-854d-07e386cba416@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Thu, 22 Aug 2024 11:37:18 -0700
-mhkelley58@gmail.com wrote:
-
-> From: Michael Kelley <mhklinux@outlook.com>
+On Fri, Aug 02, 2024 at 04:30:30PM +0100, Suzuki K Poulose wrote:
+> On 31/07/2024 16:50, Will Deacon wrote:
+> > On Wed, Jul 31, 2024 at 08:11:16PM +0530, Aneesh Kumar K.V wrote:
+> > > Will Deacon <will@kernel.org> writes:
+> > > 
+> > > > From: Marc Zyngier <maz@kernel.org>
+> > > > 
+> > > > arm64 will soon require its own callback to initialise services
+> > > > that are only available on this architecture. Introduce a hook
+> > > > that can be overloaded by the architecture.
+> > > > 
+> > > > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > > > Signed-off-by: Will Deacon <will@kernel.org>
+> > > > ---
+> > > >   arch/arm/include/asm/hypervisor.h   | 2 ++
+> > > >   arch/arm64/include/asm/hypervisor.h | 4 ++++
+> > > >   drivers/firmware/smccc/kvm_guest.c  | 2 ++
+> > > >   3 files changed, 8 insertions(+)
+> > > > 
+> > > > diff --git a/arch/arm/include/asm/hypervisor.h b/arch/arm/include/asm/hypervisor.h
+> > > > index bd61502b9715..8a648e506540 100644
+> > > > --- a/arch/arm/include/asm/hypervisor.h
+> > > > +++ b/arch/arm/include/asm/hypervisor.h
+> > > > @@ -7,4 +7,6 @@
+> > > >   void kvm_init_hyp_services(void);
+> > > >   bool kvm_arm_hyp_service_available(u32 func_id);
+> > > > +static inline void kvm_arch_init_hyp_services(void) { };
+> > > > +
+> > > >   #endif
+> > > > diff --git a/arch/arm64/include/asm/hypervisor.h b/arch/arm64/include/asm/hypervisor.h
+> > > > index 0ae427f352c8..8cab2ab535b7 100644
+> > > > --- a/arch/arm64/include/asm/hypervisor.h
+> > > > +++ b/arch/arm64/include/asm/hypervisor.h
+> > > > @@ -7,4 +7,8 @@
+> > > >   void kvm_init_hyp_services(void);
+> > > >   bool kvm_arm_hyp_service_available(u32 func_id);
+> > > > +static inline void kvm_arch_init_hyp_services(void)
+> > > > +{
+> > > > +};
+> > > > +
+> > > >   #endif
+> > > > diff --git a/drivers/firmware/smccc/kvm_guest.c b/drivers/firmware/smccc/kvm_guest.c
+> > > > index 89a68e7eeaa6..f3319be20b36 100644
+> > > > --- a/drivers/firmware/smccc/kvm_guest.c
+> > > > +++ b/drivers/firmware/smccc/kvm_guest.c
+> > > > @@ -39,6 +39,8 @@ void __init kvm_init_hyp_services(void)
+> > > >   	pr_info("hypervisor services detected (0x%08lx 0x%08lx 0x%08lx 0x%08lx)\n",
+> > > >   		 res.a3, res.a2, res.a1, res.a0);
+> > > > +
+> > > > +	kvm_arch_init_hyp_services();
+> > > >   }
+> > > > 
+> > > 
+> > > That is a bit late to detect RMM? One of the requirements is to
+> > > figure out the pgprot_t flags for early_ioremap so that "earlycon" will
+> > > work (by mapping the address as shared alias). To do that we need to
+> > > make an RSI call to detect PROT_NS_SHARED mask as below.
+> > > 
+> > > 	if (rsi_get_realm_config(&config))
+> > > 		return;
+> > > 	prot_ns_shared = BIT(config.ipa_bits - 1);
+> > 
+> > Why can't the earlycon MMIO address just have that high bit set?
 > 
-> In a CoCo VM, all DMA-based I/O must use swiotlb bounce buffers
-> because DMA cannot be done to private (encrypted) portions of VM
-> memory. The bounce buffer memory is marked shared (decrypted) at
-> boot time, so I/O is done to/from the bounce buffer memory and then
-> copied by the CPU to/from the final target memory (i.e, "bounced").
-> Storage devices can be large consumers of bounce buffer memory because
-> it is possible to have large numbers of I/Os in flight across multiple
-> devices. Bounce buffer memory must be pre-allocated at boot time, and
-> it is difficult to know how much memory to allocate to handle peak
-> storage I/O loads. Consequently, bounce buffer memory is typically
-> over-provisioned, which wastes memory, and may still not avoid a peak
-> that exhausts bounce buffer memory and cause storage I/O errors.
-> 
-> For Coco VMs running with NVMe PCI devices, update the driver to
-> permit bounce buffer throttling. Gate the throttling behavior
-> on a DMA layer check indicating that throttling is useful, so that
-> no change occurs in a non-CoCo VM. If throttling is useful, enable
-> the BLK_MQ_F_BLOCKING flag, and pass the DMA_ATTR_MAY_BLOCK attribute
-> into dma_map_bvec() and dma_map_sgtable() calls. With these options in
-> place, DMA map requests are pended when necessary to reduce the
-> likelihood of usage peaks caused by the NVMe driver that could exhaust
-> bounce buffer memory and generate errors.
-> 
-> Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+> Do you mean the "earlycon=<MMIO-address-to-use>" ? That could work,
+> except that :
+> 1. It breaks the Realm's view of the {I}"PA" space
 
-LGTM.
+Breaks in what sense? It won't work?
 
-Reviewed-by: Petr Tesarik <ptesarik@suse.com>
+> 2. If the address is missed, it is fatal for the Realm.
 
-Petr T
+If earlycon= has broken/missing addresses, it's going to be fatal for
+whoever is consuming it anyway, no?
 
-> ---
->  drivers/nvme/host/pci.c | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-> index 6cd9395ba9ec..2c39943a87f8 100644
-> --- a/drivers/nvme/host/pci.c
-> +++ b/drivers/nvme/host/pci.c
-> @@ -156,6 +156,7 @@ struct nvme_dev {
->  	dma_addr_t host_mem_descs_dma;
->  	struct nvme_host_mem_buf_desc *host_mem_descs;
->  	void **host_mem_desc_bufs;
-> +	unsigned long dma_attrs;
->  	unsigned int nr_allocated_queues;
->  	unsigned int nr_write_queues;
->  	unsigned int nr_poll_queues;
-> @@ -735,7 +736,8 @@ static blk_status_t nvme_setup_prp_simple(struct nvme_dev *dev,
->  	unsigned int offset = bv->bv_offset & (NVME_CTRL_PAGE_SIZE - 1);
->  	unsigned int first_prp_len = NVME_CTRL_PAGE_SIZE - offset;
->  
-> -	iod->first_dma = dma_map_bvec(dev->dev, bv, rq_dma_dir(req), 0);
-> +	iod->first_dma = dma_map_bvec(dev->dev, bv, rq_dma_dir(req),
-> +					dev->dma_attrs);
->  	if (dma_mapping_error(dev->dev, iod->first_dma))
->  		return BLK_STS_RESOURCE;
->  	iod->dma_len = bv->bv_len;
-> @@ -754,7 +756,8 @@ static blk_status_t nvme_setup_sgl_simple(struct nvme_dev *dev,
->  {
->  	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
->  
-> -	iod->first_dma = dma_map_bvec(dev->dev, bv, rq_dma_dir(req), 0);
-> +	iod->first_dma = dma_map_bvec(dev->dev, bv, rq_dma_dir(req),
-> +					dev->dma_attrs);
->  	if (dma_mapping_error(dev->dev, iod->first_dma))
->  		return BLK_STS_RESOURCE;
->  	iod->dma_len = bv->bv_len;
-> @@ -800,7 +803,7 @@ static blk_status_t nvme_map_data(struct nvme_dev *dev, struct request *req,
->  		goto out_free_sg;
->  
->  	rc = dma_map_sgtable(dev->dev, &iod->sgt, rq_dma_dir(req),
-> -			     DMA_ATTR_NO_WARN);
-> +			     dev->dma_attrs | DMA_ATTR_NO_WARN);
->  	if (rc) {
->  		if (rc == -EREMOTEIO)
->  			ret = BLK_STS_TARGET;
-> @@ -828,7 +831,8 @@ static blk_status_t nvme_map_metadata(struct nvme_dev *dev, struct request *req,
->  	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
->  	struct bio_vec bv = rq_integrity_vec(req);
->  
-> -	iod->meta_dma = dma_map_bvec(dev->dev, &bv, rq_dma_dir(req), 0);
-> +	iod->meta_dma = dma_map_bvec(dev->dev, &bv, rq_dma_dir(req),
-> +					dev->dma_attrs);
->  	if (dma_mapping_error(dev->dev, iod->meta_dma))
->  		return BLK_STS_IOERR;
->  	cmnd->rw.metadata = cpu_to_le64(iod->meta_dma);
-> @@ -3040,6 +3044,12 @@ static struct nvme_dev *nvme_pci_alloc_dev(struct pci_dev *pdev,
->  	 * a single integrity segment for the separate metadata pointer.
->  	 */
->  	dev->ctrl.max_integrity_segments = 1;
-> +
-> +	if (dma_recommend_may_block(dev->dev)) {
-> +		dev->ctrl.blocking = true;
-> +		dev->dma_attrs = DMA_ATTR_MAY_BLOCK;
-> +	}
-> +
->  	return dev;
->  
->  out_put_device:
+> 3. All higher level tools that specify the command line parameter now
+>    need to fixup the "MMIO" address, based on the "ipa_bits" chosen by
+>    the VMM (which could vary with the VMMs and Hyp/System)
 
+Should be fine for earlycon, though?
+
+If not, then perhaps the RSI should include calls for putchar() so that
+earlycon can be implemented using a service rather than trying to use
+MMIO with a bunch of awkward caveats.
+
+Will
