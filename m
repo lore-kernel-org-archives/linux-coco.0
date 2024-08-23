@@ -1,156 +1,562 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azolkn19011037.outbound.protection.outlook.com [52.103.12.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401631BDD0;
-	Fri, 23 Aug 2024 02:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.12.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724379645; cv=fail; b=onL1F3YBEc7mOAZcTxNvC+GYNjezwoZ4Bk+gEeIv88//F4vZxN31oxhrrHF4OcA+AFRBbHipXmPF39DsCQjitOlJqbWS4KFT3/FKp9MSm7cK0yLvAzzQYt696q/uGG3ladAGqh5rEkVYo2Rep0tHah6dnR7VzzaqMwsXG6DDH+s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724379645; c=relaxed/simple;
-	bh=26RYsyhIoBaphAOU+Frkjm1L9z5LlQ9h4oEzn9gwu2A=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RbYCVc27XLmDPtqg9hZ/RvwiF11Z5Yl6q5d2LC2XvJNtFRoYtYnblpBJZwVoGslTF8aNaz30wgcka1RNbJGS9vYkVvh04ht6r1Iyxe9U3xGR4HzkgbZp8c0ZrXT3HBKdvLCEc5jtZ4nJzQc6gnUz6egToD6da0gasSIadH5zkLg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=EcJpKIvm; arc=fail smtp.client-ip=52.103.12.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3137A259C;
+	Fri, 23 Aug 2024 04:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724387450; cv=none; b=uSYrDw8mx3Vpih0LrdihbtolcoenkIjnYa0VgM5CZFBMSyS/qRYkcaE5uNKIgTacqKCJX/4nrTHTpPeROtqZWYtltxu++3aGL+mTx7C2U8UZCgaRu1aYJCBBUSiEVSskGtwodPCpPk/ohbGMkWnaUd4VSWXuLOMIaZOfCDZptrc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724387450; c=relaxed/simple;
+	bh=nq+M6koVXgKtdGqZpO/26KqtCn0/nlKteLdQ3/OHu2k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=rBo9RcWtOU1Etr5C1SSDWKeYuEA5Jku9y0lfHH6WCXO8S8wYZ71LkJWJBYk2W8ZL5hSc/20bbqZkX/twmoNj+/pYZPixWGQwqOJ+vtwA0sQiq2MqpX36jJu4FCzeV/747F3nHowEjna+sBHYcK1MtAo0ySdgMdbbq+r3Pnkrhcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1Rs73fd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="EcJpKIvm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xfo220OtxDJpUG/0ss7bZxmeAYE3Z3kz46zKLcCNq0SWCied+JCxuOLxoEeefVOKt62CDFEQjOa/+Oq1DoNETWpPFqlu/0sewWKJv5fHEXZJGSQRwYhG7VjdsNbTVpOr7tJrS0Ra6tp1UflMn9euSHj+Ady68mmdcDuZHs+bZISbYULukym/4QKCZ7fJpmGsW+y6UbG1Ga/Du1P0BqE9M2J6gz1WZ2pZvc4wlhq/WMd+oXjI3dreG7OnX0PTrocRXkroELOD3F+K8uGQC/SRvmEvCKVegh9yaGPSY5ZPDOoRsWaehxSvBGRIPRg2RwyPJV3T/1XUdK+MI3clJxjx8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=26RYsyhIoBaphAOU+Frkjm1L9z5LlQ9h4oEzn9gwu2A=;
- b=vaFPxbhNevvQ2ZBW6Pva6606Hy+SK5I+wRWnEXXzm2xG3UnYB2PuY1A1gDdlb8MsMqBD0nQL+mTqvvokyq7DFDf3zRmzZ3OmovdCMQv6V9pPz7ZqLAbOuPKChdshnI4d+0daLBJlvhxBSGVg5hUeF6jBpf5nin95G+wfqVzMuwtfMFu9bhXJn+O1qp9gFT+CweMb6bv4tsECQrpvEIAys4dq78I2InIE6r20ZdSfNfmJCbyyalEeuvAuYbQJRr8OMFk6WbkZcdW1a9iYj+A4jf44UNjGKv8tNf6jlw7qxIQIqF6t48CnfCYJtYK6/ekXwH9Hep/qhEmxDq+BDuglTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=26RYsyhIoBaphAOU+Frkjm1L9z5LlQ9h4oEzn9gwu2A=;
- b=EcJpKIvmTVRHcO6IDUzC1dNPHRQNGh+v4NYJO0BQlFIMSm9p979MFv5zFjtlS/WegNFjKSPa4XlhWGj4LhVCE9LUFKM5EvR14JU4ZFLzRYWSFr2ggyA0EUNrN/gCyZVhPn4q3/ttDS44/aqZbzVfs3iEWRsjs7qn0RqvtR7y/nSP0nNDex86rlsuk5R55uPdLvxWwxk/feh6z81zi2sgjzT1FdPCrzmHwWtphxFQEFVJABSbji9yJhVE1zCXfh+G1ZiV52YSaAQW74WHCJGorRKt77tlUb70GXCBvuUirasFp5ez4SdChyrWLTeTlQizzBKrhJT44uxy61Y3CLMDDw==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by DM4PR02MB9030.namprd02.prod.outlook.com (2603:10b6:8:b8::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.19; Fri, 23 Aug
- 2024 02:20:41 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df%6]) with mapi id 15.20.7875.018; Fri, 23 Aug 2024
- 02:20:41 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Bart Van Assche <bvanassche@acm.org>, "kbusch@kernel.org"
-	<kbusch@kernel.org>, "axboe@kernel.dk" <axboe@kernel.dk>, "sagi@grimberg.me"
-	<sagi@grimberg.me>, "James.Bottomley@HansenPartnership.com"
-	<James.Bottomley@HansenPartnership.com>, "martin.petersen@oracle.com"
-	<martin.petersen@oracle.com>, "kys@microsoft.com" <kys@microsoft.com>,
-	"haiyangz@microsoft.com" <haiyangz@microsoft.com>, "wei.liu@kernel.org"
-	<wei.liu@kernel.org>, "decui@microsoft.com" <decui@microsoft.com>,
-	"robin.murphy@arm.com" <robin.murphy@arm.com>, "hch@lst.de" <hch@lst.de>,
-	"m.szyprowski@samsung.com" <m.szyprowski@samsung.com>, "petr@tesarici.cz"
-	<petr@tesarici.cz>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: RE: [RFC 0/7] Introduce swiotlb throttling
-Thread-Topic: [RFC 0/7] Introduce swiotlb throttling
-Thread-Index: AQHa9MJuV8zHlUlbFEOu4P5Y/AqjALIzqaeAgABtSvA=
-Date: Fri, 23 Aug 2024 02:20:41 +0000
-Message-ID:
- <SN6PR02MB41577F000FD7A5EC70CF54D0D4882@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20240822183718.1234-1-mhklinux@outlook.com>
- <f8bb65ed-cdf2-4d23-b794-765ce0b48a4b@acm.org>
-In-Reply-To: <f8bb65ed-cdf2-4d23-b794-765ce0b48a4b@acm.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-tmn: [wJ6hfREF22uRzLSej8jy8OZHs16awmvl]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|DM4PR02MB9030:EE_
-x-ms-office365-filtering-correlation-id: 2eee0415-ba7d-43c0-cb05-08dcc31a2f82
-x-microsoft-antispam:
- BCL:0;ARA:14566002|8060799006|461199028|15080799003|19110799003|102099032|440099028|3412199025;
-x-microsoft-antispam-message-info:
- 4Vy+RemmgDSFBlVjFgAiz2CsPQtLgR0eiUivnXzEhtohcX0v8OlqBVeh1WQRqYN9pVItFFH3LkfFokvlH8C0Am9Uv51cb1k6wCYpDp4qHJQegudBC573rlfE0kcNyZMNQtkmGrotaHA8B3pTRfZA8yqVxjIuuvJxRNxrQpQ+vKC9ySvS3ILi66TkkYjwxs6QaawA1upsBwtaPSqss/xfnp8fsUSDW0cL/C7HF+mmCYEOhOY51lUQW48Inuj0gv/znMaD0U7ZkzI8QYr9AVHuslwKAZ2mmHB0o6TnJKUQ5KzOsF2OE+JiSZ2P7+5VJdRFeVOAJZLpFuWaQiYAoBYb56iORB5KonmcUGdPR5Xiol2QdFtAt3mntkn5ZK3QDvNaSRJvdTrxAUJqeWsPM/YA44eKVDhdwnVHDmZ49klOXcCMrj+L40l4/H0bVLkFrR/mMprWw5Y17aLA1yZpjNIpRzW31exahfViSgYorb2GZjYF8xozBWl19iR2QXIx/a0vNI9YU9OeKsJmfRzbB4wBl7fLliwYMOfXPgmGxThFHOenVKjJ9pEsZszbhUmtAi53ICFImMxzNYS+an3SklRg02sJqurBqehzIq4e66do/5hJ0vSqQFhv4tvNedxv3RftePppM854l7eDq0rh9t9HzBc75pc7ArZL4X/OPte77c70KjLti2cCciQcYVDca5z4
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?cU5GTTNxOEplbkJFaFMvdElrUlZDOXNtWkMraWN2KzhaakJrOXowd0FmQ1lG?=
- =?utf-8?B?akErWGpnL3orcTRDOVJiN0pvT1BObUs3eGhRMVhuK0d1d1ZDZWhXOFg5Ui9a?=
- =?utf-8?B?cm9OcFQyanZFZEpBTFFpYmRsU3IyVVZOMitKaythc1o4bEJFWWtCTFVSMFMz?=
- =?utf-8?B?MTdjTzFnYnJxK1FWZm1xV2FGcC9xUnpIQ0tBR083WXhrbkphZEIvZklRRGlt?=
- =?utf-8?B?M2ZCeXJOZGtsZWhqRlVaU0J1T2tLb05aZ2pRSFpuQ2pPcGxXWC93Q3BlK210?=
- =?utf-8?B?c2xlMVJSeXdCTVlCTEM4Y2oxZzZyVHQ1NlJQSjJxU2w5T3N5eXdxdlpzRFFt?=
- =?utf-8?B?SE1Ja2hMS3ErYW9JQ2VUNGNMeGQyT1l2N2w3TkJTWXoybHk2akhvTmY2eSs5?=
- =?utf-8?B?NUhaR1F2S1cvYmthV2RTUG9jMjFBR1pzdENqNGwyWVh6bUVQYSt0S3p2VVdD?=
- =?utf-8?B?TDg0ZjlCM0FSUUdpMGlOdGlBUG9JTkVBbVVhMGV6VUJiejVFeHkxWW1qdGk2?=
- =?utf-8?B?VWs1UDluekwyR1NZQ2JtL2h3RElOWDY1NXVaZzVYWEZFKzl0U1ZLZlFUVlE2?=
- =?utf-8?B?TGpPQWVZRFMzaXRWcm9lejJObWRUOXJidUpESzBrVzd1VmhuYVpUQWo1S1dw?=
- =?utf-8?B?dENXSVZXRzA4cUZCS0JzL2NHRXlXLzlFOTFiYXl2cVQxWE1GejJVQnRlNlFP?=
- =?utf-8?B?NERlN01PS0w0elprT091SHBWaHNoMUdqQnpDb2p5UkQrWE81Z2hRUGlYK0dR?=
- =?utf-8?B?Ukk3QklCNmljTkxaYmhYWkEwYzM4QnlEaUlwM2VuWkJlYUxBNmdWMGs5L25N?=
- =?utf-8?B?cGt2NVlsWUVTd0tPNmp2UHRvV0NoYWQrcG5uYUV2ZHRlLzZnK0w2cVc1SXNm?=
- =?utf-8?B?NW5Hd0NWVUVBYkdxK1lFcEZmVXNyOGJqanZKN2pxQmtCZm1pblNPZEgvM2gv?=
- =?utf-8?B?NEs1SWQrUVUxMU9oSzkrU2VrV0Vja2h1bGVYQXU4cm1RZ2Y0RHFqaUxFaFIx?=
- =?utf-8?B?UWtkczh1YkVudGVuR05VaFQ0NFY2WDVLVkFPRU5BR0hyVzg5VEU4Q1pOQk0y?=
- =?utf-8?B?dStoM2o3eHlDZTg5NDRLN3NiRk56T3pvRTF3WTZGNE1XRUdocEFuN0o5aHZr?=
- =?utf-8?B?cnI4VjVvL0o1bEFWNW9JTUNJdVR2VTBYSnRRQkNSNjJpMlFuTGFoRys5cDBV?=
- =?utf-8?B?RTlTL0pyQ0I3YUlqcWhkN3ZJS09ZVDhyMG9WamtCalc5bnZLcG81cWxLdjRt?=
- =?utf-8?B?L1dvcmJkTkJIRFdmbENIMkdYVUpsa3JsSnBFS1pxa055TCtvcUxCdzVLL0Vt?=
- =?utf-8?B?V0NPN1p5bGhPQWlZZ0YrVGlhOWdVdmdFRWRxOFUwbm1GSHdWbUo3eStMZ2FV?=
- =?utf-8?B?amZaNURGVll1cU5LQ29BTysxdXJxZmVldmMwM2tYNEhyNzIrenNDUGczSXV3?=
- =?utf-8?B?ODRhaGxTTm9LSkFlQStoc0NUTTlzbWNwQWVwNklLQ3NuSFYyVzBXK2tyWGtk?=
- =?utf-8?B?cW9XL0NTVmR6bVkyQ1JyVExQMDdlTVNhaE1HSXRiYllOR0VDUS9mbFpOTUlC?=
- =?utf-8?B?b3dvTjZTOXRNZldlRmY0b1JFVm9iMGMvK1JYVXZIck92N3JvMUNqWm1jdEZW?=
- =?utf-8?Q?ftPW7vyhDmT+/+LUIWCJuAtFyAn3G3ci+bAIFAuqRHeI=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1Rs73fd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21B9C32786;
+	Fri, 23 Aug 2024 04:30:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724387449;
+	bh=nq+M6koVXgKtdGqZpO/26KqtCn0/nlKteLdQ3/OHu2k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=m1Rs73fd3fFvem1Gacqg1IBqpKU+TJBCkK4on+Hy/p0NKfW0Vuw54XiC2jrR650Dt
+	 EutOjSiTQoSZReEmcAAAPYFYPHA0X7cwjEdTofIoWO/fRkhcafqzsGjDJopWvo7bIc
+	 9S8cHddHdvMajCwjSyg2KjITsQGEdc+PUOxewW7vsLUr6G2PqiW5pORsVXDe60ZEnR
+	 hgCimAt8cqTs1Et1ovC8fA6U80Bc3/7UWTtPV/3fV9oepoAviWVwWnHPtFTqpAfoCe
+	 lyE1tEat0meji36b+bPPmDF+3AwzFogB0tKXQAyj3EO2doE4XA85f3XAl2Kai+ZXoM
+	 436h255HqkJKA==
+X-Mailer: emacs 31.0.50 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>
+Subject: Re: [PATCH v4 21/43] arm64: RME: Runtime faulting of memory
+In-Reply-To: <80e2dc67-9dca-4e90-8a42-21ddea329c53@arm.com>
+References: <20240821153844.60084-1-steven.price@arm.com>
+ <20240821153844.60084-22-steven.price@arm.com>
+ <yq5acym12p3c.fsf@kernel.org>
+ <80e2dc67-9dca-4e90-8a42-21ddea329c53@arm.com>
+Date: Fri, 23 Aug 2024 10:00:37 +0530
+Message-ID: <yq5azfp3274i.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2eee0415-ba7d-43c0-cb05-08dcc31a2f82
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Aug 2024 02:20:41.2995
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR02MB9030
+Content-Type: text/plain
 
-RnJvbTogQmFydCBWYW4gQXNzY2hlIDxidmFuYXNzY2hlQGFjbS5vcmc+IFNlbnQ6IFRodXJzZGF5
-LCBBdWd1c3QgMjIsIDIwMjQgMTI6MjkgUE0NCj4gDQo+IE9uIDgvMjIvMjQgMTE6MzcgQU0sIG1o
-a2VsbGV5NThAZ21haWwuY29tIHdyb3RlOg0KPiA+IExpbnV4IGRldmljZSBkcml2ZXJzIG1heSBt
-YWtlIERNQSBtYXAvdW5tYXAgY2FsbHMgaW4gY29udGV4dHMgdGhhdA0KPiA+IGNhbm5vdCBibG9j
-aywgc3VjaCBhcyBpbiBhbiBpbnRlcnJ1cHQgaGFuZGxlci4NCj4gDQo+IEFsdGhvdWdoIEkgcmVh
-bGx5IGFwcHJlY2lhdGUgeW91ciB3b3JrLCB3aGF0IGFsdGVybmF0aXZlcyBoYXZlIGJlZW4NCj4g
-Y29uc2lkZXJlZD8gSG93IG1hbnkgZHJpdmVycyBwZXJmb3JtIERNQSBtYXBwaW5nIGZyb20gYXRv
-bWljIGNvbnRleHQ/DQo+IFdvdWxkIGl0IGJlIGZlYXNpYmxlIHRvIG1vZGlmeSB0aGVzZSBkcml2
-ZXJzIHN1Y2ggdGhhdCBETUEgbWFwcGluZw0KPiBhbHdheXMgaGFwcGVucyBpbiBhIGNvbnRleHQg
-aW4gd2hpY2ggc2xlZXBpbmcgaXMgYWxsb3dlZD8NCj4gDQoNCkkgaGFkIGFzc3VtZWQgdGhhdCBh
-bGxvd2luZyBETUEgbWFwcGluZyBmcm9tIGludGVycnVwdCBjb250ZXh0IGlzIGENCmxvbmctdGlt
-ZSBmdW5kYW1lbnRhbCByZXF1aXJlbWVudCB0aGF0IGNhbid0IGJlIGNoYW5nZWQuICBJdCdzIGJl
-ZW4NCmFsbG93ZWQgYXQgbGVhc3QgZm9yIHRoZSBwYXN0IDIwIHllYXJzLCBhcyBMaW51cyBhZGRl
-ZCB0aGlzIHN0YXRlbWVudCB0bw0Ka2VybmVsIGRvY3VtZW50YXRpb24gaW4gMjAwNToNCg0KICAg
-VGhlIHN0cmVhbWluZyBETUEgbWFwcGluZyByb3V0aW5lcyBjYW4gYmUgY2FsbGVkIGZyb20gaW50
-ZXJydXB0IGNvbnRleHQuDQoNCkJ1dCBJIGRvbid0IGhhdmUgYW55IGlkZWEgaG93IG1hbnkgZHJp
-dmVycyBhY3R1YWxseSBkbyB0aGF0LiBUaGVyZSBhcmUNCnJvdWdobHkgMTcwMCBjYWxsIHNpdGVz
-IGluIGtlcm5lbCBjb2RlL2RyaXZlcnMgdGhhdCBjYWxsIG9uZSBvZiB0aGUNCmRtYV9tYXBfKigp
-IHZhcmlhbnRzLCBzbyBsb29raW5nIHRocm91Z2ggdGhlbSBhbGwgZG9lc24ndCBzZWVtDQpmZWFz
-aWJsZS4gRnJvbSB0aGUgbGltaXRlZCBzYW1wbGVzIEkgbG9va2VkIGF0LCBibG9jayBkZXZpY2Ug
-ZHJpdmVycw0KdHlwaWNhbGx5IGRvIG5vdCBjYWxsIGRtYV9tYXBfKigpIGZyb20gaW50ZXJydXB0
-IGNvbnRleHQsIHRob3VnaCB0aGV5DQpkbyBjYWxsIGRtYV91bm1hcF8qKCkuIE5ldHdvcmsgZHJp
-dmVycyBfZG9fIGNhbGwgZG1hX21hcF8qKCkNCmZyb20gaW50ZXJydXB0IGNvbnRleHQsIGFuZCB0
-aGF0IHNlZW1zIGxpa2VseSB0byBiZSBhbiBhcnRpZmFjdCBvZiB0aGUNCmdlbmVyaWMgbmV0d29y
-a2luZyBmcmFtZXdvcmsgdGhhdCB0aGUgZHJpdmVycyBmaXQgaW50by4gSSBoYXZlbid0IGxvb2tl
-ZA0KYXQgYW55IG90aGVyIGRldmljZSB0eXBlcy4gDQoNCkNocmlzdG9waCBIZWxsd2lnLCBvciBh
-bnlvbmUgZWxzZSB3aG8ga25vd3MgdGhlIGhpc3RvcnkgYW5kIGN1cnJlbnQNCnJlYWxpdHkgYmV0
-dGVyIHRoYW4gSSBkbywgcGxlYXNlIGp1bXAgaW4uIDotKQ0KDQpNaWNoYWVsDQo=
+Steven Price <steven.price@arm.com> writes:
+
+> On 22/08/2024 04:50, Aneesh Kumar K.V wrote:
+>> Steven Price <steven.price@arm.com> writes:
+>>
+>>> At runtime if the realm guest accesses memory which hasn't yet been
+>>> mapped then KVM needs to either populate the region or fault the guest.
+>>>
+>>> For memory in the lower (protected) region of IPA a fresh page is
+>>> provided to the RMM which will zero the contents. For memory in the
+>>> upper (shared) region of IPA, the memory from the memslot is mapped
+>>> into the realm VM non secure.
+>>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> ---
+>>> Changes since v2:
+>>>  * Avoid leaking memory if failing to map it in the realm.
+>>>  * Correctly mask RTT based on LPA2 flag (see rtt_get_phys()).
+>>>  * Adapt to changes in previous patches.
+>>> ---
+>>>  arch/arm64/include/asm/kvm_emulate.h |  10 ++
+>>>  arch/arm64/include/asm/kvm_rme.h     |  10 ++
+>>>  arch/arm64/kvm/mmu.c                 | 120 +++++++++++++++-
+>>>  arch/arm64/kvm/rme.c                 | 205 +++++++++++++++++++++++++--
+>>>  4 files changed, 325 insertions(+), 20 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+>>> index 7430c77574e3..0b50572d3719 100644
+>>> --- a/arch/arm64/include/asm/kvm_emulate.h
+>>> +++ b/arch/arm64/include/asm/kvm_emulate.h
+>>> @@ -710,6 +710,16 @@ static inline bool kvm_realm_is_created(struct kvm *kvm)
+>>>  	return kvm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
+>>>  }
+>>>
+>>> +static inline gpa_t kvm_gpa_stolen_bits(struct kvm *kvm)
+>>> +{
+>>> +	if (kvm_is_realm(kvm)) {
+>>> +		struct realm *realm = &kvm->arch.realm;
+>>> +
+>>> +		return BIT(realm->ia_bits - 1);
+>>> +	}
+>>> +	return 0;
+>>> +}
+>>> +
+>>>  static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
+>>>  {
+>>>  	if (static_branch_unlikely(&kvm_rme_is_available))
+>>> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
+>>> index 0e44b20cfa48..c50854f44674 100644
+>>> --- a/arch/arm64/include/asm/kvm_rme.h
+>>> +++ b/arch/arm64/include/asm/kvm_rme.h
+>>> @@ -103,6 +103,16 @@ void kvm_realm_unmap_range(struct kvm *kvm,
+>>>  			   unsigned long ipa,
+>>>  			   u64 size,
+>>>  			   bool unmap_private);
+>>> +int realm_map_protected(struct realm *realm,
+>>> +			unsigned long base_ipa,
+>>> +			struct page *dst_page,
+>>> +			unsigned long map_size,
+>>> +			struct kvm_mmu_memory_cache *memcache);
+>>> +int realm_map_non_secure(struct realm *realm,
+>>> +			 unsigned long ipa,
+>>> +			 struct page *page,
+>>> +			 unsigned long map_size,
+>>> +			 struct kvm_mmu_memory_cache *memcache);
+>>>  int realm_set_ipa_state(struct kvm_vcpu *vcpu,
+>>>  			unsigned long addr, unsigned long end,
+>>>  			unsigned long ripas,
+>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>> index 620d26810019..eb8b8d013f3e 100644
+>>> --- a/arch/arm64/kvm/mmu.c
+>>> +++ b/arch/arm64/kvm/mmu.c
+>>> @@ -325,8 +325,13 @@ static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64
+>>>
+>>>  	lockdep_assert_held_write(&kvm->mmu_lock);
+>>>  	WARN_ON(size & ~PAGE_MASK);
+>>> -	WARN_ON(stage2_apply_range(mmu, start, end, kvm_pgtable_stage2_unmap,
+>>> -				   may_block));
+>>> +
+>>> +	if (kvm_is_realm(kvm))
+>>> +		kvm_realm_unmap_range(kvm, start, size, !only_shared);
+>>> +	else
+>>> +		WARN_ON(stage2_apply_range(mmu, start, end,
+>>> +					   kvm_pgtable_stage2_unmap,
+>>> +					   may_block));
+>>>  }
+>>>
+>>>  void kvm_stage2_unmap_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64 size)
+>>> @@ -345,7 +350,10 @@ static void stage2_flush_memslot(struct kvm *kvm,
+>>>  	phys_addr_t addr = memslot->base_gfn << PAGE_SHIFT;
+>>>  	phys_addr_t end = addr + PAGE_SIZE * memslot->npages;
+>>>
+>>> -	kvm_stage2_flush_range(&kvm->arch.mmu, addr, end);
+>>> +	if (kvm_is_realm(kvm))
+>>> +		kvm_realm_unmap_range(kvm, addr, end - addr, false);
+>>> +	else
+>>> +		kvm_stage2_flush_range(&kvm->arch.mmu, addr, end);
+>>>  }
+>>>
+>>>  /**
+>>> @@ -1037,6 +1045,10 @@ void stage2_unmap_vm(struct kvm *kvm)
+>>>  	struct kvm_memory_slot *memslot;
+>>>  	int idx, bkt;
+>>>
+>>> +	/* For realms this is handled by the RMM so nothing to do here */
+>>> +	if (kvm_is_realm(kvm))
+>>> +		return;
+>>> +
+>>>  	idx = srcu_read_lock(&kvm->srcu);
+>>>  	mmap_read_lock(current->mm);
+>>>  	write_lock(&kvm->mmu_lock);
+>>> @@ -1062,6 +1074,7 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+>>>  	if (kvm_is_realm(kvm) &&
+>>>  	    (kvm_realm_state(kvm) != REALM_STATE_DEAD &&
+>>>  	     kvm_realm_state(kvm) != REALM_STATE_NONE)) {
+>>> +		kvm_stage2_unmap_range(mmu, 0, (~0ULL) & PAGE_MASK);
+>>>  		write_unlock(&kvm->mmu_lock);
+>>>  		kvm_realm_destroy_rtts(kvm, pgt->ia_bits);
+>>>  		return;
+>>> @@ -1428,6 +1441,71 @@ static bool kvm_vma_mte_allowed(struct vm_area_struct *vma)
+>>>  	return vma->vm_flags & VM_MTE_ALLOWED;
+>>>  }
+>>>
+>>> +static int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
+>>> +			 kvm_pfn_t pfn, unsigned long map_size,
+>>> +			 enum kvm_pgtable_prot prot,
+>>> +			 struct kvm_mmu_memory_cache *memcache)
+>>> +{
+>>> +	struct realm *realm = &kvm->arch.realm;
+>>> +	struct page *page = pfn_to_page(pfn);
+>>> +
+>>> +	if (WARN_ON(!(prot & KVM_PGTABLE_PROT_W)))
+>>> +		return -EFAULT;
+>>> +
+>>> +	if (!realm_is_addr_protected(realm, ipa))
+>>> +		return realm_map_non_secure(realm, ipa, page, map_size,
+>>> +					    memcache);
+>>> +
+>>> +	return realm_map_protected(realm, ipa, page, map_size, memcache);
+>>> +}
+>>> +
+>>> +static int private_memslot_fault(struct kvm_vcpu *vcpu,
+>>> +				 phys_addr_t fault_ipa,
+>>> +				 struct kvm_memory_slot *memslot)
+>>> +{
+>>> +	struct kvm *kvm = vcpu->kvm;
+>>> +	gpa_t gpa_stolen_mask = kvm_gpa_stolen_bits(kvm);
+>>> +	gfn_t gfn = (fault_ipa & ~gpa_stolen_mask) >> PAGE_SHIFT;
+>>> +	bool is_priv_gfn = !((fault_ipa & gpa_stolen_mask) == gpa_stolen_mask);
+>>> +	bool priv_exists = kvm_mem_is_private(kvm, gfn);
+>>> +	struct kvm_mmu_memory_cache *memcache = &vcpu->arch.mmu_page_cache;
+>>> +	kvm_pfn_t pfn;
+>>> +	int ret;
+>>> +
+>>> +	if (priv_exists != is_priv_gfn) {
+>>> +		kvm_prepare_memory_fault_exit(vcpu,
+>>> +					      fault_ipa & ~gpa_stolen_mask,
+>>> +					      PAGE_SIZE,
+>>> +					      kvm_is_write_fault(vcpu),
+>>> +					      false, is_priv_gfn);
+>>> +
+>>> +		return 0;
+>>> +	}
+>>> +
+>>> +	if (!is_priv_gfn) {
+>>> +		/* Not a private mapping, handling normally */
+>>> +		return -EAGAIN;
+>>> +	}
+>>>
+>>
+>> Instead of that EAGAIN, it better to handle as below?
+>
+> I'm not finding the below easier to read.
+>
+>>  arch/arm64/kvm/mmu.c | 24 ++++++++++++++++--------
+>>  1 file changed, 16 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 1eddbc7d7156..33ef95b5c94a 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -1480,11 +1480,6 @@ static int private_memslot_fault(struct kvm_vcpu *vcpu,
+>>  		return 0;
+>>  	}
+>>
+>> -	if (!is_priv_gfn) {
+>> -		/* Not a private mapping, handling normally */
+>> -		return -EAGAIN;
+>> -	}
+>> -
+>>  	ret = kvm_mmu_topup_memory_cache(memcache,
+>>  					 kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu));
+>>  	if (ret)
+>> @@ -1925,12 +1920,25 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>>  	gfn = kvm_gpa_from_fault(vcpu->kvm, ipa) >> PAGE_SHIFT;
+>>  	memslot = gfn_to_memslot(vcpu->kvm, gfn);
+>>
+>> -	if (kvm_slot_can_be_private(memslot)) {
+>> -		ret = private_memslot_fault(vcpu, fault_ipa, memslot);
+>> -		if (ret != -EAGAIN)
+>> +	if (kvm_slot_can_be_private(memslot) &&
+>> +	    kvm_is_private_gpa(vcpu->kvm, ipa)) {
+>
+> I presume kvm_is_private_gpa() is defined as something like:
+>
+> static bool kvm_is_private_gpa(kvm, phys_addr_t ipa)
+> {
+> 	gpa_t gpa_stolen_mask = kvm_gpa_stolen_bits(kvm);
+> 	return  !((ipa & gpa_stolen_mask) == gpa_stolen_mask);
+> }
+>
+>> +		ret = private_memslot_fault(vcpu, ipa, memslot);
+>
+> So this handles the case in private_memslot_fault() where is_priv_gfn is
+> true. So there's a little bit of simplification in
+> private_memslot_fault().
+>
+>>  			goto out;
+>>  	}
+>> +	/* attribute msimatch. shared access fault on a mem with private attribute */
+>> +	if (kvm_mem_is_private(vcpu->kvm, gfn)) {
+>> +		/* let VMM fixup the memory attribute */
+>> +		kvm_prepare_memory_fault_exit(vcpu,
+>> +					      kvm_gpa_from_fault(vcpu->kvm, ipa),
+>> +					      PAGE_SIZE,
+>> +					      kvm_is_write_fault(vcpu),
+>> +					      false, false);
+>
+> And then we have to duplicate the code here for calling
+> kvm_prepare_memory_fault_exit(). Which seems a bit ugly to me. Am I
+> missing something? Your patch doesn't seem complete.
+>
+
+
+What confused me was I was looking at EAGAIN as retry access. But here
+it is not a retry. It is an error condition for handling the fault as a
+shared access fault. IMHO having that check in the caller makes it
+simpler. ie,
+
+if it is a private fault private_memslot_fault handle it with the fault
+exit condition that indicates an attribute mismatch
+
+if it is a shared fault the existing fault handling code handles it with
+the fault exit condition indicating an attribute mismatch.
+
+If you find the change not clean, can we rename the error to EINVAL?
+
+>
+>> +
+>> +		ret =  0;
+>> +		goto out;
+>> +	}
+>>
+>> +	/* Slot can be be private, but fault addr is not, handle that as normal fault */
+>>  	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
+>>  	write_fault = kvm_is_write_fault(vcpu);
+>>  	if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
+>
+>
+> Note your email had a signature line "--" here which causes my email
+> client to remove the rest of your reply - it's worth dropping that from
+> the git output when sending diffs. I've attempted to include your
+> second diff below manually.
+>
+>> Instead of referring this as stolen bits is it better to do
+>>
+>>  arch/arm64/include/asm/kvm_emulate.h | 20 +++++++++++++++++---
+>>  arch/arm64/kvm/mmu.c                 | 21 ++++++++-------------
+>>  2 files changed, 25 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+>> index 0b50572d3719..790412fd53b8 100644
+>> --- a/arch/arm64/include/asm/kvm_emulate.h
+>> +++ b/arch/arm64/include/asm/kvm_emulate.h
+>> @@ -710,14 +710,28 @@ static inline bool kvm_realm_is_created(struct kvm *kvm)
+>>  	return kvm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
+>>  }
+>>
+>> -static inline gpa_t kvm_gpa_stolen_bits(struct kvm *kvm)
+>> +static inline gpa_t kvm_gpa_from_fault(struct kvm *kvm, phys_addr_t fault_addr)
+>>  {
+>> +	gpa_t addr_mask;
+>> +
+>>  	if (kvm_is_realm(kvm)) {
+>>  		struct realm *realm = &kvm->arch.realm;
+>>
+>> -		return BIT(realm->ia_bits - 1);
+>> +		addr_mask = BIT(realm->ia_bits - 1);
+>> +		/* clear shared bit and return */
+>> +		return fault_addr & ~addr_mask;
+>>  	}
+>> -	return 0;
+>> +	return fault_addr;
+>> +}
+>> +
+>> +static inline bool kvm_is_private_gpa(struct kvm *kvm, phys_addr_t fault_addr)
+>> +{
+>> +	/*
+>> +	 * For Realms, the shared address is an alias of the private GPA
+>> +	 * with top bit set and we have a single address space. Thus if the
+>> +	 * fault address matches the GPA, it is the private GPA
+>> +	 */
+>> +	return fault_addr == kvm_gpa_from_fault(kvm, fault_addr);
+>>  }
+>
+> Ah, so here's the missing function from above.
+>
+>>
+>>  static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index eb8b8d013f3e..1eddbc7d7156 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -1464,20 +1464,18 @@ static int private_memslot_fault(struct kvm_vcpu *vcpu,
+>>  				 struct kvm_memory_slot *memslot)
+>>  {
+>>  	struct kvm *kvm = vcpu->kvm;
+>> -	gpa_t gpa_stolen_mask = kvm_gpa_stolen_bits(kvm);
+>> -	gfn_t gfn = (fault_ipa & ~gpa_stolen_mask) >> PAGE_SHIFT;
+>> -	bool is_priv_gfn = !((fault_ipa & gpa_stolen_mask) == gpa_stolen_mask);
+>> -	bool priv_exists = kvm_mem_is_private(kvm, gfn);
+>> +	gfn_t gfn = kvm_gpa_from_fault(kvm, fault_ipa) >> PAGE_SHIFT;
+>>  	struct kvm_mmu_memory_cache *memcache = &vcpu->arch.mmu_page_cache;
+>>  	kvm_pfn_t pfn;
+>>  	int ret;
+>>
+>> -	if (priv_exists != is_priv_gfn) {
+>> +	if (!kvm_mem_is_private(kvm, gfn)) {
+>> +		/* let VMM fixup the memory attribute */
+>>  		kvm_prepare_memory_fault_exit(vcpu,
+>> -					      fault_ipa & ~gpa_stolen_mask,
+>> +					      kvm_gpa_from_fault(kvm, fault_ipa),
+>>  					      PAGE_SIZE,
+>>  					      kvm_is_write_fault(vcpu),
+>> -					      false, is_priv_gfn);
+>> +					      false, true);
+>>
+>>  		return 0;
+>>  	}
+>> @@ -1527,7 +1525,6 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+>>  	long vma_pagesize, fault_granule;
+>>  	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
+>>  	struct kvm_pgtable *pgt;
+>> -	gpa_t gpa_stolen_mask = kvm_gpa_stolen_bits(vcpu->kvm);
+>>
+>>  	if (fault_is_perm)
+>>  		fault_granule = kvm_vcpu_trap_get_perm_fault_granule(vcpu);
+>> @@ -1640,7 +1637,7 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+>>  	if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE)
+>>  		fault_ipa &= ~(vma_pagesize - 1);
+>>
+>> -	gfn = (ipa & ~gpa_stolen_mask) >> PAGE_SHIFT;
+>> +	gfn = kvm_gpa_from_fault(kvm, ipa) >> PAGE_SHIFT;
+>>  	mte_allowed = kvm_vma_mte_allowed(vma);
+>>
+>>  	vfio_allow_any_uc = vma->vm_flags & VM_ALLOW_ANY_UNCACHED;
+>> @@ -1835,7 +1832,6 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>>  	struct kvm_memory_slot *memslot;
+>>  	unsigned long hva;
+>>  	bool is_iabt, write_fault, writable;
+>> -	gpa_t gpa_stolen_mask = kvm_gpa_stolen_bits(vcpu->kvm);
+>>  	gfn_t gfn;
+>>  	int ret, idx;
+>>
+>> @@ -1926,7 +1922,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>>  		nested = &nested_trans;
+>>  	}
+>>
+>> -	gfn = (ipa & ~gpa_stolen_mask) >> PAGE_SHIFT;
+>> +	gfn = kvm_gpa_from_fault(vcpu->kvm, ipa) >> PAGE_SHIFT;
+>>  	memslot = gfn_to_memslot(vcpu->kvm, gfn);
+>>
+>>  	if (kvm_slot_can_be_private(memslot)) {
+>> @@ -1978,8 +1974,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>>  		 * of the page size.
+>>  		 */
+>>  		ipa |= kvm_vcpu_get_hfar(vcpu) & GENMASK(11, 0);
+>> -		ipa &= ~gpa_stolen_mask;
+>> -		ret = io_mem_abort(vcpu, ipa);
+>> +		ret = io_mem_abort(vcpu, kvm_gpa_from_fault(vcpu->kvm, ipa));
+>>  		goto out_unlock;
+>>  	}
+>
+> I can see your point that kvm_gpa_from_fault() makes sense. I'm still
+> not convinced about the duplication of the kvm_prepare_memory_fault_exit()
+> call though.
+>
+> How about the following (untested):
+>
+> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+> index 0b50572d3719..fa03520d7933 100644
+> --- a/arch/arm64/include/asm/kvm_emulate.h
+> +++ b/arch/arm64/include/asm/kvm_emulate.h
+> @@ -710,14 +710,14 @@ static inline bool kvm_realm_is_created(struct kvm *kvm)
+>  	return kvm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
+>  }
+>
+> -static inline gpa_t kvm_gpa_stolen_bits(struct kvm *kvm)
+> +static inline gpa_t kvm_gpa_from_fault(struct kvm *kvm, phys_addr_t fault_ipa)
+>  {
+>  	if (kvm_is_realm(kvm)) {
+>  		struct realm *realm = &kvm->arch.realm;
+>
+> -		return BIT(realm->ia_bits - 1);
+> +		return fault_ipa & ~BIT(realm->ia_bits - 1);
+>  	}
+> -	return 0;
+> +	return fault_ipa;
+>  }
+>
+>  static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index d7e8b0c4f2a3..c0a3054201a9 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -1468,9 +1468,9 @@ static int private_memslot_fault(struct kvm_vcpu *vcpu,
+>  				 struct kvm_memory_slot *memslot)
+>  {
+>  	struct kvm *kvm = vcpu->kvm;
+> -	gpa_t gpa_stolen_mask = kvm_gpa_stolen_bits(kvm);
+> -	gfn_t gfn = (fault_ipa & ~gpa_stolen_mask) >> PAGE_SHIFT;
+> -	bool is_priv_gfn = !((fault_ipa & gpa_stolen_mask) == gpa_stolen_mask);
+> +	gpa_t gpa = kvm_gpa_from_fault(kvm, fault_ipa);
+> +	gfn_t gfn = gpa >> PAGE_SHIFT;
+> +	bool is_priv_gfn = (gpa == fault_ipa);
+>  	bool priv_exists = kvm_mem_is_private(kvm, gfn);
+>  	struct kvm_mmu_memory_cache *memcache = &vcpu->arch.mmu_page_cache;
+>  	kvm_pfn_t pfn;
+> @@ -1478,7 +1478,7 @@ static int private_memslot_fault(struct kvm_vcpu *vcpu,
+>
+>  	if (priv_exists != is_priv_gfn) {
+>
+
+Can we also have a helper with document for this?
+
+static inline bool kvm_is_private_gpa(struct kvm *kvm, phys_addr_t fault_addr)
+{
+	/*
+	 * For Realms, the shared address is an alias of the private GPA
+	 * with top bit set and we have a single address space. Thus if the
+	 * fault address matches the GPA, it is the private GPA
+	 */
+	return fault_addr == kvm_gpa_from_fault(kvm, fault_addr);
+}
+
+
+>  		kvm_prepare_memory_fault_exit(vcpu,
+> -					      fault_ipa & ~gpa_stolen_mask,
+> +					      gpa,
+>  					      PAGE_SIZE,
+>  					      kvm_is_write_fault(vcpu),
+>  					      false, is_priv_gfn);
+> @@ -1531,7 +1531,6 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+>  	long vma_pagesize, fault_granule;
+>  	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
+>  	struct kvm_pgtable *pgt;
+> -	gpa_t gpa_stolen_mask = kvm_gpa_stolen_bits(vcpu->kvm);
+>
+>  	if (fault_is_perm)
+>  		fault_granule = kvm_vcpu_trap_get_perm_fault_granule(vcpu);
+> @@ -1648,7 +1647,7 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+>  	if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE)
+>  		fault_ipa &= ~(vma_pagesize - 1);
+>
+> -	gfn = (ipa & ~gpa_stolen_mask) >> PAGE_SHIFT;
+> +	gfn = kvm_gpa_from_fault(kvm, ipa) >> PAGE_SHIFT;
+>  	mte_allowed = kvm_vma_mte_allowed(vma);
+>
+>  	vfio_allow_any_uc = vma->vm_flags & VM_ALLOW_ANY_UNCACHED;
+> @@ -1843,7 +1842,6 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>  	struct kvm_memory_slot *memslot;
+>  	unsigned long hva;
+>  	bool is_iabt, write_fault, writable;
+> -	gpa_t gpa_stolen_mask = kvm_gpa_stolen_bits(vcpu->kvm);
+>  	gfn_t gfn;
+>  	int ret, idx;
+>
+> @@ -1934,7 +1932,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>  		nested = &nested_trans;
+>  	}
+>
+> -	gfn = (ipa & ~gpa_stolen_mask) >> PAGE_SHIFT;
+> +	gfn = kvm_gpa_from_fault(vcpu->kvm, ipa) >> PAGE_SHIFT;
+>  	memslot = gfn_to_memslot(vcpu->kvm, gfn);
+>
+>  	if (kvm_slot_can_be_private(memslot)) {
+> @@ -1986,8 +1984,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>  		 * of the page size.
+>  		 */
+>  		ipa |= kvm_vcpu_get_hfar(vcpu) & GENMASK(11, 0);
+> -		ipa &= ~gpa_stolen_mask;
+> -		ret = io_mem_abort(vcpu, ipa);
+> +		ret = io_mem_abort(vcpu, kvm_gpa_from_fault(vcpu->kvm, ipa));
+>  		goto out_unlock;
+>  	}
+>
+>
+> Thanks,
+> Steve
