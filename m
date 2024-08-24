@@ -1,48 +1,47 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011A81684A4;
-	Fri, 23 Aug 2024 22:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AA0154BF0;
+	Sat, 24 Aug 2024 08:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724452661; cv=none; b=YQZHfrfAUu+DoWXcCjfFe62zLZprcW1D91BG8jwTTOtTvFntgqY7fnXvMaAMDzp3laN2A8RUUDul4+TNMro4ziA/yf40ke7ucNul+SMcfsENQEIQDpQlqjLOhbA5wt/PnFTVfssVua4u1+g0BSUf5yuciUPt4q+bkJ6uf7va3+U=
+	t=1724486730; cv=none; b=pWyJ/md+NVD/ak/a/4JpQeZAEVcXR4puqTRatGzWK465ILSRST3Q0AQ7LiUtwILxfgn4heUtrGvzCHZamjWlOn6mJPArwxexH2AbZH+2p5mT8em8xIZB7w1724zx8Esw0sKSs+ZRXH4oNqHkd34/N6Ub/t+56/TQ2Jw+ucxQOdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724452661; c=relaxed/simple;
-	bh=EoII+OSsqXOv7iyDrVHXvCJ0w2dAKTY2a05EkquIc1w=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Dbr7BH6bawJUMjGTaVHZrpneGay/KPu/BXWuo3pgIAj5nLX5wibXgJzLq7tw3XjmbBer0THmbFDacOePYl+80LsXnwemBoBXRHy1/7G27y0NXnY0QLPOjwWPCmEHwbj7xmQ1DgnMNtMsvUWdwYeEWl6FHRYT0WXo+8CJ2x5wcBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s07ZYOLi; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s07ZYOLi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6CCC32786;
-	Fri, 23 Aug 2024 22:37:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724452660;
-	bh=EoII+OSsqXOv7iyDrVHXvCJ0w2dAKTY2a05EkquIc1w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=s07ZYOLiedObiXWVvsXH+RgNuKSet7EOTnxGBuj8EmagTlb25W2Neqw9Vgcyds+dw
-	 2gl8lemgm/FpM5TeI9y2nSTzjCvxOCm8O0Mnpz/HZbfnkIICSN420syuawDylvHqoD
-	 Ohlj2GPpkmG6aBDr52twtaWGGu5aPiOzEzy2aI1QEWyL/8mIkAOoJqWwwDvhZtBIIm
-	 tPdsjt+nPKeCNNL07CRJDv33GeQ5KApEHHhpkDrptgN2Tmq3fxkxYnJmAa2SpbFewL
-	 J9hvxhgMi/hfqZVe6vaRhjLj0mrBHKUy/NC/AOlIm9lwLCxnzxkTPh//hEbQ8kkK1s
-	 ZNQ/DTSoN0cbg==
-Date: Fri, 23 Aug 2024 17:37:38 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: kvm@vger.kernel.org, iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	pratikrajesh.sampat@amd.com, michael.day@amd.com,
-	david.kaplan@amd.com, dhaval.giani@amd.com,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>, Alexander Graf <agraf@suse.de>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Lukas Wunner <lukas@wunner.de>
-Subject: Re: [RFC PATCH 20/21] pci: Allow encrypted MMIO mapping via sysfs
-Message-ID: <20240823223738.GA391927@bhelgaas>
+	s=arc-20240116; t=1724486730; c=relaxed/simple;
+	bh=M/BIBnLEhY/rZYFAJjMpvfFC+TI9s3HFHcqI3QGQvGI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=te+xWNYJvdfRlaXXpSJR/kBvXjajxQI5G0IY8uP+b4eWCaTnSKuGGJ2DkmuHbd9/rxcz27dEieYkacq7TlMwtR8qffKWM4bNLXK5Ft9P3QhzeSenB3g0GbhJvamGlt2UOKz7QU/IIzA5xI25HHIDGf93abKXIhoMJbRs/iFDPNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 28730227A88; Sat, 24 Aug 2024 10:05:15 +0200 (CEST)
+Date: Sat, 24 Aug 2024 10:05:14 +0200
+From: "hch@lst.de" <hch@lst.de>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: Bart Van Assche <bvanassche@acm.org>,
+	"kbusch@kernel.org" <kbusch@kernel.org>,
+	"axboe@kernel.dk" <axboe@kernel.dk>,
+	"sagi@grimberg.me" <sagi@grimberg.me>,
+	"James.Bottomley@HansenPartnership.com" <James.Bottomley@HansenPartnership.com>,
+	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+	"kys@microsoft.com" <kys@microsoft.com>,
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"decui@microsoft.com" <decui@microsoft.com>,
+	"robin.murphy@arm.com" <robin.murphy@arm.com>,
+	"hch@lst.de" <hch@lst.de>,
+	"m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
+	"petr@tesarici.cz" <petr@tesarici.cz>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [RFC 0/7] Introduce swiotlb throttling
+Message-ID: <20240824080514.GA8527@lst.de>
+References: <20240822183718.1234-1-mhklinux@outlook.com> <f8bb65ed-cdf2-4d23-b794-765ce0b48a4b@acm.org> <SN6PR02MB41577F000FD7A5EC70CF54D0D4882@SN6PR02MB4157.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -51,50 +50,17 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240823132137.336874-21-aik@amd.com>
+In-Reply-To: <SN6PR02MB41577F000FD7A5EC70CF54D0D4882@SN6PR02MB4157.namprd02.prod.outlook.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Fri, Aug 23, 2024 at 11:21:34PM +1000, Alexey Kardashevskiy wrote:
-> Add another resource#d_enc to allow mapping MMIO as
-> an encrypted/private region.
-> 
-> Unlike resourceN_wc, the node is added always as ability to
-> map MMIO as private depends on negotiation with the TSM which
-> happens quite late.
+On Fri, Aug 23, 2024 at 02:20:41AM +0000, Michael Kelley wrote:
+> Christoph Hellwig, or anyone else who knows the history and current
+> reality better than I do, please jump in. :-)
 
-Capitalize subject prefix.
+It's not just interrupt context, but any context that does not allow
+blocking.  There is plenty of that as seen by the moving of nvme
+to specifically request a blocking context for I/O submission in this
+path.
 
-Wrap to fill 75 columns.
-
-> +++ b/include/linux/pci.h
-> @@ -2085,7 +2085,7 @@ pci_alloc_irq_vectors(struct pci_dev *dev, unsigned int min_vecs,
->   */
->  int pci_mmap_resource_range(struct pci_dev *dev, int bar,
->  			    struct vm_area_struct *vma,
-> -			    enum pci_mmap_state mmap_state, int write_combine);
-> +			    enum pci_mmap_state mmap_state, int write_combine, int enc);
-
-This interface is only used in drivers/pci and look like it should be
-moved to drivers/pci/pci.h.
-
-> @@ -46,6 +46,15 @@ int pci_mmap_resource_range(struct pci_dev *pdev, int bar,
->  
->  	vma->vm_ops = &pci_phys_vm_ops;
->  
-> +	/*
-> +	 * Calling remap_pfn_range() directly as io_remap_pfn_range()
-> +	 * enforces shared mapping.
-
-s/Calling/Call/
-
-Needs some additional context about why io_remap_pfn_range() can't be
-used here.
-
-> +	 */
-> +	if (enc)
-> +		return remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
-> +				       vma->vm_end - vma->vm_start,
-> +				       vma->vm_page_prot);
-> +
->  	return io_remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
->  				  vma->vm_end - vma->vm_start,
->  				  vma->vm_page_prot);
+That being said there are probably more contexts that can block than
+those that can't, so allowing for that option is a good thing.
