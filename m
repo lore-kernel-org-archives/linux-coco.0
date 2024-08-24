@@ -1,35 +1,51 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1AC186A;
-	Sat, 24 Aug 2024 08:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E70D39AEB;
+	Sat, 24 Aug 2024 16:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724487384; cv=none; b=mMQPS9AqGNHcrEo8fw8/PVnuio5hox/m3pfMJ4yQ4nB6qcuL4jfru7b2AIKwhYFf0bDiL7dzfT8SwjECrP0dWuokBaFMcN9h+RU0J9jgsokihiJp1n2XCIZHGViHDxWBKGaVUJA4azsa5zg962cCw1lr464PuQG/zO1tWnwlsjg=
+	t=1724518648; cv=none; b=lA+YreZAXi5gQyaqxkZV4aHTSkqvBOfXLqMEAaIDQfmLfm4Upwx7GK2R+dZzmodWFkBnVJQhOg24HiJiBoVxbAUWTZ4C2n2tC4piig2QSVEDg6C0P02BZPGRLOjRptLYkSk5TE79c9/iHEI6XV0t5Rn30yxKNcNs7ZxTLKJp+pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724487384; c=relaxed/simple;
-	bh=tPuCwHyIKcY3Z4wwkH2t8Pvr1gWq8xRTEmWqoLqXl88=;
+	s=arc-20240116; t=1724518648; c=relaxed/simple;
+	bh=fZXoHykcvD1A1JFjEQWQzA8RfT1FLb1kSJXWvNQuTSA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ILhoqaXsh5JVQRDT2cyYmiQh4dMVXu+6C0yJa8ofsyCzj87P+d8/NXPXdGGzIMeTZCPlE1HNlBog4PevnxAyGBRYvn0ezwiX9uZ8wVun+1g5tVtt5yFagRIvogy2/GiMeVC9rjvEYoVI9qcOWZt7CBb/PCed+AOTE7AmSSElyc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 4F46A227A87; Sat, 24 Aug 2024 10:16:18 +0200 (CEST)
-Date: Sat, 24 Aug 2024 10:16:18 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: mhklinux@outlook.com
-Cc: kbusch@kernel.org, axboe@kernel.dk, sagi@grimberg.me,
-	James.Bottomley@HansenPartnership.com, martin.petersen@oracle.com,
-	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, robin.murphy@arm.com, hch@lst.de,
-	m.szyprowski@samsung.com, petr@tesarici.cz, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-nvme@lists.infradead.org,
-	linux-scsi@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [RFC 0/7] Introduce swiotlb throttling
-Message-ID: <20240824081618.GB8527@lst.de>
-References: <20240822183718.1234-1-mhklinux@outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=URcmqhs+AB+ONlFJRHKSzN9h+BmEOsionUFpenj+Zn5SUArIGAT/QKiMLNg07QS2HaMnrCx9qQU2Vf12Lhvdw23d7XYD1QRuL31Xt+P7XOJIOwD3oG186mN2AKBggJ3RserJW8Kmf4THSQQqfi4ZMb97BskSolIgYaGuJHGFWeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=faEd3C6x; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="faEd3C6x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19277C32781;
+	Sat, 24 Aug 2024 16:57:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724518647;
+	bh=fZXoHykcvD1A1JFjEQWQzA8RfT1FLb1kSJXWvNQuTSA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=faEd3C6xk3bB7/IzcZTbthHs2go8i2t8IzxJbgykL8HKT7I1Cj30ifR1rdfbF45+g
+	 Xrurn92tq4+O3tvZGh9+E4N0SrITO6hNo608f24CAFL2w8+s94I8EdvfcxDsdNm8ot
+	 Bc5vacQ6lB2cE3mOXSvTGaWOePNyc9V7Gs8iGC/tAhkST47dOsItJHz9kjoc8BG/Yy
+	 VUSaNfMcaRuhZ3nlshNWMHCIOXpRyhl2UXGJkot63db3C/KSql0sul34SXMPELXrGD
+	 ZtYuV+N+tGWTtEN4m+cl1l7WLqR2SQU6vsDP1Gdw87/lejwxOS2ufAqkEj17XIqnR3
+	 5JGiL0AHsoPgw==
+Date: Sat, 24 Aug 2024 18:57:20 +0200
+From: Alexey Gladkov <legion@kernel.org>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yuan Yao <yuan.yao@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>,
+	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
+	cho@microsoft.com, decui@microsoft.com, John.Starks@microsoft.com
+Subject: Re: [PATCH v4 6/6] x86/tdx: Implement movs for MMIO
+Message-ID: <ZsoQ8GCWTHgY3H_e@example.org>
+References: <cover.1723807851.git.legion@kernel.org>
+ <cover.1724248680.git.legion@kernel.org>
+ <9320e721e609e55a020d3eb98f48fc856371c561.1724248680.git.legion@kernel.org>
+ <tcngnuglju2mnpfa4o2hw3fpwdkk4ryso5dq2zjfi2wn4yr5yd@2iij74o7ugaf>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -38,41 +54,54 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240822183718.1234-1-mhklinux@outlook.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <tcngnuglju2mnpfa4o2hw3fpwdkk4ryso5dq2zjfi2wn4yr5yd@2iij74o7ugaf>
 
-On Thu, Aug 22, 2024 at 11:37:11AM -0700, mhkelley58@gmail.com wrote:
-> Because it's not possible to detect at runtime whether a DMA map call
-> is made in a context that can block, the calls in key device drivers
-> must be updated with a MAY_BLOCK attribute, if appropriate. When this
-> attribute is set and swiotlb memory usage is above a threshold, the
-> swiotlb allocation code can serialize swiotlb memory usage to help
-> ensure that it is not exhausted.
+On Thu, Aug 22, 2024 at 11:28:14AM +0300, Kirill A. Shutemov wrote:
+> On Wed, Aug 21, 2024 at 04:24:38PM +0200, Alexey Gladkov wrote:
+> > From: "Alexey Gladkov (Intel)" <legion@kernel.org>
+> > 
+> 
+> Please capitalize MOVS in the subject.
+> 
+> > Add emulation of the MOVS instruction on MMIO regions. MOVS emulation
+> > consists of dividing it into a series of read and write operations,
+> > which in turn will be validated separately.
+> 
+> Commit message is pretty sparse. I think we need to elaborate on the
+> similarities and differences with SEV implementation. Locking context
+> difference is important.
 
-One thing I've been doing for a while but haven't gotten to due to
-my lack of semantic patching skills is that we really want to split
-the few flags useful for dma_map* from DMA_ATTR_* which largely
-only applies to dma_alloc.
+Agree.
 
-Only DMA_ATTR_WEAK_ORDERING (if we can't just kill it entirely)
-and for now DMA_ATTR_NO_WARN is used for both.
+> > diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+> > index a75a07f4931f..45136b1b02cc 100644
+> > --- a/arch/x86/include/asm/processor.h
+> > +++ b/arch/x86/include/asm/processor.h
+> > @@ -503,6 +503,10 @@ struct thread_struct {
+> >  	struct thread_shstk	shstk;
+> >  #endif
+> >  
+> > +#ifdef CONFIG_INTEL_TDX_GUEST
+> > +	unsigned long		mmio_emul;
+> > +#endif
+> > +
+> >  	/* Floating point and extended processor state */
+> >  	struct fpu		fpu;
+> >  	/*
+> 
+> Hm. Do we need to track exact target address in the thread struct?
+> Wouldn't be single bit be enough to allow MMIO to userspace address from a
+> kernel regs->ip?
 
-DMA_ATTR_SKIP_CPU_SYNC and your new SLEEP/BLOCK attribute is only
-useful for mapping, and the rest is for allocation only.
+The flag will identify that a nested exception happened, but it will not
+be clear which address cause it.
 
-So I'd love to move to a DMA_MAP_* namespace for the mapping flags
-before adding more on potentially widely used ones.
+Perhaps you are right and this approach is unnecessarily paranoid. 
 
-With a little grace period we can then also phase out DMA_ATTR_NO_WARN
-for allocations, as the gfp_t can control that much better.
+> There is space for the flag next to iopl_warn.
 
-> In general, storage device drivers can take advantage of the MAY_BLOCK
-> option, while network device drivers cannot. The Linux block layer
-> already allows storage requests to block when the BLK_MQ_F_BLOCKING
-> flag is present on the request queue.
+Yes, I can use just a flag to identify a nested exception.
 
-Note that this also in general involves changes to the block drivers
-to set that flag, which is a bit annoying, but I guess there is not
-easy way around it without paying the price for the BLK_MQ_F_BLOCKING
-overhead everywhere.
+-- 
+Rgrds, legion
 
