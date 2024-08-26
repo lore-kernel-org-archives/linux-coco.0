@@ -1,121 +1,151 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from bee.tesarici.cz (bee.tesarici.cz [37.205.15.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F4A1946D0
-	for <linux-coco@lists.linux.dev>; Mon, 26 Aug 2024 16:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A24512C7FB;
+	Mon, 26 Aug 2024 19:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.15.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724690525; cv=none; b=S40jUN2K2XtxAPdQsXvqmecqHhBRSP4sZqSaFIYI/ZibMpx8MbkQGzQAzLU2li0WpdpmL26GtMEUkGOAbRbq86YWmOH+8JR0YmAk2UGYtr3oFvA80und01px7n9QF5tMStzu0g2dIL/h5MK27VGnK3NUeoHaS4acqbwr5xG1S3w=
+	t=1724700496; cv=none; b=isaDPU3ZCFB78nU/hrJ9DPuJ2Q6jUUYKVpRUC1lTk8yCLX0oUrXnudWxioSNWHKzT+xHMZWl7sprFETj23gStZFC13YcvsUK48+QePpZBNP/a7XDQT7s2kAuLrYEsoyxBj5EF5HCtdYKGHRZIuQV9ZhuvHSE3oe7uw24EL8l77k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724690525; c=relaxed/simple;
-	bh=ppYu9K2ghwv6MVNvA0aC/JaiLii6mvIKIRd/twErs/g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D6Rw4qljeVTG/CRjEjD2P1pLcCWKBlGhQ5nPudoA8nZyubyBlGseZvvZT2pMl7OAg1OUu3vaH8BEBvWxB9wghdCHrSXCTN9t+gS4QQ66oxQ242fwGHhedV0SwPjvruZoT76KYFTzN6bu+4uA97sPyTSgqpXnjc/UmskqYTWobmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eUG8zLrC; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1724700496; c=relaxed/simple;
+	bh=FHyu0VU/PnPOXAQDCe1rt+BnsCDvW7gQcM+qKPcnMh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ul1pvP2Kgg++kwh+lJXCXC9eFZOJz7fv+w842MqFoTB/HPDo0V3bg54IOEI6ze9jHSjVPMJqDkixMgIwPsrw1IGUrBLTk869EpabR5+Vf9NRdBGhr+WzhxiIjLpmlc7vDVhxFx4Gh2HhSPD9R44l8JnXceveZG5zXFP3nP0L9BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz; spf=pass smtp.mailfrom=tesarici.cz; dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b=3OqICh2V; arc=none smtp.client-ip=37.205.15.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tesarici.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eUG8zLrC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724690524; x=1756226524;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ppYu9K2ghwv6MVNvA0aC/JaiLii6mvIKIRd/twErs/g=;
-  b=eUG8zLrCywT1VVHVkzMEmKSNFz9h+g2J9nKmoIObxA0WFswHDEXRWi0J
-   KRr1H6UhvatMqJ8lIgPPiLS3k9bIn8hBJ6VWHojuTWPH+rhleXmcaVBWh
-   ZgjAHrT6dRBE/wf/wSpqcrTUZSpGwqOM57gFCoI+KbSnvBhZ37UP8Tt/M
-   vPttq9204h5B7eMo08lpQRALLj3T6fQShs2zYBRqZ/4D5++rxaP+dv6Pn
-   caAO3V0aEAYTIVZ9MIwmWwtxvTwU1mVpr/GeBLEaihppU2xHd7pzI75Cd
-   agZwmSAliBtFSAiTj5aQH6kz15OT5ZNUnXsqsXDJ/SWLAGGtOB/IAxNgK
-   Q==;
-X-CSE-ConnectionGUID: y6ASEhyqQ9CPeQHgwA/x7A==
-X-CSE-MsgGUID: gyyYCQB9SZeftE0IePa+Pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="23256988"
-X-IronPort-AV: E=Sophos;i="6.10,178,1719903600"; 
-   d="scan'208";a="23256988"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 09:42:03 -0700
-X-CSE-ConnectionGUID: wNGhoRxcSWupt5gOaAAohA==
-X-CSE-MsgGUID: opGhL0+qR8KjngocHNLSiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,178,1719903600"; 
-   d="scan'208";a="63300808"
-Received: from hcaldwel-desk1.amr.corp.intel.com (HELO [10.125.110.87]) ([10.125.110.87])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 09:42:02 -0700
-Message-ID: <7401a060-884a-4e7f-9d87-10f5c5ac754d@intel.com>
-Date: Mon, 26 Aug 2024 09:41:49 -0700
+	dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b="3OqICh2V"
+Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by bee.tesarici.cz (Postfix) with ESMTPSA id 723761F5836;
+	Mon, 26 Aug 2024 21:28:04 +0200 (CEST)
+Authentication-Results: mail.tesarici.cz; dmarc=fail (p=quarantine dis=none) header.from=tesarici.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tesarici.cz; s=mail;
+	t=1724700484; bh=++Bczk63eC2DOga6kXt5dxUEmHon4YZ3k2+0HLuXZag=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=3OqICh2V1e2GjJj6P5dajLB+vX9Z3X4Wa4bS1dWEwq8vhHUUIUosz3GCww2OJ1jUo
+	 CqePrcEgW60T6bgpx/94gfYqT1dbH0f52BXLCD7aO5mgnlEQ56zdJzVeBi5T92aXrZ
+	 bYl31QmnVAr35N2iFoW8vnmc/PLofHaSfrg7fu+X07020RnFGA4A+1DAJnskmB+YRa
+	 65chdJgFXnfe69EGSCgCIpI56BqhFMIP4TykSfuXnspbLBMXg6jcsBFPuCyLr4IZUA
+	 mwqWOH8sHchI9YbUutrw5p6muhKUc4L07fG7A66CM3S3dTzhRQgA5xMluFisAuzRfn
+	 xy5uztHZJzqjg==
+Date: Mon, 26 Aug 2024 21:28:03 +0200
+From: Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: "kbusch@kernel.org" <kbusch@kernel.org>, "axboe@kernel.dk"
+ <axboe@kernel.dk>, "sagi@grimberg.me" <sagi@grimberg.me>,
+ "James.Bottomley@HansenPartnership.com"
+ <James.Bottomley@HansenPartnership.com>, "martin.petersen@oracle.com"
+ <martin.petersen@oracle.com>, "kys@microsoft.com" <kys@microsoft.com>,
+ "haiyangz@microsoft.com" <haiyangz@microsoft.com>, "wei.liu@kernel.org"
+ <wei.liu@kernel.org>, "decui@microsoft.com" <decui@microsoft.com>,
+ "robin.murphy@arm.com" <robin.murphy@arm.com>, "hch@lst.de" <hch@lst.de>,
+ "m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [RFC 0/7] Introduce swiotlb throttling
+Message-ID: <20240826212803.3e11d2f9@meshulam.tesarici.cz>
+In-Reply-To: <SN6PR02MB41577933B499309EA3CE4DDBD48B2@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20240822183718.1234-1-mhklinux@outlook.com>
+	<20240823084458.4394b401@meshulam.tesarici.cz>
+	<SN6PR02MB415758F12C59E6CA67227DCFD4882@SN6PR02MB4157.namprd02.prod.outlook.com>
+	<20240824220556.0e2587d5@meshulam.tesarici.cz>
+	<SN6PR02MB41577933B499309EA3CE4DDBD48B2@SN6PR02MB4157.namprd02.prod.outlook.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/tdx: Fix data leak in mmio_read()
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- Sean Christopherson <seanjc@google.com>, stable@vger.kernel.org
-References: <20240826125304.1566719-1-kirill.shutemov@linux.intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20240826125304.1566719-1-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On 8/26/24 05:53, Kirill A. Shutemov wrote:
-> The mmio_read() function makes a TDVMCALL to retrieve MMIO data for an
-> address from the VMM.
-> 
-> Sean noticed that mmio_read() unintentionally exposes the value of an
-> initialized variable on the stack to the VMM.
-> 
-> Do not send the original value of *val to the VMM.
+On Mon, 26 Aug 2024 16:24:53 +0000
+Michael Kelley <mhklinux@outlook.com> wrote:
 
-The key to this is that 'val' is only used for the _return_ value, right?
+> From: Petr Tesa=C5=99=C3=ADk <petr@tesarici.cz> Sent: Saturday, August 24=
+, 2024 1:06 PM
+> >=20
+> > On Fri, 23 Aug 2024 20:40:16 +0000
+> > Michael Kelley <mhklinux@outlook.com> wrote:
+> >  =20
+> > > From: Petr Tesa=C5=99=C3=ADk <petr@tesarici.cz> Sent: Thursday, Augus=
+t 22, 2024 11:45 PM
+> > >[...] =20
+> > > > > Discussion
+> > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > > > * Since swiotlb isn't visible to device drivers, I've specifically
+> > > > > named the DMA attribute as MAY_BLOCK instead of MAY_THROTTLE or
+> > > > > something swiotlb specific. While this patch set consumes MAY_BLO=
+CK
+> > > > > only on the DMA direct path to do throttling in the swiotlb code,
+> > > > > there might be other uses in the future outside of CoCo VMs, or
+> > > > > perhaps on the IOMMU path. =20
+> > > >
+> > > > I once introduced a similar flag and called it MAY_SLEEP. I chose
+> > > > MAY_SLEEP, because there is already a might_sleep() annotation, but=
+ I
+> > > > don't have a strong opinion unless your semantics is supposed to be
+> > > > different from might_sleep(). If it is, then I strongly prefer
+> > > > MAY_BLOCK to prevent confusing the two. =20
+> > >
+> > > My intent is that the semantics are the same as might_sleep(). I
+> > > vacillated between MAY_SLEEP and MAY_BLOCK. The kernel seems
+> > > to treat "sleep" and "block" as equivalent, because blk-mq has
+> > > the BLK_MQ_F_BLOCKING flag, and SCSI has the
+> > > queuecommand_may_block flag that is translated to
+> > > BLK_MQ_F_BLOCKING. So I settled on MAY_BLOCK, but as you
+> > > point out, that's inconsistent with might_sleep(). Either way will
+> > > be inconsistent somewhere, and I don't have a preference. =20
+> >=20
+> > Fair enough. Let's stay with MAY_BLOCK then, so you don't have to
+> > change it everywhere.
+> >  =20
+> > >[...] =20
+> > > > > Open Topics
+> > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > > > 1. swiotlb allocations from Xen and the IOMMU code don't make use
+> > > > > of throttling. This could be added if beneficial.
+> > > > >
+> > > > > 2. The throttling values are currently exposed and adjustable in
+> > > > > /sys/kernel/debug/swiotlb. Should any of this be moved so it is
+> > > > > visible even without CONFIG_DEBUG_FS? =20
+> > > >
+> > > > Yes. It should be possible to control the thresholds through
+> > > > sysctl. =20
+> > >
+> > > Good point.  I was thinking about creating /sys/kernel/swiotlb, but
+> > > sysctl is better. =20
+> >=20
+> > That still leaves the question where it should go.
+> >=20
+> > Under /proc/sys/kernel? Or should we make a /proc/sys/kernel/dma
+> > subdirectory to make room for more dma-related controls? =20
+>=20
+> I would be good with /proc/sys/kernel/swiotlb (or "dma"). There
+> are only two entries (high_throttle and low_throttle), but just
+> dumping everything directly in /proc/sys/kernel doesn't seem like
+> a good long-term approach.  Even though there are currently a lot
+> of direct entries in /proc/sys/kernel, that may be historical, and not
+> changeable due to backwards compatibility requirements.
+
+I think SWIOTLB is a bit too narrow. How many controls would we add
+under /proc/sys/kernel/swiotlb? The chances seem higher if we call it
+/proc/sys/kernel/dma/swiotlb_{low,high}_throttle, and it follows the
+paths in source code (which are subject to change any time, however).
+Anyway, I don't want to get into bikeshedding; I'm fine with whatever
+you send in the end. :-)
+
+BTW those entries directly under /proc/sys/kernel are not all
+historical. The io_uring_* controls were added just last year, see
+commit 76d3ccecfa18.
+
+Petr T
