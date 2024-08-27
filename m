@@ -1,45 +1,41 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E32D1547C5;
-	Tue, 27 Aug 2024 07:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D2633999
+	for <linux-coco@lists.linux.dev>; Tue, 27 Aug 2024 07:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724742881; cv=none; b=OFcAQp/IMnG0kiRrmhVcxn25nGQ6r9DRuHq+mHkZYHNSvScXKMNjoLQ60QBTF14mV6vx+gsWVTGVqxNgAgFuXaPevZyfrfNiisOlwIDK06GInahLtgv3yPEvI8uN0ItMlf6iY3l6LPl7XJBFvufosvymreZnm4l0I7MVcgmwCo4=
+	t=1724743280; cv=none; b=M3NOxwyu/i6YluN1YmgsApAwYEJ9Joh6EAPgjYvH9xwgh3x4LyH0t2vGzebYOJmnPh5A/M+Ug5Ekgtto/qd63fesAxW1XfiCmPQtjwK9Y0GtT3/+X4/Prj/60CV4663styB7D+ImYouTDun3ycXqN1x8ZNBtXKv2aT/EtC5Hwbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724742881; c=relaxed/simple;
-	bh=nhjxhmNHLo5IoXdK9az/5+6rhAZctBlOH954/my4wZo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ovUSGxB/zYGmO4DVY/+uEpVxoTrJKfz+MX4TjKxkLN2dw4utI7alDJKJ/Osg1/ws/rE99Sf1JYRUwEAkCOiQaOheb5HmcQEBhgRmFIC5I7f8EMYtbo7OGScmFDzSSAfWNstvldmiDYosTnJnY4UTyl/zk5N8jp/TxcP6VKL/kwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 6526A227AAA; Tue, 27 Aug 2024 09:14:28 +0200 (CEST)
-Date: Tue, 27 Aug 2024 09:14:28 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Christoph Hellwig <hch@lst.de>, "kbusch@kernel.org" <kbusch@kernel.org>,
-	"axboe@kernel.dk" <axboe@kernel.dk>,
-	"sagi@grimberg.me" <sagi@grimberg.me>,
-	"James.Bottomley@HansenPartnership.com" <James.Bottomley@HansenPartnership.com>,
-	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
-	"kys@microsoft.com" <kys@microsoft.com>,
-	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>,
-	"decui@microsoft.com" <decui@microsoft.com>,
-	"robin.murphy@arm.com" <robin.murphy@arm.com>,
-	"m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
-	"petr@tesarici.cz" <petr@tesarici.cz>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: Re: [RFC 0/7] Introduce swiotlb throttling
-Message-ID: <20240827071428.GA12797@lst.de>
-References: <20240822183718.1234-1-mhklinux@outlook.com> <20240824081618.GB8527@lst.de> <SN6PR02MB415753359387FBC8977A9598D48B2@SN6PR02MB4157.namprd02.prod.outlook.com>
+	s=arc-20240116; t=1724743280; c=relaxed/simple;
+	bh=yNEFa8w6jic120i8vvbEqKyPpX/uJzPQATV6A4n7evY=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TIZXKr+VLuu23VTqxqzIt2y3LaY9YQaUwkqKVVAXZUvCwid1itthFXG9UReyRlnVd6goGeMIhqf8LMz3bJ3b6/kvo23ZnyrhsRumA2IKThYDOVpG24s4do2c3pKLombUJNj/PZlB28UevisEWDLMVZrtHy9boBsuKf4ruHR74ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=btkxD4jW; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="btkxD4jW"
+Received: from 8bytes.org (pd9fe9dd8.dip0.t-ipconnect.de [217.254.157.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 7DF9B2842E6;
+	Tue, 27 Aug 2024 09:21:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1724743271;
+	bh=yNEFa8w6jic120i8vvbEqKyPpX/uJzPQATV6A4n7evY=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=btkxD4jWRAQqoF8u9I1+6GXyD8agQSjYEgxzqGC3zyoMDTQy4wLZVhw2CaSX4gFTQ
+	 8DrrVlOm/znrz1Dq/V0/GbRO+l9jZKlV43XqFAQCPW6NP0yu6k+2JiWQGoZX0mrMko
+	 YudrJosWLx71Ju0BgQ4W97Q3u0hyvU4mRaPK0Ya0HgxvFRHshfZMlYXV52TmlBigEv
+	 af2m+GkaquUCIe746feyGzHw6Lha8wh0bpQ1q0cVfPrNdw4v8N4Ifyjf9z4DHkyRV5
+	 Nb6UTNz5aw575Rk9sruB5gVYBzXiZ2S3O/ox+6yI9e0G9ERxzJvqLcbaJm1ipEOeQm
+	 ZNp3/1TDPxPzA==
+Date: Tue, 27 Aug 2024 09:21:10 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: Re: [svsm-devel] SVSM Development Call August 21st, 2024
+Message-ID: <Zs1-Zo3IYpOgJw4R@8bytes.org>
+References: <ZsS6iBEj5qmJh6Qt@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -48,48 +44,13 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <SN6PR02MB415753359387FBC8977A9598D48B2@SN6PR02MB4157.namprd02.prod.outlook.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <ZsS6iBEj5qmJh6Qt@8bytes.org>
 
-On Mon, Aug 26, 2024 at 03:27:30PM +0000, Michael Kelley wrote:
-> OK, this makes sense to me. The DMA_ATTR_* symbols are currently
-> defined as just values that are not part of an enum or any other higher
-> level abstraction, and the "attrs" parameter to the dma_* functions is
-> just "unsigned long". Are you thinking that the separate namespace is
-> based only on the symbolic name (i.e., DMA_MAP_* vs DMA_ATTR_*),
-> with the values being disjoint? That seems straightforward to me.
+Better late than never are the minutes for last weeks meetings now
+available in this PR:
 
-Yes. Although initially I'd just keep ATTR for the allocation and then
-maybe do a scripted run to convert it.
+	https://github.com/coconut-svsm/governance/pull/23
 
-> Changing the "attrs" parameter to an enum is a much bigger change ....
+Regards,
 
-I don't think an enum makes much sense as we have bits defined.  A
-__bitwise type would be nice, but not required.
-
-> For a transition period we can have both DMA_ATTR_SKIP_CPU_SYNC
-> and DMA_MAP_SKIP_CPU_SYNC, and then work to change all
-> occurrences of the former to the latter.
-> 
-> I'll have to look more closely at WEAK_ORDERING and NO_WARN.
-> 
-> There are also a couple of places where DMA_ATTR_NO_KERNEL_MAPPING
-> is used for dma_map_* calls, but those are clearly bogus since that
-> attribute is never tested in the map path.
-
-Yeah, these kinds of bogus things is what I'd like to kill..
-
-
-> > Note that this also in general involves changes to the block drivers
-> > to set that flag, which is a bit annoying, but I guess there is not
-> > easy way around it without paying the price for the BLK_MQ_F_BLOCKING
-> > overhead everywhere.
-> 
-> Agreed. I assumed there was some cost to BLK_MQ_F_BLOCKING since
-> the default is !BLK_MQ_F_BLOCKING, but I don't really know what
-> that is. Do you have a short summary, just for my education?
-
-I think the biggest issue is that synchronize_srcu is pretty damn
-expensive, but there's also a whole bunch of places that unconditionally
-defer to the workqueue.
-
+	Joerg
