@@ -1,144 +1,155 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bee.tesarici.cz (bee.tesarici.cz [37.205.15.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AC11BAEDA
-	for <linux-coco@lists.linux.dev>; Tue, 27 Aug 2024 12:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0671C93AF;
+	Tue, 27 Aug 2024 15:55:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.15.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724761966; cv=none; b=LC5LLyGVXVseztnNu1jE1NmZsz9AXxOBlgn6Hc6DrPZbabZi4QLW7VpHl/21A1dJX8tlbm/4OIJfoJuTDQePcslg+Qwchz5xIkcrQ8eNoKrp4mkkPe449w++f4/2GwKtLWzk1m5k5gLVeXxwL+7WSSH4NMKonHjO+9e8j0DWFN0=
+	t=1724774148; cv=none; b=TY5v/uLgKOosZFlT262J31Pc8YKO/+kIypAef83+Fz1HSq75eRym9Sd4wQbbstgfFWrmdAL+TESSJ4xocUpsubjSEOeOpknGJKjbrHM2HPvoyTkIkz3mMfBpnziACpedPKEd7GTX0SkybmLSXkyySWoW3uHD+RmjswRaU0kiKg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724761966; c=relaxed/simple;
-	bh=jhywql0i1Igm4tZ6CC7w55Fwugmoo13oCgW+x0dMPQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n95GA0QmwI/SwoRhY+ApPV3h9E+7l12sf3I3CIHCsISLtzIV9fSkLIKOxTubZZ/aWElF+Q6Z04swt3lGpyQ3qXgXGFj62Zfi5nYqTcu4X9XaabWpzKCdKmHJBIb/0oqv5zGxWEjIMIjlQ8YyuaQiK7lYCsZ4wrWKqJLSr+jl22c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=i47DtE17; arc=none smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1724774148; c=relaxed/simple;
+	bh=cBO2FyArKD0hhv02lTcB1TMtG8oLlZwbkjkc6NN/N60=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f4xZB7in3YipziNeLqsVZ2epDWISev0Hw9gd6D3jCMAirQ0TseeJd6WXaPI+hv+dVSRnD+mL9z07mNvprXF/aqVN7sMBJNsKbfc27DM/dbLbtecrtOXw2WUVKRFkK8ox4PT92lM8Qa4QZ1OWymMv2+AghJo9atFYSaFyOkOxAOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz; spf=pass smtp.mailfrom=tesarici.cz; dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b=Yr2QCciq; arc=none smtp.client-ip=37.205.15.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tesarici.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="i47DtE17"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6bf90d52e79so30024476d6.3
-        for <linux-coco@lists.linux.dev>; Tue, 27 Aug 2024 05:32:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1724761963; x=1725366763; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L5jbjcbxUPPj9zYNKoE0eIYQhFCqfcFcc1QbGEVtWHE=;
-        b=i47DtE17HUulYZuuB6U2Jkn7yuxDRxgmSKo0ghPgwtMiSM4vU/n/if64BXhZhXU1XL
-         4Smjgc5OaKxu68mERCHpS2ndkSCZQioOWFkx79t5XBAVaGmdfayhACH8v1bST1Gg1+/0
-         arztPg5Ti/i242CFn01YSKu0SOnKiWwxN4q8/gYHsJT4n6MafWG7y+TzE1NFD4Revjer
-         LUelxl1X61Q7OwZzpAnig8WiF/C4uqrEysSw/lZUcp+gAKT6oYqL7EXytaDMX7YJcp0Q
-         9VRf11Zl+1Py0rs57/xeZ+U+DGA6d03dxLJD1+yAb3usZZZUSuBSh923yNJ8zLWPhTBh
-         aBAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724761963; x=1725366763;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L5jbjcbxUPPj9zYNKoE0eIYQhFCqfcFcc1QbGEVtWHE=;
-        b=aXL2bb6fRFLMx6q5GrLSyeZ2Z/YP1k32d6z3jSw84BNjlLZLmlHUPXUAUy3XcenAVw
-         7b4VGpJhtOS0YcwKe1gKId5C+9NOMoE+CZGGJKTdRoy4OLiPlmmaZwuD62n9VZQmBrLA
-         G486DNAgQWsZ6NdPdfNG0EZTWzELA8NIIt+xCeWEXw4wsK/tscTpnpD8W9KC3E0zNP+s
-         N1f4ytLHMyckL27zBpFMMHDZMadyLnnqbXvjQHRxB38LebX32rJmdgW7Xtcbv/n6RYR7
-         TuGwaNKarDWai9hUqYLISoxEAHY+kAR5GdqTjFekJOo7R4yBtNWBDYsRTCJ12lN6wy0k
-         jS6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUIMrlVOnHx/Dh8OfZpVWJCp7muMNMcEFiLoG0PtQGdeJOJfdoAIKLAA/yuf4cC5rvLPjBu5iT29Fpl@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywa6xUkBF1QRblg6YGmy9UMKwZ5s8xrC8Og7qvoJ6h5SvlJRMR7
-	stCm0j4Y8FHc/dzoA2lHeHy/NWgctmPcTGHnu0f8ylhlaijCF6pVIDRQW0aEo1U=
-X-Google-Smtp-Source: AGHT+IFgABoyQ7opyAvWPQnFZTXKyke+4HJ1twIgh/+mRitM/qVkX72/Bi45aDM2XOpCwlcFx8pYwA==
-X-Received: by 2002:a05:6214:4381:b0:6c1:6a2e:afc6 with SMTP id 6a1803df08f44-6c16dc36d53mr159756336d6.15.1724761963298;
-        Tue, 27 Aug 2024 05:32:43 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-80-239.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.80.239])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c162dd1cfdsm55802226d6.129.2024.08.27.05.32.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Aug 2024 05:32:42 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1sivNK-000dsU-Aq;
-	Tue, 27 Aug 2024 09:32:42 -0300
-Date: Tue, 27 Aug 2024 09:32:42 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: kvm@vger.kernel.org, iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	pratikrajesh.sampat@amd.com, michael.day@amd.com,
-	david.kaplan@amd.com, dhaval.giani@amd.com,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>, Alexander Graf <agraf@suse.de>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Lukas Wunner <lukas@wunner.de>
-Subject: Re: [RFC PATCH 07/21] pci/tdisp: Introduce tsm module
-Message-ID: <20240827123242.GM3468552@ziepe.ca>
-References: <20240823132137.336874-1-aik@amd.com>
- <20240823132137.336874-8-aik@amd.com>
+	dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b="Yr2QCciq"
+Received: from mordecai.tesarici.cz (unknown [213.235.133.103])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by bee.tesarici.cz (Postfix) with ESMTPSA id BB8E91F64C8;
+	Tue, 27 Aug 2024 17:55:41 +0200 (CEST)
+Authentication-Results: mail.tesarici.cz; dmarc=fail (p=quarantine dis=none) header.from=tesarici.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tesarici.cz; s=mail;
+	t=1724774142; bh=Kgt1rDhB3tqHgknqxyoONMHMo+OxvdM/AzWNdimoAOE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Yr2QCciqpjJLdknVeRsD7PsgDs/BjCz1fzFb54yBUI3dAxCIH/yC8BaQmC7/rIZta
+	 R4kjf3UbLQCx1HLrAE4H2MgHezkcmPDFZQZ9nmLAlnCgcG7tHoQyc+4tzcXxmxeGY7
+	 trJ1BuKWBR09O0Y0zhR9kjieTqui1PosnMmSEtljfZmWeWRlO47Ec6PMVNuitXt+Tm
+	 ZbHUJnds5/jNYa0TE/npvMr4Rh6uHf2OuRT36H8OkM3E45X4PNypdTIftik36Eqlf5
+	 UAsu0FwczQ62eO0gD/RQm/Whj1+48funVWiYx6oo8oGD4OY2icw65WKNjg03OqWYJY
+	 hzHJcftv+yBNQ==
+Date: Tue, 27 Aug 2024 17:55:36 +0200
+From: Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: "mhkelley58@gmail.com" <mhkelley58@gmail.com>, "kbusch@kernel.org"
+ <kbusch@kernel.org>, "axboe@kernel.dk" <axboe@kernel.dk>,
+ "sagi@grimberg.me" <sagi@grimberg.me>,
+ "James.Bottomley@HansenPartnership.com"
+ <James.Bottomley@HansenPartnership.com>, "martin.petersen@oracle.com"
+ <martin.petersen@oracle.com>, "kys@microsoft.com" <kys@microsoft.com>,
+ "haiyangz@microsoft.com" <haiyangz@microsoft.com>, "wei.liu@kernel.org"
+ <wei.liu@kernel.org>, "decui@microsoft.com" <decui@microsoft.com>,
+ "robin.murphy@arm.com" <robin.murphy@arm.com>, "hch@lst.de" <hch@lst.de>,
+ "m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [RFC 1/7] swiotlb: Introduce swiotlb throttling
+Message-ID: <20240827175536.004785f3@mordecai.tesarici.cz>
+In-Reply-To: <SN6PR02MB4157AE3FA2E0D2227CC94CC0D4882@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20240822183718.1234-1-mhklinux@outlook.com>
+	<20240822183718.1234-2-mhklinux@outlook.com>
+	<20240823094101.07ba5e0f@meshulam.tesarici.cz>
+	<SN6PR02MB4157AE3FA2E0D2227CC94CC0D4882@SN6PR02MB4157.namprd02.prod.outlook.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240823132137.336874-8-aik@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 23, 2024 at 11:21:21PM +1000, Alexey Kardashevskiy wrote:
-> The module responsibilities are:
-> 1. detect TEE support in a device and create nodes in the device's sysfs
-> entry;
-> 2. allow binding a PCI device to a VM for passing it through in a trusted
-> manner;
+On Fri, 23 Aug 2024 20:41:15 +0000
+Michael Kelley <mhklinux@outlook.com> wrote:
 
-Binding devices to VMs and managing their lifecycle is the purvue of
-VFIO and iommufd, it should not be exposed via weird sysfs calls like
-this. You can't build the right security model without being inside
-the VFIO context.
+> From: Petr Tesa=C5=99=C3=ADk <petr@tesarici.cz> Sent: Friday, August 23, =
+2024 12:41 AM
+> >=20
+> > On Thu, 22 Aug 2024 11:37:12 -0700
+> > mhkelley58@gmail.com wrote:
+>[...]
+> > > @@ -71,12 +72,15 @@
+> > >   *		from each index.
+> > >   * @pad_slots:	Number of preceding padding slots. Valid only in the =
+first
+> > >   *		allocated non-padding slot.
+> > > + * @throttled:  Boolean indicating the slot is used by a request tha=
+t was
+> > > + *		throttled. Valid only in the first allocated non-padding slot.
+> > >   */
+> > >  struct io_tlb_slot {
+> > >  	phys_addr_t orig_addr;
+> > >  	size_t alloc_size;
+> > >  	unsigned short list;
+> > > -	unsigned short pad_slots;
+> > > +	u8 pad_slots;
+> > > +	u8 throttled; =20
+> >=20
+> > I'm not sure this flag is needed for each slot.
+> >=20
+> > SWIOTLB mappings should be throttled when the total SWIOTLB usage is
+> > above a threshold. Conversely, it can be unthrottled when the total
+> > usage goes below a threshold, and it should not matter if that happens
+> > due to an unmap of the exact buffer which previously pushed the usage
+> > over the edge, or due to an unmap of any other unrelated buffer. =20
+>=20
+> I think I understand what you are proposing. But I don't see a way
+> to make it work without adding global synchronization beyond
+> the current atomic counter for the number of uI'm sed slabs. At a minimum
+> we would need a global spin lock instead of the atomic counter. The spin
+> lock would protect the (non-atomic) slab count along with some other
+> accounting, and that's more global references. As described in the
+> cover letter, I was trying to avoid doing that.
 
-As I said in the other email, it seems like the PSP and the iommu
-driver need to coordinate to ensure the two DTEs are consistent, and
-solve the other sequencing problems you seem to have.
+I have thought about this for a few days. And I'm still not convinced.
+You have made it clear in multiple places that the threshold is a soft
+limit, and there are many ways the SWIOTLB utilization may exceed the
+threshold. In fact I'm not even 100% sure that an atomic counter is
+needed, because the check is racy anyway. Another task may increase
+(or decrease) the counter between atomic_long_read(&mem->total_used)
+and a subsequent down(&mem->throttle_sem).
 
-I'm not convinced this should be in some side module - it seems like
-this is possibly more logically integrated as part of the iommu..
+I consider it a feature, not a flaw, because the real important checks
+happen later while searching for free slots, and those are protected
+with a spinlock.
 
-> +static ssize_t tsm_dev_connect_store(struct device *dev, struct device_attribute *attr,
-> +				     const char *buf, size_t count)
-> +{
-> +	struct tsm_dev *tdev = tsm_dev_get(dev);
-> +	unsigned long val;
-> +	ssize_t ret = -EIO;
-> +
-> +	if (kstrtoul(buf, 0, &val) < 0)
-> +		ret = -EINVAL;
-> +	else if (val && !tdev->connected)
-> +		ret = tsm_dev_connect(tdev, tsm.private_data, val);
-> +	else if (!val && tdev->connected)
-> +		ret = tsm_dev_reclaim(tdev, tsm.private_data);
-> +
-> +	if (!ret)
-> +		ret = count;
-> +
-> +	tsm_dev_put(tdev);
-> +
-> +	return ret;
-> +}
-> +
-> +static ssize_t tsm_dev_connect_show(struct device *dev, struct device_attribute *attr, char *buf)
-> +{
-> +	struct tsm_dev *tdev = tsm_dev_get(dev);
-> +	ssize_t ret = sysfs_emit(buf, "%u\n", tdev->connected);
-> +
-> +	tsm_dev_put(tdev);
-> +	return ret;
-> +}
-> +
-> +static DEVICE_ATTR_RW(tsm_dev_connect);
+> If you can see how to do what you propose with just the current
+> atomic counter, please describe.
 
-Please do a much better job explaining the uAPIS you are trying to
-build in all the commit messages and how you expect them to be used.
+I think I'm certainly missing something obvious, but let me open the
+discussion to improve my understanding of the matter.
 
-Picking this stuff out of a 6k loc series is a bit tricky
+Suppose we don't protect the slab count with anything. What is the
+worst possible outcome? IIUC the worst scenario is that multiple tasks
+unmap swiotlb buffers simultaneously and all of them believe that their
+action made the total usage go below the low threshold, so all of them
+try to release the semaphore.
 
-Jason
+That's obviously not good, but AFAICS all that's needed is a
+test_and_clear_bit() on a per-io_tlb_mem throttled flag just before
+calling up(). Since up() would acquire the semaphore's spinlock, and
+there's only one semaphore per io_tlb_mem, adding an atomic flag doesn't
+look like too much overhead to me, especially if it ends up in the same
+cache line as the semaphore.
+
+Besides, this all happens only in the slow path, i.e. only after the
+current utilization has just dropped below the low threshold, not if
+the utilization was already below the threshold before freeing up some
+slots.
+
+I have briefly considered subtracting the low threshold as initial bias
+from mem->total_used and using atomic_long_add_negative() to avoid the
+need for an extra throttled flag, but at this point I'm not sure it can
+be implemented without any races. We can try to figure out the details
+if it sounds like a good idea.
+
+Petr T
