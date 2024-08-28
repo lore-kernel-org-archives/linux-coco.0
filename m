@@ -1,103 +1,256 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0863176259
-	for <linux-coco@lists.linux.dev>; Wed, 28 Aug 2024 14:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9229D1684A0;
+	Wed, 28 Aug 2024 14:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724855304; cv=none; b=KHiIIHZIuC4rJD2c9lyLQjuD/g8rEUeb26gpV/yfw/UU/xQ/REI3xE93OvLGUDOvMaFdR6hde+00oiorfO9yXdpLwYGfl1jY95HG4HnAVjPqvE2qybXJ6RdawEnjcOqTUv3bNXbP0JtH+e4xhocyTRfn+ii8HLQGgsOulB9tEkA=
+	t=1724855545; cv=none; b=ePsHPFIxvu7GccE0941otY6FJf/P4+61mqkAIjY/TooKoWigaKFzDEFP8+ycnreMwCZB61fwIXpxhV/PPyYzb26Fq5Jz75Pa3SAig5V+Y32cl2DUY83mZgtoxZBvs3YElOYdeAjkobYdeJkfNF20hcEqXeHx/Ae8FFlDlW1PX6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724855304; c=relaxed/simple;
-	bh=IqCHzZOe2MefKqf1QB3jOGgwTrRJJ43Amw8xlR1fSCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OiwXO0RMZHmg1rwXwUR4wM5Q1EjKe3TlLCXo04LqWzyFCu6oxWlJE/F2cUG5BZ88fdOwskQ1Wg395cWEJi3X6Ikn31YuWPIOs5ezlli0DDcNCvkO2mTtUUtj1YtvMFtrg1zhdNg8JSXLA3q7HRkPiS+DvojuzaFj5zZgoPBK2Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=T4lByg0e; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="T4lByg0e"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37198a6da58so4744862f8f.0
-        for <linux-coco@lists.linux.dev>; Wed, 28 Aug 2024 07:28:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1724855301; x=1725460101; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Wi8HafCTKyKeL7eno3kK3ziDMFF0EjcyEtRLeesAbgc=;
-        b=T4lByg0ek/Pk20F0w1SqveurHUgbFw/Hqv3Eld8CG87GYv6frkJqr2G43z/02kTp91
-         0KJ56ZdeXeY5Hlikg+XjbJLezlr/zLMfp33dPomZrDnToWQy1Bt+ndftjH+hoorKk1Nt
-         72sMA/a7rt0ckObdEZb0jkXnQpI1lRjsm7K6eh9719vkM2Rxugc9yoVrJqhunRklKCh8
-         HzhjEzHMYhy95aFo1yqUiNXyHWYluFgLUR1M//QqjRb/z0XHUVAQ43OFDkct2CMobQgs
-         zgKf91BQxchesZwMv9WegmvR1I4HgVUKye/Gi3KzuwqhtelhQ/FYpxKTg2NlgLTBaxJB
-         8WvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724855301; x=1725460101;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wi8HafCTKyKeL7eno3kK3ziDMFF0EjcyEtRLeesAbgc=;
-        b=bnLbXyGcgHLOTaFzz5rRW0rJqCdZVrMarHys11OGSyvMud9OFzNrstBZh63Y+lhu2C
-         YPIEwKmKOWo1GBb5knztbQE68pn9SpFzbmahXWXz6jxaCOklJRPzflou1r+vWF7TNUBn
-         U9icPxTHz5LfG8OI4ageybnD4Wk/Pasmd3nLmn+11+7Xdx7ta/2NyQBmChL+336EbaU7
-         HLBNBfBvw1tV2y9v4TbNwfEMv0mDTtzGLEzCDd1DFody7GbC9g9nOaV6nW7tRQXqEyKs
-         Yj6Qy73iYcS2G8IEGXe8SWbZZ7hXZz2mGCICkZVWmF4086JjfLpLI7aISz/D9eEWFG6p
-         MhXw==
-X-Gm-Message-State: AOJu0YyCxBHK8u82RGtgcW/rdk/4FdmGEUmbGpVA7u4hH5biFz3x5J/1
-	A8cV3ZnhMR4cl6fxWckJqGgoeOWQEL1Sg1NRtmd7/qQgb5lnI9qjUQzg+MzGzgI=
-X-Google-Smtp-Source: AGHT+IEu7+LqB/pIxxiTDjSXFhGZ5Uc89Xd+FMOCVfwIMBD9B6VLwoTWWqYC4EhfY9FURWCBWOpHMw==
-X-Received: by 2002:adf:f001:0:b0:371:7c68:7cd7 with SMTP id ffacd0b85a97d-373118e33d2mr12898139f8f.56.1724855300934;
-        Wed, 28 Aug 2024 07:28:20 -0700 (PDT)
-Received: from [10.20.4.146] (212-5-158-46.ip.btc-net.bg. [212.5.158.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a86e548624asm250836966b.42.2024.08.28.07.28.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Aug 2024 07:28:20 -0700 (PDT)
-Message-ID: <015695ef-d05e-4efc-8bba-03d4251db80c@suse.com>
-Date: Wed, 28 Aug 2024 17:28:18 +0300
+	s=arc-20240116; t=1724855545; c=relaxed/simple;
+	bh=Nz00Nh1OPekSP/JZVlLibawscnLN8fPc8jFtEbuR4aQ=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fSE2h94ES/rGRBAAcTY4Dnjxfz/+Y0D2NClkoBmUyQ4YOSHipxSGBSrlaU4mCHE2FXMjzqk/8Qy3ya4FfhBOKuqWyYXlUdoEykYe072Vh7ISm3+2Q5AEiVlu1cKYjADjNPGsVCLYkmYWWL/sKryL2sXB3d40LN8MZo/qXGAKTrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wv6H45fktz6H7nv;
+	Wed, 28 Aug 2024 22:29:04 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 257151400DB;
+	Wed, 28 Aug 2024 22:32:21 +0800 (CST)
+Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 28 Aug
+ 2024 15:32:20 +0100
+Date: Wed, 28 Aug 2024 15:32:19 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Alexey Kardashevskiy <aik@amd.com>
+CC: <kvm@vger.kernel.org>, <iommu@lists.linux.dev>,
+	<linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>, "Suravee
+ Suthikulpanit" <suravee.suthikulpanit@amd.com>, Alex Williamson
+	<alex.williamson@redhat.com>, Dan Williams <dan.j.williams@intel.com>,
+	<pratikrajesh.sampat@amd.com>, <michael.day@amd.com>, <david.kaplan@amd.com>,
+	<dhaval.giani@amd.com>, Santosh Shukla <santosh.shukla@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, "Michael Roth" <michael.roth@amd.com>, Alexander
+ Graf <agraf@suse.de>, "Nikunj A Dadhania" <nikunj@amd.com>, Vasant Hegde
+	<vasant.hegde@amd.com>, "Lukas Wunner" <lukas@wunner.de>
+Subject: Re: [RFC PATCH 06/21] crypto: ccp: Enable SEV-TIO feature in the
+ PSP when supported
+Message-ID: <20240828153219.00004a7b@Huawei.com>
+In-Reply-To: <20240823132137.336874-7-aik@amd.com>
+References: <20240823132137.336874-1-aik@amd.com>
+	<20240823132137.336874-7-aik@amd.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 1/4] x86/tdx: Introduce wrappers to read and write TD
- metadata
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- Kai Huang <kai.huang@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- stable@vger.kernel.org
-References: <20240828093505.2359947-1-kirill.shutemov@linux.intel.com>
- <20240828093505.2359947-2-kirill.shutemov@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-In-Reply-To: <20240828093505.2359947-2-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+
+On Fri, 23 Aug 2024 23:21:20 +1000
+Alexey Kardashevskiy <aik@amd.com> wrote:
+
+> The PSP advertises the SEV-TIO support via the FEATURE_INFO command
+> support of which is advertised via SNP_PLATFORM_STATUS.
+> 
+> Add FEATURE_INFO and use it to detect the TIO support in the PSP.
+> If present, enable TIO in the SNP_INIT_EX call.
+> 
+> While at this, add new bits to sev_data_snp_init_ex() from SEV-SNP 1.55.
+> 
+> Note that this tests the PSP firmware support but not if the feature
+> is enabled in the BIOS.
+> 
+> While at this, add new sev_data_snp_shutdown_ex::x86_snp_shutdown
+> 
+> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+I was curious so had a read.
+Some minor comments inline.
+
+Jonathan
+
+> ---
+>  include/linux/psp-sev.h      | 31 ++++++++-
+>  include/uapi/linux/psp-sev.h |  4 +-
+>  drivers/crypto/ccp/sev-dev.c | 73 ++++++++++++++++++++
+>  3 files changed, 104 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+> index 52d5ee101d3a..1d63044f66be 100644
+> --- a/include/linux/psp-sev.h
+> +++ b/include/linux/psp-sev.h
+> @@ -107,6 +107,7 @@ enum sev_cmd {
+>  	SEV_CMD_SNP_DOWNLOAD_FIRMWARE_EX = 0x0CA,
+>  	SEV_CMD_SNP_COMMIT		= 0x0CB,
+>  	SEV_CMD_SNP_VLEK_LOAD		= 0x0CD,
+> +	SEV_CMD_SNP_FEATURE_INFO	= 0x0CE,
+>  
+>  	SEV_CMD_MAX,
+>  };
+> @@ -584,6 +585,25 @@ struct sev_data_snp_addr {
+>  	u64 address;				/* In/Out */
+>  } __packed;
+>  
+> +/**
+> + * struct sev_data_snp_feature_info - SEV_CMD_SNP_FEATURE_INFO command params
+> + *
+> + * @len: length of this struct
+> + * @ecx_in: subfunction index of CPUID Fn8000_0024
+> + * @feature_info_paddr: physical address of a page with sev_snp_feature_info
+> + */
+
+Comment seems to have drifted away from the structure.
+
+> +#define SNP_FEATURE_FN8000_0024_EBX_X00_SEVTIO	1
+> +
+> +struct sev_snp_feature_info {
+> +	u32 eax, ebx, ecx, edx;			/* Out */
+> +} __packed;
+> +
+> +struct sev_data_snp_feature_info {
+> +	u32 length;				/* In */
+> +	u32 ecx_in;				/* In */
+> +	u64 feature_info_paddr;			/* In */
+> +} __packed;
+> +
+
+>  /**
+> @@ -787,7 +811,8 @@ struct sev_data_range_list {
+>  struct sev_data_snp_shutdown_ex {
+>  	u32 len;
+>  	u32 iommu_snp_shutdown:1;
+> -	u32 rsvd1:31;
+> +	u32 x86_snp_shutdown:1;
+
+Has docs that want updating I think.
+
+> +	u32 rsvd1:30;
+>  } __packed;
+>  
+>  /**
+
+> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+> index f6eafde584d9..a49fe54b8dd8 100644
+> --- a/drivers/crypto/ccp/sev-dev.c
+> +++ b/drivers/crypto/ccp/sev-dev.c
+> @@ -223,6 +223,7 @@ static int sev_cmd_buffer_len(int cmd)
+
+> +static int snp_feature_info_locked(struct sev_device *sev, u32 ecx,
+> +				   struct sev_snp_feature_info *fi, int *psp_ret)
+> +{
+> +	struct sev_data_snp_feature_info buf = {
+> +		.length = sizeof(buf),
+> +		.ecx_in = ecx,
+> +	};
+> +	struct page *status_page;
+> +	void *data;
+> +	int ret;
+> +
+> +	status_page = alloc_page(GFP_KERNEL_ACCOUNT);
+> +	if (!status_page)
+> +		return -ENOMEM;
+> +
+> +	data = page_address(status_page);
+> +
+> +	if (sev->snp_initialized && rmp_mark_pages_firmware(__pa(data), 1, true)) {
+> +		ret = -EFAULT;
+> +		goto cleanup;
+> +	}
+> +
+> +	buf.feature_info_paddr = __psp_pa(data);
+> +	ret = __sev_do_cmd_locked(SEV_CMD_SNP_FEATURE_INFO, &buf, psp_ret);
+> +
+> +	if (sev->snp_initialized && snp_reclaim_pages(__pa(data), 1, true))
+> +		ret = -EFAULT;
+		goto cleanup
+	}
+
+	memcpy(fi, data, sizeof(*fi));
+
+> +
+> +	if (!ret)
+> +		memcpy(fi, data, sizeof(*fi));
+
+rather than this is more consistent and hence easier to review.
+
+> +
+> +cleanup:
+> +	__free_pages(status_page, 0);
+
+	free_page(status_page);
+
+Maybe worth a DEFINE_FREE() to let you do early returns and make this
+even nicer to read.
 
 
 
-On 28.08.24 г. 12:35 ч., Kirill A. Shutemov wrote:
-> The TDG_VM_WR TDCALL is used to ask the TDX module to change some
-> TD-specific VM configuration. There is currently only one user in the
-> kernel of this TDCALL leaf.  More will be added shortly.
-> 
-> Refactor to make way for more users of TDG_VM_WR who will need to modify
-> other TD configuration values.
-> 
-> Add a wrapper for the TDG_VM_RD TDCALL that requests TD-specific
-> metadata from the TDX module. There are currently no users for
-> TDG_VM_RD. Mark it as __maybe_unused until the first user appears.
-> 
-> This is preparation for enumeration and enabling optional TD features.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Cc: stable@vger.kernel.org
+> +	return ret;
+> +}
+> +
+> +static int snp_get_feature_info(struct sev_device *sev, u32 ecx, struct sev_snp_feature_info *fi)
+> +{
+> +	struct sev_user_data_snp_status status = { 0 };
+> +	int psp_ret = 0, ret;
+> +
+> +	ret = snp_platform_status_locked(sev, &status, &psp_ret);
+> +	if (ret)
+> +		return ret;
+> +	if (ret != SEV_RET_SUCCESS)
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+	won't get here as ret definitely == 0
+given you checked it was just above.
+
+> +		return -EFAULT;
+> +	if (!status.feature_info)
+> +		return -ENOENT;
+> +
+> +	ret = snp_feature_info_locked(sev, ecx, fi, &psp_ret);
+> +	if (ret)
+> +		return ret;
+> +	if (ret != SEV_RET_SUCCESS)
+> +		return -EFAULT;
+and another.
+
+	return snp_feature_info_locked(...
+
+
+> +
+> +	return 0;
+> +}
+> +
+> +static bool sev_tio_present(struct sev_device *sev)
+> +{
+> +	struct sev_snp_feature_info fi = { 0 };
+> +	bool present;
+> +
+> +	if (snp_get_feature_info(sev, 0, &fi))
+> +		return false;
+> +
+> +	present = (fi.ebx & SNP_FEATURE_FN8000_0024_EBX_X00_SEVTIO) != 0;
+> +	dev_info(sev->dev, "SEV-TIO support is %s\n", present ? "present" : "not present");
+
+Probably too noisy for final driver but fine for RFC I guess.
+
+> +	return present;
+> +}
+> +
+>  static int __sev_snp_init_locked(int *error)
+>  {
+>  	struct psp_device *psp = psp_master;
+> @@ -1189,6 +1261,7 @@ static int __sev_snp_init_locked(int *error)
+>  		data.init_rmp = 1;
+>  		data.list_paddr_en = 1;
+>  		data.list_paddr = __psp_pa(snp_range_list);
+> +		data.tio_en = sev_tio_present(sev);
+>  		cmd = SEV_CMD_SNP_INIT_EX;
+>  	} else {
+>  		cmd = SEV_CMD_SNP_INIT;
+
