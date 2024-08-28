@@ -1,69 +1,57 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD2C165F13
-	for <linux-coco@lists.linux.dev>; Wed, 28 Aug 2024 09:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E2216C857;
+	Wed, 28 Aug 2024 10:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724837718; cv=none; b=kVxK/6nyx2ryJxBqcjH0GKuXewz0fFmDPg6kBAa85aTkYW9B8i2KG1s5QC/Z8GY+gT0Kz5i0K1QPsWsilnQrfm0hPrup0M8bK7j4bKz+wEFxCr0YImvXO+NscX3byqhjdfgzncO/WqkDUnifdyqhzAiYqxbygWiFJO7KhhoxPHg=
+	t=1724841904; cv=none; b=rOwILnRQCU/nrHFzyHLdhh5HT645K31tslVMMbioP5aFsBmyqvbGmr/R0/MP6HVzgv17QLYLndTn/Y8C4Z5sigWJ62BWNMYAJC1w7YNmlNCxG8BRFvJNxnuVbCbWdFpPE+BUdm7TqsiNfZ3VsmumO/O9mSFpFa0MDO4/WBRz5uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724837718; c=relaxed/simple;
-	bh=txhMMZiJ5qMnU9pWlrkfzR83GU0+BDmAM6j8E24Zs5U=;
+	s=arc-20240116; t=1724841904; c=relaxed/simple;
+	bh=RJ1IaqCvApyfSsH4KWoeYq/fuMQ6WydSqOcFuoqX4tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azWatfArdUa4lFXnAIT/KmwR6/LB1mBGP4lvLraOUHJ/ERQkW8gd+DsHzLQAIqXO/nDjYidwCBrmSxRrIMwIx1wqquxpAeiKq2QFEAfo0D69yaNWMNvye2zAdW5yVrGMVhWjgvsREaJrkDjW4pvLQp1PrWR0AiFiw7ot0mfVHKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zyweyqng; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+	 MIME-Version; b=YKPw7BOjSF375jKiNJgUF6MKK9UwvbIbsWJIcNeXxtOpY2yNWR8wjrgUVlGz8uCwQ1hp/8eqD/CXw2FAgJiTfhdGSqmzHAypk15J1ZcmylviH17qd6Ijyyy4uvSEzypVBIXNi3cp5aant1iyOTC9bn9OAoNFLEaiJ9myoQ6Atw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FGj9TDDU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zyweyqng"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724837717; x=1756373717;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=txhMMZiJ5qMnU9pWlrkfzR83GU0+BDmAM6j8E24Zs5U=;
-  b=ZyweyqngUtIXd21t01uPa0g4rNKD0LdWvJi/pKz95XGsjoXBBXpDqoyR
-   k+zvP4COFyZb3T/Qfknhk86YL6e+l6nHxQGkBwic4+dhvO1+R4LF0cF+P
-   79U4I++HjF10MGb107t3u3Xm+79N7WbfzKCYA1+V5hJzQYNVLon8uJTko
-   emjTafH0yz+jRPSxyErd3PAwF6zVqvYSLe501N/LavfXCwF+8FZLJIcZ9
-   NfwFDsVKAPfbTJK7knkwlS9EfByxeogcfQIuqihFADmnqcKK+GE2UmVTL
-   kKolQzQogABPKscWMPhJWcygatKebQWCuhmvNwxxHpTR978/BMZHRVCO5
-   A==;
-X-CSE-ConnectionGUID: JhIDuru5QlmaXmwsWbVWcg==
-X-CSE-MsgGUID: KcalBCBzQGe0O40LOkv9ug==
-X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="26254884"
-X-IronPort-AV: E=Sophos;i="6.10,182,1719903600"; 
-   d="scan'208";a="26254884"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2024 02:35:15 -0700
-X-CSE-ConnectionGUID: T/h+enk6SfaHYpNv8dnoiw==
-X-CSE-MsgGUID: VFvSTLrARWi9vWFF2Kfhmw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,182,1719903600"; 
-   d="scan'208";a="62827318"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa006.fm.intel.com with ESMTP; 28 Aug 2024 02:35:12 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 8665F143; Wed, 28 Aug 2024 12:35:10 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FGj9TDDU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E11C98EC0;
+	Wed, 28 Aug 2024 10:44:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724841903;
+	bh=RJ1IaqCvApyfSsH4KWoeYq/fuMQ6WydSqOcFuoqX4tc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FGj9TDDUTNbCLOxcabGJmSzllDBJrozhBRQ1w5AWt1FiASevc+ObKsfsxxMAp7+Ey
+	 YXoj1tgJVSJ0xaEOxU3Yv83cHMP+vzZbjkhiIQ/Z9M69gfUabLb2VN/n03xqE1Umbl
+	 6y49OPOmRZwGIunmupCzFkBB/sdCQUpyWe0P2ufvxZSdZ/8O0Z8cObK1sTszfLHpPk
+	 njbmCwXXTUPfDXpCEXcFZb39V8WCg1ZOnoFuioUeS7x1EQMXM5aiY3kUdsGnjcy8nT
+	 bNWKq9BoXDvP7YGlFDKXt4XZsBIC0iKVp+pUSkYnYt+aAbpOgUpcnaMERzYeq/qpwx
+	 fEHs0xheQ99ig==
+From: Alexey Gladkov <legion@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Cc: "Alexey Gladkov (Intel)" <legion@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yuan Yao <yuan.yao@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Yuntao Wang <ytcoode@gmail.com>,
 	Kai Huang <kai.huang@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCHv6 2/4] x86/tdx: Rename tdx_parse_tdinfo() to tdx_setup()
-Date: Wed, 28 Aug 2024 12:35:03 +0300
-Message-ID: <20240828093505.2359947-3-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240828093505.2359947-1-kirill.shutemov@linux.intel.com>
-References: <20240828093505.2359947-1-kirill.shutemov@linux.intel.com>
+	Baoquan He <bhe@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	cho@microsoft.com,
+	decui@microsoft.com,
+	John.Starks@microsoft.com
+Subject: [PATCH v5 0/6] x86/tdx: Allow MMIO instructions from userspace
+Date: Wed, 28 Aug 2024 12:44:30 +0200
+Message-ID: <cover.1724837158.git.legion@kernel.org>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <cover.1724248680.git.legion@kernel.org>
+References: <cover.1724248680.git.legion@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -72,58 +60,58 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rename tdx_parse_tdinfo() to tdx_setup() and move setting NOTIFY_ENABLES
-there.
+From: "Alexey Gladkov (Intel)" <legion@kernel.org>
 
-The function will be extended to adjust TD configuration.
+Currently, MMIO inside the TDX guest is allowed from kernel space and access
+from userspace is denied. This becomes a problem when working with virtual
+devices in userspace.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Cc: stable@vger.kernel.org
----
- arch/x86/coco/tdx/tdx.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+In TDX guest MMIO instructions are emulated in #VE. The kernel code uses special
+helpers to access MMIO memory to limit the number of instructions which are
+used.
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 64717a96a936..08ce488b54d0 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -193,7 +193,7 @@ static void __noreturn tdx_panic(const char *msg)
- 		__tdx_hypercall(&args);
- }
- 
--static void tdx_parse_tdinfo(u64 *cc_mask)
-+static void tdx_setup(u64 *cc_mask)
- {
- 	struct tdx_module_args args = {};
- 	unsigned int gpa_width;
-@@ -218,6 +218,9 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
- 	gpa_width = args.rcx & GENMASK(5, 0);
- 	*cc_mask = BIT_ULL(gpa_width - 1);
- 
-+	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
-+	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
-+
- 	/*
- 	 * The kernel can not handle #VE's when accessing normal kernel
- 	 * memory.  Ensure that no #VE will be delivered for accesses to
-@@ -964,11 +967,11 @@ void __init tdx_early_init(void)
- 	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
- 
- 	cc_vendor = CC_VENDOR_INTEL;
--	tdx_parse_tdinfo(&cc_mask);
--	cc_set_mask(cc_mask);
- 
--	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
--	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
-+	/* Configure the TD */
-+	tdx_setup(&cc_mask);
-+
-+	cc_set_mask(cc_mask);
- 
- 	/*
- 	 * All bits above GPA width are reserved and kernel treats shared bit
+This patchset makes MMIO accessible from userspace. To do this additional checks
+were added to ensure that the emulated instruction will not be compromised.
+
+
+v5:
+- Improve commit messages and comments in commits as suggested by Kirill A. Shutemov.
+- To emulate MOVS, instead of storing the entire address, started using a flag.
+
+v4:
+- Move patches to avoid crossing the page boundary to separate patchset. They
+  address separate issue.
+- Check the address only in user context and in case of nested exceptions.
+- Fix the check that the address does not point to private memory.
+
+v3:
+- Add patches to avoid crossing the page boundary when the instruction is read
+  and decoded in the TDX, SEV, UMIP.
+- Forbid accessing userspace addresses from kernel space. The exception to this
+  is when emulating MOVS instructions.
+- Fix address validation during MOVS emulation.
+
+v2:
+- Split into separate patches AMD helpers extraction and MOVS implementation
+  code for intel as suggested by Thomas Gleixner.
+- Fix coding style issues.
+
+
+Alexey Gladkov (Intel) (6):
+  x86/tdx: Split MMIO read and write operations
+  x86/tdx: Add validation of userspace MMIO instructions
+  x86/tdx: Allow MMIO from userspace
+  x86/tdx: Add a restriction on access to MMIO address
+  x86/tdx: Move MMIO helpers to common library
+  x86/tdx: Implement MOVS for MMIO
+
+ arch/x86/coco/sev/core.c         | 139 ++-----------
+ arch/x86/coco/tdx/tdx.c          | 338 ++++++++++++++++++++++++++-----
+ arch/x86/include/asm/io.h        |   3 +
+ arch/x86/include/asm/processor.h |   3 +
+ arch/x86/lib/iomem.c             | 115 +++++++++++
+ 5 files changed, 429 insertions(+), 169 deletions(-)
+
 -- 
-2.45.2
+2.46.0
 
