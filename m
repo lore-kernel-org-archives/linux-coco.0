@@ -1,243 +1,229 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5EF17332C;
-	Wed, 28 Aug 2024 10:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CF816C69B;
+	Wed, 28 Aug 2024 12:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724841930; cv=none; b=oF6kUfnJftSFbGibYj9PtMVZuGuWoivVGVWN3LTFxo6+THy3e9vQ11aN3WTrgC2/QKfq+38GuLdOTnHdZhfW0UiBNHktthEF/5k9E5utpls+4Q0FgbvmQyZ1LTjpRJ2HX2+BGXw06SDuTIzmKadozKyzzDTtIvDMJvjGhoAtUUM=
+	t=1724846573; cv=none; b=dDBQqvr5klbDe7ZCtkXybxLvgX6p68c5HL72Iqv1RkrndQyzZtT2F+LP3+7Zp8XgA1dTLR/GP6DLXMNq6br1aTl+a9XfbWGfn+WKaQGK2aKEPyfRiHbXhbWCxVW9knX1Jxf0Zz46Mvocg3xdjwrmILgdtJa0AMtLcQy+piDEczs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724841930; c=relaxed/simple;
-	bh=oJqUQOk3o8bIk/rAfWnTmRRVoeg4z5+bXwcyEO9YgA0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PkHztfcX6mbmZKzZzb3CTAZXATGBQ9MAeuVI8zNZ8uw65rqJBhMMPjyOZo2Peh1bFHrpEtqc5Xcr99xYlT/Ckv4ulEN1RanHRjKLzBvttrWGjMoaeExqwb8T9DRRBqOtS0J3jC3Bri3O/JrLIdzK7Oc5kKvIBpz4WCiYnuNdPFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vDAJ/kZw; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vDAJ/kZw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5139C98EC0;
-	Wed, 28 Aug 2024 10:45:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724841929;
-	bh=oJqUQOk3o8bIk/rAfWnTmRRVoeg4z5+bXwcyEO9YgA0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vDAJ/kZwaX7nXf8vqSCNOkFOT9yLQtcJgXUsWQeuVGGoiVJTLofjwxMyy1KMPBux7
-	 GidQ9s5nA8x7rz5d4gKl7qZ7fpVXsglyxRSE4ZFcDxlDsDm8lAmTZh3eQZJxNVv6Hs
-	 UCdlrZoqBzIdFHLJlpyG2odykUnbZegIM35iyq2cRqQfaD2Pq9ax4oKfSFt30/Xv8u
-	 uIq8RbWIeThbQSS1PlU5UjThHIYHa1DVbndeoYcj4JuPCzWiVZpY8bYhRC9Gd1AYXP
-	 jrWyWFcOZZ1qLwUc7fwufASPnfnkHnPp+sTp3ni6mrvlm6Y7VvevDqs82wsCszxwEW
-	 P9UZMn4xycy/Q==
-From: Alexey Gladkov <legion@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Cc: "Alexey Gladkov (Intel)" <legion@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yuan Yao <yuan.yao@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Yuntao Wang <ytcoode@gmail.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Baoquan He <bhe@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	cho@microsoft.com,
-	decui@microsoft.com,
-	John.Starks@microsoft.com
-Subject: [PATCH v5 6/6] x86/tdx: Implement MOVS for MMIO
-Date: Wed, 28 Aug 2024 12:44:36 +0200
-Message-ID: <86af46ade7688c9f4216da51573b6f74b7c53143.1724837158.git.legion@kernel.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <cover.1724837158.git.legion@kernel.org>
-References: <cover.1724248680.git.legion@kernel.org> <cover.1724837158.git.legion@kernel.org>
+	s=arc-20240116; t=1724846573; c=relaxed/simple;
+	bh=GV+R85tycGY3Ozigrbe3J1zpTJoK33VMYMatOrJvs0E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=rPjdADSTpmktv3jr+sb3Hr/uVMrnyVkpnwtW7b/dJ8Ku4mJt5I+et1jaDamjD45+KsEzKah1UBfwFsw8+IdC2PaKQaMN1mvP4oSYcoSLP2XExqxkqk8UGcD7sl9R3wSkZ9UhT9WmiVCoJQutnNqsq+vl8XN+bE3o5DNLO55rK+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B67AFDA7;
+	Wed, 28 Aug 2024 05:03:16 -0700 (PDT)
+Received: from [10.57.15.188] (unknown [10.57.15.188])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AD0133F762;
+	Wed, 28 Aug 2024 05:02:43 -0700 (PDT)
+Message-ID: <efc1eafc-dba4-4991-9f9a-58ceca1d9a35@arm.com>
+Date: Wed, 28 Aug 2024 13:02:31 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 0/7] Introduce swiotlb throttling
+To: mhklinux@outlook.com, kbusch@kernel.org, axboe@kernel.dk,
+ sagi@grimberg.me, James.Bottomley@HansenPartnership.com,
+ martin.petersen@oracle.com, kys@microsoft.com, haiyangz@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, hch@lst.de,
+ m.szyprowski@samsung.com, petr@tesarici.cz, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-nvme@lists.infradead.org,
+ linux-scsi@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-coco@lists.linux.dev
+References: <20240822183718.1234-1-mhklinux@outlook.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20240822183718.1234-1-mhklinux@outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: "Alexey Gladkov (Intel)" <legion@kernel.org>
+On 2024-08-22 7:37 pm, mhkelley58@gmail.com wrote:
+> From: Michael Kelley <mhklinux@outlook.com>
+> 
+> Background
+> ==========
+> Linux device drivers may make DMA map/unmap calls in contexts that
+> cannot block, such as in an interrupt handler. Consequently, when a
+> DMA map call must use a bounce buffer, the allocation of swiotlb
+> memory must always succeed immediately. If swiotlb memory is
+> exhausted, the DMA map call cannot wait for memory to be released. The
+> call fails, which usually results in an I/O error.
+> 
+> Bounce buffers are usually used infrequently for a few corner cases,
+> so the default swiotlb memory allocation of 64 MiB is more than
+> sufficient to avoid running out and causing errors. However, recently
+> introduced Confidential Computing (CoCo) VMs must use bounce buffers
+> for all DMA I/O because the VM's memory is encrypted. In CoCo VMs
+> a new heuristic allocates ~6% of the VM's memory, up to 1 GiB, for
+> swiotlb memory. This large allocation reduces the likelihood of a
+> spike in usage causing DMA map failures. Unfortunately for most
+> workloads, this insurance against spikes comes at the cost of
+> potentially "wasting" hundreds of MiB's of the VM's memory, as swiotlb
+> memory can't be used for other purposes.
+> 
+> Approach
+> ========
+> The goal is to significantly reduce the amount of memory reserved as
+> swiotlb memory in CoCo VMs, while not unduly increasing the risk of
+> DMA map failures due to memory exhaustion.
 
-Add emulation of the MOVS instruction on MMIO regions. MOVS emulation
-consists of dividing it into a series of read and write operations,
-which in turn will be validated separately.
+Isn't that fundamentally the same thing that SWIOTLB_DYNAMIC was already 
+meant to address? Of course the implementation of that is still young 
+and has plenty of scope to be made more effective, and some of the ideas 
+here could very much help with that, but I'm struggling a little to see 
+what's really beneficial about having a completely disjoint mechanism 
+for sitting around doing nothing in the precise circumstances where it 
+would seem most possible to allocate a transient buffer and get on with it.
 
-This implementation is based on the same principle as in SEV. It splits
-MOVS into separate read and write operations, which in turn can cause
-nested #VEs depending on which of the arguments caused the first #VE.
+Thanks,
+Robin.
 
-The difference with the SEV implementation is the execution context. SEV
-code is executed in atomic context. Exception handler in TDX is executed
-with interrupts enabled. That's why the approach to locking is
-different. In TDX, mmap_lock is taken to verify and emulate the
-instruction.
-
-Another difference is how the read and write instructions are executed
-for MOVS emulation. While in SEV each read/write operation returns to
-user space, in TDX these operations are performed from the kernel
-context.
-
-It may be possible to achieve more code reuse at this point,
-but it would require confirmation from SEV that such a thing wouldn't
-break anything.
-
-Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
----
- arch/x86/coco/tdx/tdx.c          | 82 ++++++++++++++++++++++++++++----
- arch/x86/include/asm/processor.h |  3 ++
- 2 files changed, 77 insertions(+), 8 deletions(-)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 65f65015238a..a9b3c6dee9ad 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -518,6 +518,60 @@ static int decode_insn_struct(struct insn *insn, struct pt_regs *regs)
- 	return 0;
- }
- 
-+static int handle_mmio_movs(struct insn *insn, struct pt_regs *regs, int size, struct ve_info *ve)
-+{
-+	unsigned long ds_base, es_base;
-+	unsigned char *src, *dst;
-+	unsigned char buffer[8];
-+	int off, ret;
-+	bool rep;
-+
-+	/*
-+	 * The in-kernel code must use a special API that does not use MOVS.
-+	 * If the MOVS instruction is received from in-kernel, then something
-+	 * is broken.
-+	 */
-+	if (WARN_ON_ONCE(!user_mode(regs)))
-+		return -EFAULT;
-+
-+	ds_base = insn_get_seg_base(regs, INAT_SEG_REG_DS);
-+	es_base = insn_get_seg_base(regs, INAT_SEG_REG_ES);
-+
-+	if (ds_base == -1L || es_base == -1L)
-+		return -EINVAL;
-+
-+	current->thread.in_mmio_emul = 1;
-+
-+	rep = insn_has_rep_prefix(insn);
-+
-+	do {
-+		src = ds_base + (unsigned char *) regs->si;
-+		dst = es_base + (unsigned char *) regs->di;
-+
-+		ret = __get_iomem(src, buffer, size);
-+		if (ret)
-+			goto out;
-+
-+		ret = __put_iomem(dst, buffer, size);
-+		if (ret)
-+			goto out;
-+
-+		off = (regs->flags & X86_EFLAGS_DF) ? -size : size;
-+
-+		regs->si += off;
-+		regs->di += off;
-+
-+		if (rep)
-+			regs->cx -= 1;
-+	} while (rep || regs->cx > 0);
-+
-+	ret = insn->length;
-+out:
-+	current->thread.in_mmio_emul = 0;
-+
-+	return ret;
-+}
-+
- static int handle_mmio_write(struct insn *insn, enum insn_mmio_type mmio, int size,
- 			     struct pt_regs *regs, struct ve_info *ve)
- {
-@@ -539,9 +593,8 @@ static int handle_mmio_write(struct insn *insn, enum insn_mmio_type mmio, int si
- 		return insn->length;
- 	case INSN_MMIO_MOVS:
- 		/*
--		 * MMIO was accessed with an instruction that could not be
--		 * decoded or handled properly. It was likely not using io.h
--		 * helpers or accessed MMIO accidentally.
-+		 * MOVS is processed through higher level emulation which breaks
-+		 * this instruction into a sequence of reads and writes.
- 		 */
- 		return -EINVAL;
- 	default:
-@@ -600,6 +653,7 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- {
- 	enum insn_mmio_type mmio;
- 	struct insn insn = {};
-+	int need_validation;
- 	unsigned long vaddr;
- 	int size, ret;
- 
-@@ -611,14 +665,27 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- 	if (WARN_ON_ONCE(mmio == INSN_MMIO_DECODE_FAILED))
- 		return -EINVAL;
- 
-+	if (mmio == INSN_MMIO_MOVS)
-+		return handle_mmio_movs(&insn, regs, size, ve);
-+
-+	need_validation = user_mode(regs);
-+
- 	if (!user_mode(regs) && !is_kernel_addr(ve->gla)) {
--		WARN_ONCE(1, "Access to userspace address is not supported");
--		return -EINVAL;
-+		/*
-+		 * Access from kernel to userspace addresses is not allowed
-+		 * unless it is a nested exception during MOVS emulation.
-+		 */
-+		if (!current->thread.in_mmio_emul || !current->mm) {
-+			WARN_ONCE(1, "Access to userspace address is not supported");
-+			return -EINVAL;
-+		}
-+
-+		need_validation = 1;
- 	}
- 
- 	vaddr = (unsigned long)insn_get_addr_ref(&insn, regs);
- 
--	if (user_mode(regs)) {
-+	if (need_validation) {
- 		if (mmap_read_lock_killable(current->mm))
- 			return -EINTR;
- 
-@@ -644,7 +711,6 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- 	switch (mmio) {
- 	case INSN_MMIO_WRITE:
- 	case INSN_MMIO_WRITE_IMM:
--	case INSN_MMIO_MOVS:
- 		ret = handle_mmio_write(&insn, mmio, size, regs, ve);
- 		break;
- 	case INSN_MMIO_READ:
-@@ -665,7 +731,7 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- 		ret = -EINVAL;
- 	}
- unlock:
--	if (user_mode(regs))
-+	if (need_validation)
- 		mmap_read_unlock(current->mm);
- 
- 	return ret;
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index a75a07f4931f..33875a217ed8 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -486,6 +486,9 @@ struct thread_struct {
- 	unsigned long		iopl_emul;
- 
- 	unsigned int		iopl_warn:1;
-+#ifdef CONFIG_INTEL_TDX_GUEST
-+	unsigned int		in_mmio_emul:1;
-+#endif
- 
- 	/*
- 	 * Protection Keys Register for Userspace.  Loaded immediately on
--- 
-2.46.0
-
+> To reach this goal, this patch set introduces the concept of swiotlb
+> throttling, which can delay swiotlb allocation requests when swiotlb
+> memory usage is high. This approach depends on the fact that some
+> DMA map requests are made from contexts where it's OK to block.
+> Throttling such requests is acceptable to spread out a spike in usage.
+> 
+> Because it's not possible to detect at runtime whether a DMA map call
+> is made in a context that can block, the calls in key device drivers
+> must be updated with a MAY_BLOCK attribute, if appropriate. When this
+> attribute is set and swiotlb memory usage is above a threshold, the
+> swiotlb allocation code can serialize swiotlb memory usage to help
+> ensure that it is not exhausted.
+> 
+> In general, storage device drivers can take advantage of the MAY_BLOCK
+> option, while network device drivers cannot. The Linux block layer
+> already allows storage requests to block when the BLK_MQ_F_BLOCKING
+> flag is present on the request queue. In a CoCo VM environment,
+> relatively few device types are used for storage devices, and updating
+> these drivers is feasible. This patch set updates the NVMe driver and
+> the Hyper-V storvsc synthetic storage driver. A few other drivers
+> might also need to be updated to handle the key CoCo VM storage
+> devices.
+> 
+> Because network drivers generally cannot use swiotlb throttling, it is
+> still possible for swiotlb memory to become exhausted. But blunting
+> the maximum swiotlb memory used by storage devices can significantly
+> reduce the peak usage, and a smaller amount of swiotlb memory can be
+> allocated in a CoCo VM. Also, usage by storage drivers is likely to
+> overall be larger than for network drivers, especially when large
+> numbers of disk devices are in use, each with many I/O requests in-
+> flight.
+> 
+> swiotlb throttling does not affect the context requirements of DMA
+> unmap calls. These always complete without blocking, even if the
+> corresponding DMA map call was throttled.
+> 
+> Patches
+> =======
+> Patches 1 and 2 implement the core of swiotlb throttling. They define
+> DMA attribute flag DMA_ATTR_MAY_BLOCK that device drivers use to
+> indicate that a DMA map call is allowed to block, and therefore can be
+> throttled. They update swiotlb_tbl_map_single() to detect this flag and
+> implement the throttling. Similarly, swiotlb_tbl_unmap_single() is
+> updated to handle a previously throttled request that has now freed
+> its swiotlb memory.
+> 
+> Patch 3 adds the dma_recommend_may_block() call that device drivers
+> can use to know if there's benefit in using the MAY_BLOCK option on
+> DMA map calls. If not in a CoCo VM, this call returns "false" because
+> swiotlb is not being used for all DMA I/O. This allows the driver to
+> set the BLK_MQ_F_BLOCKING flag on blk-mq request queues only when
+> there is benefit.
+> 
+> Patch 4 updates the SCSI-specific DMA map calls to add a "_attrs"
+> variant to allow passing the MAY_BLOCK attribute.
+> 
+> Patch 5 adds the MAY_BLOCK option to the Hyper-V storvsc driver, which
+> is used for storage in CoCo VMs in the Azure public cloud.
+> 
+> Patches 6 and 7 add the MAY_BLOCK option to the NVMe PCI host driver.
+> 
+> Discussion
+> ==========
+> * Since swiotlb isn't visible to device drivers, I've specifically
+> named the DMA attribute as MAY_BLOCK instead of MAY_THROTTLE or
+> something swiotlb specific. While this patch set consumes MAY_BLOCK
+> only on the DMA direct path to do throttling in the swiotlb code,
+> there might be other uses in the future outside of CoCo VMs, or
+> perhaps on the IOMMU path.
+> 
+> * The swiotlb throttling code in this patch set throttles by
+> serializing the use of swiotlb memory when usage is above a designated
+> threshold: i.e., only one new swiotlb request is allowed to proceed at
+> a time. When the corresponding unmap is done to release its swiotlb
+> memory, the next request is allowed to proceed. This serialization is
+> global and without knowledge of swiotlb areas. From a storage I/O
+> performance standpoint, the serialization is a bit restrictive, but
+> the code isn't trying to optimize for being above the threshold. If a
+> workload regularly runs above the threshold, the size of the swiotlb
+> memory should be increased.
+> 
+> * Except for knowing how much swiotlb memory is currently allocated,
+> throttle accounting is done without locking or atomic operations. For
+> example, multiple requests could proceed in parallel when usage is
+> just under the threshold, putting usage above the threshold by the
+> aggregate size of the parallel requests. The threshold must already be
+> set relatively conservatively because of drivers that can't enable
+> throttling, so this slop in the accounting shouldn't be a problem.
+> It's better than the potential bottleneck of a globally synchronized
+> reservation mechanism.
+> 
+> * In a CoCo VM, mapping a scatter/gather list makes an independent
+> swiotlb request for each entry. Throttling each independent request
+> wouldn't really work, so the code throttles only the first SGL entry.
+> Once that entry passes any throttle, subsequent entries in the SGL
+> proceed without throttling. When the SGL is unmapped, entries 1 thru
+> N-1 are unmapped first, then entry 0 is unmapped, allowing the next
+> serialized request to proceed.
+> 
+> Open Topics
+> ===========
+> 1. swiotlb allocations from Xen and the IOMMU code don't make use of
+> throttling. This could be added if beneficial.
+> 
+> 2. The throttling values are currently exposed and adjustable in
+> /sys/kernel/debug/swiotlb. Should any of this be moved so it is
+> visible even without CONFIG_DEBUG_FS?
+> 
+> 3. I have not changed the current heuristic for the swiotlb memory
+> size in CoCo VMs. It's not clear to me how to link this to whether the
+> key storage drivers have been updated to allow throttling. For now,
+> the benefit of reduced swiotlb memory size must be realized using the
+> swiotlb= kernel boot line option.
+> 
+> 4. I need to update the swiotlb documentation to describe throttling.
+> 
+> This patch set is built against linux-next-20240816.
+> 
+> Michael Kelley (7):
+>    swiotlb: Introduce swiotlb throttling
+>    dma: Handle swiotlb throttling for SGLs
+>    dma: Add function for drivers to know if allowing blocking is useful
+>    scsi_lib_dma: Add _attrs variant of scsi_dma_map()
+>    scsi: storvsc: Enable swiotlb throttling
+>    nvme: Move BLK_MQ_F_BLOCKING indicator to struct nvme_ctrl
+>    nvme: Enable swiotlb throttling for NVMe PCI devices
+> 
+>   drivers/nvme/host/core.c    |   4 +-
+>   drivers/nvme/host/nvme.h    |   2 +-
+>   drivers/nvme/host/pci.c     |  18 ++++--
+>   drivers/nvme/host/tcp.c     |   3 +-
+>   drivers/scsi/scsi_lib_dma.c |  13 ++--
+>   drivers/scsi/storvsc_drv.c  |   9 ++-
+>   include/linux/dma-mapping.h |  13 ++++
+>   include/linux/swiotlb.h     |  15 ++++-
+>   include/scsi/scsi_cmnd.h    |   7 ++-
+>   kernel/dma/Kconfig          |  13 ++++
+>   kernel/dma/direct.c         |  41 +++++++++++--
+>   kernel/dma/direct.h         |   1 +
+>   kernel/dma/mapping.c        |  10 ++++
+>   kernel/dma/swiotlb.c        | 114 ++++++++++++++++++++++++++++++++----
+>   14 files changed, 227 insertions(+), 36 deletions(-)
+> 
