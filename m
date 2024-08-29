@@ -1,103 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAA4148FF0;
-	Thu, 29 Aug 2024 18:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B07F18B479
+	for <linux-coco@lists.linux.dev>; Thu, 29 Aug 2024 22:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724956864; cv=none; b=pEQYY5tyTdgdB+uV3yL6mBs2ZoAiZ2TBAADb7bMUlCu6Ja0BxnIB+y8tAPJgAToi/nscIfgCD5+dHGv8JLkQV2XFBEoNNVurFmHQJB+ANfuyYb/AoXo5p/BJYlDVJxKOrhjfVLpSty4ZGTEy88P0oJt2SnP0BpBOXVic3S0IchI=
+	t=1724970273; cv=none; b=NoHelYriKrffAhq/lLHckXh4Pb/gKKGDVnBClAVn/OaoJ6yVZN19PSZj9zscdyA2rcr5V82Pc7tPoBZDPGzMMOJYaDRXJKvLEZ13+ep9uRYabYmi6+JJLDuzafSiuY9h4zJx0RC4zjmAcH1yE16RkP8fqAlE4xBLPHBhLJe3Jlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724956864; c=relaxed/simple;
-	bh=FLcFkLH3+Lv6+PmzGb4e9u+eCIxjMRaOgAkP2qTMK/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZQAhUS00A+ZYyD7VmXOt1iEH0AjbKkFPHlIx/N1Wz5K90VjHflJK1yE3yFtSBNIH6M0ByURzuMzSU7CaXqmB+Bace4HOiV9iEiFmM2LWUGj/f2WZYS7kg4eoFWu/Pz40gcWjjEMUJuUoBtgJpVhtzCFya/EoVvyjBBl8V1CLRPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKxi7XH/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724970273; c=relaxed/simple;
+	bh=Y/VGX0u7JSsRBTCC3cXYvYlXH0MeuOZ4hyXlo5DJ76s=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=AMQ/PWmC+YnFSR8hbhJhx+76U6ZwEsVRSDNkMjQiCHMEXSDpo/01WcxSTWtG89qb7RpRt45/auRsZt1gKQtDkbj0ZNNVeZtz/zkWfz9o405SRJdcgpolL1sOwdvm/s1GqK5tWXh1pxG6/WsOILSPSy69kgzhTOqYN0tv+WxOaKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=C1AwnNLY; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKxi7XH/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F16C4CEC2;
-	Thu, 29 Aug 2024 18:40:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724956863;
-	bh=FLcFkLH3+Lv6+PmzGb4e9u+eCIxjMRaOgAkP2qTMK/M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PKxi7XH/rml0la9geg3Di8jmTtNqxF3mKzrtGlcSK7a5fum2yv+e3itS+FZjXAO/W
-	 kpFldxTzKcJR+W+ry0hYPhv3Lhq4yGfqhPmLAsVEaX306B3RgsiM9EpOoxKqm5gpIg
-	 8T04UZeQLcC9icGRY7JbSQrPuJa5YtmT4saxPhUYBuVmy5a6/yNHFP6uv7XagPdtoC
-	 tbCkmauap143goVLGvm+5yBxubEKiFGgqQl+0o11fljZxv0JUnYlznM2+zkE0v9VRi
-	 SDk1pa26ZVp4I/TUWt1Er5FfPAMzv1yXkhfv6uNwZrJCqwIiXrm0fcxTAbYe5xtS8o
-	 6s25lRAvkgv+w==
-Date: Thu, 29 Aug 2024 20:40:56 +0200
-From: Alexey Gladkov <legion@kernel.org>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yuan Yao <yuan.yao@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>,
-	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
-	cho@microsoft.com, decui@microsoft.com, John.Starks@microsoft.com
-Subject: Re: [PATCH v5 6/6] x86/tdx: Implement MOVS for MMIO
-Message-ID: <ZtDAuDAyGevAhSj-@example.org>
-References: <cover.1724248680.git.legion@kernel.org>
- <cover.1724837158.git.legion@kernel.org>
- <86af46ade7688c9f4216da51573b6f74b7c53143.1724837158.git.legion@kernel.org>
- <6n6tn2t4tabiclau7cpav6b7kisuotqwg246wp5lxgfngoyyl2@674snretgst5>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="C1AwnNLY"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47THchVs027493;
+	Thu, 29 Aug 2024 22:24:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=7iq3GRLIa6xNJ+/ns9duml
+	S8c3TCTwTI8XA/iSqTdxI=; b=C1AwnNLYfH58zBji0xxrjpQbVJ3DjOL3CCE86W
+	QiR4/7I0yKP1GtADipPXrEhymUw+tzqmB4etl03sQwV6N4mj4iCFaEtkN0Cb9UKv
+	T+7pHMdV1QKm0tCIFW7TpaJna5+ZhWp2Oqk/sWXok09clMFnCtQrY+9pjV0LKAkT
+	8b9RY2s40QB1Qafa6PKjlGxERZ7Ow/Qh7/0NcBMplBiYVC9WZz/ls2mDL6d0sVnn
+	winJjfGnWUfDB96FArxNxi0XrJxe358GVrvFaeNoIaMacOFallIsq7vlV05gCmPF
+	vY6ypd4V7E0hZ19eP5tZxIOcLFdNvg1ecEkBD5VMI/q1Yyog==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419puvesnv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 22:24:12 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47TMOBHN014608
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 22:24:11 GMT
+Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 29 Aug 2024 15:24:10 -0700
+From: Elliot Berman <quic_eberman@quicinc.com>
+Subject: [PATCH RFC v2 0/5] mm: Introduce guest_memfd library
+Date: Thu, 29 Aug 2024 15:24:08 -0700
+Message-ID: <20240829-guest-memfd-lib-v2-0-b9afc1ff3656@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6n6tn2t4tabiclau7cpav6b7kisuotqwg246wp5lxgfngoyyl2@674snretgst5>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAj10GYC/2WNwQrCMBBEf6Xs2UiyJFY9FQQ/wKv0UJNNu2BbT
+ dqilP67IVePb4Z5s0KkwBThXKwQaOHI45AAdwXYrhlaEuwSA0rUskQU7UxxEj313oknP4Q2xqN
+ Wyjh9gLR6BfL8ycY73K4XqFPYcZzG8M0vi8pVFh6l+RMuSkhBpsFTo703rqzeM1se7N6OPdTbt
+ v0A3eI4lrUAAAA=
+To: Andrew Morton <akpm@linux-foundation.org>,
+        Sean Christopherson
+	<seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov
+	<bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Fuad Tabba
+	<tabba@google.com>, David Hildenbrand <david@redhat.com>,
+        Patrick Roy
+	<roypat@amazon.co.uk>, <qperret@google.com>,
+        Ackerley Tng
+	<ackerleytng@google.com>,
+        Mike Rapoport <rppt@kernel.org>, <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+        <linux-arm-msm@vger.kernel.org>,
+        Elliot Berman <quic_eberman@quicinc.com>
+X-Mailer: b4 0.14.1
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: _yYbQidiBAnKOeD_gPtq4BTytlypn2jq
+X-Proofpoint-GUID: _yYbQidiBAnKOeD_gPtq4BTytlypn2jq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-29_06,2024-08-29_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=797 priorityscore=1501 bulkscore=0 impostorscore=0
+ adultscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0 mlxscore=0
+ spamscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408290158
 
-On Thu, Aug 29, 2024 at 03:44:55PM +0300, Kirill A. Shutemov wrote:
-> On Wed, Aug 28, 2024 at 12:44:36PM +0200, Alexey Gladkov wrote:
-> > From: "Alexey Gladkov (Intel)" <legion@kernel.org>
-> > 
-> > Add emulation of the MOVS instruction on MMIO regions. MOVS emulation
-> > consists of dividing it into a series of read and write operations,
-> > which in turn will be validated separately.
-> > 
-> > This implementation is based on the same principle as in SEV. It splits
-> > MOVS into separate read and write operations, which in turn can cause
-> > nested #VEs depending on which of the arguments caused the first #VE.
-> > 
-> > The difference with the SEV implementation is the execution context. SEV
-> > code is executed in atomic context. Exception handler in TDX is executed
-> > with interrupts enabled. That's why the approach to locking is
-> > different. In TDX, mmap_lock is taken to verify and emulate the
-> > instruction.
-> > 
-> > Another difference is how the read and write instructions are executed
-> > for MOVS emulation. While in SEV each read/write operation returns to
-> > user space, in TDX these operations are performed from the kernel
-> > context.
-> 
-> It looks like SEV only returns to userspace to retry the instruction after
-> stepping on failed __get_user()/__put_user(), unrolling back to
-> vc_raw_handle_exception() and handling page fault there.
+In preparation for adding more features to KVM's guest_memfd, refactor
+and introduce a library which abstracts some of the core-mm decisions
+about managing folios associated with the file. The goal of the refactor
+serves two purposes:
 
-In vc_handle_mmio_movs() if regs->cx is not zero we return ES_RETRY. The
-vc_handle_mmio(), vc_handle_exitcode() return it as is. In
-vc_raw_handle_exception() if vc_handle_exitcode() returns ES_RETRY then we
-just return true. So, the ES_RETRY is not further visible.
+1. Provide an easier way to reason about memory in guest_memfd. With KVM
+supporting multiple confidentiality models (TDX, SEV-SNP, pKVM, ARM
+CCA), and coming support for allowing kernel and userspace to access
+this memory, it seems necessary to create a stronger abstraction between
+core-mm concerns and hypervisor concerns.
 
-Or am I missing something?
+2. Provide a common implementation for other hypervisors (Gunyah) to use.
 
-> 
-> But I'm not sure what happens with #VC inside vc_read_mem() and
-> vc_write_mem(). Can the #VC exception be nested? Tom?
-> 
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
-> 
+To create a guest_memfd, the owner provides operations to attempt to
+unmap the folio and check whether a folio is accessible to the host. The
+owner can call guest_memfd_make_inaccessible() to ensure Linux doesn't
+have the folio mapped.
 
+The series first introduces a guest_memfd library based on the current
+KVM (next) implementation, then adds few features needed for Gunyah and
+arm64 pKVM. The Gunyah usage of the series will be posted separately
+shortly after sending this series. I'll work with Fuad on using the
+guest_memfd library for arm64 pKVM based on the feedback received.
+
+There are a few TODOs still pending. 
+- The KVM patch isn't tested. I don't have access a SEV-SNP setup to be
+  able to test.
+- I've not yet investigated deeply whether having the guest_memfd
+  library helps live migration. I'd appreciate any input on that part.
+- We should consider consolidating the adjust_direct_map() in
+  arch/x86/virt/svm/sev.c so guest_memfd can take care of it.
+- There's a race possibility where the folio ref count is incremented
+  and about to also increment the safe counter, but waiting for the
+  folio lock to be released. The owner of folio_lock will see mismatched
+  counter values and not be able to convert to (in)accessible, even
+  though it should be okay to do so.
+ 
+I'd appreciate any feedback, especially on the direction I'm taking for
+tracking the (in)accessible state.
+
+Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+
+Changes in v2:
+- Significantly reworked to introduce "accessible" and "safe" reference
+  counters
+- Link to v1:
+  https://lore.kernel.org/r/20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com
+
+---
+Elliot Berman (5):
+      mm: Introduce guest_memfd
+      mm: guest_memfd: Allow folios to be accessible to host
+      kvm: Convert to use guest_memfd library
+      mm: guest_memfd: Add ability for userspace to mmap pages
+      mm: guest_memfd: Add option to remove inaccessible memory from direct map
+
+ arch/x86/kvm/svm/sev.c      |   3 +-
+ include/linux/guest_memfd.h |  49 ++++
+ mm/Kconfig                  |   3 +
+ mm/Makefile                 |   1 +
+ mm/guest_memfd.c            | 667 ++++++++++++++++++++++++++++++++++++++++++++
+ virt/kvm/Kconfig            |   1 +
+ virt/kvm/guest_memfd.c      | 371 +++++-------------------
+ virt/kvm/kvm_main.c         |   2 -
+ virt/kvm/kvm_mm.h           |   6 -
+ 9 files changed, 797 insertions(+), 306 deletions(-)
+---
+base-commit: 5be63fc19fcaa4c236b307420483578a56986a37
+change-id: 20240722-guest-memfd-lib-455f24115d46
+
+Best regards,
 -- 
-Rgrds, legion
+Elliot Berman <quic_eberman@quicinc.com>
 
