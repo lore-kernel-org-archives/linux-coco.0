@@ -1,738 +1,333 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB9A1BA86D
-	for <linux-coco@lists.linux.dev>; Thu, 29 Aug 2024 22:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724970275; cv=none; b=aNK2ZBJpyG4zfTPtoTQLJafFWz/h4pbQHe/ILErrQpYmPw0Piix98AyaBen0sN0Y7p5nFR5Gv1K+Qkbumzt7REyaI045ZWMoNQpQhYHdec9fy5Vdfn+Ip0oSNdN08NtIbPXHB4c+4JYgIqR0JmEPVKuLOHUBGtTxTZz9bi8u1as=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724970275; c=relaxed/simple;
-	bh=OVpsnsnklWI91mBnkJxqpUi4I2UexG3F/rRgCYr+w5Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=Z6/Jt0UI8SpikmNYm0TNATpU8G+iHc7AACRJYD0QaKt0xaBa7BbZvbfJZDZU8sVm1Dx5hZOtKwt0Nxs3+zaDxHLnWQa664cvNxAmlxYw2hQQOnnvcvOigtpN6UN+btyiFVMSVutGJ70AwlboxzAn0XRF2ss0g43EE/+OwcTFCcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BZ2cy6VK; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A3A18F2FA;
+	Thu, 29 Aug 2024 23:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724974903; cv=fail; b=a0BDihzGPF2osifbYUQNw+mM4aTNijBZgKaDFFRxiqDEnYQSosir9YcJxFdZdXr7DGdEO0WEnzexMB6OsstqYzDeX92luPpARbGocWTacu3kgCnBPEvj0HkwZDv8PyIQJL8OavtnLYq/xI028iouuEAv8GrsyFbEO3YSpqdcVGE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724974903; c=relaxed/simple;
+	bh=Qd5TRsKbe2gX+YFOD8JDbkUqbTVtp/k2O1yoTvZZN1A=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=k0ozKXN5aK68AACCOSfa+4OT3nqVP8EwKJFmXNqcOMg+GMJEBaHy3+uYyOD8jhK5ZXBCJI3Xb7UGDY5daDaHSDTdksiN9iM4165bWy1uC8K5T0UkRsL20jwUFosOzojYu92yyfoU1PwGs9CQCqJggt0rOMHWOxFKaLBNjFhteng=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FRF7n+6M; arc=fail smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BZ2cy6VK"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47TGK3xQ005704;
-	Thu, 29 Aug 2024 22:24:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	d2/WnP2frNBYCJvNS7Pj/sP9q/9Ds6gocJG9LQvySYc=; b=BZ2cy6VKH9zO+TRh
-	H/H/KZy33RkTyj7jBOCHlrahsoxDZqyO/o5i0rW4eZgp8M79zIirPprIieb22E82
-	jN4hLvSyM/7KB65al3/+SJ5AvHI/N+QaPS0iNGIX55OCqzklUcp1nHbAzuT3klLZ
-	aCnS52AWRU+Nu/GkOAK/cRHZUoquW8e2VjdzFfHd9PCmVEyubW4vioNsu0lMcMcU
-	5PXG4eMsBZ2RDFkh1vqcVLeVH8BVbS34OMLV2JloJhe4DrFZKzFuUkSJlVteKN+J
-	p90xDl47PNvK4D341qw8OUNFsDIbnfoO+Uja/b+I61YeCiCunmw7iVpI8W8lWuVF
-	Eccjdg==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419putxv3c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Aug 2024 22:24:13 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47TMOCM2019594
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Aug 2024 22:24:12 GMT
-Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FRF7n+6M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724974901; x=1756510901;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=Qd5TRsKbe2gX+YFOD8JDbkUqbTVtp/k2O1yoTvZZN1A=;
+  b=FRF7n+6MA5h8pselBT0nxf6LdEBXoU9sgRIq360ou8OubOzAvlttJ0Fy
+   CGlvIEGR7z8zfdbHnfaANuC6ZHGbh3HvmPkN3NVlHhyZt6X4YFZC8TBdO
+   Aao1cBTtqfqt6p3MxUokcbJfAdqRXHlmZCVH12o2WGeieKB7fPXcP8Oza
+   f+f3aTgGZZ9RGbQX41ug1WBhsFZungoRsqfKZTpn3QDD1n+rk/JBAsbro
+   H7mD4kBwr4Y4gUizmDSf/aGEf12aLP5X5csevg/1wc/6ZmA2mOnO5dYBY
+   hhyVhmGUDP8cugK0hY5aSaB+EAoWSmGbN4P3pa0+oFYxqIe8PZewaTenl
+   Q==;
+X-CSE-ConnectionGUID: lIgApYp+Q0W4kJjuf8NN6g==
+X-CSE-MsgGUID: n2WrOtHKRumB0a7mgYlLiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="34977074"
+X-IronPort-AV: E=Sophos;i="6.10,187,1719903600"; 
+   d="scan'208";a="34977074"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 16:41:41 -0700
+X-CSE-ConnectionGUID: kszvPSsgT+ixe/+aC6rbIA==
+X-CSE-MsgGUID: TzhO27nmTAKJJPpDpXfg6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,187,1719903600"; 
+   d="scan'208";a="67890456"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 29 Aug 2024 16:41:41 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 29 Aug 2024 16:41:40 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 29 Aug 2024 16:41:40 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Thu, 29 Aug 2024 16:41:40 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.43) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 29 Aug 2024 15:24:12 -0700
-From: Elliot Berman <quic_eberman@quicinc.com>
-Date: Thu, 29 Aug 2024 15:24:11 -0700
-Subject: [PATCH RFC v2 3/5] kvm: Convert to use guest_memfd library
+ 15.1.2507.39; Thu, 29 Aug 2024 16:41:40 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F2ujXcPvE3e6XM3IY1vQ571NgYX3dLgcRhbMN9V5rZ9bJr3bAkwaxyTJjNIY5SSiHcz3K0xBcgfzgw61wAEqK4Uw9nm2VFqSzmV6D9oTXRlcsx31Uu8PgImz5jBb9ErRDJTYAoqbSW4db3ih/5RQOsVY11URw4QwhhXzATgxRdZz+Y8XBMsR2LGQds6QdklCDk1bnB3uTGv3BELFDurWEkZWVY1cJg310AY6FKtVIuNhPD8n9aXEEWu+PgxJLR/I5VwC3sQTS3K2kdbx/cTnd341ntBNxxm9OlZnBBu/hooa7OZHwoUMgbRJh2G/U/P4c+gICMYQ+4viIZaEuzqgnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mEUXfnqz02fzFUqRjQGMabClB4KLYxbq1mu6BAfCS6g=;
+ b=UocW8yidQkXT/mLXbfpHoNYOoGqdDuVteY89kxzcW2qp84OYth+6lfytL7Yyj0+ymoWqgU4/Euzc7rb55shDhjINQfg1n0rs18awDzu8E2xC/p8PB8qBlkxXV3fzqMiLe+hy2I1h1V3qz/Oh5v7yeMu1KT+KuW3RndZOTDYVe+Y0QuZzDJOUFuHACEmzNEDMFX8w1qT60g72JeMmJ9h6N7JnYw71T0yYIRjgHOxTmRuMOdUtBSVRp4jllQhfA8xRb+LFS+U8v2V+F/PDMxEKzwqcu08PB4Km+hbOf7vM7a1wrxGhWAwam1a9KG3kpP1sdiLkdS5/IY4SUyLVsaDvuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA2PR11MB4828.namprd11.prod.outlook.com (2603:10b6:806:110::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.27; Thu, 29 Aug
+ 2024 23:41:38 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%7]) with mapi id 15.20.7897.021; Thu, 29 Aug 2024
+ 23:41:37 +0000
+Date: Thu, 29 Aug 2024 16:41:34 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Alexey Kardashevskiy <aik@amd.com>, Dan Williams
+	<dan.j.williams@intel.com>, <kvm@vger.kernel.org>
+CC: <iommu@lists.linux.dev>, <linux-coco@lists.linux.dev>,
+	<linux-pci@vger.kernel.org>, Suravee Suthikulpanit
+	<suravee.suthikulpanit@amd.com>, Alex Williamson
+	<alex.williamson@redhat.com>, <pratikrajesh.sampat@amd.com>,
+	<michael.day@amd.com>, <david.kaplan@amd.com>, <dhaval.giani@amd.com>,
+	Santosh Shukla <santosh.shukla@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, "Alexander
+ Graf" <agraf@suse.de>, Nikunj A Dadhania <nikunj@amd.com>, Vasant Hegde
+	<vasant.hegde@amd.com>, Lukas Wunner <lukas@wunner.de>
+Subject: Re: [RFC PATCH 00/21] Secure VFIO, TDISP, SEV TIO
+Message-ID: <66d1072ea0590_31daf294e8@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20240823132137.336874-1-aik@amd.com>
+ <66cf8bfdd0527_88eb2942e@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <6cd62b80-9a8d-4f01-a458-4466dac6d27f@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <6cd62b80-9a8d-4f01-a458-4466dac6d27f@amd.com>
+X-ClientProxiedBy: MW4P220CA0024.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:303:115::29) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240829-guest-memfd-lib-v2-3-b9afc1ff3656@quicinc.com>
-References: <20240829-guest-memfd-lib-v2-0-b9afc1ff3656@quicinc.com>
-In-Reply-To: <20240829-guest-memfd-lib-v2-0-b9afc1ff3656@quicinc.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Sean Christopherson
-	<seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Thomas Gleixner
-	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov
-	<bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Fuad Tabba
-	<tabba@google.com>, David Hildenbrand <david@redhat.com>,
-        Patrick Roy
-	<roypat@amazon.co.uk>, <qperret@google.com>,
-        Ackerley Tng
-	<ackerleytng@google.com>,
-        Mike Rapoport <rppt@kernel.org>, <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-        <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-        <linux-arm-msm@vger.kernel.org>,
-        Elliot Berman <quic_eberman@quicinc.com>
-X-Mailer: b4 0.14.1
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: KkmqlMiCSiehdHohJ5aZU1fbV3yHin3l
-X-Proofpoint-GUID: KkmqlMiCSiehdHohJ5aZU1fbV3yHin3l
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-29_06,2024-08-29_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 suspectscore=0 phishscore=0 spamscore=0 bulkscore=0
- clxscore=1015 mlxscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408290158
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA2PR11MB4828:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6fc904f5-1329-46a0-69ee-08dcc8841ff7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?rNsNNNYAtpOd49M6Ul4CYj3ngF0A2AjDPLWvCI7W4YyucA1+EVoFMEg3cr1E?=
+ =?us-ascii?Q?LP2S7EXthyzcQpELf0xmc90r1isbh400mELxn8q6x2oBmrXGx8+IBKKWeuw2?=
+ =?us-ascii?Q?o8P/4v8lFLAhCtJnG4kIndLEFetEShOrU5/Vlk87Xt6ZveFrnEn5hv9fAlFy?=
+ =?us-ascii?Q?HkldW92yCLjmpXOHnhj7HxBBtzsKAi5bFWc4jfO26n4kStakVj7zVmY2lYEr?=
+ =?us-ascii?Q?YdblEfPJS2hXlz7P2FVh9E+EkNQa9RgGgiQDIlNjF4knDnXbS6MNTk3dei7U?=
+ =?us-ascii?Q?GtCK0l74G8kadkbFlJfLOxF9UgRlGoiDRoykunhNpPMZKWe4Gy/cSe1+zrRX?=
+ =?us-ascii?Q?S5joinxnXs3J6LY+EwxjXGBaEn0+zgiFjRPQV/h6kbYZube4WHXKEIH9VM7+?=
+ =?us-ascii?Q?A37lCHrmjLAHK7MWNTirgYUUQ/+E73bZnJaXSFJ+2SORcvrWvWIliZfiiW8s?=
+ =?us-ascii?Q?g35k30bQJnCkmNUG9ep3nEeOFb+aHBhN34SabFOUorRbjHVBW+arZEvmHHVr?=
+ =?us-ascii?Q?7W1nVc8BL7MLSdIE5G8LqA01dR799YNsSMew17imLT+DhOsP4ral38d98ONq?=
+ =?us-ascii?Q?dKj03SmzbKIVirEc4fsOt+Oxgy+Vtuqv54r6jcJUD+/9EWxeV1uG31/wWzXa?=
+ =?us-ascii?Q?WE5mao7aR8x7KKb5gh8p+6ns2GTVJ4B64/lj/pHXVypwdWbUvrmmKLxknxUF?=
+ =?us-ascii?Q?k626wNkpccudHItEb7vVEJHk5nRf12C5nMicBSH0LzO05iL0vs8NCruLGPnL?=
+ =?us-ascii?Q?JKXRXy5EDvViEWP6p2mB9Qh9yEaeevdVl0Fjwlxzyu+P6TGPf5jCn1ZUMSSf?=
+ =?us-ascii?Q?BRjdu3/nSxReCGc8dfFGkcX5QsM/hLzAdJgWwo7WRwpg4rBQ86xow3ER03iO?=
+ =?us-ascii?Q?jGO9zRv3BX4xMSLrziV/oJdww1GMxoOGSj19BjdO1gCUMf+0ikx1JwiJwArX?=
+ =?us-ascii?Q?RW6jSTaXn352/1LDsYmq3x6Enkkmet2hZ2Ui84H1DDUirQN8WZJ6WN+dluw5?=
+ =?us-ascii?Q?UoKECfzIC1hdPoeGWhXwSXgI44JcBdEKhn/dfVr6PDvCA5rwtZjL6tVM5BNU?=
+ =?us-ascii?Q?U1xmkn132S0Cdd7Nzm0+7T2tiiiNU2bJC62B8Ylq6TvJ6Y0BoOyLYvq3QdYw?=
+ =?us-ascii?Q?GA+6aey4ngrfFNCJM6zBgXlkSfsyxOBDqz3YaLxxMASoFwDt8M9TPPn2vNba?=
+ =?us-ascii?Q?p7Da9hyTDRf/yRyf0tIvYCmQlgIzPRZBLzuW3vW/DGHMcjO+nU3QM8bSojX/?=
+ =?us-ascii?Q?EfA3kbQpYWs7DWu9WJqRwxzI+vC0qw75Qtk9QWrLmhr9bMHspq2q3ZWYAPpx?=
+ =?us-ascii?Q?RhYJmEUGXp7dSSuG+PgaHW26vcWAerstzmWGJc3QG73BQQ=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7gVfGZqd8o2mPn8kOfUFwJwO/RAeaLmXsbCRbk6z+DqUDF/88G8v6h/54eoS?=
+ =?us-ascii?Q?67qGK7rsPppx2uZPyp/8r2kzQh3Fy+Wi9dODZJs4r8+rC/vGK1s1Ls1j2V32?=
+ =?us-ascii?Q?ibiquatI7oOzUntsU+YUy+qc/m8xXYLkTcwsoxIZ2UIB2aW/XT8wIpBrAZ+Z?=
+ =?us-ascii?Q?02JhPzdv1aVGDRsW2ZQEdZ8pv5pRQ7NJb+S+cnNkgvK8p1Ak0IgaznnOYKVs?=
+ =?us-ascii?Q?+V9eobN9LuZV4FwGKmg0MdIW0CpjegqiBRpxM/tKGxI2zv4+baTWlReY4im8?=
+ =?us-ascii?Q?uoTgOWb/FwIGAhA8crVQPcYmG1I09hhb+Tyn0lh/Gow7+iyMYADAG9GoUzFS?=
+ =?us-ascii?Q?azZ6TDyQLOExVMWfj7FM4ZnRL6k9py6yxOvjKvns2bub1GeBK/TvRMDD3dQZ?=
+ =?us-ascii?Q?SngrSzOl1mbh+6jwOMiMFMI0V0AhDtk0IA50Q49yiGunXkjX7noQv7NNVyFL?=
+ =?us-ascii?Q?PRB02Iyie4/PWyy2318TxsT6N7v+l+O1+j2wg3uZYJGrn3cPv18Pe1QwbRrj?=
+ =?us-ascii?Q?Cl2HASJg2c8rkOt9RwVCu5DEP6ZMBs8KT0f9jSXJ0g0GpXGHKF9Yc5Vvy7wq?=
+ =?us-ascii?Q?AxOO50DHvhQJDJ4hqjOXn7U4Wc4lNH7/DaJ4kueZIVy+jKZLrEqe26n4b210?=
+ =?us-ascii?Q?en1kfwH/otSUNYcO2IB4oXP2Hl761Ul47toYkHYVMwXQ57S0MpiyML/HVup2?=
+ =?us-ascii?Q?jhovQ6sp0I+ovSbOa/OnPn4RffWi/MCB2/pj7ivYr29Ra/qSOdCkV/gf9voi?=
+ =?us-ascii?Q?DERKM8UGNr9hRIK9tCN0VWiUE7PZ4juI8zoHyD/aFar/p6+TJe4L3mq9qoeD?=
+ =?us-ascii?Q?kuqTsOD+O07fQnZ8wgyqoGIq7G4Wxms2INvSI5Jtx12jbDDfVfRRMoGYyF/k?=
+ =?us-ascii?Q?RW/+ojVp7OcQ45NlpnDxCucglx29tKO79mg6iF3MsR0FHTv2sD+/E72IAxgs?=
+ =?us-ascii?Q?Q2o/KMCoZ8PwkJN1iJRDaI9UYh9wXPJzD+kscb/zsuJ8wZ4ybg6wqRlxgf1F?=
+ =?us-ascii?Q?vZzwHsxETsaMPrWw7Nk76zOJrdkmzv7ZgD9dNwHEalzY84V3JzQuY+X+mrAM?=
+ =?us-ascii?Q?pP3XtAhDWajOcGjdtG5Hc9gOgGTpoFNQr8NIxr3JhHa4tD/JQimp3QHrmxLY?=
+ =?us-ascii?Q?F5XO5VhdokepueW/TJJuf3N6OeMexCJHIxgMzPSJ1yARLdzy18Vugcig4jqb?=
+ =?us-ascii?Q?ElSLumTkUJUWgkACvDgBc7A37FqDHbhrTK7kz0j82f9JDpbPX87x1uMAX1g5?=
+ =?us-ascii?Q?hRrQWY24L3Q1Z8Mq43e3lK7JMn6wW+pQlVwZCVSt3ZYktYdkEimvBugE6Ukv?=
+ =?us-ascii?Q?BbQoQBzj9UpusMmqRy4bPUrhE+U6BDSmU/zxOC1zKi9l27P9L7r+Iiihr7Ro?=
+ =?us-ascii?Q?s0LQFOooQT4mUH9+ddiaw4qbySXLPqmd5qsUB/OybooSJO1wyj3t+AMNHmP/?=
+ =?us-ascii?Q?gFhE+6Fbk5snWs+6PCa/u5KBQ620QjZ3im674mP9gRvvjDttnZ+Z43Tebht3?=
+ =?us-ascii?Q?qqcn8YAe0fgFO5k4EnVYc4uuuJ8IB+KEZo3Fk2TQVtwRG5B6lj83R96fgMyL?=
+ =?us-ascii?Q?pIcxa26sgVLVe/TBwnlVL2Gba0F3L6bh4VLZ6tpo6V7I/CXVEcGbqrIYDiXo?=
+ =?us-ascii?Q?Qw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fc904f5-1329-46a0-69ee-08dcc8841ff7
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2024 23:41:37.8353
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GjI0pgO8LdKoJZMRjtD7OmUVz5Sxm+qmkBUbnGPoeT9nxGWTJU6BwtxKt4x0XIVW22A0sYu8TZeB3zSZE/r5O93iDhdUBjQXfVQOpl8u0Ug=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4828
+X-OriginatorOrg: intel.com
 
-Use the recently created mm/guest_memfd implementation. No functional
-change intended.
+Alexey Kardashevskiy wrote:
+[..]
+> >> - skipping various enforcements of non-SME or
+> >> SWIOTLB in the guest;
+> > 
+> > Is this based on some concept of private vs shared mode devices?
+> > 
+> >> No mixed share+private DMA supported within the
+> >> same IOMMU.
+> > 
+> > What does this mean? A device may not have mixed mappings (makes sense),
+> 
+> Currently devices do not have an idea about private host memory (but it 
+> is being worked on afaik).
 
-Note: I've only compile-tested this. Appreciate some help from SEV folks
-to be able to test this.
+Worked on where? You mean the PCI core indicating that a device is
+private or not? Is that not indicated by guest-side TSM connection
+state?
 
-Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
----
- arch/x86/kvm/svm/sev.c |   3 +-
- virt/kvm/Kconfig       |   1 +
- virt/kvm/guest_memfd.c | 371 ++++++++++---------------------------------------
- virt/kvm/kvm_main.c    |   2 -
- virt/kvm/kvm_mm.h      |   6 -
- 5 files changed, 77 insertions(+), 306 deletions(-)
+> > or an IOMMU can not host devices that do not all agree on whether DMA is
+> > private or shared?
+> 
+> The hardware allows that via hardware-assisted vIOMMU and I/O page 
+> tables in the guest with C-bit takes into accound by the IOMMU but the 
+> software support is missing right now. So for this initial drop, vTOM is 
+> used for DMA - this thing says "everything below <addr> is private, 
+> above <addr> - shared" so nothing needs to bother with the C-bit, and in 
+> my exercise I set the <addr> to the allowed maximum.
+> 
+> So each IOMMUFD instance in the VM is either "all private mappings" or 
+> "all shared". Could be half/half by moving that <addr> :)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 714c517dd4b72..f3a6857270943 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2297,8 +2297,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
- 			kunmap_local(vaddr);
- 		}
- 
--		ret = rmp_make_private(pfn + i, gfn << PAGE_SHIFT, PG_LEVEL_4K,
--				       sev_get_asid(kvm), true);
-+		ret = guest_memfd_make_inaccessible(pfn_folio(pfn));
- 		if (ret)
- 			goto err;
- 
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index fd6a3010afa83..1e7a3dc488919 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -106,6 +106,7 @@ config KVM_GENERIC_MEMORY_ATTRIBUTES
- 
- config KVM_PRIVATE_MEM
-        select XARRAY_MULTI
-+       select GUEST_MEMFD
-        bool
- 
- config KVM_GENERIC_PRIVATE_MEM
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 8f079a61a56db..cbff71b6019db 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -1,9 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/backing-dev.h>
--#include <linux/falloc.h>
-+#include <linux/guest_memfd.h>
- #include <linux/kvm_host.h>
- #include <linux/pagemap.h>
--#include <linux/anon_inodes.h>
- 
- #include "kvm_mm.h"
- 
-@@ -13,6 +11,13 @@ struct kvm_gmem {
- 	struct list_head entry;
- };
- 
-+static inline struct kvm_gmem *inode_to_kvm_gmem(struct inode *inode)
-+{
-+	struct list_head *gmem_list = &inode->i_mapping->i_private_list;
-+
-+	return list_first_entry_or_null(gmem_list, struct kvm_gmem, entry);
-+}
-+
- /**
-  * folio_file_pfn - like folio_file_page, but return a pfn.
-  * @folio: The folio which contains this index.
-@@ -25,12 +30,11 @@ static inline kvm_pfn_t folio_file_pfn(struct folio *folio, pgoff_t index)
- 	return folio_pfn(folio) + (index & (folio_nr_pages(folio) - 1));
- }
- 
--static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
--				    pgoff_t index, struct folio *folio)
-+static int kvm_gmem_prepare_inaccessible(struct inode *inode, struct folio *folio)
- {
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
--	kvm_pfn_t pfn = folio_file_pfn(folio, index);
--	gfn_t gfn = slot->base_gfn + index - slot->gmem.pgoff;
-+	kvm_pfn_t pfn = folio_file_pfn(folio, 0);
-+	gfn_t gfn = slot->base_gfn + folio_index(folio) - slot->gmem.pgoff;
- 	int rc = kvm_arch_gmem_prepare(kvm, gfn, pfn, folio_order(folio));
- 	if (rc) {
- 		pr_warn_ratelimited("gmem: Failed to prepare folio for index %lx GFN %llx PFN %llx error %d.\n",
-@@ -42,67 +46,7 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
- 	return 0;
- }
- 
--static inline void kvm_gmem_mark_prepared(struct folio *folio)
--{
--	folio_mark_uptodate(folio);
--}
--
--/*
-- * Process @folio, which contains @gfn, so that the guest can use it.
-- * The folio must be locked and the gfn must be contained in @slot.
-- * On successful return the guest sees a zero page so as to avoid
-- * leaking host data and the up-to-date flag is set.
-- */
--static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
--				  gfn_t gfn, struct folio *folio)
--{
--	unsigned long nr_pages, i;
--	pgoff_t index;
--	int r;
--
--	nr_pages = folio_nr_pages(folio);
--	for (i = 0; i < nr_pages; i++)
--		clear_highpage(folio_page(folio, i));
--
--	/*
--	 * Preparing huge folios should always be safe, since it should
--	 * be possible to split them later if needed.
--	 *
--	 * Right now the folio order is always going to be zero, but the
--	 * code is ready for huge folios.  The only assumption is that
--	 * the base pgoff of memslots is naturally aligned with the
--	 * requested page order, ensuring that huge folios can also use
--	 * huge page table entries for GPA->HPA mapping.
--	 *
--	 * The order will be passed when creating the guest_memfd, and
--	 * checked when creating memslots.
--	 */
--	WARN_ON(!IS_ALIGNED(slot->gmem.pgoff, 1 << folio_order(folio)));
--	index = gfn - slot->base_gfn + slot->gmem.pgoff;
--	index = ALIGN_DOWN(index, 1 << folio_order(folio));
--	r = __kvm_gmem_prepare_folio(kvm, slot, index, folio);
--	if (!r)
--		kvm_gmem_mark_prepared(folio);
--
--	return r;
--}
--
--/*
-- * Returns a locked folio on success.  The caller is responsible for
-- * setting the up-to-date flag before the memory is mapped into the guest.
-- * There is no backing storage for the memory, so the folio will remain
-- * up-to-date until it's removed.
-- *
-- * Ignore accessed, referenced, and dirty flags.  The memory is
-- * unevictable and there is no storage to write back to.
-- */
--static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
--{
--	/* TODO: Support huge pages. */
--	return filemap_grab_folio(inode->i_mapping, index);
--}
--
--static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
-+static void __kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
- 				      pgoff_t end)
- {
- 	bool flush = false, found_memslot = false;
-@@ -137,118 +81,38 @@ static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
- 		KVM_MMU_UNLOCK(kvm);
- }
- 
--static void kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
--				    pgoff_t end)
-+static int kvm_gmem_invalidate_begin(struct inode *inode, pgoff_t offset, unsigned long nr)
- {
--	struct kvm *kvm = gmem->kvm;
--
--	if (xa_find(&gmem->bindings, &start, end - 1, XA_PRESENT)) {
--		KVM_MMU_LOCK(kvm);
--		kvm_mmu_invalidate_end(kvm);
--		KVM_MMU_UNLOCK(kvm);
--	}
--}
--
--static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
--{
--	struct list_head *gmem_list = &inode->i_mapping->i_private_list;
--	pgoff_t start = offset >> PAGE_SHIFT;
--	pgoff_t end = (offset + len) >> PAGE_SHIFT;
- 	struct kvm_gmem *gmem;
- 
--	/*
--	 * Bindings must be stable across invalidation to ensure the start+end
--	 * are balanced.
--	 */
--	filemap_invalidate_lock(inode->i_mapping);
--
--	list_for_each_entry(gmem, gmem_list, entry)
--		kvm_gmem_invalidate_begin(gmem, start, end);
--
--	truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
--
--	list_for_each_entry(gmem, gmem_list, entry)
--		kvm_gmem_invalidate_end(gmem, start, end);
--
--	filemap_invalidate_unlock(inode->i_mapping);
-+	list_for_each_entry(gmem, &inode->i_mapping->i_private_list, entry)
-+		__kvm_gmem_invalidate_begin(gmem, offset, offset + nr);
- 
- 	return 0;
- }
- 
--static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
-+static void __kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
-+				    pgoff_t end)
- {
--	struct address_space *mapping = inode->i_mapping;
--	pgoff_t start, index, end;
--	int r;
--
--	/* Dedicated guest is immutable by default. */
--	if (offset + len > i_size_read(inode))
--		return -EINVAL;
--
--	filemap_invalidate_lock_shared(mapping);
--
--	start = offset >> PAGE_SHIFT;
--	end = (offset + len) >> PAGE_SHIFT;
--
--	r = 0;
--	for (index = start; index < end; ) {
--		struct folio *folio;
--
--		if (signal_pending(current)) {
--			r = -EINTR;
--			break;
--		}
--
--		folio = kvm_gmem_get_folio(inode, index);
--		if (IS_ERR(folio)) {
--			r = PTR_ERR(folio);
--			break;
--		}
--
--		index = folio_next_index(folio);
--
--		folio_unlock(folio);
--		folio_put(folio);
--
--		/* 64-bit only, wrapping the index should be impossible. */
--		if (WARN_ON_ONCE(!index))
--			break;
-+	struct kvm *kvm = gmem->kvm;
- 
--		cond_resched();
-+	if (xa_find(&gmem->bindings, &start, end - 1, XA_PRESENT)) {
-+		KVM_MMU_LOCK(kvm);
-+		kvm_mmu_invalidate_end(kvm);
-+		KVM_MMU_UNLOCK(kvm);
- 	}
--
--	filemap_invalidate_unlock_shared(mapping);
--
--	return r;
- }
- 
--static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
--			       loff_t len)
-+static void kvm_gmem_invalidate_end(struct inode *inode, pgoff_t offset, unsigned long nr)
- {
--	int ret;
--
--	if (!(mode & FALLOC_FL_KEEP_SIZE))
--		return -EOPNOTSUPP;
--
--	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
--		return -EOPNOTSUPP;
--
--	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
--		return -EINVAL;
--
--	if (mode & FALLOC_FL_PUNCH_HOLE)
--		ret = kvm_gmem_punch_hole(file_inode(file), offset, len);
--	else
--		ret = kvm_gmem_allocate(file_inode(file), offset, len);
-+	struct kvm_gmem *gmem;
- 
--	if (!ret)
--		file_modified(file);
--	return ret;
-+	list_for_each_entry(gmem, &inode->i_mapping->i_private_list, entry)
-+		__kvm_gmem_invalidate_end(gmem, offset, offset + nr);
- }
- 
--static int kvm_gmem_release(struct inode *inode, struct file *file)
-+static void __kvm_gmem_release(struct inode *inode, struct kvm_gmem *gmem)
- {
--	struct kvm_gmem *gmem = file->private_data;
- 	struct kvm_memory_slot *slot;
- 	struct kvm *kvm = gmem->kvm;
- 	unsigned long index;
-@@ -274,8 +138,8 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 	 * Zap all SPTEs pointed at by this file.  Do not free the backing
- 	 * memory, as its lifetime is associated with the inode, not the file.
- 	 */
--	kvm_gmem_invalidate_begin(gmem, 0, -1ul);
--	kvm_gmem_invalidate_end(gmem, 0, -1ul);
-+	__kvm_gmem_invalidate_begin(gmem, 0, -1ul);
-+	__kvm_gmem_invalidate_end(gmem, 0, -1ul);
- 
- 	list_del(&gmem->entry);
- 
-@@ -287,6 +151,14 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 	kfree(gmem);
- 
- 	kvm_put_kvm(kvm);
-+}
-+
-+static int kvm_gmem_release(struct inode *inode)
-+{
-+	struct kvm_gmem *gmem;
-+
-+	list_for_each_entry(gmem, &inode->i_mapping->i_private_list, entry)
-+		__kvm_gmem_release(inode, gmem);
- 
- 	return 0;
- }
-@@ -302,94 +174,11 @@ static inline struct file *kvm_gmem_get_file(struct kvm_memory_slot *slot)
- 	return get_file_active(&slot->gmem.file);
- }
- 
--static struct file_operations kvm_gmem_fops = {
--	.open		= generic_file_open,
--	.release	= kvm_gmem_release,
--	.fallocate	= kvm_gmem_fallocate,
--};
--
--void kvm_gmem_init(struct module *module)
--{
--	kvm_gmem_fops.owner = module;
--}
--
--static int kvm_gmem_migrate_folio(struct address_space *mapping,
--				  struct folio *dst, struct folio *src,
--				  enum migrate_mode mode)
--{
--	WARN_ON_ONCE(1);
--	return -EINVAL;
--}
--
--static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *folio)
--{
--	struct list_head *gmem_list = &mapping->i_private_list;
--	struct kvm_gmem *gmem;
--	pgoff_t start, end;
--
--	filemap_invalidate_lock_shared(mapping);
--
--	start = folio->index;
--	end = start + folio_nr_pages(folio);
--
--	list_for_each_entry(gmem, gmem_list, entry)
--		kvm_gmem_invalidate_begin(gmem, start, end);
--
--	/*
--	 * Do not truncate the range, what action is taken in response to the
--	 * error is userspace's decision (assuming the architecture supports
--	 * gracefully handling memory errors).  If/when the guest attempts to
--	 * access a poisoned page, kvm_gmem_get_pfn() will return -EHWPOISON,
--	 * at which point KVM can either terminate the VM or propagate the
--	 * error to userspace.
--	 */
--
--	list_for_each_entry(gmem, gmem_list, entry)
--		kvm_gmem_invalidate_end(gmem, start, end);
--
--	filemap_invalidate_unlock_shared(mapping);
--
--	return MF_DELAYED;
--}
--
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
--static void kvm_gmem_free_folio(struct folio *folio)
--{
--	struct page *page = folio_page(folio, 0);
--	kvm_pfn_t pfn = page_to_pfn(page);
--	int order = folio_order(folio);
--
--	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
--}
--#endif
--
--static const struct address_space_operations kvm_gmem_aops = {
--	.dirty_folio = noop_dirty_folio,
--	.migrate_folio	= kvm_gmem_migrate_folio,
--	.error_remove_folio = kvm_gmem_error_folio,
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
--	.free_folio = kvm_gmem_free_folio,
--#endif
--};
--
--static int kvm_gmem_getattr(struct mnt_idmap *idmap, const struct path *path,
--			    struct kstat *stat, u32 request_mask,
--			    unsigned int query_flags)
--{
--	struct inode *inode = path->dentry->d_inode;
--
--	generic_fillattr(idmap, request_mask, inode, stat);
--	return 0;
--}
--
--static int kvm_gmem_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
--			    struct iattr *attr)
--{
--	return -EINVAL;
--}
--static const struct inode_operations kvm_gmem_iops = {
--	.getattr	= kvm_gmem_getattr,
--	.setattr	= kvm_gmem_setattr,
-+static const struct guest_memfd_operations kvm_gmem_ops = {
-+	.invalidate_begin = kvm_gmem_invalidate_begin,
-+	.invalidate_end = kvm_gmem_invalidate_end,
-+	.prepare_inaccessible = kvm_gmem_prepare_inaccessible,
-+	.release = kvm_gmem_release,
- };
- 
- static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
-@@ -410,28 +199,16 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 		goto err_fd;
- 	}
- 
--	file = anon_inode_create_getfile(anon_name, &kvm_gmem_fops, gmem,
--					 O_RDWR, NULL);
-+	file = guest_memfd_alloc(anon_name, &kvm_gmem_ops, size,
-+				 GUEST_MEMFD_FLAG_CLEAR_INACCESSIBLE);
- 	if (IS_ERR(file)) {
- 		err = PTR_ERR(file);
- 		goto err_gmem;
- 	}
- 
--	file->f_flags |= O_LARGEFILE;
--
- 	inode = file->f_inode;
- 	WARN_ON(file->f_mapping != inode->i_mapping);
- 
--	inode->i_private = (void *)(unsigned long)flags;
--	inode->i_op = &kvm_gmem_iops;
--	inode->i_mapping->a_ops = &kvm_gmem_aops;
--	inode->i_mode |= S_IFREG;
--	inode->i_size = size;
--	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
--	mapping_set_inaccessible(inode->i_mapping);
--	/* Unmovable mappings are supposed to be marked unevictable as well. */
--	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
--
- 	kvm_get_kvm(kvm);
- 	gmem->kvm = kvm;
- 	xa_init(&gmem->bindings);
-@@ -462,6 +239,14 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
- 	return __kvm_gmem_create(kvm, size, flags);
- }
- 
-+static inline struct kvm_gmem *file_to_kvm_gmem(struct file *file)
-+{
-+	if (!is_guest_memfd(file, &kvm_gmem_ops))
-+		return NULL;
-+
-+	return inode_to_kvm_gmem(file_inode(file));
-+}
-+
- int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		  unsigned int fd, loff_t offset)
- {
-@@ -478,11 +263,8 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	if (!file)
- 		return -EBADF;
- 
--	if (file->f_op != &kvm_gmem_fops)
--		goto err;
--
--	gmem = file->private_data;
--	if (gmem->kvm != kvm)
-+	gmem = file_to_kvm_gmem(file);
-+	if (!gmem || gmem->kvm != kvm)
- 		goto err;
- 
- 	inode = file_inode(file);
-@@ -539,7 +321,9 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
- 	if (!file)
- 		return;
- 
--	gmem = file->private_data;
-+	gmem = file_to_kvm_gmem(file);
-+	if (WARN_ON_ONCE(!gmem))
-+		return;
- 
- 	filemap_invalidate_lock(file->f_mapping);
- 	xa_store_range(&gmem->bindings, start, end - 1, NULL, GFP_KERNEL);
-@@ -553,7 +337,7 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
- /* Returns a locked folio on success.  */
- static struct folio *
- __kvm_gmem_get_pfn(struct file *file, struct kvm_memory_slot *slot,
--		   gfn_t gfn, kvm_pfn_t *pfn, bool *is_prepared,
-+		   gfn_t gfn, kvm_pfn_t *pfn, bool accessible,
- 		   int *max_order)
- {
- 	pgoff_t index = gfn - slot->base_gfn + slot->gmem.pgoff;
-@@ -565,19 +349,27 @@ __kvm_gmem_get_pfn(struct file *file, struct kvm_memory_slot *slot,
- 		return ERR_PTR(-EFAULT);
- 	}
- 
--	gmem = file->private_data;
-+	gmem = file_to_kvm_gmem(file);
-+	if (WARN_ON_ONCE(!gmem))
-+		return ERR_PTR(-EFAULT);
-+
- 	if (xa_load(&gmem->bindings, index) != slot) {
- 		WARN_ON_ONCE(xa_load(&gmem->bindings, index));
- 		return ERR_PTR(-EIO);
- 	}
- 
--	folio = kvm_gmem_get_folio(file_inode(file), index);
-+	if (accessible)
-+		grab_flags = GUEST_MEMFD_GRAB_ACCESSIBLE;
-+	else
-+		grab_flags = GUEST_MEMFD_GRAB_INACCESSIBLE;
-+
-+	folio = guest_memfd_grab_folio(file, index, grab_flags);
- 	if (IS_ERR(folio))
- 		return folio;
- 
- 	if (folio_test_hwpoison(folio)) {
- 		folio_unlock(folio);
--		folio_put(folio);
-+		guest_memfd_put_folio(folio, accessible ? 1 : 0);
- 		return ERR_PTR(-EHWPOISON);
- 	}
- 
-@@ -585,7 +377,6 @@ __kvm_gmem_get_pfn(struct file *file, struct kvm_memory_slot *slot,
- 	if (max_order)
- 		*max_order = 0;
- 
--	*is_prepared = folio_test_uptodate(folio);
- 	return folio;
- }
- 
-@@ -594,24 +385,22 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- {
- 	struct file *file = kvm_gmem_get_file(slot);
- 	struct folio *folio;
--	bool is_prepared = false;
- 	int r = 0;
- 
- 	if (!file)
- 		return -EFAULT;
- 
--	folio = __kvm_gmem_get_pfn(file, slot, gfn, pfn, &is_prepared, max_order);
-+	folio = __kvm_gmem_get_pfn(file, slot, gfn, pfn, false, max_order);
- 	if (IS_ERR(folio)) {
- 		r = PTR_ERR(folio);
- 		goto out;
- 	}
- 
--	if (!is_prepared)
--		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
--
- 	folio_unlock(folio);
- 	if (r < 0)
--		folio_put(folio);
-+		guest_memfd_put_folio(folio, 0);
-+	else
-+		guest_memfd_unsafe_folio(folio);
- 
- out:
- 	fput(file);
-@@ -648,7 +437,6 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
- 	for (i = 0; i < npages; i += (1 << max_order)) {
- 		struct folio *folio;
- 		gfn_t gfn = start_gfn + i;
--		bool is_prepared = false;
- 		kvm_pfn_t pfn;
- 
- 		if (signal_pending(current)) {
-@@ -656,19 +444,12 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
- 			break;
- 		}
- 
--		folio = __kvm_gmem_get_pfn(file, slot, gfn, &pfn, &is_prepared, &max_order);
-+		folio = __kvm_gmem_get_pfn(file, slot, gfn, &pfn, true, &max_order);
- 		if (IS_ERR(folio)) {
- 			ret = PTR_ERR(folio);
- 			break;
- 		}
- 
--		if (is_prepared) {
--			folio_unlock(folio);
--			folio_put(folio);
--			ret = -EEXIST;
--			break;
--		}
--
- 		folio_unlock(folio);
- 		WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
- 			(npages - i) < (1 << max_order));
-@@ -684,11 +465,9 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
- 
- 		p = src ? src + i * PAGE_SIZE : NULL;
- 		ret = post_populate(kvm, gfn, pfn, p, max_order, opaque);
--		if (!ret)
--			kvm_gmem_mark_prepared(folio);
- 
- put_folio_and_exit:
--		folio_put(folio);
-+		guest_memfd_put_folio(folio, 1);
- 		if (ret)
- 			break;
- 	}
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cb2b78e92910f..f94a36ca17fe2 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -6514,8 +6514,6 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- 	if (WARN_ON_ONCE(r))
- 		goto err_vfio;
- 
--	kvm_gmem_init(module);
--
- 	/*
- 	 * Registration _must_ be the very last thing done, as this exposes
- 	 * /dev/kvm to userspace, i.e. all infrastructure must be setup!
-diff --git a/virt/kvm/kvm_mm.h b/virt/kvm/kvm_mm.h
-index 715f19669d01f..6336a4fdcf505 100644
---- a/virt/kvm/kvm_mm.h
-+++ b/virt/kvm/kvm_mm.h
-@@ -36,17 +36,11 @@ static inline void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm,
- #endif /* HAVE_KVM_PFNCACHE */
- 
- #ifdef CONFIG_KVM_PRIVATE_MEM
--void kvm_gmem_init(struct module *module);
- int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args);
- int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		  unsigned int fd, loff_t offset);
- void kvm_gmem_unbind(struct kvm_memory_slot *slot);
- #else
--static inline void kvm_gmem_init(struct module *module)
--{
--
--}
--
- static inline int kvm_gmem_bind(struct kvm *kvm,
- 					 struct kvm_memory_slot *slot,
- 					 unsigned int fd, loff_t offset)
+I thought existing use cases assume that the CC-VM can trigger page
+conversions at will without regard to a vTOM concept? It would be nice
+to have that address-map separation arrangement, has not that ship
+already sailed?
 
--- 
-2.34.1
+[..]
+> > Would the device not just launch in "shared" mode until it is later
+> > converted to private? I am missing the detail of why passing the device
+> > on the command line requires that private memory be mapped early.
+> 
+> A sequencing problem.
+> 
+> QEMU "realizes" a VFIO device, it creates an iommufd instance which 
+> creates a domain and writes to a DTE (a IOMMU descriptor for PCI BDFn). 
+> And DTE is not updated after than. For secure stuff, DTE needs to be 
+> slightly different. So right then I tell IOMMUFD that it will handle 
+> private memory.
+> 
+> Then, the same VFIO "realize" handler maps the guest memory in iommufd. 
+> I use the same flag (well, pointer to kvm) in the iommufd pinning code, 
+> private memory is pinned and mapped (and related page state change 
+> happens as the guest memory is made guest-owned in RMP).
+> 
+> QEMU goes to machine_reset() and calls "SNP LAUNCH UPDATE" (the actual 
+> place changed recenly, huh) and the latter will measure the guest and 
+> try making all guest memory private but it already happened => error.
+> 
+> I think I have to decouple the pinning and the IOMMU/DTE setting.
+> 
+> > That said, the implication that private device assignment requires
+> > hotplug events is a useful property. This matches nicely with initial
+> > thoughts that device conversion events are violent and might as well be
+> > unplug/replug events to match all the assumptions around what needs to
+> > be updated.
+> 
+> For the initial drop, I tell QEMU via "-device vfio-pci,x-tio=true" that 
+> it is going to be private so there should be no massive conversion.
 
+That's a SEV-TIO RFC-specific hack, or a proposal?
+
+An approach that aligns more closely with the VFIO operational model,
+where it maps and waits for guest faults / usages, is that QEMU would be
+told that the device is "bind capable", because the host is not in a
+position to assume how the guest will use the device. A "bind capable"
+device operates in shared mode unless and until the guest triggers
+private conversion.
+
+> >> This requires the BME hack as MMIO and
+> > 
+> > Not sure what the "BME hack" is, I guess this is foreshadowing for later
+> > in this story.
+>  >
+> >> BusMaster enable bits cannot be 0 after MMIO
+> >> validation is done
+> > 
+> > It would be useful to call out what is a TDISP requirement, vs
+> > device-specific DSM vs host-specific TSM requirement. In this case I
+> > assume you are referring to PCI 6.2 11.2.6 where it notes that TDIs must
+> 
+> Oh there is 6.2 already.
+> 
+> > enter the TDISP ERROR state if BME is cleared after the device is
+> > locked?
+> > 
+> > ...but this begs the question of whether it needs to be avoided outright
+> 
+> Well, besides a couple of avoidable places (like testing INTx support 
+> which we know is not going to work on VFs anyway), a standard driver 
+> enables MSE first (and the value for the command register does not have 
+> 1 for BME) and only then BME. TBH I do not think writing BME=0 when 
+> BME=0 already is "clearing" but my test device disagrees.
+
+...but we should not be creating kernel policy around test devices. What
+matters is real devices. Now, if it is likely that real / production
+devices will go into the TDISP ERROR state by not coalescing MSE + BME
+updates then we need a solution.
+
+Given it is unlikely that TDISP support will be widespread any time soon
+it is likely tenable to assume TDISP compatible drivers call a new:
+
+   pci_enable(pdev, PCI_ENABLE_TARGET | PCI_ENABLE_INITIATOR);
+
+...or something like that to coalesce command register writes.
+
+Otherwise if that retrofit ends up being too much work or confusion then
+the ROI of teaching the PCI core to recover this scenario needs to be
+evaluated.
+
+> > or handled as an error recovery case dependending on policy.
+> 
+> Avoding seems more straight forward unless we actually want enlightened 
+> device drivers which want to examine the interface report before 
+> enabling the device. Not sure.
+
+If TDISP capable devices trends towards a handful of devices in the near
+term then some driver fixups seems reasonable. Otherwise if every PCI
+device driver Linux has ever seens needs to be ready for that device to
+have a TDISP capable flavor then mitigating this in the PCI core makes
+more sense than playing driver whack-a-mole.
+
+> >> the guest OS booting process when this
+> >> appens.
+> >>
+> >> SVSM could help addressing these (not
+> >> implemented at the moment).
+> > 
+> > At first though avoiding SVSM entanglements where the kernel can be
+> > enlightened shoud be the policy. I would only expect SVSM hacks to cover
+> > for legacy OSes that will never be TDISP enlightened, but in that case
+> > we are likely talking about fully unaware L2. Lets assume fully
+> > enlightened L1 for now.
+> 
+> Well, I could also tweak OVMF to make necessary calls to the PSP and 
+> hack QEMU to postpone the command register updates to get this going, 
+> just a matter of ugliness.
+
+Per above, the tradeoff should be in ROI, not ugliness. I don't see how
+OVMF helps when devices might be being virtually hotplugged or reset.
