@@ -1,64 +1,51 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C3C1B3B1E;
-	Thu, 29 Aug 2024 15:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAA4148FF0;
+	Thu, 29 Aug 2024 18:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724946633; cv=none; b=eZ4BlTAMXkpS1Vk3O4KWiYNwh/wMHr96KVKTBHLn4qhIgnjObtdoQyC/08hP0XOQVpbw3XOU9+4VuiDiCICrDnlw95wgaHJeSB85GBNdfV8aoZjrji/Uq0gebmP4s9Y/DNqsYUzJllKwHDfCIIccmLf5frQ3mDEdkTtxSSduP7g=
+	t=1724956864; cv=none; b=pEQYY5tyTdgdB+uV3yL6mBs2ZoAiZ2TBAADb7bMUlCu6Ja0BxnIB+y8tAPJgAToi/nscIfgCD5+dHGv8JLkQV2XFBEoNNVurFmHQJB+ANfuyYb/AoXo5p/BJYlDVJxKOrhjfVLpSty4ZGTEy88P0oJt2SnP0BpBOXVic3S0IchI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724946633; c=relaxed/simple;
-	bh=Xwa41nPWXFk5ZvYn4P/GOc574DpMq9cTCMistG6DV14=;
+	s=arc-20240116; t=1724956864; c=relaxed/simple;
+	bh=FLcFkLH3+Lv6+PmzGb4e9u+eCIxjMRaOgAkP2qTMK/M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LzXgzAOhDLZrHQ2D/eEhJQrscF0UBNSFmVTsxEtzYhprpGLM0Tju/vo/RNQUWxAwmdK/yImPzKgxOecLFsznBwTiCR41UzQNkAuQrpmiS+NlRNLOFwBPih7u/gYKdvvMvnMLndudXcbkU4BG3wglaa9QK/4u1+KrL4h5E0W6nRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NImxa3nI; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZQAhUS00A+ZYyD7VmXOt1iEH0AjbKkFPHlIx/N1Wz5K90VjHflJK1yE3yFtSBNIH6M0ByURzuMzSU7CaXqmB+Bace4HOiV9iEiFmM2LWUGj/f2WZYS7kg4eoFWu/Pz40gcWjjEMUJuUoBtgJpVhtzCFya/EoVvyjBBl8V1CLRPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKxi7XH/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NImxa3nI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724946632; x=1756482632;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Xwa41nPWXFk5ZvYn4P/GOc574DpMq9cTCMistG6DV14=;
-  b=NImxa3nIClo/jpMESSCQs4KUQCd5g84rNliAtgA8w5YPwwWRN5EAt2mD
-   lr4nwcVXFDffaQhxM7kBXg38WvAlU1IQXYsIm9pRGCQApYX46XbN6XMNa
-   3VoOKtqGEPbB5YLtQHh67mJ4Tx7TW+47tllnJncZtcr3eaQRE+x6nUCde
-   VVxd2l6yqi9ASq5FEBfkPxRDROf6/OkHAOD0O9iASd1iLUrdXQuIPjPw6
-   nVTNzu2lcx3N/dtB5XYY+P6lKi2DWwpXvyZxPdDW9Ih7JuMA97V4EPv0U
-   poMZdOSYiQ7W16Y7s+CMM+RkJsbslKu4+mkTEVIun+op7xJioOaRjQMkE
-   w==;
-X-CSE-ConnectionGUID: wDVRYTL3S2WIo/kO2Qv1Ug==
-X-CSE-MsgGUID: kAcONysLTb2yGTptUH3utg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="34958254"
-X-IronPort-AV: E=Sophos;i="6.10,186,1719903600"; 
-   d="scan'208";a="34958254"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 08:50:31 -0700
-X-CSE-ConnectionGUID: SqhaKlPuSoS/Ppr9Z5wcWA==
-X-CSE-MsgGUID: caMfL994RjyUJRCwpirnWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,186,1719903600"; 
-   d="scan'208";a="101129077"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 29 Aug 2024 08:50:28 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sjhPl-0000Q4-0p;
-	Thu, 29 Aug 2024 15:50:25 +0000
-Date: Thu, 29 Aug 2024 23:50:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ashish Kalra <Ashish.Kalra@amd.com>, seanjc@google.com,
-	pbonzini@redhat.com, dave.hansen@linux.intel.com,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, hpa@zytor.com,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	thomas.lendacky@amd.com, michael.roth@amd.com,
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH] x86/sev: Fix host kdump support for SNP
-Message-ID: <202408292344.yuQ5sYEz-lkp@intel.com>
-References: <20240827203804.4989-1-Ashish.Kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKxi7XH/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F16C4CEC2;
+	Thu, 29 Aug 2024 18:40:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724956863;
+	bh=FLcFkLH3+Lv6+PmzGb4e9u+eCIxjMRaOgAkP2qTMK/M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PKxi7XH/rml0la9geg3Di8jmTtNqxF3mKzrtGlcSK7a5fum2yv+e3itS+FZjXAO/W
+	 kpFldxTzKcJR+W+ry0hYPhv3Lhq4yGfqhPmLAsVEaX306B3RgsiM9EpOoxKqm5gpIg
+	 8T04UZeQLcC9icGRY7JbSQrPuJa5YtmT4saxPhUYBuVmy5a6/yNHFP6uv7XagPdtoC
+	 tbCkmauap143goVLGvm+5yBxubEKiFGgqQl+0o11fljZxv0JUnYlznM2+zkE0v9VRi
+	 SDk1pa26ZVp4I/TUWt1Er5FfPAMzv1yXkhfv6uNwZrJCqwIiXrm0fcxTAbYe5xtS8o
+	 6s25lRAvkgv+w==
+Date: Thu, 29 Aug 2024 20:40:56 +0200
+From: Alexey Gladkov <legion@kernel.org>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yuan Yao <yuan.yao@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>,
+	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
+	cho@microsoft.com, decui@microsoft.com, John.Starks@microsoft.com
+Subject: Re: [PATCH v5 6/6] x86/tdx: Implement MOVS for MMIO
+Message-ID: <ZtDAuDAyGevAhSj-@example.org>
+References: <cover.1724248680.git.legion@kernel.org>
+ <cover.1724837158.git.legion@kernel.org>
+ <86af46ade7688c9f4216da51573b6f74b7c53143.1724837158.git.legion@kernel.org>
+ <6n6tn2t4tabiclau7cpav6b7kisuotqwg246wp5lxgfngoyyl2@674snretgst5>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,71 +54,50 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240827203804.4989-1-Ashish.Kalra@amd.com>
+In-Reply-To: <6n6tn2t4tabiclau7cpav6b7kisuotqwg246wp5lxgfngoyyl2@674snretgst5>
 
-Hi Ashish,
+On Thu, Aug 29, 2024 at 03:44:55PM +0300, Kirill A. Shutemov wrote:
+> On Wed, Aug 28, 2024 at 12:44:36PM +0200, Alexey Gladkov wrote:
+> > From: "Alexey Gladkov (Intel)" <legion@kernel.org>
+> > 
+> > Add emulation of the MOVS instruction on MMIO regions. MOVS emulation
+> > consists of dividing it into a series of read and write operations,
+> > which in turn will be validated separately.
+> > 
+> > This implementation is based on the same principle as in SEV. It splits
+> > MOVS into separate read and write operations, which in turn can cause
+> > nested #VEs depending on which of the arguments caused the first #VE.
+> > 
+> > The difference with the SEV implementation is the execution context. SEV
+> > code is executed in atomic context. Exception handler in TDX is executed
+> > with interrupts enabled. That's why the approach to locking is
+> > different. In TDX, mmap_lock is taken to verify and emulate the
+> > instruction.
+> > 
+> > Another difference is how the read and write instructions are executed
+> > for MOVS emulation. While in SEV each read/write operation returns to
+> > user space, in TDX these operations are performed from the kernel
+> > context.
+> 
+> It looks like SEV only returns to userspace to retry the instruction after
+> stepping on failed __get_user()/__put_user(), unrolling back to
+> vc_raw_handle_exception() and handling page fault there.
 
-kernel test robot noticed the following build warnings:
+In vc_handle_mmio_movs() if regs->cx is not zero we return ES_RETRY. The
+vc_handle_mmio(), vc_handle_exitcode() return it as is. In
+vc_raw_handle_exception() if vc_handle_exitcode() returns ES_RETRY then we
+just return true. So, the ES_RETRY is not further visible.
 
-[auto build test WARNING on kvm/queue]
-[also build test WARNING on linus/master v6.11-rc5 next-20240829]
-[cannot apply to kvm/linux-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Or am I missing something?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ashish-Kalra/x86-sev-Fix-host-kdump-support-for-SNP/20240828-044035
-base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
-patch link:    https://lore.kernel.org/r/20240827203804.4989-1-Ashish.Kalra%40amd.com
-patch subject: [PATCH] x86/sev: Fix host kdump support for SNP
-config: x86_64-buildonly-randconfig-002-20240829 (https://download.01.org/0day-ci/archive/20240829/202408292344.yuQ5sYEz-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240829/202408292344.yuQ5sYEz-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408292344.yuQ5sYEz-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from arch/x86/kvm/svm/avic.c:28:
->> arch/x86/kvm/svm/svm.h:783:13: warning: 'snp_decommision_all' declared 'static' but never defined [-Wunused-function]
-     783 | static void snp_decommision_all(void);
-         |             ^~~~~~~~~~~~~~~~~~~
---
-   In file included from arch/x86/kvm/svm/svm.c:50:
->> arch/x86/kvm/svm/svm.h:783:13: warning: 'snp_decommision_all' used but never defined
-     783 | static void snp_decommision_all(void);
-         |             ^~~~~~~~~~~~~~~~~~~
-
-
-vim +783 arch/x86/kvm/svm/svm.h
-
-   763	
-   764	static inline void sev_free_vcpu(struct kvm_vcpu *vcpu) {}
-   765	static inline void sev_vm_destroy(struct kvm *kvm) {}
-   766	static inline void __init sev_set_cpu_caps(void) {}
-   767	static inline void __init sev_hardware_setup(void) {}
-   768	static inline void sev_hardware_unsetup(void) {}
-   769	static inline int sev_cpu_init(struct svm_cpu_data *sd) { return 0; }
-   770	static inline int sev_dev_get_attr(u32 group, u64 attr, u64 *val) { return -ENXIO; }
-   771	#define max_sev_asid 0
-   772	static inline void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code) {}
-   773	static inline void sev_snp_init_protected_guest_state(struct kvm_vcpu *vcpu) {}
-   774	static inline int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
-   775	{
-   776		return 0;
-   777	}
-   778	static inline void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end) {}
-   779	static inline int sev_private_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn)
-   780	{
-   781		return 0;
-   782	}
- > 783	static void snp_decommision_all(void);
-   784	#endif
-   785	
+> 
+> But I'm not sure what happens with #VC inside vc_read_mem() and
+> vc_write_mem(). Can the #VC exception be nested? Tom?
+> 
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
+> 
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Rgrds, legion
+
