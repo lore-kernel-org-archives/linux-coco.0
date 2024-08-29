@@ -1,66 +1,66 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7FF18E75A
-	for <linux-coco@lists.linux.dev>; Thu, 29 Aug 2024 12:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8441B791C
+	for <linux-coco@lists.linux.dev>; Thu, 29 Aug 2024 12:45:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724934628; cv=none; b=Uy4wuaexOdazc1D5myGDMj6PCitlUqMD7uy3vf4Vmt1FBWDPbsxTHEzV3fgO5gPVsIjBIKTKF1rLVewkjbyO5QTgoxsMLsyjtGGgamIHc0syXyK3Hu8JQQugdwaGGd0KQoU102VAZsH8xXhth+8S60+5lqK8sNouBZSJx668UDI=
+	t=1724935503; cv=none; b=eaGi58cCd9LeXYf0EG5z5WXwBp5jQ0N6n5dfpTutDGwu5FDUxtJXrSbEkrBZ3GwwRcK8fJhYNRpf1xHihi4tr31Ud2a+5LDZH2AvLVf7y77nHRb+tMYXgyhXwkmbSM3Cy3xuD2Tc1JcxxGIff5eRUQOM/15i3miuaQ5MfHwODHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724934628; c=relaxed/simple;
-	bh=u3qcRvtBLlVgfxJ6HUJVJJbVviRspfWgoYS2Mn9zdg4=;
+	s=arc-20240116; t=1724935503; c=relaxed/simple;
+	bh=DY9/1cVv26pG2cP3fISCj+C0nDsRZeSSuABJcI/vO6w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g1So9fXTQsXg2tgdl9tXtdyUjFzm46+WnHmXdwoD7cCo1NCt8ep4wMsO54cl5tjCV87PibwNHiUpegv4AfH4QAZXFmj1lWDydjvtKOVWJa6mjN8Mvtmvbwcq/f2cr/qgZMy4cWoLR51bKPgG9OwkNqp35JThb1Gj4SG18UvUq7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gaPRySIx; arc=none smtp.client-ip=198.175.65.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=P1OFOBQB2uVmbGsLDS7euKWHUERs3QiH3eDHHpW2mPT130G67/OKh4ZvLfIIIauElh9qW4JwhhFeWmdU1D9O3jhZEa2bD/Y6mZnLwGKQbPUD+DSE4lQzu75Kwyjl94bDJo4zoVw3njU661I1+B/DNgW7AXo6Zm1mAC1KJSFiveA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HIEacCcL; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gaPRySIx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HIEacCcL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724934627; x=1756470627;
+  t=1724935502; x=1756471502;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=u3qcRvtBLlVgfxJ6HUJVJJbVviRspfWgoYS2Mn9zdg4=;
-  b=gaPRySIx2GU6xqreKXdDmm3UC/+haATlpX95xHxVfXobV4YXC9m6dVtT
-   OpU4RWyGTwsYQLOZNtVDV7N5+99NzsoN8ltfoevNDBoM6UMJBgnivJMDv
-   zzVl1ItQ8HkYm5dGoBYOUMscdvqiL4YMRKvPHuGNHQ9rl5agcjybS03CM
-   ntqRvg8TWU4rBjfEH6b46g9IrRp4dtzZWmxn+RYQerbX9OTgDOxkAByU+
-   yfAdWYf3YViP3BXgOF7JtCXmMzZtov3IZjX5I+uXzQWdO0x3KUwnSHtO+
-   A8qRZD7Xf+xRR+TRa88B389HdvNTnWOaIRjR5HA+WcKb8Jo56/wIE9Rga
-   g==;
-X-CSE-ConnectionGUID: Nn6iW5nSQemT9h9jWKd4lw==
-X-CSE-MsgGUID: lhP+lOu2QD+swtH0vCeLMQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="27281205"
+  bh=DY9/1cVv26pG2cP3fISCj+C0nDsRZeSSuABJcI/vO6w=;
+  b=HIEacCcLCedJ0AEhVMvgcOmtd7YQRvRtJU1H2x+EBPG28buRdZxENs0g
+   k5j+kKf7zhgmsH2vVdAkCJHG9SZvo2cJCjiTaWmngnx5v+U/dvoIuyO8X
+   n7xZ3x8WMz6Q/EZdVmQbY758uxUqgJ7ULXHhnymu6w1bR1PqVsiTa86j9
+   AVbKiyAvHSTIfwtkU9g8GYYRFq40+bAQePYxos+HANF7cOeFRsS9XJ8JN
+   5wGrXRwOgfAiiIMYAnnsBSuOGnnOcxov/bqA6m2h6r2d9JS2rRK3pdN1k
+   /Dcc+I86d0gM2I6CRRzBpJs8AA8OpGel22rxOT9PC35gmHYYL37J3cz2+
+   A==;
+X-CSE-ConnectionGUID: 1SURQSi+TryvWYTBdgnDkg==
+X-CSE-MsgGUID: l1BzW46tTNKP0pwdcGGiSA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="23476128"
 X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; 
-   d="scan'208";a="27281205"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 05:30:27 -0700
-X-CSE-ConnectionGUID: Ksu6FyZYSxijbfdxtrifdw==
-X-CSE-MsgGUID: 14sX5qBeSCyBml+sOUFRUQ==
+   d="scan'208";a="23476128"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 05:45:01 -0700
+X-CSE-ConnectionGUID: niHST7EoSAmr0pwY6BH+Pg==
+X-CSE-MsgGUID: HP9sOHBVQ5WEBtkCT3BMpw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; 
-   d="scan'208";a="63619919"
+   d="scan'208";a="67946059"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa009.fm.intel.com with ESMTP; 29 Aug 2024 05:30:22 -0700
+  by fmviesa005.fm.intel.com with ESMTP; 29 Aug 2024 05:44:57 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 17CD4170; Thu, 29 Aug 2024 15:30:21 +0300 (EEST)
-Date: Thu, 29 Aug 2024 15:30:21 +0300
+	id F3273170; Thu, 29 Aug 2024 15:44:55 +0300 (EEST)
+Date: Thu, 29 Aug 2024 15:44:55 +0300
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Alexey Gladkov <legion@kernel.org>
+To: Alexey Gladkov <legion@kernel.org>, 
+	Tom Lendacky <thomas.lendacky@amd.com>
 Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
 	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Yuan Yao <yuan.yao@intel.com>, 
 	Geert Uytterhoeven <geert@linux-m68k.org>, Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>, 
 	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>, cho@microsoft.com, 
-	decui@microsoft.com, John.Starks@microsoft.com, stable@vger.kernel.org
-Subject: Re: [PATCH v5 4/6] x86/tdx: Add a restriction on access to MMIO
- address
-Message-ID: <cpbbbdeqkgvtoeqviygn6vcagxl55wjb3nyhqd5fzk2re6luan@rmfr2sbw7tfi>
+	decui@microsoft.com, John.Starks@microsoft.com
+Subject: Re: [PATCH v5 6/6] x86/tdx: Implement MOVS for MMIO
+Message-ID: <6n6tn2t4tabiclau7cpav6b7kisuotqwg246wp5lxgfngoyyl2@674snretgst5>
 References: <cover.1724248680.git.legion@kernel.org>
  <cover.1724837158.git.legion@kernel.org>
- <b9b120f5615776d3f557c96e244e57c97ac7d9d4.1724837158.git.legion@kernel.org>
+ <86af46ade7688c9f4216da51573b6f74b7c53143.1724837158.git.legion@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,43 +69,36 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b9b120f5615776d3f557c96e244e57c97ac7d9d4.1724837158.git.legion@kernel.org>
+In-Reply-To: <86af46ade7688c9f4216da51573b6f74b7c53143.1724837158.git.legion@kernel.org>
 
-On Wed, Aug 28, 2024 at 12:44:34PM +0200, Alexey Gladkov wrote:
+On Wed, Aug 28, 2024 at 12:44:36PM +0200, Alexey Gladkov wrote:
 > From: "Alexey Gladkov (Intel)" <legion@kernel.org>
 > 
-> For security reasons, access from kernel space to MMIO addresses in
-> userspace should be restricted. All MMIO operations from kernel space
-> are considered trusted and are not validated.
+> Add emulation of the MOVS instruction on MMIO regions. MOVS emulation
+> consists of dividing it into a series of read and write operations,
+> which in turn will be validated separately.
 > 
-> For instance, if in response to a syscall, kernel does put_user() and
-> the target address is MMIO mapping in userspace, current #VE handler
-> threat this access as kernel MMIO which is wrong and have security
-> implications.
+> This implementation is based on the same principle as in SEV. It splits
+> MOVS into separate read and write operations, which in turn can cause
+> nested #VEs depending on which of the arguments caused the first #VE.
+> 
+> The difference with the SEV implementation is the execution context. SEV
+> code is executed in atomic context. Exception handler in TDX is executed
+> with interrupts enabled. That's why the approach to locking is
+> different. In TDX, mmap_lock is taken to verify and emulate the
+> instruction.
+> 
+> Another difference is how the read and write instructions are executed
+> for MOVS emulation. While in SEV each read/write operation returns to
+> user space, in TDX these operations are performed from the kernel
+> context.
 
-What about this:
+It looks like SEV only returns to userspace to retry the instruction after
+stepping on failed __get_user()/__put_user(), unrolling back to
+vc_raw_handle_exception() and handling page fault there.
 
-------------------------------------8<-----------------------------------
-
-Subject: x86/tdx: Fix "in-kernel MMIO" check
-
-TDX only supports kernel-initiated MMIO operations. The handle_mmio()
-function checks if the #VE exception occurred in the kernel and rejects
-the operation if it did not.
-
-However, userspace can deceive the kernel into performing MMIO on its
-behalf. For example, if userspace can point a syscall to an MMIO address,
-syscall does get_user() or put_user() on it, triggering MMIO #VE. The
-kernel will treat the #VE as in-kernel MMIO.
-
-Ensure that the target MMIO address is within the kernel before decoding
-instruction.
-
-------------------------------------8<-----------------------------------
-
-And please make this patch the first in the patchset. It has to be
-backported to stable trees and should have zero dependencies on the rest
-of the patchset.
+But I'm not sure what happens with #VC inside vc_read_mem() and
+vc_write_mem(). Can the #VC exception be nested? Tom?
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
