@@ -1,55 +1,86 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC7A12F399
-	for <linux-coco@lists.linux.dev>; Thu, 29 Aug 2024 06:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724914649; cv=none; b=GJXbIy12o4aMFlps9yPsi7XEpebCd5AAIne0LGcxu7ANKK71zuBeSBZ734Q2kJqyneQc1EiWzsRyD0SvMjwqYVtV368f3L0Fzl6gO//af6zEG0lTSLyiUOh8ZeeknsWWt95RAI9UBBIi4hMKY8rOoQwMAquXszsuYmKR44nmtAQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724914649; c=relaxed/simple;
-	bh=jjcqQdPBI/qT4OB7rICMyr9hF5X7vkvgdQCl5m1D9bA=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DCog+EOcQowWLOJ+0xVLp01X+a0p/qj4vL7xQPq/hYYjSD9cijgmvTITaoRZnCh6gntnxI4f90OKuFXuC3a3Vn5H4CkoPNZqGaFRcKvP3Zch2mWn0JSx8XmMf93lM7zjNeca/MwOSLv+M/8u+jtSf8ZhpGgLh6wAh2B2/vIuHl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=RPOR8aHY; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="RPOR8aHY"
-Received: from 8bytes.org (pd9fe9dd8.dip0.t-ipconnect.de [217.254.157.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 40AFD286555;
-	Thu, 29 Aug 2024 08:57:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1724914640;
-	bh=jjcqQdPBI/qT4OB7rICMyr9hF5X7vkvgdQCl5m1D9bA=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=RPOR8aHYEdMu8LJdMDLT8PsvQtA3PpOlqu9VvBWV7TuYl+JLa3tzVB1xOgUyK1fpQ
-	 elHwJcVhfyKTtePGVP2DxAAvtx5tUy5nIdY5siqeFqCLq/yWulBwceQUkjf69x1w/w
-	 YUn3U5EMnqV5LVZPIKU6B/3CefWojuCAQ46ABIgd/q46a/G0NMTZUU4PQToyND1GH2
-	 lLcwsp+Xf15LByH/sXPWhc2J31qCKZFO7rww4Iyg3tBz90g1+UXGxir2t8sbDN+zp4
-	 VlMEKbtzEDNtn+fVHeXq55gyIVo5UPh0sGMQ9jnTIz3dbbdJsGvtPrisV2fUdG09ck
-	 A9nygRZIe35xg==
-Date: Thu, 29 Aug 2024 08:57:19 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: Re: [svsm-devel] SVSM Development Call August 28th, 2024
-Message-ID: <ZtAbz1E-sOs3ueIf@8bytes.org>
-References: <Zs43_I_cewEo6efb@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514023D6A
+	for <linux-coco@lists.linux.dev>; Thu, 29 Aug 2024 08:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724920518; cv=none; b=cFk8bM3MDnMU6lnfPzhh4UDVeN1iukY8wCsPmQNQ7DjHt+fUxkiqWJ1KaFjwpcncUSgHlECx+1OlUUlGfsy0mYX0qN67xB+lwLjhOik8xOBIh4qYrosl7Wbtwwi+Hsj0QVYiXAli+HP8Y9qSHPrbjJe139tYN7CRbiIYgHgBLGI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724920518; c=relaxed/simple;
+	bh=6iZ8iIGBRLFC4519kTdXtS0rAGmtcKBdcw8S6IFTyEI=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=N+ZlqV4xezEliP6zfKTCqhKerU7hvP1fnHgM/EmIHDmzmccP+nH5BkO9cKmbJKtg8NeDB797hu9K89JhLMsvcude07wVj/r+1P6jzIjq1FT1V29ThgL99e+qzFUZX1H/TDfMqCAP9Xx/pGEDeBF46iAj53SfHHDPhW6F1bcaDA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cah3Mpc5; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cah3Mpc5"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 07C2540E01C5;
+	Thu, 29 Aug 2024 08:35:14 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id g_I6YJdYLlmn; Thu, 29 Aug 2024 08:35:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1724920509; bh=CPJhcm4WSc5DpBeeH7qgshS/p1SRpirWBGGJlu0SQk4=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=cah3Mpc5nSYpGQMyejkNsp95hkl/X+s6B5xBrgHTfPCNNQHp02ZSXOUI3HjjX9DhW
+	 vEjexwCY727LS3YMNoK0hQUMyonR7aCZ6D039tIZEc0OGBucSwndlYqbguDZ5gi4V1
+	 qhZLMvXyyeZMQu6daP0guN8Y1oKm6wakJjFYxPGOxJLNxtRkK+Z+Ex/igPHquHI7Wj
+	 Ddds+DrEZRos0kyn+w1xjqjEOWO/CswZhHip6siwbkvvkLWV5HCiPMzsqyHYzuUJoT
+	 L5qAqTd7VSvRgD2Z1lZm5t9usfqnAZaWvE1uVf4Va1N3vBI82FN068qKydf+GuJidM
+	 XA1OKDiXNXqX6CU65lFshs7FVcU81qS2symUlsmgah/jJijv/Tf0+WDNXM80jUmtfG
+	 Nlfq/D7c6dvsjCzZq6aRE4X0n+UsndkhJQiIm0XIRUG9GGVUW/RgrPl5RQ3h7s4yoL
+	 3HIXB4MRZm3S3Yac4tzt6ibF8iW4XM+Ll3t856HohJIhipSd1Bm0aYJr6hm2CmI2vW
+	 WVddYO2iPSadIGgueMUoLwBneHPNBouJQPv+xtq6+hv0CCXnB9obYO8ytEQsrQei75
+	 OGA2vtzuB2ZuJwSvSswy6ChUfr7Bf8mfj7ZWYX5nRoa/YrU7DDUXMabC788QCRKSqU
+	 s0hrlESh+O3tj6sHBKJoGii4=
+Received: from [127.0.0.1] (business-24-134-159-81.pool2.vodafone-ip.de [24.134.159.81])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 51BEC40E016A;
+	Thu, 29 Aug 2024 08:34:53 +0000 (UTC)
+Date: Thu, 29 Aug 2024 10:34:49 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>, seanjc@google.com, pbonzini@redhat.com,
+ dave.hansen@linux.intel.com, tglx@linutronix.de, mingo@redhat.com,
+ x86@kernel.org
+CC: hpa@zytor.com, peterz@infradead.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, thomas.lendacky@amd.com, michael.roth@amd.com,
+ kexec@lists.infradead.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH] x86/sev: Fix host kdump support for SNP
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20240827203804.4989-1-Ashish.Kalra@amd.com>
+References: <20240827203804.4989-1-Ashish.Kalra@amd.com>
+Message-ID: <87475131-856C-44DC-A27A-84648294F094@alien8.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zs43_I_cewEo6efb@8bytes.org>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Minutes are now available in this PR:
+On August 27, 2024 10:38:04 PM GMT+02:00, Ashish Kalra <Ashish=2EKalra@amd=
+=2Ecom> wrote:
+>From: Ashish Kalra <ashish=2Ekalra@amd=2Ecom>
+>
+>With active SNP VMs, SNP_SHUTDOWN_EX invoked during panic notifiers cause=
+s
+>crashkernel boot failure with the following signature:
 
-	https://github.com/coconut-svsm/governance/pull/24
+Why would SNP_SHUTDOWN be allowed *at all* if there are active SNP guests =
+and there's potential to lose guest data in the process?!
 
-Regards,
+I don't think you want to be on the receiving end of those customer suppor=
+t calls at your cloud provider=2E=2E=2E
 
-	Joerg
+--=20
+Sent from a small device: formatting sucks and brevity is inevitable=2E 
