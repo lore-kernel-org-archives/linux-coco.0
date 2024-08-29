@@ -1,84 +1,86 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8991A3BDD
-	for <linux-coco@lists.linux.dev>; Thu, 29 Aug 2024 14:50:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1F81AD3F0
+	for <linux-coco@lists.linux.dev>; Thu, 29 Aug 2024 15:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724943020; cv=none; b=tPuFzz+OBly6QPU02CstLGhHSlzEEPzWvHJGbbwKtEPxaj5xqPutDkAey0++jkff7S8wBbjQt+LB+/f8lRFxJ09LUclgbCZhos9pINst+3R2jQCZ+sLcnpDM4vLuOygdMB6QEk48eZwYbBiWNnbe9s3BufarVZvLLsExPMDPp4E=
+	t=1724943869; cv=none; b=eEvMRx5uM6BSCnjiJ5fG31mavh46HhKdGrSGQP5+eQKrClnx1Tl0KdxFsQFqoUeuN+mD+SqQ3/lRAWOmCa8gJ96Z5JRBL6kwnYjljppICISFsbKU9vJUNucNZHSa5v7RmPaTbvuqAnlSyWzGp6ux845quU4BijVe+WDjQ14Jrz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724943020; c=relaxed/simple;
-	bh=7owvFBq7H/zZo+uLT3Wf+SvWErVFCaIRpkT2UIT2MZE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Xolo8MnYpweOaon2x1/tPrw3jWks8S5cQYxAFVKPjU4EIs+/FUEPWhr+N5hg0OuaPRwI63QOS3tVaOvGL4LxORGByakRhrAmd7pk4KlH7q/VEhFAbFStYHtaI2o7vdGavzuN7DWjBOUyOe6qNVFSc1aiFjnETDAF1ETOFfg0Iy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wNdeVGLS; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1724943869; c=relaxed/simple;
+	bh=lP7O8YnthRSL3opjjOPeri6/0jjOp8ue8AR4MTD9/DI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cqhIJmXifd3m+dY0toDDwMl94pqGch8g3LxLkxXwdE3odrFN+jdednSzu1GoYd8Pl9G3BnKYUEgQjzTqK+CKeDdvq6XZJIG4mf8xxYtWpdXvlWh+0JlyEKnTVxXTztAwVj+mUa6qjxfwdv7U2sp4rp6fUn3S5YERBCWeNo5xKxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ZXO7HL9v; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wNdeVGLS"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6b2249bf2d0so16401267b3.2
-        for <linux-coco@lists.linux.dev>; Thu, 29 Aug 2024 07:50:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724943018; x=1725547818; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K40x/XxYGu996xFAIHnF019vu74x3oRUZW/VL978XPs=;
-        b=wNdeVGLS+pMqyU4Wj8ACrxDbhozeefWgh2u9FMgG9b7+XyCOaXBMHxCvZoUo+Xr7m4
-         Dxgizyv905z04gWu95ieQLXgKb26mYxPFcHi2s2qYy7slDo3oEZex2U1Dfj02PkHk87w
-         dxDG3tf83LbwWhHe5Ea770M4zPK97F7FXtmYl6eZtSeWLiEu3Cd9r2YjCiZhxUGsrIF2
-         UoUHhfzDQUV+1F6GDSTZ2kgg7UlbPDweBUsOtbB0jEaLMCCUT+OLWjmjca8qn6dYo/H4
-         VKaONQuqHrOfj2CnamvEd6HEei7V2J16xxuQNBAxl2NKJ6wHh1rYO6ngWayxW/l5ZIc3
-         /Dvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724943018; x=1725547818;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K40x/XxYGu996xFAIHnF019vu74x3oRUZW/VL978XPs=;
-        b=DqICci9v9VCMG1v0KxmhL5VHHVtxy16cwCQDGD5idZbM8Yt4BHTz2PoxMjkybeV7a1
-         bnm0+iPIGKRIsScgShFLb6RAm1xyG4/Apbd9q/RDp9/RM6qNVq08CAzyOu8dOLQ8N+5C
-         NAoUuNuybracnEqIDbBgd8ohcfxTBSalqOtQll4mpf3mRhM3eAHtsqBNWmNBIUbbhg2g
-         Xq6Tt7opjdGbd0wimjT6sTlVJDSIJ4IO951prOt/eg5C66A1UsRO4Wg/z2GPkJ/gBRgs
-         NkuBlSJWkYZ7uAQPb9wiMCesdDqp2jgaudd+jgv9mY88gpxV0FGQK7kaEwryoFWKEzQh
-         0dCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUGNPSE+/Z94tkfEfpr0hX3cZeiqGdiq+CUi7dryGcHt7i9wSbub83TCFjO3ARop4pv/56/SYVG8ayS@lists.linux.dev
-X-Gm-Message-State: AOJu0YxRt7Mgl32wQ9O/Xq7YVOJPO2GL4XdmGQdAf7NMJRsAwAANddon
-	vLlFfnakHum1T6Cf8lpkMG77pcsKd1K92+Ktu1ZYR4tdb68So44eP1Fdd0b5cNbwpZlBZXGMfBr
-	czg==
-X-Google-Smtp-Source: AGHT+IGmzsl+rb2EC+zOzjzhADg2nn9Mafe2WTKumDpKYR0ktqk4W9+2ZAHTw7zGoStxNYtfttKBQBxzE5Y=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:690c:680d:b0:64a:e220:bfb5 with SMTP id
- 00721157ae682-6d2e6f71327mr398347b3.1.1724943018336; Thu, 29 Aug 2024
- 07:50:18 -0700 (PDT)
-Date: Thu, 29 Aug 2024 07:50:16 -0700
-In-Reply-To: <87475131-856C-44DC-A27A-84648294F094@alien8.de>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ZXO7HL9v"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D879040E0277;
+	Thu, 29 Aug 2024 15:04:25 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id eGyWPI7l-Okp; Thu, 29 Aug 2024 15:04:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1724943862; bh=YfvEj90/YGTqFstXw+WygwIyDmoZvVGd7EjPYBPVmmI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZXO7HL9vBgsg3vVGUgx+5tUa1K02Cy5YiW87naLs7rQWruNBSeAPNX84S5dPpx16Q
+	 Phc0unvnj/pAXRoTrl8gKXNmjc28NiQa7Gx7IuKoEwyxMsXo7PCayGQ11aa5YiS41q
+	 LH4lBzFE8o/V46xa8cGFGKVfepmKo6lAW1qiI7QW08SFGBPDqWtsmgmC7/qcS8vVB2
+	 9jnAbgFEnu/gu2+aAsJgU/noo9i0vUolxyTqDWbJ63DBSJ8wxGpD9r/lSDe/+o7dmk
+	 fWipX/QOAaR6LFBXcrGJhzluk01T2RK+pFO8Mle3AgYYbD3g/b9FcW34EUgt8pzwIw
+	 VZQgQtSceacb0xUyCqqsrbOEABhkSLE42a6pr40MSN9PhUSQEc0OjzIFAgyX62if/9
+	 BdnlIykYUe3hxsiWLWDvRYG157aTgZfWpom0KXvuJk5W2T5Fp595xq7hbkwkcuVyeh
+	 QYEOmfNQXpjszVN5KE+N9v2D08w6K8xi7+YfX+hu6vbxjroa1gG90yD6FeS0K0v9uQ
+	 4ey8hLyMvDTt2KComHRs7C3FoW1XOH1gCNLx5LB3wUnGKfP7BPJTsnWNiWXYHG01bG
+	 WHnpNP+RGVdn/9KHkVmplmyFVp5E1H8+8B5SkDKpVvIah6dWJjHrs02ssUIu+EHhgo
+	 bo49QgY29hvKGw7zGc5MgNO0=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CD3DC40E0275;
+	Thu, 29 Aug 2024 15:04:06 +0000 (UTC)
+Date: Thu, 29 Aug 2024 17:04:01 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Ashish Kalra <Ashish.Kalra@amd.com>, pbonzini@redhat.com,
+	dave.hansen@linux.intel.com, tglx@linutronix.de, mingo@redhat.com,
+	x86@kernel.org, hpa@zytor.com, peterz@infradead.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	thomas.lendacky@amd.com, michael.roth@amd.com,
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH] x86/sev: Fix host kdump support for SNP
+Message-ID: <20240829150401.GGZtCN4ZtVyqjYHbpD@fat_crate.local>
+References: <20240827203804.4989-1-Ashish.Kalra@amd.com>
+ <87475131-856C-44DC-A27A-84648294F094@alien8.de>
+ <ZtCKqD_gc6wnqu-P@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20240827203804.4989-1-Ashish.Kalra@amd.com> <87475131-856C-44DC-A27A-84648294F094@alien8.de>
-Message-ID: <ZtCKqD_gc6wnqu-P@google.com>
-Subject: Re: [PATCH] x86/sev: Fix host kdump support for SNP
-From: Sean Christopherson <seanjc@google.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Ashish Kalra <Ashish.Kalra@amd.com>, pbonzini@redhat.com, dave.hansen@linux.intel.com, 
-	tglx@linutronix.de, mingo@redhat.com, x86@kernel.org, hpa@zytor.com, 
-	peterz@infradead.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	thomas.lendacky@amd.com, michael.roth@amd.com, kexec@lists.infradead.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZtCKqD_gc6wnqu-P@google.com>
 
-On Thu, Aug 29, 2024, Borislav Petkov wrote:
-> On August 27, 2024 10:38:04 PM GMT+02:00, Ashish Kalra <Ashish.Kalra@amd.com> wrote:
-> >From: Ashish Kalra <ashish.kalra@amd.com>
-> >
-> >With active SNP VMs, SNP_SHUTDOWN_EX invoked during panic notifiers causes
-> >crashkernel boot failure with the following signature:
-> 
-> Why would SNP_SHUTDOWN be allowed *at all* if there are active SNP guests and
-> there's potential to lose guest data in the process?!
+On Thu, Aug 29, 2024 at 07:50:16AM -0700, Sean Christopherson wrote:
+> Because if the host is panicking, guests are hosed regardless.
 
-Because if the host is panicking, guests are hosed regardless.  Unless I'm
-misreading things, the goal here is to ensure the crashkernel can actually capture
-a kdump.
+Are they?
+
+I read "active SNP VMs"...
+
+I guess if it reaches svm_emergency_disable() we're hosed anyway and that's
+what you mean but I'm not sure...
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
