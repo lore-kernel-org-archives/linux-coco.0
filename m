@@ -1,70 +1,48 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C90826ACB
-	for <linux-coco@lists.linux.dev>; Fri, 30 Aug 2024 13:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF2D192D6A
+	for <linux-coco@lists.linux.dev>; Fri, 30 Aug 2024 13:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725025345; cv=none; b=WWJWRIpVLP1NSdumOMnRA7l8M80uZqrengC0Y0Q+y9eHlQWXS92mH+To6TfuH+W0gayGV2Yqe1kIhn0YtQ1pD4Ykzkdo1GFADf6AOmoO6h2EJbZwniK3OyjmbHmAi7/ppykOy3kNsKdK/94Ee1X3IEf90uf/kWBocwm9w0t0lbA=
+	t=1725025981; cv=none; b=h5vCaRWOORBrAv4vdCi0mj/OG4vqW6x11kRMTwzofsuevm6KkzopMxJtc+MN74v6Y+DSmX5+P3DyjRZUAYfibyhzIMr1zwvdoW1H0OL1cdcLSokwq9Uecar1BsBJ78Ou1dyV9W1QRxg6uFnH6T7JGHxOkvm7bH9hBRsVuwdRso8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725025345; c=relaxed/simple;
-	bh=ElRFDaOlbVgmwoLJ7Gg1IvQlztMopuP09ERJCMEQGsY=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CteRA8MvNt+FwDs4XqBw30tpgGNmx4nxfHhIzZ+tWfrg9g7mop8xwarGtYl5HV7gc6Y13fhbZjHflXPSWlNJflBbK35sdkqYDrE60MmP1ckJTO+KihryVPYDuBD5dsMiKp0OjeIBTuh2Y7d5qcLi3jrSn7pfJ4Uq7pa6liSWtFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Be/YWMrx; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Be/YWMrx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279DAC4CEC2;
-	Fri, 30 Aug 2024 13:42:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725025345;
-	bh=ElRFDaOlbVgmwoLJ7Gg1IvQlztMopuP09ERJCMEQGsY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Be/YWMrx+8MJXB0JBPRUlYzw7yWbXimqWxwHc9bOtqmoXfHYXlE1PQoWF3oyEJHOX
-	 LQRi0Ua7UrvipXzWOk77q6SJ1KIwena830fGh2pg2E4LG0EcqvAjV6/2J9uXtH8qED
-	 9zPpdfuRT0egD4cCh2HZiHFnFdD1lBbV7ssrf7D+FhLCuSRqdrnSDdPeIkxa5LPoK6
-	 SWw2AwrPr9MDSKsK3doHoncV9NEodWknasK1m/xqzuTEwPoAcIJyu2kN+/4WxEQmEC
-	 qO58n8dxpwdNP8qLFrT/31jhXFxm5zY0SaYvqPwbdOUKLrBwMsVqmyhzg+fES9c59Q
-	 P9N5TNMAPZKzg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sk1tP-008FiL-3E;
-	Fri, 30 Aug 2024 14:42:23 +0100
-Date: Fri, 30 Aug 2024 14:42:22 +0100
-Message-ID: <867cbyw2ip.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Suzuki Poulose <suzuki.poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v2 0/7] Support for running as a pKVM protected guest
-In-Reply-To: <20240830130150.8568-1-will@kernel.org>
-References: <20240830130150.8568-1-will@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1725025981; c=relaxed/simple;
+	bh=MNi1Fy5rMh2qADRXbv3To1NiBq40mwW4RSHJw8TnCkc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kXeOZpciTa5FNrzT/Au0/izyJ5nDqh//v3Vrgm/fK43tZfA1ww/Ycskjf0yQrYfxzlrnvuJkkIfbUZOTUQMg/NwtAkY3fF/ynoIKT27Mqaw6qgpy87M54MxufSFKtmEjBU4TREm+WoRqFBBX60KVkv3oeP5EkSUNkwuWOud0p6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F2DEC1063;
+	Fri, 30 Aug 2024 06:53:24 -0700 (PDT)
+Received: from [10.1.30.22] (e122027.cambridge.arm.com [10.1.30.22])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F2E873F762;
+	Fri, 30 Aug 2024 06:52:56 -0700 (PDT)
+Message-ID: <0b672910-34c0-4ed0-8828-c06571737e72@arm.com>
+Date: Fri, 30 Aug 2024 14:52:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: will@kernel.org, linux-arm-kernel@lists.infradead.org, sudeep.holla@arm.com, catalin.marinas@arm.com, lpieralisi@kernel.org, suzuki.poulose@arm.com, steven.price@arm.com, oliver.upton@linux.dev, linux-coco@lists.linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/7] Support for running as a pKVM protected guest
+To: Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Suzuki Poulose <suzuki.poulose@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>,
+ linux-coco@lists.linux.dev
+References: <20240830130150.8568-1-will@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20240830130150.8568-1-will@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 30 Aug 2024 14:01:43 +0100,
-Will Deacon <will@kernel.org> wrote:
-> 
+On 30/08/2024 14:01, Will Deacon wrote:
 > Hi all,
 > 
 > This is version two of the series previously posted here:
@@ -78,13 +56,65 @@ Will Deacon <will@kernel.org> wrote:
 > so it would be great to merge this with an Ack from the kvmarm
 > maintainers.
 
-For patches 2-7:
+Indeed, for what it's worth, patches 3 and 5 are both:
 
-Acked-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Steven Price <steven.price@arm.com>
 
 Thanks,
+Steve
 
-	M.
+> Cheers,
+> 
+> Will
+> 
+> [1] https://lore.kernel.org/r/20240819131924.372366-1-steven.price@arm.com
+> 
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Cc: Suzuki Poulose <suzuki.poulose@arm.com>
+> Cc: Steven Price <steven.price@arm.com>
+> Cc: Oliver Upton <oliver.upton@linux.dev>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: linux-coco@lists.linux.dev
+> 
+> --->8
+> 
+> Marc Zyngier (1):
+>   firmware/smccc: Call arch-specific hook on discovering KVM services
+> 
+> Will Deacon (6):
+>   drivers/virt: pkvm: Add initial support for running as a protected
+>     guest
+>   arm64: mm: Add top-level dispatcher for internal mem_encrypt API
+>   drivers/virt: pkvm: Hook up mem_encrypt API using pKVM hypercalls
+>   arm64: mm: Add confidential computing hook to ioremap_prot()
+>   drivers/virt: pkvm: Intercept ioremap using pKVM MMIO_GUARD hypercall
+>   arm64: smccc: Reserve block of KVM "vendor" services for pKVM
+>     hypercalls
+> 
+>  Documentation/virt/kvm/arm/hypercalls.rst     |  98 ++++++++++++++
+>  arch/arm/include/asm/hypervisor.h             |   2 +
+>  arch/arm64/Kconfig                            |   1 +
+>  arch/arm64/include/asm/hypervisor.h           |  11 ++
+>  arch/arm64/include/asm/io.h                   |   4 +
+>  arch/arm64/include/asm/mem_encrypt.h          |  15 +++
+>  arch/arm64/include/asm/set_memory.h           |   1 +
+>  arch/arm64/mm/Makefile                        |   2 +-
+>  arch/arm64/mm/ioremap.c                       |  23 +++-
+>  arch/arm64/mm/mem_encrypt.c                   |  50 +++++++
+>  drivers/firmware/smccc/kvm_guest.c            |   2 +
+>  drivers/virt/coco/Kconfig                     |   2 +
+>  drivers/virt/coco/Makefile                    |   1 +
+>  drivers/virt/coco/pkvm-guest/Kconfig          |  10 ++
+>  drivers/virt/coco/pkvm-guest/Makefile         |   2 +
+>  drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c | 127 ++++++++++++++++++
+>  include/linux/arm-smccc.h                     |  88 ++++++++++++
+>  17 files changed, 437 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/arm64/include/asm/mem_encrypt.h
+>  create mode 100644 arch/arm64/mm/mem_encrypt.c
+>  create mode 100644 drivers/virt/coco/pkvm-guest/Kconfig
+>  create mode 100644 drivers/virt/coco/pkvm-guest/Makefile
+>  create mode 100644 drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
+> 
 
--- 
-Without deviation from the norm, progress is not possible.
