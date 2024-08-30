@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D16165F05
-	for <linux-coco@lists.linux.dev>; Fri, 30 Aug 2024 13:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90679165F05
+	for <linux-coco@lists.linux.dev>; Fri, 30 Aug 2024 13:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725022918; cv=none; b=fjttPe7Vyz7kUrRCYLXrn4vUUuB1JG/TPLGcO4y4l+6/pvv62iT9bmuKkDtxZjkGN8gIWBKWG0CiSeEfA9Re1FZKuO8q1x+A3fl0VaZanE0zMI4pw20ZQQhwa2J3w6rw86P3opSgxhULlkW0Nwcfyv0JTcAjPG+Wl5KpvIMWdJM=
+	t=1725022920; cv=none; b=VHNVYVHzsusGQ8S/8LRCxPQ0rPowNWFvml8RQD2hop3w4oAmdTNBWhFYRMdkYf6dWH3FR0PB8oldLGHpkbFlFH52Fcmq+WhdMtxrBimOdRNoFqgKPG6Pa9kt95r18iHD5PbrOJx04EDIFxLSXRopeA61f7sqkFzQS+qkiwgZW0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725022918; c=relaxed/simple;
-	bh=A+3W/LHx+l+LB0DUctIiW8vpIgMQ4ADYQ24vstES/1U=;
+	s=arc-20240116; t=1725022920; c=relaxed/simple;
+	bh=bybmau78AN3JZEypffHlDRWzeeB9IxYBSB8FtPJvrLw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u1qQuKzb4DCfyS3KqUJHeIMxUBdmSUU22gUrJS38n2ghSgLPbrHK2Ar3z9RgJwsjaKebZE9vYMl40AdHibGoBbGVilW0bQuUmSx3UhOYOSk8DCd4iz8mwsSvP+bcAmVwCiSOP6kDtwAFPGXC/hQTj3cyGDxXWYuKEdviC9gJYwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXzcZLQ4; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=K8YB9R3oS9qngFBtf7Kapq9l7EJnSaIbgATSBQZPobBKjHoK//wmVvS5CaSYOQpP5eihDuI8m6XwbLDeOr6qFYssm5xhe3H0jEjved33C/05s6wfNDmos5Sm7al02pruFzeB43FHWL6Z/bR1Un3hEp3CUCoqffGC7HkNjgnuykw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6Jurckv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXzcZLQ4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B81C4CEC9;
-	Fri, 30 Aug 2024 13:01:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6Jurckv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AFDC4CEC8;
+	Fri, 30 Aug 2024 13:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725022917;
-	bh=A+3W/LHx+l+LB0DUctIiW8vpIgMQ4ADYQ24vstES/1U=;
+	s=k20201202; t=1725022920;
+	bh=bybmau78AN3JZEypffHlDRWzeeB9IxYBSB8FtPJvrLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXzcZLQ4FATCLyGSVz4aePHhhgBTP/jIdSrJF+DjEMXKFsf+ks5MLKwCOgbazI6XY
-	 bRM8Cmpnz04fGEtkgIFzrZAn6hiaqLIRf1knmeKWTvA1KO81l7VJ11mrGVF+f6AcFX
-	 CTAlBTNTE2gF8WVZQrxNl+ONABzCYq3rqcp4ikisklBs4Z0kO4T+iLMACEO1clyawP
-	 hhRrK3nuGEhm5BCfy1wTnxDhmbfqT+px50tcmuYW+aAhGClbyImWa2jKNrgYW6JOxJ
-	 CiX9q4AmFFM2cM0nOYv4dfAESWp0xkWDH3dviUDPcHFhJkkB9c3pvGwUuywNhlXixd
-	 V6XDGeJeG5yOA==
+	b=F6JurckvPFgimBVQ9NphXzU+mVadmW8f9T4tvFQS98UgLOU+AvcpwERNm6VLmJIHX
+	 6xT0c8aks8Z708fp9ihU/tcyolWrX26DUz9NuF/wIXCPiiFb4G9Wo404GFzm5Mo3Oh
+	 1ZHpYEIu1wYmTDWg/zo+bMJGzQEFmu8hdMzmpziVSB9bvz+X2i6kOhWzo9F4aqRUtu
+	 GiOLGQf2D1xn/qQLImviJsLdpYuczrp+mX3OaWuGBnT7mbHj558j10FRs8JNhUpzvn
+	 ShwZWLcmxT5yilISsS0u3/i2GyEmlWF7eTbLnsR79J1/EC9Vn1yquo1uU+Xn4KL1l4
+	 Z5BHNqA44Kmug==
 From: Will Deacon <will@kernel.org>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Will Deacon <will@kernel.org>,
@@ -37,9 +37,9 @@ Cc: Will Deacon <will@kernel.org>,
 	Oliver Upton <oliver.upton@linux.dev>,
 	Marc Zyngier <maz@kernel.org>,
 	linux-coco@lists.linux.dev
-Subject: [PATCH v2 1/7] firmware/smccc: Call arch-specific hook on discovering KVM services
-Date: Fri, 30 Aug 2024 14:01:44 +0100
-Message-Id: <20240830130150.8568-2-will@kernel.org>
+Subject: [PATCH v2 2/7] drivers/virt: pkvm: Add initial support for running as a protected guest
+Date: Fri, 30 Aug 2024 14:01:45 +0100
+Message-Id: <20240830130150.8568-3-will@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20240830130150.8568-1-will@kernel.org>
 References: <20240830130150.8568-1-will@kernel.org>
@@ -51,57 +51,191 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Marc Zyngier <maz@kernel.org>
+Implement a pKVM protected guest driver to probe the presence of pKVM
+and determine the memory protection granule using the HYP_MEMINFO
+hypercall.
 
-arm64 will soon require its own callback to initialise services
-that are only available on this architecture. Introduce a hook
-that can be overloaded by the architecture.
-
-Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Will Deacon <will@kernel.org>
 ---
- arch/arm/include/asm/hypervisor.h   | 2 ++
- arch/arm64/include/asm/hypervisor.h | 4 ++++
- drivers/firmware/smccc/kvm_guest.c  | 2 ++
- 3 files changed, 8 insertions(+)
+ Documentation/virt/kvm/arm/hypercalls.rst     | 22 +++++++++++
+ arch/arm64/include/asm/hypervisor.h           |  7 ++++
+ drivers/virt/coco/Kconfig                     |  2 +
+ drivers/virt/coco/Makefile                    |  1 +
+ drivers/virt/coco/pkvm-guest/Kconfig          | 10 +++++
+ drivers/virt/coco/pkvm-guest/Makefile         |  2 +
+ drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c | 37 +++++++++++++++++++
+ include/linux/arm-smccc.h                     |  7 ++++
+ 8 files changed, 88 insertions(+)
+ create mode 100644 drivers/virt/coco/pkvm-guest/Kconfig
+ create mode 100644 drivers/virt/coco/pkvm-guest/Makefile
+ create mode 100644 drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
 
-diff --git a/arch/arm/include/asm/hypervisor.h b/arch/arm/include/asm/hypervisor.h
-index bd61502b9715..8a648e506540 100644
---- a/arch/arm/include/asm/hypervisor.h
-+++ b/arch/arm/include/asm/hypervisor.h
-@@ -7,4 +7,6 @@
- void kvm_init_hyp_services(void);
- bool kvm_arm_hyp_service_available(u32 func_id);
+diff --git a/Documentation/virt/kvm/arm/hypercalls.rst b/Documentation/virt/kvm/arm/hypercalls.rst
+index 17be111f493f..16515eb42149 100644
+--- a/Documentation/virt/kvm/arm/hypercalls.rst
++++ b/Documentation/virt/kvm/arm/hypercalls.rst
+@@ -44,3 +44,25 @@ Provides a discovery mechanism for other KVM/arm64 hypercalls.
+ ----------------------------------------
  
-+static inline void kvm_arch_init_hyp_services(void) { };
+ See ptp_kvm.rst
 +
- #endif
++``ARM_SMCCC_KVM_FUNC_HYP_MEMINFO``
++----------------------------------
++
++Query the memory protection parameters for a pKVM protected virtual machine.
++
+++---------------------+-------------------------------------------------------------+
++| Presence:           | Optional; pKVM protected guests only.                       |
+++---------------------+-------------------------------------------------------------+
++| Calling convention: | HVC64                                                       |
+++---------------------+----------+--------------------------------------------------+
++| Function ID:        | (uint32) | 0xC6000002                                       |
+++---------------------+----------+----+---------------------------------------------+
++| Arguments:          | (uint64) | R1 | Reserved / Must be zero                     |
++|                     +----------+----+---------------------------------------------+
++|                     | (uint64) | R2 | Reserved / Must be zero                     |
++|                     +----------+----+---------------------------------------------+
++|                     | (uint64) | R3 | Reserved / Must be zero                     |
+++---------------------+----------+----+---------------------------------------------+
++| Return Values:      | (int64)  | R0 | ``INVALID_PARAMETER (-3)`` on error, else   |
++|                     |          |    | memory protection granule in bytes          |
+++---------------------+----------+----+---------------------------------------------+
 diff --git a/arch/arm64/include/asm/hypervisor.h b/arch/arm64/include/asm/hypervisor.h
-index 0ae427f352c8..8cab2ab535b7 100644
+index 8cab2ab535b7..409e239834d1 100644
 --- a/arch/arm64/include/asm/hypervisor.h
 +++ b/arch/arm64/include/asm/hypervisor.h
-@@ -7,4 +7,8 @@
+@@ -7,8 +7,15 @@
  void kvm_init_hyp_services(void);
  bool kvm_arm_hyp_service_available(u32 func_id);
  
-+static inline void kvm_arch_init_hyp_services(void)
-+{
-+};
++#ifdef CONFIG_ARM_PKVM_GUEST
++void pkvm_init_hyp_services(void);
++#else
++static inline void pkvm_init_hyp_services(void) { };
++#endif
 +
+ static inline void kvm_arch_init_hyp_services(void)
+ {
++	pkvm_init_hyp_services();
+ };
+ 
  #endif
-diff --git a/drivers/firmware/smccc/kvm_guest.c b/drivers/firmware/smccc/kvm_guest.c
-index 89a68e7eeaa6..f3319be20b36 100644
---- a/drivers/firmware/smccc/kvm_guest.c
-+++ b/drivers/firmware/smccc/kvm_guest.c
-@@ -39,6 +39,8 @@ void __init kvm_init_hyp_services(void)
+diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+index 87d142c1f932..d9ff676bf48d 100644
+--- a/drivers/virt/coco/Kconfig
++++ b/drivers/virt/coco/Kconfig
+@@ -9,6 +9,8 @@ config TSM_REPORTS
  
- 	pr_info("hypervisor services detected (0x%08lx 0x%08lx 0x%08lx 0x%08lx)\n",
- 		 res.a3, res.a2, res.a1, res.a0);
+ source "drivers/virt/coco/efi_secret/Kconfig"
+ 
++source "drivers/virt/coco/pkvm-guest/Kconfig"
 +
-+	kvm_arch_init_hyp_services();
- }
+ source "drivers/virt/coco/sev-guest/Kconfig"
  
- bool kvm_arm_hyp_service_available(u32 func_id)
+ source "drivers/virt/coco/tdx-guest/Kconfig"
+diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+index 18c1aba5edb7..b69c30c1c720 100644
+--- a/drivers/virt/coco/Makefile
++++ b/drivers/virt/coco/Makefile
+@@ -4,5 +4,6 @@
+ #
+ obj-$(CONFIG_TSM_REPORTS)	+= tsm.o
+ obj-$(CONFIG_EFI_SECRET)	+= efi_secret/
++obj-$(CONFIG_ARM_PKVM_GUEST)	+= pkvm-guest/
+ obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
+ obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
+diff --git a/drivers/virt/coco/pkvm-guest/Kconfig b/drivers/virt/coco/pkvm-guest/Kconfig
+new file mode 100644
+index 000000000000..d2f344f1f98f
+--- /dev/null
++++ b/drivers/virt/coco/pkvm-guest/Kconfig
+@@ -0,0 +1,10 @@
++config ARM_PKVM_GUEST
++	bool "Arm pKVM protected guest driver"
++	depends on ARM64
++	help
++	  Protected guests running under the pKVM hypervisor on arm64
++	  are isolated from the host and must issue hypercalls to enable
++	  interaction with virtual devices. This driver implements
++	  support for probing and issuing these hypercalls.
++
++	  If unsure, say 'N'.
+diff --git a/drivers/virt/coco/pkvm-guest/Makefile b/drivers/virt/coco/pkvm-guest/Makefile
+new file mode 100644
+index 000000000000..4bee24579423
+--- /dev/null
++++ b/drivers/virt/coco/pkvm-guest/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-$(CONFIG_ARM_PKVM_GUEST) += arm-pkvm-guest.o
+diff --git a/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c b/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
+new file mode 100644
+index 000000000000..a5148701d2f1
+--- /dev/null
++++ b/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
+@@ -0,0 +1,37 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Support for the hypercall interface exposed to protected guests by
++ * pKVM.
++ *
++ * Author: Will Deacon <will@kernel.org>
++ * Copyright (C) 2024 Google LLC
++ */
++
++#include <linux/arm-smccc.h>
++#include <linux/array_size.h>
++#include <linux/mm.h>
++
++#include <asm/hypervisor.h>
++
++static size_t pkvm_granule;
++
++void pkvm_init_hyp_services(void)
++{
++	int i;
++	struct arm_smccc_res res;
++	const u32 funcs[] = {
++		ARM_SMCCC_KVM_FUNC_HYP_MEMINFO,
++	};
++
++	for (i = 0; i < ARRAY_SIZE(funcs); ++i) {
++		if (!kvm_arm_hyp_service_available(funcs[i]))
++			return;
++	}
++
++	arm_smccc_1_1_invoke(ARM_SMCCC_VENDOR_HYP_KVM_HYP_MEMINFO_FUNC_ID,
++			     0, 0, 0, &res);
++	if (res.a0 > PAGE_SIZE) /* Includes error codes */
++		return;
++
++	pkvm_granule = res.a0;
++}
+diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
+index 083f85653716..16b6dcc54e02 100644
+--- a/include/linux/arm-smccc.h
++++ b/include/linux/arm-smccc.h
+@@ -115,6 +115,7 @@
+ /* KVM "vendor specific" services */
+ #define ARM_SMCCC_KVM_FUNC_FEATURES		0
+ #define ARM_SMCCC_KVM_FUNC_PTP			1
++#define ARM_SMCCC_KVM_FUNC_HYP_MEMINFO		2
+ #define ARM_SMCCC_KVM_FUNC_FEATURES_2		127
+ #define ARM_SMCCC_KVM_NUM_FUNCS			128
+ 
+@@ -137,6 +138,12 @@
+ 			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
+ 			   ARM_SMCCC_KVM_FUNC_PTP)
+ 
++#define ARM_SMCCC_VENDOR_HYP_KVM_HYP_MEMINFO_FUNC_ID			\
++	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,				\
++			   ARM_SMCCC_SMC_64,				\
++			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
++			   ARM_SMCCC_KVM_FUNC_HYP_MEMINFO)
++
+ /* ptp_kvm counter type ID */
+ #define KVM_PTP_VIRT_COUNTER			0
+ #define KVM_PTP_PHYS_COUNTER			1
 -- 
 2.46.0.469.g59c65b2a67-goog
 
