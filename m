@@ -1,141 +1,89 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAE81B6553;
-	Fri, 30 Aug 2024 15:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98ED51BB68E
+	for <linux-coco@lists.linux.dev>; Fri, 30 Aug 2024 16:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725033302; cv=none; b=V5h9Z1eY7DeZrOB9MguUw4O0s/GRHAY3tAurXWezjrg/kQ0F5bgVNkI/rCkOuaO3iqoo7bmLkHMxBIxOteBre7PAdx/pSS4YXEWqAi5y+15ROkilBRCJeMNvVVRMWlBO8NsC50AgV8BmE8b40nNI61YHcXhcmhuRdxICNI4fIeM=
+	t=1725034364; cv=none; b=Xj6HglmPBaBKbgCoG/CcIANTvpU+ciM34otD8ISx88XLwQFMfXt57zITnu9QcLFEJlcON5HyWjCyQmyEadYvB5lI16K1ygW3GzYvfeeZRXCIgSfd8Cdxehd2bOLkxy0740nsOS57PwAnaKVoUnD1Q0rGUUnLjKrgmR9ndFxR11k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725033302; c=relaxed/simple;
-	bh=8nPUBbYoUtNAT80wKKkWO+YB8VEQnVa8FilYwX9Bjfg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ki225nsBI5w65zE2oSFuqLF9MU1AHNNXRQsheWXVxfSZRawz28EdHQlrB9POkKtU0xqEjfTy023T+90tvBKoGOoKC/ixDFWRVPhkU04C3UIk1YS/ccn7b/iyxY9pCO7ymVi8YU+/LVYEN2rczXqg8Cu5K+19VSpJIP0pexU6LAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7194B1063;
-	Fri, 30 Aug 2024 08:55:26 -0700 (PDT)
-Received: from [10.1.30.22] (e122027.cambridge.arm.com [10.1.30.22])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C38F3F762;
-	Fri, 30 Aug 2024 08:54:56 -0700 (PDT)
-Message-ID: <5dfccae9-58c3-4159-b1df-1b783e513dfa@arm.com>
-Date: Fri, 30 Aug 2024 16:54:49 +0100
+	s=arc-20240116; t=1725034364; c=relaxed/simple;
+	bh=/kfq7YmiVobXWgz7nzhblwvbYNwsu76OS0ckz053/hA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Jr1HRi6VwUDWJFunM5np3isBkCYVC3AyJCuYwW+UnbPYbc//bOzxqX9uVr6lVVj4D1RuhP9Ct1PJx1tkXq4/SK/k1Az0CAL75CEL7bzreD1YmktWXO6/fJrNvhQiVLywqgyl77fMY+UblbhtD87csW8D1mI+3iaogSVLKcAWnrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IEkOvn5W; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IEkOvn5W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7B0C4CEC8;
+	Fri, 30 Aug 2024 16:12:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725034364;
+	bh=/kfq7YmiVobXWgz7nzhblwvbYNwsu76OS0ckz053/hA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IEkOvn5WD9MHe2ESq7KL1lW266duu1y5G20yHb2mUHH/eNPRkpp0fQObqiLvsuuCy
+	 MqLivE34jP5wwssKRTKQPXuqGGU+eFhb5lPdJl0qgBQ9nCvyWWh4XtTtxs1g5lnbBo
+	 Gmc9TqZ2gRNA4dvKWdFtZio8WbsBtoyMa6a78fL3+ylmBrZtmyhSKkDXz6qAa0Ifj8
+	 b3T2PV7cJntvWOyWZa+9Q7oFWKu4as2L6AVo1tbeIPHRBvwEg3CzHhTzhi8NF9RZ4U
+	 kf5/czkQ+lbBYmZk6MFlDEUp4+CqEU3etfx8Z2Gq8aK6pdvkG+oIFc0V2h1+c1ue65
+	 h4xr2LqK0QFzQ==
+From: Will Deacon <will@kernel.org>
+To: linux-arm-kernel@lists.infradead.org,
+	Will Deacon <will@kernel.org>
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Suzuki Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v2 0/7] Support for running as a pKVM protected guest
+Date: Fri, 30 Aug 2024 17:12:15 +0100
+Message-Id: <172503184338.3258182.14015328751329437949.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20240830130150.8568-1-will@kernel.org>
+References: <20240830130150.8568-1-will@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/19] firmware/psci: Add psci_early_test_conduit()
-To: Will Deacon <will@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>
-References: <20240819131924.372366-1-steven.price@arm.com>
- <20240819131924.372366-5-steven.price@arm.com>
- <20240823132918.GD32156@willie-the-truck>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20240823132918.GD32156@willie-the-truck>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 23/08/2024 14:29, Will Deacon wrote:
-> On Mon, Aug 19, 2024 at 02:19:09PM +0100, Steven Price wrote:
->> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>
->> Add a function to test early if PSCI is present and what conduit it
->> uses. Because the PSCI conduit corresponds to the SMCCC one, this will
->> let the kernel know whether it can use SMC instructions to discuss with
->> the Realm Management Monitor (RMM), early enough to enable RAM and
->> serial access when running in a Realm.
->>
->> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> v4: New patch
->> ---
->>  drivers/firmware/psci/psci.c | 25 +++++++++++++++++++++++++
->>  include/linux/psci.h         |  5 +++++
->>  2 files changed, 30 insertions(+)
->>
->> diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
->> index 2328ca58bba6..2b308f97ef2c 100644
->> --- a/drivers/firmware/psci/psci.c
->> +++ b/drivers/firmware/psci/psci.c
->> @@ -13,6 +13,7 @@
->>  #include <linux/errno.h>
->>  #include <linux/linkage.h>
->>  #include <linux/of.h>
->> +#include <linux/of_fdt.h>
->>  #include <linux/pm.h>
->>  #include <linux/printk.h>
->>  #include <linux/psci.h>
->> @@ -769,6 +770,30 @@ int __init psci_dt_init(void)
->>  	return ret;
->>  }
->>  
->> +/*
->> + * Test early if PSCI is supported, and if its conduit matches @conduit
->> + */
->> +bool __init psci_early_test_conduit(enum arm_smccc_conduit conduit)
->> +{
->> +	int len;
->> +	int psci_node;
->> +	const char *method;
->> +	unsigned long dt_root;
->> +
->> +	/* DT hasn't been unflattened yet, we have to work with the flat blob */
->> +	dt_root = of_get_flat_dt_root();
->> +	psci_node = of_get_flat_dt_subnode_by_name(dt_root, "psci");
->> +	if (psci_node <= 0)
->> +		return false;
->> +
->> +	method = of_get_flat_dt_prop(psci_node, "method", &len);
->> +	if (!method)
->> +		return false;
->> +
->> +	return  (conduit == SMCCC_CONDUIT_SMC && strncmp(method, "smc", len) == 0) ||
->> +		(conduit == SMCCC_CONDUIT_HVC && strncmp(method, "hvc", len) == 0);
->> +}
+On Fri, 30 Aug 2024 14:01:43 +0100, Will Deacon wrote:
+> This is version two of the series previously posted here:
 > 
-> This still looks incomplete to me as per my earlier comments:
+>   https://lore.kernel.org/r/20240730151113.1497-1-will@kernel.org
 > 
-> https://lore.kernel.org/all/20240709104851.GE12978@willie-the-truck/
+> Changes since v1:
+>   * New patch allocating additional hypercalls for future pKVM usage
 > 
-> For the first implementation, can we punt the RIPAS_RAM to the bootloader
-> and drop support for earlycon? Even if we manage to shoe-horn enough code
-> into the early boot path, I think we'll regret it later on because there's
-> always something that wants to be first and it inevitably ends up being
-> a nightmare to maintain.
+> [...]
 
-Short-answer: yes, although it has drawbacks.
+Applied to arm64 (for-next/pkvm-guest), thanks!
 
-I've never been keen on the RIPAS_RAM requirement, the logic behind it
-is that it makes it easier to have varying amounts of RAM given to the
-guest without affecting the attestation. But it's a weak argument and
-I'd personally prefer to punt the responsibility to a bootloader/VMM.
+[1/7] firmware/smccc: Call arch-specific hook on discovering KVM services
+      https://git.kernel.org/arm64/c/0ba5b4ba6178
+[2/7] drivers/virt: pkvm: Add initial support for running as a protected guest
+      https://git.kernel.org/arm64/c/a06c3fad49a5
+[3/7] arm64: mm: Add top-level dispatcher for internal mem_encrypt API
+      https://git.kernel.org/arm64/c/e7bafbf71777
+[4/7] drivers/virt: pkvm: Hook up mem_encrypt API using pKVM hypercalls
+      https://git.kernel.org/arm64/c/ebc59b120c58
+[5/7] arm64: mm: Add confidential computing hook to ioremap_prot()
+      https://git.kernel.org/arm64/c/c86fa3470c10
+[6/7] drivers/virt: pkvm: Intercept ioremap using pKVM MMIO_GUARD hypercall
+      https://git.kernel.org/arm64/c/0f1269495800
+[7/7] arm64: smccc: Reserve block of KVM "vendor" services for pKVM hypercalls
+      https://git.kernel.org/arm64/c/21be9f7110d4
 
-earlycon should be fairly easy to remove - and it doesn't have to
-actually kill earlycon because we can pass in the address with the top
-bit set - it just requires fixing up the VMM.
+Cheers,
+-- 
+Will
 
-EFI is the main issue.
-
-I'll have a go at coming up with a cut down series - at the very least
-I'll see if I can rearrange to have the troublesome parts at the end so
-they can be dropped if necessary.
-
-Steve
-
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
