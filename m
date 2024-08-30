@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF6E165F05
-	for <linux-coco@lists.linux.dev>; Fri, 30 Aug 2024 13:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FDD165F05
+	for <linux-coco@lists.linux.dev>; Fri, 30 Aug 2024 13:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725022922; cv=none; b=k0L9KvS3wQpScsG9p3hKb21DwAaZ9/b5++CVd0XtiMPOScrEW2qv1ylESEFNnhu+BO0OJIV4YnYaYxG2rFVYmTCYft6loxAnR4vvhiFeHI6+GoNko+iiuK4o6Q9w7QpuZzhHqKVU34+//FS3R0uwzRg8ectt783pGyFXTHP2b1A=
+	t=1725022924; cv=none; b=XfV3UcLLFU/SjK6T5LMFAIY4mjAQkmLlrix7Jmlt0XDRkZwaqhvUTdZe3OBpK2Tsd2M5IAhvq7zxmzfn4nO+Xuex2DIoqNW0TKfTkc/OyRo79WxtVpfcx9m8m8nRBVnOsJy/He6AXGiJWTJ5Tdi7y+9K/YxvH6TAZtMPc/0Qxu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725022922; c=relaxed/simple;
-	bh=fM2dKph4rfiOaYzJogpThbTlC5m+B2tFthIQflmuX4k=;
+	s=arc-20240116; t=1725022924; c=relaxed/simple;
+	bh=fOFx+vCt8zSA57KmyUhuAyFmh0/KvJ1/VKXwh9l++u8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cYmmQrB6sjPJpcgHoq45Rk7omDCh4XpnetRc1M4bwKgTghCjxIs94NTK4JRjX1fKVlxd8PHHgEkjUQ1miIt9uEeEgN9EyzeVa1n3VMvFwoqhYPhVRxeCpk1+phg+QFQcLqmg5Lz6vcQbVdMsd5H5dOWWtwCXBG7PkVyjj32GIyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EX4ECrwp; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=q9y5ujScLg0OUIvaGeIxkmwuRihVmgUkEJWGHjbbWh05XXQPTgBAaWPxIqoddRO9QhxMarhs+KsYsoE45Eu8Mnxt20EdoNPr8gc2jl7DjOA+V5EBrxdcSaVx+dkCrOSPmBdqlnLigMJ4hxELTOQEcQ/ZhqycFVlf+xZiKlgKibw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAHkh1qT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EX4ECrwp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D013C4CEC9;
-	Fri, 30 Aug 2024 13:02:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAHkh1qT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD05C4CEC7;
+	Fri, 30 Aug 2024 13:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725022922;
-	bh=fM2dKph4rfiOaYzJogpThbTlC5m+B2tFthIQflmuX4k=;
+	s=k20201202; t=1725022924;
+	bh=fOFx+vCt8zSA57KmyUhuAyFmh0/KvJ1/VKXwh9l++u8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EX4ECrwpDXD+Z0saYVImnMS9UMODcydoVe6oLo/SBfORzJ1d8jT/ScgPmyuds2aiI
-	 WouvFRmFsBr2aRc9klyFGripvnr1+X6e2paDSBnx0zOpBxxUsTdxCNVR45NyrzdQhd
-	 FDqqzznJtODQnX/CUtA+WmjecWdBNLtGZbdEyZRBB1r0s8+PBe+FT1+RWsq64oP6sq
-	 EQiS0TJ3NX1Y8JuHK6H8dUT2jMgBRwxNhQCKahMI9bmym/ZH41FOg99CBXxM+m+tg4
-	 UGP2LteA8nX6XBEqZKhnhhuC5OkiSUvv7eR1YMJXNUeSBt13AUIf6hhmU3DlkYSW87
-	 3fN/jQysiQRgw==
+	b=GAHkh1qTi7oYPE2zN8n3dhr38w5cisPWLPHf8zTV6iDTr+wsL/iBsDZ6ls1cgLSz5
+	 IF1MXB85RhM1j7YqSwWQXzfQav9PWxOrGxbJYMgzeQwHgmCG/lvM0gezWsbpsRB3JW
+	 /OY9Z3P0QqWXjOgrcVsQ5itABnI5/d271z9CacTz+vsGUJHm5lFkqsPj0tF6TiIDu+
+	 Q9FRhm7i0tJe9bdUnfdKuEjb3Z7awrFJHHBF/OaohVyBvW3dN8SFX618xBbje3ycq/
+	 rChwaWsqw/jfyo2qs3LT0B3ds8FEwwoQJ5Me9r8a5NUMX8PDPuC6ubQ9qbdzMTpxkZ
+	 tQwX/Dj7SNoOw==
 From: Will Deacon <will@kernel.org>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Will Deacon <will@kernel.org>,
@@ -37,9 +37,9 @@ Cc: Will Deacon <will@kernel.org>,
 	Oliver Upton <oliver.upton@linux.dev>,
 	Marc Zyngier <maz@kernel.org>,
 	linux-coco@lists.linux.dev
-Subject: [PATCH v2 3/7] arm64: mm: Add top-level dispatcher for internal mem_encrypt API
-Date: Fri, 30 Aug 2024 14:01:46 +0100
-Message-Id: <20240830130150.8568-4-will@kernel.org>
+Subject: [PATCH v2 4/7] drivers/virt: pkvm: Hook up mem_encrypt API using pKVM hypercalls
+Date: Fri, 30 Aug 2024 14:01:47 +0100
+Message-Id: <20240830130150.8568-5-will@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20240830130150.8568-1-will@kernel.org>
 References: <20240830130150.8568-1-will@kernel.org>
@@ -51,137 +51,190 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implementing the internal mem_encrypt API for arm64 depends entirely on
-the Confidential Computing environment in which the kernel is running.
-
-Introduce a simple dispatcher so that backend hooks can be registered
-depending upon the environment in which the kernel finds itself.
+If we detect the presence of pKVM's SHARE and UNSHARE hypercalls, then
+register a backend implementation of the mem_encrypt API so that things
+like DMA buffers can be shared appropriately with the host.
 
 Signed-off-by: Will Deacon <will@kernel.org>
 ---
- arch/arm64/Kconfig                   |  1 +
- arch/arm64/include/asm/mem_encrypt.h | 15 +++++++++
- arch/arm64/include/asm/set_memory.h  |  1 +
- arch/arm64/mm/Makefile               |  2 +-
- arch/arm64/mm/mem_encrypt.c          | 50 ++++++++++++++++++++++++++++
- 5 files changed, 68 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm64/include/asm/mem_encrypt.h
- create mode 100644 arch/arm64/mm/mem_encrypt.c
+ Documentation/virt/kvm/arm/hypercalls.rst     | 50 +++++++++++++++++
+ drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c | 55 +++++++++++++++++++
+ include/linux/arm-smccc.h                     | 14 +++++
+ 3 files changed, 119 insertions(+)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index a2f8ff354ca6..164858120191 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -34,6 +34,7 @@ config ARM64
- 	select ARCH_HAS_KERNEL_FPU_SUPPORT if KERNEL_MODE_NEON
- 	select ARCH_HAS_KEEPINITRD
- 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
-+	select ARCH_HAS_MEM_ENCRYPT
- 	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
- 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 	select ARCH_HAS_PTE_DEVMAP
-diff --git a/arch/arm64/include/asm/mem_encrypt.h b/arch/arm64/include/asm/mem_encrypt.h
-new file mode 100644
-index 000000000000..b0c9a86b13a4
---- /dev/null
-+++ b/arch/arm64/include/asm/mem_encrypt.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __ASM_MEM_ENCRYPT_H
-+#define __ASM_MEM_ENCRYPT_H
+diff --git a/Documentation/virt/kvm/arm/hypercalls.rst b/Documentation/virt/kvm/arm/hypercalls.rst
+index 16515eb42149..c42580e71bf8 100644
+--- a/Documentation/virt/kvm/arm/hypercalls.rst
++++ b/Documentation/virt/kvm/arm/hypercalls.rst
+@@ -66,3 +66,53 @@ Query the memory protection parameters for a pKVM protected virtual machine.
+ | Return Values:      | (int64)  | R0 | ``INVALID_PARAMETER (-3)`` on error, else   |
+ |                     |          |    | memory protection granule in bytes          |
+ +---------------------+----------+----+---------------------------------------------+
 +
-+struct arm64_mem_crypt_ops {
-+	int (*encrypt)(unsigned long addr, int numpages);
-+	int (*decrypt)(unsigned long addr, int numpages);
-+};
++``ARM_SMCCC_KVM_FUNC_MEM_SHARE``
++--------------------------------
 +
-+int arm64_mem_crypt_ops_register(const struct arm64_mem_crypt_ops *ops);
++Share a region of memory with the KVM host, granting it read, write and execute
++permissions. The size of the region is equal to the memory protection granule
++advertised by ``ARM_SMCCC_KVM_FUNC_HYP_MEMINFO``.
 +
-+int set_memory_encrypted(unsigned long addr, int numpages);
-+int set_memory_decrypted(unsigned long addr, int numpages);
+++---------------------+-------------------------------------------------------------+
++| Presence:           | Optional; pKVM protected guests only.                       |
+++---------------------+-------------------------------------------------------------+
++| Calling convention: | HVC64                                                       |
+++---------------------+----------+--------------------------------------------------+
++| Function ID:        | (uint32) | 0xC6000003                                       |
+++---------------------+----------+----+---------------------------------------------+
++| Arguments:          | (uint64) | R1 | Base IPA of memory region to share          |
++|                     +----------+----+---------------------------------------------+
++|                     | (uint64) | R2 | Reserved / Must be zero                     |
++|                     +----------+----+---------------------------------------------+
++|                     | (uint64) | R3 | Reserved / Must be zero                     |
+++---------------------+----------+----+---------------------------------------------+
++| Return Values:      | (int64)  | R0 | ``SUCCESS (0)``                             |
++|                     |          |    +---------------------------------------------+
++|                     |          |    | ``INVALID_PARAMETER (-3)``                  |
+++---------------------+----------+----+---------------------------------------------+
 +
-+#endif	/* __ASM_MEM_ENCRYPT_H */
-diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
-index 0f740b781187..917761feeffd 100644
---- a/arch/arm64/include/asm/set_memory.h
-+++ b/arch/arm64/include/asm/set_memory.h
-@@ -3,6 +3,7 @@
- #ifndef _ASM_ARM64_SET_MEMORY_H
- #define _ASM_ARM64_SET_MEMORY_H
++``ARM_SMCCC_KVM_FUNC_MEM_UNSHARE``
++----------------------------------
++
++Revoke access permission from the KVM host to a memory region previously shared
++with ``ARM_SMCCC_KVM_FUNC_MEM_SHARE``. The size of the region is equal to the
++memory protection granule advertised by ``ARM_SMCCC_KVM_FUNC_HYP_MEMINFO``.
++
+++---------------------+-------------------------------------------------------------+
++| Presence:           | Optional; pKVM protected guests only.                       |
+++---------------------+-------------------------------------------------------------+
++| Calling convention: | HVC64                                                       |
+++---------------------+----------+--------------------------------------------------+
++| Function ID:        | (uint32) | 0xC6000004                                       |
+++---------------------+----------+----+---------------------------------------------+
++| Arguments:          | (uint64) | R1 | Base IPA of memory region to unshare        |
++|                     +----------+----+---------------------------------------------+
++|                     | (uint64) | R2 | Reserved / Must be zero                     |
++|                     +----------+----+---------------------------------------------+
++|                     | (uint64) | R3 | Reserved / Must be zero                     |
+++---------------------+----------+----+---------------------------------------------+
++| Return Values:      | (int64)  | R0 | ``SUCCESS (0)``                             |
++|                     |          |    +---------------------------------------------+
++|                     |          |    | ``INVALID_PARAMETER (-3)``                  |
+++---------------------+----------+----+---------------------------------------------+
+diff --git a/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c b/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
+index a5148701d2f1..8256cf68fd76 100644
+--- a/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
++++ b/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
+@@ -9,18 +9,72 @@
  
-+#include <asm/mem_encrypt.h>
- #include <asm-generic/set_memory.h>
+ #include <linux/arm-smccc.h>
+ #include <linux/array_size.h>
++#include <linux/mem_encrypt.h>
+ #include <linux/mm.h>
  
- bool can_set_direct_map(void);
-diff --git a/arch/arm64/mm/Makefile b/arch/arm64/mm/Makefile
-index 60454256945b..2fc8c6dd0407 100644
---- a/arch/arm64/mm/Makefile
-+++ b/arch/arm64/mm/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-y				:= dma-mapping.o extable.o fault.o init.o \
- 				   cache.o copypage.o flush.o \
--				   ioremap.o mmap.o pgd.o mmu.o \
-+				   ioremap.o mmap.o pgd.o mem_encrypt.o mmu.o \
- 				   context.o proc.o pageattr.o fixmap.o
- obj-$(CONFIG_ARM64_CONTPTE)	+= contpte.o
- obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
-diff --git a/arch/arm64/mm/mem_encrypt.c b/arch/arm64/mm/mem_encrypt.c
-new file mode 100644
-index 000000000000..ee3c0ab04384
---- /dev/null
-+++ b/arch/arm64/mm/mem_encrypt.c
-@@ -0,0 +1,50 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Implementation of the memory encryption/decryption API.
-+ *
-+ * Since the low-level details of the operation depend on the
-+ * Confidential Computing environment (e.g. pKVM, CCA, ...), this just
-+ * acts as a top-level dispatcher to whatever hooks may have been
-+ * registered.
-+ *
-+ * Author: Will Deacon <will@kernel.org>
-+ * Copyright (C) 2024 Google LLC
-+ *
-+ * "Hello, boils and ghouls!"
-+ */
-+
-+#include <linux/bug.h>
-+#include <linux/compiler.h>
-+#include <linux/err.h>
-+#include <linux/mm.h>
-+
-+#include <asm/mem_encrypt.h>
-+
-+static const struct arm64_mem_crypt_ops *crypt_ops;
-+
-+int arm64_mem_crypt_ops_register(const struct arm64_mem_crypt_ops *ops)
+ #include <asm/hypervisor.h>
+ 
+ static size_t pkvm_granule;
+ 
++static int arm_smccc_do_one_page(u32 func_id, phys_addr_t phys)
 +{
-+	if (WARN_ON(crypt_ops))
-+		return -EBUSY;
++	phys_addr_t end = phys + PAGE_SIZE;
 +
-+	crypt_ops = ops;
++	while (phys < end) {
++		struct arm_smccc_res res;
++
++		arm_smccc_1_1_invoke(func_id, phys, 0, 0, &res);
++		if (res.a0 != SMCCC_RET_SUCCESS)
++			return -EPERM;
++
++		phys += pkvm_granule;
++	}
++
 +	return 0;
 +}
 +
-+int set_memory_encrypted(unsigned long addr, int numpages)
++static int __set_memory_range(u32 func_id, unsigned long start, int numpages)
 +{
-+	if (likely(!crypt_ops) || WARN_ON(!PAGE_ALIGNED(addr)))
-+		return 0;
++	void *addr = (void *)start, *end = addr + numpages * PAGE_SIZE;
 +
-+	return crypt_ops->encrypt(addr, numpages);
++	while (addr < end) {
++		int err;
++
++		err = arm_smccc_do_one_page(func_id, virt_to_phys(addr));
++		if (err)
++			return err;
++
++		addr += PAGE_SIZE;
++	}
++
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(set_memory_encrypted);
 +
-+int set_memory_decrypted(unsigned long addr, int numpages)
++static int pkvm_set_memory_encrypted(unsigned long addr, int numpages)
 +{
-+	if (likely(!crypt_ops) || WARN_ON(!PAGE_ALIGNED(addr)))
-+		return 0;
-+
-+	return crypt_ops->decrypt(addr, numpages);
++	return __set_memory_range(ARM_SMCCC_VENDOR_HYP_KVM_MEM_UNSHARE_FUNC_ID,
++				  addr, numpages);
 +}
-+EXPORT_SYMBOL_GPL(set_memory_decrypted);
++
++static int pkvm_set_memory_decrypted(unsigned long addr, int numpages)
++{
++	return __set_memory_range(ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID,
++				  addr, numpages);
++}
++
++static const struct arm64_mem_crypt_ops pkvm_crypt_ops = {
++	.encrypt	= pkvm_set_memory_encrypted,
++	.decrypt	= pkvm_set_memory_decrypted,
++};
++
+ void pkvm_init_hyp_services(void)
+ {
+ 	int i;
+ 	struct arm_smccc_res res;
+ 	const u32 funcs[] = {
+ 		ARM_SMCCC_KVM_FUNC_HYP_MEMINFO,
++		ARM_SMCCC_KVM_FUNC_MEM_SHARE,
++		ARM_SMCCC_KVM_FUNC_MEM_UNSHARE,
+ 	};
+ 
+ 	for (i = 0; i < ARRAY_SIZE(funcs); ++i) {
+@@ -34,4 +88,5 @@ void pkvm_init_hyp_services(void)
+ 		return;
+ 
+ 	pkvm_granule = res.a0;
++	arm64_mem_crypt_ops_register(&pkvm_crypt_ops);
+ }
+diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
+index 16b6dcc54e02..9cb7c95920b0 100644
+--- a/include/linux/arm-smccc.h
++++ b/include/linux/arm-smccc.h
+@@ -116,6 +116,8 @@
+ #define ARM_SMCCC_KVM_FUNC_FEATURES		0
+ #define ARM_SMCCC_KVM_FUNC_PTP			1
+ #define ARM_SMCCC_KVM_FUNC_HYP_MEMINFO		2
++#define ARM_SMCCC_KVM_FUNC_MEM_SHARE		3
++#define ARM_SMCCC_KVM_FUNC_MEM_UNSHARE		4
+ #define ARM_SMCCC_KVM_FUNC_FEATURES_2		127
+ #define ARM_SMCCC_KVM_NUM_FUNCS			128
+ 
+@@ -144,6 +146,18 @@
+ 			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
+ 			   ARM_SMCCC_KVM_FUNC_HYP_MEMINFO)
+ 
++#define ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID			\
++	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,				\
++			   ARM_SMCCC_SMC_64,				\
++			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
++			   ARM_SMCCC_KVM_FUNC_MEM_SHARE)
++
++#define ARM_SMCCC_VENDOR_HYP_KVM_MEM_UNSHARE_FUNC_ID			\
++	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,				\
++			   ARM_SMCCC_SMC_64,				\
++			   ARM_SMCCC_OWNER_VENDOR_HYP,			\
++			   ARM_SMCCC_KVM_FUNC_MEM_UNSHARE)
++
+ /* ptp_kvm counter type ID */
+ #define KVM_PTP_VIRT_COUNTER			0
+ #define KVM_PTP_PHYS_COUNTER			1
 -- 
 2.46.0.469.g59c65b2a67-goog
 
