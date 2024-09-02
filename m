@@ -1,102 +1,66 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B751A3035;
-	Mon,  2 Sep 2024 15:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F4619CC1C
+	for <linux-coco@lists.linux.dev>; Mon,  2 Sep 2024 19:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725291268; cv=none; b=LuMw+R+RANcOi9i6bvXsYbX7+otRcu6mBYC7nTJww23HTvDkbJ4rCIwNEPuXqorWTKh1pu8fh49QkeDSjpHS49mYe5Kzr4mIUXgvsc07szvJVO3bqDgJ2wIo0Ea4PJ0laB1OLgmoL/idzPiXprC2JyQERiRy6+aC4wumeK0hQU4=
+	t=1725304128; cv=none; b=LjpIEm5uI9pvEt5fqO3PRfG/9iR4Lg22l6Li9nMJdW7Ju/63JofA/vN2nleBthytsn9V3X6s0C8DEi+DswNyqh3jNNPa0s/ZJ5cZ9Qb3EfmtZtGzb7y1i2jhOmVRW+rr73oPcUuZBj2M2UcjWjpKxq6w892JO6n5ZzhCvXAyfmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725291268; c=relaxed/simple;
-	bh=Iq6BZepIjitU0fA1+TlY/XI2FSZ7xGvsxpctHbhevlk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lFR4HoRp1tIySpuSQXeV2dxFrMUrrsSGAdAiBx7bXvlrKJET73p3xvRe1PLh4thPQU/vHwPKFDiuWDM2fHESe6EXsyPaHJ9vJuWNxHLOM0gsX62aAikdkCDm+DeKWV1oLqyfm0k+GBMWUb82qJW7Pe+Eg+fLLXFh2D7SWBCQpqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 65DC4FEC;
-	Mon,  2 Sep 2024 08:34:52 -0700 (PDT)
-Received: from [10.57.74.147] (unknown [10.57.74.147])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E373B3F66E;
-	Mon,  2 Sep 2024 08:34:21 -0700 (PDT)
-Message-ID: <bdeb29af-b833-402d-b0b2-0db02335a0c3@arm.com>
-Date: Mon, 2 Sep 2024 16:34:19 +0100
+	s=arc-20240116; t=1725304128; c=relaxed/simple;
+	bh=FoaQtGm07JmrjDjFVuUD/T8qJ+x/b1dHPZCSDblAbJ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D5dl5jcEt4jrnwxUDZLOA7sxBTFe6GuaJUUg9nGE7BN2at6MEkyJd8zl7ug6bOf5O2ael38S9pkUC/ARtwfLUhGk/NEcZ6uWzReBAbx7Sf+gEywVGhI0jYIUaOyihPks3mxjC6HjnllcU+dSYL92VK6bgwcQeUhXHl2C9A03bwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224DFC4CEC2;
+	Mon,  2 Sep 2024 19:08:46 +0000 (UTC)
+Date: Mon, 2 Sep 2024 20:08:45 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Suzuki Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v2 5/7] arm64: mm: Add confidential computing hook to
+ ioremap_prot()
+Message-ID: <ZtYNPQnP5_YEiLy5@arm.com>
+References: <20240830130150.8568-1-will@kernel.org>
+ <20240830130150.8568-6-will@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 21/43] arm64: RME: Runtime faulting of memory
-To: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>
-References: <20240821153844.60084-1-steven.price@arm.com>
- <20240821153844.60084-22-steven.price@arm.com> <ZtW8rNIdpd1wTx7w@fedora>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <ZtW8rNIdpd1wTx7w@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240830130150.8568-6-will@kernel.org>
 
-On 02/09/2024 14:25, Matias Ezequiel Vara Larsen wrote:
-> Hello Steven, 
-> 
-> On Wed, Aug 21, 2024 at 04:38:22PM +0100, Steven Price wrote:
+On Fri, Aug 30, 2024 at 02:01:48PM +0100, Will Deacon wrote:
+> @@ -16,7 +28,16 @@ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+>  	if (WARN_ON(pfn_is_map_memory(__phys_to_pfn(phys_addr))))
+>  		return NULL;
+>  
+> -	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
+> +	/*
+> +	 * If a hook is registered (e.g. for confidential computing
+> +	 * purposes), call that now and barf if it fails.
+> +	 */
+> +	if (unlikely(ioremap_prot_hook) &&
+> +	    WARN_ON(ioremap_prot_hook(phys_addr, size, &pgprot))) {
+> +		return NULL;
+> +	}
+> +
+> +	return generic_ioremap_prot(phys_addr, size, pgprot);
+>  }
+>  EXPORT_SYMBOL(ioremap_prot);
 
-...
+I mentioned on the CCA series, the patch is all good but we may need
+something similar for io_remap_pfn_range() which uses
+pgprot_decrypted() (I think it mostly matters for the pKVM case).
 
->> +static int private_memslot_fault(struct kvm_vcpu *vcpu,
->> +				 phys_addr_t fault_ipa,
->> +				 struct kvm_memory_slot *memslot)
->> +{
->> +	struct kvm *kvm = vcpu->kvm;
->> +	gpa_t gpa_stolen_mask = kvm_gpa_stolen_bits(kvm);
->> +	gfn_t gfn = (fault_ipa & ~gpa_stolen_mask) >> PAGE_SHIFT;
->> +	bool is_priv_gfn = !((fault_ipa & gpa_stolen_mask) == gpa_stolen_mask);
->> +	bool priv_exists = kvm_mem_is_private(kvm, gfn);
->> +	struct kvm_mmu_memory_cache *memcache = &vcpu->arch.mmu_page_cache;
->> +	kvm_pfn_t pfn;
->> +	int ret;
->> +
->> +	if (priv_exists != is_priv_gfn) {
->> +		kvm_prepare_memory_fault_exit(vcpu,
->> +					      fault_ipa & ~gpa_stolen_mask,
->> +					      PAGE_SIZE,
->> +					      kvm_is_write_fault(vcpu),
->> +					      false, is_priv_gfn);
->> +
->> +		return 0;
->> +	}
-> 
-> If I understand correctly, `kvm_prepare_memory_fault_exit()` ends up
-> returning to the VMM with the KVM_EXIT_MEMORY_FAULT exit reason. The
-> documentation says (https://docs.kernel.org/virt/kvm/api.html#kvm-run):
-> 
-> "Note! KVM_EXIT_MEMORY_FAULT is unique among all KVM exit reasons in that
-> it accompanies a return code of ‘-1’, not ‘0’! errno will always be set
-> to EFAULT or EHWPOISON when KVM exits with KVM_EXIT_MEMORY_FAULT,
-> userspace should assume kvm_run.exit_reason is stale/undefined for all
-> other error numbers."
-> 
-> Shall the return code be different for KVM_EXIT_MEMORY_FAULT?
-> 
-> Thanks, Matias.
-
-Ah, good spot - I've no idea why KVM_EXIT_MEMORY_FAULT is special in
-this regard, but yes I guess we should be returning -EFAULT here.
-
-Thanks,
-Steve
-
+-- 
+Catalin
