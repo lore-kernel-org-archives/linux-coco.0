@@ -1,135 +1,205 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2068.outbound.protection.outlook.com [40.107.236.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3EB7BB14;
-	Sat, 31 Aug 2024 07:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725089757; cv=none; b=IIMIDnQ+GrGXBwE5ikZZ4pQILzPsHKUgLXAP/1HqgjosTaHVTFZpaz8pzXAFsfUpEdI6Rt3PszXSN6g2IC4jDayxMJReFzmR+k/dgDx/J27890+0S51W8XGugLeRchXrzKAqq2655fsdJDMFJVm7t8UhpOq3Q4vSZvHUpUr9vGA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725089757; c=relaxed/simple;
-	bh=czp5B2f7yB9kZl1r+dl0QORW3vwTZa6LcMuzRe1KU+8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LB6jzrzi7//abiumSADbNWP0I08jVn5yD1AA//LhP76/Vr0QdaHredMJTcv7LdQCYt8Ma0KNE/551m27ovnOQE/3qUyq+8Ne5SxgoGpfpUG6GBDiHsUKXCVVSt90F4NavsROW3wXxir4Rnswh9dVislWAZuxI5gwzYrTZa+gSB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a6DkfDuO; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9B52C9D;
+	Mon,  2 Sep 2024 00:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725238360; cv=fail; b=ECLISw+v5fwxNrxza72EhXPnBW1CnBmgSti15dqW2UfeDAI1OFZdngGntXmO7+C4pVljHUFI+3Znpy6W8KlVbguK2NOC1WSsEbwgbZJuBVQ6g9VSZ35EQ4dqfh2Zj6B104MgMLP7IMx4x3hakYrSAMztowP7A7enQady+NwFKQE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725238360; c=relaxed/simple;
+	bh=/DBxamzE7nmK/QPX87oHKRn8dvzz1Q03NPix2PhwxgQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=sjqTEc5vsjvbIznWX031TZ0YBKbP/P6J5zoKbh0Ofw+oG9IQNoJRGl4vfJskJ+EtSxaA2PMo8k9Np40evzfr3qM2jd1HZtOStYs8NwTwQx5hRuAggXp6BXkgBRdjzicsE3moc76T2fFDNowtiStcHFi61c/D83GvN8ZyP1EI9H4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=cm3Y3Ggx; arc=fail smtp.client-ip=40.107.236.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a6DkfDuO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725089756; x=1756625756;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=czp5B2f7yB9kZl1r+dl0QORW3vwTZa6LcMuzRe1KU+8=;
-  b=a6DkfDuObpg+6Hlkjg2x9ORDf5QbJiYA1Up45gteXtxb8hcV+zzrcPDF
-   L++lP3ucm/pTFgxGtMkwHQbCq4oO9qtGtukxIp3cln2Pc6eqIMXmpSeek
-   11/7CBoE7BLEkHKVixFpxoKXzrbH3c6S2f/qPZ2WvFClsgxtBVlrpPX7M
-   5Uc3wezLE0FqmV71OFO75XdF7MvR/4InJ1AMh48Nvi4L8API4sGqqZKgk
-   B8b1oazQMnyP8n5Q8bLLp6eypLsds9J6YnIWtkzUPqLty3uP+MouXTng0
-   X9h/1XnWh0mpdRmmJqCBRef+nqpmxVG0OubEHgCTKYnFN0P/+Y53zOY/V
-   Q==;
-X-CSE-ConnectionGUID: 0ObJ9s0zT7GK60tIROWr0Q==
-X-CSE-MsgGUID: fbDNZOWPQu62m2F6IG+Jfg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11180"; a="26644511"
-X-IronPort-AV: E=Sophos;i="6.10,191,1719903600"; 
-   d="scan'208";a="26644511"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2024 00:35:55 -0700
-X-CSE-ConnectionGUID: yxTs2rpBSbuLl83xUL3cog==
-X-CSE-MsgGUID: rW71+T5yRlq/qW58K35c4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,191,1719903600"; 
-   d="scan'208";a="68950957"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 31 Aug 2024 00:35:51 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1skIeC-0002Qw-1m;
-	Sat, 31 Aug 2024 07:35:48 +0000
-Date: Sat, 31 Aug 2024 15:35:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ashish Kalra <Ashish.Kalra@amd.com>, seanjc@google.com,
-	pbonzini@redhat.com, dave.hansen@linux.intel.com,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, hpa@zytor.com,
-	peterz@infradead.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, thomas.lendacky@amd.com, michael.roth@amd.com,
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH] x86/sev: Fix host kdump support for SNP
-Message-ID: <202408311530.cYa27OX8-lkp@intel.com>
-References: <20240827203804.4989-1-Ashish.Kalra@amd.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="cm3Y3Ggx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Rphv2vdYQizdnMpnY/ycY/x5Dcf+hltRKuwy8m6Rx4M65ddoLWBl9My6xw8ZFVvy6/OQekTzGL1FAoXap27GQMBwfVYxgVG4V/ZcmWUkddu4lhMhBLLa75T2LpjsmNLjEMWFOcVO2Ygn240vB5vUDb/bW6NbBVBPWiWoWDdfsqqxS8EkU8THbSA0yFpnnYQHViwbuLtxMFnuNY30mqDae4TkBNzRJ4/UbUBevc+Pb7mlqAmwjn6FwsB51T0i9gBX/YrnJ15s6EpxvvNUQa8p0o3Da52LWgPUbQkW7+C681sbDSRRFkzXPPut7nZLZclf2MUHRGFF4Clq62lGtBqG4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HRXeBmMRQXUXvS3WouGylHT/E2qnlIeV8pb4K4bIfLQ=;
+ b=OtVVJPw+u19i20xbiOSLOYTBeCkpOGcG0vOzKa1RdKYA8EzszNKxq7Rm0fDHbgMCkWij+Ec4fPxn7TVQEASAUlVbRkCSfHU8sv/o3g5PZnHdPPQCQrpZvJt20p9DVMcQWp5hnVsx8EAegmVumbsU+ms5qsfDApHLFaZ/yRBQVkBPm/AMNDwJPJGU6/LukIkvei9sV6ponbDdHOTbZGo7nIspgvBnIsmiXsKQ/lMXAAQ5QtyhNfe7V+VmTeJuTPUPt0hKKwxVu8LxpEGS3FPQBVMaLPM5ce8bGeabCS5SvU8IBoiIliH7/6AQJd1JCCBMEOMr1XSb3HHyZR/n/IOjzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HRXeBmMRQXUXvS3WouGylHT/E2qnlIeV8pb4K4bIfLQ=;
+ b=cm3Y3Ggxnudi99G6q1VV6moGRHJpzZrObjXM5P573YDQn5GUIfmA8zTM3rLRoFTNO3tFx8mhraqCNdLAFkTitAL7ijpOtad5C0wu8kQZgfIZJw4Ftf662abpf2nWhz9PDh58RbQzM6W/HfXBCt1nBJGawkRx/iacfUJr7XN3mP4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by CYYPR12MB8752.namprd12.prod.outlook.com (2603:10b6:930:b9::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.24; Mon, 2 Sep
+ 2024 00:52:34 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%6]) with mapi id 15.20.7918.024; Mon, 2 Sep 2024
+ 00:52:34 +0000
+Message-ID: <d30ea566-4add-4b3a-b37b-79272fc1ddf3@amd.com>
+Date: Mon, 2 Sep 2024 10:52:25 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [RFC PATCH 07/21] pci/tdisp: Introduce tsm module
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: kvm@vger.kernel.org, iommu@lists.linux.dev, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Dan Williams <dan.j.williams@intel.com>, pratikrajesh.sampat@amd.com,
+ michael.day@amd.com, david.kaplan@amd.com, dhaval.giani@amd.com,
+ Santosh Shukla <santosh.shukla@amd.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>,
+ Alexander Graf <agraf@suse.de>, Nikunj A Dadhania <nikunj@amd.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Lukas Wunner <lukas@wunner.de>
+References: <20240823132137.336874-1-aik@amd.com>
+ <20240823132137.336874-8-aik@amd.com> <20240827123242.GM3468552@ziepe.ca>
+ <6e9e4945-8508-4f48-874e-9150fd2e38f3@amd.com>
+ <20240828234240.GR3468552@ziepe.ca>
+ <d9bd104b-e1a0-4619-977c-02a27fc2e5b0@amd.com>
+ <20240829120753.GU3468552@ziepe.ca>
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <20240829120753.GU3468552@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5P282CA0154.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:24a::24) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240827203804.4989-1-Ashish.Kalra@amd.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|CYYPR12MB8752:EE_
+X-MS-Office365-Filtering-Correlation-Id: 50e8d287-72e3-49fc-1e47-08dccae98809
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M3dsSU54ajRRQ3FHdlRseXgxREpMWVBDcGl2VHlPUnJLSk9panU4OTZoSEJ6?=
+ =?utf-8?B?Y0ZsbW9uR1M1Sm9FY1VQMUIrVGdFRUtDRVpseHVnd3RFM2l2by9CcDVvVDVq?=
+ =?utf-8?B?WDJmWVpNY0tWelQ0TDNEbUJyVkdPR2RGSzZ2NkUwekpkeUtIR3JjQzlsamdE?=
+ =?utf-8?B?QUNFQkJKNW5OYmUxTUxxVkwrclo1aERJYzNIZHB6cDg0Y1NvLzhzZEtUNUNB?=
+ =?utf-8?B?NlpqRDJqR1dDM1ozZjhOWUNDaXFoR0tsT0dWVDNIaXVhWUsyTkdDWDVpK0k3?=
+ =?utf-8?B?YnEyNnFEZHM5WnZWaDRIU0RqeTNmNG93RW0wRkFlL2tRcFZ6bmhtcExrdU1K?=
+ =?utf-8?B?RGZvNVg4eXJyRGR3ampqK3dGMHBXYVZ0Q2grZ3JKRDlvS2grYnVxR2RoYW9O?=
+ =?utf-8?B?WGRlUkQvRjBoTUQ3ZzBCMWVmL1NsMEczMy9HNTBNOEEwQ2lIVjM4N2R6ZVZK?=
+ =?utf-8?B?UVJkcVY1ZDk1aU9qMFFuZUlKZmI1UW93UEdkMktHSUpCaDdOWEhHZldPSWFQ?=
+ =?utf-8?B?enYxenU2b21WclZaWDNhZEJVRDc4NGpyYndjZWh6OGpQQWpaMVFseEtrdFRT?=
+ =?utf-8?B?WUd6ODE1WnhwOGFiMXBPMnZTWXpqN3VkT1UrT2lCMXdtR1oycGtacVUvK2ZH?=
+ =?utf-8?B?eDhIQmNxM01qTXlzY1AvLzNEOGJNWFhMZDdoMmR0YkdwZThqZndOWWN5VGZt?=
+ =?utf-8?B?YkM5bXVPekJzcEs3dm8zQVlBR0xtZUcvRkQvc25WMFVVaU9WOGw1cXhzRndD?=
+ =?utf-8?B?OW0wcW9oWGhJWGRyN3ZUa2l4WVgwR203ank2dkRaQ3FsRWp6aDVURlpsTHVM?=
+ =?utf-8?B?MkJVSHRPMXZPNFE0U0RyQmZ4OVhCSlBtQUVUajB4SktQVXZNSmk1OE41NTRN?=
+ =?utf-8?B?c0U5VlVCaEpPaWhleGorUHVJeHRkb0hwbDBZNy9mYTUxTW9JWTRLdXhmYS9x?=
+ =?utf-8?B?Y3ZpajhKb0o0OThKL2dnRTQyL2VmK0x5N3p0SlBFR1lqM3RKTStETEFkQkxm?=
+ =?utf-8?B?WkN3akJIZUhiTjVzYThqWklxdzdKeUVFS1JBYVpSc1hNN3Urb1cyMWRkaUt5?=
+ =?utf-8?B?KzFEdXFXQUJKT0hibUtHblI3SzQxd1hJVjVPbGxkUkxQVmZOVW1wNGY3NFcz?=
+ =?utf-8?B?UE05Q0YrdkYyeVdEMVRDc3M0VWFxRkt2eG9QRWtac0FWQmtSZUxkVDFtNjJ5?=
+ =?utf-8?B?blkwUmJMSmIyTmdYVm15V3lFcDQ0a0pXNzdPdWtBbExaeTNCUU5jK2NqU3gv?=
+ =?utf-8?B?emwrc3E1NG9MVkR5V2l4eWlqMWNYRTJSbnd3MVdtMnIyREtOL2RrWk5DVHVO?=
+ =?utf-8?B?aGRwUk1qeTd3KzZmYVF0bjJMekI4Q0JBTnlCYVRFNmVVN01mTk9tcFJQczlS?=
+ =?utf-8?B?MGJnRGhzK1RsUWF6eVZLQjN5UTBQUzl1LzV0NnlycytJa0N6WnF6S0lITHJr?=
+ =?utf-8?B?ZnJ2b09Jc0l2QlQ3STN0dzEzMlNaellVdXAwbUxBUjBZVFJVOVkva0ZlZnl1?=
+ =?utf-8?B?dG1vUHB0SkowL2I5NkxJcUkrYUVjaHNseGRVRGFGNEZFWHhSNDI3UlBZeVNr?=
+ =?utf-8?B?bFVRWGM4ZDhsdDZVOEtIbC81THFBZmV2ZjROajladUlDNXFuMWpaSlpmUlFt?=
+ =?utf-8?B?UlhjaURrSVpCK2lYZEF5S1NnZGVkeEs4bDk5RThFWlB1eDRmVWxwcitMazRK?=
+ =?utf-8?B?Wkl0RDl5akE4Q0QyL1FJS2pReDVJWkNFVFphU3l3Mjl0emY4T3lNNzFXQS9U?=
+ =?utf-8?B?dUNCaFgyR2VTalZFdlpqQ1A3UW16c2cvOXR0Y1Vrb0o0ZVhQcjlWWDVOQWRT?=
+ =?utf-8?B?NmxXNWduKzVkMWlXbC9EUT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TUVEb1pLVGtRcXZtaVlYUXlXcW1UTnZ6SlVPeHIvcEd4R2RsS091bS9qOUtI?=
+ =?utf-8?B?eVp3a0pqZkdPK1pnS3B0YkdJN2hNVmpoK1hZK0FFeUVpWWZNUEorcEhGdjli?=
+ =?utf-8?B?VnJFV2dGc21UTGpaZENQemhyRHBpMndRNUZhMjZFdkxRV1BnOUQ5dnVvTjhl?=
+ =?utf-8?B?YTdycXdGVkJGRHFReGlGMjJsaGVnMjVPaHBZNnYzVXozSlNmS1RUcm9jTG5U?=
+ =?utf-8?B?eHNyaVFrUkg5T2llb3pNYmlGVVo3ZWk0MGFBRThJMUlOZUpkOVQ5TDVDSjla?=
+ =?utf-8?B?ZnZteGR1RytlbXdmLytQWUdrVG5CWnZTaTNnNnI4ZzRTSGVsSS9PcEUwdDNB?=
+ =?utf-8?B?R3lpYXYyc1NKK0hKZ3N1UHlCSGxDT2JGZUJHbGUxK2ZkczBGcUVyckRWdWVP?=
+ =?utf-8?B?WmdGMlhOd1N6Y2VOL01JTWs5SGVIaVNqdjVVRmJ0ZEY4OENHTXhlT1NaL1dy?=
+ =?utf-8?B?cE93eEQrVnR6VGwybTZyNXJxbTdtLzFONTVIcEc0V01YUWNCa3hJeWZxK1U5?=
+ =?utf-8?B?RXdIeExhNVFPWjdnTC9rUjN1d0hDQzBYT3ZpUEx2NVJESU40SFJ1MW5VTU1H?=
+ =?utf-8?B?V3J5dE1iL1dhd2NxZUJibVFjNm8yd2s3bjdHSkZLU1FZd1pKWWVUbE83SjNN?=
+ =?utf-8?B?amF0TWhQU3Vic0QwT2ZTOThETGJjanJrV3NQVGV1TTdKSmNoempwWlk1ZFpX?=
+ =?utf-8?B?MHhqdy9Eb2FsMkxnTFhaN3ZydlZabE1vT0w5VGVEb0JKOHdObU4zbW85ZGh4?=
+ =?utf-8?B?TnFVUXBJTjUxVGYyVXd3OUt0V1cySGgwZG8raGhwQWxuYnNmMGFnUWcrZzB3?=
+ =?utf-8?B?Zy9lTEJxYVpmZmh0NWIzT0V0djJkYXlVSW1HSHg2emxrOVB1MHNjNFpsRjl5?=
+ =?utf-8?B?VXNGcG1sQnVNcFU2djFNUGRxOUVMNENxa0w1RHlteXVSdmxBbTkrczl1Qnl2?=
+ =?utf-8?B?K3lpUVl6czhWZDFITmNrejc3UndaeEllWmRGKzRFODFQUFJNODBwMzJoV1dR?=
+ =?utf-8?B?bU1ydTBkSWl1Z1JEYkVXazZNTy9tWmJES2V0NmRSbk5UYXNxRms0eGhiT05Y?=
+ =?utf-8?B?cUE5b1lkaTB4cWYwR0xvMkN5OHpiaS9hOUhPT1RDRjVtcmxXSGVwUDFJWjJL?=
+ =?utf-8?B?cTIyUzZXWnVWYXRJVEZqcjRnM0lFeUMrTTZ4V0daRmZFNENFQUpCaVJ3disx?=
+ =?utf-8?B?YVlONXB5VjhnK0JlSjdGZGZON3VkRmlYdGNrMHh4dTFWYXIxTjBDUDlmNS9x?=
+ =?utf-8?B?V2FoTmdKNnZ6ZXFxUWpiMTl3NkJ6TnUvSVl4M3JvcWZES09NdjZlOFlONjkv?=
+ =?utf-8?B?UExYdnJUNEIrY1JiTkVJTXdVL2lNNkJ5VjdPcWFEU1BMaCt5b0hUdC8xeHZa?=
+ =?utf-8?B?cUJSQmkwaSswSTJZcTR2ZVVRZEQvTW1GYlE0SEZDUitaNEliQ1U5L01jM1Fq?=
+ =?utf-8?B?ZDJHbVRaRHNsRlJCUCtDdlRRZXdXblJEU0R5cGh5YUJkM1FMdFhHNXJDY2NW?=
+ =?utf-8?B?S2Frc0dHUUozazFGWDJKY3NnTTVjd1IySnE4Q2dCc05jS3dtbkc2RDRzdGVo?=
+ =?utf-8?B?T0E1eksvb0xrSTd1YWRlQkE5NEhxMjY2OXU3d0lCUTZhOTcrN0dLMERLKzFk?=
+ =?utf-8?B?ZjZ4c1NUQVlZak1RREJ1eFlyak5ZT0Rac2pmV25kY0FJd0Nkc05reUlialIw?=
+ =?utf-8?B?T2pDVEw4Q3EyNVhDZEp2MWYrUEdZd1o2UWRsbHdYMzIxUGd2eTdtREdJNWV6?=
+ =?utf-8?B?WFBRUHNaZWZKQW9sS2FxeUhuT2xMdWpPK0dzeVdPNjY4WXlKSUxVbFhIVWwz?=
+ =?utf-8?B?TEpvNk01dTY0VWtsazBSSE5zcGU5K3BSVGJtWEgremZVdW9IZTAyQ3BSVWpY?=
+ =?utf-8?B?WWZReTNQNFE5Q21UV1JZcmNTelRLUVNxUHlnNHNZRVpPYS96T1lEdGNwSGM1?=
+ =?utf-8?B?R1hnelV5aHFZMGtBWEV3ZjVuU2dFMDd2anArZFViRmRURDlSQUxBRFJSSEtZ?=
+ =?utf-8?B?M0tJTHlnL1BwNzNCVFBKcndnK05jdlZpaVRWZTN6QXlGMVBnMzlmeEUyZWV4?=
+ =?utf-8?B?ZjBqSTA1NytqMktkSzErNDRZc253VXVsVTRDdmt0dkFUTTJyRlcxOWg1VVpV?=
+ =?utf-8?Q?ArPPYXySnKX8jKHz7YXTH6/Ob?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 50e8d287-72e3-49fc-1e47-08dccae98809
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2024 00:52:33.9625
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nbi4vLq9zo74aU1SAkcmGmuZ2XuQXp+ebkgC68qnfN9zMbXTWvHEVkRQhmztq0jwG3XFc6Yw/RS+dvzzhxQ2iw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8752
 
-Hi Ashish,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on kvm/queue]
-[also build test WARNING on linus/master v6.11-rc5 next-20240830]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Ashish-Kalra/x86-sev-Fix-host-kdump-support-for-SNP/20240828-044035
-base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
-patch link:    https://lore.kernel.org/r/20240827203804.4989-1-Ashish.Kalra%40amd.com
-patch subject: [PATCH] x86/sev: Fix host kdump support for SNP
-config: i386-buildonly-randconfig-006-20240831 (https://download.01.org/0day-ci/archive/20240831/202408311530.cYa27OX8-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240831/202408311530.cYa27OX8-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408311530.cYa27OX8-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from arch/x86/kvm/svm/svm.c:50:
->> arch/x86/kvm/svm/svm.h:783:13: warning: function 'snp_decommision_all' has internal linkage but is not defined [-Wundefined-internal]
-     783 | static void snp_decommision_all(void);
-         |             ^
-   arch/x86/kvm/svm/svm.c:686:3: note: used here
-     686 |                 snp_decommision_all();
-         |                 ^
-   1 warning generated.
 
 
-vim +/snp_decommision_all +783 arch/x86/kvm/svm/svm.h
+On 29/8/24 22:07, Jason Gunthorpe wrote:
+> On Thu, Aug 29, 2024 at 02:57:34PM +1000, Alexey Kardashevskiy wrote:
+> 
+>>>> Is "extend the MAP_DMA uAPI to accept {gmemfd, offset}" enough for the VFIO
+>>>> context, or there is more and I am missing it?
+>>>
+>>> No, you need to have all the virtual PCI device creation stuff linked
+>>> to a VFIO cdev to prove you have rights to do things to the physical
+>>> device.
+>>
+>> The VM-to-VFIOdevice binding is already in the KVM VFIO device, the rest is
+>> the same old VFIO.
+> 
+> Frankly, I'd rather not add any more VFIO stuff to KVM. Today KVM has
+> no idea of a VFIO on most platforms.
+> > Given you already have an issue with iommu driver synchronization this
+> looks like it might be a poor choice anyhow..
+> >> I wonder if there is enough value to try keeping the TIO_DEV_* and 
+TIO_TDI_*
+>> API together or having TIO_DEV_* in some PCI module and TIO_TDI_* in KVM is
+>> a non-confusing way to proceed with this. Adding things to the PCI's sysfs
+>> from more places bothers me more than this frankenmodule. Thanks,
+> 
+> I wouldn't mix them up, they are very different. Just because they are
+> RPCs to the same bit of FW doesn't really mean they should be together
+> in the same interfaces or ops structures.
 
-   763	
-   764	static inline void sev_free_vcpu(struct kvm_vcpu *vcpu) {}
-   765	static inline void sev_vm_destroy(struct kvm *kvm) {}
-   766	static inline void __init sev_set_cpu_caps(void) {}
-   767	static inline void __init sev_hardware_setup(void) {}
-   768	static inline void sev_hardware_unsetup(void) {}
-   769	static inline int sev_cpu_init(struct svm_cpu_data *sd) { return 0; }
-   770	static inline int sev_dev_get_attr(u32 group, u64 attr, u64 *val) { return -ENXIO; }
-   771	#define max_sev_asid 0
-   772	static inline void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code) {}
-   773	static inline void sev_snp_init_protected_guest_state(struct kvm_vcpu *vcpu) {}
-   774	static inline int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
-   775	{
-   776		return 0;
-   777	}
-   778	static inline void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end) {}
-   779	static inline int sev_private_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn)
-   780	{
-   781		return 0;
-   782	}
- > 783	static void snp_decommision_all(void);
-   784	#endif
-   785	
+Both DEV_* and TDI_* use the same SecureSPDM channel (on top of the 
+PF#0's PCIe DOE cap) for IDE_KM (for DEV_*) and TDISP (for TDI_*) so 
+there is some common ground. Thanks,
+
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Alexey
+
