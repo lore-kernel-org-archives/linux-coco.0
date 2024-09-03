@@ -1,318 +1,215 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D950A1DC73C
-	for <linux-coco@lists.linux.dev>; Tue,  3 Sep 2024 19:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725393172; cv=none; b=lZGeAJRiyv2eHu2uIXbW29oXWXYsNBs6429HwfS/9H625oI+bEgH8AhHiD83+adEKgc5NUGA7Gy/sWdMR2W/mAjnbtB6syvv3fXYtR7ntFIuIB0kZWsrruXkfnMvutVndRUrrG93IICB6Ve7iBibD2zNiw6YUTh19Ks5cmrmlII=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725393172; c=relaxed/simple;
-	bh=8xKZgw8HBtI3RFkDbmWK5wOroviUu7mWZf/ycI38VGQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j+Pwau3Ct+fkfVy7563ObIIsQq4bYcqsyYaL1KR4Xorl9/6VqZRSrVNDXw3OH/NLWtgXL7Z+X7MXSA7r/KoCg8ELhffsLIO/g5meKbtX9cHEQCKq4t4jyOrVw4qHk9D8K628o1xMHymJTlgg+HnGHzeFw7agRUwQqlWp+W/iFXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BjnLrGrd; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06F841C65;
+	Tue,  3 Sep 2024 20:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725395681; cv=fail; b=XS4uVjb2WuhxMCRcoSuYdH5+Y+D8Q4X43sb5IrkBYotnKea3N7zVfQmMXetPqkBcE8SOcGh0Er+lbQx4CWsyKOITUaptb6iyzMqgVgIA7z0QOZqNQiEXadEyj4bfaikkdRhbQIm894a6uMTcNLaoF+gcNVAUwdFfcMG9lQ6IEpU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725395681; c=relaxed/simple;
+	bh=yD7syxo8GOryelrP58TgjKTbhhdNt/8bTQFuid+dkak=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=sOL9zU/xYVFsKz3pn5ukn0sCHAj73rhSqIL9R0tXV104VMZ5JYkH1Fjg9oPCZIGuy+ia5tSdDXzcOcmprzIN0XZ7ePVRWyeNgt8YrUZtz0Jh7HkEQ8p1/Xofd3vY9RoAnqMw0EYD9NVwfIzVcr16Ls9dH+AVuC9vYb1F99afwrY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QWX3VnZR; arc=fail smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BjnLrGrd"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6d5dd6d28c2so69951097b3.0
-        for <linux-coco@lists.linux.dev>; Tue, 03 Sep 2024 12:52:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725393169; x=1725997969; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fI+madg2F5jxzMgESVkIyHR0MmAEDyO6S+oxlQFxTfw=;
-        b=BjnLrGrdawQ8wJ0asmCm98YPZ3IkMg9kCdtxqBSWiL5eCyujaZD2FASyJEnzV/fbDN
-         fFw5WcD9CBgNFn8YwOuT4kO6QTp7zELG3f1s1B5QgcTsBFW+ZBIQVezb8wOvOcBWm309
-         biVJgI92IDzVJdvlstpHuOi2/L79hDq6MQnJJxtj2s/B9SdeS3u69XqLxj7473Ub1+p2
-         l0O3Nl/anWWPIyer/zUdRIQZk/0aRwAXrVQEs4LIeecagGwmmwbSul6XUzRZy1joSnat
-         EWw1y+NeT6NEuoXHmSpVXSvdEyCp8LAugZlOGflDXrRS/54a0VLp2Q7FcQ++lCViYQYz
-         shag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725393169; x=1725997969;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fI+madg2F5jxzMgESVkIyHR0MmAEDyO6S+oxlQFxTfw=;
-        b=i3HTv9s7shYC6BBBr49pGIMrWmvbXlq8KDO5lMPggdxAgaOghyhWs0cZwcJhedotXJ
-         5xxhw/VcZQaG40lPV3z75CFM8RTe8VLP0hEWL9dCi65WI4ZnYDCkWzP2HNkTckHXBi6S
-         jRAoSpmd/BGOBeSjkgzsiiiux4IM9+aKNELG5cY+0ieKHLQq6p82f80hAwGVc5NM2I5+
-         LvfKTrGP1n8nCc0XXFb5GMiVvsvs9PS+hjLpjEWvs4kptZClZs0/q/OQuz6cyhe+c+h6
-         jqdhP4heqhdwFfa5xxdSIBo2xMU154oo6cxLyZlLRAwb6JWwEzkP9D165g41ok8IIfWB
-         2Seg==
-X-Forwarded-Encrypted: i=1; AJvYcCUA5vBinvng7ttXXTGUb7w66+wuH4xxEBUdRistdScA63TlfDzrV+IymOOeCRz3xmgS0KakDVJYvP2E@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy7kb8P9sRq9LLnpw2C4i7tKGLZ2XYzEkqvCYGABL7clBxBRaVx
-	Loq2QXBzy77gjfJmdz1q7eHoEsIXEWIpds78dJsWibvq5LojdVA8JY93QzhN6B6YwLbhXyhB6aD
-	Hcg==
-X-Google-Smtp-Source: AGHT+IGznZGpOHs537cn7xrwAtS55FBRH/lk1IunDfes8pLlRqXE4lN176lmA/xwEcC4P3q0jU1X7lR2lZU=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:690c:281:b0:69a:536:afd3 with SMTP id
- 00721157ae682-6d4108c6606mr11831257b3.5.1725393168864; Tue, 03 Sep 2024
- 12:52:48 -0700 (PDT)
-Date: Tue, 3 Sep 2024 12:52:47 -0700
-In-Reply-To: <20240903191033.28365-1-Ashish.Kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QWX3VnZR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725395679; x=1756931679;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=yD7syxo8GOryelrP58TgjKTbhhdNt/8bTQFuid+dkak=;
+  b=QWX3VnZRL8C0AGzSSLcn8omYxS4HW4/hcjzdq1F0fVYOSlwOHSRbsmir
+   OW39Upie+BzaxJx+YWS5n8bkfT7UwE+4gyyTUGgI3wyXEHrtT4Po/9yEI
+   mdC2da2mp52W3uROIIqwF1ct/y6YNBkCEJIK8c0X7hRX7gcGq6UUMDUm6
+   8ER8RMOxybWPN4kypJgnE1HGsXkZm4UHtsWCKyyulC8O7Pn57z6XV8cFL
+   LMap5Albq1Sz4zRJ1XwIBuFPCYj8uqGQX9Wg83mNkCFkbaaFfcjT7IX/7
+   CPVL/JjElOtnaSB2HjtLVm/YvwnsnWXZgeEYvTcWXOv6inCCRsUUntCcP
+   w==;
+X-CSE-ConnectionGUID: VvTqPFAHTSGopVZT4Y1fJA==
+X-CSE-MsgGUID: 9///25aGRRKoRjLgFrVaoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="34626157"
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
+   d="scan'208";a="34626157"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 13:34:38 -0700
+X-CSE-ConnectionGUID: H1FqkD/qTt+tdHiYtawHlQ==
+X-CSE-MsgGUID: mMKj5vAhTiSftjXndc8AMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
+   d="scan'208";a="64850930"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 03 Sep 2024 13:34:37 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 3 Sep 2024 13:34:36 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 3 Sep 2024 13:34:36 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.175)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 3 Sep 2024 13:34:36 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PB+qzCXzrCwHBYLAhz2RqP+m6x9WBe31a1187F6jpWNfNCV7WCVjaxkO9LUqNvAZoDHOfVLU1GIpdfYdLZwIPuff0wjjXvYeh6M8DIUf86i5xyoiIFOsxhUjlzITuV0IX00UeqtrioI4CZgYunkzuQhifYHP18tBLjqCKOuYwO6tiqTIKB4qRcnMVghtnJsU+X/aP+Amg2Tbrryc4qNX9G9APctqWQSmt+v5k/Va3+jeKw/GSlw/SSLK8FWpGkYDU4GoloNWl8ycCYvlvSjdnTfWjNZbA3SCE3vsVnYzLAvltNvtT7v6FUwDSm71JnI0epWj5vwi8lOW1BZZHreLmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bUuJcTZIWpUMMfkxhf9Th1K38ZjUCyvGpv/mCoBoNQI=;
+ b=f1k9Uy7SZpeR59Ngumm40MkIgAePhp8i6SSKMZ2t2XgMTawsUFBNKMhos802edsn/sxhqdaI2BM6FIwrzv31o7DdTcuTIIZyos/Bzru6aEWmAiSvYmt969so5s4NNU7PHqwnCeYSy1NU0as/G1O5RlxM6TwAS8IyDSAyfxueybpDlx5Big444vqZUH4Za3NLP6djLcPV3BP6uHrXjKzX+1sypXR9IAawR7a2H0X/XdKRJCpWPXJgFCpiZPfwZmBAiGfycZIiXSpzxO3IlRES0YceIViomMJ4NMIXffjnzzMbmZrI4XLqaAquQuBXT6vMWSh8HjD95J6ixwiGjRlXMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by PH7PR11MB6907.namprd11.prod.outlook.com (2603:10b6:510:203::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.23; Tue, 3 Sep
+ 2024 20:34:33 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%6]) with mapi id 15.20.7918.024; Tue, 3 Sep 2024
+ 20:34:33 +0000
+Date: Tue, 3 Sep 2024 13:34:29 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>
+CC: "Tian, Kevin" <kevin.tian@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "iommu@lists.linux.dev"
+	<iommu@lists.linux.dev>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, Suravee Suthikulpanit
+	<suravee.suthikulpanit@amd.com>, Alex Williamson
+	<alex.williamson@redhat.com>, "Williams, Dan J" <dan.j.williams@intel.com>,
+	"pratikrajesh.sampat@amd.com" <pratikrajesh.sampat@amd.com>,
+	"michael.day@amd.com" <michael.day@amd.com>, "david.kaplan@amd.com"
+	<david.kaplan@amd.com>, "dhaval.giani@amd.com" <dhaval.giani@amd.com>,
+	Santosh Shukla <santosh.shukla@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, "Alexander
+ Graf" <agraf@suse.de>, Nikunj A Dadhania <nikunj@amd.com>, Vasant Hegde
+	<vasant.hegde@amd.com>, Lukas Wunner <lukas@wunner.de>, "david@redhat.com"
+	<david@redhat.com>
+Subject: Re: [RFC PATCH 12/21] KVM: IOMMUFD: MEMFD: Map private pages
+Message-ID: <66d772d568321_397529458@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20240823132137.336874-1-aik@amd.com>
+ <20240823132137.336874-13-aik@amd.com>
+ <BN9PR11MB5276D14D4E3F9CB26FBDE36C8C8B2@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <20240826123024.GF3773488@nvidia.com>
+ <ZtBAvKyWWiF5mYqc@yilunxu-OptiPlex-7050>
+ <20240829121549.GF3773488@nvidia.com>
+ <ZtFWjHPv79u8eQFG@yilunxu-OptiPlex-7050>
+ <20240830123658.GO3773488@nvidia.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240830123658.GO3773488@nvidia.com>
+X-ClientProxiedBy: MW4PR03CA0353.namprd03.prod.outlook.com
+ (2603:10b6:303:dc::28) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20240903191033.28365-1-Ashish.Kalra@amd.com>
-Message-ID: <ZtdpDwT8S_llR9Zn@google.com>
-Subject: Re: [PATCH v2] x86/sev: Fix host kdump support for SNP
-From: Sean Christopherson <seanjc@google.com>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: pbonzini@redhat.com, dave.hansen@linux.intel.com, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com, 
-	peterz@infradead.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	thomas.lendacky@amd.com, michael.roth@amd.com, kexec@lists.infradead.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH7PR11MB6907:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80947a5c-8930-4ec6-b07f-08dccc57d191
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?3fW2YGGKi39j9JLtZz0aPXQvStdqOMSJi43OqKbvnQe9YkevqSAi30+Prw+V?=
+ =?us-ascii?Q?BfrxT98EEiXBWv4TBf4IHHjstxN+62Svx7XscUws1j99qJVNZa/i4jfc3qnc?=
+ =?us-ascii?Q?8qd/mc8dPdpl2I5RRNsz+VTxqOfvRn4vkRVEwjaDHQ3SfS8+nK2/fIjFoA1M?=
+ =?us-ascii?Q?XgdeG0bmdp2O2VMPeXcp9qLSb6UGpAvAGKby/RJFFQFm2FkC++Zpz8KTWTcM?=
+ =?us-ascii?Q?da1jKxwxOfZBiW1ptw/66YtmpI3AoDbDwY0X9bLGjqyyXViBfgzTIj4Uz43s?=
+ =?us-ascii?Q?zoJlxIdoD1tGT13cvqAcmBBXQl4iyogNPEym1lgdCgseHtVZU7blhPFSO5hn?=
+ =?us-ascii?Q?8QAjMrjVhTfaOng+VXpqG2iXUM2majm3qDIbvsnxmiQUsV3Tr0hW+1QCHNWZ?=
+ =?us-ascii?Q?1kRD9SzBQHbX+FtuN4RmUudZxCPICBa7XuxnTK+1hC1/opcJRaiGLpXPqmQE?=
+ =?us-ascii?Q?vZE4cNIvWIpaJJgYO/3e7YRXxVHrwsrGbpNqmXOjT+RahsYEiwB9SC9zG6LP?=
+ =?us-ascii?Q?4YXLYo/FhTWtKDYn8riUshZIUI3xtmA+zy6phHwuMJ6ldg0/HF5+5h8VCVac?=
+ =?us-ascii?Q?U3MqUheoXk/icxxSEAOF2fzIrS8XcxUFC69yz9RSfEd7aKDZahIA3BTrkQFg?=
+ =?us-ascii?Q?j/sQoJRNOFi52wTTkfZsTktolghWuFnT30NFu4kK6bEDAFs8/G3hwEuPaOrv?=
+ =?us-ascii?Q?LOYBU4prwU9rxdTH3W1dpqKVF8MJOMmkWlZHl4NPEg8W7Q6Ul5iPcRU+Vi9H?=
+ =?us-ascii?Q?8C9BCKbKs/9v1UvCiYLMfW0ZDobAxuQ9ix+52vO2fdxMxn9c2DCRLv7iilVm?=
+ =?us-ascii?Q?ZNxjlM7D0eOPz/O6HijxVrcfHF91+IYCs0bzbsg7wvaUJ/AO6ZHYduez7uWw?=
+ =?us-ascii?Q?NxR6wZGOp2GYfLxz2CrHuNhCo5EHLUT2Yo5FODw+tFRRgm6VO3pDmoNXu1AZ?=
+ =?us-ascii?Q?Bp8PS6yUoe4H1HlQlyC8NDH8WWODRFhu4cp8pzdu8NId5NU/KqtvmzJMDY+m?=
+ =?us-ascii?Q?o4aY5hZ7jmuaY/WNhoIGSsxsfHjUrV+UHfdQBbeKoJRNE4Odu/JlmCON9PyJ?=
+ =?us-ascii?Q?WX3/5mCpCShzKc0xOLTLedTW4BwQgTuDrNt0d55amSFyP0yB97C07paZgx4t?=
+ =?us-ascii?Q?YSD/My5xHZCTxKq6be8w0U6gzHpOQs+V4qgPf3wJWz4fjNWM2UHIZe8Zj1id?=
+ =?us-ascii?Q?Nqvh0BXzksajxCI4lHIzjGZSbBsG3/0Nru+5EBnBFJ8Ln86SXUYmzIaUDPgn?=
+ =?us-ascii?Q?46o1crEhlOWrxYfV0UGsfBUGI6pZRg5W0wyi+uIOP4wx2FIND7Z1JsGoTSKj?=
+ =?us-ascii?Q?nT6xJ6xxEZ5ZAa7iCRk4aWx9mxUiwaJ5ngeIVwzZQt7fLA=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xrgLKgHe+zEeNURhz9+C83vYQX5LNXj1L9e5EdKgJ6nsCWY39o8MM4TfiUku?=
+ =?us-ascii?Q?kg/iRUROuPldnsxJXTS1IP0flhV2qbS582qJOrCZjf/Lc01h8+6g4360Dcju?=
+ =?us-ascii?Q?bkZDgB1voBvy0Tua10fu7jdAjtwkiCuQlzIl1nCCV3Jm/qmUu/n4yRdwHj15?=
+ =?us-ascii?Q?3QtbgHrXqti9qNEmuMvWD+p+i5ykQhjskjgNSWViJMlgs7VtpSf1MDRcN5Ef?=
+ =?us-ascii?Q?1LTaJAdTtNPp8lKDgffHB6huQIFJ4mbkIlBCIAY2VifQohRt3Ms6P9KFf6hh?=
+ =?us-ascii?Q?py5nGv/S9EintbRgnEyShcy5MCrXJMnsy3vJRNG1KV2x9LpHlLRnkhuQebDi?=
+ =?us-ascii?Q?tHjRcyu7dfgmFvJPnR2TeS37c1CjksUhmrKXlAEF/Y2njMTc5mayBEKF4+j/?=
+ =?us-ascii?Q?FA6wNED20W+RB9knELHSwC9Ur65/23+l7VK4JvVknQytY5KZktzdV+IDLgds?=
+ =?us-ascii?Q?/5zh8xusgF9wjxlZ4UMLk9o8IC9orQlysuXqxuGopVpTyD6mFPOUTszFHaJy?=
+ =?us-ascii?Q?3zdJtUULTCy4wqf3rEXHtCbULpBLhzLFioLk5xSrxIcz6OYiLsyfuInQZiBs?=
+ =?us-ascii?Q?dd2F2ORvzj7OBUaNt3rsbCHc5WDbwtWkV3s3iYiZTmugwoAiMkSxswrGmSDB?=
+ =?us-ascii?Q?ViGOyf7rarJSUf1pGDJ+CKv48ibBs3dSIRj0nW4n6GPm1v4FAxjTJy0Et2OP?=
+ =?us-ascii?Q?KagQRbWf50I5n4G40ZqHaBaBHr9OKvVG3qD/fxzVKfNn6sU38FD2+20RY32B?=
+ =?us-ascii?Q?BRluYhm52nuocJtJRfPWlX2/mN27lIYt8toU2DytRM7S/3ppBzNHqUFhNxwJ?=
+ =?us-ascii?Q?tVP0ZIOUF52hyTkPZxYfq71JEDSpQRmywi5CGroVvTT1y95fcfw/Hf9eo/JU?=
+ =?us-ascii?Q?eR17tT8kunTve997PaKLSXBtrk447IQCw9a0da/SSQZFJSVuFk+ASl1yS/Uf?=
+ =?us-ascii?Q?wj7YR3ztT83+YJrUFRU14DO//HEXDCiM43Cs4BY0b1VuCts+N/d0gQokxWLM?=
+ =?us-ascii?Q?0E6d0tIzZgYvLKMXsbscYLQdQhnC6iibwkeT7A30gq7xrf5LLVRNI7Mt2uLn?=
+ =?us-ascii?Q?NtQbDS7DxGadqtbudeN8mKJdEoYrQl0eDSKHxWtYFK87TCy7Un+B8VHb9aZ8?=
+ =?us-ascii?Q?Adfz3ppaVKozLgrT66XLuCK3MT2V4JVboAgSPrshqWpkh1YE6BFerymhSVJU?=
+ =?us-ascii?Q?16+y/JtDCxZvi1Eqb5DbOKca94WAENmi55Yif20SrOdPRZ+X6mYmT7x8TQn1?=
+ =?us-ascii?Q?oFXSXQKJ3UEzEkrLw3gGjfmbnWD3RzMJVX9V08O+7UewJvDY445b+NjYWbHQ?=
+ =?us-ascii?Q?x+T4N/xU2xwXKwxjVFRgnyn8akSnEMXcyLiv+q7ahX5rDeiAnMxXFwhJJCsM?=
+ =?us-ascii?Q?n6zRAWXMIrFCPNX/AObjk2Bg+ooVVL1mcnxh7EpJHfbbi6EC7V5IM2Hs+Une?=
+ =?us-ascii?Q?fGKuIOQqOPUHAm0H7EO4/MPqLveVjkholYMOSxOSaozNxyWMt0WfsQX8u0eZ?=
+ =?us-ascii?Q?nP8WYxAwUo0I7qYKGGFrbspFqO7L7t4z1N0on7oIkfXjExErqnEynovYKeHW?=
+ =?us-ascii?Q?1MTxZ9bAoiRdBcIcbnSgEdvvL5Hu+/HmU42gScibaWn83D3ZJcchI9PP5jle?=
+ =?us-ascii?Q?5Q=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80947a5c-8930-4ec6-b07f-08dccc57d191
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2024 20:34:33.1853
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 77g4q0V/9Orm1i3O2lKxR3nLtgyhQ3/tJomEFSvdgd7uPQbpwKyjSliU+L8FfZFS4XKOQaynfjB21ri0BkrM9su4q3Xwc7fJGguuVj1Z+48=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6907
+X-OriginatorOrg: intel.com
 
-On Tue, Sep 03, 2024, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> [    1.671804] AMD-Vi: Using global IVHD EFR:0x841f77e022094ace, EFR2:0x0
-> [    1.679835] AMD-Vi: Translation is already enabled - trying to copy translation structures
-> [    1.689363] AMD-Vi: Copied DEV table from previous kernel.
-> [    1.864369] AMD-Vi: Completion-Wait loop timed out
-> [    2.038289] AMD-Vi: Completion-Wait loop timed out
-> [    2.212215] AMD-Vi: Completion-Wait loop timed out
-> [    2.386141] AMD-Vi: Completion-Wait loop timed out
-> [    2.560068] AMD-Vi: Completion-Wait loop timed out
-> [    2.733997] AMD-Vi: Completion-Wait loop timed out
-> [    2.907927] AMD-Vi: Completion-Wait loop timed out
-> [    3.081855] AMD-Vi: Completion-Wait loop timed out
-> [    3.225500] AMD-Vi: Completion-Wait loop timed out
-> [    3.231083] ..TIMER: vector=0x30 apic1=0 pin1=2 apic2=-1 pin2=-1
-> d out
-> [    3.579592] AMD-Vi: Completion-Wait loop timed out
-> [    3.753164] AMD-Vi: Completion-Wait loop timed out
-> [    3.815762] Kernel panic - not syncing: timer doesn't work through Interrupt-remapped IO-APIC
-> [    3.825347] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.11.0-rc3-next-20240813-snp-host-f2a41ff576cc-dirty #61
-> [    3.837188] Hardware name: AMD Corporation ETHANOL_X/ETHANOL_X, BIOS RXM100AB 10/17/2022
-> [    3.846215] Call Trace:
-> [    3.848939]  <TASK>
-> [    3.851277]  dump_stack_lvl+0x2b/0x90
-> [    3.855354]  dump_stack+0x14/0x20
-> [    3.859050]  panic+0x3b9/0x400
-> [    3.862454]  panic_if_irq_remap+0x21/0x30
-> [    3.866925]  setup_IO_APIC+0x8aa/0xa50
-> [    3.871106]  ? __pfx_amd_iommu_enable_faulting+0x10/0x10
-> [    3.877032]  ? __cpuhp_setup_state+0x5e/0xd0
-> [    3.881793]  apic_intr_mode_init+0x6a/0xf0
-> [    3.886360]  x86_late_time_init+0x28/0x40
-> [    3.890832]  start_kernel+0x6a8/0xb50
-> [    3.894914]  x86_64_start_reservations+0x1c/0x30
-> [    3.900064]  x86_64_start_kernel+0xbf/0x110
-> [    3.904729]  ? setup_ghcb+0x12/0x130
-> [    3.908716]  common_startup_64+0x13e/0x141
-> [    3.913283]  </TASK>
-> [    3.915715] in panic
-> [    3.918149] in panic_other_cpus_shutdown
-> [    3.922523] ---[ end Kernel panic - not syncing: timer doesn't work through Interrupt-remapped IO-APIC ]---
+Jason Gunthorpe wrote:
+> On Fri, Aug 30, 2024 at 01:20:12PM +0800, Xu Yilun wrote:
 > 
-> This happens as SNP_SHUTDOWN_EX fails
-
-Exactly what happens?  I.e. why does the PSP (sorry, ASP) need to be full shutdown
-in order to get a kdump?  The changelogs for the original SNP panic/kdump support
-are frustratingly unhelpful.  They all describe what the patch does, but say
-nothing about _why_.
-
-> when SNP VMs are active as the firmware checks every encryption-capable ASID
-> to verify that it is not in use by a guest and a DF_FLUSH is not required. If
-> a DF_FLUSH is required, the firmware returns DFFLUSH_REQUIRED.
+> > > If that is true for the confidential compute, I don't know.
+> > 
+> > For Intel TDX TEE-IO, there may be a different story.
+> > 
+> > Architechturely the secure IOMMU page table has to share with KVM secure
+> > stage 2 (SEPT). The SEPT is managed by firmware (TDX Module), TDX Module
+> > ensures the SEPT operations good for secure IOMMU, so there is no much
+> > trick to play for SEPT.
 > 
-> To fix this, added support to do SNP_DECOMMISSION of all active SNP VMs
-> in the panic notifier before doing SNP_SHUTDOWN_EX, but then
-> SNP_DECOMMISSION tags all CPUs on which guest has been activated to do
-> a WBINVD. This causes SNP_DF_FLUSH command failure with the following
-> flow: SNP_DECOMMISSION -> SNP_SHUTDOWN_EX -> SNP_DF_FLUSH ->
-> failure with WBINVD_REQUIRED.
+> Yes, I think ARM will do the same as well.
 > 
-> When panic notifier is invoked all other CPUs have already been
-> shutdown, so it is not possible to do a wbinvd_on_all_cpus() after
-> SNP_DECOMMISSION has been executed. This eventually causes SNP_SHUTDOWN_EX
-> to fail after SNP_DECOMMISSION.
-> 
-> Adding fix to do SNP_DECOMMISSION and subsequent WBINVD on all CPUs
-> during NMI shutdown of CPUs as part of disabling virtualization on
-> all CPUs via cpu_emergency_disable_virtualization ->
-> svm_emergency_disable().
-> 
-> SNP_DECOMMISSION unbinds the ASID from SNP context and marks the ASID
-> as unusable and then transitions the SNP guest context page to a
-> firmware page and SNP_SHUTDOWN_EX transitions all pages associated
-> with the IOMMU to reclaim state which the hypervisor then transitions
-> to hypervisor state, all these page state changes are in the RMP
-> table, so there is no loss of guest data as such and the complete
-> host memory is captured with the crashkernel boot. There are no
-> processes which are being killed and host/guest memory is not
-> being altered or modified in any way.
-> 
-> This fixes and enables crashkernel/kdump on SNP host.
+> From a uAPI perspective we need some way to create a secure vPCI
+> function linked to a KVM and some IOMMUs will implicitly get a
+> translation from the secure world and some IOMMUs will need to manage
+> it in untrusted hypervisor memory.
 
-...
-
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 714c517dd4b7..30f286a3afb0 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -16,6 +16,7 @@
->  #include <linux/psp-sev.h>
->  #include <linux/pagemap.h>
->  #include <linux/swap.h>
-> +#include <linux/delay.h>
->  #include <linux/misc_cgroup.h>
->  #include <linux/processor.h>
->  #include <linux/trace_events.h>
-> @@ -89,6 +90,8 @@ static unsigned int nr_asids;
->  static unsigned long *sev_asid_bitmap;
->  static unsigned long *sev_reclaim_asid_bitmap;
->  
-> +static DEFINE_SPINLOCK(snp_decommission_lock);
-> +static void **snp_asid_to_gctx_pages_map;
->  static int snp_decommission_context(struct kvm *kvm);
->  
->  struct enc_region {
-> @@ -2248,6 +2251,9 @@ static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
->  		goto e_free_context;
->  	}
->  
-> +	if (snp_asid_to_gctx_pages_map)
-> +		snp_asid_to_gctx_pages_map[sev_get_asid(kvm)] = sev->snp_context;
-> +
->  	return 0;
->  
->  e_free_context:
-> @@ -2884,9 +2890,126 @@ static int snp_decommission_context(struct kvm *kvm)
->  	snp_free_firmware_page(sev->snp_context);
->  	sev->snp_context = NULL;
->  
-> +	if (snp_asid_to_gctx_pages_map)
-> +		snp_asid_to_gctx_pages_map[sev_get_asid(kvm)] = NULL;
-> +
->  	return 0;
->  }
->  
-> +static void __snp_decommission_all(void)
-> +{
-> +	struct sev_data_snp_addr data = {};
-> +	int ret, asid;
-> +
-> +	if (!snp_asid_to_gctx_pages_map)
-> +		return;
-> +
-> +	for (asid = 1; asid < min_sev_asid; asid++) {
-> +		if (snp_asid_to_gctx_pages_map[asid]) {
-> +			data.address = __sme_pa(snp_asid_to_gctx_pages_map[asid]);
-
-NULL pointer deref if this races with snp_decommission_context() from task
-context.
-
-> +			ret = sev_do_cmd(SEV_CMD_SNP_DECOMMISSION, &data, NULL);
-> +			if (!ret) {
-
-And what happens if SEV_CMD_SNP_DECOMMISSION fails?
-
-> +				snp_free_firmware_page(snp_asid_to_gctx_pages_map[asid]);
-> +				snp_asid_to_gctx_pages_map[asid] = NULL;
-> +			}
-> +		}
-> +	}
-> +}
-> +
-> +/*
-> + * NOTE: called in NMI context from svm_emergency_disable().
-> + */
-> +void sev_emergency_disable(void)
-> +{
-> +	static atomic_t waiting_for_cpus_synchronized;
-> +	static bool synchronize_cpus_initiated;
-> +	static bool snp_decommission_handled;
-> +	static atomic_t cpus_synchronized;
-> +
-> +	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
-> +		return;
-> +
-> +	/*
-> +	 * SNP_SHUTDOWN_EX fails when SNP VMs are active as the firmware checks
-
-Define "active".
-
-> +	 * every encryption-capable ASID to verify that it is not in use by a
-> +	 * guest and a DF_FLUSH is not required. If a DF_FLUSH is required,
-> +	 * the firmware returns DFFLUSH_REQUIRED. To address this, SNP_DECOMMISSION
-> +	 * is required to shutdown all active SNP VMs, but SNP_DECOMMISSION tags all
-> +	 * CPUs that guest was activated on to do a WBINVD. When panic notifier
-> +	 * is invoked all other CPUs have already been shutdown, so it is not
-> +	 * possible to do a wbinvd_on_all_cpus() after SNP_DECOMMISSION has been
-> +	 * executed. This eventually causes SNP_SHUTDOWN_EX to fail after
-> +	 * SNP_DECOMMISSION. To fix this, do SNP_DECOMMISSION and subsequent WBINVD
-> +	 * on all CPUs during NMI shutdown of CPUs as part of disabling
-> +	 * virtualization on all CPUs via cpu_emergency_disable_virtualization().
-> +	 */
-> +
-> +	spin_lock(&snp_decommission_lock);
-> +
-> +	/*
-> +	 * exit early for call from native_machine_crash_shutdown()
-> +	 * as SNP_DECOMMISSION has already been done as part of
-> +	 * NMI shutdown of the CPUs.
-> +	 */
-> +	if (snp_decommission_handled) {
-> +		spin_unlock(&snp_decommission_lock);
-> +		return;
-> +	}
-> +
-> +	/*
-> +	 * Synchronize all CPUs handling NMI before issuing
-> +	 * SNP_DECOMMISSION.
-> +	 */
-> +	if (!synchronize_cpus_initiated) {
-> +		/*
-> +		 * one CPU handling panic, the other CPU is initiator for
-> +		 * CPU synchronization.
-> +		 */
-> +		atomic_set(&waiting_for_cpus_synchronized, num_online_cpus() - 2);
-
-And what happens when num_online_cpus() == 1?
-
-> +		synchronize_cpus_initiated = true;
-> +		/*
-> +		 * Ensure CPU synchronization parameters are setup before dropping
-> +		 * the lock to let other CPUs continue to reach synchronization.
-> +		 */
-> +		wmb();
-> +
-> +		spin_unlock(&snp_decommission_lock);
-> +
-> +		/*
-> +		 * This will not cause system to hang forever as the CPU
-> +		 * handling panic waits for maximum one second for
-> +		 * other CPUs to stop in nmi_shootdown_cpus().
-> +		 */
-> +		while (atomic_read(&waiting_for_cpus_synchronized) > 0)
-> +		       mdelay(1);
-> +
-> +		/* Reacquire the lock once CPUs are synchronized */
-> +		spin_lock(&snp_decommission_lock);
-> +
-> +		atomic_set(&cpus_synchronized, 1);
-> +	} else {
-> +		atomic_dec(&waiting_for_cpus_synchronized);
-> +		/*
-> +		 * drop the lock to let other CPUs contiune to reach
-> +		 * synchronization.
-> +		 */
-> +		spin_unlock(&snp_decommission_lock);
-> +
-> +		while (atomic_read(&cpus_synchronized) == 0)
-> +		       mdelay(1);
-> +
-> +		/* Try to re-acquire lock after CPUs are synchronized */
-> +		spin_lock(&snp_decommission_lock);
-> +	}
-
-Yeah, no.  This is horrific.  If the panic path doesn't provide the necessary
-infrastructure to ensure the necessary ordering between the initiating CPU and
-responding CPUs, then rework the panic path.
+Yes. This matches the line of though I had for the PCI TSM core
+interface. It allows establishing the connection to the device's
+security manager and facilitates linking that to a KVM context. So part
+of the uAPI is charged with managing device-security independent of a
+VM, and binding a vPCI device involves a rendezvous of the
+secure-world IOMMU setup with secure-world PCI via IOMMU and PCI-TSM
+coordination.
