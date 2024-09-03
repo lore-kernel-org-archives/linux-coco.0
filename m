@@ -1,107 +1,85 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5821188A30
-	for <linux-coco@lists.linux.dev>; Tue,  3 Sep 2024 15:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E08189F20
+	for <linux-coco@lists.linux.dev>; Tue,  3 Sep 2024 16:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725378980; cv=none; b=P06veAiRQeQtB1xUiF/EIg30V117+8+wXeJ1y49UHCr9YJK7bq7jheK/dbqn2sdHXesRAOhmt/jSg+FBoldykCQ2sxCfjlM4M3QGPUrfF0Us7l3bBPlqfwk3frxnJpesaTzvXBXZ3cZXwYnLnvDwjz0fab9BUCU2DrOy/86/p4c=
+	t=1725382475; cv=none; b=aeYoChrpvU8KzIsmjIcxnwTGPfYHOX3EazPd3ICY7QunITlsOWgUorsq6S+1O/ewPR0yoNd1E2y0wXmW6enkA9vrFwX6g3L0J+A0r+nh8zlQfN+FTi1fZYP5jaDjZlurWfj3tcm70Ou11ROqJVBoUa3H3i9t9K6l05QfGiLWy3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725378980; c=relaxed/simple;
-	bh=Mzgy4Zfk7DBRAXkLZqlzskQY/R1zzzcOZXHvCA6PQXE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZQwDYpDxkAnGzvcaLjMkfVg7QeUOKrq+As4tK4I+Bk/jUZoiB/+JptwQnkfswNMckTTtNqiEAqlR5vHugBNPVcww5KcyqsijGVqcE6QQ6Du1FG3mcL3Q93ShnlzvSZ7Xpb4QmI4TZHcAcyptpEM844nCQS8XAKDQJGA/+jaXX2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dupU4j2f; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1725382475; c=relaxed/simple;
+	bh=8W2FKf1mX6wOlnKqq3kseLdpAUtcbmJpAgWyIYzTOco=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UDMRlVB/FFycEWruOzy6tr0LytmZpeLqumA9d3MrCJCaeTc6HIEiSp3SfWb9lxSXe3I4mycS2JunM2K1CVWkM1Wv3/6csTci34rOwZM9BtUdLwpR0ELtvRFJk2UZo49UBTzDHMeN85fHfbtYtEYMD3hRW+d9OuLkZRxWiChEHd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=iEh+Qdhe; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dupU4j2f"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2d86e9da90cso3887264a91.2
-        for <linux-coco@lists.linux.dev>; Tue, 03 Sep 2024 08:56:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725378978; x=1725983778; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GWzaB2zVBiJq7ajI0wtzRO85aFP0qg9gF2s4BJREzmU=;
-        b=dupU4j2fSjbuRPhcSIPlTG6y39f9Ks5/5xHvFw5evc1o4wnPZKH4kucF9MaEuov7a/
-         RAu2dv/elaH+iBDQ/NBk/XOdE/J5wEqo1sPpZhNJQhieC20RQqq7RsOfjiDxMgoblhAA
-         4VZmwIUvW6eyigz9Ki81A2rRn7XFnqcmplP2rbjDlfpc9GNvbXH/uYJ+uV9gl2vP5Ssc
-         1ZZ7U5X4C4dprj8sCpB4eTARXWxoWi8a9JcWa2WBkDeXgNUi1fwXGYDLuhK1y+t+UYq7
-         9F8a6hW4wOLwjg4/lrTZqEl1vlxXH1LBrXVwJZy6m/7yIY7R4v4VuzapUNXGu7suRSou
-         AlOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725378978; x=1725983778;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GWzaB2zVBiJq7ajI0wtzRO85aFP0qg9gF2s4BJREzmU=;
-        b=NO/+wYK24IR0JvKJPevas6BVCWfjoB39isz+oB/y9vR9t2S2XbNOvuC18Vp7QijBtn
-         yftK5JKsM4qHOuww7QJ8H9KfqCnzEku4bNBnZgn1XlyIG6CRoSsXkPCLdDpKKFq8SNfM
-         R5qpHcwA6zXE7R27eKzRpKsJvMWsNgdn5gjlKlFr3hjdB4WRdmYedKAItJjTbL12r1qz
-         axUOXyYQsB1L1r7s70BkBHT1SG3IoHjuVs3MoQuHqV00hHmLJuM5AZfTKDGcqks2cpcG
-         2aUvsEb8RirKElSvkwHPsoOLkZYSDKLNSk9HamFAC5S6x9SNikRBIycdmL41IXeIlmhM
-         uSUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW5gVjveHi/3mmZeZ4GhHs/x8Aa9HK7Oe0D5tZ/zFa+zOc1y+n/w7XDS90XNs+b7dmxc1WW6FjDZ0vD@lists.linux.dev
-X-Gm-Message-State: AOJu0YzBEpwlD3SMlLpAIDxbfndVPPn8n/y7iVI+no73A0sIyiZjVAdI
-	TeytM2Th9qF4JLbLQVgsMHPGVX4vfBlwoH+iYTT74OfQkLiHc5F1lE0b6M7yjmBd6I+3CO9ABpj
-	jPg==
-X-Google-Smtp-Source: AGHT+IEU1849ih3tqcS05odvzRPeJyVpF9Fkthp9R0njzfPmkPWPuM+m0PM+Icyr5mRhgGWG26r/jNAQht0=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:90b:3013:b0:2d8:9dd1:d9aa with SMTP id
- 98e67ed59e1d1-2d89dd1da1emr23806a91.8.1725378977841; Tue, 03 Sep 2024
- 08:56:17 -0700 (PDT)
-Date: Tue, 3 Sep 2024 08:56:16 -0700
-In-Reply-To: <20240823132137.336874-1-aik@amd.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="iEh+Qdhe"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 61C9D40E0275;
+	Tue,  3 Sep 2024 16:54:31 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 6uHhZfpwbo0n; Tue,  3 Sep 2024 16:54:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1725382467; bh=pYKhtjki6SeFDno2F6TDAHe/MTQ7DiBiBkBNTh+qMDY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iEh+QdheQQujp8eWR6xyHMIMIqI26xwx4REdP0K1dOLVoq5ZVZjIZDM8LPgqXKjIt
+	 +51UjdOFu8cQRG9q/E8AW8HYjUS+lvHqif8zZS33UrCBdVIp1Taf4pHEeCjt4DyvZC
+	 G8XXZ4GQ8unC5uTn1+t+f023dbcmwwrXAqrLEKG5LOrMbfW6b8aLjNbPAenMVmOHmb
+	 UYULQ+wES+tNYhB1CrwueQdUIVxy6JM0JiHxlHuuCtJJZcb3tOsnCKmMh8K1B0Ub+u
+	 p02zVIineHl5B8eTW8i+5V1xRgiQou7neqZ4J7uSs10GAW4WsCabtOpif7iP7MMclt
+	 o8iWEwyjjTFUrSag7eNwY8nneI9zgxh/tQm8Bfps3ITdWOOVj97o3yyeTsrJTD6WO6
+	 rmM3cMPwZ8iVdZn8vm+PeU97RLksk4gPOXit8EAX18Jp6AnzHPkDAEEuaMfHvcjsyI
+	 6IFvRZHF/z3rtCYPKhcS8DHAvv+Y/3RkiRXHIsq200Ijo9wA1Og0GZooZWFYa7yR0l
+	 FPWQK1pBRcFySzJx/pefP9T18dSzt4cBmS3vZNRqpPKaFsRy73JheqcA/yUGxDb0/G
+	 YEFBMaL+Jbq3P5oZvKZ6Cb5UMwWfqvVGQLzK0bjhjOr5wwQ8ZbCkHK/BBpB3pay1DK
+	 LFMw4yDYRpeK/Cy2PQklEtfI=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 14E8540E0198;
+	Tue,  3 Sep 2024 16:54:12 +0000 (UTC)
+Date: Tue, 3 Sep 2024 18:54:06 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com,
+	dave.hansen@linux.intel.com, tglx@linutronix.de, mingo@redhat.com,
+	x86@kernel.org, hpa@zytor.com, peterz@infradead.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	thomas.lendacky@amd.com, michael.roth@amd.com,
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH] x86/sev: Fix host kdump support for SNP
+Message-ID: <20240903165406.GBZtc_LmcBbsGql9Dj@fat_crate.local>
+References: <20240827203804.4989-1-Ashish.Kalra@amd.com>
+ <87475131-856C-44DC-A27A-84648294F094@alien8.de>
+ <ZtCKqD_gc6wnqu-P@google.com>
+ <155cb321-a169-4a56-b0ac-940676c1e9ee@amd.com>
+ <26da9c1f-3cb6-45a5-b4df-1e4838057ea4@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20240823132137.336874-1-aik@amd.com>
-Message-ID: <ZtcxoPl302h77pb9@google.com>
-Subject: Re: [RFC PATCH 00/21] Secure VFIO, TDISP, SEV TIO
-From: Sean Christopherson <seanjc@google.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: kvm@vger.kernel.org, iommu@lists.linux.dev, linux-coco@lists.linux.dev, 
-	linux-pci@vger.kernel.org, 
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, 
-	Alex Williamson <alex.williamson@redhat.com>, Dan Williams <dan.j.williams@intel.com>, 
-	pratikrajesh.sampat@amd.com, michael.day@amd.com, david.kaplan@amd.com, 
-	dhaval.giani@amd.com, Santosh Shukla <santosh.shukla@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, 
-	Alexander Graf <agraf@suse.de>, Nikunj A Dadhania <nikunj@amd.com>, Vasant Hegde <vasant.hegde@amd.com>, 
-	Lukas Wunner <lukas@wunner.de>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <26da9c1f-3cb6-45a5-b4df-1e4838057ea4@amd.com>
 
-On Fri, Aug 23, 2024, Alexey Kardashevskiy wrote:
-> Hi everyone,
-> 
-> Here are some patches to enable SEV-TIO (aka TDISP, aka secure VFIO)
-> on AMD Turin.
-> 
-> The basic idea is to allow DMA to/from encrypted memory of SNP VMs and
-> secure MMIO in SNP VMs (i.e. with Cbit set) as well.
-> 
-> These include both guest and host support. QEMU also requires
-> some patches, links below.
-> 
-> The patches are organized as:
-> 01..06 - preparing the host OS;
-> 07 - new TSM module;
-> 08 - add PSP SEV TIO ABI (IDE should start working at this point);
-> 09..14 - add KVM support (TDI binding, MMIO faulting, etc);
-> 15..19 - guest changes (the rest of SEV TIO ABI, DMA, secure MMIO).
-> 20, 21 - some helpers for guest OS to use encrypted MMIO
-> 
-> This is based on a merge of
-> ee3248f9f8d6 Lukas Wunner spdm: Allow control of next requester nonce
-> through sysfs
-> 85ef1ac03941 (AMDESE/snp-host-latest) 4 days ago Michael Roth [TEMP] KVM: guest_memfd: Update gmem_prep are hook to handle partially-allocated folios
-> 
-> 
-> Please comment. Thanks.
+On Fri, Aug 30, 2024 at 04:08:35PM -0500, Kalra, Ashish wrote:
+> Are you convinced with Sean's feedback here that this is a required feature to fix ?
 
-1. Use scripts/get_maintainer.pl
-2. Fix your MUA to wrap closer to 80 chars
-3. Explain the core design, e.g. roles and responsibilities, coordination between
-   KVM, VFIO/IOMMUFD, userspace, etc.
+Yes.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
