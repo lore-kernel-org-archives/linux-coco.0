@@ -1,196 +1,70 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3F2320E;
-	Tue,  3 Sep 2024 05:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC09518A6A3
+	for <linux-coco@lists.linux.dev>; Tue,  3 Sep 2024 15:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725340539; cv=none; b=gc7frc0P5Vvuh66FnqF9xTfzwfzL/5rfi2QQ39Bxd33rf6O6eOnmKSwUSXLRWMtx4juutAblQnj7R28tSHyzeCDoVRHb7GEDcZw506x3vNOSTAOQTXcCdlKa9TTDBOri0ygBHil2vcgoaJp7zo3H7xYZL+fxUJ10jJttLhtDumE=
+	t=1725377047; cv=none; b=T6/tXbpdzdXjrKy2JohzaDYv3wWHxdOOuoIFos/DmFWFiOCagi/E3YsToyPA/Ptv/l4ZW3NlTX0w2R1z2N8FbymK8hNtutEHTxk7i9jO2LaDIBeEE8tSpUJOdJLvTEU0v4OFDl1INKIX+Wnmxn/apNSewUimwGEryVDS2WUg6yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725340539; c=relaxed/simple;
-	bh=5pGzzaXFHuizYR7w0upkczQmmZoRE5GU/jg2UXe6CBM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pwbnaj5/TIPm+A4y90UMECylViwyA2HC/M5BDNP9QmUiNylO+5ymM7hrxUR1dSYfv6y7TXET+yYs7+OOTsb4Uqceo/Fzhjo2+iyx5ZOVWNWYHRvW/G7bQS5qmdd1nVJI6fnNrP1y9KaI3yvS716BoR8qS1TzArW5h+X9dT1ncXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NzAd7adt; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1725377047; c=relaxed/simple;
+	bh=GGhUW9fvehn2LonobaUCXXzd5H3jeUwORedzANqFD4g=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ZVm7ncw6ZeLUtYd536xJu7f28Shi2UlU8QjgueMxbivBKwEsOGs2zGNo2p3ubbhxcUVprGYMQfB3iHMiFmc/z51WpS9Je3k/FJIZgz8xPEMFbE5QxkHxJtPMQteAPB2+9nwK+gehyW8w31HjBlqFSoZA0wthbyH7m3Zw1H5TD/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=7Cn4YHd2; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NzAd7adt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725340538; x=1756876538;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5pGzzaXFHuizYR7w0upkczQmmZoRE5GU/jg2UXe6CBM=;
-  b=NzAd7adtDGezX5ODj+t+Bxql5GwxMLLfLTkB6E9CduqQ874r46NuYryJ
-   1LawrlLj8l619q/hGWi8+7gkhIw9er0TtODWQyCZWT2vkobp104QFnMas
-   6WFZ/1jS4+2TzbiMkiWhaWRACX0kA9o69+ZQp34VrLNtJF6NVq32KVkSP
-   AN1DKzZOl0GoyZE5mZD0VbFUtzh8wCApKv5JUnDyHgzaKkqaq1/AM8ORr
-   c5qw/qsqlNYKoSmfeMambOwRS+heqC/Az+p0nMn8T1nfdg/8HDlsY2Of5
-   d0LhJYPuu8yjBmcGpVkJAxqxXP5c1lSAD/yV+j4uganG4w/T98UtpioAP
-   A==;
-X-CSE-ConnectionGUID: 9kUilTQ/RQG20my6vjcwqA==
-X-CSE-MsgGUID: rKcnR6jUTUW2yrFXvitRSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24073150"
-X-IronPort-AV: E=Sophos;i="6.10,197,1719903600"; 
-   d="scan'208";a="24073150"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2024 22:15:37 -0700
-X-CSE-ConnectionGUID: r0q2XG+lQgCbT/VErKTA3Q==
-X-CSE-MsgGUID: XMz0dyqBR5akKaAgCllmgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,197,1719903600"; 
-   d="scan'208";a="65286268"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa007.jf.intel.com with ESMTP; 02 Sep 2024 22:15:32 -0700
-Date: Tue, 3 Sep 2024 13:13:01 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: kvm@vger.kernel.org, iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	pratikrajesh.sampat@amd.com, michael.day@amd.com,
-	david.kaplan@amd.com, dhaval.giani@amd.com,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>, Alexander Graf <agraf@suse.de>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Lukas Wunner <lukas@wunner.de>
-Subject: Re: [RFC PATCH 13/21] KVM: X86: Handle private MMIO as shared
-Message-ID: <Ztaa3TpDLKrEY0Ys@yilunxu-OptiPlex-7050>
-References: <20240823132137.336874-1-aik@amd.com>
- <20240823132137.336874-14-aik@amd.com>
- <ZtH55q0Ho1DLm5ka@yilunxu-OptiPlex-7050>
- <49226b61-e7d3-477f-980b-30567eb4d069@amd.com>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="7Cn4YHd2"
+Received: from 8bytes.org (pd9fe9dd8.dip0.t-ipconnect.de [217.254.157.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 67AED28820E;
+	Tue,  3 Sep 2024 17:24:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1725377043;
+	bh=GGhUW9fvehn2LonobaUCXXzd5H3jeUwORedzANqFD4g=;
+	h=Date:From:To:Subject:From;
+	b=7Cn4YHd2D/6WpeIJtJESG7C27P8/Rm9UPotLl6IY2PjnxRBI75B21TL8zWGiHWJhC
+	 Ux1PyDW/LvbseJyyRQvlb3n0iVpAS48RA5BVy41nxQlS4xv3aqhFr7joN9ze4SyEcv
+	 A6U8nfpJ+KmLqOYlQ6jNidBdK3qOyt2KjLhPNqSw5N/0WZsSf2VM5Smi450iKsgYbV
+	 7mZJXQYUdySToS5kWnjMOqiXn6wLK74+qGrSsdBkdw/0GNIFjjq5Eo1hSvPLhW+5bq
+	 vkJg/ahBfohrSDS5as3R729XzWRgN5LFOvehuF1rmjSXoHizGJKprduLSfLGkg4Zkw
+	 J2qpj8DTx7WNg==
+Date: Tue, 3 Sep 2024 17:24:02 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call September 4th, 2024
+Message-ID: <ZtcqEhX5tnf4q5yj@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <49226b61-e7d3-477f-980b-30567eb4d069@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 02, 2024 at 12:22:56PM +1000, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 31/8/24 02:57, Xu Yilun wrote:
-> > On Fri, Aug 23, 2024 at 11:21:27PM +1000, Alexey Kardashevskiy wrote:
-> > > Currently private MMIO nested page faults are not expected so when such
-> > > fault occurs, KVM tries moving the faulted page from private to shared
-> > > which is not going to work as private MMIO is not backed by memfd.
-> > > 
-> > > Handle private MMIO as shared: skip page state change and memfd
-> > 
-> > This means host keeps the mapping for private MMIO, which is different
-> > from private memory. Not sure if it is expected, and I want to get
-> > some directions here.
-> 
-> There is no other translation table on AMD though, the same NPT. The
+Hi,
 
-Sorry for not being clear, when I say "host mapping" I mean host
-userspace mapping (host CR3 mapping). By using guest_memfd, there is no
-host CR3 mapping for private memory. I'm wondering if we could keep host
-CR3 mapping for private MMIO.
+Here is the usual call for agenda items for this weeks SVSM development
+call. Please send me any agenda items you have in mind or raise them in
+the meeting.
 
-> security is enforced by the RMP table. A device says "bar#x is private" so
-> the host + firmware ensure the each corresponding RMP entry is "assigned" +
-> "validated" and has a correct IDE stream ID and ASID, and the VM's kernel
-> maps it with the Cbit set.
-> 
-> >  From HW perspective, private MMIO is not intended to be accessed by
-> > host, but the consequence may varies. According to TDISP spec 11.2,
-> > my understanding is private device (known as TDI) should reject the
-> > TLP and transition to TDISP ERROR state. But no further error
-> > reporting or logging is mandated. So the impact to the host system
-> > is specific to each device. In my test environment, an AER
-> > NonFatalErr is reported and nothing more, much better than host
-> > accessing private memory.
-> 
-> afair I get an non-fatal RMP fault so the device does not even notice.
-> 
-> > On SW side, my concern is how to deal with mmu_notifier. In theory, if
-> > we get pfn from hva we should follow the userspace mapping change. But
-> > that makes no sense. Especially for TDX TEE-IO, private MMIO mapping
-> > in SEPT cannot be changed or invalidated as long as TDI is running.
-> 
-> > Another concern may be specific for TDX TEE-IO. Allowing both userspace
-> > mapping and SEPT mapping may be safe for private MMIO, but on
-> > KVM_SET_USER_MEMORY_REGION2,  KVM cannot actually tell if a userspace
-> > addr is really for private MMIO. I.e. user could provide shared memory
-> > addr to KVM but declare it is for private MMIO. The shared memory then
-> > could be mapped in SEPT and cause problem.
-> 
-> I am missing lots of context here. When you are starting a guest with a
-> passed through device, until the TDISP machinery transitions the TDI into
-> RUN, this TDI's MMIO is shared and mapped everywhere. And after
+We have one topic to resume from last week:
 
-Yes, that's the situation nowadays. I think if we need to eliminate
-host CR3 mapping for private MMIO, a simple way is we don't allow host
-CR3 mapping at the first place, even for shared pass through. It is
-doable cause:
+	* Early attestation document - Status and next steps.
+	  Link: https://docs.google.com/document/d/11ZsxP8jsviP3ddp9Hrn0rf6inttNw_Pbnz0psXlxlPs
 
- 1. IIUC, host CR3 mapping for assigned MMIO is only used for pfn
-    finding, i.e. host doesn't really (or shouldn't?) access them.
- 2. The hint from guest_memfd shows KVM doesn't have to rely on host
-    CR3 mapping to find pfn.
+Details of the meeting (GMeet and Calendar links, meeting time) can be
+found in our governance repository at:
 
-> transitioning to RUN you move mappings from EPT to SEPT?
+	https://github.com/coconut-svsm/governance
 
-Mostly correct, TDX move mapping from EPT to SEPT after LOCKED and
-right before RUN.
+The meeting will be recorded and the recording eventually published.
 
-> 
-> > So personally I prefer no host mapping for private MMIO.
-> 
-> Nah, cannot skip this step on AMD. Thanks,
+See you all there.
 
-Not sure if we are on the same page. I assume from HW perspective, host
-CR3 mapping is not necessary for NPT/RMP build?
+Regards,
 
-Thanks,
-Yilun
-
-> 
-> 
-> > 
-> > Thanks,
-> > Yilun
-> > 
-> > > page state tracking.
-> > > 
-> > > The MMIO KVM memory slot is still marked as shared as the guest can
-> > > access it as private or shared so marking the MMIO slot as private
-> > > is not going to help.
-> > > 
-> > > Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-> > > ---
-> > >   arch/x86/kvm/mmu/mmu.c | 6 +++++-
-> > >   1 file changed, 5 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > > index 928cf84778b0..e74f5c3d0821 100644
-> > > --- a/arch/x86/kvm/mmu/mmu.c
-> > > +++ b/arch/x86/kvm/mmu/mmu.c
-> > > @@ -4366,7 +4366,11 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
-> > >   {
-> > >   	bool async;
-> > > -	if (fault->is_private)
-> > > +	if (fault->slot && fault->is_private && !kvm_slot_can_be_private(fault->slot) &&
-> > > +	    (vcpu->kvm->arch.vm_type == KVM_X86_SNP_VM))
-> > > +		pr_warn("%s: private SEV TIO MMIO fault for fault->gfn=%llx\n",
-> > > +			__func__, fault->gfn);
-> > > +	else if (fault->is_private)
-> > >   		return kvm_faultin_pfn_private(vcpu, fault);
-> > >   	async = false;
-> > > -- 
-> > > 2.45.2
-> > > 
-> > > 
-> 
-> -- 
-> Alexey
-> 
+	Jörg
