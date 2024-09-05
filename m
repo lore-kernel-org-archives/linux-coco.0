@@ -1,111 +1,72 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2079.outbound.protection.outlook.com [40.107.223.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACB7152166;
-	Wed,  4 Sep 2024 23:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03996EADB;
+	Thu,  5 Sep 2024 02:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.79
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725492538; cv=fail; b=O6fu2UYZgAi8FeqgHQSCzkVGIjQt8Kcri3v7HEjb6hXG99m6/jIIr5R4LfsEYsIfsGiaBWFyd+UDwBYQiRdJP+7VnXRFndH6e9HRx0/DtaibpfJv/80WPOgDJFHGbQKlWtCo9IF3+3ELW0HIKlrECngGRgg+FwZMBRQx3s3tMFI=
+	t=1725503392; cv=fail; b=daJR0JTsEqyY9C/4FZQvEOvIC4hxyGUn2ZGgww+p+IbRoPyYiEcmVRL8tXth3cGgAu4gxFrdakg5mKQ3i0NTLCLoUHzaXuNQTvghEBzpqyJzv4+WqdpWZcFkraYCYpU5NidvhGS7jRpzbX0EIM5bxFKIAyMkSB+UeLKv0D4VpRc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725492538; c=relaxed/simple;
-	bh=axNHKuSUEHSCAraLqN3K9KmWqy3AfpP51yYTLKA4cwI=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nxmpjknazO9qKLM0R83JZmZKUEKFoauGPxgRVybQs+75BQp9qgiDF4LVgXclgEI4HLRY4QBclbZnZT37IqGgKuQTGMr1V5aYs1n9bOFWhTOZqwCbsBz7yq7h7KCFN6eQv14KpNDl3CI9+eNChUZhhWQpNu+JD3XRCpfEU5d9OIU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LOmNCGjK; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1725503392; c=relaxed/simple;
+	bh=kPPUVltUoY7cIte8h0pHzSdf5HjsrYI+O8lohdK8mro=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hfxcbGrSBoPDz3zq92y+yZbU04izkwmxnld7fOpjhOeePL9opzDDrRUupv0puZ1Uu3r/v1hHCgez2lkbCqM1uXVk8JzuJ3S9WZuaLV+6QlHueEe5pDM6NH5PQFhIGVbvltNxvQOCpyZoDZJ3EUeGv0MBAuvICM27DQ0gsa0ME68=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZyVUsJJz; arc=fail smtp.client-ip=40.107.223.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LOmNCGjK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725492535; x=1757028535;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=axNHKuSUEHSCAraLqN3K9KmWqy3AfpP51yYTLKA4cwI=;
-  b=LOmNCGjKkWiPc/Ba3SKDGHlVZ8ky6e6S8h1iv69V2vc/Hg5B1sIlAsdn
-   9XmCXE3KQI4wuSauiO7oXjtF5M22xQPuGDWUtdAxiz+0dmM0Jv9U80/jP
-   cJdtl4we2tlmhMN+ggPWxw8+d6RJhrWOLgMfsQObpjq8GUTkwFDr2EV4S
-   KvRupFD9JDnJJPvN2mXSsNeZkysZNvNvTwXA1cWK5l9leWnnpk9hpLrKu
-   OK5yUYqzGftR69qXXU9wbo5LSo2+R32ZUlXqlAcm+HoC3jaduAMZzYjNa
-   v4GkdRDYukrDmJJSvqlFEKAfMhSPDsquaJ4HlLRHliv60UTpSLy4MWYNY
-   w==;
-X-CSE-ConnectionGUID: 2vzleDbSSUmGAHjWqOF12A==
-X-CSE-MsgGUID: ggxuybBySI+PEw+RKLzMrw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="24340073"
-X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
-   d="scan'208";a="24340073"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 16:28:54 -0700
-X-CSE-ConnectionGUID: cgxGepHBRk6l/libm1ULCA==
-X-CSE-MsgGUID: 0YI3SZgcQ2aM8/I5/HH/Yw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; 
-   d="scan'208";a="88664618"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 04 Sep 2024 16:28:53 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 4 Sep 2024 16:28:53 -0700
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 4 Sep 2024 16:28:52 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 4 Sep 2024 16:28:52 -0700
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.47) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 4 Sep 2024 16:28:52 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZyVUsJJz"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OEe7nLdPId40e+hRTNY6uEia0DTmULOyctsMILQ85ahU8LY1Jx9Q4OhFylwDhxCAlO2e5WLSa6ScsNeBxFc1wQ4Dp4AmKH2HpA7RmrSAnCWAUvFSAsNFtNj8Z38faqt7tGvBHk08hNWmwg8cnbmfExt7WSZeqAsu5IlQshtUw+p2uARuM6vCQYKTQkeLJwyEkMkWdjbS0/Ks0XptLq4KAEOQfRlsRihOk4lnRrxAGm5uoalyA6r4YqbHJEfobizEZeRIgQdtS1L2ovKPu+Vh4b9H2bVeLtq+By9pjpuVXuMb0+LZdWrsjhGAwQg2axGV/1PjXxOg1qAcuNRYi43kLQ==
+ b=Yrxbmlj8hBAmhE5tqc2h7Gyzc+F/hPclv4V1kChLc7CKJms+yOrtBVJB0HAo31kyKwqsseYPpgwBQzOkMwogqjDT629k8k22sx/lwO2nE2FwS3F8HhFbtj6z1LTIekn/4I/KafRNJ2+YACGXInpUiNx4LTIDSAmrjOpOUsXjrjFVhteV2vebwdj7zvI8Vya3FvROXbIceMeerX/QPU5fu6Dyz5bbz/UYx3WV6OqbQQgiNbUdOl8oEXv/5UQkbHZ/FAyqNL6+16Y7fX4zi24UKoIqt5PLKoNWS46XwJypeApQZopWaV+8hD9cKLhfV8DGTe+Mn7JWWJv7Ytq4pOXAVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CBXxiepl9LumlOn//rRrQemKYfHk28j5uD2+ZAfblN0=;
- b=fyu3TgCFGqi+fnirItg3dJbudf7iHHScNOS+NHnhr0zCI7s8FTARF2CBvU+Ukd5jaQZhtWa+fNhIQ4StTJXTOhmX4ho7jawXc1BhWYgQ/rfepvAZH9TBHsswv+CAk5PoctzPlhYwZLufvZ6KCPXLQNeu4Su1rxLPdWFNtumgb0I2OSsVI5pOQ+xaFGfTP0/7rv4UJtiSi4d2S3NtrpHPbN6Aa55LGvd8HZNVxRosVHn7enLA3cob51xr78KOOLy4/xTob7QJl/RDh4lf6WkZ8mbUFEKpp8D55HBPZIqjHVzH1V5z3BeDhiB5RbPGDmgXaNRhOPH8PKRwCnLdUs6FIw==
+ bh=SmI9XP1ponenCwRfQSUxKXwHULKjk0JpS0YI0GCU1E4=;
+ b=StY9zanmQssTpVbm/fUGkZjfPmSO58a/ebFpcLVzFrhsuk7qfMVJidsZqs30kzHPMUrF2srlK3k9Wu+2pue0OISXpwEegY5J507ybQyPyyXSp7M7WsZZASAHbE13CqvsI7V/a7GaCRSTglTstFrjNf1Jzbk+8IuJtzNIuBwV4yezdMf2KFZclFwqS3AuMYwbzptHIHjj2MGpYDgQ5OVaV07pdwZ1ootSpN4v4dMAjc0eHXqk/Rjung09zJShPfuiEKO4PpSB/sLYkwXuCuM5+rNinQsrW3NYY97NeS10hFWPmutUDmvvjhzMmi+8L4WajxBLhtHMimEjF7doZ0OziA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SmI9XP1ponenCwRfQSUxKXwHULKjk0JpS0YI0GCU1E4=;
+ b=ZyVUsJJzSYiDQ/N0kSW7n1QQpzGRg5fdu9Eo3sLsTsG9c7r4JGh3SKrNlHYJ849xuYZjZUcpHS4ZjLEo9tsIuEX6RHqZvXTQOPv8ENV77X9mA5HH/aof2yQc3toOWy2x9wWk/rGy7fknZjPFUITj8I7n7qfFyOuee6a8460sSBE=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by DM4PR11MB5310.namprd11.prod.outlook.com (2603:10b6:5:391::19) with
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by LV8PR12MB9231.namprd12.prod.outlook.com (2603:10b6:408:192::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Wed, 4 Sep
- 2024 23:28:48 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%6]) with mapi id 15.20.7918.024; Wed, 4 Sep 2024
- 23:28:48 +0000
-Date: Wed, 4 Sep 2024 16:28:45 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Alexey Kardashevskiy <aik@amd.com>, Dan Williams
-	<dan.j.williams@intel.com>, <kvm@vger.kernel.org>
-CC: <iommu@lists.linux.dev>, <linux-coco@lists.linux.dev>,
-	<linux-pci@vger.kernel.org>, Suravee Suthikulpanit
-	<suravee.suthikulpanit@amd.com>, Alex Williamson
-	<alex.williamson@redhat.com>, <pratikrajesh.sampat@amd.com>,
-	<michael.day@amd.com>, <david.kaplan@amd.com>, <dhaval.giani@amd.com>,
-	Santosh Shukla <santosh.shukla@amd.com>, Tom Lendacky
-	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, "Alexander
- Graf" <agraf@suse.de>, Nikunj A Dadhania <nikunj@amd.com>, Vasant Hegde
-	<vasant.hegde@amd.com>, Lukas Wunner <lukas@wunner.de>
-Subject: Re: [RFC PATCH 07/21] pci/tdisp: Introduce tsm module
-Message-ID: <66d8ed2d5a719_3975294c4@dwillia2-xfh.jf.intel.com.notmuch>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Thu, 5 Sep
+ 2024 02:29:47 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%6]) with mapi id 15.20.7918.024; Thu, 5 Sep 2024
+ 02:29:47 +0000
+Message-ID: <16182660-3eb0-4df0-95a5-d4d2c4598319@amd.com>
+Date: Thu, 5 Sep 2024 12:29:38 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [RFC PATCH 06/21] crypto: ccp: Enable SEV-TIO feature in the PSP
+ when supported
+Content-Language: en-US
+To: Dan Williams <dan.j.williams@intel.com>, kvm@vger.kernel.org
+Cc: iommu@lists.linux.dev, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Alex Williamson <alex.williamson@redhat.com>, pratikrajesh.sampat@amd.com,
+ michael.day@amd.com, david.kaplan@amd.com, dhaval.giani@amd.com,
+ Santosh Shukla <santosh.shukla@amd.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>,
+ Alexander Graf <agraf@suse.de>, Nikunj A Dadhania <nikunj@amd.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Lukas Wunner <lukas@wunner.de>
 References: <20240823132137.336874-1-aik@amd.com>
- <20240823132137.336874-8-aik@amd.com>
- <66d7a10a4d621_3975294ac@dwillia2-xfh.jf.intel.com.notmuch>
- <9c0bac09-f663-4592-b954-259aeb7ec268@amd.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9c0bac09-f663-4592-b954-259aeb7ec268@amd.com>
-X-ClientProxiedBy: MW4PR03CA0046.namprd03.prod.outlook.com
- (2603:10b6:303:8e::21) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+ <20240823132137.336874-7-aik@amd.com>
+ <66d77f5ec9da8_3975294d7@dwillia2-xfh.jf.intel.com.notmuch>
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <66d77f5ec9da8_3975294d7@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SYBPR01CA0078.ausprd01.prod.outlook.com
+ (2603:10c6:10:3::18) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -113,486 +74,335 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM4PR11MB5310:EE_
-X-MS-Office365-Filtering-Correlation-Id: fbcf3e80-483e-42bf-c28d-08dccd3953ce
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|LV8PR12MB9231:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c3c8a6b-35d3-4b08-9798-08dccd529bf7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?eEJSUmtSdWlpNmxOTnlxcURhWE1jOFptUk9YTWw3MkwxSU5mRitxTDk0UGdr?=
- =?utf-8?B?WDl1WlRIaG9HdmxBVERkeWZsV2pCeXB3d2xkZTV5ZEhNNHBPVHBvQWlmdG42?=
- =?utf-8?B?QklGTWVRb1d4Y2kvTzJESHU2eHpkd3FwaDQvdDNXQ0hsMnFLOUhaVVlTUUtP?=
- =?utf-8?B?elgrUFJBekVnTlM2VFNVVDZvaUJNeEFMWmEzMSs0TVdEdmt5MDJveCt0TGNv?=
- =?utf-8?B?Q0ZVcGUxblJaZXBMcGNJdktJQ1BNd0JDTzZHaFlmbEsvVUM3ankxOVY1TEZZ?=
- =?utf-8?B?c21mZFpJc2hWcTVwd09VUW4xeUQyZDJLZHQ1T21TNWIxM2xvT1VJYTdXMWsv?=
- =?utf-8?B?MDgwQ3VpRXFoVWJld1hoNTg3WUFmTFpOSVZyOUl1TzVOZ2FjYVFoZ1pIdjB2?=
- =?utf-8?B?OCtSVkJmUGIrOUFjWmY0RkRRNXQ0MUZweXB4VktoekRvODZnS3FBTG1adm9P?=
- =?utf-8?B?NGlReC9JSnhJQTE1YlFyZUV0OHpnTW5SbmExTTBra3ozeFM1SkJpSkR1RDcv?=
- =?utf-8?B?Qlprb0ZjTDBXTWdRNE9hQ0hBdGlzd05seFZSRVQxNGZJeHZxb3BINFJDOXFv?=
- =?utf-8?B?U1dwejAybDRyYmtTTFE0ZzRkRUlZUzh6RVN4bGs5ckR3QWo0THZuREF3REhJ?=
- =?utf-8?B?SEpNSy9lVlR5VTA3Q09obnY5V1F4RnBHczZ0aUtwNGVSMTBjTFZidHNibmNO?=
- =?utf-8?B?eTd2WXRQQmNiN1Z1dXZCRTRBOHlCMCtIT0thQWVFVkptZzI1QkUrZWUxR0hv?=
- =?utf-8?B?bjZUdTVFSnU0bmVpZzFHNGc0U1EveU1FbWJpbkdDU3ZXTTkyOVlQOGpjR0dl?=
- =?utf-8?B?MXpHMlRadnN2UE5LTVNpa1dtazBZWXRqdUpCMmEybkpVOHJTQnBMZEcrbHdh?=
- =?utf-8?B?L3FVM0gxclZ6emc5RWFRMUJTVlBDZWRRbG9JUkVkUHBNTm5aUnBZbjZCMlls?=
- =?utf-8?B?MkZLUitqa2E2UTNwZlVUTmJlbzdkUkF2aDdRU3RiRGZnZDBHY2lLOGg4b0pu?=
- =?utf-8?B?MHE3ditwQ1NtdGErZTRzckhBUGRSZFNDMzFqNVdMelVRSFExK3NOa2JWR2lJ?=
- =?utf-8?B?cmRyQjR2Y0JqOXRmakF4RFJxM1VTcjhhMGtxbUFoaE84WndmMVcraTVTaEtG?=
- =?utf-8?B?RnBBWHFKakl5N2N6SG4xUVhZaGlUTjk3Rzllbm9mbWJDN05tVUJqS1p2TnNp?=
- =?utf-8?B?WkhKai9mRm1sWHBPdnFpZXE4NWFYano3eTJ2dnlmcGRKOGtyU3p1dnYxVTZp?=
- =?utf-8?B?OWd1OW53cEVEbjJOOHBITzA0OHBGMVErV0s0RnBZQmlXZUxTMWRSUVJQMUdQ?=
- =?utf-8?B?TFFlWnZULzRCRGZwL2Zod3FCeXlTR2UyYlNwanBVdmxLajBqRjU1TGdRVHFv?=
- =?utf-8?B?ZUlWOTNPTzBPWUthaUVLMUpPTC8xOGNyQzl6QjRIbWZIY0FXa0VMbVdzWG1i?=
- =?utf-8?B?VWNkOUx2aHpXZFd5eGZUQ1BJczhYcGpLTCt3U282bEp5ZzhpZWNKNnlOQjIz?=
- =?utf-8?B?cGVDWkZBM2EzQlZnMGhiR21ST1ljQkRnS1BQNjZJcWU2dUVJMmlrYkVhVk1T?=
- =?utf-8?B?OG9sTmhQNFgxTTYvU0xmeE50YzNyYzNTQzR6S1B3RS9hRWlPalg3TmtMN3JG?=
- =?utf-8?B?cWZiWUwzeVZhUXlKSzZjOERkK1FGcWtvZGhLbDZnSHhCL1hXUHdGSXpPT2dx?=
- =?utf-8?B?MGEvMlZoSTIydWdTWC9jZW1sY3RZdFNrbFdkUGpTK29HdFFSK0hibXVrZ2R3?=
- =?utf-8?B?UGpDOEVNaFlXT1pvNGo1QjlxRXEvSkRScUZJdHRaRmk1Y3BpZ1dlNmllaHJD?=
- =?utf-8?Q?dFH5qrP5fbH5og2ZdaxanRvfw4otGA///t2Sc=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RGorcHQwTThvekN2NUwrLzExTFIvLy9FNGtDbWZjc2E1TFBWUzg5TG1qZWRu?=
+ =?utf-8?B?MXczeDB1Qm9Da2pVMjVZMlFNU3gzZDE0L2kxaGFUSEc1QVNNa2FMMEVwWDdJ?=
+ =?utf-8?B?TnRLODlMQk5zU3JUWU1MOFhXOU05ZHVUaDZFWm9xMGRDbmk5TGFwK2wzTFM1?=
+ =?utf-8?B?UE5YK3VmOWF1MDZiOCtZTUp3SENBYWNaSTRwajJwWGkrek1ROTNQTVdpSkRQ?=
+ =?utf-8?B?NWZTNmNYR1lIemNJUm82RXdEeC9xTzJBekdLbzJVSkdCVmFGZzFYVjU3a1Iz?=
+ =?utf-8?B?OUJRNGQ2cGhoemlUVHV1c0RaaDJiRjhJRGpWV1B5WktXd3BpSGZjSU1EWWQy?=
+ =?utf-8?B?dzFwSWNDTEJjOHE3aFVPRnRHcExYNTdRL0RHSFNSOWFDZ0t4YlNncWJucjdx?=
+ =?utf-8?B?QUZ3dUY3d0FSZ01JOXpKdDVEbGR1VU5WeTRyenRsUTc4dGxEZGUranF5U1k0?=
+ =?utf-8?B?OHRVUkJxWTIyRzlRdmN5UjFkL1FiQktjcmM2OFNSM01odzl6SzRaMlNXV3R3?=
+ =?utf-8?B?NXRqQkE4U01NMEUxM2MzZGRNcGFjUDdwR3FTaGg4ZnN3L2JDWFVEVENiWnJZ?=
+ =?utf-8?B?WW1wTXpQTUNTNmR4OVdzNlFINEdYSWUwY0N2djh0TERQa09NSlU0RXl3bzdo?=
+ =?utf-8?B?L25ONncxUS9ZWElSaUEvVEFMdjU5ajFXUG5WakZBcmtCSGdQMFQ0dHFkL2tQ?=
+ =?utf-8?B?RFNEU05maWZDdE9leTdTY3FpOHNqKzYxSy9OMjlSQm9GNklVc1dncHlkbWdo?=
+ =?utf-8?B?ZzdvajZFMGpuWXpPZDZSS0N1U3k5YnBRSW5WY0R4TjRaYnZlcFRzUmd1Y2Qw?=
+ =?utf-8?B?T0x4cmpiTmhQUkxRai9vZ3pqODI1aWZyKzEzM0tVZnFNTWt4TkErcnQ2TUc0?=
+ =?utf-8?B?QWkwMUZvams3VnZqM0lDN2VpUExuay8yMi9FRzlvdXVkWFBnUE1qSTF2MjZM?=
+ =?utf-8?B?RGMyODFMSm5UcENZQWM1NXg5WmJzbzNBTFJvVEs0ZVVtWnBpcklOTlpuNXRk?=
+ =?utf-8?B?MHZzR3NzY1g5ZFUvQ1o5eGJiSnMvQlA5NHh1TTBPWHZSWllzclJZTERjR21v?=
+ =?utf-8?B?SlBGVGgrTzFRczJHcFNMRGRmZkZHV1N2UVEvV1JKNEhoazRXMDFBUjhYVkt2?=
+ =?utf-8?B?dkc0QmN0bmdYcXJ6RnFQK3puVkgyeGtuMDZybjFhQ2J3VE84eU9ja0wwWkdh?=
+ =?utf-8?B?b3hhYVVWbnNFV01FbHVBVE5KWGNYRkFDb2JZeWl0T1VZYjdoVW1nRDRkK3VF?=
+ =?utf-8?B?cE5OY2cydER1bW5CM2FLWHZmeTVzK0taSzZoNmVUQmJMZzJsNEt1RXlja0l1?=
+ =?utf-8?B?V2pVTVVmWDhDcTlQQWIwTG1sODk0UGwrR0tZZzdYR1kyQXJXM2lWbXlublQ3?=
+ =?utf-8?B?a21CNlhrSXVxMnk4eloyaHdOSGNhdWRCT1E1ZDA5R2N4ak80cmFWY21ITi9D?=
+ =?utf-8?B?NERwQWk3dEc2UWFlSElXT3pidHZwbXFlSXRrMlo1eEh0T2M4QzVSaU9ZS1Y3?=
+ =?utf-8?B?NlcyeE9HQ0NnMlZDWDBoWDR2VzFENVVGS2g0dERNbnprQUtEUUhIa3lKL0RG?=
+ =?utf-8?B?Q3NwQWgzSjNySTlHTnNJb3RsSjVUdUZDQzhpcE5ZQUxaWVAwakdGUHRWSGJT?=
+ =?utf-8?B?dVVJc0lYaEtuZnR5TUJlK2ErdWs5b1Qvc1NXNzRQamluaStoaWd3UDcwTmRm?=
+ =?utf-8?B?STF1cmpoOUdLcXBqVS8zVTRQZkFoejM0MUdWejZFRnoybEsyYzRTVkRXSGcv?=
+ =?utf-8?B?a3FMbHFtYjB4c0VadDVYS0tna2hQZnZOSngyaDZweWlVc08wL21oTjBhdnU1?=
+ =?utf-8?B?am0yMUtYSGRIcThmcXdEUT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dCtMQzFTeFRIVlN0dGNNbkdINXoySnhPbGRWWnZ1Q2RNQ3N4Ulpwd1VvcGZW?=
- =?utf-8?B?cDdDSWdqMFgrSFlRbEo3akVpVFhnZFZiNVo1Vlh0dGRIZkU3SmovU2NueTNu?=
- =?utf-8?B?Mk9wZ25laEpWY1F2RjhTUlVaS2U5VlF0ZVN6N2NYRHFLamhjbmZNL1dYT2hX?=
- =?utf-8?B?V0FUWm84dS9HRkJoRG5iSTNEUjA1bkZBNHJYVDB3enhqV3REd2pOZURHS3JK?=
- =?utf-8?B?ZUN4aUdDZ0phbStxV3JyaU5rZFVJVXNhS3drb3JndC8zT2hsSVpiaGhJUS9z?=
- =?utf-8?B?R2xFU3hXWEp6cCsycERKYlByQjloMzhHY0VLOGN1ck1neTBHbG11czZQNkpr?=
- =?utf-8?B?UHJIYXJvNE82Mk1kR3lFUHhZWmk5NHk1ZmRwNGFEVThxNFp2eXNoci9pZlcw?=
- =?utf-8?B?SEs0czMrRmg3RndWSHkyNWF2NzNERjJRRndQZmJPVHJjY3NuQnc2MjZ4Mk1w?=
- =?utf-8?B?Z3RtNWt4RlM5Yk1KVjBnMm9xR0Rtd1JiQmlBVlA4YmRhWkdPVVhiMy9uL0tR?=
- =?utf-8?B?NG1ZT25xQXd0cmtvL1BJRVhZWG91ZFJwWS9SMVFiNmpXVWxtbzJwdFRlcjNB?=
- =?utf-8?B?d2d4bGdrUnlNMjdCbVJlQ0NGKzVOVGNQWElnY1J2d2tSaFlWUU5hSmYrSUM1?=
- =?utf-8?B?cUVjT0RUNGV4SVc4dHJ1RWNkQk11UGpQYzdDUUNCeVZaa3A5cThhYkNYTzRL?=
- =?utf-8?B?NDZraGd4dU5mUGxFcmVrOTIvYTJ4THY0STFuQnpBMHlHaWJOa2MwdXdMSlBL?=
- =?utf-8?B?OElvRWlEQ1hidnlZc1AyQlFjWVovbHpQa3FOZHJ4TGhLaG9reDhHRHlsK014?=
- =?utf-8?B?MEMvd2FDV05HcGh1d2pkM2ZCNGlxcWhId2dnWkdDa3p6bk8yU0VQSmVCdWhY?=
- =?utf-8?B?WGdvVlhuaEZYQUhFVzFGaVBLWXZFTi9XRndjTWhEZHd5aWtjSmR0TjREWjds?=
- =?utf-8?B?V3lMamFwRVc5Tzlwb0JSSFVydjFoQ1FpeW85NzFwZDR2K2JjT1AwOGpzU25I?=
- =?utf-8?B?UjZGVTF4RjA5VituN1RpKzRvdXFDRXhzTWdOYXhLSWNSSUhjQ0dTcWlTOTRa?=
- =?utf-8?B?elJONkhQZCtYVE82V0xjK3IzeXkxMDEzQ3BJN3V3WnJUY1doOG1CNWpRd3Uz?=
- =?utf-8?B?R3pKanlPSTVEK0t4QjhPalE5eko2cmovd3lsZS9JdXlzZmJDVGlXZGJuVDFO?=
- =?utf-8?B?TURveXl3WHM4VkVMMG5nTkt4Q1FPQjRDR1YwRUltaEx0Y0NTb29ZMEZjb2Vj?=
- =?utf-8?B?WUtuUjZzb2F1MFZwK2NZbC9LeStjeWpHWnZ2eUtYWmpzdk1PcC9vYVRvTW5D?=
- =?utf-8?B?SHBkdUlyWlRXNGtWamJ1RVZUNzVoNDArU0paOURoQnNkWVVtSW1EbVFrSmRV?=
- =?utf-8?B?RFgzZG15M2dWcThrZHgvVGNOSlptdVZ1OG5vUGFOKytYdEVhTGRibEVldkVR?=
- =?utf-8?B?Smxoa1V0bW5kVW5mNzFBbkM5ZUhVSSs4UVc1QU9KUWRrbGRHbDFMbGZkMGww?=
- =?utf-8?B?VUozREFqRXFMaUIreTlZYUZxR2cybUVzZCtpSlBCcS9ZM25kK3BUdWtGUlhZ?=
- =?utf-8?B?bEpZTkpHc3RLaUxvV0J4S1hhbDUrNEZUV2RCZXJXL2FwZnhUbExEWm1BNVpJ?=
- =?utf-8?B?emlvYWI0THpabmx0c0U3UVIvdnFURDhTRmR0SW94bTNkTUVsdHlhcjRkVVVV?=
- =?utf-8?B?VkVPU0x5ZWNwWVRKUm5uK3Z4aFNKa29kcGg2bTZXKzZrZjFZaytUS2ZFci9s?=
- =?utf-8?B?LzZzTFpKMGEwZDZoRGFFMUlxTmI3VlZDMWRXT2FCWE9HbzVRT3QrbGR0bG1L?=
- =?utf-8?B?SVlldVk2anpKUm9MQml1U3VlT3pERVBUQ0JqMU50M3JQZDI1bDZOU3R2MjJs?=
- =?utf-8?B?a1JkcjV6TjBma1pPOHUzZ2lnTkhlQWMvaE1DQkZ3UDZ6NnV5MkVINWZHSXhQ?=
- =?utf-8?B?RHltK1lzcHJyWG00NFBPZ0dvQjlnLzBPaExrc2NyWGFJQW11WHBRd3c5V3N1?=
- =?utf-8?B?SWl2a1hwcHBGUFltbkN2ZE5wbG9WTnBCd2U4b2tvWis2bkZXUUFKTlRPS3dW?=
- =?utf-8?B?WkFRTTlQSkkwRm1EQmFMZzZENDNudzJVZDVOdnh1a013MmlzNU0zMmFHcnRz?=
- =?utf-8?B?bG5LdEphZmI5cFVzbUUyZDZuT0YveFJ4ekwzenpUOVJxYTY2c3RmVkh3S1JZ?=
- =?utf-8?B?eFE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: fbcf3e80-483e-42bf-c28d-08dccd3953ce
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L1hhREdRTEowTUpESjZOMTlWQnhzZCtuWnhoR3RiYUF5VTBWK3g4enozZ0FC?=
+ =?utf-8?B?amZRMzAwNHp5dzdrTkRSU3MvL2I5NGlCZmpvQjdsRWtjZXBud3BJb3BmVEhE?=
+ =?utf-8?B?RkNqSmNuZnpHSnRScjFWNXlVYlFjeTJQZGJrbnpjd0hDWlp0eXNoSk9rbElI?=
+ =?utf-8?B?VzN4ZHlGRlFKT0UwMG9tTzdGRUJINVNOOHVGdUtoa1pncHBXZkw5OWNCTURS?=
+ =?utf-8?B?b0w3K3hWNEZudFY4QVYyZkhvbFFwSHozSEVOMEtWdUhzMkFMT0hEV05IK1pX?=
+ =?utf-8?B?N091Y2FwMmdNQUdKRTk2QXhwSjJ5WmU1YzAzcjZJWjM4ZVlrTHlUdHcxRXF4?=
+ =?utf-8?B?SVd1aGlBY0FWcURSVUttSE9xb0hUZm1GaHhadDhPOXErSXYwekhQVzhmV05j?=
+ =?utf-8?B?dE10WjJTRjA3UkMwQlJMSGJaZjFkREd1d2t4YllobmUzb0JyYkpYd1VYaXVz?=
+ =?utf-8?B?OEt0M252U1RHQXFNcGphTjZrK1o4UEk4T1o5cWlqbzgxTmlyWWErczdHYVda?=
+ =?utf-8?B?RWE4ZTdRanhzTHBJVEtHU3BxdzBaRmZKbVp0OTdsYmFHNkZTUkFWQmRZR1VE?=
+ =?utf-8?B?cUlrS2x1SXhSMmE3ZXA2M1FhZFhYRGZ5ejNQUjZvTDREZzF0TXljbllRYUdp?=
+ =?utf-8?B?QUNFZFh4N0d5RytZOHhLZHNMdjRHUVpBY1hBTmVuNVlMNHJKVC9zMm8yVVBh?=
+ =?utf-8?B?YzJ5N2plWVEzNUh1UzRoR0tFaWNBU3VJY3ZabXdNVWpYNzZnNWlXOEQzWU5p?=
+ =?utf-8?B?bkRrN2x1ZkhySzJtWm91Vi9ZMFFCdnhYUEtraFIvVFJKWkhaUURZaG5tNVhq?=
+ =?utf-8?B?S3kyUVYxdGxqYkhMTEIxUzFubk4rSk1rV2pwWjA3dFp5MUh5SHBjVk1KaVdH?=
+ =?utf-8?B?NmhZbzhYNkRYVk9TR3hYV3B2Q2czRnFoUG1Ddk1jaWQvWmNkS1ZoRWx0c3dt?=
+ =?utf-8?B?RENBNlM4Z09rRTdvbGJwcW4xWkZ3a2Z1TWpPeHJQY2dSeGlXL1RscEhyVUxu?=
+ =?utf-8?B?eC9rcVV1andkMlpBSnBhTlJUL1FzWTVBRENXdUlscG5LNm9SWDdNZTdEbXlK?=
+ =?utf-8?B?WlMyVGtPaE0wUW00NzA5WU1GNXQ5QjhTQTQ1d3RnaU1VODlDb0JodzEzMnZy?=
+ =?utf-8?B?UkRwSzNpcjluRS9GN2MyNkhNM2pObS9FdXdKaDFldXh2YUMwRVVGYzlYRG9n?=
+ =?utf-8?B?KzhoUnhXZzhQWDNGeTUwWVMzUkxmMjRyU05rMW82cXZrSWJoYzREZVFzRkZP?=
+ =?utf-8?B?NFdGSHE4T0hJWVJmWVkwbUYyendmYVk4c3NvTHkzRUpLSlhld3FSV3pqUEpk?=
+ =?utf-8?B?ZmxMU283eW1mYk92b0VRaUptTXpNSVNkdE5ONXpldGVZaHlrZUZ3Q1FWWUpp?=
+ =?utf-8?B?NTdOa2VLbnFtOWl1cDBPa1ZHQ3ZiTFhtWVdRaGFyRkJWazRaWDJ1MUN1cG1w?=
+ =?utf-8?B?bmxmMVQwVXY5LzVMTVRqRkJ5Q3FGMDZSc01rTTNvc05FV0lDQUxFTlVKeU9U?=
+ =?utf-8?B?M3VRY3Q1TzFqaVBtU21BSy9NUnIwVVgwbWZmeDNRTU1ub0E3Z2V1Qk1wRzVH?=
+ =?utf-8?B?WU1sMTVnSDlSRmxrR1MvcmNTZnRHZkhKQ0pBajAzU3JUdnpUZVF4Q2NMUGJh?=
+ =?utf-8?B?V1ltcFNzNkYrcEQ1WDIyYVc4RHkvNWx6TmJBSUNleVAxZWZFZ1RrQzUzSDRL?=
+ =?utf-8?B?Qms5NEpKeS9UQUFyVGw4dXpNL1pwVSt2RXI0eUJlTFY4Y0laMFB1NDRQWnlz?=
+ =?utf-8?B?K1gwWFI1VUN6SXg4cGd4UmhlYXZqaHZ4M2lDV3VNYzN0eGJsbG1VSUdJSTFH?=
+ =?utf-8?B?WlNQQzZHOEhFdGZJU2Z2NE5MaHBwOEdmRCtKZjhSazd0TTRva2djQ1RBTjVq?=
+ =?utf-8?B?bVd1Ukl1UWRkL00wS1AwMFh4Tk1UNlhJTmlDYmYrUXFYM0VuaVpLdjhobXZX?=
+ =?utf-8?B?T1h3aVQreHdKdk5jTEFYemFLR2QyVmJKRnJRUWZRMjQ3SndvZ2t0azVtR2tn?=
+ =?utf-8?B?T3kybzV6Q25YeXFMSHRZd0pUMjZBOVVWaGtQWmcvTUFkU2wzc1V6QTY0MVR5?=
+ =?utf-8?B?bFFCTzJZdWJNVTRFYllSYXY1bjNUR1B1R29kRjJNUjVxbWxiRGZJZzN5Ymsw?=
+ =?utf-8?Q?ZuS0Vc412Oay93xlC3/N4zX/C?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c3c8a6b-35d3-4b08-9798-08dccd529bf7
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2024 23:28:48.4957
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2024 02:29:46.9110
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: odsv8jKHIAWvTGOrB5aDrORN3qa2yfjsla91861Tlp17WZku5d/fNkPQ9vw8n0Y7sq/1NA9hGYAAYuHiDzQblOu7nI4Xts1YmK139WgSOnw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5310
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: B25ATLFUhe4hL1JYnihVdzpfPzJr/TuF1Cz3KYANJzWnxTGWp/lDz8EgBgHIuElik9laZCaUZTTKeBEZ4nVdHA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9231
 
-Alexey Kardashevskiy wrote:
+
+
+On 4/9/24 07:27, Dan Williams wrote:
+> Alexey Kardashevskiy wrote:
+>> The PSP advertises the SEV-TIO support via the FEATURE_INFO command
+>> support of which is advertised via SNP_PLATFORM_STATUS.
+>>
+>> Add FEATURE_INFO and use it to detect the TIO support in the PSP.
+>> If present, enable TIO in the SNP_INIT_EX call.
+>>
+>> While at this, add new bits to sev_data_snp_init_ex() from SEV-SNP 1.55.
+>>
+>> Note that this tests the PSP firmware support but not if the feature
+>> is enabled in the BIOS.
+>>
+>> While at this, add new sev_data_snp_shutdown_ex::x86_snp_shutdown
+>>
+>> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+>> ---
+>>   include/linux/psp-sev.h      | 31 ++++++++-
+>>   include/uapi/linux/psp-sev.h |  4 +-
+>>   drivers/crypto/ccp/sev-dev.c | 73 ++++++++++++++++++++
+>>   3 files changed, 104 insertions(+), 4 deletions(-)
 > 
+> Taking a peek to familiarize myself with that is required for TIO
+> enabling in the PSP driver...
 > 
-> On 4/9/24 09:51, Dan Williams wrote:
-> > Alexey Kardashevskiy wrote:
-> >> The module responsibilities are:
-> >> 1. detect TEE support in a device and create nodes in the device's sysfs
-> >> entry;
-> >> 2. allow binding a PCI device to a VM for passing it through in a trusted
-> >> manner;
-> >> 3. store measurements/certificates/reports and provide access to those for
-> >> the userspace via sysfs.
-> >>
-> >> This relies on the platform to register a set of callbacks,
-> >> for both host and guest.
-> >>
-> >> And tdi_enabled in the device struct.
-> > 
-> > I had been holding out hope that when I got this patch the changelog
-> > would give some justification for what folks had been whispering to me
-> > in recent days: "hey Dan, looks like Alexey is completely ignoring the
-> > PCI/TSM approach?".
-> > 
-> > Bjorn acked that approach here:
-> > 
-> > http://lore.kernel.org/20240419220729.GA307280@bhelgaas
-> > 
-> > It is in need of a refresh, preview here:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/djbw/linux.git/commit/?id=5807465b92ac
-> > 
-> > At best, I am disappointed that this RFC ignored it. More comments
-> > below, but please do clarify if we are working together on a Bjorn-acked
-> > direction, or not.
+>>
+>> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+>> index 52d5ee101d3a..1d63044f66be 100644
+>> --- a/include/linux/psp-sev.h
+>> +++ b/include/linux/psp-sev.h
+>> @@ -107,6 +107,7 @@ enum sev_cmd {
+>>   	SEV_CMD_SNP_DOWNLOAD_FIRMWARE_EX = 0x0CA,
+>>   	SEV_CMD_SNP_COMMIT		= 0x0CB,
+>>   	SEV_CMD_SNP_VLEK_LOAD		= 0x0CD,
+>> +	SEV_CMD_SNP_FEATURE_INFO	= 0x0CE,
+>>   
+>>   	SEV_CMD_MAX,
+>>   };
+>> @@ -584,6 +585,25 @@ struct sev_data_snp_addr {
+>>   	u64 address;				/* In/Out */
+>>   } __packed;
+>>   
+>> +/**
+>> + * struct sev_data_snp_feature_info - SEV_CMD_SNP_FEATURE_INFO command params
+>> + *
+>> + * @len: length of this struct
+>> + * @ecx_in: subfunction index of CPUID Fn8000_0024
+>> + * @feature_info_paddr: physical address of a page with sev_snp_feature_info
+>> + */
+>> +#define SNP_FEATURE_FN8000_0024_EBX_X00_SEVTIO	1
+>> +
+>> +struct sev_snp_feature_info {
+>> +	u32 eax, ebx, ecx, edx;			/* Out */
+>> +} __packed;
+>> +
+>> +struct sev_data_snp_feature_info {
+>> +	u32 length;				/* In */
+>> +	u32 ecx_in;				/* In */
+>> +	u64 feature_info_paddr;			/* In */
+>> +} __packed;
 > 
-> Together.
+> Why use CPU register names in C structures? I would hope the spec
+> renames these parameters to something meaninful?
+
+This mimics the CPUID instruction and (my guess) x86 people are used to 
+"CPUID's ECX" == "Subfunction index". The spec (the one I mention below) 
+calls it precisely "ECX_IN".
+
+
+>> +
+>>   /**
+>>    * struct sev_data_snp_launch_start - SNP_LAUNCH_START command params
+>>    *
+>> @@ -745,10 +765,14 @@ struct sev_data_snp_guest_request {
 > 
-> My problem with that patchset is that it only does connect/disconnect 
-> and no TDISP business (and I need both for my exercise) and I was hoping 
-> to see some TDISP-aware git tree but this has not happened yet so I 
-> postponed rebasing onto it, due to the lack of time and also apparent 
-> difference between yours and mine TSMs (and I had mine working before I 
-> saw yours and focused on making things work for the starter). Sorry, I 
-> should have spoken louder. Or listen better to that whispering. Or 
-> rebase earlier.
+> Would be nice to have direct pointer to the spec and spec chapter
+> documented for these command structure fields.
 
-Ok, this makes sense. This is definitely changelog material to clarify
-assumptions, tradeoffs, and direction. The fact that the changelog said
-nothing about those was, at a minimum, cause for concern.
+For every command? Seems overkill. Any good example?
 
-[..]
-> >> @@ -801,6 +802,7 @@ struct device {
-> >>   	void	(*release)(struct device *dev);
-> >>   	struct iommu_group	*iommu_group;
-> >>   	struct dev_iommu	*iommu;
-> >> +	struct tsm_tdi		*tdi;
-> > 
-> > No. The only known device model for TDIs is PCI devices, i.e. TDISP is a
-> > PCI protocol. Even SPDM which is cross device-type generic did not touch
-> > 'struct device'.
+Although the file could have mentioned in the header that SNP_xxx are 
+from "SEV Secure Nested Paging Firmware ABI Specification" which google 
+easily finds, and search on that pdf for "SNP_INIT_EX" finds the 
+structure layout. Using the exact chapter numbers/titles means they 
+cannot change, or someone has to track the changes.
+
 > 
-> TDISP is PCI but DMA is not. This is for:
-> [RFC PATCH 19/21] sev-guest: Stop changing encrypted page state for 
-> TDISP devices
+>>   struct sev_data_snp_init_ex {
+>>   	u32 init_rmp:1;
+>>   	u32 list_paddr_en:1;
+>> -	u32 rsvd:30;
+>> +	u32 rapl_dis:1;
+>> +	u32 ciphertext_hiding_en:1;
+>> +	u32 tio_en:1;
+>> +	u32 rsvd:27;
+>>   	u32 rsvd1;
+>>   	u64 list_paddr;
+>> -	u8  rsvd2[48];
+>> +	u16 max_snp_asid;
+>> +	u8  rsvd2[46];
+>>   } __packed;
+>>   
+>>   /**
+>> @@ -787,7 +811,8 @@ struct sev_data_range_list {
+>>   struct sev_data_snp_shutdown_ex {
+>>   	u32 len;
+>>   	u32 iommu_snp_shutdown:1;
+>> -	u32 rsvd1:31;
+>> +	u32 x86_snp_shutdown:1;
+>> +	u32 rsvd1:30;
+>>   } __packed;
+>>   
+>>   /**
+> [..]
+>> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+>> index f6eafde584d9..a49fe54b8dd8 100644
+>> --- a/drivers/crypto/ccp/sev-dev.c
+>> +++ b/drivers/crypto/ccp/sev-dev.c
+>> @@ -223,6 +223,7 @@ static int sev_cmd_buffer_len(int cmd)
+>>   	case SEV_CMD_SNP_GUEST_REQUEST:		return sizeof(struct sev_data_snp_guest_request);
+>>   	case SEV_CMD_SNP_CONFIG:		return sizeof(struct sev_user_data_snp_config);
+>>   	case SEV_CMD_SNP_COMMIT:		return sizeof(struct sev_data_snp_commit);
+>> +	case SEV_CMD_SNP_FEATURE_INFO:		return sizeof(struct sev_data_snp_feature_info);
+>>   	default:				return 0;
+>>   	}
+>>   
+>> @@ -1125,6 +1126,77 @@ static int snp_platform_status_locked(struct sev_device *sev,
+>>   	return ret;
+>>   }
+>>   
+>> +static int snp_feature_info_locked(struct sev_device *sev, u32 ecx,
+>> +				   struct sev_snp_feature_info *fi, int *psp_ret)
+>> +{
+>> +	struct sev_data_snp_feature_info buf = {
+>> +		.length = sizeof(buf),
+>> +		.ecx_in = ecx,
+>> +	};
+>> +	struct page *status_page;
+>> +	void *data;
+>> +	int ret;
+>> +
+>> +	status_page = alloc_page(GFP_KERNEL_ACCOUNT);
+>> +	if (!status_page)
+>> +		return -ENOMEM;
+>> +
+>> +	data = page_address(status_page);
+>> +
+>> +	if (sev->snp_initialized && rmp_mark_pages_firmware(__pa(data), 1, true)) {
+>> +		ret = -EFAULT;
+>> +		goto cleanup;
 > 
-> DMA layer deals with struct device and tries hard to avoid indirect _ops 
-> calls so I was looking for a place for "tdi_enabled" (a bad name, 
-> perhaps, may be call it "dma_encrypted", a few lines below).
+> Jonathan already mentioned this, but "goto cleanup" is so 2022.
 
-The name and the fact that it exposes all of the TSM interfaces to the
-driver core made it unclear if this oversharing was on purpose, or for
-convenience / expediency?
+This requires DEFINE_FREE() which yet another place to look at. When I 
+Then, no_free_ptr() just hurts to read (cold breath of c++). It is not 
+needed here but unavoidably will be in other places when I start using 
+__free(kfree). But alright, I'll switch.
 
-I agree that 'struct device' should carry DMA mapping details, but the
-full TDI context is so much more than that which makes it difficult to
-understand the organizing principle of this data sharing.
-
-> the flag and the pointer together for the RFC. I am hoping for a better 
-> solution for 19/21, then I am absolutely moving tdi* to pci_dev (well, 
-> drop these and just use yours).
-
-Ok, so what patches are in the category of "temporary hacks to get
-something going and a plan to replace them", and which are "firm
-proposals looking for review feedback"?
-
-[..]
-> >> +/**
-> >> + * struct tdisp_interface_id - TDISP INTERFACE_ID Definition
-> >> + *
-> >> + * @function_id: Identifies the function of the device hosting the TDI
-> >> + * 15:0: @rid: Requester ID
-> >> + * 23:16: @rseg: Requester Segment (Reserved if Requester Segment Valid is Clear)
-> >> + * 24: @rseg_valid: Requester Segment Valid
-> >> + * 31:25 – Reserved
-> >> + * 8B - Reserved
-> >> + */
-> >> +struct tdisp_interface_id {
-> >> +	union {
-> >> +		struct {
-> >> +			u32 function_id;
-> >> +			u8 reserved[8];
-> >> +		};
-> >> +		struct {
-> >> +			u16 rid;
-> >> +			u8 rseg;
-> >> +			u8 rseg_valid:1;
-> > 
-> > Linux typically avoids C-bitfields in hardware interfaces in favor of
-> > bitfield.h macros.
-> > >> +		};
-> >> +	};
-> >> +} __packed;
-> > 
-> > Does this need to be "packed"? Looks naturally aligned to pahole.
 > 
-> "__packed" is also a way to say it is a binary interface, I want to be 
-> precise about this.
-
-It's also a way to tell the compiler to turn off useful optimizations.
-
-Don't these also need to be __le32 and __le16 for the multi-byte fields?
-
-[..]
-> > Same C-bitfield comment, as before, and what about big endian hosts?
+>> +	}
+>> +
+>> +	buf.feature_info_paddr = __psp_pa(data);
+>> +	ret = __sev_do_cmd_locked(SEV_CMD_SNP_FEATURE_INFO, &buf, psp_ret);
+>> +
+>> +	if (sev->snp_initialized && snp_reclaim_pages(__pa(data), 1, true))
+>> +		ret = -EFAULT;
+>> +
+>> +	if (!ret)
+>> +		memcpy(fi, data, sizeof(*fi));
+>> +
+>> +cleanup:
+>> +	__free_pages(status_page, 0);
+>> +	return ret;
+>> +}
+>> +
+>> +static int snp_get_feature_info(struct sev_device *sev, u32 ecx, struct sev_snp_feature_info *fi)
 > 
-> Right, I'll get rid of c-bitfields in the common parts.
+> Why not make this bool...
 > 
-> Although I am curious what big-endian platform is going to actually 
-> support this.
-
-The PCI DOE and CMA code is cross-CPU generic with endian annotations
-where needed. Why would PCI TSM code get away with kicking that analysis
-down the road?
-
-[..]
-> >> +/* Physical device descriptor responsible for IDE/TDISP setup */
-> >> +struct tsm_dev {
-> >> +	struct kref kref;
-> > 
-> > Another kref that begs the question why would a tsm_dev need its own
-> > lifetime? This also goes back to the organization in the PCI/TSM
-> > proposal that all TSM objects are at max bound to the lifetime of
-> > whatever is shorter, the registration of the low-level TSM driver or the
-> > PCI device itself.
+>> +{
+>> +	struct sev_user_data_snp_status status = { 0 };
+>> +	int psp_ret = 0, ret;
+>> +
+>> +	ret = snp_platform_status_locked(sev, &status, &psp_ret);
+>> +	if (ret)
+>> +		return ret;
+>> +	if (ret != SEV_RET_SUCCESS)
+>> +		return -EFAULT;
+>> +	if (!status.feature_info)
+>> +		return -ENOENT;
+>> +
+>> +	ret = snp_feature_info_locked(sev, ecx, fi, &psp_ret);
+>> +	if (ret)
+>> +		return ret;
+>> +	if (ret != SEV_RET_SUCCESS)
+>> +		return -EFAULT;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static bool sev_tio_present(struct sev_device *sev)
+>> +{
+>> +	struct sev_snp_feature_info fi = { 0 };
+>> +	bool present;
+>> +
+>> +	if (snp_get_feature_info(sev, 0, &fi))
 > 
+> ...since the caller does not care?
+
+
+sev_tio_present() does not but other users of snp_get_feature_info() 
+(one is coming sooner that TIO) might, WIP.
+
+
+>> +		return false;
+>> +
+>> +	present = (fi.ebx & SNP_FEATURE_FN8000_0024_EBX_X00_SEVTIO) != 0;
+>> +	dev_info(sev->dev, "SEV-TIO support is %s\n", present ? "present" : "not present");
+>> +	return present;
+>> +}
+>> +
+>>   static int __sev_snp_init_locked(int *error)
+>>   {
+>>   	struct psp_device *psp = psp_master;
+>> @@ -1189,6 +1261,7 @@ static int __sev_snp_init_locked(int *error)
+>>   		data.init_rmp = 1;
+>>   		data.list_paddr_en = 1;
+>>   		data.list_paddr = __psp_pa(snp_range_list);
+>> +		data.tio_en = sev_tio_present(sev);
 > 
-> That proposal deals with PFs for now and skips TDIs. Since TDI needs its 
-> place in pci_dev too, and I wanted to add the bare minimum to struct 
-> device or pci_dev, I only add TDIs and each of them references a DEV. 
-> Enough to get me going.
+> Where does this get saved for follow-on code to consume that TIO is
+> active?
 
-Fine for an RFC, but again please be upfront about what is firmer for
-deeper scrutiny and what is softer to get the RFC standing.
+Oh. It is not saved, whether TIO is actually active is determined by the 
+result of calling PSP's TIO_STATUS (which I should skip if tio_en == 
+false in the first place). Thanks,
 
-> >> +	const struct attribute_group *ag;
-> > 
-> > PCI device attribute groups are already conveyed in a well known
-> > (lifetime and user visibility) manner. What is motivating this
-> > "re-imagining"?
-> > 
-> >> +	struct pci_dev *pdev; /* Physical PCI function #0 */
-> >> +	struct tsm_spdm spdm;
-> >> +	struct mutex spdm_mutex;
-> > 
-> > Is an spdm lock sufficient? I expect the device needs to serialize all
-> > TSM communications, not just spdm? Documentation of the locking would
-> > help.
-> 
-> What other communication do you mean here?
 
-For example, a lock protecting entry into tsm_ops->connect(...), if that
-operation is locked does there need to be a lower level spdm locking
-context?
+-- 
+Alexey
 
-[..]
-> >> +/*
-> >> + * Enables IDE between the RC and the device.
-> >> + * TEE Limited, IDE Cfg space and other bits are hardcoded
-> >> + * as this is a sketch.
-> > 
-> > It would help to know how in depth to review the pieces if there were
-> > more pointers of "this is serious proposal", and "this is a sketch".
-> 
-> Largely the latter, remember to keep appreciating the "release early" 
-> aspect of it :)
-> 
-> It is a sketch which has been tested on the hardware with both KVM and 
-> SNP VM which (I thought) has some value if posted before the LPC. I 
-> should have made it clearer though.
-
-It is definitely useful for getting the conversation started, but maybe
-we need a SubmittingPatches style document that clarifies that RFC's
-need to be explicit about if and where reviewers spend their time.
-
-[..]
-> > This feels kludgy. IDE is a fundamental mechanism of a PCI device why
-> > would a PCI core helper not know how to extract the settings from a
-> > pdev?
-> > 
-> > Something like:
-> > 
-> > pci_ide_setup_stream(pdev, i)
-> 
-> 
-> It is unclear to me how we go about what stream(s) need(s) enabling and 
-> what flags to set. Who decides - a driver? a daemon/user?
-
-That is a good topic for the design document that Jason wanted. I had
-been expecting that since stream IDs are a limited resource the kernel
-needs to depend on userspace to handle allocation conflicts. Most of the
-other settings would seem to be PCI core defaults unless and until
-someone can point to a use case for a driver or userspace to have a
-different opinion about those settings.
-
-> >> +		if (ret) {
-> >> +			pci_warn(tdev->pdev,
-> >> +				 "Failed configuring SelectiveIDE#%d with %d\n",
-> >> +				 i, ret);
-> >> +			break;
-> >> +		}
-> >> +
-> >> +		ret = pci_ide_set_sel_rid_assoc(rootport, i, true, 0, 0, 0xFFFF);
-> >> +		if (ret)
-> >> +			pci_warn(rootport,
-> >> +				 "Failed configuring SelectiveIDE#%d rid1 with %d\n",
-> >> +				 i, ret);
-> >> +
-> >> +		ret = pci_ide_set_sel(rootport, i,
-> > 
-> > Perhaps:
-> > 
-> > pci_ide_host_setup_stream(pdev, i)
-> > 
-> > ...I expect the helper should be able to figure out the rootport and RID
-> > association.
-> 
-> Where will the helper get the properties from?
-
-I expect it can retrieve it out of @pdev since the IDE settings belong
-in 'struct pci_dev'.
-
-[..]
-> >> +static int tsm_dev_reclaim(struct tsm_dev *tdev, void *private_data)
-> >> +{
-> >> +	struct pci_dev *pdev = NULL;
-> >> +	int ret;
-> >> +
-> >> +	if (WARN_ON(!tsm.ops->dev_reclaim))
-> >> +		return -EPERM;
-> > 
-> > Similar comment about how this could happen and why crashing the kernel
-> > is ok.
-> 
-> In this exercise, connect/reclaim are triggered via sysfs so this can 
-> happen in my practice.
-> 
-> And it is WARN_ON, not BUG_ON, is it still called "crashing" (vs. 
-> "panic", I never closely thought about it)?
-
-You will see folks like Greg raise the concern that many users run with
-"panic_on_warn" enabled. I expect a confidential VM is well advised to
-enable that.
-
-If it is a "can't ever happen outside of a kernel developer mistake"
-then maybe WARN_ON() is ok, and you will see folks like Christoph assert
-that WARN_ON() is good for that, but it should be reserved for cases
-where rebooting might be a good idea if it fires.
-
-> >> +
-> >> +	/* Do not disconnect with active TDIs */
-> >> +	for_each_pci_dev(pdev) {
-> >> +		struct tsm_tdi *tdi = tsm_tdi_get(&pdev->dev);
-> >> +
-> >> +		if (tdi && tdi->tdev == tdev && tdi->data)
-> >> +			return -EBUSY;
-> > 
-> > I would expect that removing things out of order causes violence, not
-> > blocking it.
-> > 
-> > For example you can remove disk drivers while filesystems are still
-> > mounted. What is the administrator's recourse if they *do* want to
-> > shutdown the TSM layer all at once?
-> 
-> "rmmod tsm"
-
-Is tsm_dev_reclaim() triggered by "rmmod tsm"? The concern is how to
-reclaim when tsm_dev_reclaim() is sometimes returning EBUSY. Similar to
-how the driver core enforces that driver unbind must succeed so should
-TSM shutdown.
-
-Also, the proposal Bjorn acked, because it comports with PCI sysfs
-lifetime and visibility expectations, is that the TSM core is part of
-the PCI core, just like DOE and CMA. The proposed way to shutdown TSM
-operations is to unbind the low level TSM driver (TIO, TDX-Connect,
-etc...) and that will forcefully destruct all TDI contexts with no
-dangling -EBUSY cases.
-
-Maybe tsm_dev_reclaim() is not triggered by TSM shutdown, but TSM
-shutdown, like 'struct device_driver'.remove() should return 'void'.
-Note, I know that 'struct device_driver' is not quite there yet on
-->remove() returning 'void' instead of 'int', but that is the direction.
-
-[..]
-> > Why is refresh not "connect"? I.e. connecting an already connected
-> > device refreshes the connection.
-> 
-> Really not sure about that. Either way I am ditching it for now.
-
-Yeah, lets aggressively defer incremental features.
-
-> >> +		ret = spdm_forward(&tdev->spdm, ret);
-> >> +		if (ret < 0)
-> >> +			break;
-> >> +	}
-> >> +	mutex_unlock(&tdev->spdm_mutex);
-> >> +
-> >> +	return ret;
-> >> +}
-> >> +
-> >> +static void tsm_tdi_reclaim(struct tsm_tdi *tdi, void *private_data)
-> >> +{
-> >> +	int ret;
-> >> +
-> >> +	if (WARN_ON(!tsm.ops->tdi_reclaim))
-> >> +		return;
-> >> +
-> >> +	mutex_lock(&tdi->tdev->spdm_mutex);
-> >> +	while (1) {
-> >> +		ret = tsm.ops->tdi_reclaim(tdi, private_data);
-> >> +		if (ret <= 0)
-> >> +			break;
-> > 
-> > What is involved in tdi "reclaim" separately from "unbind"?
-> > "dev_reclaim" and "tdi_reclaim" seem less precise than "disconnect" and
-> > "unbind".
-> 
-> The firmware operates at the finer granularity so there are 
-> create+connect+disconnect+reclaim (for DEV and TDI). My verbs dictionary 
-> evolved from having all of them in the tsm_ops to this subset which 
-> tells the state the verb leaves the device at. This needs correction, yes.
-
-I like the simplicity of the TIO verbs, but that does not preclude the
-Linux verbs from having even coarser semantics.
-
-[..]
-> >> +/* In case BUS_NOTIFY_PCI_BUS_MASTER is no good, a driver can call pci_dev_tdi_validate() */
-> > 
-> > No. TDISP is a fundamental re-imagining of the PCI device security
-> > model. It deserves first class support in the PCI core, not bolted on
-> > support via bus notifiers.
-> 
-> This one is about sequencing. For example, writing a zero to BME breaks 
-> a TDI after it moved to CONFIG_LOCKED. So, we either:
-> 1) prevent zeroing BME or
-> 2) delay this "validation" step (which also needs a better name).
-> 
-> If 1), then I can call "validate" from the PCI core before the driver's 
-> probe.
-> If 2), it is either a driver modification to call "validate" explicitly 
-> or have a notifier like this. Or guest's sysfs - as a VM might want to 
-> boot with a "shared" device, get to the userspace where some daemon 
-> inspects the certificates/etc and "validates" the device only if it is 
-> happy with the result. There may be even some vendor-specific device 
-> configuration happening before the validation step.
-
-Right, the guest might need to operate the device in shared mode to get
-it ready for validation. At that point locking and validating the device
-needs to be triggered by userspace talking to the PCI core before
-reloading the driver to operate the device in private mode. That
-conversion is probably best modeled as a hotplug event to leave the
-shared world and enter the secured world.
-
-That likely means that the userspace operation to transtion the device
-to LOCKED also needs to take care of enabling BME and MSE independent of
-any driver just based on the interface report. Then, loading the driver
-can take the device from LOCKED to RUN when ready.
-
-Yes, that implies an enlightened driver, for simplicity. We could later 
-think about auto-validating devices by pre-loading golden measurements
-into the kernel, but I expect the common case is that userspace needs to
-do a bunch of work with the device-evidence and the verifier to get
-itself comfortable with allowing the device to transition to the RUN
-state.
-
-> > I hesitate to keep commenting because this is so far off of the lifetime
-> > and code organization expectations I thought we were negotiating with
-> > the PCI/TSM series. So I will stop here for now.
-> 
-> Good call, sorry for the mess. Thanks for the review!
-
-No harm done. The code is useful and the disconnect on the communication
-/ documentation is now understood.
-
-> ps: I'll just fix the things I did not comment on but I'm not ignoring them.
-
-Sounds good.
