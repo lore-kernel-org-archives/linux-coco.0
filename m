@@ -1,157 +1,239 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0388D2FF
-	for <linux-coco@lists.linux.dev>; Fri,  6 Sep 2024 00:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725581517; cv=none; b=Mc0rN4thxKn93Dzulxupotfo2I7KIuWVm4tOtsvJ/NQtat0zhhRo8gaXcO44a6CCifv/aWZZu8G/Mrjyals3PVvfiq+Lk8TQ0S8UgSOFIh9qOl6mG3gHeJfmk+AUfA5JBsSHPj8YOlC2wv1Ifz4uYVl6FhW7EEI/LdAqe4ce0+g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725581517; c=relaxed/simple;
-	bh=WiXv8hX9YZancIkVdHpHwSwJynH9Vx0kkTy6hfFFNvA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EJC54pSWaGCg7LD/P6Y69r6g5r2wN+KZvmITEabusoiqsIQRhYsi+dhzAKN9C1GzDQzNxfJyZ6a6KEEhoaG0p2u6nLFi//A/dbzjUHaCl+BXCdEHzR8kRU9xIbdwoXSLvMfMNTrV174shkyOx1E3YUsIeHYz5/YM+dcnYOjitiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KichCM/Z; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1644A3FEC;
+	Fri,  6 Sep 2024 02:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725590504; cv=fail; b=ThAzZHUZrwvKYa7VWKUlFD0DCtbwmsVTPyAfpGLrZPZvSDg2JnCKUyn5bcBpCUL+nJVIqRd/S0h6vjv8OTjsq9R0C21zf1bfguPjjXoZBTBqLw/cNJpOxfSJr7j7teZ6RT89G34JVq4SEkkg2AMNJBEs5JufzyxkOEM5YKGBdmo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725590504; c=relaxed/simple;
+	bh=HtkGb0zP38C0tx/5w8ovR4Kufi21fmwl4hr+U/oNix0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bfh9tvvbNiNYnSk/NXxf5gOClGohs6k72AoE7zbvzdpm2HP6L2bOWUCoAJ1MWYlTV/ix9kckGadUlvsmiZHlsBVca5+INwhI7SGgBAzQVylqZDFDAEREzrZVkwOCtGBS2cOZqSgQT2UDK6/tErbfR2lYgkaPq20KAxXGOXYKERs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RzHUepSF; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KichCM/Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725581514;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JCf63UUAEsoVjhHUgMARlZrjCRqgXN/a16VIpsPHI30=;
-	b=KichCM/ZTZ0nnHpBB8xTaQ0f4LKuQV5xCo5Y7XjYLS3ibt7nAEiyZdvRdMMSs/QA+pQOtQ
-	8ZXpnTfJdHh/zdS5k40fdQMi2E5gaXWwjP80VwMtKbdb4oKEVnk+xfaaC9h9yFF4q4DAL6
-	Mlgp9hf2xaEEo7z5md7+9Fpg+I+IUq4=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-367-CkeLfyHFMvSDiXmRw_RibA-1; Thu, 05 Sep 2024 20:11:52 -0400
-X-MC-Unique: CkeLfyHFMvSDiXmRw_RibA-1
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-718d6ad6105so240041b3a.1
-        for <linux-coco@lists.linux.dev>; Thu, 05 Sep 2024 17:11:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725581509; x=1726186309;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JCf63UUAEsoVjhHUgMARlZrjCRqgXN/a16VIpsPHI30=;
-        b=LjhBdMkDF+t+P5OQrnMBWpS2lJGI3Vqkim2RfNY/Mx3S20ksB8BBJpe++YaSPB53Z2
-         M+XozNhBtYqm6FATzqeIjfFgOkYlVzgTg0FsFeNNX1QKDOJ94tBi1wPLBrLH2dWoGGfs
-         rbxjsCPr3Y4wYj3udXQ5T8zwTQLufoNBzDlBA6jJiRJy3IfqMUVhPE0Oe4uczJPngbsp
-         gKKZGHg6ApdO0ooIyOPjem37H2vyslzEH1BKPabedkxOEC5q2Stk6myk+k5Drh0k6dee
-         IDmEpL6pbCah6xARoWrTL1+lCC3xgItY2h62Y3tod0mCNUnGvjKZwDpDCZMzPin8rpUJ
-         0fFw==
-X-Forwarded-Encrypted: i=1; AJvYcCVZBoxGCl31RtzRhnnb3E4gJv1NDwy5Yqupriw+9xTwah7SvU9AfDDR6pHzDOYdmAZBWBFVaLcNL2YM@lists.linux.dev
-X-Gm-Message-State: AOJu0YzZdNk7dUh5H51zAp6S8xRFVVZ3okwnztxPa493SLMbY65ixNdS
-	83b+qGybHSlE5BWnxQndoAHUTTvVf95SKXIUXFhWHvfCKZTlKvilohWvwxHjNPcrCcopRvLAmg4
-	BvlHJkGafbxKTKXA57k8g2P8NK9QYCmMo1EW2Lfk8UVLKO4GbstR2YXIUN8k=
-X-Received: by 2002:a05:6a00:2d89:b0:717:90df:7cbb with SMTP id d2e1a72fcca58-718d5f32a78mr828852b3a.22.1725581509039;
-        Thu, 05 Sep 2024 17:11:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHQ1mDgKhDpSBr33m3qRjdU1KN0Ixr0d3LiEv3WDkhrTsLXZpCco0dlZ/A1QyM+Jkkdv532Jg==
-X-Received: by 2002:a05:6a00:2d89:b0:717:90df:7cbb with SMTP id d2e1a72fcca58-718d5f32a78mr828823b3a.22.1725581508457;
-        Thu, 05 Sep 2024 17:11:48 -0700 (PDT)
-Received: from [192.168.68.54] ([103.210.27.31])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-718087d92ffsm535625b3a.153.2024.09.05.17.11.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Sep 2024 17:11:46 -0700 (PDT)
-Message-ID: <fc168fe2-2b19-4930-85cf-047260aeaef0@redhat.com>
-Date: Fri, 6 Sep 2024 10:11:37 +1000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RzHUepSF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725590503; x=1757126503;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=HtkGb0zP38C0tx/5w8ovR4Kufi21fmwl4hr+U/oNix0=;
+  b=RzHUepSF2y2hU5uy/lEjBZ8z60h7QvFravqLn/q2S3VQkcqRcU/+hbZP
+   fQpLM/EzoDWVO40i26NR1LFFwD7C85CjfuMht3D4ZA7apyADP+eHoqL1n
+   0WfEMgp+RdGDzOxK8GVYKAEQmgQK34HMq8ehLfx5VbxsgjLOAD5nLMw6b
+   NZgNA5kiPd5KPN7Ev3yYCkRj8JAsP/OvplilzrZPYMpSkdpNmTjcqth7L
+   z/ya7K+fviVci9uP69MPdynOmz7b1/Wn/+LSHBtr03GLyI3SKVpD4VvSy
+   EV4kqq3xNrsNNq5tR0UefZ5gz3+IQ188ozDCP5+Xh1rSePLPPyJCyrIDb
+   w==;
+X-CSE-ConnectionGUID: AckNZqxtRh6cGlwiGhWcxg==
+X-CSE-MsgGUID: V80sDiUxQ86zxdXp3MtZtA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11186"; a="28129490"
+X-IronPort-AV: E=Sophos;i="6.10,206,1719903600"; 
+   d="scan'208";a="28129490"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 19:41:43 -0700
+X-CSE-ConnectionGUID: fi6YvZ3qSOOszbDDGBrDtQ==
+X-CSE-MsgGUID: OcdOXlJRQSemtj3T4iVBQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,206,1719903600"; 
+   d="scan'208";a="65810915"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 05 Sep 2024 19:41:42 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 5 Sep 2024 19:41:42 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Thu, 5 Sep 2024 19:41:42 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 5 Sep 2024 19:41:41 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WuArN6KYF3yGbKFJCZAd3inL3clhGloIbb0dqDYri+6QQG6xIHrYMK68Bg8Cz8f6IXKJ+5ljZOS8TjcA8bnug2X07WWE2C0ElLgizl3h81g0ePjAFOZbOHraFLJKI3uCpgfSZLvpiknG/ZUzZ3lcK6FwG8aXDyAnfmrdPLpLN25Lhlpb3jAnTT559sqWKnWBt55FxX/ETknzJhmOQfERIzoHEyHCSODIhVdgUiWeQ0JBpvy3Crblp81b66PQJyTYwHIF0dMMTfXbIbjiiEEqpbU9Q4cdVU0BRykkb3/jcCe3v86QUXUjWMys47hn0PS1j9Oldn0LqvtN1K5+deYM1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HtkGb0zP38C0tx/5w8ovR4Kufi21fmwl4hr+U/oNix0=;
+ b=T1707yTgqBkcNgeqjzClna3EjocEPfH/VsElP79jNtpkigrX31dE73o9VLO5TWMfSeOhOft+c1biceUWtiT3YC4Cpm0jHY6ty/3LzZ90FYqvT+7eC2vHvQMon/iq8NwIOOqflzoy7bbjRXI99SGJ35KfBp0RFW7JUyRjigzlhNfq6tMRzQIUCeCalMcvHcGi5i+cKDtsEFfE+K9DJwIl3qVl21N12PfPlS25jYwPsubpkW+EfMjZ9RaW7p1fB/JglNz1YQlYUEKX3WI7OOrMMVRCG/ZrMH/PU+T0QnnVyBluHg0EQckyjcrLhN7NMsD2ESu27qb+WJ52tyhp4QcMUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
+ by PH7PR11MB6474.namprd11.prod.outlook.com (2603:10b6:510:1f2::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Fri, 6 Sep
+ 2024 02:41:38 +0000
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::b576:d3bd:c8e0:4bc1]) by BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::b576:d3bd:c8e0:4bc1%3]) with mapi id 15.20.7918.024; Fri, 6 Sep 2024
+ 02:41:38 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: "Williams, Dan J" <dan.j.williams@intel.com>, Jason Gunthorpe
+	<jgg@nvidia.com>
+CC: Xu Yilun <yilun.xu@linux.intel.com>, Mostafa Saleh <smostafa@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Suravee
+ Suthikulpanit" <suravee.suthikulpanit@amd.com>, Alex Williamson
+	<alex.williamson@redhat.com>, "pratikrajesh.sampat@amd.com"
+	<pratikrajesh.sampat@amd.com>, "michael.day@amd.com" <michael.day@amd.com>,
+	"david.kaplan@amd.com" <david.kaplan@amd.com>, "dhaval.giani@amd.com"
+	<dhaval.giani@amd.com>, Santosh Shukla <santosh.shukla@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, "Alexander
+ Graf" <agraf@suse.de>, Nikunj A Dadhania <nikunj@amd.com>, Vasant Hegde
+	<vasant.hegde@amd.com>, Lukas Wunner <lukas@wunner.de>, "david@redhat.com"
+	<david@redhat.com>
+Subject: RE: [RFC PATCH 12/21] KVM: IOMMUFD: MEMFD: Map private pages
+Thread-Topic: [RFC PATCH 12/21] KVM: IOMMUFD: MEMFD: Map private pages
+Thread-Index: AQHa9WDSA4/jzf2jak2pyUws2LsQ4bI5OEgwgABEaACABIX0AIAALPiAgAEeNQCAAHoIAIAGzr6AgAA6GYCAAA/8AIACSweAgAADRwCAAAMgAIAAjnSAgABfTRA=
+Date: Fri, 6 Sep 2024 02:41:37 +0000
+Message-ID: <BN9PR11MB52760ABCAD1AB37420A49ADD8C9E2@BN9PR11MB5276.namprd11.prod.outlook.com>
+References: <ZtBAvKyWWiF5mYqc@yilunxu-OptiPlex-7050>
+ <20240829121549.GF3773488@nvidia.com>
+ <ZtFWjHPv79u8eQFG@yilunxu-OptiPlex-7050>
+ <20240830123658.GO3773488@nvidia.com>
+ <66d772d568321_397529458@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240904000225.GA3915968@nvidia.com>
+ <66d7b0faddfbd_3975294e0@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240905120041.GB1358970@nvidia.com>
+ <BN9PR11MB527612F4EF22B4B564E1DEDA8C9D2@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <20240905122336.GG1358970@nvidia.com>
+ <66da1a47724e8_22a2294ef@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <66da1a47724e8_22a2294ef@dwillia2-xfh.jf.intel.com.notmuch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|PH7PR11MB6474:EE_
+x-ms-office365-filtering-correlation-id: 02ad91a7-fe3d-45d1-d516-08dcce1d6e58
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?5YNpD1fcITF04GImOAdr11WY6vkSI5gfemTSUVrMszOAjno3MIm8WFRnP/Xj?=
+ =?us-ascii?Q?xNinDtEXIvBSe1BerbcOk/qDmlOLPz2Qs5JXWGiBebZnm3L6N4Hj0LZ3Xpu4?=
+ =?us-ascii?Q?93feWYcd8ijH4BHKyvsVN5twVUHEkHS3WoX5ctp0w79UfgR7orwVH2S5Hdjx?=
+ =?us-ascii?Q?AebiG6Rf18PLylshpcHcvqysSLvCC9Ll90QSH5R2iK6MVsuhDSBo5gouKA0j?=
+ =?us-ascii?Q?zxacQJJI83tV8Ik6kmXCEGE5aFFBOkCIKKMrn2NORWYAqLPhE0ctooOykx3f?=
+ =?us-ascii?Q?SjGFYKALFXMZSotgb9wIIBMhmngBffYHRz6IZhPzCzkKK28zHufCfhS5GXNL?=
+ =?us-ascii?Q?S1SyGpT6vyuY+XbjnKR69aU9X0fMhvf2EhId5z4RDGLm3tqMeQhSHGz8Ahbf?=
+ =?us-ascii?Q?vxZLh4bDaaccFbyJxZQ5wFqfS9Bs7qWECoTSysQyRgIe3/q5C/1H/YBOaGtd?=
+ =?us-ascii?Q?6h+b2GrZ20Mzm6Mldd4DygdPdZBbFnjtdAFSp94mxsq0dRLJdWe5OVJNcW9C?=
+ =?us-ascii?Q?PrV65fu3QhCBKJPKBgQ9bZ9q7RBxc9WtqIGge5+OmDWHXTpiunQhmrPPVJGu?=
+ =?us-ascii?Q?Di1uzKM1qycvrz1fmGSMVMvj5+2i6uV/ZZizGe3PTcKJPtYnAADTTbxEpq+m?=
+ =?us-ascii?Q?fblIR7cJL3g6caWGEEpf6Yw+CJe2/OdBWj/xQQiwoRgfvFvCbGk28vkEux2K?=
+ =?us-ascii?Q?3hin5L7LE6H6zfwTP7hu7a5GSiamCv+AOyTNtzDadv8ws7e4YTZf2CxjzU4E?=
+ =?us-ascii?Q?wrPwyQ8VC9DN67iU07DuepEoHTmZZ6RxelkDvZkxjUxQYhs4PecEfFxQpvF7?=
+ =?us-ascii?Q?lUoZkfJM8lu/5PlnkPQi2YG4xNfe5Cz0LYu/axV/U7ui3WQ1kcYh/dAJWFAT?=
+ =?us-ascii?Q?dGWOjrZKo0PlNl58HnHAOJpVkpxLusdyXEwjNd/J86J+5LXDjN5s9f+C3eh9?=
+ =?us-ascii?Q?qCXSlQJDIEiyxEFnHUBKYbJS6fDGE0F7Sv0nnrU51up4loqWXc6dNqMXU+S+?=
+ =?us-ascii?Q?c6LRNxUk9/IP/hNQhun4Ln+6un8ITf7FYBSQFUpqvLOP2N4vJTYbxfvo5BmT?=
+ =?us-ascii?Q?69M1hegQzd+Yrq8ABO0OQzZCTD4decG82L3dYvTkJGke40kVzhxRK7S88k64?=
+ =?us-ascii?Q?7KsGBug3agm8lQ4UgntqkD3VfJKbuN5xn8YzUXBqceKSGrjmTXUsTX8XxYzw?=
+ =?us-ascii?Q?Gv0Kwi46yUXc6jUd1EGs+v+T/ZhhVS8D7Jj2OoIWWeYH04LkOCCfkH2TZexk?=
+ =?us-ascii?Q?/dCpiZ06gfCmtmKFW0lgPqHO60+CNqpEZq4nN3sUV5tg81iJkBldw19E3gVN?=
+ =?us-ascii?Q?u21IM82l5acf6f4hHHCMIC+la7aH41Q6DE5k62rXluU+Cmt+kGzNEIgmqdI3?=
+ =?us-ascii?Q?tgUPaYnnIUjECwgqQTlkibr8Pka7hPyL5MOeawikQD6j0hz6Qg=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?0/2eCoO4LanJM2ewaL01DJcuL2ajzr0STVUyuZSWgJbGqA29Z2La5C7VCKGR?=
+ =?us-ascii?Q?gpANjILwkatB1f8w2pbQGFalxSS9KBgvxewhJHmPXpcmE2MfztrwFVylUG9Y?=
+ =?us-ascii?Q?NidK94Vy89BWtz8SgJEfhdAV8JNxqRNckuZNsqbRsstF5BlmKManN2WeuOwv?=
+ =?us-ascii?Q?cK4idWFppOaIrfMUAPJeo7CwzknARlUHjKERhWVIX0zrHflQOK6lUn8AZeTR?=
+ =?us-ascii?Q?6gwR2UDvgsoA3mLqWff9ir90xCKYtMJgE6ymVz9vH3PkDZgb72ud44mVLe6d?=
+ =?us-ascii?Q?8YbdOvaVGrnfjaTr1s7K3AA6M3bHEoi8IMmq70CyId0vMpePtmLpt3AWS8in?=
+ =?us-ascii?Q?L3OlB7gcrLKkocJrifOwxR2DmOQRZk8UpcMpQDv5Op0J4grzz4N5Z9j5IPdn?=
+ =?us-ascii?Q?8IXqJnP2NXf1LlspV2ECw45Y0WCJ1u3URj+3oWcVBOWyPvG7aQlNnCL0BovU?=
+ =?us-ascii?Q?k+CTdy7b8KuulrvB9ewhb6EUkI7sgylF0GQS+48/JVb39e+k08PEPCDl++tI?=
+ =?us-ascii?Q?iBQ29p7lQR7HzHLV8HimY3gwBvHSJUVJjrkSrUnhiUDGMkWC3RzFNT8XbDpZ?=
+ =?us-ascii?Q?fFW4/yENmnaXSY4XXoCcA1OIYoZYMpoY+9KzB9DKV0FoHfSMCsv8uoZ5YNup?=
+ =?us-ascii?Q?oIJ80RtPNh5Gz8vLBYk3wCYbsNu+CEbq/RgY3LNfY/knQCiBLg0Mb9zlYJ4v?=
+ =?us-ascii?Q?rs8ZS9yg9hsjbOpf4qkxU6wdxsUzpF9hUGDjcgApNF2+B1+P0q8x7gavjcAD?=
+ =?us-ascii?Q?TjEADyaw+FNrlgoyKk/WKHgfECRKHIz1ZkXdL+d5OXWZHL6yAfQrIfxOKXPE?=
+ =?us-ascii?Q?tj3TZYUFPzMo9Lr2VkzE+ELjL8U67L3QFGyMLbe0q7jpaZ30IsCc9EqIkJq2?=
+ =?us-ascii?Q?ZHJ0isYOJRPcT01zkz4DSpul655YVDL3rTfivIXndsoXn1JEX5c3UbJUIf7G?=
+ =?us-ascii?Q?m0XzdU+3MN8lcNwexjisJNxT7fDRSNYmmFKvIe18SvGFKOeGwGPtfmojgxTH?=
+ =?us-ascii?Q?m4MJ9qJQBZObxzZRx79Q4Y0ebV1EWlKz4p6JfrBeD54I/FIx/J3v9e4gTb/X?=
+ =?us-ascii?Q?oDbE8sG+uuAiX2w+X0xbiuu63OqUPv9Xuv2HrAlCU7USlg6fJvJZQEDFXXxU?=
+ =?us-ascii?Q?Y40FrU5wmthOX5H8BvtJDdMzB9KUESjDw+L7CxRFsPmkQWGen0CNStS3KonJ?=
+ =?us-ascii?Q?BHkMc4LLX1dysWUgUxcigPNExNAPxq7LF+YaXo3Hn9as4Aof0Ug1N0ZbnUMT?=
+ =?us-ascii?Q?QKksBJ8AM47w7KsG9QlHMnKVBhMZomOfvwgDGgQ3sH6gY2OvAw3Xcna1qqcP?=
+ =?us-ascii?Q?DodSD4ht/F+8Z2qmquiTawmp3ML/c5PkYzkRNCyVuh58iijxXyulo6+SajvS?=
+ =?us-ascii?Q?hEW/7hW2ZWnA9QmQNujTW3Q/XMgyLZD4OW9lqvoPBPWCnuJyo7TEDC2XN1XB?=
+ =?us-ascii?Q?Jsl7gOwuNJcvaqVGWhD6Q28nVxATXIu8qkWX9wMHlDatkOGpl1+i6Jl+y7kL?=
+ =?us-ascii?Q?V511TBZUhzJNFXnzckvqnzBJPWU2T03vGc3YvY1MY5MvANntxs+bGjAAqCg2?=
+ =?us-ascii?Q?6t6ZqQNeOmGzp0s0c6bItcYDvvkKW3JKDH77uJKO?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/43] arm64: RME: Add SMC definitions for calling the
- RMM
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>
-References: <20240821153844.60084-1-steven.price@arm.com>
- <20240821153844.60084-6-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20240821153844.60084-6-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02ad91a7-fe3d-45d1-d516-08dcce1d6e58
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Sep 2024 02:41:38.0083
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gMZyttIBlSNynPOXeZzvPKHoITiokkxJH4PKwhgGsCh+CPX6jUyIe8a446j8wqdVCzShTD8oeBL3ao/ZG/bidA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6474
+X-OriginatorOrg: intel.com
 
-Hi Steven,
+> From: Williams, Dan J <dan.j.williams@intel.com>
+> Sent: Friday, September 6, 2024 4:53 AM
+>=20
+> Jason Gunthorpe wrote:
+> > On Thu, Sep 05, 2024 at 12:17:14PM +0000, Tian, Kevin wrote:
+> > > Then you expect to build CC/vPCI stuff around the vIOMMU
+> > > object given it already connects to KVM?
+> >
+> > Yes, it is my thought
+> >
+> > We alreay have a binding of devices to the viommu, increasing that to
+> > also include creating vPCI objects in the trusted world is a small
+> > step.
+>=20
+> Sounds reasonable to me.
+>=20
+> To answer Kevin's question about what "bind capable" means I need to
+> clarify this oversubscribed "bind" term means. "Bind" in the TDISP sense
+> is transitioning the device to the LOCKED state so that its
+> configuration is static and ready for the VM to run attestation without
+> worrying about TOCTOU races.
+>=20
+> The VMM is not in a good position to know when the assigned device can
+> be locked. There are updates, configuration changes, and reset/recovery
+> scenarios the VM may want to perform before transitioning the device to
+> the LOCKED state. So, the "bind capable" concept is: pre-condition VFIO
+> with the context that "this vPCI device is known to VFIO as a device
+> that can attach to the secure world, all the linkage between VFIO and
+> the secure world is prepared for a VM to trigger entry into the LOCKED
+> state, and later the RUN state".
 
-On 8/22/24 1:38 AM, Steven Price wrote:
-> The RMM (Realm Management Monitor) provides functionality that can be
-> accessed by SMC calls from the host.
-> 
-> The SMC definitions are based on DEN0137[1] version 1.0-rel0-rc1
-> 
-> [1] https://developer.arm.com/-/cdn-downloads/permalink/PDF/Architectures/DEN0137_1.0-rel0-rc1_rmm-arch_external.pdf
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v3:
->   * Update to match RMM spec v1.0-rel0-rc1.
-> Changes since v2:
->   * Fix specification link.
->   * Rename rec_entry->rec_enter to match spec.
->   * Fix size of pmu_ovf_status to match spec.
-> ---
->   arch/arm64/include/asm/rmi_smc.h | 253 +++++++++++++++++++++++++++++++
->   1 file changed, 253 insertions(+)
->   create mode 100644 arch/arm64/include/asm/rmi_smc.h
-> 
+Okay this makes sense. So the point is that the TDI state machine is
+fully managed by the TSM driver so here 'bind capable' is a necessary
+preparation step for that state machine to enter the LOCKED state.
 
-[...]
+>=20
+> As mentioned in another thread this entry into the LOCKED state is
+> likely nearly as violent as hotplug event since the DMA layer currently
+> has no concept of a device having a foot in the secure world and the
+> shared world at the same time.
 
-> +
-> +#define RMI_FEATURE_REGISTER_0_S2SZ		GENMASK(7, 0)
-> +#define RMI_FEATURE_REGISTER_0_LPA2		BIT(8)
-> +#define RMI_FEATURE_REGISTER_0_SVE_EN		BIT(9)
-> +#define RMI_FEATURE_REGISTER_0_SVE_VL		GENMASK(13, 10)
-> +#define RMI_FEATURE_REGISTER_0_NUM_BPS		GENMASK(19, 14)
-> +#define RMI_FEATURE_REGISTER_0_NUM_WPS		GENMASK(25, 20)
-> +#define RMI_FEATURE_REGISTER_0_PMU_EN		BIT(26)
-> +#define RMI_FEATURE_REGISTER_0_PMU_NUM_CTRS	GENMASK(31, 27)
-> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_256	BIT(32)
-> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_512	BIT(33)
-> +#define RMI_FEATURE_REGISTER_0_GICV3_NUM_LRS	GENMASK(37, 34)
-> +#define RMI_FEATURE_REGISTER_0_MAX_RECS_ORDER	GENMASK(41, 38)
-> +
-
-Those definitions aren't consistent to tf-rmm at least. For example, the latest tf-rmm
-has bit-28 and bit-29 for RMI_FEATURE_REGISTER_0_HASH_SHA_{256, 512}. I didn't check the
-specification yet, but they need to be corrected in Linux host or tf-rmm.
-
-   git@github.com:TF-RMM/tf-rmm.git
-   head: 258b7952640b Merge "fix(tools/clang-tidy): ignore header include check" into integration
-
-   [gshan@gshan tf-rmm]$ git grep RMI_FEATURE_REGISTER_0_HASH_SHA.*_SHIFT
-   lib/smc/include/smc-rmi.h:#define RMI_FEATURE_REGISTER_0_HASH_SHA_256_SHIFT     UL(28)
-   lib/smc/include/smc-rmi.h:#define RMI_FEATURE_REGISTER_0_HASH_SHA_512_SHIFT     UL(29)
-
-Due to the inconsistent definitions, I'm unable to start a guest with the following
-combination: linux-host/cca-host/v4, linux-guest/cca-guest/v5, kvmtool/cca/v2.
-
-   # ./start_guest.sh
-   Info: # lkvm run -k Image -m 256 -c 2 --name guest-152
-   [  145.894085] config_realm_hash_algo: unsupported ALGO_SHA256 by rmm_feat_reg0=0x0000000034488e30
-   KVM_CAP_RME(KVM_CAP_ARM_RME_CONFIG_REALM) hash_algo: Invalid argument
-
-Thanks,
-Gavin
-
+Is the DMA layer relevant in this context? Here we are talking about
+VFIO/IOMMUFD which can be hinted by VMM for whatever side
+effect caused by the entry into the LOCKED state...
