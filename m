@@ -1,118 +1,131 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1BB1B85F7
-	for <linux-coco@lists.linux.dev>; Fri,  6 Sep 2024 21:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7693828DD0
+	for <linux-coco@lists.linux.dev>; Sun,  8 Sep 2024 04:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725657236; cv=none; b=sbIoEvLWqML/KkmMF76fpCvxdUGOwEetx6x6yDAnRnwEqBXYXgYqaaxQo3LbSVS93YW3Tlz2IWQH2kHNr1wIp4TQ5qRvfEG7IpO8pvdVxW1PXd+PuITFfWzI0s9bYP4GHXUTPneCVaCl22GNIKS5rsEFG395ykcXWkEcUsrS6jo=
+	t=1725771471; cv=none; b=a2ptIl2YvTes+WZIPPIg5RtTONYhgTlQWkiRzufOYzgz0r7FbTKoaAVp9k+9zz41ly6ye78QQ9+LQ3ph+Oapv6th7h1/+S5h10/oj/fhCOjVry1zC0DXKBKSa3c2pDDbROoE3PiNOynfdUJQYlrje0RNfoz8cd6WK/v8UGfbhAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725657236; c=relaxed/simple;
-	bh=PidQRgyhau9RywwQfMwnSi++A1DlF0VCF5P36FYOOlw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HS86zdT02QuY8Ok3c8yMHpKIvIis8iPL/YTJ1oSbnGc39ES1yDQBhdMVjsbTpBekCgOuli4TsR1b0J63Cz7RQi42h5FpolSu1AbKO8J4X02ndH83F91kQMDFqOsVunUhqZJEy9xZJqZWmg4noewqHMPg1EJk0tbSSgC3QHNL0oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JXuLmN6E; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1725771471; c=relaxed/simple;
+	bh=qA5OYxRBHwI1X3vC8+wmcOP3BNpbMzeA9QExhdShNH4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rwvnYBMDsJMYVEwf5orrEm0El+yVq8T9leVIXH8DPg5vlNKS5L6V5qK6HjFwV0fV8bXBXCOw6yrm4Zvkao1+bcrRUVfuZzQjvNFQo9ajSY68TwxoA4PrJQHpsVvn494AKLwnU8weikP8mZzEDu98HBumvb95X45XS+ktNSL55Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MHasQbiy; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JXuLmN6E"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6b43e6b9c82so103990867b3.0
-        for <linux-coco@lists.linux.dev>; Fri, 06 Sep 2024 14:13:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725657234; x=1726262034; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BZRF+Uz8RACsevk2adlxaEtEYzeBIw82PDVENRhyYjs=;
-        b=JXuLmN6ETq67RQRrnCpXP5z2rwDhwLq9hzdC51bxxxvdriciX/Okz/AmIogeSB2+jg
-         f3bemUJWv4umaFfJkRbv5U+Wzx4r9ZgAGsquNvTXYcEzi2fNv/Xw9Y4BRSuWmIkR0R/w
-         UyDKtDVAKgHOSQLrAnYEKdVOkwuzu9kn2G70d15Cfx5rt2fOMA/aP0egIMow4trMO0KZ
-         ym5Etczu4eGJ6XZxZGqgPL/HGej+pTuQF5GHVEjlKNy4a5paBZlvAG1Okv914IJuByKn
-         YpFgWslNwc+X/2kSvN7Kn37dT3FjJTn9+NlRjhj9ceIFvbSwH8QIxJXtbFz5PaVsAjt4
-         4LEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725657234; x=1726262034;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BZRF+Uz8RACsevk2adlxaEtEYzeBIw82PDVENRhyYjs=;
-        b=L4um5U1UZubd/Yn+80KgVf5Gi6mqf6BawTSAO/crRKHKUfvoB+P1AG56GODxqQx5M8
-         WdrBwgCml5qBZGZAXE8UCfd9lkTKUwv8OFBBxcLXVSnttOE8IXcGFQkqaz1XYKA0MNxB
-         hPNAXpOAx3K2+hTM9bii7ACs/yGIPgliV+0EwNtpoJdCdGooO9THymHfCaR/hJ3LY03E
-         MtCozjrnq9bwpjWbZUIWNyt1Dg30Zi3ufUQbGG87a7/V1Ux/UtGwEBucvOeA3viQ1kcH
-         YVq2AtWQFaHqkDYVsNPUhWhwXDkMNbMnujykU6yBHs8UyADk8CbS0FtTLO0ryiOAEOPy
-         ufEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWudmK6Sxh67mgfYSw9eC1eqOgUTHQ7rXDL5Hdz4rKN5nqX6idrFEJuZn4mtWYa5z0pL52nlnlhERXU@lists.linux.dev
-X-Gm-Message-State: AOJu0YyC7M04RdN+85OqDsqyBOpTJRnhFq1nJr59xQWK40dcWH3/v5C/
-	46I5IGHoFpl4qG9a6GiDuPyVODZLSLv/NCWkTWIB5FMRiw1CHy1JrPpOa0MKBvpgm7VBYuxGjxP
-	yWg==
-X-Google-Smtp-Source: AGHT+IEBxxDqT9l6zNOeVcgpC3KwWhesu1gDA5QEnrw1Cpx5yRsYUm+B0QR+anioUUBz73TqJuqgcao9Lg4=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:690c:ece:b0:6d5:9459:538e with SMTP id
- 00721157ae682-6db4515d939mr1250217b3.3.1725657234393; Fri, 06 Sep 2024
- 14:13:54 -0700 (PDT)
-Date: Fri, 6 Sep 2024 14:13:52 -0700
-In-Reply-To: <6c158a14-ba01-4146-9c6c-8e4c035dd055@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MHasQbiy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725771469; x=1757307469;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=qA5OYxRBHwI1X3vC8+wmcOP3BNpbMzeA9QExhdShNH4=;
+  b=MHasQbiykJyPBT8GikqrwkRW8dgDK/67MHrayZO3rTtrwBD+AHm9YvbM
+   KdN8XUHZGSu9WYLFWtwSfKs+eeCWVLKWMVIkucyT2CL9Fl90V75pvrskG
+   8+ZojsPc6d6O4PIkIlNt0VUrS+wHjbL1m+bu6JBky4vLYD6pA1LfJTExu
+   iTYhn0TaYqTgDzt4EbFhEmxy4Y7M2GGUDlwGakRWrYk5ZuGRX7ZInSzY+
+   bJ6msstPk0ccHcLLe2iBE+S/Y0i6Os2w+YHUw4VrwOCO4npfIJk5jdQNm
+   y0G3y+iuZP/JUYvxjA5xCjzSWLZYYxrXO0JeksgqKTaP5YPQg+DRShEO6
+   A==;
+X-CSE-ConnectionGUID: 3vjyHQDMTNypJuvvb8m2VA==
+X-CSE-MsgGUID: 5ziaFZ5eQ+KPlKta0xdtsg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11188"; a="35152161"
+X-IronPort-AV: E=Sophos;i="6.10,211,1719903600"; 
+   d="scan'208";a="35152161"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2024 21:57:48 -0700
+X-CSE-ConnectionGUID: 6fI/PuQxQCya+BeBQdy3Ig==
+X-CSE-MsgGUID: rq/YmnuhQteFcIFmXDuKxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,211,1719903600"; 
+   d="scan'208";a="70924654"
+Received: from ibarbour-mobl.amr.corp.intel.com (HELO bxing-mobl1.clients.intel.com) ([10.246.116.49])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2024 21:57:47 -0700
+From: Cedric Xing <cedric.xing@intel.com>
+Subject: [PATCH RFC 0/3] tsm: Unified Measurement Register ABI for TVMs
+Date: Sat, 07 Sep 2024 23:56:18 -0500
+Message-Id: <20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <cover.1724837158.git.legion@kernel.org> <cover.1725622408.git.legion@kernel.org>
- <6c158a14-ba01-4146-9c6c-8e4c035dd055@intel.com>
-Message-ID: <ZttwkLP74TrQgVtL@google.com>
-Subject: Re: [PATCH v6 0/6] x86/tdx: Allow MMIO instructions from userspace
-From: Sean Christopherson <seanjc@google.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Alexey Gladkov <legion@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Yuan Yao <yuan.yao@intel.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
-	Oleg Nesterov <oleg@redhat.com>, cho@microsoft.com, decui@microsoft.com, 
-	John.Starks@microsoft.com, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAHIu3WYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDSwMT3ZLiXN2iktwiXfNEE1MLU8sUo0RLMyWg8oKi1LTMCrBR0UpBbs5
+ KsbW1AHOhWzBfAAAA
+To: Dan Williams <dan.j.williams@intel.com>, 
+ Samuel Ortiz <sameo@rivosinc.com>, 
+ James Bottomley <James.Bottomley@HansenPartnership.com>, 
+ Lukas Wunner <lukas@wunner.de>, 
+ Dionna Amalie Glaze <dionnaglaze@google.com>, 
+ Qinkun Bao <qinkun@google.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+X-Mailer: b4 0.13.0
 
-On Fri, Sep 06, 2024, Dave Hansen wrote:
-> On 9/6/24 04:49, Alexey Gladkov wrote:
-> > Currently, MMIO inside the TDX guest is allowed from kernel space and access
-> > from userspace is denied. This becomes a problem when working with virtual
-> > devices in userspace.
-> 
-> Kernel MMIO and User MMIO are very different beasts.
-> 
-> The kernel MMIO instructions are trusted and can be constrained to use a
-> very limited number of instructions that match the kernel's limited
-> instruction decoding capability.
-> 
-> Userspace is not constrained in that way.
-> 
-> TDX also doesn't have the option of having the VMM deal with the
-> instruction emulation.
-> 
-> Before we start down this road, I'd really want to hear from the KVM
-> folks that having the kernel decode arbitrary user instructions is the
-> way we want to go.
+NOTE: This patch series introduces the Measurement Register (MR) ABI, and is
+largely a continuation of Samuel Ortiz’s previous work on the RTMR ABI [1].
 
-That's an x86 kernel decision, not a KVM decision.  KVM cares if the guest kernel
-has delegated certain permissions to userspace, which is why emulated MMIO is
-preferred over hypercalls; the fact that userspace can access an MMIO region
-communicates to KVM that the guest kernel has granted userspace the necessary
-permissions (by mapping the MMIO region into the user page tables).
+This patch series adds a unified interface to TSM core for confidential
+computing (CC) guest drivers to provide access to measurement registers (MRs),
+which are essential for relying parties (RPs) to verify the integrity of the
+computing environment. The interface is structured around
+`struct tsm_measurement_provider`, which holds an array of
+`struct tsm_measurement_register` and includes operations for reading and
+updating MRs.
 
-But whether or not a particular user/application is trusted by the guest kernel
-is firmly out of scope for KVM.  KVM's responsibility is to not undermine the
-guest kernel's security/trust model, but KVM doesn't define that model.
+The MRs come in two varieties: static and runtime. Static MRs are determined at
+the TEE VM (TVM) build time and capture the initial memory image or the
+configuration/policy specified by the TVM's owner. In contrast, Runtime MRs
+(RTMRs) start with known values, such as all zeros, at TVM build time and are
+extended with measurements of loaded code, data, configuration, or executed
+actions by the TVM guest during runtime.
 
-Ditto for what behavior is supported/allowed.  The kernel could choose to disallow
-userspace MMIO entirely, limit what instructions are supported, etc, in the name
-of security, simplicity, or whatever.   Doing so would likely cause friction with
-folks that want to run their workloads in an SNP/TDX VM, but that friction is very
-much with the guest kernel, not with KVM.
+Each `struct tsm_measurement_register` features a `mr_flags` member that
+indicates the MR's properties. Static MRs are typically marked as read-only
+with only the `TSM_MR_F_R` flag set, while RTMRs are marked as extensible with
+the `TSM_MR_F_X` flag. For examples of defining and implementing MRs, refer to
+Patch 3.
 
-FWIW, emulating MMIO that isn't controlled by the kernel gets to be a bit of a
-slippery slope, e.g. there are KVM patches on the list to support emulating AVX
-instructions[*].  But, a major use case of any hypervisor is to lift-and-shift
-workloads, and so KVM users, developers, and maintainers are quite motivated to
-ensure that anything that works on bare metal also works on KVM.
+MRs are made accessible to applications through a directory tree, where static
+MRs are represented as files and RTMRs as directories containing elements like
+`digest` and `hash_algo`. Although the current root of this directory tree is
+`/sys/kernel/tsm/`, other potential locations include configfs
+(`/sys/kernel/config/tsm/`) and securityfs (`/sys/kernel/security/tsm/`). This
+RFC (Request for Comments) series seeks feedback on the interfaces, with the
+directory tree's location being a secondary concern. Further details can be
+found in Patch 1.
+
+Patch 2 introduces event log support for RTMRs, addressing the fact that the
+standalone values of RTMRs, which represent the cumulative digests of
+sequential events, are not fully informative on their own.
+
+[1]: https://patchwork.kernel.org/project/linux-integrity/cover/20240128212532.2754325-1-sameo@rivosinc.com/
+
+Signed-off-by: Cedric Xing <cedric.xing@intel.com>
+---
+Cedric Xing (3):
+      tsm: Add TVM Measurement Register Support
+      tsm: Add RTMR event logging
+      tsm: Add TVM Measurement Sample Code
+
+ drivers/virt/coco/Kconfig         |   4 +-
+ drivers/virt/coco/tsm.c           | 598 +++++++++++++++++++++++++++++++++++++-
+ include/linux/tsm.h               |  62 ++++
+ samples/Kconfig                   |   4 +
+ samples/Makefile                  |   1 +
+ samples/tsm/Makefile              |   2 +
+ samples/tsm/measurement-example.c | 116 ++++++++
+ 7 files changed, 777 insertions(+), 10 deletions(-)
+---
+base-commit: 431c1646e1f86b949fa3685efc50b660a364c2b6
+change-id: 20240904-tsm-rtmr-7a45859d2a96
+
+Best regards,
+-- 
+Cedric Xing <cedric.xing@intel.com>
+
