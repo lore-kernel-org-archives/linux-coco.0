@@ -1,279 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C3D28DD0
-	for <linux-coco@lists.linux.dev>; Sun,  8 Sep 2024 04:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0592171E65
+	for <linux-coco@lists.linux.dev>; Sun,  8 Sep 2024 17:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725771474; cv=none; b=gI+yvkiQ+CqPwQH75C2XexjwXVpwXKbMwNvh15Pyz1uMvgpPMcasUJBH0NVTz0tmYNSmZWCa0/Ec6D8AIgoA9+SRTM3wA0ETvkSuhj8qyhpxAPoRsH+RU/t42F3/LrlpA6HclCDCxbcItP6anD75K3ywraIqK96KTvtfASg1raw=
+	t=1725817065; cv=none; b=fEDhCqjINETWAfbhOjx2c2eZT9ITY5sR+DyfOU4veU5Um3U/emIh4mm0gJXzZQFKFtpnaDLIm/J3aI7Cvniftl6Npr2B/bEzJDvKIIq//67bdSaD/B17VhlqqwZ0mHVUDHowyV4eTzJ2VvquACF0OcBYAhCOF73/JGb2J+jJpb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725771474; c=relaxed/simple;
-	bh=TTfU1gIn373WQAv+wSjs1LLHvBRpR9JaaQ4A3DvKcak=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GUmMeg16KrZ/baTAJfPUJMkSuhDgKG2zhmK0xrgVj2e9LzRyvM7N4PemWqAMnOYf7PkzolrTlPbUzJc+6kXciocAHF+aiaUz6JwawnMv0w1Yl4geL/7bh/8h/Qb/jm7qulOjfpCXrdAW3sc8aBpjeLXrzowpRLKKVQUx6nuDniI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mxa+7gj4; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1725817065; c=relaxed/simple;
+	bh=QRJ5E+Qg4kZZbzNjiMkCcdN+eaVzGuah8k/OUmE9WXs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=S47zApquem6bDrLmkTzQQVcOY/7qnUiQT6Tv/OyDL54LTGwBP3DR7TlgjJCDkDcKzMTc+1Vwk5puKOcdny7jOgCUI0w4QUkUe75b0RQ4iQCvxMsgSza3/G6WcvVs3cnlCy3nrKqQMEk2KJV7XLs5l6aPvvUdUUGzYUGlpU+CdXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=kze4xufZ; arc=none smtp.client-ip=207.171.184.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mxa+7gj4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725771472; x=1757307472;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=TTfU1gIn373WQAv+wSjs1LLHvBRpR9JaaQ4A3DvKcak=;
-  b=mxa+7gj4XZZPJFScvoSbByOaa359t5b7ouhuI8gLm2gPQbz4D5xGm53j
-   OlUER0OxPAQ4O8rkCLnzzwHu22rZlG5SdCojtjoEuFJBscWeZ011BVMQL
-   YEiDGZxo7SID1Sz/L4+Hiygj3ICSzISArGqKkOdDR9T2Kg3YHROrbs+Iw
-   Ol0mtBYFE+7BNnAgZpwmzku8d+MtbuvwswSeAQoE5A2pWJOR0xFUBK6WO
-   XXMcWQRrR95ZDBLXwlGXi6oGG8T+Ovf44ZZUfov3Slvyr7LwPRXyxWoI9
-   pIZCxfpPfyeidkFVGUwomulz8bqRyvtRYss2Eedw9tiKy5JClK6AB/wcZ
-   g==;
-X-CSE-ConnectionGUID: o5/atS1KT2+IhvgWqhEWxg==
-X-CSE-MsgGUID: UmWrNlbKQOKEdJ8sHFPSlg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11188"; a="35152179"
-X-IronPort-AV: E=Sophos;i="6.10,211,1719903600"; 
-   d="scan'208";a="35152179"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2024 21:57:51 -0700
-X-CSE-ConnectionGUID: 07id3TQkQD6aR7ZdNXOj0w==
-X-CSE-MsgGUID: B/75QyiQSmya8HRsgEZMJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,211,1719903600"; 
-   d="scan'208";a="70924663"
-Received: from ibarbour-mobl.amr.corp.intel.com (HELO bxing-mobl1.clients.intel.com) ([10.246.116.49])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2024 21:57:50 -0700
-From: Cedric Xing <cedric.xing@intel.com>
-Date: Sat, 07 Sep 2024 23:56:21 -0500
-Subject: [PATCH RFC 3/3] tsm: Add TVM Measurement Sample Code
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="kze4xufZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1725817064; x=1757353064;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=QRJ5E+Qg4kZZbzNjiMkCcdN+eaVzGuah8k/OUmE9WXs=;
+  b=kze4xufZ0rOEuKR/oBck4S1Uq3JenGVplIOna8m9HBZgTDJNQ46N3Hu7
+   AkhwsQcf73puFY1ZgNI1cDBTBd23S5I/jkG86epVx0QRc3mMc0WweI7PF
+   UJ3r4+1VHMnHIgu7NaMQZx/Xlsbhp4v/AatZMDvc5/uI2OSuUagOp9BeO
+   Y=;
+X-IronPort-AV: E=Sophos;i="6.10,212,1719878400"; 
+   d="scan'208";a="451813482"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2024 17:37:39 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:37989]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.11.90:2525] with esmtp (Farcaster)
+ id a470615d-1bd8-4989-a246-8faaa25fc188; Sun, 8 Sep 2024 17:37:38 +0000 (UTC)
+X-Farcaster-Flow-ID: a470615d-1bd8-4989-a246-8faaa25fc188
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Sun, 8 Sep 2024 17:37:37 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34; Sun, 8 Sep 2024
+ 17:37:35 +0000
+Message-ID: <10ffa4f1-e3f9-4b7d-9a6f-e4dd843f6d44@amazon.com>
+Date: Sun, 8 Sep 2024 19:37:32 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240907-tsm-rtmr-v1-3-12fc4d43d4e7@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/3] tsm: Unified Measurement Register ABI for TVMs
+To: Cedric Xing <cedric.xing@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, Samuel Ortiz <sameo@rivosinc.com>, "James
+ Bottomley" <James.Bottomley@HansenPartnership.com>, Lukas Wunner
+	<lukas@wunner.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, Qinkun Bao
+	<qinkun@google.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>, "Kuppuswamy
+ Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>
 References: <20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com>
+Content-Language: en-US
+From: Alexander Graf <graf@amazon.com>
 In-Reply-To: <20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com>
-To: Dan Williams <dan.j.williams@intel.com>, 
- Samuel Ortiz <sameo@rivosinc.com>, 
- James Bottomley <James.Bottomley@HansenPartnership.com>, 
- Lukas Wunner <lukas@wunner.de>, 
- Dionna Amalie Glaze <dionnaglaze@google.com>, 
- Qinkun Bao <qinkun@google.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-X-Mailer: b4 0.13.0
+X-ClientProxiedBy: EX19D040UWB004.ant.amazon.com (10.13.138.91) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-This sample kernel module demonstrates how to make MRs accessible to user mode
-through TSM.
-
-Once loaded, this module registers a virtual measurement provider with the TSM
-core and will result in the directory tree below.
-
-/sys/kernel/tsm/
-└── measurement-example
-    ├── config_mr
-    ├── full_report
-    ├── report_digest
-    ├── rtmr0
-    │   ├── append_event
-    │   ├── digest
-    │   ├── event_log
-    │   └── hash_algo
-    ├── rtmr1
-    │   ├── append_event
-    │   ├── digest
-    │   ├── event_log
-    │   └── hash_algo
-    ├── static_mr
-    └── user_data
-
-Among the MRs in this example:
-
-- `static_mr` and `config_mr` are static MRs.
-- `full_report` illustrates that a complete architecture-dependent attestation
-  report structure (for instance, the `TDREPORT` structure in Intel TDX) can be
-  presented as an MR.
-- `user_data` represents the data provided by the software to be incorporated
-  into the attestation report. Writing to this MR and then reading from
-  `full_report` effectively triggers a request for an attestation report from
-  the underlying CC hardware.
-- `report_digest` serves as an example MR to demonstrate the use of the
-  `TSM_MR_F_L` flag.
-- `rtmr0` is an RTMR with `TSM_MR_F_W` **cleared**, preventing direct
-  extensions; as a result, `rtmr0/digest` is read-only, and the sole method to
-  extend this RTMR is by writing to `rtmr0/append_event`.
-- `rtmr1` is an RTMR with `TSM_MR_F_W` **set**, permitting direct extensions;
-  thus, `rtmr1/digest` is writable.
-
-See comments in `samples/tsm/measurement-example.c` for more details.
-
-Signed-off-by: Cedric Xing <cedric.xing@intel.com>
----
- samples/Kconfig                   |   4 ++
- samples/Makefile                  |   1 +
- samples/tsm/Makefile              |   2 +
- samples/tsm/measurement-example.c | 116 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 123 insertions(+)
-
-diff --git a/samples/Kconfig b/samples/Kconfig
-index b288d9991d27..8159d3ca6487 100644
---- a/samples/Kconfig
-+++ b/samples/Kconfig
-@@ -184,6 +184,10 @@ config SAMPLE_TIMER
- 	bool "Timer sample"
- 	depends on CC_CAN_LINK && HEADERS_INSTALL
- 
-+config SAMPLE_TSM
-+	tristate "TSM measurement sample"
-+	depends on TSM_REPORTS
-+
- config SAMPLE_UHID
- 	bool "UHID sample"
- 	depends on CC_CAN_LINK && HEADERS_INSTALL
-diff --git a/samples/Makefile b/samples/Makefile
-index b85fa64390c5..891f5c12cd39 100644
---- a/samples/Makefile
-+++ b/samples/Makefile
-@@ -39,3 +39,4 @@ obj-$(CONFIG_SAMPLE_KMEMLEAK)		+= kmemleak/
- obj-$(CONFIG_SAMPLE_CORESIGHT_SYSCFG)	+= coresight/
- obj-$(CONFIG_SAMPLE_FPROBE)		+= fprobe/
- obj-$(CONFIG_SAMPLES_RUST)		+= rust/
-+obj-$(CONFIG_SAMPLE_TSM)		+= tsm/
-diff --git a/samples/tsm/Makefile b/samples/tsm/Makefile
-new file mode 100644
-index 000000000000..3969a59221e9
---- /dev/null
-+++ b/samples/tsm/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_SAMPLE_TSM) += measurement-example.o
-diff --git a/samples/tsm/measurement-example.c b/samples/tsm/measurement-example.c
-new file mode 100644
-index 000000000000..b10bda4ba1ee
---- /dev/null
-+++ b/samples/tsm/measurement-example.c
-@@ -0,0 +1,116 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-+
-+#include <linux/module.h>
-+#include <linux/tsm.h>
-+#include <crypto/hash_info.h>
-+#include <crypto/hash.h>
-+
-+struct __aligned(16)
-+{
-+	u8 static_mr[SHA384_DIGEST_SIZE];
-+	u8 config_mr[SHA512_DIGEST_SIZE];
-+	u8 rtmr0[SHA256_DIGEST_SIZE];
-+	u8 rtmr1[SHA384_DIGEST_SIZE];
-+	u8 user_data[SHA512_DIGEST_SIZE];
-+	u8 report_digest[SHA512_DIGEST_SIZE];
-+}
-+example_report = {
-+	.static_mr = "STATIC MR",
-+	.config_mr = "CONFIG MR",
-+};
-+
-+DEFINE_FREE(shash, struct crypto_shash *,
-+	    if (!IS_ERR(_T)) crypto_free_shash(_T));
-+
-+static int _refresh_report(struct tsm_measurement_provider *pvd,
-+			   const struct tsm_measurement_register *mr)
-+{
-+	pr_debug(KBUILD_MODNAME ": %s(%s,%s)\n", __func__, pvd->name,
-+		 mr->mr_name);
-+	struct crypto_shash *tfm __free(shash) =
-+		crypto_alloc_shash(hash_algo_name[HASH_ALGO_SHA512], 0, 0);
-+	if (IS_ERR(tfm))
-+		return PTR_ERR(tfm);
-+	return crypto_shash_tfm_digest(tfm, (u8 *)&example_report,
-+				       offsetof(typeof(example_report),
-+						report_digest),
-+				       example_report.report_digest);
-+}
-+
-+static int _extend_mr(struct tsm_measurement_provider *pvd,
-+		      const struct tsm_measurement_register *mr, const u8 *data)
-+{
-+	SHASH_DESC_ON_STACK(desc, 0);
-+	int rc;
-+
-+	pr_debug(KBUILD_MODNAME ": %s(%s,%s)\n", __func__, pvd->name,
-+		 mr->mr_name);
-+
-+	desc->tfm = crypto_alloc_shash(hash_algo_name[mr->mr_hash], 0, 0);
-+	if (IS_ERR(desc->tfm))
-+		return PTR_ERR(desc->tfm);
-+
-+	BUG_ON(crypto_shash_digestsize(desc->tfm) != mr->mr_size);
-+
-+	rc = crypto_shash_init(desc);
-+	if (!rc)
-+		rc = crypto_shash_update(desc, mr->mr_value, mr->mr_size);
-+	if (!rc)
-+		rc = crypto_shash_finup(desc, data, mr->mr_size, mr->mr_value);
-+
-+	crypto_free_shash(desc->tfm);
-+	return rc;
-+}
-+
-+#define MR_(mr) #mr, &example_report.mr, sizeof(example_report.mr), TSM_MR_F_R
-+static const struct tsm_measurement_register example_mrs[] = {
-+	/* the entire report can be considered as a LIVE MR */
-+	{ "full_report", &example_report, sizeof(example_report),
-+	  TSM_MR_F_LIVE },
-+	/* static MR, read-only */
-+	{ MR_(static_mr) },
-+	/* config MR, read-only */
-+	{ MR_(config_mr) },
-+	/* RTMR, direct extension prohibited */
-+	{ MR_(rtmr0) | TSM_MR_F_RTMR, HASH_ALGO_SHA256 },
-+	/* RTMR, direct extension allowed */
-+	{ MR_(rtmr1) | TSM_MR_F_RTMR | TSM_MR_F_W, HASH_ALGO_SHA384 },
-+	/* most CC archs allow including user data in attestation */
-+	{ MR_(user_data) | TSM_MR_F_W },
-+	/* LIVE MR example, usually doesn't exist in real CC arch */
-+	{ MR_(report_digest) | TSM_MR_F_L },
-+	/* terminating NULL entry */
-+	{}
-+};
-+#undef MR_
-+
-+static struct tsm_measurement_provider example_measurement_provider = {
-+	.name = "measurement-example",
-+	.mrs = example_mrs,
-+	.refresh = _refresh_report,
-+	.extend = _extend_mr,
-+};
-+
-+static int __init measurement_example_init(void)
-+{
-+	int rc = tsm_register_measurement_provider(
-+		&example_measurement_provider);
-+	pr_debug(KBUILD_MODNAME ": tsm_register_measurement_provider(%p)=%d\n",
-+		 &example_measurement_provider, rc);
-+	return rc;
-+}
-+
-+static void __exit measurement_example_exit(void)
-+{
-+	int rc = tsm_unregister_measurement_provider(
-+		&example_measurement_provider);
-+	pr_debug(KBUILD_MODNAME
-+		 ": tsm_unregister_measurement_provider(%p)=%d\n",
-+		 &example_measurement_provider, rc);
-+}
-+
-+module_init(measurement_example_init);
-+module_exit(measurement_example_exit);
-+
-+MODULE_LICENSE("GPL");
-
--- 
-2.43.0
+SGV5IENlZHJpYywKCk9uIDA4LjA5LjI0IDA2OjU2LCBDZWRyaWMgWGluZyB3cm90ZToKPiBOT1RF
+OiBUaGlzIHBhdGNoIHNlcmllcyBpbnRyb2R1Y2VzIHRoZSBNZWFzdXJlbWVudCBSZWdpc3RlciAo
+TVIpIEFCSSwgYW5kIGlzCj4gbGFyZ2VseSBhIGNvbnRpbnVhdGlvbiBvZiBTYW11ZWwgT3J0aXri
+gJlzIHByZXZpb3VzIHdvcmsgb24gdGhlIFJUTVIgQUJJIFsxXS4KPgo+IFRoaXMgcGF0Y2ggc2Vy
+aWVzIGFkZHMgYSB1bmlmaWVkIGludGVyZmFjZSB0byBUU00gY29yZSBmb3IgY29uZmlkZW50aWFs
+Cj4gY29tcHV0aW5nIChDQykgZ3Vlc3QgZHJpdmVycyB0byBwcm92aWRlIGFjY2VzcyB0byBtZWFz
+dXJlbWVudCByZWdpc3RlcnMgKE1ScyksCj4gd2hpY2ggYXJlIGVzc2VudGlhbCBmb3IgcmVseWlu
+ZyBwYXJ0aWVzIChSUHMpIHRvIHZlcmlmeSB0aGUgaW50ZWdyaXR5IG9mIHRoZQo+IGNvbXB1dGlu
+ZyBlbnZpcm9ubWVudC4gVGhlIGludGVyZmFjZSBpcyBzdHJ1Y3R1cmVkIGFyb3VuZAo+IGBzdHJ1
+Y3QgdHNtX21lYXN1cmVtZW50X3Byb3ZpZGVyYCwgd2hpY2ggaG9sZHMgYW4gYXJyYXkgb2YKPiBg
+c3RydWN0IHRzbV9tZWFzdXJlbWVudF9yZWdpc3RlcmAgYW5kIGluY2x1ZGVzIG9wZXJhdGlvbnMg
+Zm9yIHJlYWRpbmcgYW5kCj4gdXBkYXRpbmcgTVJzLgo+Cj4gVGhlIE1ScyBjb21lIGluIHR3byB2
+YXJpZXRpZXM6IHN0YXRpYyBhbmQgcnVudGltZS4gU3RhdGljIE1ScyBhcmUgZGV0ZXJtaW5lZCBh
+dAo+IHRoZSBURUUgVk0gKFRWTSkgYnVpbGQgdGltZSBhbmQgY2FwdHVyZSB0aGUgaW5pdGlhbCBt
+ZW1vcnkgaW1hZ2Ugb3IgdGhlCj4gY29uZmlndXJhdGlvbi9wb2xpY3kgc3BlY2lmaWVkIGJ5IHRo
+ZSBUVk0ncyBvd25lci4gSW4gY29udHJhc3QsIFJ1bnRpbWUgTVJzCj4gKFJUTVJzKSBzdGFydCB3
+aXRoIGtub3duIHZhbHVlcywgc3VjaCBhcyBhbGwgemVyb3MsIGF0IFRWTSBidWlsZCB0aW1lIGFu
+ZCBhcmUKPiBleHRlbmRlZCB3aXRoIG1lYXN1cmVtZW50cyBvZiBsb2FkZWQgY29kZSwgZGF0YSwg
+Y29uZmlndXJhdGlvbiwgb3IgZXhlY3V0ZWQKPiBhY3Rpb25zIGJ5IHRoZSBUVk0gZ3Vlc3QgZHVy
+aW5nIHJ1bnRpbWUuCgoKSXMgdGhlcmUgYSBwYXJ0aWN1bGFyIHJlYXNvbiB0byB0cmVhdCBydW50
+aW1lIGFuZCBzdGF0aWMgbWVhc3VyZW1lbnRzIApzZXBhcmF0ZWx5PyBJbiBOaXRybyBFbmNsYXZl
+cyAod2hpY2ggSSBzdGlsbCBuZWVkIHRvIGFkZCB0c20gaW50ZWdyYXRpb24gCmZvciksIGJvdGgg
+YXJlIHNpbXBseSBOU00gUENScy4gIlN0YXRpYyIgbWVhc3VyZW1lbnRzIGdldCBsb2NrZWQgYnkg
+dGhlIAppbml0aWFsIGJvb3QgY29kZS4gIlJ1bnRpbWUiIG1lYXN1cmVtZW50cyBjYW4gZ2V0IGxv
+Y2tlZCBieSBndWVzdCBjb2RlIApsYXRlciBpbiB0aGUgYm9vdCBwcm9jZXNzLiBCdXQgdGVjaG5p
+Y2FsbHksIGJvdGggYXJlIHRoZSBzYW1lIHR5cGUgb2YgCm1lYXN1cmVtZW50LgoKSW4gZmFjdCwg
+b3RoZXIgYXR0cmlidXRlcyBsaWtlIGFuIGFkZGl0aW9uYWwgImhhc2hfYWxnbyIgdG8gdGhlIApt
+ZWFzdXJlbWVudCBpdHNlbGYgY2FuIGJlIHVzZWZ1bCBpbiBnZW5lcmFsLiBJZiB0aGUgdW5kZXJs
+eWluZyAKaW5mcmFzdHJ1Y3R1cmUgYWxsb3dzIGZvciBhIGdlbmVyaWMgZXZlbnQgbG9nIG1lY2hh
+bmlzbSwgaGF2aW5nIHRoYXQgCmVhc2lseSBhdmFpbGFibGUgaGVyZSBpcyB1c2VmdWwgdG9vLgoK
+U28gSSBkb24ndCByZWFsbHkgdW5kZXJzdGFuZCB3aHkgd2Ugd291bGQgdHJlYXQgc3RhdGljIGFu
+ZCBydW50aW1lIAptZWFzdXJlbWVudHMgZGlmZmVyZW50bHkuIENhbid0IHdlIGp1c3QgbWFrZSBh
+bGwgb2YgdGhlbSBkaXJlY3RvcmllcyBhbmQgCmluZGljYXRlIHdoZXRoZXIgdGhleSBhcmUgKGlt
+LSltdXRhYmxlIHZpYSBhIGZpbGU/CgoKQWxleAoKCgoKQW1hem9uIFdlYiBTZXJ2aWNlcyBEZXZl
+bG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVzZW5zdHIuIDM4CjEwMTE3IEJlcmxpbgpH
+ZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hsYWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVp
+bmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0ZW5idXJnIHVudGVyIEhSQiAyNTc3NjQg
+QgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBERSAzNjUgNTM4IDU5Nwo=
 
