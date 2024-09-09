@@ -1,210 +1,283 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2041.outbound.protection.outlook.com [40.107.243.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD763A1A0
-	for <linux-coco@lists.linux.dev>; Mon,  9 Sep 2024 15:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B895A18C35A
+	for <linux-coco@lists.linux.dev>; Mon,  9 Sep 2024 23:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725895216; cv=fail; b=V4SLX4RjHHdUijTWECkpTfBLAD3UD2pL5/4rgmt7hgFZ9f4ujDv+6ZzwXhzMVog0T9VSzW46NHj4cdDXI3YwJ2M5Uf1lPuKA8D3WV1ZOzDuOjEB3nzlzT/Hsy3Do+7S6rXqXkJu6uGlkvcHMftMjlVroFSiUGPvGuu8La9pu8Vo=
+	t=1725924865; cv=fail; b=ajGr0SofijLQ3sfcHOj2pKiGp6bf/WeIWXW3nzjEedgbJ/K6V2cJ4yRVI87U0T0CqzCW5dGhv4o6VKFLxEi5CjCJJmYIR1diUb6yJTf/KlojiECH8UR6CF27q/tPC92OTtQ7MapoWhRZqEF24XZR5udvA/PnlfcMxtuBAn6X5dg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725895216; c=relaxed/simple;
-	bh=QuD/VHU6wK1uMNWeqKUojVkjsZwYlr3Qx2ArqRS17bk=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=UBnW79mLfqgv537y/lzf8IQVvK0lUCOHsasNutPlnfw2sIf2JGJE3tD8LtlOeBZJtyrvyHAuduEK9j4hoqoZ1JR/4lgA6HtZ/5RsW1QFrQkBCTmiz28SHwf8+3GNVGzy4TISPRancBPvdoB0jnZKMot9d/sPNPo0KG+bBE7ZXsY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Qo9paGV+; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1725924865; c=relaxed/simple;
+	bh=9LHbQcJlkEQtAZLr04POOHw4T7/Gj8aQt20/q1yVGKw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FTyz67CzKrA0FzkP5PEo5iKSl6yQzcb3yoyfpS+zuaOWkH1BjVz1uuBNU7VA3jRS4X2tk9n+k+Pyv+ae/9PQQlgxwmKYu2t5tVWd0mHzVlyc1oETTMzzmhhlkkYot52HJaYASRR1PQ46EOahGxhQMVKTsSZT/tFB8XL9vvfS9ww=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=EIWXrXCV; arc=fail smtp.client-ip=40.107.243.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qo9paGV+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725895214; x=1757431214;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=QuD/VHU6wK1uMNWeqKUojVkjsZwYlr3Qx2ArqRS17bk=;
-  b=Qo9paGV+tYkneQjkUZG6q6omfyhX16uwLPnxIQH+WlQmpYLx+yFJpSz5
-   RCY1qJsc3RTVCMtZX69N5PjaJfcZPo7jWKtwIyShNNCCf4schEU65logR
-   wPpZIuTulGVq3DdG3k1zrHF5SjyVcKtQoQgLh/yt6s7P+eP4xXbgPIlCT
-   8daNoqnYfHivLjnl9zyPa7rExZP2Jg4z0i2Sj9vlDUKe6oPMBPepe4hq6
-   1KwPLIKhnTNGlpSX5J8sQPxq03BEGdvB56Bz1JGGS3muWdhpGHrCbwBgQ
-   MJpuixIJxiH1OKagFHKpz/DHwrIvao29mKCEriiKSuavKWB6N+Y3It1M5
-   g==;
-X-CSE-ConnectionGUID: thFe12J0TveMRIpG8E+pnw==
-X-CSE-MsgGUID: pqSMqaoHSAyWuzRLGViGbg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="28483119"
-X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
-   d="scan'208";a="28483119"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 08:20:13 -0700
-X-CSE-ConnectionGUID: dWlHKwlKTpewZBshVmoEyA==
-X-CSE-MsgGUID: ckI8lOKXTwKu676MGV/sOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
-   d="scan'208";a="97511558"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 09 Sep 2024 08:20:13 -0700
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 9 Sep 2024 08:20:12 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 9 Sep 2024 08:20:12 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 9 Sep 2024 08:20:12 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="EIWXrXCV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y+D0v5aZJmqUR3CGDS9hpO3SyeU4Cs/AS4DQ538TLmG4u5LrpsPMU3RgNsjzixgm6zceXGW0ino/YB2fT7/iFoFE68pXVy9QEhsnyb66dVlDCQYGPrzp28q55Z7ITywh6B+fU0b6J5h1evn42XhdGWQr6+OMiTVzDBQMa4OdtT3kjKv/SARCWAuv0bKMrlnwRCEM+VORdc6h68QL+5C4KguGWLKXOyVQxY/WDEvegVGsz6UxrPA3lZa6knbCCNVoai424FhUjK/7rbAMa90sB5WSe39lMXccZ0WDcbVq2rC4Vz2lpcxmTQ+W7FN6meEvA0ifA4heFilJc9iaS2Rzyg==
+ b=GhtSe76ifTYwPK8L4RppQ/vr8gWALomQVLYPa20RT0LoRd6H6QqqyMcdi1VRQNSBHI+AlCcjQuHsFuWRK22xVo5WS2XCbYEkBXVugzscBX1ninVbk6wr1mxhrF5EIbWvhyV5NTbhHNx18s/ir1xp+GQ5Q7iFYk1icDbLIWQmHQhYHhcGYNS7QRJCUPRgh+e6IdEa6+NmnhS5X54+4HMJNpMDYRklq5V+BfGEYdIngKWHowdfUtEGcRPIXdAxj06EPSf4Pfe20hUAQjDBDvBs7PF+XekC+wGwZHSeCMYpiVF90nADBYzxMVofEuAakngm3ZXBrs84IatTOJrHn2uD3g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z/pEaaRdykgqgRhPxHPQKQno0VotcE/saA6Ue9yafVk=;
- b=ICGDXM+z2YH5HpVJ5W/oaw4Am7yqz5BYYAbeYxhTtMQUZQbp8DwcW9DKeiqfMfRNAN0SulB2e+A3lw61TrYXITvdrbmSN6lYqBqMkVpdX26i271QngEeybHKYYP7ZofC33yysOxhEUUcbObBxtwgjwriWaK0BXQ/NcWFCZsJdHRfu77F+PHAeDKDf3Mje6vDOKiNfs1pmOIzVAFWCWiB+KMKeIQ6yuC/7GAUVW+2WWlSG/QPjP5lasyhvMxORrn8SPDVqFKf4EoqqtQ9NWZmDGmgMXnKiAgRH8uapiG244SVs4ADN34QHNaLZoQgI0jjRqSplDVEwnZu3XGYdrPoLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB6269.namprd11.prod.outlook.com (2603:10b6:8:97::14) by
- DM4PR11MB5328.namprd11.prod.outlook.com (2603:10b6:5:393::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7918.28; Mon, 9 Sep 2024 15:20:09 +0000
-Received: from DS7PR11MB6269.namprd11.prod.outlook.com
- ([fe80::af1f:dcc:49bf:1a26]) by DS7PR11MB6269.namprd11.prod.outlook.com
- ([fe80::af1f:dcc:49bf:1a26%3]) with mapi id 15.20.7918.024; Mon, 9 Sep 2024
- 15:20:09 +0000
-Message-ID: <82784b04-7f07-4804-9f61-0198890fbb5d@intel.com>
-Date: Mon, 9 Sep 2024 10:20:04 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 3/3] tsm: Add TVM Measurement Sample Code
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Dan Williams
-	<dan.j.williams@intel.com>, Samuel Ortiz <sameo@rivosinc.com>, "James
- Bottomley" <James.Bottomley@HansenPartnership.com>, Lukas Wunner
-	<lukas@wunner.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, Qinkun Bao
-	<qinkun@google.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>, "Kuppuswamy
- Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>
-References: <20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com>
- <20240907-tsm-rtmr-v1-3-12fc4d43d4e7@intel.com>
- <9c2483cf-d66b-438d-ae77-3c0d18704d03@quicinc.com>
-Content-Language: en-US
-From: "Xing, Cedric" <cedric.xing@intel.com>
-In-Reply-To: <9c2483cf-d66b-438d-ae77-3c0d18704d03@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0196.namprd03.prod.outlook.com
- (2603:10b6:a03:2ef::21) To DS7PR11MB6269.namprd11.prod.outlook.com
- (2603:10b6:8:97::14)
+ bh=3IvNxHOyaPNa7dODJ0V0986Ug1mueN+mziud9Fesnug=;
+ b=Q755r7Z/QVWptIqZ9noqOXq/NIRYtdHYfd8Jjd6HeoabeUVi2Y7T++i3CJGK2EpnYR459gAFbA5GRaxMpMO/EXnnitRF+Jf4bbTHHOZsBMy7Nf10agJi6YlIiaWDYXiQKHecuK3vMqmam4bkTMI+1fkuzS8WT0o4MYknu/VgqVnXUWh63Vo6ghnR5KdGJ/U6KZIGt1RZp+0eOD/7Bz9Vlwpu/DweTpCZpPoxBysbTMlcdir80kW5m5tWzKelA34d98vkxDIA3EGVYSRRWo5uv52nxuNJhkIsqxN8i44sItt1CtoHg3a3cMaMyk1KzZjCERDYHrz9FB22s6Fd5b9YMA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3IvNxHOyaPNa7dODJ0V0986Ug1mueN+mziud9Fesnug=;
+ b=EIWXrXCVV5O3ua84/9vFlqXE4JFTtreBl4Bw33nq8PNzNRfByjVqf8bSlImZySLgDyCI/o8aDOeRF/JHPj6Z1U6Z186tF4jc6ty3aWJpAdAMro/XYfTrCJt/8aZ/LA095lXz3136l53seWcxCM98ZHSa4NVxok3ae8Z9vB8ZfU0=
+Received: from CH0PR03CA0367.namprd03.prod.outlook.com (2603:10b6:610:119::24)
+ by CH2PR12MB4136.namprd12.prod.outlook.com (2603:10b6:610:a4::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.24; Mon, 9 Sep
+ 2024 23:34:18 +0000
+Received: from CH2PEPF00000144.namprd02.prod.outlook.com
+ (2603:10b6:610:119:cafe::71) by CH0PR03CA0367.outlook.office365.com
+ (2603:10b6:610:119::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.24 via Frontend
+ Transport; Mon, 9 Sep 2024 23:34:18 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ CH2PEPF00000144.mail.protection.outlook.com (10.167.244.101) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7918.13 via Frontend Transport; Mon, 9 Sep 2024 23:34:16 +0000
+Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 9 Sep
+ 2024 18:34:15 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <ashish.kalra@amd.com>
+CC: <bp@alien8.de>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
+	<kexec@lists.infradead.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<michael.roth@amd.com>, <mingo@redhat.com>, <pbonzini@redhat.com>,
+	<peterz@infradead.org>, <seanjc@google.com>, <tglx@linutronix.de>,
+	<thomas.lendacky@amd.com>, <x86@kernel.org>
+Subject: Re: [PATCH v2] x86/sev: Fix host kdump support for SNP
+Date: Mon, 9 Sep 2024 23:33:32 +0000
+Message-ID: <20240909233332.4779-1-Ashish.Kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240906202757.5258-1-Ashish.Kalra@amd.com>
+References: <20240906202757.5258-1-Ashish.Kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB03.amd.com
+ (10.181.40.144)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB6269:EE_|DM4PR11MB5328:EE_
-X-MS-Office365-Filtering-Correlation-Id: 398b446e-7cf3-4af7-b2d6-08dcd0e2e457
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000144:EE_|CH2PR12MB4136:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4905275f-5a5f-48b8-ad74-08dcd127eb47
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WDA4bVgyazd5VXBrWlhwSGZBb25oQlhlRXhCRzBGVU1yU0lCNmVVM1Q4Qnlp?=
- =?utf-8?B?WDc1dmJUVkdSNTQzMklrOXVqOVhyZWJQOUxWMkRTcGJFQy92VUhIekNCYUky?=
- =?utf-8?B?N1RmUG9mR3ltN2NZeUh1QmJ3WEhLQUN2TlJJa21jTUZNb0luNFB6MDRJbEhh?=
- =?utf-8?B?OWhuS0d5ZUdOSmFqekZGd09NaWV1bTNpQlhDaUw2MGV4WHVNSnZBKzZRNjdr?=
- =?utf-8?B?QnpzclZMRXRuMUJMbkdSS3B5OG9CMVNqZzNreWZzdGI2M2x2b2JUd2ZNTUZW?=
- =?utf-8?B?UlNybHFWc0tkYVlWUkIrT1ZuUUdCSzJGSjJCZU5INkRDZkl0Uk4xN2RCWE9J?=
- =?utf-8?B?MTZ0Wklrdlg1bEl5ZzNyTHBoTGpmMk1LbWcyNlFKRyt4dTVuQmtwd0NURWd3?=
- =?utf-8?B?V1pQK1VDdGNXMVM1UDl1aE83Q05vQzJ2SnR4VGM3amh3QzhsVWtPT2J4QlQ3?=
- =?utf-8?B?Vk92RkxVOGxWMjdaVWlscEJRV3hHU2Q5VnlMcXZ6Smo4VjdoQ1g3dmgzZGNj?=
- =?utf-8?B?d0xzS0p3SFUyQjR3aUlTOG9qLzc5WnlETGJLS1JJWUljblkraTdsb0VBUUFD?=
- =?utf-8?B?ek1IMTQydWVyRUxKTkxOS1BqWGVBYmFWOGc4SFBJN2VodmdFUnZ5VkpTR1FM?=
- =?utf-8?B?akZvc0pndDhHdzQ5YWNPRVJGVTdGQlpYMzFzNlM0TjZkcGFCL0VvSVJCTjBx?=
- =?utf-8?B?TjdFRENWZHlDOFVYVk4vRzlPQnRWNVhjWVJjVHVRY0pOdk91VldMVE1iQU1u?=
- =?utf-8?B?OUcrblRMRmRmTGJyd1dLSWptOFA3c3FyWE95SVhRa09IbU5IU3FVM0s3aUdU?=
- =?utf-8?B?dGdDWHZ3eWJVUHBmQ0M0VVJ5YXd4aFJxMlY5MjUwZkFlbnpSUXpzUGxhcXZa?=
- =?utf-8?B?ZlVrSzNCNGVDS1YzR3AydmZ1M2tnekFIbncxWURpcHo3NmFNVC9wbHBhSnZG?=
- =?utf-8?B?OUJlbmd1c1hJZVRFdHpVU0NQTXQyTEY0eUl2bW5oQTczaDFtL2R3SDhaTGVl?=
- =?utf-8?B?dXVqYi9YQzg3blVpdHgwV1JLdERSK3l0RFJsVnplaEo4YzFFUi9CTmlra0dm?=
- =?utf-8?B?L01HaFZCU1dycEd0Um9TSFBtL2RsbkpTQWJoZ2lERW1NR0g2VXBlVm83ekhD?=
- =?utf-8?B?ZXRscU96REtCQUhkUUFWVFd6V3ZvaHFndzB6TkxWUnVibzJVTWFFL0VTL3Nn?=
- =?utf-8?B?MjFpdFhwSjNEQ3hYVy9EM1VDRGloQnJKU2trbGIzRGYzK2dQQWh6T3I0SU9h?=
- =?utf-8?B?M0FMR2tDNE1peWRlSitkSlRtSmV2Z2tMVGxzamtyWkFuYkxoRXNweEMva2Ft?=
- =?utf-8?B?b3I4b3JWRUxLNkd3NU12U2djdjByTkU0QUJpblNrN1ZwYUdEdTdvaXR4Zm5R?=
- =?utf-8?B?T3p1ZTl0dHVJclQrMUtpUUJRYzMyMHBTQUROblRmbEhnbEQyY2lqbnZTOTR2?=
- =?utf-8?B?Wklsc09jWklQTDZEOFNHbFR1MU5mU0lJYzFmMWlKNHZ2Y3ZJZkcybXBMaXNh?=
- =?utf-8?B?d0xhQWdOTzg3RWc5SWthRGpORUdkK2RMNUI2RllIUkp1MHVIMHZLUjJSbnpZ?=
- =?utf-8?B?THY3U1lnOFVOcTF2bG1ud1pLdVFaQWVIZ1lYUmFOWVkwUlhtUVM2WmZRRjdE?=
- =?utf-8?B?c0dsSDdqeS81bDBnZDI3a1hCc1BoeWx0TUFKaDF2aHMwcmNOOGpJOFpOUWpy?=
- =?utf-8?B?ZUpKZlZDRUYxV2c5OU5Uc1p4cmFMV2NRSnhYQmZ1aFNKSFg5cTlLejF6bWxY?=
- =?utf-8?B?QUhWbS9QMlAyeGxCczhqdEFkS04rTHUyeE5Ud2xDNGFsdjFzTUhvSUFTaFYz?=
- =?utf-8?B?ZlNLUmwrT0FReTBQUzFSZz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB6269.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VytpcDFBSkk4ZWxZazB1UnZUd0ppaEVGNHMzbU9vZmFCcmhFak1FcHppNWRa?=
- =?utf-8?B?REdMd3FxLzFWWjRhcWd2eWVoZUVUYlJYYkQ5ZHVtS3ordlFjZVpXL3dqV0tq?=
- =?utf-8?B?VEdWbjFXc0FMeHhqMGZBa3NUZllwR3V5b0lUUUxtcDQ2ai9pUzZuYnlJRzJR?=
- =?utf-8?B?bkVTcnZPZTlJUE1lWW4zMHcxYUpUeFFXMmNHczdsS2YrbklQNkRoLzFGMjNj?=
- =?utf-8?B?QlNxLysvSmZpaVVWOENKb2IvN055ekdGdCtkWWNWYTFHYk8vNWJyaW5tbGd1?=
- =?utf-8?B?NVFTNlBhYzZGbEU5QlBTTjFjcjRvS1NSZWJkK2NEMHpCeHZ4eHRyM0hicHpE?=
- =?utf-8?B?UGg3WEFxdzFjRFZtK1pNeWdKZ1BwcjBnaW45SC90S2E0SUhBMmRWU3E0a3lT?=
- =?utf-8?B?VVgxMmlSUVp1TDk4c3FnYXo3YUxPbFBoNUR0aGFJcUhaMnVJd092blNpUjRE?=
- =?utf-8?B?L3dySXo0NzhQcXNMdDE2bzd5WnFoN3F2MEJMRVJYQnNXZklJbFJFQ0hlRlAx?=
- =?utf-8?B?VFFpZzh2LzMrcEg5dk9FS3U2dEx2M1JwdUZCZGxnWnJVNWhEWVFLR0RxRW5a?=
- =?utf-8?B?eGxIR3NWV2VvM1pHN0FuNjZwcHBwNjdDazFIOW1RMTFDMi83bXEvbGc4T0ps?=
- =?utf-8?B?VWlrOWhIeXE1TjFBR0RxL0F3VEN1TjczUnN4L3M0UFYrYmxvT0QwZEtKSFlM?=
- =?utf-8?B?am1rN2liZmZkenBjdDhTRkpjTlUwZWJLcUZMUURqOFdBemdQVno3Y2hVbi9n?=
- =?utf-8?B?MTBybGFZYjhGYWVFUmlQSlhCV1l3RDJqZXpWS3pQOHgwa3RCWjVtUW5WZkc5?=
- =?utf-8?B?cTAzVTJYSG5iZVV6enk0OWpCUERNNUpYVHZMSXpGUVJFaVNZemxTSlBNdE5j?=
- =?utf-8?B?c2UwdTRibkNBZWJxSDZVL3lTcDc0MmJtQkdsbTY4R05JNzNFYzdOdktldlBu?=
- =?utf-8?B?ZXFYaWV5M1Y2dk5yRkZZYUtMNmhpc3p0RytKUGtPNGxBN3orWWM5ZVJoK0o5?=
- =?utf-8?B?M3hieTk1SGc1RzJvdzhiaWtxSVBTVVJzVEhId0xrUzVxdkNPWUNFMitwNklU?=
- =?utf-8?B?d2tSd1IyLzZFTHdHU09oY2ZnN0NId2VsdVRFbDNCVW1PYlJXaVFLVFh3d0lG?=
- =?utf-8?B?bm04Mk9YVFZ6czVocnJ6Z2pVYWZEM05jWlVCRDNGRWpIa0g1dStOaUVOM2Yv?=
- =?utf-8?B?SnFQaEVCU29sSDFPc2dJeW1wS0hyejZub000TVd4RGp4K1NTSnpKN3hvMEZB?=
- =?utf-8?B?NkRJaWc4M1R2dzVwL2tTdk5sTml5VVFiQlIzc2lpQ01ZYnFYVm85MS8vOGUv?=
- =?utf-8?B?a0VYL3dXQUVlTGZ6S0FCM1VvcEcxMHR0YmtjYkpUeUhERmQ3WXBFd0NLblBV?=
- =?utf-8?B?QlhQTHFsWFRiY05idzhUUHRkdmVYMTRmekowRTBiTEI5ZEZheTVUSkNkVEJt?=
- =?utf-8?B?Q1QyNHh1bFA4RjMyRU16N2VLRjd6cS82RGZJMkpmRm9vQnJRWEN5eVZPREhQ?=
- =?utf-8?B?dGxldklyOVNoS0h1RFc3NW1EelRSd0dhYi9zOTF6RFJDd0hwMWFSMGdMYnV6?=
- =?utf-8?B?MHB2RWZ1Tm5nd1JjMUxjcnRRWERsVjdPR0dZSTIvNnc0OWZPb3htOWxCVXVi?=
- =?utf-8?B?d0hDOFNhOXpMQk1jRENuN01yMDdYZnhMNGFab3pJY0V4cWtmK1MzOStRYUhq?=
- =?utf-8?B?c1dNckRnOVNiWE9kM3hXYXJZY2M3QVdqNnNjVlladzBvSG5Oak1QTGFJTnE5?=
- =?utf-8?B?UFUzTnF1TkdYS1NzL0NGVHZ6NngyMWtQcnE4TWZtZUc2NHpkUU5oRll1c1hH?=
- =?utf-8?B?aXkybUEzOGZSRjRIK3IwRnBxakNMZUoxd0hSYmQxSmh3WmRHY0Q2TUdGdWd4?=
- =?utf-8?B?R3E2TGJDSS9seFl2UWtYeFBJMGNCVWJ4M1NjYmNldDgwb0lZdmpzdGNPZUxF?=
- =?utf-8?B?Sm85VWJBWkdBQUxvcUxwdk14c1NRVkpRZFVUa0VScllGekJ2VTVDT05Bc3FL?=
- =?utf-8?B?S0cxZkp4STNKbWhHdS9neUVjS1ZGYWdJakw0a1RJekhHSG5keUdDVnpZb2tQ?=
- =?utf-8?B?Y1owczlHOXJxc2hJRnBJUVNPbHRpQXJUdTR0VEZGcEdJWDlrTk5HejdOMzA4?=
- =?utf-8?Q?0yjykxcWJO9CXOZfhR+UvQWU+?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 398b446e-7cf3-4af7-b2d6-08dcd0e2e457
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB6269.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2024 15:20:09.4277
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|36860700013|82310400026|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9V6HrtXt2u0oWhDfNpJEWzxxHwp/LQB7YKVqro3o55cCFECI0YPmcdgKyQfH?=
+ =?us-ascii?Q?2yHrKe8F6fngH/I+6bq20jpZTAWpu/mlywp+quuPbGwTiWIgSyWXb29JQBdd?=
+ =?us-ascii?Q?8gzpUTqj/1ve+kNpc3aKrToN+VHhPQF3kctADfanX89OUG3KXg7l96cUc2Wr?=
+ =?us-ascii?Q?eChrZtriuxhKkp/TeIW0uxg5/DwahFtbA6hjQbpggRsMXPpU1jkvLzj+pOGM?=
+ =?us-ascii?Q?RBKSa/lIHXMv4nTFlBnrBu1Xnx6R6CPCdyXkFPsxM5kYKBl7Sw3rQTJObrwq?=
+ =?us-ascii?Q?v7TgaW4+72OYiCHOfhkiVEvnkHmC3pHy35ufP4X2klBSaPORYjxSptQo8nth?=
+ =?us-ascii?Q?edQ4Osl1R9w/o7Jn4YjSIF53GbqCgeEdABdAxaaFTKcSeLYxMRh9nhD/acYv?=
+ =?us-ascii?Q?uxzKfjWxhwYczXB2GWtp2I79R1LmBv4Rp0CoqfH6QTNSBmu1hSfy9oM4vLPN?=
+ =?us-ascii?Q?+kXhZhCV2qqRRYnX/HhY/x1J10JBs39al3RjKaijjVC03RmXxrnRl5COr0sl?=
+ =?us-ascii?Q?6CVzKZJCRTRZYhGS2Y3d2YtnHpIcAKRBN3GsRlpbGQXurX8qvLej/B6gevGy?=
+ =?us-ascii?Q?akYHfg34QsKbTS2Fr2a1eO6gVLyVWNkOzuFgpYPBuQBgIn7SWTi+TaZhjURU?=
+ =?us-ascii?Q?J3+9Bs7sHjQpPMH3F4L+Ytjz2aml/oDxrPf7n1F+0qM3ZnMvMx8lEwD4rqUP?=
+ =?us-ascii?Q?MEq0TTemMn3oj+j84TMv/FqWX6odoqkAqoigGDmn+mEAVGHteK60fPkih2xH?=
+ =?us-ascii?Q?tVzPaYToo79vzOjP3z0j01zdnh8xzuH1WMbN48J7cZki/vdNEhzd7KuXAuPi?=
+ =?us-ascii?Q?A4xexInQRmPu6yz9ouHjzFvEkcLsuWmCsKgPDI0dDctcftI6BhYuz1uxMGsJ?=
+ =?us-ascii?Q?QBF+2JiGQfRoZxn7hvc6rvFMs0+IFfVf5dChcJzCkSbOlcOgnfBpjbL27oe5?=
+ =?us-ascii?Q?Rmh3G/VXhMpYX+WtwTes80wsJvHB3tPm3peoZi+IMZRdtn3uhKlnJTDUOz1V?=
+ =?us-ascii?Q?D4CakxjTCo9YNSkMjqJVYW12IYEkmMc3AVblw1jkC11dGCanxE0q8j32+yW4?=
+ =?us-ascii?Q?4Bvdxha+LZ/KPyYqFrTGt+R8M5ulW50iHjqzEsLOtCbAsfFxr4JuIPr9E++c?=
+ =?us-ascii?Q?I5pR06FcosOlY3jsIJ+yEsmhOacocDav9Mpru5IAZT8ifJcZyJ4+FcOwFTM3?=
+ =?us-ascii?Q?8lH4ixEQfmoUuG82TTPNN8eZUDXAdq6OiEA4z92eJSTW5iFjaJMy9pWhdase?=
+ =?us-ascii?Q?KhuLyxI5xHHb3PFQijeywhrm337dUSofpjjmHYZysH609sH0XGt8MMuPnSra?=
+ =?us-ascii?Q?vmGqR9LdG940UD63eMGYce2ZRFBlK/T+JkoOZuaM0V2NENXih4OXtqnlPgyo?=
+ =?us-ascii?Q?p7bQ6qUfvf900yc0gs9PJtNztlg2x0CjMbGkLikVe1R+xuDGGvFq6CaCPlu9?=
+ =?us-ascii?Q?7Qx0krkiTJdE8ESHF4sAmTRJ9CUWT1Wy?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(36860700013)(82310400026)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2024 23:34:16.0103
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hcA7d6qJYAEK3spW0lratAoib9y8P3MJDelGaFCqKW0/Ttt511ll11LbES1AyF7ko4oP2piETliiNa/ueuU3iA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5328
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4905275f-5a5f-48b8-ad74-08dcd127eb47
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000144.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4136
 
-On 9/9/2024 10:14 AM, Jeff Johnson wrote:
-> On 9/7/24 21:56, Cedric Xing wrote:
-> ...
->> +module_init(measurement_example_init);
->> +module_exit(measurement_example_exit);
->> +
->> +MODULE_LICENSE("GPL");
-> 
-> Missing MODULE_DESCRIPTION()
-> 
-> Since commit 1fffe7a34c89 ("script: modpost: emit a warning when the
-> description is missing"), a module without a MODULE_DESCRIPTION() will
-> result in a warning when built with make W=1. Recently, multiple
-> developers have been eradicating these warnings treewide, and very few
-> are left, so please don't introduce a new one :)
-> 
+Hello Sean,
 
-Thanks! This will be fixed in the next version of the series.
+On 9/4/2024 5:23 PM, Sean Christopherson wrote:
+>> On Wed, Sep 04, 2024, Ashish Kalra wrote:
+>>> On 9/4/2024 2:54 PM, Michael Roth wrote:
+>>>>   - Sean inquired about making the target kdump kernel more agnostic to
+>>>>     whether or not SNP_SHUTDOWN was done properly, since that might
+>>>>     allow for capturing state even for edge cases where we can't go
+>>>>     through the normal cleanup path. I mentioned we'd tried this to some
+>>>>     degree but hit issues with the IOMMU, and when working around that
+>>>>     there was another issue but I don't quite recall the specifics.
+>>>>     Can you post a quick recap of what the issues are with that approach
+>>>>     so we can determine whether or not this is still an option?
+>>>
+>>> Yes, i believe without SNP_SHUTDOWN, early_enable_iommus() configure the
+>>> IOMMUs into an IRQ remapping configuration causing the crash in
+>>> io_apic.c::check_timer().
+>>>
+>>> It looks like in this case, we enable IRQ remapping configuration *earlier*
+>>> than when it needs to be enabled and which causes the panic as indicated:
+>>>
+>>> EMERGENCY [    1.376701] Kernel panic - not syncing: timer doesn't work
+>>> through Interrupt-remapped IO-APIC
+>>
+>> I assume the problem is that IOMMU setup fails in the kdump kernel, not that it
+>> does the setup earlier.  That's that part I want to understand.
+
+>Here is a deeper understanding of this issue:
+
+>It looks like this is happening: when we do SNP_SHUTDOWN without IOMMU_SNP_SHUTDOWN during panic, kdump boot runs with iommu snp 
+>enforcement still enabled and IOMMU completion wait buffers (cwb) still locked and exclusivity still setup on those, and then in 
+>kdump boot, we allocate new iommu completion wait buffers and try to use them, but we get a iommu command completion wait time-out,
+>due to the locked in (prev) completion wait buffers, the newly allocated completion wait buffers are not getting used for iommu 
+>command execution and completion indication :
+
+>[    1.711588] AMD-Vi: early_amd_iommu_init: irq remaping enabled
+>[    1.718972] AMD-Vi: in early_enable_iommus
+>[    1.723543] AMD-Vi: Translation is already enabled - trying to copy translation structures
+>[    1.733333] AMD-Vi: Copied DEV table from previous kernel.
+>[    1.739566] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.11.0-rc6-next-20240903-snp-host-f2a41ff576cc+ #78
+>[    1.750920] Hardware name: AMD Corporation ETHANOL_X/ETHANOL_X, BIOS RXM100AB 10/17/2022
+>[    1.759950] Call Trace:
+>[    1.762677]  <TASK>
+>[    1.765018]  dump_stack_lvl+0x70/0x90
+>[    1.769109]  dump_stack+0x14/0x20
+>[    1.772809]  iommu_completion_wait.part.0.isra.0+0x38/0x140
+>[    1.779035]  amd_iommu_flush_all_caches+0xa3/0x240
+>[    1.784383]  ? memcpy_toio+0x25/0xc0
+>[    1.788372]  early_enable_iommus+0x151/0x880
+>[    1.793140]  state_next+0xe67/0x22b0
+>[    1.797130]  ? __raw_callee_save___native_queued_spin_unlock+0x19/0x30
+>[    1.804421]  amd_iommu_enable+0x24/0x60
+>[    1.808702]  irq_remapping_enable+0x1f/0x50
+>[    1.813371]  enable_IR_x2apic+0x155/0x260
+>[    1.817848]  x86_64_probe_apic+0x13/0x70
+>[    1.822226]  apic_intr_mode_init+0x39/0xf0
+>[    1.826799]  x86_late_time_init+0x28/0x40
+>[    1.831266]  start_kernel+0x6ad/0xb50
+>[    1.835436]  x86_64_start_reservations+0x1c/0x30
+>[    1.840591]  x86_64_start_kernel+0xbf/0x110
+>[    1.845256]  ? setup_ghcb+0x12/0x130
+>[    1.849247]  common_startup_64+0x13e/0x141
+>[    1.853821]  </TASK>
+>[    2.077901] AMD-Vi: Completion-Wait loop timed out
+>...
+
+>And because of this the iommu command, in this case which is for enabling irq remapping does not succeed and that eventually causes 
+>timer to fail without irq remapping support enabled.
+
+>Once IOMMU SNP support is enabled, to enforce RMP enforcement the IOMMU completion wait buffers are setup as read-only and 
+>exclusivity set on these and additionally the IOMMU registers used to mark the exclusivity on the store addresses associated with 
+>these CWB is also locked. This enforcement of SNP in the IOMMU is only disabled with the IOMMU_SNP_SHUTDOWN parameter with 
+>SNP_SHUTDOWN_EX command.
+
+>From the AMD IOMMU specifications:
+
+>2.12.2.2 SEV-SNP COMPLETION_WAIT Store Restrictions On systems that are SNP-enabled, the store address associated with any host 
+>COMPLETION_WAIT command (s=1) is restricted. The Store Address must fall within the address range specified by the Completion Store 
+>Base and Completion Store Limit registers. When the system is SNP-enabled, the memory within this range will be marked in the RMP 
+>using a special immutable state by the PSP. This memory region will be readable by the CPU but not writable.
+
+>2.12.2.3 SEV-SNP Exclusion Range Restrictions The exclusion range feature is not supported on systems that are SNP-enabled. 
+>Additionally, the Exclusion Base and Exclusion Range Limit registers are re-purposed to act as the Completion Store Base and Limit 
+>registers.
+
+>Therefore, we need to disable IOMMU SNP enforcement with SNP_SHUTDOWN_EX command before the kdump kernel starts booting as we can't 
+>setup IOMMU CWB again in kdump as SEV-SNP exclusion base and range limit registers are locked as IOMMU SNP support is still enabled.
+
+>I tried to use the previous kernel's CWB (cmd_sem) as below: 
+
+>static int __init alloc_cwwb_sem(struct amd_iommu *iommu)
+>{
+>        if (!is_kdump_kernel())
+>                iommu->cmd_sem = iommu_alloc_4k_pages(iommu, GFP_KERNEL, 1);
+>        else {
+>                if (check_feature(FEATURE_SNP)) {
+>                        u64 cwwb_sem_paddr;
+>
+>                        cwwb_sem_paddr = readq(iommu->mmio_base + MMIO_EXCL_BASE_OFFSET);
+>                        iommu->cmd_sem = iommu_phys_to_virt(cwwb_sem_paddr);
+>        		return iommu->cmd_sem ? 0 : -ENOMEM;
+>                }
+>        }
+>
+>        return iommu->cmd_sem ? 0 : -ENOMEM;
+>}
+
+>I tried this, but this fails as i believe the kdump kernel will not have these previous kernel's allocated IOMMU CWB in the kernel 
+>direct map : 
+
+>[    1.708959] AMD-Vi: in alloc_cwwb_sem kdump kernel
+>[    1.714327] AMD-Vi: in alloc_cwwb_sem SNP feature enabled, cmd_sem_paddr 0x100805000, cmd_sem_vaddr 0xffff9f5340805000
+>[    1.726309] AMD-Vi: in alloc_cwwb_sem kdump kernel
+>[    1.731676] AMD-Vi: in alloc_cwwb_sem SNP feature enabled, cmd_sem_paddr 0x1050051000, cmd_sem_vaddr 0xffff9f6290051000
+>[    1.743742] AMD-Vi: in alloc_cwwb_sem kdump kernel
+>[    1.749109] AMD-Vi: in alloc_cwwb_sem SNP feature enabled, cmd_sem_paddr 0x1050052000, cmd_sem_vaddr 0xffff9f6290052000
+>[    1.761177] AMD-Vi: in alloc_cwwb_sem kdump kernel
+>[    1.766542] AMD-Vi: in alloc_cwwb_sem SNP feature enabled, cmd_sem_paddr 0x100808000, cmd_sem_vaddr 0xffff9f5340808000
+>[    1.778509] AMD-Vi: in alloc_cwwb_sem kdump kernel
+>[    1.783877] AMD-Vi: in alloc_cwwb_sem SNP feature enabled, cmd_sem_paddr 0x1050053000, cmd_sem_vaddr 0xffff9f6290053000
+>[    1.795942] AMD-Vi: in alloc_cwwb_sem kdump kernel
+>[    1.801300] AMD-Vi: in alloc_cwwb_sem SNP feature enabled, cmd_sem_paddr 0x100809000, cmd_sem_vaddr 0xffff9f5340809000
+>[    1.813268] AMD-Vi: in alloc_cwwb_sem kdump kernel
+>[    1.818636] AMD-Vi: in alloc_cwwb_sem SNP feature enabled, cmd_sem_paddr 0x1050054000, cmd_sem_vaddr 0xffff9f6290054000
+>[    1.830701] AMD-Vi: in alloc_cwwb_sem kdump kernel
+>[    1.836069] AMD-Vi: in alloc_cwwb_sem SNP feature enabled, cmd_sem_paddr 0x10080a000, cmd_sem_vaddr 0xffff9f534080a000
+>[    1.848039] AMD-Vi: early_amd_iommu_init: irq remaping enabled
+>[    1.855431] AMD-Vi: in early_enable_iommus
+>[    1.860032] AMD-Vi: Translation is already enabled - trying to copy translation structures
+>[    1.869812] AMD-Vi: Copied DEV table from previous kernel.
+>[    1.875958] AMD-Vi: in build_completion_wait, paddr = 0x100805000
+>[    1.882766] BUG: unable to handle page fault for address: ffff9f5340805000
+>[    1.890441] #PF: supervisor read access in kernel mode
+>[    1.896177] #PF: error_code(0x0000) - not-present page
+
+>....
+
+>I think that memremap(..,..,MEMREMAP_WB) will also fail for the same reason as memremap(.., MEMREMAP_WB) for the RAM region will 
+>again use the kernel directmap.
+
+To follow up on this:
+
+I am able to use memremap() to map the previous kernel's allocated CWB buffers and try to reuse the same CWB buffers in the
+kdump kernel, obviously, memremap() does not return a direct pointer to kernel directmap as the previous kernel's CWB buffers 
+will be in a RAM address which is not directly mapped into kdump kernel's directmap.
+ 
+And these memremap() mappings seem to be correct, because if i do a memset(0) on these, i get a RMP #PF violation due
+to these buffers being setup as RO in the RMP table, so that means that memremap() seems to have done the mapping correctly.
+
+I am getting inconsistent IOMMU command completion wait timeout's with these reused CWB buffers (which are used as
+semaphores to indicate IOMMU command completions) and i am still debugging those issues.
+
+Thanks,
+Ashish
