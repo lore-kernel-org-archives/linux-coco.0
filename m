@@ -1,211 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EB51B3B0F
-	for <linux-coco@lists.linux.dev>; Mon,  9 Sep 2024 11:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F401B9B48
+	for <linux-coco@lists.linux.dev>; Mon,  9 Sep 2024 13:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725881391; cv=none; b=eSsyOQ0VN3EnbvZF/AlTHw9e3VZYkL6DpHbnqlxsYnZTCfuhKJJsoBb7ILP+UaHvge+ytY3HxB/G86Up37Llb61eDcY/jy15xympd7azqEJhU7BW24OjwBy+jRbArGNSedGH9O+FnVp/jeuftvn9IO3BtMxHRdm5lOUEUmRJkG4=
+	t=1725890149; cv=none; b=ilLxw6clNiqGR4JeVEeg/5nDGpe68WTPsPVlWGhRXsnPMBO48ntQoYvPnhUekPwN6eawgcmKoZxRbUOxZLwRUdQEeXPyad2nmVblLaA6CwBhRm4NKkKBurWl6bfsnYQqN10FwukBGGpjrYlwxHEH6DfgSqmIh/3l0kza1IvywVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725881391; c=relaxed/simple;
-	bh=N/oRHbYAMKFAKUpDtfEq7Erb9OiUoM/9NotgDl/AUOI=;
+	s=arc-20240116; t=1725890149; c=relaxed/simple;
+	bh=DBSqSKKZCT86Ns+OwHm8+kGgzIhmdP3PE7fnwZ2cnSE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MibawelgenUcEuPeeUBZ1oPZqACbNsEGv7q5yk5wj7gpNihZgu+BE667Q31KPalp196d99dIPFkR9Lgbq1d2VwFzqZk8McwSy6Uz7prfUgUu0itydRoQxHChuN55S/y9b22dZkh3aD1gob6Cm7vCQXQX3NkpYeyGdW9SYQ3nMCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XWw15fUy; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type:Content-Disposition; b=JRrxULu/NICHPMOTFVmPLi8G5HM2PeY39LT38RebgdFvSZPh1W3tCwiRtS0XgO5L0O+vqR8SXlYSOzHBoH5tckb9E7NDHSztKIlz1SvxghHW/ZGmYQowDvKOAH9b8WJ6LleIYJIqWkYvpdo/yrJJMI3NvNxWWHcyUi925LC+yps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UpmeDKDD; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XWw15fUy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725881388; x=1757417388;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=N/oRHbYAMKFAKUpDtfEq7Erb9OiUoM/9NotgDl/AUOI=;
-  b=XWw15fUyl2oRT5D4R1HeQ2HrpL+O2ie+ECJLEhbA6Kzyna44kN4fi97a
-   K435MGlz+zdxaN8r2+BRkRNQ0v1vCo0nj646pyecZcSZQdoxU9+wieY/3
-   bEXge6qSRgTicwmcLhJE2t6sfXi39t1IfYpeyWAzDrcuYisFDlQRqGsJ9
-   ecdjd1M1C5Pa7P+EoSIPKM2JNXYnvxkGO+Z+NoHg8M+9Sr/Genv5NVPA/
-   WbjVRt7i6OJo0SO1TlqZ5QLmSWFGWyZJuOUBT68Eo7KNGikKcQA0p20bN
-   ZyFZZ7MUTKLOQyh/ALnrzPUUT+gb2fuKtYMFboCu6EUqItS4Tw4vrTkBL
-   g==;
-X-CSE-ConnectionGUID: bZ1uq1u/RiW8SPfY4PAjWg==
-X-CSE-MsgGUID: jJjZJ/gnTlqsQ+x/HZTQbA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="28456308"
-X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
-   d="scan'208";a="28456308"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 04:29:48 -0700
-X-CSE-ConnectionGUID: y1k9qXhnSTmaFD6klw4wqw==
-X-CSE-MsgGUID: NYjaBJ5rTBOj92o+Jc+wgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
-   d="scan'208";a="66885614"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa010.fm.intel.com with ESMTP; 09 Sep 2024 04:29:45 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id EC567321; Mon, 09 Sep 2024 14:29:43 +0300 (EEST)
-Date: Mon, 9 Sep 2024 14:29:43 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Kai Huang <kai.huang@intel.com>
-Subject: Re: [PATCHv6 3/4] x86/tdx: Dynamically disable SEPT violations from
- causing #VEs
-Message-ID: <k6sk7qmumm4lkvfd26m2r2pd7yv4rosp4zbdpfurznlz5n3a4t@c5sh77tlmjxj>
-References: <20240828093505.2359947-1-kirill.shutemov@linux.intel.com>
- <20240828093505.2359947-4-kirill.shutemov@linux.intel.com>
- <0dce2a59-544a-4e98-b895-ce5848778108@suse.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UpmeDKDD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725890146;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=phI90hKtthNRNf98RPRiQsc1bPNjYM/u78Q8gnoGCn8=;
+	b=UpmeDKDDlprjtQyy1a1fYdvIWuW7FEbNlwGrcs11Dn7BGfybkfnJn31Q25Ltl+i4JBKYDm
+	x2etvEh/QyfpjQB74KEF5P5Z/ulguUVs4yuHYn2SHcDebYbpd7Y7UOm9rVpRE5+kBBciik
+	PAe+fUpVPiDY+v++BI03MwV+iXuX1w4=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-7TDzCSP3P7Olgrxge0NhXw-1; Mon, 09 Sep 2024 09:55:45 -0400
+X-MC-Unique: 7TDzCSP3P7Olgrxge0NhXw-1
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6c36e60b5f9so59540116d6.2
+        for <linux-coco@lists.linux.dev>; Mon, 09 Sep 2024 06:55:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725890145; x=1726494945;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=phI90hKtthNRNf98RPRiQsc1bPNjYM/u78Q8gnoGCn8=;
+        b=f+DIQYWYtR9ON/zIyt1q7LVKsJ6VBgPta19QiXIu0lvYFjI4lyYJJJnALc4hLGgoBs
+         nM1GpQHoe/BiZEdf0JkEJ8KjTnWasfQISdIz2bDhJk1thcVfFmIPsx9MqvjdmOL0QLUo
+         cXnkrugiQHdPUBCq66Gk2bO5EA/BxIaOO/rMFitI3p/cortKVn1Vdxcf/i0UX7i1ILJ/
+         QEppGixP34O4FwpY3UUzGVbH4E0Lye/pVO+vTBTCPWWSa2fhjCcQ3IM+QpYWqQoulUsq
+         q6xE2tF4fffDF4w3PSXl5n02D5i20JNh7I8seq73xqWSIr3FsRw6JKUt1LwqbwLdmq8q
+         CH8w==
+X-Forwarded-Encrypted: i=1; AJvYcCVYGYjMEaJ6mxMNgEOgZuNEYbuDjJPqMSc03a/m1QgcNY696/z9dJg4N8WEIyN8CLpLyMtxAV3NTwQ0@lists.linux.dev
+X-Gm-Message-State: AOJu0YyGFtvvgkkR5WvlL2bipV0fgsyBv6ZG6gUPUPKw90eggIG3dxzS
+	sdEN9fHlpBLxcuHGg0PuULOOyg/+T0Za/KlUJtF0Az37UK3HJswUHTafDMIKTzMWMLRkZMB5inH
+	RiHhp0gRVluBJBz/0XiReGwNZlxTWoua5qOUjUv10jdq/YLSPEnD+N3udJ+Y=
+X-Received: by 2002:a05:6214:1843:b0:6c5:2a13:b8e1 with SMTP id 6a1803df08f44-6c52a13b9c5mr96954446d6.43.1725890145006;
+        Mon, 09 Sep 2024 06:55:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFQcseXYtQRpNWe4UC31AKTYj4V8OS7K7G0X+aaWgh8qtUW96w7rIdRupRfllbFa2yALO/OQg==
+X-Received: by 2002:a05:6214:1843:b0:6c5:2a13:b8e1 with SMTP id 6a1803df08f44-6c52a13b9c5mr96954066d6.43.1725890144589;
+        Mon, 09 Sep 2024 06:55:44 -0700 (PDT)
+Received: from fedora (193-248-58-176.ftth.fr.orangecustomers.net. [193.248.58.176])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c553803dd6sm940686d6.14.2024.09.09.06.55.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Sep 2024 06:55:44 -0700 (PDT)
+Date: Mon, 9 Sep 2024 15:55:39 +0200
+From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>
+Subject: Re: [PATCH v5 12/19] efi: arm64: Map Device with Prot Shared
+Message-ID: <Zt7+W56+dKhQl7GG@fedora>
+References: <20240819131924.372366-1-steven.price@arm.com>
+ <20240819131924.372366-13-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20240819131924.372366-13-steven.price@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0dce2a59-544a-4e98-b895-ce5848778108@suse.com>
 
-On Wed, Aug 28, 2024 at 05:27:32PM +0300, Nikolay Borisov wrote:
+On Mon, Aug 19, 2024 at 02:19:17PM +0100, Steven Price wrote:
+> From: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
+> Device mappings need to be emualted by the VMM so must be mapped shared
+> with the host.
 > 
-> On 28.08.24 г. 12:35 ч., Kirill A. Shutemov wrote:
-> > Memory access #VEs are hard for Linux to handle in contexts like the
-> > entry code or NMIs.  But other OSes need them for functionality.
-> > There's a static (pre-guest-boot) way for a VMM to choose one or the
-> > other.  But VMMs don't always know which OS they are booting, so they
-> > choose to deliver those #VEs so the "other" OSes will work.  That,
-> > unfortunately has left us in the lurch and exposed to these
-> > hard-to-handle #VEs.
-> > 
-> > The TDX module has introduced a new feature. Even if the static
-> > configuration is set to "send nasty #VEs", the kernel can dynamically
-> > request that they be disabled. Once they are disabled, access to private
-> > memory that is not in the Mapped state in the Secure-EPT (SEPT) will
-> > result in an exit to the VMM rather than injecting a #VE.
-> > 
-> > Check if the feature is available and disable SEPT #VE if possible.
-> > 
-> > If the TD is allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
-> > attribute is no longer reliable. It reflects the initial state of the
-> > control for the TD, but it will not be updated if someone (e.g. bootloader)
-> > changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
-> > determine if SEPT #VEs are enabled or disabled.
-> 
-> LGTM. However 2 minor suggestions which might be worth addressing.
-> 
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-> 
-> > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Fixes: 373e715e31bf ("x86/tdx: Panic on bad configs that #VE on "private" memory access")
-> > Cc: stable@vger.kernel.org
-> > Acked-by: Kai Huang <kai.huang@intel.com>
-> > ---
-> >   arch/x86/coco/tdx/tdx.c           | 76 ++++++++++++++++++++++++-------
-> >   arch/x86/include/asm/shared/tdx.h | 10 +++-
-> >   2 files changed, 69 insertions(+), 17 deletions(-)
-> > 
-> > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> > index 08ce488b54d0..f969f4f5ebf8 100644
-> > --- a/arch/x86/coco/tdx/tdx.c
-> > +++ b/arch/x86/coco/tdx/tdx.c
-> > @@ -78,7 +78,7 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
-> >   }
-> >   /* Read TD-scoped metadata */
-> > -static inline u64 __maybe_unused tdg_vm_rd(u64 field, u64 *value)
-> > +static inline u64 tdg_vm_rd(u64 field, u64 *value)
-> >   {
-> >   	struct tdx_module_args args = {
-> >   		.rdx = field,
-> > @@ -193,6 +193,62 @@ static void __noreturn tdx_panic(const char *msg)
-> >   		__tdx_hypercall(&args);
-> >   }
-> > +/*
-> > + * The kernel cannot handle #VEs when accessing normal kernel memory. Ensure
-> > + * that no #VE will be delivered for accesses to TD-private memory.
-> > + *
-> > + * TDX 1.0 does not allow the guest to disable SEPT #VE on its own. The VMM
-> > + * controls if the guest will receive such #VE with TD attribute
-> > + * ATTR_SEPT_VE_DISABLE.
-> > + *
-> > + * Newer TDX modules allow the guest to control if it wants to receive SEPT
-> > + * violation #VEs.
-> > + *
-> > + * Check if the feature is available and disable SEPT #VE if possible.
-> > + *
-> > + * If the TD is allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
-> > + * attribute is no longer reliable. It reflects the initial state of the
-> > + * control for the TD, but it will not be updated if someone (e.g. bootloader)
-> > + * changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
-> > + * determine if SEPT #VEs are enabled or disabled.
-> > + */
-> > +static void disable_sept_ve(u64 td_attr)
-> > +{
-> > +	const char *msg = "TD misconfiguration: SEPT #VE has to be disabled";
-> > +	bool debug = td_attr & ATTR_DEBUG;
-> > +	u64 config, controls;
-> > +
-> > +	/* Is this TD allowed to disable SEPT #VE */
-> > +	tdg_vm_rd(TDCS_CONFIG_FLAGS, &config);
-> > +	if (!(config & TDCS_CONFIG_FLEXIBLE_PENDING_VE)) {
-> 
-> Should you check for the presence of those controls in in
-> TDX_FEATURES0.PENDING_EPT_VIOLATION_V2 ? I.e perhaps this code can be put in
-> the same function that checks the presence of RBP_NO_MOD in a different
-> series by Kai Huang?
+Typo. s/emualted/emulated 
 
-No. TDX_FEATURES0 check is not required. This bit in TDCS_CONFIG_FLAGS
-cannot be anything else than FLEXIBLE_PENDING_VE and checking only this
-bit is enough.
+Matias
 
-> 
-> 
-> > +		/* No SEPT #VE controls for the guest: check the attribute */
-> > +		if (td_attr & ATTR_SEPT_VE_DISABLE)
-> > +			return;
-> 
-> nit: Given that we expect most guests to actually have this attribute set
-> perhaps moving this check at the top of the function will cause it exit
-> early more often than not?
-
-The attribute is not reliable source if flexible VE controls are present
-as I mentioned in the commit message. We can only rely on it if there's no
-TDCS_CONFIG_FLEXIBLE_PENDING_VE.
-
-> > +
-> > +		/* Relax SEPT_VE_DISABLE check for debug TD for backtraces */
-> > +		if (debug)
-> > +			pr_warn("%s\n", msg);
-> > +		else
-> > +			tdx_panic(msg);
-> > +		return;
-> > +	}
-> > +
-> > +	/* Check if SEPT #VE has been disabled before us */
-> > +	tdg_vm_rd(TDCS_TD_CTLS, &controls);
-> > +	if (controls & TD_CTLS_PENDING_VE_DISABLE)
-> > +		return;
-> > +
-> > +	/* Keep #VEs enabled for splats in debugging environments */
-> > +	if (debug)
-> > +		return;
-> > +
-> > +	/* Disable SEPT #VEs */
-> > +	tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_PENDING_VE_DISABLE,
-> > +		  TD_CTLS_PENDING_VE_DISABLE);
-> > +
-> > +	return;
-> > +}
-> > +
-> >   static void tdx_setup(u64 *cc_mask)
-> >   {
-> >   	struct tdx_module_args args = {};
-> 
-> <snip>
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
