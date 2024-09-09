@@ -1,51 +1,51 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C281B5806
-	for <linux-coco@lists.linux.dev>; Mon,  9 Sep 2024 09:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFB31B29B3
+	for <linux-coco@lists.linux.dev>; Mon,  9 Sep 2024 09:24:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725873573; cv=none; b=qZi1o/f8v+nOwuxTtWRfvtMDZoLMd/G9YkC3FAydSB+RZ/Sv5x/jxeUpnPO4UO86wZKWb5pRZvqN5BPl1xbQNXOyuGb7up5ZgxrZCC9WkK1gRRtiW6ORNwOJOdYsdbdL37zRbucuT1lsmKQVg2/CLmaIXDGexYiVX6D3R6J2VTw=
+	t=1725873859; cv=none; b=DHN+KBACcwEseIFtqheV0wXqy3Sn1ZHrSYJ//Gi8+FRXSfgqSg0tYyAExSROxgknJdd5JzsUT7jarroUUKnqRu8FjD0zQFu+0DgVcUo7NMToQL5maPlFuXFYtbmGTGHTeJLjFMGavyoZiy3/OBYJqSVbBTkx6UxyJgevy2/it+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725873573; c=relaxed/simple;
-	bh=vBicCEn34wOQk+mxT1S9HSE+MwVayxQWhVfS2wuRQoY=;
+	s=arc-20240116; t=1725873859; c=relaxed/simple;
+	bh=y/zEhbGoGCGtET0L7VBESgrFbiwtn+5vGlpKoy71hz0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aOQY+pBCOeCott5KVypGrBAgPRMg3a8k+j0LFMg/UA2u3RG4CxXyFCvmSjD9lR+a1CpCrX4hlG930AGg2lxaiYE1bXn7EmswbiPHEOHVGwBZripNx+6U8+MaMbjM00zIo2pUJBxNUjL0XWNxfyO/LcO6DXYUdb6ZbpRNWw/dZXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h9QhVcKk; arc=none smtp.client-ip=192.198.163.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=i7D72kScs44Mtv+alPFl1XS/1fhpevKj69aykjzmkki6rch3pKjMkj2HKaix9ds84KYQ1onKiT9TCODQyA50kn6v3hqD/ml++6YIuLgtbai+k1fkJtoQWpoF6Ofvpd3tb4QZ9E8vHl5OtRX7qw83XOu00NJaGGshIVOMLJ1X0rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WOmcoZwS; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h9QhVcKk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WOmcoZwS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725873571; x=1757409571;
+  t=1725873858; x=1757409858;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=vBicCEn34wOQk+mxT1S9HSE+MwVayxQWhVfS2wuRQoY=;
-  b=h9QhVcKkUUWgq2oq+b8IQoO5zEhbwHBdvTjleTF5cKfYl7m83LNf+APo
-   xwrivNvVbDOZRwnWtEoheJmyzJNMrsxqHPft1wo0DcCgH6Y5PFF1oFKFE
-   QovAfKC4kXSph6wHBnpg/0CGumfKLVowPIs4Md9dspl2wFDedkYCnjfZ7
-   Te0tqZMrSOSXaaK2lv33zS0I+E1piqf4ePC1bSMzY+z+4X71EWlFMsNtY
-   DyowH74PTO5seX7pu6jQg5AfkTBzbYz+S/qndm338fxFJ+yZig9hVy8xc
-   Ed5d+F3WthiEKjW3CGeSERU3da2ceQx7hijA2UnM9ZpyMqj6japu5RNwC
-   A==;
-X-CSE-ConnectionGUID: 4ag5IU0YQBOCxzHkAZ48/Q==
-X-CSE-MsgGUID: CJrxP//wQtuEY5GpziOtwg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="24717029"
+  bh=y/zEhbGoGCGtET0L7VBESgrFbiwtn+5vGlpKoy71hz0=;
+  b=WOmcoZwSgbkLjM6penKC0dxMIMawcTyjteibi9LKDv+oeZkgfqNgxS5R
+   h7QuIO269sQddkO6gm9Cs0LBGOTdI+N77FsiwYUgcWEd0GEi8HLo2wFug
+   GVaq/esFoShb1MFGpGz6IXJjmhNhP+VO8ItsJz0n+XCmyeAYdRiul4ctV
+   cl7p8GUifizSwLSpRlsQsYGgw0AhWMp8LASJBsZLhqZhVBfc0GJOgBqeu
+   hATuV4j+VXwNE98qZi1uRyWA4LYDV+DjN/dCiFbtwQXLINruJHgFTqtJS
+   iuRWnIUMYq73dyVjC7zmxx5q8fOKyIeoIeDtvBczW8zl8uaIROQ7Z3Eic
+   w==;
+X-CSE-ConnectionGUID: PDhiaA8iSeabF0DVwf2D3w==
+X-CSE-MsgGUID: KEnr6ttESPO77cEI0MVOIA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="49970390"
 X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; 
-   d="scan'208";a="24717029"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 02:19:23 -0700
-X-CSE-ConnectionGUID: cvkWcm4WR729h0FwFTRqiQ==
-X-CSE-MsgGUID: w3M1/NvXSfKQry4pHGACxQ==
+   d="scan'208";a="49970390"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 02:24:17 -0700
+X-CSE-ConnectionGUID: cobGghzgTHyXYq1Kq7IegQ==
+X-CSE-MsgGUID: m4eOU/nJRKi3E72JIibx/w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; 
-   d="scan'208";a="66846484"
+   d="scan'208";a="66598830"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa010.fm.intel.com with ESMTP; 09 Sep 2024 02:19:19 -0700
+  by fmviesa009.fm.intel.com with ESMTP; 09 Sep 2024 02:24:13 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 60847297; Mon, 09 Sep 2024 12:19:18 +0300 (EEST)
-Date: Mon, 9 Sep 2024 12:19:18 +0300
+	id 36F9D243D; Mon, 09 Sep 2024 12:24:12 +0300 (EEST)
+Date: Mon, 9 Sep 2024 12:24:12 +0300
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Alexey Gladkov <legion@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
@@ -55,11 +55,11 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Geert Uytterhoeven <geert@linux-m68k.org>, Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>, 
 	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>, cho@microsoft.com, 
 	decui@microsoft.com, John.Starks@microsoft.com
-Subject: Re: [PATCH v6 5/6] x86/tdx: Move MMIO helpers to common library
-Message-ID: <hga6pbwtnx4wgbau5nqem7d5ypsv3swwxezdpok2fw2zqfbvxe@f4zsrbvymckf>
+Subject: Re: [PATCH v6 6/6] x86/tdx: Implement MOVS for MMIO
+Message-ID: <7gg7baisfiiqlg3x7mohkhvxvvvgxdjkn4pwvkzxmljwgimf4z@wukl6lab7dmh>
 References: <cover.1724837158.git.legion@kernel.org>
  <cover.1725622408.git.legion@kernel.org>
- <24044dab4a665f6208c10d1cbce4b99f0fea8239.1725622408.git.legion@kernel.org>
+ <017887cf42991777c96949ecf81469965113b412.1725622408.git.legion@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -68,18 +68,26 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <24044dab4a665f6208c10d1cbce4b99f0fea8239.1725622408.git.legion@kernel.org>
+In-Reply-To: <017887cf42991777c96949ecf81469965113b412.1725622408.git.legion@kernel.org>
 
-On Fri, Sep 06, 2024 at 01:50:03PM +0200, Alexey Gladkov wrote:
-> From: "Alexey Gladkov (Intel)" <legion@kernel.org>
-> 
-> AMD code has helpers that are used to emulate MOVS instructions. To be
-> able to reuse this code in the MOVS implementation for intel, it is
-> necessary to move them to a common location.
-> 
-> Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
+On Fri, Sep 06, 2024 at 01:50:04PM +0200, Alexey Gladkov wrote:
+> diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+> index a75a07f4931f..33875a217ed8 100644
+> --- a/arch/x86/include/asm/processor.h
+> +++ b/arch/x86/include/asm/processor.h
+> @@ -486,6 +486,9 @@ struct thread_struct {
+>  	unsigned long		iopl_emul;
+>  
+>  	unsigned int		iopl_warn:1;
+> +#ifdef CONFIG_INTEL_TDX_GUEST
+> +	unsigned int		in_mmio_emul:1;
+> +#endif
 
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+This ifdeffery doesn't help anybody. Just drop it.
+
+Otherwise looks good to me:
+
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
