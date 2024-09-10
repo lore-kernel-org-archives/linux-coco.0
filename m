@@ -1,65 +1,49 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC6917E016
-	for <linux-coco@lists.linux.dev>; Tue, 10 Sep 2024 04:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB68183061
+	for <linux-coco@lists.linux.dev>; Tue, 10 Sep 2024 07:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725941755; cv=none; b=OvtUmvqGLRYBELVFG6sxNw2Jg8uaBsetNqxPV3VqVE2L+Cv4u/5z/mmqghjkUBhLxwwNwl7XlxMmW8MBMN6Gsz6A9C/ySoq4drjlLI522o9lOy40Z90+GqUml1fh4f+81kQdFTbn70teL5MJLJSJpSsVh1DdOMduOM2Nz28I50g=
+	t=1725954483; cv=none; b=uWM9CdTSAxfZhTbKGRGv6wCwGPzXTE3PBdfqlbHY3hDwla5/MSLYjMTZaWsC/ZMVOAFNryvoiQT3Ma/9FFekVWJjOPQ8j2nLj539vJoTUQIHEeDa7PhPiyhO7GH754/23uIA4PaL0FlYBy2qSdPDCTgK1bZIthBg0PNwhVfqJZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725941755; c=relaxed/simple;
-	bh=gkZzcVeOY1zKE6Oa+cxE4jiLx/E16ZR2j2sfe3+e4vI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CQxEAkeEdzSJ2j4Uk8lxUe/2vYea3S3G8K2gaaWfCf+bzl/hyOs77fhlRgdOA19TbIzmFWv2BPuugEJML6Vlltd+LwY0gEuCjHzX1pHyjVayp67uTh5HcDhM0Fy1JOCJXgUXUc9ng/PtFWuFGwz6E7UgBLp/X0zkANA74cKm0mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dqWdq0/S; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1725954483; c=relaxed/simple;
+	bh=wxWwHk0nwc2H9qd/VUc1E7GvAr+7m/sH/Q5oxnmNf6g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=McE2opnztLqtv8TJZ3YoQk5Et8rgHZreB/ORrz8jQNEIJX9O0eZvUHAJ6D/WoNO5zSjzenz6uc+TbjZVNIjg7uMS7IOcguCbIJa7rMTup/X+a9cFQIgCxwfFQh2nSbTjpvry6CD8/eskrVQOjIIUHG/g7IFwa256fLbzInKIoi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=stZX+HeI; arc=none smtp.client-ip=52.95.49.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dqWdq0/S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725941752;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u/+FRQQ8Ru8+M5tm0CToElnSS7luR16tiIP4Dg8B3y8=;
-	b=dqWdq0/SMJnTpdZNVVG3YYLM2yKiE4Uujv0Lx7TJsxW/Fj+Gx0FVNPzeKjZ39nGzzRt8WT
-	Fr5S/rO9ITSDEzjFAPYaDFTlpMPUfFdw50rP12VtlE79Pocor+PBug2qT1R8IqwQHqye9W
-	W5PdGKvODRrTM7YCml59ZwQvg8tl9ug=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-LAPqP0FfNVymw-hccHQn6Q-1; Tue, 10 Sep 2024 00:15:50 -0400
-X-MC-Unique: LAPqP0FfNVymw-hccHQn6Q-1
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-7d50777abf1so2931574a12.3
-        for <linux-coco@lists.linux.dev>; Mon, 09 Sep 2024 21:15:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725941749; x=1726546549;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=u/+FRQQ8Ru8+M5tm0CToElnSS7luR16tiIP4Dg8B3y8=;
-        b=c1qWkhZdcafp0g+7BpystXuL1NN6uUL5DKzKug2sp75q3pvxFOvttYoLzUB0QeylCG
-         3HvNo4fEjyMHk4K5687tPwCqnyIYQACTMk+VqoWG0JihFNkYa/4/2hb+yviU8TF9ebKe
-         jADOeK4r5sQcDGsH7HHnpP6/Nxz2ct3Pd39gAkYUR52CuwY2l4UDqjdHRLkuu4DxA72P
-         BGkIFUgkDHyd82YkLnbpG96Rb0QYoUltBl6s1ysRk/9F9bzaYM7bK7oyjoyniSrf3j8v
-         MO2TPjPbS8Trtf2+HTOLhvj8oqU6NPOemRWtG2cDTbaJzwYvxdJpKrtiSw0koQH2ybeE
-         VbHw==
-X-Forwarded-Encrypted: i=1; AJvYcCW6Ga47TXAHHAxv6NR9Z8fJrWLyQjmFKQelJdSYHnKQMA2a+G5jcHXflCpFFvNuJYnDT4WefuG3m6VC@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx66NX1CT8GTHRlcLwkiq/S3TPY8WouG7U+NeTk8iTHbkYmjdHM
-	5sbzDq5mE7ieY6Lej9gf8svsgoL3KFILppYpwT1s7xAo5mV3TXeKe9LynnSCgCrFNR+yNt4OnLs
-	3zAeKzrdy4WT1RZlR34yurwdqEYh4Ic5/cMSdc39xg8zY52koYWSlfO43CQw=
-X-Received: by 2002:a17:902:f549:b0:202:5af:47fc with SMTP id d9443c01a7336-206f0511f66mr213103755ad.13.1725941749245;
-        Mon, 09 Sep 2024 21:15:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IESpzFJPvUaYPPTKHz8T4YHLbc03zqgmBJU6sgzN1/EtRPQmV6cfuytRj9V1iBRvh9wsUVF0g==
-X-Received: by 2002:a17:902:f549:b0:202:5af:47fc with SMTP id d9443c01a7336-206f0511f66mr213103255ad.13.1725941748534;
-        Mon, 09 Sep 2024 21:15:48 -0700 (PDT)
-Received: from [192.168.68.54] ([103.210.27.31])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20710e0efbesm40682855ad.40.2024.09.09.21.15.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Sep 2024 21:15:48 -0700 (PDT)
-Message-ID: <29016e56-e632-422d-a4d2-1891fad2c565@redhat.com>
-Date: Tue, 10 Sep 2024 14:15:39 +1000
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="stZX+HeI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1725954482; x=1757490482;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=wxWwHk0nwc2H9qd/VUc1E7GvAr+7m/sH/Q5oxnmNf6g=;
+  b=stZX+HeI95GOPsm4NOWlbLstRWc+THPqsKFzlgCPBA4v8FS/davtq+nj
+   /esoT3VSVNR49FUde9WWLezo+QtZPP5ZgpC1s5BTkfr7sk68UTfbmBTgu
+   siyIeUYo0pUrDH8hZ09v9oyrGZK3jbpKztaUV/GEQjBiwO5vP4dy8Yngl
+   0=;
+X-IronPort-AV: E=Sophos;i="6.10,216,1719878400"; 
+   d="scan'208";a="432364489"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 07:47:58 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.21.151:11295]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.40.54:2525] with esmtp (Farcaster)
+ id 7cd07189-687a-42b6-ad96-7297ba812e56; Tue, 10 Sep 2024 07:47:57 +0000 (UTC)
+X-Farcaster-Flow-ID: 7cd07189-687a-42b6-ad96-7297ba812e56
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Tue, 10 Sep 2024 07:47:57 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34; Tue, 10 Sep 2024
+ 07:47:54 +0000
+Message-ID: <d49a9768-fc9c-4df7-ba11-5b25470f6feb@amazon.com>
+Date: Tue, 10 Sep 2024 09:47:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,73 +51,110 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 12/19] efi: arm64: Map Device with Prot Shared
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>
-References: <20240819131924.372366-1-steven.price@arm.com>
- <20240819131924.372366-13-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20240819131924.372366-13-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH RFC 0/3] tsm: Unified Measurement Register ABI for TVMs
+To: "Xing, Cedric" <cedric.xing@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, Samuel Ortiz <sameo@rivosinc.com>, "James
+ Bottomley" <James.Bottomley@HansenPartnership.com>, Lukas Wunner
+	<lukas@wunner.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, Qinkun Bao
+	<qinkun@google.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>, "Kuppuswamy
+ Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>
+References: <20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com>
+ <10ffa4f1-e3f9-4b7d-9a6f-e4dd843f6d44@amazon.com>
+ <b1965018-6663-4bf5-b8e0-8210d0429333@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <b1965018-6663-4bf5-b8e0-8210d0429333@intel.com>
+X-ClientProxiedBy: EX19D044UWB004.ant.amazon.com (10.13.139.134) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-On 8/19/24 11:19 PM, Steven Price wrote:
-> From: Suzuki K Poulose <suzuki.poulose@arm.com>
-> 
-> Device mappings need to be emualted by the VMM so must be mapped shared
-> with the host.
-> 
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v4:
->   * Reworked to use arm64_is_iomem_private() to decide whether the memory
->     needs to be decrypted or not.
-> ---
->   arch/arm64/kernel/efi.c | 12 ++++++++++--
->   1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-> index 712718aed5dd..95f8e8bf07f8 100644
-> --- a/arch/arm64/kernel/efi.c
-> +++ b/arch/arm64/kernel/efi.c
-> @@ -34,8 +34,16 @@ static __init pteval_t create_mapping_protection(efi_memory_desc_t *md)
->   	u64 attr = md->attribute;
->   	u32 type = md->type;
->   
-> -	if (type == EFI_MEMORY_MAPPED_IO)
-> -		return PROT_DEVICE_nGnRE;
-> +	if (type == EFI_MEMORY_MAPPED_IO) {
-> +		pgprot_t prot = __pgprot(PROT_DEVICE_nGnRE);
-> +
-> +		if (arm64_is_iomem_private(md->phys_addr,
-> +					   md->num_pages << EFI_PAGE_SHIFT))
-> +			prot = pgprot_encrypted(prot);
-> +		else
-> +			prot = pgprot_decrypted(prot);
-> +		return pgprot_val(prot);
-> +	}
->   
-
-Question: the second parameter (@size) passed to arm64_is_iomem_private() covers the
-whole region. In [PATCH v5 10/19] arm64: Override set_fixmap_io, the size has been
-truncated to the granule size (4KB). They look inconsistent and I don't understand
-the reason.
-
-Thanks,
-Gavin
+Ck9uIDA5LjA5LjI0IDE2OjU1LCBYaW5nLCBDZWRyaWMgd3JvdGU6Cj4gSGkgQWxleCwKPgo+IFRo
+YW5rcyBmb3IgeW91IGNvbW1lbnRzIQo+Cj4gT24gOS84LzIwMjQgMTI6MzcgUE0sIEFsZXhhbmRl
+ciBHcmFmIHdyb3RlOgo+PiBIZXkgQ2VkcmljLAo+Pgo+PiBPbiAwOC4wOS4yNCAwNjo1NiwgQ2Vk
+cmljIFhpbmcgd3JvdGU6Cj4+PiBOT1RFOiBUaGlzIHBhdGNoIHNlcmllcyBpbnRyb2R1Y2VzIHRo
+ZSBNZWFzdXJlbWVudCBSZWdpc3RlciAoTVIpIEFCSSwKPj4+IGFuZCBpcwo+Pj4gbGFyZ2VseSBh
+IGNvbnRpbnVhdGlvbiBvZiBTYW11ZWwgT3J0aXrigJlzIHByZXZpb3VzIHdvcmsgb24gdGhlIFJU
+TVIgQUJJCj4+PiBbMV0uCj4+Pgo+Pj4gVGhpcyBwYXRjaCBzZXJpZXMgYWRkcyBhIHVuaWZpZWQg
+aW50ZXJmYWNlIHRvIFRTTSBjb3JlIGZvciBjb25maWRlbnRpYWwKPj4+IGNvbXB1dGluZyAoQ0Mp
+IGd1ZXN0IGRyaXZlcnMgdG8gcHJvdmlkZSBhY2Nlc3MgdG8gbWVhc3VyZW1lbnQKPj4+IHJlZ2lz
+dGVycyAoTVJzKSwKPj4+IHdoaWNoIGFyZSBlc3NlbnRpYWwgZm9yIHJlbHlpbmcgcGFydGllcyAo
+UlBzKSB0byB2ZXJpZnkgdGhlIGludGVncml0eQo+Pj4gb2YgdGhlCj4+PiBjb21wdXRpbmcgZW52
+aXJvbm1lbnQuIFRoZSBpbnRlcmZhY2UgaXMgc3RydWN0dXJlZCBhcm91bmQKPj4+IGBzdHJ1Y3Qg
+dHNtX21lYXN1cmVtZW50X3Byb3ZpZGVyYCwgd2hpY2ggaG9sZHMgYW4gYXJyYXkgb2YKPj4+IGBz
+dHJ1Y3QgdHNtX21lYXN1cmVtZW50X3JlZ2lzdGVyYCBhbmQgaW5jbHVkZXMgb3BlcmF0aW9ucyBm
+b3IgCj4+PiByZWFkaW5nIGFuZAo+Pj4gdXBkYXRpbmcgTVJzLgo+Pj4KPj4+IFRoZSBNUnMgY29t
+ZSBpbiB0d28gdmFyaWV0aWVzOiBzdGF0aWMgYW5kIHJ1bnRpbWUuIFN0YXRpYyBNUnMgYXJlCj4+
+PiBkZXRlcm1pbmVkIGF0Cj4+PiB0aGUgVEVFIFZNIChUVk0pIGJ1aWxkIHRpbWUgYW5kIGNhcHR1
+cmUgdGhlIGluaXRpYWwgbWVtb3J5IGltYWdlIG9yIHRoZQo+Pj4gY29uZmlndXJhdGlvbi9wb2xp
+Y3kgc3BlY2lmaWVkIGJ5IHRoZSBUVk0ncyBvd25lci4gSW4gY29udHJhc3QsCj4+PiBSdW50aW1l
+IE1Scwo+Pj4gKFJUTVJzKSBzdGFydCB3aXRoIGtub3duIHZhbHVlcywgc3VjaCBhcyBhbGwgemVy
+b3MsIGF0IFRWTSBidWlsZCB0aW1lCj4+PiBhbmQgYXJlCj4+PiBleHRlbmRlZCB3aXRoIG1lYXN1
+cmVtZW50cyBvZiBsb2FkZWQgY29kZSwgZGF0YSwgY29uZmlndXJhdGlvbiwgb3IKPj4+IGV4ZWN1
+dGVkCj4+PiBhY3Rpb25zIGJ5IHRoZSBUVk0gZ3Vlc3QgZHVyaW5nIHJ1bnRpbWUuCj4+Cj4+Cj4+
+IElzIHRoZXJlIGEgcGFydGljdWxhciByZWFzb24gdG8gdHJlYXQgcnVudGltZSBhbmQgc3RhdGlj
+IG1lYXN1cmVtZW50cwo+PiBzZXBhcmF0ZWx5PyBJbiBOaXRybyBFbmNsYXZlcyAod2hpY2ggSSBz
+dGlsbCBuZWVkIHRvIGFkZCB0c20gaW50ZWdyYXRpb24KPj4gZm9yKSwgYm90aCBhcmUgc2ltcGx5
+IE5TTSBQQ1JzLiAiU3RhdGljIiBtZWFzdXJlbWVudHMgZ2V0IGxvY2tlZCBieSB0aGUKPj4gaW5p
+dGlhbCBib290IGNvZGUuICJSdW50aW1lIiBtZWFzdXJlbWVudHMgY2FuIGdldCBsb2NrZWQgYnkg
+Z3Vlc3QgY29kZQo+PiBsYXRlciBpbiB0aGUgYm9vdCBwcm9jZXNzLiBCdXQgdGVjaG5pY2FsbHks
+IGJvdGggYXJlIHRoZSBzYW1lIHR5cGUgb2YKPj4gbWVhc3VyZW1lbnQuCj4+Cj4gTXkgYXBvbG9n
+aWVzIGZvciB0aGUgY29uZnVzaW9uISBUaGV5IGFyZSBpbiBmYWN0IHRyZWF0ZWQgaW4gdGhlIHNh
+bWUgd2F5Cj4gZnJvbSB0aGUgQ0MgZ3Vlc3QgZHJpdmVyJ3MgcGVyc3BlY3RpdmUuCgoKSSdtIG5v
+dCB3b3JyaWVkIGFib3V0IHRoZSBkcml2ZXIncyBwZXJzcGVjdGl2ZSB0byBiZSBob25lc3Q7IEkn
+bSBtdWNoIAptb3JlIGludGVyZXN0ZWQgaW4gdGhlIHVzZXIgc3BhY2UgQUJJIGFuZCB0byBlbnN1
+cmUgaXQncyBjb25zaXN0ZW50IGFuZCAKZmxleGlibGUgOikuCgoKPiBIZXJlIEkgbWVhbnQgdG8g
+ZGVzY3JpYmUgdGhhdCBzdGF0aWMgYW5kIHJ1bnRpbWUgTVJzIGhhdmUgZGlmZmVyZW50Cj4gcHJv
+cGVydGllcyAobGlrZSAibG9ja2VkIiBhcyB5b3UgbWVudGlvbmVkKSBzbyBpbiBvcmRlciB0byB0
+cmVhdCB0aGVtIGluCj4gdGhlIHNhbWUgd2F5LCB3ZSdkIGhhdmUgdG8gZGVmaW5lIHRoZSBwcm9w
+ZXJ0aWVzIGluIGNvZGUgKGkuZS4sIGBlbnVtCj4gdHNtX21lYXN1cmVtZW50X3JlZ2lzdGVyX2Zs
+YWdgIGluIGluY2x1ZGUvbGludXgvdHNtLmgpLgo+Cj4+IEluIGZhY3QsIG90aGVyIGF0dHJpYnV0
+ZXMgbGlrZSBhbiBhZGRpdGlvbmFsICJoYXNoX2FsZ28iIHRvIHRoZQo+PiBtZWFzdXJlbWVudCBp
+dHNlbGYgY2FuIGJlIHVzZWZ1bCBpbiBnZW5lcmFsLiBJZiB0aGUgdW5kZXJseWluZwo+PiBpbmZy
+YXN0cnVjdHVyZSBhbGxvd3MgZm9yIGEgZ2VuZXJpYyBldmVudCBsb2cgbWVjaGFuaXNtLCBoYXZp
+bmcgdGhhdAo+PiBlYXNpbHkgYXZhaWxhYmxlIGhlcmUgaXMgdXNlZnVsIHRvby4KPj4KPiBgaGFz
+aF9hbGdvYCBpcyBpbmRlZWQgYSBtZW1iZXIgb2YgYHN0cnVjdCB0c21fbWVhc3VyZW1lbnRfcmVn
+aXN0ZXJgLgo+Cj4+IFNvIEkgZG9uJ3QgcmVhbGx5IHVuZGVyc3RhbmQgd2h5IHdlIHdvdWxkIHRy
+ZWF0IHN0YXRpYyBhbmQgcnVudGltZQo+PiBtZWFzdXJlbWVudHMgZGlmZmVyZW50bHkuIENhbid0
+IHdlIGp1c3QgbWFrZSBhbGwgb2YgdGhlbSBkaXJlY3RvcmllcyBhbmQKPj4gaW5kaWNhdGUgd2hl
+dGhlciB0aGV5IGFyZSAoaW0tKW11dGFibGUgdmlhIGEgZmlsZT8KPj4KPiBEaXN0aW5ndWlzaGlu
+ZyB0aGVtIGluIHRoZSB1c2VyIGludGVyZmFjZSBtYWtlcyBlbnVtZXJhdGlvbiBvZiBSVE1Scwo+
+IGVhc2llci4gQWxzbywgdGhlcmUgYXJlIFJUTVIgc3BlY2lmaWMgYXJ0aWZhY3RzIHRoYXQgc3Rh
+dGljIE1ScyBkb24ndAo+IGhhdmUuIFRoZSBtb3N0IG9idmlvdXMgaXMgdGhlIGBldmVudF9sb2dg
+LiBgaGFzaF9hbGdvYCBpcyBsZXNzIG9idmlvdXMKPiBidXQgaXQgaXMgaW4gZmFjdCBhcHBsaWNh
+YmxlIHRvIFJUTVJzIG9ubHkgKHRoZSBvbmx5IHRoaW5nIHRoYXQgYSBzdGF0aWMKPiBNUiBoYXMg
+aXMgaXRzIHZhbHVlKS4gQWRkaW5nIHRob3NlIHRvIHN0YXRpYyBNUnMgd291bGQgY29uZnVzZSB1
+c2Vycy4KCgpJIHRoaW5rIHRoYXQgdGhpcyBzdGF0ZW1lbnQgaXMgbG9va2luZyB0b28gbXVjaCBh
+dCB0aGUgcHJvYmxlbSB3aXRoIFREWCAKZ2xhc3NlcyBvbi4gQ29uY2VwdHVhbGx5LCBtZWFzdXJl
+bWVudHMgY2FuIGhhcHBlbiBhdCBhbnkgdGltZSBieSBhbnkgCmNvbXBvbmVudCBhbmQgdGhlbiBn
+ZXQgbG9ja2VkIGdvaW5nIGZvcndhcmQuIExldCdzIGxvb2sgYSBiaXQgYXQgd2hhdCAKZGlmZmVy
+ZW50IHNvbHV0aW9ucyBkbzoKClREWAoKc3RhdGljIC0gc3BlY2lhbCByZWdpc3RlcnMgdGhhdCBn
+ZXQgd3JpdHRlbiBieSB0aGUgc2VjdXJlIG1vZHVsZSBhbmQgYXJlIApsb2NrZWQgYXQgbGF1bmNo
+ICg/KTsgU0hBMjU2PyBObyBldmVudCBsb2c7IG9yZGVyIGRlZmluZWQgYnkgcGxhdGZvcm0uCmR5
+bmFtaWMgLSBzcGVjaWFsIHJlZ2lzdGVycyB0aGF0IGFyZSBtdXRhYmxlIGF0IHJ1bnRpbWUKClNF
+Vi1TTlAKCnN0YXRpYyAtIGxhdW5jaCBkaWdlc3QgZ2VuZXJhdGVkIGJ5IEFTUCBhdCBsYXVuY2gg
+dGltZSB1c2luZyBhIFNFVi1TTlAgCnNwZWNpZmljIGFsZ29yaXRobS4gTm8gZXZlbnQgbG9nOyBv
+cmRlciBkZWZpbmVkIGJ5IHBsYXRmb3JtLgpkeW5hbWljIC0gbm90IHNwZWNpZmllZCwgd291bGQg
+YmUgaW1wbGVtZW50ZWQgYnkgYW4gU1ZTTQoKTml0cm8gRW5jbGF2ZXMKCnN0YXRpYyAtIFBDUjAt
+MTUgZ2V0IGNhbGN1bGF0ZWQgYW5kIHRoZW4gbG9ja2VkIGJ5IHRoZSBib290IGxvYWRlci4gClNI
+QTM4NC4gTm8gZXZlbnQgbG9nOyBtZWNoYW5pY3MgdG8gcmVwcm9kdWNlIGFyZSBkZWZpbmVkIGlu
+IGRvY3MuCmR5bmFtaWMgLSBQQ1IxNi0zMSBhcmUgdXAgZm9yIGN1c3RvbWVyIHVzZSBhbmQgY2Fu
+IGJlIGxvY2tlZCBhdCBhbnkgCmxhdGVyIHN0YWdlLiBTSEEzODQuIEV2ZW50IGxvZyBpcyB1bmRl
+ZmluZWQgYW5kIHVwIHRvIGN1c3RvbWVyIGNvZGUuCgoKQWxsIHN0YXRpYyBjYWxjdWxhdGlvbnMg
+YXJlIGJhc2VkIG9uIHNvbWUgYWxnb3JpdGhtLiBZZXMsIHRoZSBhbGdvcml0aG0gCmlzbid0IG5l
+Y2Vzc2FyaWx5IGEgc3RhbmRhcmQgZGlnZXN0LCBidXQgdGhleSBjYW4gYWxsIGhhdmUgYSBuYW1l
+LiBJIGNhbiAKYWxzbyBhYnNvbHV0ZWx5IHNlZSBob3cgYW55IG9mIHRoZSBzb2x1dGlvbnMgYWJv
+dmUgZ2FpbiBldmVudCBsb2cgCnN1cHBvcnQgZm9yIHN0YXRpYyBvciBkeW5hbWljIG1lYXN1cmVt
+ZW50cy4gQXQgdGhlIGVuZCBvZiB0aGUgZGF5LCBhbiAKZXZlbnQgbG9nIGZvciBzdGF0aWMgbWVh
+c3VyZW1lbnRzIGlzIGp1c3QgYSBtYXR0ZXIgb2Ygd3JpdGluZyBpdCBvdXQgYXQgCmxhdW5jaCB0
+aW1lLgoKU28gd2hhdCBJJ20gdHJ5aW5nIHRvIHNheSBpczogSW4gdGhlIHVzZXIgc3BhY2UgQUJJ
+IChmaWxlIHN5c3RlbSAKbGF5b3V0KSwgcGxlYXNlIHRyZWF0IHN0YXRpYyBhbmQgZHluYW1pYyBy
+ZWdpc3RlcnMgaWRlbnRpY2FsbHkuIFRoZXJlIApyZWFsbHkgaXMgbm8gZGlmZmVyZW5jZSBiZXR3
+ZWVuIHRoZW0gYXBhcnQgZnJvbSB0aGUgZmFjdCB0aGF0IHNvbWUgYXJlIApyZWFkLW9ubHkgYW5k
+IG90aGVycyBhcmUgcmVhZC13cml0ZS4KCgpBbGV4CgoKCgpBbWF6b24gV2ViIFNlcnZpY2VzIERl
+dmVsb3BtZW50IENlbnRlciBHZXJtYW55IEdtYkgKS3JhdXNlbnN0ci4gMzgKMTAxMTcgQmVybGlu
+Ckdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0aWFuIFNjaGxhZWdlciwgSm9uYXRoYW4gV2Vpc3MK
+RWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxvdHRlbmJ1cmcgdW50ZXIgSFJCIDI1Nzc2
+NCBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDM2NSA1MzggNTk3Cg==
 
