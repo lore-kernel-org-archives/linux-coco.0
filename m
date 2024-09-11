@@ -1,53 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021B873477;
-	Wed, 11 Sep 2024 12:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9F42F860
+	for <linux-coco@lists.linux.dev>; Wed, 11 Sep 2024 13:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726056535; cv=none; b=dLBEGNEaeRgm1IGCTu8qdu8rYCvEjOVnOfKTvew16GSHvYwuWcAcjvzg88hB7B8hqssZsl8FBtYpDb33k0mj2O5UtdLK9VFWsCmOnc2O7T32ds5TMPRVcBQdUU+4bnvAY98EsmWI7HH4sik3e6r4jtpArwe7Dfi2OB+JjSOy5c0=
+	t=1726059821; cv=none; b=qAEHuWAR6hHFuFDWdj42ZW/DI+/d/CxXWtItgqqxY0PCc03y/fEopDbJ8zHgV//cMSDIGI5uVZ4+DvN/5FqU/34ojNyYdithaURHA3rgotKvBjILPH8PSuWhN6tLWm4G+9+ErqM23AO+1RjsxneMsCy7YAVoISjh4nQMcNVc8yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726056535; c=relaxed/simple;
-	bh=w/tDZv4M/XcKS4q0HA8T/eO5qRUpw6WhnQbqCTdFFvQ=;
+	s=arc-20240116; t=1726059821; c=relaxed/simple;
+	bh=06KUJ6FSLxBVrfoCMTs/MWMdnJKm/uUyZyDWiPvPxm0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pfjr3LbUnI5W92or7YBRWU53mi/kaVNf7+h8xmWiQqd5B+heskRXBlpVC8tNYVyJvvvXQL6WJiBzsjeWMP2fyVHxw6pCEz+uqW3/BV6U9CEiXyPP0eftRIZq6Bwu8x46eC6Lwtde5yxaQYCo8Ub8nRcLbHQnCKm2pCLTIHYY8eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1KDYyBq; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=RwOr7RPQcYwU5fhCwscA9Fq/i7QKg5kJgZ/+nPDwWcoHlu0+KR1T0lPYpdJCTECJSLl0EpkxE9/YI8/8rRUlmdTAjxWdOrmSbKrpVPGVqTV3rtXUp/L9Pfmw1iAwkJRv0XASfguuZLyNF3gVjTSK1sGyW6ITq1Abf2XrJ3RYcpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FoPiNejF; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1KDYyBq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A77BC4CEC5;
-	Wed, 11 Sep 2024 12:08:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726056534;
-	bh=w/tDZv4M/XcKS4q0HA8T/eO5qRUpw6WhnQbqCTdFFvQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d1KDYyBql2g0tmnA4tajxcg2o9MFrW6hOdI5jmJVDR9RivGjEV2MZcIT7bp88c29f
-	 ov/M8bP8IDDX9wM8N+wBoYsalVsh6p5vMcorq11vr/deYqq+74Cd0cgdo+zSPT6uSd
-	 K5LsIBliXj81sT/gm6Zyi90gWZsWZ6yQCWW8mg4Y9X94wWOcdrWWJSqyfn3uJTjDdL
-	 rUaweht1UGI0aUDuRb4PVgkxN34gASe2taDRPz5ONXxdZw/+c6QxXPDVyeHZi142h4
-	 mNfJvEg9LQ+veMNU2eOMgZxD1Pgd0N4eCMbDoHX9liKoFFlS//pD3upQ++iAb3B/3r
-	 RdaYsLpd/1i+w==
-Date: Wed, 11 Sep 2024 14:08:47 +0200
-From: Alexey Gladkov <legion@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yuan Yao <yuan.yao@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>,
-	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
-	cho@microsoft.com, decui@microsoft.com, John.Starks@microsoft.com,
-	stable@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FoPiNejF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726059820; x=1757595820;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=06KUJ6FSLxBVrfoCMTs/MWMdnJKm/uUyZyDWiPvPxm0=;
+  b=FoPiNejFZa75Xvqq1L6e6t2Tn3qdEDiR6E+5QSRB6y+lkXI0Cw1mcHz5
+   q0rzP7kD11FbnQI2OoT6j7eZdeJJ3x5DiT/7jeovJ9jmzBRAH49IFp+X1
+   xlc7PPPOVF9QUskPOtJ4JYLzqzc46ejdRpFPPkMDLaqxwQ4X0A0Ap2cZm
+   JXhID4ZdxCPoEOOZpcBwT0LrfCtcWvZ7Mx0J5VfSaPlFTqDwwIUxP9Ok8
+   UQcKRKEz4HIm+Ew8w4l53jHEXMYawQI4fpQcByW5yGvwBNckGQHnqYEWu
+   fCIJhSNWmCi3J/llP/t9VJrXRRri0bD47SlOW1ni9gHP50h5Zzb2m0OAW
+   g==;
+X-CSE-ConnectionGUID: AHcVeIU6TKa5ggP80/xPgQ==
+X-CSE-MsgGUID: Nfb1QAmdQ/+YZwseQlIRZw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="47375162"
+X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; 
+   d="scan'208";a="47375162"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 06:03:40 -0700
+X-CSE-ConnectionGUID: quJw22cRT7al/h7UKBNqYw==
+X-CSE-MsgGUID: cExRptkVTTCixmES8/hz4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; 
+   d="scan'208";a="68128173"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa008.jf.intel.com with ESMTP; 11 Sep 2024 06:03:36 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id DB83F192; Wed, 11 Sep 2024 16:03:33 +0300 (EEST)
+Date: Wed, 11 Sep 2024 16:03:33 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Alexey Gladkov <legion@kernel.org>
+Cc: Dave Hansen <dave.hansen@intel.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Yuan Yao <yuan.yao@intel.com>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>, 
+	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>, cho@microsoft.com, 
+	decui@microsoft.com, John.Starks@microsoft.com, stable@vger.kernel.org
 Subject: Re: [PATCH v6 1/6] x86/tdx: Fix "in-kernel MMIO" check
-Message-ID: <ZuGITwFiv5X3wg0y@example.org>
+Message-ID: <ijxp5xk6kq7gk4myfaijnq5vunrq6tcoqu3eoqoy6n7qfvvqjg@5ca372qmmy2o>
 References: <cover.1724837158.git.legion@kernel.org>
  <cover.1725622408.git.legion@kernel.org>
  <398de747c81e06be4d3f3602ee11a7e2881f31ed.1725622408.git.legion@kernel.org>
  <24ec1497-af03-4e65-abb4-db89590fb28e@intel.com>
+ <ZuGITwFiv5X3wg0y@example.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -56,44 +71,47 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <24ec1497-af03-4e65-abb4-db89590fb28e@intel.com>
+In-Reply-To: <ZuGITwFiv5X3wg0y@example.org>
 
-On Tue, Sep 10, 2024 at 12:54:19PM -0700, Dave Hansen wrote:
-> On 9/6/24 04:49, Alexey Gladkov wrote:
-> > +static inline bool is_kernel_addr(unsigned long addr)
-> > +{
-> > +	return (long)addr < 0;
-> > +}
-> > +
-> >  static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
-> >  {
-> >  	unsigned long *reg, val, vaddr;
-> > @@ -434,6 +439,11 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
-> >  			return -EINVAL;
-> >  	}
-> >  
-> > +	if (!user_mode(regs) && !is_kernel_addr(ve->gla)) {
-> > +		WARN_ONCE(1, "Access to userspace address is not supported");
-> > +		return -EINVAL;
-> > +	}
+On Wed, Sep 11, 2024 at 02:08:47PM +0200, Alexey Gladkov wrote:
+> On Tue, Sep 10, 2024 at 12:54:19PM -0700, Dave Hansen wrote:
+> > On 9/6/24 04:49, Alexey Gladkov wrote:
+> > > +static inline bool is_kernel_addr(unsigned long addr)
+> > > +{
+> > > +	return (long)addr < 0;
+> > > +}
+> > > +
+> > >  static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+> > >  {
+> > >  	unsigned long *reg, val, vaddr;
+> > > @@ -434,6 +439,11 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+> > >  			return -EINVAL;
+> > >  	}
+> > >  
+> > > +	if (!user_mode(regs) && !is_kernel_addr(ve->gla)) {
+> > > +		WARN_ONCE(1, "Access to userspace address is not supported");
+> > > +		return -EINVAL;
+> > > +	}
+> > 
+> > Should we really be open-coding a "is_kernel_addr" check?  I mean,
+> > TASK_SIZE_MAX is there for a reason.  While I doubt we'd ever change the
+> > positive vs. negative address space convention on 64-bit, I don't see a
+> > good reason to write a 64-bit x86-specific is_kernel_addr() when a more
+> > generic, portable and conventional idiom would do.
 > 
-> Should we really be open-coding a "is_kernel_addr" check?  I mean,
-> TASK_SIZE_MAX is there for a reason.  While I doubt we'd ever change the
-> positive vs. negative address space convention on 64-bit, I don't see a
-> good reason to write a 64-bit x86-specific is_kernel_addr() when a more
-> generic, portable and conventional idiom would do.
-
-I took arch/x86/events/perf_event.h:1262 as an example. There is no
-special reason in its own function.
-
-> So, please use either a:
+> I took arch/x86/events/perf_event.h:1262 as an example. There is no
+> special reason in its own function.
 > 
-> 	addr < TASK_SIZE_MAX
+> > So, please use either a:
+> > 
+> > 	addr < TASK_SIZE_MAX
+> > 
+> > check, or use fault_in_kernel_space() directly.
 > 
-> check, or use fault_in_kernel_space() directly.
+> I'll use fault_in_kernel_space() since SEV uses it. Thanks.
 
-I'll use fault_in_kernel_space() since SEV uses it. Thanks.
+Also user_mode() check is redundant until later in the patchset. Move it
+to the patch that allows userspace MMIO.
 
 -- 
-Rgrds, legion
-
+  Kiryl Shutsemau / Kirill A. Shutemov
