@@ -1,101 +1,99 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCAB6F2FD
-	for <linux-coco@lists.linux.dev>; Wed, 11 Sep 2024 12:06:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021B873477;
+	Wed, 11 Sep 2024 12:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726056393; cv=none; b=PX8pwSlstMGgVbl6ALimZEncDZ1X1RRolaTFGAY3r3jgz9D9yq7HP7hqIr6Lf3mGPKrVR4O4cc4eg80kTNV4MCgHJY6DmLdTG0NvfPUXIpVmW+azgGAKQPDAN8FQ7HRSpWBj+DfH3mZxht9K0gumhie7soK12CFgN6vfEj1dI6Q=
+	t=1726056535; cv=none; b=dLBEGNEaeRgm1IGCTu8qdu8rYCvEjOVnOfKTvew16GSHvYwuWcAcjvzg88hB7B8hqssZsl8FBtYpDb33k0mj2O5UtdLK9VFWsCmOnc2O7T32ds5TMPRVcBQdUU+4bnvAY98EsmWI7HH4sik3e6r4jtpArwe7Dfi2OB+JjSOy5c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726056393; c=relaxed/simple;
-	bh=RRYpzrCIc4/Xe+g0aYPeg/MPSChEFt/5BSMzWDxbDso=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G/ivwWAcC8tZ9xBFv00Um4POKnZuAogpz5wap6l62TgTYuB0d5IpSvFKPw5sNHFzw5dcpwvcPw/PZTLvqCcI5pdjQrF0jGPPjuUzuiSObjPFs6mEvNRQNrohKU4n5hCIy2Q0ZUSTt+xLVqhDP5ZEl2QgqhFlaf6Ku5TFs/SPeP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=CRZv1gYF; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=CRZv1gYF; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1726056535; c=relaxed/simple;
+	bh=w/tDZv4M/XcKS4q0HA8T/eO5qRUpw6WhnQbqCTdFFvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pfjr3LbUnI5W92or7YBRWU53mi/kaVNf7+h8xmWiQqd5B+heskRXBlpVC8tNYVyJvvvXQL6WJiBzsjeWMP2fyVHxw6pCEz+uqW3/BV6U9CEiXyPP0eftRIZq6Bwu8x46eC6Lwtde5yxaQYCo8Ub8nRcLbHQnCKm2pCLTIHYY8eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1KDYyBq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="CRZv1gYF";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="CRZv1gYF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1726056390;
-	bh=RRYpzrCIc4/Xe+g0aYPeg/MPSChEFt/5BSMzWDxbDso=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=CRZv1gYFz3vzsGaYWLyBX1eswzRTAlxF73KQsAJ3XdkBYT7KncC+NP5r0fzAJSVOq
-	 0yLLaBa0HP/q+TMwIQpnTI9uiCNb7pADrGIjPIQris0Bsh/lYDWDNhPYXrCMtNgb/P
-	 l36/rHQZmngGrp4hf9IhSeWZewno/DdYWyMdb5Rw=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id DD156128609C;
-	Wed, 11 Sep 2024 08:06:30 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id hGpnq_4fl3-f; Wed, 11 Sep 2024 08:06:30 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1726056390;
-	bh=RRYpzrCIc4/Xe+g0aYPeg/MPSChEFt/5BSMzWDxbDso=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=CRZv1gYFz3vzsGaYWLyBX1eswzRTAlxF73KQsAJ3XdkBYT7KncC+NP5r0fzAJSVOq
-	 0yLLaBa0HP/q+TMwIQpnTI9uiCNb7pADrGIjPIQris0Bsh/lYDWDNhPYXrCMtNgb/P
-	 l36/rHQZmngGrp4hf9IhSeWZewno/DdYWyMdb5Rw=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id A23F0128187B;
-	Wed, 11 Sep 2024 08:06:29 -0400 (EDT)
-Message-ID: <14fc2ce22d224f05f4d382cd22f5242297e9fb86.camel@HansenPartnership.com>
-Subject: Re: [PATCH RFC 0/3] tsm: Unified Measurement Register ABI for TVMs
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: "Xing, Cedric" <cedric.xing@intel.com>, Jean-Philippe Brucker
-	 <jean-philippe@linaro.org>
-Cc: Dan Williams <dan.j.williams@intel.com>, Samuel Ortiz
- <sameo@rivosinc.com>,  Lukas Wunner <lukas@wunner.de>, Dionna Amalie Glaze
- <dionnaglaze@google.com>, Qinkun Bao <qinkun@google.com>,  Mikko Ylinen
- <mikko.ylinen@linux.intel.com>, Kuppuswamy Sathyanarayanan
- <sathyanarayanan.kuppuswamy@linux.intel.com>, linux-kernel@vger.kernel.org,
-  linux-coco@lists.linux.dev, suzuki.poulose@arm.com, sami.mujawar@arm.com
-Date: Wed, 11 Sep 2024 08:06:27 -0400
-In-Reply-To: <f6b0a1d2-c730-4b20-a8f3-afd9a7cf822a@intel.com>
-References: <20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com>
-	 <20240910170959.GA213064@myrica>
-	 <f6b0a1d2-c730-4b20-a8f3-afd9a7cf822a@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1KDYyBq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A77BC4CEC5;
+	Wed, 11 Sep 2024 12:08:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726056534;
+	bh=w/tDZv4M/XcKS4q0HA8T/eO5qRUpw6WhnQbqCTdFFvQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d1KDYyBql2g0tmnA4tajxcg2o9MFrW6hOdI5jmJVDR9RivGjEV2MZcIT7bp88c29f
+	 ov/M8bP8IDDX9wM8N+wBoYsalVsh6p5vMcorq11vr/deYqq+74Cd0cgdo+zSPT6uSd
+	 K5LsIBliXj81sT/gm6Zyi90gWZsWZ6yQCWW8mg4Y9X94wWOcdrWWJSqyfn3uJTjDdL
+	 rUaweht1UGI0aUDuRb4PVgkxN34gASe2taDRPz5ONXxdZw/+c6QxXPDVyeHZi142h4
+	 mNfJvEg9LQ+veMNU2eOMgZxD1Pgd0N4eCMbDoHX9liKoFFlS//pD3upQ++iAb3B/3r
+	 RdaYsLpd/1i+w==
+Date: Wed, 11 Sep 2024 14:08:47 +0200
+From: Alexey Gladkov <legion@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yuan Yao <yuan.yao@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>,
+	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
+	cho@microsoft.com, decui@microsoft.com, John.Starks@microsoft.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v6 1/6] x86/tdx: Fix "in-kernel MMIO" check
+Message-ID: <ZuGITwFiv5X3wg0y@example.org>
+References: <cover.1724837158.git.legion@kernel.org>
+ <cover.1725622408.git.legion@kernel.org>
+ <398de747c81e06be4d3f3602ee11a7e2881f31ed.1725622408.git.legion@kernel.org>
+ <24ec1497-af03-4e65-abb4-db89590fb28e@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <24ec1497-af03-4e65-abb4-db89590fb28e@intel.com>
 
-On Tue, 2024-09-10 at 23:01 -0500, Xing, Cedric wrote:
-> On 9/10/2024 12:09 PM, Jean-Philippe Brucker wrote:
-> > Hi Cedric,
-> > 
-> > On Sat, Sep 07, 2024 at 11:56:18PM -0500, Cedric Xing wrote:
-> > > Patch 2 introduces event log support for RTMRs, addressing the
-> > > fact that the standalone values of RTMRs, which represent the
-> > > cumulative digests of sequential events, are not fully
-> > > informative on their own.
-> > 
-> > Would each event_log include the events that firmware wrote before
-> > Linux?
->  
-> No. The log format proposed here is textual and incompatible with
-> TCG2 log format.
+On Tue, Sep 10, 2024 at 12:54:19PM -0700, Dave Hansen wrote:
+> On 9/6/24 04:49, Alexey Gladkov wrote:
+> > +static inline bool is_kernel_addr(unsigned long addr)
+> > +{
+> > +	return (long)addr < 0;
+> > +}
+> > +
+> >  static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+> >  {
+> >  	unsigned long *reg, val, vaddr;
+> > @@ -434,6 +439,11 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+> >  			return -EINVAL;
+> >  	}
+> >  
+> > +	if (!user_mode(regs) && !is_kernel_addr(ve->gla)) {
+> > +		WARN_ONCE(1, "Access to userspace address is not supported");
+> > +		return -EINVAL;
+> > +	}
 > 
-> The proposed log format is based on the CoCo event log - 
-> https://github.com/confidential-containers/guest-components/issues/495
-> .
+> Should we really be open-coding a "is_kernel_addr" check?  I mean,
+> TASK_SIZE_MAX is there for a reason.  While I doubt we'd ever change the
+> positive vs. negative address space convention on 64-bit, I don't see a
+> good reason to write a 64-bit x86-specific is_kernel_addr() when a more
+> generic, portable and conventional idiom would do.
 
-Given that AMD is planning to use the SVSM-vTPM for post launch
-measurements, not supporting TPMs in any form would make this Intel
-only on x86 and thus not very "unified".  Microsoft also tends to do
-attestations partly via the vTPM in its L1 openHCL component (even for
-TDX) and thus would also have difficulty adopting this proposal.
+I took arch/x86/events/perf_event.h:1262 as an example. There is no
+special reason in its own function.
 
-Regards,
+> So, please use either a:
+> 
+> 	addr < TASK_SIZE_MAX
+> 
+> check, or use fault_in_kernel_space() directly.
 
-James
+I'll use fault_in_kernel_space() since SEV uses it. Thanks.
+
+-- 
+Rgrds, legion
 
