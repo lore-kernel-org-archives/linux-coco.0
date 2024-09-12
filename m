@@ -1,68 +1,62 @@
 Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E07A1A0BD7
-	for <linux-coco@lists.linux.dev>; Thu, 12 Sep 2024 12:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491E41A3058
+	for <linux-coco@lists.linux.dev>; Thu, 12 Sep 2024 12:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726143313; cv=none; b=pHhsdoaNJrOreii39sBJ9bBUR8ED6+J7ezw5U0HwA0bF5gUYYVez0B/spVlLa+RXFxEL42V1bsgBqT5DoZGSfjFBbyfW+uo7JewWvBGvUlxjpZMbhj3PiVZCOqhXZMukMWkJUsi105olAfv6qrB2YkpKaDNQflhCWbKgs9J1l/o=
+	t=1726144088; cv=none; b=qMX4VNvpXw3H03iLeFP/WBX59grHfmP12p19/5hjYm3PL9scS+G1sx+kFI7JNGDI0YRH4sFF429ofjwnpPCYDahgINUEcFBFyBqDtGeOIkVoFIXQN3n6zHa41W3vPXiTkTs8LFfqfC969WJooWeWibVbj6z1OwbfhqyaNjky2u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726143313; c=relaxed/simple;
-	bh=oP+x8vTR6i5LlScGznSHY5Nv6feXOepnr9iiMusFwbE=;
+	s=arc-20240116; t=1726144088; c=relaxed/simple;
+	bh=9ZjnxTfWpjA1p4zlfI33l+DzUXnH6P+5rE0W9WBIxOs=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PGwtE3TDeK1IA9AtV4jbeeAKsa7Gj46OhPxUH867smFLVLbdA7r9qvzbP8W1OdmJc5ElrXnkmGLnHJfrPxw+3ENU4ntx3D/44rvu7/4F76BL5bafYrVSn6yA9S8VWgm/JyWUGnFJHAYurSpPLJBLf3PG7OgjJ6lqUfzoLPcTzXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Sd+YwGt+; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=fF1w6HzE; arc=none smtp.client-ip=96.44.175.130
+	 Content-Type:MIME-Version; b=HXlYWPBGAlUozzgOubRZT4WXjCYMULUGVIkdy6dIK1+OcGgzBtYxIa4Gd1+qb90gQIm6bHWIe6NApFnTwprY0JYQQbbybrbOE0GDzZbWXZNc8ulcJiY7+n5Vr3n5WozHgbpdug6QS142WXNr/5mp1htJiAnXC1QUjsi448cQHGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=AAdVE0CB; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=cZQ5IMM7; arc=none smtp.client-ip=96.44.175.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Sd+YwGt+";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="fF1w6HzE"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="AAdVE0CB";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="cZQ5IMM7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1726143309;
-	bh=oP+x8vTR6i5LlScGznSHY5Nv6feXOepnr9iiMusFwbE=;
+	d=hansenpartnership.com; s=20151216; t=1726144086;
+	bh=9ZjnxTfWpjA1p4zlfI33l+DzUXnH6P+5rE0W9WBIxOs=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=Sd+YwGt+tlFV3Ao0FyAT7VdVyLAleprzJQFM6pzpsfp02E17Ci1u4qdKJY/Rxeau+
-	 7oWuRxf/L+WJ0fi/oCkx2WqWTX5Ed7pHNFRkhS1qnAFpqO3Axi1BlBSjiMOhiGqxnM
-	 dx8Z4USKLREam8PlDKfZV+ejUE5Xz+tWN6Y+HcD8=
+	b=AAdVE0CB6ztaej2NjLWMuVFfb6OO2Y+Kdl/dGNBOjZCV/TNYh+ARWTRoHcT2Faqpg
+	 vMDKUPr4HrgZYdR95dEm42ppafoPM1NXE5aK5scdSuyuDhocrYXogt/HRVbkJ/MlQL
+	 yUMz3L1aDn4dhujn5awfVtwmOQYhskI3t1nEmqFc=
 Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id E3E321286089;
-	Thu, 12 Sep 2024 08:15:09 -0400 (EDT)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 2EF1E1286B75;
+	Thu, 12 Sep 2024 08:28:06 -0400 (EDT)
 Received: from bedivere.hansenpartnership.com ([127.0.0.1])
  by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id D75SfnYKynVW; Thu, 12 Sep 2024 08:15:09 -0400 (EDT)
+ with ESMTP id pNQr286WJefl; Thu, 12 Sep 2024 08:28:06 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1726143308;
-	bh=oP+x8vTR6i5LlScGznSHY5Nv6feXOepnr9iiMusFwbE=;
+	d=hansenpartnership.com; s=20151216; t=1726144085;
+	bh=9ZjnxTfWpjA1p4zlfI33l+DzUXnH6P+5rE0W9WBIxOs=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=fF1w6HzEY/tm/Y6bSe4tFwhUdZImuVSqH0K0W6zR9CNnGWPOtpE1FEbPV3pbm2/OL
-	 EDdBMdwwf+bW4b2fcJ97CFbmT1g8Lv9fTT92Nu3GANo8wzk2oTuOlA455jf3/F+QNt
-	 VTwN+mTxpsnV7bw6d+qQ/21ANA5cItEfEp8qnPBk=
+	b=cZQ5IMM770InZlyQTl/BVP2feJT63s5tz6Xlc5LfMYjzPY/vuZotfONtKQpj2TEZw
+	 igF4o7D6uchL1NKkZ1iqhSgl/QmOEnZNZT4LMLyvGV4gRkIufV2bCjIwrDq6UD2cHi
+	 aoTzxzO2OrfRbMD6+/WksiC9n8Npvh9i0C2Jd9bE=
 Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 384B512860C5;
-	Thu, 12 Sep 2024 08:15:05 -0400 (EDT)
-Message-ID: <0b334090c4bf21740b19371664ad0d78b66830c4.camel@HansenPartnership.com>
-Subject: Re: [PATCH RFC 0/3] tsm: Unified Measurement Register ABI for TVMs
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 228DE1285DB2;
+	Thu, 12 Sep 2024 08:28:05 -0400 (EDT)
+Message-ID: <86e6659bc8dd135491dc34bdb247caf05d8d2ad8.camel@HansenPartnership.com>
+Subject: Re: [PATCH RFC 3/3] tsm: Add TVM Measurement Sample Code
 From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: "Xing, Cedric" <cedric.xing@intel.com>, Qinkun Bao <qinkun@google.com>
-Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>, Dan Williams
- <dan.j.williams@intel.com>, Samuel Ortiz <sameo@rivosinc.com>, Lukas Wunner
- <lukas@wunner.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, Mikko
- Ylinen <mikko.ylinen@linux.intel.com>, Kuppuswamy Sathyanarayanan
- <sathyanarayanan.kuppuswamy@linux.intel.com>, linux-kernel@vger.kernel.org,
-  linux-coco@lists.linux.dev, suzuki.poulose@arm.com, sami.mujawar@arm.com,
- Chong Cai <chongc@google.com>
-Date: Thu, 12 Sep 2024 08:15:01 -0400
-In-Reply-To: <c7157fb7-b8d0-482b-9ec3-d60179a95882@intel.com>
+To: Cedric Xing <cedric.xing@intel.com>, Dan Williams
+ <dan.j.williams@intel.com>,  Samuel Ortiz <sameo@rivosinc.com>, Lukas
+ Wunner <lukas@wunner.de>, Dionna Amalie Glaze <dionnaglaze@google.com>,
+ Qinkun Bao <qinkun@google.com>, Mikko Ylinen
+ <mikko.ylinen@linux.intel.com>, Kuppuswamy Sathyanarayanan
+ <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+Date: Thu, 12 Sep 2024 08:28:02 -0400
+In-Reply-To: <20240907-tsm-rtmr-v1-3-12fc4d43d4e7@intel.com>
 References: <20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com>
-	 <20240910170959.GA213064@myrica>
-	 <f6b0a1d2-c730-4b20-a8f3-afd9a7cf822a@intel.com>
-	 <14fc2ce22d224f05f4d382cd22f5242297e9fb86.camel@HansenPartnership.com>
-	 <CAOjUGWfgYoXBzUB8wFvO5LDq+=t7hAEksu0EA4Dc7FwbmUJp7A@mail.gmail.com>
-	 <f92766c96c993276bec770e8a255bca6cc46c292.camel@HansenPartnership.com>
-	 <c7157fb7-b8d0-482b-9ec3-d60179a95882@intel.com>
+	 <20240907-tsm-rtmr-v1-3-12fc4d43d4e7@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.42.4 
 Precedence: bulk
@@ -71,63 +65,54 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2024-09-11 at 22:23 -0500, Xing, Cedric wrote:
-> Hi James,
+On Sat, 2024-09-07 at 23:56 -0500, Cedric Xing wrote:
+> This sample kernel module demonstrates how to make MRs accessible to
+> user mode
+> through TSM.
 > 
-> I would like to clarify that, even though the log format is
-> incompatible with the existing TCG2 log format, nothing prevents TPM
-> PCRs from being exposed through the TSM measurement framework.
+> Once loaded, this module registers a virtual measurement provider
+> with the TSM
+> core and will result in the directory tree below.
+> 
+> /sys/kernel/tsm/
+> └── measurement-example
+>     ├── config_mr
+>     ├── full_report
+>     ├── report_digest
+>     ├── rtmr0
+>     │   ├── append_event
+>     │   ├── digest
+>     │   ├── event_log
+>     │   └── hash_algo
+>     ├── rtmr1
+>     │   ├── append_event
+>     │   ├── digest
+>     │   ├── event_log
+>     │   └── hash_algo
+>     ├── static_mr
+>     └── user_data
 
-Well, the PCRs are already exposed through 
+I'm not sure this is the best structure to apply to logs with multiple
+banks (hash algorithms).  There needs to be a way to get the same
+registers measurement for each bank, but the log should sit above that
+(appending should extend all active banks)
 
-/sys/class/tpm/tpm0/pcr-<algo>/<n>
+How about
 
-but they don't have much meaning without the log.
+/sys/kernel/tsm/
+└──<measurement type>
+   ├──reg0
+   │   ├── <log format>
+   │   │   ├── append_event
+   │   │   └── event_log
+   │   ├── <hash algo>  
+   │  ...  └── digest
+   ...
 
-> Please note that the existing event types in the TCG2 log format are 
-> predominantly BIOS/firmware-oriented, which seldom makes sense for 
-> applications in OS runtime. Consequently, most application-specific 
-> events have to come under the EV_EVENT_TAG umbrella, which is 
-> essentially arbitrary binary data with no specific format. Thus, I
-> don't see much value in continuing the TCG2 log into OS runtime IMHO.
-
-And the IMA log, which is runtime and isn't TCG2?
-
-> The proposed log format aims to provide a framework for unambiguous 
-> hashing while allowing application-defined events. Its primary design
-> objective is to enable application-agnostic kernel/verifier to 
-> hash/verify logs without understanding the event records, allowing 
-> application-specific appraisers to be built on top (i.e., 
-> semantics/storage separation). Both TCG2 and CEL formats rely on 
-> event/content type to dictate what part of event data to hash, making
-> semantics/storage separation impossible. Therefore, this proposed log
-> format cannot accommodate entries from TCG2 or CEL logs due to that 
-> design conflict. However, entries of this log can easily be
-> encapsulated in TCG2 (as EV_ACTION entries) or CEL-JSON (a new
-> content type string needs to be defined, like what systemd is doing
-> today) logs.
-
-But that's my complaint.  This specification:
-
-   - Records are lines ending with `\n`.
-   - Each record (line) is hashed in its entirety (excluding the
-   trailing `\n`) and extended to the RTMR.
-   - The log for an RTMR is stored at
-   `/sys/kernel/tsm/<MR group name>/<RTMR name>/event_log` and consists
-   of these delineated records.
-   - Lines that are empty (containing only `\n`) or start with `#` are
-   skipped (not hashed or extended).
-   
-Is completely incompatible with pretty much every current log format. 
-Given you have fairly elaborate decorations for the register formats,
-what's the problem with simply having a decoration for the log format? 
-That way you can use the above incompatible log for your purpose but this
-framework can support existing logs and expand to future ones as they come
-along.  All this would mean initially to the code is adding the decoration
-file (easy) and ensuring that append_event is handled by a log format
-specific component, allowing for expansion.
+That way it supports multiple log formats (would be the job of the log
+extender to ensure compatibility) and multiple banks.
 
 James
 
