@@ -1,142 +1,316 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348D91A2876
-	for <linux-coco@lists.linux.dev>; Thu, 12 Sep 2024 15:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726156184; cv=none; b=uSK09yAxcB74xhhtwKHL90KmW859UyBtw+N/bnE87ULnPzQYOfcP94ptj36CRLsk+KRg947gIcFrE9rxa2GAS7iVghTgW27LdQbUNrQCaR5UVo5aIttDnD3Eo6VGlDHCx8WssAXtgntdEn+H1jtmbu7ksCsr3MRaBjxnJkUTwdk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726156184; c=relaxed/simple;
-	bh=i1b1dJnZFqLMF+ime5wFaH+3bkZaNUeZDLDLU+8iOME=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B/Ot/tBB2Tqc9hxr6wJBvZB8HYNWknlqa/o1B+/mYuk0tRA9RITvAK6O5te/4cGyTcNlaj5Yt0OOP0wtNHHiUVuyf2t8UqlUPXddexU7BF8/AiWHZKMzzknuhh4mpw2Rvww6qZmh5lOLGXCvkULLfHVJCc7zOTpTzQ3Rz6Dz+1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aMZiQWUn; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2DA18BB98
+	for <linux-coco@lists.linux.dev>; Thu, 12 Sep 2024 19:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726167668; cv=fail; b=OnTGctchNkToTEJfag2b9cC4Y6xtkhXJ51Nrv3uchYQBIO3lAbyZll6touY9BXfBHjLBSamVZQiMR2X31QQ5RykrpFPjCkUfX+cP0htKW63asAWC0WvQllRpr00IWrWxGK1DOqXer5sGNnXXMNwHk+pGwf2n8xV6r8YbUK67iwo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726167668; c=relaxed/simple;
+	bh=pH5gUeg2g1mhdHgmLpGSZDPYldb+7r6DNB1alYAT1ho=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=nETclnuX0QiqC5J+Lk70tMgsjI6BKUEpl4NlAC7VFv1cMMWSgZNl6cpkyYsQa0HqdrWTulO/OcQt0jXqv0YICW/0+LQrz9vuohhPOZQeUjrYixB4QEswvbOyz9VTEfTS9aCiFRK7f9ET8TIlvMvh9fisuc3xmo5+GRXddttmyPQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZJyW2y77; arc=fail smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aMZiQWUn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZJyW2y77"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726156183; x=1757692183;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=i1b1dJnZFqLMF+ime5wFaH+3bkZaNUeZDLDLU+8iOME=;
-  b=aMZiQWUn0aoaeeYxKYfUyX8CbzRFO8CQCAWDMRjDdjUBq7db976XLtgq
-   iV8W30eC5BvtUjQDw5fVBoiF7OQDvyDgiwA6eiQIJdQZtJcq2GNuHFD66
-   N9z4fP3YhSfSVqjy0Xojw0O2yzN9TtvkR+JZwmXpFve3xqCohMYfTgpLP
-   teXpgedwIknfvc7TWumR6tMihieN2YQPC5ZHqn4Y/ICeMvVCzc0rzBjdp
-   mkAlf5tac1ifNViPEOt5QLDlNk0Yu9fe54s9pd0ojJScIXp6Zk3FeL/6z
-   vlkA3pkYikvi1tI+FP9gNESH9lWs49JoXMqToleRARRJpsGJqiQ9Cm6Uc
-   w==;
-X-CSE-ConnectionGUID: MyXW+DbtTeShr9ry7qYE2w==
-X-CSE-MsgGUID: O0bEUbJ0SiKZoMGFFHZPQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11193"; a="42535408"
+  t=1726167667; x=1757703667;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=pH5gUeg2g1mhdHgmLpGSZDPYldb+7r6DNB1alYAT1ho=;
+  b=ZJyW2y7760t/bRw0N6DB4a/7Kr3XWyBux73Uwf/n8RPQ/NavwSkzLGBs
+   K3iTZp2iu3glU/Z4rIDQfdGfRZZq+hpcY9G/QoR05y8Gw1rdFJE/WcSdk
+   v5APSAnvdPqWvJqyBHcjDAqUhspIFX6oDKJWTsXRvJKtMIXRg45HgJrnb
+   0EVqT9vhZIQl7ug4+TH3gLujoW6DNfRLSu7RotJFASRjDLpNMx/H06D30
+   IedLa9mpGbZEgX6509T0wgs28etsju0MPY/vA9diodl/4LA87WmWy3FPn
+   1uznCZ7TUL5x6Cctqccp/LvXcd4Vvgi+j5opoDgs7C+uxFXt49RBymn5/
+   Q==;
+X-CSE-ConnectionGUID: 5qZf1sNMSmiDgFud8pef/w==
+X-CSE-MsgGUID: x23fDI31T6aya2Voa7dD4A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11193"; a="28823757"
 X-IronPort-AV: E=Sophos;i="6.10,223,1719903600"; 
-   d="scan'208";a="42535408"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2024 08:49:42 -0700
-X-CSE-ConnectionGUID: H1EqNV2eT+aAn+K5s0e5JA==
-X-CSE-MsgGUID: PdrjLvRtRimYMcOmlp2loQ==
+   d="scan'208";a="28823757"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2024 12:01:07 -0700
+X-CSE-ConnectionGUID: tWbOH0rqSoyoiQCNg564tg==
+X-CSE-MsgGUID: VY0VTwAoQbqGa7u7kuGDog==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,223,1719903600"; 
-   d="scan'208";a="67691540"
-Received: from philliph-desk.amr.corp.intel.com (HELO [10.124.220.79]) ([10.124.220.79])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2024 08:49:41 -0700
-Message-ID: <039bc47c-9b5d-41f3-87da-4500731ad347@intel.com>
-Date: Thu, 12 Sep 2024 08:49:21 -0700
+   d="scan'208";a="72158984"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 12 Sep 2024 12:01:05 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 12 Sep 2024 12:01:05 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Thu, 12 Sep 2024 12:01:05 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.45) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 12 Sep 2024 12:01:04 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JPMe6IBIcecNjz5OL8TSLT3EALWfvWVfdueQhdvgiZjoTp5AROj3l6ZbDkdF9YJyWg5cSXRsENLI+t0aY+4JzCS6pNrsSZQvLOyDVsfRi360qOt3RLa3gSRyfMXoxnTpmSG0JpDHb3yey6vuatbOSeq1yxDWUBD6H8u0F0kO3Wi/1k6AuQG+L7kV7HlzHAH2Ctl7s45azqUTNjVzuVa/O3TMzR7gxoF3nFHfKgxn7ORKssXOaTKRdpRyDn4uecGps3pJ7diA1lDbGkxIbTj6CnlSGGFP6kvVLgA1/Wlb6oKj1Ep0hghTx18Gam+NLza8XCk5xW38tvT1L2r45bYnjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AZCKaBkWBHYOtehIE+BYdSOIL9O/B2YDR5FvJEm+4Rg=;
+ b=FDrbrnc79PHcfWtXtKPYO1Rd8MSpbCDrko+nzFMA8Ner09JoOjX6nCN2VX9BFnbT3PZnoG3mOh7XUCxzJO+n45NY2OR4rX/OiczT4vfNqKcgXi/4P+yrVe1KFT7CcAWAkPHwAFwrE2Lb2n89YGSLuTzj+OVihjlbrtjUe6BG+vKM55baBDNURL7PwYRWwD9nthRv122wOrJlt7qnlQyehoDffi+X18G1j52oqFyKjpqzTiMFeFKjkKk6DoQj68n2V2Kbae3AF2JCk3Z2yRCDmhx1Hxk1MAabL3JdsIAJZgtXyDMn67mLggak8XquwJNLb6i35g2EYw/cT/dB4Hdi9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS7PR11MB6269.namprd11.prod.outlook.com (2603:10b6:8:97::14) by
+ SJ2PR11MB8585.namprd11.prod.outlook.com (2603:10b6:a03:56b::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Thu, 12 Sep
+ 2024 19:01:01 +0000
+Received: from DS7PR11MB6269.namprd11.prod.outlook.com
+ ([fe80::af1f:dcc:49bf:1a26]) by DS7PR11MB6269.namprd11.prod.outlook.com
+ ([fe80::af1f:dcc:49bf:1a26%4]) with mapi id 15.20.7939.022; Thu, 12 Sep 2024
+ 19:01:00 +0000
+Message-ID: <f284ce29-6afe-40ce-ad81-b6b2cec9199c@intel.com>
+Date: Thu, 12 Sep 2024 14:00:56 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/3] tsm: Unified Measurement Register ABI for TVMs
+To: James Bottomley <James.Bottomley@HansenPartnership.com>, Qinkun Bao
+	<qinkun@google.com>
+CC: Jean-Philippe Brucker <jean-philippe@linaro.org>, Dan Williams
+	<dan.j.williams@intel.com>, Samuel Ortiz <sameo@rivosinc.com>, Lukas Wunner
+	<lukas@wunner.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, Mikko Ylinen
+	<mikko.ylinen@linux.intel.com>, Kuppuswamy Sathyanarayanan
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <linux-kernel@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <suzuki.poulose@arm.com>,
+	<sami.mujawar@arm.com>, Chong Cai <chongc@google.com>
+References: <20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com>
+ <20240910170959.GA213064@myrica>
+ <f6b0a1d2-c730-4b20-a8f3-afd9a7cf822a@intel.com>
+ <14fc2ce22d224f05f4d382cd22f5242297e9fb86.camel@HansenPartnership.com>
+ <CAOjUGWfgYoXBzUB8wFvO5LDq+=t7hAEksu0EA4Dc7FwbmUJp7A@mail.gmail.com>
+ <f92766c96c993276bec770e8a255bca6cc46c292.camel@HansenPartnership.com>
+ <c7157fb7-b8d0-482b-9ec3-d60179a95882@intel.com>
+ <0b334090c4bf21740b19371664ad0d78b66830c4.camel@HansenPartnership.com>
+Content-Language: en-US
+From: "Xing, Cedric" <cedric.xing@intel.com>
+In-Reply-To: <0b334090c4bf21740b19371664ad0d78b66830c4.camel@HansenPartnership.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY5PR13CA0014.namprd13.prod.outlook.com
+ (2603:10b6:a03:180::27) To DS7PR11MB6269.namprd11.prod.outlook.com
+ (2603:10b6:8:97::14)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/6] x86/tdx: Allow MMIO instructions from userspace
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: Alexey Gladkov <legion@kernel.org>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Andrew Morton <akpm@linux-foundation.org>, Yuan Yao <yuan.yao@intel.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Yuntao Wang <ytcoode@gmail.com>,
- Kai Huang <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
- Oleg Nesterov <oleg@redhat.com>, cho@microsoft.com, decui@microsoft.com,
- John.Starks@microsoft.com, Paolo Bonzini <pbonzini@redhat.com>
-References: <cover.1724837158.git.legion@kernel.org>
- <cover.1725622408.git.legion@kernel.org>
- <6c158a14-ba01-4146-9c6c-8e4c035dd055@intel.com>
- <ZttwkLP74TrQgVtL@google.com>
- <d3895e03-bdfc-4f2a-a1c4-b2c95a098fb5@intel.com>
- <ZuHC-G575S4A-S_m@google.com>
- <h5gp6dgcfazm2yk3lorwqms24c2y2z4saqyed6bnzkk2zhq5g2@rf3lj2a22omd>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <h5gp6dgcfazm2yk3lorwqms24c2y2z4saqyed6bnzkk2zhq5g2@rf3lj2a22omd>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR11MB6269:EE_|SJ2PR11MB8585:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4db25102-81f7-4c72-150f-08dcd35d3e05
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?OEVrSGQ1N2o5cmdsbmJOZWtZam5WRHI3Y2RDZUYxOUJyYlI0UWFzSTVwTzUy?=
+ =?utf-8?B?d2lONHQveklpU29ZNE9xQUhzcDNUN2FNTGZGRlNOSEk2VGZwMmVQTzlWWnhM?=
+ =?utf-8?B?V0lPblJ5OGxmeGRja0VYaGp4WTVxYnIvTVBxdEhSeVU2ek9IbC91Z3RTRkQ2?=
+ =?utf-8?B?TnNEdHpPbmxPN0dLYjh1Sjc0ZkU0NG1MT2p0WFl2cWFUR0Z1bkxZQUEzc0tF?=
+ =?utf-8?B?WE1BWmN2NGNyY2p3UDAwWlVZc0xRRlZUVk1HanVUUjFvaklsVU9YK0FNUDlT?=
+ =?utf-8?B?U3RqVTYzc2dtamh1VEYxTlgrWE9weENYUEpFVmlWRjRIQjBqcVJwUFllZTJR?=
+ =?utf-8?B?c3pJa0dueGUzK1o1YXh3M2JaZmJVemxqWWs5bUtFRmZvaVpBRUxLR3J2T3pJ?=
+ =?utf-8?B?alFkVENJSllsZDV3VmNKSDduODY0VEdSYXdjV1JGRnhHNE83ZzlCM0FTU3Iz?=
+ =?utf-8?B?bnVBWm5qWUh4NzdnaUEwS0VKaFFEMzZuVFZEQ1l2elFOTmhuTHY5MnFTRWZC?=
+ =?utf-8?B?SFkrRTREMFJLMEUxOThxalBBcmpXRDNGQW9JVW5QaVFQb2F5cU9ad25oTnJ2?=
+ =?utf-8?B?WVZYdkZtOUVEUGlmLzBFQjIyUS9CT2MxRTYxYWRGK2x4Szk3VXZ0T3dIbnNi?=
+ =?utf-8?B?S2lMNHNrUnNxcEJqSmtaV1NYQXYyTTVRMHIxTjZkL3lIL2pFN0RMT2dJMlhy?=
+ =?utf-8?B?U3dFRHlSUVd1ajR5eUlOQ2pCNnBnSnlORlBYWVduRzg2SENmREVhR1RISEp2?=
+ =?utf-8?B?RlhSZ0VKMXRMNldEbWU1OHdCQ0M4SThxV09qT1Vac0RBbzJuMzFpeGw5RXhZ?=
+ =?utf-8?B?SG9XTjU4emlmL0xzTlh1VmlXRWpoa2ltT1J3VkZIamxjNjdlWjNjbmRuR042?=
+ =?utf-8?B?TE5NNnFYdnEzTDcyM1NqZWhkRmJNNGUvaWRDdWhVVGhyMkhvM3dwb2M0cDRy?=
+ =?utf-8?B?aXo3dW9VZXhaWmVBSTIvREh1WkZRZk5QcGhLcm9GRlpuZ2kzcktlY3FRVXo4?=
+ =?utf-8?B?WC9leTlaRllpN1Y2TE12dUU5cXpjL0RRak4rVmZvVWYxUTJJQmNCUnYvMWV5?=
+ =?utf-8?B?U0FPbmdVSUgyOXNuTkxLcTJONHlkM0I1UllXQ3FBclN0RFRCbVJ2aHhaZnZk?=
+ =?utf-8?B?UWRqL3FDOTJxNmErWjZKcWNkOFU4VXpxMy8vYXBiN2d5ZFJvSGxFaCsvWFli?=
+ =?utf-8?B?MWx3UVhyTG1HRTJ0SUFUNFdFZHBRMmFPL1F6dyt1a1dLK0Q5bjhpeDdBUUNn?=
+ =?utf-8?B?bHErK21xQXFFUy9UeXVYNkN1d2M1cU9xMzBwS054aFRQdDV0R202djVTc2pZ?=
+ =?utf-8?B?ZHJpMUNhZVpnU2dJMmdkclhlN3VDZUdteTZmOVJ2Sk55R2Q4dkxSZkVmRVRI?=
+ =?utf-8?B?NXRTeDRNUmlyTU1lOVFTRmE2L1FCbmxkTlFNa0h2amM5d1JBenVHVVVXY3pO?=
+ =?utf-8?B?RU9DaXBzelh2TGoydUlNaXZCT09hVzN6cmpPc1BKUlY5bDJJdG5LWVNkZHNl?=
+ =?utf-8?B?UkRKWU9RR3BJU2RiVHZ6bml1alYrWmdNZDg5d3Nrb1dIbjVJNDJJL0lISmIx?=
+ =?utf-8?B?enZFUGVIVk5qV2JVdXV0R3hZdTNrb0tJOUV4ZGhEZW9CMDF0d3VvVW03S3dL?=
+ =?utf-8?B?d1lIUGxDR1RQb2ptMm9ITVVHOXBGVExzSEs4ci95a1lhWnBuZlJiblBBUFM1?=
+ =?utf-8?B?alJBckhpcm9NTTR4ZlIyOGMvNFhpalYrYngyM1F5RXJMVlh5ekFyN3lPYURE?=
+ =?utf-8?B?Qk9oenE0L01sN0lpN1MxS0hEdVNMUGxGUTY4Q25weGMxZGNwb3UwRDhRN3gv?=
+ =?utf-8?B?QXBONmlLOVh2NzhWK2Ewdz09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB6269.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?S05YYVhmeXdpZkIwRDgzck52Q1RueDkydlhGaGl4cURyVElObGlFdDU4c3E3?=
+ =?utf-8?B?anU4MnNxRWR4R2NieFFpSFd1Rmx6U3haWXl5UTJGRVR2TDJDczhNL3Q3MCsw?=
+ =?utf-8?B?SXM0M3BiSDdlQVpDWGJIL0F4VXJCT21iN1hLVDJ2c3dLaXNmMXlFbklvUk9q?=
+ =?utf-8?B?cnBZc1k3ZElDUlcxUE9VVGdmQ0p3V29Ga2puOVgzK3RlZU5GQ29qT0VxRFAv?=
+ =?utf-8?B?UUR6bmdKY3NZayt2NFQxSjFDK1BhMFFFNUp4ZWdka21ZdEhhSzFCOGozampP?=
+ =?utf-8?B?S0d3a0VoLytPSlNib05Ja1lEOENNZTR3QkF3RE5kWWNoNmhJR1ZQZW5TdXg5?=
+ =?utf-8?B?OHA3T004ZGpUNklRY212QndjL25EUzllMDFYYU9HdmxLRDl2NjUwbzVpOFNS?=
+ =?utf-8?B?NmFtOS9uRVNHT242bUU2YmE1dXp2aUlkYXJRVkNjR0RZQlQ1aVlhZTFOSk82?=
+ =?utf-8?B?b2tBVVd3ZXNxcEVqdVc2c2FxTitmU05vRit1SG9rc1ZSeU5vRGp0Y2M1emZk?=
+ =?utf-8?B?OC80VG1MSllPSnhSSXBwcWg4V2s3K3crK1EyUGkxMFd0bGM2dGNIckFZUE85?=
+ =?utf-8?B?alhoUkxRYkR1eGVFeEJPTmpEV2lWTTRqaXZpM1lFakZrUzNlNEprdVA4OTlZ?=
+ =?utf-8?B?ZjdyRjlERDcvTVBUZ1hic2EwaTZVRmJXeGh0a3JsOFBTY2ROV0R3MlFIbWFX?=
+ =?utf-8?B?QkI5ZkhwdG5IcE1jcGtZSVZuSkd0LzBmd1RPbE5nWEpTYy9oZHBXcHdkRG5G?=
+ =?utf-8?B?V2g3OVZIM0JQOFVoYVhXRDFrRlVzamZRV2diRTBGQXVrVitnTjIySEtlKzdF?=
+ =?utf-8?B?aGZZeDdoMGJJOWZvSm9idUswbG52OFlYOE4vUFVoUkc4OG9ReSsxYnppSVV4?=
+ =?utf-8?B?QlZkZmVKRUFmeitIbDlic2R2SlhxdlRkSG0vNmVxVUw4eEhnclVPbkU4RVZ2?=
+ =?utf-8?B?YW1xMDFUV2xkaG1qeXR1MWQvUUNad0YwME8wck90QVNuZng2OUo5RjA5c2tR?=
+ =?utf-8?B?YU9TVjMxOEJXVEpXdEJINGFPOTY4VUFPQ2Vjc3NJOFZFK3kzTk9OSlJOaXBF?=
+ =?utf-8?B?VEZpcDlrQm5JUUxoSWNET09IZUliTHNqdWNwQmZnbzgyOG9vUnR5cys0UmVs?=
+ =?utf-8?B?RlVCamVTQ0Zyb3hvcnp0MFRtZTA4MmROYWNjL2owdXdEZFdvZjlqelJEVXNq?=
+ =?utf-8?B?UW9ZOXdFdS9XWUNvWVBkVkZpaldXZkkzVTY5VGZyRklGZC9Wc01RVWR6VStM?=
+ =?utf-8?B?R1FIZzB3Yld3bDhOYXNIc0xHR3NVSEFVNnIra09RNWoyT0dsUjUzU0ttUXBs?=
+ =?utf-8?B?RGNCeWdLdWU3OFNOSkJ0STZwUTRlcjEwMVE3ZnErOE5vemZJL2U3ZncyZFlR?=
+ =?utf-8?B?VFBpTThQczU0VHI1Mm53dGw2VUJnamlRSFQ2WUxZTCtBTmovS1ExZnN2eW5N?=
+ =?utf-8?B?TUREMzNOTHVqbVBJRExya1N1aUtkMS9hR253SDZ3S3ZVOUNNOEZCNVgyVkpw?=
+ =?utf-8?B?WXlPRjZzc2pSTTltdDRJYTl4Uk5leTdlbXNteEdLOWxhVjJwWVgyMDBoV05a?=
+ =?utf-8?B?eHhaNm83MHltV1pwb3pmQTZSTk9yanFsM2FaY3JVdVlDa3daMnptK2M0LzRT?=
+ =?utf-8?B?aXMvVDRuZ1ozOEFyalE5K2k0MHlrdDdwTUpYQ2p0UElDWDRjWlFrc3hYdGd5?=
+ =?utf-8?B?azVHaXk3RDNRTnRKT1RobVFQMC9EVVBxYVZPNGhsWU5mRUxmNDVjWXhjT2lz?=
+ =?utf-8?B?QkVZZ0lBekc5OTA1UDdWK1Q0NWZwYjFNNER1bXJlRzlxQVo4b051NTdueE1w?=
+ =?utf-8?B?alRzSEo0M1hySG5VM053bTMxV2NkMURSamtRMjU1T1RNbitNdGJGWGxHMmRw?=
+ =?utf-8?B?K2dDL3pxd1daUlV1K054Qnl4UUxDdklINVFHWWhJUmRCVVVMdngvRTJ0cUU5?=
+ =?utf-8?B?Q3BNYmc0QlpyNFRad3c2L2RUY0w5UmlKL2d3ZXpQMlNlNG8wK3k5S0R4TDJL?=
+ =?utf-8?B?RTdaZzBwdFM3K2JwdUVIKzhLWGEvRUdTOHZlUU1MVWFnSzlNZkNuQ1BHd3Ri?=
+ =?utf-8?B?ZzVnb25YNW9zL3FsSUxTZEdEQmF0UHFBeDcyVVF4N3dqWkZDKzdkUk41TklT?=
+ =?utf-8?Q?dIqsTW7KovuCZy03eGGXW3pAR?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4db25102-81f7-4c72-150f-08dcd35d3e05
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB6269.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2024 19:01:00.8057
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BOHOE7iiL8rRTS+HqLLuH/+evhBEVhHzgrCZnN/bBLU0D+2FrkP9MxyURW8agk40PGktuhmofIuOWgSI4mj9aw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8585
+X-OriginatorOrg: intel.com
 
-On 9/12/24 02:45, Kirill A. Shutemov wrote:
-> On Wed, Sep 11, 2024 at 09:19:04AM -0700, Sean Christopherson wrote:
->> Yep.  Based on the original report[*], it sounds like the userspace program is
->> doing a memcpy(), so it's hard to even argue that userspace is being silly.
-> The kernel does MMIO accesses using special helpers that use well-known
-> instructions. I believe we should educate userspace to do the same by
-> rejecting emulation of anything more complex than plain loads and stores.
-> Otherwise these asks will keep coming.
+On 9/12/2024 7:15 AM, James Bottomley wrote:
+> On Wed, 2024-09-11 at 22:23 -0500, Xing, Cedric wrote:
+>> Hi James,
+>>
+>> I would like to clarify that, even though the log format is
+>> incompatible with the existing TCG2 log format, nothing prevents TPM
+>> PCRs from being exposed through the TSM measurement framework.
+> 
+> Well, the PCRs are already exposed through
+> 
+TPM predates TSM so has an existing implementation for sure.
 
-My assumption is that folks have VMM-specific kernel drivers and crusty
-old userspace that mmap()'s an MMIO region exposed by that driver. They
-want to keep their old userspace.
+> /sys/class/tpm/tpm0/pcr-<algo>/<n>
+> 
+> but they don't have much meaning without the log.
+> 
+Consolidating PCRs under TSM is not a requirement. But if it's 
+desirable, it could be done. When it comes to the log, the assumption 
+here is that we will switch log format after TSM takes over. The preboot 
+log can stay where it is today. Yeah, it would be kinda ugly without a 
+unified log, but the separation of semantics/storage is more important, 
+because otherwise it will be very difficult to enable new applications.
 
-Once we're dictating that specific instructions be used, the old
-userspace doesn't work and it needs to be changed. Once it needs to be
-changed, then some _other_ new ABI might as well be considered.
+>> Please note that the existing event types in the TCG2 log format are
+>> predominantly BIOS/firmware-oriented, which seldom makes sense for
+>> applications in OS runtime. Consequently, most application-specific
+>> events have to come under the EV_EVENT_TAG umbrella, which is
+>> essentially arbitrary binary data with no specific format. Thus, I
+>> don't see much value in continuing the TCG2 log into OS runtime IMHO.
+> 
+> And the IMA log, which is runtime and isn't TCG2?
+> 
+By "TCG2", I refer to the TPM PC client profile that defines the EV_* 
+event types. I could be very wrong but I thought IMA content/event types 
+had not been defined until CEL came along. Though both TCG2 and CEL were 
+designed to be extensible, adding new event/content types would require 
+revising the specs, which is a very high bar for new applications, and 
+is one of the major reasons for introducing this new log format.
 
-Basically:
+Regarding the IMA log, there are several options to integrate it into 
+the TSM framework:
 
-	New ABI =~ Specific Kernel-mandated Instructions
+One straight forward option is to dedicate a RTMR for IMA use. This 
+series allows off-log extension so nothing else (except mapping the PCR 
+to the dedicated RTMR) needs changes.
+
+The second option is to change IMA to use the new log format proposed 
+here. Of course, it'd require more changes than the first option - I 
+don't believe many people would like it at the moment.
+
+The third option is "virtual measurement". We can define a virtual MR - 
+say "mr_ima", to replace the current PCR. Then we back mr_ima by a real 
+RTMR by logging the value extended to mr_ima. That is: when mr_ima is 
+extended by value XYZ, an entry like "mr_ima extend <hash_algo>/XYZ" is 
+logged to some native RTMR. Later on, the verifier can replay the RTMR 
+log to calculate an mr_ima value that matches the IMA's log. This is 
+actually an example of sharing an RTMR among multiple arbitrary 
+applications. Events from different applications can be distinguished by 
+the prefix ("mr_ima" in this example), and a layered verifier can be 
+built - the bottom CC-specific layer verifies the integrity of the log 
+without understanding IMA, then the top (CC-agnostic) layer verifies the 
+IMA log using calculated "mr_ima" value by the bottom layer.
+
+>> The proposed log format aims to provide a framework for unambiguous
+>> hashing while allowing application-defined events. Its primary design
+>> objective is to enable application-agnostic kernel/verifier to
+>> hash/verify logs without understanding the event records, allowing
+>> application-specific appraisers to be built on top (i.e.,
+>> semantics/storage separation). Both TCG2 and CEL formats rely on
+>> event/content type to dictate what part of event data to hash, making
+>> semantics/storage separation impossible. Therefore, this proposed log
+>> format cannot accommodate entries from TCG2 or CEL logs due to that
+>> design conflict. However, entries of this log can easily be
+>> encapsulated in TCG2 (as EV_ACTION entries) or CEL-JSON (a new
+>> content type string needs to be defined, like what systemd is doing
+>> today) logs.
+> 
+> But that's my complaint.  This specification:
+> 
+>     - Records are lines ending with `\n`.
+>     - Each record (line) is hashed in its entirety (excluding the
+>     trailing `\n`) and extended to the RTMR.
+>     - The log for an RTMR is stored at
+>     `/sys/kernel/tsm/<MR group name>/<RTMR name>/event_log` and consists
+>     of these delineated records.
+>     - Lines that are empty (containing only `\n`) or start with `#` are
+>     skipped (not hashed or extended).
+>     
+> Is completely incompatible with pretty much every current log format.
+
+Unfortunately this is true, because this log format has different design 
+objectives than pretty much all existing log formats. Another notable 
+difference is this ABI is log oriented, vs. most existing log formats 
+are digest oriented. A log oriented design allows applications to 
+generate identical logs regardless of the underlying CC arch.
+
+> Given you have fairly elaborate decorations for the register formats,
+> what's the problem with simply having a decoration for the log format?
+> That way you can use the above incompatible log for your purpose but this
+> framework can support existing logs and expand to future ones as they come
+> along.  All this would mean initially to the code is adding the decoration
+> file (easy) and ensuring that append_event is handled by a log format
+> specific component, allowing for expansion.
+> 
+Using CEL terms, ELCD (Event Log Critical Data) could be easily 
+encapsulated in both TCG2 and CEL, but ELID (Event Log Informative Data 
+- i.e., lines starting with '#') is not. One use of ELID is to support 
+off-log extension, designed to help migrating existing applications. The 
+`SYNC` lines (necessary after off-log extensions, see Patch 2 for 
+details) would also require special treatments from the verifier. 
+Therefore, converting this log to a TCG2 or CEL log is NOT always 
+doable. It'll be better to convert log format only when needed (and 
+before any off-log extensions have been done).
+
+-Cedric
