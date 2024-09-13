@@ -1,266 +1,194 @@
-Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F191D6DC6
-	for <linux-coco@lists.linux.dev>; Fri, 13 Sep 2024 09:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DBE1D88A7
+	for <linux-coco@lists.linux.dev>; Fri, 13 Sep 2024 12:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726220675; cv=none; b=Jcz63IrR0nQpPPiwXDgRjO/TV+mbta3O1S/aUtO7blwhM8jIX/oTU3Wsm02DpKuXqe03CeBDhpLlBFMyjq6rSP8C2H0Q+Ea1TZ+WkQsWNDKtaPSFS3ZjugYcfAubrJGMDUpD9iqstE5qUqnEcYJuvf5ke8mpJnkJ9DklK85ldUY=
+	t=1726232128; cv=none; b=O3CQK7wLR5FelztLc/a8v05IfWd0KAA+TBp8TOPVeXXdZlvLZEhnuMLS3H+Z+p19n9UewdACRjZPR5LtFKrwcZ4yU6q1OR+9icbjv85OzMKQcsBihlM07sHIdSj4lUczwFCBqRfiMOMVaOmGnbCySYtbreFvIZAbnZMm4TXWLMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726220675; c=relaxed/simple;
-	bh=h0iJXK+aFKF6xDhs5xzNYLT8wyWlXEulTMQO10Jpo78=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=cnLQLqBPSHgI/ltldBTGR9+tE+u/1qQfRO429eQJS2dUF+ADTpYGRwz+aWPDT5SUG1A/U8LrAG0KWRdiV9mywGjkgLVs9Bd4Qi1lXZ6zvY6rPHIm3RI6d8OSo4U+WT7zapsA73VERe91sPgMVOOromuxe0bbSuv88UYIz5tQg28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=irU3xiyB; arc=none smtp.client-ip=207.171.188.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	s=arc-20240116; t=1726232128; c=relaxed/simple;
+	bh=LVc8Qq3XJd8QUnXxr/2fyOwrcDgbCrxl6qC1wvyhnog=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uZGUxJ/vByJARstlKg818G0NzbaRVHc0zep7QD4t/mz36+jue2t3istkiLBvxGb118Ux/rb3u7l+c69J9gzH3VBgUeyYkbmk16FVyMGAXhNQCo38XGMvcARgwEpz/oKBUTnouQ9+CudOBWf+nl1jkHGG4wRT8jgP3QE7hX0jx6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=tzZ4PVx/; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=tzZ4PVx/; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="irU3xiyB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1726220674; x=1757756674;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=h0iJXK+aFKF6xDhs5xzNYLT8wyWlXEulTMQO10Jpo78=;
-  b=irU3xiyBrj5599RpCObGQ3yYybFme1HRo/asckm0BzIcVArx18CRCf8P
-   NMOkfkEkfOTPobPBylTQ6PqME+c4FYDyk0a3BTzXT/42D/+C4gPbEYCxz
-   1m6tBH/2C39YX1/+b3vxpWRe3kBwJeADqmCEXq7jmbhlhX7a/BGAO+hCC
-   E=;
-X-IronPort-AV: E=Sophos;i="6.10,225,1719878400"; 
-   d="scan'208";a="759591462"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 09:44:07 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.21.151:53512]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.10:2525] with esmtp (Farcaster)
- id 87c9ee91-cc16-4514-8775-b23d9be236e6; Fri, 13 Sep 2024 09:44:06 +0000 (UTC)
-X-Farcaster-Flow-ID: 87c9ee91-cc16-4514-8775-b23d9be236e6
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Fri, 13 Sep 2024 09:44:04 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34; Fri, 13 Sep 2024
- 09:44:01 +0000
-Message-ID: <515aa05c-8ee3-477d-9fca-8db9b186880d@amazon.com>
-Date: Fri, 13 Sep 2024 11:43:59 +0200
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="tzZ4PVx/";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="tzZ4PVx/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1726232126;
+	bh=LVc8Qq3XJd8QUnXxr/2fyOwrcDgbCrxl6qC1wvyhnog=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=tzZ4PVx/3wgsgw7tyVsaOUgsjrRtNtbMob5oX8GQXiJXAKiIa8ghaw40cLeGtYPwE
+	 WdkWNyR4/8tTk4AcG5Qh+/LDUDv2qz6zTOR3FQu7nScs9FAQBI3FIMBo1vZmKU10pm
+	 AtfI2gQ2e3+h57EaPcKi2LX+0YXQACi4WALTMINE=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 7D77A1287401;
+	Fri, 13 Sep 2024 08:55:26 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id AmJzjMDlzMON; Fri, 13 Sep 2024 08:55:26 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1726232126;
+	bh=LVc8Qq3XJd8QUnXxr/2fyOwrcDgbCrxl6qC1wvyhnog=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=tzZ4PVx/3wgsgw7tyVsaOUgsjrRtNtbMob5oX8GQXiJXAKiIa8ghaw40cLeGtYPwE
+	 WdkWNyR4/8tTk4AcG5Qh+/LDUDv2qz6zTOR3FQu7nScs9FAQBI3FIMBo1vZmKU10pm
+	 AtfI2gQ2e3+h57EaPcKi2LX+0YXQACi4WALTMINE=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 2A552128637B;
+	Fri, 13 Sep 2024 08:55:25 -0400 (EDT)
+Message-ID: <cc8f30d105758c06566bab32ad6fdd87489f875e.camel@HansenPartnership.com>
+Subject: Re: [PATCH RFC 0/3] tsm: Unified Measurement Register ABI for TVMs
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: "Xing, Cedric" <cedric.xing@intel.com>, Qinkun Bao <qinkun@google.com>
+Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>, Dan Williams
+ <dan.j.williams@intel.com>, Samuel Ortiz <sameo@rivosinc.com>, Lukas Wunner
+ <lukas@wunner.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, Mikko
+ Ylinen <mikko.ylinen@linux.intel.com>, Kuppuswamy Sathyanarayanan
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, linux-kernel@vger.kernel.org,
+  linux-coco@lists.linux.dev, suzuki.poulose@arm.com, sami.mujawar@arm.com,
+ Chong Cai <chongc@google.com>
+Date: Fri, 13 Sep 2024 08:55:23 -0400
+In-Reply-To: <f284ce29-6afe-40ce-ad81-b6b2cec9199c@intel.com>
+References: <20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com>
+	 <20240910170959.GA213064@myrica>
+	 <f6b0a1d2-c730-4b20-a8f3-afd9a7cf822a@intel.com>
+	 <14fc2ce22d224f05f4d382cd22f5242297e9fb86.camel@HansenPartnership.com>
+	 <CAOjUGWfgYoXBzUB8wFvO5LDq+=t7hAEksu0EA4Dc7FwbmUJp7A@mail.gmail.com>
+	 <f92766c96c993276bec770e8a255bca6cc46c292.camel@HansenPartnership.com>
+	 <c7157fb7-b8d0-482b-9ec3-d60179a95882@intel.com>
+	 <0b334090c4bf21740b19371664ad0d78b66830c4.camel@HansenPartnership.com>
+	 <f284ce29-6afe-40ce-ad81-b6b2cec9199c@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/3] tsm: Unified Measurement Register ABI for TVMs
-To: "Xing, Cedric" <cedric.xing@intel.com>, Jean-Philippe Brucker
-	<jean-philippe@linaro.org>
-CC: Dan Williams <dan.j.williams@intel.com>, Samuel Ortiz
-	<sameo@rivosinc.com>, James Bottomley
-	<James.Bottomley@hansenpartnership.com>, Lukas Wunner <lukas@wunner.de>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>, Qinkun Bao <qinkun@google.com>,
-	Mikko Ylinen <mikko.ylinen@linux.intel.com>, Kuppuswamy Sathyanarayanan
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <linux-kernel@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <suzuki.poulose@arm.com>,
-	<sami.mujawar@arm.com>
-References: <20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com>
- <20240910170959.GA213064@myrica>
- <f6b0a1d2-c730-4b20-a8f3-afd9a7cf822a@intel.com>
- <51c009c7-e2ee-4753-89c8-6157d2cd49fa@amazon.com>
- <b9d3736a-836f-44cd-ae84-e6912ef22d15@intel.com>
-Content-Language: en-US
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <b9d3736a-836f-44cd-ae84-e6912ef22d15@intel.com>
-X-ClientProxiedBy: EX19D044UWB003.ant.amazon.com (10.13.139.168) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
 
-Ck9uIDEyLjA5LjI0IDE3OjQzLCBYaW5nLCBDZWRyaWMgd3JvdGU6Cj4KPiBPbiA5LzExLzIwMjQg
-MTo1NiBBTSwgQWxleGFuZGVyIEdyYWYgd3JvdGU6Cj4+Cj4+IE9uIDExLjA5LjI0IDA2OjAxLCBY
-aW5nLCBDZWRyaWMgd3JvdGU6Cj4+Pgo+Pj4gT24gOS8xMC8yMDI0IDEyOjA5IFBNLCBKZWFuLVBo
-aWxpcHBlIEJydWNrZXIgd3JvdGU6Cj4+Pj4gSGkgQ2VkcmljLAo+Pj4+Cj4+Pj4gT24gU2F0LCBT
-ZXAgMDcsIDIwMjQgYXQgMTE6NTY6MThQTSAtMDUwMCwgQ2VkcmljIFhpbmcgd3JvdGU6Cj4+Pj4+
-IFBhdGNoIDIgaW50cm9kdWNlcyBldmVudCBsb2cgc3VwcG9ydCBmb3IgUlRNUnMsIGFkZHJlc3Np
-bmcgdGhlIGZhY3QKPj4+Pj4gdGhhdCB0aGUKPj4+Pj4gc3RhbmRhbG9uZSB2YWx1ZXMgb2YgUlRN
-UnMsIHdoaWNoIHJlcHJlc2VudCB0aGUgY3VtdWxhdGl2ZSBkaWdlc3RzIG9mCj4+Pj4+IHNlcXVl
-bnRpYWwgZXZlbnRzLCBhcmUgbm90IGZ1bGx5IGluZm9ybWF0aXZlIG9uIHRoZWlyIG93bi4KPj4+
-Pgo+Pj4+IFdvdWxkIGVhY2ggZXZlbnRfbG9nIGluY2x1ZGUgdGhlIGV2ZW50cyB0aGF0IGZpcm13
-YXJlIHdyb3RlIGJlZm9yZQo+Pj4+IExpbnV4Pwo+Pj4gTm8uIFRoZSBsb2cgZm9ybWF0IHByb3Bv
-c2VkIGhlcmUgaXMgdGV4dHVhbCBhbmQgaW5jb21wYXRpYmxlIHdpdGggVENHMgo+Pj4gbG9nIGZv
-cm1hdC4KPj4+Cj4+PiBUaGUgcHJvcG9zZWQgbG9nIGZvcm1hdCBpcyBiYXNlZCBvbiB0aGUgQ29D
-byBldmVudCBsb2cgLQo+Pj4gaHR0cHM6Ly9naXRodWIuY29tL2NvbmZpZGVudGlhbC1jb250YWlu
-ZXJzL2d1ZXN0LWNvbXBvbmVudHMvaXNzdWVzLzQ5NS4KPj4+Cj4+Pj4gSSdtIHdvbmRlcmluZyBo
-b3cgdGhpcyBjb2V4aXN0cyB3aXRoIC9zeXMvZmlybXdhcmUvYWNwaS90YWJsZXMvZGF0YS8KPj4+
-PiBDQ0VMLgo+Pj4gVGhlIHByb3Bvc2VkIGxvZyB3aWxsIHRha2Ugb3ZlciBhZnRlciBib290aW5n
-IHRvIExpbnV4LiBUaGUgYFNZTkNgIGxpbmUKPj4+IGluIHRoZSBsb2cgY2FwdHVyZXMgdGhlIFJU
-TVIgdmFsdWUgYmVmb3JlIGl0LCB3aGljaCBjYW4gYmUgdXNlZCB0bwo+Pj4gdmVyaWZ5IENDRUwg
-bGVmdCBvZmYgYnkgdGhlIHZpcnR1YWwgZmlybXdhcmUuCj4+Pgo+Pj4+IE1heWJlIHNvbWV0aGlu
-ZyBsaWtlOiBDQ0VMIG9ubHkgY29udGFpbnMgcHJlLUxpbnV4IGV2ZW50cy4gVGhlIFRTTQo+Pj4+
-IGRyaXZlcgo+Pj4+IHBhcnNlcyBDQ0VMICh1c2luZyBhIGZvcm1hdCBzcGVjaWZpYyB0byB0aGUg
-YXJjaCwgZm9yIGV4YW1wbGUgVENHMiksCj4+Pj4gc2VwYXJhdGVzIHRoZSBldmVudHMgYnkgTVIg
-YW5kIHByb2R1Y2VzIGV2ZW50X2xvZyBmaWxlcyBpbgo+Pj4+IC9zeXMva2VybmVsL3RzbS8sIHBv
-c3NpYmx5IGluIGEgZGlmZmVyZW50IGZvcm1hdCBsaWtlIENFTC1UTFYuIElzIHRoYXQKPj4+PiB3
-aGF0IHlvdSBlbnZpc2lvbiBmb3IgVERYPwo+Pj4+Cj4+PiBDQ0VMIHdpbGwgYmUgcHJlLUxpbnV4
-IG9ubHkuIEdpdmVuIHRoZSBwcm9wb3NlZCBmb3JtYXQgaXMgaW5jb21wYXRpYmxlCj4+PiB3aXRo
-IFRDRzIgZm9ybWF0LCBJIGRvbid0IHRoaW5rIHRob3NlIDIgbG9ncyB3aWxsIGJlIG1lcmdlZC4g
-QnV0IGlmIHdlCj4+PiBnZXQgYW55IHN1Y2Nlc3MgaW4gdGhpcyBuZXcgbG9nIGZvcm1hdCwgd2Ug
-bWF5IGluZmx1ZW5jZSB0aGUgVUVGSS9PVk1GCj4+PiBjb21tdW5pdHkgdG8gYWRvcHQgdGhpcyBu
-ZXcgZm9ybWF0IGluIGZ1dHVyZS4KPj4+Cj4+PiBXZSBoYXZlIGV2YWx1YXRlZCBib3RoIFRDRzIg
-YW5kIENFTCBmb3JtYXRzIGJ1dCBhcnJpdmVkIGluIHRoaXMgbmV3Cj4+PiBmb3JtYXQgYmVjYXVz
-ZSB3ZSdkIGxpa2UgdG8gc3VwcG9ydCBBTEwgYXBwbGljYXRpb25zLiBBbmQgdGhlIG9ubHkgc2Fu
-ZQo+Pj4gd2F5IEkgY291bGQgZmlndXJlIG91dCBpcyB0byBzZXBhcmF0ZSB0aGUgbG9nIGludG8g
-MiBsYXllcnMgLSBhbgo+Pj4gYXBwbGljYXRpb24gc3BlY2lmaWMgc2VtYW50aWNzIGxheWVyIChh
-IGNvbnRyYWN0IGJldHdlZW4gdGhlIAo+Pj4gYXBwbGljYXRpb24KPj4+IGFuZCB0aGUgdmVyaWZp
-ZXIpLCBhbmQgYW4gYXBwbGljYXRpb24gYWdub3N0aWMgc3RvcmFnZSBsYXllcgo+Pj4gKGltcGxl
-bWVudGVkIGJ5IHRoZSBrZXJuZWwpLiBUaGUgY29tbW9uIHByb2JsZW0gb2YgVENHMiBhbmQgQ0VM
-IGlzIHRoYXQKPj4+IHRoZSBldmVudC9jb250ZW50IHRhZy90eXBlIGRpY3RhdGVzIHdoaWNoIHBh
-cnQgb2YgdGhlIGV2ZW50IAo+Pj4gZGF0YS9jb250ZW50Cj4+PiB0byBoYXNoLCBtZWFuaW5nIHRo
-ZSBrZXJuZWwgbXVzdCB1bmRlcnN0YW5kIGFuIGV2ZW50IHJlY29yZCBiZWZvcmUKPj4+IGhhc2hp
-bmcgaXQuIEFuZCB0aGF0IGhhcyBwcmV2ZW50ZWQgYW4gYXBwbGljYXRpb24gYWdub3N0aWMgc3Rv
-cmFnZQo+Pj4gZGVzaWduLgo+Pj4KPj4+IEFueXdheSwgdGhpcyBuZXcgbG9nIGNhbiBiZSBlbmNh
-cHN1bGF0ZWQgaW4gYm90aCBDRUwtSlNPTiAobGlrZSB3aGF0Cj4+PiBzeXN0ZW1kIGlzIGRvaW5n
-IHRvZGF5KSBhbmQgVENHMiAodXNpbmcgdGhlIEVWX0FDVElPTiBldmVudCB0eXBlKQo+Pj4gZm9y
-bWF0cy4gUGxlYXNlIHNlZSB0aGUgQ29DbyBpc3N1ZSAobGluayBnaXZlbiBhYm92ZSkgZm9yIG1v
-cmUgZGV0YWlscy4KPj4+Cj4+Pj4gSSBhc2sgYmVjYXVzZSBJJ3ZlIGJlZW4gbG9va2luZyBpbnRv
-IHRoaXMgaW50ZXJmYWNlIGZvciBBcm0gQ0NBLCBhbmQKPj4+PiBoYXZpbmcgdW5pZmllZCBldmVu
-dCBsb2dzIGF2YWlsYWJsZSBzb21ld2hlcmUgaW4gL3N5cy9rZXJuZWwvY29uZmcvdHNtCj4+Pj4g
-d291bGQgYmUgdmVyeSBjb252ZW5pZW50IGZvciB1c2VycyAoYXZvaWRzIGhhdmluZyB0byBwYXJz
-ZSBhbmQgY29udmVydAo+Pj4+IGRpZmZlcmVudCAvc3lzL2Zpcm13YXJlIGludGVyZmFjZXMgYWxv
-bmcgd2l0aCBMaW51eCBldmVudCBsb2dzKS4gSSAKPj4+PiB3b3VsZAo+Pj4+IGhhdmUgcHV0IGEg
-c2luZ2xlIGV2ZW50X2xvZyBpbiAvc3lzL2tlcm5lbC9jb25maWcvdHNtL3JlcG9ydC8gYnV0Cj4+
-Pj4gc3BsaXR0aW5nIGl0IGJ5IE1SIHNob3VsZCB3b3JrIHRvby4KPj4+Pgo+Pj4gV2UgaGF2ZSBj
-b25zaWRlcmVkIG9uZSBnbG9iYWwgbG9nIHZzLiBwZXItTVIgbG9ncy4gSW4gZmFjdCwgYSBnbG9i
-YWwgCj4+PiBsb2cKPj4+IGlzIGVxdWl2YWxlbnQgdG8gdGhlIGNvbmNhdGVuYXRpb24gb2YgYWxs
-IHBlci1NUiBsb2dzLiBXZSd2ZSBhZG9wdGVkIAo+Pj4gdGhlCj4+PiBwZXItTVIgYXBwcm9hY2gg
-dG8ga2VlcCB0aGUgbG9nIG9wdGlvbmFsIC0gaS5lLiwgYW4gUlRNUiBjYW4gYmUgCj4+PiBleHRl
-bmRlZAo+Pj4gZGlyZWN0bHkgKGJ5IHdyaXRpbmcgdG8gaXRzIGBkaWdlc3RgIGF0dHJpYnV0ZSkg
-d2l0aG91dCBhIGxvZy4KPj4+Cj4+PiBXaXRoIHJlZ2FyZCB0byB0aGUgbG9jYXRpb24gb2YgdGhl
-IE1SIHRyZWUsIHdlIHBpY2tlZCBzeXNmcyBiZWNhdXNlIHRoZQo+Pj4gTVJzIChhbmQgYXNzb2Np
-YXRlZCBsb2dzKSBhcmUgZ2xvYmFsIGFuZCBmaXQgbW9yZSBpbnRvIHRoZSBzZW1hbnRpY3Mgb2YK
-Pj4+IHN5c2ZzIHRoYW4gY29uZmlnZnMuIERhbiBXLiBhbmQgSSBhcmUgYWxzbyBjb25zaWRlcmlu
-ZyBtb3ZpbmcgYm90aAo+Pj4gcmVwb3J0LyBhbmQgbWVhc3VyZW1lbnQvIHRyZWVzIGludG8gc2Vj
-dXJpdHlmcy4gSXQnbGwgYmUgaGlnaGx5Cj4+PiBhcHByZWNpYXRlZCBpZiB5b3UgKGFuZCBBbGV4
-LCBhbmQgZXZlcnlvbmUpIGNhbiBzaGFyZSB5b3VyIGluc2lnaHRzLgo+Pj4KPj4+PiBBcyBBbGV4
-IEkgYmVsaWV2ZSB3ZSBuZWVkIG1vcmUgc2ltaWxhcml0eSBiZXR3ZWVuIHRoZSBpbnRlcmZhY2Vz
-IG9mCj4+Pj4gc3RhdGljCj4+Pj4gYW5kIHJ1bnRpbWUgbWVhc3VyZW1lbnRzLCBiZWNhdXNlIHZl
-cmlmaWVycyBtYXkgYmVuZWZpdCBmcm9tIGFuIGV2ZW50Cj4+Pj4gbG9nCj4+Pj4gb2Ygc3RhdGlj
-IG1lYXN1cmVtZW50cy4gRm9yIGV4YW1wbGUgQXJtIGNvdWxkIGhhdmUgYSBjb25maWd1cmF0aW9u
-IAo+Pj4+IGxpa2UKPj4+PiB0aGlzOgo+Pj4+Cj4+Pj4gwqDCoCBzdHJ1Y3QgdHNtX21lYXN1cmVt
-ZW50X3JlZ2lzdGVyIGFybV9jY2FfbXJzW10gPSB7Cj4+Pj4gwqDCoMKgwqDCoCB7IE1SXyhyaW0p
-IHwgVFNNX01SX0ZfUiB8IFRTTV9NUl9GX0xPRywgSEEgfSwKPj4+PiDCoMKgwqDCoMKgIHsgTVJf
-KHJlbTApIHwgVFNNX01SX0ZfUiB8IFRTTV9NUl9GX1ggfCBUU01fTVJfRl9MT0csIEhBIH0sCj4+
-Pj4gwqDCoMKgwqDCoCAuLi4KPj4+PiDCoMKgwqDCoMKgIHsgTVJfKHJlbTMpIHwgVFNNX01SX0Zf
-UiB8IFRTTV9NUl9GX1ggfCBUU01fTVJfRl9MT0csIEhBIH0sCj4+Pj4gwqDCoCB9Owo+Pj4+Cj4+
-Pj4gSGVyZSByaW0gaXMgYSBzdGF0aWMgbWVhc3VyZW1lbnQgb2YgdGhlIGluaXRpYWwgVk0gc3Rh
-dGUsIAo+Pj4+IGltcG9zc2libGUgdG8KPj4+PiBleHRlbmQgYnV0IGNvdWxkIGhhdmUgYW4gZXZl
-bnQgbG9nLiByZW0wLTMgYXJlIHJ1bnRpbWUgbWVhc3VyZW1lbnRzLAo+Pj4+IGV4dGVuc2libGUg
-YnkgZmlybXdhcmUgYW5kIHRoZW4gTGludXguIE5vbmUgb2YgdGhlIGRpZ2VzdHMgY2FuIGJlCj4+
-Pj4gd3JpdHRlbgo+Pj4+IGRpcmVjdGx5LCBvbmx5IGV4dGVuZGVkIGFuZCByZWFkIHdpdGggY2Fs
-bHMgdG8gdGhlIHVwcGVyIGxheWVyLiBUaGUgCj4+Pj4gdHJlZQo+Pj4+IHdvdWxkIGJlOgo+Pj4+
-Cj4+Pj4gwqDCoCAvc3lzL2tlcm5lbC9jb25maWcvdHNtLwo+Pj4+IMKgwqAg4pSc4pSA4pSAIHJp
-bQo+Pj4+IMKgwqAg4pSCwqDCoCDilJzilIDilIAgZGlnZXN0Cj4+Pj4gwqDCoCDilILCoMKgIOKU
-nOKUgOKUgCBldmVudF9sb2cKPj4+PiDCoMKgIOKUgsKgwqAg4pSU4pSA4pSAIGhhc2hfYWxnbwo+
-Pj4+IMKgwqAg4pSc4pSA4pSAIHJlbTAKPj4+PiDCoMKgIOKUgsKgwqAg4pSc4pSA4pSAIGRpZ2Vz
-dAo+Pj4+IMKgwqAg4pSCwqDCoCDilJzilIDilIAgYXBwZW5kX2V2ZW50Cj4+Pj4gwqDCoCDilILC
-oMKgIOKUnOKUgOKUgCBldmVudF9sb2cKPj4+PiDCoMKgIOKUgsKgwqAg4pSU4pSA4pSAIGhhc2hf
-YWxnbwo+Pj4+IMKgwqAgLi4uCj4+Pj4gwqDCoCDilJzilIDilIAgcmVtMwo+Pj4+IMKgwqAg4pSC
-wqDCoCDilJzilIDilIAgZGlnZXN0Cj4+Pj4gwqDCoCDilILCoMKgIOKUnOKUgOKUgCBhcHBlbmRf
-ZXZlbnQKPj4+PiDCoMKgIOKUgsKgwqAg4pSc4pSA4pSAIGV2ZW50X2xvZwo+Pj4+IMKgwqAg4pSC
-wqDCoCDilJTilIDilIAgaGFzaF9hbGdvCj4+Pj4gwqDCoCDilJTilIDilIAgcmVwb3J0LyRuYW1l
-Cj4+Pj4gwqDCoMKgwqDCoMKgIOKUnOKUgOKUgCBpbmJsb2IKPj4+PiDCoMKgwqDCoMKgwqAg4pSU
-4pSA4pSAIG91dGJsb2IKPj4+Pgo+Pj4gSSBzZWUuIFRoZSBkZXNpcmVkL21pc3NpbmcgZmVhdHVy
-ZSBoZXJlIEkgdGhpbmsgaXMgdG8gYWxsb3cgYSBDQyBndWVzdAo+Pj4gZHJpdmVyIHRvIHN1cHBs
-eSBhbiAiaW5pdGlhbCBsb2ciLiBJIGNhbiBkZWZpbmUgYSBMT0cgYml0LCB3aGljaCBpZiAKPj4+
-IHNldCwKPj4+IHdpbGwgbWFrZSB0aGUgTVIgaXRzIG93biBkaXIgd2l0aCBgaGFzaF9hbGdvYCBh
-bmQgYGV2ZW50X2xvZ2AuIEFuZCBpZiBYCj4+PiBpcyBhbHNvIHNldCwgdGhlbiBgYXBwZW5kX2V2
-ZW50YCB3aWxsIGFwcGVhciBhcyB3ZWxsLiBEb2VzIHRoaXMgc291bmQKPj4+IGxpa2Ugd2hhdCBB
-bGV4IGFuZCB5b3UgYXJlIGxvb2tpbmcgZm9yPwo+Pgo+Pgo+PiBJIGRvbid0IHVuZGVyc3RhbmQg
-d2h5IHdlIHdhbnQgdG8gaGF2ZSAyIHNlcGFyYXRlIHJlcHJlc2VudGF0aW9ucyBmb3IgYQo+PiAi
-bWVhc3VyZW1lbnQgb2JqZWN0IjogZmxhdCBmaWxlIGFzIHdlbGwgYXMgZGlyZWN0b3J5LiBDb3Vs
-ZCB5b3UgcGxlYXNlCj4+IGVsYWJvcmF0ZSBvbiB0aGUgcmF0aW9uYWxlIHdoeSB5b3UgdGhpbmsg
-aXQgd291bGQgYmUgZGVzaXJhYmxlIHRvIGhhdmUgYQo+PiBub24tZGlyZWN0b3J5IHJlcHJlc2Vu
-dGF0aW9uIGF0IGFsbD8gSSBmZWVsIGxpa2UgSSdtIG1pc3NpbmcgCj4+IHNvbWV0aGluZyA6KQo+
-Pgo+IFRoZSBpbnRlbnRpb24gaXMgdG8gbWFrZSBhIGNsZWFuZXIgdXNlciBpbnRlcmZhY2UuIEdl
-bmVyYWxseSwgdGhlIGZsYXQKPiBmaWxlcyBjb250YWluIGluZm9ybWF0aW9uIHJlYWR5IHRvIGJl
-IGNvbnN1bWVkIGJ5IGFwcGxpY2F0aW9ucywgd2hpbGUKPiB0aG9zZSBpbiBkaXJlY3RvcmllcyBh
-cmUgbGVzcyByZWFkeSAtIGUuZy4sIHRoZSBsb2cgbWF5IGhhdmUgdG8gYmUKPiBwYXJzZWQgdG8g
-ZXh0cmFjdCB0aGUgbWVhc3VyZW1lbnRzIG9mIGludGVyZXN0LiBJbiB0aGUgY2FzZSBvZiBURFgs
-Cj4gTVJDT05GSUdJRCwgTVJPV05FUiwgYW5kIE1ST1dORVJDT05GSUcgYXJlIGVzc2VudGlhbGx5
-IDMgYXJiaXRyYXJ5Cj4gNDgtYnl0ZSB2YWx1ZXMgYW5kIHdvdWxkIGJlIG1vcmUgc3RyYWlnaHRm
-b3J3YXJkIHRvIGJlIHByZXNlbnRlZCBhcyAzIAo+IGZpbGVzLgo+Cj4gVGhlIG5lY2Vzc2l0eSBm
-b3IgYSBsb2cgYXNzb2NpYXRlZCB3aXRoIGFueSBNUiBhcmlzZXMgZnJvbSB0aGUgbmVlZCB0bwo+
-ICJzaGFyZSIgdGhlIE1SIC0gaS5lLiwgdGhlcmUgYXJlIG1vcmUgbWVhc3VyZW1lbnRzIHRoYW4g
-TVJzIGFuZCB0aGVyZSdzCj4gYSBuZWVkIGZvciB0aG9zZSBtZWFzdXJlbWVudHMgdG8gYmUgYXNz
-ZXNzZWQvcHJvY2Vzc2VkIGluZGl2aWR1YWxseS4KPiBSYXRoZXIgdGhhbiBhc2tpbmcgaW5kaXZp
-ZHVhbCBhcHBsaWNhdGlvbnMgdG8gcGFyc2UgYSBsb2csIGl0J2QgYmUKPiBkZXNpcmFibGUgZm9y
-IENDIGd1ZXN0IGRyaXZlcnMgdG8gInVucGFjayIgdGhlIGxvZyBpbnRvIGEgc2V0IG9mCj4gImFy
-dGlmaWNpYWwiIE1ScyBjb25zdW1hYmxlIGJ5IGFwcGxpY2F0aW9ucy4gRS5nLiwgaWYgYSBzdGFu
-ZGFyZGl6ZWQKPiBtZXRob2QgZm9yIGNvbnZleWluZyBib290IHRpbWUgY29uZmlndXJhdGlvbi9w
-b2xpY2llcyB0byBDVk1zIHdlcmUKPiBlc3RhYmxpc2hlZCB0byBiZSBhbiBhcnJheSBvZiAiYXJ0
-aWZpY2lhbCIgQ0NSMC4uQ0NSbiAoQ3ZtIENvbmZpZwo+IFJlZ2lzdGVyKSwgYSBwb3RlbnRpYWwg
-aW1wbGVtZW50YXRpb24gY291bGQgYmUgdG8gc3RvcmUgdGhlIGFycmF5IHdpdGhpbgo+IHNvbWUg
-c3RhdGljIE1SJ3MgbG9nIHRvIGJlIGV4dHJhY3RlZCB0aGVuIGV4cG9zZWQgYnkgdGhlIENDIGd1
-ZXN0IGRyaXZlcgo+IGFzIGEgc2V0IG9mIGZsYXQgZmlsZXMuIFRoaXMgZXhhbXBsZSBvZiBjb3Vy
-c2UgZG9lc24ndCBtYW5kYXRlIGZsYXQKPiBmaWxlcy4gSXQgc2ltcGx5IHNob3djYXNlcyB0aGF0
-IHRoZXJlIGFyZSBib3RoIHNpbXBsZSB2YWx1ZXMgYW5kIG1vcmUKPiBjb21wbGV4IGRhdGEgaW4g
-dGhlICJtZWFzdXJlbWVudCB0cmVlIiwgYW5kIHRoZSBpZGVhIGhlcmUgaXMgdG8gb2ZmZXIgYW4K
-PiBvcHRpb24gdG8gZGlmZmVyZW50aWF0ZSB0aGVtICh3aGVyZXZlci93aGVuZXZlciB0aGUgQ0Mg
-Z3Vlc3QgZHJpdmVyIHNlZXMKPiBmaXQpLCB3aXRoIHRoZSBpbnRlbnRpb24gdG8gc2ltcGxpZnkg
-bmF2aWdhdGlvbiBmb3IgdXNlcnMgYW5kL29yCj4gYXBwbGljYXRpb24gZGV2ZWxvcGVycy4KCgpJ
-IGRvbid0IGZvbGxvdyB5b3VyIGFyZ3VtZW50YXRpb24gbGluZS4gTGV0J3MgbG9vayBhdCB0aGUg
-U0VWLVNOUCBsYXVuY2ggCmRpZ2VzdC4gSXQgY2FsY3VsYXRlcyBpdHMgImxhdW5jaCBkaWdlc3Qi
-IGhhc2ggYmFzZWQgb24KCiogSW5pdGlhbCBwYWdlIGhhc2hlcwoqIEluaXRpYWwgVk1TQSBzdGF0
-ZSBmb3IgdkNQVXMKClRvZGF5IHRoYXQgbWVhbnMgdGhhdCB3aGVuIHlvdSBzcGF3biBhIFZNIHdp
-dGggbXVsdGlwbGUgdkNQVXMsIHlvdXIgCmxhdW5jaCBkaWdlc3QgZGlmZmVycy4gV2l0aCBhbiBl
-dmVudCBsb2csIFNOUCBjb3VsZCBnaXZlIHlvdSBpbmRpdmlkdWFsIApvcGVyYXRpb25zIHRoYXQg
-bWFrZSB1cCB0aGUgbGF1bmNoIGRpZ2VzdCBzbyB5b3UgY2FuIHZhbGlkYXRlCgoqIG1lbW9yeSBj
-b250ZW50IGlzIHdoYXQgSSB3YW50CiogdkNQVTAgc3RhdGUgaXMgd2hhdCBJIHdhbnQKKiB2Q1BV
-biBzdGF0ZSBpcyB3aGF0IEkgd2FudAoKd2hpbGUgc3RheWluZyBjb21wbGV0ZWx5IGZsZXhpYmxl
-IHRvIHRoZSBudW1iZXIgb2YgaW5pdGlhbCB2Q1BVcy4KCgpBbm90aGVyIGV4YW1wbGU6IE5pdHJv
-IEVuY2xhdmVzIFBDUnMgWzFdLiBXaGlsZSB3ZSB0cnkgaGFyZCB0byBub3QgCmNvbmZsYXRlIHRv
-byBtYW55IGZpZWxkcyBpbnRvIGEgc2luZ2xlIFBDUiwgd2Ugc29tZSB0aW1lcyBzdGlsbCBkby4g
-UENSMSAKZm9yIGV4YW1wbGUgY29udGFpbnMga2VybmVsIGFzIHdlbGwgYXMgImZpcnN0IGluaXRy
-YW1mcyIuIE1heWJlIHlvdSB3YW50IAp0byBhY3R1YWxseSBoYXZlIGRpZmZlcmVudCBwb2xpY2ll
-cyBvbiBlYWNoIG9mIHRob3NlLiBNYXliZSB5b3Ugd2FudCB0byAKYWxsb3cgNSBkaWZmZXJlbnQg
-a2VybmVscyBhbmQgMyBkaWZmZXJlbnQgImluaXRpYWwgaW5pdHJhbWZzIHZlcnNpb24iIGluIAph
-bnkgcGVybXV0YXRpb24uCgpBZ2FpbiwgeW91IHdvdWxkIG5lZWQgYW4gZXZlbnQgbG9nIHRvIGdl
-dCB0aGF0LgoKU28gZXZlbiB3aGVuIHdoYXQgd2UgY2FsbCAiYm9vdCBtZWFzdXJlbWVudHMiIGFy
-ZSBvbmx5IGNvbnN1bWVkIGFzIGZpbmFsIApoYXNoZXMgdG9kYXksIHRoZXJlIGNvdWxkIGFic29s
-dXRlbHkgYmUgdmFsdWUgaW4gYW4gZXZlbnQgbG9nIGZvciB0aGVtLiAKU2luY2UgeW91IGFyZSBw
-cm9wb3NpbmcgYSBnZW5lcmljIG1lY2hhbmlzbSB0byBleHBvc2UgcmVnaXN0ZXJzICsgbG9ncywg
-Ckkgc3RpbGwgZmFpbCB0byBzZWUgd2h5IHdlIHdvdWxkIHRyZWF0IGJvb3QgbWVhc3VyZW1lbnRz
-IGRpZmZlcmVudCBmcm9tIApydW50aW1lIG1lYXN1cmVtZW50cy4KCgo+Cj4+IFdoYXQgaWYgZm9y
-IGV4YW1wbGUgbmV4dC1uZXh0LWdlbiBTRVYtU05QIHN1ZGRlbmx5IGdhaW5zIGV2ZW50IGxvZwo+
-PiBzdXBwb3J0IGZvciBpdHMgbGF1bmNoIGRpZ2VzdD8gV2Ugd291bGQgY3JlYXRlIG5lZWRsZXNz
-IGNodXJuIG9uIHVzZXIKPj4gc3BhY2UgdG8gZHluYW1pY2FsbHkgZGV0ZXJtaW5lIHdoZXRoZXIg
-aXQgc2hvdWxkIHJlYWQgdGhpbmdzIGFzCj4+IGRpcmVjdG9yeSBvciBhcyBmaWxlLiBPciBldmVu
-IHdvcnNlOiBOZXdlciBrZXJuZWxzIHdvdWxkIHNpbXBseSBhbHdheXMKPj4gc2V0IHRoZSBMT0cg
-Yml0IGFuZCB3ZSBzdWRkZW5seSBicmVhayB0aGUgdXNlciBzcGFjZSBBQkkgZm9yIGV4aXN0aW5n
-Cj4+IGVudmlyb25tZW50cyB0aGF0IHJ1biBvbiBjdXJyZW50LWdlbiBTRVYtU05QLgo+Pgo+IFRo
-aXMgaXMgYSBncmVhdCBwb2ludCEgSSdkIHNheSwgaWYgdGhlIGxvZyB3YXMgb24gdGhlIHByb2R1
-Y3Qgcm9hZCBtYXAsCj4gdGhlIENDIGd1ZXN0IGRyaXZlciBzaG91bGQgb3B0IGZvciBhIGRpcmVj
-dG9yeSBvbiBkYXkgMS4gT3RoZXJ3aXNlLCBJJ2QKCgpUaGUgZ3JlYXQgdGhpbmcgYWJvdXQgcHJv
-ZHVjdCByb2FkIG1hcHMgaXMgdGhhdCB0aGV5IGtlZXAgY2hhbmdpbmcuIApZb3UncmUgYnVpbGRp
-bmcgYSBnZW5lcmljIEFCSSBmb3IgdXNlciBzcGFjZSBoZXJlIHRoYXQgc2hvdWxkIGJlIGFibGUg
-dG8gCmJlIGZsZXhpYmxlIGVub3VnaCB0byBzdXJ2aXZlIGZvciB0aGUgbmV4dCAxMC0yMCB5ZWFy
-cy4gWW91IGNhbid0IGFzc3VtZSAKeW91IGtub3cgZXZlcnl0aGluZyBhbHJlYWR5LgoKCj4gZXhw
-ZWN0IGFuIE1SIG5hbWUgY2hhbmdlIHdpdGggc3VjaCBhIHNlbWFudGljIHNoaWZ0LCBhbmQgdGhl
-IENDIGd1ZXN0CgoKVGhlcmUgaXMgbm8gc2VtYW50aWMgc2hpZnQuIEluIHRoZSBTTlAgY2FzZSwg
-d2UnZCBzdGlsbCBiZSB0YWxraW5nIGFib3V0IAp0aGUgZXhhY3Qgc2FtZSBsYXVuY2ggZGlnZXN0
-LCBqdXN0IHRoYXQgbm93IHdlIHdvdWxkIGFsc28gbGVhcm4gc3ViLWhhc2ggCmluZm9ybWF0aW9u
-LgoKCj4gZHJpdmVyIGNvdWxkIHRoZW4gZXh0cmFjdCB0aGUgIm9sZCIgZGlnZXN0IGZyb20gdGhl
-IGxvZyBwZXIgdGhlIG9yaWdpbmFsCj4gc2VtYW50aWNzLCBhbmQgcHJlc2VudCBpdCB1bmRlciBp
-dHMgb3JpZ2luYWwgbmFtZS4KPgo+IEZpbmFsbHksIEkgZG9uJ3QgbWVhbiB0byBmb3JjZSBmbGF0
-IGZpbGVzIGZvciBzdGF0aWMgTVJzIChJIG9uY2UgZGlkLAo+IGJ1dCBKZWFuIGFuZCB5b3UgaGF2
-ZSBtZSBjb252aW5jZWQgOikpLiBJdCB3aWxsIGJlIGp1c3QgYW4gb3B0aW9uLgoKCkkgdGhpbmsg
-ZXZlbiBhbGxvd2luZyBmbGF0IGZpbGVzIGluIGEgd29ybGQgd2hlcmUgeW91IGFscmVhZHkgaWRl
-bnRpZmllZCAKbXVsdGlwbGUgdXNlcyBmb3IgYSBkaXJlY3Rvcnkgc3RydWN0dXJlIGZvciBvYmpl
-Y3RzIG9mIHNpbWlsYXIgc2VtYW50aWMgCmlzIGp1c3QgYSBiYWQgaWRlYSBhbmQgd2lsbCBsZWFk
-IHRvIHBhaW4gZG93biB0aGUgcm9hZCA6KQoKCkFsZXgKClsxXSBodHRwczovL2RvY3MuYXdzLmFt
-YXpvbi5jb20vZW5jbGF2ZXMvbGF0ZXN0L3VzZXIvc2V0LXVwLWF0dGVzdGF0aW9uLmh0bWwKCgoK
-CgpBbWF6b24gV2ViIFNlcnZpY2VzIERldmVsb3BtZW50IENlbnRlciBHZXJtYW55IEdtYkgKS3Jh
-dXNlbnN0ci4gMzgKMTAxMTcgQmVybGluCkdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0aWFuIFNj
-aGxhZWdlciwgSm9uYXRoYW4gV2Vpc3MKRWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxv
-dHRlbmJ1cmcgdW50ZXIgSFJCIDI1Nzc2NCBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDM2NSA1
-MzggNTk3Cg==
+On Thu, 2024-09-12 at 14:00 -0500, Xing, Cedric wrote:
+> On 9/12/2024 7:15 AM, James Bottomley wrote:
+> > On Wed, 2024-09-11 at 22:23 -0500, Xing, Cedric wrote:
+> > > Hi James,
+> > > 
+> > > I would like to clarify that, even though the log format is
+> > > incompatible with the existing TCG2 log format, nothing prevents
+> > > TPM
+> > > PCRs from being exposed through the TSM measurement framework.
+> > 
+> > Well, the PCRs are already exposed through
+> > 
+> TPM predates TSM so has an existing implementation for sure.
+> 
+> > /sys/class/tpm/tpm0/pcr-<algo>/<n>
+> > 
+> > but they don't have much meaning without the log.
+> > 
+> Consolidating PCRs under TSM is not a requirement.
 
+As I keep saying I'm not expecting you to do it.  However, it will be a
+requirement for consolidating AMD SNP under this using the SVSM-vTPM,
+so I do expect someone will do it.
+
+>  But if it's desirable, it could be done. When it comes to the log,
+> the assumption here is that we will switch log format after TSM takes
+> over. The preboot log can stay where it is today. Yeah, it would be
+> kinda ugly without a  unified log, but the separation of
+> semantics/storage is more important,  because otherwise it will be
+> very difficult to enable new applications.
+
+I really don't think you'd want to do that because it creates a bigger
+mess for all the tools if you keep using the same PCRs because now they
+have to know where the log switches and how to change the extensions. 
+There's no tool today that can do this.
+
+
+> > > Please note that the existing event types in the TCG2 log format
+> > > are predominantly BIOS/firmware-oriented, which seldom makes
+> > > sense for applications in OS runtime. Consequently, most
+> > > application-specific events have to come under the EV_EVENT_TAG
+> > > umbrella, which is essentially arbitrary binary data with no
+> > > specific format. Thus, I don't see much value in continuing the
+> > > TCG2 log into OS runtime IMHO.
+> > 
+> > And the IMA log, which is runtime and isn't TCG2?
+> > 
+> By "TCG2", I refer to the TPM PC client profile that defines the EV_*
+> event types. I could be very wrong but I thought IMA content/event
+> types had not been defined until CEL came along.
+
+The IMA log has always been defined in 
+
+Documentation/security/IMA-templates
+
+Even before CEL tried to add it as a format.
+
+>  Though both TCG2 and CEL were designed to be extensible, adding new
+> event/content types would require revising the specs, which is a very
+> high bar for new applications, and is one of the major reasons for
+> introducing this new log format.
+> 
+> Regarding the IMA log, there are several options to integrate it into
+> the TSM framework:
+> 
+> One straight forward option is to dedicate a RTMR for IMA use. This 
+> series allows off-log extension so nothing else (except mapping the
+> PCR to the dedicated RTMR) needs changes.
+
+I don't see how that would help:  From the IMA point of view there's no
+practical difference between extending a PCR and extending a RTMR (it's
+the same mathematical operation).  The difference is how you get the
+quote and verify the log matches it.
+
+I do note that since the whole problem boils down to the different
+quoting mechanism between TPM and RTMR, it is entirely possible, since
+the Quoting Enclave is all in software, for them to produce a TPM quote
+even for RTMR measurements that could be verified against some external
+key.  That way all the IMA tools would just work for RTMRs (which would
+seem to me to be a much easier way of getting them to work with RTMRs).
+It's always baffled me why Intel is so adamant that every existing
+measurement tool and pathway should be rewritten for the RTMR approach
+instead of simply being compatible enough to get existing tools to work
+with RTMRs.  You can still keep the current RTMR quote format and the
+certificate chain, simply add the ability to produce a signature that
+matches the usual TPM quote.  Since a quote is only a signature over a
+public key, the tools would work and the only difference is how you
+confirm the certificate chain.
+
+> The second option is to change IMA to use the new log format proposed
+> here. Of course, it'd require more changes than the first option - I 
+> don't believe many people would like it at the moment.
+
+I think that's true, yes.  And that's precisely the problem with this
+proposal: you're completely pejorative about log format but know that
+no-one is going to change to the format you're trying to mandate.
+
+> The third option is "virtual measurement". We can define a virtual MR
+> - 
+> say "mr_ima", to replace the current PCR. Then we back mr_ima by a
+> real RTMR by logging the value extended to mr_ima. That is: when
+> mr_ima is extended by value XYZ, an entry like "mr_ima extend
+> <hash_algo>/XYZ" is  logged to some native RTMR. Later on, the
+> verifier can replay the RTMR log to calculate an mr_ima value that
+> matches the IMA's log. This is actually an example of sharing an RTMR
+> among multiple arbitrary applications. Events from different
+> applications can be distinguished by the prefix ("mr_ima" in this
+> example), and a layered verifier can be built - the bottom CC-
+> specific layer verifies the integrity of the log without
+> understanding IMA, then the top (CC-agnostic) layer verifies
+> the IMA log using calculated "mr_ima" value by the bottom layer.
+
+But this sounds even worse.  You're adding an extra layer and an extra
+logging tool simply to verify the PCR/RTMR quote and then after that
+you need to us IMA tools to verify the log.
+
+James
