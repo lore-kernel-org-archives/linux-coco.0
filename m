@@ -1,632 +1,266 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40C31C14
-	for <linux-coco@lists.linux.dev>; Fri, 13 Sep 2024 00:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F191D6DC6
+	for <linux-coco@lists.linux.dev>; Fri, 13 Sep 2024 09:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726187192; cv=none; b=uGo0xiA4ICj3ej1egO86G0KSNxt6NSQTaeVLY7b0EvwIrFNBQRfJLN9XmL552/BpBxDLc9/FR6JOJ/r17YmF+2gNf0u+ERIRwxcUOImLvAmeaIKUdbBA4VBMTUW++4xwGthSa+sejIeEQ4Ei5YL+QAl5qpwFuMa5qfMgIVysrYI=
+	t=1726220675; cv=none; b=Jcz63IrR0nQpPPiwXDgRjO/TV+mbta3O1S/aUtO7blwhM8jIX/oTU3Wsm02DpKuXqe03CeBDhpLlBFMyjq6rSP8C2H0Q+Ea1TZ+WkQsWNDKtaPSFS3ZjugYcfAubrJGMDUpD9iqstE5qUqnEcYJuvf5ke8mpJnkJ9DklK85ldUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726187192; c=relaxed/simple;
-	bh=wMNI9U7zdOEhy2BB3cj/d5g3YfbNI8pqQgJnaoYd1Xg=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QKVHLFHMmTngDLsHmXcX+f0Q/erHnxSCvlueNCJDoxv1vgowjTmQP0mgHqUt5d2xNPOLjXzoN/R4YDqlzq22KGtmYQdE42kAX+ZT8rkrabMYpKL4bhhSVCoo4UAlHsghSrbGdX+K2nH9pYZDhNp5DRNDF9ZVzeJdq0KTmb8x1jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HlnJeltq; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1726220675; c=relaxed/simple;
+	bh=h0iJXK+aFKF6xDhs5xzNYLT8wyWlXEulTMQO10Jpo78=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=cnLQLqBPSHgI/ltldBTGR9+tE+u/1qQfRO429eQJS2dUF+ADTpYGRwz+aWPDT5SUG1A/U8LrAG0KWRdiV9mywGjkgLVs9Bd4Qi1lXZ6zvY6rPHIm3RI6d8OSo4U+WT7zapsA73VERe91sPgMVOOromuxe0bbSuv88UYIz5tQg28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=irU3xiyB; arc=none smtp.client-ip=207.171.188.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HlnJeltq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726187190; x=1757723190;
-  h=subject:from:to:cc:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=wMNI9U7zdOEhy2BB3cj/d5g3YfbNI8pqQgJnaoYd1Xg=;
-  b=HlnJeltq5CTHcrK18Wjl66Bn///sJKRc/b/h3Tm2Q4pgF9gC71Fr7KlW
-   2l58oCvOJKNitbghcK4H6d09LN6lAjTJ8NcZEQ83nBidfdyRLTPvOE3d/
-   NBEY0/4igUeWtz9UvL9NXTPQqXDThtcYztEDOfOftHOSkx0GSY5gmjprP
-   FEGnfbXtvoiwmReNqNIDqS4fRkpZLuJRxONHlr33BtCfcHKjOrKCjPOww
-   R8VFXJHdIwSt3BnbSYvba32bfeKU1SZrTBgFazxgZB0pxY7M15vwW1m+/
-   XkmU2Ab4GhG7JWKl/TrpjRCwL6Qf0i6kLPJI+nZJwadKY5wjuK1JI4c23
-   Q==;
-X-CSE-ConnectionGUID: rYYSWFSCQZC9++Z3WsfSVg==
-X-CSE-MsgGUID: CHdy0s//ROmCYAMwTrnsMA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11193"; a="27990488"
-X-IronPort-AV: E=Sophos;i="6.10,224,1719903600"; 
-   d="scan'208";a="27990488"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2024 17:26:29 -0700
-X-CSE-ConnectionGUID: u30lrkU8S8yzs5jpTmvkew==
-X-CSE-MsgGUID: UZtfrgoSRU2pJL2aW34wHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,224,1719903600"; 
-   d="scan'208";a="67970190"
-Received: from inaky-mobl1.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.125.108.106])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2024 17:26:28 -0700
-Subject: [PATCH 4/4] configfs-tsm-report: Introduce TCB stability
- enumeration and watchdog
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-coco@lists.linux.dev
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- "Borislav Petkov \(AMD\)" <bp@alien8.de>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Michael Roth <michael.roth@amd.com>,
- x86@kernel.org, aik@amd.com, elena.reshetova@intel.com, pgonda@google.com
-Date: Thu, 12 Sep 2024 17:26:26 -0700
-Message-ID: <172618718534.516322.14804707935022669853.stgit@dwillia2-xfh.jf.intel.com>
-In-Reply-To: <172618715121.516322.9909313629463814714.stgit@dwillia2-xfh.jf.intel.com>
-References: <172618715121.516322.9909313629463814714.stgit@dwillia2-xfh.jf.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="irU3xiyB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1726220674; x=1757756674;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=h0iJXK+aFKF6xDhs5xzNYLT8wyWlXEulTMQO10Jpo78=;
+  b=irU3xiyBrj5599RpCObGQ3yYybFme1HRo/asckm0BzIcVArx18CRCf8P
+   NMOkfkEkfOTPobPBylTQ6PqME+c4FYDyk0a3BTzXT/42D/+C4gPbEYCxz
+   1m6tBH/2C39YX1/+b3vxpWRe3kBwJeADqmCEXq7jmbhlhX7a/BGAO+hCC
+   E=;
+X-IronPort-AV: E=Sophos;i="6.10,225,1719878400"; 
+   d="scan'208";a="759591462"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 09:44:07 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.21.151:53512]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.10:2525] with esmtp (Farcaster)
+ id 87c9ee91-cc16-4514-8775-b23d9be236e6; Fri, 13 Sep 2024 09:44:06 +0000 (UTC)
+X-Farcaster-Flow-ID: 87c9ee91-cc16-4514-8775-b23d9be236e6
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Fri, 13 Sep 2024 09:44:04 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34; Fri, 13 Sep 2024
+ 09:44:01 +0000
+Message-ID: <515aa05c-8ee3-477d-9fca-8db9b186880d@amazon.com>
+Date: Fri, 13 Sep 2024 11:43:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/3] tsm: Unified Measurement Register ABI for TVMs
+To: "Xing, Cedric" <cedric.xing@intel.com>, Jean-Philippe Brucker
+	<jean-philippe@linaro.org>
+CC: Dan Williams <dan.j.williams@intel.com>, Samuel Ortiz
+	<sameo@rivosinc.com>, James Bottomley
+	<James.Bottomley@hansenpartnership.com>, Lukas Wunner <lukas@wunner.de>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>, Qinkun Bao <qinkun@google.com>,
+	Mikko Ylinen <mikko.ylinen@linux.intel.com>, Kuppuswamy Sathyanarayanan
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <linux-kernel@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <suzuki.poulose@arm.com>,
+	<sami.mujawar@arm.com>
+References: <20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com>
+ <20240910170959.GA213064@myrica>
+ <f6b0a1d2-c730-4b20-a8f3-afd9a7cf822a@intel.com>
+ <51c009c7-e2ee-4753-89c8-6157d2cd49fa@amazon.com>
+ <b9d3736a-836f-44cd-ae84-e6912ef22d15@intel.com>
+Content-Language: en-US
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <b9d3736a-836f-44cd-ae84-e6912ef22d15@intel.com>
+X-ClientProxiedBy: EX19D044UWB003.ant.amazon.com (10.13.139.168) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-One of the points of contention for enabling runtime updates of the TDX
-Module has been what to do about the fact that it results in
-confidential VMs seeing surprise updates to their TCB. The general
-concern is that there is a non-zero confidentiality regression risk for
-updating measured TCB components. Not only the TDX Module, but
-microcode, SEV-SNP PSP firmware, RISCV and ARM equivalents etc. The
-degree to which the TCB is or is not compromised by an unexpected update
-is unknowable by the kernel, but it should at least try to be
-transparent about what it knows about TCB stability.
-
-Ironically, microcode and PSP firmware update flows predated this
-launch-state attestation era of confidential computing and resulted in a
-"permissive" by default policy. So while TDX Module update is a new
-concern that triggers fresh questions, the resolution of that question
-reads on more than just the TDX Module.
-
-The proposal is: update the cross-vendor TSM Reports mechanism to have a
-unified response to this question in the form of a "TCB Stability"
-build-time configuration stance.
-
-Likely hosting providers expect tenants to be permissive of updates at
-all times in which case they can just mandate
-CONFIG_TSM_REPORTS_TCB_STABILITY_PERMISSIVE in tenant Linux kernel
-configs, and no need to read the rest of this changelog.
-
-Outside of that case though the kernel has a responsibility to be
-transparent about what it knows about the stability of launch
-attestation reports, and it has the ability to supplement the lack of
-proactive notification of pending updates with an after-the-fact
-watchdog.
-
-The expectation is that userspace that depends on remote attestation
-(the common ecosystem expectation for confidential computing
-deployments) already has everything it needs to periodically revalidate
-the TCB. However, similar to how the typical watchdog backstops
-unexpected lockup scenarios to limit downtime, the
-CONFIG_TSM_REPORTS_TCB_STABILITY_RELAXED policy backstops unexpected
-remote attestation connectivity losses in a common way.
-
-Lastly, CONFIG_TSM_REPORTS_TCB_STABILITY_STRICT, for completeness,
-allows the kernel to be toxic to even the possibility of runtime
-updates. The inclusion of this option is mainly for the communication
-value it provides to later survey how many Linux distributions, cloud
-hosting providers and confidential computing host platforms offer
-compatibility with a "no runtime TCB component update" policy. The
-maintenance burden of this option is low compared to that communication
-value.
-
-The enforcement of "Relaxed" or "Strict" violations is expected to adopt
-the kernel's "panic_on_warn" policy. I.e. a violation is only a WARN()
-in either configuration.
-
-For now, only tdx-guest is updated to convey when runtime updates are
-disbaled. sev-guest always asserts that runtime updates are enabled.
-
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Michael Roth <michael.roth@amd.com>
-Cc: x86@kernel.org
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- Documentation/ABI/testing/configfs-tsm-report |   41 ++++++++++++
- drivers/virt/coco/guest/Kconfig               |   65 +++++++++++++++++++
- drivers/virt/coco/guest/Makefile              |    1 
- drivers/virt/coco/guest/report.c              |   85 +++++++++++++++++++++++++
- drivers/virt/coco/guest/watchdog.c            |   59 +++++++++++++++++
- drivers/virt/coco/guest/watchdog.h            |   40 ++++++++++++
- drivers/virt/coco/sev-guest/sev-guest.c       |    2 -
- drivers/virt/coco/tdx-guest/tdx-guest.c       |    9 ++-
- include/linux/tsm.h                           |    9 ++-
- 9 files changed, 307 insertions(+), 4 deletions(-)
- create mode 100644 drivers/virt/coco/guest/watchdog.c
- create mode 100644 drivers/virt/coco/guest/watchdog.h
-
-diff --git a/Documentation/ABI/testing/configfs-tsm-report b/Documentation/ABI/testing/configfs-tsm-report
-index 534408bc1408..28c89afc265b 100644
---- a/Documentation/ABI/testing/configfs-tsm-report
-+++ b/Documentation/ABI/testing/configfs-tsm-report
-@@ -143,3 +143,44 @@ Description:
- 
- 		See 'service_provider' for information on the format of the
- 		service manifest version.
-+
-+What:		/sys/kernel/config/tsm/report/$name/tcb_static
-+Date:		September, 2024
-+KernelVersion:	v6.13
-+Contact:	linux-coco@lists.linux.dev
-+Description:
-+		(RO) Reports 1 if low level TCB component versions are subject to
-+		change at runtime, reports 0 otherwise.  Note that TSM provider
-+		implementations may draw the line on what can be updated at
-+		runtime differently. For example, only small security fixes are
-+		suitable for runtime update while major feature versions require
-+		VM shutdown. Consult with the platform provider on what component
-+		updates are included in runtime updates.
-+
-+What:		/sys/kernel/config/tsm/report/$name/watchdog
-+Date:		September, 2024
-+KernelVersion:	v6.13
-+Contact:	linux-coco@lists.linux.dev
-+Description:
-+		(WO) Attribute is visible if the kernel is built with
-+		CONFIG_TSM_REPORTS_TCB_STABILITY_RELAXED=y and @tcb_static reports
-+		"0". Userspace is required to write "1" to this file at least once
-+		every @watchdog_timeout period to assert that the TCB has not
-+		changed and that userspace connectivity with remote attestation
-+		services is still alive. The watchdog starts upon the first read
-+		from @outblob.
-+
-+What:		/sys/kernel/config/tsm/report/$name/watchdog_timeout
-+Date:		September, 2024
-+KernelVersion:	v6.13
-+Contact:	linux-coco@lists.linux.dev
-+Description:
-+		(RW) Attribute is visible if the kernel is built with
-+		CONFIG_TSM_REPORTS_TCB_STABILITY_RELAXED=y and @tcb_static reports
-+		"0". It reports the current timeout value in seconds when read.
-+		Writing an integer value establishes the next timeout for the
-+		period initiated with a write to @watchdog, or retrieval of a new
-+		report from @outblob. A write of "0" disables the watchdog. Also
-+		consider building the kernel with
-+		CONFIG_TSM_REPORTS_TCB_STABILITY_PERMISSIVE=y if there is no
-+		intent to use the watchdog.
-diff --git a/drivers/virt/coco/guest/Kconfig b/drivers/virt/coco/guest/Kconfig
-index ed9bafbdd854..d59cb237b1e0 100644
---- a/drivers/virt/coco/guest/Kconfig
-+++ b/drivers/virt/coco/guest/Kconfig
-@@ -5,3 +5,68 @@
- config TSM_REPORTS
- 	select CONFIGFS_FS
- 	tristate
-+
-+choice
-+	prompt "TSM Reports: TCB Stability Policy"
-+	depends on TSM_REPORTS
-+	help
-+	  Confidential Computing Launch attestation includes the version of
-+	  components like the TSM firmware and CPU microcode.
-+
-+	  While updates to those components are designed to maintain or improve
-+	  confidentiality and integrity, there is a non-zero chance for
-+	  regressions. Select one of "Strict", "Relaxed", or "Permissive" to
-+	  determine the kernel's default policy with respect to runtime updates.
-+	  Select "Relaxed" if unsure, the historical default is "Permissive",
-+	  but otherwise, consult with your VM host provider and/or attestation
-+	  service provider for the recommended policy.
-+
-+config TSM_REPORTS_TCB_STABILITY_PERMISSIVE
-+	bool "Permissive"
-+	help
-+	  If the VM running this kernel trusts or is contractually obligated to
-+	  accept runtime updates, set this option. It assumes that the
-+	  regression risk of updates is lower than the risk of continuing with
-+	  an older TCB, or the hosting provider has an operational deployment
-+	  requirement to mandate runtime updates. Set this option to disable
-+	  kernel diligence around asserting that the TCB is not being mutated in
-+	  unexpected ways.
-+
-+config TSM_REPORTS_TCB_STABILITY_RELAXED
-+	bool "Relaxed"
-+	help
-+	  There are legitimate reasons for runtime updates of TCB components.
-+	  The kernel is not in a position to pre-approve exposure to updated
-+	  TCBs, or to parse a myriad of vendor specific report formats across
-+	  platforms. It is, however, in a position to trigger self protection of
-+	  confidentiality and integrity when TCB update surprises occur and go
-+	  unhandled. This option requires userspace to positively assert that
-+	  each new attestation report it receives has not modified the TCB in a
-+	  way that userspace does not expect. It is a watchdog to set a kernel
-+	  enforced maximum amount of time that the VM is exposed to new TCB
-+	  components without validation.  See "watchdog" in
-+	  Documentation/ABI/testing/configfs-tsm-report.
-+
-+config TSM_REPORTS_TCB_STABILITY_STRICT
-+	bool "Strict"
-+	help
-+	  For maximum paranoia, trigger a warning immediately upon userspace
-+	  retrieving an attestation report that is subject to potential surprise
-+	  updates of any of the measured components, or if the kernel cannot
-+	  determine that such updates are disabled. The system "panic_on_warn"
-+	  policy can be deployed to escalate this notification to terminating
-+	  the kernel to prevent exposure to updated TCBs that may not yet be
-+	  approved by a verifier. Contact the VMM host provider to determine if
-+	  disabling exposure to dynamic TCBs is possible.
-+endchoice
-+
-+config TSM_REPORTS_WATCHDOG_TIMEOUT
-+	int "TSM Reports: TCB Stability Watchdog Timeout"
-+	depends on TSM_REPORTS_TCB_STABILITY_RELAXED
-+	range 1 300
-+	default 60
-+	help
-+	  Set a timeout, in seconds, for userspace to assert that newly
-+	  retrieved attestation reports have not modified a measured component
-+	  version outside of expectations, and require revalidation of the TCB
-+	  on this period.
-diff --git a/drivers/virt/coco/guest/Makefile b/drivers/virt/coco/guest/Makefile
-index b3b217af77cf..341009357400 100644
---- a/drivers/virt/coco/guest/Makefile
-+++ b/drivers/virt/coco/guest/Makefile
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_TSM_REPORTS)	+= tsm_report.o
- tsm_report-y := report.o
-+tsm_report-$(CONFIG_TSM_REPORTS_TCB_STABILITY_RELAXED) += watchdog.o
-diff --git a/drivers/virt/coco/guest/report.c b/drivers/virt/coco/guest/report.c
-index bcb515b50c68..6e33804702e7 100644
---- a/drivers/virt/coco/guest/report.c
-+++ b/drivers/virt/coco/guest/report.c
-@@ -12,8 +12,11 @@
- #include <linux/cleanup.h>
- #include <linux/configfs.h>
- 
-+#include "watchdog.h"
-+
- static struct tsm_provider {
- 	const struct tsm_report_ops *ops;
-+	unsigned long flags;
- 	void *data;
- } provider;
- static DECLARE_RWSEM(tsm_rwsem);
-@@ -42,6 +45,7 @@ struct tsm_report_state {
- 	unsigned long write_generation;
- 	unsigned long read_generation;
- 	struct config_item cfg;
-+	struct tcb_stability_state tcb;
- };
- 
- enum tsm_data_select {
-@@ -221,6 +225,66 @@ static ssize_t tsm_report_provider_show(struct config_item *cfg, char *buf)
- }
- CONFIGFS_ATTR_RO(tsm_report_, provider);
- 
-+static ssize_t tsm_report_tcb_static_show(struct config_item *cfg, char *buf)
-+{
-+	guard(rwsem_read)(&tsm_rwsem);
-+	return sysfs_emit(buf, "%d\n",
-+			  !!(provider.flags & TSM_REPORT_TCB_STATIC));
-+}
-+CONFIGFS_ATTR_RO(tsm_report_, tcb_static);
-+
-+static ssize_t tsm_report_watchdog_timeout_store(struct config_item *cfg,
-+						 const char *buf, size_t len)
-+{
-+	struct tsm_report *report = to_tsm_report(cfg);
-+	struct tsm_report_state *state = to_state(report);
-+	int rc;
-+
-+	rc = kstrtoul(buf, 0, &state->tcb.tmo);
-+	if (rc)
-+		return rc;
-+	return len;
-+}
-+
-+static ssize_t tsm_report_watchdog_timeout_show(struct config_item *cfg,
-+						char *buf)
-+{
-+	struct tsm_report *report = to_tsm_report(cfg);
-+	struct tsm_report_state *state = to_state(report);
-+
-+	return sysfs_emit(buf, "%ld\n", state->tcb.tmo);
-+}
-+CONFIGFS_ATTR(tsm_report_, watchdog_timeout);
-+
-+static ssize_t tsm_report_watchdog_store(struct config_item *cfg,
-+					 const char *buf, size_t len)
-+{
-+	struct tsm_report *report = to_tsm_report(cfg);
-+	struct tsm_report_state *state = to_state(report);
-+
-+	return __tsm_report_watchdog_store(&state->tcb, buf, len);
-+}
-+CONFIGFS_ATTR_WO(tsm_report_, watchdog);
-+
-+static void check_tcb_stability(struct tsm_report_state *state)
-+{
-+	if (provider.flags & TSM_REPORT_TCB_STATIC || state->tcb.report)
-+		return;
-+
-+	if (IS_ENABLED(CONFIG_TSM_REPORTS_TCB_STABILITY_PERMISSIVE)) {
-+		pr_info("%s: TCB is subject to dynamic low level component updates\n",
-+			state->tcb.name);
-+		state->tcb.report = true;
-+	} else if (IS_ENABLED(CONFIG_TSM_REPORTS_TCB_STABILITY_RELAXED))
-+		tcb_watchdog_trigger(&state->tcb);
-+	else if (IS_ENABLED(CONFIG_TSM_REPORTS_TCB_STABILITY_STRICT)) {
-+		WARN(1,
-+		     pr_fmt("%s: TCB is subject to dynamic low level component updates\n"),
-+		     state->tcb.name);
-+		state->tcb.report = true;
-+	}
-+}
-+
- static ssize_t __read_report(struct tsm_report *report, void *buf, size_t count,
- 			     enum tsm_data_select select)
- {
-@@ -303,6 +367,7 @@ static ssize_t tsm_report_read(struct tsm_report *report, void *buf,
- 	if (rc < 0)
- 		return rc;
- 	state->read_generation = state->write_generation;
-+	check_tcb_stability(state);
- out:
- 	return __read_report(report, buf, count, select);
- }
-@@ -342,6 +407,9 @@ static struct configfs_attribute *tsm_report_attrs[] = {
- 	[TSM_REPORT_SERVICE_PROVIDER] = &tsm_report_attr_service_provider,
- 	[TSM_REPORT_SERVICE_GUID] = &tsm_report_attr_service_guid,
- 	[TSM_REPORT_SERVICE_MANIFEST_VER] = &tsm_report_attr_service_manifest_version,
-+	[TSM_REPORT_TCB_STATIC] = &tsm_report_attr_tcb_static,
-+	[TSM_REPORT_TCB_WATCHDOG] = &tsm_report_attr_watchdog,
-+	[TSM_REPORT_TCB_WATCHDOG_TIMEOUT] = &tsm_report_attr_watchdog_timeout,
- 	NULL,
- };
- 
-@@ -358,6 +426,7 @@ static void tsm_report_item_release(struct config_item *cfg)
- 	struct tsm_report *report = to_tsm_report(cfg);
- 	struct tsm_report_state *state = to_state(report);
- 
-+	tcb_watchdog_shutdown(&state->tcb);
- 	kvfree(report->manifestblob);
- 	kvfree(report->auxblob);
- 	kvfree(report->outblob);
-@@ -376,6 +445,16 @@ static bool tsm_report_is_visible(struct config_item *item,
- 	if (!provider.ops)
- 		return false;
- 
-+	if (attr == &tsm_report_attr_tcb_static)
-+		return true;
-+
-+	if (attr == &tsm_report_attr_watchdog ||
-+	    attr == &tsm_report_attr_watchdog_timeout) {
-+		if (IS_ENABLED(CONFIG_TSM_REPORTS_TCB_STABILITY_RELAXED))
-+			return true;
-+		return false;
-+	}
-+
- 	if (!provider.ops->report_attr_visible)
- 		return true;
- 
-@@ -421,6 +500,7 @@ static struct config_item *tsm_report_make_item(struct config_group *group,
- 	if (!state)
- 		return ERR_PTR(-ENOMEM);
- 
-+	tcb_watchdog_init(&state->tcb, name);
- 	config_item_init_type_name(&state->cfg, name, &tsm_report_type);
- 	return &state->cfg;
- }
-@@ -448,7 +528,8 @@ static struct configfs_subsystem tsm_configfs = {
- 	.su_mutex = __MUTEX_INITIALIZER(tsm_configfs.su_mutex),
- };
- 
--int tsm_report_register(const struct tsm_report_ops *ops, void *priv)
-+int tsm_report_register(const struct tsm_report_ops *ops, unsigned long flags,
-+			void *priv)
- {
- 	const struct tsm_report_ops *conflict;
- 
-@@ -461,6 +542,7 @@ int tsm_report_register(const struct tsm_report_ops *ops, void *priv)
- 
- 	provider.ops = ops;
- 	provider.data = priv;
-+	provider.flags = flags;
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(tsm_report_register);
-@@ -472,6 +554,7 @@ int tsm_report_unregister(const struct tsm_report_ops *ops)
- 		return -EBUSY;
- 	provider.ops = NULL;
- 	provider.data = NULL;
-+	provider.flags = 0;
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(tsm_report_unregister);
-diff --git a/drivers/virt/coco/guest/watchdog.c b/drivers/virt/coco/guest/watchdog.c
-new file mode 100644
-index 000000000000..58577a286a13
---- /dev/null
-+++ b/drivers/virt/coco/guest/watchdog.c
-@@ -0,0 +1,59 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <linux/workqueue.h>
-+#include "watchdog.h"
-+
-+/*
-+ * a new report has been retrieved, require userspace to assert that
-+ * connectivity with and approval from remote attestation is still
-+ * intact, and remains intact on an ongoing basis
-+ */
-+void tcb_watchdog_trigger(struct tcb_stability_state *tcb)
-+{
-+	unsigned long tmo = READ_ONCE(tcb->tmo);
-+
-+	if (!tmo)
-+		return;
-+
-+	schedule_delayed_work(&tcb->watchdog_work, msecs_to_jiffies(tmo * 1000));
-+}
-+
-+static void tcb_watchdog_work(struct work_struct *work)
-+{
-+	struct tcb_stability_state *tcb = container_of(
-+		work, struct tcb_stability_state, watchdog_work.work);
-+
-+	WARN(1, pr_fmt("%s: Timeout awaiting TCB stability validation\n"), tcb->name);
-+	tcb->report = true;
-+}
-+
-+void tcb_watchdog_init(struct tcb_stability_state *tcb, const char *name)
-+{
-+	INIT_DELAYED_WORK(&tcb->watchdog_work, tcb_watchdog_work);
-+	tcb->tmo = CONFIG_TSM_REPORTS_WATCHDOG_TIMEOUT;
-+	tcb->name = name;
-+}
-+
-+ssize_t __tsm_report_watchdog_store(struct tcb_stability_state *tcb, const char *buf,
-+				    size_t len)
-+{
-+	unsigned long tmo = READ_ONCE(tcb->tmo);
-+	bool cancel;
-+	int rc;
-+
-+	rc = kstrtobool(buf, &cancel);
-+	if (rc)
-+		return rc;
-+	if (!cancel)
-+		return len;
-+	if (!tmo) {
-+		cancel_delayed_work(&tcb->watchdog_work);
-+		return len;
-+	}
-+
-+	schedule_delayed_work(&tcb->watchdog_work, msecs_to_jiffies(tmo * 1000));
-+	return len;
-+}
-diff --git a/drivers/virt/coco/guest/watchdog.h b/drivers/virt/coco/guest/watchdog.h
-new file mode 100644
-index 000000000000..c29a0d8e3833
---- /dev/null
-+++ b/drivers/virt/coco/guest/watchdog.h
-@@ -0,0 +1,40 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __TCB_WATCHDOG_H
-+#define __TCB_WATCHDOG_H
-+#include <linux/workqueue.h>
-+
-+struct tcb_stability_state {
-+	const char *name;
-+	bool report;
-+	unsigned long tmo;
-+	struct delayed_work watchdog_work;
-+};
-+
-+#ifdef CONFIG_TSM_REPORTS_TCB_STABILITY_RELAXED
-+void tcb_watchdog_trigger(struct tcb_stability_state *tcb);
-+ssize_t __tsm_report_watchdog_store(struct tcb_stability_state *tcb,
-+				    const char *buf, size_t len);
-+void tcb_watchdog_init(struct tcb_stability_state *tcb, const char *name);
-+static inline void tcb_watchdog_shutdown(struct tcb_stability_state *tcb)
-+{
-+	cancel_delayed_work_sync(&tcb->watchdog_work);
-+}
-+#else
-+static inline void tcb_watchdog_init(struct tcb_stability_state *tcb,
-+				     const char *name)
-+{
-+}
-+static inline void tcb_watchdog_shutdown(struct tcb_stability_state *tcb)
-+{
-+}
-+static inline void tcb_watchdog_trigger(struct tcb_stability_state *tcb)
-+{
-+}
-+static inline ssize_t
-+__tsm_report_watchdog_store(struct tcb_stability_state *tcb, const char *buf,
-+			    size_t len)
-+{
-+	return -ENXIO;
-+}
-+#endif /* CONFIG_TSM_REPORTS_TCB_STABILITY_RELAXED */
-+#endif /* __TCB_WATCHDOG_H */
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index 2fc818c7ece0..89b160ae719d 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -1160,7 +1160,7 @@ static int __init sev_guest_probe(struct platform_device *pdev)
- 	/* Set the privlevel_floor attribute based on the vmpck_id */
- 	sev_tsm_report_ops.privlevel_floor = vmpck_id;
- 
--	ret = tsm_report_register(&sev_tsm_report_ops, snp_dev);
-+	ret = tsm_report_register(&sev_tsm_report_ops, 0, snp_dev);
- 	if (ret)
- 		goto e_free_cert_data;
- 
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index a74b9a509658..122a10a8dd2b 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -309,6 +309,7 @@ static const struct tsm_report_ops tdx_tsm_ops = {
- 
- static int __init tdx_guest_init(void)
- {
-+	unsigned long flags;
- 	int ret;
- 
- 	if (!x86_match_cpu(tdx_guest_ids))
-@@ -325,7 +326,13 @@ static int __init tdx_guest_init(void)
- 		goto free_misc;
- 	}
- 
--	ret = tsm_report_register(&tdx_tsm_ops, NULL);
-+	flags = TSM_REPORT_TCB_STATIC;
-+	if (tdg_sys_info_features.num_tdx_features >
-+		    TDX_FEATURE_TD_PRESERVING_BIT &&
-+	    tdg_sys_info_features.features0 & TDX_FEATURE_TD_PRESERVING)
-+		flags = 0;
-+
-+	ret = tsm_report_register(&tdx_tsm_ops, flags, NULL);
- 	if (ret)
- 		goto free_quote;
- 
-diff --git a/include/linux/tsm.h b/include/linux/tsm.h
-index 431054810dca..e53c237620f2 100644
---- a/include/linux/tsm.h
-+++ b/include/linux/tsm.h
-@@ -62,6 +62,8 @@ struct tsm_report {
-  * @TSM_REPORT_SERVICE_PROVIDER: index of the service provider identifier attribute
-  * @TSM_REPORT_SERVICE_GUID: index of the service GUID attribute
-  * @TSM_REPORT_SERVICE_MANIFEST_VER: index of the service manifest version attribute
-+ * @TSM_REPORT_TCB_WATCHDOG: TCB stability monitor
-+ * @TSM_REPORT_TCB_WATCHDOG_TIMEOUT: TCB stability timeout value (seconds)
-  */
- enum tsm_attr_index {
- 	TSM_REPORT_GENERATION,
-@@ -71,6 +73,8 @@ enum tsm_attr_index {
- 	TSM_REPORT_SERVICE_PROVIDER,
- 	TSM_REPORT_SERVICE_GUID,
- 	TSM_REPORT_SERVICE_MANIFEST_VER,
-+	TSM_REPORT_TCB_WATCHDOG,
-+	TSM_REPORT_TCB_WATCHDOG_TIMEOUT,
- };
- 
- /**
-@@ -107,6 +111,9 @@ struct tsm_report_ops {
- 	bool (*report_bin_attr_visible)(int n);
- };
- 
--int tsm_report_register(const struct tsm_report_ops *ops, void *priv);
-+#define TSM_REPORT_TCB_STATIC BIT(0)
-+
-+int tsm_report_register(const struct tsm_report_ops *ops, unsigned long flags,
-+			void *priv);
- int tsm_report_unregister(const struct tsm_report_ops *ops);
- #endif /* __TSM_H */
+Ck9uIDEyLjA5LjI0IDE3OjQzLCBYaW5nLCBDZWRyaWMgd3JvdGU6Cj4KPiBPbiA5LzExLzIwMjQg
+MTo1NiBBTSwgQWxleGFuZGVyIEdyYWYgd3JvdGU6Cj4+Cj4+IE9uIDExLjA5LjI0IDA2OjAxLCBY
+aW5nLCBDZWRyaWMgd3JvdGU6Cj4+Pgo+Pj4gT24gOS8xMC8yMDI0IDEyOjA5IFBNLCBKZWFuLVBo
+aWxpcHBlIEJydWNrZXIgd3JvdGU6Cj4+Pj4gSGkgQ2VkcmljLAo+Pj4+Cj4+Pj4gT24gU2F0LCBT
+ZXAgMDcsIDIwMjQgYXQgMTE6NTY6MThQTSAtMDUwMCwgQ2VkcmljIFhpbmcgd3JvdGU6Cj4+Pj4+
+IFBhdGNoIDIgaW50cm9kdWNlcyBldmVudCBsb2cgc3VwcG9ydCBmb3IgUlRNUnMsIGFkZHJlc3Np
+bmcgdGhlIGZhY3QKPj4+Pj4gdGhhdCB0aGUKPj4+Pj4gc3RhbmRhbG9uZSB2YWx1ZXMgb2YgUlRN
+UnMsIHdoaWNoIHJlcHJlc2VudCB0aGUgY3VtdWxhdGl2ZSBkaWdlc3RzIG9mCj4+Pj4+IHNlcXVl
+bnRpYWwgZXZlbnRzLCBhcmUgbm90IGZ1bGx5IGluZm9ybWF0aXZlIG9uIHRoZWlyIG93bi4KPj4+
+Pgo+Pj4+IFdvdWxkIGVhY2ggZXZlbnRfbG9nIGluY2x1ZGUgdGhlIGV2ZW50cyB0aGF0IGZpcm13
+YXJlIHdyb3RlIGJlZm9yZQo+Pj4+IExpbnV4Pwo+Pj4gTm8uIFRoZSBsb2cgZm9ybWF0IHByb3Bv
+c2VkIGhlcmUgaXMgdGV4dHVhbCBhbmQgaW5jb21wYXRpYmxlIHdpdGggVENHMgo+Pj4gbG9nIGZv
+cm1hdC4KPj4+Cj4+PiBUaGUgcHJvcG9zZWQgbG9nIGZvcm1hdCBpcyBiYXNlZCBvbiB0aGUgQ29D
+byBldmVudCBsb2cgLQo+Pj4gaHR0cHM6Ly9naXRodWIuY29tL2NvbmZpZGVudGlhbC1jb250YWlu
+ZXJzL2d1ZXN0LWNvbXBvbmVudHMvaXNzdWVzLzQ5NS4KPj4+Cj4+Pj4gSSdtIHdvbmRlcmluZyBo
+b3cgdGhpcyBjb2V4aXN0cyB3aXRoIC9zeXMvZmlybXdhcmUvYWNwaS90YWJsZXMvZGF0YS8KPj4+
+PiBDQ0VMLgo+Pj4gVGhlIHByb3Bvc2VkIGxvZyB3aWxsIHRha2Ugb3ZlciBhZnRlciBib290aW5n
+IHRvIExpbnV4LiBUaGUgYFNZTkNgIGxpbmUKPj4+IGluIHRoZSBsb2cgY2FwdHVyZXMgdGhlIFJU
+TVIgdmFsdWUgYmVmb3JlIGl0LCB3aGljaCBjYW4gYmUgdXNlZCB0bwo+Pj4gdmVyaWZ5IENDRUwg
+bGVmdCBvZmYgYnkgdGhlIHZpcnR1YWwgZmlybXdhcmUuCj4+Pgo+Pj4+IE1heWJlIHNvbWV0aGlu
+ZyBsaWtlOiBDQ0VMIG9ubHkgY29udGFpbnMgcHJlLUxpbnV4IGV2ZW50cy4gVGhlIFRTTQo+Pj4+
+IGRyaXZlcgo+Pj4+IHBhcnNlcyBDQ0VMICh1c2luZyBhIGZvcm1hdCBzcGVjaWZpYyB0byB0aGUg
+YXJjaCwgZm9yIGV4YW1wbGUgVENHMiksCj4+Pj4gc2VwYXJhdGVzIHRoZSBldmVudHMgYnkgTVIg
+YW5kIHByb2R1Y2VzIGV2ZW50X2xvZyBmaWxlcyBpbgo+Pj4+IC9zeXMva2VybmVsL3RzbS8sIHBv
+c3NpYmx5IGluIGEgZGlmZmVyZW50IGZvcm1hdCBsaWtlIENFTC1UTFYuIElzIHRoYXQKPj4+PiB3
+aGF0IHlvdSBlbnZpc2lvbiBmb3IgVERYPwo+Pj4+Cj4+PiBDQ0VMIHdpbGwgYmUgcHJlLUxpbnV4
+IG9ubHkuIEdpdmVuIHRoZSBwcm9wb3NlZCBmb3JtYXQgaXMgaW5jb21wYXRpYmxlCj4+PiB3aXRo
+IFRDRzIgZm9ybWF0LCBJIGRvbid0IHRoaW5rIHRob3NlIDIgbG9ncyB3aWxsIGJlIG1lcmdlZC4g
+QnV0IGlmIHdlCj4+PiBnZXQgYW55IHN1Y2Nlc3MgaW4gdGhpcyBuZXcgbG9nIGZvcm1hdCwgd2Ug
+bWF5IGluZmx1ZW5jZSB0aGUgVUVGSS9PVk1GCj4+PiBjb21tdW5pdHkgdG8gYWRvcHQgdGhpcyBu
+ZXcgZm9ybWF0IGluIGZ1dHVyZS4KPj4+Cj4+PiBXZSBoYXZlIGV2YWx1YXRlZCBib3RoIFRDRzIg
+YW5kIENFTCBmb3JtYXRzIGJ1dCBhcnJpdmVkIGluIHRoaXMgbmV3Cj4+PiBmb3JtYXQgYmVjYXVz
+ZSB3ZSdkIGxpa2UgdG8gc3VwcG9ydCBBTEwgYXBwbGljYXRpb25zLiBBbmQgdGhlIG9ubHkgc2Fu
+ZQo+Pj4gd2F5IEkgY291bGQgZmlndXJlIG91dCBpcyB0byBzZXBhcmF0ZSB0aGUgbG9nIGludG8g
+MiBsYXllcnMgLSBhbgo+Pj4gYXBwbGljYXRpb24gc3BlY2lmaWMgc2VtYW50aWNzIGxheWVyIChh
+IGNvbnRyYWN0IGJldHdlZW4gdGhlIAo+Pj4gYXBwbGljYXRpb24KPj4+IGFuZCB0aGUgdmVyaWZp
+ZXIpLCBhbmQgYW4gYXBwbGljYXRpb24gYWdub3N0aWMgc3RvcmFnZSBsYXllcgo+Pj4gKGltcGxl
+bWVudGVkIGJ5IHRoZSBrZXJuZWwpLiBUaGUgY29tbW9uIHByb2JsZW0gb2YgVENHMiBhbmQgQ0VM
+IGlzIHRoYXQKPj4+IHRoZSBldmVudC9jb250ZW50IHRhZy90eXBlIGRpY3RhdGVzIHdoaWNoIHBh
+cnQgb2YgdGhlIGV2ZW50IAo+Pj4gZGF0YS9jb250ZW50Cj4+PiB0byBoYXNoLCBtZWFuaW5nIHRo
+ZSBrZXJuZWwgbXVzdCB1bmRlcnN0YW5kIGFuIGV2ZW50IHJlY29yZCBiZWZvcmUKPj4+IGhhc2hp
+bmcgaXQuIEFuZCB0aGF0IGhhcyBwcmV2ZW50ZWQgYW4gYXBwbGljYXRpb24gYWdub3N0aWMgc3Rv
+cmFnZQo+Pj4gZGVzaWduLgo+Pj4KPj4+IEFueXdheSwgdGhpcyBuZXcgbG9nIGNhbiBiZSBlbmNh
+cHN1bGF0ZWQgaW4gYm90aCBDRUwtSlNPTiAobGlrZSB3aGF0Cj4+PiBzeXN0ZW1kIGlzIGRvaW5n
+IHRvZGF5KSBhbmQgVENHMiAodXNpbmcgdGhlIEVWX0FDVElPTiBldmVudCB0eXBlKQo+Pj4gZm9y
+bWF0cy4gUGxlYXNlIHNlZSB0aGUgQ29DbyBpc3N1ZSAobGluayBnaXZlbiBhYm92ZSkgZm9yIG1v
+cmUgZGV0YWlscy4KPj4+Cj4+Pj4gSSBhc2sgYmVjYXVzZSBJJ3ZlIGJlZW4gbG9va2luZyBpbnRv
+IHRoaXMgaW50ZXJmYWNlIGZvciBBcm0gQ0NBLCBhbmQKPj4+PiBoYXZpbmcgdW5pZmllZCBldmVu
+dCBsb2dzIGF2YWlsYWJsZSBzb21ld2hlcmUgaW4gL3N5cy9rZXJuZWwvY29uZmcvdHNtCj4+Pj4g
+d291bGQgYmUgdmVyeSBjb252ZW5pZW50IGZvciB1c2VycyAoYXZvaWRzIGhhdmluZyB0byBwYXJz
+ZSBhbmQgY29udmVydAo+Pj4+IGRpZmZlcmVudCAvc3lzL2Zpcm13YXJlIGludGVyZmFjZXMgYWxv
+bmcgd2l0aCBMaW51eCBldmVudCBsb2dzKS4gSSAKPj4+PiB3b3VsZAo+Pj4+IGhhdmUgcHV0IGEg
+c2luZ2xlIGV2ZW50X2xvZyBpbiAvc3lzL2tlcm5lbC9jb25maWcvdHNtL3JlcG9ydC8gYnV0Cj4+
+Pj4gc3BsaXR0aW5nIGl0IGJ5IE1SIHNob3VsZCB3b3JrIHRvby4KPj4+Pgo+Pj4gV2UgaGF2ZSBj
+b25zaWRlcmVkIG9uZSBnbG9iYWwgbG9nIHZzLiBwZXItTVIgbG9ncy4gSW4gZmFjdCwgYSBnbG9i
+YWwgCj4+PiBsb2cKPj4+IGlzIGVxdWl2YWxlbnQgdG8gdGhlIGNvbmNhdGVuYXRpb24gb2YgYWxs
+IHBlci1NUiBsb2dzLiBXZSd2ZSBhZG9wdGVkIAo+Pj4gdGhlCj4+PiBwZXItTVIgYXBwcm9hY2gg
+dG8ga2VlcCB0aGUgbG9nIG9wdGlvbmFsIC0gaS5lLiwgYW4gUlRNUiBjYW4gYmUgCj4+PiBleHRl
+bmRlZAo+Pj4gZGlyZWN0bHkgKGJ5IHdyaXRpbmcgdG8gaXRzIGBkaWdlc3RgIGF0dHJpYnV0ZSkg
+d2l0aG91dCBhIGxvZy4KPj4+Cj4+PiBXaXRoIHJlZ2FyZCB0byB0aGUgbG9jYXRpb24gb2YgdGhl
+IE1SIHRyZWUsIHdlIHBpY2tlZCBzeXNmcyBiZWNhdXNlIHRoZQo+Pj4gTVJzIChhbmQgYXNzb2Np
+YXRlZCBsb2dzKSBhcmUgZ2xvYmFsIGFuZCBmaXQgbW9yZSBpbnRvIHRoZSBzZW1hbnRpY3Mgb2YK
+Pj4+IHN5c2ZzIHRoYW4gY29uZmlnZnMuIERhbiBXLiBhbmQgSSBhcmUgYWxzbyBjb25zaWRlcmlu
+ZyBtb3ZpbmcgYm90aAo+Pj4gcmVwb3J0LyBhbmQgbWVhc3VyZW1lbnQvIHRyZWVzIGludG8gc2Vj
+dXJpdHlmcy4gSXQnbGwgYmUgaGlnaGx5Cj4+PiBhcHByZWNpYXRlZCBpZiB5b3UgKGFuZCBBbGV4
+LCBhbmQgZXZlcnlvbmUpIGNhbiBzaGFyZSB5b3VyIGluc2lnaHRzLgo+Pj4KPj4+PiBBcyBBbGV4
+IEkgYmVsaWV2ZSB3ZSBuZWVkIG1vcmUgc2ltaWxhcml0eSBiZXR3ZWVuIHRoZSBpbnRlcmZhY2Vz
+IG9mCj4+Pj4gc3RhdGljCj4+Pj4gYW5kIHJ1bnRpbWUgbWVhc3VyZW1lbnRzLCBiZWNhdXNlIHZl
+cmlmaWVycyBtYXkgYmVuZWZpdCBmcm9tIGFuIGV2ZW50Cj4+Pj4gbG9nCj4+Pj4gb2Ygc3RhdGlj
+IG1lYXN1cmVtZW50cy4gRm9yIGV4YW1wbGUgQXJtIGNvdWxkIGhhdmUgYSBjb25maWd1cmF0aW9u
+IAo+Pj4+IGxpa2UKPj4+PiB0aGlzOgo+Pj4+Cj4+Pj4gwqDCoCBzdHJ1Y3QgdHNtX21lYXN1cmVt
+ZW50X3JlZ2lzdGVyIGFybV9jY2FfbXJzW10gPSB7Cj4+Pj4gwqDCoMKgwqDCoCB7IE1SXyhyaW0p
+IHwgVFNNX01SX0ZfUiB8IFRTTV9NUl9GX0xPRywgSEEgfSwKPj4+PiDCoMKgwqDCoMKgIHsgTVJf
+KHJlbTApIHwgVFNNX01SX0ZfUiB8IFRTTV9NUl9GX1ggfCBUU01fTVJfRl9MT0csIEhBIH0sCj4+
+Pj4gwqDCoMKgwqDCoCAuLi4KPj4+PiDCoMKgwqDCoMKgIHsgTVJfKHJlbTMpIHwgVFNNX01SX0Zf
+UiB8IFRTTV9NUl9GX1ggfCBUU01fTVJfRl9MT0csIEhBIH0sCj4+Pj4gwqDCoCB9Owo+Pj4+Cj4+
+Pj4gSGVyZSByaW0gaXMgYSBzdGF0aWMgbWVhc3VyZW1lbnQgb2YgdGhlIGluaXRpYWwgVk0gc3Rh
+dGUsIAo+Pj4+IGltcG9zc2libGUgdG8KPj4+PiBleHRlbmQgYnV0IGNvdWxkIGhhdmUgYW4gZXZl
+bnQgbG9nLiByZW0wLTMgYXJlIHJ1bnRpbWUgbWVhc3VyZW1lbnRzLAo+Pj4+IGV4dGVuc2libGUg
+YnkgZmlybXdhcmUgYW5kIHRoZW4gTGludXguIE5vbmUgb2YgdGhlIGRpZ2VzdHMgY2FuIGJlCj4+
+Pj4gd3JpdHRlbgo+Pj4+IGRpcmVjdGx5LCBvbmx5IGV4dGVuZGVkIGFuZCByZWFkIHdpdGggY2Fs
+bHMgdG8gdGhlIHVwcGVyIGxheWVyLiBUaGUgCj4+Pj4gdHJlZQo+Pj4+IHdvdWxkIGJlOgo+Pj4+
+Cj4+Pj4gwqDCoCAvc3lzL2tlcm5lbC9jb25maWcvdHNtLwo+Pj4+IMKgwqAg4pSc4pSA4pSAIHJp
+bQo+Pj4+IMKgwqAg4pSCwqDCoCDilJzilIDilIAgZGlnZXN0Cj4+Pj4gwqDCoCDilILCoMKgIOKU
+nOKUgOKUgCBldmVudF9sb2cKPj4+PiDCoMKgIOKUgsKgwqAg4pSU4pSA4pSAIGhhc2hfYWxnbwo+
+Pj4+IMKgwqAg4pSc4pSA4pSAIHJlbTAKPj4+PiDCoMKgIOKUgsKgwqAg4pSc4pSA4pSAIGRpZ2Vz
+dAo+Pj4+IMKgwqAg4pSCwqDCoCDilJzilIDilIAgYXBwZW5kX2V2ZW50Cj4+Pj4gwqDCoCDilILC
+oMKgIOKUnOKUgOKUgCBldmVudF9sb2cKPj4+PiDCoMKgIOKUgsKgwqAg4pSU4pSA4pSAIGhhc2hf
+YWxnbwo+Pj4+IMKgwqAgLi4uCj4+Pj4gwqDCoCDilJzilIDilIAgcmVtMwo+Pj4+IMKgwqAg4pSC
+wqDCoCDilJzilIDilIAgZGlnZXN0Cj4+Pj4gwqDCoCDilILCoMKgIOKUnOKUgOKUgCBhcHBlbmRf
+ZXZlbnQKPj4+PiDCoMKgIOKUgsKgwqAg4pSc4pSA4pSAIGV2ZW50X2xvZwo+Pj4+IMKgwqAg4pSC
+wqDCoCDilJTilIDilIAgaGFzaF9hbGdvCj4+Pj4gwqDCoCDilJTilIDilIAgcmVwb3J0LyRuYW1l
+Cj4+Pj4gwqDCoMKgwqDCoMKgIOKUnOKUgOKUgCBpbmJsb2IKPj4+PiDCoMKgwqDCoMKgwqAg4pSU
+4pSA4pSAIG91dGJsb2IKPj4+Pgo+Pj4gSSBzZWUuIFRoZSBkZXNpcmVkL21pc3NpbmcgZmVhdHVy
+ZSBoZXJlIEkgdGhpbmsgaXMgdG8gYWxsb3cgYSBDQyBndWVzdAo+Pj4gZHJpdmVyIHRvIHN1cHBs
+eSBhbiAiaW5pdGlhbCBsb2ciLiBJIGNhbiBkZWZpbmUgYSBMT0cgYml0LCB3aGljaCBpZiAKPj4+
+IHNldCwKPj4+IHdpbGwgbWFrZSB0aGUgTVIgaXRzIG93biBkaXIgd2l0aCBgaGFzaF9hbGdvYCBh
+bmQgYGV2ZW50X2xvZ2AuIEFuZCBpZiBYCj4+PiBpcyBhbHNvIHNldCwgdGhlbiBgYXBwZW5kX2V2
+ZW50YCB3aWxsIGFwcGVhciBhcyB3ZWxsLiBEb2VzIHRoaXMgc291bmQKPj4+IGxpa2Ugd2hhdCBB
+bGV4IGFuZCB5b3UgYXJlIGxvb2tpbmcgZm9yPwo+Pgo+Pgo+PiBJIGRvbid0IHVuZGVyc3RhbmQg
+d2h5IHdlIHdhbnQgdG8gaGF2ZSAyIHNlcGFyYXRlIHJlcHJlc2VudGF0aW9ucyBmb3IgYQo+PiAi
+bWVhc3VyZW1lbnQgb2JqZWN0IjogZmxhdCBmaWxlIGFzIHdlbGwgYXMgZGlyZWN0b3J5LiBDb3Vs
+ZCB5b3UgcGxlYXNlCj4+IGVsYWJvcmF0ZSBvbiB0aGUgcmF0aW9uYWxlIHdoeSB5b3UgdGhpbmsg
+aXQgd291bGQgYmUgZGVzaXJhYmxlIHRvIGhhdmUgYQo+PiBub24tZGlyZWN0b3J5IHJlcHJlc2Vu
+dGF0aW9uIGF0IGFsbD8gSSBmZWVsIGxpa2UgSSdtIG1pc3NpbmcgCj4+IHNvbWV0aGluZyA6KQo+
+Pgo+IFRoZSBpbnRlbnRpb24gaXMgdG8gbWFrZSBhIGNsZWFuZXIgdXNlciBpbnRlcmZhY2UuIEdl
+bmVyYWxseSwgdGhlIGZsYXQKPiBmaWxlcyBjb250YWluIGluZm9ybWF0aW9uIHJlYWR5IHRvIGJl
+IGNvbnN1bWVkIGJ5IGFwcGxpY2F0aW9ucywgd2hpbGUKPiB0aG9zZSBpbiBkaXJlY3RvcmllcyBh
+cmUgbGVzcyByZWFkeSAtIGUuZy4sIHRoZSBsb2cgbWF5IGhhdmUgdG8gYmUKPiBwYXJzZWQgdG8g
+ZXh0cmFjdCB0aGUgbWVhc3VyZW1lbnRzIG9mIGludGVyZXN0LiBJbiB0aGUgY2FzZSBvZiBURFgs
+Cj4gTVJDT05GSUdJRCwgTVJPV05FUiwgYW5kIE1ST1dORVJDT05GSUcgYXJlIGVzc2VudGlhbGx5
+IDMgYXJiaXRyYXJ5Cj4gNDgtYnl0ZSB2YWx1ZXMgYW5kIHdvdWxkIGJlIG1vcmUgc3RyYWlnaHRm
+b3J3YXJkIHRvIGJlIHByZXNlbnRlZCBhcyAzIAo+IGZpbGVzLgo+Cj4gVGhlIG5lY2Vzc2l0eSBm
+b3IgYSBsb2cgYXNzb2NpYXRlZCB3aXRoIGFueSBNUiBhcmlzZXMgZnJvbSB0aGUgbmVlZCB0bwo+
+ICJzaGFyZSIgdGhlIE1SIC0gaS5lLiwgdGhlcmUgYXJlIG1vcmUgbWVhc3VyZW1lbnRzIHRoYW4g
+TVJzIGFuZCB0aGVyZSdzCj4gYSBuZWVkIGZvciB0aG9zZSBtZWFzdXJlbWVudHMgdG8gYmUgYXNz
+ZXNzZWQvcHJvY2Vzc2VkIGluZGl2aWR1YWxseS4KPiBSYXRoZXIgdGhhbiBhc2tpbmcgaW5kaXZp
+ZHVhbCBhcHBsaWNhdGlvbnMgdG8gcGFyc2UgYSBsb2csIGl0J2QgYmUKPiBkZXNpcmFibGUgZm9y
+IENDIGd1ZXN0IGRyaXZlcnMgdG8gInVucGFjayIgdGhlIGxvZyBpbnRvIGEgc2V0IG9mCj4gImFy
+dGlmaWNpYWwiIE1ScyBjb25zdW1hYmxlIGJ5IGFwcGxpY2F0aW9ucy4gRS5nLiwgaWYgYSBzdGFu
+ZGFyZGl6ZWQKPiBtZXRob2QgZm9yIGNvbnZleWluZyBib290IHRpbWUgY29uZmlndXJhdGlvbi9w
+b2xpY2llcyB0byBDVk1zIHdlcmUKPiBlc3RhYmxpc2hlZCB0byBiZSBhbiBhcnJheSBvZiAiYXJ0
+aWZpY2lhbCIgQ0NSMC4uQ0NSbiAoQ3ZtIENvbmZpZwo+IFJlZ2lzdGVyKSwgYSBwb3RlbnRpYWwg
+aW1wbGVtZW50YXRpb24gY291bGQgYmUgdG8gc3RvcmUgdGhlIGFycmF5IHdpdGhpbgo+IHNvbWUg
+c3RhdGljIE1SJ3MgbG9nIHRvIGJlIGV4dHJhY3RlZCB0aGVuIGV4cG9zZWQgYnkgdGhlIENDIGd1
+ZXN0IGRyaXZlcgo+IGFzIGEgc2V0IG9mIGZsYXQgZmlsZXMuIFRoaXMgZXhhbXBsZSBvZiBjb3Vy
+c2UgZG9lc24ndCBtYW5kYXRlIGZsYXQKPiBmaWxlcy4gSXQgc2ltcGx5IHNob3djYXNlcyB0aGF0
+IHRoZXJlIGFyZSBib3RoIHNpbXBsZSB2YWx1ZXMgYW5kIG1vcmUKPiBjb21wbGV4IGRhdGEgaW4g
+dGhlICJtZWFzdXJlbWVudCB0cmVlIiwgYW5kIHRoZSBpZGVhIGhlcmUgaXMgdG8gb2ZmZXIgYW4K
+PiBvcHRpb24gdG8gZGlmZmVyZW50aWF0ZSB0aGVtICh3aGVyZXZlci93aGVuZXZlciB0aGUgQ0Mg
+Z3Vlc3QgZHJpdmVyIHNlZXMKPiBmaXQpLCB3aXRoIHRoZSBpbnRlbnRpb24gdG8gc2ltcGxpZnkg
+bmF2aWdhdGlvbiBmb3IgdXNlcnMgYW5kL29yCj4gYXBwbGljYXRpb24gZGV2ZWxvcGVycy4KCgpJ
+IGRvbid0IGZvbGxvdyB5b3VyIGFyZ3VtZW50YXRpb24gbGluZS4gTGV0J3MgbG9vayBhdCB0aGUg
+U0VWLVNOUCBsYXVuY2ggCmRpZ2VzdC4gSXQgY2FsY3VsYXRlcyBpdHMgImxhdW5jaCBkaWdlc3Qi
+IGhhc2ggYmFzZWQgb24KCiogSW5pdGlhbCBwYWdlIGhhc2hlcwoqIEluaXRpYWwgVk1TQSBzdGF0
+ZSBmb3IgdkNQVXMKClRvZGF5IHRoYXQgbWVhbnMgdGhhdCB3aGVuIHlvdSBzcGF3biBhIFZNIHdp
+dGggbXVsdGlwbGUgdkNQVXMsIHlvdXIgCmxhdW5jaCBkaWdlc3QgZGlmZmVycy4gV2l0aCBhbiBl
+dmVudCBsb2csIFNOUCBjb3VsZCBnaXZlIHlvdSBpbmRpdmlkdWFsIApvcGVyYXRpb25zIHRoYXQg
+bWFrZSB1cCB0aGUgbGF1bmNoIGRpZ2VzdCBzbyB5b3UgY2FuIHZhbGlkYXRlCgoqIG1lbW9yeSBj
+b250ZW50IGlzIHdoYXQgSSB3YW50CiogdkNQVTAgc3RhdGUgaXMgd2hhdCBJIHdhbnQKKiB2Q1BV
+biBzdGF0ZSBpcyB3aGF0IEkgd2FudAoKd2hpbGUgc3RheWluZyBjb21wbGV0ZWx5IGZsZXhpYmxl
+IHRvIHRoZSBudW1iZXIgb2YgaW5pdGlhbCB2Q1BVcy4KCgpBbm90aGVyIGV4YW1wbGU6IE5pdHJv
+IEVuY2xhdmVzIFBDUnMgWzFdLiBXaGlsZSB3ZSB0cnkgaGFyZCB0byBub3QgCmNvbmZsYXRlIHRv
+byBtYW55IGZpZWxkcyBpbnRvIGEgc2luZ2xlIFBDUiwgd2Ugc29tZSB0aW1lcyBzdGlsbCBkby4g
+UENSMSAKZm9yIGV4YW1wbGUgY29udGFpbnMga2VybmVsIGFzIHdlbGwgYXMgImZpcnN0IGluaXRy
+YW1mcyIuIE1heWJlIHlvdSB3YW50IAp0byBhY3R1YWxseSBoYXZlIGRpZmZlcmVudCBwb2xpY2ll
+cyBvbiBlYWNoIG9mIHRob3NlLiBNYXliZSB5b3Ugd2FudCB0byAKYWxsb3cgNSBkaWZmZXJlbnQg
+a2VybmVscyBhbmQgMyBkaWZmZXJlbnQgImluaXRpYWwgaW5pdHJhbWZzIHZlcnNpb24iIGluIAph
+bnkgcGVybXV0YXRpb24uCgpBZ2FpbiwgeW91IHdvdWxkIG5lZWQgYW4gZXZlbnQgbG9nIHRvIGdl
+dCB0aGF0LgoKU28gZXZlbiB3aGVuIHdoYXQgd2UgY2FsbCAiYm9vdCBtZWFzdXJlbWVudHMiIGFy
+ZSBvbmx5IGNvbnN1bWVkIGFzIGZpbmFsIApoYXNoZXMgdG9kYXksIHRoZXJlIGNvdWxkIGFic29s
+dXRlbHkgYmUgdmFsdWUgaW4gYW4gZXZlbnQgbG9nIGZvciB0aGVtLiAKU2luY2UgeW91IGFyZSBw
+cm9wb3NpbmcgYSBnZW5lcmljIG1lY2hhbmlzbSB0byBleHBvc2UgcmVnaXN0ZXJzICsgbG9ncywg
+Ckkgc3RpbGwgZmFpbCB0byBzZWUgd2h5IHdlIHdvdWxkIHRyZWF0IGJvb3QgbWVhc3VyZW1lbnRz
+IGRpZmZlcmVudCBmcm9tIApydW50aW1lIG1lYXN1cmVtZW50cy4KCgo+Cj4+IFdoYXQgaWYgZm9y
+IGV4YW1wbGUgbmV4dC1uZXh0LWdlbiBTRVYtU05QIHN1ZGRlbmx5IGdhaW5zIGV2ZW50IGxvZwo+
+PiBzdXBwb3J0IGZvciBpdHMgbGF1bmNoIGRpZ2VzdD8gV2Ugd291bGQgY3JlYXRlIG5lZWRsZXNz
+IGNodXJuIG9uIHVzZXIKPj4gc3BhY2UgdG8gZHluYW1pY2FsbHkgZGV0ZXJtaW5lIHdoZXRoZXIg
+aXQgc2hvdWxkIHJlYWQgdGhpbmdzIGFzCj4+IGRpcmVjdG9yeSBvciBhcyBmaWxlLiBPciBldmVu
+IHdvcnNlOiBOZXdlciBrZXJuZWxzIHdvdWxkIHNpbXBseSBhbHdheXMKPj4gc2V0IHRoZSBMT0cg
+Yml0IGFuZCB3ZSBzdWRkZW5seSBicmVhayB0aGUgdXNlciBzcGFjZSBBQkkgZm9yIGV4aXN0aW5n
+Cj4+IGVudmlyb25tZW50cyB0aGF0IHJ1biBvbiBjdXJyZW50LWdlbiBTRVYtU05QLgo+Pgo+IFRo
+aXMgaXMgYSBncmVhdCBwb2ludCEgSSdkIHNheSwgaWYgdGhlIGxvZyB3YXMgb24gdGhlIHByb2R1
+Y3Qgcm9hZCBtYXAsCj4gdGhlIENDIGd1ZXN0IGRyaXZlciBzaG91bGQgb3B0IGZvciBhIGRpcmVj
+dG9yeSBvbiBkYXkgMS4gT3RoZXJ3aXNlLCBJJ2QKCgpUaGUgZ3JlYXQgdGhpbmcgYWJvdXQgcHJv
+ZHVjdCByb2FkIG1hcHMgaXMgdGhhdCB0aGV5IGtlZXAgY2hhbmdpbmcuIApZb3UncmUgYnVpbGRp
+bmcgYSBnZW5lcmljIEFCSSBmb3IgdXNlciBzcGFjZSBoZXJlIHRoYXQgc2hvdWxkIGJlIGFibGUg
+dG8gCmJlIGZsZXhpYmxlIGVub3VnaCB0byBzdXJ2aXZlIGZvciB0aGUgbmV4dCAxMC0yMCB5ZWFy
+cy4gWW91IGNhbid0IGFzc3VtZSAKeW91IGtub3cgZXZlcnl0aGluZyBhbHJlYWR5LgoKCj4gZXhw
+ZWN0IGFuIE1SIG5hbWUgY2hhbmdlIHdpdGggc3VjaCBhIHNlbWFudGljIHNoaWZ0LCBhbmQgdGhl
+IENDIGd1ZXN0CgoKVGhlcmUgaXMgbm8gc2VtYW50aWMgc2hpZnQuIEluIHRoZSBTTlAgY2FzZSwg
+d2UnZCBzdGlsbCBiZSB0YWxraW5nIGFib3V0IAp0aGUgZXhhY3Qgc2FtZSBsYXVuY2ggZGlnZXN0
+LCBqdXN0IHRoYXQgbm93IHdlIHdvdWxkIGFsc28gbGVhcm4gc3ViLWhhc2ggCmluZm9ybWF0aW9u
+LgoKCj4gZHJpdmVyIGNvdWxkIHRoZW4gZXh0cmFjdCB0aGUgIm9sZCIgZGlnZXN0IGZyb20gdGhl
+IGxvZyBwZXIgdGhlIG9yaWdpbmFsCj4gc2VtYW50aWNzLCBhbmQgcHJlc2VudCBpdCB1bmRlciBp
+dHMgb3JpZ2luYWwgbmFtZS4KPgo+IEZpbmFsbHksIEkgZG9uJ3QgbWVhbiB0byBmb3JjZSBmbGF0
+IGZpbGVzIGZvciBzdGF0aWMgTVJzIChJIG9uY2UgZGlkLAo+IGJ1dCBKZWFuIGFuZCB5b3UgaGF2
+ZSBtZSBjb252aW5jZWQgOikpLiBJdCB3aWxsIGJlIGp1c3QgYW4gb3B0aW9uLgoKCkkgdGhpbmsg
+ZXZlbiBhbGxvd2luZyBmbGF0IGZpbGVzIGluIGEgd29ybGQgd2hlcmUgeW91IGFscmVhZHkgaWRl
+bnRpZmllZCAKbXVsdGlwbGUgdXNlcyBmb3IgYSBkaXJlY3Rvcnkgc3RydWN0dXJlIGZvciBvYmpl
+Y3RzIG9mIHNpbWlsYXIgc2VtYW50aWMgCmlzIGp1c3QgYSBiYWQgaWRlYSBhbmQgd2lsbCBsZWFk
+IHRvIHBhaW4gZG93biB0aGUgcm9hZCA6KQoKCkFsZXgKClsxXSBodHRwczovL2RvY3MuYXdzLmFt
+YXpvbi5jb20vZW5jbGF2ZXMvbGF0ZXN0L3VzZXIvc2V0LXVwLWF0dGVzdGF0aW9uLmh0bWwKCgoK
+CgpBbWF6b24gV2ViIFNlcnZpY2VzIERldmVsb3BtZW50IENlbnRlciBHZXJtYW55IEdtYkgKS3Jh
+dXNlbnN0ci4gMzgKMTAxMTcgQmVybGluCkdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0aWFuIFNj
+aGxhZWdlciwgSm9uYXRoYW4gV2Vpc3MKRWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxv
+dHRlbmJ1cmcgdW50ZXIgSFJCIDI1Nzc2NCBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDM2NSA1
+MzggNTk3Cg==
 
