@@ -1,83 +1,109 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D811D86FD;
-	Fri, 13 Sep 2024 13:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008E02BB13
+	for <linux-coco@lists.linux.dev>; Fri, 13 Sep 2024 15:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726235566; cv=none; b=EaywomaTjEdOcqiEjpBvVzzmW1rlzLd+ESfSp1Vq4JDkkqIGv0N7oQtQZEpZqwoYjj8TCC2M2B5qG9KGD3Rh2GWnwRCmaNdpcN4KJlx2VEWJpotEfyFjMgITkTbR34qGSJSWeK1aLreeKjJFCxyVbKnHqfYW8ykfk2JXpafDynE=
+	t=1726242819; cv=none; b=QMaFyTvkNYgLlZfcbXTRZvidxR5UdhALq7zQhsXpfB8Rjvi6M08HP8olqdZlqRgXV7Le0P69hSTPOJUJBaK2y1tLUvQtR2+stMcy5wpe8QaV+Emf7f71x7LFSCEmNU+4mo7ccMZE1UXccqmU1wYTmjLbGbeYMNTaLl86NmpQBvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726235566; c=relaxed/simple;
-	bh=I+E10dZp9h10g1VxXIbj1/pHLRChuRvZfeT9ZUzKBjc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eyAdvbAzgvCRSwnv2oNweLiwqC+ky/FibQPuV0Vq1Z5RYbZ69grwSJMNNIfFxt7fsApgGB1wWb2rul8wvwW2lq1BYbEmzWb+Ke5wex4QSmhZtr/ssZBkv1fAGsRX9vxivRiha3hr5X5cEqPMSp+UDN5KpgFAPvEQ/CnKOivG6b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1106A13D5;
-	Fri, 13 Sep 2024 06:53:13 -0700 (PDT)
-Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 16F153F73B;
-	Fri, 13 Sep 2024 06:52:40 -0700 (PDT)
-Message-ID: <2f9f10cf-7356-458a-bf63-ed6a757df81f@arm.com>
-Date: Fri, 13 Sep 2024 14:52:39 +0100
+	s=arc-20240116; t=1726242819; c=relaxed/simple;
+	bh=jkW48gG3KB5s68m7xCQu7Fd9vmkiEiCdQvjxpzLLclw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qL9geKJ5CbT+5fi9kG6mvZJ1K4yn1PlrBbA93FMxetAXBeU2CG+Bosa/pNvwOm6CNT+5D6VqC3XwtVCVeBL62/oQ+BqzRdjNgdPgHizKjFlw2vg3fkdW1kGwom5ri6ssmuIlDT5qf7efeh7THDdkRGoOwd4OY1xcbVMBvgf5s3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U39A5VgJ; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U39A5VgJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726242818; x=1757778818;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jkW48gG3KB5s68m7xCQu7Fd9vmkiEiCdQvjxpzLLclw=;
+  b=U39A5VgJ9PKNzRMn0iIgYM5Qt3x/p9R1S8hzogBspygc/sLpWcstR1Un
+   W3zhmd45cCuAuU731qgQYEkdVEhTtBOI8AOuowZpyukIaZcAkquVFjjVI
+   XaLwXyLll4jBaMeqy9N9DAmIEU+gpk8PlZy1KkUi2WQkt1TJUScqSMU4u
+   Y/57XpWI9TIf0ztVFFLvIInXbVnRIcjHJSh42ynUhNugbdOB3Q97QokTy
+   Zdbsfx1B6gnK1Xi/2v609no6YEm5nXaJdz4QmtNWUtKqOSKB2OW3zbjyf
+   R9LTTsk1FeJ6YyQBzDWJ0UnoBsZbg02tSYlOt3F+TCcYl1i3PfhE2l/eH
+   A==;
+X-CSE-ConnectionGUID: kM3T0UnSSgGTLa3XGiDJ9w==
+X-CSE-MsgGUID: no7rtXrWTEaWudgHK7FrSg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11194"; a="35815809"
+X-IronPort-AV: E=Sophos;i="6.10,226,1719903600"; 
+   d="scan'208";a="35815809"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 08:53:37 -0700
+X-CSE-ConnectionGUID: EdWqKmH4SvmyF3NcoNCfGg==
+X-CSE-MsgGUID: 6R0Rn12TQL+80vgwJU/xEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,226,1719903600"; 
+   d="scan'208";a="98942853"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 13 Sep 2024 08:53:32 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id BA42F334; Fri, 13 Sep 2024 18:53:31 +0300 (EEST)
+Date: Fri, 13 Sep 2024 18:53:31 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Alexey Gladkov <legion@kernel.org>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Yuan Yao <yuan.yao@intel.com>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>, 
+	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>, cho@microsoft.com, 
+	decui@microsoft.com, John.Starks@microsoft.com, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v6 0/6] x86/tdx: Allow MMIO instructions from userspace
+Message-ID: <2v2egjmdpb2fzjriqc2ylvqns3heo5bpirtqm7cn32h3zsuwry@y5ejrbyniwxq>
+References: <cover.1724837158.git.legion@kernel.org>
+ <cover.1725622408.git.legion@kernel.org>
+ <6c158a14-ba01-4146-9c6c-8e4c035dd055@intel.com>
+ <ZttwkLP74TrQgVtL@google.com>
+ <d3895e03-bdfc-4f2a-a1c4-b2c95a098fb5@intel.com>
+ <ZuHC-G575S4A-S_m@google.com>
+ <h5gp6dgcfazm2yk3lorwqms24c2y2z4saqyed6bnzkk2zhq5g2@rf3lj2a22omd>
+ <039bc47c-9b5d-41f3-87da-4500731ad347@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/19] firmware/psci: Add psci_early_test_conduit()
-To: Catalin Marinas <catalin.marinas@arm.com>,
- Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Marc Zyngier
- <maz@kernel.org>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>
-References: <20240819131924.372366-1-steven.price@arm.com>
- <20240819131924.372366-5-steven.price@arm.com> <ZsxS52IBVVLKrTEX@arm.com>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <ZsxS52IBVVLKrTEX@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <039bc47c-9b5d-41f3-87da-4500731ad347@intel.com>
 
-On 26/08/2024 11:03, Catalin Marinas wrote:
-> On Mon, Aug 19, 2024 at 02:19:09PM +0100, Steven Price wrote:
->> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>
->> Add a function to test early if PSCI is present and what conduit it
->> uses. Because the PSCI conduit corresponds to the SMCCC one, this will
->> let the kernel know whether it can use SMC instructions to discuss with
->> the Realm Management Monitor (RMM), early enough to enable RAM and
->> serial access when running in a Realm.
->>
->> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
->> Signed-off-by: Steven Price <steven.price@arm.com>
+On Thu, Sep 12, 2024 at 08:49:21AM -0700, Dave Hansen wrote:
+> On 9/12/24 02:45, Kirill A. Shutemov wrote:
+> > On Wed, Sep 11, 2024 at 09:19:04AM -0700, Sean Christopherson wrote:
+> >> Yep.  Based on the original report[*], it sounds like the userspace program is
+> >> doing a memcpy(), so it's hard to even argue that userspace is being silly.
+> > The kernel does MMIO accesses using special helpers that use well-known
+> > instructions. I believe we should educate userspace to do the same by
+> > rejecting emulation of anything more complex than plain loads and stores.
+> > Otherwise these asks will keep coming.
 > 
-> On the code itself:
+> My assumption is that folks have VMM-specific kernel drivers and crusty
+> old userspace that mmap()'s an MMIO region exposed by that driver. They
+> want to keep their old userspace.
 > 
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Once we're dictating that specific instructions be used, the old
+> userspace doesn't work and it needs to be changed. Once it needs to be
+> changed, then some _other_ new ABI might as well be considered.
 > 
-> However, Will has a point and it would be good if we can avoid this
-> early setup as much as possible. If it's just the early console used for
-> debugging, maybe just pass the full IPA address on the command line and
-> allow those high addresses in fixmap. Not sure about the EFI map.
+> Basically:
 > 
+> 	New ABI =~ Specific Kernel-mandated Instructions
 
-We could delay the RSI init until we have probed the PSCI conduit.
-This could be done from setup_arch(), after the psci_{dt,acpi}_init().
-This is safe, as the EFI maps are only created later, as an 
-early_initcall().
+If we are going to say "no" to userspace MMIO emulation for TDX, the same
+has to be done for SEV. Or we can bring TDX to SEV level and draw the line
+there.
 
-Kind regards
-Suzuki
+SEV and TDX run similar workloads and functional difference in this area
+is hard to justify.
 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
