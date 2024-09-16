@@ -1,58 +1,58 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A8E15C13C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB5015CD7C
 	for <linux-coco@lists.linux.dev>; Mon, 16 Sep 2024 18:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726510694; cv=none; b=I45B0AkeSpihmD1Tppx9nB7odpHMDbN6MRPn+sb0jrntl2MA3cKXMnGIgntuKYYovmmFZH6OuKRuLwHongusElTZBSY5tw4cU9VrKNpOkhGbbRlt6SV1SUZga+UpW89fDEib9MQlm0Hk7sHSTEnpJr0e2E2Im9mec+VSkvg2B8A=
+	t=1726510694; cv=none; b=FWLIUzG0rjazvY4jMH1IdDk1cl6xilUJNYyb5UMCxU7OBtDywdjF+ibESuwX8vHs1CDL8Qnb6GwCxX6SmQU1YfO2tO+k8/8m2WJHZEs3wwLqDniXBVvVERccbiNzKMt46QyhZuEzbFSoqkRe8K+e5X9YPPBDSEXaeThk2j/N3Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1726510694; c=relaxed/simple;
-	bh=3Fw+K0hQmf1BM7ZUV56V8ZoBg80KB09mMA/nO1nJv50=;
+	bh=NaYD4z/PMvcd35hhct3ZHR9P9LQY2eeQF++fxr464lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ny0Uii572Z6bCwfheJx45kJeSP8Lcm4NWFb9P9B3itV8OJrTzWBH9wj9SC3FqEV1rasx4pxACdz3Zb28J1vWi0JUWKTAAunTFS5XhK+66+GNSSR/WkjEzOIGgO37V/YGhjCTHAXXz8piFofz9JCgwT8m4cTPchq5PESqGNzGIN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=rN1w5HsK; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=rN1w5HsK; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=rPLu/XVRMMudSj4oNwh2ytzLzRqEOZsmEEkE+UUlOMK4aZD+R/X+J6lYZK0DYI0crKs82cNRxW+yfqVTLsdU5uaEB4lEXyEys9mVbKM4QH9qAGx5y0lW3J8IMm6jCeUJHbLOGXTunhfNFEeV96nWH++6UJO4O17NANlXw3ajg74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=V71zJMy3; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=V71zJMy3; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="rN1w5HsK";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="rN1w5HsK"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="V71zJMy3";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="V71zJMy3"
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E1D6221C29;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 404D71F8C5;
 	Mon, 16 Sep 2024 18:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
 	t=1726510690; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cmWFWeD/k+yoNDkLlzMQjwNocrg/PxJwLUSs9viTQhw=;
-	b=rN1w5HsK48Bgtd/u6hO6M/taq110M6zoZAubwmeu0EzlpqMyrMXDfDc4q85DzVxZD9a8v0
-	xKP3HgcyUlPy3ku4OoH2wvAdq793eVOAaD+HTX/rg4jFrU6oTXVijMLgtnbXhRfJpuaji0
-	RXiGt/K5WRGurqytB2T00nc9A9aKNCs=
-Authentication-Results: smtp-out1.suse.de;
+	bh=WCm95XJJnBEDcbDJOtrx9fOx+lx0IhmYpGAcLnQXA+s=;
+	b=V71zJMy3Js2dFPMYYzngiEvzIBoh3x26RyoESwZ0ytSjpoXeRG591t3PYyRUA7QqaumpN8
+	aoRMVtDqqj6tJqN0N2D3a9CvfxTdeTCq/01husX2aT3gy5Zny9AWpX2T8BXRa8hnL3a8EL
+	xRxqi158r+A/OFU+zReCEMttFTBW0Hk=
+Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
 	t=1726510690; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cmWFWeD/k+yoNDkLlzMQjwNocrg/PxJwLUSs9viTQhw=;
-	b=rN1w5HsK48Bgtd/u6hO6M/taq110M6zoZAubwmeu0EzlpqMyrMXDfDc4q85DzVxZD9a8v0
-	xKP3HgcyUlPy3ku4OoH2wvAdq793eVOAaD+HTX/rg4jFrU6oTXVijMLgtnbXhRfJpuaji0
-	RXiGt/K5WRGurqytB2T00nc9A9aKNCs=
+	bh=WCm95XJJnBEDcbDJOtrx9fOx+lx0IhmYpGAcLnQXA+s=;
+	b=V71zJMy3Js2dFPMYYzngiEvzIBoh3x26RyoESwZ0ytSjpoXeRG591t3PYyRUA7QqaumpN8
+	aoRMVtDqqj6tJqN0N2D3a9CvfxTdeTCq/01husX2aT3gy5Zny9AWpX2T8BXRa8hnL3a8EL
+	xRxqi158r+A/OFU+zReCEMttFTBW0Hk=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4E71913A3A;
-	Mon, 16 Sep 2024 18:18:10 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A0D65139CE;
+	Mon, 16 Sep 2024 18:18:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wPgSEWJ26GbveAAAD6G6ig
-	(envelope-from <roy.hopkins@suse.com>); Mon, 16 Sep 2024 18:18:10 +0000
+	id 0L8nJWF26GbveAAAD6G6ig
+	(envelope-from <roy.hopkins@suse.com>); Mon, 16 Sep 2024 18:18:09 +0000
 From: Roy Hopkins <roy.hopkins@suse.com>
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -69,9 +69,9 @@ Cc: Roy Hopkins <roy.hopkins@suse.com>,
 	Ashish Kalra <ashish.kalra@amd.com>,
 	Joerg Roedel <jroedel@suse.de>,
 	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [RFC PATCH 5/5] x86/kvm: Add target VMPL to IRQs and send to APIC for VMPL
-Date: Mon, 16 Sep 2024 19:17:57 +0100
-Message-ID: <67ffe577fe98f53068d68c053fa209e8d4b4bae9.1726506534.git.roy.hopkins@suse.com>
+Subject: [RFC PATCH 4/5] x86/kvm: Add x86 field to find the default VMPL that IRQs should target
+Date: Mon, 16 Sep 2024 19:17:56 +0100
+Message-ID: <d8eb94631cdd98196e81119f19b9a0cae9dddc3a.1726506534.git.roy.hopkins@suse.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1726506534.git.roy.hopkins@suse.com>
 References: <cover.1726506534.git.roy.hopkins@suse.com>
@@ -99,7 +99,7 @@ X-Spamd-Result: default: False [-6.80 / 50.00];
 	RCPT_COUNT_TWELVE(0.00)[15];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:mid,imap1.dmz-prg2.suse.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.com:mid];
 	FUZZY_BLOCKED(0.00)[rspamd.com];
 	FROM_EQ_ENVFROM(0.00)[];
 	DKIM_SIGNED(0.00)[suse.com:s=susede1];
@@ -108,90 +108,54 @@ X-Spamd-Result: default: False [-6.80 / 50.00];
 X-Spam-Score: -6.80
 X-Spam-Flag: NO
 
-Systems that support VMPLs need to decide which VMPL each
-IRQ is destined for; each VMPL can support its own set of hardware
-devices that generate interrupts.
-
-This commit extends kvm_lapic_irq to include a target_vmpl field the
-sends the IRQ to the APIC instance at the target VMPL.
+When a CPU supports multiple VMPLs, injected interrupts need to be sent
+to the correct context. This commit adds an operation that determines
+the VMPL number that IRQs should be sent to in the absence of an explicit
+target VMPL.
 
 Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
 ---
- arch/x86/include/asm/kvm_host.h | 1 +
- arch/x86/kvm/ioapic.c           | 3 +++
- arch/x86/kvm/irq_comm.c         | 1 +
- arch/x86/kvm/lapic.c            | 6 +++++-
- 4 files changed, 10 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/kvm_host.h | 7 +++++++
+ arch/x86/kvm/svm/sev.c          | 8 ++++++++
+ 2 files changed, 15 insertions(+)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 3dd3a5ff0cec..d0febb67dabf 100644
+index 94e7b5a4fafe..3dd3a5ff0cec 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -1624,6 +1624,7 @@ struct kvm_lapic_irq {
- 	u32 shorthand;
- 	u32 dest_id;
- 	bool msi_redir_hint;
-+	unsigned int target_vmpl;
+@@ -1537,6 +1537,13 @@ struct kvm_arch {
+ 	 */
+ #define SPLIT_DESC_CACHE_MIN_NR_OBJECTS (SPTE_ENT_PER_PAGE + 1)
+ 	struct kvm_mmu_memory_cache split_desc_cache;
++
++	/*
++	 * When a system supports multiple VMPLs, injected interrupts need to be
++	 * sent to the correct context. The default VMPL that IRQs should be sent
++	 * to is indicated in this variable.
++	 */
++	unsigned int default_irq_vmpl;
  };
  
- static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
-diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
-index 995eb5054360..7b835a192561 100644
---- a/arch/x86/kvm/ioapic.c
-+++ b/arch/x86/kvm/ioapic.c
-@@ -413,6 +413,8 @@ static void ioapic_write_indirect(struct kvm_ioapic *ioapic, u32 val)
- 			irq.shorthand = APIC_DEST_NOSHORT;
- 			irq.dest_id = e->fields.dest_id;
- 			irq.msi_redir_hint = false;
-+			irq.target_vmpl = ioapic->kvm->arch.default_irq_vmpl;
+ struct kvm_vm_stat {
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 3fbb1ce5195d..ed91aa93da6e 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3983,6 +3983,14 @@ static int __sev_snp_update_protected_guest_state(struct kvm_vcpu *vcpu)
+ 		 * means.
+ 		 */
+ 		kvm_release_pfn_clean(pfn);
 +
- 			bitmap_zero(vcpu_bitmap, KVM_MAX_VCPUS);
- 			kvm_bitmap_or_dest_vcpus(ioapic->kvm, &irq,
- 						 vcpu_bitmap);
-@@ -458,6 +460,7 @@ static int ioapic_service(struct kvm_ioapic *ioapic, int irq, bool line_status)
- 	irqe.level = 1;
- 	irqe.shorthand = APIC_DEST_NOSHORT;
- 	irqe.msi_redir_hint = false;
-+	irqe.target_vmpl = ioapic->kvm->arch.default_irq_vmpl;
++		/*
++		 * TEMP: If the newly created VMSA is for a lower VMPL then
++		 * set this VMPL to be the default for sending IRQs to.
++		 */
++		if (vcpu->vmpl > vcpu->kvm->arch.default_irq_vmpl) {
++			vcpu->kvm->arch.default_irq_vmpl = vcpu->vmpl;
++		}
+ 	}
  
- 	if (irqe.trig_mode == IOAPIC_EDGE_TRIG)
- 		ioapic->irr_delivered |= 1 << irq;
-diff --git a/arch/x86/kvm/irq_comm.c b/arch/x86/kvm/irq_comm.c
-index 8136695f7b96..6bd4a78dddba 100644
---- a/arch/x86/kvm/irq_comm.c
-+++ b/arch/x86/kvm/irq_comm.c
-@@ -119,6 +119,7 @@ void kvm_set_msi_irq(struct kvm *kvm, struct kvm_kernel_irq_routing_entry *e,
- 	irq->msi_redir_hint = msg.arch_addr_lo.redirect_hint;
- 	irq->level = 1;
- 	irq->shorthand = APIC_DEST_NOSHORT;
-+	irq->target_vmpl = kvm->arch.default_irq_vmpl;
- }
- EXPORT_SYMBOL_GPL(kvm_set_msi_irq);
- 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index e2dd573e4f2d..20b433a78457 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -836,7 +836,9 @@ static int __apic_accept_irq(struct kvm_lapic *apic, int delivery_mode,
- int kvm_apic_set_irq(struct kvm_vcpu *vcpu, struct kvm_lapic_irq *irq,
- 		     struct dest_map *dest_map)
- {
--	struct kvm_lapic *apic = vcpu->arch.apic;
-+	struct kvm_lapic *apic = vcpu->vcpu_parent->vcpu_vmpl[irq->target_vmpl]->arch.apic;
-+	if (!apic)
-+		return -EINVAL;
- 
- 	return __apic_accept_irq(apic, irq->delivery_mode, irq->vector,
- 			irq->level, irq->trig_mode, dest_map);
-@@ -1528,6 +1530,8 @@ void kvm_apic_send_ipi(struct kvm_lapic *apic, u32 icr_low, u32 icr_high)
- 	irq.trig_mode = icr_low & APIC_INT_LEVELTRIG;
- 	irq.shorthand = icr_low & APIC_SHORT_MASK;
- 	irq.msi_redir_hint = false;
-+	/* IPIs always target the same VMPL as the source */
-+	irq.target_vmpl = apic->vcpu->vmpl;
- 	if (apic_x2apic_mode(apic))
- 		irq.dest_id = icr_high;
- 	else
+ 	return 0;
 -- 
 2.43.0
 
