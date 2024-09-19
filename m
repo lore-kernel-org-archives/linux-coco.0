@@ -1,193 +1,76 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C1C19EECD
+	for <linux-coco@lists.linux.dev>; Thu, 19 Sep 2024 14:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726757805; cv=none; b=JVo5AyvkF+gTJZNlNi2chCxUuWM9R2s+H8rtRvf5AP8CUlFqnIPS0pvbGqU+/HXSpa+P+GFEyBazUFek/gmMNiGdfey+lNnmcXzpBxNh0cPSSNt2EZ1AwdnvlQjyMsqKjwBEI/9rYjM1QBTox5XhNDDy/l3oRxp0elI/f+600Ug=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726757805; c=relaxed/simple;
+	bh=yFNpCSzRJjaDEBAYyjGhtEEDQg0/gBqha3U5WdgkESA=;
+	h=From:Content-Type:Mime-Version:Subject:Date:References:To:
+	 In-Reply-To:Message-Id; b=A8mEwhC6MaNzalkdDl0E44/QZiJ+Vb5/cDDHMJAv8Y9cbrkMSZfbdr+h96jbbE/A3OX1pgpQCzGcaaNgYNiLF7knF6o/0dT4W6Fqsqh18DKGkX104kixvLHMCSwJJHtTMaYCs7wwKNk6m/viIx6+GWKWt4n/RQIw7gU05lapXio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=52XyzH6X; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="52XyzH6X"
+Received: from smtpclient.apple (unknown [83.68.141.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD0E17C9E9;
-	Wed, 18 Sep 2024 10:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726656489; cv=none; b=CVdtxvbZn3bFHUdU8M6PtJIs94V/ufCsHBB9N4lTv8XbGxFtU5LoyGlPnus6ehU5DP+f7ZeI4raAijzHAG0mvKJhBVegYaZaHSnN7nO12rZFN8S5YRu0n+/hxhYDXL72rA/w3lAVBajzbf2rtaB5898fiySqntl7uO87ULfoC2g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726656489; c=relaxed/simple;
-	bh=TiIy7EfGXyCmAuvsoen3rZWUqqgVpPDNqDz5ADa6soM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CZl/m1dR+DREkTF3MipfZndP2sEZ2nnL5b0xjmhWjZJeQrAajPUbU6cDiRiMmkXopt7faNoigArHfP+bUqNBpbpM8Hr5efChukCKwTIX38ArqEUlhw0G+3Dq2rw+Eu+cBhQ0hfP2jER12a7G3IVn9Kw1kVNUAD4MiXA01dzki0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gb2YmsS5; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gb2YmsS5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726656488; x=1758192488;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TiIy7EfGXyCmAuvsoen3rZWUqqgVpPDNqDz5ADa6soM=;
-  b=Gb2YmsS52OqKh/nG8i/gMnJzA51opXYFTR7Zh8mnSrKFocIWDRlQAU+z
-   Hug/X8atK1jyy+I1b6rlzhAHAUbCCNcd9oZy8meQlayCsHb+bY2AWJQ2c
-   TyGL5A8ma/1kFW9A3ewoq/XgFRDXk7LvfuowE1lgt1G+HXvPLLKDwDixv
-   Q6ALX0Np+Br50Ego6A8mTACKZNHSta5wKG2xHw57JH41wsHcyBxM2MDzq
-   qQUmrq7ecu+4G3vW9fwlJsTqIkb0frHQUdgw7pIXLh8PKkJgU+LMKaGyi
-   QoA8ghdLjlq/QrI/WPFmXipupotyEya9+vOlBK+yaCZvpD+XhmGKk71Qr
-   Q==;
-X-CSE-ConnectionGUID: taFbkdOfR0y4LPdIRkmBKQ==
-X-CSE-MsgGUID: d0tt2zUUTq+zuii3F9MuSQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="36228036"
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; 
-   d="scan'208";a="36228036"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2024 03:48:07 -0700
-X-CSE-ConnectionGUID: r1ktb154Qomnw/3/dLbBPw==
-X-CSE-MsgGUID: +YEmRqY1RuCSlWKwZz3t1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; 
-   d="scan'208";a="73864529"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa005.fm.intel.com with ESMTP; 18 Sep 2024 03:48:02 -0700
-Date: Wed, 18 Sep 2024 18:45:14 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Zhi Wang <zhiw@nvidia.com>
-Cc: "Tian, Kevin" <kevin.tian@intel.com>,
-	"Williams, Dan J" <dan.j.williams@intel.com>,
-	Zhi Wang <zhiwang@kernel.org>, Alexey Kardashevskiy <aik@amd.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	"pratikrajesh.sampat@amd.com" <pratikrajesh.sampat@amd.com>,
-	"michael.day@amd.com" <michael.day@amd.com>,
-	"david.kaplan@amd.com" <david.kaplan@amd.com>,
-	"dhaval.giani@amd.com" <dhaval.giani@amd.com>,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>, Alexander Graf <agraf@suse.de>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Lukas Wunner <lukas@wunner.de>
-Subject: Re: [RFC PATCH 11/21] KVM: SEV: Add TIO VMGEXIT and bind TDI
-Message-ID: <ZuqvOt1WEn/Pa/wQ@yilunxu-OptiPlex-7050>
-References: <20240823132137.336874-1-aik@amd.com>
- <20240823132137.336874-12-aik@amd.com>
- <20240913165011.000028f4.zhiwang@kernel.org>
- <66e4b7fabf8df_ae21294c7@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <BN9PR11MB527607712924E6574159C4908C662@BN9PR11MB5276.namprd11.prod.outlook.com>
- <20240914081946.000079ae.zhiw@nvidia.com>
+	by mail.8bytes.org (Postfix) with ESMTPSA id B32432A59AC;
+	Thu, 19 Sep 2024 16:56:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1726757796;
+	bh=yFNpCSzRJjaDEBAYyjGhtEEDQg0/gBqha3U5WdgkESA=;
+	h=From:Subject:Date:References:To:In-Reply-To:From;
+	b=52XyzH6XnL7hVT+kXbqTnXkGcSPEOYVfsC2sLNoknxq1JFaL+K+doGx5tnX35Vcr9
+	 ZWc7cgg4X91XnX+tfAUPu2p3mpI4pd5U5xGXOqYab4Emhc7s41ECfHTT+eVmzSgJaB
+	 FlTnt1iarAyO7FL+ZQHmHsPMbLBP0N7bzqEeuKdv61uCthX6fPDr+5d2Wz3mE5wzcB
+	 5G5o/oZX/2wZPRQW2gp8v8FiR/tp6kJUbbwRc4AuI5WQ87AyYRtdnZL00WhGHsM3i2
+	 X3UGXH8gJ7SH/TYk4FyHVMIgu7S5hyw5bsrIgPiqNBbwHIoGzUh4flKfQ92lOHexLj
+	 vo9DQhA+9T6bg==
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240914081946.000079ae.zhiw@nvidia.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: Invitation to COCONUT-SVSM BoF at Linux Plumbers Conference
+Date: Thu, 19 Sep 2024 16:56:26 +0200
+References: <ZuK30-Ug790Vbhck@8bytes.org>
+To: svsm-devel@coconut-svsm.dev,
+ linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org
+In-Reply-To: <ZuK30-Ug790Vbhck@8bytes.org>
+Message-Id: <FD656EE6-DC11-46E5-B9BE-7A7647316581@8bytes.org>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
 
-On Sat, Sep 14, 2024 at 08:19:46AM +0300, Zhi Wang wrote:
-> On Sat, 14 Sep 2024 02:47:27 +0000
-> "Tian, Kevin" <kevin.tian@intel.com> wrote:
-> 
-> > > From: Dan Williams <dan.j.williams@intel.com>
-> > > Sent: Saturday, September 14, 2024 6:09 AM
-> > > 
-> > > Zhi Wang wrote:
-> > > > On Fri, 23 Aug 2024 23:21:25 +1000
-> > > > Alexey Kardashevskiy <aik@amd.com> wrote:
-> > > >
-> > > > > The SEV TIO spec defines a new TIO_GUEST_MESSAGE message to
-> > > > > provide a secure communication channel between a SNP VM and
-> > > > > the PSP.
-> > > > >
-> > > > > The defined messages provide way to read TDI info and do secure
-> > > > > MMIO/DMA setup.
-> > > > >
-> > > > > On top of this, GHCB defines an extension to return
-> > > > > certificates/ measurements/report and TDI run status to the VM.
-> > > > >
-> > > > > The TIO_GUEST_MESSAGE handler also checks if a specific TDI
-> > > > > bound to the VM and exits the KVM to allow the userspace to
-> > > > > bind it.
-> > > > >
-> > > >
-> > > > Out of curiosity, do we have to handle the TDI bind/unbind in the
-> > > > kernel space? It seems we are get the relationship between
-> > > > modules more complicated. What is the design concern that letting
-> > > > QEMU to handle the TDI bind/unbind message, because QEMU can talk
-> > > > to VFIO/KVM and also
-> > > TSM.
-> > > 
-> > > Hmm, the flow I have in mind is:
-> > > 
-> > > Guest GHCx(BIND) => KVM => TSM GHCx handler => VFIO state update +
-> > > TSM low-level BIND
-> > > 
-> > > vs this: (if I undertand your question correctly?)
-> > > 
-> > > Guest GHCx(BIND) => KVM => TSM GHCx handler => QEMU => VFIO => TSM
-> > > low-level BIND
-> > 
-> > Reading this patch appears that it's implemented this way except QEMU
-> > calls a KVM_DEV uAPI instead of going through VFIO (as Yilun
-> > suggested).
-> > 
-> > > 
-> > > Why exit to QEMU only to turn around and call back into the kernel?
-> > > VFIO should already have the context from establishing the vPCI
-> > > device as "bind-capable" at setup time.
+The session is broadcasted via LPC Hackroom #1.
 
-Previously we tried to do host side "bind-capable" setup (TDI context
-creation required by firmware but no LOCK) at setup time. But didn't
-see enough value, only to make the error recovery flow more complex. So
-now I actually didn't see much work to do for "bind-capable", just to
-mark the device as can-be-private. I.e. the context from establishing
-the vPCI device are moved to GHCx BIND phase.
+> Am 12.09.2024 um 11:43 schrieb J=C3=B6rg R=C3=B6del <joro@8bytes.org>:
+>=20
+> Hi,
+>=20
+> The COCONUT-SVSM community wants to invite the Linux, virtualisation, =
+and
+> confidential computing communities to our BoF at the Linux Plumbers
+> Conference next week in Vienna.
+>=20
+> We hope to gather ideas, discuss problems and get input for the next
+> year of development. It is scheduled for Thursday, September 19th at =
+5pm
+> in Room 1.14. Details are at this link:
+>=20
+> https://lpc.events/event/18/contributions/1980/
+>=20
+> Hope to see you all there!
+>=20
+> Regards,
+>=20
+> J=C3=B6rg
+>=20
 
-> > > 
-> > 
-> > The general practice in VFIO is to design things around userspace
-> > driver control over the device w/o assuming the existence of KVM.
-> > When VMM comes to the picture the interaction with KVM is minimized
-> > unless for functional or perf reasons.
-> > 
-> > e.g. KVM needs to know whether an assigned device allows non-coherent
-> > DMA for proper cache control, or mdev/new vIOMMU object needs
-> > a reference to struct kvm, etc. 
-> > 
-> > sometimes frequent trap-emulates is too costly then KVM/VFIO may
-> > enable in-kernel acceleration to skip Qemu via eventfd, but in 
-> > this case the slow-path via Qemu has been firstly implemented.
-> > 
-> > Ideally BIND/UNBIND is not a frequent operation, so falling back to
-> > Qemu in a longer path is not a real problem. If no specific
-> > functionality or security reason for doing it in-kernel, I'm inclined
-> > to agree with Zhi here (though not about complexity).
-
-I agree GHCx BIND/UNBIND been routed to QEMU, cause there are host side
-cross module managements for BIND/UNBIND. E.g. IOMMUFD page table
-switching, VFIO side settings that builds host side TDI context & LOCK
-TDI.
-
-But I do support other GHCx calls between BIND/UNBIND been directly
-route to TSM low-level. E.g. get device interface report, get device
-certification/measurement, TDISP RUN. It is because these communications
-are purely for CoCo-VM, firmware and TDI. Host is totally out of its
-business and worth nothing to pass these requirements to QEMU/VFIO and
-still back into TSM low-level.
-
-Thanks,
-Yilun
-
-> > 
-> > 
-> 
-> Exactly what I was thinking. Folks had been spending quite some efforts
-> on keeping VFIO and KVM independent. The existing shortcut calling
-> between two modules is there because there is no other better way to do
-> it.
-> 
-> TSM BIND/UNBIND should not be a performance critical path. Thus falling
-> back to QEMU would be fine. Besides, not sure about others' opinion, I
-> don't think adding tsm_{bind, unbind} in kvm_x86_ops is a good idea.
-> 
-> If we have to stick to the current approach, I think we need more
-> justifications.
-> 
