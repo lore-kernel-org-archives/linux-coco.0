@@ -1,286 +1,201 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7A21514C9
-	for <linux-coco@lists.linux.dev>; Mon, 30 Sep 2024 05:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D8417F505
+	for <linux-coco@lists.linux.dev>; Mon, 30 Sep 2024 08:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727675512; cv=none; b=O4suQErtQCqFZyblHmyr/+teGudE3vW4pZBLMqK1xUhQTvpoIRpDyESMdnNAT5s2WqV/3VwQVsd+HSobpK7vDJfKmkqfHgiAa2URQWfuVlFnUVTmpa8z/Pvconjn4pj3wwOfr50dEWoIFx8ZI5Bj/5d1wDo3Co+tEBeVQwpXqnE=
+	t=1727686697; cv=none; b=fgvJjHXIlyZ95/ov5QjOZ5zexRgIsTi2B0IMaDZfJMyJaBl8SfjUtO2DCx1oCkY4Rf9ZqDN/JAfXVmjt64VzZR8DHQICx9+9QLLIpoC3jyGZD/NIMW7NTkRklulVVqQ+YrEQkFCJKvb0lDMuasbu3/q9ME9HvkQj4ycSZg+NJ78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727675512; c=relaxed/simple;
-	bh=D7qgt/re79b94z4qKj4/hVxF8hx2+DoYj0YpC+nDoLk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qD3JOj91CFSJGdUkccuay/sbULTQy9pMXz33bTF+67NN8E1tvY1Wm/cR72eU6m6Thlw2o/pT7uhzX2cQcoVM+r0ZkqGvi/Wnhr8B0JbB4YXGcAdufgmIF0ZQMmpBk+NvB06iijH/zVPiXSqiBfoSZD+5cXbfz0jL54Eb53GJrCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WOlEI/kR; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1727686697; c=relaxed/simple;
+	bh=jiG+zd12v7M9QTJgIy9eY7/iFuv2pD3i9NmBIp2MQSo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KMe6a1H4WAVRti7Hfdq1fasDiAzdT0A5z48UQaEc/ULhcq62CFwnADvRw5NtGWvCidsQ+JXZ7SHlwato0jteVsDgx6RUFPIS1ttqunaqRkbqqerH0DtoZwGoV1Hv93QXqMUMgxOQ+mDe4vi8USsZ0hONSCVLQ0YMDn+HZ7QR96A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SDGGHVNY; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WOlEI/kR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727675510; x=1759211510;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=D7qgt/re79b94z4qKj4/hVxF8hx2+DoYj0YpC+nDoLk=;
-  b=WOlEI/kRlOQgDxz7q7lf4qJIZ2UuaxJSYKrgOVzf/Pc+sW/xrgkrFBxo
-   Y0i4sLlxFbDp38PgsA4ElZqIigGcN6L8APULhKt184AXMTPUxnCElol78
-   8Rcj1LE1y8+ffGqLVMxQfcZgwAmn7N3+2C991B7Mbc6m51704K9acoyQx
-   W8KHUKDOTsiQwtsv06jjyKS5cU+auyVl3+rMuqqjXq3B0mgDmrJKwvLGw
-   p9jDssGn/6eXd0qb/qDRGM1c4eymiU4E/vFS1w9/HOexJP+xN37dXoXwv
-   LGrIMuYgrv9rCP1Ha66sj2zsmh3o2V8RGFhZA+o7QUunF2Eqs52Bs3dps
-   w==;
-X-CSE-ConnectionGUID: 4Sr440V8Qsax90AszpKapg==
-X-CSE-MsgGUID: mUyZOUMYRMasyKIik6EDMw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26698441"
-X-IronPort-AV: E=Sophos;i="6.11,164,1725346800"; 
-   d="scan'208";a="26698441"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2024 22:51:49 -0700
-X-CSE-ConnectionGUID: 5zR1OpmOSyywRCtLL0caCQ==
-X-CSE-MsgGUID: fDaLogJbR0WCZoFMTV148w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,164,1725346800"; 
-   d="scan'208";a="73497045"
-Received: from lhan1x-mobl.ccr.corp.intel.com (HELO yhuang6-mobl2.ccr.corp.intel.com) ([10.124.238.64])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2024 22:51:45 -0700
-From: Huang Ying <ying.huang@intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: x86@kernel.org,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	linux-coco@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Huang Ying <ying.huang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>
-Subject: [PATCH] tdx, memory hotplug: Check whole hot-adding memory range for TDX
-Date: Mon, 30 Sep 2024 13:51:12 +0800
-Message-Id: <20240930055112.344206-1-ying.huang@intel.com>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SDGGHVNY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727686694;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=cf862QE3DJSwzt+WRGJivYd4bfR0GFwJXPFnH6kObYA=;
+	b=SDGGHVNY/qwbDwjlujr5HxK+jMWK8RYbRyjVGIROVOzDUn9t1dCDSaLhbrVbzmd61ubdS/
+	gldVqwcPvb5Q/92GSRhQHtvLNFIGqFscNSF6qTfzpi80KITNZ33YYfo698pTQmbu0fcNvm
+	E/42zOQHhc6jfeEvhH35MDMEbQuyHvI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-251-zuMig7n4OE-9bTBRd16aWw-1; Mon, 30 Sep 2024 04:58:12 -0400
+X-MC-Unique: zuMig7n4OE-9bTBRd16aWw-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-42cb080ab53so31547995e9.0
+        for <linux-coco@lists.linux.dev>; Mon, 30 Sep 2024 01:58:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727686692; x=1728291492;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cf862QE3DJSwzt+WRGJivYd4bfR0GFwJXPFnH6kObYA=;
+        b=mHMYg2nTqVs6CbLQAwqBjfNH34lXjBf2yycSApBelX1c7lem0tfnD1SYqAwlOceVsu
+         qgzUAhjO8ggJd62ilbhlblEvr3KqSFUYZcI0VSX6sUXcYCw48zC6u3CiujNg2DeFVj+J
+         hMjtb2m7NjK6EAwKpVqqFlox7nH2sM0uk/ew7uAc6KUXpF5TR60Ags6lFctcR3SOcBsO
+         iJaBVaL+WdHCBal1K6i7EykHFAzylg9U/FgjVwje5rnHMg+UbMrfYiiN8uy2Vpup+2el
+         Jw4puH6MHQZ19Krvh2JZgZ62Si1kvgCwxV/2lkl3N43d221nnxybvm4YN7kUNke1UQ4S
+         m/4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUc8op5ZdozUeitgyMQr6DeOEZO1yvz/j0Q2mSyKIPOTy22DTEA7zz6W+bcEyz9OzHsfrxxFxp/U86a@lists.linux.dev
+X-Gm-Message-State: AOJu0YwjJwWox8XGLyuS+am8MWf+Za2QAkOgv96YPU5yoWJ99q+u1SYJ
+	mHA0IcxjXZKgVwWXKWSF/nrUGyH4Pyn41MQ27PeLyckgaLjZuy4zrHdI8yzIB7yEBfi2C8VnCW5
+	TqmuoBTg5YooJmoFtBbyetDLd9AO2M8oQhNiXE94AcwiK+yJq2QFKoNK0nK8=
+X-Received: by 2002:a05:600c:1d97:b0:428:e866:3933 with SMTP id 5b1f17b1804b1-42f58464a07mr104400295e9.22.1727686691736;
+        Mon, 30 Sep 2024 01:58:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHp7HodyhYb64/Q8tTfraakrNR9kAN2Vct4EdIAZtddMLmLB6H999czvl8h40Q3FXFNlc8mPQ==
+X-Received: by 2002:a05:600c:1d97:b0:428:e866:3933 with SMTP id 5b1f17b1804b1-42f58464a07mr104400035e9.22.1727686691353;
+        Mon, 30 Sep 2024 01:58:11 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e969ddfc9sm144410695e9.5.2024.09.30.01.58.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Sep 2024 01:58:10 -0700 (PDT)
+Message-ID: <cf4a3ae4-deae-4224-88e3-308a55492085@redhat.com>
+Date: Mon, 30 Sep 2024 10:58:09 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tdx, memory hotplug: Check whole hot-adding memory range
+ for TDX
+To: Huang Ying <ying.huang@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, linux-coco@lists.linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>, Kai Huang <kai.huang@intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>
+References: <20240930055112.344206-1-ying.huang@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240930055112.344206-1-ying.huang@intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On systems with TDX (Trust Domain eXtensions) enabled, memory ranges
-hot-added must be checked for compatibility by TDX.  This is currently
-implemented through memory hotplug notifiers for each memory_block.
-If a memory range which isn't TDX compatible is hot-added, for
-example, some CXL memory, the command line as follows,
+On 30.09.24 07:51, Huang Ying wrote:
+> On systems with TDX (Trust Domain eXtensions) enabled, memory ranges
+> hot-added must be checked for compatibility by TDX.  This is currently
+> implemented through memory hotplug notifiers for each memory_block.
+> If a memory range which isn't TDX compatible is hot-added, for
+> example, some CXL memory, the command line as follows,
+> 
+>    $ echo 1 > /sys/devices/system/node/nodeX/memoryY/online
+> 
+> will report something like,
+> 
+>    bash: echo: write error: Operation not permitted
+> 
+> If pr_debug() is enabled, the error message like below will be shown
+> in the kernel log,
+> 
+>    online_pages [mem 0xXXXXXXXXXX-0xXXXXXXXXXX] failed
+> 
+> Both are too general to root cause the problem.  This will confuse
+> users.  One solution is to print some error messages in the TDX memory
+> hotplug notifier.  However, memory hotplug notifiers are called for
+> each memory block, so this may lead to a large volume of messages in
+> the kernel log if a large number of memory blocks are onlined with a
+> script or automatically.  For example, the typical size of memory
+> block is 128MB on x86_64, when online 64GB CXL memory, 512 messages
+> will be logged.
 
-  $ echo 1 > /sys/devices/system/node/nodeX/memoryY/online
+ratelimiting would likely help here a lot, but I agree that it is 
+suboptimal.
 
-will report something like,
+> 
+> Therefore, in this patch, the whole hot-adding memory range is checked
+> for TDX compatibility through a newly added architecture specific
+> function (arch_check_hotplug_memory_range()).  If rejected, the memory
+> hot-adding will be aborted with a proper kernel log message.  Which
+> looks like something as below,
+> 
+>    virt/tdx: Reject hot-adding memory range: 0xXXXXXXXX-0xXXXXXXXX for TDX compatibility.
+ > > The target use case is to support CXL memory on TDX enabled systems.
+> If the CXL memory isn't compatible with TDX, the whole CXL memory
+> range hot-adding will be rejected.  While the CXL memory can still be
+> used via devdax interface.
 
-  bash: echo: write error: Operation not permitted
+I'm curious, why can that memory be used through devdax but not through 
+the buddy? I'm probably missing something important :)
 
-If pr_debug() is enabled, the error message like below will be shown
-in the kernel log,
+> 
+> This also makes the original TDX memory hotplug notifier useless, so
+> delete it.
 
-  online_pages [mem 0xXXXXXXXXXX-0xXXXXXXXXXX] failed
+The online-notifier would even be too late when used with the 
+memmap-on-memory feature I assume, as we might be touching that memory 
+even before being able to call memory online notifiers.
 
-Both are too general to root cause the problem.  This will confuse
-users.  One solution is to print some error messages in the TDX memory
-hotplug notifier.  However, memory hotplug notifiers are called for
-each memory block, so this may lead to a large volume of messages in
-the kernel log if a large number of memory blocks are onlined with a
-script or automatically.  For example, the typical size of memory
-block is 128MB on x86_64, when online 64GB CXL memory, 512 messages
-will be logged.
+One way to handle that would be to switch to the MEM_PREPARE_ONLINE 
+notifier, but it's still called per-memory block.
 
-Therefore, in this patch, the whole hot-adding memory range is checked
-for TDX compatibility through a newly added architecture specific
-function (arch_check_hotplug_memory_range()).  If rejected, the memory
-hot-adding will be aborted with a proper kernel log message.  Which
-looks like something as below,
+Nothing jumped at me, so
 
-  virt/tdx: Reject hot-adding memory range: 0xXXXXXXXX-0xXXXXXXXX for TDX compatibility.
+Acked-by: David Hildenbrand <david@redhat.com>
 
-The target use case is to support CXL memory on TDX enabled systems.
-If the CXL memory isn't compatible with TDX, the whole CXL memory
-range hot-adding will be rejected.  While the CXL memory can still be
-used via devdax interface.
-
-This also makes the original TDX memory hotplug notifier useless, so
-delete it.
-
-Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Oscar Salvador <osalvador@suse.de>
----
- arch/x86/include/asm/tdx.h     |  2 ++
- arch/x86/mm/init_64.c          |  6 ++++++
- arch/x86/virt/vmx/tdx/tdx.c    | 35 ++++++++++++----------------------
- include/linux/memory_hotplug.h |  3 +++
- mm/memory_hotplug.c            |  7 ++++++-
- 5 files changed, 29 insertions(+), 24 deletions(-)
-
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index eba178996d84..6db5da34e4ba 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -116,11 +116,13 @@ static inline u64 sc_retry(sc_func_t func, u64 fn,
- int tdx_cpu_enable(void);
- int tdx_enable(void);
- const char *tdx_dump_mce_info(struct mce *m);
-+int tdx_check_hotplug_memory_range(u64 start, u64 size);
- #else
- static inline void tdx_init(void) { }
- static inline int tdx_cpu_enable(void) { return -ENODEV; }
- static inline int tdx_enable(void)  { return -ENODEV; }
- static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
-+static inline int tdx_check_hotplug_memory_range(u64 start, u64 size) { return 0; }
- #endif	/* CONFIG_INTEL_TDX_HOST */
- 
- #endif /* !__ASSEMBLY__ */
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index ff253648706f..30a4ad4272ce 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -55,6 +55,7 @@
- #include <asm/uv/uv.h>
- #include <asm/setup.h>
- #include <asm/ftrace.h>
-+#include <asm/tdx.h>
- 
- #include "mm_internal.h"
- 
-@@ -974,6 +975,11 @@ int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
- 	return ret;
- }
- 
-+int arch_check_hotplug_memory_range(u64 start, u64 size)
-+{
-+	return tdx_check_hotplug_memory_range(start, size);
-+}
-+
- int arch_add_memory(int nid, u64 start, u64 size,
- 		    struct mhp_params *params)
- {
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 4e2b2e2ac9f9..c477b04c5548 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1388,36 +1388,32 @@ static bool is_tdx_memory(unsigned long start_pfn, unsigned long end_pfn)
- 	return false;
- }
- 
--static int tdx_memory_notifier(struct notifier_block *nb, unsigned long action,
--			       void *v)
-+int tdx_check_hotplug_memory_range(u64 start, u64 size)
- {
--	struct memory_notify *mn = v;
--
--	if (action != MEM_GOING_ONLINE)
--		return NOTIFY_OK;
-+	u64 start_pfn = PHYS_PFN(start);
-+	u64 end_pfn = PHYS_PFN(start + size);
- 
- 	/*
- 	 * Empty list means TDX isn't enabled.  Allow any memory
--	 * to go online.
-+	 * to be hot-added.
- 	 */
- 	if (list_empty(&tdx_memlist))
--		return NOTIFY_OK;
-+		return 0;
- 
- 	/*
- 	 * The TDX memory configuration is static and can not be
--	 * changed.  Reject onlining any memory which is outside of
-+	 * changed.  Reject hot-adding any memory which is outside of
- 	 * the static configuration whether it supports TDX or not.
- 	 */
--	if (is_tdx_memory(mn->start_pfn, mn->start_pfn + mn->nr_pages))
--		return NOTIFY_OK;
-+	if (is_tdx_memory(start_pfn, end_pfn))
-+		return 0;
- 
--	return NOTIFY_BAD;
-+	pr_info("Reject hot-adding memory range: %#llx-%#llx for TDX compatibility.\n",
-+		start, start + size);
-+
-+	return -EINVAL;
- }
- 
--static struct notifier_block tdx_memory_nb = {
--	.notifier_call = tdx_memory_notifier,
--};
--
- static void __init check_tdx_erratum(void)
- {
- 	/*
-@@ -1465,13 +1461,6 @@ void __init tdx_init(void)
- 		return;
- 	}
- 
--	err = register_memory_notifier(&tdx_memory_nb);
--	if (err) {
--		pr_err("initialization failed: register_memory_notifier() failed (%d)\n",
--				err);
--		return;
--	}
--
- #if defined(CONFIG_ACPI) && defined(CONFIG_SUSPEND)
- 	pr_info("Disable ACPI S3. Turn off TDX in the BIOS to use ACPI S3.\n");
- 	acpi_suspend_lowlevel = NULL;
-diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index b27ddce5d324..c5ba7b909bb4 100644
---- a/include/linux/memory_hotplug.h
-+++ b/include/linux/memory_hotplug.h
-@@ -140,6 +140,9 @@ extern int try_online_node(int nid);
- 
- extern int arch_add_memory(int nid, u64 start, u64 size,
- 			   struct mhp_params *params);
-+
-+extern int arch_check_hotplug_memory_range(u64 start, u64 size);
-+
- extern u64 max_mem_size;
- 
- extern int mhp_online_type_from_str(const char *str);
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 621ae1015106..c4769f24b1e2 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1305,6 +1305,11 @@ int try_online_node(int nid)
- 	return ret;
- }
- 
-+int __weak arch_check_hotplug_memory_range(u64 start, u64 size)
-+{
-+	return 0;
-+}
-+
- static int check_hotplug_memory_range(u64 start, u64 size)
- {
- 	/* memory range must be block size aligned */
-@@ -1315,7 +1320,7 @@ static int check_hotplug_memory_range(u64 start, u64 size)
- 		return -EINVAL;
- 	}
- 
--	return 0;
-+	return arch_check_hotplug_memory_range(start, size);
- }
- 
- static int online_memory_block(struct memory_block *mem, void *arg)
 -- 
-2.39.2
+Cheers,
+
+David / dhildenb
 
