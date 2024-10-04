@@ -1,66 +1,66 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFBE137903
-	for <linux-coco@lists.linux.dev>; Fri,  4 Oct 2024 10:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7350314AD3D
+	for <linux-coco@lists.linux.dev>; Fri,  4 Oct 2024 10:21:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728037016; cv=none; b=pz1LDMDMsfBVKgHpl4vxawY669nuZU9oVffJd3l1aSNVGqC+pZucZ0/9OWyVU/7L6pTEr0HeY7VLfu8PWg6BJD6Kiolv23AXEHZRYU8riOC3hHVzzNr9sWIMObTjMtCVGgPxeJQFbA3wW3thnRt038/iyLfZg784SCsR7ctHVMA=
+	t=1728037282; cv=none; b=g9AMJ0DK1GfarJe42edAlWCp0Vv7JKaYcD9NiW4m9YDzlQPdetg30pzSv/lnuRLxgUrnYNNua/jLQuOG5me8yS74tC8+Sd3n+wIOeC2NtWyc0lCKhKOASuinIzJRwaoFHsuhqClhoOIWVJfgMEmAUbmOP1aGGNOOZR4I0erQrT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728037016; c=relaxed/simple;
-	bh=cq9jFgrOfqAx20FwhuUVZ3cnLf/ZA0L0QQwQk850CEo=;
+	s=arc-20240116; t=1728037282; c=relaxed/simple;
+	bh=lYFiNt9nmnAQqQ6uDn5FswnQ4PPGAo0L/6uvXle2yMw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XVojmRcM3sD0p7abeT+2roeR8jEBzD8TrYaxwng0IPtLi2YKfF3Xovx1cVUPv1qs81Ns1na+Hiqi2uvweHY1A4f9EB5gjzCFoF8BSZdGjkw/6CyQcDUp0/OgUzk0F32Xh85i9MVjklHOsA6+UoIDDcqdIqu1s+Vy1W5COGC4FRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gJBI1mOq; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=tzjrSOY5qVj9EqmHgdR3dCLk0DzUO4yuubXgQbaD3dUhvvy8cmatLI/lEOlyT3QcCI8SDXL38ypch8ghaLK2W5RzluCDfEGM9eAY6MEOCDxAFMZIpY/llSHM46PEMdnYtYxSedjqZfDjiE6vbsNeaEZB0L4lBLj0VP9iBkmYAO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i96KRLQI; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gJBI1mOq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i96KRLQI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728037013;
+	s=mimecast20190719; t=1728037279;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=N6GdPppOtfNFlPAW8QqgLW9SMnDwDrKhqWMr9Q52wtc=;
-	b=gJBI1mOqtSeD28x+ALnwHOy6AIBAvHvRef3kk56cVZaeBqMpRnw1SfRLwvPu3dyV9t2iPA
-	7pWbZtmlHE41iHhVRhufKs608dU7HLnXGuVY4PrOLohA068kw82zgshZx9B+a72AflA6xW
-	rOgX2UEDYgPDNRk/gvDKgik8rpE3kjg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ItcLhmC8kaffrLJ2Dm6Z6QEFSQlbuw+pIggrwFvXTZY=;
+	b=i96KRLQIp4yzBRlYncwkUiWYK+j4y+QmKS2ZwMlN4jL54Ug7YahVYoHWG3cSNfNMZGz8xs
+	JKof6a1UF3I3GGrR4m3iQlmJOBYSRP9LhkPQknYYM4XvqD1xSuZ6MleCtiKESLs9OdNAv2
+	rnEeBmhEy9ke7Odmfy8Bht4zirWW99o=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-2BQEcaVRNYizzwsBhVx35w-1; Fri, 04 Oct 2024 06:16:52 -0400
-X-MC-Unique: 2BQEcaVRNYizzwsBhVx35w-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37cd1fb9497so1489314f8f.1
-        for <linux-coco@lists.linux.dev>; Fri, 04 Oct 2024 03:16:51 -0700 (PDT)
+ us-mta-364-ciJ1Rey3MyieBnXu7AuR5w-1; Fri, 04 Oct 2024 06:21:18 -0400
+X-MC-Unique: ciJ1Rey3MyieBnXu7AuR5w-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-42f310f0ed2so18547595e9.1
+        for <linux-coco@lists.linux.dev>; Fri, 04 Oct 2024 03:21:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728037011; x=1728641811;
+        d=1e100.net; s=20230601; t=1728037277; x=1728642077;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=N6GdPppOtfNFlPAW8QqgLW9SMnDwDrKhqWMr9Q52wtc=;
-        b=ki8Kj2BhsW7tl//0OFZFGwDPnPJ5ZJEFvBjmIwHHcXBWqOpui9pjvM5lgq9RQIrVU/
-         Y2sH2zMPXhBHrB3FX60rga7v/9DbxRCcGNIBo5fk7dN1G0DYG3bBj20M4XbXZhUOKD+g
-         xjcx/xBIe6QtuEWx0DBEGRSQkIDNPXdf+8nYYqy/i9/c9hr5/dQjfhIY8MNe4NOJYsG5
-         5LgjZLK/8/2Hwrhogs0Zsr95zpNbM2HO1e6g74XoO4Lkgf0H33l+jTC7MsyMpJCCxjrJ
-         0BHh2H+RoDruUw49GLBov3ZAmSeGF4GlG+akhWA43qB3lr75nIeU6Ryib++hP/3ZH2qr
-         99pw==
-X-Forwarded-Encrypted: i=1; AJvYcCUfqTBdx/gbM2IdeUFv0BWhOrfAiTrQPW4YDEIFhzUQZyA9qCowGAT46yy+3LazNyuqV94bLF4t4SPs@lists.linux.dev
-X-Gm-Message-State: AOJu0YzP9gUPnd7rapaftK1hevVNtQS5yZfcM3apxqa76tXjev9fToib
-	2bsUmAV5p4wzO3W6pW6nezQj6nVFHT/p7u44GJSfVa6cDKXOa9iVuLoPekDkqVBPKPs/ut0FfsC
-	yPkR92KG346uf7kIQ2CqnDjr6pyI6qTob6o0iR2bus4fCCfgtiSCBDCtz8G0=
-X-Received: by 2002:a5d:6712:0:b0:37c:cbc8:d278 with SMTP id ffacd0b85a97d-37d0f720694mr1484683f8f.31.1728037010936;
-        Fri, 04 Oct 2024 03:16:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFtZyajR3+mxi/ZK+zxsj1WAEzIlwoFAl8KsGpsQtrVS19gXMrixju930maqzL3ETEmhJDRzQ==
-X-Received: by 2002:a5d:6712:0:b0:37c:cbc8:d278 with SMTP id ffacd0b85a97d-37d0f720694mr1484663f8f.31.1728037010564;
-        Fri, 04 Oct 2024 03:16:50 -0700 (PDT)
+        bh=ItcLhmC8kaffrLJ2Dm6Z6QEFSQlbuw+pIggrwFvXTZY=;
+        b=OYq3UrK2Xxx2kY4ESaurf/tKIkeMsBl6D6FOWJobS4f9cr878nM9aQDks7J+WOO5ej
+         aokd+OlE3oEvk9TbiXyOJ6FdYzQdo+rwmf9NbN+WgNJVX5sXEd9tSB3/K56edSYbF/pk
+         cegYIvv+OQWmHP7ialsMDhxGS5cIu8J1Xtigdjy9IglzN8C0gm3pcRurXG1TzOPxVeLG
+         d09nU8A0LdNPFeE5NL4qqkbV3Dd52aJ5BIUdlPXL+txMm+6kZl0SEh6qJ2WzOiI4julS
+         LGLagxfkfFlLZL4BY3pAea7JXKPCufl8mub85a/3W7gUPslJHlyMVH1KBg8xbrEzVWkG
+         8hgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ+KPOXdsNn4EmjFfTElnkwzSZULfPxmNj25weB+6MVfC72SnGUB3dtM7Pyk7HVYjzX4viqrzsH1nt@lists.linux.dev
+X-Gm-Message-State: AOJu0YyxZOINsCeudAnWT/3G79BsVK5mqQ2GdzvKLZ1LiPYX0Qxrm10A
+	qmda9wLYcXU446kwRIur2nB82RcLnmZ1jD7zBldLkA9xlotA8H2E/8NkoqeY34N5xaPtcZRqjb9
+	tgD2hACg0ruXEdn9e/QaFExpKhyvktB6emQd8PRnKJvegG9a8PM0oD+XC/18=
+X-Received: by 2002:a05:600c:3ba9:b0:42c:ba83:3f00 with SMTP id 5b1f17b1804b1-42f85a6e0c0mr21343135e9.1.1728037277059;
+        Fri, 04 Oct 2024 03:21:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IERgQ2dFRFh8SMJSUJsxcC2XaIZK0l7gMRKVSU3qIssWcQj3uzeBu4dUWeVBnCQvBjb+K7xgA==
+X-Received: by 2002:a05:600c:3ba9:b0:42c:ba83:3f00 with SMTP id 5b1f17b1804b1-42f85a6e0c0mr21342735e9.1.1728037276515;
+        Fri, 04 Oct 2024 03:21:16 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c714:d00:a1ab:bff4:268f:d7c5? (p200300cbc7140d00a1abbff4268fd7c5.dip0.t-ipconnect.de. [2003:cb:c714:d00:a1ab:bff4:268f:d7c5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d082a6992sm2944433f8f.68.2024.10.04.03.16.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f86b1d672sm12081605e9.28.2024.10.04.03.21.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Oct 2024 03:16:50 -0700 (PDT)
-Message-ID: <4865b333-60c2-4bad-850d-5f8550f5a59e@redhat.com>
-Date: Fri, 4 Oct 2024 12:16:48 +0200
+        Fri, 04 Oct 2024 03:21:16 -0700 (PDT)
+Message-ID: <22d1cfbf-b195-4343-b87b-493cb3d2843b@redhat.com>
+Date: Fri, 4 Oct 2024 12:21:14 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,21 +70,22 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] tdx, memory hotplug: Check whole hot-adding memory range
  for TDX
-To: Dan Williams <dan.j.williams@intel.com>, Huang Ying
- <ying.huang@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>, linux-coco@lists.linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Kai Huang <kai.huang@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Andy Lutomirski <luto@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>, Yang Shi <shy828301@gmail.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, x86@kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Kai Huang <kai.huang@intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>
 References: <20240930055112.344206-1-ying.huang@intel.com>
  <cf4a3ae4-deae-4224-88e3-308a55492085@redhat.com>
- <66fb9a89dd814_964fe294ed@dwillia2-xfh.jf.intel.com.notmuch>
- <c9dcdc44-7031-4541-96a2-70a071accb61@redhat.com>
- <66fbade318730_964f2294d1@dwillia2-xfh.jf.intel.com.notmuch>
+ <8734lgpuoi.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <CAHbLzkp_SyRBR+JsxMwM_qKpF=8+TU=36hDY6TuKMHdnLnyxAg@mail.gmail.com>
+ <66ff297119b92_964f2294c6@dwillia2-xfh.jf.intel.com.notmuch>
+ <CAHbLzkoR1pT1NEL7qAYi+JXOsB7O0FnHyHFOJ+4eZf9vf5K6Wg@mail.gmail.com>
+ <66ff5dd3b9128_964fe294ca@dwillia2-xfh.jf.intel.com.notmuch>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -131,97 +132,150 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <66fbade318730_964f2294d1@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <66ff5dd3b9128_964fe294ca@dwillia2-xfh.jf.intel.com.notmuch>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 01.10.24 10:08, Dan Williams wrote:
-> David Hildenbrand wrote:
->> On 01.10.24 08:45, Dan Williams wrote:
->>> David Hildenbrand wrote:
->>>> On 30.09.24 07:51, Huang Ying wrote:
->>>>> On systems with TDX (Trust Domain eXtensions) enabled, memory ranges
->>>>> hot-added must be checked for compatibility by TDX.  This is currently
->>>>> implemented through memory hotplug notifiers for each memory_block.
->>>>> If a memory range which isn't TDX compatible is hot-added, for
->>>>> example, some CXL memory, the command line as follows,
->>>>>
->>>>>      $ echo 1 > /sys/devices/system/node/nodeX/memoryY/online
->>>>>
->>>>> will report something like,
->>>>>
->>>>>      bash: echo: write error: Operation not permitted
->>>>>
->>>>> If pr_debug() is enabled, the error message like below will be shown
->>>>> in the kernel log,
->>>>>
->>>>>      online_pages [mem 0xXXXXXXXXXX-0xXXXXXXXXXX] failed
->>>>>
->>>>> Both are too general to root cause the problem.  This will confuse
->>>>> users.  One solution is to print some error messages in the TDX memory
->>>>> hotplug notifier.  However, memory hotplug notifiers are called for
->>>>> each memory block, so this may lead to a large volume of messages in
->>>>> the kernel log if a large number of memory blocks are onlined with a
->>>>> script or automatically.  For example, the typical size of memory
->>>>> block is 128MB on x86_64, when online 64GB CXL memory, 512 messages
->>>>> will be logged.
->>>>
->>>> ratelimiting would likely help here a lot, but I agree that it is
->>>> suboptimal.
->>>>
->>>>>
->>>>> Therefore, in this patch, the whole hot-adding memory range is checked
->>>>> for TDX compatibility through a newly added architecture specific
->>>>> function (arch_check_hotplug_memory_range()).  If rejected, the memory
->>>>> hot-adding will be aborted with a proper kernel log message.  Which
->>>>> looks like something as below,
->>>>>
->>>>>      virt/tdx: Reject hot-adding memory range: 0xXXXXXXXX-0xXXXXXXXX for TDX compatibility.
->>>>    > > The target use case is to support CXL memory on TDX enabled systems.
->>>>> If the CXL memory isn't compatible with TDX, the whole CXL memory
->>>>> range hot-adding will be rejected.  While the CXL memory can still be
->>>>> used via devdax interface.
->>>>
->>>> I'm curious, why can that memory be used through devdax but not through
->>>> the buddy? I'm probably missing something important :)
+On 04.10.24 05:15, Dan Williams wrote:
+> Yang Shi wrote:
+>> On Thu, Oct 3, 2024 at 4:32 PM Dan Williams <dan.j.williams@intel.com> wrote:
 >>>
->>> TDX requires memory that supports integrity and encryption. Until
->>> platforms and expanders with a technology called CXL TSP arrives, CXL
->>> memory is not able to join the TCB.
+>>> Yang Shi wrote:
+>>>> On Mon, Sep 30, 2024 at 4:54 PM Huang, Ying <ying.huang@intel.com> wrote:
+>>>>>
+>>>>> Hi, David,
+>>>>>
+>>>>> Thanks a lot for comments!
+>>>>>
+>>>>> David Hildenbrand <david@redhat.com> writes:
+>>>>>
+>>>>>> On 30.09.24 07:51, Huang Ying wrote:
+>>>>>>> On systems with TDX (Trust Domain eXtensions) enabled, memory ranges
+>>>>>>> hot-added must be checked for compatibility by TDX.  This is currently
+>>>>>>> implemented through memory hotplug notifiers for each memory_block.
+>>>>>>> If a memory range which isn't TDX compatible is hot-added, for
+>>>>>>> example, some CXL memory, the command line as follows,
+>>>>>>>     $ echo 1 > /sys/devices/system/node/nodeX/memoryY/online
+>>>>>>> will report something like,
+>>>>>>>     bash: echo: write error: Operation not permitted
+>>>>>>> If pr_debug() is enabled, the error message like below will be shown
+>>>>>>> in the kernel log,
+>>>>>>>     online_pages [mem 0xXXXXXXXXXX-0xXXXXXXXXXX] failed
+>>>>>>> Both are too general to root cause the problem.  This will confuse
+>>>>>>> users.  One solution is to print some error messages in the TDX memory
+>>>>>>> hotplug notifier.  However, memory hotplug notifiers are called for
+>>>>>>> each memory block, so this may lead to a large volume of messages in
+>>>>>>> the kernel log if a large number of memory blocks are onlined with a
+>>>>>>> script or automatically.  For example, the typical size of memory
+>>>>>>> block is 128MB on x86_64, when online 64GB CXL memory, 512 messages
+>>>>>>> will be logged.
+>>>>>>
+>>>>>> ratelimiting would likely help here a lot, but I agree that it is
+>>>>>> suboptimal.
+>>>>>>
+>>>>>>> Therefore, in this patch, the whole hot-adding memory range is
+>>>>>>> checked
+>>>>>>> for TDX compatibility through a newly added architecture specific
+>>>>>>> function (arch_check_hotplug_memory_range()).  If rejected, the memory
+>>>>>>> hot-adding will be aborted with a proper kernel log message.  Which
+>>>>>>> looks like something as below,
+>>>>>>>     virt/tdx: Reject hot-adding memory range: 0xXXXXXXXX-0xXXXXXXXX
+>>>>>>> for TDX compatibility.
+>>>>>>>> The target use case is to support CXL memory on TDX enabled systems.
+>>>>>>> If the CXL memory isn't compatible with TDX, the whole CXL memory
+>>>>>>> range hot-adding will be rejected.  While the CXL memory can still be
+>>>>>>> used via devdax interface.
+>>>>>>
+>>>>>> I'm curious, why can that memory be used through devdax but not
+>>>>>> through the buddy? I'm probably missing something important :)
+>>>>>
+>>>>> Because only TDX compatible memory can be used for TDX guest.  The buddy
+>>>>> is used to allocate memory for TDX guest.  While devdax will not be used
+>>>>> for that.
+>>>>
+>>>> Sorry for chiming in late. I think CXL also faces the similar problem
+>>>> on the platform with MTE (memory tagging extension on ARM64). AFAIK,
+>>>> we can't have MTE on CXL, so CXL has to stay as dax device if MTE is
+>>>> enabled.
+>>>>
+>>>> We should need a similar mechanism to prevent users from hot-adding
+>>>> CXL memory if MTE is on. But not like TDX I don't think we have a
+>>>> simple way to tell whether the pfn belongs to CXL or not. Please
+>>>> correct me if I'm wrong. I'm wondering whether we can find a more
+>>>> common way to tell memory hotplug to not hot-add some region. For
+>>>> example, a special flag in struct resource. off the top of my head.
+>>>>
+>>>> No solid idea yet, I'm definitely seeking some advice.
 >>>
->>> The TDX code for simplicity assumes that only memory present at boot
->>> might be capable of TDX and that everything else is not.
+>>> Could the ARM version of arch_check_hotplug_memory_range() check if MTE
+>>> is enabled in the CPU and then ask the CXL subsystem if the address range is
+>>> backed by a topology that supports MTE?
 >>
->> So is there ever a chance where add_memory() would actually work now
->> with TDX? Or can we just simplify and unconditionally reject
->> add_memory() if TDX is enabled?
+>> Kernel can tell whether MTE is really enabled. For the CXL part, IIUC
+>> that relies on the CXL subsystem is able to tell whether that range
+>> can support MTE or not, right? Or CXL subsystem tells us whether the
+>> range is CXL memory range or not, then we can just refuse MTE for all
+>> CXL regions for now. Does CXL support this now?
 > 
-> Only if the memory address range is enumerated by the platform firmware
-> (mcheck) at boot time.
+> So the CXL specification has section:
 > 
-> This will eventually be possible with the CXL dynamic-capacity (DCD)
-> capability once CXL TSP arrives. In that scenario the CXL DCD expander
-> is brought into the TCB at boot time and assigned a fixed address range
-> where future memory could arrive. I.e. the CXL device is brought into
-> the TCB at boot, but the memory it provides can arrive later.
+>      8.2.4.31 CXL Extended Metadata Capability Register
 > 
->>> Confidential VMs use guest_mem_fd to allocate memory, and that only
->>> pulls from the page allocator as a backend.
->>>
->>> This ability to use devdax in an offline mode is a hack to not
+> ...that indicates if the device supports "Extended Metadata" (EMD).
+> However, the CXL specification does not talk about how a given hosts
+> uses the extended metadata capabilities of a device. That detail would
+> need to come from an ARM platform specification.
+> 
+> Currently CXL subsystem does nothing with this since there has been no
+> need to date, but I would expect someone from the ARM side to plumb this
+> detection into the CXL subsystem.
+> 
+>>> However, why would it be ok to access CXL memory without MTE via devdax,
+>>> but not as online page allocator memory?
 >>
->> Thanks, I was missing the "hack" of it, and somehow (once again) assumed
->> that we would be hotplugging memory into confidential VMs.
+>> CXL memory can be onlined as system ram as long as MTE is not enabled.
+>> It just can be used as devdax device if MTE is enabled.
 > 
-> When / if dynamic capacity and this security-protocol for CXL arrives
-> that may yet happen. For now it is safe to block adding anything which
-> mcheck does not like which is everything but memory present at boot
-> (is_tdx_memory()).
+> Do you mean the kernel only manages MTE for kernel pages, but with user
+> mapped memory the application will need to implicitly know that
+> memory-tagging is not available?
+> 
+> I worry about applications that might not know that their heap is coming
+> from a userspace memory allocator backed by device-dax rather than the
+> kernel.
 
-Makes sense, thanks!
+I recall that MTE is requested by user space via mprotect(). If we end 
+up with memory that is not taggable, we would have to fail the 
+operation, which is not desirable.
+
+This is what we want to avoid, so if MTE is enabled, all memory in the 
+buddy should be taggable.
+
+> 
+>>> If the goal is to simply deny any and all non-MTE supported CXL region
+>>> from attaching then that could probably be handled as a modification to
+>>> the "cxl_acpi" driver to deny region creation unless it supports
+>>> everything the CPU expects from "memory".
+>>
+>> I'm not quite familiar with the details in CXL driver. What did you
+>> mean "deny region creation"? As long as the CXL memory still can be
+>> used as devdax device, it should be fine.
+> 
+> Meaning that the CXL subsytem knows how to, for a given address range, figure
+> out the members and geometry of the CXL devices that contribute to that
+> range (CXL region). It would be straightforward to add EMD to that
+> enumeration and flag the CXL region as not online-capable if the CPU has
+> MTE enabled but no EMD capability.
+
+If it's really just CXL memory we are worrying about, we could pass a 
+flag to add_memory_driver_managed(), and passing that to our callback here.
+
+Not sure if that is the most reliable way of handling it :) What about 
+other ways of hotplugging memory besides CXL? Are we sure, they are/will 
+be providing taggable memory?
 
 -- 
 Cheers,
