@@ -1,266 +1,275 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1679E1CACED
-	for <linux-coco@lists.linux.dev>; Fri,  4 Oct 2024 15:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728057305; cv=none; b=PdarazdGXCjBEssXrM+nsm7Coh3iuXTzj76ufrQqLe9nwh0mBTOHYxWiinXshlV4Y5Zlz2y6daVb+eh7wHt1eIscGC2eJecOSlH+ENlhhNL/CTCtb7xec/uYi2QKulIGoFEzqOfzAlmwL62BiTjaHreqKmeMuaz87RnQs38BMVE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728057305; c=relaxed/simple;
-	bh=sPfDTTjfojdpTrD/m+6kDQhvCxIO2wR0hfTot8mv+q4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CyzpEyO6cHfEkSkV+rz/ar1ALWwhhDc1yIw5j0Rt8pE3/Flibas1WblGUuaCCDkCHabNrCr4nQO7EP6n9VA7/B2+SVq4rnXNIoTQ0JZcVK3ssCeZ55z/+pFbPfsAUsnClg4fD2ve+vg1du5mSV2S0Fyhe2oQ+6HkGv4HB9MCp8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E6QpEpun; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FB1231C9D
+	for <linux-coco@lists.linux.dev>; Fri,  4 Oct 2024 21:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728077786; cv=fail; b=Tu/YQF5yZwEC4fwD50KZZMgV5PT9H8ywGst4yfaPR1shKCX2JVSAO71KVBaIATg20bC1GUBJ2TCe51htwCXLXStT77pmk1Lm1cm3n1reyEzW/5in/4DQSaliH08fByu9V+xwF8ji3w1WJ/Za0jbWCZDctnVphyedK8CGmeL36SM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728077786; c=relaxed/simple;
+	bh=imY5EkXXKsP6i5BsW5s1e5bTb7SCSbJoKPn9x7sFgJA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=cHw46CsCBudsF+vVib5IuG2SgYzR8OpjpSfihWKm7IsX5afsTf7AaJrfY473NzvO4ofCqc53VVFydCLx2czReP/xea6iAEsFRkxt91LoIkCe81+fdbC86x+hx2JFWNByOkzNp1lmHXX50937ZuyJdUlgWOCoXhL5OTIsSlKPSQw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JNJojL2Y; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E6QpEpun"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a8a897bd4f1so295283466b.3
-        for <linux-coco@lists.linux.dev>; Fri, 04 Oct 2024 08:55:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728057301; x=1728662101; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g7V1eSqayAcR6DKSXIhi+T/ONIAgUgtsiQgcpv204+8=;
-        b=E6QpEpunNCFX4uhHMllJ8sIoycWTxTtted9SEex/qWNEzQSdAjwwd4wPk+e5cbafyX
-         n0rfvPrJkq1HSYmhNDF3H4umb/ILQCz0N43H2VSlbBSduDpjJqTwwzPvMCp1hIBDXc9f
-         BOwLdD8HYbVBPuC0nkzsk5FMU137Cbf/rYbq8lAfahzyTN7XJvQOl/EB3Gu+H+XYVLCU
-         RBhj+Xv06TEYPu7mkyhlSI9v11wCAzvh9SKHT1wjPm1KRkm9RyXzR5+/YMD4EB5TE+SS
-         cY6OgO5f7MW176jbt2OVPCJIth0w+CE8QASM1nfpy6i1AWt52D3qZaJqZT3hUnqgGCP0
-         f/Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728057301; x=1728662101;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g7V1eSqayAcR6DKSXIhi+T/ONIAgUgtsiQgcpv204+8=;
-        b=Pvy2I5sE61RbBLnGQir2+jm2wPMjSmTGiupBq6w5dBS8l49fzcU86BJt5HQ9192U2/
-         Ot75khhr+PkzhxMG/7tYdsKl9cpXicUg8VeZKNv55WzAb2jL5OQzFjMEH+hG8RT8RvXd
-         /xmEN4bIwFIWjrfQA1bCYqqPTlDuGWwpS5GF0Zut5YFmdE70KPvQZIMYX8Iex1R0bXeV
-         RbX2rzuonYHw6/Y/AiycquPoUv/r0m7VQ60pDBUig2dRHabDtZBYMMHO8NlCiUJVa0m8
-         c7BQzadG6s5iVtHe9xs+Y4RwBT++YJqFuFuuxHS5WHLcPVq/Sriw2j+dvCnI4vApSwe0
-         Xt1A==
-X-Forwarded-Encrypted: i=1; AJvYcCVqAurqofYrjO9mvqyJpQjyvnP6SsQXNzosT72CouyPuet+51hjsEuIgCV64zD8VEyuc0gvNyt5OdxD@lists.linux.dev
-X-Gm-Message-State: AOJu0YzfGhADM9X/2ePGhhio9N01RsOtVNIYmQf+LVdUO6l7UkwdKcNv
-	FebNrRHL+e0/4mIookoDBEGMl0EwkpgsYl/JjtskObs+gEYR9MHHw004viHHWrFikwH/nHUul9H
-	4NvWpisizXA+eGY2AkynnK4vsA+A=
-X-Google-Smtp-Source: AGHT+IFUeFMXgskl1sc4SyH/9JFwHHLkLn+Im1yAUtOBQWKw+t6O+BK082CGGJ19AYBEeFnE9FU2GY7KgsUCu9Ai3Gg=
-X-Received: by 2002:a17:907:36c4:b0:a8d:1303:2283 with SMTP id
- a640c23a62f3a-a991bd7a123mr326684166b.30.1728057301051; Fri, 04 Oct 2024
- 08:55:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JNJojL2Y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728077785; x=1759613785;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=imY5EkXXKsP6i5BsW5s1e5bTb7SCSbJoKPn9x7sFgJA=;
+  b=JNJojL2Yjjg3p4dK1yBABFxLMb4O6osyWRX7WlG5CGK1Mfy3tzm3BcG0
+   fuydurHvhYdNQAGdsWh2eqP3isGUiVa2TQ3DZ90Kdiax6ZrT54Fh/dk0I
+   v88vLWRhCdVOF7L0qyOjh8UgwYuFAqkhTCsfi5DNPZFUF6X5QSfrC57TO
+   c/GgRto+4ne3tTl2hInr8nNurD4WDLa9KfcDf95YrZ9wUpJQu9HXVLqV0
+   VREYbg2DI4Tlj5ELEvp3yjH/v6LXBDJni0zJkFDugX8Se1/KbxvObNkb3
+   hpwmJwuNHPPzKpmPP9OU+2toPtH/tFI+YMO6XNdYcC0LV5IFqt2Z0dsuZ
+   g==;
+X-CSE-ConnectionGUID: /g7b2s5LRO+PB7mxTUHphg==
+X-CSE-MsgGUID: /y0gBVVMS2OQPBbMNvgDHA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11215"; a="37969967"
+X-IronPort-AV: E=Sophos;i="6.11,178,1725346800"; 
+   d="scan'208";a="37969967"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2024 14:36:25 -0700
+X-CSE-ConnectionGUID: bV+Ger7DS6KkidW7f3DpNw==
+X-CSE-MsgGUID: sCNGyTb2TWGDWKd/0b+lrw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,178,1725346800"; 
+   d="scan'208";a="78811819"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 04 Oct 2024 14:36:24 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Fri, 4 Oct 2024 14:36:23 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Fri, 4 Oct 2024 14:36:23 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Fri, 4 Oct 2024 14:36:23 -0700
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.46) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 4 Oct 2024 14:36:22 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=B9GbpVIPFzLI+tYDox0VXbIaR3O1TLR4/7qwZXr9eMSQj6cxFeBwdLXIlypvP+y1RwXCCmFVxWW89bah4lxZ9yto3ZDn2O4xt8oo5otToN4eRwH1rev5vDWAR0jpFiPolStV61x66MhZVMAkWkuyeS+sjjvC2sXUEyRdtFWPvuJHlN9ffYk6zmuKhjxdez31Xg4MMcsex6RbSXhBEGiwdVlxssi1+aE3S/FSayhv+6kX8Q9VYjBFGfHIxo7EvutDiiRXQrw7dkrD5UsoKzhMQ0NirlAtJEwHlcyHoCQh4/o6EO2WiFAQGdEj3CTPlnPhPkQDt14USN0wESCNodaoTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i1KZq+6PV67HB72eT/P9/Rn2HApuq/Te2rJ2P2qWPDE=;
+ b=kY1CvL8hoCYG++i7efUBnu79a7+gXafZ5xquRzvMMB4Ymec363BTFxbu8CAJ8p1FDphfMN02ySqH0GKvtQVwRIF7LRwcASAkQzeZQG1EWE/O1F2eqxoeL3Qt4V/kt9iYG5ojzEqnDLLjWBOPJAMaJTA2/S+1t2pWpDJGo5Ww2F8MgwsjASte7+luCNOI3V/DXRNYGF73K6iSEVDttaUCU2s9osIMrflYqXLSjR2IehyqpplyzuS8Zny5DX4aIYkt/WATr7t2/X0DBBHXKlTy1jOXFhFFFutrp+yk1ocA2bpw8heqf1QFRS9Z0CeetesVyCmZwayRq3GWGJt76PVwSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SN7PR11MB8027.namprd11.prod.outlook.com (2603:10b6:806:2de::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.19; Fri, 4 Oct
+ 2024 21:36:18 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8026.017; Fri, 4 Oct 2024
+ 21:36:18 +0000
+Date: Fri, 4 Oct 2024 14:36:15 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Alexander Graf <graf@amazon.com>, Dan Williams <dan.j.williams@intel.com>,
+	<linux-coco@lists.linux.dev>
+CC: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Kuppuswamy Sathyanarayanan
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, Thomas Gleixner
+	<tglx@linutronix.de>, Michael Roth <michael.roth@amd.com>, <x86@kernel.org>,
+	<aik@amd.com>, <elena.reshetova@intel.com>, <pgonda@google.com>
+Subject: Re: [PATCH 4/4] configfs-tsm-report: Introduce TCB stability
+ enumeration and watchdog
+Message-ID: <67005fcf46742_10a0a2945@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <172618715121.516322.9909313629463814714.stgit@dwillia2-xfh.jf.intel.com>
+ <172618718534.516322.14804707935022669853.stgit@dwillia2-xfh.jf.intel.com>
+ <665c5ae0-4b7c-4852-8995-255adf7b3a2f@amazon.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <665c5ae0-4b7c-4852-8995-255adf7b3a2f@amazon.com>
+X-ClientProxiedBy: MW4PR03CA0038.namprd03.prod.outlook.com
+ (2603:10b6:303:8e::13) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240930055112.344206-1-ying.huang@intel.com> <cf4a3ae4-deae-4224-88e3-308a55492085@redhat.com>
- <8734lgpuoi.fsf@yhuang6-desk2.ccr.corp.intel.com> <CAHbLzkp_SyRBR+JsxMwM_qKpF=8+TU=36hDY6TuKMHdnLnyxAg@mail.gmail.com>
- <66ff297119b92_964f2294c6@dwillia2-xfh.jf.intel.com.notmuch>
- <CAHbLzkoR1pT1NEL7qAYi+JXOsB7O0FnHyHFOJ+4eZf9vf5K6Wg@mail.gmail.com>
- <66ff5dd3b9128_964fe294ca@dwillia2-xfh.jf.intel.com.notmuch> <22d1cfbf-b195-4343-b87b-493cb3d2843b@redhat.com>
-In-Reply-To: <22d1cfbf-b195-4343-b87b-493cb3d2843b@redhat.com>
-From: Yang Shi <shy828301@gmail.com>
-Date: Fri, 4 Oct 2024 08:54:49 -0700
-Message-ID: <CAHbLzkonbXG-=Ob3nfn=K0gqN1ow62SgwJegYORdCm-MfWeWhg@mail.gmail.com>
-Subject: Re: [PATCH] tdx, memory hotplug: Check whole hot-adding memory range
- for TDX
-To: David Hildenbrand <david@redhat.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, "Huang, Ying" <ying.huang@intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, x86@kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>, 
-	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Kai Huang <kai.huang@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SN7PR11MB8027:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42c3c3be-7679-4754-c401-08dce4bc94bd
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?doYNwuFx8rINfQQqkScHRbPygOqGq+1Ul8u/xrey3LYJgePsWJhYGsh3w8xP?=
+ =?us-ascii?Q?TjWIFNjrHke5UnxLDc+IYkoVjRJAg6IQ0dfiutkTLLs136oORPI6bxw1C46t?=
+ =?us-ascii?Q?VnfrzZvO0mrqGKETpjjSQ167pu+wwGxuWANicplPEMjbtsav80kt60sbniNJ?=
+ =?us-ascii?Q?AXF6memTqX634IvFzgLi3MOrdIOhN2TwQ8JDd1kbrUvj7RmLJHUZuevtO4mR?=
+ =?us-ascii?Q?t6TnZA/8BXCB1k2sG3WP0uxbCgjEmZcGt068kjupEFBYt+8hcVMvy0YiEqqm?=
+ =?us-ascii?Q?wDaG8omv79NeQ6bL1gQ3LVs3nvznFgx0W7yBaqA7kiW5pqCOG0AdeDJHdchF?=
+ =?us-ascii?Q?rZ2r5STC12TGdnXSSULU7af+l1UGxB0wcf8qIULnCIdhjibBOmUAuQjkdUXe?=
+ =?us-ascii?Q?DBhk21SqQd7EuWf2MigCsQg0JnKdLVMOT2w0wa4idEYG6AS4PgTGhgq7IN9C?=
+ =?us-ascii?Q?7SuyOjWSc+SC5oaB2+krulqbIycEsMEtpbdtBFdcC3WCaaP3uNLEOGU1Pm3k?=
+ =?us-ascii?Q?YD3SQFDbhkTWS+XquZEldo0fCuqze+KNE4gnUteudFQqecOBU6t5KbVF0Eft?=
+ =?us-ascii?Q?iZiPwRAtJBpW8ISdU0pRf6pVAYMV6LsGZ7JDNKU7OTrFmHQK5hdUlOHvbrXm?=
+ =?us-ascii?Q?ekQUTAhgZ1DJiqiFQRJG8KNPkqNuOJ9hG5AIyQvcktXiqehtK5Z07ULkJ5ZW?=
+ =?us-ascii?Q?jgLOW5SWhxF8VJPjqBfbXTXoPo4U+sUogxwPXlnTQd8mY7PO90tV2LMrHpJg?=
+ =?us-ascii?Q?mCJup5FtacjelUZrjG369a7aaJB98hydXeUi7Aaa2RiP9i8YYNq+jaxhSkxv?=
+ =?us-ascii?Q?Yv+u/ycd0OXGrcl2IuyrsFeBK3kU7v82v/uP3v4alRki0TiaRqH7o6pvUO8J?=
+ =?us-ascii?Q?DZMKYKl1nG6GlPW+zrDh8lNovc90ZhVxjKkynyTTxo/ou9Bg9DUYg0EFenbr?=
+ =?us-ascii?Q?tWUjBOzdmO+7GeVqYVVHUtD6K00Zfeo/Sfv86Hiquy/KjvSKBB+BPUfx4+tY?=
+ =?us-ascii?Q?FD5AcJ0fCEr0j8X2Vges4OhDLkSQ9n6irPoQieG174Xf4DiwpCKHox0S0oq1?=
+ =?us-ascii?Q?nS2IE8DioCbV7PFvUZ0qkJ8dVtpfkWb3zNvYzbhN9M5kLJcaJVAsB7+QVPQc?=
+ =?us-ascii?Q?Crv47u/NYahzb/sDQKjpj3D/0+l/E+kdA4ORJ1QR7QhzPlHwbomoAZQQiDIJ?=
+ =?us-ascii?Q?0gzsMOMbMimaHkUQJVhl4qXStAinj7ENU3+Fdit2aKazQqijt0Hku5XCf2SV?=
+ =?us-ascii?Q?1kI/pOAGRnC/62gckYRAe9dP7NoEahQewI9Y/8zIOg=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9rw0jbcuj7mWj3XkvXruVE/wSwncBCRr8M6fKg1GY9jPRS9dpDB/xJOJdY4E?=
+ =?us-ascii?Q?IX4TikCIh1IoSv30A6C6yGhbX61XZqR0w+CeBx25Ie7bJrhSBG2Q252OcApe?=
+ =?us-ascii?Q?s5ouglWGHssOgnPSzbsRiXADrOWGbtYbCMujsVhyC+ZfbeEzczhN59kCeRq4?=
+ =?us-ascii?Q?zjUzEAJelqVOLR+LFeJYJTe8SZu0WPNoJ4iw5FdQudEs3PFP9jcEogQmIzVx?=
+ =?us-ascii?Q?V1eNygtwNinBimqLEj3Ug8LHHXR/jTWO3qIbUDRWy/gWonUKDkzI1CdSeu9X?=
+ =?us-ascii?Q?rIRiY1tnztvEbutUchEmp9qkMTHEINkRc8R7X95eU8b1ZZNPdigcd7C2ZwhE?=
+ =?us-ascii?Q?h7M8BWospAGA8RUfBWeK1f9YirImNCq27JaeC7GEy07cibXftDlku4VUePU+?=
+ =?us-ascii?Q?g3wOgXHkLNfXhm2H7hkD5qKaz3Y7ex2ipnMSlWrWHJ90RCdKlzWYQIjX49rf?=
+ =?us-ascii?Q?vlYdkkZO8rew4gpzlbvr4EnXV0L8FGSfpviK7GO6IW+pHnk4aTJInUVtUGnE?=
+ =?us-ascii?Q?u3Ycm3lqFjEPWMJ8wMZRaU0Ch/SQ0malObtBZY88WfJdJ1gGpcRpiNF7YCsZ?=
+ =?us-ascii?Q?0hDh8GqvRDz3tV6fhaPOA5XdIcbijlNYyuhkpa1/3wLKxmGUHUIqEQX26ah2?=
+ =?us-ascii?Q?BWGB3jryJDkvr+IkayU9MLDyv5/78Y8/aHIraUvDqoDyOpHn+WYqQUPFiw39?=
+ =?us-ascii?Q?8rV40G6QlT2K5pfCgT4VytaUKpbfzaHK50S/8pEe8ZoqPpfOpdaxBvC8r8uy?=
+ =?us-ascii?Q?ET50iwrSuD61VBlP0HEsr7J4p+drCz6SnGsk/ZAuk6ndGuiuuB/67KgPhiQw?=
+ =?us-ascii?Q?yEc2hnqbwUUc7IsUXwQxSdYDhk+EfnuJVf+LfxgP53wiHUZe6OWyLB44PnOX?=
+ =?us-ascii?Q?FIEB0otAHCjc0OYv+XIIg2THQ1kh+nYhmgoFXVanwe/TAAYU/pvWAHScfjqG?=
+ =?us-ascii?Q?EpUHOwp+TKum7G7sSP9uYMb2uiH69mBiMT+nzrTv5tBm2XW+Jh2eRjgWBIoz?=
+ =?us-ascii?Q?4uyCLNBiKfMarhvi5T28UE6kuaa1eRiHOU18Mrzph6wY/S2MS0Zevd2Utt7+?=
+ =?us-ascii?Q?4wfcCRvpx8mk/7AEneN0ccHH7DRqICqMOErWaRLr4aE/P6qt9pnUJk4CBwOz?=
+ =?us-ascii?Q?u9A4qaOr+tLZCpt1Ms/egHpCWaJDyW2KiBsdYMXXJi7GtgpdzoQxGkscksIN?=
+ =?us-ascii?Q?+XvG3NBa0T+EClPAeOpRoTL8XmkYqOIsN1LSQga7toIa2sdLRtOSCpJE7p4d?=
+ =?us-ascii?Q?pPnatsZ0k9CvEPW3uz8TA7ApJQ+tTMGegz23VIudDDKNc+nwgFY5QCyJPqxd?=
+ =?us-ascii?Q?1gxFEO1pojbuFclLDjTIvMaKLNFY9G+9fULECbd3T6UlDqCRp/MIXGmQgG2L?=
+ =?us-ascii?Q?vElZNk9GiWTetfnMTgArBh9iwOWr31UHugg9QhhVu+cJljmkD1JZQPW27CZf?=
+ =?us-ascii?Q?pjWSMSvrM4leeMVytgsj75zsyhzmodt2qMWMz6xg+Vm+2fd1jbHH+BXtqjpk?=
+ =?us-ascii?Q?d/YmsNLcPTlPN7uxrNAOOx73/XLotAqTHeCsfKLPH+Z7mQloxwaih90dljRb?=
+ =?us-ascii?Q?8wQ8KBeYV7JxubhJNCQqVuweBW5hSfO7Nk47PBjzftpRKNPaVrOWQ8OveKZ5?=
+ =?us-ascii?Q?zg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42c3c3be-7679-4754-c401-08dce4bc94bd
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2024 21:36:18.2177
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DUZ2yulejeHd3spJrIrTPIRgGYqYswqED6SR6XEoWH2a2q3W5Y65hQfpS1V37fhQYvG3NZb3RQ3mQYvY/xNy+6RjBY9h1s7NZzK9YE3cmf0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB8027
+X-OriginatorOrg: intel.com
 
-On Fri, Oct 4, 2024 at 3:21=E2=80=AFAM David Hildenbrand <david@redhat.com>=
- wrote:
->
-> On 04.10.24 05:15, Dan Williams wrote:
-> > Yang Shi wrote:
-> >> On Thu, Oct 3, 2024 at 4:32=E2=80=AFPM Dan Williams <dan.j.williams@in=
-tel.com> wrote:
-> >>>
-> >>> Yang Shi wrote:
-> >>>> On Mon, Sep 30, 2024 at 4:54=E2=80=AFPM Huang, Ying <ying.huang@inte=
-l.com> wrote:
-> >>>>>
-> >>>>> Hi, David,
-> >>>>>
-> >>>>> Thanks a lot for comments!
-> >>>>>
-> >>>>> David Hildenbrand <david@redhat.com> writes:
-> >>>>>
-> >>>>>> On 30.09.24 07:51, Huang Ying wrote:
-> >>>>>>> On systems with TDX (Trust Domain eXtensions) enabled, memory ran=
-ges
-> >>>>>>> hot-added must be checked for compatibility by TDX.  This is curr=
-ently
-> >>>>>>> implemented through memory hotplug notifiers for each memory_bloc=
-k.
-> >>>>>>> If a memory range which isn't TDX compatible is hot-added, for
-> >>>>>>> example, some CXL memory, the command line as follows,
-> >>>>>>>     $ echo 1 > /sys/devices/system/node/nodeX/memoryY/online
-> >>>>>>> will report something like,
-> >>>>>>>     bash: echo: write error: Operation not permitted
-> >>>>>>> If pr_debug() is enabled, the error message like below will be sh=
-own
-> >>>>>>> in the kernel log,
-> >>>>>>>     online_pages [mem 0xXXXXXXXXXX-0xXXXXXXXXXX] failed
-> >>>>>>> Both are too general to root cause the problem.  This will confus=
-e
-> >>>>>>> users.  One solution is to print some error messages in the TDX m=
-emory
-> >>>>>>> hotplug notifier.  However, memory hotplug notifiers are called f=
-or
-> >>>>>>> each memory block, so this may lead to a large volume of messages=
- in
-> >>>>>>> the kernel log if a large number of memory blocks are onlined wit=
-h a
-> >>>>>>> script or automatically.  For example, the typical size of memory
-> >>>>>>> block is 128MB on x86_64, when online 64GB CXL memory, 512 messag=
-es
-> >>>>>>> will be logged.
-> >>>>>>
-> >>>>>> ratelimiting would likely help here a lot, but I agree that it is
-> >>>>>> suboptimal.
-> >>>>>>
-> >>>>>>> Therefore, in this patch, the whole hot-adding memory range is
-> >>>>>>> checked
-> >>>>>>> for TDX compatibility through a newly added architecture specific
-> >>>>>>> function (arch_check_hotplug_memory_range()).  If rejected, the m=
-emory
-> >>>>>>> hot-adding will be aborted with a proper kernel log message.  Whi=
-ch
-> >>>>>>> looks like something as below,
-> >>>>>>>     virt/tdx: Reject hot-adding memory range: 0xXXXXXXXX-0xXXXXXX=
-XX
-> >>>>>>> for TDX compatibility.
-> >>>>>>>> The target use case is to support CXL memory on TDX enabled syst=
-ems.
-> >>>>>>> If the CXL memory isn't compatible with TDX, the whole CXL memory
-> >>>>>>> range hot-adding will be rejected.  While the CXL memory can stil=
-l be
-> >>>>>>> used via devdax interface.
-> >>>>>>
-> >>>>>> I'm curious, why can that memory be used through devdax but not
-> >>>>>> through the buddy? I'm probably missing something important :)
-> >>>>>
-> >>>>> Because only TDX compatible memory can be used for TDX guest.  The =
-buddy
-> >>>>> is used to allocate memory for TDX guest.  While devdax will not be=
- used
-> >>>>> for that.
-> >>>>
-> >>>> Sorry for chiming in late. I think CXL also faces the similar proble=
-m
-> >>>> on the platform with MTE (memory tagging extension on ARM64). AFAIK,
-> >>>> we can't have MTE on CXL, so CXL has to stay as dax device if MTE is
-> >>>> enabled.
-> >>>>
-> >>>> We should need a similar mechanism to prevent users from hot-adding
-> >>>> CXL memory if MTE is on. But not like TDX I don't think we have a
-> >>>> simple way to tell whether the pfn belongs to CXL or not. Please
-> >>>> correct me if I'm wrong. I'm wondering whether we can find a more
-> >>>> common way to tell memory hotplug to not hot-add some region. For
-> >>>> example, a special flag in struct resource. off the top of my head.
-> >>>>
-> >>>> No solid idea yet, I'm definitely seeking some advice.
-> >>>
-> >>> Could the ARM version of arch_check_hotplug_memory_range() check if M=
-TE
-> >>> is enabled in the CPU and then ask the CXL subsystem if the address r=
-ange is
-> >>> backed by a topology that supports MTE?
-> >>
-> >> Kernel can tell whether MTE is really enabled. For the CXL part, IIUC
-> >> that relies on the CXL subsystem is able to tell whether that range
-> >> can support MTE or not, right? Or CXL subsystem tells us whether the
-> >> range is CXL memory range or not, then we can just refuse MTE for all
-> >> CXL regions for now. Does CXL support this now?
-> >
-> > So the CXL specification has section:
-> >
-> >      8.2.4.31 CXL Extended Metadata Capability Register
-> >
-> > ...that indicates if the device supports "Extended Metadata" (EMD).
-> > However, the CXL specification does not talk about how a given hosts
-> > uses the extended metadata capabilities of a device. That detail would
-> > need to come from an ARM platform specification.
-> >
-> > Currently CXL subsystem does nothing with this since there has been no
-> > need to date, but I would expect someone from the ARM side to plumb thi=
-s
-> > detection into the CXL subsystem.
-> >
-> >>> However, why would it be ok to access CXL memory without MTE via devd=
-ax,
-> >>> but not as online page allocator memory?
-> >>
-> >> CXL memory can be onlined as system ram as long as MTE is not enabled.
-> >> It just can be used as devdax device if MTE is enabled.
-> >
-> > Do you mean the kernel only manages MTE for kernel pages, but with user
-> > mapped memory the application will need to implicitly know that
-> > memory-tagging is not available?
-> >
-> > I worry about applications that might not know that their heap is comin=
-g
-> > from a userspace memory allocator backed by device-dax rather than the
-> > kernel.
->
-> I recall that MTE is requested by user space via mprotect(). If we end
-> up with memory that is not taggable, we would have to fail the
-> operation, which is not desirable.
->
-> This is what we want to avoid, so if MTE is enabled, all memory in the
-> buddy should be taggable.
+Alexander Graf wrote:
+> On 13.09.24 02:26, Dan Williams wrote:
+> > One of the points of contention for enabling runtime updates of the TDX
+> > Module has been what to do about the fact that it results in
+> > confidential VMs seeing surprise updates to their TCB. The general
+> > concern is that there is a non-zero confidentiality regression risk for
+> > updating measured TCB components. Not only the TDX Module, but
+> > microcode, SEV-SNP PSP firmware, RISCV and ARM equivalents etc. The
+> > degree to which the TCB is or is not compromised by an unexpected update
+> > is unknowable by the kernel, but it should at least try to be
+> > transparent about what it knows about TCB stability.
+> 
+> IMHO this looks at the problem the wrong way around. The typical flow 
+> for firmware updates is:
+> 
+> 1) Researchers find an issue
+> 2) Intel fixes it, ideally in TDX Module. Releases TDX Module update.
+> 3) Infrastructure providers update TDX Module to resolve issue
+> 4) Embargo lifts
+> 
+> If an issue impacts your confidentiality promises according to your 
+> threat model, you are already affected by it after 1). You are able to 
+> assess whether that is the case after 4). This patch tells you about it 
+> during 3).
+> 
+> If your threat model really really considers hosting infrastructure as 
+> malicious, 
 
-Yes, the buddy memory has to be taggable if MTE is enabled. And not
-only mprotect(), but also mmap() and malloc() (glibc compiled with MTE
-support) can allocate mapping with MTE. And MTE mapping is just
-allowed for anonymous and tmpfs currently.
+Lets set aside "malicious host", because as you allude, why cloud host
+at all in that case? Instead lets focus on "theoretical paranoid tenant"
+that wants to trust but verify the TCB in the presence of updates.
 
->
-> >
-> >>> If the goal is to simply deny any and all non-MTE supported CXL regio=
-n
-> >>> from attaching then that could probably be handled as a modification =
-to
-> >>> the "cxl_acpi" driver to deny region creation unless it supports
-> >>> everything the CPU expects from "memory".
-> >>
-> >> I'm not quite familiar with the details in CXL driver. What did you
-> >> mean "deny region creation"? As long as the CXL memory still can be
-> >> used as devdax device, it should be fine.
-> >
-> > Meaning that the CXL subsytem knows how to, for a given address range, =
-figure
-> > out the members and geometry of the CXL devices that contribute to that
-> > range (CXL region). It would be straightforward to add EMD to that
-> > enumeration and flag the CXL region as not online-capable if the CPU ha=
-s
-> > MTE enabled but no EMD capability.
->
-> If it's really just CXL memory we are worrying about, we could pass a
-> flag to add_memory_driver_managed(), and passing that to our callback her=
-e.
->
-> Not sure if that is the most reliable way of handling it :) What about
-> other ways of hotplugging memory besides CXL? Are we sure, they are/will
-> be providing taggable memory?
+More below, but I readily admit that "theoretical tenant" already raises
+the "no practical benefit" objection to the proposal.
 
-AFAIK, I don't think they are, or at least some of them are not. So
-this should be not CXL specific.
+> you did not gain any benefits from learning about 3). You 
+> know that something was patched. You do not know what. You do not know 
+> whether anyone malicious was already aware of the issue. If you were 
+> strict, you would need to consider all data past 1) in such a VM as 
+> compromised. Given SEV-SNP's patch track record, I would expect security 
+> relevant patches multiple times per year. If you are really paranoid 
+> enough to care, notifications at point 3 will not tell you anything. 
+> Instead, your conclusion would probably be "I could get compromised at 
+> any point in time, so let me not expose data in the first place" which 
+> means you can not run in the Cloud at all. In most risk assessments, 
+> customers will typically be ok with a temporary, limited risk between 1) 
+> and 3). And that means you want to optimize to shift 3) left as much as 
+> possible to fix security issues as quickly as possible.
+> 
+> Instead, what we do by creating FUD around the patching process is to 
+> create a false assumption with customers that "unpatched" == "secure" 
+> while it's the exact opposite. We also encourage a shift of 3) from left 
+> to right: If I only patch you after embargo lift, you can assess, so 
+> it's safer, right? Not really, because you prolong the time an 
+> environment is unpatched.
+> 
+> The crux of the problem is that - by definition - a VM can not 
+> autonomously determine step 1) because what really happens here is that 
+> the world around it changed. We need to ask the world. So if Intel is 
+> really concerned about the update flow and notifying customers that the 
+> environment they are running in is potentially insecure, Intel should 
+> provide an attestation mechanism to notify them as early as reasonable; 
+> probably around 3). That way, customers get the chance to learn first 
+> hand that they should be running on a newer revision of TDX Module code 
+> and should no longer trust the one with known vulnerabilities.
+> 
+> The in-VM logic suggested in this patch such as "I'll die if you patch 
+> my host" or "I tell my owner that you patched me, but my owner won't be 
+> able to tell anything from that info" is not going to help anyone for 
+> TDX Module security patching situations.
+> 
+> Instead, let's start the conversation from how Intel can provide a 
+> mechanism to customers to evaluate whether their system is fully 
+> patched, work towards closing the gap between 1) and 3) and then build 
+> whatever interfaces in Linux we need to enable customers to make use of 
+> the evaluation mechanism.
 
->
-> --
-> Cheers,
->
-> David / dhildenb
->
+I quote the above in its entirety because, "no lies detected". However,
+reframe it in the perspective of paranoid  / vigilant tenant. It is
+always going to be the case that a vigilant tenant can see updates
+whether the kernel is polling for them or not. Also, it will almost
+always be the case that the platform vendor release schedule for updates
+will come at some inopportune time for the tenant, or that the CSP
+update somehow races to the tenant before the notification from platform
+vendor that a new update is available.
+
+At the discovery of an issue impacting TCB1, that is potentially fixed
+by TCB2, I think it is reasonable to support a tenant that wants to
+pause TCB1 operations until a TCB2 audit is complete and then resume
+operations. If that is reasonable then the question becomes how to
+ensure periodic renewal in confidence of TCB1 and non-surprise update to
+TCB2. A kernel watchdog protects against userspace hangs or exceptions
+that block periodic renewal of TCB1, or otherwise confirms that an
+update to TCB2 is expected and welcome.
