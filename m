@@ -1,284 +1,186 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7350314AD3D
-	for <linux-coco@lists.linux.dev>; Fri,  4 Oct 2024 10:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630142178E6;
+	Fri,  4 Oct 2024 14:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728037282; cv=none; b=g9AMJ0DK1GfarJe42edAlWCp0Vv7JKaYcD9NiW4m9YDzlQPdetg30pzSv/lnuRLxgUrnYNNua/jLQuOG5me8yS74tC8+Sd3n+wIOeC2NtWyc0lCKhKOASuinIzJRwaoFHsuhqClhoOIWVJfgMEmAUbmOP1aGGNOOZR4I0erQrT0=
+	t=1728053009; cv=none; b=Oa8mMlqdsTJZCrl99eQqXv4ir4uJ/SqX1JNmtV4mkcG3Q9L/fsM4EdSnaPrX7EzKszqjkT3xiC8UjoZU336EH3Us8VcuyxzPEJKIBK/YpQxC5QV1P5PQC8H7MmmiXWquhDdX7bA7ficNdWqaJSP5t9JM2mPiCjTu6lheRMK9n5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728037282; c=relaxed/simple;
-	bh=lYFiNt9nmnAQqQ6uDn5FswnQ4PPGAo0L/6uvXle2yMw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tzjrSOY5qVj9EqmHgdR3dCLk0DzUO4yuubXgQbaD3dUhvvy8cmatLI/lEOlyT3QcCI8SDXL38ypch8ghaLK2W5RzluCDfEGM9eAY6MEOCDxAFMZIpY/llSHM46PEMdnYtYxSedjqZfDjiE6vbsNeaEZB0L4lBLj0VP9iBkmYAO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i96KRLQI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i96KRLQI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728037279;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ItcLhmC8kaffrLJ2Dm6Z6QEFSQlbuw+pIggrwFvXTZY=;
-	b=i96KRLQIp4yzBRlYncwkUiWYK+j4y+QmKS2ZwMlN4jL54Ug7YahVYoHWG3cSNfNMZGz8xs
-	JKof6a1UF3I3GGrR4m3iQlmJOBYSRP9LhkPQknYYM4XvqD1xSuZ6MleCtiKESLs9OdNAv2
-	rnEeBmhEy9ke7Odmfy8Bht4zirWW99o=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-364-ciJ1Rey3MyieBnXu7AuR5w-1; Fri, 04 Oct 2024 06:21:18 -0400
-X-MC-Unique: ciJ1Rey3MyieBnXu7AuR5w-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-42f310f0ed2so18547595e9.1
-        for <linux-coco@lists.linux.dev>; Fri, 04 Oct 2024 03:21:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728037277; x=1728642077;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ItcLhmC8kaffrLJ2Dm6Z6QEFSQlbuw+pIggrwFvXTZY=;
-        b=OYq3UrK2Xxx2kY4ESaurf/tKIkeMsBl6D6FOWJobS4f9cr878nM9aQDks7J+WOO5ej
-         aokd+OlE3oEvk9TbiXyOJ6FdYzQdo+rwmf9NbN+WgNJVX5sXEd9tSB3/K56edSYbF/pk
-         cegYIvv+OQWmHP7ialsMDhxGS5cIu8J1Xtigdjy9IglzN8C0gm3pcRurXG1TzOPxVeLG
-         d09nU8A0LdNPFeE5NL4qqkbV3Dd52aJ5BIUdlPXL+txMm+6kZl0SEh6qJ2WzOiI4julS
-         LGLagxfkfFlLZL4BY3pAea7JXKPCufl8mub85a/3W7gUPslJHlyMVH1KBg8xbrEzVWkG
-         8hgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ+KPOXdsNn4EmjFfTElnkwzSZULfPxmNj25weB+6MVfC72SnGUB3dtM7Pyk7HVYjzX4viqrzsH1nt@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxZOINsCeudAnWT/3G79BsVK5mqQ2GdzvKLZ1LiPYX0Qxrm10A
-	qmda9wLYcXU446kwRIur2nB82RcLnmZ1jD7zBldLkA9xlotA8H2E/8NkoqeY34N5xaPtcZRqjb9
-	tgD2hACg0ruXEdn9e/QaFExpKhyvktB6emQd8PRnKJvegG9a8PM0oD+XC/18=
-X-Received: by 2002:a05:600c:3ba9:b0:42c:ba83:3f00 with SMTP id 5b1f17b1804b1-42f85a6e0c0mr21343135e9.1.1728037277059;
-        Fri, 04 Oct 2024 03:21:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IERgQ2dFRFh8SMJSUJsxcC2XaIZK0l7gMRKVSU3qIssWcQj3uzeBu4dUWeVBnCQvBjb+K7xgA==
-X-Received: by 2002:a05:600c:3ba9:b0:42c:ba83:3f00 with SMTP id 5b1f17b1804b1-42f85a6e0c0mr21342735e9.1.1728037276515;
-        Fri, 04 Oct 2024 03:21:16 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c714:d00:a1ab:bff4:268f:d7c5? (p200300cbc7140d00a1abbff4268fd7c5.dip0.t-ipconnect.de. [2003:cb:c714:d00:a1ab:bff4:268f:d7c5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f86b1d672sm12081605e9.28.2024.10.04.03.21.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Oct 2024 03:21:16 -0700 (PDT)
-Message-ID: <22d1cfbf-b195-4343-b87b-493cb3d2843b@redhat.com>
-Date: Fri, 4 Oct 2024 12:21:14 +0200
+	s=arc-20240116; t=1728053009; c=relaxed/simple;
+	bh=V/n3a/RmyEFaEXOi7ye94B3gyl3XifclsxOHGAcIQLQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gsxd58oyVFyJ2jEy0OjtiHS70PGuTQDqVeDI7NQYfNSB4SZetpXV6Bo9PrJR36UjtWidI/5zBaEx3rZui2dWnuf1VzvxCxGZy/EHIp+6yeq0GNXT6cXh19KN3uXjTIIRXBorU6Bsy0Lubv3lwsnXeUu3BrIgFrQ/95vojGWzZwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1388A339;
+	Fri,  4 Oct 2024 07:43:56 -0700 (PDT)
+Received: from e122027.cambridge.arm.com (unknown [10.1.25.25])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2305E3F58B;
+	Fri,  4 Oct 2024 07:43:21 -0700 (PDT)
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: [PATCH v6 00/11] arm64: Support for running as a guest in Arm CCA
+Date: Fri,  4 Oct 2024 15:42:55 +0100
+Message-Id: <20241004144307.66199-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tdx, memory hotplug: Check whole hot-adding memory range
- for TDX
-To: Dan Williams <dan.j.williams@intel.com>, Yang Shi <shy828301@gmail.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, x86@kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kai Huang <kai.huang@intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>
-References: <20240930055112.344206-1-ying.huang@intel.com>
- <cf4a3ae4-deae-4224-88e3-308a55492085@redhat.com>
- <8734lgpuoi.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <CAHbLzkp_SyRBR+JsxMwM_qKpF=8+TU=36hDY6TuKMHdnLnyxAg@mail.gmail.com>
- <66ff297119b92_964f2294c6@dwillia2-xfh.jf.intel.com.notmuch>
- <CAHbLzkoR1pT1NEL7qAYi+JXOsB7O0FnHyHFOJ+4eZf9vf5K6Wg@mail.gmail.com>
- <66ff5dd3b9128_964fe294ca@dwillia2-xfh.jf.intel.com.notmuch>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <66ff5dd3b9128_964fe294ca@dwillia2-xfh.jf.intel.com.notmuch>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 04.10.24 05:15, Dan Williams wrote:
-> Yang Shi wrote:
->> On Thu, Oct 3, 2024 at 4:32 PM Dan Williams <dan.j.williams@intel.com> wrote:
->>>
->>> Yang Shi wrote:
->>>> On Mon, Sep 30, 2024 at 4:54 PM Huang, Ying <ying.huang@intel.com> wrote:
->>>>>
->>>>> Hi, David,
->>>>>
->>>>> Thanks a lot for comments!
->>>>>
->>>>> David Hildenbrand <david@redhat.com> writes:
->>>>>
->>>>>> On 30.09.24 07:51, Huang Ying wrote:
->>>>>>> On systems with TDX (Trust Domain eXtensions) enabled, memory ranges
->>>>>>> hot-added must be checked for compatibility by TDX.  This is currently
->>>>>>> implemented through memory hotplug notifiers for each memory_block.
->>>>>>> If a memory range which isn't TDX compatible is hot-added, for
->>>>>>> example, some CXL memory, the command line as follows,
->>>>>>>     $ echo 1 > /sys/devices/system/node/nodeX/memoryY/online
->>>>>>> will report something like,
->>>>>>>     bash: echo: write error: Operation not permitted
->>>>>>> If pr_debug() is enabled, the error message like below will be shown
->>>>>>> in the kernel log,
->>>>>>>     online_pages [mem 0xXXXXXXXXXX-0xXXXXXXXXXX] failed
->>>>>>> Both are too general to root cause the problem.  This will confuse
->>>>>>> users.  One solution is to print some error messages in the TDX memory
->>>>>>> hotplug notifier.  However, memory hotplug notifiers are called for
->>>>>>> each memory block, so this may lead to a large volume of messages in
->>>>>>> the kernel log if a large number of memory blocks are onlined with a
->>>>>>> script or automatically.  For example, the typical size of memory
->>>>>>> block is 128MB on x86_64, when online 64GB CXL memory, 512 messages
->>>>>>> will be logged.
->>>>>>
->>>>>> ratelimiting would likely help here a lot, but I agree that it is
->>>>>> suboptimal.
->>>>>>
->>>>>>> Therefore, in this patch, the whole hot-adding memory range is
->>>>>>> checked
->>>>>>> for TDX compatibility through a newly added architecture specific
->>>>>>> function (arch_check_hotplug_memory_range()).  If rejected, the memory
->>>>>>> hot-adding will be aborted with a proper kernel log message.  Which
->>>>>>> looks like something as below,
->>>>>>>     virt/tdx: Reject hot-adding memory range: 0xXXXXXXXX-0xXXXXXXXX
->>>>>>> for TDX compatibility.
->>>>>>>> The target use case is to support CXL memory on TDX enabled systems.
->>>>>>> If the CXL memory isn't compatible with TDX, the whole CXL memory
->>>>>>> range hot-adding will be rejected.  While the CXL memory can still be
->>>>>>> used via devdax interface.
->>>>>>
->>>>>> I'm curious, why can that memory be used through devdax but not
->>>>>> through the buddy? I'm probably missing something important :)
->>>>>
->>>>> Because only TDX compatible memory can be used for TDX guest.  The buddy
->>>>> is used to allocate memory for TDX guest.  While devdax will not be used
->>>>> for that.
->>>>
->>>> Sorry for chiming in late. I think CXL also faces the similar problem
->>>> on the platform with MTE (memory tagging extension on ARM64). AFAIK,
->>>> we can't have MTE on CXL, so CXL has to stay as dax device if MTE is
->>>> enabled.
->>>>
->>>> We should need a similar mechanism to prevent users from hot-adding
->>>> CXL memory if MTE is on. But not like TDX I don't think we have a
->>>> simple way to tell whether the pfn belongs to CXL or not. Please
->>>> correct me if I'm wrong. I'm wondering whether we can find a more
->>>> common way to tell memory hotplug to not hot-add some region. For
->>>> example, a special flag in struct resource. off the top of my head.
->>>>
->>>> No solid idea yet, I'm definitely seeking some advice.
->>>
->>> Could the ARM version of arch_check_hotplug_memory_range() check if MTE
->>> is enabled in the CPU and then ask the CXL subsystem if the address range is
->>> backed by a topology that supports MTE?
->>
->> Kernel can tell whether MTE is really enabled. For the CXL part, IIUC
->> that relies on the CXL subsystem is able to tell whether that range
->> can support MTE or not, right? Or CXL subsystem tells us whether the
->> range is CXL memory range or not, then we can just refuse MTE for all
->> CXL regions for now. Does CXL support this now?
-> 
-> So the CXL specification has section:
-> 
->      8.2.4.31 CXL Extended Metadata Capability Register
-> 
-> ...that indicates if the device supports "Extended Metadata" (EMD).
-> However, the CXL specification does not talk about how a given hosts
-> uses the extended metadata capabilities of a device. That detail would
-> need to come from an ARM platform specification.
-> 
-> Currently CXL subsystem does nothing with this since there has been no
-> need to date, but I would expect someone from the ARM side to plumb this
-> detection into the CXL subsystem.
-> 
->>> However, why would it be ok to access CXL memory without MTE via devdax,
->>> but not as online page allocator memory?
->>
->> CXL memory can be onlined as system ram as long as MTE is not enabled.
->> It just can be used as devdax device if MTE is enabled.
-> 
-> Do you mean the kernel only manages MTE for kernel pages, but with user
-> mapped memory the application will need to implicitly know that
-> memory-tagging is not available?
-> 
-> I worry about applications that might not know that their heap is coming
-> from a userspace memory allocator backed by device-dax rather than the
-> kernel.
+This series adds support for running Linux in a protected VM under the
+Arm Confidential Compute Architecture (CCA). This is a trimmed down
+series following the feedback from the v5 posting[1]. Thanks for the
+feedback!
 
-I recall that MTE is requested by user space via mprotect(). If we end 
-up with memory that is not taggable, we would have to fail the 
-operation, which is not desirable.
+Individual patches have a change log. But things to highlight:
 
-This is what we want to avoid, so if MTE is enabled, all memory in the 
-buddy should be taggable.
+ * Some patches have been merged already. The first two patches from v4
+   were borrowed from pKVM were merged as part of that series. The GIC
+   ITS patches[2][3] have been merged via the tip tree.
 
-> 
->>> If the goal is to simply deny any and all non-MTE supported CXL region
->>> from attaching then that could probably be handled as a modification to
->>> the "cxl_acpi" driver to deny region creation unless it supports
->>> everything the CPU expects from "memory".
->>
->> I'm not quite familiar with the details in CXL driver. What did you
->> mean "deny region creation"? As long as the CXL memory still can be
->> used as devdax device, it should be fine.
-> 
-> Meaning that the CXL subsytem knows how to, for a given address range, figure
-> out the members and geometry of the CXL devices that contribute to that
-> range (CXL region). It would be straightforward to add EMD to that
-> enumeration and flag the CXL region as not online-capable if the CPU has
-> MTE enabled but no EMD capability.
+ * Final RMM v1.0 spec[4] - only minor changes over the previous spec,
+   but we've now got a proper release.
 
-If it's really just CXL memory we are worrying about, we could pass a 
-flag to add_memory_driver_managed(), and passing that to our callback here.
+ * Probing/initialisation of the RMM is now done later. This means
+   there's no need for finding the PSCI conduit and can drop the patch
+   for that.
 
-Not sure if that is the most reliable way of handling it :) What about 
-other ways of hotplugging memory besides CXL? Are we sure, they are/will 
-be providing taggable memory?
+ * The patches for set_fixmap_io() is also gone - we the RMM is detected
+   later it's now too late for earlycon. See below for instructions on
+   how to use earlycon.
+
+ * Mainline no longer uses PHYS_MASK_SHIFT for manipulating PTEs, so we
+   can drop the patch for making that dynamic.
+
+ * There's now some documentation! In particular this clarifies a change
+   in the boot requirements - memory must now be RIPAS RAM for a realm
+   guest.
+
+This series is based on v6.12-rc1.
+
+Testing
+=======
+
+Since a couple of the patches have been merged separately, and there was
+also a bug[5] in -rc1 which impacts 9p filesystems, I've provided the
+below git tree with everything you need for a CCA guest:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-guest/v6
+
+Back by popular demand is also a tree with both host and guest changes:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-full/v5+v6
+
+(I'll post the v5 series of the host changes shortly)
+
+You will also need an up-to-date RMM - the necessary changes have been
+merged into the 'main' branch of upstream:
+
+https://git.trustedfirmware.org/TF-RMM/tf-rmm.git main
+
+And you also need an updated kvmtool, there's a branch with the
+necessary changes here:
+
+https://git.gitlab.arm.com/linux-arm/kvmtool-cca.git cca/v3
+
+earlycon
+--------
+
+If using 'earlycon' on the kernel command line it is now necessary to
+pass the address of the serial port *in the unprotected IPA*. This is
+because the fixmap changes were dropped (due to the late probing of the
+RMM). E.g. for kvmtool you will need:
+
+  earlycon=uart,mmio,0x101000000
+
+This is the main drawback to late probing. One potential improvement
+would be an option like "earlycon=realm" to identify that the earlycon
+uart is in the unprotected space without having to know the actual IPA.
+I've left this out for now as I'm not sure whether there is any actual
+interest in this.
+
+[1] https://lore.kernel.org/r/20240819131924.372366-1-steven.price%40arm.com
+[2] e36d4165f079 ("irqchip/gic-v3-its: Rely on genpool alignment")
+[3] b08e2f42e86b ("irqchip/gic-v3-its: Share ITS tables with a non-trusted hypervisor")
+[4] https://developer.arm.com/documentation/den0137/1-0rel0/
+[5] https://lore.kernel.org/all/cbaf141ba6c0e2e209717d02746584072844841a.1727722269.git.osandov@fb.com/
+
+Sami Mujawar (1):
+  virt: arm-cca-guest: TSM_REPORT support for realms
+
+Steven Price (4):
+  arm64: realm: Query IPA size from the RMM
+  arm64: Enforce bounce buffers for realm DMA
+  arm64: mm: Avoid TLBI when marking pages as valid
+  arm64: Document Arm Confidential Compute
+
+Suzuki K Poulose (6):
+  arm64: rsi: Add RSI definitions
+  arm64: Detect if in a realm and set RIPAS RAM
+  arm64: rsi: Add support for checking whether an MMIO is protected
+  arm64: rsi: Map unprotected MMIO as decrypted
+  efi: arm64: Map Device with Prot Shared
+  arm64: Enable memory encrypt for Realms
+
+ Documentation/arch/arm64/arm-cca.rst          |  67 ++++++
+ Documentation/arch/arm64/booting.rst          |   3 +
+ Documentation/arch/arm64/index.rst            |   1 +
+ arch/arm64/Kconfig                            |   3 +
+ arch/arm64/include/asm/io.h                   |   8 +
+ arch/arm64/include/asm/mem_encrypt.h          |   9 +
+ arch/arm64/include/asm/pgtable-prot.h         |   4 +
+ arch/arm64/include/asm/pgtable.h              |   5 +
+ arch/arm64/include/asm/rsi.h                  |  68 ++++++
+ arch/arm64/include/asm/rsi_cmds.h             | 160 +++++++++++++
+ arch/arm64/include/asm/rsi_smc.h              | 193 ++++++++++++++++
+ arch/arm64/include/asm/set_memory.h           |   3 +
+ arch/arm64/kernel/Makefile                    |   3 +-
+ arch/arm64/kernel/efi.c                       |  12 +-
+ arch/arm64/kernel/rsi.c                       | 141 ++++++++++++
+ arch/arm64/kernel/setup.c                     |   3 +
+ arch/arm64/mm/init.c                          |  10 +-
+ arch/arm64/mm/pageattr.c                      |  98 +++++++-
+ drivers/virt/coco/Kconfig                     |   2 +
+ drivers/virt/coco/Makefile                    |   1 +
+ drivers/virt/coco/arm-cca-guest/Kconfig       |  11 +
+ drivers/virt/coco/arm-cca-guest/Makefile      |   2 +
+ .../virt/coco/arm-cca-guest/arm-cca-guest.c   | 211 ++++++++++++++++++
+ 23 files changed, 1010 insertions(+), 8 deletions(-)
+ create mode 100644 Documentation/arch/arm64/arm-cca.rst
+ create mode 100644 arch/arm64/include/asm/rsi.h
+ create mode 100644 arch/arm64/include/asm/rsi_cmds.h
+ create mode 100644 arch/arm64/include/asm/rsi_smc.h
+ create mode 100644 arch/arm64/kernel/rsi.c
+ create mode 100644 drivers/virt/coco/arm-cca-guest/Kconfig
+ create mode 100644 drivers/virt/coco/arm-cca-guest/Makefile
+ create mode 100644 drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
 
 -- 
-Cheers,
-
-David / dhildenb
+2.34.1
 
