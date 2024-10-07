@@ -1,49 +1,25 @@
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042BF17C20F
-	for <linux-coco@lists.linux.dev>; Mon,  7 Oct 2024 08:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C84418C038;
+	Mon,  7 Oct 2024 08:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728290006; cv=none; b=F3kpTxVS30G9/ouXT0WMqSVUmu4N5oIUY2tp/5AfI4bp8u22sRMUK1pFxhkmNdlLGfVCfLnLQ4Pqk98MnXtpeZVTjd/EP1qFEcqA1sWVc/qVdCy9jy107ptse0KM4AG/UgjkT8uBOP9HeJPZx0ac9lzT4MYV2ciNPn04d8mM+q4=
+	t=1728291295; cv=none; b=Ugo7e3RXYdhhqB9+49nCqg7YIcssKmEl4eK0igpaG0x+Z8UZLXKWh047MraiEKZ/jOLxbBWURYG+J168+3XpD/ftkXbfiQKXfqlcKXUquZnUqpaGusiy/VI1bK2p5L4RFNF+7etw3IiNJzEUnAwm2Om1a65Noe9QEHRfX1wqGiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728290006; c=relaxed/simple;
-	bh=8G47bKkK9Vh1moVhyOY3clsNInDFJFnm6w7IfptcYYw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mub/fXCgZXnNqf1Fqc4hQulrtrSsqrgU0gVOKX6E8sNqG7JFiJ5VH5fLxuZNs5m6Uc6jmjoMY+Mo6ku6+BjMAZD7mugMoM6iB50LPSmf6Z6yMiyqWUWsrGbyJxaghmncobKAwQSXdgxzzEzGmd99O/b9FpUHAHhbylLeLahxgdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Z0AKOytf; arc=none smtp.client-ip=52.95.48.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Z0AKOytf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1728290005; x=1759826005;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=8G47bKkK9Vh1moVhyOY3clsNInDFJFnm6w7IfptcYYw=;
-  b=Z0AKOytfpOdjJWlx4yMVAaFaYXcD8FR/Pyfi6O3aXi1NHEqrQXX/wBPD
-   Qrj7OC0uiUjLadVLrQSX/EyTmElgSRPqfY+eNq+S4AtxmN3L05PZQz9EU
-   G/INJUoxEIH4JfEgtjprbo7s+a86vtrb3I0f6jBV2ws1q+W0rzcZUUmx1
-   o=;
-X-IronPort-AV: E=Sophos;i="6.11,183,1725321600"; 
-   d="scan'208";a="429362586"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 08:33:21 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:13412]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.41.198:2525] with esmtp (Farcaster)
- id f1b6d03f-c7db-4007-a5be-7c44841a3818; Mon, 7 Oct 2024 08:33:20 +0000 (UTC)
-X-Farcaster-Flow-ID: f1b6d03f-c7db-4007-a5be-7c44841a3818
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 7 Oct 2024 08:33:16 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34; Mon, 7 Oct 2024
- 08:33:12 +0000
-Message-ID: <5d1da767-491b-4077-b472-2cc3d73246d6@amazon.com>
-Date: Mon, 7 Oct 2024 10:33:10 +0200
+	s=arc-20240116; t=1728291295; c=relaxed/simple;
+	bh=6LtsjONwqSUoFU6nmabpi05B/akMm3Nqxl7GdD5Mrzk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j6opSC+ZZ3IgYlSIfWUMq/hYr57fVeL3VO4si5ckr5V40b35FOkSkQqQFCp+C7zOTj3tCgWPnDqVolWv5A+ovg2YrmaQn9tds5GRFW0jHsWtzzJOw2kQ3AB3cx9c6eS/L0Fxs/B+Ko89La7iZYqYN6iNaYlOzsagpJH6y+dzHkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2610AFEC;
+	Mon,  7 Oct 2024 01:55:20 -0700 (PDT)
+Received: from [192.168.4.86] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D5ED43F64C;
+	Mon,  7 Oct 2024 01:54:47 -0700 (PDT)
+Message-ID: <9b728a01-159a-4908-9dcf-2906e24f5e2e@arm.com>
+Date: Mon, 7 Oct 2024 09:54:46 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -51,158 +27,328 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] configfs-tsm-report: Introduce TCB stability
- enumeration and watchdog
-To: Dan Williams <dan.j.williams@intel.com>, <linux-coco@lists.linux.dev>
-CC: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Dave Hansen
-	<dave.hansen@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Kuppuswamy Sathyanarayanan
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, Thomas Gleixner
-	<tglx@linutronix.de>, Michael Roth <michael.roth@amd.com>, <x86@kernel.org>,
-	<aik@amd.com>, <elena.reshetova@intel.com>, <pgonda@google.com>
-References: <172618715121.516322.9909313629463814714.stgit@dwillia2-xfh.jf.intel.com>
- <172618718534.516322.14804707935022669853.stgit@dwillia2-xfh.jf.intel.com>
- <665c5ae0-4b7c-4852-8995-255adf7b3a2f@amazon.com>
- <67005fcf46742_10a0a2945@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-Content-Language: en-US
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <67005fcf46742_10a0a2945@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-X-ClientProxiedBy: EX19D040UWB003.ant.amazon.com (10.13.138.8) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Subject: Re: [PATCH v5 05/43] arm64: RME: Add SMC definitions for calling the
+ RMM
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>
+References: <20241004152804.72508-1-steven.price@arm.com>
+ <20241004152804.72508-6-steven.price@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20241004152804.72508-6-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-SGkgRGFuLAoKT24gMDQuMTAuMjQgMjM6MzYsIERhbiBXaWxsaWFtcyB3cm90ZToKPiBBbGV4YW5k
-ZXIgR3JhZiB3cm90ZToKPj4gT24gMTMuMDkuMjQgMDI6MjYsIERhbiBXaWxsaWFtcyB3cm90ZToK
-Pj4+IE9uZSBvZiB0aGUgcG9pbnRzIG9mIGNvbnRlbnRpb24gZm9yIGVuYWJsaW5nIHJ1bnRpbWUg
-dXBkYXRlcyBvZiB0aGUgVERYCj4+PiBNb2R1bGUgaGFzIGJlZW4gd2hhdCB0byBkbyBhYm91dCB0
-aGUgZmFjdCB0aGF0IGl0IHJlc3VsdHMgaW4KPj4+IGNvbmZpZGVudGlhbCBWTXMgc2VlaW5nIHN1
-cnByaXNlIHVwZGF0ZXMgdG8gdGhlaXIgVENCLiBUaGUgZ2VuZXJhbAo+Pj4gY29uY2VybiBpcyB0
-aGF0IHRoZXJlIGlzIGEgbm9uLXplcm8gY29uZmlkZW50aWFsaXR5IHJlZ3Jlc3Npb24gcmlzayBm
-b3IKPj4+IHVwZGF0aW5nIG1lYXN1cmVkIFRDQiBjb21wb25lbnRzLiBOb3Qgb25seSB0aGUgVERY
-IE1vZHVsZSwgYnV0Cj4+PiBtaWNyb2NvZGUsIFNFVi1TTlAgUFNQIGZpcm13YXJlLCBSSVNDViBh
-bmQgQVJNIGVxdWl2YWxlbnRzIGV0Yy4gVGhlCj4+PiBkZWdyZWUgdG8gd2hpY2ggdGhlIFRDQiBp
-cyBvciBpcyBub3QgY29tcHJvbWlzZWQgYnkgYW4gdW5leHBlY3RlZCB1cGRhdGUKPj4+IGlzIHVu
-a25vd2FibGUgYnkgdGhlIGtlcm5lbCwgYnV0IGl0IHNob3VsZCBhdCBsZWFzdCB0cnkgdG8gYmUK
-Pj4+IHRyYW5zcGFyZW50IGFib3V0IHdoYXQgaXQga25vd3MgYWJvdXQgVENCIHN0YWJpbGl0eS4K
-Pj4gSU1ITyB0aGlzIGxvb2tzIGF0IHRoZSBwcm9ibGVtIHRoZSB3cm9uZyB3YXkgYXJvdW5kLiBU
-aGUgdHlwaWNhbCBmbG93Cj4+IGZvciBmaXJtd2FyZSB1cGRhdGVzIGlzOgo+Pgo+PiAxKSBSZXNl
-YXJjaGVycyBmaW5kIGFuIGlzc3VlCj4+IDIpIEludGVsIGZpeGVzIGl0LCBpZGVhbGx5IGluIFRE
-WCBNb2R1bGUuIFJlbGVhc2VzIFREWCBNb2R1bGUgdXBkYXRlLgo+PiAzKSBJbmZyYXN0cnVjdHVy
-ZSBwcm92aWRlcnMgdXBkYXRlIFREWCBNb2R1bGUgdG8gcmVzb2x2ZSBpc3N1ZQo+PiA0KSBFbWJh
-cmdvIGxpZnRzCj4+Cj4+IElmIGFuIGlzc3VlIGltcGFjdHMgeW91ciBjb25maWRlbnRpYWxpdHkg
-cHJvbWlzZXMgYWNjb3JkaW5nIHRvIHlvdXIKPj4gdGhyZWF0IG1vZGVsLCB5b3UgYXJlIGFscmVh
-ZHkgYWZmZWN0ZWQgYnkgaXQgYWZ0ZXIgMSkuIFlvdSBhcmUgYWJsZSB0bwo+PiBhc3Nlc3Mgd2hl
-dGhlciB0aGF0IGlzIHRoZSBjYXNlIGFmdGVyIDQpLiBUaGlzIHBhdGNoIHRlbGxzIHlvdSBhYm91
-dCBpdAo+PiBkdXJpbmcgMykuCj4+Cj4+IElmIHlvdXIgdGhyZWF0IG1vZGVsIHJlYWxseSByZWFs
-bHkgY29uc2lkZXJzIGhvc3RpbmcgaW5mcmFzdHJ1Y3R1cmUgYXMKPj4gbWFsaWNpb3VzLAo+IExl
-dHMgc2V0IGFzaWRlICJtYWxpY2lvdXMgaG9zdCIsIGJlY2F1c2UgYXMgeW91IGFsbHVkZSwgd2h5
-IGNsb3VkIGhvc3QKPiBhdCBhbGwgaW4gdGhhdCBjYXNlPyBJbnN0ZWFkIGxldHMgZm9jdXMgb24g
-InRoZW9yZXRpY2FsIHBhcmFub2lkIHRlbmFudCIKPiB0aGF0IHdhbnRzIHRvIHRydXN0IGJ1dCB2
-ZXJpZnkgdGhlIFRDQiBpbiB0aGUgcHJlc2VuY2Ugb2YgdXBkYXRlcy4KPgo+IE1vcmUgYmVsb3cs
-IGJ1dCBJIHJlYWRpbHkgYWRtaXQgdGhhdCAidGhlb3JldGljYWwgdGVuYW50IiBhbHJlYWR5IHJh
-aXNlcwo+IHRoZSAibm8gcHJhY3RpY2FsIGJlbmVmaXQiIG9iamVjdGlvbiB0byB0aGUgcHJvcG9z
-YWwuCj4KPj4geW91IGRpZCBub3QgZ2FpbiBhbnkgYmVuZWZpdHMgZnJvbSBsZWFybmluZyBhYm91
-dCAzKS4gWW91Cj4+IGtub3cgdGhhdCBzb21ldGhpbmcgd2FzIHBhdGNoZWQuIFlvdSBkbyBub3Qg
-a25vdyB3aGF0LiBZb3UgZG8gbm90IGtub3cKPj4gd2hldGhlciBhbnlvbmUgbWFsaWNpb3VzIHdh
-cyBhbHJlYWR5IGF3YXJlIG9mIHRoZSBpc3N1ZS4gSWYgeW91IHdlcmUKPj4gc3RyaWN0LCB5b3Ug
-d291bGQgbmVlZCB0byBjb25zaWRlciBhbGwgZGF0YSBwYXN0IDEpIGluIHN1Y2ggYSBWTSBhcwo+
-PiBjb21wcm9taXNlZC4gR2l2ZW4gU0VWLVNOUCdzIHBhdGNoIHRyYWNrIHJlY29yZCwgSSB3b3Vs
-ZCBleHBlY3Qgc2VjdXJpdHkKPj4gcmVsZXZhbnQgcGF0Y2hlcyBtdWx0aXBsZSB0aW1lcyBwZXIg
-eWVhci4gSWYgeW91IGFyZSByZWFsbHkgcGFyYW5vaWQKPj4gZW5vdWdoIHRvIGNhcmUsIG5vdGlm
-aWNhdGlvbnMgYXQgcG9pbnQgMyB3aWxsIG5vdCB0ZWxsIHlvdSBhbnl0aGluZy4KPj4gSW5zdGVh
-ZCwgeW91ciBjb25jbHVzaW9uIHdvdWxkIHByb2JhYmx5IGJlICJJIGNvdWxkIGdldCBjb21wcm9t
-aXNlZCBhdAo+PiBhbnkgcG9pbnQgaW4gdGltZSwgc28gbGV0IG1lIG5vdCBleHBvc2UgZGF0YSBp
-biB0aGUgZmlyc3QgcGxhY2UiIHdoaWNoCj4+IG1lYW5zIHlvdSBjYW4gbm90IHJ1biBpbiB0aGUg
-Q2xvdWQgYXQgYWxsLiBJbiBtb3N0IHJpc2sgYXNzZXNzbWVudHMsCj4+IGN1c3RvbWVycyB3aWxs
-IHR5cGljYWxseSBiZSBvayB3aXRoIGEgdGVtcG9yYXJ5LCBsaW1pdGVkIHJpc2sgYmV0d2VlbiAx
-KQo+PiBhbmQgMykuIEFuZCB0aGF0IG1lYW5zIHlvdSB3YW50IHRvIG9wdGltaXplIHRvIHNoaWZ0
-IDMpIGxlZnQgYXMgbXVjaCBhcwo+PiBwb3NzaWJsZSB0byBmaXggc2VjdXJpdHkgaXNzdWVzIGFz
-IHF1aWNrbHkgYXMgcG9zc2libGUuCj4+Cj4+IEluc3RlYWQsIHdoYXQgd2UgZG8gYnkgY3JlYXRp
-bmcgRlVEIGFyb3VuZCB0aGUgcGF0Y2hpbmcgcHJvY2VzcyBpcyB0bwo+PiBjcmVhdGUgYSBmYWxz
-ZSBhc3N1bXB0aW9uIHdpdGggY3VzdG9tZXJzIHRoYXQgInVucGF0Y2hlZCIgPT0gInNlY3VyZSIK
-Pj4gd2hpbGUgaXQncyB0aGUgZXhhY3Qgb3Bwb3NpdGUuIFdlIGFsc28gZW5jb3VyYWdlIGEgc2hp
-ZnQgb2YgMykgZnJvbSBsZWZ0Cj4+IHRvIHJpZ2h0OiBJZiBJIG9ubHkgcGF0Y2ggeW91IGFmdGVy
-IGVtYmFyZ28gbGlmdCwgeW91IGNhbiBhc3Nlc3MsIHNvCj4+IGl0J3Mgc2FmZXIsIHJpZ2h0PyBO
-b3QgcmVhbGx5LCBiZWNhdXNlIHlvdSBwcm9sb25nIHRoZSB0aW1lIGFuCj4+IGVudmlyb25tZW50
-IGlzIHVucGF0Y2hlZC4KPj4KPj4gVGhlIGNydXggb2YgdGhlIHByb2JsZW0gaXMgdGhhdCAtIGJ5
-IGRlZmluaXRpb24gLSBhIFZNIGNhbiBub3QKPj4gYXV0b25vbW91c2x5IGRldGVybWluZSBzdGVw
-IDEpIGJlY2F1c2Ugd2hhdCByZWFsbHkgaGFwcGVucyBoZXJlIGlzIHRoYXQKPj4gdGhlIHdvcmxk
-IGFyb3VuZCBpdCBjaGFuZ2VkLiBXZSBuZWVkIHRvIGFzayB0aGUgd29ybGQuIFNvIGlmIEludGVs
-IGlzCj4+IHJlYWxseSBjb25jZXJuZWQgYWJvdXQgdGhlIHVwZGF0ZSBmbG93IGFuZCBub3RpZnlp
-bmcgY3VzdG9tZXJzIHRoYXQgdGhlCj4+IGVudmlyb25tZW50IHRoZXkgYXJlIHJ1bm5pbmcgaW4g
-aXMgcG90ZW50aWFsbHkgaW5zZWN1cmUsIEludGVsIHNob3VsZAo+PiBwcm92aWRlIGFuIGF0dGVz
-dGF0aW9uIG1lY2hhbmlzbSB0byBub3RpZnkgdGhlbSBhcyBlYXJseSBhcyByZWFzb25hYmxlOwo+
-PiBwcm9iYWJseSBhcm91bmQgMykuIFRoYXQgd2F5LCBjdXN0b21lcnMgZ2V0IHRoZSBjaGFuY2Ug
-dG8gbGVhcm4gZmlyc3QKPj4gaGFuZCB0aGF0IHRoZXkgc2hvdWxkIGJlIHJ1bm5pbmcgb24gYSBu
-ZXdlciByZXZpc2lvbiBvZiBURFggTW9kdWxlIGNvZGUKPj4gYW5kIHNob3VsZCBubyBsb25nZXIg
-dHJ1c3QgdGhlIG9uZSB3aXRoIGtub3duIHZ1bG5lcmFiaWxpdGllcy4KPj4KPj4gVGhlIGluLVZN
-IGxvZ2ljIHN1Z2dlc3RlZCBpbiB0aGlzIHBhdGNoIHN1Y2ggYXMgIkknbGwgZGllIGlmIHlvdSBw
-YXRjaAo+PiBteSBob3N0IiBvciAiSSB0ZWxsIG15IG93bmVyIHRoYXQgeW91IHBhdGNoZWQgbWUs
-IGJ1dCBteSBvd25lciB3b24ndCBiZQo+PiBhYmxlIHRvIHRlbGwgYW55dGhpbmcgZnJvbSB0aGF0
-IGluZm8iIGlzIG5vdCBnb2luZyB0byBoZWxwIGFueW9uZSBmb3IKPj4gVERYIE1vZHVsZSBzZWN1
-cml0eSBwYXRjaGluZyBzaXR1YXRpb25zLgo+Pgo+PiBJbnN0ZWFkLCBsZXQncyBzdGFydCB0aGUg
-Y29udmVyc2F0aW9uIGZyb20gaG93IEludGVsIGNhbiBwcm92aWRlIGEKPj4gbWVjaGFuaXNtIHRv
-IGN1c3RvbWVycyB0byBldmFsdWF0ZSB3aGV0aGVyIHRoZWlyIHN5c3RlbSBpcyBmdWxseQo+PiBw
-YXRjaGVkLCB3b3JrIHRvd2FyZHMgY2xvc2luZyB0aGUgZ2FwIGJldHdlZW4gMSkgYW5kIDMpIGFu
-ZCB0aGVuIGJ1aWxkCj4+IHdoYXRldmVyIGludGVyZmFjZXMgaW4gTGludXggd2UgbmVlZCB0byBl
-bmFibGUgY3VzdG9tZXJzIHRvIG1ha2UgdXNlIG9mCj4+IHRoZSBldmFsdWF0aW9uIG1lY2hhbmlz
-bS4KPiBJIHF1b3RlIHRoZSBhYm92ZSBpbiBpdHMgZW50aXJldHkgYmVjYXVzZSwgIm5vIGxpZXMg
-ZGV0ZWN0ZWQiLiBIb3dldmVyLAo+IHJlZnJhbWUgaXQgaW4gdGhlIHBlcnNwZWN0aXZlIG9mIHBh
-cmFub2lkICAvIHZpZ2lsYW50IHRlbmFudC4gSXQgaXMKPiBhbHdheXMgZ29pbmcgdG8gYmUgdGhl
-IGNhc2UgdGhhdCBhIHZpZ2lsYW50IHRlbmFudCBjYW4gc2VlIHVwZGF0ZXMKPiB3aGV0aGVyIHRo
-ZSBrZXJuZWwgaXMgcG9sbGluZyBmb3IgdGhlbSBvciBub3QuIEFsc28sIGl0IHdpbGwgYWxtb3N0
-Cj4gYWx3YXlzIGJlIHRoZSBjYXNlIHRoYXQgdGhlIHBsYXRmb3JtIHZlbmRvciByZWxlYXNlIHNj
-aGVkdWxlIGZvciB1cGRhdGVzCj4gd2lsbCBjb21lIGF0IHNvbWUgaW5vcHBvcnR1bmUgdGltZSBm
-b3IgdGhlIHRlbmFudCwgb3IgdGhhdCB0aGUgQ1NQCj4gdXBkYXRlIHNvbWVob3cgcmFjZXMgdG8g
-dGhlIHRlbmFudCBiZWZvcmUgdGhlIG5vdGlmaWNhdGlvbiBmcm9tIHBsYXRmb3JtCj4gdmVuZG9y
-IHRoYXQgYSBuZXcgdXBkYXRlIGlzIGF2YWlsYWJsZS4KPgo+IEF0IHRoZSBkaXNjb3Zlcnkgb2Yg
-YW4gaXNzdWUgaW1wYWN0aW5nIFRDQjEsIHRoYXQgaXMgcG90ZW50aWFsbHkgZml4ZWQKPiBieSBU
-Q0IyLCBJIHRoaW5rIGl0IGlzIHJlYXNvbmFibGUgdG8gc3VwcG9ydCBhIHRlbmFudCB0aGF0IHdh
-bnRzIHRvCj4gcGF1c2UgVENCMSBvcGVyYXRpb25zIHVudGlsIGEgVENCMiBhdWRpdCBpcyBjb21w
-bGV0ZSBhbmQgdGhlbiByZXN1bWUKPiBvcGVyYXRpb25zLiBJZiB0aGF0IGlzIHJlYXNvbmFibGUg
-dGhlbiB0aGUgcXVlc3Rpb24gYmVjb21lcyBob3cgdG8KPiBlbnN1cmUgcGVyaW9kaWMgcmVuZXdh
-bCBpbiBjb25maWRlbmNlIG9mIFRDQjEgYW5kIG5vbi1zdXJwcmlzZSB1cGRhdGUgdG8KPiBUQ0Iy
-LiBBIGtlcm5lbCB3YXRjaGRvZyBwcm90ZWN0cyBhZ2FpbnN0IHVzZXJzcGFjZSBoYW5ncyBvciBl
-eGNlcHRpb25zCj4gdGhhdCBibG9jayBwZXJpb2RpYyByZW5ld2FsIG9mIFRDQjEsIG9yIG90aGVy
-d2lzZSBjb25maXJtcyB0aGF0IGFuCj4gdXBkYXRlIHRvIFRDQjIgaXMgZXhwZWN0ZWQgYW5kIHdl
-bGNvbWUuCgoKSSBjYW4gZm9sbG93IHlvdXIgcmF0aW9uYWxlLCBidXQgSSBkb24ndCBzZWUgbWFu
-eSAoZWNvbm9taWNhbGx5IHZpYWJsZSkgCmFsdGVybmF0aXZlcyB0byAidHJ1c3QgbmV3ZXIgVENC
-IHVudGlsIGF1ZGl0IGlzIGNvbXBsZXRlIjoKCkxldCdzIGFzc3VtZSBhIFRDQiByZWZyZXNoIG9u
-Y2UgcGVyIG1vbnRoLiBJbiB0aGUgc2NlbmFyaW8geW91IG91dGxpbmUgCmFib3ZlLCB3ZSBuZWVk
-IHRvIGFzc3VtZSB0aGF0IHRoZSBhdWRpdCBvZiBUQ0ItbmV4dCBvbmx5IGZvbGxvd3Mgd2l0aCBh
-IApkZWxheSB0byB0aGUgZGVwbG95bWVudCBvZiBUQ0ItbmV4dC4gSWYgdGhhdCBkZWxheSBpcyAy
-IHdlZWtzICh3aGljaCBpcyAKcHJldHR5IGZhc3QgZm9yIGF1ZGl0cyEpLCB0aGVuIHlvdSB3b3Vs
-ZCBiZSBlZmZlY3RpdmVseSBvZmZsaW5lIGZvciAyIAp3ZWVrcyBldmVyeSBtb250aDogaGFsZiBv
-ZiB0aGUgdGltZS4gSSBkb24ndCBzZWUgaG93IHlvdSBjb3VsZCAKcmVhbGlzdGljYWxseSBwdXQg
-eW91ciB3b3JrbG9hZCBpbnRvIHRoZSBjbG91ZCB3aXRoIHN1Y2ggYSBtb2RlbC4KCkhvd2V2ZXIs
-IGlmIHlvdSB3ZXJlIHRvCgogwqAgMSkgImJsaW5kbHkiIHRydXN0IEludGVsIHRoYXQgYW55IFRD
-QiBpcyB2YWxpZCBvcgogwqAgMikgSW50ZWwgcHJvdmlkZXMgeW91IHdpdGggYW4gYXR0ZXN0YXRp
-b24gbWVjaGFuaXNtIHRoYXQgaW5jbHVkZXMgCnByZS1yZWxlYXNlZCBUQ0JzIG9yCiDCoCAzKSB5
-b3UgY2FuIGxpdmUgd2l0aCBhIHN3aW5nIHBlcmlvZCBvZiAidXAgdG8gWCB3ZWVrcyIgd2hlcmUg
-eW91IApkb24ndCBrbm93IGlmIHlvdSB0cnVzdGVkIGEgVENCIHlldCwgYnV0IHlvdSBmYWl0aGZ1
-bGx5IGJlbGlldmUgeW91IGRvIAphbmQgb25seSByZXRyb3NwZWN0aXZlbHkgY29uc2lkZXIgc3lz
-dGVtcyBjb21wcm9taXNlZCBpZiB5b3VyIGF1ZGl0IGRpZCAKbm90IHN1Y2NlZWQgd2l0aGluIHRo
-YXQgdGltZSBmcmFtZQoKdGhlbiB5b3UgY2FuIG1ha2UgdGhpbmdzIHdvcmsgd2l0aG91dCBldmVy
-IGRlY2xhcmluZyB0aGUgY2xvdWQgb3B0aW9uIGFzIApub24tdmlhYmxlLgoKSSBkb24ndCB0aGlu
-ayBhIHNvbHV0aW9uIHRoYXQgc2F5cyAiTm93IEkgbm8gbG9uZ2VyIHRydXN0IG15IGNsb3VkIApp
-bmZyYXN0cnVjdHVyZSwgc28gSSBzdG9wIHJ1bm5pbmcgdGhlcmUiIHdpbGwgd29yay4gVGhlIG9u
-bHkgY29uY2x1c2lvbiAKeW91IHdpbGwgcmVhY2ggZnJvbSB0aGF0IGlzIHRoYXQgeW91IG5lZWQg
-dG8ga2VlcCBhbiBpbi1ob3VzZSBzdGFjayBvZiAKdGhlIHNhbWUgc2l6ZSBhcyB0b2RheSBhcyBm
-YWxsYmFjayBuZXQsIGJ1dCBzdGlsbCBwYXkgY2xvdWQgY29zdHMgd2hlbiAKeW91IHJ1biB0aGVy
-ZS4gQW5kIHRoYXQgaW4gdHVybiBtZWFucyB5b3UncmUgb25seSBpbmNyZWFzaW5nIGNvc3RzLiBX
-ZSAKbmVlZCB0byBwcm92aWRlIGEgd2F5IHRvwqBhbHdheXMgbWFrZSB0aGUgY2xvdWQgc29sdXRp
-b24gYSB2aWFibGUgdGFyZ2V0IAp0byBydW4gaW4gdG8gYmUgZWNvbm9taWNhbGx5IGF0dHJhY3Rp
-dmUgdG8gY3VzdG9tZXJzLgoKV2hhdGV2ZXIgeW91J3JlIHBsYXlpbmcgdGhyb3VnaCBtZW50YWxs
-eSwgcGxheSBpdCB0aHJvdWdoIHdpdGggbW9udGhseSAKVENCIHVwZGF0ZXMgdG8gZ2l2ZSB0aGVt
-IGEgcmVhbGl0eSBjaGVjayBmb3IgdmlhYmlsaXR5LiBDdXN0b21lcnMgbWF5IGJlIAp3aWxsaW5n
-IHRvIHN3aXRjaCB0byBhbiBhbHRlcm5hdGl2ZSwgcmVkdWNlZC1jYXBhY2l0eSBzb2x1dGlvbiBm
-b3IgYSAKd2VlayBldmVyeSAxMCB5ZWFycyBhcyBlbWVyZ2VuY3kgbWVhc3VyZS4gVGhleSB3b24n
-dCBkbyBpdCBtb250aGx5LgoKSW4gb3RoZXIgd29yZHM6IFRoZSAidGhlb3JldGljYWwgdGVuYW50
-IiBhYm92ZSB0aGF0IHdhbnRzIHRvIHBhdXNlIApvcGVyYXRpb25zIHdvbid0IGV4aXN0LiBJZiBp
-dCBkaWQsIHRoZXknZCBiZSBiYW5rcnVwdCBieSBub3cgOikuCgoKQWxleAoKCgoKQW1hem9uIFdl
-YiBTZXJ2aWNlcyBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVzZW5zdHIuIDM4
-CjEwMTE3IEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hsYWVnZXIsIEpv
-bmF0aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0ZW5idXJnIHVu
-dGVyIEhSQiAyNTc3NjQgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBERSAzNjUgNTM4IDU5Nwo=
+Hi Steven
+
+On 04/10/2024 16:27, Steven Price wrote:
+> The RMM (Realm Management Monitor) provides functionality that can be
+> accessed by SMC calls from the host.
+> 
+> The SMC definitions are based on DEN0137[1] version 1.0-rel0
+> 
+> [1] https://developer.arm.com/documentation/den0137/1-0rel0/
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v4:
+>   * Update to point to final released RMM spec.
+>   * Minor rearrangements.
+> Changes since v3:
+>   * Update to match RMM spec v1.0-rel0-rc1.
+> Changes since v2:
+>   * Fix specification link.
+>   * Rename rec_entry->rec_enter to match spec.
+>   * Fix size of pmu_ovf_status to match spec.
+> ---
+>   arch/arm64/include/asm/rmi_smc.h | 255 +++++++++++++++++++++++++++++++
+>   1 file changed, 255 insertions(+)
+>   create mode 100644 arch/arm64/include/asm/rmi_smc.h
+> 
+> diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/rmi_smc.h
+> new file mode 100644
+> index 000000000000..0fde2e06d275
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/rmi_smc.h
+> @@ -0,0 +1,255 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright (C) 2023-2024 ARM Ltd.
+> + *
+> + * The values and structures in this file are from the Realm Management Monitor
+> + * specification (DEN0137) version 1.0-rel0:
+> + * https://developer.arm.com/documentation/den0137/1-0rel0/
+> + */
+> +
+> +#ifndef __ASM_RME_SMC_H
+> +#define __ASM_RME_SMC_H
+> +
+> +#include <linux/arm-smccc.h>
+> +
+> +#define SMC_RxI_CALL(func)				\
+> +	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,		\
+> +			   ARM_SMCCC_SMC_64,		\
+> +			   ARM_SMCCC_OWNER_STANDARD,	\
+> +			   (func))
+> +
+> +#define SMC_RMI_DATA_CREATE		SMC_RxI_CALL(0x0153)
+> +#define SMC_RMI_DATA_CREATE_UNKNOWN	SMC_RxI_CALL(0x0154)
+> +#define SMC_RMI_DATA_DESTROY		SMC_RxI_CALL(0x0155)
+> +#define SMC_RMI_FEATURES		SMC_RxI_CALL(0x0165)
+> +#define SMC_RMI_GRANULE_DELEGATE	SMC_RxI_CALL(0x0151)
+> +#define SMC_RMI_GRANULE_UNDELEGATE	SMC_RxI_CALL(0x0152)
+> +#define SMC_RMI_PSCI_COMPLETE		SMC_RxI_CALL(0x0164)
+> +#define SMC_RMI_REALM_ACTIVATE		SMC_RxI_CALL(0x0157)
+> +#define SMC_RMI_REALM_CREATE		SMC_RxI_CALL(0x0158)
+> +#define SMC_RMI_REALM_DESTROY		SMC_RxI_CALL(0x0159)
+> +#define SMC_RMI_REC_AUX_COUNT		SMC_RxI_CALL(0x0167)
+> +#define SMC_RMI_REC_CREATE		SMC_RxI_CALL(0x015a)
+> +#define SMC_RMI_REC_DESTROY		SMC_RxI_CALL(0x015b)
+> +#define SMC_RMI_REC_ENTER		SMC_RxI_CALL(0x015c)
+> +#define SMC_RMI_RTT_CREATE		SMC_RxI_CALL(0x015d)
+> +#define SMC_RMI_RTT_DESTROY		SMC_RxI_CALL(0x015e)
+> +#define SMC_RMI_RTT_FOLD		SMC_RxI_CALL(0x0166)
+> +#define SMC_RMI_RTT_INIT_RIPAS		SMC_RxI_CALL(0x0168)
+> +#define SMC_RMI_RTT_MAP_UNPROTECTED	SMC_RxI_CALL(0x015f)
+> +#define SMC_RMI_RTT_READ_ENTRY		SMC_RxI_CALL(0x0161)
+> +#define SMC_RMI_RTT_SET_RIPAS		SMC_RxI_CALL(0x0169)
+> +#define SMC_RMI_RTT_UNMAP_UNPROTECTED	SMC_RxI_CALL(0x0162)
+> +#define SMC_RMI_VERSION			SMC_RxI_CALL(0x0150)
+> +
+> +#define RMI_ABI_MAJOR_VERSION	1
+> +#define RMI_ABI_MINOR_VERSION	0
+> +
+> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
+> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
+> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
+> +
+> +#define RMI_UNASSIGNED			0
+> +#define RMI_ASSIGNED			1
+> +#define RMI_TABLE			2
+> +
+> +#define RMI_RETURN_STATUS(ret)		((ret) & 0xFF)
+> +#define RMI_RETURN_INDEX(ret)		(((ret) >> 8) & 0xFF)
+> +
+> +#define RMI_SUCCESS		0
+> +#define RMI_ERROR_INPUT		1
+> +#define RMI_ERROR_REALM		2
+> +#define RMI_ERROR_REC		3
+> +#define RMI_ERROR_RTT		4
+> +
+> +enum rmi_ripas {
+> +	RMI_EMPTY = 0,
+> +	RMI_RAM = 1,
+> +	RMI_DESTROYED = 2,
+> +};
+> +
+> +#define RMI_NO_MEASURE_CONTENT	0
+> +#define RMI_MEASURE_CONTENT	1
+> +
+> +#define RMI_FEATURE_REGISTER_0_S2SZ		GENMASK(7, 0)
+> +#define RMI_FEATURE_REGISTER_0_LPA2		BIT(8)
+> +#define RMI_FEATURE_REGISTER_0_SVE_EN		BIT(9)
+> +#define RMI_FEATURE_REGISTER_0_SVE_VL		GENMASK(13, 10)
+> +#define RMI_FEATURE_REGISTER_0_NUM_BPS		GENMASK(19, 14)
+> +#define RMI_FEATURE_REGISTER_0_NUM_WPS		GENMASK(25, 20)
+> +#define RMI_FEATURE_REGISTER_0_PMU_EN		BIT(26)
+> +#define RMI_FEATURE_REGISTER_0_PMU_NUM_CTRS	GENMASK(31, 27)
+> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_256	BIT(32)
+> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_512	BIT(33)
+> +#define RMI_FEATURE_REGISTER_0_GICV3_NUM_LRS	GENMASK(37, 34)
+> +#define RMI_FEATURE_REGISTER_0_MAX_RECS_ORDER	GENMASK(41, 38)
+> +
+> +#define RMI_REALM_PARAM_FLAG_LPA2		BIT(0)
+> +#define RMI_REALM_PARAM_FLAG_SVE		BIT(1)
+> +#define RMI_REALM_PARAM_FLAG_PMU		BIT(2)
+> +
+> +/*
+> + * Note many of these fields are smaller than u64 but all fields have u64
+> + * alignment, so use u64 to ensure correct alignment.
+> + */
+> +struct realm_params {
+> +	union { /* 0x0 */
+> +		struct {
+> +			u64 flags;
+> +			u64 s2sz;
+> +			u64 sve_vl;
+> +			u64 num_bps;
+> +			u64 num_wps;
+> +			u64 pmu_num_ctrs;
+> +			u64 hash_algo;
+> +		};
+> +		u8 padding1[0x400];
+> +	};
+> +	union { /* 0x400 */
+> +		u8 rpv[64];
+> +		u8 padding2[0x400];
+> +	};
+> +	union { /* 0x800 */
+> +		struct {
+> +			u64 vmid;
+> +			u64 rtt_base;
+> +			s64 rtt_level_start;
+> +			u64 rtt_num_start;
+> +		};
+> +		u8 padding3[0x800];
+> +	};
+> +};
+> +
+> +/*
+> + * The number of GPRs (starting from X0) that are
+> + * configured by the host when a REC is created.
+> + */
+> +#define REC_CREATE_NR_GPRS		8
+> +
+> +#define REC_PARAMS_FLAG_RUNNABLE	BIT_ULL(0)
+> +
+> +#define REC_PARAMS_AUX_GRANULES		16
+> +
+> +struct rec_params {
+> +	union { /* 0x0 */
+> +		u64 flags;
+> +		u8 padding1[0x100];
+> +	};
+> +	union { /* 0x100 */
+> +		u64 mpidr;
+> +		u8 padding2[0x100];
+> +	};
+> +	union { /* 0x200 */
+> +		u64 pc;
+> +		u8 padding3[0x100];
+> +	};
+> +	union { /* 0x300 */
+> +		u64 gprs[REC_CREATE_NR_GPRS];
+> +		u8 padding4[0x500];
+> +	};
+> +	union { /* 0x800 */
+> +		struct {
+> +			u64 num_rec_aux;
+> +			u64 aux[REC_PARAMS_AUX_GRANULES];
+> +		};
+> +		u8 padding5[0x800];
+> +	};
+> +};
+> +
+> +#define REC_ENTER_EMULATED_MMIO		BIT(0)
+> +#define REC_ENTER_INJECT_SEA		BIT(1)
+> +#define REC_ENTER_TRAP_WFI		BIT(2)
+> +#define REC_ENTER_TRAP_WFE		BIT(3)
+> +#define REC_ENTER_RIPAS_RESPONSE	BIT(4)
+> +
+> +#define REC_RUN_GPRS			31
+> +#define REC_GIC_NUM_LRS			16
+
+minor nit:
+Should we rename this to REC_MAX_GIC_NUM_LRS ? The RMM could
+support lesser number of LRs as indicated in the FEATURE Register 0
+and we need to take that into consideration for VGIC support. Otherwise 
+we may loose LRs on restore path. More on that on the VGIC change.
+
+Suzuki
+
+
+
+
+
+
+> +
+> +struct rec_enter {
+> +	union { /* 0x000 */
+> +		u64 flags;
+> +		u8 padding0[0x200];
+> +	};
+> +	union { /* 0x200 */
+> +		u64 gprs[REC_RUN_GPRS];
+> +		u8 padding2[0x100];
+> +	};
+> +	union { /* 0x300 */
+> +		struct {
+> +			u64 gicv3_hcr;
+> +			u64 gicv3_lrs[REC_GIC_NUM_LRS];
+> +		};
+> +		u8 padding3[0x100];
+> +	};
+> +	u8 padding4[0x400];
+> +};
+> +
+> +#define RMI_EXIT_SYNC			0x00
+> +#define RMI_EXIT_IRQ			0x01
+> +#define RMI_EXIT_FIQ			0x02
+> +#define RMI_EXIT_PSCI			0x03
+> +#define RMI_EXIT_RIPAS_CHANGE		0x04
+> +#define RMI_EXIT_HOST_CALL		0x05
+> +#define RMI_EXIT_SERROR			0x06
+> +
+> +struct rec_exit {
+> +	union { /* 0x000 */
+> +		u8 exit_reason;
+> +		u8 padding0[0x100];
+> +	};
+> +	union { /* 0x100 */
+> +		struct {
+> +			u64 esr;
+> +			u64 far;
+> +			u64 hpfar;
+> +		};
+> +		u8 padding1[0x100];
+> +	};
+> +	union { /* 0x200 */
+> +		u64 gprs[REC_RUN_GPRS];
+> +		u8 padding2[0x100];
+> +	};
+> +	union { /* 0x300 */
+> +		struct {
+> +			u64 gicv3_hcr;
+> +			u64 gicv3_lrs[REC_GIC_NUM_LRS];
+> +			u64 gicv3_misr;
+> +			u64 gicv3_vmcr;
+> +		};
+> +		u8 padding3[0x100];
+> +	};
+> +	union { /* 0x400 */
+> +		struct {
+> +			u64 cntp_ctl;
+> +			u64 cntp_cval;
+> +			u64 cntv_ctl;
+> +			u64 cntv_cval;
+> +		};
+> +		u8 padding4[0x100];
+> +	};
+> +	union { /* 0x500 */
+> +		struct {
+> +			u64 ripas_base;
+> +			u64 ripas_top;
+> +			u64 ripas_value;
+> +		};
+> +		u8 padding5[0x100];
+> +	};
+> +	union { /* 0x600 */
+> +		u16 imm;
+> +		u8 padding6[0x100];
+> +	};
+> +	union { /* 0x700 */
+> +		struct {
+> +			u8 pmu_ovf_status;
+> +		};
+> +		u8 padding7[0x100];
+> +	};
+> +};
+> +
+> +struct rec_run {
+> +	struct rec_enter enter;
+> +	struct rec_exit exit;
+> +};
+> +
+> +#endif
 
