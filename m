@@ -1,65 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073C5EEBA
-	for <linux-coco@lists.linux.dev>; Mon,  7 Oct 2024 23:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33996AA1
+	for <linux-coco@lists.linux.dev>; Tue,  8 Oct 2024 00:24:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728344022; cv=none; b=mCRsOVQI/zs00H1HHFdc4NBWZ3tzlJ342lhe83te+qddNicTdDgC8joLbOWfmPvcrBx85a6dJh8zqXjOFiN1P61twkw+ATxCdW2i93HZZ1DOgatTfyietPKvLW2htd4DXQWba6lD88ShCD6wFipoT9DFOziJkbRncEzkKvIlI6Q=
+	t=1728347061; cv=none; b=Pz6EXk8jVGsCKfx8hTcV7OLVe0YLX/1mmS8kiaB9rMpbtihtecqQzqP7PxtzlKhbgPien6eIlW3MR/10Jgb4DUqaeek7lw/CvN6+OfTY7ysMck6KvIJI+6gywpOyIsFt7wavRj7N8MWpprJrucqZvW+EgVSWfN7ijWqHnIDjqiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728344022; c=relaxed/simple;
-	bh=MrDTR2RWvkLILCduhS7Qm7of3YNeohC1Y4ELsDjirfw=;
+	s=arc-20240116; t=1728347061; c=relaxed/simple;
+	bh=KvWJnwVwl0NDrPnt2jed9aYpkeaKZIfqaGFr9K23u8k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YhhNvK/gSBRjx6DoTtVB4caHX12ZC+rvvON33tdgi5MV+4v/2t1P3vQB0i20H4UZxhFlE3MqN29WLm6g7dmJXX+Fg4XcwxiM/zu3NcaPGSDMwm1UBCuXRNjUBs4l0PdIOczxzOB2cIeaC/ZUv/S7naKV6+NiL9F+hwvQheixrGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qe86oudE; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=JsDbqxltKToxF6gU3HuefnZvOiETA4FRYn/v5PVX/TSmhxksE3SofhTjHFnrKHkVHErfBW9IOLO1A5jTjCAgX2kTJHfI0EuDpL4wPkj4LJYd1+LxsiA6VYpTIwZu1AjtB8q4qwt0AhtSymqjZgg1qvcj4JNK6YI+Gct7roN3Amo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VP77yv90; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qe86oudE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VP77yv90"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728344020;
+	s=mimecast20190719; t=1728347057;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oUAx6nXlr893COLcXh7JrWdAKfzazyJiQwKWV+hUdVA=;
-	b=Qe86oudETuf+sfObPF9D+Yfvbyqv51Ch6OKTM0dUOxFJaiQbLo8KNuyioVMc3n/NJZdPp5
-	ssAlQwkowOu9/LzQbk/N5GFkAhRKp8yvfMbfxewAlBzE1lnxPr3uVg6gOKYAB69XHRPeur
-	9fE6QWCOOgbmZ8MqA41vKbOR2o6FpcU=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0376WQc127XhNG695n+yocxmWIkuvVKsPdxkTLuIqys=;
+	b=VP77yv90Es1zjM18RlEazYb6ISk47jdaIyU6d0FYr7ROnWZz2r8t2sCVxUZRLgn1zNtT5i
+	pqoHmYEpAZr9Y2OP+jbOdOat04iuUcm8saf5rK2UyYGMbVakZZ22Vx6sGjbA0ix/1SpEZq
+	f9UkE2/kafjhixcJM9oG2Nzs3B7a2JY=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-2ysYeJdcNM-e2uG0WfMM4g-1; Mon, 07 Oct 2024 19:33:39 -0400
-X-MC-Unique: 2ysYeJdcNM-e2uG0WfMM4g-1
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-7163489149fso5808994a12.3
-        for <linux-coco@lists.linux.dev>; Mon, 07 Oct 2024 16:33:39 -0700 (PDT)
+ us-mta-52-MdqM0nMWN5qgAa_DqH2HEQ-1; Mon, 07 Oct 2024 20:24:14 -0400
+X-MC-Unique: MdqM0nMWN5qgAa_DqH2HEQ-1
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-20c56938075so1030955ad.2
+        for <linux-coco@lists.linux.dev>; Mon, 07 Oct 2024 17:24:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728344017; x=1728948817;
+        d=1e100.net; s=20230601; t=1728347054; x=1728951854;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oUAx6nXlr893COLcXh7JrWdAKfzazyJiQwKWV+hUdVA=;
-        b=FQQ+exMQavixzrqsd4YkC5FGZsim+UApP7ZB7eTLt+frf1KaDqERqTdeHTyhZVcrEP
-         ZLYnZkjCEMmI4lnuN4DMJHfNEVpHlZVFfG3WTyYE+dro2TzjApfB2nkR5zgOAvp3fiC9
-         2obZefDnlxoFD7NxcDDUPKd4FYiNIx2SZFkukVs2sD53mAW/UUZrzXitxkCvVGy1DNRA
-         vo7ncYBmetCN0NeCZ8D9Wgfwh9q5qpTIqJw631/iibkWu35AH09tUpoBkCKAs6Zg1Fep
-         UrNP1SM4ZIvcZPLFNh3r9PcZ/zl5Wdijj0nTE4QKnGJzla2GIkaMnshCSVXQRcqOX/LD
-         1KIg==
-X-Forwarded-Encrypted: i=1; AJvYcCWNVt4Oc5ndFZGZV42+PWI92YmVuLCyigLJTM113w/9kCHLn4bJ0uN98OzJqR/3ck4QRi9xGaVpulrp@lists.linux.dev
-X-Gm-Message-State: AOJu0YyBHjsAHsJUbJalKA5H/8sqy37ANC99x+pu1mOIbwvGfPueMu70
-	twAo4KG0gceHhMEzOKN+eIM5yI75h3GSFUzVfcZZrnGY0fTNP2Ioeecmr9FKa0RMikzsWhp9+dR
-	GDmTlh6/1WHvVrfqNirx/Yuz64xnHcxmQemgOcfoOBGNHbSplgorf6CwbFqHl353eEUA=
-X-Received: by 2002:a05:6a20:c707:b0:1d2:bbf2:4c0e with SMTP id adf61e73a8af0-1d6dfafbee2mr18065607637.43.1728344017614;
-        Mon, 07 Oct 2024 16:33:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE3uOhYexO703NofjJ/K1+V6Z0EqfLIjrytFm7WskmOCohACxWBRCDtgqXpyOZ0bCoE9smNBQ==
-X-Received: by 2002:a17:90b:302:b0:2d8:d098:4f31 with SMTP id 98e67ed59e1d1-2e1e626c06amr14188663a91.17.1728344006795;
-        Mon, 07 Oct 2024 16:33:26 -0700 (PDT)
+        bh=0376WQc127XhNG695n+yocxmWIkuvVKsPdxkTLuIqys=;
+        b=OFryTMzG7IxnVlOAvuhxRUDcrLCwEJEO34i0viKkeNkEXCaqhl0X98cWIA23YaRj9X
+         8h3FW7qIaLXOXtuzUCkoYq9Ln5rrauh+ggbink+kviTeeI643mb0JhTGBnYkaGe5IBxe
+         vNDvXsSJa/P0rGdkkrHBVS/4Ek/ww7rcWGgSh0J9tRatD+fTfL0y6vFXMEnKHGn6oVPk
+         umKuUo2j0CwhlxB7m+2Yu39RAJFnEgNPFEIaQKpxjV82sKMjmwgq6NXKy/onBlgVLQjI
+         VqujE+LKRQ1oFTiPTs2TjLiBhqb3lRfF+cdv0pOAXGByyANLrv34ulmCJcYDv1WIyqZy
+         WFsg==
+X-Forwarded-Encrypted: i=1; AJvYcCWswLhDPNnlyHwee3hyo1D5YT7utYucHDZFd2orkcq62xCyYAtCuXFGj6ZkNLZLMHrMP/QT8+c01J1v@lists.linux.dev
+X-Gm-Message-State: AOJu0YxM7/eTLVMUXfH2481pgbTfr//SszfRn6kXF+bZGCbntSMSov77
+	PzFYZyiclWjS0Ug7tBQuUazepUl2qxk1V2XWGeung+bFIVrnPwDlgy2+M0lgnONrVGLgMZnylsD
+	1uOnuf2MdxZQkNKyICcvbmy8ml2NA+Awco8mw9zcxyG2mtyg90QgxTZeoGCk=
+X-Received: by 2002:a17:902:d504:b0:20b:861a:25d3 with SMTP id d9443c01a7336-20bfdfd9423mr232892295ad.21.1728347053588;
+        Mon, 07 Oct 2024 17:24:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGmBrtcwDaxpRIh5M4VJUUsKgMzLr25X0QLxLVSlJzA+dyLr+IP/KpbXFMj9jVG7hvezGVaGA==
+X-Received: by 2002:a17:902:d504:b0:20b:861a:25d3 with SMTP id d9443c01a7336-20bfdfd9423mr232891965ad.21.1728347053242;
+        Mon, 07 Oct 2024 17:24:13 -0700 (PDT)
 Received: from [192.168.68.54] ([103.210.27.132])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e1e85d93b1sm7767761a91.25.2024.10.07.16.33.19
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c138afc71sm45326155ad.47.2024.10.07.17.24.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Oct 2024 16:33:26 -0700 (PDT)
-Message-ID: <07d1c00d-fcdc-4121-a766-2eb0c149bb8d@redhat.com>
-Date: Tue, 8 Oct 2024 09:33:17 +1000
+        Mon, 07 Oct 2024 17:24:12 -0700 (PDT)
+Message-ID: <2b161369-b9b3-4103-9cf4-fa316dec0ca1@redhat.com>
+Date: Tue, 8 Oct 2024 10:24:03 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,25 +67,25 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 03/11] arm64: realm: Query IPA size from the RMM
+Subject: Re: [PATCH v6 04/11] arm64: rsi: Add support for checking whether an
+ MMIO is protected
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
  Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
  Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
  <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20241004144307.66199-1-steven.price@arm.com>
- <20241004144307.66199-4-steven.price@arm.com>
+ <20241004144307.66199-5-steven.price@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20241004144307.66199-4-steven.price@arm.com>
+In-Reply-To: <20241004144307.66199-5-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -93,47 +93,161 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 10/5/24 12:42 AM, Steven Price wrote:
-> The top bit of the configured IPA size is used as an attribute to
-> control whether the address is protected or shared. Query the
-> configuration from the RMM to assertain which bit this is.
+> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> On Arm CCA, with RMM-v1.0, all MMIO regions are shared. However, in
+> the future, an Arm CCA-v1.0 compliant guest may be run in a lesser
+> privileged partition in the Realm World (with Arm CCA-v1.1 Planes
+> feature). In this case, some of the MMIO regions may be emulated
+> by a higher privileged component in the Realm world, i.e, protected.
+> 
+> Thus the guest must decide today, whether a given MMIO region is shared
+> vs Protected and create the stage1 mapping accordingly. On Arm CCA, this
+> detection is based on the "IPA State" (RIPAS == RIPAS_IO). Provide a
+> helper to run this check on a given range of MMIO.
+> 
+> Also, provide a arm64 helper which may be hooked in by other solutions.
 > 
 > Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
-> Changes since v4:
->   * Make PROT_NS_SHARED check is_realm_world() to reduce impact on
->     non-CCA systems.
-> Changes since v2:
->   * Drop unneeded extra brackets from PROT_NS_SHARED.
->   * Drop the explicit alignment from 'config' as struct realm_config now
->     specifies the alignment.
+> New patch for v5
 > ---
->   arch/arm64/include/asm/pgtable-prot.h | 4 ++++
->   arch/arm64/include/asm/rsi.h          | 2 +-
->   arch/arm64/kernel/rsi.c               | 8 ++++++++
->   3 files changed, 13 insertions(+), 1 deletion(-)
+>   arch/arm64/include/asm/io.h       |  8 ++++++++
+>   arch/arm64/include/asm/rsi.h      |  2 ++
+>   arch/arm64/include/asm/rsi_cmds.h | 21 +++++++++++++++++++++
+>   arch/arm64/kernel/rsi.c           | 26 ++++++++++++++++++++++++++
+>   4 files changed, 57 insertions(+)
 > 
 
-[...]
+With the following nitpick addressed:
 
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+
+> diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
+> index 1ada23a6ec19..cce445ff8e3f 100644
+> --- a/arch/arm64/include/asm/io.h
+> +++ b/arch/arm64/include/asm/io.h
+> @@ -17,6 +17,7 @@
+>   #include <asm/early_ioremap.h>
+>   #include <asm/alternative.h>
+>   #include <asm/cpufeature.h>
+> +#include <asm/rsi.h>
+>   
+>   /*
+>    * Generic IO read/write.  These perform native-endian accesses.
+> @@ -318,4 +319,11 @@ extern bool arch_memremap_can_ram_remap(resource_size_t offset, size_t size,
+>   					unsigned long flags);
+>   #define arch_memremap_can_ram_remap arch_memremap_can_ram_remap
+>   
+> +static inline bool arm64_is_mmio_private(phys_addr_t phys_addr, size_t size)
+> +{
+> +	if (unlikely(is_realm_world()))
+> +		return arm64_is_protected_mmio(phys_addr, size);
+> +	return false;
+> +}
+> +
+
+The function names (arm64_is_{mmio_private, protected_mmio} are indicators to the
+MMIO region's state or property. arm64_is_mmio_private() indicates the MMIO region
+is 'private MMIO' while arm64_is_protected_mmio() indicates the MMIO region is
+'protected MMIO'. They are equivalent and it may be worthy to unify the function
+names (indicators) as below.
+
+   option#1                         option#2
+   --------                         --------
+   arm64_is_private_mmio            arm64_is_protected_mmio
+   __arm64_is_private_mmio          __arm64_is_protected_mmio
+
+
+>   #endif	/* __ASM_IO_H */
 > diff --git a/arch/arm64/include/asm/rsi.h b/arch/arm64/include/asm/rsi.h
-> index e4c01796c618..acba065eb00e 100644
+> index acba065eb00e..42ff93c7b0ba 100644
 > --- a/arch/arm64/include/asm/rsi.h
 > +++ b/arch/arm64/include/asm/rsi.h
-> @@ -27,7 +27,7 @@ static inline int rsi_set_memory_range(phys_addr_t start, phys_addr_t end,
+> @@ -14,6 +14,8 @@ DECLARE_STATIC_KEY_FALSE(rsi_present);
 >   
->   	while (start != end) {
->   		ret = rsi_set_addr_range_state(start, end, state, flags, &top);
-> -		if (WARN_ON(ret || top < start || top > end))
-> +		if (ret || top < start || top > end)
->   			return -EINVAL;
->   		start = top;
+>   void __init arm64_rsi_init(void);
+>   
+> +bool arm64_is_protected_mmio(phys_addr_t base, size_t size);
+> +
+>   static inline bool is_realm_world(void)
+>   {
+>   	return static_branch_unlikely(&rsi_present);
+> diff --git a/arch/arm64/include/asm/rsi_cmds.h b/arch/arm64/include/asm/rsi_cmds.h
+> index b661331c9204..fdb47f690307 100644
+> --- a/arch/arm64/include/asm/rsi_cmds.h
+> +++ b/arch/arm64/include/asm/rsi_cmds.h
+> @@ -45,6 +45,27 @@ static inline unsigned long rsi_get_realm_config(struct realm_config *cfg)
+>   	return res.a0;
+>   }
+>   
+> +static inline unsigned long rsi_ipa_state_get(phys_addr_t start,
+> +					      phys_addr_t end,
+> +					      enum ripas *state,
+> +					      phys_addr_t *top)
+> +{
+> +	struct arm_smccc_res res;
+> +
+> +	arm_smccc_smc(SMC_RSI_IPA_STATE_GET,
+> +		      start, end, 0, 0, 0, 0, 0,
+> +		      &res);
+> +
+> +	if (res.a0 == RSI_SUCCESS) {
+> +		if (top)
+> +			*top = res.a1;
+> +		if (state)
+> +			*state = res.a2;
+> +	}
+> +
+> +	return res.a0;
+> +}
+> +
+>   static inline unsigned long rsi_set_addr_range_state(phys_addr_t start,
+>   						     phys_addr_t end,
+>   						     enum ripas state,
+> diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
+> index a6495a64d9bb..d7bba4cee627 100644
+> --- a/arch/arm64/kernel/rsi.c
+> +++ b/arch/arm64/kernel/rsi.c
+> @@ -66,6 +66,32 @@ static void __init arm64_rsi_setup_memory(void)
 >   	}
+>   }
+>   
+> +bool arm64_is_protected_mmio(phys_addr_t base, size_t size)
+> +{
+> +	enum ripas ripas;
+> +	phys_addr_t end, top;
+> +
+> +	/* Overflow ? */
+> +	if (WARN_ON(base + size <= base))
+> +		return false;
+> +
+> +	end = ALIGN(base + size, RSI_GRANULE_SIZE);
+> +	base = ALIGN_DOWN(base, RSI_GRANULE_SIZE);
+> +
+> +	while (base < end) {
+> +		if (WARN_ON(rsi_ipa_state_get(base, end, &ripas, &top)))
+> +			break;
+> +		if (WARN_ON(top <= base))
+> +			break;
+> +		if (ripas != RSI_RIPAS_DEV)
+> +			break;
+> +		base = top;
+> +	}
+> +
+> +	return base >= end;
+> +}
+> +EXPORT_SYMBOL(arm64_is_protected_mmio);
+> +
 
-I think the changes belong to PATCH[02/11] :)
+The function may be worthy to be renamed to __arm64_is_private_mmio, as explained
+as above.
+
+>   void __init arm64_rsi_init(void)
+>   {
+>   	if (arm_smccc_1_1_get_conduit() != SMCCC_CONDUIT_SMC)
 
 Thanks,
 Gavin
