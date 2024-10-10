@@ -1,68 +1,71 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2079.outbound.protection.outlook.com [40.107.220.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8631FEFC5
-	for <linux-coco@lists.linux.dev>; Thu, 10 Oct 2024 07:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728546476; cv=none; b=BOCLy/dRXuo3kZ0RXo63IPHusuZTJEOiPAWjjyrfSgZW2HgTp68yEabAAlXRIdjZDiOGNznXTkO5PMhQ7EELZUQRBhjDQN3MYoxXZcc2x0faZT7c8owWxhN8CP0QSO1ZuWHWhDRDfcYZsxFJdPtRDKz823ZEWCYGE1S3dkZabNc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728546476; c=relaxed/simple;
-	bh=br+zYnMwtP2W99coXs+94igddUMorqNE7meqm6enj60=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uD/vXB++i/n9pJ/KMj0L8v88hZKtuNsQ7O9TP6STsQpleeGUV7YXvsXGZWg5zm1594JWmP9+rtiqlm/8l7aUkRVcpC1Vq4+IgOdc50aYUhAZJMRL3p9mYM+sixrgLGlDvNrXKBDO0Y/NHoahF5cXercJQ0qQgbtGcGikpWdHd8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kDw6/uZH; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D21A1BD00C
+	for <linux-coco@lists.linux.dev>; Thu, 10 Oct 2024 12:15:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728562510; cv=fail; b=EPx6ZC7FEB63OoO63Y9dLPR3dXq3feVdbztrT1vPWe3JRFy0ocObJxQ/NXIZXjxVRRyW5PybBgzj+UeiiN0OUxbOWRQ7Rza0hjWHithVGnKhj7lnn7ux17WxvH3S740oy9DEV8FEgssaOm5tD0FWJwC0SR6ROk72TfHd2KtVkE8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728562510; c=relaxed/simple;
+	bh=GVO2TmwD8i6uH4uXf3OsGK9B6Pv+B+GN/sGVcxrReUk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u/1p6FH0g4iXcZ8WlzTH5C/VMPo0VlnYnozoFQSpEBUVKy41b1gold6r8Cr/i1sVcPkmLOZg6gpodHD7ziI6TPLR+PTY1nr/eO2QOF+V1oK4glVYXxzrBpDNM0+XsuGrR98j1rLWWJ96twPEGx9tL7buBC1Kcr5376IAIDtbixQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=F+rF1NOc; arc=fail smtp.client-ip=40.107.220.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kDw6/uZH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728546475; x=1760082475;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=br+zYnMwtP2W99coXs+94igddUMorqNE7meqm6enj60=;
-  b=kDw6/uZHMpIM915deEEgcPBs6Qg1XvrYmywOwxCCUEtu4yYiihdSxj/a
-   ZHB6w7Uhd3biy+cTlceHTAqNkUY2BQ16LELCbzHgmnXNsCz7V/O6NPpqm
-   mBlYyE1ec+xzGDEPo4dhf9OU9Ijxvu2KmtAhFpR/rf1E2loKEWPs0BvIT
-   ywetlun58kxbIGpRoaBa3UzccA58/7reKZkjFAg2d0pGC475ZX8cVOrlf
-   BPeXVRYd3tqYJsMbDjM5vll3Oyue2zywQO/OWVaQMUqBYIebvSxv3uK47
-   6L9E478PWz7cJK5JmQ6xz7cAfUZ4+tPmkBSL7mMHpgMFGprHEJVIwWMx8
-   w==;
-X-CSE-ConnectionGUID: LAqjzLyBSeO06WIKfPfVBw==
-X-CSE-MsgGUID: oOlW1e6eSJ+YnASq2pNktQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="38472904"
-X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
-   d="scan'208";a="38472904"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 00:47:48 -0700
-X-CSE-ConnectionGUID: 89YLszNPRTyY143WsKhdvw==
-X-CSE-MsgGUID: HB4PB0d6TX+q+6mLkQ42Nw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
-   d="scan'208";a="81307090"
-Received: from unknown (HELO yhuang6-mobl2.ccr.corp.intel.com) ([10.245.243.193])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 00:47:44 -0700
-From: Huang Ying <ying.huang@intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Huang Ying <ying.huang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>
-Subject: [PATCH -V2] tdx, memory hotplug: Check whole hot-adding memory range for TDX
-Date: Thu, 10 Oct 2024 15:47:26 +0800
-Message-Id: <20241010074726.1397820-1-ying.huang@intel.com>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="F+rF1NOc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UNFA0Jx2UMmm0xAlWf8FdKucazSR653cSse5YGa3+M5UoxOC9yvELOirInflX2GTtf7uoRh4qzVK2g2W+9kfHEbPBd+1EJEQgKAJ6lC1gtaaI8RqWO3yW6dDDlzhZlKgwzZEGHGKE1Tz5sC142P471giVMGHBdBj884kkqylW6MBO1OfV5p1ONLSO25tz/0DIUD72cAgNaoyP77WebZ7SEckOh+CRT07B5NsN0XOEj/0KJhGiAn24k8kJIApRyo0N+weZcrtY8+ERlMut32zBYp0GQm/flsfnCMIza4ACwwYsC6MawchsmPzCd0MTwFMo8Ho/bbaiejqVuscmqnxMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XdQXzfNLBtAiSpxrnWW+oqufrDsRXfDIOO45bu6Pr3w=;
+ b=aiWlMhRx0s5SoKDA94CxXshpUkkXn8ZS5Wxn1THef3mU9qamAx9NZ2oUnNJyQ2T83na2O055QleoX0MtVxRVJMiAnurdVBuK+2dkFPE/TU0BV6w/r/kRSEwK5cji7kRqvmwfcw8FauUQ8VYzesIzE2YbReLkgfCKpHIhTkcDz12sQSF2dabBXOgpBw602EX5I16TTpKPDzyZtB8jcOKtDnFP/c0S3TYgAigEzCikn1guVCOlaYTDGezZdUOk6eh1WckL2YZcZ5sfye0Cjnxvdqxiript5VzjOe7aDAonr6f582gEU0WviE0cpjZa39EVkTZKSdAlZ4JkRsuGU2TgKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XdQXzfNLBtAiSpxrnWW+oqufrDsRXfDIOO45bu6Pr3w=;
+ b=F+rF1NOcTPyweXs9ZmcEeEIZ43/SdkSwraofztLK6ANQ6aJOyxpRZSPQ6HgDFw20yHu0nrb3Xy8ohBNXV5oIa5GeF6Qfz6/jT+cnoozBBqCUMzX52ERMfODPpaP18e7CtkoPzvEL5gY8ZX9ZMnGOtUBGPHkzmeVzxz30Ffix9Ms=
+Received: from DM5PR07CA0069.namprd07.prod.outlook.com (2603:10b6:4:ad::34) by
+ DM4PR12MB7694.namprd12.prod.outlook.com (2603:10b6:8:102::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8048.18; Thu, 10 Oct 2024 12:15:03 +0000
+Received: from DS3PEPF0000C37B.namprd04.prod.outlook.com
+ (2603:10b6:4:ad:cafe::a3) by DM5PR07CA0069.outlook.office365.com
+ (2603:10b6:4:ad::34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18 via Frontend
+ Transport; Thu, 10 Oct 2024 12:15:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS3PEPF0000C37B.mail.protection.outlook.com (10.167.23.5) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8048.13 via Frontend Transport; Thu, 10 Oct 2024 12:15:03 +0000
+Received: from ethanolx16dchost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 10 Oct
+ 2024 07:15:02 -0500
+From: Pavan Kumar Paluri <papaluri@amd.com>
+To: <linux-kernel@vger.kernel.org>
+CC: <linux-doc@vger.kernel.org>, <linux-coco@lists.linux.dev>, Borislav Petkov
+	<bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+	<mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Eric Van
+ Tassell" <Eric.VanTassell@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>, "H
+ . Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, "Pavan
+ Kumar Paluri" <papaluri@amd.com>, Dhaval Giani <dhaval.giani@amd.com>
+Subject: [PATCH v6 0/2] nosnp sev command line support
+Date: Thu, 10 Oct 2024 07:14:53 -0500
+Message-ID: <20241010121455.15795-1-papaluri@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,233 +73,99 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF0000C37B:EE_|DM4PR12MB7694:EE_
+X-MS-Office365-Filtering-Correlation-Id: f6f79fbf-f4d0-4593-a489-08dce9252ba1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qZjZz+HcqztRHqj0YY3VZSSwcl0xgYWxE2O1ME0VH/lrbtcw9C229up/UmSg?=
+ =?us-ascii?Q?1ll6cfRq6DVWVlOVVkUeJuKokhUDeS06ajUtX6MOy/PuKQr/BlDPIg42wtUi?=
+ =?us-ascii?Q?vSPxt1blIOI14qlC4DntG0OeQFtZZArZEpNYcvUFJrNmjfdPxIhPVSBpRO2n?=
+ =?us-ascii?Q?oyR2cus+h8UM+hNQHc6EzqrVTJ2wYDPhzW/aCxQBNlzF0mZl1Bmtd/4PPLrd?=
+ =?us-ascii?Q?BrSPL06uDAfl2e/OYLpIrFSX8u+V5EVXPQIfRs3sqaxAhLZJkY0bhGRaTWO2?=
+ =?us-ascii?Q?DxXSvbkzmEW9yjP/SdctYs7o3gqt67/bV8N6S4sdMCJD0vrqE4T+wWmY2C04?=
+ =?us-ascii?Q?gy7OMQphMAG5Ba0J/5+rOtBPAqw2dCU8cW1YL6AJzJsehdZBOd9rhpIktvCe?=
+ =?us-ascii?Q?bUS+rZJyNI2DF9G+7sYg8oS5CQ8eIzj8PowaPOCWPFMI6YJcEG2DxhSw1E33?=
+ =?us-ascii?Q?vPQC370eiD2l7j8lr6YnRP0BTwyoCYNAVoHo7Ocu8h37PwYgwz7nCfb0Tkky?=
+ =?us-ascii?Q?uIPo0gyDdBSsCLdE3dqujg61GMwQWbhFs+24+AEcMViXNaLjiWgURd6CCHyF?=
+ =?us-ascii?Q?Mr46YomsSrAAXzhOaKc1n0jqt96izqxxnNEcLPbwxY1soTv3WqouZRnkOXQ2?=
+ =?us-ascii?Q?LB6sYc2rPojcQT990fBaIzw3wVEI8mIbsuWpQb33YcZY+ZbkIpED0Fmf4ddz?=
+ =?us-ascii?Q?BxE4L1zCWqYnV6rU3sjkpTxKVqZhNGIB/UClb3GS6YS+whpsXRGjWlrpVKX6?=
+ =?us-ascii?Q?tplgLUe+bAuobvlzOqj+Oj0RaGLftQTw2EGOKGPlRl9Q8ta7vFB3B6awWU5V?=
+ =?us-ascii?Q?YlQ+HHUQrNDlqLOX1M0XaqBEHG5/nTDzkI7hbZie677GisKlI+46VNowgSuD?=
+ =?us-ascii?Q?SRB0T9DXGwx8C+dKlHOxYU9bXLGei8i8V5y25yWEBCA3VlNHupp4taVOUiHt?=
+ =?us-ascii?Q?ty3AdNuVEo0r6/Di3rT0boHJstapCp67FNvc55lTRMj8LtryhqgnzTlt7oG1?=
+ =?us-ascii?Q?wf2PC0DGZ+FNM9uRU+3iBwgEixheWVwDOjl7FkGNr51/ZGtrkLYkBA7ZKrxf?=
+ =?us-ascii?Q?A+syi2hFgPujec83HhJh+4ARLwuLXVRHMDD9NrbjoA88GW069Ro7fUK0rWSb?=
+ =?us-ascii?Q?ti0MJPrzlv9x5szca/12qIDZr4kDMTzQScoS/UWuG0SF2WU++SOxIvQpzlMp?=
+ =?us-ascii?Q?7n8L342SXb2fweZcuuQl7IqZTu34j2jS0V+UJTJBZna6JbrXIXisuJe8aNQI?=
+ =?us-ascii?Q?X8E8DGa53OtReegHrXYBGaxlMYDsLXw/KuFmRGWYaH9Ke6NqOrGjNvWe4U5s?=
+ =?us-ascii?Q?ysbw3KAWADz4sbLgPN4Q3qnHv5JXJyywZ4g3IRfZnj6SrWVodipHR+qsEMCU?=
+ =?us-ascii?Q?y9gLOjOeB5owIDMTJC8txdLlY610?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2024 12:15:03.3280
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6f79fbf-f4d0-4593-a489-08dce9252ba1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF0000C37B.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7694
 
-On systems with TDX (Trust Domain eXtensions) enabled, memory ranges
-hot-added must be checked for compatibility by TDX.  This is currently
-implemented through memory hotplug notifiers for each memory_block.
-If a memory range which isn't TDX compatible is hot-added, for
-example, some CXL memory, the command line as follows,
+Provide "nosnp" boot option via "sev=nosnp" kernel command line to
+prevent SEV-SNP [1] capable host kernel from enabling SEV-SNP and
+initializing Reverse Map Table (RMP)
 
-  $ echo 1 > /sys/devices/system/node/nodeX/memoryY/online
+Setting 'nosnp' avoids the RMP check overhead in memory accesses when
+users do not want to run SEV-SNP guests.
 
-will report something like,
+On providing sev=nosnp via kernel command line:
+cat /sys/module/kvm_amd/parameters/sev_snp should be "N".
 
-  bash: echo: write error: Operation not permitted
+The patchset is based on tip/master.
 
-If pr_debug() is enabled, the error message like below will be shown
-in the kernel log,
+Reference:
+[1] https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24593.pdf
 
-  online_pages [mem 0xXXXXXXXXXX-0xXXXXXXXXXX] failed
+Changelog:
+=========
+v5:
+  * Update cover-letter and Documentation to include information on why
+    nosnp command line option is required (Dave Hansen)
+  * Remove <asm/cache.h> stray header introduced in the previous
+    versions because of __read_mostly attribute that is now moved into
+    virt/svm/cmdline.c
+  * Link: https://lore.kernel.org/all/20240930231102.123403-1-papaluri@amd.com/
 
-Both are too general to root cause the problem.  This will confuse
-users.  One solution is to print some error messages in the TDX memory
-hotplug notifier.  However, memory hotplug notifiers are called for
-each memory block, so this may lead to a large volume of messages in
-the kernel log if a large number of memory blocks are onlined with a
-script or automatically.  For example, the typical size of memory
-block is 128MB on x86_64, when online 64GB CXL memory, 512 messages
-will be logged.
+v4:
+  * Move __read_mostly attribute to place where sev_cfg is declared (Tom)
+  * Link: https://lore.kernel.org/all/20240922033626.29038-1-papaluri@amd.com/
 
-Therefore, in this patch, the whole hot-adding memory range is checked
-for TDX compatibility through a newly added architecture specific
-function (arch_check_hotplug_memory_range()).  If rejected, the memory
-hot-adding will be aborted with a proper kernel log message.  Which
-looks like something as below,
+Pavan Kumar Paluri (2):
+  x86, KVM:SVM: Move sev specific parsing into arch/x86/virt/svm
+  x86 KVM:SVM: Provide "nosnp" boot option for sev kernel command line
 
-  virt/tdx: Reject hot-adding memory range: 0xXXXXXXXX-0xXXXXXXXX for TDX compatibility.
+ .../arch/x86/x86_64/boot-options.rst          |  5 +++
+ arch/x86/coco/sev/core.c                      | 44 -------------------
+ arch/x86/include/asm/sev-common.h             | 27 ++++++++++++
+ arch/x86/virt/svm/Makefile                    |  1 +
+ arch/x86/virt/svm/cmdline.c                   | 39 ++++++++++++++++
+ 5 files changed, 72 insertions(+), 44 deletions(-)
+ create mode 100644 arch/x86/virt/svm/cmdline.c
 
-The target use case is to support CXL memory on TDX enabled systems.
-If the CXL memory isn't compatible with TDX, the whole CXL memory
-range hot-adding will be rejected.  While the CXL memory can still be
-used via devdax interface.
 
-This also makes the original TDX memory hotplug notifier useless, so
-delete it.
-
-Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
----
-
-Changes:
-
-v2:
-
-- Collected reviewed-by and acked-by.
-
-- Added comments for tdx_check_hotplug_memory_range(), Thanks David!
-
-- Link to v1: https://lore.kernel.org/lkml/20240930055112.344206-1-ying.huang@intel.com/
-
----
- arch/x86/include/asm/tdx.h     |  2 ++
- arch/x86/mm/init_64.c          |  6 +++++
- arch/x86/virt/vmx/tdx/tdx.c    | 40 +++++++++++++++-------------------
- include/linux/memory_hotplug.h |  3 +++
- mm/memory_hotplug.c            |  7 +++++-
- 5 files changed, 34 insertions(+), 24 deletions(-)
-
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index eba178996d84..6db5da34e4ba 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -116,11 +116,13 @@ static inline u64 sc_retry(sc_func_t func, u64 fn,
- int tdx_cpu_enable(void);
- int tdx_enable(void);
- const char *tdx_dump_mce_info(struct mce *m);
-+int tdx_check_hotplug_memory_range(u64 start, u64 size);
- #else
- static inline void tdx_init(void) { }
- static inline int tdx_cpu_enable(void) { return -ENODEV; }
- static inline int tdx_enable(void)  { return -ENODEV; }
- static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
-+static inline int tdx_check_hotplug_memory_range(u64 start, u64 size) { return 0; }
- #endif	/* CONFIG_INTEL_TDX_HOST */
- 
- #endif /* !__ASSEMBLY__ */
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index ff253648706f..30a4ad4272ce 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -55,6 +55,7 @@
- #include <asm/uv/uv.h>
- #include <asm/setup.h>
- #include <asm/ftrace.h>
-+#include <asm/tdx.h>
- 
- #include "mm_internal.h"
- 
-@@ -974,6 +975,11 @@ int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
- 	return ret;
- }
- 
-+int arch_check_hotplug_memory_range(u64 start, u64 size)
-+{
-+	return tdx_check_hotplug_memory_range(start, size);
-+}
-+
- int arch_add_memory(int nid, u64 start, u64 size,
- 		    struct mhp_params *params)
- {
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 4e2b2e2ac9f9..f70b4ebe7cc5 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1388,36 +1388,37 @@ static bool is_tdx_memory(unsigned long start_pfn, unsigned long end_pfn)
- 	return false;
- }
- 
--static int tdx_memory_notifier(struct notifier_block *nb, unsigned long action,
--			       void *v)
-+/*
-+ * We don't allow mixture of TDX and !TDX memory in the buddy so we
-+ * won't run into trouble when launching encrypted VMs that really
-+ * need TDX-capable memory.
-+ */
-+int tdx_check_hotplug_memory_range(u64 start, u64 size)
- {
--	struct memory_notify *mn = v;
--
--	if (action != MEM_GOING_ONLINE)
--		return NOTIFY_OK;
-+	u64 start_pfn = PHYS_PFN(start);
-+	u64 end_pfn = PHYS_PFN(start + size);
- 
- 	/*
- 	 * Empty list means TDX isn't enabled.  Allow any memory
--	 * to go online.
-+	 * to be hot-added.
- 	 */
- 	if (list_empty(&tdx_memlist))
--		return NOTIFY_OK;
-+		return 0;
- 
- 	/*
- 	 * The TDX memory configuration is static and can not be
--	 * changed.  Reject onlining any memory which is outside of
-+	 * changed.  Reject hot-adding any memory which is outside of
- 	 * the static configuration whether it supports TDX or not.
- 	 */
--	if (is_tdx_memory(mn->start_pfn, mn->start_pfn + mn->nr_pages))
--		return NOTIFY_OK;
-+	if (is_tdx_memory(start_pfn, end_pfn))
-+		return 0;
- 
--	return NOTIFY_BAD;
-+	pr_info("Reject hot-adding memory range: %#llx-%#llx for TDX compatibility.\n",
-+		start, start + size);
-+
-+	return -EINVAL;
- }
- 
--static struct notifier_block tdx_memory_nb = {
--	.notifier_call = tdx_memory_notifier,
--};
--
- static void __init check_tdx_erratum(void)
- {
- 	/*
-@@ -1465,13 +1466,6 @@ void __init tdx_init(void)
- 		return;
- 	}
- 
--	err = register_memory_notifier(&tdx_memory_nb);
--	if (err) {
--		pr_err("initialization failed: register_memory_notifier() failed (%d)\n",
--				err);
--		return;
--	}
--
- #if defined(CONFIG_ACPI) && defined(CONFIG_SUSPEND)
- 	pr_info("Disable ACPI S3. Turn off TDX in the BIOS to use ACPI S3.\n");
- 	acpi_suspend_lowlevel = NULL;
-diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index b27ddce5d324..c5ba7b909bb4 100644
---- a/include/linux/memory_hotplug.h
-+++ b/include/linux/memory_hotplug.h
-@@ -140,6 +140,9 @@ extern int try_online_node(int nid);
- 
- extern int arch_add_memory(int nid, u64 start, u64 size,
- 			   struct mhp_params *params);
-+
-+extern int arch_check_hotplug_memory_range(u64 start, u64 size);
-+
- extern u64 max_mem_size;
- 
- extern int mhp_online_type_from_str(const char *str);
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 621ae1015106..c4769f24b1e2 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1305,6 +1305,11 @@ int try_online_node(int nid)
- 	return ret;
- }
- 
-+int __weak arch_check_hotplug_memory_range(u64 start, u64 size)
-+{
-+	return 0;
-+}
-+
- static int check_hotplug_memory_range(u64 start, u64 size)
- {
- 	/* memory range must be block size aligned */
-@@ -1315,7 +1320,7 @@ static int check_hotplug_memory_range(u64 start, u64 size)
- 		return -EINVAL;
- 	}
- 
--	return 0;
-+	return arch_check_hotplug_memory_range(start, size);
- }
- 
- static int online_memory_block(struct memory_block *mem, void *arg)
+base-commit: 00d91979d23c88d3f50870e22fc9cec3f5e26a2a
 -- 
-2.39.2
+2.34.1
 
