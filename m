@@ -1,325 +1,181 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FEB1CF28E
-	for <linux-coco@lists.linux.dev>; Thu, 10 Oct 2024 19:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B51819CD1B
+	for <linux-coco@lists.linux.dev>; Thu, 10 Oct 2024 21:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728589623; cv=none; b=NrvLGXzEH0WMGV1yFhPlJw/AKtEaj32lxgsMgX1kM8TTll7fqm4MqcpUJP9biKBJN5jbvOQ5NWYolbPpscb+Ic/iel58tDZI0vjTEXvl32rrXTOFQeAZrFq0RCYSMeMVnH1Xax/xrZYqYo237f5RCdr46TneSqQNA4ilCHYgELU=
+	t=1728595240; cv=none; b=V+RDblcDBqsfX5OMsqidPptePg8o8ZEg2py+RCVjqSTa6NzsbdsCfSvpqiP3JOTdElGco68fYIgGfoZ3jCIfQIuLFICqYRU5MqMRR8mrPXHuHrocFQiopYx2C8qCbmJ84wpFcG7cyMgQGMvkoD+I0tmz+gMbzMvKqeH3HfbngL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728589623; c=relaxed/simple;
-	bh=abZRVLo08LzcuZ1xEXrr2BDS8h/UhKg4KYKPrq+VaN8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L2UiKZaFjS3rS+wI1lNyduGMux958gQhBuZ87YQBiLNZtM428Ei/uReNqDs2KtNstZQfrl5uVUy04oT+a029iFV6hCE9XUoI0HFTg7IMuaHcCuH5/BjjHuadTSaQJ8UKG9XvxdP1TW35h4HUyNfCyT/hkSDE9k7lec5oMcuT87o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=frzy6IPa; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728595240; c=relaxed/simple;
+	bh=hHB042UrlNapGxuP9YL5laD53DwKqbtDdjnvLIFvJmg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BwxKgFuoJlDoqDfwxZANUpt5mK0o3cu0EL8/K0WLigOi5IrGiQP3ZYez78ciXbvUn/5vZyE3D2IOY4u0hvUXCMupauVu8L+5jOMbm5Ub/9vbKsHOBki22RX5kpKs+jPMhSyGb7sqZyYYBpiSL0oeRTq6MuPM3I/bSArmNFZLxvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=S+bs9SQ3; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="frzy6IPa"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a7a843bef98so177894266b.2
-        for <linux-coco@lists.linux.dev>; Thu, 10 Oct 2024 12:47:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728589619; x=1729194419; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G3GM/QtSq57guYsRP0uD3zCreoGlMsZEA0FCnFpbyt4=;
-        b=frzy6IPaKIpIzZ2U9xjZaYmcweN7sdc3J1QxXBcxVtCxIKD+JEPzroY8NY54CvFxkp
-         BGDegkUAGbO3g9ijaNexVeylvzI0v4/K9RqfAguOP188+5VgkHBgnWi179qCXWWrw+NG
-         xDmyhidFIpB8GUdSkTvDqKQdv32K9jWo/MMFjtBxxTe4viWRn4whzGViZ8ZPXA7Gldqn
-         jDUwS3PX+FMeOLHSTKrJW6z7wSzWJf3oPo7SD+i57m4TgcC+wMB9RMiq/pbTe0nkqpZa
-         YW4h1rolaW3JYWeqfh7R37HTb7cak/mVXObGdzAGa00lU5/NcDBsjgpZmni+m0WCRNE0
-         oevg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728589619; x=1729194419;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G3GM/QtSq57guYsRP0uD3zCreoGlMsZEA0FCnFpbyt4=;
-        b=nPQY5YkR+2wOrhLH7/v6wkj9dxD7J+5Rf2u6izUdnzNK7ZLUvPBMt312g740s2JFB3
-         o9949EECBS0fj3r/ZA2D0ppi6dQCIMhTSFA/WiICXzbQmA3CgIWPlnirDoUw5Tjq0FbT
-         pjxZcp9pmSxQz0/Dot5mZU9+T6VEK+16yDM/1rGrJy1D59Os5KLx/K5ndDRDfpw6qOCW
-         MOgddwwpnZkZ/67G4+CRYd+d9xc6CYptgCp5ZF2J4QUs7b4+xaqp3/mjsgQeniK35ErP
-         q5/0LevO4aDl5MD806JNQTS2BQAif6hwJAyd0xX2seo0bXnS9CAq/Nx+odTv7conkuHC
-         +F+g==
-X-Forwarded-Encrypted: i=1; AJvYcCUe1nBecoogIa04yQO2kZ4jA2kdPV5kytbF2bE8BgAXC/FXdcCoqgvJVlLCRE2HlCXaXtjtK0uyq9IH@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz42eBiXWRD9Mz7jrd65OXHASOEEJde5QryTurI33t9SRJnnQc/
-	lOFR5nR/QjzLiJ44SNQew7ZnIfPdT5+8MKLu3ffcIBg50CNlyn/WS5sXWjMhgP3xD3S1woNbueE
-	Z25NA4l4yhg8PUMGM691BzDQN8T8=
-X-Google-Smtp-Source: AGHT+IESCWUKMq8YCkR8F/+RNuj2ueWl7s7OXeJ+V0ERay6XruNJRuq7g0SZobQ9AIbu8fC3uYMuMNWPqYH+sYrEEk8=
-X-Received: by 2002:a17:906:6a01:b0:a99:76bc:dba0 with SMTP id
- a640c23a62f3a-a99b940ff3bmr11715366b.37.1728589619131; Thu, 10 Oct 2024
- 12:46:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="S+bs9SQ3"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49ADqTgG029122;
+	Thu, 10 Oct 2024 21:20:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=p1du+Ye7BQqMGbCGPm0NLDXB
+	ijQnXr/8gzzZbkjUG5U=; b=S+bs9SQ3mpvE8P9EYeZGATpgGdP1gBb4TSpyqg5p
+	OMk80dp/Oq+gswoYiL8Er4yR7GW99aVZ4+sKfu+o2fyFMKQ20soZI7/o/+8RI1f6
+	/6CfZIerkLPqvU5GM/5cQPEGyDXFIjLcVgh5Rlzi33ZoYHdtye50Uk89wR8qpc4z
+	4KK2nlFTjQzlmFlN3V4NMnWW7L8tbicoMimbeRE8ClOIM8N9/dz4kzqZYDlbrzm9
+	95ubm2aqo42yh42WcPFxnj2s6ZoiMLE8AL8Zp6ScCLQWwYcYs216Iho8R22FNaVb
+	adAAA1LhSZqtFqVDbH8BKB23a/fJ03ckTwVdToVf25d3Bg==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 426g6n9221-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Oct 2024 21:20:04 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49ALK3nt004421
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Oct 2024 21:20:03 GMT
+Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 10 Oct 2024 14:20:02 -0700
+Date: Thu, 10 Oct 2024 14:20:02 -0700
+From: Elliot Berman <quic_eberman@quicinc.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+CC: Andrew Morton <akpm@linux-foundation.org>,
+        Sean Christopherson
+	<seanjc@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+	<mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen
+	<dave.hansen@linux.intel.com>,
+        Fuad Tabba <tabba@google.com>, David
+ Hildenbrand <david@redhat.com>,
+        Patrick Roy <roypat@amazon.co.uk>, <qperret@google.com>,
+        Ackerley Tng <ackerleytng@google.com>,
+        Mike Rapoport
+	<rppt@kernel.org>, <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mm@kvack.org>, <kvm@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH RFC v2 0/5] mm: Introduce guest_memfd library
+Message-ID: <20241010141522228-0700.eberman@hu-eberman-lv.qualcomm.com>
+References: <20240829-guest-memfd-lib-v2-0-b9afc1ff3656@quicinc.com>
+ <9fd97046-b7b1-49d6-8fc5-2104814152d6@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240930055112.344206-1-ying.huang@intel.com> <cf4a3ae4-deae-4224-88e3-308a55492085@redhat.com>
- <8734lgpuoi.fsf@yhuang6-desk2.ccr.corp.intel.com> <CAHbLzkp_SyRBR+JsxMwM_qKpF=8+TU=36hDY6TuKMHdnLnyxAg@mail.gmail.com>
- <66ff297119b92_964f2294c6@dwillia2-xfh.jf.intel.com.notmuch>
- <CAHbLzkoR1pT1NEL7qAYi+JXOsB7O0FnHyHFOJ+4eZf9vf5K6Wg@mail.gmail.com>
- <66ff5dd3b9128_964fe294ca@dwillia2-xfh.jf.intel.com.notmuch>
- <CAHbLzkqBCfWOXEtafPnuQSj3B3OHGEPAxPs8ycDuX-a5aVgVjg@mail.gmail.com> <d84975b6-1c47-4290-92a3-a1dae180355a@arm.com>
-In-Reply-To: <d84975b6-1c47-4290-92a3-a1dae180355a@arm.com>
-From: Yang Shi <shy828301@gmail.com>
-Date: Thu, 10 Oct 2024 12:46:47 -0700
-Message-ID: <CAHbLzkrXRQcnFPUc+r81y9kbrUmxvkBWZT5gNFRDWLmjZ3fhog@mail.gmail.com>
-Subject: Re: [PATCH] tdx, memory hotplug: Check whole hot-adding memory range
- for TDX
-To: James Morse <james.morse@arm.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, "Huang, Ying" <ying.huang@intel.com>, 
-	David Hildenbrand <david@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, x86@kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>, 
-	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Kai Huang <kai.huang@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <9fd97046-b7b1-49d6-8fc5-2104814152d6@redhat.com>
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: TbXGm-yolUCjzTTItCKQ163W7jB4XeIs
+X-Proofpoint-GUID: TbXGm-yolUCjzTTItCKQ163W7jB4XeIs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 impostorscore=0
+ mlxlogscore=999 mlxscore=0 spamscore=0 phishscore=0 malwarescore=0
+ clxscore=1011 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2409260000 definitions=main-2410100140
 
-On Thu, Oct 10, 2024 at 10:52=E2=80=AFAM James Morse <james.morse@arm.com> =
-wrote:
->
-> Hi guys,
->
-> On 04/10/2024 16:46, Yang Shi wrote:
-> > On Thu, Oct 3, 2024 at 8:15=E2=80=AFPM Dan Williams <dan.j.williams@int=
-el.com> wrote:
-> >> Yang Shi wrote:
-> >>> On Thu, Oct 3, 2024 at 4:32=E2=80=AFPM Dan Williams <dan.j.williams@i=
-ntel.com> wrote:
-> >>>> Yang Shi wrote:
-> >>>>> On Mon, Sep 30, 2024 at 4:54=E2=80=AFPM Huang, Ying <ying.huang@int=
-el.com> wrote:
-> >>>>>>
-> >>>>>> Hi, David,
-> >>>>>>
-> >>>>>> Thanks a lot for comments!
-> >>>>>>
-> >>>>>> David Hildenbrand <david@redhat.com> writes:
-> >>>>>>
-> >>>>>>> On 30.09.24 07:51, Huang Ying wrote:
-> >>>>>>>> On systems with TDX (Trust Domain eXtensions) enabled, memory ra=
-nges
-> >>>>>>>> hot-added must be checked for compatibility by TDX.  This is cur=
-rently
-> >>>>>>>> implemented through memory hotplug notifiers for each memory_blo=
-ck.
-> >>>>>>>> If a memory range which isn't TDX compatible is hot-added, for
-> >>>>>>>> example, some CXL memory, the command line as follows,
-> >>>>>>>>    $ echo 1 > /sys/devices/system/node/nodeX/memoryY/online
-> >>>>>>>> will report something like,
-> >>>>>>>>    bash: echo: write error: Operation not permitted
-> >>>>>>>> If pr_debug() is enabled, the error message like below will be s=
-hown
-> >>>>>>>> in the kernel log,
-> >>>>>>>>    online_pages [mem 0xXXXXXXXXXX-0xXXXXXXXXXX] failed
-> >>>>>>>> Both are too general to root cause the problem.  This will confu=
-se
-> >>>>>>>> users.  One solution is to print some error messages in the TDX =
-memory
-> >>>>>>>> hotplug notifier.  However, memory hotplug notifiers are called =
-for
-> >>>>>>>> each memory block, so this may lead to a large volume of message=
-s in
-> >>>>>>>> the kernel log if a large number of memory blocks are onlined wi=
-th a
-> >>>>>>>> script or automatically.  For example, the typical size of memor=
-y
-> >>>>>>>> block is 128MB on x86_64, when online 64GB CXL memory, 512 messa=
-ges
-> >>>>>>>> will be logged.
-> >>>>>>>
-> >>>>>>> ratelimiting would likely help here a lot, but I agree that it is
-> >>>>>>> suboptimal.
-> >>>>>>>
-> >>>>>>>> Therefore, in this patch, the whole hot-adding memory range is
-> >>>>>>>> checked
-> >>>>>>>> for TDX compatibility through a newly added architecture specifi=
-c
-> >>>>>>>> function (arch_check_hotplug_memory_range()).  If rejected, the =
-memory
-> >>>>>>>> hot-adding will be aborted with a proper kernel log message.  Wh=
-ich
-> >>>>>>>> looks like something as below,
-> >>>>>>>>    virt/tdx: Reject hot-adding memory range: 0xXXXXXXXX-0xXXXXXX=
-XX
-> >>>>>>>> for TDX compatibility.
-> >>>>>>>>> The target use case is to support CXL memory on TDX enabled sys=
-tems.
-> >>>>>>>> If the CXL memory isn't compatible with TDX, the whole CXL memor=
-y
-> >>>>>>>> range hot-adding will be rejected.  While the CXL memory can sti=
-ll be
-> >>>>>>>> used via devdax interface.
-> >>>>>>>
-> >>>>>>> I'm curious, why can that memory be used through devdax but not
-> >>>>>>> through the buddy? I'm probably missing something important :)
-> >>>>>>
-> >>>>>> Because only TDX compatible memory can be used for TDX guest.  The=
- buddy
-> >>>>>> is used to allocate memory for TDX guest.  While devdax will not b=
-e used
-> >>>>>> for that.
-> >>>>>
-> >>>>> Sorry for chiming in late. I think CXL also faces the similar probl=
-em
-> >>>>> on the platform with MTE (memory tagging extension on ARM64). AFAIK=
-,
-> >>>>> we can't have MTE on CXL, so CXL has to stay as dax device if MTE i=
-s
-> >>>>> enabled.
-> >>>>>
-> >>>>> We should need a similar mechanism to prevent users from hot-adding
-> >>>>> CXL memory if MTE is on. But not like TDX I don't think we have a
-> >>>>> simple way to tell whether the pfn belongs to CXL or not. Please
-> >>>>> correct me if I'm wrong. I'm wondering whether we can find a more
-> >>>>> common way to tell memory hotplug to not hot-add some region. For
-> >>>>> example, a special flag in struct resource. off the top of my head.
-> >>>>>
-> >>>>> No solid idea yet, I'm definitely seeking some advice.
-> >>>>
-> >>>> Could the ARM version of arch_check_hotplug_memory_range() check if =
-MTE
-> >>>> is enabled in the CPU and then ask the CXL subsystem if the address =
-range is
-> >>>> backed by a topology that supports MTE?
-> >>>
-> >>> Kernel can tell whether MTE is really enabled. For the CXL part, IIUC
-> >>> that relies on the CXL subsystem is able to tell whether that range
-> >>> can support MTE or not, right? Or CXL subsystem tells us whether the
-> >>> range is CXL memory range or not, then we can just refuse MTE for all
-> >>> CXL regions for now. Does CXL support this now?
-> >>
-> >> So the CXL specification has section:
-> >>
-> >>     8.2.4.31 CXL Extended Metadata Capability Register
-> >>
-> >> ...that indicates if the device supports "Extended Metadata" (EMD).
-> >> However, the CXL specification does not talk about how a given hosts
-> >> uses the extended metadata capabilities of a device. That detail would
-> >> need to come from an ARM platform specification.
-> >>
-> >> Currently CXL subsystem does nothing with this since there has been no
-> >> need to date, but I would expect someone from the ARM side to plumb th=
-is
-> >> detection into the CXL subsystem.
-> >
-> > Yeah, it should be a good way to let the kernel know whether CXL
-> > supports memory tagging or not.
->
-> On its own I don't think its enough - there would need to be some kind of=
- capability in
-> both the CXL root-port and the device to say that MTE tags are sent in th=
-at metadata
-> field. If both support it, then the device memory supports MTE.
+On Thu, Oct 10, 2024 at 03:04:16PM +0200, Paolo Bonzini wrote:
+> On 8/30/24 00:24, Elliot Berman wrote:
+> > In preparation for adding more features to KVM's guest_memfd, refactor
+> > and introduce a library which abstracts some of the core-mm decisions
+> > about managing folios associated with the file. The goal of the refactor
+> > serves two purposes:
+> > 
+> > 1. Provide an easier way to reason about memory in guest_memfd. With KVM
+> > supporting multiple confidentiality models (TDX, SEV-SNP, pKVM, ARM
+> > CCA), and coming support for allowing kernel and userspace to access
+> > this memory, it seems necessary to create a stronger abstraction between
+> > core-mm concerns and hypervisor concerns.
+> > 
+> > 2. Provide a common implementation for other hypervisors (Gunyah) to use.
+> > 
+> > To create a guest_memfd, the owner provides operations to attempt to
+> > unmap the folio and check whether a folio is accessible to the host. The
+> > owner can call guest_memfd_make_inaccessible() to ensure Linux doesn't
+> > have the folio mapped.
+> > 
+> > The series first introduces a guest_memfd library based on the current
+> > KVM (next) implementation, then adds few features needed for Gunyah and
+> > arm64 pKVM. The Gunyah usage of the series will be posted separately
+> > shortly after sending this series. I'll work with Fuad on using the
+> > guest_memfd library for arm64 pKVM based on the feedback received.
+> > 
+> > There are a few TODOs still pending.
+> > - The KVM patch isn't tested. I don't have access a SEV-SNP setup to be
+> >    able to test.
+> > - I've not yet investigated deeply whether having the guest_memfd
+> >    library helps live migration. I'd appreciate any input on that part.
+> > - We should consider consolidating the adjust_direct_map() in
+> >    arch/x86/virt/svm/sev.c so guest_memfd can take care of it.
+> > - There's a race possibility where the folio ref count is incremented
+> >    and about to also increment the safe counter, but waiting for the
+> >    folio lock to be released. The owner of folio_lock will see mismatched
+> >    counter values and not be able to convert to (in)accessible, even
+> >    though it should be okay to do so.
+> > I'd appreciate any feedback, especially on the direction I'm taking for
+> > tracking the (in)accessible state.
+> > 
+> > Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+> > 
+> > Changes in v2:
+> > - Significantly reworked to introduce "accessible" and "safe" reference
+> >    counters
+> 
+> Was there any discussion on this change?  If not, can you explain it a bit
+> more since it's the biggest change compared to the KVM design?  I suppose
 
-OK, we need both root port and device support for MTE. IOW if either
-of them is false, we know MTE can't be supported, so we won't online
-CXL memory as system ram.
+The accessible and safe refcount was discussed in the PUCK and over the
+mailing lists in the previous version of this patchset.
 
->
-> (I'll poke the standards people to see if this is something they already =
-have in the
->  works...)
->
->
-> >>>> However, why would it be ok to access CXL memory without MTE via dev=
-dax,
-> >>>> but not as online page allocator memory?
->
-> >>> CXL memory can be onlined as system ram as long as MTE is not enabled=
-.
-> >>> It just can be used as devdax device if MTE is enabled.
->
-> This makes sense to me.
->
-> We can print a warning that 'arm64.nomte' should be passed on the command=
- line if the CXL
-> memory is more important than MTE and the hardware can't support both.
+That being said though, after discussions at LPC, I'm now behind the
+design Fuad has recently posted [1]. I was on vacation last week and I
+still need to go through his series, but we had discussed the key parts
+of the design offline.
 
-Sounds good to me.
+[1]: https://lore.kernel.org/all/20241010085930.1546800-1-tabba@google.com/
 
->
->
-> >> Do you mean the kernel only manages MTE for kernel pages, but with use=
-r
-> >> mapped memory the application will need to implicitly know that
-> >> memory-tagging is not available?
-> >
-> > I think the current assumption is that all buddy memory (can be used
-> > by userspace) should be taggable. And memory tagging is only supported
-> > for anonymous mapping and tmpfs. I'm adding hugetlbfs support. But any
-> > memory backed by the real backing store doesn't have memory tagging
-> > support.
->
-> Hopefully there are no assumptions here! -
-> Documentation/arch/arm64/memory-tagging-extension.rst says anonymous mapp=
-ings can have
-> PROT_MTE set.
->
-> The arch code requires all memory to support MTE if the CPUs support it.
->
->
-> >> I worry about applications that might not know that their heap is comi=
-ng
-> >> from a userspace memory allocator backed by device-dax rather than the
-> >> kernel.
-> >
-> > IIUC, memory mapping from device-dax is a file mapping, right? If so,
-> > it is safe. If it is not, I think it is easy to handle. We can just
-> > reject any VM_MTE mapping from DAX.
->
-> That should already be the case. (we should check!)
->
-> Because devdax is already a file-mapping, user-space can't expect MTE to =
-work.
-> While some library may not know the memory came from devdax - whoever wro=
-te the
-> malloc()/free() implementation will have known they were using devdax - t=
-his is where the
-> decisions to use MTE and what tag to use is made.
->
-> I don't think this adds a new broken case.
-
-I agree.
-
->
->
-> >>>> If the goal is to simply deny any and all non-MTE supported CXL regi=
-on
-> >>>> from attaching then that could probably be handled as a modification=
- to
-> >>>> the "cxl_acpi" driver to deny region creation unless it supports
-> >>>> everything the CPU expects from "memory".
-> >>>
-> >>> I'm not quite familiar with the details in CXL driver. What did you
-> >>> mean "deny region creation"? As long as the CXL memory still can be
-> >>> used as devdax device, it should be fine.
-> >>
-> >> Meaning that the CXL subsytem knows how to, for a given address range,=
- figure
-> >> out the members and geometry of the CXL devices that contribute to tha=
-t
-> >> range (CXL region). It would be straightforward to add EMD to that
-> >> enumeration and flag the CXL region as not online-capable if the CPU h=
-as
-> >> MTE enabled but no EMD capability.
-> >
-> > It sounds like a good way to me.
->
-> From your earlier description, EMD may not be enough - and this would dep=
-end on the
-> root-port (or at least the host side decoders) to support this too. I'll =
-poke the spec
-> people...
-
-Thank you for following up.
-
->
->
-> Thanks,
->
-> James
+> the reference counting is used in relation to mmap, but it would be nice to
+> have a few more words on how the counts are used and an explanation of when
+> (especially) the accessible atomic_t can take any value other than 0/1.
+> 
+> As an aside, allocating 8 bytes of per-folio private memory (and
+> dereferencing the pointer, too) is a bit of a waste considering that the
+> private pointer itself is 64 bits on all platforms of interest.
+> 
+> Paolo
+> 
+> > - Link to v1:
+> >    https://lore.kernel.org/r/20240805-guest-memfd-lib-v1-0-e5a29a4ff5d7@quicinc.com
+> > 
+> > ---
+> > Elliot Berman (5):
+> >        mm: Introduce guest_memfd
+> >        mm: guest_memfd: Allow folios to be accessible to host
+> >        kvm: Convert to use guest_memfd library
+> >        mm: guest_memfd: Add ability for userspace to mmap pages
+> >        mm: guest_memfd: Add option to remove inaccessible memory from direct map
+> > 
+> >   arch/x86/kvm/svm/sev.c      |   3 +-
+> >   include/linux/guest_memfd.h |  49 ++++
+> >   mm/Kconfig                  |   3 +
+> >   mm/Makefile                 |   1 +
+> >   mm/guest_memfd.c            | 667 ++++++++++++++++++++++++++++++++++++++++++++
+> 
+> I think I'd rather have this in virt/lib.
+> 
+> Paolo
+> 
