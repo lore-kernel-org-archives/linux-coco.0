@@ -1,183 +1,168 @@
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2065.outbound.protection.outlook.com [40.107.102.65])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405A71C3F2F
-	for <linux-coco@lists.linux.dev>; Thu, 10 Oct 2024 12:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728562531; cv=fail; b=WgkhclwDDXKozK6SHaP8ezX162LMKo35hze/9b4DPRXk14JFOPOrBd+zVuwkIeDKDoUS5JbIa597QsWUKSFeq2EMVFnzFvep8ICeHHb4uuf7OPohj2O+YNIektrLuIZ33VEGLq0Q3LrtEOuvpRJY1FLzYWOPQu4Cdlx0b43TfdQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728562531; c=relaxed/simple;
-	bh=fuJI24g+lqVG7snhxlrsiuRR33+OAk6lyJx+tFD0bpc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KKOVEVoxafnMMe61raemXuWDBpVrq1PJgsDTNFZsb4naUVHUs5TLuBZmTHhMMTMmFP9LwERp4eP7jUYaweeeydWcW8WGF9y/5e9bSiRtjMS+AThc+7fuisdvqVCW2FXYjCZ2X/Rr0aFBgWjQVrNtDv2PRt8CNdKfgeXfufg9ny8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=A3wGX7M5; arc=fail smtp.client-ip=40.107.102.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FB41C6882
+	for <linux-coco@lists.linux.dev>; Thu, 10 Oct 2024 12:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728564054; cv=none; b=Plj1vyLztlyDOIvDf4AGvyUsAgE9tQFiWNYyUU5Fk9uI6qWD83DUOTp/5/EvQa4OIwlTWLf8bpH7o4ZqC6v6qIhiprjZs0Bf0HCcADfsnxxNIQh8xR4AZPk5/6ZHUqOEVVCBWyyV9mxtGWfxSrFrsOCCaTAQTNV+KQSnXMfwOAk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728564054; c=relaxed/simple;
+	bh=hj6/rJOhBAPj9FAjBFl/0JgbYaSLLJuXDxMIjgHM29g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=COMa+iQWcDJnM5bbet/OKocjiyy3awXrXLnZXykkA/hBpHfQjE2wtARUUH6Yd7ZA99xL+EUj6D9Kf5Dvbja1fFUFQXrwB/PhvucVvChAHYw96vvm3ysSCh1tjX6tG8gawm4/v93mA7RNnW1wu//87dDPbepb4AleApwK21cP320=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WvQOwJu1; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="A3wGX7M5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UwFTWY+pu56oXcuUbuTJLPbsU4AeJV10MLu+UIC12S2zFsC9KkVJQHs1FaWqxz8eDtM/uZi26asCY253w6AFlsChMV/Uq5zOqepEMZ++CqM65wlKjbpWX+OwD8PdToz+zpwdRGu9RONxqtTLJ8lF5LqVfl6V55xJHfBKq+3dxllL+sWmbaaGhwkBtq3XtOM+t4VC4kw3JgPVZNOYjy2KSyYUru7nB6gxBtXPU1lhzdK2sPSlt8vl9Op62XgyexKrVehDO6PMJrd+m9yHhuCSxeuzG82e2fpMOw9dwFCFy+SduSatyKAH/IABsIOdmRDvvx2wRHAwLNA11xuZC5671Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=91DX+f/Xb/MiOMiKXzxRufE8kaNCoS9bFbGmvzdyaCQ=;
- b=oYlyjeiW1fnVD5CaIqXJHy/Vv/418ZlRbBR28iw/CusrAQKkIfnHOYym7MA2sa+IcdV8QHz0eazzFVMioXxZ5qgS6C3Gr8nyiXZUrjIlAOHXoqUIiGXzAGU6dtQ5i3FICSSWm78GSiDBiboHquhWz3LKeH6IDELk+ViU5l5ZD5+hyt7iSFy23qoHv/alyaZBMh9KAIylu2aeFlAfdITB7KdGZquZqaPRv7PftXigz/1ESR9PpaYolKIwnEBUYMUNf1v3tdyoULReE8gd75BubC+Mss8ad1K0Flrhcp47wioYa1Y+/cWoLhO7hLgDelwZ+pMPrXK4is56Bqsgwlk58w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=91DX+f/Xb/MiOMiKXzxRufE8kaNCoS9bFbGmvzdyaCQ=;
- b=A3wGX7M5nD+VAYFlxKG5+w9TxJKwIbSWPf+gkUENRigpk/zLDFDm5a27laPs7ICmnzbxLEu2TTLdyMU68cBhoZdqyfwu4OHdKjaoHSxC/q3N44xxZ8FaR7eh98j6W3Da31VADt52gGvqOC5amxvcIQP+Y+Xm0Rjonrbzdav+jZs=
-Received: from BY5PR20CA0027.namprd20.prod.outlook.com (2603:10b6:a03:1f4::40)
- by PH7PR12MB9065.namprd12.prod.outlook.com (2603:10b6:510:1f7::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Thu, 10 Oct
- 2024 12:15:25 +0000
-Received: from SJ5PEPF000001E8.namprd05.prod.outlook.com
- (2603:10b6:a03:1f4:cafe::58) by BY5PR20CA0027.outlook.office365.com
- (2603:10b6:a03:1f4::40) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.20 via Frontend
- Transport; Thu, 10 Oct 2024 12:15:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ5PEPF000001E8.mail.protection.outlook.com (10.167.242.196) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8048.13 via Frontend Transport; Thu, 10 Oct 2024 12:15:25 +0000
-Received: from ethanolx16dchost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 10 Oct
- 2024 07:15:24 -0500
-From: Pavan Kumar Paluri <papaluri@amd.com>
-To: <linux-kernel@vger.kernel.org>
-CC: <linux-doc@vger.kernel.org>, <linux-coco@lists.linux.dev>, Borislav Petkov
-	<bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
-	<mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Eric Van
- Tassell" <Eric.VanTassell@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>, "H
- . Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, "Pavan
- Kumar Paluri" <papaluri@amd.com>, Dhaval Giani <dhaval.giani@amd.com>
-Subject: [PATCH v6 2/2] x86 KVM:SVM: Provide "nosnp" boot option for sev kernel command line
-Date: Thu, 10 Oct 2024 07:14:55 -0500
-Message-ID: <20241010121455.15795-3-papaluri@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241010121455.15795-1-papaluri@amd.com>
-References: <20241010121455.15795-1-papaluri@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WvQOwJu1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1728564052;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=lMFODkR2vW9a0hERyrHa5UI56idc0n9E0W4rHG9DS2g=;
+	b=WvQOwJu1drxxue2JtZrOsz/C6wzKYzR/pOV86TS0oCuEzV4ZkN24s1QNHfT4IWLsLz9zX7
+	I2GXHaEJP6aLEu+iRIe8KFns7a2ky/vVkaDM58AzEuUwFBo2W7FDBiAKu4qr+6sa7fan6a
+	bOcac17efUekizYzwImJ2E47ii9F+u4=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-240-GUcRpTmiPNyzqCDFvyPbGg-1; Thu, 10 Oct 2024 08:40:51 -0400
+X-MC-Unique: GUcRpTmiPNyzqCDFvyPbGg-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d462b64e3so310062f8f.3
+        for <linux-coco@lists.linux.dev>; Thu, 10 Oct 2024 05:40:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728564050; x=1729168850;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lMFODkR2vW9a0hERyrHa5UI56idc0n9E0W4rHG9DS2g=;
+        b=GtM8rTSvjv5e5LeL7V3oqX+HCuhAHNTEPfZrEnQJiZlXxcYu/GPmgao5T7ET/kCZ8u
+         eZ2MJ62ytND20fOsLwIlwgyJ1YAMV3IqyBNJhNg/uXUM2Z4rLIxcytxpkajI+DDpVNFz
+         rQqj48akm2hijIy7iMIEdjhTsi5MxV8RVugRvY/g8OBpUgIFtMnnAB/gD371L4G7+lsf
+         r7CYcrVxxM9tt3VZxwq8MOGD/Hy1BVLSgUxpRxE29OZQr1rStORxVV2fsyABJPep1eEM
+         dq09a/TZdcNx/M3o2eFNveb6gkmIiSMZIVn+5APQG7axBvkF3E+skpa4F+yQ29R968YI
+         IS7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVr6q7SUOnX2aVqJG3dZRqIUELKO+BsjlsBhdsqIQpHt6ukcyNBTWV2KKK3jMcekUUAp3KikwBng3b1@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz8VrL/GF4NAY+MEUiI6UbD+DP9nt2iYmFCROpr9uS/e05ylVjI
+	P8me6lvRYn5zMmEbrmpHLBTcfoqJgZquKgUFLUJWtrPv83ZEDpQJIAb5JwwbWktf4SRFLe83Cg0
+	ctFc0zAPDE3BuGzoEH+Tsus41YXG1P6P87IlsshHRy4+tVq5SG2wOKN4OaQcRDyzXQEnVlA==
+X-Received: by 2002:adf:f6d1:0:b0:37c:d569:97b with SMTP id ffacd0b85a97d-37d3a9d3c7dmr3829049f8f.19.1728564049965;
+        Thu, 10 Oct 2024 05:40:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHhRH0ZpjXpF9EqcbW90ozg8Hyr1TAYd4ehAfCcOhkuuhD0Unrx1FsjGmhIuRLbrpNtk4DKGw==
+X-Received: by 2002:adf:f6d1:0:b0:37c:d569:97b with SMTP id ffacd0b85a97d-37d3a9d3c7dmr3829026f8f.19.1728564049570;
+        Thu, 10 Oct 2024 05:40:49 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c742:9200:eb2e:74f9:6f5c:3040? (p200300cbc7429200eb2e74f96f5c3040.dip0.t-ipconnect.de. [2003:cb:c742:9200:eb2e:74f9:6f5c:3040])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6bd266sm1469333f8f.40.2024.10.10.05.40.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Oct 2024 05:40:49 -0700 (PDT)
+Message-ID: <037801d9-8923-4d49-8423-072fd7c73069@redhat.com>
+Date: Thu, 10 Oct 2024 14:40:47 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001E8:EE_|PH7PR12MB9065:EE_
-X-MS-Office365-Filtering-Correlation-Id: 073d4354-8329-4047-aef1-08dce92538c8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Wp4EE0uyhlglsQJIJAnsWekwq7gDEkymwIh4Ffsha5r9VNpF9tp434bf1O1Z?=
- =?us-ascii?Q?/bK9PZJV59Tz9ckRGmsFYqss6Q1HlxNf4iIe2to6zQGPbktVx6q0jnxcCBdo?=
- =?us-ascii?Q?3U1Nyvfrp/9JpfO+cRnc007nyhcNxm9eLRtRRAAqWufCkoSaPq8N1naiOIrM?=
- =?us-ascii?Q?cjDltdVN5Kr1KIoO9/UQ8bYYjcv8451jgpDGbsv8osaUrJd8x0O1iR5OtbIg?=
- =?us-ascii?Q?pSwxREjhQhahr+DjFwE7P/uCj1KZ97dZT2FGzUdtzSwxXY5hYIjsCRAU51aO?=
- =?us-ascii?Q?d3MdjVwnrX+9qRIX5jCp1+nY+MHM/HdrPwmaWxiIR2CWMfd1gp8W1e5aOAZG?=
- =?us-ascii?Q?dy+29bFlJ46SpDDYr4ujguTZqrEIgayYxIy1QKZLDwxTfMQEwcw5Y2cvPpOL?=
- =?us-ascii?Q?kio2oyF7DNvVh73jq7csN8KpNWvBnx83Vl3hEKzmTe/gpmmE7ply72dk85Zv?=
- =?us-ascii?Q?17GkMwBQKWpNpGYehlHy8IXzlFN5rx8R03/8sh5hrYT0KoV6LYo2x4knVqt9?=
- =?us-ascii?Q?c45WNz3noO/sIB5Q7WBDfyKlj+Xz4wfxPGYR3C/4oG3yoT1JXfIv2v/XOZwK?=
- =?us-ascii?Q?uZosJVwNlHZctPY4fLMFWdLV8rLne/A2rpXFNFkKhEKYOIvlIuI3zZL4d/gy?=
- =?us-ascii?Q?zRLrep6pwuQFPNXz7g2lxhWYIV4gl9kPWrJRqTFXnOZsMRiEbSwr778P7FLw?=
- =?us-ascii?Q?30xvvZern2VxdRroYV8PWLq57hyU0SXEMrjt8SbIqQFW3aa8a8lm3NoNywjl?=
- =?us-ascii?Q?O8WT7fnLmNmImQOrs2ftgwMkmTutJf0Q/hpzpbN74pjO+r9lz42wsg3hUrur?=
- =?us-ascii?Q?bYc9zE44AiT05kJqjW3wwRF48geZpcNRXWPJgBr6lsUhQTekMrEDZiaSofxV?=
- =?us-ascii?Q?LW1dROlqaZFFZm/RO40Q2hkZL5wTnACCmWcI2VL6bFAjxXa8PCZliEON1Z6N?=
- =?us-ascii?Q?ypgwaiiI5990ZOfWOQBybrwI8PxIpQJA0OXYAfdfMZc+uVvjuawbClItEmAj?=
- =?us-ascii?Q?j2snutddwVGFb1OLkwa+SWYBKNoDlljDrdrmwtT6ChhrkusTo6UGT7+KVt+V?=
- =?us-ascii?Q?DOcchcedUQkye2UbMbN9stxk+/rMzM7zExqfeiyLdfCH1bGgFMDHoEJKWel1?=
- =?us-ascii?Q?gQEKsYx/gcdq5O/ZEmxntGVQ5JzgEwtPDzM/zIRcZeMqGCtfouFdQUTPmm7H?=
- =?us-ascii?Q?zKXgaGA2RHGIYxCKTmwXnMetXWPFpljwDCZ5xfg8DAEet5QiZ9S/XBHc1y8T?=
- =?us-ascii?Q?1muqPbO/KTyIzI7T/d9BtU1C6PzHvob+cEOhkGcryY0XoDV6nEP0mCc2dQek?=
- =?us-ascii?Q?wR4HDN8bgqEdy9NV0+uKV0dymsesQ8PBvHk65X4QTrOzruLo32fCKAKrvf//?=
- =?us-ascii?Q?jhOMCpdLxTQMvuY2uKjM51l2/8G3?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2024 12:15:25.4099
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 073d4354-8329-4047-aef1-08dce92538c8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001E8.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9065
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -V2] tdx, memory hotplug: Check whole hot-adding memory
+ range for TDX
+To: Huang Ying <ying.huang@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ Kai Huang <kai.huang@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Andy Lutomirski <luto@kernel.org>, Oscar Salvador <osalvador@suse.de>
+References: <20241010074726.1397820-1-ying.huang@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20241010074726.1397820-1-ying.huang@intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Provide a "nosnp" kernel command line option to prevent enabling of the
-RMP and SEV-SNP features in the host/hypervisor. Not initializing the
-RMP removes system overhead associated with RMP checks.
+>   extern u64 max_mem_size;
+>   
+>   extern int mhp_online_type_from_str(const char *str);
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 621ae1015106..c4769f24b1e2 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1305,6 +1305,11 @@ int try_online_node(int nid)
+>   	return ret;
+>   }
+>   
+> +int __weak arch_check_hotplug_memory_range(u64 start, u64 size)
+> +{
+> +	return 0;
+> +}
 
-Co-developed-by: Eric Van Tassell <Eric.VanTassell@amd.com>
-Signed-off-by: Eric Van Tassell <Eric.VanTassell@amd.com>
-Signed-off-by: Pavan Kumar Paluri <papaluri@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
----
- Documentation/arch/x86/x86_64/boot-options.rst | 5 +++++
- arch/x86/virt/svm/cmdline.c                    | 7 +++++++
- 2 files changed, 12 insertions(+)
+BTW, I remember that "__weak" doesn't always behave the way it would 
+seem, which is the reason we're usually using
 
-diff --git a/Documentation/arch/x86/x86_64/boot-options.rst b/Documentation/arch/x86/x86_64/boot-options.rst
-index 98d4805f0823..d69e3cfbdba5 100644
---- a/Documentation/arch/x86/x86_64/boot-options.rst
-+++ b/Documentation/arch/x86/x86_64/boot-options.rst
-@@ -305,3 +305,8 @@ The available options are:
- 
-    debug
-      Enable debug messages.
-+
-+   nosnp
-+     Do not enable SEV-SNP (applies to host/hypervisor only). Setting
-+     'nosnp' avoids the RMP check overhead in memory accesses when
-+     users do not want to run SEV-SNP guests.
-diff --git a/arch/x86/virt/svm/cmdline.c b/arch/x86/virt/svm/cmdline.c
-index 9640507342e0..313415d6f53f 100644
---- a/arch/x86/virt/svm/cmdline.c
-+++ b/arch/x86/virt/svm/cmdline.c
-@@ -11,6 +11,7 @@
- #include <linux/printk.h>
- 
- #include <asm/sev-common.h>
-+#include <asm/cpufeature.h>
- 
- struct sev_config sev_cfg __read_mostly;
- 
-@@ -24,6 +25,12 @@ static int __init init_sev_config(char *str)
- 			continue;
- 		}
- 
-+		if (!strcmp(s, "nosnp")) {
-+			setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
-+			cc_platform_clear(CC_ATTR_HOST_SEV_SNP);
-+			continue;
-+		}
-+
- 		pr_info("SEV command-line option '%s' was not recognized\n", s);
- 	}
- 
+#define arch_check_hotplug_memory_range arch_check_hotplug_memory_range
+
+#ifndef arch_check_hotplug_memory_range
+...
+#endif
+
+
+Not that I remember the details, just that it can result in rather 
+surprising outcomes (e.g., the wrong function getting called).
+
 -- 
-2.34.1
+Cheers,
+
+David / dhildenb
 
