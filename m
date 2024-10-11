@@ -1,66 +1,66 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CCE20FA96
-	for <linux-coco@lists.linux.dev>; Fri, 11 Oct 2024 09:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831F420ADD9
+	for <linux-coco@lists.linux.dev>; Fri, 11 Oct 2024 09:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728640114; cv=none; b=j+VamqqgyWuu5N9hE1m36QcmELKUB2O3xfKYM+2zQZGVbBbduHUucqtXyHTPNkr41zQFq8tamG+9wQMQxbcP95/1A5GuI6DNdvma7iR3c8iOnTH29OsaV+OlYFcywDp2V+zn8jzd3rfp53JrDkwr8OFD995h3qt5ih6RFlsK2ps=
+	t=1728640402; cv=none; b=TSOHIJYJCeeQGoubCxeuL7mqxXX56tGqIjA5jeUed6q9v1rbLrBxjQ5RI2SoRf91yjzU3wocpZFbVBTSSG3BEpEtUHFLrV5IQ344CE+i01bs1lWra/P2KdV3mm8FFLC9R+PG7Nr4b4n7PhbL6ykxlpaGusMAOa5PpB9y/wV8BE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728640114; c=relaxed/simple;
-	bh=6zLrCxvPWp/HfBePygSl4UEA5jCtWhS8Xlx9eW/+QxY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a/GXMt1unnjnlBDlGGJ8PhyRHnVMwA8MjjhCyfVXZVYWRg/raqNjFvr9sq7GniboGmLg2hbo8jZVlTEN4m9alWcnHkCrcLTYLOoOIkRzGpdaxlfShjVCxxdl8uXwIWq/VHQr2+quEXNiQ8zHW1tzJttFhY7mEUME2fJsd/2spxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ir2CN8YO; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1728640402; c=relaxed/simple;
+	bh=SCJ/nWEH7wpWt+ujaPajvndd5YxOckzbLIJHJ+WzosA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=NKh5fbpLYZPJpHJMEtaJetDMVA0kma9O3pO7+VvvwXk3MSERZ3ma7dYZIzdhCh9ihMJGbCrU9PP8hX4KBsJXPp4MiHiJ5WUB7bOFeYKu2UtepQBjtvDYPZP0ONsFUdgWwAXsker2QdqvF17bsnEvpH9GQGxAVjwXf6XwHlBP32c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iGrZ10Xo; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ir2CN8YO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iGrZ10Xo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728640111;
+	s=mimecast20190719; t=1728640398;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nFml5bu07TjtsGgoGy1G/ldM+ZV3Omcp3k9SfVkcSQM=;
-	b=Ir2CN8YOcGxRljGbor8MqAPV1vO+iy2TMFxozSw70osgYWi4vHVOez5oem0qplrJebxTl5
-	8Qv2vUem00r/M+A32Lr0fXSLnIW5+F5xdEDwwR9Y0Jut/9Cd0QNiqugDuXr859bHDh7rrC
-	E/7SsKEMgp6XYEialR+gJyIAzpntsho=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=j8JgN0B7e2RGQHwmbcuj8xvOSAz5VKcMMLTM3uCsXkw=;
+	b=iGrZ10XoibLsMyJeEMeQlH8tvIaxKIiyDQ5FeFmjD+7JIMx8TSiTOYDx5r+Erv8t5CbAIq
+	rGLBzIjN9sWJqeWHXhKnjMMqzsf2hYMKL+SkG8V80WXEn6i6vFpWflSpDWFu9es0qHi+NE
+	BkC0q8Ab/JAkYXH7qwyAmciL0f5yMXs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-l-MzFEJ0MWysI4ZRVkaY7A-1; Fri, 11 Oct 2024 05:48:27 -0400
-X-MC-Unique: l-MzFEJ0MWysI4ZRVkaY7A-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4311c47684aso4681425e9.0
-        for <linux-coco@lists.linux.dev>; Fri, 11 Oct 2024 02:48:27 -0700 (PDT)
+ us-mta-93-M-bwxXdGNraLF2AjqQI7Fg-1; Fri, 11 Oct 2024 05:53:17 -0400
+X-MC-Unique: M-bwxXdGNraLF2AjqQI7Fg-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-42cb0b0514bso11462905e9.1
+        for <linux-coco@lists.linux.dev>; Fri, 11 Oct 2024 02:53:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728640107; x=1729244907;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nFml5bu07TjtsGgoGy1G/ldM+ZV3Omcp3k9SfVkcSQM=;
-        b=hfXbLuLRjYv6YW4srjGartbkAAdHI5RhDcHPeIgWZ5aSO0CBynQUxVhHFG3Bgwp/K5
-         yEhxl14BQ2RjYLZLMMLhgZJ6n4OKNS6DzG5eBO+8Vj3gDLq2G5sAgFt8e2PzW2B7QJmp
-         hyS0LAXfSC/ImWjYIAjiXrSI80s5e/dd89lxVv7VcOytFJqseOpaN1I51Ck3Y5iPVcot
-         ELF1O9BpeQvjH2CnhovPxkWQckPrNhRRVwd+FM+7JpfE+vPQPfG7HDifFBV5RUokSuq1
-         ynnBSMn1xBPLsoieFCCJZAgMuRklHfWlaf/Gg9mEG6xg0Bz7Ma+gVVEoN6V0lMtevrRF
-         Tlqg==
-X-Forwarded-Encrypted: i=1; AJvYcCXu6SZp9FSFC4WHiTofvMDQWjwSAfQvDVQe+3Tud33vIl/W+eLgkU+QVmmG9tCRYSK4YxD0JwrbjVzk@lists.linux.dev
-X-Gm-Message-State: AOJu0YyTDnkHZq0qYt/5TMJi7EjP109X7/Ex3ULOsdVqI4IrYNm9svYR
-	YHgtwrcu7GqoYvehxY7+lQIVuFlq1NO/E0Ci3YAs0KTaYrItTi6jw3vPQOaeXe3uZdg7ch3AGhw
-	PVw5JucBMm3lzqtFZZRfuh+w2I+NoOKTkpDk3XA2wxZPcKfgLQ3cQrmVlTN8=
-X-Received: by 2002:a05:600c:1d0e:b0:431:1575:2e83 with SMTP id 5b1f17b1804b1-4311ded1b02mr13650975e9.10.1728640106704;
-        Fri, 11 Oct 2024 02:48:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE/ywSqey+Mf6IeCMC4/m/fXHc33V5jKaT5QQ3u/c1qmdPgsV1I/ucAMlKe8fOi9FNwsuX/Zg==
-X-Received: by 2002:a05:600c:1d0e:b0:431:1575:2e83 with SMTP id 5b1f17b1804b1-4311ded1b02mr13650815e9.10.1728640106306;
-        Fri, 11 Oct 2024 02:48:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728640396; x=1729245196;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:from:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=j8JgN0B7e2RGQHwmbcuj8xvOSAz5VKcMMLTM3uCsXkw=;
+        b=f2Ye8BbI0uqT/DYHnLs7elc1jpukoZ+siUB2dTbhTGkDkryh+RVr/Dv4evwDNLAE4t
+         pSQLILFoXvHQ0c9qkHZvWgq2yvHaO2H4AK46zGcxrSziSQtW9nZhpBC9IPaJJ6Jb6rlI
+         CaVNftJInjZUKh72treN/Ru3wLRh6HtT2ZBp3tU/GFvJeYoEQIm+voKHLf6B1VGXQytg
+         n4KIEeTglOhRJHYTPTSwvx6TW9fym4iDtoMPH1QsntExCrvSS2+cjOYOFGKmvZzoYm+3
+         MsUQZ5+EBhkh3vCGji36wGQOaeo85ZsV0o75bAQSpQ7ovEhVZ7dPsDsWUijNpmbXCwoR
+         fiqA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDiqL87PzVwZfdXKe86NWRQjCzVpDlx5iKFs0J8Yidplerwq/1/VvDseMY/AkZ8/PDDWUJqTaGL2IS@lists.linux.dev
+X-Gm-Message-State: AOJu0YygjAcUT3t2IFCmaX1PohyjpQsgj4vcCOSM1VCMWatXgUw6udIx
+	VgH5YL5ml5pOKfbPm1JRia7WerPxKVUEJgmHlMufBh2ptaNBRSRK1rDTSx0ob6M5k+WuGWkePV5
+	SMUBZuCWSUN7KlTSuIncNeyq19yGzl6za63hG06aVPsK4Wx6vTFWt7VbH2QE=
+X-Received: by 2002:a05:600c:350f:b0:42e:d4a2:ce67 with SMTP id 5b1f17b1804b1-4311dee8073mr17857755e9.17.1728640395819;
+        Fri, 11 Oct 2024 02:53:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMlYp7nE25GUUlqYE8/ghORz1FKWYNasIRQ1LAXdxLixDCR0HKVgF11tI6nbCvxAsBI6BWKg==
+X-Received: by 2002:a05:600c:350f:b0:42e:d4a2:ce67 with SMTP id 5b1f17b1804b1-4311dee8073mr17857465e9.17.1728640395382;
+        Fri, 11 Oct 2024 02:53:15 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c749:9100:c078:eec6:f2f4:dd3b? (p200300cbc7499100c078eec6f2f4dd3b.dip0.t-ipconnect.de. [2003:cb:c749:9100:c078:eec6:f2f4:dd3b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430d748d450sm70323745e9.39.2024.10.11.02.48.25
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431182ff785sm37510915e9.13.2024.10.11.02.53.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Oct 2024 02:48:25 -0700 (PDT)
-Message-ID: <4bc038a4-e8ff-4441-acb1-63fcb3dc9068@redhat.com>
-Date: Fri, 11 Oct 2024 11:48:24 +0200
+        Fri, 11 Oct 2024 02:53:14 -0700 (PDT)
+Message-ID: <50881635-092f-4940-b998-1532d5c9f83a@redhat.com>
+Date: Fri, 11 Oct 2024 11:53:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,6 +70,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH -V2] tdx, memory hotplug: Check whole hot-adding memory
  range for TDX
+From: David Hildenbrand <david@redhat.com>
 To: "Huang, Ying" <ying.huang@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
@@ -83,7 +84,7 @@ References: <20241010074726.1397820-1-ying.huang@intel.com>
  <87o73ra0p7.fsf@yhuang6-desk2.ccr.corp.intel.com>
  <71dc3853-45a6-4fa5-b3c6-b165e0ab6a1b@redhat.com>
  <87v7xz81jk.fsf@yhuang6-desk2.ccr.corp.intel.com>
-From: David Hildenbrand <david@redhat.com>
+ <4bc038a4-e8ff-4441-acb1-63fcb3dc9068@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -129,62 +130,89 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <87v7xz81jk.fsf@yhuang6-desk2.ccr.corp.intel.com>
+In-Reply-To: <4bc038a4-e8ff-4441-acb1-63fcb3dc9068@redhat.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 11.10.24 10:51, Huang, Ying wrote:
-> David Hildenbrand <david@redhat.com> writes:
-> 
->> On 11.10.24 03:27, Huang, Ying wrote:
->>> David Hildenbrand <david@redhat.com> writes:
+On 11.10.24 11:48, David Hildenbrand wrote:
+> On 11.10.24 10:51, Huang, Ying wrote:
+>> David Hildenbrand <david@redhat.com> writes:
+>>
+>>> On 11.10.24 03:27, Huang, Ying wrote:
+>>>> David Hildenbrand <david@redhat.com> writes:
+>>>>
+>>>>>>      extern u64 max_mem_size;
+>>>>>>        extern int mhp_online_type_from_str(const char *str);
+>>>>>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>>>>>> index 621ae1015106..c4769f24b1e2 100644
+>>>>>> --- a/mm/memory_hotplug.c
+>>>>>> +++ b/mm/memory_hotplug.c
+>>>>>> @@ -1305,6 +1305,11 @@ int try_online_node(int nid)
+>>>>>>      	return ret;
+>>>>>>      }
+>>>>>>      +int __weak arch_check_hotplug_memory_range(u64 start, u64 size)
+>>>>>> +{
+>>>>>> +	return 0;
+>>>>>> +}
+>>>>>
+>>>>> BTW, I remember that "__weak" doesn't always behave the way it would
+>>>>> seem, which is the reason we're usually using
+>>>>>
+>>>>> #define arch_check_hotplug_memory_range arch_check_hotplug_memory_range
+>>>>>
+>>>>> #ifndef arch_check_hotplug_memory_range
+>>>>> ...
+>>>>> #endif
+>>>>>
+>>>>>
+>>>>> Not that I remember the details, just that it can result in rather
+>>>>> surprising outcomes (e.g., the wrong function getting called).
+>>>> I can replace __weak with #define/#ifndef.
+>>>> However, it appears that "__weak" is still widely used now.
 >>>
->>>>>     extern u64 max_mem_size;
->>>>>       extern int mhp_online_type_from_str(const char *str);
->>>>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->>>>> index 621ae1015106..c4769f24b1e2 100644
->>>>> --- a/mm/memory_hotplug.c
->>>>> +++ b/mm/memory_hotplug.c
->>>>> @@ -1305,6 +1305,11 @@ int try_online_node(int nid)
->>>>>     	return ret;
->>>>>     }
->>>>>     +int __weak arch_check_hotplug_memory_range(u64 start, u64 size)
->>>>> +{
->>>>> +	return 0;
->>>>> +}
->>>>
->>>> BTW, I remember that "__weak" doesn't always behave the way it would
->>>> seem, which is the reason we're usually using
->>>>
->>>> #define arch_check_hotplug_memory_range arch_check_hotplug_memory_range
->>>>
->>>> #ifndef arch_check_hotplug_memory_range
->>>> ...
->>>> #endif
->>>>
->>>>
->>>> Not that I remember the details, just that it can result in rather
->>>> surprising outcomes (e.g., the wrong function getting called).
->>> I can replace __weak with #define/#ifndef.
->>> However, it appears that "__weak" is still widely used now.
+>>> Probably better to avoid new ones.
 >>
->> Probably better to avoid new ones.
-> 
-> Sure.  Will do that in the future versions.
-> 
->> See also
->> Documentation/dev-tools/checkpatch.rst
+>> Sure.  Will do that in the future versions.
 >>
->> I assume checkpatch.pl should complain as well?
+>>> See also
+>>> Documentation/dev-tools/checkpatch.rst
+>>>
+>>> I assume checkpatch.pl should complain as well?
+>>
+>> Double checked again.  It doesn't complain for that.
 > 
-> Double checked again.  It doesn't complain for that.
+> Indeed, it only checks for usage of "weak" for *declarations*. So maybe
+> it's fine after all and I am misremembering things. So just leave it as
+> is for the time being.
+> 
 
-Indeed, it only checks for usage of "weak" for *declarations*. So maybe 
-it's fine after all and I am misremembering things. So just leave it as 
-is for the time being.
+For completeness, this is the issue I remembered:
+
+commit 65d9a9a60fd71be964effb2e94747a6acb6e7015
+Author: Naveen N Rao <naveen@kernel.org>
+Date:   Fri Jul 1 13:04:04 2022 +0530
+
+     kexec_file: drop weak attribute from functions
+     
+     As requested
+     (http://lkml.kernel.org/r/87ee0q7b92.fsf@email.froward.int.ebiederm.org),
+     this series converts weak functions in kexec to use the #ifdef approach.
+     
+     Quoting the 3e35142ef99fe ("kexec_file: drop weak attribute from
+     arch_kexec_apply_relocations[_add]") changelog:
+     
+     : Since commit d1bcae833b32f1 ("ELF: Don't generate unused section symbols")
+     : [1], binutils (v2.36+) started dropping section symbols that it thought
+     : were unused.  This isn't an issue in general, but with kexec_file.c, gcc
+     : is placing kexec_arch_apply_relocations[_add] into a separate
+     : .text.unlikely section and the section symbol ".text.unlikely" is being
+     : dropped.  Due to this, recordmcount is unable to find a non-weak symbol in
+     : .text.unlikely to generate a relocation record against.
+
+
 
 -- 
 Cheers,
