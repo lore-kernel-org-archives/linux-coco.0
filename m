@@ -1,120 +1,113 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C692940D
-	for <linux-coco@lists.linux.dev>; Fri, 11 Oct 2024 15:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B248E197A9F
+	for <linux-coco@lists.linux.dev>; Fri, 11 Oct 2024 16:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728659744; cv=none; b=nQRzZrNuy7DGJ7axdmftM0LahWmkCXgdiLFXrIsNsT7HTyFjoGVrrmUT/wa5t2p5Ifr3+lzIEwK2h51zm3wruTgqojRmmxidQyiEwtyQeX8OXa5hcv2XKnm5kMom4xo8nluGNkQlQpqMVpoAi8OJzz8X12U+OB9iMvqckmIVRnU=
+	t=1728663711; cv=none; b=sx8qVaeL9AOpbo+SAxlcgHqrocvFohvyroRt/bklndEMMRwEWf41zgMS7mNNlXFp+KdABVHmWoLGwyGkvero9wV2tQWp+7rxqK+psBxfDnKB4CMOppHY+qwT9cu8FeCHszJoxOtiOO161VkqjceSSTweXBx2zei19McCs0LMN4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728659744; c=relaxed/simple;
-	bh=0ird5SSUaLCFpmcf0H3uDs6mag8WxLiTFKAm5TpIph0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Tx2kZHxG44QWmLU/8FLcRX55nN7oGAGN8+05lrKs6OOmboJHCMcNOVoK+t7bFrPStJAV2Yicu/kPn0Zs7kMMFjcArLKaOTgllgfZp7TQJnJZSITj5Zxl6eIiFRpgxtoj/jYtHaOqRL/UyTaTGYrIkgfbZuZrlp09EjKBmL0ewa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1qSMUNiC; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1728663711; c=relaxed/simple;
+	bh=ECupTpD4ARhVG6JGOoFsGZdnvX3iKONH0IXFKqFvXV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CeIrvl79y7FTIaYYgq0h+KqC5/3NORSmUzamER1O6nO7jVT1kRYFgeIwK3kUr23h9TOJkzu74a2hR8RPGUyR3Os+0eL852cOEgunUFoe/R/dD1vSt0n4AB44Tz5ii598kg4tMFY2RvPrrw+WZWttgafR8igtZE2zDFAf23OSATQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ASAUfGwy; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1qSMUNiC"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e35199eb2bso8440697b3.3
-        for <linux-coco@lists.linux.dev>; Fri, 11 Oct 2024 08:15:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728659741; x=1729264541; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yD8fLJDMIKEGL9LdS26hHvshcG+d1j7neE9mXfOfORQ=;
-        b=1qSMUNiC5HBUsvhkIZgIJEsf2EwwPxworTzNQJL9i+4BRNVwU7zEzw0hKW2Pi5FUG1
-         5mjXVAiErlwQuJsNKTq4ZBQhWRVv2YiT0DN0awKHPcCpu/mu4P1KEvt/WbFTniu70hdt
-         EmJFXlCRDRo6SqLWsd98pNaWDV43nKtLJYONITKFSIukP1xDAmgY9Ui0Y/v5ZBwtytU7
-         e2H+JSh+j3bs5Znyz/gWUkqV12WD7dPxYcJCGDIJa8paDMFyDRqaTbUYim2xX5/KEROs
-         p7zVmGA2sTj6d+AoF0D/1doo6ZljyEHcjXX/iS+On6csKPLDlm+aJlEvpVAADcuzINZA
-         cxSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728659741; x=1729264541;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yD8fLJDMIKEGL9LdS26hHvshcG+d1j7neE9mXfOfORQ=;
-        b=v6uvQ5kPBDGfD3JvaH/hxz1hgw6Wwoh68S4M4d5McmezG9f8+m1figuPi/MbBTpuaG
-         uGOW9daVVXZsOTT+YzdLssioTcVsK7UBuT+YrlSnmL80iAZP/BJT5/hr/Ez38l9uy3Cm
-         80Y8SL3RoFfWLR8W89AX0gzMhQTm3A1WNADenuPVhX5mkyUFCF32gygulU4WJfHbLBQV
-         vLlJ+rI30D5HAgG8PgW/VVwlsXKfhAWgqVhxD5ZhKk0A89COtZrQW3hzIJToKYIXOrJp
-         I0TyFfBDdfRmjTOC73rz5j/C8Se3bzdTvjexEyUHbbxUvo7jU1g5mO3t9X3FhHW3GaSf
-         HE9g==
-X-Forwarded-Encrypted: i=1; AJvYcCVTwWPntfKj3fTlKSiStjJoFs0z98d+fUugmpIuu08xLOG5ykmNE2Co3X952eA5tEu9QXLUr4Cb4/gc@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy3z30kzETH32MLzOat+kfCaDRRcZAo6ZTQHMWUMSLjXHVfIKHP
-	tefDHcOk68pHeTLRfZ99ocpeNDFfJwhCm3/h7oPPCq7BJqw3inxKUH9ASsWELuQ1CQZDMakMeGl
-	7sg==
-X-Google-Smtp-Source: AGHT+IHcJiD6aNAzPZbyQ0X6W/CQXqg5RExz1ZOW/RVcZQ9RjOja9gvFQTsg5ZX8TQuQ7LSYdG7H3he9psU=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:a25:86d0:0:b0:e25:5cb1:77cd with SMTP id
- 3f1490d57ef6-e291a32d32cmr11193276.10.1728659741554; Fri, 11 Oct 2024
- 08:15:41 -0700 (PDT)
-Date: Fri, 11 Oct 2024 08:15:40 -0700
-In-Reply-To: <d54f9b64-fc9f-4b63-8212-7d59e5d5a54d@redhat.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ASAUfGwy"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5063B40E0163;
+	Fri, 11 Oct 2024 16:21:46 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id gIJqbr9fPyHI; Fri, 11 Oct 2024 16:21:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1728663700; bh=YTOw6MvyQfsbbhTtfOUGLF8pwamm/nmExAZ1ApDUoHU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ASAUfGwyjX5NZeGh/eb3gR8eWY6Xde4fvJf+YcsJ7Ydh/Dp3sZIM5L+WvhGsLrjfO
+	 ZW1OCY1chBKLqynzIPeb0pLUNvO2jUAvhHmMiktETe2r4GkBFUxbcN2xugJ7D/kXCf
+	 KPCjcWvNVmCITQSit3votd9ylHyajMlpDC67C21P5cdkoOwoUrIrFBUheXx5vKYL6p
+	 Ak/fm5jBoLP/hGNK7djA0to0b5iRXCjbW/AZyFy6Tqows0+aAgN9DV3Lbc4gJrc5d3
+	 vWxz+jWUw1nQGbvZTyQF5WOeEpIsB+1L9B7vVku6j2T3U2y75BK+EA7IdV4KhRru4Z
+	 6P3SZ2vWhfzfQ+AitFERda9rLBfMlB4lNS3pNzehkW2fIr5NktFWXwyj5kahUuvOjf
+	 oEQGcza54xuzeyjHJaKla+g78UXjx0kqIrHSUQw//z/9s6ATrwEBHvEqXuLpU5SOAJ
+	 2fbvK/+WpuGU6dYIiSkPAWDnX3uMFu2rF5S4IGlJWeTZWM55C+mSl/W1c+UEVFHomK
+	 WzczfYiJLRUcvaY+9knswG5Y4sk7v4nCSdnkAS0YO9ngCrN02v343qHV/AViO8/KO+
+	 nJTpS4irlTL41CbjYVvxNkkI/fFxHIDVNuxBzELTl5Fukv1V5FSolWdpFGHeLUpNf/
+	 J9jiUl0GT133LVclsD0e9dFk=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8E58C40E0191;
+	Fri, 11 Oct 2024 16:21:26 +0000 (UTC)
+Date: Fri, 11 Oct 2024 18:21:20 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Pavan Kumar Paluri <papaluri@amd.com>
+Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-coco@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Eric Van Tassell <Eric.VanTassell@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dhaval Giani <dhaval.giani@amd.com>
+Subject: Re: [PATCH v6 1/2] x86, KVM:SVM: Move sev specific parsing into
+ arch/x86/virt/svm
+Message-ID: <20241011162120.GDZwlQgKTFi22JZ5If@fat_crate.local>
+References: <20241010121455.15795-1-papaluri@amd.com>
+ <20241010121455.15795-2-papaluri@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <diqzy12vswvr.fsf@ackerleytng-ctop.c.googlers.com> <d54f9b64-fc9f-4b63-8212-7d59e5d5a54d@redhat.com>
-Message-ID: <ZwlA7oi4WQWi6bXB@google.com>
-Subject: Re: Proposal: bi-weekly guest_memfd upstream call
-From: Sean Christopherson <seanjc@google.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241010121455.15795-2-papaluri@amd.com>
 
-On Fri, Oct 11, 2024, David Hildenbrand wrote:
-> On 10.10.24 19:14, Ackerley Tng wrote:
-> > David Hildenbrand <david@redhat.com> writes:
-> > 
-> > > Ahoihoi,
-> > > 
-> > > while talking to a bunch of folks at LPC about guest_memfd, it was
-> > > raised that there isn't really a place for people to discuss the
-> > > development of guest_memfd on a regular basis.
-> > > 
-> > > There is a KVM upstream call, but guest_memfd is on its way of not being
-> > > guest_memfd specific ("library") and there is the bi-weekly MM alignment
-> > > call, but we're not going to hijack that meeting completely + a lot of
-> > > guest_memfd stuff doesn't need all the MM experts ;)
-> > > 
-> > > So my proposal would be to have a bi-weekly meeting, to discuss ongoing
-> > > development of guest_memfd, in particular:
-> > > 
-> > > (1) Organize development: (do we need 3 different implementation
-> > >       of mmap() support ? ;) )
-> > > (2) Discuss current progress and challenges
-> > > (3) Cover future ideas and directions
-> > > (4) Whatever else makes sense
-> > > 
-> > > Topic-wise it's relatively clear: guest_memfd extensions were one of the
-> > > hot topics at LPC ;)
-> > > 
-> > > I would suggest every second Thursdays from 9:00 - 10:00am PDT (GMT-7),
-> > > starting Thursday next week (2024-10-17).
-> > 
-> > This time works for me as well, thank you!
-> > 
-> > > 
-> > > We would be using Google Meet.
-> > 
-> > Thanks too! Shall we use http://meet.google.com/wxp-wtju-jzw ?
+On Thu, Oct 10, 2024 at 07:14:54AM -0500, Pavan Kumar Paluri wrote:
+> Move SEV specific kernel command line option parsing support from
+> arch/x86/coco/sev/core.c to arch/x86/virt/svm/cmdline.c so that both
+> host and guest related SEV command line options can be supported.
 > 
-> I assume that room cannot be joined when you are not around (e.g., using it
-> right now makes me "Ask to join"). Can that be changed?
+> No functional changes intended.
+> 
+> Signed-off-by: Pavan Kumar Paluri <papaluri@amd.com>
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> ---
+>  arch/x86/coco/sev/core.c          | 44 -------------------------------
+>  arch/x86/include/asm/sev-common.h | 27 +++++++++++++++++++
+>  arch/x86/virt/svm/Makefile        |  1 +
+>  arch/x86/virt/svm/cmdline.c       | 32 ++++++++++++++++++++++
+>  4 files changed, 60 insertions(+), 44 deletions(-)
+>  create mode 100644 arch/x86/virt/svm/cmdline.c
 
-Yeah, it can be changed.  I did it for the PUCK Meet, but I forget the exact steps :-)
+make[5]: *** No rule to make target 'arch/x86/virt/svm/cmdline.o', needed by 'arch/x86/virt/svm/built-in.a'.  Stop.
+make[5]: *** Waiting for unfinished jobs....
+make[4]: *** [scripts/Makefile.build:478: arch/x86/virt/svm] Error 2
+make[3]: *** [scripts/Makefile.build:478: arch/x86/virt] Error 2
+make[3]: *** Waiting for unfinished jobs....
+make[2]: *** [scripts/Makefile.build:478: arch/x86] Error 2
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [/mnt/kernel/kernel/linux/Makefile:1936: .] Error 2
+make: *** [Makefile:224: __sub-make] Error 2
 
-> Otherwise, I think I can provide a room (Red Hat is using Google Mail/Meet
-> etc.)
-> 
-> Thanks!
-> 
-> -- 
-> Cheers,
-> 
-> David / dhildenb
-> 
+$ ls arch/x86/virt/svm/cmdline.c
+ls: cannot access 'arch/x86/virt/svm/cmdline.c': No such file or directory
+
+Looks like you forgot to git add cmdline.c before committing.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
