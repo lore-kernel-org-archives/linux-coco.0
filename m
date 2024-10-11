@@ -1,24 +1,24 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCA720C473;
-	Fri, 11 Oct 2024 13:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB872185B1;
+	Fri, 11 Oct 2024 13:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728652353; cv=none; b=NQw+PmZFWPi/eBDygGSPGOasaCrFte8wbVR0hoS6EOmfB9FfaXkJHYdBktlde/FCPhjtNrXrWfv1/ogouvneyKxQHfBnumZl4JoRsnj5yhfuIb2ZhM4pr77Dw5VmPEe8dMTNuf25lE5byxLGgdfAnNjqEc5pBX2kDyuDI6pm9bc=
+	t=1728652781; cv=none; b=tAbaT79jPmdxuIlJcZfhqRh3uWSyhWXyZbZllhQc1Kf+D64nonGa8NUirH/SEQMItcAMasasWjYeQgXxRpOOnzCb1Vn4xNZqmB27oaRZ4L1TTBpp7ht/yI0jctIfaHgzsTNVW0ObAf65+7fnA8NXuKTfC99KsbniTiui/bpkGJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728652353; c=relaxed/simple;
-	bh=AmHqZRlKZ/BVZ/RbHk6PXKUpwD5Cqq2FONbMchH6INA=;
+	s=arc-20240116; t=1728652781; c=relaxed/simple;
+	bh=KPk/oGQCSzHeJeEm1U6bQDYtA3wrtPagucVe1rAmc3o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S5Vq2/dbQfDIiy60v/tHqNnki6x9trgGTWfnpZPd78bERJ0vm96L5ZM6O5IbiayiycrvXKBAht+67ohQeLtv0mchbVoLl/Is+d4ihcEFwqWqi+0eLM632nrunUXALrMYixey9ZrDu02V0wIzY5i0krBnL/rhxROUdY64v3DP0oU=
+	 Content-Type:Content-Disposition:In-Reply-To; b=nS2eXTBl8l1OlAvFhVqeo24qnWzAAt7hF4XXPU0WCzBydAnlaKi3uYIe6iCy/mnTeXhP+Oy9AV7hKnHOI4U7NParDcLN/v5Mnubz/H+d1IELcvyq2WYQ+eAGewCXA25Gm20gEElkkacCPxlyJDGH0RvZHgp3PjEgnXYZfUklMLg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B56C4CEC3;
-	Fri, 11 Oct 2024 13:12:29 +0000 (UTC)
-Date: Fri, 11 Oct 2024 14:12:27 +0100
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A97C4CEC7;
+	Fri, 11 Oct 2024 13:19:37 +0000 (UTC)
+Date: Fri, 11 Oct 2024 14:19:35 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+To: Gavin Shan <gshan@redhat.com>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
 	James Morse <james.morse@arm.com>,
 	Oliver Upton <oliver.upton@linux.dev>,
@@ -29,15 +29,14 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
 	Christoffer Dall <christoffer.dall@arm.com>,
 	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
 	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
 	Shanker Donthineni <sdonthineni@nvidia.com>,
 	Alper Gun <alpergun@google.com>,
 	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [PATCH v6 02/11] arm64: Detect if in a realm and set RIPAS RAM
-Message-ID: <ZwkkOxR4vy_uPA70@arm.com>
+Subject: Re: [PATCH v6 05/11] arm64: rsi: Map unprotected MMIO as decrypted
+Message-ID: <Zwkl51C3DFEQQ0Jb@arm.com>
 References: <20241004144307.66199-1-steven.price@arm.com>
- <20241004144307.66199-3-steven.price@arm.com>
- <085896de-9a39-4f90-9a2d-3f8662c2e2a2@arm.com>
+ <20241004144307.66199-6-steven.price@arm.com>
+ <e21481a9-3e36-4a5d-9428-0f5ef8083676@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -46,25 +45,43 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <085896de-9a39-4f90-9a2d-3f8662c2e2a2@arm.com>
+In-Reply-To: <e21481a9-3e36-4a5d-9428-0f5ef8083676@redhat.com>
 
-On Fri, Oct 04, 2024 at 04:05:17PM +0100, Steven Price wrote:
-> I should have reworded this commit message to something like:
+On Tue, Oct 08, 2024 at 10:31:06AM +1000, Gavin Shan wrote:
+> On 10/5/24 12:43 AM, Steven Price wrote:
+> > diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
+> > index d7bba4cee627..f1add76f89ce 100644
+> > --- a/arch/arm64/kernel/rsi.c
+> > +++ b/arch/arm64/kernel/rsi.c
+> > @@ -6,6 +6,8 @@
+> >   #include <linux/jump_label.h>
+> >   #include <linux/memblock.h>
+> >   #include <linux/psci.h>
+> > +
+> > +#include <asm/io.h>
+> >   #include <asm/rsi.h>
+> >   struct realm_config config;
+> > @@ -92,6 +94,16 @@ bool arm64_is_protected_mmio(phys_addr_t base, size_t size)
+> >   }
+> >   EXPORT_SYMBOL(arm64_is_protected_mmio);
+> > +static int realm_ioremap_hook(phys_addr_t phys, size_t size, pgprot_t *prot)
+> > +{
+> > +	if (arm64_is_protected_mmio(phys, size))
+> > +		*prot = pgprot_encrypted(*prot);
+> > +	else
+> > +		*prot = pgprot_decrypted(*prot);
+> > +
+> > +	return 0;
+> > +}
+> > +
 > 
-> """
-> Detect that the VM is a realm guest by the presence of the RSI
-> interface. This is done after PSCI has been initialised so that we can
-> check the SMCCC conduit before making any RSI calls.
-> 
-> If in a realm then iterate over all memory ensuring that it is marked as
-> RIPAS RAM. The loader is required to do this for us, however if some
-> memory is missed this will cause the guest to receive a hard to debug
-> external abort at some random point in the future. So for a
-> belt-and-braces approach set all memory to RIPAS RAM. Any failure here
-> implies that the RAM regions passed to Linux are incorrect so panic()
-> promptly to make the situation clear.
-> """
+> We probably need arm64_is_mmio_private() here, meaning arm64_is_protected_mmio() isn't
+> sufficient to avoid invoking SMCCC call SMC_RSI_IPA_STATE_GET in a regular guest where
+> realm capability isn't present.
 
-With the updated commit description, the patch looks fine to me.
+I think we get away with this since the hook won't be registered in a
+normal guest (done from arm64_rsi_init()). So the additional check in
+arm64_is_mmio_private() is unnecessary.
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+-- 
+Catalin
