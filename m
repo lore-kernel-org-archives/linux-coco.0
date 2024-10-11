@@ -1,189 +1,98 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2069.outbound.protection.outlook.com [40.107.237.69])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9250D1C3F0A
-	for <linux-coco@lists.linux.dev>; Fri, 11 Oct 2024 20:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728676909; cv=fail; b=mtSLiVio/EPmbYBuopftPW4Sz4heilDkOPdd5cYt/OPDTQz+FaDCYNts1IcAYtIQCdnez8I0FhltYNYHA0XrNvJIm6o2oaKQ0jNKbHjRX0SS34QwPrNmx7UDqkhZO2LH/bVfM7Qr/9EuaQZS0TuUtNZBH0LD6cQaWPUgMdGSqh0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728676909; c=relaxed/simple;
-	bh=dSes5CMy77pSRDDi3dqfzIQjnA5Ol6mN3HYfm5/R2JE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qRwjTm5O4CfSdlYMtMRhZ2Tab2mZA9EnHR8PahC3IxDyuIY9Tectd7qwZd9SzRtYdJ2V3u7KjV3+4baUxI/REBdcpKN1Sp0BvQJZsH7KcrsmAPjMCGC10PhAXBUkwLf490NCF/6EoomiaMzacXnM1TTk7GfwePiJIHQTUpnZgMY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RBUnvurC; arc=fail smtp.client-ip=40.107.237.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF25F1CB509
+	for <linux-coco@lists.linux.dev>; Fri, 11 Oct 2024 22:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728685007; cv=none; b=bZW/oTwUd7F5RYIkVAFPCZGewChhE/pQZdCjpRxb3OWlRshQSiSZDm/wHCBBxiSVF5gPzo8B7VrpZPTcfQ5xkXhjpfR0kLS/uXzF6RLk00iRHtbBknhZSxPJacK0n7ch/HdAstvEu1OfbKZWKc320Xt0bOK6urZWjd62EQV3iKc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728685007; c=relaxed/simple;
+	bh=WONhSOWCi175/80TtK3cWU+gWBvXyU9qlzVf+sT8ipw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XoCM33eSpNEsNIjPJ30J05SOJz9pJ55WKo5FzXXjuvBIjJcwUEN53lgHTvgDdeuEIqxOA6MSX/47O9aeHKy1ckok9NiB/NpKPfseFdZBq1WNneh6kH8PWi6/4x6TKrH0CEcKQ3ooO2m1RG/RVWzqOEg2vWcD2XpxB3MmTRiGwBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=MEuyn4Nf; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RBUnvurC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fgWCS7RQ+N292KH/4FHwnjUcGv6KO56aCdWatZbU3pUJdoMZs6jG53nXcdqrSF2LIEr289BPGs4tEXU9928OitEVc9LjpYYcutOfRlaSe0zpmcNbGYUmGWgoI6aH7aILNpePnDz0oVtBl0Er/1mI7uB9EXk41adZou8j2z/IE3kEWtY8s+n56T1m6Ii2UV+5EpNX+n9/oq2Q3KByWuxndwvE7OBp8pl3pX/cZlcBzPtUwtFTDyLaJwlqAaIgWB6KGQh9ozG1JjyUza3GO0z4vLOaXGUpOgZmaOfLCAHzLNsef/DkhWMPSGYREmUP3Wn7ij4JWYnbwuexMYkUP/6HZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rkfp3VArSIWiYuBflK4WH4sGzkaqLCMrWaUlkGp6mmc=;
- b=F7JWINyi2WNqkmS5RuQ/de9CBYvC+jHIaq7R9tvgT4NNL4Oc2OcIR2wDC5chHAmi33wE40WpLV+5c8+zd/QCGrwrjbnxY45Ga0Mp3vWffxbibi9sf80ZdTThXRUonz04bcEytyUIltakfOj6VWE4woCcQLLnG9NiDQO/7z2TcYLeVu4hK9Li6DVBvvbGQCrvbVui5ENMM52MPI+ZKQmSwJ4lDFc92svfw7ipJ+hUzRimCyeAafFsAxndmeY1gJ8fXkZ2pvsgxJF+Y801bAW+eqizbktFE7uxTqBc8QNphomWe/xTp4+LoXEFpJtl3byuulsmuVbztqA9rnnUxRUmKw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rkfp3VArSIWiYuBflK4WH4sGzkaqLCMrWaUlkGp6mmc=;
- b=RBUnvurCiP3KZs7nD5zW67VtiVD++bgHB2AV6nw75ARl+AIG1bzCx98DXxLChJR50N+XCQsFmBC9D5tsK1q1dUIza0jGYv4S7wNKuVueetQnYhIbzC21cnAgqeU3ja4AF4mHm4vzcb5q9nnP/Jo7aWawlFNL6RWEH3Tk1EAOFyw=
-Received: from BYAPR05CA0044.namprd05.prod.outlook.com (2603:10b6:a03:74::21)
- by DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.20; Fri, 11 Oct
- 2024 20:01:41 +0000
-Received: from CO1PEPF000066EA.namprd05.prod.outlook.com
- (2603:10b6:a03:74:cafe::d8) by BYAPR05CA0044.outlook.office365.com
- (2603:10b6:a03:74::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.8 via Frontend
- Transport; Fri, 11 Oct 2024 20:01:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000066EA.mail.protection.outlook.com (10.167.249.5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8048.13 via Frontend Transport; Fri, 11 Oct 2024 20:01:40 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 11 Oct
- 2024 15:01:39 -0500
-Date: Fri, 11 Oct 2024 15:01:19 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Vishal Annapurve <vannapurve@google.com>
-CC: David Hildenbrand <david@redhat.com>, <linux-coco@lists.linux.dev>, KVM
-	<kvm@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: Re: Proposal: bi-weekly guest_memfd upstream call
-Message-ID: <20241011200119.7kz7ggc2mbnoia36@amd.com>
-References: <4b49248b-1cf1-44dc-9b50-ee551e1671ac@redhat.com>
- <CAGtprH848Q=RMuOvjvPGPZYhjEmZYAF-Mos2otqKKLv8+TEcMA@mail.gmail.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="MEuyn4Nf"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6C9CC40E021E;
+	Fri, 11 Oct 2024 22:16:42 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id VDBdf3Bmymee; Fri, 11 Oct 2024 22:16:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1728684997; bh=uwVjeJX5+wiYDsRJY0b3ge6c8EGQGnn07CLN6ApCP0I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MEuyn4NfBQbLLjOUokVGZMEhRsuS7zK7TpjEjCVDuygbw201c+oSWZz7akfmDfLFs
+	 bCwRB1maYRIXGkXktXtXKm/IIVPNgAgv10Wif5eoe6AQlAbpQG4w6pOjT805WFI1s8
+	 zDqlYYgiUJAG+fWZsgYdABwpIDGK8H0489HXt5CGXtd6dQ0KZKCZvpRaNUUVJQgBvH
+	 r1aWh4e4/lTZMdgOKDKTADlXj7TrnX+uFjQrAPSRvUg7OjgNSVSIaDZWQ6/2K07Cka
+	 u291VH9QHCVkZXsKhZnyC4IUjlukRky9JSonCHXh3dvU+O3uXE7GP4/99WsJI84bJp
+	 crVqzdwZ5BIu19UHuaSjPBVgCQMmKRgvvcN4qVkxhtcnyrAePx2Tt+ZNhD4toJ3vrL
+	 EZSiRfc9q2sVex1QLLdQKD+HCqtlruTaXjRQU4ayUZukp5I7w8gyzmwA6/teyH+TGG
+	 XRbS37ZkH9JpuV7wjCMBIWDtIZBpNX3zY7xp6Cq+LTzK3i533dZkq8elb9fWN7kgOZ
+	 WyS3l9DofBd3C3Yk8qDF4ZPnDwjyLUqZk2aYERtiEZl20fus0zXHlclo5syo7tJMX4
+	 bzjdatPgv1w3aD3DBS+79RG8bRpspLPLHZIp67qwsCvS5XOa+bkLb19j1Pv61N/6WV
+	 OekJ6AYJRGGuVRrTX2P9GzL8=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9727340E0169;
+	Fri, 11 Oct 2024 22:16:23 +0000 (UTC)
+Date: Sat, 12 Oct 2024 00:16:17 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Paluri, PavanKumar" <papaluri@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-coco@lists.linux.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Eric Van Tassell <Eric.VanTassell@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dhaval Giani <dhaval.giani@amd.com>
+Subject: Re: [PATCH v6 1/2] x86, KVM:SVM: Move sev specific parsing into
+ arch/x86/virt/svm
+Message-ID: <20241011221617.GHZwmjseuoz1fOKtps@fat_crate.local>
+References: <20241010121455.15795-1-papaluri@amd.com>
+ <20241010121455.15795-2-papaluri@amd.com>
+ <20241011162120.GDZwlQgKTFi22JZ5If@fat_crate.local>
+ <f8a3a683-0cdd-d1bb-1904-521ce5a96dac@amd.com>
+ <20241011164825.GEZwlW2XggpAMsZ3P9@fat_crate.local>
+ <7df1961f-f120-3914-ef23-9e466cda6248@amd.com>
+ <20241011165912.GAZwlZYDO_kz3HQ_ie@fat_crate.local>
+ <07b4dd67-9e09-eb0c-86d2-92fa68938129@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGtprH848Q=RMuOvjvPGPZYhjEmZYAF-Mos2otqKKLv8+TEcMA@mail.gmail.com>
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066EA:EE_|DM4PR12MB8476:EE_
-X-MS-Office365-Filtering-Correlation-Id: 07ab2270-a8c9-47d3-c66f-08dcea2f85d1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026|3613699012;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eFl1dlVuYmJ2bDJ4d2tCVnQzd1BsUkd0UnIveUZJSkRaMXBBaXBiV1l6OFZs?=
- =?utf-8?B?eG0wRTkyZnlHTW1GRGMyL21CMUdWQ0l6UXlzUkk1QzJueDM3WWRBNTU2TWtq?=
- =?utf-8?B?a3pqTW45RitTTlA4RzVILzF5NDBjTEZLakJ2NlpweUJFTWN4eDJuc0xrbjNP?=
- =?utf-8?B?L05rTm1pdUc5ZW5SWGUvSWMxNkRhVXRuTFh4ZkFXZjF0b2VWckZCa3lQd2lX?=
- =?utf-8?B?bkR3Vm03N2dXM2MwQWNkRGMyZzdmUUdBZW5lNGRQZUFPSCtKd21RSlJuK0ky?=
- =?utf-8?B?enc2Y05qcDBqb0NvU0FFWjRFb3RIR2U2bkdvb2JzODJIdzNlVFZPb2VOU2pi?=
- =?utf-8?B?VHkvYVBYdEtYNlQ3b3VpMWViajBZNnU0bEVJbm11RkVSczRyVEJGeWIzYWdS?=
- =?utf-8?B?cUxCUlppam55WFlPcmlaUHFLa0ZUMDJFUnA3Z3o5b3ZGVjNVbkM2bTc3cjJW?=
- =?utf-8?B?c2VIdGZ6UTlKNk50aWFlU000dFJUVWJ4UG1TM1hWMHZtQUExYUtUWTVGQ3FR?=
- =?utf-8?B?SWJPQTFOZXpuaVRmRUMvMklSM1NCZnNrTEhWalRVbnZyVEJjM2lBNld4MUFI?=
- =?utf-8?B?aDA3NVYzbHI3OW1MTm5EVXRhMzhpSU9CcEJxWVFHVUVJRkNVMlgyTGZiVlQ5?=
- =?utf-8?B?eWhvUjBkVlQrMjBpallGWEE5ckhPYWZzaUJpYmVmcWpGRm1xdkNaZ2Q5T3hn?=
- =?utf-8?B?SUVFc0xmMmhLN2xpTEtLSHVteHZRMkZxVW1MMFl2M3IwSnBWblMzSEI5OXVl?=
- =?utf-8?B?MFZQWnB6Zng1VEJYQ2JxbGVKVENLRGV5ZVBJT3RVcjhFRVhWL2prZm1zSVU5?=
- =?utf-8?B?aEdnUGJma1ltZUpXNnFXU0ttdWlLaUgxcllHRFV5TEpPMVlPeU5uSjB3YTUx?=
- =?utf-8?B?V3ZSSjJjTm14bEUvUHQ1ZXBpbGcrVmUzL3lNL09PZGNWY0RuUUlxbUJYS2Z2?=
- =?utf-8?B?Y3RLOGgrU01kU0JzMkFzUURWWHliZ0JRS2t3VGxJMjViRHFVSk1LMXV6ZGto?=
- =?utf-8?B?VUVkNmo0NjFUSTJZM0hYK2RLOFh1QkRSUEkxbkFIUjhpaGhNL1NkU0lwU04x?=
- =?utf-8?B?UmJHVXdXR3pmV2dlSjRrUU9lY0Z6Y3ovZDAybVFFTzZzN0FzWDdKQlNkSFo5?=
- =?utf-8?B?eitVVDlrdlU0TjFmcG5HMzc1bFNSMitJc0IyTHEzdVdIekltTWZCNS9WRWJq?=
- =?utf-8?B?OURnNXhDZnpSOWc2dVVwbU8zQnhpeTRVNDhtaGQ2aXI4WkhUQ2twelJvUjZJ?=
- =?utf-8?B?Ym90R092YjZZTjU2ZlUvdk4yQStmSGNUYnVva2ZRenJaRFpWYWxka3lZOFlt?=
- =?utf-8?B?cUwxeFRPL1g2UWVtRGFzemF3Ukk2Q01keEp2SFdtL1BSZnBKSU1OWlRkS05i?=
- =?utf-8?B?VkM3RmRmSDV0Z0dkNG1mWlA1NGJOaGlUa1IvaGtmZkpaczduSGxwVU9qNGxZ?=
- =?utf-8?B?aHczSTJCR1pDcDFQWCs5N0hLYythSXRUL0dNLzJNY1FOSUR6dlNNN3BQbE5k?=
- =?utf-8?B?UVNIaWZDRXh6Q2srZHNqbU9Bdi9VZFBGRXl5WnZKZENmZkFpZ00rZG5OUFpD?=
- =?utf-8?B?ZmdJaE9IK2YxSjJBK2h2dm4xU0F2cGl6cEZkdURmM0ZQMVYyRitjQWkyMnZa?=
- =?utf-8?B?NEZuQk9nbWl4ajlzNk56ZWVaclNBMFVaV2ZqZS9tVG83SU4yT2Q2NXE1Tmo4?=
- =?utf-8?B?N01nY2dpb0RSSWhSVFlBdmhpT09na2NCajBFdFl3czdiYy95dldya1cxQngv?=
- =?utf-8?B?YjRoNUpCcTYvK0MrRVJoZTR0ODB2a3JUWjVtU2N1SzBzK1lSMUp1V3N5UmJp?=
- =?utf-8?B?eVdIdlZzUERKME9VUEhPL1ljZFZzalc2NE8yTWcyaUhFdU1vemoxTTIxcVl1?=
- =?utf-8?B?aXpvYndKbyt4bVdyUDFnUnJZbXA3RVFWVzF2M3l4cmw3akE9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026)(3613699012);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2024 20:01:40.7216
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07ab2270-a8c9-47d3-c66f-08dcea2f85d1
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066EA.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8476
+In-Reply-To: <07b4dd67-9e09-eb0c-86d2-92fa68938129@amd.com>
 
-On Thu, Oct 10, 2024 at 07:50:12PM +0530, Vishal Annapurve wrote:
-> On Thu, Oct 10, 2024 at 7:11 PM David Hildenbrand <david@redhat.com> wrote:
-> >
-> > Ahoihoi,
-> >
-> > while talking to a bunch of folks at LPC about guest_memfd, it was
-> > raised that there isn't really a place for people to discuss the
-> > development of guest_memfd on a regular basis.
-> >
-> > There is a KVM upstream call, but guest_memfd is on its way of not being
-> > guest_memfd specific ("library") and there is the bi-weekly MM alignment
-> > call, but we're not going to hijack that meeting completely + a lot of
-> > guest_memfd stuff doesn't need all the MM experts ;)
-> >
-> > So my proposal would be to have a bi-weekly meeting, to discuss ongoing
-> > development of guest_memfd, in particular:
-> >
-> > (1) Organize development: (do we need 3 different implementation
-> >      of mmap() support ? ;) )
-> > (2) Discuss current progress and challenges
-> > (3) Cover future ideas and directions
-> > (4) Whatever else makes sense
-> >
-> > Topic-wise it's relatively clear: guest_memfd extensions were one of the
-> > hot topics at LPC ;)
-> >
-> > I would suggest every second Thursdays from 9:00 - 10:00am PDT (GMT-7),
-> > starting Thursday next week (2024-10-17).
-> 
-> Thanks for starting this discussion! A dedicated forum for covering
-> guest memfd specific topics sounds great. Suggested time slot works
-> for me.
+On Fri, Oct 11, 2024 at 12:08:34PM -0500, Paluri, PavanKumar wrote:
+> On building the patchset (1 and 2 together), I do not see the error, so this
+> should have occurred on just building Patch #1.
 
-+1
+You always, *always* must build-test each patch. 
 
-Thanks David!
+Imagine someone is bisecting the kernel and bisection lands at your patch
+which doesn't even build...
 
--Mike
+We can't have that.
 
-> 
-> Regards,
-> Vishal
-> 
-> >
-> > We would be using Google Meet.
-> >
-> >
-> > Thoughts?
-> >
-> > --
-> > Cheers,
-> >
-> > David / dhildenb
-> >
-> >
-> 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
