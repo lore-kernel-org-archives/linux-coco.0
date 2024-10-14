@@ -1,81 +1,65 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77ED713CFBD
-	for <linux-coco@lists.linux.dev>; Mon, 14 Oct 2024 09:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B4A146D65
+	for <linux-coco@lists.linux.dev>; Mon, 14 Oct 2024 09:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728896746; cv=none; b=JpVHlFDZye2mDFYlkRFdp0fvfQp/8Lvod5zXz5hNtroH8IAUJ3z6YNAAYgZq07AgjuRpsMWfNsnko8kGA72C9jcC0M2MLasWw8NMcR9zVOnGqNUmcqaz3yCJgiwndWnSYjAmmOxtC4CEmfTrlziG+tdc3MaL5Z19/EZEhrmQrYQ=
+	t=1728898476; cv=none; b=PDOMnyZVx9/kUrZ8k6DP5FRk8XK7jj/QRnTxn/b9fEvIhrwX+gXtkA4uR7R12kM5SuTTg4ikyuK7+Se51uQjkXHOscD6s1XF5g5fA5ZfgId1wR/OhZ0vUD41xpikuRWSv3DW+OElz3qyazPl5YQC6qFhMmJo95YkjfQyxuBNdrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728896746; c=relaxed/simple;
-	bh=fQtTkZoM/MSJGdvoJjSyi3rrNl5eJrIR6m2L86/0HVs=;
+	s=arc-20240116; t=1728898476; c=relaxed/simple;
+	bh=MzIkKBP6kTupistwX07xdMrJP7TLu6YBP3QM5gE7UWs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UPKQwTvUHALVX+yzuGG2MCoIIAY8zaPT1tvXrzXFCpbyY0XR9N5yRl1rGwWe3Tm+rA6BW9YM7oppE6hJIQKcmmBz4WTxtt1FSyoBqzij2LXuxHmWNj6vAN9L/GN/FdypSapLsegUjlbH7hwspRFMT0g9yAGPvU6kt8BaaurZs3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Sh3Tb7wU; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=v5Zj8dfo; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Sh3Tb7wU; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=v5Zj8dfo; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	 In-Reply-To:Content-Type; b=kdftNeO/tM/bXGm72MnVDowMnVPGpyTtPTJrAcJzFwSKwv4NJjkEtIoeP3l/NZ/B4KKbRe5XYWRCait8lxRw/1hENykB8mrzc/mYyLAlFvjn1vi1cNmHAUGj8+MZfibdXhWJtp5FdBmhct3UaRJMJgpkgH4EFe5AOSgArm2PJ6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CAQjOgDN; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Sh3Tb7wU";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="v5Zj8dfo";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Sh3Tb7wU";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="v5Zj8dfo"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5425F1F785;
-	Mon, 14 Oct 2024 09:05:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1728896742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CAQjOgDN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1728898473;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YOL6B5GbHpYvBKABl6mTUS3xILlO6l387Hou8UX58CE=;
-	b=Sh3Tb7wUbur/FpyI1W9CayvB2R2a7MHdswF+zq7FQz944q0pwokuOj040xMnn+gy3JzNHN
-	vUs0CMAPmRxaGOFR84l7bIUtixSYcw1nBgF2A1G1OJ6EDE3TASAp+bJpUcV8XDOoOjP61P
-	UsMePSR8BAiS7CvGV/jNGOZCwu8NopQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1728896742;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YOL6B5GbHpYvBKABl6mTUS3xILlO6l387Hou8UX58CE=;
-	b=v5Zj8dfoUiAG1lqv3gjoNDMikl/75xHzz68HpAwf4dTJUqP2PlslYsRYMTVbbdhEo23a0d
-	67/T101i7Zc1STBQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Sh3Tb7wU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=v5Zj8dfo
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1728896742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YOL6B5GbHpYvBKABl6mTUS3xILlO6l387Hou8UX58CE=;
-	b=Sh3Tb7wUbur/FpyI1W9CayvB2R2a7MHdswF+zq7FQz944q0pwokuOj040xMnn+gy3JzNHN
-	vUs0CMAPmRxaGOFR84l7bIUtixSYcw1nBgF2A1G1OJ6EDE3TASAp+bJpUcV8XDOoOjP61P
-	UsMePSR8BAiS7CvGV/jNGOZCwu8NopQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1728896742;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YOL6B5GbHpYvBKABl6mTUS3xILlO6l387Hou8UX58CE=;
-	b=v5Zj8dfoUiAG1lqv3gjoNDMikl/75xHzz68HpAwf4dTJUqP2PlslYsRYMTVbbdhEo23a0d
-	67/T101i7Zc1STBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4595913A79;
-	Mon, 14 Oct 2024 09:05:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IjqQEObeDGdjfwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 14 Oct 2024 09:05:42 +0000
-Message-ID: <0f47fad8-50ef-425b-8954-38c26cc0a054@suse.cz>
-Date: Mon, 14 Oct 2024 11:05:42 +0200
+	bh=9pjXZCdVLkiltwg5DWQH/O4Om3DKCIGFAYS2woLtTEE=;
+	b=CAQjOgDN9/Bfw5KOWxd8fHrCRJWcMztqcSrwunr0O8OGOqu5nuNat32hxuO0qBcP4huGLA
+	OD9aYOM90QQlwGH4e12OyB1wemilB5hL9P9LU/gmTCfnccsvVX9vmvRzVV/b6RkUfFMTnm
+	lyLjFLgDFhmtr1zGe6E4GMnj2CJXizc=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-63-zOCClFvgPay7HU8T8YFAeQ-1; Mon, 14 Oct 2024 05:34:32 -0400
+X-MC-Unique: zOCClFvgPay7HU8T8YFAeQ-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-539f49f23ddso510247e87.1
+        for <linux-coco@lists.linux.dev>; Mon, 14 Oct 2024 02:34:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728898471; x=1729503271;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9pjXZCdVLkiltwg5DWQH/O4Om3DKCIGFAYS2woLtTEE=;
+        b=VZigNE9i/ZuF7ZbSTofEG2881oaSYlR07eY4M/uNuUUW8pN0lZyV1h3IUvON8NTHGZ
+         uBXGYTbzxkqnmuToqEE4vo1d7+nWJT5Yp4QaknrfmGG02b7efYLGvgS0tgiut9VYRV+L
+         nVGDD7V3g+Pz6nz6zAQ2mUTfyoMVL7CB9r8nY3Sl367C3lopojVCHPW3CmO6pMh7xyX6
+         iAp3P7WBrwaUqdQcgDq1gn+p02/7HAbpaku0N/PnoQdnvoPcQZiOKwKiNSjWgtANg13D
+         PGIduX6QCPgHNQwoZjW6vCp+kDVM2QzKsUPAx2CGmfjOhfeWpF7eb8QY0JE9Oz2HU7tR
+         OtBg==
+X-Gm-Message-State: AOJu0YzWyPs+qttYlwPamyQmLHzXu/DS2dTv7Lqlhqe6xQ25/RxZi+Ss
+	p82VlYPuTZrr+hacDpWfODKCH0TUUoDrPJsw56e5zhrjvUEa0j/cNIlmc9UGQErfpaHepbOnZ1C
+	heDFigTEnnrkUUKjZnH1HvrZwtnKkkfwVRWa0W8LgqDgvhYD9a7RllF2uAo4=
+X-Received: by 2002:a05:6512:3b93:b0:539:983b:ea75 with SMTP id 2adb3069b0e04-539da5ae6b3mr4704796e87.57.1728898471127;
+        Mon, 14 Oct 2024 02:34:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFNLNg3W02/w9MPbHsdhMdxIxOSDuRscebq5wpEwTK+RvCOclGTnCB6wl2OViFmzYrbHeRmyA==
+X-Received: by 2002:a05:6512:3b93:b0:539:983b:ea75 with SMTP id 2adb3069b0e04-539da5ae6b3mr4704773e87.57.1728898470612;
+        Mon, 14 Oct 2024 02:34:30 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431182d78b4sm115939835e9.10.2024.10.14.02.34.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Oct 2024 02:34:30 -0700 (PDT)
+Message-ID: <ddab4fa2-c850-4ba2-b707-1dfd962d59da@redhat.com>
+Date: Mon, 14 Oct 2024 11:34:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -84,134 +68,119 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: Proposal: bi-weekly guest_memfd upstream call
-Content-Language: en-US
-To: Ackerley Tng <ackerleytng@google.com>,
- David Hildenbrand <david@redhat.com>
+To: Vlastimil Babka <vbabka@suse.cz>, Ackerley Tng <ackerleytng@google.com>
 Cc: linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-mm@kvack.org
 References: <diqzy12vswvr.fsf@ackerleytng-ctop.c.googlers.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- EP+ylKVEKb0Q2A==
-In-Reply-To: <diqzy12vswvr.fsf@ackerleytng-ctop.c.googlers.com>
-Content-Type: text/plain; charset=UTF-8
+ <0f47fad8-50ef-425b-8954-38c26cc0a054@suse.cz>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <0f47fad8-50ef-425b-8954-38c26cc0a054@suse.cz>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5425F1F785
-X-Spam-Score: -4.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
 
-On 10/10/24 19:14, Ackerley Tng wrote:
-> David Hildenbrand <david@redhat.com> writes:
+On 14.10.24 11:05, Vlastimil Babka wrote:
+> On 10/10/24 19:14, Ackerley Tng wrote:
+>> David Hildenbrand <david@redhat.com> writes:
+>>
+>>> Ahoihoi,
+>>>
+>>> while talking to a bunch of folks at LPC about guest_memfd, it was
+>>> raised that there isn't really a place for people to discuss the
+>>> development of guest_memfd on a regular basis.
+>>>
+>>> There is a KVM upstream call, but guest_memfd is on its way of not being
+>>> guest_memfd specific ("library") and there is the bi-weekly MM alignment
+>>> call, but we're not going to hijack that meeting completely + a lot of
+>>> guest_memfd stuff doesn't need all the MM experts ;)
+>>>
+>>> So my proposal would be to have a bi-weekly meeting, to discuss ongoing
+>>> development of guest_memfd, in particular:
+>>>
+>>> (1) Organize development: (do we need 3 different implementation
+>>>       of mmap() support ? ;) )
+>>> (2) Discuss current progress and challenges
+>>> (3) Cover future ideas and directions
+>>> (4) Whatever else makes sense
+>>>
+>>> Topic-wise it's relatively clear: guest_memfd extensions were one of the
+>>> hot topics at LPC ;)
+>>>
+>>> I would suggest every second Thursdays from 9:00 - 10:00am PDT (GMT-7),
+>>> starting Thursday next week (2024-10-17).
 > 
->> Ahoihoi,
->>
->> while talking to a bunch of folks at LPC about guest_memfd, it was 
->> raised that there isn't really a place for people to discuss the 
->> development of guest_memfd on a regular basis.
->>
->> There is a KVM upstream call, but guest_memfd is on its way of not being 
->> guest_memfd specific ("library") and there is the bi-weekly MM alignment 
->> call, but we're not going to hijack that meeting completely + a lot of 
->> guest_memfd stuff doesn't need all the MM experts ;)
->>
->> So my proposal would be to have a bi-weekly meeting, to discuss ongoing 
->> development of guest_memfd, in particular:
->>
->> (1) Organize development: (do we need 3 different implementation
->>      of mmap() support ? ;) )
->> (2) Discuss current progress and challenges
->> (3) Cover future ideas and directions
->> (4) Whatever else makes sense
->>
->> Topic-wise it's relatively clear: guest_memfd extensions were one of the 
->> hot topics at LPC ;)
->>
->> I would suggest every second Thursdays from 9:00 - 10:00am PDT (GMT-7), 
->> starting Thursday next week (2024-10-17).
-
-works for me!
-
-> 
-> This time works for me as well, thank you!
+> works for me!
 > 
 >>
->> We would be using Google Meet.
-> 
-> Thanks too! Shall we use http://meet.google.com/wxp-wtju-jzw ?
-
-So is it going to be this one?
-
-> 
-> And here's a calendar event if you'd like notifications:
-> https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=NDJvYjBha3FlMWpxdHFzMGNpNnQzZDk5cjBfMjAyNDEwMTdUMTYwMDAwWiBhY2tlcmxleXRuZ0Bnb29nbGUuY29t&tmsrc=ackerleytng%40google.com&scp=ALL
-
-gcal says it cannot find such event?
-
+>> This time works for me as well, thank you!
 >>
+>>>
+>>> We would be using Google Meet.
 >>
->> Thoughts?
+>> Thanks too! Shall we use http://meet.google.com/wxp-wtju-jzw ?
+> 
+> So is it going to be this one?
+
+I'll follow up with a proper invitation mail today or tomorrow.
+
+> 
+>>
+>> And here's a calendar event if you'd like notifications:
+>> https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=NDJvYjBha3FlMWpxdHFzMGNpNnQzZDk5cjBfMjAyNDEwMTdUMTYwMDAwWiBhY2tlcmxleXRuZ0Bnb29nbGUuY29t&tmsrc=ackerleytng%40google.com&scp=ALL
+> 
+> gcal says it cannot find such event?
+
+Calender needs to be public. Let me give it a try and include it in the 
+mail I'll send out (then, I can also modify/cancel the event etc. ).
+
+-- 
+Cheers,
+
+David / dhildenb
 
