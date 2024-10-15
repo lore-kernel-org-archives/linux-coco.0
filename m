@@ -1,65 +1,65 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AA27F6
-	for <linux-coco@lists.linux.dev>; Tue, 15 Oct 2024 00:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F11172BB9
+	for <linux-coco@lists.linux.dev>; Tue, 15 Oct 2024 03:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728950515; cv=none; b=X+uEOSXcJac6Fu67wri2Zi1mVhblekB8LWBoB0zG9P0tqgzL0MqRsJBMEsEPqjKMobhIwhqs2QINITuKuCj/cFCO/ifpd2ZOsUlhR/3LQAn4QGXWHgqNVOv1XBMx1ZNYdP/yTC/CU7bD4yPf0IGjU29scxrAetemWuqbYbsdr9E=
+	t=1728964572; cv=none; b=sbKhlQkgyxP40BD71CE1uIqSkxSQ9P2cHd+gvAasmu+XXmgq9PZRUb10gf8meeyLzGwH4d8XbdrevKPVO+h/vi6tMevToBe7hrkDcpoHan2YKZDoN+0x8ngqVZaDrkO7ZYIGOy/7qiAgoYBgzV5EVMu59VCmFwFOx/9sV9qSRZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728950515; c=relaxed/simple;
-	bh=Q8iS8IxHSVGTjbc9AGbpjOQg0EWYXS/kKQdTlWSiROE=;
+	s=arc-20240116; t=1728964572; c=relaxed/simple;
+	bh=MgtyB/AAROrtxH1XraK2lYAW3vbCsCYiprQHNQSY0ag=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lHYig4GTSdNsh/DgON+tEdxZJAhy0jhG3gmXpfptd8VaRw/tqXSKfDCq+xGU2S+XFZpukupANBe9r76q98jJhcRe6UBqUh899g0nigsCwh0gi/Az3zRdUpPBnw6vW0Oh/gcalaezlxLpPhdiOd9A4L9LPzCo6Ut2kAjRNfQHT4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iiUNX+m5; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=kVS1kU4TkGnpAX+6hWSPfHXAprk6CKQBMWKcVkhbmr2W2kd8rJW4ENHEpQFVrniHtRXccLdQYMdUnyHbHKLiCLYeoqvii0o8yuolKZCXk2mdNjk1FDjImrH9/isb+ePnmneH2U+rKbXcTe+OV+JnaPpNajIOsKq+URZqYyVGj1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FcqLoKGo; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iiUNX+m5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FcqLoKGo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728950512;
+	s=mimecast20190719; t=1728964569;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3fVXTa8XIsbgoiuVpOKk+BswyA+FGg23RGxfcTSTItE=;
-	b=iiUNX+m5BUlI/1pYSJPhf4J4Wf+3/Av1K5o5nmIYP7yGUtYOQLKPF5LV3/q0/l6NQQs0TH
-	gk1Zv+N56ebv6rg8yyV6vbfZYSxkwGUsxG3S6z5jYJEwExhiOy2bSdpWmY82XOtiyROmBc
-	R4QqK/YkMjJvpI2n7e3WCQZmYThWfgY=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=/gQj7yhKGwHX3tay3bEUPL2aqsF2Bb60CY1YisKDKbg=;
+	b=FcqLoKGoNl+x90sZU/+prbL9oXBlyyJDvugCNuPbGeuhTosFUc6xRzbYtOzD9KUOCDoChU
+	81Njh09lUqGKJgTZjr4lXjEEXM+fyTu5O8aAlmrrOHiz2xaUeUUAQfMg/4C7ypoHAFNqx4
+	Ml9xypt30jSaRq1sjAtH0j12t+IwmF8=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-169-P4l4wV0PPRGEJr1hhoWL8w-1; Mon, 14 Oct 2024 20:01:51 -0400
-X-MC-Unique: P4l4wV0PPRGEJr1hhoWL8w-1
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-7ea6d5e76c3so1725337a12.1
-        for <linux-coco@lists.linux.dev>; Mon, 14 Oct 2024 17:01:51 -0700 (PDT)
+ us-mta-411-J0UiS9n_PlGOyluXqGselw-1; Mon, 14 Oct 2024 23:56:07 -0400
+X-MC-Unique: J0UiS9n_PlGOyluXqGselw-1
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-7db8197d431so6600426a12.0
+        for <linux-coco@lists.linux.dev>; Mon, 14 Oct 2024 20:56:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728950510; x=1729555310;
+        d=1e100.net; s=20230601; t=1728964563; x=1729569363;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3fVXTa8XIsbgoiuVpOKk+BswyA+FGg23RGxfcTSTItE=;
-        b=bFVsgjM1OG9oqQEq9Ennvnq2+qK4FkgcDpFCfTITqFtNawG8Fvbezhrlsghtd9y564
-         qI9ilOFm4VJ7sz4P4y9koHxjtaEBtqxVGabedTa5N73BQKIjUJNWajrfuVnYicWGTbNu
-         0X9sVp+6vSWoFbVt4FaLdI9Xm0beLMAOJfq+HI9Di5Ycjk8+65fz5/yY/38Bk6n3jLE4
-         4uRN4kkLXnbrGvogXrqDHhUMnh+i7NMbFL1RaEzQ/vmYuo+qpoNt/iDQ7RpIm+5C6Dgp
-         SNYrDRD3uAYwObMHwJ93+Jbkoe9KQhw24AQKd1Z3vDUQqFHBud24/76Sr34ZpzroktM1
-         7mGA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2E0KRrfbnGvqSvnXYYrMTFPbGlpyKvb4XyODA8+Aww9pCaukYfa7CG6ozaytNZi5H5BcuVVpeksCY@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywe+4ZgvaZ+4bY62uN23kokilYojoC+RZcsGfbbFZpM4AqAfm7Q
-	zD6EoyyEejNvxLEStBuzsX5KUssUJA4agVY5ucHOD79ad/W4iAfEJmCTxRpMUA4ViJvVwI6IpeD
-	lDN5N1igcLgyV6GwCF1mXR8GExk+pXpkhIorZ8w8TF1b8DETjf1yy73bIGN4=
-X-Received: by 2002:a05:6a20:d501:b0:1d2:ea38:39bc with SMTP id adf61e73a8af0-1d8c9594e7dmr14937908637.11.1728950510189;
-        Mon, 14 Oct 2024 17:01:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJcAFjePFn8mOJXk/8VHRUXLze+FJupfXBRL7K3VuUoXPsbgGUDvbOUz+Vrv3oSTsD9DVmWw==
-X-Received: by 2002:a05:6a20:d501:b0:1d2:ea38:39bc with SMTP id adf61e73a8af0-1d8c9594e7dmr14937869637.11.1728950509802;
-        Mon, 14 Oct 2024 17:01:49 -0700 (PDT)
+        bh=/gQj7yhKGwHX3tay3bEUPL2aqsF2Bb60CY1YisKDKbg=;
+        b=uUK6o7+LQJ80MBJeRAH0hmW4XvqaCY0YOZM7vdwZMVODx5Le5rz5138PsNnv1FelRK
+         ACUIFMkQ++coDn6iT5DRe0kL5dNiiVZWEmx5HVWxBuLVHLKD6GInQJcg9+dmdYSef42w
+         ifV7BNNW67W83mP7buYG6S0UKZnUeLTz2Q1565vkhNR+DYUR/OqidiiYCxuv71BMc6CE
+         8SYq1Lu56YXoWmjbBjmCqmdQ3mOQZO9aF9xPtDa54Z2790yNlzojSTZhiYEQqQDUbDMB
+         qzRDz5ohCz7GxqV2HH2ro2vnPVHR84j4nL5U+ak4HpP/ru2BFeaxC0W1VWXkomrnJuw1
+         xKBg==
+X-Forwarded-Encrypted: i=1; AJvYcCXgUpQ1GLHK5gkSsYyJwVKn3G/hJs0QMdy/RdbhMuxQ6pM2FXP6J/5hsMLnAn9mvIuVHyyI6EwTXtjP@lists.linux.dev
+X-Gm-Message-State: AOJu0YyPJR1K4anyba/E82HVTL2w2I2duf5EKG2d95SuMJJYOrOmeEIO
+	3Is6td2nkyi5UsBdxJpryD9BwD+vrHp54lJjnzOR1HbFatW1WnwuarF50qIy0E+3GjgxPqY9ikD
+	M/F8c1XCsilDbZ4cbyWy0dsecxb5jQVFiHB8NoNKJwdqe1muZtKG+fNgyK1c=
+X-Received: by 2002:a05:6a21:4d8c:b0:1d8:f894:43f9 with SMTP id adf61e73a8af0-1d8f89445eamr681090637.11.1728964563169;
+        Mon, 14 Oct 2024 20:56:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGybMblrnhP5WbRv8pGItZKUwHcNnS++KdeQ7wfVC+XkNBJwpsFwHEmwrwG693wjo55GOXWsQ==
+X-Received: by 2002:a05:6a21:4d8c:b0:1d8:f894:43f9 with SMTP id adf61e73a8af0-1d8f89445eamr681045637.11.1728964562725;
+        Mon, 14 Oct 2024 20:56:02 -0700 (PDT)
 Received: from [192.168.68.54] ([180.233.125.129])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ea9c71a8aesm114810a12.81.2024.10.14.17.01.41
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ea9c6ba2d4sm339896a12.11.2024.10.14.20.55.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Oct 2024 17:01:49 -0700 (PDT)
-Message-ID: <6d6253a6-c113-44af-856e-118d02e1e409@redhat.com>
-Date: Tue, 15 Oct 2024 10:01:39 +1000
+        Mon, 14 Oct 2024 20:56:02 -0700 (PDT)
+Message-ID: <2352629a-3742-45e9-a38f-196989918c9b@redhat.com>
+Date: Tue, 15 Oct 2024 13:55:53 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,220 +67,88 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 10/11] virt: arm-cca-guest: TSM_REPORT support for
- realms
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
- Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+Subject: Re: [PATCH v6 03/11] arm64: realm: Query IPA size from the RMM
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
-Cc: Sami Mujawar <sami.mujawar@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
  Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
  Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, Dan Williams <dan.j.williams@intel.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20241004144307.66199-1-steven.price@arm.com>
- <20241004144307.66199-11-steven.price@arm.com>
- <5a3432d1-6a79-434c-bc93-6317c8c6435c@redhat.com>
- <6c306817-fbd7-402c-8425-a4523ed43114@arm.com>
- <7a83461d-40fd-4e61-8833-5dae2abaf82b@arm.com>
- <5999b021-0ae3-4d90-ae29-f18f187fd115@redhat.com>
- <11cff100-3406-4608-9993-c29caf3d086d@arm.com>
- <f3ce0718-064d-48e4-a681-7058157127b0@arm.com>
- <56d9edcb-2574-43fe-8ebb-65cc4fdbc3d0@arm.com>
+ <20241004144307.66199-4-steven.price@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <56d9edcb-2574-43fe-8ebb-65cc4fdbc3d0@arm.com>
+In-Reply-To: <20241004144307.66199-4-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 10/15/24 12:46 AM, Suzuki K Poulose wrote:
-> On 14/10/2024 15:41, Steven Price wrote:
->> On 14/10/2024 09:56, Suzuki K Poulose wrote:
->>> On 12/10/2024 07:06, Gavin Shan wrote:
->>>> On 10/12/24 2:22 AM, Suzuki K Poulose wrote:
->>>>> On 11/10/2024 15:14, Steven Price wrote:
->>>>>> On 08/10/2024 05:12, Gavin Shan wrote:
->>>>>>> On 10/5/24 12:43 AM, Steven Price wrote:
->>>>>>>> From: Sami Mujawar <sami.mujawar@arm.com>
->>>>>>>>
->>>>>>>> Introduce an arm-cca-guest driver that registers with
->>>>>>>> the configfs-tsm module to provide user interfaces for
->>>>>>>> retrieving an attestation token.
->>>>>>>>
->>>>>>>> When a new report is requested the arm-cca-guest driver
->>>>>>>> invokes the appropriate RSI interfaces to query an
->>>>>>>> attestation token.
->>>>>>>>
->>>>>>>> The steps to retrieve an attestation token are as follows:
->>>>>>>>      1. Mount the configfs filesystem if not already mounted
->>>>>>>>         mount -t configfs none /sys/kernel/config
->>>>>>>>      2. Generate an attestation token
->>>>>>>>         report=/sys/kernel/config/tsm/report/report0
->>>>>>>>         mkdir $report
->>>>>>>>         dd if=/dev/urandom bs=64 count=1 > $report/inblob
->>>>>>>>         hexdump -C $report/outblob
->>>>>>>>         rmdir $report
->>>>>>>>
->>>>>>>> Signed-off-by: Sami Mujawar <sami.mujawar@arm.com>
->>>>>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>>>>> Signed-off-by: Steven Price <steven.price@arm.com>
->>>>>>>> ---
->>>>>>>> v3: Minor improvements to comments and adapt to the renaming of
->>>>>>>> GRANULE_SIZE to RSI_GRANULE_SIZE.
->>>>>>>> ---
->>>>>>>>     drivers/virt/coco/Kconfig                     |   2 +
->>>>>>>>     drivers/virt/coco/Makefile                    |   1 +
->>>>>>>>     drivers/virt/coco/arm-cca-guest/Kconfig       |  11 +
->>>>>>>>     drivers/virt/coco/arm-cca-guest/Makefile      |   2 +
->>>>>>>>     .../virt/coco/arm-cca-guest/arm-cca-guest.c   | 211
->>>>>>>> ++++++++++++ ++++++
->>>>>>>>     5 files changed, 227 insertions(+)
->>>>>>>>     create mode 100644 drivers/virt/coco/arm-cca-guest/Kconfig
->>>>>>>>     create mode 100644 drivers/virt/coco/arm-cca-guest/Makefile
->>>>>>>>     create mode 100644 drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
->>>>
->>>> [...]
->>>>
->>>>>>>> +/**
->>>>>>>> + * arm_cca_report_new - Generate a new attestation token.
->>>>>>>> + *
->>>>>>>> + * @report: pointer to the TSM report context information.
->>>>>>>> + * @data:  pointer to the context specific data for this module.
->>>>>>>> + *
->>>>>>>> + * Initialise the attestation token generation using the
->>>>>>>> challenge data
->>>>>>>> + * passed in the TSM descriptor. Allocate memory for the attestation
->>>>>>>> token
->>>>>>>> + * and schedule calls to retrieve the attestation token on the
->>>>>>>> same CPU
->>>>>>>> + * on which the attestation token generation was initialised.
->>>>>>>> + *
->>>>>>>> + * The challenge data must be at least 32 bytes and no more than 64
->>>>>>>> bytes. If
->>>>>>>> + * less than 64 bytes are provided it will be zero padded to 64
->>>>>>>> bytes.
->>>>>>>> + *
->>>>>>>> + * Return:
->>>>>>>> + * * %0        - Attestation token generated successfully.
->>>>>>>> + * * %-EINVAL  - A parameter was not valid.
->>>>>>>> + * * %-ENOMEM  - Out of memory.
->>>>>>>> + * * %-EFAULT  - Failed to get IPA for memory page(s).
->>>>>>>> + * * A negative status code as returned by
->>>>>>>> smp_call_function_single().
->>>>>>>> + */
->>>>>>>> +static int arm_cca_report_new(struct tsm_report *report, void *data)
->>>>>>>> +{
->>>>>>>> +    int ret;
->>>>>>>> +    int cpu;
->>>>>>>> +    long max_size;
->>>>>>>> +    unsigned long token_size;
->>>>>>>> +    struct arm_cca_token_info info;
->>>>>>>> +    void *buf;
->>>>>>>> +    u8 *token __free(kvfree) = NULL;
->>>>>>>> +    struct tsm_desc *desc = &report->desc;
->>>>>>>> +
->>>>>>>> +    if (!report)
->>>>>>>> +        return -EINVAL;
->>>>>>>> +
->>>>>>>
->>>>>>> This check seems unnecessary and can be dropped.
->>>>>>
->>>>>> Ack
->>>>>>
->>>>>>>> +    if (desc->inblob_len < 32 || desc->inblob_len > 64)
->>>>>>>> +        return -EINVAL;
->>>>>>>> +
->>>>>>>> +    /*
->>>>>>>> +     * Get a CPU on which the attestation token generation will be
->>>>>>>> +     * scheduled and initialise the attestation token generation.
->>>>>>>> +     */
->>>>>>>> +    cpu = get_cpu();
->>>>>>>> +    max_size = rsi_attestation_token_init(desc->inblob,
->>>>>>>> desc->inblob_len);
->>>>>>>> +    put_cpu();
->>>>>>>> +
->>>>>>>
->>>>>>> It seems that put_cpu() is called early, meaning the CPU can go
->>>>>>> away before
->>>>>>> the subsequent call to arm_cca_attestation_continue() ?
->>>>>>
->>>>>> Indeed, good spot. I'll move it to the end of the function and update
->>>>>> the error paths below.
->>>>>
->>>>> Actually this was on purpose, not to block the CPU hotplug. The
->>>>> attestation must be completed on the same CPU.
->>>>>
->>>>> We can detect the failure from "smp_call" further down and make sure
->>>>> we can safely complete the operation or restart it.
->>>>>
->>>>
->>>> Yes, It's fine to call put_cpu() early since we're tolerant to error
->>>> introduced
->>>> by CPU unplug. It's a bit confused that rsi_attestation_token_init()
->>>> is called
->>>> on the local CPU while arm_cca_attestation_continue() is called on
->>>> same CPU
->>>> with help of smp_call_function_single(). Does it make sense to unify
->>>> so that
->>>> both will be invoked with the help of smp_call_function_single() ?
->>>>
->>>>       int cpu = smp_processor_id();
->>>>
->>>>       /*
->>>>        * The calling and target CPU can be different after the calling
->>>> process
->>>>        * is migrated to another different CPU. It's guaranteed the
->>>> attestatation
->>>>        * always happen on the target CPU with smp_call_function_single().
->>>>        */
->>>>       ret = smp_call_function_single(cpu,
->>>> rsi_attestation_token_init_wrapper,
->>>>                                      (void *)&info, true);
->>>
->>> Well, we want to allocate sufficient size buffer (size returned from
->>> token_init())  outside an atomic context (thus not in smp_call_function()).
->>>
->>> May be we could make this "allocation" restriction in a comment to
->>> make it clear, why we do it this way.
->>
->> So if I've followed this correctly the get_cpu() route doesn't work
->> because of the need to allocate outblob. So using
->> smp_call_function_single() for all calls seems to be the best approach,
->> along with a comment explaining what's going on. So how about:
->>
->>     /*
->>      * The attestation token 'init' and 'continue' calls must be
->>      * performed on the same CPU. smp_call_function_single() is used
->>      * instead of simply calling get_cpu() because of the need to
->>      * allocate outblob based on the returned value from the 'init'
->>      * call and that cannot be done in an atomic context.
->>      */
->>     cpu = smp_processor_id();
->>
->>     info.challenge = desc->inblob;
->>     info.challenge_size = desc->inblob_len;
->>
->>     ret = smp_call_function_single(cpu, arm_cca_attestation_init,
->>                        &info, true);
->>     if (ret)
->>         return ret;
->>     max_size = info.result;
->>
->> (with appropriate updates to the 'info' struct and a new
->> arm_cca_attestation_init() wrapper for rsi_attestation_token_init()).
+On 10/5/24 12:42 AM, Steven Price wrote:
+> The top bit of the configured IPA size is used as an attribute to
+> control whether the address is protected or shared. Query the
+> configuration from the RMM to assertain which bit this is.
 > 
-> That sounds good to me.
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v4:
+>   * Make PROT_NS_SHARED check is_realm_world() to reduce impact on
+>     non-CCA systems.
+> Changes since v2:
+>   * Drop unneeded extra brackets from PROT_NS_SHARED.
+>   * Drop the explicit alignment from 'config' as struct realm_config now
+>     specifies the alignment.
+> ---
+>   arch/arm64/include/asm/pgtable-prot.h | 4 ++++
+>   arch/arm64/include/asm/rsi.h          | 2 +-
+>   arch/arm64/kernel/rsi.c               | 8 ++++++++
+>   3 files changed, 13 insertions(+), 1 deletion(-)
 > 
 
-+1, it looks good to me as well.
+[...]
+
+> diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
+> index 9bf757b4b00c..a6495a64d9bb 100644
+> --- a/arch/arm64/kernel/rsi.c
+> +++ b/arch/arm64/kernel/rsi.c
+> @@ -8,6 +8,11 @@
+>   #include <linux/psci.h>
+>   #include <asm/rsi.h>
+>   
+> +struct realm_config config;
+> +
+
+Nit: I think this variable is file-scoped since it has a generic name.
+In this case, 'static' is needed to match with the scope.
+
+> +unsigned long prot_ns_shared;
+> +EXPORT_SYMBOL(prot_ns_shared);
+> +
+>   DEFINE_STATIC_KEY_FALSE_RO(rsi_present);
+>   EXPORT_SYMBOL(rsi_present);
+>   
+> @@ -67,6 +72,9 @@ void __init arm64_rsi_init(void)
+>   		return;
+>   	if (!rsi_version_matches())
+>   		return;
+> +	if (WARN_ON(rsi_get_realm_config(&config)))
+> +		return;
+> +	prot_ns_shared = BIT(config.ipa_bits - 1);
+>   
+>   	arm64_rsi_setup_memory();
+>   
 
 Thanks,
 Gavin
