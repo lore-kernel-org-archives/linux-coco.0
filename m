@@ -1,203 +1,287 @@
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2057.outbound.protection.outlook.com [40.107.100.57])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B849B1CACF3
-	for <linux-coco@lists.linux.dev>; Mon, 14 Oct 2024 21:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728940192; cv=fail; b=pdCnDsl7pUbImBi9xFyjLSreK4Hyg2DyLv2fziWH3oX4tk75S5/AGoxkAIlzLm9YG4gA0AukgNYZtuYUxQDUuXptpXfGJS0qoREaZ3Hf07vEd/e8YOEX5nFuWn8V12lb9sV8CZnrtu4gCBE0V+4BiThrjpxEYTI77TPLFuaAY9I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728940192; c=relaxed/simple;
-	bh=GL3/lPC3+yBPbO45lZ/dHo9+tiGWC9VfsJL77uQ9VT4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=CPOfwOKdrELAWfmv/UrwM28YlCx4XAegUbj1+TMGIi5CXGlB7+M7N4DddUxkmz/WFzwxQyGmbXP2XJzFnZjhB9vtU+3RhYrrDSXGhhheVMrhrU6xIn64gZFs+++g/bkVjvD67m9GoyfE3ENsnB9YVXCmVrhaRdJ18t4ivJBQ0ek=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=V0Au+E1m; arc=fail smtp.client-ip=40.107.100.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AA27F6
+	for <linux-coco@lists.linux.dev>; Tue, 15 Oct 2024 00:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728950515; cv=none; b=X+uEOSXcJac6Fu67wri2Zi1mVhblekB8LWBoB0zG9P0tqgzL0MqRsJBMEsEPqjKMobhIwhqs2QINITuKuCj/cFCO/ifpd2ZOsUlhR/3LQAn4QGXWHgqNVOv1XBMx1ZNYdP/yTC/CU7bD4yPf0IGjU29scxrAetemWuqbYbsdr9E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728950515; c=relaxed/simple;
+	bh=Q8iS8IxHSVGTjbc9AGbpjOQg0EWYXS/kKQdTlWSiROE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lHYig4GTSdNsh/DgON+tEdxZJAhy0jhG3gmXpfptd8VaRw/tqXSKfDCq+xGU2S+XFZpukupANBe9r76q98jJhcRe6UBqUh899g0nigsCwh0gi/Az3zRdUpPBnw6vW0Oh/gcalaezlxLpPhdiOd9A4L9LPzCo6Ut2kAjRNfQHT4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iiUNX+m5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="V0Au+E1m"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IngADNdsiXdcn4cvP28S/+cE71+Qv9Jyi8WIjA/N86UuOPNk0jJAa0IlRlcqpxzj50unsD7xRAjvKZiE2Cb5Z4WFB+rvOW35/Fnr5y2wff7KT9dAcT72Y//iZ2dllKZRl2Gid7Ilz9CNiH6000tI5hlhy7YK7cCbN08Bc51XB4HeObfvoxKdq3lAu0kIIhH9si12IyFP+A6IW3WqwfQKTkKZZVGorxVnMue/7aAWCnKIJ1N0Q2lmHZF4iLwHTAIi8EkykAvcgghMKFu1JWm7j+ji+4rFofL6W6WXAzU/ABkykau22M9j3H0lyJBzkD3tywgqiSUeOTpZFXKJTS7AHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HgTgl3qx/umXfGHayLIcA2aovQzddrYmWwWmwx2AHnQ=;
- b=GqPlsgRt1qY1SpCn+GfJwddUS+F8MQufhH73b/nyZGdQACH+VSwH2IU/1vhfq4lPVH1tXRvrHXOAOplla7CA2Wp1iA/LDiCY8n1kEURcqESgHGxHceGpSoUNUcKfeOrKzffEi/CPUXpvW0IoyyeEmWzPscUmHYu7HIioFgC3N+mZSUS8/+nRnJFfLt3TqSsk8QPVVNfyCtij1QTKz6uh2ltNHTYD6MX4XvAWvkw8lP3d//o6fqy9YDZjRu6btDmRDPaqDFlf5AOTGisKkoIMedSgOPslhVR1cy1HhpdTNBIkZ3GnkwgTH5gI+7h1hczR8jxv/NzuRsQ9EcAvSkX5JA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HgTgl3qx/umXfGHayLIcA2aovQzddrYmWwWmwx2AHnQ=;
- b=V0Au+E1mjAs0GdoPCX2bc4z+lCakX0ioLQ8cnr9+LYPzfuZY9Ciar7zjr5tYjivBsCaVj2vTQdTohTEmLfdg+mdg2RlcC1gG27Le90726BBz8Vt7fxU8YWydf7OHuBq0KjaP8Jw+Nzyok5bMR0j/okhWYqKQMQNpMQ0Kymqv79g=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA0PR12MB4447.namprd12.prod.outlook.com (2603:10b6:806:9b::23)
- by SJ0PR12MB6943.namprd12.prod.outlook.com (2603:10b6:a03:44b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Mon, 14 Oct
- 2024 21:09:47 +0000
-Received: from SA0PR12MB4447.namprd12.prod.outlook.com
- ([fe80::b4ba:6991:ab76:86d2]) by SA0PR12MB4447.namprd12.prod.outlook.com
- ([fe80::b4ba:6991:ab76:86d2%5]) with mapi id 15.20.8048.020; Mon, 14 Oct 2024
- 21:09:47 +0000
-Message-ID: <5c3344b9-e896-e93b-6853-1bff83d6544c@amd.com>
-Date: Mon, 14 Oct 2024 16:09:45 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v7 2/2] x86 KVM:SVM: Provide "nosnp" boot option for sev
- kernel command line
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-coco@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Eric Van Tassell <Eric.VanTassell@amd.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Ashish Kalra <ashish.kalra@amd.com>,
- Michael Roth <michael.roth@amd.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Peter Zijlstra <peterz@infradead.org>, Dhaval Giani <dhaval.giani@amd.com>
-References: <20241014130948.1476946-1-papaluri@amd.com>
- <20241014130948.1476946-3-papaluri@amd.com>
- <20241014154040.GBZw07eBVDJoLJZV0w@fat_crate.local>
-From: "Paluri, PavanKumar" <papaluri@amd.com>
-In-Reply-To: <20241014154040.GBZw07eBVDJoLJZV0w@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7PR04CA0181.namprd04.prod.outlook.com
- (2603:10b6:806:126::6) To SA0PR12MB4447.namprd12.prod.outlook.com
- (2603:10b6:806:9b::23)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iiUNX+m5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1728950512;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3fVXTa8XIsbgoiuVpOKk+BswyA+FGg23RGxfcTSTItE=;
+	b=iiUNX+m5BUlI/1pYSJPhf4J4Wf+3/Av1K5o5nmIYP7yGUtYOQLKPF5LV3/q0/l6NQQs0TH
+	gk1Zv+N56ebv6rg8yyV6vbfZYSxkwGUsxG3S6z5jYJEwExhiOy2bSdpWmY82XOtiyROmBc
+	R4QqK/YkMjJvpI2n7e3WCQZmYThWfgY=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-169-P4l4wV0PPRGEJr1hhoWL8w-1; Mon, 14 Oct 2024 20:01:51 -0400
+X-MC-Unique: P4l4wV0PPRGEJr1hhoWL8w-1
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-7ea6d5e76c3so1725337a12.1
+        for <linux-coco@lists.linux.dev>; Mon, 14 Oct 2024 17:01:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728950510; x=1729555310;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3fVXTa8XIsbgoiuVpOKk+BswyA+FGg23RGxfcTSTItE=;
+        b=bFVsgjM1OG9oqQEq9Ennvnq2+qK4FkgcDpFCfTITqFtNawG8Fvbezhrlsghtd9y564
+         qI9ilOFm4VJ7sz4P4y9koHxjtaEBtqxVGabedTa5N73BQKIjUJNWajrfuVnYicWGTbNu
+         0X9sVp+6vSWoFbVt4FaLdI9Xm0beLMAOJfq+HI9Di5Ycjk8+65fz5/yY/38Bk6n3jLE4
+         4uRN4kkLXnbrGvogXrqDHhUMnh+i7NMbFL1RaEzQ/vmYuo+qpoNt/iDQ7RpIm+5C6Dgp
+         SNYrDRD3uAYwObMHwJ93+Jbkoe9KQhw24AQKd1Z3vDUQqFHBud24/76Sr34ZpzroktM1
+         7mGA==
+X-Forwarded-Encrypted: i=1; AJvYcCW2E0KRrfbnGvqSvnXYYrMTFPbGlpyKvb4XyODA8+Aww9pCaukYfa7CG6ozaytNZi5H5BcuVVpeksCY@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywe+4ZgvaZ+4bY62uN23kokilYojoC+RZcsGfbbFZpM4AqAfm7Q
+	zD6EoyyEejNvxLEStBuzsX5KUssUJA4agVY5ucHOD79ad/W4iAfEJmCTxRpMUA4ViJvVwI6IpeD
+	lDN5N1igcLgyV6GwCF1mXR8GExk+pXpkhIorZ8w8TF1b8DETjf1yy73bIGN4=
+X-Received: by 2002:a05:6a20:d501:b0:1d2:ea38:39bc with SMTP id adf61e73a8af0-1d8c9594e7dmr14937908637.11.1728950510189;
+        Mon, 14 Oct 2024 17:01:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFJcAFjePFn8mOJXk/8VHRUXLze+FJupfXBRL7K3VuUoXPsbgGUDvbOUz+Vrv3oSTsD9DVmWw==
+X-Received: by 2002:a05:6a20:d501:b0:1d2:ea38:39bc with SMTP id adf61e73a8af0-1d8c9594e7dmr14937869637.11.1728950509802;
+        Mon, 14 Oct 2024 17:01:49 -0700 (PDT)
+Received: from [192.168.68.54] ([180.233.125.129])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ea9c71a8aesm114810a12.81.2024.10.14.17.01.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Oct 2024 17:01:49 -0700 (PDT)
+Message-ID: <6d6253a6-c113-44af-856e-118d02e1e409@redhat.com>
+Date: Tue, 15 Oct 2024 10:01:39 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4447:EE_|SJ0PR12MB6943:EE_
-X-MS-Office365-Filtering-Correlation-Id: b18f4fd1-459e-42e2-959f-08dcec948881
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TXVseTNuT1d4dmFZcUo0VDExaXJsMVlPZWFvVDE1RzZHeWN2MW9ldVRGLzlj?=
- =?utf-8?B?NWV1V3pROERadVFwZEsveEwxMWdWUEFXem9OWmY5dG1wRkVnVUJMQmg5a0RU?=
- =?utf-8?B?UHlJNVdOMG5nNDd5Q2krdmZzcjIvWFZVYTltOVcrMkxBOEhBU3NCNFVJWU1W?=
- =?utf-8?B?dzBGT2JjTnEraE93MzVhRm5XcWdRNW42MXJza3dPV1FRQ2lJL1ozVnZkTFJF?=
- =?utf-8?B?SVE5TElOS2ZXcTMxbktPMTdPNzRIall1a1g0NDdSY3dTRHVBZFNIdTJJQ1Zm?=
- =?utf-8?B?eHFkMllDZmVaeWFwY0tNeTdiTFZpOHhtMXJXZjBubTdkQjl0bFdwRnZ4Ylpl?=
- =?utf-8?B?L2NKSUt5eXRLdERMcXViR2VEQUFpZ0V6L00vKzJ4V3JqRitpR1RKcUc2dTBK?=
- =?utf-8?B?RXJmNDFGeno0dDF1M1VLazM5ekZTbWNxRUN1cFUrUzlOc0xuOFZqY01hVmNp?=
- =?utf-8?B?ZXJINEJZZ0N5eUxLTW5MakZsY1VRU0hjaFJEb1B0YlFOVHZTNFNxZk5sUmpX?=
- =?utf-8?B?aWJsTmxFR3M1L0JlZEM3S0JxblovN0kxcUtHUFpLVEhiKzlnOExJbmhjVXNV?=
- =?utf-8?B?dGg3WlgwVTJWaGRsSUg4cFFjcU4rM0Zvc041bDlhd0thSkpiS2xEZ3BoNStl?=
- =?utf-8?B?NkU2WjRDRzFtYXZSWWVZM2ZsaVpyaTB3ZHRwSWQxNUJYclhRTnVzQmFSS0dw?=
- =?utf-8?B?YzVwMk4yOWRyTjdxT2FuMG56dTh2cXczdnhmdnZNbi90cTZzT1V0ZEhTZjlh?=
- =?utf-8?B?d2laeUhVSzVtS2xwK1BYU09uQ2UrY296NExZNFUxT1k5cjQrTit1OXkrR3lD?=
- =?utf-8?B?c1UvQlhmQ0Q1NWNSdDM4d1MzL0lvWmtSYkJmdzBQRzhtMDBwbVlQeFpjaC9R?=
- =?utf-8?B?dkRFbXdwd2hFQ2NCeFdLTTQ1N0NJS1htS0dEWFNJUlFwZ2R6U3RDbE1kTG5u?=
- =?utf-8?B?Q2NOekx3cVVYZnR0MXRoKzhveTYxZlFOdHd3M0VqNithemFWdWVwZlBXRXlz?=
- =?utf-8?B?KzlmUXk4aVMraUJYdzRJcmVWamtSUitoa0xSNi9Ua1QwTjlCVkdqK3JYZUM2?=
- =?utf-8?B?N3hSZkp6ZTZQRHBWU3Y4TUF2MFFhTTkveDNEdWJBSlRySmlkVC9nL2ViTk1k?=
- =?utf-8?B?SXo1Uk0vcU5pV245elJscmI5SlhyOHJyVWkvN0NleEVtV0cyb0psRUNYbG00?=
- =?utf-8?B?MXdBMWtnSkJ3bW96a3pWRzhOK3lLVktKWlMvZEh3bkN2QjRuTGROQ3VPYjJa?=
- =?utf-8?B?cVlrTkEvYkJRc1BRUXJiblVURnBnTHZFZ1FCeXJsK3pGZFljMDF3RVI0RlV1?=
- =?utf-8?B?MjNTRU1aRGNwL1VpOVNUTFZXUThTZExPM0RERnVkMU5JUzBYeFgraWlXbmc3?=
- =?utf-8?B?Rjdua1hlMVRZRE81LzNncHRCYXBBVkZSZ0FxY3B2YzJELytQS2tQTk9NYkFG?=
- =?utf-8?B?NWJFajlpaTViSkFRVytQSnFacDE2L0VKa3lqK0ZLc09rdUdMTSs3ZlIwc0VV?=
- =?utf-8?B?cjN4Vi9GWEdiQVZLckkzcFFCbENvUFo0Z1BkY09PanQxNytjQTlvdnZqZWps?=
- =?utf-8?B?QXVrcnBSTDhPYjFGWTJYWllKOEtKR1Z6cG5nMVYwNkVOS0tyeWJqOWoyS1lS?=
- =?utf-8?B?K3J5MWRIMStxYzloemxrNG5aZ0FDd3VQbTAvclAzc3JkcXJvbkxVWlZnWkQ1?=
- =?utf-8?B?UG9PRHJ0RHNITXBOenVDMXF4V0U3Yk5FQzA4T3RON0JhdkhuS3RCZlJnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4447.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?U3FHbVlFS2dQVWN3aFpXaGl2UFNjMWFobURMdzcydkNNdHQxMU5uS2tFZ2J2?=
- =?utf-8?B?djFHMUVIZGlTZmNteFFKSXRvWnJNUTY0K1ZtdkkwTHl6RExOd1ZsMXhNQklX?=
- =?utf-8?B?V1Vlbk5UV1Y4SFFaZWJuZ1dYcDVKT0FIb0ViaWpjTTF6ZFJ4YWJyak1ocFVM?=
- =?utf-8?B?YWQ1SklDNnV2TlZnMHc0ZjR5MjAzazE0UTV1eEZkNWV4NFk2ZXlBOVI3MmYy?=
- =?utf-8?B?SGpvWEVqWTVQSHBSaVptajVKbjZCVUtybVRaQ2xhQ2Y3LzJ4TXBxMHFmQWNU?=
- =?utf-8?B?WmZJcVlveTYyWDdzT1hxRVpSRmZXa0NtbXZ0ek5VcjRpc2FkZk5mUW5CdmpR?=
- =?utf-8?B?by9INmZNSmtjMXI2aktOcjhqaXlHMFhUMHFPWmpMMFNiNlgvaFdUVnZ1bWNF?=
- =?utf-8?B?aURlam1XNndoSmhCVWZvWmFIZmV1eThaclBrTGg1V2tKM2J0VlZkSDZXZFNW?=
- =?utf-8?B?MjV2c3N4NCtLTzRXeWg3NEs4Z2Zmcmo4UExsWVFNOXpkRGZYYUJpUklOdFVK?=
- =?utf-8?B?T1VGbDVuNnd5ZUdkcVRGMGk1aE1hUGczZndOR1pBNmh4aEs4cWZnd3UwWjlz?=
- =?utf-8?B?YlJobDQ1M1JmclUyNGpBVFFEcjlNMzJaNFpSME5wK0gwU2MweUhjMkVXL2o3?=
- =?utf-8?B?dmNlcUtPdVVuVE1OaW1EYnRIOGk3c2E4SUtVc2lkOWNKbG5OZmNZeHdvcmJV?=
- =?utf-8?B?YkRhZ1hjU3piNGtkbWZHVWtjTGVzVnJneldOMDFidlA1ZWp1d05yWm1RYlB6?=
- =?utf-8?B?RTBmREs2cHhOeE1JZTNxRlo5OWpzbnRWUHB5WWJFZWZLTldHTW9NczUzY0lh?=
- =?utf-8?B?YUdPMTI0UXYxNEEvd0pDeHZpbVVnQUN1VUdKa2NwVEM5cURENHVSU2xVK1FC?=
- =?utf-8?B?NVp5RExCSDkyK3o0Wkt3UlhaMUJwT29YUnFYdVRBc2plZ2w2QjBLZ2tYanFM?=
- =?utf-8?B?TURCbXBZcUdwVTh0WnQrVHg1WmNRZXBwM0VZS0UxVEorMHlnMzBMLzNPODFo?=
- =?utf-8?B?blNxeTZZb1ljdi9Ga2RPLzIrS0lYK3o1UTlROUJKaTlBR3o5OVFiWHBtWUtW?=
- =?utf-8?B?TjVjdURsdDVaSGdXVVJNVWZmekwrdzhzaERMa3luSTFJRStwY3ppTmI4Wm1q?=
- =?utf-8?B?THMrMVZsMGZRZXFZaXJkcVg0NW5yOGNDMVVPTXVJbmVLWS9GVEZUQzF0L3R0?=
- =?utf-8?B?VUdXZ2JEdERYai9Hd2FBdHlJWTVoSXl0TktCTm1pRVMzejIyYmQ4ZENYbVNx?=
- =?utf-8?B?Q2VSWGpnR2J4V2x0ZlV2SStmaWRuMnBCRk5XcW5Ib3B3T2lkV21jaHkvV2Zp?=
- =?utf-8?B?TkRyclNPaDBpRmxEbEJhbC9qSk5XWUFmL2Vqb3NjOG90Tzd4Vjc4aHpkWVg3?=
- =?utf-8?B?alR2NGJwY1FaY1V6OXc1VWdlQU03NjlIZ0sxMklUUmtkZmF2SlZEUEZ5aXlv?=
- =?utf-8?B?Y2VBWWFLbmc3QUV2eWN0bmErZzliVEIvbUtZT2dVcmJKSEtJazdTMUlUeERu?=
- =?utf-8?B?S3lRMC9NRUNabmFPMDN0NDJRTnpoWDlmUXR6bU16c29CYVhZdEkyVDByQVNN?=
- =?utf-8?B?Nk52UjlkWFRzak5QNDRJZTRucmdFeGpNWlVZU1lvREtHbHhFY3NGNnF5TU52?=
- =?utf-8?B?V3ArVk83bUowV2Q5N0FuVURhYVF4SXZERXFBd1p4d3pkMVpUdGpJNmFYeHVF?=
- =?utf-8?B?TXJQRU1JOUlIZUpzRjRrNG1ZNW5nNnVwcWIrRlhKMzE5SVB1NllkRUZlSFVK?=
- =?utf-8?B?V2JLUURWcWh4RGxrdVJCRTZ3TlBMMFZZNTU5eU5jV29FUVZZSlowZUVMMHhZ?=
- =?utf-8?B?WG5OQU1lajBZTmhxRGx6UVlHam5MWSt5Y0thUzFCdUNFdncvMkFJd21CL3Rq?=
- =?utf-8?B?MlE2dWQrRmNvZGE4T0prR29qbzRVWFF0U0kxd2FDSFhxL1p5cUExQjFCSzhq?=
- =?utf-8?B?SE9VTHdJaGVXUHNPdTQvRUtranNHWk5jeGlWSFJwSEY4Q09jb3RtQXFRU3Bm?=
- =?utf-8?B?Yjl1WVJKQnppZkc5VmtHWllMeFBTdWRRd0pMZVU5V1FMeXJWVmJsVi9MMWha?=
- =?utf-8?B?UU1sUFdsK2JnZ2FlTUJZbHYwRCtINjBwdDJLR1d0UE5ncVdUNTFJd3JMU0tq?=
- =?utf-8?Q?sib6PdZT/2mCvVOLeVD/iuvJQ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b18f4fd1-459e-42e2-959f-08dcec948881
-X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4447.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2024 21:09:47.0357
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WrYRfggot3WoYT/FonNECHBi1mu7epPJ6A/5Oi/FND3f8FUWoRkMeWnhbVInAB46hTl5d4/E4q24Sswo4JPfAg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6943
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 10/11] virt: arm-cca-guest: TSM_REPORT support for
+ realms
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Sami Mujawar <sami.mujawar@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, Dan Williams <dan.j.williams@intel.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20241004144307.66199-1-steven.price@arm.com>
+ <20241004144307.66199-11-steven.price@arm.com>
+ <5a3432d1-6a79-434c-bc93-6317c8c6435c@redhat.com>
+ <6c306817-fbd7-402c-8425-a4523ed43114@arm.com>
+ <7a83461d-40fd-4e61-8833-5dae2abaf82b@arm.com>
+ <5999b021-0ae3-4d90-ae29-f18f187fd115@redhat.com>
+ <11cff100-3406-4608-9993-c29caf3d086d@arm.com>
+ <f3ce0718-064d-48e4-a681-7058157127b0@arm.com>
+ <56d9edcb-2574-43fe-8ebb-65cc4fdbc3d0@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <56d9edcb-2574-43fe-8ebb-65cc4fdbc3d0@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hello Boris,
-
-On 10/14/2024 10:40 AM, Borislav Petkov wrote:
-> On Mon, Oct 14, 2024 at 08:09:48AM -0500, Pavan Kumar Paluri wrote:
->> @@ -25,6 +26,12 @@ static int __init init_sev_config(char *str)
->>  			continue;
->>  		}
->>  
->> +		if (!strcmp(s, "nosnp")) {
->> +			setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
->> +			cc_platform_clear(CC_ATTR_HOST_SEV_SNP);
->> +			continue;
->> +		}
+On 10/15/24 12:46 AM, Suzuki K Poulose wrote:
+> On 14/10/2024 15:41, Steven Price wrote:
+>> On 14/10/2024 09:56, Suzuki K Poulose wrote:
+>>> On 12/10/2024 07:06, Gavin Shan wrote:
+>>>> On 10/12/24 2:22 AM, Suzuki K Poulose wrote:
+>>>>> On 11/10/2024 15:14, Steven Price wrote:
+>>>>>> On 08/10/2024 05:12, Gavin Shan wrote:
+>>>>>>> On 10/5/24 12:43 AM, Steven Price wrote:
+>>>>>>>> From: Sami Mujawar <sami.mujawar@arm.com>
+>>>>>>>>
+>>>>>>>> Introduce an arm-cca-guest driver that registers with
+>>>>>>>> the configfs-tsm module to provide user interfaces for
+>>>>>>>> retrieving an attestation token.
+>>>>>>>>
+>>>>>>>> When a new report is requested the arm-cca-guest driver
+>>>>>>>> invokes the appropriate RSI interfaces to query an
+>>>>>>>> attestation token.
+>>>>>>>>
+>>>>>>>> The steps to retrieve an attestation token are as follows:
+>>>>>>>>      1. Mount the configfs filesystem if not already mounted
+>>>>>>>>         mount -t configfs none /sys/kernel/config
+>>>>>>>>      2. Generate an attestation token
+>>>>>>>>         report=/sys/kernel/config/tsm/report/report0
+>>>>>>>>         mkdir $report
+>>>>>>>>         dd if=/dev/urandom bs=64 count=1 > $report/inblob
+>>>>>>>>         hexdump -C $report/outblob
+>>>>>>>>         rmdir $report
+>>>>>>>>
+>>>>>>>> Signed-off-by: Sami Mujawar <sami.mujawar@arm.com>
+>>>>>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>>>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>>>>>> ---
+>>>>>>>> v3: Minor improvements to comments and adapt to the renaming of
+>>>>>>>> GRANULE_SIZE to RSI_GRANULE_SIZE.
+>>>>>>>> ---
+>>>>>>>>     drivers/virt/coco/Kconfig                     |   2 +
+>>>>>>>>     drivers/virt/coco/Makefile                    |   1 +
+>>>>>>>>     drivers/virt/coco/arm-cca-guest/Kconfig       |  11 +
+>>>>>>>>     drivers/virt/coco/arm-cca-guest/Makefile      |   2 +
+>>>>>>>>     .../virt/coco/arm-cca-guest/arm-cca-guest.c   | 211
+>>>>>>>> ++++++++++++ ++++++
+>>>>>>>>     5 files changed, 227 insertions(+)
+>>>>>>>>     create mode 100644 drivers/virt/coco/arm-cca-guest/Kconfig
+>>>>>>>>     create mode 100644 drivers/virt/coco/arm-cca-guest/Makefile
+>>>>>>>>     create mode 100644 drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
+>>>>
+>>>> [...]
+>>>>
+>>>>>>>> +/**
+>>>>>>>> + * arm_cca_report_new - Generate a new attestation token.
+>>>>>>>> + *
+>>>>>>>> + * @report: pointer to the TSM report context information.
+>>>>>>>> + * @data:  pointer to the context specific data for this module.
+>>>>>>>> + *
+>>>>>>>> + * Initialise the attestation token generation using the
+>>>>>>>> challenge data
+>>>>>>>> + * passed in the TSM descriptor. Allocate memory for the attestation
+>>>>>>>> token
+>>>>>>>> + * and schedule calls to retrieve the attestation token on the
+>>>>>>>> same CPU
+>>>>>>>> + * on which the attestation token generation was initialised.
+>>>>>>>> + *
+>>>>>>>> + * The challenge data must be at least 32 bytes and no more than 64
+>>>>>>>> bytes. If
+>>>>>>>> + * less than 64 bytes are provided it will be zero padded to 64
+>>>>>>>> bytes.
+>>>>>>>> + *
+>>>>>>>> + * Return:
+>>>>>>>> + * * %0        - Attestation token generated successfully.
+>>>>>>>> + * * %-EINVAL  - A parameter was not valid.
+>>>>>>>> + * * %-ENOMEM  - Out of memory.
+>>>>>>>> + * * %-EFAULT  - Failed to get IPA for memory page(s).
+>>>>>>>> + * * A negative status code as returned by
+>>>>>>>> smp_call_function_single().
+>>>>>>>> + */
+>>>>>>>> +static int arm_cca_report_new(struct tsm_report *report, void *data)
+>>>>>>>> +{
+>>>>>>>> +    int ret;
+>>>>>>>> +    int cpu;
+>>>>>>>> +    long max_size;
+>>>>>>>> +    unsigned long token_size;
+>>>>>>>> +    struct arm_cca_token_info info;
+>>>>>>>> +    void *buf;
+>>>>>>>> +    u8 *token __free(kvfree) = NULL;
+>>>>>>>> +    struct tsm_desc *desc = &report->desc;
+>>>>>>>> +
+>>>>>>>> +    if (!report)
+>>>>>>>> +        return -EINVAL;
+>>>>>>>> +
+>>>>>>>
+>>>>>>> This check seems unnecessary and can be dropped.
+>>>>>>
+>>>>>> Ack
+>>>>>>
+>>>>>>>> +    if (desc->inblob_len < 32 || desc->inblob_len > 64)
+>>>>>>>> +        return -EINVAL;
+>>>>>>>> +
+>>>>>>>> +    /*
+>>>>>>>> +     * Get a CPU on which the attestation token generation will be
+>>>>>>>> +     * scheduled and initialise the attestation token generation.
+>>>>>>>> +     */
+>>>>>>>> +    cpu = get_cpu();
+>>>>>>>> +    max_size = rsi_attestation_token_init(desc->inblob,
+>>>>>>>> desc->inblob_len);
+>>>>>>>> +    put_cpu();
+>>>>>>>> +
+>>>>>>>
+>>>>>>> It seems that put_cpu() is called early, meaning the CPU can go
+>>>>>>> away before
+>>>>>>> the subsequent call to arm_cca_attestation_continue() ?
+>>>>>>
+>>>>>> Indeed, good spot. I'll move it to the end of the function and update
+>>>>>> the error paths below.
+>>>>>
+>>>>> Actually this was on purpose, not to block the CPU hotplug. The
+>>>>> attestation must be completed on the same CPU.
+>>>>>
+>>>>> We can detect the failure from "smp_call" further down and make sure
+>>>>> we can safely complete the operation or restart it.
+>>>>>
+>>>>
+>>>> Yes, It's fine to call put_cpu() early since we're tolerant to error
+>>>> introduced
+>>>> by CPU unplug. It's a bit confused that rsi_attestation_token_init()
+>>>> is called
+>>>> on the local CPU while arm_cca_attestation_continue() is called on
+>>>> same CPU
+>>>> with help of smp_call_function_single(). Does it make sense to unify
+>>>> so that
+>>>> both will be invoked with the help of smp_call_function_single() ?
+>>>>
+>>>>       int cpu = smp_processor_id();
+>>>>
+>>>>       /*
+>>>>        * The calling and target CPU can be different after the calling
+>>>> process
+>>>>        * is migrated to another different CPU. It's guaranteed the
+>>>> attestatation
+>>>>        * always happen on the target CPU with smp_call_function_single().
+>>>>        */
+>>>>       ret = smp_call_function_single(cpu,
+>>>> rsi_attestation_token_init_wrapper,
+>>>>                                      (void *)&info, true);
+>>>
+>>> Well, we want to allocate sufficient size buffer (size returned from
+>>> token_init())  outside an atomic context (thus not in smp_call_function()).
+>>>
+>>> May be we could make this "allocation" restriction in a comment to
+>>> make it clear, why we do it this way.
+>>
+>> So if I've followed this correctly the get_cpu() route doesn't work
+>> because of the need to allocate outblob. So using
+>> smp_call_function_single() for all calls seems to be the best approach,
+>> along with a comment explaining what's going on. So how about:
+>>
+>>     /*
+>>      * The attestation token 'init' and 'continue' calls must be
+>>      * performed on the same CPU. smp_call_function_single() is used
+>>      * instead of simply calling get_cpu() because of the need to
+>>      * allocate outblob based on the returned value from the 'init'
+>>      * call and that cannot be done in an atomic context.
+>>      */
+>>     cpu = smp_processor_id();
+>>
+>>     info.challenge = desc->inblob;
+>>     info.challenge_size = desc->inblob_len;
+>>
+>>     ret = smp_call_function_single(cpu, arm_cca_attestation_init,
+>>                        &info, true);
+>>     if (ret)
+>>         return ret;
+>>     max_size = info.result;
+>>
+>> (with appropriate updates to the 'info' struct and a new
+>> arm_cca_attestation_init() wrapper for rsi_attestation_token_init()).
 > 
-> Well, if it is a HV-only option, then it better be such:
+> That sounds good to me.
 > 
-> @@ -25,6 +26,17 @@ static int __init init_sev_config(char *str)
->  			continue;
->  		}
->  
-> +		if (!strcmp(s, "nosnp")) {
-> +			if (!cpu_feature_enabled(X86_FEATURE_HYPERVISOR)) {
 
-Sure, it does make sense to add this check since nosnp is only a HV option.
++1, it looks good to me as well.
 
 Thanks,
-Pavan
+Gavin
 
-> +				setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
-> +				cc_platform_clear(CC_ATTR_HOST_SEV_SNP);
-> +				continue;
-> +			} else {
-> +				goto warn;
-> +			}
-> +		}
-> +
-> +warn:
->  		pr_info("SEV command-line option '%s' was not recognized\n", s);
->  	}
->  
-> 
