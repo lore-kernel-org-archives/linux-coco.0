@@ -1,106 +1,83 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A361D545;
-	Fri, 18 Oct 2024 13:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB51720127B
+	for <linux-coco@lists.linux.dev>; Fri, 18 Oct 2024 15:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729258220; cv=none; b=YwV8dmHcH0wakD8S9HDWHoV0tJUgFGWOEwB+ulw0BYSkwc8OWmU0woo4dsA3CG3FS0f5rr4Cq4pef4o1SZsXYSsYu76WCQIp6Lds1bSmHljP5te/tt4leTatOL5liFbxul6GMvRFLZWplvKRs9V2rYlrIE7GFvC3oQgmB/Zc6xU=
+	t=1729265797; cv=none; b=ui+O5C79a3djXzI4TLOAsm1DQxUwv+628OO285YUicxQYP/Zo/ow/dPYdzA19DDp4X85fbossfPHpmkubxNcq1Np7XqBGS7QTU4GJAQhnHQfWOgi4inhnC6Ntq+zod8DLPO6KPbf6iS3n7T7QzCJbCzaQJVkonoRRRFnh782Sao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729258220; c=relaxed/simple;
-	bh=4cb3B3QHewrPYGrjaGWu1ULVYo4OSiASJENbHyPgKyc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vF18A2+TNcxu8t99dV2FwtcnWGUlgGhjNCxrVF65wt1NXufvtbaMx9Yucpp7ARfG2ASnCEfdXpZr5Lnayv6AupXBO1smnHIWt8/EwPrIGPTT+82tWzu/BPbWd2b5QHV4MI6LI1A5uEGXIlZOW4Ki7VS/Z09lJU7j2Q4DiZMieRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 332DFFEC;
-	Fri, 18 Oct 2024 06:30:47 -0700 (PDT)
-Received: from [10.57.64.219] (unknown [10.57.64.219])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AAD373F528;
-	Fri, 18 Oct 2024 06:30:14 -0700 (PDT)
-Message-ID: <7ca207aa-4433-4e9b-8cd2-e025bb265796@arm.com>
-Date: Fri, 18 Oct 2024 14:30:13 +0100
+	s=arc-20240116; t=1729265797; c=relaxed/simple;
+	bh=3KuPTPKFRs/xGs+UxwmvV37m+aAL2k4H0fIxMFw9Q+Y=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
+	 MIME-Version; b=Hnf325AFfjhYSGPUvw5jdXYsBZ+eQupoqCfA65R8GsCanlnrw4yH8K0IERWr2sE4Fj+WdQhqgsvKbm2lk8x7sQ0495tSXOaxxchUNov/mh1cUJ1IfrZGuTu9WZUQNMZzHHAv3qXgQki69kfqY4tQdAoGCpgkDH7Jgh/QEeUhauo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=io+A9U+H; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=io+A9U+H; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="io+A9U+H";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="io+A9U+H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1729265794;
+	bh=3KuPTPKFRs/xGs+UxwmvV37m+aAL2k4H0fIxMFw9Q+Y=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:From;
+	b=io+A9U+Ho/1pTA0LKynKBJTFNMvyilAO5oeke4JCURYuKI8wh8fsAYmaOUmmYTOZy
+	 A5ZJ4dy/CCURDMEZDjx9au3qSMTUzJ+fDd9Odut9yFFpNOAlKazTEYorISIOaTFip4
+	 jqbaKRrIACZ43iFt8wKcdpYrcwlgE6k2hCNAKFVk=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id BDDEF12874E5;
+	Fri, 18 Oct 2024 11:36:34 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id l_H6ysM2xXpH; Fri, 18 Oct 2024 11:36:34 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1729265794;
+	bh=3KuPTPKFRs/xGs+UxwmvV37m+aAL2k4H0fIxMFw9Q+Y=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:From;
+	b=io+A9U+Ho/1pTA0LKynKBJTFNMvyilAO5oeke4JCURYuKI8wh8fsAYmaOUmmYTOZy
+	 A5ZJ4dy/CCURDMEZDjx9au3qSMTUzJ+fDd9Odut9yFFpNOAlKazTEYorISIOaTFip4
+	 jqbaKRrIACZ43iFt8wKcdpYrcwlgE6k2hCNAKFVk=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 4ACBD1287459;
+	Fri, 18 Oct 2024 11:36:33 -0400 (EDT)
+Message-ID: <6028e1a0fad729f28451782754417b0be3aea7ed.camel@HansenPartnership.com>
+Subject: Re: [RFC PATCH 0/5] Extend SEV-SNP SVSM support with a kvm_vcpu per
+ VMPL
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: roy.hopkins@suse.com
+Cc: ashish.kalra@amd.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	jroedel@suse.de, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, michael.roth@amd.com, mingo@redhat.com, 
+	pbonzini@redhat.com, seanjc@google.com, tglx@linutronix.de, 
+	thomas.lendacky@amd.com, x86@kernel.org
+Date: Fri, 18 Oct 2024 11:36:32 -0400
+In-Reply-To: <cover.1726506534.git.roy.hopkins@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 31/43] arm64: rme: Prevent Device mappings for Realms
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>
-References: <20241004152804.72508-1-steven.price@arm.com>
- <20241004152804.72508-32-steven.price@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20241004152804.72508-32-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 04/10/2024 16:27, Steven Price wrote:
-> Physical device assignment is not yet supported by the RMM, so it
-> doesn't make much sense to allow device mappings within the realm.
-> Prevent them when the guest is a realm.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
->   arch/arm64/kvm/mmu.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 4f0403059c91..602c49eae90d 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1142,6 +1142,10 @@ int kvm_phys_addr_ioremap(struct kvm *kvm, phys_addr_t guest_ipa,
->   	if (is_protected_kvm_enabled())
->   		return -EPERM;
->   
-> +	/* We don't support mapping special pages into a Realm */
-> +	if (kvm_is_realm(kvm))
-> +		return -EINVAL;
-> +
+> I've prepared this series as an extension to the RFC patch series:
+> 'SEV-SNP support for running an SVSM' posted by Tom Lendacky [1].
+> This extends the support for transitioning a vCPU between VM
+> Privilege Levels (VMPLs) by storing the vCPU state for each VMPL in
+> its own `struct kvm_vcpu`. This additionally allows for separate
+> APICs for each VMPL.
 
-I believe this is not sufficient. This is only called for GICv2 today.
-But we also need to check in  user_mem_abort() and only allow the
-mapping if it targeting an unprotected IPA.
+I couldn't attend KVM forum, but I understand based on feedback at a
+session there, Paolo took the lead to provide an architecture document
+for this feature, is that correct?  Just asking because I haven't
+noticed anything about this on the list.
 
-Something like:
+Regards,
 
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 26d550ad8393..e433bf8376f2 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1710,6 +1710,9 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, 
-phys_addr_t fault_ipa,
-         if (exec_fault && device)
-                 return -ENOEXEC;
-
-+       if (device && kvm_gpa_from_fault(fault_ipa) != fault_ipa)
-+               return -EINVAL;
-+
-         /*
-          * Potentially reduce shadow S2 permissions to match the 
-guest's own
-          * S2. For exec faults, we'd only reach this point if the guest
-
-
-
-Suzuki
-
-
->   	size += offset_in_page(guest_ipa);
->   	guest_ipa &= PAGE_MASK;
->   
+James
 
