@@ -1,181 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EDC15539D
-	for <linux-coco@lists.linux.dev>; Tue, 22 Oct 2024 08:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEA518BBA9;
+	Tue, 22 Oct 2024 11:06:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729586127; cv=none; b=KfEAZi8wyv5tE4BVb0590YHkUovib/7xhksgl1BtlkUrgOxbxFSUMqhu8tHBlHogF57onsFzHSmJLkDlUJe2DbxJSbkTGow0me1HZ9gvn4tIbAwZpoF86pv+swYbKvrBX5BuYjJf9WFQC2kLGLze/MfxSnpiee8VR45aI8ojAtQ=
+	t=1729595216; cv=none; b=pF/iH4blcxs5ndKJTF2sv7r088cepVIB3WH+x8YziILGE1AbJjES+ngSm6swi5PNi+oE2EDraI6U96Wdeg4jjHBXBqiz+eXRt9HUIkrvRleSzw1eH0y//hlxM+Wt2jlWhBc/yW9zEiJDWt9bt85blpzgefKtVTZxXTTLjB1GzQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729586127; c=relaxed/simple;
-	bh=aJGyiVV1Vx+wkCJPog3Ga3tOsSFFzIoJWEjdxQipbM8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZJKfQm4k3YY5IJJvISLzUoJU1vGL4EHCfRgXlvNyuT4wZd2pD8SMixPEx61Zm4kF9xYScN9VQAUW+/m8dUB95ftGf3nmfgPKPbvh/uEmtni+TZgs6nwB/HXPWONoa/SJG9k7le6xfIaVbLDv49WZPHJAbjavBrERZ0n9rPd+a/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QET9J2rf; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QET9J2rf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729586125; x=1761122125;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=aJGyiVV1Vx+wkCJPog3Ga3tOsSFFzIoJWEjdxQipbM8=;
-  b=QET9J2rfkjzpq95Kc+51EYN6XByo7VQ17F5VJ5rXKW7bD8hik9jZULnw
-   1KViWIkuYgkZzqVussv9aEB8Fa9tx+4dFJRYXNy6Kg9/g8VRjTt3gfppE
-   YPov6hGy/+hfxRX0CyAKz9AqilqBk7X001DWWVyjSXyUODSqNC3dn0LRI
-   FBIZrt26CBLI+fsIjyvJD8g9sDqbxT05LIhBgQNyLotsCKpAtcqgt7lcN
-   IdsEK01IjrDTec3gPEzKepdj1UghdpxHaexm4ECyT97MxwYD0wPwC39Z5
-   TfjBu6QihwYyPpTYtzC/+GerK+Q7J/E7XKvmweDs1GO8Rft35dBUO6iol
-   A==;
-X-CSE-ConnectionGUID: /LdC0dsvTv2TjMBC0Q4WJQ==
-X-CSE-MsgGUID: /SKcEqPyTq+ieeGBPPD6aQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29260034"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="29260034"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 01:35:25 -0700
-X-CSE-ConnectionGUID: 7gXu7vSUTKqgcCNx5pA5ow==
-X-CSE-MsgGUID: iWFLw6k0QJqYXX+yMmEUGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; 
-   d="scan'208";a="80602371"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 01:35:22 -0700
-From: "Huang, Ying" <ying.huang@intel.com>
-To: Oscar Salvador <osalvador@suse.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,
-  Borislav Petkov <bp@alien8.de>,  Dave Hansen
- <dave.hansen@linux.intel.com>,  "Kirill A . Shutemov"
- <kirill.shutemov@linux.intel.com>,  x86@kernel.org,
-  linux-coco@lists.linux.dev,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org,  Dan Williams <dan.j.williams@intel.com>,
-  Kai Huang <kai.huang@intel.com>,  David Hildenbrand <david@redhat.com>,
-  "H. Peter Anvin" <hpa@zytor.com>,  Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH -V3] x86/tdx, memory hotplug: Check whole hot-adding
- memory range for TDX
-In-Reply-To: <ZxdY8ty-nAj3dlQQ@localhost.localdomain> (Oscar Salvador's
-	message of "Tue, 22 Oct 2024 09:49:06 +0200")
-References: <20241022031617.159969-1-ying.huang@intel.com>
-	<ZxdY8ty-nAj3dlQQ@localhost.localdomain>
-Date: Tue, 22 Oct 2024 16:31:48 +0800
-Message-ID: <87r0884jyj.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1729595216; c=relaxed/simple;
+	bh=v7P5/7qk7UApYxhUS6nF0cmNQ91ZhvIbcS2flDvVIFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W1j4F/NH6AGBSJDoXoHYqLMaM9y40kUEmpDzju/1cyP3rvnqGhzac4A+5gIwbwdeFmDayKflwOdQcD62eHzInUBFY8/B5jGN5yTFbthcnjuUpJE5XYX18kc1nYhs1FOztC8iTMmnZerzi7wdcagzG2XT9QmADpo3/w5XarxDF+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4C3C4CEC3;
+	Tue, 22 Oct 2024 11:06:51 +0000 (UTC)
+Date: Tue, 22 Oct 2024 12:06:49 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Steven Price <steven.price@arm.com>, Gavin Shan <gshan@redhat.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Sami Mujawar <sami.mujawar@arm.com>, Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: Re: [PATCH v7 10/11] virt: arm-cca-guest: TSM_REPORT support for
+ realms
+Message-ID: <ZxeHSdpxocFA-SrO@arm.com>
+References: <20241017131434.40935-1-steven.price@arm.com>
+ <20241017131434.40935-11-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241017131434.40935-11-steven.price@arm.com>
 
-Hi, Oscar,
+On Thu, Oct 17, 2024 at 02:14:33PM +0100, Steven Price wrote:
+> From: Sami Mujawar <sami.mujawar@arm.com>
+> 
+> Introduce an arm-cca-guest driver that registers with
+> the configfs-tsm module to provide user interfaces for
+> retrieving an attestation token.
+> 
+> When a new report is requested the arm-cca-guest driver
+> invokes the appropriate RSI interfaces to query an
+> attestation token.
+> 
+> The steps to retrieve an attestation token are as follows:
+>   1. Mount the configfs filesystem if not already mounted
+>      mount -t configfs none /sys/kernel/config
+>   2. Generate an attestation token
+>      report=/sys/kernel/config/tsm/report/report0
+>      mkdir $report
+>      dd if=/dev/urandom bs=64 count=1 > $report/inblob
+>      hexdump -C $report/outblob
+>      rmdir $report
+> 
+> Signed-off-by: Sami Mujawar <sami.mujawar@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v6:
+>  * Avoid get_cpu() and instead make the init attestation call using
+>    smp_call_function_single(). Improve comments to explain the logic.
+>  * Minor code reorgnisation and comment cleanup following Gavin's review
+>    (thanks!)
 
-Oscar Salvador <osalvador@suse.de> writes:
+Gavin, since most changes in v7 are based on your feedback, do you have
+any more comments on this patch? I plan to push this series into -next
+fairly soon.
 
-> On Tue, Oct 22, 2024 at 11:16:17AM +0800, Huang Ying wrote:
->> On systems with TDX (Trust Domain eXtensions) enabled, current kernel
->> checks the TDX compatibility of the hot-added memory ranges through a
->> memory hotplug notifier for each memory_block.  If a memory range
->> which isn't TDX compatible is hot-added, for example, some CXL memory,
->> the command line as follows,
->> 
->>   $ echo 1 > /sys/devices/system/node/nodeX/memoryY/online
->> 
->> will report something like,
->> 
->>   bash: echo: write error: Operation not permitted
->> 
->> If pr_debug() is enabled, current kernel will show the error message
->> like below in the kernel log,
->> 
->>   online_pages [mem 0xXXXXXXXXXX-0xXXXXXXXXXX] failed
->> 
->> Both are too general to root cause the problem.  This may confuse
->> users.  One solution is to print some error messages in the TDX memory
->> hotplug notifier.  However, kernel calls memory hotplug notifiers for
->> each memory block, so this may lead to a large volume of messages in
->> the kernel log if a large number of memory blocks are onlined with a
->> script or automatically.  For example, the typical size of memory
->> block is 128MB on x86_64, when online 64GB CXL memory, 512 messages
->> will be logged.
->> 
->> Therefore, this patch checks the TDX compatibility of the whole
->> hot-adding memory range through a newly added architecture specific
->> function (arch_check_hotplug_memory_range()).  If this patch rejects
->> the memory hot-adding for TDX compatibility, it will output a kernel
->> log message like below,
->> 
->>   virt/tdx: Reject hot-adding memory range: 0xXXXXXXXX-0xXXXXXXXX for TDX compatibility.
->> 
->> The target use case is to support CXL memory on TDX enabled systems.
->> If the CXL memory isn't compatible with TDX, the kernel will reject
->> the whole CXL memory range.  While the CXL memory can still be used
->> via devdax interface.
->> 
->> This also makes the original TDX memory hotplug notifier useless, so
->> this patch deletes it.
->> 
->> Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
->
-> Acked-by: Oscar Salvador <osalvador@suse.de>
+Thanks.
 
-Thanks!
-
-> One question below:
->
-> ...
->
->> +int tdx_check_hotplug_memory_range(u64 start, u64 size)
->>  {
->> -	struct memory_notify *mn = v;
->> -
->> -	if (action != MEM_GOING_ONLINE)
->> -		return NOTIFY_OK;
->> +	u64 start_pfn = PHYS_PFN(start);
->> +	u64 end_pfn = PHYS_PFN(start + size);
->>  
->>  	/*
->>  	 * Empty list means TDX isn't enabled.  Allow any memory
->> -	 * to go online.
->> +	 * to be hot-added.
->>  	 */
->>  	if (list_empty(&tdx_memlist))
->> -		return NOTIFY_OK;
->> +		return 0;
->>  
->>  	/*
->>  	 * The TDX memory configuration is static and can not be
->> -	 * changed.  Reject onlining any memory which is outside of
->> +	 * changed.  Reject hot-adding any memory which is outside of
->>  	 * the static configuration whether it supports TDX or not.
->>  	 */
->> -	if (is_tdx_memory(mn->start_pfn, mn->start_pfn + mn->nr_pages))
->> -		return NOTIFY_OK;
->> +	if (is_tdx_memory(start_pfn, end_pfn))
->> +		return 0;
->>  
->> -	return NOTIFY_BAD;
->> +	pr_info("Reject hot-adding memory range: %#llx-%#llx for TDX compatibility.\n",
->> +		start, start + size);
->
-> Why not using pr_err() here?
->
-> I was checking which kind of information level we use when failing at
-> hot-adding memory, and we seem to be using pr_err(), and pr_debug() when
-> onlining/offlining.
->
-> Not a big deal, and not saying it is wrong, but was just wondering the reasoning
-> behind.
-
-TBH, I have no strong opinion about which log level is more appropriate.
-IMHO, it shouldn't be pr_debug() to make it easy for users to root cause
-the hot-adding failure.  And, it appears too harsh to use pr_err(),
-because there's no program error, etc.  So, I think that something
-in-between is more appropriate.  That is, pr_warn(), pr_notice, or
-pr_info().  In them, I prefer pr_info() a little.
-
---
-Best Regards,
-Huang, Ying
+-- 
+Catalin
