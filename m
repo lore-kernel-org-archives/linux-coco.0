@@ -1,73 +1,138 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0924E6CDAF
-	for <linux-coco@lists.linux.dev>; Wed, 23 Oct 2024 05:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729660979; cv=none; b=Vbe+DfSqr0ISte/QihQaehG4LTLh8zniJNMQCJpP+FMqDIw481Ysu2W0bCKicMbrv6/XY9CBn7OU8C7qgsVZgxlhRWzorW2tSnfaSYAlk/8Xlebt9eQxc1BvUJCAa9h9W9DymvPkNMTrJ26MZKElT/MZZi+uyMPpNhugZHHz/mI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729660979; c=relaxed/simple;
-	bh=jaVX81z53p5nscHZi4FViOOFnlI7ZuqWEq2t0nMA8rs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=uM99XX4w8rgHtiULnN5DG9fdsG85UPr2hofpS1nDJLjrjuPxlE0UFbkUSx5AfAhzOlH1BelU1SovgbkcmNHTpURle6bUEk3U1L77LZCXc6qrhqrs2EV+7avuh0fVB6hnnIs7zMKCGQta7xli9WvrlUZyRSIQ6VYayPBEzKbPVQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=sZ3QyFk2; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="sZ3QyFk2"
-Received: from 8bytes.org (p549219d2.dip0.t-ipconnect.de [84.146.25.210])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id D035D2A85FF;
-	Wed, 23 Oct 2024 07:22:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1729660964;
-	bh=jaVX81z53p5nscHZi4FViOOFnlI7ZuqWEq2t0nMA8rs=;
-	h=Date:From:To:Cc:Subject:From;
-	b=sZ3QyFk2kEFuTPhfwHh/O0N1OmeJNILjcWZXEHxHmZ/gAtRbpv37u0Yi+FI/BhiHF
-	 P4rkRnHsGTUrY2UM6dypwIhdHJVH6K91He3A95O4iu3uqe4mfQtD5HqXq7Y45al6FA
-	 wh2AigoXhQWnpnEZBm7Xk6YHP9HkKMIRuDn8eNesmryQ4LC8PDkZ2SfLBbITaWFoE7
-	 SxAFK8xBVJ3Xn+6+GP36rbD3FOZiV7O2iYRZznMqHUPdY/USu6HmanUKYzZBIZr57r
-	 qNae5oncCE/1j8/hr4Y92yRHC51dOW9uxZdcpFiQDTxrBkpd9T0ReRJZLLOB117yng
-	 rzwisSab+bUqQ==
-Date: Wed, 23 Oct 2024 07:22:43 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Cc: Ziqiao Zhou <ziqiaozhou@microsoft.com>,
-	Weidong Cui <Weidong.Cui@microsoft.com>
-Subject: SVSM Development Call October 23rd, 2024
-Message-ID: <ZxiIIxuWHa_Vs28L@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1547482;
+	Wed, 23 Oct 2024 05:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729662665; cv=none; b=guHriZet9IvAsHMIltA8Vjr0RBsW1Gt/0lpM0p6TIlo2s8WwjUd28bwvp/VCqM9Cf1L/MS81NGQxTwVgwMxTS1Hv1RJkPzzl8v6scZ2AmQhmflPKTXdVwp8P8eGfaqSL0bdv+Q83zJaqAcGNtHnkhUFOlydN3/Z62bTrMfqo3YM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729662665; c=relaxed/simple;
+	bh=M7aW7sxLx+ChIx2S9zBXQ1rM3KjHSPN+I4dTs+cdgrY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lEFbaapk7gGGn7hTDJFZuiT5zuNRjz9J9m1ZXd5M9KGdUIIZXE6RdKXWTx3ErwG93T78hlcGJq28YT3sVA/X1LlbAQK2fYDOPM6zjXCmO81qySjcDifEDSnvm1WwtDTm5fzKudqq+eD+bA2qKhdMNgStGQtDJu0kx9+7EJmDR/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mv0UjbKg; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mv0UjbKg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E46C4CEC6;
+	Wed, 23 Oct 2024 05:50:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729662665;
+	bh=M7aW7sxLx+ChIx2S9zBXQ1rM3KjHSPN+I4dTs+cdgrY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=mv0UjbKggh21apRWlL3ozSbZ+z2YuV6nmp+1X23/ZCd2g35Ng9hANH6i8w3KCfxB1
+	 6WHm+WeOvk8YiWrW7IREbdPz9OMqoEN6Q8LVE8z2IDkN5uM/O7QulH03FH4BK6Ppxl
+	 p5Thg249BFlniB+1+sFssrzCBcK3l5MF4Mw0yiaOSi3Yl8jdnBn6LYlHbd7TvDXbeF
+	 bSg7C5yql1a7KQi6rUQpsY58MXlO9TOOJlDdbcFoFGiwosWRON6kCl4dBbL/VxgiXP
+	 C5/c37/WD+9knK/gcJW0CFJcvznoh6F6wnP3pLbH2dOXMW0x7QKycmGEus8Lz/C/hD
+	 6pxJs8GC0lgHg==
+X-Mailer: emacs 31.0.50 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>
+Subject: Re: [PATCH v5 21/43] arm64: RME: Runtime faulting of memory
+In-Reply-To: <20241004152804.72508-22-steven.price@arm.com>
+References: <20241004152804.72508-1-steven.price@arm.com>
+ <20241004152804.72508-22-steven.price@arm.com>
+Date: Wed, 23 Oct 2024 11:20:54 +0530
+Message-ID: <yq5abjzbmkox.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi,
+Steven Price <steven.price@arm.com> writes:
 
-Here is the usual call for agenda items for this weeks SVSM development
-call. Please send me any agenda items you have in mind or raise them in
-the meeting.
+.....
 
-This week Ziqiao Zhou and Weidong Cui from Microsoft research will give
-an introduction to the Verismo formal code verification project and we
-will have a discussion how this can benefit COCONUT-SVSM:
+> +int realm_map_protected(struct realm *realm,
+> +			unsigned long base_ipa,
+> +			struct page *dst_page,
+> +			unsigned long map_size,
+> +			struct kvm_mmu_memory_cache *memcache)
+> +{
+> +	phys_addr_t dst_phys = page_to_phys(dst_page);
+> +	phys_addr_t rd = virt_to_phys(realm->rd);
+> +	unsigned long phys = dst_phys;
+> +	unsigned long ipa = base_ipa;
+> +	unsigned long size;
+> +	int map_level;
+> +	int ret = 0;
+> +
+> +	if (WARN_ON(!IS_ALIGNED(ipa, map_size)))
+> +		return -EINVAL;
+> +
+> +	switch (map_size) {
+> +	case PAGE_SIZE:
+> +		map_level = 3;
+> +		break;
+> +	case RME_L2_BLOCK_SIZE:
+> +		map_level = 2;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (map_level < RME_RTT_MAX_LEVEL) {
+> +		/*
+> +		 * A temporary RTT is needed during the map, precreate it,
+> +		 * however if there is an error (e.g. missing parent tables)
+> +		 * this will be handled below.
+> +		 */
+> +		realm_create_rtt_levels(realm, ipa, map_level,
+> +					RME_RTT_MAX_LEVEL, memcache);
+> +	}
+> +
+> +	for (size = 0; size < map_size; size += PAGE_SIZE) {
+> +		if (rmi_granule_delegate(phys)) {
+> +			struct rtt_entry rtt;
+> +
+> +			/*
+> +			 * It's possible we raced with another VCPU on the same
+> +			 * fault. If the entry exists and matches then exit
+> +			 * early and assume the other VCPU will handle the
+> +			 * mapping.
+> +			 */
+> +			if (rmi_rtt_read_entry(rd, ipa, RME_RTT_MAX_LEVEL, &rtt))
+> +				goto err;
+> +
+> +			/*
+> +			 * FIXME: For a block mapping this could race at level
+> +			 * 2 or 3... currently we don't support block mappings
+> +			 */
+> +			if (WARN_ON((rtt.walk_level != RME_RTT_MAX_LEVEL ||
+> +				     rtt.state != RMI_ASSIGNED ||
+> +				     rtt_get_phys(realm, &rtt) != phys))) {
+> +				goto err;
+> +			}
+> +
+> +			return 0;
+> +		}
+>
 
-	- Verismo Formal Verification presentation and discussion
+Technically we are are not mapping more than PAGE_SIZE here, but then
+the code does the loop above and with that loop should that return 0 be
+a 'continue'? if we find the granule delegated, then does that ensure
+rest of the map_size is also delegated?
 
-Details of the meeting (GMeet and Calendar links, meeting time) can be
-found in our governance repository at:
 
-	https://github.com/coconut-svsm/governance
-
-The meeting will be recorded and the recording eventually published.
-
-See you all there.
-
-Regards,
-
-	Jörg
+-aneesh
