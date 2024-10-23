@@ -1,137 +1,119 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E1B1CFEDC;
-	Wed, 23 Oct 2024 14:35:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3AB1C6F43;
+	Wed, 23 Oct 2024 15:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.70.13.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729694145; cv=none; b=Tkr1nEm2QM4Do9jPv93ntXPKJaC2UGYSPsoC9wPOqz4RGhBUJxHtFWAkxb/zPA8KxRCMkQc7+Qv84jFl9epN/2pUfq01U5cCoWkuh8A5d0uZBB9X8FJ6k/Xq3o4ehQca0EihcenxXczpOCDsrkWgSq/5rCpyaDzNf6tlN4Gbm6A=
+	t=1729698284; cv=none; b=V32FY3cvKTLO/PwvNcnD1hyWuLOuCbltWS1bptFtfxnixkTlX3/+9soF/xBPsCiw3wzIV4JgmOOMIckl/0/JjskDQXJ72T5/mh92jUOYSnwfCEPzkpt3VvgFuWGlBO4Fyhwsh64C7rPH78dlX39pDYHnFQxnbmtYiAeDjVZrUBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729694145; c=relaxed/simple;
-	bh=l68G4xs/wglFkcKCnUp2kdZ0MOFIFNVe7VqWRN/gcjE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZFTStzpOEpBDOPc3PCHkOBQyyz3HhzqjfWnZNBWhlvnYdDQu3t1C6v5FEUdrxsbeZe87SE3BV4iWzVu/ubggOluhGj7pd3oONfcl57kEVoptrrKa0dkt2TzGVUSwBRw3KIX9xOrqpUtAAG220ulvfgnV6lvt/rIEtpHpk0mYIN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E145E339;
-	Wed, 23 Oct 2024 07:36:11 -0700 (PDT)
-Received: from [10.57.23.17] (unknown [10.57.23.17])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 045763F71E;
-	Wed, 23 Oct 2024 07:35:37 -0700 (PDT)
-Message-ID: <7d02ed25-7618-4920-8f35-9e480cdf709f@arm.com>
-Date: Wed, 23 Oct 2024 15:35:35 +0100
+	s=arc-20240116; t=1729698284; c=relaxed/simple;
+	bh=BJsQa4UwFXYxZ2llPGv6z6ugbvbu+ADQbnfLdebuFZg=;
+	h=From:To:Cc:References:Date:In-Reply-To:Message-ID:MIME-Version:
+	 Content-Type:Subject; b=iHj9ZrsjnyuS3EI967L+m7WEFVN2UJaanTrmuT3hMOw24Yi9d8NKNVbV5XQoqJGhubkzNseOhjmJQqC3BIJWLh31axNLSKmzs/mmGaDcObRfwJqZayBsVzdAD7MvgdAOi9VOJz9If+ltF5WGEIFYLS8U7+Qo4FTF3vpz3oNCLLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com; spf=pass smtp.mailfrom=xmission.com; arc=none smtp.client-ip=166.70.13.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xmission.com
+Received: from in02.mta.xmission.com ([166.70.13.52]:37192)
+	by out01.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1t3dXF-00Gq8R-Vr; Wed, 23 Oct 2024 09:44:34 -0600
+Received: from ip72-198-198-28.om.om.cox.net ([72.198.198.28]:48910 helo=email.froward.int.ebiederm.org.xmission.com)
+	by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1t3dXE-00Ce3Q-Ub; Wed, 23 Oct 2024 09:44:33 -0600
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: Yan Zhao <yan.y.zhao@intel.com>,  kexec@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  linux-coco@lists.linux.dev,
+  x86@kernel.org,  rick.p.edgecombe@intel.com,
+  kirill.shutemov@linux.intel.com
+References: <20241021034553.18824-1-yan.y.zhao@intel.com>
+	<87frop8r0y.fsf@email.froward.int.ebiederm.org>
+	<tpbcun3d4wrnbtsvx3b3hjpdl47f2zuxvx6zqsjoelazdt3eyv@kgqnedtcejta>
+Date: Wed, 23 Oct 2024 10:44:11 -0500
+In-Reply-To: <tpbcun3d4wrnbtsvx3b3hjpdl47f2zuxvx6zqsjoelazdt3eyv@kgqnedtcejta>
+	(Kirill A. Shutemov's message of "Tue, 22 Oct 2024 15:06:15 +0300")
+Message-ID: <87cyjq7rjo.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 02/43] kvm: arm64: pgtable: Track the number of pages
- in the entry level
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20241004152804.72508-1-steven.price@arm.com>
- <20241004152804.72508-3-steven.price@arm.com>
- <032d29e7-b6a3-4493-833b-a9b6d9496a75@redhat.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <032d29e7-b6a3-4493-833b-a9b6d9496a75@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-XM-SPF: eid=1t3dXE-00Ce3Q-Ub;;;mid=<87cyjq7rjo.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=72.198.198.28;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX1899tWOjUmFXe4DAmPwzY/yTaOmZMJ+rQQ=
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+	*      [score: 0.4764]
+	*  0.7 XMSubLong Long Subject
+	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+	*      [sa06 1397; Body=1 Fuz1=1 Fuz2=1]
+	*  0.0 XM_B_AI_SPAM_COMBINATION Email matches multiple AI-related
+	*      patterns
+	*  0.2 XM_B_SpammyWords One or more commonly used spammy words
+X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;"Kirill A. Shutemov" <kirill@shutemov.name>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 475 ms - load_scoreonly_sql: 0.08 (0.0%),
+	signal_user_changed: 11 (2.3%), b_tie_ro: 10 (2.0%), parse: 1.67
+	(0.4%), extract_message_metadata: 18 (3.8%), get_uri_detail_list: 1.66
+	(0.3%), tests_pri_-2000: 6 (1.3%), tests_pri_-1000: 3.6 (0.8%),
+	tests_pri_-950: 1.69 (0.4%), tests_pri_-900: 1.36 (0.3%),
+	tests_pri_-90: 164 (34.5%), check_bayes: 147 (30.9%), b_tokenize: 7
+	(1.4%), b_tok_get_all: 6 (1.3%), b_comp_prob: 3.1 (0.7%),
+	b_tok_touch_all: 127 (26.7%), b_finish: 0.96 (0.2%), tests_pri_0: 251
+	(52.9%), check_dkim_signature: 0.86 (0.2%), check_dkim_adsp: 3.1
+	(0.7%), poll_dns_idle: 0.73 (0.2%), tests_pri_10: 1.92 (0.4%),
+	tests_pri_500: 8 (1.8%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH] kexec_core: Accept unaccepted kexec destination addresses
+X-SA-Exim-Connect-IP: 166.70.13.52
+X-SA-Exim-Rcpt-To: kirill.shutemov@linux.intel.com, rick.p.edgecombe@intel.com, x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, yan.y.zhao@intel.com, kirill@shutemov.name
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-SA-Exim-Scanned: No (on out01.mta.xmission.com); SAEximRunCond expanded to false
 
-On 23/10/2024 05:03, Gavin Shan wrote:
-> On 10/5/24 1:27 AM, Steven Price wrote:
->> From: Suzuki K Poulose <suzuki.poulose@arm.com>
->>
->> Keep track of the number of pages allocated for the top level PGD,
->> rather than computing it every time (though we need it only twice now).
->> This will be used later by Arm CCA KVM changes.
->>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->>   arch/arm64/include/asm/kvm_pgtable.h | 2 ++
->>   arch/arm64/kvm/hyp/pgtable.c         | 5 +++--
->>   2 files changed, 5 insertions(+), 2 deletions(-)
->>
-> 
-> If we really want to have the number of pages for the top level PGDs,
-> the existing helpers kvm_pgtable_stage2_pgd_size() for the same purpose
-> needs to replaced by (struct kvm_pgtable::pgd_pages << PAGE_SHIFT) and
-> then removed.
-> 
-> The alternative would be just to use kvm_pgtable_stage2_pgd_size()
-> instead of
-> introducing struct kvm_pgtable::pgd_pages, which will be used in the slow
-> paths where realm is created or destroyed.
+"Kirill A. Shutemov" <kirill@shutemov.name> writes:
 
-I think just dropping this patch and using kvm_pgtable_stage2_pgd_size()
-in the slow paths makes sense. I think originally there had been some
-issue with the value being hard to obtain in the relevant path, but I
-can't see any problem now.
+> Waiting minutes to get VM booted to shell is not feasible for most
+> deployments. Lazy is sane default to me.
 
-Thanks,
-Steve
+Huh?
 
->> diff --git a/arch/arm64/include/asm/kvm_pgtable.h
->> b/arch/arm64/include/asm/kvm_pgtable.h
->> index 03f4c3d7839c..25b512756200 100644
->> --- a/arch/arm64/include/asm/kvm_pgtable.h
->> +++ b/arch/arm64/include/asm/kvm_pgtable.h
->> @@ -404,6 +404,7 @@ static inline bool kvm_pgtable_walk_lock_held(void)
->>    * struct kvm_pgtable - KVM page-table.
->>    * @ia_bits:        Maximum input address size, in bits.
->>    * @start_level:    Level at which the page-table walk starts.
->> + * @pgd_pages:        Number of pages in the entry level of the
->> page-table.
->>    * @pgd:        Pointer to the first top-level entry of the page-table.
->>    * @mm_ops:        Memory management callbacks.
->>    * @mmu:        Stage-2 KVM MMU struct. Unused for stage-1 page-tables.
->> @@ -414,6 +415,7 @@ static inline bool kvm_pgtable_walk_lock_held(void)
->>   struct kvm_pgtable {
->>       u32                    ia_bits;
->>       s8                    start_level;
->> +    u8                    pgd_pages;
->>       kvm_pteref_t                pgd;
->>       struct kvm_pgtable_mm_ops        *mm_ops;
->>   diff --git a/arch/arm64/kvm/hyp/pgtable.c
->> b/arch/arm64/kvm/hyp/pgtable.c
->> index b11bcebac908..9e1be28c3dc9 100644
->> --- a/arch/arm64/kvm/hyp/pgtable.c
->> +++ b/arch/arm64/kvm/hyp/pgtable.c
->> @@ -1534,7 +1534,8 @@ int __kvm_pgtable_stage2_init(struct kvm_pgtable
->> *pgt, struct kvm_s2_mmu *mmu,
->>       u32 sl0 = FIELD_GET(VTCR_EL2_SL0_MASK, vtcr);
->>       s8 start_level = VTCR_EL2_TGRAN_SL0_BASE - sl0;
->>   -    pgd_sz = kvm_pgd_pages(ia_bits, start_level) * PAGE_SIZE;
->> +    pgt->pgd_pages = kvm_pgd_pages(ia_bits, start_level);
->> +    pgd_sz = pgt->pgd_pages * PAGE_SIZE;
->>       pgt->pgd = (kvm_pteref_t)mm_ops->zalloc_pages_exact(pgd_sz);
->>       if (!pgt->pgd)
->>           return -ENOMEM;
->> @@ -1586,7 +1587,7 @@ void kvm_pgtable_stage2_destroy(struct
->> kvm_pgtable *pgt)
->>       };
->>         WARN_ON(kvm_pgtable_walk(pgt, 0, BIT(pgt->ia_bits), &walker));
->> -    pgd_sz = kvm_pgd_pages(pgt->ia_bits, pgt->start_level) * PAGE_SIZE;
->> +    pgd_sz = pgt->pgd_pages * PAGE_SIZE;
->>       pgt->mm_ops->free_pages_exact(kvm_dereference_pteref(&walker,
->> pgt->pgd), pgd_sz);
->>       pgt->pgd = NULL;
->>   }
-> 
-> Thanks,
-> Gavin
-> 
+Unless my guesses about what is happening are wrong lazy is hiding
+a serious implementation deficiency.  From all hardware I have seen
+taking minutes is absolutely ridiculous.
 
+Does writing to all of memory at full speed take minutes?  How can such
+a system be functional?
+
+If you don't actually have to write to the pages and it is just some
+accounting function it is even more ridiculous.
+
+
+I had previously thought that accept_memory was the firmware call.
+Now that I see that it is just a wrapper for some hardware specific
+calls I am even more perplexed.
+
+
+Quite honestly what this looks like to me is that someone failed to
+enable write-combining or write-back caching when writing to memory
+when initializing the protected memory.  With the result that everything
+is moving dog slow, and people are introducing complexity left and write
+to avoid that bad implementation.
+
+
+Can someone please explain to me why this accept_memory stuff has to be
+slow, why it has to take minutes to do it's job.
+
+I would much rather spend my time figuring out how to make accept_memory
+run at a reasonable speed than to litter the kernel with more of this
+nonsense.
+
+Eric
