@@ -1,97 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EE519B5A7;
-	Wed, 23 Oct 2024 10:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9F41A00DF
+	for <linux-coco@lists.linux.dev>; Wed, 23 Oct 2024 11:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729677732; cv=none; b=EebaFK9sUAEZeRLjbp4LNoiJ21HCvdLKIYQv6+aSWufD92Gv99TE5H8Pzii8rdZFfLTZa5T65+RIbaSfxDcJXcOAeVykkZ702O0kK69udgvT3FcatnHZSCSKdiZvGpOKIRa/TnbMAEYbXfAEPVnEbJVOj1DIGpLAPB6bD6Mfhgg=
+	t=1729684146; cv=none; b=sHxswE5Rsa80VR1SaauYo0fOIL90S1IS6TNQ6BB54gSIVhhGDjPvoX9SrHSefvEWjxUrAEya8jlC6lQkhSphEv8miKQU5cQr3t+9dtCWI+kxif8tlcnNKx5MiYrEqGTy7YkReEc/WuB9fUCiI09ktIfJz5U8S9hIEyBVUi81tc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729677732; c=relaxed/simple;
-	bh=VF72SbQafd1brM4nP5NE7TVxgFoirD5rMKb7ZQh2UMg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ng71s0hBbQqrfkdT0olbSiQogpApppyJwUQOK5G2Wb4dQh7TSI6qeEvPw001by4xj80LJ52ZW7sPLjckuF87mrXwLnTzOSKPHyLBtKZMNOp4cb1YXlpGiHJfi7Yw7V0ofaAZ+enbqcsX3hUPVVRQn5eSrsgGdxBfPbM6+CnSazE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC1BC4CEC6;
-	Wed, 23 Oct 2024 10:02:08 +0000 (UTC)
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Steven Price <steven.price@arm.com>
-Cc: Will Deacon <will@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [PATCH v7 00/11] arm64: Support for running as a guest in Arm CCA
-Date: Wed, 23 Oct 2024 11:02:06 +0100
-Message-Id: <172967739783.1412028.8494484908145931121.b4-ty@arm.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241017131434.40935-1-steven.price@arm.com>
-References: <20241017131434.40935-1-steven.price@arm.com>
+	s=arc-20240116; t=1729684146; c=relaxed/simple;
+	bh=lnAzdNlv19301PTpnzxOvvebhNg12dbxkYaRPa9fsdY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BNedhXtBp/uc602TIwHSgA8qeRb/I49QOzRNWHRHP9oOwTYXAeRASBtjSZkL2dyJrtk1WA3JpFL4JUsZVXt2Hj8ylycNzuTFVRmcmJxYLi1TUxRvZYIgli5V1N4qYvwfLPmwt+fHee4cNEZQC3vWaspi5sO/4ZArRdyJqpPt8qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JXhoctH1; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JXhoctH1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729684144;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=m6kz830Q6Q2sHJKEQ2L50K5dgcFaGgSdbSQzFqvDar4=;
+	b=JXhoctH19SfZ/lZWxxoMklpk/hx1u/tASsnfFmK5pGunv+sRXXTV/3KpMr37yK7bbpw1mM
+	ccekHxUrFu80plK9iAGZi8B5aieXfU/8P4J/ebasD7NQIi4ARN0R+hVnUNdgP1tHQfKjnP
+	dYZiBxdUWSx1gTLoLix9lQHiwaeAEkI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-534-R3VC33-2O4qRYsl-c6DAeQ-1; Wed, 23 Oct 2024 07:49:03 -0400
+X-MC-Unique: R3VC33-2O4qRYsl-c6DAeQ-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d4922d8c7so3576709f8f.1
+        for <linux-coco@lists.linux.dev>; Wed, 23 Oct 2024 04:49:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729684142; x=1730288942;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=m6kz830Q6Q2sHJKEQ2L50K5dgcFaGgSdbSQzFqvDar4=;
+        b=G4eRWZrs9ZURgnpnc4tw1zHYQaH7n+SsRxrwnbDrT6bmqnI048le/VCS0rqj6x1ywv
+         BmR0iomRdbS1Jy+cEQ4iAk3yPhP4DFEZtFuIP85HDpa+p9nAWh4KEN/H8cEpNnBsQH37
+         ZxmAyVCNrluz1RtuQsgNM0fwkc/zGLqwvIJU5WeJTqPHHBOV5UEl3myLoBKP2h94W0tI
+         HDXyh8GVUph/H2oxhgqeNc+gq9ZakwQ9vSbTmcdF1qfjUkLByzt9Tefhnnd6LkcFM+IC
+         EINE4jJchSLUd0akIk0eL7Nq++m39PWtsNTQTueIktlAOKHO2D6DQyhx3N1TB9MKU/Eq
+         NO+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUAD+0qjzBL65Sy35QzbVbWRWCOfkzoLwhxVSV/+bBlvExGzDVY8+cybZBony+VX2FZ4Lu5j8kxDRIR@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyw1uTk5hS1FassyDFzI2LxBpAsirO+5hWqI3lLGWBU+29s2V7T
+	zTz5UPDsoTatHQaq9wmXJy0LHwKuQRGgoZou+vkB+FnhILlVVJIMWYgIV2xSBUbMt9bTXwfjSYj
+	sRoN9Gj/s8Zb0MsKF0uVWcwwVajwav6h8Fc6vzGOjc6HJAhhkB0ZPDCGFAMg=
+X-Received: by 2002:a05:6000:1210:b0:374:b6f4:d8d1 with SMTP id ffacd0b85a97d-37efcf0b548mr1498845f8f.13.1729684142121;
+        Wed, 23 Oct 2024 04:49:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHUT0sp4eH6mOtuL30exiy5cULAfI4w3qDURGhrvTYuy9yPDH5DOXGd77VMq0qcLF48M0XZRA==
+X-Received: by 2002:a05:6000:1210:b0:374:b6f4:d8d1 with SMTP id ffacd0b85a97d-37efcf0b548mr1498817f8f.13.1729684141659;
+        Wed, 23 Oct 2024 04:49:01 -0700 (PDT)
+Received: from [192.168.10.3] ([151.95.144.54])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43186bde267sm14009505e9.13.2024.10.23.04.48.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Oct 2024 04:49:01 -0700 (PDT)
+Message-ID: <8db215c5-4393-4db1-883c-431fed9dfd59@redhat.com>
+Date: Wed, 23 Oct 2024 13:48:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/5] Extend SEV-SNP SVSM support with a kvm_vcpu per
+ VMPL
+To: Sean Christopherson <seanjc@google.com>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: roy.hopkins@suse.com, ashish.kalra@amd.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, jroedel@suse.de, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ michael.roth@amd.com, mingo@redhat.com, tglx@linutronix.de,
+ thomas.lendacky@amd.com, x86@kernel.org
+References: <cover.1726506534.git.roy.hopkins@suse.com>
+ <6028e1a0fad729f28451782754417b0be3aea7ed.camel@HansenPartnership.com>
+ <ZxawyGnWfo378f3S@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
+ CxXPkIBTvYY+ZPkoTh5xF9oS1jqI8iRLzouzF8yXs3QjQIZ2SfuCxSVwlV65jotcjD2FTN04
+ hVopm9llFijNZpVIOGUTqzM4U55sdsCcZUluWM6x4HSOdw5F5Utxfp1wOjD/v92Lrax0hjiX
+ DResHSt48q+8FrZzY+AUbkUS+Jm34qjswdrgsC5uxeVcLkBgWLmov2kMaMROT0YmFY6A3m1S
+ P/kXmHDXxhe23gKb3dgwxUTpENDBGcfEzrzilWueOeUWiOcWuFOed/C3SyijBx3Av/lbCsHU
+ Vx6pMycNTdzU1BuAroB+Y3mNEuW56Yd44jlInzG2UOwt9XjjdKkJZ1g0P9dwptwLEgTEd3Fo
+ UdhAQyRXGYO8oROiuh+RZ1lXp6AQ4ZjoyH8WLfTLf5g1EKCTc4C1sy1vQSdzIRu3rBIjAvnC
+ tGZADei1IExLqB3uzXKzZ1BZ+Z8hnt2og9hb7H0y8diYfEk2w3R7wEr+Ehk5NQsT2MPI2QBd
+ wEv1/Aj1DgUHZAHzG1QN9S8wNWQ6K9DqHZTBnI1hUlkp22zCSHK/6FwUCuYp1zcAEQEAAc0j
+ UGFvbG8gQm9uemluaSA8cGJvbnppbmlAcmVkaGF0LmNvbT7CwU0EEwECACMFAlRCcBICGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRB+FRAMzTZpsbceDp9IIN6BIA0Ol7MoB15E
+ 11kRz/ewzryFY54tQlMnd4xxfH8MTQ/mm9I482YoSwPMdcWFAKnUX6Yo30tbLiNB8hzaHeRj
+ jx12K+ptqYbg+cevgOtbLAlL9kNgLLcsGqC2829jBCUTVeMSZDrzS97ole/YEez2qFpPnTV0
+ VrRWClWVfYh+JfzpXmgyhbkuwUxNFk421s4Ajp3d8nPPFUGgBG5HOxzkAm7xb1cjAuJ+oi/K
+ CHfkuN+fLZl/u3E/fw7vvOESApLU5o0icVXeakfSz0LsygEnekDbxPnE5af/9FEkXJD5EoYG
+ SEahaEtgNrR4qsyxyAGYgZlS70vkSSYJ+iT2rrwEiDlo31MzRo6Ba2FfHBSJ7lcYdPT7bbk9
+ AO3hlNMhNdUhoQv7M5HsnqZ6unvSHOKmReNaS9egAGdRN0/GPDWr9wroyJ65ZNQsHl9nXBqE
+ AukZNr5oJO5vxrYiAuuTSd6UI/xFkjtkzltG3mw5ao2bBpk/V/YuePrJsnPFHG7NhizrxttB
+ nTuOSCMo45pfHQ+XYd5K1+Cv/NzZFNWscm5htJ0HznY+oOsZvHTyGz3v91pn51dkRYN0otqr
+ bQ4tlFFuVjArBZcapSIe6NV8C4cEiSTOwE0EVEJx7gEIAMeHcVzuv2bp9HlWDp6+RkZe+vtl
+ KwAHplb/WH59j2wyG8V6i33+6MlSSJMOFnYUCCL77bucx9uImI5nX24PIlqT+zasVEEVGSRF
+ m8dgkcJDB7Tps0IkNrUi4yof3B3shR+vMY3i3Ip0e41zKx0CvlAhMOo6otaHmcxr35sWq1Jk
+ tLkbn3wG+fPQCVudJJECvVQ//UAthSSEklA50QtD2sBkmQ14ZryEyTHQ+E42K3j2IUmOLriF
+ dNr9NvE1QGmGyIcbw2NIVEBOK/GWxkS5+dmxM2iD4Jdaf2nSn3jlHjEXoPwpMs0KZsgdU0pP
+ JQzMUMwmB1wM8JxovFlPYrhNT9MAEQEAAcLBMwQYAQIACQUCVEJx7gIbDAAKCRB+FRAMzTZp
+ sadRDqCctLmYICZu4GSnie4lKXl+HqlLanpVMOoFNnWs9oRP47MbE2wv8OaYh5pNR9VVgyhD
+ OG0AU7oidG36OeUlrFDTfnPYYSF/mPCxHttosyt8O5kabxnIPv2URuAxDByz+iVbL+RjKaGM
+ GDph56ZTswlx75nZVtIukqzLAQ5fa8OALSGum0cFi4ptZUOhDNz1onz61klD6z3MODi0sBZN
+ Aj6guB2L/+2ZwElZEeRBERRd/uommlYuToAXfNRdUwrwl9gRMiA0WSyTb190zneRRDfpSK5d
+ usXnM/O+kr3Dm+Ui+UioPf6wgbn3T0o6I5BhVhs4h4hWmIW7iNhPjX1iybXfmb1gAFfjtHfL
+ xRUr64svXpyfJMScIQtBAm0ihWPltXkyITA92ngCmPdHa6M1hMh4RDX+Jf1fiWubzp1voAg0
+ JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
+ dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
+ b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
+In-Reply-To: <ZxawyGnWfo378f3S@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, 17 Oct 2024 14:14:23 +0100, Steven Price wrote:
-> This series adds support for running Linux in a protected VM under the
-> Arm Confidential Compute Architecture (CCA). This is a minor update
-> following the feedback from the v6 posting[1]. Thanks for the feedback!
+On 10/21/24 21:51, Sean Christopherson wrote:
+> On Fri, Oct 18, 2024, James Bottomley wrote:
+>>> I've prepared this series as an extension to the RFC patch series:
+>>> 'SEV-SNP support for running an SVSM' posted by Tom Lendacky [1].
+>>> This extends the support for transitioning a vCPU between VM
+>>> Privilege Levels (VMPLs) by storing the vCPU state for each VMPL in
+>>> its own `struct kvm_vcpu`. This additionally allows for separate
+>>> APICs for each VMPL.
+>>
+>> I couldn't attend KVM forum, but I understand based on feedback at a
+>> session there, Paolo took the lead to provide an architecture document
+>> for this feature, is that correct?
 > 
-> Individual patches have a change log. The biggest changes are in patch
-> 10 where Gavin gave some great feedback to tidy things up a bit.
+> Yep.
 > 
-> [...]
+>> Just asking because I haven't noticed anything about this on the list.
+> 
+> Heh, there's quite a queue of blocked readers (and writers!) at this point ;-)
 
-Applied to arm64 (for-next/guest-cca), thanks!
+Well, at least one person had a writer's block instead.
 
-Note that this branch cannot be tested in isolation as it doesn't have
-the irqchip CCA changes. I pulled tip irq/core into the arm64
-for-kernelci. Please give the latter branch a go (or linux-next when the
-patches turn up).
+I had it almost ready but then noticed a few hiccups in the design we 
+came up with, and have been seating on it for a while.  I'm sending it 
+now, finishing the commit messages.
 
-[01/11] arm64: rsi: Add RSI definitions
-        https://git.kernel.org/arm64/c/b880a80011f5
-[02/11] arm64: Detect if in a realm and set RIPAS RAM
-        https://git.kernel.org/arm64/c/c077711f718b
-[03/11] arm64: realm: Query IPA size from the RMM
-        https://git.kernel.org/arm64/c/399306954996
-[04/11] arm64: rsi: Add support for checking whether an MMIO is protected
-        https://git.kernel.org/arm64/c/371589437616
-[05/11] arm64: rsi: Map unprotected MMIO as decrypted
-        https://git.kernel.org/arm64/c/3c6c70613956
-[06/11] efi: arm64: Map Device with Prot Shared
-        https://git.kernel.org/arm64/c/491db21d8256
-[07/11] arm64: Enforce bounce buffers for realm DMA
-        https://git.kernel.org/arm64/c/fbf979a01375
-[08/11] arm64: mm: Avoid TLBI when marking pages as valid
-        https://git.kernel.org/arm64/c/0e9cb5995b25
-[09/11] arm64: Enable memory encrypt for Realms
-        https://git.kernel.org/arm64/c/42be24a4178f
-[10/11] virt: arm-cca-guest: TSM_REPORT support for realms
-        https://git.kernel.org/arm64/c/7999edc484ca
-[11/11] arm64: Document Arm Confidential Compute
-        https://git.kernel.org/arm64/c/972d755f0195
-
--- 
-Catalin
+Paolo
 
