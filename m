@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062EB1E3766;
-	Thu, 24 Oct 2024 14:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78031EBFE4;
+	Thu, 24 Oct 2024 14:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729779472; cv=none; b=qPw6U5I3L+L1kf92qTwO+t+xm9lDXqAKifbBmbUlGw4cOEwt7+Rsut8GVEHERG8CVq8CswJNeBJq1t1/U9llSuWQcY4ebpTwCZkuUB7lgxo/xuSt29g+cylb32y+O+mB450qrUcfwpnceEnqdd90kb3eq3ox7+rjfrNkFsb65qA=
+	t=1729780212; cv=none; b=Nxr08wO9w9kwjCNSG095RRp4ctHC2zsekR+hoBLsgyF93gsSgDBQLtexmnNpUX0qzAhLp1DZlJlQW2NOMxRIxsE6uGHHuhmShTe7Neq54+mGJAnuo+Wym7mJKxiP1jofEau2sXLhaV8z6NqPDmjARmiSzcOuS2wmZEEOSpvkTKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729779472; c=relaxed/simple;
-	bh=4uD2k8h2vy1UgxcQ+HHmd+XNAwZMm6TvGvEVPby1hNs=;
+	s=arc-20240116; t=1729780212; c=relaxed/simple;
+	bh=T05ZMOyThtGE5f2OTn9E4J0GkLKprBESCNSczcrAbsY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YSnwCd36FHGH7CMW3xrnDW0g2mkUEFktBocht6Jh21g/IXTJNrBeV8qm4P5e6HxIOlWtwtkJEr20fFXqPYbqObmemauwSHRW1IAAPsHqGXyiKkbfAW4DUCloTzNgNg3PoE4/SPRVxmF+MJdhqee3DZCruVznK7/+/TkmCPQ9zg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+PJztDa; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=MxLnFOuhGUGmczLN8EzC3p9qVM43VzlvduJT55T4UHXx8FdsWlXglAYrYOOIkWJxzgim2CKYfCPijNHs4+sRXUyBTLuI9b8zihg1hJIL5HRenWKkkG5p58wq+aaGLcfhzW7RLH5rcryhlMBpAHzIHR+fcR8VJq/oUR5JjN0A/og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHYSR9pB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+PJztDa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18BAC4CEC7;
-	Thu, 24 Oct 2024 14:17:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHYSR9pB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE545C4CEC7;
+	Thu, 24 Oct 2024 14:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729779471;
-	bh=4uD2k8h2vy1UgxcQ+HHmd+XNAwZMm6TvGvEVPby1hNs=;
+	s=k20201202; t=1729780211;
+	bh=T05ZMOyThtGE5f2OTn9E4J0GkLKprBESCNSczcrAbsY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Z+PJztDa3DLJi8zczBtunJjYtTgbSB/pWYuOXBfkLIyw6TJiCAQ0WRq/AQHNYvMIO
-	 ypPUss6EbEuI+coFbJNqOQ7DB+SW8zeDyvxK1TRcGHKz3TKoE8rdW6wGUWGYFTZfzL
-	 pqbUZrnT461zBGjqAr82cZ5oVy50OPec5abANxSAzPIpWWUz5lKPIPkuWR2RcW+Ak/
-	 Lc6LA81PZMJ5+ZtTF2j46hgvE/ZCfmDp2TRENpjxGGbiUvUVIlIorJpIWJWxPb7jXl
-	 4P5XKju/mwmLSgkExTYhQYAm8xCA2feq6F05VCgttXD1PUf43IL0rqbydLFMxZfMKo
-	 QUgNloX/6Rwnw==
+	b=BHYSR9pBBsMpJ48PvzQ5vi3PlbCKBU45gWbS74GOT0vpYG2MTTRaDF6Tia3IqGmp0
+	 +2fPS3k8r83CNicL2JOnWfdVm9RfuA1hzv5ktQ32EHShPoM0xuJ5cM7fEDdy+mxncX
+	 Z1fkRLweZlFH4yr/1vMYxXM4lsL+cLq9/okHPEwg9zvNNNjfZo4Buax3vub5FPyGWP
+	 jNBHc3E3AWzmkhmhs2VPpomE1+8qKIvZfzNIsCCNADBHZ+tDcsyA77u45Ps/ihMrKA
+	 eWNRFa5e2ppY6WNwT+bz7A/Dqdad4bYmHVSWTzzwx3FDjQ85K9jGPo453XYh1cmNoa
+	 Asu+ux01o/3ZQ==
 X-Mailer: emacs 31.0.50 (via feedmail 11-beta-1 I)
 From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
@@ -46,13 +46,12 @@ Cc: Steven Price <steven.price@arm.com>,
 	Gavin Shan <gshan@redhat.com>,
 	Shanker Donthineni <sdonthineni@nvidia.com>,
 	Alper Gun <alpergun@google.com>
-Subject: Re: [PATCH v5 04/43] arm64: RME: Handle Granule Protection Faults
- (GPFs)
-In-Reply-To: <20241004152804.72508-5-steven.price@arm.com>
+Subject: Re: [PATCH v5 21/43] arm64: RME: Runtime faulting of memory
+In-Reply-To: <20241004152804.72508-22-steven.price@arm.com>
 References: <20241004152804.72508-1-steven.price@arm.com>
- <20241004152804.72508-5-steven.price@arm.com>
-Date: Thu, 24 Oct 2024 19:47:41 +0530
-Message-ID: <yq5a8qudmvp6.fsf@kernel.org>
+ <20241004152804.72508-22-steven.price@arm.com>
+Date: Thu, 24 Oct 2024 20:00:00 +0530
+Message-ID: <yq5a5xphmv4n.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -63,91 +62,176 @@ Content-Type: text/plain
 
 Steven Price <steven.price@arm.com> writes:
 
-> If the host attempts to access granules that have been delegated for use
-> in a realm these accesses will be caught and will trigger a Granule
-> Protection Fault (GPF).
->
-> A fault during a page walk signals a bug in the kernel and is handled by
-> oopsing the kernel. A non-page walk fault could be caused by user space
-> having access to a page which has been delegated to the kernel and will
-> trigger a SIGBUS to allow debugging why user space is trying to access a
-> delegated page.
->
-
-A non-page walk fault can also be caused by host kernel trying to access a
-page which it had delegated before. It would be nice to dump details
-like FAR in that case. Right now it shows only the below.
-
-[  285.122310] Internal error: Granule Protection Fault not on table walk: 0000000096000068 [#1] PREEMPT SMP               
-[  285.122427] Modules linked in:                                                                                                                                                
-[  285.122512] CPU: 1 UID: 0 PID: 217 Comm: kvm-vcpu-0 Not tainted 6.12.0-rc1-00082-g8461d8333829 #42
-[  285.122656] Hardware name: FVP Base RevC (DT)
-[  285.122733] pstate: 81400009 (Nzcv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[  285.122871] pc : clear_page+0x18/0x50
-[  285.122975] lr : kvm_gmem_get_pfn+0xbc/0x190
-[  285.123110] sp : ffff800082cef900
-[  285.123182] x29: ffff800082cef910 x28: 0000000090000000 x27: 0000000090000006
-.....
-
--aneesh
-
->
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v2:
->  * Include missing "Granule Protection Fault at level -1"
-> ---
->  arch/arm64/mm/fault.c | 31 +++++++++++++++++++++++++------
->  1 file changed, 25 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index 8b281cf308b3..f9d72a936d48 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -804,6 +804,25 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
->  	return 0;
->  }
->  
-> +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
+> +static int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
+> +			 kvm_pfn_t pfn, unsigned long map_size,
+> +			 enum kvm_pgtable_prot prot,
+> +			 struct kvm_mmu_memory_cache *memcache)
 > +{
-> +	const struct fault_info *inf = esr_to_fault_info(esr);
+> +	struct realm *realm = &kvm->arch.realm;
+> +	struct page *page = pfn_to_page(pfn);
 > +
-> +	die_kernel_fault(inf->name, far, esr, regs);
-> +	return 0;
+> +	if (WARN_ON(!(prot & KVM_PGTABLE_PROT_W)))
+> +		return -EFAULT;
+> +
+> +	if (!realm_is_addr_protected(realm, ipa))
+> +		return realm_map_non_secure(realm, ipa, page, map_size,
+> +					    memcache);
+> +
+> +	return realm_map_protected(realm, ipa, page, map_size, memcache);
 > +}
 > +
-> +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> +{
-> +	const struct fault_info *inf = esr_to_fault_info(esr);
-> +
-> +	if (!is_el1_instruction_abort(esr) && fixup_exception(regs))
-> +		return 0;
-> +
-> +	arm64_notify_die(inf->name, regs, inf->sig, inf->code, far, esr);
-> +	return 0;
-> +}
-> +
->  static const struct fault_info fault_info[] = {
->  	{ do_bad,		SIGKILL, SI_KERNEL,	"ttbr address size fault"	},
->  	{ do_bad,		SIGKILL, SI_KERNEL,	"level 1 address size fault"	},
-> @@ -840,12 +859,12 @@ static const struct fault_info fault_info[] = {
->  	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 32"			},
->  	{ do_alignment_fault,	SIGBUS,  BUS_ADRALN,	"alignment fault"		},
->  	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 34"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 35"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 36"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 37"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 38"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 39"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 40"			},
-> +	{ do_gpf_ptw,		SIGKILL, SI_KERNEL,	"Granule Protection Fault at level -1" },
-> +	{ do_gpf_ptw,		SIGKILL, SI_KERNEL,	"Granule Protection Fault at level 0" },
-> +	{ do_gpf_ptw,		SIGKILL, SI_KERNEL,	"Granule Protection Fault at level 1" },
-> +	{ do_gpf_ptw,		SIGKILL, SI_KERNEL,	"Granule Protection Fault at level 2" },
-> +	{ do_gpf_ptw,		SIGKILL, SI_KERNEL,	"Granule Protection Fault at level 3" },
-> +	{ do_gpf,		SIGBUS,  SI_KERNEL,	"Granule Protection Fault not on table walk" },
->  	{ do_bad,		SIGKILL, SI_KERNEL,	"level -1 address size fault"	},
->  	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 42"			},
->  	{ do_translation_fault,	SIGSEGV, SEGV_MAPERR,	"level -1 translation fault"	},
-> -- 
-> 2.34.1
+
+
+Some of these pfn_to_page(pfn) conversions can be avoided because the
+callers are essentially expecting a pfn value (converting page_to_phys())
+It also helps to clarify whether we are operating on a compound page or
+not.
+
+Something like below?
+
+diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
+index cd42c19ca21d..bf5702c8dbee 100644
+--- a/arch/arm64/include/asm/kvm_rme.h
++++ b/arch/arm64/include/asm/kvm_rme.h
+@@ -110,13 +110,13 @@ void kvm_realm_unmap_range(struct kvm *kvm,
+ 			   bool unmap_private);
+ int realm_map_protected(struct realm *realm,
+ 			unsigned long base_ipa,
+-			struct page *dst_page,
+-			unsigned long map_size,
++			kvm_pfn_t pfn,
++			unsigned long size,
+ 			struct kvm_mmu_memory_cache *memcache);
+ int realm_map_non_secure(struct realm *realm,
+ 			 unsigned long ipa,
+-			 struct page *page,
+-			 unsigned long map_size,
++			 kvm_pfn_t pfn,
++			 unsigned long size,
+ 			 struct kvm_mmu_memory_cache *memcache);
+ int realm_set_ipa_state(struct kvm_vcpu *vcpu,
+ 			unsigned long addr, unsigned long end,
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index 569f63695bef..254e90c014cf 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1452,16 +1452,15 @@ static int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
+ 			 struct kvm_mmu_memory_cache *memcache)
+ {
+ 	struct realm *realm = &kvm->arch.realm;
+-	struct page *page = pfn_to_page(pfn);
+ 
+ 	if (WARN_ON(!(prot & KVM_PGTABLE_PROT_W)))
+ 		return -EFAULT;
+ 
+ 	if (!realm_is_addr_protected(realm, ipa))
+-		return realm_map_non_secure(realm, ipa, page, map_size,
++		return realm_map_non_secure(realm, ipa, pfn, map_size,
+ 					    memcache);
+ 
+-	return realm_map_protected(realm, ipa, page, map_size, memcache);
++	return realm_map_protected(realm, ipa, pfn, map_size, memcache);
+ }
+ 
+ static int private_memslot_fault(struct kvm_vcpu *vcpu,
+diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+index 4064a2ce5c64..953d5cdf7ead 100644
+--- a/arch/arm64/kvm/rme.c
++++ b/arch/arm64/kvm/rme.c
+@@ -676,15 +676,15 @@ void kvm_realm_unmap_range(struct kvm *kvm, unsigned long ipa, u64 size,
+ 
+ static int realm_create_protected_data_page(struct realm *realm,
+ 					    unsigned long ipa,
+-					    struct page *dst_page,
+-					    struct page *src_page,
++					    kvm_pfn_t dst_pfn,
++					    kvm_pfn_t src_pfn,
+ 					    unsigned long flags)
+ {
+ 	phys_addr_t dst_phys, src_phys;
+ 	int ret;
+ 
+-	dst_phys = page_to_phys(dst_page);
+-	src_phys = page_to_phys(src_page);
++	dst_phys = __pfn_to_phys(dst_pfn);
++	src_phys = __pfn_to_phys(src_pfn);
+ 
+ 	if (rmi_granule_delegate(dst_phys))
+ 		return -ENXIO;
+@@ -711,7 +711,7 @@ static int realm_create_protected_data_page(struct realm *realm,
+ err:
+ 	if (WARN_ON(rmi_granule_undelegate(dst_phys))) {
+ 		/* Page can't be returned to NS world so is lost */
+-		get_page(dst_page);
++		get_page(pfn_to_page(dst_pfn));
+ 	}
+ 	return -ENXIO;
+ }
+@@ -741,15 +741,14 @@ static phys_addr_t rtt_get_phys(struct realm *realm, struct rtt_entry *rtt)
+ }
+ 
+ int realm_map_protected(struct realm *realm,
+-			unsigned long base_ipa,
+-			struct page *dst_page,
++			unsigned long ipa,
++			kvm_pfn_t pfn,
+ 			unsigned long map_size,
+ 			struct kvm_mmu_memory_cache *memcache)
+ {
+-	phys_addr_t dst_phys = page_to_phys(dst_page);
++	phys_addr_t phys = __pfn_to_phys(pfn);
+ 	phys_addr_t rd = virt_to_phys(realm->rd);
+-	unsigned long phys = dst_phys;
+-	unsigned long ipa = base_ipa;
++	unsigned long base_ipa = ipa;
+ 	unsigned long size;
+ 	int map_level;
+ 	int ret = 0;
+@@ -860,14 +859,14 @@ int realm_map_protected(struct realm *realm,
+ 
+ int realm_map_non_secure(struct realm *realm,
+ 			 unsigned long ipa,
+-			 struct page *page,
++			 kvm_pfn_t pfn,
+ 			 unsigned long map_size,
+ 			 struct kvm_mmu_memory_cache *memcache)
+ {
+ 	phys_addr_t rd = virt_to_phys(realm->rd);
+ 	int map_level;
+ 	int ret = 0;
+-	unsigned long desc = page_to_phys(page) |
++	unsigned long desc = __pfn_to_phys(pfn) |
+ 			     PTE_S2_MEMATTR(MT_S2_FWB_NORMAL) |
+ 			     /* FIXME: Read+Write permissions for now */
+ 			     (3 << 6);
+@@ -951,7 +950,6 @@ static int populate_par_region(struct kvm *kvm,
+ 		unsigned int vma_shift;
+ 		unsigned long offset;
+ 		unsigned long hva;
+-		struct page *page;
+ 		kvm_pfn_t pfn;
+ 		int level;
+ 
+@@ -1000,10 +998,8 @@ static int populate_par_region(struct kvm *kvm,
+ 						RME_RTT_MAX_LEVEL, NULL);
+ 		}
+ 
+-		page = pfn_to_page(pfn);
+-
+ 		for (offset = 0; offset < map_size && !ret;
+-		     offset += PAGE_SIZE, page++) {
++		     offset += PAGE_SIZE, pfn++) {
+ 			phys_addr_t page_ipa = ipa + offset;
+ 			kvm_pfn_t priv_pfn;
+ 			int order;
+@@ -1015,8 +1011,8 @@ static int populate_par_region(struct kvm *kvm,
+ 				break;
+ 
+ 			ret = realm_create_protected_data_page(realm, page_ipa,
+-							       pfn_to_page(priv_pfn),
+-							       page, data_flags);
++							       priv_pfn,
++							       pfn, data_flags);
+ 		}
+ 
+ 		kvm_release_pfn_clean(pfn);
