@@ -1,650 +1,142 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DBF7081F;
-	Fri, 25 Oct 2024 13:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013401F757E
+	for <linux-coco@lists.linux.dev>; Fri, 25 Oct 2024 13:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729862702; cv=none; b=ElmvGmTMmT1QUjnvsKAXXIMmL89rDWLYpx7YNMK6abZlp9guQwH1DL+VrWZGUkwd7nF42f7a9nNPcmUjg9WGzg1QazTKifDopRgsTAA521UMkjuNx4IcK9qmNg7zip6GiOOcEKRxb3yGLiDS3N8JiNWKEo+IsLMTTM0KLg9/21s=
+	t=1729864612; cv=none; b=MHb5fxzX2XXjVCRpQ4G8o5EZ+1fhi+mU1ghlIzI9LYTNgmD6OMCl33P1UZk9Q6/Rjss3RwVEShZ9sk7Dg4IW7iCCCf+f2WAc6m8pCT6OKFPCjjjtFM+EU+7DAof9bIIsdyOK9klIb/BxoKhpfO56HEMvzmWI3wGEVGFhQKd7oW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729862702; c=relaxed/simple;
-	bh=9kIPJntVFBJpIRVJQlNXZDtAH3SnFCOm/q6zzE8MoK4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KUrX1yTYH0sok8dx0w9lHfmLhiQK40E/FEj0PAdmNkQcivZre1fMzW1JpC8Oydiy6EqXWujm/G5QTkWGZ1r2Wn5zzzpiAkddCEkOQzF/dTGtfsbie3QgI3f4ditDEuFw3NJzgwtb6vqp7fk7Y2PYBPvPD3wd3BT54rvx5CEmnvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C656D339;
-	Fri, 25 Oct 2024 06:25:27 -0700 (PDT)
-Received: from [10.1.36.18] (e122027.cambridge.arm.com [10.1.36.18])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E7BA3F71E;
-	Fri, 25 Oct 2024 06:24:51 -0700 (PDT)
-Message-ID: <e1b8fca1-bdf1-4ac8-9e02-fe0ca4aa2fcf@arm.com>
-Date: Fri, 25 Oct 2024 14:24:43 +0100
+	s=arc-20240116; t=1729864612; c=relaxed/simple;
+	bh=OiT8JxOAoTd4Z4TYTOXoIXQTR2pbbQsAKCp0QTemFOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CyBaZ/E0SyJjVH8v7bUY2Xeu0JEk97Wpbb2zjUiXJmjDCC3eTzQG3H7/FM+JHdwxZqdt8woMfQ/80Kn9oj80Ydb/Rj35rcaBZr85P7tZ0UTFkmdBYrD3pfBY9UMLY0QG3nHJorOep3ZuxlvF8v8tW8/XKo753wAeBDXkG4z3Ttw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=HwoQyiz2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JMuyYIFa; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="HwoQyiz2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JMuyYIFa"
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfout.phl.internal (Postfix) with ESMTP id ED908138013A;
+	Fri, 25 Oct 2024 09:56:48 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Fri, 25 Oct 2024 09:56:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1729864608; x=
+	1729951008; bh=Mb7CPbDsMkHl3VCngl15IkB9nuLUepRzV8CtrrDN0C8=; b=H
+	woQyiz2iNFAHeR0dS6ZYSOpHMPgtWoy9McKD4O8aqbP0QpuUK9w3Zf/TdL20Cy/a
+	CDMrY1BvSwTUoodjGJedvXihF2ZfZq0JlXcderHEZZzbBIT4xsK1bEOTusr3wCU5
+	kzqLtiaboKv+sdPM9d9jknkg2crINH6Kgv/gKlBrx/TYo8C9znKFrfH2OEkQ9TPP
+	ntOdx84XZVnDYORp+TybjM3sXbMAo34rXL2X7Djs239w13MaQEtbS3VGv0z0m8gg
+	o8YcoAdWYntDeJk99T5TMvo4N25wS4GeE8a4zkHI9dNYQPRK7DRKhNMXjRCPOufM
+	soyG+YzuVNVd7vT9a8yAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1729864608; x=1729951008; bh=Mb7CPbDsMkHl3VCngl15IkB9nuLU
+	epRzV8CtrrDN0C8=; b=JMuyYIFaDVcWVEQUrjnP08uMto9mpVdu37QKcIZzhX5Y
+	/1ThO6+thlfO5x/9H5p+ASWP/pGAwocyRsj1LGbdTmkixhPJW72v7cOXa9+erLGd
+	1vyqi1wTf6mLzTDRbIXBEZiMbPIbf4S49AxV50UCoi9CjbWU+ohRNSOhToPEhAM/
+	UL4k+ICO9zCZL+hYRtb2DHofFosJu6uIxP9wGorKUxWRAQM219b6v4FTxNhyIsd+
+	GglVSgSTgWn8CzGVtO4ekiMyVSo/WVt0FTQ7ZlixLzu+NbfisgVGViaj93CWusA4
+	MV3TtBjbzKWNzffwY+f6qljU16YpHX/V25ahKHEskA==
+X-ME-Sender: <xms:oKMbZx4d2WHRHwJHgW2TA896BymT8wN01WRxp9o3PaZOWhhPkG8jLQ>
+    <xme:oKMbZ-51ON1PdeIeNVdVnQjS3J-DQrSTVBq0hjjRt1Tb38NRHbNp3gHOJxB1y0NvZ
+    ApJiJOI_pCeCR-L8P8>
+X-ME-Received: <xmr:oKMbZ4dixv32WIGNe8ECo7jN2tMme3kRsaWdg32wN8HRM9LlmcU4p5aSmH5YQdaNw94NTQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejvddgjedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvden
+    ucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlse
+    hshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeffvdevueetudfhhfff
+    veelhfetfeevveekleevjeduudevvdduvdelteduvefhkeenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhv
+    rdhnrghmvgdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htohepvggsihgvuggvrhhmseigmhhishhsihhonhdrtghomhdprhgtphhtthhopeihrghn
+    rdihrdiihhgrohesihhnthgvlhdrtghomhdprhgtphhtthhopehkvgigvggtsehlihhsth
+    hsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghl
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghose
+    hlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtoheprhhitghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtoh
+    hmpdhrtghpthhtohepkhhirhhilhhlrdhshhhuthgvmhhovheslhhinhhugidrihhnthgv
+    lhdrtghomh
+X-ME-Proxy: <xmx:oKMbZ6KpVHWW-L9Sdqww0-9T1IY4QZmOTj3blLEnxvIXQ6Khw2sjQw>
+    <xmx:oKMbZ1KKDx88TIR_ypqZNeF1R8OgkHv6hp1F6u3eIxAJFLSnbw37fA>
+    <xmx:oKMbZzwtYlDtTJQHBevKysof0eXIsPSg5H0DwScUnP6qkqb5JKb3oQ>
+    <xmx:oKMbZxK8Xpzg_RGRuBBUH6jLnc6snORzs3MRYYoWD9DxTu0o1NWKMQ>
+    <xmx:oKMbZ8_6_niIEGeFyIZ5jH9P-rFaknS4k4TlVxnuqK18b5nEhL88HZro>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 25 Oct 2024 09:56:45 -0400 (EDT)
+Date: Fri, 25 Oct 2024 16:56:41 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org, 
+	rick.p.edgecombe@intel.com, kirill.shutemov@linux.intel.com
+Subject: Re: [PATCH] kexec_core: Accept unaccepted kexec destination addresses
+Message-ID: <ihzvi5pwn5hrn4ky2ehjqztjxoixaiaby4igmeihqfehy2vrii@tsg6j5qvmyrm>
+References: <20241021034553.18824-1-yan.y.zhao@intel.com>
+ <87frop8r0y.fsf@email.froward.int.ebiederm.org>
+ <tpbcun3d4wrnbtsvx3b3hjpdl47f2zuxvx6zqsjoelazdt3eyv@kgqnedtcejta>
+ <87cyjq7rjo.fsf@email.froward.int.ebiederm.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 06/43] arm64: RME: Add wrappers for RMI calls
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20241004152804.72508-1-steven.price@arm.com>
- <20241004152804.72508-7-steven.price@arm.com>
- <d3e0b74a-7c01-487e-ac77-5c8afbd720d4@redhat.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <d3e0b74a-7c01-487e-ac77-5c8afbd720d4@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87cyjq7rjo.fsf@email.froward.int.ebiederm.org>
 
-On 25/10/2024 08:03, Gavin Shan wrote:
-> On 10/5/24 1:27 AM, Steven Price wrote:
->> The wrappers make the call sites easier to read and deal with the
->> boiler plate of handling the error codes from the RMM.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes from v4:
->>   * Improve comments
->> Changes from v2:
->>   * Make output arguments optional.
->>   * Mask RIPAS value rmi_rtt_read_entry()
->>   * Drop unused rmi_rtt_get_phys()
->> ---
->>   arch/arm64/include/asm/rmi_cmds.h | 510 ++++++++++++++++++++++++++++++
->>   1 file changed, 510 insertions(+)
->>   create mode 100644 arch/arm64/include/asm/rmi_cmds.h
->>
->> diff --git a/arch/arm64/include/asm/rmi_cmds.h
->> b/arch/arm64/include/asm/rmi_cmds.h
->> new file mode 100644
->> index 000000000000..3ed32809a608
->> --- /dev/null
->> +++ b/arch/arm64/include/asm/rmi_cmds.h
->> @@ -0,0 +1,510 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +/*
->> + * Copyright (C) 2023 ARM Ltd.
->> + */
->> +
->> +#ifndef __ASM_RMI_CMDS_H
->> +#define __ASM_RMI_CMDS_H
->> +
->> +#include <linux/arm-smccc.h>
->> +
+On Wed, Oct 23, 2024 at 10:44:11AM -0500, Eric W. Biederman wrote:
+> "Kirill A. Shutemov" <kirill@shutemov.name> writes:
 > 
-> It can be dropped since the header file has been included by
-> <asm/rmi_smc.h>
-
-I thought the usual idea was that you included header files for the
-functions you needed. While technically it can be dropped, the only
-reason asm/rmi_smc.h includes linux/arm-smccc.h is because of the
-ARM_SMCCC_CALL_VAL() macro. If that macro were to be moved to another
-file in the future then the linux/arm-smccc.h include would be dropped.
-Whereas rmi_cmds.h obviously needs that file for arm_smccc_1_1_invoke()
-and relevant structs.
-
->> +#include <asm/rmi_smc.h>
->> +
->> +struct rtt_entry {
->> +    unsigned long walk_level;
->> +    unsigned long desc;
->> +    int state;
->> +    int ripas;
->> +};
->> +
->> +/**
->> + * rmi_data_create() - Create a Data Granule
->> + * @rd: PA of the RD
->> + * @data: PA of the target granule
->> + * @ipa: IPA at which the granule will be mapped in the guest
->> + * @src: PA of the source granule
->> + * @flags: RMI_MEASURE_CONTENT if the contents should be measured
->> + *
->> + * Create a new Data Granule, copying contents from a Non-secure
->> Granule.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_data_create(unsigned long rd, unsigned long data,
->> +                  unsigned long ipa, unsigned long src,
->> +                  unsigned long flags)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_DATA_CREATE, rd, data, ipa, src,
->> +                 flags, &res);
->> +
->> +    return res.a0;
->> +}
->> +
+> > Waiting minutes to get VM booted to shell is not feasible for most
+> > deployments. Lazy is sane default to me.
 > 
-> Is there a particular reason why the first letter for 'Data Granule' and
-> 'Granule' has to be upper-case?
-
-I think I was trying to rub in that "Granule" has a specific meaning the
-spec, but actually this file is a mish-mash of different capitalisation.
-I'll switch to lower case - the upper case is more confusing that helpful.
-
->> +/**
->> + * rmi_data_create_unknown() - Create a Data Granule with unknown
->> contents
->> + * @rd: PA of the RD
->> + * @data: PA of the target granule
->> + * @ipa: IPA at which the granule will be mapped in the guest
->> + *
->> + * Create a new Data Granule with unknown contents
->       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> Huh?
 > 
-> This line can be dropped since the same content has been given at the
-> beginning.
-
-Ack
-
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_data_create_unknown(unsigned long rd,
->> +                      unsigned long data,
->> +                      unsigned long ipa)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_DATA_CREATE_UNKNOWN, rd, data, ipa,
->> &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_data_destroy() - Destroy a Data Granule
->> + * @rd: PA of the RD
->> + * @ipa: IPA at which the granule is mapped in the guest
->> + * @data_out: PA of the granule which was destroyed
->> + * @top_out: Top IPA of non-live RTT entries
->> + *
->> + * Unmap a protected IPA from stage 2, transitioning it to DESTROYED.
->> + * The IPA cannot be used by the guest unless it is transitioned to
->> RAM again
->> + * by the Realm guest.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_data_destroy(unsigned long rd, unsigned long ipa,
->> +                   unsigned long *data_out,
->> +                   unsigned long *top_out)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_DATA_DESTROY, rd, ipa, &res);
->> +
->> +    if (data_out)
->> +        *data_out = res.a1;
->> +    if (top_out)
->> +        *top_out = res.a2;
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_features() - Read feature register
->> + * @index: Feature register index
->> + * @out: Feature register value is written to this pointer
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_features(unsigned long index, unsigned long *out)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_FEATURES, index, &res);
->> +
->> +    if (out)
->> +        *out = res.a1;
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_granule_delegate() - Delegate a Granule
->> + * @phys: PA of the Granule
->> + *
->> + * Delegate a Granule for use by the Realm World.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_granule_delegate(unsigned long phys)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_GRANULE_DELEGATE, phys, &res);
->> +
->> +    return res.a0;
->> +}
->> +
+> Unless my guesses about what is happening are wrong lazy is hiding
+> a serious implementation deficiency.  From all hardware I have seen
+> taking minutes is absolutely ridiculous.
 > 
-> Same as above, why the first letters for 'Realm World' have to be
-> in upper-case? :-)
+> Does writing to all of memory at full speed take minutes?  How can such
+> a system be functional?
 
-Will switch to lower case.
+It is not only memory write (to encrypt the memory), but also TDCALL which
+is TD-exit on every page. That is costly in TDX case.
 
->> +/**
->> + * rmi_granule_undelegate() - Undelegate a Granule
->> + * @phys: PA of the Granule
->> + *
->> + * Undelegate a Granule to allow use by the Normal World. Will fail
->> if the
->> + * Granule is in use.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_granule_undelegate(unsigned long phys)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_GRANULE_UNDELEGATE, phys, &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_psci_complete() - Complete pending PSCI command
->> + * @calling_rec: PA of the calling REC
->> + * @target_rec: PA of the target REC
->> + * @status: Status of the PSCI request
->> + *
->> + * Completes a pending PSCI command which was called with an MPIDR
->> argument, by
->> + * providing the corresponding REC.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_psci_complete(unsigned long calling_rec,
->> +                    unsigned long target_rec,
->> +                    unsigned long status)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_PSCI_COMPLETE, calling_rec, target_rec,
->> +                 status, &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_realm_activate() - Active a Realm
->> + * @rd: PA of the RD
->> + *
->> + * Mark a Realm as Active signalling that creation is complete and
->> allowing
->> + * execution of the Realm.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_realm_activate(unsigned long rd)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_REALM_ACTIVATE, rd, &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_realm_create() - Create a Realm
->> + * @rd: PA of the RD
->> + * @params_ptr: PA of Realm parameters
->> + *
->> + * Create a new Realm using the given parameters.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_realm_create(unsigned long rd, unsigned long
->> params_ptr)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_REALM_CREATE, rd, params_ptr, &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_realm_destroy() - Destroy a Realm
->> + * @rd: PA of the RD
->> + *
->> + * Destroys a Realm, all objects belonging to the Realm must be
->> destroyed first.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_realm_destroy(unsigned long rd)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_REALM_DESTROY, rd, &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rec_aux_count() - Get number of auxiliary Granules required
->> + * @rd: PA of the RD
->> + * @aux_count: Number of pages written to this pointer
->> + *
->> + * A REC may require extra auxiliary pages to be delegated for the
->> RMM to
->> + * store metadata (not visible to the normal world) in. This function
->> provides
->> + * the number of pages that are required.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rec_aux_count(unsigned long rd, unsigned long
->> *aux_count)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_REC_AUX_COUNT, rd, &res);
->> +
->> +    if (aux_count)
->> +        *aux_count = res.a1;
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rec_create() - Create a REC
->> + * @rd: PA of the RD
->> + * @rec: PA of the target REC
->> + * @params_ptr: PA of REC parameters
->> + *
->> + * Create a REC using the parameters specified in the struct
->> rec_params pointed
->> + * to by @params_ptr.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rec_create(unsigned long rd, unsigned long rec,
->> +                 unsigned long params_ptr)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_REC_CREATE, rd, rec, params_ptr, &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rec_destroy() - Destroy a REC
->> + * @rec: PA of the target REC
->> + *
->> + * Destroys a REC. The REC must not be running.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rec_destroy(unsigned long rec)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_REC_DESTROY, rec, &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rec_enter() - Enter a REC
->> + * @rec: PA of the target REC
->> + * @run_ptr: PA of RecRun structure
->> + *
->> + * Starts (or continues) execution within a REC.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rec_enter(unsigned long rec, unsigned long
->> run_ptr)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_REC_ENTER, rec, run_ptr, &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rtt_create() - Creates an RTT
->> + * @rd: PA of the RD
->> + * @rtt: PA of the target RTT
->> + * @ipa: Base of the IPA range described by the RTT
->> + * @level: Depth of the RTT within the tree
->> + *
->> + * Creates an RTT (Realm Translation Table) at the specified level
->> for the
->> + * translation of the specified address within the Realm.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rtt_create(unsigned long rd, unsigned long rtt,
->> +                 unsigned long ipa, long level)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_RTT_CREATE, rd, rtt, ipa, level, &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rtt_destroy() - Destroy an RTT
->> + * @rd: PA of the RD
->> + * @ipa: Base of the IPA range described by the RTT
->> + * @level: Depth of the RTT within the tree
->> + * @out_rtt: Pointer to write the PA of the RTT which was destroyed
->> + * @out_top: Pointer to write the top IPA of non-live RTT entries
->> + *
->> + * Destroys an RTT. The RTT must be non-live, i.e. none of the
->> entries in the
->> + * table are in ASSIGNED or TABLE state.
->> + *
->> + * Return: RMI return code.
->> + */
->> +static inline int rmi_rtt_destroy(unsigned long rd,
->> +                  unsigned long ipa,
->> +                  long level,
->> +                  unsigned long *out_rtt,
->> +                  unsigned long *out_top)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_RTT_DESTROY, rd, ipa, level, &res);
->> +
->> +    if (out_rtt)
->> +        *out_rtt = res.a1;
->> +    if (out_top)
->> +        *out_top = res.a2;
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rtt_fold() - Fold an RTT
->> + * @rd: PA of the RD
->> + * @ipa: Base of the IPA range described by the RTT
->> + * @level: Depth of the RTT within the tree
->> + * @out_rtt: Pointer to write the PA of the RTT which was destroyed
->> + *
->> + * Folds an RTT. If all entries with the RTT are 'homogeneous' the
->> RTT can be
->> + * folded into the parent and the RTT destroyed.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rtt_fold(unsigned long rd, unsigned long ipa,
->> +                   long level, unsigned long *out_rtt)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_RTT_FOLD, rd, ipa, level, &res);
->> +
->> +    if (out_rtt)
->> +        *out_rtt = res.a1;
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rtt_init_ripas() - Set RIPAS for new Realm
->> + * @rd: PA of the RD
->> + * @base: Base of target IPA region
->> + * @top: Top of target IPA region
->> + * @out_top: Top IPA of range whose RIPAS was modified
->> + *
->> + * Sets the RIPAS of a target IPA range to RAM, for a Realm in the
->> NEW state.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rtt_init_ripas(unsigned long rd, unsigned long
->> base,
->> +                     unsigned long top, unsigned long *out_top)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_RTT_INIT_RIPAS, rd, base, top, &res);
->> +
->> +    if (out_top)
->> +        *out_top = res.a1;
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rtt_map_unprotected() - Map NS pages into a Realm
->> + * @rd: PA of the RD
->> + * @ipa: Base IPA of the mapping
->> + * @level: Depth within the RTT tree
->> + * @desc: RTTE descriptor
->> + *
->> + * Create a mapping from an Unprotected IPA to a Non-secure PA.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rtt_map_unprotected(unsigned long rd,
->> +                      unsigned long ipa,
->> +                      long level,
->> +                      unsigned long desc)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_RTT_MAP_UNPROTECTED, rd, ipa, level,
->> +                 desc, &res);
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rtt_read_entry() - Read an RTTE
->> + * @rd: PA of the RD
->> + * @ipa: IPA for which to read the RTTE
->> + * @level: RTT level at which to read the RTTE
->> + * @rtt: Output structure describing the RTTE
->> + *
->> + * Reads a RTTE (Realm Translation Table Entry).
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rtt_read_entry(unsigned long rd, unsigned long
->> ipa,
->> +                     long level, struct rtt_entry *rtt)
->> +{
->> +    struct arm_smccc_1_2_regs regs = {
->> +        SMC_RMI_RTT_READ_ENTRY,
->> +        rd, ipa, level
->> +    };
->> +
->> +    arm_smccc_1_2_smc(&regs, &regs);
->> +
->> +    rtt->walk_level = regs.a1;
->> +    rtt->state = regs.a2 & 0xFF;
->> +    rtt->desc = regs.a3;
->> +    rtt->ripas = regs.a4 & 0xFF;
->> +
->> +    return regs.a0;
->> +}
->> +
->> +/**
->> + * rmi_rtt_set_ripas() - Set RIPAS for an running Realm
->> + * @rd: PA of the RD
->> + * @rec: PA of the REC making the request
->> + * @base: Base of target IPA region
->> + * @top: Top of target IPA region
->> + * @out_top: Pointer to write top IPA of range whose RIPAS was modified
->> + *
->> + * Completes a request made by the Realm to change the RIPAS of a
->> target IPA
->> + * range.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rtt_set_ripas(unsigned long rd, unsigned long rec,
->> +                    unsigned long base, unsigned long top,
->> +                    unsigned long *out_top)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_RTT_SET_RIPAS, rd, rec, base, top,
->> &res);
->> +
->> +    if (out_top)
->> +        *out_top = res.a1;
->> +
->> +    return res.a0;
->> +}
->> +
->> +/**
->> + * rmi_rtt_unmap_unprotected() - Remove a NS mapping
->> + * @rd: PA of the RD
->> + * @ipa: Base IPA of the mapping
->> + * @level: Depth within the RTT tree
->> + * @out_top: Pointer to write top IPA of non-live RTT entries
->> + *
->> + * Removes a mapping at an Unprotected IPA.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rtt_unmap_unprotected(unsigned long rd,
->> +                        unsigned long ipa,
->> +                        long level,
->> +                        unsigned long *out_top)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_RTT_UNMAP_UNPROTECTED, rd, ipa,
->> +                 level, &res);
->> +
->> +    if (out_top)
->> +        *out_top = res.a1;
->> +
->> +    return res.a0;
->> +}
->> +
->> +#endif
+On single vCPU it takes about a minute to accept 90GiB of memory.
+
+It improves a bit with number of vCPUs. It is 40 seconds with 4 vCPU, but
+it doesn't scale past that in my setup.
+
+But it is all rather pathological: VMM doesn't support huge pages yet and
+all memory is accepted in 4K chunks. Bringing 2M support would cut number
+of TDCALLs by 512.
+
+Once memory accepted, memory access cost is comparable to bare metal minus
+usual virtualisation tax on page walk.
+
+I don't know what the picture looks like in AMD case.
+j
+> If you don't actually have to write to the pages and it is just some
+> accounting function it is even more ridiculous.
 > 
-> #endif /* __ASM_RMI_CMDS_H */
+> 
+> I had previously thought that accept_memory was the firmware call.
+> Now that I see that it is just a wrapper for some hardware specific
+> calls I am even more perplexed.
 
-Ack.
+It is hypercall basically. The feature is only used in guests so far.
 
-Thanks,
-Steve
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
