@@ -1,75 +1,125 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A2A3207
-	for <linux-coco@lists.linux.dev>; Tue, 29 Oct 2024 21:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730236256; cv=none; b=CM9epd913ia2QPp4Oph7ztv5ameQqjn4/grIRmAfbyeWjFoNGJcwRrPK+K3y0u+Vr4mWImq/zh9yCJ++RZBz5Jr6TTGUPj6DaBT3QrDHHz59U9aMj28SXn4qZGZO9uJhxTCbGNSZ6hfQnP5P511OI6n4m7NQaJA9B+3rWnJdX64=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730236256; c=relaxed/simple;
-	bh=mZEcZ5tMVG96s6OBYwLAv1zBPXCCOM9vxdOZYmBvQq0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=mHH3C47K7JNY5ld8ll/T7hc7z+1htFj8oFp2fYtLmVwQOEo1Liiw0S3Tpjh65Ft34pCrTUFQyhe+DfmOtz+6TnLwgyjqTbV5i2V6DP/klfnACvQvX6iTNVM8fmlvgkFqN7DWw71hjYLwOUDALUjpoZWOYhvBTklB4Tur1FgvaVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=Xi1L9JJW; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="Xi1L9JJW"
-Received: from 8bytes.org (p549219d2.dip0.t-ipconnect.de [84.146.25.210])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 375282A8EE5;
-	Tue, 29 Oct 2024 22:10:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1730236252;
-	bh=mZEcZ5tMVG96s6OBYwLAv1zBPXCCOM9vxdOZYmBvQq0=;
-	h=Date:From:To:Cc:Subject:From;
-	b=Xi1L9JJWFdefUXv8OmLd7iHk4bl2wgM4Vbueahoo0SeplRZVmf70dKhJ3DOxPOboi
-	 3AePguCrpveA8Mkag5TZgI5Ue/+fb2KHbW2fY9MxdwYIQvQ1vv7pZHKyq7DpzNSgjd
-	 YToRK4qOtzdCRLKKTnms5JUHxLVtvAuevj/5LyYXNVfbl8tHZuf4uHTzNy4UP31m7V
-	 eB+iTHJRW1oPx+7dGsH8ZkJmj5qyDGyjl5yoVsGbpssAODJjSiwMgDTS/71tXPG+6N
-	 +pVUKFj/gNT7M2whWWYM3BXtCTEMDCFVqzMlZP3Lbs/ARG++SvaMpe39ym7sc2SLMs
-	 cuQs6CLRYTubg==
-Date: Tue, 29 Oct 2024 22:10:51 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Cc: Ziqiao Zhou <ziqiaozhou@microsoft.com>,
-	Weidong Cui <Weidong.Cui@microsoft.com>
-Subject: SVSM Development Call October 30th, 2024 (!!! Check meeting time !!!)
-Message-ID: <ZyFPW7yg_EVUTlPU@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFF533E1;
+	Wed, 30 Oct 2024 07:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730274729; cv=none; b=U8mb9Azx10J5smgYGoPA6r+rQdg4dowGLKELwIHZq9JJ54dTJHwhthc7xShNxowBV9/uMIyvSPM7eiyaFkzYAYJOdXDC6sEXCXE7WWYxq+6FXEhe9kyQJK1rqiff5LVCqz3i5rhmYYtOH7R8PA+YX4CpVLs1jMhG0EHOkSr45yI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730274729; c=relaxed/simple;
+	bh=vrq3Hj0eASMy2KLVd52CUc8legLz7mDW/VncF6IQKRk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HPTbywzR5PMqGoblaXgzILbqOOsPGjYeMeSN7/vpw3QIJIwJZ7OJZIphyX+uIFGD0BmFI1eALNoV+hz5uRVuoHHOTpToPRP6fMvc6UaZFouo41DoE2pQUIcU1QYBAAR5/oVO5jKHIoH6u5CzrK0GhiPI2cH0w7HWu/qLrsINbKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fyf0LMJf; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fyf0LMJf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBD3C4CEE4;
+	Wed, 30 Oct 2024 07:52:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730274729;
+	bh=vrq3Hj0eASMy2KLVd52CUc8legLz7mDW/VncF6IQKRk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=fyf0LMJf7Dtu1xwovWtcG6BfS649d4d36jLDwt+BeNQyBUsWZQ/X0tcmIebTw/E9U
+	 aVV6KA+GAnRHC10my9qHaHTRstRTBSD8dW6oLM1GoPMFE2BhLQBO5vyPCezZzQ2dnZ
+	 +oDU45jvPEjKOX5qC77au6BuHcBFxOH7cNEDQIboSQbRKzACVfaJKensFd8+PzY6Z3
+	 bD2+bzGtuFPaTXfmMiJXEtpXafSuwz1KoCLyUgJNkPH7DiwWDFJ9uz/IkGg8gpf4ta
+	 g7Q+Mnthdgki4eFXTeWepnFh4HvsyZ/yYE8EG2Uij/iTGTHjMMoL9qSrfwU2vRA1R0
+	 J6Xt04LlfhfPA==
+X-Mailer: emacs 31.0.50 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>
+Subject: Re: [PATCH v5 17/43] arm64: RME: Allow VMM to set RIPAS
+In-Reply-To: <4075a8bc-2f1e-441d-815e-aaf83e88d3d0@arm.com>
+References: <20241004152804.72508-1-steven.price@arm.com>
+ <20241004152804.72508-18-steven.price@arm.com>
+ <4075a8bc-2f1e-441d-815e-aaf83e88d3d0@arm.com>
+Date: Wed, 30 Oct 2024 13:22:00 +0530
+Message-ID: <yq5afroec9jz.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi,
+Suzuki K Poulose <suzuki.poulose@arm.com> writes:
 
-Here is the usual call for agenda items for this weeks SVSM development
-call. Please send me any agenda items you have in mind or raise them in
-the meeting.
+> Hi Steven
+>
+>
+>> +	if (WARN_ON(rmi_granule_undelegate(phys))) {
+>> +		/* Undelegate failed: leak the page */
+>> +		return;
+>> +	}
+>> +
+>> +	free_page((unsigned long)phys_to_virt(phys));
+>
+> The above pattern of undelegate and reclaim a granule or leak appears 
+> elsewhere in the KVM support code. Is it worth having a common helper to
+> do the same ?
+>
+> something like: reclaim_delegated_granule()
+>
 
-!!! Note that the meeting is scheduled at European time and the EU already
-!!! switched to Winter time. This means that the meeting time will be ONE
-!!! HOUR LATER in US time zones. Other non-european time zones, please
-!!! make sure to check the calendar as well.
+free_delegated_page() which should really be renamed to
+free_delegated_granule() essentially does that.
 
-This week we will continue the discussion from last week about the
-formal verification efforts.
+IMHO we should convert all the delgated allocation and free to
+alloc_delegated_granule() and free_delegated_granule(). This will also
+help in switching to a slab for granule allocation. 
 
-Details of the meeting (GMeet and Calendar links, meeting time) can be
-found in our governance repository at:
+>
+>
+>> +}
+>> +
+>> +static int realm_rtt_create(struct realm *realm,
+>> +			    unsigned long addr,
+>> +			    int level,
+>> +			    phys_addr_t phys)
+>> +{
+>> +	addr = ALIGN_DOWN(addr, rme_rtt_level_mapsize(level - 1));
+>> +	return rmi_rtt_create(virt_to_phys(realm->rd), phys, addr, level);
+>> +}
 
-	https://github.com/coconut-svsm/governance
+.......
 
-The meeting will be recorded and the recording eventually published.
+>> +static void realm_unmap_range_private(struct kvm *kvm,
+>> +				      unsigned long start,
+>> +				      unsigned long end)
+>> +{
+>> +	struct realm *realm = &kvm->arch.realm;
+>> +	ssize_t map_size = RME_PAGE_SIZE;
+>> +	unsigned long next_addr, addr;
+>> +
+>> +	for (addr = start; addr < end; addr = next_addr) {
+>> +		int ret;
+>> +
+>> +		next_addr = ALIGN(addr + 1, map_size);
+>> +
 
-See you all there.
+Is that next_addr update needed? 
 
-Regards,
 
-	Jörg
+>> +		ret = realm_destroy_protected(realm, addr, &next_addr);
+>> +
+>> +		if (WARN_ON(ret))
+>> +			break;
+>
