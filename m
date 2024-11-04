@@ -1,118 +1,114 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA67D18E359
-	for <linux-coco@lists.linux.dev>; Mon,  4 Nov 2024 14:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E21A1CC177
+	for <linux-coco@lists.linux.dev>; Mon,  4 Nov 2024 20:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730730577; cv=none; b=q9c8EZ2Hz9yw//RVWJRmR4x6gD6tFLM/PbBM/ml9+WXCH1PKwSRvxlYtgL/vdLMx3pd/qg2t6dRscH8QZagvYL+7pyd6kfFhNp7SGhxyoondbIhCgT0R+9FgoF6wHczdBIKas6YuziXcASNDBBcLt+aho3dzdjlQfy9EZ7e8abg=
+	t=1730752580; cv=none; b=T2KflPIpYltH/JQsXujtY0A6fyvV0gy5mdjJ1klpYn0r362XP7/pbdnTaF7IVem3ppMeRVmCkaq5ovGYyq6WvRX44Tw1FWBeAGFm5TMi619JLO/bkSK5g1WxQlCERHdapCD0sXCbSnXVvPjG/TY1fawQY3YTSpouOZTXSfp7qHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730730577; c=relaxed/simple;
-	bh=ZAdw3ycbQtDIRnnmmbxv15KDyRbeiPm8mNAI3lRZvbQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=URM/GzSXro3xIITk4y/+8aeKF80S+cNhVAu6jYa8ev93tqZaWyDPGkNLJ2UKcDFvHqBXZ6fOhH64PJaVagyTJodJPWiokpwTrvmhYgWFShBbq/9UbwWaFTrm2WW7wGefevvoojMxyU55eZzc03NL/hIyyKP93Wa5xwtS0L8Pc4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=tNznIsLm; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Dni0tHAU; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1730752580; c=relaxed/simple;
+	bh=/4kipNipjsy0gHcbOzkKkJwEem+dCzCJOCvQ5nlQMks=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=HGjuicquDkF6JWRKMwM0eR3aRuKU7pA2U/9G6oaCgMiNlGpgwvipiduzjFx0u1Ym3AWZ4AWlTL39IxBMHGwDeocrnSZv/MV3G7RmZrsTAMLIKVMVMHLiDOv91k6grKkL4YXRjxO8R9ohT6NHG+gYocT8WTzloN1r0i/byWOthGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pJSW8y/6; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="tNznIsLm";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Dni0tHAU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1730730575;
-	bh=ZAdw3ycbQtDIRnnmmbxv15KDyRbeiPm8mNAI3lRZvbQ=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=tNznIsLmEFEazrnPe8pjZ629KrZYVVhe99MOhdfuc6YIEeh+YN7HOw9tXiSoV9ZSE
-	 jpzAYUrbfupPU7zJ6sYoMpGpsE6WJMWgws4huCsH3EzaxhEnDwiomXI6yd2W4mhJiV
-	 sECGowtPyZlSUiioYMMN4xnyQs0PiMpalmaUt4To=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 0D0961286ACB;
-	Mon, 04 Nov 2024 09:29:35 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id zX46con-PA7d; Mon,  4 Nov 2024 09:29:34 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1730730574;
-	bh=ZAdw3ycbQtDIRnnmmbxv15KDyRbeiPm8mNAI3lRZvbQ=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=Dni0tHAULbW+8RXiRM5YlYfaFPNsSK61f2PJXCpvf6T27XvcjShxeMzqN0D7nl9vY
-	 yVTdFb3q7wYAh3gAs91Ww+wugTQGEguZDU5wR+8USB07xd3ZW8cMNwqvotUrvqOpKy
-	 HdsJZRH9XJGGD5ptBd6h31djvOY0gs/3s2vadJKI=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id E967F1286AA4;
-	Mon, 04 Nov 2024 09:29:33 -0500 (EST)
-Message-ID: <83c50ab23fbe0727edb489b3d59264896331ce40.camel@HansenPartnership.com>
-Subject: Re: [PATCH RFC v2 2/2] tsm: Add TVM Measurement Sample Code
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Alexey Kardashevskiy <aik@amd.com>, Cedric Xing <cedric.xing@intel.com>,
-  Dan Williams <dan.j.williams@intel.com>, Samuel Ortiz
- <sameo@rivosinc.com>, Lukas Wunner <lukas@wunner.de>,  Dionna Amalie Glaze
- <dionnaglaze@google.com>, Qinkun Bao <qinkun@google.com>, Mikko Ylinen
- <mikko.ylinen@linux.intel.com>,  Kuppuswamy Sathyanarayanan
- <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Date: Mon, 04 Nov 2024 09:29:32 -0500
-In-Reply-To: <5ef943d9-1ce6-4b20-8c6c-7cba4f1b3ea9@amd.com>
-References: <20241031-tsm-rtmr-v2-0-1a6762795911@intel.com>
-	 <20241031-tsm-rtmr-v2-2-1a6762795911@intel.com>
-	 <5ef943d9-1ce6-4b20-8c6c-7cba4f1b3ea9@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pJSW8y/6"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-20e67b82aa3so36651885ad.0
+        for <linux-coco@lists.linux.dev>; Mon, 04 Nov 2024 12:36:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730752578; x=1731357378; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=FBUqoCi8K8ESiGlnRsBfO9wVHimd//kbdOXM7NxwLpg=;
+        b=pJSW8y/6sgUoR7FBeWvIfgqziYywqOPmYmBzwOdNi33A7Did/j/5PlSCpF8wqgPxfB
+         TvFomAploJkKPpHGosupFcq25OGQmz0VC666o4umRDluNRLzc6pcbhNTPEuB7Eqn3POs
+         x30iSTTfugD5/VWLLir1Q8mSxuwvtA8RObmLGkC6ufUdl+KK4UYPi/kOew8Ru6c56atu
+         y4+fNcW+VHujjdByTYBMzjg1tXTvBeY1mHLUl4bIJrj8bTPb1iBzhBSjQ5r/oD62zaDU
+         YIAOfZEm4n3MFKNN51gSTDAs0Nn1XFJ8Cjyq8Paar8EMFsc0McU8FLXSMEH/djU1iyYk
+         p6IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730752578; x=1731357378;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FBUqoCi8K8ESiGlnRsBfO9wVHimd//kbdOXM7NxwLpg=;
+        b=HbCawkTzKaK/HgsCDb2df2Ca62nPzKmbuhU4zdJqlfdubvu166xAUeU4x0ugEX2VEm
+         zITbadpPJgi1rjiu4gduNN2ZwcWWTp04mDWwDC71Yzt40gapP7Shoqak8sDZY0+TqUER
+         dKtwKUFX4nilRg0VRDgfB++TvHifI8RoW1AhUDFdFB98XXsBsZHD1rUQyJGoIV9RxUw5
+         Uwc/K4xewaYMtH/9cLQaAfKhx5BkhP/5BorAmnXzZY6wHf/5O/SM8fNeGPx7eyUvwUhX
+         8IZkn9h3/S3gkE2SzdKF4RimzHcqajYCCsCeJb/OJUkiHnAANtohTbAU1O/9AJupN8zM
+         moxA==
+X-Gm-Message-State: AOJu0Yy01gkrn+j7QF9MfMQ0CbwVpjIEvicuiqy0odGr65j9hmfUZhMh
+	l4PL41geq8U4glW4BPBhR22bQzD5pcv5WY5KWtSp9fb+OfqgiWCBCpc1D8hs1oQ5oNGwz5QOSAA
+	IRM0Vgu6uCJOduKkFk81ofQ==
+X-Google-Smtp-Source: AGHT+IFU04o9XUDE//mBesDzlZUGfXhW0O1bweXhu5hafrvVsG3Q2k1UIzGyEqRQkYf6VWaas7XC9AtGk9HO8gA8fA==
+X-Received: from ackerleytng-ctop-specialist.c.googlers.com
+ ([fda3:e722:ac3:cc00:7f:e700:c0a8:1612]) (user=ackerleytng job=sendgmr) by
+ 2002:a17:902:c401:b0:20c:e4b5:40ff with SMTP id d9443c01a7336-210f763bf78mr2611005ad.7.1730752578323;
+ Mon, 04 Nov 2024 12:36:18 -0800 (PST)
+Date: Mon, 04 Nov 2024 20:36:16 +0000
+In-Reply-To: <4b49248b-1cf1-44dc-9b50-ee551e1671ac@redhat.com> (message from
+ David Hildenbrand on Thu, 10 Oct 2024 15:39:37 +0200)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Message-ID: <diqzmsieybwf.fsf@ackerleytng-ctop-specialist.c.googlers.com>
+Subject: Re: Proposal: bi-weekly guest_memfd upstream call
+From: Ackerley Tng <ackerleytng@google.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 2024-11-04 at 19:40 +1100, Alexey Kardashevskiy wrote:
-> On 1/11/24 03:50, Cedric Xing wrote:
-> > This sample kernel module demonstrates how to make MRs accessible
-> > to user mode through TSM.
-> > 
-> > Once loaded, this module registers a virtual measurement provider
-> > with the TSM core and will result in the directory tree below.
-> > 
-> > /sys/kernel/tsm/
-> > └── measurement-example
-> >      ├── config_mr
-> >      │   ├── digest
-> >      │   └── hash_algo
-> 
-> Do we actually need this many nodes? A digest is 64bytes long (or 128
-> chars), hash_algo is lot less, "config_mr" could just print 
-> human-readable 2 lines (one with the algo, one with the digest), just
-> like many other things in sysfs.
+David Hildenbrand <david@redhat.com> writes:
 
-Actually, that's not supposed to be like anything in sysfs.  Attributes
-are supposed to have one value per file:
+> Ahoihoi,
+>
+> while talking to a bunch of folks at LPC about guest_memfd, it was 
+> raised that there isn't really a place for people to discuss the 
+> development of guest_memfd on a regular basis.
+>
+> There is a KVM upstream call, but guest_memfd is on its way of not being 
+> guest_memfd specific ("library") and there is the bi-weekly MM alignment 
+> call, but we're not going to hijack that meeting completely + a lot of 
+> guest_memfd stuff doesn't need all the MM experts ;)
+>
+> So my proposal would be to have a bi-weekly meeting, to discuss ongoing 
+> development of guest_memfd, in particular:
+>
+> (1) Organize development: (do we need 3 different implementation
+>      of mmap() support ? ;) )
+> (2) Discuss current progress and challenges
+> (3) Cover future ideas and directions
+> (4) Whatever else makes sense
+>
+> Topic-wise it's relatively clear: guest_memfd extensions were one of the 
+> hot topics at LPC ;)
+>
+> I would suggest every second Thursdays from 9:00 - 10:00am PDT (GMT-7), 
+> starting Thursday next week (2024-10-17).
+>
+> We would be using Google Meet.
+>
+>
+> Thoughts?
 
-https://docs.kernel.org/filesystems/sysfs.html#attributes
+We've been taking recordings of these meetings with attendees'
+permission and the recordings are kind of stuck in a Google drive
+now.
 
-However, as I keep saying, this structure doesn't support systems, like
-the TPM, which can have multiple hashes per measurement register, so I
-still think the structure should be
+People interested in watching the recordings need to request access to
+the meetings.
 
-<measurement type>/<pcr number>/<hash>/digest
+I would like to make these recordings more public and lower
+administrative overheads of requesting/giving access by hosting the
+videos somewhere.
 
-to allow for that.  I even think even Intel will be forced to use agile
-cryptography one day: even if Shor's algorithm isn't realised post
-quantum, the hash and curve will have to expand to at least 512 bits
-and there's bound to be several candidates plus backwards compatibility
-problems.
+Does anyone have any suggestions/preferences on a video hosting service?
 
-[...]
-> It looks that /sys/kernel/tsm/full_report is a binary concatenation
-> of 6 digests, with no hash_algo and no hint which digest is which,
-> hardly a "structure". I do understand it is an example though :)
-
-That doesn't sound right: the rtmrs can be extended post launch, so
-this should be some type of log of all the post launch measurements to
-allow the relying system to examine the events as well as the final
-value.
-
-James
-
+Otherwise I'll default to using YouTube since that's also where LPC and
+LSF/MM videos are hosted.
