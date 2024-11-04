@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC871B2190
-	for <linux-coco@lists.linux.dev>; Mon,  4 Nov 2024 10:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475FE1B219E
+	for <linux-coco@lists.linux.dev>; Mon,  4 Nov 2024 10:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730716711; cv=none; b=PmwDKu6keUBtJAZuCe8UPdKj0cPM8vgl4o9BSjLavpwJmCetwhKKy6XqKdvo8NLU7K6hI0TclA7PRCTKrbvwCn3QWY2S+WM5k/ib2jyWKH/fzBbXSaQpfCVV8y7QcIzBm02+jacBlCo1dAefugMwFbfcgFoNcFR5TS8atBXyDaY=
+	t=1730716711; cv=none; b=ios150jtFi+8bW4ZPpfVeTEJ7Ra6bRvNHsvLM8dw8XcJLZx8p/zguj6UP1glawcq4tjBEHjLfJc9MPUC4P8RKitK9BxBkLRCV/XAQyGxiah+73OLIDFz1wqvgqwK2kqUwlm1m+7mAyHXU8OUxh42AxBzFS2BMxwNvRNYC9csaXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730716711; c=relaxed/simple;
-	bh=gocM8aPyttzWISmlvpoeL5oA9VUV8xfMlYkDGj3TCos=;
+	bh=vsEVitYVDMPQzYHhzzt87qZt//TgH2xF8Dsmgp1BRZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3MdAs8ijrqmqDPWtb4gbxhd9A/kRkefxfQO8hpioQcp8LOmK71D9SNjakarS65eAXyQoBBZc4mg4n08jxfANBQwWIegX2wsP7mwi0rZDY+YpuDytjEV6CM/5g30DwuUVsoq0jjs+EaPJ87x6YT1a3Ati/LPdTmOfVKw2ac46AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nGD4SOt4; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=VBw719dJPNNuLYhFv++NhXYjfFR2YUHs9gz1XtGBpl8TRXgonqVBfdCZbbIym2xRTfEZ1n9u7HdVNM1eiHbLQIryerDYnT3QQWuwHFFlhJ7Dbmylpf5IrLhlivTqBjLx7gw04yFRQz7UzblXos3zqoDBu+bU6YYsjuVu+yNfAh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z1LVi84e; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nGD4SOt4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z1LVi84e"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1730716710; x=1762252710;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=gocM8aPyttzWISmlvpoeL5oA9VUV8xfMlYkDGj3TCos=;
-  b=nGD4SOt4WSAMJd7Nrs6g3RoQtrquoZWuwg4dlfrSidgK0Px9oiWelVdQ
-   y81gZRyBge8dLwezlkTrN7PeIve3fAqta7+LW7cjwtcdOpMOYH7d1xYc6
-   ueRXnyLet7il3KjtQhoELFxw2f0ywKNGxEVtOXIPeHMf9lnfZ8jYnVRqx
-   F0Iy6/OcVT7Kj3XTxzA2hfxB6CBoJ6ccl+3R1WvBGLqAyUC0JkvNVLTHp
-   2IhxXix68H5QzOdo1xm6GibCAmIo8q2z/Hgy5usYDo3vnZn2q0CXG1Dzb
-   vHRw3QJJFCG1D/bY3o2+UNG2agtNeXCiz9EizklwPfr//A6/mvFojnxMQ
-   g==;
-X-CSE-ConnectionGUID: kDk++6NOTBiN/Bvn1kLo1Q==
-X-CSE-MsgGUID: 5KFfZjlTTleQNeVbAe3ybQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11245"; a="30509353"
+  bh=vsEVitYVDMPQzYHhzzt87qZt//TgH2xF8Dsmgp1BRZ0=;
+  b=Z1LVi84eFyiWZ6HAOfpanU/c8ap47ACvKU0cyNWTQ9UCo3AK/3HnpZda
+   +7/E0/KlMZ4QIQukKfyvdxFACmd5SZuM59wAs9v3mIcVzDsw6XYCt0Tex
+   rBQXALQz6oJBPtXfMZ4GXNZJWdVPnHQP80516T+FI+DJsXtOLuRF4GmbB
+   MNWrZ01snnGlTx86DksVKPFrENi1elauf6zQbAwhGcSsIjBCUdXhgDYtO
+   v5+Tqna1S6OpQe8IenbyVT+5Ztq4AFsgliPKxs2XtJG2DKnXTvnKWsKeN
+   3UOjGUC9tl6XT4GdysM9uJ+mSglTcWGWHq14Zfy+Qkptvb7bsGD03pRFg
+   A==;
+X-CSE-ConnectionGUID: ey+6Igf5Tk6A+nHJtAQCQw==
+X-CSE-MsgGUID: CCPeYLCfR0iWaHcLnxdfLg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11245"; a="18024557"
 X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
-   d="scan'208";a="30509353"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 02:38:28 -0800
-X-CSE-ConnectionGUID: wwOQ0HbqTzOGnBsdtsOHzA==
-X-CSE-MsgGUID: G+fvy3I/TXCrnwD2HmbWEg==
+   d="scan'208";a="18024557"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 02:38:28 -0800
+X-CSE-ConnectionGUID: UWXFlgrpTVu4sxNNczPDQg==
+X-CSE-MsgGUID: UqKSmIsHQ1S1g38d4wGB6w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
-   d="scan'208";a="84433002"
+   d="scan'208";a="88438974"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa008.jf.intel.com with ESMTP; 04 Nov 2024 02:38:25 -0800
+  by orviesa005.jf.intel.com with ESMTP; 04 Nov 2024 02:38:24 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id AA35D26A; Mon, 04 Nov 2024 12:38:23 +0200 (EET)
+	id 9BF54FD; Mon, 04 Nov 2024 12:38:23 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -55,12 +55,12 @@ To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>
 Cc: linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Kai Huang <kai.huang@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCHv6, RESEND 2/4] x86/tdx: Rename tdx_parse_tdinfo() to tdx_setup()
-Date: Mon,  4 Nov 2024 12:38:01 +0200
-Message-ID: <20241104103803.195705-3-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv6, RESEND 1/4] x86/tdx: Introduce wrappers to read and write TD metadata
+Date: Mon,  4 Nov 2024 12:38:00 +0200
+Message-ID: <20241104103803.195705-2-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104103803.195705-1-kirill.shutemov@linux.intel.com>
 References: <20241104103803.195705-1-kirill.shutemov@linux.intel.com>
@@ -72,58 +72,97 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rename tdx_parse_tdinfo() to tdx_setup() and move setting NOTIFY_ENABLES
-there.
+The TDG_VM_WR TDCALL is used to ask the TDX module to change some
+TD-specific VM configuration. There is currently only one user in the
+kernel of this TDCALL leaf.  More will be added shortly.
 
-The function will be extended to adjust TD configuration.
+Refactor to make way for more users of TDG_VM_WR who will need to modify
+other TD configuration values.
+
+Add a wrapper for the TDG_VM_RD TDCALL that requests TD-specific
+metadata from the TDX module. There are currently no users for
+TDG_VM_RD. Mark it as __maybe_unused until the first user appears.
+
+This is preparation for enumeration and enabling optional TD features.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Cc: stable@vger.kernel.org
 ---
- arch/x86/coco/tdx/tdx.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/x86/coco/tdx/tdx.c           | 32 ++++++++++++++++++++++++++-----
+ arch/x86/include/asm/shared/tdx.h |  1 +
+ 2 files changed, 28 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index c74bb9e7d7a3..28b321a95a5e 100644
+index 327c45c5013f..c74bb9e7d7a3 100644
 --- a/arch/x86/coco/tdx/tdx.c
 +++ b/arch/x86/coco/tdx/tdx.c
-@@ -194,7 +194,7 @@ static void __noreturn tdx_panic(const char *msg)
- 		__tdx_hypercall(&args);
+@@ -78,6 +78,32 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+ 		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
  }
  
--static void tdx_parse_tdinfo(u64 *cc_mask)
-+static void tdx_setup(u64 *cc_mask)
++/* Read TD-scoped metadata */
++static inline u64 __maybe_unused tdg_vm_rd(u64 field, u64 *value)
++{
++	struct tdx_module_args args = {
++		.rdx = field,
++	};
++	u64 ret;
++
++	ret = __tdcall_ret(TDG_VM_RD, &args);
++	*value = args.r8;
++
++	return ret;
++}
++
++/* Write TD-scoped metadata */
++static inline u64 tdg_vm_wr(u64 field, u64 value, u64 mask)
++{
++	struct tdx_module_args args = {
++		.rdx = field,
++		.r8 = value,
++		.r9 = mask,
++	};
++
++	return __tdcall(TDG_VM_WR, &args);
++}
++
+ /**
+  * tdx_mcall_get_report0() - Wrapper to get TDREPORT0 (a.k.a. TDREPORT
+  *                           subtype 0) using TDG.MR.REPORT TDCALL.
+@@ -929,10 +955,6 @@ static void tdx_kexec_finish(void)
+ 
+ void __init tdx_early_init(void)
  {
- 	struct tdx_module_args args = {};
- 	unsigned int gpa_width;
-@@ -219,6 +219,9 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
- 	gpa_width = args.rcx & GENMASK(5, 0);
- 	*cc_mask = BIT_ULL(gpa_width - 1);
+-	struct tdx_module_args args = {
+-		.rdx = TDCS_NOTIFY_ENABLES,
+-		.r9 = -1ULL,
+-	};
+ 	u64 cc_mask;
+ 	u32 eax, sig[3];
  
-+	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
+@@ -951,7 +973,7 @@ void __init tdx_early_init(void)
+ 	cc_set_mask(cc_mask);
+ 
+ 	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
+-	tdcall(TDG_VM_WR, &args);
 +	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
-+
- 	/*
- 	 * The kernel can not handle #VE's when accessing normal kernel
- 	 * memory.  Ensure that no #VE will be delivered for accesses to
-@@ -969,11 +972,11 @@ void __init tdx_early_init(void)
- 	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
- 
- 	cc_vendor = CC_VENDOR_INTEL;
--	tdx_parse_tdinfo(&cc_mask);
--	cc_set_mask(cc_mask);
- 
--	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
--	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
-+	/* Configure the TD */
-+	tdx_setup(&cc_mask);
-+
-+	cc_set_mask(cc_mask);
  
  	/*
  	 * All bits above GPA width are reserved and kernel treats shared bit
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index fdfd41511b02..7e12cfa28bec 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -16,6 +16,7 @@
+ #define TDG_VP_VEINFO_GET		3
+ #define TDG_MR_REPORT			4
+ #define TDG_MEM_PAGE_ACCEPT		6
++#define TDG_VM_RD			7
+ #define TDG_VM_WR			8
+ 
+ /* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
 -- 
 2.45.2
 
