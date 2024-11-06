@@ -1,229 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86C81D47CD
-	for <linux-coco@lists.linux.dev>; Wed,  6 Nov 2024 08:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA1718C00E
+	for <linux-coco@lists.linux.dev>; Wed,  6 Nov 2024 11:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730880770; cv=none; b=Se27uIK0MsgECJgklQBWmSqvtB39Mn08rXAyj160favm6keXd5WTML5NLlaAzFDbG+gmXiMVS8eWv2In+LIDTeYAjTYSQaTNlBZ7Fyv36s9mMvdPaWtUGEVK0iP7OPOCUY1iYCZ6yz2AkiTmG50sB9CGSrU4m9vg+DtY7YY8tyo=
+	t=1730892009; cv=none; b=FIBgDvhhdsPCdUHCxxvCY6kR6Gf2f4cgDy8Ot6kVXfuAyDZj7S7/i6JfHNtml7cRFShgfsakf2P5nD64z5MwhCkkqWWgL+KC1Oyv4cSbw7PFixODkl17d/0S/VO6Zt9vlh36xSFiqdQrflb0erC27qMBWB51Av3S051MmoSU5bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730880770; c=relaxed/simple;
-	bh=LAjBJIrf+QHNvH66aqJrh4mDtpWYTGpgIATIK51lkbk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WpurjTlFeLA9o/nkstQ4uFzY2lp9ROJlAkeOUcW6SN9nYJvaHFER6duXvRcOY2CkjFPUTvHHSV6gfw1Nf4Zf0AlZ2ju9nWuAmiWgTEeX2SVb0vtF3G//bgkAPfkFQDde49pc49CUiN0+OQ1FbtLqA51TGFa7zq/iYvcjzqkoxm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NrMPZxl8; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1730892009; c=relaxed/simple;
+	bh=sDev3LO5fhXhE7JBnHp1ZGLZ7yuT4aHUXRGR94pNH24=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=NVqKRnSJ0SyVZswEW2zf5Qqg/ITw7A7PPLV+pxyTR2il1IErLFVP/czVO1DsWo2EVAETBVDLykHTzuMp43R4Qdeeg0FH9JqvJ3+pgdbD21FYZ6Bbh+G1hBY7fCvzmzj2SinB+SlTdv1gHhOFZq+CcoXCR0L2DzqRayldV0GemEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YmQ+6dFM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NrMPZxl8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730880769; x=1762416769;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=LAjBJIrf+QHNvH66aqJrh4mDtpWYTGpgIATIK51lkbk=;
-  b=NrMPZxl8Rwi8mkfYOdfXda6hUpLNd4eYRco11+1sVasa97GvOxlW5izF
-   j2yFqPCFSI4nbTw/y9UB51MJB+SZbg02Fsyu2pvjnmbGjWSQq6vXZgP6A
-   C3G5Fzo+2CFNh/+Rt/G2A+7wXZVtjYFj+F3nYC45roNog/CHd4atu+0ft
-   5dhz2r1QTygg9ObJnG+9v7c92tEOhzPoLfr1r2XYT3SwfZsq7O9nVK+KG
-   mjW//Lto3Ij1MzqA/jiW9tUkdD4ax4B5qgK2mit6nsRwnXIfxA7ot66Ro
-   5TPNfZ7TubyXBecie9J8VkOVdWDZACqJz8715vB2yhrZQY1i7Ts1LDQhJ
-   w==;
-X-CSE-ConnectionGUID: Y5+VfANqR/SRuge1eresIQ==
-X-CSE-MsgGUID: jXArB3qYS+6wXzegkkVJAw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="48181089"
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="48181089"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 00:12:48 -0800
-X-CSE-ConnectionGUID: uwapckj2T5ejfV4+VNGkKA==
-X-CSE-MsgGUID: udN9Jek8SPSeLJvI8gkZqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="84801241"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 00:12:45 -0800
-From: "Huang, Ying" <ying.huang@intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,
-  Borislav Petkov <bp@alien8.de>,  Dave Hansen
- <dave.hansen@linux.intel.com>,  "Kirill A . Shutemov"
- <kirill.shutemov@linux.intel.com>,  <x86@kernel.org>,
-  <linux-coco@lists.linux.dev>,  <linux-mm@kvack.org>,
-  <linux-kernel@vger.kernel.org>,  Dan Williams <dan.j.williams@intel.com>,
-  "Kai Huang" <kai.huang@intel.com>,  David Hildenbrand <david@redhat.com>,
-  "Oscar Salvador" <osalvador@suse.de>,  "H. Peter Anvin" <hpa@zytor.com>,
-  "Andy Lutomirski" <luto@kernel.org>
-Subject: Re: [PATCH -V3 RESEND] x86, tdx, memory hotplug: Check whole
- hot-adding memory range for TDX
-In-Reply-To: <702d9dbd-fb7d-44d0-a352-e78adf92254e@intel.com> (Dave Hansen's
-	message of "Tue, 5 Nov 2024 10:34:59 -0800")
-References: <20241031085151.186111-1-ying.huang@intel.com>
-	<702d9dbd-fb7d-44d0-a352-e78adf92254e@intel.com>
-Date: Wed, 06 Nov 2024 16:09:11 +0800
-Message-ID: <8734k47pi0.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YmQ+6dFM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730892006;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CJBjrFIps+dj+nucOlxhqTBpH+3vXXFkH8CzxzjpDlQ=;
+	b=YmQ+6dFMeCg6hEvTKQC9f62ayZBIYoHvY86RLD7DFfBljCUk+fZSvIZwiKkbgZebMggxjq
+	xljWcG4YtzjTYgNn/DQk9NBQdEbHqHLjJJh/C8cPNPHDs/iS2tBSz/k9NKwjilZSTV7z1m
+	5bDgybtsqc0lhh8c0xM208ldnt4tOFc=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-645-YW6P6vGwMZy7aHSXxmGXSA-1; Wed, 06 Nov 2024 06:20:05 -0500
+X-MC-Unique: YW6P6vGwMZy7aHSXxmGXSA-1
+X-Mimecast-MFC-AGG-ID: YW6P6vGwMZy7aHSXxmGXSA
+Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-84fd18bac1fso1965618241.3
+        for <linux-coco@lists.linux.dev>; Wed, 06 Nov 2024 03:20:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730892005; x=1731496805;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CJBjrFIps+dj+nucOlxhqTBpH+3vXXFkH8CzxzjpDlQ=;
+        b=kqT9xSprARag8ZSEecscftp9f1PV+KSV9elz0k/enr5m0pfHGGmpe8efDZIE+lAu6R
+         J3f1/nIE+23/1n4916zvCOon5uLliKoT4pEIfQNHbhFhcNe4/vmMY1T/zRlnnzL6JuKZ
+         16mAe+oP3cq2qiJpd8xRbJHpWMcUVk0aGoWAicWXPOBml43lUvZdhEdW1p80FAfXQbkH
+         TcF+uCeT93mbHKKgveUaG+KYw8fJdm226iDYcR0ICbpAMn0BGtAlRasEuSLa/+ZaVGsC
+         2CuheBwnHs9XzbCiW7/ysd8P1ScxCZXTUK/Bs+z8XoHXJ9eIOrpSYei25jdBEtkeGMOp
+         6f5Q==
+X-Gm-Message-State: AOJu0YzoM/mX1XZxRQazHPo0ce9edsplhrQClB1m9ft+4zcPaRfPZAG8
+	PAesAcU9y4C2+gYWhY3qtKYF7heqRyq7/++34p0GUXCHDQSmddeDJuwWdzsmbzyCZ3ulIYZ3Sd3
+	8ZdAeD6WV1BstYY3n7tNKk1uFVX67GmlUD1kI22XU+e24KJuCrlxq6+Wg70M=
+X-Received: by 2002:a05:6102:32cc:b0:4a4:8ef0:25ba with SMTP id ada2fe7eead31-4a8cfd305c2mr40379641137.21.1730892005157;
+        Wed, 06 Nov 2024 03:20:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG+bflx43lK9gjypOIShSM9cK/ZsP2QNHNK4seVhUNLgz3z1zdg97hz4VeYmjWZLFRDi/NVlw==
+X-Received: by 2002:a05:6102:32cc:b0:4a4:8ef0:25ba with SMTP id ada2fe7eead31-4a8cfd305c2mr40379613137.21.1730892004750;
+        Wed, 06 Nov 2024 03:20:04 -0800 (PST)
+Received: from sgarzare-redhat ([5.77.86.226])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462ad19b328sm70049421cf.85.2024.11.06.03.20.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2024 03:20:04 -0800 (PST)
+Date: Wed, 6 Nov 2024 12:19:52 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: linux-coco@lists.linux.dev, cclaudio@ibm.com, osteffen@redhat.com, 
+	jroedel@suse.de, Dov Murik <dovmurik@linux.ibm.com>
+Subject: Re: [RFC 0/3] Enlightened vTPM support for SVSM on SEV-SNP
+Message-ID: <hcttb7s5yvur5oigge2xlbspyi26ngrgc4unn7ewv6px6vgukv@mp2relslhh6w>
+References: <acb06bc7f329dfee21afa1b2ff080fe29b799021.camel@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+In-Reply-To: <acb06bc7f329dfee21afa1b2ff080fe29b799021.camel@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: JWl-ioXF92Ayj-zFuXMKWmLb6cn58hUn9RjCjQCNfVk_1730892005
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
 
-Hi, Dave,
+Hi James,
 
-Thanks a lot for your detailed review!
-
-Dave Hansen <dave.hansen@intel.com> writes:
-
-> First and foremost, this touches x86 and core mm code, but it seem to
-> solidly lean on being an x86 thing.  If anyone thinks this isn't x86
-> tree material, please speak up.
+On Tue, Jan 03, 2023 at 04:01:33PM -0500, James Bottomley wrote:
+>This is a sketch for how a fully enlightened vTPM driver would work.
+>The idea is that the SVSM responds on function 8 to vTPM requests, so
+>we use that to send down a buffer which is modified on return (the
+>buffer must be big enough, so the agreed protocol is it should be a
+>page in length, which is larger than any possible TPM command or
+>response).  The protocol used is the MSSIM one which is self describing
+>in terms of length, so there's no need to transmit sizes (it also
+>leaves room for expansion to localities and cancellation, which is
+>useful in the light of discussions).  A NULL in place of the buffer is
+>a probe and the SVSM call simply returns SVSM_SUCCESS without doing
+>anything.  This can be used to probe for vTPM support because any other
+>return would indicate no vTPM present.
 >
-> On 10/31/24 01:51, Huang Ying wrote:
->> Therefore, this patch checks the TDX compatibility of the whole
+>Hopefully IBM will publish the new svsm-vtpm repo shortly, but we're
+>still working with the old CRB based one at the moment, so it may take
+>some time.
 >
-> Please zap the "this patch" nomenclature.  It showed up in a couple of
-> places.  ChatGPT is actually pretty good at this kind of stuff and using
-> imperative voice.
+>The three following patches are for two different repos.  Patch 1 will
+>apply to any upstream Linux kernel, Patch 2 requires the non-upstream
+>sev-snp repo and patch 3 is against the non upstream sev-snp edk repo.
 
-Sure.  Will do that.
+Thanks for this series, I'd like to restart this work and Claudio 
+pointed me here.
 
->> hot-adding memory range through a newly added architecture specific
->> function (arch_check_hotplug_memory_range()).  If this patch rejects
->> the memory hot-adding for TDX compatibility, it will output a kernel
->> log message like below,
->> 
->>   virt/tdx: Reject hot-adding memory range: 0xXXXXXXXX-0xXXXXXXXX for TDX compatibility.
->
-> I think this is more clear and much more succinct:
->
->   virt/tdx: Rejecting incompatible memory range: 0xXXXXXXXX-0xXXXXXXXX
+IIUC the last version we have is the one in Coconut [1] which is based 
+on this series, but with some changes on top from Claudio to probe SVSM 
+and check if TPM commands are supported or not.
 
-Yes.  This looks better, will use this in the next version.
+I already rebased them for 6.11 here [2] and we will include them in the 
+next coconut-svsm branch, but in the meantime I think nothing is 
+blocking us to upstream them, so I can take care of Linux patches, while 
+Oliver (in CC) is working on the EDK2 patch.
 
->
->> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
->> index eba178996d84..6db5da34e4ba 100644
->> --- a/arch/x86/include/asm/tdx.h
->> +++ b/arch/x86/include/asm/tdx.h
->> @@ -116,11 +116,13 @@ static inline u64 sc_retry(sc_func_t func, u64 fn,
->>  int tdx_cpu_enable(void);
->>  int tdx_enable(void);
->>  const char *tdx_dump_mce_info(struct mce *m);
->> +int tdx_check_hotplug_memory_range(u64 start, u64 size);
->>  #else
->>  static inline void tdx_init(void) { }
->>  static inline int tdx_cpu_enable(void) { return -ENODEV; }
->>  static inline int tdx_enable(void)  { return -ENODEV; }
->>  static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
->> +static inline int tdx_check_hotplug_memory_range(u64 start, u64 size) { return 0; }
->>  #endif	/* CONFIG_INTEL_TDX_HOST */
->>  
->>  #endif /* !__ASSEMBLY__ */
->> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
->> index ff253648706f..30a4ad4272ce 100644
->> --- a/arch/x86/mm/init_64.c
->> +++ b/arch/x86/mm/init_64.c
->> @@ -55,6 +55,7 @@
->>  #include <asm/uv/uv.h>
->>  #include <asm/setup.h>
->>  #include <asm/ftrace.h>
->> +#include <asm/tdx.h>
->>  
->>  #include "mm_internal.h"
->>  
->> @@ -974,6 +975,11 @@ int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
->>  	return ret;
->>  }
->>  
->> +int arch_check_hotplug_memory_range(u64 start, u64 size)
->> +{
->> +	return tdx_check_hotplug_memory_range(start, size);
->> +}
->> +
->>  int arch_add_memory(int nid, u64 start, u64 size,
->>  		    struct mhp_params *params)
->>  {
->> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
->> index 4e2b2e2ac9f9..f70b4ebe7cc5 100644
->> --- a/arch/x86/virt/vmx/tdx/tdx.c
->> +++ b/arch/x86/virt/vmx/tdx/tdx.c
->> @@ -1388,36 +1388,37 @@ static bool is_tdx_memory(unsigned long start_pfn, unsigned long end_pfn)
->>  	return false;
->>  }
->>  
->> -static int tdx_memory_notifier(struct notifier_block *nb, unsigned long action,
->> -			       void *v)
->> +/*
->> + * We don't allow mixture of TDX and !TDX memory in the buddy so we
->> + * won't run into trouble when launching encrypted VMs that really
->> + * need TDX-capable memory.
->> + */
->
-> No "we's" please.
->
-> I'd probably explain it like this:
->
-> /*
->  * By convention, all RAM in the buddy must be TDX compatible whenever
->  * TDX is enabled. This avoids having to do extra work later to find
->  * TDX compatible memory to run VMs. Enforce that convention and reject
->  * attempted hot-adds of any TDX-incompatible ranges.
->  *
->  * Returns 0 to pass the checks and allow the hot-add
->  * Returns -ERRNO to fail the checks and reject the hot-add
->  */
+IIUC the only thing missing from the patches we have in Coconut are the 
+fixes to Don's comments. Do you have a branch or patches with them 
+already fixed?
+Otherwise I can do it on top of the patches we have in Coconut.
 
-This looks better, Thanks!  Will use it in the next version.
+Any other things to fix/improve that you can think of?
 
->> +int tdx_check_hotplug_memory_range(u64 start, u64 size)
->>  {
->> -	struct memory_notify *mn = v;
->> -
->> -	if (action != MEM_GOING_ONLINE)
->> -		return NOTIFY_OK;
->> +	u64 start_pfn = PHYS_PFN(start);
->> +	u64 end_pfn = PHYS_PFN(start + size);
->
-> Nit:                ^ please vertically align those
+Let me know if it is okay with you that I will restart working on these 
+patches.
 
-Sure.  Will do that in the next version.
+Thanks,
+Stefano
 
->>  	/*
->>  	 * Empty list means TDX isn't enabled.  Allow any memory
->> -	 * to go online.
->> +	 * to be hot-added.
->>  	 */
->>  	if (list_empty(&tdx_memlist))
->> -		return NOTIFY_OK;
->> +		return 0;
->
-> The changelog also needs _some_ discussion of why the locking context is
-> the same between the old and new uses of this function and why this
-> doesn't need any locking _here_.
+[1] https://github.com/coconut-svsm/linux/tree/svsm
+[2] https://github.com/coconut-svsm/linux/pull/8
 
-Sure.  Will do that in the next version.
-
->>  	/*
->>  	 * The TDX memory configuration is static and can not be
->> -	 * changed.  Reject onlining any memory which is outside of
->> +	 * changed.  Reject hot-adding any memory which is outside of
->>  	 * the static configuration whether it supports TDX or not.
->>  	 */
->> -	if (is_tdx_memory(mn->start_pfn, mn->start_pfn + mn->nr_pages))
->> -		return NOTIFY_OK;
->> +	if (is_tdx_memory(start_pfn, end_pfn))
->> +		return 0;
->>  
->> -	return NOTIFY_BAD;
->> +	pr_info("Reject hot-adding memory range: %#llx-%#llx for TDX compatibility.\n",
->> +		start, start + size);
->> +
->> +	return -EINVAL;
->>  }
-
---
-Best Regards,
-Huang, Ying
