@@ -1,93 +1,53 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC4A199247
-	for <linux-coco@lists.linux.dev>; Wed,  6 Nov 2024 19:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F55038FB0
+	for <linux-coco@lists.linux.dev>; Thu,  7 Nov 2024 08:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730922440; cv=none; b=ViDn8XegL0vO84jgto9Wzq4GaWhrGmZgFW/Cyj6VQ5Yv5d2y3LPwgK3WcqZCOdKFNP0FNbr7l4yAH85SBtIhAqhzLi4QNLFL9dPiru0J2tP1/h+qo9jFGHo7gFjJdQ5FiN53P+BJSEiLUUf0rt6TbgG6y+Vclb/sS/VVOcr0Yms=
+	t=1730969410; cv=none; b=j0bEjZqbPUYEEOupt4TakUmLt9W2BBJxZusmx8DS70aKMXl7LyB4uUvEx+Di46MiUNq7DCJIVplyYS3zFl0dYKxtZD/j8W5mIx1JVrwlW5SAGzUW7I6vYvBp0tzSbPa+8As7sLXsz5XtP5/BcSCTtAHd5m64tydueDMWoY6hXtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730922440; c=relaxed/simple;
-	bh=K44yoga4VIhQeNCPZsLu88MzsWWRBcfEnjv4cEeYyfk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tsF5q3VCCYJqxMljB/echG4xmNoDVC7b3B0BxWFrCStnua7m1CYUF6aaEglArGNM66F7EYZCWs5wczu6dEi1SLPhEG+U95AjsX4MqwJrCOmkWJo1iKTRcJEBqgZz2rdtgsLA2CPrsOj1MfGaQz4L8iJarGwffomhXoiFaTCaiYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=NOgjvecs; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1730969410; c=relaxed/simple;
+	bh=+44c4Hfx/OtIYTiKCcOoh2TywYFITNTBS89Q/GEUTQA=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CiH8eUrHmXcravDLop3uqiqHJyuMZsV5q7nXE8RcfWWZEgOFar/yvLnhICAJhRIm33PAUwRnoE2KH+Wf2aifGPywX+gmS6f0kbxDZxzavI18THQ9G/qCEDCp03wxycdD9tA2RfRShZJriEgCEAiLY/sFsbPIEHAXkiRuqtKEfNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=Zm80ubIG; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="NOgjvecs"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 495FD40E0261;
-	Wed,  6 Nov 2024 19:47:15 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id YUTYsnELnGyw; Wed,  6 Nov 2024 19:47:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1730922430; bh=H5Gjfn+B+EHWqSPOlyScGe2vQXYXrhjgCwEMZg7sobo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NOgjvecsJ80sDcB5mT847+jD5vOS3hG6bpZT26jJR9nq/OOlyvz8AhZHmVDDkGNrc
-	 atc9GbN63PGC/CTg4q76Hi8r2Jc5iMZ3dI0otuEOOIx3MiT5BeoR4mzAzfJPzDs6Sn
-	 0Ha4XgVnum84tUyQe74rp7x7yOwAjGB3a+lh3mKz4U/UXJ8v96LoZsOzS1K1VZ/kWE
-	 IL7NMR7t2mo1vJInph4MNEbsKLZoAUZKqfeZFuSgXsu9BokCNbw6iEPlrfYH1Ui0s2
-	 jwaX3oPE7qehHAauYvBtMW0TNXMXvhSrpnm3485K2uemm2m+zYrHyWfh8UsSCCcYJQ
-	 oOLj6amKLurI0bO9bHyL1arGykgcOXcUOqWwR12KTi7biGTnFPIIhhv485qKWayIXR
-	 F3T4D9miNZSbgpO4GXITis7zN29H+0bLVdyueKGhB8ATit5Op/kqmSvt5l5CTwAzRu
-	 mJBeWk5xARbrZNbE7FhXkJ4Mk+DR0y2qyhhnhh36QyVz41V3EfQ1itO/Yak/eAxWz/
-	 wp6vWmTPbJpQjjOPbjAyQrQBv9cUuLruv0wT/c3TMMUEh9n8UlwrA2eRiBkzSpijfE
-	 L1rSLm2beHJ8s3aqvSroagnPJNv3FODj3WJHTQY+JbyUgciFHVZw+Ciyk54RWT8mRe
-	 sXRFJmv/JyRhGCNCjcVvxb7E=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="Zm80ubIG"
+Received: from 8bytes.org (p549219d2.dip0.t-ipconnect.de [84.146.25.210])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 94B9140E0191;
-	Wed,  6 Nov 2024 19:47:06 +0000 (UTC)
-Date: Wed, 6 Nov 2024 20:47:01 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: x86-ml <x86@kernel.org>, lkml <linux-kernel@vger.kernel.org>,
-	linux-coco@lists.linux.dev
-Subject: Re: [RFC PATCH] x86/sev: Cleanup vc_handle_msr()
-Message-ID: <20241106194701.GKZyvHtQrLXvZOJhbP@fat_crate.local>
-References: <20241106172647.GAZyum1zngPDwyD2IJ@fat_crate.local>
- <4816aded-9ac4-c55d-053c-a7c7f31d11c9@amd.com>
+	by mail.8bytes.org (Postfix) with ESMTPSA id 4B5C02A9B86;
+	Thu,  7 Nov 2024 09:50:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1730969401;
+	bh=+44c4Hfx/OtIYTiKCcOoh2TywYFITNTBS89Q/GEUTQA=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=Zm80ubIGp+8nu0taiQ8MbxPoiFcbyHQu9Mc24ynkpvc1K6PNtArNmQ5Tvab2FH1Qj
+	 K5+UYnkkoCB2nNctfH+4ryz/rjXR5O+wHrdkYRmYz5UZ5FVv6N8FjNxnnkQhE1CCwB
+	 C6DKV+56PaMLekAt79rqLzA0JwbrZpBxRs/IicQelGbJ+ziqf6a51r0tkykmbKdVra
+	 ZoUih+nDHtTdlpqryvggUeL/+Ppd+aXG85eag8eItxdHvct4C/FvIoJO99bX8u8nsS
+	 0x60GAaIVBmcuKmOuHvakrZKCczZ8t+6WM9di3XA4emojy27e9b6n1bcWB3+nGYV1z
+	 rNbrr7f1QE0Uw==
+Date: Thu, 7 Nov 2024 09:50:00 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: Re: [svsm-devel] SVSM Development Call November 6th, 2024
+Message-ID: <Zyx_OIuMSd_bZlEN@8bytes.org>
+References: <ZypQEMu0tgeVttBy@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4816aded-9ac4-c55d-053c-a7c7f31d11c9@amd.com>
+In-Reply-To: <ZypQEMu0tgeVttBy@8bytes.org>
 
-On Wed, Nov 06, 2024 at 01:40:47PM -0600, Tom Lendacky wrote:
-> Is the !! necessary? It should have either 0 or 1 because of the boolean
-> operation used to set it, right?
+PR with meeting minutes is now open:
 
-I was going to be overly cautious but integer promotion will make sure there
-really is a 0 or a 1. So yeah, I can drop the !!.
+	https://github.com/coconut-svsm/governance/pull/33
 
-> 
-> >  
-> > -	if ((ret == ES_OK) && (!exit_info_1)) {
-> > +	if ((ret == ES_OK) && (!write)) {
-> 
-> I guess the parentheses around "!write" can be removed while your at it.
-
-Ack.
-
-> Other than those two little things...
-> 
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-
-Thanks!
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Joerg
