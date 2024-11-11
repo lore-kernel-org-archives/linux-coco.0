@@ -1,59 +1,80 @@
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF7F53A7
-	for <linux-coco@lists.linux.dev>; Sat,  9 Nov 2024 01:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51CDD14A4CC
+	for <linux-coco@lists.linux.dev>; Mon, 11 Nov 2024 11:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731115210; cv=none; b=C1U8cyvCOfsQRuY6jr1AFfOHgeTC2wbupSCpYr8Ky/gZzOykofiurq8eTEVc52C7p/p/z+SQTd3E7UNaGnvNhqohb9sEMP1eQpJ8CZOHpIYI2dyhnbAtlFGUI17hfPqSjnIr5cJRa9t15breH89jbPTlaqDM2NCQC+KvuV/kRa0=
+	t=1731322927; cv=none; b=snShHvuMv7AQbt6/S+Ua7Vhy8cQpdTVdt5+fTL562tnFjzU8b9QhXFB5qWihc/QB5XUlo+B4HgO3WBSOxD1E9cZApcM1WEqfxa3jX0eLWj4fLR7xVeAIq9bB6k0elL572dAVrU3udKy7iNV33ksN7eojdGSffYf1tvsNJrs65gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731115210; c=relaxed/simple;
-	bh=8T57QwEx0r82E64B6MC0tKGz17LxJfUJ65qzn8eT3FE=;
+	s=arc-20240116; t=1731322927; c=relaxed/simple;
+	bh=zKv3Vn3RngXApMuDLHQ3tdm8G0jfhbJLEdut14IqwrA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hYe+fwqMrwnOwYXfgf3KNnpkPL4GqNx1WrZkiTCsRCkenIgYIDvPSE22dPOFhMD/9MdEzkAXT5pRYooWu7dG7mDs5kBqzO78ugzWGvIZI5l9FPVeERY7i5Jb9AuF2wmRlEYmUKOfH9LBsWMScvVRke7hqixGoOG/89iAPWj3MtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gsR8cayD; arc=none smtp.client-ip=209.85.167.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=rOl+jegiR34GfMvAWSLxj1DJwH8Bw19jLc1vN1zGNXEBOduQhyy5WtjngUfbk1zsY9hoRJU5PPEqv5DEY+nTpLNs/OLICWT0WDi5rVyREkvGVU4XXDKb+ZvvLqEYlQYiykUavYEXh06seFc1Ak+C8eGeUJ2DCzja49/G7LFeV0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=P49p6Xb9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=tkrmPWiL; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=P49p6Xb9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=tkrmPWiL; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gsR8cayD"
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3e604425aa0so1691506b6e.0
-        for <linux-coco@lists.linux.dev>; Fri, 08 Nov 2024 17:20:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731115208; x=1731720008; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=U+nzJol7Ows9sCcHIaknBt/mB5hbo+FW2PxTq/Jiujo=;
-        b=gsR8cayDsiS44Oa393HbIWv2c7Q1mmc6A/e5bqoFSkAmIRISa9n8ceNCTyJ9vUvnS2
-         IxYWbuXCdGtxbX5IZ3zMtViN8ivTwAqn5hRREchxt4/SPRWv/P9t9XzrYJCcxq/PL0zX
-         0KLAmw7yxzNshyMb1Dg9dFIADZjCdIfdcnufto0NOO36B2u8Zf9FerlVXTchLqRVOu7s
-         0s1DWqlJgFcSheaC8U4IRtSggc3rI3gFUeSvVJtHQZEV1yiN3CWQQcmiRL+PNTsos9+S
-         uI0cct900s7LRbzpqT2rn4YTeMce1qEjTVyK67FYEE8YQ8kpY0s81s3OsIGTbVtYIv51
-         l0QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731115208; x=1731720008;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U+nzJol7Ows9sCcHIaknBt/mB5hbo+FW2PxTq/Jiujo=;
-        b=v48pkRudnf9eTtgzq7a2saYt/Fex+tVZVRSAh7t8L/POk2A4wWXQJfTcevqftzeOxy
-         JpxyUiGxwKEaVyo++ipEf5DEY6IivgL2D9/nzSOtRbC4xjDIvuQ5bxG5eiTKTuIQJDsf
-         JUu5IF0k1m93ohILzpBT/5zX9QJRqlyE7/qj7kM1beefuk4vwn50U+LEDHNrpg+/+pQC
-         QU1+tSu6vDnT1keVfCiffJEuRODH/wacrDIezpsrq0Sxk988Ud108gOuJZZ5vrvEmAVT
-         f9oNEz54ZHPTwhjGdUTjhtYhfjngM7FC2uvqB+oVsM8wTD7bNrSoDfbi71VbQsKmejJU
-         UGvA==
-X-Forwarded-Encrypted: i=1; AJvYcCVdQbhXqhI2dGDfInyug1Y5u6NQ0OnwicSlHl4UjF+FSjIwnvWZIfdwpfUO/fus6U0jcmFHpAYFv44H@lists.linux.dev
-X-Gm-Message-State: AOJu0YzoJhlmlR0g5pRP2OJcH+13bKeQ9ATqg0yBgCx9cJJD7VRB0Z4w
-	6RCUQyc/E8qpbA31Lq1x39sR31qAeZSNw7udqXKEyI2r0Danw/TH
-X-Google-Smtp-Source: AGHT+IEWwZS3Ni+/0mOo+fFHB9SYtom1YAKoeu5S14QI++T0QB+N3M8W4JCqTE4x00SFLsCMZqd+AA==
-X-Received: by 2002:a05:6808:3c8a:b0:3e5:fd66:c16b with SMTP id 5614622812f47-3e794737dadmr6209409b6e.33.1731115207668;
-        Fri, 08 Nov 2024 17:20:07 -0800 (PST)
-Received: from ?IPV6:2603:8080:7400:36da:dff5:4180:2562:4c1e? ([2603:8080:7400:36da:dff5:4180:2562:4c1e])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3e78cc67484sm989696b6e.6.2024.11.08.17.20.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Nov 2024 17:20:07 -0800 (PST)
-Message-ID: <a28ee651-b557-48ca-88ba-1f46eea81eda@gmail.com>
-Date: Fri, 8 Nov 2024 19:20:06 -0600
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="P49p6Xb9";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="tkrmPWiL";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="P49p6Xb9";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="tkrmPWiL"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9C1381F38E;
+	Mon, 11 Nov 2024 11:02:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1731322923; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=uXHVH0ccgWFcGpeM6HgeltmGCkaKDRVIsW9/gEoqXsg=;
+	b=P49p6Xb9X9EU2crk2y1oMy2KeTCSI+7k6Cf4qmPXhaV50qDusoH3M+AMdTpVGy/6Sw6I3k
+	fnrYtFYt4WdUKE7CGto1/WoVovedVCYShD6+l5IRSG7wNAYlv48lXRP3KaFSgszfEodJWJ
+	sO/nDG7MsI1U1JfpVZOXgSTrqJ10mdY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1731322923;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=uXHVH0ccgWFcGpeM6HgeltmGCkaKDRVIsW9/gEoqXsg=;
+	b=tkrmPWiLNNj2qm3VuGpKD+E8ycRAHQNEVnHcYHSe5dia8bkPxhGQfF3p8F1nao0Gio6rFJ
+	jN8zHuwwIRfhMYBw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1731322923; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=uXHVH0ccgWFcGpeM6HgeltmGCkaKDRVIsW9/gEoqXsg=;
+	b=P49p6Xb9X9EU2crk2y1oMy2KeTCSI+7k6Cf4qmPXhaV50qDusoH3M+AMdTpVGy/6Sw6I3k
+	fnrYtFYt4WdUKE7CGto1/WoVovedVCYShD6+l5IRSG7wNAYlv48lXRP3KaFSgszfEodJWJ
+	sO/nDG7MsI1U1JfpVZOXgSTrqJ10mdY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1731322923;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=uXHVH0ccgWFcGpeM6HgeltmGCkaKDRVIsW9/gEoqXsg=;
+	b=tkrmPWiLNNj2qm3VuGpKD+E8ycRAHQNEVnHcYHSe5dia8bkPxhGQfF3p8F1nao0Gio6rFJ
+	jN8zHuwwIRfhMYBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 60442137FB;
+	Mon, 11 Nov 2024 11:02:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ricQFyvkMWfuIwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 11 Nov 2024 11:02:03 +0000
+Message-ID: <ff3174f8-c8b5-4fae-a9d9-87546d37c162@suse.cz>
+Date: Mon, 11 Nov 2024 12:02:02 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -61,59 +82,164 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: GHCB draft specification v2.04
-To: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev
-Cc: "Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
- "Shukla, Santosh" <Santosh.Shukla@amd.com>,
- "Giani, Dhaval" <Dhaval.Giani@amd.com>,
- "Upadhyay, Neeraj" <Neeraj.Upadhyay@amd.com>
-References: <3453675d-ca29-4715-9c17-10b56b3af17e@amd.com>
+Subject: Re: [RFC PATCH 0/4] Add fbind() and NUMA mempolicy support for KVM
+ guest_memfd
 Content-Language: en-US
-From: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-In-Reply-To: <3453675d-ca29-4715-9c17-10b56b3af17e@amd.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Matthew Wilcox
+ <willy@infradead.org>, Shivank Garg <shivankg@amd.com>
+Cc: x86@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
+ jack@suse.cz, akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-api@vger.kernel.org, linux-arch@vger.kernel.org, kvm@vger.kernel.org,
+ chao.gao@intel.com, pgonda@google.com, thomas.lendacky@amd.com,
+ seanjc@google.com, luto@kernel.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, arnd@arndb.de, kees@kernel.org,
+ bharata@amd.com, nikunj@amd.com, michael.day@amd.com,
+ Neeraj.Upadhyay@amd.com, linux-coco@lists.linux.dev
+References: <20241105164549.154700-1-shivankg@amd.com>
+ <ZypqJ0e-J3C_K8LA@casper.infradead.org>
+ <6004eaa4-934c-48f4-b502-cf7e436462fc@amd.com>
+ <ZyzYUOX_r3uWin5f@casper.infradead.org>
+ <10ffac79-0dba-4c30-991e-f3ca2b5ff639@redhat.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ EP+ylKVEKb0Q2A==
+In-Reply-To: <10ffac79-0dba-4c30-991e-f3ca2b5ff639@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[30];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RL81e5qggtdx371s8ik49ru6xr)];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.30
+X-Spam-Flag: NO
 
-On 9/5/24 09:25, Alexey Kardashevskiy wrote:
+On 11/8/24 18:31, Paolo Bonzini wrote:
+> On 11/7/24 16:10, Matthew Wilcox wrote:
+>> On Thu, Nov 07, 2024 at 02:24:20PM +0530, Shivank Garg wrote:
+>>> The folio allocation path from guest_memfd typically looks like this...
+>>>
+>>> kvm_gmem_get_folio
+>>>    filemap_grab_folio
+>>>      __filemap_get_folio
+>>>        filemap_alloc_folio
+>>>          __folio_alloc_node_noprof
+>>>            -> goes to the buddy allocator
+>>>
+>>> Hence, I am trying to have a version of filemap_alloc_folio() that takes an mpol.
+>> 
+>> It only takes that path if cpuset_do_page_mem_spread() is true.  Is the
+>> real problem that you're trying to solve that cpusets are being used
+>> incorrectly?
+> 
+> If it's false it's not very different, it goes to alloc_pages_noprof(). 
+> Then it respects the process's policy, but the policy is not 
+> customizable without mucking with state that is global to the process.
+> 
+> Taking a step back: the problem is that a VM can be configured to have 
+> multiple guest-side NUMA nodes, each of which will pick memory from the 
+> right NUMA node in the host.  Without a per-file operation it's not 
+> possible to do this on guest_memfd.  The discussion was whether to use 
+> ioctl() or a new system call.  The discussion ended with the idea of 
+> posting a *proposal* asking for *comments* as to whether the system call 
+> would be useful in general beyond KVM.
+> 
+> Commenting on the system call itself I am not sure I like the 
+> file_operations entry, though I understand that it's the simplest way to 
+> implement this in an RFC series.  It's a bit surprising that fbind() is 
+> a total no-op for everything except KVM's guest_memfd.
+> 
+> Maybe whatever you pass to fbind() could be stored in the struct file *, 
+> and used as the default when creating VMAs; as if every mmap() was 
+> followed by an mbind(), except that it also does the right thing with 
+> MAP_POPULATE for example.  Or maybe that's a horrible idea?
 
-> Hi!
->
-> Attached is a draft GHCB specification with updates for SEV-TIO, Secure 
-> AVIC guest APIC page, Debug Virtualization support.
->
-> Please take a look and reply with any feedback you may have. Thanks,
+mbind() manpage has this:
 
+       The  specified  policy  will  be  ignored  for  any MAP_SHARED
+mappings in the specified memory range.  Rather the pages will be allocated
+according to the memory policy of the thread that caused the page to be
+allocated. Again, this may not be the thread that called mbind().
 
-Just silly feedback, but "AP (vCPU) creation from within the guest" sounds
-fun! Thanks for sharing.
+So that seems like we're not very keen on having one user of a file set a
+policy that would affect other users of the file?
 
+Now the next paragraph of the manpage says that shmem is different, and
+guest_memfd is more like shmem than a regular file.
 
->
->
-> Changelog (copy from the pdf):
-> ===
-> Revision 2.04 introduces support for SEV trusted IO (SEV-TIO). SEV-TIO 
-> allows for passing through trusted PCIe devices with TDISP support to 
-> SEV-SNP guests.
-> Revision 2.04 also introduces support for guest to notify hypervisor of 
-> a vCPU's Secure AVIC guest APIC backing page.
->
-> Document Additions:
->
-> Document the SEV-TIO Guest Request Protocol used to communicate the 
-> SEV-TIO device measurements, certificates and SPDM attestation reports 
-> to the guest and provide the guest with a means to enable the device 
-> functionality if it is determined that it can be trusted.
->
-> Document changes in hardware debug support in an SEV-ES guest.
->
-> Document the Secure AVIC vCPU APIC Backing Page Notification Protocol to 
-> communicate the GPA of the guest-owned vCPU's Secure AVIC backing page 
-> to the hypervisor.
-> ===
->
+My conclusion from that is that fbind() might be too broad and we don't want
+this for actual filesystem-backed files? And if it's limited to guest_memfd,
+it shouldn't be an fbind()?
 
-Best,
-
-Carlos
+> Adding linux-api to get input; original thread is at
+> https://lore.kernel.org/kvm/20241105164549.154700-1-shivankg@amd.com/.
+> 
+> Paolo
+> 
+>> Backing up, it seems like you want to make a change to the page cache,
+>> you've had a long discussion with people who aren't the page cache
+>> maintainer, and you all understand the pros and cons of everything,
+>> and here you are dumping a solution on me without talking to me, even
+>> though I was at Plumbers, you didn't find me to tell me I needed to go
+>> to your talk.
+>> 
+>> So you haven't explained a damned thing to me, and I'm annoyed at you.
+>> Do better.  Starting with your cover letter.
+>> 
+> 
+> 
 
