@@ -1,245 +1,277 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2040.outbound.protection.outlook.com [40.107.92.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51CDD14A4CC
-	for <linux-coco@lists.linux.dev>; Mon, 11 Nov 2024 11:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731322927; cv=none; b=snShHvuMv7AQbt6/S+Ua7Vhy8cQpdTVdt5+fTL562tnFjzU8b9QhXFB5qWihc/QB5XUlo+B4HgO3WBSOxD1E9cZApcM1WEqfxa3jX0eLWj4fLR7xVeAIq9bB6k0elL572dAVrU3udKy7iNV33ksN7eojdGSffYf1tvsNJrs65gk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731322927; c=relaxed/simple;
-	bh=zKv3Vn3RngXApMuDLHQ3tdm8G0jfhbJLEdut14IqwrA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rOl+jegiR34GfMvAWSLxj1DJwH8Bw19jLc1vN1zGNXEBOduQhyy5WtjngUfbk1zsY9hoRJU5PPEqv5DEY+nTpLNs/OLICWT0WDi5rVyREkvGVU4XXDKb+ZvvLqEYlQYiykUavYEXh06seFc1Ak+C8eGeUJ2DCzja49/G7LFeV0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=P49p6Xb9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=tkrmPWiL; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=P49p6Xb9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=tkrmPWiL; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7C01A76B4
+	for <linux-coco@lists.linux.dev>; Mon, 11 Nov 2024 17:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731345238; cv=fail; b=CL1LQgpOQbJAe7XZQwwrWqnz94VNNnKRa9cRtRQD8Hodq2CQlmR/eqPSYmLH9o9wJ16keDq8QE/e1lyUw6obW/VZwPGtva78WIb7aAJYRt+qx87i78h8Cv5xrPfbXkGuISx/FHKnJnFbkbr3y5FzCtXBbUDumrCtxfjDUhFiKzc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731345238; c=relaxed/simple;
+	bh=Hq7jb5qG1yDy8sUEEaFnIZcPBIY7w67iV6FcnEc9V3Q=;
+	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
+	 Content-Type:MIME-Version; b=D9378kqlEt0q9MbOwPIIaN2TnSkTZjVIsm8O49wy5/PaFFEtJ0yTuX6gK46k/pQLWUfDpGNYzTcgqiGn9dA3JdtMl2IURwgSGxrFZh6Wgq+If0QHaYgHUnCgM4Tb4gETtRznIiGrgimwo6KdSAqDTNW3hGEQWkLumTEcVAcdZrs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GnOcGjuE; arc=fail smtp.client-ip=40.107.92.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="P49p6Xb9";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="tkrmPWiL";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="P49p6Xb9";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="tkrmPWiL"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9C1381F38E;
-	Mon, 11 Nov 2024 11:02:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1731322923; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uXHVH0ccgWFcGpeM6HgeltmGCkaKDRVIsW9/gEoqXsg=;
-	b=P49p6Xb9X9EU2crk2y1oMy2KeTCSI+7k6Cf4qmPXhaV50qDusoH3M+AMdTpVGy/6Sw6I3k
-	fnrYtFYt4WdUKE7CGto1/WoVovedVCYShD6+l5IRSG7wNAYlv48lXRP3KaFSgszfEodJWJ
-	sO/nDG7MsI1U1JfpVZOXgSTrqJ10mdY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1731322923;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uXHVH0ccgWFcGpeM6HgeltmGCkaKDRVIsW9/gEoqXsg=;
-	b=tkrmPWiLNNj2qm3VuGpKD+E8ycRAHQNEVnHcYHSe5dia8bkPxhGQfF3p8F1nao0Gio6rFJ
-	jN8zHuwwIRfhMYBw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1731322923; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uXHVH0ccgWFcGpeM6HgeltmGCkaKDRVIsW9/gEoqXsg=;
-	b=P49p6Xb9X9EU2crk2y1oMy2KeTCSI+7k6Cf4qmPXhaV50qDusoH3M+AMdTpVGy/6Sw6I3k
-	fnrYtFYt4WdUKE7CGto1/WoVovedVCYShD6+l5IRSG7wNAYlv48lXRP3KaFSgszfEodJWJ
-	sO/nDG7MsI1U1JfpVZOXgSTrqJ10mdY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1731322923;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uXHVH0ccgWFcGpeM6HgeltmGCkaKDRVIsW9/gEoqXsg=;
-	b=tkrmPWiLNNj2qm3VuGpKD+E8ycRAHQNEVnHcYHSe5dia8bkPxhGQfF3p8F1nao0Gio6rFJ
-	jN8zHuwwIRfhMYBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 60442137FB;
-	Mon, 11 Nov 2024 11:02:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ricQFyvkMWfuIwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 11 Nov 2024 11:02:03 +0000
-Message-ID: <ff3174f8-c8b5-4fae-a9d9-87546d37c162@suse.cz>
-Date: Mon, 11 Nov 2024 12:02:02 +0100
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GnOcGjuE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oxlHQGtJi3qQjz9Q/qZsnQIzrk7hU1fQu8iAXGXKht3MTqIc5uVaO1b5qLKs/dag8rstZyPEK3mGBBSbLzdLogthSc6JCTM60oOMOvUq0sndY4R3/vacxryVQCPEcWsrhSk7M3UBRhAw+lJzEdhY5MvDikZPurGjA++q9hr/4FqfZC8SpAFMmbRzX8pLAZykVE4FRACYTa/d4hszY2YVQK6PS30MUx/KICQSAAskRUf0NkZbf/gTYInokfd6KvuGf4gwWbZW9omhD+Njf9PpN+nES8tC5yOtCdyZ0bndZdOVT49J5Gv7NtNctCyH7PDDJ0o1beuaojJUHxKd9uBs/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j5i+qviQCLpr7O6qUlVV7a8ApFitu3Kp60TKWTC9jsA=;
+ b=f6ULMD/a+Wr+AiHK9E2tmSJUrHLxNxiG0jfj5Rj02MAy9Ol4O/7VE8lBHdM/fQ+I7Yua1lyIHCKNwnzudGE2dzwiBv9e4LAWeb7uD6vb+T8WWbMgCzW1dwQl+DVYGtykPyXrfnzsyN2HMZPtQt2U2yPRUwLtW5NrLLumZfvxbsHVBH9BywHXvIVzi9OuqHRxuKiRHJDhG1imj1nn43h1TFa+jHQiYHZ8PgqvUwixwNK/L/XDe0BzilIXjoQnccQgWh0IYAHxRl/+afg0y8wKqAui5JRcQlX0pqJ35eoXta9l76zP5RizvgWuPlEylxWdaa3xF+Sp0zGm+gNTdW2hkA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j5i+qviQCLpr7O6qUlVV7a8ApFitu3Kp60TKWTC9jsA=;
+ b=GnOcGjuE5y2K8Xe//kg6hx8NIoG0HhN8Y30MohiFjsNHLQFrLnqVsglDQdEPIbWut8GkkrBDsWaExqlVmbK+75mJf6SKtmPmxGAJJg2gCy9VVVp2VpmJe7mXCcQDdFmE5xK0O3b06UfA6VRdbU2tvNHZ00SyE6gAQR02vsaJgx8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by PH7PR12MB7307.namprd12.prod.outlook.com (2603:10b6:510:20b::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.25; Mon, 11 Nov
+ 2024 17:13:51 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.8137.027; Mon, 11 Nov 2024
+ 17:13:51 +0000
+Message-ID: <d2f7d2cd-9019-47d0-a4a9-01918cda32c3@amd.com>
+Date: Mon, 11 Nov 2024 11:13:48 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Content-Language: en-US
+To: Dionna Amalie Glaze <dionnaglaze@google.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+ Ashish Kalra <ashish.kalra@amd.com>, John Allen <john.allen@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, linux-coco@lists.linux.dev,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Michael Roth <michael.roth@amd.com>, Luis Chamberlain <mcgrof@kernel.org>,
+ Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Tianfei zhang <tianfei.zhang@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+ linux-crypto@vger.kernel.org
+References: <20241107232457.4059785-1-dionnaglaze@google.com>
+ <20241107232457.4059785-6-dionnaglaze@google.com>
+ <71db9119-a667-96c1-7aaa-4f0241f203ea@amd.com>
+ <CAAH4kHaVDTokOR9BBbinXkw=Hk3ztYoiZOK_77JahmQ64vjK_g@mail.gmail.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH v5 05/10] crypto: ccp: Add GCTX API to track ASID
+ assignment
+In-Reply-To: <CAAH4kHaVDTokOR9BBbinXkw=Hk3ztYoiZOK_77JahmQ64vjK_g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SN6PR08CA0028.namprd08.prod.outlook.com
+ (2603:10b6:805:66::41) To DM4PR12MB5070.namprd12.prod.outlook.com
+ (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/4] Add fbind() and NUMA mempolicy support for KVM
- guest_memfd
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, Matthew Wilcox
- <willy@infradead.org>, Shivank Garg <shivankg@amd.com>
-Cc: x86@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
- jack@suse.cz, akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-api@vger.kernel.org, linux-arch@vger.kernel.org, kvm@vger.kernel.org,
- chao.gao@intel.com, pgonda@google.com, thomas.lendacky@amd.com,
- seanjc@google.com, luto@kernel.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, arnd@arndb.de, kees@kernel.org,
- bharata@amd.com, nikunj@amd.com, michael.day@amd.com,
- Neeraj.Upadhyay@amd.com, linux-coco@lists.linux.dev
-References: <20241105164549.154700-1-shivankg@amd.com>
- <ZypqJ0e-J3C_K8LA@casper.infradead.org>
- <6004eaa4-934c-48f4-b502-cf7e436462fc@amd.com>
- <ZyzYUOX_r3uWin5f@casper.infradead.org>
- <10ffac79-0dba-4c30-991e-f3ca2b5ff639@redhat.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- EP+ylKVEKb0Q2A==
-In-Reply-To: <10ffac79-0dba-4c30-991e-f3ca2b5ff639@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[30];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RL81e5qggtdx371s8ik49ru6xr)];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|PH7PR12MB7307:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6f5cb723-b26c-4d1b-499b-08dd027436ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SlJlOWdjL3pMaTFraDdzb0FBOUMwVEFMbHIxRW1uOWplL0lYWlovS2FNUlFh?=
+ =?utf-8?B?MXpWWmc5VjZxYUozV3Y0VWc4L2Fqd1dYU3FkakFXUnE0STNmYk56UXlrODhw?=
+ =?utf-8?B?R2QzNFhYbWhCK3NRRFZyUmRzTm4vWWlRWFNONVFkeERwczlqUEVYZ2QrWFlU?=
+ =?utf-8?B?NVZMS1E2d2l1QzZPSVVKZWZMalQyOTM2ZFdmUnFKbSthTVMwa1J5YlJIcE5w?=
+ =?utf-8?B?UFE2L1R4VTR2MU5BK0JmMlpBaER4aElFVXByVzMvbDk3Z3FQM2lPRTc4dmov?=
+ =?utf-8?B?Rk15THIxaTRON3Y5WDRSOVhEWTNYTkVITWxudFhyWXp0Uy9xL1ZwRHBFYjU2?=
+ =?utf-8?B?TWQvVmZZUSs1TitDbTJ6MXJQeWhLSVpjQVpjNGtkMXpBV2M1UDhrZHF1cGlM?=
+ =?utf-8?B?bDdOSWFjcFJUQTNnTm05SHUvQUJwRDljS0Jtd0UxTGExMCs1QTBKdkNHa2d0?=
+ =?utf-8?B?MUhNRzd4VFhXMzlVRE4zMGNhdDYzUjBISWQwZy9FTkpPTFp6Yi95UlpVSXFK?=
+ =?utf-8?B?ZFdHcktKZ1FlYXd5cEc2SFE1b0k4dU5uQWE3SUpXcDd1SDFnSW9oa2d2ZElH?=
+ =?utf-8?B?WWtEWllTWGsrdE52UDEvM0dxSjUwTXB0amxiWmZNSzlrUUR1RUFPdnFGdHJT?=
+ =?utf-8?B?TCt2S3RQd2pnMkJOZ2NPQlpjenUwSlVmZTMwbUtBeEFhc2NJbWlSNXRkWVgx?=
+ =?utf-8?B?dVVQL0hwQ3VLb2RwM01DQzRHNFJ1ajdYR3NFejkxWnNhSTIyL3RBMDc0THhM?=
+ =?utf-8?B?cUErTVpMbDMwbkZIZmNVcGI4eGt1c0xnRi9JYjM0VGwxZWlFM2lKM3ZWQjgz?=
+ =?utf-8?B?Vnpxc1Q5MkhIcGlYUTdVWVhHbUYvZm5UOXJwN1JwdmYvUmZyK2hvVCtIU0lZ?=
+ =?utf-8?B?eHRib3hESE9QbjNyUHlvQVBNYXU2c0I1dnYyZVJpZ1puOVE1eTNCOFdRb2VZ?=
+ =?utf-8?B?aXVjY0cyZ1crQlNwWmdnS1NzejYraGJnM2hWcGxxQUI4UjBKK0R1SG9jU1gx?=
+ =?utf-8?B?MURPUDAweERUSTc2RCtKRGdlekl6QnlyMFJUY3NPSDBBUHdXaVFjbXlNSEJm?=
+ =?utf-8?B?YW82cnhGdlVXUVhDL09SSjRuVmd5NHZrM09FWmNUTmNFQUxpWGcxei9pbTVo?=
+ =?utf-8?B?bjJXcXFvU1VBK0xLQ0xLSXdGeTdsQUFXK2lCdW02KytCSHVsb2JEZGJJK3Mw?=
+ =?utf-8?B?SXJWNHJQb2lUWTA0V1pPQmRET1hVTkw0blhaenZsV1pnTU56WWFibHQ0SVlP?=
+ =?utf-8?B?SndYMDUwTi9kcWxzM3FnbHczaGp6MTNsR1RpNkl1ODhRclhncnhMWXlYRFdC?=
+ =?utf-8?B?cVhEYTlCcG9YNFZsNS91UXdUN2RRQi9Rd3hFVEZaa2E3aUxmVm5xNkRLZGRZ?=
+ =?utf-8?B?b29nU1dFWmh4ZkVBWU4vai9iL1EyWXdrMkFtbGxid3N4YmFMNGJYYmpjdmlV?=
+ =?utf-8?B?M0RRYjdxNzNjTi81dGszWDIrMmtQak01ajJvMWU0SFoxZHNrajJqOVhMVU9Q?=
+ =?utf-8?B?ZlU1V2VqU0d6ZEpoeTVUOU5DN2x2eGVGUVJLRzNWTGpIdjMvY1lHaXMxY2FR?=
+ =?utf-8?B?dGFiYzhpRlFsaWcrMmNPWEJMcGRXYnFRMFRad3c5K20xOFRvVWhHalAyRjNZ?=
+ =?utf-8?B?dTNVelJHR21vWS9nOHFiaWhTT0lEVkd0SU1TbDY3bGF2MVVPdXhkNzVVNnRr?=
+ =?utf-8?B?VmxoT1FaZm1hVWVpMzhEMG8zREtyL2JpR2R1S00wOExseHEzcGxhN1Nuc3Jj?=
+ =?utf-8?Q?R/psw9OuoCdrid3AhCoJNT6Ccj5Y7b31Vy3TS9z?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q0VOVmxudFpRYXJkQzdLVS83SVhhNFBjK2RrR0lrWmljekZXallpaFFNdHBw?=
+ =?utf-8?B?YTZiTy8yTEx6VUovOFp3ckwvcFJ3NnRGU3Bnd200OGdSaWRwWGI5VmRQb296?=
+ =?utf-8?B?VTRiNlA1UlFXTjlxWWNoenpmVzkxWmx3QXY0WHAyUitGeEVlbVMrVmRpMzgx?=
+ =?utf-8?B?SnBXb2gvOTkwM3l5MHJQNTN4Zzl2dkZJT2NKWEQzOGxVak9SVVVjWlpSWHd6?=
+ =?utf-8?B?SjRFT3hJakZ5aXVtaXNaSzNvc0pMRVdBMWV1WVRWektxYWV1NS9DWjNpdWlq?=
+ =?utf-8?B?a01qS3ZRa01Mb0dPeDlrOVFCbW41bGp5ZDhzb0FuRWxQU1g3aXEreTJPa2FC?=
+ =?utf-8?B?cTNaODNWd3RvZE0xeDQ1c2VxODFrVHo4N2lLWUljdTFPMittdzVyMWZiRVcv?=
+ =?utf-8?B?Z2NQdDlKaGREUnNvbm5xeW42TU04QWFMZUdBa3JCSHVHbW1MUlo3bUpxaTM4?=
+ =?utf-8?B?RkJ4MkhKMS9SbUs0N1FiTVQwREpUTlFWTDFoTEpjRmE2dC9jMys3MVd0djU5?=
+ =?utf-8?B?cGgwSmJRb2JtcnMxYzJDTHJLMkhqdUtDY0NzY1h1RHVBeVJScURWUllGK1dx?=
+ =?utf-8?B?UmhPdXVrdjdPTzJLRjFOc1JQU2pGSnY0Z2QwcDNvSUx5b1dFaDhrNXBHcVRa?=
+ =?utf-8?B?SDNxbjNJNzlXT0RIZTZzdEViNDkzTk9PbFVMdlFnRzI0MlBaZllZV2M4NFhK?=
+ =?utf-8?B?b2FLNmtuSTMwajJJZTRmWVZDbDRZWWt5bWhQZk9VanZnU1phZkpEMHN2c2Rx?=
+ =?utf-8?B?SnhHSU9lbHU5cFNQdkhIZlBCMGpjZ2tQcEZyQlpqVGhUM3lTVWRJa0k2c2Zq?=
+ =?utf-8?B?ZkRJODFOMitMcStKQVpORnNSTTVVam95THg1b3NkSFV1aDhBQTZoVlhzNTVB?=
+ =?utf-8?B?MTFOTFZHcEgyaElCYnB1Q20zT3dwNXZKZXlRc2dyR3ZSbXNqMnRzZUFKTTc3?=
+ =?utf-8?B?YlY3dWp4ZmlQalFpUFV3b251OWliZUI3YkZpa3BvWlQ1QVdseXpxQ3BSODV6?=
+ =?utf-8?B?dGN3S251b1JpeW9lL1V1QmU0SzlEaE4vN2ZWOU85OUh3UDNCYWhZY1pHQUgz?=
+ =?utf-8?B?cjl6VjlDMWtreDk4cWpqVnAyR1U2Y2JYYTBEOUxWVHBwdVNnMFc4NWVMVzFy?=
+ =?utf-8?B?Zm50WHJ1Q1A4VEpnc004Y3lueU8vMEQ1enExaGE0bk9IbmZST0ZHOUx2Vy9Z?=
+ =?utf-8?B?dWxBU0ZVUGhnYW9zOXhQenhuL2YxRXUyQWF3d0RUMDJERzJvdXlBRHBLWkZH?=
+ =?utf-8?B?clNMMi9QR1Ywem9XVE5nZUN6UjdkWTBVaGptQ2RjbVBmTlpUTTQ4WU5MeHM3?=
+ =?utf-8?B?M1BhTm9sVnJlUG9BK1Y3VEtZT29yMTV0ZDQ2M0ZnMkZaMSt2T203emg2T2RT?=
+ =?utf-8?B?aVdQV2ZSaTlXYjFBdU9IYkJrQnd6K0s3dUZBOGZud0NuZVlaR05XKzdEVGJW?=
+ =?utf-8?B?OE1FWElJSENoTW04RHBMY0xXWTVGbXFzQ2d2cUo3WituWWFWTFMxY0J0SVJh?=
+ =?utf-8?B?OUJtVTNMVDlWd1lFQUV6VGVJd0lLTzBNdjhhZDlmUXZPNExLMy9wUXphQ0xi?=
+ =?utf-8?B?bTM5TFRFWjFrOXRtdVRMMWZIMkF6WUNMVm96YkdQZlhqb2hvYy9PRTg3ODNF?=
+ =?utf-8?B?M3lXOUo2eVhTbmlyZTUraytZdEFiT2VUdGRsV3pHMGd4cmFXci9PVGxyRmlp?=
+ =?utf-8?B?UWdBU3JrdXBQQWtwS2ZHTDFmRlcxMmY3d0FjNUZjazd3S3h4V0lxdjdmMk9L?=
+ =?utf-8?B?Q3lsQVVqdTYzK2RYOGFsOHR0eHNzT2I3QjRRa1IxTEYzRitPVDFrSVhza2Qv?=
+ =?utf-8?B?elplMzFLL2NXOGw2cmczb3FHQ2VYeU05RWo5eG1OUitrMDl3M1FJSG45aUE5?=
+ =?utf-8?B?QWdrd2Q2aURHY1dHWlAyV011VGM3OHJCUFR0R0VCRVFub040Skc5akdOOHc1?=
+ =?utf-8?B?VmxES1VBOUxqUEwzYnQ0ZFVrSXhreGhPeU1wOGF2ZWZlSERPNDB0Sm1PMGUz?=
+ =?utf-8?B?MVpxMUdaS1NYZTdmNCt3SWVPc1dEUDJ5STJmc1R6NzdqN0dxeTcvTlVMZFNm?=
+ =?utf-8?B?VlowZmp5RkVuaXlTNm1hSWtxdTR1bEU2ZHhYOFVnZ0FqR0tjSVdwejRHZlZF?=
+ =?utf-8?Q?hp3ccnVuL8xwPUnvBLzzW/89h?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f5cb723-b26c-4d1b-499b-08dd027436ca
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2024 17:13:51.6911
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8dIUtpnv9kSuyiHuk5D5oXjvzIaxxZW3hDcJCWWFSRoQMKLPz4FZPxTo+vmA9BHBzaIlAC4VATXndQ4Ex/TBLA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7307
 
-On 11/8/24 18:31, Paolo Bonzini wrote:
-> On 11/7/24 16:10, Matthew Wilcox wrote:
->> On Thu, Nov 07, 2024 at 02:24:20PM +0530, Shivank Garg wrote:
->>> The folio allocation path from guest_memfd typically looks like this...
+On 11/8/24 16:13, Dionna Amalie Glaze wrote:
+> On Fri, Nov 8, 2024 at 9:24 AM Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>>
+>> On 11/7/24 17:24, Dionna Glaze wrote:
+>>> In preparation for SEV firmware hotloading support, introduce a new way
+>>> to create, activate, and decommission GCTX pages such that ccp is has
+>>
+>> s/is has/has/
+>>
+>>> all GCTX pages available to update as needed.
 >>>
->>> kvm_gmem_get_folio
->>>    filemap_grab_folio
->>>      __filemap_get_folio
->>>        filemap_alloc_folio
->>>          __folio_alloc_node_noprof
->>>            -> goes to the buddy allocator
+>>> Compliance with SEV-SNP API section 3.3 Firmware Updates and 4.1.1
+>>> Live Update: before a firmware is committed, all active GCTX pages
+>>> should be updated with SNP_GUEST_STATUS to ensure their data structure
+>>> remains consistent for the new firmware version.
+>>> There can only be CPUID 0x8000001f_EDX-1 many SEV-SNP asids in use at
+>>> one time, so this map associates asid to gctx in order to track which
+>>> addresses are active gctx pages that need updating. When an asid and
+>>> gctx page are decommissioned, the page is removed from tracking for
+>>> update-purposes.
+>>
+>> You should be consistent with capitalization of gctx and also capitalize ASID.
+>>
 >>>
->>> Hence, I am trying to have a version of filemap_alloc_folio() that takes an mpol.
->> 
->> It only takes that path if cpuset_do_page_mem_spread() is true.  Is the
->> real problem that you're trying to solve that cpusets are being used
->> incorrectly?
-> 
-> If it's false it's not very different, it goes to alloc_pages_noprof(). 
-> Then it respects the process's policy, but the policy is not 
-> customizable without mucking with state that is global to the process.
-> 
-> Taking a step back: the problem is that a VM can be configured to have 
-> multiple guest-side NUMA nodes, each of which will pick memory from the 
-> right NUMA node in the host.  Without a per-file operation it's not 
-> possible to do this on guest_memfd.  The discussion was whether to use 
-> ioctl() or a new system call.  The discussion ended with the idea of 
-> posting a *proposal* asking for *comments* as to whether the system call 
-> would be useful in general beyond KVM.
-> 
-> Commenting on the system call itself I am not sure I like the 
-> file_operations entry, though I understand that it's the simplest way to 
-> implement this in an RFC series.  It's a bit surprising that fbind() is 
-> a total no-op for everything except KVM's guest_memfd.
-> 
-> Maybe whatever you pass to fbind() could be stored in the struct file *, 
-> and used as the default when creating VMAs; as if every mmap() was 
-> followed by an mbind(), except that it also does the right thing with 
-> MAP_POPULATE for example.  Or maybe that's a horrible idea?
+>>> CC: Sean Christopherson <seanjc@google.com>
+>>> CC: Paolo Bonzini <pbonzini@redhat.com>
+>>> CC: Thomas Gleixner <tglx@linutronix.de>
+>>> CC: Ingo Molnar <mingo@redhat.com>
+>>> CC: Borislav Petkov <bp@alien8.de>
+>>> CC: Dave Hansen <dave.hansen@linux.intel.com>
+>>> CC: Ashish Kalra <ashish.kalra@amd.com>
+>>> CC: Tom Lendacky <thomas.lendacky@amd.com>
+>>> CC: John Allen <john.allen@amd.com>
+>>> CC: Herbert Xu <herbert@gondor.apana.org.au>
+>>> CC: "David S. Miller" <davem@davemloft.net>
+>>> CC: Michael Roth <michael.roth@amd.com>
+>>> CC: Luis Chamberlain <mcgrof@kernel.org>
+>>> CC: Russ Weight <russ.weight@linux.dev>
+>>> CC: Danilo Krummrich <dakr@redhat.com>
+>>> CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>> CC: "Rafael J. Wysocki" <rafael@kernel.org>
+>>> CC: Tianfei zhang <tianfei.zhang@intel.com>
+>>> CC: Alexey Kardashevskiy <aik@amd.com>
+>>>
+>>> Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
+>>> ---
+>>>  drivers/crypto/ccp/sev-dev.c | 107 +++++++++++++++++++++++++++++++++++
+>>>  drivers/crypto/ccp/sev-dev.h |   8 +++
+>>>  include/linux/psp-sev.h      |  52 +++++++++++++++++
+>>>  3 files changed, 167 insertions(+)
+>>>
+>>> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+>>> index af018afd9cd7f..036e8d5054fcc 100644
+>>> --- a/drivers/crypto/ccp/sev-dev.c
+>>> +++ b/drivers/crypto/ccp/sev-dev.c
 
-mbind() manpage has this:
-
-       The  specified  policy  will  be  ignored  for  any MAP_SHARED
-mappings in the specified memory range.  Rather the pages will be allocated
-according to the memory policy of the thread that caused the page to be
-allocated. Again, this may not be the thread that called mbind().
-
-So that seems like we're not very keen on having one user of a file set a
-policy that would affect other users of the file?
-
-Now the next paragraph of the manpage says that shmem is different, and
-guest_memfd is more like shmem than a regular file.
-
-My conclusion from that is that fbind() might be too broad and we don't want
-this for actual filesystem-backed files? And if it's limited to guest_memfd,
-it shouldn't be an fbind()?
-
-> Adding linux-api to get input; original thread is at
-> https://lore.kernel.org/kvm/20241105164549.154700-1-shivankg@amd.com/.
+>>
+>> But, I don't think that SEV_CMD_SNP_ACTIVATE needs to be here since it
+>> doesn't change anything related to the sev_asid_data struct. KVM has the
+>> guest context and can issue the commands similar to the other commands KVM
+>> issues that use the guest context. So this function can be removed and
+>> still performed in KVM.
 > 
-> Paolo
-> 
->> Backing up, it seems like you want to make a change to the page cache,
->> you've had a long discussion with people who aren't the page cache
->> maintainer, and you all understand the pros and cons of everything,
->> and here you are dumping a solution on me without talking to me, even
->> though I was at Plumbers, you didn't find me to tell me I needed to go
->> to your talk.
->> 
->> So you haven't explained a damned thing to me, and I'm annoyed at you.
->> Do better.  Starting with your cover letter.
->> 
-> 
+> My intention for adding it was for safety, not raw capability.
+> Is it not safer to ensure that the GCTX used for activation is the one
+> that is tracked?
 > 
 
+I'm not sure... all the code is really doing at this moment is tracking
+guest context pages so that you can update them on firmware changes. Any
+misuse of the context page and ASIDs can happen today in KVM so I'm not
+sure it matters. And any duplicate ASID usage is recognized when
+creating the guest context page.
+
+I guess we can keep it here, though.
+
+>>> +     cpuid(0x8000001f, &eax, &ebx, &sev_max_asid, &sev_min_asid);
+>>> +     if (!sev_max_asid)
+>>> +             return -ENODEV;
+>>> +
+>>> +     nr_asids = sev_max_asid + 1;
+>>
+>> Can we get rid of sev_max_asid and then just use nr_asids or sev_asids in
+>> the cpuid() call and adjust by 1 after the above check.
+>>
+> I'm not sure I know what you mean.
+
+You only need one of either nr_asids or sev_max_asid. So you could do:
+
+	cpuid(0x8000001f, &eax, &ebx, &sev_max_asid, &sev_min_asid);
+	if (!sev_max_asid)
+		return -ENODEV;
+
+	/* Bump SEV ASIDs count to allow for simple array checking */
+	sev_max_asid++;
+
+Then you can get rid of nr_asids and just use sev_max_asid in the
+appropriate places and manner.
+
+Thanks,
+Tom
+
+>>> +     sev_es_max_asid = sev_min_asid - 1;
+>>> +
+>>> +     sev_asid_data = kcalloc(nr_asids, sizeof(*sev_asid_data), GFP_KERNEL);
+>>
