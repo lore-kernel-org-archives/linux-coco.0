@@ -1,54 +1,54 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF2021C168
-	for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 23:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2DA21CF90
+	for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 23:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731453784; cv=none; b=lqkGI/T5cXlUHI8mU+6zp1XoP0pBo7vdIYHccm86GsACzPJrw6QxXke3PLDyXKji4Z1XSo1MmywAE8eEOJEYT12e56k7EOrwz165d2cQTpq/70/a8oukI30deRS7EnvcZN/LHC55Id1xcMswqXbPRWMH8xYyvZU2g+SI66ojpa4=
+	t=1731453786; cv=none; b=tB6tSl6hFqgTaZKMdFrjqOBChe7cTDDsB07Y8fi8Jn6zwWo8W58NwldGgBRUCZyetZ8dEAKTIZqNQbFVtLDcOryQNqnPsimOdI2M3snHFwTOlRUgVrErMGP7PScOZndoueOSsCcT7xxaILtdJFSxmpOWWqdZxGQ7scRi8H6Dc4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731453784; c=relaxed/simple;
-	bh=Jb7bsAHuq1g+F+AyFt83enXaiVLr1zlWcNhrBiuDpbE=;
+	s=arc-20240116; t=1731453786; c=relaxed/simple;
+	bh=ayby78yQOyjOz6ls+yE5cxTfghhQvc3yyzZlL7gs+bU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VqhYII684SaQayivVt+Kd/hxFXV+yONhgFGsm+mCGyzEQ/zyPWcomNjMbR11cDdt04Shg2KUK3VDDFnOHQhkC4KNckaSSgoEzBo6VqWUygGriCcWM/gZvYTyCbNQS/x6tL/XqO4N2CAkU9VS4D/WpMFuLrOyxICQXD1shzYxNxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rmASES+l; arc=none smtp.client-ip=209.85.128.202
+	 To:Cc:Content-Type; b=BDtXmX326h82vlHRFk+en9FU9HqYq2Hwv/U7x99zaxTKRDVXOXwjrxDeXPsN+2Lnb849sIH2Tk2rJTyRaIH/AJq1gNRpGAlJvX3YkKNipkPjCuUoqyFc268HskQ0KC0yJPX3Xd8gI8bsVkiF7aj6sxSq03cnfXgYmIn6h5ydO2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ru2zt3Dk; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rmASES+l"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6eae6aba72fso76317997b3.2
-        for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 15:23:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ru2zt3Dk"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2e2ca4fb175so6496758a91.3
+        for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 15:23:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731453782; x=1732058582; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1731453784; x=1732058584; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=te/cfPXpVlK1XxYIx1bZceEtuwPH7dTOHve13FO/vjw=;
-        b=rmASES+lxC+WgCnFnz8/QmnH0ntUO2FnMS6CPY4h3TInVDjG7gbesqSaf/BwIDWe0P
-         c8aRFWi9qMss9AB9OxTqxy/yqUVTLNiTJj/TLd3R+XpgtHq7Y/nXD9RJefRfryFi5iBo
-         8d0IrY1uz7ZbkQwjemq29oRZhyvgL11myBkjnBd3bI1SYp8pM8NA8CSDe2tE0K6BrlIv
-         fNxiSrHKdMykqIspHFbBOBycCHyfpm+D2432dwqBx9gIt6kqgEiq4OWgMMEhoAZnBrXD
-         yKqVt8EMolCW8SGTCthyIcQ7pQsXjKz3CJFxqFYafN5IN8pCoQx6zbMKzFjzJ2VM0GOm
-         2uhg==
+        bh=WmL++hD8fgHMSusvyHDFwqq57StgWysj/njcEHmccMk=;
+        b=ru2zt3DkZCWDPEMGeBMIvKdRr/fy4NZE2hfk1ViwB+VUu4L6yH7uaHXqaFZjyFMGzJ
+         NXD7vlA4776Rq+7NiVpaFUQHxwzvWjz+DN4nQNMiR/mBHiQficgbi8zbry2HeGsIvNt/
+         lPjSqePrwR58YOCp4V8+vKAAdZgxRH/ghz88Fi/BKK8Runsi6/5cEMV3S/Wu+2LqOBbI
+         K2pHQq5o39aS1MLKjjUYv5UG5/smDxh/iimqRlk6VIISBG9BeoF3r51SqMQQ3vbE93x9
+         eHFEdqk+HdYXDB9E0FmhsoCxgFN0C6rgNz22nLFHKFexZLoOCPzILEcftd25p3jqbBv8
+         vbFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731453782; x=1732058582;
+        d=1e100.net; s=20230601; t=1731453784; x=1732058584;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=te/cfPXpVlK1XxYIx1bZceEtuwPH7dTOHve13FO/vjw=;
-        b=ftqx0flqRQNbLaNGMVbqy+q1M0R4CDD+O17Lrf9eIRBFWA/ilm9xQc1WiyVB0O+eQi
-         qforTOpdxpNLZyX9LbZEOEaKtYTtEtZPdywfDXY8BiOPOS/0CBvcL1qHng504uF/XQIh
-         XCEHpdC9ebdkFapDhU71oYpQmEyc6g1YdRVBZyHxwjc72YARRClh+jYuM9C4b6ICrXvy
-         sAWpnZyLbfSxaGJYQ+JXyvX4BX+3r+CHbPNrZzE89MNgJzrfQ6w/Hp5E7JEofN6N2qVQ
-         yQiCWMtJSKv5ZnOA1sfLj6du1tiVEN8tCWwKHk87a4mv55uF8ECOhSu+OFwXykH0NTVw
-         nXqQ==
-X-Gm-Message-State: AOJu0YxKtX+GoHfau+/gdqFV+wtj1IIchTS87Jjo5xCmcQR8xAYCVd5c
-	LwAGDWWQS671qLRGM6PPQwamatsyYN1ahm/LLFeTmUdvvKn6Yafz+fFLQ6L7Jgp5AGq54lQ7JMe
-	TRfHuCECd7PxD9VKTSaRp7w==
-X-Google-Smtp-Source: AGHT+IH0ZHDJ9RxOoA61xD1ipX9jxEyCm6JJVxkz4PucOgUVx/B+vOpDcYEieZFLPHqw48EsYNAyVJqKyr8eL5q2kw==
+        bh=WmL++hD8fgHMSusvyHDFwqq57StgWysj/njcEHmccMk=;
+        b=Ccpo+cQfLKgT03Dm9qWoyhYIeIM7stJl12Mraf/unmiUFKzslqhxh3bcus/XFG1ap9
+         nMVcJNp6P8yhe85dzEu18Tt8itzXaRbDHmo4eXQMjWpEpRFRLdV1iXEXioG6qNf1UWWZ
+         3TXZc+oFd1IdgRbljxXvkkoxL4FQP7IXoozCgZKbl/6sUwndHOlJJT5h6nnqo5Y7E05d
+         Okze9h4z9gcfpkdur0k1VI8xHmkVyi/iB+/JSDqZvCCMm1651u18YUXSB9AwP7ObOWG6
+         m0gG1OGIVNgczTYYa0+H3D3M3PborFiNJCTUesFXLP5BMo+9yRD/qmhZ/T5AJzROj30x
+         DgjA==
+X-Gm-Message-State: AOJu0YxVyRZWrE9SH20DhPXr08SgK7aV/xrYBwveGDBCgGkfqMSmLvnQ
+	TeXE/TRC3N5lWKfaGS+ofhnnrGP2peQYqHes1knKegSqldvLZYSIoQ8mGpFu2Ol59AVralTqUNC
+	TRZoI9jDVG9aQg/QPyPRNuQ==
+X-Google-Smtp-Source: AGHT+IEKIx/zzlZD9qfrCEEtWDHbsmZlYa32pBSY0nOxUmKrJ4QniZXwOwxKWzCDaGQhHEeyreWYnDeyUdJT3VYCwQ==
 X-Received: from dionnaglaze.c.googlers.com ([fda3:e722:ac3:cc00:36:e7b8:ac13:c9e8])
- (user=dionnaglaze job=sendgmr) by 2002:a05:690c:3688:b0:6ea:fa4:a365 with
- SMTP id 00721157ae682-6eaddfec9efmr1445227b3.8.1731453781898; Tue, 12 Nov
- 2024 15:23:01 -0800 (PST)
-Date: Tue, 12 Nov 2024 23:22:40 +0000
+ (user=dionnaglaze job=sendgmr) by 2002:a17:90b:2ec3:b0:2e2:bb49:1052 with
+ SMTP id 98e67ed59e1d1-2e9e4c7f1aamr70975a91.4.1731453784634; Tue, 12 Nov 2024
+ 15:23:04 -0800 (PST)
+Date: Tue, 12 Nov 2024 23:22:41 +0000
 In-Reply-To: <20241112232253.3379178-1-dionnaglaze@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20241112232253.3379178-1-dionnaglaze@google.com>
 X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
-Message-ID: <20241112232253.3379178-2-dionnaglaze@google.com>
-Subject: [PATCH v6 1/8] KVM: SVM: Fix gctx page leak on invalid inputs
+Message-ID: <20241112232253.3379178-3-dionnaglaze@google.com>
+Subject: [PATCH v6 2/8] KVM: SVM: Fix snp_context_create error reporting
 From: Dionna Glaze <dionnaglaze@google.com>
 To: linux-kernel@vger.kernel.org, x86@kernel.org, 
 	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -76,8 +76,8 @@ Cc: linux-coco@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>,
 	Alexey Kardashevskiy <aik@amd.com>, stable@vger.kernel.org, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Ensure that snp gctx page allocation is adequately deallocated on
-failure during snp_launch_start.
+Failure to allocate should not return -ENOTTY.
+Command failure has multiple possible error modes.
 
 Fixes: 136d8bc931c8 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_START command")
 
@@ -103,37 +103,43 @@ CC: Alexey Kardashevskiy <aik@amd.com>
 CC: stable@vger.kernel.org
 
 Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-Acked-by: Sean Christopherson <seanjc@google.com>
 ---
  arch/x86/kvm/svm/sev.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index c6c8524859001..357906375ec59 100644
+index 357906375ec59..d0e0152aefb32 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -2212,10 +2212,6 @@ static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	if (sev->snp_context)
+@@ -2171,7 +2171,7 @@ static void *snp_context_create(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	/* Allocate memory for context page */
+ 	context = snp_alloc_firmware_page(GFP_KERNEL_ACCOUNT);
+ 	if (!context)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	data.address = __psp_pa(context);
+ 	rc = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_GCTX_CREATE, &data, &argp->error);
+@@ -2179,7 +2179,7 @@ static void *snp_context_create(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 		pr_warn("Failed to create SEV-SNP context, rc %d fw_error %d",
+ 			rc, argp->error);
+ 		snp_free_firmware_page(context);
+-		return NULL;
++		return ERR_PTR(rc);
+ 	}
+ 
+ 	return context;
+@@ -2227,8 +2227,8 @@ static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
  		return -EINVAL;
  
--	sev->snp_context = snp_context_create(kvm, argp);
+ 	sev->snp_context = snp_context_create(kvm, argp);
 -	if (!sev->snp_context)
 -		return -ENOTTY;
--
- 	if (params.flags)
- 		return -EINVAL;
++	if (IS_ERR(sev->snp_context))
++		return PTR_ERR(sev->snp_context);
  
-@@ -2230,6 +2226,10 @@ static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	if (params.policy & SNP_POLICY_MASK_SINGLE_SOCKET)
- 		return -EINVAL;
- 
-+	sev->snp_context = snp_context_create(kvm, argp);
-+	if (!sev->snp_context)
-+		return -ENOTTY;
-+
  	start.gctx_paddr = __psp_pa(sev->snp_context);
  	start.policy = params.policy;
- 	memcpy(start.gosvw, params.gosvw, sizeof(params.gosvw));
 -- 
 2.47.0.277.g8800431eea-goog
 
