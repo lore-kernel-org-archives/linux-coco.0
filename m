@@ -1,54 +1,54 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FE421D22B
-	for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 23:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CC721E110
+	for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 23:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731453793; cv=none; b=cCFLPQORibo8YjVxuU60wyzYyPzIoQ/Ksgpb1lqdj/12VNzYoUqm+Ew8z8jIwa6Gx/W8+cY820NsT/rFFZWC/JINwDINSEp+qxpBM/CB7/zkoWX3Zmsku+ZTIrpczHBZuKpCHaH5/1jHxb8L4qGMRP0/BNhcIsuHkBB6Ls/uSTI=
+	t=1731453795; cv=none; b=hF+hM0aGaB60PI2ZKljXNemFfMxKpohPd58zdYvqKJH8SqcgWMFds4lB0VhuMQt2oksbypDQVdNFOck8K7ROXufmYKp9VuwvRN7joL1bhx8kbf57OZofdbTz1kgGIK3YdQJmt5UyRWy5QpuDD/NrkswDPyqsLEM3+NNi7niQJNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731453793; c=relaxed/simple;
-	bh=1hS42kMCXh2fd2/NsPf3DiCppJSEIF2GD7L2ejW+7Kw=;
+	s=arc-20240116; t=1731453795; c=relaxed/simple;
+	bh=ZYnveSnHe3FkDFRVZnrqkrTHNRmt3JMbLrbNeGvJt08=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FRq99uHG+96jSo3Wv8wsj9NKL1YHGn579fM8od4njylJbV8OZXhKPyWG2n9Y47Gnj1paAGOt9vsIBkaOyMshT8HPokEl0ugf5tjX8sjURgnPYyCTH7+pxhaJ0CVvKocqt5qU9i52EWmkq9XOhDLIrjKnKk3KH/gNnSHI3Pa3gT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mEBOls0f; arc=none smtp.client-ip=209.85.219.201
+	 To:Cc:Content-Type; b=hnEO4NwiCXL0BI1PkWBeMPmDgTpKZs0k1Lkf/fHi4ILPNqAvUHiHdMnkpoZRbBtJM3vMsqHQSdqWDKbJd9mBjsZLa4AkASEvAQETfZ/W/JZ1/9FyfIem35jhmsvlhbXjw+JNlHlRu0HIow8uleCfmIL3o2CMfJTaRY/eEHSdPbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qPY6ZTSe; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mEBOls0f"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e292dbfd834so10213625276.3
-        for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 15:23:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qPY6ZTSe"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-210d5ea3cf5so1241415ad.0
+        for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 15:23:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731453790; x=1732058590; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1731453793; x=1732058593; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JK/GSTSvm9liRNiU4g1TG7hfg4UB9r2AkllQ23c8pWk=;
-        b=mEBOls0fj+eLVjHVzi0GT9odtyT0R6hW36AJceakGsPunR8kWOrVWUyAdxJNcIJsWv
-         9FHYW+EVOgDxpkwSZrVNLZFSD+spwxooEdolXnmTyZFEvkPVQ44gUeWeya4/76q3Rk9S
-         U+zN9Ifm+iGuuZUp8ibY+E7pDYuhqSaQ138BtAgXy4AOQJkqvrvmTIa5MxnPXTqn2jk5
-         rBpsQxKV0vSC8XVvboZeVOwAkUnIv2ONu89xp/ZzIOIYBPopuqIfon8YzJP8dL/C9E4q
-         tPR67Ah5mXRiRlb984Sn6R0xQvsuGbnC/Y18xuSktzk8lCMJEuNDOM3qnAgNPg2rCKgm
-         IJAA==
+        bh=USTo4YL/VPH3OMlRJlDOB1h2tpzzB/FL1xLG0AeYaEg=;
+        b=qPY6ZTSevMWK4cLoxAvAf8iNCDC0yG2fRwV8TXv+rNckaYt2RiZJBENfQw94CIT7Q8
+         M2KajUESU6PsSv8tsmBPM4nZ/6nTMdt9xn9hc7f8UFvPTampVN6BiQqPpounvLUoqJNz
+         X5tDb4/S/9ezx8eujmqCqOTCmjglc85rHVdp8hgFrSTEfBk6GjiuFKUWehJVzVGN3pW6
+         78GCBIdok6kehLWpc9DQih3XuPTsa0o/zMMETVBe89LJ9038X0DP0DAhnIFF0bhh4YlH
+         I1m4t26u0I7TYnV2Q09Fd9zHDrJbDGQzAzoLlRRvZ7vP/ci8c0N0J9EL7dmHwe6fgAix
+         5xLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731453790; x=1732058590;
+        d=1e100.net; s=20230601; t=1731453793; x=1732058593;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JK/GSTSvm9liRNiU4g1TG7hfg4UB9r2AkllQ23c8pWk=;
-        b=KZdqOec9QRiQB7tVvT+BW0tEwRIgiv75iwjV7k5+vEqt+Wdx+mkfPPrn9WUo7roWL7
-         v9ESFxHz3oxcP2UEEs8SQZQ8sYRzBT7jHGoOXwSzyLcRu85WGkZp69WbzddR+A8C3Roi
-         oVMDPWwbIL3A3yb93bhDKQqDXRwLxoMMmrodgBdjvxm6BKbGTG/mjBIiGwLJakWgEoHd
-         1yqwBXD8OFBmJyFr5HanAb7TZ0FhqRzxWlN9uSaSfWAFg7hWLnTdbFTPOIlSmoFQtdj2
-         8bhq+jqOQnrNula7+xyz0u5xCSMxXjXVc7e9Mlod9jF/nU6VdpWJKBegb/TIrTi6A+Ou
-         C+SQ==
-X-Gm-Message-State: AOJu0YyaYDIaP34fkRlwuSpK7oJbca4QpDL3+sBQlXfyEpT85YTccE3H
-	CGd2g0TMKfPBMkBhM+reZ7EyZRnoGFiDfWNKyXfM6N1NuGJs7+1C+leBsIAdYfDJA7ShAdQrqgV
-	UeIb/RHUlX2KR/nZojqNrIg==
-X-Google-Smtp-Source: AGHT+IHGhhefKoRV5e5OubSGAwAM0UWk5yFk6qkA96dyKOOGAJu9z6Gb09Ycpw7kFzXXPso5tbzga53kt7B3No4ObA==
+        bh=USTo4YL/VPH3OMlRJlDOB1h2tpzzB/FL1xLG0AeYaEg=;
+        b=p92YiR+kkI803jlkjn/cEB3DiTUMUdCvAA+2P3nwiVBqi4mNKSLpn8Cyjm/rJ0E3hR
+         LkjhUStXGCgH9AbXi6n5nm4vaDXs6cxEqzvxwip1HDEuLgTLMkCEswVhZPUze9mWFmi2
+         6UrY2GiGsuPN0OnjT8BDgDSQNxzaRv0lcYKkSjUpKSrU7S99+NRXXv/itwd9BBl3CuLA
+         WtbHegXo88qYzdQ/diFKz6c4f8zPnmhk12EJakGakI/mm0eiNsGudATM0gJVUdUN8srY
+         2hNR8foT7KVIXbx4JbSYcUqF0oEoJXAry+k0GJpdH2U5DvLTNe8X45bQhPqrAcIDQb5u
+         /5mw==
+X-Gm-Message-State: AOJu0Yw0kSKnRcfV5lAeOL2YHWvt5WYDBiTIQtH8FpLSSBZ4vebZMB68
+	GTQbp10ue0wL+pbIqK8kU0Az37lRXG/IEKPZ3nJiGKffNYvSAHlscN3gGo101h9bZR1l8kkM+wu
+	cdDVb6Iotu3AABN0xb2W8bA==
+X-Google-Smtp-Source: AGHT+IEby86KOt7jOT5/DEApza0kwwIhq4p8JxRYX4qy2k+CNTUtIUvHeGv7sbHFOyCcpJ8TgiN/weldRpPBkDTfbw==
 X-Received: from dionnaglaze.c.googlers.com ([fda3:e722:ac3:cc00:36:e7b8:ac13:c9e8])
- (user=dionnaglaze job=sendgmr) by 2002:a25:a22a:0:b0:e30:b93a:b3e4 with SMTP
- id 3f1490d57ef6-e337f85f1c8mr43720276.4.1731453790070; Tue, 12 Nov 2024
- 15:23:10 -0800 (PST)
-Date: Tue, 12 Nov 2024 23:22:43 +0000
+ (user=dionnaglaze job=sendgmr) by 2002:a17:902:e809:b0:20c:6764:6681 with
+ SMTP id d9443c01a7336-211821273camr1743295ad.2.1731453793410; Tue, 12 Nov
+ 2024 15:23:13 -0800 (PST)
+Date: Tue, 12 Nov 2024 23:22:44 +0000
 In-Reply-To: <20241112232253.3379178-1-dionnaglaze@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -58,33 +58,36 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20241112232253.3379178-1-dionnaglaze@google.com>
 X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
-Message-ID: <20241112232253.3379178-5-dionnaglaze@google.com>
-Subject: [PATCH v6 4/8] crypto: ccp: Fix uapi definitions of PSP errors
+Message-ID: <20241112232253.3379178-6-dionnaglaze@google.com>
+Subject: [PATCH v6 5/8] crypto: ccp: Add GCTX API to track ASID assignment
 From: Dionna Glaze <dionnaglaze@google.com>
 To: linux-kernel@vger.kernel.org, x86@kernel.org, 
 	Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, 
-	Brijesh Singh <brijesh.singh@amd.com>
-Cc: linux-coco@lists.linux.dev, Alexey Kardashevskiy <aik@amd.com>, 
+	John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"David S. Miller" <davem@davemloft.net>
+Cc: linux-coco@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>, 
 	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, John Allen <john.allen@amd.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Michael Roth <michael.roth@amd.com>, 
 	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
 	Danilo Krummrich <dakr@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Tianfei zhang <tianfei.zhang@intel.com>, stable@vger.kernel.org, 
-	Dionna Glaze <dionnaglaze@google.com>, linux-crypto@vger.kernel.org
+	"Rafael J. Wysocki" <rafael@kernel.org>, Tianfei zhang <tianfei.zhang@intel.com>, 
+	Alexey Kardashevskiy <aik@amd.com>, linux-crypto@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-From: Alexey Kardashevskiy <aik@amd.com>
+In preparation for SEV firmware hotloading support, introduce a new way
+to create, activate, and decommission GCTX pages such that ccp is has
+all GCTX pages available to update as needed.
 
-Additions to the error enum after the explicit 0x27 setting for
-SEV_RET_INVALID_KEY leads to incorrect value assignments.
-
-Use explicit values to match the manufacturer specifications more
-clearly.
-
-Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
+Compliance with SEV-SNP API section 3.3 Firmware Updates and 4.1.1
+Live Update: before a firmware is committed, all active GCTX pages
+should be updated with SNP_GUEST_STATUS to ensure their data structure
+remains consistent for the new firmware version.
+There can only be CPUID 0x8000001f_EDX-1 many SEV-SNP asids in use at
+one time, so this map associates asid to gctx in order to track which
+addresses are active gctx pages that need updating. When an asid and
+gctx page are decommissioned, the page is removed from tracking for
+update-purposes.
 
 CC: Sean Christopherson <seanjc@google.com>
 CC: Paolo Bonzini <pbonzini@redhat.com>
@@ -105,46 +108,308 @@ CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 CC: "Rafael J. Wysocki" <rafael@kernel.org>
 CC: Tianfei zhang <tianfei.zhang@intel.com>
 CC: Alexey Kardashevskiy <aik@amd.com>
-CC: stable@vger.kernel.org
 
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
 Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
 ---
- include/uapi/linux/psp-sev.h | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/crypto/ccp/sev-dev.c | 159 ++++++++++++++++++++++++++++++++++-
+ drivers/crypto/ccp/sev-dev.h |   4 +
+ include/linux/psp-sev.h      |  55 ++++++++++++
+ 3 files changed, 217 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
-index 832c15d9155bd..eeb20dfb1fdaa 100644
---- a/include/uapi/linux/psp-sev.h
-+++ b/include/uapi/linux/psp-sev.h
-@@ -73,13 +73,20 @@ typedef enum {
- 	SEV_RET_INVALID_PARAM,
- 	SEV_RET_RESOURCE_LIMIT,
- 	SEV_RET_SECURE_DATA_INVALID,
--	SEV_RET_INVALID_KEY = 0x27,
--	SEV_RET_INVALID_PAGE_SIZE,
--	SEV_RET_INVALID_PAGE_STATE,
--	SEV_RET_INVALID_MDATA_ENTRY,
--	SEV_RET_INVALID_PAGE_OWNER,
--	SEV_RET_INVALID_PAGE_AEAD_OFLOW,
--	SEV_RET_RMP_INIT_REQUIRED,
-+	SEV_RET_INVALID_PAGE_SIZE          = 0x0019,
-+	SEV_RET_INVALID_PAGE_STATE         = 0x001A,
-+	SEV_RET_INVALID_MDATA_ENTRY        = 0x001B,
-+	SEV_RET_INVALID_PAGE_OWNER         = 0x001C,
-+	SEV_RET_AEAD_OFLOW                 = 0x001D,
-+	SEV_RET_EXIT_RING_BUFFER           = 0x001F,
-+	SEV_RET_RMP_INIT_REQUIRED          = 0x0020,
-+	SEV_RET_BAD_SVN                    = 0x0021,
-+	SEV_RET_BAD_VERSION                = 0x0022,
-+	SEV_RET_SHUTDOWN_REQUIRED          = 0x0023,
-+	SEV_RET_UPDATE_FAILED              = 0x0024,
-+	SEV_RET_RESTORE_REQUIRED           = 0x0025,
-+	SEV_RET_RMP_INITIALIZATION_FAILED  = 0x0026,
-+	SEV_RET_INVALID_KEY                = 0x0027,
- 	SEV_RET_MAX,
- } sev_ret_code;
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index af018afd9cd7f..d8c35b8478ff5 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -8,6 +8,7 @@
+  */
  
+ #include <linux/bitfield.h>
++#include <linux/file.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/kthread.h>
+@@ -109,6 +110,10 @@ static void *sev_init_ex_buffer;
+  */
+ static struct sev_data_range_list *snp_range_list;
+ 
++/* SEV ASID data tracks resources associated with an ASID to safely manage operations. */
++struct sev_asid_data *sev_asid_data;
++u32 nr_asids, sev_min_asid, sev_es_max_asid;
++
+ static inline bool sev_version_greater_or_equal(u8 maj, u8 min)
+ {
+ 	struct sev_device *sev = psp_master->sev_data;
+@@ -1093,6 +1098,109 @@ static int snp_filter_reserved_mem_regions(struct resource *rs, void *arg)
+ 	return 0;
+ }
+ 
++static bool sev_check_external_user(int fd);
++void *sev_snp_create_context(int fd, int asid, int *psp_ret)
++{
++	struct sev_data_snp_addr data = {};
++	void *context;
++	int rc, error;
++
++	if (!sev_check_external_user(fd))
++		return ERR_PTR(-EBADF);
++
++	if (!sev_asid_data)
++		return ERR_PTR(-ENODEV);
++
++	if (asid < 0 || asid >= nr_asids)
++		return ERR_PTR(-EINVAL);
++
++	/* Can't create a context for a used ASID. */
++	if (WARN_ON_ONCE(sev_asid_data[asid].snp_context))
++		return ERR_PTR(-EBUSY);
++
++	/* Allocate memory for context page */
++	context = snp_alloc_firmware_page(GFP_KERNEL_ACCOUNT);
++	if (!context)
++		return ERR_PTR(-ENOMEM);
++
++	data.address = __psp_pa(context);
++	rc = sev_do_cmd(SEV_CMD_SNP_GCTX_CREATE, &data, &error);
++	if (rc) {
++		pr_warn("Failed to create SEV-SNP context, rc=%d fw_error=0x%x",
++			rc, error);
++		if (psp_ret)
++			*psp_ret = error;
++		snp_free_firmware_page(context);
++		return ERR_PTR(-EIO);
++	}
++
++	sev_asid_data[asid].snp_context = context;
++
++	return context;
++}
++EXPORT_SYMBOL_GPL(sev_snp_create_context);
++
++int sev_snp_activate_asid(int fd, int asid, int *psp_ret)
++{
++	struct sev_data_snp_activate data = {0};
++	void *context;
++
++	if (!sev_check_external_user(fd))
++		return -EBADF;
++
++	if (!sev_asid_data)
++		return -ENODEV;
++
++	if (asid < 0 || asid >= nr_asids)
++		return -EINVAL;
++
++	context = sev_asid_data[asid].snp_context;
++	if (WARN_ON_ONCE(!context))
++		return -EINVAL;
++
++	data.gctx_paddr = __psp_pa(context);
++	data.asid = asid;
++	return sev_do_cmd(SEV_CMD_SNP_ACTIVATE, &data, psp_ret);
++}
++EXPORT_SYMBOL_GPL(sev_snp_activate_asid);
++
++int sev_snp_guest_decommission(int fd, int asid, int *psp_ret)
++{
++	struct sev_data_snp_addr addr = {};
++	struct sev_asid_data *data;
++	int ret, error;
++
++	if (!sev_check_external_user(fd))
++		return -EBADF;
++
++	if (!sev_asid_data)
++		return -ENODEV;
++
++	if (asid < 0 || asid >= nr_asids)
++		return -EINVAL;
++
++	data = &sev_asid_data[asid];
++	/* If context is not created then do nothing */
++	if (!data->snp_context)
++		return 0;
++
++	/* Do the decommission, which will unbind the ASID from the SNP context */
++	addr.address = __sme_pa(data->snp_context);
++	ret = sev_do_cmd(SEV_CMD_SNP_DECOMMISSION, &addr, &error);
++
++	if (WARN_ONCE(ret, "Failed to release guest context, rc=%d, fw_error=0x%x", ret, error)) {
++		if (psp_ret)
++			*psp_ret = error;
++		return ret;
++	}
++
++	snp_free_firmware_page(data->snp_context);
++	data->snp_context = NULL;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(sev_snp_guest_decommission);
++
+ static int __sev_snp_init_locked(int *error)
+ {
+ 	struct psp_device *psp = psp_master;
+@@ -1306,6 +1414,27 @@ static int __sev_platform_init_locked(int *error)
+ 	return 0;
+ }
+ 
++static int sev_asid_data_init(void)
++{
++	u32 eax, ebx, ecx;
++
++	if (sev_asid_data)
++		return 0;
++
++	cpuid(0x8000001f, &eax, &ebx, &ecx, &sev_min_asid);
++	if (!ecx)
++		return -ENODEV;
++
++	nr_asids = ecx + 1;
++	sev_es_max_asid = sev_min_asid - 1;
++
++	sev_asid_data = kcalloc(nr_asids, sizeof(*sev_asid_data), GFP_KERNEL);
++	if (!sev_asid_data)
++		return -ENOMEM;
++
++	return 0;
++}
++
+ static int _sev_platform_init_locked(struct sev_platform_init_args *args)
+ {
+ 	struct sev_device *sev;
+@@ -1319,6 +1448,10 @@ static int _sev_platform_init_locked(struct sev_platform_init_args *args)
+ 	if (sev->state == SEV_STATE_INIT)
+ 		return 0;
+ 
++	rc = sev_asid_data_init();
++	if (rc)
++		return rc;
++
+ 	/*
+ 	 * Legacy guests cannot be running while SNP_INIT(_EX) is executing,
+ 	 * so perform SEV-SNP initialization at probe time.
+@@ -2329,6 +2462,9 @@ static void __sev_firmware_shutdown(struct sev_device *sev, bool panic)
+ 		snp_range_list = NULL;
+ 	}
+ 
++	kfree(sev_asid_data);
++	sev_asid_data = NULL;
++
+ 	__sev_snp_shutdown_locked(&error, panic);
+ }
+ 
+@@ -2377,10 +2513,31 @@ static struct notifier_block snp_panic_notifier = {
+ 	.notifier_call = snp_shutdown_on_panic,
+ };
+ 
++static bool file_is_sev(struct file *filep)
++{
++	return filep && filep->f_op == &sev_fops;
++}
++
++static bool sev_check_external_user(int fd)
++{
++	struct fd f;
++	bool ret = true;
++
++	f = fdget(fd);
++	if (!fd_file(f))
++		return false;
++
++	if (!file_is_sev(fd_file(f)))
++		ret = false;
++
++	fdput(f);
++	return ret;
++}
++
+ int sev_issue_cmd_external_user(struct file *filep, unsigned int cmd,
+ 				void *data, int *error)
+ {
+-	if (!filep || filep->f_op != &sev_fops)
++	if (!file_is_sev(filep))
+ 		return -EBADF;
+ 
+ 	return sev_do_cmd(cmd, data, error);
+diff --git a/drivers/crypto/ccp/sev-dev.h b/drivers/crypto/ccp/sev-dev.h
+index 3e4e5574e88a3..ccf3ba78d8332 100644
+--- a/drivers/crypto/ccp/sev-dev.h
++++ b/drivers/crypto/ccp/sev-dev.h
+@@ -65,4 +65,8 @@ void sev_dev_destroy(struct psp_device *psp);
+ void sev_pci_init(void);
+ void sev_pci_exit(void);
+ 
++struct sev_asid_data {
++	void *snp_context;
++};
++
+ #endif /* __SEV_DEV_H */
+diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+index 903ddfea85850..0b3b7707ccb21 100644
+--- a/include/linux/psp-sev.h
++++ b/include/linux/psp-sev.h
+@@ -942,6 +942,61 @@ int sev_guest_decommission(struct sev_data_decommission *data, int *error);
+  */
+ int sev_do_cmd(int cmd, void *data, int *psp_ret);
+ 
++/**
++ * sev_snp_create_context - allocates an SNP context firmware page
++ *
++ * Associates the created context with the ASID that an activation
++ * call after SNP_LAUNCH_START will commit. The association is needed
++ * to track active guest context pages to refresh during firmware hotload.
++ *
++ * @fd:      A file descriptor for the SEV device
++ * @asid:    The ASID allocated to the caller that will be used in a subsequent SNP_ACTIVATE.
++ * @psp_ret: sev command return code.
++ *
++ * Returns:
++ * A pointer to the SNP context page, or an ERR_PTR of
++ * -%ENODEV    if the PSP device is not available
++ * -%ENOTSUPP  if PSP device does not support SEV
++ * -%ETIMEDOUT if the SEV command timed out
++ * -%EIO       if PSP device returned a non-zero return code
++ */
++void *sev_snp_create_context(int fd, int asid, int *psp_ret);
++
++/**
++ * sev_snp_activate_asid - issues SNP_ACTIVATE for the ASID and associated guest context page.
++ *
++ * @fd:      A file descriptor for the SEV device
++ * @asid:    The ASID to activate.
++ * @psp_ret: sev command return code.
++ *
++ * Returns:
++ * 0 if the SEV device successfully processed the command
++ * -%ENODEV    if the PSP device is not available
++ * -%ENOTSUPP  if PSP device does not support SEV
++ * -%ETIMEDOUT if the SEV command timed out
++ * -%EIO       if PSP device returned a non-zero return code
++ */
++int sev_snp_activate_asid(int fd, int asid, int *psp_ret);
++
++/**
++ * sev_snp_guest_decommission - issues SNP_DECOMMISSION for an ASID's guest context page, and frees
++ * it.
++ *
++ * The caller must ensure mutual exclusion with any process that may deactivate ASIDs.
++ *
++ * @fd:      A file descriptor for the SEV device
++ * @asid:    The ASID to activate.
++ * @psp_ret: sev command return code.
++ *
++ * Returns:
++ * 0 if the SEV device successfully processed the command
++ * -%ENODEV    if the PSP device is not available
++ * -%ENOTSUPP  if PSP device does not support SEV
++ * -%ETIMEDOUT if the SEV command timed out
++ * -%EIO       if PSP device returned a non-zero return code
++ */
++int sev_snp_guest_decommission(int fd, int asid, int *psp_ret);
++
+ void *psp_copy_user_blob(u64 uaddr, u32 len);
+ void *snp_alloc_firmware_page(gfp_t mask);
+ void snp_free_firmware_page(void *addr);
 -- 
 2.47.0.277.g8800431eea-goog
 
