@@ -1,173 +1,158 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00B51CD1FB
-	for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 12:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C85E188907
+	for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 14:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731414614; cv=none; b=EG/gUblWPOOjsurOzYRJyitWeKyUoq/Eny1PB6OCsqI7L0Eg+eo37Li+VaW+d9+4B4/kuRNgdltuEeP9z4qOF6oMESYtEOGrcc8v8Pr7I8wFINUPkFok+nduWzu+6UcniMRwWPoCmC/RtIxeB7fGLds9YtgVSdc+X19m7qytXRQ=
+	t=1731420542; cv=none; b=Rd1DAg9O/G/TaXizm0Jxz0wK/vWJPElbn7qNDZz5skzdGfr8vh3HDt1VfwdbK2+t07JGXenH2+az4jfcWjTkkbQZ1v3PRwmujphx2EkwMRjPUbYiqrobt2ldBC686cMzC/aMy1bWfvy6UHCXIIlfFwXA3ebwfhMZASrcdmuh2g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731414614; c=relaxed/simple;
-	bh=EkH7tOZES0UTBANUTLmCYMEXvzkYbquoimoVw4cajmk=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=nIeddLQvidlo+bN51036V60KNgxuj9WVzQcudYv0KDKwkIS+0qWoIQZmjNtyJyqgD9GW3cFu6RTEU+823w4rVEc/e+MExkDsdalvswlzULr6bZeFQ475rCfx1PcFaXGh9aaK0fcWjN0pTQ1SVSUVGHmXsUcfzWCZMT6WaIFZjk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ifAzxFh+; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1731420542; c=relaxed/simple;
+	bh=z2GgRrZe65j+X0EfOtlHN3FnXHDPVC9GzEqvEqjhomE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XiyjmMMPogx26p1PgnK9ii5UufX9TEhbUI1a0rVm89iQKToYRXewm6rr785Z5KHXkMBnCqzVAm1ag+Gq0UHF5/kmPUs6C/uQNaPu+aZP96Fekn38WvwZf2LXdOMkZLUnb3yYWxNaljCgxXnlZF9t/yJt7GfVIf4WHtakTR3iBYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L3NtHFBi; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ifAzxFh+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731414611;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=2a4i7dwP6my646ebN4zwm6Im+La25V6vtygycyHtUM8=;
-	b=ifAzxFh+QOC9uUHKa4/9VTpz3R4Coxz2YBCSglVGee2VNoFCGU8gQJQTcCSa5uXh9lZw75
-	UzNuJiw8aYQaIADRii0IJJVxZ6IbNQB8pOEDgU6CLpeElQnlO3AvP4eiFf0ZbAq0fnrMHG
-	cZBLMWs12x12sfSXXZj57Kyfv8YRuLw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-578-EHvu1MSgNDOApWdAoJjGIQ-1; Tue, 12 Nov 2024 07:30:10 -0500
-X-MC-Unique: EHvu1MSgNDOApWdAoJjGIQ-1
-X-Mimecast-MFC-AGG-ID: EHvu1MSgNDOApWdAoJjGIQ
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43164f21063so37730485e9.2
-        for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 04:30:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731414609; x=1732019409;
-        h=content-transfer-encoding:to:organization:autocrypt:subject:from
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2a4i7dwP6my646ebN4zwm6Im+La25V6vtygycyHtUM8=;
-        b=gxLwFdwy1OdakQwCLW0IUgKqmOIGvH7PEUqSZAWh59A/ZAJRDUK7WhUw0Ia8s8aiCK
-         860DEuAR1ws4ATr78t3cBBRfc8XD1yI++kMw4rwlpG1DbRAflXB9Hd+YPr4dInse23kD
-         PGRajAJv28ydxiJNrdE6Uv8dCg2Fejhj0gxMLH8uz9KQDSbs78j7j3ASg4nfP6TxkPg0
-         cESmM4yAwWR1406k6xv4JGdclC6dkYPvWoFJvQeLedxnaLyhnU+8w6tle9ZfMRj1HaUj
-         +p5DlPecvcLpTj9leCG4BtiavKwz2mO+3CAhYM//ODq4r1c+gZ4IkiM6VTu4TRWg+vse
-         n3GQ==
-X-Gm-Message-State: AOJu0YwdMQm/eDgAhOXnj7syfE5WYxQW1K91Ev3vcAlSXnGPZPA06kMo
-	MrpckYVoEq8NdMhWgnY/GDxdUJZhqkMiJOEzNd9DqbRL2wpT0GXV1xgBSqwCK0bkJs+ycDhJVIq
-	fnZen0YQkTkTk/054bk2SCLyXhV+iSE+GcBNFh4p7zZO7/6WzicLUAIJJ3JgCbLPqTNeBvANLJf
-	DjD9AvFn2zLX2Ho5Rc8KbbKMFbhVzPOXOoNjZebT/FXg==
-X-Received: by 2002:a05:600c:35cf:b0:431:5044:e388 with SMTP id 5b1f17b1804b1-432cd4748a4mr20638935e9.22.1731414608894;
-        Tue, 12 Nov 2024 04:30:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGRKyf/MQA+/dsqTGn2AGJJDkgnrno5y7HFWo9lw33oNXuUOSk2AaDSa75oCXZLX/Hm30DtNA==
-X-Received: by 2002:a05:600c:35cf:b0:431:5044:e388 with SMTP id 5b1f17b1804b1-432cd4748a4mr20638515e9.22.1731414608456;
-        Tue, 12 Nov 2024 04:30:08 -0800 (PST)
-Received: from ?IPV6:2003:cb:c739:8e00:7a46:1b8c:8b13:d3d? (p200300cbc7398e007a461b8c8b130d3d.dip0.t-ipconnect.de. [2003:cb:c739:8e00:7a46:1b8c:8b13:d3d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432b05e5f77sm211872355e9.43.2024.11.12.04.30.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Nov 2024 04:30:07 -0800 (PST)
-Message-ID: <6f2bfac2-d9e7-4e4a-9298-7accded16b4f@redhat.com>
-Date: Tue, 12 Nov 2024 13:30:06 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L3NtHFBi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731420540; x=1762956540;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=z2GgRrZe65j+X0EfOtlHN3FnXHDPVC9GzEqvEqjhomE=;
+  b=L3NtHFBiPGweEtFVByETOrGQMF79LYVoKG1dTIMzG1GHPwzWL9mrAlHE
+   GzkE8MBaoVF2ivIFEdnjdwwhmArSaoKm3DM3vzDAEPgO7CmIBh+sunLX2
+   WrO/CNav1xJcyRHuI5b8Sg4sgRa2pdjoPkvEkLSxBEgeUUwmops5GRSEG
+   C3U8/JlKab+JJhL6gBa1b0iknmW6jwA3URqga5PxgH6yjFhYx0XK4Sbc8
+   hNaxBxgMdGLVYfHQ4u/j7xcqEGa79IdjRVrjoKYpxMS4vxe4jEYsCIKI/
+   Rz6VaXozqJ1hP7cVfgBQ8//AybPVy24DBBkl96D7zHkMxHCGYXxaAXY40
+   w==;
+X-CSE-ConnectionGUID: BYM7OtBTTWyS7QsXrAFInw==
+X-CSE-MsgGUID: RIrxkNFhSQSUAtUfIAFJDg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="41817712"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="41817712"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 06:09:00 -0800
+X-CSE-ConnectionGUID: IDC/AicaQlS8Ta4m07fCXw==
+X-CSE-MsgGUID: zOekt+EETG6DEFedC3oAqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,148,1728975600"; 
+   d="scan'208";a="87606121"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO himmelriiki) ([10.245.245.0])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 06:08:56 -0800
+Date: Tue, 12 Nov 2024 16:08:48 +0200
+From: Mikko Ylinen <mikko.ylinen@linux.intel.com>
+To: Cedric Xing <cedric.xing@intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
+	Qinkun Bao <qinkun@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH RFC v2 0/2] tsm: Unified Measurement Register ABI for TVMs
+Message-ID: <ZzNhcHDzIIGi7fb6@himmelriiki>
+References: <20241031-tsm-rtmr-v2-0-1a6762795911@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Hildenbrand <david@redhat.com>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2024-11-14
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-To: linux-coco@lists.linux.dev, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- KVM <kvm@vger.kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FFLWb1U7DxSdOFvWTVa3WmvtEjMNzdBJEH57t87jLBQ_1731414609
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241031-tsm-rtmr-v2-0-1a6762795911@intel.com>
 
-Hi,
 
-the next guest_memfd upstream call will happen this Thursday, 2024-11-14
-at at 9:00 - 10:00am (GMT-08:00) Pacific Time - Vancouver.
+On Thu, Oct 31, 2024 at 11:50:39AM -0500, Cedric Xing wrote:
+> NOTE: This patch series introduces the Measurement Register (MR) ABI, and is
+> largely a continuation of Samuel Ortiz’s previous work on the RTMR ABI [1].
+> 
+> This patch series adds a unified interface to TSM core for confidential
+> computing (CC) guest drivers to provide access to measurement registers (MRs),
+> which are essential for relying parties (RPs) to verify the integrity of the
+> computing environment. The interface is structured around
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+I think we also need think about the user ABI here. While there's a use
+case for user components (running in a CVM) to read and evaluate the static parts
+of the report, exposing them in a vendor agnostic way can be difficult.
 
-The meeting notes are linked from the google calendar invitation. If you
-want an invitation that also covers all future meetings, just write me a
-mail.
+Is it justified for the kernel parse the report details and make them available
+or would it be enough to let users to parse TSM Reports @outblob based on @provider
+info for the parts they are interested?
 
-In this meeting we'll discuss:
-* fbind() and NUMA mempolicy for guest_memfd
-* Persisting guest_memfd across reboot / guest_memfs
-* guest_memfd use cases for a PFN range allocator
+On the runtime measurement registers, [1] took the approach where only a generic
+transport (same thinking as with TSM Reports) was provided and the proposed user
+ABI was only the digest with a pre-configured target register index without any
+vendor specifics.
 
-And we'll continue our discussion on:
-* Challenges with supporting huge pages
-* Challenges with shared vs. private conversion
-* guest_memfd as a "library"
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
---
-
-Current upstream proposals floating around:
-* mmap support + shared vs. private [1]
-* preparations [2] for huge/gigantic page support [3]
-* guest_memfd as a "library" to make it independent of KVM [4]
-* fbind() and NUMA mempolicy for guest_memfd [5]
-* Hooking into folio_put() [6]
-
-[1] https://lkml.kernel.org/r/20241010085930.1546800-1-tabba@google.com
-[2] https://lkml.kernel.org/r/cover.1728684491.git.ackerleytng@google.com
-[3] https://lkml.kernel.org/r/cover.1728684491.git.ackerleytng@google.com
-[4]
-https://lkml.kernel.org/r/20240829-guest-memfd-lib-v2-0-b9afc1ff3656@quicinc.com
-[5] 
-https://lore.kernel.org/all/20241105164549.154700-1-shivankg@amd.com/T/#u
-[6] https://lkml.kernel.org/r/20241108162040.159038-1-tabba@google.com
+> `struct tsm_measurement`, which holds an array of
+> `struct tsm_measurement_register` and includes operations for reading and
+> updating MRs.
+> 
+> The MRs come in two varieties: static and runtime. Static MRs are determined at
+> the TEE VM (TVM) build time and capture the initial memory image or the
+> configuration/policy specified by the TVM's owner. In contrast, Runtime MRs
+> (RTMRs) start with known values, such as all zeros, at TVM build time and are
+> extended with measurements of loaded code, data, configuration, or executed
+> actions by the TVM guest during runtime.
+> 
+> Each `struct tsm_measurement_register` features a `mr_flags` member that
+> indicates the MR's properties. Static MRs are typically marked as read-only
+> with only the `TSM_MR_F_R` flag set, while RTMRs are marked as extensible with
+> the `TSM_MR_F_X` flag. Patch 2 adds a sample module to demonstrate how to
+> define and implement MRs.
+> 
+> MRs are made accessible to applications through a directory tree (rooted at
+> /sys/kernel/tsm). An MR could be presented as either a file containing its
+> value, or a directory containing elements like `digest` and `hash_algo`. By
+> default, an MR will be presented as a directory unless `TSM_MR_F_F` is set in
+> `mr_flags`.
+> 
+> [1]: https://patchwork.kernel.org/project/linux-integrity/cover/20240128212532.2754325-1-sameo@rivosinc.com/
+> 
+> Signed-off-by: Cedric Xing <cedric.xing@intel.com>
+> ---
+> Changes in v2:
+> - Separated TSM MR code in a new file: `tsm-mr.c`.
+> - Removed RTMR event logging due to the lack of agreement on the log format.
+> - Default presentation of each MR as a directory, with the option to request an
+>   MR as a file using `TSM_MR_F_F`.
+> - Reduced verbosity: Renamed `struct tsm_measurement_provider` to `struct
+>   tsm_measurement`, and `tsm_(un)register_measurement_provider` to
+>   `tsm_(un)register_measurement`.
+> - Added `MODULE_DESCRIPTION` for measurement-sample.
+> - Fixed several compiler warnings on 32-bit builds.
+> - Link to v1: https://lore.kernel.org/r/20240907-tsm-rtmr-v1-0-12fc4d43d4e7@intel.com
+> 
+> ---
+> Cedric Xing (2):
+>       tsm: Add TVM Measurement Register Support
+>       tsm: Add TVM Measurement Sample Code
+> 
+>  drivers/virt/coco/Kconfig               |   3 +-
+>  drivers/virt/coco/Makefile              |   2 +
+>  drivers/virt/coco/{tsm.c => tsm-core.c} |  26 ++-
+>  drivers/virt/coco/tsm-mr.c              | 374 ++++++++++++++++++++++++++++++++
+>  include/linux/tsm.h                     |  63 ++++++
+>  samples/Kconfig                         |   4 +
+>  samples/Makefile                        |   1 +
+>  samples/tsm/Makefile                    |   2 +
+>  samples/tsm/measurement-example.c       | 117 ++++++++++
+>  9 files changed, 581 insertions(+), 11 deletions(-)
+> ---
+> base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
+> change-id: 20240904-tsm-rtmr-7a45859d2a96
+> 
+> Best regards,
+> -- 
+> Cedric Xing <cedric.xing@intel.com>
+>
 
 -- 
-Cheers,
-
-David / dhildenb
-
+Regards, Mikko
