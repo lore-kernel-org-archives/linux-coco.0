@@ -1,54 +1,55 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A54221CF9A
-	for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 19:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB88217F27
+	for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 19:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731440043; cv=none; b=tsSKMm/+XsXk1s6uDBeO+fgVeHIzYnisjALQ4nnTcpiTuMbm7cI9R0DdvFz/bsOC3IyLYFaww1SPiOaau0YWGJL/uq2qp1e7d2X12aia7pdSjI+ChV7EXz9v6m8sK0ziPFbZMgqT+7yRldUXONtik13+zgYusgX0/BHVRCpq2qU=
+	t=1731440890; cv=none; b=BAv/LaJcACEYpcYHav/hVftynCrg0rpEIgnlPjuTxLjWiqidD6/bR3SeS9XhZmg8R1baKZr6bF8HERdG4q7HRjAlj6SlDhSom/yzqvm/lJIoBrXS+rroF4BESlOa6BfxbI7SZoCTplxrZZhkvESTnxtXarisVYMArL0cTgpCUVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731440043; c=relaxed/simple;
-	bh=8Zw9VxaGNKeAshrG2DVz/boJEgYN8+U9vCybtzTq3DY=;
+	s=arc-20240116; t=1731440890; c=relaxed/simple;
+	bh=o8eOdtHtMHFg2vs8SZ/DKu2qO40wUv2AUpZc54PgLH0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J/6SBNanUif9xcxPEdDoa/jiZ2okJTOnnX2bVJb0IjonDpwAzGGIRfCEn8HH38CqIarwMGyA5AxQWiQMEI0+cCt7hkwnZ3oOHgwtKPqRA70CDhjZau7o0aN5Ydn+7P0793/lMnj3E4MQhdE6HvYx//CQTQ1xBaf7FUrgK474YUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uvHp8N2n; arc=none smtp.client-ip=209.85.221.53
+	 To:Cc:Content-Type; b=eP6C/LvKVEZ6KursypLFdv9TZRNR/FDhb1zPoLkdXkgSmiw+IwLTswS2am5hxLAiQpDWIwaMsc8ijofc3410suPkMG1KiSFkJqPJKTMTgQDRcPOB5ZLGmT7nyLf6we0gc3GJvAnfkP61tPCSnrTq3BGaY4UmISSrm+DMX/76YdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EK08aeE3; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uvHp8N2n"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3807dd08cfcso5685309f8f.1
-        for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 11:34:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EK08aeE3"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9a0ef5179dso1027051566b.1
+        for <linux-coco@lists.linux.dev>; Tue, 12 Nov 2024 11:48:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731440040; x=1732044840; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=y9wb6AkvqlKLFv6CsY4nbWvFqgC5HzXu2/jh/XKH3TM=;
-        b=uvHp8N2nTSPpZwY+T5Szy5aOwb7N/ePtFAVoN9yZAU3tBj+ehKhB6uKGq1tLWN2NGz
-         kiyRyMGVBmn7BNSDtsiVPCiFsUJiUvw7NUeTJcXYSxwenrkPPFPVq9VzxrBsO8Qt/bDI
-         8003EJCsVY5t96XySoAyHXZsovJxbmDXsJAgkzuM4Ch6NZ4hQFUtf/X76bWaJfZurGKm
-         UIsc+EaiV6n8nwfdIdJA1L0qCk83NORJun3IektiiBQERvd5QLt9P38ttGVa53UowWyJ
-         O/HM1bt8SlYqGGrZ0FMETmbVR9PuNg+u25EUaN6i63Ejf5x9ftihprrUCypQ/AR45uJ9
-         +MlA==
+        d=google.com; s=20230601; t=1731440887; x=1732045687; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o8eOdtHtMHFg2vs8SZ/DKu2qO40wUv2AUpZc54PgLH0=;
+        b=EK08aeE3aWPd9VJ0aOg5qcnSVjlkn6zq5rAw656LS7yw9vb44Ask06IAg4123bamZC
+         pGw6Ksb15s6OBF19Aaq7+GX55ZX5/wQgTXgluZukyei4p2BfCok1+EegloZUPHlYFAV4
+         jsx0SLVKRdCdQ4fLO8NQ3uGDFASUqqnK+A8iJtIHag+IXsUjBpBgwa8U5QFuGmiRDc2p
+         Rnjtp4Nh+hTUQ1Mm/kAAqklVhNYGnCquAb2tqvEcE/X8rZDdeGoG9rFZFpeYd+m77uCx
+         eC+0k19kPOVuadjJdF3tCgBLcCQxkPIX/OutStxJezkZwtAWwwClCBCdVPcEA2RZaBHf
+         5r5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731440040; x=1732044840;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y9wb6AkvqlKLFv6CsY4nbWvFqgC5HzXu2/jh/XKH3TM=;
-        b=Wb/uv4sKQTc5uQujJSua0tpRIm1sXcSgPCUEsV6YTjjtpFKqTAzAXtivKD3PXzp6mR
-         5gtrq9RM4LR1+CY63z6en0N8CiFURYaIOtlgpwoJs66uUMYMlvpvvr4iVM9+S6SVLLJu
-         JRUZZZCPImVDUyWpseurKm8dXjTPkRfhBG6zp1cUhscfzwdTZ2BA3SVIDGKiznheO2V2
-         I0iVwp6eaF+t8F6TrstmVD3A5iAGfcotZ+1VEilAPGuH/99zd62N10fet9uhlk8Sw4GS
-         YX8HmrGu3xINOnWrt7Upr9e4KPT/262VFla+/FmjMtOB5BDQPXkOfOiNsbKXE0zLEk16
-         bZlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuDe3iLBSGX7C/Y7uoSsZ3HPX2w7hsVRRg5S5Q03/gxhd7JnnwQ/8kQBYI1Rfc60Tgw02smkGT/9Py@lists.linux.dev
-X-Gm-Message-State: AOJu0YzHTq7e2A7ggZS1QKOgC5eBXoOzCCRCDBEp5XMJpgrLO/2Ym6W3
-	Xx2VF0GeoPad3g40xTKsvyu9OWBOVHVXPOVgIPmzTSSmRL5EDRSdJ2iWq7vD8tctCfNcIKoNeI7
-	Ign+M7SJ4N5UDLiZFNBOYx1ndvldpqHIrAgt3
-X-Google-Smtp-Source: AGHT+IH2loZRrvGX7OLDNAn4wYJUo+4ZKUEg9FXqo8fn5IA6xVdWeodz/p2eUqUKInKsvo4Oso+ZqW477vo9YTiTm1Q=
-X-Received: by 2002:a05:6000:2a8a:b0:381:f443:21d1 with SMTP id
- ffacd0b85a97d-381f443259dmr17589618f8f.54.1731440040288; Tue, 12 Nov 2024
- 11:34:00 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731440887; x=1732045687;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o8eOdtHtMHFg2vs8SZ/DKu2qO40wUv2AUpZc54PgLH0=;
+        b=FhjhUzEEHzyAj/VhNUoRRUK9kISnDTd4ubKiE7d2pKOx8r/V71cRK4S4bCMIPBl1CO
+         J1g9BZY1dS9PTGVt1sIr5X+CtlU+LhEjL9RPxp9g4hDKzv6WukxPC1kEXPV3OGRWQQhh
+         hcQe/lw3fDFCRGgDfH39fA5xxO5Ch0hmpyHUlNp8ze3+NJ0TangBW7LFspWxBP8CW2m6
+         PGqWJcOq2JXzVgVayUCerp0DP1TRHr2O55ky+dmrRic5IYedOZCQDAIHyHPwzdCoNGnB
+         tzJuISKPEY1RZqZR9M5fprwgtwylg5DbUiPIjqEMSw87gUZ3p/vcXxxoZup2X1mA/yPf
+         4GCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUVRrp1D1os6Ipa0q6Qb+cNBg6Wy0cYsrI1Cf5DH1jjcnh681RrQmC7ujuuUj9MDdLUqvw8rpM7go9u@lists.linux.dev
+X-Gm-Message-State: AOJu0YyoIZBvNtpa9A1dPUTqNBBoLbS2mbtFpBmQqiRaGKHCTO1vl+np
+	uslOMYOcV+DpQElh87BYD+PTxnf9EGRKfAFSRr3P6s2u29cAaeK0xNwvbj/5PktWE4TzcJ0EChH
+	dL5bivohYbQCBSRTOxXZA62WO5TR2KG0g+GWb
+X-Google-Smtp-Source: AGHT+IEFgQusI2LRG8yS8c+lKwjb4SOnATX6OL+zJ6TrY0kBJRmVDcTAeTIKs1eTWUeRMWkbTKPLqC6ZZa3hgOujSU0=
+X-Received: by 2002:a17:907:318e:b0:a9a:cf6:b629 with SMTP id
+ a640c23a62f3a-a9eeff4458amr1685921066b.29.1731440886519; Tue, 12 Nov 2024
+ 11:48:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -56,50 +57,69 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20241107232457.4059785-1-dionnaglaze@google.com>
- <20241107232457.4059785-10-dionnaglaze@google.com> <43be0a16-0a06-d7fb-3925-4337fb38e9e9@amd.com>
-In-Reply-To: <43be0a16-0a06-d7fb-3925-4337fb38e9e9@amd.com>
+ <20241107232457.4059785-8-dionnaglaze@google.com> <4ec6b73f-4707-c93a-f046-213ac4d4549d@amd.com>
+In-Reply-To: <4ec6b73f-4707-c93a-f046-213ac4d4549d@amd.com>
 From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Tue, 12 Nov 2024 11:33:48 -0800
-Message-ID: <CAAH4kHasdYwboG+zgR=MaTRBKyNmwpvBQ-ChRY18=EiBBSdFXQ@mail.gmail.com>
-Subject: Re: [PATCH v5 09/10] KVM: SVM: Use new ccp GCTX API
+Date: Tue, 12 Nov 2024 11:47:51 -0800
+Message-ID: <CAAH4kHaAqh1R6CGBKXNsO+uQnscwGo0Y06MTny8CebSWK9QMaw@mail.gmail.com>
+Subject: Re: [PATCH v5 07/10] crypto: ccp: Add preferred access checking method
 To: Tom Lendacky <thomas.lendacky@amd.com>
 Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
 	Ashish Kalra <ashish.kalra@amd.com>, John Allen <john.allen@amd.com>, 
 	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	linux-coco@lists.linux.dev, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Michael Roth <michael.roth@amd.com>, Luis Chamberlain <mcgrof@kernel.org>, 
 	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@redhat.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Tianfei zhang <tianfei.zhang@intel.com>, Alexey Kardashevskiy <aik@amd.com>, kvm@vger.kernel.org
+	Tianfei zhang <tianfei.zhang@intel.com>, Alexey Kardashevskiy <aik@amd.com>, linux-crypto@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > index cea41b8cdabe4..d7cef84750b33 100644
-> > --- a/arch/x86/kvm/svm/sev.c
-> > +++ b/arch/x86/kvm/svm/sev.c
-> > @@ -89,7 +89,7 @@ static unsigned int nr_asids;
-> >  static unsigned long *sev_asid_bitmap;
-> >  static unsigned long *sev_reclaim_asid_bitmap;
+On Mon, Nov 11, 2024 at 2:46=E2=80=AFPM Tom Lendacky <thomas.lendacky@amd.c=
+om> wrote:
+>
+> On 11/7/24 17:24, Dionna Glaze wrote:
+> > sev_issue_cmd_external_user is the only function that checks permission=
+s
+> > before performing its task. With the new GCTX API, it's important to
+> > establish permission once and have that determination dominate later AP=
+I
+> > uses. This is implicitly how ccp has been used by dominating uses of
+> > sev_do_cmd by a successful sev_issue_cmd_external_user call.
 > >
-> > -static int snp_decommission_context(struct kvm *kvm);
-> > +static int kvm_decommission_snp_context(struct kvm *kvm);
+> > Consider sev_issue_cmd_external_user deprecated by
+> > checking if a held file descriptor passes file_is_sev, similar to the
+> > file_is_kvm function.
+> >
+> > This also fixes the header comment that the bad file error code is
+> > -%EINVAL when in fact it is -%EBADF.
 >
-> Why the name change? It seems like it just makes the patch a bit harder
-> to follow since there are two things going on.
->
-
-KVM and ccp both seem to like to name their functions starting with
-sev_ or snp_, and it's particularly hard to determine provenance.
-
-snp_decommision_context and sev_snp_guest_decommission... which is
-from where? It's weird to me.
-
-> Thanks,
-> Tom
+> Same comment as before. This commit merely creates a helper function, so
+> this commit message is not appropriate.
 >
 
+Is this a meta-comment about how the commit presupposes being in a
+series with a goal, but should have a self-contained commit message? I
+don't know what "same comment as before" you're referring to.
+How about this:
 
--- 
+crypto: ccp: Add file_is_sev to identify access
+
+Access to the ccp driver only needs to be determined once, so
+sev_issue_cmd_external_user called in a loop (e.g. for
+SNP_LAUNCH_UPDATE) does more than it needs to.
+
+The file_is_sev function allows the caller to determine access before using
+sev_do_cmd or other API methods multiple times without extra access
+checking.
+
+This also fixes the header comment that the bad file error code is
+-%EINVAL when in fact it is -%EBADF.
+
+
+
+
+--=20
 -Dionna Glaze, PhD, CISSP, CCSP (she/her)
