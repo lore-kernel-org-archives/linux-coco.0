@@ -1,187 +1,242 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2061.outbound.protection.outlook.com [40.107.236.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B110146588
-	for <linux-coco@lists.linux.dev>; Wed, 13 Nov 2024 15:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731513497; cv=none; b=ufs16hQ/ODP76LPIC3KQfynoTGsICxNioaFj8nIzQCUEs5lOqSPyEJYpteewBfogr0sSZB9GfNLBBcmuL6AcQqr8pzDd+B0xZO1c6SuoRMv82z+N3yLmRwBMW3IxKlcWv99MeMsNhCn9UUCnLbTwBObEAz0Avf7U2Fs5A3WnKtk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731513497; c=relaxed/simple;
-	bh=IZNKL5dKTunqOnlhlqbELW9B4+RdNR6QwIYEmChpV5c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gVemwTFPEhV2BVrtYPcYwTzPjH4nqfeiGRlV+IpKp6rs1LiLubHI2Y1G0pongqAHJ7m4fdpaxaLLlt8aO16pHxXdt8T9MOQUPxSMdbnNLrdKCj5ok0m1aNkELvPQBUoZJ1/rsJvK3bArta8dndAEyDfed+FlhKyr5Vt8msCDOPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VjaXK6nH; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FB33214
+	for <linux-coco@lists.linux.dev>; Wed, 13 Nov 2024 16:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731515106; cv=fail; b=j1Xr7+M3uj3rq3NmC0e8bE8sVTc82TNiY6ewSsBAVPm0kEYQ3WjQy3ddYBv5BwLeI0eCAHEJS+8EL9j6AUeRy8OxbPrhYH7i6eIVYaHIyp7l1cDRflvNkjkl7gixdp8Z8o1qzgpMyxO22v4pglqTPw8HLTPixude/PR488n6f5k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731515106; c=relaxed/simple;
+	bh=RCGmk53sNUh1t1yYB+IQKoABqm7qd8/eSxCNOTUz0Zw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=nLg5IzxzQXKdK6pxr5dD/5zCR9KvdnTyPt7W+JQXZpcYY83zH236Aj7TxTjD2LyEvac0WsY4fCqHftlIJplWBnejoZup5+87mAYnujwVNxk6f9HCPkeB6dOahu9tzOxO23ajmrq6AFZy6ZSXT32QliFFgipd5MatWArVwmrBQGg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Rh414g66; arc=fail smtp.client-ip=40.107.236.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VjaXK6nH"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6ea863ecfe9so136955987b3.3
-        for <linux-coco@lists.linux.dev>; Wed, 13 Nov 2024 07:58:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731513494; x=1732118294; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kF/MfTQ5/fcEXQi4LYfLZfwZ71SBi7osE385WhqsuTc=;
-        b=VjaXK6nH+vzh6oMbuD/9QNSz0KgrMDRVWY/aqURYnhtz/6MCwgNJNPWpyechZKiqGs
-         tinuWPBBxgLFV9aQx/UZ2Qn9ZJMWPc9NtNT1ioaxYTyCmV6qzoAaf5TWx3rKtdoSuPu6
-         26eVJVfe9igvgWwfHaGsXo6DWIWQbKZkpvFWNp70V5E7X4UK7QlqBPAwRxu5uKaM+gxo
-         AE1OrGHyFzILqnlu0N2xPh/bEBexc8UVFGH8GJIQad3ncqZRrAa2jrcO2o0A3vW07y7v
-         P1zMqOlzUeZSx1OdHoSJlA98+GWkhbBHqu5TwEGPBf/pesXPoDjI6+rL7TN6nF+TGr62
-         2wzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731513494; x=1732118294;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kF/MfTQ5/fcEXQi4LYfLZfwZ71SBi7osE385WhqsuTc=;
-        b=PnJSA+umVuG4FCxcDM5qlLpwvZMt8L76JqJUWWa3sCN6O8XP7r6vB7ZICwJPlN6UxN
-         rySjkOYmYl5rZcZK90+bs6/qVWjDgyYprkvxnWlQJiNMpxJQQADgfj0P1FtQXSQtk/s2
-         B1w326Su0CrTmv3Rw2842QqMHRqi81LHTmVbYsLNUVSq+goKAF3AOM/K7ENCD+iA2c35
-         N/frjtGMsa1LmCo2uVT8JBv0Bf6Uabe5WacZewJgC0GAuiHSi8ulXEUVSDfbJIsY+KfZ
-         lhHbMq58f6bwVc+ycbEtwFNpAxkoW041gSpijINprSCo+kSjYJYxgYTY8Ao/m/jf8SNr
-         unqw==
-X-Forwarded-Encrypted: i=1; AJvYcCV7tC8FmQTEIAvwJTTImClsQ9dXxmWFiokfmSIeRSO5nYr9FHAIwYuVnDqK4pG1GWs5tqESRiTX6AKi@lists.linux.dev
-X-Gm-Message-State: AOJu0YzAi+D4tEYHqIi4I2OMfVEHlfUBTfTgZbN/7pi7TkeoxcTrj7IN
-	bRYpJNAewofIGa1l59TBYJdMazQu51yCasiqSERFctL3a65qeOuGXLg9yAUD6ic5yjoBn/2qgs1
-	FGw==
-X-Google-Smtp-Source: AGHT+IHuQ95n+Y8jejyNGBOGXye70VLPfyNGzX3R/E/mHwLTbyQVpbG8tfrNstJjL7AVlymwbNM8htd7/LM=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:a81:b510:0:b0:6e2:ad08:4924 with SMTP id
- 00721157ae682-6eaddf71dcfmr1920297b3.4.1731513494525; Wed, 13 Nov 2024
- 07:58:14 -0800 (PST)
-Date: Wed, 13 Nov 2024 07:58:13 -0800
-In-Reply-To: <20241112232253.3379178-6-dionnaglaze@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Rh414g66"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nCLXnei4A9kDjrhp+Txy/CXgoZMUqyi1d4Pjl+UZf1PI1LY4QAFtZDBJMBL+enUSzF/FmemzIJBciHQcKAlwD1Pc4X+sTi/DEnIo7BEnTfLopBXi9KLSzdNxEiA9XAeTYlkiag4QmkZSy2k8hhp8tpxz3/LxzUNx/ObCPWRDT1a5yuZjMy0+WaOZPR6z2WkWOnh+xTFU9SBXWRwySd+Vr8u6hB1HbEJojLfynx0LI1Ndy1sm82ey6UAceAlZj0CXBBQo0GBz+M3Zz1Ix7oy2tHC2USILmjeD2Mqori0B+B6q0alD+6OypH5hBr0NZRnq50XdoaFLsapkH2DAC9hHHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eGOQmLjWSlTBGAhNhf6NuOjAtA8LWGHxrKLZSwsoGKk=;
+ b=N45/KJifhEWkM4IfQvgqm95EBsxafkCaTaADADXlK6VElAFdFjA9sH8566JHbqy2nENIWUkg2G9rcs2QV+mg0S6UV6k5CoFX5hgOhDvMF0KE7JSZzc3z88ddmVilF4hRhOm75jnh+8MAxV9pLDu9nK/XAb29r9KVSJ3c7D/0dqocNZV8cCnrgZ2Hj8UVczpz24r5yshffzISvgLawYA35hP/HF/YGWoWO+18kVFidVGNjBwGihox62tdlNoPFsdSJ7JI3RT0D9A4G8FIIjIufIMoGjYpIcVk2ldqlEsUEwlRKVW3jQzjvlIkWmigN3bcxVfHDEDxywq+VN0BxoRU+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eGOQmLjWSlTBGAhNhf6NuOjAtA8LWGHxrKLZSwsoGKk=;
+ b=Rh414g66THNqlHRaTpl4flOVPF0XvvrDrOtT+avPJAMzjmMh6YopMM69kj8F9Id+38UX2o45hYZtqSrRgGjwKRgTeeRpLZdBFDC61abw1o2Xz9OwLh00FvpV3cP+ITrRMwYbXywLI7i5qq0srsgBgKmXb4K+1IUZ6bigoyWTsCU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by CY8PR12MB7636.namprd12.prod.outlook.com (2603:10b6:930:9f::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Wed, 13 Nov
+ 2024 16:25:01 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.8158.013; Wed, 13 Nov 2024
+ 16:25:01 +0000
+Message-ID: <d6ad4239-eb8a-9618-5be4-226dcf3e946c@amd.com>
+Date: Wed, 13 Nov 2024 10:24:58 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v6 4/8] crypto: ccp: Fix uapi definitions of PSP errors
+To: Dionna Glaze <dionnaglaze@google.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
+ Michael Roth <michael.roth@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Brijesh Singh <brijesh.singh@amd.com>
+Cc: linux-coco@lists.linux.dev, Alexey Kardashevskiy <aik@amd.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Luis Chamberlain
+ <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>,
+ Danilo Krummrich <dakr@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Tianfei zhang <tianfei.zhang@intel.com>, stable@vger.kernel.org,
+ linux-crypto@vger.kernel.org
+References: <20241112232253.3379178-1-dionnaglaze@google.com>
+ <20241112232253.3379178-5-dionnaglaze@google.com>
+Content-Language: en-US
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <20241112232253.3379178-5-dionnaglaze@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA1P222CA0057.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:2c1::6) To DM4PR12MB5070.namprd12.prod.outlook.com
+ (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20241112232253.3379178-1-dionnaglaze@google.com> <20241112232253.3379178-6-dionnaglaze@google.com>
-Message-ID: <ZzTMlcoU4uOijVxt@google.com>
-Subject: Re: [PATCH v6 5/8] crypto: ccp: Add GCTX API to track ASID assignment
-From: Sean Christopherson <seanjc@google.com>
-To: Dionna Glaze <dionnaglaze@google.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S. Miller" <davem@davemloft.net>, linux-coco@lists.linux.dev, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Michael Roth <michael.roth@amd.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Tianfei zhang <tianfei.zhang@intel.com>, Alexey Kardashevskiy <aik@amd.com>, linux-crypto@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|CY8PR12MB7636:EE_
+X-MS-Office365-Filtering-Correlation-Id: fad8529f-4563-44e8-05b1-08dd03ffb900
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MTRqSWVyZEdlWWRvUkFTNERYUjk3TjJGQStIdlo5TWw1Wm1GTXZzNUxaby92?=
+ =?utf-8?B?MUJuTVE4alpwN0dnc0huSUNKZXFpNGtZVFJ4eVJRMzVGdUk0dmZTdXVlRmo0?=
+ =?utf-8?B?UlBaYS8xUjNSUmFMZ3VPck9kdVlscjZ1Z0hLd3U3dm5hUkdWUFBIbTZhcFJo?=
+ =?utf-8?B?b01yQlJGSHFSRDdoZG01VUloZkNnL2VhT2htQ2RKWnVVVVBuRkI5MEJaWlRY?=
+ =?utf-8?B?blFHdzVXN3d1VUtWNWVxdVlHSjF4SXRVVkZNY0QrTWQ4Z29QbllRUEdUejFP?=
+ =?utf-8?B?ZjduLzN4U1lvK2FOQnV6RkVpWWttQk1HMUxvc21kNHRzTm1FRm9jcnFnMWdu?=
+ =?utf-8?B?YnFrbm5RRzlWS29oUUlud29SYXFQU1FwZ21tL3JDRU1oRE5zSnhYazU5VFhL?=
+ =?utf-8?B?Ly9vMUFlbm42TFRhb1VVYXZTR1hJTTZoenhRdTYyTlhsOG1DY3ZrRVluNWxX?=
+ =?utf-8?B?ck4rMUk2NmFveldoQkFUYmt3U1gzalQ4RnZlUTRjTXNKa0k5cUdoUTM4SVpi?=
+ =?utf-8?B?RnEzaVlWclJtZE9NVTRvQlk4UmlSMmlNT2tMVWdIRGdMWkRvUm8yZTByYzE2?=
+ =?utf-8?B?aVNNeUI0RXYyT2RJc2hoRFRWTitzdkN1UGFURlp4emZ0ZzFwMVJCR3BlTTVJ?=
+ =?utf-8?B?bVh4eWJmNVgxNk82T212NldDNmwzWmF6ekpjTEIvQnZVaXI0QVpJM2gvNzE1?=
+ =?utf-8?B?VUhXdUFseTRMYW9nQ3ZyZ0Q4WFZXcGhWbCtYdmk5aHZ1K0g0Q29UOU5SMUo5?=
+ =?utf-8?B?K202UlVQSkZicUJBeTRhL0NIa2pMMnRkNGQ5RVE0VW1UOFFsSm1NNHFCcUNT?=
+ =?utf-8?B?YnAxYzZYQmM3c25RZytEeHBmSUF3YS93V1laRndKd203bGdqMTBBWTYyWTRW?=
+ =?utf-8?B?U2pzWXAwOHVMRForQ1Erak9ZY0VYLzcvanNzMGlrNjIvNjJhWHB0c2htNVo2?=
+ =?utf-8?B?S0lNS1RtNTUxTVdRZVRRZlNpU2p1aVlia05JVXpPUWlLZCtGelZpRWFqYzE3?=
+ =?utf-8?B?bXB1OXlJODB3dEUrY0ZGYk5BSTczaTd5UFdxa0NxOWdYOFJiL09zdmxKMXRK?=
+ =?utf-8?B?aTdJcHQ2OXlSanFtWlA0WmZJRjZPbnVFVEdONHowWXliVSt3K1pyeVMzbnhN?=
+ =?utf-8?B?bnpzZnFyUkVIUHRwN2d4ZUNSN3JRblAyRVZiNWgxN0NkZVZ3L1gyank5TWtV?=
+ =?utf-8?B?UEZJelQ3SXZkTlk0c09PUTFXSDFmNXZZdkZKN0JNUjM4MVZOdkxXV2hIV1Zt?=
+ =?utf-8?B?R2V4c1NDMTFWMktkU0VXc052VFB0L256UmdTMUhReUJQTFNXWUZoeUx1MGUy?=
+ =?utf-8?B?bDkyaUpLbnNGV0tDZzdVL2tjQ0RtMitiaUZ2ZDlPR1NnR29wYTNObmtnL0tj?=
+ =?utf-8?B?Z2hMNDFzeSsxQ2UyUmVjMmpwbUhuVEZWc2JLakFuQ0ttZnRhU0E1cHM2Lzlt?=
+ =?utf-8?B?M1hoeDg3UERKbm5LVWN6dFFVaUpJVXBBcGQ5d3FDNFdySGxINXE1cFNSd0Nm?=
+ =?utf-8?B?TTVjaGNMMHdNL1dIQzVVdmlQenRVanJ3Q2FHMitMMlduZXBQVHI5MUs0S0lQ?=
+ =?utf-8?B?UEVwYWdoWHdRVit2cUVTWWM1c2hKcmNUZkt1M1djWE00UitMNWhBNlhXdmQz?=
+ =?utf-8?B?S3ZCTC9ucmpEOGdXdk1kc0dhbDZ0QklHYVpVWmovZTJ4MnBnN2dwS1VJM2lN?=
+ =?utf-8?B?SHVTbzVsa2pXOThQamtTTHVZK0d6NDRNZ25FL1p6THhZUFYrL2lKdUlRMlVC?=
+ =?utf-8?Q?Nwa6LyCoe0r7F0OjS8xO/czBvYsgW36SPZx6/2b?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NUtrbkJaSzZPcUt4NWp3RTFFZGxSOTEvUmxadW5VS3lSSmt5cm01VUp2VlIz?=
+ =?utf-8?B?amZERytYZ0s1M1BZNjhnMElweDdvQkFVR1Y5YWFua2k2RHJpWTBrSHhOVUlP?=
+ =?utf-8?B?QVdCMDQzV2xNOTNDU3ZKeFdJTXF2TWNUZDRESXlFR1paNHBsMURqTklVR3ZG?=
+ =?utf-8?B?MzVzNjhpT3ExN3hNd2srMXNjMk5ZcGFuN3NZdHBOeS8zNmZoSlAvUDJsSlh1?=
+ =?utf-8?B?dFgyTWtRMWxiQUVWTEdvUDlETDh4K3plMG9TcmsxSWd0dFA5cnQ5bjdabS9n?=
+ =?utf-8?B?c0w1WHBRb2JkK2pzVkxqNFplZlFWT2R6MnFqbk9Bbm96bXU4bElKcjNNajRv?=
+ =?utf-8?B?TG9RUi8zVCtHeXphb2FtMTV2TnZPSlJHVitmNUtVTUp2MG9reERsQ21YNFM5?=
+ =?utf-8?B?NTFYc0o4YUdKd24zOTVBdmlyNk1zQVRxUXFzeTJyODN6OEF2MnhQbGpLd1hv?=
+ =?utf-8?B?cHpuNE5ObklvaThVZkR3bXdtZG01bEJjdkJ1YUJxVEZTRmdxT1hPOTlmSyth?=
+ =?utf-8?B?eVh5WUxSMk1hSzJVaDZDR29KYTlTK1JzejQ5QmZNR1lCUWF6QklaQVZLbTBE?=
+ =?utf-8?B?ei9oeGREL09lcWoxTkg3Um5PRHlham5KcFloZHdLYkkrbzdvWDFLQzFjZUVJ?=
+ =?utf-8?B?ZjdJY3U3a01NaDJ4Ym5OL0NZRFFzbW0rWmdPMDE4bjcrVmZZVHJEdDZDLzNI?=
+ =?utf-8?B?WnFYd1FZWWlGRE1acERzSGNDSUw0am8rWFZvQUUwQzhCVnMwWUhGWFJqaTVo?=
+ =?utf-8?B?LzdPb2VuUXAzZW5NMklyZ1pLL0l5RVo2YTdsdGw1MjJ6NGNxblVYTVJETG85?=
+ =?utf-8?B?dmFPWEd2ZGpBeHRmVGhRbVgvVFF1V2xpeFNJK0YvV0hUc042MVRkSkNUd1hT?=
+ =?utf-8?B?TmxXcGgrNzdvQ3d2VVRZa2hrc1NKa1p2Nys2bVV5eWlwOUY2K2dWNjdGM2s0?=
+ =?utf-8?B?U0NJK1RzbFduNGtkdzZWNnQzcGNXQTZRbzVOS3pjOHFleVRhWWFTbkhLckox?=
+ =?utf-8?B?T2Y5M0s5TUhMQmNTVkp3bVVGY1hHSjh6UUE2b0NhN2NBcjVET1R0RmcvWnBm?=
+ =?utf-8?B?QVoySTUwQkhJRjdiZWZUVktrOGhMWllJTDNZSUVIeWRCdERlKzNCZTl5Z1pw?=
+ =?utf-8?B?dktnZDdLU2Z3VWJaQzJmNkVyMkUzNld2MGxTd3NDSkJOMG5tcThkTDlRaFBJ?=
+ =?utf-8?B?Z1RQSERCbEluSysrLy93eTAzWGkrWXpSaVE0bUpGbTBiQ1BPTnJJMHBaRy9R?=
+ =?utf-8?B?Zk82NlRrbjVkSHFjK3NEb0JhRWowYkZnaDFJai9ZdXZ3YUZsa3F0UkJxdXFp?=
+ =?utf-8?B?Qm10SDFHVkpVZWY4VGVlSkdJclQwRHd1cFVLc0tDTGp2Z0EzQkNQWGZhL29h?=
+ =?utf-8?B?M3ljYVN4WFd1cTY2ZTRLWjBLczJYWmUwVTkrOGJYMlF4aUxQZnV0c2lpTXFw?=
+ =?utf-8?B?Q0k5UVFiaHRrOTV0Y2crV0xXbnNIUGJZa0ZjVkdhMkJhejk1TE9jRkZkM0N1?=
+ =?utf-8?B?MGZSTnFOUVJ0Wlg3QzRqVWJoOXRZMFp2MTZLWkc4dWM2M2lvOWp2MFhwM1Rl?=
+ =?utf-8?B?cmhZM3VFSjlPeE5FU1NFVk1lY29mQzZnQkpGdlhqNTFSdXVmc3laZVUvbC9E?=
+ =?utf-8?B?WGF2WU44K1hBS3A3SllBa0srUUJZKzk0b3lhbkdUN1FUUHo4eG4wTnkvWnVD?=
+ =?utf-8?B?Q05lRHBlRzRzM21aYmNyTXkvNG92ZXVQekZBUk1tVDN2SDNpYzc0NFpsUHBs?=
+ =?utf-8?B?eDlHN2d6QkpDUDdYRnozajkzRXpiUWJ2OWdmR1RtVVJheUIyaFV6eFk1MGFw?=
+ =?utf-8?B?Qms2bzNCSlBZK1l1YXV5Z3BPK3c5YlVLNmNqZ3Q1TDFIZUg0RUxGbUMwajQ0?=
+ =?utf-8?B?ZE1qcWFTMDdFWnlhRS83T290aTFsWWtvV29xbnVGNGhEeXhqbXF0c0lVN3lC?=
+ =?utf-8?B?Ykh1OVNDQVBGRk4rTzRrOGNNamsxL0RWVnZGK3JwSkVSSFdxRTNFUGJhRkVw?=
+ =?utf-8?B?MVBBWmZlNXRjQWlRdWNzc2JSWTRwRUUwd0NhSU1JRUIyeVN5NEpLb2MwNXlp?=
+ =?utf-8?B?Rk1DZ1NGYXhXWVRBbUhIa2pObU4wRmthZnM0UXJtaWNSSExCTjIxMEdtNHMv?=
+ =?utf-8?Q?j/LcWMrN2X6qNMa8t6AFrBlng?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fad8529f-4563-44e8-05b1-08dd03ffb900
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 16:25:01.5144
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mBhcBpEfVWM179iVe7Qx6/VwQX0N8cOcE+spf+AK7pQ2+YmQWTq3PVjwCcutIi794ziqQ78UQ5MX0dAgxOGQUg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7636
 
-On Tue, Nov 12, 2024, Dionna Glaze wrote:
-> @@ -109,6 +110,10 @@ static void *sev_init_ex_buffer;
->   */
->  static struct sev_data_range_list *snp_range_list;
+On 11/12/24 17:22, Dionna Glaze wrote:
+> From: Alexey Kardashevskiy <aik@amd.com>
+> 
+> Additions to the error enum after the explicit 0x27 setting for
+> SEV_RET_INVALID_KEY leads to incorrect value assignments.
+> 
+> Use explicit values to match the manufacturer specifications more
+> clearly.
+> 
+> Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
+> 
+> CC: Sean Christopherson <seanjc@google.com>
+> CC: Paolo Bonzini <pbonzini@redhat.com>
+> CC: Thomas Gleixner <tglx@linutronix.de>
+> CC: Ingo Molnar <mingo@redhat.com>
+> CC: Borislav Petkov <bp@alien8.de>
+> CC: Dave Hansen <dave.hansen@linux.intel.com>
+> CC: Ashish Kalra <ashish.kalra@amd.com>
+> CC: Tom Lendacky <thomas.lendacky@amd.com>
+> CC: John Allen <john.allen@amd.com>
+> CC: Herbert Xu <herbert@gondor.apana.org.au>
+> CC: "David S. Miller" <davem@davemloft.net>
+> CC: Michael Roth <michael.roth@amd.com>
+> CC: Luis Chamberlain <mcgrof@kernel.org>
+> CC: Russ Weight <russ.weight@linux.dev>
+> CC: Danilo Krummrich <dakr@redhat.com>
+> CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> CC: "Rafael J. Wysocki" <rafael@kernel.org>
+> CC: Tianfei zhang <tianfei.zhang@intel.com>
+> CC: Alexey Kardashevskiy <aik@amd.com>
+> CC: stable@vger.kernel.org
+> 
+> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+> Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
+
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+
+> ---
+>  include/uapi/linux/psp-sev.h | 21 ++++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
+> index 832c15d9155bd..eeb20dfb1fdaa 100644
+> --- a/include/uapi/linux/psp-sev.h
+> +++ b/include/uapi/linux/psp-sev.h
+> @@ -73,13 +73,20 @@ typedef enum {
+>  	SEV_RET_INVALID_PARAM,
+>  	SEV_RET_RESOURCE_LIMIT,
+>  	SEV_RET_SECURE_DATA_INVALID,
+> -	SEV_RET_INVALID_KEY = 0x27,
+> -	SEV_RET_INVALID_PAGE_SIZE,
+> -	SEV_RET_INVALID_PAGE_STATE,
+> -	SEV_RET_INVALID_MDATA_ENTRY,
+> -	SEV_RET_INVALID_PAGE_OWNER,
+> -	SEV_RET_INVALID_PAGE_AEAD_OFLOW,
+> -	SEV_RET_RMP_INIT_REQUIRED,
+> +	SEV_RET_INVALID_PAGE_SIZE          = 0x0019,
+> +	SEV_RET_INVALID_PAGE_STATE         = 0x001A,
+> +	SEV_RET_INVALID_MDATA_ENTRY        = 0x001B,
+> +	SEV_RET_INVALID_PAGE_OWNER         = 0x001C,
+> +	SEV_RET_AEAD_OFLOW                 = 0x001D,
+> +	SEV_RET_EXIT_RING_BUFFER           = 0x001F,
+> +	SEV_RET_RMP_INIT_REQUIRED          = 0x0020,
+> +	SEV_RET_BAD_SVN                    = 0x0021,
+> +	SEV_RET_BAD_VERSION                = 0x0022,
+> +	SEV_RET_SHUTDOWN_REQUIRED          = 0x0023,
+> +	SEV_RET_UPDATE_FAILED              = 0x0024,
+> +	SEV_RET_RESTORE_REQUIRED           = 0x0025,
+> +	SEV_RET_RMP_INITIALIZATION_FAILED  = 0x0026,
+> +	SEV_RET_INVALID_KEY                = 0x0027,
+>  	SEV_RET_MAX,
+>  } sev_ret_code;
 >  
-> +/* SEV ASID data tracks resources associated with an ASID to safely manage operations. */
-> +struct sev_asid_data *sev_asid_data;
-> +u32 nr_asids, sev_min_asid, sev_es_max_asid;
-> +
->  static inline bool sev_version_greater_or_equal(u8 maj, u8 min)
->  {
->  	struct sev_device *sev = psp_master->sev_data;
-> @@ -1093,6 +1098,109 @@ static int snp_filter_reserved_mem_regions(struct resource *rs, void *arg)
->  	return 0;
->  }
->  
-> +static bool sev_check_external_user(int fd);
-> +void *sev_snp_create_context(int fd, int asid, int *psp_ret)
-> +{
-> +	struct sev_data_snp_addr data = {};
-> +	void *context;
-> +	int rc, error;
-> +
-> +	if (!sev_check_external_user(fd))
-> +		return ERR_PTR(-EBADF);
-> +
-> +	if (!sev_asid_data)
-> +		return ERR_PTR(-ENODEV);
-> +
-> +	if (asid < 0 || asid >= nr_asids)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	/* Can't create a context for a used ASID. */
-> +	if (WARN_ON_ONCE(sev_asid_data[asid].snp_context))
-> +		return ERR_PTR(-EBUSY);
-
-Tracking contexts in an array that's indexed per ASID is unsafe and unnecessarily
-splits ASID management across KVM and the PSP driver.  There is zero reason the
-PSP driver needs to care about ASIDs.  Attempting to police KVM is futile, and
-leads to bloated, convoluted code.
-
-AFAICT, there is nothing to guard against a use-after-free in 
-snp_update_guest_contexts().  The need to handle SEV_RET_INVALID_GUEST is a pretty
-big clue that there are races between KVM and firmware updates.
-
-		if (!sev_asid_data[i].snp_context)
-			continue;
-
-		status_data.gctx_paddr = __psp_pa(sev_asid_data[i].snp_context);
-		status_data.address = __psp_pa(snp_guest_status);
-		rc = sev_do_cmd(SEV_CMD_SNP_GUEST_STATUS, &status_data, &error);
-		if (!rc)
-			continue;
-
-		/*
-		 * Handle race with SNP VM being destroyed/decommissoned,
-		 * if guest context page invalid error is returned,
-		 * assume guest has been destroyed.
-		 */
-		if (error == SEV_RET_INVALID_GUEST)
-			continue;
-
-Using an array is also inefficient, as it requires iterating over all possible
-ASIDs, many of which may be unused.
-
-Furthermore, handling this in the PSP driver (correctly) leads to unnecessary
-locking.  KVM already protects SNP ASID allocations with sev_deactivate_lock, I
-see zero reason to complicate things with another lock.
-
-The "rollback" mechanism is also broken.  If SEV_CMD_SNP_GUEST_STATUS fails,
-synthetic_restore_required is set and never cleared, and impacts *all* SEV PSP
-commands.  I.e. failure to update one guest context comletely cripples the entire
-system.  Not to mention synthetic_restore_required also lacks any form of SMP
-synchronication.
-
-I also don't see how a rollback is possible if an error occurs after one or more
-guest contexts have been updated.  Presumably trying to rollback in that state
-will leave the updated guests in a bad state.  Of course, I don't see any rollback
-code as nothing ever clears synthetic_restore_required, so what's intented to
-happen is entirely unclear.
-
-I also don't see anything in this series that explains why a SEV_CMD_SNP_GUEST_STATUS
-failure shouldn't be treated as a fatal error.  Of the error codes listed in the
-SNP ABI, everything except UPDATE_FAILED is clearly a software bug.  And I can't
-find anything that explains when UPDATE_FAILED will be returned.
-
-  Table 80. Status Codes for SNP_GUEST_STATUS
-  Status                          Condition
-  SUCCESS                         Successful completion.
-  INVALID_PLATFORM_STATE          The platform is not in the INIT state.
-  INVALID_ADDRESS                 The address is invalid for use by the firmware.
-  INVALID_PARAM                   MBZ fields are not zero.
-  INVALID_GUEST                   The guest context page was invalid.
-  INVALID_PAGE_STATE              The guest status page was not in the correct state.
-  INVALID_PAGE_SIZE               The guest status page was not the correct size.
-  UPDATE_FAILED                   Update of the firmware internal state or a guest context page has failed.
-
-Somewhat off the cuff, I think the only sane way to approach this is to call into
-KVM when doing a firmware update, and let KVM react accordingly.   E.g. let KVM
-walk its list of VMs in order to update SNP VMs, taking kvm_lock and the somewhat
-misnamed sev_deactivate_lock() as needed.  Then if updating a guest context fails,
-terminate _that_ VM, and move on to the next VM.
-
-Side topic, I don't see any code that ensures no SEV or SEV-ES VMs are running.
-Is the idea to let userspace throw noodles at the PSP and see what sticks?
-
-+        Provide support for AMD Platform Security Processor firmware.
-+        The PSP firmware can be updated while no SEV or SEV-ES VMs are active.
-                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+        Users of this feature should be aware of the error modes that indicate
-+        required manual rollback or reset due to instablity.
