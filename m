@@ -1,199 +1,166 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2056.outbound.protection.outlook.com [40.107.96.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDA314389F
-	for <linux-coco@lists.linux.dev>; Thu, 14 Nov 2024 19:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731612624; cv=fail; b=I1BVSlBiE4dTZ9nCdFSrj2J5L+owWzaeKUJT3boIAGwW/SXyI+Msb4qxGH/9CozPTwhJFI/qXkQE9bYXogyhBLq0a/5AVGoQAMPD+GMXpuDyKqhUnQ45nRztZ/dQ62BnvcC9BVJaKUdGMdaf/HSYG/HE2n9K9UCMS63H6rHLoJc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731612624; c=relaxed/simple;
-	bh=WsD0iUjLkCmz7EV5g3Uexey1yqm2VAhCzvUBTEYkGNc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qd7Ii0fC5zKY9HhDGQk/613FRrcapBP58vI916ba6jNzqHO6Y378UvHrw95skJN2O6qXvcYcAQW5pZSUU4gchSHwdjKoRBdSYcdGdISRAryveFunSbYWhkSUWe99bvasWfoDxpCOzHdeCzQBF17RgU7aSenpYKQnhVrSVUGRHko=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=46yj73YE; arc=fail smtp.client-ip=40.107.96.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CD619CD08
+	for <linux-coco@lists.linux.dev>; Fri, 15 Nov 2024 10:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731666688; cv=none; b=SppRnCCo4zK3HoUiFAG/w2mEKTaibs4PAcdzs7xVuc7QpxtaupmRsxKXvhbsGMED5hqlI6fLAGMqp1yZxYFU936QU1hFsZBPWCOz0KhcpU+zB2svinlKMendpHdB33FfHeT3WLrx53f4Pi+/2fkDXtX5sIMTJCyUTHWiuGpsNac=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731666688; c=relaxed/simple;
+	bh=yvfezaSRQKzXueO363ieESFFIt2B4C9r0Uqrv+vvU08=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RHevIwHNXHgLNMhoxI3NYiYzpqu+dAGF539ScByqw1n0MLGNRRMasBY17F3sjmB7pPz3vq1bs7121SEh4gzq3iqj5sKgltQ/GRgIfMVzmvJTz4wbfsJM1SfaStHJGKHiP9R3VqP04F6KC2WiiD312QSARQElecly4jrpzRzOTDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NG2hrCZF; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="46yj73YE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XdeIEVGVzcKYWi6T8J7wf2ynH5xfzDb7dpaKHfHbKvG8tXyTGM3eUJMtzULE3Twygj35VIBe6xErZFJ2D8DQsFBG+wUwFurGYVtOsjOFxuXvq6FwhDi0QVKXfwFdJ46FTie3XxLML14bRaQARYFbo1cpzmFuf3Gv9uqAs4smDeYFhV2p9W+ctCNs+/ErGZxlprd3l4o/8BmFJFxkPAjXKGGc18xRAqF3IsuQHl2+FAYPk3iCtO5jKYe8bITgAZyyOT7lZ9PpX9NoJbXQvimgCOBIC82PHI58YV88lM6Hoa+GLxd6xKsCJfKY+n2igvB2BChuhjMzAtW0JiC7bkwWTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RNDLRbMV6wFcqhyKGvZ0os9lmoggG8FJXGyUZAFmciM=;
- b=BV6cJu/n4tN4Ond6gnsmybXAYxpFO3/feMrVa7adYqy5ygCO3WrSzanZeEPlUDrbv5kD8xpLuB463DRatW6slNHDvZcKL015OF+DSqvrXzE7/Tj1n+qTMwV8ZLZx5q3vBbeWk79oENQmGMAulfUJCEXCJWRcmHp3XyLGZRWMAQOW/uP46fGfn4C5mhfwV6+5Si1677uCocZCbwKYxMMC25xUoPsTANaoO2gfwJA3Lvjioek2F1boPWA06ENOWvObFcB8vvKpJndiE9b8kMw07rspXng0HXmOSlaVoDTaJkk7goVdleHRqGTSQ62l2Ba+q5QXd7FGGQxpiToqPQoQGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RNDLRbMV6wFcqhyKGvZ0os9lmoggG8FJXGyUZAFmciM=;
- b=46yj73YEnF8RYZATe09KOVLIQnu/sLbZLY6Y7yO6Z4QUr688hgrLNKgaZvo04cdMLZ2x31NPNFEFY494KWp/Via0ICmREuw7VBUm55QiZOiUv+IvDFF7wMjvkXzti1ZbiE9d0FlCQItITEQ0nQAX7RI0bcIl41H6Azbhv2s94wk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by SN7PR12MB6983.namprd12.prod.outlook.com (2603:10b6:806:261::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Thu, 14 Nov
- 2024 19:30:19 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.8158.017; Thu, 14 Nov 2024
- 19:30:19 +0000
-Message-ID: <6cffe226-928f-360f-20ae-bcf27a8d2c73@amd.com>
-Date: Thu, 14 Nov 2024 13:30:16 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v6 3/8] firmware_loader: Move module refcounts to allow
- unloading
-Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>,
- Russ Weight <russ.weight@linux.dev>
-Cc: Dionna Glaze <dionnaglaze@google.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- Danilo Krummrich <dakr@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Tianfei zhang <tianfei.zhang@intel.com>, linux-coco@lists.linux.dev,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Ashish Kalra <ashish.kalra@amd.com>, John Allen <john.allen@amd.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>, Michael Roth
- <michael.roth@amd.com>, Alexey Kardashevskiy <aik@amd.com>,
- Russ Weight <russell.h.weight@intel.com>
-References: <20241112232253.3379178-1-dionnaglaze@google.com>
- <20241112232253.3379178-4-dionnaglaze@google.com>
- <6734119c1c9a7_10bb729471@dwillia2-xfh.jf.intel.com.notmuch>
- <20241114163546.ermxem4bgjzeaxzc@4VRSMR2-DT.corp.robot.car>
- <67363ecf8a693_214c294dd@dwillia2-xfh.jf.intel.com.notmuch>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <67363ecf8a693_214c294dd@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1PR03CA0023.namprd03.prod.outlook.com
- (2603:10b6:806:2d3::28) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NG2hrCZF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731666685;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2QzJEh1uH0p2OuQd5yMwTk7/0LxYqplTeSNY5bJ8Vss=;
+	b=NG2hrCZF/4WCwOijUM4bVD8HlSQRKaINROvgNS2d1+JexwZn6he7lf1afkl72bbjD7syhF
+	Xk1wTr7AF4yVCBwvV0ml+IozEipO3/gvEhDR20pHHuDOL0lO+mjqArv/o5hzg/0Ohajuyk
+	TTvqQ82Dzjj3Y9bAJId7R1SHZcva/jI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-544-9v75wQVWMneNKbGLwoKBtQ-1; Fri, 15 Nov 2024 05:31:23 -0500
+X-MC-Unique: 9v75wQVWMneNKbGLwoKBtQ-1
+X-Mimecast-MFC-AGG-ID: 9v75wQVWMneNKbGLwoKBtQ
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4315f48bd70so3977405e9.2
+        for <linux-coco@lists.linux.dev>; Fri, 15 Nov 2024 02:31:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731666682; x=1732271482;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2QzJEh1uH0p2OuQd5yMwTk7/0LxYqplTeSNY5bJ8Vss=;
+        b=MJ03+Q7sDsxaPDRzHhXadKTRhplUB1PRtfeOBXuhDFN/Hnf61sjpq9gsw3lz8Xe9LX
+         7i33wVqwmi33TqKWQrhrbNujRP6XeJpmdI145H3uevu7gTPk4zqMg4+XYJ3LuTNnT8Ca
+         thQLUgrKyXDEPlCQUK7oNYYxYeBmGL1+kO+os5FSW8C42HQjT9coGep1tNfI6BppfMUF
+         rFzMLAaMtQmoteETifWDsiyadTH+NLcOzt9iD/DmP1NbEcTxyaxgm1+I8VBBM84Css3B
+         lyT8436ylhXoA2aweMQPDQwWJSCKrQdWg0LcYBafj/VhFLNl9qAX2fc0n1LHr9rljbTU
+         gorw==
+X-Forwarded-Encrypted: i=1; AJvYcCWtb7+OrulOb1I7a/rgzlcET8gvBDv3C4AKtobYrlp5WeoAAWUNR6IcqeneuDBxg5ukslt35g2Ik57K@lists.linux.dev
+X-Gm-Message-State: AOJu0YycT/JTn1k/ldANTxS5Tx00XABntyQEq53kHZ8gCJ3gZ2SszZiU
+	nCvIEheCyPifVGVMg3do8n27c6FVH0qkabdc4Tw4b8Q9Zh4cRbj5b5VXZBJQlTdftCjFbjbX4yG
+	P2vU9/ICHwu3l1HVVHpEAMRYaVC3y4QTR0iZGBbPC8WZcFhIWjBJwoUvvQS0=
+X-Received: by 2002:a05:600c:1d16:b0:431:60ec:7a96 with SMTP id 5b1f17b1804b1-432df78dde5mr16800465e9.25.1731666681917;
+        Fri, 15 Nov 2024 02:31:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IERNMi7Q96XKnFK8FdJDpljOOIPF6yY+fTc2OudR307Gv0rqgqERoR3TbPa1yLm7FC9hbRIcA==
+X-Received: by 2002:a05:600c:1d16:b0:431:60ec:7a96 with SMTP id 5b1f17b1804b1-432df78dde5mr16800295e9.25.1731666681603;
+        Fri, 15 Nov 2024 02:31:21 -0800 (PST)
+Received: from ?IPV6:2003:cb:c721:8100:177e:1983:5478:64ec? (p200300cbc7218100177e1983547864ec.dip0.t-ipconnect.de. [2003:cb:c721:8100:177e:1983:5478:64ec])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dab80a28sm49483705e9.24.2024.11.15.02.31.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Nov 2024 02:31:20 -0800 (PST)
+Message-ID: <1c524181-5518-44bb-9985-d9d12bb92073@redhat.com>
+Date: Fri, 15 Nov 2024 11:31:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|SN7PR12MB6983:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4d57cb65-4ca4-484e-ff6d-08dd04e2c60d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Z2l1NlpWa3I5eEZjRm9yRmdXNjAvY1c5aVVyYWNZVmtYUSsyWVgzZk5oMDg1?=
- =?utf-8?B?TG0xY3NXV0lUTkR3N2UydXhsZnlybWZoN00yRkJoM0xOaGhwYVFERno5SE1J?=
- =?utf-8?B?bTAzVERqcHp3ODlodzVFVzJzekxzTis3TG50K043QXR3aUxrS3ZTdjUxOWpY?=
- =?utf-8?B?cFdkUHAxWm1KZDQvUnJkdW8zaGdDazA2ZnpOcDdCZEZlVjJ3elBSaElLcVRh?=
- =?utf-8?B?dDRDdzBEWlB0VkJXUUJtQVJOUnZxdFJSanF3QXdnVkI3RkFnUHRkVUZYWEUz?=
- =?utf-8?B?YkZwbFFNTGV2cW9YTGpMaHZmblZUb3ExS096T1JPc1M0bVY4QUFZTkxVMWdK?=
- =?utf-8?B?OWtrNVBsZlNKNmwxaWRrWjNCUHVQeWFLTmFaaGJrdnUzRVdFZDRXWWNHNXNp?=
- =?utf-8?B?NGx6Z1hlVko1MlQwanJ4Q1BGWE9sMVZ1VnZSTlBDbzZMSm1ra1VlU0kyL0p5?=
- =?utf-8?B?cGJ2dm1qcDFvMnA0RjQ2NWdRMW9hUVpBY2VISW9scUZPeWFGYkhKNjl1RWJF?=
- =?utf-8?B?clNUNDFOMXNBOTRlVGRjem9wejlFcDZ6UERiODc4bW9KaENUZGJMdkpQUW5J?=
- =?utf-8?B?YnE2SFJCZlFDb0V4NDJvdHd5N0RDdDY2NnlDTnRFdnptZVNLS0pGTVl2NE5z?=
- =?utf-8?B?VytJaWhnM3JrMUhLeDZiVGdZTS9ySXVPcXR1eVp5RU83Qlh2UFc2R09FVEtX?=
- =?utf-8?B?OTVhQmttaUgvck5yZTh4M085SndRMVVTV0Q2SVZLQ1Z0SzliZmZ3RDZGdDFU?=
- =?utf-8?B?ZzNPUHpOU1NLZVFDQXAyM3NnbzNJZ2dSejVkVER3aUV0VFVoV1NPOVd0SElm?=
- =?utf-8?B?Y1U0eUxSOHdCWHlHZGJGRUEyL2k3QTJuYmRTM3E5eTZhaVB6dEJUSzNjelpa?=
- =?utf-8?B?R2VjZnJNcU96ZGRaeGpnWUZqUEY5dFBBL2l2aFU5MmhDbVpVaW9zTmE2eUdF?=
- =?utf-8?B?T1loT0hoalFNV0hxR3dyUDJ3Zk1GaTVvNzQvaDMyUVBhRHNNQW9wYzF0SW9V?=
- =?utf-8?B?U1NmelpkSmRxWTZSd2FKdWJ3V2pLVjdiZFgvcFpjNzY1UnFVMXNpVEQraHNF?=
- =?utf-8?B?QzdjejlRQ3Y1T3BRTjIvS21jVCtybHhOV080ZXlsY2RDelVpcGZaVnV4UERD?=
- =?utf-8?B?eFlXbDR0Zm1GRm5ZRmJTK3RtR09Lb3U0T0pxMnFXeGJSdDcvYWd1NUZsV2M0?=
- =?utf-8?B?aUZVdnRjTUR1KyttQlRUZDZsZ1dzb2JTc0RzcmdqUmM3Y3JERlp0TUxtRklv?=
- =?utf-8?B?bWNlc1FHVmluQVhKZFdLZ2xVWmttbXpPNGZ1M0VyV1FKZ1dnK3dKRXp6cGNV?=
- =?utf-8?B?bjgraXZkM2YrK0dVa3FGMDRlQUsvZVlvdDRjQ3A0MUFCRmNwM0h3Qi8rVDRo?=
- =?utf-8?B?Q05sNXlXbkk0eFByRi90OVVKdTdxL2ZmRVBHRlRPV3Z1d3cwWS9KOVgxRU9C?=
- =?utf-8?B?WjBrU1ZLbG1sQXh3N2oyZGVXd2dNMzl5bEl4cXZRdjlhaTlWdC8vN0lseTgw?=
- =?utf-8?B?T2hpVitGV2Z6OGgrT2pRakc2Ryt2REVYckR0L2p0b2RZMWY0eDFMd01YRnRR?=
- =?utf-8?B?V1BiZmpDMi84S0lsbi96UlpveEl1SitEcC9VVDgrZWdCWi9lNVJtam9KdFVK?=
- =?utf-8?B?NnM3d1gxcEhhRWluSmFjLzlTWm8zZWtUUmlieWtLOGxGUFZLVXlBTmZWbjI2?=
- =?utf-8?B?c1RVSStobW1YZGhHUmxqeHQ0d0prWVZzK3NySWtaRlovSDhEVERubllkVEdX?=
- =?utf-8?Q?OoZoRxW5EQgtoyqgTgiUIzCfdJKpqeVrqkYzqJL?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YnpxZmNuOXVHYm5JWUVzTGVIbUJpamdxQmg5OElJcjIrTmxZdEp4QkVmTUp4?=
- =?utf-8?B?cXZHbmZBOUNiSEZGYUJEZTNGRlZZNVBoV0NDc2o4VW9ZekhpQ1ozQlJLK20z?=
- =?utf-8?B?ZmJvY3FiOC9tenRSOEdMZVJWYW5YUHpqSW9yZzFyUUxXRENRS2FJWFlSc3NO?=
- =?utf-8?B?eDJObWhCU2pQRUJWQ2k5Y0twN0ZpMjVRa3NFam5GamVCSjlBVzU0ZDgrV3pT?=
- =?utf-8?B?d05hbW5HSy85cVBJSllRdGFCSnVEbU82NllUSDhGU2JSOENtWTNYanhvbERs?=
- =?utf-8?B?QUFqaHFqVldPYmlpRkdhWE9veUswMFd1eHBYOXB6S2hEanNxTDVHeU1CaVR5?=
- =?utf-8?B?S0JlcXc0OWc5Zk9YVWExY3JSaHBSMkZ2dVhrNW5ZK2NldFdlNmcyZ3RsTkZY?=
- =?utf-8?B?bERhbGRqUGxjaGw3Nm5hblB0MnJ1M3U1NkxCZjVIdUdxR0lmdlYxZVFBM1gx?=
- =?utf-8?B?Mi9yRHhGdE9CaG5JSHN3V0RyKzFtU0xtb2p3aStTbThQdWYxQ1NWRmh5bm4w?=
- =?utf-8?B?N0E1dzk2OFNld01QSVFTbHcwaFN2VmwzYkdZT0ZUdTRGS3R2RXFCcGZLa05U?=
- =?utf-8?B?TmsxSGpHaEdhRlFOUjQzbjh4ZFRhMlhLU1hBTTQxcEdEYjJ0eHArS1JKcDVu?=
- =?utf-8?B?dFVzcXl6ZjZRajJWOHMxQ2tuZEtjV0dZRUVFME1oSGtiY2FSRmxSeVFpS1pY?=
- =?utf-8?B?UU54OGo4elplWU01eEwvNzVrcXlHRlFjV3B4YjBqcGt0bTlGbzNRelliQVlN?=
- =?utf-8?B?b2ZhMU9XakVwOFRUc2dKYnFDQmIzcTdGWHNyNXFsdE9vcXdwbXcvQlpRSEdq?=
- =?utf-8?B?Nmo5Ym1ISEJaV1d0bHViUW51S2c5ZUozN1FwYmsvakJrYmZmRWJGcXhrUGFV?=
- =?utf-8?B?QW1CUmo3UTVXS3MrR0Z3L3VCeUlDN2VrVWpoOWd0TUJVQk01NE94bHEvWWNo?=
- =?utf-8?B?SCthUTN5ZitHbDREYlhoYk1kSzhBUjNHbjI1RnlKVUpTMmc2WVBtblVmWWV0?=
- =?utf-8?B?VndJY3k3b3FONyt0QW1FL2VrZ1kwR1BXRzl4VGV1R0MzNHh6Q2xnYmVYb3Fs?=
- =?utf-8?B?UnF1WUtpeG9mVnVBMmEwUmRxcjhvVmhJSU9id05SSG5vcFMybkUzcFVqMDVW?=
- =?utf-8?B?MExXcWxEQW1VNkRVekFORHRrRys2Y3lQUzdPMDYyU2NWN1E2eFlUYzFKU254?=
- =?utf-8?B?aWE0Tk9lOVQxenpIZEgrZDZ6VjRVMTl3S21ZK1duNkVUTnpNM2xIYVBkMVlj?=
- =?utf-8?B?OFJqdHJDcGk5MWQxTnl0amZxUUJzVEJhdkxHeVl5ai9va3FGRGdxbUg5M3l4?=
- =?utf-8?B?SGhXZkEzejZtbHJtaWRIbzRNZTFCUWttTHM4S1UvRUJxWHRUVEx3cS81cWpU?=
- =?utf-8?B?NHUxV2ROSWtSZjVJYmxIeGJjZWErZUViaWRnZ0Fxa2dLUklvL281TG1MY3Vn?=
- =?utf-8?B?VTJjaVNoY2JwbnUzRzN1MThxNUVyZ3F6cW90azV6QmRJOVQ5a0JPTkFQcWkv?=
- =?utf-8?B?OVEzY0sySGx4TkJaejF1R1dDYTFuUFNHRXFiSXVHamNJWEFmOTZtaTUrUUZR?=
- =?utf-8?B?MVRzSjZvdGdMbUJqMWQvWngzNW92ZlFSYStJNy9uMEJqaWpPeE5OazQ0NTQz?=
- =?utf-8?B?eGRHWlJMcEVrYzhWMGp2eUhNVFVuVWFWVUxHOU5UYkZSTWxtS0E4NXVndmR4?=
- =?utf-8?B?UjRzT1EraDZzVytkRllxc3BWQkhjTm1mZ25BZS9mKzIvRjRUVWVwbjFaVlVS?=
- =?utf-8?B?QnI3VE1xQkRTUTdUNHZTcVpVcUdOTDcxVG1hUDZ0QnIyaVJpNDhZRGthMmVr?=
- =?utf-8?B?Yzd6aVc5SkxRUWxweFpacTdyMFh5dE01NFV4U29JUFl1c3RxQWJDL1g3WHNP?=
- =?utf-8?B?dUNGb093OFgwWW5vNVhqV3R2OGFXUUw1SFVmdjJFUldjZHFRc1kzQ0VINVFp?=
- =?utf-8?B?alh2d24wVWNkNGlzRHNwQ3VhNG50MURzRUZxU09hUFFrd0x3VTJZY2JiVlFx?=
- =?utf-8?B?NEw1YXVYVU1wL0hwOWltNmw1Z3RtKzNhKy9RN0gzakxZbHlpam10TEdKQk91?=
- =?utf-8?B?OGxrUjNyODlZRVVsMG5LRThMblFBdTRTUTVTc2Zqa3VRL3lQV2ozVlpJaTBz?=
- =?utf-8?Q?ceMdQ/i6lkqW/CH8+4289dFqJ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d57cb65-4ca4-484e-ff6d-08dd04e2c60d
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2024 19:30:18.9901
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7pI6yIpgM7GBL+UKQS88COZ6n7pA8WnOu/0fMDb/NZIZhoHOk9Rq/ypTh3MUxiuwKW/bAmQwu1M7mNgmuoYlsw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6983
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 0/2] mm: Refactor KVM guest_memfd to introduce
+ guestmem library
+To: Elliot Berman <quic_eberman@quicinc.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Sean Christopherson <seanjc@google.com>, Fuad Tabba <tabba@google.com>,
+ Ackerley Tng <ackerleytng@google.com>, Mike Rapoport <rppt@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>
+Cc: James Gowans <jgowans@amazon.com>, linux-fsdevel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20241113-guestmem-library-v3-0-71fdee85676b@quicinc.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20241113-guestmem-library-v3-0-71fdee85676b@quicinc.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Em3xSV_QTVRKDPCGhoWpzPk3p9dJZJBbbt6LbflUjlo_1731666682
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 11/14/24 12:17, Dan Williams wrote:
-> Russ Weight wrote:
-> [..]
->> Clearly this would be an unexpected/unusual case. Someone with root
->> access would have to remove the device driver. I'm not sure how much
->> effort should be expended in preventing it - but this is the reasoning
->> behind the incrementing/decrementing of the module reference counts.
+On 13.11.24 23:34, Elliot Berman wrote:
+> In preparation for adding more features to KVM's guest_memfd, refactor
+> and introduce a library which abtracts some of the core-mm decisions
+> about managing folios associated with guest memory. The goal of the
+> refactor serves two purposes:
 > 
-> The module reference needs to be held only if the producer of those
-> symbols can be removed without triggering some coordinated removal with
-> action consumer. A driver that fails to call
-> firmware_upload_unregister() in its module removal path is simply a driver
-> with a memory-leak and use-after-free bug, not something the firmware
-> upload core needs to worry about.
+> 1. Provide an easier way to reason about memory in guest_memfd. KVM
+>     needs to support multiple confidentiality models (TDX, SEV, pKVM, Arm
+>     CCA). These models support different semantics for when the host
+>     can(not) access guest memory. An abstraction for the allocator and
+>     managing the state of pages will make it eaiser to reason about the
+>     state of folios within the guest_memfd.
 > 
-> So, the prevention mechanism is "thou shalt use
-> firmware_upload_unregister() correctly", and when that is in place
-> explicit module references are not only redundant, but trying to
-> implement them causes circular dependency loops.
+> 2. Provide a common implementation for other users such as Gunyah [1] and
+>     guestmemfs [2].
+> 
+> In this initial series, I'm seeking comments for the line I'm drawing
+> between library and user (KVM). I've not introduced new functionality in
+> this series; the first new feature will probably be Fuad's mappability
+> patches [3].
 
-I believe that is how other similar services, like debugfs, work, the
-module is responsible for cleaning up.
+Right, or the dummy mmap + vma->set_policy patches for NUMA handling.
 
-Thanks,
-Tom
+-- 
+Cheers,
+
+David / dhildenb
+
