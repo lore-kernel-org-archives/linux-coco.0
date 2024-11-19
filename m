@@ -1,315 +1,243 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2061.outbound.protection.outlook.com [40.107.236.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C38188906
-	for <linux-coco@lists.linux.dev>; Mon, 18 Nov 2024 09:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731922717; cv=none; b=pxiCpy36efxa9hdIdxP5QKHV6F0NCzywwTB8Jz+6v30Mlv7Y7do5D+1FuFG1HazwU4xQFqUKlizubM3Wq/fLGYZSseO5BxaTNdJCdwvEPEz2ge4PpDuWDKJIk7BuWEQZFLm13Xbb6AyJ09n+UkbBAbyelH6ne90yCB+ozO8vWFg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731922717; c=relaxed/simple;
-	bh=RCNvydKraMeZR7MoDtc89kltmwQsGZj67/ZYMQ/bOJQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eBJ+YtqbIvW6fKF8lB5auqGP51RF2xVC2yVOGbzZiyq5OAUNBDX9u8vOYUkkqtPLRDcIspN+qU91OQVxvSNJNW3iYXbuC09y5lQ6JlBNUllVD29MB30JryrmaK3rWIJ4iwqFcWcALDal56sGSPIKT/EU95FrqVEVj+f+4+Q+8Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UCsI67N+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5591CCEC6
+	for <linux-coco@lists.linux.dev>; Tue, 19 Nov 2024 13:50:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732024255; cv=fail; b=q3oXYHHORdQP+e7WBFP1i9sujNuL5unPd+70Ayl0RVpgyCGvnZ7x0K42CeLdjbTaicGcLU+S8QF5jDmRZAkHPudj1N9F4aHeWZniNtDoSrlInne4+BXHKGOJNvPlrSw8Uz8yPAw0L2iGqdrjrDs5Cb8BuwTLNrryr2a1u665AMw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732024255; c=relaxed/simple;
+	bh=5/eA0HpsVgiqAlj1Lo+CTunI3Xco6f6ijNinSP5CYus=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P1mAzcwgFd3/dmUmhIKoM4SNf7UOIn2HHdsfGtHvHOOts4w4/X/oqCkfpEjHypXESUfjvxtEpVLiQlcKAiItNUiWCNpRLLmCN002XXUE0i9gKm1zFTEYjRzjvdeAOXnbQetQf2Ll16/8dBElJMDp2I7wUNLb8U2R78eSVuYKdDk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HhyFFXNu; arc=fail smtp.client-ip=40.107.236.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UCsI67N+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731922714;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+NTRjdfPcUO1aXo5xK1hvXQ8mkL4rX7RTb4WBxeB6gE=;
-	b=UCsI67N+eRm5e0rgmbrGmfxMmZ8bzD773l/E7Ktq0WWUKgNmQlD2++j/aMXZjZKmgDzLms
-	ULTLmXJG5LsFzl+vF8wmvArA4U5SFb42RBwHg81olEwgShT/cyexJaAekcc9Eu8xIaNu4m
-	/pfF7OfnhMunmr+gEbK1koQNDHpEKPA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-407-7qTXevLZMEeQeVZ0IdScmw-1; Mon, 18 Nov 2024 04:38:32 -0500
-X-MC-Unique: 7qTXevLZMEeQeVZ0IdScmw-1
-X-Mimecast-MFC-AGG-ID: 7qTXevLZMEeQeVZ0IdScmw
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4315b7b0c16so31935395e9.1
-        for <linux-coco@lists.linux.dev>; Mon, 18 Nov 2024 01:38:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731922712; x=1732527512;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+NTRjdfPcUO1aXo5xK1hvXQ8mkL4rX7RTb4WBxeB6gE=;
-        b=TnNsz80+mEM3K/4j7VZb0lzx8Jx4zWnWf6/erDN5+851aJL5Q77i3r0ESDH8yz3Dz0
-         xd5MiwyoOLc/DNurALols0ebEaOWUDC+vuPakOiSL7jM8h0clZgIXBZ8GZ3wE+h5bhUG
-         Tc8r0vSCs+t2QYe1QdUBRVE3iAG/DAfzTdxDkNfMk03PGejzWSug0YzmsoljpeLNLLnj
-         BRn3qm3mGrbiTcRSfxT+fQeeYQvBfHZcdtTint8ttBvzT+SIasCQ+q2Ok63LGVvfvlYF
-         EZ9bRsuHkmS/iBFastRLI0j0NPUX1yeJwkVOOfX6Tp2S4f1cdN/eGNRv+rkvGH9+prgu
-         GKqA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQvsbeSJkr18XCedgdIFcih5oGlndq2ej4Pqe0XzUbid0UcUjSANzxk4nmxtAD96BL1Xh6sT2MG20o@lists.linux.dev
-X-Gm-Message-State: AOJu0YyTnAPYJaoLpU7Kyue2mAF/e3FNjBPrQKi3oR89f95yRpKhLbrL
-	k7H5NFzHZ2HWL8/2kkIwdjCeLsE8Ho8gOH5eJO6OyxH4dzIUhPQ4AEql95n5KGKrS3Dg2UIlFgm
-	jFw+L4hrt/DZcQA03OinF2ZKNPfwEWMD2NmYohMDuP8/Lm2Vi++JJujksy/4=
-X-Received: by 2002:a05:600c:4595:b0:431:b42a:2978 with SMTP id 5b1f17b1804b1-432df7411f8mr96600575e9.9.1731922711673;
-        Mon, 18 Nov 2024 01:38:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHNdX08kgrhCDdSpGLAntBtOpOc15TdOtLfjCc8MQDp2SzDpZ/XtyXBKhpLLWnL6Ein1okH4A==
-X-Received: by 2002:a05:600c:4595:b0:431:b42a:2978 with SMTP id 5b1f17b1804b1-432df7411f8mr96600255e9.9.1731922711303;
-        Mon, 18 Nov 2024 01:38:31 -0800 (PST)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da2800absm151820395e9.25.2024.11.18.01.38.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Nov 2024 01:38:30 -0800 (PST)
-Message-ID: <15f665b4-2d33-41ca-ac50-fafe24ade32f@redhat.com>
-Date: Mon, 18 Nov 2024 10:38:29 +0100
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HhyFFXNu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=L4EUbRc3fg0D0q73T6uXbO90Gj4LJjAOHAPLIdbmqkG0JNBqhS7qi8n1+uWWX9bqFEe2pbUMStGqWEqXxi30c1FG1XywlRWSnuA1GJi6NpsuMPevqznPTu4owB/jL3jMAU4/8FmsFu68Gc8up/QKhj2XTROUvlAOxTnXL2Gvc2vNKyW1reK/2wJbePGQwFGdFfJfehFarJ+O8So0H8R7mJSv3V85cL2I0YUXfgF9Eq+K+c30AzwBb9f9EXIrepHtNf5KGrFtGIReADqXSm0lwh5nxLburon2Q0JnumcOiwnbTHnCpFnRl1WK95qki7XBO/vHW6qpZZCgKmsO8YM5oA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=z0vl9T1I2vpykVdI24rWAG4S7AxqZ/gNNGKqysf2URM=;
+ b=lDeBWjVI/kFHIZJMLzS/dQQ+YaKZDFasCrjQcs9/Saf4gO38fQQCE5xxr3k4q9gKK+k0iNbA/C7aPu/9QYxHERQNnSbbtTBIZIsdE+WXb/PhFfN3/fZxiG6BZYPeu8aOBgdT3Ncq2SGMp88JyIShfojtxzk+1ozEeCTCnc8bgPjyyB+AcaQMpIYPSBS6v3+jRj4IzcFaQbyx3bcXf5z1JPSCDwgz5hEJvv1gHpRjTQHF58rpMOBHYWc0ayePceQRl39Iw0Ez9OEiCQW0tNlZ3/Le2BUo+6ea8rZMqAHimJxUfVnqOQitYLUSGksLitNwj6rkC0SQqnRoZApM/v+HZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.12) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=z0vl9T1I2vpykVdI24rWAG4S7AxqZ/gNNGKqysf2URM=;
+ b=HhyFFXNuoGFUqA5iZoEGgCfYefCeO0BPGtLY+7BnetCKyQmIXT9eoRJaDHE2/2qa/DDpLEwC29C/0U/Vnjb5Ly/1IL2hEiIj7hkAy6PSfc8elCetnrbLHXlhRCvLNVad8rGnB2KIVmdnR8sYGkDJ5VMk9HIfY/qqoEXeGNZqdWU=
+Received: from BN1PR14CA0023.namprd14.prod.outlook.com (2603:10b6:408:e3::28)
+ by MN0PR12MB6127.namprd12.prod.outlook.com (2603:10b6:208:3c5::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.22; Tue, 19 Nov
+ 2024 13:50:49 +0000
+Received: from BN3PEPF0000B073.namprd04.prod.outlook.com
+ (2603:10b6:408:e3:cafe::93) by BN1PR14CA0023.outlook.office365.com
+ (2603:10b6:408:e3::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.24 via Frontend
+ Transport; Tue, 19 Nov 2024 13:50:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.12)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.12 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.12; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.12) by
+ BN3PEPF0000B073.mail.protection.outlook.com (10.167.243.118) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8158.14 via Frontend Transport; Tue, 19 Nov 2024 13:50:49 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 19 Nov
+ 2024 07:50:49 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: <kvm@vger.kernel.org>
+CC: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<x86@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <pgonda@google.com>,
+	<ashish.kalra@amd.com>, <bp@alien8.de>, <pankaj.gupta@amd.com>,
+	<liam.merwick@oracle.com>, <dionnaglaze@google.com>
+Subject: [PATCH v2 0/2] SEV-SNP: Add KVM support for SNP certificate fetching via KVM_EXIT_COCO
+Date: Tue, 19 Nov 2024 07:35:11 -0600
+Message-ID: <20241119133513.3612633-1-michael.roth@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 1/2] KVM: guest_memfd: Convert .free_folio() to
- .release_folio()
-To: Elliot Berman <quic_eberman@quicinc.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Sean Christopherson <seanjc@google.com>, Fuad Tabba <tabba@google.com>,
- Ackerley Tng <ackerleytng@google.com>, Mike Rapoport <rppt@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Matthew Wilcox <willy@infradead.org>,
- James Gowans <jgowans@amazon.com>, linux-fsdevel@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20241113-guestmem-library-v3-0-71fdee85676b@quicinc.com>
- <20241113-guestmem-library-v3-1-71fdee85676b@quicinc.com>
- <c650066d-18c8-4711-ae22-3c6c660c713e@redhat.com>
- <d2147b7c-bb2e-4434-aa10-40cacac43d4f@redhat.com>
- <20241115121119110-0800.eberman@hu-eberman-lv.qualcomm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20241115121119110-0800.eberman@hu-eberman-lv.qualcomm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: IZ7jghRT7BWQOqtI2SO2FHYO885Lo_Dzv04t6SEPYwk_1731922712
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B073:EE_|MN0PR12MB6127:EE_
+X-MS-Office365-Filtering-Correlation-Id: 35c45b5b-1c86-455d-2529-08dd08a12d22
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9uPcT8d5uJ8JcNry3xf0e8scdB1YGcrFzk0sJD8u5adNAOfIJGIsxSwBo1Pg?=
+ =?us-ascii?Q?2/RujebUMcMIRKOxlhdDvBu+cA4oQR87p6GpjoKHwkAhq4w1XEN+63aSXO4K?=
+ =?us-ascii?Q?EBo4xQcnDRnfVgSNLt9QYdpZjIojSoYWmwQG9dnc1TAQafAFSmdJpewZaIXT?=
+ =?us-ascii?Q?jAQM04dLAVvcRG5Nq8eYA+VaZ/MfVLTK5W/3GBGRGp0wzO4eReRLdUKgMoBi?=
+ =?us-ascii?Q?PJMZqsQ8Hv2oZ8MXmDyHH+QzqaRGKC/J3xOe1UjEh0yelbdb57N9+6+tcHgb?=
+ =?us-ascii?Q?u19wPeRaeL0kORqG3BNUZS9H88+yTDERKOuQkNSMbnm6Dbyk75XuNXgTKdv3?=
+ =?us-ascii?Q?KBViEp7E2vx1A3apF26DdZgVMtaXTSJcaOr1Tw/vU/9qJ/oqCe7FkTcFeUzO?=
+ =?us-ascii?Q?w33gUl/0fuWJOiSPBjR2ZO9m/FrRaLZCUZ23EAabprOdL953YkffxYCcVZDx?=
+ =?us-ascii?Q?dJs5fr/04b7ee3nJRFzKTGl5KLYtEq5ycTddSx77HW0I1JaW0zNGD09I+iWL?=
+ =?us-ascii?Q?av5dAJRi3ATQuPy7yABghJqx/FsneIcX9godlZfH+Pv92OqKrWSAvJayeYat?=
+ =?us-ascii?Q?6Acp6BITbCy3XwrVJA15b4EIrIHAozMRGhUl0f2BLtDUiKYzGhkw4o/p/Ouw?=
+ =?us-ascii?Q?g2hxosBXHMLnnFtOtLTflBM9rWndjiN8Dlc6s3v3VGMv0Jr8XMMWHLjjjdl+?=
+ =?us-ascii?Q?1PlLUaU8FpgL5Nll/B0yamL7DzMLAqRP5VBPoXd7LRTbRTL5TW1dlp204T1A?=
+ =?us-ascii?Q?0iz/n1xEQqc2tIobJqAB8ZPpfvQg2BY1C9naAKl64drsgIcdv5ovVrFlRpBL?=
+ =?us-ascii?Q?l2s0ShdeIYbH4xtXnh1A6j+Fw34yLGrRm1QRfRcA7Awur/yh50gOZ64f1DZJ?=
+ =?us-ascii?Q?7RTrgE2/5HkS04SAbo9cj2htYzKYSlbn4qWdjq9pbUQqYN5XudXreR1ogL+q?=
+ =?us-ascii?Q?RHsqaIYrQEMHwsdz+ZOZA89NxiW10k4BSphAEJOS0yhnCA+TwQe5QDWiIwdE?=
+ =?us-ascii?Q?nyTOoyQxDXJF8U8viwTL4dkZf45mw5JKu49H4Gdp3oegWPunilFzTKkrXMWK?=
+ =?us-ascii?Q?0mP3oocH+Mdbt/Fsnyy1/2BTPNlmFhGVyuFSYD13HzTqQF+rF5E65EhDEvIl?=
+ =?us-ascii?Q?l/UCK0uP0fkPmwmn4Xfkee5rwXE5i09Pd8WmBv1SkVZ3oiOlMC7sQ8IoyAsq?=
+ =?us-ascii?Q?2kt+nVmYIrMN4x15T8UwRdX02C/lqiVE6FpyqHQrX9hkB8DSTKP9ojw8hVkl?=
+ =?us-ascii?Q?owHB7RVS9FUOcZNBIUAP6i1MVyG7K1Ge+NiHekEFmey+uAnxKl9nGx1VdcIq?=
+ =?us-ascii?Q?TgX9SU9ON9drkeG8stldwBmVMk/UBga+DIDZMnJIqS+jL3Oc8JUuAJ0RdViv?=
+ =?us-ascii?Q?jbpenes=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.12;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:atlvpn-bp.amd.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014)(7416014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2024 13:50:49.5822
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 35c45b5b-1c86-455d-2529-08dd08a12d22
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.12];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B073.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6127
 
-On 15.11.24 21:13, Elliot Berman wrote:
-> On Fri, Nov 15, 2024 at 11:58:59AM +0100, David Hildenbrand wrote:
->> On 15.11.24 11:58, David Hildenbrand wrote:
->>> On 13.11.24 23:34, Elliot Berman wrote:
->>>> When guest_memfd becomes a library, a callback will need to be made to
->>>> the owner (KVM SEV) to transition pages back to hypervisor-owned/shared
->>>> state. This is currently being done as part of .free_folio() address
->>>> space op, but this callback shouldn't assume that the mapping still
->>>> exists. guest_memfd library will need the mapping to still exist to look
->>>> up its operations table.
->>>
->>> I assume you mean, that the mapping is no longer set for the folio (it
->>> sure still exists, because we are getting a callback from it :) )?
->>>
->>> Staring at filemap_remove_folio(), this is exactly what happens:
->>>
->>> We remember folio->mapping, call __filemap_remove_folio(), and then call
->>> filemap_free_folio() where we zap folio->mapping via page_cache_delete().
->>>
->>> Maybe it's easier+cleaner to also forward the mapping to the
->>> free_folio() callback, just like we do with filemap_free_folio()? Would
->>> that help?
->>>
->>> CCing Willy if that would be reasonable extension of the free_folio
->>> callback.
->>>
-> 
-> I like this approach too. It would avoid the checks we have to do in the
-> invalidate_folio() callback and is cleaner.
+This patchset is also available at:
 
-It really should be fairly simple
+  https://github.com/amdese/linux/commits/snp-certs-v2
 
+and is based on top of kvm/next (d96c77bd4eeb)
 
-  Documentation/filesystems/locking.rst | 2 +-
-  fs/nfs/dir.c                          | 9 +++++----
-  fs/orangefs/inode.c                   | 3 ++-
-  include/linux/fs.h                    | 2 +-
-  mm/filemap.c                          | 2 +-
-  mm/secretmem.c                        | 3 ++-
-  virt/kvm/guest_memfd.c                | 3 ++-
-  7 files changed, 14 insertions(+), 10 deletions(-)
+v1 of these patches were originally included as part of a larger series
+that went upstream without the certificate support included:
 
-diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
-index f5e3676db954b..f1a20ad5edbee 100644
---- a/Documentation/filesystems/locking.rst
-+++ b/Documentation/filesystems/locking.rst
-@@ -258,7 +258,7 @@ prototypes::
-  	sector_t (*bmap)(struct address_space *, sector_t);
-  	void (*invalidate_folio) (struct folio *, size_t start, size_t len);
-  	bool (*release_folio)(struct folio *, gfp_t);
--	void (*free_folio)(struct folio *);
-+	void (*free_folio)(struct address_space *, struct folio *);
-  	int (*direct_IO)(struct kiocb *, struct iov_iter *iter);
-  	int (*migrate_folio)(struct address_space *, struct folio *dst,
-  			struct folio *src, enum migrate_mode);
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 492cffd9d3d84..f7da6d7496b06 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -218,7 +218,8 @@ static void nfs_readdir_folio_init_array(struct folio *folio, u64 last_cookie,
-  /*
-   * we are freeing strings created by nfs_add_to_readdir_array()
-   */
--static void nfs_readdir_clear_array(struct folio *folio)
-+static void nfs_readdir_clear_array(struct address_space *mapping,
-+		struct folio *folio)
-  {
-  	struct nfs_cache_array *array;
-  	unsigned int i;
-@@ -233,7 +234,7 @@ static void nfs_readdir_clear_array(struct folio *folio)
-  static void nfs_readdir_folio_reinit_array(struct folio *folio, u64 last_cookie,
-  					   u64 change_attr)
-  {
--	nfs_readdir_clear_array(folio);
-+	nfs_readdir_clear_array(folio->mapping, folio);
-  	nfs_readdir_folio_init_array(folio, last_cookie, change_attr);
-  }
-  
-@@ -249,7 +250,7 @@ nfs_readdir_folio_array_alloc(u64 last_cookie, gfp_t gfp_flags)
-  static void nfs_readdir_folio_array_free(struct folio *folio)
-  {
-  	if (folio) {
--		nfs_readdir_clear_array(folio);
-+		nfs_readdir_clear_array(folio->mapping, folio);
-  		folio_put(folio);
-  	}
-  }
-@@ -391,7 +392,7 @@ static void nfs_readdir_folio_init_and_validate(struct folio *folio, u64 cookie,
-  	if (folio_test_uptodate(folio)) {
-  		if (nfs_readdir_folio_validate(folio, cookie, change_attr))
-  			return;
--		nfs_readdir_clear_array(folio);
-+		nfs_readdir_clear_array(folio->mapping, folio);
-  	}
-  	nfs_readdir_folio_init_array(folio, cookie, change_attr);
-  	folio_mark_uptodate(folio);
-diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
-index aae6d2b8767df..d936694b8e91f 100644
---- a/fs/orangefs/inode.c
-+++ b/fs/orangefs/inode.c
-@@ -470,7 +470,8 @@ static bool orangefs_release_folio(struct folio *folio, gfp_t foo)
-  	return !folio_test_private(folio);
-  }
-  
--static void orangefs_free_folio(struct folio *folio)
-+static void orangefs_free_folio(struct address_space *mapping,
-+		struct folio *folio)
-  {
-  	kfree(folio_detach_private(folio));
-  }
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 3559446279c15..4dd4013541c1b 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -417,7 +417,7 @@ struct address_space_operations {
-  	sector_t (*bmap)(struct address_space *, sector_t);
-  	void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
-  	bool (*release_folio)(struct folio *, gfp_t);
--	void (*free_folio)(struct folio *folio);
-+	void (*free_folio)(struct address_space *, struct folio *folio);
-  	ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
-  	/*
-  	 * migrate the contents of a folio to the specified target. If
-diff --git a/mm/filemap.c b/mm/filemap.c
-index e582a1545d2ae..86f975ba80746 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -239,7 +239,7 @@ void filemap_free_folio(struct address_space *mapping, struct folio *folio)
-  
-  	free_folio = mapping->a_ops->free_folio;
-  	if (free_folio)
--		free_folio(folio);
-+		free_folio(mapping, folio);
-  
-  	if (folio_test_large(folio))
-  		refs = folio_nr_pages(folio);
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 399552814fd0f..1d2ed3391734d 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -152,7 +152,8 @@ static int secretmem_migrate_folio(struct address_space *mapping,
-  	return -EBUSY;
-  }
-  
--static void secretmem_free_folio(struct folio *folio)
-+static void secretmem_free_folio(struct address_space *mapping,
-+		struct folio *folio)
-  {
-  	set_direct_map_default_noflush(&folio->page);
-  	folio_zero_segment(folio, 0, folio_size(folio));
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 8f079a61a56db..573946c4fff51 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -353,7 +353,8 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
-  }
-  
-  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
--static void kvm_gmem_free_folio(struct folio *folio)
-+static void kvm_gmem_free_folio(struct address_space *mapping,
-+		struct folio *folio)
-  {
-  	struct page *page = folio_page(folio, 0);
-  	kvm_pfn_t pfn = page_to_pfn(page);
--- 
-2.47.0
+  https://lore.kernel.org/lkml/20240621134041.3170480-1-michael.roth@amd.com/
+
+Overview
+--------
+
+The GHCB 2.0 specification defines 2 GHCB request types to allow SNP guests
+to send encrypted messages/requests to firmware: SNP Guest Requests and SNP
+Extended Guest Requests. These encrypted messages are used for things like
+servicing attestation requests issued by the guest. Implementing support for
+these is required to be fully GHCB-compliant.
+
+For the most part, KVM only needs to handle forwarding these requests to
+firmware (to be issued via the SNP_GUEST_REQUEST firmware command defined
+in the SEV-SNP Firmware ABI), and then forwarding the encrypted response to
+the guest.
+
+However, in the case of SNP Extended Guest Requests, the host is also
+able to provide the certificate data corresponding to the endorsement key
+used by firmware to sign attestation report requests. This certificate data
+is provided by userspace because:
+
+  1) It allows for different keys/key types to be used for each particular
+     guest with requiring any sort of KVM API to configure the certificate
+     table in advance on a per-guest basis.
+
+  2) It provides additional flexibility with how attestation requests might
+     be handled during live migration where the certificate data for
+     source/dest might be different.
+
+  3) It allows all synchronization between certificates and firmware/signing
+     key updates to be handled purely by userspace rather than requiring
+     some in-kernel mechanism to facilitate it. [1]
+
+To support fetching certificate data from userspace, a new KVM exit type is
+used to fetch the data similarly to KVM_EXIT_MMIO/etc. Since there is
+potential for more CoCo-related exits, this series implements this as a more
+general KVM_EXIT_COCO exit type, where individual sub-types can be enabled
+similarly to how KVM_EXIT_HYPERCALL/KVM_CAP_EXIT_HYPERCALL are handled, and
+then introduces the KVM_EXIT_COCO_REQ_CERTS sub-type to implement certficate
+handling.
+
+[1] https://lore.kernel.org/kvm/ZS614OSoritrE1d2@google.com/
 
 
--- 
-Cheers,
+Testing
+-------
 
-David / dhildenb
+For testing this via QEMU, use the following tree:
+
+  https://github.com/amdese/qemu/commits/snp-certs-wip1
+
+A basic command-line invocation for SNP with certificate data supplied
+would be:
+
+ qemu-system-x86_64 -smp 32,maxcpus=255 -cpu EPYC-Milan-v2
+  -machine q35,confidential-guest-support=sev0,memory-backend=ram1
+  -object memory-backend-memfd,id=ram1,size=4G,share=true,reserve=false
+  -object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,id-auth=,certs-path=/home/mroth/cert.blob
+  -bios OVMF.fd
+
+The format of the certificate blob is defined in the GHCB 2.0 specification,
+but if it's not being parsed on the guest-side then random data will suffice
+for testing the KVM bits.
+
+Any feedback/review is appreciated.
+
+Thanks!
+
+-Mike
+
+Changes since v1:
+
+ * Drop subtype-specific error codes. Instead use standard error codes like
+   ENOSPC/etc. and let KVM determine whether a particular error requires
+   special handling for a particular KVM_EXIT_COCO subtype. (Sean)
+ * Introduce special handling for EAGAIN for KVM_EXIT_COCO_REQ_CERTS such
+   that the guest can be instructed to retry if userspace is temporarily unable
+   to immediately lock/provide the certificate data. (Sean)
+ * Move the 'ret' field of struct kvm_exit_coco to the top-level so all
+   sub-types can propagate error codes the same way.
+ * Add more clarifying details in KVM documentation about the suggested
+   file-locking scheme to avoid races between certificate requests and updates
+   to SNP firmware that might modify the endorsement key corresponding to the
+   certificate data.
+
+Changes since splitting this off from v15 SNP KVM patchset:
+
+ * Address clang-reported warnings regarding uninitialized variables 
+ * Address a memory leak of the request/response buffer pages, and refactor
+   the code based on Sean's suggestions:
+   https://lore.kernel.org/kvm/ZktbBRLXeOp9X6aH@google.com/
+ * Fix SNP Extended Guest Request handling to only attempt to fetch
+   certificates if handling MSG_REQ_REPORT (attestation) message types
+ * Drop KVM_EXIT_VMGEXIT and introduce KVM_EXIT_COCO events instead
+ * Refactor patch layout for easier handling/review
+
+----------------------------------------------------------------
+Michael Roth (2):
+      KVM: Introduce KVM_EXIT_COCO exit type
+      KVM: SEV: Add certificate support for SNP_EXTENDED_GUEST_REQUEST events
+
+ Documentation/virt/kvm/api.rst  | 119 ++++++++++++++++++++++++++++++++++++++++
+ arch/x86/include/asm/kvm_host.h |   1 +
+ arch/x86/kvm/svm/sev.c          |  44 +++++++++++++--
+ arch/x86/kvm/x86.c              |  13 +++++
+ include/uapi/linux/kvm.h        |  19 +++++++
+ include/uapi/linux/sev-guest.h  |   8 +++
+ 6 files changed, 198 insertions(+), 6 deletions(-)
+
 
