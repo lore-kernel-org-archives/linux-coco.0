@@ -1,118 +1,307 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA9F3F9C5
-	for <linux-coco@lists.linux.dev>; Wed, 20 Nov 2024 04:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A33157495
+	for <linux-coco@lists.linux.dev>; Wed, 20 Nov 2024 18:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732078555; cv=none; b=ckOzETkBHXaRiXL5j2BmhjyYKj3aLJTB7c3FWdZDC+9LhpuacC73hN/tHsE0HuvbI07CSeojCyi10R+d2URAgKwTAdcSVFS+S6UgqGWFKBrJpZ3kI6C/ygo2SvlU7Hdm1HLGq5kY9Xq9XEu57nABkE6eoTvprOZiLpt+n9DI9KA=
+	t=1732126356; cv=none; b=TQqogx3N+a8x5ZceEZV3qRVI2DqSq7f6N7SLCbrtw9k4oi/TToH19WLowrF4QywsUMinuIGNLPzmGrJfz8c/sRRuVDyN8Xn7cnEREkvLnwKyVaF59cQ5uKSuPplDIrOENHMPEPnuzDjNxM6+f6VnPqplXY5Envlh4Z2/mrBZrf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732078555; c=relaxed/simple;
-	bh=qidyDdoPMSrLqOEPcAD7Fm10v61MJZnJnKYjl/6vk68=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oxBoUeDFHBCAl5ahJB2ufcTDzqFAOczUAg5tn+8lKClfngaV/8ZS64nPmcR/CyPqbZIdM6W0p9i7t1+6MWYpPqSLDzewOpcgV5ixjyBFjRliA047/lbprHOTyJuA5+aBXiJEtbMnLDqyXFmkglY2Qap11Fi8B8YvmpDPhJiujk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uSjitzdE; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1732126356; c=relaxed/simple;
+	bh=kEKpxw3CotOQ7wils62B18/WUj4g9whxm2Eiu4thJiE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=JC60gqdls1KTDXlnzKllOBKuUXPDgjUI3m/0b4+NEiYaI/odHUC0iZSgDtfxjrj4pIpTaQ60Ys/hJ/IBQDQfmXzxgDl6aXuN4+q8BmCKxyvQ90anSwTPVlrjYXtLKjVALv+ZyY8slfAYyR7gomc10PrznjN4PXqNlTRtN2eCXhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dC8dt5H+; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uSjitzdE"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9f1c590ecdso893377466b.1
-        for <linux-coco@lists.linux.dev>; Tue, 19 Nov 2024 20:55:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732078552; x=1732683352; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rLsyLORpZtZ6b2mAwzZkeZQ6i4pKu4Ce89IT06ouUsE=;
-        b=uSjitzdED3ftX5xuHt9V1H3sXyEcFts1/Rk0qntqzoudJeHuNBzLYvddIhYVjJU7ti
-         8FrfUN7R+OfUTBzmVTruLBgG10C04kCC/GBLgBNEHm1OvXTQDhh/NWLwUYzwUi9mueBg
-         jbQi35R/I8dPCPb4TI/UaW52ltVaORhPFLuSr7QmGdjumNeXlzSrhLBdw2QtaStj81Xj
-         3dlQFBhjyLly9ZpPlispMo2fJCqJyxbqG6UEXnFUFIzd0hFcixfkn2bmofnTngge0fj6
-         r5DuA0yjdH6o6LMkAdO7jEpUY5p28SzlAHJNyNpEZOzuux8j0PivKSVWkDuoXY0eKUwa
-         ecEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732078552; x=1732683352;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rLsyLORpZtZ6b2mAwzZkeZQ6i4pKu4Ce89IT06ouUsE=;
-        b=urA+d4OyXUN8VfL16+gK4T/2bfuaSrU9hDDq+MsQp7sW8oMNATeyD2rZYF26nQXGPt
-         P7MbkkaIcZWFBgAiaLWxwf7mWJ/eClBy5j22+RLza1Nr+8a24Mk2qoqJFmkUWQ82VvIr
-         hbGKrZP1LbQwi+kjH9pWNKDuSu7rI4CG6b/T9cQjofga/usu/gzntiMCBLQtiGq92PFx
-         4c1ObSSUh7NhTe6YgaCJvXipYiBH/weamqjYM+tEH4dFdIKMU90UolRUvJ3eDSrqT1Dm
-         mHOZxOtQ//cp5O0k1qoeqgmx9SYyjKA+ao6ixEj7e6gsLhGnPRHAZ5vtx6kRX4s/8O03
-         qvfw==
-X-Forwarded-Encrypted: i=1; AJvYcCUEbjL9ZN5442g7PEIng8PfE2JCL9Pgi+a3hEOtlg7sg+Ibd2Ylic+rEhKp6Bs1YJiVwFrY1ScL7coI@lists.linux.dev
-X-Gm-Message-State: AOJu0YzAqluEKYPnrBerlykW5Wub1+wOEr8BfGzknOoSrPNHawh4zJwJ
-	j+A6/Jie5+e/KnZ6lxlYDzJlZ5GV3o3Yh0XaRGH4g6PkVmjBJyygf/UlG1BYsUKa8Yj/EmUK0+6
-	rfY0R4ualk8Y2PHn4HZSejM6uhfw89Ng8rSX+
-X-Google-Smtp-Source: AGHT+IGineP2bUXtNwD1Ct4msCtFonm9FZ5ffyQckr3P3Efc8YypLgUph8KTFI3sRkQXjSxM5eevi7MkccDQbnEgqmo=
-X-Received: by 2002:a17:907:961e:b0:aa4:777d:7394 with SMTP id
- a640c23a62f3a-aa4dd52feabmr116533166b.11.1732078552227; Tue, 19 Nov 2024
- 20:55:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dC8dt5H+"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AK9FKSB027803;
+	Wed, 20 Nov 2024 18:12:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	dYnrEPxKLE6MQr5D9RuLPD8bN+zm4F0byAPTSCQkhxE=; b=dC8dt5H+cQHviopv
+	RhJHEKycrBke9RtwRutNt+CJatrFvCW635dZrktM3ayWSuclMNy/Njyu16vyfX32
+	XYyozQRbWwoOVidRJ2J+3fI/sfOn6bt6aWqCwT7WC3OlBqSRwwtEahmsd+1Syq+D
+	0b+0h8fRSUSUOCrwVFEbU/KMRSeXVKx4n5iEk0HzZiEH12cy0mBP2MOxpZ0JsX1b
+	GM9SzXNtGJhytrlQfDHpjSb9V1Tb8RDFJgc46v1Qv+mBdD+GoNVPQwIrWq6U7gnP
+	Gx19NWqQR8J1N7oyIWGgXBcgyg0ceHpU44ayH1F10U0juXiGisfFAL28XlsskLjc
+	komeAA==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 431bv79kf2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 Nov 2024 18:12:15 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AKICEj0001256
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 Nov 2024 18:12:14 GMT
+Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 20 Nov 2024 10:12:14 -0800
+From: Elliot Berman <quic_eberman@quicinc.com>
+Date: Wed, 20 Nov 2024 10:12:07 -0800
+Subject: [PATCH v4 1/2] filemap: Pass address_space mapping to
+ ->free_folio()
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241119133513.3612633-1-michael.roth@amd.com>
- <20241119133513.3612633-2-michael.roth@amd.com> <CAAH4kHZ_A7-dNyMiyrZ2p46te=Xi7SRosS_kSjYvG6sJTcmb7A@mail.gmail.com>
-In-Reply-To: <CAAH4kHZ_A7-dNyMiyrZ2p46te=Xi7SRosS_kSjYvG6sJTcmb7A@mail.gmail.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Tue, 19 Nov 2024 20:55:40 -0800
-Message-ID: <CAAH4kHYncFsa=5NZVX35jk3jicx1fnYTHsLwapHmJ03+TNKa9w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] KVM: Introduce KVM_EXIT_COCO exit type
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, jroedel@suse.de, thomas.lendacky@amd.com, 
-	pgonda@google.com, ashish.kalra@amd.com, bp@alien8.de, pankaj.gupta@amd.com, 
-	liam.merwick@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20241120-guestmem-library-v4-1-0c597f733909@quicinc.com>
+References: <20241120-guestmem-library-v4-0-0c597f733909@quicinc.com>
+In-Reply-To: <20241120-guestmem-library-v4-0-0c597f733909@quicinc.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+        Andrew Morton
+	<akpm@linux-foundation.org>,
+        Sean Christopherson <seanjc@google.com>,
+        "Fuad
+ Tabba" <tabba@google.com>,
+        Ackerley Tng <ackerleytng@google.com>,
+        "Mike
+ Rapoport" <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        "H. Peter
+ Anvin" <hpa@zytor.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jonathan Corbet <corbet@lwn.net>, Trond Myklebust <trondmy@kernel.org>,
+        "Anna
+ Schumaker" <anna@kernel.org>,
+        Mike Marshall <hubcap@omnibond.com>,
+        "Martin
+ Brandenburg" <martin@omnibond.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
+CC: James Gowans <jgowans@amazon.com>, Mike Day <michael.day@amd.com>,
+        <linux-fsdevel@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <linux-doc@vger.kernel.org>, <linux-nfs@vger.kernel.org>,
+        <devel@lists.orangefs.org>, <linux-arm-kernel@lists.infradead.org>,
+        "Elliot
+ Berman" <quic_eberman@quicinc.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: zmCUsCF2OCF2qjnIgQvaT7lUbSu7ZtJ7
+X-Proofpoint-GUID: zmCUsCF2OCF2qjnIgQvaT7lUbSu7ZtJ7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ mlxscore=0 spamscore=0 mlxlogscore=999 impostorscore=0 phishscore=0
+ clxscore=1015 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411200125
 
-On Tue, Nov 19, 2024 at 8:54=E2=80=AFPM Dionna Amalie Glaze
-<dionnaglaze@google.com> wrote:
->
-> On Tue, Nov 19, 2024 at 5:51=E2=80=AFAM Michael Roth <michael.roth@amd.co=
-m> wrote:
-> >
-> > +struct kvm_exit_coco {
-> > +#define KVM_EXIT_COCO_REQ_CERTS                0
-> > +#define KVM_EXIT_COCO_MAX              1
-> > +       __u8 nr;
-> > +       __u8 pad0[7];
-> > +       __u32 ret;
-> > +       __u32 pad1;
-> > +       union {
-> > +               struct {
-> > +                       __u64 gfn;
-> > +                       __u32 npages;
->
-> Should this not also include a vmm_err code to report to the guest? We
-> need some way for user space to indicate that KVM should write the
-> vmm_err to the upper 32 bits of exit_info_2.
-> I don't think we have a snapshot of the GHCB accessible to userspace.
->
-> I'm still not quite able to get a good test of this patch series
-> ready. Making the certificate file accessible to the VMM process has
-> been unfortunately challenging due to how we manage chroots and VMM
-> upgrades.
-> Still, I'm stuck in the VMM implementation of grabbing the file lock
-> for the certificates and asking myself "how do I tell KVM to write
-> exit_info_2 =3D (2 << 32) | (exit_info_2 & ((1 << 32)-1) before entering
-> the guest?"
-> A __u32 vmm_err field of this struct would nicely make its size 64-bit al=
-igned..
+When guest_memfd becomes a library, a callback will need to be made to
+the owner (KVM SEV) to update the RMP entry for the page back to shared
+state. This is currently being done as part of .free_folio() operation,
+but this callback shouldn't assume that folio->mapping is set/valid.
 
-retracted. I needed to look 2 lines lower. I need to stop working this late=
-.
->
-> --
-> -Dionna Glaze, PhD, CISSP, CCSP (she/her)
+The mapping is well-known to callers of .free_folio(), so pass that
+mapping so the callback can access the mapping's private data.
 
+Link: https://lore.kernel.org/all/15f665b4-2d33-41ca-ac50-fafe24ade32f@redhat.com/
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+---
+ Documentation/filesystems/locking.rst |  2 +-
+ fs/nfs/dir.c                          | 11 ++++++-----
+ fs/orangefs/inode.c                   |  3 ++-
+ include/linux/fs.h                    |  2 +-
+ mm/filemap.c                          |  9 +++++----
+ mm/secretmem.c                        |  3 ++-
+ mm/vmscan.c                           |  4 ++--
+ virt/kvm/guest_memfd.c                |  3 ++-
+ 8 files changed, 21 insertions(+), 16 deletions(-)
 
+diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
+index f5e3676db954b5bce4c23a0bf723a79d66181fcd..f1a20ad5edbee70c1a3c8d8a9bfc0f008a68985b 100644
+--- a/Documentation/filesystems/locking.rst
++++ b/Documentation/filesystems/locking.rst
+@@ -258,7 +258,7 @@ prototypes::
+ 	sector_t (*bmap)(struct address_space *, sector_t);
+ 	void (*invalidate_folio) (struct folio *, size_t start, size_t len);
+ 	bool (*release_folio)(struct folio *, gfp_t);
+-	void (*free_folio)(struct folio *);
++	void (*free_folio)(struct address_space *, struct folio *);
+ 	int (*direct_IO)(struct kiocb *, struct iov_iter *iter);
+ 	int (*migrate_folio)(struct address_space *, struct folio *dst,
+ 			struct folio *src, enum migrate_mode);
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index 492cffd9d3d845723b5f3d0eea3874b1f1773fe1..54e7069013ef2a63db24491fa65059e5ad68057a 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -55,7 +55,7 @@ static int nfs_closedir(struct inode *, struct file *);
+ static int nfs_readdir(struct file *, struct dir_context *);
+ static int nfs_fsync_dir(struct file *, loff_t, loff_t, int);
+ static loff_t nfs_llseek_dir(struct file *, loff_t, int);
+-static void nfs_readdir_clear_array(struct folio *);
++static void nfs_readdir_clear_array(struct address_space *, struct folio *);
+ static int nfs_do_create(struct inode *dir, struct dentry *dentry,
+ 			 umode_t mode, int open_flags);
+ 
+@@ -218,7 +218,8 @@ static void nfs_readdir_folio_init_array(struct folio *folio, u64 last_cookie,
+ /*
+  * we are freeing strings created by nfs_add_to_readdir_array()
+  */
+-static void nfs_readdir_clear_array(struct folio *folio)
++static void nfs_readdir_clear_array(struct address_space *mapping,
++				    struct folio *folio)
+ {
+ 	struct nfs_cache_array *array;
+ 	unsigned int i;
+@@ -233,7 +234,7 @@ static void nfs_readdir_clear_array(struct folio *folio)
+ static void nfs_readdir_folio_reinit_array(struct folio *folio, u64 last_cookie,
+ 					   u64 change_attr)
+ {
+-	nfs_readdir_clear_array(folio);
++	nfs_readdir_clear_array(folio->mapping, folio);
+ 	nfs_readdir_folio_init_array(folio, last_cookie, change_attr);
+ }
+ 
+@@ -249,7 +250,7 @@ nfs_readdir_folio_array_alloc(u64 last_cookie, gfp_t gfp_flags)
+ static void nfs_readdir_folio_array_free(struct folio *folio)
+ {
+ 	if (folio) {
+-		nfs_readdir_clear_array(folio);
++		nfs_readdir_clear_array(folio->mapping, folio);
+ 		folio_put(folio);
+ 	}
+ }
+@@ -391,7 +392,7 @@ static void nfs_readdir_folio_init_and_validate(struct folio *folio, u64 cookie,
+ 	if (folio_test_uptodate(folio)) {
+ 		if (nfs_readdir_folio_validate(folio, cookie, change_attr))
+ 			return;
+-		nfs_readdir_clear_array(folio);
++		nfs_readdir_clear_array(folio->mapping, folio);
+ 	}
+ 	nfs_readdir_folio_init_array(folio, cookie, change_attr);
+ 	folio_mark_uptodate(folio);
+diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
+index aae6d2b8767df04714647db5fe1e5ce54c092fce..2d554102ba9ac83acd2b637d4568090717e87f94 100644
+--- a/fs/orangefs/inode.c
++++ b/fs/orangefs/inode.c
+@@ -470,7 +470,8 @@ static bool orangefs_release_folio(struct folio *folio, gfp_t foo)
+ 	return !folio_test_private(folio);
+ }
+ 
+-static void orangefs_free_folio(struct folio *folio)
++static void orangefs_free_folio(struct address_space *mapping,
++				struct folio *folio)
+ {
+ 	kfree(folio_detach_private(folio));
+ }
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index e3c603d01337650d562405500013f5c4cfed8eb6..6e5b5cc99750a685b217cb8273c38e7f6bf5ae86 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -417,7 +417,7 @@ struct address_space_operations {
+ 	sector_t (*bmap)(struct address_space *, sector_t);
+ 	void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
+ 	bool (*release_folio)(struct folio *, gfp_t);
+-	void (*free_folio)(struct folio *folio);
++	void (*free_folio)(struct address_space *, struct folio *folio);
+ 	ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
+ 	/*
+ 	 * migrate the contents of a folio to the specified target. If
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 36d22968be9a1e10da42927dd627d3f22c3a747b..2c8d92dd9d5dd433acbf1b87156eb2e68337332d 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -235,12 +235,12 @@ void __filemap_remove_folio(struct folio *folio, void *shadow)
+ 
+ void filemap_free_folio(struct address_space *mapping, struct folio *folio)
+ {
+-	void (*free_folio)(struct folio *);
++	void (*free_folio)(struct address_space *, struct folio *);
+ 	int refs = 1;
+ 
+ 	free_folio = mapping->a_ops->free_folio;
+ 	if (free_folio)
+-		free_folio(folio);
++		free_folio(mapping, folio);
+ 
+ 	if (folio_test_large(folio))
+ 		refs = folio_nr_pages(folio);
+@@ -814,7 +814,8 @@ EXPORT_SYMBOL(file_write_and_wait_range);
+ void replace_page_cache_folio(struct folio *old, struct folio *new)
+ {
+ 	struct address_space *mapping = old->mapping;
+-	void (*free_folio)(struct folio *) = mapping->a_ops->free_folio;
++	void (*free_folio)(struct address_space *, struct folio *) =
++		mapping->a_ops->free_folio;
+ 	pgoff_t offset = old->index;
+ 	XA_STATE(xas, &mapping->i_pages, offset);
+ 
+@@ -843,7 +844,7 @@ void replace_page_cache_folio(struct folio *old, struct folio *new)
+ 		__lruvec_stat_add_folio(new, NR_SHMEM);
+ 	xas_unlock_irq(&xas);
+ 	if (free_folio)
+-		free_folio(old);
++		free_folio(mapping, old);
+ 	folio_put(old);
+ }
+ EXPORT_SYMBOL_GPL(replace_page_cache_folio);
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index 3afb5ad701e14ad87b6e5173b2974f1309399b8e..8643d073b8f3554a18d419353fa604864de224c1 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -152,7 +152,8 @@ static int secretmem_migrate_folio(struct address_space *mapping,
+ 	return -EBUSY;
+ }
+ 
+-static void secretmem_free_folio(struct folio *folio)
++static void secretmem_free_folio(struct address_space *mapping,
++				 struct folio *folio)
+ {
+ 	set_direct_map_default_noflush(&folio->page);
+ 	folio_zero_segment(folio, 0, folio_size(folio));
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 749cdc110c745944cd455ae9c5a4c373f631341d..419dc63de05095be298fee724891f0665a397a7b 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -765,7 +765,7 @@ static int __remove_mapping(struct address_space *mapping, struct folio *folio,
+ 		xa_unlock_irq(&mapping->i_pages);
+ 		put_swap_folio(folio, swap);
+ 	} else {
+-		void (*free_folio)(struct folio *);
++		void (*free_folio)(struct address_space *, struct folio *);
+ 
+ 		free_folio = mapping->a_ops->free_folio;
+ 		/*
+@@ -794,7 +794,7 @@ static int __remove_mapping(struct address_space *mapping, struct folio *folio,
+ 		spin_unlock(&mapping->host->i_lock);
+ 
+ 		if (free_folio)
+-			free_folio(folio);
++			free_folio(mapping, folio);
+ 	}
+ 
+ 	return 1;
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 47a9f68f7b247f4cba0c958b4c7cd9458e7c46b4..24dcbad0cb76e353509cf4718837a1999f093414 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -358,7 +358,8 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
+ }
+ 
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+-static void kvm_gmem_free_folio(struct folio *folio)
++static void kvm_gmem_free_folio(struct address_space *mapping,
++				struct folio *folio)
+ {
+ 	struct page *page = folio_page(folio, 0);
+ 	kvm_pfn_t pfn = page_to_pfn(page);
 
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+-- 
+2.34.1
+
