@@ -1,69 +1,124 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104D81D2F50
-	for <linux-coco@lists.linux.dev>; Tue, 19 Nov 2024 17:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732037085; cv=none; b=tL5ObffwLPw1joeLGft4RpZmzSc+iDQWeOCAuiQMHpBft3CuIYtb03LXTPmwjIvUBtJaCMhIf+8fJze4IVeVtvZWq1g1oVpUnwyzcPl2/xudO/Te8EW0xwuj3raUNt6GVtK9qsyVU6lQLJvK9d7fmslh6lzzyep1EwucL3mVCAo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732037085; c=relaxed/simple;
-	bh=F4RNofEwSU92UgBEryV+kXQ2nLsLK9fSPNJFSbkV5iQ=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=T0J/TRw57KEf13KFeZD6HwPev7mZp2Zj2+BCuHdUHh05mCFNdCxdnI1HulBK/xKcAjB9wIDsDMpUJybix+p9uwPsACVbyB+Lg0hEf7QhRk6GXAJscvi6lUvI+e4JZwW+znq2Ck//kYAcUFpLOIy0TUbDCMBrtEKh27rqOvC6af0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=l81bOMmQ; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="l81bOMmQ"
-Received: from 8bytes.org (p54921e31.dip0.t-ipconnect.de [84.146.30.49])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 7149D2C0DCB;
-	Tue, 19 Nov 2024 18:24:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1732037076;
-	bh=F4RNofEwSU92UgBEryV+kXQ2nLsLK9fSPNJFSbkV5iQ=;
-	h=Date:From:To:Subject:From;
-	b=l81bOMmQy40O/7BvWQ+/XpHphy9krMua23saGbehOhhbr/J37VOzmKwOayIsmqp5m
-	 yjvjwtPd4D8hRBSknpi/OLhT5twSB4BTMtpxhOl6DI+3V3XwOn2q6J+irFcOHX7A10
-	 fmQSQjw5Z6dVXWg3OUCtQHXH5wLzi6n4qUyl3Hw5ecqgAc9GuNPUeW8vQmcjuYSFt+
-	 ASed0qnsufR7PRZNqE4u/hTR4FH3eWqmznshEDbWuUqttPowgixIXHVe8qZzrKcLd/
-	 zWigr6AToIWOrebhjkacXPh00GrEi2dQ7VePgBFPs71y40EWWogvT/1re62H2Q3QRH
-	 5zOb7R8r1/GmA==
-Date: Tue, 19 Nov 2024 18:24:35 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call November 20th, 2024
-Message-ID: <ZzzJ0-ROnSW0SZ1G@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040218615A
+	for <linux-coco@lists.linux.dev>; Wed, 20 Nov 2024 04:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732075439; cv=none; b=J+kcfzgVMzo3NK8NHNI3RyP4EOJ++C70mlx3myhCpBF0Psj0OrYWTT4hoIFa+o9sCtQpCtTanBy18qVfP+m2lbuDtGhhk8DGemNvZaHIDOwxdDriEzkXo9yHQ0JGZfdhbRCqbCJEhZHvgIx7QJuINEEBvj2Rtr/Tvlv529LQfJY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732075439; c=relaxed/simple;
+	bh=r41Eb+fJ3uIywp8te8U4WHM8WHp7sJWz+VL8aPrV7nA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CQsOEbO8EKcy3+OPYCAwF3jXD1URvI9gfh+IRKAybgqhGaBufENuaPnX9P3RywJnNaX5vUsrHshwseD3SUTgbub0uNVNjtUwvPxK5bwFmEusosXk9TJ9iwRJRH9edAXt+4ZVsHewk0SiX11Jck6pchEnNHUKwvuM2Kl7k7Wav3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QOjHkX1l; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QOjHkX1l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732075438; x=1763611438;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=r41Eb+fJ3uIywp8te8U4WHM8WHp7sJWz+VL8aPrV7nA=;
+  b=QOjHkX1lcMKxu0beETiggI9lEI9di234F+9PZMpvNG+rjzAOXoUowxkH
+   iZKSQ3qRt+RZKgKGKTPzVFA4bOSzE5fjGYkwCTDtrLKoUnvVbYai5K8yM
+   7eQyphlh6WkrYODsPDxJfDKnZD4KxL3/tJYBYZ/g0JdFX+e+pJvHLY7yK
+   HtfLnhexOdm5Gw+TvJKUCSzxYe5Z8m0caVHD7ht9ZARKSMabQ0UkOmP5h
+   xVaeA5cPFHFXu1dPyTIxQUP70ptBaZHP9BiDWIHaXX58xNfkSq0ZhM6qk
+   kSaVg/2pAPBBf6jPiUKU+LtX/fLbjeUg+WpIcs98QBRhM6Jp2A4IFlB30
+   A==;
+X-CSE-ConnectionGUID: bugL3gZ6QiC2ax2hlyGq8g==
+X-CSE-MsgGUID: 6AFi1SwZTdW/mZKOLHN4Xw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11261"; a="36024546"
+X-IronPort-AV: E=Sophos;i="6.12,168,1728975600"; 
+   d="scan'208";a="36024546"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2024 20:03:57 -0800
+X-CSE-ConnectionGUID: sXZrxEyUSTSoSVppd524cg==
+X-CSE-MsgGUID: QFNulvvjSR6eI60JKfRu9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,168,1728975600"; 
+   d="scan'208";a="94243691"
+Received: from shiningy-mobl1.ccr.corp.intel.com (HELO [10.124.227.33]) ([10.124.227.33])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2024 20:03:51 -0800
+Message-ID: <6fc71b3c-fbc1-4fb8-9692-f85d3166a68f@linux.intel.com>
+Date: Wed, 20 Nov 2024 12:03:49 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 4/5] KVM: Introduce KVM_EXIT_COCO exit type
+To: Michael Roth <michael.roth@amd.com>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org,
+ pbonzini@redhat.com, jroedel@suse.de, thomas.lendacky@amd.com,
+ pgonda@google.com, ashish.kalra@amd.com, bp@alien8.de, pankaj.gupta@amd.com,
+ liam.merwick@oracle.com, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ "Yamahata, Isaku" <isaku.yamahata@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>
+References: <20240621134041.3170480-1-michael.roth@amd.com>
+ <20240621134041.3170480-5-michael.roth@amd.com> <ZnwkMyy1kgu0dFdv@google.com>
+ <r3tffokfww4yaytdfunj5kfy2aqqcsxp7sm3ga7wdytgyb3vnz@pfmstnvtuyg2>
+ <Zn8YM-s0TRUk-6T-@google.com>
+ <r7wqzejwpcvmys6jx7qcio2r6wvxfiideniqmwv5tohbohnvzu@6stwuvmnrkpo>
+ <f8dfeab2-e5f2-4df6-9406-0aff36afc08a@linux.intel.com>
+ <20241119135327.zjxlczjbli3wdo5o@amd.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20241119135327.zjxlczjbli3wdo5o@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi,
 
-Here is the usual call for agenda items for this weeks SVSM development
-call. Please send me any agenda items you have in mind or raise them in
-the meeting.
 
-I have one agenda item so far:
 
-	* Build system PR overview and discussion.
+On 11/19/2024 9:53 PM, Michael Roth wrote:
+[...]
+> A few weeks back we discussed during the PUCK call on whether it makes
+> sense for use a common exit type for REQ_CERTS and TDX_GET_QUOTE, and
+> due to the asynchronous/polling nature of TDX_GET_QUOTE, and the
+> somewhat-particular file-locking requirements that need to be built into
+> the REQ_CERTS handling, we'd decided that it's probably more trouble
+> than it's worth to try to merge the 2.
+>
+> However, I'm still hoping that KVM_EXIT_COCO might still provide some
+> useful infrastructure for introducing something like
+> KVM_EXIT_COCO_GET_QUOTE that implements the TDX-specific requirements
+> more directly.
+I am not sure it benefits much.
+Since the handling codes of REQ_CERTS andÂ  TDX_GET_QUOTE in userspace are
+quite different, i.e., there will be little common code to reuse, but it
+requires KVM to convert the error code from the KVM_EXIT_COCO version to
+vendor specific versions.
 
-Details of the meeting (GMeet and Calendar links, meeting time) can be
-found in our governance repository at:
 
-	https://github.com/coconut-svsm/governance
+>
+> I've just submitted v2 of KVM_EXIT_COCO where the userspace-provided
+> error codes are reworked to be less dependent on specific spec-defined
+> values but instead relies on standard error codes that KVM can provide
+> special handling for internally when needed:
+>
+>    https://lore.kernel.org/kvm/20241119133513.3612633-1-michael.roth@amd.com/
+>
+> But I suppose in your case userspace would just return "SUCCESS"/0 and
+According to GHCI spec, besides "TDG.VP.VMCALL_SUCCESS", there are two more
+error codes "TDG.VP.VMCALL_RETRY" and "TDG.VP.VMCALL_INVALID_OPERAND".
+"TDG.VP.VMCALL_RETRY" could cover EAGAIN.
+"TDG.VP.VMCALL_INVALID_OPERAND" could be used to cover the other errors
+returned, i.e., EIO and ENOSPC according to your proposal in v2.
 
-The meeting will be recorded and the recording eventually published.
-
-See you all there.
-
-Regards,
-
-	Jörg
+> then all the vendor-specific values are mainly in relation to the
+> "Status Code" field so it likely doesn't make a huge difference as far
+> as what userspace passes back to KVM.
+>
+> Thanks,
+>
+> Mike
+>
+[...]
