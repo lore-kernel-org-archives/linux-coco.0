@@ -1,366 +1,617 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA17D1DE4FB
-	for <linux-coco@lists.linux.dev>; Fri, 22 Nov 2024 11:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AB41DF98A
+	for <linux-coco@lists.linux.dev>; Fri, 22 Nov 2024 17:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732273402; cv=none; b=YbiN+KhPF+IuFbibTc5K1w7oXoBAgM7+2E947ORXi6UaUB2Uwvztw3wcFWFk4ZRdZQEHbddUizwn+dBxPKoMtybE31s4NDSm/HBrBcL3vtFYc1At5GEP+ik1uCbff/uZaBW9MYStnEz1d0pC0wXBMYncGYtvww3Mr2hE+j1Zzh0=
+	t=1732296606; cv=none; b=YrV+3GLvpuFNCFuaRYP7r4DX/cWdOd8b2i7PMFhCtykIgf4KKccrxriyDsksp1Gh/pvW11MEDnBM8BiqCPLzZsmlUZSOxNztFdH8cjPYXLl+wDaX77Q7g9j20DbR12cg7EvJ5Prl4W2jlvEkQEyVKAyckiviyDNp0I7Iq1bUKOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732273402; c=relaxed/simple;
-	bh=NNT2sdRz8gOTo1HjKqBbwsGakTUcvB+cnj7LflAFjQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SPRLJ8VPKd+lz4ktH8tuUspJZcXQ90J/LGqQ+l4hUMoacWqf0YgzffOXLOcQfQcuwIj14Kmn/qewbmkhywusWAhbqB8bQfWICHWSkwFu8qlO+6W7o+rLO7S6YQII8S8+pVCuu5m7aDp4ZyFcq15B7Z6jpHMPJDUtqwO1wYTvr5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=htXriobr; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1732296606; c=relaxed/simple;
+	bh=fVwiOqaq1zuU3jnKGwXuwPDdxgn64Khth7667ISU1nk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=sSvdTMPf8RiZEd9lcodSb0hu/qJUHRz8+0mmZhUrEnSXfd/FhchVl2VtCRvzliafemDqrj6lZyPOSHefgRrvc0r6b/ZVGg21DLh6pFgQ2zmYJf15jgpyU6MTlRhtaaW9eK/M2981U0ZNJLL3Ovo/TJq4rFztwV0wgRmQo15qcpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PdYIKCPd; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="htXriobr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732273399;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bESni2/f8mwItX/tTYi25M4TXlCQoc1gL7vsjpaYqxo=;
-	b=htXriobrv2v2o+wqoruwbM2sphOD0VSjwCFtWV1JSbA1vlxeNZNJgxQ43Z65KbyjPVuous
-	WJum7ttZJsfhH6Oidl7ZBrWWtfQpWK+YNfJhMhu1nMlL2zwPYsu2MwHolHt50GOrWEMm8R
-	ue1GuhqIFzagyVVdNI5e3gNTN4GOaQs=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-Xz7XJso2Ppy-mOFdUreYFQ-1; Fri, 22 Nov 2024 06:03:18 -0500
-X-MC-Unique: Xz7XJso2Ppy-mOFdUreYFQ-1
-X-Mimecast-MFC-AGG-ID: Xz7XJso2Ppy-mOFdUreYFQ
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4315e8e9b1cso11182325e9.1
-        for <linux-coco@lists.linux.dev>; Fri, 22 Nov 2024 03:03:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732273397; x=1732878197;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bESni2/f8mwItX/tTYi25M4TXlCQoc1gL7vsjpaYqxo=;
-        b=fIc0SWSCQNvrEVx1unZByDuAB30P/X1Y8DTkNfp3FaC05xKxhN29FTtNdoMz9pqG6V
-         mxAwE31VYYG/EQ4vHR70v7jjcjoag8FjiXZSdZcn+ZKbbuIX6Z6dF8UohyN3IGNqvxlu
-         lXZNviUk9rzPmdnfvIQ0aIF/h4Kj7LootRUjJ+lsR417yDPMNtk4X/fYTENcu60fvHnv
-         RkzQcKKgCjSGZHmNfd47twQwJOHGbg73gjzvXrJ6EEUjjzFxmqwsUxDj9VPMVuig+R0x
-         QpimZ1vJz82hcEiYkuyzNrX/5VwmAjE3TXXmhao7HWuvW5YYlNXrN2zjPP7pTDRCYtX3
-         Vcbw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwYCLK7Vq6CEklZUED71yzdrNMsVUe+jEd10PlXRkZv8JTtjxtRcQr+rdefDAF9QdP+ZwxqqmVpnmu@lists.linux.dev
-X-Gm-Message-State: AOJu0YygLORBeXey5fB3t2noWxcwf0KBuJw3mB44YOeeFN6sNBxqceGG
-	GxJwJmCLPa2xiJthpKMMcaeyLP8qdN0ApoU+mrqAS0wJEtw0zbuOzBwmMZp4Jw8eAnmvps7yh9J
-	FuZQgU+4cUjJY6W/eg1oMRaSDk8BbY/2n68ZYM9P/QA0Hrwt2ngwazLK0JLk=
-X-Gm-Gg: ASbGnctUKyOYX64q7U/9Hdu9yxNM1VTzNWl1eU6sndfSZmhQA2V6pqI9F+I9bZ8U4j7
-	x2Xv/LrnTdMBrWmO//45vQKAtHqd12eoNrirHtGvySSLwBe32y4Y5XgiZUr3UYxhAdEiDsyIfTY
-	vUlGAGe0iS80gc/JLUXgQcc3VitSR148Gig4k///Jv6+YGOzTdmvg+c2qiWHqNMS+o7n7B1lXGA
-	98bgk+icEeUdSDB7aVgI+tUaMTEoRfxxZNE3rLYthXG3+ukG/oGQOiFT9v8UdGNw/NP6RhKF8RG
-	xWrJan4O6lh3N3GBGbNiCZqe5bwYUgmk1HMlo1DKPHZD4riaSnMI2utQwP/Y2pHoZGG2Xaorrb8
-	=
-X-Received: by 2002:a05:600c:1e1e:b0:42c:b603:422 with SMTP id 5b1f17b1804b1-433cdb0b504mr21328335e9.8.1732273396618;
-        Fri, 22 Nov 2024 03:03:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFFJxr7crO4glajQJEDgTAZNjVb8uk7YiyJcg7aXRoJivCkE6u6AnPY5u3vjqLC7qU4+MK8iA==
-X-Received: by 2002:a05:600c:1e1e:b0:42c:b603:422 with SMTP id 5b1f17b1804b1-433cdb0b504mr21327795e9.8.1732273396194;
-        Fri, 22 Nov 2024 03:03:16 -0800 (PST)
-Received: from ?IPV6:2003:cb:c70b:7a00:9ccd:493:d8e2:9ac8? (p200300cbc70b7a009ccd0493d8e29ac8.dip0.t-ipconnect.de. [2003:cb:c70b:7a00:9ccd:493:d8e2:9ac8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-433cde114d5sm23620125e9.17.2024.11.22.03.03.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Nov 2024 03:03:15 -0800 (PST)
-Message-ID: <0903abca-42f5-4ca7-8c81-070e7669f996@redhat.com>
-Date: Fri, 22 Nov 2024 12:03:14 +0100
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PdYIKCPd"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AMG7g5r002535;
+	Fri, 22 Nov 2024 17:29:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ms/0ZuZrdN5Xa9tcQLlwairZw5yHrpEZZ38anRjMd/U=; b=PdYIKCPd03OQwakd
+	rIw05jXufpTzu8xAxpcooAwZLtlsyA/XvBrH3G1jtDhhn+yLDGqsQz7UGXAsTgB3
+	5f5K80oKylrIgGDj2a364jK/KPsQeqZ8s3WB84zi+ScZe0rT+E92a9stQnT/H5bL
+	qS0YuDNA7qfVIkQfloU75ulLW88JQ1LDC5K/TPhUFuTXOKUO6kco62Yw8NP85xNq
+	+hm2UkOuYYPpJJ85MLVQRC3nh/o6EtDwRuKLepa/0mRKA0+X0IZ5Red/9J+RTa0v
+	kFLVmT6YBExU4Zacg0TnSonCb/15PhOrGEijXRR44lCgruqK4jD2GTwQCT3CM3lt
+	+z27qw==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 432w72r5vx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Nov 2024 17:29:44 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AMHThjs027935
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Nov 2024 17:29:43 GMT
+Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Fri, 22 Nov 2024 09:29:42 -0800
+From: Elliot Berman <quic_eberman@quicinc.com>
+Date: Fri, 22 Nov 2024 09:29:39 -0800
+Subject: [PATCH v5 2/2] mm: guestmem: Convert address_space operations to
+ guestmem library
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] mm: guestmem: Convert address_space operations to
- guestmem library
-To: michael.day@amd.com, Elliot Berman <quic_eberman@quicinc.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Sean Christopherson <seanjc@google.com>, Fuad Tabba <tabba@google.com>,
- Ackerley Tng <ackerleytng@google.com>, Mike Rapoport <rppt@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Jonathan Corbet <corbet@lwn.net>, Trond Myklebust <trondmy@kernel.org>,
- Anna Schumaker <anna@kernel.org>, Mike Marshall <hubcap@omnibond.com>,
- Martin Brandenburg <martin@omnibond.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
-Cc: James Gowans <jgowans@amazon.com>, linux-fsdevel@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-nfs@vger.kernel.org,
- devel@lists.orangefs.org, linux-arm-kernel@lists.infradead.org
-References: <20241120-guestmem-library-v4-0-0c597f733909@quicinc.com>
- <20241120-guestmem-library-v4-2-0c597f733909@quicinc.com>
- <20241120145527130-0800.eberman@hu-eberman-lv.qualcomm.com>
- <3349f838-2c73-4ef0-aa30-a21e41fb39e5@amd.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <3349f838-2c73-4ef0-aa30-a21e41fb39e5@amd.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 56qbbrIJxJa63_jDQ1nYVzdc_IJh-DNGnRii21SfkLM_1732273397
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-ID: <20241122-guestmem-library-v5-2-450e92951a15@quicinc.com>
+References: <20241122-guestmem-library-v5-0-450e92951a15@quicinc.com>
+In-Reply-To: <20241122-guestmem-library-v5-0-450e92951a15@quicinc.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+        Andrew Morton
+	<akpm@linux-foundation.org>,
+        Sean Christopherson <seanjc@google.com>,
+        "Fuad
+ Tabba" <tabba@google.com>,
+        Ackerley Tng <ackerleytng@google.com>,
+        "Mike
+ Rapoport" <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        "H. Peter
+ Anvin" <hpa@zytor.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jonathan Corbet <corbet@lwn.net>, Trond Myklebust <trondmy@kernel.org>,
+        "Anna
+ Schumaker" <anna@kernel.org>,
+        Mike Marshall <hubcap@omnibond.com>,
+        "Martin
+ Brandenburg" <martin@omnibond.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
+CC: James Gowans <jgowans@amazon.com>, Mike Day <michael.day@amd.com>,
+        <linux-fsdevel@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <linux-doc@vger.kernel.org>, <linux-nfs@vger.kernel.org>,
+        <devel@lists.orangefs.org>, <linux-arm-kernel@lists.infradead.org>,
+        "Elliot
+ Berman" <quic_eberman@quicinc.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: EKXojsiTrlLfnV8raZBkp6yNiR-N9VOU
+X-Proofpoint-GUID: EKXojsiTrlLfnV8raZBkp6yNiR-N9VOU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 spamscore=0 priorityscore=1501 malwarescore=0
+ phishscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411220147
 
-On 21.11.24 18:40, Mike Day wrote:
-> 
-> 
-> On 11/21/24 10:43, Elliot Berman wrote:
->> On Wed, Nov 20, 2024 at 10:12:08AM -0800, Elliot Berman wrote:
->>> diff --git a/mm/guestmem.c b/mm/guestmem.c
->>> new file mode 100644
->>> index 0000000000000000000000000000000000000000..19dd7e5d498f07577ec5cec5b52055f7435980f4
->>> --- /dev/null
->>> +++ b/mm/guestmem.c
->>> @@ -0,0 +1,196 @@
->>> +// SPDX-License-Identifier: GPL-2.0-only
->>> +/*
->>> + * guestmem library
->>> + *
->>> + * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
->>> + */
->>> +
->>> +#include <linux/fs.h>
->>> +#include <linux/guestmem.h>
->>> +#include <linux/mm.h>
->>> +#include <linux/pagemap.h>
->>> +
->>> +struct guestmem {
->>> +	const struct guestmem_ops *ops;
->>> +};
->>> +
->>> +static inline struct guestmem *folio_to_guestmem(struct folio *folio)
->>> +{
->>> +	struct address_space *mapping = folio->mapping;
->>> +
->>> +	return mapping->i_private_data;
->>> +}
->>> +
->>> +static inline bool __guestmem_release_folio(struct address_space *mapping,
->>> +					    struct folio *folio)
->>> +{
->>> +	struct guestmem *gmem = mapping->i_private_data;
->>> +	struct list_head *entry;
->>> +
->>> +	if (gmem->ops->release_folio) {
->>> +		list_for_each(entry, &mapping->i_private_list) {
->>> +			if (!gmem->ops->release_folio(entry, folio))
->>> +				return false;
->>> +		}
->>> +	}
->>> +
->>> +	return true;
->>> +}
->>> +
->>> +static inline int
->>> +__guestmem_invalidate_begin(struct address_space *const mapping, pgoff_t start,
->>> +			    pgoff_t end)
->>> +{
->>> +	struct guestmem *gmem = mapping->i_private_data;
->>> +	struct list_head *entry;
->>> +	int ret = 0;
->>> +
->>> +	list_for_each(entry, &mapping->i_private_list) {
->>> +		ret = gmem->ops->invalidate_begin(entry, start, end);
->>> +		if (ret)
->>> +			return ret;
->>> +	}
->>> +
->>> +	return 0;
->>> +}
->>> +
->>> +static inline void
->>> +__guestmem_invalidate_end(struct address_space *const mapping, pgoff_t start,
->>> +			  pgoff_t end)
->>> +{
->>> +	struct guestmem *gmem = mapping->i_private_data;
->>> +	struct list_head *entry;
->>> +
->>> +	if (gmem->ops->invalidate_end) {
->>> +		list_for_each(entry, &mapping->i_private_list)
->>> +			gmem->ops->invalidate_end(entry, start, end);
->>> +	}
->>> +}
->>> +
->>> +static void guestmem_free_folio(struct address_space *mapping,
->>> +				struct folio *folio)
->>> +{
->>> +	WARN_ON_ONCE(!__guestmem_release_folio(mapping, folio));
->>> +}
->>> +
->>> +static int guestmem_error_folio(struct address_space *mapping,
->>> +				struct folio *folio)
->>> +{
->>> +	pgoff_t start, end;
->>> +	int ret;
->>> +
->>> +	filemap_invalidate_lock_shared(mapping);
->>> +
->>> +	start = folio->index;
->>> +	end = start + folio_nr_pages(folio);
->>> +
->>> +	ret = __guestmem_invalidate_begin(mapping, start, end);
->>> +	if (ret)
->>> +		goto out;
->>> +
->>> +	/*
->>> +	 * Do not truncate the range, what action is taken in response to the
->>> +	 * error is userspace's decision (assuming the architecture supports
->>> +	 * gracefully handling memory errors).  If/when the guest attempts to
->>> +	 * access a poisoned page, kvm_gmem_get_pfn() will return -EHWPOISON,
->>> +	 * at which point KVM can either terminate the VM or propagate the
->>> +	 * error to userspace.
->>> +	 */
->>> +
->>> +	__guestmem_invalidate_end(mapping, start, end);
->>> +
->>> +out:
->>> +	filemap_invalidate_unlock_shared(mapping);
->>> +	return ret ? MF_DELAYED : MF_FAILED;
->>> +}
->>> +
->>> +static int guestmem_migrate_folio(struct address_space *mapping,
->>> +				  struct folio *dst, struct folio *src,
->>> +				  enum migrate_mode mode)
->>> +{
->>> +	WARN_ON_ONCE(1);
->>> +	return -EINVAL;
->>> +}
->>> +
->>> +static const struct address_space_operations guestmem_aops = {
->>> +	.dirty_folio = noop_dirty_folio,
->>> +	.free_folio = guestmem_free_folio,
->>> +	.error_remove_folio = guestmem_error_folio,
->>> +	.migrate_folio = guestmem_migrate_folio,
->>> +};
->>> +
->>> +int guestmem_attach_mapping(struct address_space *mapping,
->>> +			    const struct guestmem_ops *const ops,
->>> +			    struct list_head *data)
->>> +{
->>> +	struct guestmem *gmem;
->>> +
->>> +	if (mapping->a_ops == &guestmem_aops) {
->>> +		gmem = mapping->i_private_data;
->>> +		if (gmem->ops != ops)
->>> +			return -EINVAL;
->>> +
->>> +		goto add;
->>> +	}
->>> +
->>> +	gmem = kzalloc(sizeof(*gmem), GFP_KERNEL);
->>> +	if (!gmem)
->>> +		return -ENOMEM;
->>> +
->>> +	gmem->ops = ops;
->>> +
->>> +	mapping->a_ops = &guestmem_aops;
->>> +	mapping->i_private_data = gmem;
->>> +
->>> +	mapping_set_gfp_mask(mapping, GFP_HIGHUSER);
->>> +	mapping_set_inaccessible(mapping);
->>> +	/* Unmovable mappings are supposed to be marked unevictable as well. */
->>> +	WARN_ON_ONCE(!mapping_unevictable(mapping));
->>> +
->>> +add:
->>> +	list_add(data, &mapping->i_private_list);
->>> +	return 0;
->>> +}
->>> +EXPORT_SYMBOL_GPL(guestmem_attach_mapping);
->>> +
->>> +void guestmem_detach_mapping(struct address_space *mapping,
->>> +			     struct list_head *data)
->>> +{
->>> +	list_del(data);
->>> +
->>> +	if (list_empty(&mapping->i_private_list)) {
->>> +		kfree(mapping->i_private_data);
->>
->> Mike was helping me test this out for SEV-SNP. They helped find a bug
->> here. Right now, when the file closes, KVM calls
->> guestmem_detach_mapping() which will uninstall the ops. When that
->> happens, it's not necessary that all of the folios aren't removed from
->> the filemap yet
+A few near-term features are coming to guest_memfd which make sense to
+create a built-in library.
+ - pKVM will introduce MMU-based protection for guests and allow guest
+   memory to be switched between "guest-private" and "accessible to
+   host". Additional tracking is needed to manage the state of pages as
+   accessing "guest-private" pages crashes the host.
+ - Introduction of large folios requires tracking since guests will not
+   have awareness whether the memory backing a page is huge or not.
+   Guests may wish to share only a partial page.
+ - Gunyah hypervisor support will be added and also make use of guestmem
+   for its MMU-based protection.
 
-Yes, that's the real issue. There either must be some lifetime tracking 
-(kfree() after the mapping is completely unused), or you have to tear it 
-all down before you mess with the mapping.
+The address_space is targeted for the guestmem library.  KVM still
+"owns" the inode and file.
 
->>
->> There are a few approaches I could take:
->>
->> 1. Create a guestmem superblock so I can register guestmem-specific
->>      destroy_inode() to do the kfree() above. This requires a lot of
->>      boilerplate code, and I think it's not preferred approach.
->> 2. Update how KVM tracks the memory so it is back in "shared" state when
->>      the file closes. This requires some significant rework about the page
->>      state compared to current guest_memfd. That rework might be useful
->>      for the shared/private state machine.
->> 3. Call truncate_inode_pages(mapping, 0) to force pages to be freed
->>      here. It's might be possible that a page is allocated after this
->>      point. In order for that to be a problem, KVM would need to update
->>      RMP entry as guest-owned, and I don't believe that's possible after
->>      the last guestmem_detach_mapping().
->>
->> My preference is to go with #3 as it was the most easy thing to do.
-> 
-> #3 is my preference as well. The semantics are that the guest is "closing" the gmem
-> object, which means all the memory is being released from the guest.
+MAINTAINERS is updated with explicit references to guestmem files
+else the stm maintainers are automatically added.
 
-Agreed.
+Tested with:
+run_kselftest.sh -t kvm:guest_memfd_test -t kvm:set_memory_region_test
+
+Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+---
+ MAINTAINERS              |   2 +
+ include/linux/guestmem.h |  34 ++++++++
+ mm/Kconfig               |   3 +
+ mm/Makefile              |   1 +
+ mm/guestmem.c            | 201 +++++++++++++++++++++++++++++++++++++++++++++++
+ virt/kvm/Kconfig         |   1 +
+ virt/kvm/guest_memfd.c   |  99 +++++++----------------
+ 7 files changed, 271 insertions(+), 70 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 391fe4b106f8cb7e1cc0b4184dc121ac74d8e00a..c684248ce65d99d62dc616c8bc6c1a7419bd6f4d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14888,6 +14888,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+ T:	quilt git://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new
+ F:	include/linux/gfp.h
+ F:	include/linux/gfp_types.h
++F:	include/linux/guestmem.h
+ F:	include/linux/memfd.h
+ F:	include/linux/memory.h
+ F:	include/linux/memory_hotplug.h
+@@ -14903,6 +14904,7 @@ F:	include/linux/pagewalk.h
+ F:	include/linux/rmap.h
+ F:	include/trace/events/ksm.h
+ F:	mm/
++F:	mm/guestmem.c
+ F:	tools/mm/
+ F:	tools/testing/selftests/mm/
+ N:	include/linux/page[-_]*
+diff --git a/include/linux/guestmem.h b/include/linux/guestmem.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..0466c10ea7be2360cf334a2d8a439df5438322ac
+--- /dev/null
++++ b/include/linux/guestmem.h
+@@ -0,0 +1,34 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_GUESTMEM_H
++#define _LINUX_GUESTMEM_H
++
++struct address_space;
++struct list_head;
++
++/**
++ * struct guestmem_ops - Hypervisor-specific maintenance operations to perform on folios
++ * @release_folio - Try to bring the folio back to fully owned by Linux
++ *		    for instance: about to free the folio [optional]
++ * @invalidate_begin - start invalidating mappings between start and end offsets
++ * @invalidate_end - paired with ->invalidate_begin() [optional]
++ */
++struct guestmem_ops {
++	bool (*release_folio)(struct address_space *mapping,
++			      struct folio *folio);
++	int (*invalidate_begin)(struct list_head *entry, pgoff_t start,
++				pgoff_t end);
++	void (*invalidate_end)(struct list_head *entry, pgoff_t start,
++			       pgoff_t end);
++};
++
++int guestmem_attach_mapping(struct address_space *mapping,
++			    const struct guestmem_ops *const ops,
++			    struct list_head *data);
++void guestmem_detach_mapping(struct address_space *mapping,
++			     struct list_head *data);
++
++struct folio *guestmem_grab_folio(struct address_space *mapping, pgoff_t index);
++int guestmem_punch_hole(struct address_space *mapping, loff_t offset,
++			loff_t len);
++
++#endif
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 4c9f5ea13271d1f90163e75a35adf619ada3a5cd..48c911d3dbc1645b478d0626a5d86f5fec154b15 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1190,6 +1190,9 @@ config SECRETMEM
+ 	  memory areas visible only in the context of the owning process and
+ 	  not mapped to other processes and other kernel page tables.
+ 
++config GUESTMEM
++	bool
++
+ config ANON_VMA_NAME
+ 	bool "Anonymous VMA name support"
+ 	depends on PROC_FS && ADVISE_SYSCALLS && MMU
+diff --git a/mm/Makefile b/mm/Makefile
+index d5639b03616636e4d49913f76865e24edb270f73..4d5f003d69c8969aaae0615106b90600ef638719 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -136,6 +136,7 @@ obj-$(CONFIG_PERCPU_STATS) += percpu-stats.o
+ obj-$(CONFIG_ZONE_DEVICE) += memremap.o
+ obj-$(CONFIG_HMM_MIRROR) += hmm.o
+ obj-$(CONFIG_MEMFD_CREATE) += memfd.o
++obj-$(CONFIG_GUESTMEM) += guestmem.o
+ obj-$(CONFIG_MAPPING_DIRTY_HELPERS) += mapping_dirty_helpers.o
+ obj-$(CONFIG_PTDUMP_CORE) += ptdump.o
+ obj-$(CONFIG_PAGE_REPORTING) += page_reporting.o
+diff --git a/mm/guestmem.c b/mm/guestmem.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..b25527e96881aa1968d4e85244e0e254fd33bb49
+--- /dev/null
++++ b/mm/guestmem.c
+@@ -0,0 +1,201 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * guestmem library
++ *
++ * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ */
++
++#include <linux/fs.h>
++#include <linux/guestmem.h>
++#include <linux/mm.h>
++#include <linux/pagemap.h>
++
++struct guestmem {
++	const struct guestmem_ops *ops;
++};
++
++static inline struct guestmem *folio_to_guestmem(struct folio *folio)
++{
++	struct address_space *mapping = folio->mapping;
++
++	return mapping->i_private_data;
++}
++
++static inline bool __guestmem_release_folio(struct address_space *mapping,
++					    struct folio *folio)
++{
++	struct guestmem *gmem = mapping->i_private_data;
++
++	if (gmem->ops->release_folio) {
++		if (!gmem->ops->release_folio(mapping, folio))
++			return false;
++	}
++
++	return true;
++}
++
++static inline int
++__guestmem_invalidate_begin(struct address_space *const mapping, pgoff_t start,
++			    pgoff_t end)
++{
++	struct guestmem *gmem = mapping->i_private_data;
++	struct list_head *entry;
++	int ret = 0;
++
++	list_for_each(entry, &mapping->i_private_list) {
++		ret = gmem->ops->invalidate_begin(entry, start, end);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static inline void
++__guestmem_invalidate_end(struct address_space *const mapping, pgoff_t start,
++			  pgoff_t end)
++{
++	struct guestmem *gmem = mapping->i_private_data;
++	struct list_head *entry;
++
++	if (gmem->ops->invalidate_end) {
++		list_for_each(entry, &mapping->i_private_list)
++			gmem->ops->invalidate_end(entry, start, end);
++	}
++}
++
++static void guestmem_free_folio(struct address_space *mapping,
++				struct folio *folio)
++{
++	WARN_ON_ONCE(!__guestmem_release_folio(mapping, folio));
++}
++
++static int guestmem_error_folio(struct address_space *mapping,
++				struct folio *folio)
++{
++	pgoff_t start, end;
++	int ret;
++
++	filemap_invalidate_lock_shared(mapping);
++
++	start = folio->index;
++	end = start + folio_nr_pages(folio);
++
++	ret = __guestmem_invalidate_begin(mapping, start, end);
++	if (ret)
++		goto out;
++
++	/*
++	 * Do not truncate the range, what action is taken in response to the
++	 * error is userspace's decision (assuming the architecture supports
++	 * gracefully handling memory errors).  If/when the guest attempts to
++	 * access a poisoned page, kvm_gmem_get_pfn() will return -EHWPOISON,
++	 * at which point KVM can either terminate the VM or propagate the
++	 * error to userspace.
++	 */
++
++	__guestmem_invalidate_end(mapping, start, end);
++
++out:
++	filemap_invalidate_unlock_shared(mapping);
++	return ret ? MF_DELAYED : MF_FAILED;
++}
++
++static int guestmem_migrate_folio(struct address_space *mapping,
++				  struct folio *dst, struct folio *src,
++				  enum migrate_mode mode)
++{
++	WARN_ON_ONCE(1);
++	return -EINVAL;
++}
++
++static const struct address_space_operations guestmem_aops = {
++	.dirty_folio = noop_dirty_folio,
++	.free_folio = guestmem_free_folio,
++	.error_remove_folio = guestmem_error_folio,
++	.migrate_folio = guestmem_migrate_folio,
++};
++
++int guestmem_attach_mapping(struct address_space *mapping,
++			    const struct guestmem_ops *const ops,
++			    struct list_head *data)
++{
++	struct guestmem *gmem;
++
++	if (mapping->a_ops == &guestmem_aops) {
++		gmem = mapping->i_private_data;
++		if (gmem->ops != ops)
++			return -EINVAL;
++
++		goto add;
++	}
++
++	gmem = kzalloc(sizeof(*gmem), GFP_KERNEL);
++	if (!gmem)
++		return -ENOMEM;
++
++	gmem->ops = ops;
++
++	mapping->a_ops = &guestmem_aops;
++	mapping->i_private_data = gmem;
++
++	mapping_set_gfp_mask(mapping, GFP_HIGHUSER);
++	mapping_set_inaccessible(mapping);
++	/* Unmovable mappings are supposed to be marked unevictable as well. */
++	WARN_ON_ONCE(!mapping_unevictable(mapping));
++
++add:
++	list_add(data, &mapping->i_private_list);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(guestmem_attach_mapping);
++
++void guestmem_detach_mapping(struct address_space *mapping,
++			     struct list_head *data)
++{
++	list_del(data);
++
++	if (list_empty(&mapping->i_private_list)) {
++		/**
++		 * Ensures we call ->free_folio() for any allocated folios.
++		 * Any folios allocated after this point are assumed not to be
++		 * accessed by the guest, so we don't need to worry about
++		 * guestmem ops not being called on them.
++		 */
++		truncate_inode_pages(mapping, 0);
++
++		kfree(mapping->i_private_data);
++		mapping->i_private_data = NULL;
++		mapping->a_ops = &empty_aops;
++	}
++}
++EXPORT_SYMBOL_GPL(guestmem_detach_mapping);
++
++struct folio *guestmem_grab_folio(struct address_space *mapping, pgoff_t index)
++{
++	/* TODO: Support huge pages. */
++	return filemap_grab_folio(mapping, index);
++}
++EXPORT_SYMBOL_GPL(guestmem_grab_folio);
++
++int guestmem_punch_hole(struct address_space *mapping, loff_t offset,
++			loff_t len)
++{
++	pgoff_t start = offset >> PAGE_SHIFT;
++	pgoff_t end = (offset + len) >> PAGE_SHIFT;
++	int ret;
++
++	filemap_invalidate_lock(mapping);
++	ret = __guestmem_invalidate_begin(mapping, start, end);
++	if (ret)
++		goto out;
++
++	truncate_inode_pages_range(mapping, offset, offset + len - 1);
++
++	__guestmem_invalidate_end(mapping, start, end);
++
++out:
++	filemap_invalidate_unlock(mapping);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(guestmem_punch_hole);
+diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+index fd6a3010afa833e077623065b80bdbb5b1012250..1339098795d2e859b2ee0ef419b29045aedc8487 100644
+--- a/virt/kvm/Kconfig
++++ b/virt/kvm/Kconfig
+@@ -106,6 +106,7 @@ config KVM_GENERIC_MEMORY_ATTRIBUTES
+ 
+ config KVM_PRIVATE_MEM
+        select XARRAY_MULTI
++       select GUESTMEM
+        bool
+ 
+ config KVM_GENERIC_PRIVATE_MEM
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 24dcbad0cb76e353509cf4718837a1999f093414..9445a83ba8b0dfe91e9f53d0f51bf81faa0f7e62 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/backing-dev.h>
+ #include <linux/falloc.h>
++#include <linux/guestmem.h>
+ #include <linux/kvm_host.h>
+ #include <linux/pagemap.h>
+ #include <linux/anon_inodes.h>
+@@ -98,8 +99,7 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+  */
+ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ {
+-	/* TODO: Support huge pages. */
+-	return filemap_grab_folio(inode->i_mapping, index);
++	return guestmem_grab_folio(inode->i_mapping, index);
+ }
+ 
+ static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
+@@ -151,28 +151,7 @@ static void kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
+ 
+ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+ {
+-	struct list_head *gmem_list = &inode->i_mapping->i_private_list;
+-	pgoff_t start = offset >> PAGE_SHIFT;
+-	pgoff_t end = (offset + len) >> PAGE_SHIFT;
+-	struct kvm_gmem *gmem;
+-
+-	/*
+-	 * Bindings must be stable across invalidation to ensure the start+end
+-	 * are balanced.
+-	 */
+-	filemap_invalidate_lock(inode->i_mapping);
+-
+-	list_for_each_entry(gmem, gmem_list, entry)
+-		kvm_gmem_invalidate_begin(gmem, start, end);
+-
+-	truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
+-
+-	list_for_each_entry(gmem, gmem_list, entry)
+-		kvm_gmem_invalidate_end(gmem, start, end);
+-
+-	filemap_invalidate_unlock(inode->i_mapping);
+-
+-	return 0;
++	return guestmem_punch_hole(inode->i_mapping, offset, len);
+ }
+ 
+ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
+@@ -277,7 +256,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
+ 	kvm_gmem_invalidate_begin(gmem, 0, -1ul);
+ 	kvm_gmem_invalidate_end(gmem, 0, -1ul);
+ 
+-	list_del(&gmem->entry);
++	guestmem_detach_mapping(inode->i_mapping, &gmem->entry);
+ 
+ 	filemap_invalidate_unlock(inode->i_mapping);
+ 
+@@ -318,63 +297,43 @@ void kvm_gmem_init(struct module *module)
+ 	kvm_gmem_fops.owner = module;
+ }
+ 
+-static int kvm_gmem_migrate_folio(struct address_space *mapping,
+-				  struct folio *dst, struct folio *src,
+-				  enum migrate_mode mode)
++static int kvm_guestmem_invalidate_begin(struct list_head *entry, pgoff_t start,
++					 pgoff_t end)
+ {
+-	WARN_ON_ONCE(1);
+-	return -EINVAL;
+-}
++	struct kvm_gmem *gmem = container_of(entry, struct kvm_gmem, entry);
+ 
+-static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *folio)
+-{
+-	struct list_head *gmem_list = &mapping->i_private_list;
+-	struct kvm_gmem *gmem;
+-	pgoff_t start, end;
+-
+-	filemap_invalidate_lock_shared(mapping);
+-
+-	start = folio->index;
+-	end = start + folio_nr_pages(folio);
+-
+-	list_for_each_entry(gmem, gmem_list, entry)
+-		kvm_gmem_invalidate_begin(gmem, start, end);
+-
+-	/*
+-	 * Do not truncate the range, what action is taken in response to the
+-	 * error is userspace's decision (assuming the architecture supports
+-	 * gracefully handling memory errors).  If/when the guest attempts to
+-	 * access a poisoned page, kvm_gmem_get_pfn() will return -EHWPOISON,
+-	 * at which point KVM can either terminate the VM or propagate the
+-	 * error to userspace.
+-	 */
++	kvm_gmem_invalidate_begin(gmem, start, end);
+ 
+-	list_for_each_entry(gmem, gmem_list, entry)
+-		kvm_gmem_invalidate_end(gmem, start, end);
++	return 0;
++}
+ 
+-	filemap_invalidate_unlock_shared(mapping);
++static void kvm_guestmem_invalidate_end(struct list_head *entry, pgoff_t start,
++					pgoff_t end)
++{
++	struct kvm_gmem *gmem = container_of(entry, struct kvm_gmem, entry);
+ 
+-	return MF_DELAYED;
++	kvm_gmem_invalidate_end(gmem, start, end);
+ }
+ 
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+-static void kvm_gmem_free_folio(struct address_space *mapping,
+-				struct folio *folio)
++static bool kvm_gmem_release_folio(struct address_space *mapping,
++				   struct folio *folio)
+ {
+ 	struct page *page = folio_page(folio, 0);
+ 	kvm_pfn_t pfn = page_to_pfn(page);
+ 	int order = folio_order(folio);
+ 
+ 	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
++
++	return true;
+ }
+ #endif
+ 
+-static const struct address_space_operations kvm_gmem_aops = {
+-	.dirty_folio = noop_dirty_folio,
+-	.migrate_folio	= kvm_gmem_migrate_folio,
+-	.error_remove_folio = kvm_gmem_error_folio,
++static const struct guestmem_ops kvm_guestmem_ops = {
++	.invalidate_begin = kvm_guestmem_invalidate_begin,
++	.invalidate_end = kvm_guestmem_invalidate_end,
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+-	.free_folio = kvm_gmem_free_folio,
++	.release_folio = kvm_gmem_release_folio,
+ #endif
+ };
+ 
+@@ -430,22 +389,22 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+ 
+ 	inode->i_private = (void *)(unsigned long)flags;
+ 	inode->i_op = &kvm_gmem_iops;
+-	inode->i_mapping->a_ops = &kvm_gmem_aops;
+ 	inode->i_mode |= S_IFREG;
+ 	inode->i_size = size;
+-	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
+-	mapping_set_inaccessible(inode->i_mapping);
+-	/* Unmovable mappings are supposed to be marked unevictable as well. */
+-	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
++	err = guestmem_attach_mapping(inode->i_mapping, &kvm_guestmem_ops,
++				      &gmem->entry);
++	if (err)
++		goto err_putfile;
+ 
+ 	kvm_get_kvm(kvm);
+ 	gmem->kvm = kvm;
+ 	xa_init(&gmem->bindings);
+-	list_add(&gmem->entry, &inode->i_mapping->i_private_list);
+ 
+ 	fd_install(fd, file);
+ 	return fd;
+ 
++err_putfile:
++	fput(file);
+ err_gmem:
+ 	kfree(gmem);
+ err_fd:
 
 -- 
-Cheers,
-
-David / dhildenb
+2.34.1
 
