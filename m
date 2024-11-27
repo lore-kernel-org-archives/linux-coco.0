@@ -1,265 +1,173 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA2718DF62
-	for <linux-coco@lists.linux.dev>; Wed, 27 Nov 2024 10:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732701832; cv=fail; b=op4dD0ElN9kaLtKEX08rWvJ3+PYYrALFYTes3SsNQQgolXgF/j7lUui7jJ8UkFW56AKAua8tNNviQNpYpS5iJdmPojDkNmL/BhEtf1rrmhDj1KMgm+iNci7RYvrdANZDUVBRsF32Wyk0Q20hBJfI1SZDizocuXzNNCtmBz01UvQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732701832; c=relaxed/simple;
-	bh=QYJxnbinFYIQx3eLf7fKCOuXp9z4GQ3oqNLN3Nvbq9A=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uokbkk+HrrhtAj7EpWGVtsLZiEQabMcBVdW6KpC8inAdGWRk6ln7ZwnHg0TfZNwx55e/J3LVz86Sxf6kbZ3hBWfGE/WV6xX7J9oNTb9IXuqKJPyebdBzehsagxwqq5Pj7SohUYCXOIZ7cWCkh6AeCWf1+k5HyOWpjcCu82HU66M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EQEtnu2d; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28463200BA7
+	for <linux-coco@lists.linux.dev>; Wed, 27 Nov 2024 16:43:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732725804; cv=none; b=gkAWBfGRSklV1aKn38Q9du6AszYqO0NdEposR/e/pmKnlygZGO8kqEJoQL5MEuyskUpzF9Gw5J5pKOmdsPy9OhaAEGJl195AhDlzX8NHYUoxfckOXi2mvystSDz+sqi7krtLfJW7Nw/Ujsu0sGhEUCqFo1vonq4nEFMQBwbBovk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732725804; c=relaxed/simple;
+	bh=eDpyj/AW5IHNcY2jQOG5IDshclyv5gQlwt3wqraOgy8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=gcqTnTWpkGVWnyKS3lo1kiTsDN/aCPMeXZZWpgorgXdS57zF2UsBbh1/Q66mX9LDWE2ipG1/1Ir44g/1EyDLq1d7sCxjMeDizsPzeWEkvNElefugIbumy2ap+Tjwi34ah/NvDKbO3nxBLhJoR4MtSNmB6PBwJB2W4dPiV7IAhHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iUQlMnDd; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EQEtnu2d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732701831; x=1764237831;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=QYJxnbinFYIQx3eLf7fKCOuXp9z4GQ3oqNLN3Nvbq9A=;
-  b=EQEtnu2db7NtD3J6vKLtkanB69qUm6NkOF+ydblRD0772DWYaCEczJHw
-   opUgtmChe4UawumAUSrzUt6GIJ6Iruv+BjEzs9vWETUk0/W36AViNRl7X
-   X2l6wWghJp+SnTntUytqpSU7P9OlFr6EF6uwYpfuGutQvOg11gulakk9C
-   vox+UmtSyXNkH1nM/0cj71507Ly0yOE3FzkqtncP2od5WjhF+G+qoXt96
-   wq1elUkJUZt7oty9ozIH/eMszxDxDchwpva7fRRrTZZ8baWH3gwvzI+BT
-   9m1BhhUu2T1zlUqqFjO8XXvWkQrjCxnrWa3p9lVBZ5m6QFrqBmmyzPLi0
-   A==;
-X-CSE-ConnectionGUID: WwmVXckiT+2H4h+Cu59YRg==
-X-CSE-MsgGUID: ctf9CaF4Tiu4a2EXIf+lAw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11268"; a="33148238"
-X-IronPort-AV: E=Sophos;i="6.12,189,1728975600"; 
-   d="scan'208";a="33148238"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 02:03:50 -0800
-X-CSE-ConnectionGUID: nT3oAauwQw6gIY6B5pU5Tg==
-X-CSE-MsgGUID: b+LFYolbTGWAy9lFuryC1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,189,1728975600"; 
-   d="scan'208";a="92044615"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 27 Nov 2024 02:03:50 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 27 Nov 2024 02:03:49 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 27 Nov 2024 02:03:49 -0800
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.172)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 27 Nov 2024 02:03:49 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NqzTMWF2F3xCHzqy2Xbdy7E6D5M7o8+3PQ1H05T2JRXKLFsBRVgpGYdL5fquSs1HRTc8XI45x/6P7yxpsTTq3e7kZXLbQISgsAJBDrkhcL8BS8fFTlBzTKIlL63e6sjewMr5+NTwn1B/59M/z6ZEs9klG9R+pmhKI4YE8v/8rC13JAkBTgSQavQRUOsFaUUqJp3nM+J0NIV6puDVW1WlpXIyiD2COhiPiYzw3TTi2oVHSO90CDxAqp5YViG7mORB/d9i8AG9JlSDEpdj4VruuIafsVruZiZPvdW3XZpTnXGbbQG8cUZvjmTlaE4/tB13xXi8qfxcDyGHk2G1nesQmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kaTZcNgjVpnlvi7ycnJW+VaezI4KbEwKoz411nEoP0U=;
- b=xyoABFR+2Y/A0cA1W+6m+WAqQT16A/CMk6yPJK90VWRa7wnazrZLW+ntPxb4JtNBnamnEi4PdslpAMqGmlccgf8YsKavicWyYDZ9XaYWl/z7r18aa0zU208ik6C36sMOmKNhW6JQlBP1QCV1H/LvDresrKJu9tUx9yc7TDSFg7lLjmLB8pEEryhm3VnrRrfD3RK3A9usCe0AsfPFi7h3thZheqvI3SwnRDbek2YUW/1J84gSTSSthf7DgH1KD3T3wylvtTKF/X9LrvdmqbBbO05LkmAqVtZWKpjOam4tqCrwnKX9wni9B8QxPgAfuKaDmyi1TJOdyg/CyFVq5j/xPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- DM6PR11MB4610.namprd11.prod.outlook.com (2603:10b6:5:2ab::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8207.13; Wed, 27 Nov 2024 10:03:47 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca%5]) with mapi id 15.20.8182.019; Wed, 27 Nov 2024
- 10:03:47 +0000
-Date: Wed, 27 Nov 2024 18:01:04 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Baoquan He <bhe@redhat.com>
-CC: "Eric W. Biederman" <ebiederm@xmission.com>, "Kirill A. Shutemov"
-	<kirill@shutemov.name>, <kexec@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<x86@kernel.org>, <rick.p.edgecombe@intel.com>,
-	<kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH] kexec_core: Accept unaccepted kexec destination addresses
-Message-ID: <Z0bt4HXAKqM3C1ZW@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20241021034553.18824-1-yan.y.zhao@intel.com>
- <87frop8r0y.fsf@email.froward.int.ebiederm.org>
- <tpbcun3d4wrnbtsvx3b3hjpdl47f2zuxvx6zqsjoelazdt3eyv@kgqnedtcejta>
- <87cyjq7rjo.fsf@email.froward.int.ebiederm.org>
- <ZxmRkUNmx863Po2U@yzhao56-desk.sh.intel.com>
- <Z0WzHZ+fNn6WuH/E@MiWiFi-R3L-srv>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <Z0WzHZ+fNn6WuH/E@MiWiFi-R3L-srv>
-X-ClientProxiedBy: SGXP274CA0011.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::23)
- To DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iUQlMnDd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732725801;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=QEq1JmDVmj2M7sITA6RewYlgIhtkbkZblAI0t1vMhdY=;
+	b=iUQlMnDd+lBWnvVPI/bNfuFMVDC1F6lp+3rHKM/BDb+X9c6c1zCk91bi0ic1j5WmMpLpqa
+	PWdvToNjv46CwGu4abODA04nLLHji0hz8Z7PntcEX/2/k9yFHWLMzBOyuah1p7EkfSMdul
+	spPzguXDv9eZOPJ5Xut1H2ixx9bTAFI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-138-iSPaSav4NrmJD89uP7XiiQ-1; Wed, 27 Nov 2024 11:43:19 -0500
+X-MC-Unique: iSPaSav4NrmJD89uP7XiiQ-1
+X-Mimecast-MFC-AGG-ID: iSPaSav4NrmJD89uP7XiiQ
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-382450d158fso3381032f8f.1
+        for <linux-coco@lists.linux.dev>; Wed, 27 Nov 2024 08:43:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732725798; x=1733330598;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:to:from:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QEq1JmDVmj2M7sITA6RewYlgIhtkbkZblAI0t1vMhdY=;
+        b=vy615L4cj7nRvAkPrX23TACX4omuymRR3uqq8HcXyFHAQAuTifnkJmvgjN9KRpCmee
+         N+r7Tl1jVCIwQWikI9c2enOa+GWMlV6Xvsn/+DW81jnXflmTVeV+7RKw/VnvQpavzDj4
+         uJqw6oLZg7NMJUQ03lYyqg26BhguzUZ5itg6poIRzToEnRp8QJn2J3eyiWFU1hWglp/C
+         ns6jF8n7g9qYmu8AMU3utjqfScC54NnyxfQ9p+l0RB1SANAB3ds0k4GdejL1qykxBSSL
+         4RtgkTc4Mso3G5mUqqiKTv9+1CqvJXKtGVsV6FuVS26KaT3pg97/9zzINTILVnmRLp81
+         0qPA==
+X-Gm-Message-State: AOJu0Yz7DAjhJVhT+6I5Z30jiR7kQt124BulL88iwHml6iGMVh/e4zNR
+	QESB6nbqr6PMIfT/ygHmzzi3T1xABEhdb5/xscwMjzok7/16FdyumIQ/MZlJabGDan8gcp0pFz9
+	0mcaK5e60vkzn4DuKlYpOYGnnRuJlK9KjuKaI5XPmutfgmqon65I2ePvjoKRk++AA0ot4nkQVoo
+	p8C5q0RtJVhvHYxrCaYN5Kl+ywjEQtSEFq3zDL+y9/KYMV
+X-Gm-Gg: ASbGnct4yjMgK+Ny4Z2nLYkHTP3CGLNoDWfj4viSXKHGBTsGnULIBI9wt38647X61GF
+	5x7G/xwLpkbJuazT2iZTneZLRWCN3hHIMlgQ/nnJt8n38wFeDCTzwrztHP0WKuyfsksbu2Hsxto
+	xB/lijeAeow8Y56ECvnv2lhAgAWDc5sMJqNRxWBU31tkPBBjBKQ0hDMmGd5uMRsbMU9QUnl/fTl
+	4sfPNlp1EQxFXXfbwz818Y5fdNreg9c7VmiUdalgn9ERvZu24Hm3klsJEg2/B3N+nJfCXZO6IN2
+	dAnQI1a9H/YDFb5VajTaJMPEpetg4gSOVESU28f/yzoIlKmYzOQat3kU+A81I1l+TMjBdgcfTaN
+	lyQ==
+X-Received: by 2002:a05:6000:20c1:b0:382:4a84:67c with SMTP id ffacd0b85a97d-385c6ebab13mr2127581f8f.32.1732725798414;
+        Wed, 27 Nov 2024 08:43:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHMlQf8YzSnq0HYc9BWB/5qoUxkKtUNYenwtMbzT53NbzCmcxZk5Gr24lNlaj8AsC7WyrSUIA==
+X-Received: by 2002:a05:6000:20c1:b0:382:4a84:67c with SMTP id ffacd0b85a97d-385c6ebab13mr2127537f8f.32.1732725797871;
+        Wed, 27 Nov 2024 08:43:17 -0800 (PST)
+Received: from ?IPV6:2003:cb:c70d:be00:66fa:83a6:8803:977e? (p200300cbc70dbe0066fa83a68803977e.dip0.t-ipconnect.de. [2003:cb:c70d:be00:66fa:83a6:8803:977e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fb275bcsm16705160f8f.54.2024.11.27.08.43.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Nov 2024 08:43:17 -0800 (PST)
+Message-ID: <3a544ba8-85cd-4b91-940f-85f6f07f2085@redhat.com>
+Date: Wed, 27 Nov 2024 17:43:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|DM6PR11MB4610:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0246f1aa-0eab-4a54-41c6-08dd0ecac8b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?/3vAXnajQcpqGmSpnz1Lv/Bv8hCds9vAO8yE9DAmjPgru8RqPxmhYpbuGRsa?=
- =?us-ascii?Q?8ujCQ9bQdpoIuhsz8tgsXhBkITX8lRLOW/0wrYZpHmiOVihEWOA8lmWFGubD?=
- =?us-ascii?Q?sJpZUjIpf7bgEyU441dUluiWg6SGQksz6uq0RtoEva7mGHJH9zng/O6yAhU+?=
- =?us-ascii?Q?JCEheB8ux2Bs9bofGnGv1chMLLl3TKeAJOnZLLKAKZgK+us0fMZ0rvf+2bGy?=
- =?us-ascii?Q?VQ2HJJDe/c1Di0MOi6J3OnZDhaknqOZBF5akjMs+XGeT57I8J7Ll4H1KEb40?=
- =?us-ascii?Q?B4thOA0mFzeaRFQFl3ybtena9TxA+WwjF/pBe9ryEPcPrfZINFxZBRBTOXrL?=
- =?us-ascii?Q?L2XUKEtqrIFNBc9g76aNsAxd0hDHbrDFUcO5bq4iE/oVt7rtD/LUp7ucqyP0?=
- =?us-ascii?Q?Kyc07fwWb4y4MfIhIw2iiZS4wJtaQlJFjEWTIt1WGS1jJOI/JJq4qaHJdjkM?=
- =?us-ascii?Q?lX2DujL6VPQhFkeXDELWH98fWahPg56cBZqa6Q72APNouBvu+9G2yzRJeAwa?=
- =?us-ascii?Q?oHXzBOCX6InEFqrw/r8HGdiW4Gq3tw525o8C3qK28lRZiWUZg+Ms010ybjKK?=
- =?us-ascii?Q?WE/GsZN7m9sOgBwhi8M4XpcB6yF0Oi3C3doFS5gEk+en0O+qxTQ4664xiMWf?=
- =?us-ascii?Q?mrkNkK/bn0ed4jwD3d5nj4vC5irMEnDMMKs0S30oHv0PGlSqxvhGYOheqQQe?=
- =?us-ascii?Q?FlJHEwPnHSqSbiE9qetag/8VmTRjNwj//3UMHr8W0LuSJSGk+j0P0rO/wGMN?=
- =?us-ascii?Q?d1XJ43yKrsHERNuT9e9pFRJiHbq7tps4R7nbvMhBo0LqzZ7x4jEMmHjgCvmq?=
- =?us-ascii?Q?yHfQDtY+7jQNMGlZasNNYt2f3pIE24Rx8mxjpP64rnWzf6lbDpUKBy2JWT8l?=
- =?us-ascii?Q?HOc27G+sNjlnaKERS0BJvY2wY3Sg0cqO2QYgqDra6Cpuw/TJEX2MFtK5OVTX?=
- =?us-ascii?Q?ZA4xCD6y/lgu+grBeM6Z9mG7PKT2eykHEwuEAmmkRh5zafUmLf2p3C9iHOR3?=
- =?us-ascii?Q?auBGFVNPMwrElZ6yhqCCflGT9TNvWU9tK4OZvGKLUbwcH0VCeYczZHWm6wj3?=
- =?us-ascii?Q?dj0j8BX4hXX7l2xaq5ex9ggsCPCgw8ccCfrQjrSrXi2Mg4iyczpe5OLlpNuy?=
- =?us-ascii?Q?c2Iu+Ik0LqdUBLKdNzohWS3Myiemsb2v+CMjkgGqN9k8W9K4koFLuQEs0j+0?=
- =?us-ascii?Q?soBO1sJX51cOpVOI4aWfPKyeCWEeC/RWqbRDY7yQ3lQ37D//GULK1Aaw7d7+?=
- =?us-ascii?Q?FU0ju4xczxeBB9HSU9cpwJbmo4UeC7jfCxgPlZaVpBbW404geiITBv8E9G/l?=
- =?us-ascii?Q?23xILJmJmyZLyUdhagRSDsfRqDkefTmUuQ1M/kVSwXnpvg=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XpC3gvRZHbbZWgbFfsUFZIvCpruf3DipeYlVafdf0KKfzjnQAu89zCHkPD1s?=
- =?us-ascii?Q?j3R8dqgMMFHJbedLaxu+ltGJrtT4pBiFVk27LGMM52vUM2i264lkac/yeZCO?=
- =?us-ascii?Q?kQh1R8LIM4iDheOtMVMgKXz2SqcNJErAUNwJO9NJjHEpwSYVAODsKaK954Kr?=
- =?us-ascii?Q?ORF9vP1ym070MgoqC9K8mTa/wR+4j7Vk+nkLws3xLHw4qtdZh5tQArpZkXYo?=
- =?us-ascii?Q?K4wcriPe9WsM6Pco6HSU0Blf/ryMI5mYFh5EUwJhVzt4GZQY+qPxuVLNLiSV?=
- =?us-ascii?Q?pvuDNyU+YXXWnQh8ygJpL5YNcuH0zgj0Tp2amBRmDjwdd1L3eiNMuTxffxCV?=
- =?us-ascii?Q?3Yyznuw5+3+DluMkNvAYZMfJLd22Z9aNLyPJBOPsKZjejzCLpks4p2GEGmQl?=
- =?us-ascii?Q?DlkgfEuPwgTbIissb54NQMKjVF+et900+beBdJFZ1RdX/Ns3591m632ezsxo?=
- =?us-ascii?Q?XpVbivs6ls9/Jk+b9LT3FZFgF08XndW646BTfm0LoMx8AkkW6CATPHPKbFH4?=
- =?us-ascii?Q?jNis7QoWCjVV2XSK36a6pIPWUNIxtATld675hbAP/VZR6eMCtNhXv0c57CKe?=
- =?us-ascii?Q?TBCX2FDp4af6M5tdLPlNFaGszdUqn7Tb9MCD1vsBXZt0qmuxuauLyB2c+dDH?=
- =?us-ascii?Q?/MfB0bHY9iUNDHPz2SkMjIYWRkDly5jGZAWkmxqPuSQ17XzeYRvfHaxVC70/?=
- =?us-ascii?Q?Xw4gta5+aL/8fWIVQA9Lbh/4E/WkW2oPDSQfePGJZf7wciZCmotc7QGySj1t?=
- =?us-ascii?Q?gEL7UfFC2OPZGHyO689yfP3igQFVdSMt3fw1sN+zz/cqiwIi3UEiJGEzvDch?=
- =?us-ascii?Q?fXdHnTtKOTzLkoFhLZf8FEy24+OwjHvYhCA2zXOTdX1hJadsqKabqI07hPHS?=
- =?us-ascii?Q?Ale1GkaBQAwc1i9QqflRkO/i9nUPNmWmocJVLe9s0hKUkBmZAUi1/tFAsIv2?=
- =?us-ascii?Q?+VAcyjJsXaARrpZ4exGpAOzbNWR5QLN10C74o5VYXzKqXDGkWXqSrfARGpn5?=
- =?us-ascii?Q?5/AjwegugqlzDD+C74FJBgVCNsU0J4N6zQPmZ7saCUvi4HrMmSL7yGpXeasH?=
- =?us-ascii?Q?fstP7WaJ4h1KhjZN8dhgaxIyoBT/FIej8FL/wvCFEbI2JpHsOC+oF0li4sAL?=
- =?us-ascii?Q?1omYTTJZbM+Tj88HASvOdNgJtb7Y7GgWoKCowTzK1nn95LNFsusELqDTmpXx?=
- =?us-ascii?Q?FzK3E6U2Z2HJ/bKUnQ5deigNDFtWZfdAdMxuICYCglfy5/qhup2KHmXp8k7R?=
- =?us-ascii?Q?0tqCnUkGSA/kuQHdJdLTC1w2H3C4yo5HC6rQk29NXieHWNJKaP57zDKjPkMA?=
- =?us-ascii?Q?dsvz9AGsNnH4tXchRNKs+5/lUj0JOEOlVAinGY2x9g7jRF1bCw0UXnF7YDWW?=
- =?us-ascii?Q?N/lZYERukhNsgNje9O/V7WRBohF/2NlBe49RmayGSHiU95yMXr7a0HVWwM4+?=
- =?us-ascii?Q?zx600LIcFr5FKeIlAovX9tPFC19bacMMrKFA9JR0yiTZIE9hxCSw8IJ7fRvy?=
- =?us-ascii?Q?gXnQXpFfWSuQ3sDufAXeH/2wWY9Uyy9AdFSnjgm7yBFms4hrk4qDbvI1Ijnw?=
- =?us-ascii?Q?dcp72MhhZKUiDO0nDsTJlBewtsB91WcRkkEWiMHX?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0246f1aa-0eab-4a54-41c6-08dd0ecac8b9
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2024 10:03:47.2137
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ubbYqOevz/8kRAAlzuio16l/srJDIkxbNrFuNpi4eaNaHawVEzzNzkpPrWRz87Oc57LPqC9YYW3CrCSRuCx//w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4610
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2024-12-05
+From: David Hildenbrand <david@redhat.com>
+To: linux-coco@lists.linux.dev, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ KVM <kvm@vger.kernel.org>
+References: <6f2bfac2-d9e7-4e4a-9298-7accded16b4f@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <6f2bfac2-d9e7-4e4a-9298-7accded16b4f@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: PSaN4gZKqp8-YA1XpR-yE0QnHLVxBMGIV_cQlD3a0GI_1732725799
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 26, 2024 at 07:38:05PM +0800, Baoquan He wrote:
-> On 10/24/24 at 08:15am, Yan Zhao wrote:
-> > On Wed, Oct 23, 2024 at 10:44:11AM -0500, Eric W. Biederman wrote:
-> > > "Kirill A. Shutemov" <kirill@shutemov.name> writes:
-> > > 
-> > > > Waiting minutes to get VM booted to shell is not feasible for most
-> > > > deployments. Lazy is sane default to me.
-> > > 
-> > > Huh?
-> > > 
-> > > Unless my guesses about what is happening are wrong lazy is hiding
-> > > a serious implementation deficiency.  From all hardware I have seen
-> > > taking minutes is absolutely ridiculous.
-> > > 
-> > > Does writing to all of memory at full speed take minutes?  How can such
-> > > a system be functional?
-> > > 
-> > > If you don't actually have to write to the pages and it is just some
-> > > accounting function it is even more ridiculous.
-> > > 
-> > > 
-> > > I had previously thought that accept_memory was the firmware call.
-> > > Now that I see that it is just a wrapper for some hardware specific
-> > > calls I am even more perplexed.
-> > > 
-> > > 
-> > > Quite honestly what this looks like to me is that someone failed to
-> > > enable write-combining or write-back caching when writing to memory
-> > > when initializing the protected memory.  With the result that everything
-> > > is moving dog slow, and people are introducing complexity left and write
-> > > to avoid that bad implementation.
-> > > 
-> > > 
-> > > Can someone please explain to me why this accept_memory stuff has to be
-> > > slow, why it has to take minutes to do it's job.
-> > This kexec patch is a fix to a guest(TD)'s kexce failure.
-> > 
-> > For a linux guest, the accept_memory() happens before the guest accesses a page.
-> > It will (if the guest is a TD)
-> > (1) trigger the host to allocate the physical page on host to map the accessed
-> >     guest page, which might be slow with wait and sleep involved, depending on
-> >     the memory pressure on host.
-> > (2) initializing the protected page.
-> > 
-> > Actually most of guest memory are not accessed by guest during the guest life
-> > cycle. accept_memory() may cause the host to commit a never-to-be-used page,
-> > with the host physical page not even being able to get swapped out.
-> 
-> So this sounds to me more like a business requirement on cloud platform,
-> e.g if one customer books a guest instance with 60G memory, while the
-> customer actually always only cost 20G memory at most. Then the 40G memory
-> can be saved to reduce pressure for host.
-Yes.
+Hi,
 
-> I could be shallow, just a wild guess.
-> If my guess is right, at least those cloud service providers must like this
-> accept_memory feature very much.
-> 
-> > 
-> > That's why we need a lazy accept, which does not accept_memory() until after a
-> > page is allocated by the kernel (in alloc_page(s)).
-> 
-> By the way, I have two questions, maybe very shallow.
-> 
-> 1) why can't we only find those already accepted memory to put kexec
-> kernel/initrd/bootparam/purgatory?
+due to Thanksgiving, we'll move the call to next week. As discussed in 
+the last meeting, we'll start the meeting 1h earlier.
 
-Currently, the first kernel only accepts memory during the memory allocation in
-a lazy accept mode. Besides reducing boot time, it's also good for memory
-over-commitment as you mentioned above.
+So the next guest_memfd upstream call will happen Thursday next week, 
+2024-12-05 at 8:00 - 9:00am (GMT-08:00) Pacific Time - Vancouver.
 
-My understanding of why the memory for the kernel/initrd/bootparam/purgatory is
-not allocated from the first kernel is that this memory usually needs to be
-physically contiguous. Since this memory will not be used by the first kernel,
-looking up from free RAM has a lower chance of failure compared to allocating it
-from the first kernel, especially when memory pressure is high in the first
-kernel.
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
- 
-> 2) why can't we accept memory for (kernel, boot params/cmdline/initrd)
-> in 2nd kernel? Surely this purgatory still need be accepted in 1st kernel.
-> Sorry, I just read accept_memory() code, haven't gone through x86 boot
-> code flow.
-If a page is not already accepted, invoking accept_memory() will trigger a
-memory accept to zero-out the page content. So, for the pages passed to the
-second kernel, they must have been accepted before page content is copied in.
+The meeting notes can be found at [1], where we also link recordings and 
+collect current guest_memfd upstream proposals. If you want an google 
+calendar invitation that also covers all future meetings, just write me 
+a mail.
 
-For boot params/cmdline/initrd, perhaps we could make those pages in shared
-memory initially and have the second kernel to accept private memory for copy.
-However, that would be very complex and IMHO not ideal.
+In this meeting we'll discuss:
+* Persisting guest_memfd across reboot / guest_memfs
+* Shared device assignment in QEMU
+* guest_memfd population overhead
+
+And we'll continue our discussion on:
+* Challenges with supporting huge pages
+* Challenges with shared vs. private conversion
+* guest_memfd as a "library"
+
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
+[1] 
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+
+-- 
+Cheers,
+
+David / dhildenb
+
