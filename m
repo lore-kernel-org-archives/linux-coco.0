@@ -1,204 +1,222 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B393F199253
-	for <linux-coco@lists.linux.dev>; Thu, 28 Nov 2024 15:19:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39691BBBFC
+	for <linux-coco@lists.linux.dev>; Thu, 28 Nov 2024 16:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732807178; cv=none; b=thXOa7zyko+OS/9lwzldP3Srx3v0UF6VdoyCXBQNImb5a4aZIA1tBh2YKHVWeEX0oYRb2C10XqiFh3gMSnWFC9/ocHvWvfKHvXGY+amt6L9T/KFbg0XdbQTU7bopWiFlioyUH21ylEQFqclZSalLJoPE+PXsK9qqAmELg3GYTTA=
+	t=1732810094; cv=none; b=KViGEmp1nVDv195UFfXibV4rGrGSZyrs7imaPABb7TTVLsEJg+o7OMdTY+3leNSbwSGaa7p0HaPrIZO8vGcYq9AYxRc7RJ0X9aGOMsmKsx3ySdio9tYBRRgw3Oofa1F8f1IddMplnFF4H4O2BbvGOf+R0HhV+6O6PxgvE3ur8ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732807178; c=relaxed/simple;
-	bh=YyZedDy3okp0nALDPsjnZBP0zJTRMrEGnyJvxVpfScI=;
+	s=arc-20240116; t=1732810094; c=relaxed/simple;
+	bh=EXr/Xa4IzkrMZ/1Uwppwz8/I/eKNWK/N7JTkg3JjU0M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K0vh0+AQbIGHsTn29uoU+aGUDUp2hZTEoi8ClRQIblH3pB4/vHte27kyDj53AtwiOJMDBO+8prUgvhpONc0FVSvhwyCW6U1snrLdKnt+oqS9jBlHw3ptF53E/8iktQ4tRJqVvSo+T7MY2yS1jil7RXNwz41HbkBmuxtX6SnMmLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iK/ABebs; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=IZP9KhAFzcz7zVT1Dy5UuTbFKqLuP9iGirE9VbQ8HTPvdG2LHUAqr4lOlHpweDGZsXRAdqdl+wuvIpNCetePwOZehCy1UgB+D8Xl5B6tzoAQYGN7Nmj8nAC1ufrPYo9vHKz60AC/Us/TBWYXQydqCekAlXouKx0LpfobWV2yb7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ZHiQsPrE; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iK/ABebs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732807174;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Id6THo/fI6vVef/8Eixc+rBcXSt5nmBVRnKcFs3SFmM=;
-	b=iK/ABebsU9+f/k/pM0ZtozXCIXa9GGad44iAfJdZIJq44iDuxFjtFgqDWHsW9wc1JRlpHT
-	/MKbfqDJUe/Xib2hppllW5g6lMEP/7aZzAS0GJ7H4k4SeqUuB+aDhLyoM5WZhQY2g07oQX
-	+xesNHxIVUf3kK1e41YbJZEnnkugZAM=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-564-dqbCfCTmNz2cQMULusPfFw-1; Thu,
- 28 Nov 2024 10:19:31 -0500
-X-MC-Unique: dqbCfCTmNz2cQMULusPfFw-1
-X-Mimecast-MFC-AGG-ID: dqbCfCTmNz2cQMULusPfFw
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ZHiQsPrE"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1F7AD40E015E;
+	Thu, 28 Nov 2024 16:08:08 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id JEf4IJx5ofLC; Thu, 28 Nov 2024 16:08:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1732810083; bh=tBvIZsR8D+2ZYbu6rMifmZidC/N+3RXk90l43tBthoU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZHiQsPrEmGchPW6AX34zhC0DXJifHmYraIbuw2eGIlUSIBdvs2x0Txyzcllihy0le
+	 O/ZcEuRB2/1I3BfoMe2Z6UDamwe+oRMBylPyoKQV+nZcUULKtfPjdVh0yY86ATetYf
+	 num6/FfOS7BwPqxtdAEQZS8ttdL+eXiIn0G+WaU25rUy/85kZR1tu4Lm3F9h9DUmlf
+	 VVvqIgON5qAq1899eUJKEDSEX2Sc3d3Tq1vH9ufEDLP2BwLwUhUsHHPA4/xWMJy/Qs
+	 VTbR7Soxca7BCmUQFtu9oSHkeoWC6XR3KXUqjqIx7wevdtdjBQunv3pLfmh/vqpdDE
+	 mU22AlQb8USSUWRFbbH15ZsbAe79YudL81DRhScjyLZCxG4dh0ML8PRZ2MPmH1u3Mq
+	 nW6ZdlRNN1C7V30cFMkOhYIclVZnQulD7rVFZgQ2M3rMTlS2nADnJK6NZUgIQ/Yu4u
+	 7bneZKZnezhTjAp+cTf93wlPE7iJVh4FoXkG4c8yrHWQo1Dei8r4TPfw2ESX4HqvB8
+	 LtcwNCbrCZs3B+U/8R2wvge5ZavvVuMNwe9Wrj3n3LEm+ewNz2nF4pB+8YbxDk7/z6
+	 xDUApg/qq3yO+lsH0B38ZLLhsBOwOsJ6eWh7J/cMlIJ5jos9vYNM7e4EuzS59tNKVO
+	 iQWU8ByhfllLt/Cj7lBQs/RE=
+Received: from zn.tnic (p200300ea9736A177329C23fffea6A903.dip0.t-ipconnect.de [IPv6:2003:ea:9736:a177:329c:23ff:fea6:a903])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 91E1C19560AB;
-	Thu, 28 Nov 2024 15:19:27 +0000 (UTC)
-Received: from localhost (unknown [10.72.113.10])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 99DF1195605A;
-	Thu, 28 Nov 2024 15:19:25 +0000 (UTC)
-Date: Thu, 28 Nov 2024 23:19:20 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>,
-	"Kirill A. Shutemov" <kirill@shutemov.name>,
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, x86@kernel.org,
-	rick.p.edgecombe@intel.com, kirill.shutemov@linux.intel.com
-Subject: Re: [PATCH] kexec_core: Accept unaccepted kexec destination addresses
-Message-ID: <Z0iJ+DTPA2IkVDx7@MiWiFi-R3L-srv>
-References: <20241021034553.18824-1-yan.y.zhao@intel.com>
- <87frop8r0y.fsf@email.froward.int.ebiederm.org>
- <tpbcun3d4wrnbtsvx3b3hjpdl47f2zuxvx6zqsjoelazdt3eyv@kgqnedtcejta>
- <87cyjq7rjo.fsf@email.froward.int.ebiederm.org>
- <ZxmRkUNmx863Po2U@yzhao56-desk.sh.intel.com>
- <Z0WzHZ+fNn6WuH/E@MiWiFi-R3L-srv>
- <Z0bt4HXAKqM3C1ZW@yzhao56-desk.sh.intel.com>
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A0AC240E0274;
+	Thu, 28 Nov 2024 16:07:49 +0000 (UTC)
+Date: Thu, 28 Nov 2024 17:07:42 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-coco@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Michael Roth <michael.roth@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <jroedel@suse.de>,
+	Roy Hopkins <roy.hopkins@suse.com>
+Subject: Re: [RFC PATCH 1/7] KVM: SVM: Implement GET_AP_APIC_IDS NAE event
+Message-ID: <20241128160742.GAZ0iVTp1thcQA5jFM@fat_crate.local>
+References: <cover.1724795970.git.thomas.lendacky@amd.com>
+ <e60f352abde6bfa9c989d63213d4fb04c3721c11.1724795971.git.thomas.lendacky@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Z0bt4HXAKqM3C1ZW@yzhao56-desk.sh.intel.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+In-Reply-To: <e60f352abde6bfa9c989d63213d4fb04c3721c11.1724795971.git.thomas.lendacky@amd.com>
 
-On 11/27/24 at 06:01pm, Yan Zhao wrote:
-> On Tue, Nov 26, 2024 at 07:38:05PM +0800, Baoquan He wrote:
-> > On 10/24/24 at 08:15am, Yan Zhao wrote:
-> > > On Wed, Oct 23, 2024 at 10:44:11AM -0500, Eric W. Biederman wrote:
-> > > > "Kirill A. Shutemov" <kirill@shutemov.name> writes:
-> > > > 
-> > > > > Waiting minutes to get VM booted to shell is not feasible for most
-> > > > > deployments. Lazy is sane default to me.
-> > > > 
-> > > > Huh?
-> > > > 
-> > > > Unless my guesses about what is happening are wrong lazy is hiding
-> > > > a serious implementation deficiency.  From all hardware I have seen
-> > > > taking minutes is absolutely ridiculous.
-> > > > 
-> > > > Does writing to all of memory at full speed take minutes?  How can such
-> > > > a system be functional?
-> > > > 
-> > > > If you don't actually have to write to the pages and it is just some
-> > > > accounting function it is even more ridiculous.
-> > > > 
-> > > > 
-> > > > I had previously thought that accept_memory was the firmware call.
-> > > > Now that I see that it is just a wrapper for some hardware specific
-> > > > calls I am even more perplexed.
-> > > > 
-> > > > 
-> > > > Quite honestly what this looks like to me is that someone failed to
-> > > > enable write-combining or write-back caching when writing to memory
-> > > > when initializing the protected memory.  With the result that everything
-> > > > is moving dog slow, and people are introducing complexity left and write
-> > > > to avoid that bad implementation.
-> > > > 
-> > > > 
-> > > > Can someone please explain to me why this accept_memory stuff has to be
-> > > > slow, why it has to take minutes to do it's job.
-> > > This kexec patch is a fix to a guest(TD)'s kexce failure.
-> > > 
-> > > For a linux guest, the accept_memory() happens before the guest accesses a page.
-> > > It will (if the guest is a TD)
-> > > (1) trigger the host to allocate the physical page on host to map the accessed
-> > >     guest page, which might be slow with wait and sleep involved, depending on
-> > >     the memory pressure on host.
-> > > (2) initializing the protected page.
-> > > 
-> > > Actually most of guest memory are not accessed by guest during the guest life
-> > > cycle. accept_memory() may cause the host to commit a never-to-be-used page,
-> > > with the host physical page not even being able to get swapped out.
-> > 
-> > So this sounds to me more like a business requirement on cloud platform,
-> > e.g if one customer books a guest instance with 60G memory, while the
-> > customer actually always only cost 20G memory at most. Then the 40G memory
-> > can be saved to reduce pressure for host.
-> Yes.
-
-That's very interesting, thanks for confirming.
-
-> 
-> > I could be shallow, just a wild guess.
-> > If my guess is right, at least those cloud service providers must like this
-> > accept_memory feature very much.
-> > 
-> > > 
-> > > That's why we need a lazy accept, which does not accept_memory() until after a
-> > > page is allocated by the kernel (in alloc_page(s)).
-> > 
-> > By the way, I have two questions, maybe very shallow.
-> > 
-> > 1) why can't we only find those already accepted memory to put kexec
-> > kernel/initrd/bootparam/purgatory?
-> 
-> Currently, the first kernel only accepts memory during the memory allocation in
-> a lazy accept mode. Besides reducing boot time, it's also good for memory
-> over-commitment as you mentioned above.
-> 
-> My understanding of why the memory for the kernel/initrd/bootparam/purgatory is
-> not allocated from the first kernel is that this memory usually needs to be
-> physically contiguous. Since this memory will not be used by the first kernel,
-> looking up from free RAM has a lower chance of failure compared to allocating it
-
-Well, there could be misunderstanding here.The final loaded position of
-kernel/initrd/bootparam/purgatory is not searched from free RAM, it's
-just from RAM on x86. Means it possibly have been allocated and being
-used by other component of 1st kernel. Not like kdump, the 2nd kernel of
-kexec reboot doesn't care about 1st kernel's memory usage. We will copy
-them from intermediat position to the designated location when jumping.
-
-If we take this way, we need search unaccepted->bitmap top down or
-bottom up, according to setting. Then another suit of functions need
-be provided. That looks a little complicated.
-
-kexec_add_buffer()
--->arch_kexec_locate_mem_hole()
-   -->kexec_locate_mem_hole()
-      -->kexec_walk_memblock(kbuf, locate_mem_hole_callback) -- on arm64
-      -->kexec_walk_resources(kbuf, locate_mem_hole_callback) -- on x86
-         -->walk_system_ram_res_rev()
-
-Besides, the change in your patch has one issue. Usually we do kexec load to
-read in the kernel/initrd/bootparam/purgatory, while they are loaded to
-the destinations till kexec jumping. We could do kexec loading while 
-never trigger the jumping, your change have done the accept_memory().
-But this doesn't impact much because it always searched and found the
-same location on one system.
-
-> from the first kernel, especially when memory pressure is high in the first
-> kernel.
-> 
+On Tue, Aug 27, 2024 at 04:59:25PM -0500, Tom Lendacky wrote:
+> @@ -4124,6 +4130,77 @@ static int snp_handle_ext_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t r
+>  	return 1; /* resume guest */
+>  }
 >  
-> > 2) why can't we accept memory for (kernel, boot params/cmdline/initrd)
-> > in 2nd kernel? Surely this purgatory still need be accepted in 1st kernel.
-> > Sorry, I just read accept_memory() code, haven't gone through x86 boot
-> > code flow.
-> If a page is not already accepted, invoking accept_memory() will trigger a
-> memory accept to zero-out the page content. So, for the pages passed to the
-> second kernel, they must have been accepted before page content is copied in.
-> 
-> For boot params/cmdline/initrd, perhaps we could make those pages in shared
-> memory initially and have the second kernel to accept private memory for copy.
-> However, that would be very complex and IMHO not ideal.
+> +struct sev_apic_id_desc {
+> +	u32	num_entries;
 
-I asked this because I saw your reply to Eric in another thread, quote
-your saying at below. I am wondering why kernel can accept itself, why
-other parts can't do it similarly.
-=====
-Yes, the kernel actually will accept initial memory used by itself in
-extract_kernel(), as in arch/x86/boot/compressed/misc.c.
+"count" - like in the spec. :-P
 
-But the target kernel may not be able to accept memory for purgatory.
-And it's currently does not accept memory for boot params/cmdline,
-and initrd .
-====
+> +	u32	apic_ids[];
+> +};
+> +
+> +static void sev_get_apic_ids(struct vcpu_svm *svm)
+> +{
+> +	struct ghcb *ghcb = svm->sev_es.ghcb;
+> +	struct kvm_vcpu *vcpu = &svm->vcpu, *loop_vcpu;
+> +	struct kvm *kvm = vcpu->kvm;
+> +	unsigned int id_desc_size;
+> +	struct sev_apic_id_desc *desc;
+> +	kvm_pfn_t pfn;
+> +	gpa_t gpa;
+> +	u64 pages;
+> +	unsigned long i;
+> +	int n;
+> +
+> +	pages = vcpu->arch.regs[VCPU_REGS_RAX];
 
+Probably should be "num_pages" and a comment should explain what it is:
+
+"State to Hypervisor: is the
+number of guest contiguous pages
+provided to hold the list of APIC
+IDs"
+
+Makes it much easier to follow the code.
+
+> +	/* Each APIC ID is 32-bits in size, so make sure there is room */
+> +	n = atomic_read(&kvm->online_vcpus);
+> +	/*TODO: is this possible? */
+> +	if (n < 0)
+> +		return;
+
+It doesn't look like it but if you wanna be real paranoid you can slap
+a WARN_ONCE() here or so to scream loudly.
+
+> +	id_desc_size = sizeof(*desc);
+> +	id_desc_size += n * sizeof(desc->apic_ids[0]);
+> +	if (id_desc_size > (pages * PAGE_SIZE)) {
+> +		vcpu->arch.regs[VCPU_REGS_RAX] = PFN_UP(id_desc_size);
+> +		return;
+> +	}
+> +
+> +	gpa = svm->vmcb->control.exit_info_1;
+> +
+> +	ghcb_set_sw_exit_info_1(ghcb, 2);
+> +	ghcb_set_sw_exit_info_2(ghcb, 5);
+
+Uuh, more magic numbers. I guess we need this:
+
+https://lore.kernel.org/r/20241113204425.889854-1-huibo.wang@amd.com
+
+and more.
+
+And can we write those only once at the end of the function?
+
+> +	if (!page_address_valid(vcpu, gpa))
+> +		return;
+> +
+> +	pfn = gfn_to_pfn(kvm, gpa_to_gfn(gpa));
+
+Looking at the tree, that gfn_to_pfn() thing is gone now and we're supposed to
+it this way.  Not tested ofc:
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 5af227ba15a3..47e1f72a574d 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4134,7 +4134,7 @@ static void sev_get_apic_ids(struct vcpu_svm *svm)
+ 	struct kvm *kvm = vcpu->kvm;
+ 	unsigned int id_desc_size;
+ 	struct sev_apic_id_desc *desc;
+-	kvm_pfn_t pfn;
++	struct page *page;
+ 	gpa_t gpa;
+ 	u64 pages;
+ 	unsigned long i;
+@@ -4163,8 +4163,8 @@ static void sev_get_apic_ids(struct vcpu_svm *svm)
+ 	if (!page_address_valid(vcpu, gpa))
+ 		return;
+ 
+-	pfn = gfn_to_pfn(kvm, gpa_to_gfn(gpa));
+-	if (is_error_noslot_pfn(pfn))
++	page = gfn_to_page(kvm, gpa_to_gfn(gpa));
++	if (!page)
+ 		return;
+ 
+ 	if (!pages)
+
+> +	if (is_error_noslot_pfn(pfn))
+> +		return;
+> +
+> +	if (!pages)
+> +		return;
+
+That test needs to go right under the assignment of "pages".
+
+> +	/* Allocate a buffer to hold the APIC IDs */
+> +	desc = kvzalloc(id_desc_size, GFP_KERNEL_ACCOUNT);
+> +	if (!desc)
+> +		return;
+> +
+> +	desc->num_entries = n;
+> +	kvm_for_each_vcpu(i, loop_vcpu, kvm) {
+> +		/*TODO: is this possible? */
+
+Well:
+
+#define kvm_for_each_vcpu(idx, vcpup, kvm)                 \
+        xa_for_each_range(&kvm->vcpu_array, idx, vcpup, 0, \
+                          (atomic_read(&kvm->online_vcpus) - 1))
+			   ^^^^^^^^^^^^^^
+
+but, what's stopping kvm_vm_ioctl_create_vcpu() from incrementing it?
+
+I'm guessing this would happen when you start the guest only but I haz no
+idea.
+
+> +		if (i > n)
+> +			break;
+> +
+> +		desc->apic_ids[i] = loop_vcpu->vcpu_id;
+> +	}
+> +
+> +	if (!kvm_write_guest(kvm, gpa, desc, id_desc_size)) {
+> +		/* IDs were successfully written */
+> +		ghcb_set_sw_exit_info_1(ghcb, 0);
+> +		ghcb_set_sw_exit_info_2(ghcb, 0);
+> +	}
+> +
+> +	kvfree(desc);
+> +}
+
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
