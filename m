@@ -1,315 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1078D1F9404
-	for <linux-coco@lists.linux.dev>; Mon,  2 Dec 2024 07:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3251F9AB9;
+	Mon,  2 Dec 2024 08:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733124307; cv=none; b=dz5Dz5y2y3EF16Aa5QYVb7Lj95P1GwWG0SlrkV7LQYgMnAfRBrraUri5xVGI+q+2F6FAjLY/iMsg1acocB1Bt2MsF40Z+FE7KHv0GWhvqC8PTo+jOtUGtOAfwRVf40Ll4ugIV1S6xoQIOzyfAnfl2mAQAtYuo4adv2HWi0PGf4g=
+	t=1733129661; cv=none; b=jV6j3NfDI3miQj+Zcart0ioaRdoXH3GJ7EUvfpFOEeSbSmdLwBVhFqjm9WI/CtBPW7GyrnkrRw/qAPft7e5zRxn2DpV8PZQfU9uq6hOgRtTKljYAaqL+gTUQePrjpN7ICkIsMlcYPkn8qSu1poKS/snSVRpEAk2qaD8ubgGsDpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733124307; c=relaxed/simple;
-	bh=DqsmqPg8dBvlE6bMlkwORFBkjxaO18C1BcYwkC6kODc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N5NND5C3RjVhKDPRyRtwRjr54otQPRyh0aFj4n7nbNBSAHVUBWuf4blUlO34bfsp6psKlc1PguvvOE2uK3Ngl1IZdtTF5KJx9Hy9viL5Ym9mRFjdhQ4EafSEpq4RoaYslGDaa0g64S5r0WVrtXoa2DAsF7eLEGng/54mtb2Qytg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MvXrFAkF; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MvXrFAkF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733124306; x=1764660306;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=DqsmqPg8dBvlE6bMlkwORFBkjxaO18C1BcYwkC6kODc=;
-  b=MvXrFAkFjfzl7yYEPwomEyQgAPa90NMbYOpPkW4EojUyFeIthhWLXE2L
-   9e3cDcci9BTgR8HrEG+xuFNhH67quLjlnQuvbhQCEXNrnY03hIeHNe4tF
-   pKSlwTFL4Jp+gGQlb2YQpmiheAdokRIX+wBcTKcouHmTOnaszPL2wq1OD
-   Ktymmica2Ia4G6VQg6pVGDdia0PrNCATCjZQtsCpFPz5ltEMTmBLSOI+l
-   vr/CCmO1Ko/9EF8fSuYW1f/+49WttCnOZ9bN/EnXHyan53pn5UYTsH2I+
-   qVJ5Z+UNaIGyCN4dcXxzfIL1kd5LHF2Y+mnPdMZaPhmCb+U5hjgjOGHLP
-   Q==;
-X-CSE-ConnectionGUID: 3vh0JdloRr6vERooRLY7mQ==
-X-CSE-MsgGUID: S9NrgzJpSWii5ZL+8zz7pQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11273"; a="43951441"
-X-IronPort-AV: E=Sophos;i="6.12,201,1728975600"; 
-   d="scan'208";a="43951441"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2024 23:25:06 -0800
-X-CSE-ConnectionGUID: MxRj7px1SdanuphA1phbnA==
-X-CSE-MsgGUID: Lv34/NItSFakq5AHBheaJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,201,1728975600"; 
-   d="scan'208";a="93506718"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa009.fm.intel.com with ESMTP; 01 Dec 2024 23:25:02 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 6458D3B2; Mon, 02 Dec 2024 09:25:01 +0200 (EET)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH] x86/tdx: Dump attributes and TD_CTLS on boot
-Date: Mon,  2 Dec 2024 09:24:58 +0200
-Message-ID: <20241202072458.447455-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1733129661; c=relaxed/simple;
+	bh=R6Fv08YSF9tjEaXOB/g1hNUtf8CGUiQoNMyz9uhE03s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UE/Q/MQmGOUfWV43U3wyIeHwWmV/ho+6s2KhYyHUwvlPbAVNfDLcAhUc5glvjH2lz6MYolV//8tkZMk4Sjj+2JodqdjWyhp/VM51sjewuKKHV9Yy9EUwoiIqPPVMww4d4rw7nRl67VZP+ltLaePHwoF3aM4nlAJS8VCxjoDcnwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ABE041063;
+	Mon,  2 Dec 2024 00:54:46 -0800 (PST)
+Received: from [10.57.90.186] (unknown [10.57.90.186])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6A3BA3F71E;
+	Mon,  2 Dec 2024 00:54:13 -0800 (PST)
+Message-ID: <01205247-ffcd-439f-b00f-d8e70720d049@arm.com>
+Date: Mon, 2 Dec 2024 08:54:11 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 00/43] arm64: Support for Arm CCA in KVM
+To: Itaru Kitayama <itaru.kitayama@linux.dev>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Jean-Philippe Brucker <jean-philippe@linaro.org>
+References: <20241004152804.72508-1-steven.price@arm.com>
+ <Z01BYOgsLXV5yULk@vm3>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <Z01BYOgsLXV5yULk@vm3>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Dump TD configuration on boot. Attributes and TD_CTLS define TD
-behavior. This information is useful for tracking down bugs.
+Hi Itaru,
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/coco/tdx/Makefile        |  2 +-
- arch/x86/coco/tdx/debug.c         | 69 +++++++++++++++++++++++++++++++
- arch/x86/coco/tdx/tdx.c           | 27 ++++++++----
- arch/x86/include/asm/shared/tdx.h | 39 +++++++++++++++--
- arch/x86/include/asm/tdx.h        |  3 ++
- 5 files changed, 128 insertions(+), 12 deletions(-)
- create mode 100644 arch/x86/coco/tdx/debug.c
+On 02/12/2024 05:10, Itaru Kitayama wrote:
+> On Fri, Oct 04, 2024 at 04:27:21PM +0100, Steven Price wrote:
+>> This series adds support for running protected VMs using KVM under the
+>> Arm Confidential Compute Architecture (CCA).
+...
+> 
+> On FVP, the v5+v7 kernel is unable to execute virt-manager:
+> 
+> Starting install...
+> Allocating 'test9.qcow2'                                    |    0 B  00:00 ...
+> Removing disk 'test9.qcow2'                                 |    0 B  00:00
+> ERROR    internal error: process exited while connecting to monitor: 2024-12-04T18:56:11.646168Z qemu-system-aarch64: -accel kvm: ioctl(KVM_CREATE_VM) failed: Invalid argument
+> 2024-12-04T18:56:11.646520Z qemu-system-aarch64: -accel kvm: failed to initialize kvm: Invalid argument
+> Domain installation does not appear to have been successful.
 
-diff --git a/arch/x86/coco/tdx/Makefile b/arch/x86/coco/tdx/Makefile
-index 2c7dcbf1458b..b3c47d3700e2 100644
---- a/arch/x86/coco/tdx/Makefile
-+++ b/arch/x86/coco/tdx/Makefile
-@@ -1,3 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0
- 
--obj-y += tdx.o tdx-shared.o tdcall.o
-+obj-y += debug.o tdcall.o tdx.o tdx-shared.o
-diff --git a/arch/x86/coco/tdx/debug.c b/arch/x86/coco/tdx/debug.c
-new file mode 100644
-index 000000000000..cef847c8bb67
---- /dev/null
-+++ b/arch/x86/coco/tdx/debug.c
-@@ -0,0 +1,69 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#undef pr_fmt
-+#define pr_fmt(fmt)     "tdx: " fmt
-+
-+#include <linux/array_size.h>
-+#include <linux/printk.h>
-+#include <asm/tdx.h>
-+
-+#define DEF_TDX_ATTR_NAME(_name) [TDX_ATTR_##_name##_BIT] = __stringify(_name)
-+
-+static __initdata const char *tdx_attributes[] = {
-+	DEF_TDX_ATTR_NAME(DEBUG),
-+	DEF_TDX_ATTR_NAME(HGS_PLUS_PROF),
-+	DEF_TDX_ATTR_NAME(PERF_PROF),
-+	DEF_TDX_ATTR_NAME(PMT_PROF),
-+	DEF_TDX_ATTR_NAME(ICSSD),
-+	DEF_TDX_ATTR_NAME(LASS),
-+	DEF_TDX_ATTR_NAME(SEPT_VE_DISABLE),
-+	DEF_TDX_ATTR_NAME(MIGRTABLE),
-+	DEF_TDX_ATTR_NAME(PKS),
-+	DEF_TDX_ATTR_NAME(KL),
-+	DEF_TDX_ATTR_NAME(TPA),
-+	DEF_TDX_ATTR_NAME(PERFMON),
-+};
-+
-+#define DEF_TD_CTLS_NAME(_name) [TD_CTLS_##_name##_BIT] = __stringify(_name)
-+
-+static __initdata const char *tdcs_td_ctls[] = {
-+	DEF_TD_CTLS_NAME(PENDING_VE_DISABLE),
-+	DEF_TD_CTLS_NAME(ENUM_TOPOLOGY),
-+	DEF_TD_CTLS_NAME(VIRT_CPUID2),
-+	DEF_TD_CTLS_NAME(REDUCE_VE),
-+	DEF_TD_CTLS_NAME(LOCK),
-+};
-+
-+void __init tdx_dump_attributes(u64 td_attr)
-+{
-+	pr_info("Attributes:");
-+
-+	for (int i = 0; i < ARRAY_SIZE(tdx_attributes); i++) {
-+		if (!tdx_attributes[i])
-+			continue;
-+		if (td_attr & BIT(i))
-+			pr_cont(" %s", tdx_attributes[i]);
-+		td_attr &= ~BIT(i);
-+	}
-+
-+	if (td_attr)
-+		pr_cont(" unknown:%#llx", td_attr);
-+	pr_cont("\n");
-+
-+}
-+
-+void __init tdx_dump_td_ctls(u64 td_ctls)
-+{
-+	pr_info("TD_CTLS:");
-+
-+	for (int i = 0; i < ARRAY_SIZE(tdcs_td_ctls); i++) {
-+		if (!tdcs_td_ctls[i])
-+			continue;
-+		if (td_ctls & BIT(i))
-+			pr_cont(" %s", tdcs_td_ctls[i]);
-+		td_ctls &= ~BIT(i);
-+	}
-+	if (td_ctls)
-+		pr_cont(" unknown:%#llx", td_ctls);
-+	pr_cont("\n");
-+}
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 7285502f3048..d6868e90853d 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -32,9 +32,6 @@
- #define VE_GET_PORT_NUM(e)	((e) >> 16)
- #define VE_IS_IO_STRING(e)	((e) & BIT(4))
- 
--#define ATTR_DEBUG		BIT(0)
--#define ATTR_SEPT_VE_DISABLE	BIT(28)
--
- /* TDX Module call error codes */
- #define TDCALL_RETURN_CODE(a)	((a) >> 32)
- #define TDCALL_INVALID_OPERAND	0xc0000100
-@@ -200,14 +197,14 @@ static void __noreturn tdx_panic(const char *msg)
-  *
-  * TDX 1.0 does not allow the guest to disable SEPT #VE on its own. The VMM
-  * controls if the guest will receive such #VE with TD attribute
-- * ATTR_SEPT_VE_DISABLE.
-+ * TDX_ATTR_SEPT_VE_DISABLE.
-  *
-  * Newer TDX modules allow the guest to control if it wants to receive SEPT
-  * violation #VEs.
-  *
-  * Check if the feature is available and disable SEPT #VE if possible.
-  *
-- * If the TD is allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
-+ * If the TD is allowed to disable/enable SEPT #VEs, the TDX_ATTR_SEPT_VE_DISABLE
-  * attribute is no longer reliable. It reflects the initial state of the
-  * control for the TD, but it will not be updated if someone (e.g. bootloader)
-  * changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
-@@ -216,14 +213,14 @@ static void __noreturn tdx_panic(const char *msg)
- static void disable_sept_ve(u64 td_attr)
- {
- 	const char *msg = "TD misconfiguration: SEPT #VE has to be disabled";
--	bool debug = td_attr & ATTR_DEBUG;
-+	bool debug = td_attr & TDX_ATTR_DEBUG;
- 	u64 config, controls;
- 
- 	/* Is this TD allowed to disable SEPT #VE */
- 	tdg_vm_rd(TDCS_CONFIG_FLAGS, &config);
- 	if (!(config & TDCS_CONFIG_FLEXIBLE_PENDING_VE)) {
- 		/* No SEPT #VE controls for the guest: check the attribute */
--		if (td_attr & ATTR_SEPT_VE_DISABLE)
-+		if (td_attr & TDX_ATTR_SEPT_VE_DISABLE)
- 			return;
- 
- 		/* Relax SEPT_VE_DISABLE check for debug TD for backtraces */
-@@ -1037,6 +1034,20 @@ static void tdx_kexec_finish(void)
- 	}
- }
- 
-+static __init void tdx_announce(void)
-+{
-+	struct tdx_module_args args = {};
-+	u64 controls;
-+
-+	pr_info("Guest detected\n");
-+
-+	tdcall(TDG_VP_INFO, &args);
-+	tdx_dump_attributes(args.rdx);
-+
-+	tdg_vm_rd(TDCS_TD_CTLS, &controls);
-+	tdx_dump_td_ctls(controls);
-+}
-+
- void __init tdx_early_init(void)
- {
- 	u64 cc_mask;
-@@ -1106,5 +1117,5 @@ void __init tdx_early_init(void)
- 	 */
- 	x86_cpuinit.parallel_bringup = false;
- 
--	pr_info("Guest detected\n");
-+	tdx_announce();
- }
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index a878c7e8347b..fcbbef484a78 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -19,6 +19,32 @@
- #define TDG_VM_RD			7
- #define TDG_VM_WR			8
- 
-+/* TDX attributes */
-+#define TDX_ATTR_DEBUG_BIT		0
-+#define TDX_ATTR_DEBUG			BIT_ULL(TDX_ATTR_DEBUG_BIT)
-+#define TDX_ATTR_HGS_PLUS_PROF_BIT	4
-+#define TDX_ATTR_HGS_PLUS_PROF		BIT_ULL(TDX_ATTR_HGS_PLUS_PROF_BIT)
-+#define TDX_ATTR_PERF_PROF_BIT		5
-+#define TDX_ATTR_PERF_PROF		BIT_ULL(TDX_ATTR_PERF_PROF_BIT)
-+#define TDX_ATTR_PMT_PROF_BIT		6
-+#define TDX_ATTR_PMT_PROF		BIT_ULL(TDX_ATTR_PMT_PROF_BIT)
-+#define TDX_ATTR_ICSSD_BIT		16
-+#define TDX_ATTR_ICSSD			BIT_ULL(TDX_ATTR_ICSSD_BIT)
-+#define TDX_ATTR_LASS_BIT		27
-+#define TDX_ATTR_LASS			BIT_ULL(TDX_ATTR_LASS_BIT)
-+#define TDX_ATTR_SEPT_VE_DISABLE_BIT	28
-+#define TDX_ATTR_SEPT_VE_DISABLE	BIT_ULL(TDX_ATTR_SEPT_VE_DISABLE_BIT)
-+#define TDX_ATTR_MIGRTABLE_BIT		29
-+#define TDX_ATTR_MIGRTABLE		BIT_ULL(TDX_ATTR_MIGRTABLE_BIT)
-+#define TDX_ATTR_PKS_BIT		30
-+#define TDX_ATTR_PKS			BIT_ULL(TDX_ATTR_PKS_BIT)
-+#define TDX_ATTR_KL_BIT			31
-+#define TDX_ATTR_KL			BIT_ULL(TDX_ATTR_KL_BIT)
-+#define TDX_ATTR_TPA_BIT		62
-+#define TDX_ATTR_TPA			BIT_ULL(TDX_ATTR_TPA_BIT)
-+#define TDX_ATTR_PERFMON_BIT		63
-+#define TDX_ATTR_PERFMON		BIT_ULL(TDX_ATTR_PERFMON_BIT)
-+
- /* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
- #define TDCS_CONFIG_FLAGS		0x1110000300000016
- #define TDCS_TD_CTLS			0x1110000300000017
-@@ -29,9 +55,16 @@
- #define TDCS_CONFIG_FLEXIBLE_PENDING_VE	BIT_ULL(1)
- 
- /* TDCS_TD_CTLS bits */
--#define TD_CTLS_PENDING_VE_DISABLE	BIT_ULL(0)
--#define TD_CTLS_ENUM_TOPOLOGY		BIT_ULL(1)
--#define TD_CTLS_REDUCE_VE		BIT_ULL(3)
-+#define TD_CTLS_PENDING_VE_DISABLE_BIT	0
-+#define TD_CTLS_PENDING_VE_DISABLE	BIT_ULL(TD_CTLS_PENDING_VE_DISABLE_BIT)
-+#define TD_CTLS_ENUM_TOPOLOGY_BIT	1
-+#define TD_CTLS_ENUM_TOPOLOGY		BIT_ULL(TD_CTLS_ENUM_TOPOLOGY_BIT)
-+#define TD_CTLS_VIRT_CPUID2_BIT		2
-+#define TD_CTLS_VIRT_CPUID2		BIT_ULL(TD_CTLS_VIRT_CPUID2_BIT)
-+#define TD_CTLS_REDUCE_VE_BIT		3
-+#define TD_CTLS_REDUCE_VE		BIT_ULL(TD_CTLS_REDUCE_VE_BIT)
-+#define TD_CTLS_LOCK_BIT		63
-+#define TD_CTLS_LOCK			BIT_ULL(TD_CTLS_LOCK_BIT)
- 
- /* TDX hypercall Leaf IDs */
- #define TDVMCALL_MAP_GPA		0x10001
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index eba178996d84..b4b16dafd55e 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -66,6 +66,9 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
- 
- u64 tdx_hcall_get_quote(u8 *buf, size_t size);
- 
-+void __init tdx_dump_attributes(u64 td_attr);
-+void __init tdx_dump_td_ctls(u64 td_ctls);
-+
- #else
- 
- static inline void tdx_early_init(void) { };
--- 
-2.45.2
+Can you check that the kernel has detected the RMM being available, you
+should have a message like below when the host kernel is booting:
+
+kvm [1]: RMI ABI version 1.0
+
+My guess is that you've got mismatched versions of the RMM and TF-A. The
+interface between those two components isn't stable and there were
+breaking changes fairly recently. And obviously if the RMM hasn't
+initialised successfully then confidential VMs won't be available.
+
+> Below is my virt-manager options:
+> 
+> virt-install --machine=virt --arch=aarch64 --name=test9 --memory=2048 --vcpu=1 --nographic --check all=off --features acpi=off --virt-type kvm --boot kernel=Image-cca,initrd=rootfs.cpio,kernel_args='earlycon console=ttyAMA0 rdinit=/sbin/init rw root=/dev/vda acpi=off' --qemu-commandline='-M virt,confidential-guest-support=rme0,gic-version=3 -cpu host -object rme-guest,id=rme0 -nodefaults' --disk size=4 --import --osinfo detect=on,require=off
+> 
+> Userland is Ubuntu 24.10, the VMM is Linaro's cca/2024-11-20:
+> 
+> https://git.codelinaro.org/linaro/dcap/qemu/-/tree/cca/2024-11-20?ref_type=heads
+
+I don't think this is the latest QEMU tree, Jean-Philippe posted an
+update last week:
+
+https://lore.kernel.org/qemu-devel/20241125195626.856992-2-jean-philippe@linaro.org/
+
+I'm not sure if there were any important updates there, but there are
+detailed instructions that might help.
+
+Regards,
+Steve
 
