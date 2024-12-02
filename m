@@ -1,318 +1,229 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DA084D3E;
-	Fri, 29 Nov 2024 14:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D441D619D
+	for <linux-coco@lists.linux.dev>; Mon,  2 Dec 2024 05:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732892154; cv=none; b=O7h6+XGDCI2Fazx0/UuWX9dsch6GiQTsQnxxnZUPpeeBgFiAOdQmQEhS4yiOxuwDD7DMBbPSzdqldW9IavKtzEfSG81hp0dvnYQb1h+9wQH3VIw9zuhMx+IQR+NyGBxfpNQdotHWpW4k/fEd1dxjFD4YC4LauNzFPrS+5dG4JFQ=
+	t=1733116280; cv=none; b=VCIauOhZSNKJyU1D6D9p9tp6fi93ucGgeeWt976nS1MqMffr0V0LcQ7oGAiJBx46cbTuY4R7ZVdDpfkmPubpJMQwdt+l/pDo2PjQFYhZTA8tmk7DQCxBU8QvyrKOJFMsASqvqcokiTFpj5m6p2duNaATbGY2pGzXj/cOfID+2Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732892154; c=relaxed/simple;
-	bh=GoT99dLgYkLoTZfaKdZXj7hdLYP6xe6Y3istLnH9szM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P3TwrjXAZYxm606vnCvlCVVjq9/nQevDoryNx4jwZSjatRcN9d1k+dgwyKCDLUi3dKjcT+FSzFsssiLxcxFw+A3kFCRjrh3cdetx56Nv6j3gKl6I1l+JCaTa2d8VnrCtdCl0qnrRT35yhrSsWHmDZHEPxAOAq5lQRA9t0lGVZ9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B231B12FC;
-	Fri, 29 Nov 2024 06:56:13 -0800 (PST)
-Received: from [10.57.92.242] (unknown [10.57.92.242])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B95B63F66E;
-	Fri, 29 Nov 2024 06:55:39 -0800 (PST)
-Message-ID: <86f36cfd-65b6-4b71-9272-d17e5e41b57c@arm.com>
-Date: Fri, 29 Nov 2024 14:55:36 +0000
+	s=arc-20240116; t=1733116280; c=relaxed/simple;
+	bh=DFIvOyxErt7/uLYYSwRb1DFMB1yTP5tXkHatqvHWs78=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZDf0dN6bk0mDvZcEYSESZUL3b1Dy+wX8o5OhIG7MTL2AcsWp9Vtq91ntS7JFwJNkb20XZMtU9COnGEbyjDMMwDm0yxYx+rnUBdHHmPfVkenUQAW8qKzAf4loM7zBew/v2f2dTTEasM4hiaqGQVbP83PluvfybqW4Xbw4EoYsOmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=p2tVaeOb; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="p2tVaeOb"
+Date: Mon, 2 Dec 2024 14:10:56 +0900
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1733116271;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8lbIh+01gXs5AzlZMdAt5ULUvPveI4iGrd6WK21lspQ=;
+	b=p2tVaeObXwvbjHZkVLWmnfVhv5ZIkLgvbKIZcEEey/7fX4rxpHjm3LoLMkPoNK9inZyeJG
+	gHPI6rFQVcyrt5nuLb+ECc0E7pwrOUwmFtTEKk5IFdHoH/WIC8sLU2GcSRuEY+xINt9Lmu
+	Pzp6TGnEP33GV9gqwtH+eqQuLf5BXNw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Itaru Kitayama <itaru.kitayama@linux.dev>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: Re: [PATCH v5 00/43] arm64: Support for Arm CCA in KVM
+Message-ID: <Z01BYOgsLXV5yULk@vm3>
+References: <20241004152804.72508-1-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 18/43] arm64: RME: Handle realm enter/exit
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>
-References: <20241004152804.72508-1-steven.price@arm.com>
- <20241004152804.72508-19-steven.price@arm.com>
- <c44aeac6-4fe1-4199-962d-5fbbc5a591de@arm.com>
- <7d1d4893-f798-4e44-aad0-1d0071e30b05@arm.com>
- <791e8c32-83fb-442c-9664-4b5f2f9c09bf@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <791e8c32-83fb-442c-9664-4b5f2f9c09bf@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241004152804.72508-1-steven.price@arm.com>
+X-Migadu-Flow: FLOW_OUT
 
-On 29/11/2024 13:45, Suzuki K Poulose wrote:
-> Hi Steven
+On Fri, Oct 04, 2024 at 04:27:21PM +0100, Steven Price wrote:
+> This series adds support for running protected VMs using KVM under the
+> Arm Confidential Compute Architecture (CCA).
 > 
-> On 29/11/2024 12:18, Steven Price wrote:
->> Hi Suzuki,
->>
->> Sorry for the very slow response to this. Coming back to this I'm having
->> doubts, see below.
->>
->> On 17/10/2024 14:00, Suzuki K Poulose wrote:
->>> On 04/10/2024 16:27, Steven Price wrote:
->>>> Entering a realm is done using a SMC call to the RMM. On exit the
->>>> exit-codes need to be handled slightly differently to the normal KVM
->>>> path so define our own functions for realm enter/exit and hook them
->>>> in if the guest is a realm guest.
->>>>
->>>> Signed-off-by: Steven Price <steven.price@arm.com>
->> ...
->>>> diff --git a/arch/arm64/kvm/rme-exit.c b/arch/arm64/kvm/rme-exit.c
->>>> new file mode 100644
->>>> index 000000000000..e96ea308212c
->>>> --- /dev/null
->>>> +++ b/arch/arm64/kvm/rme-exit.c
->> ...
->>>> +static int rec_exit_ripas_change(struct kvm_vcpu *vcpu)
->>>> +{
->>>> +    struct kvm *kvm = vcpu->kvm;
->>>> +    struct realm *realm = &kvm->arch.realm;
->>>> +    struct realm_rec *rec = &vcpu->arch.rec;
->>>> +    unsigned long base = rec->run->exit.ripas_base;
->>>> +    unsigned long top = rec->run->exit.ripas_top;
->>>> +    unsigned long ripas = rec->run->exit.ripas_value;
->>>> +    unsigned long top_ipa;
->>>> +    int ret;
->>>> +
->>>> +    if (!realm_is_addr_protected(realm, base) ||
->>>> +        !realm_is_addr_protected(realm, top - 1)) {
->>>> +        kvm_err("Invalid RIPAS_CHANGE for %#lx - %#lx, ripas: %#lx\n",
->>>> +            base, top, ripas);
->>>> +        return -EINVAL;
->>>> +    }
->>>> +
->>>> +    kvm_mmu_topup_memory_cache(&vcpu->arch.mmu_page_cache,
->>>> +                   kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu));
->>>
->>> I think we also need to filter the request for RIPAS_RAM, by consulting
->>> if the "range" is backed by a memslot or not. If they are not, we should
->>> reject the request with a response flag set in run.enter.flags.
->>
->> It's an interesting API question. At the moment there is no requirement
->> to have an active memslot to set the RIPAS - this is true both during
->> the setup by the VMM and at run time.
->>
->> In theory a VMM can create/destroy memslots while the guest is running.
->> So absense of a memslot doesn't actually imply that the RIPAS change
+> The related guest support was posted[1] earlier. As with the guest this
+> series moves to the "v1.0-rel0" version of the specification[2].
 > 
-> Agreed. Whether an IPA range may be used as RAM is a decision that the
-> VMM must make. So, we could give the VMM a chance to respond to this
-> request before we (KVM) make the RTT changes.
+> Almost all changes since v4[3] are either due to rebasing or minor
+> changes to improve the code following review comments. There are two bug
+> fixes:
 > 
->> should be rejected. Obviously with realms this is tricky because when
->> destroying a memslot that's in use KVM would rip those pages out from
->> the guest and it would require guest cooperation to restore those pages
->> (transition to RIPAS_EMPTY and back to RIPAS_RAM). But it's not
->> something that has been prohibited so far.
+>  * Setting the GPRS on entry after an exit where the host is allowed to
+>    change registers is now done in kvm_rec_enter(). This fixes a bug
+>    where register updates done by user space were being ignored.
 > 
-> True, and it shouldn't be prohibited. If the Host wants to take away a
-> memslot it must be able to do that. But if it wants to do that in
-> good faith with the Realm, there must have been some communication
-> (e.g., virtio-mem ?) between the Host and the Realm and as long as the
-> Realm knows not to trust the contents on that region it could be
-> recovered without a transition to EMPTY.
+>  * Drop the PTE_SHARED bit for unprotected page table entries - this bit
+>    isn't controlled by the host and the RMM now enforces the bit is
+>    zero.
 > 
-> e.g. From RIPAS_DESTROYED => RIPAS_RAM with RSI_SET_IPA_STATE(...
-> CHANGE_DESTROYED).
+> Major limitations:
+> 
+>  * Only supports 4k host PAGE_SIZE (if PAGE_SIZE != 4k then the realm
+>    extensions are disabled).
+> 
+>  * No support for huge pages when mapping the guest's pages. There is
+>    some 'dead' code left over from before guest_mem was supported. This
+>    is partly a current limitation of guest_memfd.
+> 
+> The ABI to the RMM (the RMI) is based on RMM v1.0-rel0 specification[2].
+> 
+> This series is based on v6.12-rc1. It is also available as a git
+> repository:
+> 
+> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v5
+> 
+> Work in progress changes for kvmtool are available from the git
+> repository below:
+> 
+> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v3
+> 
+> [1] https://lore.kernel.org/r/20241004144307.66199-1-steven.price%40arm.com
+> [2] https://developer.arm.com/documentation/den0137/1-0rel0/
+> [3] https://lore.kernel.org/r/20240821153844.60084-1-steven.price%40arm.com
+> 
+> Jean-Philippe Brucker (7):
+>   arm64: RME: Propagate number of breakpoints and watchpoints to
+>     userspace
+>   arm64: RME: Set breakpoint parameters through SET_ONE_REG
+>   arm64: RME: Initialize PMCR.N with number counter supported by RMM
+>   arm64: RME: Propagate max SVE vector length from RMM
+>   arm64: RME: Configure max SVE vector length for a Realm
+>   arm64: RME: Provide register list for unfinalized RME RECs
+>   arm64: RME: Provide accurate register list
+> 
+> Joey Gouly (2):
+>   arm64: rme: allow userspace to inject aborts
+>   arm64: rme: support RSI_HOST_CALL
+> 
+> Sean Christopherson (1):
+>   KVM: Prepare for handling only shared mappings in mmu_notifier events
+> 
+> Steven Price (29):
+>   arm64: RME: Handle Granule Protection Faults (GPFs)
+>   arm64: RME: Add SMC definitions for calling the RMM
+>   arm64: RME: Add wrappers for RMI calls
+>   arm64: RME: Check for RME support at KVM init
+>   arm64: RME: Define the user ABI
+>   arm64: RME: ioctls to create and configure realms
+>   arm64: kvm: Allow passing machine type in KVM creation
+>   arm64: RME: Keep a spare page delegated to the RMM
+>   arm64: RME: RTT tear down
+>   arm64: RME: Allocate/free RECs to match vCPUs
+>   arm64: RME: Support for the VGIC in realms
+>   KVM: arm64: Support timers in realm RECs
+>   arm64: RME: Allow VMM to set RIPAS
+>   arm64: RME: Handle realm enter/exit
+>   KVM: arm64: Handle realm MMIO emulation
+>   arm64: RME: Allow populating initial contents
+>   arm64: RME: Runtime faulting of memory
+>   KVM: arm64: Handle realm VCPU load
+>   KVM: arm64: Validate register access for a Realm VM
+>   KVM: arm64: Handle Realm PSCI requests
+>   KVM: arm64: WARN on injected undef exceptions
+>   arm64: Don't expose stolen time for realm guests
+>   arm64: RME: Always use 4k pages for realms
+>   arm64: rme: Prevent Device mappings for Realms
+>   arm_pmu: Provide a mechanism for disabling the physical IRQ
+>   arm64: rme: Enable PMU support with a realm guest
+>   kvm: rme: Hide KVM_CAP_READONLY_MEM for realm guests
+>   arm64: kvm: Expose support for private memory
+>   KVM: arm64: Allow activating realms
+> 
+> Suzuki K Poulose (4):
+>   kvm: arm64: pgtable: Track the number of pages in the entry level
+>   kvm: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+>   kvm: arm64: Expose debug HW register numbers for Realm
+>   arm64: rme: Allow checking SVE on VM instance
 
-Indeed - I always forget RSI_SET_IPA_STATE has two modes these days.
+On FVP, the v5+v7 kernel is unable to execute virt-manager:
 
->>
->> On the other hand this is a clear way for a (malicious/buggy) guest to
->> use a fair bit of RAM by transitioning to RIPAS_RAM (sparse) pages not
->> in a memslot and forcing KVM to allocate the RTT pages to delegate to
->> the RMM. But we do exit to the VMM, so this is solvable in the VMM (by
->> killing a misbehaving guest). The number of pages this would consume per
->> exit is also fairly small.
-> 
-> Correct. If the VMM has no intention to provide memory at a given IPA
-> range, KVM shouldn't report RSI_ACCEPT to the Realm and the Realm later
-> gets a stage2 fault that cannot be serviced by KVM.
-> 
->>
->> So my instinct is that we shouldn't impose that requirement.
-> 
-> I think we may be able to fix this by letting the VMM ACCEPT or REJECT
-> a given RIPAS_RAM transition request. That way, KVM isn't playing by
-> the rules set by the VMM and whether the VMM wants to trick the Realm
-> or play by the rules is upto it.
+Starting install...
+Allocating 'test9.qcow2'                                    |    0 B  00:00 ...
+Removing disk 'test9.qcow2'                                 |    0 B  00:00
+ERROR    internal error: process exited while connecting to monitor: 2024-12-04T18:56:11.646168Z qemu-system-aarch64: -accel kvm: ioctl(KVM_CREATE_VM) failed: Invalid argument
+2024-12-04T18:56:11.646520Z qemu-system-aarch64: -accel kvm: failed to initialize kvm: Invalid argument
+Domain installation does not appear to have been successful.
 
-Sounds good to me.
+Below is my virt-manager options:
 
->>
->> Any thoughts?
->>
->>> As for EMPTY requests, if the guest wants to explicitly mark any range
->>> as EMPTY, it doesn't matter, as long as it is within the protected IPA.
->>> (even though they may be EMPTY in the first place).
->>>
->>>> +    write_lock(&kvm->mmu_lock);
->>>> +    ret = realm_set_ipa_state(vcpu, base, top, ripas, &top_ipa);
->>>> +    write_unlock(&kvm->mmu_lock);
->>>> +
->>>> +    WARN(ret && ret != -ENOMEM,
->>>> +         "Unable to satisfy RIPAS_CHANGE for %#lx - %#lx, ripas:
->>>> %#lx\n",
->>>> +         base, top, ripas);
->>>> +
->>>> +    /* Exit to VMM to complete the change */
->>>> +    kvm_prepare_memory_fault_exit(vcpu, base, top_ipa - base, false,
->>>> false,
->>>> +                      ripas == RMI_RAM);
->>>
->>> Again this may only be need if the range is backed by a memslot ?
->>> Otherwise the VMM has nothing to do.
->>
->> Assuming the above, then the VMM would be the one to kill a misbehaving
->> guest, so would need a notification.
-> 
-> May be we could reverse the order of operations by delaying the
-> realm_set_ipa_state() to occur on VMMs request from the memory_fault_exit.
+virt-install --machine=virt --arch=aarch64 --name=test9 --memory=2048 --vcpu=1 --nographic --check all=off --features acpi=off --virt-type kvm --boot kernel=Image-cca,initrd=rootfs.cpio,kernel_args='earlycon console=ttyAMA0 rdinit=/sbin/init rw root=/dev/vda acpi=off' --qemu-commandline='-M virt,confidential-guest-support=rme0,gic-version=3 -cpu host -object rme-guest,id=rme0 -nodefaults' --disk size=4 --import --osinfo detect=on,require=off
 
-Ah, good point - moving the RIPAS state set to the entry path makes a
-lot of sense. The only negative is that we push the loop handling
-partial RIPAS changes into the KVM entry path - but I don't think that's
-a major problem.
+Userland is Ubuntu 24.10, the VMM is Linaro's cca/2024-11-20:
+
+https://git.codelinaro.org/linaro/dcap/qemu/-/tree/cca/2024-11-20?ref_type=heads
+
+virt-install doesn't complain if I try to bring up a normal VM.
 
 Thanks,
-Steve
+Itaru. 
 
 > 
-> Suzuki
+>  Documentation/virt/kvm/api.rst       |    3 +
+>  arch/arm64/include/asm/kvm_emulate.h |   34 +
+>  arch/arm64/include/asm/kvm_host.h    |   16 +-
+>  arch/arm64/include/asm/kvm_pgtable.h |    2 +
+>  arch/arm64/include/asm/kvm_rme.h     |  155 +++
+>  arch/arm64/include/asm/rmi_cmds.h    |  510 ++++++++
+>  arch/arm64/include/asm/rmi_smc.h     |  255 ++++
+>  arch/arm64/include/asm/virt.h        |    1 +
+>  arch/arm64/include/uapi/asm/kvm.h    |   49 +
+>  arch/arm64/kvm/Kconfig               |    1 +
+>  arch/arm64/kvm/Makefile              |    3 +-
+>  arch/arm64/kvm/arch_timer.c          |   45 +-
+>  arch/arm64/kvm/arm.c                 |  166 ++-
+>  arch/arm64/kvm/guest.c               |   99 +-
+>  arch/arm64/kvm/hyp/pgtable.c         |    5 +-
+>  arch/arm64/kvm/hypercalls.c          |    4 +-
+>  arch/arm64/kvm/inject_fault.c        |    2 +
+>  arch/arm64/kvm/mmio.c                |   10 +-
+>  arch/arm64/kvm/mmu.c                 |  185 ++-
+>  arch/arm64/kvm/pmu-emul.c            |    7 +-
+>  arch/arm64/kvm/psci.c                |   29 +
+>  arch/arm64/kvm/reset.c               |   23 +-
+>  arch/arm64/kvm/rme-exit.c            |  207 ++++
+>  arch/arm64/kvm/rme.c                 | 1628 ++++++++++++++++++++++++++
+>  arch/arm64/kvm/sys_regs.c            |   83 +-
+>  arch/arm64/kvm/vgic/vgic-v3.c        |    8 +-
+>  arch/arm64/kvm/vgic/vgic.c           |   41 +-
+>  arch/arm64/mm/fault.c                |   31 +-
+>  drivers/perf/arm_pmu.c               |   15 +
+>  include/kvm/arm_arch_timer.h         |    2 +
+>  include/kvm/arm_pmu.h                |    4 +
+>  include/kvm/arm_psci.h               |    2 +
+>  include/linux/kvm_host.h             |    2 +
+>  include/linux/perf/arm_pmu.h         |    5 +
+>  include/uapi/linux/kvm.h             |   31 +-
+>  virt/kvm/kvm_main.c                  |    7 +
+>  36 files changed, 3569 insertions(+), 101 deletions(-)
+>  create mode 100644 arch/arm64/include/asm/kvm_rme.h
+>  create mode 100644 arch/arm64/include/asm/rmi_cmds.h
+>  create mode 100644 arch/arm64/include/asm/rmi_smc.h
+>  create mode 100644 arch/arm64/kvm/rme-exit.c
+>  create mode 100644 arch/arm64/kvm/rme.c
 > 
->>
->> Thanks,
->> Steve
->>
->>>> +
->>>> +    return 0;
->>>> +}
->>>> +
->>>> +static void update_arch_timer_irq_lines(struct kvm_vcpu *vcpu)
->>>> +{
->>>> +    struct realm_rec *rec = &vcpu->arch.rec;
->>>> +
->>>> +    __vcpu_sys_reg(vcpu, CNTV_CTL_EL0) = rec->run->exit.cntv_ctl;
->>>> +    __vcpu_sys_reg(vcpu, CNTV_CVAL_EL0) = rec->run->exit.cntv_cval;
->>>> +    __vcpu_sys_reg(vcpu, CNTP_CTL_EL0) = rec->run->exit.cntp_ctl;
->>>> +    __vcpu_sys_reg(vcpu, CNTP_CVAL_EL0) = rec->run->exit.cntp_cval;
->>>> +
->>>> +    kvm_realm_timers_update(vcpu);
->>>> +}
->>>> +
->>>> +/*
->>>> + * Return > 0 to return to guest, < 0 on error, 0 (and set
->>>> exit_reason) on
->>>> + * proper exit to userspace.
->>>> + */
->>>> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret)
->>>> +{
->>>> +    struct realm_rec *rec = &vcpu->arch.rec;
->>>> +    u8 esr_ec = ESR_ELx_EC(rec->run->exit.esr);
->>>> +    unsigned long status, index;
->>>> +
->>>> +    status = RMI_RETURN_STATUS(rec_run_ret);
->>>> +    index = RMI_RETURN_INDEX(rec_run_ret);
->>>> +
->>>> +    /*
->>>> +     * If a PSCI_SYSTEM_OFF request raced with a vcpu executing, we
->>>> might
->>>> +     * see the following status code and index indicating an attempt
->>>> to run
->>>> +     * a REC when the RD state is SYSTEM_OFF.  In this case, we just
->>>> need to
->>>> +     * return to user space which can deal with the system event or
->>>> will try
->>>> +     * to run the KVM VCPU again, at which point we will no longer
->>>> attempt
->>>> +     * to enter the Realm because we will have a sleep request
->>>> pending on
->>>> +     * the VCPU as a result of KVM's PSCI handling.
->>>> +     */
->>>> +    if (status == RMI_ERROR_REALM && index == 1) {
->>>> +        vcpu->run->exit_reason = KVM_EXIT_UNKNOWN;
->>>> +        return 0;
->>>> +    }
->>>> +
->>>> +    if (rec_run_ret)
->>>> +        return -ENXIO;
->>>> +
->>>> +    vcpu->arch.fault.esr_el2 = rec->run->exit.esr;
->>>> +    vcpu->arch.fault.far_el2 = rec->run->exit.far;
->>>> +    vcpu->arch.fault.hpfar_el2 = rec->run->exit.hpfar;
->>>> +
->>>> +    update_arch_timer_irq_lines(vcpu);
->>>> +
->>>> +    /* Reset the emulation flags for the next run of the REC */
->>>> +    rec->run->enter.flags = 0;
->>>> +
->>>> +    switch (rec->run->exit.exit_reason) {
->>>> +    case RMI_EXIT_SYNC:
->>>> +        return rec_exit_handlers[esr_ec](vcpu);
->>>> +    case RMI_EXIT_IRQ:
->>>> +    case RMI_EXIT_FIQ:
->>>> +        return 1;
->>>> +    case RMI_EXIT_PSCI:
->>>> +        return rec_exit_psci(vcpu);
->>>> +    case RMI_EXIT_RIPAS_CHANGE:
->>>> +        return rec_exit_ripas_change(vcpu);
->>>> +    }
->>>> +
->>>> +    kvm_pr_unimpl("Unsupported exit reason: %u\n",
->>>> +              rec->run->exit.exit_reason);
->>>> +    vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
->>>> +    return 0;
->>>> +}
->>>> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
->>>> index 1fa9991d708b..4c0751231810 100644
->>>> --- a/arch/arm64/kvm/rme.c
->>>> +++ b/arch/arm64/kvm/rme.c
->>>> @@ -899,6 +899,25 @@ void kvm_destroy_realm(struct kvm *kvm)
->>>>        kvm_free_stage2_pgd(&kvm->arch.mmu);
->>>>    }
->>>>    +int kvm_rec_enter(struct kvm_vcpu *vcpu)
->>>> +{
->>>> +    struct realm_rec *rec = &vcpu->arch.rec;
->>>> +
->>>> +    switch (rec->run->exit.exit_reason) {
->>>> +    case RMI_EXIT_HOST_CALL:
->>>> +    case RMI_EXIT_PSCI:
->>>> +        for (int i = 0; i < REC_RUN_GPRS; i++)
->>>> +            rec->run->enter.gprs[i] = vcpu_get_reg(vcpu, i);
->>>> +        break;
->>>> +    }
->>>
->>> As mentioned in the patch following (MMIO emulation support), we may be
->>> able to do this unconditionally for all REC entries, to cover ourselves
->>> from missing out other cases. The RMM is in charge of taking the
->>> appropriate action anyways to copy the results back.
->>>
->>> Suzuki
->>>
->>>> +
->>>> +    if (kvm_realm_state(vcpu->kvm) != REALM_STATE_ACTIVE)
->>>> +        return -EINVAL;
->>>> +
->>>> +    return rmi_rec_enter(virt_to_phys(rec->rec_page),
->>>> +                 virt_to_phys(rec->run));
->>>> +}
->>>> +
->>>>    static void free_rec_aux(struct page **aux_pages,
->>>>                 unsigned int num_aux)
->>>>    {
->>
+> -- 
+> 2.34.1
 > 
-
