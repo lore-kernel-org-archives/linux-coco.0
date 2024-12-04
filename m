@@ -1,65 +1,245 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E76B1FCFF5
-	for <linux-coco@lists.linux.dev>; Tue,  3 Dec 2024 21:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733260309; cv=none; b=O3wFHMd2jO+iJmmFQkQCJdl8eMZFlD5uaW98NKQTAVetb4FCAm3mUkRGDBzezdsR06V2llJcjF6OSWrNWdNgenXmDZkf9ktogykrLTXCRsJyUVVxFYoiN+P9AGe85FY8iDsIkgnVg3Hzeo5yLG89gkgUywsOaQlMw6dRbJpajYc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733260309; c=relaxed/simple;
-	bh=bqiW3Tp60+aakrswDODifRSSL7zrqN/wwmNjZqLBg78=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=tf4MFYLM8LKGxkH6I9vvgRvuc+5QA7d2GxX7etNKuiOpD1cTZSGKLvxDfbx1MAI/EMNE1ve4qJScO9Z4DZNglfAF4e8Ea8Ktg7AOwG+stLTkhkrfRAQkMt2nf8TIpPqBZ/ZUtb0ln1oqplWBGhF/mr+PpmTtjXBPFHrXez2JWHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=mA/0SIlM; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="mA/0SIlM"
-Received: from 8bytes.org (p54921e31.dip0.t-ipconnect.de [84.146.30.49])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 9CB052C1E71;
-	Tue,  3 Dec 2024 22:11:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1733260298;
-	bh=bqiW3Tp60+aakrswDODifRSSL7zrqN/wwmNjZqLBg78=;
-	h=Date:From:To:Subject:From;
-	b=mA/0SIlMp8CdR97bPmo9mT3Mxw4BmPuUV7p8EcCOH0Q/NZq4I454nROITi3HTG2+y
-	 GAcRoO6eMqk7/FUmMKtvW1Yqi5/4rkthzv77jHVR6Tcdvus3/JC14kwnf75fRw40ZP
-	 EAgbLEAI18XtKJ+7VE+xqfyjZDJ6DYLOIflWMPqmFa6xMMvKbSon7KzjxFWWC5Rnpu
-	 qDUFaNhp2CR/o3VxCZ6FgSo8NJ7fmJceORS4jIboj9fYUlXv8TMgH419qdLCe1Tnzg
-	 YzPYIMUcP5SGDbIOgFBmCBA5NrLWDOiSjcTw9ivVM7g1mAYJ0+Eu5n3UcBmMEPOl/N
-	 wg9bz/y2cPNLg==
-Date: Tue, 3 Dec 2024 22:11:37 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call December 4th, 2024
-Message-ID: <Z090CQ10_c1nk1Ld@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993BD2114
+	for <linux-coco@lists.linux.dev>; Wed,  4 Dec 2024 01:33:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733275993; cv=fail; b=ex6xzhOy8lV5Gg7nR5dudoMGKXLzhKkHK1hZM3FsJjQwapUMIef3pnvcEtIo0h5BZpJ64BpJ4Z6cEW38u8QMs0aMW7YJonRGDiC7sHKQBDPl82cswjhX8PVk9B7jb4cWPIOvO6REFjzT/ubYpUiEwpMzyZ5PpnyCsZon0UZ0kkE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733275993; c=relaxed/simple;
+	bh=Pw+I5UmiODxBuMhei0fpSKC7nzWJvM7jquQzOUim/RQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mRA5e/kn+odsEcUKUVYM9maiY5GJwOvvOPvUClW3TQcnm1xIdKHuUV1YR2VD6fE5erGi9vKYLkad6VVg9WZ7Kofl30tJY9WXe7KnwRims36s//rbrlpFUHQcE6NzCNi8fOxUGVkHf1P0yWU5mz0PaFpDo2A8VZf8upVtUNc9YaU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YPlv6lpb; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YPlv6lpb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733275991; x=1764811991;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=Pw+I5UmiODxBuMhei0fpSKC7nzWJvM7jquQzOUim/RQ=;
+  b=YPlv6lpbIYh8imGnhqO79uaRVoanh0j3OWatrxHutYcXPmvpssagbK/L
+   OOuYFT3WiB/YaTZBo9IsTsSGFCE/3F4UTtHLYSiykcwRIQq55bGccoj/H
+   roRlxYPP81cp3uuUkl0bvY5nG/WdQs1SmHq1rcz3BBXBrMF7KPFuO3vCD
+   MIixZ8yg97is7tOct6UUy8ak56thZJ/AOA8LQL0vU2RYsig+dNW33rQO9
+   JipG+H60hSM9qH/bO+NmrsUIpw4wzXzUB27IMC8GOo4y//oZbPJN3XWEJ
+   VHjA0R9cfJOckQpwCrgEI21MK5tYU83kRYuVLzxR+8GytlLbE3aey5Tef
+   g==;
+X-CSE-ConnectionGUID: +GII0HlVQj2AyZf0ydYhGQ==
+X-CSE-MsgGUID: mtjMC0z9Qlq8BcMgLiX4Rw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="33655760"
+X-IronPort-AV: E=Sophos;i="6.12,206,1728975600"; 
+   d="scan'208";a="33655760"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 17:33:10 -0800
+X-CSE-ConnectionGUID: iqsl3l5VQKqbBsI90TOSXw==
+X-CSE-MsgGUID: LRDND16vQLKkVDUrkpol9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,206,1728975600"; 
+   d="scan'208";a="93465251"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 03 Dec 2024 17:33:10 -0800
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 3 Dec 2024 17:33:09 -0800
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 3 Dec 2024 17:33:09 -0800
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.48) by
+ edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 3 Dec 2024 17:33:08 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MMTVyRoQhfKbWisbmJGJqEBndHPP/wYccM2nx2Efdl+edWaOqwKjdpeS3gKUO9VNYZSuN0mueWBKAOQu+hMtJdacjVePxQO6QEOQGmhM0ea71I7VACMTHo26C5sQ3vo6jw1Y6IC3RUY/mk0pyBcEPymcuMrKOFlslJb2fm5tbPa9cXAuwtZzfen1JsmEPK6jCURDSWGg7famP7Ixq1pytuFo06DwGdV1uVn30tgz+BaKx9p3gXoe38Lezquv00OfJXVIfbPQqMBw9pGE5InTx6bAlhSibCcwdo8Lofk8ovNQyeomgjHlIh+75NV8LGnEQQ0J+2Cz69Rwp3xv/lTK9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zIsdRPjAeV7qeXhhi8wLm6vzftM8nz+jYRDqSn6VybA=;
+ b=QLW7u2vcXw21xLnK9j87ffzKVSpYtM1XNXVKHwGdoUObqlOVtAtTS48mYM5PrsYmxCFN4I9KsRgZrGKTVEiqHwlpKWGvTeJAU1Dt4G7tcY5J6LoqvKBzleJ43XdKtsxTo+WM1/XJhM6m0Jv68INzNFaX3zhgY5HMMkA7buQM3R5LQTtPmcjPQZPMohhJ2dk8hn34+zM5YSPas6IZLn7oI+bGl70RP8yqurO7WAr4dbBjEK3LgIOsNpXrvFjGvjY2J+TSDHxNosDX0y1LDsao3veAfojiytsS36ZEtN0Ca5UaExUb/8bI5i35oCrURwFoL7ZddJqM0IrnmUfvAB67Qg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by PH7PR11MB6428.namprd11.prod.outlook.com (2603:10b6:510:1f4::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.19; Wed, 4 Dec
+ 2024 01:33:06 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%5]) with mapi id 15.20.8207.017; Wed, 4 Dec 2024
+ 01:33:06 +0000
+Date: Tue, 3 Dec 2024 17:32:56 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+CC: <x86@kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, Huang Ying <ying.huang@intel.com>, "Dan
+ Williams" <dan.j.williams@intel.com>, Kai Huang <kai.huang@intel.com>, "David
+ Hildenbrand" <david@redhat.com>, Oscar Salvador <osalvador@suse.de>, "H.
+ Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH -V3 RESEND] x86, tdx, memory hotplug: Check whole
+ hot-adding memory range for TDX
+Message-ID: <674fb148d58aa_3e0fe294ce@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <20241031085151.186111-1-ying.huang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20241031085151.186111-1-ying.huang@intel.com>
+X-ClientProxiedBy: MW4PR04CA0293.namprd04.prod.outlook.com
+ (2603:10b6:303:89::28) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH7PR11MB6428:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b225217-5829-482b-176b-08dd14039a4e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?9t8IyMlbmU/z2+Vkzo52sbgqj4xtSgBRS83WLWL+wbhCwQAfabcb1TmDffhv?=
+ =?us-ascii?Q?cKQeCJf3oN3w0n/cv7Urv3OTF+Btdtso0J3gIzHMeDUR45M0Wme7OBvahQqU?=
+ =?us-ascii?Q?l3YnZXnxwpaEP6OdyXizJvEqJBsV94A01bwiS/kp7cBTRryqBljCrA/jlCPd?=
+ =?us-ascii?Q?+yNEGKWEIJN2ufk2Tct2TBoLQX1PSu61xaMOA7yPs//eHKIhSG5j1VHw+Uzh?=
+ =?us-ascii?Q?XueAZ3Nl4Ai6x3AJALnkOSvc2IluwvcgVwzbBTolw6SFOHZOz2p1Svb2H9Lp?=
+ =?us-ascii?Q?Tg8KzkE96KO3x+qEUmDVTaxeB8eOpxN0gb950y6gZxWxHU3xPYtN8diTtQDB?=
+ =?us-ascii?Q?AEmUuSDTk1ovyZmJ6jPBXJ3OpjrtbJ1K9gfaRdG7VeeowkMgyVHtLkfzt/TJ?=
+ =?us-ascii?Q?00zfiLlnKOA5IayV2yYc32ZB/cnfQ+lbitgJxdym82F8uM5F/7v0ej/EsgmX?=
+ =?us-ascii?Q?b7UGgsJYGeNNldxaSjDmvKqqXL77kMJ+IgLCW2lrFX4tjxqLKoQsex/Npv5q?=
+ =?us-ascii?Q?WEBCgmg9f9ksKqgJJZUxasHC7CMYFlLR+yqXXZw7FHP2G3LLuZQRch12Jx2H?=
+ =?us-ascii?Q?fd1pbJ7A5bFW/oDQ0MYQ5C+6scItnocyo/KDw6QsNzkiZWWhcxvgPL42DnQl?=
+ =?us-ascii?Q?DpIiDMTe2KmLIJWrRPNDHtUPC3d8P1TYdFUnA6UFjloTj4Nk+BXUCw+/kp/g?=
+ =?us-ascii?Q?xyRVM+V5D1cxb4Us8YE9qxqQWE5DQvWdZyu14U6+WX33R+ddKtexLVe4Of3N?=
+ =?us-ascii?Q?TuwDThrlOMzj6qeLNIv2gRA+yrinlRfJHY2y7gue/FFd5UcuzuqCqccfNj5D?=
+ =?us-ascii?Q?BgpYAe1sQ6yVHFrfR+JhXD4yh51ZWAxw9KVP6HuAU+r8Gz6vxsZQ91CaQWXx?=
+ =?us-ascii?Q?DoWxSROx1dkWhDCwhQIbJCMrcu6glLIncIT5+O1VjNzqRnJ9408uW1ZXVGNH?=
+ =?us-ascii?Q?PBtuB9qQ8BrOwn1T5nEhcVVouY34s4WpaPlvUCYKkzDJljqufpxE48KemV/k?=
+ =?us-ascii?Q?h91tl17VYfNZZR4xNSkIqlDZJasAM+fDTkhUkeY3Vx/MqVn0e31LXFKmH330?=
+ =?us-ascii?Q?RhlUjylSoPrUDyruUiBaucj95Wy6Zk8Sl6b6jM6JHUEmycjpcu7fCzAPDTx2?=
+ =?us-ascii?Q?dMxJIPlYDRmYdXSKRUVhySIj2pXq1yPPF6nuqe/haEKjBHmC1qhED/Yxn06q?=
+ =?us-ascii?Q?eek9CDVDL01WKGkwUtqNoxMArLO9XqCo06v/1zTGRcHBUZxLtTM47GnwAVPy?=
+ =?us-ascii?Q?jUaFlOvCSBHysIRymmsCkrJJGxklubCibpoE9BRueulb+esxsq5Ff2p27uai?=
+ =?us-ascii?Q?f7d+fYnMxXPBplIWxGPbFv/zDITdXsaA+j1JHern9rk04w=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?qaKseEfBcQw8XDjIdO9zXdASl245MJy0rZrrrf0JNevhm8tAaUKCv56xgih7?=
+ =?us-ascii?Q?pdze4ytG+AzJhyzotKFtL4RzZIYugMppThaHL0gkeDBj1mjSGkrmmT28h8U+?=
+ =?us-ascii?Q?XgSSrF9G2s6wQin7WqbIq8j640SvwgRTpV41SId/7pG8gZ8xgZB1GHWri2MN?=
+ =?us-ascii?Q?n0UaRCWTmVWFGQSTapaJ42AZ/o0hv/1wNV0ZJP1T1jGLLOfw1p8k7J7CSAex?=
+ =?us-ascii?Q?WAtkJuM/I+MjZ5YyMQfATrzauChVTYYG0iq0PmvvgOf0xPwh5uuHOn5gZ2+j?=
+ =?us-ascii?Q?NwZGEpoKVA/Tub37QsM6SCIt+2tKOXiZRYEGkj3OFOvLbAgbuSKJZyWRl0es?=
+ =?us-ascii?Q?EdAXYrBnAKoO3wyhCl8BsyLKvctHzYQvjq/yt9ubGwnLxCPDNDfJC2A1a1Uj?=
+ =?us-ascii?Q?vKguKkh4A95sNvI+cgku1tjcPqBxOu3g7fYTz1UL7Ws5zc7n856qyqgLKTLi?=
+ =?us-ascii?Q?QLa+MhWhH8J094B3ySvxTtz7nZvxrVXcBwYjUSj8gJcMvAaFFi/0jLsc4lbD?=
+ =?us-ascii?Q?/z3KjOrRCsv1q5CuOZYiivEt+YGZOQqzn6wtIhXRdCcOqBgLllL38IRuMKj/?=
+ =?us-ascii?Q?aCxml3fXnJpubIJKoVL+sKr2urJbvmPQSPoOB1khkD5MhrYvh9SQZICSIhTs?=
+ =?us-ascii?Q?sMrJx06Eos7WKewSwESobjdZQ8pS1MOppGB/UsZUltDWwlQEQ/NVgdGEDjc2?=
+ =?us-ascii?Q?puy3sayj/hE3kUoLtW4Tlxj3rnVLcE1h727w00CLPoR/FjfCS4Ui0c1eLdSn?=
+ =?us-ascii?Q?BsNshHtgjuEtcZLg7O1XRyYKriGm39b7yt6xEXez7jiUhwoEJXrGr5568NvX?=
+ =?us-ascii?Q?i10LPyRAMNCkEMZM3IXk0Y+WWMF2SkfoZjdrMnrpkIvTDBw6PZbCbYJwWj+p?=
+ =?us-ascii?Q?mAsz7LNZuxyQY30jdMuFx2flRtZyNgkO1RDj2n/2qSrtXPCnT3TuIQprEHKX?=
+ =?us-ascii?Q?JQVsQELPAdmrd/dCbtmnxY9Z+0X/nZL5dtDcL9aoQnZM2wGmAGpVYK3Cz6Rj?=
+ =?us-ascii?Q?FGXeAVIBmmqMJ+KVRbxeHtL7pqUR/UgsQBiJzdFb7cVdla2Of5CwOPgoE8lq?=
+ =?us-ascii?Q?p1/kwu6cNW1IBWe4xOycs1UfpL1pXtqsuwhp1rQCjZy2iLj2R5tcfIxs26ZK?=
+ =?us-ascii?Q?BEbuGxUAB9jeOgQZGZa5g+nSTG1hphSaXPOoTZaxOiHUfeOt2PSPi6aG5sSP?=
+ =?us-ascii?Q?YNIjTaw2fA1x1smlFtjeE/3r04cakWb509ZWqeDYrKFfTu59jBtY206loKIu?=
+ =?us-ascii?Q?pLr76Px7TOWJ/87QAv665H4qfR2n7EVE34CfgFpQk1xigipx1Rryxbn/2kQ5?=
+ =?us-ascii?Q?0uZpGwDGhgqUxDIcTOido4Voql18oQhORoUyk8ZnbDRbJYgcEBcRkwsW3Ero?=
+ =?us-ascii?Q?3u1SoIZwUGMWkSLydzlZ4AQGQpsqEMN2mp/U3s3PYi9kLztuOWe+NXRjkefU?=
+ =?us-ascii?Q?629x3dotBHQY1js28t8Jd47Ufl1+YBBSfIstDJyAJBmWXFRmgR5mcMSn6Tan?=
+ =?us-ascii?Q?clr+GiqLKj4IlHfTtWTc1oORUU7VYmMJCPn+rz7DxRZoQo0ejBJ8eggmKhdk?=
+ =?us-ascii?Q?DjSL8InI6Av+fr2DxQLnD/AzKjAvx9hBvkAaNAjzTgfmFfXGHO0Q6LCKzA3a?=
+ =?us-ascii?Q?WA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b225217-5829-482b-176b-08dd14039a4e
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2024 01:33:06.4270
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UpIqsB4e1alC3pA0ZMY6gSiAB2Q+5ByjrjyEuS4fPQrSZIrwElr6q6ErFDmiXAzKvaDEwUavCHY1NHSQwsypyOcG7JLVznMQyIITw2q/hgk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6428
+X-OriginatorOrg: intel.com
 
-Hi,
+[ drop Ying's Intel address ]
 
-Here is the usual call for agenda items for this weeks SVSM development
-call.  Please send me any agenda items you have in mind or raise them in
-the meeting.
+Huang Ying wrote:
+> On systems with TDX (Trust Domain eXtensions) enabled, current kernel
+> checks the TDX compatibility of the hot-added memory ranges through a
+> memory hotplug notifier for each memory_block.  If a memory range
+> which isn't TDX compatible is hot-added, for example, some CXL memory,
+> the command line as follows,
+> 
+>   $ echo 1 > /sys/devices/system/node/nodeX/memoryY/online
+> 
+> will report something like,
+> 
+>   bash: echo: write error: Operation not permitted
+> 
+> If pr_debug() is enabled, current kernel will show the error message
+> like below in the kernel log,
+> 
+>   online_pages [mem 0xXXXXXXXXXX-0xXXXXXXXXXX] failed
+> 
+> Both are too general to root cause the problem.  This may confuse
+> users.  One solution is to print some error messages in the TDX memory
+> hotplug notifier.  However, kernel calls memory hotplug notifiers for
+> each memory block, so this may lead to a large volume of messages in
+> the kernel log if a large number of memory blocks are onlined with a
+> script or automatically.  For example, the typical size of memory
+> block is 128MB on x86_64, when online 64GB CXL memory, 512 messages
+> will be logged.
+> 
+> Therefore, this patch checks the TDX compatibility of the whole
+> hot-adding memory range through a newly added architecture specific
+> function (arch_check_hotplug_memory_range()).  If this patch rejects
+> the memory hot-adding for TDX compatibility, it will output a kernel
+> log message like below,
+> 
+>   virt/tdx: Reject hot-adding memory range: 0xXXXXXXXX-0xXXXXXXXX for TDX compatibility.
+> 
+> The target use case is to support CXL memory on TDX enabled systems.
+> If the CXL memory isn't compatible with TDX, the kernel will reject
+> the whole CXL memory range.  While the CXL memory can still be used
+> via devdax interface.
+> 
+> This also makes the original TDX memory hotplug notifier useless, so
+> this patch deletes it.
+> 
+> Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 
-Details of the meeting (GMeet and Calendar links, meeting time) can be
-found in our governance repository at:
+Drop my Reviewed-by as I now realize that my reading of the changelog
+for commit abe8dbab8f9f "x86/virt/tdx: Use all system memory when
+initializing TDX module as TDX memory", and the presence of the
+"is_tdx_memory()" helper lead me astray. If the changelog had said "This
+approach requires *but does not validate* all memblock memory
+regions...", I might have been spared.
 
-	https://github.com/coconut-svsm/governance
+Until the new "convertible memory ranges" (CMR) enabling [1] is settled the
+kernel just takes on faith that anything memblock thinks is memory is
+TDX compatible.
 
-The meeting will be recorded and the recording eventually published.
+So, the first thing to fix is rejecting non TDX compat memory at init.
+Then teach is_tdx_memory() to actually know about convertible ranges.
+Then add support for attempts to hot-add memory that might not be TDX
+compatible.
 
-See you all there.
-
-Regards,
-
-	Jörg
+Given Dave's comment about locking and the need to consult
+is_tdx_memory() in more places, it seems reasonable to replace the
+tdx_memlist linked list with an xarray with ranges recorded by
+xa_store_range(). Then this implementation only needs rcu_read_lock()
+for locking.
