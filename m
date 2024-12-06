@@ -1,218 +1,110 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E321C3C1F
-	for <linux-coco@lists.linux.dev>; Thu,  5 Dec 2024 22:24:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CD41AAD7;
+	Fri,  6 Dec 2024 00:13:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733437461; cv=none; b=ayCh+m7tiMcnlyr6NVHczAFIMSfoPelCoXHjVGOMZol89nBPNR3/5jTYzp86SjAyhU1aPznjjuWMGvNBR8bcd5f0H6YKXsCRhRn1TwVjI2GBdzayhA5B7J0A4PtO0FqETLKU2Wn/fQ5S/LM7MvnenhylnZRkvG5wwKraaUurztY=
+	t=1733443999; cv=none; b=ZPG00DnPn2DoJr3kO7dDy/y6Pipr2ammVMDb46WnEBaPTU76lCHeSDxH/BD5X/lTX9Agv/02BKat0tcTEVYKmiKgFfVemRTZsKIwpQSwZbJLcAOaQaUVqBiGhNPb+qY38C8C8v3wvhC/XaDcmwn6wQ918s3PYYB0RKe1oRWTT/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733437461; c=relaxed/simple;
-	bh=gQOPxSvG6K0KKylaZFce0IsL6P4x72QlIrlyr/E/AtA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VtQwjs9lb91JH1JEI0z4+h+ijFpYTMqHoFFX1EsUuxtrAevWG6j76NirE9DwGCBz+Q09b2kr0vVlwfueOTt+X0YQNSmriQS+mBKyxWig+m79Tp89ic6F34H6PRxw/a5dSgBgOM8u6G62NeHM+o250epBpnRA+0Dq8KvL3rdKfpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZUg8qA5k; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1733443999; c=relaxed/simple;
+	bh=G3k5kdpZDzPR2z4Kv8oYbTAM4x/lxykBvWDQ8XU9s/Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fE2fsU1CGUrmW0gkSVjju8Ja5DAfY9zKagjyZ31vmIMreRcUj2glSITfOCJoay5tURi4/ECIYDC6y48kjZHRAPHAwaAwfFK7fHEuQSVFzRuPOmhFw/VZaxzBRqrsKHLrBVknaSBCeJNYwBLDnKS8D3n9OwggJwzwKdq/gfruNhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h7kEMBmh; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZUg8qA5k"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h7kEMBmh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733437460; x=1764973460;
-  h=subject:from:to:cc:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gQOPxSvG6K0KKylaZFce0IsL6P4x72QlIrlyr/E/AtA=;
-  b=ZUg8qA5kJAgEK4GL3FD3NsG+HI7MdtRUbTU8beKfCr73w0rLg5Hg2RkE
-   fHLsKr8yyfuqfSMf7iOQpnKvZ+5Oo4MQaXXyhXojWKkNLHoumoBg/Oj96
-   R9DvZQCjazRKtbNsj4pdpeVf2XAF/d05lQ7VXfn4Iop+ngE1CPJ1kZMFc
-   RI8OFdLn/9HjUDTrq402i3mPA36f0jGWB5Jkgk3HE9504vOdT289qQ4ST
-   OBRXNZUPJJMhukowFor7b45IIrmZ5IN/TuUi5jX+6iw3mZmIMBtZTEIxP
-   8W6wKc7OGyqE29RuMDRqaXF11kI5QzOIYRebwyJlWGR6QLXBZs2Uoh01p
-   A==;
-X-CSE-ConnectionGUID: ScgTER4MSIKNSXX2BhbezQ==
-X-CSE-MsgGUID: IDspdSPBQH6JFsUSA98kTQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="44802886"
+  t=1733443998; x=1764979998;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=G3k5kdpZDzPR2z4Kv8oYbTAM4x/lxykBvWDQ8XU9s/Q=;
+  b=h7kEMBmhmSzvYzDbIxqH6kmPwCh/opjTYIE85qX0O4fjVgzYEKxVxUVn
+   3wxXTd0WbML/26ZJrBnQwe3WNy5MgjCU9lcMOhD2ThV6w+7ZkTT4UX8qW
+   j6RrIWZv4ah3PvbRUGhV9vYx5s65OkAVlRP9enmOZgYzOSk1M3WtQLLp7
+   a3OOa4dZq/MtKXeugMhCFE4NtfoCGJLJ3ilRnKJKa5zse8FbB5gAOVx2/
+   KhrByeEW+kWAOqctft4+OxmWSkARBPA8l6kbtjJHOjGFK8+jWVjKHQVtp
+   LV/m0aBFEloot2+3IIYLLQrgeozf127Q+f6nOae2MeoUNiqNgit+mY+/c
+   w==;
+X-CSE-ConnectionGUID: /4rCYfqmS5ysQ8Mr7sYVBw==
+X-CSE-MsgGUID: 4L+KuEmRSO2ljX1fWqTtkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="37567903"
 X-IronPort-AV: E=Sophos;i="6.12,211,1728975600"; 
-   d="scan'208";a="44802886"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 14:24:20 -0800
-X-CSE-ConnectionGUID: plCRWCV5RVSWYRLX6YFPQQ==
-X-CSE-MsgGUID: cx9p9UcfTZK2EePkk5h3ZA==
+   d="scan'208";a="37567903"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 16:13:17 -0800
+X-CSE-ConnectionGUID: xsOsT0DTRYmP2Xhx+3wfHA==
+X-CSE-MsgGUID: KZRQUGdxR9qVfBXCLAARKQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,211,1728975600"; 
-   d="scan'208";a="99301902"
-Received: from kcaccard-desk.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.125.108.178])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 14:24:20 -0800
-Subject: [PATCH 11/11] samples/devsec: Add sample IDE establishment
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-coco@lists.linux.dev
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Lukas Wunner <lukas@wunner.de>,
- Samuel Ortiz <sameo@rivosinc.com>, Alexey Kardashevskiy <aik@amd.com>,
- Xu Yilun <yilun.xu@linux.intel.com>, linux-pci@vger.kernel.org,
- gregkh@linuxfoundation.org
-Date: Thu, 05 Dec 2024 14:24:19 -0800
-Message-ID: <173343745958.1074769.12896997365766327404.stgit@dwillia2-xfh.jf.intel.com>
-In-Reply-To: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
-References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
-User-Agent: StGit/0.18-3-g996c
+   d="scan'208";a="117498516"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 05 Dec 2024 16:13:15 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tJLy4-0000Vz-2k;
+	Fri, 06 Dec 2024 00:13:12 +0000
+Date: Fri, 6 Dec 2024 08:12:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Bjorn Helgaas <helgaas@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linux-pci@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Subject: Re: [PATCH 09/11] PCI/IDE: Report available IDE streams
+Message-ID: <202412060733.L2zUE7gx-lkp@intel.com>
+References: <173343744869.1074769.12345445223792172558.stgit@dwillia2-xfh.jf.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <173343744869.1074769.12345445223792172558.stgit@dwillia2-xfh.jf.intel.com>
 
-Exercise common setup and teardown flows for a sample platform TSM
-driver that implements the TSM 'connect' and 'disconnect' flows.
+Hi Dan,
 
-This is both a template for platform specific implementations and a test
-case for the shared infrastructure.
+kernel test robot noticed the following build warnings:
 
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Lukas Wunner <lukas@wunner.de>
-Cc: Samuel Ortiz <sameo@rivosinc.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- samples/devsec/tsm.c |   85 ++++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 82 insertions(+), 3 deletions(-)
+[auto build test WARNING on 40384c840ea1944d7c5a392e8975ed088ecf0b37]
 
-diff --git a/samples/devsec/tsm.c b/samples/devsec/tsm.c
-index d446ab8879d8..a8894d08f323 100644
---- a/samples/devsec/tsm.c
-+++ b/samples/devsec/tsm.c
-@@ -4,11 +4,14 @@
- #define dev_fmt(fmt) "devsec: " fmt
- #include <linux/platform_device.h>
- #include <linux/pci-tsm.h>
-+#include <linux/pci-ide.h>
- #include <linux/module.h>
- #include <linux/pci.h>
- #include <linux/tsm.h>
- #include "devsec.h"
- 
-+#define DEVSEC_NR_IDE_STREAMS 4
-+
- struct devsec_dsm {
- 	struct pci_dsm pci;
- };
-@@ -42,13 +45,60 @@ static void devsec_tsm_pci_remove(struct pci_dsm *dsm)
- 	kfree(devsec_dsm);
- }
- 
-+/* protected by tsm_ops lock */
-+static DECLARE_BITMAP(devsec_stream_ids, DEVSEC_NR_IDE_STREAMS);
-+static struct devsec_stream_info {
-+	struct pci_dev *pdev;
-+	struct pci_ide ide;
-+} devsec_streams[DEVSEC_NR_IDE_STREAMS];
-+
- static int devsec_tsm_connect(struct pci_dev *pdev)
- {
--	return -ENXIO;
-+	struct pci_ide *ide;
-+	int rc, stream_id;
-+
-+	stream_id =
-+		find_first_zero_bit(devsec_stream_ids, DEVSEC_NR_IDE_STREAMS);
-+	if (stream_id == DEVSEC_NR_IDE_STREAMS)
-+		return -EBUSY;
-+	set_bit(stream_id, devsec_stream_ids);
-+	ide = &devsec_streams[stream_id].ide;
-+	pci_ide_stream_probe(pdev, ide);
-+
-+	ide->stream_id = stream_id;
-+	rc = pci_ide_stream_setup(pdev, ide, PCI_IDE_SETUP_ROOT_PORT);
-+	if (rc)
-+		return rc;
-+	rc = tsm_register_ide_stream(pdev, ide);
-+	if (rc)
-+		goto err;
-+
-+	devsec_streams[stream_id].pdev = pdev;
-+	pci_ide_enable_stream(pdev, ide);
-+	return 0;
-+err:
-+	pci_ide_stream_teardown(pdev, ide, PCI_IDE_SETUP_ROOT_PORT);
-+	return rc;
- }
- 
- static void devsec_tsm_disconnect(struct pci_dev *pdev)
- {
-+	struct pci_ide *ide;
-+	int i;
-+
-+	for_each_set_bit(i, devsec_stream_ids, DEVSEC_NR_IDE_STREAMS)
-+		if (devsec_streams[i].pdev == pdev)
-+			break;
-+
-+	if (i >= DEVSEC_NR_IDE_STREAMS)
-+		return;
-+
-+	ide = &devsec_streams[i].ide;
-+	pci_ide_disable_stream(pdev, ide);
-+	tsm_unregister_ide_stream(ide);
-+	pci_ide_stream_teardown(pdev, ide, PCI_IDE_SETUP_ROOT_PORT);
-+	devsec_streams[i].pdev = NULL;
-+	clear_bit(i, devsec_stream_ids);
- }
- 
- static const struct pci_tsm_ops devsec_pci_ops = {
-@@ -63,16 +113,44 @@ static void devsec_tsm_remove(void *tsm)
- 	tsm_unregister(tsm);
- }
- 
-+static void set_nr_ide_streams(int nr)
-+{
-+	struct pci_dev *pdev = NULL;
-+
-+	for_each_pci_dev(pdev) {
-+		struct pci_host_bridge *hb;
-+
-+		if (pdev->sysdata != devsec_sysdata)
-+			continue;
-+		hb = pci_find_host_bridge(pdev->bus);
-+		if (hb->nr_ide_streams >= 0)
-+			continue;
-+		pci_set_nr_ide_streams(hb, nr);
-+	}
-+}
-+
-+static void devsec_tsm_ide_teardown(void *data)
-+{
-+	set_nr_ide_streams(-1);
-+}
-+
- static int devsec_tsm_probe(struct platform_device *pdev)
- {
- 	struct tsm_subsys *tsm;
-+	int rc;
- 
- 	tsm = tsm_register(&pdev->dev, NULL, &devsec_pci_ops);
- 	if (IS_ERR(tsm))
- 		return PTR_ERR(tsm);
- 
--	return devm_add_action_or_reset(&pdev->dev, devsec_tsm_remove,
--					tsm);
-+	rc = devm_add_action_or_reset(&pdev->dev, devsec_tsm_remove, tsm);
-+	if (rc)
-+		return rc;
-+
-+	set_nr_ide_streams(DEVSEC_NR_IDE_STREAMS);
-+
-+	return devm_add_action_or_reset(&pdev->dev, devsec_tsm_ide_teardown,
-+					NULL);
- }
- 
- static struct platform_driver devsec_tsm_driver = {
-@@ -109,5 +187,6 @@ static void __exit devsec_tsm_exit(void)
- }
- module_exit(devsec_tsm_exit);
- 
-+MODULE_IMPORT_NS(PCI_IDE);
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("Device Security Sample Infrastructure: Platform TSM Driver");
+url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Williams/configfs-tsm-Namespace-TSM-report-symbols/20241206-064224
+base:   40384c840ea1944d7c5a392e8975ed088ecf0b37
+patch link:    https://lore.kernel.org/r/173343744869.1074769.12345445223792172558.stgit%40dwillia2-xfh.jf.intel.com
+patch subject: [PATCH 09/11] PCI/IDE: Report available IDE streams
+config: mips-mtx1_defconfig (https://download.01.org/0day-ci/archive/20241206/202412060733.L2zUE7gx-lkp@intel.com/config)
+compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241206/202412060733.L2zUE7gx-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412060733.L2zUE7gx-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/pci/probe.c:597:33: warning: unused variable 'pci_host_bridge_type' [-Wunused-const-variable]
+   static const struct device_type pci_host_bridge_type = {
+                                   ^
+   1 warning generated.
+
+
+vim +/pci_host_bridge_type +597 drivers/pci/probe.c
+
+   596	
+ > 597	static const struct device_type pci_host_bridge_type = {
+   598		.groups = pci_host_bridge_groups,
+   599		.release = pci_release_host_bridge_dev,
+   600	};
+   601	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
