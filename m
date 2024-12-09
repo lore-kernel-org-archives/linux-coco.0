@@ -1,194 +1,159 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2076.outbound.protection.outlook.com [40.107.220.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B3E1A238C
-	for <linux-coco@lists.linux.dev>; Mon,  9 Dec 2024 13:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733750281; cv=none; b=hmBArbPHN44tlyTas6sVRQF5zW9+OG+HXjhaq2hykthpjNFPDKJkds7TXst4xO2swr7z+twEOT+zxsDcnUW07N1vZqhEKAfiS02sPkpFlqETMwu7Rb5hkzd/wQxQ2XzWOAye5189V1P4PoxXj6ud5nqlCjE5bqwVY/2u+MB5nIc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733750281; c=relaxed/simple;
-	bh=egUvmeqdvJCr5g8oulskcCn2sZFvteUTk5ZmehLR4FM=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=VJgFVzio4tH32cTlL0YQdF19X3n+Y7BuU75z33zQyb96zCbeqgd9jZ//DH0vcSL/DNHgB3K67Y/JU5/JJjaAVnK39qcuCf/zm0uOX9Dq0ZgevNkdRLu7lxpMkSMrt4q5F8v5Wbr+ThRqSIC6RrP0PZt79vbqBv3194kP6IIz7mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ne6T6e4u; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4149819E97A
+	for <linux-coco@lists.linux.dev>; Mon,  9 Dec 2024 23:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733786680; cv=fail; b=rCXB91pKmeJPZfCWXHedr+bXZSjzE2pCEDfm3ncVMeZOm83aECl3ImkPOKMmtXi+of16V5A/vaVOWWT7FFDIxp+jNuioQee8CG68nj6l5NdwIekv7QpWMnh6Zq7gofw9KkCwZh5gaqc2KNgBt9jM9LLhXPq1Llbj7X4lbBiRKgU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733786680; c=relaxed/simple;
+	bh=n8jSPpjMR2kpiQ26phbSjpBu/S99k3h/hrC5ycSpfvg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HVB24876+Y0Mbv2LWD4Nlb6uZoJn2TB5hBGa/w0JpWx/7jmPD3l/tpO2z7Ulsa02eXoI1bLYzdFVvu8EsmGJgCw8IdXP5YaIv06314wYO5WopIsoQsMedsEIGXNzxm/IgD2EZyNWRmpea2jR+GzcRH1zh1KJqOC7HvTebSgWdg8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ThqQwTu1; arc=fail smtp.client-ip=40.107.220.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ne6T6e4u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733750280; x=1765286280;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=egUvmeqdvJCr5g8oulskcCn2sZFvteUTk5ZmehLR4FM=;
-  b=Ne6T6e4u1sfvxA6UbYFXREJzrGlREpZA27i1zU34veBPSMOSNmSjd+uF
-   3RueuMG3UrGh9//01o3T7k4p/FK/cMV04BxgSf14Z6wMmWym+4NEmaOwh
-   vQ1R+YfH8AHuZWuZ+0jUCXwW7KYMaUvX5b7nCEvUX6FiQVdFZ67S9+weU
-   cYbyA8mF1KnrNO966zS7qmY6DGw0htAK4A3X1QjG0bpHa31OOp7P6HUsj
-   Z5s6cKS/Y9z5i010Klm0TV0jhG/nKIvh50ZXftm6+3JIQmGoio0oK0voj
-   ANUjxXKUjdzY4899NxDj1dsbldvxXOZgyn7e7+1r5fZqR/5Qpo/UnPOgc
-   g==;
-X-CSE-ConnectionGUID: rfvrWuHnSO2A6m/5CScILw==
-X-CSE-MsgGUID: lsi/vydjQ3itDK9sDU741Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="33386006"
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; 
-   d="scan'208";a="33386006"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 05:17:59 -0800
-X-CSE-ConnectionGUID: H3ILv4LURieifk7HT9h/Yw==
-X-CSE-MsgGUID: PA8JQkFTS/WQfTMLmQ11Ug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; 
-   d="scan'208";a="95272993"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.121])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 05:17:55 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 9 Dec 2024 15:17:52 +0200 (EET)
-To: Dan Williams <dan.j.williams@intel.com>
-cc: linux-coco@lists.linux.dev, Lukas Wunner <lukas@wunner.de>, 
-    Bjorn Helgaas <bhelgaas@google.com>, Samuel Ortiz <sameo@rivosinc.com>, 
-    Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-    linux-pci@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 07/11] PCI: Add PCIe Device 3 Extended Capability
- enumeration
-In-Reply-To: <173343743678.1074769.15403889527436764173.stgit@dwillia2-xfh.jf.intel.com>
-Message-ID: <37f7c14e-e104-0508-4a41-e62d9e36ec47@linux.intel.com>
-References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com> <173343743678.1074769.15403889527436764173.stgit@dwillia2-xfh.jf.intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ThqQwTu1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SUXZqTlJPp3AdOo37zqUBe4oPH8gCIeTXm2/DMsdTk+1Tgi2H9rgFToNuxIuuE7Brw9PbJlW1rnKkhVN55SAVExVAJH3VZt7Yn/QQ5dDJ/6RD+kYdh4eXQG5ug/0XhuADiLacUb1w2eTI273JYzsJSn9MDpJ1AjN1VrlFWMuVFU3SlboFtIKqIpGMxqmrr1ZSDaHR0m4gjqBtJXqu0S3usURYXALEu9rm4fIhMVyIP3k82EO5umwgp/gRerCU3Ac+Z4kD1v+fvS+PdqiVbY+3xIWqETL5o55syibThfXFAN8dv5kzf5IQ9erWqHsF3fOJnE+qNwlu6Z/N40joj3TKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VvZMUq2N9V7KxbFfNUHWLrMFkzyR1eDAdj53dKByjTY=;
+ b=igWATXeWJypMKFRVZWRJZE41NXfDvMc9WL4AES5GWCWSHQuNdFbUSPKrPLc4oQFJ81KZ+PieX5ietMAkELvVl9I758YTFwnFgqbx8p36mrrd8waDI95St3jDTzazfvcZ+Oh9P6ryqwN0zsaoheu9jwPre87IOzP7xwTBj13a2QE9f8Bv3wrUd51UpGBdurHiNCW7sQK0DcAC+CTGGOPoP6A4lvn5MXf8pxso9rcgJ6DMD4mdQLan0wZ+9otZB5qpwopbMkbdnGmzBKT1UUWZJMuqyFLQPY2gAtGRyrRRjsXk0QIO/jSl8aiNrWdeEcyRb/px8Ufx0YWdkZV6TxQ3EQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VvZMUq2N9V7KxbFfNUHWLrMFkzyR1eDAdj53dKByjTY=;
+ b=ThqQwTu1u24PgaqXTAs5qAqIBJjyO/j/ZvY/BNg6+CKQCoG9IJp0ln8UweFIk/ZljF6Pfsjch4Qb1vKMIL0oVCT/iWFydKJJwEFVC6DKWV0KjLMIrHp5eIhvw83n+Q3JGY/FOJrGWXGMD5je4GbghkU+JhGq8dSTUQTrU31lBBo=
+Received: from DS7PR03CA0321.namprd03.prod.outlook.com (2603:10b6:8:2b::6) by
+ MW4PR12MB6850.namprd12.prod.outlook.com (2603:10b6:303:1ed::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.11; Mon, 9 Dec
+ 2024 23:24:35 +0000
+Received: from CY4PEPF0000EDD3.namprd03.prod.outlook.com
+ (2603:10b6:8:2b:cafe::2a) by DS7PR03CA0321.outlook.office365.com
+ (2603:10b6:8:2b::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.12 via Frontend Transport; Mon,
+ 9 Dec 2024 23:24:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EDD3.mail.protection.outlook.com (10.167.241.199) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8230.7 via Frontend Transport; Mon, 9 Dec 2024 23:24:34 +0000
+Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 9 Dec
+ 2024 17:24:33 -0600
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <hpa@zytor.com>, <thomas.lendacky@amd.com>,
+	<john.allen@amd.com>, <herbert@gondor.apana.org.au>, <davem@davemloft.net>
+CC: <michael.roth@amd.com>, <dionnaglaze@google.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+Subject: [PATCH 0/7] Move initializing SEV/SNP functionality to KVM
+Date: Mon, 9 Dec 2024 23:24:22 +0000
+Message-ID: <cover.1733785468.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-173094615-1733745290=:938"
-Content-ID: <ae22ced4-ba35-463b-883c-5fe8fe5858d2@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD3:EE_|MW4PR12MB6850:EE_
+X-MS-Office365-Filtering-Correlation-Id: 800ab76b-6a6d-47b6-6fd5-08dd18a8a449
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|7416014|36860700013|82310400026|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?z3B7BEv/FYfDURJWNOK0StoMYYFSENs7kA0ZSVNJKGEXTT7+Kr9TkMUR26mg?=
+ =?us-ascii?Q?7W5vI6la2kKaj+Zs+ziaj5C+hfcEXZZoRDYwSVKBv9pB5qC9ico2jMKP5ocL?=
+ =?us-ascii?Q?ZpE9J81AG1hRErCjG0o0HbeQSmKGH8zaExJzmunteOCdheHKxPPYQhheQJH9?=
+ =?us-ascii?Q?JZFfq82Jdnxm0rkf3tIZeMXxl3jsUgQe1dQYK/WA0dR7fC7jmDnCpkF4Ku60?=
+ =?us-ascii?Q?vT0hJEYHlORncFzjWM6sy4dblYxSJb9LNUj2hUWT1rfQjj8s/0eLVkDNhJPz?=
+ =?us-ascii?Q?Pk5s2qGvhIkielckb2S4/I/c3xN88h2o9mP8IAdQZBcb/rIX0Tf9s6jvz7xU?=
+ =?us-ascii?Q?6/CnPvUtl0pJZmJN1o7lUMdYRnta42ZVqsmKYUSmaokoC5fAJwMokpdUruz2?=
+ =?us-ascii?Q?BZZrqlTwtWwWfkPaSQ3R866kyiLi7PuhzLQSg2TudqVSCDhGmrFiYhUniYwn?=
+ =?us-ascii?Q?zCIChIDL2x5jufDKaWUL2mJS0Kf5mFL0PqkpCqxguSW1egDeFwp6AhQ0cMxf?=
+ =?us-ascii?Q?OroolgVvaR5U/+LuJUpqnfwpDoK3tzPkbt60jsyH0Ydh4b7DbiaG2n1spPU/?=
+ =?us-ascii?Q?kupjEfbzzGulu1NdzQufGM40vcohRYBXPNkOvUPmJFe7AO60SVxIDCb8izK3?=
+ =?us-ascii?Q?mFYuqnOC0J20VAugN/NRXmxWUwVj8lEtWdoDmL0pve6APu+K4jzUykiqo7ae?=
+ =?us-ascii?Q?/OiaNeLGnKOZwtTeb+GZGz6l1a/fld2YW+EhpRlcIkoJr6Lk5nOYljGNrnXY?=
+ =?us-ascii?Q?x16UVqRKXgPu3mvAEfoSTXhajF2tFZy7trxXY975orlFTLT439LJDUL1/jam?=
+ =?us-ascii?Q?uxLfDNT12W91lzKj7njFe5pJ2gqOlEYWHb2AnoCgOSs8H0ysya1MenIur6Vi?=
+ =?us-ascii?Q?Q33LisuNtryP6rmrKAHx33NFdYLP3/jxbclV/OcWcwruW3ijQME7kbn8F3bQ?=
+ =?us-ascii?Q?AEyVFAuI4A5hupS1oO2SEyPctNRxt3KlM8fOSIj51nUJmCnvmCg0IdKlt30Z?=
+ =?us-ascii?Q?+8urjU5TrzBd4qnlBKLEjrTU5//jitlAh+vyl7Xaddilw67dYt0ymYvfCGj9?=
+ =?us-ascii?Q?yhuG/iBkvdz/D07thKqpDnCpLZe812rdIg5ExN9PKwBj2nKqgxuxMQGVdKer?=
+ =?us-ascii?Q?pnb8WsQH3IBO6ZCusmSmWiDYCveTHV32JuWjNhPmnDGDRit4IELAB6QeUeuL?=
+ =?us-ascii?Q?LcFSKG/ZZFK5Y5gUMZyzMN2RR4KqvlKKMN0T0LPpWIAzZXwMyz7p6eliPYSl?=
+ =?us-ascii?Q?Nf1bICBBdYB+Fpo+VIk9ka3Hlj8mbdf3YuChlIc1oVNYDp44VyoJ5n1znjQq?=
+ =?us-ascii?Q?i5aZEHaYIhkJLOSLVgTrLAMsu2hcIVRiqgPObxy0/qGszAMW92dYjnxbqOtD?=
+ =?us-ascii?Q?hF92ZZ9ZnW8vArn0M8I3DYsnEa1L410a4gu14BzLLRc5YJOov8ERSYWJeHqH?=
+ =?us-ascii?Q?sp+SHevQ4uGv021dYuLq41OUddSVesvwsAjpHRHMqfDuoHwPNnxdfg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(36860700013)(82310400026)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2024 23:24:34.4139
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 800ab76b-6a6d-47b6-6fd5-08dd18a8a449
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EDD3.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6850
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Ashish Kalra <ashish.kalra@amd.com>
 
---8323328-173094615-1733745290=:938
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <939dd909-ea12-2d0f-d147-3ab3448a46f2@linux.intel.com>
+Remove initializing SEV/SNP functionality from PSP driver and instead add
+support to KVM to explicitly initialize the PSP if KVM wants to use
+SEV/SNP functionality.
 
-On Thu, 5 Dec 2024, Dan Williams wrote:
+This removes SEV/SNP initialization at PSP module probe time and does
+on-demand SEV/SNP initialization when KVM really wants to use 
+SEV/SNP functionality. This will allow running legacy non-confidential
+VMs without initializating SEV functionality. 
 
-> PCIe 6.2 Section 7.7.9 Device 3 Extended Capability Structure,
-> enumerates new link capabilities and status added for Gen 6 devices. One
-> of the link details enumerated in that register block is the "Segment
-> Captured" status in the Device Status 3 register. That status is
-> relevant for enabling IDE (Integrity & Data Encryption) whereby
-> Selective IDE streams can be limited to a given requester id range
-> within a given segment.
->=20
-> If a device has captured its Segment value then it knows that PCIe Flit
-> Mode is enabled via all links in the path that a configuration write
-> traversed. IDE establishment requires that "Segment Base" in
-> IDE RID Association Register 2 (PCIe 6.2 Section 7.9.26.5.4.2) be
-> programmed if the RID association mechanism is in effect.
->=20
-> When / if IDE + Flit Mode capable devices arrive, the PCI core needs to
-> setup the segment base when using the RID association facility, but no
-> known deployments today depend on this.
->=20
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Samuel Ortiz <sameo@rivosinc.com>
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Cc: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/pci/pci.h             |   11 +++++++++++
->  drivers/pci/probe.c           |    1 +
->  include/linux/pci.h           |    1 +
->  include/uapi/linux/pci_regs.h |    7 +++++++
->  4 files changed, 20 insertions(+)
->=20
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 0537fc72d5be..6565eb72ded2 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -444,6 +444,17 @@ static inline void pci_doe_destroy(struct pci_dev *p=
-dev) { }
->  static inline void pci_doe_disconnected(struct pci_dev *pdev) { }
->  #endif
-> =20
-> +static inline void pci_dev3_init(struct pci_dev *pdev)
-> +{
-> +=09u16 cap =3D pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DEV3);
-> +=09u32 val =3D 0;
-> +
-> +=09if (!cap)
-> +=09=09return;
-> +=09pci_read_config_dword(pdev, cap + PCI_DEV3_STA, &val);
-> +=09pdev->fm_enabled =3D !!(val & PCI_DEV3_STA_SEGMENT);
-> +}
-> +
->  #ifdef CONFIG_PCI_NPEM
->  void pci_npem_create(struct pci_dev *dev);
->  void pci_npem_remove(struct pci_dev *dev);
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index 7cddde3cb0ed..6c1fe6354d26 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -2517,6 +2517,7 @@ static void pci_init_capabilities(struct pci_dev *d=
-ev)
->  =09pci_rcec_init(dev);=09=09/* Root Complex Event Collector */
->  =09pci_doe_init(dev);=09=09/* Data Object Exchange */
->  =09pci_tph_init(dev);=09=09/* TLP Processing Hints */
-> +=09pci_dev3_init(dev);=09=09/* Device 3 capabilities */
->  =09pci_ide_init(dev);=09=09/* Link Integrity and Data Encryption */
->  =09pci_tsm_init(dev);=09=09/* TEE Security Manager connection */
-> =20
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index a0900e7d2012..10d035395a43 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -443,6 +443,7 @@ struct pci_dev {
->  =09unsigned int=09pasid_enabled:1;=09/* Process Address Space ID */
->  =09unsigned int=09pri_enabled:1;=09=09/* Page Request Interface */
->  =09unsigned int=09tph_enabled:1;=09=09/* TLP Processing Hints */
-> +=09unsigned int=09fm_enabled:1;=09=09/* Flit Mode (segment captured) */
->  =09unsigned int=09is_managed:1;=09=09/* Managed via devres */
->  =09unsigned int=09is_msi_managed:1;=09/* MSI release via devres installe=
-d */
->  =09unsigned int=09needs_freset:1;=09=09/* Requires fundamental reset */
-> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.=
-h
-> index 19bba65a262c..c61231861b51 100644
-> --- a/include/uapi/linux/pci_regs.h
-> +++ b/include/uapi/linux/pci_regs.h
-> @@ -749,6 +749,7 @@
->  #define PCI_EXT_CAP_ID_NPEM=090x29=09/* Native PCIe Enclosure Management=
- */
->  #define PCI_EXT_CAP_ID_PL_32GT  0x2A    /* Physical Layer 32.0 GT/s */
->  #define PCI_EXT_CAP_ID_DOE=090x2E=09/* Data Object Exchange */
-> +#define PCI_EXT_CAP_ID_DEV3=090x2F=09/* Device 3 Capability/Control/Stat=
-us */
->  #define PCI_EXT_CAP_ID_IDE=090x30    /* Integrity and Data Encryption */
->  #define PCI_EXT_CAP_ID_MAX=09PCI_EXT_CAP_ID_IDE
-> =20
-> @@ -1210,6 +1211,12 @@
->  #define PCI_DOE_DATA_OBJECT_DISC_RSP_3_PROTOCOL=09=090x00ff0000
->  #define PCI_DOE_DATA_OBJECT_DISC_RSP_3_NEXT_INDEX=090xff000000
-> =20
-> +/* Device 3 Extended Capability */
-> +#define PCI_DEV3_CAP=09=090x4=09/* Device 3 Capabilities Register */
-> +#define PCI_DEV3_CTL=09=090x8=09/* Device 3 Control Register */
+This will assist in adding SNP CipherTextHiding support and SEV firmware
+hotloading support in KVM without sharing SEV ASID management and SNP
+guest context support between PSP driver and KVM and keeping all that
+support only in KVM.
 
-Should save/restore too be added for DEV3_CTL?
+Ashish Kalra (7):
+  crypto: ccp: Move dev_info/err messages for SEV/SNP initialization
+  crypto: ccp: Fix implicit SEV/SNP init and shutdown in ioctls
+  crypto: ccp: Reset TMR size at SNP Shutdown
+  crypto: ccp: Register SNP panic notifier only if SNP is enabled
+  crypto: ccp: Add new SEV/SNP platform shutdown API
+  KVM: SVM: Add support to initialize SEV/SNP functionality in KVM
+  crypto: ccp: Move SEV/SNP Platform initialization to KVM
 
---=20
- i.
+ arch/x86/kvm/svm/sev.c       |  11 ++
+ drivers/crypto/ccp/sev-dev.c | 227 ++++++++++++++++++++++++++---------
+ include/linux/psp-sev.h      |   3 +
+ 3 files changed, 187 insertions(+), 54 deletions(-)
 
-> +#define PCI_DEV3_STA=09=090xc=09/* Device 3 Status Register */
-> +#define  PCI_DEV3_STA_SEGMENT=090x8=09/* Segment Captured (end-to-end fl=
-it-mode detected) */
-> +
->  /* Compute Express Link (CXL r3.1, sec 8.1.5) */
->  #define PCI_DVSEC_CXL_PORT=09=09=09=093
->  #define PCI_DVSEC_CXL_PORT_CTL=09=09=09=090x0c
->=20
---8323328-173094615-1733745290=:938--
+-- 
+2.34.1
+
