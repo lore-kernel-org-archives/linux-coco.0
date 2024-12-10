@@ -1,141 +1,98 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D3F23DE87
-	for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 15:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E68F22FDF6
+	for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 15:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733843058; cv=none; b=bcyNXWBiHuJDwZnJ3R5EW17MNKw7Pf0zpNwE4QaCRy/sSnSZo2uWDuHH/OpcMn+EFE5FE4Mk2AcwEMNf1lxfuC31PvNTxcZYbKROT6++N0kIWd567rI8EzQ1I+kmZInVlSKPuARYQKxDBTlbdMm/K9Gejw4T8Z0jeD4+zvpUCV8=
+	t=1733845894; cv=none; b=bWvIuPfZ6HCo3dSUC38ICParnW5PU+eun5smCqY9XxS4vHLU/vRa1qMiiCIyCzHOTIiXXwAGPyStgqsoajAk9QbJRTsXQJEj65zVMRhQMhD1hj9zPJjPlZTx0zou/sXmKkZKkcbCnZwSDJ/IY00XcCTjZwXFGpOvw8Vwh8vWDSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733843058; c=relaxed/simple;
-	bh=ukjdHQgppfhZ4ld3b0epSQ6+Sp58DgXjMSZP+XOlx+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OQbDPHDazEJcPSJv2+uDiZ2CPVT5FtD4dHYb/2TI7ox9S4DaOm333RkFD+xlGb9KOmPLbhLPZct/t2RqvuJ8DcVoyG/gBX8E+8NmTYjDLsy+lIaEB/hv6CG6w5VahASzEAOnVlOWgGn3eETc7D1tmTuy7CpClat7Acdo05oMlt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Rb4ffKWG; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1733845894; c=relaxed/simple;
+	bh=6OaTMfkTA/OmgikKXTbbHwl/a5xyjcE8zGh1IgbdmZs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ge3Kvhg8a4qrde9po3MhFH5at8kq//gl9ZjqNKG2+vQ4q1wC3wJihQa1Itn2FHpHiZAYq7w0lqdCdfwAUETg7PN6nS/FIGoQDpkdKK+sa5ANhAUyxjj3brKxHczG9MGXlLRw85reqUUwiIQvC1fqjvjZpo7DQ4jzQ9Uw1qvKr88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nwEMP6IP; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Rb4ffKWG"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6d8ece4937fso31449246d6.2
-        for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 07:04:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nwEMP6IP"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a9a0ec0a94fso846874266b.1
+        for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 07:51:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1733843055; x=1734447855; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Aul+w/AZ/V/tfWxFGZGkmQ2XjrfsU0kM7YK/J2vpZW0=;
-        b=Rb4ffKWGPcxPG8OARNJikqu10GbKleastqr2+DGD1YtOcvt8rFg4QmJR25G8sFDkWf
-         UT2Ff50S1yXRSmtvhUPo51P9PkMQXO3WDHWkEAlUNjNSVlQj8sOGtfk/V63wf8LjXmLl
-         Kr7ZrwJvTOahqkCuihEnBQLMtSQ5QQ9Atx+50741+4Aepjm9diJn0tQsk5jVuSK3NO20
-         Muhwpl/IwaSyUAxnpN9QcLBjjAOYCkz62Z35kceavdlJvV+q9uAb3k8JKaFYtdyxYz/X
-         vNqC1P4uuKgm1aasUxP4PfM86jOdoq1Tv8oP9kyMOHk4bGUEO3RS9Owf22/4z2K507ut
-         QdmA==
+        d=google.com; s=20230601; t=1733845891; x=1734450691; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zGEWpmLWCQTndHxT5IXaD/UcEthKFp24ucI3TjyxNCE=;
+        b=nwEMP6IPwruLqk7NzM9DgsHyPIvg1QzAQvrc6FBlodU5T/bM2+AhXRWqiqH2iu2uuX
+         fRUYqPtaRyyQyCaDfaKLRIDCFheY9QKCQK28lSY3yzzkicqsaUGDj4C77hOh08PIOToK
+         jHu/JaMhaJZnrYpqg/rCwSo438b6jPEpM6myXZMsDccWZsdZYk/9P1Y7uRbWEs19SDml
+         8QEESEd2a1DH4swmeE8mxiGlQA3oJGqHxTDe77iUuRh0R1mPDgoks8Sw1HHAWQA0h9YR
+         DjgzHBNpfoZplckUtkcr3X3j+HahOCfCi+LozXWVVjVP3hGu9Aw5Jwt50m5xzQEjHl8F
+         TbKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733843055; x=1734447855;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Aul+w/AZ/V/tfWxFGZGkmQ2XjrfsU0kM7YK/J2vpZW0=;
-        b=DZ7sI4P8OMo4q2LP/w6K78K5pG8C7g5cEr7ujQZFi15inun64V4pTgZPVCl7VeZMnO
-         IhnKyawGa+egNrb28sCp9ghr7z5SA9JFsCqqVGebm0bj3ilEatgsPBc9G63Qnd9UXH21
-         wYGeJXTH/pliUxGOw01MY/d5s7RYgSZVi1P+uShT+plnqL8Msi/1lb7iBcpoH3ntVjK3
-         xEYfcxTfYTUECsA6UEwFI/NVB8o9xYtTD/AGalPPQzeNSCE2VMNgWm4gz7+UcWBFgrcv
-         M7aTZpnz3FD8fQ+c3KR0HZCf4B+lEkJwxYVlRoPdElwKmi9Jz+5TaBfbeALeGOaT5QVQ
-         uVmA==
-X-Forwarded-Encrypted: i=1; AJvYcCUuRICPlFZ14Mve5y365gXIfAcPh/XPeNm51+d7ArqvuVF5074W92EJxhx6JAyN6YslXYUT5XkLJ7Ov@lists.linux.dev
-X-Gm-Message-State: AOJu0YyT5aH/cJqJ2JWjPaGmrbP9h8mA5nzkEANGMYDI5vVPZt0k+wAC
-	+wqaoCoh6zoW03ybNktYsslzIwXV2xqujneZtq9s3WQb5K7dNZUhj9pj1eLckOc=
-X-Gm-Gg: ASbGncugDDys/PpasrAkmagk9wwH/PnHfe7tdk/G7TcnBQ9LU77Oe+eGS0qQSNOSKJu
-	974xtjlbmmgMNiW6rtHJh+687CpWK6qA56SsT9x0zH7gIvEoBuylXoV3rWGNMhdcq1vqIr6bt8l
-	lYriXPGF4YCpTGCNSWGwmeW1GUNoBgiNKwHkEarB/WnCNYjkvlFUN/P0EpabBmTS6+s5MyXt9Fl
-	MU1Eswrpwhkuo2ESD5/k2R2kkJ4sZuw6Rb/o6EinWo3rzfuXnG8jZdenr5pudPW8hK3RNPYb8dz
-	bABxdHZZJy8UTlAPYQuDdQGl7jk=
-X-Google-Smtp-Source: AGHT+IHyRvfTyyUB15vN1Ysf2M16N9KtPiDgvd0O/VN/SYXUfdWudj3J8B/1cFjnew5pjbR5udBkrw==
-X-Received: by 2002:a05:6214:400b:b0:6d8:95c9:af2b with SMTP id 6a1803df08f44-6d8e71e8818mr304958446d6.35.1733843055170;
-        Tue, 10 Dec 2024 07:04:15 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d8da66efd7sm60633426d6.17.2024.12.10.07.04.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2024 07:04:14 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tL1mX-0000000A2oq-1oZj;
-	Tue, 10 Dec 2024 11:04:13 -0400
-Date: Tue, 10 Dec 2024 11:04:13 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>, linux-coco@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Huewe <peterhuewe@gmx.de>, "H. Peter Anvin" <hpa@zytor.com>,
-	linux-integrity@vger.kernel.org, x86@kernel.org,
-	Joerg Roedel <jroedel@suse.de>, Jarkko Sakkinen <jarkko@kernel.org>,
-	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Claudio Carvalho <cclaudio@linux.ibm.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH 3/3] x86/sev: add a SVSM vTPM platform device
-Message-ID: <20241210150413.GI1888283@ziepe.ca>
-References: <20241210143423.101774-1-sgarzare@redhat.com>
- <20241210143423.101774-4-sgarzare@redhat.com>
- <20241210144025.GG1888283@ziepe.ca>
- <50a2e1d29b065498146f459035e447851a518d1a.camel@HansenPartnership.com>
+        d=1e100.net; s=20230601; t=1733845891; x=1734450691;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zGEWpmLWCQTndHxT5IXaD/UcEthKFp24ucI3TjyxNCE=;
+        b=MmpeEEXN02DUn+8F2AXEXwkaucFakQXn+rQk9AMeI9Vb9xUvCNryk6fb4ELk1E358J
+         0SASLvfcBOq0rRg1KjHb8aWHSKnVfp+LdJKJxH8m7FHYNcxAkrA8fwpyfoZMHyJMNulJ
+         saV4vMIQ6F69S0raCZSaVuohj8gd6oJpi4D9XkBtWHeMgKyADQjkbMljG+OXwTX1gLxE
+         XCUmyiAerTRTjyGrRfekTTFHnHVVclniBuFLsLu0H9RwfhEKC5JVNk3e4g+gTpAM4m4n
+         p9HNp8y+N2fic6tkspdGQCAaq8CJtRRopQuE68wAm+AVaa8mUyDUAUtnm3hrtCd+Ij+O
+         UJow==
+X-Forwarded-Encrypted: i=1; AJvYcCUZtMbGvQbrJitANoKn0sf4UTQDeaoIGLIX8y5cyzul+Vv+6i4J5gVOaCp1I0FxGC9vqoOGdOshPoPK@lists.linux.dev
+X-Gm-Message-State: AOJu0YyU3c1350sjaUJ9Td0W/YCnompHr2135Fl8dgbDs3ZBTKNmkxKo
+	KyBRAE1qIRGZ9vDhIjpGQ3TWgip7E3I4UXdsv20z3hpoUGOY18SW02XDWiiB84MdIuB3mvNYx44
+	GqwtKzJZS2uOZYSWLkojez5UC8FA8M0Z+LHfw
+X-Gm-Gg: ASbGncuGqu+MjFFnsdc9j4d0JajLYCBHIHyKdT3raLgqOF9bkTICS9p+Tib1ydJIjUo
+	BqKxRphnusko+2utZfo85h3oTICDhr4jWtwY=
+X-Google-Smtp-Source: AGHT+IFF1pHN9/6GA3MG/iAI7uuToN+v40kN7CYPXNMCf19FEEnJNP06BgAyjhrlHXP7Ud+BFaLU9/3DxddZc+NTX3w=
+X-Received: by 2002:a17:906:3118:b0:aa6:6e41:ea55 with SMTP id
+ a640c23a62f3a-aa66e41ede5mr1256721466b.7.1733845890857; Tue, 10 Dec 2024
+ 07:51:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <50a2e1d29b065498146f459035e447851a518d1a.camel@HansenPartnership.com>
+References: <cover.1733785468.git.ashish.kalra@amd.com> <d1658358fa8c55dca2f1869ef8a8475fc303e9c8.1733785468.git.ashish.kalra@amd.com>
+In-Reply-To: <d1658358fa8c55dca2f1869ef8a8475fc303e9c8.1733785468.git.ashish.kalra@amd.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Tue, 10 Dec 2024 07:51:19 -0800
+X-Gm-Features: AZHOrDm8zaFskRC34t7dTi25zxHQFgRiXcLbUT8F8VLJriuZ2gw6c8XA36wtfvo
+Message-ID: <CAAH4kHZCowU0FV4568P5C+pyv6T-9kL92qnMd2RTq+Sf-9j7Bg@mail.gmail.com>
+Subject: Re: [PATCH 1/7] crypto: ccp: Move dev_info/err messages for SEV/SNP initialization
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, thomas.lendacky@amd.com, john.allen@amd.com, 
+	herbert@gondor.apana.org.au, davem@davemloft.net, michael.roth@amd.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Dec 10, 2024 at 09:55:41AM -0500, James Bottomley wrote:
-> On Tue, 2024-12-10 at 10:40 -0400, Jason Gunthorpe wrote:
-> > On Tue, Dec 10, 2024 at 03:34:23PM +0100, Stefano Garzarella wrote:
-> > 
-> > > +               if (platform_device_add_data(&tpm_device, &pops,
-> > > sizeof(pops)))
-> > > +                       return -ENODEV;
-> > > +               if (platform_device_register(&tpm_device))
-> > > +                       return -ENODEV;
-> > 
-> > This seems like an old fashioned way to instantiate a device. Why do
-> > this? Just put the TPM driver here and forget about pops? Simple tpm
-> > drivers are not very complex.
-> 
-> This driver may be for the AMD SEV SVSM vTPM module, but there are
-> other platforms where there's an internal vTPM which might be contacted
-> via a platform specific enlightenment (Intel SNP and Microsoft
-> OpenHCL). 
+>
+>  static int _sev_platform_init_locked(struct sev_platform_init_args *args)
+> @@ -1329,8 +1342,7 @@ static int _sev_platform_init_locked(struct sev_platform_init_args *args)
+>                  * Don't abort the probe if SNP INIT failed,
+>                  * continue to initialize the legacy SEV firmware.
+>                  */
+> -               dev_err(sev->dev, "SEV-SNP: failed to INIT rc %d, error %#x\n",
+> -                       rc, args->error);
+> +               dev_info(sev->dev, "SEV-SNP: failed, continue to INIT SEV firmware\n");
 
-Sure, that's what TPM drivers are for, give those platforms TPM drivers
-too.
+You don't necessarily continue to INIT SEV if args->probe &&
+!psp_init_on_probe, so this may be misleading.
 
-Why put a mini driver hidden under an already mini driver?
+>         }
+>
+>         /* Defer legacy SEV/SEV-ES support if allowed by caller/module. */
+> --
+> 2.34.1
+>
 
-> This separation of the platform device from the contact
-> mechanism is designed to eliminate the duplication of having a platform
-> device within each implementation and to make any bugs in the mssim
-> protocol centrally fixable (every vTPM currently speaks this).
 
-That makes sense, but that isn't really what I see in this series?
-
-Patch one just has tpm_class_ops send() invoke pops sendrcv() after
-re-arranging the arguments?
-
-It looks to me like there would be mert in adding a new op to
-tpm_class_ops for the send/recv type operating mode and have the core
-code manage the buffer singleton (is a global static even *correct*??)
-
-After that, there is no meaningful shared code here, and maybe the
-TPM_CHIP_FLAG_IRQ hack can be avoided too.
-
-Simply call tpm_chip_alloc/register from the sev code directly and
-provide an op that does the send/recv. Let the tpm core code deal with
-everything else. It is much cleaner than platform devices and driver
-data..
-
-Jason
+-- 
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
