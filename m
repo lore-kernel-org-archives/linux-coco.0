@@ -1,69 +1,69 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1981B6CE1
-	for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 14:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D221B415C
+	for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 14:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733841293; cv=none; b=U1QCHDUhuu65t2lwRpDDroVt+gYSFQfWANtDCFqovMDecDOmCW8RfEBnSfXt20nJB9hB6CtDGP7S7TyHBbztgtlr4jFffXmUNh6w4w6YU9JAm7FFLu9lQe9E0MyTlvYNzYH3Ea0d9D1pCI2TKHwuOF2oXf66+yXItqhAFeXfzNI=
+	t=1733841301; cv=none; b=L4IH3OZCFpGAiUDE4Be+qYveLYiAU6Yp5IOFfhoI+0AVh3/HK3BRD4mNxCLVEyHGxoPmNQUu8UGPsnYmK8/7NEBOCHSJK0qKFHolNdx9H95+mGkcDi1vGv6nwqmYVtkt4oKZGOoOZZvEHW+pNet7eaGkjAJ/NDeic8DI8hLDLPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733841293; c=relaxed/simple;
-	bh=hKVfthvsa17ETqwzM+IPunkLwW1BQ0tuuiDhl+vst78=;
+	s=arc-20240116; t=1733841301; c=relaxed/simple;
+	bh=I3+OgVND3ovs3EabmzXGFURX+i4WzYcd0zLU7C8kE5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=WGEl+ILjMeq16xeYuDoMmCg9Ru/qn5dk1oRf7RJwqi0WJi0ov/RBDa85qMAI5k/QN0br9ARx19wPxEpDLFr2YJ9Cz3aEXL9w+80Wort2+0oZHaauxZIN7mCpGdDMoWGu06suIYmAog8dRm5IMbPWcxeYSCtx0dL8gSNNDXp5oBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Van+s1NP; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=ahV8P+GKBOikGMOeeDJAeshVXQcYIB0CCx25Hj0LDPloezAujosN/eeEENNOp0rEiyPVWDTVpzgoUkmS7WIUB5XBqppHVneg2Nd0xulNcFJUg2UZglE9rgIXPRRiuAxhh0ycJJi20WEO3pkdhbOghuKyTYqObAG2NX/pZz0lGWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TDjH5O6g; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Van+s1NP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TDjH5O6g"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733841291;
+	s=mimecast20190719; t=1733841298;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kkig53CpkMCs8xZ5GQefN+G8yQyR6/dGUcen+HDOvno=;
-	b=Van+s1NPnaa0QYtfkZOdJ9mTqohjI/6m7C/dte403uLpCbG8h0tUwszEZcuEmJoIm/aS25
-	9VWt0xqtRu1YBFWEHueZld2keecCMlK5ikrMquBCkKz1LCjbpRIJ+JxCrUcKdOuzjRbSHi
-	19y4w6MGzFYxs5DDNatNC1i2cbPA9tg=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ZHZJG01hNeaIMCFXcC4aAtIq9wGcVNYKpI5sbt4iaAs=;
+	b=TDjH5O6gJy06twWi4M07rOkYbJ4CCA8LwKMHAf/23rgxIfQHKkhcKRJQ01/2KlKpE43rnc
+	BkKySiGhDkgdOW8b24Xtacy74OLFq1mksXaSoAYJ2P49xMuzQGVItpVUJAHYqeZEUrE/Z7
+	hNyFFdwqilquh9X3p9RrZxP4jGUTDtY=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-XBvXIaU1Ma2CqFGcLQZTVA-1; Tue, 10 Dec 2024 09:34:50 -0500
-X-MC-Unique: XBvXIaU1Ma2CqFGcLQZTVA-1
-X-Mimecast-MFC-AGG-ID: XBvXIaU1Ma2CqFGcLQZTVA
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6d8f8f69fb5so56826376d6.1
-        for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 06:34:50 -0800 (PST)
+ us-mta-474-5M32nZOLMr66lDwtivtnfA-1; Tue, 10 Dec 2024 09:34:58 -0500
+X-MC-Unique: 5M32nZOLMr66lDwtivtnfA-1
+X-Mimecast-MFC-AGG-ID: 5M32nZOLMr66lDwtivtnfA
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-466b72ca44eso78646681cf.0
+        for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 06:34:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733841288; x=1734446088;
+        d=1e100.net; s=20230601; t=1733841297; x=1734446097;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kkig53CpkMCs8xZ5GQefN+G8yQyR6/dGUcen+HDOvno=;
-        b=LGbKOhoed1xqvJn3G9OKYvMqWhqfsqrU4kPF32jzKpKXrnwXFMXPXG1jdpZH4AAbIG
-         yEFNbtF5Zh8IZX9YsE1sxIw+Vn3C35N3KEWG/Ecq0ZpaPq/3888z66DYnD9c6YRfQXU3
-         +WUkYA43u0q3Tz41qKqVaZ80dGGH4sqD9q2iP1T8Lm3rvZY2AoCBwJt1uAzpnTIbytPP
-         OsTGXHMWGr4KAzrdtqIEE0doq5W6FyxnxToqeM1CXSDT30JMZuTrAk3DKYbs/rQhxA+n
-         eMLuD/pYkKCGf7/HfllaoaUArtJ/Qh4Xxq6MSHGK6v96RXDVmJ7NUNDz8tnU18Oz2ava
-         1agw==
-X-Gm-Message-State: AOJu0Yw7pExTHMN2HQpTRAIMqh4GL22MZGr4lh1HYK8DQnLqU42K2yCB
-	2MZC47rxOBi8BtfJKvTs3fEQcAW+R8wFcj4bPxajc/+rZFhqcHRa3cLAYV+lFlq8zAUgUKyjRiF
-	JN0GN0vgKd1DHNUujlowaba0glseXCKz2oVzGMfDw3SXhIpOJ9zOt8a571j4yMoUZzus87go979
-	EzGKmWYLz1U7j3nTPyCTK0Bi4pkYpf2VvXK0RKxiEEqoo=
-X-Gm-Gg: ASbGncuedEwMgiymBI7WcYXYqCOMGwVQw/GHV/yQR34GqHxV2AI7mXm+327yTRuHHUL
-	ucvxdEwNqjbIZ1u4rhrUZ4h1POm/401vX++Ok6Y1CWOeOviQNxE8MBhSfbzctADV3U78M//IjQi
-	/O059MMuBNP2uIMVoTEtCSr7lprtogZwGoIHtSjFLlYLsATwf5Xo58iwbN0gE/Jajj5WLMb1i95
-	mphCmJHYn6leqvr6ke9i9KexlWUreMBIz0rJTWZ30TJInBHmbjFfJkLwB5BfM6o6wddbJylC8ev
-	F9rECTG0VBoZqeojiwgR82+xNQm86nk=
-X-Received: by 2002:a05:6214:5087:b0:6d8:f50e:8036 with SMTP id 6a1803df08f44-6d9213ba859mr65685896d6.20.1733841288430;
-        Tue, 10 Dec 2024 06:34:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGSop28FY6IektnPFRQjQ8gA1PitVY9Yf0WUJf69W1zgtjztC/5xoivV4T26/rVtmO6MIg6TA==
-X-Received: by 2002:a05:6214:5087:b0:6d8:f50e:8036 with SMTP id 6a1803df08f44-6d9213ba859mr65685226d6.20.1733841287948;
-        Tue, 10 Dec 2024 06:34:47 -0800 (PST)
+        bh=ZHZJG01hNeaIMCFXcC4aAtIq9wGcVNYKpI5sbt4iaAs=;
+        b=nHg5ClN2pvrhqB3V2YZnvYwx6KyF0Oq4vD/q/K54D89VrEv5JWpL2HiOLmaQ2FJypN
+         rQIB56vxw9UJ5y+e2kUulicFp4KFG0Xjbr7509+PTReIgMqOCqkiS7DrZIkJWi9pprVB
+         J1MU+x6pVkGN3OIQM5LuAr8Rg4+rV4kYmzdB4Q/rIc768JBbm0vong7r5jllmfZhXZib
+         r3qEL6bV2TPi63qA+riA4UleoubgVwlKMGeFxEm1ov5QvRBpOR5hB0Jyf8yQGxFRR+QD
+         awndi/p5ayPaoANys9yUQ0/BkhfadQ5VfiNvAO9OVrY0uF4FueTNqzPcEuH0P4+G2aHN
+         w8RQ==
+X-Gm-Message-State: AOJu0Yxziu9CIYzkoChK7lLyYCXKjfcBhK/LsKxOlG7psEH/h40Cbcg1
+	oPG66wPEecsTxeRzcq79zxmxw3n02s+yTReeb0LmmeKel4wZZzGyETiCjgDc4o4VW0jNsfV6HDO
+	3ScGyM+Qxi114Emr/q9Jt5TXr1nZraY5PbddMLCmh60ZpeVy72P3aEWFYagWVUA2DYkkxQbNL5G
+	tdcL2dY0sQj+qPpS4LsMVLR7h+RV0sJiPmh7uXKH1EXaU=
+X-Gm-Gg: ASbGnctiZNnojoP8uvHsS2AuRn5yEswX9Ax/Gap1TjwNlZMQxgYVJAg7Sn5+yoh/pHv
+	uPvS6C/gc3f7Bw7H8HEn9KgEHgzrBXry1srFVTgEMJ74w1lG5kHvQgNTAplbGpVtXXr+1pe/5tG
+	+qGlTS0FstC3k6j2chkDSa2LrSkWcfkdhotW44o5IMyItu89WvX74oClH+YIEXtP6KTi5S58fnn
+	jAHN9l9uLBUbO7GnURqXC7R2UFg+WenrH51aZyYC666McvjH504QdF1+aQo8hetc4c/b7f3BcME
+	b/19VvujgdpMa4VE/LL0ME5Es+9wkdA=
+X-Received: by 2002:ac8:5fc6:0:b0:467:6505:e3c with SMTP id d75a77b69052e-4676505132dmr138668421cf.24.1733841296919;
+        Tue, 10 Dec 2024 06:34:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEWTua5aJb1pNQFOVrnxFBRlJAcVPzKgg25Q3AMf1JLy1jJEt2pslYht0E+7saMZCCbUW+bWQ==
+X-Received: by 2002:ac8:5fc6:0:b0:467:6505:e3c with SMTP id d75a77b69052e-4676505132dmr138667721cf.24.1733841296367;
+        Tue, 10 Dec 2024 06:34:56 -0800 (PST)
 Received: from step1.redhat.com (host-87-12-25-244.business.telecomitalia.it. [87.12.25.244])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d8dac1434esm60163516d6.124.2024.12.10.06.34.43
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4675d0d9039sm27218631cf.22.2024.12.10.06.34.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2024 06:34:46 -0800 (PST)
+        Tue, 10 Dec 2024 06:34:54 -0800 (PST)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: linux-coco@lists.linux.dev
 Cc: Borislav Petkov <bp@alien8.de>,
@@ -83,9 +83,9 @@ Cc: Borislav Petkov <bp@alien8.de>,
 	Dov Murik <dovmurik@linux.ibm.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH 2/3] x86/sev: add SVSM call macros for the vTPM protocol
-Date: Tue, 10 Dec 2024 15:34:22 +0100
-Message-ID: <20241210143423.101774-3-sgarzare@redhat.com>
+Subject: [PATCH 3/3] x86/sev: add a SVSM vTPM platform device
+Date: Tue, 10 Dec 2024 15:34:23 +0100
+Message-ID: <20241210143423.101774-4-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241210143423.101774-1-sgarzare@redhat.com>
 References: <20241210143423.101774-1-sgarzare@redhat.com>
@@ -96,36 +96,120 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: yj9w_BGp9koZoQbFSwv05Gr3S4axcE8g5eXtjFmLza8_1733841290
+X-Mimecast-MFC-PROC-ID: u8wdxtBPgoqcyPP_OMWk648lcSZbGhnVcos85HP7kl4_1733841297
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Add macros for SVSM_VTPM_QUERY and SVSM_VTPM_CMD calls as defined
-in the "Secure VM Service Module for SEV-SNP Guests"
-Publication # 58019 Revision: 1.00
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
 
-Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58019.pdf
+If the SNP boot has a SVSM, probe for the vTPM device by sending a
+SVSM_VTPM_QUERY call (function 8). The SVSM will return a bitmap with
+the TPM_SEND_COMMAND bit set only if the vTPM is present and it is able
+to handle TPM commands at runtime.
+
+If a vTPM is found, register a platform device as "platform:tpm" so it
+can be attached to the tpm_platform.c driver.
+
+Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+[CC] Used SVSM_VTPM_QUERY to probe the TPM
+Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+[SG] Code adjusted with some changes introduced in 6.11
+[SG] Used macro for SVSM_VTPM_CALL
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- arch/x86/include/asm/sev.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/coco/sev/core.c | 64 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 64 insertions(+)
 
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 91f08af31078..97dcc8d938a6 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -365,6 +365,10 @@ struct svsm_call {
- #define SVSM_ATTEST_SERVICES		0
- #define SVSM_ATTEST_SINGLE_SERVICE	1
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index c5b0148b8c0a..ec0153fddc9e 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -21,6 +21,7 @@
+ #include <linux/cpumask.h>
+ #include <linux/efi.h>
+ #include <linux/platform_device.h>
++#include <linux/tpm_platform.h>
+ #include <linux/io.h>
+ #include <linux/psp-sev.h>
+ #include <linux/dmi.h>
+@@ -2578,6 +2579,51 @@ static struct platform_device sev_guest_device = {
+ 	.id		= -1,
+ };
  
-+#define SVSM_VTPM_CALL(x)		((2ULL << 32) | (x))
-+#define SVSM_VTPM_QUERY			0
-+#define SVSM_VTPM_CMD			1
++static struct platform_device tpm_device = {
++	.name		= "tpm",
++	.id		= -1,
++};
 +
- #ifdef CONFIG_AMD_MEM_ENCRYPT
++static int snp_issue_svsm_vtpm_send_command(u8 *buffer)
++{
++	struct svsm_call call = {};
++
++	call.caa = svsm_get_caa();
++	call.rax = SVSM_VTPM_CALL(SVSM_VTPM_CMD);
++	call.rcx = __pa(buffer);
++
++	return svsm_perform_call_protocol(&call);
++}
++
++static bool is_svsm_vtpm_send_command_supported(void)
++{
++	struct svsm_call call = {};
++	u64 send_cmd_mask = 0;
++	u64 platform_cmds;
++	u64 features;
++	int ret;
++
++	call.caa = svsm_get_caa();
++	call.rax = SVSM_VTPM_CALL(SVSM_VTPM_QUERY);
++
++	ret = svsm_perform_call_protocol(&call);
++
++	if (ret != SVSM_SUCCESS)
++		return false;
++
++	features = call.rdx_out;
++	platform_cmds = call.rcx_out;
++
++	/* No feature supported, it must be zero */
++	if (features)
++		return false;
++
++	/* TPM_SEND_COMMAND - platform command 8 */
++	send_cmd_mask = 1 << 8;
++
++	return (platform_cmds & send_cmd_mask) == send_cmd_mask;
++}
++
+ static int __init snp_init_platform_device(void)
+ {
+ 	struct sev_guest_platform_data data;
+@@ -2593,6 +2639,24 @@ static int __init snp_init_platform_device(void)
+ 		return -ENODEV;
  
- extern u8 snp_vmpl;
+ 	pr_info("SNP guest platform device initialized.\n");
++
++	/*
++	 * The VTPM device is available only if we have a SVSM and
++	 * its VTPM supports the TPM_SEND_COMMAND platform command
++	 */
++	if (IS_ENABLED(CONFIG_TCG_PLATFORM) && snp_vmpl &&
++	    is_svsm_vtpm_send_command_supported()) {
++		struct tpm_platform_ops pops = {
++			.sendrcv = snp_issue_svsm_vtpm_send_command,
++		};
++
++		if (platform_device_add_data(&tpm_device, &pops, sizeof(pops)))
++			return -ENODEV;
++		if (platform_device_register(&tpm_device))
++			return -ENODEV;
++		pr_info("SNP SVSM VTPM platform device initialized\n");
++	}
++
+ 	return 0;
+ }
+ device_initcall(snp_init_platform_device);
 -- 
 2.47.1
 
