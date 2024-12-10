@@ -1,98 +1,64 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E68F22FDF6
-	for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 15:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E4F70820
+	for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 18:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733845894; cv=none; b=bWvIuPfZ6HCo3dSUC38ICParnW5PU+eun5smCqY9XxS4vHLU/vRa1qMiiCIyCzHOTIiXXwAGPyStgqsoajAk9QbJRTsXQJEj65zVMRhQMhD1hj9zPJjPlZTx0zou/sXmKkZKkcbCnZwSDJ/IY00XcCTjZwXFGpOvw8Vwh8vWDSk=
+	t=1733855447; cv=none; b=AASBvrcoCEF3xVmSSSTxZ+fH1YCZNOlm7c8ITHO3XYZ3+KVCqP8BaK+at068EZZhQdQx8hxjNtBE3YBBAVC7nsMPirNiLCadrxE3u2lyRITfcQLDpBmSkH86cImHb3PflSTBmWWV63ecCN9+jO7c4x+sqZVjIU05oXYlS8j8ax8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733845894; c=relaxed/simple;
-	bh=6OaTMfkTA/OmgikKXTbbHwl/a5xyjcE8zGh1IgbdmZs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ge3Kvhg8a4qrde9po3MhFH5at8kq//gl9ZjqNKG2+vQ4q1wC3wJihQa1Itn2FHpHiZAYq7w0lqdCdfwAUETg7PN6nS/FIGoQDpkdKK+sa5ANhAUyxjj3brKxHczG9MGXlLRw85reqUUwiIQvC1fqjvjZpo7DQ4jzQ9Uw1qvKr88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nwEMP6IP; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733855447; c=relaxed/simple;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=bQQqa/zIv9HL2c2EfDIVFyoVxmB8+L933pR+nyzusCwiaxPHIBbzol1Mo99rfdtggwFk8GvzGAfUMb8us6mZg95cTSrqgOzq/q4zl3yaC9S4Lwb98RXe7HaK077lwe1yiyVSGyjkleM/uF4i3oUcRgcnENdoK16TM8twXWJPQsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mt42icxv; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nwEMP6IP"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a9a0ec0a94fso846874266b.1
-        for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 07:51:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mt42icxv"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5cecbddb574so7765507a12.1
+        for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 10:30:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733845891; x=1734450691; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zGEWpmLWCQTndHxT5IXaD/UcEthKFp24ucI3TjyxNCE=;
-        b=nwEMP6IPwruLqk7NzM9DgsHyPIvg1QzAQvrc6FBlodU5T/bM2+AhXRWqiqH2iu2uuX
-         fRUYqPtaRyyQyCaDfaKLRIDCFheY9QKCQK28lSY3yzzkicqsaUGDj4C77hOh08PIOToK
-         jHu/JaMhaJZnrYpqg/rCwSo438b6jPEpM6myXZMsDccWZsdZYk/9P1Y7uRbWEs19SDml
-         8QEESEd2a1DH4swmeE8mxiGlQA3oJGqHxTDe77iUuRh0R1mPDgoks8Sw1HHAWQA0h9YR
-         DjgzHBNpfoZplckUtkcr3X3j+HahOCfCi+LozXWVVjVP3hGu9Aw5Jwt50m5xzQEjHl8F
-         TbKQ==
+        d=linaro.org; s=google; t=1733855443; x=1734460243; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=mt42icxv3Y7twA4R/UHrl9o0pN6T9wbMuiHu4ha9+p8GjmIIilylbpYY6e+JKznqiR
+         rlSlX9rdWeEJY4+rseJc2+1Ahw1giXt3L9jL67a9XkNm1CtT2LNrMiAZ2O4bO99vj8wM
+         UDf6Qygoc8CoE8jTxlChuilHqO77UZUFSUoSSGT6WqMaNbFPrP71gtm7GbJen3vrX/FA
+         4qvhczeweK62zhFAjTRq5Mxc6WZruOCGSkU/5ka+TYj3Q/aIqCrjNL5qoXLMuB+idDH7
+         BMJD/41YdKP4B72dfSggagm0NpuavmY8tBzfgWVx9lZ2fNb3Uwmpbhkp+1Eepm46UMd2
+         Ly8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733845891; x=1734450691;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zGEWpmLWCQTndHxT5IXaD/UcEthKFp24ucI3TjyxNCE=;
-        b=MmpeEEXN02DUn+8F2AXEXwkaucFakQXn+rQk9AMeI9Vb9xUvCNryk6fb4ELk1E358J
-         0SASLvfcBOq0rRg1KjHb8aWHSKnVfp+LdJKJxH8m7FHYNcxAkrA8fwpyfoZMHyJMNulJ
-         saV4vMIQ6F69S0raCZSaVuohj8gd6oJpi4D9XkBtWHeMgKyADQjkbMljG+OXwTX1gLxE
-         XCUmyiAerTRTjyGrRfekTTFHnHVVclniBuFLsLu0H9RwfhEKC5JVNk3e4g+gTpAM4m4n
-         p9HNp8y+N2fic6tkspdGQCAaq8CJtRRopQuE68wAm+AVaa8mUyDUAUtnm3hrtCd+Ij+O
-         UJow==
-X-Forwarded-Encrypted: i=1; AJvYcCUZtMbGvQbrJitANoKn0sf4UTQDeaoIGLIX8y5cyzul+Vv+6i4J5gVOaCp1I0FxGC9vqoOGdOshPoPK@lists.linux.dev
-X-Gm-Message-State: AOJu0YyU3c1350sjaUJ9Td0W/YCnompHr2135Fl8dgbDs3ZBTKNmkxKo
-	KyBRAE1qIRGZ9vDhIjpGQ3TWgip7E3I4UXdsv20z3hpoUGOY18SW02XDWiiB84MdIuB3mvNYx44
-	GqwtKzJZS2uOZYSWLkojez5UC8FA8M0Z+LHfw
-X-Gm-Gg: ASbGncuGqu+MjFFnsdc9j4d0JajLYCBHIHyKdT3raLgqOF9bkTICS9p+Tib1ydJIjUo
-	BqKxRphnusko+2utZfo85h3oTICDhr4jWtwY=
-X-Google-Smtp-Source: AGHT+IFF1pHN9/6GA3MG/iAI7uuToN+v40kN7CYPXNMCf19FEEnJNP06BgAyjhrlHXP7Ud+BFaLU9/3DxddZc+NTX3w=
-X-Received: by 2002:a17:906:3118:b0:aa6:6e41:ea55 with SMTP id
- a640c23a62f3a-aa66e41ede5mr1256721466b.7.1733845890857; Tue, 10 Dec 2024
- 07:51:30 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733855443; x=1734460243;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=QYFl+YeEcnnHI55Xz/Z3KsEnBhXj/FDIdq94svEBXS7zJLBZC42I6BMbpbVckiTrSw
+         3JlcP6ibr+ajoQdMHl7E4dzajt7na4iQgrdfpM8mMVe5btEnC7vmaf5MgdFLiji12UKi
+         hg1HiMSCGtkjS0rmazoGu+FzZurFQr7eCJizz1G8RApTpGcoUVynDf3FtHcb1d1RSAeo
+         LPP3UuSg0yL9m0UywBXEbuBmmJKmjWjNC+gJds2sPtFX8sykv99Qk6Hjcf3k5ALIwJlk
+         TghACY0QK8CxibbdcXAvbDrFE5hO6VQDlubAlcNtjuidfFp4PdacDExJtOu+4j8pTwHG
+         CvcQ==
+X-Gm-Message-State: AOJu0YxRBKJpkxDHXsH9alB5wRFRWNwtYUHAK0DUWDDJrLbgso9RQ1J8
+	S23LQiBr3LUigmgCTPkf4Gah3bdcxU/4uWh2PI/bw1r9zJuZEEb9AbVTZ37JuwdJzqFNK1nA0X1
+	+Xq6Bh0iV6fY0kd/LRajm7s2TIqC9BKWWxpRJGhYK2Yh1FsAF
+X-Gm-Gg: ASbGnctcwwCkZq+R2O0idShaDxGgw4v9yWGWcE2W79LkQtIn4Um7lPCKMvnnNh94BMv
+	/RHG1gv2uDBGlIEbpIzUapOZiG7umhWhJFZLaWhk/i6fijgx8h79AcupoXa0PCD/jwBNrNA==
+X-Google-Smtp-Source: AGHT+IFYwK4Bw8mshGZJ1RgNX0lqnLueO0DAmtmHu1AckYdN5+MEGjRzYLx3H8ZX138XAWi04ZDjmZOqo1BwNcoUj3g=
+X-Received: by 2002:a05:6402:5386:b0:5d0:e73c:b7f2 with SMTP id
+ 4fb4d7f45d1cf-5d3be660913mr17940766a12.7.1733855443185; Tue, 10 Dec 2024
+ 10:30:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1733785468.git.ashish.kalra@amd.com> <d1658358fa8c55dca2f1869ef8a8475fc303e9c8.1733785468.git.ashish.kalra@amd.com>
-In-Reply-To: <d1658358fa8c55dca2f1869ef8a8475fc303e9c8.1733785468.git.ashish.kalra@amd.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Tue, 10 Dec 2024 07:51:19 -0800
-X-Gm-Features: AZHOrDm8zaFskRC34t7dTi25zxHQFgRiXcLbUT8F8VLJriuZ2gw6c8XA36wtfvo
-Message-ID: <CAAH4kHZCowU0FV4568P5C+pyv6T-9kL92qnMd2RTq+Sf-9j7Bg@mail.gmail.com>
-Subject: Re: [PATCH 1/7] crypto: ccp: Move dev_info/err messages for SEV/SNP initialization
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, thomas.lendacky@amd.com, john.allen@amd.com, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, michael.roth@amd.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+Date: Tue, 10 Dec 2024 11:30:32 -0700
+Message-ID: <CANLsYkxFRJhXUnqG9BqJ+q9q6qfMmSyENvk23WzOTPGhQY7tQQ@mail.gmail.com>
+Subject: subscribe
+To: linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
->
->  static int _sev_platform_init_locked(struct sev_platform_init_args *args)
-> @@ -1329,8 +1342,7 @@ static int _sev_platform_init_locked(struct sev_platform_init_args *args)
->                  * Don't abort the probe if SNP INIT failed,
->                  * continue to initialize the legacy SEV firmware.
->                  */
-> -               dev_err(sev->dev, "SEV-SNP: failed to INIT rc %d, error %#x\n",
-> -                       rc, args->error);
-> +               dev_info(sev->dev, "SEV-SNP: failed, continue to INIT SEV firmware\n");
 
-You don't necessarily continue to INIT SEV if args->probe &&
-!psp_init_on_probe, so this may be misleading.
-
->         }
->
->         /* Defer legacy SEV/SEV-ES support if allowed by caller/module. */
-> --
-> 2.34.1
->
-
-
--- 
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
