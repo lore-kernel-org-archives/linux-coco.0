@@ -1,64 +1,72 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E4F70820
-	for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 18:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CEAF224AEC
+	for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 18:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733855447; cv=none; b=AASBvrcoCEF3xVmSSSTxZ+fH1YCZNOlm7c8ITHO3XYZ3+KVCqP8BaK+at068EZZhQdQx8hxjNtBE3YBBAVC7nsMPirNiLCadrxE3u2lyRITfcQLDpBmSkH86cImHb3PflSTBmWWV63ecCN9+jO7c4x+sqZVjIU05oXYlS8j8ax8=
+	t=1733856391; cv=none; b=XK+kKEJ5lXhcBgprjtYuHuip1Ekz8AN7qRBjGT1JIqhbHpKg1ZQWJV79Pi/yYmzluW0NE5JRK4yO2ksWFrM9czlfOvYrQWBAZs/gmRzro6IYNZY8DmK/ozH5IG5aSy2oOjUnFd3lJlTMLhOEvY8sE5byFnoPRv5Y6UTjvJwAIbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733855447; c=relaxed/simple;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=bQQqa/zIv9HL2c2EfDIVFyoVxmB8+L933pR+nyzusCwiaxPHIBbzol1Mo99rfdtggwFk8GvzGAfUMb8us6mZg95cTSrqgOzq/q4zl3yaC9S4Lwb98RXe7HaK077lwe1yiyVSGyjkleM/uF4i3oUcRgcnENdoK16TM8twXWJPQsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mt42icxv; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1733856391; c=relaxed/simple;
+	bh=ZNDed6cJTJkX1bPsgO1sgDXNXg63P9FbLmzKwFAaLwA=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=L2SziY07Wv24kIJIkVpwr/MrAWBoVI1UcQP+C5Hp7+1PllKHfdXUZYuuu2ZWQ8TUqlxojzqplmvN4pMnUlNHNLrIZvmxKmFcc90Os8TjcKR9XF1X1BBrrZACL5FAENQER6ISdVM53z6EQrcUJlhxK+QYUvMulB6wSN+P7PLhi3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=Nzu/wt08; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mt42icxv"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5cecbddb574so7765507a12.1
-        for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 10:30:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733855443; x=1734460243; darn=lists.linux.dev;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=mt42icxv3Y7twA4R/UHrl9o0pN6T9wbMuiHu4ha9+p8GjmIIilylbpYY6e+JKznqiR
-         rlSlX9rdWeEJY4+rseJc2+1Ahw1giXt3L9jL67a9XkNm1CtT2LNrMiAZ2O4bO99vj8wM
-         UDf6Qygoc8CoE8jTxlChuilHqO77UZUFSUoSSGT6WqMaNbFPrP71gtm7GbJen3vrX/FA
-         4qvhczeweK62zhFAjTRq5Mxc6WZruOCGSkU/5ka+TYj3Q/aIqCrjNL5qoXLMuB+idDH7
-         BMJD/41YdKP4B72dfSggagm0NpuavmY8tBzfgWVx9lZ2fNb3Uwmpbhkp+1Eepm46UMd2
-         Ly8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733855443; x=1734460243;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=QYFl+YeEcnnHI55Xz/Z3KsEnBhXj/FDIdq94svEBXS7zJLBZC42I6BMbpbVckiTrSw
-         3JlcP6ibr+ajoQdMHl7E4dzajt7na4iQgrdfpM8mMVe5btEnC7vmaf5MgdFLiji12UKi
-         hg1HiMSCGtkjS0rmazoGu+FzZurFQr7eCJizz1G8RApTpGcoUVynDf3FtHcb1d1RSAeo
-         LPP3UuSg0yL9m0UywBXEbuBmmJKmjWjNC+gJds2sPtFX8sykv99Qk6Hjcf3k5ALIwJlk
-         TghACY0QK8CxibbdcXAvbDrFE5hO6VQDlubAlcNtjuidfFp4PdacDExJtOu+4j8pTwHG
-         CvcQ==
-X-Gm-Message-State: AOJu0YxRBKJpkxDHXsH9alB5wRFRWNwtYUHAK0DUWDDJrLbgso9RQ1J8
-	S23LQiBr3LUigmgCTPkf4Gah3bdcxU/4uWh2PI/bw1r9zJuZEEb9AbVTZ37JuwdJzqFNK1nA0X1
-	+Xq6Bh0iV6fY0kd/LRajm7s2TIqC9BKWWxpRJGhYK2Yh1FsAF
-X-Gm-Gg: ASbGnctcwwCkZq+R2O0idShaDxGgw4v9yWGWcE2W79LkQtIn4Um7lPCKMvnnNh94BMv
-	/RHG1gv2uDBGlIEbpIzUapOZiG7umhWhJFZLaWhk/i6fijgx8h79AcupoXa0PCD/jwBNrNA==
-X-Google-Smtp-Source: AGHT+IFYwK4Bw8mshGZJ1RgNX0lqnLueO0DAmtmHu1AckYdN5+MEGjRzYLx3H8ZX138XAWi04ZDjmZOqo1BwNcoUj3g=
-X-Received: by 2002:a05:6402:5386:b0:5d0:e73c:b7f2 with SMTP id
- 4fb4d7f45d1cf-5d3be660913mr17940766a12.7.1733855443185; Tue, 10 Dec 2024
- 10:30:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="Nzu/wt08"
+Received: from 8bytes.org (p54921e31.dip0.t-ipconnect.de [84.146.30.49])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id B11262C0E20;
+	Tue, 10 Dec 2024 19:46:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1733856387;
+	bh=ZNDed6cJTJkX1bPsgO1sgDXNXg63P9FbLmzKwFAaLwA=;
+	h=Date:From:To:Subject:From;
+	b=Nzu/wt089YrTdZYX6ISgi7a7FL9c2ONRjrTSgit+XnnVVHFtjfJ7BFquvEygs1vhi
+	 +neSSqPaWGZYFXP2+rFFBJaLbSngZasP+Kg5ORD7iw8IKNKex9r6RQJsJieFi8UoXy
+	 7xfJlx5JTaeSOWEzMptG38wQIk0MORxR8deVKYmrA7+Jmmm6Cw0A9okzSMyJQKtxNj
+	 TRCMQZqAUpaSqjcnsYwzNzgA0ikC38KitUZCAguU+GfZqjbWada3JtaAhrKfeQK+oK
+	 yJyrMhz9xaMeOoLyfGw0uud28T9SlghrhW1+i/iDaYWGxnxMY5SlYHD+JBuxiMjKDq
+	 8M2M2stMwu4PQ==
+Date: Tue, 10 Dec 2024 19:46:26 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call December 11th, 2024
+Message-ID: <Z1iMgi1TOgv-sHtZ@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Tue, 10 Dec 2024 11:30:32 -0700
-Message-ID: <CANLsYkxFRJhXUnqG9BqJ+q9q6qfMmSyENvk23WzOTPGhQY7tQQ@mail.gmail.com>
-Subject: subscribe
-To: linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
+Hi,
 
+Here is the usual call for agenda items for this weeks SVSM development
+call.  Please send me any agenda items you have in mind or raise them in
+the meeting.
+
+So far I have one topic I want to talk about:
+
+	* Rust allocator crates for user-mode alloc support. I'd like to
+	  hear if someone has more input on that, I have looked at a
+	  couple of available crates but have not found something fully
+	  convincing yet.
+
+Details of the meeting (GMeet and Calendar links, meeting time) can be
+found in our governance repository at:
+
+	https://github.com/coconut-svsm/governance
+
+The meeting will be recorded and the recording eventually published.
+
+See you all there.
+
+Regards,
+
+	Jörg
