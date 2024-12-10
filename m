@@ -1,72 +1,159 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CEAF224AEC
-	for <linux-coco@lists.linux.dev>; Tue, 10 Dec 2024 18:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733856391; cv=none; b=XK+kKEJ5lXhcBgprjtYuHuip1Ekz8AN7qRBjGT1JIqhbHpKg1ZQWJV79Pi/yYmzluW0NE5JRK4yO2ksWFrM9czlfOvYrQWBAZs/gmRzro6IYNZY8DmK/ozH5IG5aSy2oOjUnFd3lJlTMLhOEvY8sE5byFnoPRv5Y6UTjvJwAIbs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733856391; c=relaxed/simple;
-	bh=ZNDed6cJTJkX1bPsgO1sgDXNXg63P9FbLmzKwFAaLwA=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=L2SziY07Wv24kIJIkVpwr/MrAWBoVI1UcQP+C5Hp7+1PllKHfdXUZYuuu2ZWQ8TUqlxojzqplmvN4pMnUlNHNLrIZvmxKmFcc90Os8TjcKR9XF1X1BBrrZACL5FAENQER6ISdVM53z6EQrcUJlhxK+QYUvMulB6wSN+P7PLhi3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=Nzu/wt08; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="Nzu/wt08"
-Received: from 8bytes.org (p54921e31.dip0.t-ipconnect.de [84.146.30.49])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id B11262C0E20;
-	Tue, 10 Dec 2024 19:46:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1733856387;
-	bh=ZNDed6cJTJkX1bPsgO1sgDXNXg63P9FbLmzKwFAaLwA=;
-	h=Date:From:To:Subject:From;
-	b=Nzu/wt089YrTdZYX6ISgi7a7FL9c2ONRjrTSgit+XnnVVHFtjfJ7BFquvEygs1vhi
-	 +neSSqPaWGZYFXP2+rFFBJaLbSngZasP+Kg5ORD7iw8IKNKex9r6RQJsJieFi8UoXy
-	 7xfJlx5JTaeSOWEzMptG38wQIk0MORxR8deVKYmrA7+Jmmm6Cw0A9okzSMyJQKtxNj
-	 TRCMQZqAUpaSqjcnsYwzNzgA0ikC38KitUZCAguU+GfZqjbWada3JtaAhrKfeQK+oK
-	 yJyrMhz9xaMeOoLyfGw0uud28T9SlghrhW1+i/iDaYWGxnxMY5SlYHD+JBuxiMjKDq
-	 8M2M2stMwu4PQ==
-Date: Tue, 10 Dec 2024 19:46:26 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call December 11th, 2024
-Message-ID: <Z1iMgi1TOgv-sHtZ@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D815A1A0B13;
+	Tue, 10 Dec 2024 18:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733856443; cv=none; b=MCPJUyIHNU0rpQzru0frjbuEMhb8GTLll18dts1fNj71LWR8/oMjNJY0bYZe9SbApDvJz9cZdflvdj2ce3nFDJfipwfJl8phnZhyD500eCBcWOFv/KSXh2O84tpijOX8DqDmuCMUamED2fmbOYJvhOHUVgRuvIu1Xb76nR2aY/M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733856443; c=relaxed/simple;
+	bh=VcmvOTsYBBgG250G2walD9rqrMBEKHED9KFe0t9OF7M=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ZUuM3u7jQY54ZTotcgLzAdPneFWfY4QpF6CqosbFgR6+bsq7zGyW0pImWGdyFt9OjTXlMq/xid5sXgVuVxSC8XbqwtcGGKMHH13ETTVCt2dfr7m+kAm6yt9sP3AdYcGKOoW4Csp2aTtYSjl2uDgiwy95jrl6HM5wsX+b2k+cO+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6iSUlYI; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6iSUlYI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561A6C4CED6;
+	Tue, 10 Dec 2024 18:47:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733856443;
+	bh=VcmvOTsYBBgG250G2walD9rqrMBEKHED9KFe0t9OF7M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=m6iSUlYIkd9eLzfFbztqpgWXvEqFNaccftFx6D8fZpbscm02y/nxY6QhBg7o5L4NL
+	 cCrbhEJv2gVH6BUCSt4fmtNvDji1YG7aTJBx20nmEyBXVviUPzpLIGWI/H/fma86c3
+	 Ra/ZDj7sq8yfQmdO6T/8cmnNqQbDS1zsfo6UobeJRn4Ngl0EyAGwe7dLuUszA1XDeT
+	 jGpRfAfr48B3Ko64HD0sJzYN7cdmOY+5K4n89tBcTabQ3YnMaigeaolsboH+eVJ1kO
+	 LblYr/jO9Nu02jhULZizc4rZ2hinFqmLOcManSK/zqdf8gy4036FPKO755T8DPmfjf
+	 JZ2zk9M4FAPfA==
+Date: Tue, 10 Dec 2024 12:47:20 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, linux-pci@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Subject: Re: [PATCH 08/11] PCI/IDE: Add IDE establishment helpers
+Message-ID: <20241210184720.GA3079867@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <173343744264.1074769.10935494914881159519.stgit@dwillia2-xfh.jf.intel.com>
 
-Hi,
+On Thu, Dec 05, 2024 at 02:24:02PM -0800, Dan Williams wrote:
+> There are two components to establishing an encrypted link, provisioning
+> the stream in config-space, and programming the keys into the link layer
+> via the IDE_KM (key management) protocol. These helpers enable the
+> former, and are in support of TSM coordinated IDE_KM. When / if native
+> IDE establishment arrives it will share this same config-space
+> provisioning flow, but for now IDE_KM, in any form, is saved for a
+> follow-on change.
+> 
+> With the TSM implementations of SEV-TIO and TDX Connect in mind this
+> abstracts small differences in those implementations. For example, TDX
+> Connect handles Root Port registers updates while SEV-TIO expects System
+> Software to update the Root Port registers. This is the rationale for
+> the PCI_IDE_SETUP_ROOT_PORT flag.
+> 
+> The other design detail for TSM-coordinated IDE establishment is that
+> the TSM manages allocation of stream-ids, this is why the stream_id is
+> passed in to pci_ide_stream_setup().
 
-Here is the usual call for agenda items for this weeks SVSM development
-call.  Please send me any agenda items you have in mind or raise them in
-the meeting.
+s/stream-ids/Stream IDs/ to match spec usage (also several other
+places)
 
-So far I have one topic I want to talk about:
+> The flow is:
+> 
+> pci_ide_stream_probe()
+>   Gather stream settings (devid and address filters)
+> pci_ide_stream_setup()
+>   Program the stream settings into the endpoint, and optionally Root Port)
+> pci_ide_enable_stream()
+>   Run the stream after IDE_KM
 
-	* Rust allocator crates for user-mode alloc support. I'd like to
-	  hear if someone has more input on that, I have looked at a
-	  couple of available crates but have not found something fully
-	  convincing yet.
+Not sure what "devid" is.  Requester ID?  I suppose it's from
+PCI_DEVID(), which does turn out to be the PCIe Requester ID.  I don't
+think the spec uses a "devid" term, so I'd prefer the term used in the
+spec.
 
-Details of the meeting (GMeet and Calendar links, meeting time) can be
-found in our governance repository at:
+> In support of system administrators auditing where platform IDE stream
+> resources are being spent, the allocated stream is reflected as a
+> symlink from the host-bridge to the endpoint.
 
-	https://github.com/coconut-svsm/governance
+s/host-bridge/host bridge/ to match typical usage (also elsewhere)
 
-The meeting will be recorded and the recording eventually published.
+> +++ b/Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+> @@ -0,0 +1,28 @@
+> +What:		/sys/devices/pciDDDDD:BB
+> +		/sys/devices/.../pciDDDDD:BB
+> +Date:		December, 2024
+> +Contact:	linux-pci@vger.kernel.org
+> +Description:
+> +		A PCI host bridge device parents a PCI bus device topology. PCI
+> +		controllers may also parent host bridges. The DDDDD:BB format
+> +		convey the PCI domain number and the bus number for root ports
+> +		of the host bridge.
 
-See you all there.
+"Root ports" doesn't seem quite right here; BB is the root bus number,
+and makes sense even for conventional PCI.
 
-Regards,
+I know IDE etc is PCIe-specific, but I think saying "the PCI domain
+number and root bus number of the host bridge" would be more accurate
+since there can be things other than Root Ports on the root bus, e.g.,
+conventional PCI devices, RCiEPs, RCECs, etc.
 
-	Jörg
+Typical formatting of domain is %04x.
+
+> +What:		pciDDDDD:BB/streamN:DDDDD:BB:DD:F
+> +Date:		December, 2024
+> +Contact:	linux-pci@vger.kernel.org
+> +Description:
+> +		(RO) When a host-bridge has established a secure connection,
+> +		typically PCIe IDE, between a host-bridge an endpoint, this
+> +		symlink appears. The primary function is to account how many
+> +		streams can be returned to the available secure streams pool by
+> +		invoking the tsm/disconnect flow. The link points to the
+> +		endpoint PCI device at domain:DDDDD bus:BB device:DD function:F.
+
+s/host-bridge an endpoint/host bridge and an endpoint/
+
+> + * Retrieve stream association parameters for devid (RID) and resources
+> + * (device address ranges)
+
+This and other exported functions probably should have kernel-doc.
+Document only the implemented parts.
+
+> +void pci_ide_stream_probe(struct pci_dev *pdev, struct pci_ide *ide)
+
+> +void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide,
+> +			     enum pci_ide_flags flags)
+> +{
+> +	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
+> +	struct pci_dev *rp = pcie_find_root_port(pdev);
+> +
+> +	__pci_ide_stream_teardown(pdev, ide);
+> +	if (flags & PCI_IDE_SETUP_ROOT_PORT)
+> +		__pci_ide_stream_teardown(rp, ide);
+
+Looks like this relies on the caller to supply the same flags as they
+previously supplied to pci_ide_stream_setup()?  Could/should we
+remember the flags to remove the possibility of leaking the RP setup
+or trying to teardown RP setup that wasn't done?
+
+> +++ b/include/linux/pci.h
+> @@ -601,6 +601,10 @@ struct pci_host_bridge {
+>  	int		domain_nr;
+>  	struct list_head windows;	/* resource_entry */
+>  	struct list_head dma_ranges;	/* dma ranges resource list */
+> +#ifdef CONFIG_PCI_IDE			/* track IDE stream id allocation */
+> +	DECLARE_BITMAP(ide_stream_ids, PCI_IDE_SEL_CTL_ID_MAX + 1);
+> +	struct resource ide_stream_res; /* track ide stream address association */
+
+Seems like overkill to repeat this.  Probably remove the comment on
+the #ifdef and s/ide/IDE/ here.
