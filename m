@@ -1,291 +1,153 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EDC20DD6B
-	for <linux-coco@lists.linux.dev>; Wed, 11 Dec 2024 03:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77B11C175A
+	for <linux-coco@lists.linux.dev>; Wed, 11 Dec 2024 08:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733887348; cv=none; b=iYmsReU8k0pT3MDafqGENYtGLzzTqVf+N6dMAtoPQSJqPAob3ZBJMWit0DDQhOQqNahJGYu7jYTjsZX0tiJollkfA5BS6tk5qESHfQv7Oz4hv+gbbisYgbDGNDlwMZyZPFFRl1xB2ylRawW7oNoVagDe4THDLxSTfYdQAC3wWO4=
+	t=1733905160; cv=none; b=kiX1ykJPX6AE0XMk5Ln5T3iCqFnW68XP+EVnJGP2M8W1sWVVwm51apNQVN5f6wEQTR/dcW/zA94Fy6MS/qdNT8+p1cif4kI661/LV2cgwBfB3f6aJrgd+eH/w5DefBryVLzbDdLYr/VqI62asV1ObJYrA80FvVpziRfCCs/Mvfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733887348; c=relaxed/simple;
-	bh=DH4VDPy+9YI7ulTmM5YVyRvQT99eqA2nEqtOa8X683c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DxKlc4e188iIRrZ9QQOoUbY0xcVOVTA1Cg00r5NkfhCCj60daEiwSNDc7Xbv3ohqhM/QNw4rqzsG7czd/qCKOWCHnGaj6sQ1KUMksVNBeD6Ky02quiORW/NuiWbsfcdssIzQo4VBqB09hZ+W6jTJIsI9HNs2IMXaV2YqTI8pmXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=niWbsUgE; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1733905160; c=relaxed/simple;
+	bh=kK/MJU/Q9OBs7J/to7TFQAxF5400ypJLjs8WUycDgxw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sYClSZHb3kNDHaDqDY1qqJRHWAYMotXvPATM+adrSSPltB80tcFz1gGurOThpJoKL0qL0MJF585d7duiCaGlXC1N37vv8iaDYW1x/DaYDpopOUTmdeJsGdX+zRvVCbuXxHBRxO0QomK+2ojpJFn5f5+NNslg8TIFqZnB2g5JiWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B8/nwdZj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="niWbsUgE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733887347; x=1765423347;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=DH4VDPy+9YI7ulTmM5YVyRvQT99eqA2nEqtOa8X683c=;
-  b=niWbsUgE48thgv1o4AXI6K6hMsNuhfhP7Kf5aluL2Z7WEtnZ3PxfLYLW
-   EXIlqkH0iQCI5WjA5kwxAjnR1AZaqAPG2nTCm/0DjnLEaqwxipPZMHEJP
-   mmbQ3O5cA3WbhziVGxAzeDLkd/K2LBcZM/rGpvDnpobMvsLpcvOugIsMh
-   gyqqtmBytDW23+UckeNBDeWJfNsqK/C5R4EmHSK374+qiJExXJ3KreABx
-   nizQm+cHH8pjuitjevuTzUhTUckofwxgxdnwUuET30ChDtApzsw6Z3Rwz
-   NEZ0jbtNqTtv8H5UawX4UHVf7kpEk/t1lJQ5RKGwlDde22//BSEZEzERg
-   A==;
-X-CSE-ConnectionGUID: 4hZLWdTITOu1N/k42CxQOg==
-X-CSE-MsgGUID: P56gzACTTAW6MvHS7JfXKQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="51785417"
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="51785417"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 19:22:25 -0800
-X-CSE-ConnectionGUID: aZPvx75GT/OaZonPCQA5Ig==
-X-CSE-MsgGUID: pyF+pwKOQyuHXua0PtSUEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="118878402"
-Received: from ibarbour-mobl.amr.corp.intel.com (HELO bxing-mobl1.clients.intel.com) ([10.246.116.49])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 19:22:24 -0800
-From: Cedric Xing <cedric.xing@intel.com>
-Date: Tue, 10 Dec 2024 21:22:16 -0600
-Subject: [PATCH RFC v3 2/2] tsm: Add TVM Measurement Sample Code
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B8/nwdZj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733905157;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Df7gzbgWME26R9rpVKPWThUShTeBvSI36yYMQF09Oe4=;
+	b=B8/nwdZj3wKjzVZ/alDn1yvyybfLH8U8s2R4YcEyAf6EkS9pO2EZIjpLcYu4CaH2OptiJe
+	VkrrxDKJuHbAknPOxLRDxDwGUHEajeGzgfPfoZM3Sl3qevau3+pYDniuUcN9/1zjNiCGp6
+	PMSWnnqtqabb29+vd4MrxzFtJ17/iXA=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-695-tdiGO88tMYCPGgXJIe_oZg-1; Wed, 11 Dec 2024 03:19:16 -0500
+X-MC-Unique: tdiGO88tMYCPGgXJIe_oZg-1
+X-Mimecast-MFC-AGG-ID: tdiGO88tMYCPGgXJIe_oZg
+Received: by mail-yb1-f198.google.com with SMTP id 3f1490d57ef6-e38dbc5d05bso11350091276.1
+        for <linux-coco@lists.linux.dev>; Wed, 11 Dec 2024 00:19:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733905155; x=1734509955;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Df7gzbgWME26R9rpVKPWThUShTeBvSI36yYMQF09Oe4=;
+        b=sp/jas7dJXfePmJBViGSVp/UcXHNTUw0w0Ox0gsnchOF3aMy8hAgGXIL09O1rdERLb
+         NShl1qQ3cyuq/D62Pr9hJ3kCPAY5VtUdBx7tL5OQO4hr3xdFK2APTQxV2Yd/QSNweKQO
+         DiZmizHQhaFRJpEGuDfQeMMqIgJfASSGyle/Li4q+HFWYgWlF/UTmIr20yLlx5XumW5L
+         Qp23siCAIVbHuGU0Tvfp/3K4tsSZrHIebdiTXG3qn/3UQDVo18ErJ09bcKtXBoWbM/jp
+         pupRxiLq1Wy5BJZjHMBa0ruqXMY0X74qFYoZqWrfBbrkFGjKwrkMe/gVur52IFxaCz/b
+         3S/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVYS5GwRhet3eh3cRiMhcPprObN6eiu1jzEpJFJawh5QOL3AIdTRe/E37/d1zDhorI+4U76PWwhMLLZ@lists.linux.dev
+X-Gm-Message-State: AOJu0Yysg8fY+FBCn9tXJEDLj7sKW5BeUgr8TyUGDKwq0C+JrfN98p6B
+	orcmV6KuTvq7L6u8jpQiuuHWAJBKmbNxfuMv6utSpxvtF+zodvVqxQ2Mbd4nL6Sg/kfj7vsGsJ2
+	CVdKFgv42OlYcO10khs9Mom+1/D4djPheYHftdMdCXx8ceNS4EHBGrV045SiV0YH7CjbhHIDcu4
+	yjfNtxAPDn+CvWyV2HPfQgR9o+y+zFyL3CXiRMNzVj1PCV
+X-Gm-Gg: ASbGncvxnMNwDo/ZXHEQ8/sPmxR0wD9pgmE2HZIq5KZl1yG4s5319mykJEvEF6qE+Lx
+	1Sf6I7d3vnl4mbappPV7rh7lS/Ofz00/vXQ==
+X-Received: by 2002:a05:6902:11c9:b0:e3c:8df7:4cdb with SMTP id 3f1490d57ef6-e3c8e67b517mr2108660276.32.1733905155736;
+        Wed, 11 Dec 2024 00:19:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHOSTE2WV/b1b9f1XmObRSLBn8v86IpzkAt8gBR0gdzUUukOkFtjbiPnJpDos/gaChbfGYffrt6LB23Z0mJj7U=
+X-Received: by 2002:a05:6902:11c9:b0:e3c:8df7:4cdb with SMTP id
+ 3f1490d57ef6-e3c8e67b517mr2108649276.32.1733905155363; Wed, 11 Dec 2024
+ 00:19:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241210-tsm-rtmr-v3-2-5997d4dbda73@intel.com>
-References: <20241210-tsm-rtmr-v3-0-5997d4dbda73@intel.com>
-In-Reply-To: <20241210-tsm-rtmr-v3-0-5997d4dbda73@intel.com>
-To: Dan Williams <dan.j.williams@intel.com>, 
- Samuel Ortiz <sameo@rivosinc.com>, 
- James Bottomley <James.Bottomley@HansenPartnership.com>, 
- Lukas Wunner <lukas@wunner.de>, 
- Dionna Amalie Glaze <dionnaglaze@google.com>, 
- Qinkun Bao <qinkun@google.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-X-Mailer: b4 0.13.0
+References: <20241210143423.101774-1-sgarzare@redhat.com> <20241210143423.101774-4-sgarzare@redhat.com>
+ <20241210144025.GG1888283@ziepe.ca> <50a2e1d29b065498146f459035e447851a518d1a.camel@HansenPartnership.com>
+ <20241210150413.GI1888283@ziepe.ca>
+In-Reply-To: <20241210150413.GI1888283@ziepe.ca>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Wed, 11 Dec 2024 09:19:04 +0100
+Message-ID: <CAGxU2F6yzqb0o_pQDakBbCj3RdKy_XfZfzGsiywnYL65g6WeGg@mail.gmail.com>
+Subject: Re: [PATCH 3/3] x86/sev: add a SVSM vTPM platform device
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, linux-coco@lists.linux.dev, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Huewe <peterhuewe@gmx.de>, "H. Peter Anvin" <hpa@zytor.com>, linux-integrity@vger.kernel.org, 
+	x86@kernel.org, Joerg Roedel <jroedel@suse.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Claudio Carvalho <cclaudio@linux.ibm.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: EwHii6hTxGJ2FMl_LZ-0hHtKq9g185Sb3EC8Jxd-myA_1733905156
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This sample kernel module demonstrates how to make MRs accessible to user
-mode through TSM.
+On Tue, Dec 10, 2024 at 4:04=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrot=
+e:
+>
+> On Tue, Dec 10, 2024 at 09:55:41AM -0500, James Bottomley wrote:
+> > On Tue, 2024-12-10 at 10:40 -0400, Jason Gunthorpe wrote:
+> > > On Tue, Dec 10, 2024 at 03:34:23PM +0100, Stefano Garzarella wrote:
+> > >
+> > > > +               if (platform_device_add_data(&tpm_device, &pops,
+> > > > sizeof(pops)))
+> > > > +                       return -ENODEV;
+> > > > +               if (platform_device_register(&tpm_device))
+> > > > +                       return -ENODEV;
+> > >
+> > > This seems like an old fashioned way to instantiate a device. Why do
+> > > this? Just put the TPM driver here and forget about pops? Simple tpm
+> > > drivers are not very complex.
+> >
+> > This driver may be for the AMD SEV SVSM vTPM module, but there are
+> > other platforms where there's an internal vTPM which might be contacted
+> > via a platform specific enlightenment (Intel SNP and Microsoft
+> > OpenHCL).
+>
+> Sure, that's what TPM drivers are for, give those platforms TPM drivers
+> too.
+>
+> Why put a mini driver hidden under an already mini driver?
+>
+> > This separation of the platform device from the contact
+> > mechanism is designed to eliminate the duplication of having a platform
+> > device within each implementation and to make any bugs in the mssim
+> > protocol centrally fixable (every vTPM currently speaks this).
+>
+> That makes sense, but that isn't really what I see in this series?
+>
+> Patch one just has tpm_class_ops send() invoke pops sendrcv() after
+> re-arranging the arguments?
+>
+> It looks to me like there would be mert in adding a new op to
+> tpm_class_ops for the send/recv type operating mode and have the core
+> code manage the buffer singleton (is a global static even *correct*??)
+>
+> After that, there is no meaningful shared code here, and maybe the
+> TPM_CHIP_FLAG_IRQ hack can be avoided too.
 
-Once loaded, this module registers a virtual measurement provider with the
-TSM core and will result in the directory tree below.
+IIUC you are proposing the following steps:
+- extend tpm_class_ops to add a new send_recv() op and use it in
+tpm_try_transmit()
+- call the code in tpm_platform_probe() directly in sev
 
-/sys/kernel/tsm
-└── measurement-example
-    ├── config_mr
-    │   └── sha512
-    │       └── digest
-    ├── report_digest
-    │   └── sha512
-    │       └── digest
-    ├── rtmr0
-    │   └── sha256
-    │       └── digest
-    ├── rtmr1
-    │   └── sha384
-    │       └── digest
-    ├── rtmr_crypto_agile
-    │   ├── sha256
-    │   │   └── digest
-    │   └── sha384
-    │       └── digest
-    └── static_mr
-        └── sha384
-            └── digest
+This would remove the intermediate driver, but at this point is it
+worth keeping tpm_platform_send() and tpm_platform_recv() in a header
+or module, since these are not related to sev, but to MSSIM?
 
-Among the MRs in this example:
+As James mentioned, other platforms may want to reuse it.
 
-- `static_mr` and `config_mr` are *Readonly* (static) MRs.
-- `rtmr0` is an RTMR with `TSM_MR_F_W` **cleared**, preventing direct
-  extensions; as a result, `rtmr0/sha256/digest` is read-only.
-- `rtmr1` is an RTMR with `TSM_MR_F_W` **set**, permitting direct
-  extensions; thus, `rtmr1/sha384/digest` is writable.
-- `rtmr_crypto_agile` demonstrates a "single" MR that supports multiple
-  hash algorithms. Each supported algorithm has a corresponding digest,
-  usually referred to as a "bank" in TCG terminology. In this specific
-  sample, the 2 banks are aliased to `rtmr0` and `rtmr1`, respectively.
-- `report_digest` contains the digest of the internal report structure
-  living in this sample module's memory. It is to demonstrate the use of
-  the `TSM_MR_F_L` flag. Its value changes each time an RTMR is extended.
+Thanks,
+Stefano
 
-More details can be found in `samples/tsm/measurement-example.c`.
-
-Signed-off-by: Cedric Xing <cedric.xing@intel.com>
----
- MAINTAINERS                       |   1 +
- samples/Kconfig                   |   4 ++
- samples/Makefile                  |   1 +
- samples/tsm/Makefile              |   2 +
- samples/tsm/measurement-example.c | 113 ++++++++++++++++++++++++++++++++++++++
- 5 files changed, 121 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4c833fa9e388..a4074cea0f16 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -23848,6 +23848,7 @@ S:	Maintained
- F:	Documentation/ABI/testing/configfs-tsm
- F:	drivers/virt/coco/tsm*.c
- F:	include/linux/tsm.h
-+F:	samples/tsm/*
- 
- TRUSTED SERVICES TEE DRIVER
- M:	Balint Dobszay <balint.dobszay@arm.com>
-diff --git a/samples/Kconfig b/samples/Kconfig
-index b288d9991d27..8159d3ca6487 100644
---- a/samples/Kconfig
-+++ b/samples/Kconfig
-@@ -184,6 +184,10 @@ config SAMPLE_TIMER
- 	bool "Timer sample"
- 	depends on CC_CAN_LINK && HEADERS_INSTALL
- 
-+config SAMPLE_TSM
-+	tristate "TSM measurement sample"
-+	depends on TSM_REPORTS
-+
- config SAMPLE_UHID
- 	bool "UHID sample"
- 	depends on CC_CAN_LINK && HEADERS_INSTALL
-diff --git a/samples/Makefile b/samples/Makefile
-index b85fa64390c5..891f5c12cd39 100644
---- a/samples/Makefile
-+++ b/samples/Makefile
-@@ -39,3 +39,4 @@ obj-$(CONFIG_SAMPLE_KMEMLEAK)		+= kmemleak/
- obj-$(CONFIG_SAMPLE_CORESIGHT_SYSCFG)	+= coresight/
- obj-$(CONFIG_SAMPLE_FPROBE)		+= fprobe/
- obj-$(CONFIG_SAMPLES_RUST)		+= rust/
-+obj-$(CONFIG_SAMPLE_TSM)		+= tsm/
-diff --git a/samples/tsm/Makefile b/samples/tsm/Makefile
-new file mode 100644
-index 000000000000..3969a59221e9
---- /dev/null
-+++ b/samples/tsm/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_SAMPLE_TSM) += measurement-example.o
-diff --git a/samples/tsm/measurement-example.c b/samples/tsm/measurement-example.c
-new file mode 100644
-index 000000000000..c5d6f44211dc
---- /dev/null
-+++ b/samples/tsm/measurement-example.c
-@@ -0,0 +1,113 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-+
-+#define pr_fmt(x) KBUILD_MODNAME ": " x
-+
-+#include <linux/module.h>
-+#include <linux/tsm.h>
-+#include <crypto/hash_info.h>
-+#include <crypto/hash.h>
-+
-+struct {
-+	u8 static_mr[SHA384_DIGEST_SIZE];
-+	u8 config_mr[SHA512_DIGEST_SIZE];
-+	u8 rtmr0[SHA256_DIGEST_SIZE];
-+	u8 rtmr1[SHA384_DIGEST_SIZE];
-+	u8 user_data[SHA512_DIGEST_SIZE];
-+	u8 report_digest[SHA512_DIGEST_SIZE];
-+} example_report = {
-+	.static_mr = "static_mr",
-+	.config_mr = "config_mr",
-+	.rtmr0 = "rtmr0",
-+	.rtmr1 = "rtmr1",
-+	.user_data = "user_data",
-+};
-+
-+DEFINE_FREE(shash, struct crypto_shash *, if (!IS_ERR(_T)) crypto_free_shash(_T));
-+
-+static int example_report_refresh(struct tsm_measurement *tmr,
-+				  const struct tsm_measurement_register *mr)
-+{
-+	pr_debug("%s(%s,%s)\n", __func__, tmr->name, mr->mr_name);
-+	struct crypto_shash *tfm __free(shash) =
-+		crypto_alloc_shash(hash_algo_name[HASH_ALGO_SHA512], 0, 0);
-+	if (IS_ERR(tfm))
-+		return PTR_ERR(tfm);
-+	return crypto_shash_tfm_digest(tfm, (u8 *)&example_report,
-+				       offsetof(typeof(example_report), report_digest),
-+				       example_report.report_digest);
-+}
-+
-+static int example_report_extend_mr(struct tsm_measurement *tmr,
-+				    const struct tsm_measurement_register *mr, const u8 *data)
-+{
-+	SHASH_DESC_ON_STACK(desc, 0);
-+	int rc;
-+
-+	pr_debug("%s(%s,%s)\n", __func__, tmr->name, mr->mr_name);
-+
-+	desc->tfm = crypto_alloc_shash(hash_algo_name[mr->mr_hash], 0, 0);
-+	if (IS_ERR(desc->tfm))
-+		return PTR_ERR(desc->tfm);
-+
-+	rc = crypto_shash_init(desc);
-+	if (!rc)
-+		rc = crypto_shash_update(desc, mr->mr_value, mr->mr_size);
-+	if (!rc)
-+		rc = crypto_shash_finup(desc, data, mr->mr_size, mr->mr_value);
-+
-+	crypto_free_shash(desc->tfm);
-+	return rc;
-+}
-+
-+#define MR_(mr, hash) .mr_value = &example_report.mr, TSM_MR_(mr, hash)
-+static const struct tsm_measurement_register example_mrs[] = {
-+	/* static MR, read-only */
-+	{ MR_(static_mr, SHA384) },
-+	/* config MR, read-only */
-+	{ MR_(config_mr, SHA512) },
-+	/* RTMR, direct extension prohibited */
-+	{ MR_(rtmr0, SHA256) | TSM_MR_F_RTMR },
-+	/* RTMR, direct extension allowed */
-+	{ MR_(rtmr1, SHA384) | TSM_MR_F_RTMR | TSM_MR_F_W },
-+	/* RTMR, crypto agile, alaised to rtmr0 and rtmr1, respectively */
-+	{ .mr_value = &example_report.rtmr0,
-+	  TSM_MR_(rtmr_crypto_agile, SHA256) | TSM_MR_F_RTMR | TSM_MR_F_W },
-+	{ .mr_value = &example_report.rtmr1,
-+	  TSM_MR_(rtmr_crypto_agile, SHA384) | TSM_MR_F_RTMR | TSM_MR_F_W },
-+	/* most CC archs allow including user data in attestation */
-+	{ MR_(report_digest, SHA512) | TSM_MR_F_L },
-+	/* terminating NULL entry */
-+	{}
-+};
-+#undef MR_
-+
-+static struct tsm_measurement example_measurement_provider = {
-+	.name = "measurement-example",
-+	.mrs = example_mrs,
-+	.refresh = example_report_refresh,
-+	.extend = example_report_extend_mr,
-+};
-+
-+static int __init measurement_example_init(void)
-+{
-+	int rc;
-+
-+	rc = tsm_register_measurement(&example_measurement_provider);
-+	pr_debug("tsm_register_measurement(%p)=%d\n", &example_measurement_provider, rc);
-+	return rc;
-+}
-+
-+static void __exit measurement_example_exit(void)
-+{
-+	int rc;
-+
-+	rc = tsm_unregister_measurement(&example_measurement_provider);
-+	pr_debug("tsm_unregister_measurement(%p)=%d\n", &example_measurement_provider, rc);
-+}
-+
-+module_init(measurement_example_init);
-+module_exit(measurement_example_exit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Sample tsm_measurement implementation");
-
--- 
-2.43.0
+>
+> Simply call tpm_chip_alloc/register from the sev code directly and
+> provide an op that does the send/recv. Let the tpm core code deal with
+> everything else. It is much cleaner than platform devices and driver
+> data..
 
