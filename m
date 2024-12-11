@@ -1,120 +1,148 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C7D246345
-	for <linux-coco@lists.linux.dev>; Wed, 11 Dec 2024 15:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357841D2B1C
+	for <linux-coco@lists.linux.dev>; Wed, 11 Dec 2024 15:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733929253; cv=none; b=qxPoiDkwEpGGirU/wdlO1jiTlEiH+QuxFhSmNq93qbBvAZJs6/5IVhN6aiHtjfxMVT9Ve+r/5OWoK2Nwel6CAwZw+QpbwJ5negJCuFxCw+VhX9rgmZKkE+kNb2weshhqSxrL8a3/JhwO/CZX/2ThnwcR+3eESR3YHnzCPode/sE=
+	t=1733931527; cv=none; b=gTGtucNbygXCMv8kUIKCgn5ZYRMRsRcxwKi8X5v0hwFQKcpzV/scnuqrJK++2+lwdk/8hFjHd7j87mmQoxa1i02n3ttJsB9IwV33ja5Ns6L5A/SPJRR2Z41sMtvqVL7qK2fGzpOAH+6j3/7ehI/+b5x966U34OrMvaosrlIAR0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733929253; c=relaxed/simple;
-	bh=tLszuGjmr5DmRzuJ37tFeyxJiAHTkhXYikVmA7/gTV0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=POIGYCv9vMcqrUlm+R1QcEJoMeI0zUOXUY8P0RIHpMDpiOvHiTv3Fd7TRuGI5rqs9tBPwbQVtCYt7T1LEtOxOE+5Yrs8XlJGXWkxwv8hIGiDeSHXtu3lA2As3bqDHsmiGvwcPbTMypEH4wv5TP80i+Zreel27JD+XG0FbgM8MEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=UfN5FJ37; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1733931527; c=relaxed/simple;
+	bh=a0hv9mFPITU2NDP0pqXzJbW7Mb2xRwyfM5fwAm1ROFg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MWssHqL8tf7BHVGTPOu0lSFeyp2djZVJC3yHxBYlNhI3nIU8J3/O9tSCdWVxVSrA2dIe+H93UnOOicqh1HhsW6Bsyw9JpSiPudzaG5ywa9wzBMA9qidiKohDkomVVGaD+E87b1mVRUbbvhYWoo88uLtN0AvXW7ImAx76/jP2cPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=daHChDPp; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="UfN5FJ37"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7b6ef047e9bso34600085a.1
-        for <linux-coco@lists.linux.dev>; Wed, 11 Dec 2024 07:00:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1733929250; x=1734534050; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YrtmwbffSfZyT6YxRWc9FPtrtY5w8qbaif6a3GhziHU=;
-        b=UfN5FJ37psR6vWyOebJUKemueJ3+BuirRPtEDjiD8KZFbi5Hf/XB4WSvXUicjeypIP
-         tRCEf7zK3qiwqJo5O/tKu5pixstRdAd0gOd6G7OrVqh8edZgobmozJsxSFkizLPf93J5
-         w88Q3MSw1g9MQWEQv2JUFPxEJA7hXdBuJaZrvzUCv5gbL+FXkyskjvGSCbkQk/6KXtXA
-         Thr2s1QKrSK55eVId8ha4U/CV4B+4sg/b9/B6xbHqI4awWJKOKPkA0rnZMKlF0axQguH
-         9kd2i36JUfyKxIDtI3qQEoX23aH156mDHVaOh5b58JagkC+LDg0FSJBm3VTg+heAFIKe
-         fFkw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="daHChDPp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733931525;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a0hv9mFPITU2NDP0pqXzJbW7Mb2xRwyfM5fwAm1ROFg=;
+	b=daHChDPpXdCnmIlqwV5cNdaV6Ch+r9dQAFd9rl1jQUZHzqhvsLYKz5TWCYpxnyNdPNWUu8
+	hjZj8CYTEs1gYyl1+P6vSiriM/3bi/aJkgAYpKL9VwxGrzmsioTqIJqBzqvD255LM4NAD3
+	imEZoaI8rWv833tMtq5wdZnTMA3OSgY=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-403-v2ryhwoRNkKsoc8S7Izs5g-1; Wed, 11 Dec 2024 10:38:42 -0500
+X-MC-Unique: v2ryhwoRNkKsoc8S7Izs5g-1
+X-Mimecast-MFC-AGG-ID: v2ryhwoRNkKsoc8S7Izs5g
+Received: by mail-yb1-f198.google.com with SMTP id 3f1490d57ef6-e399457a216so8891401276.3
+        for <linux-coco@lists.linux.dev>; Wed, 11 Dec 2024 07:38:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733929250; x=1734534050;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YrtmwbffSfZyT6YxRWc9FPtrtY5w8qbaif6a3GhziHU=;
-        b=GsjafoD2q+nKI5lGhcZ1zf+IHFLmJgQRjWhVQ3MaogecKAIz7EyMovkcSfTtU2tGPu
-         ix46zGT3ddHH/vUvEX3ahc63+YKg0axZmPF8YZC6ijUhloD8Xf66EJAVcg8nCZniWcBX
-         8sG2nUpYdzGWc/HPvUrzpi+U2X0NOf7VThgGs7143pb7DlWPM0ufPWLv+gNXCEVkE0Nc
-         5XXLIibn3XJf3SPvgZl8huDNOy9QfDKhnITu7CNhYlzwyRAJkGJXdUoOUW2/ZyWeiPN9
-         PwvL/IzpCdKzjX6lDAektN0M0zl+KeIdN0n4EW3wUJvKUOBdKpfAsxzIgxI2Z3d2BC/k
-         zb7g==
-X-Forwarded-Encrypted: i=1; AJvYcCVQZ9W+p9pVdSIaM+J3ipnWkQ/xxEl/R/pJ9IlV2AIOFHWqfAcVXuCgMzFe34Q5lArM7T2En5ELgLym@lists.linux.dev
-X-Gm-Message-State: AOJu0YwIHjEL00zKgYNc1TtzkYieOhKUNJ8MpWTW6PSWyO7VtFIGwjrc
-	SilSt+hVAkXV0VIP6IfNB8R+/aqTCz71JHI+l+Ju/gigq7IiCJLNuqal6xSYhiw=
-X-Gm-Gg: ASbGncuL77A4Ge+/pNMB4dEqRDbDdj5MQWkfgeGjeXbqEW36EktOJ/OfdCK4Imgn3WN
-	YaRDU/jg1DGgXuzIC4J/pRHYneKD/RIuPsyGjHeSKTFwagSVCmwtBzFnJ9JrU3VHN0E4feODXoF
-	dws3mvy2yE8kFGhJ/t6t+GmK56o4wM6FAGXEnB3jkMKQfy/W8b77wThuWsOz5OXOkC6cImqWvBH
-	3GgcXWdcXxUk5KyXAl/3YvrDxyKtmvOro4H+wszcJrC7fp2KXRbYbuBTJUluRaFWDfpb7apMHUV
-	e5mCy3+gWO0FzgIkMJO8NFDk4/Y=
-X-Google-Smtp-Source: AGHT+IFQcbIbj/UVOC6lgBpyonYbHxz3lu1y3vK9mVU+Waihpf9zpnAftHXTy27rea7DKFP+zHsrCQ==
-X-Received: by 2002:a05:620a:4488:b0:7b1:4a2a:9ae0 with SMTP id af79cd13be357-7b6ebc2ded9mr501476085a.9.1733929250259;
-        Wed, 11 Dec 2024 07:00:50 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b6ef71409dsm29466085a.121.2024.12.11.07.00.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2024 07:00:49 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tLOCm-0000000ADPI-0U4U;
-	Wed, 11 Dec 2024 11:00:48 -0400
-Date: Wed, 11 Dec 2024 11:00:48 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Huewe <peterhuewe@gmx.de>, "H. Peter Anvin" <hpa@zytor.com>,
-	linux-integrity@vger.kernel.org, x86@kernel.org,
-	Joerg Roedel <jroedel@suse.de>, Jarkko Sakkinen <jarkko@kernel.org>,
-	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Claudio Carvalho <cclaudio@linux.ibm.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH 3/3] x86/sev: add a SVSM vTPM platform device
-Message-ID: <20241211150048.GJ1888283@ziepe.ca>
-References: <20241210143423.101774-1-sgarzare@redhat.com>
- <20241210143423.101774-4-sgarzare@redhat.com>
- <20241210144025.GG1888283@ziepe.ca>
- <50a2e1d29b065498146f459035e447851a518d1a.camel@HansenPartnership.com>
- <20241210150413.GI1888283@ziepe.ca>
- <CAGxU2F6yzqb0o_pQDakBbCj3RdKy_XfZfzGsiywnYL65g6WeGg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1733931521; x=1734536321;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a0hv9mFPITU2NDP0pqXzJbW7Mb2xRwyfM5fwAm1ROFg=;
+        b=NIlNmGSBWtGSKXnGN55WodwFtVj0cDb25VztcRYNYtOW2GJ/Q8o0hG6h5BGCf6LDg6
+         ejob09MgCVh0Sd6sbXpkICC6zvraLcizV3Y3Q2+VN8R4AoaLO6DHgRpUvs8Qi4sa2NVW
+         PMoD6Imb/zQ8tXuqErexwpx8U5Z1wa50mtPsJLUzFnzu/zw58Mxzroeio0hys4tZs9h1
+         pkdC+FeOOeFBmZmp4t+g4t8OkzL30VgI62K3tSGQL29ysHPlszy9+0wGKdFl6Byvum7S
+         vtwsZZjXDedxkqRATLjsne8MVqUAPB2Hhw9J+Sgi0eFhUdAUY9N+WeMneM8ZxOFFqhr+
+         cgaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMMskGy3CPJIMx3cME24NBLcNYQ8zgdOWC98N+T4EImrIUOCFtlmxOYqw3VMx9z1D1MibAy6sP6I8F@lists.linux.dev
+X-Gm-Message-State: AOJu0YxdJ+qh1Z8QyXTO3Sb6PI8vdokaRXeoT2b3x9gEMSlCnU1zZg/A
+	3XxCXpf/IxQzmnP/7McRJNSPGuRJoqC/bkw2+Drq9tpa27JpYM8kSiXDrkYxek6ZIcv5bXxwxx3
+	S35dNhLKms1hJsDHdySa9s4hW9b4zSA3dlQxFgfd8GXX6Bb7EKo4qNZUhCawY6g5P4vqEaZANKP
+	hDM41F6pIblatTrKN+HD7Jm4ZPuRh0Cv2AOw==
+X-Gm-Gg: ASbGncviCFJPU8Vo7zbHraUOGJl1qo2ENugHrnJN0BNsiKYjWY7X+5iUXjKL+NuRXxX
+	CTFrWSXjE/1EtXo4km1NzOLq8gHlBvY6vUQ==
+X-Received: by 2002:a05:6902:100b:b0:e39:95e8:31be with SMTP id 3f1490d57ef6-e3c8e4249f0mr2855074276.8.1733931521384;
+        Wed, 11 Dec 2024 07:38:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE394UlHqCYe1P7sHFdWBBxDdJetIc75Ei4upOeKARHA2ACI/wc9W2mPBcu4AH1Pm2Pwz68qrAYfHGPQSHdD8g=
+X-Received: by 2002:a05:6902:100b:b0:e39:95e8:31be with SMTP id
+ 3f1490d57ef6-e3c8e4249f0mr2855042276.8.1733931521054; Wed, 11 Dec 2024
+ 07:38:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGxU2F6yzqb0o_pQDakBbCj3RdKy_XfZfzGsiywnYL65g6WeGg@mail.gmail.com>
+References: <20241210143423.101774-1-sgarzare@redhat.com> <20241210143423.101774-4-sgarzare@redhat.com>
+ <20241210144025.GG1888283@ziepe.ca> <50a2e1d29b065498146f459035e447851a518d1a.camel@HansenPartnership.com>
+ <20241210150413.GI1888283@ziepe.ca> <CAGxU2F6yzqb0o_pQDakBbCj3RdKy_XfZfzGsiywnYL65g6WeGg@mail.gmail.com>
+ <20241211150048.GJ1888283@ziepe.ca>
+In-Reply-To: <20241211150048.GJ1888283@ziepe.ca>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Wed, 11 Dec 2024 16:38:29 +0100
+Message-ID: <CAGxU2F5NSqMbA1Lep3+16GoZXR23q0OP8dFVVRJ6DG5sF20R3Q@mail.gmail.com>
+Subject: Re: [PATCH 3/3] x86/sev: add a SVSM vTPM platform device
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, linux-coco@lists.linux.dev, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Huewe <peterhuewe@gmx.de>, "H. Peter Anvin" <hpa@zytor.com>, linux-integrity@vger.kernel.org, 
+	x86@kernel.org, Joerg Roedel <jroedel@suse.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Claudio Carvalho <cclaudio@linux.ibm.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: U8PzETP-FIi3x13MBMWcuR-Nuld17mzjzwpX150HVxw_1733931521
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 11, 2024 at 09:19:04AM +0100, Stefano Garzarella wrote:
+On Wed, Dec 11, 2024 at 4:00=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrot=
+e:
+>
+> On Wed, Dec 11, 2024 at 09:19:04AM +0100, Stefano Garzarella wrote:
+>
+> > > After that, there is no meaningful shared code here, and maybe the
+> > > TPM_CHIP_FLAG_IRQ hack can be avoided too.
+> >
+> > IIUC you are proposing the following steps:
+> > - extend tpm_class_ops to add a new send_recv() op and use it in
+> > tpm_try_transmit()
+>
+> Yes, that seems to be the majority of your shared code.
+>
+> > - call the code in tpm_platform_probe() directly in sev
+>
+> Yes
 
-> > After that, there is no meaningful shared code here, and maybe the
-> > TPM_CHIP_FLAG_IRQ hack can be avoided too.
-> 
-> IIUC you are proposing the following steps:
-> - extend tpm_class_ops to add a new send_recv() op and use it in
-> tpm_try_transmit()
+Thanks for confirming!
 
-Yes, that seems to be the majority of your shared code.
+>
+> > This would remove the intermediate driver, but at this point is it
+> > worth keeping tpm_platform_send() and tpm_platform_recv() in a header
+> > or module, since these are not related to sev, but to MSSIM?
+>
+> Reuse *what* exactly? These are 10 both line funtions that just call
+> another function pointer. Where exactly is this common MSSIM stuff?
 
-> - call the code in tpm_platform_probe() directly in sev
+Except for the call to pops->sendrcv(buffer) the rest depends on how
+the TCG TPM reference implementation [1] expects the request/response
+to be formatted (we refer to this protocol with MSSIM).
 
-Yes
+This format doesn't depend on sev, and as James said, OpenHCL for
+example will have to use the same format (e.g. buffer defined by
+struct tpm_send_cmd_req, filled with TPM_SEND_COMMAND, etc.), so
+basically rewrite a similar function, because it also emulates the
+vTPM using the TCG TPM reference implementation.
 
-> This would remove the intermediate driver, but at this point is it
-> worth keeping tpm_platform_send() and tpm_platform_recv() in a header
-> or module, since these are not related to sev, but to MSSIM?
+Now, I understand it's only 10 lines of code, but that code is
+strictly TCG TPM dependent, so it might make sense to avoid having to
+rewrite it for every implementation where the device is emulated by
+TCG TPM.
 
-Reuse *what* exactly? These are 10 both line funtions that just call
-another function pointer. Where exactly is this common MSSIM stuff?
+>
+> Stated another way, by adding send_Recv() op to tpm_class_ops you have
+> already allowed reuse of all the code in tpm_platform_send/recv().
 
-Stated another way, by adding send_Recv() op to tpm_class_ops you have
-already allowed reuse of all the code in tpm_platform_send/recv().
+Partially, I mean the buffer format will always be the same for all
+platforms (e.g. sev, OpenHCL, etc.), but how we read/write will be
+different.
+That is why I was saying to create a header with helpers that create
+the request/parse the response as TCG TPM expects.
 
-Jason
+Thanks,
+Stefano
+
+[1] https://github.com/TrustedComputingGroup/TPM
+
