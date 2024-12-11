@@ -1,120 +1,91 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF9B1D90AC
-	for <linux-coco@lists.linux.dev>; Wed, 11 Dec 2024 17:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99766208967
+	for <linux-coco@lists.linux.dev>; Wed, 11 Dec 2024 18:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733936574; cv=none; b=JQ4JEgZwaMLcibKd7y/xfDJ80iqV1WnQJ7NAsYqLDy80yiQEFsxC9jafBaRnjhIioOI7Muo0vVSBIfOIaYKv/WfUlEHToBVtMnE1AIfo8/phPOAHeLN/hp7o5ZPrEOKzB9cGSUerDsERkldtNJeaafufsqKqLOKDTKvhm3hSfvo=
+	t=1733941248; cv=none; b=WXcgooK+AjtClE7N6e0bj5HLZ/3TbZcSqo3djkebmy/8zFfRlR3yTuObeCuLwjQZRuilAr9a0dScn4EcrQ5sdmsjleucPajSiQ5E7o1suWlI2uYvam/3jpuOlWhZsUhy0hB81JTZcFTUVVdxSn+UhJJHbUFxMcJW2BoNm6EtWa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733936574; c=relaxed/simple;
-	bh=9FBHdM5vw9ed3NmvDQfzEc4hChmQSrZEU3I0PFW8D/Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hrnV4kZosW2np7jwTrhQxM0jld8YiOb83REP4Q6tATsv4PuaNpQc+yFs/GqP7IeG4sWiee4zfsuPrr+0NnQvTeKzZL8sX1Ajg5G+SFIMCeL4Qr9H1xJd8vv7h2mTGGifdtlVoJamyEKFocttYvsXGOBS6IqDbaQgmaRBICc3Mzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=k4IbfY3s; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=k4IbfY3s; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1733941248; c=relaxed/simple;
+	bh=nh2EqG0QBe4JhXIAAErBIY/+LM7vz53IS02/ipEOrVA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=hBO2MqH+YI7pYrgMWjrNAShtQUq39BUa3e1NkgEQ4BWdWkxgs4E26eWQJLyGY/RjkbgyB0sT+8zzb9TswWr0irWUrDF+KvHLju/N31yHVw2z369mNyv86masVKb7brkiNsYLSGjt0xFP4LDrI+0vMqZ34kM/M/vwSovSIXccZfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=snqNbXD4; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="k4IbfY3s";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="k4IbfY3s"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1733936571;
-	bh=9FBHdM5vw9ed3NmvDQfzEc4hChmQSrZEU3I0PFW8D/Q=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=k4IbfY3sBVufrN53CdC4Ny5AyHCQkg/t0Nl+Wt8Jcz5p6KVOZ4xlf1ICtQ91P55DR
-	 LfVYdF1rjx7vtiwO8D8Pd7t/lSUB43dYZxHxQ6syYRXP1pQ7AMre393eoOqEbbYQrL
-	 YSRocspkK6EAga3ISIZ5LqXC1KI4l4V9VxEZHsaA=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id E16DC128B0EE;
-	Wed, 11 Dec 2024 12:02:51 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id haiLfIhCz8St; Wed, 11 Dec 2024 12:02:51 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1733936571;
-	bh=9FBHdM5vw9ed3NmvDQfzEc4hChmQSrZEU3I0PFW8D/Q=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=k4IbfY3sBVufrN53CdC4Ny5AyHCQkg/t0Nl+Wt8Jcz5p6KVOZ4xlf1ICtQ91P55DR
-	 LfVYdF1rjx7vtiwO8D8Pd7t/lSUB43dYZxHxQ6syYRXP1pQ7AMre393eoOqEbbYQrL
-	 YSRocspkK6EAga3ISIZ5LqXC1KI4l4V9VxEZHsaA=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 3EB6A128B0ED;
-	Wed, 11 Dec 2024 12:02:50 -0500 (EST)
-Message-ID: <9083d4cd50649ea1971e31445c554f44e8d12bf9.camel@HansenPartnership.com>
-Subject: Re: [PATCH 3/3] x86/sev: add a SVSM vTPM platform device
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>, Stefano Garzarella
-	 <sgarzare@redhat.com>, linux-coco@lists.linux.dev
-Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>,  Peter Huewe <peterhuewe@gmx.de>, "H. Peter
- Anvin" <hpa@zytor.com>, linux-integrity@vger.kernel.org,  x86@kernel.org,
- Joerg Roedel <jroedel@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>,  Jarkko
- Sakkinen <jarkko@kernel.org>, linux-kernel@vger.kernel.org, Ingo Molnar
- <mingo@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Claudio Carvalho
- <cclaudio@linux.ibm.com>, Dov Murik <dovmurik@linux.ibm.com>
-Date: Wed, 11 Dec 2024 12:02:49 -0500
-In-Reply-To: <f8c6c1e0-a42d-6fa6-a10e-925592d7992f@amd.com>
-References: <20241210143423.101774-1-sgarzare@redhat.com>
-	 <20241210143423.101774-4-sgarzare@redhat.com>
-	 <f8c6c1e0-a42d-6fa6-a10e-925592d7992f@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="snqNbXD4"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5d3e6f6cf69so6969920a12.1
+        for <linux-coco@lists.linux.dev>; Wed, 11 Dec 2024 10:20:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733941245; x=1734546045; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nh2EqG0QBe4JhXIAAErBIY/+LM7vz53IS02/ipEOrVA=;
+        b=snqNbXD4jw1E03WcCWBB6nSQxYZXRBa+X6tXVb+WBuaKuB+57SusHQZCBex/GFhZbg
+         oXQMBAtXsFlD2mZkJqcrQ7vGA9CZAfwTF+KmDtSpa9uYOBm96qPaxHzI/2DOz38hzmij
+         AaPdetXNCNaqjhcBBz1e6WFUx0fRZxhlAqU2/gutC/Z0+KDZwLUtZWEfJKsoqYCwGWdT
+         uTBd5284e4eYlOVY56ZSKogp/8MCn8NUhKYmail65wk7/SiWRd/FpQ2j9b8udqKIm9xE
+         5MtA6C2MtzwVS1FooI8ped5ItXPve9dQ0edZi6IONU+AAs8Kll9fPavXbKoSd6SVuuWF
+         rINg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733941245; x=1734546045;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nh2EqG0QBe4JhXIAAErBIY/+LM7vz53IS02/ipEOrVA=;
+        b=QRDCzM1dtUAkz0gzUh+1ylY0iZWzvuYR2fpMvF53eICdkIsOrp/DQVF8EWo/MQdimg
+         IZMWQ/m0g1y2IZHRTxds9lfGTqMdA9dITnHkzT6c8FM53z+viaWYh1at0DBS2WptAujH
+         CUQZn+jreTyXokJjvNkZSqfe+RqMza3gMZLn66Pef35Tl8d/mH5XAMk8DNIoP1V+MXL3
+         qqEJ/IbUTkxI8E7Pvp8/JoB/CotJlyK/5HvOyd6hLm9KwEj0NwY1Er4CTL3OM7jglXJw
+         IvPQ3QEDKzfdoJXUYIr4xNXo4PRrbsOy3oA40eeXnME0w5xpKLbyoOVlWchgL5L76uxr
+         5EZg==
+X-Gm-Message-State: AOJu0YxTIeQiyrvOjQpg/NYVBXaSJ7LQZQL/nqqfiupYLRoScVVZGgOx
+	ZJOV+JGMdn50PvGu+nPtB1JDiVD00UzMhL4HipoONJefhmrhaSdoFB0dwWuxfs9pz3rDkI/e65r
+	vyGoSHyvrfGiD6pshI7RYB2MoYT4srA9H5ZpuaaCq+v+m1mbSSAH9
+X-Gm-Gg: ASbGncsQEGbKDqzD6I/zbmsP9tnUYmv9XcIUkdDG46UB/sxKcZZba8ry/E727COpjuh
+	I6UrNL/re5sNjwkDi5dAGd5m6uUbFRlX9faocWhsEyZSIYYg+Zgn4Vp8S7+CV
+X-Google-Smtp-Source: AGHT+IHxQ6z9FR1ReQtjty9L4YXapaFKTo27C3ebClmNg7jPUR/MoAfEqoRjCnXpdl+GpN1rAy8KqFPXp+RMh903Qvw=
+X-Received: by 2002:a17:906:3cb1:b0:aa6:89b9:e9c7 with SMTP id
+ a640c23a62f3a-aa6c1cefccfmr83436166b.43.1733941244459; Wed, 11 Dec 2024
+ 10:20:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Wed, 11 Dec 2024 10:20:33 -0800
+X-Gm-Features: AbW1kvZ0LzJxp47m0LN4R1O7DHXWd9bWOoqrcvJfQiw0Fc1XGn0IqdrmztnAGjQ
+Message-ID: <CAAH4kHYdK7X3jZFYaJRrO5gSgF55kxHzweh0epoq+ciPjwwAwA@mail.gmail.com>
+Subject: SVSM attest single service binding
+To: linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 2024-12-11 at 10:30 -0600, Tom Lendacky wrote:
-> On 12/10/24 08:34, Stefano Garzarella wrote:
-[...]
-> > +static bool is_svsm_vtpm_send_command_supported(void)
-> > +{
-> > +       struct svsm_call call = {};
-> > +       u64 send_cmd_mask = 0;
-> > +       u64 platform_cmds;
-> > +       u64 features;
-> > +       int ret;
-> > +
-> > +       call.caa = svsm_get_caa();
-> > +       call.rax = SVSM_VTPM_CALL(SVSM_VTPM_QUERY);
-> > +
-> > +       ret = svsm_perform_call_protocol(&call);
-> > +
-> > +       if (ret != SVSM_SUCCESS)
-> > +               return false;
-> > +
-> > +       features = call.rdx_out;
-> > +       platform_cmds = call.rcx_out;
-> > +
-> > +       /* No feature supported, it must be zero */
-> > +       if (features)
-> > +               return false;
-> 
-> I think this check should be removed. The SVSM currently returns all
-> zeroes for the features to allow for future support. If a new feature
-> is added in the future, this then allows a driver that supports that
-> feature to operate with a version of an SVSM that doesn't have that
-> feature implemented. It also allows a version of the driver that
-> doesn't know about that feature to work with an SVSM that has that
-> feature.
-> 
-> A feature added to the vTPM shouldn't alter the behavior of something
-> that isn't using or understands that feature.
+The attestation protocol has two different attestation methods. One is
+a GUID table similar to that specified for an extended guest request
+in the GHCB specification, and the other is "service specific" as
+requested by the spec. Both formats are referred to as "service
+manifest", which is unfortunate.
 
-I actually don't think this matters, because I can't see any reason to
-use the SVSM features flag for the vTPM.  The reason is that the TPM
-itself contains a versioned feature mechanism that external programs
-already use, so there's no real need to duplicate it.
+The REPORT_DATA for the VMPL0 attestation for both attestation methods
+is SHA2-512(nonce || service manifest), so you can end up with
+evidence that looks like SVSM_ATTEST_SERVICES with a single service in
+the manifest when requesting a single service's manifest. There's no
+tag between the two. There's no requirement that whatever is reported
+in the service manifest under a single service's identifier is exactly
+the content of the service manifest that would appear in the
+attest_services. Even still, it's generally bad practice to hash raw
+data. You should have a context string.
 
-That said, I'm happy with either keeping or removing this.
+I would like to request a change to the specification to add context
+tags in the REPORT_DATA, at least for attest_single_service, e.g.,
+SHA2-512(nonce || "svsm service <uuid>" || service manifest)
 
-Regards,
+A solution could just be to say single services shouldn't use GUID
+tables as their own service manifests, but that's a bit brittle.
 
-James
+Thanks!
 
+--
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
