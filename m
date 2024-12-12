@@ -1,147 +1,204 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388FB215764
-	for <linux-coco@lists.linux.dev>; Thu, 12 Dec 2024 15:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864B92210F8;
+	Thu, 12 Dec 2024 15:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018106; cv=none; b=ara4FVfFVBcbtZqOL6ULjED9WcEHm1/uLL4zHYUPDsCY43qnRlHJrPL+4pEz1qTeO4BJ1XhI3XeZgV7wJmpCdGF6JDbTC7rwatX2yXcjZzN16MgNMk67xBfQuX5L7knl+OE3rrQWEiMm3ZapsP4cT1yhghJFtWpqHDQf+V6Ldu4=
+	t=1734019001; cv=none; b=j57r/802gxmk8LuLcdw/1IWVBY9aCQX18IErNbXHlpnQvEAPHQa+rm1LMt+4tgWy9gI68LVoZ+Eg0+2wUBeLz5Sl6pb6TkzLvuXXx7WPc6s70FPBUEdVJ7aaKDCHOpDnbTohD7czD3p0tiLiEM/3aeGXPlBLXUt3Cg2kxddB/ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018106; c=relaxed/simple;
-	bh=Y4hfRV5JAL5Zf/G0FNRWVrMda1GQ3RgDyZg7dpGJlgU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OKzmCHAm6XVY8INQKBkQ47qdfpyM8LmDOSxRYP5G/Syb703aADLwOiJWABAjdC/OV1Jq5sCrJ2SXbamjxmfI79HBcohKXOR0DTNbUV11yXCPln7pzvdmPhJuJYlg0oaPY9u6Hb1OPjfgnV1ZecAlo4CGFoiFlU8XqPmtBTDq1no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=OOV9IzEh; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=OOV9IzEh; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="OOV9IzEh";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="OOV9IzEh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1734018103;
-	bh=Y4hfRV5JAL5Zf/G0FNRWVrMda1GQ3RgDyZg7dpGJlgU=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=OOV9IzEhgnfoak6Q87cxXM3y0LlIqY8ls0KitsjP4Mo2cf5qW8CuFMg/Tj3qTo+Nj
-	 /NBbs0+U3PRRAnE8kQxkDfIamPHJWLKqnmZMOddlydhbu3ZkEsVvuUP57Yvt19x1m6
-	 YxjWfOAKB8hHTw6j5QJiIVN9cmhb3NFpndfXzRAI=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id C1B14128B0C0;
-	Thu, 12 Dec 2024 10:41:43 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id 7aKhnxa6fKry; Thu, 12 Dec 2024 10:41:43 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1734018103;
-	bh=Y4hfRV5JAL5Zf/G0FNRWVrMda1GQ3RgDyZg7dpGJlgU=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=OOV9IzEhgnfoak6Q87cxXM3y0LlIqY8ls0KitsjP4Mo2cf5qW8CuFMg/Tj3qTo+Nj
-	 /NBbs0+U3PRRAnE8kQxkDfIamPHJWLKqnmZMOddlydhbu3ZkEsVvuUP57Yvt19x1m6
-	 YxjWfOAKB8hHTw6j5QJiIVN9cmhb3NFpndfXzRAI=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 3F90E12801E8;
-	Thu, 12 Dec 2024 10:41:42 -0500 (EST)
-Message-ID: <d84a9a960e419cf8cbfd086e8210b6c4a112d04f.camel@HansenPartnership.com>
-Subject: Re: [PATCH 1/3] tpm: add generic platform device
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Claudio Carvalho <cclaudio@linux.ibm.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, linux-coco@lists.linux.dev, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, Peter Huewe
- <peterhuewe@gmx.de>, "H. Peter Anvin" <hpa@zytor.com>, 
- linux-integrity@vger.kernel.org, x86@kernel.org, Joerg Roedel
- <jroedel@suse.de>,  Jason Gunthorpe <jgg@ziepe.ca>, Jarkko Sakkinen
- <jarkko@kernel.org>,  linux-kernel@vger.kernel.org, Ingo Molnar
- <mingo@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Dov Murik
- <dovmurik@linux.ibm.com>, Oliver Steffen <osteffen@redhat.com>
-Date: Thu, 12 Dec 2024 10:41:40 -0500
-In-Reply-To: <cnq6nzhvrsas6ud7t4woybktpesepm7a3sq5sd5yldq4hr5kyl@ezm4xi3o7eax>
-References: <20241210143423.101774-1-sgarzare@redhat.com>
-	 <20241210143423.101774-2-sgarzare@redhat.com>
-	 <zzi3fvbo2rnb2d76soseuekwaqe22ifnrhhjplqhvw6x26lbb4@nmcqylrenzyj>
-	 <b92113a11f121dc4d485b5ba522c8c8c0781d1be.camel@HansenPartnership.com>
-	 <cnq6nzhvrsas6ud7t4woybktpesepm7a3sq5sd5yldq4hr5kyl@ezm4xi3o7eax>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1734019001; c=relaxed/simple;
+	bh=G96xLoC/eSHXYXHq+4DeBJeMDS2lbNoxJbax3AUA8J0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NWP2F1TmrHqwdNRQs1gr/0vjnd4OQFo+fcmpI4g8HB5sco0voNeYcHIadJtE9DaqSM3iN0pUKITuej+lMkaWGneXUBXFpCtv9uEwQLWDyYssMibJWMVlB+YcZx48m8oEllL+Jn4qEh5bSqLSDveseRkt4qgfKOtyvmiDwINhaQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E36B71762;
+	Thu, 12 Dec 2024 07:57:05 -0800 (PST)
+Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.39.50])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B30E53F720;
+	Thu, 12 Dec 2024 07:56:33 -0800 (PST)
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: [PATCH v6 00/43] arm64: Support for Arm CCA in KVM
+Date: Thu, 12 Dec 2024 15:55:25 +0000
+Message-ID: <20241212155610.76522-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Thu, 2024-12-12 at 16:30 +0100, Stefano Garzarella wrote:
-> On Thu, Dec 12, 2024 at 09:35:46AM -0500, James Bottomley wrote:
-> > On Thu, 2024-12-12 at 10:51 +0100, Stefano Garzarella wrote:
-> > > On Tue, Dec 10, 2024 at 03:34:21PM +0100, Stefano Garzarella
-> > > wrote:
-> > [...]
-> > > > +static int tpm_platform_recv(struct tpm_chip *chip, u8 *buf,
-> > > > size_t len)
-> > > > +{
-> > > > +       struct tpm_resp *resp = (struct tpm_resp *)buffer;
-> > > > +
-> > > > +       if (resp->size < 0)
-> > > > +               return resp->size;
-> > > 
-> > > While reviewing Oliver's work for the driver in edk2[1], I
-> > > noticed that there wasn't this check and asked to add it, but
-> > > talking to him and looking in the code/spec, we realized that
-> > > it's strange that tpm_resp.size field is signed.
-> > > 
-> > >  From SVSM spec it looks like it can't be negative:
-> > > 
-> > >      Table 17: TPM_SEND_COMMAND Response Structure
-> > > 
-> > >      Byte     Size        Meaning
-> > >      Offset   (Bytes)
-> > >      0x000    4           Response size (in bytes)
-> > >      0x004    Variable    Variable Response
-> > > 
-> > > And also Coconut SVSM remap it to the `responseSize` of the TCG
-> > > TPM implementation which is unsigned:
-> > > 
-> > >      LIB_EXPORT void _plat__RunCommand(
-> > >          uint32_t        requestSize,   // IN: command buffer size
-> > >          unsigned char*  request,       // IN: command buffer
-> > >          uint32_t*       responseSize,  // IN/OUT: response buffer
-> > > size
-> > >          unsigned char** response       // IN/OUT: response buffer
-> > >      )
-> > > 
-> > > @James, @Claudio, @Tom, should we use u32 for tpm_resp.size?
-> > 
-> > The original idea was to allow the protocol to return an error
-> > (like out of memory or something) before the command ever got to
-> > the TPM rather than having to wrap it up in a TPM error.  However,
-> > that's done in the actual return from the SVSM call, which the
-> > sendrecv routine checks, so I agree this can be removed and a u32
-> > done for the length.
-> 
-> Thanks for the details!
-> I'll fix it in v2 and put a comment also in the edk2 PR.
-> 
-> > Dov did recommend we should check the returned length against the
-> > maximum allowable:
-> > 
-> > https://lore.kernel.org/linux-coco/f7d0bd07-ba1b-894e-5e39-15fb1817bc8b@linux.ibm.com/
-> 
-> I added in this version the check he suggested:
-> 
->         if (resp->size > TPM_PLATFORM_MAX_BUFFER - sizeof(*resp))
->                 return -EINVAL;  // Invalid response from the
-> platform TPM
-> 
-> Were you referring to that?
+This series adds support for running protected VMs using KVM under the
+Arm Confidential Compute Architecture (CCA).
 
-Yes, the theory being that we're required to provide a buffer of this
-length for the response, but if someone can inject a bogus response
-they could induce us to copy beyond the end of the buffer we provided.
+The related guest support was merged for v6.13-rc1 so you no longer need
+that separately.
 
-Regards,
+There are numerous changes since v5, many thanks for the review
+comments. The highlights are below, and individual patches have a changelog.
 
-James
+ * KVM_VCPU_MAX_FEATURES is incremented. *NOTE*: This effectively
+   exposes the nested virtualisation feature. So this series as it
+   stands has a dependency on that being finished before it can be
+   merged. See [2] for more details.
+
+ * Properly support the RMM providing a more limited number of GIC LRs
+   than the hardware.
+
+ * Drop patch tracking number of pages for the top level PGD, it's
+   easier calculating it when we need it.
+
+ * Drop the "spare page" - it was causing code complexity and it's a bit
+   premature to start making such optimisations before we've got real
+   platforms to benchmark.
+
+Major limitations:
+
+ * Only supports 4k host PAGE_SIZE (if PAGE_SIZE != 4k then the realm
+   extensions are disabled). I'm looking at removing this restriction,
+   but I didn't want to delay this posting.
+
+ * No support for huge pages when mapping the guest's pages. There is
+   some 'dead' code left over from before guest_mem was supported. This
+   is partly a current limitation of guest_memfd. It's also on my todo list to
+   look at improving this.
+
+The ABI to the RMM (the RMI) is based on RMM v1.0-rel0 specification[1].
+
+This series is based on v6.13-rc1. It is also available as a git
+repository:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-host/v6
+
+Work in progress changes for kvmtool are available from the git
+repository below:
+
+https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v4
+
+[1] https://developer.arm.com/documentation/den0137/1-0rel0/
+[2] https://lore.kernel.org/r/a7011738-a084-46fa-947f-395d90b37f8b%40arm.com
+
+Jean-Philippe Brucker (7):
+  arm64: RME: Propagate number of breakpoints and watchpoints to
+    userspace
+  arm64: RME: Set breakpoint parameters through SET_ONE_REG
+  arm64: RME: Initialize PMCR.N with number counter supported by RMM
+  arm64: RME: Propagate max SVE vector length from RMM
+  arm64: RME: Configure max SVE vector length for a Realm
+  arm64: RME: Provide register list for unfinalized RME RECs
+  arm64: RME: Provide accurate register list
+
+Joey Gouly (2):
+  arm64: rme: allow userspace to inject aborts
+  arm64: rme: support RSI_HOST_CALL
+
+Sean Christopherson (1):
+  KVM: Prepare for handling only shared mappings in mmu_notifier events
+
+Steven Price (30):
+  arm64: RME: Handle Granule Protection Faults (GPFs)
+  arm64: RME: Add SMC definitions for calling the RMM
+  arm64: RME: Add wrappers for RMI calls
+  arm64: RME: Check for RME support at KVM init
+  arm64: RME: Define the user ABI
+  arm64: RME: ioctls to create and configure realms
+  arm64: kvm: Allow passing machine type in KVM creation
+  arm64: RME: RTT tear down
+  arm64: RME: Allocate/free RECs to match vCPUs
+  KVM: arm64: vgic: Provide helper for number of list registers
+  arm64: RME: Support for the VGIC in realms
+  KVM: arm64: Support timers in realm RECs
+  arm64: RME: Allow VMM to set RIPAS
+  arm64: RME: Handle realm enter/exit
+  KVM: arm64: Handle realm MMIO emulation
+  arm64: RME: Allow populating initial contents
+  arm64: RME: Runtime faulting of memory
+  KVM: arm64: Handle realm VCPU load
+  KVM: arm64: Validate register access for a Realm VM
+  KVM: arm64: Handle Realm PSCI requests
+  KVM: arm64: WARN on injected undef exceptions
+  arm64: Don't expose stolen time for realm guests
+  arm64: RME: Always use 4k pages for realms
+  arm64: rme: Prevent Device mappings for Realms
+  arm_pmu: Provide a mechanism for disabling the physical IRQ
+  arm64: rme: Enable PMU support with a realm guest
+  kvm: rme: Hide KVM_CAP_READONLY_MEM for realm guests
+  arm64: kvm: Expose support for private memory
+  KVM: arm64: Expose KVM_ARM_VCPU_REC to user space
+  KVM: arm64: Allow activating realms
+
+Suzuki K Poulose (3):
+  kvm: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+  kvm: arm64: Expose debug HW register numbers for Realm
+  arm64: rme: Allow checking SVE on VM instance
+
+ Documentation/virt/kvm/api.rst       |    3 +
+ arch/arm64/include/asm/kvm_emulate.h |   40 +
+ arch/arm64/include/asm/kvm_host.h    |   17 +-
+ arch/arm64/include/asm/kvm_rme.h     |  152 +++
+ arch/arm64/include/asm/rmi_cmds.h    |  508 ++++++++
+ arch/arm64/include/asm/rmi_smc.h     |  259 +++++
+ arch/arm64/include/asm/virt.h        |    1 +
+ arch/arm64/include/uapi/asm/kvm.h    |   49 +
+ arch/arm64/kvm/Kconfig               |    1 +
+ arch/arm64/kvm/Makefile              |    3 +-
+ arch/arm64/kvm/arch_timer.c          |   45 +-
+ arch/arm64/kvm/arm.c                 |  174 ++-
+ arch/arm64/kvm/guest.c               |  107 +-
+ arch/arm64/kvm/hypercalls.c          |    4 +-
+ arch/arm64/kvm/inject_fault.c        |    6 +-
+ arch/arm64/kvm/mmio.c                |   16 +-
+ arch/arm64/kvm/mmu.c                 |  195 +++-
+ arch/arm64/kvm/pmu-emul.c            |    6 +
+ arch/arm64/kvm/psci.c                |   29 +
+ arch/arm64/kvm/reset.c               |   23 +-
+ arch/arm64/kvm/rme-exit.c            |  195 ++++
+ arch/arm64/kvm/rme.c                 | 1588 ++++++++++++++++++++++++++
+ arch/arm64/kvm/sys_regs.c            |   79 +-
+ arch/arm64/kvm/vgic/vgic-init.c      |    2 +-
+ arch/arm64/kvm/vgic/vgic-v3.c        |    5 +
+ arch/arm64/kvm/vgic/vgic.c           |   54 +-
+ arch/arm64/mm/fault.c                |   31 +-
+ drivers/perf/arm_pmu.c               |   15 +
+ include/kvm/arm_arch_timer.h         |    2 +
+ include/kvm/arm_pmu.h                |    4 +
+ include/kvm/arm_psci.h               |    2 +
+ include/linux/kvm_host.h             |    2 +
+ include/linux/perf/arm_pmu.h         |    5 +
+ include/uapi/linux/kvm.h             |   31 +-
+ virt/kvm/kvm_main.c                  |    7 +
+ 35 files changed, 3557 insertions(+), 103 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_rme.h
+ create mode 100644 arch/arm64/include/asm/rmi_cmds.h
+ create mode 100644 arch/arm64/include/asm/rmi_smc.h
+ create mode 100644 arch/arm64/kvm/rme-exit.c
+ create mode 100644 arch/arm64/kvm/rme.c
+
+-- 
+2.43.0
 
