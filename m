@@ -1,125 +1,161 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653C62153C3
-	for <linux-coco@lists.linux.dev>; Thu, 12 Dec 2024 14:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C29217F48
+	for <linux-coco@lists.linux.dev>; Thu, 12 Dec 2024 15:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734014153; cv=none; b=EGz+eOAGpEGmEXGJBxuXWinXvicd/uLXzOXWtHwrnYurBsneI5yqL21gj+tISpKu7D4osaoMxbNxoo2qZdf1LPkGw4zK0g4oW3P9S9Wk+SSlaCoEkHKrTwie4aDFXTPS7QXVA7azljCWvF5PJbk410j8kW6eV/re1iY5TIlG2MA=
+	t=1734017418; cv=none; b=V5iRRAh5mxGYMFmTwfuKcB53aP3IDbrgXbO7YstPqnQWfXv9n5Z0wMUADikB+tV+xF5gZacopBftHMa6vYHSwpzyWqvIdMwYAXafm2bNheWN1bak2TGzaESMyNAfAMdXkgS8OcjjsVQsMyvmVaP4vchAyI9GHXv6gKfkSGtyWm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734014153; c=relaxed/simple;
-	bh=/BRyeJOSctv9s1dQvG8sTNwD6gQGaxrOOiPNVZ+2V7Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ck9S1eDnLrk0VTRI86UZadr2SWmDWsan05hGiS6FSD5Jd7thIeIcfjQEB7TsG+nq+uomMmlU60BfeCYiaBHMdbSVr8R4y9aguTjLissuCYzRipfGAnzubwUI/0GgcXW1/b3bBbc96s1TXfj8hxStMyG32kI7LgtnUCr7Rv6DeAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=QvdsJ27z; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=QvdsJ27z; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1734017418; c=relaxed/simple;
+	bh=O5ahhxuiUloPACS05gzUNOEWN3T1mok3ANYk7EW/OLY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=A+aNbhLxjhgXFeXL7EsK6KdF87hJ2hwsZ4NbGM6HZe+balU+OyQGKbPea4H0CKZO8AxpZcYB3uh4rmF9ecxrJAltbt2Qp4pY15a4VaGUos+cB+CnjN9XnWRBJAbNgINIB9B42WPNeIsqmI5lkMr7SUKMcTAtCz+nT3W4DV0Pqwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M4NSWmMV; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="QvdsJ27z";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="QvdsJ27z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1734014149;
-	bh=/BRyeJOSctv9s1dQvG8sTNwD6gQGaxrOOiPNVZ+2V7Q=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=QvdsJ27z5wkJCJ5m43ZyRYBnzb7b+SoX2jhwxvSLRL24QScwT0W6YeZt4C56j3YhO
-	 eO8Q8rwjhEx2Rp0089mTePmHhllRLT6X/lJ+wWz3NMtgwqWRnsFEcMb/DJC4n/TVPx
-	 jx166VNefKJRiDQFJ6Upoeh2u7CRYTepsIYgDZi0=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id E708312879AF;
-	Thu, 12 Dec 2024 09:35:49 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id qTv-JLffv6fG; Thu, 12 Dec 2024 09:35:49 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1734014149;
-	bh=/BRyeJOSctv9s1dQvG8sTNwD6gQGaxrOOiPNVZ+2V7Q=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=QvdsJ27z5wkJCJ5m43ZyRYBnzb7b+SoX2jhwxvSLRL24QScwT0W6YeZt4C56j3YhO
-	 eO8Q8rwjhEx2Rp0089mTePmHhllRLT6X/lJ+wWz3NMtgwqWRnsFEcMb/DJC4n/TVPx
-	 jx166VNefKJRiDQFJ6Upoeh2u7CRYTepsIYgDZi0=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 2BDBB1286F1F;
-	Thu, 12 Dec 2024 09:35:48 -0500 (EST)
-Message-ID: <b92113a11f121dc4d485b5ba522c8c8c0781d1be.camel@HansenPartnership.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M4NSWmMV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734017416;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pNvPlu3/tbTEKcryDTMAGFOHz4wBWW7XP10awKbwl0c=;
+	b=M4NSWmMVcP+Qy6LmeNdC5u01qwFD13jFUNXX+CFYfxn2fjw+uG1H2Ozrge/eBr8PRJMuWH
+	k/V9kcup/wt11QFZ/wV/DGIBiBAl1R+PV7n1RhMm9ld55DqeRdYwUa8riKhS4GCsoOZ5wW
+	WcBcjpUSrm4kUGgCwHU0AEs5RDG0aK8=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-S1zDHQzsOfalrLVSAvwhGw-1; Thu, 12 Dec 2024 10:30:15 -0500
+X-MC-Unique: S1zDHQzsOfalrLVSAvwhGw-1
+X-Mimecast-MFC-AGG-ID: S1zDHQzsOfalrLVSAvwhGw
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-46790c5b1a5so18933931cf.2
+        for <linux-coco@lists.linux.dev>; Thu, 12 Dec 2024 07:30:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734017414; x=1734622214;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pNvPlu3/tbTEKcryDTMAGFOHz4wBWW7XP10awKbwl0c=;
+        b=c1sfsthe7/owMxKDOO+S1GrxT+/Q3oLxOvSBFTzXPIlNJDDdkOhmXwdkzkLMRmUBt+
+         LNgL68eym7l/ry84hpC1REVQ4zvgoma/pKKFYwpU7Il0Ze4ptbX8XyVmw8c0W58gbDcy
+         6nCeNs+SjCjBwVfZlVP2MBF6psJboxa8akibPlddVoTesDsHd2n4fakYn+TAbC16pPbV
+         H+bekNWUw0WCIlubB3+0fcxBVvz6SePPk6F0WImvrfvMztPM2lVtQviDi4WHmJsfgOOu
+         pL0LBP1BAg38zwm6K4G/Wr1Cctb+uTK0nXr1vuvqjQqjP+bndlEjK3vXdiL1i0IENSVV
+         J37A==
+X-Forwarded-Encrypted: i=1; AJvYcCXztjKlkBtho6vPtxsRoq0WycY5kccnsRIR5mA4MFav6visWorqNZfUCB6XHZdAFFRTDSVPsg0YqAIB@lists.linux.dev
+X-Gm-Message-State: AOJu0YwJILag+gU2RPOBEByLFqOX9Yk8oWqvygl3A326eydW5wP6YZd/
+	15U1l9ROPN5XmwVjsFk+jHviM9/uYN0chGV8NBDxH3kDw7Qjhq3d9WEuc753VHo6WJepIDMW1QD
+	4S0h64W92i4mgxvArW6HVB/YnfKhjU4teW1shi0zXpT0z5JXaEDx9qfmAVQc=
+X-Gm-Gg: ASbGncvS516jpHOF9xZS2Np7gxIR7iel7dvgIYqkGO2QA9QkrOLgGqCyL8vcumzdBAH
+	7XCxMQn5NVNBCUXYjVwDvJFvODoVVAV5kdTZMyGmxVY98oCUHRx2GnlbjMEBwqyEf36VNyu9M2Y
+	+/0PECCiDVOtSjbrXvH0qOD9K6t3QyXSRWr4z/H8Ss62zZ6LUjXH/l6aiMNXSlUCvy6wA5CaNNA
+	oprfPwn01/NnTKUgGEPMtvZPlcnUwRv+hOwvySzlQ9vEPsIF+ZISLES+JE+dZ0QCMKRVQIpjNFc
+	fgasdtdtvr5V1oxEDJZxa/uB3SsDrYoB
+X-Received: by 2002:a05:622a:109:b0:466:954e:a89f with SMTP id d75a77b69052e-467a15c5d85mr9981581cf.14.1734017414003;
+        Thu, 12 Dec 2024 07:30:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGUqrMzHnYDqYzGLOnDSNbK6UCDbQs0xhbgvHxu32yCmWJ3ltiMe4gnLZlEysVazYeVy4rzFA==
+X-Received: by 2002:a05:622a:109:b0:466:954e:a89f with SMTP id d75a77b69052e-467a15c5d85mr9980721cf.14.1734017413364;
+        Thu, 12 Dec 2024 07:30:13 -0800 (PST)
+Received: from sgarzare-redhat (host-87-12-185-21.business.telecomitalia.it. [87.12.185.21])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4679748dac4sm10045351cf.22.2024.12.12.07.30.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Dec 2024 07:30:12 -0800 (PST)
+Date: Thu, 12 Dec 2024 16:30:06 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Claudio Carvalho <cclaudio@linux.ibm.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Huewe <peterhuewe@gmx.de>, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-integrity@vger.kernel.org, x86@kernel.org, 
+	Joerg Roedel <jroedel@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Dov Murik <dovmurik@linux.ibm.com>, 
+	Oliver Steffen <osteffen@redhat.com>
 Subject: Re: [PATCH 1/3] tpm: add generic platform device
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Stefano Garzarella <sgarzare@redhat.com>, Claudio Carvalho
-	 <cclaudio@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, Peter Huewe <peterhuewe@gmx.de>, "H. Peter
- Anvin" <hpa@zytor.com>, linux-integrity@vger.kernel.org, x86@kernel.org,
- Joerg Roedel <jroedel@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>, Jarkko
- Sakkinen <jarkko@kernel.org>, linux-kernel@vger.kernel.org, Ingo Molnar
- <mingo@redhat.com>,  Thomas Gleixner <tglx@linutronix.de>, Dov Murik
- <dovmurik@linux.ibm.com>, Oliver Steffen <osteffen@redhat.com>
-Date: Thu, 12 Dec 2024 09:35:46 -0500
-In-Reply-To: <zzi3fvbo2rnb2d76soseuekwaqe22ifnrhhjplqhvw6x26lbb4@nmcqylrenzyj>
+Message-ID: <cnq6nzhvrsas6ud7t4woybktpesepm7a3sq5sd5yldq4hr5kyl@ezm4xi3o7eax>
 References: <20241210143423.101774-1-sgarzare@redhat.com>
-	 <20241210143423.101774-2-sgarzare@redhat.com>
-	 <zzi3fvbo2rnb2d76soseuekwaqe22ifnrhhjplqhvw6x26lbb4@nmcqylrenzyj>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+ <20241210143423.101774-2-sgarzare@redhat.com>
+ <zzi3fvbo2rnb2d76soseuekwaqe22ifnrhhjplqhvw6x26lbb4@nmcqylrenzyj>
+ <b92113a11f121dc4d485b5ba522c8c8c0781d1be.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+In-Reply-To: <b92113a11f121dc4d485b5ba522c8c8c0781d1be.camel@HansenPartnership.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 2ZF8sUox-OweS8zJpqJWu5NLUzTV-9ccPXbyrfEACqc_1734017414
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-On Thu, 2024-12-12 at 10:51 +0100, Stefano Garzarella wrote:
-> On Tue, Dec 10, 2024 at 03:34:21PM +0100, Stefano Garzarella wrote:
-[...]
-> > +static int tpm_platform_recv(struct tpm_chip *chip, u8 *buf,
-> > size_t len)
-> > +{
-> > +Â Â Â Â Â Â Â struct tpm_resp *resp = (struct tpm_resp *)buffer;
-> > +
-> > +Â Â Â Â Â Â Â if (resp->size < 0)
-> > +Â Â Â Â Â Â Â Â Â Â Â Â Â Â Â return resp->size;
-> 
-> While reviewing Oliver's work for the driver in edk2[1], I noticed
-> that
-> there wasn't this check and asked to add it, but talking to him and
-> looking in the code/spec, we realized that it's strange that
-> tpm_resp.size field is signed.
-> 
-> Â From SVSM spec it looks like it can't be negative:
-> 
-> Â Â Â Â  Table 17: TPM_SEND_COMMAND Response Structure
-> 
-> Â Â Â Â  ByteÂ Â Â Â  SizeÂ Â Â Â Â Â Â  Meaning
-> Â Â Â Â  OffsetÂ Â  (Bytes)
-> Â Â Â Â  0x000Â Â Â  4Â Â Â Â Â Â Â Â Â Â  Response size (in bytes)
-> Â Â Â Â  0x004Â Â Â  VariableÂ Â Â  Variable Response
-> 
-> And also Coconut SVSM remap it to the `responseSize` of the TCG TPM
-> implementation which is unsigned:
-> 
-> Â Â Â Â  LIB_EXPORT void _plat__RunCommand(
-> Â Â Â Â Â Â Â Â  uint32_tÂ Â Â Â Â Â Â  requestSize,Â Â  // IN: command buffer size
-> Â Â Â Â Â Â Â Â  unsigned char*Â  request,Â Â Â Â Â Â  // IN: command buffer
-> Â Â Â Â Â Â Â Â  uint32_t*Â Â Â Â Â Â  responseSize,Â  // IN/OUT: response buffer
-> size
-> Â Â Â Â Â Â Â Â  unsigned char** responseÂ Â Â Â Â Â  // IN/OUT: response buffer
-> Â Â Â Â  )
-> 
-> @James, @Claudio, @Tom, should we use u32 for tpm_resp.size?
+On Thu, Dec 12, 2024 at 09:35:46AM -0500, James Bottomley wrote:
+>On Thu, 2024-12-12 at 10:51 +0100, Stefano Garzarella wrote:
+>> On Tue, Dec 10, 2024 at 03:34:21PM +0100, Stefano Garzarella wrote:
+>[...]
+>> > +static int tpm_platform_recv(struct tpm_chip *chip, u8 *buf,
+>> > size_t len)
+>> > +{
+>> > +       struct tpm_resp *resp = (struct tpm_resp *)buffer;
+>> > +
+>> > +       if (resp->size < 0)
+>> > +               return resp->size;
+>>
+>> While reviewing Oliver's work for the driver in edk2[1], I noticed
+>> that
+>> there wasn't this check and asked to add it, but talking to him and
+>> looking in the code/spec, we realized that it's strange that
+>> tpm_resp.size field is signed.
+>>
+>>  From SVSM spec it looks like it can't be negative:
+>>
+>>      Table 17: TPM_SEND_COMMAND Response Structure
+>>
+>>      Byte     Size        Meaning
+>>      Offset   (Bytes)
+>>      0x000    4           Response size (in bytes)
+>>      0x004    Variable    Variable Response
+>>
+>> And also Coconut SVSM remap it to the `responseSize` of the TCG TPM
+>> implementation which is unsigned:
+>>
+>>      LIB_EXPORT void _plat__RunCommand(
+>>          uint32_t        requestSize,   // IN: command buffer size
+>>          unsigned char*  request,       // IN: command buffer
+>>          uint32_t*       responseSize,  // IN/OUT: response buffer
+>> size
+>>          unsigned char** response       // IN/OUT: response buffer
+>>      )
+>>
+>> @James, @Claudio, @Tom, should we use u32 for tpm_resp.size?
+>
+>The original idea was to allow the protocol to return an error (like
+>out of memory or something) before the command ever got to the TPM
+>rather than having to wrap it up in a TPM error.  However, that's done
+>in the actual return from the SVSM call, which the sendrecv routine
+>checks, so I agree this can be removed and a u32 done for the length.
 
-The original idea was to allow the protocol to return an error (like
-out of memory or something) before the command ever got to the TPM
-rather than having to wrap it up in a TPM error.  However, that's done
-in the actual return from the SVSM call, which the sendrecv routine
-checks, so I agree this can be removed and a u32 done for the length. 
-Dov did recommend we should check the returned length against the
-maximum allowable:
+Thanks for the details!
+I'll fix it in v2 and put a comment also in the edk2 PR.
 
-https://lore.kernel.org/linux-coco/f7d0bd07-ba1b-894e-5e39-15fb1817bc8b@linux.ibm.com/
+>Dov did recommend we should check the returned length against the
+>maximum allowable:
+>
+>https://lore.kernel.org/linux-coco/f7d0bd07-ba1b-894e-5e39-15fb1817bc8b@linux.ibm.com/
 
-Regards,
+I added in this version the check he suggested:
 
-James
+	if (resp->size > TPM_PLATFORM_MAX_BUFFER - sizeof(*resp))
+		return -EINVAL;  // Invalid response from the platform TPM
+
+Were you referring to that?
+
+Thanks,
+Stefano
 
