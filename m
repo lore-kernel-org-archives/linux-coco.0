@@ -1,97 +1,125 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5798211291
-	for <linux-coco@lists.linux.dev>; Thu, 12 Dec 2024 10:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653C62153C3
+	for <linux-coco@lists.linux.dev>; Thu, 12 Dec 2024 14:35:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734000854; cv=none; b=m0+8LhcWKHcFPWBhq4n2kqg1ofcA1JO3Xe8Jk2J5KMfG3b8Zf7FiqTPUtG5ZIWahVlt+FUyrkxJX335VZZRcavAFHGKjwug8umeOaoYmAjHGpW8kwzKydARmD5L1n64fJr8ddK6g1CooEWWehc+ej6AZx8o1NyWSQ9mV+QPTZ/M=
+	t=1734014153; cv=none; b=EGz+eOAGpEGmEXGJBxuXWinXvicd/uLXzOXWtHwrnYurBsneI5yqL21gj+tISpKu7D4osaoMxbNxoo2qZdf1LPkGw4zK0g4oW3P9S9Wk+SSlaCoEkHKrTwie4aDFXTPS7QXVA7azljCWvF5PJbk410j8kW6eV/re1iY5TIlG2MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734000854; c=relaxed/simple;
-	bh=MOlQQdO5lK3U572ldkpTBbrDmAKTbjY10M2pA09lNNg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J7al9qFCaJVLWdmJfka1FOfwbFNQFkO1+G7zqMYME+OnX3gt5oLqhFgtLCdP/qk5poSbgxMfc2iMjTkgOXJjo9/w5MuqyOkv5yrNEHAQWzQNWVBoDDOU5rripy4FrJSj4AB/ds0UuM6ELdxXMgKAlzuRuTVNXUEihoMjIZ13hjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XpXBYVMj; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1734014153; c=relaxed/simple;
+	bh=/BRyeJOSctv9s1dQvG8sTNwD6gQGaxrOOiPNVZ+2V7Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ck9S1eDnLrk0VTRI86UZadr2SWmDWsan05hGiS6FSD5Jd7thIeIcfjQEB7TsG+nq+uomMmlU60BfeCYiaBHMdbSVr8R4y9aguTjLissuCYzRipfGAnzubwUI/0GgcXW1/b3bBbc96s1TXfj8hxStMyG32kI7LgtnUCr7Rv6DeAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=QvdsJ27z; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=QvdsJ27z; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XpXBYVMj"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="QvdsJ27z";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="QvdsJ27z"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734000853; x=1765536853;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MOlQQdO5lK3U572ldkpTBbrDmAKTbjY10M2pA09lNNg=;
-  b=XpXBYVMjMwI7u/Ep1QMtoVP4hiTzpydLKJq0fEB0oOx2o6hQTH9xyZF8
-   /ZFWYh+HPK7AhO/Upqx4SHf43netBAacNOb/4AHTXd0zV4EDcplknXs1f
-   a6qRYtCozzl6hpDqohzlKl8joiOtuhPB/hcZzzJROX+9S4HKftGSlotBs
-   itTpevrbWTgSWcKMf6wTnAQTbICCGPZFqv+I4quFLSl2qnEVwbju67AxA
-   xsylh7LuYIjyEOjaEfAPQeMJ+boOhCiu3+3vJGCqDFPj4nqgPonzwC/Ex
-   gx0cxxzqElkinSxkTdZh+F6uH73nTaP1xd/N6wUZtZG1zKXIc9EfqmYJy
-   A==;
-X-CSE-ConnectionGUID: TzU6Tev5Tbm1T0LhwYlfag==
-X-CSE-MsgGUID: OznFBOQkTs6QoSVJmwxTWg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="34457136"
-X-IronPort-AV: E=Sophos;i="6.12,228,1728975600"; 
-   d="scan'208";a="34457136"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2024 02:54:12 -0800
-X-CSE-ConnectionGUID: tQTjDtP0TNeQQ72BIFVR6A==
-X-CSE-MsgGUID: DEbwxkEuR0ObeawGhvzQ+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="119439918"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa002.fm.intel.com with ESMTP; 12 Dec 2024 02:54:10 -0800
-Date: Thu, 12 Dec 2024 18:50:52 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
-	Alexey Kardashevskiy <aik@amd.com>, linux-pci@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Subject: Re: [PATCH 08/11] PCI/IDE: Add IDE establishment helpers
-Message-ID: <Z1rADLJV8tbI9adp@yilunxu-OptiPlex-7050>
-References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
- <173343744264.1074769.10935494914881159519.stgit@dwillia2-xfh.jf.intel.com>
+	d=hansenpartnership.com; s=20151216; t=1734014149;
+	bh=/BRyeJOSctv9s1dQvG8sTNwD6gQGaxrOOiPNVZ+2V7Q=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=QvdsJ27z5wkJCJ5m43ZyRYBnzb7b+SoX2jhwxvSLRL24QScwT0W6YeZt4C56j3YhO
+	 eO8Q8rwjhEx2Rp0089mTePmHhllRLT6X/lJ+wWz3NMtgwqWRnsFEcMb/DJC4n/TVPx
+	 jx166VNefKJRiDQFJ6Upoeh2u7CRYTepsIYgDZi0=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id E708312879AF;
+	Thu, 12 Dec 2024 09:35:49 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id qTv-JLffv6fG; Thu, 12 Dec 2024 09:35:49 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1734014149;
+	bh=/BRyeJOSctv9s1dQvG8sTNwD6gQGaxrOOiPNVZ+2V7Q=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=QvdsJ27z5wkJCJ5m43ZyRYBnzb7b+SoX2jhwxvSLRL24QScwT0W6YeZt4C56j3YhO
+	 eO8Q8rwjhEx2Rp0089mTePmHhllRLT6X/lJ+wWz3NMtgwqWRnsFEcMb/DJC4n/TVPx
+	 jx166VNefKJRiDQFJ6Upoeh2u7CRYTepsIYgDZi0=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 2BDBB1286F1F;
+	Thu, 12 Dec 2024 09:35:48 -0500 (EST)
+Message-ID: <b92113a11f121dc4d485b5ba522c8c8c0781d1be.camel@HansenPartnership.com>
+Subject: Re: [PATCH 1/3] tpm: add generic platform device
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Stefano Garzarella <sgarzare@redhat.com>, Claudio Carvalho
+	 <cclaudio@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>
+Cc: linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Peter Huewe <peterhuewe@gmx.de>, "H. Peter
+ Anvin" <hpa@zytor.com>, linux-integrity@vger.kernel.org, x86@kernel.org,
+ Joerg Roedel <jroedel@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>, Jarkko
+ Sakkinen <jarkko@kernel.org>, linux-kernel@vger.kernel.org, Ingo Molnar
+ <mingo@redhat.com>,  Thomas Gleixner <tglx@linutronix.de>, Dov Murik
+ <dovmurik@linux.ibm.com>, Oliver Steffen <osteffen@redhat.com>
+Date: Thu, 12 Dec 2024 09:35:46 -0500
+In-Reply-To: <zzi3fvbo2rnb2d76soseuekwaqe22ifnrhhjplqhvw6x26lbb4@nmcqylrenzyj>
+References: <20241210143423.101774-1-sgarzare@redhat.com>
+	 <20241210143423.101774-2-sgarzare@redhat.com>
+	 <zzi3fvbo2rnb2d76soseuekwaqe22ifnrhhjplqhvw6x26lbb4@nmcqylrenzyj>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <173343744264.1074769.10935494914881159519.stgit@dwillia2-xfh.jf.intel.com>
+Content-Transfer-Encoding: 8bit
 
-> +static void __pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
-> +{
-> +	int pos;
-> +	u32 val;
-> +
-> +	pos = sel_ide_offset(pdev->sel_ide_cap, ide->stream_id,
-> +			     pdev->nr_ide_mem);
-> +
-> +	val = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT_MASK, ide->devid_end);
-> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, val);
-> +
-> +	val = FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |
-> +	      FIELD_PREP(PCI_IDE_SEL_RID_2_BASE_MASK, ide->devid_start) |
-> +	      FIELD_PREP(PCI_IDE_SEL_RID_2_SEG_MASK, ide->domain);
-> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, val);
-> +
-> +	for (int i = 0; i < ide->nr_mem; i++) {
-> +		val = FIELD_PREP(PCI_IDE_SEL_ADDR_1_VALID, 1) |
-> +		      FIELD_PREP(PCI_IDE_SEL_ADDR_1_BASE_LOW_MASK,
-> +				 lower_32_bits(ide->mem[i].start) >>
-> +					 PCI_IDE_SEL_ADDR_1_BASE_LOW_SHIFT) |
-> +		      FIELD_PREP(PCI_IDE_SEL_ADDR_1_LIMIT_LOW_MASK,
-> +				 lower_32_bits(ide->mem[i].end) >>
-> +					 PCI_IDE_SEL_ADDR_1_LIMIT_LOW_SHIFT);
+On Thu, 2024-12-12 at 10:51 +0100, Stefano Garzarella wrote:
+> On Tue, Dec 10, 2024 at 03:34:21PM +0100, Stefano Garzarella wrote:
+[...]
+> > +static int tpm_platform_recv(struct tpm_chip *chip, u8 *buf,
+> > size_t len)
+> > +{
+> > +       struct tpm_resp *resp = (struct tpm_resp *)buffer;
+> > +
+> > +       if (resp->size < 0)
+> > +               return resp->size;
+> 
+> While reviewing Oliver's work for the driver in edk2[1], I noticed
+> that
+> there wasn't this check and asked to add it, but talking to him and
+> looking in the code/spec, we realized that it's strange that
+> tpm_resp.size field is signed.
+> 
+>  From SVSM spec it looks like it can't be negative:
+> 
+>      Table 17: TPM_SEND_COMMAND Response Structure
+> 
+>      Byte     Size        Meaning
+>      Offset   (Bytes)
+>      0x000    4           Response size (in bytes)
+>      0x004    Variable    Variable Response
+> 
+> And also Coconut SVSM remap it to the `responseSize` of the TCG TPM
+> implementation which is unsigned:
+> 
+>      LIB_EXPORT void _plat__RunCommand(
+>          uint32_t        requestSize,   // IN: command buffer size
+>          unsigned char*  request,       // IN: command buffer
+>          uint32_t*       responseSize,  // IN/OUT: response buffer
+> size
+>          unsigned char** response       // IN/OUT: response buffer
+>      )
+> 
+> @James, @Claudio, @Tom, should we use u32 for tpm_resp.size?
 
-Oh, I missunderstood the _LOW_SHIFT Macros. But still think if they
-could be moved out of pci_reg.h. Placing in pci_reg.h makes me think
-they are some register field offsets.
+The original idea was to allow the protocol to return an error (like
+out of memory or something) before the command ever got to the TPM
+rather than having to wrap it up in a TPM error.  However, that's done
+in the actual return from the SVSM call, which the sendrecv routine
+checks, so I agree this can be removed and a u32 done for the length. 
+Dov did recommend we should check the returned length against the
+maximum allowable:
 
-Thanks,
-Yilun
+https://lore.kernel.org/linux-coco/f7d0bd07-ba1b-894e-5e39-15fb1817bc8b@linux.ibm.com/
+
+Regards,
+
+James
+
