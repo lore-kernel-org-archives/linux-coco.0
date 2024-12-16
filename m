@@ -1,272 +1,181 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FDB2066DC;
-	Mon, 16 Dec 2024 17:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734371470; cv=none; b=X8eJ+wT2JmWkWH+1Lj1QaX/HW9tdL+EItpifTqH2bppROcobTPGPnjOceclJxnEPkFR1dVqrBkT/DcaKLJRZyS8PenazVwnlZIwadd+9tsugC6GW6N1ge1GzTakL7J4WUVqS1m3pzT7Y27Bovfxx/mwogRc5O33h9tBmNHsAOE4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734371470; c=relaxed/simple;
-	bh=rBCWtRTu5Vr8cgrNPrVT8W5KU7Hajgp2sLYgmxLWcRU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sFiOPVGQ33OWOxk1CdV0+K/DykRQhjwEq5Izo0v7O7USgFjyvm3jGShGRU/YYsFZ2ebqUiKTcDJPCiQ3m/X6MfO0bI7apLHUdaf/gOHpQAEWd3vAME22EgV4zq0+MTjAMfei8DSNtsyiedprbNNboDwLUcI4/A1J8OD0txIB4eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 65D33106F;
-	Mon, 16 Dec 2024 09:51:35 -0800 (PST)
-Received: from [10.57.71.247] (unknown [10.57.71.247])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4F4BF3F58B;
-	Mon, 16 Dec 2024 09:51:04 -0800 (PST)
-Message-ID: <e88930d3-f933-41a3-a698-3a34633e5019@arm.com>
-Date: Mon, 16 Dec 2024 17:51:03 +0000
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2042.outbound.protection.outlook.com [40.107.237.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1D51D45F2
+	for <linux-coco@lists.linux.dev>; Mon, 16 Dec 2024 23:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734393432; cv=fail; b=fIxU522zg5c/SibVXujqRzp/VMxr2gvMhm16BeXNKhG2tVAIXAn59fbW+LYAC1UbH7BYKcaDYQv8PuiC4CTrbO641TZtTs1UXENdpeOjXf9crAGbnaIbs7e2N/HWNRuZNB6l+adTNpp+eVhggSllSkeUHPBbX1fFEsIlc2ijAgU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734393432; c=relaxed/simple;
+	bh=dJJemfUF6kQp0OcoAQJ7Mak+U//dkIMJ5/Sr5zr/2ns=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VnVeLhDJ+FhMTEmEmr81VykhquPlhG+g6bcC8ocwC6Bhj+zbPRytbjGcVgPzwg6J/E3Sy+NVKOq4G9oJ2eAQyh+3WAWjGQoUWmOrxbfrdt8i1KQlCeeVBZocf36Ca+pd01VYTqQ7NMQtJolpTC51bSuamjgLmLOSsKlWQKRh5uA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=IIxlMfCt; arc=fail smtp.client-ip=40.107.237.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IIxlMfCt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cryt7Mvv8nNT+lhr86FbL+GM8m31TJN+od5g/Yg265hK3R9qVGsevxThhGRatWM7xiYJTrq1pwd+AgxciLSHE0HSYzoSK4EtZY8GhF7khnXwtimD3GswscIgA2d+5V+kiovMGhriYMh2dJV7Dy5zAKFtWXdIQKjatCCGUNSwbNpDQCkaT9O1MK+Pl3x7jEP2OSqBXUYkmUGeawTtRbgOZWGv0VcW8KypNzqSws+TsEphHNHkOApdbAWpSUo8n/M/szaEGIcSLaVDEO48Y/qoCP7+u3uht9EFPZJi6LJYehyT6uDChcZS5R2NyskLOM2APuP8exJeyik2x90H1KeOjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SVve5oCMY2RZJ1nGX7TMKGmjTdccGcOH96XjIVdxu/I=;
+ b=n+58kmkwr4mtdgLRjPC6HKsvRg9rSkyIjFX7cuFPK7e8jdTMyoLIvpwx5dAZywA9JBv5ezHvdZbV0+V6z7V5neuoQTucSEs4Tr3gATDjflxbYopV/3EQbYOuGDFimtK0Zd38t+WOKfqi5lY8fykAH1+rcstWeujZlw/vX2jp8o56HRRv2ZoU/1ivY3QydSa2ZF7XdrJOf7yIbPDP/SpTgxF/MFF+CxhqKgZhQngaot3QwPIZwVtjW5PDeOrzMS6tWd+I+mBOBs2XTk3IDGXNATY7Al6QMu5gi9FaWVL98Gj74d/ybxKruOYIofPFRCyGycxaz1gEh7A+F+hc26+plQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SVve5oCMY2RZJ1nGX7TMKGmjTdccGcOH96XjIVdxu/I=;
+ b=IIxlMfCtBgQeyI3HRTcescPu5iVUSttplORRsGVUlI6uFZY+2Y8HnWEuPjuprwKmM8W0UXRCFgxTE1FUy7/37Eo3wOaZo1LJWecwgZhq/ZL4yNGqsRH5hJWjEg/q3mlsLMPRQJUx6/0I0naPcqZb9M7mIBrs4SZ0Tg+jRi2HHdI=
+Received: from SJ0PR03CA0188.namprd03.prod.outlook.com (2603:10b6:a03:2ef::13)
+ by CY8PR12MB7315.namprd12.prod.outlook.com (2603:10b6:930:51::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.22; Mon, 16 Dec
+ 2024 23:57:05 +0000
+Received: from SJ5PEPF00000209.namprd05.prod.outlook.com
+ (2603:10b6:a03:2ef:cafe::73) by SJ0PR03CA0188.outlook.office365.com
+ (2603:10b6:a03:2ef::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.22 via Frontend Transport; Mon,
+ 16 Dec 2024 23:57:05 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ5PEPF00000209.mail.protection.outlook.com (10.167.244.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8251.15 via Frontend Transport; Mon, 16 Dec 2024 23:57:04 +0000
+Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 16 Dec
+ 2024 17:57:03 -0600
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <hpa@zytor.com>, <thomas.lendacky@amd.com>,
+	<john.allen@amd.com>, <herbert@gondor.apana.org.au>, <davem@davemloft.net>
+CC: <michael.roth@amd.com>, <dionnaglaze@google.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+Subject: [PATCH v2 0/9] Move initializing SEV/SNP functionality to KVM
+Date: Mon, 16 Dec 2024 23:56:54 +0000
+Message-ID: <cover.1734392473.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 04/43] arm64: RME: Add SMC definitions for calling the
- RMM
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>
-References: <20241212155610.76522-1-steven.price@arm.com>
- <20241212155610.76522-5-steven.price@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20241212155610.76522-5-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000209:EE_|CY8PR12MB7315:EE_
+X-MS-Office365-Filtering-Correlation-Id: a820b379-cf2c-4b69-8579-08dd1e2d57c5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|376014|7416014|1800799024|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?G1eA2CgVv8OK5SJDxapUWsOzexo7GuHyal5FUf9TOyGDCC1rAOWQbCthS0k4?=
+ =?us-ascii?Q?awpR7Bt4xir/7HfE5tWdN7+6Tey56Dfj80RD2xRh3ykbbJF3awg6+DFwqygS?=
+ =?us-ascii?Q?3Vp8JKLMcKN4QdSR0X6iZKaKXwfEAynbCGjUmpcNFvQpsKE1vLkUtXrDlVVy?=
+ =?us-ascii?Q?F+Cd0/5gph/eyPP89Sm0PF2pkNBFz47s+/xGnNC4DMjeN84QtMHqWbcjJGPK?=
+ =?us-ascii?Q?4F5+WRwHThbHj6Q44KoJCZRKYjLuJWmYnHZIjta7AYOd4JC6bDRYdsyoz068?=
+ =?us-ascii?Q?PIQG25PtgEAvnUQVRm9xgpOSBB6zdYKnkj5NGCWuwsxt0ywkg9WT+ofVJYSE?=
+ =?us-ascii?Q?tUr0J9Qg7utGwM1rnuewKp8nWJ3/rbcaWg7u0W5VMQkOBK5/VoOJ6xfbAc8L?=
+ =?us-ascii?Q?uGeZ8/VhI4j6uxnKI1EjO5fVShW57U2ZrIiku6dvXaZe0Qnd2j77ooAZ0AaT?=
+ =?us-ascii?Q?T2SxJvvb+/N+TjP/pRu9aHatlzTSn/wLZhUha3sPg4KAPNA4sSdbapOKu/E0?=
+ =?us-ascii?Q?Kn6hIdfy5DYE31LYuaCpF5iQkf1TQR6TUruN6MC1SJ4ZkTik3juYZrVaks8J?=
+ =?us-ascii?Q?SdHAWtG4K3Kq0ctU/HWUHoC9qPsuOYFaoKVbALDNBj6w4OqelXzVPLSiUSQz?=
+ =?us-ascii?Q?toi3mccdbHD7sOV0OBvOvpd132kNemaW7XrA/t16cSrIQrZsbOI7rwEL655c?=
+ =?us-ascii?Q?DsQdhEXZRvajtPgBKCxfPcHO5Glqei3r7BxzazCJc5SQykwi5UUeZNkhpst4?=
+ =?us-ascii?Q?B0sK6jXdo2jjVtCMkwdfTMvpPfLLwYBdnZ43xvHmExLfwX8hs5WhvAhXgPOY?=
+ =?us-ascii?Q?P0wWkG/XqCvGw15rnU6eellPnialrnkDjbWJ21tRnpAM18Ssj5Ls9rxLUbKp?=
+ =?us-ascii?Q?gLSwYEG+RvVjQZ53aXVWMW3NHA5ApG0jZ9PtFstD32KhRjWbpo0OkFtZTwG9?=
+ =?us-ascii?Q?jWkSaEHMmdfrZ/6U/jkHZtoOByCge33UeoH9BeQgzz4GiEvNP/4Wgob5UBtW?=
+ =?us-ascii?Q?Ag3JNrcmWe4saPpZTxmVNFZKxqgd7E2QpWBItMXiGVz/d3tDgNCk8TN5zD7d?=
+ =?us-ascii?Q?LSPCpAT1O82JB8d0AEHvA9xTTO84Zx1ZRXurSnXN9I5yzs8h0gAm1DicWFsj?=
+ =?us-ascii?Q?OB4eWUtQEVC31KElsKOD7Wtw2dG6xrejIcXT5eijVBTuZzM2ztmhym4eIpMA?=
+ =?us-ascii?Q?L3ONiKJA5gC/v3uIpAW4NNPkw3EThk1C850ak91a+9FY+hG9Q/VMmTG+Q5Rz?=
+ =?us-ascii?Q?m/0TbBEjZ/j7Csz8Sh49Couar6rAxEogcoDHoI7SFQcGlR/DT5a8P0789Kxp?=
+ =?us-ascii?Q?83Qt6cPLUSJ5eKgYCwozkq4JbH4zo2zulSlN1Us/WJiy86HXlQXSvEaHkNLr?=
+ =?us-ascii?Q?3J30NhrsIp/wwpKhe1SgIa0f8kWEgta2o/Vau2r/zVDuieyai7+Yk+otqRe6?=
+ =?us-ascii?Q?QCBL5Q6rb7IIcVcM9mDRxLkcwYBxc1FPxWINPgGn/cUscagSMnd35ydfk2UF?=
+ =?us-ascii?Q?WZEETG9z4j7nOWw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(7416014)(1800799024)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2024 23:57:04.9840
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a820b379-cf2c-4b69-8579-08dd1e2d57c5
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF00000209.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7315
 
-On 12/12/2024 15:55, Steven Price wrote:
-> The RMM (Realm Management Monitor) provides functionality that can be
-> accessed by SMC calls from the host.
-> 
-> The SMC definitions are based on DEN0137[1] version 1.0-rel0
-> 
-> [1] https://developer.arm.com/documentation/den0137/1-0rel0/
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v5:
->   * Sorted the SMC #defines by value.
->   * Renamed SMI_RxI_CALL to SMI_RMI_CALL since the macro is only used for
->     RMI calls.
->   * Renamed REC_GIC_NUM_LRS to REC_MAX_GIC_NUM_LRS since the actual
->     number of available list registers could be lower.
->   * Provided a define for the reserved fields of FeatureRegister0.
->   * Fix inconsistent names for padding fields.
-> Changes since v4:
->   * Update to point to final released RMM spec.
->   * Minor rearrangements.
-> Changes since v3:
->   * Update to match RMM spec v1.0-rel0-rc1.
-> Changes since v2:
->   * Fix specification link.
->   * Rename rec_entry->rec_enter to match spec.
->   * Fix size of pmu_ovf_status to match spec.
-> ---
->   arch/arm64/include/asm/rmi_smc.h | 259 +++++++++++++++++++++++++++++++
->   1 file changed, 259 insertions(+)
->   create mode 100644 arch/arm64/include/asm/rmi_smc.h
-> 
-> diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/rmi_smc.h
-> new file mode 100644
-> index 000000000000..eec659e284cd
-> --- /dev/null
-> +++ b/arch/arm64/include/asm/rmi_smc.h
-> @@ -0,0 +1,259 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2023-2024 ARM Ltd.
-> + *
-> + * The values and structures in this file are from the Realm Management Monitor
-> + * specification (DEN0137) version 1.0-rel0:
-> + * https://developer.arm.com/documentation/den0137/1-0rel0/
-> + */
-> +
-> +#ifndef __ASM_RME_SMC_H
-> +#define __ASM_RME_SMC_H
-> +
-> +#include <linux/arm-smccc.h>
-> +
-> +#define SMC_RMI_CALL(func)				\
-> +	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,		\
-> +			   ARM_SMCCC_SMC_64,		\
-> +			   ARM_SMCCC_OWNER_STANDARD,	\
-> +			   (func))
-> +
-> +#define SMC_RMI_VERSION			SMC_RMI_CALL(0x0150)
-> +#define SMC_RMI_GRANULE_DELEGATE	SMC_RMI_CALL(0x0151)
-> +#define SMC_RMI_GRANULE_UNDELEGATE	SMC_RMI_CALL(0x0152)
-> +#define SMC_RMI_DATA_CREATE		SMC_RMI_CALL(0x0153)
-> +#define SMC_RMI_DATA_CREATE_UNKNOWN	SMC_RMI_CALL(0x0154)
-> +#define SMC_RMI_DATA_DESTROY		SMC_RMI_CALL(0x0155)
-> +
-> +#define SMC_RMI_REALM_ACTIVATE		SMC_RMI_CALL(0x0157)
-> +#define SMC_RMI_REALM_CREATE		SMC_RMI_CALL(0x0158)
-> +#define SMC_RMI_REALM_DESTROY		SMC_RMI_CALL(0x0159)
-> +#define SMC_RMI_REC_CREATE		SMC_RMI_CALL(0x015a)
-> +#define SMC_RMI_REC_DESTROY		SMC_RMI_CALL(0x015b)
-> +#define SMC_RMI_REC_ENTER		SMC_RMI_CALL(0x015c)
-> +#define SMC_RMI_RTT_CREATE		SMC_RMI_CALL(0x015d)
-> +#define SMC_RMI_RTT_DESTROY		SMC_RMI_CALL(0x015e)
-> +#define SMC_RMI_RTT_MAP_UNPROTECTED	SMC_RMI_CALL(0x015f)
-> +
-> +#define SMC_RMI_RTT_READ_ENTRY		SMC_RMI_CALL(0x0161)
-> +#define SMC_RMI_RTT_UNMAP_UNPROTECTED	SMC_RMI_CALL(0x0162)
-> +
-> +#define SMC_RMI_PSCI_COMPLETE		SMC_RMI_CALL(0x0164)
-> +#define SMC_RMI_FEATURES		SMC_RMI_CALL(0x0165)
-> +#define SMC_RMI_RTT_FOLD		SMC_RMI_CALL(0x0166)
-> +#define SMC_RMI_REC_AUX_COUNT		SMC_RMI_CALL(0x0167)
-> +#define SMC_RMI_RTT_INIT_RIPAS		SMC_RMI_CALL(0x0168)
-> +#define SMC_RMI_RTT_SET_RIPAS		SMC_RMI_CALL(0x0169)
-> +
-> +#define RMI_ABI_MAJOR_VERSION	1
-> +#define RMI_ABI_MINOR_VERSION	0
-> +
-> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
-> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
-> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
-> +
-> +#define RMI_UNASSIGNED			0
-> +#define RMI_ASSIGNED			1
-> +#define RMI_TABLE			2
-> +
-> +#define RMI_RETURN_STATUS(ret)		((ret) & 0xFF)
-> +#define RMI_RETURN_INDEX(ret)		(((ret) >> 8) & 0xFF)
-> +
-> +#define RMI_SUCCESS		0
-> +#define RMI_ERROR_INPUT		1
-> +#define RMI_ERROR_REALM		2
-> +#define RMI_ERROR_REC		3
-> +#define RMI_ERROR_RTT		4
-> +
-> +enum rmi_ripas {
-> +	RMI_EMPTY = 0,
-> +	RMI_RAM = 1,
-> +	RMI_DESTROYED = 2,
-> +};
-> +
-> +#define RMI_NO_MEASURE_CONTENT	0
-> +#define RMI_MEASURE_CONTENT	1
-> +
-> +#define RMI_FEATURE_REGISTER_0_S2SZ		GENMASK(7, 0)
-> +#define RMI_FEATURE_REGISTER_0_LPA2		BIT(8)
-> +#define RMI_FEATURE_REGISTER_0_SVE_EN		BIT(9)
-> +#define RMI_FEATURE_REGISTER_0_SVE_VL		GENMASK(13, 10)
-> +#define RMI_FEATURE_REGISTER_0_NUM_BPS		GENMASK(19, 14)
-> +#define RMI_FEATURE_REGISTER_0_NUM_WPS		GENMASK(25, 20)
-> +#define RMI_FEATURE_REGISTER_0_PMU_EN		BIT(26)
-> +#define RMI_FEATURE_REGISTER_0_PMU_NUM_CTRS	GENMASK(31, 27)
-> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_256	BIT(32)
-> +#define RMI_FEATURE_REGISTER_0_HASH_SHA_512	BIT(33)
-> +#define RMI_FEATURE_REGISTER_0_GICV3_NUM_LRS	GENMASK(37, 34)
-> +#define RMI_FEATURE_REGISTER_0_MAX_RECS_ORDER	GENMASK(41, 38)
-> +#define RMI_FEATURE_REGISTER_0_Reserved		GENMASK(63, 42)
-> +
-> +#define RMI_REALM_PARAM_FLAG_LPA2		BIT(0)
-> +#define RMI_REALM_PARAM_FLAG_SVE		BIT(1)
-> +#define RMI_REALM_PARAM_FLAG_PMU		BIT(2)
-> +
-> +/*
-> + * Note many of these fields are smaller than u64 but all fields have u64
-> + * alignment, so use u64 to ensure correct alignment.
-> + */
-> +struct realm_params {
-> +	union { /* 0x0 */
-> +		struct {
-> +			u64 flags;
-> +			u64 s2sz;
-> +			u64 sve_vl;
-> +			u64 num_bps;
-> +			u64 num_wps;
-> +			u64 pmu_num_ctrs;
-> +			u64 hash_algo;
-> +		};
-> +		u8 padding0[0x400];
-> +	};
-> +	union { /* 0x400 */
-> +		u8 rpv[64];
-> +		u8 padding1[0x400];
-> +	};
-> +	union { /* 0x800 */
-> +		struct {
-> +			u64 vmid;
-> +			u64 rtt_base;
-> +			s64 rtt_level_start;
-> +			u64 rtt_num_start;
-> +		};
-> +		u8 padding2[0x800];
-> +	};
-> +};
-> +
-> +/*
-> + * The number of GPRs (starting from X0) that are
-> + * configured by the host when a REC is created.
-> + */
-> +#define REC_CREATE_NR_GPRS		8
-> +
-> +#define REC_PARAMS_FLAG_RUNNABLE	BIT_ULL(0)
-> +
-> +#define REC_PARAMS_AUX_GRANULES		16
-> +
-> +struct rec_params {
-> +	union { /* 0x0 */
-> +		u64 flags;
-> +		u8 padding0[0x100];
-> +	};
-> +	union { /* 0x100 */
-> +		u64 mpidr;
-> +		u8 padding1[0x100];
-> +	};
-> +	union { /* 0x200 */
-> +		u64 pc;
-> +		u8 padding2[0x100];
-> +	};
-> +	union { /* 0x300 */
-> +		u64 gprs[REC_CREATE_NR_GPRS];
-> +		u8 padding3[0x500];
-> +	};
-> +	union { /* 0x800 */
-> +		struct {
-> +			u64 num_rec_aux;
-> +			u64 aux[REC_PARAMS_AUX_GRANULES];
-> +		};
-> +		u8 padding4[0x800];
-> +	};
-> +};
-> +
-> +#define REC_ENTER_EMULATED_MMIO		BIT(0)
-> +#define REC_ENTER_INJECT_SEA		BIT(1)
-> +#define REC_ENTER_TRAP_WFI		BIT(2)
-> +#define REC_ENTER_TRAP_WFE		BIT(3)
-> +#define REC_ENTER_RIPAS_RESPONSE	BIT(4)
-> +
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-Minor nit: Everywhere else, the flags bit definitions indicate
+Remove initializing SEV/SNP functionality from PSP driver and instead add
+support to KVM to explicitly initialize the PSP if KVM wants to use
+SEV/SNP functionality.
 
-OBJECT_FLAG_xyz
+This removes SEV/SNP initialization at PSP module probe time and does
+on-demand SEV/SNP initialization when KVM really wants to use 
+SEV/SNP functionality. This will allow running legacy non-confidential
+VMs without initializating SEV functionality. 
 
-inline with that should this be :
+This will assist in adding SNP CipherTextHiding support and SEV firmware
+hotloading support in KVM without sharing SEV ASID management and SNP
+guest context support between PSP driver and KVM and keeping all that
+support only in KVM.
 
-REC_ENTER_FLAG_xyz ?
+The on-demand SEV initialization support requires a fix in QEMU to 
+remove check for SEV initialization to be done prior to launching
+SEV/SEV-ES VMs. 
+NOTE: With the above fix for QEMU, older QEMU versions will be broken
+with respect to launching SEV/SEV-ES VMs with the newer kernel/KVM as
+older QEMU versions require SEV initialization to be done before
+launching SEV/SEV-ES VMs.
 
+v2:
+- Added support for separate SEV and SNP platform initalization, while
+SNP platform initialization is done at KVM module load time, SEV 
+platform initialization is done on demand at SEV/SEV-ES VM launch.
+- Added support for separate SEV and SNP platform shutdown, both 
+SEV and SNP shutdown done at KVM module unload time, only SEV
+shutdown down when all SEV/SEV-ES VMs have been destroyed, this
+allows SEV firmware hotloading support anytime during system lifetime.
+- Updated commit messages for couple of patches in the series with
+reference to the feedback received on v1 patches.
 
-Rest looks fine to me
+Ashish Kalra (9):
+  crypto: ccp: Move dev_info/err messages for SEV/SNP initialization
+  crypto: ccp: Fix implicit SEV/SNP init and shutdown in ioctls
+  crypto: ccp: Reset TMR size at SNP Shutdown
+  crypto: ccp: Register SNP panic notifier only if SNP is enabled
+  crypto: ccp: Add new SEV platform shutdown API
+  crypto: ccp: Add new SEV/SNP platform shutdown API
+  crypto: ccp: Add new SEV/SNP platform initialization API
+  KVM: SVM: Add support to initialize SEV/SNP functionality in KVM
+  crypto: ccp: Move SEV/SNP Platform initialization to KVM
 
-Suzuki
+ arch/x86/kvm/svm/sev.c       |  33 +++-
+ drivers/crypto/ccp/sev-dev.c | 283 ++++++++++++++++++++++++-----------
+ include/linux/psp-sev.h      |  27 +++-
+ 3 files changed, 248 insertions(+), 95 deletions(-)
+
+-- 
+2.34.1
 
