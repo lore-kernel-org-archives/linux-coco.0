@@ -1,71 +1,70 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23EE1DED4C
-	for <linux-coco@lists.linux.dev>; Mon,  6 Jan 2025 19:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116811DF998
+	for <linux-coco@lists.linux.dev>; Mon,  6 Jan 2025 19:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736190535; cv=none; b=K/+uRocUrtTWYqc/hQBECkxn1J+lvEISPihrW+YLPHMMFRxoFyOBM0Xv//kexp5vPaenUsHnobz3gAqQWNQId0kL94G+xDrCTZk4CrJr2Q9f+ibWRdOLY4wOyvFAQGt3Jr6pFMQ2C9F90qAcMD+z7c3dpiwEKMhtJ3xV4Mb+v5Q=
+	t=1736190902; cv=none; b=HNBl8j+zTuEvP5Zjwr1wTdXB38KsLCrFl71H4MPkP8nIKalUof6G7+XGCglEnPkZW6+6GUbjgIzM3vmrUwyuFiCd1j3nwBYoeA+k10qRX49chXN03G+EtgZCTQYqPt8co5l22VdDp0S3FrMdshcYZnI3SlrQhBuMwrXVy/F60Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736190535; c=relaxed/simple;
-	bh=d8IFcpPqpi8j+hDN/5XCv39i3O3L1ryXcw792Dxz0/8=;
+	s=arc-20240116; t=1736190902; c=relaxed/simple;
+	bh=pWFPI8QJJNsIr4V6BgsoBxzzDcG87tMmwTYxt6RmSrU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p+y31I+7E/1yHTR0rtMhdCXF0niBgusHdmMQ6IkOH3VHjOB/v7WEDqFP/t7B61Az5bz0mjtiMjaEmlkKEnW+Ohs+kR4rHd6miKJdaTXhABvjZ6KyVDThVfLLYuQIvCQ7o9VPRbV9VQP0kHmaFue5Bd4hA7JOB272ThkDKIcKbPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nBbht9RK; arc=none smtp.client-ip=209.85.218.52
+	 To:Cc:Content-Type; b=nDU4TFm1IT6tinaEpkvtCF43yrXSHEa/2om7TO5JQJhKfegCtpxSjqhY1CN48v6b/8vLT4iFSDQOAbydCnElg9V9Tz0tTJmQPmwsgIEkTsfqW9tBxshxyWzv0keSsrD7n5gDHXWyoK0nSaKS/9gngbiMyzTJSHhZWxA5lOMx0h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jwfRqpdY; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nBbht9RK"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-aaf8f0ea963so804803266b.3
-        for <linux-coco@lists.linux.dev>; Mon, 06 Jan 2025 11:08:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jwfRqpdY"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aa67ac42819so2121572566b.0
+        for <linux-coco@lists.linux.dev>; Mon, 06 Jan 2025 11:14:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736190531; x=1736795331; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1736190897; x=1736795697; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d8IFcpPqpi8j+hDN/5XCv39i3O3L1ryXcw792Dxz0/8=;
-        b=nBbht9RKf3uFLTSQFhadnW4QjE3UDHxKbtfGc1Qynz4vG23Zf3jZM9sH6sody4C5JP
-         yUImNO+SAePOPgNoHowp8ZoJNTAgfiySeJtVP/dm4X4ecxdG/xOaponVg1fJeBtCXzZ9
-         sWpbLzF/fB+EEhGiDFNoF47XrhbNVhywk+eIL37ZOljlz/nzxaTESQmzgoGUEZA/m624
-         nnafUxth3/Zd01vSdMXI+oOjyX0wDIOyc+clRHax9kvXPzkfSzgbI8/+Y4LV2qgwVPdu
-         HuuY1JHcpFw+QYtDpZ5tUYgoDr9R79KM+Cz4T8sCh5onLrDkMbQzEz/KG1QISlImxP5D
-         KBJQ==
+        bh=pWFPI8QJJNsIr4V6BgsoBxzzDcG87tMmwTYxt6RmSrU=;
+        b=jwfRqpdY8bwkyhGI2WbkYA49KawKxz6itTSq1NGek8XE6N8eeJL8joH6DevK1hvZWe
+         y7wjAS04r7uFJHXEAo9l0Pl9SIjLMARqnasdP1Y+kH6uLO5Cn47k7ph5mHr+8IHY6UCt
+         d1Jf4ZYs9XKwk//RFN/apL8LI5h+bWnJDa5N4O+aUyrznIUvBvqMT6bzwC7R6QKq7w92
+         Co1jkKvjTCfXsQ+0oQPQa9Z69oX93sohwdupqIvqSIwwqpIJQmNOrXCyLEE3z4mFEmzx
+         ihtPgKHEDkXjehPN1XzKrq5g3gnmsWL2QynosEuwMO+jhPC0w91LhG2tnSztyVnASV5r
+         mrDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736190531; x=1736795331;
+        d=1e100.net; s=20230601; t=1736190897; x=1736795697;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=d8IFcpPqpi8j+hDN/5XCv39i3O3L1ryXcw792Dxz0/8=;
-        b=SQEGmRkfg0JajwLRQ9HwFjLwHYSbm8x4/MfLQS2f0PNlsRhJVUgeqt9y8AuKTgBshA
-         CL+KObO4pXHRvNKzJyibCZjwCULHOa/JUlx1eHS+GovyBmo6GffJDASmij9hntK57/YO
-         cbvC3sC979AA+kEkHti3xNYLrOTFBRo6T3AiVviMotS3jUgqaSGlswYvbJtOAeP7Cudr
-         WoNPf1kn36qcuApTmrFTFcZWEJJcCLU662TmO31iZ8+jjTh1BROr7y1eKg0l9C4eVkoN
-         2GcDhFVTMS9yxgZDv1qV0E4xCNaQwxwZNmWPlGDt45YgBfPo9tQ8kGxhyzchdWJgKHRj
-         p5ZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXNFCiz11E9OzyVah4xzg0xPUMxzY5yTwQ4iB8TSpliuOcdXTgxkxbKJEhFNv2odkN1deOe8l3VmMZC@lists.linux.dev
-X-Gm-Message-State: AOJu0YxHHFzytU7ahE0Bujo4plTMYNnxiAcv0WuB1KbmHY8suMjPXgkq
-	4eWTIeokcF0VieLlkwHv6llUm4d7VTLAFiSYJXqdZ2+9cuhTTDOkycaLUGTQdexOzA/+VR6v3pD
-	NG4x+1oc0mXEzOHuUNPt52IS8ZxY5w+nhwd3v
-X-Gm-Gg: ASbGncs5uu8lYnzMaxuF2t2dyDkUtnz11k5zQdfcBRLcWSIPZgid/vphg/hG/EWrft1
-	xRGaBphUfUBHA6cNHBjAAkLENWHkeK7+HI8Nodyo=
-X-Google-Smtp-Source: AGHT+IGcQaUm2xusETP245F3UmHTIFSyoDHcBqk2tnwBwiaufDKBsyp+BjJtK+E4o8YHQV3okUTIH8pylljhKcy7Pl8=
-X-Received: by 2002:a17:907:d87:b0:aa6:7933:8b33 with SMTP id
- a640c23a62f3a-aac2ad82d0bmr6409005766b.15.1736190530983; Mon, 06 Jan 2025
- 11:08:50 -0800 (PST)
+        bh=pWFPI8QJJNsIr4V6BgsoBxzzDcG87tMmwTYxt6RmSrU=;
+        b=GuZ04xfpzZVWynbnf1HHYuYVfjsAN9Ntv2XES+u7xv3utlC5OmKOFNUG0u9ROzsKEv
+         GlINB1Cre6Exv9b3JOZCFlJRoNMwMhXjg06ssbK1NWHZrW+6aNBkwg+hmP8lccpHWWlc
+         D6XU7bUA/Olbl986NLjEKKOoRfTX/uYsfupwa6WoY5cu0+zkRqUzMJcRPGmildVoWpfU
+         aYqOcxb8j60lBUAwlXrLd7fJvSKH71Gw9c8XHsNPolrlIVD0AuVrdcTaBu3bDrIW2+Xo
+         wkn/bHj9z23ZclTZLMxBVrqCjE/twQwOjoYsjit5+616io+FJi6vUWbtCmlIEsrkYe3K
+         K2eg==
+X-Forwarded-Encrypted: i=1; AJvYcCV7peelApbtD+FkDH297J3mmhRf1DVSY71D74jZW9FyPNI6vFMU5OCAMlFChR9q+UEpcVf7nQCUjxaa@lists.linux.dev
+X-Gm-Message-State: AOJu0YxySnKB3GGsHI/86G+edLi1AwXX2FazQbUqDS8xiB7I3Ra/1SU1
+	xhzKmaT15HIZSCK8Nb1YgLHG6pG9IQpzVY09hU7x/omtD0+H7AtFw7E0HkXmS2dn+OXnHEHwbYW
+	Hq2iIzAs6Oa9Y+ZDPZs4p4EvItnDou8+uUrUz
+X-Gm-Gg: ASbGncutf6Vzd3KrfOQCmqSOSpzawUrx890VUXHZ27KVfzHbzk7gPBUp9BI0vTveFxz
+	O68ANmcObVzUeS9xZrnqwXDNM1/GkM7Qu4DAMpqU=
+X-Google-Smtp-Source: AGHT+IFQF+5hodEi32H1hrqQbRqo4lGqqJT4JUu9venDeqnG5Z/fmBuRxtxtizB6jozSHAAECXR5Acsg+MTVa4cBYlM=
+X-Received: by 2002:a17:907:8dce:b0:aae:df74:acd1 with SMTP id
+ a640c23a62f3a-aaedf74c300mr4344217066b.11.1736190897042; Mon, 06 Jan 2025
+ 11:14:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1735931639.git.ashish.kalra@amd.com> <674affc649968994f95b6259f162d5f0732b102c.1735931639.git.ashish.kalra@amd.com>
-In-Reply-To: <674affc649968994f95b6259f162d5f0732b102c.1735931639.git.ashish.kalra@amd.com>
+References: <cover.1735931639.git.ashish.kalra@amd.com> <da32918b84ad6d248a0e24def7955c0912c9cce3.1735931639.git.ashish.kalra@amd.com>
+In-Reply-To: <da32918b84ad6d248a0e24def7955c0912c9cce3.1735931639.git.ashish.kalra@amd.com>
 From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Mon, 6 Jan 2025 11:08:39 -0800
-X-Gm-Features: AbW1kvZ5-G9CNDDevePk78j3h9GxJgbYj_mnqJjsDLSApjXGAyO5ptX7OVqMJcw
-Message-ID: <CAAH4kHaiU8W7zb5oEWghrHTC2XvC4e__cD+6pYMprH9c=iddUA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/7] crypto: ccp: Register SNP panic notifier only if
- SNP is enabled
+Date: Mon, 6 Jan 2025 11:14:45 -0800
+X-Gm-Features: AbW1kvYLvnLWYWHAYDSxy7Fc949x5JRieReC9MaIJohfifoZer-rKc9QHEboxOU
+Message-ID: <CAAH4kHYsK8Uc2WePxfpPm=hwCybrABTjJ5Cw8rRGJ8UyAyE3Vw@mail.gmail.com>
+Subject: Re: [PATCH v3 5/7] crypto: ccp: Add new SEV/SNP platform shutdown API
 To: Ashish Kalra <Ashish.Kalra@amd.com>
 Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
 	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
@@ -81,17 +80,10 @@ On Fri, Jan 3, 2025 at 12:01=E2=80=AFPM Ashish Kalra <Ashish.Kalra@amd.com>=
 >
 > From: Ashish Kalra <ashish.kalra@amd.com>
 >
-> Register the SNP panic notifier if and only if SNP is actually
-> initialized and deregistering the notifier when shutting down
-> SNP in PSP driver when KVM module is unloaded.
->
-> Currently the SNP panic notifier is being registered
-> irrespective of SNP being enabled/initialized and with this
-> change the SNP panic notifier is registered only if SNP
-> support is enabled and initialized.
+> Add new API interface to do SEV/SNP platform shutdown when KVM module
+> is unloaded.
 >
 > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-
 Reviewed-by: Dionna Glaze <dionnaglaze@google.com>
 
 --=20
