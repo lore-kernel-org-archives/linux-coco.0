@@ -1,120 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EBA21507F;
-	Thu,  9 Jan 2025 09:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E3A1714D7
+	for <linux-coco@lists.linux.dev>; Thu,  9 Jan 2025 11:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736414909; cv=none; b=RXHK+d5fXMTuLPEyT2B8k2JirmeamU81KoWPgMp1/a/1fsc0nXWHwtfGwgU8maVxy6ovlraqoe1uXvSdXtzcFNxtRIU2KIDVHNP41ZPPr18q4aj1auN5qSwQguXAVfiG5l8xk+9VCUM6KgFdmy5J1gXZGXnhnFD0qpewSXKVpD8=
+	t=1736420878; cv=none; b=Pb1kYg2E1aybsr1AxjJKXVZZvacoMiOBvWG+tc+L67BxD2O0DOqOhCPSxZ7dm/iMXHUMyQrMW9d03iNjog/MJ43cgJWzS+NovXcEdm95Z+EqJ/LTB61LU8sOzB5EzZB8+3ICX0i+Vkzsg2p7pXSQlKxoVLafKMfPBrndQUxRk7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736414909; c=relaxed/simple;
-	bh=cm/GOqwwiMkALA/fEFsX5hEEy5V6SjOqxswcdV/STbM=;
+	s=arc-20240116; t=1736420878; c=relaxed/simple;
+	bh=+rokNR1TBRe3TqEAQHJ6WAVWiY++bf7dkHnY6VnhOIw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QHPeDzZLgTrT2B51v5SkyfeOKejyWbvJqma+6O86jYv8srn6Q3L8U0IDYsLP9YC7wrHlKVy1J1rzE6P4uEhFBN3KNJudNfPkUwFGorYjTX8Ey+4Btj/5yTJQlIoivG9ioA3USAyC0JPbrrmJpvXYZlfgIuyypCh0J6VTmx/6M4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XxSyn6Ok; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=RF+iIrWXS7HHBc7Ax2C05DYifstAsCKNKcXvSC1zoBg3lZSJNOnrFyDPI60nU/QodTpt0XXKT5VrJ5Gp65Q87BRRimdFz8EKTeeqLrxBuWJdNUgux2ZN6J+nP8po3LUAXq0gp76GaEvHCuMsuU6oGWZq70yCJXThxzi1sssB4Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yu8QvwhI; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XxSyn6Ok"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807A9C4CED2;
-	Thu,  9 Jan 2025 09:28:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736414908;
-	bh=cm/GOqwwiMkALA/fEFsX5hEEy5V6SjOqxswcdV/STbM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XxSyn6OkLmGCUGT46Xejk0oVc9wYD6k8fTUvHOcwReKi7cu6apM1Vv1rk43TPDSbX
-	 7sksEqWG8naX3qZ+x3+Ac6FeG0lmDUVJPikfxBnc5gug7Hx8qjQxIgvULeiBnFWXuj
-	 SM8vT7SquKvEx0eHIPKAsmANxGan3rbJGW9vVoaVZqc3tkai/PWNcix/6rQRChz9Nb
-	 2KoIvEiL7LeXPhq2jWy/Yhkp7s+tJ3Ly3EX1EZxh9Cs3SAjKPyzxFcQ05qLBYB3Y2W
-	 yr50Zso/lxP8NEHsbimRm8FzQti0ZSbgPIyYUmWNhduiWnACP6D+kuhmH+FRBFL4ZS
-	 onQxs8GNPbFsw==
-Date: Thu, 9 Jan 2025 11:28:23 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yu8QvwhI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736420876; x=1767956876;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+rokNR1TBRe3TqEAQHJ6WAVWiY++bf7dkHnY6VnhOIw=;
+  b=Yu8QvwhIklD6R96Mo7/pLl+Thr9iUG/xh7+neZft4Dg3puHijwxlPlNN
+   Bed5JeIu0qiiZv8VCsTogUZDgpVots6HFfjl79N5sMt3AJ3z4SPX5xliG
+   Q7nLLoTfA5+N+lh2LnWKZpd64i099vsXdA8lI33iP8uT7h31TLzo85r2H
+   XJ9klZSxB5u5EkMHi8xQhCCYxuZw88wOZkgmqxxtgRv10mgRJk2+ZcG4S
+   b6I4Q2puj+jVLXKExq6S4lQwEkcx2fkjz5nAaZNHq8KanC27TaMSiYsbW
+   bHbPgA+S693JnVqTB/GSXy8Bh9Ls4HMv33tG4FetKmmggp5hP3TKR9Qg1
+   w==;
+X-CSE-ConnectionGUID: pxb994srQ3KSKG70tzOtqA==
+X-CSE-MsgGUID: hmgj1JivS/WdruIMZy2xGQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="48090746"
+X-IronPort-AV: E=Sophos;i="6.12,301,1728975600"; 
+   d="scan'208";a="48090746"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 03:07:56 -0800
+X-CSE-ConnectionGUID: JZV1fD2DSIei0Kb+5rkS+Q==
+X-CSE-MsgGUID: U75bsEzcRwOUOMGJwatAdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="108432058"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa003.jf.intel.com with ESMTP; 09 Jan 2025 03:07:51 -0800
+Date: Thu, 9 Jan 2025 07:06:48 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
 Cc: Jason Gunthorpe <jgg@nvidia.com>, Christoph Hellwig <hch@lst.de>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	Leon Romanovsky <leonro@nvidia.com>, kvm@vger.kernel.org,
 	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
 	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
 	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
 	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
 	yilun.xu@intel.com, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com
+	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
 Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
  kAPI
-Message-ID: <20250109092823.GI87447@unreal>
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <20250107142719.179636-2-yilun.xu@linux.intel.com>
+Message-ID: <Z38FCOPE7WPprYhx@yilunxu-OptiPlex-7050>
+References: <20250107142719.179636-2-yilun.xu@linux.intel.com>
  <b1f3c179-31a9-4592-a35b-b96d2e8e8261@amd.com>
  <20250108132358.GP5556@nvidia.com>
  <f3748173-2bbc-43fa-b62e-72e778999764@amd.com>
  <20250108145843.GR5556@nvidia.com>
  <5a858e00-6fea-4a7a-93be-f23b66e00835@amd.com>
  <20250108162227.GT5556@nvidia.com>
- <0e7f92bd-7da3-4328-9081-0957b3d155ca@amd.com>
+ <Z37HpvHAfB0g9OQ-@phenom.ffwll.local>
+ <Z37QaIDUgiygLh74@yilunxu-OptiPlex-7050>
+ <58e97916-e6fd-41ef-84b4-bbf53ed0e8e4@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0e7f92bd-7da3-4328-9081-0957b3d155ca@amd.com>
+In-Reply-To: <58e97916-e6fd-41ef-84b4-bbf53ed0e8e4@amd.com>
 
-On Thu, Jan 09, 2025 at 10:10:01AM +0100, Christian König wrote:
-> Am 08.01.25 um 17:22 schrieb Jason Gunthorpe:
-> > [SNIP]
-> > > > For P2P cases we are going toward (PFN + P2P source information) as
-> > > > input to the DMA API. The additional "P2P source information" provides
-> > > > a good way for co-operating drivers to represent private address
-> > > > spaces as well. Both importer and exporter can have full understanding
-> > > > what is being mapped and do the correct things, safely.
-> > > I can say from experience that this is clearly not going to work for all use
-> > > cases.
-> > > 
-> > > It would mean that we have to pull a massive amount of driver specific
-> > > functionality into the DMA API.
-> > That isn't what I mean. There are two distinct parts, the means to
-> > describe the source (PFN + P2P source information) that is compatible
-> > with the DMA API, and the DMA API itself that works with a few general
-> > P2P source information types.
-> > 
-> > Private source information would be detected by co-operating drivers
-> > and go down driver private paths. It would be rejected by other
-> > drivers. This broadly follows how the new API is working.
-> > 
-> > So here I mean you can use the same PFN + Source API between importer
-> > and exporter and the importer can simply detect the special source and
-> > do the private stuff. It is not shifting things under the DMA API, it
-> > is building along side it using compatible design approaches. You
-> > would match the source information, cast it to a driver structure, do
-> > whatever driver math is needed to compute the local DMA address and
-> > then write it to the device. Nothing is hard or "not going to work"
-> > here.
+>  So I guess my first question is, which locking rules do you want here for
+>  pfn importers?
 > 
-> Well to be honest that sounds like an absolutely horrible design.
+>  follow_pfn() is unwanted for private MMIO, so dma_resv_lock.
 > 
-> You are moving all responsibilities for inter driver handling into the
-> drivers themselves without any supervision by the core OS.
+>    As Sima explained you either have follow_pfn() and mmu_notifier or you
+>    have DMA addresses and dma_resv lock / dma_fence.
 > 
-> Drivers are notoriously buggy and should absolutely not do things like that
-> on their own.
+>    Just giving out PFNs without some lifetime associated with them is one of
+>    the major problems we faced before and really not something you can do.
 
-IMHO, you and Jason give different meaning to word "driver" in this
-discussion. It is upto to the subsystems to decide how to provide new
-API to the end drivers. Worth to read this LWN article first.
-
-Dancing the DMA two-step - https://lwn.net/Articles/997563/
+I'm trying to make exporter give out PFN with lifetime control via
+move_notify() in this series. May not be conceptually correct but seems
+possible.
 
 > 
-> Do you have pointers to this new API?
+> 
+>  If mmu notifiers is fine, then I think the current approach of follow_pfn
+>  should be ok. But if you instead dma_resv_lock rules (or the cpu mmap
+>  somehow is an issue itself), then I think the clean design is create a new
+> 
+>  cpu mmap() is an issue, this series is aimed to eliminate userspace
+>  mapping for private MMIO resources.
+> 
+>    Why?
 
-Latest version is here - https://lore.kernel.org/all/cover.1734436840.git.leon@kernel.org/
-Unfortunately, I forgot to copy/paste cover letter but it can be seen in
-previous version https://lore.kernel.org/all/cover.1733398913.git.leon@kernel.org/.
+OK, I can start from here.
 
-The most complex example is block layer implementation which hides DMA API from
-block drivers. https://lore.kernel.org/all/cover.1730037261.git.leon@kernel.org/
+It is about the Secure guest, or CoCo VM. The memory and MMIOs assigned
+to this kind of guest is unaccessable to host itself, by leveraging HW
+encryption & access control technology (e.g. Intel TDX, AMD SEV-SNP ...).
+This is to protect the tenant data being stolen by CSP itself.
 
-Thanks
+The impact is when host accesses the encrypted region, bad things
+happen to system, e.g. memory corruption, MCE. Kernel is trying to
+mitigate most of the impact by alloc and assign user unmappable memory
+resources (private memory) to guest, which prevents userspace
+accidents. guest_memfd is the private memory provider that only allows
+for KVM to position the page/pfn by fd + offset and create secondary
+page table (EPT, NPT...), no host mapping, no VMA, no mmu_notifier. But
+the lifecycle of the private memory is still controlled by guest_memfd.
+When fallocate(fd, PUNCH_HOLE), the memory resource is revoked and KVM
+is notified to unmap corresponding EPT.
+
+The further thought is guest_memfd is also suitable for normal guest.
+It makes no sense VMM must build host mapping table before guest access.
+
+Now I'm trying to seek a similar way for private MMIO. A MMIO resource
+provider that is exported as an fd. It controls the lifecycle of the
+MMIO resource and notify KVM when revoked. dma-buf seems to be a good
+provider which have done most of the work, only need to extend the
+memory resource seeking by fd + offset.
+
+> 
+>  separate access mechanism just for that. It would be the 5th or so (kernel
+>  vmap, userspace mmap, dma_buf_attach and driver private stuff like
+>  virtio_dma_buf.c where you access your buffer with a uuid), so really not
+>  a big deal.
+> 
+>  OK, will think more about that.
+> 
+>    Please note that we have follow_pfn() + mmu_notifier working for KVM/XEN
+
+Folow_pfn & mmu_notifier won't work here, cause no VMA, no host mapping
+table.
+
+Thanks,
+Yilun
+>    with MMIO mappings and P2P. And that required exactly zero DMA-buf changes
+>    :)
+> 
+>    I don't fully understand your use case, but I think it's quite likely that
+>    we already have that working.
+> 
+>    Regards,
+>    Christian.
