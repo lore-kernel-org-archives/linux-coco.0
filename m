@@ -1,77 +1,71 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2042.outbound.protection.outlook.com [40.107.237.42])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2048.outbound.protection.outlook.com [40.107.92.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5C678F24
-	for <linux-coco@lists.linux.dev>; Wed,  8 Jan 2025 16:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6348B200120
+	for <linux-coco@lists.linux.dev>; Wed,  8 Jan 2025 17:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736353354; cv=fail; b=T5W0EIJgjl0ohKhxu1I85rJlaJu0rH70SSGSE6QnldrmQ7EZY9snJNYjSOXExaCEs1N8erpDX2YDGHgTQcbu1qgVQ/kIBwGp1bm3Sd8ggwVyd5gfe24TmotIAiW2JkuPMeamTdL6IzlTJ0aLdyQ7DXPSIUkgZkcZmtQzbqH9teA=
+	t=1736356967; cv=fail; b=YaNf8eUO9ryDw365Nko+EeyjFYxY7TqbY1zMljsXxguFdK3Yh95HBLPtCiyz+YgweJgrWOGiUmtThXoeHf8IXG5UMJEgJWXTMJbl4H8XCMa2K9GwEtZyVLDbfR13Qm67Q7NY4rSrZOAlFkVIsMTMRTugV6f7HAD6AUnApt3sqKY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736353354; c=relaxed/simple;
-	bh=Mp0uXXdzNyEXT/tJByq13bi9WNciXs3qPzQ6goy/5Bo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WxKPcWrNHnKkCXbkYSlZ41vxSl292PGvzYzLC63Biu083zMpdnEDH4aE1ZZDiQBwxuPQSuCXS6YF9aRVNLcfMbH0JsLoPmJUY1MTtyBorrBOVDh1xK+lyyF3X99PgEP4uZ+DCPKf4gyxJVHhzXwfiQ0/H0sYezEj8pGIFEPC1Qw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=e2Wb1pKN; arc=fail smtp.client-ip=40.107.237.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1736356967; c=relaxed/simple;
+	bh=K5pRZyaQVrq5sN983w960lMAH1717n7S7GHy/5v8aro=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=iI713tydIr/JzWillRbMUWi8e8KgRuEPO2cvjdwhmd+aJIUhnggn4k61T+7Uqs9g3PCIhvB0t4bfPeKZbnqKs9kKHOV7x08p2/YNby02oyFHZzQdLKEQwYqV6bvvEk49tap9vgpJgWdsLleqYxTcDOgC0xXsors47p/zSgib8WQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Trbeyz4Z; arc=fail smtp.client-ip=40.107.92.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="e2Wb1pKN"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Trbeyz4Z"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q2GUQzfpkwYzU5zW6JlX1Ujfs7eicBiSLFLqRbkccndnOrOMBB+OIXrt1jgQpj5dK0DgED16rKKetCUaovCIlLp2EW8Jb2d48XvwDEI5i92MFjJz+2ki4M+iguHcS86MZU7BP7WiNqz/v7JIqikXJ5ajlgt5Km9zBiZu//lQGLqGFWPIse07swcpPcMojXc7cd0Uv3GeybREjeHgHZBpnBnFRq32I0C7ex+R/fErMmAEoiRk62pxKpvNRk3xxwqRD5SiOxIJBiGXmOw1CmZIMNyumX7FcfrrRwJgEL2ZjQR8WTKmNq2r+A+b1jbKLQqZikFPLztqEQLDK1u9taMFAw==
+ b=iwJ69r8Rjm20QPlUhh9KVgu5RSJDVOMHGh3xgl3TImRZV17QwKpmm1cp6UmERqer7FqQ3DwoIz6qgDwvxyxSGTsXPT35SHHta5PmLNxXNujSkGXWa2VmIR24KTxEWbZdmnfDIF39iEVvAP2er+cbDck6cKazCAg+WCWFB3kJhKXCs4E189cTRAjKI0upOqj2szrXoe/RZ2I685nC4sZ8yDgVY7+WKCjQqhvh5yiIb8hea91iTPhH9uqlmd6RDPxgC2ySIcGj3x/mg/ZS4QTXL/y6YLuVcg01vM9hDuPsO9lAo5zBMca3/SCF7UtpGtR4KxdI6XXyEhw0jiwbuEa3gw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5GesDgy0BNBWQ2W8iEqHsc7GO71w5C30Qiby8vVgc8Q=;
- b=cCBFelm5hwgD9ck1sRhFdIwHUi8Jk/NGK6J3cbXAouYFr2Jx1oUlxgM89msHTjU087Y2oKEJy5MN8a2CjeFpAxDoba9AerFkM73Ky5iefi3Hzse0EYXDW4NSZoaLIv0jNQYuSRItuyPcnSiu3BIyFzkG2iJdeAi1dk4SsoAlmoVfQNbSBxbRrOUUrb0J8rbaiPDPOLjX1wlMI8KSRAYxIdhzVAByXXcdXtk9kW0RkFK82MFZRgTIpZdUyCj9dsOop22MB8OOIxIVa3XpvZn25IjX2pfpRfIXBRCOtPFMimrDXYsQFDkYAXIVXyXEWjm/CH5r42V5HEn5bExeYw08IA==
+ bh=IptLKqlFO9DDWkT+N6Tn0CJdwIjR7DBchPu/pwHJAt8=;
+ b=DBnEINkgrSx2mGPA4QW+PtZPLLvYCwfLobrP0g0rvdl9FVL/GZs19e9ADh2uiCNFba1nSKcnzW4ZkMkHsbK+nkdNRpcyOeMnv3/3ZLLAB5IMffhuFSex+eTkwJyH+rB8fTVNzhXqKaC3sx8kM+pA//0FbGsVPlvcdBQm2fdoVkZuLRYAnJgKYGcNFIh0S4KCzUHs3X2/aB0hd3os1WPfztFMEVwj7KPgl3Mxunq1ZF8qf3ExX3n8Tq+2XdOKgk94ZbtondtHoS6/EK36ap6Nx4IPFHbhJmrxoDpcmq73qn2dh9kUhFVoz2KMzMhfn36sCsQldVXCZGkG8HYpS7JV5g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5GesDgy0BNBWQ2W8iEqHsc7GO71w5C30Qiby8vVgc8Q=;
- b=e2Wb1pKNG5ooPa2wli80ohT1VigVzIwQbaht/n/fFWfaSDE40ciW8cDDXa0jqKlH7sD0fUItEyoS23A69yGYXwkq00DH2jfAb5giDlHA3ShBUmJr6r0ZyZpUjNlzcgZwbjptxODOJssqCOAhSULNOwmfZFgDjVWRa+o7gK4QHs5QgAzMh8QeJ0eDsNc1cgVF4+GVO6wJrUpV1nlI03Repb9Q4vWSoXkPLJrmPFGRNZCvYdmLPeCXrtZxRKvjumDef6TO0fumNpeWlHzI7BtGjwRCj2aC6BKRtIKXWgZtgFCnHbtgF6v0dz30m/68YltGyKd++f4YpIF/q6NwitzOsw==
+ bh=IptLKqlFO9DDWkT+N6Tn0CJdwIjR7DBchPu/pwHJAt8=;
+ b=Trbeyz4ZDdlHGynOZeaH28GVvPIEaAM/uhkmpsQrc0MjQCD7GjkCba28xNDR+hNRhmuz2q+QeMGUimocivS7qto30YeAl+57YMGEZ2RaMpnqcCUpVti1hwv3HnWHVtlK4Q7RORct0iJ++oA+MdUDcSM9j83IJJIusHzEMO8WzsA=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by CH3PR12MB8210.namprd12.prod.outlook.com (2603:10b6:610:129::19) with
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by CH3PR12MB8902.namprd12.prod.outlook.com (2603:10b6:610:17d::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Wed, 8 Jan
- 2025 16:22:29 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8314.015; Wed, 8 Jan 2025
- 16:22:29 +0000
-Date: Wed, 8 Jan 2025 12:22:27 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
-Cc: Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com
-Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
- kAPI
-Message-ID: <20250108162227.GT5556@nvidia.com>
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <20250107142719.179636-2-yilun.xu@linux.intel.com>
- <b1f3c179-31a9-4592-a35b-b96d2e8e8261@amd.com>
- <20250108132358.GP5556@nvidia.com>
- <f3748173-2bbc-43fa-b62e-72e778999764@amd.com>
- <20250108145843.GR5556@nvidia.com>
- <5a858e00-6fea-4a7a-93be-f23b66e00835@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5a858e00-6fea-4a7a-93be-f23b66e00835@amd.com>
-X-ClientProxiedBy: MN2PR14CA0012.namprd14.prod.outlook.com
- (2603:10b6:208:23e::17) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+ 2025 17:22:42 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e%7]) with mapi id 15.20.8335.010; Wed, 8 Jan 2025
+ 17:22:42 +0000
+Message-ID: <8adf7f48-dab0-cbed-d920-e3b74d8411cf@amd.com>
+Date: Wed, 8 Jan 2025 11:22:39 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v3 6/7] KVM: SVM: Add support to initialize SEV/SNP
+ functionality in KVM
+To: "Kalra, Ashish" <ashish.kalra@amd.com>, seanjc@google.com,
+ pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ john.allen@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net
+Cc: michael.roth@amd.com, dionnaglaze@google.com, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-coco@lists.linux.dev
+References: <cover.1735931639.git.ashish.kalra@amd.com>
+ <14f97f58d6150c6784909261db7f9a05d8d32566.1735931639.git.ashish.kalra@amd.com>
+ <6241f868-98ee-592b-9475-7e6cec09d977@amd.com>
+ <8ae7718c-2321-4f3a-b5b7-7fb029d150cf@amd.com>
+Content-Language: en-US
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <8ae7718c-2321-4f3a-b5b7-7fb029d150cf@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN6PR2101CA0007.namprd21.prod.outlook.com
+ (2603:10b6:805:106::17) To DM4PR12MB5070.namprd12.prod.outlook.com
+ (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -79,283 +73,202 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|CH3PR12MB8210:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6281252e-5ad8-492f-e7ae-08dd3000a547
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|CH3PR12MB8902:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7884ad6-e089-4dfe-b149-08dd30090efc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Um1CajQyWmVVYVFGU0srV1VlemFCaEJraWtUdmpvZWQ0Q0cvdzJWNGxlOW1Z?=
- =?utf-8?B?cHVoaFFXRldpM0tKQnZOVE9XRkI2dEdpVzZhM3NNSHN3d0dkU29kOTJVeHU0?=
- =?utf-8?B?aWloYXdQYU5vZm1ZUmFaekNsTDZQOFRGM2hWQ3M5Y0plNTRjQW83YkZWcjJG?=
- =?utf-8?B?SDQ4QkFBNTFRelYvQlEybmZxTmkxUVdla0tTQ2E1dXpvZVk1VytnSTgxUFhC?=
- =?utf-8?B?WnpqVjJ1ODh4K3pjcmtqTTdwQUxtaWNEZGU4TVN2UDRJTnorc1dvWUpJdnFm?=
- =?utf-8?B?RzBzdE1hKzYwRWlZWjF2OTluUVVWd1kzMG51cnI2QXBmeXZGNVdjYTI4R3o3?=
- =?utf-8?B?UEc2ZUMwaXF0SjJTSHJKZzBvY2ZqTUtnV0ZZeUVrL1pJa2lnL3RVR1U3RGNo?=
- =?utf-8?B?KzQ0NmpkVGwvUGZaMklEL3JmMGcxSWlWQzY1azRBZHZFWU1tVHVaVS9pbXVK?=
- =?utf-8?B?R3BJdVVIc3g0T2lRbHpVMGt4SDluem5sWU90RnVMRGFRQ1JXaGJzY3dGSnBj?=
- =?utf-8?B?ZUlWWXludkJuQ2U1L3ZFRGlWbGZqK3JCL21peDJKclFPMDMyRU9tUGUrQlB2?=
- =?utf-8?B?R1VTTXFwQjhxQUhWc2dKSWk5a01mSm4xV1hjV3RFYjZ0eHk2OTlldGRBYXhw?=
- =?utf-8?B?djRtMW9RRkhrWUdndCs1NmVzUURSNU5KU0pkWTlJdVlhR3IyRzF5MEVCcGNJ?=
- =?utf-8?B?ZVVsQzhkNEpJaTdCMGdyN21yZUIvQ0Jxa1ZIL3BmS05CSGN1M2ZsN1l0d252?=
- =?utf-8?B?VXQ3Zk5nN0ltL1FTVVNTeXdsczFvRFZSQ3pycEVIL2x3WlFSOEZnRVl6a0lN?=
- =?utf-8?B?SHBSejlLOXFtblRHUnVSS0JWVkwrVnJCTVIxNHdETyszMkRPbFBhY1FyWXh6?=
- =?utf-8?B?VUxCUnh1bHdCR3NZMnlqRmk2UFpBUHNDN1IzY1RXcjJRbUFwbEc2QVh5SlNW?=
- =?utf-8?B?R1RqVjRHWVFKMDVyK0F3ZFQwYk1HRGpRTFZZMzlrWTh2VzRtamtaMzRGSFdR?=
- =?utf-8?B?SHpFcjRpb2pWWTc0NzRKWFFlRk0waVNZYkRCTy90R1dxQW9GaUlxc0l3Vkt1?=
- =?utf-8?B?Tkc4THovcHFUOW8vTlcxYVpjQnp5OUdWSHpTTEcwR3JBV1d4eEZsS1FqTXZM?=
- =?utf-8?B?OVBMMVJ0TkgrYVRNMlJGMmpLUHNjR1hQS2I3czZXZnV4aUtHUFBJOERvcnZM?=
- =?utf-8?B?RWJSQ2RWSXJ1VzgrQWxkdVJCemI5b25xR2xQT1Nka29xd3NBaWM4cmp1S0Nx?=
- =?utf-8?B?aTVUdTBjc3hGVVQrYUEwa2tzaFRvcnh1eHYvTkpzY21aZU8wdk1NR0pieCtM?=
- =?utf-8?B?YVJzYWRBUmFOZVBMb2kyN0N5anRvYVhzK29jL3ZuUUpnVHFORytMUFhVeHFR?=
- =?utf-8?B?NnN4UVN0UEJlUC9QNVFKT0VUdlBjRkxmZElzMzNGQTV2bU9XdmJjVSs3MFdH?=
- =?utf-8?B?VUNuOEFMbWh2emtjWndhRnNNeFhtTEdqVWN3M0IxeVVWWGxueXh3cS95YjI2?=
- =?utf-8?B?cEY0TXErVm9IMXlOUjROZDBLSVJFVm45RTAzNXpTdnY5eUNWMFVPV3JOQi80?=
- =?utf-8?B?NHZSdnpmWk5vdE03Y2p6OGlpaHZ5SjFLUkloajUxTTU0U2hsdlZ3RnozR1JO?=
- =?utf-8?B?cFIwbDlpM1pqV2FlMWpJTWVWR00rMmQyN0l3N1hBamNudzQrQmpGbmxhTlZW?=
- =?utf-8?B?djlCSUY2UEwyajF1cWMyL2xLWjZrUVV6bWpsRUxGNHJmUk53NUJiZG9obTBT?=
- =?utf-8?B?STdBRE0rK3M4SWNhVGlwb0dpWUhUb0xpaGRydWw5dXY4VDRid080QklZNkRC?=
- =?utf-8?B?bmY2Qzdxc3kzV29TbUQ3WmVJWWw0MEtpNGNlaUwwNitDQU90YjR2K1NTWklI?=
- =?utf-8?Q?30L18OH6k42u1?=
+	=?utf-8?B?WTZlYmR2ZVZReUx4NXpuQkx5U0c0ZHYzc25QelB1T2hUN1lCVVBVMjJwd2h4?=
+ =?utf-8?B?TU5IUW9GUmFSU3NQTDFrU3lzd082aklpUVFUak9ZZWRwaWU2eEJHYllJVExW?=
+ =?utf-8?B?akhUY1U2dGNOb0Z1NkVsM1pvcTJqZzZHeXp6V2NkN0Jya1V6VTdMQUVkMGVW?=
+ =?utf-8?B?aFJxSHBFZCtTM2JBWS9QSWVmSmZrZjQ5ZndCdUtmY1A4d1FZaFI3UkMyanpX?=
+ =?utf-8?B?aHoxQnJUQ0pIR2FJSit2VzhkUlVPUkNhd2ZyekVUUW1DSUFEMk5mS2lsYjVM?=
+ =?utf-8?B?Uzc2VkMrQzU4LzBtcHNxSFBNRlVDV3gyMmZ0ajFpZkJhcitxSk1KRnRUMlFt?=
+ =?utf-8?B?UlMxeTMzZDlsejJJYURkcEpqMk94RTR3U1E5SHZvdmtyLzRSS1NoTFU1bm1R?=
+ =?utf-8?B?Z200ZHZsVW9WRGxISko3a3BTMmNOeWg4YnVXR1ZvU3h4K2ZlSEtSREFrSm5C?=
+ =?utf-8?B?d3d5SHRLTWlLNXVNUUlPT1BvQjdHZGRtWWloRnpoNzREaTlVeGtIbStDUE52?=
+ =?utf-8?B?ODFSR2xYUWp4QkdWRlUyUzRWR2ZNQ1dISGVCdGpRUC9sUkl4WVJVRmlWQ0th?=
+ =?utf-8?B?Y3ZFOHVmUlZxRlBKdFR3RUltY3cwWG5JZDJ1bUI4YXJORm4zeDF4ZkZNYmgy?=
+ =?utf-8?B?TXlCMVJLUHhqbWxMWUwzdzdrS3dsZ1lRYUhScHY4T04xRFRCYVJUWGFwNldX?=
+ =?utf-8?B?bTVmTTI2TlNTV0NrNFZMdCtyeVlXaHBTYnQ5WHhhTG9sRldQUEVtTDRtMWww?=
+ =?utf-8?B?cHE2RVhDc000Rk1VWDEwZWJLbU5zN0ZWY2UzenAyVkpoR3JnTVg3NE45Zys1?=
+ =?utf-8?B?SlMveWdtbHl0Z3Q1cnhnZFhEeEZsT1RtYU9GVHA3NHVwLy9rNTVrUXUwMjJ5?=
+ =?utf-8?B?Wk5kYWlITFY4S0lIZmJOeG5laFpoUTd5aXpBUzdTN3Z3QzZieTV6ZDBKQ0ha?=
+ =?utf-8?B?ZGVtS0NBVW42bTUvem8wMGRxRmk5RVE5OUJEbDBPOC9xZWhtNnI1V1lzd3pZ?=
+ =?utf-8?B?VWVaL0UzVVlHT1lpak15U0V6UEtnbXN6cFFWam5SWUg2c1dwRlE1SVRqbk82?=
+ =?utf-8?B?Q1g2Rk5qcUhLcDlvdXVyaWxrYWFDQmV2SDlTa2FleTJiWnNLY2ZFVWVrVVJr?=
+ =?utf-8?B?V0NWT05tcm1SY2VSVkcvbnBUajVGSy9PcDM4bmlOVHUxQldaczNMbEpnZXZn?=
+ =?utf-8?B?ZG82VzN0ZkV1aTRXMktNa3A5UEN4QUJ2NkhmMGxPWU5HZEFqRDJCL3pMME5n?=
+ =?utf-8?B?NzgydlVGR0pFd0UrZEQyTU9nM3dWRVAyRGNBRGFRdE9ST21Mak5WMWliT1Fx?=
+ =?utf-8?B?cHVLU253aHFLcE9VMUZoS1MzbHkvZ0orenBxV0dwc2wzRThQR3AzNExxMFRU?=
+ =?utf-8?B?TkZGWlF1Y2xaR3lUMjJrUXNBRHhmL3hCNUFGUi9wM01BTXlnQnhremJUY284?=
+ =?utf-8?B?ZXVQb3cvUWNSd09DM2lGMUV5VjVlU2VXV1kwSU55ZWVVczVPRHBMN25ZVEdD?=
+ =?utf-8?B?eTRwOGE0RGVjWFhiVDZ5NkdZakJXV2MrUDdsWXRid1pUcllDNXhkcVZZbC9y?=
+ =?utf-8?B?aVFCU0hJRDNKbUhzdXpJaUJnZlZ2WlNWaXZDOGorLzlEMWVPMWl6KzFUQ2h6?=
+ =?utf-8?B?bTlST0hvR0ROMUxNdkV3aXpVOTVxTVlJTlNiZmI2THZlWG9oeU0vYVVsNmtm?=
+ =?utf-8?B?ZDd5UkJMOXFyR3ZoTXUvSGdJVXh2TGV2ZUJ1cytNYWhSZG0wVXZ2MlVqWUlx?=
+ =?utf-8?B?dG1NSlFBYzVxK0JFWnR1YlhsdnZaTm1FcTdiNStBTVg3SDBEZThnNWtZYVY1?=
+ =?utf-8?B?bEJ0VVhyeHNHeGdndy9yQ3BmSjMydU5OUHY3d2ZNNm8wUTFhZWo1a1JmZDFn?=
+ =?utf-8?B?K0ZYMWRKUEF6cUdwNHZaTDJiNEJuRW1yVU0rUGZvQTRLRllWOC9lSHpBWFVa?=
+ =?utf-8?Q?LmDf+4GC/nE=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZTREalNDTVl1T3lybHp5bVRwWnhXSk1HTlJ2OHFMMThKMzNiRmYvcXdrMHln?=
- =?utf-8?B?d1hrNWVKU0ZoUTdwV3phKzNERGpRSi8zR3I3b2FIb2xxTjNxWDYzSFFzQmZ6?=
- =?utf-8?B?WVd0ZFNIUGxFdDJnMjRzNlZpTkZhNDBtZXU3YkZqKzQ2dGluQ0pWdUFvdXJT?=
- =?utf-8?B?M0NQa2w0dTVtNDZhTHJiOEliN25mOFhJc1d6dGdZRHJUU0wrTUx3MUgwSHY2?=
- =?utf-8?B?OHRaUjEva2MyTlIxbGkwR1BJMmRFTjhwdTBseXFQdldnVG5STTdEWDRtU2c0?=
- =?utf-8?B?Qk9ZdGFybzBSZ3NvRENXZWxhS3hvRmQvOXdOZ1hFdDN3R1Z4Ny93RlI5dFVu?=
- =?utf-8?B?YWlZMXZpR0hpMndEeXI3VkZwZUtURXhRcmJGckF2VzQzWGplYVY4QmJZS1pP?=
- =?utf-8?B?OEFoWjdkTG9YUUFjOU4xMHYrdDRtVEZiRHA0TEo5MU4yOEd5VXZNRFRacVc2?=
- =?utf-8?B?WmZzYUlHbW5zMHNmS1g5MjJKNFVHUHlnR2hjVWZsa0UyVHNmWVRzSE9kQmJx?=
- =?utf-8?B?QU5PQXlhZHNHZmkwQXV5L1ZyRmJkYnRIZTV1cmFkN2xIVlBhTjlURzBNMDRa?=
- =?utf-8?B?NTFpRzB6THFvVWJFKzBrZlVVSWVaQ25yQk5oTmZMM1FnbDlpWU03K2E0cW9E?=
- =?utf-8?B?MkFmKzJESlRRWmpudGpKeEkvWTlhaHRSMXFpZjAwcFkwQlRJVlhYUVJQeW0y?=
- =?utf-8?B?eEx1ZWxPMkRaMWtDVGlGaFFxaGZ6Sjh5QUFNclpWYUJTSjJlR01BV04rV0gz?=
- =?utf-8?B?Q3VxRGtHcVR6QUtTZU1rcEdBKzF2a3EzRlRLUkxIRjZ0bkt6dkRVb1gyYks4?=
- =?utf-8?B?Z0trd3VIampBTzJPNHl1NTk2TVI0Ylc3VWRKR25UTlJCbnEwcVBCZU15MitF?=
- =?utf-8?B?aUx0MWRuMU5IbmJzaFlMa0VBNVhBUWFSMDJiS2R5S2gyM0tkWWMvRHVFeUh6?=
- =?utf-8?B?eFgyUFpLOVVISFVBUG5DeGZhbDhtTXVTRWswTERJZGFpeUEyR2pBY0VoVVFP?=
- =?utf-8?B?cDNlcWN4eFZpcnF2N3ZvWnVQUlMvei9zVzgvVkc5cEdhb0ZxcWJLY0xKdXZv?=
- =?utf-8?B?OWxTMHRTYzR5U1k3NUF5NTF3cGtnaGt6Q1ptSngyMzJIUnN5ekNDK1E3YVdy?=
- =?utf-8?B?NmdESWt5V1VaYlB2Q2pQUEdvRG1IazBCVEZNOGppNU9YOFpHWnllZThNSTJr?=
- =?utf-8?B?MWJrL0gzeWZIRnNBVkdES1BUNDBiN2k3S0hLMWpKRjFkaVRKYVNJZU15bUNL?=
- =?utf-8?B?RVhSeDRvUXNwS00xV3FBbERiMzBJOStETHRyREN0RkdpYWNhd1QxR045MXVm?=
- =?utf-8?B?bFU1SzBUbWNraUhtSTVoREJ4YWZYNVpHVzVVeENCQzNjK0hZMngxOWloSHVS?=
- =?utf-8?B?SUFIUEoxazU2dWVxOWc5ZkdyT1ZFYlFqVnZkZWpzRlZPWXRrWXBJNnVScHhG?=
- =?utf-8?B?cG1JWnBhazA0bXMvemJFdWNIa1VZNHpoL1NBRllNK2tJRGlYSXUvYVd2dDNw?=
- =?utf-8?B?b09iU0xvRERYQ3NjMmtvWWVUVG00ZGFDOVk2dzR6QnhRSnVkTzBVdmV1S2tx?=
- =?utf-8?B?VFQ0MkhWUTJvZ0xveGFLbk1oVU9yUkppVW9QZ3hhcVNhdGF0bDJiUVdpOElW?=
- =?utf-8?B?RXlmQkdpU1FoTm1QekxGMnZmVmZRR1VBNlU0ak9rY2EvZE5IcStNbHJOcjhy?=
- =?utf-8?B?ZVNFbjVHdlJIN0J6ZU9yWmt0eXI2U1BLdVdSenpFcVpQK0wzcUo0eml2N0lT?=
- =?utf-8?B?TGZOTTdxWjRFSFZiUGZpdkxZa2xWTXJLR0tZendleCtiV2VPZ0JwYmloM3RF?=
- =?utf-8?B?S2Z6Z0VZcnFFaWU4NXpTRmlXNmtST2x0SS9WRHNtbGVZd0dWdm43aVVqNlh2?=
- =?utf-8?B?eW5XZSt0U3RSQkVuZ0N2ZGsrVnk0TmVqU2tMUHNuSEo5M1htckIraXpBOFlp?=
- =?utf-8?B?TlFTZTZ6SWMweVdiVXZFVjlSa1dsTmdjcnVzYk5PWjhadzNwRU9rYlRRK2gy?=
- =?utf-8?B?ZlZZQzZMT1ZYZElGdGhCTUV1V0VSdGRCVmsrSkR3TTdMTG1zMTVGRmMrZWlq?=
- =?utf-8?B?MDdHOTlVNUJ1UzdOMHBsa1NzUEYzYlNma3BzUUVFMHBvOFVGRTNXUjR3eFJC?=
- =?utf-8?Q?KvBgU8m8DVum26D7+tnYoq8E4?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6281252e-5ad8-492f-e7ae-08dd3000a547
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+	=?utf-8?B?NW82dDZXMUdwZXdwdkFOeUNBTVFVeDBaL0VFYUdMcWhqczBMMFFCSEF3Zlpn?=
+ =?utf-8?B?ZzhxSzNhazBVcjlXbktTUlg3YkpaMmpleDFSVTVFZG1YMENCMzNsbStrUHQx?=
+ =?utf-8?B?d1VVTTBJalVBZ05MRTFKMitpd2gvM01UZ2N5aTlPMVZCUXIwdi9lbE9Gb0pl?=
+ =?utf-8?B?NGVzRzliRFpQY01JQTRHbStvRWowUmVjbkhzRTJaR21tREoyVnRlbXRlN2RE?=
+ =?utf-8?B?Y2NmSktETGdweFdOSGxLOWpKekY5TkNNQzlrakFDMVVpMmVLckVlWFpJMENs?=
+ =?utf-8?B?cVl5NFVjZ1hGTStiOG53bis4R09OSkh6bEJvVXJWZklydStFUXp1czZXUFY0?=
+ =?utf-8?B?N2huZytsZlY2V2EwaFlieThFRUhyd0YraTNORXlSV043MmZpbEcyRXJmaEhz?=
+ =?utf-8?B?U3BYQmNja2Uza3FGZUdvTW45NVB0ZU92d2NSMlUvSENlRXBNYnl5S0VSY3BQ?=
+ =?utf-8?B?aDZJL01qb1dVWUY5TG5KNWdJT0JGN2h5VVpyTnhjdGxPVy9td1RyTlJ0MHJC?=
+ =?utf-8?B?bEJzRGlyTmRFU3B0TVhjTlU5U1B0K09NQzVBSmUzeEM0dnlaVFBHYTNnOU95?=
+ =?utf-8?B?S0xRU0tqd3hpbFlXeXpLRnZIcXl3RzFHeHdwOGF1YjNsMVlJQ3NJVVlidUQx?=
+ =?utf-8?B?NUxrWVNEaW5uSHF1QlZhOVdjOUQ4YXFvUk1BZ0o5Y2FzMmd0dkdqWGJwRDkv?=
+ =?utf-8?B?cTZ5Zm96Vk5RLzFObEpERHFrYklSZ1dsTWtlNHoxR0pjeFdSOUtScEt3cy9n?=
+ =?utf-8?B?VHhOVmJZNW83cVFRSHpNSlYzMlRrMVRpUFF5YytDR21iek10WFJVTnp0Y1ZQ?=
+ =?utf-8?B?SGdEaCtxbTd1L3VQbFBkNEk3SVJ2b3EwNTg3MWR5Ty9GczcvcmVMajBNUytW?=
+ =?utf-8?B?Mk4yRStCTExLM2VsN2JXbVIwMFE3QllkTUF2ZXhPMnE2RktsMExZSW9Fd3NK?=
+ =?utf-8?B?K05LbUFUcUg4SVN1blNVWm5XT3U2RjNpdy9iVzRhR2JEYVdFeGhKWE04ZGtl?=
+ =?utf-8?B?K1lwZk52MEJtb1VNQUh3bFpzMklHNFI5YzdMTEtxWWlLVGczeTlkaWZWQU8y?=
+ =?utf-8?B?SUlYdmN1T05uV3NhNHMxRU5TZ01lRFdBbXByWFYrYjZqenUxR1d1VDZNTzVQ?=
+ =?utf-8?B?U1N5c0RhRnBNT0dZWEJmOVdJOTVJQ29iVi96YStnYVhZQVdFNW5VYmVFOUZy?=
+ =?utf-8?B?RHRmYWVvR3FhWG01dDlObTFxVE5Hc1d1Zzh4M1QvRkM5Lzl4Z3MzT1ZNNG9j?=
+ =?utf-8?B?T1Q3VTNZaVlNUVVWb09TRndCemlwMXd6bktUOUNNM25kaGhsR0ZIVVBoaDNa?=
+ =?utf-8?B?czFhVjZhcEwra2EvcExJWG5vR2d6M0YvWjFIcmtEU3pBcjRMWWpCTFlkMGR0?=
+ =?utf-8?B?M00veVcxNTdkbjY2dGp3Qkt5SjV4V3BKUkhxbktBdll3VUhPYVdNdUxYNVI2?=
+ =?utf-8?B?NmV2eTFWbWtvRDM2cGVDUGlrSC91bk9TNldKS0Zsc2lRUExtRmJEbXova1BE?=
+ =?utf-8?B?WHB6YWRnREUzdkh0Q25jK2dzck5OdzVsRlB4RWpHQmpZT3llbHdpNFVyVzlP?=
+ =?utf-8?B?dW1qZHo3SHNIdVVGTVBHdU5PRzVBZ3h3Slk2a0xaSW9pbTREanZ6RzlvWEdt?=
+ =?utf-8?B?eDh1VjEveFo0RWpoeUdNa3c5VzQ2ODg4eXllRWRUUFV1Rnora1JnMlZyVjVM?=
+ =?utf-8?B?R0orL1lUZ2VmVEpXV0s3WlI4L2pyWWxHUXNFNngvV1RQYXdkQ0VxK1JGbEMr?=
+ =?utf-8?B?V3ZrZzRvOW5kZVNjQnMrNndhSTN1MVhzdDlaYUpnbVdoMjl1UGJIOHd1K0d6?=
+ =?utf-8?B?R0JoQkI0SEI5alljZ1ZVZnN3Ym8ybFQ5Wk1XNVliK1lVVXdEZ0Y2aUtodGZP?=
+ =?utf-8?B?Uk5ZOUIvYzNPN1ptR2JrTXltMUdlQThMZElnbkQ3ZlYrUERpRGxTbmgwa2ZV?=
+ =?utf-8?B?cmYwTEUxd3RoeVNlWlc1SkNNWnB6Sy9UK0NiYldhZUxXWDlOaXFXbERPWW1z?=
+ =?utf-8?B?OHNnSmQzVE0wSTV0SCtGTGJST2xQYzEvT1I5ajdZSjRySFFuMi8vMmU1VTJH?=
+ =?utf-8?B?N2NJTzBJbEx4b3dWeTc3RGxpZnpOdElTRHlxWHhsSVVQMTBvY3E0cC9vYkE0?=
+ =?utf-8?Q?t8PwlJZsuS61/waK1RMElCGv9?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7884ad6-e089-4dfe-b149-08dd30090efc
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2025 16:22:29.0180
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2025 17:22:42.3579
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YpFogEqzModddpCOR+VwbFCVUvNj/JA9dmKW7VpLzsYeX6uh+wOWwenWRddCNT66
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8210
+X-MS-Exchange-CrossTenant-UserPrincipalName: iRD8Gd7Ka/HKY8E+uJy514VnfYp3FdxuNbIvjHw0WzFv7xhsvCFXJBxQ47//IAmRxJB1esNV39ZeyRXvaN+sYw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8902
 
-On Wed, Jan 08, 2025 at 04:25:54PM +0100, Christian König wrote:
-> Am 08.01.25 um 15:58 schrieb Jason Gunthorpe:
-> > On Wed, Jan 08, 2025 at 02:44:26PM +0100, Christian König wrote:
-> > 
-> > > > Having the importer do the mapping is the correct way to operate the
-> > > > DMA API and the new API that Leon has built to fix the scatterlist
-> > > > abuse in dmabuf relies on importer mapping as part of it's
-> > > > construction.
-> > > Exactly on that I strongly disagree on.
-> > > 
-> > > DMA-buf works by providing DMA addresses the importer can work with and
-> > > *NOT* the underlying location of the buffer.
-> > The expectation is that the DMA API will be used to DMA map (most)
-> > things, and the DMA API always works with a physaddr_t/pfn
-> > argument. Basically, everything that is not a private address space
-> > should be supported by improving the DMA API. We are on course for
-> > finally getting all the common cases like P2P and MMIO solved
-> > here. That alone will take care of alot.
+On 1/7/25 12:34, Kalra, Ashish wrote:
+> On 1/7/2025 10:42 AM, Tom Lendacky wrote:
+>> On 1/3/25 14:01, Ashish Kalra wrote:
+>>> From: Ashish Kalra <ashish.kalra@amd.com>
+>>>
+>>> Remove platform initialization of SEV/SNP from PSP driver probe time and
+>>
+>> Actually, you're not removing it, yet...
+>>
+>>> move it to KVM module load time so that KVM can do SEV/SNP platform
+>>> initialization explicitly if it actually wants to use SEV/SNP
+>>> functionality.
+>>>
+>>> With this patch, KVM will explicitly call into the PSP driver at load time
+>>> to initialize SEV/SNP by default but this behavior can be altered with KVM
+>>> module parameters to not do SEV/SNP platform initialization at module load
+>>> time if required. Additionally SEV/SNP platform shutdown is invoked during
+>>> KVM module unload time.
+>>>
+>>> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+>>> ---
+>>>  arch/x86/kvm/svm/sev.c | 15 ++++++++++++++-
+>>>  1 file changed, 14 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+>>> index 943bd074a5d3..0dc8294582c6 100644
+>>> --- a/arch/x86/kvm/svm/sev.c
+>>> +++ b/arch/x86/kvm/svm/sev.c
+>>> @@ -444,7 +444,6 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+>>>  	if (ret)
+>>>  		goto e_no_asid;
+>>>  
+>>> -	init_args.probe = false;
+>>>  	ret = sev_platform_init(&init_args);
+>>>  	if (ret)
+>>>  		goto e_free;
+>>> @@ -2953,6 +2952,7 @@ void __init sev_set_cpu_caps(void)
+>>>  void __init sev_hardware_setup(void)
+>>>  {
+>>>  	unsigned int eax, ebx, ecx, edx, sev_asid_count, sev_es_asid_count;
+>>> +	struct sev_platform_init_args init_args = {0};
+>>
+>> Will this cause issues if KVM is built-in and INIT_EX is being used
+>> (init_ex_path ccp parameter)? The probe parameter is used for
+>> initialization done before the filesystem is available.
+>>
 > 
-> Well, from experience the DMA API has failed more often than it actually
-> worked in the way required by drivers.
-
-The DMA API has been static and very hard to change in these ways for
-a long time. I think Leon's new API will break through this and we
-will be able finally address these issues.
-
-> > For P2P cases we are going toward (PFN + P2P source information) as
-> > input to the DMA API. The additional "P2P source information" provides
-> > a good way for co-operating drivers to represent private address
-> > spaces as well. Both importer and exporter can have full understanding
-> > what is being mapped and do the correct things, safely.
+> Yes, this will cause issues if KVM is builtin and INIT_EX is being used,
+> but my question is how will INIT_EX be used when we move SEV INIT
+> to KVM ?
 > 
-> I can say from experience that this is clearly not going to work for all use
-> cases.
+> If we continue to use the probe field here and also continue to support
+> psp_init_on_probe module parameter for CCP, how will SEV INIT_EX be
+> invoked ? 
 > 
-> It would mean that we have to pull a massive amount of driver specific
-> functionality into the DMA API.
-
-That isn't what I mean. There are two distinct parts, the means to
-describe the source (PFN + P2P source information) that is compatible
-with the DMA API, and the DMA API itself that works with a few general
-P2P source information types.
-
-Private source information would be detected by co-operating drivers
-and go down driver private paths. It would be rejected by other
-drivers. This broadly follows how the new API is working.
-
-So here I mean you can use the same PFN + Source API between importer
-and exporter and the importer can simply detect the special source and
-do the private stuff. It is not shifting things under the DMA API, it
-is building along side it using compatible design approaches. You
-would match the source information, cast it to a driver structure, do
-whatever driver math is needed to compute the local DMA address and
-then write it to the device. Nothing is hard or "not going to work"
-here.
-
-> > So, no, we don't loose private address space support when moving to
-> > importer mapping, in fact it works better because the importer gets
-> > more information about what is going on.
+> How is SEV INIT_EX invoked in PSP driver currently if psp_init_on_probe
+> parameter is set to false ?
 > 
-> Well, sounds like I wasn't able to voice my concern. Let me try again:
+> The KVM path to invoke sev_platform_init() when a SEV VM is being launched 
+> cannot be used because QEMU checks for SEV to be initialized before
+> invoking this code path to launch the guest.
+
+Qemu only requires that for an SEV-ES guest. I was able to use the
+init_ex_path=/root/... and psp_init_on_probe=0 to successfully delay SEV
+INIT_EX and launch an SEV guest.
+
+Thanks,
+Tom
+
 > 
-> We should not give importers information they don't need. Especially not
-> information about the backing store of buffers.
+> Thanks,
+> Ashish
 > 
-> So that importers get more information about what's going on is a bad thing.
-
-I strongly disagree because we are suffering today in mlx5 because of
-this viewpoint. You cannot predict in advance what importers are going
-to need. I already listed many examples where it does not work today
-as is.
-
-> > I have imagined a staged approach were DMABUF gets a new API that
-> > works with the new DMA API to do importer mapping with "P2P source
-> > information" and a gradual conversion.
+>> Thanks,
+>> Tom
+>>
+>>>  	bool sev_snp_supported = false;
+>>>  	bool sev_es_supported = false;
+>>>  	bool sev_supported = false;
+>>> @@ -3069,6 +3069,16 @@ void __init sev_hardware_setup(void)
+>>>  	sev_supported_vmsa_features = 0;
+>>>  	if (sev_es_debug_swap_enabled)
+>>>  		sev_supported_vmsa_features |= SVM_SEV_FEAT_DEBUG_SWAP;
+>>> +
+>>> +	if (!sev_enabled)
+>>> +		return;
+>>> +
+>>> +	/*
+>>> +	 * NOTE: Always do SNP INIT regardless of sev_snp_supported
+>>> +	 * as SNP INIT has to be done to launch legacy SEV/SEV-ES
+>>> +	 * VMs in case SNP is enabled system-wide.
+>>> +	 */
+>>> +	sev_platform_init(&init_args);
+>>>  }
+>>>  
+>>>  void sev_hardware_unsetup(void)
+>>> @@ -3084,6 +3094,9 @@ void sev_hardware_unsetup(void)
+>>>  
+>>>  	misc_cg_set_capacity(MISC_CG_RES_SEV, 0);
+>>>  	misc_cg_set_capacity(MISC_CG_RES_SEV_ES, 0);
+>>> +
+>>> +	/* Do SEV and SNP Shutdown */
+>>> +	sev_platform_shutdown();
+>>>  }
+>>>  
+>>>  int sev_cpu_init(struct svm_cpu_data *sd)
 > 
-> To make it clear as maintainer of that subsystem I would reject such a step
-> with all I have.
-
-This is unexpected, so you want to just leave dmabuf broken? Do you
-have any plan to fix it, to fix the misuse of the DMA API, and all
-the problems I listed below? This is a big deal, it is causing real
-problems today.
-
-If it going to be like this I think we will stop trying to use dmabuf
-and do something simpler for vfio/kvm/iommufd :(
-
-> We have already gone down that road and it didn't worked at all and
-> was a really big pain to pull people back from it.
-
-Nobody has really seriously tried to improve the DMA API before, so I
-don't think this is true at all.
-
-> > Exporter mapping falls down in too many cases already:
-> > 
-> > 1) Private addresses spaces don't work fully well because many devices
-> > need some indication what address space is being used and scatter list
-> > can't really properly convey that. If the DMABUF has a mixture of CPU
-> > and private it becomes a PITA
-> 
-> Correct, yes. That's why I said that scatterlist was a bad choice for the
-> interface.
-> 
-> But exposing the backing store to importers and then let them do whatever
-> they want with it sounds like an even worse idea.
-
-You keep saying this without real justification. To me it is a nanny
-style of API design. But also I don't see how you can possibly fix the
-above without telling the importer alot more information.
-
-> > 2) Multi-path PCI can require the importer to make mapping decisions
-> > unique to the device and program device specific information for the
-> > multi-path. We are doing this in mlx5 today and have hacks because
-> > DMABUF is destroying the information the importer needs to choose the
-> > correct PCI path.
-> 
-> That's why the exporter gets the struct device of the importer so that it
-> can plan how those accesses are made. Where exactly is the problem with
-> that?
-
-A single struct device does not convey the multipath options. We have
-multiple struct devices (and multiple PCI endpoints) doing DMA
-concurrently under one driver.
-
-Multipath always needs additional meta information in the importer
-side to tell the device which path to select. A naked dma address is
-not sufficient.
-
-Today we guess that DMABUF will be using P2P and hack to choose a P2P
-struct device to pass the exporter. We need to know what is in the
-dmabuf before we can choose which of the multiple struct devices the
-driver has to use for DMA mapping.
-
-But even simple CPU centric cases we will eventually want to select
-the proper NUMA local PCI channel matching struct device for CPU only
-buffers.
-
-> When you have an use case which is not covered by the existing DMA-buf
-> interfaces then please voice that to me and other maintainers instead of
-> implementing some hack.
-
-Do you have any suggestion for any of this then? We have a good plan
-to fix this stuff and more. Many experts in their fields have agreed
-on the different parts now. We haven't got to dmabuf because I had no
-idea there would be an objection like this.
-
-> > 3) Importing devices need to know if they are working with PCI P2P
-> > addresses during mapping because they need to do things like turn on
-> > ATS on their DMA. As for multi-path we have the same hacks inside mlx5
-> > today that assume DMABUFs are always P2P because we cannot determine
-> > if things are P2P or not after being DMA mapped.
-> 
-> Why would you need ATS on PCI P2P and not for system memory accesses?
-
-ATS has a significant performance cost. It is mandatory for PCI P2P,
-but ideally should be avoided for CPU memory.
-
-> > 4) TPH bits needs to be programmed into the importer device but are
-> > derived based on the NUMA topology of the DMA target. The importer has
-> > no idea what the DMA target actually was because the exporter mapping
-> > destroyed that information.
-> 
-> Yeah, but again that is completely intentional.
-> 
-> I assume you mean TLP processing hints when you say TPH and those should be
-> part of the DMA addresses provided by the exporter.
-
-Yes, but is not part of the DMA addresses.
-
-> That an importer tries to look behind the curtain and determines the NUMA
-> placement and topology themselves is clearly a no-go from the design
-> perspective.
-
-I strongly disagree, this is important. Drivers need this information
-in a future TPH/UIO/multipath PCI world.
-
-> > 5) iommufd and kvm are both using CPU addresses without DMA. No
-> > exporter mapping is possible
-> 
-> We have customers using both KVM and XEN with DMA-buf, so I can clearly
-> confirm that this isn't true.
-
-Today they are mmaping the dma-buf into a VMA and then using KVM's
-follow_pfn() flow to extract the CPU pfn from the PTE. Any mmapable
-dma-buf must have a CPU PFN.
-
-Here Xu implements basically the same path, except without the VMA
-indirection, and it suddenly not OK? Illogical.
-
-Jason
