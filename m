@@ -1,98 +1,97 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1371724B241
-	for <linux-coco@lists.linux.dev>; Fri, 10 Jan 2025 19:24:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E77924B234
+	for <linux-coco@lists.linux.dev>; Fri, 10 Jan 2025 19:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736537068; cv=none; b=VlNmnkFMAn+17+02YTg/DgSSzQ0FfWEfFpXoiJIb24Zp5CmQUC9ILQot77McohJKqpgISfj5gHsoKQ7ZQJf90kgz/M1iBj9BiKoadSih7tEIdVOgn6IaLJcN6MKWuAkPzWep5XAvwBD3IQ19WZ/e/Sd8LNc/avQesOoPTO+UXuY=
+	t=1736537702; cv=none; b=GHEgrRBM8fC9yF2Hji659tn25e6u+SlDEIbUh16xeHwB7YJQ3U8622DvAG0bwIN5wLls6uGkRPBCGjmjydsvzl28YbHN22uALWDJUcFLuKQErNieHQ/I3DdRgzKw0sY/K76WUvx02ey0f1dCwGfLFEL4FZVtVdr3YCdjsw05pkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736537068; c=relaxed/simple;
-	bh=GAXiVwRl5hX0nr5x2c6GDMtUgYBmYNxhBnIp/PYb1FQ=;
+	s=arc-20240116; t=1736537702; c=relaxed/simple;
+	bh=qsnOLM6HyKJlI9V1EmDU909JMGZm5wjBuBkJfJCbY0M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eUZzgP84Vjbf3dS9m81N/vvvtjKBpT26oCa7imBFgZrhuc1Rz/idX69R+oGX0/RJxebT4Wy5vYZwYRW+I/AvvcVDLYQuOBnFs/She6Ljwq09U55/UpsiMAQUzLHiH6pfIsUuDBAJLPeBOTX3jooEJ2IFOAPE6ChFEt8VU4ZG29I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=PYG+VOVs; arc=none smtp.client-ip=209.85.128.52
+	 Content-Type:Content-Disposition:In-Reply-To; b=m2B28n6ukN1O+7HUj9jQMYXBXWbcbsSvx1vEThzjEc71lFEoMZqFUUtL36Fu1xlCeAjVeAfslR8nzBxX5pDe31ahTtiIjZ3RTxpAKtjL8pdqSfKDtMij8tbQLG2ciyCPpcJrEW10d5f5fwn7hM8XgPOztE9d7JfSosHVEyw2cvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=UrKuREiG; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="PYG+VOVs"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4361f796586so25850795e9.3
-        for <linux-coco@lists.linux.dev>; Fri, 10 Jan 2025 11:24:26 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="UrKuREiG"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-436202dd730so17936745e9.2
+        for <linux-coco@lists.linux.dev>; Fri, 10 Jan 2025 11:35:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1736537065; x=1737141865; darn=lists.linux.dev;
+        d=ffwll.ch; s=google; t=1736537698; x=1737142498; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9ACopzyajfJRcuBL6kkHr9KV+I23S42u7LRA+BIOf1M=;
-        b=PYG+VOVsWEUr6gEHy/IMDKGZtdCT3Df32y97ghBXRCM4ifRMOo3QMJsc7m8YodL+2m
-         F9hTGPF4KogmTTDP4MkyKBGHRjgVUGEnrD9uRcvgQ13Fr8W39+HMSkDWXWMiH474/kqh
-         9xtxXWW8Xb4z4VDuIn+ON/By5bkghOMoscCvQ=
+        bh=7kWAcn2HdAkzhLxO4py5Jy0oNRzwsuvt23AwwagkjAw=;
+        b=UrKuREiG/DO1GeH0GizkgoIEvk5SX3DRZByDqPqvGpjrDnE+K+dX0ka3dL7VSc9JFJ
+         +1caaTcKIjOBq8kElNE90XYalJEsTL9i75zVMTVIvux/Y/RtV+MBniiMsD0QV9Zeov7t
+         YLkvzGLmwLo0zzCjUks8Pi2fKwmkUUNyMEdBw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736537065; x=1737141865;
+        d=1e100.net; s=20230601; t=1736537698; x=1737142498;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9ACopzyajfJRcuBL6kkHr9KV+I23S42u7LRA+BIOf1M=;
-        b=sTbpMH4vlkksG3ws3m/71kLLck+MR1kcIAgOYucq+zYpxg5LMD+n6/yRrJJMRimiuu
-         6r5lXr6N3ufZHrx2RBfTw6xIycqfnZj2kuxTGEnSy08KmOetC7NxoadIe3++gD3W1Z8p
-         JzkCRIma/ELPowqpDT5XSV0yOR+3bKa0scGc5u/WnJrzZYKbggNYrHp771j9tO3AVfA+
-         tzWsqObgbijsti3879uE6JJfvyNmWoOw3sStb2NOom6VAk0Dti1Fiep9JCmCc1tI0Srz
-         2ckx1ibVy6RWCXnuMc98U9t/dDYqP2ShMkkkK2M1XHMBA9hihbqUM+azxF+qHeB0As4E
-         WS8A==
-X-Forwarded-Encrypted: i=1; AJvYcCXIdZU4cE40GBlMOsJauMMWRAfaU2ci5YKX2/jTGqAxEl3tTl1u1AXJmk438vtFLuVrJr51vTbYogVC@lists.linux.dev
-X-Gm-Message-State: AOJu0YyoSWVPfPKQfyrb1pA5k8d60sIo03k5U+BQLOtPeSEtrYrbg4iv
-	6ImGu7CyY8L8hp8lFJxcjavLnr+lEtlxtmCJSGXKO6k9aiyWUl7SEKMJy58frxQ=
-X-Gm-Gg: ASbGncsBkEMJWHoV+rwKI7cDCZ+1NHBu1CVTcHYDJkaQGgQlGkvns2xKb+vZtu9ihgX
-	yIUeqst6TpbuqPell7aLIMMVSCv2Km1yAarCTgwTdryLTGui4+jjC6Ni1hLAIxCh3JpuieJ/FVx
-	UV/AB+MBFnhV2G7rNQeEocsSSfQadDfvDmGGRoPNYBH50mVS0rCRwIUrjhQmgyZh3gmD5KCiIoF
-	ZKGqvs5WyprhWtM1jgAwnkiRThudToT40CWQPlmviujMzp4Em6IjB99QUe2ohsJjYSv
-X-Google-Smtp-Source: AGHT+IGQsKQI4LrL1qdpFjuY9ZWEttHxIv9pv69yZaLOwftdrmmCEXmYM32sp7WuieWtkMyPIHFCuw==
-X-Received: by 2002:a05:600c:a0a:b0:434:a04d:1670 with SMTP id 5b1f17b1804b1-436e25548e3mr2817985e9.0.1736537065429;
-        Fri, 10 Jan 2025 11:24:25 -0800 (PST)
+        bh=7kWAcn2HdAkzhLxO4py5Jy0oNRzwsuvt23AwwagkjAw=;
+        b=fEaxS7C81OEAxnbgQG04+qob4NXl7RknJ4A+xx6/66Y2RildqKhnaQx5/cNXJLdHas
+         aobst5oTOza+zBY+rSEuatWKYVROr4nqzZCyeAIvuDKb8hp5ZdZQFF655ivDIhGiE9Ai
+         uYoUAi+oHCs6xsA+l5ab6XxorBTqKMwfXUIYtrdcLmffnKXHV+WNjSLUPXWqoVqU1z08
+         0qa4fxqI2GWLUsqUvc5wOb7KAgrUF/fNOjb79IlQDJqT8uKgrJNyMpZwnGkJY0Re2OVl
+         saMku3i47lK29z1PZL3iYlwEEjq+caDdFzWuL/KOy3WJLcgDMuik9F3qrY6nDDOIRqua
+         /bZw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJMdykAMTr0q/tmnx09OOWg322ue3M0ORM7u6dyI77zr5kIHzDPgmsv6vsHw7h4qhVks1F1BrIKuV8@lists.linux.dev
+X-Gm-Message-State: AOJu0Yybrdd1sYnYbe8QLn7oTayt9PbDEAolJ36QcF2tj8A+w3OkV14R
+	/BmcbTp7V9tXhrjEy3dUJCshDMIWxay75Ln50HyDeOZe90SK4RNMbGoFwjylAXg=
+X-Gm-Gg: ASbGncusfBFesJEpr3i+0TepZDRaKAo10Rl1OosyC0avzpS+sYq1B2He9rBzd+LRbIJ
+	H4N2mxnua1/z7t/kag6ItUi9QM15PjjCBvZQNtAzXLxS97Yh2ZigGkj8XhmcAvtrbqYuPX3aZCi
+	vhpkOIW0Rt4BxqlJC7dbKupRVCmsqS67lteUu6DKC3P+hcbxhhVTigArM+uu31LFZk635KfQAPp
+	HdVQVaTyWOvMHnnVDdd8YnHZ/sgI2eorRz1JrydpfCmW8ip0vXpBTfHScmNCoJqEF9g
+X-Google-Smtp-Source: AGHT+IEG18CSISXY84VJBWraGNluA4sVqJHq96BnG6t/WiH07yy9ye9bYCNc0ZRatrla1bgxtE/aQg==
+X-Received: by 2002:a05:600c:138d:b0:433:c76d:d57e with SMTP id 5b1f17b1804b1-436e26849f1mr121839695e9.5.1736537698379;
+        Fri, 10 Jan 2025 11:34:58 -0800 (PST)
 Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e37d11csm5313117f8f.16.2025.01.10.11.24.24
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436dd1682e4sm64030085e9.1.2025.01.10.11.34.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 11:24:24 -0800 (PST)
-Date: Fri, 10 Jan 2025 20:24:22 +0100
+        Fri, 10 Jan 2025 11:34:57 -0800 (PST)
+Date: Fri, 10 Jan 2025 20:34:55 +0100
 From: Simona Vetter <simona.vetter@ffwll.ch>
 To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
-	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, pbonzini@redhat.com, seanjc@google.com,
-	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
-	dan.j.williams@intel.com, aik@amd.com, yilun.xu@intel.com,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch,
+Cc: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Christoph Hellwig <hch@lst.de>,
+	Leon Romanovsky <leonro@nvidia.com>, kvm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
+	yilun.xu@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
 	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
 	tao1.su@intel.com
 Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
  kAPI
-Message-ID: <Z4Fz5oiia1JGWIgG@phenom.ffwll.local>
+Message-ID: <Z4F2X7Fu-5lprLrk@phenom.ffwll.local>
 Mail-Followup-To: Xu Yilun <yilun.xu@linux.intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
 	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
-	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, pbonzini@redhat.com, seanjc@google.com,
-	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
-	dan.j.williams@intel.com, aik@amd.com, yilun.xu@intel.com,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lukas@wunner.de, yan.y.zhao@intel.com, leon@kernel.org,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	Jason Gunthorpe <jgg@nvidia.com>, Christoph Hellwig <hch@lst.de>,
+	Leon Romanovsky <leonro@nvidia.com>, kvm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
+	yilun.xu@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
 	tao1.su@intel.com
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <20250107142719.179636-2-yilun.xu@linux.intel.com>
- <b1f3c179-31a9-4592-a35b-b96d2e8e8261@amd.com>
+References: <b1f3c179-31a9-4592-a35b-b96d2e8e8261@amd.com>
  <20250108132358.GP5556@nvidia.com>
  <f3748173-2bbc-43fa-b62e-72e778999764@amd.com>
  <20250108145843.GR5556@nvidia.com>
  <5a858e00-6fea-4a7a-93be-f23b66e00835@amd.com>
  <20250108162227.GT5556@nvidia.com>
- <Z368Mmxjqa4U0jHK@yilunxu-OptiPlex-7050>
+ <Z37HpvHAfB0g9OQ-@phenom.ffwll.local>
+ <Z37QaIDUgiygLh74@yilunxu-OptiPlex-7050>
+ <58e97916-e6fd-41ef-84b4-bbf53ed0e8e4@amd.com>
+ <Z38FCOPE7WPprYhx@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -101,37 +100,113 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z368Mmxjqa4U0jHK@yilunxu-OptiPlex-7050>
+In-Reply-To: <Z38FCOPE7WPprYhx@yilunxu-OptiPlex-7050>
 X-Operating-System: Linux phenom 6.12.3-amd64 
 
-On Thu, Jan 09, 2025 at 01:56:02AM +0800, Xu Yilun wrote:
-> > > > 5) iommufd and kvm are both using CPU addresses without DMA. No
-> > > > exporter mapping is possible
-> > > 
-> > > We have customers using both KVM and XEN with DMA-buf, so I can clearly
-> > > confirm that this isn't true.
+On Thu, Jan 09, 2025 at 07:06:48AM +0800, Xu Yilun wrote:
+> >  So I guess my first question is, which locking rules do you want here for
+> >  pfn importers?
 > > 
-> > Today they are mmaping the dma-buf into a VMA and then using KVM's
-> > follow_pfn() flow to extract the CPU pfn from the PTE. Any mmapable
-> > dma-buf must have a CPU PFN.
+> >  follow_pfn() is unwanted for private MMIO, so dma_resv_lock.
+> > 
+> >    As Sima explained you either have follow_pfn() and mmu_notifier or you
+> >    have DMA addresses and dma_resv lock / dma_fence.
+> > 
+> >    Just giving out PFNs without some lifetime associated with them is one of
+> >    the major problems we faced before and really not something you can do.
 > 
-> Yes, the final target for KVM is still the CPU PFN, just with the help
-> of CPU mapping table.
+> I'm trying to make exporter give out PFN with lifetime control via
+> move_notify() in this series. May not be conceptually correct but seems
+> possible.
 > 
-> I also found the xen gntdev-dmabuf is calculating pfn from mapped
-> sgt.
+> > 
+> > 
+> >  If mmu notifiers is fine, then I think the current approach of follow_pfn
+> >  should be ok. But if you instead dma_resv_lock rules (or the cpu mmap
+> >  somehow is an issue itself), then I think the clean design is create a new
+> > 
+> >  cpu mmap() is an issue, this series is aimed to eliminate userspace
+> >  mapping for private MMIO resources.
+> > 
+> >    Why?
+> 
+> OK, I can start from here.
+> 
+> It is about the Secure guest, or CoCo VM. The memory and MMIOs assigned
+> to this kind of guest is unaccessable to host itself, by leveraging HW
+> encryption & access control technology (e.g. Intel TDX, AMD SEV-SNP ...).
+> This is to protect the tenant data being stolen by CSP itself.
+> 
+> The impact is when host accesses the encrypted region, bad things
+> happen to system, e.g. memory corruption, MCE. Kernel is trying to
+> mitigate most of the impact by alloc and assign user unmappable memory
+> resources (private memory) to guest, which prevents userspace
+> accidents. guest_memfd is the private memory provider that only allows
+> for KVM to position the page/pfn by fd + offset and create secondary
+> page table (EPT, NPT...), no host mapping, no VMA, no mmu_notifier. But
+> the lifecycle of the private memory is still controlled by guest_memfd.
+> When fallocate(fd, PUNCH_HOLE), the memory resource is revoked and KVM
+> is notified to unmap corresponding EPT.
+> 
+> The further thought is guest_memfd is also suitable for normal guest.
+> It makes no sense VMM must build host mapping table before guest access.
+> 
+> Now I'm trying to seek a similar way for private MMIO. A MMIO resource
+> provider that is exported as an fd. It controls the lifecycle of the
+> MMIO resource and notify KVM when revoked. dma-buf seems to be a good
+> provider which have done most of the work, only need to extend the
+> memory resource seeking by fd + offset.
 
-See the comment, it's ok because it's a fake device with fake iommu and
-the xen code has special knowledge to peek behind the curtain.
+So if I'm getting this right, what you need from a functional pov is a
+dma_buf_tdx_mmap? Because due to tdx restrictions, the normal dma_buf_mmap
+is not going to work I guess?
+
+Also another thing that's a bit tricky is that kvm kinda has a 3rd dma-buf
+memory model:
+- permanently pinned dma-buf, they never move
+- dynamic dma-buf, they move through ->move_notify and importers can remap
+- revocable dma-buf, which thus far only exist for pci mmio resources
+
+Since we're leaning even more on that 3rd model I'm wondering whether we
+should make it something official. Because the existing dynamic importers
+do very much assume that re-acquiring the memory after move_notify will
+work. But for the revocable use-case the entire point is that it will
+never work.
+
+I feel like that's a concept we need to make explicit, so that dynamic
+importers can reject such memory if necessary.
+
+So yeah there's a bunch of tricky lifetime questions that need to be
+sorted out with proper design I think, and the current "let's just use pfn
+directly" proposal hides them all under the rug. I agree with Christian
+that we need a bit more care here.
 -Sima
- 
-> From Christion's point, I assume only sgl->dma_address should be
-> used by importers but in fact not. More importers are 'abusing' sg dma
-> helpers.
+
 > 
-> That said there are existing needs for importers to know more about the
-> real buffer resource, for mapping, or even more than mapping,
-> e.g. dmabuf_imp_grant_foreign_access()
+> > 
+> >  separate access mechanism just for that. It would be the 5th or so (kernel
+> >  vmap, userspace mmap, dma_buf_attach and driver private stuff like
+> >  virtio_dma_buf.c where you access your buffer with a uuid), so really not
+> >  a big deal.
+> > 
+> >  OK, will think more about that.
+> > 
+> >    Please note that we have follow_pfn() + mmu_notifier working for KVM/XEN
+> 
+> Folow_pfn & mmu_notifier won't work here, cause no VMA, no host mapping
+> table.
+> 
+> Thanks,
+> Yilun
+> >    with MMIO mappings and P2P. And that required exactly zero DMA-buf changes
+> >    :)
+> > 
+> >    I don't fully understand your use case, but I think it's quite likely that
+> >    we already have that working.
+> > 
+> >    Regards,
+> >    Christian.
+
 -- 
 Simona Vetter
 Software Engineer, Intel Corporation
