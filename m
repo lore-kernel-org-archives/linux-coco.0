@@ -1,168 +1,113 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162F8D517
-	for <linux-coco@lists.linux.dev>; Sat, 11 Jan 2025 00:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B380634
+	for <linux-coco@lists.linux.dev>; Sat, 11 Jan 2025 00:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736556134; cv=none; b=iX4Z/m4zvsJjs6j01pH1O2WlvuF9p6VjZ6NgyMMX5dax2N1i0dTOekiqy8QYdt3SJzuf8PC6dEPu42j5YDAGIWrhyrKMTd4QzZeszJw+88WV72BChe0Y7RxCwbYJTfM077ftIyjpP6JSXdf5VF0nbkjwg1PBC4/ZV9uTe53gm88=
+	t=1736556569; cv=none; b=j2o0FI85ZeYRWToKyK7eZqrd6Gs3kCQjhaKM72P/PA5f3RoPDeb1stXeWuKJE4yEzMw7x17M9hx7iMRsunB4lTFwRNgQXV7PwlhpwpfXd7ZXJxK9FSpeDGcHdC0M7tsyHuuxz+u8HynJ4JYliKqCNgX4VttkigLZOiZmaJJBTUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736556134; c=relaxed/simple;
-	bh=hRD5KbUlL2kRCf11F1yR1V2YcLXONkcm5oTmEpI5QFo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iBG3/VvHGY5Iu1Aiu36KHYdz88gtM9VqsA/6EZokJ+Ek5xiDJPSJKn55N+m+SGXFxLnFJzOa0KbNQL35FaEQQwGYiCufHqij4K4ASykfjSc67JiY1sMd9hggrMyJA4Aj1FYGcksdi1fLk5EPtK3/qtE+QVTRtcpq6G5pT24ndXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZqYZ5G9m; arc=none smtp.client-ip=209.85.218.53
+	s=arc-20240116; t=1736556569; c=relaxed/simple;
+	bh=DqbsPM7pbMq3tNO53LpeaJ86ETg2ScGj8LGDaaUTLJM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=NNQgI2efJZJ9KyylWMeh5Yl88ZtowQN248ZdjHgqc0zER5m6EVXKTAUzX1O4gDQDLeuKtB4aOPI7WhjksLnu7He7i2Sj4ww4BOAbquD+l3yVDXdTrhESN164yMQKocUM1k8M9RN09xLzIVto5acPzdoOXlTlLIzDLFDoIRwYTqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0GKZL/P1; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZqYZ5G9m"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-aa69107179cso504489266b.0
-        for <linux-coco@lists.linux.dev>; Fri, 10 Jan 2025 16:42:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0GKZL/P1"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2eebfd6d065so6692236a91.3
+        for <linux-coco@lists.linux.dev>; Fri, 10 Jan 2025 16:49:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736556130; x=1737160930; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H71gULN/f4ZVIM4QE3DnJcZj1WtlYtK4rRl/zQFrEsM=;
-        b=ZqYZ5G9mvW6hZBFxAM63pxj6vXl+OqBa6TrQH2875Nl0hjRr69o3BidNqGsTMH2mhA
-         IP4RjG6dU5b4hXoUMIFjGRZRRk9XIkGMKsKuz7OZAX5ovfMIV/XJsyasplbthjzPo8K2
-         oJZDYsSCYB9BAguNkY1AiPiWpkMDJ4UlK84SLlXT7ygFV/dK4jDidPLVurD+phvVY611
-         UOVyf7FZrcYEOb0GFrfRXufhghLpRm9tTaGMtdE+2d36iM+LDT762HjEh4Z9SIxI2IPL
-         SR3GOpinBtNRXZ0yH4nkGglBbNPpXLZExbrXJGy7E5Sd8PPbxP5EbrthVW74lZq7xw3x
-         8nVg==
+        d=google.com; s=20230601; t=1736556567; x=1737161367; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YX28d/CEykAYv4b51S4uD+A1lpSwnJPjWn7kTo7F+wY=;
+        b=0GKZL/P19SLEF/aDfsmP70cPJ3m+4oVTaY+t3jK/O6ZtGXXkXpL25X0xQuWXW1z3af
+         XgyKPfuyBX8sRmh+00FHRZuCxHJ0+K02wiQHh2ZXO5XP+6/U/LX4mUf1wLX+ddYf5hdj
+         UcXx9OuKqpRvpK6NwT3JSMcYqpCsvhCZ3oJPnUmWLPK/KEqeafU4De+oa/5NIr4w6vxv
+         7wsYeUzkRG8h5cZIkfZ8YiZ4f6KJeEbT6FRq3AQkdf935Xxkam0BWFYSJgaoDuaSDrsU
+         TBn5uhZCg67/I3/YDRYjdR8BmN5wVEwXzXaYrIlqUNuYD0SLNUxtgIIqmOpIVOUSlq9X
+         ly0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736556130; x=1737160930;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H71gULN/f4ZVIM4QE3DnJcZj1WtlYtK4rRl/zQFrEsM=;
-        b=tr7IEtTTaLkgH1QvTf0f2Ohq0SHbHfkZKuiqEOkgPaPWM0ChYuYHSnYlT7ZwqMiPF+
-         mYFLyz4M1yhRPC3SyICYSpdWYVa37a2S+3r1eZn9fMnYnRJ0Mqx3kyfaZF8KFnF8/kPd
-         eLt2UwgwUrWln6R37y8XMrnYw1OeIpn7cBIiGfFSFxvpec9VaC27vb48xpTQ2zxw7xnN
-         GVI+6mosRQDn735v+Elq076nzxJ72e1PvKplIQNvj9x96rbIDPKTbtkjKaDJDQ32ICL7
-         +m4ygSuh2z/XnfgM8eNos48rUsbm38ytziXtFseSnSY2ThVAFhwceGG6lHxn5YeWWB7e
-         wn4w==
-X-Forwarded-Encrypted: i=1; AJvYcCWAaXbJz1VTlmorjZhUQo3SLK681eddyG8JZ8WyBf7FHfx/i9yAzVixySqg8qtLN0b6eDyeywWrrFdW@lists.linux.dev
-X-Gm-Message-State: AOJu0YwI3VaAgq7U2zYFaIEX0LfraYXBEM663nx2Zrtds2R3UXqWMopx
-	eMlDaiO+qM2cIPqUISXxNRBUGdnIeVM2btcUmV/hDEWe6Y2LiufjWx6Nnd6/zs59yLehCnn6NED
-	49rpPnGEavaPJfAdcYVqC8jZ05tAem1nwZxxe
-X-Gm-Gg: ASbGncuuHH/CuAH1UsMzXv15eDru8IotUaZ27WaEXX5vEJsuLtYuHAYTIjpZEkD3e9+
-	crwkrvGCKh/KaKIih3qjn6DFogTkSwuys960qmQ==
-X-Google-Smtp-Source: AGHT+IHnAcTpkMhnCUpEDsY91lMMXnwtF43O44NyvOYn8vK3nLCx5uflDA4w+bsnKKifCJWnR4f1aVK7tRgiodgVLV8=
-X-Received: by 2002:a17:907:60cf:b0:aa6:88f5:5fef with SMTP id
- a640c23a62f3a-ab2ab6fb426mr1135502966b.32.1736556130359; Fri, 10 Jan 2025
- 16:42:10 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736556567; x=1737161367;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YX28d/CEykAYv4b51S4uD+A1lpSwnJPjWn7kTo7F+wY=;
+        b=jcmD1WJohxRr5MKWRNNohiLLELHTyPFVNKGiQP22Um0EuVtKAQkCQYnUldlLG+U2tG
+         5nkfTp0gOqSbqclUa3NPwAgTXAsdIHUanMy2d9m5b9AmcSad/RY4uRlleLeUxhXTfpoy
+         SPGa972bDouQLVhRa1H7sMb6t0I2KWkTfbzZ9SdiVNAFuCOo1SvVkLYk7DtcT+MXAUXY
+         fhQiRx7/qyiucQcIQWPH93i8AvakjObqlu3P2VH6Z6YTZbttZ7/zbgjjABo8zdBLGAb+
+         IyYLnezHJAHs4xjobtipUeZg0rLLRLVTkeLHB4fb3/Qpkx1I1dU3ND6aQBAjBrfK8Kmp
+         /fdw==
+X-Forwarded-Encrypted: i=1; AJvYcCVxtuMECkySnKay+DRBkbTyt1muFC4BDzMQgMdKU9jBEFJ5ZVZGRpqmoDLBNX1ZeEqw5VoPwkOj0zRG@lists.linux.dev
+X-Gm-Message-State: AOJu0YzbSPaYsYTkp6VRvLrJ/xoRKFnq7tgb41uvtDX6Zr6GJDRPzAoP
+	Sg4W5LtWW/TtGyGEy5sZ2ImwkX8Xu/0cm79RSu4jBzkL0Y02gDfug3eb1GfKxiwQjjnqZeeaTJe
+	Mqw==
+X-Google-Smtp-Source: AGHT+IH361hyEP8ZBxDjRVTWmQZDmlNvVhHg1tXUKZ2PrfsrRNnR2/vcWBj5z0ljoK7+gcYBV3qV4n3VGY0=
+X-Received: from pjbhl13.prod.google.com ([2002:a17:90b:134d:b0:2e0:9fee:4b86])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2747:b0:2f2:a664:df1a
+ with SMTP id 98e67ed59e1d1-2f548e9c9bcmr19626538a91.2.1736556567441; Fri, 10
+ Jan 2025 16:49:27 -0800 (PST)
+Date: Fri, 10 Jan 2025 16:49:26 -0800
+In-Reply-To: <CAAH4kHZn_gtspOisv6gxQiD=JeZbZstQoR68mFCxn34Am76Bdg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+Mime-Version: 1.0
 References: <cover.1735931639.git.ashish.kalra@amd.com> <14f97f58d6150c6784909261db7f9a05d8d32566.1735931639.git.ashish.kalra@amd.com>
  <6241f868-98ee-592b-9475-7e6cec09d977@amd.com> <8ae7718c-2321-4f3a-b5b7-7fb029d150cf@amd.com>
  <8adf7f48-dab0-cbed-d920-e3b74d8411cf@amd.com> <ee9d2956-fa55-4c83-b17d-055df7e1150c@amd.com>
- <d6d08c6b-9602-4f3d-92c2-8db6d50a1b92@amd.com> <Z4G9--FpoeOlbEDz@google.com>
-In-Reply-To: <Z4G9--FpoeOlbEDz@google.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Fri, 10 Jan 2025 16:41:59 -0800
-X-Gm-Features: AbW1kvbtOeKPvMgrARDb9RvsQ9Se6P9Q-W0NbYwxtNZu3a8sopMZf__reaYZRUY
-Message-ID: <CAAH4kHZn_gtspOisv6gxQiD=JeZbZstQoR68mFCxn34Am76Bdg@mail.gmail.com>
+ <d6d08c6b-9602-4f3d-92c2-8db6d50a1b92@amd.com> <Z4G9--FpoeOlbEDz@google.com> <CAAH4kHZn_gtspOisv6gxQiD=JeZbZstQoR68mFCxn34Am76Bdg@mail.gmail.com>
+Message-ID: <Z4HAFmyhw5DeIRBT@google.com>
 Subject: Re: [PATCH v3 6/7] KVM: SVM: Add support to initialize SEV/SNP
  functionality in KVM
-To: Sean Christopherson <seanjc@google.com>
+From: Sean Christopherson <seanjc@google.com>
+To: Dionna Amalie Glaze <dionnaglaze@google.com>
 Cc: Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, pbonzini@redhat.com, 
 	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
 	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
 	john.allen@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net, 
 	michael.roth@amd.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 10, 2025 at 4:40=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Fri, Jan 10, 2025, Ashish Kalra wrote:
-> > It looks like i have hit a serious blocker issue with this approach of =
-moving
-> > SEV/SNP initialization to KVM module load time.
+On Fri, Jan 10, 2025, Dionna Amalie Glaze wrote:
+> On Fri, Jan 10, 2025 at 4:40=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> > > Is there a way to change the load order of built-in modules and/or ch=
+ange
+> > > dependency of built-in modules ?
 > >
-> > While testing with kvm_amd and PSP driver built-in, it looks like kvm_a=
-md
-> > driver is being loaded/initialized before PSP driver is loaded, and tha=
-t
-> > causes sev_platform_init() call from sev_hardware_setup(kvm_amd) to fai=
-l:
+> > The least awful option I know of would be to have the PSP use a higher =
+priority
+> > initcall type so that it runs before the standard initcalls.  When comp=
+iled as
+> > a module, all initcall types are #defined to module_init.
 > >
-> > [   10.717898] kvm_amd: TSC scaling supported
-> > [   10.722470] kvm_amd: Nested Virtualization enabled
-> > [   10.727816] kvm_amd: Nested Paging enabled
-> > [   10.732388] kvm_amd: LBR virtualization supported
-> > [   10.737639] kvm_amd: SEV enabled (ASIDs 100 - 509)
-> > [   10.742985] kvm_amd: SEV-ES enabled (ASIDs 1 - 99)
-> > [   10.748333] kvm_amd: SEV-SNP enabled (ASIDs 1 - 99)
-> > [   10.753768] PSP driver not init                        <<<---- sev_p=
-latform_init() returns failure as PSP driver is still not initialized
-> > [   10.757563] kvm_amd: Virtual VMLOAD VMSAVE supported
-> > [   10.763124] kvm_amd: Virtual GIF supported
-> > ...
-> > ...
-> > [   12.514857] ccp 0000:23:00.1: enabling device (0000 -> 0002)
-> > [   12.521691] ccp 0000:23:00.1: no command queues available
-> > [   12.527991] ccp 0000:23:00.1: sev enabled
-> > [   12.532592] ccp 0000:23:00.1: psp enabled
-> > [   12.537382] ccp 0000:a2:00.1: enabling device (0000 -> 0002)
-> > [   12.544389] ccp 0000:a2:00.1: no command queues available
-> > [   12.550627] ccp 0000:a2:00.1: psp enabled
+> > E.g. this should work, /cross fingers
 > >
-> > depmod -> modules.builtin show kernel/arch/x86/kvm/kvm_amd.ko higher on=
- the list and before kernel/drivers/crypto/ccp/ccp.ko
+> > diff --git a/drivers/crypto/ccp/sp-dev.c b/drivers/crypto/ccp/sp-dev.c
+> > index 7eb3e4668286..02c49fbf6198 100644
+> > --- a/drivers/crypto/ccp/sp-dev.c
+> > +++ b/drivers/crypto/ccp/sp-dev.c
+> > @@ -295,5 +295,6 @@ static void __exit sp_mod_exit(void)
+> >  #endif
+> >  }
 > >
-> > modules.builtin:
-> > kernel/arch/x86/kvm/kvm.ko
-> > kernel/arch/x86/kvm/kvm-amd.ko
-> > ...
-> > ...
-> > kernel/drivers/crypto/ccp/ccp.ko
-> >
-> > I believe that the modules which are compiled first get called first an=
-d it
-> > looks like that the only way to change the order for builtin modules is=
- by
-> > changing which makefiles get compiled first ?
-> >
-> > Is there a way to change the load order of built-in modules and/or chan=
-ge
-> > dependency of built-in modules ?
->
-> The least awful option I know of would be to have the PSP use a higher pr=
-iority
-> initcall type so that it runs before the standard initcalls.  When compil=
-ed as
-> a module, all initcall types are #defined to module_init.
->
-> E.g. this should work, /cross fingers
->
-> diff --git a/drivers/crypto/ccp/sp-dev.c b/drivers/crypto/ccp/sp-dev.c
-> index 7eb3e4668286..02c49fbf6198 100644
-> --- a/drivers/crypto/ccp/sp-dev.c
-> +++ b/drivers/crypto/ccp/sp-dev.c
-> @@ -295,5 +295,6 @@ static void __exit sp_mod_exit(void)
->  #endif
->  }
->
-> -module_init(sp_mod_init);
-> +/* The PSP needs to be initialized before dependent modules, e.g. before=
- KVM. */
-> +subsys_initcall(sp_mod_init);
+> > -module_init(sp_mod_init);
+> > +/* The PSP needs to be initialized before dependent modules, e.g. befo=
+re KVM. */
+> > +subsys_initcall(sp_mod_init);
+>=20
+> I was 2 seconds from clicking send with this exact suggestion. There
+> are examples in 'drivers/' that use subsys_initcall / module_exit
+> pairs.
 
-I was 2 seconds from clicking send with this exact suggestion. There
-are examples in 'drivers/' that use subsys_initcall / module_exit
-pairs.
-
->  module_exit(sp_mod_exit);
-
-
-
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+Ha!  For once, I wasn't too slow due to writing an overly verbose message :=
+-)
