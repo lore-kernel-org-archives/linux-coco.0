@@ -1,113 +1,129 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B380634
-	for <linux-coco@lists.linux.dev>; Sat, 11 Jan 2025 00:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A3E1494DD
+	for <linux-coco@lists.linux.dev>; Sat, 11 Jan 2025 15:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736556569; cv=none; b=j2o0FI85ZeYRWToKyK7eZqrd6Gs3kCQjhaKM72P/PA5f3RoPDeb1stXeWuKJE4yEzMw7x17M9hx7iMRsunB4lTFwRNgQXV7PwlhpwpfXd7ZXJxK9FSpeDGcHdC0M7tsyHuuxz+u8HynJ4JYliKqCNgX4VttkigLZOiZmaJJBTUQ=
+	t=1736610557; cv=none; b=fS2yPOIalLOKRJKRP5qVuF7vQdzrFIkC2rNrmk6f+r/Q9dl++nloPSxgnRqIntn+xRV8LV3qCY0AGBnxqjvcBuSrFomIx1VbsUWDa/K6znDKF9qP/OkdSkNfGsY7zfaspYtBzXR0h5zdyjLdsGl7ZCrI0Xk6oQKw6bUw+ZSSTjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736556569; c=relaxed/simple;
-	bh=DqbsPM7pbMq3tNO53LpeaJ86ETg2ScGj8LGDaaUTLJM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NNQgI2efJZJ9KyylWMeh5Yl88ZtowQN248ZdjHgqc0zER5m6EVXKTAUzX1O4gDQDLeuKtB4aOPI7WhjksLnu7He7i2Sj4ww4BOAbquD+l3yVDXdTrhESN164yMQKocUM1k8M9RN09xLzIVto5acPzdoOXlTlLIzDLFDoIRwYTqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0GKZL/P1; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1736610557; c=relaxed/simple;
+	bh=I13GjTQ/bEvxNSkVaRmA8TbxVYEsI+KUb/3rMftBa1w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pRhs8KC8qNSndiQi7cwAtr2PTbxTgJnfnhUOkaCrKnt8P8mCO4HHogyyCFWjkKO/6D9TZ5nJsysQhR8fWWZl/jv3mCyXIA6LwigHAEGHmJaZhg9zbN/3n93Ez9LkHfwdr7GRCFLn9rvV4TrGwF7foFhZgxhrTxotnPZ301hydqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kP5aa05/; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0GKZL/P1"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2eebfd6d065so6692236a91.3
-        for <linux-coco@lists.linux.dev>; Fri, 10 Jan 2025 16:49:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736556567; x=1737161367; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YX28d/CEykAYv4b51S4uD+A1lpSwnJPjWn7kTo7F+wY=;
-        b=0GKZL/P19SLEF/aDfsmP70cPJ3m+4oVTaY+t3jK/O6ZtGXXkXpL25X0xQuWXW1z3af
-         XgyKPfuyBX8sRmh+00FHRZuCxHJ0+K02wiQHh2ZXO5XP+6/U/LX4mUf1wLX+ddYf5hdj
-         UcXx9OuKqpRvpK6NwT3JSMcYqpCsvhCZ3oJPnUmWLPK/KEqeafU4De+oa/5NIr4w6vxv
-         7wsYeUzkRG8h5cZIkfZ8YiZ4f6KJeEbT6FRq3AQkdf935Xxkam0BWFYSJgaoDuaSDrsU
-         TBn5uhZCg67/I3/YDRYjdR8BmN5wVEwXzXaYrIlqUNuYD0SLNUxtgIIqmOpIVOUSlq9X
-         ly0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736556567; x=1737161367;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YX28d/CEykAYv4b51S4uD+A1lpSwnJPjWn7kTo7F+wY=;
-        b=jcmD1WJohxRr5MKWRNNohiLLELHTyPFVNKGiQP22Um0EuVtKAQkCQYnUldlLG+U2tG
-         5nkfTp0gOqSbqclUa3NPwAgTXAsdIHUanMy2d9m5b9AmcSad/RY4uRlleLeUxhXTfpoy
-         SPGa972bDouQLVhRa1H7sMb6t0I2KWkTfbzZ9SdiVNAFuCOo1SvVkLYk7DtcT+MXAUXY
-         fhQiRx7/qyiucQcIQWPH93i8AvakjObqlu3P2VH6Z6YTZbttZ7/zbgjjABo8zdBLGAb+
-         IyYLnezHJAHs4xjobtipUeZg0rLLRLVTkeLHB4fb3/Qpkx1I1dU3ND6aQBAjBrfK8Kmp
-         /fdw==
-X-Forwarded-Encrypted: i=1; AJvYcCVxtuMECkySnKay+DRBkbTyt1muFC4BDzMQgMdKU9jBEFJ5ZVZGRpqmoDLBNX1ZeEqw5VoPwkOj0zRG@lists.linux.dev
-X-Gm-Message-State: AOJu0YzbSPaYsYTkp6VRvLrJ/xoRKFnq7tgb41uvtDX6Zr6GJDRPzAoP
-	Sg4W5LtWW/TtGyGEy5sZ2ImwkX8Xu/0cm79RSu4jBzkL0Y02gDfug3eb1GfKxiwQjjnqZeeaTJe
-	Mqw==
-X-Google-Smtp-Source: AGHT+IH361hyEP8ZBxDjRVTWmQZDmlNvVhHg1tXUKZ2PrfsrRNnR2/vcWBj5z0ljoK7+gcYBV3qV4n3VGY0=
-X-Received: from pjbhl13.prod.google.com ([2002:a17:90b:134d:b0:2e0:9fee:4b86])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2747:b0:2f2:a664:df1a
- with SMTP id 98e67ed59e1d1-2f548e9c9bcmr19626538a91.2.1736556567441; Fri, 10
- Jan 2025 16:49:27 -0800 (PST)
-Date: Fri, 10 Jan 2025 16:49:26 -0800
-In-Reply-To: <CAAH4kHZn_gtspOisv6gxQiD=JeZbZstQoR68mFCxn34Am76Bdg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kP5aa05/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736610556; x=1768146556;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=I13GjTQ/bEvxNSkVaRmA8TbxVYEsI+KUb/3rMftBa1w=;
+  b=kP5aa05/+oOC70dpBPxjExgVw2Z0WfsXpg4iXw9/THOv4c0fy8Wqttms
+   FpoqNprn8prk0vsQiC7OvDsagBA1583YHvYjMrsuSeN5fZN97i+0HcWJF
+   163FUZP7AQCHxfO6SLbcV+aWIuhcJKAZp1wvlujimZDcxxEeZdkHJUXIg
+   XwKOoaD+wVs/2sP5zVS7Ltm9phOPk0FYfEYIm+nt52yJ6sFq0Uw8LzcBY
+   TnVtBucYkxsgvpSPo8Q3U55X7iYG/dQpl2Bs6gxRSjg9YaDfMUToi8uSz
+   aAowotGrj5eCslD8w3fu2KHNjQ/O+7+ULBwKdEd/jz04nFvOFddQAEzHe
+   w==;
+X-CSE-ConnectionGUID: RnTma2NTRXSB/VbuAH3NJg==
+X-CSE-MsgGUID: jvVbGOXgRIKoxPBVnYSxYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11312"; a="36174425"
+X-IronPort-AV: E=Sophos;i="6.12,307,1728975600"; 
+   d="scan'208";a="36174425"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2025 07:49:15 -0800
+X-CSE-ConnectionGUID: qX0nMsRYREGTB/bib2eOkw==
+X-CSE-MsgGUID: FcNHmfEXSp6HC708tUJ8qQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="134900487"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa001.fm.intel.com with ESMTP; 11 Jan 2025 07:49:10 -0800
+Date: Sat, 11 Jan 2025 11:48:06 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	sumit.semwal@linaro.org, christian.koenig@amd.com,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
+	yilun.xu@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, tao1.su@intel.com
+Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
+ private device
+Message-ID: <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050>
+References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
+ <20250107142719.179636-9-yilun.xu@linux.intel.com>
+ <20250108133026.GQ5556@nvidia.com>
+ <Z36ulpCoJAllp4fP@yilunxu-OptiPlex-7050>
+ <20250109144051.GX5556@nvidia.com>
+ <Z3/7/PQCLi1GE5Ry@yilunxu-OptiPlex-7050>
+ <20250110133116.GF5556@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <cover.1735931639.git.ashish.kalra@amd.com> <14f97f58d6150c6784909261db7f9a05d8d32566.1735931639.git.ashish.kalra@amd.com>
- <6241f868-98ee-592b-9475-7e6cec09d977@amd.com> <8ae7718c-2321-4f3a-b5b7-7fb029d150cf@amd.com>
- <8adf7f48-dab0-cbed-d920-e3b74d8411cf@amd.com> <ee9d2956-fa55-4c83-b17d-055df7e1150c@amd.com>
- <d6d08c6b-9602-4f3d-92c2-8db6d50a1b92@amd.com> <Z4G9--FpoeOlbEDz@google.com> <CAAH4kHZn_gtspOisv6gxQiD=JeZbZstQoR68mFCxn34Am76Bdg@mail.gmail.com>
-Message-ID: <Z4HAFmyhw5DeIRBT@google.com>
-Subject: Re: [PATCH v3 6/7] KVM: SVM: Add support to initialize SEV/SNP
- functionality in KVM
-From: Sean Christopherson <seanjc@google.com>
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, pbonzini@redhat.com, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	john.allen@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net, 
-	michael.roth@amd.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250110133116.GF5556@nvidia.com>
 
-On Fri, Jan 10, 2025, Dionna Amalie Glaze wrote:
-> On Fri, Jan 10, 2025 at 4:40=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> > > Is there a way to change the load order of built-in modules and/or ch=
-ange
-> > > dependency of built-in modules ?
-> >
-> > The least awful option I know of would be to have the PSP use a higher =
-priority
-> > initcall type so that it runs before the standard initcalls.  When comp=
-iled as
-> > a module, all initcall types are #defined to module_init.
-> >
-> > E.g. this should work, /cross fingers
-> >
-> > diff --git a/drivers/crypto/ccp/sp-dev.c b/drivers/crypto/ccp/sp-dev.c
-> > index 7eb3e4668286..02c49fbf6198 100644
-> > --- a/drivers/crypto/ccp/sp-dev.c
-> > +++ b/drivers/crypto/ccp/sp-dev.c
-> > @@ -295,5 +295,6 @@ static void __exit sp_mod_exit(void)
-> >  #endif
-> >  }
-> >
-> > -module_init(sp_mod_init);
-> > +/* The PSP needs to be initialized before dependent modules, e.g. befo=
-re KVM. */
-> > +subsys_initcall(sp_mod_init);
->=20
-> I was 2 seconds from clicking send with this exact suggestion. There
-> are examples in 'drivers/' that use subsys_initcall / module_exit
-> pairs.
+On Fri, Jan 10, 2025 at 09:31:16AM -0400, Jason Gunthorpe wrote:
+> On Fri, Jan 10, 2025 at 12:40:28AM +0800, Xu Yilun wrote:
+> 
+> > So then we face with the shared <-> private device conversion in CoCo VM,
+> > and in turn shared <-> private MMIO conversion. MMIO region has only one
+> > physical backend so it is a bit like in-place conversion which is
+> > complicated. I wanna simply the MMIO conversion routine based on the fact
+> > that VMM never needs to access assigned MMIO for feature emulation, so
+> > always disallow userspace MMIO mapping during the whole lifecycle. That's
+> > why the flag is introduced.
+> 
+> The VMM can simply not map it if for these cases. As part of the TDI
+> flow the kernel can validate it is not mapped.
 
-Ha!  For once, I wasn't too slow due to writing an overly verbose message :=
--)
+That's a good point. I can try on that.
+
+>  
+> > > can be sure what is the correct UAPI. In other words, make the
+> > > VFIO device into a CC device should also prevent mmaping it and so on.
+> > 
+> > My idea is prevent mmaping first, then allow VFIO device into CC dev (TDI).
+> 
+> I think you need to start the TDI process much earlier. Some arches
+> are going to need work to prepare the TDI before the VM is started.
+
+Could you elaborate more on that? AFAICS Intel & AMD are all good on
+"late bind", but not sure for other architectures. This relates to the
+definition of TSM verbs and is the right time we collect the needs for
+Dan's series.
+
+> 
+> The other issue here is that Intel is somewhat different from others
+> and when we build uapi for TDI it has to accommodate everyone.
+
+Sure, this is the aim for PCI TSM core, and VFIO as a PCI TSM user
+should not be TDX awared.
+
+> 
+> > Yes. It carries out the idea of "KVM maps MMIO resources without firstly
+> > mapping into the host" even for normal VM. That's why I think it could
+> > be an independent patchset.
+> 
+> Yes, just remove this patch and other TDI focused stuff. Just
+> infrastructure to move to FD based mapping instead of VMA.
+
+Yes.
+
+Thanks,
+Yilun
+
+> 
+> Jason
