@@ -1,89 +1,75 @@
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E087A1FDA92
-	for <linux-coco@lists.linux.dev>; Mon, 13 Jan 2025 10:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4871C07EC
+	for <linux-coco@lists.linux.dev>; Mon, 13 Jan 2025 10:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736762502; cv=none; b=s6/bno5WNJ5Jk2+jEB54vyyPS2Nq9MxZuh3OzrwKE7aweDdztq4FoDxV9Hc8+HE5mF4g2r1UpHcnpHHG2StiGEJZO5eNXgnjDTmuuCv2y4Bi/THRgVA3gGbjpYhL8d4dygToX3c4Z2pQ1kim3CGA+jyoYnK+iU3zSorQpREezFA=
+	t=1736763115; cv=none; b=KO/RZWL8Mz3ZQt2xRzJGGALS/JCkbimGdjaYNiCOc0eAbufNVHTKGURXdbnmGwq+8XVcSA8Zn7Ax9nM0KhPopIb7hvMUdDFeZE16NmfpNcduhUGoidvpXGaiQ1qr1oFsWvErnMZYxgL14zQdNmNACFgPyOMhc/uaLEGlTQEHRmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736762502; c=relaxed/simple;
-	bh=Hdwh/0+v0e0LP2utcgcINCNpZ4cYa7JV5nQ3hjjcb+w=;
+	s=arc-20240116; t=1736763115; c=relaxed/simple;
+	bh=1V0smjfm6liFtFPXdzXRpp1hcMphdhXOdaciBJTxc3k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bY4xMS2bB5SYdCqcDl6rrSt7wLBDBRHjmHbQP11NDJ8DE3JhSAi0knsNxpoHWiJNzoYmIUXMJRzv3BpjD4ZWsJSLEbX9X9caoPHmw6z3TrtnjoOnRbFR9J18rEutixyMSSQ3Wqs8Ic2fRfBy1c6m65E7yMnJQh3Z7DguPv3pWT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=KrlnsTkf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MSMEL2d8; arc=none smtp.client-ip=202.12.124.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	 Content-Type:Content-Disposition:In-Reply-To; b=SFE3664fUuenGl2NQHzDBNlYqBqANq5/1pRBMx8uMumtfXDKB5oNBA1peS2Qh7B1CysWWsCLnNcwoSoeK6ZzuElxB2Nc36Be6r3WmkFNqZ86y4KlYAV/zC479vg41L7Jf3+L5y/bGzftOHbe9cGoGaGwlbIbTWz0I0lWsBujoak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O0zPJRTN; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="KrlnsTkf";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MSMEL2d8"
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id C6187114013F;
-	Mon, 13 Jan 2025 05:01:39 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Mon, 13 Jan 2025 05:01:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1736762499; x=
-	1736848899; bh=VoG/OMcJ8d12ZSyD0ZqYeoPA89F0kd/HTyrd5huWlHw=; b=K
-	rlnsTkf9lv1i8j7tfYuyo5h2c1OL/22qr80W60Nx/KEnCaET0V/u87X76HmZ3GmC
-	6v668UAUbRHupPRtl+Ehhj9+kzsJ/Qpm1XphTBFrF93HpDfOaMnD6IPBwjymfzyF
-	3QoE4sqi//8Hjpg0/VzwZwtTrB0eVdYiDr9BdPOJlvAjTrT+zCyponn1oXstyI8e
-	04YDae0SMxMMa2/6Nnx9eKBCpKvquzrgVLUVWT3/psDNrkmSJXLryCwUzCd8NWxQ
-	P1rOt10s+7oMx36yq9lILiQqumvlz0U6bcDkzVORJrUx/E3JIe+KhIkSnizNvYF6
-	jMg4+hlIVRTs8MTgPFqUQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1736762499; x=1736848899; bh=VoG/OMcJ8d12ZSyD0ZqYeoPA89F0kd/HTyr
-	d5huWlHw=; b=MSMEL2d8Fyv8uhUhKMeO95+5BddVh6aCKavbuF2wgEl8Lfz+JFu
-	8YF7mOnaEnMu/jVDK47ktOr6LPyE7jMjVWzVgjwGwrU/MMjX4SCbB5pRJBajeqsX
-	trpAQ2Uqb7zUrhnh6uqExk0L/mfcG7frTY+GhGIjreYWRxtR8BxkHprVGVfiJTtF
-	o0trqHgvYQEsWoboOvysLpFf4RhFuK1ZO4M2Jg9Qa7c0sknj57a/jE93TEFufYoh
-	dQDlWiwKmRrhZR6b8dJ35HMuVZQiDunJSMn4PWD6DAgBeLPAXh34ynpEYkFC+7e1
-	9DAdj4zzMXclu/FT/8XrPfySLsIejwAAaDQ==
-X-ME-Sender: <xms:g-SEZ-3mqwfYA3cplCVhLSqkCAqNXG9XCkw69USpRKknmXbBWNIdVQ>
-    <xme:g-SEZxFdHGbUcjnDnZl3f3twIY2gAfXZ9W7rP_bkWnJKXmDpLAC7DDiX9V_Qyau4z
-    py3WiyGQV5AvLFuIR0>
-X-ME-Received: <xmr:g-SEZ24-vXbYbugB8EO3qVlpYpyIyu-cP2W-tlpeyBruGUm6nY5KF2rd2GvkYV-RY3XGDw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehgedguddtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvden
-    ucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlse
-    hshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeffvdevueetudfhhfff
-    veelhfetfeevveekleevjeduudevvdduvdelteduvefhkeenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhv
-    rdhnrghmvgdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htohepvggsihgvuggvrhhmseigmhhishhsihhonhdrtghomhdprhgtphhtthhopehkvgig
-    vggtsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohephigrnhdrhi
-    driihhrghosehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghl
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghose
-    hlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheprhhitghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtoh
-    hmpdhrtghpthhtohepkhhirhhilhhlrdhshhhuthgvmhhovheslhhinhhugidrihhnthgv
-    lhdrtghomhdprhgtphhtthhopegshhgvsehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:g-SEZ_3U9co5D91RLeJssdWWZ6Q_HF544c7wdJGHwHZdknayq3K3Wg>
-    <xmx:g-SEZxHChkORcqEehTUhskOyXcK6WHAtn3feTNA1QdfBJ64NQacSVQ>
-    <xmx:g-SEZ4-DTvnroz48NDUjHE_dgHIXIcYnmW1lV7s21CFybjt8rw7RWw>
-    <xmx:g-SEZ2kPEm05Bd6223mIrfKdWI1SVm8ZKtR_wnnqX5IhDDK-HOWNDA>
-    <xmx:g-SEZwAvzvOekzSCzi9N3L1knINsX6eSFKtw8krgShqv4VUZqUYhXNY3>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Jan 2025 05:01:35 -0500 (EST)
-Date: Mon, 13 Jan 2025 12:01:32 +0200
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: ebiederm@xmission.com, kexec@lists.infradead.org
-Cc: Yan Zhao <yan.y.zhao@intel.com>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, x86@kernel.org, rick.p.edgecombe@intel.com, 
-	kirill.shutemov@linux.intel.com, bhe@redhat.com
-Subject: Re: [PATCH v2 0/1] Accept unaccepted kexec segments' destination
- addresses
-Message-ID: <xgycziy2o56hnom3oau7sbqed3meoni3razc6njj7ujatldnmm@s7odbl4splbn>
-References: <20241213094930.748-1-yan.y.zhao@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O0zPJRTN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736763113; x=1768299113;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1V0smjfm6liFtFPXdzXRpp1hcMphdhXOdaciBJTxc3k=;
+  b=O0zPJRTNxraCEZrGaAHXbs+64PRrD6dgH35gVUTROm5w3OlOQSkXoNvA
+   xo0dRmNrSSCihGPo/SXgplyImFJABvVMnJWQ0NIg7Amyy5yg+6nP+N2w2
+   rOiDqRvH2bche1j9iJ6oKaxwyvtP+WpIDZe2yiWVrXd40+CEnYPKwlO8t
+   3kFBxc3iS/meX3Ln64DQMAsutd5o7NUSbszUPyR9PONZZnoIvc2T3DVG3
+   wvxvIewtz327/WpgHaC/TN+Z5vsvCZQAjCa3MA66c92W0ebnPdbK9m0Yi
+   Ob2zACnMqD1lr3wmai8uGQB5kQxD1Ap3dvIVGjMMDnFQyQ80LJK+50ria
+   g==;
+X-CSE-ConnectionGUID: QpxeyAizSh+O4E8T22OibQ==
+X-CSE-MsgGUID: w9d9vVU2RY+f3dl7giOnQA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11313"; a="47680438"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="47680438"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2025 02:11:52 -0800
+X-CSE-ConnectionGUID: e1W5JBnaQKeKiTmx3Y+QPg==
+X-CSE-MsgGUID: iL1mS6fgQq2TTbSbHA6WqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="104509323"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa006.jf.intel.com with ESMTP; 13 Jan 2025 02:11:47 -0800
+Date: Mon, 13 Jan 2025 06:10:40 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
+	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	sumit.semwal@linaro.org, pbonzini@redhat.com, seanjc@google.com,
+	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+	dan.j.williams@intel.com, aik@amd.com, yilun.xu@intel.com,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lukas@wunner.de, yan.y.zhao@intel.com, leon@kernel.org,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
+ kAPI
+Message-ID: <Z4Q94E6JvWrhvCyq@yilunxu-OptiPlex-7050>
+References: <f3748173-2bbc-43fa-b62e-72e778999764@amd.com>
+ <20250108145843.GR5556@nvidia.com>
+ <5a858e00-6fea-4a7a-93be-f23b66e00835@amd.com>
+ <20250108162227.GT5556@nvidia.com>
+ <Z37HpvHAfB0g9OQ-@phenom.ffwll.local>
+ <Z37QaIDUgiygLh74@yilunxu-OptiPlex-7050>
+ <58e97916-e6fd-41ef-84b4-bbf53ed0e8e4@amd.com>
+ <Z38FCOPE7WPprYhx@yilunxu-OptiPlex-7050>
+ <Z4F2X7Fu-5lprLrk@phenom.ffwll.local>
+ <20250110203838.GL5556@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -92,15 +78,113 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241213094930.748-1-yan.y.zhao@intel.com>
+In-Reply-To: <20250110203838.GL5556@nvidia.com>
 
-On Fri, Dec 13, 2024 at 05:49:30PM +0800, Yan Zhao wrote:
-> Hi Eric,
+On Fri, Jan 10, 2025 at 04:38:38PM -0400, Jason Gunthorpe wrote:
+> On Fri, Jan 10, 2025 at 08:34:55PM +0100, Simona Vetter wrote:
 > 
-> This is a repost of the patch "kexec_core: Accept unaccepted kexec
-> destination addresses" [1], rebased to v6.13-rc2.
+> > So if I'm getting this right, what you need from a functional pov is a
+> > dma_buf_tdx_mmap? Because due to tdx restrictions, the normal dma_buf_mmap
 
-Can we get this patch applied?
+I'm not sure if the word 'mmap' is proper here.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+It is kind of like the mapping from (FD+offset) to backend memory,
+which is directly provided by memory provider, rather than via VMA
+and cpu page table.  Basically VMA & cpu page table are for host to
+access the memory, but VMM/host doesn't access most of the guest
+memory, so why must build them.
+
+> > is not going to work I guess?
+> 
+> Don't want something TDX specific!
+> 
+> There is a general desire, and CC is one, but there are other
+> motivations like performance, to stop using VMAs and mmaps as a way to
+> exchanage memory between two entities. Instead we want to use FDs.
+
+Exactly.
+
+> 
+> We now have memfd and guestmemfd that are usable with
+> memfd_pin_folios() - this covers pinnable CPU memory.
+> 
+> And for a long time we had DMABUF which is for all the other wild
+> stuff, and it supports movable memory too.
+> 
+> So, the normal DMABUF semantics with reservation locking and move
+> notifiers seem workable to me here. They are broadly similar enough to
+> the mmu notifier locking that they can serve the same job of updating
+> page tables.
+
+Yes. With this new sharing model, the lifecycle of the shared memory/pfn/Page
+is directly controlled by dma-buf exporter, not by CPU mapping. So I also
+think reservation lock & move_notify works well for lifecycle control,
+no conflict (nothing to do) with follow_pfn() & mmu_notifier.
+
+> 
+> > Also another thing that's a bit tricky is that kvm kinda has a 3rd dma-buf
+> > memory model:
+> > - permanently pinned dma-buf, they never move
+> > - dynamic dma-buf, they move through ->move_notify and importers can remap
+> > - revocable dma-buf, which thus far only exist for pci mmio resources
+> 
+> I would like to see the importers be able to discover which one is
+> going to be used, because we have RDMA cases where we can support 1
+> and 3 but not 2.
+> 
+> revocable doesn't require page faulting as it is a terminal condition.
+> 
+> > Since we're leaning even more on that 3rd model I'm wondering whether we
+> > should make it something official. Because the existing dynamic importers
+> > do very much assume that re-acquiring the memory after move_notify will
+> > work. But for the revocable use-case the entire point is that it will
+> > never work.
+> 
+> > I feel like that's a concept we need to make explicit, so that dynamic
+> > importers can reject such memory if necessary.
+> 
+> It strikes me as strange that HW can do page faulting, so it can
+> support #2, but it can't handle a non-present fault?
+> 
+> > So yeah there's a bunch of tricky lifetime questions that need to be
+> > sorted out with proper design I think, and the current "let's just use pfn
+> > directly" proposal hides them all under the rug. 
+> 
+> I don't think these two things are connected. The lifetime model that
+> KVM needs to work with the EPT, and that VFIO needs for it's MMIO,
+> definately should be reviewed and evaluated.
+> 
+> But it is completely orthogonal to allowing iommufd and kvm to access
+> the CPU PFN to use in their mapping flows, instead of the
+> dma_addr_t.
+> 
+> What I want to get to is a replacement for scatter list in DMABUF that
+> is an array of arrays, roughly like:
+> 
+>   struct memory_chunks {
+>       struct memory_p2p_provider *provider;
+>       struct bio_vec addrs[];
+>   };
+>   int (*dmabuf_get_memory)(struct memory_chunks **chunks, size_t *num_chunks);
+
+Maybe we need to specify which object the API is operating on,
+struct dma_buf, or struct dma_buf_attachment, or a new attachment.
+
+I think:
+
+  int (*dmabuf_get_memory)(struct dma_buf_attachment *attach, struct memory_chunks **chunks, size_t *num_chunks);
+
+works, but maybe a new attachment is conceptually more clear to
+importers and harder to abuse?
+
+Thanks,
+Yilun
+
+> 
+> This can represent all forms of memory: P2P, private, CPU, etc and
+> would be efficient with the new DMA API.
+> 
+> This is similar to the structure BIO has, and it composes nicely with
+> a future pin_user_pages() and memfd_pin_folios().
+> 
+> Jason
