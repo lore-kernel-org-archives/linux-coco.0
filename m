@@ -1,70 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A3E1494DD
-	for <linux-coco@lists.linux.dev>; Sat, 11 Jan 2025 15:49:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E087A1FDA92
+	for <linux-coco@lists.linux.dev>; Mon, 13 Jan 2025 10:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736610557; cv=none; b=fS2yPOIalLOKRJKRP5qVuF7vQdzrFIkC2rNrmk6f+r/Q9dl++nloPSxgnRqIntn+xRV8LV3qCY0AGBnxqjvcBuSrFomIx1VbsUWDa/K6znDKF9qP/OkdSkNfGsY7zfaspYtBzXR0h5zdyjLdsGl7ZCrI0Xk6oQKw6bUw+ZSSTjc=
+	t=1736762502; cv=none; b=s6/bno5WNJ5Jk2+jEB54vyyPS2Nq9MxZuh3OzrwKE7aweDdztq4FoDxV9Hc8+HE5mF4g2r1UpHcnpHHG2StiGEJZO5eNXgnjDTmuuCv2y4Bi/THRgVA3gGbjpYhL8d4dygToX3c4Z2pQ1kim3CGA+jyoYnK+iU3zSorQpREezFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736610557; c=relaxed/simple;
-	bh=I13GjTQ/bEvxNSkVaRmA8TbxVYEsI+KUb/3rMftBa1w=;
+	s=arc-20240116; t=1736762502; c=relaxed/simple;
+	bh=Hdwh/0+v0e0LP2utcgcINCNpZ4cYa7JV5nQ3hjjcb+w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pRhs8KC8qNSndiQi7cwAtr2PTbxTgJnfnhUOkaCrKnt8P8mCO4HHogyyCFWjkKO/6D9TZ5nJsysQhR8fWWZl/jv3mCyXIA6LwigHAEGHmJaZhg9zbN/3n93Ez9LkHfwdr7GRCFLn9rvV4TrGwF7foFhZgxhrTxotnPZ301hydqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kP5aa05/; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=bY4xMS2bB5SYdCqcDl6rrSt7wLBDBRHjmHbQP11NDJ8DE3JhSAi0knsNxpoHWiJNzoYmIUXMJRzv3BpjD4ZWsJSLEbX9X9caoPHmw6z3TrtnjoOnRbFR9J18rEutixyMSSQ3Wqs8Ic2fRfBy1c6m65E7yMnJQh3Z7DguPv3pWT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=KrlnsTkf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MSMEL2d8; arc=none smtp.client-ip=202.12.124.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kP5aa05/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736610556; x=1768146556;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=I13GjTQ/bEvxNSkVaRmA8TbxVYEsI+KUb/3rMftBa1w=;
-  b=kP5aa05/+oOC70dpBPxjExgVw2Z0WfsXpg4iXw9/THOv4c0fy8Wqttms
-   FpoqNprn8prk0vsQiC7OvDsagBA1583YHvYjMrsuSeN5fZN97i+0HcWJF
-   163FUZP7AQCHxfO6SLbcV+aWIuhcJKAZp1wvlujimZDcxxEeZdkHJUXIg
-   XwKOoaD+wVs/2sP5zVS7Ltm9phOPk0FYfEYIm+nt52yJ6sFq0Uw8LzcBY
-   TnVtBucYkxsgvpSPo8Q3U55X7iYG/dQpl2Bs6gxRSjg9YaDfMUToi8uSz
-   aAowotGrj5eCslD8w3fu2KHNjQ/O+7+ULBwKdEd/jz04nFvOFddQAEzHe
-   w==;
-X-CSE-ConnectionGUID: RnTma2NTRXSB/VbuAH3NJg==
-X-CSE-MsgGUID: jvVbGOXgRIKoxPBVnYSxYA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11312"; a="36174425"
-X-IronPort-AV: E=Sophos;i="6.12,307,1728975600"; 
-   d="scan'208";a="36174425"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2025 07:49:15 -0800
-X-CSE-ConnectionGUID: qX0nMsRYREGTB/bib2eOkw==
-X-CSE-MsgGUID: FcNHmfEXSp6HC708tUJ8qQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="134900487"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa001.fm.intel.com with ESMTP; 11 Jan 2025 07:49:10 -0800
-Date: Sat, 11 Jan 2025 11:48:06 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com
-Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
- private device
-Message-ID: <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050>
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <20250107142719.179636-9-yilun.xu@linux.intel.com>
- <20250108133026.GQ5556@nvidia.com>
- <Z36ulpCoJAllp4fP@yilunxu-OptiPlex-7050>
- <20250109144051.GX5556@nvidia.com>
- <Z3/7/PQCLi1GE5Ry@yilunxu-OptiPlex-7050>
- <20250110133116.GF5556@nvidia.com>
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="KrlnsTkf";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MSMEL2d8"
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id C6187114013F;
+	Mon, 13 Jan 2025 05:01:39 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Mon, 13 Jan 2025 05:01:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1736762499; x=
+	1736848899; bh=VoG/OMcJ8d12ZSyD0ZqYeoPA89F0kd/HTyrd5huWlHw=; b=K
+	rlnsTkf9lv1i8j7tfYuyo5h2c1OL/22qr80W60Nx/KEnCaET0V/u87X76HmZ3GmC
+	6v668UAUbRHupPRtl+Ehhj9+kzsJ/Qpm1XphTBFrF93HpDfOaMnD6IPBwjymfzyF
+	3QoE4sqi//8Hjpg0/VzwZwtTrB0eVdYiDr9BdPOJlvAjTrT+zCyponn1oXstyI8e
+	04YDae0SMxMMa2/6Nnx9eKBCpKvquzrgVLUVWT3/psDNrkmSJXLryCwUzCd8NWxQ
+	P1rOt10s+7oMx36yq9lILiQqumvlz0U6bcDkzVORJrUx/E3JIe+KhIkSnizNvYF6
+	jMg4+hlIVRTs8MTgPFqUQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1736762499; x=1736848899; bh=VoG/OMcJ8d12ZSyD0ZqYeoPA89F0kd/HTyr
+	d5huWlHw=; b=MSMEL2d8Fyv8uhUhKMeO95+5BddVh6aCKavbuF2wgEl8Lfz+JFu
+	8YF7mOnaEnMu/jVDK47ktOr6LPyE7jMjVWzVgjwGwrU/MMjX4SCbB5pRJBajeqsX
+	trpAQ2Uqb7zUrhnh6uqExk0L/mfcG7frTY+GhGIjreYWRxtR8BxkHprVGVfiJTtF
+	o0trqHgvYQEsWoboOvysLpFf4RhFuK1ZO4M2Jg9Qa7c0sknj57a/jE93TEFufYoh
+	dQDlWiwKmRrhZR6b8dJ35HMuVZQiDunJSMn4PWD6DAgBeLPAXh34ynpEYkFC+7e1
+	9DAdj4zzMXclu/FT/8XrPfySLsIejwAAaDQ==
+X-ME-Sender: <xms:g-SEZ-3mqwfYA3cplCVhLSqkCAqNXG9XCkw69USpRKknmXbBWNIdVQ>
+    <xme:g-SEZxFdHGbUcjnDnZl3f3twIY2gAfXZ9W7rP_bkWnJKXmDpLAC7DDiX9V_Qyau4z
+    py3WiyGQV5AvLFuIR0>
+X-ME-Received: <xmr:g-SEZ24-vXbYbugB8EO3qVlpYpyIyu-cP2W-tlpeyBruGUm6nY5KF2rd2GvkYV-RY3XGDw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehgedguddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvden
+    ucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlse
+    hshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeffvdevueetudfhhfff
+    veelhfetfeevveekleevjeduudevvdduvdelteduvefhkeenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhv
+    rdhnrghmvgdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htohepvggsihgvuggvrhhmseigmhhishhsihhonhdrtghomhdprhgtphhtthhopehkvgig
+    vggtsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohephigrnhdrhi
+    driihhrghosehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghl
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghose
+    hlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtoheprhhitghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtoh
+    hmpdhrtghpthhtohepkhhirhhilhhlrdhshhhuthgvmhhovheslhhinhhugidrihhnthgv
+    lhdrtghomhdprhgtphhtthhopegshhgvsehrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:g-SEZ_3U9co5D91RLeJssdWWZ6Q_HF544c7wdJGHwHZdknayq3K3Wg>
+    <xmx:g-SEZxHChkORcqEehTUhskOyXcK6WHAtn3feTNA1QdfBJ64NQacSVQ>
+    <xmx:g-SEZ4-DTvnroz48NDUjHE_dgHIXIcYnmW1lV7s21CFybjt8rw7RWw>
+    <xmx:g-SEZ2kPEm05Bd6223mIrfKdWI1SVm8ZKtR_wnnqX5IhDDK-HOWNDA>
+    <xmx:g-SEZwAvzvOekzSCzi9N3L1knINsX6eSFKtw8krgShqv4VUZqUYhXNY3>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 13 Jan 2025 05:01:35 -0500 (EST)
+Date: Mon, 13 Jan 2025 12:01:32 +0200
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: ebiederm@xmission.com, kexec@lists.infradead.org
+Cc: Yan Zhao <yan.y.zhao@intel.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, x86@kernel.org, rick.p.edgecombe@intel.com, 
+	kirill.shutemov@linux.intel.com, bhe@redhat.com
+Subject: Re: [PATCH v2 0/1] Accept unaccepted kexec segments' destination
+ addresses
+Message-ID: <xgycziy2o56hnom3oau7sbqed3meoni3razc6njj7ujatldnmm@s7odbl4splbn>
+References: <20241213094930.748-1-yan.y.zhao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,57 +92,15 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250110133116.GF5556@nvidia.com>
+In-Reply-To: <20241213094930.748-1-yan.y.zhao@intel.com>
 
-On Fri, Jan 10, 2025 at 09:31:16AM -0400, Jason Gunthorpe wrote:
-> On Fri, Jan 10, 2025 at 12:40:28AM +0800, Xu Yilun wrote:
+On Fri, Dec 13, 2024 at 05:49:30PM +0800, Yan Zhao wrote:
+> Hi Eric,
 > 
-> > So then we face with the shared <-> private device conversion in CoCo VM,
-> > and in turn shared <-> private MMIO conversion. MMIO region has only one
-> > physical backend so it is a bit like in-place conversion which is
-> > complicated. I wanna simply the MMIO conversion routine based on the fact
-> > that VMM never needs to access assigned MMIO for feature emulation, so
-> > always disallow userspace MMIO mapping during the whole lifecycle. That's
-> > why the flag is introduced.
-> 
-> The VMM can simply not map it if for these cases. As part of the TDI
-> flow the kernel can validate it is not mapped.
+> This is a repost of the patch "kexec_core: Accept unaccepted kexec
+> destination addresses" [1], rebased to v6.13-rc2.
 
-That's a good point. I can try on that.
+Can we get this patch applied?
 
->  
-> > > can be sure what is the correct UAPI. In other words, make the
-> > > VFIO device into a CC device should also prevent mmaping it and so on.
-> > 
-> > My idea is prevent mmaping first, then allow VFIO device into CC dev (TDI).
-> 
-> I think you need to start the TDI process much earlier. Some arches
-> are going to need work to prepare the TDI before the VM is started.
-
-Could you elaborate more on that? AFAICS Intel & AMD are all good on
-"late bind", but not sure for other architectures. This relates to the
-definition of TSM verbs and is the right time we collect the needs for
-Dan's series.
-
-> 
-> The other issue here is that Intel is somewhat different from others
-> and when we build uapi for TDI it has to accommodate everyone.
-
-Sure, this is the aim for PCI TSM core, and VFIO as a PCI TSM user
-should not be TDX awared.
-
-> 
-> > Yes. It carries out the idea of "KVM maps MMIO resources without firstly
-> > mapping into the host" even for normal VM. That's why I think it could
-> > be an independent patchset.
-> 
-> Yes, just remove this patch and other TDI focused stuff. Just
-> infrastructure to move to FD based mapping instead of VMA.
-
-Yes.
-
-Thanks,
-Yilun
-
-> 
-> Jason
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
