@@ -1,157 +1,251 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2060.outbound.protection.outlook.com [40.107.95.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDA8159209
-	for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 16:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736873502; cv=none; b=dHL4uuBy8HDfs1lVS8uRJhv1N5FRd35AaYtOrQdVI+atRAwwB6xnQUqaK8So8Pa9cJEVRuQqxI7yuWyA/l36zGIJAsxDcDVue4NE5egjnQeSVHBmPwZxqytr5wmV21O0BwkumK4JFDaMxvvIvMRj5t1zMNqee49EpIn5JNj/gCs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736873502; c=relaxed/simple;
-	bh=F/Rcvm8c7WOs06/htlH1im0ahc+bhTyHl9aYTYeW32M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=qTTlCXlGw2a5K1lRUmBDMHhUai9eC/HfGpUUcoIRLLr0uAz0sWZZ16nw8Is1hEuZPtKLAH7ONRhfUBkJy59vFtLPGnGhDhgr3a+ZU9obmkaGysE8m+MeDvqIyY6dOlVPdI7rMl3i4NY9T+BBTteHM4LcoeC2BJLZYZMJLA5257A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CFY+GPE0; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE121428F3
+	for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 17:31:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736875870; cv=fail; b=D0LHvyoDuZ0KfKh6usFsJGqd+c53MFsQs0oyMR2J6SFb+G/AYUzP+WHAYqrU2ty1nASKn7c6NltDkxzv+82VuM0AQ+dXmmLDKlT/cvpYRf7kvgufG/ZNLaJSX02PvPPRkuXwIkzA2jg0PaM3mYybu6Qzyj9mXZ1ng0tCDa54kxU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736875870; c=relaxed/simple;
+	bh=NPC8ZLx/mu4RqXa4YmBVMQT4PMeGVhNV8fHvywSdH4s=;
+	h=Date:From:To:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=VhvDfpDeiAmCnVAktiZmXwvlEd7yITtHnMr7b7m/zA/OPZ1mosSM+VsJrtjOuArThXEs58ytv23BGe6lE5fgMbzeHjr8aWXeOhFHYvq21JA8m/maarxyMSIW5G7dH25r6DfDMGxnr0sMc6lNUuvvJPjq8wAgsFcMYY6H8+SagIg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rdLuGh0Q; arc=fail smtp.client-ip=40.107.95.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CFY+GPE0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736873500;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DVM4lB8fISehCZiKz+IKvae29WZL6ifuCMkp4bakUF8=;
-	b=CFY+GPE0HHEoxUQBdrmNafVCv8Wzp9rcnkw2GNG6peLQ0rshWOH8e0+kIGzAP8MA7pR7qj
-	G+hBirP5uumzM1IwRrtWqy3sydzjU5SCzr9g7cF5a80Q31a9q6TjX8Ooy3bmVH7hK7bLvW
-	RRnI9M8/kDYL7CstmO4X+Myr9lti90E=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-UpNy5zpyOV2XIZvNpNQcyw-1; Tue, 14 Jan 2025 11:51:38 -0500
-X-MC-Unique: UpNy5zpyOV2XIZvNpNQcyw-1
-X-Mimecast-MFC-AGG-ID: UpNy5zpyOV2XIZvNpNQcyw
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43673af80a6so43858335e9.1
-        for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 08:51:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736873497; x=1737478297;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DVM4lB8fISehCZiKz+IKvae29WZL6ifuCMkp4bakUF8=;
-        b=VH8JOj5O/LjBt3kP/0AaA/RkjGHvrGA3aFVh6Lvs5iCWsHLZotBpr81WsCDqLrJkjz
-         VdzlljkymYKZnHmg+wsacKAbbll8sQzpzHrpPcLPZ9TnwxzN17MTl6jK/2RTUVTEV8QN
-         UfIpYxx9RPRJmxPi/2ula6QebR85Oj2CvhNhhjb3G6/QYQdqnvcaUfOg5lGGBOpObEWU
-         ZDnjUJsiV6IX/3h87lLU+BB0JGvolOS9FB+aaYk8yxM2IIKdp898nDw9dpxDaIxdd9ah
-         DRmkuqhEb4c0jRH1jY4Y5nQHFe+qFZckH166JBM7OKDUIahdkrwv1TuN995Z5EdxScsJ
-         e3TA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFhN9eiA4dKrNPjnGxXS9yxQGe8i2KPr8zepc+jEXiCaVDl97/azOd75Rq3pGdNQfXNnd56gLvHU8v@lists.linux.dev
-X-Gm-Message-State: AOJu0YwENTOOR3NDeCLBqtugAV1MMCyHjC0X86xbtelwoNb6WnZ3WBoy
-	xKdXXEM6BFQEq/8P0yuh44De6X33A+coL//+6MM5aBoEfaX1Tcxa2ryvV7F/Z9SnedVfb6Jtp+G
-	xf4wbc5gWrkJS1MHzdK4YP1/WBAAYelhdR6of0gJXXURzafaOvea4hzVtZFw=
-X-Gm-Gg: ASbGncuO4cQgud7I4PSGqa7SGIg3t8xjD7HlvET5BE5VAojtxidtBThbPlX9AGJVAKT
-	Ukk1Yj+ju+a5HcJOGICe9Dy/MXc/y9ky0PMdE1vbznNyFT27UvzBFoDgp9er0FghvZuCe/kKRHo
-	Oml+loz2PxIVAP0wvAY6zd0hnCr7w6o+Az7ssTNmbmy5/DSSGoKoJ7JQf0W9KfGIU7/gI7QpHv7
-	rm0zwULVK6pMFWOnC/AXLahEHSxJFN0YcG82KGc0MFoYbrx2zqWa+BN39xZS929ZnAe2SvsVFAy
-	ZoIAoetzk7x6VrJN1cTbUjeiPg/tNdax
-X-Received: by 2002:a05:600c:1d9e:b0:436:8a6f:b6db with SMTP id 5b1f17b1804b1-436e2707c41mr203961375e9.22.1736873497361;
-        Tue, 14 Jan 2025 08:51:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHChBCm1fcENOEHRTFDJk6utAemDGsmFgi4siBbiD1KOBkMWUnBLk6m+9wbauenfuVr5rYzaQ==
-X-Received: by 2002:a05:600c:1d9e:b0:436:8a6f:b6db with SMTP id 5b1f17b1804b1-436e2707c41mr203960865e9.22.1736873496611;
-        Tue, 14 Jan 2025 08:51:36 -0800 (PST)
-Received: from sgarzare-redhat (host-82-53-134-100.retail.telecomitalia.it. [82.53.134.100])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e37d050sm15652966f8f.15.2025.01.14.08.51.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 08:51:36 -0800 (PST)
-Date: Tue, 14 Jan 2025 17:51:33 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Jarkko Sakkinen <jarkko.sakkinen@iki.fi>, 
-	James Bottomley <james.bottomley@hansenpartnership.com>, linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Huewe <peterhuewe@gmx.de>, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-integrity@vger.kernel.org, x86@kernel.org, 
-	Joerg Roedel <jroedel@suse.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Claudio Carvalho <cclaudio@linux.ibm.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH 3/3] x86/sev: add a SVSM vTPM platform device
-Message-ID: <2yyqhjkxl56uqv35smrq6mdddufcpoj7fgon4n6h6zwei4kryu@pkwhln6b57ga>
-References: <20241210144025.GG1888283@ziepe.ca>
- <50a2e1d29b065498146f459035e447851a518d1a.camel@HansenPartnership.com>
- <20241210150413.GI1888283@ziepe.ca>
- <CAGxU2F6yzqb0o_pQDakBbCj3RdKy_XfZfzGsiywnYL65g6WeGg@mail.gmail.com>
- <20241211150048.GJ1888283@ziepe.ca>
- <CAGxU2F7QjQTnXsqYeKc0q03SQCoW+BHbej9Q2Z8gxbgu-3O2fA@mail.gmail.com>
- <D6FSHG5Z9UJQ.CWQTAANBVIQQ@iki.fi>
- <6rwo7tkdst227kb4pwvr54w4mfz2zw3offux7mqfupi3rgwkaz@65yklvvqw6n4>
- <CAGxU2F4YQy-otsGtGiUHDiL7PGXic2_HzWL_+GHkn+Hs_ScGpQ@mail.gmail.com>
- <20250114130720.GJ26854@ziepe.ca>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rdLuGh0Q"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HQcVfjDiauhuDDCxXCsk2lpGIK4n8/QASQHVKjdfE5VgMC8sjsKAg3EGlmGDjLeBip2Lsc06hkcG2U8iS7sh0BTUcvxYXIJwBhmT9lTnSRNi0c7PA+ZhPad6ieRBYYFt3YHzENqDlWVcv6w03KbZGe8WcY4GBm4P/+UQg6Dfubg+YXYoOQtJ3r3CXt7Gozp3A14rB8IQeErGX/DRGDEUu9jWyt15qFq4eAUkCrUcZynRkGorBGwJ6ihj381XqFb7Nm3BEwhAcgtcugp8sW1bZrTsYm2Y9zSGCTA1tFwDJknzJxGs2KIMzUrwiOjRjW0uoHzExjpyiGO60XVnyCiO6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wwPXVop7yZOoYa/6nTb1Si4es1VE81yC65xUpTFdGqw=;
+ b=OzMt36SqMqtZ56mPzWYOIXrKBeBICCl+EE9dkx+780jDlmQ9GyRNivargJUzUXOL71G0bGbCL5pcC8VioCShgg2fp64lIdhD6+IYhDlju6ChBD8TIuaFXBk3DU9BVLUxterPlkx6Y/SuRg2KINDFOursVKWiLMninGFDSay3aK6F+PyIACksx7k333ErtfN8RYWfSUAMYqnLnZJcgdO/Qbl6poUEWh4l0D7oBfcEOb9Vspl5OTrwDViXnO8JvJosq5jBEJtCleGzrEhq1Unsd92TrZgKqEm25wFw+/2fdwMORTn/lb3hYPwhwCZu+o47ZsoaxLU5YQwok1sV+cnZyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wwPXVop7yZOoYa/6nTb1Si4es1VE81yC65xUpTFdGqw=;
+ b=rdLuGh0QwUKNs/U391sKewNYTrHAoczH9ns3FKazfXUxze6aY6MteHhYMsPwmEI8NCfqqWhByYvaG3qSqF4H/JxbiQapjDd32w8Pe9tSDveavQQCc9ZRu7HUvM3G0k2BdeB3eNecTsfIoqbS70zpbS4iDVTB23utoWqqQ1WM79NTK0dgqXQUkgAsf6AAhZElLLvlvth5KdDjf2Jwo2edDdiDzrEIuzOtLIotBe3iIUJr6QM0ZkW/nq76XWAHeG4AezLoy9FjzrbM4nqYZai50b9peZRGJOoV+IzBe51V98eOqAoyfSzuUtNAiKuOoPbeu9HzPxalLbeN5zhga2pyrQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by BL3PR12MB6595.namprd12.prod.outlook.com (2603:10b6:208:38e::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Tue, 14 Jan
+ 2025 17:31:04 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%5]) with mapi id 15.20.8335.017; Tue, 14 Jan 2025
+ 17:31:04 +0000
+Date: Tue, 14 Jan 2025 13:31:03 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
+	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	sumit.semwal@linaro.org, pbonzini@redhat.com, seanjc@google.com,
+	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+	dan.j.williams@intel.com, aik@amd.com, yilun.xu@intel.com,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lukas@wunner.de, yan.y.zhao@intel.com, leon@kernel.org,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
+ kAPI
+Message-ID: <20250114173103.GE5556@nvidia.com>
+References: <20250108145843.GR5556@nvidia.com>
+ <5a858e00-6fea-4a7a-93be-f23b66e00835@amd.com>
+ <20250108162227.GT5556@nvidia.com>
+ <Z37HpvHAfB0g9OQ-@phenom.ffwll.local>
+ <Z37QaIDUgiygLh74@yilunxu-OptiPlex-7050>
+ <58e97916-e6fd-41ef-84b4-bbf53ed0e8e4@amd.com>
+ <Z38FCOPE7WPprYhx@yilunxu-OptiPlex-7050>
+ <Z4F2X7Fu-5lprLrk@phenom.ffwll.local>
+ <20250110203838.GL5556@nvidia.com>
+ <Z4Z4NKqVG2Vbv98Q@phenom.ffwll.local>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z4Z4NKqVG2Vbv98Q@phenom.ffwll.local>
+X-ClientProxiedBy: MN0PR02CA0016.namprd02.prod.outlook.com
+ (2603:10b6:208:530::14) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20250114130720.GJ26854@ziepe.ca>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: BCytHc6oJgk-TAcLxG-uTS53Q_Jiz8HkYAthNMIuuAI_1736873497
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|BL3PR12MB6595:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9c4e0af-fe6a-405b-9044-08dd34c138d8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?XNt4fLehHId82BQXADJXY5MO7x5KJx2kFPGK2TRPewYznR9+z1WdloyFufSw?=
+ =?us-ascii?Q?2OwB2+t2ZLeOa5WrEEq++uPG8/ZjZvt0ieHp6gnxmkAa1FA7q1zxPg1QE1d8?=
+ =?us-ascii?Q?cBQHVosv1fmmY9U0P6R/vVSl5sRkQOfDFBAOgbRUmBcv/oBfB2Z2SF+b8FQG?=
+ =?us-ascii?Q?RqdIhKl+LPfDuU9aefWGYoH8pw+VqwdCynYnCN5dhRn/HluqcpHKbH8+ZVa+?=
+ =?us-ascii?Q?M5ITPVe6BcfGqggFTEH4yfDoaAywkH9+0+2rzxgmzNdk18lequwApPxqiOy9?=
+ =?us-ascii?Q?J+tCtdaiGggqLiJ+yDhbnMf95yl7XcaWVve8xXq9/mHixcPV6HMB4Tz7dB+p?=
+ =?us-ascii?Q?WlRHKdtvLSvTrgVtBmvNaxIL5sKxp2TfaXYGQjWk6gWmNAsE92VAifpO5dwi?=
+ =?us-ascii?Q?8sZM5dCsAsNUXqsA8ulEPRw0uzCkiJRg7nPNL2mWB7bw6XHpo754yWcB4JJZ?=
+ =?us-ascii?Q?eYPtCmE+MBLJrbNezkUrMYzrZ8MK3kxiGqQ7+dFvhukH7wSwADBVqde2RSbr?=
+ =?us-ascii?Q?JgF2lyo3Dbtl/bYz5eHP52thQHszjJ627zRd7dFdPrsauUj8Hbaydz/L/dq3?=
+ =?us-ascii?Q?fXBFJgj7LMbpTbCbBj7x+xlz0uuJSXywFpMEes3E02x3H3SrrFJl1q0CKlP5?=
+ =?us-ascii?Q?GSId/j1hRdZ30q2sM+GOTuGdlDPV+9SJdeuapDpyqq9Pe/wJ/nruUprayZFI?=
+ =?us-ascii?Q?UaV2Gv8fkNA2SM9IPRdjv3pxPSiieRPpgIyPjfYvkjI35xOTgkHDCDgYPLIz?=
+ =?us-ascii?Q?Y2DDOlaZNtFylVDzZ+YB15V1AuLOoi4lmzQ7mUHAjZ2l0DF0oake7+GrcmMs?=
+ =?us-ascii?Q?pvDhFxdgEMOx/Td66yRNTyxLvgV8q+w2usGciMKaF2YGqzRqN10tldvZBi/K?=
+ =?us-ascii?Q?kE7zuD35dbQt5qO/Ol2sQX6KrPT6itcO/ig8CWOFUY0OhAbEknOvMPQoWy2+?=
+ =?us-ascii?Q?cZDn+2LB/rC2bgcAddUZ7RLDkWCVeSfe6OUU383THQPuF8KyRZCIlA3IMSEm?=
+ =?us-ascii?Q?aJ3v2FHkASnoAOw4reXga5j/9COQSXRlEaKna+KagpqIwdQcDbrkR8/ujlVi?=
+ =?us-ascii?Q?zOTclYdA3PK9z+jl30ExFKwLvH3YWrEFZZSmJklibocM18oprwIpx9JsVVq3?=
+ =?us-ascii?Q?NfcuCsWhgys/4DHopb77Cn6ARt3z0LklhIYDfO2t+XRSAiPP1k1JXmul9bAF?=
+ =?us-ascii?Q?xJC7sPXoAYZP3OQWOrLgIpngW61ru3U70CUe4bc/DKHDA8Bz6rhaPfI0YxEw?=
+ =?us-ascii?Q?eaZEpRt19hyJlEehhoayGS1F7iy7UBKiFOi4ZiM92Pks2J+q4om8IbCY5emx?=
+ =?us-ascii?Q?+lnP7WOt2sMfv2XOqKllf6v4NmcU63YDrJ8UtPrOAcKm4NTu2YeRL/6O7QL4?=
+ =?us-ascii?Q?U6Iq9bH97zukRMfXWQX+go0/2/yc1ILGouxn05TIP7ZN5lOS7t7od/6skbx3?=
+ =?us-ascii?Q?1HLTHRD8RjI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4Gw9k2OyGF3acFkHI3B8Cq6AFJHBd8k9DOVB/9ixUvvzO2pirryZRl7T2dit?=
+ =?us-ascii?Q?mroI1bS9IFR8LFuWP11q4UTKchTHBOL/rMc6z1VK7/C/LSyS595lljuG1M0X?=
+ =?us-ascii?Q?rcYVusFLqhz68DUltin/u9HJGuzhmsoq3HKTyuDFdgMqc1pRKEIKgbA1zCYl?=
+ =?us-ascii?Q?8ydU+ePyjP95J5VxAQyUZCpk8iuvV6WA+CwPaI/L4jZi6/SnQYE1oFKc6+S4?=
+ =?us-ascii?Q?dFabyzKXytjgWxsARWPiaZ+x0LAt0TIcWlspIGHnEra+GCrePYV73sLUILFu?=
+ =?us-ascii?Q?e2O1zr5FX9V4HL7MwNfBmNdIllySpQGRsPjKMkNlEk/8mEx+7+rxCbHZ5TLb?=
+ =?us-ascii?Q?tQiZrdoTQebQ7bVh1wxoKcgThdX+kpsBa5yyJrioXXiCVpd69VqigBsNHkxh?=
+ =?us-ascii?Q?s9ZDgUkiTqpHE1w7eeoFtNOPG42Rr5OGFEZWJZGSZaCa44GB8DHCeFVqzunP?=
+ =?us-ascii?Q?8DZKrAITduMWt6z1i4xqUg7DBmKeYPPoUqNFs3cS9iZ6JtqtMVQeiFQoN36O?=
+ =?us-ascii?Q?u6rm2wI9240vEp8tlzWens5XAGjE7ygqhygcO/CIeZl5ZoZMEgMWu72JLk+/?=
+ =?us-ascii?Q?H0eHplHOP8vdPUd9pBmgFe1sATKo+Nt/yc1uMHCbZ5QIfLR9f9DlRjx28AYH?=
+ =?us-ascii?Q?kBzTpLbPeG2ySSPJCOFb3d/Rgg5CkHjUCwvEMXjVzeXzx3/gkKFGt7YbSaND?=
+ =?us-ascii?Q?LPwsSc2NXQv/KQgGNJOuZDFwXLXZr933EqctveL3ZuYKAqtKMWm3sqSrNQIe?=
+ =?us-ascii?Q?mQmb7sHCIqafabcD4lZwWVE1HevDR3jxmrumPE61tq0LLbmFRd8LAEJ2RgpU?=
+ =?us-ascii?Q?PgyOGRrruoYRjWOrxIflrUPoPicahjgZ8viDJ0c1cWl5tDuAed/4iiPiQsEq?=
+ =?us-ascii?Q?GoTdr/Ln/UD49KWT+H5sX/ioF6OqxqGh2+GrsMfZxs8BPpDzlObolvwv6nyc?=
+ =?us-ascii?Q?3VNR/bv3xiPZ1IOOtpOlhOIErgJ0faMx62f4Uf002mrYB5c7V4TRY6johvoV?=
+ =?us-ascii?Q?bVwH57/2xRlSeC7U0owXOnEHy47Dpl+Y7p2nbWcWzFlPTa2E9Qv1iacBpJyK?=
+ =?us-ascii?Q?xlJYpXV7NjzKaMmbQy/AxW293F9gJCKagU17CV8JfIM7moN9NAc1Q3t9c5oq?=
+ =?us-ascii?Q?SrfOaXrOsAYSdp7RCbk2WhGlXsCtoDKRGuydfYxreCiukLDP5GJA9ZwBTOBt?=
+ =?us-ascii?Q?TFpTQFwlX9hhc8vmqRkMlQMPoWjtVj5SZVe8FywJqgLc2CLKMByEVDBh+9VU?=
+ =?us-ascii?Q?9CizvHyo1aimHOG/WU41iBl6Bnt5wyB4SRPljOVZMns6Hy2K+zHlEcD4/Jn8?=
+ =?us-ascii?Q?FOB3UJH8gNunjG5+oq1vWunIGs7MKK2Ni5cPxH3sA1iO4LYjGfPQmr9bxhfn?=
+ =?us-ascii?Q?eqiuIHyt//ZumCSGeKQ/GPZsTlPXGhj1ePFgWgyFd0pp/i/IIRKkSzDhvDG1?=
+ =?us-ascii?Q?R3oAArLS3ztkl5vx9ieE84lVqWB9NqTnTsBriLrLx4GVO0GIy42/0/qFqhe2?=
+ =?us-ascii?Q?TmU0rt2xeK53WBmLCJabBnWNRbqWhz1W2Wvw0EGxnLHZkz8wL/gPXxseLohl?=
+ =?us-ascii?Q?JF9odQZjv9/SFekbTlba32Q3oAwEe/7YU1jJxXVk?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9c4e0af-fe6a-405b-9044-08dd34c138d8
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 17:31:04.5955
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: j9CFajaXP4oh2gxVEtjK8vdlsZ+CCARgwVUclBHdwKwr2sUJlOQTQOWp1v96qqYP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6595
 
-On Tue, Jan 14, 2025 at 09:07:20AM -0400, Jason Gunthorpe wrote:
->On Tue, Jan 14, 2025 at 11:42:34AM +0100, Stefano Garzarella wrote:
->> Hi Jarkko,
->>
->> On Thu, 19 Dec 2024 at 17:07, Stefano Garzarella <sgarzare@redhat.com> wrote:
->> >
->> > On Thu, Dec 19, 2024 at 05:40:58PM +0200, Jarkko Sakkinen wrote:
->> > >On Thu Dec 19, 2024 at 5:35 PM EET, Stefano Garzarella wrote:
->> > >> So to use them directly in sev, we would have to move these definitions
->> > >> into include/linux/tpm.h or some other file in inlcude/. Is this
->> > >> acceptable for TPM maintainers?
->> > >
->> > >There's only me.
->> > >
->> > >I don't know.
->> > >
->> > >What you want to put to include/linux/tpm.h anyway?
->> >
->> > At least tpmm_chip_alloc(), tpm2_probe(), and tpm_chip_register()
->
->The intention was that tpm drivers would be under drivers/char/tpm/
->
->Do you really need to put your tpm driver in arch code? Historically
->drivers in arch code have not worked out so well.
+On Tue, Jan 14, 2025 at 03:44:04PM +0100, Simona Vetter wrote:
 
-I think I misinterpreted your answer here: https://lore.kernel.org/linux-coco/20241211150048.GJ1888283@ziepe.ca/ when I asked about calling "the code in
-tpm_platform_probe() directly in sev".
+> E.g. if a compositor gets a dma-buf it assumes that by just binding that
+> it will not risk gpu context destruction (unless you're out of memory and
+> everything is on fire anyway, and it's ok to die). But if a nasty client
+> app supplies a revocable dma-buf, then it can shot down the higher
+> priviledged compositor gpu workload with precision. Which is not great, so
+> maybe existing dynamic gpu importers should reject revocable dma-buf.
+> That's at least what I had in mind as a potential issue.
 
-I totally agree that it's not a good idea, which is why I had proposed
-this: https://lore.kernel.org/linux-coco/CAGxU2F7QjQTnXsqYeKc0q03SQCoW+BHbej9Q2Z8gxbgu-3O2fA@mail.gmail.com/
+I see, so it is not that they can't handle a non-present fault it is
+just that the non-present effectively turns into a crash of the
+context and you want to avoid the crash. It makes sense to me to
+negotiate this as part of the API.
 
-   Otherwise we need an intermediate module in drivers/char/tpm. Here we
-   have 2 options:
-   1. continue as James did by creating a platform_device.
-   2. or we could avoid this by just exposing a registration API invoked by
-   sev to specify the send_recv() callback to use. I mean something like
-   renaming tpm_platform_probe() in tpm_platform_register(), and call it in
-   snp_init_platform_device().
+> > This is similar to the structure BIO has, and it composes nicely with
+> > a future pin_user_pages() and memfd_pin_folios().
+> 
+> Since you mention pin here, I think that's another aspect of the revocable
+> vs dynamic question. Dynamic buffers are expected to sometimes just move
+> around for no reason, and importers must be able to cope.
 
-I'm thinking of sending an RFC implementing 2 so we can discuss there,
-it should be a good compromise between your suggestions and James'
-version.
+Yes, and we have importers that can tolerate dynamic and those that
+can't. Though those that can't tolerate it can often implement revoke.
 
->
->Meaning that you'd export some of your arch stuff for the tpm driver
->to live in its natural home
+I view your list as a cascade:
+ 1) Fully pinned can never be changed so long as the attach is present
+ 2) Fully pinned, but can be revoked. Revoked is a fatal condition and
+    the importer is allowed to experience an error
+ 3) Fully dynamic and always present. Support for move, and
+    restartable fault, is required
 
-@Tom do you think we can eventually expose sev API like
-svsm_perform_call_protocol(), svsm_get_caa(), etc.?
+Today in RDMA we ask the exporter if it is 1 or 3 and allow different
+things. I've seen the GPU side start to offer 1 more often as it has
+significant performance wins.
 
-Maybe option 2 that I proposed could avoid this and have sev register a
-simple callback so that we avoid exposing these internal APIs.
+> For recovable exporters/importers I'd expect that movement is not
+> happening, meaning it's pinned until the single terminal revocation. And
+> maybe I read the kvm stuff wrong, but it reads more like the latter to me
+> when crawling through the pfn code.
 
-Thanks,
-Stefano
+kvm should be fully faultable and it should be able handle move. It
+handles move today using the mmu notifiers after all.
 
+kvm would need to interact with the dmabuf reservations on its page
+fault path.
+
+iommufd cannot be faultable and it would only support revoke. For VFIO
+revoke would not be fully terminal as VFIO can unrevoke too
+(sigh).  If we make revoke special I'd like to eventually include
+unrevoke for this reason.
+
+> Once we have the lifetime rules nailed then there's the other issue of how
+> to describe the memory, and my take for that is that once the dma-api has
+> a clear answer we'll just blindly adopt that one and done.
+
+This is what I hope, we are not there yet, first Leon's series needs
+to get merged then we can start on making the DMA API P2P safe without
+any struct page. From there it should be clear what direction things
+go in.
+
+DMABUF would return pfns annotated with whatever matches the DMA API,
+and the importer would be able to inspect the PFNs to learn
+information like their P2Pness, CPU mappability or whatever.
+
+I'm pushing for the extra struct, and Christoph has been thinking
+about searching a maple tree on the PFN. We need to see what works best.
+
+> And currently with either dynamic attachments and dma_addr_t or through
+> fishing the pfn from the cpu pagetables there's some very clearly defined
+> lifetime and locking rules (which kvm might get wrong, I've seen some
+> discussions fly by where it wasn't doing a perfect job with reflecting pte
+> changes, but that was about access attributes iirc). 
+
+Wouldn't surprise me, mmu notifiers are very complex all around. We've
+had bugs already where the mm doesn't signal the notifiers at the
+right points.
+
+> If we add something
+> new, we need clear rules and not just "here's the kvm code that uses it".
+> That's how we've done dma-buf at first, and it was a terrible mess of
+> mismatched expecations.
+
+Yes, that would be wrong. It should be self defined within dmabuf and
+kvm should adopt to it, move semantics and all.
+
+My general desire is to move all of RDMA's MR process away from
+scatterlist and work using only the new DMA API. This will save *huge*
+amounts of memory in common workloads and be the basis for non-struct
+page DMA support, including P2P.
+
+Jason
