@@ -1,228 +1,157 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481BB176ADE
-	for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 14:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDA8159209
+	for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 16:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736865855; cv=none; b=Kd6Q85MWmG/GpBdQcpq5vaEtVIkSVEKRSljIbKvwazOX/ekAES/1nFsOr7xVm9+x1rTC70gUr9xRmT3OzbgLWk/+7j2885M6d5rUMJrRg5tAaxy8oCAcyVaMdiBixWtipenC3ZnuGwLa/gibF9kbxpN+J/b86MYrJLYEzVOPaFE=
+	t=1736873502; cv=none; b=dHL4uuBy8HDfs1lVS8uRJhv1N5FRd35AaYtOrQdVI+atRAwwB6xnQUqaK8So8Pa9cJEVRuQqxI7yuWyA/l36zGIJAsxDcDVue4NE5egjnQeSVHBmPwZxqytr5wmV21O0BwkumK4JFDaMxvvIvMRj5t1zMNqee49EpIn5JNj/gCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736865855; c=relaxed/simple;
-	bh=tJBzY/+esHF2sg7h4j+gHu6DCf5brYAZN8wsp9y4Jvk=;
+	s=arc-20240116; t=1736873502; c=relaxed/simple;
+	bh=F/Rcvm8c7WOs06/htlH1im0ahc+bhTyHl9aYTYeW32M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gznUgfV3rrmyhsxNGpe6qeEux0zCGTtl/VT3xbDsvP6CencdFzOR9h7HQqKje/Y0N1qrtT9VktkYp8r0AKwzoYjoiSjJ0N2D/aooIjNdihn4rRRObwqSQ7tYCNpAOLoAgK4fPnw2UNB84aKs86dwUjeloRjJTrQHyre72ta8ncM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=WKSRph6G; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	 In-Reply-To:Content-Type:Content-Disposition; b=qTTlCXlGw2a5K1lRUmBDMHhUai9eC/HfGpUUcoIRLLr0uAz0sWZZ16nw8Is1hEuZPtKLAH7ONRhfUBkJy59vFtLPGnGhDhgr3a+ZU9obmkaGysE8m+MeDvqIyY6dOlVPdI7rMl3i4NY9T+BBTteHM4LcoeC2BJLZYZMJLA5257A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CFY+GPE0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="WKSRph6G"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5d3d2a30afcso9288110a12.3
-        for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 06:44:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1736865847; x=1737470647; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ATFNgMzaw3+odlncdmVbwQjWHseefp7b7ULkUB6sipQ=;
-        b=WKSRph6GYHrz76OhY92pB7RAntEpw8rhxzoVe+7McC1yzRz9m/YWxbGPGW0Q2QR5lI
-         mjni/67FUwQbDmc95cd22l8VYXYMt1wr4oUguKNtPEg/a78Me3/12EmJLC6K3B7VALXV
-         f4Q+YpYd+YXpxFLEg4gluekXDKcZqElbP2y2w=
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CFY+GPE0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736873500;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DVM4lB8fISehCZiKz+IKvae29WZL6ifuCMkp4bakUF8=;
+	b=CFY+GPE0HHEoxUQBdrmNafVCv8Wzp9rcnkw2GNG6peLQ0rshWOH8e0+kIGzAP8MA7pR7qj
+	G+hBirP5uumzM1IwRrtWqy3sydzjU5SCzr9g7cF5a80Q31a9q6TjX8Ooy3bmVH7hK7bLvW
+	RRnI9M8/kDYL7CstmO4X+Myr9lti90E=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-532-UpNy5zpyOV2XIZvNpNQcyw-1; Tue, 14 Jan 2025 11:51:38 -0500
+X-MC-Unique: UpNy5zpyOV2XIZvNpNQcyw-1
+X-Mimecast-MFC-AGG-ID: UpNy5zpyOV2XIZvNpNQcyw
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43673af80a6so43858335e9.1
+        for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 08:51:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736865847; x=1737470647;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ATFNgMzaw3+odlncdmVbwQjWHseefp7b7ULkUB6sipQ=;
-        b=DYPoMnFh8y2hDwlTXvtT+ZqlavRX2fg7WIICnnYjtLDAfAA8GEEPu5SnEFwh3WEQP7
-         aOG5QN6SBGBtqxazmdVkurRClCfOKma//k68aQZuqEmFtcEAiTOqJOGxl6w1Pze9lMSh
-         PmObxVc/LiDDMXGGfDXGdJbBQEsoxZTkfumz1yOwqScSPhUB8ZfZCy1FUr+oBYy2IZ19
-         51zquAgc+SlIJqZlcBIW5Jr5E53fVdnXQs/viWwWVXQZqFCzj/uIYuNTZgm9GdzcZxie
-         kVoy83BUMT1bp+Vd3GKb1ClaKQdzE02HG8V1HjLznww9gAkQzXTMpH15Sof5TD4TK8Rc
-         1XRg==
-X-Forwarded-Encrypted: i=1; AJvYcCXVCdxFgMyPnJtbP4DiOHVh1oHoQjpkrdjMBs6iXtlopiFStXactdqozWuK2BlC3QU6ziweW0nD9aTb@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz/3+sHNZcil6rF/WMSxm/FvYYsZNn7fkYjHDcmuWSzIx5H++/A
-	fhQvsGKmqEt4Tccss0wx/3TYKoVF48zn06mIgP2okZI81wsO9ItScUY5hpqvM9U=
-X-Gm-Gg: ASbGncvHY/l+uOAnDluIR9VVFTQtllKOm2yBctvEMuD3ZMtkuLxvwA/WHLvguDXCJSn
-	YfaYOpI+IbqngFp4GeUSyl3nNy6MFml1MBzrX58geUgdd8xg6WqVzD7QxDIH64nNOy0LsQfsMEe
-	tbnPoZ3fKg7P/fzUepfdTH7MaTVMAptShrj2WcrAkr028q0T2HysnbSNAlzwl4Xw99oDBQLa2Rj
-	ejQNGhj0aeUykytasAR+FO6V7tTSdo0PL3d0nlhcY0sDkuD1lvdPQ9iqibntvcQgeTi
-X-Google-Smtp-Source: AGHT+IGAg6SbQyvl4hHoMLWiihnCnk4YJMHgw8ibbt0hblBqr0eHOCrKPtQvQh7P/3PbA4F//m55Iw==
-X-Received: by 2002:a17:907:a48:b0:ab2:c1e2:1da9 with SMTP id a640c23a62f3a-ab2c1e22977mr2341583266b.51.1736865847270;
-        Tue, 14 Jan 2025 06:44:07 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95b2181sm636633966b.162.2025.01.14.06.44.06
+        d=1e100.net; s=20230601; t=1736873497; x=1737478297;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DVM4lB8fISehCZiKz+IKvae29WZL6ifuCMkp4bakUF8=;
+        b=VH8JOj5O/LjBt3kP/0AaA/RkjGHvrGA3aFVh6Lvs5iCWsHLZotBpr81WsCDqLrJkjz
+         VdzlljkymYKZnHmg+wsacKAbbll8sQzpzHrpPcLPZ9TnwxzN17MTl6jK/2RTUVTEV8QN
+         UfIpYxx9RPRJmxPi/2ula6QebR85Oj2CvhNhhjb3G6/QYQdqnvcaUfOg5lGGBOpObEWU
+         ZDnjUJsiV6IX/3h87lLU+BB0JGvolOS9FB+aaYk8yxM2IIKdp898nDw9dpxDaIxdd9ah
+         DRmkuqhEb4c0jRH1jY4Y5nQHFe+qFZckH166JBM7OKDUIahdkrwv1TuN995Z5EdxScsJ
+         e3TA==
+X-Forwarded-Encrypted: i=1; AJvYcCWFhN9eiA4dKrNPjnGxXS9yxQGe8i2KPr8zepc+jEXiCaVDl97/azOd75Rq3pGdNQfXNnd56gLvHU8v@lists.linux.dev
+X-Gm-Message-State: AOJu0YwENTOOR3NDeCLBqtugAV1MMCyHjC0X86xbtelwoNb6WnZ3WBoy
+	xKdXXEM6BFQEq/8P0yuh44De6X33A+coL//+6MM5aBoEfaX1Tcxa2ryvV7F/Z9SnedVfb6Jtp+G
+	xf4wbc5gWrkJS1MHzdK4YP1/WBAAYelhdR6of0gJXXURzafaOvea4hzVtZFw=
+X-Gm-Gg: ASbGncuO4cQgud7I4PSGqa7SGIg3t8xjD7HlvET5BE5VAojtxidtBThbPlX9AGJVAKT
+	Ukk1Yj+ju+a5HcJOGICe9Dy/MXc/y9ky0PMdE1vbznNyFT27UvzBFoDgp9er0FghvZuCe/kKRHo
+	Oml+loz2PxIVAP0wvAY6zd0hnCr7w6o+Az7ssTNmbmy5/DSSGoKoJ7JQf0W9KfGIU7/gI7QpHv7
+	rm0zwULVK6pMFWOnC/AXLahEHSxJFN0YcG82KGc0MFoYbrx2zqWa+BN39xZS929ZnAe2SvsVFAy
+	ZoIAoetzk7x6VrJN1cTbUjeiPg/tNdax
+X-Received: by 2002:a05:600c:1d9e:b0:436:8a6f:b6db with SMTP id 5b1f17b1804b1-436e2707c41mr203961375e9.22.1736873497361;
+        Tue, 14 Jan 2025 08:51:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHChBCm1fcENOEHRTFDJk6utAemDGsmFgi4siBbiD1KOBkMWUnBLk6m+9wbauenfuVr5rYzaQ==
+X-Received: by 2002:a05:600c:1d9e:b0:436:8a6f:b6db with SMTP id 5b1f17b1804b1-436e2707c41mr203960865e9.22.1736873496611;
+        Tue, 14 Jan 2025 08:51:36 -0800 (PST)
+Received: from sgarzare-redhat (host-82-53-134-100.retail.telecomitalia.it. [82.53.134.100])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e37d050sm15652966f8f.15.2025.01.14.08.51.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 06:44:06 -0800 (PST)
-Date: Tue, 14 Jan 2025 15:44:04 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
-	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, pbonzini@redhat.com, seanjc@google.com,
-	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
-	dan.j.williams@intel.com, aik@amd.com, yilun.xu@intel.com,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lukas@wunner.de, yan.y.zhao@intel.com, leon@kernel.org,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
- kAPI
-Message-ID: <Z4Z4NKqVG2Vbv98Q@phenom.ffwll.local>
-Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
-	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, pbonzini@redhat.com, seanjc@google.com,
-	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
-	dan.j.williams@intel.com, aik@amd.com, yilun.xu@intel.com,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lukas@wunner.de, yan.y.zhao@intel.com, leon@kernel.org,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-References: <f3748173-2bbc-43fa-b62e-72e778999764@amd.com>
- <20250108145843.GR5556@nvidia.com>
- <5a858e00-6fea-4a7a-93be-f23b66e00835@amd.com>
- <20250108162227.GT5556@nvidia.com>
- <Z37HpvHAfB0g9OQ-@phenom.ffwll.local>
- <Z37QaIDUgiygLh74@yilunxu-OptiPlex-7050>
- <58e97916-e6fd-41ef-84b4-bbf53ed0e8e4@amd.com>
- <Z38FCOPE7WPprYhx@yilunxu-OptiPlex-7050>
- <Z4F2X7Fu-5lprLrk@phenom.ffwll.local>
- <20250110203838.GL5556@nvidia.com>
+        Tue, 14 Jan 2025 08:51:36 -0800 (PST)
+Date: Tue, 14 Jan 2025 17:51:33 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Jarkko Sakkinen <jarkko.sakkinen@iki.fi>, 
+	James Bottomley <james.bottomley@hansenpartnership.com>, linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Huewe <peterhuewe@gmx.de>, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-integrity@vger.kernel.org, x86@kernel.org, 
+	Joerg Roedel <jroedel@suse.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Claudio Carvalho <cclaudio@linux.ibm.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH 3/3] x86/sev: add a SVSM vTPM platform device
+Message-ID: <2yyqhjkxl56uqv35smrq6mdddufcpoj7fgon4n6h6zwei4kryu@pkwhln6b57ga>
+References: <20241210144025.GG1888283@ziepe.ca>
+ <50a2e1d29b065498146f459035e447851a518d1a.camel@HansenPartnership.com>
+ <20241210150413.GI1888283@ziepe.ca>
+ <CAGxU2F6yzqb0o_pQDakBbCj3RdKy_XfZfzGsiywnYL65g6WeGg@mail.gmail.com>
+ <20241211150048.GJ1888283@ziepe.ca>
+ <CAGxU2F7QjQTnXsqYeKc0q03SQCoW+BHbej9Q2Z8gxbgu-3O2fA@mail.gmail.com>
+ <D6FSHG5Z9UJQ.CWQTAANBVIQQ@iki.fi>
+ <6rwo7tkdst227kb4pwvr54w4mfz2zw3offux7mqfupi3rgwkaz@65yklvvqw6n4>
+ <CAGxU2F4YQy-otsGtGiUHDiL7PGXic2_HzWL_+GHkn+Hs_ScGpQ@mail.gmail.com>
+ <20250114130720.GJ26854@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20250114130720.GJ26854@ziepe.ca>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: BCytHc6oJgk-TAcLxG-uTS53Q_Jiz8HkYAthNMIuuAI_1736873497
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20250110203838.GL5556@nvidia.com>
-X-Operating-System: Linux phenom 6.12.3-amd64 
 
-On Fri, Jan 10, 2025 at 04:38:38PM -0400, Jason Gunthorpe wrote:
-> On Fri, Jan 10, 2025 at 08:34:55PM +0100, Simona Vetter wrote:
-> 
-> > So if I'm getting this right, what you need from a functional pov is a
-> > dma_buf_tdx_mmap? Because due to tdx restrictions, the normal dma_buf_mmap
-> > is not going to work I guess?
-> 
-> Don't want something TDX specific!
-> 
-> There is a general desire, and CC is one, but there are other
-> motivations like performance, to stop using VMAs and mmaps as a way to
-> exchanage memory between two entities. Instead we want to use FDs.
-> 
-> We now have memfd and guestmemfd that are usable with
-> memfd_pin_folios() - this covers pinnable CPU memory.
-> 
-> And for a long time we had DMABUF which is for all the other wild
-> stuff, and it supports movable memory too.
-> 
-> So, the normal DMABUF semantics with reservation locking and move
-> notifiers seem workable to me here. They are broadly similar enough to
-> the mmu notifier locking that they can serve the same job of updating
-> page tables.
+On Tue, Jan 14, 2025 at 09:07:20AM -0400, Jason Gunthorpe wrote:
+>On Tue, Jan 14, 2025 at 11:42:34AM +0100, Stefano Garzarella wrote:
+>> Hi Jarkko,
+>>
+>> On Thu, 19 Dec 2024 at 17:07, Stefano Garzarella <sgarzare@redhat.com> wrote:
+>> >
+>> > On Thu, Dec 19, 2024 at 05:40:58PM +0200, Jarkko Sakkinen wrote:
+>> > >On Thu Dec 19, 2024 at 5:35 PM EET, Stefano Garzarella wrote:
+>> > >> So to use them directly in sev, we would have to move these definitions
+>> > >> into include/linux/tpm.h or some other file in inlcude/. Is this
+>> > >> acceptable for TPM maintainers?
+>> > >
+>> > >There's only me.
+>> > >
+>> > >I don't know.
+>> > >
+>> > >What you want to put to include/linux/tpm.h anyway?
+>> >
+>> > At least tpmm_chip_alloc(), tpm2_probe(), and tpm_chip_register()
+>
+>The intention was that tpm drivers would be under drivers/char/tpm/
+>
+>Do you really need to put your tpm driver in arch code? Historically
+>drivers in arch code have not worked out so well.
 
-Yeah raw pfn is fine with me too. It might come with more "might not work
-on this dma-buf" restrictions, but I can't think of a practical one right
-now.
+I think I misinterpreted your answer here: https://lore.kernel.org/linux-coco/20241211150048.GJ1888283@ziepe.ca/ when I asked about calling "the code in
+tpm_platform_probe() directly in sev".
 
-> > Also another thing that's a bit tricky is that kvm kinda has a 3rd dma-buf
-> > memory model:
-> > - permanently pinned dma-buf, they never move
-> > - dynamic dma-buf, they move through ->move_notify and importers can remap
-> > - revocable dma-buf, which thus far only exist for pci mmio resources
-> 
-> I would like to see the importers be able to discover which one is
-> going to be used, because we have RDMA cases where we can support 1
-> and 3 but not 2.
-> 
-> revocable doesn't require page faulting as it is a terminal condition.
+I totally agree that it's not a good idea, which is why I had proposed
+this: https://lore.kernel.org/linux-coco/CAGxU2F7QjQTnXsqYeKc0q03SQCoW+BHbej9Q2Z8gxbgu-3O2fA@mail.gmail.com/
 
-Yeah this is why I think we should separate the dynamic from the revocable
-use-cases clearly, because mixing them is going to result in issues.
+   Otherwise we need an intermediate module in drivers/char/tpm. Here we
+   have 2 options:
+   1. continue as James did by creating a platform_device.
+   2. or we could avoid this by just exposing a registration API invoked by
+   sev to specify the send_recv() callback to use. I mean something like
+   renaming tpm_platform_probe() in tpm_platform_register(), and call it in
+   snp_init_platform_device().
 
-> > Since we're leaning even more on that 3rd model I'm wondering whether we
-> > should make it something official. Because the existing dynamic importers
-> > do very much assume that re-acquiring the memory after move_notify will
-> > work. But for the revocable use-case the entire point is that it will
-> > never work.
-> 
-> > I feel like that's a concept we need to make explicit, so that dynamic
-> > importers can reject such memory if necessary.
-> 
-> It strikes me as strange that HW can do page faulting, so it can
-> support #2, but it can't handle a non-present fault?
+I'm thinking of sending an RFC implementing 2 so we can discuss there,
+it should be a good compromise between your suggestions and James'
+version.
 
-I guess it's not a kernel issue, but userspace might want to know whether
-this dma-buf could potentially nuke the entire gpu context. Because that's
-what you get when we can't patch up a fault, which is the difference
-between a recovable dma-buf and a dynamic dma-buf.
+>
+>Meaning that you'd export some of your arch stuff for the tpm driver
+>to live in its natural home
 
-E.g. if a compositor gets a dma-buf it assumes that by just binding that
-it will not risk gpu context destruction (unless you're out of memory and
-everything is on fire anyway, and it's ok to die). But if a nasty client
-app supplies a revocable dma-buf, then it can shot down the higher
-priviledged compositor gpu workload with precision. Which is not great, so
-maybe existing dynamic gpu importers should reject revocable dma-buf.
-That's at least what I had in mind as a potential issue.
+@Tom do you think we can eventually expose sev API like
+svsm_perform_call_protocol(), svsm_get_caa(), etc.?
 
-> > So yeah there's a bunch of tricky lifetime questions that need to be
-> > sorted out with proper design I think, and the current "let's just use pfn
-> > directly" proposal hides them all under the rug. 
-> 
-> I don't think these two things are connected. The lifetime model that
-> KVM needs to work with the EPT, and that VFIO needs for it's MMIO,
-> definately should be reviewed and evaluated.
-> 
-> But it is completely orthogonal to allowing iommufd and kvm to access
-> the CPU PFN to use in their mapping flows, instead of the
-> dma_addr_t.
-> 
-> What I want to get to is a replacement for scatter list in DMABUF that
-> is an array of arrays, roughly like:
-> 
->   struct memory_chunks {
->       struct memory_p2p_provider *provider;
->       struct bio_vec addrs[];
->   };
->   int (*dmabuf_get_memory)(struct memory_chunks **chunks, size_t *num_chunks);
-> 
-> This can represent all forms of memory: P2P, private, CPU, etc and
-> would be efficient with the new DMA API.
-> 
-> This is similar to the structure BIO has, and it composes nicely with
-> a future pin_user_pages() and memfd_pin_folios().
+Maybe option 2 that I proposed could avoid this and have sev register a
+simple callback so that we avoid exposing these internal APIs.
 
-Since you mention pin here, I think that's another aspect of the revocable
-vs dynamic question. Dynamic buffers are expected to sometimes just move
-around for no reason, and importers must be able to cope.
+Thanks,
+Stefano
 
-For recovable exporters/importers I'd expect that movement is not
-happening, meaning it's pinned until the single terminal revocation. And
-maybe I read the kvm stuff wrong, but it reads more like the latter to me
-when crawling through the pfn code.
-
-Once we have the lifetime rules nailed then there's the other issue of how
-to describe the memory, and my take for that is that once the dma-api has
-a clear answer we'll just blindly adopt that one and done.
-
-And currently with either dynamic attachments and dma_addr_t or through
-fishing the pfn from the cpu pagetables there's some very clearly defined
-lifetime and locking rules (which kvm might get wrong, I've seen some
-discussions fly by where it wasn't doing a perfect job with reflecting pte
-changes, but that was about access attributes iirc). If we add something
-new, we need clear rules and not just "here's the kvm code that uses it".
-That's how we've done dma-buf at first, and it was a terrible mess of
-mismatched expecations.
--Sima
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
