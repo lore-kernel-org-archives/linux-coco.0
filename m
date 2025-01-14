@@ -1,185 +1,134 @@
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77ED1ADC91
-	for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 10:09:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DB222DC27
+	for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 10:42:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736849349; cv=none; b=uLWgrTUi4fxA+R4dJHiSjilg8RJOf5AuPhdXOGhcpc9MHSF3dt+2+2YRLYDJWDvDRINHSLPWFr82jh7TZivPrjvOMM3i71HD5+dw20GD3ameMV8mMBAUheESpLhXHzpo9+v01SWNqb9wCYCCm+4dYjPtViudJqcfPrUpKn4/kUk=
+	t=1736851373; cv=none; b=nz2JvSDr50c8uI3a76DxZtbRptsz8jpop8b1EGb+P7wyEKqTr3/uoLgkA32dmJmJqsNsSuUG7pU68sO+tKgDgEVIFHMp399zVyulyLRW1915klSBL2Zkq4cY+Is1hRcZOfsw+ohoC7jJX+oxAkQms08bJP53pUANHBN4HfeFlcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736849349; c=relaxed/simple;
-	bh=e9daeFfoXZEKnrrUiCoSkT6nNkde62u1RAxjysDSA8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MLrLP6gddrzW0/mT+cRbszfhCA9GgTtFmzdJFNwFB5Pn0FZ7BIyMZtbwtL/JPsCNaLHzNZ1uw+jxVDdAueg/YlADPSEaDgOleSIm/G4SqGl2I9rr/nksfvKV4BG0yl/E5vhqxuFFfKod5lqdDznwPW1/hqAwoXNd56yimgRZ5Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=buxXj+jT; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XggG6EqW; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	s=arc-20240116; t=1736851373; c=relaxed/simple;
+	bh=XUmwUb2mpX4ZIjItpQkbXH2upcyx/o8+os3uVGGcCto=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Hdo0zGVNX5eQJPlzZgtvBaBZvygwPHYJbjqxsSkiFgKlcIKPFym2cLMwy/TqOuRUqUxmpvG3kq++EE//gSO1oBJ2sdxO9QFANtr17l1NqMtVupsFuJBNs/JSiJHtmiSyH5n/ETlV82HC87p5ZDsnMbZHVutwnJCKAcL367ThsGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XJ905IAl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="buxXj+jT";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XggG6EqW"
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id F41B51140218;
-	Tue, 14 Jan 2025 05:09:06 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Tue, 14 Jan 2025 05:09:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1736849346; x=
-	1736935746; bh=AcfRbVydz6NoUdsP2M9P1lF/DfwA+J2na2lpJTqLxqE=; b=b
-	uxXj+jTB2QT4kLtB/g7i+Ukqa7CMdJxjhpZxnMXdgxXhOJ2wfpUVVPODBAHoRxy0
-	UaSvhwfFWwvYJxehyVJqp2Uysh/BIe593BVTyytX0KsRLeAnwzbmXMVoOx3zXKM9
-	XwbTGstIpDVdi9SHKa1XVu7x8BviEqHmfj+pyAq/xTHyzl8uz3mvDClWMtJ4AeZs
-	7vyMnyvhCFrVWAMv+EaDIrQ+FEvCSisw5X+9NEmGFOc5RD8V9Jg6bXqOqPRS8Aqm
-	R0H86VfR64PVJvUHsLWKTVw/+WxnZgLR/TIHQ7D1HZTXkeuLWi6xtOMjrkiqM7zz
-	upt4qO/sKL0p/ZUKp1oCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1736849346; x=1736935746; bh=AcfRbVydz6NoUdsP2M9P1lF/DfwA+J2na2l
-	pJTqLxqE=; b=XggG6EqWtnbbEr05qOPn9Dgxs+re6S88aWaindTDayA1sYQz7wX
-	HUR5cMBsxBqDUbUwn0vP+oQDSmkDEfxeDGjPRPpgOCTays7IrFQj715NBeG+aPBi
-	gPqZuYiUj1O8Iay0iTvzmlezKQy1jgrvQvLDoWpRTpmR8bP1f41jd68yMH1K/y5v
-	dYFoHdqUmme5TGvW+13v/aXNakApXIlq+wwNEenklVsU9je4sdBSRDteJzRqzOlr
-	qdSKERv49OwdzyL6ecbWTWxCVirrC0G94gLKSKm8oMgdyG0AW24BJmnSbLuxbqnq
-	P2qHibdEcnMvOv13T29RmiJ8OgCmvz4ik3Q==
-X-ME-Sender: <xms:wjeGZwUlo2txiJzhs49CRqSm0qtu2B19MwxO3_xSJstXLnP03Jh9yw>
-    <xme:wjeGZ0ldSyai7vGcw460bVzSR8uhDinVU2TpaKGUULNbx9V14oOrefhSHdlLBb3c4
-    _OHQUuCHV6-iW9hTxA>
-X-ME-Received: <xmr:wjeGZ0amkkhtZAjpWyMH-mjenJfkLIUiNQ0V2zYGOSeE4bTo0bWYcl6Js7WfzH0a6U5PYw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehiedguddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvden
-    ucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlse
-    hshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeffvdevueetudfhhfff
-    veelhfetfeevveekleevjeduudevvdduvdelteduvefhkeenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhv
-    rdhnrghmvgdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgtph
-    htthhopegvsghivgguvghrmhesgihmihhsshhiohhnrdgtohhmpdhrtghpthhtohepsghh
-    vgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunh
-    gurghtihhonhdrohhrghdprhgtphhtthhopehkvgigvggtsehlihhsthhsrdhinhhfrhgr
-    uggvrggurdhorhhgpdhrtghpthhtohephigrnhdrhidriihhrghosehinhhtvghlrdgtoh
-    hmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuhigrdguvg
-    hvpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhitghk
-    rdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:wjeGZ_UbP-nGuAKzNrpxR2buC9CRoHhbpdt2wxtMTq3bQRKLVAiAsQ>
-    <xmx:wjeGZ6nJHHtIJBW-TryCiW8UEyea4rQgO-H4I_DfVkfEyajF68W9cg>
-    <xmx:wjeGZ0dPIj_i4THFj-G_t5XA92Oj3UMcehKzpTJ5aDdvDrwfq8TZpA>
-    <xmx:wjeGZ8Ec586g1E3cNEOYwwEhUTlaKqKMC3zTed9DJtCukHKf-gILOg>
-    <xmx:wjeGZ8fBFheae0Qocn1WLa0DwUKQ1UKNPBlb7xm2k5Y8hgyAFqbKTKPw>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jan 2025 05:09:02 -0500 (EST)
-Date: Tue, 14 Jan 2025 12:08:59 +0200
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Baoquan He <bhe@redhat.com>, akpm@linux-foundation.org, 
-	kexec@lists.infradead.org, Yan Zhao <yan.y.zhao@intel.com>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, x86@kernel.org, rick.p.edgecombe@intel.com, 
-	kirill.shutemov@linux.intel.com, security@kernel.org
-Subject: Re: [PATCH v2 0/1] Accept unaccepted kexec segments' destination
- addresses
-Message-ID: <ysjwziu3nzznorzwlkqz2dgfqgghzk7wiciaeszf4gar7e3jcz@3b5lzz6bbf5c>
-References: <20241213094930.748-1-yan.y.zhao@intel.com>
- <xgycziy2o56hnom3oau7sbqed3meoni3razc6njj7ujatldnmm@s7odbl4splbn>
- <Z4T1G4dwzo7qdwSP@MiWiFi-R3L-srv>
- <87zfjuoj3i.fsf@email.froward.int.ebiederm.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XJ905IAl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736851370;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XUmwUb2mpX4ZIjItpQkbXH2upcyx/o8+os3uVGGcCto=;
+	b=XJ905IAlPqdevsKBzP1g+EfyTF1zNB2oz8cnZSs2jP2xpelaK/rD+iR1fyA3QWrPK52Gz1
+	YjQRCHs8yCq1shb2XKJRgkoL4GIfvT53JPRcPLvvDocf4bEALMrlQ7yQvPwGXGSBPKGjj4
+	gscQGF8ib7buAYc604V00x1F7+CNN48=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-208-HfjB_27AMnOhR_8R7B2rpg-1; Tue, 14 Jan 2025 05:42:47 -0500
+X-MC-Unique: HfjB_27AMnOhR_8R7B2rpg-1
+X-Mimecast-MFC-AGG-ID: HfjB_27AMnOhR_8R7B2rpg
+Received: by mail-yb1-f197.google.com with SMTP id 3f1490d57ef6-e3a1bc0c876so11608730276.1
+        for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 02:42:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736851367; x=1737456167;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XUmwUb2mpX4ZIjItpQkbXH2upcyx/o8+os3uVGGcCto=;
+        b=L1Dv4AOUQr1fMQaSb2d8AZo9KzDmyficNszNQoSQ8B4PxUy/MP70aCns9nvh/2/Nwa
+         WKDliw0wzLQnRqZ8i6WDcWeOtvj2jz+/EphD0ERvmdRiBpco+irM0vrYmSXk3suflRKE
+         4iJE+ENWx2w0ndufW0R6/w28nBfpejgQ8Y1R1ShgPT3ZhayD2BKQvS7fNzl3hr8s9FtJ
+         MruXTFooy0GJdneQqBPfCi7xAape5A1+/dNhinJMM8pc9s07IP1IkNmSgpFE3NkEh1m7
+         3IizmszQpLIUkI/h5idFn9NpKYWh31UkH9x6JON5G+FeP6jQV8b6DX4OsKlz4Z4V3M/E
+         XJtg==
+X-Forwarded-Encrypted: i=1; AJvYcCV3Hh1JjJvw8ySRyREcFN6bo2pnMR3ggBqyGRNLlYYCuuSetr8bHbEG6t4CJ8hxNfAh6CyvlVZC5y3l@lists.linux.dev
+X-Gm-Message-State: AOJu0YxCRkG6XPow7td27Ty9W+KBM7D8RUfH6budt9ecF5kDEz1mgiWJ
+	/T1B4X5LzGrEhoKnYqxA1TcWnzQ62E0A5F7FcehGKqK9KP8++NxUGkTbxRDkx8HK1Ln80sOYqbo
+	ncRrpb28JQ59cG3jTFnC/zdRvq/Gd+ZbQx3Jq5s7v4+ofzfVTD1LoTbQ37gPQ40TkuUCNX4SV47
+	bHRY69mAgh/T2ABm9H9hAmALaV0SOOpz0gNQ==
+X-Gm-Gg: ASbGncuoZw7lceneIaSnJ2Tn161uxjK15YtQGoPng664a4yMBJ6kdaiD60fxLFMgJYu
+	ycQ0sezJHM7w8V5FaHyiiPtPDYBSvZqPDUJj8PQ==
+X-Received: by 2002:a05:6902:2b8f:b0:e57:3635:8659 with SMTP id 3f1490d57ef6-e573635870fmr9141703276.25.1736851366892;
+        Tue, 14 Jan 2025 02:42:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFOZIJlicLLrBAyQmDoeqAtFnyT1ImV+T1Uhx17NQT/QOC5LkDQJVhFAyMaYO7X972M5OFPus6XF/HZMq7kyU8=
+X-Received: by 2002:a05:6902:2b8f:b0:e57:3635:8659 with SMTP id
+ 3f1490d57ef6-e573635870fmr9141695276.25.1736851366585; Tue, 14 Jan 2025
+ 02:42:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87zfjuoj3i.fsf@email.froward.int.ebiederm.org>
+References: <20241210143423.101774-1-sgarzare@redhat.com> <20241210143423.101774-4-sgarzare@redhat.com>
+ <20241210144025.GG1888283@ziepe.ca> <50a2e1d29b065498146f459035e447851a518d1a.camel@HansenPartnership.com>
+ <20241210150413.GI1888283@ziepe.ca> <CAGxU2F6yzqb0o_pQDakBbCj3RdKy_XfZfzGsiywnYL65g6WeGg@mail.gmail.com>
+ <20241211150048.GJ1888283@ziepe.ca> <CAGxU2F7QjQTnXsqYeKc0q03SQCoW+BHbej9Q2Z8gxbgu-3O2fA@mail.gmail.com>
+ <D6FSHG5Z9UJQ.CWQTAANBVIQQ@iki.fi> <6rwo7tkdst227kb4pwvr54w4mfz2zw3offux7mqfupi3rgwkaz@65yklvvqw6n4>
+In-Reply-To: <6rwo7tkdst227kb4pwvr54w4mfz2zw3offux7mqfupi3rgwkaz@65yklvvqw6n4>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Tue, 14 Jan 2025 11:42:34 +0100
+X-Gm-Features: AbW1kvaMP9hqrX7EbZd8ixyMHLxXzfJgXSkmu3Hcf4GyoCzHKWggJwOwPVU6IFE
+Message-ID: <CAGxU2F4YQy-otsGtGiUHDiL7PGXic2_HzWL_+GHkn+Hs_ScGpQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] x86/sev: add a SVSM vTPM platform device
+To: Jarkko Sakkinen <jarkko.sakkinen@iki.fi>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, James Bottomley <james.bottomley@hansenpartnership.com>, 
+	linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Huewe <peterhuewe@gmx.de>, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-integrity@vger.kernel.org, x86@kernel.org, 
+	Joerg Roedel <jroedel@suse.de>, Jarkko Sakkinen <jarkko@kernel.org>, linux-kernel@vger.kernel.org, 
+	Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Claudio Carvalho <cclaudio@linux.ibm.com>, Dov Murik <dovmurik@linux.ibm.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: hxLOFMtMh7PODgkWqX7hbAOTXyP3ZYDYm9m7u3qh0bQ_1736851367
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jan 13, 2025 at 08:59:29AM -0600, Eric W. Biederman wrote:
-> Baoquan He <bhe@redhat.com> writes:
-> 
-> > On 01/13/25 at 12:01pm, Kirill A. Shutemov wrote:
-> >> On Fri, Dec 13, 2024 at 05:49:30PM +0800, Yan Zhao wrote:
-> >> > Hi Eric,
-> >> > 
-> >> > This is a repost of the patch "kexec_core: Accept unaccepted kexec
-> >> > destination addresses" [1], rebased to v6.13-rc2.
-> >> 
-> >> Can we get this patch applied?
+Hi Jarkko,
+
+On Thu, 19 Dec 2024 at 17:07, Stefano Garzarella <sgarzare@redhat.com> wrote:
+>
+> On Thu, Dec 19, 2024 at 05:40:58PM +0200, Jarkko Sakkinen wrote:
+> >On Thu Dec 19, 2024 at 5:35 PM EET, Stefano Garzarella wrote:
+> >> So to use them directly in sev, we would have to move these definitions
+> >> into include/linux/tpm.h or some other file in inlcude/. Is this
+> >> acceptable for TPM maintainers?
 > >
-> > This looks good to me. In v1, we have analyzed all other possible
-> > solutions, however change in this patch seems the simplest and most
-> > accepatable one.
-> 
-> Truly?  I will go back and look and see what I missed but I haven't seen
-> anything that I addressed my original objections.
-> 
-> To repeat my objection.  The problem I saw was that the performance of
-> the accepted memory paradigm was so terrible that they had to resort to
-> lazily ``accepting'' memory, which leads to hacks in kexec.  I would not
-> like to included hacks in kexec just so that other people can avoid
-> fixing their bugs.
-> 
-> I did see a coherent explanation of the bad performance that pointed the
-> finger squarely at the fact that everything is happening a page at a
-> time.  AKA that the design of the ACPI interface has a flaw that needs
-> to be fixed.
+> >There's only me.
+> >
+> >I don't know.
+> >
+> >What you want to put to include/linux/tpm.h anyway?
+>
+> At least tpmm_chip_alloc(), tpm2_probe(), and tpm_chip_register()
+>
+> >I have not followed this discussion.
+>
+> Let me try to summarize what we are doing: We are writing a small TPM
+> driver to support AMD SEV-SNP SVSM. Basically SVSM defines some sort of
+> hypercalls, which the guest OS can call to talk to the emulated vTPM.
+>
+> In the current version of this series, based on James' RFC, we have an
+> intermediate module (tpm_platform) and then another small driver
+> (platform_device) in arch/x86/coco/sev/core.c that registers the
+> callback to use.
+>
+> To avoid the intermediate driver (Jason correct me if I misunderstood),
+> we want to register the `tpm_chip` with its `tpm_class_ops` directly in
+> arch/x86/coco/sev/core.c where it's easy to use "SVSM calls" (i.e.
+> svsm_perform_call_protocol()).
+>
+> And here I have this problem, so I was proposing to expose these APIs.
+> BTW, we do have an alternative though that I proposed in the previous
+> email that might avoid this.
 
-The interface of accepting memory is platform specific. EFI (not ACPI)
-only provides a way to enumerate which memory is unaccepted.
+Any thought on this?
 
-> I really don't think we should be making complicated work-arounds for
-> someone else's bad software decision just because someone immortalized
-> their bad decision in a standard.  Just accepting all of memory and
-> letting the folks who made the bad decision deal with the consequences
-> seems much more reasonable to me.
+Thanks,
+Stefano
 
-Note that these work-arounds are needed only because kexec allocates
-memory in a hackish way bypassing page allocator.
-
-I don't like that unaccepted memory details leaks into kexec code either.
-But it happens because kexec is special and requires special handling.
-
-> > If Eric has no objection, maybe Andrew can help pick this into his
-> > tree.
-> 
-> I have a new objection.  I believe ``unaccepted memory'' and especially
-> lazily initialized ``unaccepted memory'' is an information leak that
-> could defeat the purpose of encrypted memory.  For that reason I have
-> Cc'd the security list.  I don't know who to CC to get expertise on this
-> issue, and the security list folks should.
-> 
-> Unless I am misunderstanding things the big idea with encrypted
-> memory is that the hypervisor won't be able to figure out what you
-> are doing, because it can't read your memory.
-> 
-> My concern is that by making the ``acceptance'' of memory lazy, that
-> there is a fairly strong indication of the function of different parts
-> of memory.  I expect that signal is strong enough to defeat whatever
-> elements of memory address randomization that we implement in the
-> kernel.
-> 
-> So not only does it appear to me that implementation of ``accepting''
-> memory has a stupidly slow implementation, somewhat enshrined by a bad
-> page at a time ACPI standard, but it appears to me that lazily
-> ``accepting'' that memory probably defeats the purpose of having
-> encrypted memory.
-> 
-> I think the actual solution is to remove all code except for the
-> "accept_memory=eager" code paths.  AKA delete the "accept_memory=lazy"
-> code.  At that point there are no more changes that need to be made to
-> kexec.
-
-It is outside of TDX (and I believe SEV) threat model. In TDX case, VMM
-can block access to arbitrary guest memory range which would cause TD-exit
-if guest touches it. The blocking is required to do some of memory
-maintenance operations, like promoting 4k pages to 2M or relocating a
-guest page to a different host physical address.
-
-Lazy memory accept doesn't change anything from security PoV here.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
