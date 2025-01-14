@@ -1,190 +1,228 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2068.outbound.protection.outlook.com [40.107.244.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B22232428
-	for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 13:35:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736861758; cv=fail; b=tRZiKWoGvLWur8elRqVQYGLMNVXHiKBz4Pdx9KbsiVqKOESe0YUOAYRxzJ987d0FIIaWvumwBRvjCDYn2+JjLqkgV1AFWXpM5yN45EzlrRm+riXfnwmZcScredD8XcPSRMsEw3qGuTa9lH7wQiOnHmkqwvzwv53GwHO3hSnFn94=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736861758; c=relaxed/simple;
-	bh=qckIQXJnTmlFLeOADEbOe9Vt27OfrrSZwuo865NOatM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fA78H831fRb6qF2rn1xrGgoI5Jg5/Cvu6zcQ6Eg+lb1KXkAQvmBvSEqZT0unYGH5biylelw4WToBXV9amkZfFaF2hdohxlEfaKzjYeGIJ4xl5yx/o8fJKlPqeRe+8XS7hNT+2UucCxw4cvuPEeD876AjwTYVY3nWgkpzCkFcgmY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HHO8JSa+; arc=fail smtp.client-ip=40.107.244.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481BB176ADE
+	for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 14:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736865855; cv=none; b=Kd6Q85MWmG/GpBdQcpq5vaEtVIkSVEKRSljIbKvwazOX/ekAES/1nFsOr7xVm9+x1rTC70gUr9xRmT3OzbgLWk/+7j2885M6d5rUMJrRg5tAaxy8oCAcyVaMdiBixWtipenC3ZnuGwLa/gibF9kbxpN+J/b86MYrJLYEzVOPaFE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736865855; c=relaxed/simple;
+	bh=tJBzY/+esHF2sg7h4j+gHu6DCf5brYAZN8wsp9y4Jvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gznUgfV3rrmyhsxNGpe6qeEux0zCGTtl/VT3xbDsvP6CencdFzOR9h7HQqKje/Y0N1qrtT9VktkYp8r0AKwzoYjoiSjJ0N2D/aooIjNdihn4rRRObwqSQ7tYCNpAOLoAgK4fPnw2UNB84aKs86dwUjeloRjJTrQHyre72ta8ncM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=WKSRph6G; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HHO8JSa+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uYjD65Ums/z5lq44ly2oAZG7BA/0D0WQKuwF5tdbLqcT/wM9XKtRJXvFlp/a0izU9oVHbHhpgykYg2JEmvGQCfGxh9sJogXY7tS+K4z2vdmUCcYIsb1yVaJ1HfnZsK0rbix42NDXWqEwxf4MNz40jk+ybvepFDGhzFzkfDsql9vKKAdysEVV5r/9vgXHILt4fX9zXDeGPwKJEDMkpGi7xJE3xb56ZvJvSS6jdoWSNSKhgPFJHuPYG02fpmw31m4FprPQTTnNbdeVs2slVCdq27a+CgtIhASRZO6hkirPI54IGl3yEvoyD5N1j7KuJdH0lrPU0vaqVKhag0gBcNQS2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bCU+np2FymwmOa/p/iANc4AkUige0f+/xzS42iKYUNM=;
- b=duz/c0GNeIovZdyp+sWcDnDFhow9ZKc9ciN4WxILB151Ty/C/+JDUbwJooIpaaQ9toVvhq+cH7QC0Mm5DmmpKBHxmFpmi2hB6+TjcIDSs/muwJ44Roq9hr3YvwLBy+sDATGGpndMkChiQTeR1C44wDkkPCfLWked8vPxXHPNF7vfHud0lzDVBDBN6bwHqI/9YiRea3CWYo1L8x4YUXhmM7tDgBBHAuufRHjlkvPsm0n4Hrst84qQnktnOkYsHdV+xUYYaqYE9QzxO0Q0D+qw5Vy0/5Nnxj1hoscVGFP1Z4/r+NNkcBAZtc7L17FHSoRpn6ZSFf8a05eM4LB02QkbaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bCU+np2FymwmOa/p/iANc4AkUige0f+/xzS42iKYUNM=;
- b=HHO8JSa+3GYVq8kR0hAVXF1o4f7yBSLnp45+myO/kqOfgDiQocqQvtrBCidKqcoruzqmpD9JEHPxDrR74ZaHI/NoKyYUzumxWpVzfP9UTG/9MxL7cE9ZEuWjX7aeeOZ5OB1ICkdP/fDaOVcFMn4YwPF5b5+mmFm1sAYjzPIcNUBqDJcmI7p33+cN1om79rcRn2xDvchr4tpTOL09xraEZ0/dLNpTI4U1s17JBwXkTyeO66F9ykIQ+bJiPs2C5ABm8TalD2rgiFVre04O/iyXPMruxbzYo0532GPQHAbEE4fAmokz4HWp2TTOt7ABAa4mkr2O8NkXGZek4g/NJd1XLA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by MW4PR12MB7429.namprd12.prod.outlook.com (2603:10b6:303:21b::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Tue, 14 Jan
- 2025 13:35:54 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%5]) with mapi id 15.20.8335.017; Tue, 14 Jan 2025
- 13:35:54 +0000
-Date: Tue, 14 Jan 2025 09:35:53 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="WKSRph6G"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5d3d2a30afcso9288110a12.3
+        for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 06:44:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1736865847; x=1737470647; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ATFNgMzaw3+odlncdmVbwQjWHseefp7b7ULkUB6sipQ=;
+        b=WKSRph6GYHrz76OhY92pB7RAntEpw8rhxzoVe+7McC1yzRz9m/YWxbGPGW0Q2QR5lI
+         mjni/67FUwQbDmc95cd22l8VYXYMt1wr4oUguKNtPEg/a78Me3/12EmJLC6K3B7VALXV
+         f4Q+YpYd+YXpxFLEg4gluekXDKcZqElbP2y2w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736865847; x=1737470647;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ATFNgMzaw3+odlncdmVbwQjWHseefp7b7ULkUB6sipQ=;
+        b=DYPoMnFh8y2hDwlTXvtT+ZqlavRX2fg7WIICnnYjtLDAfAA8GEEPu5SnEFwh3WEQP7
+         aOG5QN6SBGBtqxazmdVkurRClCfOKma//k68aQZuqEmFtcEAiTOqJOGxl6w1Pze9lMSh
+         PmObxVc/LiDDMXGGfDXGdJbBQEsoxZTkfumz1yOwqScSPhUB8ZfZCy1FUr+oBYy2IZ19
+         51zquAgc+SlIJqZlcBIW5Jr5E53fVdnXQs/viWwWVXQZqFCzj/uIYuNTZgm9GdzcZxie
+         kVoy83BUMT1bp+Vd3GKb1ClaKQdzE02HG8V1HjLznww9gAkQzXTMpH15Sof5TD4TK8Rc
+         1XRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXVCdxFgMyPnJtbP4DiOHVh1oHoQjpkrdjMBs6iXtlopiFStXactdqozWuK2BlC3QU6ziweW0nD9aTb@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz/3+sHNZcil6rF/WMSxm/FvYYsZNn7fkYjHDcmuWSzIx5H++/A
+	fhQvsGKmqEt4Tccss0wx/3TYKoVF48zn06mIgP2okZI81wsO9ItScUY5hpqvM9U=
+X-Gm-Gg: ASbGncvHY/l+uOAnDluIR9VVFTQtllKOm2yBctvEMuD3ZMtkuLxvwA/WHLvguDXCJSn
+	YfaYOpI+IbqngFp4GeUSyl3nNy6MFml1MBzrX58geUgdd8xg6WqVzD7QxDIH64nNOy0LsQfsMEe
+	tbnPoZ3fKg7P/fzUepfdTH7MaTVMAptShrj2WcrAkr028q0T2HysnbSNAlzwl4Xw99oDBQLa2Rj
+	ejQNGhj0aeUykytasAR+FO6V7tTSdo0PL3d0nlhcY0sDkuD1lvdPQ9iqibntvcQgeTi
+X-Google-Smtp-Source: AGHT+IGAg6SbQyvl4hHoMLWiihnCnk4YJMHgw8ibbt0hblBqr0eHOCrKPtQvQh7P/3PbA4F//m55Iw==
+X-Received: by 2002:a17:907:a48:b0:ab2:c1e2:1da9 with SMTP id a640c23a62f3a-ab2c1e22977mr2341583266b.51.1736865847270;
+        Tue, 14 Jan 2025 06:44:07 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95b2181sm636633966b.162.2025.01.14.06.44.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 06:44:06 -0800 (PST)
+Date: Tue, 14 Jan 2025 15:44:04 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
+	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
 	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com
-Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
- private device
-Message-ID: <20250114133553.GB5556@nvidia.com>
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <20250107142719.179636-9-yilun.xu@linux.intel.com>
- <20250108133026.GQ5556@nvidia.com>
- <Z36ulpCoJAllp4fP@yilunxu-OptiPlex-7050>
- <20250109144051.GX5556@nvidia.com>
- <Z3/7/PQCLi1GE5Ry@yilunxu-OptiPlex-7050>
- <20250110133116.GF5556@nvidia.com>
- <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050>
- <20250113164935.GP5556@nvidia.com>
- <ZnDGqww5SLbVD6ET@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZnDGqww5SLbVD6ET@yilunxu-OptiPlex-7050>
-X-ClientProxiedBy: MN0P221CA0009.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:52a::27) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	sumit.semwal@linaro.org, pbonzini@redhat.com, seanjc@google.com,
+	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+	dan.j.williams@intel.com, aik@amd.com, yilun.xu@intel.com,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lukas@wunner.de, yan.y.zhao@intel.com, leon@kernel.org,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
+ kAPI
+Message-ID: <Z4Z4NKqVG2Vbv98Q@phenom.ffwll.local>
+Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
+	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	sumit.semwal@linaro.org, pbonzini@redhat.com, seanjc@google.com,
+	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+	dan.j.williams@intel.com, aik@amd.com, yilun.xu@intel.com,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lukas@wunner.de, yan.y.zhao@intel.com, leon@kernel.org,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+References: <f3748173-2bbc-43fa-b62e-72e778999764@amd.com>
+ <20250108145843.GR5556@nvidia.com>
+ <5a858e00-6fea-4a7a-93be-f23b66e00835@amd.com>
+ <20250108162227.GT5556@nvidia.com>
+ <Z37HpvHAfB0g9OQ-@phenom.ffwll.local>
+ <Z37QaIDUgiygLh74@yilunxu-OptiPlex-7050>
+ <58e97916-e6fd-41ef-84b4-bbf53ed0e8e4@amd.com>
+ <Z38FCOPE7WPprYhx@yilunxu-OptiPlex-7050>
+ <Z4F2X7Fu-5lprLrk@phenom.ffwll.local>
+ <20250110203838.GL5556@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|MW4PR12MB7429:EE_
-X-MS-Office365-Filtering-Correlation-Id: 30ba289e-ccc0-4a70-1139-08dd34a05e4e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?0yFuPRrd9VkmSwtFfxP0buZGCgzV7B6x9HMKz9XE5h1KvsM3RrPN93YyIP5/?=
- =?us-ascii?Q?zEPYh48AxWac2IfMadmTwwqPanzXErE0h7uHX0Bm9H6OZrRKiFPLf6yLOE36?=
- =?us-ascii?Q?iJprNXof8uqj2xG9Oa/ztpKYpYAwUJHm4S0UWeY6IZafgPergArPCJxVBMhT?=
- =?us-ascii?Q?aLKm6gVTvWY/0g6vT4i/CgzEG5aOxPR615zKinbw9JejTlH6GpldXvSoBmVt?=
- =?us-ascii?Q?+T674ftnbDPveDvsFCRt/Tjr0PAtG4MSXiUHYs4xJBr7Lj0agOhLzd5a5yFp?=
- =?us-ascii?Q?VgpgBlEtEggrfvxV7i2w5pB9UBtIj5XbzPPg4ZhOZBIMh95vA5ZUZCrxXwOq?=
- =?us-ascii?Q?gfZhs6ct26OjzPdHwzsxU/o4oVHquQyTxO220rsKvaHCJNCg+O/m3hTM1SMF?=
- =?us-ascii?Q?TCUVObnsJVf8ht4bAnI0iSfzAP1Wnxdtg8F6aNNJAc7X7L9qc63QlG/bk98+?=
- =?us-ascii?Q?fdVn/Ca1R1LRVOVoQTIG68KSvud9MsY7GhtnMT6veicc5/ZGNqMlaEVuDzGO?=
- =?us-ascii?Q?NtIuSikp82bMy9az2eXAbMwtnSMkE8xm1f3twyo7Sxy8ouLd/Y4qRJvDkunZ?=
- =?us-ascii?Q?0ujVZLpcMY5AtkE1aQSlri6Nsu8N8QAnAj2izCrVzEa/e5Coe4+B8+fyBXkh?=
- =?us-ascii?Q?TPgjgB58e/LI0QSSUV0uTULQK0zRBHez8LiAESvxbxTArAQIVDAgr5QFjBTJ?=
- =?us-ascii?Q?ONFrRQOTv0Z6WVRCsfhcRfoYvLR9ptwUVfeW1xrSwGSpxTnPwQalxdT/9bQg?=
- =?us-ascii?Q?p4viL9abA8R/T+zh+SxoLvyVG5CGQvmwyOstmxvZyAn7b1DpXE5zVKmIUXC/?=
- =?us-ascii?Q?PhnXC3Bgq/BrL45HsPksxKE7jCPECss17jzs6OFBPweXPZyogeWtlLwX+xqk?=
- =?us-ascii?Q?q2ErhpoCSQagfUN58Bt8QrbONg3JKu6p0ljBeumMcTbw+317Q/Zf1Wa9RSX5?=
- =?us-ascii?Q?yO7NiItkBChi6u4M1Gb6KY2pKE1c90pkTa7x5+J9oDdBQq8RX2awxDB3UQNF?=
- =?us-ascii?Q?YEvdyjri8ByVcGw8N5zDy65CzTK5OqKB/8gdIgWictfISTj5Q7tio9XaBaLa?=
- =?us-ascii?Q?LNzfPSPnZBET4hrRehWg4oMg85GZO92jNhJSldNoQ8bF0j2ErIZ90iobF43V?=
- =?us-ascii?Q?l+eeE/iupftGrG0o5XqXQnvMjb0LCVvZGl2Ddw/XmVbtvSBG/lkmlLrrjUQm?=
- =?us-ascii?Q?TO1W/0qM5/jN+CHhb1pbK7qi/vvhr+Kt1njllRaocfjhHZcJtw4JXx/aaFWC?=
- =?us-ascii?Q?j6/Ae30A7vlAgaxFfLB6k7rNvs485fdfmYkGmJCGKkOyYbG5am/IlQImKvBe?=
- =?us-ascii?Q?AYIr2ou2gPzyuZ6yeq2oRaFMHssTWP/ML3sqSDoX47GIOge7IcLZCeiq463+?=
- =?us-ascii?Q?21vKoGdauCNnj8r6o++Ett5scjn0?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5UXR6/W3S0tjJrCmeutoNh8JhYu5M8+4SPOkHpWRqEauki9bQT4V37vwUdTS?=
- =?us-ascii?Q?SDMC9zZCoaxdFb6cifJntqtvePmpDFGS4acHfwNwjaBw0TrMqlimoeHJBZsl?=
- =?us-ascii?Q?0mm4aAIBr0uk5V3y5pDtDV/4Vrbckc62j1F5A+J/hTh+YiFMpp3+RWDcj3LI?=
- =?us-ascii?Q?ygjK9fH832DrDgXF6cwZ/YYqp/rX66vD2Dm17CRpUaUscGKHLNjq2Nfn/2Om?=
- =?us-ascii?Q?6Sd2im5TzFQW+HFm0/RZjl43wa1df8VRfWSIPcCgUDX7qDezKG4pPb/YBkob?=
- =?us-ascii?Q?N9fs1qY6N9GaGyWNffKdYRoqBN7k6he54tzviouToZptQVNZLd2yPVwZOg4O?=
- =?us-ascii?Q?CmbhRNpQIn/LwIE3WeamWh1wuXMcpSLHzPauajurqHyc0E7dd7FTxFyWMMt8?=
- =?us-ascii?Q?uBFTwkStk1/nHHSqT6zYV4b88aBKKq/ZAEoWooqxYQCLX9VriGQQnmRXunHG?=
- =?us-ascii?Q?pdZwebZ7egYekyLR32cjY3wt121yrH0xHEeklCSTBdouzMn4HMgTyjDekQ+s?=
- =?us-ascii?Q?vpXJvM+0ozVbmpBKuFe0szgxsvaAK3iR4VUlZDzar2c4b7QbdqvTLgWa2u/s?=
- =?us-ascii?Q?8auJhJIfJPgrIlrin1YOWyQuDHGKG0X4bxYA63k68/Oj/vg9e5lgB+t0qlbO?=
- =?us-ascii?Q?GCo5a/sKjhb/YHFN6QTBwZZvBBFlLsCWDXsr+oHmTQ2y7tyfGCL0SEtt+LfI?=
- =?us-ascii?Q?VDTcBAhfe07ezatyfYE8LK1OZf7OI+/EUZAutF5qUK4XuiXzqxk9O5vY4hGH?=
- =?us-ascii?Q?IBmUvqhodBVfqF16FeuBuaYFwmVNT0Gsu9kvrqlNM3oKUIhhlbHp5LjbaLKO?=
- =?us-ascii?Q?nAlQr23cwrEYWIwUh6VN/V/k9t5RyDMfihWI3jA2emRuZokjotNZkH9qcEX7?=
- =?us-ascii?Q?FsXX4WB3dza0gyFjph61yGe/ZkCbdXtWTO2zfRgtIRNbpZjtS7Hkvryu3334?=
- =?us-ascii?Q?N/hMSPd9YM8UDQZUlsixVRxOyV84qoX+tElgi2MsQ3xq0Reuyf8dy5xGW4rB?=
- =?us-ascii?Q?TQxJ7FguUvXNhud7tIXofrQUSeDHOC5j0nm1V+CPRCRIpeY3y8RNegVTpxDs?=
- =?us-ascii?Q?PDxHssHsL8Kpu3qBb34iP1hDjYvbyGyvfIyyT/vDXq8bN7mTLD7uX95BUWbT?=
- =?us-ascii?Q?kl283gtPcR2ONnbrP7eQjFlEg1cZOvZh08N7op18rOAv2YyOkd+NsTOGkhEz?=
- =?us-ascii?Q?C8Y09NOv2AXtBkz4rrEzNi8TlJa0D7nTlbKXOQ2iy81D++J4E1A78euyz/rH?=
- =?us-ascii?Q?T9RX14yKUnR9BxLlFrUZHw196h1d8OcL5rHNzY+HNx6a5ny0uwXdaejhNcJU?=
- =?us-ascii?Q?kqizxeyT1ayiUeGbZtkLTcbR+CCpmjeco+T5ORWbGOHw7thRYPhKUXmmhgLR?=
- =?us-ascii?Q?DU+g7XwUlKK0ku+aF3HqIIPtlejOwjKF1uTIdpDPAo7qFS3/JvTQIEE3aEys?=
- =?us-ascii?Q?M1hNG2Jt2wuG1Qeq0+kqeglELavgeORS1mqlsXO/mnxc7CPlUVM6933NxB9w?=
- =?us-ascii?Q?p1e714V/x6jIMfp5dB8dwcqDnnHE8CyTKA896oVQmMOPnzicGLAh7VLytN0g?=
- =?us-ascii?Q?PHCH49jkYj6oOz6gjDgzOTwLcTeBvk0YgzbcF1Ek?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30ba289e-ccc0-4a70-1139-08dd34a05e4e
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 13:35:53.9649
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7zzE58AxLoYG8JOAVdk6cXd374T3Zu8pDLga+4TU4RT/EWnHF5Cys8Jt/6EY0Ahu
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7429
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250110203838.GL5556@nvidia.com>
+X-Operating-System: Linux phenom 6.12.3-amd64 
 
-On Tue, Jun 18, 2024 at 07:28:43AM +0800, Xu Yilun wrote:
-
-> > is needed so the secure world can prepare anything it needs prior to
-> > starting the VM.
+On Fri, Jan 10, 2025 at 04:38:38PM -0400, Jason Gunthorpe wrote:
+> On Fri, Jan 10, 2025 at 08:34:55PM +0100, Simona Vetter wrote:
 > 
-> OK. From Dan's patchset there are some touch point for vendor tsm
-> drivers to do secure world preparation. e.g. pci_tsm_ops::probe().
+> > So if I'm getting this right, what you need from a functional pov is a
+> > dma_buf_tdx_mmap? Because due to tdx restrictions, the normal dma_buf_mmap
+> > is not going to work I guess?
 > 
-> Maybe we could move to Dan's thread for discussion.
+> Don't want something TDX specific!
 > 
-> https://lore.kernel.org/linux-coco/173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com/
-
-I think Dan's series is different, any uapi from that series should
-not be used in the VMM case. We need proper vfio APIs for the VMM to
-use. I would expect VFIO to be calling some of that infrastructure.
-
-Really, I don't see a clear sense of how this will look yet. AMD
-provided some patches along these lines, I have not seem ARM and Intel
-proposals yet, not do I sense there is alignment.
-
-> > Setting up secure vIOMMU emulation, for instance. I
+> There is a general desire, and CC is one, but there are other
+> motivations like performance, to stop using VMAs and mmaps as a way to
+> exchanage memory between two entities. Instead we want to use FDs.
 > 
-> I think this could be done at VM late bind time.
-
-The vIOMMU needs to be setup before the VM boots
-
-> > secure. This should all be pre-arranged as possible before starting
+> We now have memfd and guestmemfd that are usable with
+> memfd_pin_folios() - this covers pinnable CPU memory.
 > 
-> But our current implementation is not to prepare as much as possible,
-> but only necessary, so most of the secure work for vPCI function is done
-> at late bind time.
+> And for a long time we had DMABUF which is for all the other wild
+> stuff, and it supports movable memory too.
+> 
+> So, the normal DMABUF semantics with reservation locking and move
+> notifiers seem workable to me here. They are broadly similar enough to
+> the mmu notifier locking that they can serve the same job of updating
+> page tables.
 
-That's fine too, but both options need to be valid.
+Yeah raw pfn is fine with me too. It might come with more "might not work
+on this dma-buf" restrictions, but I can't think of a practical one right
+now.
 
-Jason
+> > Also another thing that's a bit tricky is that kvm kinda has a 3rd dma-buf
+> > memory model:
+> > - permanently pinned dma-buf, they never move
+> > - dynamic dma-buf, they move through ->move_notify and importers can remap
+> > - revocable dma-buf, which thus far only exist for pci mmio resources
+> 
+> I would like to see the importers be able to discover which one is
+> going to be used, because we have RDMA cases where we can support 1
+> and 3 but not 2.
+> 
+> revocable doesn't require page faulting as it is a terminal condition.
+
+Yeah this is why I think we should separate the dynamic from the revocable
+use-cases clearly, because mixing them is going to result in issues.
+
+> > Since we're leaning even more on that 3rd model I'm wondering whether we
+> > should make it something official. Because the existing dynamic importers
+> > do very much assume that re-acquiring the memory after move_notify will
+> > work. But for the revocable use-case the entire point is that it will
+> > never work.
+> 
+> > I feel like that's a concept we need to make explicit, so that dynamic
+> > importers can reject such memory if necessary.
+> 
+> It strikes me as strange that HW can do page faulting, so it can
+> support #2, but it can't handle a non-present fault?
+
+I guess it's not a kernel issue, but userspace might want to know whether
+this dma-buf could potentially nuke the entire gpu context. Because that's
+what you get when we can't patch up a fault, which is the difference
+between a recovable dma-buf and a dynamic dma-buf.
+
+E.g. if a compositor gets a dma-buf it assumes that by just binding that
+it will not risk gpu context destruction (unless you're out of memory and
+everything is on fire anyway, and it's ok to die). But if a nasty client
+app supplies a revocable dma-buf, then it can shot down the higher
+priviledged compositor gpu workload with precision. Which is not great, so
+maybe existing dynamic gpu importers should reject revocable dma-buf.
+That's at least what I had in mind as a potential issue.
+
+> > So yeah there's a bunch of tricky lifetime questions that need to be
+> > sorted out with proper design I think, and the current "let's just use pfn
+> > directly" proposal hides them all under the rug. 
+> 
+> I don't think these two things are connected. The lifetime model that
+> KVM needs to work with the EPT, and that VFIO needs for it's MMIO,
+> definately should be reviewed and evaluated.
+> 
+> But it is completely orthogonal to allowing iommufd and kvm to access
+> the CPU PFN to use in their mapping flows, instead of the
+> dma_addr_t.
+> 
+> What I want to get to is a replacement for scatter list in DMABUF that
+> is an array of arrays, roughly like:
+> 
+>   struct memory_chunks {
+>       struct memory_p2p_provider *provider;
+>       struct bio_vec addrs[];
+>   };
+>   int (*dmabuf_get_memory)(struct memory_chunks **chunks, size_t *num_chunks);
+> 
+> This can represent all forms of memory: P2P, private, CPU, etc and
+> would be efficient with the new DMA API.
+> 
+> This is similar to the structure BIO has, and it composes nicely with
+> a future pin_user_pages() and memfd_pin_folios().
+
+Since you mention pin here, I think that's another aspect of the revocable
+vs dynamic question. Dynamic buffers are expected to sometimes just move
+around for no reason, and importers must be able to cope.
+
+For recovable exporters/importers I'd expect that movement is not
+happening, meaning it's pinned until the single terminal revocation. And
+maybe I read the kvm stuff wrong, but it reads more like the latter to me
+when crawling through the pfn code.
+
+Once we have the lifetime rules nailed then there's the other issue of how
+to describe the memory, and my take for that is that once the dma-api has
+a clear answer we'll just blindly adopt that one and done.
+
+And currently with either dynamic attachments and dma_addr_t or through
+fishing the pfn from the cpu pagetables there's some very clearly defined
+lifetime and locking rules (which kvm might get wrong, I've seen some
+discussions fly by where it wasn't doing a perfect job with reflecting pte
+changes, but that was about access attributes iirc). If we add something
+new, we need clear rules and not just "here's the kvm code that uses it".
+That's how we've done dma-buf at first, and it was a terrible mess of
+mismatched expecations.
+-Sima
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
