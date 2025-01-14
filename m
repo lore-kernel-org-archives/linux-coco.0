@@ -1,184 +1,161 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2046.outbound.protection.outlook.com [40.107.212.46])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EF31FBBFA
-	for <linux-coco@lists.linux.dev>; Mon, 13 Jan 2025 16:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736786982; cv=fail; b=JN5wDH+KiM5eo2hsV6rbHUuwNALIDYXuG2igzB3UnPadd9f6c7+m5n0c+ZxN5NFE3L8Ga2PMAoetAyhHtHpPrFy0FCl+W3Pvne7YDUH2OTM2HzRcDqqLbTz3v2CqE7iq2zO6uewr2QcB/ha+VGmJM2Na/hSuVhlEi+N/U+rULOY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736786982; c=relaxed/simple;
-	bh=OhdVRcxRTIazzWn3nSwVnoeDkT5jp0p/B8F133DFYgU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PhwLmeLerCiDeERXBEwpGPw1Bqxhotob5PL5Ik2B72qKMhRI09eI/0L0mNYT4nfRkANUlJMp6OyaFI4lnTwYZPyoeneHb178l9mGPam3OALapCqpSezQsqXMGjW3eIiu3+rdXo25jS1L49DSYGLyuslhBPaTAOmcK0jsBG+WDOY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SFiudsoP; arc=fail smtp.client-ip=40.107.212.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65BB230D07
+	for <linux-coco@lists.linux.dev>; Tue, 14 Jan 2025 03:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736825181; cv=none; b=hmakAM5DXrv1U0pRdeYSG2O99Pyv6t5IR3t5qTUA8KWaBHDbLxKpMS6pL4y9fXcqK48248SFI4c8PIkJsDEeF9arnl/tJEyL8zEKf4L1KYaQctWHSYv1KPYhtgjVl9K2AV1WQgVNE6sn2bmsS4+skbeeq9EYLOdMJYrVFOiJIvo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736825181; c=relaxed/simple;
+	bh=n7QMu1Wwhkguk9gNDckMWivCYM0cpCB3vxs7wGNu5o8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M2Mc5B+qePPpDEQSuIbE1xghrCBk+LaX1Eu+JguJbgU2L91NN6dY1QRDE5hlV60vhlJuUHKhUNeo/3bcGsfgr/Rboc46/exneNtl9XFyovWMEmi8zSa6RvuKTYaKRYDAaYeXUYiZOr+nuYOXQ8wjnQlZd7bG42XltDTv/R+cSfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SKdlCmOe; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SFiudsoP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RooA4xQkHHm8iX2prLoHSFQQVg7Nt0TxAhujMtCa4FxQMwomBPI+YSiGBe74tdhYruR5TQMDjBtL4DYi66+8FpTinnBMLSTNsJubBtn6jeRZGIEi5E0wGVXyob+vxohGp6FjGY0XHZLdxMTIjCCknO++QkXcO5J2ylf6JRSyGwwOfxLSHMI3/YuAg1MMz0VqnILKRT74U84Ojev91Aw1KrVCxAwympwywmze68dXyrJCNCsffVGH9DpbCFn3nWgiTLJJTkNUY59uVc0ckF4U5lujy4xhmPvWGF0KrZOcM3IyW6BrzVBU3g3yNHqtUXWYVxTirMWtLpFv67UB4PZVkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=djem/8ro9L6ive8XD6KAyUosq6uW6QhaEDri0g1m1v4=;
- b=sCjwuNVEYX9eXKDLS+8/8sZAyBr4tGXW8UyZALq6VfJv1+RmUeNRzy/h3xAtdihkYAPMNN/1SDyX6Tc+IJtyX0xKPcXIsgLRA70MvPHMjHzQtFzUltD8QhB78aUlSx7khqyucm7UR5asTYpfbXQMpLwS/DSbOXRTkUvpwH0w2dwDgU/413E/OA50G9bBJGpaMoVFXp2yo+M6aNZdyUhheqv2svas/GsAWIpexTvDXtzvxpYu6Yj3DON9xaWd5rf6m3vERrOXEcn6f1UsRzABVnJzYAogW1Njx9k+WtvOc9zGjCvP5pnKEB4oedgJBX/JDm6LgUCsOEipFeI430E0MQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=djem/8ro9L6ive8XD6KAyUosq6uW6QhaEDri0g1m1v4=;
- b=SFiudsoPxRJFJY5vOmACw4NtoPWqkfbY0I3SKfvYPKAhYi5NIF3bAkS9DviCQJpwCytCTI9RpszrLiBX4gVGnwcG/44WIjQIo20MDNNoL7nDKcZIXo2OqKy4+R/Zm2D3FNDc1zoArjrctpHDu+3ZcGTKa/NKUfq+A1aoSEhPzURtQfomP2t7yxoask2n4OFNcSfgoHiB2v94J7e6ZeIDI/xoOLkYso+4Z2zCghd12kRTElj1ujjy16XQ0YnPjW/ZGnZ8CqMl7xeiaBwQOTH+L+7982zULWyc837rwA5P6sb+QPcDIB1AGhCVuBMNgRAJWsneOtrdnggXvCZVIXcYxQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by SJ2PR12MB9209.namprd12.prod.outlook.com (2603:10b6:a03:558::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Mon, 13 Jan
- 2025 16:49:36 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%5]) with mapi id 15.20.8314.022; Mon, 13 Jan 2025
- 16:49:36 +0000
-Date: Mon, 13 Jan 2025 12:49:35 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com
-Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
- private device
-Message-ID: <20250113164935.GP5556@nvidia.com>
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <20250107142719.179636-9-yilun.xu@linux.intel.com>
- <20250108133026.GQ5556@nvidia.com>
- <Z36ulpCoJAllp4fP@yilunxu-OptiPlex-7050>
- <20250109144051.GX5556@nvidia.com>
- <Z3/7/PQCLi1GE5Ry@yilunxu-OptiPlex-7050>
- <20250110133116.GF5556@nvidia.com>
- <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050>
-X-ClientProxiedBy: BL1PR13CA0079.namprd13.prod.outlook.com
- (2603:10b6:208:2b8::24) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SKdlCmOe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736825178;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d7OzC1HKFU8JmEwRobBhBX2vuHvLWfrqgAKGuhYJWcM=;
+	b=SKdlCmOekccOK4x0vIWbGAiuil6oVgSkrNbf9A0TkhvBqNdtydPcHPVECia3r1OTigQ/vm
+	JeVNZYY5CQvSigYlymF6Z05Ruy9CWK+t0dwx9y1YzcoEC5r2tIzlYVUVe8FIV9z2mpK5Wy
+	ojgmevs+xPYJTQeN00uvbpHTLt5RNvo=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-171-qAnU3jGiMZ2MKgzrAbrq8A-1; Mon,
+ 13 Jan 2025 22:26:14 -0500
+X-MC-Unique: qAnU3jGiMZ2MKgzrAbrq8A-1
+X-Mimecast-MFC-AGG-ID: qAnU3jGiMZ2MKgzrAbrq8A
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 506AE1955DB9;
+	Tue, 14 Jan 2025 03:26:12 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.156])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1E70C195608A;
+	Tue, 14 Jan 2025 03:26:09 +0000 (UTC)
+Date: Tue, 14 Jan 2025 11:26:05 +0800
+From: Baoquan He <bhe@redhat.com>
+To: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>, akpm@linux-foundation.org,
+	kexec@lists.infradead.org, Yan Zhao <yan.y.zhao@intel.com>,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	x86@kernel.org, rick.p.edgecombe@intel.com,
+	kirill.shutemov@linux.intel.com, security@kernel.org
+Subject: Re: [PATCH v2 0/1] Accept unaccepted kexec segments' destination
+ addresses
+Message-ID: <Z4XZTdmDMJ3qwIY6@MiWiFi-R3L-srv>
+References: <20241213094930.748-1-yan.y.zhao@intel.com>
+ <xgycziy2o56hnom3oau7sbqed3meoni3razc6njj7ujatldnmm@s7odbl4splbn>
+ <Z4T1G4dwzo7qdwSP@MiWiFi-R3L-srv>
+ <87zfjuoj3i.fsf@email.froward.int.ebiederm.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SJ2PR12MB9209:EE_
-X-MS-Office365-Filtering-Correlation-Id: 771482f5-4466-4558-797f-08dd33f24359
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?RDS52jF/X5vjD+fEQMuFuntbsBVtlSB0g++RLfAx+C5KRj7h+tc4gCBoe/qe?=
- =?us-ascii?Q?8jgtHYDlAMibAGWXdIh3EdRDnHh9+nCT8RHVzO9h24KRQuN0rIwSMham6r9b?=
- =?us-ascii?Q?yU0kzAV/TnEfGRvKP3a0HT7XFvaF7o4GMuI0vGScBXjhuS98bP4jcVfrV7ql?=
- =?us-ascii?Q?pijdrsLj0wmeCyjJJKHXOW1MnzO/MtzZ3pIph9xnXmHWUFER9pefZpFZ4uLZ?=
- =?us-ascii?Q?FXYk4qPVaqGTa6WKY4b7tZWwRAQwUH8loTxd6omRIBRsPZKguEtMZFLaHCgK?=
- =?us-ascii?Q?bNgTT9LFjNCCYCtRXi2XbwwAHr2/oTAjYaHkCmy5tZoRrdyuCphPAN5/5n5j?=
- =?us-ascii?Q?JjHDazz7/g9LPR6GlHScpjcrH8slf9YQpSg4lubQX0aXp5aFX/jq0ge+YhGL?=
- =?us-ascii?Q?BDNwg8c4n7KeQQVFfnVwiPcsAqwsI3kA1L9WyzeOgLtOx8qfUhC900HiFbiy?=
- =?us-ascii?Q?QgnKsFbsUBQnwu4joZ6EUA1fiDI+YF90rA1aWlmHR5H666AXgQUaNYzkU5oO?=
- =?us-ascii?Q?+/aUjVfBhnasu4d00CvECO1T6qK62kTVrGn0kW7KbfifRGUAGZJII7f88jK9?=
- =?us-ascii?Q?BVbnA6/XLle/Dr3tYxC3Cah9plCmdccphEXxTmFq3v0BgiPSkfU+3nUSjb+G?=
- =?us-ascii?Q?Qq4zjoCV9In6+JfbIRhevUkMUQobnHdiqKPZxbsZWdGN0XYpe+MGlAAIp3Xv?=
- =?us-ascii?Q?5ZP6L3SNLPrzW/bAYm3fyHJMx7EwA3O2PJ+6De9knZlTELKHSoRn59X3y0LU?=
- =?us-ascii?Q?uXTNx1HSBI71C6VX5v4xKo5F+2Ke6Erj8h2Yq6vjLIc4qPRH4czI4+QrpMle?=
- =?us-ascii?Q?HUyTkjprWINsXcmZ8nU3TuqWo3inS1VKH+vQKpgYSzHlqX6iTs2hURCoIYTT?=
- =?us-ascii?Q?AYzGDwdHLy6VoSOgx0sfluPKfqjKr2AepWPhksAo2J3TNMLIHItBzhhCliq0?=
- =?us-ascii?Q?kcMEXC3nr/mkZMV+qk7Y60tgfeYynHQxqyJDPMZ/B09qWFgWksuDk6ZdtkhP?=
- =?us-ascii?Q?UttVk948ntaforopafng+R+TXKwks6pE9ZdoQXck4YcE0TmB0xyvY1Av8B8c?=
- =?us-ascii?Q?TWh5Ub8QQJc3Dtk1I8HD3vIHKeQfilocyV9ScJ1fQ399a1NVKMF9ebxNgltW?=
- =?us-ascii?Q?61X8HrF9h97a9aZ7vM9IPEV7ZQUvGh0dRAzdWWqqW6h1MSK/EpkObv/vrcJY?=
- =?us-ascii?Q?XYOIu9VqU1sAvGJjwvdfvXhEguJ47wLb2fmd/E/1sxe/G7kaX+8QJgE2rfzw?=
- =?us-ascii?Q?B/x/Rjh3NL3iGYiM+626sanidpU10FtYbASKuCdRY04Ha9ebsHe+7KEzabNO?=
- =?us-ascii?Q?JDb3ljzL6Zu7b/uX1i6wKBVBE6UxoIBKT7maqvegM01LK3ymu4yApsjAszkF?=
- =?us-ascii?Q?ueFafSk92zLFP7odeLNRIxUgD/9e?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wDhLvScHU5Myk+EzohPuHkt3NjzKlHq50s5PigUiW2zMwQ0W3XKPnrtFEfbP?=
- =?us-ascii?Q?bb0Joa3SEg8mxo2iAzqD14P//kthcW5MU9NM8iApxYWhXzAkTk4emwDlkncG?=
- =?us-ascii?Q?xhjPHYyT2PpXu345uyvoR/X+hS2DQOaJEAeLDn6r5EC9wac+JjL0lokCPo21?=
- =?us-ascii?Q?GmugGHybIbiR2g7bPaHz9EXcclm0SHgUFrs4yF8iorRwcRorEsFBVqodNmH/?=
- =?us-ascii?Q?VeCcIXv2+iSgFFZbuYclCp9Y3TClBhYhmcjtW0wn6Nwdpqi0h+Wm4pZyPu8j?=
- =?us-ascii?Q?c9rm5b6Hcm3lzjKOIXaT8m9SE3CSyXAnqj+LDVOqz0mDuMgMah9w4af9dtiL?=
- =?us-ascii?Q?PbIDsoLk39FW1AnauhaZNpVOhLMzcmwYxaoGjZf1JqpOfreTdiiCU/PdoVl8?=
- =?us-ascii?Q?ydJgl43xsunhXvYsNeSxuV03wc338jmaQ4lgsA6G6zkBbT+NrPZp6XMfTffw?=
- =?us-ascii?Q?zvW8nWbgxi+u7Aq1b+byvFX4DbZxrpT8cC6TxzGJtf9PN3mpgSTcW2qauwIo?=
- =?us-ascii?Q?VP0OTVdGkeGhP3hPRJbNmvJ29Ixj4WjEi/cL2CZYVdYlTskhVTirVqg9yz1v?=
- =?us-ascii?Q?rigGPtR3CvjkcJoWWk/WRY9AAN9eiRi8CVQDZTDb7uiH1GaFWdnot8nPOnwk?=
- =?us-ascii?Q?a1UDNioVn5qcsuvZc71Lquii/2iCSyVzfJgKz9uAhNRJ8JF1Sga+oiivGYWx?=
- =?us-ascii?Q?akuu9X1ddIcCWW1U2mFj1GVaz1t5KsbD2dzlaZI0Cj6JaHB8hJRfNLGvhMz6?=
- =?us-ascii?Q?ZdjySwhYr++caQZE/cxkwkr1eAFvf2JtSRJkZaWh47iQ6s5mtz6CzBhEIRSI?=
- =?us-ascii?Q?GDFLaMT721E7C0SifYBzeXYYCdQRPmjqPMgp7350G2PbTsrXcETWgApYPNTR?=
- =?us-ascii?Q?SUf/nSqc59WjHlZYBXY6P2r6CFmf3DU6E71snZH7q6iqkKUh0eg7B+ztwrCD?=
- =?us-ascii?Q?z1AimCwLJ6CkSE9De0ULAcSINChMy3v4A7QVZq1RikwKS29NM5zRuqQdIsJJ?=
- =?us-ascii?Q?SDZGxPfoQW+936xjYn7SPUfOrg7tZWeIY3jTHC0wgMEbeUwIecrjOmp3UzcH?=
- =?us-ascii?Q?FZJn+f/RPZBo/yd2nh15RJ60K/heURBbBjyC61iBVy9c7utF3wufz3iPJnB+?=
- =?us-ascii?Q?FOySOoat04fQ5aLPc3WtLzcYxVDHCuUPU6zAGqF1iophSvDWmE9ILV7HU88x?=
- =?us-ascii?Q?UgpQN20M1HpxmzZIgeIlmapgljyQjP2bRYbVC+rUX6VFhclxEMyMb3iebIib?=
- =?us-ascii?Q?ogvHhDOIV6evzdNWnHKF/hRtuzrgOJxIfyiraLLCCaGc46pI2zqowKlqxq3+?=
- =?us-ascii?Q?bK3QzLyrVwpzTEqzdjuXFmBv2xQO9rq1RQwR1ZXbhD5iNhsJK/xJf5M6pw48?=
- =?us-ascii?Q?f27DjYLkjlaMIQ4VeGwpW2IpfBNfDADi28iZ4ifhowNZf9vq10l5LCcgoKAe?=
- =?us-ascii?Q?SFQP0JxkwHa7StcVSQ38E6S+OLrpUKgqRh7Phh3VRHzpO+byNMAkEVtAjb+Z?=
- =?us-ascii?Q?WsBUhgVBC4oaiRaid6Z8qQj6T7dBLxBpgU0sVhyF2Rt3QqnvOx3rPZ4XeCO9?=
- =?us-ascii?Q?7PJOLJjPETh5XKIKLrQ=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 771482f5-4466-4558-797f-08dd33f24359
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2025 16:49:36.3495
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DsoIgtO1SzC/WAyUlJJJFWvYbYBMCnKR2tZLFlznbthnbQI2z/Tw+JqhVBh3gG5D
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9209
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87zfjuoj3i.fsf@email.froward.int.ebiederm.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-On Sat, Jan 11, 2025 at 11:48:06AM +0800, Xu Yilun wrote:
+Hi Eric,
 
-> > > > can be sure what is the correct UAPI. In other words, make the
-> > > > VFIO device into a CC device should also prevent mmaping it and so on.
-> > > 
-> > > My idea is prevent mmaping first, then allow VFIO device into CC dev (TDI).
-> > 
-> > I think you need to start the TDI process much earlier. Some arches
-> > are going to need work to prepare the TDI before the VM is started.
+On 01/13/25 at 08:59am, Eric W. Biederman wrote:
+> Baoquan He <bhe@redhat.com> writes:
 > 
-> Could you elaborate more on that? AFAICS Intel & AMD are all good on
-> "late bind", but not sure for other architectures.
+> > On 01/13/25 at 12:01pm, Kirill A. Shutemov wrote:
+> >> On Fri, Dec 13, 2024 at 05:49:30PM +0800, Yan Zhao wrote:
+> >> > Hi Eric,
+> >> > 
+> >> > This is a repost of the patch "kexec_core: Accept unaccepted kexec
+> >> > destination addresses" [1], rebased to v6.13-rc2.
+> >> 
+> >> Can we get this patch applied?
+> >
+> > This looks good to me. In v1, we have analyzed all other possible
+> > solutions, however change in this patch seems the simplest and most
+> > accepatable one.
+> 
+> Truly?  I will go back and look and see what I missed but I haven't seen
+> anything that I addressed my original objections.
+> 
+> To repeat my objection.  The problem I saw was that the performance of
+> the accepted memory paradigm was so terrible that they had to resort to
+> lazily ``accepting'' memory, which leads to hacks in kexec.  I would not
+> like to included hacks in kexec just so that other people can avoid
+> fixing their bugs.
+> 
+> I did see a coherent explanation of the bad performance that pointed the
+> finger squarely at the fact that everything is happening a page at a
+> time.  AKA that the design of the ACPI interface has a flaw that needs
+> to be fixed.
+> 
+> I really don't think we should be making complicated work-arounds for
+> someone else's bad software decision just because someone immortalized
+> their bad decision in a standard.  Just accepting all of memory and
+> letting the folks who made the bad decision deal with the consequences
+> seems much more reasonable to me.
 
-I'm not sure about this, the topic has been confused a bit, and people
-often seem to  misunderstand what the full scenario actually is. :\
+Ah, I didn't realized you object the accept_memory feature itself, sorry
+about that. I personally dislike accept_memory either since there's
+already DEFERRED_STRUCT_PAGE_INIT feature to improve the boot time
+memory init. While talking about the passive providing RAM to guest
+system when actually demanded, this seems to be helpful to save RAM
+memory for cloud provider's host system, this is what I think is
+valuable of the accept_memory, even though Intel engineer avoids to
+delcare it formally.
 
-What I'm talking abou there is that you will tell the secure world to
-create vPCI function that has the potential to be secure "TDI run"
-down the road. The VM will decide when it reaches the run state. This
-is needed so the secure world can prepare anything it needs prior to
-starting the VM. Setting up secure vIOMMU emulation, for instance. I
-expect ARM will need this, I'd be surprised if AMD actually doesn't in
-the full scenario with secure viommu.
+Anyway, I would like to ack it based on accept_memory feature having
+already been merged into mainline kernel. If the feature itself is
+objected, the top priority is discussing to decide if we should take it
+off in kernel or how limitedly it's being used in kernel, or vice versa,
+whether supporting it in kexec truly is another story.
 
-It should not be a surprise to the secure world after the VM has
-started that suddenly it learns about a vPCI function that wants to be
-secure. This should all be pre-arranged as possible before starting
-the VM, even if alot of steps happen after the VM starts running (or
-maybe don't happen at all).
+Thanks a lot for your thought sharing with elaborate explanation.
 
-Jason
+Thanks
+Baoquan
+
+> 
+> > If Eric has no objection, maybe Andrew can help pick this into his
+> > tree.
+> 
+> I have a new objection.  I believe ``unaccepted memory'' and especially
+> lazily initialized ``unaccepted memory'' is an information leak that
+> could defeat the purpose of encrypted memory.  For that reason I have
+> Cc'd the security list.  I don't know who to CC to get expertise on this
+> issue, and the security list folks should.
+> 
+> Unless I am misunderstanding things the big idea with encrypted
+> memory is that the hypervisor won't be able to figure out what you
+> are doing, because it can't read your memory.
+> 
+> My concern is that by making the ``acceptance'' of memory lazy, that
+> there is a fairly strong indication of the function of different parts
+> of memory.  I expect that signal is strong enough to defeat whatever
+> elements of memory address randomization that we implement in the
+> kernel.
+> 
+> So not only does it appear to me that implementation of ``accepting''
+> memory has a stupidly slow implementation, somewhat enshrined by a bad
+> page at a time ACPI standard, but it appears to me that lazily
+> ``accepting'' that memory probably defeats the purpose of having
+> encrypted memory.
+> 
+> I think the actual solution is to remove all code except for the
+> "accept_memory=eager" code paths.  AKA delete the "accept_memory=lazy"
+> code.  At that point there are no more changes that need to be made to
+> kexec.
+> 
+> Eric
+> 
+
