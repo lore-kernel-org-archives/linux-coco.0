@@ -1,364 +1,271 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2082.outbound.protection.outlook.com [40.107.237.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD8D11CA9
-	for <linux-coco@lists.linux.dev>; Wed, 15 Jan 2025 00:20:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736900434; cv=fail; b=sAUSkmEZ8nsf5VRAhm1dkbKbMx21riooGp9ysFHIm9M+gPr8WC2JT0sDehleXncXR/7KI2A+fJrn5YdMUFVoAdzW4tEv0JeFcS5HCqOquehgSHh7LDvKwl8A2Z62dHiHejG0kT8OiG4crydQ84mfLX03YRMgDdWDmwu3DYiI2Aw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736900434; c=relaxed/simple;
-	bh=A/OdpTtDAC9M4W7wx/mRiKHFMzLPPYgp4O8M76ni5AA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=QmtR9oFCHFFsR1ULVireMvmjZ+61TMJVkMlPlZiYiKTsEm2FvYmfv3NknADN9RHX8edREJJBioxdbqcDmGEW+2FSb3zpyjEbAZlnpyyXEiFNWo670zxGve0rRTX/K8XLYGgk5rBkjcGGNo3aunocPFrHUGqNoLs95hSF281qAa4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hBuskbFc; arc=fail smtp.client-ip=40.107.237.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A93246A3F
+	for <linux-coco@lists.linux.dev>; Wed, 15 Jan 2025 08:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736931335; cv=none; b=igpTQvsmXYG/GBFJNP/H5AnPMZtbWvKo0knJJmJTQ4pmM0s+Pv1IHCAg9LT80hPYYLiK1B10fFw2KuIwGBmWp4PC5sonBq6Akv6Vuk4dCm7OTu1fTZjWWDxUDKj9qRrK5KEB7r+mS5MMEBN++BToHiGq0lc5iRNFYZ8iYTVPk/c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736931335; c=relaxed/simple;
+	bh=BXhjUNiK5nZtNWfmxo4QzngJqamzCvQrhXA93RWRduc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ELfYzJwc6utJImtASh0SbddQ562x9TyNqlIP++6NqYqDoq3SxsAU3jiYXLmITfekLi3TbEin1yGQMWJqjVR/rehqza7QqLxa90u4FQ+hpjtDzYBIGZusuZg0JjfX+1I7PWhKjEJ/UIU3Uoq6I0ERuuuO8zMI02B1KofbRhzIWhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=Vo7JgCw5; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hBuskbFc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RlvM6ryPbXkmTiwzdh7tqnRBmVP7gfGEwvNP9/ZSBlBHxqZ97ghFWlQ0gx2+s+xt5MAbYLl3nJugdNwgDp+19Ao59Q0VExD9Gkj5qBV99y3UZtUSfJlbHF3O9SROiT6jliY9Fu7dr/zqiwmeCYOwi5faOQD8gKZIyAsmfMrBp2YJ/gUv5bj7SdFLGp1FwEmFW8ATDPR+d14zW2Wu7+F2KwYZi1Q7skf0iOyK1JCOAwqCqJWUGzSJOF7X2CLctiFEo8LnMETywm8AZhkCJiqx/0CpuXa3rlRdNha1FB/CtySWqEET+Q3X/IXVoKEmTwQzj6bXd/bmfoo87uFgWYIMgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KIuqzY6n1yUn0iNTx4O+6lhS1QuxjXdyL88Io9cFw0s=;
- b=mjiSMuMKV+2/O9SetteI5gnZUvu5Xv8ZFQl16D2rM6oMkJXxIAEr3NcRqbTW7kyoMmPYvUbb0OcqFrm4etrpgrw0vJAa1DKbWFADSpgetRdi7MVPWmb9xe574chbAIGxZj8RzkL1O9Flrr7s3X364U2/+yBBH1EqQTgFczIQahAlN60YDAY+grHbNt0kMbLCiaAB3RnCRKtED473mIQBm0c+1pjPQ+4X339MciUcawRY8NzT7ncvSItXLX1yNTJDKzhwrXHvUXxszHVVoSN1znueOO0QRevRzE0sMNjKK6ypmRscPN7V+LJRzplDsrAni1WpVuwVCpmnhCf9hK6qNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KIuqzY6n1yUn0iNTx4O+6lhS1QuxjXdyL88Io9cFw0s=;
- b=hBuskbFcz1HV79qMmdN7Zp4p3cgMmvPP3upiDkbrHznkYOzHBb05Gnof1kFuFfOFqa6ieW9po5nnmf1O2OX3dgFMk2ZW6abSE1PZ65fvPRWzyW3Vx3gjWJoUCG/uluOBC0KlIN9YKt2Yipyw/w7wNz8qwQ+aH7OcOJzE+05fGRw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Wed, 15 Jan
- 2025 00:20:29 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8335.017; Wed, 15 Jan 2025
- 00:20:29 +0000
-Message-ID: <a11c82c3-b5fb-48d9-8c95-047ac4503dc6@amd.com>
-Date: Wed, 15 Jan 2025 11:20:22 +1100
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 08/11] PCI/IDE: Add IDE establishment helpers
-Content-Language: en-US
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
- Bjorn Helgaas <bhelgaas@google.com>, Lukas Wunner <lukas@wunner.de>,
- Samuel Ortiz <sameo@rivosinc.com>, linux-pci@vger.kernel.org,
- gregkh@linuxfoundation.org
-References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
- <173343744264.1074769.10935494914881159519.stgit@dwillia2-xfh.jf.intel.com>
- <9f151a74-cc5c-4a7c-8304-1714159e4b2c@amd.com>
- <6d50f215-93c4-49a5-9ee2-f9775b740f92@amd.com>
- <Z32H2Tzd1UHCQEt5@yilunxu-OptiPlex-7050>
- <d71dd5c5-4c20-4e8e-abaa-fe2cdea4f3b2@amd.com>
- <Z4A/g5Yyu4Whncuu@yilunxu-OptiPlex-7050>
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <Z4A/g5Yyu4Whncuu@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MEWP282CA0170.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:220:1cd::17) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="Vo7JgCw5"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3862b40a6e0so3446780f8f.0
+        for <linux-coco@lists.linux.dev>; Wed, 15 Jan 2025 00:55:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1736931332; x=1737536132; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Gj9RZudEPBfF7kw5HyEDfCpQN04hIW75RUFgQLeb7IY=;
+        b=Vo7JgCw5Cs6ZxVpMq3qUVbC4sOZpARIJuG5nb8dJ8q3ofEZQk5SoDGGjaK8RxwXEsP
+         jpg7vp0jdrNSJ6VhT7Bp4HDYKTjEnYo0AD56a0WbOXvqt3nLkqqgtxGvpWU5Fdmmv8aE
+         qJdrlAx0sEVK1DLunz1bG0eA4Oh6d6qSQeHNg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736931332; x=1737536132;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gj9RZudEPBfF7kw5HyEDfCpQN04hIW75RUFgQLeb7IY=;
+        b=rMGlxYzorEBaMqa5qCVx2llDNUH66kQla1m3beOFPokQRwt5MYFp9Phbm0F//SvFJD
+         M/gU+jr5l8MTgVxklfl95IrX5G/Ay7M5uQvLHCdooGvExuBOO49PUF9qFZGQS+LrnjGe
+         UosTVOZ4mqndJw/Oe6VqFOaNe5o0dDBprsWY2K5EyxFkA4WrCcEhOKI+RRXmQtJdmEka
+         OeoRpWIXH8303v7mRIWQfCNHJBDvfUSG1PtaXfDWkmEQzVw/yzM2d53T2kdjL/bmF5pl
+         9jSonlf278343MkdBxMVXMobRAtw7qQNDmnRe6F6h/+77j55eZOSH0TPCX1c3bB3zVJQ
+         y+hA==
+X-Forwarded-Encrypted: i=1; AJvYcCWO3RAsjek8oHyHmcH7Epk7PT8H1bQPTzLhuPQojf3JeubMk8La1rmZiPN36gVUaYWMM7b+Kj7DKlA/@lists.linux.dev
+X-Gm-Message-State: AOJu0YzfTvHSK4uh/v7P0hj+jbhc3BPOuHLGMDuTWXuL3Y3cq6a82hzB
+	9oJm9mPlpfZdJq/tG6pj35WjPrYVzsC0FYrCZ55jc/36UIP87P3F6uw1uZga2Bc=
+X-Gm-Gg: ASbGncsVkGadvBJ+9p8Frs6K1Qe57DTkaLfe1xunX0T8HvKSoDViwOAK5+bFIZqaQx8
+	3kYUGq9mi3EYCSzqRlYHjqqQjbxGqx8m2G2upXnpCe4KJU2q/DBDg1nWAH6PpJm4BCs+TEuex5X
+	GT9piHZUKkddyEhcDeru5uA8rSUgho53VKPlDUG88RHHXW5lwxMpngo1uGmVa9HmnpxtaEcUwcJ
+	Wpl22yEnPMbKTaOZSzX560oOgIpI+8mekTAoYjJ1A76Nv19U2oEfrxopW4W6QHVoO7b
+X-Google-Smtp-Source: AGHT+IFOU+JNTbuMjFC41rceTL+ifkq6PY4kVtqWW8pLQ7ONLhbzAQHBNa3COq6SYahEjPbUlsy+jA==
+X-Received: by 2002:adf:ab01:0:b0:38a:5a37:4a46 with SMTP id ffacd0b85a97d-38a87303f80mr15973078f8f.17.1736931332197;
+        Wed, 15 Jan 2025 00:55:32 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c7499884sm15964335e9.5.2025.01.15.00.55.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2025 00:55:31 -0800 (PST)
+Date: Wed, 15 Jan 2025 09:55:29 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
+	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	sumit.semwal@linaro.org, pbonzini@redhat.com, seanjc@google.com,
+	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+	dan.j.williams@intel.com, aik@amd.com, yilun.xu@intel.com,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lukas@wunner.de, yan.y.zhao@intel.com, leon@kernel.org,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
+ kAPI
+Message-ID: <Z4d4AaLGrhRa5KLJ@phenom.ffwll.local>
+Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>,
+	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	sumit.semwal@linaro.org, pbonzini@redhat.com, seanjc@google.com,
+	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+	dan.j.williams@intel.com, aik@amd.com, yilun.xu@intel.com,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lukas@wunner.de, yan.y.zhao@intel.com, leon@kernel.org,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+References: <5a858e00-6fea-4a7a-93be-f23b66e00835@amd.com>
+ <20250108162227.GT5556@nvidia.com>
+ <Z37HpvHAfB0g9OQ-@phenom.ffwll.local>
+ <Z37QaIDUgiygLh74@yilunxu-OptiPlex-7050>
+ <58e97916-e6fd-41ef-84b4-bbf53ed0e8e4@amd.com>
+ <Z38FCOPE7WPprYhx@yilunxu-OptiPlex-7050>
+ <Z4F2X7Fu-5lprLrk@phenom.ffwll.local>
+ <20250110203838.GL5556@nvidia.com>
+ <Z4Z4NKqVG2Vbv98Q@phenom.ffwll.local>
+ <20250114173103.GE5556@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|CH3PR12MB8659:EE_
-X-MS-Office365-Filtering-Correlation-Id: ba0861ab-8963-426a-1c94-08dd34fa6aa7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dXJlYWV3Rjd1ZzF2TjJhRE5ITmJ4R0pacm9MSlp1Y2JQdXVtT1REVS9Nd2E4?=
- =?utf-8?B?VXlUTHBsNHdhb3p2dTVZaFdLdG9RaWtJVWdwU25XMFNSenNPWjZOTmwxRzVo?=
- =?utf-8?B?eC9RNkVwdWxkNGxLTXVKMG5rYkFORWVvWE9WYjF3aVJWalA3M00xMk9QV1Nn?=
- =?utf-8?B?TnZjYWpPdXRxU2YwRzd4WERPZDl3TDJsTE45ZGR2cnNpK2h6d0xzTHRCOHBW?=
- =?utf-8?B?azZJSnIydTlXYXcva1NVeHdJSDgxK281M0hoNWdJU3p4Wi9uYi84T2JaK0tk?=
- =?utf-8?B?UzJEL3crK2lDanprM25LNTkycTljUVlySGJaZmU4c0pqY210UXRoSTRhcUV6?=
- =?utf-8?B?Uzc0YWpPdTBwbTUvcGRYTmlGQytyYXpxVHlVSjI1VkVrVFVVTDNXeExwZlA1?=
- =?utf-8?B?TkZSdnpaYnBaY0dka3YrVC8wZkFzei94NXQ3cGF4TjZVbWNCRW5kYUZxSUpB?=
- =?utf-8?B?aStkcWhiUGcrYjV2S1gwbjhIakxqT20wYTVJcHBLSXNZR2RCN0VQOTNmWm5Y?=
- =?utf-8?B?bXhnZUVHSldZdUJ2Vy9VZ0x0Nm9IenhxV2NRWlEzaFBwTnZqUEtlSVlxTGhO?=
- =?utf-8?B?SGZCc0tRMXN1YXZyK21rRzFxRGpCZTFXbWFFOHNXcDdGeUFMTGhVM1lVN1lL?=
- =?utf-8?B?Vjk3empMdHBETERQdGFVZFR2dnZ5OW1ZVHNTb3RLZ3Jab0lJLzdGVklDZkNr?=
- =?utf-8?B?WFhHTVNaem51cjdQUDVGT25kUTJWRldpZ0lQZlVCOWJpWDBkeWxmcXpEM05y?=
- =?utf-8?B?VmhIT2cwcXJTV1VJcG51Vm92Qk1EZ3V1V0xNM1lrcnpwYWhVWVdCUFVyazZI?=
- =?utf-8?B?OEM3NlJPV2lkNXlXNDBCcXNSV0MrQWJ2TyswY1RLTmpheVlxYzByMWVnNXJh?=
- =?utf-8?B?VmthRVd1YnllcmtSTk9YRGJZQklOcjBUM3duUTJtd3FLUlg1Yk9PZXRVUVhN?=
- =?utf-8?B?QU5TWkxlV0JzWnVKMjZWczhwTndoSDR2N05rMzFWZmpmSGx4N1JqazR1UFdp?=
- =?utf-8?B?eDIyc3BER2J6dDdLTjJTZjFoMkQ4dHhMOUY4OExIWDJPdjRNeEs3Q2dpZStM?=
- =?utf-8?B?VGMzMGlkZ0xsR0RRYThlc0xBdTVtTzV6T0RMaFZBa0N2WTU4TG1kd01YT2dk?=
- =?utf-8?B?akR5cGxVbFg3UUdjZWtZTlk0b2dMUzI1NW1UcDRFWnBVSENDVzRuM2h4NlFF?=
- =?utf-8?B?dzcxODNoTmVTUWFoc2JpZG9IbHN2ZjJnazM3STRoRk1VZFZnTk5jZGlLbFoy?=
- =?utf-8?B?RkFQRTR3eXVEKzA0a3YveGJENkJ1L1V1UkJ6K0dZeHZUR0JHM1hiM2tDeGh0?=
- =?utf-8?B?WUorRjVhVmJIQWMrLzZrRFJkWXg2WDBzby9pSXN0S1l5SkU0cmVFTFFNY3Zp?=
- =?utf-8?B?ZjljTG9PelFHditaMHVESnRHcVJHbkNJcFpkZTRqVGphMncvYWp2NDlOcXkv?=
- =?utf-8?B?TS9EOVRYdjVKaHhhUURIeUhMc0hHa1BQNE9qOExVMW44Kzh6QlpZR2Iza0hh?=
- =?utf-8?B?L1RFeXE4TVl0UGZOQklKZE52NTBFOHNINEZBYVpTdVZTejkzbS9UYVJZbjRk?=
- =?utf-8?B?SUk2YjRSUzlYa01yM3YvMlFUWHljSnJTeURURWo1YmNtN1NvbU5MQ2RnQnQ3?=
- =?utf-8?B?bS9qTjBtOUx2Sk9hYnJONEJXTnpRK0wya0twQnZJVk90R0d5TnVOWXNQOVF0?=
- =?utf-8?B?aW9oTW02NWdHcGk4bml0VDNPUXFIeGFkNnVWbytIU2NPZ0gxdjF0dnB6c1lX?=
- =?utf-8?B?dFpGbkNnbjQvZFJaUXZNYUthbXFFL2VzWmpqU3FaeExBaTRnckJ4WjJlejUz?=
- =?utf-8?B?QmNEelVYZXVzT3BodjN1UzB0eHA2WmhlbHdKQjBjNWlOMTRTM2htR2dFTE9z?=
- =?utf-8?Q?Vd7niJ4OgWyI1?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MFZ4d00wNXJYeGNzYkVXMVRxMzRWUEJxMlA0NFJwZDFqRHNLWk9CTDArZ0la?=
- =?utf-8?B?NFZ3bnRzMVJ6ZkhSdVZ0UVhIVThlU1ZEdk5QUGRyU1ltR0F2T0Y2eUJqKzNj?=
- =?utf-8?B?cWhpWEZhcEFsME9CNFd3ejNVL3VQWFc5cVlxUS9pb0EzMTladG5BYzVVKzNq?=
- =?utf-8?B?UWRDUENwbjNpa2ZrcTJ3SHU5b0d4M3BISk1NREoxdEJHeEV2TVNGVVpIcU9M?=
- =?utf-8?B?aDZrdlpZUVU1aXVKaDhTdWxvMERyZ3AveUVxZ0E2KzhqSmRNcXkrY2ZGTUNw?=
- =?utf-8?B?T1dEQldldWpwcjN1QkpVbDJqempjemRMVWF0R1BwRXp0Tjk2bThZTmJtb293?=
- =?utf-8?B?UDNvbTlwSnlEdkhPSnNPOGZRaW1DMm5xUy9hMFUxZEErZzlDLzFWQ0Q0bWlm?=
- =?utf-8?B?eDdkT2dWazBxMURTMTZ6MTVYeDZ3RkJBaFlWOTBYNlNPc2F6YlpIQlE2NnBI?=
- =?utf-8?B?dk5VRlBBU3RCaFlYdDFWVEtGL0JraVdteTYwM0NSMGkrd05lWW5HcG9CTkJJ?=
- =?utf-8?B?cjNyR2hTV3J4YVU1TFdoeEx5c05lNVFyaEl4N1NqbEdTRlM1TTNOYVpQSkN0?=
- =?utf-8?B?V1VIRU5lY1JQVjl4MmRlaE1hdmlJUUlSdTYxMFZIeFpmdkQzLytUTTQ4SG8r?=
- =?utf-8?B?WFl6elVuQ0tkbHB6L3ROWGdjazJjSzZNa09wdjc1dmwraWVBajVnejNPL0Rl?=
- =?utf-8?B?YzNEb1gya1VTdmRSSTRIUWd6OUhOMGU1NjJyZ2h2R1FDalV1bkt1bWRoak52?=
- =?utf-8?B?NlE3WnFjQWNVZ3ZmY2pNT1BIcitpQ1hYcEJpMFc5UlFrTWFpSTZkZjBjTTQ2?=
- =?utf-8?B?RmJyUW9GMkJMUVh1SHNvWWNQNVQ1NVpHdEU0dDFkakJWYVVxTzgyeUVXd1Zt?=
- =?utf-8?B?Wmhmdll4VWhmV3BaMDZydnhYM3lWMzIxOEJHMjlDU2l0WmdGaXJscFBTaHpH?=
- =?utf-8?B?OTdYL2dGNW9JRGtMM0VEL3c2ODV0WnVPZkhMTnMrTUdjRHBWb29HQVZUbXA5?=
- =?utf-8?B?ZER0R05VeDZwdnlnMG9YSmhDOWltUEhBemJnKzZCRDA5ci9GbElmVE5oc3I5?=
- =?utf-8?B?c0lFaGFSZlpTS1B1dUxVWUtycEdpM2ZHejBZVTBpRmVyU2F4ZkV4QTRjTjNn?=
- =?utf-8?B?WXcxdDhoK2hnVTBtdWx1S0l4ZzE2azRPcTJaR2p5QjlEY3hXdHF5NHlXUnVW?=
- =?utf-8?B?OURudjFuRG50b0kvVkFaWG9OWnFSYThKSFFFdnNtc1RjN0FKTWVZWkZLZk1p?=
- =?utf-8?B?cHlUViswby9qbHI2OUMwWWQycUt6QUMvSW95dkF0dlNkL3dyQ1JTYlBlYzV4?=
- =?utf-8?B?ZGRhdk1vdUdlRFdzUVhGYkFFcjFuMHBaVytrQnRpdGs1NHl6YTV0VkhNSFY4?=
- =?utf-8?B?emhSSWZVR082VXdMOTRSQzZyRGV1VFlpZ1lnRHZlQjE4YWpzTnc2RWI1MjBq?=
- =?utf-8?B?SkRKalRQTHB4SW5raG5uNUJBMi9iK2ZNY0tjalNoUFg0MzdOK0ZMejh6blFm?=
- =?utf-8?B?VTVkL09OdjBzSjVXS1g1YzFOVWpzVzZlL2JMeXdHSDdQVUU2dk4wYkZ1RlQw?=
- =?utf-8?B?RVc3U1RJdXZRbUVWdndWcnBJN2VmK1RuVHZaRXJTTS9BNGZuNHNkUnN6QWpy?=
- =?utf-8?B?SEpQY3htcWE3bGlaSWwrdWtzb1ExRlowOTB1YjRWMXpVMVBxSzdJTlY2d2ta?=
- =?utf-8?B?dEcvQndMN1dBWkJnTmRtanhZUmxaQWxCUVBYVjlJTkw4K0xUakZveVdwYkdz?=
- =?utf-8?B?NDZIbm9LVjI3WW93eXppeVJ3dU5BekQvb0NBVnNjMjB4M3BEYkZnTjdXcTRB?=
- =?utf-8?B?cE8wVTA0d01OZmhLdCtNNzBlTWxxZStla2l1dXBKUUEzMUNoWlVTajM1MGt1?=
- =?utf-8?B?OW8vcWE2R0dzbVVNZUJBQ1pMTmlNVXdTKzlBckRRMGZHVjkzV3JmcWFKQXoz?=
- =?utf-8?B?ckhQTGcwVS9aZkdhRFhETGorblFOVVdVRUNuMStRRlZkRkloTC9ELzFSUHEr?=
- =?utf-8?B?VDg4aG1KZjVIcmo3R0VaTytCSkZkYlQwSjBIMC9NcmxDYzZ1QzdRZnU3T0h5?=
- =?utf-8?B?N3AwQzBVRjJvaTltUDhEOEZXakROOVNlb1VtYWltTnNZR01zdTR6dUFwbjNm?=
- =?utf-8?Q?KkQlFExd8qbvjJYtQEhJThqPi?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba0861ab-8963-426a-1c94-08dd34fa6aa7
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 00:20:29.3686
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2UR5nL2Hs6keFx+cpYmJy9twkED+55zXUa0IWF9mfnJmNNt2kHDMdMr9b/Y1BpN37miQPMI8nZnvC/FKWXsy8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8659
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250114173103.GE5556@nvidia.com>
+X-Operating-System: Linux phenom 6.12.3-amd64 
 
-On 10/1/25 08:28, Xu Yilun wrote:
-> On Thu, Jan 09, 2025 at 01:35:58PM +1100, Alexey Kardashevskiy wrote:
->>
->>
->> On 8/1/25 07:00, Xu Yilun wrote:
->>>>>> +static void __pci_ide_stream_setup(struct pci_dev *pdev, struct
->>>>>> pci_ide *ide)
->>>>>> +{
->>>>>> +    int pos;
->>>>>> +    u32 val;
->>>>>> +
->>>>>> +    pos = sel_ide_offset(pdev->sel_ide_cap, ide->stream_id,
->>>>>> +                 pdev->nr_ide_mem);
->>>>>> +
->>>>>> +    val = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT_MASK, ide->devid_end);
->>>>>> +    pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, val);
->>>>>> +
->>>>>> +    val = FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |
->>>>>> +          FIELD_PREP(PCI_IDE_SEL_RID_2_BASE_MASK, ide->devid_start) |
->>>>>> +          FIELD_PREP(PCI_IDE_SEL_RID_2_SEG_MASK, ide->domain);
->>>>>> +    pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, val);
->>>>>> +
->>>>>> +    for (int i = 0; i < ide->nr_mem; i++) {
->>>>>
->>>>>
->>>>> This needs to test that (pdev->nr_ide_mem >= ide->nr_mem), easy to miss
->>>>> especially when PCI_IDE_SETUP_ROOT_PORT. Thanks,
->>>
->>> Yes, but nr_ide_mem is limited HW resource and may easily smaller than
->>> device memory region number.
->>
->> My rootport does not have any range (instead, it relies on C-bit in MMIO
+On Tue, Jan 14, 2025 at 01:31:03PM -0400, Jason Gunthorpe wrote:
+> On Tue, Jan 14, 2025 at 03:44:04PM +0100, Simona Vetter wrote:
 > 
-> It seems strange, then how the RP decide which stream id to use.
-
-The RMP table (an AMD thing for secure memory) has streamid.
-
-
->> access to set T-bit). The device got just one (which is no use here as I
->> understand).
+> > E.g. if a compositor gets a dma-buf it assumes that by just binding that
+> > it will not risk gpu context destruction (unless you're out of memory and
+> > everything is on fire anyway, and it's ok to die). But if a nasty client
+> > app supplies a revocable dma-buf, then it can shot down the higher
+> > priviledged compositor gpu workload with precision. Which is not great, so
+> > maybe existing dynamic gpu importers should reject revocable dma-buf.
+> > That's at least what I had in mind as a potential issue.
 > 
-> I also have no idea from SPEC how to use the IDE register blocks on EP,
-> except stream ENABLE bit.
+> I see, so it is not that they can't handle a non-present fault it is
+> just that the non-present effectively turns into a crash of the
+> context and you want to avoid the crash. It makes sense to me to
+> negotiate this as part of the API.
 
-Well, there is another problem.
+Yup.
 
-My other test device has 1 link stream and 1 selective stream, both have 
-streamid=0 and enable=0 after reset. I only configure 1 selective stream 
-(write streamid + enable) and do not touch the link stream.
-
-But the device assumes 2 streams have the same streamid=0 and when it 
-receives KEY_PROG, it semi-randomly assigns the key to the link stream 
-in my case so things do not work. The argument for it is: every stream 
-needs to have an unique id, regardless its enabled state as "enable" can 
-come before or after key programming (and I wonder if somebody else 
-interprets it the same way).
-
-This patch assumes that the selective streamid is the same as its index 
-in the IDE cap's list of selective streams. And it just leaves link 
-streams unconfigured. So I have to work around my device by writing 
-unique numbers to all streams (link + selective) I am not using. Meh.
-
-And then what are we doing to do when we start adding link streams? I 
-suggest decoupling pci_ide::stream_id from stream_id in sel_ide_offset() 
-(which is more like selective_stream_index) from the start.
-
-
-> And no matter how I program the RID/ADDR association registers, it
-> always work...
+> > > This is similar to the structure BIO has, and it composes nicely with
+> > > a future pin_user_pages() and memfd_pin_folios().
+> > 
+> > Since you mention pin here, I think that's another aspect of the revocable
+> > vs dynamic question. Dynamic buffers are expected to sometimes just move
+> > around for no reason, and importers must be able to cope.
 > 
-> Call for help.
+> Yes, and we have importers that can tolerate dynamic and those that
+> can't. Though those that can't tolerate it can often implement revoke.
 > 
->>
->>
->>> In this case, maybe we have to merge the
->>> memory regions into one big range.
->>
->>>>>
->>>>>
->>>>>
->>>>>> +        val = FIELD_PREP(PCI_IDE_SEL_ADDR_1_VALID, 1) |
->>>>>> +              FIELD_PREP(PCI_IDE_SEL_ADDR_1_BASE_LOW_MASK,
->>>>>> +                 lower_32_bits(ide->mem[i].start) >>
->>>>>> +                     PCI_IDE_SEL_ADDR_1_BASE_LOW_SHIFT) |
->>>>>> +              FIELD_PREP(PCI_IDE_SEL_ADDR_1_LIMIT_LOW_MASK,
->>>>>> +                 lower_32_bits(ide->mem[i].end) >>
->>>>>> +                     PCI_IDE_SEL_ADDR_1_LIMIT_LOW_SHIFT);
->>>>>> +        pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), val);
->>>>>> +
->>>>>> +        val = upper_32_bits(ide->mem[i].end);
->>>>>> +        pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), val);
->>>>>> +
->>>>>> +        val = upper_32_bits(ide->mem[i].start);
->>>>>> +        pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), val);
->>>>>> +    }
->>>>>> +}
->>>>>> +
->>>>>> +/*
->>>>>> + * Establish IDE stream parameters in @pdev and, optionally, its
->>>>>> root port
->>>>>> + */
->>>>>> +int pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide,
->>>>>> +             enum pci_ide_flags flags)
->>>>>> +{
->>>>>> +    struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
->>>>>> +    struct pci_dev *rp = pcie_find_root_port(pdev);
->>>>>> +    int mem = 0, rc;
->>>>>> +
->>>>>> +    if (ide->stream_id < 0 || ide->stream_id > U8_MAX) {
->>>>>> +        pci_err(pdev, "Setup fail: Invalid stream id: %d\n",
->>>>>> ide->stream_id);
->>>>>> +        return -ENXIO;
->>>>>> +    }
->>>>>> +
->>>>>> +    if (test_and_set_bit_lock(ide->stream_id, hb->ide_stream_ids)) {
->>>>>> +        pci_err(pdev, "Setup fail: Busy stream id: %d\n",
->>>>>> +            ide->stream_id);
->>>>>> +        return -EBUSY;
->>>>>> +    }
->>>>>> +
->>>>>> +    ide->name = kasprintf(GFP_KERNEL, "stream%d:%s", ide->stream_id,
->>>>>> +                  dev_name(&pdev->dev));
->>>>>> +    if (!ide->name) {
->>>>>> +        rc = -ENOMEM;
->>>>>> +        goto err_name;
->>>>>> +    }
->>>>>> +
->>>>>> +    rc = sysfs_create_link(&hb->dev.kobj, &pdev->dev.kobj, ide->name);
->>>>>> +    if (rc)
->>>>>> +        goto err_link;
->>>>>> +
->>>>>> +    for (mem = 0; mem < ide->nr_mem; mem++)
->>>>>> +        if (!__request_region(&hb->ide_stream_res, ide->mem[mem].start,
->>>>>> +                      range_len(&ide->mem[mem]), ide->name,
->>>>>> +                      0)) {
->>>>>> +            pci_err(pdev,
->>>>>> +                "Setup fail: stream%d: address association conflict
->>>>>> [%#llx-%#llx]\n",
->>>>>> +                ide->stream_id, ide->mem[mem].start,
->>>>>> +                ide->mem[mem].end);
->>>>>> +
->>>>>> +            rc = -EBUSY;
->>>>>> +            goto err;
->>>>>> +        }
->>>>>> +
->>>>>> +    __pci_ide_stream_setup(pdev, ide);
->>>>>> +    if (flags & PCI_IDE_SETUP_ROOT_PORT)
->>>>>> +        __pci_ide_stream_setup(rp, ide);
->>>>
->>>> Oh, when we do this, the root port gets the same devid_start/end as the
->>>> device which is not correct, what should be there, the rootport bdfn? Need
->>>
->>> "Indicates the lowest/highest value RID in the range
->>> associated with this Stream ID at the IDE *Partner* Port"
->>>
->>> My understanding is that device should fill the RP bdfn, and the RP
->>> should fill the device bdfn for RID association registers. Same for Addr
->>> association registers.
->>
->> Oh. Yeah, this sounds right. So most of the setup needs to be done on the
->> root port and not on the device (which only needs to enable the stream),
->> which is not what the patch does. Or I got it wrong? Thanks,
+> I view your list as a cascade:
+>  1) Fully pinned can never be changed so long as the attach is present
+>  2) Fully pinned, but can be revoked. Revoked is a fatal condition and
+>     the importer is allowed to experience an error
+>  3) Fully dynamic and always present. Support for move, and
+>     restartable fault, is required
 > 
-> I don't get you. This patch does IDE setup for 2 partners:
+> Today in RDMA we ask the exporter if it is 1 or 3 and allow different
+> things. I've seen the GPU side start to offer 1 more often as it has
+> significant performance wins.
+
+I'm not entirely sure a cascade is the right thing or whether we should
+have importers just specify bitmask of what is acceptable to them. But
+that little detail aside this sounds like what I was thinking of.
+
+> > For recovable exporters/importers I'd expect that movement is not
+> > happening, meaning it's pinned until the single terminal revocation. And
+> > maybe I read the kvm stuff wrong, but it reads more like the latter to me
+> > when crawling through the pfn code.
 > 
-> __pci_ide_stream_setup(pdev, ide);  This is the setup on RP
-> __pci_ide_stream_setup(rp, ide);    This is the setup on device
-
-Nope, the opposite, rp=pcie_find_root_port(pdev) so the first one writes 
-to the @pdev's IDE cap and the second one (optionally) writes to the 
-@rp's IDE cap.
-
-
-> unless AMD setup IDE by firmware, and didn't set the PCI_IDE_SETUP_ROOT_PORT flag.
-
-The AMD firmware only programs keys to the rootport and uses the host OS 
-for everything else - IDE_KM over DOE to program keys into the device 
-and the IDE capability programming on both ends. Thanks,
-
-
+> kvm should be fully faultable and it should be able handle move. It
+> handles move today using the mmu notifiers after all.
 > 
-> Thanks,
-> Yilun
+> kvm would need to interact with the dmabuf reservations on its page
+> fault path.
 > 
->>
->>>
->>> Thanks,
->>> Yilun
->>>
->>>> to dig that but PCI_IDE_SETUP_ROOT_PORT should detect that it is a root
->>>> port. Thanks,
->>>>
->>
->> -- 
->> Alexey
->>
+> iommufd cannot be faultable and it would only support revoke. For VFIO
+> revoke would not be fully terminal as VFIO can unrevoke too
+> (sigh).  If we make revoke special I'd like to eventually include
+> unrevoke for this reason.
+> 
+> > Once we have the lifetime rules nailed then there's the other issue of how
+> > to describe the memory, and my take for that is that once the dma-api has
+> > a clear answer we'll just blindly adopt that one and done.
+> 
+> This is what I hope, we are not there yet, first Leon's series needs
+> to get merged then we can start on making the DMA API P2P safe without
+> any struct page. From there it should be clear what direction things
+> go in.
+> 
+> DMABUF would return pfns annotated with whatever matches the DMA API,
+> and the importer would be able to inspect the PFNs to learn
+> information like their P2Pness, CPU mappability or whatever.
 
+I think for 90% of exporters pfn would fit, but there's some really funny
+ones where you cannot get a cpu pfn by design. So we need to keep the
+pfn-less interfaces around. But ideally for the pfn-capable exporters we'd
+have helpers/common code that just implements all the other interfaces.
+
+I'm not worried about the resulting fragmentation, because dma-buf is the
+"everythig is optional" api. We just need to make sure we have really
+clear semantic api contracts, like with the revocable vs dynamic/moveable
+distinction. Otherwise things go boom when an importer gets an unexpected
+dma-buf fd, and we pass this across security boundaries a lot.
+
+> I'm pushing for the extra struct, and Christoph has been thinking
+> about searching a maple tree on the PFN. We need to see what works best.
+> 
+> > And currently with either dynamic attachments and dma_addr_t or through
+> > fishing the pfn from the cpu pagetables there's some very clearly defined
+> > lifetime and locking rules (which kvm might get wrong, I've seen some
+> > discussions fly by where it wasn't doing a perfect job with reflecting pte
+> > changes, but that was about access attributes iirc). 
+> 
+> Wouldn't surprise me, mmu notifiers are very complex all around. We've
+> had bugs already where the mm doesn't signal the notifiers at the
+> right points.
+> 
+> > If we add something
+> > new, we need clear rules and not just "here's the kvm code that uses it".
+> > That's how we've done dma-buf at first, and it was a terrible mess of
+> > mismatched expecations.
+> 
+> Yes, that would be wrong. It should be self defined within dmabuf and
+> kvm should adopt to it, move semantics and all.
+
+Ack.
+
+I feel like we have a plan here. Summary from my side:
+
+- Sort out pin vs revocable vs dynamic/moveable semantics, make sure
+  importers have no surprises.
+
+- Adopt whatever new dma-api datastructures pops out of the dma-api
+  reworks.
+
+- Add pfn based memory access as yet another optional access method, with
+  helpers so that exporters who support this get all the others for free.
+
+I don't see a strict ordering between these, imo should be driven by
+actual users of the dma-buf api.
+
+Already done:
+
+- dmem cgroup so that we can resource control device pinnings just landed
+  in drm-next for next merge window. So that part is imo sorted and we can
+  charge ahead with pinning into device memory without all the concerns
+  we've had years ago when discussing that for p2p dma-buf support.
+
+  But there might be some work so that we can p2p pin without requiring
+  dynamic attachments only, I haven't checked whether that needs
+  adjustment in dma-buf.c code or just in exporters.
+
+Anything missing?
+
+I feel like this is small enough that m-l archives is good enough. For
+some of the bigger projects we do in graphics we sometimes create entries
+in our kerneldoc with wip design consensus and things like that. But
+feels like overkill here.
+
+> My general desire is to move all of RDMA's MR process away from
+> scatterlist and work using only the new DMA API. This will save *huge*
+> amounts of memory in common workloads and be the basis for non-struct
+> page DMA support, including P2P.
+
+Yeah a more memory efficient structure than the scatterlist would be
+really nice. That would even benefit the very special dma-buf exporters
+where you cannot get a pfn and only the dma_addr_t, altough most of those
+(all maybe even?) have contig buffers, so your scatterlist has only one
+entry. But it would definitely be nice from a design pov.
+
+Aside: A way to more efficiently create compressed scatterlists would be
+neat too, because a lot of drivers hand-roll that and it's a bit brittle
+and kinda silly to duplicate. With compressed I mean just a single entry
+for a contig range, in practice thanks to huge pages/folios and allocators
+trying to hand out contig ranges if there's plenty of memory that saves a
+lot of memory too. But currently it's a bit a pain to construct these
+efficiently, mostly it's just a two-pass approach and then trying to free
+surplus memory or krealloc to fit. Also I don't have good ideas here, but
+dma-api folks might have some from looking at too many things that create
+scatterlists.
+-Sima
 -- 
-Alexey
-
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
