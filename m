@@ -1,52 +1,51 @@
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2060.outbound.protection.outlook.com [40.107.102.60])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2060.outbound.protection.outlook.com [40.107.236.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD7B22A4CF
-	for <linux-coco@lists.linux.dev>; Thu, 16 Jan 2025 13:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E9A22CF3B
+	for <linux-coco@lists.linux.dev>; Thu, 16 Jan 2025 16:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.60
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737034106; cv=fail; b=E7jnxddJqmSHRRHohOxRnYgE1kEo2wYUmy7aKiH/soZyyOCsDus6EVTBSs9IH+ETmX4tpVExs5Hy5z85fMTz1LD/Q0a6vtxWfQI9OYrLHLQVfQC6QlTPeIdCRytfezz+7WPm6HAjU6WJf1jy+q2cmkodKpytxxOqG0MeDYKkK30=
+	t=1737043676; cv=fail; b=LDMvQ+m+dogkxokc1h14qFQBo/+IGm7XSTkwBsfqU0J1YwAAxPWqNv5EmIU6xyQ4d8B3h0Rr4in83a9+FdN2Q74KGOrkzcKd2Jc5BmO11dkwCjFNexc1C4t399kEoJRpMeQ7Exn+mdtowgwbxhzab9teqT9bkQ5rpfAZcc4zjqo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737034106; c=relaxed/simple;
-	bh=Z/f4QL2eXVB72R86aekRDH+rPSvkcHx7tzqDZFMiylY=;
+	s=arc-20240116; t=1737043676; c=relaxed/simple;
+	bh=Mbo7PXPbQc39SXIE8810vjox+XB6ZE7YwL3R4TRxuhc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=RpcqjaBONQtTE9iizTnu45kUHCwW3/y/GjQZo60lncSv1LRXZBxVrT0e/W4wQhHMh2qK2mTk3KOoI29ZN1nsoQol4F0rI6qRg2Hmlkbz9h4agNbD/vtWyEe0vdMNk30IPm1uH3CapL3mHXosF8UJfXKbpIwsL97Ns6gwvmzaLYM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qENmXZnc; arc=fail smtp.client-ip=40.107.102.60
+	 Content-Disposition:In-Reply-To:MIME-Version; b=F89bfpD58zM40uQRGn/upNx/wMYmLSYwJLDfcEXW/hXiXKVz3lUjTEZAlhonIIc1BHYTqFE/mO6InFYWQwjo8+6usGe9zPgyusFCumDVdNh1grCeSYhB1bqMKnXO0+5J/sLL7GhrPdiilGfQii4hW3TUNTHnLZ+F8lnk8f0novY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=osz3GX6z; arc=fail smtp.client-ip=40.107.236.60
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qENmXZnc"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="osz3GX6z"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m6L1q2hXD4AanQ3R6bSrzoa9GuIDJ8K8hdHon4LLYixyfIWUiccIfJAPXLsYwgGi7SYpkouiAGYUGyLMcbAouLJz30GomvS68huEnJGIOhaKWrV6ph6gGi265+NgOtbbzk5BwwcTHJdawTdDRoVR2EYTMhMC0Bs+Gwa1oEi6oY25zLzO3tV2SYl3KkHlQkfsPqLklUKQl+qPLHvf21+sYEhqO/eVYftAKuEIaeoLc3wP/llUsYA+thqqD41xe/Kop5wY6ng8VrYDI7HpfsSOSsRYChr42QFJHsdHBEFVyz9J1vRH47HnmTToWqmT8EXsbBO/eXClzxFw21ouQNNmHA==
+ b=hX74YJHEqBE7zCF9SKn7j+yTjuzamFqwmtmr7fBrCw53M4MSew8R+bY/STijsNoL+BfP/F2WqbdxD2GG4DLm4n4w7AzhIUWt+99iujis65JEj9eleorb5bjZ9lMhJ9CoFMakR2TivqXoMrhWTbIhJzsG4mQTbYD2IQjO5sDzgxgEagkxqvrU1/lbTK8HW6dPHFDbbd+tgaaE9X9BE45+kwcr6tVq+xebvSKruirClJ0UWs1rrLAKkfsMCAKpL4WO4CR29ZR/+38MnYH6dfzCTkT2iTY2/O2xSm/GgYEdBZqJJ/fxVcCvOxIw640tv6BbgDC2ibCUlS6nhpQJXWG6SA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mGAyewpqhCaDEfWmsoUIJrMsGGnHOPM1b4EK4hjYXsg=;
- b=Zmqjgc1lfVR69qXy4FCHZSL/BPGKfFbKdSXdnImBzDIGmRo/fpcajuqCEpXZ7ekpBfDoW0YejRN1pO+Dd2fhgcZyebh+ph4caM2IUGt43g8zdPRCovFAs8asoq5fP6hbgiHvkufjLlSaU15DNE7WTP1BriOKJ7zCK0ugAgNXl8kfsS0ojxek3oroEoAlpL+bJXw47M27m3pabq4Rjd7qU7ZjEPGzxT++wP25tdX1tXGMHeEeWq7k22Tpjm3Sa2I4tWbTWtvWfeZ+tIfJncbOPGS4zEkQzH26m2Bx5Ga3NRgOiEqVXTM9YJ98hjBMtWPnDYjrlk7H7Yf6ykFBlGxZ7A==
+ bh=uw5gZebVobFjkxrFoD615J8Bq97IQ5/RaJdKLdAuqTY=;
+ b=pAdNLcEDqt41d7MVOFy6im3rsjbI4ywMt2OUAH4Ql7OnU5tNxnJZJ1/mC73VzxPe6P3FTrybt1ziRbIVT7E4cfUfdX4M+79cbGIgUzgmBg7bCMMn0lwnLiXuJperLMfCJ9QKha/KTDOW6k7JTFuhVp/8fC00gjegKN9VfIFOcAPq8ZO0lxyRa63vMBZ0jcZyec2XQm88OC0pZdLOBiXl8UGEeDCU+ThN6+/+edtb4GEfdTVFpgKWffkTuX+8gm2KLvf5uCgSQy+p7HGgLz85U1IXfuBvCtNWuPwM52Iz1pG3NR8Wz32dZMcHq4F2ox2u2A3TehesAsDpg4F4ppjWTA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mGAyewpqhCaDEfWmsoUIJrMsGGnHOPM1b4EK4hjYXsg=;
- b=qENmXZncKaRTzuf43sHweniJYLiUE+iwCf5YRqDBGV0LVcDjMmzqXfNA15CTzuoUBpq5n+TlsdWdFv2me5rxVekWZgPU6iVPD5kaTRjKRO06zNyQ2/x4dRcBiWP3O1VzEqOk4XVhliGydbfVQd7mkl2GmXxwAwcG4xLkym2dGbX0k0874dqL+hAxb4yNVuDluzVR5bzGGRMMPfFzQeJuXXn6EVuDV/Dew/LwAsaMrPq6+49S/ZHLiB7FdR5l2Qb3iNdiBYQpg41oTo9EkYTlEGR29FycKxUvHPw2fxzGhpcyCKEgt3u2Fp3QLzWBfrMKP8MWYR1K5NDuoODzMjFuWw==
+ bh=uw5gZebVobFjkxrFoD615J8Bq97IQ5/RaJdKLdAuqTY=;
+ b=osz3GX6zmOL4IK1qrmnmAX3RthBmVr3uthaFjS25+tdxMfeS5YG7iOfRFhSJ2xtgEqJXpxOerE06GBH/62ECP/q+mjNI0SI9+byqY1rLS9GBrtFBOzr0X1lIYVRoPO09ifbVL+IrM5BPdY6DL2rZblwMavpmI9eukQGOQ/++SjUgWumIoffC5biBi8zq/SSQe7JdyuOOtqh0AYKbq/nnPUutMVQTdW8ySmS8DIOsTnX9Bsvw794JesK3gRMDyuaOkrNAsjnFBSrFxadwJu1stWDnfcaf0Y1ReJ6ovHQlW9HfrPy1g8TTr9Ej/2KnVS1tymy4AhpR9SHpbP8oLuknEg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by DS0PR12MB8786.namprd12.prod.outlook.com (2603:10b6:8:149::17) with
+ by PH7PR12MB6633.namprd12.prod.outlook.com (2603:10b6:510:1ff::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.14; Thu, 16 Jan
- 2025 13:28:21 +0000
+ 2025 16:07:49 +0000
 Received: from CH3PR12MB8659.namprd12.prod.outlook.com
  ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
  ([fe80::6eb6:7d37:7b4b:1732%5]) with mapi id 15.20.8335.017; Thu, 16 Jan 2025
- 13:28:21 +0000
-Date: Thu, 16 Jan 2025 09:28:20 -0400
+ 16:07:49 +0000
+Date: Thu, 16 Jan 2025 12:07:47 -0400
 From: Jason Gunthorpe <jgg@nvidia.com>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>, Christoph Hellwig <hch@lst.de>,
 	Leon Romanovsky <leonro@nvidia.com>, kvm@vger.kernel.org,
 	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
 	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
@@ -58,22 +57,23 @@ Cc: Xu Yilun <yilun.xu@linux.intel.com>,
 	tao1.su@intel.com
 Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
  kAPI
-Message-ID: <20250116132820.GU5556@nvidia.com>
-References: <58e97916-e6fd-41ef-84b4-bbf53ed0e8e4@amd.com>
- <Z38FCOPE7WPprYhx@yilunxu-OptiPlex-7050>
- <Z4F2X7Fu-5lprLrk@phenom.ffwll.local>
- <20250110203838.GL5556@nvidia.com>
- <Z4Z4NKqVG2Vbv98Q@phenom.ffwll.local>
- <20250114173103.GE5556@nvidia.com>
- <Z4d4AaLGrhRa5KLJ@phenom.ffwll.local>
- <20250115093234.GB6805@lst.de>
- <20250115133419.GN5556@nvidia.com>
- <20250116053348.GA24046@lst.de>
-Content-Type: text/plain; charset=us-ascii
+Message-ID: <20250116160747.GV5556@nvidia.com>
+References: <20250115133821.GO5556@nvidia.com>
+ <f6c2524f-5ef5-4c2c-a464-a7b195e0bf6c@amd.com>
+ <1afd5049-d1d4-4fd6-8259-e7a5454e6a1d@amd.com>
+ <20250115141458.GP5556@nvidia.com>
+ <c86cfee1-063a-4972-a343-ea0eff2141c9@amd.com>
+ <86afb69a-79bd-4719-898e-c6c2e62103f7@amd.com>
+ <20250115151056.GS5556@nvidia.com>
+ <6f7a14aa-f607-45f9-9e15-759e26079dec@amd.com>
+ <20250115170942.GT5556@nvidia.com>
+ <5f588dac-d3e2-445d-9389-067b875412dc@amd.com>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250116053348.GA24046@lst.de>
-X-ClientProxiedBy: BN9PR03CA0453.namprd03.prod.outlook.com
- (2603:10b6:408:139::8) To CH3PR12MB8659.namprd12.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5f588dac-d3e2-445d-9389-067b875412dc@amd.com>
+X-ClientProxiedBy: BLAP220CA0003.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:208:32c::8) To CH3PR12MB8659.namprd12.prod.outlook.com
  (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -82,113 +82,248 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DS0PR12MB8786:EE_
-X-MS-Office365-Filtering-Correlation-Id: 335c7f0f-7970-42cb-cca7-08dd3631a558
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|PH7PR12MB6633:EE_
+X-MS-Office365-Filtering-Correlation-Id: c607b858-bfac-4822-ccb5-08dd3647ec27
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?coVOjpyCGAPr2py4mE3mb7vnTUb4CE/O/FhkdRXJTy+hOaWwDgUgcugSIfb9?=
- =?us-ascii?Q?Y4zbfnVBbzBT5Kv+YY8yJXHMB4ZoSzj5KBXfmPDcaFEpF1aL8d0KfoCiPUjg?=
- =?us-ascii?Q?bD1aKw+SGA064+b29LEoE7hXm401feh3fFdp67rzij5ywbjqqjVL3XbpBqgY?=
- =?us-ascii?Q?o6TrUx+FRBV1wApVMyvf97K/L/HlaYuUMf1UjqaybTutofq/9VgbOeKg5mSg?=
- =?us-ascii?Q?i3g34K0/L3bBY5KhxLf2z1rEf1Js+KUE67dXcL1e4+bIeR981/AwegyB/7EQ?=
- =?us-ascii?Q?8KdF3/EB1uu7N8QeD9+Xw9+w1+TCJ8guSwIBdfL72esCJAaLN09A8Cyhjwlb?=
- =?us-ascii?Q?5XqZa0abXy5UhV2h7dVMc+E4qU12ZJTOtBiVmW/CJDzKMmBQqhnf2XnOW5if?=
- =?us-ascii?Q?RxWutM7MEq2xgvJ6ZFU9SxtWelQWwN3Ybcw0VlhR/auvTdwc+7Sva7bLgrV/?=
- =?us-ascii?Q?utbOMVQu8xVIa4RWZX6FuTxBKENRIFLONUXfPvHtM4OsrLOdH/w3k+5w7/uo?=
- =?us-ascii?Q?OojbIwMRlTYQeiaoA2zyeSHLo1t46A0cmJfCpW830OBP776XIGQO+KvDyMmB?=
- =?us-ascii?Q?5I9QUVzKku8TY8ol5ZXwV46nvKIUdsE7xRpeYkFYmRX0GBOa/nh5Rd+Icjxe?=
- =?us-ascii?Q?Ix1VV/HxUDDSJhGrOoo7im9l1yv5Ga9P/bEYGZxvM23z7qbG39y6XaSDje7C?=
- =?us-ascii?Q?fMiABGgFqrQEH1uEmT15ap9gu+gQjvLZxOxFvJzpc0s86+Hy8Wn4rOIGoHau?=
- =?us-ascii?Q?IaldKra7wdFCd9SI0aJxlDsc64Q5HTdn/idI1n0SVH4RXqhWIy3UZGhPtIRF?=
- =?us-ascii?Q?jwSIpdE0BvH8G2DRySq3Y+X9X5JucO0FcaQVrcNREiZ66ahsaj0cwTGsyxHK?=
- =?us-ascii?Q?ZK0Dl2vHPpTmelifybfUh8jyA0XjmY2+/lVfvmWxiBcf+NX3QVpe9UNyyeY0?=
- =?us-ascii?Q?3L8Xy5bxBC3aEZ0jWoboOwIeeXaoG/tm3i+7cYEJGxaUEmBY84F6FHrNQJYn?=
- =?us-ascii?Q?/rHE5ihJr5Grg8bcwhuW0+z775EgRmWGJEU4LDjpSNE9vK1MeDbMgaI61f/P?=
- =?us-ascii?Q?U5Pt+C42utPWkl7tA1/wFOvCQ1qxfx3pb01fGeuSQb2yEO5buNPnlGFiBP+h?=
- =?us-ascii?Q?7k8AkqgpKpr7RrRpRyIenipBQV7EjwSIU0kEm+KHPgbhQl4DEIeTAZTcqwan?=
- =?us-ascii?Q?oZVEh/vZdvcteTxe1JJPjq9Sn0W0Gt7jCkeeH0ZswpcahFJ30CRVIWUAiPZZ?=
- =?us-ascii?Q?gTufedpElkjFxFasKLjbsE1G+ictv8bMrnRQ09n1E+p+zWcErf1+kh0WERH7?=
- =?us-ascii?Q?aGJ7iaDoK7bjYot3uu9aXuozxxepqAbHrnXBxqoL7TQT9IpnjFMCsi1Q8syn?=
- =?us-ascii?Q?pXXXpDV9w49gCHJ0kysSbkgLzmrx?=
+	=?utf-8?B?UDQzRWhXVitOdWNsQitVb2lkTzk2alJVT3o1eFZ3QmJBRGIvaGwzZm16NGFI?=
+ =?utf-8?B?aDI3aFYvYjRhMURYSjVLY0V6R2dma1VaaTAwQW9jeEgzUmlzMXgwajFxZGxK?=
+ =?utf-8?B?VTdpM2g4dkl2RXkvQ3E1cUFtS2hzV3YxZ0lpZkd6cWVLTFFsOFkvdUI0WHFZ?=
+ =?utf-8?B?OTM1am5rNC9wVzJTUDVXZ3dmOUdHR0MyZTUzT2R0UEJvK1d4MlFXeVdUaXVV?=
+ =?utf-8?B?VTFwQUJvSkdyWHZnRjFGUmkzNjIwOUsrQzNwZng4cjdMQSt4MnRBVXE1MXdL?=
+ =?utf-8?B?S1NwRzdmbWNuNjhGckxocDhNZ1VrMGlROUVhWTBBdWpGOUhTRTFPaGdYSFhK?=
+ =?utf-8?B?QW05YVpJRUNpVWgrTjRBWllncGtJTk5NTGQzV0o5M0krOGdLVnpaOGh5dmVD?=
+ =?utf-8?B?Nk5xZ3RST1lRMXN4Wk83M3d2Z1pVUytIc1R3L2x1ZHhuQ3Nrc0VIc2xRcEZi?=
+ =?utf-8?B?dnpKSlJlczRBYktSM0ZDb1dSNTJCeUEyUWhWYWMxN2p3RGt5c1JCRFlmMjU4?=
+ =?utf-8?B?cjUrNFFRT1N5byt3UGlRVjcvZUdCY0h4UXhPdldMVGt5dS8ySkRLZURMMFlW?=
+ =?utf-8?B?eWJVU296UHN2Q3hmRHViVVVSUW5veGtBSktUKzBrUzFSb29XaCs4bXNVcmwv?=
+ =?utf-8?B?VVZOc3l2bVVTS2FSL2ZqYS9yeFZGTFJxWHh0RmtOWmVxNFJvcTEzMHRveEw3?=
+ =?utf-8?B?ZCtZR0RacXR2VXZFc2dNRkZRWS9uazhXZmovODQzTFhZWDZuVjV0ejRUUith?=
+ =?utf-8?B?V3VQY3FwK3BNMlMxdjgxaS9CdUI1UFVHbmxLR1F1elJRbnJnQVJCVk96d3J4?=
+ =?utf-8?B?cU1qV2Mzc2lQU0p6RkVNVEVsdThMQldkd1VJRDN5UHJiT0MvcFhPdTBrdFpq?=
+ =?utf-8?B?bDkyZVBpZ3VMUHMvTzF5dUMwZ2NRWldoMjRiMDdwOTVhUkR4YllSdVFiU2Fw?=
+ =?utf-8?B?TFZFR09uZGxDNzhGaG9RNEdZa25ZNm95ZkQ4Nk5KYkJlbUlyZjZtaEwybnR2?=
+ =?utf-8?B?a0Q2bDY1WmtXWkFpcVJMV1p6dWJlNUIyc0xzeEJDOE14OE9QNEZUNHBKdmZp?=
+ =?utf-8?B?aXViQnpEOXhtTHEwQ09wbmdSdmRBZTJkZ1BqNnZ2VmY3SDJCRWR2endZL04z?=
+ =?utf-8?B?T2FOdXBsbVBLczg0RERKNk9iaXJzQS9OVGVteDFqRk5udElYVG9BRVdFU0ky?=
+ =?utf-8?B?UzU4R0x0TnV2WWR4VjlPVzBGSldqb0M3Zy9FbENKUlA5VjZVcWhnSXcrVDVh?=
+ =?utf-8?B?WFBVMm5SVmY1Q3dBM3hCdzM3UngrUE9FcjlSMHJHMGIrY2NYMFVrTnBJK1Nk?=
+ =?utf-8?B?K1BFc2EyQ2pPN2lISlI3RUI5bHZLYThUNjRVTFZHQnRhLzlLVS9WelMvV1p6?=
+ =?utf-8?B?SEg1ejc2bVI2TGVZclh2aDE4WGJ6RXhsZWpPR2ZJNkNIRFZ0dklyb3JQWUVJ?=
+ =?utf-8?B?VTMzSXBUbUozRWJxZkZtSFV2cGdzbHVaSUpQYUFFZ1kya3FpajNZMVVOM0ZE?=
+ =?utf-8?B?WjdOaVg3SDE5a2czNjB2WVExeXNsUG9PanJzbHNHbzBiV3FHZjZwYjJ0TWN4?=
+ =?utf-8?B?bzlVbC8wcGZ4bEZPYkE3dE80eENTN25BTXRwSmZFN2k5NDl0bm9jSEc4QUE1?=
+ =?utf-8?B?cGFTamUvNzVNMTlocHZZTGtLUnlIbmQ1NENnQ1VMRitEVUJLQXc0R0FoNnFP?=
+ =?utf-8?B?ajlWNitDMURSWk5nVEl1K1ZHK0hKVWNjcnhVY0RHa2JpS0g3ZFRSN2VyZXFj?=
+ =?utf-8?B?eTRyV0hRVlBhSzk5M0pmMy84TjBPV1hybVIxazdualRJTXBZK0ZKMWc3Vkkz?=
+ =?utf-8?B?L2tXR3NRMDlSSW1ONit1cmZoVG9iTXMySUNGUWt2djlMeTFyS29ieTRPZlJz?=
+ =?utf-8?Q?6IiRs1ugeNtlM?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DwczygUfbgvliiJIQ9oAD3onbwGNRAFaH4ns7LpJtawMD7fvsYTUgHYDQu6x?=
- =?us-ascii?Q?f/zNoGaDqEnsxw+ubHRn0/uMTv3enrIiwd+zX6gaOMssUSJMdIPEx6luulds?=
- =?us-ascii?Q?Gpg+yqlAEvnjzoCA7r16QW1PGR0I1NBSqFWURPd8SUQLVk4Fx6dbv9TlDNGN?=
- =?us-ascii?Q?VFn7OT/QppK6MYixG5rMz/JWTvKtbu0yq70JetKYYaev56xs/QQj33dta+Sy?=
- =?us-ascii?Q?fhu0TOhxEXV1/n4kIyFqcoPj0NK0UpEGpVhJvZerIsl4H7+OFhu/MTqM4sHi?=
- =?us-ascii?Q?fgHKK5EJ8DdfxGbeAmDG+xlLJazI5TCBZlrXNv4Kkg/3f1CBIoobrs3JyhYB?=
- =?us-ascii?Q?NTcosUyd/dlJl9oV0b339R9PB1RyGLhhlFExNT5KaaLOR5wxLb/xq4YnGHwh?=
- =?us-ascii?Q?dHDkCJ5IuF2ZlxkoO9s/IgN8GpB2z+nlW01d9eFC71xGiFI4ALZIi4IE5iRH?=
- =?us-ascii?Q?PsE82hJj5LqTWjuSKyQ8E4uom7BCsRXvVmV6x+d1HPADnn/+9aLISBCFTFqX?=
- =?us-ascii?Q?x8CclmEph+3dKlcmG7vKPGOMBiAg/qiJ3fuwdfGtix3/KXl7OMSW7W4JJsj9?=
- =?us-ascii?Q?aiZBs6ZHOFBMb+Yzkammfa3VvpBVNbWi4GSp85HH0N0ETh2Y4sAUcdWPfxFp?=
- =?us-ascii?Q?/Sq+ups5pvFxfr8oFoBj8UQJzfUuAn5koufwk2Via3tphx8Uu0vvUzQJ/H8S?=
- =?us-ascii?Q?eiEj4qnKGhlx6QF2FHk6bmuKR2oATwT7DaWSuzVaGMrAQtfQnk4MFN9NPswQ?=
- =?us-ascii?Q?v9gxqvH0upASAtuVbHMmc2Izu7LKPTpm/Ghy2W63vavYOvlulCEaZ5PqR+dx?=
- =?us-ascii?Q?wo1cAjFjZmn9afaHXS6EYL+K07AEUfYdWYTE26LFTiJJhFHocgUGZk7REVTs?=
- =?us-ascii?Q?I4mdnn2mimXIWXEfIwwVMcjIDXjZsP38xWl7HnFw5hWVbmrYikIerJP8XUzI?=
- =?us-ascii?Q?KlnBYY+2VMfohKpOIGM9j39b80xU5HVTxrzFCNS+lMxYpg2ynvriuap5Qo46?=
- =?us-ascii?Q?4BHRgGjCeW0l06/VRb1rJA27KUyXZ9G0lNzMnohkAe2T0vzi7IPd009nYjb4?=
- =?us-ascii?Q?2TCJkLC6XxSbHzdvpbHEdv/aue7YSCeH/3v+LCNcFcYqFkT8Rs5dzeLdNXQD?=
- =?us-ascii?Q?tUWOCMLONEBmPns8XOcSxBEJNtYN+3/J8gs7P02Ta9pz9eXV1HIHeaoh5EkY?=
- =?us-ascii?Q?bNDs+nscAx9La5s7JHmzhP1QsD757Frk+miCX5JTipESNcpDIIjsQQ++8hkv?=
- =?us-ascii?Q?9BdLyU+ZhzcJ8nfzeltSZXZrSZoDpMDeWVWoN4Ce0Brqy51fXxT2VAXJpqPk?=
- =?us-ascii?Q?cbZDlGwc9p+2m1d3ya5ek4hmNiaoI/kL7gEeVFEK2kQrzodnS2nBLnN8Gvpl?=
- =?us-ascii?Q?GmBSLevFTsuJWrpapEFYk/LVERWud0kfh8JOrrTqlDiisQEgKWYRuRF7PeOR?=
- =?us-ascii?Q?OjSNKfonoBbC22sc/powGVvYSQTq7Af5Y+/eVv9SpiuUCb2i4to4hlE/AqVC?=
- =?us-ascii?Q?CS/uvgZnTTN5SavRjVrxmRhwQ6Px7qFjLDHHUSL/OfvzoLA0tGl2zlniCM17?=
- =?us-ascii?Q?bPM1TxuXoP4oGGo7I1M=3D?=
+	=?utf-8?B?RTZtaGVIMWFWZmd1Zm5ZZG5icnFZbDZjN0Z6V2NwNURnNEdVOTJyRmluRVFv?=
+ =?utf-8?B?VWt5TXJPV1FSblZIS0h5ekhoTjBoWm5yVEV2c2ZJWUEzVGJaQkQwNVk3WFkx?=
+ =?utf-8?B?Qk5MVGk2RExMRFZRbGhqOSticmo0aENHbldEZjVhOWN5WkIyTitDQzB1QW9k?=
+ =?utf-8?B?L05zaEpKRks3My9OOC8wS0N1WTBqOGNTbkVwNUJHemthYVZCOS9YbW5rMzhE?=
+ =?utf-8?B?bjVBa2lRcjBXVXowUXZucEoyZU81SW9QcDRxbW0rYkRMblpLcDhjWTkwM0NT?=
+ =?utf-8?B?LzFNZDJTbDdpOVFLTXBLL05icHl2Tzh5dVd4QlIveDVOMHRQTFNsdlRaYmxS?=
+ =?utf-8?B?KzBpS1ZNM0pZWHgxYkhDbTVxQkhwV1dya2pzdElIRUZRN2pnQ0FUcXNhU1hK?=
+ =?utf-8?B?VkJzWG9pT0R3YmRvajQyallWTzcvZ1RDa0VBaWMyRjFwNEl0TWhEeXU5TWRh?=
+ =?utf-8?B?bG8zVlVKbE1La0xiM3J6R3FJSFcvcVVVMTd3eEV0YkN6NExBM2h5THFYNUg2?=
+ =?utf-8?B?SmtEeHJIN2dWWjRyVGpaWHVXWXBzL1ZxQUQrbUVGS1V2N1A2R3pYMUlSMEtE?=
+ =?utf-8?B?MVlhNkJpcU12RjlMVVVKM1dJNGFrb2dibVJxM096V2t2Q3loUjRGNUdLT1RD?=
+ =?utf-8?B?ZHc4ZWpET1IwY2RQeURrVDdLNUdNK3BLL1R2QWJmSDRRVjlsRjROMnpJVnYr?=
+ =?utf-8?B?OFlaZlkva3pGRVVSUEVJaExUZUZMZnFiVEUzM0FtOXlkakdnSGxnWUhRcG1v?=
+ =?utf-8?B?LytQUHdOMThKZHRkWEZZZVlScVRMdUdXdWVCY0xKNFBySDMxcTYxZUtSWUJC?=
+ =?utf-8?B?a3I4emVrM005eFR4UDBvb2hiVmZnc2ZPK0x6RGlWUGh6b1phL1oydGc0aU9l?=
+ =?utf-8?B?emdReUpzWnBNMEJ2eHljM2ZscXRXakhCWU91c044QnJRTkpiWEVlQjhpc0tm?=
+ =?utf-8?B?a1JvcTZSVXdORmNsZ1pMSmc5NUQrV003Zk4wQ2JGSVVMVDNtSHgxVWZZdC9r?=
+ =?utf-8?B?MCtsODd1c2xycitqR1R6UlJjcjI5elcwZjAyeXY3ZjIzUFhkWHBrNXorOUNS?=
+ =?utf-8?B?ZThIUDJPNGNPRm5kdjBqcnJ6bWo1dkU4ZU5GbTlUdHJNVktrSVBFbzVVdmQr?=
+ =?utf-8?B?OFdWUU9IdEwzYjlCTnVRb1Z3bStlLy9RbVlXSnk2Nk9SL0wzUGZMcXRDbDJv?=
+ =?utf-8?B?bWEyZk5KNEh4MEJIWEpVNzlHM291dUsyNmlpcjI4NFNMT2lwY1pVZExuUVlu?=
+ =?utf-8?B?SlZ1Z3htYVlsWnh4N1BWYkJhTVVZWk5ZaXhNVXNLOE1zNFdvdXVZY1htZTkx?=
+ =?utf-8?B?MisxSDYxRmVEeHN0ZlBRR0FkQ1RaWXQ0VmJVMU4yQkFKc1dWSXBZY04vTTB6?=
+ =?utf-8?B?WGZCcllGM1l3MVkwY094OWp6K0xnWlk4dTNscktRbXVxKzI2UDVHRHh1WjZE?=
+ =?utf-8?B?RDVBb0h4ZXEyNVA3Mks2a2NmUXcxVTQwVkNhT3oxYkdoYy8yWThWdGVObTQ5?=
+ =?utf-8?B?QWoxcDlubzZTbjdqWVFlM2VVaVUxajFuSFdQWm9WT1RzYmFyOHpEVzNhUnZN?=
+ =?utf-8?B?OGs3QkZibDlYY1VKUnFPS1krMVVId2ZuOTdwYlZ4VGxXcmh5bkhaZW8wTmJj?=
+ =?utf-8?B?dko5Um1LTkdEYlIwNTNmVWoxRmtTbzEyVnd6aWtYNjVCeTlXS2t2SUFiTExH?=
+ =?utf-8?B?YjRnUGNMUHNibDN1VFZjRnJvOGhmMzlMY2I2TDNQMk1kQmF1N2YrWVU1TjN0?=
+ =?utf-8?B?ZU4wODR3aXFvSVoyYU5yc2dkUnVTSEVFUmdNaXBjMmJYRndVam41T1NmcVFL?=
+ =?utf-8?B?WjN1R1MwQThXaHp6aE81NWhRcnlITUJEWFJrS2NjOC85QTNuOG1ma01NeW5n?=
+ =?utf-8?B?TU04TFlDV2xmanZrUVloUjI0UExwamRzaFc4NVZIbTFVbjUwRForcEZVUWgv?=
+ =?utf-8?B?R1lCQkRSSm9OZ3dOcEx0SktRSmVjcTF1SEdlb01wSjI5Mis4d3gxclVsRVhX?=
+ =?utf-8?B?V0RqMzhiOS9meDB6dDBheWIwbmdwVTh3TDV1TVJiRlBDNE1KakxjMkRqN1N2?=
+ =?utf-8?B?VkpOazZNMVdLVHZMYW43dUY0SUxCaStYbG40TitzeVY2eEQxMlh5cU1HN3Mr?=
+ =?utf-8?Q?iSMM=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 335c7f0f-7970-42cb-cca7-08dd3631a558
+X-MS-Exchange-CrossTenant-Network-Message-Id: c607b858-bfac-4822-ccb5-08dd3647ec27
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2025 13:28:21.3845
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2025 16:07:49.1447
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: U+b1ApGNq+SqHp4LL7D/LjyUjVe9em/hVs15Y5H6wQyMLLEYOIV55ticfcxZUhY3
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8786
+X-MS-Exchange-CrossTenant-UserPrincipalName: xwgrVsKx2+LEIs5Q4lvFQV1Dnp1wJ3tXIEuZN1HAbh0Ses44+6TQsFXxsJkzJiVd
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6633
 
-On Thu, Jan 16, 2025 at 06:33:48AM +0100, Christoph Hellwig wrote:
-> On Wed, Jan 15, 2025 at 09:34:19AM -0400, Jason Gunthorpe wrote:
-> > > Or do you mean some that don't have pages associated with them, and
-> > > thus have pfn_valid fail on them?  They still have a PFN, just not
-> > > one that is valid to use in most of the Linux MM.
-> > 
-> > He is talking about private interconnect hidden inside clusters of
-> > devices.
-> > 
-> > Ie the system may have many GPUs and those GPUs have their own private
-> > interconnect between them. It is not PCI, and packets don't transit
-> > through the CPU SOC at all, so the IOMMU is not involved.
-> > 
-> > DMA can happen on that private interconnect, but from a Linux
-> > perspective it is not DMA API DMA, and the addresses used to describe
-> > it are not part of the CPU address space. The initiating device will
-> > have a way to choose which path the DMA goes through when setting up
-> > the DMA.
+On Thu, Jan 16, 2025 at 04:13:13PM +0100, Christian König wrote:
+>> But this, fundamentally, is importers creating attachments and then
+>> *ignoring the lifetime rules of DMABUF*. If you created an attachment,
+>> got a move and *ignored the move* because you put the PFN in your own
+>> VMA, then you are not following the attachment lifetime rules!
 > 
-> So how is this in any way relevant to dma_buf which operates on
-> a dma_addr_t right now and thus by definition can't be used for
-> these?
+>    Move notify is solely for informing the importer that they need to
+>    re-fresh their DMA mappings and eventually block for ongoing DMA to
+>    end.
 
-Oh, well since this private stuff exists the DRM folks implemented it
-and used dmabuf to hook it together tough the uAPI. To make it work it
-abuses scatterlist and dma_addr_t to carry this other information.
+I feel that it is a bit pedantic to say DMA and CPU are somehow
+different. The DMABUF API gives you a scatterlist, it is reasonable to
+say that move invalidates the entire scatterlist, CPU and DMA equally.
 
-Thus the pushback in this thread we can't naively fixup dmabuf because
-this non-dma_addr_t abuse exists and is uAPI. So it also needs some
-improved architecture to move forward :\
+>    This semantics doesn't work well for CPU mappings because you need to
+>    hold the reservation lock to make sure that the information stay valid
+>    and you can't hold a lock while returning from a page fault.
 
-Basically, the scatterlist in dmabuf API does not follow any of the
-normal rules scatterlist should follow. It is not using the semantics
-of dma_addr_t even though that is the type. It is really just an array
-of addr/len pairs - we can't reason about it in the normal way :(
+Sure, I imagine hooking up a VMA is hard - but that doesn't change my
+point. The semantics can be reasonable and well defined.
+
+>    Yeah and exactly that is something we don't want to allow because it
+>    means that every importer need to get things right to prevent exporters
+>    from running into problems.
+
+You can make the same argument about the DMA address. We should just
+get rid of DMABUF entirely because people are going to mis-use it and
+wrongly implement the invalidation callback.
+
+I have no idea why GPU drivers want to implement mmap of dmabuf, that
+seems to be a uniquely GPU thing. We are not going to be doing stuff
+like that in KVM and other places. And we can implement the
+invalidation callback with correct locking. Why should we all be
+punished because DRM drivers seem to have this weird historical mmap
+problem?
+
+I don't think that is a reasonable way to approach building a general
+purpose linux kernel API.
+ 
+>    Well it's not miss-used, it's just a very bad design decision to let
+>    every importer implement functionality which actually belong into a
+>    single point in the exporter.
+
+Well, this is the problem. Sure it may be that importers should not
+implement mmap - but using the PFN side address is needed for more
+than just mmap!
+
+DMA mapping belongs in the importer, and the new DMA API makes this
+even more explicit by allowing the importer alot of options to
+optimize the process of building the HW datastructures. Scatterlist
+and the enforeced represetation of the DMA list is very inefficient
+and we are working to get rid of it. It isn't going to be replaced by
+any sort of list of DMA addresses though.
+
+If you really disagree you can try to convince the NVMe people to give
+up their optimizations the new DMA API allows so DRM can prevent this
+code-review problem.
+
+I also want the same optimizations in RDMA, and I am also not
+convinced giving them up is a worthwhile tradeoff.
+
+>    Why would you want to do a dmabuf2 here?
+
+Because I need the same kind of common framework. I need to hook VFIO
+to RDMA as well. I need to fix RDMA to have working P2P in all
+cases. I need to hook KVM virtual device stuff to iommufd. Someone
+else need VFIO to hook into DRM.
+
+How many different times do I need to implement a buffer sharing
+lifetime model? No, we should not make a VFIO specific thing, we need
+a general tool to do this properly and cover all the different use
+cases. That's "dmabuf2" or whatever you want to call it. There are
+more than enough use cases to justify doing this. I think this is a
+bad idea, we do not need two things, we should have dmabuf to handle
+all the use cases people have, not just DRMs.
+
+>    I don't mind improving the scatterlist approach in any way possible.
+>    I'm just rejecting things which we already tried and turned out to be a
+>    bad idea.
+>    If you make an interface which gives DMA addresses plus additional
+>    information like address space, access hints etc.. to importers that
+>    would be really welcomed.
+
+This is not welcomed, having lists of DMA addresses is inefficient and
+does not match the direction of the DMA API. We are trying very hard
+to completely remove the lists of DMA addresses in common fast paths.
+
+>    But exposing PFNs and letting the importers created their DMA mappings
+>    themselves and making CPU mappings themselves is an absolutely clear
+>    no-go.
+
+Again, this is what we must have to support the new DMA API, the KVM
+and IOMMUFD use cases I mentioned.
+
+>> In this case Xu is exporting MMIO from VFIO and importing to KVM and
+>> iommufd.
+> 
+>    So basically a portion of a PCIe BAR is imported into iommufd?
+
+Yeah, and KVM. And RMDA.
+
+>    Then create an interface between VFIO and KVM/iommufd which allows to
+>    pass data between these two.
+>    We already do this between DMA-buf exporters/importers all the time.
+>    Just don't make it general DMA-buf API.
+
+I have no idea what this means. We'd need a new API linked to DMABUF
+that would be optional and used by this part of the world. As I said
+above we could protect it with some module namespace so you can keep
+it out of DRM. If you can agree to that then it seems fine..
+
+> > Someone else had some use case where they wanted to put the VFIO MMIO
+> > PCIe BAR into a DMABUF and ship it into a GPU driver for
+> > somethingsomething virtualization but I didn't understand it.
+> 
+>    Yeah, that is already perfectly supported.
+
+No, it isn't. Christoph is blocking DMABUF in VFIO because he does not
+want to scatterlist abuses that dmabuf is doing to proliferate.  We
+already have some ARM systems where the naive way typical DMABUF
+implementations are setting up P2P does not work. Those systems have
+PCI offset.
+
+Getting this to be "perfectly supported" is why we are working on all
+these aspects to improve the DMA API and remove the scatterlist
+abuses.
+
+>> In a certain sense CC is a TEE that is built using KVM instead of the
+>> TEE subsystem. Using KVM and integrating with the MM brings a whole
+>> set of unique challenges that TEE got to avoid..
+> 
+>    Please go over those challenges in more detail. I need to get a better
+>    understanding of what's going on here.
+>    E.g. who manages encryption keys, who raises the machine check on
+>    violations etc...
+
+TEE broadly has Linux launch a secure world that does some private
+work. The secure worlds tend to be very limited, they are not really
+VMs and they don't run full Linux inside
+
+CC broadly has the secure world exist at boot and launch Linux and
+provide services to Linux. The secure world enforces memory isolation
+on Linux and generates faults on violations. KVM is the gateway to
+launch new secure worlds and the secure worlds are full VMs with all
+the device emulation and more.
+
+It CC is much more like xen with it's hypervisor and DOM0 concepts.
+
+From this perspective, the only thing that matters is that CC secure
+memory is different and special - it is very much like your private
+memory concept. Only special places that understand it and have the
+right HW capability can use it. All the consumers need a CPU address
+to program their HW because of how the secure world security works.
 
 Jason
