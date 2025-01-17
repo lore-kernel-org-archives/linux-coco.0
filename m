@@ -1,146 +1,136 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377E417C8B
-	for <linux-coco@lists.linux.dev>; Thu, 16 Jan 2025 16:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CA41E131B
+	for <linux-coco@lists.linux.dev>; Fri, 17 Jan 2025 02:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737046289; cv=none; b=Eb5RAKf3Sq33KUEiCol0O+HB85o+3+Dkw1+gSDS9sumXVsMh3EoeWjTeLurhllcXuOLE8IXG8dvvCa8Rp7qvi5KoCMpxFndxkj9jmuVJ/toUKRhh81lE4//x9BUC69Qn8eFuPWeMoH4te4Kvc9IUVlyj0sGAWeaMPwgGkby+GcU=
+	t=1737079204; cv=none; b=ANoZd/H0tgrvgVad/+klH4r/VnczQFkJKpmAFResGCJaNhATUFHd+h7Xe1KixWZzeyc5O8L4zoz2tNgWt+cCQ9jFsZ1ILzyVA78FZISH9WmTYAz5Zo2rE029PJrij5PB0rL5gij9ucqec3JU5aT5ZWJ/5XE+8ppIQPB/aBsGWqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737046289; c=relaxed/simple;
-	bh=VwjSx7RSO7ul2oU5IqD0vjv00msACQu4TWlO2N4PyQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=aYdyAu+5494fZ37rYJfo5/uMhtWfZAU+YVTuBvcMfB4P4dlvRqweWQaImMl4roS2p8vxqktAp/SgGSfHrQckOT4WQKhtll1NTFqwj3jNHz3Q8Y1Da1cj/jBXKxS2ml6zqZ4EqLoz7kaWApWJdz7DKu1OJcpXilQrbBxVID7VvSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jhqHqFaC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=XBq/MiEo; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jhqHqFaC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=XBq/MiEo; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1737079204; c=relaxed/simple;
+	bh=5ZUz4QZLDlVa1hMJ47XHMGlOnKcryI3Cj9ggu76axOY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C41z7nscuacDQZsDaYCgWcjYOVUdw2zxuCqOHyYZZimXA9vCfIJCnQ6jJgZe0fiDS8zcdDjc6Lpi9nKMer714fQKA7WOr1lwpKRTVU9k4ohDrs9u9uCq/Jo7IgDGB1BnJhvwxPxd4vS7MKPoJdk1hoaRcqH9lk07JjMTU9CSWvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BolhGzCO; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jhqHqFaC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="XBq/MiEo";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jhqHqFaC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="XBq/MiEo"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 43D8C21183;
-	Thu, 16 Jan 2025 16:51:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1737046285; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ZevCcvEXzdwQO9JDQ8www35TxtlitlV/3OB/SH5BBXM=;
-	b=jhqHqFaCgXqpgeOMUC5m1la4myJf94CHu4GvfAtwmJ7+Vmg8K1AD7owIln2fd2PBJ+FkxG
-	3GpQqtLUebx62RaT91b5Uqzt+rJHNIYz7Lvdg8ivnGVf/WpRr4KXjbje1ZHVgTCDAVtIOw
-	fz9ZAr/oOBY2PXLb0TrHR/sHKbsTEKw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1737046285;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ZevCcvEXzdwQO9JDQ8www35TxtlitlV/3OB/SH5BBXM=;
-	b=XBq/MiEoanCL9J8TZ6QR/wvZm+53KxF/HzHilp3w7wB9lkXZmSSqu7uMyfAw8QztjIOvti
-	wKRMVvk41AjciTDA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1737046285; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ZevCcvEXzdwQO9JDQ8www35TxtlitlV/3OB/SH5BBXM=;
-	b=jhqHqFaCgXqpgeOMUC5m1la4myJf94CHu4GvfAtwmJ7+Vmg8K1AD7owIln2fd2PBJ+FkxG
-	3GpQqtLUebx62RaT91b5Uqzt+rJHNIYz7Lvdg8ivnGVf/WpRr4KXjbje1ZHVgTCDAVtIOw
-	fz9ZAr/oOBY2PXLb0TrHR/sHKbsTEKw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1737046285;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ZevCcvEXzdwQO9JDQ8www35TxtlitlV/3OB/SH5BBXM=;
-	b=XBq/MiEoanCL9J8TZ6QR/wvZm+53KxF/HzHilp3w7wB9lkXZmSSqu7uMyfAw8QztjIOvti
-	wKRMVvk41AjciTDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0FA0413A57;
-	Thu, 16 Jan 2025 16:51:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qOevAg05iWeFdwAAD6G6ig
-	(envelope-from <jroedel@suse.de>); Thu, 16 Jan 2025 16:51:25 +0000
-Date: Thu, 16 Jan 2025 17:51:23 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
-To: linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev,
-	amd-sev-snp@lists.suse.com
-Cc: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>, dhaval.giani@amd.com,
-	thomas.fossati@linaro.org, leonardo.garcia@linaro.org,
-	mathieu.poirier@linaro.org
-Subject: Confidential Computing MC-like workshop in May?
-Message-ID: <Z4k5C2bw8El7Yn9S@suse.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BolhGzCO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737079203; x=1768615203;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5ZUz4QZLDlVa1hMJ47XHMGlOnKcryI3Cj9ggu76axOY=;
+  b=BolhGzCO5+emxeEY2bbCDWEFk2cPQFkmtwrS15gWqEtCopozwZ/Ptuc9
+   Sr50lPxg9MwQfbG1EfqKEV1iTokGAPIdl8M/4gm7TbvY2ABeDC1cQGVcU
+   CMYOS8LyYNx5diU/GjH5C3yYSCXBIVrhCZQvIjNdLGqDD6j/l3B0YbfVl
+   qQsaAsGlqIVp5BIGlEV4GTGR+6AN9tMDRTFYCIH00DYLHi22aQgF5/BKy
+   RYkB7njyvBJP1qDZt3aXgmSUUbFfrjTe2Ot4kpsmg4glRalQ3AdjfX+8a
+   Kc96wBG8qF9CcGxhStoQwEJM4nxWnTMgArWabDdakjM41GCJhlXWJ5vcO
+   g==;
+X-CSE-ConnectionGUID: h1ra9F7BTNmQR5rJSCRIIw==
+X-CSE-MsgGUID: IND7fn5qR36+0WZT5WjEiQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="37653492"
+X-IronPort-AV: E=Sophos;i="6.13,210,1732608000"; 
+   d="scan'208";a="37653492"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 18:00:02 -0800
+X-CSE-ConnectionGUID: q+qN46kgS4eRnBfRJ9Qo0w==
+X-CSE-MsgGUID: pIAKJmATQDajlK90Sjd0tg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="106140512"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 17:59:57 -0800
+Message-ID: <f1ac048f-64b1-4343-ab86-ad98c24a44f5@linux.intel.com>
+Date: Fri, 17 Jan 2025 09:57:40 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	R_MIXED_CHARSET(1.00)[subject];
-	SUBJECT_ENDS_QUESTION(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.991];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,suse.com:url]
-X-Spam-Score: -2.30
-X-Spam-Flag: NO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
+ private device
+To: Jason Gunthorpe <jgg@nvidia.com>, Alexey Kardashevskiy <aik@amd.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
+ christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
+ alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+ dan.j.williams@intel.com, yilun.xu@intel.com, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+ daniel.vetter@ffwll.ch, leon@kernel.org, zhenzhong.duan@intel.com,
+ tao1.su@intel.com
+References: <20250108133026.GQ5556@nvidia.com>
+ <Z36ulpCoJAllp4fP@yilunxu-OptiPlex-7050> <20250109144051.GX5556@nvidia.com>
+ <Z3/7/PQCLi1GE5Ry@yilunxu-OptiPlex-7050> <20250110133116.GF5556@nvidia.com>
+ <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050> <20250113164935.GP5556@nvidia.com>
+ <ZnDGqww5SLbVD6ET@yilunxu-OptiPlex-7050> <20250114133553.GB5556@nvidia.com>
+ <17cd9b77-4620-4883-9a6a-8d1cab822c88@amd.com>
+ <20250115130102.GM5556@nvidia.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20250115130102.GM5556@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello everyone,
+On 1/15/25 21:01, Jason Gunthorpe wrote:
+> On Wed, Jan 15, 2025 at 11:57:05PM +1100, Alexey Kardashevskiy wrote:
+>> On 15/1/25 00:35, Jason Gunthorpe wrote:
+>>> On Tue, Jun 18, 2024 at 07:28:43AM +0800, Xu Yilun wrote:
+>>>
+>>>>> is needed so the secure world can prepare anything it needs prior to
+>>>>> starting the VM.
+>>>> OK. From Dan's patchset there are some touch point for vendor tsm
+>>>> drivers to do secure world preparation. e.g. pci_tsm_ops::probe().
+>>>>
+>>>> Maybe we could move to Dan's thread for discussion.
+>>>>
+>>>> https://lore.kernel.org/linux- 
+>>>> coco/173343739517.1074769.13134786548545925484.stgit@dwillia2- 
+>>>> xfh.jf.intel.com/
+>>> I think Dan's series is different, any uapi from that series should
+>>> not be used in the VMM case. We need proper vfio APIs for the VMM to
+>>> use. I would expect VFIO to be calling some of that infrastructure.
+>> Something like this experiment?
+>>
+>> https://github.com/aik/linux/commit/ 
+>> ce052512fb8784e19745d4cb222e23cabc57792e
+> Yeah, maybe, though I don't know which of vfio/iommufd/kvm should be
+> hosting those APIs, the above does seem to be a reasonable direction.
+> 
+> When the various fds are closed I would expect the kernel to unbind
+> and restore the device back.
 
-I hope you had a great start into 2025 and return refreshed for more
-exciting confidential computing work :)
+I am curious about the value of tsm binding against an iomnufd_vdevice
+instead of the physical iommufd_device.
 
-Our last get-together as the confidential computing community was in
-September last year and this years LPC is far away in December. So there
-is the idea to have another in-person/hybrid event earlier in May,
-alongside Linaro Connect 2025 (May 14th-16th, 2025) in Lisbon.
+It is likely that the kvm pointer should be passed to iommufd during the
+creation of a viommu object. If my recollection is correct, the arm
+smmu-v3 needs it to obtain the vmid to setup the userspace event queue:
 
-Lorenzo (on Cc) reached out to ask if there is interest and enough
-expected attendace at such an event? I personally see quite some value
-in another in-person event before December.
+struct iommufd_viommu *arm_vsmmu_alloc(struct device *dev,
+                                        struct iommu_domain *parent,
+                                        struct iommufd_ctx *ictx,
+                                        unsigned int viommu_type)
+{
 
-Please let us know what you think and whether you would attend such an
-event, either in-person or remotely.
+[...]
 
-Regards,
+         /* FIXME Move VMID allocation from the S2 domain allocation to 
+here */
+         vsmmu->vmid = s2_parent->s2_cfg.vmid;
 
--- 
-Jörg Rödel
-jroedel@suse.de
+         return &vsmmu->core;
+}
 
-SUSE Software Solutions Germany GmbH
-Frankenstraße 146
-90461 Nürnberg
-Germany
-https://www.suse.com/
+Intel TDX connect implementation also needs a reference to the kvm
+pointer to obtain the secure EPT information. This is crucial because
+the CPU's page table must be shared with the iommu. I am not sure
+whether the amd architecture has a similar requirement.
 
-Geschäftsführer: Ivo Totev, Andrew McDonald, Werner Knoblich
-(HRB 36809, AG Nürnberg)
+---
+baolu
