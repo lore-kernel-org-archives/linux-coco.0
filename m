@@ -1,230 +1,299 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2079.outbound.protection.outlook.com [40.107.223.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49FE1FF61B
-	for <linux-coco@lists.linux.dev>; Fri, 17 Jan 2025 13:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.79
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737120333; cv=fail; b=Gn0XKb7YUfV/i2cAw0vihsOQStYF8kPdPrPYbVVXTCThHsvEvVH35p7YaUPC+nANCp+71FbNYdl951EDCwttE/If1kWMLKMDoQbKKZD5iCybNTkHtLV/o77khVNpiQGe4sVLYJP9xnJ0+zaiy6h8hz35tanF7G6oSL3KXZckN9Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737120333; c=relaxed/simple;
-	bh=7RIrU+2hWZhXSEQiKNHrUwCx8vFmXJw954PrXeLROJM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=FyJAk+pff02xECR5DhQ1oGrVEuFkuXsI4sgZtr4GCrKUkZKohhSgNrfw2Nud2mxgVtuAQoEr1OBNuiA7Aj/xcobc4rULaYl6J+J44RoZq/PYoGkAq1EUzDCZfc9iIcEOj54IL3Cg7qy6UZPdEhMpCShpMmOdYbkRdI5x+4Xc/mQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ijaUI5S6; arc=fail smtp.client-ip=40.107.223.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098371482E8
+	for <linux-coco@lists.linux.dev>; Fri, 17 Jan 2025 14:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737124655; cv=none; b=V5WtWGZdLXCFH70I+sQ141Gxg2+IsIU2mSUieNDvfEW0NIb7fXf5cimbW9ePWjso3Dz61p8hLZIwu+/q1mwH8Mk0sVShdYMvmfz2sL4WF9M/C3peKr9gS5hHRRBs8ELUUkz7nBNnQuIYcPGNfLwppwQNq815yVji3Y+rI1ixzDg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737124655; c=relaxed/simple;
+	bh=ESWgX5V62XCad2HR/HJ25M+BlFYnA66ZmcatpUrszL4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PtkkSo/4xhTyLIQMHu/yO7AGkR66tMsV8PIoTuusL7jmMXhQ/ZIQyGxgfOrbsLCqNumbVc6MtVTGoJhr7d9271AzpQNrpyzwNNVy4eUJGEdNWzbscJ7iIBO/im6AChPqrbIC9tm5XFh9XE/uoBP6Y+edAPpx6r5BuWzM7+7Wy40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=EXx2lDyW; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ijaUI5S6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LUf33mAjvV9iUWs2aJ2ysoRMlapcVUkCH9+FzVj93Vt9J7Rsk7x3pdWnrWsz+I8dR0bowul4EbEYPBPFuAIChxvNAEjwviUIf+3u6EY2RziJfOmuO9AKKsN3NHeZfwcg/hzHBF/BAhlNlN/rnzruGuvp3TnYoJYSb76z32aTjSqHMnmLYGBEmTq8GyESxq+w+134kYO/qY01QStG2jMbEPrIZl/F/Lwrm3IfNAfJWCeN0+ptr2x6i3OLxvg2yhCgvtAQls4Y8jLTPKfMzrQHo8cp14rmD+ODxEdNg8lE8rZFKz+tdRbM73L0I4KULO4D1sCijZnpR3ePI7YsRbdgWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xGKHYR2Fwq47SysFbNURAgV3dgkEo0+vqBpFfprqJtM=;
- b=wyIk4DY2xTSfMQmnHYf7ugEPOfOfgqaMfo2XSLmJqAh0I1RxkTQwkvoKMpZuP8HpXFjxfazw0ZUt73Qak7eJKnuGVzIRGmYAWWoXU6Zz0wDxpWnnPbmQVVvKgSmWb4J1Jf7xe+FZRhWGjscc2te95r3OIB497Aj/dkTqQCwltb+FA+vE+0FpOkZ6D/vjp1kB9jzEqGNTBscXWAvTDvwF3fmJyENGU6WqyrbRZk28bL9PxQZXKF8OZHYr/Vpd4ZiP1D9pVCeC+3WXlss2NXilLsYsc1qdXtUfHHkV14SJEo/GGr791QlRQK6XtIw6OVoHojQ35rrOQxeybNVMQ7ExnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xGKHYR2Fwq47SysFbNURAgV3dgkEo0+vqBpFfprqJtM=;
- b=ijaUI5S66ypPdFXIWat7BqN0bWU/LidpPQ5+Yzv1wuNkCglhM/vdACatR7Dhv0CU5N/OgaaYt5/UMYzPYViGme3XdjNlkN1SU6ogLN9EhpyJ6G2zB2Hhvzxn/ctGET3/LCMcH/r+ZQzue9DJcybAcrR5wY5LzcgKmZwf+/w0yZi+fhimaGQye4q1g5zNZR1ZBn+VtPNmFHWOqz8WagMDLjAc0NMdYClTh/py6RIuQLXBr97DkqO9L02QRfQStHhFBLQoFcYZ7i8jnsRZvFoJAbA0J634jr/gn2r1aSjo7CRHxbcCxvRAlHX2Kfjd3BEHMORG0VuBe+UmDz8VXqyfgw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by MN2PR12MB4111.namprd12.prod.outlook.com (2603:10b6:208:1de::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.16; Fri, 17 Jan
- 2025 13:25:28 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%5]) with mapi id 15.20.8356.010; Fri, 17 Jan 2025
- 13:25:28 +0000
-Date: Fri, 17 Jan 2025 09:25:23 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>,
-	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="EXx2lDyW"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-38be3bfb045so2018377f8f.0
+        for <linux-coco@lists.linux.dev>; Fri, 17 Jan 2025 06:37:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1737124651; x=1737729451; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XotKZ5aC4hzDyG2o0IeDG6hv28Jq5p2Sy4ygAsaPcU8=;
+        b=EXx2lDyWVKHNNLoTjKSHAL97yjVvAl4ARTPgf2KvPkPmA6g/UTQYFdB1oY16Rj7sAz
+         qa0eHGXCRf/rIoCxgZT7e8WVECSCcbUiXXyCKik9TeFCziqpa9re1m7/TwJgY/q3AVvX
+         b0qpkTnyN+QkAibWzMIXWZDhWvVgEwjG8WRIQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737124651; x=1737729451;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XotKZ5aC4hzDyG2o0IeDG6hv28Jq5p2Sy4ygAsaPcU8=;
+        b=L+vvUHy3UlVTgJvwbxSw/8e0BlLGOcCi50r6DyZv1OahfSbXfV+PG49WtaQztjGxvu
+         j1w1dLiaf1svH23vzR1SC7+5ftdAKlLbh2Rf+YPhULv6Po/U5rk0pj+NJf39AmRkrBPX
+         WMYuBX0SBd1VFYk6/BrdlVLvVb2lgu4C867IVXkkau9bDh/mkCO3sjIfimI19A9ssOJJ
+         bKJ9VJ1PbmfT0NOp/ovA3yder3fNOgqZR+Zx6I/xYrtrJCaaZ/raWXh/pk9k72hYPTeT
+         wZqtveJcTheEiJg016ou1xaLl6cd2+2c/XpZS8tGggKOTxPkU6UgqW4Vl9hx6P98lTOj
+         hbmw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNC2K7SdFl491r2IrfkLDmCr5PZJk0YlDebo1KT5heV+RD4odj7MuEiPSuZh4jkTM/KiX8UkQnQPcA@lists.linux.dev
+X-Gm-Message-State: AOJu0YyK04ZBzaaz9n/ss4IiIkHX06BbXtCsCh/VAb72TyTjtlfkyNTD
+	vy6Wzq6dMZ45CHMt6WMnP9zsfBUanQswAyzUDh/7P/+rP01eXe8EdXTPjwN8jwI=
+X-Gm-Gg: ASbGncsIgVz1Hv1HENmnwKEAz01Faa0tueqzRf5j3FgnAJrjKbS89XLMZKKtQaqF6Es
+	g4Wmu52iZCUQDh+YyOMvnCkh3q/T/2xR+bdhXhWyo4jE0nvp9ps6PJc2jFY6ru2LQKIM6sANRUf
+	Iw6zVK/yUNcTqD1MXxx6mqIfIn81MsffBCuJaFH00dsbe5deW+ELgM1G2bp0pTmn4J/FlpWHPM2
+	YvfCoPbD7RW9ECiooFjhQK1emW002LzUleJ7m5dhA+wS0YeqR7BmBD7r5CauJYai3QT
+X-Google-Smtp-Source: AGHT+IGRKn0mOd/rGrQjlD6Ss6MEpPjLO2iVNpAQ/jZBO5GUHVoXw6I4KLkLGt5y/u2vf1HmVS66CA==
+X-Received: by 2002:a05:6000:1788:b0:386:3d27:b4f0 with SMTP id ffacd0b85a97d-38bec505c43mr6963889f8f.14.1737124651189;
+        Fri, 17 Jan 2025 06:37:31 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c753cc1fsm97636935e9.39.2025.01.17.06.37.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jan 2025 06:37:30 -0800 (PST)
+Date: Fri, 17 Jan 2025 15:37:28 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, Christoph Hellwig <hch@lst.de>,
+	Leon Romanovsky <leonro@nvidia.com>, kvm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
 	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com,
+	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
 	yilun.xu@intel.com, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, zhenzhong.duan@intel.com,
+	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
 	tao1.su@intel.com
-Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
- private device
-Message-ID: <20250117132523.GA5556@nvidia.com>
-References: <20250109144051.GX5556@nvidia.com>
- <Z3/7/PQCLi1GE5Ry@yilunxu-OptiPlex-7050>
- <20250110133116.GF5556@nvidia.com>
- <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050>
- <20250113164935.GP5556@nvidia.com>
- <ZnDGqww5SLbVD6ET@yilunxu-OptiPlex-7050>
- <20250114133553.GB5556@nvidia.com>
- <17cd9b77-4620-4883-9a6a-8d1cab822c88@amd.com>
- <20250115130102.GM5556@nvidia.com>
- <f1ac048f-64b1-4343-ab86-ad98c24a44f5@linux.intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f1ac048f-64b1-4343-ab86-ad98c24a44f5@linux.intel.com>
-X-ClientProxiedBy: BN9PR03CA0349.namprd03.prod.outlook.com
- (2603:10b6:408:f6::24) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
+ kAPI
+Message-ID: <Z4prKEpIg7A5pjHQ@phenom.ffwll.local>
+Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, Christoph Hellwig <hch@lst.de>,
+	Leon Romanovsky <leonro@nvidia.com>, kvm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	vivek.kasireddy@intel.com, dan.j.williams@intel.com, aik@amd.com,
+	yilun.xu@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+References: <f6c2524f-5ef5-4c2c-a464-a7b195e0bf6c@amd.com>
+ <1afd5049-d1d4-4fd6-8259-e7a5454e6a1d@amd.com>
+ <20250115141458.GP5556@nvidia.com>
+ <c86cfee1-063a-4972-a343-ea0eff2141c9@amd.com>
+ <86afb69a-79bd-4719-898e-c6c2e62103f7@amd.com>
+ <20250115151056.GS5556@nvidia.com>
+ <6f7a14aa-f607-45f9-9e15-759e26079dec@amd.com>
+ <20250115170942.GT5556@nvidia.com>
+ <5f588dac-d3e2-445d-9389-067b875412dc@amd.com>
+ <20250116160747.GV5556@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|MN2PR12MB4111:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5194aaf6-1eae-47a4-842b-08dd36fa68a2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WyqtTFj6IDOuupI86eM4qY3jDDe/AiXl34OaxMTlWTGSGf42EwBxaR9rFBmQ?=
- =?us-ascii?Q?QD9Or2H9Xd/5IdDNbMQ1+ceXQVyYCS3AWwPgDjI7jno3wGdgMrLq+SXN41xg?=
- =?us-ascii?Q?ZP8zy3y+66L5GhXmOFtsfiuiXriWejjXmaRS34oxuZKIwEspQUbHN0rx6TWA?=
- =?us-ascii?Q?AmgWcErg7lc63vUAzh6zPOhPMDIgglNN88YAdbjL4IaK29lHaGCg8wNUWLFX?=
- =?us-ascii?Q?Mt6V6nmYJhtZz+3BTIokJrwej1LZmGRJf3BUu8II2uAQ1yLjyKI/qUEKbk4C?=
- =?us-ascii?Q?pJLy2i0oMFyzwxRJ10qPjpt8PiFNQCkzCxt69yGd8dgxHDPBLxZ7CV2HkEzM?=
- =?us-ascii?Q?+OH6SUthHdqaB9OVzKSANUu/slpL78jw/irXGLQQoWLNaWiX639lVdJSRETK?=
- =?us-ascii?Q?F5WErGmbNqOyCc91z4kzQSPtMDW8lS8RXyB8IUed7zqeLwobHT/YYP0oRA2o?=
- =?us-ascii?Q?b6Dj0ka6KvtxNJW1g0voD7I2fsZ0hyL3qyk9doK+PyPHnTiF8bLISZvchJ1G?=
- =?us-ascii?Q?9Yqu8oO1WxdQRc1GCn830+pDVT6fRJP9nTxnlh5xAkLi7C86el+XoIH8Qmdk?=
- =?us-ascii?Q?D11DxS/NFUI28kCOgiOpoG/gei0deihnpu57k9B8tIcjd6gK5YOXlJBL3lr7?=
- =?us-ascii?Q?cNyP3i41r308xyF6jYMvShKABpEN3HeNMFGKqjlNpMugBKLIZ53FXjwnyUSH?=
- =?us-ascii?Q?3II5eMJ2dGjJNeVS2sdIRFejxTIk1GkSeMcGtPPG8NxVyvIiRnoAwnLYIrNy?=
- =?us-ascii?Q?QycN3tgPUjDLHZbryEcqFl8+3IICRAzVUJkKGWXyoCBQp8pDBsrm9ZhL79Zo?=
- =?us-ascii?Q?g7garkwbOhmWE698WGzvqeAGABp8TP3H7oRh9+5ODACw9Y81AXy7raU0G+KF?=
- =?us-ascii?Q?k8HaUaSb91KrjKv88DKHbt2jeTijqIZdJoJyxKxXo2nHmPFXVNYpv5yZVD2D?=
- =?us-ascii?Q?Y8OzF/KFplLBpK1XsV5Kt8IRHO8aIlP0wWZsZmrhATeL67xKzlN6w13uEGyO?=
- =?us-ascii?Q?yIpr4jQ4Z5ANU6tLdRemNaMnYYvmh0uxNrZoootnyWRkagz2qXBFJI4scYq4?=
- =?us-ascii?Q?7sQKcPamkSetmMNnbg05RJNEPqeh7CJNpOyqRZl4BPKDz+pE7DxfsioQD3zy?=
- =?us-ascii?Q?lBglnvFSfy1uDVvElElD5B29YJK0vBmphY6/O6+JBcTS+L2igF9B/nGlvHNt?=
- =?us-ascii?Q?n82ZaemEQMa7DByw844F61KQaTF6MVCfdeFiL+aDhHGMCe4kt6W7FH/lWu0Y?=
- =?us-ascii?Q?tnd2d4U+eqd3+DsJlBoNTUMtp7Y/m3OgisWzw6ZVtnp7/dVcOGHgf1+2c4zl?=
- =?us-ascii?Q?DbvUFAPx9aDeorqlYfwkPWh2C9w57w/yMuEQ5MOdbs0hsC2DlcP9liidNObk?=
- =?us-ascii?Q?vuK598Rn6aWSVOJV0UUhLpd8Glco?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LxXTCOiFJ/KmafP0Tydh7mBV3eFn4Qv8Z96UVMhkGR90aB+wL+INV9pGf+vC?=
- =?us-ascii?Q?5vL4cOOoJaLBIYZ6dd9OMtpHwL9BAxBEvsjo2SOoUaJSoWt9ijYGcRkgaH2j?=
- =?us-ascii?Q?lM3Krg89L2flqWs7yrKXzmK/6/BINgPn18K2QyvCJw2egNqjBI7lxCtTkBCR?=
- =?us-ascii?Q?FgYfCl0EJ6FK/T8aZPdWT3e3YsN3AWK0122Pyf/AOuAAELU6DEVoGN42ZiZW?=
- =?us-ascii?Q?sfQKqW+nJtcskDKTYlt3mvtYUFjVKpsjTQR6HmVb/VAoFob22cMbqTQmNbgY?=
- =?us-ascii?Q?GfOH7XB1E+XHlD5Ld7wQ4SV9wsd668OnsxI2JU4VTcNnS6+l9ek2tbGOWFzk?=
- =?us-ascii?Q?mAhPrxY1D0I5zRVm/thQzUxAVQa+LUDWE8dXtM1y8129fclCe4urFyq8RpZL?=
- =?us-ascii?Q?8VBnKjj9ONpwqvxwZCvhX/iyEcuiklcv90e8owBSRIlH0P60AiXwwRyJFPBe?=
- =?us-ascii?Q?i9C2CWA0OkaRU4gt0HprHRWwE2t9p23iD7AlB+S5w2G/MSZ7FUVeoKWBxS5Q?=
- =?us-ascii?Q?KwCIvSBwWbNWHXwoPootdyUl9G36iF9qjw8ARuH2JgkBpogkZtL1SXCvgbBG?=
- =?us-ascii?Q?gJoX3xTIo7Q2T0iIvF8fiBqiLW5H9yuMJxtCnK+a9PD2vlwgRP3KE1d6MjzQ?=
- =?us-ascii?Q?ULYg8qOJSQDgTxFicROtCeUkjV4b0isy8+0YCGV11EpYqR7EmaeRSrsz8z6U?=
- =?us-ascii?Q?caRxlTclbF22y3YgoWVdE3NNHY9/9oKWogVYy9ABxjvrHMN8DO3XNvmn0oTf?=
- =?us-ascii?Q?P32DShxCbZkYl6MTERY+dLdVh058ZQG0+MuWnFsi2Z94N1QWJITqMEnbuegI?=
- =?us-ascii?Q?lLrNH4gf+H6AIF00yI7v3znt0xvUp+v5LCna4koQpdHn1xXhvYakccFneof2?=
- =?us-ascii?Q?DqLmFOa4Z46MbYXC/82McvJFqdWkKZYHwhuR0s1+o8UQXWOa5x1BqPDfm7GU?=
- =?us-ascii?Q?+u0/Fppn4zo14drLXTURqvpxZYIRk/OW/ZdrKsGJOGtxlek7ZXfTxAKMDV/k?=
- =?us-ascii?Q?mm9IbSrLFShca8HkqvAbZyaMkB64ugiX2BV9LHZ7PrNtvg/ASg69QttQuNX+?=
- =?us-ascii?Q?1xjzgGBepquAjJflIYz3CLoI0YwVFrkTKNT+qi6gRs7TZRdWWD6zBatAYZz8?=
- =?us-ascii?Q?qhn8Z9SEJ02HfAKQbVC1tbDWUWZPO9SrMVte85N9WIH/CUvMfGdgTAVsmS4q?=
- =?us-ascii?Q?mKw36k/Apkdrybd31/reEsHin3qMHS1KFuguyFd9dVoEPvkJoXp29M2szP9r?=
- =?us-ascii?Q?3ZfzpDZ6AiZ4P1CfFZnz/iSdbKlR8HEb1X9xtI2fGFtTz5wuCt2ZWq7pXPBA?=
- =?us-ascii?Q?Wukotaa/w+yOvkbSbY6PNhAdfuNHs0zKyFbssf+s7TvD2bQynsn/HhwDkLiA?=
- =?us-ascii?Q?79N/pvdIthjVcl9hGCpKZvji61rZwgku+wDxPdgJ1hVSXV2VK1ki24PKddE9?=
- =?us-ascii?Q?Ggvki7bFndduXqOKAhAlz9RrbPKHz796fsI1DTJ2+qmRqWFGcL8gPYF7OkkG?=
- =?us-ascii?Q?/+4ad6TgojyAj28KFfyOf2k1B5r/ehCpNlh8smrIcMmFBOUYDf1H+oPEAIKH?=
- =?us-ascii?Q?Oehapq7pyJjvkbgtGh1CuVPZGBFJzoEgvqCFckjd?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5194aaf6-1eae-47a4-842b-08dd36fa68a2
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2025 13:25:28.3989
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KQSlBu8FIPJJ31ByaTvO/E8lktCpLL1jaV7MTBMgDAuCKPS1bdXQuawUF2xEZyBp
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4111
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250116160747.GV5556@nvidia.com>
+X-Operating-System: Linux phenom 6.12.3-amd64 
 
-On Fri, Jan 17, 2025 at 09:57:40AM +0800, Baolu Lu wrote:
-> On 1/15/25 21:01, Jason Gunthorpe wrote:
-> > On Wed, Jan 15, 2025 at 11:57:05PM +1100, Alexey Kardashevskiy wrote:
-> > > On 15/1/25 00:35, Jason Gunthorpe wrote:
-> > > > On Tue, Jun 18, 2024 at 07:28:43AM +0800, Xu Yilun wrote:
-> > > > 
-> > > > > > is needed so the secure world can prepare anything it needs prior to
-> > > > > > starting the VM.
-> > > > > OK. From Dan's patchset there are some touch point for vendor tsm
-> > > > > drivers to do secure world preparation. e.g. pci_tsm_ops::probe().
-> > > > > 
-> > > > > Maybe we could move to Dan's thread for discussion.
-> > > > > 
-> > > > > https://lore.kernel.org/linux-
-> > > > > coco/173343739517.1074769.13134786548545925484.stgit@dwillia2-
-> > > > > xfh.jf.intel.com/
-> > > > I think Dan's series is different, any uapi from that series should
-> > > > not be used in the VMM case. We need proper vfio APIs for the VMM to
-> > > > use. I would expect VFIO to be calling some of that infrastructure.
-> > > Something like this experiment?
-> > > 
-> > > https://github.com/aik/linux/commit/
-> > > ce052512fb8784e19745d4cb222e23cabc57792e
-> > Yeah, maybe, though I don't know which of vfio/iommufd/kvm should be
-> > hosting those APIs, the above does seem to be a reasonable direction.
+On Thu, Jan 16, 2025 at 12:07:47PM -0400, Jason Gunthorpe wrote:
+> On Thu, Jan 16, 2025 at 04:13:13PM +0100, Christian König wrote:
+> >> But this, fundamentally, is importers creating attachments and then
+> >> *ignoring the lifetime rules of DMABUF*. If you created an attachment,
+> >> got a move and *ignored the move* because you put the PFN in your own
+> >> VMA, then you are not following the attachment lifetime rules!
 > > 
-> > When the various fds are closed I would expect the kernel to unbind
-> > and restore the device back.
+> >    Move notify is solely for informing the importer that they need to
+> >    re-fresh their DMA mappings and eventually block for ongoing DMA to
+> >    end.
 > 
-> I am curious about the value of tsm binding against an iomnufd_vdevice
-> instead of the physical iommufd_device.
+> I feel that it is a bit pedantic to say DMA and CPU are somehow
+> different. The DMABUF API gives you a scatterlist, it is reasonable to
+> say that move invalidates the entire scatterlist, CPU and DMA equally.
 
-Interesting question
- 
-> It is likely that the kvm pointer should be passed to iommufd during the
-> creation of a viommu object. 
+dma-buf doesn't even give you a scatterlist, there's dma-buf which truly
+are just handles that are 100% device specific.
 
-Yes, I fully expect this
+It really is the "everything is optional" interface. And yes we've had
+endless amounts of fun where importers tried to peek behind the curtain,
+largely because scatterlists didn't cleanly separate the dma_addr_t from
+the struct page side of things. So I understand Christian's concerns here.
 
-> If my recollection is correct, the arm
-> smmu-v3 needs it to obtain the vmid to setup the userspace event queue:
+But that doesn't mean we cannot add another interface that does allow
+importers to peek behind the curtiain. As long as we don't make a mess and
+confuse importers, and ideally have compat functions so that existing
+importers can deal with pfn exporters too it's all fine with me.
 
-Right now it will use a VMID unrelated to KVM. BTM support on ARM will
-require syncing the VMID with KVM.
+And I also don't see an issue with reasonable pfn semantics that would
+prevent a generic mmap implementation on top of that, so that
+dma_buf_mmap() just works for those. The mmu notifier pain is when you
+consume mmaps/vma in a generic way, but implementing mmap with the current
+dma_resv locking is dead easy. Unless I've missed something nonobvious and
+just made a big fool of myself :-)
 
-AMD and Intel may require the KVM for some reason as well.
+What we cannot demand is that all existing dma-buf exporters switch over
+to the pfn interfaces. But hey it's the everything optional interface, the
+only things is guarantees are
+- fixed length
+- no copying
+- refcounting and yay it only took 10 years: consistent locking rules
 
-For CC I'm expecting the KVM fd to be the handle for the cVM, so any
-RPCs that want to call into the secure world need the KVM FD to get
-the cVM's identifier. Ie a "bind to cVM" RPC will need the PCI
-information and the cVM's handle.
+So I really don't understand Christian's fundamental opposition here.
 
-From that perspective it does make sense that any cVM related APIs,
-like "bind to cVM" would be against the VDEVICE where we have a link
-to the VIOMMU which has the KVM. On the iommufd side the VIOMMU is
-part of the object hierarchy, but does not necessarily have to force a
-vIOMMU to appear in the cVM.
+Cheers, Sima
 
-But it also seems to me that VFIO should be able to support putting
-the device into the RUN state without involving KVM or cVMs.
+> >    This semantics doesn't work well for CPU mappings because you need to
+> >    hold the reservation lock to make sure that the information stay valid
+> >    and you can't hold a lock while returning from a page fault.
+> 
+> Sure, I imagine hooking up a VMA is hard - but that doesn't change my
+> point. The semantics can be reasonable and well defined.
+> 
+> >    Yeah and exactly that is something we don't want to allow because it
+> >    means that every importer need to get things right to prevent exporters
+> >    from running into problems.
+> 
+> You can make the same argument about the DMA address. We should just
+> get rid of DMABUF entirely because people are going to mis-use it and
+> wrongly implement the invalidation callback.
+> 
+> I have no idea why GPU drivers want to implement mmap of dmabuf, that
+> seems to be a uniquely GPU thing. We are not going to be doing stuff
+> like that in KVM and other places. And we can implement the
+> invalidation callback with correct locking. Why should we all be
+> punished because DRM drivers seem to have this weird historical mmap
+> problem?
+> 
+> I don't think that is a reasonable way to approach building a general
+> purpose linux kernel API.
+>  
+> >    Well it's not miss-used, it's just a very bad design decision to let
+> >    every importer implement functionality which actually belong into a
+> >    single point in the exporter.
+> 
+> Well, this is the problem. Sure it may be that importers should not
+> implement mmap - but using the PFN side address is needed for more
+> than just mmap!
+> 
+> DMA mapping belongs in the importer, and the new DMA API makes this
+> even more explicit by allowing the importer alot of options to
+> optimize the process of building the HW datastructures. Scatterlist
+> and the enforeced represetation of the DMA list is very inefficient
+> and we are working to get rid of it. It isn't going to be replaced by
+> any sort of list of DMA addresses though.
+> 
+> If you really disagree you can try to convince the NVMe people to give
+> up their optimizations the new DMA API allows so DRM can prevent this
+> code-review problem.
+> 
+> I also want the same optimizations in RDMA, and I am also not
+> convinced giving them up is a worthwhile tradeoff.
+> 
+> >    Why would you want to do a dmabuf2 here?
+> 
+> Because I need the same kind of common framework. I need to hook VFIO
+> to RDMA as well. I need to fix RDMA to have working P2P in all
+> cases. I need to hook KVM virtual device stuff to iommufd. Someone
+> else need VFIO to hook into DRM.
+> 
+> How many different times do I need to implement a buffer sharing
+> lifetime model? No, we should not make a VFIO specific thing, we need
+> a general tool to do this properly and cover all the different use
+> cases. That's "dmabuf2" or whatever you want to call it. There are
+> more than enough use cases to justify doing this. I think this is a
+> bad idea, we do not need two things, we should have dmabuf to handle
+> all the use cases people have, not just DRMs.
+> 
+> >    I don't mind improving the scatterlist approach in any way possible.
+> >    I'm just rejecting things which we already tried and turned out to be a
+> >    bad idea.
+> >    If you make an interface which gives DMA addresses plus additional
+> >    information like address space, access hints etc.. to importers that
+> >    would be really welcomed.
+> 
+> This is not welcomed, having lists of DMA addresses is inefficient and
+> does not match the direction of the DMA API. We are trying very hard
+> to completely remove the lists of DMA addresses in common fast paths.
+> 
+> >    But exposing PFNs and letting the importers created their DMA mappings
+> >    themselves and making CPU mappings themselves is an absolutely clear
+> >    no-go.
+> 
+> Again, this is what we must have to support the new DMA API, the KVM
+> and IOMMUFD use cases I mentioned.
+> 
+> >> In this case Xu is exporting MMIO from VFIO and importing to KVM and
+> >> iommufd.
+> > 
+> >    So basically a portion of a PCIe BAR is imported into iommufd?
+> 
+> Yeah, and KVM. And RMDA.
+> 
+> >    Then create an interface between VFIO and KVM/iommufd which allows to
+> >    pass data between these two.
+> >    We already do this between DMA-buf exporters/importers all the time.
+> >    Just don't make it general DMA-buf API.
+> 
+> I have no idea what this means. We'd need a new API linked to DMABUF
+> that would be optional and used by this part of the world. As I said
+> above we could protect it with some module namespace so you can keep
+> it out of DRM. If you can agree to that then it seems fine..
+> 
+> > > Someone else had some use case where they wanted to put the VFIO MMIO
+> > > PCIe BAR into a DMABUF and ship it into a GPU driver for
+> > > somethingsomething virtualization but I didn't understand it.
+> > 
+> >    Yeah, that is already perfectly supported.
+> 
+> No, it isn't. Christoph is blocking DMABUF in VFIO because he does not
+> want to scatterlist abuses that dmabuf is doing to proliferate.  We
+> already have some ARM systems where the naive way typical DMABUF
+> implementations are setting up P2P does not work. Those systems have
+> PCI offset.
+> 
+> Getting this to be "perfectly supported" is why we are working on all
+> these aspects to improve the DMA API and remove the scatterlist
+> abuses.
+> 
+> >> In a certain sense CC is a TEE that is built using KVM instead of the
+> >> TEE subsystem. Using KVM and integrating with the MM brings a whole
+> >> set of unique challenges that TEE got to avoid..
+> > 
+> >    Please go over those challenges in more detail. I need to get a better
+> >    understanding of what's going on here.
+> >    E.g. who manages encryption keys, who raises the machine check on
+> >    violations etc...
+> 
+> TEE broadly has Linux launch a secure world that does some private
+> work. The secure worlds tend to be very limited, they are not really
+> VMs and they don't run full Linux inside
+> 
+> CC broadly has the secure world exist at boot and launch Linux and
+> provide services to Linux. The secure world enforces memory isolation
+> on Linux and generates faults on violations. KVM is the gateway to
+> launch new secure worlds and the secure worlds are full VMs with all
+> the device emulation and more.
+> 
+> It CC is much more like xen with it's hypervisor and DOM0 concepts.
+> 
+> From this perspective, the only thing that matters is that CC secure
+> memory is different and special - it is very much like your private
+> memory concept. Only special places that understand it and have the
+> right HW capability can use it. All the consumers need a CPU address
+> to program their HW because of how the secure world security works.
+> 
+> Jason
 
-> Intel TDX connect implementation also needs a reference to the kvm
-> pointer to obtain the secure EPT information. This is crucial because
-> the CPU's page table must be shared with the iommu. 
-
-I thought kvm folks were NAKing this sharing entirely? Or is the
-secure EPT in the secure world and not directly managed by Linux?
-
-AFAIK AMD is going to mirror the iommu page table like today.
-
-ARM, I suspect, will not have an "EPT" under Linux control, so
-whatever happens will be hidden in their secure world.
-
-Jason
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
