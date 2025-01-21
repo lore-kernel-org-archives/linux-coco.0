@@ -1,173 +1,491 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406F515098A
-	for <linux-coco@lists.linux.dev>; Tue, 21 Jan 2025 06:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F691F1505
+	for <linux-coco@lists.linux.dev>; Tue, 21 Jan 2025 15:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737439544; cv=none; b=Z72j0BMETEb2QphrUCt9ZsjHo2VKfwLh3tAVCkjSUCZ4OWoZfGjBcyf6VyRR0JfGUcQZXhFu7P9sSqZy77OhSJst1lO7DFBJwweYztkWzHbjzwVSqIoGhulYtRsSeIdUF9K6rRXQ08bbBRvJqIZLNe+2mSbDZNj33it/CAceMxk=
+	t=1737474925; cv=none; b=ffjo+edOLAHfN2h8CWRN74Y5ozCbmaj9K1FxtZvFHPXJQLkPE3ocjSkWFnBrL8oReAKnzBJG4C/Hs+grBgigRIwnlZedbhncEN8Ca/2iYOCSKYpQ1xSvcw/7KhH5rPqUke7vT4PLUktxXXas65IvddLartfwFSsE8IADxXaXXy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737439544; c=relaxed/simple;
-	bh=EICKAbt6ehTM275az3a+HO8w7Dd752OxSdIpuT+vXjw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pCNYS9GgBWrtYnXwEUKbwaiHipfHasy968MRf59EibH/fvdARY5lgqLRKcjTD/dpbpgFTLU2Z6pcrIxUNTLNfxhbn2C8SI1q1ZHXfF5XzrvnY8otFlwqLaXZuECW3X1iIi//2bzUnjvMzXPntXOUlzn5QMW0XjujIEva5D85G5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yt+d5F2W; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1737474925; c=relaxed/simple;
+	bh=UVD0NhJ02K3zx4/Fq20kd5UEy3dYZ50mTKBkSrB9l5Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ksOH9157qjgR8aK74YBA9iTfGxJa6dkSYvIOQ9Iv/AQCWSApc6Xt+kCmX8ua7q8VYPqVAjsihq/GMllp7ESQZJVRakrYSeX+qLskHrlIunUKxpI432r/3NY2MD+PrtXNrNodqCxSUO/l4Mbv4nXOHV56MX8LuFjb7ElvWYi5yBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LEqXNI7e; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yt+d5F2W"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737439544; x=1768975544;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=EICKAbt6ehTM275az3a+HO8w7Dd752OxSdIpuT+vXjw=;
-  b=Yt+d5F2WlwRFkOk63jibIQKoE7SROOqtylx+M/tf4WibNSghpvBNy3Iw
-   X+AJUJYHTXo/X0Z1WJb8c/mDxVGD5tdcOWB3goJipY4R9One/Kr/BrIgI
-   ODmAS1rSs3op6Nfp3oiqOc5CiizUXDa1Zq6neszFPLo67HGY0nDXe33Gu
-   sHlCuOu4tdDIiWpFR6AeZoBsLGqp3SrNurlfZupOrPfp17Bfe6+tajBSL
-   M1650GgrSK+ILxedg73Roz9FTJr9cIPLxr6B3Hxn+FA/qX6HUQbPPIJhQ
-   6OrAZlYgH9wodpbIazXB+bpemRMZNnCM3uDnD2g35eQxr19t4o02V+mw3
-   Q==;
-X-CSE-ConnectionGUID: Idr+SoMGQIKc89cmZvxGRw==
-X-CSE-MsgGUID: OUI4EYpmS2mqYn792QoCKA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="37947877"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="37947877"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2025 22:05:42 -0800
-X-CSE-ConnectionGUID: tHJjq00eSoirj4Z7Z0C1/g==
-X-CSE-MsgGUID: KEwSyQz7S/mHimzNYrB6sw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,221,1732608000"; 
-   d="scan'208";a="106509090"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa009.jf.intel.com with ESMTP; 20 Jan 2025 22:05:36 -0800
-Date: Tue, 25 Jun 2024 05:12:10 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>, Alexey Kardashevskiy <aik@amd.com>,
-	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
- private device
-Message-ID: <ZnnhKtA2n4s1CLyf@yilunxu-OptiPlex-7050>
-References: <Z4Hp9jvJbhW0cqWY@yilunxu-OptiPlex-7050>
- <20250113164935.GP5556@nvidia.com>
- <ZnDGqww5SLbVD6ET@yilunxu-OptiPlex-7050>
- <20250114133553.GB5556@nvidia.com>
- <17cd9b77-4620-4883-9a6a-8d1cab822c88@amd.com>
- <20250115130102.GM5556@nvidia.com>
- <f1ac048f-64b1-4343-ab86-ad98c24a44f5@linux.intel.com>
- <20250117132523.GA5556@nvidia.com>
- <Znh+uTMe/wX2RIJm@yilunxu-OptiPlex-7050>
- <20250120132525.GH5556@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LEqXNI7e"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-aa689a37dd4so1070899766b.3
+        for <linux-coco@lists.linux.dev>; Tue, 21 Jan 2025 07:55:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737474922; x=1738079722; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cKYsM/zHuT9lp18swEU+BCDQWm/p86AsP+temL/iA10=;
+        b=LEqXNI7emTgY9yltzC+T9X6uq5LS8raZAnGl7QC0AJlVloxUbbxGu/Abbh62wYsIo0
+         jjopukRq77KXM97Qgo3MiqgoAkOgXb0E21Ot769zvTOsImoyMfZwBsTO8HUuD4f69pJP
+         w1Lsed1xzlDApG5zHGjeT9DxZwVJFE1y7EuRUxpGxsgd4q1vgv75BA4xkv5Q8SXoYopB
+         L5Wo9vyMEt1ECT5iIk32E5DMMBhBNqpIR8b/4wiNjSSicdMLvhyE6gLlf7O02l93s7ds
+         BWRisRzsNC0Kh4x+q/keqemPssC3X2ZostQeXp+Nw56+esfSNGoIe3OgtTzJ1O4hgsJd
+         BKSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737474922; x=1738079722;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cKYsM/zHuT9lp18swEU+BCDQWm/p86AsP+temL/iA10=;
+        b=LYoXJAnQZzOM11iRHTs+36zxUkPw/bBXjtf/x5Yb/1H+5MooSo02bsd3P8UP1DcPQk
+         2lGNjB1bSOigs+ukgW6++UvnpUBTORD4pPfRN1hoZJG3YUKuDaWWvbA25/IReMPSIMQ6
+         yhChazesBG2VI3Eq1hTk/klOTOLEi2wr4CLlEEycIZzrOqHIPqorP1sAPKXMLjw1MhU1
+         9eRFqKE1X4pNfV2O9QDwIu0mnXkhi6BYlVqJAdYLdpY9p+oX//qsMKjw76HJcPpIFTL1
+         KmHAeIHqJ7OfMapxCquwCV9otJl+R8SyrrqE93aTEDf8o0xa8lehs15nvO3cEphX6cej
+         Kvhg==
+X-Forwarded-Encrypted: i=1; AJvYcCUa+fBy4TfPvAh8YdWbtgfAv/BE7YOgkQIjmo1iMOtTJgvvHLLzhn/W00oZV5Tg4UWQ+gngbLj/dd6Z@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx5n0bGZZVNJX3YN6/F41GmE9Ys8scViaYRh1rN85s2Hb5T0OqO
+	4PqvCYT3cIw9QzZDRsa2Uvfg3jdqJxxPEThY7u26MzycXqNOhtASoBBxI2xzrSA0wH5d2m9wP5e
+	s0Svs6MEEmSf27c48gVy0UU7vb1wNSJCPsBzv
+X-Gm-Gg: ASbGncu8TMww7Sof3oWvHV1H3fgWapn6UMvXNCa+uuYZ1dA1nJ1SpmN/oNyttmNS9YO
+	u088XEQhCblmAsLWyez2B4g5X6T+ypcREn6/+SVeSNutbar7usss=
+X-Google-Smtp-Source: AGHT+IF/KudRmy9XWRGc/O4hupDisRMLFDk/aX6uFpRUFR3oe4bJ1fVi/Av+i3fltDXPSXSq7gd6atfiVbXdyV7xjqc=
+X-Received: by 2002:a17:907:7f0b:b0:ab2:b77e:f421 with SMTP id
+ a640c23a62f3a-ab38b25e296mr1497169066b.23.1737474921325; Tue, 21 Jan 2025
+ 07:55:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250120132525.GH5556@nvidia.com>
+References: <20250120215818.522175-1-huibo.wang@amd.com> <20250120215818.522175-2-huibo.wang@amd.com>
+In-Reply-To: <20250120215818.522175-2-huibo.wang@amd.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Tue, 21 Jan 2025 07:55:09 -0800
+X-Gm-Features: AbW1kvYXh1FY-XHZNWehxRDisei0XUsnIDSKTKWC3EPJRPyFhjQsAUTNDR_MKWM
+Message-ID: <CAAH4kHZL-9R+MLLvArcwQ2Zpk+gtqYTvVMR01WA1kVJ9goq_sw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/1] KVM: Introduce KVM_EXIT_SNP_REQ_CERTS for SNP certificate-fetching
+To: Melody Wang <huibo.wang@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, roedel@suse.de, Tom Lendacky <thomas.lendacky@amd.com>, 
+	ashish.kalra@amd.com, liam.merwick@oracle.com, pankaj.gupta@amd.com, 
+	Michael Roth <michael.roth@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 20, 2025 at 09:25:25AM -0400, Jason Gunthorpe wrote:
-> On Mon, Jun 24, 2024 at 03:59:53AM +0800, Xu Yilun wrote:
-> > > But it also seems to me that VFIO should be able to support putting
-> > > the device into the RUN state
-> > 
-> > Firstly I think VFIO should support putting device into *LOCKED* state.
-> > From LOCKED to RUN, there are many evidence fetching and attestation
-> > things that only guest cares. I don't think VFIO needs to opt-in.
-> 
-> VFIO is not just about running VMs. If someone wants to run DPDK on
-> VFIO they should be able to get the device into a RUN state and work
-> with secure memory without requiring a KVM. Yes there are many steps
-> to this, but we should imagine how it can work.
+On Mon, Jan 20, 2025 at 1:58=E2=80=AFPM Melody Wang <huibo.wang@amd.com> wr=
+ote:
+>
+> From: Michael Roth <michael.roth@amd.com>
+>
+> For SEV-SNP, the host can optionally provide a certificate table to the
+> guest when it issues an attestation request to firmware (see GHCB 2.0
+> specification regarding "SNP Extended Guest Requests"). This certificate
+> table can then be used to verify the endorsement key used by firmware to
+> sign the attestation report.
+>
+> While it is possible for guests to obtain the certificates through other
+> means, handling it via the host provides more flexibility in being able
+> to keep the certificate data in sync with the endorsement key throughout
+> host-side operations that might resulting in the endorsement key
+> changing.
+>
+> In the case of KVM, userspace will be responsible for fetching the
+> certificate table and keeping it in sync with any modifications to the
+> endorsement key by other userspace management tools. Define a new
+> KVM_EXIT_SNP_REQ_CERTS event where userspace is provided with the GPA of
+> the buffer the guest has provided as part of the attestation request so
+> that userspace can write the certificate data into it while relying on
+> filesystem-based locking to keep the certificates up-to-date relative to
+> the endorsement keys installed/utilized by firmware at the time the
+> certificates are fetched.
+>
+> Also introduce a KVM_CAP_EXIT_SNP_REQ_CERTS capability to enable/disable
+> the exit for cases where userspace does not support
+> certificate-fetching, in which case KVM will fall back to returning an
+> empty certificate table if the guest provides a buffer for it.
+>
+>   [Melody: Update the documentation scheme about how file locking is
+>   expected to happen.]
+>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Melody Wang <huibo.wang@amd.com>
 
-Interesting Question. I've never thought about native TIO before.
+Reviewed-by: Dionna Glaze <dionnaglaze@google.com>
 
-And you are also thinking about VFIO usage in CoCo-VM. So I believe
-VFIO could be able to support putting the device into the RUN state,
-but no need a uAPI for that, this happens when VFIO works as a TEE
-attester.
+> ---
+>  Documentation/virt/kvm/api.rst  | 106 ++++++++++++++++++++++++++++++++
+>  arch/x86/include/asm/kvm_host.h |   1 +
+>  arch/x86/kvm/svm/sev.c          |  43 +++++++++++--
+>  arch/x86/kvm/x86.c              |  11 ++++
+>  include/uapi/linux/kvm.h        |  10 +++
+>  include/uapi/linux/sev-guest.h  |   8 +++
+>  6 files changed, 173 insertions(+), 6 deletions(-)
+>
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
+rst
+> index f15b61317aad..f00db1e4c6cc 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -7176,6 +7176,95 @@ Please note that the kernel is allowed to use the =
+kvm_run structure as the
+>  primary storage for certain register types. Therefore, the kernel may us=
+e the
+>  values in kvm_run even if the corresponding bit in kvm_dirty_regs is not=
+ set.
+>
+> +::
+> +
+> +               /* KVM_EXIT_SNP_REQ_CERTS */
+> +               struct kvm_exit_snp_req_certs {
+> +                       __u64 gfn;
+> +                       __u32 npages;
+> +                       __u32 ret;
+> +               };
+> +
+> +This event provides a way to request certificate data from userspace and
+> +have it written into guest memory. This is intended to handle attestatio=
+n
+> +requests made by SEV-SNP guests (using the Extended Guest Requests GHCB
+> +command as defined by the GHCB 2.0 specification for SEV-SNP guests),
+> +where additional certificate data corresponding to the endorsement key
+> +used by firmware to sign an attestation report can be optionally provide=
+d
+> +by userspace to pass along to the guest together with the
+> +firmware-provided attestation report.
+> +
+> +KVM will supply in `gfn` the non-private guest page that userspace shoul=
+d
+> +use to write the contents of certificate data. The format of this
+> +certificate data is defined in the GHCB 2.0 specification (see section
+> +"SNP Extended Guest Request"). KVM will also supply in `npages` the
+> +number of contiguous pages available for writing the certificate data
+> +into.
+> +
+> +  - If the supplied number of pages is sufficient, userspace must write
+> +    the certificate table blob (in the format defined by the GHCB spec)
+> +    into the address corresponding to `gfn` and set `ret` to 0 to indica=
+te
+> +    success. If no certificate data is available, then userspace can
+> +    either write an empty certificate table into the address correspondi=
+ng
+> +    to `gfn`, or it can disable ``KVM_EXIT_SNP_REQ_CERTS`` (via
+> +    ``KVM_CAP_EXIT_SNP_REQ_CERTS``), in which case KVM will handle
+> +    returning an empty certificate table to the guest.
+> +
+> +  - If the number of pages supplied is not sufficient, userspace must se=
+t
+> +    the required number of pages in `npages` and then set `ret` to
+> +    ``ENOSPC``.
+> +
+> +  - If the certificate cannot be immediately provided, userspace should =
+set
+> +    `ret` to ``EAGAIN``, which will inform the guest to retry the reques=
+t
+> +    later. One scenario where this would be useful is if the certificate
+> +    is in the process of being updated and cannot be fetched until the
+> +    update completes (see the NOTE below regarding how file-locking can
+> +    be used to orchestrate such updates between management/guests).
+> +
+> +  - If some other error occurred, userspace must set `ret` to ``EIO``.
+> +    (This is to reserve special meaning for unused error codes in the
+> +    future.)
+> +
+> +NOTE: The endorsement key used by firmware may change as a result of
+> +management activities like updating SEV-SNP firmware or loading new
+> +endorsement keys, so some care should be taken to keep the returned
+> +certificate data in sync with the actual endorsement key in use by
+> +firmware at the time the attestation request is sent to SNP firmware. Th=
+e
+> +recommended scheme to do this is to use file locking (e.g. via fcntl()'s
+> +F_OFD_SETLK) in the following manner:
+> +
+> +  - The VMM should obtain a shared/read or exclusive/write lock on the
+> +  certificate blob file before reading it and returning it to KVM, and
+> +  continue to hold the lock until the attestation request is actually
+> +  sent to firmware. To facilitate this, the VMM can set the
+> +  ``immediate_exit`` flag of kvm_run just after supplying the
+> +  certificate data, and just before and resuming the vCPU. This will
+> +  ensure the vCPU will exit again to userspace with ``-EINTR`` after
+> +  it finishes fetching the attestation request from firmware, at which
+> +  point the VMM can safely drop the file lock.
+> +
+> +  - Tools/libraries that perform updates to SNP firmware TCB values or
+> +    endorsement keys (e.g. via /dev/sev interfaces such as ``SNP_COMMIT`=
+`,
+> +    ``SNP_SET_CONFIG``, or ``SNP_VLEK_LOAD``, see
+> +    Documentation/virt/coco/sev-guest.rst for more details) in such a wa=
+y
+> +    that the certificate blob needs to be updated, should similarly take=
+ an
+> +    exclusive lock on the certificate blob for the duration of any updat=
+es
+> +    to endorsement keys or the certificate blob contents to ensure that
+> +    VMMs using the above scheme will not return certificate blob data th=
+at
+> +    is out of sync with the endorsement key used by firmware.
+> +
+> +This scheme is recommended so that tools could naturally opt to use
+> +it rather than every service provider coming up with a different solutio=
+n
+> +that they will need to work into some custom QEMU/VMM to solve the same
+> +problem.
+> +
+> +However, userspace is free to implement their own completely separate
+> +mechanism for handing all this and completely ignore file locking. QEMU =
+is
+> +only trying to play nice with this above-mentioned reference implementat=
+ion
+> +and cooperative management tools, and not trying to profess to provide a=
+ny
+> +sort of synchronization for cases where those sorts of management-level
+> +updates are performed without utilizing this reference implementation fo=
+r
+> +synchronization.
+>
+>  .. _cap_enable:
+>
+> @@ -9020,6 +9109,23 @@ Do not use KVM_X86_SW_PROTECTED_VM for "real" VMs,=
+ and especially not in
+>  production.  The behavior and effective ABI for software-protected VMs i=
+s
+>  unstable.
+>
+> +8.42 KVM_CAP_EXIT_SNP_REQ_CERTS
+> +-------------------------------
+> +
+> +:Capability: KVM_CAP_EXIT_SNP_REQ_CERTS
+> +:Architectures: x86
+> +:Type: vm
+> +
+> +This capability, if enabled, will cause KVM to exit to userspace with
+> +KVM_EXIT_SNP_REQ_CERTS exit reason to allow for fetching SNP attestation
+> +certificates from userspace.
+> +
+> +Calling KVM_CHECK_EXTENSION for this capability will return a non-zero
+> +value to indicate KVM support for KVM_EXIT_SNP_REQ_CERTS.
+> +
+> +The 1st argument to KVM_ENABLE_CAP should be 1 to indicate userspace sup=
+port
+> +for handling this event.
+> +
+>  9. Known KVM API problems
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+>
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index e159e44a6a1b..dae1a572d770 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1438,6 +1438,7 @@ struct kvm_arch {
+>         struct kvm_x86_msr_filter __rcu *msr_filter;
+>
+>         u32 hypercall_exit_enabled;
+> +       bool snp_certs_enabled;
+>
+>         /* Guest can access the SGX PROVISIONKEY. */
+>         bool sgx_provisioning_allowed;
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 943bd074a5d3..4896c34ed318 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -4064,6 +4064,30 @@ static int snp_handle_guest_req(struct vcpu_svm *s=
+vm, gpa_t req_gpa, gpa_t resp_
+>         return ret;
+>  }
+>
+> +static int snp_complete_req_certs(struct kvm_vcpu *vcpu)
+> +{
+> +       struct vcpu_svm *svm =3D to_svm(vcpu);
+> +       struct vmcb_control_area *control =3D &svm->vmcb->control;
+> +
+> +       if (vcpu->run->snp_req_certs.ret) {
+> +               if (vcpu->run->snp_req_certs.ret =3D=3D ENOSPC) {
+> +                       vcpu->arch.regs[VCPU_REGS_RBX] =3D vcpu->run->snp=
+_req_certs.npages;
+> +                       ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
+> +                                               SNP_GUEST_ERR(SNP_GUEST_V=
+MM_ERR_INVALID_LEN, 0));
+> +               } else if (vcpu->run->snp_req_certs.ret =3D=3D EAGAIN) {
+> +                       ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
+> +                                               SNP_GUEST_ERR(SNP_GUEST_V=
+MM_ERR_BUSY, 0));
 
-In different cases, VFIO plays different roles:
+Discussion, not a change request: given that my proposed patch [1] to
+add rate-limiting for guest messages to the PSP generally was
+rejected, do we think it'd be proper to add a KVM_EXIT_SNP_REQ_MSG or
+some such for the VMM to decide if the guest should have access to the
+globally shared resource (PSP) via EAGAIN or 0?
 
-1. TEE helper, but itself is out of TEE.
-2. TEE attester, it is within the TEE.
-3. TEE user, it is within the TEE.
+[1] https://patchwork.kernel.org/project/kvm/cover/20230119213426.379312-1-=
+dionnaglaze@google.com/
 
-As a TEE helper, it works on a untrusted device and help put the device
-in LOCKED state, waiting for attestation. For VM use case, VM acts as the
-attester to do attestation and move device into trusted/RUN state (lets
-say 'accept'). The attestation and accept could be direct talks between
-attester and device (maybe via TSM sysfs node), because from
-LOCKED -> RUN VFIO doesn't change its way of handling device so seems
-no need to introduce extra uAPIs and complexity just for passing the
-talks. That's my expectation of VFIO's responsibility as a TEE
-helper - serve until LOCKED, no care about the rest, UNLOCK rollbacks
-everything.
+> +               } else {
+> +                       ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
+> +                                               SNP_GUEST_ERR(SNP_GUEST_V=
+MM_ERR_GENERIC, 0));
+> +               }
+> +
+> +               return 1; /* resume guest */
+> +       }
+> +
+> +       return snp_handle_guest_req(svm, control->exit_info_1, control->e=
+xit_info_2);
+> +}
+> +
+>  static int snp_handle_ext_guest_req(struct vcpu_svm *svm, gpa_t req_gpa,=
+ gpa_t resp_gpa)
+>  {
+>         struct kvm *kvm =3D svm->vcpu.kvm;
+> @@ -4079,12 +4103,10 @@ static int snp_handle_ext_guest_req(struct vcpu_s=
+vm *svm, gpa_t req_gpa, gpa_t r
+>         /*
+>          * As per GHCB spec, requests of type MSG_REPORT_REQ also allow f=
+or
+>          * additional certificate data to be provided alongside the attes=
+tation
+> -        * report via the guest-provided data pages indicated by RAX/RBX.=
+ The
+> -        * certificate data is optional and requires additional KVM enabl=
+ement
+> -        * to provide an interface for userspace to provide it, but KVM s=
+till
+> -        * needs to be able to handle extended guest requests either way.=
+ So
+> -        * provide a stub implementation that will always return an empty
+> -        * certificate table in the guest-provided data pages.
+> +        * report via the guest-provided data pages indicated by RAX/RBX.=
+ If
+> +        * userspace enables KVM_EXIT_SNP_REQ_CERTS, then exit to userspa=
+ce
+> +        * to fetch the certificate data. Otherwise, return an empty cert=
+ificate
+> +        * table in the guest-provided data pages.
+>          */
+>         if (msg_type =3D=3D SNP_MSG_REPORT_REQ) {
+>                 struct kvm_vcpu *vcpu =3D &svm->vcpu;
+> @@ -4100,6 +4122,15 @@ static int snp_handle_ext_guest_req(struct vcpu_sv=
+m *svm, gpa_t req_gpa, gpa_t r
+>                 if (!PAGE_ALIGNED(data_gpa))
+>                         goto request_invalid;
+>
+> +               if (vcpu->kvm->arch.snp_certs_enabled) {
+> +                       vcpu->run->exit_reason =3D KVM_EXIT_SNP_REQ_CERTS=
+;
+> +                       vcpu->run->snp_req_certs.gfn =3D gpa_to_gfn(data_=
+gpa);
+> +                       vcpu->run->snp_req_certs.npages =3D data_npages;
+> +                       vcpu->run->snp_req_certs.ret =3D 0;
+> +                       vcpu->arch.complete_userspace_io =3D snp_complete=
+_req_certs;
+> +                       return 0; /* fetch certs from userspace */
+> +               }
+> +
+>                 /*
+>                  * As per GHCB spec (see "SNP Extended Guest Request"), t=
+he
+>                  * certificate table is terminated by 24-bytes of zeroes.
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index c79a8cc57ba4..cdcdc5359a87 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -4782,6 +4782,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, l=
+ong ext)
+>         case KVM_CAP_READONLY_MEM:
+>                 r =3D kvm ? kvm_arch_has_readonly_mem(kvm) : 1;
+>                 break;
+> +       case KVM_CAP_EXIT_SNP_REQ_CERTS:
+> +               r =3D 1;
+> +               break;
+>         default:
+>                 break;
+>         }
+> @@ -6743,6 +6746,14 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+>                 mutex_unlock(&kvm->lock);
+>                 break;
+>         }
+> +       case KVM_CAP_EXIT_SNP_REQ_CERTS:
+> +               if (cap->args[0] !=3D 1) {
+> +                       r =3D -EINVAL;
+> +                       break;
+> +               }
+> +               kvm->arch.snp_certs_enabled =3D true;
+> +               r =3D 0;
+> +               break;
+>         default:
+>                 r =3D -EINVAL;
+>                 break;
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 502ea63b5d2e..dcaadd6f5b18 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -135,6 +135,12 @@ struct kvm_xen_exit {
+>         } u;
+>  };
+>
+> +struct kvm_exit_snp_req_certs {
+> +       __u64 gfn;
+> +       __u32 npages;
+> +       __u32 ret;
+> +};
+> +
+>  #define KVM_S390_GET_SKEYS_NONE   1
+>  #define KVM_S390_SKEYS_MAX        1048576
+>
+> @@ -178,6 +184,7 @@ struct kvm_xen_exit {
+>  #define KVM_EXIT_NOTIFY           37
+>  #define KVM_EXIT_LOONGARCH_IOCSR  38
+>  #define KVM_EXIT_MEMORY_FAULT     39
+> +#define KVM_EXIT_SNP_REQ_CERTS    40
+>
+>  /* For KVM_EXIT_INTERNAL_ERROR */
+>  /* Emulate instruction failed. */
+> @@ -446,6 +453,8 @@ struct kvm_run {
+>                         __u64 gpa;
+>                         __u64 size;
+>                 } memory_fault;
+> +               /* KVM_EXIT_SNP_REQ_CERTS */
+> +               struct kvm_exit_snp_req_certs snp_req_certs;
+>                 /* Fix the size of the union. */
+>                 char padding[256];
+>         };
+> @@ -933,6 +942,7 @@ struct kvm_enable_cap {
+>  #define KVM_CAP_PRE_FAULT_MEMORY 236
+>  #define KVM_CAP_X86_APIC_BUS_CYCLES_NS 237
+>  #define KVM_CAP_X86_GUEST_MODE 238
+> +#define KVM_CAP_EXIT_SNP_REQ_CERTS 239
+>
+>  struct kvm_irq_routing_irqchip {
+>         __u32 irqchip;
+> diff --git a/include/uapi/linux/sev-guest.h b/include/uapi/linux/sev-gues=
+t.h
+> index fcdfea767fca..4c4ed8bc71d7 100644
+> --- a/include/uapi/linux/sev-guest.h
+> +++ b/include/uapi/linux/sev-guest.h
+> @@ -95,5 +95,13 @@ struct snp_ext_report_req {
+>
+>  #define SNP_GUEST_VMM_ERR_INVALID_LEN  1
+>  #define SNP_GUEST_VMM_ERR_BUSY         2
+> +/*
+> + * The GHCB spec essentially states that all non-zero error codes other =
+than
+> + * those explicitly defined above should be treated as an error by the g=
+uest.
+> + * Define a generic error to cover that case, and choose a value that is=
+ not
+> + * likely to overlap with new explicit error codes should more be added =
+to
+> + * the GHCB spec later.
+> + */
+> +#define SNP_GUEST_VMM_ERR_GENERIC       ((u32)~0U)
+>
+>  #endif /* __UAPI_LINUX_SEV_GUEST_H_ */
+> --
+> 2.34.1
+>
 
-I imagine in bare metal, if DPDK works as an attester (within TEE) and
-VFIO still as a TEE helper (out of TEE), this model seems still work.
 
-
-
-When VFIO works as a TEE user in VM, it means an attester (e.g. PCI
-subsystem) has already moved the device to RUN state. So VFIO & DPDK
-are all TEE users, no need to manipulate TDISP state between them.
-AFAICS, this is the most preferred TIO usage in CoCo-VM.
-
-When VFIO works as a TEE attester in VM, it means the VM's PCI
-subsystem leaves the attestation work to device drivers. VFIO should do
-the attestation and accept before pass through to DPDK, again no need to
-manipulate TDISP state between them.
-
-I image the possibility TIO happens on bare metal, that a device is
-configured as waiting for attestation by whatever kernel module, then
-PCI subsystem or VFIO try to attest, accept and use it, just the same as
-in CoCo VM.
-
-> 
-> > > without involving KVM or cVMs.
-> > 
-> > It may not be feasible for all vendors. 
-> 
-> It must be. A CC guest with an in kernel driver can definately get the
-> PCI device into RUN, so VFIO running in the guest should be able as
-> well.
-
-You are talking about VFIO in CoCo-VM as an attester, then definiately
-yes.
-
-> 
-> > I believe AMD would have one firmware call that requires cVM handle
-> > *AND* move device into LOCKED state. It really depends on firmware
-> > implementation.
-> 
-> IMHO, you would not use the secure firmware if you are not using VMs.
-> 
-> > Yes, the secure EPT is in the secure world and managed by TDX firmware.
-> > Now a SW Mirror Secure EPT is introduced in KVM and managed by KVM
-> > directly, and KVM will finally use firmware calls to propagate Mirror
-> > Secure EPT changes to secure EPT.
-> 
-> If the secure world managed it then the secure world can have rules
-> that work with the IOMMU as well..
-
-Yes.
-
-Thanks,
-Yilun
-
-> 
-> Jason
+--=20
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
