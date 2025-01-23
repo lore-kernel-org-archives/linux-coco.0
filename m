@@ -1,48 +1,48 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2075.outbound.protection.outlook.com [40.107.237.75])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2076.outbound.protection.outlook.com [40.107.237.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358B720FAB7
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jan 2025 15:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEEE43151
+	for <linux-coco@lists.linux.dev>; Thu, 23 Jan 2025 16:08:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737644544; cv=fail; b=YWZfrvyeXDaHDaIIW1kBez0mk7NCsY6tCUcNUBRP4kqEVBjlbq8XBpzrq13a8jspjU4qh1ZvYjSqSrFVbiDvMgcB1/W0WYRwOY2PAGWbqnfVbC3JDhqVe6TZwP3ktkwQ082dY5TPxl3M9UgQHCUAONQWcNqwrHVOKIv5oOe6Tt4=
+	t=1737648515; cv=fail; b=HeWOs2v0f2skgvfT3rLbTpKddE3sicXAnCs8MvcvHx6l83g7dk7Z8h5F/7zZv3vCAL961PWDb8KR4BusizSFbQfvJe0WzpTZ8Gd7AEQSs+VAPxGobACUnoBHO15n3De+Mvzj+lT/lZBaVRlcPrMdlvP2+pQex7NF3wOWkU0PPQg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737644544; c=relaxed/simple;
-	bh=n8n8Lu+v+KgF8cWsfFDPCSAohw0CoeD6qReTpGxa6hA=;
+	s=arc-20240116; t=1737648515; c=relaxed/simple;
+	bh=UOW/q/MZBXTUn/VzSDYIWZOnAHtS/S4V7Zce74iO9tw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WsjhpiAbc1+WkBUhhlHaC+DqFvvyKwHey2Blr9hLfcs1HncUBloPOBj9T6oZMoPLFrgdZLz5kp2JA7mcaZkkghFhZxsyWX8u/OsgYWVFuKQ/xk2Wnme39BKhJwVQ4kueTG5pwZQqonBzVa8CB9IMIulPP4zPLHD6sK6Ej649IJ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CKBnXyMn; arc=fail smtp.client-ip=40.107.237.75
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Us3KtbXQWXB6+fOmGFiLXCKyC8Wz/yOyb19LJaA/cHVEjAhSHInvHzpf0SBcWMWMs094xW033N/tbnAekbXgXdUePi4DAzC+5h1WQUE9l4ThjGW+V2p4K9AE1PVRvVpD5JLxA87prmVClXf5qebGUG+i/uahLDLrjqO4UWcBit4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rQ32kZcD; arc=fail smtp.client-ip=40.107.237.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CKBnXyMn"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rQ32kZcD"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=poCj68Nz+7xNPOA/jgTby0l2/lPVwjyuuceTA5XH1SOhcXWoBMwo7SyBrhsI9ISjHQMP2HZXh4x6pry0HbqYSOkIEszFUjLtIE5mNwaxnhJ9JbHCTPzIiDjV+task/7WyDCtnyXZMIowVEMOoi0CMivamyBDLNSeCDZ28ElohREGC9OyZ2GjlHUCDYvcPTJ1HVse5wZA5IJ6lhRckRGlNCudEiU9WNgVUtyzsLsVyL1W6JEdm4Xu2Q8evNv2volUT4C65YuZiKqE+1O+fxBJNL2i0CcvB2A54gJLfdCpYpFBnvU6rnPOp1qZZS9k/7hFkuyF7yg3z4T4lS/3w5x8GQ==
+ b=AssJszlD8qmqn5ihm8VpiponhSXAC+TRzhPyXjV/hy8wNjYJ31E+XkiITFItZ3GrblLf+fjGGUILmHtQGwIxESGOnfbciaBHjVjf6nS0JjyqDLW2NK3BjZSj+BjTTMu0Hq5V/p9a5KSu60fyji5MEp3hJO4ZZuyxyeu/KprwXNVPH+gg5EBunx7qbUhzHJSX/97TGmxyfy43BvFBYa4+NW8divvZwb3pwCpeBrAThYURABXjLyr+X2rlP836768hIO6Qt8ZdFIP+sfiCI/8MXU6Lmygh5M0G1X2JWFSJW3wKtW6cC1VD4iU8vtJQr0P3FdKeyAuABUhVKPTDZq7sog==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9X0zY1PirsxozflNWtomch701uE8KASJnn7kUGAlNx8=;
- b=YME2nf4uLKLT94GLIwgreUNmCW/VXtb+asJQxr+0rx+1q2UAOqnBrqSzj5S7HvQVLvdLgiQWsxJqoZsVnrTGofTt9oq6HfI6qYiys9+f0ocr2uY9l4ZDZU8LmAMhlzyBq+xH8UxhGFbJc5cJim22tzFEPld+DrhkSyaNcxQkj59LzhluMVuJvIxI3+a8eyUb0ARmINpa3M+rsVE4NFzgk55M5sTFLZYNoeSzqeEcp1NluTrWKs5Ju+mCsscWQ2EKJH5gg9UNInrDd5kqDh/bY/qEd5HVudTEw/PTmGhO2CT1j688oZKwvyeLyL6oqrGDGzea2aCI7/aeoEw0xI++fg==
+ bh=vV5O/duxgrPS/4K4k/AQ0EsgfBWsGFVsJgvWh2QsOFU=;
+ b=PCV9BH8ctUcWp9p/tdi9BajuIbkALftRYriR25ngLBYDsmtjNl3ds8TfjCvuBDOjjsjJWweaZ9pxmXc3In9krSE+DYDcfQ8ZYX/omBfXlMAzqinPsD01LpoUNqqwqE5TNNl9R1pvrulp4oIFt+72liwg8dTFZbpdyWI4QKVlCXjMiIz4lEO+hjNUGUg4pLqwB6xAHVT9xaC+BL7zJ95adZ+Pd5Z0UaehOwnl465PkY5B12Pk3aqXrETwyto8URNjZmCTR2UOxsk/dxEs7FDBQJIC4eYUrSC8onWJDDq7/bj6/bkZFdbdL1Dm9yA8BFON1V+smbP8vgxJYJT08GRFhg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9X0zY1PirsxozflNWtomch701uE8KASJnn7kUGAlNx8=;
- b=CKBnXyMnJqB3xk9x2yuOa2cDd9Lb9WG70n0f/G7zKcYivHq0OjSQRAyDmx4w6Y0sRh9sPqORSXSk7vbYt3nE3LeXY3v8SMKqkOXKVDmI+Ve1xGEPTHnAROmNem8BjGC+Bqk2A2S1vLmJ/4ofLtJnuyvP6oPZrY6V72RzCv0pAvqbsKsghPliuWEnzpSI/cDnw/B1GFhub7Rh4gNZ1Tf0kBMtzpoCMv9vW8xltOGROfgiY3wTGLDxJtkeg2sPtB32QPKxnevCMjx4wdCYpDkvb0W/5v4SNzF+dQBw15fjOetsCPChR9XS2kihcBhLYLnxO1Ux+QWYpb/XN54bESnXtw==
+ bh=vV5O/duxgrPS/4K4k/AQ0EsgfBWsGFVsJgvWh2QsOFU=;
+ b=rQ32kZcDTCXLanGdQHcAwcr66Bqx6+jBBmPA8KAWHANxH9Ssa/4PMyjpIIV19HVeOTyzOvUhJcU2hasH68BNQFjPv4ZPdyPRJM4JZUMhKz3aleb+IJXB6ULIj2cYZz4rZja/Z4VUKU2PI38miYcubumaNNPqXK2/ATZnenxrHAeL3KvB53IicysHViPxqR289Q8F4F6NhJv3e1HFL1qDt1q4GCg53vcTm1X0vJBO2+4A0VvpUJ3oi4ggJJZpf+TI1NJVpwmj5BqREbjGBohZMqJmD5p0F2kDYku0BDgz+9Ld724Qtop+Tho1HCQWRy+Oly8Co9hMIkMzW10xMQOeqA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by MW4PR12MB7239.namprd12.prod.outlook.com (2603:10b6:303:228::5) with
+ by PH7PR12MB6609.namprd12.prod.outlook.com (2603:10b6:510:213::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.17; Thu, 23 Jan
- 2025 15:02:14 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Thu, 23 Jan
+ 2025 16:08:29 +0000
 Received: from CH3PR12MB8659.namprd12.prod.outlook.com
  ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
  ([fe80::6eb6:7d37:7b4b:1732%5]) with mapi id 15.20.8356.010; Thu, 23 Jan 2025
- 15:02:14 +0000
-Date: Thu, 23 Jan 2025 11:02:12 -0400
+ 16:08:29 +0000
+Date: Thu, 23 Jan 2025 12:08:27 -0400
 From: Jason Gunthorpe <jgg@nvidia.com>
 To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
 Cc: Xu Yilun <yilun.xu@linux.intel.com>, Christoph Hellwig <hch@lst.de>,
@@ -57,10 +57,8 @@ Cc: Xu Yilun <yilun.xu@linux.intel.com>, Christoph Hellwig <hch@lst.de>,
 	tao1.su@intel.com
 Subject: Re: [RFC PATCH 01/12] dma-buf: Introduce dma_buf_get_pfn_unlocked()
  kAPI
-Message-ID: <20250123150212.GR5556@nvidia.com>
-References: <20250120194804.GT5556@nvidia.com>
- <Z4_HNA4QQbIsK8D9@phenom.ffwll.local>
- <20250121173633.GU5556@nvidia.com>
+Message-ID: <20250123160827.GS5556@nvidia.com>
+References: <20250121173633.GU5556@nvidia.com>
  <Z5DQsyV0vwX3Iabu@phenom.ffwll.local>
  <6612c40d-4999-41a1-a4a5-74d3ff5875c3@amd.com>
  <20250122143744.GF5556@nvidia.com>
@@ -68,12 +66,14 @@ References: <20250120194804.GT5556@nvidia.com>
  <20250123135946.GQ5556@nvidia.com>
  <9a36fba5-2dee-46fd-9f51-47c5f0ffc1d4@amd.com>
  <97db03be-df86-440d-be4a-082f94934ddf@amd.com>
+ <20250123150212.GR5556@nvidia.com>
+ <89f46c7f-a585-44e2-963d-bf00bf09b493@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <97db03be-df86-440d-be4a-082f94934ddf@amd.com>
-X-ClientProxiedBy: YQBPR0101CA0210.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:67::21) To CH3PR12MB8659.namprd12.prod.outlook.com
+In-Reply-To: <89f46c7f-a585-44e2-963d-bf00bf09b493@amd.com>
+X-ClientProxiedBy: BN9PR03CA0904.namprd03.prod.outlook.com
+ (2603:10b6:408:107::9) To CH3PR12MB8659.namprd12.prod.outlook.com
  (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -82,224 +82,173 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|MW4PR12MB7239:EE_
-X-MS-Office365-Filtering-Correlation-Id: 134183e8-d63b-4cb7-cf99-08dd3bbeeb88
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|PH7PR12MB6609:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee5bc05e-f14b-455a-9564-08dd3bc82c80
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Q0V1Rjh2VXg2YWdZK2ZSSmxLVjZYUFlHY1IxRStYcm84UXdkRmVLN0VTTFVQ?=
- =?utf-8?B?N1AxUmlZRTVxVERGT0ZINU0wTUFXclNTTlVUM01sWjBmNGIwSlozdGtJSWEz?=
- =?utf-8?B?WUxEaElyUE1BMkZNVGMrTW9ZbDRxemdMd20rWCt0UDh2QnZYUGFVdGVpL1dk?=
- =?utf-8?B?QWJud1hDTG9qdmpja1ljU2NkaWdLWEkwQ1E0NDZ3SHFHQm10L1RId1NIbGpG?=
- =?utf-8?B?VjRaR0RESWpueGpjNFVCdVhVU0ZSb09GK0NoZURGZ0hWZmY0NnhXdVlJUVJq?=
- =?utf-8?B?TFA2MlNpcFJ5M1JqU2cwVWJ1WEo2NHVqdWNwTzhDdkhPdjM3ZmFRc2x2ekYy?=
- =?utf-8?B?L0FpV2U1UzQ2ZlFoMUFlTlBKdlRVNUlvb3BHQUJickxjRFFMSUNoclpqWmlD?=
- =?utf-8?B?QUlGT054a0ZKQk5LVHhXZklzeXJ0cFdiQmJjL2hWM0ZTUFk1Z1U3MVVrZ3ds?=
- =?utf-8?B?Y3Zrck9MVE1zS1VBUEdCS3hrSjNqM0VLWGRYdktSTDZvbktnL3EwVlZldlNJ?=
- =?utf-8?B?R0FvblpHcXMzNmNLMkYvZG5tNDBsWUtQOFRnZzdLaHdWYzg0MWRIT0M5Q0Jt?=
- =?utf-8?B?bUJVT0ZEaGcydlIrU2U2OXMvRDlNa2w2b2kxOU5LNXQzT2VrcmNhOVZrNVhY?=
- =?utf-8?B?aEpRL0pWdnIvVURGVmRHTnh1NEZ0U2thY0FyUUIybS9hVW1XaU9oMW83RmNk?=
- =?utf-8?B?T1AxNjR2SERYYzVWQUZZVU9wUTNNRkgwRmJmRy96RjlFb3ZZOXJmbmltMm13?=
- =?utf-8?B?eUpBUEM5YUNkejZyWG10NW8wUmhwK2hacyswV0pxSE9BTlZ0ZHBBVTBZK0tM?=
- =?utf-8?B?a3ovcDBIRGlJM0NSZ1ZNY1dDY1JFeEFpcEgrbjZZVzh5NkpqQ2NUM1JIdkpW?=
- =?utf-8?B?V0k5ZWpTSS9sY0p4UkdLNnloOGd1OEQ2RDhjYlAzREZOeUF4NmtpUHV5amVN?=
- =?utf-8?B?QzZaVHozZTJwcEVKeTRDMVNDOXBFZWVMME9XbXo0cTV6T09reVltQ0Y1SXoy?=
- =?utf-8?B?SXl5aVlnNFozRTI0WDZSVG9qc2xKWjRBcVh3dEdBTHB2YU5jZUJ6d2xrTlhn?=
- =?utf-8?B?TWRmbjNTcEEvSDNlS3hKUjJ2SUw1aEN0M0F1OFlsLy9yR2M1d0dFYkNGSVlO?=
- =?utf-8?B?ZUx2aXhPb0NrOGU2VW5xV1pacVdrVkNFRjhiMjZqcURocTJ0RXkrZ2hhd1NL?=
- =?utf-8?B?WWlPcFNleTdRcUFmU3lZaG5LbVoxWE5oZHNHUDhobGIvRXZCNno2Y296SFlx?=
- =?utf-8?B?OS9iWWpOcVQ4dmIzZG5uN2lIVUVMM3NvUzJOaVNnWkt3VXFEbGtYeVJyTUxY?=
- =?utf-8?B?Z2tEcGFwQlNlSzNLYTVPYnROeFUvd2YrcUJUV0Nna0pEMk5nTHhyU3gyMGNJ?=
- =?utf-8?B?ejNVVmZPRHdDSE9HMW0zeHViTnlmSDhyL3dPU3ZGSHNiUzJRdTMrZ3lwRUx3?=
- =?utf-8?B?VkVjYXpzN25QQUxEM3VCcG1uMnpsbGxrQ1UxcEN4SWlqaTd2WVI3SjVMYm9a?=
- =?utf-8?B?S1padDZROHhqTzVPb1ZiUEU3QUprODZlanF0QXYwOVZrVkJhbElUMUZpbWJM?=
- =?utf-8?B?amptNWZwZnhidUxiNUhJYkIvY2hrVnJtYkVJeTFKMitQeG90M2lOM1M0NGUy?=
- =?utf-8?B?MEpvOXQ3MEQxb3VLdTFmU0tyNzFmcUFkelB2TGp6b2gxazdmdEVaYWVwS1dh?=
- =?utf-8?B?MWNPVTIzSzBnYzAxRTdIalNzSGsyVGRrSkE1aXdFVlYwZVUrUlo0QVdxSDA1?=
- =?utf-8?B?SFdTS081eHZNNmU5Qk1jT3ljT29iZVFydTRSSjdxRGdldGY2aTF6Rjhha28y?=
- =?utf-8?B?OWlqb1RVbk95SmpDTks1c3NDM3ovWSs1cHlZcSs2bFdudTlwT0IvR2syL1kx?=
- =?utf-8?Q?kmKLHIMWK3251?=
+	=?utf-8?B?SWJyTkxMY1ZYd3V2MW9BM1RmanRVamphN0ZPRXBKK293NWtmRTF1dzhMRTJH?=
+ =?utf-8?B?RlZFODhqWEVta2xMNWYzKzE1bzQwVkltMkgvV0s1d01OTjFqWis3WGdGbHln?=
+ =?utf-8?B?OWkvV1lkTFFQbGZaUWxHWHNaSnNPWDZCRU1LZExVQk4vSnBlb05iUG8rYXJC?=
+ =?utf-8?B?S05ZbXJtOGVDUjdiMDJMVUF6czFFYjNnZStLRHpPUVNOTStVeGkzL2IwSGxr?=
+ =?utf-8?B?WHFDQUkybkpkQWlBeXVQVXlqNTJab2FjM1ozQXoralhaQXBjSDVXbXUwandi?=
+ =?utf-8?B?NXc2TDJHalRiRjErMFpLMlkvQ29oVTl0TFdRM3N4RklCY2xXYyt5b3N3bkZw?=
+ =?utf-8?B?bW5nU2ovNkdaNmJSanR0Z3d2VysvdjJ0dUxydWFmcWhoSFRrSitRbGRPZ01D?=
+ =?utf-8?B?RVlBUjEwcUFIaTcvYzhxaUkvNk1UTmo4dm4raEw1dUhyanhOdEoxTmt5UE13?=
+ =?utf-8?B?eUtNa3pERGFvWGhCZzRFTmRWcHRyMWpFdnk5eFQ2bWx4VWNXTDgwQTVUeUxw?=
+ =?utf-8?B?bDRTSVhzSkoxOXVMakxPZjJSQzRvOEZOTk1HY1hNd21TbXd5cHZWNituQlRm?=
+ =?utf-8?B?OERmWm9xam1oTVBEaTdQY1JHK21qKy9iakRJM2ZtQW0yWXBhYVpUUlFRTVJT?=
+ =?utf-8?B?OTJTcHJZOWhRQVhZampmMmxPckdZTXNVUlZBWUcycnhJZFB3Y3F6T3VCQy8w?=
+ =?utf-8?B?V0ZnRjFYaGlwQmdvVC9SUjMwTlkxc0FxbDI3Q3VNc0hNRmFvb3VCeTluQm5V?=
+ =?utf-8?B?WkJxZ0tDS25LQTlsZXFpbXFaTkNrdnpUeDdEZkVwQzhwWEVKRkIvTWljbFNo?=
+ =?utf-8?B?Z04yajZ2NGV4VU1pbnFucWVJU0VMdXBEZEJCUXFqd2xlRmVyYUVLeC9Zb2F3?=
+ =?utf-8?B?UEJqNWFFYU4zZ3Rwd0hSaDExN3BCK1VnRFBkT3dMWFliZEx0UFhqS3MwUlJ2?=
+ =?utf-8?B?TWJFZ1VpcENPT3diTXRod2U0T3kxQUxYQ0ZqUDBmY2s2c0hsLzFtL0RlUlAw?=
+ =?utf-8?B?OUJmM2x5NUhIbVlqMHNsL2FOazhLVGtRRSsvRUFHQ0V5NGpvMXYxbWRLQzA2?=
+ =?utf-8?B?KzlGNGR0Ry9RQlZiTTVwQjNCbGJVSzRGUTV4b21JK2dEOFN2NmMvb3R3MUF0?=
+ =?utf-8?B?ckpVNmt3NG9TRHFaeU1OQkpNTzlHVWhMWTZEY3ExYk5Vb3JsMThJcjdFWXlV?=
+ =?utf-8?B?eEw4L25jY0tSV3ZWNEloeXNOR1JFTDJrMVRtaWxKM21abFZPZkprK2Z3cFJN?=
+ =?utf-8?B?MEdIZGpBaU9qSll0RmRSZlBITFp3bE9YRVd1WUNGQVJkc2F4S1F3MTFiZ1BO?=
+ =?utf-8?B?QkZxak5RZ0RoTXl4eEh2YUdZWmxJMURJOG44NVZ3emNER1ltek1oUzMxTDJE?=
+ =?utf-8?B?c2hVWGVrb3lmNXJFMkticllXWlZIdytPUDFQTWgwaUZsTEhqdUdPNXBVNXpO?=
+ =?utf-8?B?cU1GVHlLZUZFOXJ6M1hMQ2xZekord3B1eFNxbzNqVFVBeXNrK1NIUWNKWlpE?=
+ =?utf-8?B?M3NueHIyQm1GV2dha3dxUjBKSHd0QXZlRjRSTXpsTUtFbW1iVy91RFFpUEVi?=
+ =?utf-8?B?T2p4NlM0cDIzQnRmYTF2cFM0by9VQzc2elBmWGZ2SGZIR2VjeVUzM0lwZ1pQ?=
+ =?utf-8?B?bjRCbG5pa3BoM2Q3M3Z4ZGVtYTEwd3grbjIraXhraHF3eTBkMldZd3YweHpE?=
+ =?utf-8?B?bzJwczdoczBBWVp5VVBvUzBBUHpUWHpZcnhOaTJHZ3NmY0l6M0Rld2hyM1Rw?=
+ =?utf-8?B?UG1sckRZS1pqaUFMS2o5YUxrNjViR3M1VVhSalFnRzl4V0dKdlJPYmw4R21n?=
+ =?utf-8?B?dytYQWJ0QldJK0p1UG9QTFpzcjBVMHpNMXVTd1V2N3NueEdhTUlEbXA0Nllo?=
+ =?utf-8?Q?zHFWf9C0Ne2gC?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OFdSMlpKNTRQWm01TWVhTTU5cFdHWCtlWExSSWlxM2twZ1VXM1dLdlJ4NDdx?=
- =?utf-8?B?cGFhRnpwbk5lTmJENjE2MHFnOUc0UXlFQStwUmdDZTFzSUZwcVpNY0JzWnhp?=
- =?utf-8?B?RmZXVkh0NStoZVViS1dxZ1MyanBmTUdtUkdYNUU2bkdQNE1UUVczOHlGRWJC?=
- =?utf-8?B?eE1TNGxCK0lneHh0WS8zcEQzVjdKQkV1bFRYMjFqWENrSmZjbmlxZ3VhUTJG?=
- =?utf-8?B?MGpndFNFdG9zelY4ekhkeGJyRFhIR25iRmQrbkttUUlrdFJEdmtHbVpiWjNZ?=
- =?utf-8?B?d0lQTGJNQzJ5MjlGYUhlSkdXRlBSR3Q0WkhhQk1MYWJzTDZTSWh4S3lNQlA3?=
- =?utf-8?B?WUFPOG43N0NIZ1g2amZoZ213b3dDTEZWOE5Dc1JiUUR1TGJpcTlPN0tLZm92?=
- =?utf-8?B?c2hvNVVjZnVKdjBSRjRWdjAzVzM3WGZxNEN2ODBCNWx1QUlWb3crOEpLdGFC?=
- =?utf-8?B?TXFlck13ZEY2aUdSb2t4QzhRV0JxSjVhakpOSzRJNDd3QWxwT2JvM0toUEZk?=
- =?utf-8?B?THNCMkNTbTFkd3M0VUpxemtJQnQ4M2NxTXQ5RlVVOXRaRTdXVWN3MVdIejR3?=
- =?utf-8?B?NTFJc2lRMWY1enJWSFhSNVoxM2FuL2UxNzk5RktWTEt0ZitXempiMDFNaStG?=
- =?utf-8?B?RmVuL01tSnZMb04rdy81eTNEUDJOcFJKd0diaVBVYkQrazY4V3hiTFFpbHZq?=
- =?utf-8?B?NnFnYlhTUDltd1JYVnk0UkI1MkR4RWNMMXMzSGZxbDN6OVhHaFE1NXErdEh0?=
- =?utf-8?B?emZ4cGlPTkh4QmxrYmxiZjVsNTA1L0RGMi9ycjBBeE52YmpySWlLOWZvYXlu?=
- =?utf-8?B?eUpSOGJmeHFaa3NMS3IycFpaeDdKQmRhRDJydENQQml5RitNZG5PSTZleU1G?=
- =?utf-8?B?cUxFT3lpNzEwaHM1UzcvblBadjVDcmdtVC9ua3VsdnBXc0g2Uk8xc1ZaenNh?=
- =?utf-8?B?Z1VQRlVEOUNROUNpVXMyVkZET05sSnVxc2ExN1g2a0ZoV2Q1bXA0SEl0OVNs?=
- =?utf-8?B?Zk5xamdpc2I1b3VHK3puYzVKVEJWU01IbVp1cHJUc1JOYUdqcktYaUx2U01n?=
- =?utf-8?B?NVAvSVJXNWVFWXM3M3pkV0Nnck55cSs5dU1yOHFtejhSVVNKWDdmeTlKTmta?=
- =?utf-8?B?aFJFYWt6SFl4eW15MEpQdnNoU24vcmtYRDFnK1llTlRxUTR0Y0FlVklVUFl1?=
- =?utf-8?B?YXNZQlNQWURXbUxXbVlqaVdkT2VHMVdtUzBBZWdWaGwzbXEzNDRQSU5TWUVq?=
- =?utf-8?B?czBZRWl2SmVCejAweGw3UEtGNkd1cWt4dlc3NzhHL0dNOWFSRjE4Qi9PbFVW?=
- =?utf-8?B?am1HYVdxaTUzNUJ3SmxvaVh6RFoxUnVWYVBzcDFuOGFZSG94d1d2cmV3TTlR?=
- =?utf-8?B?SU1YRWtlUG9WK0MrRXEyR3c4TVZzRWpHN0xVM3JCWGNsWEJjcXRaOGVrTEpv?=
- =?utf-8?B?aEtYQmpmKzRNWmU2OVczZTlERmt4ckpiYTVJMSs2YU1UcjM3UmJYMlFxTEtV?=
- =?utf-8?B?a0UrY0Vwc2c5dG1EZGxLUlVwcCt0enN2Ynd2NDIxRDNzaFRNeWhpNGQyNytS?=
- =?utf-8?B?Zmh5bWhpMHRDR1RycEplTldnMXFnQ1RLM3JENHNBUkJVZ0pISHVGaC9mUWxE?=
- =?utf-8?B?dDAxQVJSNVFnd0E2RG1MVS9YNTR4aVQzMG0yc0ZGMzNRbjNGTHIzbFBHSmll?=
- =?utf-8?B?ZjJ1WUlWbUlCTXhRYkRRb0Z0RFVwb1ZPYmxvYmg4VFBLRkFMYU5WZVpFL2xn?=
- =?utf-8?B?WTJSL2UrY3ZMbktDOXU5dVdHN0ZkR1o4aGc1aXlNUDd1cGpJOTR0b1Yva0Yx?=
- =?utf-8?B?NmZNeHpWYVdTK09Zd3FXc1lueGd2VnhjMDNoZTlaMEdEbnNXSXlRSkxyZ3lL?=
- =?utf-8?B?YzZLS01WWUZLWEh5dHIrYllCa1V0SVZMU0M4dE9BdE9OZS82ZUdjZE1nK0w2?=
- =?utf-8?B?Y0Z3REFlcUhOdmkvRklGZ2IwelY3V0Q2RWZ0SEU2UTZVTzl6NWdpSlptOWQ3?=
- =?utf-8?B?d2pZcXN1RW45Yzc5QmU0bnZocVF0Tkh3MGw0eGhBZEVRT2doLzVid3RpT2ov?=
- =?utf-8?B?VGRLb0syOG16RnF2MGl3ZUIyZy9sVXFVbHJGa21GTzh1cmN2a1hjQWJ3c21N?=
- =?utf-8?Q?jhZhi/LcyDymuAj0knGdxI048?=
+	=?utf-8?B?cW8xd1o1Qm9UWlYyUXN0eXNaQ2ZWTEZ2Wk5kbHVYazZmNVJFRmdXSnZwUFU4?=
+ =?utf-8?B?S3VaZHV1V21KSzRkR3luZEx5aldYcVRuc0dqdW0rNkVzVmFBelUwd0p2ajhs?=
+ =?utf-8?B?M3Q0SUZvU3BnVjhEclIzVUxacDJERElyOHRYa2VJVFFkL2poMzhmLzZZVzM5?=
+ =?utf-8?B?TVZnTDl1OHB5elF2dTNteTBCQjk3bWJPNnRPLzJNZDFRTW1HaXZCdlIxYXNL?=
+ =?utf-8?B?aFJuQ0hhN1g3K3BZelR2bU43WDNCaFhYcW9xcDUrUVRhK3luRFlwT1k0MjUv?=
+ =?utf-8?B?ODd5TWhFTkw0S0x0aHZmckJUend2RUgzZ0plQXNFWTBSUWlUem5rbmhxaWZs?=
+ =?utf-8?B?NUttQmNteEdxVDhLMWE3YU5aRVZPY21rKzliUEs4eDZJaENabE9razNGK1F5?=
+ =?utf-8?B?RWtyNmpIaWtyQU9zejc5VmZTWndTS0hVR25WYmVncEp3ZUJTRkNmT25WeFox?=
+ =?utf-8?B?NTFGcDhBUDhrLzM0Zm93YkFjZ0l5d2lZeDJ6eDlJTmY4cVVTS0haOEc2ak01?=
+ =?utf-8?B?aCtmQmk1ai9VRkd0akdEeGJZRS9UQllYV3BldHhYRFFqSzhlbkQvbXhZS2lQ?=
+ =?utf-8?B?WVVHc0o3VGYvOVRLMDZKUGgrZktjSWd4WE8ycGczRXdFeUJmbzlmV2NsSzBY?=
+ =?utf-8?B?bWs4Wm5WTnU1OUZsa3FvZzd1elVFcTh2Wk0yZEE1M01ORUN1UjdVRHlpVytX?=
+ =?utf-8?B?d3NyWEpFOGxIa1ZhT2lrU2tEQURaWGVuTUQ5QmYycnBoejNMQVE2MGR0bXRF?=
+ =?utf-8?B?OUZhMFlXejVvQkxiTzFsQktyNG9hM2dyUzZQaEdMSkVLUXpVUHpnV280UFdR?=
+ =?utf-8?B?djlDbjhBeXFMY2VYYVhIalJEWHlZeGZwNDRuRWZNRG1uemJxY2NvYldlVm5G?=
+ =?utf-8?B?L2JZRW5jbE5iQkNDK0RQb1pFQk5kSmpvbmxLR2tiSTI3d0ZwWEF1UVlJVDhW?=
+ =?utf-8?B?eS84MDhqbGRnRkdGZGhiTGdsanlLQjZOQVRoVVBnQ3VIRDFMR0VBRkI1Y1BW?=
+ =?utf-8?B?OGNPdjJhNS8yMituU0FZdVBhN09KOGdDN0NYNzd0MDhMVWpvVHg0VnRQSkZx?=
+ =?utf-8?B?eWJyVlJDYjlLem1iWExWTzhNSjFnTklpeXQwd0Y4OUZjc2phS3dlaFcydU02?=
+ =?utf-8?B?NnVORDgzVHVjVURoSTJRS0RGMzUvRnFrNEtjUlhvY2kzbWI4S3AwR3pSSlkr?=
+ =?utf-8?B?ZEM5a0JXaVp4T3NtZUpsQnN4dkhMWklHMUZ5ajJhQ2tEanJDRm52dFpIbkU3?=
+ =?utf-8?B?VXRqYnhzOXo0UDc2bUpjTXEyY2xmSE82QjVISnVBTXJyUDJKV1QrVVo4MXBT?=
+ =?utf-8?B?V0JrSzVEOUp2bEttUDR2RDJucEdBeVJnSlUvRjdKWndvRkhpS1ZTaHorb1ZI?=
+ =?utf-8?B?Z3YwTTFKaFVQUmRjYnBucVF3d2pKNnlnbE5VMjQ1YVlVQ0t2R1FRMWRzYnRa?=
+ =?utf-8?B?Wk1ySFEzdGN5M3pCa3JJTW9yTStIN3pDbW0yY1RBR3dQUU5iT28wTXVTLzNp?=
+ =?utf-8?B?NkQrWEJMeG9CdXI5K3Jqb09tK25hZ3QwdkNWYjdYL0RNOTNSKzBHNks0aHNL?=
+ =?utf-8?B?cDIzeS9yOFJTcTFhMzZLa1lMSW0zUGs1TkxKM1djS1RJekVNeUgwaTZyd0VW?=
+ =?utf-8?B?a0RlNkczb2tUeS9jTlhtcVVNNVpSTElNZGZrYWF4YUlGL1lROWZLa3F0SVBQ?=
+ =?utf-8?B?RVB4L01TWlF4ODBXdHROek9wWW9FUVlxUGo1aUNGSENlWk52Tm9CdWFQbnRX?=
+ =?utf-8?B?ZmZIOE1NOHlHaVpIWlE4VXpPS2Y0anlBcjZkYWhRTkFFdW5KdHFMUmg1YStv?=
+ =?utf-8?B?L1pTeEhPWk1ueklQOHJLUmlyWHRMQW5wN25EMEZza2hFNVloOHNTSm5Pb0Nt?=
+ =?utf-8?B?dnFFRGJnUE1CYTZwUFhMQ25tV3FNMUl6bDZST2w5NnNGek10aUVpM28wVk9X?=
+ =?utf-8?B?K0IzSkg5MjlqMnlINWluem8ydVgwSDZ6eUhXOXZZdkJyOEF4UDdFMjRpMWZr?=
+ =?utf-8?B?Yy95WUtQUms1MGxJOC9jblJ3YjA5c1d1cEpXK3JkK0MxK0tBeEsvS3lVT2FQ?=
+ =?utf-8?B?UzBrcm9va2Q0bXZYTFcwWGExMXQrcmJVQmQrc3dtR2dXVjdEcGgzSURwMk5U?=
+ =?utf-8?Q?Ts0ehWjDEUDsG9Hly8eR9gFvL?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 134183e8-d63b-4cb7-cf99-08dd3bbeeb88
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee5bc05e-f14b-455a-9564-08dd3bc82c80
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2025 15:02:14.0054
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2025 16:08:28.4663
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jYoMGucttTUnGRvoUdgsaJZY8KEv7mtbxt/x6NXWYE8kRZMSKldPwzGKJMwHyt4s
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7239
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2PAiP1Mi65r/3b5MhXyGKYV1QOhl+LqhUMIDFUHrTmkCA3As2MMd+sTDktZ8lUU9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6609
 
-On Thu, Jan 23, 2025 at 03:35:21PM +0100, Christian König wrote:
-> Sending it as text mail once more.
+On Thu, Jan 23, 2025 at 04:48:29PM +0100, Christian König wrote:
+>    No, no there are much more cases where drivers simply assume that they
+>    are in the same iommu domain for different devices. 
+
+This is an illegal assumption and invalid way to use the DMA API. Do
+not do that, do not architect things in DMABUF to permit that.
+
+The dma_addr_t out of the DMA API is only usable by the device passed
+in, period full stop. If you want to use it with two devices then call
+the DMA API twice.
+
+>    E.g. that different
+>    PCI endpoints can use the same dma_addr_t.
+
+>    For example those classic sound devices for HDMI audio on graphics
+>    cards work like this. 
+>    In other words if the device handled by the generic ALSA driver and the
+>    GPU are not in the same iommu domain you run into trouble.
+
+Yes, I recall this weird AMD issue as well. IIRC the solution is not
+clean or "correct". :( I vaugely recall it was caused by a HW bug...
+
+>    Well it might never been documented but I know of quite a bunch of
+>    different cases that assume that a DMA addr will just ultimately work
+>    for some other device/driver as well.
+
+Again, illegal assumption, breaks the abstraction.
+
+>> This is all DMA API internal details you shouldn't even be talking
+>> about at the DMA BUF level. It is all hidden and simply does not
+>> matter to DMA BUF at all.
 > 
-> Am 23.01.25 um 15:32 schrieb Christian König:
-> > Am 23.01.25 um 14:59 schrieb Jason Gunthorpe:
-> > > On Wed, Jan 22, 2025 at 03:59:11PM +0100, Christian König wrote:
-> > > > > > For example we have cases with multiple devices are in the same IOMMU domain
-> > > > > > and re-using their DMA address mappings.
-> > > > > IMHO this is just another flavour of "private" address flow between
-> > > > > two cooperating drivers.
-> > > > Well that's the point. The inporter is not cooperating here.
-> > > If the private address relies on a shared iommu_domain controlled by
-> > > the driver, then yes, the importer MUST be cooperating. For instance,
-> > > if you send the same private address into RDMA it will explode because
-> > > it doesn't have any notion of shared iommu_domain mappings, and it
-> > > certainly doesn't setup any such shared domains.
-> > 
-> > Hui? Why the heck should a driver own it's iommu domain?
+>    Well we somehow need to support the existing use cases with the new
+>    API.
 
-I don't know, you are the one saying the drivers have special shared
-iommu_domains so DMA BUF need some special design to accommodate it.
+Call the DMA API multiple times, once per device. That is the only
+correct way to handle this today. DMABUF is already architected like
+this, each and every attach should be dma mapping and generating a
+scatterlist for every unique importing device.
 
-I'm aware that DRM drivers do directly call into the iommu subsystem
-and do directly manage their own IOVA. I assumed this is what you were
-talkinga bout. See below.
+Improving it to somehow avoid the redundant DMA API map would require
+new DMA API work.
 
-> > The domain is owned and assigned by the PCI subsystem under Linux.
+Do NOT randomly assume that devices share dma_addr_t, there is no
+architected way to ever discover this, it is a complete violation of
+all the API abstractions.
 
-That domain is *exclusively* owned by the DMA API and is only accessed
-via maps created by DMA API calls.
+>> If you want to pass an IOVA in one of these special driver-created
+>> domains then it would be some private address in DMABUF that only
+>> works on drivers that have understood they attached to these manually
+>> created domains. No DMA API involvement here.
+> 
+>    That won't fly like this. That would break at least the ALSA use case
+>    and potentially quite a bunch of others.
 
-If you are using the DMA API correctly then all of this is abstracted
-and none of it matters to you. There is no concept of "shared domains"
-in the DMA API. 
+Your AMD ALSA weirdness is not using custom iommu_domains (nor should
+it), it is a different problem.
 
-You call the DMA API, you get a dma_addr_t that is valid for a
-*single* device, you program it in HW. That is all. There is no reason
-to dig deeper than this.
- 
-> > > > The importer doesn't have the slightest idea that he is sharing it's DMA
-> > > > addresses with the exporter.
-> > > Of course it does. The importer driver would have had to explicitly
-> > > set this up! The normal kernel behavior is that all drivers get
-> > > private iommu_domains controled by the DMA API. If your driver is
-> > > doing something else *it did it deliberately*.
-> > 
-> > As far as I know that is simply not correct. Currently IOMMU
-> > domains/groups are usually shared between devices.
+> dma-iommu.c chooses an IOVA alignment based on its own reasoning that
+> is not always compatible with the HW. The HW can optimize if the IOVA
+> alignment meets certain restrictions. Much like page tables in a GPU.
+> 
+>    Yeah, but why can't we tell the DMA API those restrictions instead of
+>    letting the driver manage the address space themselves?
 
-No, the opposite. The iommu subsystem tries to maximally isolate
-devices up to the HW limit.
+How do you propose to do this per-mapping operation without having the
+HW driver actually call the mapping operation?
 
-On server platforms every device is expected to get its own iommu domain.
+> > Same as the multipath, the ATS, and more. It is all per-mapping
+> > descisions of the executing HW, not global decisions or something
+> > like.
+> 
+>    So the DMA API has some structure or similar to describe the necessary
+>    per-mapping properties?
 
-> > Especially multi function devices get only a single IOMMU domain.
-
-Only if the PCI HW doesn't support ACS.
-
-This is all DMA API internal details you shouldn't even be talking
-about at the DMA BUF level. It is all hidden and simply does not
-matter to DMA BUF at all.
-
-> > > The new iommu architecture has the probing driver disable the DMA API
-> > > and can then manipulate its iommu domain however it likes, safely. Ie
-> > > the probing driver is aware and particiapting in disabling the DMA
-> > > API.
-> > 
-> > Why the heck should we do this?
-> > 
-> > That drivers manage all of that on their own sounds like a massive step
-> > in the wrong direction.
-
-I am talking about DRM drivers that HAVE to manage their own for some
-reason I don't know. eg:
-
-drivers/gpu/drm/nouveau/nvkm/engine/device/tegra.c:             tdev->iommu.domain = iommu_domain_alloc(&platform_bus_type);
-drivers/gpu/drm/msm/msm_iommu.c:        domain = iommu_paging_domain_alloc(dev);
-drivers/gpu/drm/rockchip/rockchip_drm_drv.c:    private->domain = iommu_paging_domain_alloc(private->iommu_dev);
-drivers/gpu/drm/tegra/drm.c:            tegra->domain = iommu_paging_domain_alloc(dma_dev);
-drivers/gpu/host1x/dev.c:               host->domain = iommu_paging_domain_alloc(host->dev);
-
-Normal simple drivers should never be calling these functions!
-
-If you are calling these functions you are not using the DMA API, and,
-yes, some cases like tegra n1x are actively sharing these special
-domains across multiple devices and drivers.
-
-If you want to pass an IOVA in one of these special driver-created
-domains then it would be some private address in DMABUF that only
-works on drivers that have understood they attached to these manually
-created domains. No DMA API involvement here.
-
-> > > > I still strongly think that the exporter should talk with the DMA API to
-> > > > setup the access path for the importer and *not* the importer directly.
-> > > It is contrary to the design of the new API which wants to co-optimize
-> > > mapping and HW setup together as one unit.
-> > 
-> > Yeah and I'm really questioning this design goal. That sounds like
-> > totally going into the wrong direction just because of the RDMA
-> > drivers.
-
-Actually it is storage that motivates this. It is just pointless to
-allocate a dma_addr_t list in the fast path when you don't need
-it. You can stream the dma_addr_t directly into HW structures that are
-necessary and already allocated.
-
-> > > For instance in RDMA we want to hint and control the way the IOMMU
-> > > mapping works in the DMA API to optimize the RDMA HW side. I can't do
-> > > those optimizations if I'm not in control of the mapping.
-> > 
-> > Why? What is the technical background here?
-
-dma-iommu.c chooses an IOVA alignment based on its own reasoning that
-is not always compatible with the HW. The HW can optimize if the IOVA
-alignment meets certain restrictions. Much like page tables in a GPU.
-
-> > > The same is probably true on the GPU side too, you want IOVAs that
-> > > have tidy alignment with your PTE structure, but only the importer
-> > > understands its own HW to make the correct hints to the DMA API.
-> > 
-> > Yeah but then express those as requirements to the DMA API and not move
-> > all the important decisions into the driver where they are implemented
-> > over and over again and potentially broken halve the time.
-
-It wouild be in the DMA API, just the per-mapping portion of the API.
-
-Same as the multipath, the ATS, and more. It is all per-mapping
-descisions of the executing HW, not global decisions or something
-like.
+Not fully yet (though some multipath is supported), but I want to
+slowly move in this direction to solve all of these problems we
+have :(
 
 Jason
