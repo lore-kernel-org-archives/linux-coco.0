@@ -1,136 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE3B20B7EF
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jan 2025 07:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F6F20CCE4;
+	Thu, 23 Jan 2025 09:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737618139; cv=none; b=X4CwbdRW7yGedqSULT7AEJsMWzfKYgXc3VDK5KF2HvPUg5qaQsoJm3BQN7cG27xdiJt5T5GyRSVUGkmib0OBC9iL8pII6inFGJyuOFBfxBPod1PZAaaqEp0UYf35LwuDKZoh9r73ThhxST3IBw6KyVaT/i35mhNB+KFMk2/PQzY=
+	t=1737625846; cv=none; b=CqVnkcQavTGxyya2VitDnkUn7Qo0AyJyIF3Z1E1/24PlI148pjRPxVSvRS12dmnHBzDYs7sG/ffYUsHgDJRxjfR7jeQmswfiwVO6HiaGvMqBdHFO5n6oxpUg/1EvO7hJx5GL3yg50Jc3pgpHcOduZl9uEf2VcplvlavdHjYNjxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737618139; c=relaxed/simple;
-	bh=WfCoT8DAVyePFPdKpLI3f57LRfvllzvhy6jwVyfb9z0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XniMqwNszt0dz7zDmVLuDLbU9jIztzfvYY3Ibe5Y6Bs0F0nbkl+o2ZBl1B6IAHp9I5KhuZdWgUHA4YdcVPNTDcONPZOttQyEodzpqLpC/Q0NMxavufygNss/mGdEUI5Fi4Kdl0dbKmyMzNoxe4O3aoZNo8MPHF8WxPfNfuuJDbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lvpTQxMO; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1737625846; c=relaxed/simple;
+	bh=l3G4zaFnVKze3aUnY1RMk3kB+rM/zQJx7o7qCtrqwRc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=fezVi7hAAJU47C81/XelyYp2jeaFlGHtuFwJtP1a8fODggqP7kwVyuMSB+5PC7XYDFFZ6eG/ebVFqP2SKge6fTTqOhELp0iQ/Zru8s4PceZ9+TfpAywMGDA/A7f+gwDLwuZoAExIOh0pO8zawqWaQtFFREUXr2jzQhuEv8ZE3kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFB6q7e5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lvpTQxMO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737618138; x=1769154138;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WfCoT8DAVyePFPdKpLI3f57LRfvllzvhy6jwVyfb9z0=;
-  b=lvpTQxMO0RhFFy3Y/lHaJhfOPvy5dLPsSI7f+AOWkEw88+1yJdgUGtfj
-   zjXZWg4Cz2pGlUZFNTYfWgtKHXHGJG+vnLto8MS390LTYExKO1I3FzCWb
-   9oV63jjLQ75Z/3Fr5EQxf8pkcvOQ8dyVqoG/de+RJiK/lzl+A5Utxrb/B
-   mPpCqVVRFPKZDATUW9eW/38jz+bTdXLGpENCvAAgTs2HJrhLSAp71G8c1
-   F3h30NLscQe/2oW275erPHKR9Di7xzy66jz8+cAbN7CrQ9CJSFhca5Ra4
-   akDE1+WmIOWyS/No6QPBybQpzgWmTl2q5QHJ/Q7fY9+NCVRsP/ep3r/77
-   Q==;
-X-CSE-ConnectionGUID: OhXc8pnKR0ye7R0dnEYhww==
-X-CSE-MsgGUID: s0OT2iCPQXCcaGEq3B5MKQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="37992362"
-X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; 
-   d="scan'208";a="37992362"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2025 23:42:16 -0800
-X-CSE-ConnectionGUID: 1OH4uuflR5S+l2cqgHzD4w==
-X-CSE-MsgGUID: Mc61jTczThiN5e0xUsKqtQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="112028936"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa005.fm.intel.com with ESMTP; 22 Jan 2025 23:42:10 -0800
-Date: Thu, 23 Jan 2025 15:41:58 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>, Alexey Kardashevskiy <aik@amd.com>,
-	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
- private device
-Message-ID: <Z5HyxlaiXqp2/KOA@yilunxu-OptiPlex-7050>
-References: <17cd9b77-4620-4883-9a6a-8d1cab822c88@amd.com>
- <20250115130102.GM5556@nvidia.com>
- <f1ac048f-64b1-4343-ab86-ad98c24a44f5@linux.intel.com>
- <20250117132523.GA5556@nvidia.com>
- <Znh+uTMe/wX2RIJm@yilunxu-OptiPlex-7050>
- <20250120132525.GH5556@nvidia.com>
- <ZnnhKtA2n4s1CLyf@yilunxu-OptiPlex-7050>
- <20250121174303.GV5556@nvidia.com>
- <Z5B0+OcLWsiHLRIA@yilunxu-OptiPlex-7050>
- <20250122125512.GD5556@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFB6q7e5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5319DC4CED3;
+	Thu, 23 Jan 2025 09:50:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737625846;
+	bh=l3G4zaFnVKze3aUnY1RMk3kB+rM/zQJx7o7qCtrqwRc=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=EFB6q7e5Qy/QS0Bt4kyK5cbgb7aN4tz5B1qmerPQC8GRkeYIAy2Xba7vh3ony9fNN
+	 EVugiqZQkyMGRK2K6Y3Hq1EO5jpM8F2FpRm8Rz1W6dVuHKEflxVxD0JZCWN7640VCp
+	 /BMqf5QDc0DOlfXs+fmcdv07wcK8WR8GdpCca7Vu9rPWmpfLT25ZPj+eopTFXVFyCq
+	 EXka363+HJ8DIE03xX7u+r+RSGVksj77OSNaLep6vVaJ9EWFWPWKY9FGj2IQvKaIYD
+	 ZWC2OHbrOZF//S3wNkjYt14BappAGXV5HyIPm16TXehuROXJEveAmW73SwLqMLeSTC
+	 VW9w0wiP2kwfA==
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250122125512.GD5556@nvidia.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 23 Jan 2025 11:50:40 +0200
+Message-Id: <D79CYAVX0LAZ.1MIYNOM6J7MMM@kernel.org>
+Cc: "Stefano Garzarella" <sgarzare@redhat.com>, "Jarkko Sakkinen"
+ <jarkko.sakkinen@iki.fi>, "Jason Gunthorpe" <jgg@ziepe.ca>, "James
+ Bottomley" <james.bottomley@hansenpartnership.com>,
+ <linux-coco@lists.linux.dev>, "Borislav Petkov" <bp@alien8.de>, "Dave
+ Hansen" <dave.hansen@linux.intel.com>, "Peter Huewe" <peterhuewe@gmx.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, <linux-integrity@vger.kernel.org>,
+ <x86@kernel.org>, "Joerg Roedel" <jroedel@suse.de>,
+ <linux-kernel@vger.kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Thomas
+ Gleixner" <tglx@linutronix.de>, "Claudio Carvalho"
+ <cclaudio@linux.ibm.com>, "Dov Murik" <dovmurik@linux.ibm.com>, "Tom
+ Lendacky" <thomas.lendacky@amd.com>
+Subject: Re: [PATCH 3/3] x86/sev: add a SVSM vTPM platform device
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Dionna Amalie Glaze" <dionnaglaze@google.com>
+X-Mailer: aerc 0.18.2
+References: <20241210143423.101774-1-sgarzare@redhat.com>
+ <20241210143423.101774-4-sgarzare@redhat.com>
+ <20241210144025.GG1888283@ziepe.ca>
+ <50a2e1d29b065498146f459035e447851a518d1a.camel@HansenPartnership.com>
+ <20241210150413.GI1888283@ziepe.ca>
+ <CAGxU2F6yzqb0o_pQDakBbCj3RdKy_XfZfzGsiywnYL65g6WeGg@mail.gmail.com>
+ <20241211150048.GJ1888283@ziepe.ca>
+ <CAGxU2F7QjQTnXsqYeKc0q03SQCoW+BHbej9Q2Z8gxbgu-3O2fA@mail.gmail.com>
+ <D6FSHG5Z9UJQ.CWQTAANBVIQQ@iki.fi>
+ <6rwo7tkdst227kb4pwvr54w4mfz2zw3offux7mqfupi3rgwkaz@65yklvvqw6n4>
+ <CAGxU2F4YQy-otsGtGiUHDiL7PGXic2_HzWL_+GHkn+Hs_ScGpQ@mail.gmail.com>
+ <D725TPWOVBUL.1DJAOZ0QL0RNH@kernel.org>
+ <D725V628UV87.31SUEYVF9IUUC@kernel.org>
+ <D726DAWHLOGW.3TR2LCJ936OG7@kernel.org>
+ <CAAH4kHYy7=OZsHnOBiQug0Y__bNHt6i+bop0xaxQjpWQ6aQr1Q@mail.gmail.com>
+In-Reply-To: <CAAH4kHYy7=OZsHnOBiQug0Y__bNHt6i+bop0xaxQjpWQ6aQr1Q@mail.gmail.com>
 
-On Wed, Jan 22, 2025 at 08:55:12AM -0400, Jason Gunthorpe wrote:
-> On Wed, Jan 22, 2025 at 12:32:56PM +0800, Xu Yilun wrote:
-> > On Tue, Jan 21, 2025 at 01:43:03PM -0400, Jason Gunthorpe wrote:
-> > > On Tue, Jun 25, 2024 at 05:12:10AM +0800, Xu Yilun wrote:
-> > > 
-> > > > When VFIO works as a TEE user in VM, it means an attester (e.g. PCI
-> > > > subsystem) has already moved the device to RUN state. So VFIO & DPDK
-> > > > are all TEE users, no need to manipulate TDISP state between them.
-> > > > AFAICS, this is the most preferred TIO usage in CoCo-VM.
-> > > 
-> > > No, unfortunately. Part of the motivation to have the devices be
-> > > unlocked when the VM starts is because there is an expectation that a
-> > > driver in the VM will need to do untrusted operations to boot up the
-> > 
-> > I assume these operations are device specific.
-> 
-> Yes
-> 
-> > > device before it can be switched to the run state.
-> > > 
-> > > So any vfio use case needs to imagine that VFIO starts with an
-> > > untrusted device, does stuff to it, then pushes everything through to
-> > 
-> > I have concern that VFIO has to do device specific stuff. Our current
-> > expectation is a specific device driver deals with the untrusted
-> > operations, then user writes a 'bind' device sysfs node which detaches
-> > the driver for untrusted, do the attestation and accept, and try match
-> > the driver for trusted (e.g. VFIO).
-> 
-> I don't see this as working, VFIO will FLR the device which will
-> destroy anything that was done prior.
-> 
-> VFIO itself has to do the sequence and the VFIO userspace has to
-> contain the device specific stuff.
+On Wed Jan 22, 2025 at 11:29 PM EET, Dionna Amalie Glaze wrote:
+> I can appreciate this viewpoint. It even surfaced Microsoft's fTPM
+> paper to me, which solves some interesting problems we need to solve
+> in SVSM too. So thanks for that.
+>
+> Just to clarify, you're not asking for SVSM to implement the TIS-MMIO
+> interface instead, but rather to use the fTPM stack, which could make
+> SVSM calls a TEE device operation?
 
-I don't have a complete idea yet. But the goal is not to make any
-existing driver seamlessly work with secure device. It is to provide a
-generic way for bind/attestation/accept, and may save driver's effort
-if they don't care about this startup process. There are plenty of
-operations that a driver can't do to a secure device, FLR is one of
-them. The TDISP SPEC has described some general rules but some are even
-device specific.
+I don't really know what I'm asking because this is barely even a
+PoC, and I state it like this knowingly.
 
-So I think a driver (including VFIO) expects change to support trusted
-device, but may not have to cover bind/attestation/accept flow.
+You should make the argument, and the case for the solution. Then
+it is my turn to comment on that scheme.
 
-Thanks,
-Yilun
+That said, I would not give high odds for acceptance of a duplicate
+TPM stack succeeding.
 
-> 
-> The bind/unbind dance for untrusted->trusted would need to be
-> internalized in VFIO without unbinding. The main motivation for the
-> bind/unbind flow was to manage the DMA API, which VFIO does not use.
-> 
-> Jason
+BR, Jarkko
