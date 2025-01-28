@@ -1,127 +1,149 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF7D1946BC
-	for <linux-coco@lists.linux.dev>; Mon, 27 Jan 2025 21:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5DA83A14
+	for <linux-coco@lists.linux.dev>; Tue, 28 Jan 2025 05:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738012339; cv=none; b=TsyzM8/cpkG+gzd7TsMkrfehBnKO88XWGMoakx4ENCPu9kmx+BtEcQO9ZzQ4C8ZGYc5ULSBMhzAvLwuKML7TTlzF+pri2OrBozvthW/+AqtKvDBz7KVPiPrSyN+ygXnZYR985LklyDIUmrn6c+imRTqGIRnHzpXM0E6D4vA1TFs=
+	t=1738043238; cv=none; b=X4S87ajME7hEZ2sBlrK/8Nbtp0was4ig7xHCcG1M/c7qjCiZU0mb/atdAk24w1JsGdZxpS14F6VoA7Vuf57EPahPctdrGp3La8pg88AS62Gu2hL0e5ypSFL21BH+uk/BYi53G/ce5v4rEyE9ZZUGU5qB5GVl80OzkJkr+MlxYjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738012339; c=relaxed/simple;
-	bh=QIUlCdDDgNKC8e57Y3+feDkX5uLyeyfTJ0A0n34JkIU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=K1LxB2nDJO6N/AhT20O5BFW4r63P/iZ2hczHvjvPEPzHaGQVNQBnkobFnC3JQ+twd2tUNNEcFHMfzgBCgMQtcagvf5qYxfsgPSq4LwXn4KSuvAXJKaBn0dLlbeDdgr5iyoQNRVR0k+hKmjr3VTgdSB7OqGkmsrlBvBTL5dQhc/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lhgoeO+l; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1738043238; c=relaxed/simple;
+	bh=bSqOpBh9c+WYhpQcPwZJnbX4nNxmGrR1DPwd0RwuTs0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bws4KvFYO4+1CSioZD5VFpoebBuvbuSN9D4DJkx5k3+F8U15G2/x8VKra1KDdbG9+UBKhF2Y7/S88MnMwCIHPRCqLU30wGwogQ5P4CtBIwndOpyt2myJbeW2QsnhZxE0QtfyujwASd7BjW5Dfpzgcyq0Opv5KyqD3UBxKvSnbjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h1pp2J5o; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lhgoeO+l"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2efa0eb9dacso9778271a91.1
-        for <linux-coco@lists.linux.dev>; Mon, 27 Jan 2025 13:12:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738012336; x=1738617136; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K6hZefyXL2l96pWmeGJw77FS+9rwDaTak9GYI9pCtzA=;
-        b=lhgoeO+l4iGCizGj970OA73V7S5A9LfpkY3VZqTYDm73oonVxZEbownRbALloPodkB
-         AozxNYgQWwi9UxtrlgVUsd7ZyY5uPZvmV7F9rFOiktl5R1TCR++Hr6WdYLpxHYMwLT8q
-         7GHcEIIxvKMs6mOiFI67i6IgVAYQGLG2vqT3QhMijjd1BvZSjXXDdeXvvEm9qkZ87ml3
-         aBXrLvu/qO9SlCCCFCOWFH+wN8EiIwu9SdvLvus3Fm4mF4kq1bRPg+QuRnpz6WmFKhWe
-         +WtyIvOIzOgGG4et2yIeOnqMCWsUawsAYqGqgIxk4EzypcDIjOJQva2XhCh1bL6PqSPC
-         8SuQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h1pp2J5o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738043235;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZfRypJrBXY8TUZ/BgiawVGat4WmGQVQwJaXYpw4b6P4=;
+	b=h1pp2J5oV2LbLUQ7u8/l/cLg3V7VyVHldNy1UOoiBvQw4rUWk+QfAnDCoozwnZTmM3neUJ
+	Q1o1F2U0QySw6yOEqbY2o5NbhlC0e771yUUJuQaXSLD2yT95tfFvIa8bJy0XND+N0pyiMY
+	1vseXGZDeyw80Zogrgmc61yJvqHJpdM=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-257-HTOCP06QM2auIlaPvI7f8A-1; Tue, 28 Jan 2025 00:47:13 -0500
+X-MC-Unique: HTOCP06QM2auIlaPvI7f8A-1
+X-Mimecast-MFC-AGG-ID: HTOCP06QM2auIlaPvI7f8A
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-218cf85639eso158009505ad.3
+        for <linux-coco@lists.linux.dev>; Mon, 27 Jan 2025 21:47:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738012336; x=1738617136;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K6hZefyXL2l96pWmeGJw77FS+9rwDaTak9GYI9pCtzA=;
-        b=GFZ/oPWeWJt+yHuLK7+/KOfGQx0xNb9VpFaHttze/3MlhOTBtekQKuxVRYLTiENxMH
-         VELSNf4fqmBiUkRpu3asb/cC+PzZeZDSOI6dI2QSS8+N4n3JieoGPJzqW8wO1PNSM8Dx
-         yWgcfJ66tS11rYQvlenlTwCOv+HDb3GD/GjpEffM2EoTEglwJucGt2u2uLsm8523uKHF
-         lMnT7puoEr9ixcce35KRAvwT368qY7pv+8KlNAg03c0dFy+z+SBxmPQkw5X/80dzPmXD
-         7cvVjPK+s+CBLnVUpJzm7uxJ1sS+3PjUPHE449BuWJyP+R8ABB2hgRdKMqxjrpVM4E5X
-         0b/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUEhANsgTJUgeckIVu5k32yWEhJApIwIBFa9vPtf/HI0Kz1mDSrN4dJY2pDSnJbDfq3HqWJGWpi2c+f@lists.linux.dev
-X-Gm-Message-State: AOJu0YxuIJpNaBg5X+4LhSEeM5gn4uFnzJN5t/e208tjWAHeVFfA90yB
-	Qe4StT3G0EX01sT3o8XGwVzAdcgBejkl9qa9OZm59jzpIjh0rplQigfT6fr4NEiJU4Loep5M4oV
-	MMA==
-X-Google-Smtp-Source: AGHT+IEwgayOURYSvjY7e6XLYoI71UjcKramt48qbeELOlKyudPYpVmcvakyD5Op74xYsySjMiHHABxL/+s=
-X-Received: from pfbcb5.prod.google.com ([2002:a05:6a00:4305:b0:725:936f:c305])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8d1:b0:725:f153:22d5
- with SMTP id d2e1a72fcca58-72dafb9e674mr61995080b3a.18.1738012335920; Mon, 27
- Jan 2025 13:12:15 -0800 (PST)
-Date: Mon, 27 Jan 2025 13:12:14 -0800
-In-Reply-To: <e23a94f0-c35f-4d50-b348-4cd64b5ebb67@amd.com>
+        d=1e100.net; s=20230601; t=1738043232; x=1738648032;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZfRypJrBXY8TUZ/BgiawVGat4WmGQVQwJaXYpw4b6P4=;
+        b=EoCWG8gMPAwoiEatw0UcT+7ziiCfLdu97XXe7pXyrSxwpm/Q7btOHwVz0XaapDiTlV
+         5p2KZDoXVa/sXVFvDGx70YRXJgH2mlUWFn2SUX1f5tCt5Sy+9ShmRc+xD1EJTVvxoyD2
+         VlJWquc0HYB37MNW+n+/46GXQT9xO/8b2tA/S56DpCcaKFq1Oi1QpPbjwXP6ZttB4bqt
+         mWBUYd/ts/Q1QyC8xpCb8LzBtyk6D2ThUoB3Sal//41nqIT7e9lDzHRBcKH6t0JEZ1gj
+         2Om/GYVbXvZFdNeVmfr/7WmIDQidp9TYXRhIdSl7xDQNdPyLjjlw/kDaigbRZsaVw7tz
+         lgLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMGZ1RL1AAUaDa/x9IqFguo06OkwOgtevdBle6SY8VMyk6DWTLLHjySOcGoqiZmB8LdLjlON/gsDO3@lists.linux.dev
+X-Gm-Message-State: AOJu0YyV9Qk4+Z1zVUeZTkvrdyV9/ZzxKoEaac/qejI9Zzm405+qtepT
+	/SrxHr3xoxAStm2FGMFEg50JYT3wbc3lfpAW+bHJ16tHHAbhH/BRZ3R8O2+Vvs+dxm/dm/BVsMF
+	mnXU9Tonqzgt6Pl7YGauovEUEjlP8usCZYYoa2UWOHNTjgEW/SyDr/HXP3Mk=
+X-Gm-Gg: ASbGncuXf8413Nnm4q40FqNjIitBWfzb4VbXq8evDuT4r6Mm2z6DZACmlbkcZdiX5LH
+	DBJAHavQBSFyNew27kknD6VCP8hrC2ooqCXimBiefn01eNUGHQbaZVIwAGLQAviFCrMlupZivEs
+	Aun8a/p1SxvMnk2MIqcA0Yok+CY9gcajYaCLoc75OOz1sZU3xOzRWuXq5T2oBb07C4eASr6AnR+
+	6juXHg1hw+3J++qcjM7DdhFOcsN+msV4AdWzv2ckLmVn7zhnzM6kHfve0N8RRlm2InmR5hZzY3f
+	PuYQAw==
+X-Received: by 2002:a05:6a20:1591:b0:1e6:5323:58c5 with SMTP id adf61e73a8af0-1eb214a06f0mr63365297637.12.1738043232154;
+        Mon, 27 Jan 2025 21:47:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGj7WcMyL/2PjgoUCXeF8pDrIwXJ8iDNSOsLtS1l4yE0zK1FCS82DOSLWaxPfSPcfKWvA2L5w==
+X-Received: by 2002:a05:6a20:1591:b0:1e6:5323:58c5 with SMTP id adf61e73a8af0-1eb214a06f0mr63365273637.12.1738043231858;
+        Mon, 27 Jan 2025 21:47:11 -0800 (PST)
+Received: from [192.168.68.55] ([180.233.125.64])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72f8a69eb81sm8276685b3a.26.2025.01.27.21.47.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jan 2025 21:47:10 -0800 (PST)
+Message-ID: <1032c158-c5a6-4845-affa-f444e0071e5a@redhat.com>
+Date: Tue, 28 Jan 2025 15:47:02 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <cover.1737505394.git.ashish.kalra@amd.com> <0b74c3fce90ea464621c0be1dbf681bf46f1aadd.1737505394.git.ashish.kalra@amd.com>
- <c310e42d-d8a8-4ca0-f308-e5bb4e978002@amd.com> <5df43bd9-e154-4227-9202-bd72b794fdfb@amd.com>
- <5af2cc74-c56d-4bcf-870e-afa98d6456b3@amd.com> <Z5QyybbSk4NeroyZ@google.com> <e23a94f0-c35f-4d50-b348-4cd64b5ebb67@amd.com>
-Message-ID: <Z5f2rnMyBAjK88dP@google.com>
-Subject: Re: [PATCH 1/4] iommu/amd: Check SNP support before enabling IOMMU
-From: Sean Christopherson <seanjc@google.com>
-To: Ashish Kalra <ashish.kalra@amd.com>
-Cc: Vasant Hegde <vasant.hegde@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, pbonzini@redhat.com, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	john.allen@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net, 
-	joro@8bytes.org, suravee.suthikulpanit@amd.com, will@kernel.org, 
-	robin.murphy@arm.com, michael.roth@amd.com, dionnaglaze@google.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev, 
-	iommu@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 06/43] arm64: RME: Check for RME support at KVM init
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>
+References: <20241212155610.76522-1-steven.price@arm.com>
+ <20241212155610.76522-7-steven.price@arm.com> <yq5amsgsrzva.fsf@kernel.org>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <yq5amsgsrzva.fsf@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 2c_xUCkN_0CoiTi8sese0qD1FziR-QJtpkAwvu-aUdE_1738043232
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 27, 2025, Ashish Kalra wrote:
-> Hello Sean,
+On 12/19/24 3:44 PM, Aneesh Kumar K.V wrote:
+> Steven Price <steven.price@arm.com> writes:
 > 
-> On 1/24/2025 6:39 PM, Sean Christopherson wrote:
-> > On Fri, Jan 24, 2025, Ashish Kalra wrote:
-> >> With discussions with the AMD IOMMU team, here is the AMD IOMMU
-> >> initialization flow:
-> > 
-> > ..
-> > 
-> >> IOMMU SNP check
-> >>   Core IOMMU subsystem init is done during iommu_subsys_init() via
-> >>   subsys_initcall.  This function does change the DMA mode depending on
-> >>   kernel config.  Hence, SNP check should be done after subsys_initcall.
-> >>   That's why its done currently during IOMMU PCI init (IOMMU_PCI_INIT stage).
-> >>   And for that reason snp_rmptable_init() is currently invoked via
-> >>   device_initcall().
-> >>  
-> >> The summary is that we cannot move snp_rmptable_init() to subsys_initcall as
-> >> core IOMMU subsystem gets initialized via subsys_initcall.
-> > 
-> > Just explicitly invoke RMP initialization during IOMMU SNP setup.  Pretending
-> > there's no connection when snp_rmptable_init() checks amd_iommu_snp_en and has
-> > a comment saying it needs to come after IOMMU SNP setup is ridiculous.
-> > 
+>> +static int rmi_check_version(void)
+>> +{
+>> +	struct arm_smccc_res res;
+>> +	int version_major, version_minor;
+>> +	unsigned long host_version = RMI_ABI_VERSION(RMI_ABI_MAJOR_VERSION,
+>> +						     RMI_ABI_MINOR_VERSION);
+>> +
+>> +	arm_smccc_1_1_invoke(SMC_RMI_VERSION, host_version, &res);
+>> +
+>> +	if (res.a0 == SMCCC_RET_NOT_SUPPORTED)
+>> +		return -ENXIO;
+>> +
+>> +	version_major = RMI_ABI_VERSION_GET_MAJOR(res.a1);
+>> +	version_minor = RMI_ABI_VERSION_GET_MINOR(res.a1);
+>> +
+>> +	if (res.a0 != RMI_SUCCESS) {
+>> +		kvm_err("Unsupported RMI ABI (v%d.%d) we want v%d.%d\n",
+>> +			version_major, version_minor,
+>> +			RMI_ABI_MAJOR_VERSION,
+>> +			RMI_ABI_MINOR_VERSION);
+>> +		return -ENXIO;
+>> +	}
+>> +
+>> +	kvm_info("RMI ABI version %d.%d\n", version_major, version_minor);
+>> +
+>> +	return 0;
+>> +}
+>> +
 > 
-> Thanks for the suggestion and the patch, i have tested it works for all cases
-> and scenarios. I will post the next version of the patch-set based on this
-> patch.
+> Should we include both high and low version numbers in the kvm_err
+> message on error? ie,
+> 
+> 	high_version_major = RMI_ABI_VERSION_GET_MAJOR(res.a2);
+> 	high_version_minor = RMI_ABI_VERSION_GET_MINOR(res.a2);
+> 
 
-One thing I didn't account for: if IOMMU initialization fails and iommu_snp_enable()
-is never reached, CC_ATTR_HOST_SEV_SNP will be left set.
+I think so since a range of supported versions are returned in the failing case.
 
-I don't see any great options.  Something like the below might work?  And maybe
-keep a device_initcall() in arch/x86/virt/svm/sev.c that sanity checks that SNP
-really is fully enabled?  Dunno, hopefully someone has a better idea.
+Besides, 'unsigned short' is more suitable for the local variable version_{major, minor}
+since both are 16-bits in width. 'unsigned short' explicitly indicates their
+width.
 
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 0e0a531042ac..6d62ee8e0055 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -3295,6 +3295,9 @@ static int __init iommu_go_to_state(enum iommu_init_state state)
-                ret = state_next();
-        }
- 
-+       if (ret && !amd_iommu_snp_en)
-+               cc_platform_clear(CC_ATTR_HOST_SEV_SNP);
-+
-        return ret;
- }
+Thanks,
+Gavin
+
