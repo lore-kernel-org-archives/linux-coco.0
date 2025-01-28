@@ -1,186 +1,288 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CA41D6193
-	for <linux-coco@lists.linux.dev>; Tue, 28 Jan 2025 23:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1951946B8
+	for <linux-coco@lists.linux.dev>; Tue, 28 Jan 2025 23:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738105857; cv=none; b=mx88g9oWKUPQjeuZItErmy9u64TNBRRZCL7gxRwsvxMnzpkwT4cLfKGTKeCtYhj7a6EGDbfPE1yDbjYvVxPavEoRBPl0eSxkNiTb8fxzkN9b0H7RFJGNFuL4oLQmCILYXG86xMAqcKr7P94cktrM2mbU2F0ye1guT751no9VfB8=
+	t=1738108311; cv=none; b=tsHItNMsrlBFR4rt6ForbOhXiMDCFA0ap12tGpoAtTnR+QPpZGAwT7ccFKs5GeHBt9gE7dGLkzvrLqzG62Y3wfB0d4c+6zgkRg3K0GKOpIL/mYWZQECNWAna0yK1PqQlmeo6FFSYRotg4SO+YqBbo3ZQl6plj4Rf5iRHUJmHSFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738105857; c=relaxed/simple;
-	bh=MNP3mXhQarid3ub5H80lrXqLbTuYpmiWSzAXUI9X7PU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EOtRxiMw9wCOyLmqvEQTeVg6OQ3Rgnd+nylhIDB0UwzjXgfdjyYXum/6Z94uw7F/7sKXiw+nfRiKJlBkOl1VHVHOJPWP4oTOQ5w+3dRLuKu521lnvKRoU3cc7du6D8ZzChYDJWSt80QvMaZW0RMB6lakOVIJxq2Nhdd7vD3gklk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G9ic1tet; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738108311; c=relaxed/simple;
+	bh=A4jbdWMbW7MvVT/KBEfNr5R+mAmwla0vGhc+P+AhzF4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ry2ZI3g4wmKesvmTgPCgwv2keJzWKQ+Oxu72kQdpw8QvaWsdtK5fS/k6M42BDt+ZkAeVlnsIDNr6Ig39umx4MoNH/oDNSowcQFq/BMZXqdqYF5XLm82n+7K5okxWJcFeaKZXco5on5iOSo4F5cOsssOFaJ+NE5uq4S5fiYQwaW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gNYc7Mdv; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G9ic1tet"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d442f9d285so13508a12.1
-        for <linux-coco@lists.linux.dev>; Tue, 28 Jan 2025 15:10:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738105853; x=1738710653; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=30S4D0hh4slgH4ZDwimyvWHl6AB3y65dPz0b2hgA7g0=;
-        b=G9ic1tet+/R9WPcihm36WofqDJmiLLlWRsV7JcfTRygO44xBqlqJsl5LIcpmbePalT
-         PNb/58Z0pqpZG7M3HYhXfClMmZ3p5a65xO3Obfn/YrJyZT8ezNeV9JOZ49OrDdZer98j
-         5tjCTHzGVD6KW6Ykgufy0AasFhUN6xQ1r5Z0Mzaa5xAh2z7vHZGi5w3NNzg4o4enY4KZ
-         1s7AYTDmTO+8F4r/wQTw6EaH/pgt0+w067MY0hGNBjMZL6xywlDrth6rkc1r9Wi/ALaK
-         WDylVBh4bRBDXN3gkdA7gf4+APm302eq7SrgGW90QWM0aqiF7a3ZSEqVESjJl3HmQqB9
-         7ZXg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gNYc7Mdv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738108306;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+plZfZMBTkpPOut6ehHxsbo4XAtVzSns554KZTqadOQ=;
+	b=gNYc7Mdv9bSfqg+z7fKRHRqVaS9DbtjuJWv1dsZOMnDctWOp+0pNN0jQ1ra3xXzvTgN3Ac
+	MHKydWAI5gN7PCtcAWGwkh/18OEc9OTCWqqiyemhpEu/Sji6XhfFZyQ5ysn+OvBXzfP2NM
+	g/+0tRlR2V9W7Nk2ZlboJk4Mmlb3yns=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-57-BCZVB9cGPy-pNF22BYej5w-1; Tue, 28 Jan 2025 18:51:45 -0500
+X-MC-Unique: BCZVB9cGPy-pNF22BYej5w-1
+X-Mimecast-MFC-AGG-ID: BCZVB9cGPy-pNF22BYej5w
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2163dc0f689so180190665ad.1
+        for <linux-coco@lists.linux.dev>; Tue, 28 Jan 2025 15:51:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738105853; x=1738710653;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=30S4D0hh4slgH4ZDwimyvWHl6AB3y65dPz0b2hgA7g0=;
-        b=SQkuqur8TvZdVh/J4NOlc582Q/K5rOfituDgzoX9klvRHVWffokxAQvNPCLYCfqT/T
-         +KXhu+ON7tdemwAMW/Vjs6HJWJkdIw88hNfI4TJAJUfFcf/mEnRwpLawXBtmNN8qx/xB
-         1S4kTf/XZTir4pLbuvHPmrkGFKxgS6um0ZwleKa61zNWuY5RkziVkShD6+C9hNJacDdQ
-         yIyej1DEgecypVCF+8ohAItrynYCVsGGh17joViB/twz+jUSJUNio8O3PpzSfPPlhEj8
-         elGRFPnjlhZoOqPGTPYr6F5GpF5mlVGND0CbC6ZkY9bZnPFHKNxV3ygdrFKeStfnt/aj
-         BCHg==
-X-Forwarded-Encrypted: i=1; AJvYcCXQtAt0kT9MHlmjlu+ei14WpSx9I/0ZWvHLBjjU0RHMF0zUnD7zD6TZt7KcicqU15GDVGyeNo7xoxRO@lists.linux.dev
-X-Gm-Message-State: AOJu0YxIgXcrvx6IfFiXLYthpJpMHDf+VmyiSkQFsomTLjyusRM9f1a6
-	pBCZfZiT0xqsuOBGaUnnYr8J62dQk7ipGXuA4Gm5HYzptirGesvIloRvj1l8iu5lZ11tZWDDLtp
-	eV3USVpCRRlpi67OTEGAKv3UqJhKMU3+FNB2J
-X-Gm-Gg: ASbGncvbC3QFhZLGjkOybe8CMAUqSdWzOyIuAgkOMhWZ9RQJn321xpJqj0lbhiFgnEJ
-	cso+31tzZJN6mTPmqPeCpuOIrR7brTXUkPNQ59BIhPUXCEvna1G/lEn7hFYEZ9GUCn6vG3lSOOd
-	/w8PcpS7Gs0UoG7rmtpzhCmFs=
-X-Google-Smtp-Source: AGHT+IGPbz93uGpVfh/Ixn4HERBA1PJ2FGVLZbXF2Ya5IhqfnhZyUzj25HM7E5GP/JaQbmDxOkZViBWPWUi9ykUZO9g=
-X-Received: by 2002:aa7:c7d0:0:b0:5db:68d3:e8e7 with SMTP id
- 4fb4d7f45d1cf-5dc6097ab7bmr16204a12.5.1738105853025; Tue, 28 Jan 2025
- 15:10:53 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738108304; x=1738713104;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+plZfZMBTkpPOut6ehHxsbo4XAtVzSns554KZTqadOQ=;
+        b=korUNfJWY6kuHwBmgAiWFBwoJE0vUbhoVsXnlDzSXxolmScMBvno8eZIuTCo3xt2x7
+         aBzigudX4qORFJbh8Pl4bUWHX6xbvCy6MIWp7wSfuy7MRI7OnpBo1TjaKVLMS5RMUNZY
+         QVoyaFPd4+gEU4Drqz7kkurUHuPo8VWP89zdqui+JL2B197OJ85ZdgjQGKSyuScr/buF
+         wow1P+8qVV6jU9VWe6DbjJIo0WW1UeDZ5+BZyv9XCho1eS86RaWAIlJ3YeY3um/l7exG
+         JqC9kAVDwQAxaEizUYPl5CORQhm7b1Z+e7Fnu4zvBVVWXQKh+WxiGiy4+il6rGQ+Mc4t
+         oDLA==
+X-Forwarded-Encrypted: i=1; AJvYcCV42zTvpMC/qhJMI8Cqt8yUrNWjyUOhZqatO1Bv96OLeslPaRC5pxPmxz2PLbS9wtSRpxEz2faTP0Vc@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz1FbRQws1E6KzOBP8RCNdaPqGFslHXX1l951CDYbBHDchrRLIa
+	POYl1GxyszAh6ymG3fObL4UjxccEx3RGkGifTF6+yMyaAULsNTBTPYtOkWydK4bji6J+onL2eTD
+	uxtL+tnNqXNcNy6V6QzFph5CgY+aHmFTZqJ0onc95OI0h1pQE11orR3HebAY=
+X-Gm-Gg: ASbGncvqN7O07iy03j3d6VxmOOozlK4KqHKclROcVHp7o7dHDvpnSGGRW3tUPwYbsbw
+	x2K+wh3SjGXakYLWsl8yCxIumYVu+7WjXnBC4PxzRLY/kPOHIVwWZjLbqWJtTGUK2penalxgSx3
+	/NH4NaDwbF9hX9Ll6vu4RcMHQ9PjE9REcDjZ9wNOmlotoubQS1lx491DiU9NOZ1iqctKVOL+sQ3
+	VddxbT+aisk7ZnXjI2Xd4QGC0HPYvj9H/8GU5RSyiXJq+hNVblKxAMw4fqgtMG7uiWm8geiGYd7
+	uyf+eA==
+X-Received: by 2002:a17:902:cec2:b0:215:a57e:88e7 with SMTP id d9443c01a7336-21dd7c44fbemr14311215ad.3.1738108304635;
+        Tue, 28 Jan 2025 15:51:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEisDusPXc7ABGNzSjvOH0bfbYE9rGUJagDAg44yLrrrIJdYRrgsxD0BPQEinR+S01/v+a6Rw==
+X-Received: by 2002:a17:902:cec2:b0:215:a57e:88e7 with SMTP id d9443c01a7336-21dd7c44fbemr14310905ad.3.1738108304240;
+        Tue, 28 Jan 2025 15:51:44 -0800 (PST)
+Received: from [192.168.68.55] ([180.233.125.64])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414132asm86536785ad.138.2025.01.28.15.51.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jan 2025 15:51:43 -0800 (PST)
+Message-ID: <f6668e66-313a-4c56-92ba-08855878ebf9@redhat.com>
+Date: Wed, 29 Jan 2025 09:51:34 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250128213652.1880545-1-vannapurve@google.com> <4e07bbe6-9f74-45e5-b8d4-f992d2be78fc@intel.com>
-In-Reply-To: <4e07bbe6-9f74-45e5-b8d4-f992d2be78fc@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 28 Jan 2025 15:10:38 -0800
-X-Gm-Features: AWEUYZnr6BalmDJDczp06JqsaAK8ci8DX1jknG7h12z9nntmVUzxD_y9zvF07es
-Message-ID: <CAGtprH_1hc35um_47n=TMJzXAvpa7LY6kyXUafjJt3sPCosC_w@mail.gmail.com>
-Subject: Re: [PATCH 1/1] x86/tdx: Route safe halt execution via tdx_safe_halt
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, 
-	jxgao@google.com, sagis@google.com, oupton@google.com, pgonda@google.com, 
-	kirill@shutemov.name, dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
-	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 07/43] arm64: RME: Define the user ABI
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20241212155610.76522-1-steven.price@arm.com>
+ <20241212155610.76522-8-steven.price@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20241212155610.76522-8-steven.price@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 0bD-fsJT5FhCpNAyfDLXBcx5lFBdAmnMJSR1KKDHYEk_1738108305
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 28, 2025 at 2:08=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
- wrote:
->
-> On 1/28/25 13:36, Vishal Annapurve wrote:
-> > Direct HLT instruction execution causes #VEs for TDX VMs which is route=
-d
-> > to hypervisor via tdvmcall. This process renders HLT instruction
-> > execution inatomic, so any preceeding instructions like STI/MOV SS will
-> > end up enabling interrupts before the HLT instruction is routed to the
-> > hypervisor. This creates scenarios where interrupts could land during
-> > HLT instruction emulation without aborting halt operation leading to
-> > idefinite halt wait times.
->
-> Could you please break out the spell checker before posting v2? There
-> are a couple problems in that paragraph.
->
-> > x86_idle is already upgraded to invoke tdx_safe_halt to avoid such
->
-> Please add parenthesis to functions() to make it more clear what you are
-> referring to.
->
-> > scenarios, but it didn't cover pvnative_safe_halt which can be invoked
-> > using raw_safe_halt from call sites like acpi_safe_halt (acpi_pm
-> > subsystem). This patch upgrades the safe_halt executions to use
-> > tdx_safe_halt.
->
-> No "this patch", please.
->
-> > To avoid future call sites which cause HLT instruction emulation with
-> > irqs enabled, add a warn and fail the HLT instruction emulation.
->
-> This seems like a bug fix. Shouldn't it have a cc:stable@ and a Fixes: ta=
-g?
->
+On 12/13/24 1:55 AM, Steven Price wrote:
+> There is one (multiplexed) CAP which can be used to create, populate and
+> then activate the realm.
+> 
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes from v5:
+>   * Actually expose the new VCPU capability (KVM_ARM_VCPU_REC) by bumping
+>     KVM_VCPU_MAX_FEATURES - note this also exposes KVM_ARM_VCPU_HAS_EL2!
+> ---
+>   Documentation/virt/kvm/api.rst    |  1 +
+>   arch/arm64/include/uapi/asm/kvm.h | 49 +++++++++++++++++++++++++++++++
+>   include/uapi/linux/kvm.h          | 12 ++++++++
+>   3 files changed, 62 insertions(+)
+> 
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index 454c2aaa155e..df4679415a4c 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -5088,6 +5088,7 @@ Recognised values for feature:
+>   
+>     =====      ===========================================
+>     arm64      KVM_ARM_VCPU_SVE (requires KVM_CAP_ARM_SVE)
+> +  arm64      KVM_ARM_VCPU_REC (requires KVM_CAP_ARM_RME)
+>     =====      ===========================================
+>   
+>   Finalizes the configuration of the specified vcpu feature.
+> diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/asm/kvm.h
+> index 66736ff04011..8810719523ec 100644
+> --- a/arch/arm64/include/uapi/asm/kvm.h
+> +++ b/arch/arm64/include/uapi/asm/kvm.h
+> @@ -108,6 +108,7 @@ struct kvm_regs {
+>   #define KVM_ARM_VCPU_PTRAUTH_ADDRESS	5 /* VCPU uses address authentication */
+>   #define KVM_ARM_VCPU_PTRAUTH_GENERIC	6 /* VCPU uses generic authentication */
+>   #define KVM_ARM_VCPU_HAS_EL2		7 /* Support nested virtualization */
+> +#define KVM_ARM_VCPU_REC		8 /* VCPU REC state as part of Realm */
+>   
+>   struct kvm_vcpu_init {
+>   	__u32 target;
+> @@ -418,6 +419,54 @@ enum {
+>   #define   KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES	3
+>   #define   KVM_DEV_ARM_ITS_CTRL_RESET		4
+>   
+> +/* KVM_CAP_ARM_RME on VM fd */
+> +#define KVM_CAP_ARM_RME_CONFIG_REALM		0
+> +#define KVM_CAP_ARM_RME_CREATE_RD		1
+> +#define KVM_CAP_ARM_RME_INIT_IPA_REALM		2
+> +#define KVM_CAP_ARM_RME_POPULATE_REALM		3
+> +#define KVM_CAP_ARM_RME_ACTIVATE_REALM		4
+> +
 
-Makes sense to add "fixes: bfe6ed0c6727 (x86/tdx: Add HLT support for
-TDX guests)" tag.
+I guess it would be nice to rename KVM_CAP_ARM_RME_CREATE_RD to KVM_CAP_ARM_RME_CREATE_REALM
+since it's to create a realm. All other macros have suffix "_REALM". Besides, KVM_CAP_ARM_RME_INIT_IPA_REALM
+would be KVM_CAP_ARM_RME_INIT_REALM_IPA, and KVM_CAP_ARM_RME_POPULATE_REALM would be
+KVM_CAP_ARM_RME_POPULATE_REALM_IPA. Something like below.
 
-> Do you have any thoughts on why nobody has hit this up to now? Are TDX
-> users not enabling PARAVIRT_XXL? Not using ACPI?
+/* KVM_CAP_ARM_RME on VM fd */
+#define KVM_CAP_ARM_RME_CONFIG_REALM		0
+#define KVM_CAP_ARM_RME_CREATE_RD		1
+#define KVM_CAP_ARM_RME_INIT_REALM_IPA		2
+#define KVM_CAP_ARM_RME_POPULATE_REALM_IPA	3
+#define KVM_CAP_ARM_RME_ACTIVATE_REALM		4
 
-This has been a long-standing issue which would show up visibly with
-certain workloads where vcpus hit idle loop quite often during the
-runtime. I was only able to recently spend some time towards
-understanding the cause properly.
+> +#define KVM_CAP_ARM_RME_MEASUREMENT_ALGO_SHA256		0
+> +#define KVM_CAP_ARM_RME_MEASUREMENT_ALGO_SHA512		1
+> +
+> +#define KVM_CAP_ARM_RME_RPV_SIZE 64
+> +
+> +/* List of configuration items accepted for KVM_CAP_ARM_RME_CONFIG_REALM */
+> +#define KVM_CAP_ARM_RME_CFG_RPV			0
+> +#define KVM_CAP_ARM_RME_CFG_HASH_ALGO		1
+> +
 
->
-> > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> > index 0d9b090b4880..98b5f317596d 100644
-> > --- a/arch/x86/coco/tdx/tdx.c
-> > +++ b/arch/x86/coco/tdx/tdx.c
-> > @@ -14,6 +14,7 @@
-> >  #include <asm/ia32.h>
-> >  #include <asm/insn.h>
-> >  #include <asm/insn-eval.h>
-> > +#include <asm/paravirt_types.h>
-> >  #include <asm/pgtable.h>
-> >  #include <asm/set_memory.h>
-> >  #include <asm/traps.h>
-> > @@ -380,6 +381,11 @@ static int handle_halt(struct ve_info *ve)
-> >  {
-> >       const bool irq_disabled =3D irqs_disabled();
-> >
-> > +     if (!irq_disabled) {
-> > +             WARN(1, "HLT instruction emulation unsafe with irqs enabl=
-ed\n");
-> > +             return -EIO;
-> > +     }
->
-> Yeah, this warning is a good idea. But probably best left as a
-> WARN_ONCE() so it doesn't spew too badly.
->
-> > @@ -1083,6 +1089,15 @@ void __init tdx_early_init(void)
-> >       x86_platform.guest.enc_kexec_begin           =3D tdx_kexec_begin;
-> >       x86_platform.guest.enc_kexec_finish          =3D tdx_kexec_finish=
-;
-> >
-> > +#ifdef CONFIG_PARAVIRT_XXL
-> > +     /*
-> > +      * halt instruction execution is not atomic for TDX VMs as it gen=
-erates
-> > +      * #VEs, so otherwise "safe" halt invocations which cause interru=
-pts to
-> > +      * get enabled right after halt instruction don't work for TDX VM=
-s.
-> > +      */
-> > +     pv_ops.irq.safe_halt =3D tdx_safe_halt;
-> > +#endif
-> The basic bug here was that there was a path to a hlt instruction that
-> folks didn't realize. This patch fixes the basic bug and gives us a nice
-> warning if there are additional paths that weren't imagined.
->
-> But it doesn't really help us audit the code to make it clear that TDX
-> guest kernel's _can't_ screw up hlt again the same way.  This, for
-> instance would make it pretty clear:
->
-> static __always_inline void native_safe_halt(void)
-> {
->         if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST))
->                 tdx_safe_halt();
->         mds_idle_clear_cpu_buffers();
->         asm volatile("sti; hlt": : :"memory");
-> }
->
-> There are reasons we wouldn't want to do that exactly, but I'd much
-> prefer something that is harder to screw up than the proposal above.
-> Anybody have any better ideas?
+The comments for the list of configuration items accepted for KVM_CAP_ARM_RME_CONFIG_REALM,
+it shall be moved before KVM_CAP_ARM_RME_MEASUREMENT_ALGO_SHA256 to cover all the definitions
+applied to KVM_CAP_ARM_RME_CONFIG_REALM.
 
-All other suggestions look good to me and will incorporate them for V2.
+Besides, the prefix "KVM_CAP_" in those definitions, except the first 5 definitions like
+KVM_CAP_ARM_RME_CONFIG_REALM, are confusing. The macros with "KVM_CAP_" prefix are usually
+indicating capabilities. In this specific case, they're applied to the argument (struct),
+carried by the corresponding sub-command. So I would suggest to eleminate the prefix,
+something like below:
+
+/* List of configurations accepted for KVM_CAP_ARM_RME_CONFIG_REALM */
+#define ARM_RME_CONFIG_RPV		0
+#define ARM_RME_CONFIG_HASH_ALGO	1
+
+#define ARM_RME_CONFIG_MEASUREMENT_ALGO_SHA256	0
+#define ARM_RME_CONFIG_MEASUREMENT_ALGO_SHA512	1
+
+#define ARM_RME_CONFIG_RPV_SIZE	64
+
+struct arm_rme_config {
+         :
+};
+
+
+> +struct kvm_cap_arm_rme_config_item {
+> +	__u32 cfg;
+> +	union {
+> +		/* cfg == KVM_CAP_ARM_RME_CFG_RPV */
+> +		struct {
+> +			__u8	rpv[KVM_CAP_ARM_RME_RPV_SIZE];
+> +		};
+> +
+> +		/* cfg == KVM_CAP_ARM_RME_CFG_HASH_ALGO */
+> +		struct {
+> +			__u32	hash_algo;
+> +		};
+> +
+> +		/* Fix the size of the union */
+> +		__u8	reserved[256];
+> +	};
+> +};
+> +
+> +#define KVM_ARM_RME_POPULATE_FLAGS_MEASURE	BIT(0)
+> +struct kvm_cap_arm_rme_populate_realm_args {
+> +	__u64 populate_ipa_base;
+> +	__u64 populate_ipa_size;
+> +	__u32 flags;
+> +	__u32 reserved[3];
+> +};
+> +
+
+BIT(0) has type of 'unsigned long', inconsistent to '__u32 flags'. So it would
+be something like below.
+
+#define ARM_RME_POPULATE_REALM_IPA_FLAG_MEASURE		(1 << 0)
+struct arm_rme_populate_realm_ipa {
+	__u64 base;
+	__u64 size;
+	__u32 flags;
+	__u32 reserved[3];
+};
+
+> +struct kvm_cap_arm_rme_init_ipa_args {
+> +	__u64 init_ipa_base;
+> +	__u64 init_ipa_size;
+> +	__u32 reserved[4];
+> +};
+> +
+
+Similiarly, it would be something like below:
+
+struct arm_rme_init_realm_ipa {
+	__u64 base;
+	__u64 size;
+	__u64 reserved[2];
+};
+
+>   /* Device Control API on vcpu fd */
+>   #define KVM_ARM_VCPU_PMU_V3_CTRL	0
+>   #define   KVM_ARM_VCPU_PMU_V3_IRQ	0
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 502ea63b5d2e..f448198838cf 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -934,6 +934,8 @@ struct kvm_enable_cap {
+>   #define KVM_CAP_X86_APIC_BUS_CYCLES_NS 237
+>   #define KVM_CAP_X86_GUEST_MODE 238
+>   
+> +#define KVM_CAP_ARM_RME 300 /* FIXME: Large number to prevent conflicts */
+> +
+>   struct kvm_irq_routing_irqchip {
+>   	__u32 irqchip;
+>   	__u32 pin;
+> @@ -1581,4 +1583,14 @@ struct kvm_pre_fault_memory {
+>   	__u64 padding[5];
+>   };
+>   
+> +/* Available with KVM_CAP_ARM_RME, only for VMs with KVM_VM_TYPE_ARM_REALM  */
+> +struct kvm_arm_rmm_psci_complete {
+> +	__u64 target_mpidr;
+> +	__u32 psci_status;
+> +	__u32 padding[3];
+> +};
+> +
+> +/* FIXME: Update nr (0xd2) when merging */
+> +#define KVM_ARM_VCPU_RMM_PSCI_COMPLETE	_IOW(KVMIO, 0xd2, struct kvm_arm_rmm_psci_complete)
+> +
+>   #endif /* __LINUX_KVM_H */
+
+Thanks,
+Gavin
+
