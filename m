@@ -1,149 +1,267 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5DA83A14
-	for <linux-coco@lists.linux.dev>; Tue, 28 Jan 2025 05:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C457385270
+	for <linux-coco@lists.linux.dev>; Tue, 28 Jan 2025 12:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738043238; cv=none; b=X4S87ajME7hEZ2sBlrK/8Nbtp0was4ig7xHCcG1M/c7qjCiZU0mb/atdAk24w1JsGdZxpS14F6VoA7Vuf57EPahPctdrGp3La8pg88AS62Gu2hL0e5ypSFL21BH+uk/BYi53G/ce5v4rEyE9ZZUGU5qB5GVl80OzkJkr+MlxYjs=
+	t=1738066672; cv=none; b=kpvoutegQj60KDqCgIYPDOO6Rroc0c+9EpVatqEdc7BTxWcxhtjQxUK22dLsIV5Rxcm6AIkZk9hac7m/vS7xUS7U6kXk62Z2JNB7rD50M2sDs4uvNzkd0n7FVMiiX0yzcoWWoXnEJ7qKRvDs1kv7QH0Rd+jhmLnl2F2S6R0+sNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738043238; c=relaxed/simple;
-	bh=bSqOpBh9c+WYhpQcPwZJnbX4nNxmGrR1DPwd0RwuTs0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bws4KvFYO4+1CSioZD5VFpoebBuvbuSN9D4DJkx5k3+F8U15G2/x8VKra1KDdbG9+UBKhF2Y7/S88MnMwCIHPRCqLU30wGwogQ5P4CtBIwndOpyt2myJbeW2QsnhZxE0QtfyujwASd7BjW5Dfpzgcyq0Opv5KyqD3UBxKvSnbjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h1pp2J5o; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h1pp2J5o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738043235;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZfRypJrBXY8TUZ/BgiawVGat4WmGQVQwJaXYpw4b6P4=;
-	b=h1pp2J5oV2LbLUQ7u8/l/cLg3V7VyVHldNy1UOoiBvQw4rUWk+QfAnDCoozwnZTmM3neUJ
-	Q1o1F2U0QySw6yOEqbY2o5NbhlC0e771yUUJuQaXSLD2yT95tfFvIa8bJy0XND+N0pyiMY
-	1vseXGZDeyw80Zogrgmc61yJvqHJpdM=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-257-HTOCP06QM2auIlaPvI7f8A-1; Tue, 28 Jan 2025 00:47:13 -0500
-X-MC-Unique: HTOCP06QM2auIlaPvI7f8A-1
-X-Mimecast-MFC-AGG-ID: HTOCP06QM2auIlaPvI7f8A
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-218cf85639eso158009505ad.3
-        for <linux-coco@lists.linux.dev>; Mon, 27 Jan 2025 21:47:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738043232; x=1738648032;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZfRypJrBXY8TUZ/BgiawVGat4WmGQVQwJaXYpw4b6P4=;
-        b=EoCWG8gMPAwoiEatw0UcT+7ziiCfLdu97XXe7pXyrSxwpm/Q7btOHwVz0XaapDiTlV
-         5p2KZDoXVa/sXVFvDGx70YRXJgH2mlUWFn2SUX1f5tCt5Sy+9ShmRc+xD1EJTVvxoyD2
-         VlJWquc0HYB37MNW+n+/46GXQT9xO/8b2tA/S56DpCcaKFq1Oi1QpPbjwXP6ZttB4bqt
-         mWBUYd/ts/Q1QyC8xpCb8LzBtyk6D2ThUoB3Sal//41nqIT7e9lDzHRBcKH6t0JEZ1gj
-         2Om/GYVbXvZFdNeVmfr/7WmIDQidp9TYXRhIdSl7xDQNdPyLjjlw/kDaigbRZsaVw7tz
-         lgLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVMGZ1RL1AAUaDa/x9IqFguo06OkwOgtevdBle6SY8VMyk6DWTLLHjySOcGoqiZmB8LdLjlON/gsDO3@lists.linux.dev
-X-Gm-Message-State: AOJu0YyV9Qk4+Z1zVUeZTkvrdyV9/ZzxKoEaac/qejI9Zzm405+qtepT
-	/SrxHr3xoxAStm2FGMFEg50JYT3wbc3lfpAW+bHJ16tHHAbhH/BRZ3R8O2+Vvs+dxm/dm/BVsMF
-	mnXU9Tonqzgt6Pl7YGauovEUEjlP8usCZYYoa2UWOHNTjgEW/SyDr/HXP3Mk=
-X-Gm-Gg: ASbGncuXf8413Nnm4q40FqNjIitBWfzb4VbXq8evDuT4r6Mm2z6DZACmlbkcZdiX5LH
-	DBJAHavQBSFyNew27kknD6VCP8hrC2ooqCXimBiefn01eNUGHQbaZVIwAGLQAviFCrMlupZivEs
-	Aun8a/p1SxvMnk2MIqcA0Yok+CY9gcajYaCLoc75OOz1sZU3xOzRWuXq5T2oBb07C4eASr6AnR+
-	6juXHg1hw+3J++qcjM7DdhFOcsN+msV4AdWzv2ckLmVn7zhnzM6kHfve0N8RRlm2InmR5hZzY3f
-	PuYQAw==
-X-Received: by 2002:a05:6a20:1591:b0:1e6:5323:58c5 with SMTP id adf61e73a8af0-1eb214a06f0mr63365297637.12.1738043232154;
-        Mon, 27 Jan 2025 21:47:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGj7WcMyL/2PjgoUCXeF8pDrIwXJ8iDNSOsLtS1l4yE0zK1FCS82DOSLWaxPfSPcfKWvA2L5w==
-X-Received: by 2002:a05:6a20:1591:b0:1e6:5323:58c5 with SMTP id adf61e73a8af0-1eb214a06f0mr63365273637.12.1738043231858;
-        Mon, 27 Jan 2025 21:47:11 -0800 (PST)
-Received: from [192.168.68.55] ([180.233.125.64])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72f8a69eb81sm8276685b3a.26.2025.01.27.21.47.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jan 2025 21:47:10 -0800 (PST)
-Message-ID: <1032c158-c5a6-4845-affa-f444e0071e5a@redhat.com>
-Date: Tue, 28 Jan 2025 15:47:02 +1000
+	s=arc-20240116; t=1738066672; c=relaxed/simple;
+	bh=gwJt95vNJCqzrkdYQJcU71cNTn+0azjl3k3Hf4t0UB8=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bVeGgjMgaZozoydDRmlT0IA5mT0Cvk6Isr9IGi1C4utKrTLixwemfKnuxOw3lLZFrgYUj3GezdFWt7AocDzoemhrtUF+sJzybE0vxaQ+6PoBy3tXyPQNLFiGbC15ZhPeO5NqY3J9Q9CPCfozflHunMj1VIzJkn59s30FoZQasvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Yj46K59tsz6K92N;
+	Tue, 28 Jan 2025 20:17:13 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id B664D140A35;
+	Tue, 28 Jan 2025 20:17:46 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 28 Jan
+ 2025 13:17:46 +0100
+Date: Tue, 28 Jan 2025 12:17:44 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, Xiaoyao Li <xiaoyao.li@intel.com>, "Isaku
+ Yamahata" <isaku.yamahata@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+	Yilun Xu <yilun.xu@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, "John
+ Allen" <john.allen@amd.com>, <linux-pci@vger.kernel.org>,
+	<gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 03/11] coco/tsm: Introduce a class device for TEE
+ Security Managers
+Message-ID: <20250128121744.00003188@huawei.com>
+In-Reply-To: <173343741358.1074769.14824760616956254302.stgit@dwillia2-xfh.jf.intel.com>
+References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
+	<173343741358.1074769.14824760616956254302.stgit@dwillia2-xfh.jf.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/43] arm64: RME: Check for RME support at KVM init
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>
-References: <20241212155610.76522-1-steven.price@arm.com>
- <20241212155610.76522-7-steven.price@arm.com> <yq5amsgsrzva.fsf@kernel.org>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <yq5amsgsrzva.fsf@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 2c_xUCkN_0CoiTi8sese0qD1FziR-QJtpkAwvu-aUdE_1738043232
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On 12/19/24 3:44 PM, Aneesh Kumar K.V wrote:
-> Steven Price <steven.price@arm.com> writes:
-> 
->> +static int rmi_check_version(void)
->> +{
->> +	struct arm_smccc_res res;
->> +	int version_major, version_minor;
->> +	unsigned long host_version = RMI_ABI_VERSION(RMI_ABI_MAJOR_VERSION,
->> +						     RMI_ABI_MINOR_VERSION);
->> +
->> +	arm_smccc_1_1_invoke(SMC_RMI_VERSION, host_version, &res);
->> +
->> +	if (res.a0 == SMCCC_RET_NOT_SUPPORTED)
->> +		return -ENXIO;
->> +
->> +	version_major = RMI_ABI_VERSION_GET_MAJOR(res.a1);
->> +	version_minor = RMI_ABI_VERSION_GET_MINOR(res.a1);
->> +
->> +	if (res.a0 != RMI_SUCCESS) {
->> +		kvm_err("Unsupported RMI ABI (v%d.%d) we want v%d.%d\n",
->> +			version_major, version_minor,
->> +			RMI_ABI_MAJOR_VERSION,
->> +			RMI_ABI_MINOR_VERSION);
->> +		return -ENXIO;
->> +	}
->> +
->> +	kvm_info("RMI ABI version %d.%d\n", version_major, version_minor);
->> +
->> +	return 0;
->> +}
->> +
-> 
-> Should we include both high and low version numbers in the kvm_err
-> message on error? ie,
-> 
-> 	high_version_major = RMI_ABI_VERSION_GET_MAJOR(res.a2);
-> 	high_version_minor = RMI_ABI_VERSION_GET_MINOR(res.a2);
-> 
+On Thu, 05 Dec 2024 14:23:33 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-I think so since a range of supported versions are returned in the failing case.
+> A "TSM" is a platform component that provides an API for securely
+> provisioning resources for a confidential guest (TVM) to consume. The
+> name originates from the PCI specification for platform agent that
+> carries out operations for PCIe TDISP (TEE Device Interface Security
+> Protocol).
+> 
+> Instances of this class device are parented by a device representing the
+> platform security capability like CONFIG_CRYPTO_DEV_CCP or
+> CONFIG_INTEL_TDX_HOST.
+> 
+> This class device interface is a frontend to the aspects of a TSM and
+> TEE I/O that are cross-architecture common. This includes mechanisms
+> like enumerating available platform TEE I/O capabilities and
+> provisioning connections between the platform TSM and device DSMs
+> (Device Security Manager (TDISP)).
+> 
+> For now this is just the scaffolding for registering a TSM device sysfs
+> interface.
+> 
+> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> Cc: Isaku Yamahata <isaku.yamahata@intel.com>
+> Cc: Alexey Kardashevskiy <aik@amd.com>
+> Cc: Yilun Xu <yilun.xu@intel.com>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: John Allen <john.allen@amd.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-Besides, 'unsigned short' is more suitable for the local variable version_{major, minor}
-since both are 16-bits in width. 'unsigned short' explicitly indicates their
-width.
+A couple of generic comments inline.
 
-Thanks,
-Gavin
+> diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+> index 819a97e8ba99..14e7cf145d85 100644
+> --- a/drivers/virt/coco/Kconfig
+> +++ b/drivers/virt/coco/Kconfig
+> @@ -14,3 +14,5 @@ source "drivers/virt/coco/tdx-guest/Kconfig"
+>  source "drivers/virt/coco/arm-cca-guest/Kconfig"
+>  
+>  source "drivers/virt/coco/guest/Kconfig"
+> +
+> +source "drivers/virt/coco/host/Kconfig"
+> diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+> index 885c9ef4e9fc..73f1b7bc5b11 100644
+> --- a/drivers/virt/coco/Makefile
+> +++ b/drivers/virt/coco/Makefile
+> @@ -8,3 +8,4 @@ obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
+>  obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
+>  obj-$(CONFIG_ARM_CCA_GUEST)	+= arm-cca-guest/
+>  obj-$(CONFIG_TSM_REPORTS)	+= guest/
+> +obj-y				+= host/
+> diff --git a/drivers/virt/coco/host/Kconfig b/drivers/virt/coco/host/Kconfig
+> new file mode 100644
+> index 000000000000..4fbc6ef34f12
+> --- /dev/null
+> +++ b/drivers/virt/coco/host/Kconfig
+> @@ -0,0 +1,6 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +#
+> +# TSM (TEE Security Manager) Common infrastructure and host drivers
+> +#
+> +config TSM
+> +	tristate
+> diff --git a/drivers/virt/coco/host/Makefile b/drivers/virt/coco/host/Makefile
+> new file mode 100644
+> index 000000000000..be0aba6007cd
+> --- /dev/null
+> +++ b/drivers/virt/coco/host/Makefile
+> @@ -0,0 +1,6 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +#
+> +# TSM (TEE Security Manager) Common infrastructure and host drivers
+> +
+> +obj-$(CONFIG_TSM) += tsm.o
+> +tsm-y := tsm-core.o
+> diff --git a/drivers/virt/coco/host/tsm-core.c b/drivers/virt/coco/host/tsm-core.c
+> new file mode 100644
+> index 000000000000..0ee738fc40ed
+> --- /dev/null
+> +++ b/drivers/virt/coco/host/tsm-core.c
+> @@ -0,0 +1,113 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
+> +
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> +
+> +#include <linux/tsm.h>
+> +#include <linux/rwsem.h>
+> +#include <linux/device.h>
+> +#include <linux/module.h>
+> +#include <linux/cleanup.h>
+> +
+> +static DECLARE_RWSEM(tsm_core_rwsem);
+> +static struct class *tsm_class;
+> +static struct tsm_subsys {
+> +	struct device dev;
+> +} *tsm_subsys;
+
+This naming seems a bit confusing. To me tsm_sybsys could be:
+a) The subsystem itself.  So something we'd expect to remove only alongside
+class destroy.
+b) A subsystem of a tsm (confusing here in a subsystem for tsms). Expectation
+   being that a given tsm would register more than one of these.
+c) What I think it is which is, which is the device added to register with
+   the tsm subsystem.  
+
+Mind you I'm not immediately sure what a better naming is.
+tsm_class_dev maybe?  Though that sounds like it should be a struct device.
+
+
+> +
+> +static struct tsm_subsys *
+> +alloc_tsm_subsys(struct device *parent, const struct attribute_group **groups)
+> +{
+> +	struct tsm_subsys *subsys = kzalloc(sizeof(*subsys), GFP_KERNEL);
+> +	struct device *dev;
+> +
+> +	if (!subsys)
+> +		return ERR_PTR(-ENOMEM);
+> +	dev = &subsys->dev;
+> +	dev->parent = parent;
+> +	dev->groups = groups;
+> +	dev->class = tsm_class;
+> +	device_initialize(dev);
+> +	return subsys;
+> +}
+> +
+> +static void put_tsm_subsys(struct tsm_subsys *subsys)
+> +{
+> +	if (!IS_ERR_OR_NULL(subsys))
+
+If you are calling this with it as an error or null then
+that smells like a bad bug we shouldn't paper over.
+The only case I can think of is the define free you have
+below which correctly has the same check.
+
+> +		put_device(&subsys->dev);
+> +}
+> +
+> +DEFINE_FREE(put_tsm_subsys, struct tsm_subsys *,
+> +	    if (!IS_ERR_OR_NULL(_T)) put_tsm_subsys(_T))
+> +struct tsm_subsys *tsm_register(struct device *parent,
+> +				const struct attribute_group **groups)
+> +{
+> +	struct device *dev;
+> +	int rc;
+> +
+> +	guard(rwsem_write)(&tsm_core_rwsem);
+> +	if (tsm_subsys) {
+> +		dev_warn(parent, "failed to register: %s already registered\n",
+> +			 dev_name(tsm_subsys->dev.parent));
+> +		return ERR_PTR(-EBUSY);
+> +	}
+> +
+> +	struct tsm_subsys *subsys __free(put_tsm_subsys) =
+> +		alloc_tsm_subsys(parent, groups);
+> +	if (IS_ERR(subsys))
+> +		return subsys;
+> +
+> +	dev = &subsys->dev;
+> +	rc = dev_set_name(dev, "tsm0");
+> +	if (rc)
+> +		return ERR_PTR(rc);
+> +
+> +	rc = device_add(dev);
+> +	if (rc)
+> +		return ERR_PTR(rc);
+> +
+> +	tsm_subsys = no_free_ptr(subsys);
+> +
+> +	return tsm_subsys;
+> +}
+> +EXPORT_SYMBOL_GPL(tsm_register);
+> +
+> +void tsm_unregister(struct tsm_subsys *subsys)
+> +{
+> +	guard(rwsem_write)(&tsm_core_rwsem);
+> +	if (!tsm_subsys || subsys != tsm_subsys) {
+> +		pr_warn("failed to unregister, not currently registered\n");
+> +		return;
+> +	}
+> +
+> +	device_unregister(&subsys->dev);
+> +	tsm_subsys = NULL;
+> +}
+> +EXPORT_SYMBOL_GPL(tsm_unregister);
+> +
+> +static void tsm_release(struct device *dev)
+> +{
+> +	struct tsm_subsys *subsys = container_of(dev, typeof(*subsys), dev);
+> +
+> +	kfree(subsys);
+> +}
+> +
+> +static int __init tsm_init(void)
+> +{
+> +	tsm_class = class_create("tsm");
+> +	if (IS_ERR(tsm_class))
+> +		return PTR_ERR(tsm_class);
+> +
+> +	tsm_class->dev_release = tsm_release;
+> +	return 0;
+> +}
+> +module_init(tsm_init)
+> +
+> +static void __exit tsm_exit(void)
+> +{
+> +	class_destroy(tsm_class);
+> +}
+> +module_exit(tsm_exit)
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_DESCRIPTION("TEE Security Manager core");
+
 
