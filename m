@@ -1,268 +1,285 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2086.outbound.protection.outlook.com [40.107.94.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB02518FDB2
-	for <linux-coco@lists.linux.dev>; Wed, 29 Jan 2025 04:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738126237; cv=none; b=GQVwpE7lx3HPSH2+41Uh1BfDEquLwOOGqSr+aebbOy6HfkVAHmXvpIG+s0/uqpWF4G3Z9fM77/JvryuV+d0O8SyOekCa4l18uczBngRzXdgyuhTgkeKJr7nOX4f34x520AUZWwYO2kAnoSa23eBK+HwWgilGBIFijLdChhhODuw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738126237; c=relaxed/simple;
-	bh=YYUC6GKqVjKjSa8HQ0ij/8CMuynJrEIMoqLwa8xg9LE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PW8f2nLohAULc/+/VL6CcMLNjyJcmMShWTng4nmqH/qmiGs1vwoQZTATAUwYntISRbcEIRvNRVkALzU1wYwT35rrnBtqE3fB/2eyfKtCf8AYAEQWEYqLWIq1ghpDeAE3y7KFZ49C5cW0aov3NhyKMzWhYjNgFogxDpAsuBB7DPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hONiztzs; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75E618F2C3;
+	Wed, 29 Jan 2025 09:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738142687; cv=fail; b=bqlRSubAhTTh6b0uQMpGKwiKArEFujzgwsoUdkz5uxA+l6VxZxdGIbnGGkz9tsqizIoPgCP+XF1XmJVayqza0OuiNj2wAXRwUxk9V3oMF+Lwf2HWTf+tsMByI+M8fLd3bh3yYeAupqEI5O5ad/3BxSUubEnJU3h2Kq6smZv0E+U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738142687; c=relaxed/simple;
+	bh=xNVzhqYU7hL99ASZh9buqyaD6R0h6iOsmN3eeXMpgd0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=DgkT0WCblGyn8izTAbD//kknoxGdEV5ECa6GgwQ8OEJlBf6RJgMNVhqU0tTk1ZGKJA07PCvuKqZcqaWInB0ZcqjpORukt4Z07ZswiUMECYdqMtBLZJBztGWGkiggmScqzrU2C4/yJkHxHt1Og6xtNlvY1prmDGcHxScUrWkB0no=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CvgDDrZS; arc=fail smtp.client-ip=40.107.94.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hONiztzs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738126234;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dnie7b2QLZHOtsz9Z4JDce0HC9WOty7SOXWzLQevN+A=;
-	b=hONiztzsu1LQZRRE9Tx8d0jVJwwxXMg61NqjNZH3QjNSeofjmOMIzfMdPFgC2/EoCD+jKY
-	krJsRNfOiGJ9OnQJKnIy96vf7733rbKUuOhCfrhDYSu1C9b4bhaxbItoCWAE2eBnI7u1yZ
-	y86YBv2iU64S+RkD85wZu6Uq/nnKYis=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-428-NtxCW7uROCapwrG1eGOwqQ-1; Tue, 28 Jan 2025 23:50:31 -0500
-X-MC-Unique: NtxCW7uROCapwrG1eGOwqQ-1
-X-Mimecast-MFC-AGG-ID: NtxCW7uROCapwrG1eGOwqQ
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-21681a2c0d5so115871845ad.2
-        for <linux-coco@lists.linux.dev>; Tue, 28 Jan 2025 20:50:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738126230; x=1738731030;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dnie7b2QLZHOtsz9Z4JDce0HC9WOty7SOXWzLQevN+A=;
-        b=mgqC1xR4KTZ/3Gs1ynTUL0JtDT48ZxgRY70oTczWa2HrgBqvbInHeUHvrAc7mppX7F
-         oIhuh7AkQaJSaVA57Bi6nQm0JCBD+UOrigKbyvi4531dH6RwhQ2pZCVOiY8XHomBgf7z
-         hryLX45jP1THjcLyLRICG7IB/OVofmTVYAKnVSIStNK/YOcvEWeQZ+ccSrEnyQTyG0aU
-         7IJLIUfjAn0uq1tcDK4yVtSDMygrBDghwW0YjNgYa8jxpiGWW6iCM8n+fIkqcZlWLKr1
-         SPuHRnkaq2L+zsHb8gH/WahWDgVQDli9zPu9WAnVoSaqO9sbYMiuM5RbnNddDvYT9dRu
-         CI7A==
-X-Forwarded-Encrypted: i=1; AJvYcCW7iWHoomTPkcRPwsPL7/rv53H8QAQIcvlxYW0IaUeb+1GS68Gx9w28IHsyWYxBeNQ+I/2egVf+MwWM@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxLROv1So+aXcFvxNc3pzVfJc8jnhMi72495oUnxU3IXaYgqYl
-	QrDr8m/wB8gPUHZX/ZaDJdSDtMpCgMTLo744R57d2O4wjOGD6igwAA8ZwXkh9CVoRkGKXgcKMk2
-	z77raA8T5Cs+2iV8TfIHhU9abkZgsQBWwFbqsoBa1o0ZZFoEZOh/5q5Y06j4=
-X-Gm-Gg: ASbGnctv5FPMGYEdBMugbwvT75X2MCxems//kCoF8agFSvgS0819Bg/StFkMKHQ269S
-	qoKkqodX1OOo7O7Z5FohTR0QCKuFeu9XyfvhsmNlIwAmpxBGDVE60MdpTkZl2+qS3PzEK9Xc6PH
-	W6P9BmPZ5q5h58cis3nXUB0Lr2voYngpihotDX2YcKB8kkzsDRucQbiP437SelCHC43ldd0V4o4
-	Z7leTkAYm7hX1vebUO7kzmUxGlNIsIY+p2tosIGIkM9cUnU6D+nkNy6MsMJD6iW+rEhykbtb8Wq
-	37rz+w==
-X-Received: by 2002:a17:902:e742:b0:215:a97a:c6bb with SMTP id d9443c01a7336-21dd7c65891mr25754305ad.12.1738126230206;
-        Tue, 28 Jan 2025 20:50:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHMqKCsMqj6oPSufQyu9NcOncGLMFRZQV6U3d6wG1hA9zWz3o8a6Zro3eM6yrw9ZTQ1ckrhUw==
-X-Received: by 2002:a17:902:e742:b0:215:a97a:c6bb with SMTP id d9443c01a7336-21dd7c65891mr25753985ad.12.1738126229836;
-        Tue, 28 Jan 2025 20:50:29 -0800 (PST)
-Received: from [192.168.68.55] ([180.233.125.64])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da4141536sm89662845ad.156.2025.01.28.20.50.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jan 2025 20:50:29 -0800 (PST)
-Message-ID: <9a543b6f-5487-4159-89fb-73d9b6749a01@redhat.com>
-Date: Wed, 29 Jan 2025 14:50:21 +1000
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CvgDDrZS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UXO/SWexFJ4BOq69cOQN8dESEaLwZjylGvw7i4V9UL8O8ps+ZAWkM923p1ebdG1PNFTZys2URAPL4FT8pcEVbCzb0A0GfdSwH6QNns6XWnuUh4xGs1h7ZTqf2pOgs3qg2f183f55FhrMl+nvaFUTVRH9u8sqz42KQE6DYvxAkzjkSsxzvJ9er0QzAKhW+9Z8ZMXsC7ac5Ef3Nbnq015n3Xbowub/6TIR/HA0gLTkKFVIJ0G7lIHgDtM6ChxGMCkvxCy0xRWvHCrE31rQfu2pXXonCMwHlzHHZleh9eDJeI9X4aXvCLIIuoNNKsGs0dpoHFRxjcseJwg8ENfnqrxKNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YLNxhvxI5rOVz/I4jjztbS0cG6cP4+VzFn2nOewQUr8=;
+ b=k0TxsjntKR5uNxOADtQZwYSidDyH1eYqwmll12irktNREvpYQ9bE7XoJ/VVPk30Q8XYt1flquhzlyBo8AwZK6lt6FNfomCEjcNA+I5iAx0B1WNznPpwt5fCqmh4mHRF+Sl5Fkuee0mAzFrcQhDI1jUoZiZ9uFT4nYdI1j+/08VkVMvfInHRWYhOItYNLl/62RX6N/sUK3Bd9sx1qkLMhjGkYcQ8R6/BLZVcZjVtyRMI9o8H/JtxgqE46KiOK/7efWSwgZ8qSkEx25B7LnnG4a44EKWJcqq+v0xpdvXFuv62WfpoCgMXJbDkmhaKaaJIrWI0Fk2sL39GC/5wQTF676g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YLNxhvxI5rOVz/I4jjztbS0cG6cP4+VzFn2nOewQUr8=;
+ b=CvgDDrZSF4IpAI1h6wUe9PGdZtWGJR4R3SpFx+jRGsWpLUT0S/Fzjgk3b22p2AdDf6K2EQyqkbV/35y4WeZXQyoVhPceLyRCfXinTrrjippFZ5x70+oEsTUQ+iKk7fd/GbRhd4HhrkWaXNZwDffWnfFtRQ8uJpOSzG2rnh8zIhY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) by
+ MN0PR12MB5882.namprd12.prod.outlook.com (2603:10b6:208:37a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.17; Wed, 29 Jan
+ 2025 09:24:43 +0000
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::6318:26e5:357a:74a5]) by DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::6318:26e5:357a:74a5%6]) with mapi id 15.20.8398.017; Wed, 29 Jan 2025
+ 09:24:43 +0000
+Message-ID: <a4ed411d-3233-4d15-94a0-8da177633073@amd.com>
+Date: Wed, 29 Jan 2025 14:54:31 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] iommu/amd: Check SNP support before enabling IOMMU
+To: Sean Christopherson <seanjc@google.com>,
+ Ashish Kalra <ashish.kalra@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, pbonzini@redhat.com,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ john.allen@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
+ joro@8bytes.org, suravee.suthikulpanit@amd.com, will@kernel.org,
+ robin.murphy@arm.com, michael.roth@amd.com, dionnaglaze@google.com,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev,
+ iommu@lists.linux.dev
+References: <cover.1737505394.git.ashish.kalra@amd.com>
+ <0b74c3fce90ea464621c0be1dbf681bf46f1aadd.1737505394.git.ashish.kalra@amd.com>
+ <c310e42d-d8a8-4ca0-f308-e5bb4e978002@amd.com>
+ <5df43bd9-e154-4227-9202-bd72b794fdfb@amd.com>
+ <5af2cc74-c56d-4bcf-870e-afa98d6456b3@amd.com> <Z5QyybbSk4NeroyZ@google.com>
+ <e23a94f0-c35f-4d50-b348-4cd64b5ebb67@amd.com> <Z5f2rnMyBAjK88dP@google.com>
+Content-Language: en-US
+From: Vasant Hegde <vasant.hegde@amd.com>
+In-Reply-To: <Z5f2rnMyBAjK88dP@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0058.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:99::17) To DS7PR12MB6048.namprd12.prod.outlook.com
+ (2603:10b6:8:9f::5)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 12/43] arm64: RME: Allocate/free RECs to match vCPUs
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20241212155610.76522-1-steven.price@arm.com>
- <20241212155610.76522-13-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20241212155610.76522-13-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: OXnqsPSJVVmOoEXpkazV6WlLzwxtsZK0yEyJNORyM_M_1738126230
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6048:EE_|MN0PR12MB5882:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2ea5bb74-e3f5-4fa5-f841-08dd4046c38e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OTZ2TUFzRGlMY0pXS2tNbWs0OTFPM25RQ2hKNjM0NjZmQVhGQzd2NUpPSnF5?=
+ =?utf-8?B?Zk9QUkRtY3NNbC9Iekp3R1BoYndlZWlWNGJvK2ZwUUVFV1gyNFF2VkJrT3dZ?=
+ =?utf-8?B?dEJhNE1vMlhVbml1d3E5N05oWkRPYkVmQXNmVzlsWlVDcGhpMWd4K2hPRXFj?=
+ =?utf-8?B?Zk5CL202enNCZXE0ajI4Mk5MdUZzcm9OUjl3cTdtS2IvQkx6OVQ2K3VWN0xV?=
+ =?utf-8?B?WnJwZ0d4V0xuelA4M203d29OaFBKYitkcVRmT0d6NGYrbUpFYmQ3VUN1Rmsr?=
+ =?utf-8?B?ZldQUEVLbVBVcS9hVVY2dG5FVzBOZDdENFlVbEpNRDZGQnJ0YmZCSkFsWDlC?=
+ =?utf-8?B?Q01nV2p4WDNRdjdNZWdkTDBwMkhaNWdQd1kwWDBSbDJsZHRUVVV4SGNDeFBY?=
+ =?utf-8?B?ZXBKdTB1MUVTNlRvZGs4RGRUaUwra3ZBYzVFenk0anE3bytjbmxLbzFsS05W?=
+ =?utf-8?B?cGJSMkQrM3V2L3doYUxQa09zQVpNVDN2aHQ4MVdGMXd5cTFJNTlIeU03YVZI?=
+ =?utf-8?B?VlBUZjE3cmJHZEl1SktvbU56a2EwQTlPMzc0S0hkRGZjQk8wSEthQXJyK0Nw?=
+ =?utf-8?B?bEdmbnptUWdiblVCK1dBdXZXUCswK0J1Nm1KWkx3ZVorOU1sUWpNdTBWUDdE?=
+ =?utf-8?B?cnRrbGJGUWZSS1pFZmV4YUNHMEVHQnRhMkE4L2dLU1IrTmRnTEJxcE13VU52?=
+ =?utf-8?B?RjJjTVBvdGV1ZGdtSE1wMUJwdWc3VGcxMk9GMHhCMjY5bXMrWlhzRFNVbjAr?=
+ =?utf-8?B?UjhBMEhZLzg3TFJUeE5ySGJ3MWlOUnlaWjFOQlFrdmdLQ3Q1U0VrdExhdHVQ?=
+ =?utf-8?B?VitXeGo5Y2Zwc1dlZjgzSFMxbXJiaktPbjFhYmxJZDJPRkpYKy8xQW9zVTRS?=
+ =?utf-8?B?RkFjME50S2ZMYjE5Vmt2ektYWWxsYW9Pd3BrWE5DVmxieDVubmxVTFBrR3Ex?=
+ =?utf-8?B?TTQ5Uys4WGVrZ1p4ZmkyK0RENzJnUjZ2N0N3Q0VVZ29tamVVckthTnlyNHJR?=
+ =?utf-8?B?b0pha1RWZ2xoZ2JtdGFxaEhzOXhKNFo5S2JkUnhnM08wdFRGV1JENm1KK2VP?=
+ =?utf-8?B?MzVHZUpsMWcveGhOTjR4UTNBN1BYRzRZVk5aYW1tLzlEZ1J0T1lyMXRia2tj?=
+ =?utf-8?B?ZEQ2TTZBNnFLb0FMWGJQTFJmNDR1M2pHVjRuZFdNUi9mRWhZM0JRR3JQa1RC?=
+ =?utf-8?B?OVVaa25xS2JMcjdEQ3Q1NTM2ckpnSll5NG8ydGlaUGZKK3VaeXlSWGRQSnps?=
+ =?utf-8?B?VmVYS3ZwaVJVRC9kUGVqNm5OMXVLVFBnQXhnVkZ6YmU5V0QzVVZjU3loTjh2?=
+ =?utf-8?B?T2hpUTh4NDhGSWx2RytFVGdtTVh3Q2txWnpITW5SbHZaUDZieDlPMmM2QjZm?=
+ =?utf-8?B?OURWb05MVTY5TFYxbllsdTR5RlVlWXdHSmxKeExOU1RzQndNVmxYQnBadHVH?=
+ =?utf-8?B?K1g0cWtkYlVaUDROU0pmbVNDZDBoMFN5SUhaMnJEc0JDZUVsUTlHVDhXSDlx?=
+ =?utf-8?B?N0pSakdPYmVOYWQydWc1R1p1V2FjeEFlL0lEVEIxTXMweVJsTktmNDNnNVBi?=
+ =?utf-8?B?ekNGZnljTkR0MXE2eEJUcTRDQTNMdFRpNkU0VlQ3N3ZpOVRFdVVsYzZvT3Q5?=
+ =?utf-8?B?NHZRLzJSMDlKQmFLRTdGK1o5VTBZdXhLanE2cEdBM29WemN0c1cyZitzV201?=
+ =?utf-8?B?R2ZkSzFiaTErQzVWSWJIdG1sbXpOYUxmVkFEMHFGUFd1c2d2Z3lIbzh1a2h5?=
+ =?utf-8?B?eWZaWUhZRkpmQ3ViZmgwL0EvOWIxWTRxTVRKQUpOTytYNWl5SWtsN3o2QnNy?=
+ =?utf-8?B?b1pKSzRNNWxBUW55Y0U0UmNJbDdRY0M0Q3FaZXBXV29ma1N2ditWT3lma09L?=
+ =?utf-8?Q?PtXaSdv6czaLl?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6048.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bkoybktHQks0alhJNDE0UENaOGxpdENTVGZDaEtxbHNjdlFscy9obXNsU1hF?=
+ =?utf-8?B?UEQ3elNWRlY2dXloeHV3cGtDNWJKaytoWVJRUTU0UmQ5cjJESk43TEQ3amRy?=
+ =?utf-8?B?dzFPYXNHZEZ1QjhWT3NEZnZ1WXZqUlkyV3ZtcHVlMWNWNlpLS2tNSTkzR1pa?=
+ =?utf-8?B?d1hiRGhsMmZzWkFUdVdJQ1FlZEx5QVpQL1prSXRNTjNONnNxMnF5SnhKbVFh?=
+ =?utf-8?B?MVFTNVBtbmNpUlpiSkFzaDFoUHhTTFhhU0dxOVBWSmVrMVdWZWZRWTU4YVZD?=
+ =?utf-8?B?bDg2T044NEtwbS9RaTJNUHUwM0M3djVRUFBWTWJBU0pHOHhDbDNsUENKQzRr?=
+ =?utf-8?B?NUh3eFgwbmJlY1F4ejJpbWoyZkx3WDNnYmU3TmprZzZNNm5qVzdKeVFwRGIz?=
+ =?utf-8?B?blRMQ0NreGVsem5lZzJJTlVydGRreXByWi94Y1pnNzExRGNKeXZmUE5kdjZS?=
+ =?utf-8?B?cFd2WUxKMkZjTzk1bmxieDdCU3ltRVRQTDc1M2J5clV2bnlOWFZIWXF2d3h1?=
+ =?utf-8?B?djRSZUg0bmlOUDV4S2IvQm1JVGdDL1pOVkVONTdQNkg4T2MrNWlWdXpXU2Z3?=
+ =?utf-8?B?ZDZMUkhrRWZmSVZDUGNiZ08vd29DZHVHOG9wK3VpTzViTlh6WHNnY2hsTFVk?=
+ =?utf-8?B?UWNiazVtTXBPSVpzZFJmSzIrcnl5M2s4NnM4NE5Ba2lnZFh1YWl4NW1lUDhO?=
+ =?utf-8?B?V0xlVEQ5WERYTHVKZmluMVEzVWkyM1hLY3JSUWlLNUUzMlkyNzJYS283bk5S?=
+ =?utf-8?B?RXZkTjNSR05kWmg3Wk1Bc0FRelZOWFVxME1OZ1pZUXBQRzkzTkRqWkRlYlRl?=
+ =?utf-8?B?SXJhU3psRjNVa2dLRjZuVml6Y3NKeVh0MVUvcXpSbUc4dHlPazZoMnBQOTFO?=
+ =?utf-8?B?TVhHOXU3aXQzdWIxdE5xeGtUWFNteUFzTjQrdUxDSlhkWDloZGRTUU8zSVZx?=
+ =?utf-8?B?dS9KZzJkMU5HSWlWRnJ5YmZIUFh0Ym5QWGVVT1RiS0ZvbVNva2JBV291ZzV0?=
+ =?utf-8?B?aTl2TzFxUDFUSFNRSzJlNW5tV2NCMTdyZzBkSDhFMGkrby8xZ01yaEVPK01U?=
+ =?utf-8?B?OUdwYnpldVk5b1NLQytqWVhPcVRVRkF6WXBjSy9Tbmp2Y2YvbzczSU5xSmpq?=
+ =?utf-8?B?ZkVUbnp5aVpaRFBKaXpzRkM1NWdDY2oyZ3pBdlBFNUpEMXFhTkZ3bENxUk14?=
+ =?utf-8?B?NXZiNkd5Zm52Qm1XY1E5WTliUHRjc3k1Y1JJNnBYU0I3UXdBTFRNMlBDYmJI?=
+ =?utf-8?B?d0Z3QTJpeVNiOUIvWm1sRVZDeVJKaVVWRk0ydWJWZTduNDhQeDZoT3J2WndO?=
+ =?utf-8?B?ZVJid0tmYjdnckRzd2VPZkNqMnRTL2pxNU1zenNEUTRBdjNFWHh3dWlaaytL?=
+ =?utf-8?B?WDNHSDVHM2RrK1JpZkhZRTJtekgyNi81MEx2UmQrc2g4U2o3R2Roamc4b0ZN?=
+ =?utf-8?B?NDVyRnJJditkbmtjeGo2dnJ0TDZBbmlGVk9aRGcxWmgyV0t0c1VRRHFpSmZV?=
+ =?utf-8?B?TVZxY3pieGxNdWN3VUZ4OTg0TnBIY3FESzh3cG1yMzZLR2J3aEh3YnVEbWRr?=
+ =?utf-8?B?ZEFHY3FhZUFDWnNDdWovYitod2F3eVQ5dGc1NEJFcFJIWXlzQnVob0U4ZXZY?=
+ =?utf-8?B?emdDRkN3UUNSRjhEQkpQQjdNS3ZNMFQzVkRqNHFtS1ZTZDVzT0laLzFjZ1lE?=
+ =?utf-8?B?R1hoN0VZRis1Z2dodnlYVnRzeHJvQnZaTkZQY0ttNWNpSVA4cFMyblFuN3Av?=
+ =?utf-8?B?N3hzV0pQQkpock5oUmphc2UxZk5zQzZFU0p5Vnc0Y2VLUFN5dlNQREJUR2Y0?=
+ =?utf-8?B?b2w0QTFuNU5XUjFsbkVsOGh6Qys0Zk1BWWxaaXdDWGxSZm9xaDE1TW9wUDlr?=
+ =?utf-8?B?czBha0tXN3BITzM3K0NLRGF0TkxzTnJPTnd6ZWdpVG5pbDNlZ3BmZEZNbDUw?=
+ =?utf-8?B?d2JCMzl6VWxSVFNSUU4yVSs5Y290U0JBcDUvdmd4YXJId3FBT0dtbFhWYnZG?=
+ =?utf-8?B?WjdrcUZ2bWFVWFBkS29mU2J0Sy9ZL0FYUXovZ3FidjNBbGtXMk9EQmFneklG?=
+ =?utf-8?B?WUpMU0RDS2MxS2IzcTZDQitydGhINTFXYVhGMTV1ejdJSkZzYXZuZ3pNUUlr?=
+ =?utf-8?Q?Xjgss7X/9aenEIUJSid+SogC+?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2ea5bb74-e3f5-4fa5-f841-08dd4046c38e
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6048.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2025 09:24:43.2707
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: S9cV2fAYAQuBry6RdRMB79L3svzBl5wWSxUjTTtBrbRl8Uo2v8eRqk6/iK0WWttCZ/g6/BLTK87dXx+yrkvwQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5882
 
-On 12/13/24 1:55 AM, Steven Price wrote:
-> The RMM maintains a data structure known as the Realm Execution Context
-> (or REC). It is similar to struct kvm_vcpu and tracks the state of the
-> virtual CPUs. KVM must delegate memory and request the structures are
-> created when vCPUs are created, and suitably tear down on destruction.
+Hi Sean,
+
+
+On 1/28/2025 2:42 AM, Sean Christopherson wrote:
+> On Mon, Jan 27, 2025, Ashish Kalra wrote:
+>> Hello Sean,
+>>
+>> On 1/24/2025 6:39 PM, Sean Christopherson wrote:
+>>> On Fri, Jan 24, 2025, Ashish Kalra wrote:
+>>>> With discussions with the AMD IOMMU team, here is the AMD IOMMU
+>>>> initialization flow:
+>>>
+>>> ..
+>>>
+>>>> IOMMU SNP check
+>>>>   Core IOMMU subsystem init is done during iommu_subsys_init() via
+>>>>   subsys_initcall.  This function does change the DMA mode depending on
+>>>>   kernel config.  Hence, SNP check should be done after subsys_initcall.
+>>>>   That's why its done currently during IOMMU PCI init (IOMMU_PCI_INIT stage).
+>>>>   And for that reason snp_rmptable_init() is currently invoked via
+>>>>   device_initcall().
+>>>>  
+>>>> The summary is that we cannot move snp_rmptable_init() to subsys_initcall as
+>>>> core IOMMU subsystem gets initialized via subsys_initcall.
+>>>
+>>> Just explicitly invoke RMP initialization during IOMMU SNP setup.  Pretending
+>>> there's no connection when snp_rmptable_init() checks amd_iommu_snp_en and has
+>>> a comment saying it needs to come after IOMMU SNP setup is ridiculous.
+>>>
+>>
+>> Thanks for the suggestion and the patch, i have tested it works for all cases
+>> and scenarios. I will post the next version of the patch-set based on this
+>> patch.
 > 
-> RECs must also be supplied with addition pages - auxiliary (or AUX)
-> granules - for storing the larger registers state (e.g. for SVE). The
-> number of AUX granules for a REC depends on the parameters with which
-> the Realm was created - the RMM makes this information available via the
-> RMI_REC_AUX_COUNT call performed after creating the Realm Descriptor (RD).
+> One thing I didn't account for: if IOMMU initialization fails and iommu_snp_enable()
+> is never reached, CC_ATTR_HOST_SEV_SNP will be left set.
 > 
-> Note that only some of register state for the REC can be set by KVM, the
-> rest is defined by the RMM (zeroed). The register state then cannot be
-> changed by KVM after the REC is created (except when the guest
-> explicitly requests this e.g. by performing a PSCI call). The RMM also
-> requires that the VMM creates RECs in ascending order of the MPIDR.
+> I don't see any great options.  Something like the below might work?  And maybe
+
+We did explore few other options. But I don't see any other better option.
+
+Below code works fine.  But we still need to handle `iommu=off` or
+`amd_iommu=off` kernel command line. Below change will take care of this
+scenario. Does this looks OK?
+
+----
+commit 8e9296346e8f6a0831a5f6076c81a636bf044a41
+Author: Vasant Hegde <vasant.hegde@amd.com>
+Date:   Wed Jan 29 14:47:04 2025 +0530
+
+    iommu/amd: SNP fix
+
+    Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index c5cd92edada0..08802316411f 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -3426,18 +3426,24 @@ void __init amd_iommu_detect(void)
+ 	int ret;
+
+ 	if (no_iommu || (iommu_detected && !gart_iommu_aperture))
+-		return;
++		goto disable_snp;
+
+ 	if (!amd_iommu_sme_check())
+-		return;
++		goto disable_snp;
+
+ 	ret = iommu_go_to_state(IOMMU_IVRS_DETECTED);
+ 	if (ret)
+-		return;
++		goto disable_snp;
+
+ 	amd_iommu_detected = true;
+ 	iommu_detected = 1;
+ 	x86_init.iommu.iommu_init = amd_iommu_init;
++	return;
++
++disable_snp:
++	/* Disable SNP if amd_iommu is not enabled */
++	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP))
++		cc_platform_clear(CC_ATTR_HOST_SEV_SNP);
+ }
+
+ /****************************************************************************
+
+
+
+
+> keep a device_initcall() in arch/x86/virt/svm/sev.c that sanity checks that SNP
+> really is fully enabled?  Dunno, hopefully someone has a better idea.
+
+That will not solve the initial problem this series trying to solve (i. e.
+kvm_amd as built and making sure SNP init happens before device_initcall() path).
+
+I think with your patch and above changes it should work fine.
+
+-Vasant
+
+
 > 
-> See Realm Management Monitor specification (DEN0137) for more information:
-> https://developer.arm.com/documentation/den0137/
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v5:
->   * Separate the concept of vcpu_is_rec() and
->     kvm_arm_vcpu_rec_finalized() by using the KVM_ARM_VCPU_REC feature as
->     the indication that the VCPU is a REC.
-> Changes since v2:
->   * Free rec->run earlier in kvm_destroy_realm() and adapt to previous patches.
-> ---
->   arch/arm64/include/asm/kvm_emulate.h |   7 ++
->   arch/arm64/include/asm/kvm_host.h    |   3 +
->   arch/arm64/include/asm/kvm_rme.h     |  18 ++++
->   arch/arm64/kvm/arm.c                 |   9 ++
->   arch/arm64/kvm/reset.c               |  11 ++
->   arch/arm64/kvm/rme.c                 | 144 +++++++++++++++++++++++++++
->   6 files changed, 192 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> index 27f54a7778aa..ec2b6d9c9c07 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
-> @@ -722,7 +722,14 @@ static inline bool kvm_realm_is_created(struct kvm *kvm)
->   
->   static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
->   {
-> +	if (static_branch_unlikely(&kvm_rme_is_available))
-> +		return vcpu_has_feature(vcpu, KVM_ARM_VCPU_REC);
->   	return false;
->   }
->   
-
-It seems the check on kvm_rme_is_available is unnecessary because KVM_ARM_VCPU_REC
-is possible to be true only when kvm_rme_is_available is true.
-
-> +static inline bool kvm_arm_vcpu_rec_finalized(struct kvm_vcpu *vcpu)
-> +{
-> +	return vcpu->arch.rec.mpidr != INVALID_HWID;
-> +}
+> diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+> index 0e0a531042ac..6d62ee8e0055 100644
+> --- a/drivers/iommu/amd/init.c
+> +++ b/drivers/iommu/amd/init.c
+> @@ -3295,6 +3295,9 @@ static int __init iommu_go_to_state(enum iommu_init_state state)
+>                 ret = state_next();
+>         }
+>  
+> +       if (ret && !amd_iommu_snp_en)
+> +               cc_platform_clear(CC_ATTR_HOST_SEV_SNP);
 > +
->   #endif /* __ARM64_KVM_EMULATE_H__ */
-
-I would suggest to rename to kvm_arm_rec_finalized() since vCPU and REC are
-similar objects at the same level. It'd better to avoid duplicate object
-name reference in the function name.
-
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index 8482638dce3b..220195c727ef 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -789,6 +789,9 @@ struct kvm_vcpu_arch {
->   
->   	/* Per-vcpu CCSIDR override or NULL */
->   	u32 *ccsidr;
-> +
-> +	/* Realm meta data */
-> +	struct realm_rec rec;
->   };
->   
->   /*
-> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
-> index 32bdedf1d866..62d4a63d3035 100644
-> --- a/arch/arm64/include/asm/kvm_rme.h
-> +++ b/arch/arm64/include/asm/kvm_rme.h
-> @@ -6,6 +6,7 @@
->   #ifndef __ASM_KVM_RME_H
->   #define __ASM_KVM_RME_H
->   
-> +#include <asm/rmi_smc.h>
->   #include <uapi/linux/kvm.h>
->   
->   /**
-> @@ -65,6 +66,21 @@ struct realm {
->   	unsigned int ia_bits;
->   };
->   
-> +/**
-> + * struct realm_rec - Additional per VCPU data for a Realm
-> + *
-> + * @mpidr: MPIDR (Multiprocessor Affinity Register) value to identify this VCPU
-> + * @rec_page: Kernel VA of the RMM's private page for this REC
-> + * @aux_pages: Additional pages private to the RMM for this REC
-> + * @run: Kernel VA of the RmiRecRun structure shared with the RMM
-> + */
-> +struct realm_rec {
-> +	unsigned long mpidr;
-> +	void *rec_page;
-> +	struct page *aux_pages[REC_PARAMS_AUX_GRANULES];
-> +	struct rec_run *run;
-> +};
-> +
->   void kvm_init_rme(void);
->   u32 kvm_realm_ipa_limit(void);
->   
-> @@ -72,6 +88,8 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap);
->   int kvm_init_realm_vm(struct kvm *kvm);
->   void kvm_destroy_realm(struct kvm *kvm);
->   void kvm_realm_destroy_rtts(struct kvm *kvm, u32 ia_bits);
-> +int kvm_create_rec(struct kvm_vcpu *vcpu);
-> +void kvm_destroy_rec(struct kvm_vcpu *vcpu);
->   
->   #define RMM_RTT_BLOCK_LEVEL	2
->   #define RMM_RTT_MAX_LEVEL	3
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 73016e1e0067..2d97147651be 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -525,6 +525,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
->   	/* Force users to call KVM_ARM_VCPU_INIT */
->   	vcpu_clear_flag(vcpu, VCPU_INITIALIZED);
->   
-> +	vcpu->arch.rec.mpidr = INVALID_HWID;
-> +
->   	vcpu->arch.mmu_page_cache.gfp_zero = __GFP_ZERO;
->   
->   	/* Set up the timer */
-> @@ -1467,6 +1469,9 @@ static unsigned long system_supported_vcpu_features(void)
->   	if (!cpus_have_final_cap(ARM64_HAS_NESTED_VIRT))
->   		clear_bit(KVM_ARM_VCPU_HAS_EL2, &features);
->   
-> +	if (!static_branch_unlikely(&kvm_rme_is_available))
-> +		clear_bit(KVM_ARM_VCPU_REC, &features);
-> +
->   	return features;
->   }
->   
-> @@ -1506,6 +1511,10 @@ static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
->   	if (test_bit(KVM_ARM_VCPU_HAS_EL2, &features))
->   		return -EINVAL;
->   
-> +	/* RME is incompatible with AArch32 */
-> +	if (test_bit(KVM_ARM_VCPU_REC, &features))
-> +		return -EINVAL;
-> +
->   	return 0;
->   }
->   
-
-One corner case seems missed in kvm_vcpu_init_check_features(). It's allowed to
-initialize a vCPU with REC feature even kvm_is_realm(kvm) is false. Hopefully,
-I didn't miss something.
-
-[...]
-
-Thanks,
-Gavin
+>         return ret;
+>  }
 
