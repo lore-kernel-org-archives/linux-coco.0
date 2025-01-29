@@ -1,666 +1,206 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8910C16631C
-	for <linux-coco@lists.linux.dev>; Wed, 29 Jan 2025 00:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07051802B
+	for <linux-coco@lists.linux.dev>; Wed, 29 Jan 2025 00:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738111403; cv=none; b=U7TEffPdpWSPyzzuvvnjJNS8JpFTO5C77cmkfHzpOoHuayhSuYSHQmsebpyt0sRPEMUtbKw9iY+U8tXRRivYK7prkdGhhhL9XfsymZTCe5In20XCoqPbDTWSDWD28xJ6mPYJMK6qbe2nrNino8SKoxaxHwShQnTTzqr/eX9Ak5E=
+	t=1738111539; cv=none; b=m+ZgUF60jx3goUvre8JSJFSJZSd/DbMHqKY8m+wikufo7K59tr2bRP3pgaOMyv20E12xeZRnyXFAhrsBpVsqTK38Ot0mHA9BivKm7bcSdbLfWr8GZlmvNXSSR16c88D/uwwOT/1lRdL4pxpGj/kjrzk6iKGze4Y+EkLdf6uEZ9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738111403; c=relaxed/simple;
-	bh=Qc5cfnZI7fy1QyNuHQgxm6DKtaCQvIPjrGsiwzWVJu0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BBhel6BGkb8XwNHvqn56H/uvkveA5BiTHsTQgRsALGKoW9g5jJuxDFU5GyYUlFRxPsyv+dJmnEjRPil4Svfn8vQ1ePs+DPhb72gRkaX1SKdYofCd8i1HVsA9j2PHoZn66OOI/i5Xjtz5eBAH6hKoC5V28aaB1U6CLFRJY/sip4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q6drFeIX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1738111539; c=relaxed/simple;
+	bh=TZeiHzkxvxGGLrLMIlM92ETrGOfcUeX/i1cn7JCmtG0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=dv0ek9aETVgTnnvPemFfl5XNgYi7u8qGoMJCPaMNTgcYyeY5vZEjEW9Iu0mDX79X4NbyqaJ68wijNFywjXj9Eo/eboNpY+4vjaAJv2lXl4H1fKMKayyiW1Uua/2dJ3nsiaQclhLswBNendwlOXFE8uTuGlG1jdjA/Q0POQfBr9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GUeZU/jH; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q6drFeIX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738111400;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uZLW+3NIr/s7ih/WKO6/T4F6BysmWN0XR1cLwJr9BBA=;
-	b=Q6drFeIXn43fPsUb7InHVHziL33DeYhXBl0C6bSL4cyxptnluu1FsxlTBH4EZQbg1lm2+a
-	puSLIaWCzXZ0u2ENySf2UwIC685LdrTq/Y4r3HsQUcGlVgqRKiQP7voqQ4s63GBqhqRB1n
-	Ix3P2mGHoO9DeSNrrfq+bPapcRsVtoI=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-455-63a-bHblPECIgxYuu4vQ5A-1; Tue, 28 Jan 2025 19:43:17 -0500
-X-MC-Unique: 63a-bHblPECIgxYuu4vQ5A-1
-X-Mimecast-MFC-AGG-ID: 63a-bHblPECIgxYuu4vQ5A
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2ee46799961so17404522a91.2
-        for <linux-coco@lists.linux.dev>; Tue, 28 Jan 2025 16:43:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GUeZU/jH"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2178115051dso114812875ad.1
+        for <linux-coco@lists.linux.dev>; Tue, 28 Jan 2025 16:45:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738111537; x=1738716337; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QZ6odtBYi07ZEaJT5jmkk2xI2bqUgFfyGQKpSdf1RQA=;
+        b=GUeZU/jHtKnaTiwowy4UgBmcxpeJfDBPmQkQRbrXwK07FzhWX61fyNWTgYNdK4uwTC
+         04ILDPefZxnYmDMimTyHStbWswsjA5PVo8rvhMZrcgMIjWLxnF1nFMZujKTTJbsEV3Ls
+         YxtJv8uZrxO7WApr/YLdNKVSwsajEHkq6MXAFuJ84MsqhXnZPbp/Awf0iBBC2tRjT4er
+         dOH9T37UZHR5JGz5HuXKY98TAIoGnsspqpxTnLVCgPN0dnk7vdXmTs2FJmYWkrcUIIT5
+         ff9QMDc+LGx7anFKY+XQGXdyw5kOnJzQCbQfNx7zdVJ8+vsK0one5y/UuY75n1XUhKdC
+         ETSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738111396; x=1738716196;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uZLW+3NIr/s7ih/WKO6/T4F6BysmWN0XR1cLwJr9BBA=;
-        b=Ed8dQZidJWiaFv+xZQuYVUUf636/WFlsE5h7ugbE61MvAZb6hx7Yzmmz53sFQGNzW3
-         TTm6xv5zB5iFNZAvIwdtwZBIuhFio7Y8O/IOfs6Hl8nO0OyrG010q47R9Tdk8UKGctiC
-         n92LjPvq3zpgYCiNlQkS0ZAyE3nlfjBlmCiWztnnTmgQ08TeeGsA4fddWs8pPL/5lO5T
-         x3Vt42jLtvj4Hy6gXD4WWLrCExP4AgZWuK43zcuQNnPiM4fHPeOKf/k06xj9pbLEn9BE
-         1OXEWBz7Pd0NufLoTgixL2lIJAldtzeZ1bf51fm0tIKn4NqVO7Bowe/jKsA3svJ/kMEU
-         6I/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUYU8FSgSCrKfDugKdh2exXajJFylMJxmRH5U40s0rV7PePVWvA6MYWWBNh73Ajs2BVfm2p4r6aCZZN@lists.linux.dev
-X-Gm-Message-State: AOJu0YxBBq1CXMLH0PsOl4/P0GKoFue9K6eRTHdz0c+mPC6bayJQ9alQ
-	D1UBz8rmUMc6r2TC4fH2ecIstg1P4drN/6U27IMsBlv/uAe5smYqSwEVNvbbhZNPUohjT78l8QL
-	+KouDuxynIWR5ciohv6y1drCEyvhrDSOoz/SpRy3QwbzV0Uik8czA9zcP1SQ=
-X-Gm-Gg: ASbGncuk/dY1PEH2uzsJz+hGoqJvjKh4adEqRFg0QT5xmkqfUy+NJac+rQ98mKFqepF
-	U/z3NZa0IBLKx2hWedKftdKKkQiGmrIBA4+FkbfeXu3pPdSi61Jp/hsKG4M92od8mb6jisb+A0r
-	06kHySnt6kCPFrr9tgBEfKaEblDidqKAQavk7UZEmuB6ovuqsZejHygtjBj82wP6uFz2HtA7A2R
-	1nAdjD36PRChcYEGuxNzlOpIItYGg6jAi800AZ93gelDsnkPbabq+wF0WU47fYRZUsejr13rAo8
-	otjyuQ==
-X-Received: by 2002:a17:90b:2743:b0:2ee:48bf:7dc9 with SMTP id 98e67ed59e1d1-2f83ac0068cmr1779973a91.15.1738111395985;
-        Tue, 28 Jan 2025 16:43:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGJjpgjrIHY7a3JC5Ez/0L8BHt6NxNYaYvhYnSyLULVqB3+oTe+OzhpQ9OQ+eLwfEAg4S+Arw==
-X-Received: by 2002:a17:90b:2743:b0:2ee:48bf:7dc9 with SMTP id 98e67ed59e1d1-2f83ac0068cmr1779946a91.15.1738111395620;
-        Tue, 28 Jan 2025 16:43:15 -0800 (PST)
-Received: from [192.168.68.55] ([180.233.125.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f83bfbf166sm218188a91.43.2025.01.28.16.43.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jan 2025 16:43:15 -0800 (PST)
-Message-ID: <691a2f0a-0f04-4bf6-a11a-ea7ee753cf88@redhat.com>
-Date: Wed, 29 Jan 2025 10:43:06 +1000
+        d=1e100.net; s=20230601; t=1738111537; x=1738716337;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QZ6odtBYi07ZEaJT5jmkk2xI2bqUgFfyGQKpSdf1RQA=;
+        b=Oiha61ehItPlkpPdYLkjGIef0Oc0OacvrcwgK34fqksSuj9XH196r2d3MMH8A7JyLK
+         Uykth7uNvvkwzbcxAyG7GQgxm3mWqbdHGyXOdys1bDw0GR1ENGfKJ9Ij0fUrg3dlgkQx
+         9h5TGq96jVY7vg6DUib5Iv6v5/9P+qgvltjViz59/q9tzniy/J88oZDpA/xQ5TXxkQVy
+         5RmPykYEvIS6+BFRvmd14NSqCj/elrCvpuFTX7lD+HiyVHgVSCeHc3ylgo9bF5YfIK4e
+         mRKv1ADx9/Qh3Z+KBrv/NA374LVcqv8HiuYapBfSPKd2WC2p2MYskIUYHOZemx0ebAYg
+         dXUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWM0x4I7tuzFO58AZjeiO4Yrw3G3JAsCWYv1Q26OK9sJWXu/HB9dCUd2XHHtKttK0Ou8x9SYSG+OLr2@lists.linux.dev
+X-Gm-Message-State: AOJu0YyV6wX9HkIrUYZZKMh2fpa1lkwM5iFeiItlkcs4oynhLEUqYl5Y
+	vdBFr8PsOZJuHEja01+rayRyfcUK+u8x22xHvvFe4jO82dxOKE4r644xEVu9kiZHquSZ49pMuAM
+	iZA==
+X-Google-Smtp-Source: AGHT+IGUP7cTlYLUsdiCh1cUwyR9Xs1cGb2+FTTWMwVhzwSd6mM7QistHeckm+JJHTfvTgWOOtlxGKeXAgM=
+X-Received: from pfbea10.prod.google.com ([2002:a05:6a00:4c0a:b0:728:e508:8a48])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:2d07:b0:1e1:b60c:5bcf
+ with SMTP id adf61e73a8af0-1ed7a6b1589mr2529311637.32.1738111537075; Tue, 28
+ Jan 2025 16:45:37 -0800 (PST)
+Date: Tue, 28 Jan 2025 16:45:35 -0800
+In-Reply-To: <CAGtprH_1hc35um_47n=TMJzXAvpa7LY6kyXUafjJt3sPCosC_w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 08/43] arm64: RME: ioctls to create and configure
- realms
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20241212155610.76522-1-steven.price@arm.com>
- <20241212155610.76522-9-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20241212155610.76522-9-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nO2oVe_xN9YVBS2TbPZLaKhRWDWte9u6IH0OakCK06Q_1738111396
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20250128213652.1880545-1-vannapurve@google.com>
+ <4e07bbe6-9f74-45e5-b8d4-f992d2be78fc@intel.com> <CAGtprH_1hc35um_47n=TMJzXAvpa7LY6kyXUafjJt3sPCosC_w@mail.gmail.com>
+Message-ID: <Z5l6L3Hen9_Y3SGC@google.com>
+Subject: Re: [PATCH 1/1] x86/tdx: Route safe halt execution via tdx_safe_halt
+From: Sean Christopherson <seanjc@google.com>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	pbonzini@redhat.com, erdemaktas@google.com, ackerleytng@google.com, 
+	jxgao@google.com, sagis@google.com, oupton@google.com, pgonda@google.com, 
+	kirill@shutemov.name, dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
+	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/13/24 1:55 AM, Steven Price wrote:
-> Add the KVM_CAP_ARM_RME_CREATE_RD ioctl to create a realm. This involves
-> delegating pages to the RMM to hold the Realm Descriptor (RD) and for
-> the base level of the Realm Translation Tables (RTT). A VMID also need
-> to be picked, since the RMM has a separate VMID address space a
-> dedicated allocator is added for this purpose.
-> 
-> KVM_CAP_ARM_RME_CONFIG_REALM is provided to allow configuring the realm
-> before it is created. Configuration options can be classified as:
-> 
->   1. Parameters specific to the Realm stage2 (e.g. IPA Size, vmid, stage2
->      entry level, entry level RTTs, number of RTTs in start level, LPA2)
->      Most of these are not measured by RMM and comes from KVM book
->      keeping.
-> 
->   2. Parameters controlling "Arm Architecture features for the VM". (e.g.
->      SVE VL, PMU counters, number of HW BRPs/WPs), configured by the VMM
->      using the "user ID register write" mechanism. These will be
->      supported in the later patches.
-> 
->   3. Parameters are not part of the core Arm architecture but defined
->      by the RMM spec (e.g. Hash algorithm for measurement,
->      Personalisation value). These are programmed via
->      KVM_CAP_ARM_RME_CONFIG_REALM.
-> 
-> For the IPA size there is the possibility that the RMM supports a
-> different size to the IPA size supported by KVM for normal guests. At
-> the moment the 'normal limit' is exposed by KVM_CAP_ARM_VM_IPA_SIZE and
-> the IPA size is configured by the bottom bits of vm_type in
-> KVM_CREATE_VM. This means that it isn't easy for the VMM to discover
-> what IPA sizes are supported for Realm guests. Since the IPA is part of
-> the measurement of the realm guest the current expectation is that the
-> VMM will be required to pick the IPA size demanded by attestation and
-> therefore simply failing if this isn't available is fine. An option
-> would be to expose a new capability ioctl to obtain the RMM's maximum
-> IPA size if this is needed in the future.
-> 
-> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v5:
->   * Introduce free_delegated_granule() to replace many
->     undelegate/free_page() instances and centralise the comment on
->     leaking when the undelegate fails.
->   * Several other minor improvements suggested by reviews - thanks for
->     the feedback!
-> Changes since v2:
->   * Improved commit description.
->   * Improved return failures for rmi_check_version().
->   * Clear contents of PGD after it has been undelegated in case the RMM
->     left stale data.
->   * Minor changes to reflect changes in previous patches.
-> ---
->   arch/arm64/include/asm/kvm_emulate.h |   5 +
->   arch/arm64/include/asm/kvm_rme.h     |  19 ++
->   arch/arm64/kvm/arm.c                 |  18 ++
->   arch/arm64/kvm/mmu.c                 |  22 +-
->   arch/arm64/kvm/rme.c                 | 296 +++++++++++++++++++++++++++
->   5 files changed, 358 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> index 4d417e39763e..27f54a7778aa 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
-> @@ -715,6 +715,11 @@ static inline enum realm_state kvm_realm_state(struct kvm *kvm)
->   	return READ_ONCE(kvm->arch.realm.state);
->   }
->   
-> +static inline bool kvm_realm_is_created(struct kvm *kvm)
-> +{
-> +	return kvm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
-> +}
-> +
->   static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
->   {
->   	return false;
-> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
-> index 69af5c3a1e44..209cd99f03dd 100644
-> --- a/arch/arm64/include/asm/kvm_rme.h
-> +++ b/arch/arm64/include/asm/kvm_rme.h
-> @@ -6,6 +6,8 @@
->   #ifndef __ASM_KVM_RME_H
->   #define __ASM_KVM_RME_H
->   
-> +#include <uapi/linux/kvm.h>
-> +
->   /**
->    * enum realm_state - State of a Realm
->    */
-> @@ -46,11 +48,28 @@ enum realm_state {
->    * struct realm - Additional per VM data for a Realm
->    *
->    * @state: The lifetime state machine for the realm
-> + * @rd: Kernel mapping of the Realm Descriptor (RD)
-> + * @params: Parameters for the RMI_REALM_CREATE command
-> + * @num_aux: The number of auxiliary pages required by the RMM
-> + * @vmid: VMID to be used by the RMM for the realm
-> + * @ia_bits: Number of valid Input Address bits in the IPA
->    */
->   struct realm {
->   	enum realm_state state;
-> +
-> +	void *rd;
-> +	struct realm_params *params;
-> +
-> +	unsigned long num_aux;
-> +	unsigned int vmid;
-> +	unsigned int ia_bits;
->   };
->   
->   void kvm_init_rme(void);
-> +u32 kvm_realm_ipa_limit(void);
-> +
-> +int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap);
-> +int kvm_init_realm_vm(struct kvm *kvm);
-> +void kvm_destroy_realm(struct kvm *kvm);
->   
->   #endif
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 93087eca9c51..2bbf30d66424 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -153,6 +153,13 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
->   		}
->   		mutex_unlock(&kvm->slots_lock);
->   		break;
-> +	case KVM_CAP_ARM_RME:
-> +		if (!kvm_is_realm(kvm))
-> +			return -EINVAL;
-> +		mutex_lock(&kvm->lock);
-> +		r = kvm_realm_enable_cap(kvm, cap);
-> +		mutex_unlock(&kvm->lock);
-> +		break;
->   	default:
->   		break;
->   	}
+On Tue, Jan 28, 2025, Vishal Annapurve wrote:
+> On Tue, Jan 28, 2025 at 2:08=E2=80=AFPM Dave Hansen <dave.hansen@intel.co=
+m> wrote:
+> > Do you have any thoughts on why nobody has hit this up to now? Are TDX
+> > users not enabling PARAVIRT_XXL? Not using ACPI?
+>=20
+> This has been a long-standing issue which would show up visibly with
+> certain workloads where vcpus hit idle loop quite often during the
+> runtime. I was only able to recently spend some time towards
+> understanding the cause properly.
 
-The check of !kvm_is_realm() seems unnecessary because the same check will be
-done in kvm_realm_enable_cap().
+...
 
-> @@ -215,6 +222,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
->   
->   	bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
->   
-> +	/* Initialise the realm bits after the generic bits are enabled */
-> +	if (kvm_is_realm(kvm)) {
-> +		ret = kvm_init_realm_vm(kvm);
-> +		if (ret)
-> +			goto err_free_cpumask;
-> +	}
-> +
->   	return 0;
->   
->   err_free_cpumask:
-> @@ -274,6 +288,7 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
->   	kvm_unshare_hyp(kvm, kvm + 1);
->   
->   	kvm_arm_teardown_hypercalls(kvm);
-> +	kvm_destroy_realm(kvm);
->   }
->   
->   static bool kvm_has_full_ptr_auth(void)
-> @@ -421,6 +436,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->   	case KVM_CAP_ARM_SUPPORTED_REG_MASK_RANGES:
->   		r = BIT(0);
->   		break;
-> +	case KVM_CAP_ARM_RME:
-> +		r = static_key_enabled(&kvm_rme_is_available);
-> +		break;
->   	default:
->   		r = 0;
->   	}
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index c9d46ad57e52..f09d580c12ad 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -863,12 +863,16 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
->   	.icache_inval_pou	= invalidate_icache_guest_page,
->   };
->   
-> -static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long type)
-> +static int kvm_init_ipa_range(struct kvm *kvm,
-> +			      struct kvm_s2_mmu *mmu, unsigned long type)
->   {
->   	u32 kvm_ipa_limit = get_kvm_ipa_limit();
->   	u64 mmfr0, mmfr1;
->   	u32 phys_shift;
->   
-> +	if (kvm_is_realm(kvm))
-> +		kvm_ipa_limit = kvm_realm_ipa_limit();
-> +
->   	if (type & ~KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
->   		return -EINVAL;
->   
-> @@ -933,7 +937,7 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
->   		return -EINVAL;
->   	}
->   
-> -	err = kvm_init_ipa_range(mmu, type);
-> +	err = kvm_init_ipa_range(kvm, mmu, type);
->   	if (err)
->   		return err;
->   
-> @@ -1056,6 +1060,20 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
->   	struct kvm_pgtable *pgt = NULL;
->   
->   	write_lock(&kvm->mmu_lock);
-> +	if (kvm_is_realm(kvm) &&
-> +	    (kvm_realm_state(kvm) != REALM_STATE_DEAD &&
-> +	     kvm_realm_state(kvm) != REALM_STATE_NONE)) {
-> +		/* Tearing down RTTs will be added in a later patch */
-> +		write_unlock(&kvm->mmu_lock);
-> +
-> +		/*
-> +		 * The physical PGD pages are delegated to the RMM, so cannot
-> +		 * be freed at this point. This function will be called again
-> +		 * from kvm_destroy_realm() after the physical pages have been
-> +		 * returned at which point the memory can be freed.
-> +		 */
-> +		return;
-> +	}
->   	pgt = mmu->pgt;
->   	if (pgt) {
->   		mmu->pgd_phys = 0;
-> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-> index b88269b80c11..5530ec2653b7 100644
-> --- a/arch/arm64/kvm/rme.c
-> +++ b/arch/arm64/kvm/rme.c
-> @@ -5,9 +5,20 @@
->   
->   #include <linux/kvm_host.h>
->   
-> +#include <asm/kvm_emulate.h>
-> +#include <asm/kvm_mmu.h>
->   #include <asm/rmi_cmds.h>
->   #include <asm/virt.h>
->   
-> +#include <asm/kvm_pgtable.h>
-> +
-> +static unsigned long rmm_feat_reg0;
-> +
-> +static bool rme_supports(unsigned long feature)
-> +{
-> +	return !!u64_get_bits(rmm_feat_reg0, feature);
-> +}
-> +
+> > > @@ -1083,6 +1089,15 @@ void __init tdx_early_init(void)
+> > >       x86_platform.guest.enc_kexec_begin           =3D tdx_kexec_begi=
+n;
+> > >       x86_platform.guest.enc_kexec_finish          =3D tdx_kexec_fini=
+sh;
+> > >
+> > > +#ifdef CONFIG_PARAVIRT_XXL
+> > > +     /*
+> > > +      * halt instruction execution is not atomic for TDX VMs as it g=
+enerates
+> > > +      * #VEs, so otherwise "safe" halt invocations which cause inter=
+rupts to
+> > > +      * get enabled right after halt instruction don't work for TDX =
+VMs.
+> > > +      */
+> > > +     pv_ops.irq.safe_halt =3D tdx_safe_halt;
+> > > +#endif
+> > The basic bug here was that there was a path to a hlt instruction that
+> > folks didn't realize. This patch fixes the basic bug and gives us a nic=
+e
+> > warning if there are additional paths that weren't imagined.
+> >
+> > But it doesn't really help us audit the code to make it clear that TDX
+> > guest kernel's _can't_ screw up hlt again the same way.  This, for
+> > instance would make it pretty clear:
+> >
+> > static __always_inline void native_safe_halt(void)
+> > {
+> >         if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST))
+> >                 tdx_safe_halt();
 
-I don't have strong sense, but the name would be rme_has_feature() since the
-source is the RMM feature register-0.
+This incorrectly assumes the hypervisor is intercepting HLT.  If the VM is =
+given
+a slice of hardware, HLT-exiting may be disabled, in which case it's desira=
+ble
+for the guest to natively execute HLT, as the latencies to get in and out o=
+f "HLT"
+are lower, especially for TDX guests.  Such a VM would hopefully have MONIT=
+OR/MWAIT
+available as well, but even if that were the case, the admin could select H=
+LT for
+idling.
 
->   static int rmi_check_version(void)
->   {
->   	struct arm_smccc_res res;
-> @@ -36,6 +47,285 @@ static int rmi_check_version(void)
->   	return 0;
->   }
->   
-> +u32 kvm_realm_ipa_limit(void)
-> +{
-> +	return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_S2SZ);
-> +}
-> +
-> +static int get_start_level(struct realm *realm)
-> +{
-> +	return 4 - stage2_pgtable_levels(realm->ia_bits);
-> +}
-> +
-> +static void free_delegated_granule(phys_addr_t phys)
-> +{
-> +	if (WARN_ON(rmi_granule_undelegate(phys))) {
-> +		/* Undelegate failed: leak the page */
-> +		return;
-> +	}
-> +
-> +	free_page((unsigned long)phys_to_virt(phys));
-> +}
-> +
-> +static int realm_create_rd(struct kvm *kvm)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	struct realm_params *params = realm->params;
-> +	void *rd = NULL;
-> +	phys_addr_t rd_phys, params_phys;
-> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
-> +	int i, r;
-> +
-> +	if (WARN_ON(realm->rd) || WARN_ON(!realm->params))
-> +		return -EEXIST;
-> +
-> +	rd = (void *)__get_free_page(GFP_KERNEL);
-> +	if (!rd)
-> +		return -ENOMEM;
-> +
-> +	rd_phys = virt_to_phys(rd);
-> +	if (rmi_granule_delegate(rd_phys)) {
-> +		r = -ENXIO;
-> +		goto free_rd;
-> +	}
-> +
-> +	for (i = 0; i < pgd_size; i += PAGE_SIZE) {
-> +		phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i;
-> +
-> +		if (rmi_granule_delegate(pgd_phys)) {
-> +			r = -ENXIO;
-> +			goto out_undelegate_tables;
-> +		}
-> +	}
-> +
+Ugh, and I see that bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests"=
+)
+overrides default_idle().  The kernel really shouldn't do that, because odd=
+s are
+decent that any TDX guest will have direct access to HLT.  The best approac=
+h I
+can think of would be to patch x86_idle() to tdx_safe_halt() if and only if=
+ a HLT
+#VE is taken.  The tricky part would be delaying the update until it's safe=
+ to do
+so.
 
-The step of 'i' is PAGE_SIZE, inconsistent with what has been done in the tag
-'out_undelegate_tables' where the step is expected to be 1.
+As for taking a #VE, the exception itself is fine (assuming the kernel isn'=
+t off
+the rails and using a trap gate :-D).  The issue is likely that RFLAGS.IF=
+=3D1 on
+the stack, and so the call to cond_local_irq_enable() enables IRQs before m=
+aking
+the hypercall.  E.g. no one has complained about #VC, because exc_vmm_commu=
+nication()
+doesn't enable IRQs.
 
-> +	realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
-> +
-> +	params->s2sz = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
-> +	params->rtt_level_start = get_start_level(realm);
-> +	params->rtt_num_start = pgd_size / PAGE_SIZE;
-> +	params->rtt_base = kvm->arch.mmu.pgd_phys;
-> +	params->vmid = realm->vmid;
-> +
-> +	params_phys = virt_to_phys(params);
-> +
-> +	if (rmi_realm_create(rd_phys, params_phys)) {
-> +		r = -ENXIO;
-> +		goto out_undelegate_tables;
-> +	}
-> +
-> +	if (WARN_ON(rmi_rec_aux_count(rd_phys, &realm->num_aux))) {
-> +		WARN_ON(rmi_realm_destroy(rd_phys));
-> +		goto out_undelegate_tables;
-> +	}
-> +
-> +	realm->rd = rd;
-> +
-> +	return 0;
-> +
-> +out_undelegate_tables:
-> +	while (--i >= 0) {
-> +		phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i * PAGE_SIZE;
-> +
-> +		if (WARN_ON(rmi_granule_undelegate(pgd_phys))) {
-> +			/* Leak the pages if they cannot be returned */
-> +			kvm->arch.mmu.pgt = NULL;
-> +			break;
-> +		}
-> +	}
-> +	if (WARN_ON(rmi_granule_undelegate(rd_phys))) {
-> +		/* Leak the page if it isn't returned */
-> +		return r;
-> +	}
-> +free_rd:
-> +	free_page((unsigned long)rd);
-> +	return r;
-> +}
-> +
-> +/* Protects access to rme_vmid_bitmap */
-> +static DEFINE_SPINLOCK(rme_vmid_lock);
-> +static unsigned long *rme_vmid_bitmap;
-> +
-> +static int rme_vmid_init(void)
-> +{
-> +	unsigned int vmid_count = 1 << kvm_get_vmid_bits();
-> +
-> +	rme_vmid_bitmap = bitmap_zalloc(vmid_count, GFP_KERNEL);
-> +	if (!rme_vmid_bitmap) {
-> +		kvm_err("%s: Couldn't allocate rme vmid bitmap\n", __func__);
-> +		return -ENOMEM;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int rme_vmid_reserve(void)
-> +{
-> +	int ret;
-> +	unsigned int vmid_count = 1 << kvm_get_vmid_bits();
-> +
-> +	spin_lock(&rme_vmid_lock);
-> +	ret = bitmap_find_free_region(rme_vmid_bitmap, vmid_count, 0);
-> +	spin_unlock(&rme_vmid_lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static void rme_vmid_release(unsigned int vmid)
-> +{
-> +	spin_lock(&rme_vmid_lock);
-> +	bitmap_release_region(rme_vmid_bitmap, vmid, 0);
-> +	spin_unlock(&rme_vmid_lock);
-> +}
-> +
-> +static int kvm_create_realm(struct kvm *kvm)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	int ret;
-> +
-> +	if (!kvm_is_realm(kvm))
-> +		return -EINVAL;
+Off the top of my head, I can't think of any flows that would do HLT with I=
+RQs
+fully enabled.  Even PV spinlocks use safe_halt(), e.g. in kvm_wait(), so I=
+ don't
+think there's any value in trying to precisely identify that it's a safe HL=
+T?
 
-The duplicated check has been done in kvm_realm_enable_cap(). So it can be
-dropped safely.
+E.g. this should fix the immediate problem, and then ideally someone would =
+make
+TDX guests play nice with native HLT.
 
-> +	if (kvm_realm_is_created(kvm))
-> +		return -EEXIST;
-> +
-> +	ret = rme_vmid_reserve();
-> +	if (ret < 0)
-> +		return ret;
-> +	realm->vmid = ret;
-> +
-> +	ret = realm_create_rd(kvm);
-> +	if (ret) {
-> +		rme_vmid_release(realm->vmid);
-> +		return ret;
-> +	}
-> +
-> +	WRITE_ONCE(realm->state, REALM_STATE_NEW);
-> +
-> +	/* The realm is up, free the parameters.  */
-> +	free_page((unsigned long)realm->params);
-> +	realm->params = NULL;
-> +
-> +	return 0;
-> +}
-> +
-> +static int config_realm_hash_algo(struct realm *realm,
-> +				  struct kvm_cap_arm_rme_config_item *cfg)
-> +{
-> +	switch (cfg->hash_algo) {
-> +	case KVM_CAP_ARM_RME_MEASUREMENT_ALGO_SHA256:
-> +		if (!rme_supports(RMI_FEATURE_REGISTER_0_HASH_SHA_256))
-> +			return -EINVAL;
-> +		break;
-> +	case KVM_CAP_ARM_RME_MEASUREMENT_ALGO_SHA512:
-> +		if (!rme_supports(RMI_FEATURE_REGISTER_0_HASH_SHA_512))
-> +			return -EINVAL;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +	realm->params->hash_algo = cfg->hash_algo;
-> +	return 0;
-> +}
-> +
-> +static int kvm_rme_config_realm(struct kvm *kvm, struct kvm_enable_cap *cap)
-> +{
-> +	struct kvm_cap_arm_rme_config_item cfg;
-> +	struct realm *realm = &kvm->arch.realm;
-> +	int r = 0;
-> +
-> +	if (kvm_realm_is_created(kvm))
-> +		return -EBUSY;
-> +
-> +	if (copy_from_user(&cfg, (void __user *)cap->args[1], sizeof(cfg)))
-> +		return -EFAULT;
-> +
-> +	switch (cfg.cfg) {
-> +	case KVM_CAP_ARM_RME_CFG_RPV:
-> +		memcpy(&realm->params->rpv, &cfg.rpv, sizeof(cfg.rpv));
-> +		break;
-> +	case KVM_CAP_ARM_RME_CFG_HASH_ALGO:
-> +		r = config_realm_hash_algo(realm, &cfg);
-> +		break;
-> +	default:
-> +		r = -EINVAL;
-> +	}
-> +
-> +	return r;
-> +}
-> +
-> +int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
-> +{
-> +	int r = 0;
-> +
-> +	if (!kvm_is_realm(kvm))
-> +		return -EINVAL;
-> +
-> +	switch (cap->args[0]) {
-> +	case KVM_CAP_ARM_RME_CONFIG_REALM:
-> +		r = kvm_rme_config_realm(kvm, cap);
-> +		break;
-> +	case KVM_CAP_ARM_RME_CREATE_RD:
-> +		r = kvm_create_realm(kvm);
-> +		break;
-> +	default:
-> +		r = -EINVAL;
-> +		break;
-> +	}
-> +
-> +	return r;
-> +}
-> +
-> +void kvm_destroy_realm(struct kvm *kvm)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
-> +	int i;
-> +
-> +	if (realm->params) {
-> +		free_page((unsigned long)realm->params);
-> +		realm->params = NULL;
-> +	}
-> +
-> +	if (!kvm_realm_is_created(kvm))
-> +		return;
-> +
-> +	WRITE_ONCE(realm->state, REALM_STATE_DYING);
-> +
-> +	if (realm->rd) {
-> +		phys_addr_t rd_phys = virt_to_phys(realm->rd);
-> +
-> +		if (WARN_ON(rmi_realm_destroy(rd_phys)))
-> +			return;
-> +		free_delegated_granule(rd_phys);
-> +		realm->rd = NULL;
-> +	}
-> +
-> +	rme_vmid_release(realm->vmid);
-> +
-> +	for (i = 0; i < pgd_size; i += PAGE_SIZE) {
-> +		phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i;
-> +
-> +		if (WARN_ON(rmi_granule_undelegate(pgd_phys)))
-> +			return;
-> +	}
-> +
-> +	WRITE_ONCE(realm->state, REALM_STATE_DEAD);
-> +
-> +	/* Now that the Realm is destroyed, free the entry level RTTs */
-> +	kvm_free_stage2_pgd(&kvm->arch.mmu);
-> +}
-> +
-> +int kvm_init_realm_vm(struct kvm *kvm)
-> +{
-> +	struct realm_params *params;
-> +
-> +	params = (struct realm_params *)get_zeroed_page(GFP_KERNEL);
-> +	if (!params)
-> +		return -ENOMEM;
-> +
-> +	kvm->arch.realm.params = params;
-> +	return 0;
-> +}
-> +
->   void kvm_init_rme(void)
->   {
->   	if (PAGE_SIZE != SZ_4K)
-> @@ -46,5 +336,11 @@ void kvm_init_rme(void)
->   		/* Continue without realm support */
->   		return;
->   
-> +	if (WARN_ON(rmi_features(0, &rmm_feat_reg0)))
-> +		return;
-> +
-> +	if (rme_vmid_init())
-> +		return;
-> +
->   	/* Future patch will enable static branch kvm_rme_is_available */
->   }
-
-Thanks,
-Gavin
-
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 2dbadf347b5f..c60659468894 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -78,6 +78,8 @@
+=20
+ #include <asm/proto.h>
+=20
++#include <uapi/asm/vmx.h>
++
+ DECLARE_BITMAP(system_vectors, NR_VECTORS);
+=20
+ __always_inline int is_valid_bugaddr(unsigned long addr)
+@@ -1424,7 +1426,14 @@ DEFINE_IDTENTRY(exc_virtualization_exception)
+         */
+        tdx_get_ve_info(&ve);
+=20
+-       cond_local_irq_enable(regs);
++       /*
++        * Don't enable IRQs on #VE due to HLT, as the HLT was likely execu=
+ted
++        * in an STI-shadow, e.g. by safe_halt().  For safe HLT, IRQs need =
+to
++        * remain disabled until the TDCALL to request HLT emulation, so th=
+at
++        * pending IRQs are correctly treated as wake events.
++        */
++       if (ve.exit_reason !=3D EXIT_REASON_HLT)
++               cond_local_irq_enable(regs);
+=20
+        /*
+         * If tdx_handle_virt_exception() could not process
+@@ -1433,7 +1442,8 @@ DEFINE_IDTENTRY(exc_virtualization_exception)
+        if (!tdx_handle_virt_exception(regs, &ve))
+                ve_raise_fault(regs, 0, ve.gla);
+=20
+-       cond_local_irq_disable(regs);
++       if (ve.exit_reason !=3D EXIT_REASON_HLT)
++               cond_local_irq_disable(regs);
+ }
+=20
+ #endif
