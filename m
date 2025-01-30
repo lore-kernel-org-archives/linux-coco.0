@@ -1,621 +1,287 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB32B194C86;
-	Thu, 30 Jan 2025 11:57:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27093819
+	for <linux-coco@lists.linux.dev>; Thu, 30 Jan 2025 13:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738238233; cv=none; b=ltyyEdXcLjtYNpXvBnlxhrZG+Bj/F/qDzHLSGr1D48IrXpEXO/lcVALRCk8JmzY+VGGZ4qg+wISWygdo11xfZ6XCm19iZaKgIpJ/dkXedNd6z8A4HIpCl10PiMAIsgtznEDKe0MobHzKGXEU8DoPzH7ZfmgG1HkcjVhxLrwTMg4=
+	t=1738243297; cv=none; b=iJgbxS/bGleYPZkRkfXNQqYIiCMOOw8hyyqmGeNOCIdBFbku3TkVdG9NRWsXQOrAsCNOEz8SLPYvFi5CxMfq2D7F2qgZiucLiO2+ly1LRYM9iqOgxjwMbcywUaw9ClcjEnuQPl6Ms/WGZr+220IKNuOAKpEgGk26qkatlvCunRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738238233; c=relaxed/simple;
-	bh=/jzUuYwmgxP+lfg92pEzyANCRw7aOu7723g/XvYgnsA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jv57Bm8OnNSIJmWakJSHVK3849FXvfzmhVAHOLCgDB9lf4njvn7oXR5L2uQ/JKt9wJcd0C3CemSVyHxmj/1wBIDnOKcdrcYOhUms8Kn2x5qoEzj+AyIkDaBXlrrK6E9tyoPd9NvtEpXA//WuciO4YKNmGVY+zQOSgoQi/9hezao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9179B497;
-	Thu, 30 Jan 2025 03:57:35 -0800 (PST)
-Received: from [10.1.32.52] (e122027.cambridge.arm.com [10.1.32.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 33F8C3F63F;
-	Thu, 30 Jan 2025 03:57:05 -0800 (PST)
-Message-ID: <84da77b5-9150-49bc-a3b3-60dfa13935e5@arm.com>
-Date: Thu, 30 Jan 2025 11:57:03 +0000
+	s=arc-20240116; t=1738243297; c=relaxed/simple;
+	bh=31Y1emdzOrUShI0eVABfQbVoSQkTdZAiLpsoJ9BbLDU=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LthuSR+spolf6NJ13+xSBYKSybk+xwUSaM/X5+G/SVqi0mEDd3GYR8TBeNJY7KLdyac2hQNevfs92zNPX25TrhlYtKOiwgAHUg+QLD/fqQ1xhIJ4SXGdar0doqO9/3KdA729drGmGc38l4D1hNt7NX7hmckmOtILOHiChNdqUXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YkKP95qptz6M4SL;
+	Thu, 30 Jan 2025 21:19:25 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id BAD0A1400D4;
+	Thu, 30 Jan 2025 21:21:32 +0800 (CST)
+Received: from localhost (10.47.30.69) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 30 Jan
+ 2025 14:21:32 +0100
+Date: Thu, 30 Jan 2025 13:21:29 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, Bjorn Helgaas <bhelgaas@google.com>, "Lukas
+ Wunner" <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>, "Alexey
+ Kardashevskiy" <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+	<linux-pci@vger.kernel.org>, <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 06/11] samples/devsec: PCI device-security bus /
+ endpoint sample
+Message-ID: <20250130132129.000027ad@huawei.com>
+In-Reply-To: <173343743095.1074769.17985181033044298157.stgit@dwillia2-xfh.jf.intel.com>
+References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
+	<173343743095.1074769.17985181033044298157.stgit@dwillia2-xfh.jf.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 08/43] arm64: RME: ioctls to create and configure
- realms
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20241212155610.76522-1-steven.price@arm.com>
- <20241212155610.76522-9-steven.price@arm.com>
- <691a2f0a-0f04-4bf6-a11a-ea7ee753cf88@redhat.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <691a2f0a-0f04-4bf6-a11a-ea7ee753cf88@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On 29/01/2025 00:43, Gavin Shan wrote:
-> On 12/13/24 1:55 AM, Steven Price wrote:
->> Add the KVM_CAP_ARM_RME_CREATE_RD ioctl to create a realm. This involves
->> delegating pages to the RMM to hold the Realm Descriptor (RD) and for
->> the base level of the Realm Translation Tables (RTT). A VMID also need
->> to be picked, since the RMM has a separate VMID address space a
->> dedicated allocator is added for this purpose.
->>
->> KVM_CAP_ARM_RME_CONFIG_REALM is provided to allow configuring the realm
->> before it is created. Configuration options can be classified as:
->>
->>   1. Parameters specific to the Realm stage2 (e.g. IPA Size, vmid, stage2
->>      entry level, entry level RTTs, number of RTTs in start level, LPA2)
->>      Most of these are not measured by RMM and comes from KVM book
->>      keeping.
->>
->>   2. Parameters controlling "Arm Architecture features for the VM". (e.g.
->>      SVE VL, PMU counters, number of HW BRPs/WPs), configured by the VMM
->>      using the "user ID register write" mechanism. These will be
->>      supported in the later patches.
->>
->>   3. Parameters are not part of the core Arm architecture but defined
->>      by the RMM spec (e.g. Hash algorithm for measurement,
->>      Personalisation value). These are programmed via
->>      KVM_CAP_ARM_RME_CONFIG_REALM.
->>
->> For the IPA size there is the possibility that the RMM supports a
->> different size to the IPA size supported by KVM for normal guests. At
->> the moment the 'normal limit' is exposed by KVM_CAP_ARM_VM_IPA_SIZE and
->> the IPA size is configured by the bottom bits of vm_type in
->> KVM_CREATE_VM. This means that it isn't easy for the VMM to discover
->> what IPA sizes are supported for Realm guests. Since the IPA is part of
->> the measurement of the realm guest the current expectation is that the
->> VMM will be required to pick the IPA size demanded by attestation and
->> therefore simply failing if this isn't available is fine. An option
->> would be to expose a new capability ioctl to obtain the RMM's maximum
->> IPA size if this is needed in the future.
->>
->> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v5:
->>   * Introduce free_delegated_granule() to replace many
->>     undelegate/free_page() instances and centralise the comment on
->>     leaking when the undelegate fails.
->>   * Several other minor improvements suggested by reviews - thanks for
->>     the feedback!
->> Changes since v2:
->>   * Improved commit description.
->>   * Improved return failures for rmi_check_version().
->>   * Clear contents of PGD after it has been undelegated in case the RMM
->>     left stale data.
->>   * Minor changes to reflect changes in previous patches.
->> ---
->>   arch/arm64/include/asm/kvm_emulate.h |   5 +
->>   arch/arm64/include/asm/kvm_rme.h     |  19 ++
->>   arch/arm64/kvm/arm.c                 |  18 ++
->>   arch/arm64/kvm/mmu.c                 |  22 +-
->>   arch/arm64/kvm/rme.c                 | 296 +++++++++++++++++++++++++++
->>   5 files changed, 358 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/
->> include/asm/kvm_emulate.h
->> index 4d417e39763e..27f54a7778aa 100644
->> --- a/arch/arm64/include/asm/kvm_emulate.h
->> +++ b/arch/arm64/include/asm/kvm_emulate.h
->> @@ -715,6 +715,11 @@ static inline enum realm_state
->> kvm_realm_state(struct kvm *kvm)
->>       return READ_ONCE(kvm->arch.realm.state);
->>   }
->>   +static inline bool kvm_realm_is_created(struct kvm *kvm)
->> +{
->> +    return kvm_is_realm(kvm) && kvm_realm_state(kvm) !=
->> REALM_STATE_NONE;
->> +}
->> +
->>   static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
->>   {
->>       return false;
->> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/
->> asm/kvm_rme.h
->> index 69af5c3a1e44..209cd99f03dd 100644
->> --- a/arch/arm64/include/asm/kvm_rme.h
->> +++ b/arch/arm64/include/asm/kvm_rme.h
->> @@ -6,6 +6,8 @@
->>   #ifndef __ASM_KVM_RME_H
->>   #define __ASM_KVM_RME_H
->>   +#include <uapi/linux/kvm.h>
->> +
->>   /**
->>    * enum realm_state - State of a Realm
->>    */
->> @@ -46,11 +48,28 @@ enum realm_state {
->>    * struct realm - Additional per VM data for a Realm
->>    *
->>    * @state: The lifetime state machine for the realm
->> + * @rd: Kernel mapping of the Realm Descriptor (RD)
->> + * @params: Parameters for the RMI_REALM_CREATE command
->> + * @num_aux: The number of auxiliary pages required by the RMM
->> + * @vmid: VMID to be used by the RMM for the realm
->> + * @ia_bits: Number of valid Input Address bits in the IPA
->>    */
->>   struct realm {
->>       enum realm_state state;
->> +
->> +    void *rd;
->> +    struct realm_params *params;
->> +
->> +    unsigned long num_aux;
->> +    unsigned int vmid;
->> +    unsigned int ia_bits;
->>   };
->>     void kvm_init_rme(void);
->> +u32 kvm_realm_ipa_limit(void);
->> +
->> +int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap);
->> +int kvm_init_realm_vm(struct kvm *kvm);
->> +void kvm_destroy_realm(struct kvm *kvm);
->>     #endif
->> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->> index 93087eca9c51..2bbf30d66424 100644
->> --- a/arch/arm64/kvm/arm.c
->> +++ b/arch/arm64/kvm/arm.c
->> @@ -153,6 +153,13 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
->>           }
->>           mutex_unlock(&kvm->slots_lock);
->>           break;
->> +    case KVM_CAP_ARM_RME:
->> +        if (!kvm_is_realm(kvm))
->> +            return -EINVAL;
->> +        mutex_lock(&kvm->lock);
->> +        r = kvm_realm_enable_cap(kvm, cap);
->> +        mutex_unlock(&kvm->lock);
->> +        break;
->>       default:
->>           break;
->>       }
+On Thu, 05 Dec 2024 14:23:51 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
+
+> Establish just enough emulated PCI infrastructure to register a sample
+> TSM (platform security manager) driver and have it discover an IDE + TEE
+> (link encryption + device-interface security protocol (TDISP)) capable
+> device.
 > 
-> The check of !kvm_is_realm() seems unnecessary because the same check
-> will be
-> done in kvm_realm_enable_cap().
-
-Indeed, I'll drop this check.
-
->> @@ -215,6 +222,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned
->> long type)
->>         bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
->>   +    /* Initialise the realm bits after the generic bits are enabled */
->> +    if (kvm_is_realm(kvm)) {
->> +        ret = kvm_init_realm_vm(kvm);
->> +        if (ret)
->> +            goto err_free_cpumask;
->> +    }
->> +
->>       return 0;
->>     err_free_cpumask:
->> @@ -274,6 +288,7 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
->>       kvm_unshare_hyp(kvm, kvm + 1);
->>         kvm_arm_teardown_hypercalls(kvm);
->> +    kvm_destroy_realm(kvm);
->>   }
->>     static bool kvm_has_full_ptr_auth(void)
->> @@ -421,6 +436,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
->> long ext)
->>       case KVM_CAP_ARM_SUPPORTED_REG_MASK_RANGES:
->>           r = BIT(0);
->>           break;
->> +    case KVM_CAP_ARM_RME:
->> +        r = static_key_enabled(&kvm_rme_is_available);
->> +        break;
->>       default:
->>           r = 0;
->>       }
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index c9d46ad57e52..f09d580c12ad 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
->> @@ -863,12 +863,16 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
->>       .icache_inval_pou    = invalidate_icache_guest_page,
->>   };
->>   -static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long
->> type)
->> +static int kvm_init_ipa_range(struct kvm *kvm,
->> +                  struct kvm_s2_mmu *mmu, unsigned long type)
->>   {
->>       u32 kvm_ipa_limit = get_kvm_ipa_limit();
->>       u64 mmfr0, mmfr1;
->>       u32 phys_shift;
->>   +    if (kvm_is_realm(kvm))
->> +        kvm_ipa_limit = kvm_realm_ipa_limit();
->> +
->>       if (type & ~KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
->>           return -EINVAL;
->>   @@ -933,7 +937,7 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
->> kvm_s2_mmu *mmu, unsigned long t
->>           return -EINVAL;
->>       }
->>   -    err = kvm_init_ipa_range(mmu, type);
->> +    err = kvm_init_ipa_range(kvm, mmu, type);
->>       if (err)
->>           return err;
->>   @@ -1056,6 +1060,20 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
->>       struct kvm_pgtable *pgt = NULL;
->>         write_lock(&kvm->mmu_lock);
->> +    if (kvm_is_realm(kvm) &&
->> +        (kvm_realm_state(kvm) != REALM_STATE_DEAD &&
->> +         kvm_realm_state(kvm) != REALM_STATE_NONE)) {
->> +        /* Tearing down RTTs will be added in a later patch */
->> +        write_unlock(&kvm->mmu_lock);
->> +
->> +        /*
->> +         * The physical PGD pages are delegated to the RMM, so cannot
->> +         * be freed at this point. This function will be called again
->> +         * from kvm_destroy_realm() after the physical pages have been
->> +         * returned at which point the memory can be freed.
->> +         */
->> +        return;
->> +    }
->>       pgt = mmu->pgt;
->>       if (pgt) {
->>           mmu->pgd_phys = 0;
->> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
->> index b88269b80c11..5530ec2653b7 100644
->> --- a/arch/arm64/kvm/rme.c
->> +++ b/arch/arm64/kvm/rme.c
->> @@ -5,9 +5,20 @@
->>     #include <linux/kvm_host.h>
->>   +#include <asm/kvm_emulate.h>
->> +#include <asm/kvm_mmu.h>
->>   #include <asm/rmi_cmds.h>
->>   #include <asm/virt.h>
->>   +#include <asm/kvm_pgtable.h>
->> +
->> +static unsigned long rmm_feat_reg0;
->> +
->> +static bool rme_supports(unsigned long feature)
->> +{
->> +    return !!u64_get_bits(rmm_feat_reg0, feature);
->> +}
->> +
+> Use the existing a CONFIG_PCI_BRIDGE_EMUL to emulate an IDE capable root
+> port, and open code the emulation of an endpoint device via simulated
+> configuration cycle responses.
 > 
-> I don't have strong sense, but the name would be rme_has_feature() since
-> the
-> source is the RMM feature register-0.
-
-Sure.
-
->>   static int rmi_check_version(void)
->>   {
->>       struct arm_smccc_res res;
->> @@ -36,6 +47,285 @@ static int rmi_check_version(void)
->>       return 0;
->>   }
->>   +u32 kvm_realm_ipa_limit(void)
->> +{
->> +    return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_S2SZ);
->> +}
->> +
->> +static int get_start_level(struct realm *realm)
->> +{
->> +    return 4 - stage2_pgtable_levels(realm->ia_bits);
->> +}
->> +
->> +static void free_delegated_granule(phys_addr_t phys)
->> +{
->> +    if (WARN_ON(rmi_granule_undelegate(phys))) {
->> +        /* Undelegate failed: leak the page */
->> +        return;
->> +    }
->> +
->> +    free_page((unsigned long)phys_to_virt(phys));
->> +}
->> +
->> +static int realm_create_rd(struct kvm *kvm)
->> +{
->> +    struct realm *realm = &kvm->arch.realm;
->> +    struct realm_params *params = realm->params;
->> +    void *rd = NULL;
->> +    phys_addr_t rd_phys, params_phys;
->> +    size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
->> +    int i, r;
->> +
->> +    if (WARN_ON(realm->rd) || WARN_ON(!realm->params))
->> +        return -EEXIST;
->> +
->> +    rd = (void *)__get_free_page(GFP_KERNEL);
->> +    if (!rd)
->> +        return -ENOMEM;
->> +
->> +    rd_phys = virt_to_phys(rd);
->> +    if (rmi_granule_delegate(rd_phys)) {
->> +        r = -ENXIO;
->> +        goto free_rd;
->> +    }
->> +
->> +    for (i = 0; i < pgd_size; i += PAGE_SIZE) {
->> +        phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i;
->> +
->> +        if (rmi_granule_delegate(pgd_phys)) {
->> +            r = -ENXIO;
->> +            goto out_undelegate_tables;
->> +        }
->> +    }
->> +
+> The devsec_tsm driver responds to the PCI core TSM operations as if it
+> successfully exercised the given interface security protocol message.
 > 
-> The step of 'i' is PAGE_SIZE, inconsistent with what has been done in
-> the tag
-> 'out_undelegate_tables' where the step is expected to be 1.
-
-Ouch, good spot!
-
-Thanks!
-
-Steve
-
->> +    realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
->> +
->> +    params->s2sz = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
->> +    params->rtt_level_start = get_start_level(realm);
->> +    params->rtt_num_start = pgd_size / PAGE_SIZE;
->> +    params->rtt_base = kvm->arch.mmu.pgd_phys;
->> +    params->vmid = realm->vmid;
->> +
->> +    params_phys = virt_to_phys(params);
->> +
->> +    if (rmi_realm_create(rd_phys, params_phys)) {
->> +        r = -ENXIO;
->> +        goto out_undelegate_tables;
->> +    }
->> +
->> +    if (WARN_ON(rmi_rec_aux_count(rd_phys, &realm->num_aux))) {
->> +        WARN_ON(rmi_realm_destroy(rd_phys));
->> +        goto out_undelegate_tables;
->> +    }
->> +
->> +    realm->rd = rd;
->> +
->> +    return 0;
->> +
->> +out_undelegate_tables:
->> +    while (--i >= 0) {
->> +        phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i * PAGE_SIZE;
->> +
->> +        if (WARN_ON(rmi_granule_undelegate(pgd_phys))) {
->> +            /* Leak the pages if they cannot be returned */
->> +            kvm->arch.mmu.pgt = NULL;
->> +            break;
->> +        }
->> +    }
->> +    if (WARN_ON(rmi_granule_undelegate(rd_phys))) {
->> +        /* Leak the page if it isn't returned */
->> +        return r;
->> +    }
->> +free_rd:
->> +    free_page((unsigned long)rd);
->> +    return r;
->> +}
->> +
->> +/* Protects access to rme_vmid_bitmap */
->> +static DEFINE_SPINLOCK(rme_vmid_lock);
->> +static unsigned long *rme_vmid_bitmap;
->> +
->> +static int rme_vmid_init(void)
->> +{
->> +    unsigned int vmid_count = 1 << kvm_get_vmid_bits();
->> +
->> +    rme_vmid_bitmap = bitmap_zalloc(vmid_count, GFP_KERNEL);
->> +    if (!rme_vmid_bitmap) {
->> +        kvm_err("%s: Couldn't allocate rme vmid bitmap\n", __func__);
->> +        return -ENOMEM;
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->> +static int rme_vmid_reserve(void)
->> +{
->> +    int ret;
->> +    unsigned int vmid_count = 1 << kvm_get_vmid_bits();
->> +
->> +    spin_lock(&rme_vmid_lock);
->> +    ret = bitmap_find_free_region(rme_vmid_bitmap, vmid_count, 0);
->> +    spin_unlock(&rme_vmid_lock);
->> +
->> +    return ret;
->> +}
->> +
->> +static void rme_vmid_release(unsigned int vmid)
->> +{
->> +    spin_lock(&rme_vmid_lock);
->> +    bitmap_release_region(rme_vmid_bitmap, vmid, 0);
->> +    spin_unlock(&rme_vmid_lock);
->> +}
->> +
->> +static int kvm_create_realm(struct kvm *kvm)
->> +{
->> +    struct realm *realm = &kvm->arch.realm;
->> +    int ret;
->> +
->> +    if (!kvm_is_realm(kvm))
->> +        return -EINVAL;
+> The devsec_bus and devsec_tsm drivers can be loaded in either order to
+> reflect cases like SEV-TIO where the TSM is PCI-device firmware, and
+> cases like TDX Connect where the TSM is a software agent running on the
+> host CPU.
 > 
-> The duplicated check has been done in kvm_realm_enable_cap(). So it can be
-> dropped safely.
+> Follow-on patches add common code for TSM managed IDE establishment. For
+> now, just successfully complete setup and teardown of the DSM (device
+> security manager) context as a building block for management of TDI
+> (trusted device interface) instances.
 > 
->> +    if (kvm_realm_is_created(kvm))
->> +        return -EEXIST;
->> +
->> +    ret = rme_vmid_reserve();
->> +    if (ret < 0)
->> +        return ret;
->> +    realm->vmid = ret;
->> +
->> +    ret = realm_create_rd(kvm);
->> +    if (ret) {
->> +        rme_vmid_release(realm->vmid);
->> +        return ret;
->> +    }
->> +
->> +    WRITE_ONCE(realm->state, REALM_STATE_NEW);
->> +
->> +    /* The realm is up, free the parameters.  */
->> +    free_page((unsigned long)realm->params);
->> +    realm->params = NULL;
->> +
->> +    return 0;
->> +}
->> +
->> +static int config_realm_hash_algo(struct realm *realm,
->> +                  struct kvm_cap_arm_rme_config_item *cfg)
->> +{
->> +    switch (cfg->hash_algo) {
->> +    case KVM_CAP_ARM_RME_MEASUREMENT_ALGO_SHA256:
->> +        if (!rme_supports(RMI_FEATURE_REGISTER_0_HASH_SHA_256))
->> +            return -EINVAL;
->> +        break;
->> +    case KVM_CAP_ARM_RME_MEASUREMENT_ALGO_SHA512:
->> +        if (!rme_supports(RMI_FEATURE_REGISTER_0_HASH_SHA_512))
->> +            return -EINVAL;
->> +        break;
->> +    default:
->> +        return -EINVAL;
->> +    }
->> +    realm->params->hash_algo = cfg->hash_algo;
->> +    return 0;
->> +}
->> +
->> +static int kvm_rme_config_realm(struct kvm *kvm, struct
->> kvm_enable_cap *cap)
->> +{
->> +    struct kvm_cap_arm_rme_config_item cfg;
->> +    struct realm *realm = &kvm->arch.realm;
->> +    int r = 0;
->> +
->> +    if (kvm_realm_is_created(kvm))
->> +        return -EBUSY;
->> +
->> +    if (copy_from_user(&cfg, (void __user *)cap->args[1], sizeof(cfg)))
->> +        return -EFAULT;
->> +
->> +    switch (cfg.cfg) {
->> +    case KVM_CAP_ARM_RME_CFG_RPV:
->> +        memcpy(&realm->params->rpv, &cfg.rpv, sizeof(cfg.rpv));
->> +        break;
->> +    case KVM_CAP_ARM_RME_CFG_HASH_ALGO:
->> +        r = config_realm_hash_algo(realm, &cfg);
->> +        break;
->> +    default:
->> +        r = -EINVAL;
->> +    }
->> +
->> +    return r;
->> +}
->> +
->> +int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
->> +{
->> +    int r = 0;
->> +
->> +    if (!kvm_is_realm(kvm))
->> +        return -EINVAL;
->> +
->> +    switch (cap->args[0]) {
->> +    case KVM_CAP_ARM_RME_CONFIG_REALM:
->> +        r = kvm_rme_config_realm(kvm, cap);
->> +        break;
->> +    case KVM_CAP_ARM_RME_CREATE_RD:
->> +        r = kvm_create_realm(kvm);
->> +        break;
->> +    default:
->> +        r = -EINVAL;
->> +        break;
->> +    }
->> +
->> +    return r;
->> +}
->> +
->> +void kvm_destroy_realm(struct kvm *kvm)
->> +{
->> +    struct realm *realm = &kvm->arch.realm;
->> +    size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
->> +    int i;
->> +
->> +    if (realm->params) {
->> +        free_page((unsigned long)realm->params);
->> +        realm->params = NULL;
->> +    }
->> +
->> +    if (!kvm_realm_is_created(kvm))
->> +        return;
->> +
->> +    WRITE_ONCE(realm->state, REALM_STATE_DYING);
->> +
->> +    if (realm->rd) {
->> +        phys_addr_t rd_phys = virt_to_phys(realm->rd);
->> +
->> +        if (WARN_ON(rmi_realm_destroy(rd_phys)))
->> +            return;
->> +        free_delegated_granule(rd_phys);
->> +        realm->rd = NULL;
->> +    }
->> +
->> +    rme_vmid_release(realm->vmid);
->> +
->> +    for (i = 0; i < pgd_size; i += PAGE_SIZE) {
->> +        phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i;
->> +
->> +        if (WARN_ON(rmi_granule_undelegate(pgd_phys)))
->> +            return;
->> +    }
->> +
->> +    WRITE_ONCE(realm->state, REALM_STATE_DEAD);
->> +
->> +    /* Now that the Realm is destroyed, free the entry level RTTs */
->> +    kvm_free_stage2_pgd(&kvm->arch.mmu);
->> +}
->> +
->> +int kvm_init_realm_vm(struct kvm *kvm)
->> +{
->> +    struct realm_params *params;
->> +
->> +    params = (struct realm_params *)get_zeroed_page(GFP_KERNEL);
->> +    if (!params)
->> +        return -ENOMEM;
->> +
->> +    kvm->arch.realm.params = params;
->> +    return 0;
->> +}
->> +
->>   void kvm_init_rme(void)
->>   {
->>       if (PAGE_SIZE != SZ_4K)
->> @@ -46,5 +336,11 @@ void kvm_init_rme(void)
->>           /* Continue without realm support */
->>           return;
->>   +    if (WARN_ON(rmi_features(0, &rmm_feat_reg0)))
->> +        return;
->> +
->> +    if (rme_vmid_init())
->> +        return;
->> +
->>       /* Future patch will enable static branch kvm_rme_is_available */
->>   }
+>  # modprobe devsec_bus
+>     devsec_bus devsec_bus: PCI host bridge to bus 10000:00
+>     pci_bus 10000:00: root bus resource [bus 00-01]
+>     pci_bus 10000:00: root bus resource [mem 0xf000000000-0xffffffffff 64bit]
+>     pci 10000:00:00.0: [8086:7075] type 01 class 0x060400 PCIe Root Port
+>     pci 10000:00:00.0: PCI bridge to [bus 00]
+>     pci 10000:00:00.0:   bridge window [io  0x0000-0x0fff]
+>     pci 10000:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
+>     pci 10000:00:00.0:   bridge window [mem 0x00000000-0x000fffff 64bit pref]
+>     pci 10000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+>     pci 10000:01:00.0: [8086:ffff] type 00 class 0x000000 PCIe Endpoint
+>     pci 10000:01:00.0: BAR 0 [mem 0xf000000000-0xf0001fffff 64bit pref]
+>     pci_doe_abort: pci 10000:01:00.0: DOE: [100] Issuing Abort
+>     pci_doe_cache_protocols: pci 10000:01:00.0: DOE: [100] Found protocol 0 vid: 1 prot: 1
+>     pci 10000:01:00.0: disabling ASPM on pre-1.1 PCIe device.  You can enable it with 'pcie_aspm=force'
+>     pci 10000:00:00.0: PCI bridge to [bus 01]
+>     pci_bus 10000:01: busn_res: [bus 01] end is updated to 01
+>  # modprobe devsec_tsm
+>     devsec_tsm_pci_probe: pci 10000:01:00.0: devsec: tsm enabled
+>     __pci_tsm_init: pci 10000:01:00.0: TSM: Device security capabilities detected ( ide tee ), TSM attach
 > 
-> Thanks,
-> Gavin
-> 
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Lukas Wunner <lukas@wunner.de>
+> Cc: Samuel Ortiz <sameo@rivosinc.com>
+> Cc: Alexey Kardashevskiy <aik@amd.com>
+> Cc: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Hi Dan,
 
+A few minor comments as I was reading this. Mostly just trying
+to get my head around it hence they are all fairly superficial things.
+
+Jonathan
+
+> diff --git a/samples/devsec/bus.c b/samples/devsec/bus.c
+> new file mode 100644
+> index 000000000000..47dbe4e1b648
+> --- /dev/null
+> +++ b/samples/devsec/bus.c
+
+
+> +static void destroy_iomem_pool(void *data)
+
+There is a devm_gen_pool_create you can probably use.
+
+> +{
+> +	struct devsec *devsec = data;
+> +
+> +	gen_pool_destroy(devsec->iomem_pool);
+> +}
+> +
+> +static void destroy_bus(void *data)
+> +{
+> +	struct devsec *devsec = data;
+> +
+> +	pci_stop_root_bus(devsec->bus);
+> +	pci_remove_root_bus(devsec->bus);
+> +}
+> +
+> +static void destroy_devs(void *data)
+> +{
+> +	struct devsec *devsec = data;
+> +	int i;
+> +
+> +	for (i = ARRAY_SIZE(devsec->devsec_devs) - 1; i >= 0; i--) {
+> +		struct devsec_dev *devsec_dev = devsec->devsec_devs[i];
+> +
+> +		if (!devsec_dev)
+> +			continue;
+> +		gen_pool_free(devsec->iomem_pool, devsec_dev->mmio_range.start,
+> +			      range_len(&devsec_dev->mmio_range));
+> +		kfree(devsec_dev);
+> +		devsec->devsec_devs[i] = NULL;
+> +	}
+> +}
+> +
+
+> +#define MMIO_SIZE SZ_2M
+> +
+> +static int alloc_devs(struct devsec *devsec)
+> +{
+> +	struct device *dev = devsec->dev;
+> +	int i, rc;
+> +
+> +	rc = devm_add_action_or_reset(dev, destroy_devs, devsec);
+> +	if (rc)
+> +		return rc;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(devsec->devsec_devs); i++) {
+> +		struct devsec_dev *devsec_dev __free(kfree) =
+> +			kzalloc(sizeof(*devsec_dev), GFP_KERNEL);
+> +		struct genpool_data_align data = {
+> +			.align = MMIO_SIZE,
+> +		};
+> +		u64 phys;
+> +
+> +		if (!devsec_dev)
+> +			return -ENOMEM;
+> +
+> +		phys = gen_pool_alloc_algo(devsec->iomem_pool, MMIO_SIZE,
+> +					   gen_pool_first_fit_align, &data);
+> +		if (!phys)
+> +			return -ENOMEM;
+> +
+> +		devsec_dev->mmio_range = (struct range) {
+> +			.start = phys,
+> +			.end = phys + MMIO_SIZE - 1,
+> +		};
+> +		init_dev_cfg(devsec_dev);
+> +		devsec->devsec_devs[i] = no_free_ptr(devsec_dev);
+
+Similar to the case below. I'd rather see a per dev devm_ cleanup
+than relying on unified cleanup and that array having null entrees.
+Should end up easier to follow.  Might require devsec dev to have
+a reference back to the pool though.
+
+
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void destroy_ports(void *data)
+> +{
+> +	struct devsec *devsec = data;
+> +	int i;
+> +
+> +	for (i = ARRAY_SIZE(devsec->devsec_ports) - 1; i >= 0; i--) {
+> +		struct devsec_port *devsec_port = devsec->devsec_ports[i];
+> +
+> +		if (!devsec_port)
+> +			continue;
+> +		pci_bridge_emul_cleanup(&devsec_port->bridge);
+> +		kfree(devsec_port);
+> +		devsec->devsec_ports[i] = NULL;
+
+Is this necessary? If so it wrecks suggestion to do per port devres cleanup.
+I don't think it is necessary though as we really should be touching that
+array after this function is done.
+
+
+> +	}
+> +}
+
+
+> +static int init_port(struct devsec_port *devsec_port)
+> +{
+> +	struct pci_bridge_emul *bridge = &devsec_port->bridge;
+> +	int rc;
+> +
+> +	bridge->conf.vendor = cpu_to_le16(0x8086);
+> +	bridge->conf.device = cpu_to_le16(0x7075);
+> +	bridge->subsystem_vendor_id = cpu_to_le16(0x8086);
+> +	bridge->conf.class_revision = cpu_to_le32(0x1);
+> +
+> +	bridge->conf.pref_mem_base = cpu_to_le16(PCI_PREF_RANGE_TYPE_64);
+> +	bridge->conf.pref_mem_limit = cpu_to_le16(PCI_PREF_RANGE_TYPE_64);
+> +
+> +	bridge->has_pcie = true;
+> +	bridge->pcie_conf.devcap = cpu_to_le16(PCI_EXP_DEVCAP_FLR);
+> +	bridge->pcie_conf.lnksta = cpu_to_le16(PCI_EXP_LNKSTA_CLS_2_5GB);
+> +
+> +	bridge->data = devsec_port;
+> +	bridge->ops = &devsec_bridge_ops;
+Maybe 
+	*bridge = (struct pci_bridge_emul) {
+	};
+appropriate here. 	
+> +
+> +	init_ide(&devsec_port->ide);
+> +
+> +	rc = pci_bridge_emul_init(bridge, 0);
+
+return pci_bridge_emul_init() unless a later patch is going to add more here.
+
+> +	if (rc)
+> +		return rc;
+> +
+> +	return 0;
+> +}
+> +
+> +static int alloc_ports(struct devsec *devsec)
+> +{
+> +	struct device *dev = devsec->dev;
+> +	int i, rc;
+> +
+> +	rc = devm_add_action_or_reset(dev, destroy_ports, devsec);
+> +	if (rc)
+> +		return rc;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(devsec->devsec_ports); i++) {
+> +		struct devsec_port *devsec_port __free(kfree) =
+> +			kzalloc(sizeof(*devsec_port), GFP_KERNEL);
+> +
+> +		if (!devsec_port)
+> +			return -ENOMEM;
+> +
+> +		rc = init_port(devsec_port);
+> +		if (rc)
+> +			return rc;
+
+I'd prefer to see a per port devm cleanup registered so that you don't
+have to register that before anything has happened leaving it only
+loosely associated with what it is doing.
+
+
+> +		devsec->devsec_ports[i] = no_free_ptr(devsec_port);
+> +	}
+> +
+> +	return 0;
+> +}
