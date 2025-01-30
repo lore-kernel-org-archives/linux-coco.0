@@ -1,172 +1,415 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AACD1B425F
-	for <linux-coco@lists.linux.dev>; Thu, 30 Jan 2025 09:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BD819F120
+	for <linux-coco@lists.linux.dev>; Thu, 30 Jan 2025 10:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738229289; cv=none; b=YOFwThXkHV7eVfAKMjiez1Pc8WeidiHEAJ2ohdLlJ9abpPdP/85zyJ2c8RDthVpYpXcG+mHabvqPgo9wtoj14hUaEzuXkAwfxV7TZ0rJOftvR/wyjx7VX2UpQDPaqgxfWFvo/58/XKidR6oonv47+Md6sNhihU4v1eilKPljb8I=
+	t=1738233916; cv=none; b=AXsl/M/0vPVqSn0YXb0dFlO7vTjyJAtoOCadcBuqgUx32Z68RkLZEWGECYK6aqgb07sM65//jdT5MNc8FgRV+5t5FZ8uKfisUqsV4FyGBqNt+IwU6ewtjjfq02brYAfgZBukiYcISurHR3UYHHh4d0D/c8+y8Sjo3xhFhruBSm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738229289; c=relaxed/simple;
-	bh=6QEEVxeXCV/Eryqb4+2vYLsdLa+714Q+GrQSfN0elNk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WlSo+hQC693KFwfDhPEGy7ukGEMtXPlqo7gTcorXQU0aOYh9bWFwLbueNqTibSj4VaQFWzibGdGiRqKAG1796f8xM+a8B7a8rlyTJeuJ7TtFKrcPhGgoILPiSJ6+O1wSkXmBiQkIzYR9ukcsfxeiPv1hO7kmkG30PVVjV5MnMAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=c4I4Q9fg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cg4zjQBj; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="c4I4Q9fg";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cg4zjQBj"
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id A35B72540115;
-	Thu, 30 Jan 2025 04:28:05 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 30 Jan 2025 04:28:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1738229285; x=
-	1738315685; bh=t3O8u0KUNKcJVT+PdNptZvz5j4ncE2iGZc2jtKHEpZA=; b=c
-	4I4Q9fgmE9PKfoX+evVrmj/SMTQjIa0xDK/Dt4eW/gefmrOirVBpzaswWpwJudWq
-	HmlyaV+6d26O9ugiRXB23gZRIP/cBZYxEvkJeFMN1Vy+i+ONivAQjKemHk8Z7PVJ
-	2bKJCZXuCm68SfiZkU87gt+zBUiVL+jmGKAWmCrZBu8QoFAyb+tJjbrBuvmtfXps
-	T6yGO0dIZ5POEEUkVuBC7e7lWJ+yZslUu2j3VAYBTbJX9GPCoRJmRYN1G9iP/aas
-	aeDzWvMq+4KUbvCA351BTi5xyvbSYdoUkP4I7m2uzncPGyRfl7/XVf7tcrHkTSGq
-	nJz7SxlDyL7HWj58zGHnQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1738229285; x=1738315685; bh=t3O8u0KUNKcJVT+PdNptZvz5j4ncE2iGZc2
-	jtKHEpZA=; b=cg4zjQBjrjLB6KNZKNo80Wh+HchynueFbqaBIr+CYP2vyZgB6BR
-	bhsKXyHHjdWR1KNlbG0kszwEl66Z4w5h+XLW1/saKsJciGM9V/zeAHpOBfo51ZG+
-	NnjSOkOlGPFNEOmFiyjI3Z9DyAIUYWpOZF/sYuWzX3dIJHU7tvRiIo5ryh2sVmUX
-	+oPaDgu3yJOGjQ1GO60b9lodMEfPMCzl9N8Ko4maVnC/dVBs0mMgeJ5BdhojuWuU
-	TkykP9qQAViOzbP7IiyKhFYZFZI5g7taNRNaJ9V8WoSkTj3Juji0lWiuHrv1eBkM
-	4uKdq0K9S5jUe76aEE/A8Hbi5FYJoyv2xAQ==
-X-ME-Sender: <xms:JUabZ7waI2wxTDSPmwYRBaPSiT8e3YCzVmQpFa71ZcgYljSy4EniOQ>
-    <xme:JUabZzRmPYq9hclZHzr4147DsLIR02AMYM0awGBWUGan9kl4f9eQK3e4yu9fCTw4B
-    _3TvGS-2hVcZQc2Blg>
-X-ME-Received: <xmr:JUabZ1WUR03_1zi0b_ZSuQiJAbcnAj6QpNs6w4dtRVGzxRVRXq9RjGpy8wts8mpyBg6wqA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdehgeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvden
-    ucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlse
-    hshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeeltedugedtgfehuddu
-    hfetleeiuedvtdehieejjedufeejfeegteetuddtgefgudenucffohhmrghinhepkhgvrh
-    hnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhope
-    duiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhgrnhhnrghpuhhrvhgvsehg
-    ohhoghhlvgdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopehpsghonhiiihhnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepshgvrg
-    hnjhgtsehgohhoghhlvgdrtghomhdprhgtphhtthhopegvrhguvghmrghkthgrshesghho
-    ohhglhgvrdgtohhmpdhrtghpthhtoheprggtkhgvrhhlvgihthhnghesghhoohhglhgvrd
-    gtohhmpdhrtghpthhtohepjhigghgrohesghhoohhglhgvrdgtohhmpdhrtghpthhtohep
-    shgrghhishesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:JUabZ1jy_e-IpxT5ZSFHKe9Bzu0Wt_Lg0hBLoEjWCdiltsATEx-_Aw>
-    <xmx:JUabZ9ADP0yPihoeZby56FGMKuJGEjPwpaur_dt3Dr9QggsybmVB9Q>
-    <xmx:JUabZ-Ib6HiCGN62p--HuxIq4y986zMLxAVrZDDQ3Dc9q3XLHJq4kg>
-    <xmx:JUabZ8B81ibLoEibSBLpIu3AFhijdAWoVaLyXz_KA9zgX8RVDSRCsw>
-    <xmx:JUabZ_wsvb8L6c7pN6I7c9hH0SPP9A7BbUhKPR1g40OOjcMxMQsipjif>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Jan 2025 04:28:00 -0500 (EST)
-Date: Thu, 30 Jan 2025 11:27:56 +0200
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Vishal Annapurve <vannapurve@google.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
-	sagis@google.com, oupton@google.com, pgonda@google.com, 
-	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
-	isaku.yamahata@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via
- tdx_safe_halt()
-Message-ID: <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
-References: <20250129232525.3519586-1-vannapurve@google.com>
+	s=arc-20240116; t=1738233916; c=relaxed/simple;
+	bh=7zvxYvULpwgEd7FkEy0S6Y7wjqzcEy81A0/ncR+cIhE=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RRjA7ByugLtO1USXWn2xEH6bpOMoTZMlNNqWLtcmsRmSLDLAtdlkJeVC5a2cw5EF9lbA2NRLyZ7YplP1tzPtaHcOiMhkroNod2XwWECgOKoWciZo85M/PU0jV+o6mfojZaQQrLnOdrcgTyBBCsXJa+axVr0Zp7ogqP7P5fzCoEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YkFyS2vDnz6K9BZ;
+	Thu, 30 Jan 2025 18:44:32 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id D93781400DB;
+	Thu, 30 Jan 2025 18:45:10 +0800 (CST)
+Received: from localhost (10.47.30.69) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 30 Jan
+ 2025 11:45:10 +0100
+Date: Thu, 30 Jan 2025 10:45:07 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, Alexey Kardashevskiy <aik@amd.com>,
+	<linux-pci@vger.kernel.org>, <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 04/11] PCI/IDE: Selective Stream IDE enumeration
+Message-ID: <20250130104507.00004446@huawei.com>
+In-Reply-To: <173343741936.1074769.17093052628585780785.stgit@dwillia2-xfh.jf.intel.com>
+References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
+	<173343741936.1074769.17093052628585780785.stgit@dwillia2-xfh.jf.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250129232525.3519586-1-vannapurve@google.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Wed, Jan 29, 2025 at 11:25:25PM +0000, Vishal Annapurve wrote:
-> Direct HLT instruction execution causes #VEs for TDX VMs which is routed
-> to hypervisor via tdvmcall. This process renders HLT instruction
-> execution inatomic, so any preceding instructions like STI/MOV SS will
-> end up enabling interrupts before the HLT instruction is routed to the
-> hypervisor. This creates scenarios where interrupts could land during
-> HLT instruction emulation without aborting halt operation leading to
-> idefinite halt wait times.
+On Thu, 05 Dec 2024 14:23:39 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
+
+> Link encryption is a new PCIe capability defined by "PCIe 6.2 section
+> 6.33 Integrity & Data Encryption (IDE)". While it is a standalone port
+> and endpoint capability, it is also a building block for device security
+> defined by "PCIe 6.2 section 11 TEE Device Interface Security Protocol
+> (TDISP)". That protocol coordinates device security setup between the
+> platform TSM (TEE Security Manager) and device DSM (Device Security
+> Manager). While the platform TSM can allocate resources like stream-ids
+> and manage keys, it still requires system software to manage the IDE
+> capability register block.
 > 
-> Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests") already
-> upgraded x86_idle() to invoke tdvmcall to avoid such scenarios, but
-> it didn't cover pv_native_safe_halt() which can be invoked using
-> raw_safe_halt() from call sites like acpi_safe_halt().
+> Add register definitions and basic enumeration for a "selective-stream"
+> IDE capability, a follow on change will select the new CONFIG_PCI_IDE
+> symbol. Note that while the IDE specifications defines both a
+> point-to-point "Link" stream and a root-port-to-endpoint "Selective"
+> stream, only "Selective" is considered for now for platform TSM
+> coordination.
 > 
-> raw_safe_halt() also returns with interrupts enabled so upgrade
-> tdx_safe_halt() to enable interrupts by default and ensure that paravirt
-> safe_halt() executions invoke tdx_safe_halt(). Earlier x86_idle() is now
-> handled via tdx_idle() which simply invokes tdvmcall while preserving
-> irq state.
-> 
-> To avoid future call sites which cause HLT instruction emulation with
-> irqs enabled, add a warn and fail the HLT instruction emulation.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> Co-developed-by: Alexey Kardashevskiy <aik@amd.com>
+> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Some overlap in here with other reviews probably...
+
+Jonathan
+
 > ---
-> Changes since V1:
-> 1) Addressed comments from Dave H
->    - Comment regarding adding a check for TDX VMs in halt path is not
->      resolved in v2, would like feedback around better place to do so,
->      maybe in pv_native_safe_halt (?).
-> 2) Added a new version of tdx_safe_halt() that will enable interrupts.
-> 3) Previous tdx_safe_halt() implementation is moved to newly introduced
-> tdx_idle().
+>  drivers/pci/Kconfig           |    3 +
+>  drivers/pci/Makefile          |    1 
+>  drivers/pci/ide.c             |   73 ++++++++++++++++++++++++++++++++++++
+>  drivers/pci/pci.h             |    6 +++
+>  drivers/pci/probe.c           |    1 
+>  include/linux/pci.h           |    5 ++
+>  include/uapi/linux/pci_regs.h |   84 +++++++++++++++++++++++++++++++++++++++++
+>  7 files changed, 172 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/pci/ide.c
 > 
-> V1: https://lore.kernel.org/lkml/Z5l6L3Hen9_Y3SGC@google.com/T/
-> 
->  arch/x86/coco/tdx/tdx.c    | 23 ++++++++++++++++++++++-
->  arch/x86/include/asm/tdx.h |  2 +-
->  arch/x86/kernel/process.c  |  2 +-
->  3 files changed, 24 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index 0d9b090b4880..cc2a637dca15 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -14,6 +14,7 @@
->  #include <asm/ia32.h>
->  #include <asm/insn.h>
->  #include <asm/insn-eval.h>
-> +#include <asm/paravirt_types.h>
->  #include <asm/pgtable.h>
->  #include <asm/set_memory.h>
->  #include <asm/traps.h>
-> @@ -380,13 +381,18 @@ static int handle_halt(struct ve_info *ve)
->  {
->  	const bool irq_disabled = irqs_disabled();
+> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> index 2fbd379923fd..4e5236c456f5 100644
+> --- a/drivers/pci/Kconfig
+> +++ b/drivers/pci/Kconfig
+> @@ -121,6 +121,9 @@ config XEN_PCIDEV_FRONTEND
+>  config PCI_ATS
+>  	bool
 >  
-> +	if (!irq_disabled) {
-> +		WARN_ONCE(1, "HLT instruction emulation unsafe with irqs enabled\n");
-> +		return -EIO;
+> +config PCI_IDE
+> +	bool
+> +
+>  config PCI_DOE
+>  	bool
+>  
+> diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
+> index 67647f1880fb..6612256fd37d 100644
+> --- a/drivers/pci/Makefile
+> +++ b/drivers/pci/Makefile
+> @@ -34,6 +34,7 @@ obj-$(CONFIG_PCI_P2PDMA)	+= p2pdma.o
+>  obj-$(CONFIG_XEN_PCIDEV_FRONTEND) += xen-pcifront.o
+>  obj-$(CONFIG_VGA_ARB)		+= vgaarb.o
+>  obj-$(CONFIG_PCI_DOE)		+= doe.o
+> +obj-$(CONFIG_PCI_IDE)		+= ide.o
+>  obj-$(CONFIG_PCI_DYNAMIC_OF_NODES) += of_property.o
+>  obj-$(CONFIG_PCI_NPEM)		+= npem.o
+>  obj-$(CONFIG_PCIE_TPH)		+= tph.o
+> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
+> new file mode 100644
+> index 000000000000..a0c09d9e0b75
+> --- /dev/null
+> +++ b/drivers/pci/ide.c
+> @@ -0,0 +1,73 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
+> +
+> +/* PCIe 6.2 section 6.33 Integrity & Data Encryption (IDE) */
+> +
+> +#define dev_fmt(fmt) "PCI/IDE: " fmt
+> +#include <linux/pci.h>
+> +#include "pci.h"
+> +
+> +static int sel_ide_offset(u16 cap, int stream_id, int nr_ide_mem)
+> +{
+> +	return cap + stream_id * PCI_IDE_SELECTIVE_BLOCK_SIZE(nr_ide_mem);
+
+I'd be tempted to have a define to go from base of the IDE extended cap
+directly to the sel_ide_offset rather than this use of a block based
+offset.  Maybe it ends up too complex though.
+
+> +}
+> +
+> +void pci_ide_init(struct pci_dev *pdev)
+> +{
+> +	u16 ide_cap, sel_ide_cap;
+> +	int nr_ide_mem = 0;
+> +	u32 val = 0;
+> +
+> +	if (!pci_is_pcie(pdev))
+> +		return;
+> +
+> +	ide_cap = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_IDE);
+> +	if (!ide_cap)
+> +		return;
+> +
+> +	/*
+> +	 * Check for selective stream capability from endpoint to root-port, and
+> +	 * require consistent number of address association blocks
+
+on the EP.
+(for avoidance of confusion).
+
+Also, from here just seems to mean at the RP and the EP.  Not seting a bus
+walk here to check anything else.  Note I'm not sure we need to but this
+comment is implying a 'from/to' aspect that this code doesn't seem to check.
+
+> +	 */
+> +	pci_read_config_dword(pdev, ide_cap + PCI_IDE_CAP, &val);
+> +	if ((val & PCI_IDE_CAP_SELECTIVE) == 0)
+> +		return;
+> +
+> +	if (pci_pcie_type(pdev) == PCI_EXP_TYPE_ENDPOINT) {
+> +		struct pci_dev *rp = pcie_find_root_port(pdev);
+> +
+> +		if (!rp->ide_cap)
+> +			return;
 > +	}
 > +
+> +	if (val & PCI_IDE_CAP_LINK)
+> +		sel_ide_cap = ide_cap + PCI_IDE_LINK_STREAM +
+> +			      (PCI_IDE_CAP_LINK_TC_NUM(val) + 1) *
+> +				      PCI_IDE_LINK_BLOCK_SIZE;
+> +	else
+> +		sel_ide_cap = ide_cap + PCI_IDE_LINK_STREAM;
+Maybe cleaner as
+	int link_tc_count = 0;
+	if (val & PCI_IDE_CAP_LINK)
+		//see suggestion in header to make macro include +1.
+		link_tc_count = PCI_IDE_CAP_LINK_TC_NUM(val) + 1;
 
-I think it is worth to putting this into a separate patch and not
-backport. The rest of the patch is bugfix and this doesn't belong.
+	sel_ide_cap = ide_cap + PCI_IDE_LINK_STREAM +
+		      link_tc_count * PCI_IDE_LINK_BLOCK_SIZE;
+I'm not that bothered either way. Just didn't like that
+ide_cap + PIC_IDE_LINK_STREAM is in both legs.
 
-Otherwise, looks good to me:
+Or have a macro that always gets you to the selective part without
+using a zero length PCI_IDE_LINK_STREAM block.
 
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>@linux.intel.com>
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> +
+> +	for (int i = 0; i < PCI_IDE_CAP_SELECTIVE_STREAMS_NUM(val); i++) {
+> +		if (i == 0) {
+> +			pci_read_config_dword(pdev, sel_ide_cap, &val);
+> +			nr_ide_mem = PCI_IDE_SEL_CAP_ASSOC_NUM(val);
+
+Yank out and index from 1 for the loop?
+Note though that PCI_IDE_CAP_SELECTIVE_STREAMS_NUM(val) of 1
+means 2 streams so you want <= or just +1 in the macro so the PCI
+header gets to deal with that!
+
+
+> +		} else {
+> +			int offset = sel_ide_offset(sel_ide_cap, i, nr_ide_mem);
+> +
+> +			pci_read_config_dword(pdev, offset, &val);
+> +
+> +			/*
+> +			 * lets not entertain devices that do not have a
+> +			 * constant number of address association blocks
+> +			 */
+> +			if (PCI_IDE_SEL_CAP_ASSOC_NUM(val) != nr_ide_mem) {
+> +				pci_info(pdev, "Unsupported Selective Stream %d capability\n", i);
+> +				return;
+> +			}
+> +		}
+> +	}
+> +
+> +	pdev->ide_cap = ide_cap;
+> +	pdev->sel_ide_cap = sel_ide_cap;
+> +	pdev->nr_ide_mem = nr_ide_mem;
+> +}
+
+
+
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index db9b47ce3eef..50811b7655dd 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -530,6 +530,11 @@ struct pci_dev {
+>  #endif
+>  #ifdef CONFIG_PCI_NPEM
+>  	struct npem	*npem;		/* Native PCIe Enclosure Management */
+> +#endif
+> +#ifdef CONFIG_PCI_IDE
+> +	u16		ide_cap;	/* Link Integrity & Data Encryption */
+> +	u16		sel_ide_cap;	/* - Selective Stream register block */
+
+I'd not call it cap as people will go looking for a selective IDE extended capability.
+I'm a little dubious about it being necessary vs a helper function that grabs
+the necessary count info directly from the device.
+
+> +	int		nr_ide_mem;	/* - Address range limits for streams */
+>  #endif
+>  	u16		acs_cap;	/* ACS Capability offset */
+>  	u8		supported_speeds; /* Supported Link Speeds Vector */
+> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+> index 1601c7ed5fab..9635b27d2485 100644
+> --- a/include/uapi/linux/pci_regs.h
+> +++ b/include/uapi/linux/pci_regs.h
+> @@ -748,7 +748,8 @@
+>  #define PCI_EXT_CAP_ID_NPEM	0x29	/* Native PCIe Enclosure Management */
+>  #define PCI_EXT_CAP_ID_PL_32GT  0x2A    /* Physical Layer 32.0 GT/s */
+>  #define PCI_EXT_CAP_ID_DOE	0x2E	/* Data Object Exchange */
+> -#define PCI_EXT_CAP_ID_MAX	PCI_EXT_CAP_ID_DOE
+> +#define PCI_EXT_CAP_ID_IDE	0x30    /* Integrity and Data Encryption */
+> +#define PCI_EXT_CAP_ID_MAX	PCI_EXT_CAP_ID_IDE
+>  
+>  #define PCI_EXT_CAP_DSN_SIZEOF	12
+>  #define PCI_EXT_CAP_MCAST_ENDPOINT_SIZEOF 40
+> @@ -1213,4 +1214,85 @@
+>  #define PCI_DVSEC_CXL_PORT_CTL				0x0c
+>  #define PCI_DVSEC_CXL_PORT_CTL_UNMASK_SBR		0x00000001
+>  
+> +/* Integrity and Data Encryption Extended Capability */
+> +#define PCI_IDE_CAP			0x4
+> +#define  PCI_IDE_CAP_LINK		0x1  /* Link IDE Stream Supported */
+> +#define  PCI_IDE_CAP_SELECTIVE		0x2  /* Selective IDE Streams Supported */
+> +#define  PCI_IDE_CAP_FLOWTHROUGH	0x4  /* Flow-Through IDE Stream Supported */
+> +#define  PCI_IDE_CAP_PARTIAL_HEADER_ENC 0x8  /* Partial Header Encryption Supported */
+> +#define  PCI_IDE_CAP_AGGREGATION	0x10 /* Aggregation Supported */
+> +#define  PCI_IDE_CAP_PCRC		0x20 /* PCRC Supported */
+> +#define  PCI_IDE_CAP_IDE_KM		0x40 /* IDE_KM Protocol Supported */
+
+Looks like 3.2 has a bit 7 defined as well.  Selective IDE for configuration requests supported.
+Probably worth adding that.
+
+> +#define  PCI_IDE_CAP_ALG(x)		(((x) >> 8) & 0x1f) /* Supported Algorithms */
+> +#define  PCI_IDE_CAP_ALG_AES_GCM_256	0    /* AES-GCM 256 key size, 96b MAC */
+> +#define  PCI_IDE_CAP_LINK_TC_NUM(x)	(((x) >> 13) & 0x7) /* Link IDE TCs */
+Maybe add 1 here as the macro name kind of implies it is returning the number of link IDE TCs
+rather than 1 less that that. It is a little tricky given the spec calls this field "Number of"
+
+> +#define  PCI_IDE_CAP_SELECTIVE_STREAMS_NUM(x)	(((x) >> 16) & 0xff) /* Selective IDE Streams */
+
+Similar here. I'm not sure what precedence we have int his file. I can't immediately see any
+either way. 
+
+> +#define  PCI_IDE_CAP_SELECTIVE_STREAMS_MASK	0xff0000
+Why have the mask if you are providing the macro above to get the value?
+
+> +#define  PCI_IDE_CAP_TEE_LIMITED	0x1000000 /* TEE-Limited Stream Supported */
+> +#define PCI_IDE_CTL			0x8
+> +#define  PCI_IDE_CTL_FLOWTHROUGH_IDE	0x4	/* Flow-Through IDE Stream Enabled */
+> +#define PCI_IDE_LINK_STREAM		0xc
+I couldn't find specific precedence for this but my gut would say add a _0 postfix
+to indicate it's the first of a number of these.
+All the similar cases seem to explicitly enumerate _0, _1 etc which makes little
+sense here.
+
+> +#define PCI_IDE_LINK_BLOCK_SIZE		8
+> +/* Link IDE Stream block, up to PCI_IDE_CAP_LINK_TC_NUM */
+> +/* Link IDE Stream Control Register */
+I'd expect a _0 define for the first ctrl and one for the first status.
+
+Then index each register via
+PCI_IDE_LINK_CTL_0 + i * PCIE_IDE_LINK_BLOCK_SIZE
+PCI_IDE_LINK_STS_0 + i * PCIE_IDE_LINK_BLOCK_SIZE
+
+Again, not immediately seeing precedence, but having register field defines without
+a register address define (even a constructed one as will be relevant
+for the selective IDE stream blocks) seems odd to me.
+
+> +#define  PCI_IDE_LINK_CTL_EN		 0x1	/* Link IDE Stream Enable */
+> +#define  PCI_IDE_LINK_CTL_TX_AGGR_NPR(x) (((x) >> 2) & 0x3) /* Tx Aggregation Mode NPR */
+> +#define  PCI_IDE_LINK_CTL_TX_AGGR_PR(x)	 (((x) >> 4) & 0x3) /* Tx Aggregation Mode PR */
+> +#define  PCI_IDE_LINK_CTL_TX_AGGR_CPL(x) (((x) >> 6) & 0x3) /* Tx Aggregation Mode CPL */
+> +#define  PCI_IDE_LINK_CTL_PCRC_EN	 0x100	/* PCRC Enable */
+> +#define  PCI_IDE_LINK_CTL_PART_ENC(x)	 (((x) >> 10) & 0xf)  /* Partial Header Encryption Mode */
+> +#define  PCI_IDE_LINK_CTL_ALG(x)	 (((x) >> 14) & 0x1f) /* Selected Algorithm */
+Perhaps nice to throw in a reference to the supported algs list above.
+
+> +#define  PCI_IDE_LINK_CTL_TC(x)		 (((x) >> 19) & 0x7)  /* Traffic Class */
+> +#define  PCI_IDE_LINK_CTL_ID(x)		 (((x) >> 24) & 0xff) /* Stream ID */
+> +#define  PCI_IDE_LINK_CTL_ID_MASK	 0xff000000
+> +
+> +
+> +/* Link IDE Stream Status Register */
+> +#define  PCI_IDE_LINK_STS_STATUS(x)	((x) & 0xf) /* Link IDE Stream State */
+> +#define  PCI_IDE_LINK_STS_RECVD_INTEGRITY_CHECK	0x80000000 /* Received Integrity Check Fail Msg */
+
+
+I'd put some white space here.
+
+> +/* Selective IDE Stream block, up to PCI_IDE_CAP_SELECTIVE_STREAMS_NUM */
+> +#define PCI_IDE_SELECTIVE_BLOCK_SIZE(x)  (20 + 12 * (x))
+
+Probably want a better name than 'x' for that parameter as it's not
+immediately obvious what it is. (number of IDE address association
+register blocks).
+Also that 12 probably wants a define. It's used a few times.
+
+> +/* Selective IDE Stream Capability Register */
+> +#define  PCI_IDE_SEL_CAP		 0
+> +#define  PCI_IDE_SEL_CAP_ASSOC_NUM(x)	 ((x) & 0xf) /* Address Association Register Blocks Number */
+> +#define  PCI_IDE_SEL_CAP_ASSOC_MASK	 0xf
+
+If the mask make sense to keep at all would be good to build
+the macro above using it.
+
+> +/* Selective IDE Stream Control Register */
+> +#define  PCI_IDE_SEL_CTL		 4
+> +#define   PCI_IDE_SEL_CTL_EN		 0x1	/* Selective IDE Stream Enable */
+> +#define   PCI_IDE_SEL_CTL_TX_AGGR_NPR(x) (((x) >> 2) & 0x3) /* Tx Aggregation Mode NPR */
+> +#define   PCI_IDE_SEL_CTL_TX_AGGR_PR(x)	 (((x) >> 4) & 0x3) /* Tx Aggregation Mode PR */
+> +#define   PCI_IDE_SEL_CTL_TX_AGGR_CPL(x) (((x) >> 6) & 0x3) /* Tx Aggregation Mode CPL */
+> +#define   PCI_IDE_SEL_CTL_PCRC_EN	 0x100	/* PCRC Enable */
+> +#define   PCI_IDE_SEL_CTL_CFG_EN	 0x200	/* Selective IDE for Configuration Requests */
+> +#define   PCI_IDE_SEL_CTL_PART_ENC(x)	 (((x) >> 10) & 0xf)  /* Partial Header Encryption Mode */
+This is a control register. Seems likely we'll mostly be writing these.
+So how useful is it to provide just a read macro?
+Maybe I'm missing something!
+> +#define   PCI_IDE_SEL_CTL_ALG(x)	 (((x) >> 14) & 0x1f) /* Selected Algorithm */
+> +#define   PCI_IDE_SEL_CTL_TC(x)		 (((x) >> 19) & 0x7)  /* Traffic Class */
+> +#define   PCI_IDE_SEL_CTL_DEFAULT	 0x400000 /* Default Stream */
+> +#define   PCI_IDE_SEL_CTL_TEE_LIMITED	 (1 << 23) /* TEE-Limited Stream */
+
+Why this one as a shift and all the rest as explicit hex values?
+
+> +#define   PCI_IDE_SEL_CTL_ID_MASK	 0xff000000
+> +#define   PCI_IDE_SEL_CTL_ID_MAX	 255
+> +/* Selective IDE Stream Status Register */
+> +#define  PCI_IDE_SEL_STS		 8
+> +#define   PCI_IDE_SEL_STS_STATUS(x)	((x) & 0xf) /* Selective IDE Stream State */
+> +#define   PCI_IDE_SEL_STS_RECVD_INTEGRITY_CHECK	0x80000000 /* Received Integrity Check Fail Msg */
+> +/* IDE RID Association Register 1 */
+> +#define  PCI_IDE_SEL_RID_1		 12
+> +#define   PCI_IDE_SEL_RID_1_LIMIT_MASK	 0xffff00
+> +/* IDE RID Association Register 2 */
+> +#define  PCI_IDE_SEL_RID_2		 16
+> +#define   PCI_IDE_SEL_RID_2_VALID	 0x1
+> +#define   PCI_IDE_SEL_RID_2_BASE_MASK	 0x00ffff00
+
+Why leading zeros on this one?
+
+> +#define   PCI_IDE_SEL_RID_2_SEG_MASK	 0xff000000
+> +/* Selective IDE Address Association Register Block, up to PCI_IDE_SEL_CAP_ASSOC_NUM */
+> +#define  PCI_IDE_SEL_ADDR_1(x)		     (20 + (x) * 12)
+> +#define   PCI_IDE_SEL_ADDR_1_VALID	     0x1
+> +#define   PCI_IDE_SEL_ADDR_1_BASE_LOW_MASK   0x000fff0
+
+more leading zeros which doesn't seem consistent. Also, as Alexey
+pointed out value is wrong as that's 4 bits in not 8.
+
+
+> +#define   PCI_IDE_SEL_ADDR_1_BASE_LOW_SHIFT  20
+8?
+
+> +#define   PCI_IDE_SEL_ADDR_1_LIMIT_LOW_MASK  0xfff0000
+> +#define   PCI_IDE_SEL_ADDR_1_LIMIT_LOW_SHIFT 20
+Also missing a zero (Alexey got this one as well I see)
+
+> +/* IDE Address Association Register 2 is "Memory Limit Upper" */
+> +/* IDE Address Association Register 3 is "Memory Base Upper" */
+> +#define  PCI_IDE_SEL_ADDR_2(x)		(24 + (x) * 12)
+> +#define  PCI_IDE_SEL_ADDR_3(x)		(28 + (x) * 12)
+> +
+>  #endif /* LINUX_PCI_REGS_H */
+> 
+> 
+
