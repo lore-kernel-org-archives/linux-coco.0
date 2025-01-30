@@ -1,198 +1,134 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2A6179BC
-	for <linux-coco@lists.linux.dev>; Thu, 30 Jan 2025 18:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A841F0E23
+	for <linux-coco@lists.linux.dev>; Thu, 30 Jan 2025 19:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738262894; cv=none; b=Tl3x6tdgMQDvDLFTgfaVZlzk1BVWFjyQUvcJn38Xvc0YDQmS7cT+3Zqwal/I0SIuZstezaWwmFkf85cgXiIwjbqmX+FIKQ6zUvspkjNh4KLAnT4Rpu0ULlSS31O+Az5a+FsnydYqMq6Af8J+/QiIIcma7evgwKJMK10xt/xsZwY=
+	t=1738266317; cv=none; b=nQRsfHazu/1fnJCU+6E7k0hiOQXAULwtdTe3/9fmFVQHtcViK7EF17hjd9+KDKNIBELSSywsncMSlZYwBjIfIT9vXbOAH/V72KPiWX3FB9WwY8KSQ/xtfZ9IMh+sXB5iHf9hh+Svnps7a0SWwz78JzoxaT3lqtzHJ5HRBtUbigU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738262894; c=relaxed/simple;
-	bh=tUWI336ClpVEiFRGPmJcZoA6T/3Im4XIUkl2jynGFKU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fb2T7f4zCDyZ02W7nwHloGl/qOt83Us50pbJ48RGMXmAzGr8OyFDq7EFVSRs3VE/2bve71OSlKdAby06OcaMrxqG/p4JC4VMw5FOXRt5Kk8CBnkVrQ5J91jA+n/XcNffv2uhEs79mpASiyQAkHaouVGOphby5FS4NTw6L07k61A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=gI306yXd; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DOuFYXW8; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	s=arc-20240116; t=1738266317; c=relaxed/simple;
+	bh=9fbyLsH88G6tyoNdu7/EPSxn8u+wW28k1RNwWOmH2mQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n82MfO1SBtFKqxSpdzNDeG8sldP0dvIYHNcNRo1+r+3MV5e88QswRPVmMwnbU/VAUpwXrbym8XdMpnD52xfLXAodOuMRcFtLG+5SrNgJZQV7wpBHEY3vh9kZeZh7+x2cKmawMbGCZN69B/PCENbarvngV8vxBzeXu3RxT06kwRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zAp3gCH2; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="gI306yXd";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DOuFYXW8"
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id BAF021380140;
-	Thu, 30 Jan 2025 13:48:11 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Thu, 30 Jan 2025 13:48:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
-	 t=1738262891; x=1738349291; bh=raqyYngkkJXYRmg42JKQOnEvjolJ9Dxu
-	iQG90yq2mFs=; b=gI306yXdN+ojtGUERMZQVClyi9asqZ7YWtTphMlVxEZwNVH/
-	F8XzULPkKkXvAijTEobrvSL29o45iX4q44nHCGqzPd8q4vhwkav9HvJrnhIm7HIp
-	G40A1S/i6OK0NYnLZ4gvLd5wjvP0k+uhdwa/jEmipn8nZ3qFNzxPMACPdqWOO6YU
-	mpu8DU9R7gQgmT3Taj7raAiAxym4joLS9xR8T4XX+stgjeYDiz5gQgUwj79J0tSG
-	rBrNCtgHGoL7vd7WPKvzAfuqdOhNQHc3FjR4KptyiN8Lg0/fxJTelmJr8EyfMim9
-	PODwKTtuI2cVpdn1SHG4k3Cp1xtDvmZcbHpL4w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1738262891; x=
-	1738349291; bh=raqyYngkkJXYRmg42JKQOnEvjolJ9DxuiQG90yq2mFs=; b=D
-	OuFYXW8vffhlh6q9Pyq0ZyPq3c5YrrSExfRJNORef5VKqBNcHkW9eijRZS+1hpxV
-	yUuMqC8cRO/GI9bEEihPMpML6OFsGB6Oucr3IEbr5SGlWpsU3yFWCcpB6UDtpvdT
-	qwiyo+eW712LbB1m+cGOvngSqdCnsRtLLgMf3BlutItitCr1dvvD7gaa0jES4L4t
-	rxgmG/hu8dXq4J6a+QljlNnTahyE7vW8DUXTetc5mgOzxDTAPKW8xDswK/+l86Yc
-	TE0M9+Dw7iTd4UipRBsFAp+NQKA8aJlumj8kIL/kc47J3fh0aLFqvSyNymIYZo/V
-	hRAGuXQefcsYHNcstdPmg==
-X-ME-Sender: <xms:a8mbZ9lEUHgb6Fy4KA9xdVjGqh7Ll5sMjtDWuzfDZDXqyFag_hdX1g>
-    <xme:a8mbZ41iCkaXsgy8d21He-MyVBZx1sFgJzzUwuex71R9Khig2u3nkqMSxzvqtes-T
-    nwQfIzxpV2D1rKsU44>
-X-ME-Received: <xmr:a8mbZzr8Uj4D5on0_yoU1Ph9QPFiJFVJhVIwglqPlzJdfv1mtdw6M2zd49SUYhJPRD7bww>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeiheekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkefstddttdej
-    necuhfhrohhmpedfmfhirhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllh
-    esshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrfgrthhtvghrnheptddvfeeuteehieeg
-    gfektdehteejuddvvddthfetleegkedtveevtddtvdfhtdefnecuffhomhgrihhnpehkvg
-    hrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhl
-    fhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtoh
-    epudeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehvrghnnhgrphhurhhvvges
-    ghhoohhglhgvrdgtohhmpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepphgsohhniihinhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehsvg
-    grnhhjtgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvghruggvmhgrkhhtrghssehg
-    ohhoghhlvgdrtghomhdprhgtphhtthhopegrtghkvghrlhgvhihtnhhgsehgohhoghhlvg
-    drtghomhdprhgtphhtthhopehjgihgrghosehgohhoghhlvgdrtghomhdprhgtphhtthho
-    pehsrghgihhssehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:a8mbZ9nsTC6HAYS2YuAnKMpK3sxm3r6AhiFJFB856OoKGLpPhIfZtA>
-    <xmx:a8mbZ72S25XKK1a52zVKFPwxTX-c1E-8dkl1NldV597Q3J9ducv_Qg>
-    <xmx:a8mbZ8vkdcGcifYegJYSQibA2h9EcjmcKfaIBOtYYXCt6RRWpi2BpA>
-    <xmx:a8mbZ_VdgrKO77dgOXOevT4_T1CsEV9uzZW5kRppM_GDMgJX6oprDQ>
-    <xmx:a8mbZ8G3gEZQplbk-N2kTku55px82-L83iWZgUbUg88Z4MPoFJXv_G6E>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Jan 2025 13:48:06 -0500 (EST)
-Date: Thu, 30 Jan 2025 20:48:02 +0200
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Vishal Annapurve <vannapurve@google.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
-	sagis@google.com, oupton@google.com, pgonda@google.com, 
-	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
-	isaku.yamahata@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via
- tdx_safe_halt()
-Message-ID: <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
-References: <20250129232525.3519586-1-vannapurve@google.com>
- <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
- <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zAp3gCH2"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-53e44a42512so1010e87.1
+        for <linux-coco@lists.linux.dev>; Thu, 30 Jan 2025 11:45:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738266313; x=1738871113; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dPqRKKVz/y2KC5CJ8jv2zxFft8RZ+YOxuhSdEo17vUE=;
+        b=zAp3gCH2cpPbLLrd7J+39l4f9H59dSoupjIL2B5aAyBmAiOiH+LqJKfP2DYR7NDekb
+         wgX1VzrraGGJQrzwtx+DqJ7NHiAxHSncXZXOS/vvqW4xgJvG/5TL5umMsYGX4uuyxNiy
+         inOIUmmHJtZsyDuVzyRuTECdyme+u+TWeikAYWMsoogQrlA5KxodPhTSUhbJSy/56Xkz
+         OgGYuOO3o2f8NXj1jqKeaOunURYQK1HICeB0nqNcwUrzYIUlBPKJPvlvAhb2OoAzHSUm
+         rVrPxGqpj1ChpSKMNNarQ5GKdl0XPHBo96ohjgTMUtiosRQBJJRSerFNfuxSpIagsOpX
+         /ZHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738266313; x=1738871113;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dPqRKKVz/y2KC5CJ8jv2zxFft8RZ+YOxuhSdEo17vUE=;
+        b=RljU7LaD9P+hDA9WNChgHDmfKZDujuF+VVayVlz2grIuJE/q9T8H/SDMIbcc1wBXCo
+         Bz60mDG4LZr5u7G7MEiU7rjjOqYcGZWf825b7ZsdrYoifhKWX9c1No0C3leEsbktuZxv
+         PoewBdi4kJMHZkEWRJ2auKqAwyPxybVPpJUNVchU1k7h2AMla7gBBk+agIB1iqpfRz4y
+         vwScVPf3FgIoD5Uhy0QfjPBqMO0+ymroowsEWZbDlHp5mPh/0GKEnf4K7fiNSEMqKdtR
+         2aXxn6JK1wZzL/5gMBoClXtNuRQKJI78o6vS099sQh7TtbRrGoJlQQU6M5vyqHlkGaET
+         yA0A==
+X-Forwarded-Encrypted: i=1; AJvYcCW3imNEEsttEJVHZg4A30CiUKLaZ+BUEkPQw2YmwxImA+vBfCJljiHBI5i3Nu1zgR++cVDxoKDDyRJU@lists.linux.dev
+X-Gm-Message-State: AOJu0YwUxhkYNDN8MFVt/tw/jwyFjJDsQBm6ssS/jh2+REQj5YEwhwbC
+	N2glIS5w3or+mOjqnagqbRe4TbdLFrPwfBs87b9ghe9p+Pl9JkBzp8d1QYMfEVnY5RTfRaEtAQa
+	RIEd5wKPVmXsHY8vH4rj/rPqj/mVkNX7KlyLd
+X-Gm-Gg: ASbGncvLWIyuuF+354QmhjUE8kcFXl8knL5wAd+6IiQ96dP1Rx01D0lxmyjBAJbWruu
+	siO7JZJmfuwxove8qtGhZTqNqmrwQqPJWrULbvqw/h1z5Df1Kb90uFb6zLM+ak/dHGHJ7I/iTWA
+	scET+5swq4IiG4nRLHneoKMhU=
+X-Google-Smtp-Source: AGHT+IGBvwWSv1IiLAFKoJbSGBLJk+W5yCPPaqTr3SntN2b5XHQRP2haPQPs+ZrJJmWM2zhJ+gtyW2WGNQ4WHrBS1Pg=
+X-Received: by 2002:a05:6512:33d6:b0:543:e496:81d2 with SMTP id
+ 2adb3069b0e04-543f1c0ce53mr24953e87.4.1738266312941; Thu, 30 Jan 2025
+ 11:45:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com>
+References: <20250129232525.3519586-1-vannapurve@google.com>
+ <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
+ <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com> <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
+In-Reply-To: <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Thu, 30 Jan 2025 11:45:01 -0800
+X-Gm-Features: AWEUYZmdkF4eXD8cW9j3g94r1RQgW0GcoVRfXjOD-b2Tcyejz6I5I8r9tUSmJdw
+Message-ID: <CAGtprH82OjizyORJ91d6f6VAn_E9LY7WptN-DsoxwLT4VwOccg@mail.gmail.com>
+Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via tdx_safe_halt()
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, 
+	jxgao@google.com, sagis@google.com, oupton@google.com, pgonda@google.com, 
+	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
+	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 30, 2025 at 09:24:37AM -0800, Vishal Annapurve wrote:
-> On Thu, Jan 30, 2025 at 1:28 AM Kirill A. Shutemov <kirill@shutemov.name> wrote:
+On Thu, Jan 30, 2025 at 10:48=E2=80=AFAM Kirill A. Shutemov
+<kirill@shutemov.name> wrote:
+> ...
+> > >
+> > > I think it is worth to putting this into a separate patch and not
+> > > backport. The rest of the patch is bugfix and this doesn't belong.
+> > >
+> > > Otherwise, looks good to me:
+> > >
+> > > Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>@lin=
+ux.intel.com>
+> > >
+> > > --
+> > >   Kiryl Shutsemau / Kirill A. Shutemov
 > >
-> > On Wed, Jan 29, 2025 at 11:25:25PM +0000, Vishal Annapurve wrote:
-> > > Direct HLT instruction execution causes #VEs for TDX VMs which is routed
-> > > to hypervisor via tdvmcall. This process renders HLT instruction
-> > > execution inatomic, so any preceding instructions like STI/MOV SS will
-> > > end up enabling interrupts before the HLT instruction is routed to the
-> > > hypervisor. This creates scenarios where interrupts could land during
-> > > HLT instruction emulation without aborting halt operation leading to
-> > > idefinite halt wait times.
-> > >
-> > > Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests") already
-> > > upgraded x86_idle() to invoke tdvmcall to avoid such scenarios, but
-> > > it didn't cover pv_native_safe_halt() which can be invoked using
-> > > raw_safe_halt() from call sites like acpi_safe_halt().
-> > >
-> > > raw_safe_halt() also returns with interrupts enabled so upgrade
-> > > tdx_safe_halt() to enable interrupts by default and ensure that paravirt
-> > > safe_halt() executions invoke tdx_safe_halt(). Earlier x86_idle() is now
-> > > handled via tdx_idle() which simply invokes tdvmcall while preserving
-> > > irq state.
-> > >
-> > > To avoid future call sites which cause HLT instruction emulation with
-> > > irqs enabled, add a warn and fail the HLT instruction emulation.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-> > > Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> > > ---
-> > > Changes since V1:
-> > > 1) Addressed comments from Dave H
-> > >    - Comment regarding adding a check for TDX VMs in halt path is not
-> > >      resolved in v2, would like feedback around better place to do so,
-> > >      maybe in pv_native_safe_halt (?).
-> > > 2) Added a new version of tdx_safe_halt() that will enable interrupts.
-> > > 3) Previous tdx_safe_halt() implementation is moved to newly introduced
-> > > tdx_idle().
-> > >
-> > > V1: https://lore.kernel.org/lkml/Z5l6L3Hen9_Y3SGC@google.com/T/
-> > >
-> > >  arch/x86/coco/tdx/tdx.c    | 23 ++++++++++++++++++++++-
-> > >  arch/x86/include/asm/tdx.h |  2 +-
-> > >  arch/x86/kernel/process.c  |  2 +-
-> > >  3 files changed, 24 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> > > index 0d9b090b4880..cc2a637dca15 100644
-> > > --- a/arch/x86/coco/tdx/tdx.c
-> > > +++ b/arch/x86/coco/tdx/tdx.c
-> > > @@ -14,6 +14,7 @@
-> > >  #include <asm/ia32.h>
-> > >  #include <asm/insn.h>
-> > >  #include <asm/insn-eval.h>
-> > > +#include <asm/paravirt_types.h>
-> > >  #include <asm/pgtable.h>
-> > >  #include <asm/set_memory.h>
-> > >  #include <asm/traps.h>
-> > > @@ -380,13 +381,18 @@ static int handle_halt(struct ve_info *ve)
-> > >  {
-> > >       const bool irq_disabled = irqs_disabled();
-> > >
-> > > +     if (!irq_disabled) {
-> > > +             WARN_ONCE(1, "HLT instruction emulation unsafe with irqs enabled\n");
-> > > +             return -EIO;
-> > > +     }
-> > > +
+> > Thanks Kirill for the review.
 > >
-> > I think it is worth to putting this into a separate patch and not
-> > backport. The rest of the patch is bugfix and this doesn't belong.
+> > Thinking more about this fix, now I am wondering why the efforts [1]
+> > to move halt/safe_halt under CONFIG_PARAVIRT were abandoned. Currently
+> > proposed fix is incomplete as it would not handle scenarios where
+> > CONFIG_PARAVIRT_XXL is disabled. I am tilting towards reviving [1] and
+> > requiring CONFIG_PARAVIRT for TDX VMs. WDYT?
 > >
-> > Otherwise, looks good to me:
-> >
-> > Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>@linux.intel.com>
-> >
-> > --
-> >   Kiryl Shutsemau / Kirill A. Shutemov
-> 
-> Thanks Kirill for the review.
-> 
-> Thinking more about this fix, now I am wondering why the efforts [1]
-> to move halt/safe_halt under CONFIG_PARAVIRT were abandoned. Currently
-> proposed fix is incomplete as it would not handle scenarios where
-> CONFIG_PARAVIRT_XXL is disabled. I am tilting towards reviving [1] and
-> requiring CONFIG_PARAVIRT for TDX VMs. WDYT?
-> 
-> [1] https://lore.kernel.org/lkml/20210517235008.257241-1-sathyanarayanan.kuppuswamy@linux.intel.com/
+> > [1] https://lore.kernel.org/lkml/20210517235008.257241-1-sathyanarayana=
+n.kuppuswamy@linux.intel.com/
+>
+> Many people dislike paravirt callbacks. We tried to avoid relying on them
+> for core TDX enabling.
+>
+> Can you explain the issue you see with CONFIG_PARAVIRT_XXL being disabled=
+?
+> I don't think I follow.
 
-Many people dislike paravirt callbacks. We tried to avoid relying on them
-for core TDX enabling.
+Relevant callers of *_safe_halt() are:
+1) kvm_wait() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt()
+2) acpi_safe_halt() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt()
 
-Can you explain the issue you see with CONFIG_PARAVIRT_XXL being disabled?
-I don't think I follow.
+arch_safe_halt() can get routed to native_safe_halt if
+CONFIG_PARAVIRT_XXL is disabled and will use "sti; hlt" combination
+which is unsafe for TDX VMs as of now.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Either patch suggested by Sean [1] earlier or the implementation [2]
+to implement safe_halt always for TDX VMs seem functionally more
+correct to me. [2] being better where it avoids #VEs altogether. I
+haven't come across configurations where CONFIG_PARAVIRT_XXL is
+disabled but I don't see any guarantees around keeping it enabled for
+TDX VMs.
+
+[1] https://lore.kernel.org/lkml/Z5l6L3Hen9_Y3SGC@google.com/
+[2] https://lore.kernel.org/lkml/20210517235008.257241-1-sathyanarayanan.ku=
+ppuswamy@linux.intel.com/
+
+>
+> --
+>   Kiryl Shutsemau / Kirill A. Shutemov
