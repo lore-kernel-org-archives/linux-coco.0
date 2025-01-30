@@ -1,41 +1,91 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD5718DF60
-	for <linux-coco@lists.linux.dev>; Thu, 30 Jan 2025 09:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738228048; cv=none; b=ra2/1Nlj0QgBkaLWnlVGOWff9D+gAxdLzyDY3pYBzSlSg4lthaWcp7/j7BnQwcOeCCEvmu4IUPXZ5TA1mFVhJ4UWZTbnUbrHse5lh3jhwbfW2VAbDLMvZxL8TN9KEAJ6zMXFx7v2fRbtfpVvLghC25XVNVvRBmTeDN3FsTXZZEg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738228048; c=relaxed/simple;
-	bh=fAesCrg5k4232xvZ2JLS/toNGDIP2Mt/eunsxR17oeQ=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZqZ/UhBUxPum2kgrPHX/yBFilKsVcBS2jHbRQvXAoQ3Xoz9fCWKwkl9O/5C4r3ldJAtC4U3kzYGS+61cAeUlRVJW6Y7sEBAuBfuSV+y9ujoCFzhrMxEAq2Gds7005L4uwKeQtFs1U7wrlG8++fwpbL1aVE2H/L9qXMJiHilPzog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=fm6zdcc/; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="fm6zdcc/"
-Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id E5436407DF;
-	Thu, 30 Jan 2025 10:07:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1738228039;
-	bh=fAesCrg5k4232xvZ2JLS/toNGDIP2Mt/eunsxR17oeQ=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=fm6zdcc/weNBGd2NWRe3TTV9pw6tVXlGVbzjiuHGAPaErbT4/AQBacSAcUjC1XB5L
-	 lEXtPpiM9Rc1vedqiAEGaw/Bs+kH2rYxfrP/JSO3CDaVzn2sMXl95a92gwKlBw+upv
-	 JISSl07t8ZmQJ1O5t8mHdPjM+WSJVPKHGALdxRLRDwXdfrWA+o69DMNp2FJkoKcFrL
-	 OAd9c9/KC5SB3MdAMGmJGuHli1Xucl8PfTy+EKMj62jEJ5vYWFM5pdk2JmZ6/mXtXJ
-	 4DseUevFkjIg1ps11R5rbSoKADhqYAPsZ01dG5pgwqI4HlFOL/nGkTJMNFCGuXsDJx
-	 UhpTwVk8Q1H0g==
-Date: Thu, 30 Jan 2025 10:07:17 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: Re: [svsm-devel] SVSM Development Call January 29th, 2025
-Message-ID: <Z5tBRYNugYZqXZTz@8bytes.org>
-References: <Z5jv5sC5iurutj7M@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AACD1B425F
+	for <linux-coco@lists.linux.dev>; Thu, 30 Jan 2025 09:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738229289; cv=none; b=YOFwThXkHV7eVfAKMjiez1Pc8WeidiHEAJ2ohdLlJ9abpPdP/85zyJ2c8RDthVpYpXcG+mHabvqPgo9wtoj14hUaEzuXkAwfxV7TZ0rJOftvR/wyjx7VX2UpQDPaqgxfWFvo/58/XKidR6oonv47+Md6sNhihU4v1eilKPljb8I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738229289; c=relaxed/simple;
+	bh=6QEEVxeXCV/Eryqb4+2vYLsdLa+714Q+GrQSfN0elNk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WlSo+hQC693KFwfDhPEGy7ukGEMtXPlqo7gTcorXQU0aOYh9bWFwLbueNqTibSj4VaQFWzibGdGiRqKAG1796f8xM+a8B7a8rlyTJeuJ7TtFKrcPhGgoILPiSJ6+O1wSkXmBiQkIzYR9ukcsfxeiPv1hO7kmkG30PVVjV5MnMAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=c4I4Q9fg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cg4zjQBj; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="c4I4Q9fg";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cg4zjQBj"
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id A35B72540115;
+	Thu, 30 Jan 2025 04:28:05 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 30 Jan 2025 04:28:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1738229285; x=
+	1738315685; bh=t3O8u0KUNKcJVT+PdNptZvz5j4ncE2iGZc2jtKHEpZA=; b=c
+	4I4Q9fgmE9PKfoX+evVrmj/SMTQjIa0xDK/Dt4eW/gefmrOirVBpzaswWpwJudWq
+	HmlyaV+6d26O9ugiRXB23gZRIP/cBZYxEvkJeFMN1Vy+i+ONivAQjKemHk8Z7PVJ
+	2bKJCZXuCm68SfiZkU87gt+zBUiVL+jmGKAWmCrZBu8QoFAyb+tJjbrBuvmtfXps
+	T6yGO0dIZ5POEEUkVuBC7e7lWJ+yZslUu2j3VAYBTbJX9GPCoRJmRYN1G9iP/aas
+	aeDzWvMq+4KUbvCA351BTi5xyvbSYdoUkP4I7m2uzncPGyRfl7/XVf7tcrHkTSGq
+	nJz7SxlDyL7HWj58zGHnQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1738229285; x=1738315685; bh=t3O8u0KUNKcJVT+PdNptZvz5j4ncE2iGZc2
+	jtKHEpZA=; b=cg4zjQBjrjLB6KNZKNo80Wh+HchynueFbqaBIr+CYP2vyZgB6BR
+	bhsKXyHHjdWR1KNlbG0kszwEl66Z4w5h+XLW1/saKsJciGM9V/zeAHpOBfo51ZG+
+	NnjSOkOlGPFNEOmFiyjI3Z9DyAIUYWpOZF/sYuWzX3dIJHU7tvRiIo5ryh2sVmUX
+	+oPaDgu3yJOGjQ1GO60b9lodMEfPMCzl9N8Ko4maVnC/dVBs0mMgeJ5BdhojuWuU
+	TkykP9qQAViOzbP7IiyKhFYZFZI5g7taNRNaJ9V8WoSkTj3Juji0lWiuHrv1eBkM
+	4uKdq0K9S5jUe76aEE/A8Hbi5FYJoyv2xAQ==
+X-ME-Sender: <xms:JUabZ7waI2wxTDSPmwYRBaPSiT8e3YCzVmQpFa71ZcgYljSy4EniOQ>
+    <xme:JUabZzRmPYq9hclZHzr4147DsLIR02AMYM0awGBWUGan9kl4f9eQK3e4yu9fCTw4B
+    _3TvGS-2hVcZQc2Blg>
+X-ME-Received: <xmr:JUabZ1WUR03_1zi0b_ZSuQiJAbcnAj6QpNs6w4dtRVGzxRVRXq9RjGpy8wts8mpyBg6wqA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdehgeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvden
+    ucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlse
+    hshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeeltedugedtgfehuddu
+    hfetleeiuedvtdehieejjedufeejfeegteetuddtgefgudenucffohhmrghinhepkhgvrh
+    hnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
+    rhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhope
+    duiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhgrnhhnrghpuhhrvhgvsehg
+    ohhoghhlvgdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehpsghonhiiihhnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepshgvrg
+    hnjhgtsehgohhoghhlvgdrtghomhdprhgtphhtthhopegvrhguvghmrghkthgrshesghho
+    ohhglhgvrdgtohhmpdhrtghpthhtoheprggtkhgvrhhlvgihthhnghesghhoohhglhgvrd
+    gtohhmpdhrtghpthhtohepjhigghgrohesghhoohhglhgvrdgtohhmpdhrtghpthhtohep
+    shgrghhishesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:JUabZ1jy_e-IpxT5ZSFHKe9Bzu0Wt_Lg0hBLoEjWCdiltsATEx-_Aw>
+    <xmx:JUabZ9ADP0yPihoeZby56FGMKuJGEjPwpaur_dt3Dr9QggsybmVB9Q>
+    <xmx:JUabZ-Ib6HiCGN62p--HuxIq4y986zMLxAVrZDDQ3Dc9q3XLHJq4kg>
+    <xmx:JUabZ8B81ibLoEibSBLpIu3AFhijdAWoVaLyXz_KA9zgX8RVDSRCsw>
+    <xmx:JUabZ_wsvb8L6c7pN6I7c9hH0SPP9A7BbUhKPR1g40OOjcMxMQsipjif>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 30 Jan 2025 04:28:00 -0500 (EST)
+Date: Thu, 30 Jan 2025 11:27:56 +0200
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
+	sagis@google.com, oupton@google.com, pgonda@google.com, 
+	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
+	isaku.yamahata@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via
+ tdx_safe_halt()
+Message-ID: <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
+References: <20250129232525.3519586-1-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -44,16 +94,79 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z5jv5sC5iurutj7M@8bytes.org>
+In-Reply-To: <20250129232525.3519586-1-vannapurve@google.com>
 
-Minutes for this call are now posted in this PR:
+On Wed, Jan 29, 2025 at 11:25:25PM +0000, Vishal Annapurve wrote:
+> Direct HLT instruction execution causes #VEs for TDX VMs which is routed
+> to hypervisor via tdvmcall. This process renders HLT instruction
+> execution inatomic, so any preceding instructions like STI/MOV SS will
+> end up enabling interrupts before the HLT instruction is routed to the
+> hypervisor. This creates scenarios where interrupts could land during
+> HLT instruction emulation without aborting halt operation leading to
+> idefinite halt wait times.
+> 
+> Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests") already
+> upgraded x86_idle() to invoke tdvmcall to avoid such scenarios, but
+> it didn't cover pv_native_safe_halt() which can be invoked using
+> raw_safe_halt() from call sites like acpi_safe_halt().
+> 
+> raw_safe_halt() also returns with interrupts enabled so upgrade
+> tdx_safe_halt() to enable interrupts by default and ensure that paravirt
+> safe_halt() executions invoke tdx_safe_halt(). Earlier x86_idle() is now
+> handled via tdx_idle() which simply invokes tdvmcall while preserving
+> irq state.
+> 
+> To avoid future call sites which cause HLT instruction emulation with
+> irqs enabled, add a warn and fail the HLT instruction emulation.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> ---
+> Changes since V1:
+> 1) Addressed comments from Dave H
+>    - Comment regarding adding a check for TDX VMs in halt path is not
+>      resolved in v2, would like feedback around better place to do so,
+>      maybe in pv_native_safe_halt (?).
+> 2) Added a new version of tdx_safe_halt() that will enable interrupts.
+> 3) Previous tdx_safe_halt() implementation is moved to newly introduced
+> tdx_idle().
+> 
+> V1: https://lore.kernel.org/lkml/Z5l6L3Hen9_Y3SGC@google.com/T/
+> 
+>  arch/x86/coco/tdx/tdx.c    | 23 ++++++++++++++++++++++-
+>  arch/x86/include/asm/tdx.h |  2 +-
+>  arch/x86/kernel/process.c  |  2 +-
+>  3 files changed, 24 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 0d9b090b4880..cc2a637dca15 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -14,6 +14,7 @@
+>  #include <asm/ia32.h>
+>  #include <asm/insn.h>
+>  #include <asm/insn-eval.h>
+> +#include <asm/paravirt_types.h>
+>  #include <asm/pgtable.h>
+>  #include <asm/set_memory.h>
+>  #include <asm/traps.h>
+> @@ -380,13 +381,18 @@ static int handle_halt(struct ve_info *ve)
+>  {
+>  	const bool irq_disabled = irqs_disabled();
+>  
+> +	if (!irq_disabled) {
+> +		WARN_ONCE(1, "HLT instruction emulation unsafe with irqs enabled\n");
+> +		return -EIO;
+> +	}
+> +
 
-	https://github.com/coconut-svsm/governance/pull/42
+I think it is worth to putting this into a separate patch and not
+backport. The rest of the patch is bugfix and this doesn't belong.
 
-The AI was not able to sufficiently capture the CoRIM discussion. Dionna
-and Jon, if you want to have that captured in the minutes, please propose
-the notes as a change to the above PR.
+Otherwise, looks good to me:
 
-Thanks,
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>@linux.intel.com>
 
-	Joerg
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
