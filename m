@@ -1,182 +1,123 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1D11E412A
-	for <linux-coco@lists.linux.dev>; Thu, 30 Jan 2025 13:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA551DDC22;
+	Thu, 30 Jan 2025 14:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738244366; cv=none; b=X/xb/4HKgMKAXUkPw4i/RaZps5rbt+7dXpRWunZIc8h6vQ1yhETFLWOJ3E2mBCLMbgF3X0aUaM7YP4ZAjvxpgHsqOZdW4fgRSdbwrJM46FbsqS0nQo8DKULlGVP0ZQlEwjdDUAFaqMcqhMqaO9aZAkn37PO/u+Cd7K/j+uPKYMA=
+	t=1738246497; cv=none; b=byJFtEj6faZpOnXv8IWvIXyYeTUdbTWT7kqOk9MMLOmynFZR6BOqmpnVLQUoHC1n9HidOQcmd4LOcwVALhiFxiqhb6aB1IXXwalBi2QsBM1y/O+O/TJn96+ExcTTLInlPOKuUPJPZjS/6L0NeZ2qxzy76kJWuLuLE6pOcbEwB5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738244366; c=relaxed/simple;
-	bh=RIgKt8HHQqmlMNi4T8tsn4Qnv0Ra7e4iPjx6SVS2Esk=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ihHsSBUc3QAG0cPeA+DOEgMkfFfO4D9RLe/t+dC9cRiGTl77eZXXNbOelz8I0Kub4mJIcjo+61911cIrlR37lb5PyGX2fEoP+w0Jr80Oohr0i5ptnW4orIlriXDeKpQbUvdiUu/9/Qf/s8JXWfkZNwohIUWlz6v8qWUrUfDERaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YkKnj4ynPz6K8lH;
-	Thu, 30 Jan 2025 21:37:13 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9F066140B18;
-	Thu, 30 Jan 2025 21:39:20 +0800 (CST)
-Received: from localhost (10.47.30.69) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 30 Jan
- 2025 14:39:20 +0100
-Date: Thu, 30 Jan 2025 13:39:17 +0000
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, Bjorn Helgaas <bhelgaas@google.com>, "Lukas
- Wunner" <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>, "Alexey
- Kardashevskiy" <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>,
-	<linux-pci@vger.kernel.org>, <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 11/11] samples/devsec: Add sample IDE establishment
-Message-ID: <20250130133917.0000539c@huawei.com>
-In-Reply-To: <173343745958.1074769.12896997365766327404.stgit@dwillia2-xfh.jf.intel.com>
-References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
-	<173343745958.1074769.12896997365766327404.stgit@dwillia2-xfh.jf.intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1738246497; c=relaxed/simple;
+	bh=62uvUPVokekdadvzzYgMQHmplXUKl1Kb/D+EIGlWRtw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UptKO7kOzH01IORiSWx1q/amMqjWgkFvJMN3qib3DnbGuAcVmUzb2/PBfEHhv73VG/fFjT7mmxhfvVhrjPs3w/wOARJX5UGwioZr3GHkIr9Z8ZbdzeMQAQG6TjDj+1UzwYmwx1a82q62WMlI8leiqkhXdLOQPc0LPc3obNAcdw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 940B1497;
+	Thu, 30 Jan 2025 06:15:14 -0800 (PST)
+Received: from [10.1.32.52] (e122027.cambridge.arm.com [10.1.32.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3BF713F694;
+	Thu, 30 Jan 2025 06:14:45 -0800 (PST)
+Message-ID: <1356de81-2fa1-4ad5-80bd-d02440603288@arm.com>
+Date: Thu, 30 Jan 2025 14:14:43 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- frapeml500008.china.huawei.com (7.182.85.71)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 10/43] arm64: kvm: Allow passing machine type in KVM
+ creation
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20241212155610.76522-1-steven.price@arm.com>
+ <20241212155610.76522-11-steven.price@arm.com>
+ <a580d287-2fb0-4e9d-adbb-57e4dbf25765@redhat.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <a580d287-2fb0-4e9d-adbb-57e4dbf25765@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 05 Dec 2024 14:24:19 -0800
-Dan Williams <dan.j.williams@intel.com> wrote:
-
-> Exercise common setup and teardown flows for a sample platform TSM
-> driver that implements the TSM 'connect' and 'disconnect' flows.
+On 29/01/2025 04:07, Gavin Shan wrote:
+> On 12/13/24 1:55 AM, Steven Price wrote:
+>> Previously machine type was used purely for specifying the physical
+>> address size of the guest. Reserve the higher bits to specify an ARM
+>> specific machine type and declare a new type 'KVM_VM_TYPE_ARM_REALM'
+>> used to create a realm guest.
+>>
+>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>>   arch/arm64/kvm/arm.c     | 17 +++++++++++++++++
+>>   arch/arm64/kvm/mmu.c     |  3 ---
+>>   include/uapi/linux/kvm.h | 19 +++++++++++++++----
+>>   3 files changed, 32 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index c505ec61180a..73016e1e0067 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -207,6 +207,23 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned
+>> long type)
+>>       mutex_unlock(&kvm->lock);
+>>   #endif
+>>   +    if (type & ~(KVM_VM_TYPE_ARM_MASK |
+>> KVM_VM_TYPE_ARM_IPA_SIZE_MASK))
+>> +        return -EINVAL;
+>> +
+>> +    switch (type & KVM_VM_TYPE_ARM_MASK) {
+>> +    case KVM_VM_TYPE_ARM_NORMAL:
+>> +        break;
+>> +    case KVM_VM_TYPE_ARM_REALM:
+>> +        kvm->arch.is_realm = true;
+>> +        if (!kvm_is_realm(kvm)) {
+>> +            /* Realm support unavailable */
+>> +            return -EINVAL;
+>> +        }
+>> +        break;
+>> +    default:
+>> +        return -EINVAL;
+>> +    }
+>> +
+>>       kvm_init_nested(kvm);
+>>         ret = kvm_share_hyp(kvm, kvm + 1);
 > 
-> This is both a template for platform specific implementations and a test
-> case for the shared infrastructure.
+> Corresponding to comments for PATCH[6], the block of the code can be
+> modified
+> to avoid using kvm_is_realm() here. In this way, kvm_is_realm() can be
+> simplifed
+> as I commented for PATCH[6].
 > 
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: Samuel Ortiz <sameo@rivosinc.com>
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Cc: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Trivial comments inline.
-
->  static int devsec_tsm_connect(struct pci_dev *pdev)
->  {
-> -	return -ENXIO;
-> +	struct pci_ide *ide;
-> +	int rc, stream_id;
-> +
-> +	stream_id =
-> +		find_first_zero_bit(devsec_stream_ids, DEVSEC_NR_IDE_STREAMS);
-> +	if (stream_id == DEVSEC_NR_IDE_STREAMS)
-> +		return -EBUSY;
-> +	set_bit(stream_id, devsec_stream_ids);
-> +	ide = &devsec_streams[stream_id].ide;
-> +	pci_ide_stream_probe(pdev, ide);
-> +
-> +	ide->stream_id = stream_id;
-> +	rc = pci_ide_stream_setup(pdev, ide, PCI_IDE_SETUP_ROOT_PORT);
-> +	if (rc)
-> +		return rc;
-> +	rc = tsm_register_ide_stream(pdev, ide);
-> +	if (rc)
-> +		goto err;
-> +
-> +	devsec_streams[stream_id].pdev = pdev;
-> +	pci_ide_enable_stream(pdev, ide);
-> +	return 0;
-> +err:
-> +	pci_ide_stream_teardown(pdev, ide, PCI_IDE_SETUP_ROOT_PORT);
-
-I'd kind of expect to see more of what we have in disconnect here.
-Like clearing the bit.
-
-> +	return rc;
->  }
->  
->  static void devsec_tsm_disconnect(struct pci_dev *pdev)
->  {
-> +	struct pci_ide *ide;
-> +	int i;
-> +
-> +	for_each_set_bit(i, devsec_stream_ids, DEVSEC_NR_IDE_STREAMS)
-> +		if (devsec_streams[i].pdev == pdev)
-> +			break;
-> +
-> +	if (i >= DEVSEC_NR_IDE_STREAMS)
-> +		return;
-> +
-> +	ide = &devsec_streams[i].ide;
-> +	pci_ide_disable_stream(pdev, ide);
-> +	tsm_unregister_ide_stream(ide);
-> +	pci_ide_stream_teardown(pdev, ide, PCI_IDE_SETUP_ROOT_PORT);
-> +	devsec_streams[i].pdev = NULL;
-If this setting to NULL needs to be out of order wrt to what happens
-in probe, add a comment.  If not move it to after pci_ide_disable_steram()
-
-> +	clear_bit(i, devsec_stream_ids);
->  }
->  
->  static const struct pci_tsm_ops devsec_pci_ops = {
-> @@ -63,16 +113,44 @@ static void devsec_tsm_remove(void *tsm)
->  	tsm_unregister(tsm);
->  }
->  
-> +static void set_nr_ide_streams(int nr)
-> +{
-> +	struct pci_dev *pdev = NULL;
-> +
-> +	for_each_pci_dev(pdev) {
-> +		struct pci_host_bridge *hb;
-> +
-> +		if (pdev->sysdata != devsec_sysdata)
-> +			continue;
-> +		hb = pci_find_host_bridge(pdev->bus);
-> +		if (hb->nr_ide_streams >= 0)
-> +			continue;
-> +		pci_set_nr_ide_streams(hb, nr);
-> +	}
-> +}
-> +
-> +static void devsec_tsm_ide_teardown(void *data)
-> +{
-> +	set_nr_ide_streams(-1);
-> +}
-> +
->  static int devsec_tsm_probe(struct platform_device *pdev)
->  {
->  	struct tsm_subsys *tsm;
-> +	int rc;
->  
->  	tsm = tsm_register(&pdev->dev, NULL, &devsec_pci_ops);
->  	if (IS_ERR(tsm))
->  		return PTR_ERR(tsm);
->  
-> -	return devm_add_action_or_reset(&pdev->dev, devsec_tsm_remove,
-> -					tsm);
-> +	rc = devm_add_action_or_reset(&pdev->dev, devsec_tsm_remove, tsm);
-> +	if (rc)
-> +		return rc;
-> +
-> +	set_nr_ide_streams(DEVSEC_NR_IDE_STREAMS);
-> +
-> +	return devm_add_action_or_reset(&pdev->dev, devsec_tsm_ide_teardown,
-> +					NULL);
->  }
->  
->  static struct platform_driver devsec_tsm_driver = {
-> @@ -109,5 +187,6 @@ static void __exit devsec_tsm_exit(void)
->  }
->  module_exit(devsec_tsm_exit);
->  
-> +MODULE_IMPORT_NS(PCI_IDE);
->  MODULE_LICENSE("GPL");
->  MODULE_DESCRIPTION("Device Security Sample Infrastructure: Platform TSM Driver");
+>     case KVM_VM_TYPE_ARM_REALM:
+>         if (static_branch_unlikely(&kvm_rme_is_available))
+>             return -EPERM;    /* -EPERM may be more suitable than -
+> EINVAL */
 > 
-> 
+>         kvm->arch.is_realm = true;
+>         break;
+
+Yes that's more readable. I'd used kvm_is_realm() because I wanted to
+keep the check on kvm_rme_is_available to one place, but coming back to
+the code there's definitely a "Huh?" moment from setting 'is_realm' and
+then testing if it's a realm!
+
+I also agree -EPERM is probably better to signify that the kernel
+supports realms but the hardware doesn't.
+
+Thanks,
+
+Steve
 
