@@ -1,57 +1,57 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6498528E
-	for <linux-coco@lists.linux.dev>; Sat,  1 Feb 2025 02:17:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E6D1A2550
+	for <linux-coco@lists.linux.dev>; Sat,  1 Feb 2025 02:17:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738376265; cv=none; b=ENbln/IOFYZGuPuPre3WGVOVPF1xSBIjO85D0v8qqrKM4Rf4gi3bYlU5/R/Wjliy16YMc3yV+eYHVSdENC+ROaZBcGPku9RqRIb7hit2SHS2EsaNlhioCQNGubeZ9NyMqfr2BmU1gz+Fo/DBZERaUemATllWsZIN9qA/3MjVI74=
+	t=1738376267; cv=none; b=Zu81mmsnypzwrUv4ZczNALjHdGcXCOaJC5X0RNKGh7g9WBgik7aK+cGj+5+STfNnUTGZPj3UNvvfuJ9+0RBJ94fn1ixLFJ4FujWz0f4f46qUvsM+5c5ejAjpTcBmJJ6MAEid/57E2o8rHF2S9JTO39dumEwMyW+1IEdIs3W2E+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738376265; c=relaxed/simple;
-	bh=ASwUqN95BYwqinjLF99Tq16sgCdUDLFn1N7MLc7S61U=;
+	s=arc-20240116; t=1738376267; c=relaxed/simple;
+	bh=kx1WuhibcuTx6WiHPmvUxDfP1htj6y2KJdDmu/FjmBY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OPyDw2xsRzbjmR9niSya5XX5DiZxtyj2ZpT1Y1AIq/pkuroogY3eYVf+DFlPfrydVMailtzdEUxDvi6f5t7RLc7rrQ70wBEuxrfF/nf3lPwvajYZAVqeFBY+gPa3ZlwaJgjoxroohJxdUdWH5lBGgUNwV+SKL8tL+nWID5XI2rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kLZ29AYd; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=GuuuoKEjEmKyiuq5NBSAKmSsS5+aMuHEvKgoTbZGaA91vfhlvAYFT51mUo3QqrZqPyi92VYxgKkvOYkbBy05pclDCQB9TbUkGR2wJRL2n+JowA9U6J/CdDpsE5OwBT/0Jb+jRnSGQ5kIo4y4DpF3SB7hrvflEakbTsoGH/3392I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n5Qkt8WM; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kLZ29AYd"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-216405eea1fso52303295ad.0
-        for <linux-coco@lists.linux.dev>; Fri, 31 Jan 2025 18:17:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n5Qkt8WM"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-21640607349so59744705ad.0
+        for <linux-coco@lists.linux.dev>; Fri, 31 Jan 2025 18:17:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738376261; x=1738981061; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1738376265; x=1738981065; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=fjq2RAKOugqtigb0Q/zSm7wR8ZLcl6wCuY/1ydRYBE0=;
-        b=kLZ29AYdJgSzdQpTC5R0i+cp48LRNxjC8viedyT74jbZNLDDYZUxWWCsN2NRIMuaxp
-         DRiAxKXqjG47+tx9jfp1lzdKnNjlhPzKfKKB7UKPjtBfxxljZGYMJSgvuMCDYE51GFWe
-         z4J14idCZqgRCW0zXal0eBXv6dXy+M7irN2532p8KMokMiAnG47dM1PSgI51tqk+n6tq
-         sEa7x5U6LQ7HrPf5/6G4cmXWOkZVy0FveqsVExPLuhUAUxkVqqvrsIWlGjGL9d6POzBi
-         yrtEEBwqnUMWB2dpEAlIbbynGM7IljjRhpkozFXkmQS+lDw+T0IAK1mnJajAYma05y0/
-         sQ/g==
+        bh=W1XV2ZKxBzpt6fRRKseHNiWV51nuIILy1d39LBlT9SE=;
+        b=n5Qkt8WMqLZ4fX+USlNT21VnLYb46eZrfIFoVD3aC0XYIxEBQbavYTs4LAmSuIxr5T
+         ZgxHn+OZil5yRXa7onMPOWtg+niJMSv/MVL3niUeSGDG9YntvhcK60ru6fsRB28qQtWg
+         mnGSuu6Impd4jnFDN8B+XtcIy2oJ1oSxVUaaKXexgZi03MFVMVu7hSQrYlSqc7GK8vjY
+         eROPqGMloFmMANak5OBYZgvvx1wwOr8DphhY406l7AAKuHNHh/hYdVHrKw06Unri/P+a
+         H87HgM0bhzysT2zWv6Yp/yQ5ncloCPSibk0E+zmfxBezZvCJPvL41nA8uSbVfBAutuGE
+         Dzng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738376261; x=1738981061;
+        d=1e100.net; s=20230601; t=1738376265; x=1738981065;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fjq2RAKOugqtigb0Q/zSm7wR8ZLcl6wCuY/1ydRYBE0=;
-        b=Lrcyy3EtA9j6qUKX+hkTqk8v5K5p3j1lYJpJ9tI58P/n8ifBuJHCJF1oRgKCjc75/T
-         poGXyL2yGqZTcAFxJebXo9VLYBTPAktR96dEssV2ZzjZMna0CdCiXzvqOAI/CTjpp7aw
-         rV154HcXetMEtgy21bdWp5q2XRUB5tnQbPBEvTPPFTjaLTicM4p/FTWxszIOUq9GBKF2
-         pF0UI9slFU3hupAFqdZovdHyRjESIPFZy+NmJDVCu/U0+hj0DeVoebZwquoDVRRQbd5C
-         EwiLSEbu4C17oBGRcsnjv0o4bbOG5DAvdh5M+3dSWo0IbaVvEg0xrewoaYPvKIxac8x/
-         fW8A==
-X-Forwarded-Encrypted: i=1; AJvYcCXd/EsMA2bnr0+gCPk2hhADyuyKzFuoztJGUWiEQo/AdMomTRqenQCRB8dQV52N2H0aQTrWwXEemEqG@lists.linux.dev
-X-Gm-Message-State: AOJu0YwgVLi45bvPQC/gURey9QJgeo7InAzzrhS7/QHbAasLaVsuZPHO
-	PruZaQ6xj6qeyQcGIOJNJVeo0u46e6mOTBk2zeUN04y8B/JFHY6rXx0jN53ujG5LXTVOjT54RLd
-	FcQ==
-X-Google-Smtp-Source: AGHT+IEzM58dX9KoHCeq7XuQ3ZLuiQUuTP7JBFBKc9/3u2bcW6PA+cqHRPb1Z08cdz7ppSJkxA+MEfhtD78=
-X-Received: from pjbpx11.prod.google.com ([2002:a17:90b:270b:b0:2e9:5043:f55b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce8b:b0:215:e98c:c5c1
- with SMTP id d9443c01a7336-21dd7d78f78mr169836355ad.30.1738376261457; Fri, 31
- Jan 2025 18:17:41 -0800 (PST)
+        bh=W1XV2ZKxBzpt6fRRKseHNiWV51nuIILy1d39LBlT9SE=;
+        b=CdZ4MxDDGfTBlCCPaJVsWGu8wNpbPc8S8VdjH26MT1tdQ3ymUPArN/M57y57ZyfTR9
+         +WSLq0BN2fv/eL61U9zAzkQRxnjs8QZNhacv4ZT+he1bEmfA/NF1GynEq+2hVfDJOvj2
+         X3g/CthyRgv6k9zIZ/v9UPVJQ3Wd6boW9wLcocGkurB+3alI34GDKigfNaUn1GTgw4//
+         jRHhwsUNfMSbSZLUDA/iA3nna3cSkYxFQZCq37VB6RAQm0hP52hzaPUVAerS2Pg4t4C6
+         BNfy2isiDXjfRAysIpIksFoi02+kPxxG6NlARH2uZ4KjGs/Z2CLaH/h4NsiHJY9XSMmw
+         3EdA==
+X-Forwarded-Encrypted: i=1; AJvYcCWR5W5TIA75Ht/o9PpZO01acckgzzi/I1UYKKrrjMyLJ6yqPbA2PamTDGZ9xU0bMcLSYEwud8rfZ8p8@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzt+PKJ4izEv8oV5GrB2kmoUJ/4Za/KX6n8E5O3PkW2/3JAG0KM
+	Rpwb30bUd3EZg15M5k0QvG198rqck4dbVBqu5PyaH52UbNPbMyMaQ7/9Esxk7RJ1vPl1gYS2500
+	NBQ==
+X-Google-Smtp-Source: AGHT+IGSSeREbj02hPb3cDa39T9c0oKEk7xpncELnx14V1Vrs2HnSpCp6+OTk/Z1j4CkHarX3h8UUIGOLcI=
+X-Received: from pjbsb14.prod.google.com ([2002:a17:90b:50ce:b0:2f4:465d:5c61])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:244c:b0:215:f1c2:fcc4
+ with SMTP id d9443c01a7336-21dd7deeff4mr227157665ad.41.1738376264849; Fri, 31
+ Jan 2025 18:17:44 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 31 Jan 2025 18:17:10 -0800
+Date: Fri, 31 Jan 2025 18:17:12 -0800
 In-Reply-To: <20250201021718.699411-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -61,8 +61,8 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20250201021718.699411-1-seanjc@google.com>
 X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
-Message-ID: <20250201021718.699411-9-seanjc@google.com>
-Subject: [PATCH 08/16] x86/tsc: Pass KNOWN_FREQ and RELIABLE as params to registration
+Message-ID: <20250201021718.699411-11-seanjc@google.com>
+Subject: [PATCH 10/16] x86/paravirt: Move handling of unstable PV clocks into paravirt_set_sched_clock()
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -79,256 +79,86 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add a "tsc_properties" set of flags and use it to annotate whether the
-TSC operates at a known and/or reliable frequency when registering a
-paravirtual TSC calibration routine.  Currently, each PV flow manually
-sets the associated feature flags, but often in haphazard fashion that
-makes it difficult for unfamiliar readers to see the properties of the
-TSC when running under a particular hypervisor.
+Move the handling of unstable PV clocks, of which kvmclock is the only
+example, into paravirt_set_sched_clock().  This will allow modifying
+paravirt_set_sched_clock() to keep using the TSC for sched_clock in
+certain scenarios without unintentionally marking the TSC-based clock as
+unstable.
 
-The other, bigger issue with manually setting the feature flags is that
-it decouples the flags from the calibration routine.  E.g. in theory, PV
-code could mark the TSC as having a known frequency, but then have its
-PV calibration discarded in favor of a method that doesn't use that known
-frequency.  Passing the TSC properties along with the calibration routine
-will allow adding sanity checks to guard against replacing a "better"
-calibration routine with a "worse" routine.
-
-As a bonus, the flags also give developers working on new PV code a heads
-up that they should at least mark the TSC as having a known frequency.
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/coco/sev/core.c       |  6 ++----
- arch/x86/coco/tdx/tdx.c        |  7 ++-----
- arch/x86/include/asm/tsc.h     |  8 +++++++-
- arch/x86/kernel/cpu/acrn.c     |  4 ++--
- arch/x86/kernel/cpu/mshyperv.c | 10 +++++++---
- arch/x86/kernel/cpu/vmware.c   |  7 ++++---
- arch/x86/kernel/jailhouse.c    |  4 ++--
- arch/x86/kernel/kvmclock.c     |  4 ++--
- arch/x86/kernel/tsc.c          |  8 +++++++-
- arch/x86/xen/time.c            |  4 ++--
- 10 files changed, 37 insertions(+), 25 deletions(-)
+ arch/x86/include/asm/paravirt.h | 7 ++++++-
+ arch/x86/kernel/kvmclock.c      | 5 +----
+ arch/x86/kernel/paravirt.c      | 6 +++++-
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index dab386f782ce..29dd50552715 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -3284,12 +3284,10 @@ void __init snp_secure_tsc_init(void)
- {
- 	unsigned long long tsc_freq_mhz;
+diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+index 041aff51eb50..cfceabd5f7e1 100644
+--- a/arch/x86/include/asm/paravirt.h
++++ b/arch/x86/include/asm/paravirt.h
+@@ -28,7 +28,12 @@ u64 dummy_sched_clock(void);
+ DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
+ DECLARE_STATIC_CALL(pv_sched_clock, dummy_sched_clock);
  
--	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
--	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
--
- 	rdmsrl(MSR_AMD64_GUEST_TSC_FREQ, tsc_freq_mhz);
- 	snp_tsc_freq_khz = (unsigned long)(tsc_freq_mhz * 1000);
- 
- 	tsc_register_calibration_routines(securetsc_get_tsc_khz,
--					  securetsc_get_tsc_khz);
-+					  securetsc_get_tsc_khz,
-+					  TSC_FREQ_KNOWN_AND_RELIABLE);
- }
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 9d95dc713331..b1e3cca091b3 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -1135,14 +1135,11 @@ static unsigned long tdx_get_tsc_khz(void)
- 
- void __init tdx_tsc_init(void)
- {
--	/* TSC is the only reliable clock in TDX guest */
--	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
--	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
--
- 	/*
- 	 * Override the PV calibration routines (if set) with more trustworthy
- 	 * CPUID-based calibration.  The TDX module emulates CPUID, whereas any
- 	 * PV information is provided by the hypervisor.
- 	 */
--	tsc_register_calibration_routines(tdx_get_tsc_khz, NULL);
-+	tsc_register_calibration_routines(tdx_get_tsc_khz, NULL,
-+					  TSC_FREQ_KNOWN_AND_RELIABLE);
- }
-diff --git a/arch/x86/include/asm/tsc.h b/arch/x86/include/asm/tsc.h
-index 82a6cc27cafb..e99966f10594 100644
---- a/arch/x86/include/asm/tsc.h
-+++ b/arch/x86/include/asm/tsc.h
-@@ -88,8 +88,14 @@ static inline int cpuid_get_cpu_freq(unsigned int *cpu_khz)
- extern void tsc_early_init(void);
- extern void tsc_init(void);
- #if defined(CONFIG_HYPERVISOR_GUEST) || defined(CONFIG_AMD_MEM_ENCRYPT)
-+enum tsc_properties {
-+	TSC_FREQUENCY_KNOWN	= BIT(0),
-+	TSC_RELIABLE		= BIT(1),
-+	TSC_FREQ_KNOWN_AND_RELIABLE = TSC_FREQUENCY_KNOWN | TSC_RELIABLE,
-+};
- extern void tsc_register_calibration_routines(unsigned long (*calibrate_tsc)(void),
--					      unsigned long (*calibrate_cpu)(void));
-+					      unsigned long (*calibrate_cpu)(void),
-+					      enum tsc_properties properties);
- #endif
- extern void mark_tsc_unstable(char *reason);
- extern int unsynchronized_tsc(void);
-diff --git a/arch/x86/kernel/cpu/acrn.c b/arch/x86/kernel/cpu/acrn.c
-index 2da3de4d470e..4f2f4f7ec334 100644
---- a/arch/x86/kernel/cpu/acrn.c
-+++ b/arch/x86/kernel/cpu/acrn.c
-@@ -29,9 +29,9 @@ static void __init acrn_init_platform(void)
- 	/* Install system interrupt handler for ACRN hypervisor callback */
- 	sysvec_install(HYPERVISOR_CALLBACK_VECTOR, sysvec_acrn_hv_callback);
- 
--	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
- 	tsc_register_calibration_routines(acrn_get_tsc_khz,
--					  acrn_get_tsc_khz);
-+					  acrn_get_tsc_khz,
-+					  TSC_FREQUENCY_KNOWN);
- }
- 
- static bool acrn_x2apic_available(void)
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index aa60491bf738..607a3c51eddf 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -478,8 +478,13 @@ static void __init ms_hyperv_init_platform(void)
- 
- 	if (ms_hyperv.features & HV_ACCESS_FREQUENCY_MSRS &&
- 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
--		tsc_register_calibration_routines(hv_get_tsc_khz, hv_get_tsc_khz);
--		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
-+		enum tsc_properties tsc_properties = TSC_FREQUENCY_KNOWN;
+-void paravirt_set_sched_clock(u64 (*func)(void));
++void __paravirt_set_sched_clock(u64 (*func)(void), bool stable);
 +
-+		if (ms_hyperv.features & HV_ACCESS_TSC_INVARIANT)
-+			tsc_properties = TSC_FREQ_KNOWN_AND_RELIABLE;
-+
-+		tsc_register_calibration_routines(hv_get_tsc_khz, hv_get_tsc_khz,
-+						  tsc_properties);
- 	}
++static inline void paravirt_set_sched_clock(u64 (*func)(void))
++{
++	__paravirt_set_sched_clock(func, true);
++}
  
- 	if (ms_hyperv.priv_high & HV_ISOLATION) {
-@@ -582,7 +587,6 @@ static void __init ms_hyperv_init_platform(void)
- 		 * is called.
- 		 */
- 		wrmsrl(HV_X64_MSR_TSC_INVARIANT_CONTROL, HV_EXPOSE_INVARIANT_TSC);
--		setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
- 	}
- 
- 	/*
-diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index d6f079a75f05..6e4a2053857c 100644
---- a/arch/x86/kernel/cpu/vmware.c
-+++ b/arch/x86/kernel/cpu/vmware.c
-@@ -385,10 +385,10 @@ static void __init vmware_paravirt_ops_setup(void)
-  */
- static void __init vmware_set_capabilities(void)
+ static __always_inline u64 paravirt_sched_clock(void)
  {
-+	/* TSC is non-stop and reliable even if the frequency isn't known. */
- 	setup_force_cpu_cap(X86_FEATURE_CONSTANT_TSC);
- 	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
--	if (vmware_tsc_khz)
--		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
-+
- 	if (vmware_hypercall_mode == CPUID_VMWARE_FEATURES_ECX_VMCALL)
- 		setup_force_cpu_cap(X86_FEATURE_VMCALL);
- 	else if (vmware_hypercall_mode == CPUID_VMWARE_FEATURES_ECX_VMMCALL)
-@@ -417,7 +417,8 @@ static void __init vmware_platform_setup(void)
- 
- 		vmware_tsc_khz = tsc_khz;
- 		tsc_register_calibration_routines(vmware_get_tsc_khz,
--						  vmware_get_tsc_khz);
-+						  vmware_get_tsc_khz,
-+						  TSC_FREQ_KNOWN_AND_RELIABLE);
- 
- #ifdef CONFIG_X86_LOCAL_APIC
- 		/* Skip lapic calibration since we know the bus frequency. */
-diff --git a/arch/x86/kernel/jailhouse.c b/arch/x86/kernel/jailhouse.c
-index b0a053692161..d73a4d0fb118 100644
---- a/arch/x86/kernel/jailhouse.c
-+++ b/arch/x86/kernel/jailhouse.c
-@@ -218,7 +218,8 @@ static void __init jailhouse_init_platform(void)
- 
- 	machine_ops.emergency_restart		= jailhouse_no_restart;
- 
--	tsc_register_calibration_routines(jailhouse_get_tsc, jailhouse_get_tsc);
-+	tsc_register_calibration_routines(jailhouse_get_tsc, jailhouse_get_tsc,
-+					  TSC_FREQUENCY_KNOWN);
- 
- 	while (pa_data) {
- 		mapping = early_memremap(pa_data, sizeof(header));
-@@ -256,7 +257,6 @@ static void __init jailhouse_init_platform(void)
- 	pr_debug("Jailhouse: PM-Timer IO Port: %#x\n", pmtmr_ioport);
- 
- 	precalibrated_tsc_khz = setup_data.v1.tsc_khz;
--	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
- 
- 	pci_probe = 0;
- 
 diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index b898b95a7d50..b41ac7f27b9f 100644
+index b41ac7f27b9f..890535ddc059 100644
 --- a/arch/x86/kernel/kvmclock.c
 +++ b/arch/x86/kernel/kvmclock.c
-@@ -116,7 +116,6 @@ static inline void kvm_sched_clock_init(bool stable)
-  */
- static unsigned long kvm_get_tsc_khz(void)
+@@ -12,7 +12,6 @@
+ #include <linux/hardirq.h>
+ #include <linux/cpuhotplug.h>
+ #include <linux/sched.h>
+-#include <linux/sched/clock.h>
+ #include <linux/mm.h>
+ #include <linux/slab.h>
+ #include <linux/set_memory.h>
+@@ -93,10 +92,8 @@ static noinstr u64 kvm_sched_clock_read(void)
+ 
+ static inline void kvm_sched_clock_init(bool stable)
  {
--	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
- 	return pvclock_tsc_khz(this_cpu_pvti());
- }
+-	if (!stable)
+-		clear_sched_clock_stable();
+ 	kvm_sched_clock_offset = kvm_clock_read();
+-	paravirt_set_sched_clock(kvm_sched_clock_read);
++	__paravirt_set_sched_clock(kvm_sched_clock_read, stable);
  
-@@ -320,7 +319,8 @@ void __init kvmclock_init(void)
- 	flags = pvclock_read_flags(&hv_clock_boot[0].pvti);
- 	kvm_sched_clock_init(flags & PVCLOCK_TSC_STABLE_BIT);
+ 	pr_info("kvm-clock: using sched offset of %llu cycles",
+ 		kvm_sched_clock_offset);
+diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
+index 1ccaa3397a67..55c819673a9d 100644
+--- a/arch/x86/kernel/paravirt.c
++++ b/arch/x86/kernel/paravirt.c
+@@ -14,6 +14,7 @@
+ #include <linux/highmem.h>
+ #include <linux/kprobes.h>
+ #include <linux/pgtable.h>
++#include <linux/sched/clock.h>
+ #include <linux/static_call.h>
  
--	tsc_register_calibration_routines(kvm_get_tsc_khz, kvm_get_tsc_khz);
-+	tsc_register_calibration_routines(kvm_get_tsc_khz, kvm_get_tsc_khz,
-+					  TSC_FREQUENCY_KNOWN);
+ #include <asm/bug.h>
+@@ -85,8 +86,11 @@ static u64 native_steal_clock(int cpu)
+ DEFINE_STATIC_CALL(pv_steal_clock, native_steal_clock);
+ DEFINE_STATIC_CALL(pv_sched_clock, native_sched_clock);
  
- 	x86_platform.get_wallclock = kvm_get_wallclock;
- 	x86_platform.set_wallclock = kvm_set_wallclock;
-diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index 922003059101..47776f450720 100644
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -1252,11 +1252,17 @@ static void __init check_system_tsc_reliable(void)
-  */
- #if defined(CONFIG_HYPERVISOR_GUEST) || defined(CONFIG_AMD_MEM_ENCRYPT)
- void tsc_register_calibration_routines(unsigned long (*calibrate_tsc)(void),
--				       unsigned long (*calibrate_cpu)(void))
-+				       unsigned long (*calibrate_cpu)(void),
-+				       enum tsc_properties properties)
+-void paravirt_set_sched_clock(u64 (*func)(void))
++void __paravirt_set_sched_clock(u64 (*func)(void), bool stable)
  {
- 	if (WARN_ON_ONCE(!calibrate_tsc))
- 		return;
- 
-+	if (properties & TSC_FREQUENCY_KNOWN)
-+		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
-+	if (properties & TSC_RELIABLE)
-+		setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
++	if (!stable)
++		clear_sched_clock_stable();
 +
- 	x86_platform.calibrate_tsc = calibrate_tsc;
- 	if (calibrate_cpu)
- 		x86_platform.calibrate_cpu = calibrate_cpu;
-diff --git a/arch/x86/xen/time.c b/arch/x86/xen/time.c
-index 9e2e900dc0c7..e7429f3cffc6 100644
---- a/arch/x86/xen/time.c
-+++ b/arch/x86/xen/time.c
-@@ -40,7 +40,6 @@ static unsigned long xen_tsc_khz(void)
- 	struct pvclock_vcpu_time_info *info =
- 		&HYPERVISOR_shared_info->vcpu_info[0].time;
- 
--	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
- 	return pvclock_tsc_khz(info);
- }
- 
-@@ -566,7 +565,8 @@ static void __init xen_init_time_common(void)
- 	static_call_update(pv_steal_clock, xen_steal_clock);
- 	paravirt_set_sched_clock(xen_sched_clock);
- 
--	tsc_register_calibration_routines(xen_tsc_khz, NULL);
-+	tsc_register_calibration_routines(xen_tsc_khz, NULL,
-+					  TSC_FREQUENCY_KNOWN);
- 	x86_platform.get_wallclock = xen_get_wallclock;
+ 	static_call_update(pv_sched_clock, func);
  }
  
 -- 
