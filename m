@@ -1,71 +1,71 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A003101E6
-	for <linux-coco@lists.linux.dev>; Sun,  2 Feb 2025 23:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213A12147F1
+	for <linux-coco@lists.linux.dev>; Sun,  2 Feb 2025 23:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738538249; cv=none; b=P4ZA1Pm36YBlQ3f7U0pn+pWBKfRxgFBjpQM+SVCEe7E77ehX0+4nqBia4VRth6WT2ezP3nIEu3tdDlKejgN5wMP+H3mdIOOpHEB+U5bvAFHvQu044PwL4tLxV9JIxdvYfwRLUDu1fz4XMjsyxTw/ZdeYcJYQyetXWmvESgIwEGw=
+	t=1738538804; cv=none; b=i3pwccfpSPfFKQRludKwGQzX6yLI17s1EhY2yTaGbmiRLBWz1fpps7uAOwtNvQYgT8mW1gFt+eIbTNxgf/IVEDPGiy3r6qcJaXFPs7l5vaHCrgo+jJaDc73eV9i3m6nQbK2llsf4XWP7zqVs2cry+oc34LZDcYgWk4lygvw+O6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738538249; c=relaxed/simple;
-	bh=oWut+e6BjlnQ1t1a7UfTOn69NfRO8clBIxfqu43+0pQ=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=c6B1BSmXUkBw8i8DaKZunujDDx/Pk1UqdbHb2TlsS7p6UcCaBjgs6D6kOascx75KCwnIPHXdw8KGK+oN3+Nji5EXjI4UJOSNXrpeqBNvM/mdZv+EeAqTp63QUynjVEuxwwVtbE4DBLh3bUkeO/bx5KrPZQifHaUDKQjKmxsf7W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C4uZZKNS; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1738538804; c=relaxed/simple;
+	bh=z7NwxIJMtLT2Cr/NLoKbJYIk4kldTFHXswm3cyHYX/Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lYXlbxrM8C0yPllLK4zWhWWZNQIqqPfSjt+YNWLUtVqyL4EQog7o2IOvA/i9rIPU1EnspcTQ4TGhU6wlywIHPPFoS+g1HIzwXRTZ+xrez2AP/pAtDeh2viMQMOMf2121mNwhT7ksQmssbL1yKQIptb3Y7j7iD/0tyKx9U9OKlpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TaAKEK5M; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C4uZZKNS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TaAKEK5M"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738538246;
+	s=mimecast20190719; t=1738538802;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hRA7lWgwDKj6UV5o7i7BX8BX6gq8Cn4M7Ftrg8fkVDM=;
-	b=C4uZZKNSeBejYRD/NyKeKVNbNtjhgoiMyolvr2MtGoRtCLbB42/kAwepygO5P9pGOy8mON
-	VjAg5v6+Yvl2hwZuW+c44PuRvE++3IYqTy6MB4IQbpS2AdRZRxhVqQqGH2mmBeEkEKT3nu
-	FsGapwtGqBI3xavzT8N82491HaoC7Uc=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=kEorSgFKgFJuDrUUhtFm3PBvl23oSWqfsEHani8D+OI=;
+	b=TaAKEK5MoId/weXnlm86fw/ilx0CgQoVi+qp9RQ7hUgSnJGM8+jRphnt8k2TZ2/gY6DhJi
+	gJOvoSiGi/dpQ8cGfu2A0nxXgwDwg17LWTCpmKXRb12JYof2Q8Zq+8oZpMmRBa+WtJjVjN
+	Kfx6vIc4AZZb/j4io9Fz6Qe7DMgW100=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-22-r4h42g2KNoWK_srWXTAH5Q-1; Sun, 02 Feb 2025 18:17:25 -0500
-X-MC-Unique: r4h42g2KNoWK_srWXTAH5Q-1
-X-Mimecast-MFC-AGG-ID: r4h42g2KNoWK_srWXTAH5Q
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2efa0eb9dacso7171897a91.1
-        for <linux-coco@lists.linux.dev>; Sun, 02 Feb 2025 15:17:25 -0800 (PST)
+ us-mta-635-ymWzxigYN4eN1Ld6B7DOkA-1; Sun, 02 Feb 2025 18:26:41 -0500
+X-MC-Unique: ymWzxigYN4eN1Ld6B7DOkA-1
+X-Mimecast-MFC-AGG-ID: ymWzxigYN4eN1Ld6B7DOkA
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-21a7cbe3b56so57751365ad.0
+        for <linux-coco@lists.linux.dev>; Sun, 02 Feb 2025 15:26:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738538244; x=1739143044;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1738538798; x=1739143598;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hRA7lWgwDKj6UV5o7i7BX8BX6gq8Cn4M7Ftrg8fkVDM=;
-        b=slN5YjYQRX7NvMRyvMLJY7Qe6Y1A4r+0WfBY0gON4ApdhuwI7wIPWMYCwUMHJvCB7C
-         DEaEshbR46PnUX6nYETtFRenYH5ITL4YSZWQy84uHj7h5afSOI1+Ga5LumOrg61mBrz4
-         z+KngvpCRizthy2nxKOvx+ob9cQsP6nSLIUwKzUAjH9lsAiY9NJD+ryb+x4iPSmiE6l+
-         Fic3qzAt2/w9miXBQ9HQXgxtnMSpqglxT54KZF0fuA4FVORE2MKZlmsqfXbcdXlmtknq
-         n4E9kCd8ClOYTSB7gp8NpP+9drJypuXC/cJ0Ac+P1r/zk6Tn0IirkQ4kNODrxjymCc/p
-         88cg==
-X-Forwarded-Encrypted: i=1; AJvYcCU2AIXkGloKQAAdN9i5+VuuJL3GbSsjLAJ17B0/DOZbKs4x7qT73awat6k64uGfjpntaWkil+wnMeAH@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy2D0WKcmlm18/su+QRkSJ00Gh/VT2lR5yxN6o7YuhHvePhtHxi
-	T2/XGk1nzECnWkStZ+9vD99tJ7E9+outoQG9BpSDuHbCSMF/Ox3mbaBJQdLKWTfBgzRLZtylnBO
-	AS7qbqerxwgUaXV9CkMuhpZHD3aNEwMCjO6hn6n8lmwCs6eOJnGREAooVQYQ=
-X-Gm-Gg: ASbGncv2iNt9bSx40NBq3mRj/FzYX+5z26+20Kp3vK6LcSwhlB9655pCPpbpWS8gDzM
-	hSuC52LL4ynvPVVb5KCdvnMIL0dNyQxRM8xaAR1pzdhBzNcRxxcxk1W6+2dYRi1xBbwVISUzkvQ
-	FmSTP5TpaDd58rtXpi18ZlvZlCYiLN3cDVZOiOq+fMQhoYo32Tc37acUlzdMHgJaCJT0fIDn9Z8
-	MUisynPaChEpx3IM5bw3yyorcriMW4OhIm2Zm7/4bE/Vlw/t0rLUPy/eVY34UuIQDOvIA10f6ou
-	ZYw6ww==
-X-Received: by 2002:a05:6a00:80a:b0:727:d55e:4be3 with SMTP id d2e1a72fcca58-72fd0beabb1mr27783709b3a.7.1738538244191;
-        Sun, 02 Feb 2025 15:17:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEDd7NX+s9VmJsk4Gu/C5cdF+xO9wYV1JktzYhBU9uRWjBep69A7UQIF0gV3XEciNO6G3kkpg==
-X-Received: by 2002:a05:6a00:80a:b0:727:d55e:4be3 with SMTP id d2e1a72fcca58-72fd0beabb1mr27783675b3a.7.1738538243767;
-        Sun, 02 Feb 2025 15:17:23 -0800 (PST)
+        bh=kEorSgFKgFJuDrUUhtFm3PBvl23oSWqfsEHani8D+OI=;
+        b=xTWsgKZGfKK3ukcqLsmcrTQ7HT1VAbnbl4ucp/ZOzXdXRzHzhXGM215UzlhXUzq4RM
+         0jZNl9y5kIHD16Tw453LSuXk2/bxvMEP6DNmUQ6uQn9JyMns6zemUfnAHdx/8WttNH3E
+         mxSVQmk9BlOJwst5A/4zBIl7lTbeaJ5kTvXTdN8n4obfvvxYckMb6lSAr680YBoka8+D
+         drLsRkSKP3eAMZW2vpX4n7Vzqflglcdk9GYd5Iwe0QhPna9tThSypkdTSm/EXv4OFH2D
+         CkMM3MMu1l6bqA8qsMON52pourOUAtTeAcOsSsaWXZQL3dEldDgvhqDN9Sofgmim3GdY
+         uIuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVeHD8EUWv+MWMVdBS7kovMHevQ5RteunUCH1okW+j3KYWzlkW3XMGRoWTEfVH3rmICDWpKndEhBKha@lists.linux.dev
+X-Gm-Message-State: AOJu0YzB7e/+8gt58BRYOwS+eLDIkXVslY3OlSK/QvQj1uwE6ssEXqyK
+	Hd3WOeW5G/ZvjjDHPxhMWcGx6r2BYYRu/HjgkE8cRwqwUwCfFc+O+jDVt4HCPuGeXqNJzdDIWo2
+	n9/V2P7CiDBOLvbYLErjePtut0bhdXpoZ9hqCk4hBJdUsp6vZM1wDgqSTyN1wUET32lc=
+X-Gm-Gg: ASbGncv8n3LtHGnZkxTEe1wOv9ZT9/tIYC8sD5XRxUEYPz33D9oHnieVjTvEER/mSll
+	lzJkbqW35lw/t81Kr6oAnFbJpf03r1eN3flpSoHmMfQMCCYc4pB7QigHjnkXeaLVm6vg+PQxtOC
+	5NXbqhsJpVYDHeMTaStYCEC7+MdHXVpDYoE0Beug5p1Buz5Vnws957d4kIXzy+YWIYT4jlCAOe8
+	Sgeouebsi0qH63vIWdQOLQ8AmjBLzYRCuqIuFil0YRb+runYCgbdZV5jdDRjjXKhNZAXp5qB0si
+	XM3Ayg==
+X-Received: by 2002:a17:902:cec3:b0:216:7ee9:2227 with SMTP id d9443c01a7336-21dd7dd88e6mr310304725ad.36.1738538798027;
+        Sun, 02 Feb 2025 15:26:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGfTk8xGUBI61+sXaogs4siFVAtjNe8wBT4NdlyuKENiA8v7HLfkeSD7O9+S9Z2x6jnkLdTWg==
+X-Received: by 2002:a17:902:cec3:b0:216:7ee9:2227 with SMTP id d9443c01a7336-21dd7dd88e6mr310304415ad.36.1738538797668;
+        Sun, 02 Feb 2025 15:26:37 -0800 (PST)
 Received: from [192.168.68.55] ([180.233.125.64])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72fe6429a98sm7393173b3a.67.2025.02.02.15.17.16
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de3303472sm63313735ad.195.2025.02.02.15.26.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Feb 2025 15:17:23 -0800 (PST)
-Message-ID: <e76aaa8f-b2cb-4b89-ab9c-6ca4cac8af9a@redhat.com>
-Date: Mon, 3 Feb 2025 09:17:15 +1000
+        Sun, 02 Feb 2025 15:26:36 -0800 (PST)
+Message-ID: <b8b5501b-f5fd-44da-8445-53516cad8a3e@redhat.com>
+Date: Mon, 3 Feb 2025 09:26:28 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,9 +73,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 34/43] arm64: RME: Propagate number of breakpoints and
- watchpoints to userspace
-From: Gavin Shan <gshan@redhat.com>
+Subject: Re: [PATCH v6 38/43] arm64: RME: Configure max SVE vector length for
+ a Realm
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>,
@@ -92,102 +91,117 @@ Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>,
  Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
  <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20241212155610.76522-1-steven.price@arm.com>
- <20241212155610.76522-35-steven.price@arm.com>
- <34990c4f-b65e-4af2-8348-87ea078afc16@redhat.com>
-In-Reply-To: <34990c4f-b65e-4af2-8348-87ea078afc16@redhat.com>
+ <20241212155610.76522-39-steven.price@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20241212155610.76522-39-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: agavRx0zMeIuZX022kIi-h8tAfmAd7e9eTrPPTeas8I_1738538244
+X-Mimecast-MFC-PROC-ID: -ofpwkq_0fHxoSjSI8OTQIOwzk-mcGkdB02SSxSsbnc_1738538800
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 2/3/25 9:15 AM, Gavin Shan wrote:
-> On 12/13/24 1:55 AM, Steven Price wrote:
->> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>
->> The RMM describes the maximum number of BPs/WPs available to the guest
->> in the Feature Register 0. Propagate those numbers into ID_AA64DFR0_EL1,
->> which is visible to userspace. A VMM needs this information in order to
->> set up realm parameters.
->>
->> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->>   arch/arm64/include/asm/kvm_rme.h |  2 ++
->>   arch/arm64/kvm/rme.c             | 22 ++++++++++++++++++++++
->>   arch/arm64/kvm/sys_regs.c        |  2 +-
->>   3 files changed, 25 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
->> index 0d89ab1645c1..f8e37907e2d5 100644
->> --- a/arch/arm64/include/asm/kvm_rme.h
->> +++ b/arch/arm64/include/asm/kvm_rme.h
->> @@ -85,6 +85,8 @@ void kvm_init_rme(void);
->>   u32 kvm_realm_ipa_limit(void);
->>   u32 kvm_realm_vgic_nr_lr(void);
->> +u64 kvm_realm_reset_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu, u64 val);
->> +
->>   bool kvm_rme_supports_sve(void);
->>   int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap);
->> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
->> index e562e77c1f94..d21042d5ec9a 100644
->> --- a/arch/arm64/kvm/rme.c
->> +++ b/arch/arm64/kvm/rme.c
->> @@ -63,6 +63,28 @@ u32 kvm_realm_vgic_nr_lr(void)
->>       return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_GICV3_NUM_LRS);
->>   }
->> +u64 kvm_realm_reset_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu, u64 val)
->> +{
->> +    u32 bps = u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_NUM_BPS);
->> +    u32 wps = u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_NUM_WPS);
->> +    u32 ctx_cmps;
->> +
->> +    if (!kvm_is_realm(vcpu->kvm))
->> +        return val;
->> +
->> +    /* Ensure CTX_CMPs is still valid */
->> +    ctx_cmps = FIELD_GET(ID_AA64DFR0_EL1_CTX_CMPs, val);
->> +    ctx_cmps = min(bps, ctx_cmps);
->> +
->> +    val &= ~(ID_AA64DFR0_EL1_BRPs_MASK | ID_AA64DFR0_EL1_WRPs_MASK |
->> +         ID_AA64DFR0_EL1_CTX_CMPs);
->> +    val |= FIELD_PREP(ID_AA64DFR0_EL1_BRPs_MASK, bps) |
->> +           FIELD_PREP(ID_AA64DFR0_EL1_WRPs_MASK, wps) |
->> +           FIELD_PREP(ID_AA64DFR0_EL1_CTX_CMPs, ctx_cmps);
->> +
->> +    return val;
->> +}
->> +
+On 12/13/24 1:56 AM, Steven Price wrote:
+> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > 
-> The the filed ID_AA64DFR0_EL1_WRPs_MASK of the system register ID_AA64DFR0_EL1 is
-> writtable, as declared in sys_reg.c. We need to consolidate the field when the
-> system register is written.
+> Obtain the max vector length configured by userspace on the vCPUs, and
+> write it into the Realm parameters. By default the vCPU is configured
+> with the max vector length reported by RMM, and userspace can reduce it
+> with a write to KVM_REG_ARM64_SVE_VLS.
 > 
->          ID_FILTERED(ID_AA64DFR0_EL1, id_aa64dfr0_el1,
->                      ID_AA64DFR0_EL1_DoubleLock_MASK |
->                      ID_AA64DFR0_EL1_WRPs_MASK |
->                      ID_AA64DFR0_EL1_PMUVer_MASK |
->                      ID_AA64DFR0_EL1_DebugVer_MASK),
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>   arch/arm64/kvm/guest.c |  3 ++-
+>   arch/arm64/kvm/rme.c   | 42 ++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 44 insertions(+), 1 deletion(-)
 > 
+> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+> index 429c8f10b76a..5562029368c5 100644
+> --- a/arch/arm64/kvm/guest.c
+> +++ b/arch/arm64/kvm/guest.c
+> @@ -363,7 +363,7 @@ static int set_sve_vls(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+>   	if (!vcpu_has_sve(vcpu))
+>   		return -ENOENT;
+>   
+> -	if (kvm_arm_vcpu_sve_finalized(vcpu))
+> +	if (kvm_arm_vcpu_sve_finalized(vcpu) || kvm_realm_is_created(vcpu->kvm))
+>   		return -EPERM; /* too late! */
+>   
+>   	if (WARN_ON(vcpu->arch.sve_state))
+> @@ -825,6 +825,7 @@ static bool validate_realm_set_reg(struct kvm_vcpu *vcpu,
+>   		switch (reg->id) {
+>   		case KVM_REG_ARM_PMCR_EL0:
+>   		case KVM_REG_ARM_ID_AA64DFR0_EL1:
+> +		case KVM_REG_ARM64_SVE_VLS:
+>   			return true;
+>   		}
+>   	}
+> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+> index 39dbc19e4a42..3116ecee37a8 100644
+> --- a/arch/arm64/kvm/rme.c
+> +++ b/arch/arm64/kvm/rme.c
+> @@ -297,6 +297,44 @@ static void realm_unmap_shared_range(struct kvm *kvm,
+>   	}
+>   }
+>   
+> +static int realm_init_sve_param(struct kvm *kvm, struct realm_params *params)
+> +{
+> +	int ret = 0;
+> +	unsigned long i;
+> +	struct kvm_vcpu *vcpu;
+> +	int max_vl, realm_max_vl = -1;
+> +
 
-Please ignore this comment. The consolidation when the system register is
-written has been covered by PATCH[35/43].
+I would suggest to rename 'max_vl' and 'realm_max_vl' to 'vl' and 'last_vl'
+since we're not looking for the maximal VLs. Instead, we're making sure the
+VLs on all vCPUs are equal.
 
->>   static int get_start_level(struct realm *realm)
->>   {
->>       return 4 - stage2_pgtable_levels(realm->ia_bits);
->> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
->> index a4713609e230..55cde43b36b9 100644
->> --- a/arch/arm64/kvm/sys_regs.c
->> +++ b/arch/arm64/kvm/sys_regs.c
->> @@ -1806,7 +1806,7 @@ static u64 sanitise_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu, u64 val)
->>       /* Hide SPE from guests */
->>       val &= ~ID_AA64DFR0_EL1_PMSVer_MASK;
->> -    return val;
->> +    return kvm_realm_reset_id_aa64dfr0_el1(vcpu, val);
->>   }
->>   static int set_id_aa64dfr0_el1(struct kvm_vcpu *vcpu,
+> +	/*
+> +	 * Get the preferred SVE configuration, set by userspace with the
+> +	 * KVM_ARM_VCPU_SVE feature and KVM_REG_ARM64_SVE_VLS pseudo-register.
+> +	 */
+> +	kvm_for_each_vcpu(i, vcpu, kvm) {
+> +		mutex_lock(&vcpu->mutex);
+> +		if (vcpu_has_sve(vcpu)) {
+> +			if (!kvm_arm_vcpu_sve_finalized(vcpu))
+> +				ret = -EINVAL;
+> +			max_vl = vcpu->arch.sve_max_vl;
+> +		} else {
+> +			max_vl = 0;
+> +		}
+> +		mutex_unlock(&vcpu->mutex);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* We need all vCPUs to have the same SVE config */
+> +		if (realm_max_vl >= 0 && realm_max_vl != max_vl)
+> +			return -EINVAL;
+> +
+> +		realm_max_vl = max_vl;
+> +	}
+> +
+> +	if (realm_max_vl > 0) {
+> +		params->sve_vl = sve_vq_from_vl(realm_max_vl) - 1;
+> +		params->flags |= RMI_REALM_PARAM_FLAG_SVE;
+> +	}
+> +	return 0;
+> +}
+> +
+>   static int realm_create_rd(struct kvm *kvm)
+>   {
+>   	struct realm *realm = &kvm->arch.realm;
+> @@ -344,6 +382,10 @@ static int realm_create_rd(struct kvm *kvm)
+>   		params->flags |= RMI_REALM_PARAM_FLAG_PMU;
+>   	}
+>   
+> +	r = realm_init_sve_param(kvm, params);
+> +	if (r)
+> +		goto out_undelegate_tables;
+> +
+>   	params_phys = virt_to_phys(params);
+>   
+>   	if (rmi_realm_create(rd_phys, params_phys)) {
 
 Thanks,
 Gavin
