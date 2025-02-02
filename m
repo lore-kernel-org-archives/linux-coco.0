@@ -1,156 +1,214 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009BC4A3E
-	for <linux-coco@lists.linux.dev>; Sat,  1 Feb 2025 02:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FF979CD
+	for <linux-coco@lists.linux.dev>; Sun,  2 Feb 2025 01:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738377139; cv=none; b=BHcjemjSSWQnY2Aww+zGocz1HIv7k9U6jqGDZQI9mEVnxnGdAUYpYN5cm8uW9RepKJGpAfLgdaEZ1M+9BdNaX1YhHTwbp7a/5tF01TV0fgUQQ5i2H5Sq6GXTAPsAsyYfyhs+tGcasnFRrV8W4sUDyWpX0P6sOn2rcGWBR44zWqU=
+	t=1738459394; cv=none; b=P+XWZZ29pw3oWZ0XxM1CEyxhAA9SLXjIInXMJFakcG5a8EADV3rn8j7GI8bPyUVY8UBIQG9TLt1HdwADU8M0wSnNtNWjeO+g8NQ2xJx0Iwr1p4XAp21gUI72AoyR3TDrxG0Lh+T98CTCcMg5EGoWbEfYiZc0XlK8t/7O1TPTzIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738377139; c=relaxed/simple;
-	bh=YvUJr1IlpMallDUUXqLZIE2yKMx495vfCWgRkrRQMXg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V4IO8PeeUt3yj1tl81/zWg/Vhys88htzpQh91b3+bu7kO6B3jbtR+msknhSUhmckr675rcyy6CTo/mor9kOYnMa95VJjsTQ2tjrjAu+pfhWKi3fMvpDLd2m4rz/yk5Jwjkhttd6BwKXINMhm0xda7GR9IAoJvcjUHmoNWmjSdP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pcFgg0Qm; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738459394; c=relaxed/simple;
+	bh=laaJN879foDpMaPWrRy6D9kpMKcmzC5+VrbzCSXuhpE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O2FNLZpP+lAChLQFPvJCeSCq9D4js1Mn7vEGej19o2sZ8HAByPtoiP62tLPMIE+vAPGV56HcfGDoAu5jffIRVWk7IrDVtXKEZO7S5cnQZIvk8GlFxgjS83YyAygFvh7ZQ1WzOVxx89ULXEF1+5gBNIXtVn6Y7BHe0hJ7AZXVBa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DbGRMMPH; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pcFgg0Qm"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-53e3a2264e1so2977e87.0
-        for <linux-coco@lists.linux.dev>; Fri, 31 Jan 2025 18:32:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738377136; x=1738981936; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pG4VfCSV2vZRH8VFu+tXkb/1AcO1THW/axuTYVw/Lrc=;
-        b=pcFgg0QmOesFfOz8dY2sul4Q5ddaXH3nw3HINea6v125yeWDUZ/kGYoXzQzl3G6GUL
-         0EzeNDiNg2JRbZZ8QE++Gn5Z8U/wxP4tZwi1j6TdXvrVwS9R09YsUa/3A420mWYliGHf
-         RFqQCXOq8XdLaZrk79vWV+V1g1NdtezIBiR4QsCVseW5J/cNxEacXH4eJRF8B50ypNMl
-         H7WZyl1OfKaPcQ5yjoTyBrscoKUc8hwsd7ysrV1WA3V77igNVBNmspyKJZk8nywa7pwP
-         H5tiUXdObOKOmkD2/OQHJRZJ+SPz94wiYJbeGwDmgSuMKOXG8TSSrMTqtQO/y6fYpC8F
-         K7hg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DbGRMMPH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738459390;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YAAI3E0WlUEH8QGHAO5vUmuOkyQG4sKUrRj2kW9NJz0=;
+	b=DbGRMMPHYaLUXFMo8B6Vu3A2yukX/wJG+BQlWgHuOqcuzMTkpfNU7Gno6cm81ZXvJJmtK2
+	yWr/MOpt2cFl/hPf8ctlRz+Mc/frpDDA1ik36rjLqHJsazYmYlxWjLsmu+VpgoP0q+ey6d
+	3Kx8rsYBsSjivHSoN6BrKMXbtlwKP60=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-275-1Ou2T_DaPOS8upPbg82vDg-1; Sat, 01 Feb 2025 20:23:09 -0500
+X-MC-Unique: 1Ou2T_DaPOS8upPbg82vDg-1
+X-Mimecast-MFC-AGG-ID: 1Ou2T_DaPOS8upPbg82vDg
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2ee9f66cb12so6414330a91.1
+        for <linux-coco@lists.linux.dev>; Sat, 01 Feb 2025 17:23:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738377136; x=1738981936;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pG4VfCSV2vZRH8VFu+tXkb/1AcO1THW/axuTYVw/Lrc=;
-        b=QCTF+Kv0SgaQUR75Q+4YE1HnmKI0JJCgcMU4rV/qmEF3/mo9PM+OiVQWPOfevxDR3F
-         3I/QZorGam/bpUJhcXmfvtMrhATEMcJ7IGjMh8z4zDk+pvV9L12QVmqeeRPqVMZPil/e
-         P1/LaYR3qxA38A3P8YQdmPWuUafy/veXP2gLkOCyNNg41EYkPIQxp1iO/X3rYeJXDMR/
-         YcloAzsb2f8W5ePm9cU4x0J0elQ+nFi6Y0Z6NCgm5mzT96bmOgnxu4Q/3/HRBkr1C3FG
-         Y7rUxj+8OkmOdg+o03QlhJF5p4wQD/LOzu6mli5hK3flUkDQl0h0Ox/TXE7kBUaRZrvs
-         YcnA==
-X-Forwarded-Encrypted: i=1; AJvYcCWz7Jk0YEjlm7MuSodcuFxUp+wz+P3KbeV46almnvz5OnZ6j/91OdcitYROvcRHe5itwQsJMmgRovwr@lists.linux.dev
-X-Gm-Message-State: AOJu0YyTqJ+X3oO+XGGelj8OE3FtHOJlhypVbAWDDcbdsjd7UNa9G51X
-	qCLZE3EYlASJWgAkd4XbH8LxWnHYvd6amkZ25LALWNvgCbH6LDt0RnVWRPGpE6Zmbho7irAw94q
-	abFTT0u1v3mbZX/Z+rlpKgaca1AQfO9lXQ/ms
-X-Gm-Gg: ASbGnctVXSTPx3vtg+6a0lSwK0k2/ZmOcJ5gBa2o/ljlHXu9WkvVXmZideFl/2EQKiw
-	m1csCw0IrSdLKWnlRy1Yp7U6N6QZluH0JqlgIbIS4v2OARUHa8ZWtBNOCWkT59iLb+/7QbDdzWx
-	sFhKqa0KZZ13K9v+9e74N0+A==
-X-Google-Smtp-Source: AGHT+IGDm9JPvGLHbtjFN5gsiaTc6QnwCtkwno/1ZV6/IPpxaNeuuM5xrnBDIsxDQcK/xH+cQ2IfrP7ilTJxIVl7kD8=
-X-Received: by 2002:a05:6512:220a:b0:53d:dcde:395a with SMTP id
- 2adb3069b0e04-543f6160274mr132911e87.2.1738377135702; Fri, 31 Jan 2025
- 18:32:15 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738459389; x=1739064189;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YAAI3E0WlUEH8QGHAO5vUmuOkyQG4sKUrRj2kW9NJz0=;
+        b=gtFxfTINY/t7QxF+Sd8EkbIFP5ZRupchkE5T+kSk9nhMIJfypyGvP/5DxfeeB2CB7E
+         l7M/x0hYCLyDLgaElNQ8ZZ7FNteuzewi9sZ3AMYIrKkXdtWAMWq+pWDN5r/jRqPNYSOr
+         me9Lsr2tqI+DOGlNDAGQP6MRoX1qBhcMaPfl/Gu6o/rIqR/pcgbTy71Uu8KzB2R2ckCU
+         lojD3QEmIR+WBHGqD7HGwhs5SoIrh0ze5PjEzPmk1460HdIHylwh6reusbKnkb/17tfc
+         mnhutqMqan8fUMLbLEnusYDh+7AMXOSzfQebWuWWeJxB7cMatngFL/u0WQ/tnYJJfb1R
+         whfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXdu5lIRhJLEMcaq+c4J2lBscJuXCRVC2zd1xoLATReGaCf25RJfrn6Egr1BoyuWsOT/Yb4sEIe9oIx@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzq7qVvJtdtQMSAUifxPc5BvzwPXGtHZ/yAcwvfxaGVAk6CrTPH
+	UlHxJ9FbdaeNAATe+Ci4GYNrIVculesVZg2HamBCQ5GEQxmCbzYnKXDyyygyM7vfy5flIpUUaLQ
+	9RX4nWse/MRkcpz3HeSXwXLfX5ehd211xd1TDLzyTJ3tq5OcVyDoMehiBc/o=
+X-Gm-Gg: ASbGncvO5RuCjTBUqQhZPGTz5gQrUkHm9oIYQHv1KSnZrtRJAViVPfar5m8/Y78kZ0q
+	VAGaEdfRDvetDowRH2Q8vVHJ1OOJphnhJg4ck5jURoryZ8dWorSd8gsgwbg6WSDOcWS6YCn+TUV
+	I2osWWI8PStKB/4aKhme/HeTB4yHYEeP0NXX29BY9K+Z24uawGf4HVkbl7l2TeSmMbcJoDFJ0bY
+	9js8XWYboGTAT1qTHEFh7pVnx1Kx5eDolRuOWmh5zTBFRgQgFejsuy+ngxZrb/Gf0346q2k9Xeh
+	GXyNWg==
+X-Received: by 2002:a05:6a00:a84:b0:725:e405:6df7 with SMTP id d2e1a72fcca58-72fd0bf50d0mr22072063b3a.10.1738459388794;
+        Sat, 01 Feb 2025 17:23:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF+rGTDJTNwVR5Fk0Ockt+Y4TXvcEQynR1IiX2sbu3+KwKdR5uE+ZGwPGUav29lR64slwel7g==
+X-Received: by 2002:a05:6a00:a84:b0:725:e405:6df7 with SMTP id d2e1a72fcca58-72fd0bf50d0mr22072011b3a.10.1738459388254;
+        Sat, 01 Feb 2025 17:23:08 -0800 (PST)
+Received: from [192.168.68.55] ([180.233.125.64])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72fe631be3csm5660892b3a.7.2025.02.01.17.23.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 01 Feb 2025 17:23:07 -0800 (PST)
+Message-ID: <09f42dc3-9c43-49ef-b4eb-8aeab387f0fd@redhat.com>
+Date: Sun, 2 Feb 2025 11:22:58 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250129232525.3519586-1-vannapurve@google.com>
- <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
- <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com>
- <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
- <CAGtprH82OjizyORJ91d6f6VAn_E9LY7WptN-DsoxwLT4VwOccg@mail.gmail.com> <2wooixyr7ekw3ebi4oytuolk5wtyi2gqhsiveshfcfixlz3kuq@d5h6gniewqzk>
-In-Reply-To: <2wooixyr7ekw3ebi4oytuolk5wtyi2gqhsiveshfcfixlz3kuq@d5h6gniewqzk>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Fri, 31 Jan 2025 18:32:04 -0800
-X-Gm-Features: AWEUYZmeERapyJbLH5q17LnS9dbTKeBXAlIs3Ezuwk-Df4kRvcx2vhlD0t9pkOs
-Message-ID: <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
-Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via tdx_safe_halt()
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, 
-	jxgao@google.com, sagis@google.com, oupton@google.com, pgonda@google.com, 
-	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
-	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 22/43] KVM: arm64: Validate register access for a Realm
+ VM
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20241212155610.76522-1-steven.price@arm.com>
+ <20241212155610.76522-23-steven.price@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20241212155610.76522-23-steven.price@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: sSiSet2HYTzHsBUVqyU7Ymk1xsrAcWDFP22RPAugKB4_1738459389
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jan 31, 2025 at 12:13=E2=80=AFAM Kirill A. Shutemov
-<kirill@shutemov.name> wrote:
->
-> On Thu, Jan 30, 2025 at 11:45:01AM -0800, Vishal Annapurve wrote:
-> > On Thu, Jan 30, 2025 at 10:48=E2=80=AFAM Kirill A. Shutemov
-> > <kirill@shutemov.name> wrote:
-> > > ...
-> > > > >
-> > > > > I think it is worth to putting this into a separate patch and not
-> > > > > backport. The rest of the patch is bugfix and this doesn't belong=
-.
-> > > > >
-> > > > > Otherwise, looks good to me:
-> > > > >
-> > > > > Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>=
-@linux.intel.com>
-> > > > >
-> > > > > --
-> > > > >   Kiryl Shutsemau / Kirill A. Shutemov
-> > > >
-> > > > Thanks Kirill for the review.
-> > > >
-> > > > Thinking more about this fix, now I am wondering why the efforts [1=
-]
-> > > > to move halt/safe_halt under CONFIG_PARAVIRT were abandoned. Curren=
-tly
-> > > > proposed fix is incomplete as it would not handle scenarios where
-> > > > CONFIG_PARAVIRT_XXL is disabled. I am tilting towards reviving [1] =
-and
-> > > > requiring CONFIG_PARAVIRT for TDX VMs. WDYT?
-> > > >
-> > > > [1] https://lore.kernel.org/lkml/20210517235008.257241-1-sathyanara=
-yanan.kuppuswamy@linux.intel.com/
-> > >
-> > > Many people dislike paravirt callbacks. We tried to avoid relying on =
-them
-> > > for core TDX enabling.
-> > >
-> > > Can you explain the issue you see with CONFIG_PARAVIRT_XXL being disa=
-bled?
-> > > I don't think I follow.
-> >
-> > Relevant callers of *_safe_halt() are:
-> > 1) kvm_wait() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt()
->
-> Okay, I didn't realized that CONFIG_PARAVIRT_SPINLOCKS doesn't depend on
-> CONFIG_PARAVIRT_XXL.
->
-> It would be interesting to check if paravirtualized spinlocks make sense
-> for TDX given the cost of TD exit.
->
-> Maybe we should avoid advertising KVM_FEATURE_PV_UNHALT to the TDX guests=
-?
->
+On 12/13/24 1:55 AM, Steven Price wrote:
+> The RMM only allows setting the GPRS (x0-x30) and PC for a realm
+> guest. Check this in kvm_arm_set_reg() so that the VMM can receive a
+> suitable error return if other registers are accessed.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v5:
+>   * Upper GPRS can be set as part of a HOST_CALL return, so fix up the
+>     test to allow them.
+> ---
+>   arch/arm64/kvm/guest.c | 43 ++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 43 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+> index 12dad841f2a5..1ee2fe072f1a 100644
+> --- a/arch/arm64/kvm/guest.c
+> +++ b/arch/arm64/kvm/guest.c
+> @@ -73,6 +73,24 @@ static u64 core_reg_offset_from_id(u64 id)
+>   	return id & ~(KVM_REG_ARCH_MASK | KVM_REG_SIZE_MASK | KVM_REG_ARM_CORE);
+>   }
+>   
+> +static bool kvm_realm_validate_core_reg(u64 off)
+> +{
+> +	/*
+> +	 * Note that GPRs can only sometimes be controlled by the VMM.
+> +	 * For PSCI only X0-X6 are used, higher registers are ignored (restored
+> +	 * from the REC).
+> +	 * For HOST_CALL all of X0-X30 are copied to the RsiHostCall structure.
+> +	 * For emulated MMIO X0 is always used.
+> +	 */
+> +	switch (off) {
+> +	case KVM_REG_ARM_CORE_REG(regs.regs[0]) ...
+> +	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
+> +	case KVM_REG_ARM_CORE_REG(regs.pc):
+> +		return true;
+> +	}
+> +	return false;
+> +}
+> +
+>   static int core_reg_size_from_offset(const struct kvm_vcpu *vcpu, u64 off)
+>   {
+>   	int size;
+> @@ -115,6 +133,9 @@ static int core_reg_size_from_offset(const struct kvm_vcpu *vcpu, u64 off)
+>   	if (vcpu_has_sve(vcpu) && core_reg_offset_is_vreg(off))
+>   		return -EINVAL;
+>   
+> +	if (kvm_is_realm(vcpu->kvm) && !kvm_realm_validate_core_reg(off))
+> +		return -EPERM;
+> +
+>   	return size;
+>   }
+>   
+> @@ -783,12 +804,34 @@ int kvm_arm_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+>   	return kvm_arm_sys_reg_get_reg(vcpu, reg);
+>   }
+>   
+> +/*
+> + * The RMI ABI only enables setting some GPRs and PC. The selection of GPRs
+> + * that are available depends on the Realm state and the reason for the last
+> + * exit.  All other registers are reset to architectural or otherwise defined
+> + * reset values by the RMM, except for a few configuration fields that
+> + * correspond to Realm parameters.
+> + */
+> +static bool validate_realm_set_reg(struct kvm_vcpu *vcpu,
+> +				   const struct kvm_one_reg *reg)
+> +{
+> +	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_CORE) {
+> +		u64 off = core_reg_offset_from_id(reg->id);
+> +
+> +		return kvm_realm_validate_core_reg(off);
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>   int kvm_arm_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+>   {
+>   	/* We currently use nothing arch-specific in upper 32 bits */
+>   	if ((reg->id & ~KVM_REG_SIZE_MASK) >> 32 != KVM_REG_ARM64 >> 32)
+>   		return -EINVAL;
+>   
+> +	if (kvm_is_realm(vcpu->kvm) && !validate_realm_set_reg(vcpu, reg))
+> +		return -EINVAL;
+> +
+>   	switch (reg->id & KVM_REG_ARM_COPROC_MASK) {
+>   	case KVM_REG_ARM_CORE:	return set_core_reg(vcpu, reg);
+>   	case KVM_REG_ARM_FW:
 
-Are you hinting towards a model where TDX guest prohibits such call
-sites from being configured? I am not sure if it's a sustainable model
-if we just rely on the host not advertising these features as the
-guest kernel can still add new paths that are not controlled by the
-host that lead to *_safe_halt().
+It looks the core registers in kvm_arm_set_reg() has been validated for twice.
 
-> > 2) acpi_safe_halt() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt=
-()
->
-> Have you checked why you get there? I don't see a reason for TDX guest to
-> get into ACPI idle stuff. We don't have C-states to manage.
+   ioctl(KVM_SET_ONE_REG)
+     kvm_arm_set_reg
+       validate_realm_set_reg
+         kvm_realm_validate_core_reg        // 1
+       set_core_reg
+         core_reg_offset_from_id
+         core_reg_addr
+           core_reg_offset_from_id
+           core_reg_size_from_offset
+             kvm_realm_validate_core_reg    // 2
+         copy_from_user
 
-Apparently userspace VMM is advertising pblock_address through SSDT
-tables in my configuration which causes guests to enable ACPI cpuidle
-drivers. Do you know if future generations of TDX hardware will not
-support different c-states for TDX VMs?
+Besides, there are other types of registers that can be accessed by KVM_{GET, SET}_ONE_REG:
+firmware and bitmap registers, SVE registers, timer registers, system registers. Need we
+to hide any of them from the user space? As I can understand, the SVE registers are owned
+by RMM at least and won't be exposed to user space.
 
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
+Thanks,
+Gavin
+
+
