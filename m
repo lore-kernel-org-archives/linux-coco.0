@@ -1,156 +1,140 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A695120459B
-	for <linux-coco@lists.linux.dev>; Mon,  3 Feb 2025 18:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493E01D47AD
+	for <linux-coco@lists.linux.dev>; Mon,  3 Feb 2025 19:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738605990; cv=none; b=TaHfXVQG3PfAjEDkBxbvIsX9fCNKCrsl6s087seD/kJxgW96sHB+arQjfvD86zwEx7lfNNfC9fNb3nGn6DZSeK6bSMUTPwfV8z7pfY/Pb00kpH4VpZqYIoAu3lKsOpiokAS0LI3qFTdUcX0BCKuYLfC6sQSb5T3HJ72hJLQ+lXo=
+	t=1738612377; cv=none; b=fnMtmI1Jleh+/jt9sFZ66JnLiPeDd96RaeJSYf87E1vNaapCtRKolUzxkUSkj6Q+UoWCWyQJccg1nzOUgH1u/bw5XVaFFbwEL7WteqGU9bJ6RLfdakCUaBGkR0rJB8U9/XTDc0it70NCuiuGyLFmHefMvWIqDiOBm9PW1FY4EK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738605990; c=relaxed/simple;
-	bh=GQiOb6LmzQfAY7kEhJVmceIVTmix9XGEdZkaf5lDTRk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M4zHuOoeT9EVS+oFuQD0spnVhL7HHevw23diiyYBWjSjRQcR2/PPlSX56sUQ8xdNGACwrM+NyAG4taOIyvtNZV48MP0IxPzw9xvrsOl0EYVEa65IpwVOZMRNJShI1e9Nj5buXa93cYgf+tqZspu1LFGkiic670mYQPZPH31S4sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DubSls1N; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1738612377; c=relaxed/simple;
+	bh=vqumdPUecpvskYi8VygICeGGt4cQpB2BlEoPCXjm++o=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=N7T21+cQ0pFRxzgsLkc7U8JXhfp8mIlHWlb1xf3ZboPAqzjvYCV/o4EcMOky5dFdq3+dyjSNRGagGDaU5mXAXLOhIGq7OHIcNyPzH3y6AV1ohio6bmiAGuAFjzfsQc61gzOJTeWYxOepN+AEM3YONfvNn40jXOtqUNN8EZtWnHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bEQl7Hr1; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DubSls1N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738605988; x=1770141988;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=GQiOb6LmzQfAY7kEhJVmceIVTmix9XGEdZkaf5lDTRk=;
-  b=DubSls1NiTubu2BJrruHYLafsIFAHQ79tyZ792GvMQSzIgOALV63Shbx
-   KmG0RYC/wVogIJy3oKpPY2PkjwGTHfZD4LNsJjpcrKxOW3qg6qNSq1UmU
-   XR70Hx3szcyORhaIsW4qgufKmzLAFA/cYFKiQuEqLpPErX4ijV0QpQFtf
-   +mLSPX4R52nEng1zkb9a1QHUwFKvI6PN8Uh4jclwOFLNKtWSCXfA+gdKI
-   GUke72fBlBJCKhDcldU8SXIln2YgH1MI1p+E7UglZwCHuqEO2LtKU8f8T
-   cBva1SFMm5Nifc3YhMeVl43qM7ycnU+xejvHCgGFa7uSRTk8uoPrm4kEp
-   w==;
-X-CSE-ConnectionGUID: OCT7XFXhR9KjlQInaLzExQ==
-X-CSE-MsgGUID: O7aMlQlORkCKpR1IB0TxkA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="38817620"
-X-IronPort-AV: E=Sophos;i="6.13,256,1732608000"; 
-   d="scan'208";a="38817620"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 10:06:27 -0800
-X-CSE-ConnectionGUID: YF6ccGTwRPuYquESvLM2eg==
-X-CSE-MsgGUID: 1ex1y/iyR3aT5OIbAPA1Vw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="114392657"
-Received: from inaky-mobl1.amr.corp.intel.com (HELO [10.125.109.238]) ([10.125.109.238])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 10:06:26 -0800
-Message-ID: <40418980-6e5b-48eb-bc35-7ffaf3221fd9@intel.com>
-Date: Mon, 3 Feb 2025 10:06:28 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bEQl7Hr1"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-216405eea1fso97317525ad.0
+        for <linux-coco@lists.linux.dev>; Mon, 03 Feb 2025 11:52:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738612374; x=1739217174; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z4DCNVElxq2OdBlpMH7Nkzbl/aQqIemXOZXJQi0SM/U=;
+        b=bEQl7Hr1WU5bNoHWjYWPkbu86uGcvNXtgeEVTKcXJX8s+DhtYIdzuzEV5SsXz/azUo
+         cwDa+SgGSj+ziu89f2k2rib5iLSJeEsZvbESeiUOyEBmXzaI4qR34nY1bVIozR2Wvoy0
+         AcWgwlXcVoyNSQnp5L9dxrEtiWifC2MlfYtwgGlQIvNCWLVVD8a9WpPbhY2UXBl8qIl1
+         BRPdwLt5OE/TE+6gNkodrDpeM5p+yb7bQcN8Dn188yfnhJEezksmsPSj1lV26Hvdz/cW
+         +gEI9l21BQYbRF6i18PLAiJltP9eb7HCqj4Z4MRwk3R7wKbpkls5nA6wwE7HLWS1mKpt
+         cG8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738612374; x=1739217174;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z4DCNVElxq2OdBlpMH7Nkzbl/aQqIemXOZXJQi0SM/U=;
+        b=JfQaQSzrtJZEtHjkjSr5KeslVTOdGe+8ty10mafgzZJyd/SB/0Z3RYQN5TXF4wtbxj
+         3ZvUe9WeP7iMq+t8KUMmqkgrGGJ7DMCqqCZnToCPpdY2CtL5a22Di8KmnPGlpZIInnDV
+         mwMr02bUNjZwDyJPNkjxcnZi6CtpQ5zdDmMC6//LwPzUkaUOqrnLMNaAYtza0S77UxBZ
+         jgMdApV0Fn8yTfLicwIbkg01ZBwRJUlBq/oVYw+MICtcM7uyocC23UJCs0BOzFaK+FYS
+         nEasX4UAgBzFZ3Qq3B8R0PLSCRY3ZrBTPt/jm3VxrRscOEbowvLe2IG2CM1Fzk3ko6cj
+         sQpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWGTsSrjzcmIWNmp9CwelYCcxdtvRVLV5QDpHcrnOBgN6zuVhuXY3n+EYuyA+IOfBdGoQ6f8s3+KTAx@lists.linux.dev
+X-Gm-Message-State: AOJu0YwYvf/89fmgbp0cyhsX6muKozAhFDA/BvLYYvAuz6vpDzrISjli
+	j6HwF80ON0sWeAP4t/VV8EJOPFmOwhSZyhWK+9DzfZxpsQGtJXmwSTS1CTfUg4CYMh3/ZCshIIh
+	sYg==
+X-Google-Smtp-Source: AGHT+IGdTeFcZ8i5SvZ2bB5g1492lleQh9maGoQBlpXj01DaF5LbzkfV8PQhJ2gBHFVfNpv3sg2ev2woN1U=
+X-Received: from pfsq1.prod.google.com ([2002:a05:6a00:2a1:b0:72d:4132:7360])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2287:b0:72d:a208:d366
+ with SMTP id d2e1a72fcca58-72fd0c8bae3mr33309743b3a.20.1738612374524; Mon, 03
+ Feb 2025 11:52:54 -0800 (PST)
+Date: Mon, 3 Feb 2025 11:52:53 -0800
+In-Reply-To: <fb1d32fb-f213-350f-95a4-766c88a6249c@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via
- tdx_safe_halt()
-To: Vishal Annapurve <vannapurve@google.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com,
- seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com,
- jxgao@google.com, sagis@google.com, oupton@google.com, pgonda@google.com,
- dave.hansen@linux.intel.com, linux-coco@lists.linux.dev,
- chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, stable@vger.kernel.org
-References: <20250129232525.3519586-1-vannapurve@google.com>
- <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
- <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com>
- <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
- <CAGtprH82OjizyORJ91d6f6VAn_E9LY7WptN-DsoxwLT4VwOccg@mail.gmail.com>
- <2wooixyr7ekw3ebi4oytuolk5wtyi2gqhsiveshfcfixlz3kuq@d5h6gniewqzk>
- <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20250201021718.699411-1-seanjc@google.com> <20250201021718.699411-9-seanjc@google.com>
+ <fb1d32fb-f213-350f-95a4-766c88a6249c@amd.com>
+Message-ID: <Z6EelTYbVIcmGH5Q@google.com>
+Subject: Re: [PATCH 08/16] x86/tsc: Pass KNOWN_FREQ and RELIABLE as params to registration
+From: Sean Christopherson <seanjc@google.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Juergen Gross <jgross@suse.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Alexey Makhalov <alexey.amakhalov@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, virtualization@lists.linux.dev, 
+	linux-hyperv@vger.kernel.org, jailhouse-dev@googlegroups.com, 
+	kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	Nikunj A Dadhania <nikunj@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 1/31/25 18:32, Vishal Annapurve wrote:
-...
-> Are you hinting towards a model where TDX guest prohibits such call
-> sites from being configured? I am not sure if it's a sustainable model
-> if we just rely on the host not advertising these features as the
-> guest kernel can still add new paths that are not controlled by the
-> host that lead to *_safe_halt().
+On Mon, Feb 03, 2025, Tom Lendacky wrote:
+> On 1/31/25 20:17, Sean Christopherson wrote:
+> > Add a "tsc_properties" set of flags and use it to annotate whether the
+> > TSC operates at a known and/or reliable frequency when registering a
+> > paravirtual TSC calibration routine.  Currently, each PV flow manually
+> > sets the associated feature flags, but often in haphazard fashion that
+> > makes it difficult for unfamiliar readers to see the properties of the
+> > TSC when running under a particular hypervisor.
+> > 
+> > The other, bigger issue with manually setting the feature flags is that
+> > it decouples the flags from the calibration routine.  E.g. in theory, PV
+> > code could mark the TSC as having a known frequency, but then have its
+> > PV calibration discarded in favor of a method that doesn't use that known
+> > frequency.  Passing the TSC properties along with the calibration routine
+> > will allow adding sanity checks to guard against replacing a "better"
+> > calibration routine with a "worse" routine.
+> > 
+> > As a bonus, the flags also give developers working on new PV code a heads
+> > up that they should at least mark the TSC as having a known frequency.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/coco/sev/core.c       |  6 ++----
+> >  arch/x86/coco/tdx/tdx.c        |  7 ++-----
+> >  arch/x86/include/asm/tsc.h     |  8 +++++++-
+> >  arch/x86/kernel/cpu/acrn.c     |  4 ++--
+> >  arch/x86/kernel/cpu/mshyperv.c | 10 +++++++---
+> >  arch/x86/kernel/cpu/vmware.c   |  7 ++++---
+> >  arch/x86/kernel/jailhouse.c    |  4 ++--
+> >  arch/x86/kernel/kvmclock.c     |  4 ++--
+> >  arch/x86/kernel/tsc.c          |  8 +++++++-
+> >  arch/x86/xen/time.c            |  4 ++--
+> >  10 files changed, 37 insertions(+), 25 deletions(-)
+> > 
+> 
+> > diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
+> > index d6f079a75f05..6e4a2053857c 100644
+> > --- a/arch/x86/kernel/cpu/vmware.c
+> > +++ b/arch/x86/kernel/cpu/vmware.c
+> > @@ -385,10 +385,10 @@ static void __init vmware_paravirt_ops_setup(void)
+> >   */
+> >  static void __init vmware_set_capabilities(void)
+> >  {
+> > +	/* TSC is non-stop and reliable even if the frequency isn't known. */
+> >  	setup_force_cpu_cap(X86_FEATURE_CONSTANT_TSC);
+> >  	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
+> 
+> Should this line be deleted, too, or does the VMware flow require this
+> to be done separate from the tsc_register_calibration_routines() call?
 
-Let's say we required PARAVIRT_XXL for TDX guests and had TDX setup do:
+No idea, I just didn't want to break existing setups.  I assume VMware hypervisors
+will always advertise the TSC frequency, but nothing in the code guarantees that.
 
-static const typeof(pv_ops) tdx_irq_ops __initconst = {
-        .irq = {
-		.safe_halt = tdx_safe_halt,
-	},
-};
+The check on the hypervisor providing the TSC frequency has existed since the
+original support was added, and the CONSTANT+RELIABLE logic was added immediately
+after.  So even if it the above code _shouldn't_ be needed, I don't want to be
+the sucker that finds out :-)
 
-We could get rid of a _bit_ of what TDX is doing now, like:
-
-        } else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-                pr_info("using TDX aware idle routine\n");
-                static_call_update(x86_idle, tdx_safe_halt);
-
-and it would also fix this issue. Right?
-
-This commit:
-
-	bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-
-Makes it seem totally possible:
-
->     Alternative choices like PV ops have been considered for adding
->     safe_halt() support. But it was rejected because HLT paravirt calls
->     only exist under PARAVIRT_XXL, and enabling it in TDX guest just for
->     safe_halt() use case is not worth the cost.
-
-and honestly it's seeming more "worth the cost" now since that partial
-approach has a bug and might have more bugs in the future.
+  395628ef4ea12ff0748099f145363b5e33c69acb x86: Skip verification by the watchdog for TSC clocksource.
+  eca0cd028bdf0f6aaceb0d023e9c7501079a7dda x86: Add a synthetic TSC_RELIABLE feature bit.
+  88b094fb8d4fe43b7025ea8d487059e8813e02cd x86: Hypervisor detection and get tsc_freq from hypervisor
