@@ -1,240 +1,185 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2081.outbound.protection.outlook.com [40.107.94.81])
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000A5F9D6;
-	Mon,  3 Feb 2025 14:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738594133; cv=fail; b=HsMD3FSx67PQ14LKv3UcAdbdsli2K2+fZDfv+lEEGdAsPqTczo5aR0PoMqF46d3wCZAifkTd4MUNb39jWlxMRUeidn3unsKJsR647cmLv5hNn3nj7Cxmm2Kt8qJwwYZxyUXy6TxKccS5je0x8ZMAn8dOIurhhixxUhgLr21Z6cE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738594133; c=relaxed/simple;
-	bh=HqM/tvLKdBro7vJ4p9aPiNFYqKp1cbH0IWB4zP+DHCc=;
-	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
-	 Content-Type:MIME-Version; b=HOwYJUJoDIvUA/b+WcwO/BgOwtF0/Mvbh6L7RqngCTdL4+OH7TKSk5Yu1mMaAh0KiPj9FW8eTzmMOOA5ZfCny9XM4Rxg0PpdMQ2ctcjlmMvNHc4AlA1RRv5kLwvugw9eRDKmapsDUpfeklNvpUdU7GR/Bqs4Y3GvCe7zMoZoDCg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0gWaShIM; arc=fail smtp.client-ip=40.107.94.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB53420A5FB
+	for <linux-coco@lists.linux.dev>; Mon,  3 Feb 2025 16:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738598411; cv=none; b=gyL3If6d/pCQsOexR7NdgREzykoy41X60pHRcKcaqv2IgBLE1bbIfpI1Z9S37MPPUFDK8Cu0y6eYmz9bQ0ir1m4Zo0hubZ///WphW8LcD0ect+EBHb9RH1hwbmviuZtbKe0EWZtUTCRHM/1T8KoQUKVCkXDxy8weHS/ilVoXy6c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738598411; c=relaxed/simple;
+	bh=HHpIuLxVdDey+3rQYAd0ieQOJFjAUhHlZWuznmLX3Qg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HR7vpnxwpJyNc+Sn9Sa0GJmQonzbrGsQPxmmL34lwEZI6l0FkQqwrnCvLB/zzcivnswizdMc4T8GKHxAXlCQB7NxKXGe2MFbOigSvpZwoToUGJWGU+K2T9yLiZnns0SDjnITnVmVXZwDi0uNJZl87WaoyGwOqiYwvCdULLf7LMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=A5eBwkvy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iQTBmrkA; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0gWaShIM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Novb7fr4vMfr6PAc7t26o822JKOLKePm9gSys9oq4R3pwA0yzWb8OPmz5ktFN1RIUqhrKUdz4LT5o2OERUHVfyCCvE4xD8uwCwljPPTY7W8Ec8/ygY+JMdzYjzmdJtNEHLee4Uzce+99UmvRbFkP8n575qhiOGQMlCNU5eYCKpKoqTrjrZHdeGCVGbelD2N1HlZ1kEgFIG/w0sRhyjId7JN0LJ66nz7Rlg7xJnlByVqvPTW50Y+cnGi47YUa50UwMV1BzRjRNlq2Z3usMutHL3GNA5a3ALrRRjYhKA2iat9YV6JJdTGRXC3G+A2Quo/HxSWqCZFXpXYr/rk5iCkhnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r78YZbaeA7qB5IVVwH+4w/SZUJsyTdTm3w6XW88Llmo=;
- b=WcVwC85rzdkjLhG1MOcmWD8C8Av8ds8uiZB0QBasnZlEMay6QncAbuSmQF++NTHcFX74JjGPcK1w11c04tYGGZiT+Mpjp8ARG5JwCUmcHVIcSyWV8tJXqmt6k8LsxkDP62YB4699Z83Ndmxl9H7saI4mQG6HhcmSHP0PE3qBk0IkYfku7l7v+fEXQ2yAVlDwMi9V297kqDJTl3RyLgRpNccQBdM8r6ksy09bkmDbLX3UPSYmXyPHqNRyagkDUa3nF7SISLH7zAPY4SvSy955nHblvQSrKEQ290DQ5ZLKyUqSTqk0P7QyfChOEiJEjqtVX6Kydtbca35wV4+09rx4lA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r78YZbaeA7qB5IVVwH+4w/SZUJsyTdTm3w6XW88Llmo=;
- b=0gWaShIMOiq3DVjMXp6goyUryIijjtxS7tKF9334TkLhUYS32oQCVss0i4tksf3Q5A1LDJs4YkjNyxkI63LBC7FmKeb8Okvgeticc+R+93XkJvIbKUxYZOjG8SxOiEvmCCobldFMxiskevfuWLznedRTBzprCFLRXrgn4Ad13VY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by CY8PR12MB7561.namprd12.prod.outlook.com (2603:10b6:930:94::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Mon, 3 Feb
- 2025 14:48:49 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%7]) with mapi id 15.20.8398.025; Mon, 3 Feb 2025
- 14:48:49 +0000
-Message-ID: <fb1d32fb-f213-350f-95a4-766c88a6249c@amd.com>
-Date: Mon, 3 Feb 2025 08:48:46 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-To: Sean Christopherson <seanjc@google.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Juergen Gross <jgross@suse.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.amakhalov@broadcom.com>,
- Jan Kiszka <jan.kiszka@siemens.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- virtualization@lists.linux.dev, linux-hyperv@vger.kernel.org,
- jailhouse-dev@googlegroups.com, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org, Nikunj A Dadhania <nikunj@amd.com>
-References: <20250201021718.699411-1-seanjc@google.com>
- <20250201021718.699411-9-seanjc@google.com>
-Content-Language: en-US
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH 08/16] x86/tsc: Pass KNOWN_FREQ and RELIABLE as params to
- registration
-In-Reply-To: <20250201021718.699411-9-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA0PR13CA0020.namprd13.prod.outlook.com
- (2603:10b6:806:130::25) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="A5eBwkvy";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iQTBmrkA"
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 70428254015B;
+	Mon,  3 Feb 2025 11:00:07 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Mon, 03 Feb 2025 11:00:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
+	 t=1738598407; x=1738684807; bh=b1TGdaW+/VY1wKwJa980bXl/HdO+YGMF
+	E8U9uk/NliE=; b=A5eBwkvyvWUsSlVFAYoPx6DgEZiIP3e7d+S0GIU8y+f7xooq
+	o4f963CuwgcCFtmGkvIx54I0pr2HZaG+D5dIbt5M7357f+n1OtNhfX9iakbSfQWf
+	tf+6CNPSE0o2DTJOJrExlQi1o7lMIJlzPICUHwt+a/5ocuo/kxxd1KPYHEypCX6S
+	c38JwU3KgKwPtCyIOwXX1qkDO8NwlN58ILGl5t9RvWdDOzfjLq6VLttdiELj0W9s
+	Q9hZwXaQMDeDpjyWOGElfjxw/4ziNS6dl7kYjPtv/T2ubywYK3oJM+AoX4JIPDSR
+	PRebLKQx1kCxH5q432/jd21k7VussLfGPPVasw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1738598407; x=
+	1738684807; bh=b1TGdaW+/VY1wKwJa980bXl/HdO+YGMFE8U9uk/NliE=; b=i
+	QTBmrkAdBpVRMMtn+QbbB+Cy+Px3uDvcO9FHdcluRiA4gl0ZmMh0/U5Wv+Nuumh7
+	yuNi6LkMvOshe3N/F5hJ7ag9tNL9vx3fGD8YHOS5zHnjQWb0a2d//HKpbXJd/0rK
+	AtG+tXehXtxHrmvmzYPMvA+LppRDBI8sh08yrzQhr8hBLqiJrimDRj16UTZr9cNx
+	798tKv5BFCt6jAzkyx3S7Bxz39G6PFQcSzC5eg3J3KhBGomiAvrXdBU+VPeQ55/q
+	JSQB9n/nuKeYRCmmLnGQrlaYD1l5/bqfmvNKtwOK2J5SAnu6wckMFndQ/E3y2aVO
+	tHnmXqD2p3tOdbyD1cNow==
+X-ME-Sender: <xms:BuigZ7PhnrwzScCOT8JHUEm38ytNppzjnVa-IgaPTNjCz-AXlkV7iA>
+    <xme:BuigZ18HZ6HYyA28FvGY_4cER1vFxiERbEO1b-biWgRxFjznIwHOXQ-DMahJ5ECtf
+    8MSFoxyBG-5TbBnW2w>
+X-ME-Received: <xmr:BuigZ6TVcW5LCsgu6plJckSlhamVVKDvhTyJAVjQrkQBRlCO568Bsa4FUXLPV35NIR58jg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukedtfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgestheksfdttddt
+    jeenucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilh
+    hlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpedtvdefueetheei
+    gefgkedtheetjeduvddvtdfhteelgeektdevvedttddvhfdtfeenucffohhmrghinhepkh
+    gvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
+    lhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtth
+    hopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhgrnhhnrghpuhhrvhgv
+    sehgohhoghhlvgdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehpsghonhiiihhnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepsh
+    gvrghnjhgtsehgohhoghhlvgdrtghomhdprhgtphhtthhopegvrhguvghmrghkthgrshes
+    ghhoohhglhgvrdgtohhmpdhrtghpthhtoheprggtkhgvrhhlvgihthhnghesghhoohhglh
+    gvrdgtohhmpdhrtghpthhtohepjhigghgrohesghhoohhglhgvrdgtohhmpdhrtghpthht
+    ohepshgrghhishesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:B-igZ_u6fLyRvAx_v06d0HwyF4Oe7G0hAz3blzcs4E2-WJ-meyWFEQ>
+    <xmx:B-igZzfjwJa__g6T9LIZ65-CI_kK-swUWRT9Q_HtGZBaEynqBmYeJw>
+    <xmx:B-igZ73E3iXifhgNQ6_nTSWK4y6RDdYsY9evYR5x5PX1TrrZofZN_A>
+    <xmx:B-igZ_8jdfs5LhXu56Y85qnw4m5ACbziSKIVDHSWxMKmf1ECFpluEw>
+    <xmx:B-igZ-sSziHMoXbaR-6MO7PjFs--OxKfDqVpQJYVZYBu1qnqerdDvq5k>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 3 Feb 2025 11:00:01 -0500 (EST)
+Date: Mon, 3 Feb 2025 17:59:57 +0200
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
+	sagis@google.com, oupton@google.com, pgonda@google.com, 
+	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
+	isaku.yamahata@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via
+ tdx_safe_halt()
+Message-ID: <baiv6tl2lkr25i2ry2q2jaylu5y6hhioqfwhc4yafk2uwqbgf5@sqxlpg2r6kcc>
+References: <20250129232525.3519586-1-vannapurve@google.com>
+ <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
+ <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com>
+ <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
+ <CAGtprH82OjizyORJ91d6f6VAn_E9LY7WptN-DsoxwLT4VwOccg@mail.gmail.com>
+ <2wooixyr7ekw3ebi4oytuolk5wtyi2gqhsiveshfcfixlz3kuq@d5h6gniewqzk>
+ <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|CY8PR12MB7561:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7be59b7a-6776-4b7f-04ef-08dd4461de9f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WGVISlNTWTBKbkd2b0pEZk5zYTcrSFZYREEzUm9xNkVFcXBrZlM1N1VUNzBI?=
- =?utf-8?B?Y1VmUFFxT08rVGFSaGFZT25kSXY0dWZNOEZ5U2ZiMStMWUcwS0dUejI5UjNT?=
- =?utf-8?B?emx1dFB6cDMzSmt0a09FZGlhNVA2S0lmNlZnYWN5VFhDbmdmNVh0VUZpUGhS?=
- =?utf-8?B?eW05RkFMK1BoWk5FSUJEL0xhaStqbkZUbzFOQndGbnFzd0FKNVZ4ZGhRYnFS?=
- =?utf-8?B?UFpPcVo3MVRXd0dobGlpUVhoRmZaZGtnSTZFTlVheEFiRVQrMkpVYmN3TUFJ?=
- =?utf-8?B?MHN3dFpVMEttVEpIa040QnNwK0FFV0JmRWprV3VDRVNOT08yZm5iU1R4UGFH?=
- =?utf-8?B?OEM5Q2c1UXluS0RtVDBkOG8rR3MxQUpZVGdoWkc0VWI1cXd4cDJnRjcrcnh0?=
- =?utf-8?B?eEhFLy96MU9tcjV2Z3VXKzIvd3BjTlFkY3g0L0w0M1hUM2hIM0pWbS9MNnlG?=
- =?utf-8?B?VitIYW5pRjNML05URzl4QUFVYTVNREJ5RldVL003ZXRUMitxd2xLSjg1M2dP?=
- =?utf-8?B?bnN0NXB3M1dPQm1KMDRXR1BBOENpaEdMMkhKeEZERzYyZndxY0xsT1kveHVj?=
- =?utf-8?B?NjNWTUMreDVhT1VyVlNqMnFqUE9FQWtYQmcvNnZPOHZrOXJrWHpncVMyZkIz?=
- =?utf-8?B?ZTFpbGxkRFR5WTE4OGVwclpCS1ZmUHA3MDRnSGZZRHZNc29MZXZXY2c4R0JO?=
- =?utf-8?B?MUROUnFrNGJpZ0hUajE2dVA2VkN0RGNNQ0orbVVNTEJyQ2RZYTlsdW1uUjFR?=
- =?utf-8?B?dEtMWXpBeDdFcThyZTZ2N242NVpUS0ZOcm1DSG9pZ0M5MmszMjFzWG10bmgv?=
- =?utf-8?B?SXNFTnNMeVQyK3ZaSHdxaHR0d1dwY3pwU0JRVmpqM0RIVGRML3Rjb3orNVNp?=
- =?utf-8?B?OGc5OWtMTzVZcUtURlVJVE51d3FPdlVDVi93Qm1ONktiSFZxemJXbkR0RUtV?=
- =?utf-8?B?NVh2c0RpTjZKWkF2U3BNTDFLZWQ3aWF5bGxjSDd1dXZJR2dYdVdJcSttQjNW?=
- =?utf-8?B?aEprZUUrM2FYeno4VXMrem0vNFBERFk4bi9OUStlTUNrQjZWUU5HQ0FBajVG?=
- =?utf-8?B?d1p2dTQ1NFJxNGxWeUxpVTFUd21VYS9IV3R5N2krbTYvQ1NwaU1KVEFTd1JI?=
- =?utf-8?B?NG95V2V0U0NJeVd4cEk3WE56Rmczb0pPZW9yTElYNFdnR01Mc2RkK2YwVkJm?=
- =?utf-8?B?cGwySGQxbDcvTVBwS0ZmWm5BZ3h4L0VnYnd5WlBRd002MFRqTFN2TjJWMDJH?=
- =?utf-8?B?SkZiTFJscy8xTnVNd3gzbWtlcHZkbVJ4cGVuanNmQjdXbUhEOThNcmpoLzNy?=
- =?utf-8?B?NWQ5YjdGZ3A4RmVQVW5sRFZoam5kZngyYXRnL3pteGNhUWV4WU5RQ3pzMlht?=
- =?utf-8?B?QmNXZSs3OFNCa1ZIS2xoaGs2SmxTOFhKNGNrQTBjTkRvbmhhVyt2cERWTHEr?=
- =?utf-8?B?MnEyOFRNMktWMEJxV08rM3lZVXVoc2JES3VaVDBlS0cwWUYzVXRlUDQ0bXhy?=
- =?utf-8?B?VEk2TFFJc0hZWlhvMmFjQnpjVVVZenBid3EyeDQrbXJ5Tkw4TWlnTG0waU5W?=
- =?utf-8?B?VndieWNJVnUrdzJZQnhjSzkzcGRZK0RSeXlxUEo3RG9QejF3S1Y4WmRzMGJV?=
- =?utf-8?B?ZGYrYkd2V0J4TUtFWUlEeVNreDB6bnZvSjF2SVpaT0ZiZzE2bHpUNzd6RHlw?=
- =?utf-8?B?QUlYREdqTVpsK3UzSVBRNVVycmlhN1FXM0dPODRubU9ZQTFUck12UnNidW9a?=
- =?utf-8?B?STh6NkNzREc2RHBKeStTbXZLSFhGSUhMQVMvRW9RRE5iaXhGNkVLRHc5WCtk?=
- =?utf-8?B?TjNZTXdQcXlZNEZZd0FUUW9NUWFPckFrVTNCRFZ2NjRtTGVnVDJ4ZFczSkk5?=
- =?utf-8?B?RXQ4UWNYNHNPM3FOV3BiVGVQa1JkYmhGUlZRWnY0MlorakFDdThpTUgyQzh3?=
- =?utf-8?Q?RuRGtQKpSK8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cW56MzZNV2xYNGRXMmtRU0tpT0RWNWcrWm8rTnk4SlZSdmpXOWZVaUt4eHY1?=
- =?utf-8?B?bHJmQ2lVeEpSZktzMStQL2xkOW1BTzBQcjYrVFpsMUVpNkkybCttYWlndXhj?=
- =?utf-8?B?UDcxb05HZEtQZFpHbFJRQ3IyemgwcXRaM0dRRjNwNkcyL2QwUTRTTmdRVnJy?=
- =?utf-8?B?SUFKQTdHS2JMWlVJbER2bENxais2UXFKazhvM0NQWWkzanQ0a0ZFNXVUTTc3?=
- =?utf-8?B?eE43NWlJYXg2NWVUenBMamFxdlR6OEFXSnV2QkN4cGdpRTJEZ3JEL2Z5aGI5?=
- =?utf-8?B?bWUwTkQ1YXY4MjlGeTQ3ZTV3eG9xbjdsRkhQTUx1T0NYcGpmcjBmdE0wV2lE?=
- =?utf-8?B?R01ZZHRlYnk4a2l1M2JVVldKTllyMnhkd0lZMk1wQTl0Y0E4d2ZLYnVvQ05u?=
- =?utf-8?B?QnJYZWwyNVdEOStudlhxZ2U3TitrMHRMaFYyNjdjejRGdXpYNzNaN3VDWVNm?=
- =?utf-8?B?cUxLdXRvWTVKdndFY0d0bVJSOTBVUmdKQ0hzZzRPdkpXZG1GR0lWSS9rakhM?=
- =?utf-8?B?NjFaVUhjQmhCM1BUUDVUd1VMalN4TXlSaWxRYUFIOXhHWmhic05GVHA4amdK?=
- =?utf-8?B?ZkFvaW1WSndzRyt5a1poaDU0bW5JWlFIakhzQjcwZTJWZXNDeFBDMlB3VzR0?=
- =?utf-8?B?UEg0N21aQjZrb1FGSWJWUzdCQ3VYcjZZUFdCZTM4M1pDclp3UGM5R0k3VE9S?=
- =?utf-8?B?ZnpIamY0bmJNNmF0eWREVHhYTFYzR2pTdXRmWFgwSk9lZHZyTnpDbW5BN0c4?=
- =?utf-8?B?b2dyeWxIdjU0UVhtSDZjbmJKMHdIc2g5SEV6aGNoV21CSWIwMHNwY0tMUStv?=
- =?utf-8?B?N0dVaDRaUFBiZE5DQ2Iyd3p0WFNKaTZjVDBLbW81YmJDN28vVjJsei93S3FK?=
- =?utf-8?B?VnUzMFhqYktPRjNnRmdjMXlsZXo3UU9tb3p0RHhudWhub3FTbDgwWmZJbito?=
- =?utf-8?B?b011bmpkTDFXYWpIYTd5bGtHSm80WUl3VmRwaWxxU2tRL2N3RUh0OFlCZlRs?=
- =?utf-8?B?NmlBQzE4OThub2R6Wlo5RU5RUW1XRS9rYTJEQXQyT0ZITkd3YTZpcVhWaTlj?=
- =?utf-8?B?WTJFaHRHQUFjclVZd0wxQ08rcWxSemUwNUp1MHF4bit4Z05Ra3FwNUxVMEx2?=
- =?utf-8?B?b0U2ZHd3YVJ4ckhzWXJuYjRXWmJpQmtzUFRoaHBadUcwZnBvcEp0VnhoUnRi?=
- =?utf-8?B?bkp0U1NQVVQ5SXlURVU0VjM2Q3JoZFNZTloramNwbXYwRklRV2t6Qk5zdk5Z?=
- =?utf-8?B?cTRHQXEwOElHTDRtVmxGRm5IVk14QmxWcWlKdG5hQWtPVzBrVUhPeGVSZmF0?=
- =?utf-8?B?Nm02VTRoNEMySzZ5V2JwcUt4UHpXYTV3VERscktCb3dKaU9HbFkydi9hVmtG?=
- =?utf-8?B?SWxhSVdWSkhoN1BrTUM5d0NWTC9mSW42U2hsQW5tT1ZCU3hiclVValBlU0Vx?=
- =?utf-8?B?L1V3Z3NiQlpFdGhIaE1MSTlIbW0zUGwzRlJzMSt2a0JpRWVaRlJrQkgxOVM0?=
- =?utf-8?B?MnlWejhxMzF3ZVNtS0txMTh4WjVxZ0Noa01hRjk0WE4vSkh3WjBxK2VuaVg4?=
- =?utf-8?B?NmIrM1dMRitFK2I5dXhSaVplTWdCMzM1SG5aTDBMQkxSejRYdFoxZFBMY01I?=
- =?utf-8?B?eEQyd2FCeHdsaGJkTHIrOVdlWnJiQzVoSEw0Q05Oa1cydXBBQ3ZHSGh1MHRK?=
- =?utf-8?B?ckdjaWt5VGZvUkFaQ0pLdGcyVUU2R01DM0RWVmZnK3FQMUtSemV4QnRPRjZZ?=
- =?utf-8?B?K2piOEhuZlQrU3NOY0kwVy9hOE1NZFdzTHJuS25icTBqVWhod1BQTGd5ZDFw?=
- =?utf-8?B?M3RJREFuWjduZHRjWmRRZVh2bW9KMEZoT0xDZDJCVkxJRWJpU0NMeXdONXBy?=
- =?utf-8?B?VjRrbldLREpPcUk2L0Q5NVFBeW52emhTcVFQYkxvQWRBbmt5aXkzUHI0YWhx?=
- =?utf-8?B?a3p4QkFYaElhLzh0dlBqMzBsallia0xEaWMvZjJnampaQ0xZL3NBS2txL2ht?=
- =?utf-8?B?QkxWVXhyd3R1VHVLNk1jQ0tKSHJEeVdnTHJxM25GNnpxYmJKcFE5ejlIQllZ?=
- =?utf-8?B?czhNYnA1Q2Q1cTlXYzg2OVUxWE92dXZ5TkNPOSt0WUNjMjJLZnJBVXRab0Zp?=
- =?utf-8?Q?ybPaDDH54z8L0iYkYQNigiqdQ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7be59b7a-6776-4b7f-04ef-08dd4461de9f
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2025 14:48:49.6012
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ek6RKNzoy2DrdFNa4zHbDGzVcDDHz/L4IbxaG0n0uv6SXsDohFzDMI8PghqCicr0LhHy+aGjFBdRqhK/ZK2D1Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7561
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
 
-On 1/31/25 20:17, Sean Christopherson wrote:
-> Add a "tsc_properties" set of flags and use it to annotate whether the
-> TSC operates at a known and/or reliable frequency when registering a
-> paravirtual TSC calibration routine.  Currently, each PV flow manually
-> sets the associated feature flags, but often in haphazard fashion that
-> makes it difficult for unfamiliar readers to see the properties of the
-> TSC when running under a particular hypervisor.
+On Fri, Jan 31, 2025 at 06:32:04PM -0800, Vishal Annapurve wrote:
+> On Fri, Jan 31, 2025 at 12:13 AM Kirill A. Shutemov
+> <kirill@shutemov.name> wrote:
+> >
+> > On Thu, Jan 30, 2025 at 11:45:01AM -0800, Vishal Annapurve wrote:
+> > > On Thu, Jan 30, 2025 at 10:48 AM Kirill A. Shutemov
+> > > <kirill@shutemov.name> wrote:
+> > > > ...
+> > > > > >
+> > > > > > I think it is worth to putting this into a separate patch and not
+> > > > > > backport. The rest of the patch is bugfix and this doesn't belong.
+> > > > > >
+> > > > > > Otherwise, looks good to me:
+> > > > > >
+> > > > > > Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>@linux.intel.com>
+> > > > > >
+> > > > > > --
+> > > > > >   Kiryl Shutsemau / Kirill A. Shutemov
+> > > > >
+> > > > > Thanks Kirill for the review.
+> > > > >
+> > > > > Thinking more about this fix, now I am wondering why the efforts [1]
+> > > > > to move halt/safe_halt under CONFIG_PARAVIRT were abandoned. Currently
+> > > > > proposed fix is incomplete as it would not handle scenarios where
+> > > > > CONFIG_PARAVIRT_XXL is disabled. I am tilting towards reviving [1] and
+> > > > > requiring CONFIG_PARAVIRT for TDX VMs. WDYT?
+> > > > >
+> > > > > [1] https://lore.kernel.org/lkml/20210517235008.257241-1-sathyanarayanan.kuppuswamy@linux.intel.com/
+> > > >
+> > > > Many people dislike paravirt callbacks. We tried to avoid relying on them
+> > > > for core TDX enabling.
+> > > >
+> > > > Can you explain the issue you see with CONFIG_PARAVIRT_XXL being disabled?
+> > > > I don't think I follow.
+> > >
+> > > Relevant callers of *_safe_halt() are:
+> > > 1) kvm_wait() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt()
+> >
+> > Okay, I didn't realized that CONFIG_PARAVIRT_SPINLOCKS doesn't depend on
+> > CONFIG_PARAVIRT_XXL.
+> >
+> > It would be interesting to check if paravirtualized spinlocks make sense
+> > for TDX given the cost of TD exit.
+> >
+> > Maybe we should avoid advertising KVM_FEATURE_PV_UNHALT to the TDX guests?
+> >
 > 
-> The other, bigger issue with manually setting the feature flags is that
-> it decouples the flags from the calibration routine.  E.g. in theory, PV
-> code could mark the TSC as having a known frequency, but then have its
-> PV calibration discarded in favor of a method that doesn't use that known
-> frequency.  Passing the TSC properties along with the calibration routine
-> will allow adding sanity checks to guard against replacing a "better"
-> calibration routine with a "worse" routine.
+> Are you hinting towards a model where TDX guest prohibits such call
+> sites from being configured? I am not sure if it's a sustainable model
+> if we just rely on the host not advertising these features as the
+> guest kernel can still add new paths that are not controlled by the
+> host that lead to *_safe_halt().
+
+I've asked TDX module folks to provide additional information in ve_info
+to help handle STI shadow correctly. They will implement it, but it will
+take some time.
+
+So we need some kind of stopgap until we have it.
+
+I am reluctant to commit to paravirt calls for this workaround. They will
+likely stick forever. It is possible, I would like to avoid them. If not,
+oh well.
+
+> > > 2) acpi_safe_halt() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt()
+> >
+> > Have you checked why you get there? I don't see a reason for TDX guest to
+> > get into ACPI idle stuff. We don't have C-states to manage.
 > 
-> As a bonus, the flags also give developers working on new PV code a heads
-> up that they should at least mark the TSC as having a known frequency.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/coco/sev/core.c       |  6 ++----
->  arch/x86/coco/tdx/tdx.c        |  7 ++-----
->  arch/x86/include/asm/tsc.h     |  8 +++++++-
->  arch/x86/kernel/cpu/acrn.c     |  4 ++--
->  arch/x86/kernel/cpu/mshyperv.c | 10 +++++++---
->  arch/x86/kernel/cpu/vmware.c   |  7 ++++---
->  arch/x86/kernel/jailhouse.c    |  4 ++--
->  arch/x86/kernel/kvmclock.c     |  4 ++--
->  arch/x86/kernel/tsc.c          |  8 +++++++-
->  arch/x86/xen/time.c            |  4 ++--
->  10 files changed, 37 insertions(+), 25 deletions(-)
-> 
+> Apparently userspace VMM is advertising pblock_address through SSDT
+> tables in my configuration which causes guests to enable ACPI cpuidle
+> drivers. Do you know if future generations of TDX hardware will not
+> support different c-states for TDX VMs?
 
-> diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-> index d6f079a75f05..6e4a2053857c 100644
-> --- a/arch/x86/kernel/cpu/vmware.c
-> +++ b/arch/x86/kernel/cpu/vmware.c
-> @@ -385,10 +385,10 @@ static void __init vmware_paravirt_ops_setup(void)
->   */
->  static void __init vmware_set_capabilities(void)
->  {
-> +	/* TSC is non-stop and reliable even if the frequency isn't known. */
->  	setup_force_cpu_cap(X86_FEATURE_CONSTANT_TSC);
->  	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
+I have very limited understanding of power management, but I don't see how
+C-states can be meaningfully supported by any virtualized environment.
+To me, C-states only make sense for baremetal.
 
-Should this line be deleted, too, or does the VMware flow require this
-to be done separate from the tsc_register_calibration_routines() call?
-
-Thanks,
-Tom
-
-> -	if (vmware_tsc_khz)
-> -		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
-> +
->  	if (vmware_hypercall_mode == CPUID_VMWARE_FEATURES_ECX_VMCALL)
->  		setup_force_cpu_cap(X86_FEATURE_VMCALL);
->  	else if (vmware_hypercall_mode == CPUID_VMWARE_FEATURES_ECX_VMMCALL)
-> @@ -417,7 +417,8 @@ static void __init vmware_platform_setup(void)
->  
->  		vmware_tsc_khz = tsc_khz;
->  		tsc_register_calibration_routines(vmware_get_tsc_khz,
-> -						  vmware_get_tsc_khz);
-> +						  vmware_get_tsc_khz,
-> +						  TSC_FREQ_KNOWN_AND_RELIABLE);
->  
->  #ifdef CONFIG_X86_LOCAL_APIC
->  		/* Skip lapic calibration since we know the bus frequency. */
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
