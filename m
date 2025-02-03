@@ -1,163 +1,231 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2058.outbound.protection.outlook.com [40.107.237.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E0028E37;
-	Mon,  3 Feb 2025 05:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738562156; cv=fail; b=OJLK3Qt8JqzEbmFm/VExFyprn7mNslC+TXM+ORtxw8JuFOr0avzCKt5DZYkLQp31nPbZr4hGgUEsJoMK3QxSckig+aFKx6/OxwCAyYcDgT/5glW5/px9EPn8RitcLhj5g8wwzFn23jIUo5XopXwFxI3kgtRjEUd0+qGEx/wtIpw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738562156; c=relaxed/simple;
-	bh=ONQXRVTtlQzRuZbbZ3ZnRQE0tQvI5XI5OAsy0bDaIuY=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=uVnhsbhAYN/cBMEUq0LySJC65HrdcF98BJTSLtz7waLPfgMJorF+uYHi8Ouddqic2lmqkg0Ko7XeygNA71FuIOx+rTnRZnWDwAYYozQB5chdVHa3i0Wl5NGH1dtoE6S9p9DklHgwpg2BGmnjrkpOSNY08S7uxLZniqhGCCp3rnk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AR/5oMM0; arc=fail smtp.client-ip=40.107.237.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AR/5oMM0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qe/HrCE+KcGzczlaNno3v3hblZvAvrNxga+jlDOUBmkF/9ogkFYAywUjsxSvaG4JApXyvzc4jkHUF2rP98eKSUtwKwpIdTFmL4AxvJxm13z/NdE6mRXv5KC/Uk1zDAegJcVefNatrYi2jtf2y/y34Mh3yy6fwzdoIr4Lq3/cx+K9/esXhgnJcQ6hKNZrflH5treVKtcEhnRpZYvnZqyrzdx3YAv4VtHiu4V+RclgMnxQjN/MbDLups/VZ7JuHLfbQGiA9PbR8lz25s0MxW+tmVKmlJNfaC2IlJtngI0rlUAGhLbefUcdAeNFOjSJPjMQVUVxT+TkV6qgQTwaZ0mIaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j8lK7oImK5GsAjjYujbZqwkRW6kPxfs15oiWYx+hDAA=;
- b=bgWHLc407qUOi57kg9bzpjWa9aZ919VWnSlCF2aBiHfu44jkW9mrzCQks2lQLHm8nZevMwukv7luoOnxk/0OkaqO04NbyReGVRBTKFfeiCSC9VVvrqRnEIfuEjXHnS9CIre2lH3xgOUzwtaNqRXuYzfNDYSkTEaLQ8d+fvn85g6Jg+U63u2ua2mngHdWFVAgex6WmpxqwjJmCK9j4I/+4dQzjoGAlU+ikxeYjMf8Yaj+HdMNHW3Aar0/34O0atsWhE3v1JMQDKoiNlb1jDf6ZNKYxPTjXWQ0+mP29dCKGYiz6yMC9KNvLa5DiWBdrkmNCooeB8cTfhYBpGYJlm3jWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j8lK7oImK5GsAjjYujbZqwkRW6kPxfs15oiWYx+hDAA=;
- b=AR/5oMM0Ep2Rp/Pgk6uw7drexzJo97IMWZ9SoskydpUVQHhYbAnb+qkwmXnDMnphDFBFEYk7Uv/RkiBRscQbvrNoauQBKVBJ35c6TQYopeHQLic8bWTTGy8Q10pX8PeY3t/7BUQBW39vUpqY/H0bLJ/yTLOU5FR37ZW2ENOKSlk=
-Received: from BYAPR06CA0060.namprd06.prod.outlook.com (2603:10b6:a03:14b::37)
- by MW6PR12MB8957.namprd12.prod.outlook.com (2603:10b6:303:23a::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.23; Mon, 3 Feb
- 2025 05:55:51 +0000
-Received: from CO1PEPF000066EC.namprd05.prod.outlook.com
- (2603:10b6:a03:14b:cafe::89) by BYAPR06CA0060.outlook.office365.com
- (2603:10b6:a03:14b::37) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8377.14 via Frontend Transport; Mon,
- 3 Feb 2025 05:55:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000066EC.mail.protection.outlook.com (10.167.249.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8398.14 via Frontend Transport; Mon, 3 Feb 2025 05:55:50 +0000
-Received: from BLR-L1-NDADHANI (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 2 Feb
- 2025 23:55:15 -0600
-From: Nikunj A Dadhania <nikunj@amd.com>
-To: Sean Christopherson <seanjc@google.com>, Thomas Gleixner
-	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Juergen Gross
-	<jgross@suse.com>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
-	<haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
-	<decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, "Alexey
- Makhalov" <alexey.amakhalov@broadcom.com>, Jan Kiszka
-	<jan.kiszka@siemens.com>, Paolo Bonzini <pbonzini@redhat.com>, "Andy
- Lutomirski" <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-CC: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<virtualization@lists.linux.dev>, <linux-hyperv@vger.kernel.org>,
-	<jailhouse-dev@googlegroups.com>, <kvm@vger.kernel.org>,
-	<xen-devel@lists.xenproject.org>, Sean Christopherson <seanjc@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH 01/16] x86/tsc: Add a standalone helpers for getting TSC
- info from CPUID.0x15
-In-Reply-To: <20250201021718.699411-2-seanjc@google.com>
-References: <20250201021718.699411-1-seanjc@google.com>
- <20250201021718.699411-2-seanjc@google.com>
-Date: Mon, 3 Feb 2025 05:55:02 +0000
-Message-ID: <855xlra7yh.fsf@amd.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCA9B201012;
+	Mon,  3 Feb 2025 11:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738581492; cv=none; b=RLnAexRPSND9+9P6xZe624b9KhowA8K858I3T+24zVmVljHrTWe3ldLrGdesLo65Afuut6PP6/Uk5x8TJ5Nk4cwWI2sT4dekLohJKV1wR5xtFS/Md1cRtNZDGAiR1b9LKjfhpxeF+eH/NTb0IHqLlySrTewRCPJxfw1KnNaRgqA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738581492; c=relaxed/simple;
+	bh=Q0vtxORNYakjV7JbkbI4UxGVRUQsNGTkfnbh8NdEeD8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=doLpyYSKPg+22qsBv6Csm4RlliUEipl7RvFSY7t86qz/WG0IoglKvxFd2FekiX52dHsl6BpZjlZhMVGgJmV11HnguCgZhSy6QmUWiqSqrc+DBYOJUMXXIIPUMij6FNS1H7QcjQiOlKmA4KJrYOaapWGe7V9xjJhqGWPyffXyWIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4EA5811FB;
+	Mon,  3 Feb 2025 03:18:34 -0800 (PST)
+Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 457093F58B;
+	Mon,  3 Feb 2025 03:18:07 -0800 (PST)
+Message-ID: <d499c3e7-cc0f-467a-8401-bc53b70259f7@arm.com>
+Date: Mon, 3 Feb 2025 11:18:06 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066EC:EE_|MW6PR12MB8957:EE_
-X-MS-Office365-Filtering-Correlation-Id: a866d209-0981-4b8e-3556-08dd441769f8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|7416014|1800799024|82310400026|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?yHnpJxwWZjnytpYcAYL+LWwCw3QW/pQ9N+XyD8SerezGnn6wJ06BQIOh0seo?=
- =?us-ascii?Q?EoP4uTnKYbj1cTrmJceqzOtAkPVwUrisXaKd6J/u7R6HdSLUWdlVQqBAW33q?=
- =?us-ascii?Q?OOZq1bPgBtEmK65lvWVUaqN+BSTNwWNHZUQDR8tLC7s/husAIO3bXfifZZ5r?=
- =?us-ascii?Q?icQeNcNOnB0zVNtMWFLiMaX8fohdfkHyJuGtUTUilPQr2RlTz8CpZbd7xE+E?=
- =?us-ascii?Q?eVIW4r/dgceYuR4SIt9UKH/1qTOZCYq5GJtXONinVUPkqAMPWJIQ2jIW4p/G?=
- =?us-ascii?Q?31CeABi/NYLLVxC/5A2W9ak6UsGhBSsKThCbgXc64nOdlxHX/GE9X4YeqVkX?=
- =?us-ascii?Q?MPT+nd8swdb5yy1u90i4YZgq84qFMl+j2XriuUPkM6+OLYkDf+0c7b3Hm90x?=
- =?us-ascii?Q?p6H8FGvPHASk8WMkMwGf9gm/xOW1CtNiKxSzTnkS6YeYIpRoqZPHmwQ4vHzT?=
- =?us-ascii?Q?5Zhi3ejJ1+xOOT9MLIIxI/yU7DZQyozAF7Np7yKvfVDoyiduqmX1Gq5SMlkn?=
- =?us-ascii?Q?gI6KRiA2H9tA3KyK+72lW0gyoiiNAcmF+8GYD2PjB0VktT8L4Y88yLc9whJQ?=
- =?us-ascii?Q?NgBbnpgeE6u30+SeT3XyVQk5fd1wkUfUF0CCyyq0hk1EZxc0cOyuyidiDDVF?=
- =?us-ascii?Q?wlhMeRwkTt31KRUekS9gLXKlYHHdQtbBtoHSI2cxZWhSjqB5ESKrVs2HzHi2?=
- =?us-ascii?Q?ye9sVv6X8oXYzcIuLvVv0jAZVk3B5s/nP6gAJ79jMoyPf3YqYQqtQrR5bbTb?=
- =?us-ascii?Q?pbI31BN+QSWmKU1m13/cdlpF0sXfF9hILz6kakMFcnmuxCORTPii2xikvYca?=
- =?us-ascii?Q?886IcjHcQzRmvwL81r1uWJlsANVHO8Gqlnsykq5GBdzf7hZzqTA8mXxYAkHL?=
- =?us-ascii?Q?c9hIDuACr7aSfvdmfUeYgkVhj1ZPGjEOgFRhogUDRvg3uNT3Eb0EkCfvmt9T?=
- =?us-ascii?Q?nHTTWzAhBlrFB11XyCtnxH3wSrYzDaEav+CR2OjQ56ninqhwKNRmG2ELte9O?=
- =?us-ascii?Q?KdCfD9KppmwbjLW2GGMN2zL0IFBXHWir267iLpHQ8Mmt5mewJqVb6BUZkDgf?=
- =?us-ascii?Q?O8+TMZ+37oJRVw3qvikHV4eMuC5HwwCukX1xo9Zbd3WE7yEzPMukQLKxJSwD?=
- =?us-ascii?Q?7yS/ZsRWkn8nmwo9dquNnEtvLBsY7AVk/HgSkMiLV/P9PEdXhyCsw8pgxzvl?=
- =?us-ascii?Q?iHCheneNIq9/u8Dd8rHepKs90c7xW8OWsxdEzuuhWjJHBihBsT9uvOdWEXGa?=
- =?us-ascii?Q?hwpVGtXUXnrYSTS3u2fM5j11TYuqMyzwUXdAY+FC9I7O2Xbam86vEN4rR5vm?=
- =?us-ascii?Q?m/In9rYAVotUOQdOdec1SGLw7t9ktkpmlirztFxbw0IAP4vFUsh/25DrSk5D?=
- =?us-ascii?Q?qwG0Cx2ZaITOdv50qYkddEtT0hRLsmDNeDnhFs2sraZ9bmViKFdAgWDuNVcI?=
- =?us-ascii?Q?eIimnEZcqo/yrbsAJj1/hzdcGF2grP2MMQSW4ou43o1SLA928ouJmQGz8mLw?=
- =?us-ascii?Q?SOhHHyidjVEjbbQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(1800799024)(82310400026)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2025 05:55:50.8351
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a866d209-0981-4b8e-3556-08dd441769f8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066EC.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8957
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 12/43] arm64: RME: Allocate/free RECs to match vCPUs
+To: Steven Price <steven.price@arm.com>, Gavin Shan <gshan@redhat.com>,
+ kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20241212155610.76522-1-steven.price@arm.com>
+ <20241212155610.76522-13-steven.price@arm.com>
+ <9a543b6f-5487-4159-89fb-73d9b6749a01@redhat.com>
+ <9174bc24-6217-4663-a370-291d4790a212@arm.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <9174bc24-6217-4663-a370-291d4790a212@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Sean Christopherson <seanjc@google.com> writes:
-> Extract retrieval of TSC frequency information from CPUID into standalone
-> helpers so that TDX guest support and kvmlock can reuse the logic.  Provide
+On 30/01/2025 16:40, Steven Price wrote:
+> On 29/01/2025 04:50, Gavin Shan wrote:
+>> On 12/13/24 1:55 AM, Steven Price wrote:
+>>> The RMM maintains a data structure known as the Realm Execution Context
+>>> (or REC). It is similar to struct kvm_vcpu and tracks the state of the
+>>> virtual CPUs. KVM must delegate memory and request the structures are
+>>> created when vCPUs are created, and suitably tear down on destruction.
+>>>
+>>> RECs must also be supplied with addition pages - auxiliary (or AUX)
+>>> granules - for storing the larger registers state (e.g. for SVE). The
+>>> number of AUX granules for a REC depends on the parameters with which
+>>> the Realm was created - the RMM makes this information available via the
+>>> RMI_REC_AUX_COUNT call performed after creating the Realm Descriptor
+>>> (RD).
+>>>
+>>> Note that only some of register state for the REC can be set by KVM, the
+>>> rest is defined by the RMM (zeroed). The register state then cannot be
+>>> changed by KVM after the REC is created (except when the guest
+>>> explicitly requests this e.g. by performing a PSCI call). The RMM also
+>>> requires that the VMM creates RECs in ascending order of the MPIDR.
+>>>
+>>> See Realm Management Monitor specification (DEN0137) for more
+>>> information:
+>>> https://developer.arm.com/documentation/den0137/
+>>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> ---
+>>> Changes since v5:
+>>>    * Separate the concept of vcpu_is_rec() and
+>>>      kvm_arm_vcpu_rec_finalized() by using the KVM_ARM_VCPU_REC feature as
+>>>      the indication that the VCPU is a REC.
+>>> Changes since v2:
+>>>    * Free rec->run earlier in kvm_destroy_realm() and adapt to previous
+>>> patches.
+>>> ---
+>>>    arch/arm64/include/asm/kvm_emulate.h |   7 ++
+>>>    arch/arm64/include/asm/kvm_host.h    |   3 +
+>>>    arch/arm64/include/asm/kvm_rme.h     |  18 ++++
+>>>    arch/arm64/kvm/arm.c                 |   9 ++
+>>>    arch/arm64/kvm/reset.c               |  11 ++
+>>>    arch/arm64/kvm/rme.c                 | 144 +++++++++++++++++++++++++++
+>>>    6 files changed, 192 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/
+>>> include/asm/kvm_emulate.h
+>>> index 27f54a7778aa..ec2b6d9c9c07 100644
+>>> --- a/arch/arm64/include/asm/kvm_emulate.h
+>>> +++ b/arch/arm64/include/asm/kvm_emulate.h
+>>> @@ -722,7 +722,14 @@ static inline bool kvm_realm_is_created(struct
+>>> kvm *kvm)
+>>>      static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
+>>>    {
+>>> +    if (static_branch_unlikely(&kvm_rme_is_available))
+>>> +        return vcpu_has_feature(vcpu, KVM_ARM_VCPU_REC);
+>>>        return false;
+>>>    }
+>>>    
+>>
+>> It seems the check on kvm_rme_is_available is unnecessary because
+>> KVM_ARM_VCPU_REC
+>> is possible to be true only when kvm_rme_is_available is true.
+> 
+> Similar to a previous patch - the check of the static key is to avoid
+> overhead on systems without RME.
+> 
+>>> +static inline bool kvm_arm_vcpu_rec_finalized(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +    return vcpu->arch.rec.mpidr != INVALID_HWID;
+>>> +}
+>>> +
+>>>    #endif /* __ARM64_KVM_EMULATE_H__ */
+>>
+>> I would suggest to rename to kvm_arm_rec_finalized() since vCPU and REC are
+>> similar objects at the same level. It'd better to avoid duplicate object
+>> name reference in the function name.
+> 
+> Ack
+> 
+>>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/
+>>> asm/kvm_host.h
+>>> index 8482638dce3b..220195c727ef 100644
+>>> --- a/arch/arm64/include/asm/kvm_host.h
+>>> +++ b/arch/arm64/include/asm/kvm_host.h
+>>> @@ -789,6 +789,9 @@ struct kvm_vcpu_arch {
+>>>          /* Per-vcpu CCSIDR override or NULL */
+>>>        u32 *ccsidr;
+>>> +
+>>> +    /* Realm meta data */
+>>> +    struct realm_rec rec;
+>>>    };
+>>>      /*
+>>> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/
+>>> asm/kvm_rme.h
+>>> index 32bdedf1d866..62d4a63d3035 100644
+>>> --- a/arch/arm64/include/asm/kvm_rme.h
+>>> +++ b/arch/arm64/include/asm/kvm_rme.h
+>>> @@ -6,6 +6,7 @@
+>>>    #ifndef __ASM_KVM_RME_H
+>>>    #define __ASM_KVM_RME_H
+>>>    +#include <asm/rmi_smc.h>
+>>>    #include <uapi/linux/kvm.h>
+>>>      /**
+>>> @@ -65,6 +66,21 @@ struct realm {
+>>>        unsigned int ia_bits;
+>>>    };
+>>>    +/**
+>>> + * struct realm_rec - Additional per VCPU data for a Realm
+>>> + *
+>>> + * @mpidr: MPIDR (Multiprocessor Affinity Register) value to identify
+>>> this VCPU
+>>> + * @rec_page: Kernel VA of the RMM's private page for this REC
+>>> + * @aux_pages: Additional pages private to the RMM for this REC
+>>> + * @run: Kernel VA of the RmiRecRun structure shared with the RMM
+>>> + */
+>>> +struct realm_rec {
+>>> +    unsigned long mpidr;
+>>> +    void *rec_page;
+>>> +    struct page *aux_pages[REC_PARAMS_AUX_GRANULES];
+>>> +    struct rec_run *run;
+>>> +};
+>>> +
+>>>    void kvm_init_rme(void);
+>>>    u32 kvm_realm_ipa_limit(void);
+>>>    @@ -72,6 +88,8 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct
+>>> kvm_enable_cap *cap);
+>>>    int kvm_init_realm_vm(struct kvm *kvm);
+>>>    void kvm_destroy_realm(struct kvm *kvm);
+>>>    void kvm_realm_destroy_rtts(struct kvm *kvm, u32 ia_bits);
+>>> +int kvm_create_rec(struct kvm_vcpu *vcpu);
+>>> +void kvm_destroy_rec(struct kvm_vcpu *vcpu);
+>>>      #define RMM_RTT_BLOCK_LEVEL    2
+>>>    #define RMM_RTT_MAX_LEVEL    3
+>>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>>> index 73016e1e0067..2d97147651be 100644
+>>> --- a/arch/arm64/kvm/arm.c
+>>> +++ b/arch/arm64/kvm/arm.c
+>>> @@ -525,6 +525,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+>>>        /* Force users to call KVM_ARM_VCPU_INIT */
+>>>        vcpu_clear_flag(vcpu, VCPU_INITIALIZED);
+>>>    +    vcpu->arch.rec.mpidr = INVALID_HWID;
+>>> +
+>>>        vcpu->arch.mmu_page_cache.gfp_zero = __GFP_ZERO;
+>>>          /* Set up the timer */
+>>> @@ -1467,6 +1469,9 @@ static unsigned long
+>>> system_supported_vcpu_features(void)
+>>>        if (!cpus_have_final_cap(ARM64_HAS_NESTED_VIRT))
+>>>            clear_bit(KVM_ARM_VCPU_HAS_EL2, &features);
+>>>    +    if (!static_branch_unlikely(&kvm_rme_is_available))
+>>> +        clear_bit(KVM_ARM_VCPU_REC, &features);
+>>> +
+>>>        return features;
+>>>    }
+>>>    @@ -1506,6 +1511,10 @@ static int
+>>> kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
+>>>        if (test_bit(KVM_ARM_VCPU_HAS_EL2, &features))
+>>>            return -EINVAL;
+>>>    +    /* RME is incompatible with AArch32 */
+>>> +    if (test_bit(KVM_ARM_VCPU_REC, &features))
+>>> +        return -EINVAL;
+>>> +
+>>>        return 0;
+>>>    }
+>>>    
+>>
+>> One corner case seems missed in kvm_vcpu_init_check_features(). It's
+>> allowed to
+>> initialize a vCPU with REC feature even kvm_is_realm(kvm) is false.
+>> Hopefully,
+>> I didn't miss something.
+> 
+> Ah, yes good point. I'll pass a kvm pointer to
+> kvm_vcpu_init_check_features() and use kvm_is_realm() in there.
 
-s/kvmlock/kvmclock
+nit: kvm is available from the VCPU via vcpu->kvm
 
-> a version that includes the multiplier math as TDX in particular does NOT
-> want to use native_calibrate_tsc()'s fallback logic that derives the TSC
-> frequency based on CPUID.0x16 when the core crystal frequency isn't known.
->
-> No functional change intended.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
+Cheers
+Suzuki
 
-...
 
-> +
-> +static inline int cpuid_get_tsc_freq(unsigned int *tsc_khz,
-> +				     unsigned int *crystal_khz)
-
-Should we add this in patch 6/16 where it is being used for the first time ?
-
-Regards
-Nikunj
