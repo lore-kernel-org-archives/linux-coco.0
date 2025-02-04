@@ -1,248 +1,152 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617222185B4
-	for <linux-coco@lists.linux.dev>; Tue,  4 Feb 2025 18:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FADF215F72
+	for <linux-coco@lists.linux.dev>; Tue,  4 Feb 2025 19:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738695143; cv=none; b=AQ7Gjb2G3r/Kd+QsoKY9Dnt4e78z2WJdrThcCdYIkdUlEQSZHDHhpaVuLfYAO3hEmXIcY1b7FwsXYchULz2m5viUnjLzuNtUlxDYUV7aEshRUnPDybq3cSscmt6RFc500hW9FTyKZ4uRaDiOcUYspDeNAAE2ubOkdl9hM/vKcj0=
+	t=1738697381; cv=none; b=ToDFmYrfrHOu+0ycpjDsDpNYGskgsU8VX2UJgEE33WZgDPXL/MrqMHYEseT9pecHh1CdCqb48gIebp9R+MX+cPV7qrsBmRgkhlyRWbKKnx6IupdVCAt0NwV7079HHDlUewXnLifrA9PUFp52hJV37Winr4h+ZBPxcjvLo2q5VLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738695143; c=relaxed/simple;
-	bh=zbnqzd6XkDlUkXnIqmyVov9gz3edxYuX6M0f9ImDYJY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QxKRBuqtAHOazCzMZP+o0RgwZuutPlMCXu/5OgOFwymImIZ8LtTXOB07R+mt5nL7iEG8hhBPwczunNqWbvf/MKwQibxPzDzkjVDYR5/nkTg3MBDs3f4OQfWqZS3t4JwUq5cVYRIl9zVbWowgP35DboM7BHdQEmBz87SuNgfLNdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jeeIPnJI; arc=none smtp.client-ip=209.85.167.52
+	s=arc-20240116; t=1738697381; c=relaxed/simple;
+	bh=jR8glNKTcRvWQFyYWzpmeeHHaLx4f7ObdoeaqwwhgrA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=q0R2C8O6d+EIAtsPo3tb+PNQe0ZC9Fv0L/8OK1FaNZby00TGmX7X+doac2rahxYEEXOFAOQAuTWRSEi05giF/h0czSuum07tqOf6ag+zA1ofDih2hP3A+Bcbb5OLtW7wvn5z/4/07qkVIpOCcKcCTOhGqcyvVjWtEL5nOZAhyzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1H5+aT8q; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jeeIPnJI"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53e3a2264e1so9791e87.0
-        for <linux-coco@lists.linux.dev>; Tue, 04 Feb 2025 10:52:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1H5+aT8q"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ef9204f898so11208539a91.2
+        for <linux-coco@lists.linux.dev>; Tue, 04 Feb 2025 11:29:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738695139; x=1739299939; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cFpEwLn/dC0QDTCh8cN9pGGSIe7PpPg7IM5j/w3xtPA=;
-        b=jeeIPnJIPCgCLmAQbRG2kKI/YSosDsJAPoIJTZJcFT63wqFpd9N44ePDLvbdHpqAMK
-         pEggTO2zhMJ3qcU3bD6ciTQ3Hdxbo146SWLMstacmo7h24hJ0lxWvRnF2sbn4Vl3ikgw
-         pEIUjSvikaiV6C7WVfvZ5MbG8gnIMt2FTIzX5TAjLsD6LAwNymfFZr6tmsEbTbbg485P
-         ySte1q6gEq0H2BImZthJOUlhpZyOjD15ASLanj4O2IhHwSHTsc9ip621w4VDo/T6gs+C
-         09lpj1rhcAFpHoHJKUBgkBzGIGVTD/rhttHQ6l5r00v15yqQL9F0ovmhv5KrXIy+uAE4
-         eBcw==
+        d=google.com; s=20230601; t=1738697379; x=1739302179; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5e8UEnGVo+4lDc1cH0GoOuL8F0MUw58BGLx/3p+5fdQ=;
+        b=1H5+aT8qTDNOPx5lDspr+1Ot1lPqmX/2vNoN0WUzq1yU1gZCHtEPJpkqb1GsU6mt+h
+         CfwFZJC9Shqku8T/VQhexyUZ7ylcy/sTGFkt3eQVRQRqewz3BSCMpfTXSqWuMkg0KQQb
+         Wovx9AhsVuHl6MKB8YHR6v1u4GqovkMY5qfP+0tUiR4xOXWjjly4ekStb8GLHgffP8AO
+         yorrHtpfE4/bxFRdvvOn99oxSIWfk0JoHMr91K4P0Lyiy07LazviRAqCtEnf/E2ZNksM
+         wuJ8a3yKIpfVy8/UcfHVf2ekytQOAQsnaDcegDRcL6KFvPnWVu8I76Jle5uCPTiM8iVY
+         q+0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738695139; x=1739299939;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cFpEwLn/dC0QDTCh8cN9pGGSIe7PpPg7IM5j/w3xtPA=;
-        b=YyJ9gPBXxejtCJ3a487JlbfbsuszhhJ9Oj+yr7gm4g3C8bM4y6Y5Ui//rr32hQzw1Q
-         3XrQ21waOdt2cM1dxnS+2gLBssNTHH/btFp4QVWDWwUH3EbKWBG+8aZ9173+LwD/QtF9
-         /9m9YIzpRuhmo71/cNNt6DGyUMwPmIHk1BJ/9MVx9jFGXWKL+bHt8Y6jfK8+K1qgB+tq
-         qlBw/Av/NL/4Q5MRmUaikKwmkVc6cUNTK7/9aChP+lLO0BN5CLe07SkOClOjU2Q1abWj
-         EHAe7e1KWSsbyqJQNOzRnSaTb40hK06r761MedavD0+dZcZ9/xpnsYU+tJCBBqpGroqa
-         1o7A==
-X-Forwarded-Encrypted: i=1; AJvYcCWKHfcJI20pd6bI419/019s05PkwCAHtaunkmsT8gPr3SOJChxnpb0HW0g1du7ntdTBySqHu587tFs2@lists.linux.dev
-X-Gm-Message-State: AOJu0YzEC1o+7Feib/dEvAr4Q4YiG6RjMDwS8YBpeVbFpqKuZOkKTSWH
-	c6iI3m7y07ZPKiux/oIubFEv+iyKjvmmWfr4knLKX6yk9juGZEeEyZ154ZHVgY7its9klF8DpST
-	5ytJv9Cll5DfbAL5Gf/ItLchqy1oH/tVP5NdQ
-X-Gm-Gg: ASbGnct55kqnBqR4DyNsL9fiWqmD/bTnRCr0NdIxT6K+B0fqoWX0Pufav10fujBQAqr
-	/0szsu3OdMawZVORTHxlO5SKRwrkArfts+Admxg0NGgIzkOKV4vU0yTWeONJtygMqm/fm9e+7el
-	Et7MPDI+ECYqP7nl4Nf7EeC1aJ5he7
-X-Google-Smtp-Source: AGHT+IGa5r4vzVW+ObuRphdYnQxEuke4nepjoCC+Mwq/AxH5MPhY3uiQh6F6cWhaR3TVphiWxYmTKZAgQ7JaxJnMyh4=
-X-Received: by 2002:a05:6512:2398:b0:542:6b39:1d57 with SMTP id
- 2adb3069b0e04-54400bd9244mr277014e87.3.1738695139002; Tue, 04 Feb 2025
- 10:52:19 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738697379; x=1739302179;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5e8UEnGVo+4lDc1cH0GoOuL8F0MUw58BGLx/3p+5fdQ=;
+        b=GsUemExyChy/Hix4cyyR5IYYb36qLOGVOjIY4V6dtPDRsetBf/RDFaUpW6mrf3/x83
+         o/z/NwRFKTVm8q0K4i8zlatxWSAR55pBrC3Doq4lUcfkOECINYHD084u2lNxdTIYOcvk
+         lCIyYjR7I4V/P5hhOWVd8LbIql3S+qJHwpS0/UgYVC6Nufu4ZD0RDRYnVs1LqXHv4xHF
+         H8fdtbRJpGxfix9R7oavfC3mSQewK0o7NPc6p13Os3e5OpwnMintvxfz7NvAq0nlh7wg
+         RuURGSRm6KpxjSdFv/zg1nlSsqBf1S6na0Ddeho+2nUP/z1RNLW86kQ6hEJi7ov9b0TM
+         J81A==
+X-Forwarded-Encrypted: i=1; AJvYcCWNBLm+u+d6+GLNvp6fSJQwd816tD/poefJzQWIHE7+OGr7C1qMyG+Ry5vFuQp8hWOSK0Ti0iwuBDNs@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz1LA/Zid8YyIZLVNY9UMgMO+k9hYPzoms3IEGfvW/XtuA4Rno1
+	pQlzg0Rt9jCo3pXuJRZAVRfVw4UuzPVdLSypabovamPDdUBqimmn0TKKvuX0oXCFuSQfjYkd9q1
+	Hpg==
+X-Google-Smtp-Source: AGHT+IF+/fBR5/RvgfgkW+k0iOimknqvbfTCdp56sFN5T8R+lSkm/qjT6GD7VseImBDz4jdwECu7ieLsEjc=
+X-Received: from pjbsw5.prod.google.com ([2002:a17:90b:2c85:b0:2d3:d4ca:5fb0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5245:b0:2ee:ab29:1a65
+ with SMTP id 98e67ed59e1d1-2f83abb4f94mr39965711a91.4.1738697379406; Tue, 04
+ Feb 2025 11:29:39 -0800 (PST)
+Date: Tue, 4 Feb 2025 11:29:38 -0800
+In-Reply-To: <85r04e5821.fsf@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20250129232525.3519586-1-vannapurve@google.com> <054b7cab-4507-48f8-9c0a-d400779f226f@intel.com>
-In-Reply-To: <054b7cab-4507-48f8-9c0a-d400779f226f@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 4 Feb 2025 10:52:07 -0800
-X-Gm-Features: AWEUYZnozqobmK0OI4oKOR1_hLIJMHKZjhXau6ZWzoBrfPmSooIgx3fqTA3GJVk
-Message-ID: <CAGtprH9r159qjAU8E2MHMAhKGjJmh8JTuJMqq345v4Bqzc-m9Q@mail.gmail.com>
-Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via tdx_safe_halt()
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, 
-	jxgao@google.com, sagis@google.com, oupton@google.com, pgonda@google.com, 
-	kirill@shutemov.name, dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
-	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, stable@vger.kernel.org, 
-	Juergen Gross <jgross@suse.com>, Andrew Cooper <andrew.cooper3@citrix.com>, 
-	Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20250201021718.699411-1-seanjc@google.com> <20250201021718.699411-7-seanjc@google.com>
+ <85r04e5821.fsf@amd.com>
+Message-ID: <Z6JqopU5LkDIZPq6@google.com>
+Subject: Re: [PATCH 06/16] x86/tdx: Override PV calibration routines with
+ CPUID-based calibration
+From: Sean Christopherson <seanjc@google.com>
+To: Nikunj A Dadhania <nikunj@amd.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Juergen Gross <jgross@suse.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Alexey Makhalov <alexey.amakhalov@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, virtualization@lists.linux.dev, 
+	linux-hyperv@vger.kernel.org, jailhouse-dev@googlegroups.com, 
+	kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 4, 2025 at 9:32=E2=80=AFAM Dave Hansen <dave.hansen@intel.com> =
-wrote:
->
-> I think this is the right fix for _now_. In practice, Vishal's problem
-> only occurs on CONFIG_PARAVIRT_XXL systems. His proposed fix here does
-> not make TDX depend on CONFIG_PARAVIRT_XXL, it just provides an extra
-> override when TDX and CONFIG_PARAVIRT_XXL collide.
->
-> This seems like a reasonable compromise that avoids entangling
-> PARAVIRT_XXL and TDX _too_ much and also avoids reinventing a hunk of
-> PARAVIRT_XXL just to fix this bug.
-To ensure that we spend a bit more time here, would folks be ok with
-making TDX depend on CONFIG_PARAVIRT_XXL as a stopgap until we have
-the long term proposal Dave mentioned below to cleanly separate
-"pv_ops.irq.safe_halt()" from paravirt infra?
-
->
-> Long-term, I think it would be nice to move pv_ops.irq.safe_halt() away
-> from being a paravirt thing and move it over to a plain static_call().
->
-> Then, TDX can get rid of this hunk:
->
->                 pr_info("using TDX aware idle routine\n");
->                 static_call_update(x86_idle, tdx_safe_halt);
->
-> and move back to default_idle() which could look like this:
->
->  void __cpuidle default_idle(void)
->  {
-> -        raw_safe_halt();
-> +        static_call(x86_safe_halt)();
->          raw_local_irq_disable();
->  }
->
-> If 'x86_safe_halt' was the only route in the kernel to call 'sti;hlt'
-> then we can know with pretty high confidence if TDX or Xen code sets
-> their own 'x86_safe_halt' that they won't run into more bugs like this on=
-e.
->
-> On to the patch itself...
->
-> On 1/29/25 15:25, Vishal Annapurve wrote:
-> > Direct HLT instruction execution causes #VEs for TDX VMs which is route=
-d
-> > to hypervisor via tdvmcall. This process renders HLT instruction
-> > execution inatomic, so any preceding instructions like STI/MOV SS will
-> > end up enabling interrupts before the HLT instruction is routed to the
-> > hypervisor. This creates scenarios where interrupts could land during
-> > HLT instruction emulation without aborting halt operation leading to
-> > idefinite halt wait times.
->
-> Vishal! I'm noticing spelling issues right up front and center here,
-> just like in v1. I think I asked nicely last time if you could start
-> spell checking your changelogs before posting v2. Any chance you could
-> actually put some spell checking in place before v3?
-
-Yeah, will do. I incorrectly thought that codespell runs by default
-with checkpatch.pl.
-
->
-> So, the x86 STI-shadow mechanism has left a trail of tears. We don't
-> want to explain the whole sordid tale here, but I don't feel like
-> talking about the "what" (atomic vs. inatomic execution) without
-> explaining "why" is really sufficient to explain the problem at hand.
->
-> Sean had a pretty concise description in here that I liked:
->
->         https://lore.kernel.org/all/Z5l6L3Hen9_Y3SGC@google.com/
->
-> But the net result is that it is currently unsafe for TDX guests to use
-> the "sti;hlt" sequence. It's really important to say *that* somewhere.
->
-Ack.
-
-> > Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests") already
-> > upgraded x86_idle() to invoke tdvmcall to avoid such scenarios, but
-> > it didn't cover pv_native_safe_halt() which can be invoked using
-> > raw_safe_halt() from call sites like acpi_safe_halt().
->
-> Does this convey the same thing?
->
-> Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-> prevented the idle routines from using "sti;hlt". But it missed the
-> paravirt routine. That can be reached like this, for example:
->
->         acpi_safe_halt() =3D>
->         raw_safe_halt()  =3D>
->         arch_safe_halt() =3D>
->         irq.safe_halt()  =3D>
->         pv_native_safe_halt()
->
-> I also dislike the "upgrade" nomenclature. It's not really an "upgrade".
-Ack.
->
-> ...
-> > @@ -380,13 +381,18 @@ static int handle_halt(struct ve_info *ve)
-> >  {
-> >       const bool irq_disabled =3D irqs_disabled();
+On Tue, Feb 04, 2025, Nikunj A Dadhania wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+>=20
+> > When running as a TDX guest, explicitly override the TSC frequency
+> > calibration routine with CPUID-based calibration instead of potentially
+> > relying on a hypervisor-controlled PV routine.  For TDX guests, CPUID.0=
+x15
+> > is always emulated by the TDX-Module, i.e. the information from CPUID i=
+s
+> > more trustworthy than the information provided by the hypervisor.
 > >
-> > +     if (!irq_disabled) {
-> > +             WARN_ONCE(1, "HLT instruction emulation unsafe with irqs =
-enabled\n");
-> > +             return -EIO;
-> > +     }
->
-> The warning is fine, but I do think it should be separated from the bug f=
-ix.
->
+> > To maintain backwards compatibility with TDX guest kernels that use nat=
+ive
+> > calibration, and because it's the least awful option, retain
+> > native_calibrate_tsc()'s stuffing of the local APIC bus period using th=
+e
+> > core crystal frequency.  While it's entirely possible for the hyperviso=
+r
+> > to emulate the APIC timer at a different frequency than the core crysta=
+l
+> > frequency, the commonly accepted interpretation of Intel's SDM is that =
+APIC
+> > timer runs at the core crystal frequency when that latter is enumerated=
+ via
+> > CPUID:
 > >
-> > -void __cpuidle tdx_safe_halt(void)
-> > +void __cpuidle tdx_idle(void)
-> >  {
-> >       const bool irq_disabled =3D false;
+> >   The APIC timer frequency will be the processor=E2=80=99s bus clock or=
+ core
+> >   crystal clock frequency (when TSC/core crystal clock ratio is enumera=
+ted
+> >   in CPUID leaf 0x15).
 > >
-> > @@ -397,6 +403,12 @@ void __cpuidle tdx_safe_halt(void)
-> >               WARN_ONCE(1, "HLT instruction emulation failed\n");
-> >  }
+> > If the hypervisor is malicious and deliberately runs the APIC timer at =
+the
+> > wrong frequency, nothing would stop the hypervisor from modifying the
+> > frequency at any time, i.e. attempting to manually calibrate the freque=
+ncy
+> > out of paranoia would be futile.
 > >
-> > +static void __cpuidle tdx_safe_halt(void)
-> > +{
-> > +     tdx_idle();
-> > +     raw_local_irq_enable();
-> > +}
->
-> The naming here is a bit wonky. Think of how the call chain will look:
->
->         irq.safe_halt() =3D>
->         tdx_safe_halt() =3D>
->         tdx_idle()      =3D>
->         __halt()
->
-> See how it's doing a more and more TDX-specific halt operation? Isn't
-> the "idle" call right in the middle confusing?
-Makes sense.
+> > Deliberately leave the CPU frequency calibration routine as is, since t=
+he
+> > TDX-Module doesn't provide any guarantees with respect to CPUID.0x16.
+>=20
+> Does TDX use kvmclock?
 
->
-> >  static int read_msr(struct pt_regs *regs, struct ve_info *ve)
-> >  {
-> >       struct tdx_module_args args =3D {
-> > @@ -1083,6 +1095,15 @@ void __init tdx_early_init(void)
-> >       x86_platform.guest.enc_kexec_begin           =3D tdx_kexec_begin;
-> >       x86_platform.guest.enc_kexec_finish          =3D tdx_kexec_finish=
-;
-> >
-> > +#ifdef CONFIG_PARAVIRT_XXL
-> > +     /*
-> > +      * halt instruction execution is not atomic for TDX VMs as it gen=
-erates
-> > +      * #VEs, so otherwise "safe" halt invocations which cause interru=
-pts to
-> > +      * get enabled right after halt instruction don't work for TDX VM=
-s.
-> > +      */
-> > +     pv_ops.irq.safe_halt =3D tdx_safe_halt;
-> > +#endif
->
-> Just like the changelog, it's hard to write a good comment without going
-> into the horrors of the STI-shadow. But I think this is a bit more to
-> the point:
->
->         /*
->          * Avoid the literal hlt instruction in TDX guests. hlt will
->          * induce a #VE in the STI-shadow which will enable interrupts
->          * in a place where they are not wanted.
->          */
->
->
+A TDX guest can.  That's up to the host (expose kvmclock) and the guest (en=
+able
+kvmclock).
 
-Ack, will take care of these comments in v3.
+> If yes, kvmclock would have registered the CPU frequency calibration rout=
+ine:
+>=20
+> 	tsc_register_calibration_routines(kvm_get_tsc_khz, kvm_get_cpu_khz,
+>  					  tsc_properties);
+>=20
+> so TDX will use kvm_get_cpu_khz(), which will either use CPUID.0x16 or
+> PV clock, is this on the expected line ?
+
+What do you mean by "is this on the expected line"?  If you are asking "is =
+this
+intended", then the answer is "yes, working as intended".  As above, the TD=
+X-Module
+doesn't emulate CPUID.0x16, so no matter what, the guest is relying on the =
+untrusted
+hypervisor to get the CPU frequency.  If someone thinks that TDX guests sho=
+uld
+assume the CPU runs as the same frequency as the TSC, a la SNP's Secure TSC=
+, then
+they are welcome to propose such a change.
