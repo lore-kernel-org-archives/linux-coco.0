@@ -1,120 +1,188 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2089.outbound.protection.outlook.com [40.107.93.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF811FF615
-	for <linux-coco@lists.linux.dev>; Mon,  3 Feb 2025 22:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738620536; cv=none; b=OccEYOcZhgw3jGM/OMZQMf8p1CS8K7CPvzww0mVtOqS5HdpOhjYLxrdGkiS3adAgl0mUE8Z3hGnyzLmRtTd8TSK2G7udA+5J6pO4Uq/0w3N91O0WJLmuuAo6PzzeFn+F/+yyFDrn4+vcv+QloGehHWLjSDSgu+foIzWu2LapLYw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738620536; c=relaxed/simple;
-	bh=5RAtnqgSsJW3L/OucE/O3ftfhIA9MkIbq8HBQmwo9mM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NPXtf6Icq3guT6+HeG3l/S9MvGF7iL0Oiy0FqPkWQlIsOPff8j2NgnePyDaJsrJxlmzZ6gQ9AG0T2t1lwieUg8PfEPragQIllDgQQ5YUNknDrxeHR2zYf/CE3RjLXtv9p4aoDASIR8TkM625kO5xFwr1ITAu25pjrAyOjJ+OWnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aMXIOiyJ; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8F28635E;
+	Tue,  4 Feb 2025 08:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738656161; cv=fail; b=YtMqD9IzyuvDHSFqWugz/rV28NN2fNsVIqmkX0fH6VMrGEyaxhKhYrmqbe0tR7fUlScPTqXkDRJeweLuahNIcPByPUkWqOokztso85bsGp9nK1nDwewXUODq+fETUXm0W6QaZbteT0//K/fqKzkzPySUE7ANTnSf58n3D3G2n4M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738656161; c=relaxed/simple;
+	bh=Nff9UR2ox+SdrtrK/zbHIxzm4ooikfcu6cD2a21kHLA=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Zektoct+BRR9y485YepafygquoH+44Fd2uSZFRgsK8YwJuTDlNFCDwqTuO6zzVovL5uXjxE56iuM/G4xIwjmOcVRax2pxdmklGeK+URLOfLUCw5yp0/e/B8zu+7ofoY+x3jhLgN3afz8EDmex+dNM7Y9PA3McB7F7TbZqUiOEA8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PLXGeL2I; arc=fail smtp.client-ip=40.107.93.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aMXIOiyJ"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5401af8544bso115e87.1
-        for <linux-coco@lists.linux.dev>; Mon, 03 Feb 2025 14:08:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738620533; x=1739225333; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YSoo65ANk1ACUgD5CEe1MmfBfCx6K8V18L1pZv5jKUg=;
-        b=aMXIOiyJYv/X5GQM4QKz1p26XdIpE+JFZ9mwOCY6Znp5wIpaOkJb/xrja8yZJcd+em
-         H3Z+zTt9KsUbT4pOVFdkqjxrFFv4SNyg6ymi7UsKVmPAyIFttS7f/BkKRFkfnuH61yr3
-         dBiKYYT8cjdljtjrkPkEVLuRMCRqifUcjeRwXj0GtTvsVCUpQjeDiWTtQsPADjZPEx3J
-         fA6KHpjXqfu9XHOszZRR2GusJDiiB0411qBp9QpAlVoISNMBt40GZxKuc+dDtXdXJRzf
-         /Hjj2KRJ58X9QYA2xWJbQhhsqr7bzfeNkuvl94z8/jwFpWXnAGlQQ40+VoS8Xp4yNhem
-         OBkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738620533; x=1739225333;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YSoo65ANk1ACUgD5CEe1MmfBfCx6K8V18L1pZv5jKUg=;
-        b=eh2WPVwzLkPLYrK1TBDS1RUMMurUuDiWucLCb7RPg8PXNwx2UrD2N+GwhV7uv6fcp8
-         bF56vAF2GUDIG9g5uypBajA1E6l089TfnTKs/3rX148NnL4441f2DADkYtPzqTtvTtKv
-         lufz39yd2kg4hfgKI0LHdahnKoOntCLY0+b9/Wv6lMQPU/5BltKyWz69OrtRR0vOykNE
-         ecjy7jTj8j6IvM687WjQgMlZ9PhBH0qF7kHgHJ2OTinrY07J80x3/2dIij5lhH+iZcQn
-         myJ0k/m1helyeMb2/XDgkATsf0hiEhAFq+kuUabYsYAQxMyMMCNxucM3nn1kCVzlLgzg
-         ufOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWaIvKgpZZ2K/QyZQl68vaCmD0uAXKV/cBc0aXHwQYsgdXwyq7h+t2jL1GlmqaD+g/iETPmtaTt3UVD@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxm/Yj0ge1Xl2K6x5woQf8/TDy6TooqSr+r/S3Hj+GyA7PlyHpy
-	nTKY3gP7rUFYeek5lMbSzeYYDfeV8GetYytdAv7f2FoV/yV1WH0VWKGK+jwKkuB4RTX9Sm+SGva
-	TtQQkBV8AMw/q2Etiyx1iF5RTQZ4WbdyiHIxO
-X-Gm-Gg: ASbGncvxfqPRhY1pMFV1HpHZ+7XWXxFgG1yH3bKXfpI9RK3D7sm94UzXC77e9oxVQyR
-	WgCy7JoQuZP3e8rzvPmGwjCitS4yQf5fHQMmT9oZDzfmPLvuf/APMaktNrq9jAvcDDTpQDbnf8y
-	LHWH3gGb0DrJCPB41gMvlYm7uS+QH+rw==
-X-Google-Smtp-Source: AGHT+IHtm70vTgHPrrcUuJwFAa+5zFIj4hqVrwA8yzRqmy3Y13vzkDTGy11M0PhuNPkDVSVa0ZHRUqRBsdcAg8i1d2U=
-X-Received: by 2002:a05:6512:3b2a:b0:542:92ba:a08c with SMTP id
- 2adb3069b0e04-54400bd712cmr17275e87.1.1738620532535; Mon, 03 Feb 2025
- 14:08:52 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PLXGeL2I"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=M+BdEoAJQzHAW9sy8GECaCnqQPiOkYqdKDlIJf0IQ5yUjxMbtSLgNaOnJn0gMeU5qrCEtP67SUwJpcVpxz0n8auaBQNO/x8/dp459wiWcWNM4T2yugRh7NM1QCz2HwWR96V8CIycsMvLMgQ5YLX9iihbJ1YdDP9hz0Lj4rP/uiPwi2NyVyDxilGCBzoIe71aQYqxUOFa7e4JPnSOEPjKS+QQByVJWk9mEMCxzWS41lqq3XFgZCSllHdPZKibRIqCzlPPe8pNwGpF+EBK/ErOM86wqZ2Hv0BOi8STO4doTneZa673b+L7wijBTvTslCOQ8yjEPqxDXBf77TReWLbu7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2D5lXZBHVFDsmXl9n1XG3euKCn85ZJhr7IO1WYED/lI=;
+ b=qRNUVPJGASCxwj8UfSPHXj8iVGSoNCSc7/vKsBwrO1Ubx8ZKUye2K/EJH/5x7Ob3YUNkAQ8H1ZpLfBD30HjN/83K8SRuVlsrfmG2mS9aZkcWv4umc+jPwao2No3iSWxBdWecex7s4qBOL3PNJRzrDIu01QRjX2jC+9L3LKkzDTdNu9M9Yc9J5kqpDybuFQBLTRqZ1O+RkvwNWZMaOgWartSk8MCHpygY6ohE6kI88Xz3LSAxDYUVtzOsniWykijYCB++6ksg5czKHVZfvski0bbbGWB+AUPuKzz/r+GJBwaOMOJd0fXZXurNDyb8YnCLkoHgN8zPaFVn+a+yZJTj4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2D5lXZBHVFDsmXl9n1XG3euKCn85ZJhr7IO1WYED/lI=;
+ b=PLXGeL2Irl0ZgtABfiVo0n3CvYitfV5YS00d2ayWEzxgjazpKxxjQDqOZlAbGRdNhGJRXGlEY+Gby5qAK/Djnz1KHeoPqE19yGwZwmO8GO4f840SK9erFXl/YYbLHR8/t0tNS99Sl9hOIlMLRj4C2gCBAExSERsmDTSaSkB9WxQ=
+Received: from BN9PR03CA0395.namprd03.prod.outlook.com (2603:10b6:408:111::10)
+ by SA1PR12MB8859.namprd12.prod.outlook.com (2603:10b6:806:37c::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Tue, 4 Feb
+ 2025 08:02:37 +0000
+Received: from BN3PEPF0000B373.namprd21.prod.outlook.com
+ (2603:10b6:408:111:cafe::7) by BN9PR03CA0395.outlook.office365.com
+ (2603:10b6:408:111::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.24 via Frontend Transport; Tue,
+ 4 Feb 2025 08:02:37 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B373.mail.protection.outlook.com (10.167.243.170) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8445.2 via Frontend Transport; Tue, 4 Feb 2025 08:02:37 +0000
+Received: from BLR-L1-NDADHANI (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 4 Feb
+ 2025 02:02:29 -0600
+From: Nikunj A Dadhania <nikunj@amd.com>
+To: Sean Christopherson <seanjc@google.com>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Juergen Gross
+	<jgross@suse.com>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
+	<haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+	<decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, "Alexey
+ Makhalov" <alexey.amakhalov@broadcom.com>, Jan Kiszka
+	<jan.kiszka@siemens.com>, Paolo Bonzini <pbonzini@redhat.com>, "Andy
+ Lutomirski" <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<virtualization@lists.linux.dev>, <linux-hyperv@vger.kernel.org>,
+	<jailhouse-dev@googlegroups.com>, <kvm@vger.kernel.org>,
+	<xen-devel@lists.xenproject.org>, Sean Christopherson <seanjc@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH 04/16] x86/sev: Mark TSC as reliable when configuring
+ Secure TSC
+In-Reply-To: <20250201021718.699411-5-seanjc@google.com>
+References: <20250201021718.699411-1-seanjc@google.com>
+ <20250201021718.699411-5-seanjc@google.com>
+Date: Tue, 4 Feb 2025 08:02:21 +0000
+Message-ID: <85y0ym5e9e.fsf@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250129232525.3519586-1-vannapurve@google.com>
- <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
- <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com>
- <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
- <CAGtprH82OjizyORJ91d6f6VAn_E9LY7WptN-DsoxwLT4VwOccg@mail.gmail.com>
- <2wooixyr7ekw3ebi4oytuolk5wtyi2gqhsiveshfcfixlz3kuq@d5h6gniewqzk>
- <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
- <40418980-6e5b-48eb-bc35-7ffaf3221fd9@intel.com> <qzl5vkhykj4anuvjrhfco5qoeuib3oskffnxnqbcszotttnnqa@up5b4xl5l55g>
- <702c5acb-6bab-4940-a8f1-c346373167bd@intel.com>
-In-Reply-To: <702c5acb-6bab-4940-a8f1-c346373167bd@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Mon, 3 Feb 2025 14:08:41 -0800
-X-Gm-Features: AWEUYZn4lp_A5AbUjUHimrHcFYW36fbGNYwCsxNdJcmy9mUWfgPSBJE-b3l4FDY
-Message-ID: <CAGtprH-grdiE2AaagnYNUQC4ytSMxErYoh_Xyg2Nwmto33Yyyw@mail.gmail.com>
-Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via tdx_safe_halt()
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Kirill A. Shutemov" <kirill@shutemov.name>, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	pbonzini@redhat.com, seanjc@google.com, erdemaktas@google.com, 
-	ackerleytng@google.com, jxgao@google.com, sagis@google.com, oupton@google.com, 
-	pgonda@google.com, dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
-	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B373:EE_|SA1PR12MB8859:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7bcca8b8-250b-4212-1e7d-08dd44f24a06
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?nkNqDxv8OLfDQJg18fuIzIAYPP9di320vzrI1S8kGYGmlj3HNyIip+41Bck3?=
+ =?us-ascii?Q?Sg3M7kMfxi6mnnIBLYVmhcAQqmC+Vz93sN+U/QHjS6F8CuMyBTnWWtUe/VOz?=
+ =?us-ascii?Q?UBqaOR9UJNwxYdQs9ZAOycKnqhezERjLZ4Lcv7/UO58tSnoXTsXnovyifg2S?=
+ =?us-ascii?Q?x5oAV5pj0nm1vnT1VB6Qj4Alg9qU4irLHKkETvAvadrf6TEnAnUeRwWPc/sC?=
+ =?us-ascii?Q?erkscjM7K4RrUiq6vpeacVt7efhR7pO429B+2Sdd6sUp8b7tZH2smv6vxn9W?=
+ =?us-ascii?Q?dxwVCUvhbJP37zlRSs/a1a2nX4i8/qFDfcUrvFqFBo5QZzxUi3v1Y1lfvsXk?=
+ =?us-ascii?Q?UQgg9e3HToGuscu/flsde3i/t+6lquWpOKfOzXQ5MxJqaZCnj/3xbsMM3kLq?=
+ =?us-ascii?Q?annQKHRTc/4eOsEPZjEVz2bVg5EjwHaaTG4cgcbMPnwcFqKsVSiG855pM8or?=
+ =?us-ascii?Q?4n+B4Epcks9KGzNM9JqrxkFZmo9Y81qM4y8NBiaZajeFNGb4toShl0UfLG3y?=
+ =?us-ascii?Q?hyND63pB+JaGtpMNTf+bCApCTD017mua86MHzll1ybGxf2tTF7xz23moceH7?=
+ =?us-ascii?Q?mLn11b1IiTd0vcBkMiJ6b2Kw9j112BefpjnqUbLTKjcekmWcY2YuN0lvvTND?=
+ =?us-ascii?Q?7T8fDzYSu4hhIKDaYXhKDLm6ZbeFSVk54hXoni5LopBXmbjX/ZSDHRpVuVFb?=
+ =?us-ascii?Q?xFbHg6s0UDzgTJAyQOFGsWE4wsR+0m5hds5uSzrKNsMpoqBDPZxXcgu/Y3ZV?=
+ =?us-ascii?Q?TA3JukeN1OtsbHGZ5wx66QZ4cp5xkUkwwuM4YxbW2U70FvbdqCORxBaRzxe9?=
+ =?us-ascii?Q?iLkhWM9YMU6kvGEbK6R11OUfVjMhamhRSjU9mGk3PGWhFV3wvdxT0QEhtCNJ?=
+ =?us-ascii?Q?Cj91CNl6xk9oCSnxZ8oIfuQhTPddrEyzVfZ+klppxhihNOt9OeRZ1UpurQja?=
+ =?us-ascii?Q?25CuyTXZtXw/rM9rDiTkjyTCuqpvOYFB/3xg4RpjOA8dXbn7XEwEHPdr10fF?=
+ =?us-ascii?Q?c1bIvwNPucn4Q8uw/Z/xjv6cyAu/QK1gGw/P/g82YcFCz9N8JJYKdt2LrR9I?=
+ =?us-ascii?Q?lSviZMZWjKHXmK4Mp9hmEGwEGqmzBpyiOXfG9cCBgqfT+naK+WrRc45kjY3v?=
+ =?us-ascii?Q?IPSdUQWh70Iggg7PMHvizUw95KWWE/k1Y2v1nbCdHEJGj8WUPFkklc4KNQuL?=
+ =?us-ascii?Q?TWvTGtzsbeQwCLfrAdefojRL4LmSRbo3emqzcc+H4URaWSazdAQMjC0wnWzZ?=
+ =?us-ascii?Q?ju35P+9nJ7Ns0LxQH9HO8LArcdVfro6NibZ138k4eL/AA+Xum1/JXsmsl0HY?=
+ =?us-ascii?Q?qE2oFrGJ4eQVIQnqQwDphBeOGbNKi8sJ1MzprIGSZ2N9m50fe7dMpiKqIkxb?=
+ =?us-ascii?Q?ESBObshPIrK4leKmmSmlPIlC8ZRU3yu1bUkfBaSv+CJW9T2kOxupLHncZFvp?=
+ =?us-ascii?Q?zNVq6sVaBWg1z+1z8XohFcjfFOncqzDcwQNmIqWrUL4+TR4W6gyuw596UWWi?=
+ =?us-ascii?Q?IDqwuC1Q02kDp4ax71KkH2E3Sc+0yv1WpMIy?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2025 08:02:37.0386
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7bcca8b8-250b-4212-1e7d-08dd44f24a06
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B373.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8859
 
-On Mon, Feb 3, 2025 at 1:19=E2=80=AFPM Dave Hansen <dave.hansen@intel.com> =
-wrote:
->
-> On 2/3/25 12:09, Kirill A. Shutemov wrote:
-> ...
-> > But Sean's proposal with HLT check before enabling interrupts looks bet=
-ter
-> > to me.
->
-> "Sean's proposal" being this:
->
->         https://lore.kernel.org/all/Z5l6L3Hen9_Y3SGC@google.com/
->
-> ?
-Yes.
+Sean Christopherson <seanjc@google.com> writes:
 
+> Move the code to mark the TSC as reliable from sme_early_init() to
+> snp_secure_tsc_init().  The only reader of TSC_RELIABLE is the aptly
+> named check_system_tsc_reliable(), which runs in tsc_init(), i.e.
+> after snp_secure_tsc_init().
 >
-> Is that just intended to quietly fix up a hlt-induced #VE? I'm not sure
-> that's a good idea. The TDVMCALL is slow, but the #VE is also presumably
-> quite slow. This is (presumably) getting called in an idle path which is
-> actually one of the most performance-sensitive things we have in the kern=
-el.
+> This will allow consolidating the handling of TSC_KNOWN_FREQ and
+> TSC_RELIABLE when overriding the TSC calibration routine.
 >
-> Or am I missing the point of Sean's proposal?
+> Cc: Nikunj A Dadhania <nikunj@amd.com>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-I think you have captured the intent correctly.
+Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
 
+> ---
+>  arch/x86/coco/sev/core.c      | 2 ++
+>  arch/x86/mm/mem_encrypt_amd.c | 3 ---
+>  2 files changed, 2 insertions(+), 3 deletions(-)
 >
-> I don't mind having the #VE handler warn about the situation if we end
-> up there accidentally.
->
-> I'd much rather have a kernel configured in a way that we are pretty
-> sure there's no path to even call hlt.
-
-+1.
+> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+> index 684cef70edc1..e6ce4ca72465 100644
+> --- a/arch/x86/coco/sev/core.c
+> +++ b/arch/x86/coco/sev/core.c
+> @@ -3288,6 +3288,8 @@ void __init snp_secure_tsc_init(void)
+>  		return;
+>  
+>  	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+> +	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
+> +
+>  	rdmsrl(MSR_AMD64_GUEST_TSC_FREQ, tsc_freq_mhz);
+>  	snp_tsc_freq_khz = (unsigned long)(tsc_freq_mhz * 1000);
+>  
+> diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+> index b56c5c073003..774f9677458f 100644
+> --- a/arch/x86/mm/mem_encrypt_amd.c
+> +++ b/arch/x86/mm/mem_encrypt_amd.c
+> @@ -541,9 +541,6 @@ void __init sme_early_init(void)
+>  	 * kernel mapped.
+>  	 */
+>  	snp_update_svsm_ca();
+> -
+> -	if (sev_status & MSR_AMD64_SNP_SECURE_TSC)
+> -		setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
+>  }
+>  
+>  void __init mem_encrypt_free_decrypted_mem(void)
+> -- 
+> 2.48.1.362.g079036d154-goog
