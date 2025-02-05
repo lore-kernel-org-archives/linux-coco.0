@@ -1,167 +1,111 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1DE1FF1B3
-	for <linux-coco@lists.linux.dev>; Wed,  5 Feb 2025 19:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC872201032
+	for <linux-coco@lists.linux.dev>; Wed,  5 Feb 2025 19:31:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738782019; cv=none; b=KxIBf29n+CumbuO3PZuyg8981uPuWD7YTk9e2hMQ0w9lIlKYNBXw7/aOGps4/AxLbAFYzGWFZesptlRK7aJ//mcqgC83/PRivhYwCOJ8FQl5wtJwb2jGei+5ao4E71HUV8h7x8MVyHivTXPT9T3G0VkHR40xVrt+m1+Zxn8461I=
+	t=1738783919; cv=none; b=klB6dfYnvHIbxUoEWtbcDu0H4UoGYEtsHmMu491TRmgSoBkQXIMFURyydhHJ9+EZz2rteV6hBaN3g9Qat2+l5cyRH8sGTuXWwl95swWVqNdjGG+Jucg5Xk8hy+jzFhh7mHVsIPY74yFbq62IlG0Npb8QR47kG3u6jMFFtG+S1pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738782019; c=relaxed/simple;
-	bh=Xm2ual+19wDgSu/5eZaULH2c0ePkUyOKEbhBOy0r8CA=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=cd50wgsbSC0rAnzeKpscfA2k8Hb+qTnHAhEbUaEzHX7ZLNbUxacThxqyqxcbM/gRn2BSPivfKw6B5381GlENMyaqvNBtPqEFhohEslluBb0Y72mnQE3m2PjPfBXyri/CptSIB5y4PNrDuBwz9zLvl9Fev/iJUOo0GnGXB67nv4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X1idRGkx; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1738783919; c=relaxed/simple;
+	bh=2rxoVBPGkYRdke7t02zWdPgQ6HfJzuAcVvL+PkSrGoc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=USb0mwepXtOKW3dqiEH42QxxmBKNQbmetsYkvoNJ7EAR91XyDKIuu2FEZGQUIXr/s/qg/5jXoK5c4WeEAAae+SB+vOIBlhuQNt4lIoNjqYFUS26CHF4qOdOxH5h74D13+c17FbE6OoL8RcFLWP1PU84xSqEVXvWpxaBwjlCgBxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3U65+wq8; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X1idRGkx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738782014;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=MnTEmxYLFOJl/4mlhCIKwxUFV097K0d0IrDExUJf7kg=;
-	b=X1idRGkxtVE+A8z6HH9y189b4OFVluxchoLj6Rj8H9KZXHnhpbteVvRcXhH0Ej7NPq2Zt7
-	DJNl4KC9X2r5ie0bDPnYrNKMBrVbp56k/YalfzFO03o+0/4yiQLKud1SbNTcPDyRZx7U+i
-	50dSPcul6s/zlBQBSfhHYoCB06WRDUM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-142-TLWXLrywNMGoXOnNHmU0kA-1; Wed, 05 Feb 2025 14:00:13 -0500
-X-MC-Unique: TLWXLrywNMGoXOnNHmU0kA-1
-X-Mimecast-MFC-AGG-ID: TLWXLrywNMGoXOnNHmU0kA
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43625ceae52so562085e9.0
-        for <linux-coco@lists.linux.dev>; Wed, 05 Feb 2025 11:00:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3U65+wq8"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2f550d28f7dso109905a91.3
+        for <linux-coco@lists.linux.dev>; Wed, 05 Feb 2025 11:31:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738783917; x=1739388717; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ityHFYbQHjCJ1n0TCLpdhG0BGuuO1UwpdTT8iBBDxQE=;
+        b=3U65+wq88sSYll8tX5YcgTSthuIPWCP3/hnEN5aqaYTYfzN/EaZd2gSceYUDidDKm+
+         2jje+5ccJpLwkdD85mvUv8BrgeNq9b3kcgQIDo3mDwr3ex+JYy3tx30maG36DQDrbCRz
+         YjxkSgLA2A9tEpfNBAZ5a7b6kck9adyJKvXhMO2fGkX8rP/RNKSgdyV+4IIXKYQ79bTc
+         yk02CEoniQIE0Cz7PH0xG5OE28XA7/ghKBiIBs1wBR4LaTI+BskHiDQbuVGpBvPhMRuk
+         POA5bc8xw3MPxBDbC9OZnvi1ri36XRKXR0iIs2d4wFkMhemI+A7tGydVqhSZGfAK2If9
+         fT9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738782012; x=1739386812;
-        h=content-transfer-encoding:to:organization:autocrypt:subject
-         :content-language:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MnTEmxYLFOJl/4mlhCIKwxUFV097K0d0IrDExUJf7kg=;
-        b=D/rqDYpJcK/oC9TeiuHpdEap+utSUOZQe6HXe8LrsQEw1nVmbuSYzWJfiKd0l3st4e
-         ahdDXhlNfSmhZa6jgb+3KZ2RH0WQ1stQ5Aimk/VWtz76BjyfGBb7n3FV3//aj46dIsf/
-         uQipClZdDhye98SXewRt2w/pREEmeZnUfatLgQWym6RDaaOnW4INodW+DAG33g232rF7
-         UCLYt+Kk9flrI52S90qL01FGSi1iuqRRw/y2mrHwQQuYF9gfjMcMb219hsbuZVQJn+bx
-         06ZCljmx9a4yQzA9MxWhQlW6JY7pJ/kVNDQATJOb9bFPbHayQ/JAAS+bp9IQHBjgWhFU
-         UOZg==
-X-Gm-Message-State: AOJu0Yzzk8I/GGUJlrG0zrPi40tg4TcEF2Y3eF2JWsdD8bxImu4tqBl0
-	0V4Qe2NQY9j9MflI8NBKOqx/1e50LpR1nj3MPgAdmLkZ+3PMGXaX7UBofxqNvvv/pm8vi0YV07O
-	Tdf/dU5x11OcEe/w+gmWvIgi5+59lFNO02Pl1mHSQ/IwnkrN9e5TJDuNNb+qbTkrIe1roN3UMk9
-	mKDPaf2DpcMtCXkQbBBWJzcBafW1WYHUa6dX6MB99klhZq
-X-Gm-Gg: ASbGncsCxm7PtKjYoJKcVFqdD6JBOjk90gWMsddJgeg1J0PxSpiDBRyuFTrbj89GBcH
-	QZVw8AE36FNC0PH3kiQPBs0Ycb+nD0srdpBEzhS6PUB3N38bQd8ii6SBxWOlBbbaVIPJqmErd0L
-	sMmD1codveLbIVFzMUjpG+A3qai1ZyGrUEjev5MLNuz6I/xD4Zs2NDxPLT3+yeLmu51jm4wlcFX
-	rZs2vIscXZQFVegu+t2ZkyuV5JFeq8jamInoGVY9G/5/noQbizABW7Vh5ED5+sorVawO+79IT8w
-	F9Frp/K40Wbk1paiWJz9s9uVxC3OBJV2cH4LSfCBahozWjI+KwG0D4TLnkGCwvu/N+AIhYg0hRI
-	jw31duHClm2jQ6Iqn4oR7wF0ZdMw=
-X-Received: by 2002:a5d:5983:0:b0:385:fc97:9c76 with SMTP id ffacd0b85a97d-38db4861100mr3390925f8f.3.1738782012221;
-        Wed, 05 Feb 2025 11:00:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHi0Zp6oz/B5GAgsxiZFqft/mc+2xtesvghBC2j8Rwf94QOQmWTS0YNmVzMbdpt2+N+GgA16Q==
-X-Received: by 2002:a5d:5983:0:b0:385:fc97:9c76 with SMTP id ffacd0b85a97d-38db4861100mr3390866f8f.3.1738782011521;
-        Wed, 05 Feb 2025 11:00:11 -0800 (PST)
-Received: from ?IPV6:2003:cb:c717:600:ce7e:1bb1:53d:c929? (p200300cbc7170600ce7e1bb1053dc929.dip0.t-ipconnect.de. [2003:cb:c717:600:ce7e:1bb1:53d:c929])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c1cf896sm20160606f8f.94.2025.02.05.11.00.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Feb 2025 11:00:11 -0800 (PST)
-Message-ID: <c980f0af-9f98-4bb9-9bfc-6ddd6af20fe9@redhat.com>
-Date: Wed, 5 Feb 2025 20:00:08 +0100
+        d=1e100.net; s=20230601; t=1738783917; x=1739388717;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ityHFYbQHjCJ1n0TCLpdhG0BGuuO1UwpdTT8iBBDxQE=;
+        b=cB5hIXUfu3IvqVJZ3Q56o0h8IbLGuJ0TudElYXnrf6B8T9BN1HEONzH6auXsJHqKWG
+         EBzkmrdhy4iqgkPMdPiItehHAeCd+jq+AbIAMy07DLLrtRioxNFDfEKScs4e4TahgOKE
+         hjp3NsX0i5mTwrNjA0bpnMzyFE+FbGNKslDbv+q6b3t0UB6gVRnfVxd5GFWsL++9Aznw
+         6Shwq0UUf14mcFB4QVoOsFXkv2ql4s1FTfok1/iJkFvtCWlNgI1d8R1/l71xFfSU21OO
+         ZsspLUrvwL+l4P0Hz9pyuO3wXkvmJcRV0ErSn2qcR1dOKVkoqJ1uU1c22yV8Xm4vJW44
+         SABQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXpS3Lx7W6l80SjuLfDRiHRaQkQxUHO04NoOugEyomgKzg6CC50y5xbq+YuXwK08e65k1BAkAMhXBlc@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw77L/toU5qxqzU6c577ZG/JYYlznBwCIM/EIOp3Lwa6w4LEXzu
+	qiCYDwDnrrIMVPrqQ3il7WAaNo6cYhkVyZYa7jR0NvpsAqIy1KJweWAZk4dLd3xFXXJawsNx210
+	mNQ==
+X-Google-Smtp-Source: AGHT+IGYpR9H2o7CsrEfJdhduqV6CItDd+RRnz38obHEp/U4zWkL8bbKIHK5OX1zzdtql3FDGJLnjb3ZcYY=
+X-Received: from pfwy2.prod.google.com ([2002:a05:6a00:1c82:b0:72f:f548:3e09])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:28cc:b0:725:f1b1:cbc5
+ with SMTP id d2e1a72fcca58-730350f96demr7928023b3a.3.1738783917255; Wed, 05
+ Feb 2025 11:31:57 -0800 (PST)
+Date: Wed, 5 Feb 2025 11:31:51 -0800
+In-Reply-To: <8f7822df-466d-497c-9c41-77524b2870b6@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Hildenbrand <david@redhat.com>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2025-02-06
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: hb7lRuB5lUv2mBgd5blalH87rY2TcLRv0CsS0MpduhI_1738782012
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <cover.1738618801.git.ashish.kalra@amd.com> <e9f542b9f96a3de5bb7983245fa94f293ef96c9f.1738618801.git.ashish.kalra@amd.com>
+ <62b643dd-36d9-4b8d-bed6-189d84eeab59@amd.com> <Z6OA9OhxBgsTY2ni@google.com> <8f7822df-466d-497c-9c41-77524b2870b6@amd.com>
+Message-ID: <Z6O8p96ExhWFEn_9@google.com>
+Subject: Re: [PATCH v3 3/3] x86/sev: Fix broken SNP support with KVM module built-in
+From: Sean Christopherson <seanjc@google.com>
+To: Vasant Hegde <vasant.hegde@amd.com>
+Cc: Ashish Kalra <Ashish.Kalra@amd.com>, pbonzini@redhat.com, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, thomas.lendacky@amd.com, john.allen@amd.com, 
+	herbert@gondor.apana.org.au, davem@davemloft.net, joro@8bytes.org, 
+	suravee.suthikulpanit@amd.com, will@kernel.org, robin.murphy@arm.com, 
+	michael.roth@amd.com, dionnaglaze@google.com, nikunj@amd.com, ardb@kernel.org, 
+	kevinloughlin@google.com, Neeraj.Upadhyay@amd.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-coco@lists.linux.dev, iommu@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-Hi everybody,
+On Wed, Feb 05, 2025, Vasant Hegde wrote:
+> On 2/5/2025 8:47 PM, Sean Christopherson wrote:
+> > On Wed, Feb 05, 2025, Vasant Hegde wrote:
+> >>> @@ -3318,6 +3326,9 @@ static int __init iommu_go_to_state(enum iommu_init_state state)
+> >>>  		ret = state_next();
+> >>>  	}
+> >>>  
+> >>> +	if (ret && !amd_iommu_snp_en && cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+> >>
+> >>
+> >> I think we should clear when `amd_iommu_snp_en` is true.
+> > 
+> > That doesn't address the case where amd_iommu_prepare() fails, because amd_iommu_snp_en
+> > will be %false (its init value) and the RMP will be uninitialized, i.e.
+> > CC_ATTR_HOST_SEV_SNP will be incorrectly left set.
+> 
+> You are right. I missed early failure scenarios :-(
+> 
+> > 
+> > And conversely, IMO clearing CC_ATTR_HOST_SEV_SNP after initializing the IOMMU
+> > and RMP is wrong as well.  Such a host is probably hosed regardless, but from
+> > the CPU's perspective, SNP is supported and enabled.
+> 
+> So we don't want to clear  CC_ATTR_HOST_SEV_SNP after RMP initialization -OR-
+> clear for all failures?
 
-sorry for sending out this invitation late ... I was/am busy PTO'ing :)
+I honestly don't know, because the answer largely depends on what happens with
+hardware.  I asked in an earlier version of this series if IOMMU initialization
+failure after the RMP is configured is even survivable.
 
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2025-02-06 at 8:00 - 9:00am (GMT-08:00) Pacific Time - Vancouver.
-
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
-
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want a google
-calendar invitation that also covers all future meetings, just write me
-a mail.
-
-In this meeting, we'll continue the discussion we started last time:
-  * guest_memfd without "struct page" (i.e., no memmap at all,
-    or dynamically allocated memmap for "shared" pages only)
-
-Further, we'll likely continue our discussion on:
-  * State of huge page support
-  * State of shared vs. private / mmap support
-  * State of shared device assignment support
-  * State of "guest_memfd as a library"
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
-
--- 
-Cheers,
-
-David / dhildenb
-
+For this series, I think it makes sense to match the existing behavior, unless
+someone from AMD can definitively state that we should do something different.
+And the existing behavior is that amd_iommu_snp_en and CC_ATTR_HOST_SEV_SNP will
+be left set if the IOMMU completes iommu_snp_enable(), and the kernel completes
+RMP setup.
