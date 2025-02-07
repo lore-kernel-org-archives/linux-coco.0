@@ -1,108 +1,117 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D0E1DF240
-	for <linux-coco@lists.linux.dev>; Fri,  7 Feb 2025 12:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AC723FC5E
+	for <linux-coco@lists.linux.dev>; Fri,  7 Feb 2025 15:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738930192; cv=none; b=P8kM4tKdsYtx9/0iz/UdQwF0vg3vOIfgbEGxfsx/78OlMl+V2Q6TV/KUSIHQlgcJg9AzqyRWK7IJls/zMIGrTr8e3V/PTJ5GuDxceUPQ8+TXaRF7toC2zBhfHMn171wAS4PV9Nvv8kE42kzq6aZgg4DNLUw9FQ2h2ffldHfICeQ=
+	t=1738941776; cv=none; b=O0cWb8/B17LPEVsjRJa2Ao/5rr8eefvvlvY/8UivG5yPTydaF7g1fFLZoFVj3sgnmRmB3XsqldzxUUldsnAfbHuUBosQrOYpTYBtwDTpmQzP3o/MaNa2jxYE4sJaYjslS1SWPl1+c3tOLZj7vPsjukGPYK9KJctTWlJkFhkpmq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738930192; c=relaxed/simple;
-	bh=4pF195jRI8mjpC7aYEb7qPcoCnajxFj1HhZA4jePVNk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sglkkh8GmPbwKG01nzDEDRb36iqG8RmpPh8Wb8I4qeYCdgFmekxcHH67TH0LN8LDO1Vkzuz5gZrf/sQHvjQ1I+gH90wbLLgBhJq8OA1woaf57y9mQrYuE/tztCf13945NO1rtIkOQaqRcXbH3kvzuILwadLQGFH7CVmwJ2miOyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iluNVOlS; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738941776; c=relaxed/simple;
+	bh=kcqXU0L80fJwg+01toXpktwYGd4IF+d2ulZzU+doSZc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=rjamQlCJh33cYUIYPKhHOHHawzA75DSCbmp3r4A/Qd87Ap12Px/lr/1FDr9w0cAm+Zj6zn8AT5A89okc339QoaV3ykroIePidnZQms/0Vgr0P4ytBMByCep7/5VXNlNu6JjcQ9h5TErTMIEtNknp42LTcXUfh8xtfHZtTY/lH5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3i+D2XR3; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iluNVOlS"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ab771575040so367564966b.1
-        for <linux-coco@lists.linux.dev>; Fri, 07 Feb 2025 04:09:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3i+D2XR3"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2f9da17946fso7110433a91.3
+        for <linux-coco@lists.linux.dev>; Fri, 07 Feb 2025 07:22:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738930189; x=1739534989; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4pF195jRI8mjpC7aYEb7qPcoCnajxFj1HhZA4jePVNk=;
-        b=iluNVOlS6W7jf1KTVJ0vthXrmBldJxG0fAUmQhUx8wBHYNi6Hmviyp5W8HAEYPBE/L
-         i3x/FdJ5BYdVPJh/Ww+tATaAt58RbrnUYSp9MltgWQ5UPIkFWK+Sk7VbGtxvtSuSooat
-         axDl6oOVR36Cn2xA8OjHZedPmmitq07KVIoQ3KlUDg1fY5H1tUUVV5/anYC9KU5racjH
-         Grxd8BfPZbVy5nJ8mbqrS+cv+CFHe2Rw68wedcF3v8I09pGC4WNfbxP/gNROALZQ3fwN
-         hvWasFQOUfEwAtO/R4dS7OwP+6munTKEWffLLWi6V3YwnvRg4UtOFIHrkXaTqjsUuJWf
-         Xgug==
+        d=google.com; s=20230601; t=1738941774; x=1739546574; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kySEHqcfMZJGhyvftSCQ9iS/BRr0aycsLdTwptb27hg=;
+        b=3i+D2XR3lB8Dim+615OBtYEdj3iapa74Qj+n4GglcvjIe5hWh+VaBFKPQ6k33rbpNj
+         gd9oyx2lR4vfpsQ+0vgBQT0BJfF9CqQdCL7a4mnwoOo/gbH3YKRVPIBlEaC8bUdeUukv
+         I7+pd2drCQAotPC/3H87FUmT+IGWQSLR6Uu/GXm4PzAJnz857hcS5v3sosikv2lwJSAY
+         sJ+k+RBRxO7VrGlceP/86EJWHeso7oqciPjOnyacFlo2aIkhq2Z1p1Y44KE0zB2ezhrb
+         Y9KPd7jAPpuTjFRm4TOmMMOOqzl1LoiPOZzM/M0X1VOwxLbXAUIcgQSixGbD9XGBr56Q
+         JkYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738930189; x=1739534989;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4pF195jRI8mjpC7aYEb7qPcoCnajxFj1HhZA4jePVNk=;
-        b=sRSYnLOZudZe4Gg2Dj9uIwWoxoHJSuZEDZv+ou1xLk/mrV6rCOESrjC2ssVw9ArdY7
-         k2tnRdhccSl4dVNqq4oMIWgpiXkwJQorX/0pDdhqm/tu6Z1dfFvvXL9RxyeQS7XYdBdk
-         nXIaxABqxwAlJPAhXjqLHgMD8u730589WJGn7bl68s8PjLb3yzmS0mgH0s5v+4fL6dpa
-         1oY3rFXrHvIsVbDBbn+LV28+Rj1A3pZJu7bvWBWaNH29NNVkodmVmfh1Lc+XqTb0UAb6
-         iKbFyCqPfgcaLkO6JVYmOX/G7Bi8KPwIma2rGjIfUpaxMXIhDDfB17ugUBdYk5yTCt5O
-         xsNA==
-X-Forwarded-Encrypted: i=1; AJvYcCWfaJehr5OtFkxAQvM6pFZ/YY63owawpAi5g95Cvjx2t1FF7MEW45rch8aTg0NEG7X8VtV4yPD9aqhd@lists.linux.dev
-X-Gm-Message-State: AOJu0YwhJIbYkNPRC0Eenxcjq8jZNFNqV6G1CkvRV0hs0oZQK5Ud/FzG
-	IoFUCigJ9G3ddeBZUoQ4UAprtl3tcWoEaLd2DOefDhI7lhThChAkK12V7mkir1a46kNfNCK9z0c
-	E6SqaMp0g4iUv0N+G1yAMTt5GeNk=
-X-Gm-Gg: ASbGncvqnHeWYceWfVffZj265dpKa4qDx8gPu8NO0qwooEj6F+5/xP739YBVfBTLEAM
-	3hnOVSQuIpwYZGN7K7Zn9Xlvsgzav/Wm4KN2A5qw4wVmHXXhs4rtN5v4eISKtvmRkHyL0cy1wIv
-	k=
-X-Google-Smtp-Source: AGHT+IHrbiWskXPle5ImdwLhrdLRBq1l1ymqvuJ3iK9ve3uv7DBb+2jINGkUj60DkJxJ5t3LfE4k4WUHDMyRSckgp7U=
-X-Received: by 2002:a17:906:7309:b0:ab7:6d48:10a9 with SMTP id
- a640c23a62f3a-ab76e88d3a0mr822173366b.8.1738930188495; Fri, 07 Feb 2025
- 04:09:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738941774; x=1739546574;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kySEHqcfMZJGhyvftSCQ9iS/BRr0aycsLdTwptb27hg=;
+        b=AzHeU+oyOUOShn+0sR9C89rz4iNfkaCCeDO/uXG5OomjNCXZmMNBtynOaoyrYdvbhh
+         N7lO31COd4/WWKU8DpBOm3ab/K4Hs6dDdkTuJ8fq88KUxltzFkL19MoLmC1BRVXjwZ+q
+         Kz/iP0Wi4vh29YGDskTmn0001KIHMdSAwr18mzT8lW0eBWUlfhng8NvRhqQeeeDy/uSA
+         +cJKW+9o5AySF/MxTGzFs7FS8nyIaDnKLdjgUaqOr96kk5gAMQVpB51aEPGBTJtkSdYU
+         ijRpM+X8r206Sc2NzB8E2467GuUFiIUVJUx5g1KHZDnwsTgEp2Y7qwNGay5bTpN0/6hp
+         RH8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVsrWg3CSZ2WJOSA1IJwBHFtorttutnESDHFa3rtm030pe3Pqu4sowRfV0t/WMl4GnCQLWrqSm9VmZC@lists.linux.dev
+X-Gm-Message-State: AOJu0YwK87av3rGyneCUC7QKDkkoTpy/Saphj6uGyohld3k4q2qjkYdE
+	b6VyBhv10DvtM4il7I6y+XyhGC+08HyI2ij7uBn7MTHUBz4a+2lerL8yY4UmdjC2Blz9gH0EGsQ
+	N5g==
+X-Google-Smtp-Source: AGHT+IEU6jz6jlB8RaafTWWusxmACRAVwVTNLzOLEl4OKUDHMmuGMK2BqeIFN1+9CKAxpxYyavZXdA2p0Xg=
+X-Received: from pjbsc1.prod.google.com ([2002:a17:90b:5101:b0:2f9:d9fe:e723])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:19c3:b0:2ea:5054:6c49
+ with SMTP id 98e67ed59e1d1-2fa22b95ba5mr6440969a91.0.1738941774000; Fri, 07
+ Feb 2025 07:22:54 -0800 (PST)
+Date: Fri, 7 Feb 2025 07:22:52 -0800
+In-Reply-To: <20250206222714.1079059-2-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20250207005832.work.324-kees@kernel.org> <20250207010022.749952-6-kees@kernel.org>
- <b4f08d43-c421-4e8d-9bbb-c954c4472f8a@intel.com> <202502061835.F57547B@keescook>
-In-Reply-To: <202502061835.F57547B@keescook>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 7 Feb 2025 14:09:12 +0200
-X-Gm-Features: AWEUYZnChrRXXIJNdmCjHjynXFGSUufAJmxvP7Q8yY-4-DWvfhOKjUuhnQ7LHUg
-Message-ID: <CAHp75Vf4R73_GMNvsEWd3nyUKM8UEP22=9umArVsHYOA=dycWg@mail.gmail.com>
-Subject: Re: [PATCH 06/10] x86/tdx: Mark message.str as nonstring
-To: Kees Cook <kees@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>, Andy Shevchenko <andy@kernel.org>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
-	Sathya Prakash <sathya.prakash@broadcom.com>, 
-	Sreekanth Reddy <sreekanth.reddy@broadcom.com>, 
-	Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>, 
-	Kashyap Desai <kashyap.desai@broadcom.com>, Sumit Saxena <sumit.saxena@broadcom.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Nilesh Javali <njavali@marvell.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Alexey Dobriyan <adobriyan@gmail.com>, 
-	Sven Eckelmann <sven@narfation.org>, Tadeusz Struk <tadeusz.struk@linaro.org>, 
-	kernel test robot <lkp@intel.com>, Erick Archer <erick.archer@outlook.com>, 
-	Dmitry Antipov <dmantipov@yandex.ru>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, linux-kernel@vger.kernel.org, 
-	MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org, 
-	mpi3mr-linuxdrv.pdl@broadcom.com, GR-QLogic-Storage-Upstream@marvell.com, 
-	linux-hardening@vger.kernel.org, linux-nilfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250206222714.1079059-1-vannapurve@google.com> <20250206222714.1079059-2-vannapurve@google.com>
+Message-ID: <Z6YlTG3QV_Pv6nRo@google.com>
+Subject: Re: [PATCH V3 2/2] x86/tdx: Emit warning if IRQs are enabled during
+ HLT #VE handling
+From: Sean Christopherson <seanjc@google.com>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
+	sagis@google.com, oupton@google.com, pgonda@google.com, kirill@shutemov.name, 
+	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
+	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Feb 7, 2025 at 4:37=E2=80=AFAM Kees Cook <kees@kernel.org> wrote:
-> On Thu, Feb 06, 2025 at 05:12:11PM -0800, Dave Hansen wrote:
-> > On 2/6/25 17:00, Kees Cook wrote:
+On Thu, Feb 06, 2025, Vishal Annapurve wrote:
+> Direct HLT instruction execution causes #VEs for TDX VMs which is routed
+> to hypervisor via TDCALL. safe_halt() routines execute HLT in STI-shadow
+> so IRQs need to remain disabled until the TDCALL to ensure that pending
+> IRQs are correctly treated as wake events.
+> 
+> Emit warning and fail emulation if IRQs are enabled during HLT #VE handling
+> to avoid running into scenarios where IRQ wake events are lost resulting in
+> indefinite HLT execution times.
+> 
+> Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>@linux.intel.com>
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> ---
+>  arch/x86/coco/tdx/tdx.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 5e68758666a4..ed6738ea225c 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -393,6 +393,11 @@ static int handle_halt(struct ve_info *ve)
+>  {
+>  	const bool irq_disabled = irqs_disabled();
+>  
+> +	if (!irq_disabled) {
 
-...
+Wrap the check with WARN_ONCE(), doing so adds an unlikely to the <drum roll>
+unlikely scenario.
 
-> > So, the patch itself makes sense. But it does end up looking kinda
-> > funky. We call it a "str"ing and then annotate it as not a string.
->
-> Yeah, this is true all over the place. It's a string, just not a
-> NUL-terminated string: *sob*
+> +		WARN_ONCE(1, "HLT instruction emulation unsafe with irqs enabled\n");
 
-Maybe call it respectively, e.g., __nontermstr ?
+Newline is redundant, the WARN does that for you.  IMO, it's also worth adding
+a comment, because this is like the fifth time "safe halt" has come up in the
+context of TDX.
 
---=20
-With Best Regards,
-Andy Shevchenko
+E.g.
+
+	/*
+	 * HLT with IRQs enabled is unsafe, as an IRQ that is intended to be a
+	 * wake event may be consumed before requesting HLT emulation, leaving
+	 * the vCPU blocking indefinitely.
+	 */
+	if (WARN_ONCE(!irq_disabled, "HLT emulation with IRQs enabled"))
+		return -EIO;
