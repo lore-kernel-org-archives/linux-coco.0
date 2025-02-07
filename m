@@ -1,148 +1,268 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2053.outbound.protection.outlook.com [40.107.236.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AE32A1D8
-	for <linux-coco@lists.linux.dev>; Fri,  7 Feb 2025 17:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738949008; cv=none; b=SadrFSRsdK4kaMxpDI3EkC+mzQggnlBeHv3RqIPXsxaqAGu+Q+TPTc5R2+CtJYS6PYGuF07h6F4EUdeYxIL0WHlCBqsG5UWBar33btum3GdQHJE7wp/ZL72NWTwFlbhhl92E+TAylkR2M8y1l664/Zrw//JWbGdY8rA05NlFivs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738949008; c=relaxed/simple;
-	bh=PQxPFXqaG62SOXmTydcGFIcOTiJY1WblAeoXwXAFCxQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=o7OkxQ49EUiJm255XRB7nUylTU0aODBsM7hCcJcY+5UqYzlHi1Q/UlxxRTctLxcRgE0zxWDbO6EuejnfRZYtAgDCh6AElDeWWS3CxhGOCq3S2PpgiGM7PmyTu7TzWW42N8JvngwxQMz3acVhMDsFFD5BDV4sPJKgOJ6LmqGKB54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZOdCMkSq; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFB61B85F8;
+	Fri,  7 Feb 2025 21:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738964761; cv=fail; b=bSwzgUMV5EhvntGmisbN7zDhaWbU/KmW4TJ1SYa1WW1gWYIkct435PTA76R6mRMl/wVIOsyZX+duvJFKxRpY5HqcJWmILiQU93XNjG+tKAhzZ2vE3lyIOWMtLkyKHU/6+qBkHDiXR6V7GyLtQCm8v7kr8mP8yE5djkr0OZrm3UY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738964761; c=relaxed/simple;
+	bh=3jUQO2438vpKOSMo8g+eM+1r84ZjYXFMXzabbg84/hc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=GPRqvYyyLnA97jcGZGAA3BDFXxrdGnl+RKGnwnPz+L14ymG9ujDH9EVgMxBqbFH0Ynbw66iucVVNjYlHOk+2IOLi93cOpV3Ux5CxhvGdDXvvKREsMAN3hLUgq1v/Zn+ErCmYh8mmWZ/yEjrwBjErRLBzVssmo1lYxYRgIK9DRCs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=clseq8qr; arc=fail smtp.client-ip=40.107.236.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZOdCMkSq"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2fa2e61c187so1317993a91.0
-        for <linux-coco@lists.linux.dev>; Fri, 07 Feb 2025 09:23:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738949006; x=1739553806; darn=lists.linux.dev;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vOcxbBJpr4MsHRRcCFUSvs0+uPDtrFbSKcqYFX6+hYs=;
-        b=ZOdCMkSqaBZcJlES9m/Pa/PWhlLZUk09+yr3RfhttuCP3XiSBcCtljdaqLDu0iTi9a
-         AJDnmpD84JLXJkFbRZSMTQdgCo65NiipR7dc1b9nE1NyLYJv9FSrAvfZaxG/2xGmbMk1
-         aRQGOAeA38BlNydftn3sccJRj+/ErOEBS2Vm86NIwO5SyVVYrLnjqRfhAOi9VGu+D+YU
-         TO57xt1S/f0QRKLmOP1gYgkbSxcWEB/TZ7TJTss4Dwf+YDsXyhPCa+zSZ9w5/CAXpii/
-         MpqQ72Gi/rZPR/CbgBbhX4b52iHPi4wt1ZIoP/02o4Gp1kEG1k7YEesisx7rKCQdV27D
-         mQ8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738949006; x=1739553806;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vOcxbBJpr4MsHRRcCFUSvs0+uPDtrFbSKcqYFX6+hYs=;
-        b=EeOsPD7YKO7KIIMM+t+G0tGS8YvlAu6ayfiT2cw/AQN7obNs4JKboOImWYpm3wLdiQ
-         oDD8lDh2HkWtqIhQ85adoyel93UJCOxSD9D/+l4pPIA7Ryypk3gRTV0rKj3+0c1rGjtw
-         LE6triCdhyMknYCjRnX4YGDbGW2I6PVMEhOAhnNamnsRkjCaVtE0ie5nHss8QXCKf3Rc
-         sFvxoBEXkyAlYZ+zINyfglisB5/iX6AWUTXWCQxBvHQNPKaxG73cX0XdN6VSwZx0yqmb
-         tpnUNfWHBxu0/QSwkGSi/dTUDgVFBT9j321U1fH6vLl1FmnkHi+I+mGrKFY7uHuLa+7j
-         2pNw==
-X-Forwarded-Encrypted: i=1; AJvYcCVWZsDwOnpG54hqGkHONZorxI22gGTNKWtDZ8FUgKRKye7Qp+sIyLVNWKkE/2LHpYWl0kbRkYiOQBO/@lists.linux.dev
-X-Gm-Message-State: AOJu0YwgIw/ZRDZq/bOlpU/dMMIOp6w4s23GF1NyU6/7ActCyNGYosdV
-	wQge1LOTQ6DUkYs0ivoi3Knmwkc5fC5x8t5VtKoZfGa4PunUb/3CgD4uEaAaOMGPmJ2ZGhLc5Up
-	Ndg==
-X-Google-Smtp-Source: AGHT+IHtKk+I6CjiXseOd50XgDWMmjujWmhaISGeVrM7QdPNRD38ZmcvZcY1czgAsTeMYVLsyWS8xRRgOkA=
-X-Received: from pjbsv3.prod.google.com ([2002:a17:90b:5383:b0:2da:5868:311c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2685:b0:2f5:5bc6:a78d
- with SMTP id 98e67ed59e1d1-2f9ff78641amr13455568a91.3.1738949005804; Fri, 07
- Feb 2025 09:23:25 -0800 (PST)
-Date: Fri, 7 Feb 2025 09:23:24 -0800
-In-Reply-To: <20250201021718.699411-17-seanjc@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="clseq8qr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=o2FDwcijkSbyp3hnzSM1sJR5yzV8Hyeeiym5BdmmrYlkoHEYk98eWCF5/nqrdp+WkgGkKk0rqjZNo0lvIRr8QmTimtsrdiFCLzvw2qRjAs/a1SNlrJHzrATplROHYDC0fFXIQwXaGMzJ6deDmXuaizir64R0prL2B74FgMH+qSwW3oFnoVlTtnK8JrgefmXujxcLDhtMU8IiCaQbZ6cNRm2Ns04hcxvRAteyVtbuC1kIQKT1ssvMuA0S7hYQ4r7f8ZQ6BGp8QzT3MaJ+mRAvb2ljlqdYlteGyFbGCWAmpADivhDxSAONCLZKJOkPDfRl2mPy4LuY9PaZLx0CK3Kjig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HF8nwi8qjU/jJG1a02yZjGM1UgyeJbmbaDKPFnTba1w=;
+ b=NBNLjL3HNB3B7BPH7kFhMGod1gJQPnIIB9lQKf49e41nqwAK7B6LSpqtWcr6TC4BX/UXAFseSg/nig4cxT0On2HMYhHzNgEpu+y+jPyymdaM+J9G04GNKMmtPtXdpscSQ6EWoXpzImY7A4geynDWuQQrl064xZV8zNSgIrpPj/TCGO93ZBkSdeRkuUtbCQdXQIPstVVBXHb+3DqEBCQN/J1mh3ebsSuls2qZ+NQ3+RunS+XxfFiEF5dcwYkaf4wD8P4I0h2O/TvM7sCojMNysmZo6zwtea2glohy9h8YCMh/Ucr7xJHqLFDd34Zz9q/f05n2d5WQ7gwf3/pDL4PHsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HF8nwi8qjU/jJG1a02yZjGM1UgyeJbmbaDKPFnTba1w=;
+ b=clseq8qrgc/z1LhMddGwANJaxk+JHTojuPEvj1Q9r8Np5HaiOd2jAFfyCxUMMEANY1ISryGnVIhn50d6aWS5qNxoXWcSOJ2LTlt5MYdQsbnw7LnVEXtt4XYmMs7kQZ1/lukO9iCZvgcOXaAzIcLIq2Xlxb08aIfhJ8fsyJnaUYg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5062.namprd12.prod.outlook.com (2603:10b6:208:313::6)
+ by MW4PR12MB6754.namprd12.prod.outlook.com (2603:10b6:303:1eb::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.12; Fri, 7 Feb
+ 2025 21:45:55 +0000
+Received: from BL1PR12MB5062.namprd12.prod.outlook.com
+ ([fe80::fe03:ef1f:3fee:9d4a]) by BL1PR12MB5062.namprd12.prod.outlook.com
+ ([fe80::fe03:ef1f:3fee:9d4a%5]) with mapi id 15.20.8422.012; Fri, 7 Feb 2025
+ 21:45:55 +0000
+Message-ID: <2794745e-c33a-68dc-f0e7-961e1631299e@amd.com>
+Date: Fri, 7 Feb 2025 15:45:51 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v3 1/3] crypto: ccp: Add external API interface for PSP
+ module initialization
+Content-Language: en-US
+To: Ashish Kalra <Ashish.Kalra@amd.com>, seanjc@google.com,
+ pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ john.allen@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
+ joro@8bytes.org, suravee.suthikulpanit@amd.com, will@kernel.org,
+ robin.murphy@arm.com
+Cc: michael.roth@amd.com, dionnaglaze@google.com, nikunj@amd.com,
+ ardb@kernel.org, kevinloughlin@google.com, Neeraj.Upadhyay@amd.com,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev,
+ iommu@lists.linux.dev
+References: <cover.1738618801.git.ashish.kalra@amd.com>
+ <02f6935e6156df959d0542899c5e1a12d65d2b61.1738618801.git.ashish.kalra@amd.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <02f6935e6156df959d0542899c5e1a12d65d2b61.1738618801.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7P222CA0011.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:124::32) To BL1PR12MB5062.namprd12.prod.outlook.com
+ (2603:10b6:208:313::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20250201021718.699411-1-seanjc@google.com> <20250201021718.699411-17-seanjc@google.com>
-Message-ID: <Z6ZBjNdoULymGgxz@google.com>
-Subject: Re: [PATCH 16/16] x86/kvmclock: Use TSC for sched_clock if it's
- constant and non-stop
-From: Sean Christopherson <seanjc@google.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Juergen Gross <jgross@suse.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, virtualization@lists.linux.dev, 
-	linux-hyperv@vger.kernel.org, kvm@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, Nikunj A Dadhania <nikunj@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5062:EE_|MW4PR12MB6754:EE_
+X-MS-Office365-Filtering-Correlation-Id: c924f232-d790-4c0b-9846-08dd47c0ccbf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|921020|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Sy9tQmJhSWNEa0VPczN6WEsxd2haSHRxVjFpUnVCQzhPMU55aHYrdTdtaVJk?=
+ =?utf-8?B?K0V6UllFZXByUmpnQ0Q1Ri8xdE9ZOWYvMVVsSDFLNmo4MXhZR3NuZ0hSWHRr?=
+ =?utf-8?B?b2hGTSs1YnJRTmdCMlI0Ny9QaDRramRJQUEva296OU9sSERBTFVNbWM3Y0dm?=
+ =?utf-8?B?MXhONGVSOGE3UG1BeWZ5UXU4Z2l2Q3IwY2RaR1JzVnE2NG5abUJ6djBidlZS?=
+ =?utf-8?B?MnVSaVpQMy8rUE9jNEFPWEUxeVcrUzRLN00yQVRyaWNlNmlnK0RNWUJuK0hZ?=
+ =?utf-8?B?OVE5UmFZR2tQWWE4WHRUOUNWcGxCYmRNSFhXMy83SmlMSU1NTlp4Y1ZKcXhQ?=
+ =?utf-8?B?TTBza1NTU2Y4eUpRKzdTWlBtZHI5MVpVS21uYWJnMEgycXVCdlkya01SVXRv?=
+ =?utf-8?B?VEVOMTZHR25YeVBhdExlZjA2NGNrblN1QnFKa2xEclhRVDlpUC9Da0pzdW1R?=
+ =?utf-8?B?UVhMN3NBMVhZQkhkRThqRHZPanNHMHlrRjd3SEpmYXdUckNDcGNNd0Z3UEV4?=
+ =?utf-8?B?NXlYUVkrTVloTGR3bng0bUd1WTBFQUdnQVlWYVVJK051bCtOdXdua2dLZWpy?=
+ =?utf-8?B?bUk0d05oWlZLVmRaYUdIZE1mc2gxUkpyTFlOY3g5REZ5Skt0NXBBeGJuRG5C?=
+ =?utf-8?B?K2FicHI5UjVGQWl1WEZBUmN2K0JJaHM3MlYrQk5sVEI4MTFoOTFqUEJydXpW?=
+ =?utf-8?B?Znc0SUoxVHZ6c05RbEdGcFJ3QmdQM0xCd3BWMEh3Z2tzWi9uZHZDNExndXpu?=
+ =?utf-8?B?bXlTMy9WUysxVFFtYnI2UU10ekVNZWRUWWQ5WG9kb0JjVUFKNW1zRnA0QmpT?=
+ =?utf-8?B?NFF5THFMYlVDZnkra1NITXNTa2VnMGFhT1l5cThKdy83NG9aZlJiWWpyOEZp?=
+ =?utf-8?B?b3FvbSsvMUJLd09lUDlsK29tVXJxOUhKYzU1bzFoUTZrVk9CUUhBelpvSWRw?=
+ =?utf-8?B?UlNGYW5yaXB6K0NYeXlNUTNzdXZvWmkvNFMzRTErQjluREh3Q2VHWlpjclI5?=
+ =?utf-8?B?M21wMmhwQ0dBRTM3a1dNVE04UEdaWHVGM3oxNU4rZWdWRnhzTlFJR2ZsMEgx?=
+ =?utf-8?B?ZStOdlNtalZDUE5LU1VBZEhqK3BhU1lYZmp2c0NnUldwaThMclNKK05FV1FK?=
+ =?utf-8?B?ZnRmMXBuZ3NzMThmSHV6R3p6WmpncXB3QnFqbTdETVhoSG02Y1g4K2NpMU9l?=
+ =?utf-8?B?Y3hpem51bzhqeVUyUXQyMUQwaUhFTG1OMU9wakxRZEJRcXBVNE9EbDBmUldD?=
+ =?utf-8?B?NWxrZ1FCT3JJblpXV0hxOGtvbjErdmFHMHZMNTlzczVCNU54Rk4zeVcwdkxN?=
+ =?utf-8?B?OTk3TlhuY3ZTSWZjbGp1bXQ5UUZFMFNScERlaU9jVGlmZ1VZRHRYZk5JQTFJ?=
+ =?utf-8?B?UFhsZE02b25CQVR2NjlkbWtLd0FTVFBVMFp5S3FKVWxDMGlDcnpIK3NzZUFG?=
+ =?utf-8?B?djg2b2ttL3c3MU5GSmhiVEZlU1RTU2V3b2RXUlNKejgvaGJiZ0JhdTJmK21F?=
+ =?utf-8?B?eVBNajg4Y1g0cDlGdzBrcWxYdENmdU0yQ2VITmw1WDFWWE5GbWZsTFNNZTdU?=
+ =?utf-8?B?QUk4bmNhVkhUM2RScEZmdGFJbHptSE8rUUhnOWprQTgxZ0xiWHhaZUpndnZL?=
+ =?utf-8?B?QVZnQ0t3V25vSDV1R2VoU2dLbEc2MUd5U0VDRmdqN0lMTnl0SndtK1hpOUN1?=
+ =?utf-8?B?UUZJQjlSR2hOMWE5OThVaUxVUDVsMXlMU3VOSE1KZ3g1TDNFbGovb1RzQ1Ar?=
+ =?utf-8?B?YlRWTzdJRVFXYU4zUHk4M1VRZ2pza2VnZzRpOFdFekJBUnlCa2VQelpIdG1h?=
+ =?utf-8?B?V0xoTGdialNOSE1HRFJ5dTlpdkpTN2VvdkpUdTZEOVVTTHU4Z2txQ3l6MnBa?=
+ =?utf-8?B?d1owQ081Y1hwS1BYKytNMGc1ZWJWK1NlNnVXWGhYSjFFK29YS2RqcDJtQkVQ?=
+ =?utf-8?Q?n8X63Xqfyls=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5062.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(921020)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dWhmTm80L21keGRhQ2hEWGJEZHE0YmtTNGxkYnpZNnFtMUhLRFVnMjBaYWxK?=
+ =?utf-8?B?Mk42Q2Z0WlQ0M244dmFpV01UTmJBaUc2YnI2T2hLOEU3SElXcWpqejg0L05z?=
+ =?utf-8?B?alZmSUs1UVdwT2RtZVljekV6MjFVM1crMnJGMlFrTThuNWNzOFFaQ2Y0VDhH?=
+ =?utf-8?B?UjByRUFSRVVWNTB3cjRiZ3ozdGIyOU54KzZ4ekdvYVc3ajU5NnFLV25iRXo3?=
+ =?utf-8?B?aU85WTF2dlN0VS9qek5XT2IvME9GUVVFeXk1cHg0WXRnTytQbXpXN3ZvOE54?=
+ =?utf-8?B?MnhPRC9QaGl6RnBaTEZyT1VzbUptWFhYY0lQTzBjM1Z1VDlvSjlPaHNpV3lq?=
+ =?utf-8?B?V0lHdHg3ZjcxZEZHRmdRTG1ocVpwT05lK2hzM0ZRa2lVdXFoNWwwRGVIbXpY?=
+ =?utf-8?B?NFZEdjhlTStsaG9ndzJNMlVteXpLMFJTcW1KaGM4WFJpQWlTN1JpNmRQNjZ6?=
+ =?utf-8?B?R2JYbHR4ZVJNVzJFL0ZyMHo5aHIwMmZiVHRsU202Y0c5QytzME1TaUptOTda?=
+ =?utf-8?B?OU5TbHRKcXFuYTRWOTgxc2FkYWxEc2YvUFpqbytTNVJwU2dDTjY5WUFSQ3FM?=
+ =?utf-8?B?OHNzc1hxc0xSMkphY0VnSDJHdFd5SnZNaFRFa3JKOTdxLzl5OTVhek9WU2Ns?=
+ =?utf-8?B?Sm1PTHIrMjQ2NHZlTWxyQUdRUEFxSmo0WnpSRmdac3BJNGl2Z1BuS210WVNI?=
+ =?utf-8?B?SFBjUENlZHRrWWR0ZFovYlRZR1d4ZTdFOVh1aHp5RWdQbkJnbHVYUmhIOC84?=
+ =?utf-8?B?T1ZqSzdaa2JVOTNCNVo1NFJpdzduZU1mWGcydFNzdnJwaHhFbmhyZXVNd21L?=
+ =?utf-8?B?Q1M3enZYelNMem8yRFpkbGFZMFVaTlJFenFnaVQ4OXJnV0IyWU5pNDNpL3Rp?=
+ =?utf-8?B?YThXVkdQZXhZWlZXMFA4TERCV1lpbFBaUzFUOE1sRm43ZjVoK2JXMlpxWTAz?=
+ =?utf-8?B?cUJsQjY2YVVkY3cyZTVBVGp6Q3NMNWlId1pQOEQrWDN0QzRuanZwVmY3WlB0?=
+ =?utf-8?B?Nnc4ems0WjFtbkwyMU1kTEREcnB3d2M3U2VSb3VQTWorWHJ2NkN5OGZHSWFn?=
+ =?utf-8?B?dkFDWWJtbDM3SFptSE1JU243dzZPbEZtMWZlN0c4UndYOWF5WjJ6VDJoQVJ3?=
+ =?utf-8?B?ZXJvY3MrRGcvS29uTEducTFGOTNGSW9zb0NrZm5mMlVWVnlHd0hpc3hiRk1k?=
+ =?utf-8?B?U2Z4NC9HUnNuS2ZNL2FHWVZOajRGWXpHZHFySnczY3hFTG5QSkFkbE0vSkZS?=
+ =?utf-8?B?NmwrTzBtMWVjanA1bm9QdHBVWHlGcHhWYUhObFlsTzQvV0haaUp4NUtYaE0w?=
+ =?utf-8?B?a2dFeEhCL1AzZUxDcGY2enYrcmIzV3pBYUpLbkZPSnFBd0J0eXJha2FTM2lG?=
+ =?utf-8?B?dDJzRTVhaFBYdVpxdUxmK0U4ODJFNlpuYmNFazUvL20xdTBDQVhWT3M3N25Z?=
+ =?utf-8?B?ZkVwaVozcUV5c2d5dkxJTkovTlZKY1A4R3psdW94Q0JIdTZ5aXhzN1ZpcEI3?=
+ =?utf-8?B?OFNEVFhjOG5Ra3JyWHZOMDVkbGJpNmNRbTJiN3hsTXZSQjNoOGhvcDZPeXlN?=
+ =?utf-8?B?UWYzQU54bmVFWkhxdHBuQ0dUVXczeGp6VGdRNE9jQzNOYXpaLytFdm1kUWVD?=
+ =?utf-8?B?S09yQTVBRTZMZzBPYStUbkNFSHlsNTZJNXdpZjJmWmtVcEpCRy9BbUhtZFFT?=
+ =?utf-8?B?QW5yNWtBcmkxWHVKTFVYeC81eDc1NHp2eUx4bUlwRHQ0MzlFSDdxdkFYVGR3?=
+ =?utf-8?B?NUY5cHQ0RGRDcjM4ZVA0WjlESXhwWWs3MnVodzVhaG9nUVFYM244TWZMdW96?=
+ =?utf-8?B?UmtudlpqY2Zod3l1V21DN3NGSWdlNUJ5eUdhaFo5Rld5OWdvaytnZ2hkRkpa?=
+ =?utf-8?B?ZGpWbnZPMEViN0lrQXFVNkN3eE1PKzFONE9YS2kxV2NRWFUzaE5kVFFBMGRI?=
+ =?utf-8?B?UWY2aVBVT1A0WXBEazJwa2RuSXhMb2lCT0tEdHNEQWhYbzNER2xaNGJuSGwr?=
+ =?utf-8?B?bUVxQmFVRjc3M3R1K25yRjVneUdHUEE5NGNyUFFNLzB1TDFDSkdTVkJNeXI4?=
+ =?utf-8?B?ZVZuSkQ4SWd4ckxxckUzbldySjI5SWZKWmdnZFVGV043emkrNjA2Z1cxNEJO?=
+ =?utf-8?Q?4J2zhrk2pJGrSTy3SFKbRdMzq?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c924f232-d790-4c0b-9846-08dd47c0ccbf
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5062.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2025 21:45:55.3873
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BZbHzfBe7+4ekJU01wU7/mFp6LaWUYxXeXyx9jKg8X2p6Fs8YuEhYmEpZ3gIIaD6TgHH3f8GvWvnFn5VapOlPw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6754
 
-Dropping a few people/lists whose emails are bouncing.
+On 2/3/25 15:56, Ashish Kalra wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> KVM is dependent on the PSP SEV driver and PSP SEV driver needs to be
+> loaded before KVM module. In case of module loading any dependent
+> modules are automatically loaded but in case of built-in modules there
+> is no inherent mechanism available to specify dependencies between
+> modules and ensure that any dependent modules are loaded implicitly.
+> 
+> Add a new external API interface for PSP module initialization which
+> allows PSP SEV driver to be loaded explicitly if KVM is built-in.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Co-developed-by: Ashish Kalra <ashish.kalra@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  drivers/crypto/ccp/sp-dev.c | 14 ++++++++++++++
+>  include/linux/psp-sev.h     |  9 +++++++++
+>  2 files changed, 23 insertions(+)
+> 
+> diff --git a/drivers/crypto/ccp/sp-dev.c b/drivers/crypto/ccp/sp-dev.c
+> index 7eb3e4668286..3467f6db4f50 100644
+> --- a/drivers/crypto/ccp/sp-dev.c
+> +++ b/drivers/crypto/ccp/sp-dev.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/types.h>
+>  #include <linux/ccp.h>
+>  
+> +#include "sev-dev.h"
+>  #include "ccp-dev.h"
+>  #include "sp-dev.h"
+>  
+> @@ -253,8 +254,12 @@ struct sp_device *sp_get_psp_master_device(void)
+>  static int __init sp_mod_init(void)
+>  {
+>  #ifdef CONFIG_X86
+> +	static bool initialized;
+>  	int ret;
+>  
+> +	if (initialized)
+> +		return 0;
 
-On Fri, Jan 31, 2025, Sean Christopherson wrote:
-> @@ -369,6 +369,11 @@ void __init kvmclock_init(void)
->  #ifdef CONFIG_X86_LOCAL_APIC
->  	x86_cpuinit.early_percpu_clock_init = kvm_setup_secondary_clock;
+Do we need any kind of mutex protection here? Is the init process
+parallelized? We only have one caller today, so probably not a big deal.
+
+If we don't need that:
+
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+
+Thanks,
+Tom
+
+> +
+>  	ret = sp_pci_init();
+>  	if (ret)
+>  		return ret;
+> @@ -263,6 +268,8 @@ static int __init sp_mod_init(void)
+>  	psp_pci_init();
 >  #endif
-> +	/*
-> +	 * Save/restore "sched" clock state even if kvmclock isn't being used
-> +	 * for sched_clock, as kvmclock is still used for wallclock and relies
-> +	 * on these hooks to re-enable kvmclock after suspend+resume.
-
-This is wrong, wallclock is a different MSR entirely.
-
-> +	 */
->  	x86_platform.save_sched_clock_state = kvm_save_sched_clock_state;
->  	x86_platform.restore_sched_clock_state = kvm_restore_sched_clock_state;
-
-And usurping sched_clock save/restore is *really* wrong if kvmclock isn't being
-used as sched_clock, because when TSC is reset on suspend/hiberation, not doing
-tsc_{save,restore}_sched_clock_state() results in time going haywire.
-
-Subtly, that issue goes all the way back to patch "x86/paravirt: Don't use a PV
-sched_clock in CoCo guests with trusted TSC" because pulling the rug out from
-under kvmclock leads to the same problem.
-
-The whole PV sched_clock scheme is a disaster.
-
-Hyper-V overrides the save/restore callbacks, but _also_ runs the old TSC callbacks,
-because Hyper-V doesn't ensure that it's actually using the Hyper-V clock for
-sched_clock.  And the code is all kinds of funky, because it tries to keep the
-x86 code isolated from the generic HV clock code, but (a) there's already x86 PV
-specific code in drivers/clocksource/hyperv_timer.c, and (b) splitting the code
-means that Hyper-V overides the sched_clock save/restore hooks even when PARAVIRT=n,
-i.e. when HV clock can't possibly be used as sched_clock.
-
-VMware appears to be buggy and doesn't do have offset adjustments, and also lets
-the TSC callbacks run.
-
-I can't tell if Xen is broken, or if it's the sanest of the bunch.  Xen does
-save/restore things a la kvmclock, but only in the Xen PV suspend path.  So if
-the "normal" suspend/hibernate paths are unreachable, Xen is sane.  If not, Xen
-is quite broken.
-
-To make matters worse, kvmclock is a mess and has existing bugs.  The BSP's clock
-is disabled during syscore_suspend() (via kvm_suspend()), but only re-enabled in
-the sched_clock callback.  So if suspend is aborted due to a late wakeup, the BSP
-will run without its clock enabled, which "works" only because KVM-the-hypervisor
-is kind enough to not clobber the shared memory when the clock is disabled.  But
-over time, I would expect time on the BSP to drift from APs.
-
-And then there's this crud:
-
-  #ifdef CONFIG_X86_LOCAL_APIC
-	x86_cpuinit.early_percpu_clock_init = kvm_setup_secondary_clock;
-  #endif
-
-which (a) should be guarded by CONFIG_SMP, not X86_LOCAL_APIC, and (b) is only
-actually needed when kvmclock is sched_clock, because timekeeping doesn't actually
-need to start that early.  But of course kvmclock craptastic handling of suspend
-and resume makes untangling that more difficult than it needs to be.
-
-The icing on the cake is that after cleaning up all the hacks, and having
-kvmclock hook clocksource.suspend/resume like it should, suspend/resume under
-kvmclock corrupts wall clock time because timekeeping_resume() reads the persistent
-clock before resuming clocksource clocks, and the stupid kvmclock wall clock subtly
-consumes the clocksource/system clock.  *sigh*
-
-I have yet more patches to clean all of this up.  The series is rather unwieldly,
-as it's now sitting at 38 patches (ugh), but I don't see a way to chunk it up in
-a meaningful way, because everything is so intertwined.  :-/
+>  
+> +	initialized = true;
+> +
+>  	return 0;
+>  #endif
+>  
+> @@ -279,6 +286,13 @@ static int __init sp_mod_init(void)
+>  	return -ENODEV;
+>  }
+>  
+> +#if IS_BUILTIN(CONFIG_KVM_AMD) && IS_ENABLED(CONFIG_KVM_AMD_SEV)
+> +int __init sev_module_init(void)
+> +{
+> +	return sp_mod_init();
+> +}
+> +#endif
+> +
+>  static void __exit sp_mod_exit(void)
+>  {
+>  #ifdef CONFIG_X86
+> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+> index 903ddfea8585..f3cad182d4ef 100644
+> --- a/include/linux/psp-sev.h
+> +++ b/include/linux/psp-sev.h
+> @@ -814,6 +814,15 @@ struct sev_data_snp_commit {
+>  
+>  #ifdef CONFIG_CRYPTO_DEV_SP_PSP
+>  
+> +/**
+> + * sev_module_init - perform PSP SEV module initialization
+> + *
+> + * Returns:
+> + * 0 if the PSP module is successfully initialized
+> + * negative value if the PSP module initialization fails
+> + */
+> +int sev_module_init(void);
+> +
+>  /**
+>   * sev_platform_init - perform SEV INIT command
+>   *
