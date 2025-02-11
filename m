@@ -1,130 +1,129 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE8327291F
-	for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 23:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C8827291B
+	for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 23:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739317053; cv=none; b=UHLNVkxJuRonLlG19OpR2ubp3MlaHWMX6Fc4XI6Bm+girH4AIiVoNhiponBgswMgBRiO3Zubc7+VsBYv56IvRQcfUq+KscB+ywHjGlbfAUBFre6/Flyh8bGngxHqYp9ApCcstF9tsIdY/96BvSmcuQ79HlhVqSyo0f61i0M0SAg=
+	t=1739317588; cv=none; b=ouvkiVktbb93DrYwXfmiMiBww7ACPgBX+DnJBRAHDRF9aCHoSBEIREbL3B8VE629FCLcXdtqNnx32exI8HS2yE+NRn3wXagSdyMscLDxEL3Spxhmf0lI8+FNgpJ49eIRZAA6lrkn1n37k9uBuai5hybkoaiUOilDCoyLyIPBSlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739317053; c=relaxed/simple;
-	bh=GutEcZz61gwify1yCL/KrmgOIzRRqXpILaGYVs/GWDM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uaRBITeZoAsQGYpEhP3ufoTTy8lJKcgMfndhj+zmwZ2ZWc1V/XaYqHAXrruwfQlT0X1GEvu//Qmt5+jiodf3qDcYWS1GXEYtvE8xJYtulGDjtBlu4Nx3Twjhp7vKTK/yrSi1MBP9caGZHj3OZ3Ik6PhwXYhmj9d8tgIb/Dyh99Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W05HBlJl; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1739317588; c=relaxed/simple;
+	bh=mw9JLw4ZEZaMNoKEjCknWRqFUBQm0z0Z6HmoZlXeNuA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tCX7NKXzn/DJAaB+SWoVoXI+0BJh/0QSk24szfOPsi4Y63WKIQR6s02rL3VDQ7CuGgC/d/+oNMUrqbRR5ZDd93O6aO/a8YjW4EFTQbuZvLTaQxu/cfLlAMEkPNM/2REcdcklhmbYEamq0G10t2TM2Icn/E0jxf7qL2eTYYUw04w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lAAyuezH; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W05HBlJl"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5440f27da4fso3163e87.0
-        for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 15:37:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739317050; x=1739921850; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YSbvnItNGBxBKAvRaSMscNhWBRYdPAos9+Z7zPAciRI=;
-        b=W05HBlJlGxZA0KGNU3NaVqdT6+Cm67QzvrtU1hVHhXrDP1UmzJLe4hwVkA2lFnFr7x
-         BWXvYeAjlVfPtVbRZvFRQ7+NEtz4btXhFhna+fGNPJa9AILupJM6DFHvTMHnoA01KolW
-         WjO6/xbPKiJEtkTZwrrn4v70i+xAlZw7suHDxoDgSLJgBmcfIpoWROO40tJNiFAk4WvA
-         lvlw1X5UYB4jgtHk4iaPv1HoqjUo8EOmSxOIl9mb1+DScRARj9j2axN8Wuv2AL7qqema
-         ZY7JhTk4VuMmzm0OQHFM8R9CbgkehUrZauTIXLjIVg5sTEN4t1qeDJ37DpYlCt9P9SEi
-         IybA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739317050; x=1739921850;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YSbvnItNGBxBKAvRaSMscNhWBRYdPAos9+Z7zPAciRI=;
-        b=K6vc8kPRDlMkSASKQctCovZMZsgY6rFaT44SH+eKQHftYRtnFNPJO3xXOswPHr+q7i
-         6QldEdHbK37unYqMFQUy3jv6h+zRPDclTDohxsNXv56pBfn1jQx2EOeQ7On5Vew+mpVI
-         VYFVeQApbrOUWrl3L1FKDOyL3jX6aWw51FmB1HohdjaiONBEuOar7nbQQGV2H9HE/QlF
-         aOYDCzow71TWyH3yRPHUNR4cWOqnN/IuCrhF0wXwUnnl7dCaf5xqIuDtPuoqOKrGE1Wy
-         GnOnNwUNAcdHo6vMcpBl3nKEM2IKPD0qnPre51SpgzxKDpMRiA5L2x8wB929DAnv2PjJ
-         cyww==
-X-Forwarded-Encrypted: i=1; AJvYcCVhNn5dVaYM2GnzDbfBpL45bsmcmMfsxVfHU1vO4gshR0OeONBz4Flm8JVV2AyJCDRRTqB0eSrgGFzW@lists.linux.dev
-X-Gm-Message-State: AOJu0YzVJ94XpmKza0uZsqqvFtpz5M1YfOZVhDi36VfUJXehvzpoKCOv
-	smgIzbLTiDXXASCRLTRpmWsCXKkQIAwR+w9+gaeABy9qMD5/DhrHQYrTBicMFtVubM9psHeqxEW
-	ic8KonEf9xawc1VFOfNQiqPnUkt/ziXYE7Nw6
-X-Gm-Gg: ASbGncsqwiRpinZcUoL+08pKlFLyBZdUWeebq8CY+Q1gSSpibiPKL/ERj0VWxQsTa3r
-	Jdmbbe5Jt/AvczT/XK0Szoo4NbMgvQiR+jSAlFYiUs0bL2aGH4cLi32WA9uUwencc1PN5NL3YEt
-	yXRZ0UJRtA2eYv0qNP0+185K/qnZbiLA==
-X-Google-Smtp-Source: AGHT+IFwqfZpukbm59rOXt6h263eOHCDjc136zYAOcXQHTigPOGAqt3tg2yJH93apvYN9rjDIs6HzHeYOQ9BeM6qfi4=
-X-Received: by 2002:a05:6512:3d90:b0:545:34e:16c0 with SMTP id
- 2adb3069b0e04-54518de9606mr38355e87.5.1739317050020; Tue, 11 Feb 2025
- 15:37:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lAAyuezH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739317587; x=1770853587;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=mw9JLw4ZEZaMNoKEjCknWRqFUBQm0z0Z6HmoZlXeNuA=;
+  b=lAAyuezHo42amc8T3D17Xh7tWJLTNUnCQn5COstqwO5PKx3HDLnThRkc
+   51uhYqdx+A2/HmEKjQM9vXleVeqwiqhMbQ+bqc+QfQnzgnechIOsHnJaI
+   mrXdReCEF6EWKLVOKcb4aFan46P7sNrjs6lRh2ixkZGd4awJmlWmKwwkK
+   JMz0Ghp33d8gNvyJO83LXZxxvII9jfhgEX1ubr1fXsiL+m1l7iPDpT/oo
+   +IdDlq9GhaEV7QVIQM8OMHCLWXuHEbQxi47eCVlo5kDf/2y6hwTsHpGs+
+   S11aaRbBIM/wpt0s6fVIcgNaDw+sEsubOuMLn5CXzgIRR33VAnGxj+YjM
+   w==;
+X-CSE-ConnectionGUID: Thl3fTWhQAS7pro2rpajnQ==
+X-CSE-MsgGUID: 0IHGtzshSUaA4UNTudrUdw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39195101"
+X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
+   d="scan'208";a="39195101"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 15:46:26 -0800
+X-CSE-ConnectionGUID: pP/2sIh3QaGxaXN9TBK77g==
+X-CSE-MsgGUID: Pfg91G0JSM6Hnk6jc63knA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="117829532"
+Received: from msatwood-mobl.amr.corp.intel.com (HELO [10.125.108.48]) ([10.125.108.48])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 15:46:25 -0800
+Message-ID: <c07fa2b7-d453-4a9d-b1fc-e3e96514a8d3@intel.com>
+Date: Tue, 11 Feb 2025 15:46:23 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250206222714.1079059-1-vannapurve@google.com> <wra363f7ye6mwv2papahmpgmybi45yqyzeohunbqju3zsf22td@zcutpjluiury>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3 1/2] x86/tdx: Route safe halt execution via
+ tdx_safe_halt()
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Vishal Annapurve <vannapurve@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com,
+ seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com,
+ jxgao@google.com, sagis@google.com, oupton@google.com, pgonda@google.com,
+ kirill@shutemov.name, dave.hansen@linux.intel.com,
+ linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com,
+ isaku.yamahata@gmail.com, stable@vger.kernel.org
+References: <20250206222714.1079059-1-vannapurve@google.com>
+ <wra363f7ye6mwv2papahmpgmybi45yqyzeohunbqju3zsf22td@zcutpjluiury>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
 In-Reply-To: <wra363f7ye6mwv2papahmpgmybi45yqyzeohunbqju3zsf22td@zcutpjluiury>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 11 Feb 2025 15:37:17 -0800
-X-Gm-Features: AWEUYZl70YOalrJ-dWWuIpBvrvuQpb_FScJ4zAQWzJRP5MMlca2CNQsA8FuLHfY
-Message-ID: <CAGtprH9yekaDTCn0P83k221sW2DoXL5AwKLmD54Pv=PmUPU6Aw@mail.gmail.com>
-Subject: Re: [PATCH V3 1/2] x86/tdx: Route safe halt execution via tdx_safe_halt()
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, 
-	jxgao@google.com, sagis@google.com, oupton@google.com, pgonda@google.com, 
-	kirill@shutemov.name, dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
-	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 11, 2025 at 12:32=E2=80=AFAM Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
->
-> On Thu, Feb 06, 2025 at 10:27:12PM +0000, Vishal Annapurve wrote:
-> > Direct HLT instruction execution causes #VEs for TDX VMs which is route=
-d
-> > to hypervisor via TDCALL. safe_halt() routines execute HLT in STI-shado=
-w
-> > so IRQs need to remain disabled until the TDCALL to ensure that pending
-> > IRQs are correctly treated as wake events. So "sti;hlt" sequence needs =
-to
-> > be replaced with "TDCALL; raw_local_irq_enable()" for TDX VMs.
-> >
-> > Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-> > prevented the idle routines from using "sti;hlt". But it missed the
-> > paravirt routine which can be reached like this as an example:
-> >         acpi_safe_halt() =3D>
-> >         raw_safe_halt()  =3D>
-> >         arch_safe_halt() =3D>
-> >         irq.safe_halt()  =3D>
-> >         pv_native_safe_halt()
-> >
-> > Modify tdx_safe_halt() to implement the sequence "TDCALL;
-> > raw_local_irq_enable()" and invoke tdx_halt() from idle routine which j=
-ust
-> > executes TDCALL without changing state of interrupts.
-> >
-> > If CONFIG_PARAVIRT_XXL is disabled, "sti;hlt" sequences can still get
-> > executed from TDX VMs via paths like:
-> >         acpi_safe_halt() =3D>
-> >         raw_safe_halt()  =3D>
-> >         arch_safe_halt() =3D>
-> >       native_safe_halt()
-> > There is a long term plan to fix these paths by carving out
-> > irq.safe_halt() outside paravirt framework.
->
+On 2/11/25 00:32, Kirill A. Shutemov wrote:
+>> If CONFIG_PARAVIRT_XXL is disabled, "sti;hlt" sequences can still get
+>> executed from TDX VMs via paths like:
+>>         acpi_safe_halt() =>
+>>         raw_safe_halt()  =>
+>>         arch_safe_halt() =>
+>> 	native_safe_halt()
+>> There is a long term plan to fix these paths by carving out
+>> irq.safe_halt() outside paravirt framework.
 > I don't think it is acceptable to keep !PARAVIRT_XXL (read no-Xen) config
 > broken.
->
-> We need either move irq.safe_halt() out of PARAVIRT_XXL now or make
-> non-paravirt arch_safe_halt() to use TDCALL. Or if we don't care about
-> performance of !PARAVIRT_XXL config, special-case HLT in
-> exc_virtualization_exception().
 
-I will post v4 with the patch [1] move safe_halt/halt out of
-PARAVIRT_XXL included as the next step.
-
-[1] https://lore.kernel.org/lkml/20210517235008.257241-1-sathyanarayanan.ku=
-ppuswamy@linux.intel.com/
-
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
+Oh, I thought it took PARAVIRT_XXL=y to even trigger this issue. Was I
+just confused?
