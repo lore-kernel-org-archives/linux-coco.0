@@ -1,65 +1,128 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF8526BD8E
-	for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 16:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739291335; cv=none; b=IlUFWmxstxWPjNkegvWWEWyXwe+G6yQnpDPOrQaVCYbmof2zxg7XNakeibtJD2u1wIx/1hL7RIXoPhiexBdXdVZY4voSz3DUsbl+A6NE2JZUPj37UtrmAtxajgh5AGO6qozhaloanvfrrAcoigH41zIIEY4Z+YhbIu8iwZ7f4cI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739291335; c=relaxed/simple;
-	bh=HpMgsmYmsp7YzjV1SnDY9CliB1CGj4Kn6fZ1unPZ0Iw=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Aiovj7lCdvFP7Yji0HA/Z62U4LdhavcjXPMU9brwB5FKHVtjlwUk0RV7tkwceyxCjzxgGH2a68CDfRobBvKDG3qgdijkiT4s0WmloSGb6cn4ZngjFGO5/s6UnJ3ZcLJjK+kZ8eXzec/J4t/MNh/+Ut4h2ns3Fly7fbP9vnojPbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=UzN8+ljJ; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="UzN8+ljJ"
-Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 4B56541F6B;
-	Tue, 11 Feb 2025 17:28:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1739291326;
-	bh=HpMgsmYmsp7YzjV1SnDY9CliB1CGj4Kn6fZ1unPZ0Iw=;
-	h=Date:From:To:Subject:From;
-	b=UzN8+ljJOpSBhT9ZXazAHl4ec3YUlvwPv4WRHh3/3orqch49k/m3Is0ouaFgxGVE8
-	 6zdtKC1uepzm7Z+Uk7Cnw+o59LkrSABBstB1jHFHClhOUbImAGLxKXAaRWI0uykF5c
-	 ZOKLWpKdJjBFiw37zzDdoJPo4iJAYVNoqABLpMxcWS6DYWMz21upElZ7remhLbalWN
-	 Cnym8IYLZJtfaUdNF0xsDqZuO689f3DhGk5ptTolFE5KS9/+sOtoXmKt2/zGcAiMy+
-	 626o/impcVYy2tytaE7UJEdqgLEwswgDdRpzJYOKUHevw9/HQbHi4mtAR7t+hd7iQl
-	 QOrAv2iwDfaSg==
-Date: Tue, 11 Feb 2025 17:28:45 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call February 12th, 2025
-Message-ID: <Z6t6vQDVr9xYTlqx@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C91226BD8E
+	for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 17:25:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739294751; cv=none; b=OzSrdrm2JPmZ5FmtOqH1y7pu6XmtNGHqdLIh5O19cY1es4JjrUnM6HGPA17SYMF94gBFUgLf5oShldEIj7vXrsf18Dv05PtfT2mpei6BA/CN7g1MmqxieNpqGDMamT4q/S9jK/zVys8Bwt67x6H56iTHWxbttCtK3iUDaEWJ30Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739294751; c=relaxed/simple;
+	bh=yIyg4O5yYiMN7oIJCMQaW69afuHiK1Kltro4y0FMxoU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=WtLZf4W5KkjZZzLdRh3MoS8sasbF1TQ9SclesBYk7EKvOrl6+SoFNIkqL8KrPEcbyQYRQPLZs5F+P29nnCljDXP2ma6Pq4a99fDM0kReYhSG8Kt1yGYSTk63x/jJKxdKuol+9zRJmgHEDb4v7yqsJAiDvOlzysZGgVHnwR4A13I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wLFhnszD; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wLFhnszD"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2fa6409c0baso8008879a91.1
+        for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 09:25:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739294748; x=1739899548; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fehn8/FKPdzBZiJ7SaATTiqPDXAlgIYGKuuyWYqseyE=;
+        b=wLFhnszDRaMgAJH1f9bnylsQjBK17rx3PVDoY17cvvg42vnV1dgOQ8Ks838pFARoZr
+         4DE5ixx5f9WwIRzksVXQPAWUizPB2ncwdZCYRQElRHhkCP7g7dTK5mLRcHxMuLdEMjTw
+         uK5prPf/tiHVgbCLn55WrMixFCjtW/hWFfq6LEqIUaK2fjW9nsmJts6/8FQfM21rmUHN
+         6u85F+9KjfkVcpjtyLKQBf+wcs1/DH4OKnNfFx8m/uwcNOerjTxRl5V+p1Ffe9Bs3IB4
+         3RBQZUAnZvUYaFrI9vOCXOxqbSwprLtP18v4jNIRteolwqc/DmRH3ewzp2mMgcRc6szV
+         EoJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739294748; x=1739899548;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fehn8/FKPdzBZiJ7SaATTiqPDXAlgIYGKuuyWYqseyE=;
+        b=DzaivyH5t/7sE7qs895qlSDOexeVaplbUgd8n9x05COZsLM5tPoft8fKNaVocm6hXk
+         DxQl2zHDe2j4219at8dH7Qpn71kKcrgmzDpiSpZg4NsthNvkw6zZ9BrkJC4Rffpxz9Ep
+         MkTVwSsR+6GDKxBNs/GMOJrOhTuSNHeoyPVrq4UELh3tPbQT8JqZ8/8TecxjSvP12yBo
+         5KPTlbln4y07R8EVz3xfxXgttrkVihr914nZu72i/ZjuKY50+bhA3CmQxp8pKaKcA1qW
+         E5Irv12OqVxQPiqBenM2jaAJDqYd2klQPUZ/sSnY4+ETwAcbeORx5lmtBXxfzV/8BnIm
+         S8Vg==
+X-Forwarded-Encrypted: i=1; AJvYcCV6QYPQhufK20vm+PjbBmM6ejzKUQdliqKct3OYNCNPAazdvJgLhnF92WSs93qrfiTzaWZ8EanMYPu6@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywdbbl/I2Af867ua48yWRujizBcokeVNqadzR5zAbZ8fYIvJNo7
+	iEVR3k/jHgoOuqhcT9tXDgNUt5jppLLsXqRj9b7bz9FITE4soAvi+0ddwAY9Zztn2iHT2QZ1OOb
+	pqA==
+X-Google-Smtp-Source: AGHT+IFueIXltnSm3F29jVZndsq5T+j40lmj4UcIsQhmLdRSEShGqUPy9fjOgqE9JAinoOmES588AgdHP5k=
+X-Received: from pjyf5.prod.google.com ([2002:a17:90a:ec85:b0:2fa:1481:81f5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:184d:b0:2ea:4c8d:c7a2
+ with SMTP id 98e67ed59e1d1-2fa243db893mr28913562a91.24.1739294748442; Tue, 11
+ Feb 2025 09:25:48 -0800 (PST)
+Date: Tue, 11 Feb 2025 09:25:47 -0800
+In-Reply-To: <20250211150114.GCZ6tmOqV4rI04HVuY@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250201021718.699411-1-seanjc@google.com> <20250201021718.699411-2-seanjc@google.com>
+ <20250211150114.GCZ6tmOqV4rI04HVuY@fat_crate.local>
+Message-ID: <Z6uIGwxx9HzZQ-N7@google.com>
+Subject: Re: [PATCH 01/16] x86/tsc: Add a standalone helpers for getting TSC
+ info from CPUID.0x15
+From: Sean Christopherson <seanjc@google.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Juergen Gross <jgross@suse.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Alexey Makhalov <alexey.amakhalov@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, virtualization@lists.linux.dev, 
+	linux-hyperv@vger.kernel.org, jailhouse-dev@googlegroups.com, 
+	kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Hi,
+On Tue, Feb 11, 2025, Borislav Petkov wrote:
+> On Fri, Jan 31, 2025 at 06:17:03PM -0800, Sean Christopherson wrote:
+> > Extract retrieval of TSC frequency information from CPUID into standalone
+> > helpers so that TDX guest support and kvmlock can reuse the logic.  Provide
+> > a version that includes the multiplier math as TDX in particular does NOT
+> > want to use native_calibrate_tsc()'s fallback logic that derives the TSC
+> > frequency based on CPUID.0x16 when the core crystal frequency isn't known.
+> > 
+> > No functional change intended.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/include/asm/tsc.h | 41 ++++++++++++++++++++++++++++++++++++++
+> >  arch/x86/kernel/tsc.c      | 14 ++-----------
+> >  2 files changed, 43 insertions(+), 12 deletions(-)
+> > 
+> > diff --git a/arch/x86/include/asm/tsc.h b/arch/x86/include/asm/tsc.h
+> > index 94408a784c8e..14a81a66b37c 100644
+> > --- a/arch/x86/include/asm/tsc.h
+> > +++ b/arch/x86/include/asm/tsc.h
+> 
+> Bah, why in the header as inlines?
 
-Here is the usual call for agenda items for the this weeks SVSM
-development call.  Please send me any agenda items you have in mind or
-raise them in the meeting.
+Because obviously optimizing code that's called once during boot is super
+critical?
 
-Details of the meeting (GMeet and Calendar links, meeting time) can be
-found in our governance repository at:
+> Just leave them in tsc.c and call them...
+> 
+> > @@ -28,6 +28,47 @@ static inline cycles_t get_cycles(void)
+> >  }
+> >  #define get_cycles get_cycles
+> >  
+> > +static inline int cpuid_get_tsc_info(unsigned int *crystal_khz,
+> > +				     unsigned int *denominator,
+> > +				     unsigned int *numerator)
+> 
+> Can we pls do a
+> 
+> struct cpuid_tsc_info {
+> 	unsigned int denominator;
+> 	unsigned int numerator;
+> 	unsigned int crystal_khz;
+> 	unsigned int tsc_khz;
+> }
+> 
+> and hand that around instead of those I/O pointers?
 
-	https://github.com/coconut-svsm/governance
-
-The meeting will be recorded and the recording eventually published.
-
-See you all there.
-
-Regards,
-
-	Jörg
+Ah, yeah, that's way better.
