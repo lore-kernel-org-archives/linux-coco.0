@@ -1,133 +1,102 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13662F9C1;
-	Tue, 11 Feb 2025 15:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5621C22FE13
+	for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 16:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739286118; cv=none; b=CysB/bdwJXAKFjjQn5D8+akHhRmchkYTuQs7bLJrcbYBlkSP9wrm0tXTYYVWmxlzhDXBTlSxNZhdS4JD3SV/D3SFNLJ5X+uuvA0bvKqtEAmef14MpTbJovzy6PI3EoezaA1JQH2IO6efngGXkg1dRk+0M7u9HBrYf1AFZC1RYLk=
+	t=1739291303; cv=none; b=WFMWl2uwNURzOiS7JdFxYTmFGQsn0boSVjngbBeI40dzKgZlucAQKYmeFGZeB3B/5J81Ef7nkqf7ZBExemQdjH+jSF8taXRrfXVzUuYbqtSQ0VpJuNSF71kjXeHfMBLHPxoYHrkyL5xFyxIjjaJB0gQSTxSWz45poO/6wxz1oHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739286118; c=relaxed/simple;
-	bh=NT4LdFuNL1mVF0er7FdAvKA0qLNJnpbCilHR7tk3ZCw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rbgyUNnlwET04hmjhlk6deMH0D2a5kTQWsaZdRtUilvnT9WycPLRPYW5dkpBlEo72ESoWrbz6n8FC2xcC1nHyjtDu3VpU7SDxr8lyAMKrU4TIhBb8ACeyMVft+Rk5pktGczHm3wmBw7oeNsuRBLVm4hhPIyrb7b3zM6pOikt/vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=DpBI7Aqt; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1739291303; c=relaxed/simple;
+	bh=yilJGqWW4RYMKFOjUyyusb+5EmeDe91eA1bXhwR/YFI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=o6wBZJX7lk5x4BJ+lTQ6dzWGUAlAU2NodYTCyLoO4TggJXQkh677YCLx2yzuZgeXI427pqUBpSsqwrrO//6ytiRhpQ+DY0UXZ+05u3MTnc4g0Q3iLBGyoxJNvXSfYbuDYAAyq1wgPvjXE4+UFmpHpwnRkyS+gKEH6FyKuVjSvsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BV8gyqEQ; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="DpBI7Aqt"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C079340E0220;
-	Tue, 11 Feb 2025 15:01:53 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id vcaTo4I3qsTZ; Tue, 11 Feb 2025 15:01:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1739286109; bh=4lwHEX7loO/SRy+ZxkW2JvVT9zUzrCSHPE5+qCPs4Vc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DpBI7Aqt8XOmID6XpqbDT6/JpWJ5yVuWy4TG2lI1I2RyyHucsQiPgTTbMFr+3APKE
-	 vaRUG4GIlOzxTU7YUIqQaaJU7BZE3orP1yegfSTUKgT1lxeqrQgWZfKA3x6KXW4Qvh
-	 Fmod4YL2KZ9eM8+nBAFJX18wZO8dX+OVtTHO+ERgfD/COIHzZak/rQkWDrzM8OUJzt
-	 yDnh8pqfBZwKx5Pztz5ocTaM9hKiTWmb3XDQ+JYa8ptGy8Z9mlwqlbt5/zxlqajcrS
-	 nCDSCzOfOH8dW+quN4fuLfRtCcjkuB2YKjhDgIuGlwXcyxgxsv2xNu6BIHkfCIu57T
-	 dI3o6w7SJEYUnM3DccFMM2p7429H/Dbgolh0WNYMxImLZV9p3qVx1UCoLr1HOD5zEb
-	 XeYWpWM5TAizW4An75m3IzKvBguY8O+HEf2DgqgFMy6/UrWgRx9lnzMyfgmtZsybpk
-	 ewR38IijGkYWVNMTLoBdPuqnO+h1+ruRV3z2Cy2UoZdbRq67StoxJzL0dsuX5eyi4B
-	 KNjYQlmCCsqqCRM0TsE9OAC4ybr5CUT3UCUPvIcSwoYDHPKGVAFK3OhGZ8h6ekN5DA
-	 v+aqAFlzwhlYaJFyH+6bEW/HlTfbiwxSaatnuKXcl8tPmhFzoDDkuSgRm1lFyK7vYt
-	 mfLheS+6IIG/fb5cqt1E39HQ=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7F6A240E01AE;
-	Tue, 11 Feb 2025 15:01:23 +0000 (UTC)
-Date: Tue, 11 Feb 2025 16:01:14 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.amakhalov@broadcom.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, virtualization@lists.linux.dev,
-	linux-hyperv@vger.kernel.org, jailhouse-dev@googlegroups.com,
-	kvm@vger.kernel.org, xen-devel@lists.xenproject.org,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH 01/16] x86/tsc: Add a standalone helpers for getting TSC
- info from CPUID.0x15
-Message-ID: <20250211150114.GCZ6tmOqV4rI04HVuY@fat_crate.local>
-References: <20250201021718.699411-1-seanjc@google.com>
- <20250201021718.699411-2-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BV8gyqEQ"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2f2a9f056a8so11356010a91.2
+        for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 08:28:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739291301; x=1739896101; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5MEK/stSb+AMRyC9Zhx6OFHXRnHPVcvklj9Pc8LhwOQ=;
+        b=BV8gyqEQ8Bo/dEWAAdR3aL3XgwtOcqF7BNB7v5dn8HgnIE9gKi56z680tOVvcUJEl8
+         J++kUakbd2lfLWUYWsHqqEJTjiwSFTSbNQdsjeK3IHpuUSGtYiX+CyFiRGauYZPZqyqN
+         1Bp0BCRB1NHF9FALR69/4ynEpKTGBxqwUK3E2fdc8PgFD/YgL6oViU+g9Qv1cTlCzPnO
+         gcnJnTLlkPOybTrb+2R0Afk3210pMHRUtlDEEXN/OQeK7DRsr9qHpvCsKNuCAfUBa6MT
+         5ymvH4XwK27IGYqt0/084kzcv3qcDDYUXCeW3aOTTTnXwpLwDFX6cGfD9Su4OXXYUb0B
+         a29w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739291301; x=1739896101;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5MEK/stSb+AMRyC9Zhx6OFHXRnHPVcvklj9Pc8LhwOQ=;
+        b=Af1IVpPZnt3B2/NHBrrfZSubki0UbRMX7qFGuQwmEcQ8oXuxYzfpnUwaVDrMSK6zaQ
+         /hGmKHLXj3jJJN0CwVIZt4e8GcU11mvf+hXStj4S4lpBazWPYs8nnb12oN13Vsa/r9NF
+         K4LXCuRXfKelN4gGqEqqqbRLqWlpjFbrP2faCKosRHWbZ7/Q+IaqOQSKQoTE8++q2Uwj
+         pLggA+mdf3g3Hq41b5A7ruP9zqKmeiLoaiNEAb84z5sB1Y8bsQG54U3JGeyHsr/1Pi/S
+         9jxRiROKaMrvO0ZEjO75RA651xlatwvy4PSS+UZq4CfUhQ1vJxRH4bamBhbejUv1efJr
+         Rm+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXq+OFUAkKlqd2G+Z0NdEkXVC98cnaPV3MUYhpVv5t+3nV8ZK7KCFvSS4eivvAmpNlm656wKyo5YFoR@lists.linux.dev
+X-Gm-Message-State: AOJu0YwtWBEatlVg606fGNWRWjOzRuodeuzwTZJ+gz65mSjcKr6qmp9c
+	2I2FJrvRAAkNu5bISqyCoLNZunOnGwUJcaCimOQ/AP2pa8q7LgnK7hNfOhPoWdpJQ06DKVZi+hD
+	9cQ==
+X-Google-Smtp-Source: AGHT+IEW6FT5SzWSOj0JB0UAPg+blRK0ibYMj54XT+2rd1e326WroNU4nUmkSnUDL4aqV/75Jp14hq1SYiM=
+X-Received: from pfrc11.prod.google.com ([2002:aa7:8e0b:0:b0:730:7648:7a74])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:188f:b0:732:2170:b69a
+ with SMTP id d2e1a72fcca58-7322170b72bmr3189092b3a.18.1739291301572; Tue, 11
+ Feb 2025 08:28:21 -0800 (PST)
+Date: Tue, 11 Feb 2025 16:28:20 +0000
+In-Reply-To: <20250211143919.GBZ6thF2Ryx-D2YpDz@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250201021718.699411-2-seanjc@google.com>
+Mime-Version: 1.0
+References: <20250201021718.699411-1-seanjc@google.com> <20250211143919.GBZ6thF2Ryx-D2YpDz@fat_crate.local>
+Message-ID: <Z6t6pMgAjHckWMs_@google.com>
+Subject: Re: [PATCH 00/16] x86/tsc: Try to wrangle PV clocks vs. TSC
+From: Sean Christopherson <seanjc@google.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Juergen Gross <jgross@suse.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Alexey Makhalov <alexey.amakhalov@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, virtualization@lists.linux.dev, 
+	linux-hyperv@vger.kernel.org, jailhouse-dev@googlegroups.com, 
+	kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jan 31, 2025 at 06:17:03PM -0800, Sean Christopherson wrote:
-> Extract retrieval of TSC frequency information from CPUID into standalone
-> helpers so that TDX guest support and kvmlock can reuse the logic.  Provide
-> a version that includes the multiplier math as TDX in particular does NOT
-> want to use native_calibrate_tsc()'s fallback logic that derives the TSC
-> frequency based on CPUID.0x16 when the core crystal frequency isn't known.
+On Tue, Feb 11, 2025, Borislav Petkov wrote:
+> On Fri, Jan 31, 2025 at 06:17:02PM -0800, Sean Christopherson wrote:
+> > And if the host provides the core crystal frequency in CPUID.0x15, then KVM
+> > guests can use that for the APIC timer period instead of manually
+> > calibrating the frequency.
 > 
-> No functional change intended.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/include/asm/tsc.h | 41 ++++++++++++++++++++++++++++++++++++++
->  arch/x86/kernel/tsc.c      | 14 ++-----------
->  2 files changed, 43 insertions(+), 12 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/tsc.h b/arch/x86/include/asm/tsc.h
-> index 94408a784c8e..14a81a66b37c 100644
-> --- a/arch/x86/include/asm/tsc.h
-> +++ b/arch/x86/include/asm/tsc.h
+> Hmm, so that part: what's stopping the host from faking the CPUID leaf? I.e.,
+> I would think that actually doing the work to calibrate the frequency would be
+> more reliable/harder to fake to a guest than the guest simply reading some
+> untrusted values from CPUID...
 
-Bah, why in the header as inlines? Just leave them in tsc.c and call them...
+Not really.  Crafting an attack based on timing would be far more difficult than
+tricking the guest into thinking the APIC runs at the "wrong" frequency.  The
+APIC timer itself is controlled by the hypervisor, e.g. the host can emulate the
+timer at the "wrong" freuquency on-demand.  Detecting that the guest is post-boot
+and thus done calibrating is trivial.
 
-> @@ -28,6 +28,47 @@ static inline cycles_t get_cycles(void)
->  }
->  #define get_cycles get_cycles
->  
-> +static inline int cpuid_get_tsc_info(unsigned int *crystal_khz,
-> +				     unsigned int *denominator,
-> +				     unsigned int *numerator)
+> Or are we saying here: oh well, there are so many ways for a normal guest to
+> be lied to so that we simply do the completely different approach and trust
+> the HV to be benevolent when we're not dealing with confidential guests which
+> have all those other things to keep the HV honest?
 
-Can we pls do a
-
-struct cpuid_tsc_info {
-	unsigned int denominator;
-	unsigned int numerator;
-	unsigned int crystal_khz;
-	unsigned int tsc_khz;
-}
-
-and hand that around instead of those I/O pointers?
-
-It would make the code a bit saner to stare at and follow.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+This.  Outside of CoCo, the hypervisor is 100% trusted.  And there's zero reason
+for the hypervisor to lie, it can simply read/write all guest state.
