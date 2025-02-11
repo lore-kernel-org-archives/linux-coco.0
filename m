@@ -1,109 +1,100 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A42E2641C8;
-	Tue, 11 Feb 2025 20:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD16B268FED
+	for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 21:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739306009; cv=none; b=Rph/hWA3586O84TMu9x+7uIotytCe1dJHWxrmv6HrYG+QsTFx8zLKlyjj3U62RYi5DSFXlxK46x9VeuWP4PyBa3QWOLAmqLpaanUBn+jm7ibn9pCJQG3X65clb0SknZBkaAWIv9XSqo4Y90C/PtaTrjb6+LXMTNuGWg1uxHhnqE=
+	t=1739309524; cv=none; b=TA3XluzCmPAGaFljGjFc8BAFNE+qgjZCnBdPqWVWBGM2JaXW6jOpEDV7Sjl/bwcids2627wdPn2MwBqB3YS+7bVF+s8FoX2TCZgZUby2nF7Lo8RurqwulD6kLUJtorqVtMAfu+fDRrS+2i9gP3AEFewtfDkkan4hGLs2oiUzn1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739306009; c=relaxed/simple;
-	bh=0f9pRQChVXubkmyasXArzZjjwmP416IPg/pG89VNEA8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Byew4r3ax+BHIlzVulilBkGeZYjdeupkKjGq+zwOdFIxlUjnfUBkVLgkBduL92KhVAKGxLMxeYNUh1yEQYZsfHb3GMVkA/NKCQDmdsWTFIiAbOrr0JVtDdKxQ5km4UTD/h+dTEBNMIkTrLskeTD2+pdTYzVS+nQ4Wt5GW36Ahwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AFUlWZ0D; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1739309524; c=relaxed/simple;
+	bh=+LUKvtaq5+tVeSV8nn8P/esQQflfMiqhA8o10k5cyOo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=eA23o3z6fwgNWnZpT5HH+wlhXgYfbOkqgXsogtG3wuho9chESSMFK4L2qTzEpjn/4xr9YKK8PzwNoBAt+BYZ5HDb/dLu9kd8gjJpvU5zG+ytuVbSmEja9eAvgmnzmd3xZDJifFvtKcJBtefYo9FkSCt+vAWuRY+FjluKb4MVI+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m+pUU6lO; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AFUlWZ0D"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DE2F840E01A3;
-	Tue, 11 Feb 2025 20:33:24 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 0PKbeqaqAjw5; Tue, 11 Feb 2025 20:33:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1739306000; bh=vokWJlVITGsJPLU0E80fHH3PEIz2HUpoUnuaGEO2j6U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AFUlWZ0DeHiRMMNZlsix1H04k414jFQXrFBZ4u3Kh2xhD2zeHLtcREVfv49eBYkRE
-	 2Uz9r44M6OkcAd2F5Tn7kyK54+mdJErAicpYaNXR5S8izEv6nOBNpsfOARwcge74iV
-	 TmFenLLylZGXmeyAeLI3nuHQQHBU2J6D6cdEUsbjr8oC/7h9T8eXDJLpgzdS3/+oed
-	 n+iLHWSmOZGWw6969PcR/8iGtpI6qBuDGIA8ivjzHStxYrTWMw4iMsEiBHObvGMiOE
-	 0F++vYiFXcsy06/Yyu+lUaQ0CD2ROX/Z7mFlltOaOF120lQPflr7FoK+/pnwpPv8RO
-	 o+BTQsdyQ1uay0JWxnM0UkpR8iMddQuZcfI0g+Pkv0NpO60BeLqja2fmr0932rvMzV
-	 H7swDSsow4+pjCTDJLJkUshJPe55qQFYObG4woYT3lFYOx6VaW8u6H/pHsQGIp4mDy
-	 2YqTmmnf4zue9xs9Zxbl0lkm/c4+hDjqw48dAXQQCo/YCqaJSZfmZVt6Lw1NSKjbbM
-	 xPSOgyxuaZxgWmt5yvo9yxKxR07xMLcPjtvKDfJL1ve7VLNfix1x6/FU76QemVtK4L
-	 c8kDVs/Lv7/yXWNcgMavW2AoNALm74nfMtCcWr8skhL1PWzrEeIzE/P6v/K7uMPWPZ
-	 08T7FYKdJuebMVv1SZsOImxo=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5016940E01A0;
-	Tue, 11 Feb 2025 20:32:56 +0000 (UTC)
-Date: Tue, 11 Feb 2025 21:32:50 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Sean Christopherson <seanjc@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, virtualization@lists.linux.dev,
-	linux-hyperv@vger.kernel.org, kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org, Nikunj A Dadhania <nikunj@amd.com>
-Subject: Re: [PATCH 03/16] x86/tsc: Add helper to register CPU and TSC freq
- calibration routines
-Message-ID: <20250211203250.GHZ6uz8qs-bzcbi0_b@fat_crate.local>
-References: <20250201021718.699411-1-seanjc@google.com>
- <20250201021718.699411-4-seanjc@google.com>
- <20250211173238.GDZ6uJtkVBi8_X7kia@fat_crate.local>
- <Z6uMOyHD3C6-qCXz@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m+pUU6lO"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-21f61a983ddso151073765ad.1
+        for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 13:31:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739309516; x=1739914316; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VkaRbODbKGzYYO3d8B5U658Dnrd7njXNzj1iv9zbjaI=;
+        b=m+pUU6lOYjRWC3QVyxxOIShGpgW80IGDxRXEl6g9GwISPgbvyarkJPrByIhUZvjKMz
+         qQE+3NrZDs5qk6STJqV8pNazqmukR0uZdbHOhEsgoE/qfWQjLw4PzIruL7GwGZ/1OMvp
+         YWpPljIh76COyT4cHXzjNdng5ZwUdBISHMtrVFZpAAlFbKCHHKjeV947h2WAN4/xHTjM
+         aQn6ADL0IpcIgJ6pkSWGGanJ3N/EIC6trK7xMl16UBXhWkDv320KZIHlUxuNlFzACnZ2
+         LXbJ+8tQEPsPaWnLEUthPhEQrvkU6/7FA0BsD1y/4q8/Op9lirKC7I48zZPWEwCze6DY
+         62Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739309516; x=1739914316;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VkaRbODbKGzYYO3d8B5U658Dnrd7njXNzj1iv9zbjaI=;
+        b=lgcBLbvcVOi6xf7M5mo50FMWEXx2PatybjsZNxKSzg6VAFI11piUGs9AwOS2siiOzX
+         ahV55QKT8pYzExTBqH+kJZuh7RwSh9SbrPwf+tXesEPm0RTTdXRlRXs0ewozn9NmPQgg
+         l8Tr+pqLXJDfa/uNTxT/1wZ5Zg4jdNB2Oc7aiS2lZapSiXlxf9fORMwDl5rTWc8X0F5i
+         ZV+TTm0tBixT3YxYHPJBeO+erEMXsWYXeT2ThAsFAG4Yw9XrnFVu839Q06XwlbY4DqR9
+         W6LiBPGDurgzz93r4ofBRh/AWWYtygXf5vFAoP38p6cA2uBu8364MT9WQ66DRMHeu3M7
+         cvtw==
+X-Forwarded-Encrypted: i=1; AJvYcCWXRPQjZjgYmwVyxGjquViU1wRoNZ+VARacNdJlYt4/TxI0kp7SvA+B5rstTWbaBDLcprBQrThIvnRL@lists.linux.dev
+X-Gm-Message-State: AOJu0YyBC+FowcxUfKxiQBlcI4wilPuwBQgA4RJoKZhkl0HfwQfWvV9E
+	yWd/p1jnUvw+kit7rHxxb2UhUt6tqxtbQ29opMo3jBlg1/kUR0XynkC3v+i3k/PvAeLFktdZTiW
+	cGg==
+X-Google-Smtp-Source: AGHT+IF0fRIVtQzGjHRyYmnEnH/8CimtcIxuPGCWLPNdmuUYuFVbVgvZHz2rDvO254ixr09jUnGGcU4Rzps=
+X-Received: from pfblb14.prod.google.com ([2002:a05:6a00:4f0e:b0:730:8a7b:24e0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:2d06:b0:1e4:8fdd:8c77
+ with SMTP id adf61e73a8af0-1ee5c733c61mr1455053637.8.1739309515854; Tue, 11
+ Feb 2025 13:31:55 -0800 (PST)
+Date: Tue, 11 Feb 2025 13:31:54 -0800
+In-Reply-To: <cover.1739226950.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Z6uMOyHD3C6-qCXz@google.com>
+Mime-Version: 1.0
+References: <cover.1739226950.git.ashish.kalra@amd.com>
+Message-ID: <Z6vByjY9t8X901hQ@google.com>
+Subject: Re: [PATCH v4 0/3] Fix broken SNP support with KVM module built-in
+From: Sean Christopherson <seanjc@google.com>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	thomas.lendacky@amd.com, john.allen@amd.com, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, joro@8bytes.org, suravee.suthikulpanit@amd.com, 
+	will@kernel.org, robin.murphy@arm.com, michael.roth@amd.com, 
+	dionnaglaze@google.com, nikunj@amd.com, ardb@kernel.org, 
+	kevinloughlin@google.com, Neeraj.Upadhyay@amd.com, vasant.hegde@amd.com, 
+	Stable@vger.kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev, 
+	iommu@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Feb 11, 2025 at 09:43:23AM -0800, Sean Christopherson wrote:
-> It conflates two very different things: host/bare metal support for memory
-> encryption, and SEV guest support.  For kernels that will never run in a VM,
-> pulling in all the SEV guest code just to enable host-side support for SME (and
-> SEV) is very undesirable.
+On Mon, Feb 10, 2025, Ashish Kalra wrote:
+> Ashish Kalra (1):
+>   x86/sev: Fix broken SNP support with KVM module built-in
+> 
+> Sean Christopherson (2):
+>   crypto: ccp: Add external API interface for PSP module initialization
+>   KVM: SVM: Ensure PSP module is initialized if KVM module is built-in
 
-Well, that might've grown in the meantime... when we started it, it was all
-small so it didn't really matter and we kept it simple. That's why I never
-thought about it. And actually, we've been thinking of even ripping out SME
-in favor of TSME which is transparent and doesn't need any SME glue. But there
-was some reason why we didn't want to do it yet, Tom would know.
+Unless I've overlooked a dependency, patch 3 (IOMMU vs. RMP) is entirely
+independent of patches 1 and 2 (PSP vs. KVM).  If no one objects, I'll take the
+first two patches through the kvm-x86 tree, and let the tip/iommu maintainers
+sort out the last patch.
 
-As to carving it out now, meh, dunno how much savings that would be. Got
-a student to put on that task? :-P
-
-> And in this case, because AMD_MEM_ENCRYPT gates both host and guest code, it
-> can't depend on HYPERVISOR_GUEST like it should, because taking a dependency on
-> HYPERVISOR_GUEST to enable SME is obviously wrong.
-
-Right.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>  arch/x86/include/asm/sev.h  |  2 ++
+>  arch/x86/kvm/svm/sev.c      | 10 ++++++++++
+>  arch/x86/virt/svm/sev.c     | 23 +++++++----------------
+>  drivers/crypto/ccp/sp-dev.c | 14 ++++++++++++++
+>  drivers/iommu/amd/init.c    | 34 ++++++++++++++++++++++++++++++----
+>  include/linux/psp-sev.h     |  9 +++++++++
+>  6 files changed, 72 insertions(+), 20 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
