@@ -1,73 +1,73 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77196207A2C
-	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 10:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3802D2080EA
+	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 10:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739355828; cv=none; b=r96+tkH7l46TdFvjMdOh2/cMdCm4aJ2+UHDeDSFahKkQ72LzSPDDyVgJE8svpwclPegwLuUpBFDWYo7dufmeJ6iGRh5qtgqySMeZg/3cJCpS+mXQPHxPzqthj+jHPxuYrb8lIWhgdTK5fqvXfaSiYDITZ9FW11N0v+fHk0KRvI4=
+	t=1739356766; cv=none; b=E9AOQ7EWg+uKxReiYfnA+yoWsjWmwDKORLubcQSeJeLuGDwNWfxeqX31R1jFCOasxFnO0KUgj1XwjBFyhQpgjeGNDoPfVjH6OZU8LA2tHenGbC01bn0rtywAO/VB+S1Un3ShIf+mc2c7xN9Y6L1yfzvqCb9dmKYD+cLkpDc7N3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739355828; c=relaxed/simple;
-	bh=BZBEVuaiMiQpifiiunyV3GoEyCbfAhZHtiKdSJfCe5o=;
+	s=arc-20240116; t=1739356766; c=relaxed/simple;
+	bh=4tYaNq1YUzR7xbCfa6M7JF8G3YzrwrXnQ/T3Jqjroy0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pcMRFBSymNGiq+cq6HNFRxreAE7BstcQYXDJyod5+xvkTDVydFyN99HPNbiCSRlcSEq58O/o7JeF5d7plg4nm8vLf6shxY+acXFqD7lmIyJ3QufTlh/g1MSWb4SSJZ1JNBDT6zuVz4vUzdCn8pu7hrgKbG4fADauuflcRcjmKBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U6uwTcB6; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=jLMVcsdBPlNIcamUMxflRJE/kxniMn5Q41JTTcd+QYIcWz5ePq89V36a3QJuSVzbwGHw9yBHT6znq73/HR8uQFfOC0+6+lSjqEomt80ZJZPdyXFHwJAQQQrq6lSHRKx5gdZFXYt7XjHq/OBiksgDmhAeFS96cJHrA7Lt3HzqaKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bORUvimi; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U6uwTcB6"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bORUvimi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739355825;
+	s=mimecast20190719; t=1739356763;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L8X4DcZFs2elKxOWwa0k/NR+c76D4y+brE6Aap7ycNU=;
-	b=U6uwTcB6eM/mhAvMZkCu0gZokW4O/edU8XqINz3Yw22vG59YffkOGfO0EDOotGEESAF6hJ
-	bw8qQjJkF8zweaRYRhdEULpFBTG4GJ20Rt0/QGh+GzelS43s9epwbMPFflnkGb9RfKCzA0
-	I77BLMR/m6kuqQaiYk1KW+kH5kiwQI4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=yJerI8drpoZ0/TsOfXFWnQ0scPP+Ef3H3mLwdeVJ5tE=;
+	b=bORUvimixrloILu/X+rBA1QsnqXWkWpGqadmAJnNaGxuqB7am+9M5fNXS/FdhvLeL2fPJF
+	b1G5f9GPXaFEfeSoLFq+bVoM4fyAVMFHYj/E6toUAGaWvxLs9vTbXfNIeh5g5cma0ohk/s
+	VdZ3skDa52dFiBGtVGdRLcQeyNtRJ6s=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-150-TpX8yCxbOvmkzdUTVEcRHA-1; Wed, 12 Feb 2025 05:23:44 -0500
-X-MC-Unique: TpX8yCxbOvmkzdUTVEcRHA-1
-X-Mimecast-MFC-AGG-ID: TpX8yCxbOvmkzdUTVEcRHA_1739355823
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-38dcc9653a7so2180630f8f.0
-        for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 02:23:43 -0800 (PST)
+ us-mta-261-RDpKNTM5MBmkb04LjrFyNw-1; Wed, 12 Feb 2025 05:39:21 -0500
+X-MC-Unique: RDpKNTM5MBmkb04LjrFyNw-1
+X-Mimecast-MFC-AGG-ID: RDpKNTM5MBmkb04LjrFyNw
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43933b8d9b1so22500555e9.3
+        for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 02:39:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739355823; x=1739960623;
+        d=1e100.net; s=20230601; t=1739356760; x=1739961560;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=L8X4DcZFs2elKxOWwa0k/NR+c76D4y+brE6Aap7ycNU=;
-        b=chjq3zNi9/+C29WamcC3Iv9u2Ff7tkY++0za94UWiOSwdBt+yoDaT2lGF6LsBDsNrI
-         UXnQybhR0FRGP1/6ePczSDrzc2MizVYRVJUTb5+dBIpf3xlT6SLpo7MeT/dBhjuJ77Ig
-         xan6wYKCxIUgjuO+ZWBnUMXt5xUkJqMn0ZJWp6EqahWiJJsh+6Jy/FaQAS3KiUa26XES
-         WnnUlABE3ZN8HK7nCL4u3LkE9cvZ4i1y7hO7fEHrYXwSC+1kwKYAidTLkdgE2MlgVJFl
-         Rg2Dv7bJUXLtX04q8216TvzHuZjB51WwINlZVGdR+IrZSIcy4c5jPe+EaLS0LMVJtJT0
-         RjRg==
-X-Forwarded-Encrypted: i=1; AJvYcCVE/7XKjWe3KJ2Xjuv2dWdRh5MjhMyjjv4/FBw+ackyJgXP0NRLILfRe7IQ0ZOMHQQN3953s7i98g6s@lists.linux.dev
-X-Gm-Message-State: AOJu0YyCF/iCzfrav4JIhGJt5KUfXPbiFyYMwKZpi1ZZJ/BNX4D3pj06
-	PpJi0sUH6ALK+a0aC1VOyKXT5ou2HES278JdIrriSwvqV+K3aS4lEiuYXh8laeX/UrWsTNYqZtg
-	j2iXW1P/izfVilUfXbVtGiXGCTjpMUlRMDb1BHGl8NDP+BAqYYLU9l9ISWbo=
-X-Gm-Gg: ASbGncu2Y/TU0EVcLe9Z+gPG/OjyYJgVeGulDWNLwXFXrSJ+zZC5Rbqpfz530+Qmr9B
-	zrJSxzwHveIiDoFnHECRsM997XSrfpAMNeT2wTllihZOvjDTeGsz4qNQV9MKh6pB5Yjj6SngY+o
-	l6pfg9MLWLG/whlSKyi0uGR1YWKzcgGo6XXHo0/auTcgGxIIN/boVm1Uqlh30USN23rwkGSm0wT
-	ZHu/3b6E8U1PJKEybpa7G5YmgUcwfiZtzquLYlhpsGzhDa5CmJBc3xmdTl/PB0YuyrSOI7xawKx
-	b+DhvYSghPMo4XBY6LVaITcjbIWNHQN3O7qC8BXiXY9bz96vH2h0tabb49JtR1v3rjbcmPP4yab
-	1+N0LuZvnwL5KySlw75rxITOH+5EPkQ==
-X-Received: by 2002:a5d:648d:0:b0:38d:e6f4:5a87 with SMTP id ffacd0b85a97d-38dea2516e5mr2148763f8f.10.1739355822855;
-        Wed, 12 Feb 2025 02:23:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE7zr5n5F5+dcD+mXARYuAo/50Zt+QCUnGeNukOUn+08qLpr3cu4noNKpaotZqF4NpfaApiaw==
-X-Received: by 2002:a5d:648d:0:b0:38d:e6f4:5a87 with SMTP id ffacd0b85a97d-38dea2516e5mr2148727f8f.10.1739355822457;
-        Wed, 12 Feb 2025 02:23:42 -0800 (PST)
+        bh=yJerI8drpoZ0/TsOfXFWnQ0scPP+Ef3H3mLwdeVJ5tE=;
+        b=UAw/utseL4JfT83qz88ieBnrClZCViHxOAnHmBjj3j+BXed+23i2lKA3INd6Vjkp3y
+         ffBkx2kw8BcbeJabMzmC5ZFd/YCgZKgQT18/RwdcSg3yhPW10V72UTcPpJtSfgFURdyu
+         OGoo+2Kv7yJ40sjjbZzU5KukZI2HKC+D8Ugn1RlfqdU4nrDHgTik7yNO4fhNmlmesCzj
+         NYvlX0/wGg38H5K2qAnpNYOS4tPHtlgGzNOxYlVs/aeRaH8QabBE5W0l5jaUVYRRBjes
+         0I0ySml6dmYndO2e4Xcnt/ionwzpfr1HPBlz2lKu4c16B8H9SoTaDbc+UNYqP4H78aiz
+         in7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVcCqNn/RkwwgRF1SbQ2EfVnRmM+1LMT5EnSwjppzX/ZisDoXxFvAIqUg6BegK1py6j1pnJQosn4Hxh@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx0C8i5dp5LE5RZAKhrc/3wXhnr0QCpYQYfTFKbEA1vvzA9Ns3N
+	hv4aMVlIWakIqc5nkSr16A3x///M2hMDaKd4vzMWtOFsVyoL6EINCKe8FXnFcoRhMi79BcjYjY+
+	qmaT3zXSLbRFS8+HXxpH0mcXuuq+YkGpmdbV9S71ydngMoIgvbhkinm4Eqcs=
+X-Gm-Gg: ASbGncuKtJR5nYoBxDcEfWCuEmsRpKmYEptZD+7AZJ4Fafz6Z9Lxcljy+kr1OOpRH7+
+	jsWv4aWJlPBDb/6tlTOPYSwBmrxXpEgYh58a/NWr/vn3T5mj70vDFwTFjIjJo6QeLYHPBqWlXcO
+	Oes7CqnWh5OMI79OmVdnto0SZ8pDwoBMt/BITNBsas/Qkamoej3guvXt+ljmHZxFn+f9nQ+4u2T
+	NdW+6gn+iMAncKYdSVrSvWy6V5Wq0ekamPlHimAyLGtQGBEvrCkr3r0XwgWSVU0QqXXylJGi2Qc
+	ZDzUan6T5+UrQ27NMrkOZ8ATb3qDWKUZON1JPQCQsnd4TLL6cr8RvYTzLPvd7sIX83FSLub7JDr
+	3JIfsHE7ykqvbfGEilP+AjA9H5ukZhg==
+X-Received: by 2002:a05:600c:1c24:b0:439:42c6:f11f with SMTP id 5b1f17b1804b1-4395815fddcmr26874375e9.4.1739356760391;
+        Wed, 12 Feb 2025 02:39:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFF4MYfbFVvDo57SWW/XdoivU59ZYNcJEUnst6OF39h3SptnFfEVlsoezf+ni/KL7k+3Ov6vw==
+X-Received: by 2002:a05:600c:1c24:b0:439:42c6:f11f with SMTP id 5b1f17b1804b1-4395815fddcmr26873955e9.4.1739356759890;
+        Wed, 12 Feb 2025 02:39:19 -0800 (PST)
 Received: from ?IPV6:2003:cb:c70c:a600:1e3e:c75:d269:867a? (p200300cbc70ca6001e3e0c75d269867a.dip0.t-ipconnect.de. [2003:cb:c70c:a600:1e3e:c75:d269:867a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dc5a8a9e4sm15765546f8f.10.2025.02.12.02.23.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a1aa7c7sm15829755e9.27.2025.02.12.02.39.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Feb 2025 02:23:41 -0800 (PST)
-Message-ID: <9392618e-32de-4a86-9e1e-bcfeefe39181@redhat.com>
-Date: Wed, 12 Feb 2025 11:23:39 +0100
+        Wed, 12 Feb 2025 02:39:18 -0800 (PST)
+Message-ID: <824f7d52-3304-4028-b10a-e10566b3dfc0@redhat.com>
+Date: Wed, 12 Feb 2025 11:39:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,7 +75,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 2/3] mm/mempolicy: export memory policy symbols
+Subject: Re: [RFC PATCH v4 3/3] KVM: guest_memfd: Enforce NUMA mempolicy using
+ shared policy
 To: Shivank Garg <shivankg@amd.com>, akpm@linux-foundation.org,
  willy@infradead.org, pbonzini@redhat.com
 Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
@@ -83,9 +84,9 @@ Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev, chao.gao@intel.com, seanjc@google.com,
  ackerleytng@google.com, vbabka@suse.cz, bharata@amd.com, nikunj@amd.com,
  michael.day@amd.com, Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com,
- michael.roth@amd.com
+ michael.roth@amd.com, Fuad Tabba <tabba@google.com>
 References: <20250210063227.41125-1-shivankg@amd.com>
- <20250210063227.41125-3-shivankg@amd.com>
+ <20250210063227.41125-4-shivankg@amd.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -132,35 +133,178 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20250210063227.41125-3-shivankg@amd.com>
+In-Reply-To: <20250210063227.41125-4-shivankg@amd.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7-IP-08jf9f_sXl0MgXhWQCAZHJ626al9y9UjHLTbYk_1739355823
+X-Mimecast-MFC-PROC-ID: tSz90TP7kuEddZLehny8a1An3asD9tMVyPJett0OhrI_1739356760
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 10.02.25 07:32, Shivank Garg wrote:
-> Export memory policy related symbols needed by the KVM guest-memfd to
-> implement NUMA policy support.
+> Previously, guest-memfd allocations were following local NUMA node id
+> in absence of process mempolicy, resulting in random memory allocation.
+> Moreover, mbind() couldn't be used since memory wasn't mapped to userspace
+> in VMM.
 > 
-> These symbols are required to implement per-memory region NUMA policies
-> for guest memory, allowing VMMs to control guest memory placement across
-> NUMA nodes.
+> Enable NUMA policy support by implementing vm_ops for guest-memfd mmap
+> operation. This allows VMM to map the memory and use mbind() to set the
+> desired NUMA policy. The policy is then retrieved via
+> mpol_shared_policy_lookup() and passed to filemap_grab_folio_mpol() to
+> ensure that allocations follow the specified memory policy.
+> 
+> This enables VMM to control guest memory NUMA placement by calling mbind()
+> on the mapped memory regions, providing fine-grained control over guest
+> memory allocation across NUMA nodes.
 
-Probably worth mentioning something like
+Yes, I think that is the right direction, especially with upcoming 
+in-place conversion of shared<->private in mind.
 
-"guest_memfd wants to implement support for NUMA policies just like 
-shmem already does using the shared policy infrastructure. As 
-guest_memfd currently resides in KVM module code, we have to export the 
-relevant symbols.
+> 
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>   virt/kvm/guest_memfd.c | 84 +++++++++++++++++++++++++++++++++++++++---
+>   1 file changed, 78 insertions(+), 6 deletions(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index b2aa6bf24d3a..e1ea8cb292fa 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -2,6 +2,7 @@
+>   #include <linux/backing-dev.h>
+>   #include <linux/falloc.h>
+>   #include <linux/kvm_host.h>
+> +#include <linux/mempolicy.h>
+>   #include <linux/pagemap.h>
+>   #include <linux/anon_inodes.h>
+>   
+> @@ -11,8 +12,13 @@ struct kvm_gmem {
+>   	struct kvm *kvm;
+>   	struct xarray bindings;
+>   	struct list_head entry;
+> +	struct shared_policy policy;
+>   };
+>   
+> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem *gmem,
+> +						   pgoff_t index,
+> +						   pgoff_t *ilx);
+> +
+>   /**
+>    * folio_file_pfn - like folio_file_page, but return a pfn.
+>    * @folio: The folio which contains this index.
+> @@ -96,10 +102,20 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>    * Ignore accessed, referenced, and dirty flags.  The memory is
+>    * unevictable and there is no storage to write back to.
+>    */
+> -static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+> +static struct folio *kvm_gmem_get_folio(struct file *file, pgoff_t index)
 
-In the future, guest_memfd might be moved to core-mm, at which point the 
-symbols no longer would have to be exported. When/if that happens is 
-still unclear."
+I'd probably do that change in a separate prep-patch; would remove some 
+of the unrelated noise in this patch.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+>   {
+>   	/* TODO: Support huge pages. */
+> -	return filemap_grab_folio(inode->i_mapping, index);
+> +	struct folio *folio = NULL;
 
+No need to init folio.
+
+> +	struct inode *inode = file_inode(file);
+> +	struct kvm_gmem *gmem = file->private_data;
+
+Prefer reverse christmas-tree (longest line first) as possible.
+
+> +	struct mempolicy *policy;
+> +	pgoff_t ilx;
+
+Why do you return the ilx from kvm_gmem_get_pgoff_policy() if it is 
+completely unused?
+
+> +
+> +	policy = kvm_gmem_get_pgoff_policy(gmem, index, &ilx);
+> +	folio =  filemap_grab_folio_mpol(inode->i_mapping, index, policy);
+> +	mpol_cond_put(policy);
+
+The downside is that we always have to lookup the policy, even if we 
+don't have to allocate anything because the pagecache already contains a 
+folio.
+
+Would there be a way to lookup if there is something already allcoated 
+(fast-path) and fallback to the slow-path (lookup policy+call 
+filemap_grab_folio_mpol) only if that failed?
+
+Note that shmem.c does exactly that: shmem_alloc_folio() is only called 
+after filemap_get_entry() told us that there is nothing.
+
+> +
+> +	return folio;
+>   }
+>   
+
+[...]
+
+> +#ifdef CONFIG_NUMA
+> +static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *new)
+> +{
+> +	struct file *file = vma->vm_file;
+> +	struct kvm_gmem *gmem = file->private_data;
+> +
+> +	return mpol_set_shared_policy(&gmem->policy, vma, new);
+> +}
+> +
+> +static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+> +		unsigned long addr, pgoff_t *pgoff)
+> +{
+> +	struct file *file = vma->vm_file;
+> +	struct kvm_gmem *gmem = file->private_data;
+> +
+> +	*pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +	return mpol_shared_policy_lookup(&gmem->policy, *pgoff);
+> +}
+> +
+> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem *gmem,
+> +						   pgoff_t index,
+> +						   pgoff_t *ilx)
+> +{
+> +	struct mempolicy *mpol;
+> +
+> +	*ilx = NO_INTERLEAVE_INDEX;
+> +	mpol = mpol_shared_policy_lookup(&gmem->policy, index);
+> +	return mpol ? mpol : get_task_policy(current);
+> +}
+> +
+> +static const struct vm_operations_struct kvm_gmem_vm_ops = {
+> +	.get_policy	= kvm_gmem_get_policy,
+> +	.set_policy	= kvm_gmem_set_policy,
+> +};
+> +
+> +static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+> +{
+> +	file_accessed(file);
+> +	vma->vm_ops = &kvm_gmem_vm_ops;
+> +	return 0;
+> +}
+> +#else
+> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem *gmem,
+> +						   pgoff_t index,
+> +						   pgoff_t *ilx)
+> +{
+> +	*ilx = 0;
+> +	return NULL;
+> +}
+> +#endif /* CONFIG_NUMA */
+>   
+>   static struct file_operations kvm_gmem_fops = {
+> +#ifdef CONFIG_NUMA
+> +	.mmap		= kvm_gmem_mmap,
+> +#endif
+
+With Fuad's work, this will be unconditional, and you'd only set the 
+kvm_gmem_vm_ops conditionally -- just like shmem.c. Maybe best to 
+prepare for that already: allow unconditional mmap (Fuad will implement 
+the faulting logic of shared pages, until then all accesses would SIGBUS 
+I assume, did you try that?) and only mess with get_policy/set_policy.
 
 -- 
 Cheers,
