@@ -1,55 +1,55 @@
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B132046BE
-	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 12:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BB220D516
+	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 13:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739364870; cv=none; b=mo+IMC4geTwcMx3H/AsdWDHFLo++cAWoBf6pqlh3ey0UsmqYNX8DyFqMD2u+e5KFrF5qIAHhWl034DdhP9GN2ZHUTtll68UuPg1KxbNxz8VQUkFPqhlVZ7OVIeGnrmk/WO8AGLOllLkyD+S90qDSxCTPbP3UoeV4mBa8BhJI+mw=
+	t=1739365421; cv=none; b=T02of+ChNUAR4Rc6rLfUgUeT4YQejdUWjvfx81/e7BdKK70wGx8GpB0aS3+huoalvugQxFVAYRvby909unSxCbgs2yyhMAS6Fui6O0QnWQdv+/JR4LrnXBlci9VVWPiP+EhMki9QnXj+VRoG2c+rlfCIgnP+iTWA8uCmJqkS73w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739364870; c=relaxed/simple;
-	bh=dUzLri7HLBnLUNXHtV56R2oFbTGzCCUoFmmjbezeFMA=;
+	s=arc-20240116; t=1739365421; c=relaxed/simple;
+	bh=5I+GoDOLPXwxaF/bdd/7zGEhpTleAA3217JXKvjhE4I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WRyTN2Wwt9ifD6cO11p30M90QEdangOFtlV42dtWVTvvuYu2jf1PmA9Gr/5wnyb1N5LCUv5Q3OcevyuKblVFjANIOwYAuDKIXetPj+mhZIBIVJXy7CQ/sLBwlNhS5MP21b1ofEj3spegVs3BqufaW/bblcAB0XvpKLZhWpyjW3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=UFpZapta; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NkdljSwn; arc=none smtp.client-ip=103.168.172.145
+	 Content-Type:Content-Disposition:In-Reply-To; b=JKAmruBCXzp958mvka/V1QpFi08LBjPHmcOssl18Zr0G66qnxSgt6gPDPI3wH+oEejajKvylmTHJgba4nkaF2PpyExmr0GAYAJAlM/xE2Y1SrUgWXVZ4Ns0APOk6E92keH/X3CYecd4QGreJjsNe+84liLQx0SfygNUOOILyZqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=ebOHMC8s; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=igHe+GkC; arc=none smtp.client-ip=103.168.172.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="UFpZapta";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NkdljSwn"
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfout.phl.internal (Postfix) with ESMTP id 467641380830;
-	Wed, 12 Feb 2025 07:54:27 -0500 (EST)
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="ebOHMC8s";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="igHe+GkC"
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 330B3114018F;
+	Wed, 12 Feb 2025 08:03:39 -0500 (EST)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Wed, 12 Feb 2025 07:54:27 -0500
+  by phl-compute-04.internal (MEProxy); Wed, 12 Feb 2025 08:03:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-type:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1739364867; x=
-	1739451267; bh=B8CxILEVEpjQ5H2ChvReMTw8ajG4/Nhh8qC+Fiy/HAc=; b=U
-	FpZaptaQZTevoe0cySA3pPZRz7aLIwl0WmrLjfHqB5tQKE4T1hXWY1nfrPGtXVZd
-	nM5lLH9iiI11DEabnPWSkd5Vs9oa6zUx2CnOyRXkGwqWHZznsEgGnLlqI7V3eQK/
-	92eGQ5bolSmIVQ5OOSHkDhKnBQCQ/JYrBZ4eU9zxW/mRgdPCZB9a1aQhzP7lC/CF
-	1J8Y3qi2C4TpX12jOgMcISUeStbUwGVkwC/dLpabhdrBkwf3gGe6oNzQuXGXUMz9
-	ZavnZXt36Z7JT5aiokfllnBR42ou1+B9ioqH9gKPEVGrFxfa7w1i/SDGN4oFgvPG
-	I0dNq7tYlMzkKpiugcA6w==
+	:reply-to:subject:subject:to:to; s=fm2; t=1739365419; x=
+	1739451819; bh=+Y6Ib/RSqKlmrUGsG+NEeNPWdjzf+UWt/aq1y+kKLoo=; b=e
+	bOHMC8smW1FFDE+T0YMtLUOKeN1+oIci9V47ehV5TsmcVSEDTaBnlfpFVtuV/HlM
+	tojgIXacFPQrNfJAfcXQlcX4vmyGyC62P5JC6z5c5Ti6FtQfK/RnB16QovbR2Vg4
+	yNQltaSxbohA9ce+GWU8Qiizp1UVyvzmaFDDpsY3o408CwbnJ8yzflHOJ+mcct7y
+	wVZbgsgxJWoOnV7fhDAcdnVrtq0CErG/z+UO/W7l60da8/ovSvhnQt5UWHs9D8It
+	bmdyMaxg7M2s81ka/lN6rUhLXCvMX38J9w/TNA8FSxCNGfZk6AxRY60uUr1OMhnX
+	wGP7aVQtDfEjsd8H4jKXw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1739364867; x=1739451267; bh=B8CxILEVEpjQ5H2ChvReMTw8ajG4/Nhh8qC
-	+Fiy/HAc=; b=NkdljSwnPaOcgW0ruMTJgTYj+egMstPs93iS9lb/cdE0Zf++1zC
-	Q+2n1uxqsnfWOuSB41UoLA9cpjKHlEQ+NRU+10neTM1BL+MPlynKh4vQFdCAaMmY
-	aE8UGymw7SLeSOYBkYdO2E9Uf/PsFx+hSiS0ah9lcW2Uv6pZZkke2x0TZyNJ5Rn+
-	wYvRB2KT2FAC4+o6AY7kuJxQI4XBmhdv8sKLUX98W1jUkL/EcEeCYAUlHMl/zvKl
-	Wh9s2WjmjviEOujM17XdT+BAukcYMPnAYI8+tA04oqi9Fd3G/RW4cWjETkNQ+Q1l
-	EXQwDS1pNfG/DVi8YT6zisA6egalr6mPa1w==
-X-ME-Sender: <xms:A5qsZwFfftWnxLKO6VEGGYykTExInmqUGCVHfIm60tKHBomTukzBiQ>
-    <xme:A5qsZ5V1Cysan1OEF7T3q8C0u--XYOveiBFa9runYPz5BvJ2Htzjc3mJgMqRIsqq2
-    i6WOwIOup1XZzhpT9Q>
-X-ME-Received: <xmr:A5qsZ6JGQTKbTQppU40zBoPJBB60aFrO9Ht9NjM3pmtmEV_7A2P9bhECg0f-lTaizoXXmQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfeelfecutefuodetggdotefrod
+	1739365419; x=1739451819; bh=+Y6Ib/RSqKlmrUGsG+NEeNPWdjzf+UWt/aq
+	1y+kKLoo=; b=igHe+GkC+oO+sjhu6f82OnkmsCRSej4hthz39z6T7SI7A1V7USa
+	C0ChkJr3ZLxH6qdWrz0iVfixykXVIoxcvImA6SMKFZSSRF47ms91195Fgu3uW1dv
+	2G+1mltvF1P7v+1z9fOD0PAIlE3GECltkioTXLvFnAT7m6+nWfFK9XI1c9OlrUaa
+	LZJs4a0WZEjO1ozrr5irYYqs1H5DfjdOZxEfroqDVQ8YAsU7Av3V3tSI2DYi+3L7
+	aj/sdq5Ad12YeXY9YAsZBR4nKYTCV3LRfeVtF7KftgdkQonrQdHJH64RR5KkTIz9
+	oLM2kOSH3TFOr8xsQczzLHbGIzxbqGo7wpg==
+X-ME-Sender: <xms:KpysZ75bDcq_Dv4rOLfzrNvSYQobhozPKD00g9ykeYpNwm5N_OO9xA>
+    <xme:KpysZw7gOqfwR4FcUZAbcilF329sUpIO2-USYUVGeXm5e_SiyYyR1XjAUKSkIywmn
+    ciIIgF8ZJ2omaaXEmY>
+X-ME-Received: <xmr:KpysZydSpsHBuveNzQPtc7PVWNd3DsvmV4Fa4l29PPTXUEAzUVaA8DXV2lowNFBwd7TG4A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfeelhecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
     hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdfstddttddv
@@ -57,7 +57,7 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfeelfecutefuodetgg
     esshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrfgrthhtvghrnhepffdvveeuteduhffh
     ffevlefhteefveevkeelveejudduvedvuddvleetudevhfeknecuvehluhhsthgvrhfuih
     iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhho
-    vhdrnhgrmhgvpdhnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtg
+    vhdrnhgrmhgvpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtg
     hpthhtohepvhgrnhhnrghpuhhrvhgvsehgohhoghhlvgdrtghomhdprhgtphhtthhopeig
     keeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvh
     hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehpsghonhiiihhnihesrhgvughh
@@ -65,28 +65,26 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfeelfecutefuodetgg
     htthhopegvrhguvghmrghkthgrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprggt
     khgvrhhlvgihthhnghesghhoohhglhgvrdgtohhmpdhrtghpthhtohepjhigghgrohesgh
     hoohhglhgvrdgtohhmpdhrtghpthhtohepshgrghhishesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:A5qsZyELfOkik5Aw0VjABfX6_-CkUI8hrvVUaWqAyH0abqxsoBUVqg>
-    <xmx:A5qsZ2UngPg7AvIvi-g81a65Nlso9hxbl5MDri9HYTV_rk8wgxKGOA>
-    <xmx:A5qsZ1Mg-FmwM8dJGVhQ9avw3ohaazEB9jZul-D0tirmGmPdLHKTpg>
-    <xmx:A5qsZ93m0XRzGOMaqXzjhdDAiyogMy9f1YhtwXpRA_DM3bmvILZcyA>
-    <xmx:A5qsZ0ayS2upXBHUmye1FPk7dK90iimRTe2aHt76QKeRyBesncV9rvoA>
+X-ME-Proxy: <xmx:KpysZ8Jwd7SmUdQWsB3CpA0XEQr-SHdSQ7jlFyvn9SUqaG9MJX2l2Q>
+    <xmx:K5ysZ_ISRZEj5D7uqBAOmfmWJnHizY5LxtmdRkS-1lCC5YHIcKva2A>
+    <xmx:K5ysZ1wZbb3pCgjaOIspFoZ9YvEIdtSY8arRyUhyuYA489Suyb1fBQ>
+    <xmx:K5ysZ7IFqkeMAZ9_wB3Ajs9IzHjgOEavHiMs4s7lUGJRVUTvFT7KlQ>
+    <xmx:K5ysZ467oL4q_Dc7qqNBCmU0GVPQk3MrvpHn2okmIPgDb2hS16BvFaq2>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 12 Feb 2025 07:54:21 -0500 (EST)
-Date: Wed, 12 Feb 2025 14:54:17 +0200
+ 12 Feb 2025 08:03:33 -0500 (EST)
+Date: Wed, 12 Feb 2025 15:03:30 +0200
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
 To: Vishal Annapurve <vannapurve@google.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
 	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
 	sagis@google.com, oupton@google.com, pgonda@google.com, 
 	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
-	isaku.yamahata@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH V4 2/4] x86/tdx: Route safe halt execution via
- tdx_safe_halt()
-Message-ID: <ljdzupgyl2am4qgvirwpdonwuzwjaysemu43icrzxjt5olr3yx@dldbi5tqwhjh>
+	isaku.yamahata@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH V4 4/4] x86/tdx: Remove TDX specific idle routine
+Message-ID: <avodert2s5di3s4m3ays6z4qhskwfz6zxenoq3rsf7crpclkfz@jaq7ptkmco4o>
 References: <20250212000747.3403836-1-vannapurve@google.com>
- <20250212000747.3403836-3-vannapurve@google.com>
+ <20250212000747.3403836-5-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -95,33 +93,18 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250212000747.3403836-3-vannapurve@google.com>
+In-Reply-To: <20250212000747.3403836-5-vannapurve@google.com>
 
-On Wed, Feb 12, 2025 at 12:07:45AM +0000, Vishal Annapurve wrote:
-> Direct HLT instruction execution causes #VEs for TDX VMs which is routed
-> to hypervisor via TDCALL. safe_halt() routines execute HLT in STI-shadow
-> so IRQs need to remain disabled until the TDCALL to ensure that pending
-> IRQs are correctly treated as wake events. So "sti;hlt" sequence needs to
-> be replaced with "TDCALL; raw_local_irq_enable()" for TDX VMs.
+On Wed, Feb 12, 2025 at 12:07:47AM +0000, Vishal Annapurve wrote:
+> With explicit dependency on CONFIG_PARAVIRT and TDX specific
+> halt()/safe_halt() routines in place, default_idle() is safe to execute for
+> TDX VMs. Remove TDX specific idle routine override which is now
+> redundant.
 
-The last sentence is somewhat confusing.
+I am not convinced that it is good idea.
 
-Maybe drop it and add explanation that #VE handler doesn't have info about
-STI shadow, enables interrupts before TDCALL which can lead to missed
-wakeup events.
-
-> @@ -409,6 +410,12 @@ void __cpuidle tdx_safe_halt(void)
->  		WARN_ONCE(1, "HLT instruction emulation failed\n");
->  }
->  
-> +static void __cpuidle tdx_safe_halt(void)
-> +{
-> +	tdx_halt();
-> +	raw_local_irq_enable();
-
-What is justification for raw_? Why local_irq_enable() is not enough?
-
-To very least, it has to be explained.
+It adds two needless flipping of IF in the hot path: first enabling
+interrupts in tdx_safe_halt() and disabling it back in default_idle().
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
