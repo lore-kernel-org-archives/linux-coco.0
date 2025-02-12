@@ -1,55 +1,55 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10C779F2
-	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 00:08:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DC4F4FA
+	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 00:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739318900; cv=none; b=LeAZkSwSo4kJ+e6GZ7rLISYlRX9cLOJ/GXVjEeYhJg3ATPNbUczMtkACcFcaIWN5r6GG9pTyhFKQMWrNBj/AD77AmaZkw8K3OAI+sCJm2q3S/JZdczXxmWBQzh7NUM8YhPvAupvEJ8u+1LpCWb4wR26mCoVZvvB8o+o2E5uW2Wc=
+	t=1739318902; cv=none; b=eZD4rVnMGj5LMWLXrtwQzUtWBpjogZ3riVSBYLrA4G7Lmu2VB9IZ7IcbkHDZIm6O3e9ABqpZFWHECCGcrhlFsujr3VMjZU8Jc2IsdqUiR71LIv4pQsm6qP7DGMsjfGUo/8QqGoTHY/sBgN1pbR6kq/fUKztN6paIdKq99ggF6Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739318900; c=relaxed/simple;
-	bh=qPyAwicKpZpLg3GmtysNq22b8SvhJ9Kkp+IXaoaTFnU=;
+	s=arc-20240116; t=1739318902; c=relaxed/simple;
+	bh=oLYsr5K/EnOE6Ps4r/pTLeznQ2IgY4c6G0iy2zWPqsM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DOfVp3xaE9/h+3RS6DeqTqPHaws3iuzUjCWfhJLAWWFswH7ZbfZDZkjyh+cg/h/jogCITMyx9t4fVlqnvFEgKXmJ1GUPqnl5l70TmICl5yWn/qnER/WrokSO/EmOj3ntYytqq4SQm7Xudlc4mS3DYK+u3MTmjH2a3WEi6mocI4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Tf5hOEvW; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=AXW3KQ3dxLk/eANSLo8r2ip92BZywk0Ixy4o+3ZsUtptSSqkAtsv0iFiBfZV7FVLcI4b8tQXbDjYvFBNBL+Nx3k/Y9mIFXvRdulmoR3wTES5QCCzcQzUMY3CIFxsfAl4zA4onF6G47DutOJVkiKo0BEVMsB2t8Ii6+l1u6KYJNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qVHCPXPa; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Tf5hOEvW"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2fa57c42965so7098944a91.1
-        for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 16:08:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qVHCPXPa"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2f83e54432dso19315310a91.2
+        for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 16:08:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739318898; x=1739923698; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1739318900; x=1739923700; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rhFKIyqyWccfVyhYNzTyKMpa/Pu1oM/LLWYuIAGv7wA=;
-        b=Tf5hOEvWGuKn9nlSlTgyCpymKaMrjaWU1rWhrDo64E9Tk3VCZZvcRXfifGKrat4uQr
-         mJ69h775NqnsA1gQRbCbZKD0lZCjK/XL2xm33qGZY6PKrTPCnrzAVJkJw7pGVn7NJOAL
-         npYlDABtLQPdb1XpuuBd4ZgwHGXhUG5KFMaPzcn477KliJP1Hegb5I6pCEz/kl+glYF9
-         fDjgaOPG+2L+lKk9LPglWa8W1RkzSSF8G7QWnGQ8B122KAsjZarpLXIBzvR7CTZjFPZc
-         KANUTDLyo3C/ss9aSph6kE5XwmL0zUfBliIz3TOF+CLkRF4l47blBXm07pKGA9c/3OuA
-         RYYw==
+        bh=h1XiCMBzc5zO/l6anZRBbtwTnK6rTlocvFZ6R2e8ekk=;
+        b=qVHCPXPanPpc5A3tGtuIoMuxkLeWtMmH9utyKf3mpyNEV/MCjIzPTBYD0wulBHy/JX
+         /wA6sr0gbXW3qYHpMzMtEvLszye9D3trG79wWXD5UHN2pecRVBtZu2SRRhEnAlOx+4Fa
+         6OGcqQDkq2qczPqT5/a155vGK/+HsmcJX8VuWfYmh4igMBRPfYO4ysqVIBBND4Hnasiv
+         T21iBvz4sK+dal2sCEum17BXLNKoUU8+WiJHD232JD2EKH1XQS2FBx6c6e1nZ9ahS/cZ
+         Hh6sBwK1RyZJ5rgw3KEGEZlvortNntQfu488cuuD13wZE566ztsPK9YAiBajapbDljBS
+         2MZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739318898; x=1739923698;
+        d=1e100.net; s=20230601; t=1739318900; x=1739923700;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rhFKIyqyWccfVyhYNzTyKMpa/Pu1oM/LLWYuIAGv7wA=;
-        b=f6Z1uSazyuYjFTb7UIcTfQnOvuPHtJPm6y5seut6JyIqgHielRIW5q2t3yaCrPhoLm
-         aL+37ktlLJhSt6vUQo+gY6jLhg+WXz/4C2aaPhCKDzmLaMQx2QJRM03dxqkfXne7hwX4
-         rkrtMRXt3bOPGMwLyBDOLMOjFgWJ+aGDQpWVos8nldJNdKydX69+aSus9pN4n/hBeY98
-         W/ImXP6j203uuzGzvRMuSrb8oSytfKTAppKAadZMhMmpGcRp5Tj7OKAiD94XywuF4bWL
-         vtNo2dm5404eUqmdQQO/i3bRqwMe9b9H9vPBWOUQkvbDvNGB/dcY59pioP5GE/W7D0p/
-         EjQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVFi5wQyZNIlznK3HXWXMNCvc5hRIvF4UaeaafqvSV3vpRDIy+K0uOkKn1PjZ9O3md/YhgJZagojtxF@lists.linux.dev
-X-Gm-Message-State: AOJu0YwS9tANn9HDfIIfpr38DlR3M+ZrbEVsrtw7dgUtWc8afsXjV6fH
-	QY5nWgEdHd6tJcyiO9xlq+rNHcLdGtJnIHgeGPiNdR5iNMBoYorp1iTwX63iFKniCtCAieTTOVB
-	HZgumYh5NYHVnNgSQ9A==
-X-Google-Smtp-Source: AGHT+IGIIh1a6f5LCEQr8t1bLmoqA5VXctBMBQSaTYWM2+xjlnEVTI47jUBbtXW0wJOYn/WoZYxJQiGIyuC2R8tL
-X-Received: from pfoa23.prod.google.com ([2002:aa7:8657:0:b0:730:759d:5049])
+        bh=h1XiCMBzc5zO/l6anZRBbtwTnK6rTlocvFZ6R2e8ekk=;
+        b=WT2jwDV1C25YZeJjvHdq+qXCBwNdHp23klCZxKSVNP+QXd8LqwMvlHpEHxkqH32Rzf
+         U9UJHGYljHkPsEOxgN+VdSIj30iurxHEp+3o0kFD6WtDAYRSO0Z8wUu0YiMyHcRV68iq
+         PzoMsGfOldyRXlVHrti3sqmZLHHbE8wjCWvbaVV+i4dLxOkZAbBcXko2kXcF1DAOa6bz
+         01bxep+dNEVseH1n+bBWqYKj6A3Wf1Jov+kwLPsC2wuWzukR6AEToPCccuO9nUv39b+1
+         eUvw75MQL0l5fZ9HuY+b3mOVnrLHJpdRbeJy6cwlXD7ZX2RkV9OwpxPJdMHKPLYKLjrM
+         GnEg==
+X-Forwarded-Encrypted: i=1; AJvYcCVkdrrdoAuBiAcNztQlm7IY+VGcIgHd86TMvpXq1l9VePnWaRCuAnw/7kyzvB1ClRRtAkgi6vWn07Cu@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywjt1nB/0D3xLprz7YsIUYcG11ICk0xlxhF4FiKhPqPBA44ykEp
+	Mx0mlNyQZFz80M8SZAXK/IWwcniWx81nXMEfDkYT2TrPUulpHqf/HcSPhMpVWt8rCwgsLRcvA7F
+	XLBc0dnd8a4XAwLHC+w==
+X-Google-Smtp-Source: AGHT+IH4Aastc89G3lK7Kpren76shMv1ca6utCycZ+bUZsHekNg+thxZju67dX6Db0XVVQa0m/oRTqmDN+BLbf48
+X-Received: from pfbit9.prod.google.com ([2002:a05:6a00:4589:b0:730:8636:67d7])
  (user=vannapurve job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:cd2:b0:730:7499:4036 with SMTP id d2e1a72fcca58-7322c443c7bmr1611687b3a.22.1739318898459;
- Tue, 11 Feb 2025 16:08:18 -0800 (PST)
-Date: Wed, 12 Feb 2025 00:07:45 +0000
+ 2002:a05:6a00:1c8d:b0:730:9860:1240 with SMTP id d2e1a72fcca58-7322c39c33bmr1528792b3a.13.1739318900587;
+ Tue, 11 Feb 2025 16:08:20 -0800 (PST)
+Date: Wed, 12 Feb 2025 00:07:46 +0000
 In-Reply-To: <20250212000747.3403836-1-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20250212000747.3403836-1-vannapurve@google.com>
 X-Mailer: git-send-email 2.48.1.502.g6dc24dfdaf-goog
-Message-ID: <20250212000747.3403836-3-vannapurve@google.com>
-Subject: [PATCH V4 2/4] x86/tdx: Route safe halt execution via tdx_safe_halt()
+Message-ID: <20250212000747.3403836-4-vannapurve@google.com>
+Subject: [PATCH V4 3/4] x86/tdx: Emit warning if IRQs are enabled during HLT
+ #VE handling
 From: Vishal Annapurve <vannapurve@google.com>
 To: x86@kernel.org, linux-kernel@vger.kernel.org
 Cc: pbonzini@redhat.com, seanjc@google.com, erdemaktas@google.com, 
@@ -68,128 +69,44 @@ Cc: pbonzini@redhat.com, seanjc@google.com, erdemaktas@google.com,
 	pgonda@google.com, kirill@shutemov.name, dave.hansen@linux.intel.com, 
 	linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
 	isaku.yamahata@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
-	Vishal Annapurve <vannapurve@google.com>, stable@vger.kernel.org
+	Vishal Annapurve <vannapurve@google.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
 Direct HLT instruction execution causes #VEs for TDX VMs which is routed
 to hypervisor via TDCALL. safe_halt() routines execute HLT in STI-shadow
 so IRQs need to remain disabled until the TDCALL to ensure that pending
-IRQs are correctly treated as wake events. So "sti;hlt" sequence needs to
-be replaced with "TDCALL; raw_local_irq_enable()" for TDX VMs.
+IRQs are correctly treated as wake events.
 
-Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-prevented the idle routines from using "sti;hlt". But it missed the
-paravirt routine which can be reached like this as an example:
-        acpi_safe_halt() =>
-        raw_safe_halt()  =>
-        arch_safe_halt() =>
-        irq.safe_halt()  =>
-        pv_native_safe_halt()
+Emit warning and fail emulation if IRQs are enabled during HLT #VE handling
+to avoid running into scenarios where IRQ wake events are lost resulting in
+indefinite HLT execution times.
 
-Modify tdx_safe_halt() to implement the sequence "TDCALL;
-raw_local_irq_enable()" and invoke tdx_halt() from idle routine which just
-executes TDCALL without changing state of interrupts. Introduce dependency
-on CONFIG_PARAVIRT and override paravirt halt()/safe_halt() routines for
-TDX VMs.
-
-Cc: stable@vger.kernel.org
-Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Vishal Annapurve <vannapurve@google.com>
 ---
- arch/x86/Kconfig           |  1 +
- arch/x86/coco/tdx/tdx.c    | 18 +++++++++++++++++-
- arch/x86/include/asm/tdx.h |  2 +-
- arch/x86/kernel/process.c  |  2 +-
- 4 files changed, 20 insertions(+), 3 deletions(-)
+ arch/x86/coco/tdx/tdx.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 87198d957e2f..afcdbc9693dc 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -902,6 +902,7 @@ config INTEL_TDX_GUEST
- 	depends on X86_64 && CPU_SUP_INTEL
- 	depends on X86_X2APIC
- 	depends on EFI_STUB
-+	depends on PARAVIRT
- 	select ARCH_HAS_CC_PLATFORM
- 	select X86_MEM_ENCRYPT
- 	select X86_MCE
 diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 32809a06dab4..ee67c1870e70 100644
+index ee67c1870e70..54baf93d9218 100644
 --- a/arch/x86/coco/tdx/tdx.c
 +++ b/arch/x86/coco/tdx/tdx.c
-@@ -14,6 +14,7 @@
- #include <asm/ia32.h>
- #include <asm/insn.h>
- #include <asm/insn-eval.h>
-+#include <asm/paravirt_types.h>
- #include <asm/pgtable.h>
- #include <asm/set_memory.h>
- #include <asm/traps.h>
-@@ -398,7 +399,7 @@ static int handle_halt(struct ve_info *ve)
- 	return ve_instr_len(ve);
- }
- 
--void __cpuidle tdx_safe_halt(void)
-+void __cpuidle tdx_halt(void)
+@@ -393,6 +393,14 @@ static int handle_halt(struct ve_info *ve)
  {
- 	const bool irq_disabled = false;
- 
-@@ -409,6 +410,12 @@ void __cpuidle tdx_safe_halt(void)
- 		WARN_ONCE(1, "HLT instruction emulation failed\n");
- }
- 
-+static void __cpuidle tdx_safe_halt(void)
-+{
-+	tdx_halt();
-+	raw_local_irq_enable();
-+}
-+
- static int read_msr(struct pt_regs *regs, struct ve_info *ve)
- {
- 	struct tdx_module_args args = {
-@@ -1109,6 +1116,15 @@ void __init tdx_early_init(void)
- 	x86_platform.guest.enc_kexec_begin	     = tdx_kexec_begin;
- 	x86_platform.guest.enc_kexec_finish	     = tdx_kexec_finish;
+ 	const bool irq_disabled = irqs_disabled();
  
 +	/*
-+	 * "sti;hlt" execution in TDX guests will induce a #VE in the STI-shadow
-+	 * which will enable interrupts before HLT TDCALL inocation possibly
-+	 * resulting in missed wakeup events. Modify all possible HLT
-+	 * execution paths to use TDCALL for performance/reliability reasons.
++	 * HLT with IRQs enabled is unsafe, as an IRQ that is intended to be a
++	 * wake event may be consumed before requesting HLT emulation, leaving
++	 * the vCPU blocking indefinitely.
 +	 */
-+	pv_ops.irq.safe_halt = tdx_safe_halt;
-+	pv_ops.irq.halt = tdx_halt;
++	if (WARN_ONCE(!irq_disabled, "HLT emulation with IRQs enabled"))
++		return -EIO;
 +
- 	/*
- 	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
- 	 * bringup low level code. That raises #VE which cannot be handled
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index b4b16dafd55e..393ee2dfaab1 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -58,7 +58,7 @@ void tdx_get_ve_info(struct ve_info *ve);
+ 	if (__halt(irq_disabled))
+ 		return -EIO;
  
- bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
- 
--void tdx_safe_halt(void);
-+void tdx_halt(void);
- 
- bool tdx_early_handle_ve(struct pt_regs *regs);
- 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 6da6769d7254..d11956a178df 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -934,7 +934,7 @@ void __init select_idle_routine(void)
- 		static_call_update(x86_idle, mwait_idle);
- 	} else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
- 		pr_info("using TDX aware idle routine\n");
--		static_call_update(x86_idle, tdx_safe_halt);
-+		static_call_update(x86_idle, tdx_halt);
- 	} else {
- 		static_call_update(x86_idle, default_idle);
- 	}
 -- 
 2.48.1.502.g6dc24dfdaf-goog
 
