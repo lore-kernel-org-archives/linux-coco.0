@@ -1,101 +1,86 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CD36136
-	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 00:23:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF2C204C16
+	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 07:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739319794; cv=none; b=Xy0lS5ocNOsdbRQYANNuShDadsOlu3NIuaaAcljPXC6G2Hq4gkR/xa60d+cFdvoFPsnBZ6Tb+d6dAyBrMuBliZhDvTkd90B4v4dbkG06zHJnOmnLwUihqcNGOb/TGO2Px52cYhyzv6z529Ghmm58vjIS9SWUeYbQCfk2D9yHfOk=
+	t=1739347059; cv=none; b=EJhLmMZ0eUg+K+ILwgDJIceaL8BfzbvWOUVltBcbeZ4nR3ltRlq1MF96L+lzQER8dKRrFPlva0ekbVzfUwmifS3LvekkczJDeb1ix0FTOyBGJRGTYgENXI6bM5jxIW/pgnXpROser4dVLrO05tBORfPI5vq782+S4t5FpShIirY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739319794; c=relaxed/simple;
-	bh=qNR6Tk+GObHhwah3Z3S1fvOkyR0+TVEpjXojg1MVygE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uSLaaaXIwOvWsje3BoxKUriXWIZDGSsR4REFOxuy5FAJZHoMp932tMapOvA5a/iW4Flyt/PxVsLYJ7SSwjbfEA1Yn+84KIRmdn9GH9S2342+b1vzDimfKjh3hHYE23p8kRHp56SnzeYsbGGkRHVsypH4+Jk/XDooyiC13eb74Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TH39O2DE; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1739347059; c=relaxed/simple;
+	bh=03WLSSFoaU02CLxWG0tXeMYv/zQbNS0SuGJ8yfYpC0E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=REh8fj0R0YasoIteIBe2E601y5k36xryUF+LL548SbekY/pKL3mYYiQ3jvdymS8fK2QW3PNTLl7jTnLpoWbeySN2bhtlrlNfKbhj/4QyLxdr5+HUjnBeHND6yJ7eM+SKKpYsYb9W9sCm+8uNQyT8C16sxlTSLoFKUYxEXfuMDV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CfK8AYYx; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TH39O2DE"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-545092d763cso1379e87.1
-        for <linux-coco@lists.linux.dev>; Tue, 11 Feb 2025 16:23:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739319790; x=1739924590; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mACifcoi2DxXepU+x0EutTWQzaMm/Sos4wROfYi3LJM=;
-        b=TH39O2DEd915JcHF2esxhoBspm8hNMjQ2D0+TO8+oJaWSuLiCduZb9pedqk9Pjy61W
-         lbxBpJ033v3FrsFPgpOkfbGBBd3XCGLDDq3h8ThpRn6HgOMnRYxzW4Y8cwIfkY8t3peY
-         D31icM7xdn8MAOMTlcfuBpDNNIHIWOqrKu1DZt/SEJQFrZ01TpKNpQFqSDRPdEcgmhgq
-         mw+v7EjVG3aLX8a44ZBozemMIvVfY+gB3sfcs4h2EOPHYAXc8q5ldbUylEpBWfNJhj2b
-         +9mIdAPzYtb/pKv7/rxdKF/OrGe2ePykev0jTPirbbJU67FherumQAmRdNCVAD+a1bhR
-         V7LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739319790; x=1739924590;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mACifcoi2DxXepU+x0EutTWQzaMm/Sos4wROfYi3LJM=;
-        b=pvXBt2dd/6GFNzDQNB33Ba6t0+XdpJMYXWBheLSWKmJvkzqXuxLDpqbzbaFPV16oXS
-         R7FIr5S9Qk0c6mgF8pT7lgqEeDT94J+tlWIJ7RDAIplysQXNKIA7ikF3Sikjo9RZwZtu
-         ybAPvkabimMmEHpJp6TE04VTnI4llCRyEiyUUQNGZk1ax6xZKCxHchP1eWyUIAJ1w3ez
-         AIOtbEGznplI8a43Q3zEMqJhtg51fVlfkOsIaIH+5w6tKNCMDEytdMfTVJj2YoyyIrHu
-         zMcT962NNBUTHSnKEmE+P/iYiwJBxtvlnxjfKANgRtwSknW1F7cY55MroP4iUE92ZQhy
-         tcVw==
-X-Forwarded-Encrypted: i=1; AJvYcCVeSkVRTpai2d2dCv8tgtUIuet92Et6X/oWrKdH5t23AKB7nqw4uys84tVWx1T5NC2/oamhbID97+3c@lists.linux.dev
-X-Gm-Message-State: AOJu0YxZ8van0ZWxWmbpdSZPUs1U3nk0ETA/9KaUvVus7EubjnUPVtAC
-	zLx2/c8+022phSr9QRdS95FEFZVvSFpP6orD6zmQmkibGHLzmbOwiolliDfZGoWY8XCNRuaq+Gr
-	TFxOBlw8SaQdW13s7IOX6M5wrfZqg3lI3+ndC
-X-Gm-Gg: ASbGncvq2HI6QbOMOIO0EWBYywPO3RZiarCHjacvmRUXvtDX6W8iHlBp2f/t1sHXOkX
-	Kpj/pSPsWtJrEqV0pPEm+GeMwIihU8pZCpja0WiNgyDZfNOBS2FnxHqKXwMTDZ8w4r8gCm/GNYq
-	+aDY/9o+VilcOO/dWc7xcCPl4qrA8iqw==
-X-Google-Smtp-Source: AGHT+IFPKhZm0/EPYURfMy8o2OglVh9zff4nbrdv9CblcFNVpZjWo90EpnyStQulFiUbZl+EMuN5argcpQNCmKAOnj4=
-X-Received: by 2002:a05:6512:3d90:b0:545:34e:16c0 with SMTP id
- 2adb3069b0e04-54518de9606mr49823e87.5.1739319790362; Tue, 11 Feb 2025
- 16:23:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CfK8AYYx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739347056; x=1770883056;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=03WLSSFoaU02CLxWG0tXeMYv/zQbNS0SuGJ8yfYpC0E=;
+  b=CfK8AYYx9f+gJE67GzxJS72QpojQL3vbyfd6WSAIbUtcAF3usq53bd38
+   7p0KCgEVhOp1yA5vrkOYQrHO/awQ8/DQZZ5urjIiq4K02wJT01+Z3AbWF
+   mpAM1K/0hSAl9w8SMbHYXxl1u59oL773YXDf+f/EqTqhhTZicpJn6b9UH
+   Zfo1UrCfarfibGu9etEVGg6XwCsCqVYheRQUTbIDdcHdekq4qcFbOJQeg
+   59b3/niRoOra/l5mqVz/6Kqm/zJ221W6G69L1STqpZiFM65mYNCM5u8tU
+   vo2gOKHFln1YKcSp4MZmI+gCG+zX45u+E85DCgXuD0P1mrg1x/g4mTG92
+   Q==;
+X-CSE-ConnectionGUID: fS4Lz8asSI+OatAzn7F6Gw==
+X-CSE-MsgGUID: U09OaG99Ql+RqTmOn7nH4g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="50633574"
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
+   d="scan'208";a="50633574"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 23:57:35 -0800
+X-CSE-ConnectionGUID: 13DZUju0SoiMtD+w64Lw0Q==
+X-CSE-MsgGUID: +yODgdJLT2uqUBxxM0irSw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
+   d="scan'208";a="112700731"
+Received: from ubuntu.bj.intel.com ([10.238.156.105])
+  by orviesa006.jf.intel.com with ESMTP; 11 Feb 2025 23:57:34 -0800
+From: Jun Miao <jun.miao@intel.com>
+To: kirill.shutemov@linux.intel.com,
+	dave.hansen@linux.intel.com
+Cc: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] x86/virt/tdx: Correct the errors in the comments
+Date: Wed, 12 Feb 2025 15:58:05 +0800
+Message-Id: <20250212075805.2906200-1-jun.miao@intel.com>
+X-Mailer: git-send-email 2.32.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250206222714.1079059-1-vannapurve@google.com>
- <wra363f7ye6mwv2papahmpgmybi45yqyzeohunbqju3zsf22td@zcutpjluiury> <c07fa2b7-d453-4a9d-b1fc-e3e96514a8d3@intel.com>
-In-Reply-To: <c07fa2b7-d453-4a9d-b1fc-e3e96514a8d3@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 11 Feb 2025 16:22:59 -0800
-X-Gm-Features: AWEUYZlkk-jh9FqHHuYl2log-YQTJzWr98PHa1jkE8VtQRSzVdPYb1_-7Dq2dlc
-Message-ID: <CAGtprH_4Z15UdPDDCYg=pnroS41fX7c7VzK_ziPMsk=UgQYfgw@mail.gmail.com>
-Subject: Re: [PATCH V3 1/2] x86/tdx: Route safe halt execution via tdx_safe_halt()
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com, 
-	erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
-	sagis@google.com, oupton@google.com, pgonda@google.com, kirill@shutemov.name, 
-	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
-	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 11, 2025 at 3:46=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
- wrote:
->
-> On 2/11/25 00:32, Kirill A. Shutemov wrote:
-> >> If CONFIG_PARAVIRT_XXL is disabled, "sti;hlt" sequences can still get
-> >> executed from TDX VMs via paths like:
-> >>         acpi_safe_halt() =3D>
-> >>         raw_safe_halt()  =3D>
-> >>         arch_safe_halt() =3D>
-> >>      native_safe_halt()
-> >> There is a long term plan to fix these paths by carving out
-> >> irq.safe_halt() outside paravirt framework.
-> > I don't think it is acceptable to keep !PARAVIRT_XXL (read no-Xen) conf=
-ig
-> > broken.
->
-> Oh, I thought it took PARAVIRT_XXL=3Dy to even trigger this issue. Was I
-> just confused?
+In comment of config_global_keyid(), the "will fail" is duplicate, delete it.
 
-Original issue with unsafe "sti;hlt" execution for TDX VMs doesn't
-need PARAVIRT_XXL to be enabled in theory. Any caller just needs to
-reach native*halt() to trigger the issue.
+Signed-off-by: Jun Miao <jun.miao@intel.com>
+---
+ arch/x86/virt/vmx/tdx/tdx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 7fdb37387886..2023216a04a9 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -961,8 +961,8 @@ static int do_global_key_config(void *unused)
+  * Attempt to configure the global KeyID on all physical packages.
+  *
+  * This requires running code on at least one CPU in each package.
+- * TDMR initialization) will fail will fail if any package in the
+- * system has no online CPUs.
++ * TDMR initialization) will fail if any package in the system has
++ * no online CPUs.
+  *
+  * This code takes no affirmative steps to online CPUs.  Callers (aka.
+  * KVM) can ensure success by ensuring sufficient CPUs are online and
+-- 
+2.32.0
+
