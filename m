@@ -1,58 +1,92 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F2E2046BD
-	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 12:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B132046BE
+	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 12:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739361725; cv=none; b=D5vrm4s4zUqAfRUs7ctf+lpzqgSpmq6vjOdtJP9GQtUGKfVkmQTWyFcs26jenrCY3rpEOj5D0j1EXSExR9LD/4mAwL7DTMcvNMIEaOvBuRKhVriIh65GAu2xs4m+/PlFingByTSSgqDI7qFJc94Cy2HO2KywXTHGi5qNGWskaOk=
+	t=1739364870; cv=none; b=mo+IMC4geTwcMx3H/AsdWDHFLo++cAWoBf6pqlh3ey0UsmqYNX8DyFqMD2u+e5KFrF5qIAHhWl034DdhP9GN2ZHUTtll68UuPg1KxbNxz8VQUkFPqhlVZ7OVIeGnrmk/WO8AGLOllLkyD+S90qDSxCTPbP3UoeV4mBa8BhJI+mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739361725; c=relaxed/simple;
-	bh=dIfwYaEK6l7GPdYkOMJaIRqUNxzO77R65/rLjfZCHZQ=;
+	s=arc-20240116; t=1739364870; c=relaxed/simple;
+	bh=dUzLri7HLBnLUNXHtV56R2oFbTGzCCUoFmmjbezeFMA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=At9vroxOL10GOEfQcWrLQzdpozRWSeLolyRvUFiP8SbElFdORYx/zbSfkGiz4d+bhuk1gztw7sST7elg56bk/ADR6+CNcd0zi5ZTJ1G49dpPsqZZSyW90JqzKyRMgWLsn70wzhFwCaL6Vjf3pfo8oq6zYMikOb5uaHa1r+KwftE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fik8NhyS; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=WRyTN2Wwt9ifD6cO11p30M90QEdangOFtlV42dtWVTvvuYu2jf1PmA9Gr/5wnyb1N5LCUv5Q3OcevyuKblVFjANIOwYAuDKIXetPj+mhZIBIVJXy7CQ/sLBwlNhS5MP21b1ofEj3spegVs3BqufaW/bblcAB0XvpKLZhWpyjW3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=UFpZapta; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NkdljSwn; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fik8NhyS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739361724; x=1770897724;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dIfwYaEK6l7GPdYkOMJaIRqUNxzO77R65/rLjfZCHZQ=;
-  b=Fik8NhyS41FyORHSmdOHvIoy/mLKpOC90QTVN3Pk47/qAaz0stSP1NK4
-   xhRh5d3t+fIDnwzLDNj2FOJPXzH5tW7ugJBvltKowZ2gGlfmwqhVSONHE
-   PMSI2cp0jvZuraKxtOJmNuKX/dja5jn0vZCPYYBtIQdEnlIncbPbGOG4k
-   KtshZG4kxX8DNsPJp+TleY+rLrVNk4aTOA5wOhCRhY2ikMSs0rT7XqgnH
-   HXxacKVwY7m0TXR7rMRx24wngHRWdVL0a2d0xfKjPcD8CwTE1c55UKAbd
-   CE+bFe6yvRae9vAC+6peFhaSaSJY5+0bmniTKk5NZf1CDE1wUCmINUlII
-   Q==;
-X-CSE-ConnectionGUID: zgJ+N/dwRZSRjodJXKro+A==
-X-CSE-MsgGUID: LlYHRz0JQWCasQL1E+sLVg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="27610691"
-X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; 
-   d="scan'208";a="27610691"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 04:01:55 -0800
-X-CSE-ConnectionGUID: VKaM4QA3QO2B6FkxA7/Bvw==
-X-CSE-MsgGUID: fF+d2onJQOek7Yp6Arb5tA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; 
-   d="scan'208";a="113463458"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa009.fm.intel.com with ESMTP; 12 Feb 2025 04:01:54 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 00C9B1FD; Wed, 12 Feb 2025 14:01:52 +0200 (EET)
-Date: Wed, 12 Feb 2025 14:01:52 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Jun Miao <jun.miao@intel.com>
-Cc: dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/virt/tdx: Correct the errors in the comments
-Message-ID: <r7shaamvucw35wqymhkmceu3gpu2fedgv2umlcgdglglw65m4o@heaniim3gikx>
-References: <20250212075805.2906200-1-jun.miao@intel.com>
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="UFpZapta";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NkdljSwn"
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfout.phl.internal (Postfix) with ESMTP id 467641380830;
+	Wed, 12 Feb 2025 07:54:27 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Wed, 12 Feb 2025 07:54:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1739364867; x=
+	1739451267; bh=B8CxILEVEpjQ5H2ChvReMTw8ajG4/Nhh8qC+Fiy/HAc=; b=U
+	FpZaptaQZTevoe0cySA3pPZRz7aLIwl0WmrLjfHqB5tQKE4T1hXWY1nfrPGtXVZd
+	nM5lLH9iiI11DEabnPWSkd5Vs9oa6zUx2CnOyRXkGwqWHZznsEgGnLlqI7V3eQK/
+	92eGQ5bolSmIVQ5OOSHkDhKnBQCQ/JYrBZ4eU9zxW/mRgdPCZB9a1aQhzP7lC/CF
+	1J8Y3qi2C4TpX12jOgMcISUeStbUwGVkwC/dLpabhdrBkwf3gGe6oNzQuXGXUMz9
+	ZavnZXt36Z7JT5aiokfllnBR42ou1+B9ioqH9gKPEVGrFxfa7w1i/SDGN4oFgvPG
+	I0dNq7tYlMzkKpiugcA6w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1739364867; x=1739451267; bh=B8CxILEVEpjQ5H2ChvReMTw8ajG4/Nhh8qC
+	+Fiy/HAc=; b=NkdljSwnPaOcgW0ruMTJgTYj+egMstPs93iS9lb/cdE0Zf++1zC
+	Q+2n1uxqsnfWOuSB41UoLA9cpjKHlEQ+NRU+10neTM1BL+MPlynKh4vQFdCAaMmY
+	aE8UGymw7SLeSOYBkYdO2E9Uf/PsFx+hSiS0ah9lcW2Uv6pZZkke2x0TZyNJ5Rn+
+	wYvRB2KT2FAC4+o6AY7kuJxQI4XBmhdv8sKLUX98W1jUkL/EcEeCYAUlHMl/zvKl
+	Wh9s2WjmjviEOujM17XdT+BAukcYMPnAYI8+tA04oqi9Fd3G/RW4cWjETkNQ+Q1l
+	EXQwDS1pNfG/DVi8YT6zisA6egalr6mPa1w==
+X-ME-Sender: <xms:A5qsZwFfftWnxLKO6VEGGYykTExInmqUGCVHfIm60tKHBomTukzBiQ>
+    <xme:A5qsZ5V1Cysan1OEF7T3q8C0u--XYOveiBFa9runYPz5BvJ2Htzjc3mJgMqRIsqq2
+    i6WOwIOup1XZzhpT9Q>
+X-ME-Received: <xmr:A5qsZ6JGQTKbTQppU40zBoPJBB60aFrO9Ht9NjM3pmtmEV_7A2P9bhECg0f-lTaizoXXmQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfeelfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdfstddttddv
+    necuhfhrohhmpedfmfhirhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllh
+    esshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrfgrthhtvghrnhepffdvveeuteduhffh
+    ffevlefhteefveevkeelveejudduvedvuddvleetudevhfeknecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhho
+    vhdrnhgrmhgvpdhnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtg
+    hpthhtohepvhgrnhhnrghpuhhrvhgvsehgohhoghhlvgdrtghomhdprhgtphhtthhopeig
+    keeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehpsghonhiiihhnihesrhgvughh
+    rghtrdgtohhmpdhrtghpthhtohepshgvrghnjhgtsehgohhoghhlvgdrtghomhdprhgtph
+    htthhopegvrhguvghmrghkthgrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprggt
+    khgvrhhlvgihthhnghesghhoohhglhgvrdgtohhmpdhrtghpthhtohepjhigghgrohesgh
+    hoohhglhgvrdgtohhmpdhrtghpthhtohepshgrghhishesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:A5qsZyELfOkik5Aw0VjABfX6_-CkUI8hrvVUaWqAyH0abqxsoBUVqg>
+    <xmx:A5qsZ2UngPg7AvIvi-g81a65Nlso9hxbl5MDri9HYTV_rk8wgxKGOA>
+    <xmx:A5qsZ1Mg-FmwM8dJGVhQ9avw3ohaazEB9jZul-D0tirmGmPdLHKTpg>
+    <xmx:A5qsZ93m0XRzGOMaqXzjhdDAiyogMy9f1YhtwXpRA_DM3bmvILZcyA>
+    <xmx:A5qsZ0ayS2upXBHUmye1FPk7dK90iimRTe2aHt76QKeRyBesncV9rvoA>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 12 Feb 2025 07:54:21 -0500 (EST)
+Date: Wed, 12 Feb 2025 14:54:17 +0200
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
+	sagis@google.com, oupton@google.com, pgonda@google.com, 
+	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
+	isaku.yamahata@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH V4 2/4] x86/tdx: Route safe halt execution via
+ tdx_safe_halt()
+Message-ID: <ljdzupgyl2am4qgvirwpdonwuzwjaysemu43icrzxjt5olr3yx@dldbi5tqwhjh>
+References: <20250212000747.3403836-1-vannapurve@google.com>
+ <20250212000747.3403836-3-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -61,17 +95,33 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250212075805.2906200-1-jun.miao@intel.com>
+In-Reply-To: <20250212000747.3403836-3-vannapurve@google.com>
 
-On Wed, Feb 12, 2025 at 03:58:05PM +0800, Jun Miao wrote:
-> In comment of config_global_keyid(), the "will fail" is duplicate, delete it.
+On Wed, Feb 12, 2025 at 12:07:45AM +0000, Vishal Annapurve wrote:
+> Direct HLT instruction execution causes #VEs for TDX VMs which is routed
+> to hypervisor via TDCALL. safe_halt() routines execute HLT in STI-shadow
+> so IRQs need to remain disabled until the TDCALL to ensure that pending
+> IRQs are correctly treated as wake events. So "sti;hlt" sequence needs to
+> be replaced with "TDCALL; raw_local_irq_enable()" for TDX VMs.
 
-  In the comment for config_global_keyid(), the phrase "will fail" is
-  duplicated. Remove it.
+The last sentence is somewhat confusing.
 
-> Signed-off-by: Jun Miao <jun.miao@intel.com>
+Maybe drop it and add explanation that #VE handler doesn't have info about
+STI shadow, enables interrupts before TDCALL which can lead to missed
+wakeup events.
 
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> @@ -409,6 +410,12 @@ void __cpuidle tdx_safe_halt(void)
+>  		WARN_ONCE(1, "HLT instruction emulation failed\n");
+>  }
+>  
+> +static void __cpuidle tdx_safe_halt(void)
+> +{
+> +	tdx_halt();
+> +	raw_local_irq_enable();
+
+What is justification for raw_? Why local_irq_enable() is not enough?
+
+To very least, it has to be explained.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
