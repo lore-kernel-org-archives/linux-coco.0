@@ -1,90 +1,65 @@
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BB220D516
-	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 13:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29FE24CEE7
+	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 16:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739365421; cv=none; b=T02of+ChNUAR4Rc6rLfUgUeT4YQejdUWjvfx81/e7BdKK70wGx8GpB0aS3+huoalvugQxFVAYRvby909unSxCbgs2yyhMAS6Fui6O0QnWQdv+/JR4LrnXBlci9VVWPiP+EhMki9QnXj+VRoG2c+rlfCIgnP+iTWA8uCmJqkS73w=
+	t=1739378171; cv=none; b=i5FCg7lh0G8MvY5A4BvyK4FY6HMUeK9TTWAmOn6bDw1Y0/kx5NEfosty0MltGQdSdAr6r71peziqGoJmceVqDGLbM1l/qetoqpX8iGCHTlqzBaAM+Z8QqAhwZ8UlD9hG54LZKyP59+OU46YPzi6sMoM9v13RNMlgoPwxNhhddyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739365421; c=relaxed/simple;
-	bh=5I+GoDOLPXwxaF/bdd/7zGEhpTleAA3217JXKvjhE4I=;
+	s=arc-20240116; t=1739378171; c=relaxed/simple;
+	bh=ozwS80Px8jgB+KR4DO9OSCcBIuaqE6z6a9AlLrJXX1Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JKAmruBCXzp958mvka/V1QpFi08LBjPHmcOssl18Zr0G66qnxSgt6gPDPI3wH+oEejajKvylmTHJgba4nkaF2PpyExmr0GAYAJAlM/xE2Y1SrUgWXVZ4Ns0APOk6E92keH/X3CYecd4QGreJjsNe+84liLQx0SfygNUOOILyZqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=ebOHMC8s; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=igHe+GkC; arc=none smtp.client-ip=103.168.172.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="ebOHMC8s";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="igHe+GkC"
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 330B3114018F;
-	Wed, 12 Feb 2025 08:03:39 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 12 Feb 2025 08:03:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1739365419; x=
-	1739451819; bh=+Y6Ib/RSqKlmrUGsG+NEeNPWdjzf+UWt/aq1y+kKLoo=; b=e
-	bOHMC8smW1FFDE+T0YMtLUOKeN1+oIci9V47ehV5TsmcVSEDTaBnlfpFVtuV/HlM
-	tojgIXacFPQrNfJAfcXQlcX4vmyGyC62P5JC6z5c5Ti6FtQfK/RnB16QovbR2Vg4
-	yNQltaSxbohA9ce+GWU8Qiizp1UVyvzmaFDDpsY3o408CwbnJ8yzflHOJ+mcct7y
-	wVZbgsgxJWoOnV7fhDAcdnVrtq0CErG/z+UO/W7l60da8/ovSvhnQt5UWHs9D8It
-	bmdyMaxg7M2s81ka/lN6rUhLXCvMX38J9w/TNA8FSxCNGfZk6AxRY60uUr1OMhnX
-	wGP7aVQtDfEjsd8H4jKXw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1739365419; x=1739451819; bh=+Y6Ib/RSqKlmrUGsG+NEeNPWdjzf+UWt/aq
-	1y+kKLoo=; b=igHe+GkC+oO+sjhu6f82OnkmsCRSej4hthz39z6T7SI7A1V7USa
-	C0ChkJr3ZLxH6qdWrz0iVfixykXVIoxcvImA6SMKFZSSRF47ms91195Fgu3uW1dv
-	2G+1mltvF1P7v+1z9fOD0PAIlE3GECltkioTXLvFnAT7m6+nWfFK9XI1c9OlrUaa
-	LZJs4a0WZEjO1ozrr5irYYqs1H5DfjdOZxEfroqDVQ8YAsU7Av3V3tSI2DYi+3L7
-	aj/sdq5Ad12YeXY9YAsZBR4nKYTCV3LRfeVtF7KftgdkQonrQdHJH64RR5KkTIz9
-	oLM2kOSH3TFOr8xsQczzLHbGIzxbqGo7wpg==
-X-ME-Sender: <xms:KpysZ75bDcq_Dv4rOLfzrNvSYQobhozPKD00g9ykeYpNwm5N_OO9xA>
-    <xme:KpysZw7gOqfwR4FcUZAbcilF329sUpIO2-USYUVGeXm5e_SiyYyR1XjAUKSkIywmn
-    ciIIgF8ZJ2omaaXEmY>
-X-ME-Received: <xmr:KpysZydSpsHBuveNzQPtc7PVWNd3DsvmV4Fa4l29PPTXUEAzUVaA8DXV2lowNFBwd7TG4A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfeelhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdfstddttddv
-    necuhfhrohhmpedfmfhirhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllh
-    esshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrfgrthhtvghrnhepffdvveeuteduhffh
-    ffevlefhteefveevkeelveejudduvedvuddvleetudevhfeknecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhho
-    vhdrnhgrmhgvpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtg
-    hpthhtohepvhgrnhhnrghpuhhrvhgvsehgohhoghhlvgdrtghomhdprhgtphhtthhopeig
-    keeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehpsghonhiiihhnihesrhgvughh
-    rghtrdgtohhmpdhrtghpthhtohepshgvrghnjhgtsehgohhoghhlvgdrtghomhdprhgtph
-    htthhopegvrhguvghmrghkthgrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprggt
-    khgvrhhlvgihthhnghesghhoohhglhgvrdgtohhmpdhrtghpthhtohepjhigghgrohesgh
-    hoohhglhgvrdgtohhmpdhrtghpthhtohepshgrghhishesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:KpysZ8Jwd7SmUdQWsB3CpA0XEQr-SHdSQ7jlFyvn9SUqaG9MJX2l2Q>
-    <xmx:K5ysZ_ISRZEj5D7uqBAOmfmWJnHizY5LxtmdRkS-1lCC5YHIcKva2A>
-    <xmx:K5ysZ1wZbb3pCgjaOIspFoZ9YvEIdtSY8arRyUhyuYA489Suyb1fBQ>
-    <xmx:K5ysZ7IFqkeMAZ9_wB3Ajs9IzHjgOEavHiMs4s7lUGJRVUTvFT7KlQ>
-    <xmx:K5ysZ467oL4q_Dc7qqNBCmU0GVPQk3MrvpHn2okmIPgDb2hS16BvFaq2>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 12 Feb 2025 08:03:33 -0500 (EST)
-Date: Wed, 12 Feb 2025 15:03:30 +0200
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Vishal Annapurve <vannapurve@google.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
-	sagis@google.com, oupton@google.com, pgonda@google.com, 
-	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
-	isaku.yamahata@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH V4 4/4] x86/tdx: Remove TDX specific idle routine
-Message-ID: <avodert2s5di3s4m3ays6z4qhskwfz6zxenoq3rsf7crpclkfz@jaq7ptkmco4o>
-References: <20250212000747.3403836-1-vannapurve@google.com>
- <20250212000747.3403836-5-vannapurve@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nl6YH6OvlebB6L3X5HAa3CjLYXWxeRaASxdnIaRZab0O3n8jW7Q2HmSH11UhvHkwmdx2xDfF7Gymi5cS27623K8JfWIxJHzGKlhM65uY7fUSQENFg/QlfUQdjpBSdS1dkWxUml7yQl2oUwq6cKhBfP7G6yOjU/IBjQgUojmWdxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 5C348300135A1;
+	Wed, 12 Feb 2025 17:36:01 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 452231B825A; Wed, 12 Feb 2025 17:36:01 +0100 (CET)
+Date: Wed, 12 Feb 2025 17:36:01 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Woodhouse <dwmw2@infradead.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linuxarm@huawei.com,
+	David Box <david.e.box@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Li, Ming" <ming4.li@intel.com>,
+	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Dhaval Giani <dhaval.giani@amd.com>,
+	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
+	Jerome Glisse <jglisse@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v2 00/18] PCI device authentication
+Message-ID: <Z6zN8R-E9uJpkU7j@wunner.de>
+References: <cover.1719771133.git.lukas@wunner.de>
+ <2140c4e4-6df0-47c7-8301-c6eb70ada27d@amd.com>
+ <ZovrK7GsDpOMp3Bz@wunner.de>
+ <b1595ceb-a916-4ff0-97bd-1a223e0cef15@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -93,18 +68,33 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250212000747.3403836-5-vannapurve@google.com>
+In-Reply-To: <b1595ceb-a916-4ff0-97bd-1a223e0cef15@amd.com>
 
-On Wed, Feb 12, 2025 at 12:07:47AM +0000, Vishal Annapurve wrote:
-> With explicit dependency on CONFIG_PARAVIRT and TDX specific
-> halt()/safe_halt() routines in place, default_idle() is safe to execute for
-> TDX VMs. Remove TDX specific idle routine override which is now
-> redundant.
+On Tue, Feb 11, 2025 at 12:30:21PM +1100, Alexey Kardashevskiy wrote:
+> > > On 1/7/24 05:35, Lukas Wunner wrote:
+> > > > PCI device authentication v2
+> > > > 
+> > > > Authenticate PCI devices with CMA-SPDM (PCIe r6.2 sec 6.31) and
+> > > > expose the result in sysfs.
+> 
+> Has any further development happened since then? I am asking as I have the
+> CMA-v2 in my TSM exercise tree (to catch conflicts, etc) but I do not see
+> any change in your github or kernel.org/devsec since v2 and that v2 does not
+> merge nicely with the current upstream.
 
-I am not convinced that it is good idea.
+Please find a rebase of v2 on v6.14-rc2 on this branch:
 
-It adds two needless flipping of IF in the hot path: first enabling
-interrupts in tdx_safe_halt() and disabling it back in default_idle().
+https://github.com/l1k/linux/commits/doe
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+A portion of the crypto patches that were part of v2 have landed in v6.13.
+So the rebased version has shrunk.
+
+There was a bit of fallout caused by the upstreamed crypto patches
+and dealing with that kept me occupied during the v6.13 cycle.
+However I'm now back working on the PCI/CMA patches,
+specifically the migration to netlink for retrieval of signatures
+and measurements as discussed at Plumbers.
+
+Thanks,
+
+Lukas
