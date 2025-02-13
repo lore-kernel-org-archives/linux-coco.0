@@ -1,98 +1,131 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A767C202C2E
-	for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 22:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D9C14A60F
+	for <linux-coco@lists.linux.dev>; Thu, 13 Feb 2025 02:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739400944; cv=none; b=rfs7vo2yVxsiQd78Rz68a/iPSDJnRb0aiEwcPgLomsEamrFV+GRhTjh0bugKMrHb8x2hjf5S/PtLFEoxU9/P9eeQdCxVwhp6BVxzHGLK6nGeUUnvwnDpgtSqHfGXYur3lfebuHjrDC9RpUvNvbUy4kjHPd2ZLEhCMkpVM7ptWXY=
+	t=1739413402; cv=none; b=ZAQ7Z7ymiLA+y+yOzXlZLvVT23ME3OPSNwhBcpoM8hBT3WwFII5u97ijlLgd0/ws6zcrbdjWwzqczHTu0HNOnZ3yTJ4HojDF9R+oWoHurDPOJRhRY2y3GN3NLZ143hEIFaQpawkc8PJWxLUexjHcVaMBmJVO9M9FW/ooP2irn74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739400944; c=relaxed/simple;
-	bh=M/JEAtm/aKqZQpUcIkbOx1V5MbhNPluJ7A9OR2+JsF8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=O0tj4trzwKlFwT5YsZV3sjHzRY/nfNqk665saiv+a0+h7Bby6xqy+C+fllEjt4km1Jgyu1SYp3Qh0U9Y/6vKgOd9BcgknhKye6Q/n2W/b+mv9ekK3P5DwxNWu6STYhGdK1vg3NkdnbZFx6+2lgBjcEd/gjZJl1k3ARG9kiRo80s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pbix+M3+; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1739413402; c=relaxed/simple;
+	bh=o1jcl5KI/y1cuttFf66JMvaljCmtyP77ZEjjtgROw0Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=J5D/CUkw0gMqgY+q2FeMLJsK3YOLsbhna7OBbZhwJxGxo9VQe/oSb8i2qnqojWyhkKUuFlmOcCLiK6Gk3sivWuc+QLfRRpyOTu/TLiJTKXbkqjtgWNxfG0/SmVaptaAKVi88HlVQyTA2ACygycZm8XmzatCmuM+xs9BnK1Nmh/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iPh//vIJ; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pbix+M3+"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-220c86b3ef3so14252575ad.1
-        for <linux-coco@lists.linux.dev>; Wed, 12 Feb 2025 14:55:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739400942; x=1740005742; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=G4pJwe4WBZK7j0Qn81lTWodsKOqME7mNPJqkDCUIDvw=;
-        b=pbix+M3+gHdLeHOVBDASDOmHCG67hMNyLb9x15lFln7UscesoMxLWgbFCribawMABu
-         YHzYQ8EmOFF18CZVDz/gpZX5GxIa/SG40Y3ukA3QFdp/d/TJ6YPaj+HCL1VOo3wbw9Jt
-         yHogwcZ8HSAu1OJIs38/lph9VTIcMAp1+XAp5mq13Qm1F7LhyfD+UVUOj/9OWtZJ3DhS
-         LBbr6d4bxgtM11VKQM6GsNkJcD75+JOFIiE2OR+mioOvAhNvwAKDZikE8HTM4oABIwgq
-         aen5IsY62uBMYMBHT1KnIzzm4OERxBJjzmdZGS2g/837bpM2iov0FQCmRY/joTlvD3BP
-         CCtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739400942; x=1740005742;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=G4pJwe4WBZK7j0Qn81lTWodsKOqME7mNPJqkDCUIDvw=;
-        b=D/lUwm3+Emax+uS39AyCtafKKgMRGcC6/7vVLyFrLEODFQk+H4+NuJ+KJfEuCVUBiY
-         G4cQWrb3Ey4uX5G0VxR3ps25qJEVt4BiTZGxuSOcBoYnfxH8bue83naS2rsB50kQ9F8D
-         M2S+9aV6RjNCEWhRsPYOx1b08RABTXH+qYFmH2qyPRo9LKHFDzPc5bZ5nycPDWm6bHoW
-         ZxRpirXKA5Zc1rR3XdP5JrTkQBWaaeG44eJOHFK++TMN0qJtLXDzxPZLe0vat3846kP4
-         EzosHhdUmzkM/kh7PCZND1X9i9uarl40EtOJYBx8ioNqYpqmhTy68qa8pdUAHKRea8sy
-         SPgw==
-X-Forwarded-Encrypted: i=1; AJvYcCVZR4INcUDn/6IJq/D1s/uIO3w9bCRBODAJSUgnBQKEUd5Xo6JOgpqttA6bZngxJrnAStS0Eqd9FeZs@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxic/D2EkQ89xscVmKYmgZVu0YjVZUo0zWvg/XdINOD2zE0bacP
-	AmjrccNHDsVhQz2w9SpTCfuLN2Afha8kdJJ1tyISohOJ/evcuTu8TbFcJun30IWmy06JEMDwAyb
-	L/w==
-X-Google-Smtp-Source: AGHT+IFCvprC2FVz2MYwofAu+gOZ+t6GzfO0x6W16EewccF+NjWJufThiJaaDpuXjWvbsRckLewQnEmSOUI=
-X-Received: from plbb4.prod.google.com ([2002:a17:903:c04:b0:21f:14cc:68b0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c94e:b0:220:c2bf:e8ba
- with SMTP id d9443c01a7336-220d3528cc9mr11030295ad.14.1739400941927; Wed, 12
- Feb 2025 14:55:41 -0800 (PST)
-Date: Wed, 12 Feb 2025 14:55:36 -0800
-In-Reply-To: <SN6PR02MB4157DBAF1E3BB0E4FFD2C92DD4FC2@SN6PR02MB4157.namprd02.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iPh//vIJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739413401; x=1770949401;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=o1jcl5KI/y1cuttFf66JMvaljCmtyP77ZEjjtgROw0Q=;
+  b=iPh//vIJ3mDcHjocSecFDKxN/9fe+CpEqfrUOTsKGanQUZEmU3GtOf7u
+   n0xka/1mJkhJXQTf2IpZ7KL2mWaDseV0QUtp1mo3T0DSDnkATBNninjsi
+   XgtGZonvzt9asmVvzcYKqJobdXyJunvEsjGnAlxStRZCOfGYYhHydTiC9
+   EVLoKhfGij+v0tjftqZ7597RxMSl2ipm64/+HdPSnJxUu7kaBhVYeOHLd
+   hp68vc6wiHETVe/2ysnCoI+kpxPtc5iEpnnGINfmePHXlz+3g3PefAV4q
+   wtICMYbOgTUZmxZ6xQOr6kMsOTgGRiovtBwsDIgNUAZ58QhpRQayukiTh
+   Q==;
+X-CSE-ConnectionGUID: v1zJ1+fuQmOO48RU7R/AEw==
+X-CSE-MsgGUID: y/ZAqYDeRsikew8hJgsYnA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="62566618"
+X-IronPort-AV: E=Sophos;i="6.13,281,1732608000"; 
+   d="scan'208";a="62566618"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 18:23:20 -0800
+X-CSE-ConnectionGUID: bmEXs7aiRjC6g2NNS+17sg==
+X-CSE-MsgGUID: 3KThC2W1R3ard7Y7XK53LA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="113905824"
+Received: from rtice-desk1.amr.corp.intel.com (HELO bxing-mobl1.clients.intel.com) ([10.246.116.160])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 18:23:19 -0800
+From: Cedric Xing <cedric.xing@intel.com>
+Subject: [PATCH 0/4] tsm: Unified Measurement Register ABI for TVMs
+Date: Wed, 12 Feb 2025 20:23:03 -0600
+Message-Id: <20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20250201021718.699411-1-seanjc@google.com> <20250201021718.699411-17-seanjc@google.com>
- <Z6ZBjNdoULymGgxz@google.com> <SN6PR02MB4157A85EC0B1B2D45CB611FAD4F02@SN6PR02MB4157.namprd02.prod.outlook.com>
- <Z6onnUthSBUVAklf@google.com> <SN6PR02MB4157DBAF1E3BB0E4FFD2C92DD4FC2@SN6PR02MB4157.namprd02.prod.outlook.com>
-Message-ID: <Z60m6NiOlCmy4-q0@google.com>
-Subject: Re: [PATCH 16/16] x86/kvmclock: Use TSC for sched_clock if it's
- constant and non-stop
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Juergen Gross <jgross@suse.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, 
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, Nikunj A Dadhania <nikunj@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIdXrWcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDIwNL3ZKUCt2iktwiXSNTUxNzSzMzc0MTMyWg8oKi1LTMCrBR0bG1tQA
+ oZnqVWgAAAA==
+To: Dan Williams <dan.j.williams@intel.com>, 
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+ Cedric Xing <cedric.xing@intel.com>, 
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+X-Mailer: b4 0.13.0
 
-On Wed, Feb 12, 2025, Michael Kelley wrote:
-> From: Sean Christopherson <seanjc@google.com> Sent: Monday, February 10, 2025 8:22 AM
-> > On Sat, Feb 08, 2025, Michael Kelley wrote:
-> > > But I would be good with some restructuring so that setting the sched clock
-> > > save/restore hooks is more closely tied to the sched clock choice,
-> > 
-> > Yeah, this is the intent of my ranting.  After the dust settles, the code can
-> > look like this.
-> 
-> I'm good with what you are proposing. And if you want, there's no real need
-> for hv_ref_counter_at_suspend and hv_save/restore_sched_clock_state()
-> to be in the #ifdef sequence since the code has no architecture dependencies.
+NOTE: This patch series introduces the Measurement Register (MR) ABI, and
+is a continuation of the RFC series on the same topic [1].
 
-Right, but because they will be local/static and there are no users outside of
-x86, the compiler will complain about unused variables/functions on other
-architectures.
+This patch series adds a unified interface to TSM core for confidential
+computing (CC) guest drivers to provide access to measurement registers
+(MRs), which are essential for relying parties (RPs) to verify the
+integrity of the computing environment. The interface is structured around
+`struct tsm_measurement`, which holds an array of `struct
+tsm_measurement_register` and includes operations for reading and updating
+MRs.
+
+Each `struct tsm_measurement_register` features a `mr_flags` member that
+indicates the MR's properties, such as *Readable* (`TSM_MR_F_R`),
+*Extensible* (`TSM_MR_F_X`), etc. Please refer to Patch 1 in this series
+for more details. Patch 2 adds a sample module to demonstrate how to define
+and implement MRs in a CC guest driver. The last patches add TDX MR support
+to the TDX Guest driver.
+
+MRs are made accessible to applications through a directory tree (rooted at
+`/sys/kernel/tsm`). An MR could be presented as either a file containing
+its value, or a directory containing the file `digest` under a subdirectory
+of the same name as the hash algorithm. By default, an MR will be presented
+as a directory unless `TSM_MR_F_F` is set in `mr_flags`.
+
+[1]: https://lore.kernel.org/linux-coco/20241210-tsm-rtmr-v3-0-5997d4dbda73@intel.com/
+
+Signed-off-by: Cedric Xing <cedric.xing@intel.com>
+---
+Cedric Xing (3):
+      tsm: Add TVM Measurement Register support
+      tsm: Add TSM measurement sample code
+      x86/tdx: Expose TDX MRs through TSM sysfs interface
+
+Kuppuswamy Sathyanarayanan (1):
+      x86/tdx: Add tdx_mcall_rtmr_extend() interface
+
+ Documentation/ABI/testing/sysfs-kernel-tsm |  20 ++
+ MAINTAINERS                                |   3 +-
+ arch/x86/coco/tdx/tdx.c                    |  36 +++
+ arch/x86/include/asm/shared/tdx.h          |   1 +
+ arch/x86/include/asm/tdx.h                 |   2 +
+ drivers/virt/coco/Kconfig                  |   3 +-
+ drivers/virt/coco/Makefile                 |   2 +
+ drivers/virt/coco/tdx-guest/Kconfig        |  15 ++
+ drivers/virt/coco/tdx-guest/tdx-guest.c    | 119 +++++++++
+ drivers/virt/coco/{tsm.c => tsm-core.c}    |   6 +-
+ drivers/virt/coco/tsm-mr.c                 | 375 +++++++++++++++++++++++++++++
+ include/linux/tsm.h                        |  64 +++++
+ samples/Kconfig                            |  10 +
+ samples/Makefile                           |   1 +
+ samples/tsm/Makefile                       |   2 +
+ samples/tsm/tsm_mr_sample.c                | 107 ++++++++
+ 16 files changed, 763 insertions(+), 3 deletions(-)
+---
+base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
+change-id: 20250209-tdx-rtmr-255479667146
+
+Best regards,
+-- 
+Cedric Xing <cedric.xing@intel.com>
+
