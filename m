@@ -1,193 +1,221 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9975726B0B1
-	for <linux-coco@lists.linux.dev>; Thu, 13 Feb 2025 15:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA1E200BB7;
+	Thu, 13 Feb 2025 16:14:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739462118; cv=none; b=gMq4IlREJ689lm8ugTs0lvKFGpof1+6d+QVBPnbrIprVmi7VXLJDNda8BaPI7YIu3aToEJ7cHdM6kDvcTMg+/whLP8xdbydeqxw6IFHmQQ6dKNcAXqssvt3NGHJIX2n/SeY08iczuqn+T+an75CkpUEucVkmLc+RlXTAsOn0a7E=
+	t=1739463287; cv=none; b=Dl82/aKaBmM3CWy/4JHBx/vxrfyUgMz+HE8bD1EVhzkcfjI/k5stQeW173p9cjRDIf0hOWbVKX3LvRsCRDBuU2AdfWDS4aPDtM58Uj8089sq43A8nMFgJNrzfq4TU81ufgLAv+ldVELROCHJ8Uef5LiD7qA+7QdvXx4zJs2jln4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739462118; c=relaxed/simple;
-	bh=b7ObII/vFR47LETuncg9l2bFg9S6/OwFkur2pLXDuzg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ueubrh//cS/i2L88sMqfVOJmZMlDFcaWdP2PiHwz6I0GaPPKfgwjLHhfn8JOuCINw5WYM2pTPxwniQi99DASzjpxy5ypZig/ks4cdXedCMJDex92+uWT6LurtZSBDfHlcJPcM+POo0PYCMWzN2DaFvZ/7f4LkfxLEerfUfny/W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XFkNmonz; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XFkNmonz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739462116; x=1770998116;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=b7ObII/vFR47LETuncg9l2bFg9S6/OwFkur2pLXDuzg=;
-  b=XFkNmonzJ0yhRCRM/6s5nMSpc5ZkcSiq1DmtxzC6jIAW/UHeyc1d2nIn
-   27jLW4BFbGNy6i/31PqNTichVYZNBqGNuMZSqpTHRts9oEPQJE9DPcnSQ
-   fKVeO7XCjcd2i1OZitd6d2Mbqy5Utb9/BB2lsVoeZ0q5n7gQTk/m/DW32
-   zYtC8kkfC1ilkcUQ+i8EzAhor8qTbMxMGlC7MStFQwpabddI1CzxUWv2V
-   GTCscwBrO//pP9sHQ9xF3dwmeJM30q1dPRNp3eCUw71MPGVEwU1+8Ru9I
-   X41EL8Xup71LRX2xWQNsOIc6JOC3I6f+a7n224rcahRff7DxYcBRQT7Hb
-   A==;
-X-CSE-ConnectionGUID: CsjlFexzT7eC5F08OYZwnw==
-X-CSE-MsgGUID: wsZW/4enQQCrpp0Xrjdirw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="65523203"
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="65523203"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 07:55:16 -0800
-X-CSE-ConnectionGUID: jweFNLneQO6WT10qF3AKmQ==
-X-CSE-MsgGUID: E86di0h5Sj65g1P4Nef7mg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="113840907"
-Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.108.188]) ([10.125.108.188])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 07:55:15 -0800
-Message-ID: <f38f1b56-a5df-4644-be59-56c70499ed92@intel.com>
-Date: Thu, 13 Feb 2025 07:55:15 -0800
+	s=arc-20240116; t=1739463287; c=relaxed/simple;
+	bh=cMqkENu/ZOxocimQK5jA1C0TnU51He0yJud7qqZnxT0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LZ/6maVNOgsXAeuO1gKNRyzIWGRGiv26ncvgbArWZcZaJPwHs48MUOgk8jy8g2T+4IDcGUS9n4wKgaPP+GvLpWsFdRWDTxj1997ddNkrPP1P+8HkaMHYYNJe29vcsVDfkdDRHrFeo7tlyQNXKA9WilmabqmlUVXsrO2uX7uYgGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 660F8106F;
+	Thu, 13 Feb 2025 08:15:05 -0800 (PST)
+Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.32.44])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 569483F6A8;
+	Thu, 13 Feb 2025 08:14:40 -0800 (PST)
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: [PATCH v7 00/45] arm64: Support for Arm CCA in KVM
+Date: Thu, 13 Feb 2025 16:13:40 +0000
+Message-ID: <20250213161426.102987-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/1] Accept unaccepted kexec segments' destination
- addresses
-To: "Eric W. Biederman" <ebiederm@xmission.com>, Baoquan He <bhe@redhat.com>
-Cc: "Kirill A. Shutemov" <kirill@shutemov.name>, akpm@linux-foundation.org,
- kexec@lists.infradead.org, Yan Zhao <yan.y.zhao@intel.com>,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org,
- rick.p.edgecombe@intel.com, kirill.shutemov@linux.intel.com,
- security@kernel.org
-References: <20241213094930.748-1-yan.y.zhao@intel.com>
- <xgycziy2o56hnom3oau7sbqed3meoni3razc6njj7ujatldnmm@s7odbl4splbn>
- <Z4T1G4dwzo7qdwSP@MiWiFi-R3L-srv>
- <87zfjuoj3i.fsf@email.froward.int.ebiederm.org>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <87zfjuoj3i.fsf@email.froward.int.ebiederm.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/13/25 06:59, Eric W. Biederman wrote:
-...
-> I have a new objection.  I believe ``unaccepted memory'' and especially
-> lazily initialized ``unaccepted memory'' is an information leak that
-> could defeat the purpose of encrypted memory.  For that reason I have
-> Cc'd the security list.  I don't know who to CC to get expertise on this
-> issue, and the security list folks should.
-> 
-> Unless I am misunderstanding things the big idea with encrypted
-> memory is that the hypervisor won't be able to figure out what you
-> are doing, because it can't read your memory.
+This series adds support for running protected VMs using KVM under the
+Arm Confidential Compute Architecture (CCA).
 
-At a super high level, you are right. Accepting memory tells the
-hypervisor that the guest is _allocating_ memory. It even tells the host
-what the guest physical address of the memory is. But that's far below
-the standard we've usually exercised in the kernel for rejecting on
-security concerns.
+The related guest support was merged for v6.14-rc1 so you no longer need
+that separately.
 
-Did anyone on the security list raise any issues here? I've asked them
-about a few things in the past and usually I've thought that no news is
-good news.
+There are several changes since v6, many thanks for the review
+comments. The highlights are below, and individual patches have a changelog.
 
-> My concern is that by making the ``acceptance'' of memory lazy, that
-> there is a fairly strong indication of the function of different parts
-> of memory.  I expect that signal is strong enough to defeat whatever
-> elements of memory address randomization that we implement in the
-> kernel.
+ * Separation of the concepts of RMM granule size and PAGE_SIZE. It's
+   now possible to run with a host PAGE_SIZE larger than 4k (but see
+   below).
 
-In the end, the information that the hypervisor gets is that the guest
-allocated _some_ page within a 4MB physical region and the time. It gets
-that signal once per boot for each region. It will mostly see a pattern
-of acceptance going top-down from high to low physical addresses.
+ * Return with -EFAULT error for KVM_EXIT_MEMORY_FAULT as per the
+   documentation.
 
-The hypervisor never learns anything about KASLR. The fact that the
-physical allocation patterns are predictable (with or without memory
-acceptance) is one of the reasons KASLR is in place.
+ * Return -EPERM rather than -EINVAL in cases where a realm function is
+   performed on a non-realm guest.
 
-I don't think memory acceptance has any real impact on "memory address
-randomization". This is especially true because it's a once-per-boot
-signal, not a continuous thing that can be leveraged. 4MB is also
-awfully coarse.
+ * Several improvements to names of functions/defines and other minor
+   changes following review feedback - thanks!
 
-> So not only does it appear to me that implementation of ``accepting''
-> memory has a stupidly slow implementation, somewhat enshrined by a bad
-> page at a time ACPI standard, but it appears to me that lazily
-> ``accepting'' that memory probably defeats the purpose of having
-> encrypted memory.
+Things to note:
 
-Memory acceptance is pitifully slow. But it's slow because it
-fundamentally requires getting guest memory into a known state before
-guest use. You either have slow memory acceptance as a thing or you have
-slow guest boot.
+ * You will need an updated kvmtool because of the KVM_EXIT_MEMORY_FAULT
+   change mentioned above. See below for a link.
 
-Are there any other CoCo systems that don't have to zero memory like TDX
-does? On the x86 side, we have SGX the various flavors of SEV. They all,
-as far as I know, require some kind of slow "conversion" process when
-pages change security domains.
+ * KVM_VCPU_MAX_FEATURES is incremented. *NOTE*: This effectively
+   exposes the nested virtualisation feature. So this series as it
+   stands has a dependency on that being finished before it can be
+   merged. See [2] for more details.
 
-> I think the actual solution is to remove all code except for the
-> "accept_memory=eager" code paths.  AKA delete the "accept_memory=lazy"
-> code.  At that point there are no more changes that need to be made to
-> kexec.
+ * The final patch enables the host's page size to be larger than 4k.
+   The support is all in the previous patches, but there is more work to
+   do before I consider this ready, specifically:
 
-That was my first instinct too: lazy acceptance is too complicated to
-live and must die.
+   - The code to allocate RTTs (stage 2 page tables) for the RMM still
+     conflates pages and granules. This means that for every RTT an
+     entire host page is allocated potentially using 16x the required
+     memory for the RTTs.
 
-It sounds like you're advocating for the "slow guest boot" option.
-Kirill, can you remind us how fast a guest boots to the shell for
-modestly-sized (say 256GB) memory with "accept_memory=eager" versus
-"accept_memory=lazy"? IIRC, it was a pretty remarkable difference.
+   - Having the guest's page size smaller than the host's currently
+     doesn't work. The issue is the guest needs to know what granulatity
+     it can transition pages between shared and private.  Exactly how
+     this should work is an open area of discussion.
 
-Eric, I wasn't planning on ripping the lazy acceptance code out of
-arch/x86. I haven't heard any rumblings from the mm folks that it's
-causing problems over there either. This seems like something we want to
-fix and I _think_ the core kexec code is the right place to fix this issue.
+   - This configuration isn't well tested, I would be unsurprised if
+     there are major bugs! ;) But a simple Linux guest of the same page
+     size works.
 
-There are definitely ways to work around this in arch code, but they
-seem rather distasteful and I'd rather not go there.
+The ABI to the RMM (the RMI) is based on RMM v1.0-rel0 specification[1].
+
+This series is based on v6.14-rc1. It is also available as a git
+repository:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-host/v7
+
+Work in progress changes for kvmtool are available from the git
+repository below:
+
+https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v5
+
+[1] https://developer.arm.com/documentation/den0137/1-0rel0/
+[2] https://lore.kernel.org/r/a7011738-a084-46fa-947f-395d90b37f8b%40arm.com
+
+Jean-Philippe Brucker (7):
+  arm64: RME: Propagate number of breakpoints and watchpoints to
+    userspace
+  arm64: RME: Set breakpoint parameters through SET_ONE_REG
+  arm64: RME: Initialize PMCR.N with number counter supported by RMM
+  arm64: RME: Propagate max SVE vector length from RMM
+  arm64: RME: Configure max SVE vector length for a Realm
+  arm64: RME: Provide register list for unfinalized RME RECs
+  arm64: RME: Provide accurate register list
+
+Joey Gouly (2):
+  arm64: rme: allow userspace to inject aborts
+  arm64: rme: support RSI_HOST_CALL
+
+Sean Christopherson (1):
+  KVM: Prepare for handling only shared mappings in mmu_notifier events
+
+Steven Price (32):
+  arm64: RME: Handle Granule Protection Faults (GPFs)
+  arm64: RME: Add SMC definitions for calling the RMM
+  arm64: RME: Add wrappers for RMI calls
+  arm64: RME: Check for RME support at KVM init
+  arm64: RME: Define the user ABI
+  arm64: RME: ioctls to create and configure realms
+  arm64: kvm: Allow passing machine type in KVM creation
+  arm64: RME: RTT tear down
+  arm64: RME: Allocate/free RECs to match vCPUs
+  KVM: arm64: vgic: Provide helper for number of list registers
+  arm64: RME: Support for the VGIC in realms
+  KVM: arm64: Support timers in realm RECs
+  arm64: RME: Allow VMM to set RIPAS
+  arm64: RME: Handle realm enter/exit
+  arm64: RME: Handle RMI_EXIT_RIPAS_CHANGE
+  KVM: arm64: Handle realm MMIO emulation
+  arm64: RME: Allow populating initial contents
+  arm64: RME: Runtime faulting of memory
+  KVM: arm64: Handle realm VCPU load
+  KVM: arm64: Validate register access for a Realm VM
+  KVM: arm64: Handle Realm PSCI requests
+  KVM: arm64: WARN on injected undef exceptions
+  arm64: Don't expose stolen time for realm guests
+  arm64: RME: Always use 4k pages for realms
+  arm64: rme: Prevent Device mappings for Realms
+  arm_pmu: Provide a mechanism for disabling the physical IRQ
+  arm64: rme: Enable PMU support with a realm guest
+  kvm: rme: Hide KVM_CAP_READONLY_MEM for realm guests
+  arm64: kvm: Expose support for private memory
+  KVM: arm64: Expose KVM_ARM_VCPU_REC to user space
+  KVM: arm64: Allow activating realms
+  WIP: Enable support for PAGE_SIZE>4k
+
+Suzuki K Poulose (3):
+  kvm: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+  kvm: arm64: Expose debug HW register numbers for Realm
+  arm64: rme: Allow checking SVE on VM instance
+
+ Documentation/virt/kvm/api.rst       |    3 +
+ arch/arm64/include/asm/kvm_emulate.h |   40 +
+ arch/arm64/include/asm/kvm_host.h    |   17 +-
+ arch/arm64/include/asm/kvm_rme.h     |  128 ++
+ arch/arm64/include/asm/rmi_cmds.h    |  508 ++++++++
+ arch/arm64/include/asm/rmi_smc.h     |  259 ++++
+ arch/arm64/include/asm/virt.h        |    1 +
+ arch/arm64/include/uapi/asm/kvm.h    |   49 +
+ arch/arm64/kvm/Kconfig               |    1 +
+ arch/arm64/kvm/Makefile              |    3 +-
+ arch/arm64/kvm/arch_timer.c          |   45 +-
+ arch/arm64/kvm/arm.c                 |  173 ++-
+ arch/arm64/kvm/guest.c               |  104 +-
+ arch/arm64/kvm/hypercalls.c          |    4 +-
+ arch/arm64/kvm/inject_fault.c        |    5 +-
+ arch/arm64/kvm/mmio.c                |   16 +-
+ arch/arm64/kvm/mmu.c                 |  199 ++-
+ arch/arm64/kvm/pmu-emul.c            |    6 +
+ arch/arm64/kvm/psci.c                |   30 +
+ arch/arm64/kvm/reset.c               |   23 +-
+ arch/arm64/kvm/rme-exit.c            |  199 +++
+ arch/arm64/kvm/rme.c                 | 1710 ++++++++++++++++++++++++++
+ arch/arm64/kvm/sys_regs.c            |   79 +-
+ arch/arm64/kvm/vgic/vgic-init.c      |    2 +-
+ arch/arm64/kvm/vgic/vgic-v3.c        |    5 +
+ arch/arm64/kvm/vgic/vgic.c           |   54 +-
+ arch/arm64/mm/fault.c                |   31 +-
+ drivers/perf/arm_pmu.c               |   15 +
+ include/kvm/arm_arch_timer.h         |    2 +
+ include/kvm/arm_pmu.h                |    4 +
+ include/kvm/arm_psci.h               |    2 +
+ include/linux/kvm_host.h             |    2 +
+ include/linux/perf/arm_pmu.h         |    5 +
+ include/uapi/linux/kvm.h             |   31 +-
+ virt/kvm/kvm_main.c                  |    7 +
+ 35 files changed, 3658 insertions(+), 104 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_rme.h
+ create mode 100644 arch/arm64/include/asm/rmi_cmds.h
+ create mode 100644 arch/arm64/include/asm/rmi_smc.h
+ create mode 100644 arch/arm64/kvm/rme-exit.c
+ create mode 100644 arch/arm64/kvm/rme.c
+
+-- 
+2.43.0
+
