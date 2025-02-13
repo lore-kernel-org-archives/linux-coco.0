@@ -1,91 +1,199 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0402066ED
-	for <linux-coco@lists.linux.dev>; Thu, 13 Feb 2025 05:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF7620ADCF;
+	Thu, 13 Feb 2025 07:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739426178; cv=none; b=Y8RAetLyM+Nv5Bc8x8+FU6Wlubr7+VAlX5fwUctB75DYb2c0KpJZszjGed8mNLfgaG9Wpak7+hZ5G+huqqMkuWhkC2+USRWOiN0KNyHwFcE2TRvTf+rVuaBTDKtKulAWJNY92AMF9RQkmAO8NT3uAwHEf1vzQVAs2hFcfFIK2zw=
+	t=1739432550; cv=none; b=LdoI3JcE9dRTak6IEr4N0qNipHtwyaC9SUGSFxT4E5SQT5OpbnrmgP3xii0UYX5BUP6hndxlQuXEqAfj16TctDRx3u3vUKl8QIKqcNpJl4M+2feU3UMlKZyerYGM+L8UNwqsrY7t+gYGRW5KDxlu6Wh9U7QAc3K4R5iNeCHVmvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739426178; c=relaxed/simple;
-	bh=4bsEwEwBaPTXsQfCwWigVAv+NGsMJr0zZT5B3w8PGJA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QZMWBwf/PkHSf1GXadxe6m3o1wpBOxhKhu1JCXCQlI31PQCJwsHEhmePS8TozkG7kdO2us8BMtHN0YCPczvsfsW3I+xvSbBOTx5+nifJnaTbGpuQOQAc+xwP1++bbaG8s92FPfXycqvHzjfNrJTgMzZEJ33pju/ApGhU91tFXdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h1Wl2nbG; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1739432550; c=relaxed/simple;
+	bh=IlVYh+wZ/YIFB/UgdqiAswcv4hn7Nfi0gPcL0hnnO3E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=REjg+Dsv5fcJvLzVpEHopHrUDwDsWTcActnFx7u/vZkx3JhsZ/1SXk98rn+K7lP1M84buQmQg/MxjsR/yTNvjViwWlrtETsEFdxHfypUIsxkTF12ve0TsuQQb97sy0AGAGYN3IbDm56JjgswTpS3pCXgjw3R9hkUHEQlFET74m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=CmIagTw0; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h1Wl2nbG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739426177; x=1770962177;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4bsEwEwBaPTXsQfCwWigVAv+NGsMJr0zZT5B3w8PGJA=;
-  b=h1Wl2nbG1a9uAzqSq/5ZreN7GwGkUEckJchh6b3DKJbel7527P1DW1sK
-   03GgbBAt7svhMcf7eSogS/kTyBd+8tFLegIFronmnF+LX7ZBzIcwktHR/
-   B1wx9iIXl1lPFwyAuu/UeKh/9KrhYPbsX0xuvlayjNAUVTuwdMlB1MLo7
-   yuImPHGgu9EK7i36XuRGt86GI20o1kx/2G32A22pmpdgpL7eUp0LxHani
-   157Kfs8Qp2NvCZU7ZtACgl9oGVjig4AP/uHVlxt5OXpdlVW4d68XTLGuK
-   sjKCJiH5w+gKEn7z4RlaJey6+fIFjOsmQti3oQoRlnQ4v7CO6l4uPVoKg
-   A==;
-X-CSE-ConnectionGUID: BrQq13B1TLOV5OjFHrRW9g==
-X-CSE-MsgGUID: 2wedefG6QAW3wHNDecbIDQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="40237396"
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="40237396"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 21:56:13 -0800
-X-CSE-ConnectionGUID: 7NYo+22XTBCWa0VQrNU6Og==
-X-CSE-MsgGUID: R3bOdgDZQyuZkvZglsjCOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="112887897"
-Received: from ubuntu.bj.intel.com ([10.238.156.105])
-  by orviesa010.jf.intel.com with ESMTP; 12 Feb 2025 21:56:11 -0800
-From: Jun Miao <jun.miao@intel.com>
-To: kirill.shutemov@linux.intel.com,
-	dave.hansen@linux.intel.com,
-	kai.huang@intel.com
-Cc: jun.miao@intel.com,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] x86/virt/tdx: Correct the errors in the comments
-Date: Thu, 13 Feb 2025 13:56:41 +0800
-Message-Id: <20250213055641.2952774-1-jun.miao@intel.com>
-X-Mailer: git-send-email 2.32.0
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="CmIagTw0"
+Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id D69B642529;
+	Thu, 13 Feb 2025 08:42:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1739432540;
+	bh=IlVYh+wZ/YIFB/UgdqiAswcv4hn7Nfi0gPcL0hnnO3E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CmIagTw072QVKg6X2zF7CjJurHTdhFIIdQEKgjmvrTlWE/dhMXwuw81+d2esttJTW
+	 1Y5ahtF8Fh/SNFP1P2RR1sujXeleOSH1HJl/VWQ+xg4ZehSMZVJUiWLJSjesYZK0bO
+	 INumkDNROadS9kEyDgL/db6dJo8AvtGeSnYok5/tosCl3G+YJGQOKeyshvdDM2ZcNu
+	 xudPDBoXknDJGg3hN5/h/oS5jZh1yx3J563YBU6NemsY4JynKHoKUNrpdeH2lDs9VK
+	 7XBBTpmsyUoP0bd2AI13NqcUQzea1IEkVHpYZ4hkviX4l9Nr6eXPw9zpNl1Wi7lDZL
+	 r2pcW+wJeNMNQ==
+Date: Thu, 13 Feb 2025 08:42:18 +0100
+From: Joerg Roedel <joro@8bytes.org>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, thomas.lendacky@amd.com,
+	john.allen@amd.com, herbert@gondor.apana.org.au,
+	davem@davemloft.net, suravee.suthikulpanit@amd.com, will@kernel.org,
+	robin.murphy@arm.com, michael.roth@amd.com, dionnaglaze@google.com,
+	nikunj@amd.com, ardb@kernel.org, kevinloughlin@google.com,
+	Neeraj.Upadhyay@amd.com, vasant.hegde@amd.com,
+	Stable@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-coco@lists.linux.dev, iommu@lists.linux.dev
+Subject: Re: [PATCH v4 3/3] x86/sev: Fix broken SNP support with KVM module
+ built-in
+Message-ID: <Z62iWr77bPWsZcDC@8bytes.org>
+References: <cover.1739226950.git.ashish.kalra@amd.com>
+ <138b520fb83964782303b43ade4369cd181fdd9c.1739226950.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <138b520fb83964782303b43ade4369cd181fdd9c.1739226950.git.ashish.kalra@amd.com>
 
-In the comment for config_global_keyid(), the phrase "will fail" is
-duplicated. Remove it.
+On Mon, Feb 10, 2025 at 10:54:18PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> Fix issues with enabling SNP host support and effectively SNP support
+> which is broken with respect to the KVM module being built-in.
+> 
+> SNP host support is enabled in snp_rmptable_init() which is invoked as
+> device_initcall(). SNP check on IOMMU is done during IOMMU PCI init
+> (IOMMU_PCI_INIT stage). And for that reason snp_rmptable_init() is
+> currently invoked via device_initcall() and cannot be invoked via
+> subsys_initcall() as core IOMMU subsystem gets initialized via
+> subsys_initcall().
+> 
+> Now, if kvm_amd module is built-in, it gets initialized before SNP host
+> support is enabled in snp_rmptable_init() :
+> 
+> [   10.131811] kvm_amd: TSC scaling supported
+> [   10.136384] kvm_amd: Nested Virtualization enabled
+> [   10.141734] kvm_amd: Nested Paging enabled
+> [   10.146304] kvm_amd: LBR virtualization supported
+> [   10.151557] kvm_amd: SEV enabled (ASIDs 100 - 509)
+> [   10.156905] kvm_amd: SEV-ES enabled (ASIDs 1 - 99)
+> [   10.162256] kvm_amd: SEV-SNP enabled (ASIDs 1 - 99)
+> [   10.171508] kvm_amd: Virtual VMLOAD VMSAVE supported
+> [   10.177052] kvm_amd: Virtual GIF supported
+> ...
+> ...
+> [   10.201648] kvm_amd: in svm_enable_virtualization_cpu
+> 
+> And then svm_x86_ops->enable_virtualization_cpu()
+> (svm_enable_virtualization_cpu) programs MSR_VM_HSAVE_PA as following:
+> wrmsrl(MSR_VM_HSAVE_PA, sd->save_area_pa);
+> 
+> So VM_HSAVE_PA is non-zero before SNP support is enabled on all CPUs.
+> 
+> snp_rmptable_init() gets invoked after svm_enable_virtualization_cpu()
+> as following :
+> ...
+> [   11.256138] kvm_amd: in svm_enable_virtualization_cpu
+> ...
+> [   11.264918] SEV-SNP: in snp_rmptable_init
+> 
+> This triggers a #GP exception in snp_rmptable_init() when snp_enable()
+> is invoked to set SNP_EN in SYSCFG MSR:
+> 
+> [   11.294289] unchecked MSR access error: WRMSR to 0xc0010010 (tried to write 0x0000000003fc0000) at rIP: 0xffffffffaf5d5c28 (native_write_msr+0x8/0x30)
+> ...
+> [   11.294404] Call Trace:
+> [   11.294482]  <IRQ>
+> [   11.294513]  ? show_stack_regs+0x26/0x30
+> [   11.294522]  ? ex_handler_msr+0x10f/0x180
+> [   11.294529]  ? search_extable+0x2b/0x40
+> [   11.294538]  ? fixup_exception+0x2dd/0x340
+> [   11.294542]  ? exc_general_protection+0x14f/0x440
+> [   11.294550]  ? asm_exc_general_protection+0x2b/0x30
+> [   11.294557]  ? __pfx_snp_enable+0x10/0x10
+> [   11.294567]  ? native_write_msr+0x8/0x30
+> [   11.294570]  ? __snp_enable+0x5d/0x70
+> [   11.294575]  snp_enable+0x19/0x20
+> [   11.294578]  __flush_smp_call_function_queue+0x9c/0x3a0
+> [   11.294586]  generic_smp_call_function_single_interrupt+0x17/0x20
+> [   11.294589]  __sysvec_call_function+0x20/0x90
+> [   11.294596]  sysvec_call_function+0x80/0xb0
+> [   11.294601]  </IRQ>
+> [   11.294603]  <TASK>
+> [   11.294605]  asm_sysvec_call_function+0x1f/0x30
+> ...
+> [   11.294631]  arch_cpu_idle+0xd/0x20
+> [   11.294633]  default_idle_call+0x34/0xd0
+> [   11.294636]  do_idle+0x1f1/0x230
+> [   11.294643]  ? complete+0x71/0x80
+> [   11.294649]  cpu_startup_entry+0x30/0x40
+> [   11.294652]  start_secondary+0x12d/0x160
+> [   11.294655]  common_startup_64+0x13e/0x141
+> [   11.294662]  </TASK>
+> 
+> This #GP exception is getting triggered due to the following errata for
+> AMD family 19h Models 10h-1Fh Processors:
+> 
+> Processor may generate spurious #GP(0) Exception on WRMSR instruction:
+> Description:
+> The Processor will generate a spurious #GP(0) Exception on a WRMSR
+> instruction if the following conditions are all met:
+> - the target of the WRMSR is a SYSCFG register.
+> - the write changes the value of SYSCFG.SNPEn from 0 to 1.
+> - One of the threads that share the physical core has a non-zero
+> value in the VM_HSAVE_PA MSR.
+> 
+> The document being referred to above:
+> https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/revision-guides/57095-PUB_1_01.pdf
+> 
+> To summarize, with kvm_amd module being built-in, KVM/SVM initialization
+> happens before host SNP is enabled and this SVM initialization
+> sets VM_HSAVE_PA to non-zero, which then triggers a #GP when
+> SYSCFG.SNPEn is being set and this will subsequently cause
+> SNP_INIT(_EX) to fail with INVALID_CONFIG error as SYSCFG[SnpEn] is not
+> set on all CPUs.
+> 
+> Essentially SNP host enabling code should be invoked before KVM
+> initialization, which is currently not the case when KVM is built-in.
+> 
+> Add fix to call snp_rmptable_init() early from iommu_snp_enable()
+> directly and not invoked via device_initcall() which enables SNP host
+> support before KVM initialization with kvm_amd module built-in.
+> 
+> Add additional handling for `iommu=off` or `amd_iommu=off` options.
+> 
+> Note that IOMMUs need to be enabled for SNP initialization, therefore,
+> if host SNP support is enabled but late IOMMU initialization fails
+> then that will cause PSP driver's SNP_INIT to fail as IOMMU SNP sanity
+> checks in SNP firmware will fail with invalid configuration error as
+> below:
+> 
+> [    9.723114] ccp 0000:23:00.1: sev enabled
+> [    9.727602] ccp 0000:23:00.1: psp enabled
+> [    9.732527] ccp 0000:a2:00.1: enabling device (0000 -> 0002)
+> [    9.739098] ccp 0000:a2:00.1: no command queues available
+> [    9.745167] ccp 0000:a2:00.1: psp enabled
+> [    9.805337] ccp 0000:23:00.1: SEV-SNP: failed to INIT rc -5, error 0x3
+> [    9.866426] ccp 0000:23:00.1: SEV API:1.53 build:5
+> 
+> Fixes: c3b86e61b756 ("x86/cpufeatures: Enable/unmask SEV-SNP CPU feature")
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Co-developed-by: Vasant Hegde <vasant.hegde@amd.com>
+> Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+> Cc: <Stable@vger.kernel.org>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/include/asm/sev.h |  2 ++
+>  arch/x86/virt/svm/sev.c    | 23 +++++++----------------
+>  drivers/iommu/amd/init.c   | 34 ++++++++++++++++++++++++++++++----
+>  3 files changed, 39 insertions(+), 20 deletions(-)
 
-Acked-by: Kai Huang <kai.huang@intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Jun Miao <jun.miao@intel.com>
----
- arch/x86/virt/vmx/tdx/tdx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+For the IOMMU part:
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 7fdb37387886..2023216a04a9 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -961,8 +961,8 @@ static int do_global_key_config(void *unused)
-  * Attempt to configure the global KeyID on all physical packages.
-  *
-  * This requires running code on at least one CPU in each package.
-- * TDMR initialization) will fail will fail if any package in the
-- * system has no online CPUs.
-+ * TDMR initialization) will fail if any package in the system has
-+ * no online CPUs.
-  *
-  * This code takes no affirmative steps to online CPUs.  Callers (aka.
-  * KVM) can ensure success by ensuring sufficient CPUs are online and
--- 
-2.32.0
+Acked-by: Joerg Roedel <jroedel@suse.de>
 
