@@ -1,122 +1,139 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97C02139A6
-	for <linux-coco@lists.linux.dev>; Thu, 13 Feb 2025 09:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98225176AA1
+	for <linux-coco@lists.linux.dev>; Thu, 13 Feb 2025 15:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739437958; cv=none; b=Hvc0tOmGakOOeIHwPe9WlnTcQD98YgJsWzNRreu0NUV8YrVqw5u9sOimCqO33A7oebEjfOs5GcCwL9zisV8i1YvPmnmOji9UXU5vOhZCOLgpOAdSTsCzFVLpGuyo8WtYm3+i06P+tZsJnlqu0jzE0FQD+EwvYaBb8EmeuRPYkOU=
+	t=1739461846; cv=none; b=bNw/3gIadXfPofgf3GzX2pb1WuxH7N7AdyQi2TfcFgSvWfE7BfJ5HCahzAPK6HJCiEKAdiZsnsBTMcWtzN/kKr6x9uQKAuXvCqZm6Bzc49+aKHLLEGZ0ZkOuYlGIqAQfopskSWsHrvX6l+6y6n17UltoO42UjzsV47UDdRp1O2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739437958; c=relaxed/simple;
-	bh=Hpd6cn3Os/G9hehs6bXs/er3EDTTNqwu3Jq9nyiomNw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DSKkOk2hpHqK/gC1zOeTvAMrhym9w58SgV+ueLZyM1vUebnLcdn5bMoAsqaqfRMkBPs7rwJ5vXo+fUSkhtLDBs2SlUmcxkt7J+W9B6FzNZRl5VvpKfLA8HuD9Lgz/Dtk5vJsM9c5AwS5liMuuV0Xqh030RyXY7yAH2UvQOMQOJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YUCorjsv; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1739461846; c=relaxed/simple;
+	bh=pKKOW+0rlAIXhNsy+k3pB2L0K5ftmPyShJsJGVMM3aE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pY/CiwFQhCiXaMujlpP9qS9sgEq6MIIelJHcDxrr+grzN0l0QaKIf3HJffl/AJsI5aJqg1SgycB6OhqSfHNT+uQ7+dn9+vFznxv6bSRFxfENIMiUz3GPMonw09Xt/IDqJz4xPi9bDRqfdXNZJE48GyB0ouZYeIw/D9Fm1BFFRk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VTI68t1z; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YUCorjsv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739437955;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hpd6cn3Os/G9hehs6bXs/er3EDTTNqwu3Jq9nyiomNw=;
-	b=YUCorjsvTjh2amAbYkAiKmFm6if1PiQvSJ15Ut5zecAULfBtPY6oAfIO+UoW29dHx1gngj
-	m87yylJcTNMJTs41vzY5naI0aQnOycDSCyKn2CkF6CwlMGxYV4Bn+pQHxCmhZf5/YJMBH0
-	G0ewE0ezsepgplrykEPQPlT8jwWz/7s=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-o11Mw_FbMgy3tfDfWdwO6A-1; Thu, 13 Feb 2025 04:12:34 -0500
-X-MC-Unique: o11Mw_FbMgy3tfDfWdwO6A-1
-X-Mimecast-MFC-AGG-ID: o11Mw_FbMgy3tfDfWdwO6A
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-6f3ff1ff13aso9822347b3.3
-        for <linux-coco@lists.linux.dev>; Thu, 13 Feb 2025 01:12:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739437953; x=1740042753;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hpd6cn3Os/G9hehs6bXs/er3EDTTNqwu3Jq9nyiomNw=;
-        b=R7waVnsxJNcijf4ViXjD/22cmj2xNnaemTLKaeogiKy0/RUPly9vUgcAxxRXD5OLkA
-         LJIMNSMYd4pjH+YSv7xn9UQfeGJW6+TEMpXR1PWRkg2Ok1lYrJe7kwaj1Cc8beqzBJ1K
-         Tp3gRdfKxX23+04RbFlu0vK/ugouWuooFIFc2cSx+DABaSqwEp4e/BPafVFW47rgY5ob
-         mzdWrwgjn8aHQNq5itCEBfIAYzbPpncmVeAnob/gWCGH3SLiteFVWMvN66YugSvGVKTG
-         PpabOGtDvgO9oi9FO9m9OExNmWnt1tDE1jv8TT499QuOf9cg0h2myR2FZhYhIiHRLU7e
-         eb/w==
-X-Gm-Message-State: AOJu0YybQjTZ3gBKle3qMtSqsYetp18NfnXIpT9P1GBG5VWJZcelb1hY
-	7YBS+xpSnalGbHhZ1FL/shvq+ZKLz4UfTYyscucXtB6Uil+2juOySu2XPGj0EdCroxlf6ZBXIiN
-	nwD8NJV2fmtHAOFEHuBtyz2EqVokERe61QG3NA5hWaBnaeL5YGQZDbbzrAXBCHMsuHvpKfbxSo6
-	s5+C6FtSFm0NYcbo9C5I7634G9zx4OvfkjSUDzx4yvEp4W
-X-Gm-Gg: ASbGncsLIBa/rF9w/E1yVV19+BvYrfxOr/JJLzZPkQ9MNkyr7afbHvk+OUpWCWbUNQw
-	ZKiZO36DH4svXeqHr1Q3RKGlnBtZKDhZ/AQTmv95PIaZjwDhS9OSynl1pNIbX
-X-Received: by 2002:a05:690c:3685:b0:6fb:2980:b0bd with SMTP id 00721157ae682-6fb32c6ea8cmr22936507b3.11.1739437953248;
-        Thu, 13 Feb 2025 01:12:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF4rmJbP6LWTve17VR4BujQvoFXTr5BQzYFcbCLPZh+kz+v1KFCdFq4lCvdqi15dnnjKuDJHugladVEdU3yPKI=
-X-Received: by 2002:a05:690c:3685:b0:6fb:2980:b0bd with SMTP id
- 00721157ae682-6fb32c6ea8cmr22936337b3.11.1739437952887; Thu, 13 Feb 2025
- 01:12:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VTI68t1z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739461844; x=1770997844;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pKKOW+0rlAIXhNsy+k3pB2L0K5ftmPyShJsJGVMM3aE=;
+  b=VTI68t1z36LXzAp0KWh23dF8iOWFKpw+eMFXWgmbgZ2H4GNw6wanQA4u
+   bLBrJw0HTiPlZbWd6MYJ/ywvoU4rKHSuJkQ0zDSM0cKFUxbccL+XaTANQ
+   Qv9OispgRXjFbbBMp/zrK2fIyLzWj0kQPaEmR+gWsBm4eZNierkbYhYle
+   9ROjJIuzjz3JVg9mCd6VNIHzAfzfrxap3wHs/DgNJxL2L02rT7+oN9WPI
+   06+5hAX1bEXnRPady0mVD9UagDhm/j8BaQ/Qb2GDbOWzTcB3xP6SFxDCA
+   lXda3UuFq+YBOnHAiTotkUuEfLgc8muaio0YvpnDblaw5mb5c7D8BElaQ
+   Q==;
+X-CSE-ConnectionGUID: 7wTmXzpZTNiSfT0p8YR4fQ==
+X-CSE-MsgGUID: 1Ohg/nxCRa200NwqM/XbOw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="39400964"
+X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
+   d="scan'208";a="39400964"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 07:50:44 -0800
+X-CSE-ConnectionGUID: RJHEPWKPQ6CqyH85gm2NpA==
+X-CSE-MsgGUID: b8aiYEQoR+C142Of0nSiqA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="117295307"
+Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.108.188]) ([10.125.108.188])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 07:50:43 -0800
+Message-ID: <69dc7277-7aa8-4091-8993-ff1195ef4c3a@intel.com>
+Date: Thu, 13 Feb 2025 07:50:42 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <Z4k5C2bw8El7Yn9S@suse.de>
-In-Reply-To: <Z4k5C2bw8El7Yn9S@suse.de>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Thu, 13 Feb 2025 10:12:21 +0100
-X-Gm-Features: AWEUYZmvBvMpX0Tj_huxms6z56RMr0PjbLrlk-wd4bKZ1ti48RoeCaTJs8FjJZY
-Message-ID: <CAGxU2F5cU7CggPK0e9bnu1=r4mCaOry3cY4tG2FBdBuQw00uqg@mail.gmail.com>
-Subject: Re: [svsm-devel] Confidential Computing MC-like workshop in May?
-To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>
-Cc: linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev, 
-	amd-sev-snp@lists.suse.com, mathieu.poirier@linaro.org, 
-	Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>, leonardo.garcia@linaro.org, 
-	thomas.fossati@linaro.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ivkyVHA-cdYQaq--tb7QfX5BufxBSbmdEUm8HVoLcaQ_1739437954
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] kexec_core: Accept unaccepted kexec segments'
+ destination addresses
+To: Yan Zhao <yan.y.zhao@intel.com>, ebiederm@xmission.com
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, x86@kernel.org, rick.p.edgecombe@intel.com,
+ kirill.shutemov@linux.intel.com, bhe@redhat.com
+References: <20241213094930.748-1-yan.y.zhao@intel.com>
+ <20241213095449.881-1-yan.y.zhao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <20241213095449.881-1-yan.y.zhao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi J=C3=B6rg,
+On 12/13/24 01:54, Yan Zhao wrote:
+> +	/*
+> +	 * The destination addresses are searched from system RAM rather than
+> +	 * being allocated from the buddy allocator, so they are not guaranteed
+> +	 * to be accepted by the current kernel.  Accept the destination
+> +	 * addresses before kexec swaps their content with the segments' source
+> +	 * pages to avoid accessing memory before it is accepted.
+> +	 */
+> +	for (i = 0; i < nr_segments; i++)
+> +		accept_memory(image->segment[i].mem, image->segment[i].memsz);
 
-On Thu, 16 Jan 2025 at 17:51, J=C3=B6rg R=C3=B6del <jroedel@suse.de> wrote:
->
-> Hello everyone,
->
-> I hope you had a great start into 2025 and return refreshed for more
-> exciting confidential computing work :)
->
-> Our last get-together as the confidential computing community was in
-> September last year and this years LPC is far away in December. So there
-> is the idea to have another in-person/hybrid event earlier in May,
-> alongside Linaro Connect 2025 (May 14th-16th, 2025) in Lisbon.
->
-> Lorenzo (on Cc) reached out to ask if there is interest and enough
-> expected attendace at such an event? I personally see quite some value
-> in another in-person event before December.
->
-> Please let us know what you think and whether you would attend such an
-> event, either in-person or remotely.
+The "searched from system RAM" phrase both here and in the changelog
+doesn't quite parse for me.
 
-I'm not sure if I can attend Linaro Connect in person this year, but
-for sure I can do remotely.
+Also "System RAM" is the normal phrase that I use to describe the memory
+that mostly ends up _going_ into the buddy allocator. It's not just me:
 
-Another option might be, like 2 years ago, to take advantage of the
-KVM Forum where many of us attend.
-It was announced a few weeks ago that the next KVM Forum will be in
-Milan (Italy) on September 4 and 5 [1], so that could be another
-opportunity.
+	cat /proc/iomem  | grep 'System RAM'
 
-Of course, one does not exclude the other ;-)
+I think a more useful comment (and changelog) might be something like this:
 
-Thanks,
-Stefano
+	The core kernel focuses on accepting memory which is known to be
+	System RAM. However, there might be areas that are reserved in
+	the memory map, not exposed to the kernel as "System RAM" and
+	not accepted by firmware. Accept the memory before kexec touches
+	it.
 
-[1] https://lore.kernel.org/all/ea6e5059-85d1-4503-99d4-635272b9b32b@linux.=
-ibm.com/
 
