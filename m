@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98225176AA1
-	for <linux-coco@lists.linux.dev>; Thu, 13 Feb 2025 15:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9975726B0B1
+	for <linux-coco@lists.linux.dev>; Thu, 13 Feb 2025 15:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739461846; cv=none; b=bNw/3gIadXfPofgf3GzX2pb1WuxH7N7AdyQi2TfcFgSvWfE7BfJ5HCahzAPK6HJCiEKAdiZsnsBTMcWtzN/kKr6x9uQKAuXvCqZm6Bzc49+aKHLLEGZ0ZkOuYlGIqAQfopskSWsHrvX6l+6y6n17UltoO42UjzsV47UDdRp1O2Q=
+	t=1739462118; cv=none; b=gMq4IlREJ689lm8ugTs0lvKFGpof1+6d+QVBPnbrIprVmi7VXLJDNda8BaPI7YIu3aToEJ7cHdM6kDvcTMg+/whLP8xdbydeqxw6IFHmQQ6dKNcAXqssvt3NGHJIX2n/SeY08iczuqn+T+an75CkpUEucVkmLc+RlXTAsOn0a7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739461846; c=relaxed/simple;
-	bh=pKKOW+0rlAIXhNsy+k3pB2L0K5ftmPyShJsJGVMM3aE=;
+	s=arc-20240116; t=1739462118; c=relaxed/simple;
+	bh=b7ObII/vFR47LETuncg9l2bFg9S6/OwFkur2pLXDuzg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pY/CiwFQhCiXaMujlpP9qS9sgEq6MIIelJHcDxrr+grzN0l0QaKIf3HJffl/AJsI5aJqg1SgycB6OhqSfHNT+uQ7+dn9+vFznxv6bSRFxfENIMiUz3GPMonw09Xt/IDqJz4xPi9bDRqfdXNZJE48GyB0ouZYeIw/D9Fm1BFFRk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VTI68t1z; arc=none smtp.client-ip=192.198.163.18
+	 In-Reply-To:Content-Type; b=ueubrh//cS/i2L88sMqfVOJmZMlDFcaWdP2PiHwz6I0GaPPKfgwjLHhfn8JOuCINw5WYM2pTPxwniQi99DASzjpxy5ypZig/ks4cdXedCMJDex92+uWT6LurtZSBDfHlcJPcM+POo0PYCMWzN2DaFvZ/7f4LkfxLEerfUfny/W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XFkNmonz; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VTI68t1z"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XFkNmonz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739461844; x=1770997844;
+  t=1739462116; x=1770998116;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=pKKOW+0rlAIXhNsy+k3pB2L0K5ftmPyShJsJGVMM3aE=;
-  b=VTI68t1z36LXzAp0KWh23dF8iOWFKpw+eMFXWgmbgZ2H4GNw6wanQA4u
-   bLBrJw0HTiPlZbWd6MYJ/ywvoU4rKHSuJkQ0zDSM0cKFUxbccL+XaTANQ
-   Qv9OispgRXjFbbBMp/zrK2fIyLzWj0kQPaEmR+gWsBm4eZNierkbYhYle
-   9ROjJIuzjz3JVg9mCd6VNIHzAfzfrxap3wHs/DgNJxL2L02rT7+oN9WPI
-   06+5hAX1bEXnRPady0mVD9UagDhm/j8BaQ/Qb2GDbOWzTcB3xP6SFxDCA
-   lXda3UuFq+YBOnHAiTotkUuEfLgc8muaio0YvpnDblaw5mb5c7D8BElaQ
-   Q==;
-X-CSE-ConnectionGUID: 7wTmXzpZTNiSfT0p8YR4fQ==
-X-CSE-MsgGUID: 1Ohg/nxCRa200NwqM/XbOw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="39400964"
+  bh=b7ObII/vFR47LETuncg9l2bFg9S6/OwFkur2pLXDuzg=;
+  b=XFkNmonzJ0yhRCRM/6s5nMSpc5ZkcSiq1DmtxzC6jIAW/UHeyc1d2nIn
+   27jLW4BFbGNy6i/31PqNTichVYZNBqGNuMZSqpTHRts9oEPQJE9DPcnSQ
+   fKVeO7XCjcd2i1OZitd6d2Mbqy5Utb9/BB2lsVoeZ0q5n7gQTk/m/DW32
+   zYtC8kkfC1ilkcUQ+i8EzAhor8qTbMxMGlC7MStFQwpabddI1CzxUWv2V
+   GTCscwBrO//pP9sHQ9xF3dwmeJM30q1dPRNp3eCUw71MPGVEwU1+8Ru9I
+   X41EL8Xup71LRX2xWQNsOIc6JOC3I6f+a7n224rcahRff7DxYcBRQT7Hb
+   A==;
+X-CSE-ConnectionGUID: CsjlFexzT7eC5F08OYZwnw==
+X-CSE-MsgGUID: wsZW/4enQQCrpp0Xrjdirw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="65523203"
 X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="39400964"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 07:50:44 -0800
-X-CSE-ConnectionGUID: RJHEPWKPQ6CqyH85gm2NpA==
-X-CSE-MsgGUID: b8aiYEQoR+C142Of0nSiqA==
+   d="scan'208";a="65523203"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 07:55:16 -0800
+X-CSE-ConnectionGUID: jweFNLneQO6WT10qF3AKmQ==
+X-CSE-MsgGUID: E86di0h5Sj65g1P4Nef7mg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="117295307"
+X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
+   d="scan'208";a="113840907"
 Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.108.188]) ([10.125.108.188])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 07:50:43 -0800
-Message-ID: <69dc7277-7aa8-4091-8993-ff1195ef4c3a@intel.com>
-Date: Thu, 13 Feb 2025 07:50:42 -0800
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 07:55:15 -0800
+Message-ID: <f38f1b56-a5df-4644-be59-56c70499ed92@intel.com>
+Date: Thu, 13 Feb 2025 07:55:15 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,14 +52,18 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] kexec_core: Accept unaccepted kexec segments'
- destination addresses
-To: Yan Zhao <yan.y.zhao@intel.com>, ebiederm@xmission.com
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, x86@kernel.org, rick.p.edgecombe@intel.com,
- kirill.shutemov@linux.intel.com, bhe@redhat.com
+Subject: Re: [PATCH v2 0/1] Accept unaccepted kexec segments' destination
+ addresses
+To: "Eric W. Biederman" <ebiederm@xmission.com>, Baoquan He <bhe@redhat.com>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>, akpm@linux-foundation.org,
+ kexec@lists.infradead.org, Yan Zhao <yan.y.zhao@intel.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org,
+ rick.p.edgecombe@intel.com, kirill.shutemov@linux.intel.com,
+ security@kernel.org
 References: <20241213094930.748-1-yan.y.zhao@intel.com>
- <20241213095449.881-1-yan.y.zhao@intel.com>
+ <xgycziy2o56hnom3oau7sbqed3meoni3razc6njj7ujatldnmm@s7odbl4splbn>
+ <Z4T1G4dwzo7qdwSP@MiWiFi-R3L-srv>
+ <87zfjuoj3i.fsf@email.froward.int.ebiederm.org>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -105,35 +109,85 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20241213095449.881-1-yan.y.zhao@intel.com>
+In-Reply-To: <87zfjuoj3i.fsf@email.froward.int.ebiederm.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/13/24 01:54, Yan Zhao wrote:
-> +	/*
-> +	 * The destination addresses are searched from system RAM rather than
-> +	 * being allocated from the buddy allocator, so they are not guaranteed
-> +	 * to be accepted by the current kernel.  Accept the destination
-> +	 * addresses before kexec swaps their content with the segments' source
-> +	 * pages to avoid accessing memory before it is accepted.
-> +	 */
-> +	for (i = 0; i < nr_segments; i++)
-> +		accept_memory(image->segment[i].mem, image->segment[i].memsz);
+On 1/13/25 06:59, Eric W. Biederman wrote:
+...
+> I have a new objection.  I believe ``unaccepted memory'' and especially
+> lazily initialized ``unaccepted memory'' is an information leak that
+> could defeat the purpose of encrypted memory.  For that reason I have
+> Cc'd the security list.  I don't know who to CC to get expertise on this
+> issue, and the security list folks should.
+> 
+> Unless I am misunderstanding things the big idea with encrypted
+> memory is that the hypervisor won't be able to figure out what you
+> are doing, because it can't read your memory.
 
-The "searched from system RAM" phrase both here and in the changelog
-doesn't quite parse for me.
+At a super high level, you are right. Accepting memory tells the
+hypervisor that the guest is _allocating_ memory. It even tells the host
+what the guest physical address of the memory is. But that's far below
+the standard we've usually exercised in the kernel for rejecting on
+security concerns.
 
-Also "System RAM" is the normal phrase that I use to describe the memory
-that mostly ends up _going_ into the buddy allocator. It's not just me:
+Did anyone on the security list raise any issues here? I've asked them
+about a few things in the past and usually I've thought that no news is
+good news.
 
-	cat /proc/iomem  | grep 'System RAM'
+> My concern is that by making the ``acceptance'' of memory lazy, that
+> there is a fairly strong indication of the function of different parts
+> of memory.  I expect that signal is strong enough to defeat whatever
+> elements of memory address randomization that we implement in the
+> kernel.
 
-I think a more useful comment (and changelog) might be something like this:
+In the end, the information that the hypervisor gets is that the guest
+allocated _some_ page within a 4MB physical region and the time. It gets
+that signal once per boot for each region. It will mostly see a pattern
+of acceptance going top-down from high to low physical addresses.
 
-	The core kernel focuses on accepting memory which is known to be
-	System RAM. However, there might be areas that are reserved in
-	the memory map, not exposed to the kernel as "System RAM" and
-	not accepted by firmware. Accept the memory before kexec touches
-	it.
+The hypervisor never learns anything about KASLR. The fact that the
+physical allocation patterns are predictable (with or without memory
+acceptance) is one of the reasons KASLR is in place.
 
+I don't think memory acceptance has any real impact on "memory address
+randomization". This is especially true because it's a once-per-boot
+signal, not a continuous thing that can be leveraged. 4MB is also
+awfully coarse.
 
+> So not only does it appear to me that implementation of ``accepting''
+> memory has a stupidly slow implementation, somewhat enshrined by a bad
+> page at a time ACPI standard, but it appears to me that lazily
+> ``accepting'' that memory probably defeats the purpose of having
+> encrypted memory.
+
+Memory acceptance is pitifully slow. But it's slow because it
+fundamentally requires getting guest memory into a known state before
+guest use. You either have slow memory acceptance as a thing or you have
+slow guest boot.
+
+Are there any other CoCo systems that don't have to zero memory like TDX
+does? On the x86 side, we have SGX the various flavors of SEV. They all,
+as far as I know, require some kind of slow "conversion" process when
+pages change security domains.
+
+> I think the actual solution is to remove all code except for the
+> "accept_memory=eager" code paths.  AKA delete the "accept_memory=lazy"
+> code.  At that point there are no more changes that need to be made to
+> kexec.
+
+That was my first instinct too: lazy acceptance is too complicated to
+live and must die.
+
+It sounds like you're advocating for the "slow guest boot" option.
+Kirill, can you remind us how fast a guest boots to the shell for
+modestly-sized (say 256GB) memory with "accept_memory=eager" versus
+"accept_memory=lazy"? IIRC, it was a pretty remarkable difference.
+
+Eric, I wasn't planning on ripping the lazy acceptance code out of
+arch/x86. I haven't heard any rumblings from the mm folks that it's
+causing problems over there either. This seems like something we want to
+fix and I _think_ the core kexec code is the right place to fix this issue.
+
+There are definitely ways to work around this in arch code, but they
+seem rather distasteful and I'd rather not go there.
