@@ -1,128 +1,154 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [104.223.66.194])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9F5264A71
-	for <linux-coco@lists.linux.dev>; Fri, 14 Feb 2025 13:54:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.223.66.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98E82676E8
+	for <linux-coco@lists.linux.dev>; Fri, 14 Feb 2025 16:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739541282; cv=none; b=cFroRNQMIDRF7NBLrO8miQu5/D+YxyDTH6RAtyigb9aFCZybfl8FyGtOLJ4hK/0RIBvq5uQduhqGJqcKnYQBznuLCR3qCgr6zKXWabWT08GiRSMN/nSvDD51fyWvj0A3am5TRaRX2073xZYmyhIFEFZa5fH/B1KOi3xrewSvqzY=
+	t=1739550007; cv=none; b=Tul4nlH9IBmdFbv9Hd4WxNwyThfBWWoTU9Ah52U2/FbuRzC4N2ddQIIY3i9LlI52OLNz/ZiOPYepC5qQFITgBnkHjSbTH+xrF/I4EN6iNXXI2y3Z8fuheHwva28zNrEy47FbDukikWiyg1v2U1LWKXsTSCqEaM4knwbgmMdB/j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739541282; c=relaxed/simple;
-	bh=9GEtvxm6k9W+hbIndFA8tWfpv5TR8uTWSseHKuwNEec=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ceKhOjNt2dvB/Z8K7XA5PSPfO/EfMBwL43jke55QbpwQ1sCJDZv+DqD8fnJ9Gx3ajNrTMHGCp5O8D5WjBrck31PiNwBCxSXxh9K9/77zMFZNZOcUfdxjkd6iM+fCDvbwthZxFY5iwvKLzYzC1Q8jpIwWPqDeE6iKBNXROEE2G3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=L6/L9wip; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=L6/L9wip; arc=none smtp.client-ip=104.223.66.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1739550007; c=relaxed/simple;
+	bh=/CxnacnZ64DLjO3K7djuU0Qm7UPulYo/6rqJ4nbs2O4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U0mXvyGcw8td4XmVZN1Qh/gvXRM9970QCUd26aEZ4FduQdHLrkJcEtJ4sBKtKbhqWwiswMgI7oaPa6ZiDaxAP54Ipfn7d95iBIUjVw1BmzQoD5Xh69CVHwdHzLUPrn6PPwVzQhLJEgmo3uUo36v1ZhsLuMk4RR/i5HnmYCbz8y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iz/S5g44; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="L6/L9wip";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="L6/L9wip"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iz/S5g44"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1739541278;
-	bh=9GEtvxm6k9W+hbIndFA8tWfpv5TR8uTWSseHKuwNEec=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=L6/L9wipsTUP7c7heUeFshYGWrCaQD6dohn/qbHxPasMbS3bA91XeGhTl0cUDHXgI
-	 SNx/Bv3K5ctJrK9LbhyKAbrhVbEtGrqHuqDDV9uo1m+ZVKHIuJ7gwA7k4/+O9lTOK7
-	 OeqLg9soNMCmd40PIL5oT+8RMu6fZAblN8jtf/NM=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id E9A951280BCA;
-	Fri, 14 Feb 2025 08:54:38 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id 0TrHb8hFefNW; Fri, 14 Feb 2025 08:54:38 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1739541278;
-	bh=9GEtvxm6k9W+hbIndFA8tWfpv5TR8uTWSseHKuwNEec=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=L6/L9wipsTUP7c7heUeFshYGWrCaQD6dohn/qbHxPasMbS3bA91XeGhTl0cUDHXgI
-	 SNx/Bv3K5ctJrK9LbhyKAbrhVbEtGrqHuqDDV9uo1m+ZVKHIuJ7gwA7k4/+O9lTOK7
-	 OeqLg9soNMCmd40PIL5oT+8RMu6fZAblN8jtf/NM=
-Received: from lingrow.int.hansenpartnership.com (c-67-166-174-65.hsd1.va.comcast.net [67.166.174.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 45DBE1280B19;
-	Fri, 14 Feb 2025 08:54:38 -0500 (EST)
-Message-ID: <16ecae506c9a207cc714929a62a38d6fbe67df0f.camel@HansenPartnership.com>
-Subject: Re: Collecting Open Questions from the Linux Kernel SIG Call
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Steve Rutherford <srutherford@google.com>, linux-coco@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Date: Fri, 14 Feb 2025 08:54:36 -0500
-In-Reply-To: <CABayD+f-1kTZZaKx7Okbi_eoua8uv8qa4_-XMa28CigJ58dZrw@mail.gmail.com>
-References: 
-	<CABayD+f-1kTZZaKx7Okbi_eoua8uv8qa4_-XMa28CigJ58dZrw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739550005; x=1771086005;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/CxnacnZ64DLjO3K7djuU0Qm7UPulYo/6rqJ4nbs2O4=;
+  b=Iz/S5g44K7yCE/pkSzd61P56pdciXl8uF1rL7nbvvTzcei35s2GpIopM
+   H4UXMA71C0WTQhW7nNwDGkcVgP35FtymXL9ui5yy+r2S/n1PZSZAhf6wu
+   7YNFefSXjP1wuqvvLI450xgouzVkjDQJEjcJwmgn8dV7El42NDT06NHCB
+   cLaR1dMdOhIVXYrxz9QPUEoCdjcWzK/+/6ppSMa6EcuNyFAl8KGRt8TkE
+   PyiHdezIhYtNwDqKQJL3uxW8XvdJp509RXwLS8qTcYWF3OQxC/jpeoNFT
+   98dC/nVbvrKr43MaSUX/87ZfltCvGiFQcpPsrs8BNsxYyyapwuH95i8iN
+   g==;
+X-CSE-ConnectionGUID: wWuUESekRcmQjb9NDwOleg==
+X-CSE-MsgGUID: kukppgKgQO2ERoFaffySDw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="43142308"
+X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; 
+   d="scan'208";a="43142308"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 08:20:04 -0800
+X-CSE-ConnectionGUID: 4HBR2OMeQY2V4z452kg0iA==
+X-CSE-MsgGUID: S3b5qtvvTuuEzX23BzZ32Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="118426787"
+Received: from tjmaciei-mobl5.ger.corp.intel.com (HELO [10.125.109.21]) ([10.125.109.21])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 08:20:05 -0800
+Message-ID: <4599571f-804b-40d8-b5c8-e19478a3ad18@intel.com>
+Date: Fri, 14 Feb 2025 08:20:07 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/1] Accept unaccepted kexec segments' destination
+ addresses
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>, Baoquan He <bhe@redhat.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>, akpm@linux-foundation.org,
+ kexec@lists.infradead.org, Yan Zhao <yan.y.zhao@intel.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org,
+ rick.p.edgecombe@intel.com, security@kernel.org
+References: <20241213094930.748-1-yan.y.zhao@intel.com>
+ <xgycziy2o56hnom3oau7sbqed3meoni3razc6njj7ujatldnmm@s7odbl4splbn>
+ <Z4T1G4dwzo7qdwSP@MiWiFi-R3L-srv>
+ <87zfjuoj3i.fsf@email.froward.int.ebiederm.org>
+ <f38f1b56-a5df-4644-be59-56c70499ed92@intel.com>
+ <fslhdizolr4twqm4ixevzj6ai5l5qg6mxky25jasn3yctsnvt4@hpwphlmfs5cp>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <fslhdizolr4twqm4ixevzj6ai5l5qg6mxky25jasn3yctsnvt4@hpwphlmfs5cp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-[added the kvm list because of the similarities to virt]
-On Thu, 2025-02-13 at 10:26 -0800, Steve Rutherford wrote:
-> Hi all,
+On 2/14/25 05:46, Kirill A. Shutemov wrote:
+>> It sounds like you're advocating for the "slow guest boot" option.
+>> Kirill, can you remind us how fast a guest boots to the shell for
+>> modestly-sized (say 256GB) memory with "accept_memory=eager" versus
+>> "accept_memory=lazy"? IIRC, it was a pretty remarkable difference.
+> I only have 128GB machine readily available and posted some number on
+> other thread[1]:
 > 
-> I'd like to aggregate a list of open questions. This list is
-> definitely incomplete. Please add to it!
-
-Sure, but first I'll reiterate the points I made in the meeting.
-
+>   On single vCPU it takes about a minute to accept 90GiB of memory.
 > 
-> * Should there be a standard for common protocols? (But not the
-> underlying interfaces, since those can not be universally shared)
+>   It improves a bit with number of vCPUs. It is 40 seconds with 4 vCPU, but
+>   it doesn't scale past that in my setup.
+> 
+> I've mentioned it before in other thread:
+> 
+> [1] https://lore.kernel.org/all/ihzvi5pwn5hrn4ky2ehjqztjxoixaiaby4igmeihqfehy2vrii@tsg6j5qvmyrm
 
-So on this one, it would be nice if that happened.  However, the way
-the world works today is that every hypervisor has its own guest to
-host communication protocol, usually embedded in a hypervisor specific
-bus and its drivers (and then they each have their own separate drivers
-for the same function), so having one more for a new SVSM
-virtualization component just follows that trend.
+Oh, wow, from that other thread, you've been trying to get this crash
+fix accepted since November?
 
-> * What is the correct method for capability discovery with the SVSM?
+From the looks of it, Eric stopped responding to that thread. I _think_
+you gave a reasonable explanation of why memory acceptance is slow. He
+then popped back up last month raising security concerns. But I don't
+see anyone that shares those concerns.
 
-The current way the SVSM is discovered on AMD is via an MSR, which
-seems appropriate for something so deep in virtualization.  
+The unaccepted memory stuff is also _already_ touching the page
+allocator. If it's a dumb idea, then we should be gleefully ripping it
+out of the page allocator, not rejecting a 2-line kexec patch.
 
->         + Do we want the SVSM to touch ACPI? (No, but what instead?)
+Baoquan has also said this looks good to him.
 
-To clarify, the reason we don't use ACPI today is that the ACPI tables
-are constructed in OVMF using host information from the KVM fw_config
-device which the SVSM doesn't touch.  To allow the SVSM to modify the
-ACPI tables, we'd have to make it terminate the fw_config device, pull
-in the information and then re-supply it to OVMF in the modified form.
-It's not that we can't do that, it's just that it's way less messy not
-to do it.
+I'm happy to give Eric another week to respond in case he's on vacation
+or something, but I'm honestly not seeing a good reason to hold this bug
+fix up.
 
->         + Going across the common protocol seems pretty reasonable
-> * What SVSM capabilities are common and complex enough to warrant
-> further discussion?
->       + Observability?
->       + TPM?
-
-Once we accept that the SVSM protocol is really just another
-incarnation of the hypervisor bus based guest to host communication
-mechanism, I think what we're really asking is what features would we
-like to be paravirt.  The two above seem natural.
-
-> * How should the shared code within Linux be organized?
-
-And, given the similarity above, I think where everything goes is
-fairly easy.  In our case the discovery mechanism is likely going to be
-different between AMD SEV and Intel TDX (and the Arm and RISC-V things
-when they come along) it makes sense for the core communication
-protocol to sit deep in the arch code, but from there we can expose a
-message passing (request/response) API which will look the same for
-every architecture and which exposes the basic messages described in
-the SVSM protocol document.
-
-Perhaps the only outstanding question is should we have our own bus
-like all the other paravirt to hypervisor communication systems?
-
-Regards,
-
-James
-
+Andrew, is this the kind of thing you can stick into mm and hold on to
+for a bit while we give Eric time to respond?
