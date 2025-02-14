@@ -1,151 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B47322D794
-	for <linux-coco@lists.linux.dev>; Thu, 13 Feb 2025 23:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F62D6FC5;
+	Fri, 14 Feb 2025 00:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739488799; cv=none; b=iMFZ7XLYU5ABV8OfO9c3Ja3+SGabBv9YBSc2VeJ1R4qr03Hz2+6v8W8piUVZ8qu/eEaBeOZhzBd1k/8RTJvvD+JD784lJY61MinTsu95nEIRd469zcHyBcKSsdAaJBesKPuN/UdyJBbSl9hXmVYyt/nAfgAeohOpi233aSFYbEk=
+	t=1739494556; cv=none; b=ac9IT/IK2ZLWLY1isSD95umaOpuOc0nW1W9WNM5Cu9VHss73/4jHnWgA1rjl2YY4+QMGK//AIvGlZXnIPUGMJXo8mkDpMmcBfC7HhivDEnlLh5NmqMynd7P9wWt2hblnbNCfcNh/M1cXenHQtDLMj/Y3zlCLJMKQgH3eFtoS+Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739488799; c=relaxed/simple;
-	bh=A+h5agGwrDnZFBycmKAezBcfsgMpiv3ol3i+J+di2ZA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ILmDHq5QSH47ycvWAtktHaQHI+FrWM/32qX+V50IAPFSwV3Lp8PIexdDuZBpRaRRU/IeSuptuKfmhk1JXgnR5RHJbvH/Vqir5ysZSv7O1FV7Fpciyi1T2rHk3/6/fMgMtYIcS+gNY8f5APWJS0hNcZe+7WuEmJljwxWLNvsTH0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MaArMl49; arc=none smtp.client-ip=192.198.163.19
+	s=arc-20240116; t=1739494556; c=relaxed/simple;
+	bh=xVMsNL3oRPIShTD32393oiFY2QHSrhABEYEfaUhgvsw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bgsUWrDOOBB4L68gYiFDLtvsmnPhZPDeMu+Q2aEEN+kEpcZhOM6o4flBEXpQJwTocgnB0lwblr9hmkCGcXnO0VIclsrWfjszNE9J/QI4uUkTMw9gf47/Dmais8ISdWwDAqfg2veLg9sd5hPqrek5WxJeT4Pgxt3qK7NlnaXAdNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Qp4kIUbJ; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MaArMl49"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qp4kIUbJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739488798; x=1771024798;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=A+h5agGwrDnZFBycmKAezBcfsgMpiv3ol3i+J+di2ZA=;
-  b=MaArMl494Cos4ge3jEuZN+fm7TQqOcdptgidqUzXcM5a+rfWT/Vgi3gI
-   bpt5djOfIq+6cyOA8HdjmcP+jS8XWBIfRNKf2+ae1jf43aIDyKX0sr1Iy
-   eSh7T0N4BLskql53IOFmdfdPODp+U0l0dh5FAw5lI4lQsQZzagEj0t+z8
-   uls46kMEL+v2m4qpbLbCzNUWubeknSpoN2T3R3qBK4GUe7zmysC3tBv5z
-   L7MmIkQK4Y3e+BMTvdu119gm7WlUybC97mfBCzIagsBjsWGYKm/7oEQSs
-   zgg85SPTR/rmggyB/Or+1aSAjGm20WCx1ILIZi/9HUFhe4ySA8f0fJZEn
-   A==;
-X-CSE-ConnectionGUID: QScG7khdRZC1kzQQS4+MAQ==
-X-CSE-MsgGUID: sbUiv7UATCWdfxKN/nLA+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="39407944"
+  t=1739494555; x=1771030555;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xVMsNL3oRPIShTD32393oiFY2QHSrhABEYEfaUhgvsw=;
+  b=Qp4kIUbJVMs0Cof3GcW2Stu/xAkxw3olsOMt0XdnHh1JCQrQ5hEtSwvb
+   HJ0zdx0PhfQXJeRNiR780pmIb7ddYpehAAH51RjAn9aDbCe6kJaDJfQC3
+   gkSRY5eDGvxAXmnlyHJc/AKSB/pxD9lY/BPnCfuyiha/om++/q11LxTIH
+   RPWciHZybjCaGHnVfLy53uwfxx4ybVuwerw6wtmDUZJuWibCeGLS9CWKy
+   P4wmvZLhpbzEd65KyCm4koCk/vr5t6agGPDBQ/sJYhwnaSgHY6ByH61ph
+   /PBcLM6okdJsdC5FLevbFfYTUiKI0tgMEdlz4Y/4UiGN4GBScbPmQXsi6
+   Q==;
+X-CSE-ConnectionGUID: vFd53fRORfq1DyXsLIQE5w==
+X-CSE-MsgGUID: L4NQ/KPUTFKiw493bD0lLg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="40154378"
 X-IronPort-AV: E=Sophos;i="6.13,284,1732608000"; 
-   d="scan'208";a="39407944"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 15:19:57 -0800
-X-CSE-ConnectionGUID: Emd0lxTVSHuX265sd4q04Q==
-X-CSE-MsgGUID: QlSt+aKVRL2F6y+w5TqBaw==
+   d="scan'208";a="40154378"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 16:55:55 -0800
+X-CSE-ConnectionGUID: qQsBAxi5RO+D8XBr4PV+2w==
+X-CSE-MsgGUID: Z8joHWw4TtGx5DHJUIzPMA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="144224972"
-Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.108.188]) ([10.125.108.188])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 15:19:56 -0800
-Message-ID: <c7894df2-2b27-4f67-b428-3eca312503f9@intel.com>
-Date: Thu, 13 Feb 2025 15:19:55 -0800
+X-IronPort-AV: E=Sophos;i="6.13,284,1732608000"; 
+   d="scan'208";a="113830199"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 13 Feb 2025 16:55:51 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tijzh-0018t1-11;
+	Fri, 14 Feb 2025 00:55:49 +0000
+Date: Fri, 14 Feb 2025 08:55:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Cedric Xing <cedric.xing@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Cc: Paul Gazzillo <paul@pgazz.com>,
+	Necip Fazil Yildiran <fazilyildiran@gmail.com>,
+	oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, Cedric Xing <cedric.xing@intel.com>
+Subject: Re: [PATCH 1/4] tsm: Add TVM Measurement Register support
+Message-ID: <202502140854.9CZ1xPmC-lkp@intel.com>
+References: <20250212-tdx-rtmr-v1-1-9795dc49e132@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] tsm: Unified Measurement Register ABI for TVMs
-To: "Xing, Cedric" <cedric.xing@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-References: <20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com>
- <15c69d57-4ffb-4ea1-8cbc-0ba6d3d7b14f@intel.com>
- <be7e3c9d-208a-4bda-b8cf-9119f3e0c4ce@intel.com>
- <015cdddb-7f74-4205-af8a-b15cad7ddc22@intel.com>
- <d8f3eb33-d902-4391-adc7-005e4895b471@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <d8f3eb33-d902-4391-adc7-005e4895b471@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250212-tdx-rtmr-v1-1-9795dc49e132@intel.com>
 
-On 2/13/25 13:50, Xing, Cedric wrote:
-> On 2/13/2025 10:58 AM, Dave Hansen wrote:
-...
->> Wait a sec, so there's already ABI for manipulating these? This just
->> adds a parallel sysfs interface to the existing ABI?
->>
-> No, this is new. There's no existing ABI for accessing measurement
-> registers from within a TVM (TEE VM). Currently, on TDX for example,
-> reading TDX measurement registers (MRs) must be done by getting a TD
-> quote. And there's no way to extend any RTMRs. Therefore, it would be
-> much easier end users to debug/diagnose measurement related issues
-> (which would almost always require reading MRs) with this patch.
+Hi Cedric,
 
-Ok, that makes sense.
+kernel test robot noticed the following build warnings:
 
-But if this is for debug, wouldn't these belong better in debugfs? Do we
-really want to maintain this interface forever? There's no shame in debugfs.
+[auto build test WARNING on a64dcfb451e254085a7daee5fe51bf22959d52d3]
 
->> Also, you're saying that users don't need to write any code, but then
->> provide... sample code. That's unexpected.
->>
-> The sample code is to demo how to expose MRs from a CC guest driver, but
-> not for end users to access those MRs.
-> 
->> Oh, and you seem to have forgotten to attach the sysfs ABI documentation
->> patch to the series. You did write the required documentation, right? ;)
-> Documentation/ABI/testing/sysfs-kernel-tsm (new file added by patch 1)
-> contains a description on the attributes added by the patch.
+url:    https://github.com/intel-lab-lkp/linux/commits/Cedric-Xing/tsm-Add-TVM-Measurement-Register-support/20250213-102639
+base:   a64dcfb451e254085a7daee5fe51bf22959d52d3
+patch link:    https://lore.kernel.org/r/20250212-tdx-rtmr-v1-1-9795dc49e132%40intel.com
+patch subject: [PATCH 1/4] tsm: Add TVM Measurement Register support
+config: nios2-kismet-CONFIG_CRYPTO_HASH_INFO-CONFIG_TSM_REPORTS-0-0 (https://download.01.org/0day-ci/archive/20250214/202502140854.9CZ1xPmC-lkp@intel.com/config)
+reproduce: (https://download.01.org/0day-ci/archive/20250214/202502140854.9CZ1xPmC-lkp@intel.com/reproduce)
 
-Whoops! I went looking for it but I'm blind, evidently. Thanks for
-pointing it out.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202502140854.9CZ1xPmC-lkp@intel.com/
 
+kismet warnings: (new ones prefixed by >>)
+>> kismet: WARNING: unmet direct dependencies detected for CRYPTO_HASH_INFO when selected by TSM_REPORTS
+   WARNING: unmet direct dependencies detected for CRYPTO_HASH_INFO
+     Depends on [n]: CRYPTO [=n]
+     Selected by [y]:
+     - TSM_REPORTS [=y] && VIRT_DRIVERS [=y]
 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
