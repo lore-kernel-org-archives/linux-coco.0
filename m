@@ -1,81 +1,73 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FE3219EB8
-	for <linux-coco@lists.linux.dev>; Mon, 17 Feb 2025 11:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F4522688C
+	for <linux-coco@lists.linux.dev>; Mon, 17 Feb 2025 19:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739793165; cv=none; b=iuuk/fv5uJLFkw79s4m4yCET0yGBIaPctL/3WW9XTAlrKCDtUh0D0jbsDpK2lPUuocSoHNbQhlw9EyNDUh7yl+krlyRmhIIbMFRfTUgrA6wSs/e2RPLags0FJqVOzU0SXSXzEtXfys/rDtNkP35numc5CqFaQyOOLDzhw7maIwk=
+	t=1739821961; cv=none; b=FZ85tOsjLpF6IEHQ90kKhpNDDNf4P76wwY7FWK8JKE+G7OXtXvXeUs7uSmFo1QrzFZP1EAib3d/R8EcL21pcx5UVwrUhAPXesHfTqkCc20OIoxqmTg5bkN9Q2JwsnANcCb359VLntemzB6DcUOMdFpQC1keDli7h6DYuk+cV/Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739793165; c=relaxed/simple;
-	bh=DEdFGpsxrphAseea/kSBbkDecoXV7rNsjSO9Bg4cwd0=;
+	s=arc-20240116; t=1739821961; c=relaxed/simple;
+	bh=DJMKpnTHwr+LdItMMSCGe47GOiJK1Uk52r2+n37U+lg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H2HKnKKDjf4o6SdryS/0wlWJHPekcmlojwgz6mMa924y/PSfu24tdaXuor32sLBBvsxhcG5d4GMrqnmZ+Hi2b4W0cxMsHj5e+u6UXD91mJUBqvbrjZ6YianAeILqL4+e1uX0r7T+oDQE4ZxWryHia1gkWXhz+vaytMKhdndRq/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=fail smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=eryqCgRQ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=laIGp8vW; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Ld9gZ4Tp; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mg19ksoV; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=suse.cz
+	 In-Reply-To:Content-Type; b=q0V3yUJO3kIQELK5GfoI5velpDCSNNUg4z4GsKBWlFgxx6O9jnshuD2YklJ+GaaP+amFlPLM0ZE7GuF7m+ymqGZ8nMNp0cjyVcKetBrMAdAXC/FcBe2bV3a8LmevvMoswdgVZH8YPafPMelbIvsI3xVyd1gvGW8ktbEia6uMCvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jG46r1Xo; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="eryqCgRQ";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="laIGp8vW";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Ld9gZ4Tp";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mg19ksoV"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6CBFB211A7;
-	Mon, 17 Feb 2025 11:52:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1739793161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jG46r1Xo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739821958;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=osMQhKZVU6kLbu8H2vhW2lAjHU+ow95PQyFWnAqYoMw=;
-	b=eryqCgRQE2K29qWCaqtisNSJnBSIzDisnYNOPAH6rXCO0Qe4PZqyyC4f2iFb8UczYKUT+4
-	nULkfNCIjFqAq/F7ZKs2JgSB5qfmHXh57A3MJ4PRjlsr+0caSSaFz2/7VoPeJZymmHu99D
-	ljrqedYoBkNFVb7e5umMMeqwuZfoImI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1739793161;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=osMQhKZVU6kLbu8H2vhW2lAjHU+ow95PQyFWnAqYoMw=;
-	b=laIGp8vWbYlQfykLTiFvxgF62AR59pGqeihWzp7zX8hee/YmpkLA5ca9HwWH2la+BXqfIx
-	XBIFlHtWVsrjlKCA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ld9gZ4Tp;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mg19ksoV
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1739793160; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=osMQhKZVU6kLbu8H2vhW2lAjHU+ow95PQyFWnAqYoMw=;
-	b=Ld9gZ4Tp8H3YUaajtfqwbkyJzS/iJOAf+RZlzbimAjpCOdkJqgGPpBnrFMqSf46xZI23Bo
-	U41OCcTG7tXi4LBwvOHSsP+B2GA1ji3VSd5omgm7DH6e2xAjH40zB2drPLu+w/JbrZfOyc
-	bTMHUanytxWbhyKuszt5BD2XRd3haGI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1739793160;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=osMQhKZVU6kLbu8H2vhW2lAjHU+ow95PQyFWnAqYoMw=;
-	b=mg19ksoV2ZNjBDlxNnVAZGocKYEmsF1LUuY+PdZq2PFYXEW6wQO/kjtPo0vc/awRLxiB9b
-	5vEnh8pv0ddkTgDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 45606133F9;
-	Mon, 17 Feb 2025 11:52:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2q6iEAgjs2c/bQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 17 Feb 2025 11:52:40 +0000
-Message-ID: <469ee330-7736-4059-9e59-ec7b9a6d3c8b@suse.cz>
-Date: Mon, 17 Feb 2025 12:52:39 +0100
+	bh=dSgud9IFu9zBU2/yrWAzazkl9insW+YrIX8GunCoEkA=;
+	b=jG46r1XowxG6lmGwyssqQ77VLRCQdhEoV4HRZs7UbJHpIQ7MZ9ox2JEhtRRRAjfz4zib64
+	dInZ1ST5MTVZfKpsJtz0E3YbVfgnhlyyVR5Ek25XUHDdJH2zZLSr+r9Q4pj9Cr8Z//7wtr
+	Nj65w0pnyBCoOn68cvX0u0UukXdgyXo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-448-8f1GVANIMceGbM4MJHZsnw-1; Mon, 17 Feb 2025 14:52:37 -0500
+X-MC-Unique: 8f1GVANIMceGbM4MJHZsnw-1
+X-Mimecast-MFC-AGG-ID: 8f1GVANIMceGbM4MJHZsnw_1739821956
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4394c489babso25626105e9.1
+        for <linux-coco@lists.linux.dev>; Mon, 17 Feb 2025 11:52:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739821956; x=1740426756;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dSgud9IFu9zBU2/yrWAzazkl9insW+YrIX8GunCoEkA=;
+        b=DEabxpqQq4PfucUkjCFCwIJZ10qlGguRTSnwLviE147FqfNVrZmNzdRMFhCXSMcUag
+         o0VXJnv+yrXlXUMpeReJNXQx2miPCUbrsdZB1R76KqLX+n4+SMaCKHlYd8X75IQ+cV0y
+         4qLR4z2+PAo6BlobXVsWgIbwmKz/CobcsHXq03qXAXZPhTENKMdgoe8C9pLYrCdrSVCO
+         gdBmp42Jk7Uy13CM+YJ8wU3I3cvtDMKHLOkWAJmcNIN4SLxqNImVXq6wdzc1t0e43zmV
+         ejeXVNU5YLooBD0aUNr6xvY5UxkSvWcz5E0b5jN2ieiRA6RDD60WhbL2wIezRvOEgNpq
+         tc7g==
+X-Forwarded-Encrypted: i=1; AJvYcCXDMafDkRFipPl1yppfUq2jzA4jcEjiHveAUtVLj0DwXhyGFNSCXGVEI2EfluF0NTamtGhJHXAJYje6@lists.linux.dev
+X-Gm-Message-State: AOJu0YyIQ3xJFw4zvJTdTifJeDBE/PhfTnVKN6ARgAxuh0mHaErr1ygL
+	xY9M92vP+h2bJ14GdFwwthprBKzcw2CFjdoCR+DiMd+78/2y6DdYkJuQYWdbGRBjDegVe7Y6p/y
+	oDrjbTCqkBC7u4f1yRLc/Cl1r3eCmsOnLqGs+gt4HXs0N7l3XXIlutxMbV8Q=
+X-Gm-Gg: ASbGncsph2pBVjZaH9Dyqa4QEBo+1wOx/KLQW7Fu3CtQCFGmLto6ySSeVgff72oXZQH
+	2I5QPgiNtWYmJRIvDPXrCQw9AD7JT7yopD8CdoewslpRvhJX7V/9Tg2Y3lfHYY1qem8kE/gZ+oi
+	4yShbqLNY1phYnkwBOByNXhF+3aNfDr8J9t5+BCxe/t3f3iDzOQ7xWMb5m6g6q1WUQAX6rrjEbR
+	5Dn5pXHtb/NkbRZg4HNvF1LhWCnS+0dvu98YdMCyDeO64U2c7CJ9+hDq1V1ljU5UwdybFxgeKrA
+	ufXW+o/S07eEMYc2X8jd2FX/+0eoxag8r8kbScs8Fe9l/aviJA8H1WtAbWwUvXU2Ve9BadcIUTX
+	oy113EYMl4Z6nqsqXTYG6Z7kvdjPAYQ==
+X-Received: by 2002:a05:600c:5487:b0:439:8a8c:d3d8 with SMTP id 5b1f17b1804b1-4398a8cd568mr31393975e9.29.1739821955824;
+        Mon, 17 Feb 2025 11:52:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEyDxt9ziBk25VblfQc1zoKMTJeD5SerjisAnql1pNBHcQPqv9b6CUDpFtmZRLpJojsitSOKg==
+X-Received: by 2002:a05:600c:5487:b0:439:8a8c:d3d8 with SMTP id 5b1f17b1804b1-4398a8cd568mr31393715e9.29.1739821955440;
+        Mon, 17 Feb 2025 11:52:35 -0800 (PST)
+Received: from ?IPV6:2003:cb:c739:900:900f:3c9e:2f7b:5d0a? (p200300cbc7390900900f3c9e2f7b5d0a.dip0.t-ipconnect.de. [2003:cb:c739:900:900f:3c9e:2f7b:5d0a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259d8dd6sm13231254f8f.62.2025.02.17.11.52.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Feb 2025 11:52:34 -0800 (PST)
+Message-ID: <f880cf51-8703-444c-ac7e-b89cc5816931@redhat.com>
+Date: Mon, 17 Feb 2025 20:52:31 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -83,158 +75,136 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 2/3] mm/mempolicy: export memory policy symbols
-Content-Language: en-US
+Subject: Re: [RFC PATCH v4 1/3] mm/filemap: add mempolicy support to the
+ filemap layer
 To: Shivank Garg <shivankg@amd.com>, akpm@linux-foundation.org,
  willy@infradead.org, pbonzini@redhat.com
 Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, chao.gao@intel.com, seanjc@google.com,
- ackerleytng@google.com, david@redhat.com, bharata@amd.com, nikunj@amd.com,
+ ackerleytng@google.com, vbabka@suse.cz, bharata@amd.com, nikunj@amd.com,
  michael.day@amd.com, Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com,
- michael.roth@amd.com
+ michael.roth@amd.com, Shivansh Dhiman <shivansh.dhiman@amd.com>,
+ baolin.wang@linux.alibaba.com
 References: <20250210063227.41125-1-shivankg@amd.com>
- <20250210063227.41125-3-shivankg@amd.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- EP+ylKVEKb0Q2A==
-In-Reply-To: <20250210063227.41125-3-shivankg@amd.com>
-Content-Type: text/plain; charset=UTF-8
+ <20250210063227.41125-2-shivankg@amd.com>
+ <76537454-272b-4fbb-b073-5387bbaaf28d@redhat.com>
+ <d504979a-3f25-4a57-9632-5c17cbc2acda@amd.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
+ 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
+ rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
+ wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
+ 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
+ pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
+ KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
+ BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
+ 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
+ 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
+ M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63XOwU0EVcufkQEQAOfX3n0g0fZz
+ Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
+ T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
+ 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
+ CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
+ NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
+ 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
+ 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
+ lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
+ AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
+ N7eop7uh+6bezi+rugUI+w6DABEBAAHCwXwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
+ AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
+ boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
+ 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
+ XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
+ a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
+ Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
+ 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
+ kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
+ th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
+ jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <d504979a-3f25-4a57-9632-5c17cbc2acda@amd.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: QR0_Vhvs1T_DplYllsijiJZMNp78zytEAv8Hr2vIxQQ_1739821956
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6CBFB211A7
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:dkim,suse.cz:mid,amd.com:email];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
-X-Spam-Flag: NO
 
-On 2/10/25 07:32, Shivank Garg wrote:
-> Export memory policy related symbols needed by the KVM guest-memfd to
-> implement NUMA policy support.
 > 
-> These symbols are required to implement per-memory region NUMA policies
-> for guest memory, allowing VMMs to control guest memory placement across
-> NUMA nodes.
+> (1) As you noted later, shmem has unique requirements due to handling swapin.
+> It does considerable open-coding.
+> Initially, I was considering simplifying the shmem but it was not possible due
+> to above constraints.
+> One option would be to add shmem's special cases in the filemap and check for
+> themusing shmem_mapping()?
+> But, I don't understand the shmem internals well enough to determine if it is
+> feasible.
 > 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
 
-I think we should use EXPORT_SYMBOL_GPL() these days.
+Okay, thanks for looking into this.
 
-Wasn't there also some way to limit the exports to KVM?
+> (2) I considered handling it manually in guest_memfd like shmem does, but this
+> would lead to code duplication and more open-coding in guest_memfd. The current
+> approach seems cleaner.
 
-> ---
->  mm/mempolicy.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+Okay, thanks.
+
 > 
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index bbaadbeeb291..9c15780cfa63 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -214,6 +214,7 @@ struct mempolicy *get_task_policy(struct task_struct *p)
->  
->  	return &default_policy;
->  }
-> +EXPORT_SYMBOL(get_task_policy);
->  
->  static const struct mempolicy_operations {
->  	int (*create)(struct mempolicy *pol, const nodemask_t *nodes);
-> @@ -347,6 +348,7 @@ void __mpol_put(struct mempolicy *pol)
->  		return;
->  	kmem_cache_free(policy_cache, pol);
->  }
-> +EXPORT_SYMBOL(__mpol_put);
->  
->  static void mpol_rebind_default(struct mempolicy *pol, const nodemask_t *nodes)
->  {
-> @@ -2736,6 +2738,7 @@ struct mempolicy *mpol_shared_policy_lookup(struct shared_policy *sp,
->  	read_unlock(&sp->lock);
->  	return pol;
->  }
-> +EXPORT_SYMBOL(mpol_shared_policy_lookup);
->  
->  static void sp_free(struct sp_node *n)
->  {
-> @@ -3021,6 +3024,7 @@ void mpol_shared_policy_init(struct shared_policy *sp, struct mempolicy *mpol)
->  		mpol_put(mpol);	/* drop our incoming ref on sb mpol */
->  	}
->  }
-> +EXPORT_SYMBOL(mpol_shared_policy_init);
->  
->  int mpol_set_shared_policy(struct shared_policy *sp,
->  			struct vm_area_struct *vma, struct mempolicy *pol)
-> @@ -3039,6 +3043,7 @@ int mpol_set_shared_policy(struct shared_policy *sp,
->  		sp_free(new);
->  	return err;
->  }
-> +EXPORT_SYMBOL(mpol_set_shared_policy);
->  
->  /* Free a backing policy store on inode delete. */
->  void mpol_free_shared_policy(struct shared_policy *sp)
-> @@ -3057,6 +3062,7 @@ void mpol_free_shared_policy(struct shared_policy *sp)
->  	}
->  	write_unlock(&sp->lock);
->  }
-> +EXPORT_SYMBOL(mpol_free_shared_policy);
->  
->  #ifdef CONFIG_NUMA_BALANCING
->  static int __initdata numabalancing_override;
+>> Two tabs indent on second parameter line, please.
+>>
+> ..
+>>
+>> This should go below the variable declaration. (and indentation on second parameter line should align with the first parameter)
+>>
+> ..
+>> "The mempolicy to apply when allocating a new folio." ?
+>>
+> 
+> I'll address all the formatting and documentation issues in next posting.
+> 
+>>
+>> For guest_memfd, where pages are un-movable and un-swappable, the memory policy will never change later.
+>>
+>> shmem seems to handle the swap-in case, because it keeps care of allocating pages in that case itself.
+>>
+>> For ordinary pagecache pages (movable), page migration would likely not be aware of the specified mpol; I assume the same applies to shmem?
+>>
+>> alloc_migration_target() seems to prefer the current nid (nid = folio_nid(src)), but apart from that, does not lookup any mempolicy.
+> 
+> Page migration does handle the NUMA mempolicy using mtc (struct migration_target_control *)
+> which takes node ID input and allocates on the "preferred" node id.
+> The target node in migrate_misplaced_folio() is obtained using get_vma_policy(), so the
+> per-VMA policy handles proper node placement for mapped pages.
+> It use current nid (folio_nid(src)) only if NUMA_NO_NODE is passed.
+> 
+> mempolicy.c provides the alloc_migration_target_by_mpol() that allocates according to
+> NUMA mempolicy, which is used by do_mbind().
+> 
+>>
+>> compaction likely handles this by comapcting within a node/zone.
+>>
+>> Maybe migration to the right target node on misplacement is handled on a higher level lagter (numa hinting faults -> migrate_misplaced_folio). Likely at least for anon memory, not sure about unmapped shmem.
+> 
+> Yes.
+
+Thanks, LGTM.
+
+-- 
+Cheers,
+
+David / dhildenb
 
