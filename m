@@ -1,93 +1,150 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAA926B946
-	for <linux-coco@lists.linux.dev>; Tue, 18 Feb 2025 15:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F48C1C3054
+	for <linux-coco@lists.linux.dev>; Tue, 18 Feb 2025 16:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739892178; cv=none; b=qLhvx1uJBtsDWkMkuixwSpP9gnH6ryOrTX1oxXiKnU1z/BwplcrFth6WfBUqD776WoAghstBfqbPAv04Y9X9gLUceD0RLQujUkUbXuK5x7M6Rpc7hxfa38tesRpaY3iL3qxBCyZr92YncW6g3GqMuGpL6DMG/vrnf95OKYMee+Q=
+	t=1739895917; cv=none; b=OqlZHWAQmP2UBvAcL3y9hvY6/zYXGJuHMt1Co1g0VrXxA7n4kST/SdTW3QFKStCDDxTSv41lzSA5Q1p40jk9KRhm5d/63P4EaZvZJYj1tVQEuvC7ECVQDhMMYbuUG1aa2ofoM2lvR35qE8RN0+KgoJYkynRzTm71baHolHuz/aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739892178; c=relaxed/simple;
-	bh=dRqns3tgs9LOzsvNykyA2wnDs4hZV04yHkHiuozwTo0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NKN4C+aoj03sA2SywZ8EpghqBdfvrshHCItqFiPlbC+WSUU/SQ8icZZXyPfoTVgPm38rlVMioxoMB/nbIEe6cmQW0LSHX626rGMOFASRqUWtTk0OWbTowtoZScayjUPuCMBA4vXQnVSutsSzWSgQoOSEb+0D9m7Wg1iarckMxrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cezjFrPX; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1739895917; c=relaxed/simple;
+	bh=41BI8YlrCGmBKS+t8IH/N263QGj1uwZ0cBkSEzL2LRI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xiy6z1eDsGmP/DEyl2oKK0G9V/AbC3ZQFeXTjGsXhPO1o0MyvbCZCPcZUlEvnsQ/v5cYqj4/xq/LKhE5fn2ZxhTHSSo6KaNNR0OAw+XEa6TJXREqSbfbNOFzX68z8Y/YeTK1dHgzwRVDYZ4KIDR1uE/61pCAO1oUZb+5oQ2lLuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AJ5DEJJ+; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cezjFrPX"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-22112e86501so55630155ad.0
-        for <linux-coco@lists.linux.dev>; Tue, 18 Feb 2025 07:22:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739892176; x=1740496976; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=A4rBn1loiHVRgqEEQSp4qIiIQysoefBUpVmMVONI/VM=;
-        b=cezjFrPXDdpLUiDWMmB+HMt9S49tMcMvVgc1ApcjCTL4pgqvTL256jAkarJaAVZzSK
-         3bEsrB+LFWLtx100RRuFeeLRm0mTvrRFzGkeWy62MLRKfxpFrKrzELuRnAVngLPNJAvK
-         w2664ivdoYYsWJrw8yx0kfhRlbbPYaxfzR/a0G421J/6GpP7iHBFRVXwA4yIiMvWCqG0
-         Aqg3b93lbEyozspvJjJjjIHXIX8H8Ng41SaKNHBexo/iY6g8ZxBJrgzXE1aUAY8cy7a4
-         0pvmRHlUDDsfOX0nJ6cgt9k0AtHV2kcyiCF8UU0j+6OGOhLtm0uD9Ea+9ySgDxRxwhks
-         E2Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739892176; x=1740496976;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A4rBn1loiHVRgqEEQSp4qIiIQysoefBUpVmMVONI/VM=;
-        b=lKPohaquE/p3wVbdZL6Zx8IXXN/CgKb+CobJNsmfAO6ZOLF2Yid/Dp3yMXnyTCiZn4
-         j5h0qchVlMnyy052etAwrbMXY1tsa/ukgO23XGCti7s4pifzHCew7/1YX/ws/G30X+Q5
-         v/jst5ger3DXKzfL6iHTrICXLzrzAWp8f1XkMz+V/r3CcQQlYyVHov2Pof373698s6iK
-         wF/7hULT9aNqCPKaqWVZQahuzS4PzH2UkyHG+FdMF+h5ITw+GVbfm9LrJAQ4iDGO6y+y
-         TyOkFIbdmy+JuoIlbp1aV6zu71AGZTLMhHyIiLDDw6rpBVMn9dhrxCooDtlLHHrn+i0w
-         UTyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUYpNrBV6XRkO5muX0YIPJYpKFNRpHV5sBO0pk+3QHs4nKkYWvom96pIU0tof0zBWWvHm5iPefsLiOI@lists.linux.dev
-X-Gm-Message-State: AOJu0YzKUDTQgGkj7L2vmMjOnmk+aFI4E+rCMszPGyNNF0i9jXR2omVu
-	ZwBlBq8tW2cMXDt7jp7XQ3IqJ6A+tbwN7bsFraKdschJ0PgOdwokWFm1cKzwQxB42arREgglwBC
-	r9g==
-X-Google-Smtp-Source: AGHT+IHtk8QhNUJ5IVao0gvIDKE2j52eZP0sIqAgCjZecx7PvM8TzFSmR+acBjaj46uiYVes4srTDuaJU+E=
-X-Received: from pfbjt23.prod.google.com ([2002:a05:6a00:91d7:b0:730:8a7b:24e0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:790b:b0:1ee:a914:1d64
- with SMTP id adf61e73a8af0-1eea9142045mr14137360637.28.1739892176009; Tue, 18
- Feb 2025 07:22:56 -0800 (PST)
-Date: Tue, 18 Feb 2025 07:22:54 -0800
-In-Reply-To: <469ee330-7736-4059-9e59-ec7b9a6d3c8b@suse.cz>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AJ5DEJJ+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739895915; x=1771431915;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=41BI8YlrCGmBKS+t8IH/N263QGj1uwZ0cBkSEzL2LRI=;
+  b=AJ5DEJJ+uZvoA7qulgh7uVAy8dkhTu53b92aq0P9P/O1Wsg81q1p6aJV
+   fx9ubB6858NidTAJwReQ545l5C5axqcTSfnGt5t6cHJlrVEOrZOehVEvV
+   50pp35hsGqcUVBSXMIl3NZX6PjLzsDC3DXFMAnpX5oE/8/6RXZWrR8RZ1
+   XTO62EsvDdZGY2n5+n3axoUwszrCC0PsqgOMda5p/V6bNf00uu6y0f8J1
+   SPyXFMafJ8jdPOx7eRe3Xb80F5TMcmybM6Ok3KAn87sj58W1ogNHnXSYn
+   PNWrExG1yl5O+Wigncw0Y0ITpCF9HpezUyE2OjXQBfx5ud0MojVJhRqjW
+   g==;
+X-CSE-ConnectionGUID: p8SWxsvOQAGBEfQoS/0Oww==
+X-CSE-MsgGUID: fngAGQIDRKSPRzhDAFI7MQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="52029939"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="52029939"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 08:25:15 -0800
+X-CSE-ConnectionGUID: bR7eGB9cT/S1HdZh82AbWA==
+X-CSE-MsgGUID: APnwE7LjS5Ss6ce2pApoEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; 
+   d="scan'208";a="114374448"
+Received: from dikoukis-mobl1.amr.corp.intel.com (HELO [10.95.1.75]) ([10.95.1.75])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 08:25:13 -0800
+Message-ID: <ab2036d5-5b6f-4fa9-995a-fba63c0a5209@linux.intel.com>
+Date: Tue, 18 Feb 2025 10:25:07 -0600
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20250210063227.41125-1-shivankg@amd.com> <20250210063227.41125-3-shivankg@amd.com>
- <469ee330-7736-4059-9e59-ec7b9a6d3c8b@suse.cz>
-Message-ID: <Z7Slzs_4jZ2qkPAi@google.com>
-Subject: Re: [RFC PATCH v4 2/3] mm/mempolicy: export memory policy symbols
-From: Sean Christopherson <seanjc@google.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Shivank Garg <shivankg@amd.com>, akpm@linux-foundation.org, willy@infradead.org, 
-	pbonzini@redhat.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	chao.gao@intel.com, ackerleytng@google.com, david@redhat.com, bharata@amd.com, 
-	nikunj@amd.com, michael.day@amd.com, Neeraj.Upadhyay@amd.com, 
-	thomas.lendacky@amd.com, michael.roth@amd.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] tsm: Unified Measurement Register ABI for TVMs
+To: "Xing, Cedric" <cedric.xing@intel.com>,
+ Dave Hansen <dave.hansen@intel.com>, Dan Williams
+ <dan.j.williams@intel.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+References: <20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com>
+ <15c69d57-4ffb-4ea1-8cbc-0ba6d3d7b14f@intel.com>
+ <be7e3c9d-208a-4bda-b8cf-9119f3e0c4ce@intel.com>
+ <015cdddb-7f74-4205-af8a-b15cad7ddc22@intel.com>
+ <d8f3eb33-d902-4391-adc7-005e4895b471@intel.com>
+ <c7894df2-2b27-4f67-b428-3eca312503f9@intel.com>
+ <c2cf2184-7753-454e-ac99-8c4f3c9c3d16@intel.com>
+ <01fc0997-a0e7-4086-b0aa-67b4a51b328a@intel.com>
+ <12ed2ab1-e97d-4a20-8370-8c60cabffc77@intel.com>
+Content-Language: en-US
+From: Dan Middleton <dan.middleton@linux.intel.com>
+In-Reply-To: <12ed2ab1-e97d-4a20-8370-8c60cabffc77@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 17, 2025, Vlastimil Babka wrote:
-> On 2/10/25 07:32, Shivank Garg wrote:
-> > Export memory policy related symbols needed by the KVM guest-memfd to
-> > implement NUMA policy support.
-> > 
-> > These symbols are required to implement per-memory region NUMA policies
-> > for guest memory, allowing VMMs to control guest memory placement across
-> > NUMA nodes.
-> > 
-> > Signed-off-by: Shivank Garg <shivankg@amd.com>
-> 
-> I think we should use EXPORT_SYMBOL_GPL() these days.
-> 
-> Wasn't there also some way to limit the exports to KVM?
 
-The infrastructure is still a WIP[1], though when that lands, I definitely plan
-on tightening down the KVM-induced exports[2].
+On 2/14/25 3:59 PM, Xing, Cedric wrote:
+> On 2/14/2025 10:26 AM, Dave Hansen wrote:
+>> On 2/14/25 08:19, Xing, Cedric wrote:
+>>>> But if this is for debug, wouldn't these belong better in debugfs? 
+>>>> Do we
+>>>> really want to maintain this interface forever? There's no shame in
+>>>> debugfs.
+>>>>
+>>> There are many other (more important/significant) uses besides 
+>>> debugging.
+>>>
+>>> For example, any applications that make use of runtime measurements 
+>>> must
+>>> extend RTMRs, and this interface provides that exact functionality.
+>>>
+>>> Another example, a policy may be associated with a TD (e.g., CoCo) by
+>>> storing its digest in MRCONFIGID, so that the policy could be verified
+>>> against its digest at runtime. This interface allows applications to
+>>> read MRCONFIGID.
+>>
+>> The attestation world is horrifically complicated, and I don't
+>> understand the details at _all_. You're going to have to explain this
+>> one to me like I'm five.
+>>
+>> Could you also explain how this is different from the hardware and
+>> virtual TPMs and why this doesn't fit into that existing framework? How
+>> are TVMs novel? What justifies all this new stuff?
+> TVM (TEE VM) is a broad term referring to encrypted/protected VMs on 
+> various confidential computing (CC) architectures, such as AMD SEV, 
+> Arm CCA, Intel TDX, etc. Each of these architectures includes hardware 
+> components for storing software measurements, known as measurement 
+> registers (MRs). This patch series aims to provide the necessary 
+> functionality for applications that need to access these MRs.
+>
+> There are no real/hardware TPMs but only virtual ones in TVMs. Virtual 
+> TPMs can be built upon the native MRs provided by the underlying CC 
+> architectures.
+>
+> If you need more detailed information, I'd be happy to discuss it 
+> further offline to avoid cluttering the mailing list.
+>
+Hi Dave,
 
-[1] https://lore.kernel.org/all/20241202145946.108093528@infradead.org
-[2] https://lore.kernel.org/all/ZzJOoFFPjrzYzKir@google.com
+Let me try to add more plain language usages.
+
+This ABI lets applications extend events after boot such that they can be
+part of the hardware-based attestation.
+
+One common reason is to _identify the workload_ running in the VM.
+Typically a VM attestation tells you that you booted to a clean state.
+It is much more valuable to a Relying Party to know that they are 
+interacting
+with a trusted application / workload.
+Projects like CNCF Confidential Containers [1] and Attested Containers
+[2] would like to do this.
+
+More generally, Relying Parties can track the state of an application in
+the attestation. Auctions are common examples of stateful flows where it
+can be meaningful to, e.g., attest that a bid arrived before or after the
+close of an auction.
+
+[1] 
+https://github.com/confidential-containers/guest-components/blob/main/attestation-agent/attester/src/tdx/rtmr.rs
+[2] https://github.com/intel/acon
+
+Thanks,
+Dan Middleton
+
+
