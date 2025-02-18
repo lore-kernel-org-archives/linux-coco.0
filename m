@@ -1,120 +1,118 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030D31DE2A1
-	for <linux-coco@lists.linux.dev>; Tue, 18 Feb 2025 23:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CD31DC184
+	for <linux-coco@lists.linux.dev>; Tue, 18 Feb 2025 23:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739922670; cv=none; b=H29x0/vjvRZCHTC1is5415Ocv152oOPe5n/UwWhuy3dnXX+5Iv1IBi7y3PYxYVzB7z+wtyUPP86iFepKqt5jtLz77EP5ONq9AgPzVEwgjJL0v26kpe+b3RiKcQuOhwBisoXg18dvUMW7+/ZSwPbnrLfA7N9N3DxANtCjcBNFoao=
+	t=1739923085; cv=none; b=iRZ8JiCkqgPLTsnZLrmSUoOR9Sjif3mRWiYQ2Pi8Ql0btYO9lFtn4ztFJ+4C3paNqcH4Vrm9/9Wzs2wtbCVNBjq72hh5cgs/RLrdvj0GwvWSovMiaOpst1LNPt4qgWN4dhr5RiRA5RmdUUivuryxRHxCWXTm6OhNOsdtWPh3YkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739922670; c=relaxed/simple;
-	bh=iKT5gRHJFTk24cvpT8KmAyPqwcHjrkHc67AQuv3guHc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AuJuQKIyMUg7ubRAgk+NAhbC41Wia2xi8sZu7Krs6zYoDpiV+QmWW0kX/f3Z14wCgP8hN5VDP8lG2QCWvIbvrtNSJqZECNzrUDl7grmFglEtFgGLY8yYC1Pz+ULyOCImdIjTvHhYkyHExismcZwpESaoqfQSHoV8LWUpZpNslmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=QrQG5h67; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1739923085; c=relaxed/simple;
+	bh=fC1P3XC32NnXo00sjdLw5qb9N9oKkD+Omqv1rR0S5FE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GRpcu0aJkg9QtSCZL4UG0MRziSv7pNC5wZMw8ZkmT9oq7gW+BY5fVq66xGRF1EL56vm8UyOX0KdOuBs/vl3uCbSBY98Z5QHvgdc+tMr/MHifukpeW6DLj5L4y8u000rkeDe0peJQVeyRp0Qhqv+s8CC/zrngCXzNiDnealp/2iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jG13MJ20; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="QrQG5h67"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6e66a7e2754so33814076d6.3
-        for <linux-coco@lists.linux.dev>; Tue, 18 Feb 2025 15:51:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jG13MJ20"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-aba868c6e88so744477966b.2
+        for <linux-coco@lists.linux.dev>; Tue, 18 Feb 2025 15:58:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1739922668; x=1740527468; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iKT5gRHJFTk24cvpT8KmAyPqwcHjrkHc67AQuv3guHc=;
-        b=QrQG5h67JEl6vm3nanzmW4zxI9o7sEdpTKmtuepSlvI3GClAMkdI82Ot6JTiZa5Hof
-         n04geGXht/S+G+rfgYJtT4aLvdmUIpoTQ2yuKtm/SNVWL0okfb0Fm6jC9EZZWPHn5cLD
-         B5zlfgfuaAQ/oSumwUmFUTzNTOASyVE89YPiQUK/OybEu/OYTBZwCnRdPV1Z5qVhful/
-         Xxz5dm+ByKNYDDw6+O/mlznj2/piVNdkk1bBT4rJkLTKHP6+VboEe3kXaULafbszm7yf
-         aIVdEyhuF4Oiuts/ccM4/UpAjMxAh8RY/AY0JCex8IcrUn3IDddoeuo6j8CJcvUNlS9g
-         s50w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739922668; x=1740527468;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1739923082; x=1740527882; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iKT5gRHJFTk24cvpT8KmAyPqwcHjrkHc67AQuv3guHc=;
-        b=oPYp3ezpfgWkI7eFLDvo/JswOkIOIzlUPmwXVZSG99JvMUfXguGslYRCFGnpSi7eb4
-         h/5+rAyjNOqpR6h5w9mUt/Qtom/KkOsW3l4EXp7maTBlmwcvmzUFAlzLJvfzPesffrDj
-         PvD0imeVJWL/AzvJDs9biLy8AvO88K3yP74pWEy3mVV5iH9EuZT4Ar+IZnIDCQErzhCP
-         0fLxL8SsVxSP9g3n7d3zdNqdF2WiOEJ5zUN8nYxUaiNUE5hJZ7FgVFCvZqEeYcpbWFNZ
-         30HfnUznPu99roMVFkShXtzeG3+4Y0yyCHj3c+RdhNw1s10WwMx9797mtNDUlZuHe9df
-         u55w==
-X-Forwarded-Encrypted: i=1; AJvYcCW8tRAMQcBR86P6d5OdcESOtkn5VTX0m0HAsm+1HyILi7AYOtzEpMP9I+jj7MjKYVe+ZtMJsU5U08lA@lists.linux.dev
-X-Gm-Message-State: AOJu0YzoLbgeqaG0KlqowGMw68xplDhVTOkXsLBWFP3fxTuKzOJW6D+6
-	YWadN4JsAVr0KWBPOVU5ZDiORabF3U5r78u6DsgrpLyDTlPfnwnxizXvLqvVXM8=
-X-Gm-Gg: ASbGncvREdh8FQiTmVPRpWasLB0ytSjnF/MUVmp75A8j8B1lWCcdMaS72exZEy+TuuE
-	3M/2FEuhyz4UX4c+kWXDXXYBz9MWkH4Mz0hPH9Opuq3ORVEbiPyYFhYiFWfArbOj3kHejtL4y/F
-	iwLG43P1ocAe0xXdjBFp083d8BYSSzZHhP7NL8ytoybKG+BEJb/m7tF9jLKVADo+5R0sEZt34OS
-	4BXrBmTembSlM50R45RzUMpOXzlDhncPfxgRVQ/xXSvzFI0G7HCBHeqthn2LihvUIliVpga/z4A
-	IsKyCtYy0rTP2QCULLt4S1L5HwE/NB7n6c/vV33w0RYVt0Q+lKuRFgCsyZOThFq+
-X-Google-Smtp-Source: AGHT+IFO1/6l3OUxeVa8mqeoAIRJldW9bBpco9S18W39RUG+1rvPlDolxLvoJK10Ea2Dnll0//ehxQ==
-X-Received: by 2002:a05:6214:1d09:b0:6d4:3593:2def with SMTP id 6a1803df08f44-6e66cc8aba1mr253639746d6.5.1739922667835;
-        Tue, 18 Feb 2025 15:51:07 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e65d9f325fsm68981726d6.76.2025.02.18.15.51.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2025 15:51:06 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tkXMn-0000000020v-3I9I;
-	Tue, 18 Feb 2025 19:51:05 -0400
-Date: Tue, 18 Feb 2025 19:51:05 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
-	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	Zhi Wang <zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [RFC PATCH v2 12/22] iommufd: Allow mapping from guest_memfd
-Message-ID: <20250218235105.GK3696814@ziepe.ca>
-References: <20250218111017.491719-1-aik@amd.com>
- <20250218111017.491719-13-aik@amd.com>
- <20250218141634.GI3696814@ziepe.ca>
- <340d8dba-1b09-4875-8604-cd9f66ca1407@amd.com>
+        bh=fC1P3XC32NnXo00sjdLw5qb9N9oKkD+Omqv1rR0S5FE=;
+        b=jG13MJ20IByw1Y0rCd4qSB6vvb40/8yFhAzy6nUtoE4cb0rev+jFd3WNFlK+I054Qx
+         C480pwr8Of+PCVr2D+oMa/0p4j2je/ihuGVnBo+lCu+i8KMHPrufxWyVJdkqKzy5vaVu
+         hUDpmNc2vdCYRtVUvcVvJ1OJuveO+x+UgcNus+FmDUO4S2cIwtKW5ibcacX/azyZkKRn
+         Js6yow/cK3ZgVdkU+M1s0VhkCcusENoN4TPbgPuCxFqljcxKpADWcdq1o8UrSNWMMKZq
+         h4LSHXPvtScXTSRAyQP8gnVVL46to2TPS+LCfZslUAjJLmf+Cz9j5SJu7t2lbSSkHk1d
+         LPMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739923082; x=1740527882;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fC1P3XC32NnXo00sjdLw5qb9N9oKkD+Omqv1rR0S5FE=;
+        b=XqmeKULPPO06bwXq/jAD7BkUT4RtPhi2qxevbGzTfOczgqxUxRT7cA4haJZSQfNfwa
+         Y4UHzCOJGg3mdDtOb+gmd0dYFgSoRTvp3TSBP5moeg1RDn03fhGk7vv/LZ69DiuurZIb
+         OqdyhgA3oxx13ukajPVEhGA61c1EIVVUSFUSjhaLHdkz/f/FbrCX1uIbA6/c04dshB3Q
+         NcMY1fpy6KxsXkdl3LZi4cFshsMm8gTJW0bGU/CBWjn/xqLbOSLtRDU0hjTZqrGnWIrD
+         uDcMFBTyvBbY96JhZsXPxxzTRgVFn/s9yNSYeHxoUVceg+Zfo8FmeXwnwDo3BoC9UXl2
+         J2Dw==
+X-Forwarded-Encrypted: i=1; AJvYcCV/1z+0gGPtRe7csVCQT7XDydRK6FXUXv2ZP355YUyIoZBaWuqkpHkDi4gE0fgN9YtzHz+/dO1t3VaI@lists.linux.dev
+X-Gm-Message-State: AOJu0YxWJqg/Q/wKMdO71GY+/JSU+FSrJrg5VOaKvnlJaAJv4cTyRbBA
+	R+WigyHzvWad2JESwth5+h69S5SLT2+b+UmnklwkpaFAaYezRXl3i4a7JLFvjqMLwQHNYPql91g
+	PAYi3FowLZjlf2b05b5wBZtlouTlgD8QXjg8g
+X-Gm-Gg: ASbGncuInTklUKwud/8J5uZMx89cbLlTp2XpXIykzxgGQt0Hx4+mqsn2cQdlPrkYPkT
+	FMbCddI3vCnu1RisYO2b4n/WxpUbr2pJ37iwxmy8OCj90brlCkHd9OA2MngeL5DVZBY8+P1g8
+X-Google-Smtp-Source: AGHT+IFrQ15TJ33fdYF/oTMtbCii+ZRQfmSIkaWviOKdP/iHummReS5upGdEbovHEhto8hKzDWcCHzZn9/UWQZ+2rDM=
+X-Received: by 2002:a17:907:60c9:b0:ab7:d361:11b4 with SMTP id
+ a640c23a62f3a-abb70a7c9c4mr1630995466b.7.1739923081760; Tue, 18 Feb 2025
+ 15:58:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <340d8dba-1b09-4875-8604-cd9f66ca1407@amd.com>
+References: <20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com>
+ <15c69d57-4ffb-4ea1-8cbc-0ba6d3d7b14f@intel.com> <be7e3c9d-208a-4bda-b8cf-9119f3e0c4ce@intel.com>
+ <015cdddb-7f74-4205-af8a-b15cad7ddc22@intel.com> <d8f3eb33-d902-4391-adc7-005e4895b471@intel.com>
+ <c7894df2-2b27-4f67-b428-3eca312503f9@intel.com> <c2cf2184-7753-454e-ac99-8c4f3c9c3d16@intel.com>
+ <01fc0997-a0e7-4086-b0aa-67b4a51b328a@intel.com> <12ed2ab1-e97d-4a20-8370-8c60cabffc77@intel.com>
+ <ab2036d5-5b6f-4fa9-995a-fba63c0a5209@linux.intel.com> <f4d344de-70c2-4fd4-bb18-2912cf0f3f98@intel.com>
+In-Reply-To: <f4d344de-70c2-4fd4-bb18-2912cf0f3f98@intel.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Tue, 18 Feb 2025 15:57:49 -0800
+X-Gm-Features: AWEUYZlz10uZ3RgXyh6tsNf75k8mF_KZ5dIIh28yA3hngdsabEPbjxarUn5eOH0
+Message-ID: <CAAH4kHYq7_3vLXQaCA7iKF+mC5Pg0cn-1FsB-iCbN7Jim9a-OQ@mail.gmail.com>
+Subject: Re: [PATCH 0/4] tsm: Unified Measurement Register ABI for TVMs
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Dan Middleton <dan.middleton@linux.intel.com>, "Xing, Cedric" <cedric.xing@intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 19, 2025 at 10:35:28AM +1100, Alexey Kardashevskiy wrote:
+On Tue, Feb 18, 2025 at 8:57=E2=80=AFAM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+>
+> On 2/18/25 08:25, Dan Middleton wrote:
+> > One common reason is to _identify the workload_ running in the VM.
+> > Typically a VM attestation tells you that you booted to a clean state.
+> > It is much more valuable to a Relying Party to know that they are
+> > interacting
+> > with a trusted application / workload.
+> > Projects like CNCF Confidential Containers [1] and Attested Containers
+> > [2] would like to do this.
+>
+> That's a _bit_ of a different story than the series author mentioned here=
+:
+>
+>
+> https://lore.kernel.org/all/be7e3c9d-208a-4bda-b8cf-9119f3e0c4ce@intel.co=
+m/
+>
+> It would be great to see a solid, consistent story about what the
+> purpose of this series is when v2 is posted. As always, it would be even
+> better if it was obvious that this is not tied to one vendor or one
+> architecture.
+>
+> If there are actual end users who care about this, it would be great to
+> see their acks on it as well.
+>
 
-> With in-place conversion, we could map the entire guest once in the HV IOMMU
-> and control the Cbit via the guest's IOMMU table (when available). Thanks,
+We would like to have this for Google Confidential Space and Kubernetes Eng=
+ine.
 
-Isn't it more complicated than that? I understood you need to have a
-IOPTE boundary in the hypervisor at any point where the guest Cbit
-changes - so you can't just dump 1G hypervisor pages to cover the
-whole VM, you have to actively resize ioptes?
+Acked-by: Dionna Glaze <dionnaglaze@google.com>
 
-This was the whole motivation to adding the page size override kernel
-command line.
 
-Jason
+--=20
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
