@@ -1,116 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4E4269B09
-	for <linux-coco@lists.linux.dev>; Tue, 18 Feb 2025 14:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAA926B946
+	for <linux-coco@lists.linux.dev>; Tue, 18 Feb 2025 15:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739890172; cv=none; b=OcrtMPJAWlRSWOIze6xAcKJmNjrLwcMVTgY1899TOzGBMEU6lGew+F4IwSxRg9BVUhY6jkSNhRbNlyafEfDrdAdcCYeGBald1GkpBckmzOVbRj/uozmHu4Bk71a7ZiYabhGetPHFgFSAW+g1HztHlFZubsc72qVs6c3YtnyKlOM=
+	t=1739892178; cv=none; b=qLhvx1uJBtsDWkMkuixwSpP9gnH6ryOrTX1oxXiKnU1z/BwplcrFth6WfBUqD776WoAghstBfqbPAv04Y9X9gLUceD0RLQujUkUbXuK5x7M6Rpc7hxfa38tesRpaY3iL3qxBCyZr92YncW6g3GqMuGpL6DMG/vrnf95OKYMee+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739890172; c=relaxed/simple;
-	bh=UVGVBuu6e33jMGeyfiLTBPJGjbrgPrDhUZRv5B1e3oo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ce0SrjR9NfQ4O3Fy3eLfOPMCph3cgeWW29VTFoIZxS/OE3XHgSddbLM5rhusolz2o/cepQ+jD/N6FwyiumO77DG0jQYVLvEPLuwZNiTrHDreFAv1qZCuDr54sQOHaQoWSN6su30gaJwdZ4mzG5liHykwXuR5nI0O3AwOLCBphgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h0iZJQxN; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1739892178; c=relaxed/simple;
+	bh=dRqns3tgs9LOzsvNykyA2wnDs4hZV04yHkHiuozwTo0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=NKN4C+aoj03sA2SywZ8EpghqBdfvrshHCItqFiPlbC+WSUU/SQ8icZZXyPfoTVgPm38rlVMioxoMB/nbIEe6cmQW0LSHX626rGMOFASRqUWtTk0OWbTowtoZScayjUPuCMBA4vXQnVSutsSzWSgQoOSEb+0D9m7Wg1iarckMxrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cezjFrPX; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h0iZJQxN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739890171; x=1771426171;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UVGVBuu6e33jMGeyfiLTBPJGjbrgPrDhUZRv5B1e3oo=;
-  b=h0iZJQxNgGPKd5HI5Xk2dV5Iq7r+4/cHAoiiGOtsieH7mAujNU3gsJmO
-   qYDL9alRBh2RdLsMPtjqQl62RE/1ZAz0y0AMZE2plQ1vfi3j3v/HxRoZb
-   6Xb90ZdC44Ks78IJWCdahKyitp/AqT1h5oBWKlsAlVXPOnZUkVLDHHmew
-   GbaPPvSyYQcexUL5mm9UNx/UTUZOOpYqQljc18R+04OXt5OlFXCW05odw
-   LIHgTpKend+wL/TEPc4yyrjrCIsaXoYH/CJeEsPe1B4S0ti4hnpA8zBVE
-   j1O5clviPqLiKLMM4plVxA8ow7YLsqbi+MayiihzneR/XKZOGlXS9973m
-   A==;
-X-CSE-ConnectionGUID: u2xV33ImQcmFgeCrppY3mA==
-X-CSE-MsgGUID: qDUqrTF4Q/m3MJNoTMI18w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="51227845"
-X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; 
-   d="scan'208";a="51227845"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 06:49:30 -0800
-X-CSE-ConnectionGUID: IzJFd+DHSfumLx2XFcJAZg==
-X-CSE-MsgGUID: MS49BogmTkSPwqIUagHD6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="114884797"
-Received: from sosterlu-desk.ger.corp.intel.com (HELO himmelriiki) ([10.245.245.44])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 06:49:23 -0800
-Date: Tue, 18 Feb 2025 16:49:12 +0200
-From: Mikko Ylinen <mikko.ylinen@linux.intel.com>
-To: "Xing, Cedric" <cedric.xing@intel.com>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH 0/4] tsm: Unified Measurement Register ABI for TVMs
-Message-ID: <Z7Sd6FuDDMgExEna@himmelriiki>
-References: <20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com>
- <15c69d57-4ffb-4ea1-8cbc-0ba6d3d7b14f@intel.com>
- <be7e3c9d-208a-4bda-b8cf-9119f3e0c4ce@intel.com>
- <015cdddb-7f74-4205-af8a-b15cad7ddc22@intel.com>
- <d8f3eb33-d902-4391-adc7-005e4895b471@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cezjFrPX"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-22112e86501so55630155ad.0
+        for <linux-coco@lists.linux.dev>; Tue, 18 Feb 2025 07:22:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739892176; x=1740496976; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=A4rBn1loiHVRgqEEQSp4qIiIQysoefBUpVmMVONI/VM=;
+        b=cezjFrPXDdpLUiDWMmB+HMt9S49tMcMvVgc1ApcjCTL4pgqvTL256jAkarJaAVZzSK
+         3bEsrB+LFWLtx100RRuFeeLRm0mTvrRFzGkeWy62MLRKfxpFrKrzELuRnAVngLPNJAvK
+         w2664ivdoYYsWJrw8yx0kfhRlbbPYaxfzR/a0G421J/6GpP7iHBFRVXwA4yIiMvWCqG0
+         Aqg3b93lbEyozspvJjJjjIHXIX8H8Ng41SaKNHBexo/iY6g8ZxBJrgzXE1aUAY8cy7a4
+         0pvmRHlUDDsfOX0nJ6cgt9k0AtHV2kcyiCF8UU0j+6OGOhLtm0uD9Ea+9ySgDxRxwhks
+         E2Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739892176; x=1740496976;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A4rBn1loiHVRgqEEQSp4qIiIQysoefBUpVmMVONI/VM=;
+        b=lKPohaquE/p3wVbdZL6Zx8IXXN/CgKb+CobJNsmfAO6ZOLF2Yid/Dp3yMXnyTCiZn4
+         j5h0qchVlMnyy052etAwrbMXY1tsa/ukgO23XGCti7s4pifzHCew7/1YX/ws/G30X+Q5
+         v/jst5ger3DXKzfL6iHTrICXLzrzAWp8f1XkMz+V/r3CcQQlYyVHov2Pof373698s6iK
+         wF/7hULT9aNqCPKaqWVZQahuzS4PzH2UkyHG+FdMF+h5ITw+GVbfm9LrJAQ4iDGO6y+y
+         TyOkFIbdmy+JuoIlbp1aV6zu71AGZTLMhHyIiLDDw6rpBVMn9dhrxCooDtlLHHrn+i0w
+         UTyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUYpNrBV6XRkO5muX0YIPJYpKFNRpHV5sBO0pk+3QHs4nKkYWvom96pIU0tof0zBWWvHm5iPefsLiOI@lists.linux.dev
+X-Gm-Message-State: AOJu0YzKUDTQgGkj7L2vmMjOnmk+aFI4E+rCMszPGyNNF0i9jXR2omVu
+	ZwBlBq8tW2cMXDt7jp7XQ3IqJ6A+tbwN7bsFraKdschJ0PgOdwokWFm1cKzwQxB42arREgglwBC
+	r9g==
+X-Google-Smtp-Source: AGHT+IHtk8QhNUJ5IVao0gvIDKE2j52eZP0sIqAgCjZecx7PvM8TzFSmR+acBjaj46uiYVes4srTDuaJU+E=
+X-Received: from pfbjt23.prod.google.com ([2002:a05:6a00:91d7:b0:730:8a7b:24e0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:790b:b0:1ee:a914:1d64
+ with SMTP id adf61e73a8af0-1eea9142045mr14137360637.28.1739892176009; Tue, 18
+ Feb 2025 07:22:56 -0800 (PST)
+Date: Tue, 18 Feb 2025 07:22:54 -0800
+In-Reply-To: <469ee330-7736-4059-9e59-ec7b9a6d3c8b@suse.cz>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d8f3eb33-d902-4391-adc7-005e4895b471@intel.com>
+Mime-Version: 1.0
+References: <20250210063227.41125-1-shivankg@amd.com> <20250210063227.41125-3-shivankg@amd.com>
+ <469ee330-7736-4059-9e59-ec7b9a6d3c8b@suse.cz>
+Message-ID: <Z7Slzs_4jZ2qkPAi@google.com>
+Subject: Re: [RFC PATCH v4 2/3] mm/mempolicy: export memory policy symbols
+From: Sean Christopherson <seanjc@google.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Shivank Garg <shivankg@amd.com>, akpm@linux-foundation.org, willy@infradead.org, 
+	pbonzini@redhat.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	chao.gao@intel.com, ackerleytng@google.com, david@redhat.com, bharata@amd.com, 
+	nikunj@amd.com, michael.day@amd.com, Neeraj.Upadhyay@amd.com, 
+	thomas.lendacky@amd.com, michael.roth@amd.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Feb 13, 2025 at 03:50:19PM -0600, Xing, Cedric wrote:
-> On 2/13/2025 10:58 AM, Dave Hansen wrote:
-> > On 2/13/25 08:21, Xing, Cedric wrote:
-> > > On 2/12/2025 10:50 PM, Dave Hansen wrote:
-> > > > On 2/12/25 18:23, Cedric Xing wrote:
-> > > > > NOTE: This patch series introduces the Measurement Register (MR) ABI,
-> > > > > and
-> > > > > is a continuation of the RFC series on the same topic [1].
-> > > > 
-> > > > Could you please explain how the benefits of this series are helpful to
-> > > > end users?
-> > > 
-> > > This series exposes MRs as sysfs attributes, allowing end users to
-> > > access them effortlessly without needing to write any code. This
-> > > simplifies the process of debugging and diagnosing measurement-related
-> > > issues. Additionally, it makes the CC architecture more intuitive for
-> > > newcomers.
+On Mon, Feb 17, 2025, Vlastimil Babka wrote:
+> On 2/10/25 07:32, Shivank Garg wrote:
+> > Export memory policy related symbols needed by the KVM guest-memfd to
+> > implement NUMA policy support.
 > > 
-> > Wait a sec, so there's already ABI for manipulating these? This just
-> > adds a parallel sysfs interface to the existing ABI?
+> > These symbols are required to implement per-memory region NUMA policies
+> > for guest memory, allowing VMMs to control guest memory placement across
+> > NUMA nodes.
 > > 
-> No, this is new. There's no existing ABI for accessing measurement registers
-> from within a TVM (TEE VM). Currently, on TDX for example, reading TDX
-> measurement registers (MRs) must be done by getting a TD quote. And there's
-> no way to extend any RTMRs. Therefore, it would be much easier end users to
+> > Signed-off-by: Shivank Garg <shivankg@amd.com>
+> 
+> I think we should use EXPORT_SYMBOL_GPL() these days.
+> 
+> Wasn't there also some way to limit the exports to KVM?
 
-TD reports *are* available through the tdx_guest ioctl so there's overlap
-with the suggested reportdata/report0 entries at least. Since configfs-tsm
-provides the generic transport for TVM reports, the best option to make report0
-available is through configfs-tsm reports.
+The infrastructure is still a WIP[1], though when that lands, I definitely plan
+on tightening down the KVM-induced exports[2].
 
-The use case on MRCONFIGID mentioned later in this thread does not depend
-on this series. It's easy for the user-space to interprete the full report
-to find MRCONFIGID or any other register value (the same is true for HOSTDATA
-on SNP).
-
-The question here is whether there's any real benefit for the kernel to
-expose the provider specific report details through sysfs or could we focus on
-the RTMR extend capability only.
-
--- 
-Regards, Mikko
+[1] https://lore.kernel.org/all/20241202145946.108093528@infradead.org
+[2] https://lore.kernel.org/all/ZzJOoFFPjrzYzKir@google.com
