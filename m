@@ -1,103 +1,97 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A613B25333B
-	for <linux-coco@lists.linux.dev>; Wed, 19 Feb 2025 22:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E8713FD86
+	for <linux-coco@lists.linux.dev>; Wed, 19 Feb 2025 23:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740003973; cv=fail; b=fztphD5p1MDGeMHjFCT4LopsJ3E3WbiBKUsP1xmzieRXNJU+dhQVgFjVj1r8uJiTPH7KBtjIXZ4HD0+plXAeZVgg9oTOZ8Y8RKugxRiNQpCe9ofV5WB1zKi0qxBTfLaoeEt819sOQ/9qzCBOLEbPturan18y4lrQpuHHqVW1CkM=
+	t=1740006185; cv=fail; b=ecTP7CssHuAJVrKGA2XxrxW48H8CgsPHFuGa/F5gYLZhLQ9CaBEAZNkrID5WYmfZHb2R/VaKKyc6E3KNKFSXCmXu4yVmCbntcuv1I7U+zqnQBSwjWJMXRI4MI4GZUNYK4vBIxK+8kFtmgs1nTeSOw7Bl7PCX1uOE/b/C/Q/I76c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740003973; c=relaxed/simple;
-	bh=10Ltgkd/p7XolPRbNM4O6RtMBHVUWM9LCTWzngp9hII=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kqWjmdrCh1k4+V8Tje36/DDCvq0WgI22A0Am5PlRTYs8zaokYi2+cGSEyfRjCcq7Pk5j7A2Jan2BgLJrzrHELOX9PapKqqdbrAQrglVoW++LnTWro7H2mttCKV59vKsN/qHgBLCEnOCrJriLsEUNSGiqBCeg1p/F3gCkfWQN/oc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n8ZyTt2D; arc=fail smtp.client-ip=198.175.65.18
+	s=arc-20240116; t=1740006185; c=relaxed/simple;
+	bh=aX5qzw/4JGOv91RzrGVUm3JzzY4G2ZBvrMdzmbufmP8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Nz+kSdr9rUvD+T1Lu/NG88n2yrQtT9lhP3GN6twyxgWR+HSWR/TH21JFDqh6C/hgp4R5mF+ZR8UhEOg/bHmZu7pWK2iS0E8+xNX1PQnT1dTs/pASRALOgHvbK1Z1BxqRpYow80mICdj+aaOV6841Cj2WkvSl11Wj9Itthvc9xOU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NnJgGl+x; arc=fail smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n8ZyTt2D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NnJgGl+x"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740003970; x=1771539970;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=10Ltgkd/p7XolPRbNM4O6RtMBHVUWM9LCTWzngp9hII=;
-  b=n8ZyTt2Dd2sJ4kjdipxh0gRSd+xy5Lwv/gU+GNYk1wbqosUwwsHYTaO/
-   FV2KF5dDUjjHBVu4TiCTfzMvpNkeg/6bg3MVTPBN7lo42WG7dIcraG7ez
-   J9mPJKg3+0aCBHc4jKTMgdHd7ktPjuR4cMp2qb319kmHjixJI2qP7szhp
-   F6tI1wbp1r8NvamuydJnRum97l5p5TlUx+yY3qtuml60VcfyEv1Do91Zu
-   KFxOmvYaSnzxqn/bvU9Xd8DqSlYjwryQb6ccg1jsxT5Vk+KnnGW+I1hLA
-   rTcNEq9RniYhY0nDUGPSiFA0blqdyWBhRZGsPJeIAdNIAwrqEH81yYRBx
-   g==;
-X-CSE-ConnectionGUID: Gc/qnpdtQzu4SrTpyD7SHg==
-X-CSE-MsgGUID: Blg7wNh9Ty6sfQglXiJCcA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="40968923"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="40968923"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 14:26:09 -0800
-X-CSE-ConnectionGUID: n37SWVuASBGx0MfekoPdyw==
-X-CSE-MsgGUID: bMygQJnWRMmkg6U8+gE0yw==
+  t=1740006184; x=1771542184;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=aX5qzw/4JGOv91RzrGVUm3JzzY4G2ZBvrMdzmbufmP8=;
+  b=NnJgGl+xkj+bm3UvkaLkwiLHJWpa3bOtwuWZoBG6Yx04wGCg0WDtp81B
+   TsJ0ZGqRyvHQVYcEc09TQf4V1TOkN0E1YRe9vvwlDz/3ZAFbSPg3PgYHJ
+   v3BEkM9cBXv1SOX758qlV+qpT7JWDIolaEfH4FyAMc+oX5PDmfxIZLH1m
+   Jj2r0PeCi4xcskIagpfpXcVR+OaBpcomFRQaQ1jvWWV07pHXcNOt7FZEr
+   RTbKT4xwO8tLmCBO2n3rSzMFTm58obDaFj4iAfAd+PoEDtJT8+rYygz4w
+   o6PwLnrKGHzwPbmu+59kXN8nIKTD94djV8UkWKgxcingBIaCVHD8pi7Bf
+   A==;
+X-CSE-ConnectionGUID: W2slWxnuQrCnDXJ8iozpKQ==
+X-CSE-MsgGUID: 4ND6dmRrTwmuiFxC0bhn5g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="66122443"
+X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
+   d="scan'208";a="66122443"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 15:03:03 -0800
+X-CSE-ConnectionGUID: OnX5UwjISeqlIdiYfOk9dg==
+X-CSE-MsgGUID: v++JoAOCS1qzxQ6Iv5sQug==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
-   d="scan'208";a="119947270"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 14:25:37 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Wed, 19 Feb 2025 14:25:35 -0800
+   d="scan'208";a="119797129"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 19 Feb 2025 15:03:03 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Wed, 19 Feb 2025 15:03:02 -0800
 Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Wed, 19 Feb 2025 14:25:35 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.173)
+ 15.2.1544.14 via Frontend Transport; Wed, 19 Feb 2025 15:03:02 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.173)
  by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 19 Feb 2025 14:25:33 -0800
+ 15.1.2507.44; Wed, 19 Feb 2025 15:03:00 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U/gjvu8p65vwy+QNQyGoyVZEjeTrO1hveDkcxRG7/3Ozy7V9rtkOQV+CBfp4nkfN5RxDrXFbcBuQlxjiKdt3xFB7zxIFtso4Zo8+JC2im61+jVjHfSNm71kGMEqSE+e+PlYR2bnaygT44coC0woNVcnFsL+5sOMOLWk42J0lawLLzRNrF7jzAeUracXUd2/RPPswngFlxdTm1Rsyd36OmbkADKSElw9UVg+1CAXRHfcBFlLR/8/ccmHywScFRfCZyJvkKNqLxuWcLZwRZ7ySo2WQmmel2QbxW//PYYTej31DHWM8T+usk1IQqYQEqO4PTslUGHsPlOsIL2qYcvh0mw==
+ b=rq04ua6tcJWVL7lLmlW/KKGVH61UD1aET7+/C2a8tzKsQWL1YGQHEgBoV0dkI5rGPUVUzS6GuPvyZwiKIky8O5g1G3tg+eu4hY4QEDjqfa6n9pU6qnQ2qz0vRvT1HdxbPWk7U/WRfCFNz1KKgvDcd44uSuwxGAFUJk1GeWafebgS0Q2uOJyyVjyKe+PYTV1UDL3xQemHVsrGcOJZVhGLj6pXaZBVC6xwxVhlw9LXHk5N/0gw2z+A9pIKeGyIzChQxugXkrKnq7FGmghmVeBQa+91oTZcg5FuPAdFony0fxB/CJ9t1rbbSOrIwN3vGXcicwUoDsTl3WLLGM6+Ee07Ng==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JvrxBd148T6QmYoFiFe0HTSkZWfTeW1U1ScCdj2bsLM=;
- b=HC2aVb8v589bNfPRK+mc3fL22Mow2Lvri4A2X+Q1l8OXlFlIszHd4Tzq3jpOH592sAjjY1fudLKeLSrIiAIz1eafqRiysoC9UAx1/3r2cRVYJy8p/w/NBx0xyLfnlywFanVzsFYBe+aypIecyYZM+bGLkR1Gj6lMEfYwhrX94YjurzmCqpcRISgFOTP3+YNXFKM0pmKyyGRcFdKPT0ZrOacsAFWxD4cET40ql9PmW35OeHIBlwxLEwY2ShLzE5kpt/rACa7eZikuK8Cr/ys+fBUGOlia7WPu1LqZxmaptZDyfsiNXe3hVebWWr0XDeRZw8ZoUHsWcTsVfXoYrzlK3g==
+ bh=VjVfrobXCS//YU0BumWmvA/XbnqavJ/aOuNHetNuwp4=;
+ b=TdQxmXdxjplCTrMp+h3E3PyinJq0dhYrw/GLFXQu9b9XauzEIRdaAHo2HKUMFzstZxS10WHJnqQekLVpXmvPwZCMas0z5jTUQZvIEFVKOULGSrke3WnyxiWcJnSG/IxSJ2zSJg9G7tNZO8104m2xQjziEkVCUwp78MPZX4/ZAgRRkhclChr/N2g4c4c9FgTBNnjSrgvh1WG+S8/+5h/0ICeRt3OrgzGbgkJ4rRerStoaZFKEz4k00J2idDkdOb/aTRZaCBnDVM3+ZgOMRh9Hhb11KxZLuznjuzuAwhQwjFcWbUMSmjHX/B/57bmsK9dALHKIegGB7yC1WkTcku3pNg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB6269.namprd11.prod.outlook.com (2603:10b6:8:97::14) by
- SN7PR11MB6995.namprd11.prod.outlook.com (2603:10b6:806:2ae::11) with
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by CO1PR11MB4884.namprd11.prod.outlook.com (2603:10b6:303:6c::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Wed, 19 Feb
- 2025 22:25:31 +0000
-Received: from DS7PR11MB6269.namprd11.prod.outlook.com
- ([fe80::af1f:dcc:49bf:1a26]) by DS7PR11MB6269.namprd11.prod.outlook.com
- ([fe80::af1f:dcc:49bf:1a26%3]) with mapi id 15.20.8466.013; Wed, 19 Feb 2025
- 22:25:31 +0000
-Message-ID: <d5db93c2-9ce4-4ad7-a64c-cbf3c1020ff5@intel.com>
-Date: Wed, 19 Feb 2025 16:25:24 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] tsm: Unified Measurement Register ABI for TVMs
-To: James Bottomley <James.Bottomley@HansenPartnership.com>, Dan Middleton
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.14; Wed, 19 Feb
+ 2025 23:02:59 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8445.017; Wed, 19 Feb 2025
+ 23:02:58 +0000
+Date: Wed, 19 Feb 2025 15:02:55 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>, Dan Middleton
 	<dan.middleton@linux.intel.com>, Dionna Amalie Glaze
 	<dionnaglaze@google.com>, Dave Hansen <dave.hansen@intel.com>
-CC: Dan Williams <dan.j.williams@intel.com>, "Kirill A. Shutemov"
+CC: "Xing, Cedric" <cedric.xing@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, "Kirill A. Shutemov"
 	<kirill.shutemov@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin"
 	<hpa@zytor.com>, <linux-kernel@vger.kernel.org>,
 	<linux-coco@lists.linux.dev>, Kuppuswamy Sathyanarayanan
 	<sathyanarayanan.kuppuswamy@linux.intel.com>
-References: <20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com>
- <15c69d57-4ffb-4ea1-8cbc-0ba6d3d7b14f@intel.com>
- <be7e3c9d-208a-4bda-b8cf-9119f3e0c4ce@intel.com>
- <015cdddb-7f74-4205-af8a-b15cad7ddc22@intel.com>
- <d8f3eb33-d902-4391-adc7-005e4895b471@intel.com>
- <c7894df2-2b27-4f67-b428-3eca312503f9@intel.com>
- <c2cf2184-7753-454e-ac99-8c4f3c9c3d16@intel.com>
- <01fc0997-a0e7-4086-b0aa-67b4a51b328a@intel.com>
+Subject: Re: [PATCH 0/4] tsm: Unified Measurement Register ABI for TVMs
+Message-ID: <67b6631fc7054_2d2c294f1@dwillia2-xfh.jf.intel.com.notmuch>
+References: <01fc0997-a0e7-4086-b0aa-67b4a51b328a@intel.com>
  <12ed2ab1-e97d-4a20-8370-8c60cabffc77@intel.com>
  <ab2036d5-5b6f-4fa9-995a-fba63c0a5209@linux.intel.com>
  <f4d344de-70c2-4fd4-bb18-2912cf0f3f98@intel.com>
@@ -107,14 +101,12 @@ References: <20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com>
  <cccce005fc19dc05caf67c454bd669d524c862bf.camel@HansenPartnership.com>
  <8009a9fd-c7b1-48e3-af8b-8f481328c597@linux.intel.com>
  <6e773bfd1275d4f8c7df1ca65e22ec42eba12a8e.camel@HansenPartnership.com>
-Content-Language: en-US
-From: "Xing, Cedric" <cedric.xing@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
 In-Reply-To: <6e773bfd1275d4f8c7df1ca65e22ec42eba12a8e.camel@HansenPartnership.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY3PR05CA0037.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::12) To DS7PR11MB6269.namprd11.prod.outlook.com
- (2603:10b6:8:97::14)
+X-ClientProxiedBy: MW4PR04CA0188.namprd04.prod.outlook.com
+ (2603:10b6:303:86::13) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -122,237 +114,114 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB6269:EE_|SN7PR11MB6995:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c1d19d1-4d95-4d10-7183-08dd513451aa
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CO1PR11MB4884:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0043fce9-d1fa-481a-6415-08dd51398d7f
 X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?OXY3VURNekl3Q2ZSNGFxOU9zMlJURXd0SUxjeDVRZGxsZlJqbWs2MUdtYTht?=
- =?utf-8?B?MFpYS0FtWllxaStiZmxqNVdWelk5TENCV1BEM3RBWDZKWnBubzBvZEQ1YVQ5?=
- =?utf-8?B?Z3dwakllUXpBUDR3eGV4cHFDd2VWUklEL1Q5SFNXWmNXZ29Ba1Jlc1lreDVu?=
- =?utf-8?B?QnQ0VHFYWldzU0V5clJLajYxQ3hHaXR4YlBIQk54T1NINXRmRTU1Ylpadkhy?=
- =?utf-8?B?YklUQTk3dEdTN2FyQW9MT3d5a3VjTU85MUl2S1RGVEV3RVdvYVpxQmVITTNB?=
- =?utf-8?B?YitrSTdKUTBhZ3hPaFNmOUlDWjhLOVQrdWlWN3B2b1UrQ1BoNnlId04xU0Vk?=
- =?utf-8?B?ZU5FVkUrRjQrNkx6QkduYTh0L3c1TTE1ZEs2cnhadUl6Z21HeHhkK1NJNFVL?=
- =?utf-8?B?S0F6L1V1ZXIyMXFjTUpTSTduNlNUcW5nWW40akxQNnUzS2MzS3huZGo5WndS?=
- =?utf-8?B?N2t4bGhSVDJKd01welR3d0pDWEZFbEFMUUhxRmM3Rzk5MHZZT2VWYS9iN1ZG?=
- =?utf-8?B?emFmRHFrUkpsa1NhT0YreVFNNWdEUU9nZlNXZEpBTXVsaGYwczZjT3N2L1B1?=
- =?utf-8?B?WStDVHVXZVo3anpSQS9LaFdBLzI3SFVkQjMrLzFsRlNpbUYwQkVzZlpBRjk1?=
- =?utf-8?B?RW8zL3Z4OW5KOVZOYklUTlF5MjJITnV1M0RVckMwbDhWR2tXSWN4dm84YU4y?=
- =?utf-8?B?NVBhUTdDbUNqK3dMczBZb1hlV1JLTXFsY0hEaXlRMlhnbC9IYW5kandic1BR?=
- =?utf-8?B?RzhJak1jZ3FPVXMvek9vaUFjS01lZS9JVlh6OVdKUEd4ZVFJNWt1b2FCMGwy?=
- =?utf-8?B?UVFpQkpZckM2WFNmZ3lTRTVqSW14NEczaTg3STVJdERTSGprRnNmY0Qvb3ls?=
- =?utf-8?B?eHhVSFB6SndxbkxhYVdodjFxZFViSWJ0MXRpQmMzSWE2YnMvQUJjOG0zL09l?=
- =?utf-8?B?V3poNDl1eG03UEdubEFPc2xkeW9EMGN0V1hhSDJpbytlaGlqeEdKNEQzczFR?=
- =?utf-8?B?UC94SnI0a080b1V3QWdpUFg5djFob2xIUzhBT1ZHa3BtN2VLSHJGOEYraUht?=
- =?utf-8?B?Nmg1SU1hZS9SSXFKSFlUUkxiNnh6YlJaWTNzYkFoeXBrUGdoeVRuQXd5bnFJ?=
- =?utf-8?B?dkJ6U3IzVmVFeFYzY1k3OE5wL1JTKzA5RTBjNWp1SFBqOFhIZndzaWJzcXIz?=
- =?utf-8?B?ZjZxdEVhWWtyMURpQXVrRVo4bkJja2U4Wk1pb2JZcUs4TDBGb0RaeWZuS21J?=
- =?utf-8?B?QmdPZXRVV0cyNHVDSStKS2UyOEpHYm1wcDZVS1FVL0MrVjJpczdmVGlOS3FU?=
- =?utf-8?B?QVJWV1Z0K1AxZlJ0WlNQbm1CQ1Q3VzhjUjFJRmpYSlU1c3I1bGlJU25VQ25h?=
- =?utf-8?B?UVN2OExzRzFqZ0Mwck9pRGJGN2ptdUxPUHVQQjJNNzFUVnV4U3grSTRCN1BW?=
- =?utf-8?B?SUM1RDl4MUkrT0dEdE95WWx3OGpuOWtlVUhGeGRWL3hwbytNbk53ekFPSlNt?=
- =?utf-8?B?ZDZHQk5pd0ZtckF6OWl2L0w1ZVRYV1FwQzZRMnFMMUhkVWNmWDdBZzVBVnFj?=
- =?utf-8?B?b1lGSE9vQWdOY2Q5YmlTeCtOREdDUlF1eGl0b05SZml4RmFCWlNyMnBra0xK?=
- =?utf-8?B?T2MrMXVjVXZMT1pVNEN0dDVXVHYzbURPVUpBTlZWaUx4NGd4OWYwd2dqRWlx?=
- =?utf-8?B?bkhSRWNtdk5wYng0NzhRa2MwVm1hdWNsU3c3NnczK1N5RUdNOHpWVlg2Rm10?=
- =?utf-8?B?VXdkRjZ2TXJ2SnhhQ25STnl0bUpZdGVQQWZSRDhJVGZOeDMzRWk5SlhsUnNz?=
- =?utf-8?B?clB6M0V3cHhVejdDRTY0Zz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB6269.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?hB3ftbujNiRFpaBircPWz6q2Y7P0MOdwDBfqgVOhyc9z1xoyqBb6imd+4f9Q?=
+ =?us-ascii?Q?effqwt1JmP1FWaBmreu01BoD3s2GPJoDud4J2BNh9WIR6lyjNdmb5txObXLQ?=
+ =?us-ascii?Q?kxI3xh1gIIOJLPy3+kPWhf7SRuySOd4WmBXnVIzFIgBct4f9qQPiPpNGk7Ey?=
+ =?us-ascii?Q?+LH32SspNCzgrIhA8BRzHU/NRNFOBQmC8ua3xgMw4AUVa6eCpauQd+1vCvxI?=
+ =?us-ascii?Q?Kv31EvVBLZQIQvtczMX8a/Y8ow/NsA3/ZhD29bVmeJk94ZnYxe5RhcAKbb0a?=
+ =?us-ascii?Q?46GqeAaNwNnckxb2lG+gmAgh2gCkJ8IXvhSvmCJOeRZGGqAMSxPc9j5afKDc?=
+ =?us-ascii?Q?0924mzGXJzqmy+1EqERiwh6vyCFkxGmkB6IuAaE42clYayd+72D5C7LqU6C0?=
+ =?us-ascii?Q?BCgBB2+HU3HQ3hFgT+DJoxxMPwHfhYl44RRZoFbD4LmYlJAkQuSa/E0tMSE1?=
+ =?us-ascii?Q?Q0UqkNMJczG16HGZzayGFN7wZmRrsfn5GwzWfszyJLluQocF8IEWu9QBP9oQ?=
+ =?us-ascii?Q?ouaDWUmCoUrKGy2M8nuPsyW4K0X9ID3YcrZpNSkfwHxlJtBzEekJHZkixZgT?=
+ =?us-ascii?Q?N9D8/gFWHRlv9oNAdWLAQta+Ui8MRzlTaLPMAPfsfXOUe5forUsaHhN1LM5m?=
+ =?us-ascii?Q?p+5lWz4HORa0z4ybGlwd3qWU/SHz01xx8XxlPBsDcoR9p0djWuk35XkLhZfk?=
+ =?us-ascii?Q?S7YtCAZpzDrd3hu37pK4KjpAFfaUY88SJmPCMMMgIeazqv7oCrr0zjyIzpOG?=
+ =?us-ascii?Q?SpbflUQfqjNhX8XO1phhXiB1lFoQN39roJDqTgZssiMS+UAfWsi6I79Txcmh?=
+ =?us-ascii?Q?J2iPhIPibZkUL1Z5F/43hfjQtfKYXGPCON7vxnWyu3gJZFuyR7+qJZzrsWJx?=
+ =?us-ascii?Q?Xvkan6DfI1GwbPgBpNKjHRWx/BMVgwuMwZrZsO8qwtRKPweVQZ9D2CK1lSAh?=
+ =?us-ascii?Q?ij/snwFdk2od/16LlQ3q9Q5UZABXLOKdqeR44zHrtwlywAFsa+k14l5w8SEq?=
+ =?us-ascii?Q?QrFSEx9uyYyEVXGePHUElIBeqrJwED3/nQnz5JObtfziQ5BdjvVkC4y7he6G?=
+ =?us-ascii?Q?p+o3+J6otrjeNTEl1V5I4U1lYMwYp3HeyfM4ZDfBeM1nr/RE+iP6+nb3Ti0c?=
+ =?us-ascii?Q?XGBFqJNfCfQaBis0Q8xN/kNjKu9tuvuZckn8outYk0CdZGX1xgoaXMp383Kf?=
+ =?us-ascii?Q?pSBC2aC3byVUPunGmAfn44ubcceg673sglNGzEuiwOpcju8sIgxkA3KbAkRk?=
+ =?us-ascii?Q?htyL+fPV6jUkOJJKxc7xAp5yw7kEI8c0NPhNdMpufa1K3b9cpZLAtKb72AyS?=
+ =?us-ascii?Q?AvvgKGvA4pHhbHPY78FkzsbhIQz0dEimNUVE16kQTW2bDgtqGzXKHRq8yLtL?=
+ =?us-ascii?Q?NZ1LiByD7EiRAOgnzCcYQwMRJvR7?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NG1senBxeU8xcm95Z2VCbHJOdGovcE81VHlhdzllTVM2eis4a0ZRZzlmcWxL?=
- =?utf-8?B?c1NlWlRLbit4RVpjaFIzZFlMTUVjVjVyckc0SXY5NnhjQXlldjFLQ24wVDRi?=
- =?utf-8?B?bUlYcWVUazJzOWdBMko2ZDd2MUpFOWF4a1lLUHFJTElxdzNodlVLYTV6eWlM?=
- =?utf-8?B?Y29mUHlzY0xmYW0rU2RzeU9ISWF1NS9kQmNuVm9qQVc3R05BQTR3Tzl1SnRT?=
- =?utf-8?B?bEtOZ0lUN1gvNGM2MHJyZ3RHOUdGUVNjekh1ZmVFcmN3MHBsWXBLcjFSUkht?=
- =?utf-8?B?VDVDOFR6eXkwTTVJdkxHR0s4Qm1jVzRBMmhPejBNdlhaUVZmVWtkWEptWnpG?=
- =?utf-8?B?eENyN3FoMWUrRlhyWlNwbWZqL0h2a01tMkFRZjhWTmo3TjV3KzBPTUtEK3l1?=
- =?utf-8?B?QWVibDQvTWhaRklpeEN0T0hNendZSnRmS014S1BBektOS05wb1N5MWV4TDI2?=
- =?utf-8?B?SFVCbkpFZTZHQWlwRzNReGFHQ3I2akh2WFczVkRxelliNkcxSmxhcDZkdGJ5?=
- =?utf-8?B?ZTlZT04wWkpPWHVxVXBLdjkzb0ErcVVXRGhtQTV0b3RXU2NhS1pHb0ZqZVdn?=
- =?utf-8?B?WWg3eG1qOHB1NGdxLzV5VnZScis4eURDSTlFc0hQRUNQb2JieUhXL0t3TUJQ?=
- =?utf-8?B?QVArdUFmZDEzdytGbjBvVkczVERJSmgzdC9OZVVaMjN5cE9PMGw4dUNPbHBp?=
- =?utf-8?B?ZmhJVi9yTWN4d25mOG53dHlxTnQ1TUs4RVhXUWs3NEwxVUY3NUJPY1NsL3Fv?=
- =?utf-8?B?dnAvb01MUVd5bXZqQmVlcnljNmJZQWN3V3FSYU94RDFpVmlBZE4yYUdzNmsx?=
- =?utf-8?B?MlJ6cmVwMkI3TThaYlYrZjhsdkl1cnRERDJrNnZXNStHN2U2ZWU5N0FaMDNV?=
- =?utf-8?B?Ull3YXdaTEpoenRQYXRzQkw1MEl6aEhFb2JLdEpFOVNhNWFjbTNnSElhY0Rh?=
- =?utf-8?B?S3hmOEU5Vnh4bTJYalpyaS9OZmFvN3lIbERFQ3dIaFRNUEtHT2ZkbG5BU0RF?=
- =?utf-8?B?RGxFZnYwSy9EOW1GMlJ1clJ5c09neXJIVjJsd3lCaXVZYktza29oTm9yWDRP?=
- =?utf-8?B?enhESE1WMmpQNjBxQW5kck9ieGJHRHlXNGxwNSsvL0hvR1lJc1pRTitNOFhq?=
- =?utf-8?B?cHdLYUw2djhjRjhxWk95VzM2SWx2Y2YxUzU1cEJlV0Rlb3RzNG1sMWRLamYz?=
- =?utf-8?B?dk8xd21kMlhWWDd0NThHUFdHbDl5ZElNQzBLL3ZuU2JOcHJZMk1FQ3cvd1ZI?=
- =?utf-8?B?Z282Y0hjT1dLN240Qzl3a1ZBemQyckVJL0N2Mlc4M09hOVdhSEZxamhOTnpW?=
- =?utf-8?B?RXRjeTBFQ2t0RTdNVnZDMmx3SnVGYlJzOEdBYjZiRXBYWnB1RFpsa0tTbGNl?=
- =?utf-8?B?L1F1cUhOVEQweVJzM0dPTVk0WDhBSEt5ako1bjJQMnhSVHFVb1ovY0E2U3BU?=
- =?utf-8?B?YUdDamNLSnRhemk4dGpwc3NQd3llalZWdmhwK21kRnh5RjVQU0RvU3dSODk0?=
- =?utf-8?B?cWwrWGVDSEhOcHkvK05BYmFDMGpYUVhwbHBCSjZpMEJnWEMxL09uV2NjWFMz?=
- =?utf-8?B?ZjJ5VXNqTVdWbG9qMTliWWREVUZPSVdSU1VlU0hscFJGeTlVMmxmRzM1N1Z2?=
- =?utf-8?B?L0N4ZkxzOERQTkhiQmR0bUg2Uy9sWWVVeTc4VEFrMzVjN24zMEI4NTJDdDB2?=
- =?utf-8?B?VjdUeEgzUi9uUjFlRFVSSHlwZklXYmg5WXJkdU1BQ0d1V3IzUFI5RnY2bnVH?=
- =?utf-8?B?TFJkcXU4YTJ4TlZMSUN4U3QwV1h5OGljM1pKR0FqamtuQ0IzeEljUkVhQjhL?=
- =?utf-8?B?VFZwUEt3K1Zhb0hBNHNmMXBpbXJZMWhFN1d6Q3JSL2hQRVgrZ1BTODB1dlZL?=
- =?utf-8?B?NGp6QjJPRG1mUmgrN2o5akQwckliN0taWWhCWENBM2Z6dHJQS3RnY2ZhRjdY?=
- =?utf-8?B?dG15bzV3cUxNT3kvWkJLWkp1OUcycElTcmhjV096alMyTjRrK2NGaHJYK2hV?=
- =?utf-8?B?c0RGbC9DT3dGYjRoTmVmc2VVRHYvdkQxSUI1ZDFvN1NUU1R5ZEN6RytnNUoy?=
- =?utf-8?B?c2RmaFQ0bklrU0R0bWtQS29tV1ZuVU45UDdySGhyUytWay9hUGdDSEgvRkFh?=
- =?utf-8?Q?Uy9wH7opvBbQY+hoM/jcnk2/F?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c1d19d1-4d95-4d10-7183-08dd513451aa
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB6269.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?5cp/T7uOiV2q/ADcp3wNHNaspbTgxh0pyA60Wacl04raInLD6UKA9fPNRxn8?=
+ =?us-ascii?Q?ze4n10D0dDcaiQB0uAdfAEU81suqKiG+B1Gq0bcc5F76Xu66+Dad8Vr21vT5?=
+ =?us-ascii?Q?ArjVTO8QubuSE627wkPEMLat3trKp4W7qXxQn3hM9An2XgwCEnbnIPqBypK6?=
+ =?us-ascii?Q?KA9qOZDQn263JYNZjbCfXeE77NrsfsFu2hW+/NnafLs/A65GolDX8bH2U/CV?=
+ =?us-ascii?Q?rGd4TnML6TCqmZATjI8o1lWwND7yhp1I73+DEQTegfEK8NVf72xAZMR8mF9H?=
+ =?us-ascii?Q?FFS/gDsz7+Aymjracch34QVRLwNlZ4hge23RYJzoyV7jfaJdYJOWuj0mqOOw?=
+ =?us-ascii?Q?Vb3LwzuwYaFDg7Dfp3wVS99/6rS5OMJ3A/UlNKPNzONqZnVst2rmu/YvyxVA?=
+ =?us-ascii?Q?c0x7DIaZWvwbOxzxShagCPkwtfXX0/BiOhEc65amneaA3pjbW/WgZFzHBlrt?=
+ =?us-ascii?Q?tyy4q2gcIGVcGZ74uHHmbhEOWVGoavhgiYKDAQy+LWlX2YeBYtlEtpZDSAsI?=
+ =?us-ascii?Q?0v3uOixB7mJMIpENpOO6a4HLD5ChpD2ODPSKq4qCBiEIkyYK9ppiHPlYjG0c?=
+ =?us-ascii?Q?IOgd9clAWFBz3a75s+NhFV0KCZdkyEJQYCM0x1jCDRxOqW7l8MDp2x4Nx0jN?=
+ =?us-ascii?Q?HnacNw0eu+WYy9TLYznZseocITzZowpZwhCn8MXU8F+olBaFsz4gJkWIGy2B?=
+ =?us-ascii?Q?NDjYvtU0IKOO0ibakaCikuw9TDZTNuZwG2e6mNKhzF0b+wWt1IuknAykVQzs?=
+ =?us-ascii?Q?UkH1TkS6Kowf20pgg9xn7vR0s+8FXThaib6ZguR9MNpsrDdSB3XSH8ycunp6?=
+ =?us-ascii?Q?BXIDL6Ebp6NKd3ed/02B9B3JqX1QZxGpZFDz2WqFpmkkvskxokFoklCgLPGG?=
+ =?us-ascii?Q?VMXhbDExBxpUKVnv9XUFkqEyIBjVBhHIE1/48aJfBfPrFoI5WuwA+IZruRz0?=
+ =?us-ascii?Q?1TkWkf2QH79Gk8fkUFsQPLtfYlygKZeZAMPkCWt5u7bQYIs01XBJf5Bs2Wu0?=
+ =?us-ascii?Q?qu5H53InzYgr/0/FJ3k81OQkRjGyI9LO9Y/ipa5XNUlPEJZZ1mKVpl1L7tgD?=
+ =?us-ascii?Q?vWJM2Y8nPxcNDPWjmY8EeyfUU5Lnv3nI3kk5Q9qaZufuJx6Fj+OBKq68TUYO?=
+ =?us-ascii?Q?e/ni1/4bXKgk6lo9pcUy3eARAdXrKK0XtAa3mOxYCrVfoRfdWG6SD7tRmKty?=
+ =?us-ascii?Q?coZU5S4tmmV47YmfrzeiUSFr8bEN0Cs3rjqXDwysmpmL1g+NVJtTLJ/XCTz4?=
+ =?us-ascii?Q?k23rUEBDLpwf8tMnkCb+0boQ/syQjJRyTxXr5g61n0hTZzHwtO2VStRIVQLm?=
+ =?us-ascii?Q?dJDjDZhFxNsLw9F0lSl30sbF+pRPEGMSbuaRWOuS4rj7iJ8TdWrRUTxwNisp?=
+ =?us-ascii?Q?XLBfKlmyBIuQAM+pbex8lfWUxs8TesMHkWXSMWhEyj8I6iEqSDQgi04mDiD6?=
+ =?us-ascii?Q?xFuQltDa9iTbPi4a4HN3bin2czH2JgO5i/zbmEC9GBPwFNky+YRw7mYu7FTv?=
+ =?us-ascii?Q?TFh4bgMyiT1tb3QaL5CgH9+e6QcSaoCPkPGXTfnj3AR/IFoLWLR1aQG1ukxO?=
+ =?us-ascii?Q?xbn3JAeIY1/bo4IVOhJYOVNOfk7Sr1qwJSeL7xgA1LNqAGcGspyrLdO9mFHe?=
+ =?us-ascii?Q?Zw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0043fce9-d1fa-481a-6415-08dd51398d7f
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2025 22:25:30.9972
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2025 23:02:58.7989
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6RuMnBU+7uKjTbvBuaiM83waL//czGdfp5evFuFBQK8JX2O81JAPBAC2ChSRWXi7y16tNurk5826Ex8GeTtcSA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6995
+X-MS-Exchange-CrossTenant-UserPrincipalName: LF9OT2bg79lgccA+5/3DK6UAvTRbHYFrH0R1+lwQ6y0CfZws9RUAYN5yGmUX8k/6WF+h7unVT9jeWlqE3EHMBOJkgJSYc4PSlyT8UWEa5yk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4884
 X-OriginatorOrg: intel.com
 
-Hi James,
-
-On 2/19/2025 2:53 PM, James Bottomley wrote:
-> On Wed, 2025-02-19 at 09:24 -0600, Dan Middleton wrote:
->>
->>
->> On 2/19/25 7:29 AM, James Bottomley wrote:
->>> On Tue, 2025-02-18 at 19:21 -0800, Dionna Amalie Glaze wrote:
->>>> On Tue, Feb 18, 2025 at 4:41 PM Dave Hansen
->>>> <dave.hansen@intel.com>
->>>> wrote:
->>>>>
->>>>> On 2/18/25 15:57, Dionna Amalie Glaze wrote:
->>>>>>> If there are actual end users who care about this, it would
->>>>>>> be great to see their acks on it as well.
->>>>>>>
->>>>>> We would like to have this for Google Confidential Space and
->>>>>> Kubernetes Engine.
->>>>>>
->>>>>> Acked-by: Dionna Glaze <dionnaglaze@google.com>
->>>>>
->>>>> Great! Thanks for chiming in. Can you talk for a second,
->>>>> though, about why this is useful and how you plan to use it? Is
->>>>> it for debugging?
->>>>
->>>> Confidential space on SEV depends on the hypervisor-provided vTPM
->>>> to provide remotely attestable quotes of its PCRs, and the
->>>> corresponding event logs.
->>>> https://github.com/google/go-tpm-tools/blob/main/launcher/agent/agent.go#L97
->>>>
->>>> On TDX and ARM CCA (maybe RISC-V CoVE someday), we don't want to
->>>> have to depend on the vTPM.
->>>
->>> I still don't get why one of the goals seems to be to artificially
->>> separate AMD Confidential Computing from Intel (and now Arm and
->>> RISC-V).
->>>
->>>> There are runtime measurement registers and the CCEL.
->>>> When we have a sysfs interface to extend these registers, it
->>>> makes the user space evidence manager's life easier.
->>>> When Dan Williams forced the issue about configfs-tsm, we were
->>>> told that it is bad for the kernel to have many platform-specific
->>>> interfaces for attestation operations.
->>>> This patch series is a way to unify behind the tsm.
->>>
->>> You say "unify behind", but this proposal doesn't include AMD and
->>> it could easily.  All these RTMR systems are simply subsets of a
->>> TPM functionality with non-standard (and different between each of
->>> them) quoting mechanisms.  The only real substantive difference
->>> between RTMR systems and TPM2 is the lack of algorithm agility.  If
->>> everyone is determined to repeat the mistakes of history, TPM2 can
->>> easily be exposed with a pejorative algorithm, so it could fit into
->>> this structure with whatever the chosen hash is and definitely
->>> should be so the interface can really become a universal one
->>> applying to both Intel *and* AMD.   The only real argument against
->>> adding a TPM that I've seen is that it potentially expands the use
->>> beyond confidential VMs, which, in an interface claiming to be
->>> universal, I think is actually a good thing. There are many non-CC
->>> use cases that would really like a non-repudiable logging system.
->>
-This series does support crypto algo agility per your comments to the 
-RFC version this same series. The 2nd patch contains a sample showing 
-how to add multiple algorithms (banks) to the same MR.
-
-It isn't limited to CC either. Any kernel module can expose arbitrary 
-MRs, real or virtual, through this interface. Again, the sample code in 
-the 2nd patch shows how to, and it's quite straight forward.
-
->> Hi James,
->> This isn't excluding AMD. AMD just happens not to have a feature
->> common  to the other architectures.
->> Intel TDX, Arm CCA, and RISC-V COVE all provide architectural
->> measurement registers.
-> 
-> Calling them "architectural" (implying via hardware) doesn't really
-> deflect from the fact that for everyone some pieces are going to be
-> software (or in this case SVSM) provided ... it shouldn't matter where
-> they're located.
-> 
-As said above, nothing will prevent a vTPM (based on SVSM or anything 
-else) driver from exposing any PCRs through the interface defined by 
-this series.
-
->>   SEV happens not to have these today
-> 
-> As I said, the vTPM is fully equivalent to a RTMR system, it's just
-> implemented in software.
-> 
-Agreed. Again, nothing will prevent a vTPM driver from exposing PCRs 
-through this interface.
-
->>   but should they in the future, they can draft off of the work here.
->> Might also be worth remembering the original author of the series
->> represented RISC-V COVE.
->>
->> While someone can emulate a TPM using the architectural measurement
->> registers as a backing store, they don't have to. Certainly it's also
->> possible to provide a vTPM in a protected region of memory, but that
->> shouldn't block the legitimate interests of using the architectural
->> features of TDX, CCA, and COVE.
-> 
+James Bottomley wrote:
+[..]
 > What I still don't get is this.  The difference between RTMRs and the
-> subset of TPM functionality that also provides it is non-existent.
+> subset of TPM functionality that also provides it is non-existent. 
 > It's like a distinction without a difference.  If the SVSM authors had
 > written for a pure RTMR implementation (just usng a CRB API) would that
 > have made a difference?
-> 
-To be precise, RTMRs serve the purpose of RTM (Root of Trust for 
-Measurement). The TPM PCRs serve the same purpose. But neither is a 
-complete RTM. Per TPM spec, RTM also includes the BIOS boot block (CRTM) 
-because the TPM device doesn't have access to processor memory or the 
-flash device where BIOS resides. In the case of TVMs, there are static 
-MRs that capture the measurements of the initial memory image, which is 
-equivalent to the CRTM but measured.
 
-This series models the full RTM (static + runtime MRs), which isn't 
-fully covered by the existing TPM framework. But again, nothing will 
-prevent the driver of a TPM, real or virtual, from exposing PCRs through 
-this series.
+That is an interesting hypothetical, "would things be different if the
+authors, that were forced by SEV-SNP architectural necessity to push
+runtime measurement functionality into an SVSM layer exclusively, had
+considered that some architectures would include runtime measurement
+functionality in the CVM technology directly?". I do not think it helps
+because that presupposes that vTPM for these other architectures already
+exists.
 
->>> Just on algorithm agility, could I make one more plea to add it to
->>> the API before it's set in stone.  You might think sha384 will last
->>> forever, but then that's what the TPM1 makers thought of sha1 and
->>> that design decision hasn't been well supported by history.  The
->>> proposal is here:
->>>
->>> https://lore.kernel.org/linux-coco/86e6659bc8dd135491dc34bdb247caf05d8d2ad8.camel@HansenPartnership.com/
->>
->> This was helpful feedback. Cedric incorporated it into v3 of the RFC
->> series:
->>
->> https://lore.kernel.org/linux-coco/20241210-tsm-rtmr-v3-2-5997d4dbda73@intel.com/
->>
->> We thought your silence on v3 meant you were happy with that feature.
->> Lots of threads to track though so also not surprised if you didn't
->> see it, or possible we misinterpreted your feedback.
->>
->> It is retained in this patch set:
->> https://lore.kernel.org/linux-coco/20250212-tdx-rtmr-v1-2-9795dc49e132@intel.com/
-> 
-> Heh, OK, you got me there.  After the negative reaction to the above
-> proposal and nothing changing in v2 I did stop reading the patch sets
-> ...
-> 
-Glad that you see it now!
+When I look at the proposed solutions for TDX-vTPM based on service VMs
+and other complications brought on by architectural differences between
+TDX and SEV-SNP, and compare that to a potential vTPM that wraps RTMR I
+see a net reduction in complexity. In other words, a path to a
+cross-architecture RTMR-backed vTPM without requiring SVSM and
+approximation of the VMPL mechanism. It follows that userspace, not the
+kernel, needs to wrap architectural RTMR differences to build that vTPM.
 
--Cedric
+So to me the question is less "RTMR vs TPM" and more about vTPM
+implementation choice where RTMR-backed and SVSM-based vTPM solutions
+are not mutually exclusive.
+
+For the kernel this mean leaking architecture specific RTMR details into
+its ABI and punting the vTPM interface problem to userspace. It also
+means that software, in some cases, could forgo vTPM and use raw RTMR.
+However, I do not think that ultimately fragments the ecosystem. TPM
+momentum and portability concerns limits how far raw RTMR usage will
+extend, but in the meantime for use cases that "don't want to have to
+depend on the vTPM", like the one Dionna mentioned, are enabled.
+
+If those use case ultimately melt away and transition to vTPM (whether
+RTMR backed or SVSM backed), great. If those use cases persist then that
+is also a useful system evolution signal from the ecosystem.
