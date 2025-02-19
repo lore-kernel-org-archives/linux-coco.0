@@ -1,46 +1,46 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2062.outbound.protection.outlook.com [40.107.93.62])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2076.outbound.protection.outlook.com [40.107.236.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6E71FE469
-	for <linux-coco@lists.linux.dev>; Wed, 19 Feb 2025 17:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA201F4614;
+	Wed, 19 Feb 2025 20:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739986638; cv=fail; b=KSGJOhJwdc5g8eN4PFl8iKxqmz7lvOkeubRdsEiJ6I26txmWvyT17LWBxkHiHhpL/Vb2mcXzTuUiwHOeflJfqTYkpLLe1EWUU8gz39OuL8TJifso1fkJJWJPaktZhbyBeTV/hSdJIyO31gT9kp3/PNyGMa0wW2GjfJwKWCSryLI=
+	t=1739996627; cv=fail; b=oUYiNYI8JF81dSw9ioT3/GP0CQS5ZUsl4ToTLZzPvt/09UD5IaBoDJheYxjF18cLDQRS1OA5wZbElK5i+8k5kU9qgSPtUQDFGk8qkxJP8POMgW8R7SkaTLwgZFAWRoYn7DEp25ixsn7R+Pc+W2slS8Hpo8YGDEv2OT+7vU8TEK0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739986638; c=relaxed/simple;
-	bh=37KxNiMk/cSrishMa+r4rdhYan1/It9t8v3haO+VLlg=;
+	s=arc-20240116; t=1739996627; c=relaxed/simple;
+	bh=551a7v/832k71jac5kJCslJuqmC7FRAA8vE+k9NbHNs=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QTUnHIthWzDH0ecm+sjNagXcy+Tfo6XJ7VaEOq9dJkUblD637nwVmnKhO+XujlSsrZjLePztuWy5OMXdjCEyrNmXRzaKVDwmMXEmgSjynhvL4t2/nfXEJe2gf91Z1536g0R0Pj0xaGpX51ltUJ+saqTJvwWtwKCKT9iUDkiwH/4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FjpOdZTg; arc=fail smtp.client-ip=40.107.93.62
+	 Content-Type:Content-Disposition:In-Reply-To; b=VwJxseM/amiOQRnv/MelJJGlBbLgByO4CE+EYSuLauSz+ifflaDqD21R85oIBvNlwQleaFZxdA0+636Ewz58x8hSd3+VjEmbuvXJAH2pHOfLgfBOKBkeynDIfDqVRjwffzi0G6OjL98QoGTkM72GIWaMBDtlzoObqpFRfRbQkxY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ePGbzrFz; arc=fail smtp.client-ip=40.107.236.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FjpOdZTg"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ePGbzrFz"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gRpwcAaHZA0kELymkbdKmZPfoE0z5gy4slFDbUxfvkMAlIOFQ71Co1ffr6sAGFDPZasXO/BFvPmh3skW6rf4ym/BuvB9a+Ty6C0xHriNmwFQU0d5Jnk+IGRphTGxpcjgMsouEQ8u/2hHDAoOEjcuy+TXt5H3E/aFpQ99D79vcrkT+lSqJ3QjKOY0U3WVB29pNu1jLR0TKzWt1zXnayPtx/ssxWFYM+wXv/H5OMPeluIhzYKbCJH+EsHPEi4uA6218OkfVQgI5DbuprSc/x6y3+MF8qVDP+VqGA19hInC0/kyLOJdz0a9uBX+1R9ZvpRzghxeGNoEavUmrUfyqbsiwg==
+ b=m0KySXx7aPVMPdzBobKZ5EE7HbGmc+jg892wjN5HICu4xFwPJgi/C3VjZPAq76pYCde4w+bm3z9SbNcz4p5CunTQ2+9OtrgM+O6fPILrV8Cddd8cK2ElOPDzqbS1v+uruABzvdLwhqfrDcg0onJOa5W61p24W8TrVfuI7OezVu+GGE6yR5KaQn9NlpoESgzrAFjS4fQY2GhbVZ6U2pO+oQLfKg8MLkePx1wHdPGJDNPQPF6IOkoxp8gRq5GdCUwgNLxt7ROwn5St9O8CrMwIH5XaePk5ek9BMVEgwlBS7qE+oLuMH8lsDt7hEvEjVb3wJrBj1qbn1QDIK/rhLQHbpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8RA+Pm2HcasB0WHbTIIyshrS+6rdB1b78i91EnpXnb8=;
- b=tMBK+0iSJwcroxN4TbAJHkJGiaNspVqctfqblj1TUZ4PHZ3asorr7cbNuzWLemCFuG61Y0G+TPF8Z0f/4qtJ3uU4+VEJHWz6REx4Ksdx8qSYIIUJKhr8iep+PNoT/M6vn1MjvOpnOMlfgvK8KxwQhy9yDwNMc+rxh9W6VWvnCvoiy0+IwfJ6nPLYcuQxZ/DydLnO5+xneIfdrNMwHYWbwDe+NzHRc4zN9mi6uE0DJHk1NBosP+w5YxW6EwpaCqJmCRasKoM+ME4A1G73tGXCHGXW+eqXkFsGgzAoCE7GwwQ4QXrPQM/unvmEp96lt0XJPBs1PYiBFhl0IPlF0jl6FQ==
+ bh=7Y76QK7xhwkKUzF1crl2ZpASSEli0wGC223YxIr+GuY=;
+ b=PqvYqPODkzJli8JbiuYKY9uQgUi9qvegfDj19s1RqHCQzDinK9HEFaEnRYZlXE+gCCz9yckYnHl0u0Q6JOTSYWQaNzhaAUF7iP2PDv+WQrbQLvU9XExXAKl5bCuNDQccw9k14ZRc33LkPxLrfpsr4UJONtVxaXGG5jScHdL3iqQBLuJBTz9V6yiD3NZA/zZDkuHveviRWwA0kjURuK5HWwP77GWSFnnvrz3EE4Mht9xBMykv0JjiBg9rINsr237HfFFWdD3xUGdj/wp5v7ZL0abnYQMDxM+LkZyPaKg318D/I2g5XsoN67cMMyiioeHDccP3a+XyCkLIKYs7OuP9Og==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ 165.204.84.17) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8RA+Pm2HcasB0WHbTIIyshrS+6rdB1b78i91EnpXnb8=;
- b=FjpOdZTgw80pDczbAQUp/lVJWer9cDIiozkZfxc5SyFOFpD1EVsX/PfVCHSWfTu/ZPlPAMKQ2eNn7O9RmoLr733zsuMYf72grCVWTihydY7KkuPo216Xih3O8tpAD1gXVP4bQIY6hB5Zp2EIhfYtcLGWTShWnrK6oBMAkuEF3s0=
-Received: from PH1PEPF000132E6.NAMP220.PROD.OUTLOOK.COM (2603:10b6:518:1::26)
- by SJ0PR12MB8140.namprd12.prod.outlook.com (2603:10b6:a03:4e3::7) with
+ bh=7Y76QK7xhwkKUzF1crl2ZpASSEli0wGC223YxIr+GuY=;
+ b=ePGbzrFzp60kWUnj3I3sWVz3575X7rcgIZyXlXAXkY0rNZ3MAL85Zvr8M8G4fM3CZUBhAM6GhH0ji5pE5oJIyLJhSiKDvkWO3JuTgVxrCCGtgeBEMH9xYQFAJH6dY8uEwKt7+FTehQkCmKhKlDa4UqIp43NldfKeFjrdRiKaZ1g=
+Received: from CH0PR03CA0100.namprd03.prod.outlook.com (2603:10b6:610:cd::15)
+ by PH7PR12MB7889.namprd12.prod.outlook.com (2603:10b6:510:27f::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Wed, 19 Feb
- 2025 17:37:12 +0000
-Received: from CY4PEPF0000EDD0.namprd03.prod.outlook.com
- (2a01:111:f403:f912::1) by PH1PEPF000132E6.outlook.office365.com
- (2603:1036:903:47::3) with Microsoft SMTP Server (version=TLS1_3,
+ 2025 20:23:41 +0000
+Received: from CH2PEPF000000A0.namprd02.prod.outlook.com
+ (2603:10b6:610:cd:cafe::c3) by CH0PR03CA0100.outlook.office365.com
+ (2603:10b6:610:cd::15) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.14 via Frontend Transport; Wed,
- 19 Feb 2025 17:37:12 +0000
+ 19 Feb 2025 20:23:40 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,195 +48,200 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EDD0.mail.protection.outlook.com (10.167.241.196) with Microsoft
+ CH2PEPF000000A0.mail.protection.outlook.com (10.167.244.26) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8466.11 via Frontend Transport; Wed, 19 Feb 2025 17:37:11 +0000
+ 15.20.8466.11 via Frontend Transport; Wed, 19 Feb 2025 20:23:40 +0000
 Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 19 Feb
- 2025 11:37:09 -0600
-Date: Wed, 19 Feb 2025 11:36:28 -0600
+ 2025 14:23:39 -0600
+Date: Wed, 19 Feb 2025 14:23:24 -0600
 From: Michael Roth <michael.roth@amd.com>
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-CC: Sean Christopherson <seanjc@google.com>, Melody Wang <huibo.wang@amd.com>,
-	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	<roedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
-	<ashish.kalra@amd.com>, <liam.merwick@oracle.com>, <pankaj.gupta@amd.com>
-Subject: Re: [PATCH v4 1/1] KVM: Introduce KVM_EXIT_SNP_REQ_CERTS for SNP
- certificate-fetching
-Message-ID: <20250219173628.hlbrp4c7uf3wtv4r@amd.com>
-References: <20250120215818.522175-1-huibo.wang@amd.com>
- <20250120215818.522175-2-huibo.wang@amd.com>
- <CAAH4kHZL-9R+MLLvArcwQ2Zpk+gtqYTvVMR01WA1kVJ9goq_sw@mail.gmail.com>
- <Z4_Qs2mAXK28IwJa@google.com>
- <CAAH4kHaCTGxQ_D+KbhJQ+RYL4n5qeG4UnDNu5FK9+3KJLpNw0Q@mail.gmail.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+CC: Alexey Kardashevskiy <aik@amd.com>, <x86@kernel.org>,
+	<kvm@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <linux-arch@vger.kernel.org>, "Sean
+ Christopherson" <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	"Tom Lendacky" <thomas.lendacky@amd.com>, Ashish Kalra
+	<ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>, Suravee Suthikulpanit
+	<suravee.suthikulpanit@amd.com>, Robin Murphy <robin.murphy@arm.com>, "Kevin
+ Tian" <kevin.tian@intel.com>, Bjorn Helgaas <bhelgaas@google.com>, "Dan
+ Williams" <dan.j.williams@intel.com>, Christoph Hellwig <hch@lst.de>, "Nikunj
+ A Dadhania" <nikunj@amd.com>, Vasant Hegde <vasant.hegde@amd.com>, Joao
+ Martins <joao.m.martins@oracle.com>, Nicolin Chen <nicolinc@nvidia.com>, Lu
+ Baolu <baolu.lu@linux.intel.com>, Steve Sistare <steven.sistare@oracle.com>,
+	"Lukas Wunner" <lukas@wunner.de>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
+	<iommu@lists.linux.dev>, <linux-coco@lists.linux.dev>, Zhi Wang
+	<zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>, "Aneesh Kumar K . V"
+	<aneesh.kumar@kernel.org>
+Subject: Re: [RFC PATCH v2 12/22] iommufd: Allow mapping from guest_memfd
+Message-ID: <20250219202324.uq2kq27kmpmptbwx@amd.com>
+References: <20250218111017.491719-1-aik@amd.com>
+ <20250218111017.491719-13-aik@amd.com>
+ <20250218141634.GI3696814@ziepe.ca>
+ <340d8dba-1b09-4875-8604-cd9f66ca1407@amd.com>
+ <20250218235105.GK3696814@ziepe.ca>
+ <06b850ab-5321-4134-9b24-a83aaab704bf@amd.com>
+ <20250219133516.GL3696814@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAH4kHaCTGxQ_D+KbhJQ+RYL4n5qeG4UnDNu5FK9+3KJLpNw0Q@mail.gmail.com>
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+In-Reply-To: <20250219133516.GL3696814@ziepe.ca>
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD0:EE_|SJ0PR12MB8140:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6c882517-582f-4a01-fec6-08dd510c0ac4
+X-MS-TrafficTypeDiagnostic: CH2PEPF000000A0:EE_|PH7PR12MB7889:EE_
+X-MS-Office365-Filtering-Correlation-Id: 84c76ec8-2ab7-4c41-9bda-08dd51234ca8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013|13003099007;
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?N2VXaTlMVVJnZWVpZUlFVlFyQmJUb0JrQnVyZWRPTEhGTmtnSG9YWmg4UmJi?=
- =?utf-8?B?UnQ1VDBsRWJrK2FxTTVPRDdkc3pRRWE3cTdXMzZMc1NsQ2V3SzFkMUtPRXpk?=
- =?utf-8?B?N3NBMDRGRm1VRjkwSzlYMXVzOTd2SEsrMHQrSHZDdXRmR3N1OG44VStqZ1p6?=
- =?utf-8?B?Zkg5WUpheC9jbkFKakZzYk5oa0pkRGNsQ2dYNzUxQ3NqTjlxSnNUMDhkMy9l?=
- =?utf-8?B?bFE2S2VXam9ieWo1ZjRGNlQ0TzhmdTdkN3dsODVRNi9tRjNPTTRsQmEzMUdw?=
- =?utf-8?B?cWxOaEpldmlsVUpEc0RHZFFVbU9xM09FekJkZmRuRmN0MXNjclBHbVUyci8v?=
- =?utf-8?B?dm5iUFRrU3VaczE0dXBLWXEwUE5iamE4VXdLSkxJSTNmVWJhMmJ3YllVbFdH?=
- =?utf-8?B?c2pxQ2lacXYvVjFaRGtRUUx3SVhnS3JvWmFSNUNjOTVMenV0YVUzaERMNFYr?=
- =?utf-8?B?RVJRT1l4Z2wzU0VDek1GeS9kdjBCaDVvYzMrZFBReUx6NVJDRzVuMnU5M2tN?=
- =?utf-8?B?dWQ0SDNtM0xGVXVmcTkwOGMrbkxOZ29BOWs3ZTI5SHE2Lzhsc1dobXR2VU5J?=
- =?utf-8?B?Nkd2WkhML3g0NnBIa3ZYeC9ralJubXdKSDE1TGhpK1JHQUc3amFJME9rTW0y?=
- =?utf-8?B?eVlod2RnYk44ZG1CK0I0MEEzaVNPTUwxb1VYYmtTb3lFc2YxNU1ZRVFrcjRu?=
- =?utf-8?B?MkhnZS9BdVpzTk8wZWdlN2JMcGRYSThHaWVPVnNDbEVJVFY1THJKa2JpYUpr?=
- =?utf-8?B?eGpYdm9oL2xiSmw4NDVNaUxRSnRJSEJRamdodFVQRmN6TEV5RWo4THRwb25a?=
- =?utf-8?B?eGtoQmVRQXBwczh0UzBkZXNBOEhhODRad3paUy9OeXU1VUZMU3JVUG9MMk1J?=
- =?utf-8?B?R1ZTOHBxK1RzcldCTzBqVUgyQlZRL0pweEFYbkhnUnBhb2tQUzVnNFUvV1JF?=
- =?utf-8?B?VzkrbkhUTTkyODdHclk3WE9wTGNxem5JVFEzdFpOOVFrMnQ5c092ZTZQRWg2?=
- =?utf-8?B?TlM5dHQrMXcybndhUHdoNUJzekUzMUhVcUlTS1dwcmF1SXNVWUk4Y1JaaVUw?=
- =?utf-8?B?YWtzYWZhQmVJbDZ4OXI0SFo5a1doN3dCUTBNclVhek94dGZnU3VMRllBV29a?=
- =?utf-8?B?Y3F2bTVUQUo0Z2t6Z1Z1QldvL1ZKNXpzMy9OU0VpM1lGWDljTTk3WUc2SDdo?=
- =?utf-8?B?MVVkckR4QVZlaEhiTDZBekoxaE1YSUQ3VHp3TWxBL2tsdVE1eUVneWpYZGpM?=
- =?utf-8?B?WHRYWWVvVFdseWhhamJMUjB0VGVnUzFFdTM2WWN5YVF0ZmhaZ1JFZDk4KzlZ?=
- =?utf-8?B?YkxudVg1aGhwQmNaZXIzWUt1ZGl1ZXV0ZFQyL2JYTEtvZUhjUDkyY2o3MStK?=
- =?utf-8?B?TVNybHN1TlZ3NXVnR0VtaU1vYUpsYXJzT0ZNbjIyUmJocDdNNHNNQ2UwZmpC?=
- =?utf-8?B?Mnl1VTdjUlp6ZGh1SGtGU1JlYnpDSTZvaXVzcHdHRUl1d1pBa1ZyOWFKZ2Jq?=
- =?utf-8?B?TEkvK21IdjVoUE81dmhhY3kvN2EwZGxIRWRvL05Ca0piRkt5NHY5U05sU1N2?=
- =?utf-8?B?WVdXUkkwK25sWFNpU05hUERldjdNQno0clIrQmprTXdVeS9sMWU3Z1ZQd21L?=
- =?utf-8?B?L05YTm5YSnUyd2JGZlNnWjdESEwvZWFkSjh1RGtrNU80ZkN0dFNESW9abXNu?=
- =?utf-8?B?U0hRVFpBWitoYUNlNXFMOXBvTm1sSXZ3TGxxczduQnlDU1hFQVdqY0l0R1JO?=
- =?utf-8?B?NjhEOUF5aEtObHEwRXM5MkpyOFppTGZML2dNTTlwTm1UVUpBMkNFQ1Vpdmxz?=
- =?utf-8?B?a0IxOHoyKzFFbXVmdFErVFhnRXk3a3BaTlNpMkRoWUFmRlRZWFhoK1k0blR4?=
- =?utf-8?B?YXJHa1FDQ0dVYmlBVk44S2FhV1BXcXg5cmpMNi9ISnBEbzJwVjVHU01zSlNW?=
- =?utf-8?B?RVdYSkV4STFCcVJzV3EyRExLZU4wc0IwdW1xVmE1S0JudjEzWWJ1cEdQYmpL?=
- =?utf-8?B?a21HKzhnTE12aEpldzdtcWw5dFo1MWdERS9MOWNDV3BTcmo2MXBLZEt2bHM2?=
- =?utf-8?Q?ZhNJbr?=
+	=?us-ascii?Q?YmzbjPvqE1x2b0UJQSVs+Ke2SMABJ8KwSOPjiJQGT1lEnZoAsT3pxx9ihLG/?=
+ =?us-ascii?Q?W4oEx36K/ZjfmmMklfVhUG9bRD44lulphD7gOznl6T69SKWcaerGpcAtPjkU?=
+ =?us-ascii?Q?WeyOpdTHJ56PCQWqeXFn2t+0OULjvcGSnvNyY7G9OI2hUyIXTT6iR4Tm+bKo?=
+ =?us-ascii?Q?+se+xdI8aUXrg1vT2u/0qSdHaOs7NRIZRrt0jdzxTsqfwZ/Ll8+ZG+A5oluW?=
+ =?us-ascii?Q?LUFc9RQLOTXkAFf/GM37ACnaPRRjd0ziKZg9urAksWQyan7kno6xOgfVSFGL?=
+ =?us-ascii?Q?FP8eOAO1RtULZD6E7C7TGOASOAjq/Q+RWKQhic3NU1RkYEDjd3slyb/Age6X?=
+ =?us-ascii?Q?js49HlAxzTfH2O5Boq7abl0vhHhAYiXc3e047wJml/EgNBDY7AgRcw8rb/CP?=
+ =?us-ascii?Q?mIYxDFx2gTMKv622a3PjM5ik50lrTWagamsHL5J+/pc2VlcvmVxEon3fLZku?=
+ =?us-ascii?Q?JbUm6rbD2mPYbiJ814A9Ozyg/+M1vdoRUj3uX3rnlzOeZlWkZ5yj7F1e3ZzQ?=
+ =?us-ascii?Q?/Vwi/VUTOZrwC5/ScJWCyoiRf1cHR7mdUpon/Uu6aBMpnEqISy6PUIJDNhNg?=
+ =?us-ascii?Q?iTNBZogDcAEx6Tsahr45Rlnhhu9QhNtu8oAlEPUBe5Ha3hD3cm2iBDpL9pAJ?=
+ =?us-ascii?Q?PN3hI+7tpXChLQEZKRBOU1iPmacXJ+LWnjvtQLxCTM+CRK5n19zq030IFXXU?=
+ =?us-ascii?Q?3escQgtk32n9ylTGQ8JWr+6MIc4jhr47bAhWnjEZOLyRk3V6EgO+1AYbCwfR?=
+ =?us-ascii?Q?ZpQSmVaEHbtEwHLfq7kub141i9SflKzHnMBrIPrVDWmDzhr1FU2Ty6YmtgfA?=
+ =?us-ascii?Q?tEpgUE71gJtDY6NkLAdroG05Xe9RFCm0gqCAw1mq4ge0excRmNejIwwY0Cyl?=
+ =?us-ascii?Q?EhBN6lWOteAUUZ5i4LS5IlQbNe9wohL5DI7rYC1J5osQiPe9XnLAL3FZvFWV?=
+ =?us-ascii?Q?DqPKZ4J77T3w7DwNDKdJ/biEKwVSLK9AdjPDxbKhnkQdQie30E/lGRrJJ8B3?=
+ =?us-ascii?Q?LvxW9RNYeRt69rOvGw6esYYu0+3gJ08Wm6f9ZCghgGHntTd7FbZhKzJ9Him0?=
+ =?us-ascii?Q?tMQ9ycL/iJY1832R9cipDaCd1Qb0aPdENrylAfeSGwqIIsDZcBZAf0Db87Sj?=
+ =?us-ascii?Q?WTtVpfgqUL5wnY+cw95AM98kzcEh1vz/in1tLUwGnV6Bmk4We9+H6fzneuGe?=
+ =?us-ascii?Q?gIrY5+Q4dKkhIauvVUNckmAual4uEtpdvw4GxnI++GVwlQxHe1LAXvenTQIX?=
+ =?us-ascii?Q?ZVvCPl83eiFMKTjRaNLoW66Bq9y8cqN1H7B1v3y2x8sEUVQKdrhIXMYINaWn?=
+ =?us-ascii?Q?t96J+46W+iDlWryvcwiOPyWsXuQpxEtsifuq65XQlRlaSqEk65vHnIQpNvL6?=
+ =?us-ascii?Q?sIMq2RWAhZMIjmeyMd6xMG7XhqVl2uFBBFjh4wwmNliuGXml+Xbd9ECvgg5w?=
+ =?us-ascii?Q?Ysxwk6kRVauK44b5zS6iG9mKeS40FLbFVYSA3QzUuGuha2RRawt6/ad9Px6F?=
+ =?us-ascii?Q?zp/YX5dMpx0jMkw=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013)(13003099007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014)(13003099007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2025 17:37:11.7055
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2025 20:23:40.7677
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c882517-582f-4a01-fec6-08dd510c0ac4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84c76ec8-2ab7-4c41-9bda-08dd51234ca8
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EDD0.namprd03.prod.outlook.com
+	CH2PEPF000000A0.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8140
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7889
 
-On Tue, Jan 21, 2025 at 09:19:08AM -0800, Dionna Amalie Glaze wrote:
-> On Tue, Jan 21, 2025 at 8:52 AM Sean Christopherson <seanjc@google.com> wrote:
-> >
-> > On Tue, Jan 21, 2025, Dionna Amalie Glaze wrote:
-> > > On Mon, Jan 20, 2025 at 1:58 PM Melody Wang <huibo.wang@amd.com> wrote:
-> > > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > > > index 943bd074a5d3..4896c34ed318 100644
-> > > > --- a/arch/x86/kvm/svm/sev.c
-> > > > +++ b/arch/x86/kvm/svm/sev.c
-> > > > @@ -4064,6 +4064,30 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
-> > > >         return ret;
-> > > >  }
-> > > >
-> > > > +static int snp_complete_req_certs(struct kvm_vcpu *vcpu)
-> > > > +{
-> > > > +       struct vcpu_svm *svm = to_svm(vcpu);
-> > > > +       struct vmcb_control_area *control = &svm->vmcb->control;
-> > > > +
-> > > > +       if (vcpu->run->snp_req_certs.ret) {
-> > > > +               if (vcpu->run->snp_req_certs.ret == ENOSPC) {
-> > > > +                       vcpu->arch.regs[VCPU_REGS_RBX] = vcpu->run->snp_req_certs.npages;
-> > > > +                       ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
-> > > > +                                               SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_INVALID_LEN, 0));
-> > > > +               } else if (vcpu->run->snp_req_certs.ret == EAGAIN) {
-> > > > +                       ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
-> > > > +                                               SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_BUSY, 0));
-> > >
-> > > Discussion, not a change request: given that my proposed patch [1] to
-> > > add rate-limiting for guest messages to the PSP generally was
-> > > rejected,
-> >
-> > For the record, it wasn't rejected outright.  I pointed out flaws in the proposed
-> > behavior[*], and AFAICT no one ever responded.  If I fully reject something, I
-> > promise I will make it abundantly clear :-)
-> >
+On Wed, Feb 19, 2025 at 09:35:16AM -0400, Jason Gunthorpe wrote:
+> On Wed, Feb 19, 2025 at 11:43:46AM +1100, Alexey Kardashevskiy wrote:
+> > On 19/2/25 10:51, Jason Gunthorpe wrote:
+> > > On Wed, Feb 19, 2025 at 10:35:28AM +1100, Alexey Kardashevskiy wrote:
+> > > 
+> > > > With in-place conversion, we could map the entire guest once in the HV IOMMU
+> > > > and control the Cbit via the guest's IOMMU table (when available). Thanks,
+> > > 
+> > > Isn't it more complicated than that? I understood you need to have a
+> > > IOPTE boundary in the hypervisor at any point where the guest Cbit
+> > > changes - so you can't just dump 1G hypervisor pages to cover the
+> > > whole VM, you have to actively resize ioptes?
+> > 
+> > When the guest Cbit changes, only AMD RMP table requires update but not
+> > necessaryly NPT or IOPTEs.
+> > (I may have misunderstood the question, what meaning does "dump 1G pages"
+> > have?).
 > 
-> Okay, well it was a no to the implementation strategy I had chosen and
-> did not have bandwidth to change. Your suggestion to exit to userspace
-> is more aligned with the topic of discussion now.
+> AFAIK that is not true, if there are mismatches in page size, ie the
+> RMP is 2M and the IOPTE is 1G then things do not work properly.
+
+Just for clarity: at least for normal/nested page table (but I'm
+assuming the same applies to IOMMU mappings), 1G mappings are
+handled similarly as 2MB mappings as far as RMP table checks are
+concerned: each 2MB range is checked individually as if it were
+a separate 2MB mapping:
+
+AMD Architecture Programmer's Manual Volume 2, 15.36.10,
+"RMP and VMPL Access Checks":
+
+  "Accesses to 1GB pages only install 2MB TLB entries when SEV-SNP is
+  enabled, therefore this check treats 1GB accesses as 2MB accesses for
+  purposes of this check."
+
+So a 1GB mapping doesn't really impose more restrictions than a 2MB
+mapping (unless there's something different about how RMP checks are
+done for IOMMU).
+
+But the point still stands for 4K RMP entries and 2MB mappings: a 2MB
+mapping either requires private page RMP entries to be 2MB, or in the
+case of 2MB mapping of shared pages, every page in the range must be
+shared according to the corresponding RMP entries.
+
 > 
-> > [*] https://lore.kernel.org/all/Y8rEFpbMV58yJIKy@google.com
-> >
-> > > do we think it'd be proper to add a KVM_EXIT_SNP_REQ_MSG or
-> > > some such for the VMM to decide if the guest should have access to the
-> > > globally shared resource (PSP) via EAGAIN or 0?
-> >
-> > Can you elaborate?  I don't quite understand what you're suggesting.
-> >
-> 
-> I just mean that instead of only exiting to the VMM on an extended
-> guest request and this capability enabled, all guest requests exit to
-> the VMM to make the decision to permit access to the device. EAGAIN
-> means busy, try again later, and 0 means permit the request. That
-> allows for implementation-specific throttling policies to be
-> implemented.
+> It is why we had to do this:
 
-Discussed this with Sean on the PUCK call last week and our thinking was
-that tying throttling support to a new KVM_EXIT_* type would not be
-compatible with existing userspaces unless it is opt-in, and requiring
-userspace to opt-in would not be ideal if DoS on the part of guest-owner is
-a concern.
+I think, for the non-SEV-TIO use-case, it had more to do with inability
+to unmap a 4K range once a particular 4K page has been converted
+from shared to private if it was originally installed via a 2MB IOPTE,
+since the guest could actively be DMA'ing to other shared pages in the
+2M range (but we can be assured it is not DMA'ing to a particular 4K
+page it has converted to private), and the IOMMU doesn't (AFAIK) have
+a way to atomically split an existing 2MB IOPTE to avoid this. So
+forcing everything to 4K ends up being necessary since we don't know
+in advance what ranges might contain 4K pages that will get converted
+to private in the future by the guest.
 
-So most likely the more generalized exit-to-userspace throttling behavior
-would be tied to something pre-existing, like existing EAGAIN/EINTR handling
-for the KVM_RUN ioctl or something along that line.
-
-And if the throttling occurs as part of this particular path, we still have
-the option of using the SNP_GUEST_VMM_ERR_BUSY response to guest to force a
-retry while still giving userspace the immediate_exit-triggered exit it
-needs to release the lock and complete things on its end.
-
-So, since throttling support doesn't seem like a blocker for this series, I
-went ahead and sent a v5 with some minor documentation updates:
-
-  https://lore.kernel.org/kvm/20250219151505.3538323-1-michael.roth@amd.com/
-
-Thanks!
+SEV-TIO might relax this restriction by making use of TMPM and the
+PSMASH_IO command to split/"smash" RMP entries and IOMMU mappings to 4K
+after-the-fact, but I'm not too familiar with the architecture/plans so
+Alexey can correct me on that.
 
 -Mike
 
 > 
-> > > [1] https://patchwork.kernel.org/project/kvm/cover/20230119213426.379312-1-dionnaglaze@google.com/
-> > >
-> > > > +               } else {
-> > > > +                       ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
-> > > > +                                               SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_GENERIC, 0));
-> > > > +               }
-> > > > +
-> > > > +               return 1; /* resume guest */
-> > > > +       }
-> > > > +
-> > > > +       return snp_handle_guest_req(svm, control->exit_info_1, control->exit_info_2);
-> > > > +}
+> > > This was the whole motivation to adding the page size override kernel
+> > > command line.
 > 
+> commit f0295913c4b4f377c454e06f50c1a04f2f80d9df
+> Author: Joerg Roedel <jroedel@suse.de>
+> Date:   Thu Sep 5 09:22:40 2024 +0200
 > 
+>     iommu/amd: Add kernel parameters to limit V1 page-sizes
+>     
+>     Add two new kernel command line parameters to limit the page-sizes
+>     used for v1 page-tables:
+>     
+>             nohugepages     - Limits page-sizes to 4KiB
+>     
+>             v2_pgsizes_only - Limits page-sizes to 4Kib/2Mib/1GiB; The
+>                               same as the sizes used with v2 page-tables
+>     
+>     This is needed for multiple scenarios. When assigning devices to
+>     SEV-SNP guests the IOMMU page-sizes need to match the sizes in the RMP
+>     table, otherwise the device will not be able to access all shared
+>     memory.
+>     
+>     Also, some ATS devices do not work properly with arbitrary IO
+>     page-sizes as supported by AMD-Vi, so limiting the sizes used by the
+>     driver is a suitable workaround.
+>     
+>     All-in-all, these parameters are only workarounds until the IOMMU core
+>     and related APIs gather the ability to negotiate the page-sizes in a
+>     better way.
+>     
+>     Signed-off-by: Joerg Roedel <jroedel@suse.de>
+>     Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+>     Link: https://lore.kernel.org/r/20240905072240.253313-1-joro@8bytes.org
 > 
-> -- 
-> -Dionna Glaze, PhD, CISSP, CCSP (she/her)
-> 
+> Jason
