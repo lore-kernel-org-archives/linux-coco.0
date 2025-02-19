@@ -1,135 +1,262 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BE2A920
-	for <linux-coco@lists.linux.dev>; Wed, 19 Feb 2025 03:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739935298; cv=none; b=IWJxwqn6v9ZVN4Nons6G2VObB0Eg+z1HPlQ76SBhmRdjV8UrsaziVsLBQHiYZbRAQXGmLSycrdmSQ3H9o7/ctbNWUfVte1f5GKyIVPZMQnOcOFQwrwJY8qgw8HkXA9Dv4iTFScazhnkCItjZpgCZv/ro7ldfaGaZw7xjbXJCN34=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739935298; c=relaxed/simple;
-	bh=zQZ72noBMjWgnUpzvtmi4E18hq/KrvTADHps9Ta+qv0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ColKSaDwlwnQKxiNiQkGpHHoMFKns6/cizOVd+gwQfCzv5L4U90+K4nJxZZNZKUgz0pNyH8L/ERwVQaHzbWeNewlJEyu9rQVyj0SlSjf4wlqTpC36s98kw+OdVj4H9K7zEmAoT9fgDLgU9sSgqN5ls1xWfaDiqynb+OBOi+c1sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pHJ8CdB7; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D0622EE4
+	for <linux-coco@lists.linux.dev>; Wed, 19 Feb 2025 04:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739937869; cv=fail; b=ge6c+SjVSo5FM22uDf5YZQpUX9L4RY/MI5NCE1oiY+TM5bvEc5Yb0vxsCZoMuMDVCeCDsdAbXhkLwDmiVZ8KHTOQU5CQHH/Gq/wbnmOWxOrQcdG2mUsQGxSeAbGez/1CqwFlRB+IFF3z15sbzBv51sSh8Jme5kvHpoGIEr6/1jU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739937869; c=relaxed/simple;
+	bh=BOx38kvW8oi6/8LMxt+6j05GKnq179EKNOVF6yGO7zc=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=R8SQ280kCvDk4yiGho3uY7S3nhkvzT1/az4SzcXO7hWnsBC232JQaXw1BnHA55WyT6eXlFBPB3EdhI42YxsuS+BkMses0cgu7pqnfp09IbPOhLwaLgkfv6A4JlooeIJSCbBD0lYa8L01VGtt5cy6Sw4TrSse1XCYGag11yvh5pk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=co3myn24; arc=fail smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pHJ8CdB7"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e033c2f106so5613463a12.3
-        for <linux-coco@lists.linux.dev>; Tue, 18 Feb 2025 19:21:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739935295; x=1740540095; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zQZ72noBMjWgnUpzvtmi4E18hq/KrvTADHps9Ta+qv0=;
-        b=pHJ8CdB7n9pb0cCOiywzF3kDi8G/cohAqbpRfahy1eri3s+XJI3ELdJk3YNgZt8WL1
-         rSNKs08VoToIoy1kw2Qirx27VYu7WlkMGf/qNOMUopA8SXjhG2uJgTTYZrWAMAwP5gMZ
-         jZoHr0eNY9r/MpGScZIEoRdbHB+QNYLxGfM6FeKWXL3WBfdSllN4oO4I/tciRNJJcOAR
-         I/slfWGx7XoLppMV3QzEoJqQd8usxe9FGFljc6XgmR9MgfsVKFvVcb4RelKUUlwVGMQZ
-         WT/3JLmmammmhzH82d4AbNUDoqZ0uXumr3j8IY/gyL5kYSzJKxmhIJlki5WXVheBJ2Sn
-         CjdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739935295; x=1740540095;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zQZ72noBMjWgnUpzvtmi4E18hq/KrvTADHps9Ta+qv0=;
-        b=sbfhUhazzGG86jYLG3U/aeba0tcLGc83kSW8bWt9dvjsl6SeY3u0UYWsl49L3ACpBT
-         pMZsuqJtvC4KFHQo/O5V5pu2l2IJRN0+KMuDfVG3c8LWyKfD27+goKfQHhkjSpAkrpyC
-         wG8L7k7W0F9y85rF5ZRaDkcJ36DFYJMKJWifKvSSishkaHHuhtBf75jUWbn5upuBSwGx
-         ++LvhRLfxyaq7gBBP2nb238bnVOJ/OQH3eQmUUroqtVGrZJCUWbIVxVoh9J7V5EyzYmw
-         IbSZ23ALabS0etFp5Wal9Ay/eR10wRp6GcU5Icw//jq3X79ZHK62XJfNlYt33M59sLO8
-         g+WA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqxBRjgOpelgbAtSLqb4Remi8U3tGWTihXdDVe+aUyflUkPBRJHf0LKWNc0ca3NeOq/lnDTix9YK4Q@lists.linux.dev
-X-Gm-Message-State: AOJu0YzhZlw6d467fjxnsbrVxHN/9ZX9+tbwrQNLfgZtq8k38g3RXKQ4
-	iAezM6vSMms99lN6I6TqCdXXhE9MqvB8FmcQwIWVWEqf27IefsqVJ92AYzfQ5FMkRW0WgvH+328
-	5lUu2xs4gTph+XEUjjPhYWCqhK/n/MV90qu90
-X-Gm-Gg: ASbGnctZE2DL/aScOEvrxl7w1vVRAlXiUCdkJ1KpEwTSF8xmWLJwlmMRJ0V3Cdf5odj
-	njpQVKXb/Ox+dFUasr1BZZuoKC2rzVaswpnJpElQNMPzFA/v4IGjpMfx8DvenQC8eRohPhQJQ
-X-Google-Smtp-Source: AGHT+IEnGbryBeBhChWrRvIMKHLS/nYVH9GuCmrhXCKrLhI46whs35vEsS7hGUKNaTHSWl6ye+CZMmasW6Vxzw7o0U4=
-X-Received: by 2002:a05:6402:35cb:b0:5dc:caab:9447 with SMTP id
- 4fb4d7f45d1cf-5e036063e6amr41083363a12.18.1739935295010; Tue, 18 Feb 2025
- 19:21:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="co3myn24"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739937868; x=1771473868;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=BOx38kvW8oi6/8LMxt+6j05GKnq179EKNOVF6yGO7zc=;
+  b=co3myn24VQcnwztZfci4rOydyK2XdjDL7vTJncc0iI9Y2pphk4QKQNXL
+   A9o4el46glgtmZYtAGmKoEFK2WOZL/6VM65Q2gWa5BRfYPBJqmzr9y29b
+   aJ1fAe6/Zjuwbvg14phclljkVaMWtDmfJGNM3W76w9afXnUZT7KyAVL6F
+   dimvbOEEOXZiAeoL0f+EB1jag5vwPQ+GBRmCT6ZwH+mMgnL3yFCevzl2y
+   XSqpWHNe5O9eBmjTeYaC/dfcpvG33pjguF3cDvGWhnDmaptGoMoL1WmxY
+   dHRkWPxOR/AhX2sOZQwXpJrMM96VQB8kzy1v7Mz0uQIiY5b3Y7UYAfPwi
+   Q==;
+X-CSE-ConnectionGUID: pv7k4/X1TgyT2YBcgcEl5A==
+X-CSE-MsgGUID: 9e6ugcTERfGq6b3/6gAp2w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40786588"
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; 
+   d="scan'208";a="40786588"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 20:04:28 -0800
+X-CSE-ConnectionGUID: QZBDXzWORZqkmvrY7vr+Jg==
+X-CSE-MsgGUID: 0+MSE/QUQ4Wl2VrS8aN+Sw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="119528435"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 20:04:27 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Tue, 18 Feb 2025 20:04:26 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Tue, 18 Feb 2025 20:04:26 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.43) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 18 Feb 2025 20:04:26 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hIYcEwNyBrfHiJvP3r7LOJkdkSDyuazDMsuDcGpHkkxYfEVpNKZFP4jX1pxYxiqlA8+qOKirvMCKvDrHqjeJkD3mmbx/gOn46hrjWeiNrH7vqJiEGjZ88iKTubgfdZeqCARShUpUSaEsbQOngd3q3MxDKir5ZoLIflmyfxa0Ux8tc18j1RnGSWZWQ4sQY0lkrC7/i4yxdXrdGe9Lmhmvic1MPcfPDVq71GVbiEE54c5gQxFuElIf7kf4TwUCmy4sqWViGEglB3YIVWvvgGD41wbAtIBkZr5a7u/a9Y7Ds08zcIpnAKq78mNUiOiz6zHC2TBx/4YY5fnwuhaAesACaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=baXoFjI+VZKQD7HVVeQWUi5KlfoN5rxlVaiqiR3SbAI=;
+ b=qF+/Abo28jFkWI2wV/gaPoEVp6iFEhy7TSXAsJkdIulN1i+gupCgHBkmjEUVX+WZSvIAYLAad5WBeS61oOygs/DFSz5VQFfgofRC6Uu2clr7MFG2W+imSABbBd++QQlXqxzS4N/ibYRj5fBPrf19VmXqjpcvssYQYQDjVQPOYQYCQ1X03RoCuBzH7D1BjET0YCrjnHPGqj6KAcsHNgJpyQTjLyYo3sy+q/WUFZilqn+msfS8dw9/4s/kgrjxqf6c7uV/N1VzliUjJNtKHKJKRTLiOoxYDU0wA1L9Ag5+1c+LzUCjJahoXQYPcnLwaB//DjFFzObV4YG9Q0cQ5ksIMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS7PR11MB6269.namprd11.prod.outlook.com (2603:10b6:8:97::14) by
+ DS0PR11MB7621.namprd11.prod.outlook.com (2603:10b6:8:143::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8445.19; Wed, 19 Feb 2025 04:04:23 +0000
+Received: from DS7PR11MB6269.namprd11.prod.outlook.com
+ ([fe80::af1f:dcc:49bf:1a26]) by DS7PR11MB6269.namprd11.prod.outlook.com
+ ([fe80::af1f:dcc:49bf:1a26%3]) with mapi id 15.20.8466.013; Wed, 19 Feb 2025
+ 04:04:23 +0000
+Message-ID: <465d712c-b638-4884-88c8-1a88c506efdf@intel.com>
+Date: Tue, 18 Feb 2025 22:04:19 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] tsm: Unified Measurement Register ABI for TVMs
+To: Mikko Ylinen <mikko.ylinen@linux.intel.com>
+CC: Dave Hansen <dave.hansen@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, "Kirill A. Shutemov"
+	<kirill.shutemov@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, <linux-kernel@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, Kuppuswamy Sathyanarayanan
+	<sathyanarayanan.kuppuswamy@linux.intel.com>
+References: <20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com>
+ <15c69d57-4ffb-4ea1-8cbc-0ba6d3d7b14f@intel.com>
+ <be7e3c9d-208a-4bda-b8cf-9119f3e0c4ce@intel.com>
+ <015cdddb-7f74-4205-af8a-b15cad7ddc22@intel.com>
+ <d8f3eb33-d902-4391-adc7-005e4895b471@intel.com>
+ <Z7Sd6FuDDMgExEna@himmelriiki>
+Content-Language: en-US
+From: "Xing, Cedric" <cedric.xing@intel.com>
+In-Reply-To: <Z7Sd6FuDDMgExEna@himmelriiki>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0291.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::26) To DS7PR11MB6269.namprd11.prod.outlook.com
+ (2603:10b6:8:97::14)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com>
- <15c69d57-4ffb-4ea1-8cbc-0ba6d3d7b14f@intel.com> <be7e3c9d-208a-4bda-b8cf-9119f3e0c4ce@intel.com>
- <015cdddb-7f74-4205-af8a-b15cad7ddc22@intel.com> <d8f3eb33-d902-4391-adc7-005e4895b471@intel.com>
- <c7894df2-2b27-4f67-b428-3eca312503f9@intel.com> <c2cf2184-7753-454e-ac99-8c4f3c9c3d16@intel.com>
- <01fc0997-a0e7-4086-b0aa-67b4a51b328a@intel.com> <12ed2ab1-e97d-4a20-8370-8c60cabffc77@intel.com>
- <ab2036d5-5b6f-4fa9-995a-fba63c0a5209@linux.intel.com> <f4d344de-70c2-4fd4-bb18-2912cf0f3f98@intel.com>
- <CAAH4kHYq7_3vLXQaCA7iKF+mC5Pg0cn-1FsB-iCbN7Jim9a-OQ@mail.gmail.com> <650b6236-50d3-4932-b5bc-056fd29c93a7@intel.com>
-In-Reply-To: <650b6236-50d3-4932-b5bc-056fd29c93a7@intel.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Tue, 18 Feb 2025 19:21:23 -0800
-X-Gm-Features: AWEUYZkxt4Uz_DEgnqnT-wIOC0NHjgfy5WtvAXnbdvc8enIGlu1IN6n1oU029Q4
-Message-ID: <CAAH4kHYye2ApqYb3GmHSt2Ge4B1m55mA54Ch-f1RCzh3GZuHOw@mail.gmail.com>
-Subject: Re: [PATCH 0/4] tsm: Unified Measurement Register ABI for TVMs
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Dan Middleton <dan.middleton@linux.intel.com>, "Xing, Cedric" <cedric.xing@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR11MB6269:EE_|DS0PR11MB7621:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ef27af6-bb24-4fcb-b514-08dd509a7e64
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?MEZDTWZuL010czU5ckg5Slh6V01aVytra0xzOW1GeGY3SW9oM2h1TjNvTWUr?=
+ =?utf-8?B?ZFhQaXY1b0czWTg5TFFUdmUzcHMrU3ZWa2pzYVkreXIrZ0hBMS9sVWNBeUx1?=
+ =?utf-8?B?SGNFZGw5ZEhUTHgwanRndDVKTVZpdEo2Y3VMYVV3RiswM05LcVVlL1hqN3ZR?=
+ =?utf-8?B?STgyTGN2Q2Y1RVh2cmdSYS9QN1M4bGV1dE9sU0x3a3drSDBwZkxrZGVZRW1r?=
+ =?utf-8?B?OTIyZ0pMUU1OcDI3ZWw4eWpHS01IUnpXYTd4T01kUnhYUE5rSXlzQ1IwRm03?=
+ =?utf-8?B?MzRnZGk4dkZIOVBzZEFoOVZiWjJGSjNONGk3dTRmRWtDK3kxSWRYaUxEaVdW?=
+ =?utf-8?B?Z2M5alcwWmo2YWNwbkJWd1BsV2FUU1N3WE9HSy9xZWxGcnJyZFdmOFBhS0JC?=
+ =?utf-8?B?bjNTSEZDQXIwWTRVNGhQVk80QWExKytLV3NiZXJVSUphdUxxR3dIazFBckVU?=
+ =?utf-8?B?cGtMNDhaRkVFYmlNb0N5cWFYVzM0SldJVkhIL2d6ckx0enpINEk2RGRZUkgv?=
+ =?utf-8?B?aUpBay9nN2FjOExmekVFS2oyR1ZkUlRWNXkxVUN6SXZoS2pod1JmMDRTem1B?=
+ =?utf-8?B?MEpqVnJrUmlEWVpTM2Jqc2lYSVlMUkt0RDRUdlFoMURVK0grUXNzbzY5M2cy?=
+ =?utf-8?B?emprVTRzRW1VTHVUNnQ4SEc3Z0Rhc0F2Y0xHMHZ0cFpJWTBtakxlajZtK0t1?=
+ =?utf-8?B?bU5DaWpDaEViQ0FjTWFFUUV5MUFEcDlRdGdIUDI3bUtuRWZPbEtPM2ltbXdj?=
+ =?utf-8?B?SE1haW9zWUpNL09YOUorL1RKOTJDb1c3cHUrRUxVZDJlQTI3TStCZ3JienZT?=
+ =?utf-8?B?VFdBb3loQWtqQ2NwczZaSmJDYmFVZk5aWEY1QjM3ZWw0MCtveFlZMUxmZyts?=
+ =?utf-8?B?L3VIVE1XR3BuekZtdThqeEp6UHNpWkJobUs4TitHQ016Qjc2dGhWQjd6UUIy?=
+ =?utf-8?B?amhCMVFVNWNmc0lmV2IyRm0yK0ZlWGFjTGMySUJOeWRLR3ZKbjhHQjJOcGt3?=
+ =?utf-8?B?Q3lPK0RGZWJxemhSNHE0YXlic1BjQnNqM1hjaUcwK2dSN3pCS2l0TC9ZTHdk?=
+ =?utf-8?B?UVVJQUJubFhINFc0a21PeWxnWlBkYzNJVWNuUGdEOTdjUGZSaWc4dHBKTU1n?=
+ =?utf-8?B?Y0R3azNJZFZlSFNlWU1NM211ZC9MRzVCaUFpS0U3ZVNoOHVyT1ZMVlpxVEp3?=
+ =?utf-8?B?YlpqTFJ0L1h1RDh5K0pUdTIrMHRobzJaOExxeGdxbUFqQU83REdiVWZVL2Nk?=
+ =?utf-8?B?cWVHWUhPa1JadzlZVGxOT0k3bXpJL0hDSlBwRjlESTVYMU9IdjJnVUpWWlhQ?=
+ =?utf-8?B?eGlNV1NsUXJpYk5IWXNsYXZhUjNMd0g5S29zMVZXQkZaVUtjQ3Z2S21GeGRr?=
+ =?utf-8?B?OW5DcnpBaDFmcjZyNjJyalJETWdUQXkwTGN1VmZkSkg3SmNqTUMzT3FYWHNJ?=
+ =?utf-8?B?N1JPSkZLTlpxMzA0T3daS3BzL3VmVnFoeUFQczBJSzhOZWlKRjkwUjFPa3JZ?=
+ =?utf-8?B?STlhYkZkMlBNUHZteS9kdWFkNEZ0TUNBeDJCTFZ6TjJsZy9mWmdpMldYREJJ?=
+ =?utf-8?B?K2w4SHBmdzZjZm50OWd0Tmo4aWNZeDN2TTdvQlNJY0N4R1NLY2lFWGpkRDFZ?=
+ =?utf-8?B?dkFKSHFiVHA1TFV0NlhYU29pNWx0S3FXYUdHZlBaRlRkNElkelRmTGd0cXNt?=
+ =?utf-8?B?UTBaZkF5MDJ2TWhydjBWSmtHL2VUYUlCRUMyOExobnRjSVVSNnM3VDBmVFZH?=
+ =?utf-8?B?UGxiOWRKbEZGTzk5N2NRNHhtOVlsd3daalJOUWpWOUo0dmpsUk1XMHozNUM1?=
+ =?utf-8?B?S3lYNXAxM2s3cUNFdE1ReGJWTGNwRE5RR1JUdnFybjhjYXA4ZnY1d2E2Q2I4?=
+ =?utf-8?Q?ZpNAEU4BsYQEP?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB6269.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cmRnaktvSFJYOVBRdXREVy82QlNsYllOV1RHWG9KbGY3M3NEdHhwQXdrQVFP?=
+ =?utf-8?B?VnBWTnIvZnVWK01jYXkzREEyRWRzNE9QTG91dUI5cEdqVC9samR5eVRQd0tp?=
+ =?utf-8?B?bjV5blp4eXJRc2s1OGxLbnhUKzFoelVRelkvMkIwRUE0K3dKb3AzYXdVY2hs?=
+ =?utf-8?B?NmVrdmtDK3luM3R0cWhZalZwLzZSWVNMRm9rdWNHR1RkcmZxWGR2dkpiL0hv?=
+ =?utf-8?B?M21MU01XNW01WHVSczl6NEQ2V1RQSkhCQVNtL2VKaTk2OVZjZldzUHZJdVFZ?=
+ =?utf-8?B?NE9QZnFEM2RhNVFvOEZDUXJRZmI4RDFvc040b2JRcnI5NkdiVEQ2SmhvS1dK?=
+ =?utf-8?B?NVBpQ0IxbnRaYjlUb3JUSUhFQmFFY2NUTFY1MXZtT21laEpYUEZMUFpkSDZj?=
+ =?utf-8?B?bytvSklDaHB5bFVDQmttZjNVRXAycDJIYnRYZlVXY3B6YXMvY2JjN0Jsb2x5?=
+ =?utf-8?B?RUNXcTVXK2dtRHpDNThpMkU1blFkQ0xtVnR4d1duYVRNVElkTHlKR2hZQkY2?=
+ =?utf-8?B?bU9TelZwTHNaNW5STWxOYVpQVDRSMnlWWXpWSGNTRE5lWW1ZbmNhRVRVcWtD?=
+ =?utf-8?B?N1Ewb0MxU1ZoMm1PR3JYMEVmZmZsbVRFMkxNSnQ1U29sYk5FQW1WWEtML3Mw?=
+ =?utf-8?B?TGJ2bXIvSkhoK1FqaXFYZE5aNnkwVjlXaTJoQ3d4Q2JTZjNOZXpJNjZEcDJE?=
+ =?utf-8?B?N0p5amE3ZVh6dm96NEF6S0NUdEFCOTlTTkh4MDhLc1Z0MjZNeTgzOFRXcDRj?=
+ =?utf-8?B?N3JCQ2gxRHBzZG13eFhXU2RoUDRreWRXRTNNNGNIaDNTeVpRbnZwY3kvWWZz?=
+ =?utf-8?B?R1Q4dkFHSHBYQjlIRUVmR1lnR2J6NnhqWHZaQXFUdmR4ZXVoSXVtREJ3bFR5?=
+ =?utf-8?B?ZUo4Y01MZ1duakR6VkN3ajZ3MlRxUFlqMVpBNm9mN3lrcTNtQlJ6VnNzejNG?=
+ =?utf-8?B?MXlKMXcvNDZPeUNBckcrZ1o5dElXVXI0ZUUzWWxuekJjblFWS0VBOFZCV2xD?=
+ =?utf-8?B?MWV1NGk2TEZ5aXhsZ3lKVnJYaWlTejhiazBiQjlMSnErT2lUa3krYitQbjlO?=
+ =?utf-8?B?NWdsaS9nUXgrMUVNQ0ltZitJamlaSXhJeFNaMjJidFljWHczajdRSC9xMlA5?=
+ =?utf-8?B?UVZuUXVjRVNVS1l2M0pzMGpldTVuKzY2STZJQUhRekFwY0IxQjRWYzc2QUh4?=
+ =?utf-8?B?Vm1tUnpCQ0VCeFZqdFR0TVU1MEF4QjU4Y05YUWN4WE5HdFo3dWkwU2Uxb0d2?=
+ =?utf-8?B?bURMUWVtSzRZYTBzakMxSThwT1hjRDlWa2lwNnRiNTBOR2dQOUo1RXRKeEVU?=
+ =?utf-8?B?Q21nVy9JdzZPMGJpc3NEZ0hMdG1hV1N4TjJjZG1ONnpXbWhpZ0UwL3NBMHVx?=
+ =?utf-8?B?VHlPdjJuR3RZY0JmNEU3U1JRNjdsSzNhVEhFVzlDaDYvUW9HTVNINGFaM1Yx?=
+ =?utf-8?B?NnNoZWRCYXFVWHk2SUgxaVJ2MXhVd041TXZjL0FJTlJYVVBNNFFvWFRYd2xN?=
+ =?utf-8?B?ekpSaGVtQTYxYWVZZi9Nc1MxNEdia3lodjFvMWtkOUcxaEVYN0YrVHdDRnRD?=
+ =?utf-8?B?cmlOdnAycmJtdXBsN2taQ2F3NXRDMVQ1ZTdaSkU5Q3A1a1dqb2R3S0VjUUcz?=
+ =?utf-8?B?RWJKMXZtWkU0Qy9yOTQ0eEt1azgzdVRkczQyMzJYSE1tcHJZem1saks3cldM?=
+ =?utf-8?B?NDFuUW9PR3BnSUwrQVYwZklLbitIeTRlbTFITXVVRGNUL0llSHZTOUd5K0cx?=
+ =?utf-8?B?d0hDRGx4MFF3ZmZGLzZwYWJna1RFWjlKT3pQRHVjeldvUFNUaHZwemxzN2lE?=
+ =?utf-8?B?dzJvNUhVTjNXR0poeHRtZVE5bTEwK00zb3VFQUNUcGNZOTJQTzZ5Qy9DcW9w?=
+ =?utf-8?B?MmJJZGRYNWlnTVg4eWFXYnpBaHAwL3hUUk9wSkhQbVhaWGZQNGMya2UzRk5Y?=
+ =?utf-8?B?ODhxemljR2RzSUw5RExnQWhZcnZISXo4TEp1TUs0WnIvdHNvTmZnVnRaNUYw?=
+ =?utf-8?B?WHRnK0F6ZzR6K2t0U05kUXFIM3F0cS90UEM5RWl0eGNzd3lvSDNCdGMxRFBt?=
+ =?utf-8?B?QStCRC8wdUVqaXVmTHNla0dzb3dKaUlsZ3EyQVVWanZNbGorQXV1K3Yva0lh?=
+ =?utf-8?Q?KFGK5tQjKIUgFxdRFK9ZOb94c?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ef27af6-bb24-4fcb-b514-08dd509a7e64
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB6269.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2025 04:04:23.4367
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XVHc8X5JzZw0ME37SNlCevuBK8KVpihxtmFSUBARbYJQ3R5yg6h9FWZ3PVL6uqMkSn+q5//HyDbg6aLSX1kPVQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7621
+X-OriginatorOrg: intel.com
 
-On Tue, Feb 18, 2025 at 4:41=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
- wrote:
->
-> On 2/18/25 15:57, Dionna Amalie Glaze wrote:
-> >> If there are actual end users who care about this, it would be great t=
-o
-> >> see their acks on it as well.
-> >>
-> > We would like to have this for Google Confidential Space and Kubernetes=
- Engine.
-> >
-> > Acked-by: Dionna Glaze <dionnaglaze@google.com>
->
-> Great! Thanks for chiming in. Can you talk for a second, though, about
-> why this is useful and how you plan to use it? Is it for debugging?
+On 2/18/2025 8:49 AM, Mikko Ylinen wrote:
+> On Thu, Feb 13, 2025 at 03:50:19PM -0600, Xing, Cedric wrote:
+>> On 2/13/2025 10:58 AM, Dave Hansen wrote:
+>>> On 2/13/25 08:21, Xing, Cedric wrote:
+>>>> On 2/12/2025 10:50 PM, Dave Hansen wrote:
+>>>>> On 2/12/25 18:23, Cedric Xing wrote:
+>>>>>> NOTE: This patch series introduces the Measurement Register (MR) ABI,
+>>>>>> and
+>>>>>> is a continuation of the RFC series on the same topic [1].
+>>>>>
+>>>>> Could you please explain how the benefits of this series are helpful to
+>>>>> end users?
+>>>>
+>>>> This series exposes MRs as sysfs attributes, allowing end users to
+>>>> access them effortlessly without needing to write any code. This
+>>>> simplifies the process of debugging and diagnosing measurement-related
+>>>> issues. Additionally, it makes the CC architecture more intuitive for
+>>>> newcomers.
+>>>
+>>> Wait a sec, so there's already ABI for manipulating these? This just
+>>> adds a parallel sysfs interface to the existing ABI?
+>>>
+>> No, this is new. There's no existing ABI for accessing measurement registers
+>> from within a TVM (TEE VM). Currently, on TDX for example, reading TDX
+>> measurement registers (MRs) must be done by getting a TD quote. And there's
+>> no way to extend any RTMRs. Therefore, it would be much easier end users to
+> 
+> TD reports *are* available through the tdx_guest ioctl so there's overlap
+> with the suggested reportdata/report0 entries at least. Since configfs-tsm
+> provides the generic transport for TVM reports, the best option to make report0
+> available is through configfs-tsm reports.
+> 
+Given the purpose of TSM, I once thought this TDX_CMD_GET_REPORT0 ioctl 
+of /dev/tdx_guest had been deprecated but I was wrong.
 
-Confidential space on SEV depends on the hypervisor-provided vTPM to
-provide remotely attestable quotes of its PCRs, and the corresponding
-event logs.
-https://github.com/google/go-tpm-tools/blob/main/launcher/agent/agent.go#L9=
-7
+However, unlocked_ioctl is the only fops remaining on /dev/tdx_guest and 
+TDX_CMD_GET_REPORT0 is the only command supported. It might soon be time 
+to deprecate this interface.
 
-On TDX and ARM CCA (maybe RISC-V CoVE someday), we don't want to have
-to depend on the vTPM.
-There are runtime measurement registers and the CCEL.
-When we have a sysfs interface to extend these registers, it makes the
-user space evidence manager's life easier.
-When Dan Williams forced the issue about configfs-tsm, we were told
-that it is bad for the kernel to have many platform-specific
-interfaces for attestation operations.
-This patch series is a way to unify behind the tsm.
+> The use case on MRCONFIGID mentioned later in this thread does not depend
+> on this series. It's easy for the user-space to interprete the full report
+> to find MRCONFIGID or any other register value (the same is true for HOSTDATA
+> on SNP).
+> 
+Yes, parsing the full report will always be an option. But reading 
+static MRs like MRCONDFIGID or HOSTDATA from sysfs attributes will be 
+way more convenient.
 
-As for the ability to read the registers through sysfs instead of just
-extend-on-write, that's not something Confidential Space depends on
-specifically.
-Our attestation policies are evaluated in a verification service
-rather than on-node.
+Additionally, this sysfs interface is more friendly to newcomers, as 
+everyone can tell what MRs are available from the directory tree 
+structure, rather than studying processor manuals.
 
-For on-node policy evaluation, for instance in kubectl, there is a
-benefit to being able to generically read measurement registers that
-have been extended generically to execute policy that a certain action
-if a measurement register isn't an exact expected value.
-This is not far-fetched, since it is used for confidential containers,
-and is being discussed for kubernetes engine as a way to poison an
-instance when an ssh session is terminated for a human operator.
+> The question here is whether there's any real benefit for the kernel to
+> expose the provider specific report details through sysfs or could we focus on
+> the RTMR extend capability only.
+> 
+Again, parsing the full report is always an alternative for reading any 
+MRs from the underlying arch. But it's much more convenient to read them 
+from files, which I believe is a REAL benefit.
 
-To have that same capability without a generic read interface, we need
-to stuff kubectl with quote parsers of every attestation technology.
-
-Hope that helps.
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+Or can we flip the question around and ask: is there any real benefit 
+NOT to allow reading MRs as files and force users and applications to go 
+through an arch specific IOCTL interface?
