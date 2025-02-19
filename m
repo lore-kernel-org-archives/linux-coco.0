@@ -1,155 +1,170 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401891F2B8B
-	for <linux-coco@lists.linux.dev>; Wed, 19 Feb 2025 14:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5841F1522;
+	Wed, 19 Feb 2025 14:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739973819; cv=none; b=EnXjIbjWlF1bgy9GP7WPvm6a+EID2LfxzXVn1czw+nCBMejVg+Vhy7mAl/vcDNviaMTtCIvHFtysWAbjuAmWcUtzv2ppKwWWtZ3jErIaDgiJK3XvK1Zqq9dPS3dVmnhrx12gUIJD/G3KehaBN3bGh1ZsD9Q4rPnYhRroCif/WEQ=
+	t=1739975438; cv=none; b=Qz43uT3MCmVlk1adU+d09LAXk/bz6LLxDtP9ZX+t/I6EU3Bi6gTmWYCUAnDumnEHi2EswTuivNKDHw4qq4xTkw6Mz0wTjlENlVkUMyzQf63J6Exz1B2pOZif1C0g1Yz1eiGiFKY+p568xnbvBhrMbYmbhlbmtiSmK/LK5rJZ3Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739973819; c=relaxed/simple;
-	bh=QmbQLkkDdQ72D1Tjn3A14Gl1CAEBwtZyNkBzH5iXLzU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pr8J/sgYz8Oa1gzJK0M0dSuTS5qnXvi9S2+5gQgiT3v2S4WU4/dblItG+LCZbKRM35kz2t0ABn+yDOAwWAtq65ODwac39ZF8q43jJqKGJkKLuMxI4NTPyfztmfZyaraAi5eRPpaCFJfCqufsNWdqKL+oA9/yELtQOPJh+NHUl0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=caUpztk5; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="caUpztk5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739973817; x=1771509817;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QmbQLkkDdQ72D1Tjn3A14Gl1CAEBwtZyNkBzH5iXLzU=;
-  b=caUpztk5bMOmYWO/ObiA2YFU1k+OCzM5EdGB9Ep6UeAuK61d4EfqQSuW
-   nK2PhZtyUZ0blbr/XydXdJfOpYOCt5a6um9n0ab+hkCCD5eY3EE8MUqxQ
-   pOKbsgz9TbTMEi14wOco+66pkL0ae3RoGPNleYpzTwcB4Di11YDPBaE7v
-   DeedHdhIdUsjwTswsv21u4qGykF9cf9WlTDN6aAzE/qKuHsghOOdc6/yo
-   y2pQxjF2D2Otf1F4mlqxhqXaoikXppBydL8C+G0m+YDlWmmuibjCw0+V9
-   dDuRXBmTz5gH/1TPUm7OF276pUSllulUt4IPSDyy51ck+PoxWpi4R60Gc
-   Q==;
-X-CSE-ConnectionGUID: 7Vk326uvRc6SNQHY0qyPbA==
-X-CSE-MsgGUID: NCwgoo9fR2q8pc1IsHumOw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="44477501"
-X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
-   d="scan'208";a="44477501"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 06:03:26 -0800
-X-CSE-ConnectionGUID: 8Ea9qZleTLapvJoMw6xpQA==
-X-CSE-MsgGUID: KjvrAP6aQgCFGCMW5B3nLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
-   d="scan'208";a="114572569"
-Received: from opintica-mobl1 (HELO himmelriiki) ([10.245.245.206])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 06:03:22 -0800
-Date: Wed, 19 Feb 2025 16:03:13 +0200
-From: Mikko Ylinen <mikko.ylinen@linux.intel.com>
-To: "Xing, Cedric" <cedric.xing@intel.com>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH 0/4] tsm: Unified Measurement Register ABI for TVMs
-Message-ID: <Z7XkoQ1cJNw8dn3I@himmelriiki>
-References: <20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com>
- <15c69d57-4ffb-4ea1-8cbc-0ba6d3d7b14f@intel.com>
- <be7e3c9d-208a-4bda-b8cf-9119f3e0c4ce@intel.com>
- <015cdddb-7f74-4205-af8a-b15cad7ddc22@intel.com>
- <d8f3eb33-d902-4391-adc7-005e4895b471@intel.com>
- <Z7Sd6FuDDMgExEna@himmelriiki>
- <465d712c-b638-4884-88c8-1a88c506efdf@intel.com>
+	s=arc-20240116; t=1739975438; c=relaxed/simple;
+	bh=g1/2wPLaewjbx4uyxyoD+nP5/AK0RWw0EsXYYA2h/bc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LDzTvVj3pem0U7su1FCt8g/9WlFpJDzFYTLSVIIRNU10wpHhuUZ6tTHh7YnetaflljhKYAizpnoi/L6ghfiipHYWHmzbcBJcbyiHtZxe8HOkXigTolLAzJt91BGrznEznnvzQ6gjzENln3bmgTppUQxJCRFmy0IDvbT7Kt5LK+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C040312FC;
+	Wed, 19 Feb 2025 06:30:53 -0800 (PST)
+Received: from [10.57.84.90] (unknown [10.57.84.90])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 523213F59E;
+	Wed, 19 Feb 2025 06:30:31 -0800 (PST)
+Message-ID: <5aeb6f47-12be-40d5-be6f-847bb8ddc605@arm.com>
+Date: Wed, 19 Feb 2025 14:30:28 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <465d712c-b638-4884-88c8-1a88c506efdf@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 09/11] arm64: Enable memory encrypt for Realms
+To: "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Will Deacon <will@kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+References: <20241017131434.40935-1-steven.price@arm.com>
+ <20241017131434.40935-10-steven.price@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20241017131434.40935-10-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 18, 2025 at 10:04:19PM -0600, Xing, Cedric wrote:
-> On 2/18/2025 8:49 AM, Mikko Ylinen wrote:
-> > On Thu, Feb 13, 2025 at 03:50:19PM -0600, Xing, Cedric wrote:
-> > > On 2/13/2025 10:58 AM, Dave Hansen wrote:
-> > > > On 2/13/25 08:21, Xing, Cedric wrote:
-> > > > > On 2/12/2025 10:50 PM, Dave Hansen wrote:
-> > > > > > On 2/12/25 18:23, Cedric Xing wrote:
-> > > > > > > NOTE: This patch series introduces the Measurement Register (MR) ABI,
-> > > > > > > and
-> > > > > > > is a continuation of the RFC series on the same topic [1].
-> > > > > > 
-> > > > > > Could you please explain how the benefits of this series are helpful to
-> > > > > > end users?
-> > > > > 
-> > > > > This series exposes MRs as sysfs attributes, allowing end users to
-> > > > > access them effortlessly without needing to write any code. This
-> > > > > simplifies the process of debugging and diagnosing measurement-related
-> > > > > issues. Additionally, it makes the CC architecture more intuitive for
-> > > > > newcomers.
-> > > > 
-> > > > Wait a sec, so there's already ABI for manipulating these? This just
-> > > > adds a parallel sysfs interface to the existing ABI?
-> > > > 
-> > > No, this is new. There's no existing ABI for accessing measurement registers
-> > > from within a TVM (TEE VM). Currently, on TDX for example, reading TDX
-> > > measurement registers (MRs) must be done by getting a TD quote. And there's
-> > > no way to extend any RTMRs. Therefore, it would be much easier end users to
-> > 
-> > TD reports *are* available through the tdx_guest ioctl so there's overlap
-> > with the suggested reportdata/report0 entries at least. Since configfs-tsm
-> > provides the generic transport for TVM reports, the best option to make report0
-> > available is through configfs-tsm reports.
-> > 
-> Given the purpose of TSM, I once thought this TDX_CMD_GET_REPORT0 ioctl of
-> /dev/tdx_guest had been deprecated but I was wrong.
+On 17/10/2024 14:14, Steven Price wrote:
+> From: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
-> However, unlocked_ioctl is the only fops remaining on /dev/tdx_guest and
-> TDX_CMD_GET_REPORT0 is the only command supported. It might soon be time to
-> deprecate this interface.
-
-Once an alternative is available but it's still in use because of this 
-use case (i.e., read registers from a TD report). AFAUI, SEV has its
-reports available through configfs-tsm reports so it'd be a good fit here too.
-
-Obviously, if the registers get exposed through this series, the use case
-can be covered but full TD report is still good to keep available.
-
+> Use the memory encryption APIs to trigger a RSI call to request a
+> transition between protected memory and shared memory (or vice versa)
+> and updating the kernel's linear map of modified pages to flip the top
+> bit of the IPA. This requires that block mappings are not used in the
+> direct map for realm guests.
 > 
-> > The use case on MRCONFIGID mentioned later in this thread does not depend
-> > on this series. It's easy for the user-space to interprete the full report
-> > to find MRCONFIGID or any other register value (the same is true for HOSTDATA
-> > on SNP).
-> > 
-> Yes, parsing the full report will always be an option. But reading static
-> MRs like MRCONDFIGID or HOSTDATA from sysfs attributes will be way more
-> convenient.
-> 
-> Additionally, this sysfs interface is more friendly to newcomers, as
-> everyone can tell what MRs are available from the directory tree structure,
-> rather than studying processor manuals.
-> 
-> > The question here is whether there's any real benefit for the kernel to
-> > expose the provider specific report details through sysfs or could we focus on
-> > the RTMR extend capability only.
-> > 
-> Again, parsing the full report is always an alternative for reading any MRs
-> from the underlying arch. But it's much more convenient to read them from
-> files, which I believe is a REAL benefit.
-> 
-> Or can we flip the question around and ask: is there any real benefit NOT to
-> allow reading MRs as files and force users and applications to go through an
-> arch specific IOCTL interface?
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Co-developed-by: Steven Price <steven.price@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+[...]
+> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+> index 547a9e0b46c2..6ae6ae806454 100644
+> --- a/arch/arm64/mm/pageattr.c
+> +++ b/arch/arm64/mm/pageattr.c
+> @@ -5,10 +5,12 @@
+>  #include <linux/kernel.h>
+>  #include <linux/mm.h>
+>  #include <linux/module.h>
+> +#include <linux/mem_encrypt.h>
+>  #include <linux/sched.h>
+>  #include <linux/vmalloc.h>
+>  
+>  #include <asm/cacheflush.h>
+> +#include <asm/pgtable-prot.h>
+>  #include <asm/set_memory.h>
+>  #include <asm/tlbflush.h>
+>  #include <asm/kfence.h>
+> @@ -23,14 +25,16 @@ bool rodata_full __ro_after_init = IS_ENABLED(CONFIG_RODATA_FULL_DEFAULT_ENABLED
+>  bool can_set_direct_map(void)
+>  {
+>  	/*
+> -	 * rodata_full and DEBUG_PAGEALLOC require linear map to be
+> -	 * mapped at page granularity, so that it is possible to
+> +	 * rodata_full, DEBUG_PAGEALLOC and a Realm guest all require linear
+> +	 * map to be mapped at page granularity, so that it is possible to
+>  	 * protect/unprotect single pages.
+>  	 *
+>  	 * KFENCE pool requires page-granular mapping if initialized late.
+> +	 *
+> +	 * Realms need to make pages shared/protected at page granularity.
+>  	 */
+>  	return rodata_full || debug_pagealloc_enabled() ||
+> -	       arm64_kfence_can_set_direct_map();
+> +		arm64_kfence_can_set_direct_map() || is_realm_world();
+>  }
 
-FWIW, I'm not thinking about IOCTLs here but configfs-tsm reports: a
-single read gives you all registers as specified by the report without
-having to add anything to the kernel ABI.
+Aneesh pointed out that this call to is_realm_world() is now too early 
+since the decision to delay the RSI detection. The upshot is that a 
+realm guest which doesn't have page granularity forced for other reasons 
+will fail to share pages with the host.
 
--- 
-Regards, Mikko
+At the moment I can think of a couple of options:
+
+(1) Make rodata_full a requirement for realm guests. 
+    CONFIG_RODATA_FULL_DEFAULT_ENABLED is already "default y" so this 
+    isn't a big ask.
+
+(2) Revisit the idea of detecting when running as a realm guest early. 
+    This has the advantage of also "fixing" earlycon (no need to 
+    manually specify the shared-alias of an unprotected UART).
+
+I'm currently leaning towards (1) because it's the default anyway. But 
+if we're going to need to fix earlycon (or indeed find other similar 
+issues) then (2) would obviously make sense.
+
+Any thoughts on the best option here.
+
+Untested patch for (1) below. Although updating the docs would be
+probably be a good idea too ;)
+
+Thanks,
+Steve
+
+----8<---
+diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
+index ce4778141ec7..48a6ef0f401c 100644
+--- a/arch/arm64/kernel/rsi.c
++++ b/arch/arm64/kernel/rsi.c
+@@ -126,6 +126,10 @@ void __init arm64_rsi_init(void)
+ 		return;
+ 	if (!rsi_version_matches())
+ 		return;
++	if (!can_set_direct_map()) {
++		pr_err("rodata_full disabled, unable to run as a realm guest. Please enable CONFIG_RODATA_FULL_DEFAULT_ENABLED\n");
++		return;
++	}
+ 	if (WARN_ON(rsi_get_realm_config(&config)))
+ 		return;
+ 	prot_ns_shared = BIT(config.ipa_bits - 1);
+diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+index 39fd1f7ff02a..f8fd8a3816fb 100644
+--- a/arch/arm64/mm/pageattr.c
++++ b/arch/arm64/mm/pageattr.c
+@@ -25,16 +25,14 @@ bool rodata_full __ro_after_init = IS_ENABLED(CONFIG_RODATA_FULL_DEFAULT_ENABLED
+ bool can_set_direct_map(void)
+ {
+ 	/*
+-	 * rodata_full, DEBUG_PAGEALLOC and a Realm guest all require linear
+-	 * map to be mapped at page granularity, so that it is possible to
++	 * rodata_full, DEBUG_PAGEALLOC require linear map to be
++	 * mapped at page granularity, so that it is possible to
+ 	 * protect/unprotect single pages.
+ 	 *
+ 	 * KFENCE pool requires page-granular mapping if initialized late.
+-	 *
+-	 * Realms need to make pages shared/protected at page granularity.
+ 	 */
+ 	return rodata_full || debug_pagealloc_enabled() ||
+-		arm64_kfence_can_set_direct_map() || is_realm_world();
++		arm64_kfence_can_set_direct_map();
+ }
+ 
+ static int change_page_range(pte_t *ptep, unsigned long addr, void *data)
+
