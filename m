@@ -1,919 +1,243 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2048.outbound.protection.outlook.com [40.107.92.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841D828F5
-	for <linux-coco@lists.linux.dev>; Thu, 20 Feb 2025 01:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF69A923
+	for <linux-coco@lists.linux.dev>; Thu, 20 Feb 2025 01:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740013288; cv=fail; b=h8t8xcm6rVtHY0ucqADAKyBcplmVFR3o+itFHOsEiG6O7uHNmXg4y8YjHsEzzFxYi0mx3NbafoQcmkblieJLIhFpsrVwNL4hade42dslyy+ZFTaSZVhC0EzI8KNUSSc6O9cU4VFDr89Sh2BCPo7gq/QbKI7tDuY+Ty0EgTPx730=
+	t=1740013955; cv=fail; b=bvcQtIbKKxbzJnf1jUhCfxS5nwOuDNYM2GAgn0cQHdcKL7c/HWz0BcA5mXnTKUf2oGw93ozBJoEpn5mYy4tmPjJXqrG3X+QCeRq4QYZfxsd9fx7RHW1u4W0X4uWF+uiExkWxPNxw6CegiJkGaQ+hxDadm4S9mdDIoXmb+trVWL4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740013288; c=relaxed/simple;
-	bh=y0zZuaass6MKcQr4kWeGZa4CGMlkQdnTnh5dDRia7uk=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Y08J1MLSgyK2jq6cm34G6/jvQPp+3FXk8H53gKEdS1QRj5v/HHuct9W9WMFtGaljo9CLUgwF8GV/LZhgR3GjExe2zqQKmrz1SsJSLQGsUzTAD6mf42B9n6MyrXibBq7yvah1ikONJMQcy7hfJhHOjrZCtcHnebgTxlTkue1OJMI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hzhcyzlm; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1740013955; c=relaxed/simple;
+	bh=UX2P3LJV8wj04XqSyzKx4gU0P8IWvhm1JUVQ1JoWRTE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T+yoAN2WRWafwaFJ95fFJFfJmgvYMU5RFDL3TFtz+VnW6KLshyqDZ3dkJPGCaq1BVTrPRr2194njUwJ57GZ4IQY46nGaRh3d5JTyt4Bnm/bmTW/bKr6/I1cdIh2mfCujWyEusA/Pim6gfPxTipB+3yscAPfIngMqcYPX3V2l7Bw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wgaMG/b5; arc=fail smtp.client-ip=40.107.92.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hzhcyzlm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740013286; x=1771549286;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=y0zZuaass6MKcQr4kWeGZa4CGMlkQdnTnh5dDRia7uk=;
-  b=HzhcyzlmfW13AtUc/krCZrChBrJhr16MIL2VCO6+guL333SWSVnB80l9
-   cFg948vdaj6eo8RYH1+cYAjcOXSh566HJZqqoZ2+bBYVrUv/vDo4qH+Yf
-   VPCRmbot7Orp0Z9YFbhpdm00USyqxX6+bibh1fdnUPQDuE8CRUaexFpFV
-   inFwUseDP4FtfvIuSVdd3rksxd3JZ/U5mKiYjJabnsQoSzRfy4qZNYbQ+
-   7o/uxUVSWVnQoJ+rEeHgNmxpnYtlDWiRWxvqWN/VePG/WX2eU1PiTe+av
-   RZer6082TbjHaAGvaz5LBTLJbw199k1LiYYaW96KSVJPyMBS5Qy6T0+En
-   g==;
-X-CSE-ConnectionGUID: iOqU4XxQS1u2tAS3uEutcg==
-X-CSE-MsgGUID: wwzCnD9NSr2Cnp5esKaHYA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="63252594"
-X-IronPort-AV: E=Sophos;i="6.13,300,1732608000"; 
-   d="scan'208";a="63252594"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 17:01:25 -0800
-X-CSE-ConnectionGUID: WLIn9vzMTWeaPfyJOJxMOQ==
-X-CSE-MsgGUID: MzxTJ0a7R4yULqX+umUNiQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,300,1732608000"; 
-   d="scan'208";a="114869653"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 17:01:24 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Wed, 19 Feb 2025 17:01:23 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Wed, 19 Feb 2025 17:01:23 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.175)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 19 Feb 2025 17:01:23 -0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wgaMG/b5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cSXGF/9eYLD/7x3pRseg1bvjY4dcl2cwvMRJi893AijC6cM8Ph5HcosVHyK1JqF3Mc0Cbz2c0SKCs1cg2yZklFBe1B3GUr06FuEEzeGpko9TZ8G0YMdJs9Fq1+5pJP2ofr99aQq1wQ21BCTDT689dhqCfJ0JKn/a1nTr77wgVXx7jobyetdHtvIobSFqFSYgA52mD1iTsB69g5eVHZ+pvbxRKwsVhD0o0rbFt/srpNS1kZyyyYedCYmpl4SSqKireybgUmWXf7r/NpYR3CaFM+Imoz4xD2DM05WKPhAc2DiErPOZyJ+OYdmSXphDsOTv8JoeiYq6ydJi49lIi/7AdA==
+ b=N3oIbUhg1Qm7As8hevKoQb3Ya3if6uqoVLT3uSpttKNpqFFBx9jdG+0GGmIL2aUJu58FLcezBZ4KCO3QmP/c6Y4Vf5sdoeko7JR+k8/7BLKANj/tBnofiMv13lxzkE0l0KF2InTXjxfndsg5QuPC7O1mFFKBcZiX3HxN8CSaKTCAgj23HIpEvzaCyhf3FT2em8uZRH7TqDbh2BIEFwqXK0gr5tvuNvkI1odORVHkWHKpLsZ2bsxckRu7qeB7fTPPS8loU5R9vXgoR2tuLBgYNGRNyNCMxwT2Pe71SFwCcNwm7hqbsn1Cy0Oq9bcd/98+IUo0psRi/I8FeVKA+9j3Vg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iJAFn4PFj2c441AoBwMQuaZMmiHOczuJBsMTOYSMMYU=;
- b=nREK/EOsNePndLR8PFOWd/9M4nTAK21KMlmgDDtt7qJEG2tZX6/E98AyXwFwMb7tXFx6pfbSOD+CS3gon2o7yGGYxtZuUG0SVDdGqN/ZIVTBjJ8MKgyIQhqAED0v2jcP/W2hS6LmbdSceoI4T0r8we1ww92t9aszhVk5/3oNaW4zwlLagbICAPLbwrLBuymU1aWHJr2Q7gT8oTAv+AZ+GicqAP81oVfwe439+VgTLvclkPOWAGJ4eGIJ2qDMMyamZcVT5Gjb6vEAqvQkLk3kRqnI69EwWq8HFQrFFy75Eqked8EH12yU5fao7ogrZhUrujAdY71mcgiBNmZmV7MMmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB6269.namprd11.prod.outlook.com (2603:10b6:8:97::14) by
- SA1PR11MB6781.namprd11.prod.outlook.com (2603:10b6:806:25d::12) with
+ bh=/2FHULhc8GW4M0ahUjVCuRJCgiKzmDXNFfSfHzIv5HY=;
+ b=Hq2Z6qyR2u6WvOw8wixCsRo8k54dQXSf37Nn0VIGtoQflQWr++BdQ8jOlEhR6VQQ9VpTBi7elNsOqNBQB7tfdSJcqwkL0MBfEa3o6GgqbXoxZwpIRMPpWXNdAQhtMFrnuNMlKvE4wua0CMyQFT/aMurVv8zJqR10ob1h+dosc9Dq5JgrJ5lOYQlgjVMVm2uM1HW6F4n+VMuqgkn26f6mTuO4DwYCcszOzVC2mkJW7wjeqgN6Y2jmjcwqYrKWLs0jwPIgc9xxTwuDGyyoP18icQ1TWm0yrcUuzFww57GZdrhhpg4YLcB1DyQc8qJR1B7W/sS0TFb2qs9IFOIjs6CMOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/2FHULhc8GW4M0ahUjVCuRJCgiKzmDXNFfSfHzIv5HY=;
+ b=wgaMG/b5JrSJaFPj5nOFNz8EXqXDVKnGqeEjR86Y2txAhjWXR3Us9l6XIue5TmtFN0CRcWtyze8Ynh2HIrl4MyoT/L7e0SGZTsXDqdi+x6HDBXeFRwba2/Lxlfowyjz1PXUYdwV4qqGZubytl2s//I+YY8t4X9MDTDSKJkj5pFY=
+Received: from SN6PR01CA0033.prod.exchangelabs.com (2603:10b6:805:b6::46) by
+ PH0PR12MB8800.namprd12.prod.outlook.com (2603:10b6:510:26f::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.21; Thu, 20 Feb
- 2025 01:01:19 +0000
-Received: from DS7PR11MB6269.namprd11.prod.outlook.com
- ([fe80::af1f:dcc:49bf:1a26]) by DS7PR11MB6269.namprd11.prod.outlook.com
- ([fe80::af1f:dcc:49bf:1a26%3]) with mapi id 15.20.8466.013; Thu, 20 Feb 2025
- 01:01:19 +0000
-Message-ID: <e725bea0-e2d0-47ce-9128-5187cefecff7@intel.com>
-Date: Wed, 19 Feb 2025 19:01:14 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] tsm: Add TVM Measurement Register support
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>, "Kirill A. Shutemov"
-	<kirill.shutemov@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>
-References: <20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com>
- <20250212-tdx-rtmr-v1-1-9795dc49e132@intel.com>
- <e6124222-0dd8-46ff-abf7-3fcde963a5bd@linux.intel.com>
-Content-Language: en-US
-From: "Xing, Cedric" <cedric.xing@intel.com>
-In-Reply-To: <e6124222-0dd8-46ff-abf7-3fcde963a5bd@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0170.namprd05.prod.outlook.com
- (2603:10b6:a03:339::25) To DS7PR11MB6269.namprd11.prod.outlook.com
- (2603:10b6:8:97::14)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Thu, 20 Feb
+ 2025 01:12:28 +0000
+Received: from SN1PEPF0002636A.namprd02.prod.outlook.com
+ (2603:10b6:805:b6:cafe::f4) by SN6PR01CA0033.outlook.office365.com
+ (2603:10b6:805:b6::46) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.14 via Frontend Transport; Thu,
+ 20 Feb 2025 01:12:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF0002636A.mail.protection.outlook.com (10.167.241.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8466.11 via Frontend Transport; Thu, 20 Feb 2025 01:12:28 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 19 Feb
+ 2025 19:12:27 -0600
+Date: Wed, 19 Feb 2025 19:09:57 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: Vishal Annapurve <vannapurve@google.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <jroedel@suse.de>, <thomas.lendacky@amd.com>,
+	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
+	<amit.shah@amd.com>, <pratikrajesh.sampat@amd.com>, <ashish.kalra@amd.com>,
+	<liam.merwick@oracle.com>, <david@redhat.com>, <ackerleytng@google.com>,
+	<quic_eberman@quicinc.com>
+Subject: Re: [PATCH RFC v1 0/5] KVM: gmem: 2MB THP support and preparedness
+ tracking changes
+Message-ID: <20250220010957.cueewk2qliqlpe45@amd.com>
+References: <20241212063635.712877-1-michael.roth@amd.com>
+ <CAGtprH9ehiz+yKfQqj6JeObaPv0DPUsoAH+YVdSeuzL9zhw9tA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGtprH9ehiz+yKfQqj6JeObaPv0DPUsoAH+YVdSeuzL9zhw9tA@mail.gmail.com>
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB6269:EE_|SA1PR11MB6781:EE_
-X-MS-Office365-Filtering-Correlation-Id: 79c43eee-54fd-420a-9fe9-08dd514a15f3
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002636A:EE_|PH0PR12MB8800:EE_
+X-MS-Office365-Filtering-Correlation-Id: 36c08244-5334-4ba8-19f8-08dd514ba494
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?K2VqeTBFREN1Q2VUWVBWSlNwZlRLMGRsME96NFpxZncyV0p2SFVGTWxGMmdz?=
- =?utf-8?B?Y1dYSW14ZTRQalFZT0ZOdXZ6NllCSjVBWEd4MXJoTHpUcjZIMVc1Q1p6SmIx?=
- =?utf-8?B?U1IrYUp4YUVhWWs3SlZFUDNJK0NoZjBYYWZIQ2VWdGVWV2hzalBHcmphOTVw?=
- =?utf-8?B?UlhPYnZrYlgrV21Fd3VvYzkvQVRrWWNuNGJZdi8yQVNiQzdhMEtjSzFEaEV1?=
- =?utf-8?B?em5nRCtwQU1ydU4rRHdKRm9icjZBd1JLendlZ0ZLTlJ4U2puamZob3RjeFZF?=
- =?utf-8?B?Wmc4SmVRQXBTVXJMT0RMaGt4MjV0ekRaQzRCSDJuWEFFa3V2TUFwZjZGMUpL?=
- =?utf-8?B?TnEwZ0taeEZ5MDdwWEh4M3Jab21mN1VNRGU3U1VObk9kQyt5ZDFhRmp6Nzh3?=
- =?utf-8?B?c0FoaVVKVXpMWVA0SEhPeW5MM05XNndzbUVCUWozckF5ZlhWN2dJK2lCNFNw?=
- =?utf-8?B?MDl0Q3hRZ2QvN3hLWjVZR3RES3FJUWQ0clZrNjl5YlJNZ0Uyc25hUzlEU1Zv?=
- =?utf-8?B?NXpBRGhZb1pRV1JEOUYrZHRpM3RVUlBMek9jNjhhSGN5V3BDUjFwcmJ5RjhC?=
- =?utf-8?B?RzZFMk9NSThMcUQ1c0xwdEl3YkJEQXRPa0c4UGovSjhVc0R3WnQzY0pQMGZL?=
- =?utf-8?B?eDBPeUV4UUJYUmxIbnhsdWZhVUd2R2NIWkZZTEtKUGZnMzB6Y0oxYWNZcWlV?=
- =?utf-8?B?MHVrME5pcFNaUGNOQmRxL2FwSWZ2Um9rY1NYWk5VZDc4SWozZlR1UGcrUXVk?=
- =?utf-8?B?ckxIZk9ackZJZjFndnRVSERDeTZlbjdLS2dJNTNvVTJYbExIR0tIZE84WkZJ?=
- =?utf-8?B?N2NoQ2wxdmMzZlp2TVBoZitka3l6dmxMQUlFRXVIbGx5ZW9tR1h5R0RVNDB0?=
- =?utf-8?B?bE9saTNrZlBMN2hVUkRGMTFvUkQ4Z1NydzhqbEdmOGtxTkR5WHVCUGZBSCtI?=
- =?utf-8?B?UlE1eFIza3M1MGZ3c0lUNW56WHNaOFk4RWJxVkZzTWpkcThDQ1VMNWY2MkhS?=
- =?utf-8?B?NVdRQzdyc3VHZVZrZzF1OER5UlRjYUtXUzZpZnpKWlovcE54SGJ0ak45VmJR?=
- =?utf-8?B?aTVsQmNBRTF0T0NkejVhcTVUVTBjYlBoWVVKZFRhYUhqY0JJT3BhK1Y5SGdM?=
- =?utf-8?B?SGcxdVQyMTFxM3NVU04xeEFaV3JxV3hpT3d5ak96eHNjTHRuM3JpYlhGdjlw?=
- =?utf-8?B?SHRITHNqZHNJYTZSbHRLb2VrTmZQcmJMTVlEcWJlMHBxNm0vNFNQSXd4RWs4?=
- =?utf-8?B?VVBIS3E5TDN2eU4zUERKd0FmVjFzaDZnL0c2M05SWEN2c0dMSWU2ZmI3L1VT?=
- =?utf-8?B?NEh6d3hYVmRHb0tWK2FnUEZ4WmJYZFQ1bCtndWhYM09NZlBUVUtWUmdzZlpq?=
- =?utf-8?B?RkV4ZDRoWmtvbG9NQmZXSHovalFLbUtDekdLTDE5YWpKbUxRQmVPSmI2Zk95?=
- =?utf-8?B?YkdwUXRxOGN5TUFMZUpnZ3NLc1JjS1BzeWdhMjlMalJjUHFLbGNMclBFK1lQ?=
- =?utf-8?B?Z2J6SXMrUStFenVSaWxUNGRvZDEzMTJqbDdRVHdnbFdOOFJuenRxWVljRXd6?=
- =?utf-8?B?MStVclR1YmVSaGF6SldZY2tEZW5WYWJHVkxaWG1KUzdpVm1jOTZJVENvOVR2?=
- =?utf-8?B?cGR3V3ppN2l6MzJTQVQ0R1QvMVJiMUgxYmdMaTlaNjNHc2tvN0JFTUtrZmhl?=
- =?utf-8?B?RExSdFBMUVYrbDBqRUJpQURUaExzRE9FVTVhN0lxRm5LQUVrQnJ4R1NVeTV5?=
- =?utf-8?B?V1RDNmdRQS9mKzkvdXdEek5GZ0dyNDZrbXYvV0JieldqajRpWEJiM0Z1dk1D?=
- =?utf-8?B?R2JjdzhwSFU2Y3pYOGFBTjZqRFYzUFZ4MzBCdExZWWJKNVUrRFdRRlJDNEhm?=
- =?utf-8?Q?gc8p2tb8PVAGS?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB6269.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eGEvcGl5Z1BIbndjZGFKR2RZSWI3K21acnhtSDNobUhmdTd6QmhzUm8xMlNO?=
- =?utf-8?B?ZFYyQzgwcHcrbHJGRTZBYXpFRm02UkFzcmdrS01vY2hCU1AyTzMzTUtDbEsw?=
- =?utf-8?B?VnNYUmh2S3VGdittcVBqSlAydzB1aUZiVU83eUVwR2N2S1RWeTU1VzFXVm1j?=
- =?utf-8?B?emsyQm1yWXZ6NWN6b3BXK0svaUdsUmk3YnBkZ1FqRHd2VjdiTEo1VVhtUkpr?=
- =?utf-8?B?MFpVUHFnSVJZSGZ3dE9OaXhtaUtpdVM2blBnWjhwSEQzU2JaWWFHZ3FTbUhX?=
- =?utf-8?B?M0U0K2YyOVg4b0pZWkp3dHlPVTFEWmlOMkQ1RHhXaHJkb3VWNlZtcVhFVVR5?=
- =?utf-8?B?WElQSjdrZXU2dUhIQy9TeklrZlpXUGVpeE1TODhpZDlqZEZTTEVwK29RSnh0?=
- =?utf-8?B?Qi9KaGVYcU14bzl2eXlVRk9PMWovOGpFb2JITU9DTVU4SXVLSHVXVkNab1dS?=
- =?utf-8?B?QUJjOVJ0dllkYkgrancxeUp3WVVVWkRuYVltKytMUnZFelJkRzhCUjhvbndM?=
- =?utf-8?B?Y0tBaGF5N2Y0bm9PMWE4OWRvVFJ3VEU5Q05GeWVZM3NjT3c4UlZENGlja1Ay?=
- =?utf-8?B?YW9LOHRpd2F1eFlHMkZwcjZOQVRPWi9NNTBRMUtNRDlHd2lmK3BRZzdnb3Bx?=
- =?utf-8?B?RVowRzZITjkvb05LMkUyZnE2cWVLT3d4TlZ3ZWY4eXhLbzgrM1NGZHVTZXhG?=
- =?utf-8?B?Y2tyZ2ZOVitHVmI0TS9PRkUrWkNtWWVNd3pGd0c4aG1TZjlPbWs3aDRPM0xv?=
- =?utf-8?B?dVJpSFlQc3dKT201aDVWRzIwTHppZHZiVlQ3RHJtTnpoNkJicGNRR1ZUK3ll?=
- =?utf-8?B?OVVjUUJ2SHZNcHpudllGRHhGS3M3dHNiYUxmbEREV1VDMkhHSEpVMlN6aGty?=
- =?utf-8?B?Z1hScERTN0RkR0RqelVwYmZnL0NNcExMa29aSzR3cmRJN0J0VnBQM2R6NE5r?=
- =?utf-8?B?TzJaOXJDMy8zUXBHUmptenNHRnlNVW9zNUdYblpXNWVzbE90TlNNVCt4NEh1?=
- =?utf-8?B?RDExT0c1T3NLV1hVL2JpMjZyNURFNmlxck0wUEFyNlFOVXlkNXNMVDFid0s4?=
- =?utf-8?B?eTMvN2ZxWjVkNEpSM2FPMGhyeWw4QXlaUE5CVWlEQVozc0YvVnlOL3U1cGli?=
- =?utf-8?B?OUlXWCswOStMdm5aTnZaQnBrRWxPM0VHYytGN20rZVN2bnBqemxCVzJuU1Nk?=
- =?utf-8?B?bFROa0xWcnFjWUI0dzFWM2VwMEtPQkttT1hpejlRNDVHTDhwTW4yZmI0bmdK?=
- =?utf-8?B?Q2hyNHQxU3BYYkx3M2FMazIwQlFDT1V4TUNUSnZ1NmVtZFNoYmVlZFZRYVdX?=
- =?utf-8?B?M2pnMnhyVHhpcmRqT0pMcUk4VWx5eFJKQnhCbkpQQTBsK3VZcDNzM0JPRk1N?=
- =?utf-8?B?U1pudHpGZEdPU1doVUVHWlhXV1VETFMzQUhxY20zSnUzZFdQT2tvQllYQWND?=
- =?utf-8?B?WXIyNkNRdzBGOFZuREhxcDFrWFBaVCswMVpEUUlib01MelBrc1d2STJEUWho?=
- =?utf-8?B?dElKOWwycFhnZnZyckdQWi9rSVlJL3RFdDAyT0Q5UXVoM2orMFhwNFhmVEt0?=
- =?utf-8?B?WW5mczBzdittOHpzaTZEUE1nZ01iaWErekV1SkxYa3p1elgwemlkQ1RtSjM0?=
- =?utf-8?B?K3R0UlI1R01rSSs3cWhuTjY0elpqUlIyamJCRjVtczBDQktmcGI4MUhSdStt?=
- =?utf-8?B?czF3a1NlT0lpYnYwdFRkVGQ3ODJaeWJVR0lRVDExaGJzT0lXRmVGYm1tSWQv?=
- =?utf-8?B?dDIwdkJmQTl2dzEvTVhlbWxEd1Y3akRXQWdkMld2RTc5UzU1Yit0aUNLTEpH?=
- =?utf-8?B?VGp3NHgxTVRueWx2Zy9tNHAvMmRNQldYRkdsUnR6elR4VnByWmR4K2JUbFdr?=
- =?utf-8?B?eUxGcFlLbFFZemF4c09WR01pVkpQVVNzakVSYmRBanhreUh1bnRraU80cndh?=
- =?utf-8?B?bDlsa3YyTXB1bjdIVEdqZkgzLzJ5WWJ6NUVaTnpRTU1PamRDclo1bEFlb08x?=
- =?utf-8?B?R0lTZ1dOc1J1VWx5cGZZaWl1a2g4bTZ1QTRpUnMzSHRBUE1QZVBnQ0FSNWlW?=
- =?utf-8?B?eWl4MCtucHgvRC9mWmZkeWg1RERyRUIxNm9RYkJtTVp4Ky80VzRLSHlRc2FS?=
- =?utf-8?Q?Zhba2EAVxyFYTb6pXy4DhG/ea?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79c43eee-54fd-420a-9fe9-08dd514a15f3
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB6269.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2025 01:01:19.6347
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|376014|7416014|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bjdzYmlIekpsMmZwUGh1aFNBVlFXNjNxakVLVXljTDdCQ0hTWUNMK2x0VE4x?=
+ =?utf-8?B?SGcreGNnUFl5NVF1SjhaR0JLODZCUnVCWERhemg5Wnl1bE5yUDZvTlptS3FW?=
+ =?utf-8?B?enRQem8yeis5Zjh1S21sT3hraW9YdFBxU0QwMytiMm5uVUZqQ0Y4QklTd0c0?=
+ =?utf-8?B?MDZuMzllV0JJQXZHK252a2hsTVQ5alhua0NUNXhvSGduczBwNkZicDlIMVhV?=
+ =?utf-8?B?RDRZb21ITXFmVUxJOEVnaXV5cnhzeFRKSnFlTWpuR25rUkpMODRTZEJRcjl5?=
+ =?utf-8?B?N3pXamxKVysraUJ2alJJQXBYK3B2NmpHQWgrMWhVak9xM1JLSVpNWjJlNXh3?=
+ =?utf-8?B?VUpmQy9YZUlZY2h2L1NyOEtJNHgxdTJGS3RFc0NqWThYMis3emJJMmJVdGlZ?=
+ =?utf-8?B?T1pCV08veWg5Yk1BZzFKaEJTaWg5YjRqTWVFYzBLTXVYbTZkZGo2RTFtNTB5?=
+ =?utf-8?B?UGRlZlNkcC9vTzRlNFBNcGkraEt5ZFdsUGViaVdLUDEyd2NhM3d2V1pRUXZN?=
+ =?utf-8?B?bHI1UHVZQWFmQlpwUThhNWZqNUxUWGVXcjdjM3V1QjRXVE8xamVWVXpZMFRR?=
+ =?utf-8?B?eWZ4Ni93ZHZQSVJDb3pTdXJueHJwZUxHMGFabFhwbUNnM3VvdWRPUE9Kc3Np?=
+ =?utf-8?B?bFZIU2d6N3JsNGtYeGdBbDZnRzB4M1BvaXk0U1RxUlFVWXZOZjNLSGhpQ1ZN?=
+ =?utf-8?B?aUIrdGg5R000ZnRJNjRHY2pKQTRIc2RiQlVrYnFJM21kU2RNN1dGYUFHY3Fi?=
+ =?utf-8?B?SHlCdkpGMlBISXhxRGE5SlY5ZjBkVVo4bXllOWJIZzdZNno1bDF2RWFqb0sy?=
+ =?utf-8?B?MXN1N1hBeWlBUXFPUEYzRFFWMGdQT0E4cVg0ZDU1RTdlZjBOSGN4bHh4OTFh?=
+ =?utf-8?B?Sy9tcG5pVnpIVUNHM0kzb3plVmlJQXYxWHBXdjhRK1RWTEsva0lCQlJCNTBV?=
+ =?utf-8?B?U1Fua3hqeXpWQy9zNTB0OFp2WmZxakRxOFlIQVlTZmp4b3ZGRzBtaXdFcUdI?=
+ =?utf-8?B?NnB5ZThPOTNZTE9wREhGVE9PVFRGWFljSndWTXBhaDdMRllzSk9nRUQyYm5y?=
+ =?utf-8?B?OStMVlArWHhGQWVjRmx6Q3dUWjV3SUVhbUVBTlNkNnRiOFlIQTNaeVhkTmlm?=
+ =?utf-8?B?VUhjS2IwSVdqNmV1UGRiU3NLQXJKaWxwdjM2aVlEbUxwN3JDT2IrdDNhOVRt?=
+ =?utf-8?B?cDFKdDk5RXRaUHZ4bGZNVWUrOGY3akg0UjFIQnBMa1Yzek1VTDlWYVJvdmdI?=
+ =?utf-8?B?QVNwcGlPZ3NPREF3WXlCcnh4dVk1WXkxdlBXNVlBMnlMdUpaMDRObWp6d0pI?=
+ =?utf-8?B?aiszWUZJTE92MGcvREYySFROdXFXeGJ6VThNOG8rSG5FWWZIWmFsVTJnTFVJ?=
+ =?utf-8?B?cEVQYjBaVDYrRWVCYklveFRRVlFLZ0dsblB0RWkybyswa3BmanNiQlV4QUp4?=
+ =?utf-8?B?MWNXNXlCVlB5MFRJbklodlhkSWR4Mm05clhZZm81MzBKek96Q2ZNL0djbkNK?=
+ =?utf-8?B?YkxSQWVBc1FDYXV6c2lTeVZObitwVDgzU3VwdmNMQmNSZU55L2ExRVRLb0VD?=
+ =?utf-8?B?YTQ3dTUydzh0MGFvUFlGc0FleEtyT2pxMU9tLzFhQm1HMEpRdlBGT2hRQzFE?=
+ =?utf-8?B?OU9TSnRtaEhoa2puM2dINGxaM3Y2N01wQ29hVTVGcU5aRG5xYVY1aGw1ZXpL?=
+ =?utf-8?B?RlNlMWRKZnZ5L3o3MWFhM0FBZFBVS3RYcUFVZTF5bzVJbTBNZlpNbldHSWlp?=
+ =?utf-8?B?UUlLaEk1ZzhjM2paMHkrQmp2YTdtY3lZbzBiamE2MDZtV2dCMlhtcFM0bVkx?=
+ =?utf-8?B?YjhPSmpzNGIwM1NrZFJ4UVZneFBtQnFHSlNDNVFCMS8wQjZQY2Qra3BuZk1O?=
+ =?utf-8?B?eTBZaVhKY2NLZExWQm8vVWxZSnJFU0RWdllTNm9sK294YzdEQ25iVE5hK3k5?=
+ =?utf-8?B?dHpBRWI0MDVqRTM4NUw4UmxqOTJNMlNjMkRJNUVmRUwzMTFZOHRFYWpKY2hJ?=
+ =?utf-8?B?djFyZDBUc0FzK29XamYyd01SU1piYXBzV0o4YkN3RjVXbDBiTWlVN2hZOHVF?=
+ =?utf-8?Q?aOsskt?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(7416014)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2025 01:12:28.1107
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1vREz+o0uUwswqZS0oA6I79hvHqj+trDbou311mK8amtLokXh98QhktfgKbvimwNcRSdZ4u/0QbJVvscm2X9ZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6781
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36c08244-5334-4ba8-19f8-08dd514ba494
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF0002636A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8800
 
-On 2/17/2025 7:10 PM, Sathyanarayanan Kuppuswamy wrote:
-> Hi Cedric,
+On Mon, Feb 10, 2025 at 05:16:33PM -0800, Vishal Annapurve wrote:
+> On Wed, Dec 11, 2024 at 10:37 PM Michael Roth <michael.roth@amd.com> wrote:
+> >
+> > This patchset is also available at:
+> >
+> >   https://github.com/amdese/linux/commits/snp-prepare-thp-rfc1
+> >
+> > and is based on top of Paolo's kvm-coco-queue-2024-11 tag which includes
+> > a snapshot of his patches[1] to provide tracking of whether or not
+> > sub-pages of a huge folio need to have kvm_arch_gmem_prepare() hooks issued
+> > before guest access:
+> >
+> >   d55475f23cea KVM: gmem: track preparedness a page at a time
+> >   64b46ca6cd6d KVM: gmem: limit hole-punching to ranges within the file
+> >   17df70a5ea65 KVM: gmem: add a complete set of functions to query page preparedness
+> >   e3449f6841ef KVM: gmem: allocate private data for the gmem inode
+> >
+> >   [1] https://lore.kernel.org/lkml/20241108155056.332412-1-pbonzini@redhat.com/
+> >
+> > This series addresses some of the pending review comments for those patches
+> > (feel free to squash/rework as-needed), and implements a first real user in
+> > the form of a reworked version of Sean's original 2MB THP support for gmem.
+> >
 > 
-> On 2/12/25 6:23 PM, Cedric Xing wrote:
->> This commit extends the TSM core with support for CC measurement 
->> registers
->> (MRs).
->>
->> The newly added APIs are:
->>
->> - `tsm_register_measurement(struct tsm_measurement *)`: This API allows a
->>    CC guest driver to register a set of measurement registers with the 
->> TSM
->>    core.
->> - `tsm_unregister_measurement(struct tsm_measurement *)`: This API 
->> enables
->>    a CC guest driver to unregister a previously registered set of
->>    measurement registers.
->>
->> `struct tsm_measurement` has been defined to encapsulate the details of
->> CC-specific MRs. It includes an array of `struct 
->> tsm_measurement_register`s
->> and provides operations for reading and updating these registers. For a
->> comprehensive understanding of the structure and its usage, refer to the
->> detailed comments in `include/linux/tsm.h`.
->>
->> Upon successful registration of a measurement provider, the TSM core
->> exposes the MRs through a directory tree in the sysfs filesystem. The 
->> root
->> of this tree is located at `/sys/kernel/tsm/MR_PROVIDER/`, where
->> `MR_PROVIDER` is the name of the measurement provider (as specified by
->> `struct tsm_measurement::name`). Each MR is made accessible as either a
->> file or a directory of the specified name (i.e.,
->> `tsm_measurement_register::mr_name`). In the former case, the file 
->> content
-> 
-> May be include some info on when a MR can be just a file (like an example)
-> 
-Will do.
+> Looking at the work targeted by Fuad to add in-place memory conversion
+> support via [1] and Ackerley in future to address hugetlb page
+> support, can the state tracking for preparedness be simplified as?
+> i) prepare guest memfd ranges when "first time an offset with
+> mappability = GUEST is allocated or first time an allocated offset has
+> mappability = GUEST". Some scenarios that would lead to guest memfd
+> range preparation:
+>      - Create file with default mappability to host, fallocate, convert
+>      - Create file with default mappability to Guest, guest faults on
+> private memory
 
->> is the MR value; while in the latter case `HASH_ALG/digest` under the MR
->> directory contains the MR value, where `HASH_ALG` specifies the hash
->> algorithm (e.g., sha256, sha384, etc.) used by this MR.
->>
->> *Crypto Agility* is supported as a set of independent MRs that share a
->> common name. These MRs will be merged into a single MR directory and each
->> will be represented by its respective `HASH_ALG/digest` file. Note that
->> `tsm_measurement_register::mr_hash` must be distinct or the behavior is
->> undefined.
-> 
-> is this required/supported in any of the existing CC providers?
-> 
-> By sharing a common name, you mean internally there will be distinct
-> registers for every crypto algo supported?
-> 
-This is explicitly requested by James Bottomley. And yes, an MR with >1 
-algo is in fact a collection of independent MRs, even though they are 
-referred to as the "banks" of the same MR in TCG/TPM spec.
+Yes, this seems like a compelling approach. One aspect that still
+remains is knowing *when* the preparation has been done, so that the
+next time a private page is accessed, either to re-fault into the guest
+(e.g. because it was originally mapped 2MB and then a sub-page got
+converted to shared so the still-private pages need to get re-faulted
+in as 4K), or maybe some other path where KVM needs to grab the private
+PFN via kvm_gmem_get_pfn() but not actually read/write to it (I think
+the GHCB AP_CREATION path for bringing up APs might do this).
 
->>
->> Signed-off-by: Cedric Xing <cedric.xing@intel.com>
->> ---
->>   Documentation/ABI/testing/sysfs-kernel-tsm |  20 ++
->>   MAINTAINERS                                |   2 +-
->>   drivers/virt/coco/Kconfig                  |   3 +-
->>   drivers/virt/coco/Makefile                 |   2 +
->>   drivers/virt/coco/{tsm.c => tsm-core.c}    |   6 +-
->>   drivers/virt/coco/tsm-mr.c                 | 375 +++++++++++++++++++ 
->> ++++++++++
->>   include/linux/tsm.h                        |  64 +++++
->>   7 files changed, 469 insertions(+), 3 deletions(-)
->>
->> diff --git a/Documentation/ABI/testing/sysfs-kernel-tsm b/ 
->> Documentation/ABI/testing/sysfs-kernel-tsm
->> new file mode 100644
->> index 000000000000..99735cf4da5c
->> --- /dev/null
->> +++ b/Documentation/ABI/testing/sysfs-kernel-tsm
->> @@ -0,0 +1,20 @@
->> +What:        /sys/kernel/tsm/<measurement_provider>/<register>
-> 
-> Any reason for not using fixed name for registers (like mr[0-n])? May be it
-> will help if user space use a generic code across vendors.
-> 
-The names of MRs identify the hardware resources, while the semantics of 
-an MR (e.g., whose measurements it contains) is defined by applications. 
-A good design should separate those two to allow applications to connect 
-them as needed. For example, say all loadable modules must be measured 
-before being loaded, and shall be measured/extended to rtmrX on arch A 
-and to rtmrY on arch B, respectively. A portable implementation could 
-always extend to "rtmrModule", which would be a symlink pointing to 
-either rtmrX or rtmrY depending on the underlying arch. On the contrary, 
-extending to the same mr[z] is equivalent to forcing z == X == Y, which 
-_breaks_ portability as different archs tend to have different number of 
-RTMRs.
+We could just keep re-checking the RMP table to see if the PFN was
+already set to private in the RMP table, but I think one of the design
+goals of the preparedness tracking was to have gmem itself be aware of
+this and not farm it out to platform-specific data structures/tracking.
 
-One more thing worth noting here is: different archs may choose 
-different hash algorithms for RTMRs, and that forces applications to be 
-arch aware. The solution will be a "log centric" ABI that we don't have yet.
+So as a proof of concept I've been experimenting with using Fuad's
+series ([1] in your response) and adding an additional GUEST_PREPARED
+state so that it can be tracked via the same mappability xarray (or
+whatever data structure we end up using for mappability-tracking).
+In that case GUEST becomes sort of a transient state that can be set
+in advance of actual allocation/fault-time.
 
->> +Date:        February 2025
->> +Contact:    Cedric Xing <cedric.xing@intel.com>.
->> +Description:
->> +        This file contains the value of the measurement register
->> +        <register>. Depending on the CC architecture, this file may be
->> +        writable, in which case the value written will be the new value
->> +        of <register>. Each write must start at the beginning and be of
->> +        the same size as the file. Partial writes are not permitted.
->> +
->> +What:        /sys/kernel/tsm/<measurement_provider>/<register>/ 
->> <hash>/digest
->> +Date:        February 2025
->> +Contact:    Cedric Xing <cedric.xing@intel.com>.
->> +Description:
->> +        This file contains the value of the measurement register
->> +        <register>. Depending on the CC architecture, this file may be
->> +        writable, in which case any value written may be extended to
->> +        <register> using <hash>. Each write must start at the beginning
->> +        and be of the same size as the file. Partial writes are not
->> +        permitted.
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 25c86f47353d..c129fccd3d5a 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -24098,7 +24098,7 @@ M:    Dan Williams <dan.j.williams@intel.com>
->>   L:    linux-coco@lists.linux.dev
->>   S:    Maintained
->>   F:    Documentation/ABI/testing/configfs-tsm
->> -F:    drivers/virt/coco/tsm.c
->> +F:    drivers/virt/coco/tsm*.c
->>   F:    include/linux/tsm.h
->>   TRUSTED SERVICES TEE DRIVER
->> diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
->> index ff869d883d95..6f3c0831680b 100644
->> --- a/drivers/virt/coco/Kconfig
->> +++ b/drivers/virt/coco/Kconfig
->> @@ -5,7 +5,8 @@
->>   config TSM_REPORTS
->>       select CONFIGFS_FS
->> -    tristate
->> +    select CRYPTO_HASH_INFO
->> +    tristate "Trusted Security Module (TSM) sysfs/configfs support"
-> 
-> IMO, sysfs/configfs part is not required in the title.
-> 
-Ok. I'll take it out.
+That seems to have a lot of nice characteristics, because (in that
+series at least) guest-mappable (as opposed to all-mappable)
+specifically corresponds to private guest pages, which for SNP require
+preparation before they can be mapped into the nested page table so
+it seems like a natural fit.
 
->>   source "drivers/virt/coco/efi_secret/Kconfig"
->> diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
->> index c3d07cfc087e..4b108d8df1bd 100644
->> --- a/drivers/virt/coco/Makefile
->> +++ b/drivers/virt/coco/Makefile
->> @@ -2,6 +2,8 @@
->>   #
->>   # Confidential computing related collateral
->>   #
->> +tsm-y                += tsm-core.o tsm-mr.o
->> +
->>   obj-$(CONFIG_TSM_REPORTS)    += tsm.o
->>   obj-$(CONFIG_EFI_SECRET)    += efi_secret/
->>   obj-$(CONFIG_ARM_PKVM_GUEST)    += pkvm-guest/
->> diff --git a/drivers/virt/coco/tsm.c b/drivers/virt/coco/tsm-core.c
->> similarity index 99%
->> rename from drivers/virt/coco/tsm.c
->> rename to drivers/virt/coco/tsm-core.c
->> index 9432d4e303f1..ab5269db9c13 100644
->> --- a/drivers/virt/coco/tsm.c
->> +++ b/drivers/virt/coco/tsm-core.c
->> @@ -476,6 +476,9 @@ int tsm_unregister(const struct tsm_ops *ops)
->>   }
->>   EXPORT_SYMBOL_GPL(tsm_unregister);
->> +int tsm_mr_init(void);
->> +void tsm_mr_exit(void);
->> +
->>   static struct config_group *tsm_report_group;
->>   static int __init tsm_init(void)
->> @@ -497,12 +500,13 @@ static int __init tsm_init(void)
->>       }
->>       tsm_report_group = tsm;
->> -    return 0;
->> +    return tsm_mr_init();
->>   }
->>   module_init(tsm_init);
->>   static void __exit tsm_exit(void)
->>   {
->> +    tsm_mr_exit();
->>       configfs_unregister_default_group(tsm_report_group);
->>       configfs_unregister_subsystem(&tsm_configfs);
->>   }
->> diff --git a/drivers/virt/coco/tsm-mr.c b/drivers/virt/coco/tsm-mr.c
->> new file mode 100644
->> index 000000000000..8d26e952da6b
->> --- /dev/null
->> +++ b/drivers/virt/coco/tsm-mr.c
->> @@ -0,0 +1,375 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/* Copyright(c) 2024-2025 Intel Corporation. All rights reserved. */
->> +
->> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->> +
->> +#include <crypto/hash.h>
->> +#include <crypto/hash_info.h>
->> +#include <linux/kobject.h>
->> +#include <linux/module.h>
->> +#include <linux/tsm.h>
->> +
->> +int tsm_mr_init(void);
->> +void tsm_mr_exit(void);
->> +
->> +enum tmr_dir_battr_index {
->> +    TMR_DIR_BA_DIGEST,
->> +    TMR_DIR_BA__COUNT,
-> 
-> Why not use single underscore uniformly?
-> 
-DIGEST is a bin attribute while _COUNT is the _count_ of bin attributes. 
-If w/o the underscore, COUNT would look like another bin attribute.
+> ii) Unprepare guest memfd ranges when "first time an offset with
+> mappability = GUEST is deallocated or first time an allocated offset
+> has lost mappability = GUEST attribute", some scenarios that would
+> lead to guest memfd range unprepare:
+>      -  Truncation
+>      -  Conversion
 
->> +
->> +    TMR_DIR__ALGO_MAX = 4,
-> 
-> Since this is not related to attribute index, why not use #define?
-> 
-Now I'm thinking of making it a CONFIG option, default to 4.
+Similar story here: it seems like a good fit. Truncation already does
+the unprepare via .free_folio->kvm_arch_gmem_invalidate callback, and
+if we rework THP to behave similar to HugeTLB in that we only free back
+the full 2MB folio rather than splitting it like in this series, I think
+that might be sufficient for truncation. If userspace tries to truncate
+a subset of a 2MB private folio we could no-op and just leave it in
+GUEST_PREPARED. If we stick with THP, my thinking is we tell userspace
+what the max granularity is, and userspace will know that it must
+truncate with that same granularity if it actually wants to free memory.
+It sounds like the HugeTLB would similarly be providing this sort of
+information. What's nice is that if we stick with best-effort THP-based
+allocator, and allow best-effort allocator to fall back to smaller page
+sizes, this scheme would still work, since we'd still always be able to
+free folios without splitting. But I'll try to get a better idea of what
+this looks like in practice.
 
->> +};
->> +
->> +struct tmr_dir {
->> +    struct kobject kobj;
->> +    struct bin_attribute battrs[TMR_DIR__ALGO_MAX][TMR_DIR_BA__COUNT];
->> +    int algo;
->> +};
->> +
->> +struct tmr_provider {
->> +    struct kset kset;
->> +    struct rw_semaphore rwsem;
->> +    struct bin_attribute *mrfiles;
->> +    struct tsm_measurement *tmr;
->> +    bool in_sync;
->> +};
->> +
->> +static inline struct tmr_provider *tmr_mr_to_provider(const struct 
->> tsm_measurement_register *mr,
->> +                              struct kobject *kobj)
->> +{
->> +    if (mr->mr_flags & TSM_MR_F_F)
->> +        return container_of(kobj, struct tmr_provider, kset.kobj);
->> +    else
->> +        return container_of(kobj->kset, struct tmr_provider, kset);
->> +}
->> +
->> +static inline int tmr_call_refresh(struct tmr_provider *pvd,
->> +                   const struct tsm_measurement_register *mr)
->> +{
->> +    int rc;
->> +
->> +    rc = pvd->tmr->refresh(pvd->tmr, mr);
->> +    if (rc)
->> +        pr_warn("%s.refresh(%s) failed %d\n", kobject_name(&pvd- 
->> >kset.kobj), mr->mr_name,
->> +            rc);
->> +    return rc;
->> +}
->> +
->> +static inline int tmr_call_extend(struct tmr_provider *pvd,
->> +                  const struct tsm_measurement_register *mr, const u8 
->> *data)
->> +{
->> +    int rc;
->> +
->> +    rc = pvd->tmr->extend(pvd->tmr, mr, data);
->> +    if (rc)
->> +        pr_warn("%s.extend(%s) failed %d\n", kobject_name(&pvd- 
->> >kset.kobj), mr->mr_name,
->> +            rc);
->> +    return rc;
->> +}
->> +
->> +static ssize_t tmr_digest_read(struct file *filp, struct kobject 
->> *kobj, struct bin_attribute *attr,
->> +                   char *page, loff_t off, size_t count)
->> +{
->> +    const struct tsm_measurement_register *mr;
->> +    struct tmr_provider *pvd;
->> +    int rc;
->> +
->> +    if (off < 0 || off > attr->size)
->> +        return -EINVAL;
->> +
->> +    count = min(count, attr->size - (size_t)off);
->> +    if (!count)
->> +        return count;
->> +
->> +    mr = (typeof(mr))attr->private;
-> 
-> I think you don't need to cast it.
-> 
-Thanks! I'll remove it.
+For conversion, we'd need to hook in an additional
+kvm_arch_gmem_invalidate() somewhere to make sure the folio is
+host-owned in the RMP table before transitioning to host/all-mappable,
+but that seems pretty straightforward.
 
->> +    pvd = tmr_mr_to_provider(mr, kobj);
->> +    rc = down_read_interruptible(&pvd->rwsem);
->> +    if (rc)
->> +        return rc;
->> +
->> +    if ((mr->mr_flags & TSM_MR_F_L) && !pvd->in_sync) {
->> +        up_read(&pvd->rwsem);
->> +
->> +        rc = down_write_killable(&pvd->rwsem);
->> +        if (rc)
->> +            return rc;
->> +
->> +        if (!pvd->in_sync) {
-> 
-> Since this path is only taken if in_sync is false, do you need to check 
-> again?
-> 
-Yes, because in_sync could be set to true between up_read and 
-down_write_killable above.
+> iii) To handle scenarios with hugepages, page splitting/merging in
+> guest memfd can also signal change in page granularities.
 
->> +            rc = tmr_call_refresh(pvd, mr);
->> +            pvd->in_sync = !rc;
->> +        }
->> +
->> +        downgrade_write(&pvd->rwsem);
->> +    }
->> +
->> +    if (!rc)
->> +        memcpy(page, mr->mr_value + off, count);
->> +
->> +    up_read(&pvd->rwsem);
->> +    return rc ?: count;
->> +}
->> +
->> +static ssize_t tmr_digest_write(struct file *filp, struct kobject 
->> *kobj, struct bin_attribute *attr,
->> +                char *page, loff_t off, size_t count)
->> +{
->> +    const struct tsm_measurement_register *mr;
->> +    struct tmr_provider *pvd;
->> +    ssize_t rc;
->> +
->> +    if (off != 0 || count != attr->size)
->> +        return -EINVAL;
->> +
->> +    mr = (typeof(mr))attr->private;
->> +    pvd = tmr_mr_to_provider(mr, kobj);
->> +    rc = down_write_killable(&pvd->rwsem);
->> +    if (rc)
->> +        return rc;
->> +
->> +    if (mr->mr_flags & TSM_MR_F_X)
->> +        rc = tmr_call_extend(pvd, mr, page);
->> +    else
->> +        memcpy(mr->mr_value, page, count);
->> +
->> +    if (!rc)
->> +        pvd->in_sync = false;
->> +
->> +    up_write(&pvd->rwsem);
->> +    return rc ?: count;
->> +}
->> +
->> +static void tmr_dir_release(struct kobject *kobj)
->> +{
->> +    struct tmr_dir *mrd;
->> +
->> +    mrd = container_of(kobj, typeof(*mrd), kobj);
->> +    kfree(mrd);
->> +}
->> +
->> +static const struct kobj_type tmr_dir_ktype = {
->> +    .release = tmr_dir_release,
->> +    .sysfs_ops = &kobj_sysfs_ops,
->> +};
->> +
->> +static struct tmr_dir *tmr_dir_create(const struct 
->> tsm_measurement_register *mr,
->> +                      struct tmr_provider *pvd)
->> +{
->> +    struct kobject *kobj;
->> +    struct tmr_dir *mrd;
->> +
->> +    kobj = kset_find_obj(&pvd->kset, mr->mr_name);
->> +    if (kobj) {
->> +        mrd = container_of(kobj, typeof(*mrd), kobj);
->> +        kobject_put(kobj);
->> +        if (++mrd->algo >= TMR_DIR__ALGO_MAX) {
->> +            --mrd->algo;
->> +            return ERR_PTR(-ENOSPC);
->> +        }
->> +    } else {
->> +        int rc;
->> +
->> +        mrd = kzalloc(sizeof(*mrd), GFP_KERNEL);
->> +        if (!mrd)
->> +            return ERR_PTR(-ENOMEM);
->> +
->> +        mrd->kobj.kset = &pvd->kset;
->> +        rc = kobject_init_and_add(&mrd->kobj, &tmr_dir_ktype, NULL, 
->> "%s", mr->mr_name);
->> +        if (rc) {
->> +            kfree(mrd);
->> +            return ERR_PTR(rc);
->> +        }
->> +    }
->> +
->> +    sysfs_bin_attr_init(&mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST]);
->> +    mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].attr.name = "digest";
-> 
-> Since this attribute reflects register value, personally I think "value" 
-> is more clear
-> than "digest". But it is fine either way.
-> 
-This attribute shows up only when its parent dir is a hash algo name 
-(e.g., "sha384"). So "digest" I believe is more appropriate to refer to 
-the result of the hash.
+Not yet clear to me if extra handling for prepare/unprepare is needed
+here, but it does seem like an option if needed.
 
->> +    if (mr->mr_flags & TSM_MR_F_W)
->> +        mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].attr.mode |= 
->> S_IWUSR | S_IWGRP;
->> +    if (mr->mr_flags & TSM_MR_F_R)
->> +        mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].attr.mode |= S_IRUGO;
->> +
->> +    mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].size = mr->mr_size;
->> +    mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].read = tmr_digest_read;
->> +    mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].write = tmr_digest_write;
->> +    mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].private = (void *)mr;
->> +
->> +    return mrd;
->> +}
->> +
->> +static void tmr_provider_release(struct kobject *kobj)
->> +{
->> +    struct tmr_provider *pvd;
->> +
->> +    pvd = container_of(kobj, typeof(*pvd), kset.kobj);
->> +    if (!WARN_ON(!list_empty(&pvd->kset.list))) {
->> +        kfree(pvd->mrfiles);
->> +        kfree(pvd);
->> +    }
->> +}
->> +
->> +static const struct kobj_type _mr_provider_ktype = {
->> +    .release = tmr_provider_release,
->> +    .sysfs_ops = &kobj_sysfs_ops,
->> +};
->> +
->> +static struct kset *tmr_sysfs_root;
->> +
->> +static struct tmr_provider *tmr_provider_create(struct 
->> tsm_measurement *tmr)
->> +{
->> +    struct tmr_provider *pvd __free(kfree);
->> +    int rc;
->> +
->> +    pvd = kzalloc(sizeof(*pvd), GFP_KERNEL);
->> +    if (!pvd)
->> +        return ERR_PTR(-ENOMEM);
->> +
->> +    if (!tmr->name || !tmr->mrs || !tmr->refresh || !tmr->extend)
->> +        return ERR_PTR(-EINVAL);
-> 
-> Why not add this condition at the top before allocation?
-> 
-Because a few bytes can be saved this way (by not initializing pvd). The 
-difference (in performance) will only be on the error path, which we 
-don't care.
+Thanks,
 
->> +
->> +    rc = kobject_set_name(&pvd->kset.kobj, "%s", tmr->name);
->> +    if (rc)
->> +        return ERR_PTR(rc);
->> +
->> +    pvd->kset.kobj.kset = tmr_sysfs_root;
->> +    pvd->kset.kobj.ktype = &_mr_provider_ktype;
->> +    pvd->tmr = tmr;
->> +
->> +    init_rwsem(&pvd->rwsem);
->> +
->> +    rc = kset_register(&pvd->kset);
->> +    if (rc)
->> +        return ERR_PTR(rc);
->> +
->> +    return_ptr(pvd);
->> +}
->> +
->> +DEFINE_FREE(_unregister_measurement, struct tmr_provider *,
->> +        if (!IS_ERR_OR_NULL(_T)) tsm_unregister_measurement(_T->tmr));
->> +
->> +int tsm_register_measurement(struct tsm_measurement *tmr)
->> +{
->> +    struct tmr_provider *pvd __free(_unregister_measurement);
->> +    int rc, nr;
->> +
->> +    pvd = tmr_provider_create(tmr);
->> +    if (IS_ERR(pvd))
->> +        return PTR_ERR(pvd);
->> +
->> +    nr = 0;
->> +    for (int i = 0; tmr->mrs[i].mr_name; ++i) {
->> +        // flat files are counted and skipped
->> +        if (tmr->mrs[i].mr_flags & TSM_MR_F_F) {
->> +            ++nr;
->> +            continue;
->> +        }
->> +
->> +        struct tmr_dir *mrd;
->> +        struct bin_attribute *battrs[TMR_DIR_BA__COUNT + 1] = {};
->> +        struct attribute_group agrp = {
->> +            .name = hash_algo_name[tmr->mrs[i].mr_hash],
->> +            .bin_attrs = battrs,
->> +        };
->> +
->> +        mrd = tmr_dir_create(&tmr->mrs[i], pvd);
->> +        if (IS_ERR(mrd))
->> +            return PTR_ERR(mrd);
->> +
->> +        for (int j = 0; j < TMR_DIR_BA__COUNT; ++j)
->> +            battrs[j] = &mrd->battrs[mrd->algo][j];
->> +
->> +        rc = sysfs_create_group(&mrd->kobj, &agrp);
->> +        if (rc)
->> +            return rc;
->> +    }
->> +
->> +    if (nr > 0) {
->> +        struct bin_attribute *mrfiles __free(kfree);
->> +        struct bin_attribute **battrs __free(kfree);
->> +
->> +        mrfiles = kcalloc(nr, sizeof(*mrfiles), GFP_KERNEL);
->> +        battrs = kcalloc(nr + 1, sizeof(*battrs), GFP_KERNEL);
->> +        if (!battrs || !mrfiles)
->> +            return -ENOMEM;
->> +
->> +        for (int i = 0, j = 0; tmr->mrs[i].mr_name; ++i) {
->> +            if (!(tmr->mrs[i].mr_flags & TSM_MR_F_F))
->> +                continue;
->> +
->> +            mrfiles[j].attr.name = tmr->mrs[i].mr_name;
->> +            mrfiles[j].read = tmr_digest_read;
->> +            mrfiles[j].write = tmr_digest_write;
->> +            mrfiles[j].size = tmr->mrs[i].mr_size;
->> +            mrfiles[j].private = (void *)&tmr->mrs[i];
->> +            if (tmr->mrs[i].mr_flags & TSM_MR_F_R)
->> +                mrfiles[j].attr.mode |= S_IRUGO;
->> +            if (tmr->mrs[i].mr_flags & TSM_MR_F_W)
->> +                mrfiles[j].attr.mode |= S_IWUSR | S_IWGRP;
->> +
->> +            battrs[j] = &mrfiles[j];
->> +            ++j;
->> +        }
->> +
->> +        struct attribute_group agrp = {
->> +            .bin_attrs = battrs,
->> +        };
->> +        rc = sysfs_create_group(&pvd->kset.kobj, &agrp);
->> +        if (rc)
->> +            return rc;
->> +
->> +        pvd->mrfiles = no_free_ptr(mrfiles);
->> +    }
->> +
->> +    // initial refresh of MRs
->> +    rc = tmr_call_refresh(pvd, NULL);
->> +    pvd->in_sync = !rc;
->> +
->> +    pvd = NULL; // to avoid being freed automatically
->> +    return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(tsm_register_measurement);
->> +
->> +static void tmr_put_children(struct kset *kset)
->> +{
->> +    struct kobject *p, *n;
->> +
->> +    spin_lock(&kset->list_lock);
->> +    list_for_each_entry_safe(p, n, &kset->list, entry) {
->> +        spin_unlock(&kset->list_lock);
->> +        kobject_put(p);
->> +        spin_lock(&kset->list_lock);
->> +    }
->> +    spin_unlock(&kset->list_lock);
->> +}
->> +
->> +int tsm_unregister_measurement(struct tsm_measurement *tmr)
->> +{
->> +    struct kobject *kobj;
->> +    struct tmr_provider *pvd;
->> +
->> +    kobj = kset_find_obj(tmr_sysfs_root, tmr->name);
->> +    if (!kobj)
->> +        return -ENOENT;
->> +
->> +    pvd = container_of(kobj, typeof(*pvd), kset.kobj);
->> +    if (pvd->tmr != tmr)
->> +        return -EINVAL;
->> +
->> +    tmr_put_children(&pvd->kset);
->> +    kset_unregister(&pvd->kset);
->> +    kobject_put(kobj);
->> +    return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(tsm_unregister_measurement);
->> +
->> +int tsm_mr_init(void)
->> +{
->> +    tmr_sysfs_root = kset_create_and_add("tsm", NULL, kernel_kobj);
->> +    if (!tmr_sysfs_root)
->> +        return -ENOMEM;
->> +    return 0;
->> +}
->> +
->> +void tsm_mr_exit(void)
->> +{
->> +    kset_unregister(tmr_sysfs_root);
->> +}
->> +
->> +MODULE_LICENSE("GPL");
->> +MODULE_DESCRIPTION("Provide Trusted Security Module measurements via 
->> sysfs");
->> diff --git a/include/linux/tsm.h b/include/linux/tsm.h
->> index 11b0c525be30..624a7b62b85d 100644
->> --- a/include/linux/tsm.h
->> +++ b/include/linux/tsm.h
->> @@ -5,6 +5,7 @@
->>   #include <linux/sizes.h>
->>   #include <linux/types.h>
->>   #include <linux/uuid.h>
->> +#include <uapi/linux/hash_info.h>
->>   #define TSM_INBLOB_MAX 64
->>   #define TSM_OUTBLOB_MAX SZ_32K
->> @@ -109,4 +110,67 @@ struct tsm_ops {
->>   int tsm_register(const struct tsm_ops *ops, void *priv);
->>   int tsm_unregister(const struct tsm_ops *ops);
->> +
->> +/**
->> + * struct tsm_measurement_register - describes an architectural 
->> measurement register (MR)
->> + * @mr_name: name of the MR
->> + * @mr_value: buffer containing the current value of the MR
->> + * @mr_size: size of the MR - typically the digest size of @mr_hash
->> + * @mr_flags: bitwise OR of flags defined in enum 
->> tsm_measurement_register_flag
->> + * @mr_hash: optional hash identifier defined in include/uapi/linux/ 
->> hash_info.h
->> + *
->> + * A CC guest driver provides this structure to detail the 
->> measurement facility supported by the
->> + * underlying CC hardware. After registration via 
->> `tsm_register_measurement`, the CC guest driver
->> + * must retain this structure until it is unregistered using 
->> `tsm_unregister_measurement`.
->> + */
->> +struct tsm_measurement_register {
->> +    const char *mr_name;
->> +    void *mr_value;
->> +    u32 mr_size;
->> +    u32 mr_flags;
->> +    enum hash_algo mr_hash;
->> +};
->> +
->> +/**
->> + * enum tsm_measurement_register_flag - properties of an MR
->> + * @TSM_MR_F_X: this MR supports the extension semantics on write
-> 
-> Why not use _E? Before reading the help text, I thought _X is for execute.
-> 
-I was thinking of HTTP and X.509, all extensions are marked by "x".
+Mike
 
-Anyone else having a preference on _E vs. _X?
-
->> + * @TSM_MR_F_W: this MR is writable
->> + * @TSM_MR_F_R: this MR is readable. This should typically be set
->> + * @TSM_MR_F_L: this MR is live - writes to other MRs may change this MR
->> + * @TSM_MR_F_F: present this MR as a file (instead of a directory)
->> + * @TSM_MR_F_LIVE: shorthand for L (live) and R (readable)
->> + * @TSM_MR_F_RTMR: shorthand for LIVE and X (extensible)
->> + */
->> +enum tsm_measurement_register_flag {
->> +    TSM_MR_F_X = 1,
->> +    TSM_MR_F_W = 2,
 > 
-> It is not clear why you want to differentiate between write and extension.
-> Please add some help text related to it.
-> 
-R/W is for controlling the file permission of the MR, while X is the 
-semantics of the MR. I'll try to clarify.
-
->> +    TSM_MR_F_R = 4,
->> +    TSM_MR_F_L = 8,
->> +    TSM_MR_F_F = 16,
->> +    TSM_MR_F_LIVE = TSM_MR_F_L | TSM_MR_F_R,
->> +    TSM_MR_F_RTMR = TSM_MR_F_LIVE | TSM_MR_F_X,
->> +};
->> +
->> +#define TSM_MR_(mr, 
->> hash)                                                           \
->> +    .mr_name = #mr, .mr_size = hash##_DIGEST_SIZE, .mr_hash = 
->> HASH_ALGO_##hash, \
->> +    .mr_flags = TSM_MR_F_R
->> +
->> +/**
->> + * struct tsm_measurement - define CC specific MRs and methods for 
->> updating them
->> + * @name: name of the measurement provider
->> + * @mrs: array of MR definitions ending with mr_name set to %NULL
->> + * @refresh: invoked to update the specified MR
->> + * @extend: invoked to extend the specified MR with mr_size bytes
->> + */
->> +struct tsm_measurement {
->> +    const char *name;
->> +    const struct tsm_measurement_register *mrs;
->> +    int (*refresh)(struct tsm_measurement *tmr, const struct 
->> tsm_measurement_register *mr);
->> +    int (*extend)(struct tsm_measurement *tmr, const struct 
->> tsm_measurement_register *mr,
->> +              const u8 *data);
->> +};
->> +
->> +int tsm_register_measurement(struct tsm_measurement *tmr);
->> +int tsm_unregister_measurement(struct tsm_measurement *tmr);
->> +
->>   #endif /* __TSM_H */
->>
-
+> [1] https://lore.kernel.org/kvm/20250117163001.2326672-1-tabba@google.com/
