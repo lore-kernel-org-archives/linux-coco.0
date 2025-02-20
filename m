@@ -1,134 +1,146 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE02F1DE4D0
-	for <linux-coco@lists.linux.dev>; Wed, 19 Feb 2025 23:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5971D7080C
+	for <linux-coco@lists.linux.dev>; Thu, 20 Feb 2025 00:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740006979; cv=none; b=lSMZdct5AgiNt5j2/D51WCSvXziieMacdcMq1CyqX1xiDNSf31GngWf1tsU0IUbSHh0lEx9gu3+XHlx9K67Qf+deAJYo3kyjXvcxxKydgr92J85voIOqzoAUeCYwKi4bG2eUyoNpJSS66SP6xLOCP7vR+FTI+pcd9PQPpyCjIJE=
+	t=1740013052; cv=none; b=H1CLknEFljGKuIJFIw0wLte6QRWyxFGwGS2dQ+bblLHBmOh4BCJTm0QLsBWQoCRRRx7jUyaYPKpz1avVdfdC1b+47rjiaZ0p+2ok/Rh125pBjIVr0jrgrGjptPUI22cMkOguq9Nb2Tl73KmKaZTYVmGgEhFNafF34wHss2lXScw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740006979; c=relaxed/simple;
-	bh=v34G1esLBZXaAKmdauy1fpUMAwGoN76yBW71sn8HJdU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uoGPJGYY9NQpmYBLzTKnT9D4xVB8yTJgJPngXyDZN30MX6PTs5kkzUq7L7nPUeuRAGApbIP9TtkPZI9i40b/bQgYD8L2iXvwvlqs4nofHxnpI3D2tHGXlwICYGeg0cskVRfpoHGKd6FJhPOsjdNq/cvrCe+KBD23KXGADKDaCuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RbQzM3Pn; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1740013052; c=relaxed/simple;
+	bh=Lnj8ZPF5lrE7Xc/uMpcIj9FkYaJnkbOF/02TZqJAndk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lFouicNriPYfCuNab9zfHis7MGLQ48z9D/zCeDe9YOIAN63WJ1GRUokCoMKisMZEUs5iZwQzqwmKfWMaX/CpU1sCaVa6vNxkPY4c0H2CTcy5/LU03P+GJL+5QbLTzqE7s0s5DNGAaWruDwpEZhpvaQfvzASz9huE+AG84F+CN00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=kF5Qojpx; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RbQzM3Pn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740006978; x=1771542978;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=v34G1esLBZXaAKmdauy1fpUMAwGoN76yBW71sn8HJdU=;
-  b=RbQzM3PnQPVewt4extApBDSaf7VkCceaJuTX6Gr0DW67gDb9DkXkFdNz
-   qAhb0JZr7+zHp6geyv+83x5lmxfu1GwL6pK74k8tZczZD5+7QXeO+25gY
-   ePn9tZlfdfLQ9u/4jz81sG5D7SFqB1jk98egTUbY3j+KzyEeA/57QT2Xx
-   RCqPeMLPyrLrvqXCWSm0yIximDTGYgIhBIMR13B7KNdKwnYhcaRUe4GTc
-   Ne4v4XzxND+NynvY4JOxrjcqRh4ZxAZH/f3AnBY6vUn8FT/6yzcIEKv+7
-   A7/G/iut7yeKGfoIjwdS9gKUHf5QumnHpDPsOC8F4R2AtPT3bVg3VIWWg
-   Q==;
-X-CSE-ConnectionGUID: kg7wTqDdTxWRtSfcU/jptg==
-X-CSE-MsgGUID: 8WFTs517QLWlVXZsKs1dMg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="40974516"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="40974516"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 15:16:16 -0800
-X-CSE-ConnectionGUID: Ic7EysGdQW64EyjdROkCZA==
-X-CSE-MsgGUID: 2BWnipDbRPaqhqV2HSR8aQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
-   d="scan'208";a="115057454"
-Received: from kinlongk-mobl1.amr.corp.intel.com (HELO [10.125.109.250]) ([10.125.109.250])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 15:16:14 -0800
-Message-ID: <5007ae91-f4d5-430b-a403-aff9af1d6375@intel.com>
-Date: Wed, 19 Feb 2025 15:16:14 -0800
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="kF5Qojpx"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-46fcbb96ba9so5006761cf.0
+        for <linux-coco@lists.linux.dev>; Wed, 19 Feb 2025 16:57:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1740013049; x=1740617849; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0/Q3pmbQgFaUMEz//cVYqBy+kD1niHA/UXy9NuQBpQc=;
+        b=kF5Qojpx79ywMURVFU28xSrJ1+x1dCApCVPKvv152iY9vW9Izx/oTHeTb1QjaYTpbg
+         6LubDvqU+/KoPS5KaImuNOpgqkmMrYHEfBFeZ8p+b6ZeuVXy/eM/+aRw0lqmkDdG87c/
+         5cinHHn88KNlmNBz9NtqKkEioXLZhWYtMl+Ufd6pY9TF0B3Kp00gzzN/VL+btGAwj3V5
+         G3IgeThWZaSR8NOWgDLGtj5Rel2Sm0AUsqBagZDaBWH3aUYmvfZFkRfU/vcZrpqG8XBv
+         E157VtOZAhZcY7G/cfPCoBu5wAT3KksAGWP1SaxSHAe1t0SichcD1Guixeita0qEJBxy
+         1MjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740013049; x=1740617849;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0/Q3pmbQgFaUMEz//cVYqBy+kD1niHA/UXy9NuQBpQc=;
+        b=tAKCGL8c9Ci8T1a3MQgKEhYK/wX967sj5Ye5GosGwdkU4nSQji9rUDXARbksN7UtUu
+         tosdqKCHmRPTw6EspIrZS596hWxn+9cpffEkK7JZi/iGiKAmIFcKFlq+xGr9iiDfTVWM
+         7wzGvpMcfcRjyafnnok74krER2/9Nbbn0AybboJxVlvdSyr2G1pAZioPEUkpIDnAb6zV
+         Is+LJ/iPfoNthxzr8htGfXhvu9qHRZGUKNB0+WghbjS8bVztS1CjVUowB6fRewIpoR4J
+         sTwLWVq7+K5+aD7a94Q0BQ+LWKKXX7nRQ+c6r+UH4UoL6hk6+zkGluAbhXikWYYMvU9m
+         2Q6w==
+X-Forwarded-Encrypted: i=1; AJvYcCWRFbGJQCX7GD5j9Rc5qZfdc56//aTF7FNpD1kqtL3lL2YAmffv+kWcDPR6viKmjFAu75WWVigxOxxe@lists.linux.dev
+X-Gm-Message-State: AOJu0YxV9x40SicsqERNkud0h7Sw3TdR35oe6HbzSaLcx1WP05Jnoch9
+	+OhwpZguMJYDEkTfXbHtkF7UAz9M8VxITyiQS85cbaB0d+VGQhx4eJ4xcGsPdpQ=
+X-Gm-Gg: ASbGncvHbHUtakOuNhAbI6MBtN9G0KpfMz6BvS6wAkpWI/97ekNNO7NXKOrXUdWsoZW
+	DxW9UMSNM+HcNhHeKPZegEEzzcuxjc+pLtswNee4kepoNLnecuhWvW7rubNlEe3OEK2kqR6Ohuj
+	QYyrXWu09rOXenqhGmpZ/1StgTyBJViTl7UcWTAIKYmjMgA6Fkx4fXmmCw1t0eysnlcaETH0nTM
+	bDiREegdksjDhiie0MO8Hz82BwDMC+ao+pAdbgVLn+B5zCYmNLpDSsjT2EMMkRFhH3MsTci8icU
+	rJ1gjQwoRaFS2LorgqeTGxvaHkJBRFu7osbQb87MQH7x2qZr841AoytwYiNLCW5d
+X-Google-Smtp-Source: AGHT+IG5zCh9CoeLQY7rC+mk5ewFMnBFHyg7FBmH5U0ScrNRvZkI+aTZATrHIvB820rTi8JmR7A9wg==
+X-Received: by 2002:a05:622a:1a02:b0:471:a2c7:b6be with SMTP id d75a77b69052e-471dbea0a25mr253348721cf.45.1740013049013;
+        Wed, 19 Feb 2025 16:57:29 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-471f3f6e90bsm36101381cf.79.2025.02.19.16.57.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Feb 2025 16:57:28 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1tkusZ-00000000D45-0QWL;
+	Wed, 19 Feb 2025 20:57:27 -0400
+Date: Wed, 19 Feb 2025 20:57:27 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, x86@kernel.org, kvm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
+	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
+	Zhi Wang <zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: Re: [RFC PATCH v2 12/22] iommufd: Allow mapping from guest_memfd
+Message-ID: <20250220005727.GP3696814@ziepe.ca>
+References: <20250218111017.491719-1-aik@amd.com>
+ <20250218111017.491719-13-aik@amd.com>
+ <20250218141634.GI3696814@ziepe.ca>
+ <340d8dba-1b09-4875-8604-cd9f66ca1407@amd.com>
+ <20250218235105.GK3696814@ziepe.ca>
+ <06b850ab-5321-4134-9b24-a83aaab704bf@amd.com>
+ <20250219133516.GL3696814@ziepe.ca>
+ <20250219202324.uq2kq27kmpmptbwx@amd.com>
+ <20250219203708.GO3696814@ziepe.ca>
+ <20250219213037.ku2wi7oyd5kxtwiv@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] kexec_core: Accept unaccepted kexec segments'
- destination addresses
-To: Yan Zhao <yan.y.zhao@intel.com>, ebiederm@xmission.com
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, x86@kernel.org, rick.p.edgecombe@intel.com,
- kirill.shutemov@linux.intel.com, bhe@redhat.com,
- Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>
-References: <20241213094930.748-1-yan.y.zhao@intel.com>
- <20241213095449.881-1-yan.y.zhao@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20241213095449.881-1-yan.y.zhao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250219213037.ku2wi7oyd5kxtwiv@amd.com>
 
-On 12/13/24 01:54, Yan Zhao wrote:
-> Accept the destination addresses during the kexec load, immediately after
-> they pass sanity checks. This ensures the code is located in a common place
-> shared by both the kexec_load and kexec_file_load system calls.
+On Wed, Feb 19, 2025 at 03:30:37PM -0600, Michael Roth wrote:
+> I think the documentation only mentioned 1G specifically since that's
+> the next level up in host/nested page table mappings, and that more
+> generally anything mapping at a higher granularity than 2MB would be
+> broken down into individual checks on each 2MB range within. But it's
+> quite possible things are handled differently for IOMMU so definitely
+> worth confirming.
 
-So, we've got an end-user-visible bug. Eric raised some good concerns
-about the hardware and firmware design, but I think they've all been
-addressed. The only other even solution I've seen proposed is to not do
-unaccepted memory in the first place. I don't think that's viable or
-justified, especially since we've got at least one end user[1] that
-seems to think unaccepted memory fits their needs.
+Hmm, well, I'd very much like it if we are all on the same page as to
+why the new kernel parameters were needed. Joerg was definitely seeing
+testing failures without them.
 
-This bug can _probably_ be fixed in arch/x86 as well, but having the
-solution in general code seems like the right place to me:
+IMHO we should not require parameters like that, I expect the kernel
+to fix this stuff on its own.
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> But regardless, we'll still end up dealing with 4K RMP entries since
+> we'll need to split 2MB RMP entries in response to private->conversions
+> that aren't 2MB aligned/sized.
 
-Andrew, it seems like a lot of kexec work flows through you. Are you the
-right one to pick this up?
+:( What is the point of even allowing < 2MP private/shared conversion?
 
-1.
-https://lore.kernel.org/all/CAMGD6P3r-S-Va-TRvVjZ808on9+-wFJ_VeTpQ+FEN1jBbhmnXw@mail.gmail.com/
+> > Then the HW will not see IOPTEs that exceed the shared/private
+> > granularity of the VM.
+> 
+> That sounds very interesting. It would allow us to use larger IOMMU
+> mappings even for guest_memfd as it exists today, while still supporting
+> shared memory discard and avoiding the additional host memory usage
+> mentioned above. Are there patches available publicly?
+
+https://patch.msgid.link/r/0-v1-01fa10580981+1d-iommu_pt_jgg@nvidia.com
+
+I'm getting quite close to having something non-RFC that just does AMD
+and the bare minimum. I will add you two to the CC
+
+Jason
