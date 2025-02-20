@@ -1,333 +1,336 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D022638B8
-	for <linux-coco@lists.linux.dev>; Thu, 20 Feb 2025 21:37:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740087468; cv=none; b=U9AyrIwFkcQObN8ufOZIg+dKI7FeLup7oApkliFLX+amYeoXn+/+rD76yN4b3lGMvEDaYWyX5Gu/C96sRXIOlVFU8gjIekIVrnxNEKgp5lNKh2wg9e1RebrSiqsqgQ78fZy7IkfVWMFMJ6576SxQ7s54ir/uIl+Px0noYL/ZEqY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740087468; c=relaxed/simple;
-	bh=88xel4ReXmml0Y0dgHmn02RadkL5KzYs1W8CvR4jbJo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g52TX8B2Hpa8vmFTJr5Y0vhcFJORGDMWVIr9HHEaMhLxPiYTyHmIoBVXy5V/YFmpcR4faoDMnp0cd5K+mzo0VSYH82nC3HaNwKli1pNlL93ltabF8erE9gP+PYIJ5jbtaCImQo4sNZg+GdsQdkTRFECGFsEpMAnyCLirZGa+ZkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GNN/UOED; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DF426463D
+	for <linux-coco@lists.linux.dev>; Thu, 20 Feb 2025 21:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740087875; cv=fail; b=AVKYC3656ihoLgn6Hb/NPA+MIL1zIaHvrE4sUFIOA1u/RYk8Oqw6DwDeQa8SEAsmNiZAz2XUWAxEQardUOyLEgsH++382YCDt8lErRF2NUi9b2DIsYi+E1cVQ2mzAFYkqdViI4/PCeqIor9W5BFwxRD3/ZKvF1KpyyDTjf/k19Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740087875; c=relaxed/simple;
+	bh=73X6QAWhJv7if5GIAzLq8ZvYJNenN/zvpXPmsKA5uE4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GtBslMMU8uRhCQfbP/ie9YxwA/Gn71b+pcgPLzH6Refkzy+U4PHcYcxXsohe0uHcveh3+HohkYxEoeTDDMPdHpbFUiXsKJQdzgNjtoXnmzMSjIEZZUpY0s1qoE4vUo+qhIml6bDTtjaKBBGM1ui1JaPrUGwFosV9fpqPKTlU45Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SMvzm0lr; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GNN/UOED"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-abb8045c3f3so181912766b.2
-        for <linux-coco@lists.linux.dev>; Thu, 20 Feb 2025 13:37:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740087465; x=1740692265; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UJgY/DEAxcJuwoGxKe8jJ8rEYcAL/Pax8Zc7JijGPQM=;
-        b=GNN/UOEDFIuApDEup+jOJljEbLmjjT0b7nqN9clSkl1lZxrZHrbh2QXjK/Ep3hzIhe
-         w0GQN+3EigDKj0loa0z4UclA62uJh+Aw81LMN0eONMNo1zddmUOngtbuvMKm8ZWkZUkS
-         3uiCWT6ClRx99N0RWsETDbaL0g+X/EwxXu2XBUQfr7/7CM5CAjvZtYUsxDGwD3es4Zac
-         rimyiPabShdce82Zgv3BbYVRRCXWQDGVy1ssu8anC8yLXF4izuxb2YqVeuqZaNWfU8d2
-         VlGf1Jfc3grPp7J8y8jiDmbAOLCX2zRgCsVsgVI4mevkWwgYXKdDJ74JYSYKFz8CQwr6
-         DuAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740087465; x=1740692265;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UJgY/DEAxcJuwoGxKe8jJ8rEYcAL/Pax8Zc7JijGPQM=;
-        b=ihGgHdXLbf507oC/crKedp8Np5pKxJr/vQ1zOyVkVE16aLQERbz/QbT3CU+37BZ9LF
-         t7ryCOrNOoAdFKwOMhuIdLKG77w3TQjymC9HQr39OctSx6/xBq9JvaMQ+zaQPA6pzhAa
-         zZXsfO93H7TWw9iSzc8PshtPZhmj+buNNaOQ7V8VB7OFBcXB7/p+GwCWdBhM9xyN0waF
-         A9O9G1BnTVH3iwmWUe6cg6kjeBk/1z0/VGmCLRmg6khnogaZtE1H3kWBBvS/M+YeI3LT
-         3PeyOV7a6iSQNs9SpzpG2CzamBGx56NCfaZqfzdIe4LuJ/NpgJNq/Uw4YWlETUbqllKA
-         SE0A==
-X-Forwarded-Encrypted: i=1; AJvYcCWi1+E+31vdCGvSdFoLeleMC6R1Ib/GQJ/XthBChyBtOXDGvp7BBQiPShIJDCTnVigQW6jMYfGPtOn3@lists.linux.dev
-X-Gm-Message-State: AOJu0YzVspesNE3SdzmmPhI0OPN8zvQTMWMOJe2BCU2NpvEt4qOZ0wmb
-	+/sPScXr3WEPjLWgaaxCdKtuG4g34lXfF9S+EQ1t/ebfWdBlx/CIxRCXole6Jx0jqTnCkY4OJr5
-	XZ5mZ9PIFxexoP4LXh43phWhVc+iuaDQHtCyM
-X-Gm-Gg: ASbGncsKm5qBjZgPNA4U39MtR7ESaXfM7mt26QMA2LjiEfhgv2cEJRiS53sdFIekvMU
-	EDPet+t7xVF9ybw+729vFsOaF3Pst0bMCoxPZ3+kYhgeIbPVdb4lzWDY6ivZgchXucW0IVdYJv8
-	pQlvta1O8Z7Xo5uUWqwQIa7dd+zwA=
-X-Google-Smtp-Source: AGHT+IHk8/fn5FhZEYC+B8X06zJ7j4NoHhOvN9+v3er2xxjzQYmLbruTLQB4WUbNewXmprb13+b2o7CIyIBuqIUXzPg=
-X-Received: by 2002:a17:906:308c:b0:ab7:ec7c:89e4 with SMTP id
- a640c23a62f3a-abc09a0a2c1mr77488566b.21.1740087464402; Thu, 20 Feb 2025
- 13:37:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SMvzm0lr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740087873; x=1771623873;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=73X6QAWhJv7if5GIAzLq8ZvYJNenN/zvpXPmsKA5uE4=;
+  b=SMvzm0lr21japrrrM7P/7gHnBYZRVPxSc0khEu/OYt/eW2l559T+bYf8
+   MLQFakutaOJ75OTqJsecPtPAtJS9F43SMiLkGFzEWQkHbNqyu6MZVKP5n
+   OfICdZq9qyW2BTjwlugCwyeI0MCAHmYlDqyw/4kUO5KrKuEmVfzqbGWCW
+   8lXzNmfOLZ7CdmqNPrp81FaRIaCLkf3HJkKVGSjp29gCvXzkT05R1w0WM
+   DCHLFVeqSdKOGWu0tua4+N+8JBEYsdKV6HH/Jtd7hYQgJs6Lg3cEWD0yh
+   Y4dNeRmquMJ04bGUV51oZqo7+G+2tgkPrjNT7hVEK08x6Ne8zC+oJ/8M4
+   g==;
+X-CSE-ConnectionGUID: K/l1T2w6TTayCA5eJn3x/w==
+X-CSE-MsgGUID: yqG84FOJRqifPerGa5KV1w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="40078138"
+X-IronPort-AV: E=Sophos;i="6.13,302,1732608000"; 
+   d="scan'208";a="40078138"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 13:44:32 -0800
+X-CSE-ConnectionGUID: NbP1M7y4SDOAHgphrcEhfg==
+X-CSE-MsgGUID: rMIGZwxMQ2OL9RK9nk8phw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,302,1732608000"; 
+   d="scan'208";a="115372965"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 13:44:32 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 20 Feb 2025 13:44:31 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Thu, 20 Feb 2025 13:44:31 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.45) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 20 Feb 2025 13:44:31 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JFm2wZYiFmDrCN1MLYHQHRN6izW8g1xInfI6jxKIWLXc1z/hKEQjsdHW7ZVsJo1W9q+eEE60RRW6vOPT3jDqzW+l70imHfe4PjKOXFbGYTERvuSF2Y5+gFILf9Xb7eDY8z5APlt1tDOH4q7CfAi5IUmrJ3eP/aJLf3hBCvMzsOKBPjTg/njDQEXolOifwobcoWvT9x7xS9qJVXIydcm46Q79qW5oejQ3tgvGbMC9dRGL168f6Eajg1kG7FgEUkhPC3BRrxt3gK5GMYnYD9X7PJPK0V+flH+d78EmZoOUejT/SM2/JRhn7bekamyqHds3XsqWyeqSd0yeLxu88IHUiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nz7lqXP4e8sB8cnXnYjQ/MamiEilQvLtUWc0Kt6uGgM=;
+ b=nDbuS3qQ8bAlvTGqKdNxB+/8Zts9e7F0pg1cppwVNGmkkPUENalYc/VatmeRbcYtVCTpB/C1UVRXcIqICImDN3qk2aEOMvWLW0BZsQIBcsiKlgIG8Ye6jHxRNxZSgnPxAMUvS3FtJMWg8N+vD0RXZj64Q88JUXe9DinmxrMcZojM1+FAHgSjvQ8O0UUNDmW75IhFV8Or/WGMRQUPqyr3+QwZrydhAqImaUtZP9Uk+sA5iXYxOdnAid8gA8ItFZGD2Zu1Pa9PldnAQ+GvdVQb8PhUbLKnbcdVlfnukU5M/uY2kyXLSnjiXnQbjjysucP+u1+VSFSqjy9PKQausxkCfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by CY8PR11MB7873.namprd11.prod.outlook.com (2603:10b6:930:79::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Thu, 20 Feb
+ 2025 21:44:23 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8445.017; Thu, 20 Feb 2025
+ 21:44:23 +0000
+Date: Thu, 20 Feb 2025 13:44:21 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Alexey Kardashevskiy <aik@amd.com>, Dan Williams
+	<dan.j.williams@intel.com>, <linux-coco@lists.linux.dev>
+CC: Bjorn Helgaas <bhelgaas@google.com>, Lukas Wunner <lukas@wunner.de>,
+	Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+	<linux-pci@vger.kernel.org>, <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 08/11] PCI/IDE: Add IDE establishment helpers
+Message-ID: <67b7a2351d003_2d2c29496@dwillia2-xfh.jf.intel.com.notmuch>
+References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
+ <173343744264.1074769.10935494914881159519.stgit@dwillia2-xfh.jf.intel.com>
+ <ad512345-793b-4cfe-a71b-445f2be64df5@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ad512345-793b-4cfe-a71b-445f2be64df5@amd.com>
+X-ClientProxiedBy: MW4PR04CA0236.namprd04.prod.outlook.com
+ (2603:10b6:303:87::31) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1739997129.git.ashish.kalra@amd.com> <f1caff4423a46c50564e625fd98932fde2a9a3fc.1739997129.git.ashish.kalra@amd.com>
- <CAAH4kHab8rvWCPX2x8cvv6Dm+uhZQxpJgwrrn2GAKzn8sqS9Kg@mail.gmail.com> <27d63f0a-f840-42df-a31c-28c8cb457222@amd.com>
-In-Reply-To: <27d63f0a-f840-42df-a31c-28c8cb457222@amd.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Thu, 20 Feb 2025 13:37:31 -0800
-X-Gm-Features: AWEUYZkw8JRzTMCWoOsQe1qrRf6TLzBp_lxe1iYiNlk4nmTmKATxQq-pAaeLENg
-Message-ID: <CAAH4kHYXGNTFABo7hWCQvvebiv4VkXfT8HvV-FPneyQcrHA-9w@mail.gmail.com>
-Subject: Re: [PATCH v4 2/7] crypto: ccp: Ensure implicit SEV/SNP init and
- shutdown in ioctls
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, thomas.lendacky@amd.com, john.allen@amd.com, 
-	herbert@gondor.apana.org.au, michael.roth@amd.com, nikunj@amd.com, 
-	ardb@kernel.org, kevinloughlin@google.com, Neeraj.Upadhyay@amd.com, 
-	aik@amd.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CY8PR11MB7873:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e913fc7-151a-44f2-7435-08dd51f7bd7d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?q5jJdwld/cTK61MwGMQZFHaKC4Vzs1ynGngKa/gWEaDlgwHExZgKWhCxTS3A?=
+ =?us-ascii?Q?QMUNkBSoUjETnMyb9T29uALVd48rK2gcVDNc0w73vox22ie/m7C1/WXUHIkL?=
+ =?us-ascii?Q?v44Iug56VihqBxHwV5uEkF11g0mYwwugxVvG54eJFMmCPWRGTMdP97BpRzH2?=
+ =?us-ascii?Q?EIHBRvYzQhWSxm7mAeEtdh39ylD60xOR5ebOjMcXUJaGPTgFWDhYeD7KSUSe?=
+ =?us-ascii?Q?N+gUerLxPRe/5gHdLgrMkasvN0UVgZY8EHiq6UtfiLEv/i78xX75f+A6jfWJ?=
+ =?us-ascii?Q?mT0dV5gHVtD6FJdlan49mQyZW4d2HuF8g+1Fo17P0nO8V7eJF3M5B4t8U6h/?=
+ =?us-ascii?Q?PasIQ+L1ulZpfdGUPcpeZejpEBh8LBqeSUSK59NaZcatRqV7ffUxbD0Q0DjX?=
+ =?us-ascii?Q?GLJ+Zrd63EYgMfDFD0UdmEike3xWZro6KCpXnvpOVD+FNmHIJDYtHQlsNfVu?=
+ =?us-ascii?Q?v1NubXbxrIFRgZeHzJ39ag49AM48TfTrGYSAV6QD+O2NzHdDnXLYifsl+JNx?=
+ =?us-ascii?Q?3kzTlOl/F3/BVxkCf/2mauacGjclf10gukW0JpQDLNg6izC4Of5+5S4qzItr?=
+ =?us-ascii?Q?VaM4XKm7S+ZH/plxL0mhN8wNX5fO3b3QHtd5rAvRqway3h6gt8X3b9JhNxbE?=
+ =?us-ascii?Q?iiFQ/2Y5XAYqt4dQxC5jQMUjwtaL/8nbMd7WQqSSqDdiSh+14Tc8bsA+EGgd?=
+ =?us-ascii?Q?0lQvAz2aQd74XjE+eZQYKwEdRH6830CpfYkg3SAhj8pv9XUHG+8rKYpPpyuX?=
+ =?us-ascii?Q?4pQmmkUBnXlz3YKgXEslLGSNlzu51HbvuzI6PLFmq01J32N9ut7DcS0Z1aPr?=
+ =?us-ascii?Q?aNH4qiBEeWahlp98nwdhQ3HNQI9KSq4qVYqnBej33UcLy3/XP9NskizWvROs?=
+ =?us-ascii?Q?eCD5TP96ltlZZp0mDV2fXSVrmbX7Y354KDXwrfalNIizaahjGdCymUe1HCBB?=
+ =?us-ascii?Q?GHTkOYSfUJCo/cJIWes41YWeGMQM/BS2GXJH9acFnRsutc0OpwGDRk+LN8Vy?=
+ =?us-ascii?Q?dIe9Dd1NQB+YyToNvFRxyHze1FnsYyqbgyFzh2QnK/NPEqVlysRXckeTcnip?=
+ =?us-ascii?Q?4qdZYfIOvZNnE1D5mwLFvmwqgEzxicNZgAqmwBZGUkdLkQmmJIjNt2YaKubA?=
+ =?us-ascii?Q?Zde8KqvvNJfmKtBAYz7AABmoFzgVXPzZUlJLK/BIjBRY4S/WNsrgjUBehLnN?=
+ =?us-ascii?Q?E5YeGhIqFYlw34APYyeJhqRE+4ox1DT8hUPS9BGSrMm+wYXpnARcghubIe7c?=
+ =?us-ascii?Q?TltIW1+UnvZhBR8s10z0Ndh3yQ0PZ32WllMcyNoywkwtvB85W9pu+H8/bykt?=
+ =?us-ascii?Q?/UEUVkrZGzfDcRbZWnHYr+Ca7TkDQCe5TVrxWFt47jcB7zar+86HiIO0SLUK?=
+ =?us-ascii?Q?dIeKriXG/GNnHCOJ6atb9DZjx/b2?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/Wy+joCXnXB4XZjV6thzgcq9XTNqru7DJxu8enJ3xS2nmWiqGWrFxbbnFNML?=
+ =?us-ascii?Q?hPlD3d9tNU3ASibgYlr5SI1JjOvzeIynE0WnCJdL+h7FgpF9XvjFpx4iVsp6?=
+ =?us-ascii?Q?g812XzLzf2gElxZA2NJCIk8XZ1rEyMwrtt39gVirqJ+UccJRakltbMmpSLZH?=
+ =?us-ascii?Q?LMx0KCQgdv+vjTHBDj3eJoLteHOfQ0Ir2Ici7rQu6af6qn333SHpBevqdx3u?=
+ =?us-ascii?Q?TowgQpcEysqpEakwTiYcNur4W9ND/mvX1uN/vefGRABnaMzKe/h7LPrZWs1g?=
+ =?us-ascii?Q?RomsRr3InkWC4hu/EEGzcLWnx6eYm5XXaqOhY1eicAw9t0zBM5dIT0Ixm32L?=
+ =?us-ascii?Q?3B1tSeJMDA8cRPH9grpWUbfY54BGRculMzv/3KI/BUhWVkH/ajoF+l/lhPm7?=
+ =?us-ascii?Q?t2hbG7EWbOjKvWjfKWENAy4Y3+j9g+0E6jjnLLy9t4Hyoid4b3/FdurQUAfZ?=
+ =?us-ascii?Q?8Ho/o0rV6LWVLhtDW7GyjEZg6jWDQM4mO9vfmnTclcdhncNbyuswpvZUBZHS?=
+ =?us-ascii?Q?GIe5pb1U+TjDTyienOEs0EJT4YS6z1K+UqdFz9foil6WikzbWeKoLwcSLKsa?=
+ =?us-ascii?Q?+vP1KG8iZeyJGKtrp6fZZSs3lVMktypYIB3899dK/dD/O0sZTckSsNEUJcI3?=
+ =?us-ascii?Q?KVIt5RPkXxtrkaidN3xUicL6ril9caEu6yri16zJpJR6u288/CSmf+uicit6?=
+ =?us-ascii?Q?yN6tq2Qg4mssEagFDLliLVKvIKZU0364FDi/l8LJ4m3gFcm48pHxss8iiJ/T?=
+ =?us-ascii?Q?YBzLtjlfNElE/mzkl5L46iOPYbGKnq7tKYZ5rIIfnE+zdDDI2FUnMm3TyJ87?=
+ =?us-ascii?Q?vynCdsSX0lWqxoPJ2aXSzGMZjhisO+y5JhSj7yFB8dGYD3hkGnblbvxLd6dM?=
+ =?us-ascii?Q?VdRH25HWwY0vgsqstImsyI2+/NrwrTzzSpGwjy5Q2VVNd0tMDSrF9NLZVCLj?=
+ =?us-ascii?Q?wGgfyWDvBn8iyzsT+0bKDrjsjthzCkq3mzyEvYqUCAsxbaIx6SGG/QKQZwEs?=
+ =?us-ascii?Q?gqUYYvvtYASQGsgv2MfNpM2H+h6YcufkMahsArp5I4HK2cGK8lWPq+DyKxUo?=
+ =?us-ascii?Q?mP9leTOn1MKBVCOo7fmcpacpv8w6wrrY9c4no3mG2CmkYod7zRs9Dn1MJWmF?=
+ =?us-ascii?Q?mjdxeKeTQ7SI0i8sau6eplISQvaJ0rqjMfudVYFq7ki0XbpM/TVm/oZFghc1?=
+ =?us-ascii?Q?LDdNCfAvfWXh2I70BP65ZTKDxMfy2CzocO32buhetZ7b0rZGz82qvFPcikCZ?=
+ =?us-ascii?Q?6QJWP7+sbszAyWU+8fPl9FJrCBLyeCRNPQJSbUHp/rK58/kEGf1NwZdteJIo?=
+ =?us-ascii?Q?wjEXWG4ozBPNZd3yX5cn/Rckh108mSddFR/J+3ASBxlLAuo5WxuBs+FQzlUW?=
+ =?us-ascii?Q?qjdiqQev0lbqH5RySTPlGm/Qy8Ep3npECyfDhb1DT3wM6+weHkM9GZXZAw95?=
+ =?us-ascii?Q?nkv+e+RwVyJGWRewVtrzeB+AzhN8IelQFRecq1KTg2IquD/Ki7XNmowK7wJf?=
+ =?us-ascii?Q?2J+kawN/+8tD4bdr9lDhQ+BfWQ7ZPPMN3qbC4chuHBQIP0criIqcNlB3n5oz?=
+ =?us-ascii?Q?4g8HqJemBDJbopq043reWEKQhazdDiYRSzdRWlgVAJiybU47A/sKFk7UF2OK?=
+ =?us-ascii?Q?5g=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e913fc7-151a-44f2-7435-08dd51f7bd7d
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2025 21:44:23.6202
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: N4/q9ckGioJWkpM1Z8Qat4+WqGmOd90YH8h8k2WY3ZZWkEFjBPzM/l1M73z/UGemQIJKV0bnQAzKeVkaU9FmRJ0ABMu9zY6Wo4UwIbQGP00=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7873
+X-OriginatorOrg: intel.com
 
-On Thu, Feb 20, 2025 at 12:07=E2=80=AFPM Kalra, Ashish <ashish.kalra@amd.co=
-m> wrote:
->
-> Hello Dionna,
->
-> On 2/20/2025 10:44 AM, Dionna Amalie Glaze wrote:
-> > On Wed, Feb 19, 2025 at 12:53=E2=80=AFPM Ashish Kalra <Ashish.Kalra@amd=
-.com> wrote:
-> >>
-> >> From: Ashish Kalra <ashish.kalra@amd.com>
-> >>
-> >> Modify the behavior of implicit SEV initialization in some of the
-> >> SEV ioctls to do both SEV initialization and shutdown and add
-> >> implicit SNP initialization and shutdown to some of the SNP ioctls
-> >> so that the change of SEV/SNP platform initialization not being
-> >> done during PSP driver probe time does not break userspace tools
-> >> such as sevtool, etc.
-> >>
-> >> Prior to this patch, SEV has always been initialized before these
-> >> ioctls as SEV initialization is done as part of PSP module probe,
-> >> but now with SEV initialization being moved to KVM module load instead
-> >> of PSP driver probe, the implied SEV INIT actually makes sense and get=
-s
-> >> used and additionally to maintain SEV platform state consistency
-> >> before and after the ioctl SEV shutdown needs to be done after the
-> >> firmware call.
-> >>
-> >> It is important to do SEV Shutdown here with the SEV/SNP initializatio=
-n
-> >> moving to KVM, an implicit SEV INIT here as part of the SEV ioctls not
-> >> followed with SEV Shutdown will cause SEV to remain in INIT state and
-> >> then a future SNP INIT in KVM module load will fail.
-> >>
-> >> Similarly, prior to this patch, SNP has always been initialized before
-> >> these ioctls as SNP initialization is done as part of PSP module probe=
-,
-> >> therefore, to keep a consistent behavior, SNP init needs to be done
-> >> here implicitly as part of these ioctls followed with SNP shutdown
-> >> before returning from the ioctl to maintain the consistent platform
-> >> state before and after the ioctl.
-> >>
-> >> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> >> ---
-> >>  drivers/crypto/ccp/sev-dev.c | 117 ++++++++++++++++++++++++++++------=
--
-> >>  1 file changed, 93 insertions(+), 24 deletions(-)
-> >>
-> >> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev=
-.c
-> >> index 8f5c474b9d1c..b06f43eb18f7 100644
-> >> --- a/drivers/crypto/ccp/sev-dev.c
-> >> +++ b/drivers/crypto/ccp/sev-dev.c
-> >> @@ -1461,7 +1461,8 @@ static int sev_ioctl_do_platform_status(struct s=
-ev_issue_cmd *argp)
-> >>  static int sev_ioctl_do_pek_pdh_gen(int cmd, struct sev_issue_cmd *ar=
-gp, bool writable)
-> >>  {
-> >>         struct sev_device *sev =3D psp_master->sev_data;
-> >> -       int rc;
-> >> +       bool shutdown_required =3D false;
-> >> +       int rc, error;
-> >>
-> >>         if (!writable)
-> >>                 return -EPERM;
-> >> @@ -1470,19 +1471,26 @@ static int sev_ioctl_do_pek_pdh_gen(int cmd, s=
-truct sev_issue_cmd *argp, bool wr
-> >>                 rc =3D __sev_platform_init_locked(&argp->error);
-> >>                 if (rc)
-> >>                         return rc;
-> >> +               shutdown_required =3D true;
-> >>         }
-> >>
-> >> -       return __sev_do_cmd_locked(cmd, NULL, &argp->error);
-> >> +       rc =3D __sev_do_cmd_locked(cmd, NULL, &argp->error);
-> >> +
-> >> +       if (shutdown_required)
-> >> +               __sev_platform_shutdown_locked(&error);
-> >
-> > This error is discarded. Is that by design? If so, It'd be better to
-> > call this ignored_error.
-> >
->
-> This is by design, we cannot overwrite the error for the original command=
- being issued
-> here which in this case is do_pek_pdh_gen, hence we use a local error for=
- the shutdown command.
-> And __sev_platform_shutdown_locked() has it's own error logging code, so =
-it will be printing
-> the error message for the shutdown command failure, so the shutdown error=
- is not eventually
-> being ignored, that error log will assist in any inconsistent SEV/SNP pla=
-tform state and
-> subsequent errors.
->
-> >> +
-> >> +       return rc;
-> >>  }
-> >>
-> >>  static int sev_ioctl_do_pek_csr(struct sev_issue_cmd *argp, bool writ=
-able)
-> >>  {
-> >>         struct sev_device *sev =3D psp_master->sev_data;
-> >>         struct sev_user_data_pek_csr input;
-> >> +       bool shutdown_required =3D false;
-> >>         struct sev_data_pek_csr data;
-> >>         void __user *input_address;
-> >>         void *blob =3D NULL;
-> >> -       int ret;
-> >> +       int ret, error;
-> >>
-> >>         if (!writable)
-> >>                 return -EPERM;
-> >> @@ -1513,6 +1521,7 @@ static int sev_ioctl_do_pek_csr(struct sev_issue=
-_cmd *argp, bool writable)
-> >>                 ret =3D __sev_platform_init_locked(&argp->error);
-> >>                 if (ret)
-> >>                         goto e_free_blob;
-> >> +               shutdown_required =3D true;
-> >>         }
-> >>
-> >>         ret =3D __sev_do_cmd_locked(SEV_CMD_PEK_CSR, &data, &argp->err=
-or);
-> >> @@ -1531,6 +1540,9 @@ static int sev_ioctl_do_pek_csr(struct sev_issue=
-_cmd *argp, bool writable)
-> >>         }
-> >>
-> >>  e_free_blob:
-> >> +       if (shutdown_required)
-> >> +               __sev_platform_shutdown_locked(&error);
-> >
-> > Another discarded error. This function is called in different
-> > locations in sev-dev.c with and without checking the result, which
-> > seems problematic.
->
-> Not really, if shutdown fails for any reason, the error is printed.
-> The return value here reflects the value of the original command/function=
-.
-> The command/ioctl could have succeeded but the shutdown failed, hence,
-> shutdown error is printed, but the return value reflects that the ioctl s=
-ucceeded.
->
-> Additionally, in case of INIT before the command is issued, the command m=
-ay
-> have failed without the SEV state being in INIT state, hence the error fo=
-r the
-> INIT command failure is returned back from the ioctl.
->
-> >
-> >> +
-> >>         kfree(blob);
-> >>         return ret;
-> >>  }
-> >> @@ -1747,8 +1759,9 @@ static int sev_ioctl_do_pek_import(struct sev_is=
-sue_cmd *argp, bool writable)
-> >>         struct sev_device *sev =3D psp_master->sev_data;
-> >>         struct sev_user_data_pek_cert_import input;
-> >>         struct sev_data_pek_cert_import data;
-> >> +       bool shutdown_required =3D false;
-> >>         void *pek_blob, *oca_blob;
-> >> -       int ret;
-> >> +       int ret, error;
-> >>
-> >>         if (!writable)
-> >>                 return -EPERM;
-> >> @@ -1780,11 +1793,15 @@ static int sev_ioctl_do_pek_import(struct sev_=
-issue_cmd *argp, bool writable)
-> >>                 ret =3D __sev_platform_init_locked(&argp->error);
-> >>                 if (ret)
-> >>                         goto e_free_oca;
-> >> +               shutdown_required =3D true;
-> >>         }
-> >>
-> >>         ret =3D __sev_do_cmd_locked(SEV_CMD_PEK_CERT_IMPORT, &data, &a=
-rgp->error);
-> >>
-> >>  e_free_oca:
-> >> +       if (shutdown_required)
-> >> +               __sev_platform_shutdown_locked(&error);
-> >
-> > Again.
-> >
-> >> +
-> >>         kfree(oca_blob);
-> >>  e_free_pek:
-> >>         kfree(pek_blob);
-> >> @@ -1901,17 +1918,8 @@ static int sev_ioctl_do_pdh_export(struct sev_i=
-ssue_cmd *argp, bool writable)
-> >>         struct sev_data_pdh_cert_export data;
-> >>         void __user *input_cert_chain_address;
-> >>         void __user *input_pdh_cert_address;
-> >> -       int ret;
-> >> -
-> >> -       /* If platform is not in INIT state then transition it to INIT=
-. */
-> >> -       if (sev->state !=3D SEV_STATE_INIT) {
-> >> -               if (!writable)
-> >> -                       return -EPERM;
-> >> -
-> >> -               ret =3D __sev_platform_init_locked(&argp->error);
-> >> -               if (ret)
-> >> -                       return ret;
-> >> -       }
-> >> +       bool shutdown_required =3D false;
-> >> +       int ret, error;
-> >>
-> >>         if (copy_from_user(&input, (void __user *)argp->data, sizeof(i=
-nput)))
-> >>                 return -EFAULT;
-> >> @@ -1952,6 +1960,16 @@ static int sev_ioctl_do_pdh_export(struct sev_i=
-ssue_cmd *argp, bool writable)
-> >>         data.cert_chain_len =3D input.cert_chain_len;
-> >>
-> >>  cmd:
-> >> +       /* If platform is not in INIT state then transition it to INIT=
-. */
-> >> +       if (sev->state !=3D SEV_STATE_INIT) {
-> >> +               if (!writable)
-> >> +                       goto e_free_cert;
-> >> +               ret =3D __sev_platform_init_locked(&argp->error);
-> >
-> > Using argp->error for init instead of the ioctl-requested command
-> > means that the user will have difficulty distinguishing which process
-> > is at fault, no?
-> >
->
-> Not really, in case the SEV command has still not been issued, argp->erro=
-r is still usable
-> and returned back to the caller (no need to use a local error here), we a=
-re not overwriting
-> the argp->error used for the original command/ioctl here.
->
+Alexey Kardashevskiy wrote:
+> On 6/12/24 09:24, Dan Williams wrote:
+> > There are two components to establishing an encrypted link, provisioning
+> > the stream in config-space, and programming the keys into the link layer
+> > via the IDE_KM (key management) protocol. These helpers enable the
+> > former, and are in support of TSM coordinated IDE_KM. When / if native
+> > IDE establishment arrives it will share this same config-space
+> > provisioning flow, but for now IDE_KM, in any form, is saved for a
+> > follow-on change.
+> > 
+> > With the TSM implementations of SEV-TIO and TDX Connect in mind this
+> > abstracts small differences in those implementations. For example, TDX
+> > Connect handles Root Port registers updates while SEV-TIO expects System
+> > Software to update the Root Port registers. This is the rationale for
+> > the PCI_IDE_SETUP_ROOT_PORT flag.
+> > 
+> > The other design detail for TSM-coordinated IDE establishment is that
+> > the TSM manages allocation of stream-ids, this is why the stream_id is
+> > passed in to pci_ide_stream_setup().
+> > 
+> > The flow is:
+> > 
+> > pci_ide_stream_probe()
+> >    Gather stream settings (devid and address filters)
+> > pci_ide_stream_setup()
+> >    Program the stream settings into the endpoint, and optionally Root Port)
+> > pci_ide_enable_stream()
+> >    Run the stream after IDE_KM
+> > 
+> > In support of system administrators auditing where platform IDE stream
+> > resources are being spent, the allocated stream is reflected as a
+> > symlink from the host-bridge to the endpoint.
+> > 
+> > Thanks to Wu Hao for a draft implementation of this infrastructure.
+> > 
+> > Cc: Bjorn Helgaas <bhelgaas@google.com>
+> > Cc: Lukas Wunner <lukas@wunner.de>
+> > Cc: Samuel Ortiz <sameo@rivosinc.com>
+> > Co-developed-by: Alexey Kardashevskiy <aik@amd.com>
+> > Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+> > Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+[..]
+> > @@ -71,3 +74,192 @@ void pci_ide_init(struct pci_dev *pdev)
+> >   	pdev->sel_ide_cap = sel_ide_cap;
+> >   	pdev->nr_ide_mem = nr_ide_mem;
+> >   }
+> > +
+> > +void pci_init_host_bridge_ide(struct pci_host_bridge *hb)
+> > +{
+> > +	hb->ide_stream_res =
+> > +		DEFINE_RES_MEM_NAMED(0, 0, "IDE Address Association");
+> 
+> out of curiosity - should it be DEFINE_RES_MEM_NAMED(0, UINT_MAX, "IDE 
+> Address Association");?
 
-I mean in the case that argp->error is set to a value shared by the
-command and init, it's hard to know what the problem was.
-I'd like to ensure that the documentation is updated to reflect that
-(in this case) if PDH_CERT_EXPORT returns INVALID_PLATFORM_STATE, then
-it's because the platform was not in PSTATE.UNINIT state.
-The new behavior of initializing when you need to now means that you
-should have ruled out INVALID_PLATFORM_STATE as a possible value from
-PDH_EXPORT_CERT. Same for SNP_CONFIG.
+Hmm, yes, an empty resource only makes sense if there is going to be a
+later point in the init flow where it is adjusted to map the real
+platform probed boundaries, and I do not have that in this code.
 
-There is not a 1-to-1 mapping between the ioctl commands and the SEV
-commands now, so I think you need extra documentation to clarify the
-new error space for at least pdh_export and set_config
+The platform iomem_resource boundaries should be settled before the
+host-bridge is initialized, so no need to find a later point than this
+to set the bounds. Will fold in this incremental change:
 
-SNP_PLATFORM_STATUS, VLEK_LOAD, and SNP_COMMIT appear to not
-necessarily have a provenance confusion after looking closer.
+@@ -77,8 +77,13 @@ void pci_ide_init(struct pci_dev *pdev)
+ 
+ void pci_init_host_bridge_ide(struct pci_host_bridge *hb)
+ {
+-       hb->ide_stream_res =
+-               DEFINE_RES_MEM_NAMED(0, 0, "IDE Address Association");
++       /*
++        * Match platform iomem resource boundaries for IDE address
++        * association.
++        */
++       hb->ide_stream_res = DEFINE_RES_MEM_NAMED(
++               iomem_resource.start, resource_size(&iomem_resource),
++               "IDE Address Association");
+ }
+ 
+ /*
 
 
+[..]
+> > +void pci_ide_enable_stream(struct pci_dev *pdev, struct pci_ide *ide)
+> > +{
+> > +	int pos;
+> > +	u32 val;
+> > +
+> > +	pos = sel_ide_offset(pdev->sel_ide_cap, ide->stream_id,
+> > +			     pdev->nr_ide_mem);
+> > +
+> > +	val = FIELD_PREP(PCI_IDE_SEL_CTL_ID_MASK, ide->stream_id) |
+> > +	      FIELD_PREP(PCI_IDE_SEL_CTL_DEFAULT, 1);
+> 
+> 
+> FIELD_PREP(PCI_IDE_SEL_CTL_EN) is missing here.
 
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+Added.
+
+> And no PCI_IDE_SETUP_ROOT_PORT here, is the platform expected to enable 
+> it explicitely? If yes, then we do not need PCI_IDE_SETUP_ROOT_PORT 
+> really. If no, then this needs to enable the stream on the rootport.
+
+Hmm, yes, looking at this now, PCI_IDE_SETUP_ROOT_PORT is giving off
+"mid-layer" smells and this responsibility should be pushed to the low
+level driver.
+
+It is still the case that there is a part of the stream setup that can
+fail, like registering the presence of the stream in sysfs, but the
+piece that can not fail, __pci_ide_stream_setup(), should be left to the
+platform TSM driver to optionally be called for the root-port.
+
+I will rename the parts of the stream setup that needs alloc / free as
+"pci_ide_stream_{register,unregister}()", export
+__pci_ide_stream_setup() as a standalone helper renamed to just
+pci_ide_stream_setup(), and drop the PCI_IDE_SETUP_ROOT_PORT flag
+concept.
+
+> Also, my test device wants PCI_IDE_SEL_CTL_TEE_LIMITED to work, I wonder 
+> how to showel it in here, add a "unsigned dev_sel_ctl" to pci_ide?
+> And the same comment for PCI_IDE_SEL_CTL_CFG_EN on the rootport. 
+> "unsigned rootport_sel_ctl"?
+
+I will add that. If the device supports limited stream I see no reason
+that Linux would want to not require it (outside of device quirks). So,
+the default will be to enable it if supported, but the low-level TSM
+driver can always clear that support flag in the pdev (endpoint or root)
+if the need arises.
+
+[..]
+> > diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
+> > new file mode 100644
+> > index 000000000000..24e08a413645
+> > --- /dev/null
+> > +++ b/include/linux/pci-ide.h
+> > @@ -0,0 +1,33 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
+> > +
+> > +/* PCIe 6.2 section 6.33 Integrity & Data Encryption (IDE) */
+> > +
+> > +#ifndef __PCI_IDE_H__
+> > +#define __PCI_IDE_H__
+> > +
+> > +#include <linux/range.h>
+> > +
+> > +struct pci_ide {
+> > +	int domain;
+> 
+> Not much point in caching this, real easy to calculate in that one spot.
+
+Agree, added an ide_domain_nr() helper to meet the requirement that
+software must write 0 if the device has not captured its segment base.
+
+> Thanks,
+> 
+> ps. I'll probably be commenting more on the same things as I try using 
+> all this :)
+
+Hey, yes please! The whole point of this effort is to find a path to
+mutual acceptance on all these concerns.
