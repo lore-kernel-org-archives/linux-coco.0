@@ -1,157 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2056.outbound.protection.outlook.com [40.107.243.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7CF2AEF1;
-	Fri, 21 Feb 2025 08:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740125622; cv=none; b=ljYD6Z9rmbQ0d1JNCmGLvpFS7uQxOtos4Z8ZPOm+gYYHgVWsi7I+tDL8V5Y78YP8xhwOPG3KYglSfYMh4ZaK6nmz58K63Ka85cQXLivtZ07Hc7BzHRWTjFEhtmvncbJwTqWT598ElEMG+huHBkmlGnHbGtcWkcacoQH0t0LMTXM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740125622; c=relaxed/simple;
-	bh=sstp1KHRVscNEp2wCo68NPITpWUlLbBip5GRGpXG6aw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Oa1S0yWIgMpEIIyi4DITforF1sdRDsWascsf0+BqzNoanGuH6S90TX7BUqS1EvCnEpDW/CvZExOwBvxOOyxxEAvz//ms5aq3W3MMa3n9juBureinJIpoUUFhMJC4QKYBCWO0uNr+CFfScuU96/b3E0OdNAwA5TDOAXIEpYQdBBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cjRe+UYF; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6188191F6A
+	for <linux-coco@lists.linux.dev>; Fri, 21 Feb 2025 11:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740137418; cv=fail; b=inO7w5nSybz1GyJFPX+xTCrC4HKJMIuyngLMWF3zfzqdp6Hw+e5ZseekH6pB2hgqVaBoRoyWQQnX6+uZ6a5rrhykqL4Llp/VOAqYvMHuYaSyra5330Wh6Vz9KY97OUH+ezQxB4Eljm24ilAxae0HB6hXnOLuVUNV4IF3VaNgn4s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740137418; c=relaxed/simple;
+	bh=dFXTtHq0Oa+VPdhmlmMRL1NrHRYQKYYp8jZmcRz6UIg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=cFw2hxmZgTY4jrUCvvNveTjvomhMNtqIQnTyR5ufG7YcRmeo7AFmYpqLDYnh22R/gGJqSH5sWAHfDW+ziJnKh8joxLuxzoVOXrEDx+yvIXeRNS2giUGRp7vN5AokEdKoseFyVSK0p6991qDZU7/ogg7S0t/t5VGCqYsmObjtE28=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wQVEAebK; arc=fail smtp.client-ip=40.107.243.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cjRe+UYF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C3EC4CEE6;
-	Fri, 21 Feb 2025 08:13:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740125622;
-	bh=sstp1KHRVscNEp2wCo68NPITpWUlLbBip5GRGpXG6aw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=cjRe+UYFBSpzEAk8kqexVfZpzvZVW8PnFSA2x3+WqQiRJGUx9YDUvlG2yoWRXe0av
-	 YlyWvWT0pQ8As+6lbCjJDpExxB5zvaExCve5g7TvxJuwg24LPPuOFvOaMcPHAE2OEf
-	 U0PM2o3/CQ9619EywQtI37TykWEtURJv61tRUEwO4H0tS6hoZ8EbG7FX+Qg2hZA+sb
-	 53YYN4+5qUxrUosbmckEcc0nBCRf0WQaihbFpGXllJBOsuFJAfUz8Cu/I5NEZAjP4+
-	 CEdmUzNe7suJ2dR/BWa+d2tfDrFSlnenwutzk1L/MOz8tFmOeegWS5ZFr0uovWnnVk
-	 TF6v0ZkgtekSg==
-X-Mailer: emacs 29.4 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
-Cc: Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, linux-pci@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Subject: Re: [PATCH 05/11] PCI/TSM: Authenticate devices via platform TSM
-In-Reply-To: <efc5ba59-964d-4988-a412-47f5297fedd3@amd.com>
-References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
- <173343742510.1074769.16552514658771224955.stgit@dwillia2-xfh.jf.intel.com>
- <efc5ba59-964d-4988-a412-47f5297fedd3@amd.com>
-Date: Fri, 21 Feb 2025 13:43:28 +0530
-Message-ID: <yq5aeczrww9j.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wQVEAebK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HHWzzU7AyIFjlBQrsmhf3Cs0EHAs/7HLJsX0WJQGzZupZhapPHWlPiDg7Rc0LLKPFhKap1B+jU0FhktjTqVy6MfYP3FYAMOD1wANifoCXfZh/JXQo8a3YOrevOjRrzdekg35BmXQnL6cKVR7Fc0iaI6qcDZXp8L2eWPCLmG62iNLaTLCnDUlEMLLaCmNZmZUUZMlIZPC6PQnH5krXs6CadYOPJxiHKxsgnYIgFBQIKUoes4e+sNdASKRmWgb5vNYWVCsrKPTsNG7wVZ0Z4DXXcsgzctmEsHJcSGtpmiB07PWTv0jZNCduq6lkk8IZE17askAk/NbrAMQoXBcQIj04w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6GDebTrDY1Ebc+IVrZBBuwnKXFJE2oe2gYqY2JpEmr8=;
+ b=GwwssmlWNGCeFcfktuB70lmeuN2Ax76lZD3QPs/Z8hFYrmCNVike05Sy6gx8iN+WmJyeQXqXoyatEo8gYVAdR+TcYy+vbHgOwIF3elRyGLXDgiF4MISlUO6BqCG95rDFolWcCQeK3JQkQq61Txlag6alDJwEhRm1whnJtdKjZg/gK1RrELJp30YbzkXyRgA3OI/GLdIH9L3CvwyKO4oRj7WbctZMaeHYWkfdW+8C7SoahcQ7jVdEPbTnt7K55F2FrK3berT+jgNUH0AaXXBb61K2O3qLGM4sbC92bV5AlENCksCHQiDW3r/mGvXoC7lsT/gX28N2ZBPPRf8ibDG3ow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6GDebTrDY1Ebc+IVrZBBuwnKXFJE2oe2gYqY2JpEmr8=;
+ b=wQVEAebKrLHBfa18t/d2McAeuUai+z5PBeC1NxJyrqyHMg/bYN4JOR1GIiMy4ZNqnzlt4Tbtv7QspstyP2RKy1ZtMUWm0GNiYQfcQE7Dh8HHPUKBq/ZmGxc/6EvXOssChmsmshmJe5ml97eKUHRHJnyT7GA0ZZw2cukmZ6xfL1k=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH2PR12MB4262.namprd12.prod.outlook.com (2603:10b6:610:af::8)
+ by PH0PR12MB7907.namprd12.prod.outlook.com (2603:10b6:510:28d::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Fri, 21 Feb
+ 2025 11:30:13 +0000
+Received: from CH2PR12MB4262.namprd12.prod.outlook.com
+ ([fe80::3bdb:bf3d:8bde:7870]) by CH2PR12MB4262.namprd12.prod.outlook.com
+ ([fe80::3bdb:bf3d:8bde:7870%5]) with mapi id 15.20.8466.013; Fri, 21 Feb 2025
+ 11:30:13 +0000
+Message-ID: <2b77e055-98ac-43a1-a7ad-9f9065d7f38f@amd.com>
+Date: Fri, 21 Feb 2025 17:00:01 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v5 0/4] Add NUMA mempolicy support for KVM guest-memfd
+To: akpm@linux-foundation.org, willy@infradead.org, pbonzini@redhat.com
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, chao.gao@intel.com, seanjc@google.com,
+ ackerleytng@google.com, david@redhat.com, vbabka@suse.cz, bharata@amd.com,
+ nikunj@amd.com, michael.day@amd.com, Neeraj.Upadhyay@amd.com,
+ thomas.lendacky@amd.com, michael.roth@amd.com, Fuad Tabba <tabba@google.com>
+References: <20250219101559.414878-1-shivankg@amd.com>
+Content-Language: en-US
+From: Shivank Garg <shivankg@amd.com>
+In-Reply-To: <20250219101559.414878-1-shivankg@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN2PR01CA0075.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:23::20) To CH2PR12MB4262.namprd12.prod.outlook.com
+ (2603:10b6:610:af::8)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB4262:EE_|PH0PR12MB7907:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24dc0394-5097-4722-c072-08dd526b1add
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M1NBUEVLK0xVZkV0TnNsNVJLMHo5NmVwS2pMcTdFOERxRDJOSEVLWU9vYWNy?=
+ =?utf-8?B?cjhnK3BSVzBoMjVObGJGak1EM1RYTUpsbVBiREt1SVZuQ21KNmNLbWZaZkpK?=
+ =?utf-8?B?WEgzRlNzMkNiOFVRTUc4Vnp1SHlrdnFSTFVYcVRuMTN4all3UUR0Sy91cVFD?=
+ =?utf-8?B?bzIxZTNNQVR5eFVHNHdiUHFLK3c1R3Y5VGtXR1VUTjhsTDdZanJqaUdYUisv?=
+ =?utf-8?B?enp5cTZ4SEdNZWttbUVlT0cwUHJZN2dkQlM3bGwzZHlFeUtCRDd6SDdFbzBk?=
+ =?utf-8?B?bVU4TjhaSVI4MGVKdVU5SG41TThxdE5DTHpNNVF3bVVRcW1tdFROWjVaeXd6?=
+ =?utf-8?B?ZFBqc3lhbmNhdU9JVllBTGt3eGdJMDByQWZsdGtLTXc1SFhXMXVqWjJYYmd1?=
+ =?utf-8?B?cVpMcXhhNDBScEE0MmNEMzBqaFpod0xJUDJkd01CVUdudmNSRzBPdXRaUlNL?=
+ =?utf-8?B?cmRPTUxqOXk3REVzMFNjd3d6SDhEc25XZ0oxUzFqN1l4YTc4UzBWSlRidmhx?=
+ =?utf-8?B?c2EvR0x0MDhoRlVyc0pSSnV2ejZFSDR2ZTB1Z2NkZ2F4dm1jWlB4ME5LaEZT?=
+ =?utf-8?B?VlphT0xHV3dZbjNPMHdiaEsvc3FTakZySWhPQ1Y2aUdqTnQ4S0pwTkFrblhQ?=
+ =?utf-8?B?bUE5RWVSbDVzWVFqNyt1VFJtSWRENHlQYmZlaFBLSmc3RHZVdzYzT29PMEpm?=
+ =?utf-8?B?UHZJbmtYNHJ2N3lkcDR1Q0VWVlN3akRTS1ZVekxBZ2xQdFM2dDRSWFVYWDFN?=
+ =?utf-8?B?dlpQVVdPRmZibTMreHhVTm1pOEg1V0krckI5OHlSeFI4YmR5ak1UR3lhd2N6?=
+ =?utf-8?B?S2pSYUR3anhLZUF2NmF0dEliUHQ4UkM1Mmc3bVplYlBYYTVkVEcyN3J3YlRK?=
+ =?utf-8?B?SHEwVHFSbjkyajEyWGlZV2lpQkdwNGtVaW1xakhUMkJHNHU2YmdqRmhvNmo0?=
+ =?utf-8?B?Nkczcnl0cVVZdStVb2hoMUFpZytOSGozWGVuTXZBZmxFSW5vVlpwMkQveWdN?=
+ =?utf-8?B?ZjdFMndONm1WRDMrbEJYMUc5NXBIQTVReE05RHZ5OXNjMVdEbXZMb2YwRXhE?=
+ =?utf-8?B?K3NTSGFvU0t3anVhTElZMGNIR1FrNWNxWDZ5dlFtUWY5M2lOTDRyR2ZJcFg0?=
+ =?utf-8?B?ZDRqTTF2eEcwSm5iY2s3eXhRR3M5OVViRGF0UmRjNXBFTlBUVHQ4OFRWaXBj?=
+ =?utf-8?B?RzRud01BanN4T0x6K244VnpRd0N1RVhlZGZhZWwxWW5kVldNdTl2RXJIMnRF?=
+ =?utf-8?B?N3NMNzlRTkMyUm9qMkFQdU5LVVRVNjZFVW5ydWYrM0kxRmR0VnN2L2Q2bXJT?=
+ =?utf-8?B?REZVZFZIZXZjU2ZGd0dWNWtSNEpqRkZ4SElIN1VkcVhaMFdoOUdEU1F0VFA3?=
+ =?utf-8?B?dktVcmZCVHdyRzhQeCszaUVuVTJXeTk4eS9lVTlma1dxVWlIRnBueVFnb1RR?=
+ =?utf-8?B?Mk5oWFBWc1A0V0pjT05QQVlZM1d2WHB0K1cwMnZqQW84cXdzL0dsV1c3VWc4?=
+ =?utf-8?B?bjJJV3UzOHdyU2dmY01uQXpLcVdwSkxJU3luM2lvdUcrbzN3VUtQVkpZR0Vt?=
+ =?utf-8?B?dFBjOVY0ZEMya044MWpmWjJXOWVHRjUxVGd1RHJmMkRSNnAvNDNLMWRrcjdL?=
+ =?utf-8?B?dTdaMEt5aXJZZ21OcEIzVzk0ejdnK0J1ZmJseVJIMDJEOVJBZm9DQjMzTlFN?=
+ =?utf-8?B?NGozSkU0b3ozRDArRU9KSFBRVTZyM0tYWmlCMk1FL0RyWlE1WWlkenVPWmZt?=
+ =?utf-8?B?Nk5SYUx0djllczgrYXBpRWZ3YmlwVm9IWW5HUUltNlZDQnZ1RTV1cjMrSlBS?=
+ =?utf-8?B?ZGUzN3hBQ1BSS3RDU1BWQUp2eGZCdHVOT2s1ajZMUDZQOXgzZEI5T3k5eXh5?=
+ =?utf-8?B?NSszZHQxbDFmRTVweEYzcmJQOGJNcnE2MzVMWk10WERHSkE9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4262.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q0lpWDduRFNZOHBKdnZQTmNZZHJxTGVsMytiQWp1aGVteWdpUUc5Q2JPTG5Z?=
+ =?utf-8?B?a2syTU9NenpOdVVrSHdPR0dLcHRGS1JlS3BBalZYY0F3VXhzSnBZaVpPZEdl?=
+ =?utf-8?B?eHlXZkg3RXlEaXY2M1pOaXFiRmlVZzlKdTlJSDcwTmJ6OU5va3lNcjBHOWl0?=
+ =?utf-8?B?K2hVNk9kaFhTSWNlMmc4VjBETVBpdElJMTVhUCt1ZEtScFRxSWdHb2x1ajBM?=
+ =?utf-8?B?anIrQ1Y1dUduTDRBVDlnU2lTTXF3eHFMeGNSQkpoanlCeTBrWTJoNklEQnhl?=
+ =?utf-8?B?V2NQZUtaYjhHdE1wdFVpMXRZZ05heGp4djk3djl4RDZHYUgrcTNEZTNQYzQr?=
+ =?utf-8?B?aDlONVArdkU4VVAyaE14UmVLZHRReUxTdmhSYndtSEZ5MEZkMFNoZFFMN3NG?=
+ =?utf-8?B?V0FSVzdtZ0prVzJyVG1EdTF3eWZiYk1zdHVYVldkS2Vkdk9xbFQ3K2hHMUtY?=
+ =?utf-8?B?QkdwNFhleHg4TUd4WHBvVmRVMWxmYWFHOFFDQmJ6aVUzZGYyRlZPbFFIYTZJ?=
+ =?utf-8?B?Z0daME1LUGxaQUluakxjT2JHUDRjcWJsVGJtZzM5UnpLMkVPSTIwTGpUeEkx?=
+ =?utf-8?B?c3ZuanM5MVFNQTNJWExJM0tkL0kzbEtyVlZta2VielFGZlIrZEh4K3BsY3ZU?=
+ =?utf-8?B?VUlOY1JVMDJqVTR6MDB3WUF2WllwTjk5VnV2Z1h3WUh3WjFmU2hWWjNBSlRj?=
+ =?utf-8?B?U0U0N3Rmdk16eUpRTmJXbm1ReURTYitBcHp4RG1LZFJoQUlDeS9BMllEOWN0?=
+ =?utf-8?B?R1lQd0JPMnRkZUtFMGFZSHZ1VzduRzZ1cXlUUDFjeWdFM3hCVFo4aU5nUzBO?=
+ =?utf-8?B?cS9sT2pMclMyanE0cDIyU1NUVkdFRW4yMXRBdGNYaXFmbnFwNGwxamxaYmpK?=
+ =?utf-8?B?Zkh5VWhTdUtKNmV4aVUyRDFmVDgrR1JjY1g1cjdpNXBZRUt2QTN1MzVhaWZQ?=
+ =?utf-8?B?VENJc0pBanIvYUtaUStsaUN5RXBmV3ZNKzRIVk9qQVM2SmxWVWswTUdkTTJT?=
+ =?utf-8?B?NE0xNlNCdDJHeWpYSjZaYnI2blJlQ0xJOFJ0a3ZBeVpaSFFZMzlUU1l1VGlp?=
+ =?utf-8?B?R2RNVDBIbjgrNXMxeUpkZjBSU01zWE9NY3hZUmFvdlJWNEh0dzFITjVHNmcz?=
+ =?utf-8?B?WFdNVTlPU1hydjl4Q0NZTXl5MGpTMEV1akRsTG9xaUhnZU0rVm1zeHJnWTRO?=
+ =?utf-8?B?U20xamNvVXF2VXBOWXNUWmhEV1AxUTlhN2RXYmVGMmJkaXE2alJVR29Oa1pG?=
+ =?utf-8?B?Q1UvMnE5ZksvYkZZUXFpUUE3M2duUVRVZHBjeER0eWpYbGFXaFVzTG1ESlZP?=
+ =?utf-8?B?dng1RVlUV0JjaVZ0TTRKeDd1S1hQSmV3aXdSRG91Q0hsL2xHeWFYZkpUcngx?=
+ =?utf-8?B?QklEMkpvN0dGYlNyWmxCTlM1dmN6dXgzNCtjTHNQSUo1S290alcrT2czMHZP?=
+ =?utf-8?B?MFFJQ3pSWm5nOHppbkVuUUxHbVlxU0t1TTY1L0FmWTdia0RnMmtENG10RCtL?=
+ =?utf-8?B?eHcwbXU2VXJxZWo5ZU1oUng2Ymw2M0w2SjF3dVlUNC92RlVHK0tiREtQMGhN?=
+ =?utf-8?B?bkQ4YjN0NmF4eDJyR2FWZHBBUDY1amMyVldNTEVlUGkrYjRxSDhoRlVYTUFO?=
+ =?utf-8?B?aEV5UU9GTyt3UnltYURyNkF3REhLcUtWZHhtYnJkTHVXb1ZjRVpuT1BvYlJs?=
+ =?utf-8?B?d3diUi8rUTNsYUlmTzRGVVpMSk5yL25MTG40NjE0Q25aV21sK0JyYVhOL3FL?=
+ =?utf-8?B?VytOMGhEV2NhVER2djRNZVNSVVhWZkFSTGhKRUdDOTNkWUxxN1FMRlZvcGQ0?=
+ =?utf-8?B?NE94OFBKSTNrODRMeGVoY09KTGVpaW1EOFRlSlpnSnJRQXFnbVVDQmpEMnFO?=
+ =?utf-8?B?eVIwY2o5NkVRMyswMEVlL3p4Qnc4cFd2NXRxdmg1RFpZYjEvZEZHWWxSY2Yz?=
+ =?utf-8?B?R0JuUFhPUWVmZlV2aVh0WTVDc1FQbnVGQnovRHBBOTdIWkdRMTdORW9HajFM?=
+ =?utf-8?B?Y2x6NkNGZnRGUjlEQldpSk4yUlBMbDdKYmhtbzhJcmxvL0crMFUrM2xkQTBV?=
+ =?utf-8?B?QkZLY0hHL3FqeC9abUZ4N29IQUNqTmVoR20zdks0d2laRjJkb0E5UlFscWxV?=
+ =?utf-8?Q?Agek2u2PQAAbu2HD2nxw8ErtV?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24dc0394-5097-4722-c072-08dd526b1add
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4262.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 11:30:13.2009
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tpTCtsFGFa5i0eLyJPtdViq2XOwMMVc0hOuWIgAL6IOlVRchWKVc8FKt8UnQvca8WE6kMGmbR8qGXhOTdHoQ8w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7907
 
-Alexey Kardashevskiy <aik@amd.com> writes:
+On 2/19/2025 3:45 PM, Shivank Garg wrote:
+> KVM's guest-memfd memory backend currently lacks support for NUMA policy
+> enforcement, causing guest memory allocations to be distributed arbitrarily
+> across host NUMA nodes regardless of the policy specified by the VMM. This
+> occurs because conventional userspace NUMA control mechanisms like mbind()
+> are ineffective with guest-memfd, as the memory isn't directly mapped to
+> userspace when allocations occur.
+> 
+> This patch-series adds NUMA binding capabilities to guest_memfd backend
+> KVM guests. It has evolved through several approaches based on community
+> feedback:
+> - v1,v2: Extended the KVM_CREATE_GUEST_MEMFD IOCTL to pass mempolicy.
+> - v3: Introduced fbind() syscall for VMM memory-placement configuration.
+> - v4,v5: Current approach using shared_policy support and vm_ops (based on
+>       suggestions from David[1] and guest_memfd biweekly upstream call[2]).
+> 
 
-....
+<--snip>
 
->
-> I am trying to wrap my head around your tsm. here is what I got in my tree:
-> https://github.com/aik/linux/blob/tsm/include/linux/tsm.h
->
-> Shortly:
->
-> drivers/virt/coco/tsm.ko does sysfs (including "connect" and "bind" to 
-> control and "certs"/"report" to attest) and implements tsm_dev/tsm_tdi, 
-> it does not know pci_dev;
->
-> drivers/pci/tsm-pci.ko creates/destroys tsm_dev/tsm_dev using tsm.ko;
->
-> drivers/crypto/ccp/ccp.ko (the PSP guy) registers:
-> - tsm_subsys in tsm.ko (which does "connect" and "bind" and
-> - tsm_bus_subsys in tsm-pci.ko (which does "spdm_forward")
-> ccp.ko knows about pci_dev and whatever else comes in the future, and 
-> ccp.ko's "connect" implementation calls the IDE library (I am adopting 
-> yours now, with some tweaks).
->
-> tsm-dev and tsm-tdi embed struct dev each and are added as children to 
-> PCI devices: no hide/show attrs, no additional TSM pointer in struct 
-> device or pci_dev, looks like:
->
-> aik@sc ~> ls  /sys/bus/pci/devices/0000:e1:04.0/tsm-tdi/tdi:0000:e1:04.0/
-> device  power  subsystem  tsm_report  tsm_report_user  tsm_tdi_bind 
-> tsm_tdi_status  tsm_tdi_status_user  uevent
->
-> aik@sc ~> ls  /sys/bus/pci/devices/0000:e1:04.0/tsm_dev/
-> device  power  subsystem  tsm_certs  tsm_cert_slot  tsm_certs_user 
-> tsm_dev_connect  tsm_dev_status  tsm_meas  tsm_meas_user  uevent
->
-> aik@sc ~> ls /sys/class/tsm/tsm0/
-> device  power  stream0:0000:e1:00.0  subsystem  uevent
->
-> aik@sc ~> ls /sys/class/tsm-dev/
-> tdev:0000:c0:01.1  tdev:0000:e0:01.1  tdev:0000:e1:00.0
->
-> aik@sc ~> ls /sys/class/tsm-tdi/
-> tdi:0000:c0:01.1  tdi:0000:e0:01.1  tdi:0000:e1:00.0  tdi:0000:e1:04.0 
-> tdi:0000:e1:04.1  tdi:0000:e1:04.2  tdi:0000:e1:04.3
->
->
-> SPDM forwarding seems a bus-agnostic concept, "connect" is a PCI thing 
-> but pci_dev is only needed for DOE/IDE.
->
-> Or is separating struct pci_dev from struct device not worth it and most 
-> of it should go to tsm-pci.ko? Then what is left for tsm.ko? Thanks,
->
+Hi All,
 
-For the Arm CCA DA, I have structured the flow as follows. I am
-currently refining my changes to prepare them for posting. I am using
-tsm-core in both the host and guest. There is no bind interface at the
-sysfs level; instead, it is managed via the KVM ioctl
+This patch-series was discussed during the bi-weekly guest_memfd upstream 
+call on 2025-02-20 [1].
 
-Host:
-step 1.
-echo ${DEVICE} > /sys/bus/pci/devices/${DEVICE}/driver/unbind
-echo vfio-pci > /sys/bus/pci/devices/${DEVICE}/driver_override
-echo ${DEVICE} > /sys/bus/pci/drivers_probe
+Here are my notes from the discussion:
 
-step 2.
-echo 1 > /sys/bus/pci/devices/$DEVICE/tsm/connect
+The current design using mmap and shared_policy support with vm_ops
+appears good and aligns well with how shared memory handles NUMA policy.
+This makes perfect sense with upcoming changes from Fuad [2].
+Integration with Fuad's work should be straightforward as my work
+primarily involves set_policy and get_policy callbacks in vm_ops.
+Additionally, this approach helps us avoid any fpolicy/fbind()[3]
+complexity.
 
-step 3.
-using VMM to make the new KVM_SET_DEVICE_ATTR ioctl
+David mentioned documenting the behavior of setting memory policy after
+memory has already been allocated. Specifically, the policy change will
+only affect future allocations and will not migrate existing memory.
+This matches mbind(2)'s default behavior which affects only new allocations
+(unless overridden with MPOL_MF_MOVE/MPOL_MF_MOVE_ALL flags).
 
-+		dev_num = vfio_devices[i].dev_hdr.dev_num;
-+		/* kvmtool only do 0 domain, 0 bus and 0 function devices. */
-+		guest_bdf = (0ULL << 32) | (0 << 16) | dev_num << 11 | (0 << 8);
-+
-+		struct kvm_vfio_tsm_bind param = {
-+			.guest_rid = guest_bdf,
-+			.devfd = vfio_devices[i].fd,
-+		};
-+		struct kvm_device_attr attr = {
-+			.group = KVM_DEV_VFIO_DEVICE,
-+			.attr = KVM_DEV_VFIO_DEVICE_TDI_BIND,
-+			.addr = (__u64)&param,
-+		};
-+
-+		if (ioctl(kvm_vfio_device, KVM_SET_DEVICE_ATTR, &attr)) {
-+			pr_err("Failed KVM_SET_DEVICE_ATTR for KVM_DEV_VFIO_DEVICE");
-+			return -ENODEV;
-+		}
-+
+In the future, we may explore supporting MPOL_MF_MOVE for guest_memfd,
+but for now, this behavior is sufficient and should be clearly documented.
 
-Now in the guest we follow the below steps
+Before sending the non-RFC version of the patch-series, I will:
+- Document and clarify the memory allocation behavior after policy changes
+- Write kselftests to validate NUMA policy enforcement, including edge
+  cases like changing policies after memory allocation
 
-step 1:
-echo ${DEVICE} > /sys/bus/pci/devices/${DEVICE}/driver/unbind
+I aim to send the updated patch-series soon. If there are any further
+suggestions or concerns, please let me know.
 
-step 2: Move the device to TDISP LOCK state
-echo 1 > /sys/bus/pci/devices/0000:00:00.0/tsm/connect
-echo 3 > /sys/bus/pci/devices/0000:00:00.0/tsm/connect
+[1] https://lore.kernel.org/linux-mm/40290a46-bcf4-4ef6-ae13-109e18ad0dfd@redhat.com
+[2] https://lore.kernel.org/linux-mm/20250218172500.807733-1-tabba@google.com
+[3] https://lore.kernel.org/linux-mm/20241105164549.154700-1-shivankg@amd.com
 
-step 3: Moves the device to TDISP RUN state
-echo 4 > /sys/bus/pci/devices/0000:00:00.0/tsm/connect
-
-step 4: Load the driver again.
-echo ${DEVICE} > /sys/bus/pci/drivers_probe
-
-
+Thanks,
+Shivank
