@@ -1,137 +1,177 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5F27F7FC
-	for <linux-coco@lists.linux.dev>; Mon, 24 Feb 2025 15:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C9D2561DD
+	for <linux-coco@lists.linux.dev>; Mon, 24 Feb 2025 16:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409754; cv=none; b=AaQuRISue3r6kqW2OGIxrAAWp1f8MQu64+OmHWIk8sVVltHuBR3kfwoopidF52G7Jp7h1DbLGra+1oyiEGQIBacv45AC9S38u3S4Chbw1wG5f9yzP9g5vmHw3VRriNQSnxxxc28GizO7myLK6Ybn0oWUmDw0b28Gw3rMs8hlsMY=
+	t=1740414204; cv=none; b=DYDnE3vV7Sblma2qIU0z2s1aRuf98pIUXka+xPhBSQkWjxp3Nr5Uqs24FZVkhCVnqX9O4n2LZiGun7zYYoWAZw/0gRwXNQzk3vABiAcMIW8ZAVHRp1+esprUKOwSXqq83baIeBd03csY9VPasS8K9tkwSTuVsyt2LPlSuwE2Wjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409754; c=relaxed/simple;
-	bh=teA/QyB9G8gXwhLH3zP+xGQ54exGKVu3YN7D2G56rSs=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=mBG9QhAjeHBqr0tiHF97v7XJiwkdYnyZ01S7p5mJNP6jiEfIHAOqO6Eggg93ZKS+MhqN7N/oyAe/xfXwKllzY6fMKC2u5tHUvCzMwZLMPgJrozd/ztCXulTPJvxvlZODbvDwxI88UYtC+MQuPd1g5assY3du/Vd9fj+kFEp6pkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n1SBL4Bk; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1740414204; c=relaxed/simple;
+	bh=MRVXIfI9UG2BXzOG7tv7V/b1GbukpjVr4eoLmQQzA1Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jF4xxjMt3HlUoHXtrRFggHQnGkHfe7LsHCHPmmxHHorgMNozuEauGdqdgqku2wveMZd1bDSXJ2zu+6hTxffmaEbeQWitp0EVo3LcKhVV1NXM9kvuLjacscEDWmPLOeXsZJ5lCi5ioz/PfeTg2ED+H9Z48kGAffKx6nCMjBsqf3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ffvY7N0p; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y67nHpQK; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ffvY7N0p; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y67nHpQK; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n1SBL4Bk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740409753; x=1771945753;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=teA/QyB9G8gXwhLH3zP+xGQ54exGKVu3YN7D2G56rSs=;
-  b=n1SBL4Bk+1IjYCBCW2wGyob6c24OzXtGuIJE2WzI4gwQu6jLbii6CXMq
-   dzttQKqlZFUk+Nlj0eQ1+aG87xEwFbRjDUSx4qq5sN9RX6I2wn1Y4d01O
-   Z8zap4s9E4RBkbgAPiv5TZBedBm1WCeFkYdb/P8V0hRaqYStcNYvvxvZz
-   cnZdZGYdkJJqLTF4D2OjTTiR1ghkLPrsSJOOn/1QvU2lf7xv4nTIH0HeV
-   /fm/LHHTLWD9zW3XQSE5kJU2Oc8xzQjJomEVJQTX5q0WcxhCBH4q/TCjJ
-   RDsWqPhHz2bBcdNtVEGCZuA2zXgsBcX5anYid7MCspV3rhm+zwZBv0qjB
-   g==;
-X-CSE-ConnectionGUID: pKjYC8zIS/mnCo6yYAc6kw==
-X-CSE-MsgGUID: iMGRGi7/RoyQxa24o3zmIg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="41046134"
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
-   d="scan'208";a="41046134"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 07:09:12 -0800
-X-CSE-ConnectionGUID: 506Ri49zShGuvjXlY0xy0g==
-X-CSE-MsgGUID: cLlFKEdmTUW4vfWeDUcPCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
-   d="scan'208";a="116063257"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.233])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 07:09:09 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 24 Feb 2025 17:09:05 +0200 (EET)
-To: Dan Williams <dan.j.williams@intel.com>
-cc: Bjorn Helgaas <helgaas@kernel.org>, linux-coco@lists.linux.dev, 
-    Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>, 
-    Samuel Ortiz <sameo@rivosinc.com>, Alexey Kardashevskiy <aik@amd.com>, 
-    Xu Yilun <yilun.xu@linux.intel.com>, linux-pci@vger.kernel.org, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 07/11] PCI: Add PCIe Device 3 Extended Capability
- enumeration
-In-Reply-To: <67b9172eb5eca_2d2c294b4@dwillia2-xfh.jf.intel.com.notmuch>
-Message-ID: <83d1985d-a843-1d9f-840d-226f68de7d1f@linux.intel.com>
-References: <20241210192140.GA3079633@bhelgaas> <c7fce545-e369-0dba-fbbe-3d90b67e5cfb@linux.intel.com> <67b9172eb5eca_2d2c294b4@dwillia2-xfh.jf.intel.com.notmuch>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ffvY7N0p";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y67nHpQK";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ffvY7N0p";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y67nHpQK"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0DC331F44F;
+	Mon, 24 Feb 2025 16:23:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740414201; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PAktyz2Hln0u1wP32xCnt0b/m1o4I8DHrPaK7s3SeXw=;
+	b=ffvY7N0pIsMHXBWzK/7TCFsjF57cMzfXSdmxHflB10fTjf2nI3Gv8/LMYFArDh1zhyDp2L
+	p5QzGpRkEbrtqiYXrxohREzzTbtPftteaDEzHbq9msRUdXRG9n8vm+cwAjGVzikRzCa1fW
+	xk5Q+5R1xrhUsnFOgTtiE3bgCbMwAqU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740414201;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PAktyz2Hln0u1wP32xCnt0b/m1o4I8DHrPaK7s3SeXw=;
+	b=y67nHpQKZ6A37WCLnocVuAPvBNsF5ldexO64bHfLe+MwZzDNiSqa0WvrZSFLctQkWtB/uN
+	X2Pi8A15ykI+LdBA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ffvY7N0p;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=y67nHpQK
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740414201; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PAktyz2Hln0u1wP32xCnt0b/m1o4I8DHrPaK7s3SeXw=;
+	b=ffvY7N0pIsMHXBWzK/7TCFsjF57cMzfXSdmxHflB10fTjf2nI3Gv8/LMYFArDh1zhyDp2L
+	p5QzGpRkEbrtqiYXrxohREzzTbtPftteaDEzHbq9msRUdXRG9n8vm+cwAjGVzikRzCa1fW
+	xk5Q+5R1xrhUsnFOgTtiE3bgCbMwAqU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740414201;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PAktyz2Hln0u1wP32xCnt0b/m1o4I8DHrPaK7s3SeXw=;
+	b=y67nHpQKZ6A37WCLnocVuAPvBNsF5ldexO64bHfLe+MwZzDNiSqa0WvrZSFLctQkWtB/uN
+	X2Pi8A15ykI+LdBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B4AED13707;
+	Mon, 24 Feb 2025 16:23:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TB2GKvicvGd1bQAAD6G6ig
+	(envelope-from <jroedel@suse.de>); Mon, 24 Feb 2025 16:23:20 +0000
+Date: Mon, 24 Feb 2025 17:23:15 +0100
+From: Joerg Roedel <jroedel@suse.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, pbonzini@redhat.com,
+	seanjc@google.com, thomas.lendacky@amd.com, ashish.kalra@amd.com,
+	liam.merwick@oracle.com, pankaj.gupta@amd.com,
+	dionnaglaze@google.com, huibo.wang@amd.com
+Subject: Re: [PATCH v5 1/1] KVM: Introduce KVM_EXIT_SNP_REQ_CERTS for SNP
+ certificate-fetching
+Message-ID: <Z7yc8-QXXVPzr2K8@suse.de>
+References: <20250219151505.3538323-1-michael.roth@amd.com>
+ <20250219151505.3538323-2-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-555201434-1740397993=:933"
-Content-ID: <d216cc3e-054c-7388-1d0b-e5c64f0265d3@linux.intel.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250219151505.3538323-2-michael.roth@amd.com>
+X-Rspamd-Queue-Id: 0DC331F44F
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,suse.com:url];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Michael,
 
---8323328-555201434-1740397993=:933
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <10884278-66bf-981b-6832-b3420b9f1bdd@linux.intel.com>
+On Wed, Feb 19, 2025 at 09:15:05AM -0600, Michael Roth wrote:
+> +  - If some other error occurred, userspace must set `ret` to ``EIO``.
+> +    (This is to reserve special meaning for unused error codes in the
+> +    future.)
 
-On Fri, 21 Feb 2025, Dan Williams wrote:
-> Ilpo J=E4rvinen wrote:
-> > On Tue, 10 Dec 2024, Bjorn Helgaas wrote:
-> >=20
-> > > On Thu, Dec 05, 2024 at 02:23:56PM -0800, Dan Williams wrote:
-> > > > PCIe 6.2 Section 7.7.9 Device 3 Extended Capability Structure,
-> > > > enumerates new link capabilities and status added for Gen 6 devices=
-=2E One
-> > > > of the link details enumerated in that register block is the "Segme=
-nt
-> > > > Captured" status in the Device Status 3 register. That status is
-> > > > relevant for enabling IDE (Integrity & Data Encryption) whereby
-> > > > Selective IDE streams can be limited to a given requester id range
-> > > > within a given segment.
-> > >=20
-> > > s/requester id/Requester ID/ to match spec usage
-> > >=20
-> > > > +++ b/include/uapi/linux/pci_regs.h
-> > > > @@ -749,6 +749,7 @@
-> > > >  #define PCI_EXT_CAP_ID_NPEM=090x29=09/* Native PCIe Enclosure Mana=
-gement */
-> > > >  #define PCI_EXT_CAP_ID_PL_32GT  0x2A    /* Physical Layer 32.0 GT/=
-s */
-> > > >  #define PCI_EXT_CAP_ID_DOE=090x2E=09/* Data Object Exchange */
-> > > > +#define PCI_EXT_CAP_ID_DEV3=090x2F=09/* Device 3 Capability/Contro=
-l/Status */
-> > >=20
-> > > It doesn't look like lspci knows about this; is there something in
-> > > progress to add that?
-> > >=20
-> > > https://git.kernel.org/pub/scm/utils/pciutils/pciutils.git/tree/lib/h=
-eader.h?id=3Dv3.13.0#n257
-> >=20
-> > Hi,
-> >=20
-> > I've two patches lying around that add a few Flit mode related fields=
-=20
-> > and Dev3 into lspci, although the latter patch doesn't exactly have all=
-=20
-> > the fields from Dev3 but at least it would be a good start for many=20
-> > things.
-> >=20
-> > I think I'll just post them as is and see where it goes.
->=20
-> Oh, good to hear (the dangers of replying to patch feedback in response
-> order unfortunately means I missed this in my earlier reply). Please
-> copy me on those patches so I can keep track of that discussion.
+[...]
 
-Hi Dan,
+> +static int snp_complete_req_certs(struct kvm_vcpu *vcpu)
+> +{
+> +	struct vcpu_svm *svm = to_svm(vcpu);
+> +	struct vmcb_control_area *control = &svm->vmcb->control;
+> +
+> +	if (vcpu->run->snp_req_certs.ret) {
+> +		if (vcpu->run->snp_req_certs.ret == ENOSPC) {
+> +			vcpu->arch.regs[VCPU_REGS_RBX] = vcpu->run->snp_req_certs.npages;
+> +			ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
+> +						SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_INVALID_LEN, 0));
+> +		} else if (vcpu->run->snp_req_certs.ret == EAGAIN) {
+> +			ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
+> +						SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_BUSY, 0));
+> +		} else {
+> +			ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
+> +						SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_GENERIC, 0));
+> +		}
 
-I've seemingly Cc'ed you back then:
+According to the documentation above, there should be a block checking
+for EIO which injects SNP_GUEST_VMM_ERR_GENERIC and the else block
+should return with EINVAL to user-space, no?
 
-https://lore.kernel.org/linux-pci/20241211134840.3375-1-ilpo.jarvinen@linux=
-=2Eintel.com/
+Regards,
 
-(Np of not noticing, we do get way too much email to pick up everything.)
+-- 
+Jörg Rödel
+jroedel@suse.de
 
-=2E..There has been no discussion about it though.
+SUSE Software Solutions Germany GmbH
+Frankenstraße 146
+90461 Nürnberg
+Germany
+https://www.suse.com/
 
---=20
- i.
---8323328-555201434-1740397993=:933--
+Geschäftsführer: Ivo Totev, Andrew McDonald, Werner Knoblich
+(HRB 36809, AG Nürnberg)
