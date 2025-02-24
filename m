@@ -1,174 +1,137 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063652580D7
-	for <linux-coco@lists.linux.dev>; Mon, 24 Feb 2025 11:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5F27F7FC
+	for <linux-coco@lists.linux.dev>; Mon, 24 Feb 2025 15:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395065; cv=none; b=GteKGYVhAtQQ0Zmjel53NBX8pUuI6IKiGkRixdamCAlTM8gjyxzjTYpITqLMpTyj64nsU+yTG7Wct8npLF8PfVQ7eojXKxMQ8bFk1dpxLct+220jENYYmn88vCy4atSzw/abymbalKR5/EEDRnyT3KzqbDo9tBpwcgPc7pEN0QE=
+	t=1740409754; cv=none; b=AaQuRISue3r6kqW2OGIxrAAWp1f8MQu64+OmHWIk8sVVltHuBR3kfwoopidF52G7Jp7h1DbLGra+1oyiEGQIBacv45AC9S38u3S4Chbw1wG5f9yzP9g5vmHw3VRriNQSnxxxc28GizO7myLK6Ybn0oWUmDw0b28Gw3rMs8hlsMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395065; c=relaxed/simple;
-	bh=XnrWYFKLdcBwHlb3JP9w96Sdf1jponZtSCVf/ck+LnA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vGRdGEaTm68YD40W/30ZHcTuRFAEGxPS8JNHJk3fydyhuVCffYj8aKtAcp0HYBXE9ncU+uayclvGRhoneXhL/z/MRJc058W6PvossVBb4xC5NOi6svzTFtemu9YQF6EzthayjL7DEZlrUxP8tyT9hLSh5dvjNPtFdKpYcG2Hauc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CL4ZQn1R; arc=none smtp.client-ip=192.198.163.15
+	s=arc-20240116; t=1740409754; c=relaxed/simple;
+	bh=teA/QyB9G8gXwhLH3zP+xGQ54exGKVu3YN7D2G56rSs=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=mBG9QhAjeHBqr0tiHF97v7XJiwkdYnyZ01S7p5mJNP6jiEfIHAOqO6Eggg93ZKS+MhqN7N/oyAe/xfXwKllzY6fMKC2u5tHUvCzMwZLMPgJrozd/ztCXulTPJvxvlZODbvDwxI88UYtC+MQuPd1g5assY3du/Vd9fj+kFEp6pkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n1SBL4Bk; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CL4ZQn1R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n1SBL4Bk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740395064; x=1771931064;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XnrWYFKLdcBwHlb3JP9w96Sdf1jponZtSCVf/ck+LnA=;
-  b=CL4ZQn1RUU3j4aKZiVaG+ZfGHNiW0GhEIYvoOZ5hgLO3clL0WaNzZXDg
-   dZ3Wk2CHf0C2tMA6/XxJmcC2G3rjqiYsXJKlnJANSL2MDMQRglzngf3Z3
-   XaYCFp9dpqaSxYvSvCiHlWcVRgPnl4UF7ndNIvL6rRts65mGRWzOsT3iX
-   8W8TC0lb+8+Hstwc+8VikNpKrgNEOZOfuiY2vLW81NLCHPT9mVhYiLpGo
-   v6wSB2JIOTPdDuT1sQNDcLlRzU2xilnq6R5ONAi1EXQG26cUFsf6ukkNV
-   ttHyTGbqSqo352e++WYkzllBhGgMBKqhxT9PVs9ob0ZqNevpYkzDH2vT7
-   w==;
-X-CSE-ConnectionGUID: 4UnX7MUVTYW7laxR8NCMmA==
-X-CSE-MsgGUID: mCJBnIa3RkeELBmpSLuVFw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11354"; a="41282924"
+  t=1740409753; x=1771945753;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=teA/QyB9G8gXwhLH3zP+xGQ54exGKVu3YN7D2G56rSs=;
+  b=n1SBL4Bk+1IjYCBCW2wGyob6c24OzXtGuIJE2WzI4gwQu6jLbii6CXMq
+   dzttQKqlZFUk+Nlj0eQ1+aG87xEwFbRjDUSx4qq5sN9RX6I2wn1Y4d01O
+   Z8zap4s9E4RBkbgAPiv5TZBedBm1WCeFkYdb/P8V0hRaqYStcNYvvxvZz
+   cnZdZGYdkJJqLTF4D2OjTTiR1ghkLPrsSJOOn/1QvU2lf7xv4nTIH0HeV
+   /fm/LHHTLWD9zW3XQSE5kJU2Oc8xzQjJomEVJQTX5q0WcxhCBH4q/TCjJ
+   RDsWqPhHz2bBcdNtVEGCZuA2zXgsBcX5anYid7MCspV3rhm+zwZBv0qjB
+   g==;
+X-CSE-ConnectionGUID: pKjYC8zIS/mnCo6yYAc6kw==
+X-CSE-MsgGUID: iMGRGi7/RoyQxa24o3zmIg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="41046134"
 X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
-   d="scan'208";a="41282924"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 03:04:23 -0800
-X-CSE-ConnectionGUID: X/Du1pqRS4SICKnvC7mIMg==
-X-CSE-MsgGUID: ZWBarRrkQg+Ge2QpJoLDLQ==
+   d="scan'208";a="41046134"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 07:09:12 -0800
+X-CSE-ConnectionGUID: 506Ri49zShGuvjXlY0xy0g==
+X-CSE-MsgGUID: cLlFKEdmTUW4vfWeDUcPCQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="120152385"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa003.fm.intel.com with ESMTP; 24 Feb 2025 03:04:22 -0800
-Date: Mon, 24 Feb 2025 19:02:37 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
+   d="scan'208";a="116063257"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.233])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 07:09:09 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 24 Feb 2025 17:09:05 +0200 (EET)
 To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Subject: Re: [PATCH 05/11] PCI/TSM: Authenticate devices via platform TSM
-Message-ID: <Z7xRzVrR0t6ap3+y@yilunxu-OptiPlex-7050>
-References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
- <173343742510.1074769.16552514658771224955.stgit@dwillia2-xfh.jf.intel.com>
- <Z1qx2nAHbZN72Ljf@yilunxu-OptiPlex-7050>
- <67b9252c8cac0_1c530f29484@dwillia2-xfh.jf.intel.com.notmuch>
+cc: Bjorn Helgaas <helgaas@kernel.org>, linux-coco@lists.linux.dev, 
+    Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>, 
+    Samuel Ortiz <sameo@rivosinc.com>, Alexey Kardashevskiy <aik@amd.com>, 
+    Xu Yilun <yilun.xu@linux.intel.com>, linux-pci@vger.kernel.org, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 07/11] PCI: Add PCIe Device 3 Extended Capability
+ enumeration
+In-Reply-To: <67b9172eb5eca_2d2c294b4@dwillia2-xfh.jf.intel.com.notmuch>
+Message-ID: <83d1985d-a843-1d9f-840d-226f68de7d1f@linux.intel.com>
+References: <20241210192140.GA3079633@bhelgaas> <c7fce545-e369-0dba-fbbe-3d90b67e5cfb@linux.intel.com> <67b9172eb5eca_2d2c294b4@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67b9252c8cac0_1c530f29484@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: multipart/mixed; BOUNDARY="8323328-555201434-1740397993=:933"
+Content-ID: <d216cc3e-054c-7388-1d0b-e5c64f0265d3@linux.intel.com>
 
-On Fri, Feb 21, 2025 at 05:15:24PM -0800, Dan Williams wrote:
-> Xu Yilun wrote:
-> > > +static int pci_tsm_disconnect(struct pci_dev *pdev)
-> > > +{
-> > > +	struct pci_tsm *pci_tsm = pdev->tsm;
-> > > +
-> > > +	lockdep_assert_held(&pci_tsm_rwsem);
-> > > +	if_not_guard(mutex_intr, &pci_tsm->lock)
-> > > +		return -EINTR;
-> > > +
-> > > +	if (pci_tsm->state < PCI_TSM_CONNECT)
-> > > +		return 0;
-> > > +	if (pci_tsm->state < PCI_TSM_INIT)
-> > > +		return -ENXIO;
-> > 
-> > Check PCI_TSM_INIT first, or this condition will never hit.
-> > 
-> >   if (pci_tsm->state < PCI_TSM_INIT)
-> > 	return -ENXIO;
-> >   if (pci_tsm->state < PCI_TSM_CONNECT)
-> > 	return 0;
-> > 
-> > I suggest the same sequence for pci_tsm_connect().
-> 
-> Good catch, fixed.
-> 
-> [..]
-> > > +
-> > > +static void __pci_tsm_init(struct pci_dev *pdev)
-> > > +{
-> > > +	bool tee_cap;
-> > > +
-> > > +	if (!is_physical_endpoint(pdev))
-> > > +		return;
-> > 
-> > This Filters out virtual functions, just because not ready for support,
-> > is it?
-> 
-> Do you see a need for PCI core to notify the TSM driver about the
-> arrival of VF devices?
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-I think yes.
+--8323328-555201434-1740397993=:933
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <10884278-66bf-981b-6832-b3420b9f1bdd@linux.intel.com>
 
-> 
-> My expectation is that a VF TDI communicates with the TSM driver
-> relative to its PF.
+On Fri, 21 Feb 2025, Dan Williams wrote:
+> Ilpo J=E4rvinen wrote:
+> > On Tue, 10 Dec 2024, Bjorn Helgaas wrote:
+> >=20
+> > > On Thu, Dec 05, 2024 at 02:23:56PM -0800, Dan Williams wrote:
+> > > > PCIe 6.2 Section 7.7.9 Device 3 Extended Capability Structure,
+> > > > enumerates new link capabilities and status added for Gen 6 devices=
+=2E One
+> > > > of the link details enumerated in that register block is the "Segme=
+nt
+> > > > Captured" status in the Device Status 3 register. That status is
+> > > > relevant for enabling IDE (Integrity & Data Encryption) whereby
+> > > > Selective IDE streams can be limited to a given requester id range
+> > > > within a given segment.
+> > >=20
+> > > s/requester id/Requester ID/ to match spec usage
+> > >=20
+> > > > +++ b/include/uapi/linux/pci_regs.h
+> > > > @@ -749,6 +749,7 @@
+> > > >  #define PCI_EXT_CAP_ID_NPEM=090x29=09/* Native PCIe Enclosure Mana=
+gement */
+> > > >  #define PCI_EXT_CAP_ID_PL_32GT  0x2A    /* Physical Layer 32.0 GT/=
+s */
+> > > >  #define PCI_EXT_CAP_ID_DOE=090x2E=09/* Data Object Exchange */
+> > > > +#define PCI_EXT_CAP_ID_DEV3=090x2F=09/* Device 3 Capability/Contro=
+l/Status */
+> > >=20
+> > > It doesn't look like lspci knows about this; is there something in
+> > > progress to add that?
+> > >=20
+> > > https://git.kernel.org/pub/scm/utils/pciutils/pciutils.git/tree/lib/h=
+eader.h?id=3Dv3.13.0#n257
+> >=20
+> > Hi,
+> >=20
+> > I've two patches lying around that add a few Flit mode related fields=
+=20
+> > and Dev3 into lspci, although the latter patch doesn't exactly have all=
+=20
+> > the fields from Dev3 but at least it would be a good start for many=20
+> > things.
+> >=20
+> > I think I'll just post them as is and see where it goes.
+>=20
+> Oh, good to hear (the dangers of replying to patch feedback in response
+> order unfortunately means I missed this in my earlier reply). Please
+> copy me on those patches so I can keep track of that discussion.
 
-It is possible, but the PF TSM still need to manage the TDI context for
-all it's VFs, like:
+Hi Dan,
 
-struct pci_tdi;
+I've seemingly Cc'ed you back then:
 
-struct pci_tsm {
-	...
-	struct pci_dsm *dsm;
-	struct xarray tdi_xa; // struct pci_tdi array
-};
+https://lore.kernel.org/linux-pci/20241211134840.3375-1-ilpo.jarvinen@linux=
+=2Eintel.com/
 
+(Np of not noticing, we do get way too much email to pick up everything.)
 
-An alternative is we allow VFs has their own pci_tsm, and store their
-own tdi contexts in it.
+=2E..There has been no discussion about it though.
 
-struct pci_tsm {
-	...
-	struct pci_dsm *dsm; // point to PF's dsm.
-	struct pci_tdi *tdi;
-};
-
-I perfer the later cause we don't have to seach for TDI context
-everytime we have a pdev for VF and do tsm operations on it.
-
-> 
-> > > +
-> > > +	tee_cap = pdev->devcap & PCI_EXP_DEVCAP_TEE;
-> > > +
-> > > +	if (!(pdev->ide_cap || tee_cap))
-> > > +		return;
-> > > +
-> > > +	lockdep_assert_held_write(&pci_tsm_rwsem);
-> > > +	if (!tsm_ops)
-> > > +		return;
-> > > +
-> > > +	struct pci_tsm *pci_tsm __free(kfree) = kzalloc(sizeof(*pci_tsm), GFP_KERNEL);
-> > > +	if (!pci_tsm)
-> > > +		return;
-> > > +
-> > > +	/*
-> > > +	 * If a physical device has any security capabilities it may be
-> > > +	 * a candidate to connect with the platform TSM
-> > > +	 */
-> > > +	struct pci_dsm *dsm __free(dsm_remove) = tsm_ops->probe(pdev);
-> > 
-> > IIUC, pdev->tsm should be for every pci function (physical or virtual),
-> > pdev->tsm->dsm should be only for physical functions, is it?
-> 
-> Per above I was only expecting physical function, but the bind flow
-> might introduce the need for per function (phyiscal or virtual) TDI
-> context. I expect that is separate from the PF pdev->tsm context.
-
-Could we embed TDI context in PF's pdev->tsm AND VF's pdev->tsm? From
-TDISP spec, TSM covers TDI management so I think it is proper
-struct pci_tsm contains TDI context.
-
-Thanks,
-Yilun
+--=20
+ i.
+--8323328-555201434-1740397993=:933--
