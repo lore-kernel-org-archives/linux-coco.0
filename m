@@ -1,244 +1,699 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1B52AF00
-	for <linux-coco@lists.linux.dev>; Sat, 22 Feb 2025 01:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740186933; cv=fail; b=BeDAviGbQEVmqCnBcdN0AY/Yu1FwyZe7ItE1Q2KmpG7D8E+tTck5gvwr9Ejq/gcVh10jYjTWZPNhywNsaPuZ+eiP7LFZnWVqT/2ioUxQgTfM0q/uf3YQIGh8OZg2ce/my0m6kjMNFvJ8IQim8h9PPq/nwGUBpZhSSoYmPxH4yuM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740186933; c=relaxed/simple;
-	bh=6zJNwEoKaeUfu0t9QE4haUAfLya+6LHUx9Z3yj24j68=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qg2wC7QU1RQwSWbiAnMUaxiER4HA7jADNl3uggr8gjC3Ug7MHy2aAnmAHt266yTfR34hWP6Jx6u2Z2TnEl0xPIx+AZjSAjdX9O7urVwj3GKbPDoUcfQAFcCO4OHAEtWM6lGXj5EukojnTFwmc7XW4ABBJtfoV0UOrBTKZpJ0Ga4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f6ZisnWH; arc=fail smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3462F2AD2D
+	for <linux-coco@lists.linux.dev>; Mon, 24 Feb 2025 03:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740367320; cv=none; b=m1O8jXDHwqQYuiZ8w0H8PU3F91NBuEteHPEOi1PFYXVEz644vHurngHnyo6r+s8hp2spPRsdyHdiSP3gKUGxlH2j6FoBGr+iUW9MVf3AEpLWdQxR0MCfbFv0svXPTS56gqi7m9miNWMrwJIZJ2tMLEHDJ1q8SE7S2tQ9eh9PiO8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740367320; c=relaxed/simple;
+	bh=JfXnBns1Fax1qPA3yPKSlFeVnjd9t6yOBfyrq6kQx6g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=cgzDyciiVERiFL7RNCyt/B2MyZFkZZpQaar4DRn5qTvRA9v+D7eMZwK6rwQjDJ8K+jBKwYk6gSzSI3QqlrRw361DdznXUr2rHnYL1e83XiOH91vgERczi7QCeRCxPTjwLgj/urKN8kdIOhpUGQqNPljUZtZuFzbMYNrNyTRlf5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SWdDD5Nw; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f6ZisnWH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SWdDD5Nw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740186931; x=1771722931;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=6zJNwEoKaeUfu0t9QE4haUAfLya+6LHUx9Z3yj24j68=;
-  b=f6ZisnWHGEX6zcWLpzPZcgC4U+JXPaFYyqaL9qmr6E+CDHpi1S6UGEb+
-   sd+DDLX289pFPZ0hbbmDa73f4oIxFQ/OdZrN5pu/ZKgMKxdoiYQxWHjj7
-   stIGYc8PHMqcydWckF5AU2WzRMuMYLIk34x5xSnq9wMGE23fpABFB/HxU
-   aMYKqjUh7XH72jgNRvDBDatN1ngEl0IPjw8VTfi7kR1s83xDrqSlEAkho
-   hE5SnYYrfAuZP0h+GAApEpnOVSki0HYewDVgcZ+huSWKMzrcj9VPdcg0y
-   cj/E1y42j509lI+EjWffGiyLKV0vt0hpFecKFlirya/SxQkKuh8U2EaA/
-   Q==;
-X-CSE-ConnectionGUID: WOSzypd6Sbu43YLGURZamw==
-X-CSE-MsgGUID: uyC25QWbS+GObU+YL7vwKA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="52447470"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="52447470"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 17:15:31 -0800
-X-CSE-ConnectionGUID: 786IZgxoQVCJNbczGfjmHA==
-X-CSE-MsgGUID: gtKP5ALvSXapysANISSsUQ==
+  t=1740367318; x=1771903318;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=JfXnBns1Fax1qPA3yPKSlFeVnjd9t6yOBfyrq6kQx6g=;
+  b=SWdDD5NwDsB31Rj2UBKHOhkBIO0VNcK7TITGtetlR/yh1wDjTt65J72c
+   WPbkbJJ4NmdgnVtY/bL2lu8sYZ0JRk8H5u6wVE1yQckJSdg3C74LQRiDG
+   OtGSl6W/f59U/sxqTlLvJm5nE6UrQ0q0MmINtnTEz1seRXnvJnJGdeO44
+   k/VAc9TV67I099pPXKhF/sEB0i6OLEchLrLEslLyp3z1qr7E8wqy24hkf
+   rM4RKoWnlmnb+7tNDbcwiH5GHO8qAoyXNAMXBgAlomYNp+mHqLXUUSfi7
+   RUB1RQ6kM8f7fFwEeSlttdMQWRCv3Jh4c/GQgpNi+UvX/5oLOihFi/7l/
+   g==;
+X-CSE-ConnectionGUID: 52B8uSEoTuK7mBjmmdaXbg==
+X-CSE-MsgGUID: Z2daHHVvQtWpJhhMXWsvRQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11354"; a="28706865"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
+   d="scan'208";a="28706865"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2025 19:21:56 -0800
+X-CSE-ConnectionGUID: AYbk5T1iRLGtQP54D+Ck3g==
+X-CSE-MsgGUID: 4OrWKWCaQSy1Mx+jhdCcBA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,306,1732608000"; 
-   d="scan'208";a="146367160"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 17:15:30 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Fri, 21 Feb 2025 17:15:30 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Fri, 21 Feb 2025 17:15:30 -0800
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.48) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Fri, 21 Feb 2025 17:15:29 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MexuzP7oSA1EszF1qR+v29JZRe+yEkTK3Gr0EGnlAINbAlW6whvjKhrDjKQAqge30WVRa60qtO0g6HfQ/3dCOlEx7WoCWZyozF7UXOZ486pnbpL7PXDDoq7R+wfcI4FOpIpNOI58gGk8OUdxzQW2DHJqjkzdU2bnXBAyEwVdRvvOfCxG0LoXGNRSB0cET7USrayCqJSqwxq9qtLtFhAk4gt5vrgDc/EMY9x6MFOTM1Vqif2o9htHEAVF79bkrutSILmwRrBcbxIVnVVcgQwHPXdJTTHYaV774w/UwM+QLp9KNU6JaP9VgZK7YY4j8Ivml8KwzNzeG02KWcwrYv8ZnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jPiDXYiO8YIS4W9QAwdAtMAJRmVCq0IKGcOqrnQ/NtE=;
- b=e5UuR0IOtUvA3o3TFgGP8AfAE2+AvOZt0US3qIJ0UldB7axvqCf0Tb5Ai8MhZWMQMx+7OxxXujp27/c+6ITYX+sGRI0vLdey51B4EekFpphj2iRsh/jHdxk11dk/wORop9nj92g7x/8U4f4zEPtisYCfHXM2HipF4TenSPMcYqiinw52IW2LbNDLKiKk8cQeuxNxaRGJWMRek70SKT5LSksp1nw3dKQsVYAWF19vjfHg6/AiF22l7Ua1DyEzQ4stOIGYfemmpylpHQjmUho0sQsq9Hm9dzhFENz5Sr95zUrpNf4qFKfNQw4r/P0by2Kpnt8CyTCyI37Wco/pvnQ0XA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SN7PR11MB8111.namprd11.prod.outlook.com (2603:10b6:806:2e9::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Sat, 22 Feb
- 2025 01:15:27 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8466.015; Sat, 22 Feb 2025
- 01:15:27 +0000
-Date: Fri, 21 Feb 2025 17:15:24 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>, Dan Williams
-	<dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, Lukas Wunner <lukas@wunner.de>, Samuel Ortiz
-	<sameo@rivosinc.com>, Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas
-	<bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 05/11] PCI/TSM: Authenticate devices via platform TSM
-Message-ID: <67b9252c8cac0_1c530f29484@dwillia2-xfh.jf.intel.com.notmuch>
-References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
- <173343742510.1074769.16552514658771224955.stgit@dwillia2-xfh.jf.intel.com>
- <Z1qx2nAHbZN72Ljf@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <Z1qx2nAHbZN72Ljf@yilunxu-OptiPlex-7050>
-X-ClientProxiedBy: MW4PR04CA0140.namprd04.prod.outlook.com
- (2603:10b6:303:84::25) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
+   d="scan'208";a="116441900"
+Received: from shanagud-mobl.amr.corp.intel.com (HELO bxing-mobl1.clients.intel.com) ([10.246.117.251])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2025 19:21:14 -0800
+From: Cedric Xing <cedric.xing@intel.com>
+Date: Sun, 23 Feb 2025 21:20:12 -0600
+Subject: [PATCH v2 1/4] tsm: Add TVM Measurement Register support
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SN7PR11MB8111:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ec00b02-0247-498b-de9a-08dd52de63de
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?lrHxQnxwL2Ko1dMxs0bahdqx9MIvL/+o/hthE3aOZ4D25AfGbrl17g7RalWL?=
- =?us-ascii?Q?i6N91sebJkeGBuOzeetmFUzXMGm6JnvBcAP2PhdmuB/PTwF2kABlRX78YW6F?=
- =?us-ascii?Q?F1gcIFYL/h7pKGboEf8PW2tnmq8iWUWLdNb7b1j1PgT+jvBmO1QPp3Jym2qy?=
- =?us-ascii?Q?xR8QKDZRGjFWTsJhwDi29VnSFs+Meg2RGKyqCOg6OI9AXILXPSlosmf7Gkew?=
- =?us-ascii?Q?gemGMMEfbOZ2jB5gdcyKmuZTBpek1YF8JfcvjooOocz94PBr3XSicxKBJrDA?=
- =?us-ascii?Q?+Q/S78yWetMLHFXhSMyZrvkrSGVkC1ZyEdb4HcGpXpXGsaKD25ka81xvlN/l?=
- =?us-ascii?Q?YaNo6ZUogpcCZL2xAnKwtmSemELAE4vZI3M0UR7hkITMV637G4Ff8fuW9Y1d?=
- =?us-ascii?Q?o3arFN2lFkh4iWELeykt3bclGYjA6nSWHyDtQ/VlPcw4DlIL0hR1f1FxYmC2?=
- =?us-ascii?Q?2LBmGwY71GJd+syZ2RjFitYMmJ599VFdPN5Gnn59eEqIp9yuQ1hrOddVJb2K?=
- =?us-ascii?Q?Xs7zoV89N7K2xcQ/xLVevJk0lQ+rO8Lfr3ao4Bh2agz1Y7ZR9yrLCu2OoDoE?=
- =?us-ascii?Q?f2yaCYZyobM7+Q4xRtQDubovVA/NRYf19zuxDL2ube6aLQ0x4eVuPjLb2zCq?=
- =?us-ascii?Q?JYVFMo/8vaEhtaQKubDO0P+6y9VgIndCC38s6iVhhsTgfa1lviQXug3fmjb3?=
- =?us-ascii?Q?jTaKJ4Mu+Vzm48X74haRN+hNv5FfNqSzFSHDkTmS6G/IwIrUBld7SaBnzC9v?=
- =?us-ascii?Q?432vUYK1wDV5oDrQ04xXQxLoq+EAYaZNJbA+/NFKOpo2MuWWCgndWSASPEZi?=
- =?us-ascii?Q?w7nYIDcHWOpnfULU4rS/fAUADeqXQx4+6NInnBfGRYhgOPIKosRaSMfs/s7i?=
- =?us-ascii?Q?jDOvoQKxDFqefTAdYRhp9pXPFRLl9ZRGYPXZK1Y1m7WNndt5B71UtUduCypo?=
- =?us-ascii?Q?ziRfZiQ81fPhvK46+h/MDoqlxwSl6riSyV3eaQBVpVHLz7T7of5JTqNPJbqW?=
- =?us-ascii?Q?B6ABUHP/Rj4duIbP3RUPjE/8897pcTGroy972efGfmkXDbSteLIjeVHLwbo/?=
- =?us-ascii?Q?nMCq62nv5F/c2inMKWm89zQRZjxMGj0sgNPB89lHatOFSeRdN6fkVibKHKB8?=
- =?us-ascii?Q?pt5OK2y4ZkCYp0ANUOGCAtKzXxEvC3CMyaNTWFFy97wnerkodINonQASYuNE?=
- =?us-ascii?Q?zkcnJCKKbkzJp1KUAnvl71ZCbBKWBy9X4CoPDRYQhrmOcT4Sjpqgs/nXik8p?=
- =?us-ascii?Q?3R1F4kH1ApzpOSERf2x6EYNCJ1n7vB2ksGA+k7rF885nfERVBp3yn+tq3isY?=
- =?us-ascii?Q?mAMJQxm3bwzLiyR/YO0chx/EMxbRnJSomvZ7djsH7amOmDm3GnHblUVuCHCD?=
- =?us-ascii?Q?PWKyXNaOJMs9cm+i5DwTZLQmpAwJ?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PwFsImSOVKy6QZRfx8RtN3BBLgZsxZUaDT6TggyNPHkXUNrMka0zx1mOUigL?=
- =?us-ascii?Q?U6VEmj8z0gWCjqI4KqS13FoKv4A9yuzHbaIRfsvYrB2ycq8KdV5QeMJRRmzv?=
- =?us-ascii?Q?HtZ9x6pbHuTxSiSxT6n75FB5sQ6HfJvwKgB0v+0PpodrGOTlB7Zg8uotlAV+?=
- =?us-ascii?Q?kPH9Ll/okNL35oP7efeYCDSy6Qm+BQWGdwB3Hzbgb2KyPpk+ZXrlMqjg9tiV?=
- =?us-ascii?Q?5u3gINDwwPaTKkR9z3f6a9xzSsR4Qx0ZRXge1wCwFxPvLkGusJi69UxtnH4r?=
- =?us-ascii?Q?mW6hf6cY4N4oQ8wQCeqQVbrCo7f30dqNTg90x4JxXnD814zSkAZqtK9tpS2X?=
- =?us-ascii?Q?PIdtPK9pSzcNzLZUMW2PIu2ZS0PuAgZ6GLAPSgctJ8inB7NWWbw4WlLEF/uU?=
- =?us-ascii?Q?10JqVTK5VwXLx5lBdcVHBVYOLA53TDrqVlgzEwFrQQPjQz3/ELXJPGCOxEKZ?=
- =?us-ascii?Q?wLjvKbHJ+jDGYcatNL8uTjpxgHlsT6VeUCGi1SUuhr/ci2qujh3zfMTi22q9?=
- =?us-ascii?Q?BH+cqLGeSHre6zkwMGI2hLGPtjJObz+gvKj4gQLS5xNrq17RjluTxWax8auU?=
- =?us-ascii?Q?vuTnY3PDcCMaZ6AbfiYk+2+QE+2PY87OkzDFZUP8y5xNBZelyUNSJghwGzqd?=
- =?us-ascii?Q?JHsknp/kW+8PDEPw/tmb4jcznxMNivKMJidzceDRkk+Qzf/sgYOZXCTg59PW?=
- =?us-ascii?Q?5k5zsbw5pcVQvcRf6oxljPINlQ26KMHAQ7E+EOzte7T7mGCRT3ErrUrxbjAp?=
- =?us-ascii?Q?GhRFyWnbg7bKCLHT6j5uk5HxtNHrk3Y+cCgeKYUcgziau9ZFd1m6/ZfNjlP+?=
- =?us-ascii?Q?IXhGwAnzbiIFnCO8KRWbtiktOioyS8l3sTzhPFUMWItB37C5aI8fJu5HHVdE?=
- =?us-ascii?Q?WjjOO0SHhM0T8emStMqFdfyHJNvD1YYTPFpvVngNjGBN5Wj6LpTuDeMBaLKb?=
- =?us-ascii?Q?HQcZtFafk1kYNfTcE9GAl30VCS7BQyHgt/NFtEkrYKLOAHZ7ndWdewLgynuk?=
- =?us-ascii?Q?x68mQkw/3HqV9AyR0i4shzK0H3ET2ikdZdIWuPp1839puDAVF++l5ttcmjru?=
- =?us-ascii?Q?LIq8Jb41KnsGWoKBKtiez62wnfK4INLpgvWDM5dpH2JsqErX2UO4UnZ+Ibx4?=
- =?us-ascii?Q?wO66uBI5wYMnhJn/52GMNsVs53T8JorOwj9nWvSxLpxfGm7DQ7HsxhqjTXVi?=
- =?us-ascii?Q?aFSfw7p6UJnr1uR8OqXeqrCH7zeR+bUgTZ0N2LAJLheaZmGJ7vN9pUhZX/VS?=
- =?us-ascii?Q?fojZN5hC2cYnrkuwUHpla1tnNxTdwmWu+TPvocrO3GNIpg7UpNSZS0eyrOvX?=
- =?us-ascii?Q?vMKVN/PO2kSIyNfKylj5Zl1bjbh1Yqy20BvKywfpYOXxWcXOyKJMSvAqAzNI?=
- =?us-ascii?Q?t+WPXfoGRtCIUyYu1ybbEVwtJBqlbcMIiRm6qDFLNC34shM4nfeevad4JdGl?=
- =?us-ascii?Q?oWXNJFE24fsbCJp43sAdRXg1qIpe0KW5un+yKqsk4ZtI//6fF7BcHkoPYCqk?=
- =?us-ascii?Q?2zXIM9UkX+MBBq0DvdLcVXZXBLHrv6YVjnIk8ZD4QWOt/ZigBeKIsNDLXBgE?=
- =?us-ascii?Q?m53UzsZvxADmJuso9pJl9axXSCWOfQMHXduiy4bgJmq4vzhkcZ6xc7qd4sx+?=
- =?us-ascii?Q?CQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ec00b02-0247-498b-de9a-08dd52de63de
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2025 01:15:26.9302
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EedRO0BWMnVIpWImQuLF9Yle3TgfcXP5/VaCMbEkwZxPKkg3z2jfim7BVOLVbnpUl5t16xjwOTlm5cGJqpup/2URpm4DcfauorKqLdCYuwo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB8111
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250223-tdx-rtmr-v2-1-f2d85b0a5f94@intel.com>
+References: <20250223-tdx-rtmr-v2-0-f2d85b0a5f94@intel.com>
+In-Reply-To: <20250223-tdx-rtmr-v2-0-f2d85b0a5f94@intel.com>
+To: Dan Williams <dan.j.williams@intel.com>, 
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+ Dionna Amalie Glaze <dionnaglaze@google.com>, 
+ James Bottomley <James.Bottomley@HansenPartnership.com>, 
+ Dan Middleton <dan.middleton@linux.intel.com>, 
+ Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
+ Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+X-Mailer: b4 0.13.0
 
-Xu Yilun wrote:
-> > +static int pci_tsm_disconnect(struct pci_dev *pdev)
-> > +{
-> > +	struct pci_tsm *pci_tsm = pdev->tsm;
-> > +
-> > +	lockdep_assert_held(&pci_tsm_rwsem);
-> > +	if_not_guard(mutex_intr, &pci_tsm->lock)
-> > +		return -EINTR;
-> > +
-> > +	if (pci_tsm->state < PCI_TSM_CONNECT)
-> > +		return 0;
-> > +	if (pci_tsm->state < PCI_TSM_INIT)
-> > +		return -ENXIO;
-> 
-> Check PCI_TSM_INIT first, or this condition will never hit.
-> 
->   if (pci_tsm->state < PCI_TSM_INIT)
-> 	return -ENXIO;
->   if (pci_tsm->state < PCI_TSM_CONNECT)
-> 	return 0;
-> 
-> I suggest the same sequence for pci_tsm_connect().
+Add new TSM APIs for TVM guest drivers to register and expose measurement
+registers (MRs) as sysfs attributes (files).
 
-Good catch, fixed.
+New TSM APIs:
 
-[..]
-> > +
-> > +static void __pci_tsm_init(struct pci_dev *pdev)
-> > +{
-> > +	bool tee_cap;
-> > +
-> > +	if (!is_physical_endpoint(pdev))
-> > +		return;
-> 
-> This Filters out virtual functions, just because not ready for support,
-> is it?
+- `tsm_register_measurement(struct tsm_measurement *)`: Register a set of
+  MRs with the TSM core.
+- `tsm_unregister_measurement(struct tsm_measurement *)`: Unregister a
+  previously registered set of MRs.
 
-Do you see a need for PCI core to notify the TSM driver about the
-arrival of VF devices?
+These APIs are centered around `struct tsm_measurement`, which includes an
+array of `struct tsm_measurement_register`s with properties
+(`tsm_measurement_register::mr_flags`) like *Readable* (`TSM_MR_F_R`) and
+*Extensible* (`TSM_MR_F_X`). For details, see include/linux/tsm.h.
 
-My expectation is that a VF TDI communicates with the TSM driver
-relative to its PF.
+Upon successful registration, the TSM core exposes MRs in sysfs at
+/sys/kernel/tsm/MR_PROVIDER/, where MR_PROVIDER is the measurement
+provider's name (`tsm_measurement::name`). Each MR is accessible either as
+a file (/sys/kernel/tsm/MR_PROVIDER/MR_NAME contains the MR value) or a
+directory (/sys/kernel/tsm/MR_PROVIDER/MR_NAME/HASH/digest contains the MR
+value) depending on whether `TSM_MR_F_F` is set or cleared (in
+`tsm_measurement_register::mr_flags`). MR_NAME is the name
+(`tsm_measurement_register::mr_name`) of the MR, while HASH is the hash
+algorithm (`tsm_measurement_register::mr_hash`) name in the latter case.
 
-> > +
-> > +	tee_cap = pdev->devcap & PCI_EXP_DEVCAP_TEE;
-> > +
-> > +	if (!(pdev->ide_cap || tee_cap))
-> > +		return;
-> > +
-> > +	lockdep_assert_held_write(&pci_tsm_rwsem);
-> > +	if (!tsm_ops)
-> > +		return;
-> > +
-> > +	struct pci_tsm *pci_tsm __free(kfree) = kzalloc(sizeof(*pci_tsm), GFP_KERNEL);
-> > +	if (!pci_tsm)
-> > +		return;
-> > +
-> > +	/*
-> > +	 * If a physical device has any security capabilities it may be
-> > +	 * a candidate to connect with the platform TSM
-> > +	 */
-> > +	struct pci_dsm *dsm __free(dsm_remove) = tsm_ops->probe(pdev);
-> 
-> IIUC, pdev->tsm should be for every pci function (physical or virtual),
-> pdev->tsm->dsm should be only for physical functions, is it?
+*Crypto Agility* is supported by merging independent MRs with a common name
+into a single directory, each represented by its HASH/digest file. Note
+that HASH must be distinct or behavior is undefined.
 
-Per above I was only expecting physical function, but the bind flow
-might introduce the need for per function (phyiscal or virtual) TDI
-context. I expect that is separate from the PF pdev->tsm context.
+Signed-off-by: Cedric Xing <cedric.xing@intel.com>
+---
+ Documentation/ABI/testing/sysfs-kernel-tsm |  20 ++
+ MAINTAINERS                                |   2 +-
+ drivers/virt/coco/Kconfig                  |  17 +-
+ drivers/virt/coco/Makefile                 |   2 +
+ drivers/virt/coco/{tsm.c => tsm-core.c}    |   6 +-
+ drivers/virt/coco/tsm-mr.c                 | 383 +++++++++++++++++++++++++++++
+ include/linux/tsm.h                        |  65 +++++
+ 7 files changed, 492 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-kernel-tsm b/Documentation/ABI/testing/sysfs-kernel-tsm
+new file mode 100644
+index 000000000000..99735cf4da5c
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-kernel-tsm
+@@ -0,0 +1,20 @@
++What:		/sys/kernel/tsm/<measurement_provider>/<register>
++Date:		February 2025
++Contact:	Cedric Xing <cedric.xing@intel.com>.
++Description:
++		This file contains the value of the measurement register
++		<register>. Depending on the CC architecture, this file may be
++		writable, in which case the value written will be the new value
++		of <register>. Each write must start at the beginning and be of
++		the same size as the file. Partial writes are not permitted.
++
++What:		/sys/kernel/tsm/<measurement_provider>/<register>/<hash>/digest
++Date:		February 2025
++Contact:	Cedric Xing <cedric.xing@intel.com>.
++Description:
++		This file contains the value of the measurement register
++		<register>. Depending on the CC architecture, this file may be
++		writable, in which case any value written may be extended to
++		<register> using <hash>. Each write must start at the beginning
++		and be of the same size as the file. Partial writes are not
++		permitted.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4ff26fa94895..a5eef4c7234c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -24104,7 +24104,7 @@ M:	Dan Williams <dan.j.williams@intel.com>
+ L:	linux-coco@lists.linux.dev
+ S:	Maintained
+ F:	Documentation/ABI/testing/configfs-tsm
+-F:	drivers/virt/coco/tsm.c
++F:	drivers/virt/coco/tsm*.c
+ F:	include/linux/tsm.h
+ 
+ TRUSTED SERVICES TEE DRIVER
+diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+index ff869d883d95..3fa38fd731b9 100644
+--- a/drivers/virt/coco/Kconfig
++++ b/drivers/virt/coco/Kconfig
+@@ -5,7 +5,22 @@
+ 
+ config TSM_REPORTS
+ 	select CONFIGFS_FS
+-	tristate
++	select CRYPTO_HASH_INFO
++	select CRYPTO
++	tristate "Trusted Security Module (TSM) support"
++
++if TSM_REPORTS
++
++config TSM_MR_MAXBANKS
++	int "Max number of banks of Measurement Registers"
++	range 1 8
++	default 1
++	help
++	  A "bank" is a group of MRs that use the same hash algorithm. This
++	  option specifies the maximal number of banks each Measurement
++	  Register (MR) can support.
++
++endif
+ 
+ source "drivers/virt/coco/efi_secret/Kconfig"
+ 
+diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+index c3d07cfc087e..4b108d8df1bd 100644
+--- a/drivers/virt/coco/Makefile
++++ b/drivers/virt/coco/Makefile
+@@ -2,6 +2,8 @@
+ #
+ # Confidential computing related collateral
+ #
++tsm-y				+= tsm-core.o tsm-mr.o
++
+ obj-$(CONFIG_TSM_REPORTS)	+= tsm.o
+ obj-$(CONFIG_EFI_SECRET)	+= efi_secret/
+ obj-$(CONFIG_ARM_PKVM_GUEST)	+= pkvm-guest/
+diff --git a/drivers/virt/coco/tsm.c b/drivers/virt/coco/tsm-core.c
+similarity index 99%
+rename from drivers/virt/coco/tsm.c
+rename to drivers/virt/coco/tsm-core.c
+index 9432d4e303f1..ab5269db9c13 100644
+--- a/drivers/virt/coco/tsm.c
++++ b/drivers/virt/coco/tsm-core.c
+@@ -476,6 +476,9 @@ int tsm_unregister(const struct tsm_ops *ops)
+ }
+ EXPORT_SYMBOL_GPL(tsm_unregister);
+ 
++int tsm_mr_init(void);
++void tsm_mr_exit(void);
++
+ static struct config_group *tsm_report_group;
+ 
+ static int __init tsm_init(void)
+@@ -497,12 +500,13 @@ static int __init tsm_init(void)
+ 	}
+ 	tsm_report_group = tsm;
+ 
+-	return 0;
++	return tsm_mr_init();
+ }
+ module_init(tsm_init);
+ 
+ static void __exit tsm_exit(void)
+ {
++	tsm_mr_exit();
+ 	configfs_unregister_default_group(tsm_report_group);
+ 	configfs_unregister_subsystem(&tsm_configfs);
+ }
+diff --git a/drivers/virt/coco/tsm-mr.c b/drivers/virt/coco/tsm-mr.c
+new file mode 100644
+index 000000000000..8a96b2a78869
+--- /dev/null
++++ b/drivers/virt/coco/tsm-mr.c
+@@ -0,0 +1,383 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright(c) 2024-2025 Intel Corporation. All rights reserved. */
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <crypto/hash_info.h>
++#include <linux/kobject.h>
++#include <linux/module.h>
++#include <linux/slab.h>
++#include <linux/tsm.h>
++
++int tsm_mr_init(void);
++void tsm_mr_exit(void);
++
++enum tmr_dir_battr_index {
++	TMR_DIR_BA_DIGEST,
++	TMR_DIR_BA__COUNT,
++};
++
++struct tmr_dir {
++	struct kobject kobj;
++	struct bin_attribute battrs[CONFIG_TSM_MR_MAXBANKS][TMR_DIR_BA__COUNT];
++	int algo;
++};
++
++struct tmr_provider {
++	struct kset kset;
++	struct rw_semaphore rwsem;
++	struct bin_attribute *mrfiles;
++	struct tsm_measurement *tmr;
++	bool in_sync;
++};
++
++static inline struct tmr_provider *tmr_mr_to_provider(const struct tsm_measurement_register *mr,
++						      struct kobject *kobj)
++{
++	if (mr->mr_flags & TSM_MR_F_F)
++		return container_of(kobj, struct tmr_provider, kset.kobj);
++	else
++		return container_of(kobj->kset, struct tmr_provider, kset);
++}
++
++static inline int tmr_call_refresh(struct tmr_provider *pvd,
++				   const struct tsm_measurement_register *mr)
++{
++	int rc;
++
++	rc = pvd->tmr->refresh(pvd->tmr, mr);
++	if (rc)
++		pr_warn("%s.refresh(%s) failed %d\n", kobject_name(&pvd->kset.kobj), mr->mr_name,
++			rc);
++	return rc;
++}
++
++static inline int tmr_call_extend(struct tmr_provider *pvd,
++				  const struct tsm_measurement_register *mr, const u8 *data)
++{
++	int rc;
++
++	rc = pvd->tmr->extend(pvd->tmr, mr, data);
++	if (rc)
++		pr_warn("%s.extend(%s) failed %d\n", kobject_name(&pvd->kset.kobj), mr->mr_name,
++			rc);
++	return rc;
++}
++
++static ssize_t tmr_digest_read(struct file *filp, struct kobject *kobj, struct bin_attribute *attr,
++			       char *buffer, loff_t off, size_t count)
++{
++	const struct tsm_measurement_register *mr;
++	struct tmr_provider *pvd;
++	int rc;
++
++	if (off < 0 || off > attr->size)
++		return -EINVAL;
++
++	count = min(count, attr->size - (size_t)off);
++	if (!count)
++		return count;
++
++	mr = attr->private;
++	pvd = tmr_mr_to_provider(mr, kobj);
++	rc = down_read_interruptible(&pvd->rwsem);
++	if (rc)
++		return rc;
++
++	/*
++	 * pvd->in_sync indicates if any MRs have been written/extended since the last
++	 * pvd->refresh() call. When pvd->in_sync is false, pvd->refresh() is necessary to sync the
++	 * cached values of all live (L) MRs with the underlying hardware.
++	 */
++	if ((mr->mr_flags & TSM_MR_F_L) && !pvd->in_sync) {
++		up_read(&pvd->rwsem);
++
++		rc = down_write_killable(&pvd->rwsem);
++		if (rc)
++			return rc;
++
++		if (!pvd->in_sync) {
++			rc = tmr_call_refresh(pvd, mr);
++			pvd->in_sync = !rc;
++		}
++
++		downgrade_write(&pvd->rwsem);
++	}
++
++	if (!rc)
++		memcpy(buffer, mr->mr_value + off, count);
++
++	up_read(&pvd->rwsem);
++	return rc ?: count;
++}
++
++static ssize_t tmr_digest_write(struct file *filp, struct kobject *kobj, struct bin_attribute *attr,
++				char *buffer, loff_t off, size_t count)
++{
++	const struct tsm_measurement_register *mr;
++	struct tmr_provider *pvd;
++	ssize_t rc;
++
++	if (off != 0 || count != attr->size)
++		return -EINVAL;
++
++	mr = attr->private;
++	pvd = tmr_mr_to_provider(mr, kobj);
++	rc = down_write_killable(&pvd->rwsem);
++	if (rc)
++		return rc;
++
++	if (mr->mr_flags & TSM_MR_F_X)
++		rc = tmr_call_extend(pvd, mr, buffer);
++	else
++		memcpy(mr->mr_value, buffer, count);
++
++	// clear pvd->in_sync so the next read from any live (L) MR will trigger pvd->refresh()
++	if (!rc)
++		pvd->in_sync = false;
++
++	up_write(&pvd->rwsem);
++	return rc ?: count;
++}
++
++static void tmr_dir_release(struct kobject *kobj)
++{
++	struct tmr_dir *mrd;
++
++	mrd = container_of(kobj, typeof(*mrd), kobj);
++	kfree(mrd);
++}
++
++static const struct kobj_type tmr_dir_ktype = {
++	.release = tmr_dir_release,
++	.sysfs_ops = &kobj_sysfs_ops,
++};
++
++static struct tmr_dir *tmr_dir_create(const struct tsm_measurement_register *mr,
++				      struct tmr_provider *pvd)
++{
++	struct kobject *kobj;
++	struct tmr_dir *mrd;
++
++	kobj = kset_find_obj(&pvd->kset, mr->mr_name);
++	if (kobj) {
++		mrd = container_of(kobj, typeof(*mrd), kobj);
++		kobject_put(kobj);
++		if (++mrd->algo >= CONFIG_TSM_MR_MAXBANKS) {
++			--mrd->algo;
++			return ERR_PTR(-ENOSPC);
++		}
++	} else {
++		int rc;
++
++		mrd = kzalloc(sizeof(*mrd), GFP_KERNEL);
++		if (!mrd)
++			return ERR_PTR(-ENOMEM);
++
++		mrd->kobj.kset = &pvd->kset;
++		rc = kobject_init_and_add(&mrd->kobj, &tmr_dir_ktype, NULL, "%s", mr->mr_name);
++		if (rc) {
++			kfree(mrd);
++			return ERR_PTR(rc);
++		}
++	}
++
++	sysfs_bin_attr_init(&mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST]);
++	mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].attr.name = "digest";
++	if (mr->mr_flags & TSM_MR_F_W)
++		mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].attr.mode |= S_IWUSR | S_IWGRP;
++	if (mr->mr_flags & TSM_MR_F_R)
++		mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].attr.mode |= S_IRUGO;
++
++	mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].size = mr->mr_size;
++	mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].read = tmr_digest_read;
++	mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].write = tmr_digest_write;
++	mrd->battrs[mrd->algo][TMR_DIR_BA_DIGEST].private = (void *)mr;
++
++	return mrd;
++}
++
++static void tmr_provider_release(struct kobject *kobj)
++{
++	struct tmr_provider *pvd;
++
++	pvd = container_of(kobj, typeof(*pvd), kset.kobj);
++	if (!WARN_ON(!list_empty(&pvd->kset.list))) {
++		kfree(pvd->mrfiles);
++		kfree(pvd);
++	}
++}
++
++static const struct kobj_type _mr_provider_ktype = {
++	.release = tmr_provider_release,
++	.sysfs_ops = &kobj_sysfs_ops,
++};
++
++static struct kset *tmr_sysfs_root;
++
++static struct tmr_provider *tmr_provider_create(struct tsm_measurement *tmr)
++{
++	struct tmr_provider *pvd __free(kfree);
++	int rc;
++
++	pvd = kzalloc(sizeof(*pvd), GFP_KERNEL);
++	if (!pvd)
++		return ERR_PTR(-ENOMEM);
++
++	if (!tmr->name || !tmr->mrs || !tmr->refresh || !tmr->extend)
++		return ERR_PTR(-EINVAL);
++
++	rc = kobject_set_name(&pvd->kset.kobj, "%s", tmr->name);
++	if (rc)
++		return ERR_PTR(rc);
++
++	pvd->kset.kobj.kset = tmr_sysfs_root;
++	pvd->kset.kobj.ktype = &_mr_provider_ktype;
++	pvd->tmr = tmr;
++
++	init_rwsem(&pvd->rwsem);
++
++	rc = kset_register(&pvd->kset);
++	if (rc)
++		return ERR_PTR(rc);
++
++	return_ptr(pvd);
++}
++
++DEFINE_FREE(_unregister_measurement, struct tmr_provider *,
++	    if (!IS_ERR_OR_NULL(_T)) tsm_unregister_measurement(_T->tmr));
++
++int tsm_register_measurement(struct tsm_measurement *tmr)
++{
++	struct tmr_provider *pvd __free(_unregister_measurement);
++	int rc, nr;
++
++	pvd = tmr_provider_create(tmr);
++	if (IS_ERR(pvd))
++		return PTR_ERR(pvd);
++
++	nr = 0;
++	for (int i = 0; tmr->mrs[i].mr_name; ++i) {
++		// flat files are counted and skipped
++		if (tmr->mrs[i].mr_flags & TSM_MR_F_F) {
++			++nr;
++			continue;
++		}
++
++		struct tmr_dir *mrd;
++		struct bin_attribute *battrs[TMR_DIR_BA__COUNT + 1] = {};
++		struct attribute_group agrp = {
++			.name = hash_algo_name[tmr->mrs[i].mr_hash],
++			.bin_attrs = battrs,
++		};
++
++		mrd = tmr_dir_create(&tmr->mrs[i], pvd);
++		if (IS_ERR(mrd)) {
++			if (WARN_ONCE(PTR_ERR(mrd) == -ENOSPC, "too many banks"))
++				continue;
++
++			return PTR_ERR(mrd);
++		}
++
++		for (int j = 0; j < TMR_DIR_BA__COUNT; ++j)
++			battrs[j] = &mrd->battrs[mrd->algo][j];
++
++		rc = sysfs_create_group(&mrd->kobj, &agrp);
++		if (rc)
++			return rc;
++	}
++
++	if (nr > 0) {
++		struct bin_attribute *mrfiles __free(kfree);
++		struct bin_attribute **battrs __free(kfree);
++
++		mrfiles = kcalloc(nr, sizeof(*mrfiles), GFP_KERNEL);
++		battrs = kcalloc(nr + 1, sizeof(*battrs), GFP_KERNEL);
++		if (!battrs || !mrfiles)
++			return -ENOMEM;
++
++		for (int i = 0, j = 0; tmr->mrs[i].mr_name; ++i) {
++			if (!(tmr->mrs[i].mr_flags & TSM_MR_F_F))
++				continue;
++
++			mrfiles[j].attr.name = tmr->mrs[i].mr_name;
++			mrfiles[j].read = tmr_digest_read;
++			mrfiles[j].write = tmr_digest_write;
++			mrfiles[j].size = tmr->mrs[i].mr_size;
++			mrfiles[j].private = (void *)&tmr->mrs[i];
++			if (tmr->mrs[i].mr_flags & TSM_MR_F_R)
++				mrfiles[j].attr.mode |= S_IRUGO;
++			if (tmr->mrs[i].mr_flags & TSM_MR_F_W)
++				mrfiles[j].attr.mode |= S_IWUSR | S_IWGRP;
++
++			battrs[j] = &mrfiles[j];
++			++j;
++		}
++
++		struct attribute_group agrp = {
++			.bin_attrs = battrs,
++		};
++		rc = sysfs_create_group(&pvd->kset.kobj, &agrp);
++		if (rc)
++			return rc;
++
++		pvd->mrfiles = no_free_ptr(mrfiles);
++	}
++
++	// initial refresh of MRs
++	rc = tmr_call_refresh(pvd, NULL);
++	pvd->in_sync = !rc;
++
++	pvd = NULL; // to avoid being freed automatically
++	return 0;
++}
++EXPORT_SYMBOL_GPL(tsm_register_measurement);
++
++static void tmr_put_children(struct kset *kset)
++{
++	struct kobject *p, *n;
++
++	spin_lock(&kset->list_lock);
++	list_for_each_entry_safe(p, n, &kset->list, entry) {
++		spin_unlock(&kset->list_lock);
++		kobject_put(p);
++		spin_lock(&kset->list_lock);
++	}
++	spin_unlock(&kset->list_lock);
++}
++
++int tsm_unregister_measurement(struct tsm_measurement *tmr)
++{
++	struct kobject *kobj;
++	struct tmr_provider *pvd;
++
++	kobj = kset_find_obj(tmr_sysfs_root, tmr->name);
++	if (!kobj)
++		return -ENOENT;
++
++	pvd = container_of(kobj, typeof(*pvd), kset.kobj);
++	if (pvd->tmr != tmr)
++		return -EINVAL;
++
++	tmr_put_children(&pvd->kset);
++	kset_unregister(&pvd->kset);
++	kobject_put(kobj);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(tsm_unregister_measurement);
++
++int tsm_mr_init(void)
++{
++	tmr_sysfs_root = kset_create_and_add("tsm", NULL, kernel_kobj);
++	if (!tmr_sysfs_root)
++		return -ENOMEM;
++	return 0;
++}
++
++void tsm_mr_exit(void)
++{
++	kset_unregister(tmr_sysfs_root);
++}
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Provide Trusted Security Module measurements via sysfs");
+diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+index 11b0c525be30..312965d45001 100644
+--- a/include/linux/tsm.h
++++ b/include/linux/tsm.h
+@@ -5,6 +5,7 @@
+ #include <linux/sizes.h>
+ #include <linux/types.h>
+ #include <linux/uuid.h>
++#include <uapi/linux/hash_info.h>
+ 
+ #define TSM_INBLOB_MAX 64
+ #define TSM_OUTBLOB_MAX SZ_32K
+@@ -109,4 +110,68 @@ struct tsm_ops {
+ 
+ int tsm_register(const struct tsm_ops *ops, void *priv);
+ int tsm_unregister(const struct tsm_ops *ops);
++
++/**
++ * struct tsm_measurement_register - describes an architectural measurement register (MR)
++ * @mr_name: name of the MR
++ * @mr_value: buffer containing the current value of the MR
++ * @mr_size: size of the MR - typically the digest size of @mr_hash
++ * @mr_flags: bitwise OR of flags defined in enum tsm_measurement_register_flag
++ * @mr_hash: optional hash identifier defined in include/uapi/linux/hash_info.h
++ *
++ * A CC guest driver provides this structure to detail the measurement facility supported by the
++ * underlying CC hardware. After registration via `tsm_register_measurement`, the CC guest driver
++ * must retain this structure until it is unregistered using `tsm_unregister_measurement`.
++ */
++struct tsm_measurement_register {
++	const char *mr_name;
++	void *mr_value;
++	u32 mr_size;
++	u32 mr_flags;
++	enum hash_algo mr_hash;
++};
++
++/**
++ * enum tsm_measurement_register_flag - properties of an MR
++ * @TSM_MR_F_X: this MR supports the extension semantics
++ * @TSM_MR_F_W: the sysfs attribute corresponding to this MR is writable
++ * @TSM_MR_F_R: the sysfs attribute corresponding to this MR is readable
++ * @TSM_MR_F_L: this MR is live - the current value may differ from the last value written so must
++ *              be loaded back from TVM hardware/firmware on read
++ * @TSM_MR_F_F: present this MR as a file (instead of a directory)
++ * @TSM_MR_F_LIVE: shorthand for L (live) and R (readable)
++ * @TSM_MR_F_RTMR: shorthand for LIVE and X (extensible)
++ */
++enum tsm_measurement_register_flag {
++	TSM_MR_F_X = 1,
++	TSM_MR_F_W = 2,
++	TSM_MR_F_R = 4,
++	TSM_MR_F_L = 8,
++	TSM_MR_F_F = 16,
++	TSM_MR_F_LIVE = TSM_MR_F_L | TSM_MR_F_R,
++	TSM_MR_F_RTMR = TSM_MR_F_LIVE | TSM_MR_F_X,
++};
++
++#define TSM_MR_(mr, hash)                                                           \
++	.mr_name = #mr, .mr_size = hash##_DIGEST_SIZE, .mr_hash = HASH_ALGO_##hash, \
++	.mr_flags = TSM_MR_F_R
++
++/**
++ * struct tsm_measurement - define CC specific MRs and methods for updating them
++ * @name: name of the measurement provider
++ * @mrs: array of MR definitions ending with mr_name set to %NULL
++ * @refresh: sync/reload MR values in TVM hardware/firmware into the kernel buffers
++ * @extend: extend the specified MR with mr->mr_size bytes stored in mr->mr_value
++ */
++struct tsm_measurement {
++	const char *name;
++	const struct tsm_measurement_register *mrs;
++	int (*refresh)(struct tsm_measurement *tmr, const struct tsm_measurement_register *mr);
++	int (*extend)(struct tsm_measurement *tmr, const struct tsm_measurement_register *mr,
++		      const u8 *data);
++};
++
++int tsm_register_measurement(struct tsm_measurement *tmr);
++int tsm_unregister_measurement(struct tsm_measurement *tmr);
++
+ #endif /* __TSM_H */
+
+-- 
+2.43.0
+
