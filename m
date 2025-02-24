@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B204A1A4F09
-	for <linux-coco@lists.linux.dev>; Mon, 24 Feb 2025 03:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C933FB31
+	for <linux-coco@lists.linux.dev>; Mon, 24 Feb 2025 03:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740367322; cv=none; b=bhej/Suau2TBvdRdjRC4+emxGYmU0UkGloK0gfY75xWfeL/TlhCaCIAuS87A8afGpnurPmSDKnqgDDXLwtig/Bf7NHUbfC+E53B4rDGnB80aWVOxEOJlkORbnDLCVcUUjcvU+WA2WMaYa20OfejYCqP2Xon9NNbsvmzdOlQL8MU=
+	t=1740367324; cv=none; b=HPby4Vxy6AJjWg85WoLVIG26Z9lKTJ4o/JTypTwVWIAHWy8U/HZIbT7Eb328rsCip9nRsI3Rv9Tb1oZGTga0z9rTmtFLmesjLF9sdXJzxCTJQbOATmqoZJQl4qhVVVqFAqwzAF2m4vPvnJ/VWNnEYN9Zm/DzEy5XXVBJPvOWj6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740367322; c=relaxed/simple;
-	bh=GiULTZ2ipk+wIUbKL/FpRBpeW8mvkTFvKGmACFzv7hI=;
+	s=arc-20240116; t=1740367324; c=relaxed/simple;
+	bh=taadowUR5/58ys41IAsM9k+P+FmsnUdHVJhEU6NXOls=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hD3oyrUpHEKwpyXr9HhUkK6DKXBwAzMDrhkATfJTHqiHCTN9anzYNbGNNr6CHGdY1k+OuASpTrHW/WQfUtCcMFcvZw4asIl+RaRgcrv6rqRXNhy8AVvUez9usnC2oyoD1prOcZDplftXJKTiLe4H9K9SMsifBk8oW8ggPiC5A20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fRo1IPSf; arc=none smtp.client-ip=192.198.163.16
+	 In-Reply-To:To:Cc; b=XFcky7/nefh2Apo0hWPyiykp8w2PanarSNEC9NABvCQHSbgrpR8RxvdL7zNS/ly7yJxttC1PgO+bFqU6IRfslKjVm2iON7+HbtRGXqteC4iMHplJ/x0Cs4g1WHCnHoFBeH9eGDqrnsQpCOmErMaVdKTMhjhf5XV2df79aDqiguo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VXH3S6cN; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fRo1IPSf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VXH3S6cN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740367321; x=1771903321;
+  t=1740367322; x=1771903322;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=GiULTZ2ipk+wIUbKL/FpRBpeW8mvkTFvKGmACFzv7hI=;
-  b=fRo1IPSfLgaVYDKHdr6Q4e3ZqKnTGTOUbSxIjxFrAbt51mXAm0TD2AJP
-   NT22lXhMTCDkr3L6gxsir5043jyr6OmBfqUpY04Tq1oG5/ZD7VtOXuQ3p
-   unHtPiA2vGAlA52/leQ/VCmodXkaY4La2TFBfEoZCKCi+jvmLvQ287a8d
-   dVi+cQWJ7fXMWup0jGGwwt9dAQXDUYnZMO/5uR1pBB63FlOtwAXiQsN3O
-   KAu1IbeOPd8D4RNjS/db0Yy82i5ZZ0sBGbkf2OuA7jVMmS9yN/4QESpzb
-   U9cfVK/5IMMNimzVIeH/suhf2GmWzvbdVihE8SjUckdqErMidgzOPzO+8
-   g==;
-X-CSE-ConnectionGUID: ngqyfs02QOeoH7IuT9UyBA==
-X-CSE-MsgGUID: hIJVh6JMRHOWG82+yWSMRw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11354"; a="28706875"
+  bh=taadowUR5/58ys41IAsM9k+P+FmsnUdHVJhEU6NXOls=;
+  b=VXH3S6cNcABa0xjaRrEgiY2Ge5FoJHRFoLagl+hZ/N8scqJkacYEGCCR
+   QfDAlD8o1DORt41O1YfvmkEWKVTvCri1Q0h5wFJgfod0lP7x6DmSFrpUU
+   L7E/NHWnmrqf6iPxctdfpKmegfQvONiMYb8OC406i9C9sDovvwmRZvV4f
+   sxSdiXmqz7OV5CirB3/2BPUVQZAA0T7WADQBgK7gvNjskKbEROb/rWVJi
+   PUKxUQcNKZ79TBP3oZhElHsLGB/3nN2kKTqaejE17Lx4RlAYqcyiJrjVU
+   zPHTlm0t9yEioaxlnDOVcHkh6Ka30WUC9f+W4Gcvls81eX7VqfDL11dRH
+   A==;
+X-CSE-ConnectionGUID: XEqoB2uqRKu1+NmodUYBmQ==
+X-CSE-MsgGUID: 77qt1gZrQYSZ8cCB/6E4Zw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11354"; a="28706885"
 X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
-   d="scan'208";a="28706875"
+   d="scan'208";a="28706885"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
   by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2025 19:21:56 -0800
-X-CSE-ConnectionGUID: RDRNehVqQZ6Gak3lT0KySw==
-X-CSE-MsgGUID: HbGLO86BTV2ZKeoSFt+WEw==
+X-CSE-ConnectionGUID: dtwl4QAgROmEkAs/LCc1xQ==
+X-CSE-MsgGUID: DM3mpKcgSsygBmtDyZkTgQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
-   d="scan'208";a="116441902"
+   d="scan'208";a="116441904"
 Received: from shanagud-mobl.amr.corp.intel.com (HELO bxing-mobl1.clients.intel.com) ([10.246.117.251])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2025 19:21:15 -0800
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2025 19:21:16 -0800
 From: Cedric Xing <cedric.xing@intel.com>
-Date: Sun, 23 Feb 2025 21:20:13 -0600
-Subject: [PATCH v2 2/4] tsm: Add TSM measurement sample code
+Date: Sun, 23 Feb 2025 21:20:14 -0600
+Subject: [PATCH v2 3/4] x86/tdx: Add tdx_mcall_extend_rtmr() interface
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -53,8 +53,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250223-tdx-rtmr-v2-2-f2d85b0a5f94@intel.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250223-tdx-rtmr-v2-3-f2d85b0a5f94@intel.com>
 References: <20250223-tdx-rtmr-v2-0-f2d85b0a5f94@intel.com>
 In-Reply-To: <20250223-tdx-rtmr-v2-0-f2d85b0a5f94@intel.com>
 To: Dan Williams <dan.j.williams@intel.com>, 
@@ -71,227 +71,107 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
  Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
 X-Mailer: b4 0.13.0
 
-This sample kernel module demonstrates how to make MRs accessible to user
-mode through TSM.
+The TDX guest exposes one MRTD (Build-time Measurement Register) and four
+RTMR (Run-time Measurement Register) registers to record the build and boot
+measurements of a virtual machine (VM). These registers are similar to PCR
+(Platform Configuration Register) registers in the TPM (Trusted Platform
+Module) space. This measurement data is used to implement security features
+like attestation and trusted boot.
 
-Once loaded, this module registers a virtual measurement provider with the
-TSM core and will result in the directory tree below.
+To facilitate updating the RTMR registers, the TDX module provides support
+for the `TDG.MR.RTMR.EXTEND` TDCALL which can be used to securely extend
+the RTMR registers.
 
-/sys/kernel/tsm/
-└── tsm_mr_sample
-    ├── config_mr
-    │   └── sha512
-    │       └── digest
-    ├── report_digest
-    │   └── sha512
-    │       └── digest
-    ├── rtmr0
-    │   └── sha256
-    │       └── digest
-    ├── rtmr1
-    │   └── sha384
-    │       └── digest
-    ├── rtmr_crypto_agile
-    │   ├── sha256
-    │   │   └── digest
-    │   └── sha384
-    │       └── digest
-    └── static_mr
-        └── sha384
-            └── digest
+Add helper function to update RTMR registers. It will be used by the TDX
+guest driver in enabling RTMR extension support.
 
-Among the MRs in this example:
-
-- `static_mr` and `config_mr` are *Readonly* (static) MRs.
-- `rtmr0` is an RTMR with `TSM_MR_F_W` **cleared**, preventing direct
-  extensions; as a result, the attribute rtmr0/sha256/digest is read-only.
-- `rtmr1` is an RTMR with `TSM_MR_F_W` **set**, permitting direct
-  extensions; thus, the attribute rtmr1/sha384/digest is writable.
-- `rtmr_crypto_agile` demonstrates a "single" MR that supports multiple
-  hash algorithms. Each supported algorithm has a corresponding digest,
-  usually referred to as a "bank" in TCG terminology. In this specific
-  sample, the 2 banks are aliased to `rtmr0` and `rtmr1`, respectively.
-- `report_digest` contains the digest of the internal report structure
-  living in this sample module's memory. It is to demonstrate the use of
-  the `TSM_MR_F_L` flag. Its value changes each time an RTMR is extended.
-
-More details are available in samples/tsm/tsm_mr_sample.c.
-
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Signed-off-by: Cedric Xing <cedric.xing@intel.com>
 ---
- MAINTAINERS                 |   1 +
- samples/Kconfig             |  13 ++++++
- samples/Makefile            |   1 +
- samples/tsm/Makefile        |   2 +
- samples/tsm/tsm_mr_sample.c | 107 ++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 124 insertions(+)
+ arch/x86/coco/tdx/tdx.c           | 36 ++++++++++++++++++++++++++++++++++++
+ arch/x86/include/asm/shared/tdx.h |  1 +
+ arch/x86/include/asm/tdx.h        |  2 ++
+ 3 files changed, 39 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a5eef4c7234c..1d4232f5269e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -24106,6 +24106,7 @@ S:	Maintained
- F:	Documentation/ABI/testing/configfs-tsm
- F:	drivers/virt/coco/tsm*.c
- F:	include/linux/tsm.h
-+F:	samples/tsm/*
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 32809a06dab4..f88e249e339a 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -35,6 +35,7 @@
+ /* TDX Module call error codes */
+ #define TDCALL_RETURN_CODE(a)	((a) >> 32)
+ #define TDCALL_INVALID_OPERAND	0xc0000100
++#define TDCALL_OPERAND_BUSY	0x80000200
  
- TRUSTED SERVICES TEE DRIVER
- M:	Balint Dobszay <balint.dobszay@arm.com>
-diff --git a/samples/Kconfig b/samples/Kconfig
-index 820e00b2ed68..0b4592581648 100644
---- a/samples/Kconfig
-+++ b/samples/Kconfig
-@@ -184,6 +184,19 @@ config SAMPLE_TIMER
- 	bool "Timer sample"
- 	depends on CC_CAN_LINK && HEADERS_INSTALL
+ #define TDREPORT_SUBTYPE_0	0
  
-+config SAMPLE_TSM_MR
-+	tristate "TSM measurement sample"
-+	depends on TSM_REPORTS
-+	help
-+	  Build a sample module that emulates MRs (Measurement Registers) and
-+	  exposes them to user mode applications through the TSM sysfs
-+	  interface (/sys/kernel/tsm/tsm_mr_sample/).
-+
-+	  The module name will be tsm-mr-sample when built as a module.
-+
-+	  Note: TSM_MR_MAXBANKS must be at least 2 for this sample to work
-+	  properly.
-+
- config SAMPLE_UHID
- 	bool "UHID sample"
- 	depends on CC_CAN_LINK && HEADERS_INSTALL
-diff --git a/samples/Makefile b/samples/Makefile
-index f24cd0d72dd0..c4b6dcc81df6 100644
---- a/samples/Makefile
-+++ b/samples/Makefile
-@@ -42,3 +42,4 @@ obj-$(CONFIG_SAMPLE_FPROBE)		+= fprobe/
- obj-$(CONFIG_SAMPLES_RUST)		+= rust/
- obj-$(CONFIG_SAMPLE_DAMON_WSSE)		+= damon/
- obj-$(CONFIG_SAMPLE_DAMON_PRCL)		+= damon/
-+obj-$(CONFIG_SAMPLE_TSM_MR)		+= tsm/
-diff --git a/samples/tsm/Makefile b/samples/tsm/Makefile
-new file mode 100644
-index 000000000000..587c3947b3a7
---- /dev/null
-+++ b/samples/tsm/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_SAMPLE_TSM_MR) += tsm_mr_sample.o
-diff --git a/samples/tsm/tsm_mr_sample.c b/samples/tsm/tsm_mr_sample.c
-new file mode 100644
-index 000000000000..4c2c6cde36e1
---- /dev/null
-+++ b/samples/tsm/tsm_mr_sample.c
-@@ -0,0 +1,107 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-+
-+#define DEBUG
-+#define pr_fmt(x) KBUILD_MODNAME ": " x
-+
-+#include <linux/module.h>
-+#include <linux/tsm.h>
-+#include <crypto/hash_info.h>
-+#include <crypto/hash.h>
-+
-+struct {
-+	u8 static_mr[SHA384_DIGEST_SIZE];
-+	u8 config_mr[SHA512_DIGEST_SIZE];
-+	u8 rtmr0[SHA256_DIGEST_SIZE];
-+	u8 rtmr1[SHA384_DIGEST_SIZE];
-+	u8 user_data[SHA512_DIGEST_SIZE];
-+	u8 report_digest[SHA512_DIGEST_SIZE];
-+} sample_report = {
-+	.static_mr = "static_mr",
-+	.config_mr = "config_mr",
-+	.rtmr0 = "rtmr0",
-+	.rtmr1 = "rtmr1",
-+	.user_data = "user_data",
-+};
-+
-+DEFINE_FREE(shash, struct crypto_shash *, if (!IS_ERR(_T)) crypto_free_shash(_T));
-+
-+static int sample_report_refresh(struct tsm_measurement *tmr,
-+				 const struct tsm_measurement_register *mr)
+@@ -135,6 +136,41 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
+ }
+ EXPORT_SYMBOL_GPL(tdx_mcall_get_report0);
+ 
++/**
++ * tdx_mcall_extend_rtmr() - Wrapper to extend RTMR registers using
++ *			     TDG.MR.RTMR.EXTEND TDCALL.
++ * @index: Index of RTMR register to be extended.
++ * @data: Address of the input buffer with RTMR register extend data.
++ *
++ * Refer to section titled "TDG.MR.RTMR.EXTEND leaf" in the TDX Module
++ * v1.0 specification for more information on TDG.MR.RTMR.EXTEND TDCALL.
++ * It is used in the TDX guest driver module to allow user extend the
++ * RTMR registers (index > 1).
++ *
++ * Return 0 on success, -EINVAL for invalid operands, -EBUSY for busy
++ * operation or -EIO on other TDCALL failures.
++ */
++int tdx_mcall_extend_rtmr(u8 index, u8 *data)
 +{
-+	pr_debug("%s(%s,%s) is called\n", __func__, tmr->name, mr ? mr->mr_name : "<nil>");
-+	struct crypto_shash *tfm __free(shash) =
-+		crypto_alloc_shash(hash_algo_name[HASH_ALGO_SHA512], 0, 0);
-+	if (IS_ERR(tfm))
-+		return PTR_ERR(tfm);
-+	return crypto_shash_tfm_digest(tfm, (u8 *)&sample_report,
-+				       offsetof(typeof(sample_report), report_digest),
-+				       sample_report.report_digest);
++	struct tdx_module_args args = {
++		.rcx = virt_to_phys(data),
++		.rdx = index,
++	};
++	u64 ret;
++
++	ret = __tdcall(TDG_MR_RTMR_EXTEND, &args);
++	if (ret) {
++		if (TDCALL_RETURN_CODE(ret) == TDCALL_INVALID_OPERAND)
++			return -EINVAL;
++		if (TDCALL_RETURN_CODE(ret) == TDCALL_OPERAND_BUSY)
++			return -EBUSY;
++		return -EIO;
++	}
++
++	return 0;
 +}
++EXPORT_SYMBOL_GPL(tdx_mcall_extend_rtmr);
 +
-+static int sample_report_extend_mr(struct tsm_measurement *tmr,
-+				   const struct tsm_measurement_register *mr, const u8 *data)
-+{
-+	SHASH_DESC_ON_STACK(desc, 0);
-+	int rc;
+ /**
+  * tdx_hcall_get_quote() - Wrapper to request TD Quote using GetQuote
+  *                         hypercall.
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index fcbbef484a78..d0760c6160cc 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -13,6 +13,7 @@
+ /* TDX module Call Leaf IDs */
+ #define TDG_VP_VMCALL			0
+ #define TDG_VP_INFO			1
++#define TDG_MR_RTMR_EXTEND		2
+ #define TDG_VP_VEINFO_GET		3
+ #define TDG_MR_REPORT			4
+ #define TDG_MEM_PAGE_ACCEPT		6
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index b4b16dafd55e..6b98d7dc5207 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -64,6 +64,8 @@ bool tdx_early_handle_ve(struct pt_regs *regs);
+ 
+ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
+ 
++int tdx_mcall_extend_rtmr(u8 index, u8 *data);
 +
-+	pr_debug("%s(%s,%s) is called\n", __func__, tmr->name, mr->mr_name);
-+
-+	desc->tfm = crypto_alloc_shash(hash_algo_name[mr->mr_hash], 0, 0);
-+	if (IS_ERR(desc->tfm))
-+		return PTR_ERR(desc->tfm);
-+
-+	rc = crypto_shash_init(desc);
-+	if (!rc)
-+		rc = crypto_shash_update(desc, mr->mr_value, mr->mr_size);
-+	if (!rc)
-+		rc = crypto_shash_finup(desc, data, mr->mr_size, mr->mr_value);
-+
-+	crypto_free_shash(desc->tfm);
-+	return rc;
-+}
-+
-+#define MR_(mr, hash) .mr_value = &sample_report.mr, TSM_MR_(mr, hash)
-+static const struct tsm_measurement_register sample_mrs[] = {
-+	/* static MR, read-only */
-+	{ MR_(static_mr, SHA384) },
-+	/* config MR, read-only */
-+	{ MR_(config_mr, SHA512) },
-+	/* RTMR, direct extension prohibited */
-+	{ MR_(rtmr0, SHA256) | TSM_MR_F_RTMR },
-+	/* RTMR, direct extension allowed */
-+	{ MR_(rtmr1, SHA384) | TSM_MR_F_RTMR | TSM_MR_F_W },
-+	/* RTMR, crypto agile, alaised to rtmr0 and rtmr1, respectively */
-+	{ .mr_value = &sample_report.rtmr0,
-+	  TSM_MR_(rtmr_crypto_agile, SHA256) | TSM_MR_F_RTMR | TSM_MR_F_W },
-+	{ .mr_value = &sample_report.rtmr1,
-+	  TSM_MR_(rtmr_crypto_agile, SHA384) | TSM_MR_F_RTMR | TSM_MR_F_W },
-+	/* most CC archs allow including user data in attestation */
-+	{ MR_(report_digest, SHA512) | TSM_MR_F_L },
-+	/* terminating NULL entry */
-+	{}
-+};
-+#undef MR_
-+
-+static struct tsm_measurement sample_mr_provider = {
-+	.name = KBUILD_MODNAME,
-+	.mrs = sample_mrs,
-+	.refresh = sample_report_refresh,
-+	.extend = sample_report_extend_mr,
-+};
-+
-+static int __init tsm_mr_sample_init(void)
-+{
-+	return tsm_register_measurement(&sample_mr_provider);
-+}
-+
-+static void __exit tsm_mr_sample_exit(void)
-+{
-+	tsm_unregister_measurement(&sample_mr_provider);
-+}
-+
-+module_init(tsm_mr_sample_init);
-+module_exit(tsm_mr_sample_exit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Sample tsm_measurement implementation");
+ u64 tdx_hcall_get_quote(u8 *buf, size_t size);
+ 
+ void __init tdx_dump_attributes(u64 td_attr);
 
 -- 
 2.43.0
