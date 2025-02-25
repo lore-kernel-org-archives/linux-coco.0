@@ -1,71 +1,65 @@
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2070.outbound.protection.outlook.com [40.107.100.70])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2070.outbound.protection.outlook.com [40.107.223.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC341250BF5
-	for <linux-coco@lists.linux.dev>; Tue, 25 Feb 2025 03:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C259254855
+	for <linux-coco@lists.linux.dev>; Tue, 25 Feb 2025 04:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740454791; cv=fail; b=iR90Aj+on6K5+m0WWgGlDGyrrTjWXYnYTJNSpCLQTKvJroQbw7s753ju+GXQ6Y7jyMGwVTjZ75izaqYB4B3e0zoF3p5SF+d2VpjpepJgGEX5iNAQ5XCKqqswPDszHBba1jd4Lvscl6WrZeuecEmj+mfchpGgmfmFlHVMv925sIo=
+	t=1740458722; cv=fail; b=KYUnQS4j0lqbwYOqGABj7REpGVmDdCIS3ox9lDYnXnqKBRUMEIg37k0Q/sI7XwqaKs7oKMq33LOBmc7ERwsXh+E6dpeLrwsZNtITk7d5zQ6sQF0pJVdRaejWe2gSAaOESLQ+Lo+rNuMWufM7jw+P/ueHMtz+EVs/VP6WP4aEyQI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740454791; c=relaxed/simple;
-	bh=jq9vR3MoSuArF4OVQFo7cmT4Wvxi/yOjCrxXz8Bpvp4=;
+	s=arc-20240116; t=1740458722; c=relaxed/simple;
+	bh=/9/0IqXvVPkn7GAXCVPgOJzMEBb54ZSjcGwPwQqRUlo=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ncqyHUqoKzRFI1rKwFZiTHtPiWRzWuQi2cXCN3JH+C7HP0+XDkioHk6DWEq7Lp7nNkSI/fIXWxrOdF/tWgLawEfJ5+SyYHK7dqE0cv4qE5vpAw1eWB4u7JU7o9SaettBkN1f8CMZa5bt9wvcj9wjWVS/imnoJ1+7loGGS0z8D3k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=t4+l4Wl7; arc=fail smtp.client-ip=40.107.100.70
+	 Content-Type:MIME-Version; b=RMN/RGaU8efN23EXZlNz7A+C8UAmBPkM8vBhABquirb4eyIzctBs5uR1Vt2IzpI6afPqBtc8Ihw0hzp4SGeZejteI+0hxBO317k/QoLCuFUH4wfJ2+zZ/SVkN2InYQ4pt0kVQ8GkrWP9y847OMTiQX4mbxny3XMkwM4pDrUcxQ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DpDsBUu+; arc=fail smtp.client-ip=40.107.223.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="t4+l4Wl7"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DpDsBUu+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q9Ody5Us2REOzfIuOKfPyQVgW1aAkxNST1aYgbkkreZzDFBbBRC9TNrYT6M2lUU95Yy46nwhFTo+1GvfKk+UveMlrDrF/Ojl4xn/wDdlN7+yvzWMA97oT8A3OR/0B9CGrE3rlOcTq62D2l6qxPhi9wWhlyYf15sIYotYnCp0Fkgjb8Z6PGoXM2abcamo7P2OmSbZy8he7mZIJHEYZASlHgfnrUJa+bhnMVw0zsHxctP620yVk8kQFv62cNkCajdMZIzT9WgEbWiO/KcX8VndPdSwyk3vQEHTQN3Q7OV97EqRxLU9q8F8NzhtM+o7PwzGMqPmzxC0l1G0jh0YJ8uOhw==
+ b=UDpjLzDdJg6r+oJI6QHz9evkdFK74vO5a0vMJPm4HHI9nw6lRgbUM4wobgnWYsSbNnYkBeiSY44kN0DQ5QTa74hA5WatpAMMGv4jd39Se2SPvyyQxVGVnutVwxljPVprMv+2AwriURM6H7qiCGfdQ6E29bPIIVr6oZ0saVHNnw5s12rmSql8k2OcFY6oaIxb+wE9KAtAhW5jScNXa3rzmefkSi0SeZt/turpgm5q+ljga0O8WYIe2lLuCmevWmVtOllPBF+ruUpWABnwYs4iSjbqoNFKkkhVzVW2FuwGcMTrh5Az04rfjvXYQTNIybe21aV7xILqUR0us3dWTE3wYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9D+ZM5onaRpJc/RkBaZzPhXFE1ostpj44JdkTwpn374=;
- b=FbyYq6Xjasc3pd2R1wXCTLWNSNh0BPScKh4P7FGY+fiZZnB+zBg2UD9GMqnCAJpZjpnxWpNBM18F6Qp9rD1Sz5J6FUWBM1vF1e39vcFqb7pchllh4TSqGfuFOlEyLp8ml0f7RmKZXfb7O/mZF+3DnPiPD5HZ3pQ3Y9mgeUktx781e5Hkn2GdwLAbitmNbr93bFxGDipgQaCiM5+AxH1FMxHEcyzEzWdfOOEHCKiH9DKP418tidVQX8rhRojxao9xZLoKUodgkKxyFwpZHl+O9uep3WMpUammD3S023mwuGkWTXbVtdMYdIgp3gYKIgjW3skcpi1NbEPKlkI5/iNzlw==
+ bh=9iY5xs/p6mlcsxgiJ7T53dGhEz20mGRH9pfgZz6mpKM=;
+ b=Quo0CsbHKDAMJZdCt5GCWvmlipxlp3Xs0OcL1Yc2YehtIFBhp9FxMJ6BozwAYDc7jwZTRZHhQHU1S+FhNY6QrBXaUN8gKJTrSGFJErRG9hASyrTDTroyP02jG7X/IwY5Wn/mWEmePOAjQN9E9AAaxZJIWtam6ADGWG0JzfRaCNZy5KGSIkroFFNREhg07YZ+nC15vCY4SnKmu+Q9xQN/CA2pwvXDlXN/t4baV2veALlrfOllfsiwX3iqQ36zBrgvoo9ZsFjY/vGROqGDZ/teO7fYzGkPkreErGjAk2PYOdYFh8+F3zR7wvqZawspRW7bIYYAH+43rbezQEbZGmYwcQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9D+ZM5onaRpJc/RkBaZzPhXFE1ostpj44JdkTwpn374=;
- b=t4+l4Wl7LqmkvyRZR5bttiZq0rgTL0P7eEMDiSHebmGi4f5vMqn1YYN7FxLNhcsUvUsznlY0vsw5ftIQ+o3IYD5jqFfSNoQ9LdzuF0NYEc7yhKiRAZKXMVpKeHm1iv58+L5supI8rb6cCkFeNX9y9xNFWiSv5IZLZxLwslKMM6Y=
+ bh=9iY5xs/p6mlcsxgiJ7T53dGhEz20mGRH9pfgZz6mpKM=;
+ b=DpDsBUu+Md6X/q/xrJTzebXYhfRiGJ3DtyWRmnKtE/9HAwrpv4/WjRBwwDE4P3tmLOjGA+OkpVZssx8nmU1GYMQiCGY2JbXLxTnV2NAtJ6zUlDPSy+i/WXozeBHO9E97Lry4n5mvibo1zFVFjimcAEOZz9GIGYEChQfL8pcKJz8=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by SA1PR12MB9492.namprd12.prod.outlook.com (2603:10b6:806:459::7) with
+ by MW4PR12MB6899.namprd12.prod.outlook.com (2603:10b6:303:208::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Tue, 25 Feb
- 2025 03:39:43 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.18; Tue, 25 Feb
+ 2025 04:45:16 +0000
 Received: from CH3PR12MB9194.namprd12.prod.outlook.com
  ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
  ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8466.016; Tue, 25 Feb 2025
- 03:39:36 +0000
-Message-ID: <cf2f615d-2a28-45ec-8bb9-563c2a5bde73@amd.com>
-Date: Tue, 25 Feb 2025 14:39:29 +1100
+ 04:45:16 +0000
+Message-ID: <e1864dcb-fa7f-4c34-8031-a22360c9bd2b@amd.com>
+Date: Tue, 25 Feb 2025 15:45:09 +1100
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 08/11] PCI/IDE: Add IDE establishment helpers
+Subject: Re: [PATCH 05/11] PCI/TSM: Authenticate devices via platform TSM
 Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>,
- Xu Yilun <yilun.xu@linux.intel.com>
-Cc: linux-coco@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
- Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
+Cc: Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Xu Yilun <yilun.xu@linux.intel.com>,
  linux-pci@vger.kernel.org, gregkh@linuxfoundation.org
 References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
- <173343744264.1074769.10935494914881159519.stgit@dwillia2-xfh.jf.intel.com>
- <9f151a74-cc5c-4a7c-8304-1714159e4b2c@amd.com>
- <6d50f215-93c4-49a5-9ee2-f9775b740f92@amd.com>
- <Z32H2Tzd1UHCQEt5@yilunxu-OptiPlex-7050>
- <d71dd5c5-4c20-4e8e-abaa-fe2cdea4f3b2@amd.com>
- <Z4A/g5Yyu4Whncuu@yilunxu-OptiPlex-7050>
- <a11c82c3-b5fb-48d9-8c95-047ac4503dc6@amd.com>
- <67bd098f4dcd1_1a7729449@dwillia2-xfh.jf.intel.com.notmuch>
+ <173343742510.1074769.16552514658771224955.stgit@dwillia2-xfh.jf.intel.com>
+ <efc5ba59-964d-4988-a412-47f5297fedd3@amd.com>
+ <67b8e5328fd41_2d2c294e5@dwillia2-xfh.jf.intel.com.notmuch>
 From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <67bd098f4dcd1_1a7729449@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <67b8e5328fd41_2d2c294e5@dwillia2-xfh.jf.intel.com.notmuch>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ME2PR01CA0204.ausprd01.prod.outlook.com
- (2603:10c6:220:34::24) To CH3PR12MB9194.namprd12.prod.outlook.com
+X-ClientProxiedBy: MEWPR01CA0201.ausprd01.prod.outlook.com
+ (2603:10c6:220:1ee::7) To CH3PR12MB9194.namprd12.prod.outlook.com
  (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -74,171 +68,376 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SA1PR12MB9492:EE_
-X-MS-Office365-Filtering-Correlation-Id: 79486d89-58c9-4bae-b5d1-08dd554e069c
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|MW4PR12MB6899:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0f2f608f-cf8f-4834-680d-08dd55573316
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Y0JMd24rZ2VuU3E2V3R1cnZKcVQvelNYSTZQemIwWW1FOVJZQ01BMHE3cUda?=
- =?utf-8?B?N3RYZFMydVQxM3NCc2FxNXVwdmJmcThCcEUzWk9WRnNCZ0RVdENZZHl3a1Uv?=
- =?utf-8?B?ZUFIL3JkbGxkUDFYdjJ4MEhHZmU0dXg5cUg3RUZNRkNockgrdnlZTEd0QkJV?=
- =?utf-8?B?dXNsbFlJaWZOam5GSnpXUG1ldm5kdk5YQnl0YUwyOEVzOXVlMWErbEltQmJL?=
- =?utf-8?B?TkZiTjJXQkZMd2ZzM3JERzQxY21KQm14bXM1RHp4aTE5cWV4Q09NV2hOTDF2?=
- =?utf-8?B?Mk1oaW91RW5RbHg3K05vNk5VbDhIYnFBTDV6eXNYK0tKNXVBWHRJY2lJMUZF?=
- =?utf-8?B?WnFRdWIzU3ExY2Uwa1ZMQ0NGQlByc3hxS0oxWGE3NGlDRTlYNHM3YkhiYTVF?=
- =?utf-8?B?ejNSYWVQSExQQzBZcUE1Y1M2VjM4cnVkdDgvWW92dzJteGQzK2tvdTd3ZWph?=
- =?utf-8?B?Q0J3NGNrWGpvL0NyZzNUUlFFdElZWDludkVXL2hlOGEycGh1QnI5RTJzOUlL?=
- =?utf-8?B?QkZwN0Q0MDhVc0xqUmVlditjbzd4ZFhqVHhtV0xaejVXWDJFVmtuNEhHVjNI?=
- =?utf-8?B?dlUrR2FTc1d0dk5NN0RRRklRZE5YQ0p5UEhmeTFSeWNEQzlaa0o2bW1kZi91?=
- =?utf-8?B?SE9tczM3eWcyQ2p2UVQ4WGQ0Q2xtM2xzK0hUVzVra2llR3JlTGppYVRmMGxl?=
- =?utf-8?B?NGRoL0NOTlNjYjNaclFJUXdabHNaOW1EdE55d2NmdURNYkVZR2pzcjlwb0dk?=
- =?utf-8?B?dW9RNldybWpwSHlqbmlOUGlFU0hSUjRkRytWNGhUQ1RrMFRvZ3p0aWdlQWNi?=
- =?utf-8?B?NnJ6MUptMDRDM1hRZTgvR2kzSHlzenNpcVRhNDJBcVpjVXM3VnhIVXRxd29a?=
- =?utf-8?B?Wm9Bcm9JZ1FnWUo2dXZQaHJSWnBobmE4WHZaNU5XcytFWEZPLzRRSklyQVpT?=
- =?utf-8?B?N3VTV2ZmYU9RaUpSdDZkc0JnbDgzdS93MWswMGtZYnQ5YnEzbnJyc25JMGdt?=
- =?utf-8?B?RGlQU3k5ZnJWSTlXTVQrWFNsTFJDYTlCUytsTXZDMFZyVDMybFVVcnYzR08w?=
- =?utf-8?B?cTQ3ampYUWpXMUEvUUl5T2lCWXNCNUxoWlByTmNDRjgxZTJ6OEluZHpKeEFY?=
- =?utf-8?B?Rk5UYlVmcVFBS0pjVmRRRFR6MjF6Rms0WkVOWmt1ZVhoVnhyYXdwRTZWTyth?=
- =?utf-8?B?UVRMMVFLcmtqUGlFdDVSa1BveGtOSlBINm9hTWpmZGZpRlZGZm1JVms0NGlw?=
- =?utf-8?B?Tkg4NzVBNXVpeE5EVEZRekxtMUlUSFlvUXFqTFdmdTRDR09xTTllM1BkUjg3?=
- =?utf-8?B?SGphcXI5cjRNdktMcjNqdWNtWm9hZXl2aWFPS2psNG04ZUI2ZExKV2ZnRmoz?=
- =?utf-8?B?Rm4vRjNDM2xDR254bWdFOURMa1FPVEN5RzNqeXhDQXlHQlBaTllLWmV5clda?=
- =?utf-8?B?WElMVnhvWTVyd0hMTHJnMzBIRXhMcE5Od2RNaFh5dmMwcHB4a25hUjY2VDRx?=
- =?utf-8?B?L25sc0FpNGEzd3V4Wm1vdnJwY0lKcDlzRnBTczB3SnAra2s1NitkeDlYK1J1?=
- =?utf-8?B?czB0b1AxVVQ4MW1lZ0pUaVZwNUgxUzhPeWd6Y095WDJIU2FQNjhBY0pnbWI0?=
- =?utf-8?B?dnRWcU93SGd4eElaU1drTFJLRVNzQVcyRnhGWFNzZ1VZdGJzZzQwVVduODNi?=
- =?utf-8?B?OXdYWHJ0ejZMV1FENXBTeCtpK0t3UnFsUEpuMHh0aU8xdmwxTWZ3VHpSeERl?=
- =?utf-8?B?ZHpxYy85a0lqWnBJSm11MlZsV3U0SlJmNVJRTmhheG1veDM0RThmNlFzSmV3?=
- =?utf-8?B?RjZlc1dwVGdGQUNDc1piZz09?=
+	=?utf-8?B?SUZwcnhFcVZ0QUNZZjY2Y2hHRVlpYUJ5V1lQWjl0NWg0c2EwTzlqNnpZdjc2?=
+ =?utf-8?B?K2swbXErRkJKdVdGL1dVaUZXbFpuKzc1eWZRMWlhQ2ZxamVMcGh6cHpPNU5W?=
+ =?utf-8?B?NVFGYWZzc3E4VTliMjM0b3BPQW5uZWxpVUlFN3JTWmV3R0xUTjg2TjlmOWJI?=
+ =?utf-8?B?UTVrYWRjbFVza2QrYjRXOFpQalNKMzdSalVZSUJ4UWU1MHliUjZGV1A3QlB1?=
+ =?utf-8?B?VzNXRW1yVFdwVkhpYVZmb2NsaGVBS3dla050WG9xdy95aHV5ejk1TkE1RXQ0?=
+ =?utf-8?B?SkhtM1BkMUhiWTgyRU1wT2gxZFByU3BpYzZ3L1Ezdm1YeFp5R0NOclZVc3du?=
+ =?utf-8?B?OVpTUm13SUNTOVU0SWhhelAreVZ1WnVUWGFvMHdkVXNoRXdzYisxSkJXUnRl?=
+ =?utf-8?B?RFJCNFFhMUdYaTMya2Q4eUh3aHhmZWxKTWhNZXZiL2hESHpYRTdlZ2RqTGxN?=
+ =?utf-8?B?eCtFSkZ2UFNzV0xEdHplQWxSemZoS2wxc2NnZno5a1prU2hFYU9mYUxwSjVH?=
+ =?utf-8?B?dWhNaStDaU1paWpNVFcwbVNkTTV1Ri9QSzJsVGJabXhmZTA0ZHVKVE9HWWpY?=
+ =?utf-8?B?WUk1clg5SHpBVEFadVpuUW1sTFdsVjFPWWRhaEFwMTc2MmxBazNkclFqSDFN?=
+ =?utf-8?B?b2F1cmtMWHQ2eUdBbEgzK3VBZ0kzUlU3UENFVi9tc3JSajVKSUc4RG4yZ3I3?=
+ =?utf-8?B?SDBKKzkxUllCSjBSdkVvR3NvUFdkcEJFbDkzWEtDSnZWd0Y4bnQ0dGRNdFp3?=
+ =?utf-8?B?Ykd5dldTQ3pyVzVYc1c1MHZ1TWJiWVBVUU1QZU5BZC9WdyszQlZialdGZ2tZ?=
+ =?utf-8?B?TnN3aUFyUjUwdXdFMzAxTDlySEN0djJVd0FVUDAwNzVQRzEzM0hPaDMxL1FY?=
+ =?utf-8?B?N3habVE3VzQ0eUh1aGd1cFcxQ1BDcnIwWnNyZDZxZE44WXpZZm5iank4T28v?=
+ =?utf-8?B?T1VPK3JMRXFnYzJxWGZ5Ym1UTGZESzVoVXlpaWhZK1pDL0hHWWljRytlVFlF?=
+ =?utf-8?B?NXlycjh0NGEyV2x4ZFA4dXVNTEJncERaVE1TcTN5Zk80OU9UaU1oZ3NjOFNU?=
+ =?utf-8?B?eWphKzJ6TWw2S0VNYk96ZzBKSzlDcDZKaHI0Y2JPWjhENGs4ZDVSSm1NSnpn?=
+ =?utf-8?B?U3FXcEt6S0tza3FNQzhHbXl4bS8xMjlHb0VxWURDaDhFbksvNFpCK3dUNG5p?=
+ =?utf-8?B?V1RoZzJXN3FtM2NkVVE4ajUyTUFMUXpyelozTUl4NnVEUm1BQnF5WjdTRTNh?=
+ =?utf-8?B?aEFzTnNxcU10RHA2SzZ6UWo3cnJKeUp3eUUrL3Q2SVM3cEJjRVIvMCtLQkZr?=
+ =?utf-8?B?Z1FiWjlpZFRSLzd5KzZSTzFXVkdMdUw4ejRsa2MxRTNFZXd6MHZQNCtoaDQy?=
+ =?utf-8?B?a0RoZVFsU2J2UTc3TDNrNDg1ZHR6cUhOWEdQOUVvTkxZUUxRNE9sOW5jZHNE?=
+ =?utf-8?B?cWtBK2xEWlMvL1FYS05lZHlPUDFxZkZsTVZSYlhiNVkwOGRXTHVRRGFsRFpj?=
+ =?utf-8?B?V0xLMFd5em51SjhLNVplYWdlY0E4L0pHUEVzWndRYkZvQ1lGTWpud3YvOUhN?=
+ =?utf-8?B?dXFzM0p1Ui9oYjFiUTJFVXRHVENMY3hpMzJzRnlIU2JLRnpBbDhEVEtFZnNa?=
+ =?utf-8?B?TGVCZ0JhbkltS3Nvdi9Ta3BVRnlLajVXaVZyOXF2cEg4V090RGN2dEloZXkv?=
+ =?utf-8?B?T2tZd0l4ckZUTWk0a1Q1UHRaTy9RREhCR0tZSWdXUy8rYzlLSDkySytLMUhi?=
+ =?utf-8?B?eXNCQUpTYXU2MENlN1Q3WE10bkp4ZkxuVG5rbzh0OUdWK1c4V1lwUmFJOVlm?=
+ =?utf-8?B?Qm5TbThCQ3RpRkJBVDhKbzZuY3BCQWdHZVdhK25yblZndDdibG1CNzc1OWox?=
+ =?utf-8?Q?6KEcEt3yIPlVX?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?N0lkbHlUVE5QWW4xanF0azZNOXBJeUxQUEJ2VkxQU3lRVFk5bjVGa3Y3Q29Q?=
- =?utf-8?B?MU5TWXpmSFB0YTBManBQS0hDcXpzZk1RcmNlZVBtQW5kWU5Bdm1tT2owK2RC?=
- =?utf-8?B?UDliK3o4QmIyZnJNRzdYWGZGdUFpZlA1bjV1NEV6OHMzcVV0S1lFMEhwaWsx?=
- =?utf-8?B?UTVHWHBxelFFZll5STVpRkZjRW5iUk9XdC9FUWxhemV4dVdaRmlVZUVFKy9N?=
- =?utf-8?B?ZDg0cy94ekc1LzYvanJaMUpDS2ZWUXJ3bHVrUG4yUzBobzdVRFNjTXdTQWJk?=
- =?utf-8?B?b2d0S29nVS9jalo5RDgrVkI2RHNJOHJlSnBBOU56eG5xa1VuK1ZGK3F2L1Fq?=
- =?utf-8?B?bUxYbmZNeEovaytDUG9mbjlSTjVtck9DN1BtaklITCtLcHpPdkx2WktkRTZo?=
- =?utf-8?B?dnlFeE9rZjBvWG1DQ3dpWTlwTVlBbzBraUNWRWs1K0xaRHAxcW5sOVptdUdR?=
- =?utf-8?B?bXZ0dDhkTlV5VUo0alg2eitJbTYzblJSdzJUWlhIOVZScXQrOTJjK1hDMXlG?=
- =?utf-8?B?WWpEN2VtMzV4MllvamNVVFZyKzA0TGVSTzVQLzZ1Rk1uOTA1aVcxTXF2UGU0?=
- =?utf-8?B?c2RXa2ZPdkdOM1JBaVdRMTZPYlNyQjZFZUNPNlB0VXZZRGJDaStnYmRLcExT?=
- =?utf-8?B?U0wvQjBJcHVXRnVFQ2VJWm5Za2pJSm1xZzNSZWp4QStscnBscmJFNGd2bTN3?=
- =?utf-8?B?QjNwMVM5emZlN1FLZDlVWGRqY1hoZEFxUW5pU0tGWVZTRnJCNytQSmJLOExC?=
- =?utf-8?B?SVV6aFlDR3l6eWxTenUwYXJJMnV2b1ppUTJ4UkYrVVlqMmN1dFdFb3JyamE1?=
- =?utf-8?B?UWxzOWVZVXF0a2dyVUNxUUZpOWZBdXN4dFpUbmlUOGR4enBYOExVa2Q1ellh?=
- =?utf-8?B?enV0WkdVcDJMNXJZL2VpQkxiMDJFOWhPRmNqajVaVEtlZmNNTWhvTzYrUk5t?=
- =?utf-8?B?V1NrOHR3K3dpWDJydWU3OFRwYUFvSGVSREc5czJzemtVSWNkNndNejk4T2wr?=
- =?utf-8?B?WE1NaklVdlJlalhjcWh3QlJUTENQT0hNelpYci9hR0tPVm8wYW0ranB6bE1t?=
- =?utf-8?B?SkJzNzVodFZqTllZR0lnZ3k0WjFSU3MvTkNmTEFrZ3FRTFpoRnFXNnNsVE5n?=
- =?utf-8?B?WTBENXplNU1qUmh0U0pCWmp5M2g4UG1aUWd4U1VPc2QvdnRQaGsvdW44RXll?=
- =?utf-8?B?ZzdnK084dmEyZ2I1L1NTSjBvUEJZZnlFbXUzZE9ib2wrR3VJa1l5eExPbGJF?=
- =?utf-8?B?aHMrWXFzSkhTN1U4YzYrdldvR201OU5KUHZsTFoxYnhHTFRLVnNyS1YvclU1?=
- =?utf-8?B?cXZEbVhCblZCQWllclJvNUNIS1Z2bWFnZzl5cnBXYXE2bU1FZG5taFIzY3JE?=
- =?utf-8?B?TThhblgvM3RqemFKTk9JRVNhR0diWHNVOE5YemwvNnBIblZibTd3Z2V1eFk2?=
- =?utf-8?B?RVZidTR2MUpJc09yRmUzKzJ5QUtLUFJ4SVhRcnlUSlVBNTVKQ1hvbTI4Lzlt?=
- =?utf-8?B?RWlsME5vb3NKWmVjUm05R1F3TzFNWll2azl3dHVzV2llcDNRTGdPbXNDK25Q?=
- =?utf-8?B?alFNd1VoTVQ0S3dMTnNKK3V2b1JWekJBblFqWllLdWsrTVBsdDloVmlOdlJy?=
- =?utf-8?B?NGRRQjlzUGtUR0xGSTNwSWhhTjhqK3dERzNQVm5pTnp5MWR0bmVlSUpLV2FX?=
- =?utf-8?B?bzdYVnhaMGg2Z0pwR0hXRkpETEJQN0R5eU1RRG1uVjJ2WTR0Yi85L21WRjNY?=
- =?utf-8?B?cisxTlQwY05KZHUxbGhOc3VCL0pvRzY4d29BMVE3di9oNUcrUEpmc29vVTJX?=
- =?utf-8?B?RWV6b1V2bW95dkhpV3BGNHZiOGw5VkNNZFFsc1B4U3BZTE9xZlhsQXRMOWR5?=
- =?utf-8?B?dDJFQW9CU0FkZjJUVFNOTG5WNEc3aDRtNFRCL0lSMmtMTlVDZFZsalF0M2Rv?=
- =?utf-8?B?RzgyeHV6eUhNZ1V0L0xVRUgva0djTEZ1ZkFkNWNxdXMyamtiN3ZnQkpWMTcw?=
- =?utf-8?B?SWdlcXdTWUJsYUdxcjdHUG4zNGFNY25XdG9MdXRGUVJzeEtTdjZ3ZTcvVFU3?=
- =?utf-8?B?b2RPTWhJMUkyRHdCaWdHNUpOcHliL0dzV3hnSS96UzVqS2IrdTZQcVpJRUxT?=
- =?utf-8?Q?QAAmH/a1SZW73V8so50VQTfY9?=
+	=?utf-8?B?L2RFUnVmdG5NNzRiMGdsNEtKQlErcTM4R3g1dmZERjdpTm1ERFl0dHZoNXFD?=
+ =?utf-8?B?NGdubXNSdlZXbHlld0dCc05rRlUzZVdQWG1SdDV5cFNTVXVaWGZYeVNhaWZp?=
+ =?utf-8?B?Qk0zcEh0eUR3RTVtbGdrR1Nvd2EzZjl1S05IZy9hTmxDT1N0cGJNY2JQa2pF?=
+ =?utf-8?B?a3lWVHJ4aEFmRDNSVVR1Q3UrN2o0dHVoWURuYnlrSU8xQjNJVW56RXEycmhY?=
+ =?utf-8?B?aUhNSjhyUWNHazNpM0JNdEtGcEIrRnNUMlRsSlNBbU5heTBETlpNNm55L2k2?=
+ =?utf-8?B?MjBxdlNnblJLUWFJekFnZU9HN2laaVRpVlBUMUdGV0gxaXNLekNrYW5kNUpp?=
+ =?utf-8?B?MDdaL3dsWFoyM1VyRlQ2dzdzOXd2SHl3eU1nWmgrQTg3bnVRUnNteWNaQU9x?=
+ =?utf-8?B?WTFhVm5uYUV4b0wyNDlaelhWYk5ubm5mUDhGMk1TUXlBaTNPbC9xVlVBajRO?=
+ =?utf-8?B?akY4TVVJQm5veUdZcThRR2Z3VndKS3lnZkE4RHlnck1pWjJqVG9TOEd4T1Fu?=
+ =?utf-8?B?Qi9kUkhKbTJ2TzIwRlVMbG8vZzlEQjhkUGM0bmtoc3cyYUZVSFVyVnVYTlVJ?=
+ =?utf-8?B?ajBMaXUzRGtEakR4UFRVK3RJZkxNWHRSaWJTdXlrSUtBWkxhNzk4L2EybUcy?=
+ =?utf-8?B?Q2hqbFQ0a2VyYW1VaEVlVkpSK3NmaS9UV083dVloa1RybUs5N1UvMHBmZTk2?=
+ =?utf-8?B?VTBlMW9NdEZWTlBrRGtsbGFZVUhyTmlBQXJkSENYQ0lnQm1BbS9KeENya2Rh?=
+ =?utf-8?B?MHNod1VJeDlnSFJCNSthTzd1RlJQbUtSTWlPSjNZUW5GV3ZKWWV1ZWd0a1U4?=
+ =?utf-8?B?ZzZJMjNMUFd4U1h2bFptM2VxZEtBdlBIYkp0N014QVVycEhla2FSZ0tLdVNx?=
+ =?utf-8?B?aUQzc2NBQTlYaGUrTTJrSEpMSWgxRFo5Q2dwNkZVNjA5R21MQnJvSHo5UWJF?=
+ =?utf-8?B?QzFFZVZRZ0pUR1NwSkh0R0xVL09RY3JIZjYxOVBWREQwZWhjcER6N2pndHlN?=
+ =?utf-8?B?emI0NFhwQXJnQUVJTm5NclhiREc0WWhFUkwxb2UrMG5zTldZclFHVFpGUVR6?=
+ =?utf-8?B?dHFwS1I0QnZjYk1WSG93ZGNTeDRPNUd2T3plaW0rTjM0eCtCNS9vanFrNkxL?=
+ =?utf-8?B?enMxcjhIN3R4YWcwSGZyR1VabHRhOWp3NnF4WXdCaFQ0bklCVEMxMmVxTDdO?=
+ =?utf-8?B?Z28zMm04NnJ4VnFHN1lvZXQ1bW1OcHZlZGVaVmhUQmRZdGdWTUFwQ0cxZXNK?=
+ =?utf-8?B?b3FZQnoyeVB5Tzh4azBuV0dTYVVXZFV4ZlJCb2w0NVRhUTJqOHlVMXUwNTdo?=
+ =?utf-8?B?YlVpQTQ2VHNQUXpxQWkyOGlST0JXdDk2cU0vYzduR2N0eityQ1BPQUM2ekM1?=
+ =?utf-8?B?ZjNXdTJlemxaMjVBeU5yWithRHJDQ3hKS3VsYy9RWVRvVHlWMXlvZVFiWFRU?=
+ =?utf-8?B?OGdQU29KR2Z3VGc2Z3NlMWd0c3dtWWlTWnk1bkRFRlY5VjNyYldsWUlvSWpV?=
+ =?utf-8?B?dkVUbG9zeE02Ym9BQzBES2FQd3pCSGtSTjZHMERQVDNVNTdydy9mVHdJdXVZ?=
+ =?utf-8?B?MkpjQzdpUTFtVWZqYUJYMkprN0hCZVdFTGI5WFMzQ1M1c3ZodnNwNC96T29J?=
+ =?utf-8?B?TFl5YmVjY0FsSW1zK3lmWm9ZM0FyZUd2T2RtOHkwenpjbE9SYnVqZ3R4U2F3?=
+ =?utf-8?B?TitrZXRHdnpVd2xOTUF5RDlTNys0Tld1aEZ5ZkNmaE53TmlndGE2U2poZHVS?=
+ =?utf-8?B?dWdaN21JVlB3Z0orMnh2QTVFUmpweEFNUHRsa1NwOWZvVW1ocHVtVDQ0ci9J?=
+ =?utf-8?B?QkQzMlgzYUlOcmZ0S2hYOG1DaXZPNzZCOEFEWTJoanB0bk4xUlZnRWtJTDdB?=
+ =?utf-8?B?WEs0TEZlMnhhbWlid2MvcmhzbTVNU2lraTdZamtMZzhUZUVkSjk1UG5hUWZR?=
+ =?utf-8?B?YzlTK2dYVUd5VVNJN0wrbnk5eTZqSFpEejJVazlQQ0Zmb1JEZHZJNmZ0V29N?=
+ =?utf-8?B?d1B0TnRtdUNJdmpvWVdVV1RBdDd5aFNFTHBFQWlNcEhtcnlRTmpJT1JFSkVq?=
+ =?utf-8?B?c3Q4NGFRcVdhZmdQY0ViL2tPVnA4S015b3A0OHpweHNCRzgrQWZmcVJreDJr?=
+ =?utf-8?Q?V8o26NiP0GQXKz6m344dMKI3B?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79486d89-58c9-4bae-b5d1-08dd554e069c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0f2f608f-cf8f-4834-680d-08dd55573316
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 03:39:36.8443
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 04:45:16.7168
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: j+OjJt/GU4bVK+BtpopXZcpInCLWJdk+ufjV0tMJlj3F+qFfgSv1N/xrunumwEp1rQbSMfs2YpmJ6A2NnKjQrw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9492
+X-MS-Exchange-CrossTenant-UserPrincipalName: Sx0RnY8R0vLaIseFrxkHW2OjvDgqL+QsJPKt2OEfujSGJftqT1R3qT9SYMlSeZNmp6hLZzNSWGBz9/LIAh2zRw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6899
 
 
 
-On 25/2/25 11:06, Dan Williams wrote:
+On 22/2/25 07:42, Dan Williams wrote:
 > Alexey Kardashevskiy wrote:
-> [..]
->>>> access to set T-bit). The device got just one (which is no use here as I
->>>> understand).
+>> On 6/12/24 09:23, Dan Williams wrote:
+>>> The PCIe 6.1 specification, section 11, introduces the Trusted Execution
+>>> Environment (TEE) Device Interface Security Protocol (TDISP).  This
+>>> interface definition builds upon Component Measurement and
+>>> Authentication (CMA), and link Integrity and Data Encryption (IDE). It
+>>> adds support for assigning devices (PCI physical or virtual function) to
+>>> a confidential VM such that the assigned device is enabled to access
+>>> guest private memory protected by technologies like Intel TDX, AMD
+>>> SEV-SNP, RISCV COVE, or ARM CCA.
 >>>
->>> I also have no idea from SPEC how to use the IDE register blocks on EP,
->>> except stream ENABLE bit.
+>>> The "TSM" (TEE Security Manager) is a concept in the TDISP specification
+>>> of an agent that mediates between a "DSM" (Device Security Manager) and
+>>> system software in both a VMM and a confidential VM. A VMM uses TSM ABIs
+>>> to setup link security and assign devices. A confidential VM uses TSM
+>>> ABIs to transition an assigned device into the TDISP "RUN" state and
+>>> validate its configuration. From a Linux perspective the TSM abstracts
+>>> many of the details of TDISP, IDE, and CMA. Some of those details leak
+>>> through at times, but for the most part TDISP is an internal
+>>> implementation detail of the TSM.
+>>>
+>>> CONFIG_PCI_TSM adds an "authenticated" attribute and "tsm/" subdirectory
+>>> to pci-sysfs. The work in progress CONFIG_PCI_CMA (software
+>>> kernel-native PCI authentication) that can depend on a local to the PCI
+>>> core implementation, CONFIG_PCI_TSM needs to be prepared for late
+>>> loading of the platform TSM driver. Consider that the TSM driver may
+>>> itself be a PCI driver. Userspace can watch /sys/class/tsm/tsm0/uevent
+>>> to know when the PCI core has TSM services enabled.
+>>>
+>>> The common verbs that the low-level TSM drivers implement are defined by
+>>> 'struct pci_tsm_ops'. For now only 'connect' and 'disconnect' are
+>>> defined for secure session and IDE establishment. The 'probe' and
+>>> 'remove' operations setup per-device context representing the device's
+>>> security manager (DSM). Note that there is only one DSM expected per
+>>> physical PCI function, and that coordinates a variable number of
+>>> assignable interfaces to CVMs.
+>>>
+>>> The locking allows for multiple devices to be executing commands
+>>> simultaneously, one outstanding command per-device and an rwsem flushes
+>>> all in-flight commands when a TSM low-level driver/device is removed.
+>>>
+>>> Thanks to Wu Hao for his work on an early draft of this support.
+>>>
+>>> Cc: Lukas Wunner <lukas@wunner.de>
+>>> Cc: Samuel Ortiz <sameo@rivosinc.com>
+>>> Cc: Alexey Kardashevskiy <aik@amd.com>
+>>> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+>>> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+>>> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+>>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>>> ---
+>>>    Documentation/ABI/testing/sysfs-bus-pci |   42 ++++
+>>>    MAINTAINERS                             |    2
+>>>    drivers/pci/Kconfig                     |   13 +
+>>>    drivers/pci/Makefile                    |    1
+>>>    drivers/pci/pci-sysfs.c                 |    4
+>>>    drivers/pci/pci.h                       |   10 +
+>>>    drivers/pci/probe.c                     |    1
+>>>    drivers/pci/remove.c                    |    3
+>>>    drivers/pci/tsm.c                       |  293 +++++++++++++++++++++++++++++++
+>>>    drivers/virt/coco/host/tsm-core.c       |   19 ++
 >>
->> Well, there is another problem.
+>> It is sooo small, make me wonder why we need it at all...
+> 
+> I expect it to grow as more common cross-vendor host TSM functionality
+> is added.
+> 
+>>> +static int pci_tsm_connect(struct pci_dev *pdev)
+>>> +{
+>>> +	struct pci_tsm *pci_tsm = pdev->tsm;
+>>> +	int rc;
+>>> +
+>>> +	lockdep_assert_held(&pci_tsm_rwsem);
+>>> +	if_not_guard(mutex_intr, &pci_tsm->lock)
+>>> +		return -EINTR;
+>>> +
+>>> +	if (pci_tsm->state >= PCI_TSM_CONNECT)
+>>> +		return 0;
+>>> +	if (pci_tsm->state < PCI_TSM_INIT)
+>>> +		return -ENXIO;
+>>> +
+>>> +	rc = tsm_ops->connect(pdev);
 >>
->> My other test device has 1 link stream and 1 selective stream, both have
->> streamid=0 and enable=0 after reset. I only configure 1 selective stream
->> (write streamid + enable) and do not touch the link stream.
+>> I thought ages ago it was suggested that DOE/SPDM loop happens in a
+>> common place and not in the platform driver implementing
+>> tsm_ops->connect() (but I may have missed the point then).
+> 
+> That's still the plan, but I would expect that to be a common helper
+> that TSM drivers can use and does not need to be enforced as a midlayer
+> detail in pci/tsm.c. We can add that to pci/doe.c or somewhere more
+> appropriate for SPDM transport helpers.
+> 
+> [..]
+>>> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+>>> new file mode 100644
+>>> index 000000000000..beb0d68129bc
+>>> --- /dev/null
+>>> +++ b/include/linux/pci-tsm.h
+>>> @@ -0,0 +1,83 @@
+>>> +/* SPDX-License-Identifier: GPL-2.0 */
+>>> +#ifndef __PCI_TSM_H
+>>> +#define __PCI_TSM_H
+>>> +#include <linux/mutex.h>
+>>> +
+>>> +struct pci_dev;
+>>> +
+>>> +/**
+>>> + * struct pci_dsm - Device Security Manager context
+>>> + * @pdev: physical device back pointer
+>>> + */
+>>> +struct pci_dsm {
+>>> +	struct pci_dev *pdev;
+>>> +};
+>>> +
+>>> +enum pci_tsm_state {
+>>> +	PCI_TSM_ERR = -1,
+>>> +	PCI_TSM_INIT,
+>>> +	PCI_TSM_CONNECT,
+>>> +};
+>>> +
+>>> +/**
+>>> + * struct pci_tsm - Platform TSM transport context
+>>> + * @state: reflect device initialized, connected, or bound
+>>> + * @lock: protect @state vs pci_tsm_ops invocation
+>>> + * @doe_mb: PCIe Data Object Exchange mailbox
+>>> + * @dsm: TSM driver device context established by pci_tsm_ops.probe
+>>> + */
+>>> +struct pci_tsm {
+>>> +	enum pci_tsm_state state;
+>>> +	struct mutex lock;
+>>> +	struct pci_doe_mb *doe_mb;
+>>> +	struct pci_dsm *dsm;
+>>> +};
 >>
->> But the device assumes 2 streams have the same streamid=0 and when it
->> receives KEY_PROG, it semi-randomly assigns the key to the link stream
->> in my case so things do not work. The argument for it is: every stream
->> needs to have an unique id, regardless its enabled state as "enable" can
->> come before or after key programming (and I wonder if somebody else
->> interprets it the same way).
+>> doe_mb and state look are device's attribures so will look more
+>> appropriate in pci_dsm ("d" from "dsm" is "device"), and pci_tsm would
+>> be some intimate knowledge of the ccp.ko (==PSP) about PCI PFs ("t" ==
+>> "TEE" == TCB == PSP). Or I got it all wrong?
+> 
+> I typed up a long reply only to realize I think this can be made simpler
+> by only having one common context and drop this subtle 'struct pci_dsm'
+> distinction.
+> 
+> So, 'struct pci_tsm' is just the common core context / handle for
+> drivers/pci/tsm.c to communicate with low level TSM driver
+> implementation. It is allocated by pci_tsm_ops->probe() and freed by
+> pci_tsm_ops->remove().
+> 
+> A low-level TSM driver can optionally wrap that core context with its
+> own data, i.e. enforce a container_of() relationship between the core
+> context and the low level context.
+
+My sketch evolved much since I wrote this comment :) I've put the low 
+level TSM bits into CCP.
+
+
+> [..]
+>>> diff --git a/include/linux/pci.h b/include/linux/pci.h
+>>> index 50811b7655dd..a0900e7d2012 100644
+>>> --- a/include/linux/pci.h
+>>> +++ b/include/linux/pci.h
+>>> @@ -535,6 +535,9 @@ struct pci_dev {
+>>>    	u16		ide_cap;	/* Link Integrity & Data Encryption */
+>>>    	u16		sel_ide_cap;	/* - Selective Stream register block */
+>>>    	int		nr_ide_mem;	/* - Address range limits for streams */
+>>> +#endif
+>>> +#ifdef CONFIG_PCI_TSM
+>>> +	struct pci_tsm *tsm;		/* TSM operation state */
+>>>    #endif
+>>>    	u16		acs_cap;	/* ACS Capability offset */
+>>>    	u8		supported_speeds; /* Supported Link Speeds Vector */
+>>> diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+>>> index 1a97459fc23e..46b9a0c6ea4e 100644
+>>> --- a/include/linux/tsm.h
+>>> +++ b/include/linux/tsm.h
+>>> @@ -111,7 +111,9 @@ struct tsm_report_ops {
+>>>    int tsm_report_register(const struct tsm_report_ops *ops, void *priv);
+>>>    int tsm_report_unregister(const struct tsm_report_ops *ops);
+>>>    struct tsm_subsys;
+>>> +struct pci_tsm_ops;
+>>>    struct tsm_subsys *tsm_register(struct device *parent,
+>>> -				const struct attribute_group **groups);
+>>> +				const struct attribute_group **groups,
+>>> +				const struct pci_tsm_ops *ops);
+>>>    void tsm_unregister(struct tsm_subsys *subsys);
+>>>    #endif /* __TSM_H */
+>>> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+>>> index 9635b27d2485..19bba65a262c 100644
+>>> --- a/include/uapi/linux/pci_regs.h
+>>> +++ b/include/uapi/linux/pci_regs.h
+>>> @@ -499,6 +499,7 @@
+>>>    #define  PCI_EXP_DEVCAP_PWR_VAL	0x03fc0000 /* Slot Power Limit Value */
+>>>    #define  PCI_EXP_DEVCAP_PWR_SCL	0x0c000000 /* Slot Power Limit Scale */
+>>>    #define  PCI_EXP_DEVCAP_FLR     0x10000000 /* Function Level Reset */
+>>> +#define  PCI_EXP_DEVCAP_TEE     0x40000000 /* TEE I/O (TDISP) Support */
+>>>    #define PCI_EXP_DEVCTL		0x08	/* Device Control */
+>>>    #define  PCI_EXP_DEVCTL_CERE	0x0001	/* Correctable Error Reporting En. */
+>>>    #define  PCI_EXP_DEVCTL_NFERE	0x0002	/* Non-Fatal Error Reporting Enable */
+>>>
 >>
->> This patch assumes that the selective streamid is the same as its index
->> in the IDE cap's list of selective streams.
+>>
+>> I am trying to wrap my head around your tsm. here is what I got in my tree:
+>> https://github.com/aik/linux/blob/tsm/include/linux/tsm.h
+>>
+>> Shortly:
+>>
+>> drivers/virt/coco/tsm.ko does sysfs (including "connect" and "bind" to
+>> control and "certs"/"report" to attest) and implements tsm_dev/tsm_tdi,
+>> it does not know pci_dev;
+>>
+>> drivers/pci/tsm-pci.ko creates/destroys tsm_dev/tsm_dev using tsm.ko;
+>>
+>> drivers/crypto/ccp/ccp.ko (the PSP guy) registers:
+>> - tsm_subsys in tsm.ko (which does "connect" and "bind" and
+>> - tsm_bus_subsys in tsm-pci.ko (which does "spdm_forward")
+>> ccp.ko knows about pci_dev and whatever else comes in the future, and
+>> ccp.ko's "connect" implementation calls the IDE library (I am adopting
+>> yours now, with some tweaks).
+>>
+>> tsm-dev and tsm-tdi embed struct dev each and are added as children to
+>> PCI devices: no hide/show attrs, no additional TSM pointer in struct
+>> device or pci_dev, looks like:
 > 
-> Oh, true that should be separated, and perhaps that is the concern that
-> Aneesh has been raising as well?
->   
->> And it just leaves link streams unconfigured. So I have to work around
->> my device by writing unique numbers to all streams (link + selective)
->> I am not using. Meh.
+> The motivation for building awareness of device-security properties
+> natively into 'struct pci_dev' is the recognition that TSM-based
+> security is not the only model that Linux needs to contend. The TSM
+> flow is a superset of PCI-CMA and maybe PCI-IDE in the future (although
+> Intel seems to be the only architecture that has a concept of allowing
+> IDE establishment without a TSM).
 > 
-> This sounds like a device-quirk where it is not waiting for an enable
-> event to associate the key with a given stream index. One could imagine
-> this is either a pervasive problem and TSMs will start considering
-> Stream ID 0 as burned for compatibilitiy reasons. Or, this device is
-> just exhibiting a pre-production quirk that Linux does not need to
-> react, yet.
+> I understand your motivations to make all of TSM functionality bolted
+> onto the side of the PCI core. It has some nice properties. However, I
+> think that is a SEV-TIO centric view of the world.
 
-The hw people call it "the device needs to have an errata" (for which we 
-will later have a quirk?).
+Very true.
 
-> Can you say whether this problem is going to escape your test bench into
-> something mainline Linux needs to worry about?
+> PCI device security
+> attributes are PCI device attributes and have reason to exist with and
+> without a TSM. In other words, certificates and measurements should not
+> be placed behind a TSM ABI because certificates and measurements are
+> expected to have a native PCI-CMA ABI.
 
-Likely going to escape, unless the PCIe spec says specifically that this 
-is a bug. Hence 
-https://github.com/aik/linux/commit/745ee4e151bcc8e3b6db8281af445ab498e87a70
+The Lukas'es CMA ABI should just work on AMD, without any TSM. I am not 
+sure if anyone wants CMA bits from the PSP when can be obtained from the 
+device directly.
 
 
+> It would be a useful property if software written to retrieve
+> measurement and certificate chains did that relative to the PCI dev
+> independent of TSM presence.
 > 
->> And then what are we doing to do when we start adding link streams? I
->> suggest decoupling pci_ide::stream_id from stream_id in sel_ide_offset()
->> (which is more like selective_stream_index) from the start.
+>> aik@sc ~> ls  /sys/bus/pci/devices/0000:e1:04.0/tsm-tdi/tdi:0000:e1:04.0/
+>> device  power  subsystem  tsm_report  tsm_report_user  tsm_tdi_bind
+>> tsm_tdi_status  tsm_tdi_status_user  uevent
+>>
+>> aik@sc ~> ls  /sys/bus/pci/devices/0000:e1:04.0/tsm_dev/
+>> device  power  subsystem  tsm_certs  tsm_cert_slot  tsm_certs_user
+>> tsm_dev_connect  tsm_dev_status  tsm_meas  tsm_meas_user  uevent
+>>
+>> aik@sc ~> ls /sys/class/tsm/tsm0/
+>> device  power  stream0:0000:e1:00.0  subsystem  uevent
+>>
+>> aik@sc ~> ls /sys/class/tsm-dev/
+>> tdev:0000:c0:01.1  tdev:0000:e0:01.1  tdev:0000:e1:00.0
+>>
+>> aik@sc ~> ls /sys/class/tsm-tdi/
+>> tdi:0000:c0:01.1  tdi:0000:e0:01.1  tdi:0000:e1:00.0  tdi:0000:e1:04.0
+>> tdi:0000:e1:04.1  tdi:0000:e1:04.2  tdi:0000:e1:04.3
 > 
-> Setting aside that I agree with you that Stream index be separated from
-> from Stream ID, what would motivate Linux to consider setting up Link
-> Stream IDE?
-> 
-> One of the operational criticisms of Link IDE is that it requires adding
-> more points of failure into the TCB where a compromised switch can snoop
-> traffic. It also adds more Keys and their associated maintainenace
-> overhead. So, before we start planning ahead for Link IDE and Selective
-> Stream IDE to co-exist in the implementation, I think we need a clear
-> use case that demonstrates Link IDE is going to graduate from the
-> specification into practical deployments.
+> Right, so I remain unconvinced that Linux needs to contend with new "tsm"
+> class devs vs PCI device objects with security properties especially
+> when those security properties have a "TSM" and non-"TSM" flavor.
 
-Probably for things like CXL which connect directly to the soc? I do not 
-really know, I only touch link streams because of that only device which 
-is like to see the light of the day though.
-
-> We can always cross that sophistication bridge later.
-
-Today SEV-TIO does not do link streams at all so I am with you :) Thanks,
+One of the thoughts was - when we start adding this TDISP to CXL (which 
+is but also is not PCI), this may be handy, may be. Or, I dunno, 
+USB-TDISP. The security objects are described in the PCIe spec now but 
+the concept is generic really. Thanks,
 
 
 -- 
