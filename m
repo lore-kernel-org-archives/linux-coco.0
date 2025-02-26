@@ -1,141 +1,207 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90E121B9C5
-	for <linux-coco@lists.linux.dev>; Wed, 26 Feb 2025 13:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560F3221555
+	for <linux-coco@lists.linux.dev>; Wed, 26 Feb 2025 13:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740575527; cv=none; b=tHDd/omGHIZ930aD9Qm8Q1rYpBejeoitKTCpcWueftohNb98G1061hZRaTSAeRln9TLA7NT5qSh8cmZrUcPYiMdpSIJxSjD156ushx2GfDT4Xo/hNT/HK5E1LN8Sppnzo1vbM/ezuXgv6JD1EWIDgIU5irTS8mWtlYVHyMDiOks=
+	t=1740578270; cv=none; b=HxTlYALPk56w8DL69NNtmQsby16DPPXs1FeRFyyIkdUf3StoBdugXx8pmedCgJXhhM1LXNIerFVh0YuJ12v77qUUPBA5Vkw/KYdgAALj8K7v3K0RVShEvmKF28SPSUMBTjeDsSpAp3rkQj9pU5RAWRpqf6NyuDwD7Cmnp2S8BgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740575527; c=relaxed/simple;
-	bh=UcN+Yc8/BXf/BDVbG/QiIbLhSfNGYB+VDmHOpxILJEU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nm8XkwdmOjYrovBbLO8xAiED9MEM2roM8KqVY/7tr6BmsMIj8p5WLdq7FMufsj5PrirRdnEds9wMKYGfFkDdKkTwOKHib9W2s82F3yyV2iUN5cIYnBKoqA8DJ5We3DXmAa0DUc8AsV3nmSEoi6G6EMQUF0F/w8jMv/JCPmOJHxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=TXmOdZV7; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1740578270; c=relaxed/simple;
+	bh=sOsAhVl3Pth7b6HVc96vFlxzXU6gEn4y6aryJYUr7r8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nDj7k2ZYLhV6fMEtdOVRKVTEs3xvSUlRmNy1eU2JN+t50n69eAji7MRdqo1wcy59YO4bzVBk3DhSP36jBrEG/jvhvVs+P/Xvc0rsB1UX1V67df8+mOE3OMlIJJKiC5aJZXednTXf8J76ul6pMLcjqiF2EUi671cUgIK0B5jM1mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=f6aC9r7h; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=kWvAXcYU; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=f6aC9r7h; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=kWvAXcYU; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="TXmOdZV7"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7c08fc20194so1129017385a.2
-        for <linux-coco@lists.linux.dev>; Wed, 26 Feb 2025 05:12:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1740575524; x=1741180324; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=m6Xk4LHq+vuxMrWb9QEhIjcrWUMHuvgAEq1BuTfNkWI=;
-        b=TXmOdZV7mbSQxOi0t5SmHpwZposQlX3dLoTnfAGtdjUDO2qJnX8bwJqVDzxgzHvP+r
-         J3J4wtJXgfe1nVIUMp12Ck9stYqwPVJ7m1Vm4/4AyBZSzt3NEW0MZC3EuKtWVc1LJYJ8
-         jFjLgsWRZxElwiJH4oBy8Ybxaz8ty+ZQG61BdSlZq+ERA2+EimPK488o3rVOW3fr3o3o
-         xZY70UugOJC3WhFpr0NrS939wdksGf28M4ofvaEvmDP9vRgQxY1OQ4TGF9xCUpQVz5TL
-         Xw2VoyMzfEV9ku07cg0i2mlb8g9yEjk6QASBUUaaudbX8gKlRxYwcf/RqpC8qZGfhGlm
-         vedA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740575524; x=1741180324;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m6Xk4LHq+vuxMrWb9QEhIjcrWUMHuvgAEq1BuTfNkWI=;
-        b=olyJbrzYNmCWudpkR6IYnavTcNv4QNQLXe6juZO+qvlO5rVs3hVTBcwE9+RkvWEuaP
-         bPPmg1TAHU1HsXBo+vKtFbXMtGjqCKUUAouWcYNbXRBvpFYE9V7W8IM6UFIPzK24OsuP
-         SfKRHpXnz+MtnVORD+GV7WWyiGBBvr0YBJciluk7GixARf7k91kUEDeDvffPo6W9/kHh
-         hfjfE5CFVKmC5Q8Dmzt6w+824Tw12qbzD4N1aCce1YnV8rI2p57VIt9BfOCjGkNbcHLi
-         mokWS7Hu9pBXQjquATFjZU1uepUVTgN09ehjGRUZh32ffsAnNktK57rPRetj47eXU2oF
-         0jjg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/qjCcPYwVxq2dtfeADei1g7jLkeC6gxoEZiiQ2QeP4jT3RJ0ob0bkcakRPhUlGEGlaozmbraOcIxq@lists.linux.dev
-X-Gm-Message-State: AOJu0YwloqTcEOELwDITqRg4sAqWcnmuHUmT9h3VVHh2WBiDb1i1aeMX
-	Br2hOVJ2a+KQ8mOvqWjy8PkpyzHDQDqA9805Vd5AmCmG0+qpwtvqyLu1Cddhfig=
-X-Gm-Gg: ASbGncu7IFBe+TAQjGEHv3drajv907I0Dn8inLwevMoZvmg69HhX2BxOZ5WEu+uU4pU
-	cuIEpTfHjw1e9UGGMma0039hlkar5BkAua/XsKNo9xTNtGyEmEBZy+rrVZ5QP4PYl4hiEej4Bra
-	gOd8LddVIwHelBrQV26dBSZ20kVw5ShrcG24DGoKWZje6Nq5HbXAUCI6ec080BXUlfl7a2ZwCRZ
-	PCeR2zyFXtSogxcoNZ3iqmj1EocBJtDeR3v6c/9Rsc9xnq7NsEPacrH1MhMAlCv7miSSnr5nvWh
-	2WK++K11BCs/JdabD0EA0ky1rBspEftUHu7q4YXcayIUO/2ZV0y4yKpZZP7apsaf3AYGv8GZmR8
-	=
-X-Google-Smtp-Source: AGHT+IEEfwlXAvWZ2xNGVxvzUGP6nDfT13h++oyNBWTrRPp0M1zvh40QuIYqQQDMaC1/myckxEJxtw==
-X-Received: by 2002:a05:622a:13ce:b0:471:f619:db45 with SMTP id d75a77b69052e-4737725caa7mr88331981cf.42.1740575523795;
-        Wed, 26 Feb 2025 05:12:03 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-47377e21fcdsm23423041cf.39.2025.02.26.05.12.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 05:12:02 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tnHCk-000000007O6-0KPx;
-	Wed, 26 Feb 2025 09:12:02 -0400
-Date: Wed, 26 Feb 2025 09:12:02 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, x86@kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arch@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
-	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	Zhi Wang <zhiw@nvidia.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
-Message-ID: <20250226131202.GH5011@ziepe.ca>
-References: <20250218111017.491719-1-aik@amd.com>
- <20250218111017.491719-15-aik@amd.com>
- <Z72GmixR6NkzXAl7@yilunxu-OptiPlex-7050>
- <2fe6b3c6-3eed-424d-87f0-34c4e7e1c906@amd.com>
- <Z77xrqLtJfB84dJF@yilunxu-OptiPlex-7050>
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="f6aC9r7h";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="kWvAXcYU";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="f6aC9r7h";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="kWvAXcYU"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 77A8C1F388;
+	Wed, 26 Feb 2025 13:57:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1740578266; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4IhlMQLU7O+/3cgB5SqnTRbXuJ/IQuGdZmOILhsLwm0=;
+	b=f6aC9r7hbfE5be4MYPaoQ3QEKQLeMGfx1A8Jq0wP9B0QUYVmlSQOkyKbJV8dTM9hmO0rgp
+	JSh9+W7ZcPSOuAtnVDIsXkjLDL/KN78VsMxOs3ICguiRLRV4Bf8PPo02qQlWJQGJgiwtm9
+	5TOgz69VrOYYvfDZyQWox44rwWSoT5I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1740578266;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4IhlMQLU7O+/3cgB5SqnTRbXuJ/IQuGdZmOILhsLwm0=;
+	b=kWvAXcYUdWO7rp5uJCpRO10JpeXohnZ7b05tEUtJqzgb9/jQDs1tWc3wlEIhh9NzthI/T1
+	TukaERVLfsFzvnAA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=f6aC9r7h;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kWvAXcYU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1740578266; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4IhlMQLU7O+/3cgB5SqnTRbXuJ/IQuGdZmOILhsLwm0=;
+	b=f6aC9r7hbfE5be4MYPaoQ3QEKQLeMGfx1A8Jq0wP9B0QUYVmlSQOkyKbJV8dTM9hmO0rgp
+	JSh9+W7ZcPSOuAtnVDIsXkjLDL/KN78VsMxOs3ICguiRLRV4Bf8PPo02qQlWJQGJgiwtm9
+	5TOgz69VrOYYvfDZyQWox44rwWSoT5I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1740578266;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4IhlMQLU7O+/3cgB5SqnTRbXuJ/IQuGdZmOILhsLwm0=;
+	b=kWvAXcYUdWO7rp5uJCpRO10JpeXohnZ7b05tEUtJqzgb9/jQDs1tWc3wlEIhh9NzthI/T1
+	TukaERVLfsFzvnAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5BC9B13A53;
+	Wed, 26 Feb 2025 13:57:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id inElFtodv2drOQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 26 Feb 2025 13:57:46 +0000
+Message-ID: <6e9d4d95-a132-46a0-89c3-e39ace6bcb2a@suse.cz>
+Date: Wed, 26 Feb 2025 14:59:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z77xrqLtJfB84dJF@yilunxu-OptiPlex-7050>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/5] mm/mempolicy: export memory policy symbols
+To: Shivank Garg <shivankg@amd.com>, akpm@linux-foundation.org,
+ willy@infradead.org, pbonzini@redhat.com
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, chao.gao@intel.com, seanjc@google.com,
+ ackerleytng@google.com, david@redhat.com, bharata@amd.com, nikunj@amd.com,
+ michael.day@amd.com, Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com,
+ michael.roth@amd.com, tabba@google.com
+References: <20250226082549.6034-1-shivankg@amd.com>
+ <20250226082549.6034-3-shivankg@amd.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Content-Language: en-US
+In-Reply-To: <20250226082549.6034-3-shivankg@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 77A8C1F388
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:dkim,suse.cz:mid];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+X-Spam-Flag: NO
 
-On Wed, Feb 26, 2025 at 06:49:18PM +0800, Xu Yilun wrote:
 
-> E.g. I don't think VFIO driver would expect its MMIO access suddenly
-> failed without knowing what happened.
 
-What do people expect to happen here anyhow? Do you still intend to
-mmap any of the MMIO into the hypervisor? No, right? It is all locked
-down?
-
-So perhaps the answer is that the VFIO side has to put the device into
-CC mode which disables MMAP/etc, then the viommu/vdevice iommufd
-object can control it.
-
-> Back to your concern, I don't think it is a problem. From your patch,
-> vIOMMU doesn't know the guest BDFn by nature, it is just the user
-> stores the id in vdevice via iommufd_vdevice_alloc_ioctl(). A proper
-> VFIO API could also do this work.
-
-We don't want duplication though. If the viommu/vdevice/vbdf are owned
-and lifecycle controlled by iommufd then the operations against them
-must go through iommufd and through it's locking regime.
+On 2/26/25 9:25 AM, Shivank Garg wrote:
+> KVM guest_memfd wants to implement support for NUMA policies just like
+> shmem already does using the shared policy infrastructure. As
+> guest_memfd currently resides in KVM module code, we have to export the
+> relevant symbols.
 > 
-> The implementation is basically no difference from:
+> In the future, guest_memfd might be moved to core-mm, at which point the
+> symbols no longer would have to be exported. When/if that happens is
+> still unclear.
 > 
-> +       vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
-> +                                              IOMMUFD_OBJ_VDEVICE),
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+
+> ---
+>  mm/mempolicy.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> The real concern is the device owner, VFIO, should initiate the bind.
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index bbaadbeeb291..d9c5dcdadcd0 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -214,6 +214,7 @@ struct mempolicy *get_task_policy(struct task_struct *p)
+>  
+>  	return &default_policy;
+>  }
+> +EXPORT_SYMBOL_GPL(get_task_policy);
+>  
+>  static const struct mempolicy_operations {
+>  	int (*create)(struct mempolicy *pol, const nodemask_t *nodes);
+> @@ -347,6 +348,7 @@ void __mpol_put(struct mempolicy *pol)
+>  		return;
+>  	kmem_cache_free(policy_cache, pol);
+>  }
+> +EXPORT_SYMBOL_GPL(__mpol_put);
+>  
+>  static void mpol_rebind_default(struct mempolicy *pol, const nodemask_t *nodes)
+>  {
+> @@ -2736,6 +2738,7 @@ struct mempolicy *mpol_shared_policy_lookup(struct shared_policy *sp,
+>  	read_unlock(&sp->lock);
+>  	return pol;
+>  }
+> +EXPORT_SYMBOL_GPL(mpol_shared_policy_lookup);
+>  
+>  static void sp_free(struct sp_node *n)
+>  {
+> @@ -3021,6 +3024,7 @@ void mpol_shared_policy_init(struct shared_policy *sp, struct mempolicy *mpol)
+>  		mpol_put(mpol);	/* drop our incoming ref on sb mpol */
+>  	}
+>  }
+> +EXPORT_SYMBOL_GPL(mpol_shared_policy_init);
+>  
+>  int mpol_set_shared_policy(struct shared_policy *sp,
+>  			struct vm_area_struct *vma, struct mempolicy *pol)
+> @@ -3039,6 +3043,7 @@ int mpol_set_shared_policy(struct shared_policy *sp,
+>  		sp_free(new);
+>  	return err;
+>  }
+> +EXPORT_SYMBOL_GPL(mpol_set_shared_policy);
+>  
+>  /* Free a backing policy store on inode delete. */
+>  void mpol_free_shared_policy(struct shared_policy *sp)
+> @@ -3057,6 +3062,7 @@ void mpol_free_shared_policy(struct shared_policy *sp)
+>  	}
+>  	write_unlock(&sp->lock);
+>  }
+> +EXPORT_SYMBOL_GPL(mpol_free_shared_policy);
+>  
+>  #ifdef CONFIG_NUMA_BALANCING
+>  static int __initdata numabalancing_override;
 
-There is a big different, the above has correct locking, the other
-does not :)
-
-Jason
