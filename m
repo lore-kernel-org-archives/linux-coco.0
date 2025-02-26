@@ -1,106 +1,81 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8474814D283
-	for <linux-coco@lists.linux.dev>; Wed, 26 Feb 2025 14:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0D7221704
+	for <linux-coco@lists.linux.dev>; Wed, 26 Feb 2025 14:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740580041; cv=none; b=omMaRv8vNhJeSP7Kr3EMxco5AQ5Ovnbe1hG4S8bWNWNUvYJm6juL0yj2nUPDuORdFxf0Wsy7/64TaQNB2OOcarH7EZA5jP2Fb2eNYjQWK48+W9ow9I9VkoD0TIitVljq9bhpTnVgqi4lMVs8CkqdbWqWv1LKuPj/URRNYzrxOTM=
+	t=1740580459; cv=none; b=hwrYre+Nce2ASc8clE03e7s/nu5UlZQ+7M0iTfiL6MECPz6uJw034sYsn+UbP4JlfE3ogmf0kwOv8uAUFZGViTA3eQ+kBM8NGDe0AoWh3HOKLs2fTTuPwV0oaLjx9a99RYnK0XwaK9NAO2eQooLy180WJuxq4B7NIlaLS8dgR+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740580041; c=relaxed/simple;
-	bh=EVDB5ihtgZeieRnrugyEXIDrswGJIhn4/GuR5gLfv2A=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=urHAuORpGC/gb2HAoUI+RwfpOFJq9nNl3i84CLmOErkbcXR+dWFfiLpI5VLPS9IrAfeR9K07CiTFBhcNLJfaRF6QBjwg3xqlV33Z07bu71LxgRB9UybZNoBPV5d868kXizDWfF1ZQMluWCTmqUUj6T/xW8kQZn221UNiGDMBnmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MO06BlOz; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1740580459; c=relaxed/simple;
+	bh=j3rMfqhZQpSA963KHR38+1nPJJaP5/380A9keD4KOq4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iWmhaoEgibsU/v8vRWMmTVXZJr2K/Vor2skedEkkSBZbgiFwcdCIRCd42WslzQDfz6jyDsVWa6/sH2FBR1hGUuBcwQ8La2sMliSHi4LVn7JXVccgGw3ftB/J5lxIizb61b7ZnWgzFJ/telCWpFSk1rUcsnx3bsjMpLnFtT56640=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=LwWmYDbw; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MO06BlOz"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2fc0bc05c00so22160839a91.2
-        for <linux-coco@lists.linux.dev>; Wed, 26 Feb 2025 06:27:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740580039; x=1741184839; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eaRjEj+S+iNUpexzYhTHe/q7bOyFL6g0TekFIq/1o1g=;
-        b=MO06BlOzegygdQGXrHcHUFJe006RMWB+KeUWFtMJRaHBmCC+LrQMEnLkRg5JtphXRH
-         v+TTpjzoNqeSYhfX3s9musRUkrn5nFLiRcL44FNwWj79mqLF4FgCx+0Aw8QqPjZ6Pqzh
-         IBxhBN5TJ4J1L70IBiaCxngTdQEfc46JuLLnDLIAx8cz6DephNm3s8/okA81Bq7Ar8eH
-         SDxd/LZVIa9BtKSsCDas24ZjOo+K1Db+SdO5ysHFB4xPOe9ZJvBXB95nyKVB/eoPq2na
-         bJ7EJAgWUlnv7Qoigj4VmE2GE3n+//7eDCN3wXkHSoYq1/O5Tk3KZ4gyja5/NMoxit3Q
-         Ed/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740580039; x=1741184839;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eaRjEj+S+iNUpexzYhTHe/q7bOyFL6g0TekFIq/1o1g=;
-        b=lISmzyNPnUoHsnMig9dp0sM3vLFmxF/VDd861GWndF7U1Kfv4gN65NIJ0ymIvldCjd
-         lHJV4aoy4b0uUEkq/qdbCne5JGllNPfDfZE8X27gWZ8gZ2TesL2T0ixPF8lLd/ZJA7zt
-         4EHFvquOzfAqRhfjVydBalH4B413DOW7tp331NSEJPXnrjpaL5MfD04F9a1FUS98/hmZ
-         fm3l6vkl0hdC7B6MNNvBvPMzqD2aBN6Ti8l78ZlgEC+9QqchEJ2Ry2dD9W8KIGSu5b3m
-         bP5OufZP8PvEng1YGEbxoA9WpKS9JrvqNuD6GWdyDvj9SSZ0yqaILAuozEBCltTl9swy
-         07RA==
-X-Forwarded-Encrypted: i=1; AJvYcCVCxCDduXTBValFtTvYbPVhVgvKcheioddSRvNDBcH31M/U5NQ22Fz1zroOjDWQRMSRiM4TPvRGXWqE@lists.linux.dev
-X-Gm-Message-State: AOJu0YyV1o346/8Kmch1QXKnMvsy27TFn3b7WU2GTT0UAZlrQ4A8arZa
-	KaggfbkKRePYeG58UW99yTzYY2KqE3CwP6BtdM1O2R4YOKI057Bic3PyOSLXHTUA8lxzgUf6g9X
-	bmA==
-X-Google-Smtp-Source: AGHT+IFswkBOj+OW+b1B+n/Joz6AyKOkyChMtV3kE6V2sRCzgJx4EB1M/qGFGRbf1byqZAHdlEsQn9PZhSg=
-X-Received: from pjb8.prod.google.com ([2002:a17:90b:2f08:b0:2ea:5613:4d5d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:540c:b0:2ea:83a0:47a5
- with SMTP id 98e67ed59e1d1-2fe68acd777mr11441995a91.4.1740580038672; Wed, 26
- Feb 2025 06:27:18 -0800 (PST)
-Date: Wed, 26 Feb 2025 06:27:11 -0800
-In-Reply-To: <Z7yc8-QXXVPzr2K8@suse.de>
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="LwWmYDbw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1740580456;
+	bh=j3rMfqhZQpSA963KHR38+1nPJJaP5/380A9keD4KOq4=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=LwWmYDbw8AUeLnJ1wBv6Nl0mpT4ziD7pRDIqx7oCimAnY4r+8oQRZ6EA9lHOhTbQV
+	 z/hGknyCwQbhxJ5POd+iAaZW432/QsFomkSM2ajsnRfhaONqMwvWj/OQHp2HQx4+/X
+	 dnQ5u0FOh564Y5EFfjFofsIalTKjNdVy05+s4zvc=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 918F01C257A;
+	Wed, 26 Feb 2025 09:34:16 -0500 (EST)
+Message-ID: <3cbef80a611a8ce6b9584981777810ec054de7f8.camel@HansenPartnership.com>
+Subject: Re: [svsm-devel] Using a linux bus for SVSM devices
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev
+Date: Wed, 26 Feb 2025 09:34:15 -0500
+In-Reply-To: <CAGxU2F5N7MrLU_Wsr0D1nBS_C=ojjm-NUmf5_a00j6+jiuDtJw@mail.gmail.com>
+References: 
+	<38fdf6373fe5f500115d09bcad391e14137b75b8.camel@HansenPartnership.com>
+	 <CAGxU2F5N7MrLU_Wsr0D1nBS_C=ojjm-NUmf5_a00j6+jiuDtJw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20250219151505.3538323-1-michael.roth@amd.com>
- <20250219151505.3538323-2-michael.roth@amd.com> <Z7yc8-QXXVPzr2K8@suse.de>
-Message-ID: <Z78kv-hhU6AWyufz@google.com>
-Subject: Re: [PATCH v5 1/1] KVM: Introduce KVM_EXIT_SNP_REQ_CERTS for SNP certificate-fetching
-From: Sean Christopherson <seanjc@google.com>
-To: Joerg Roedel <jroedel@suse.de>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, pbonzini@redhat.com, thomas.lendacky@amd.com, 
-	ashish.kalra@amd.com, liam.merwick@oracle.com, pankaj.gupta@amd.com, 
-	dionnaglaze@google.com, huibo.wang@amd.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 24, 2025, Joerg Roedel wrote:
-> Hi Michael,
+On Wed, 2025-02-26 at 15:04 +0100, Stefano Garzarella wrote:
+[...]
+> IIUC the SVSM vTPM driver will be the first one using the new bus.
+> Since I have the new version almost ready (need to finish writing
+> better commit descriptions), do you think I should post it in any
+> case as RFC, or better to wait to include also the SVSM bus?
 > 
-> On Wed, Feb 19, 2025 at 09:15:05AM -0600, Michael Roth wrote:
-> > +  - If some other error occurred, userspace must set `ret` to ``EIO``.
-> > +    (This is to reserve special meaning for unused error codes in the
-> > +    future.)
-> 
-> [...]
-> 
-> > +static int snp_complete_req_certs(struct kvm_vcpu *vcpu)
-> > +{
-> > +	struct vcpu_svm *svm = to_svm(vcpu);
-> > +	struct vmcb_control_area *control = &svm->vmcb->control;
-> > +
-> > +	if (vcpu->run->snp_req_certs.ret) {
-> > +		if (vcpu->run->snp_req_certs.ret == ENOSPC) {
-> > +			vcpu->arch.regs[VCPU_REGS_RBX] = vcpu->run->snp_req_certs.npages;
-> > +			ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
-> > +						SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_INVALID_LEN, 0));
-> > +		} else if (vcpu->run->snp_req_certs.ret == EAGAIN) {
-> > +			ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
-> > +						SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_BUSY, 0));
-> > +		} else {
-> > +			ghcb_set_sw_exit_info_2(svm->sev_es.ghcb,
-> > +						SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_GENERIC, 0));
-> > +		}
-> 
-> According to the documentation above, there should be a block checking
-> for EIO which injects SNP_GUEST_VMM_ERR_GENERIC and the else block
-> should return with EINVAL to user-space, no?
+> The current version is here [1] but it still uses platform devices,
+> even though I removed one as requested during the review of the
+> previous version.
 
-Yeah.  It feels a bit ridiculous, but it would be quite unfortunate to go through
-the extra effort of decoupling KVM's error handling from the GHCB error code, only
-for it to all fall apart due to not enforcing the "return" value.
+So on this, yes, it's always wise to post early and often, particularly
+where there's a discussion about where the code is going.  Seeing
+updated code helps people frame arguments.
+
+Just on the platform device: Greg seems to be going on an anti-platform
+device bender at the moment
+
+https://lore.kernel.org/linux-usb/2025021023-sandstorm-precise-9f5d@gregkh/
+
+So you may need to humour him and use his faux bus instead.
+
+> If no one is working on the new SVSM bus or planning to (don't want
+> to step on anyone's toes), I can try adding something to that branch
+> and send an RFC here.
+
+I was going to do an RFC in my copious free time, but I've no objection
+at all to someone else doing it...
+
+Regards,
+
+James
+
