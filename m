@@ -1,137 +1,143 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A6D22332C
-	for <linux-coco@lists.linux.dev>; Wed, 26 Feb 2025 15:16:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1A1183CCA;
+	Wed, 26 Feb 2025 19:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740583020; cv=none; b=WPxChDuDYaxq54jxNs8G0y0Vw3crS6bmI0OTyAxam+FfRVL9/pW/z65mw/XU0HYYy2VJFg4Uz5dA9Du4DYnkRXlCXndEjMcLJE1WdLdFAXNRN5cCCEFq+f1JIhgv+C4a5m5ijeDTAZER00L/ENwHkE5W7iAYxtc2tVcoq7q/G38=
+	t=1740596588; cv=none; b=lkPNoINELxJBmEks0mg/W+8SY6bDxiBMNr6WuXg+mgh1GHCTAuTvFhhNre3B8i6RuvZ8nWY7G4ikP0yrb7KunOL5Pd/M82AWKlmiZViUcC2bleFSyl52wgTkwINiuHul/QnnoETWKZgj623bUbdQA4mddUpntSswjjdMlFLTvJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740583020; c=relaxed/simple;
-	bh=hPlQqnEfgZ98qMM/OgrgYPS2ohmDkkoL0MWzob01lJ8=;
+	s=arc-20240116; t=1740596588; c=relaxed/simple;
+	bh=0PqRmrErNpl4Jtg6yBGuNZ5C5vDip9QFb3/+TQ9Hbns=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=t8BpRJcd0EbemaZ6hrprE3a6keycMosQsupmwWq/HxQ92XnVUy+SPGHaCH+ytJBxukeva6FlKTu4su2sXfLeNdLn1GXD147I782AvV1QkLWbLcrqKdCq+RFVTnjuToUGyormrEtK+zFxpR+blxHssm84zLwAXxrAPIoVuPkNiGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TR26oYG/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TR26oYG/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740583017;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y6O3H0bKwSgz8ac6NG6weWjL85qpaidZjw0jrlrtCgQ=;
-	b=TR26oYG/SNkRWW7tFjjfPgnkrpfO6ILpL7UurotB5g0jmC+loPbOz5L9l0rmxmWQhqSdk0
-	vdZwgYUUuJJuPvNAZgHRDS3eKB5ZOZMA/ikGRtBZiDl/zfdxj6pQPw3hHfSeSF/cb7Tc+T
-	Ww8kjFbph7XI87sWyEclQkVkrsQFCY8=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-gCMi56N7N8Kj-GA9TOA-Ww-1; Wed, 26 Feb 2025 10:16:55 -0500
-X-MC-Unique: gCMi56N7N8Kj-GA9TOA-Ww-1
-X-Mimecast-MFC-AGG-ID: gCMi56N7N8Kj-GA9TOA-Ww_1740583014
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-abb7e837a7aso668393766b.3
-        for <linux-coco@lists.linux.dev>; Wed, 26 Feb 2025 07:16:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740583014; x=1741187814;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y6O3H0bKwSgz8ac6NG6weWjL85qpaidZjw0jrlrtCgQ=;
-        b=SsDNgNP3mDMLmu8xNoB/htUy5/g3QdJ01lcnAaUjGrDgOARz21QLKkRuDzHYUaPr9D
-         4+rerqgdz7+9r9GNbKyXsW/3eDNV4Aqf1pZFK1uNAPHsIZnLayfMwX9P2rcsyG8HcXb9
-         KUyLzkuYbJu2HN76ToniavY8BtZ7dmb1GbbhVcQCmJAERlNPK04LcmEQmt1p7uZI8l1R
-         NEpks3670VIvt6LwroKwq2FH8cJGxjBNbEW6qPy9taAwdJl0NOsqFeVRQegiYYyQ+A36
-         hiE47qfpFbTo7i9PpYCSvRRA/CkCpVezACjIe/Wppez2ANpFDq8hoQw1GsAeBPgAh8im
-         WhJA==
-X-Gm-Message-State: AOJu0YyjGW0u12oS4s8llCL/Gu4o/Q2lu9G2WMn+9ObXEUW0XiJsZAl2
-	olKSWspQih9IyS3QVaI6jhEQk7yAEGFvYLKnOWg28Pw0ZDw9Xy1L4H/fRPt1uV1fkTQWea9nEG4
-	QG3QYXWtzKDgwP59iiAcidY4+C0sQFIKKWJL02gh7GYE0uH0CqVBz01UpMhRIU3RwBXA=
-X-Gm-Gg: ASbGncu8bg9f6HoRACKZbgoVORrees2KUUH/gYZNA3ahP5n6aWVn3D0ibfLv76Wy3Oh
-	04Wz9jCBfvegDHOY5I/B8Qz71kGiAZhAmaY5Q+WVkZYKu6jg75phvpRX1hjOlBj1XomDNEzBOJD
-	4RgwpbUKpiO+JD7yaQOEGo1ZWUqFx9gNuO7TLbnceqT7llBwqki/Xl89VDfWoDT66CIAjABdHVZ
-	1XcKI7EmqIyWR0nOM3LVz9E/3xJo6RoY9SQavQ18L867rqtx9AJ2sWZl19uS+vGto662GS8W5e6
-	7L2Mx+EoeBJUrUKj
-X-Received: by 2002:a17:906:7cd8:b0:ab7:b5d9:525a with SMTP id a640c23a62f3a-abc09c1a653mr1903737466b.37.1740583013625;
-        Wed, 26 Feb 2025 07:16:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFsh1EaBpXd7OmqHZw38Ij08xBL5oY1iYC2WScIrgEFN0uFpeliEgCTxXIyQ/RX+qJtWtBw5A==
-X-Received: by 2002:a17:906:7cd8:b0:ab7:b5d9:525a with SMTP id a640c23a62f3a-abc09c1a653mr1903732166b.37.1740583012942;
-        Wed, 26 Feb 2025 07:16:52 -0800 (PST)
-Received: from sgarzare-redhat ([5.77.88.132])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed20b81a0sm339398666b.180.2025.02.26.07.16.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 07:16:52 -0800 (PST)
-Date: Wed, 26 Feb 2025 16:16:47 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: linux-coco@lists.linux.dev, svsm-devel@coconut-svsm.dev
-Subject: Re: [svsm-devel] Using a linux bus for SVSM devices
-Message-ID: <CAGxU2F7LacCGbuL3HemvfOAD9v9i_GCbdM8Y4bs+xT=+JBz1ug@mail.gmail.com>
-References: <38fdf6373fe5f500115d09bcad391e14137b75b8.camel@HansenPartnership.com>
- <CAGxU2F5N7MrLU_Wsr0D1nBS_C=ojjm-NUmf5_a00j6+jiuDtJw@mail.gmail.com>
- <3cbef80a611a8ce6b9584981777810ec054de7f8.camel@HansenPartnership.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=EHugK4h00dVZhLUzgc8Vj60i9Bn6kdrIEDXWR+kOz2rrPYIASKcdmH6SWSLO55s3jtW13mEvh07xEPcVTAWGTYq3ceulOw1lZtOjLsHBPpDSa36lroEeF5d3pM9X9wPpYlQhqZ4BatvJFZVjXWqc6/zl+ixJx7bsH+pbbf2pkFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D290C4CED6;
+	Wed, 26 Feb 2025 19:03:04 +0000 (UTC)
+Date: Wed, 26 Feb 2025 19:03:01 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Steven Price <steven.price@arm.com>
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v7 09/11] arm64: Enable memory encrypt for Realms
+Message-ID: <Z79lZdYqWINaHfrp@arm.com>
+References: <20241017131434.40935-1-steven.price@arm.com>
+ <20241017131434.40935-10-steven.price@arm.com>
+ <5aeb6f47-12be-40d5-be6f-847bb8ddc605@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <3cbef80a611a8ce6b9584981777810ec054de7f8.camel@HansenPartnership.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NaL9QEVmG1J8p3tv1M3645ynNvx2F9SvDhrwku46geA_1740583014
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <5aeb6f47-12be-40d5-be6f-847bb8ddc605@arm.com>
 
-On Wed, 26 Feb 2025 at 15:34, James Bottomley <James.Bottomley@hansenpartnership.com> wrote:
->
-> On Wed, 2025-02-26 at 15:04 +0100, Stefano Garzarella wrote:
+On Wed, Feb 19, 2025 at 02:30:28PM +0000, Steven Price wrote:
+> On 17/10/2024 14:14, Steven Price wrote:
+> > From: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > 
+> > Use the memory encryption APIs to trigger a RSI call to request a
+> > transition between protected memory and shared memory (or vice versa)
+> > and updating the kernel's linear map of modified pages to flip the top
+> > bit of the IPA. This requires that block mappings are not used in the
+> > direct map for realm guests.
+> > 
+> > Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > Co-developed-by: Steven Price <steven.price@arm.com>
+> > Signed-off-by: Steven Price <steven.price@arm.com>
+> > ---
 > [...]
-> > IIUC the SVSM vTPM driver will be the first one using the new bus.
-> > Since I have the new version almost ready (need to finish writing
-> > better commit descriptions), do you think I should post it in any
-> > case as RFC, or better to wait to include also the SVSM bus?
-> >
-> > The current version is here [1] but it still uses platform devices,
-> > even though I removed one as requested during the review of the
-> > previous version.
->
-> So on this, yes, it's always wise to post early and often, particularly
-> where there's a discussion about where the code is going.  Seeing
-> updated code helps people frame arguments.
+> > diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+> > index 547a9e0b46c2..6ae6ae806454 100644
+> > --- a/arch/arm64/mm/pageattr.c
+> > +++ b/arch/arm64/mm/pageattr.c
+> > @@ -5,10 +5,12 @@
+> >  #include <linux/kernel.h>
+> >  #include <linux/mm.h>
+> >  #include <linux/module.h>
+> > +#include <linux/mem_encrypt.h>
+> >  #include <linux/sched.h>
+> >  #include <linux/vmalloc.h>
+> >  
+> >  #include <asm/cacheflush.h>
+> > +#include <asm/pgtable-prot.h>
+> >  #include <asm/set_memory.h>
+> >  #include <asm/tlbflush.h>
+> >  #include <asm/kfence.h>
+> > @@ -23,14 +25,16 @@ bool rodata_full __ro_after_init = IS_ENABLED(CONFIG_RODATA_FULL_DEFAULT_ENABLED
+> >  bool can_set_direct_map(void)
+> >  {
+> >  	/*
+> > -	 * rodata_full and DEBUG_PAGEALLOC require linear map to be
+> > -	 * mapped at page granularity, so that it is possible to
+> > +	 * rodata_full, DEBUG_PAGEALLOC and a Realm guest all require linear
+> > +	 * map to be mapped at page granularity, so that it is possible to
+> >  	 * protect/unprotect single pages.
+> >  	 *
+> >  	 * KFENCE pool requires page-granular mapping if initialized late.
+> > +	 *
+> > +	 * Realms need to make pages shared/protected at page granularity.
+> >  	 */
+> >  	return rodata_full || debug_pagealloc_enabled() ||
+> > -	       arm64_kfence_can_set_direct_map();
+> > +		arm64_kfence_can_set_direct_map() || is_realm_world();
+> >  }
+> 
+> Aneesh pointed out that this call to is_realm_world() is now too early 
+> since the decision to delay the RSI detection. The upshot is that a 
+> realm guest which doesn't have page granularity forced for other reasons 
+> will fail to share pages with the host.
+> 
+> At the moment I can think of a couple of options:
+> 
+> (1) Make rodata_full a requirement for realm guests. 
+>     CONFIG_RODATA_FULL_DEFAULT_ENABLED is already "default y" so this 
+>     isn't a big ask.
+> 
+> (2) Revisit the idea of detecting when running as a realm guest early. 
+>     This has the advantage of also "fixing" earlycon (no need to 
+>     manually specify the shared-alias of an unprotected UART).
+> 
+> I'm currently leaning towards (1) because it's the default anyway. But 
+> if we're going to need to fix earlycon (or indeed find other similar 
+> issues) then (2) would obviously make sense.
 
-Got it ;-)
+I'd go with (1) since the end result is the same even if we implemented
+(2) - i.e. we still avoid block mappings in realms.
 
->
-> Just on the platform device: Greg seems to be going on an anti-platform
-> device bender at the moment
->
-> https://lore.kernel.org/linux-usb/2025021023-sandstorm-precise-9f5d@gregkh/
->
-> So you may need to humour him and use his faux bus instead.
+> diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
+> index ce4778141ec7..48a6ef0f401c 100644
+> --- a/arch/arm64/kernel/rsi.c
+> +++ b/arch/arm64/kernel/rsi.c
+> @@ -126,6 +126,10 @@ void __init arm64_rsi_init(void)
+>  		return;
+>  	if (!rsi_version_matches())
+>  		return;
+> +	if (!can_set_direct_map()) {
+> +		pr_err("rodata_full disabled, unable to run as a realm guest. Please enable CONFIG_RODATA_FULL_DEFAULT_ENABLED\n");
 
-I see, thanks for sharing!
+It's a bit strange to complain about rodata since, in principle, it
+doesn't have anything to do with realms. Its only side-effect is that we
+avoid block kernel mappings. Maybe "cannot set the kernel direct map,
+consider rodata=full" or something like that.
 
-Currently, I have
-- module_platform_driver_probe(tpm_svsm_driver, tpm_svsm_probe) in
-  drivers/char/tpm/tpm_svsm.c since they asked to keep tpm drivers in
-  drivers/char/tpm
-- platform_device_register(&tpm_svsm_device) in arch/x86/coco/sev/core.c
-  to load it
-
-I'll check if I can use the faux bus in this case.
-
->
-> > If no one is working on the new SVSM bus or planning to (don't want
-> > to step on anyone's toes), I can try adding something to that branch
-> > and send an RFC here.
->
-> I was going to do an RFC in my copious free time, but I've no objection
-> at all to someone else doing it...
-
-If I can do something (probably next week), I'll let you know!
-
-Thanks,
-Stefano
-
+-- 
+Catalin
