@@ -1,266 +1,247 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2058.outbound.protection.outlook.com [40.107.92.58])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E720C226D1B
-	for <linux-coco@lists.linux.dev>; Wed, 26 Feb 2025 08:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740558494; cv=fail; b=rnkzFI8s1/WNhvFFFkp615zBD54QSfMRHLo3fXJ4BN2MTAHEuX2GuP3tqYez70sn0tc+QI5vtc8539pIYODmRmt1SN6r3HeF3EkGXCS4U8O/STxRNZTPDXG4GnWj8Gt0ETdKuZyjxM9gDcX/9lM7JX9ZPqwayzpCBo1buvAGiQY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740558494; c=relaxed/simple;
-	bh=7PavWSs1Hl2wx0ugPxGR47C7SmvCzimsUwTFdPvSIJI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QiO+FuK4/LW+/8AQ0XT9NqMAAjTKtaJHfKppXgABJRBj9li3Un89OE78Bi0yc26px6mXRnY5hUD34ErRYL6Hww3QPRUPO2y8ZBHVTSIrKJ+t8n6JfewaJMPB6g/d+I4K+UXFrb348XWCtgytpvpitPb7zg+qo+ax1wMRFwuXMEw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VredHeHb; arc=fail smtp.client-ip=40.107.92.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6C920E70A;
+	Wed, 26 Feb 2025 10:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740567082; cv=none; b=fIaWjmOOJdQEkybwVL+SewQ22bV3yanhWFHf1DLcutg7A6P01E4g3XkVNarLc6/KPfJgYIK/f1jLyrM5v7ASFwyHv/1Uaz9VI+dJ7AKX8GYw54T/qSNoKK3dy195WcECVrNpk1nGTQ3mbs9tM0iKO7OcCnt/1Sm5b4bTiPD2W9Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740567082; c=relaxed/simple;
+	bh=EJRmzJTFJ8NjApj/tf5SNaCRDGeunDMttv5+CnuEb8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uoFco4GgTu18Hx10XZtGs2rLCUSrCy2wiE0IrtiGRcpbBJGaMX7o/kDYfDf5K+oM+OysTY651/LzzdVGSnyK73UF4NMxMO1qDr0+dyzSbEMMxh0vJstVZtlXRFNn5yf7E/FWyg1pxqfMs+OZC43sKzeG477JGhcUMe6iAUNTy+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k5cPrCQt; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VredHeHb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nxCP4xfOQJQIHRqEhF48vYo1cnOuk4ZHNbz1sjd9oyiavUd78k0VhkSCN7bJ6i1Fv7zQMDkG+aUKMvthi9y6zc5JsAfngClhr3UOqeciHy7a4hToXrBLYJWVkq96EQV5PuU+1HCWsRbasHGsLtC0nutVrchreDZyf+GPMCzX0diaXKhCM5Jr1BEJdLuAD3jkP8wPj7NF4OPkVn6MJj5FB4Dh42BnZ+h5E1GTQ2+lKIAr5HsvHVpOovoosOpJq5wY9UfbEp+2+FrdIP3jzGhHO5i/5qpUc1sCQcFS6mFYe/sl7/Q5XAQKq2rnG3DJCHBR22TiygJmMi7eF6bqEuiYvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6St1b1o4opRrG5+XbMZz9/UVH3Qaez2X854bSxUmZdg=;
- b=gWN/1A35Ey/HG/k2TX1T+68nINdaOb9Cd3whh46qjii390WiADYwsfQge2IDzGElG15VquP1CJ69Oqm8artKIamVYe0rqv20zDXy+mtsS8Yeywwv2/6uW70ruvz6XfWQR0G74xWu1fVP9QiK+r3/52EQU1oy7HnrWd8QgtMr6g5UbHWaYgkVc0jiFo8iTNFkbSgLUXG5p1qqAcIQlvjA4gKkouOjBAnfOgpP4ODazl9mFAT1sS68hPNMNihdTmErbdTBn5H5qD2KcOMkioYTgFiBs+/eRRXAgbIj5xz1E3AVaEDr0sXUxKoOhaZXHYQqvXm6cXp3EiPwPxT5r1vK4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6St1b1o4opRrG5+XbMZz9/UVH3Qaez2X854bSxUmZdg=;
- b=VredHeHbIBtGfPReY7DACMyYfY8bX0xZ5S7MpGcfs45SQxM0LLv3TJDRPrq1ohlIY/LceJ+EGI8Hd2+yjiTa0ka65VQ7DOuC6IIYjvEnIid3Bj8N700isLZaJzg8KO9peSNrNEXrDHWzHpdHP9oPKvGAekHCRUndMggjwEarrLY=
-Received: from SJ0PR03CA0203.namprd03.prod.outlook.com (2603:10b6:a03:2ef::28)
- by PH7PR12MB7257.namprd12.prod.outlook.com (2603:10b6:510:205::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.21; Wed, 26 Feb
- 2025 08:28:09 +0000
-Received: from MWH0EPF000A6730.namprd04.prod.outlook.com
- (2603:10b6:a03:2ef:cafe::b6) by SJ0PR03CA0203.outlook.office365.com
- (2603:10b6:a03:2ef::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.20 via Frontend Transport; Wed,
- 26 Feb 2025 08:28:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MWH0EPF000A6730.mail.protection.outlook.com (10.167.249.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8489.16 via Frontend Transport; Wed, 26 Feb 2025 08:28:09 +0000
-Received: from kaveri.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 26 Feb
- 2025 02:28:03 -0600
-From: Shivank Garg <shivankg@amd.com>
-To: <akpm@linux-foundation.org>, <willy@infradead.org>, <pbonzini@redhat.com>
-CC: <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <chao.gao@intel.com>, <seanjc@google.com>,
-	<ackerleytng@google.com>, <david@redhat.com>, <vbabka@suse.cz>,
-	<bharata@amd.com>, <nikunj@amd.com>, <michael.day@amd.com>,
-	<Neeraj.Upadhyay@amd.com>, <thomas.lendacky@amd.com>, <michael.roth@amd.com>,
-	<shivankg@amd.com>, <tabba@google.com>
-Subject: [PATCH v6 5/5] KVM: guest_memfd: selftests: add tests for mmap and NUMA policy support
-Date: Wed, 26 Feb 2025 08:25:49 +0000
-Message-ID: <20250226082549.6034-6-shivankg@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250226082549.6034-1-shivankg@amd.com>
-References: <20250226082549.6034-1-shivankg@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k5cPrCQt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740567079; x=1772103079;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EJRmzJTFJ8NjApj/tf5SNaCRDGeunDMttv5+CnuEb8g=;
+  b=k5cPrCQtbm/jffIW3KDqHF/oyqzlqS5GXl8q3iie70T7++8LodS10O3Q
+   oYsr34fgxZZQIqDnRh4QWyo9XakHu/KQYx0JjkJ56I5D57Xn6IzR7wqR5
+   1hstTm2rC9S7D96IlS6gPnppzM9aEkE4gpggZla6US7YuHkYHPUd96Fos
+   MNWTigfFc3AooKSEnPNPdR9rvZ0+WF0ptfRyMfjv5xx8KdU65YsvDjWci
+   XRDv4yvD8zzb/zsFPYIkCloe0O231gvULdg6uvlBZcL5xaTNG5tWupQT/
+   5WGhond0wxkp6ZYqBs92QF6f29ihW7fOKAWtMgi5Aa8yQ094ylSXPGJ6y
+   Q==;
+X-CSE-ConnectionGUID: cWA6IKRfTVarq1MFCJ8SLQ==
+X-CSE-MsgGUID: jkeoh7jHREuNM85vMqiVZg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41603140"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="41603140"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 02:51:18 -0800
+X-CSE-ConnectionGUID: Sp/DqdCSR8Glw85ZGwduvg==
+X-CSE-MsgGUID: ixcL/gLGQqim/7ZZJYfvsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; 
+   d="scan'208";a="147490774"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa002.jf.intel.com with ESMTP; 26 Feb 2025 02:51:09 -0800
+Date: Wed, 26 Feb 2025 18:49:18 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
+	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
+	Zhi Wang <zhiw@nvidia.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
+Message-ID: <Z77xrqLtJfB84dJF@yilunxu-OptiPlex-7050>
+References: <20250218111017.491719-1-aik@amd.com>
+ <20250218111017.491719-15-aik@amd.com>
+ <Z72GmixR6NkzXAl7@yilunxu-OptiPlex-7050>
+ <2fe6b3c6-3eed-424d-87f0-34c4e7e1c906@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6730:EE_|PH7PR12MB7257:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14a7f0b1-5924-4e3c-63cb-08dd563f807d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|82310400026|376014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?5zQan82jIdSJSDC+JD4CjI0VBR61V8Vqc3jXlcV4MiCx9wdNjTAyYQRHJyQl?=
- =?us-ascii?Q?ab4DcX8lVhgRwBmrA2I6FNBXRqtjnhO5YFxXn2gyT9qqT52bQceq4KT0llR1?=
- =?us-ascii?Q?JjuC1zuf7CZaHrUe6viBiMlfKwkeWRo0qFQASo6kR1x1xkJQyYpTIJgMAq9B?=
- =?us-ascii?Q?KBGV/5VEOU91rmco+4+jHC4JHrYTmbw2uakMW6OoKBNFm1xL+95W1Cm6osDh?=
- =?us-ascii?Q?HaU85GeLRJ0KAYxPelW7akJjtUCf0A/NLdc8rkxH81d/Ym5RjToXoW8l3zJB?=
- =?us-ascii?Q?QOYJiAhuvI4dDG2R5kW3VPefZxZwEZCZ2YmNQqCqzkLLpASIp1g/TcvPQZW6?=
- =?us-ascii?Q?rwP++4yKMEbjN/h3iji8gw99Kft1G7273Sn/NNVjdS8Pva3+ORXMUV8MBmcZ?=
- =?us-ascii?Q?QaLFbrJ3KBdosct6aVKAH/XT+GYh5LPQEZQ0i/VxrXZvC3lO6uDNua3+2J7Q?=
- =?us-ascii?Q?YjoKCMOSjMzgkfmoheOeJiG6BMGE5M3ge7gGTphpMdkxL3CulZJtYQgpbxgC?=
- =?us-ascii?Q?tm4IDn8Phnx/iEW7OiQjL3ZsoQzp5XmQw2MQbP/IUMinmqr4tzZduhoPEXb2?=
- =?us-ascii?Q?nNxHeLO83c0iS8e7/fFkP1dAF7yFWBUunvjPqrVOEP4mhlXvRpSsyvj0HV1R?=
- =?us-ascii?Q?UFOk7lz/UnrFPAhLD9+6FW8/vTbNVx1lCo2pfOO+CcjEV3MlH2e1a687sHx5?=
- =?us-ascii?Q?95ka/MvBg5nIdmF4srUbljBtnY5oReuaw948rFzOuV/yNjWOPj8JpIx9MuWk?=
- =?us-ascii?Q?/4EhefLRuYKfG92/jE7xel8DlGAj+RuEy+D/c+N23RdMJEPL64t1m6UQP5th?=
- =?us-ascii?Q?BuPn22ijRmhwBAwiQgx3YypCWfty2kLSEqv7lVUe8xoqWex+0w7n1xgAcWTA?=
- =?us-ascii?Q?0UlTgUENRiuo4niXsiZKeEMBtKOXrThOynWwxoyqLVWU/gSwY7SmXJfJhH/p?=
- =?us-ascii?Q?0oJvDbsYc2tYZzblIfOvxdZZDmDVCkZQHH6hOeMcuVaS6UNDUC5m4bP3V9WK?=
- =?us-ascii?Q?uNfx6mFcEL3GrmZARL8GuF5tzUuPPAIvbRf1GvvvtOtnh2ySr1sGAi/SYJno?=
- =?us-ascii?Q?tzOIpnCynqf5jukbJNFe5HAMsDCU5/V9K2lgx9mNTqgfhyOrxHPpqCSe03MJ?=
- =?us-ascii?Q?HKwoVJIaYq91uL3u6Jy5IXJZvZyd/p6cHIc0ZL7EzeUDaXat9r5Oa7mworpJ?=
- =?us-ascii?Q?3V+abmh6+y2QVU5cjOZXShU1M8ojodmAFIRRsk2hPyX821BKjf/99arPd4mW?=
- =?us-ascii?Q?LxHDQ55dGEf9nSXAu+/2YmIlsh++qrQAXXos5zIPXzr1sQU3id+hlEOuDGhC?=
- =?us-ascii?Q?YJcnRMl1EzdxClTdwtPALHA1Flzoh4hOJDRt0j1CKh7F7DRYJWHIpUgabV1d?=
- =?us-ascii?Q?/GZxZmgiB+G5khi3QVAgITXBqHLRxU2k3jaFdfoKyDC4hfsAQCCp3sPkJFE2?=
- =?us-ascii?Q?3t5T3HV+B+8wpnpVcfibcMkB6BnU6Hn/KbJXsaFxP6OBIqIfwIlbTig0HPT7?=
- =?us-ascii?Q?/JkqpRMSfeAF44w=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(82310400026)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2025 08:28:09.3545
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14a7f0b1-5924-4e3c-63cb-08dd563f807d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A6730.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7257
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2fe6b3c6-3eed-424d-87f0-34c4e7e1c906@amd.com>
 
-Add tests for memory mapping and NUMA memory policy binding in
-guest_memfd. This extends the existing selftests by adding proper
-validation for:
-- Basic mmap() functionality
-- KVM GMEM set_policy and get_policy() vm_ops functionality using
-  mbind() and get_mempolicy()
-- NUMA policy application before and after memory allocation
+On Wed, Feb 26, 2025 at 11:12:32AM +1100, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 25/2/25 20:00, Xu Yilun wrote:
+> > On Tue, Feb 18, 2025 at 10:10:01PM +1100, Alexey Kardashevskiy wrote:
+> > > When a TDISP-capable device is passed through, it is configured as
+> > > a shared device to begin with. Later on when a VM probes the device,
+> > > detects its TDISP capability (reported via the PCIe ExtCap bit
+> > > called "TEE-IO"), performs the device attestation and transitions it
+> > > to a secure state when the device can run encrypted DMA and respond
+> > > to encrypted MMIO accesses.
+> > > 
+> > > Since KVM is out of the TCB, secure enablement is done in the secure
+> > > firmware. The API requires PCI host/guest BDFns, a KVM id hence such
+> > > calls are routed via IOMMUFD, primarily because allowing secure DMA
+> > > is the major performance bottleneck and it is a function of IOMMU.
+> > 
+> > I still have concern about the vdevice interface for bind. Bind put the
+> > device to LOCKED state, so is more of a device configuration rather
+> > than an iommu configuration. So seems more reasonable put the API in VFIO?
+> 
+> IOMMUFD means pretty much VFIO (in the same way "VFIO means KVM" as 95+% of
+> VFIO users use it from KVM, although VFIO works fine without KVM) so not
+> much difference where to put this API and can be done either way. VFIO is
 
-These tests help ensure NUMA support for guest_memfd works correctly.
+Er... I cannot agree. There are clear responsibilities for
+VFIO/IOMMUFD/KVM each. They don't overlap each other. So I don't think
+either way is OK. VFIO still controls the overall device behavior
+and it is VFIO's decision to hand over user DMA setup to IOMMUFD. IIUC
+that's why VFIO_DEVICE_ATTACH_IOMMUFD_PT should be a VFIO API.
 
-Signed-off-by: Shivank Garg <shivankg@amd.com>
----
- .../testing/selftests/kvm/guest_memfd_test.c  | 86 ++++++++++++++++++-
- 1 file changed, 82 insertions(+), 4 deletions(-)
+E.g. I don't think VFIO driver would expect its MMIO access suddenly
+failed without knowing what happened.
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index ce687f8d248f..b9c845cc41e0 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -13,9 +13,11 @@
- 
- #include <linux/bitmap.h>
- #include <linux/falloc.h>
-+#include <linux/mempolicy.h>
- #include <sys/mman.h>
- #include <sys/types.h>
- #include <sys/stat.h>
-+#include <sys/syscall.h>
- 
- #include "kvm_util.h"
- #include "test_util.h"
-@@ -34,12 +36,86 @@ static void test_file_read_write(int fd)
- 		    "pwrite on a guest_mem fd should fail");
- }
- 
--static void test_mmap(int fd, size_t page_size)
-+static void test_mmap(int fd, size_t page_size, size_t total_size)
- {
- 	char *mem;
- 
--	mem = mmap(NULL, page_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
--	TEST_ASSERT_EQ(mem, MAP_FAILED);
-+	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	TEST_ASSERT(mem != MAP_FAILED, "mmap should succeed");
-+	TEST_ASSERT(munmap(mem, total_size) == 0, "munmap should succeed");
-+}
-+
-+static void test_mbind(int fd, size_t page_size, size_t total_size)
-+{
-+	unsigned long nodemask = 1; /* nid: 0 */
-+	unsigned long maxnode = 8;
-+	unsigned long get_nodemask;
-+	int get_policy;
-+	void *mem;
-+	int ret;
-+
-+	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	TEST_ASSERT(mem != MAP_FAILED, "mmap for mbind test should succeed");
-+
-+	/* Test MPOL_INTERLEAVE policy */
-+	ret = syscall(__NR_mbind, mem, page_size * 2, MPOL_INTERLEAVE,
-+		      &nodemask, maxnode, 0);
-+	TEST_ASSERT(!ret, "mbind with INTERLEAVE to node 0 should succeed");
-+	ret = syscall(__NR_get_mempolicy, &get_policy, &get_nodemask,
-+		      maxnode, mem, MPOL_F_ADDR);
-+	TEST_ASSERT(!ret && get_policy == MPOL_INTERLEAVE && get_nodemask == nodemask,
-+		    "Policy should be MPOL_INTERLEAVE and nodes match");
-+
-+	/* Test basic MPOL_BIND policy */
-+	ret = syscall(__NR_mbind, mem + page_size * 2, page_size * 2, MPOL_BIND,
-+		      &nodemask, maxnode, 0);
-+	TEST_ASSERT(!ret, "mbind with MPOL_BIND to node 0 should succeed");
-+	ret = syscall(__NR_get_mempolicy, &get_policy, &get_nodemask,
-+		      maxnode, mem + page_size * 2, MPOL_F_ADDR);
-+	TEST_ASSERT(!ret && get_policy == MPOL_BIND && get_nodemask == nodemask,
-+		    "Policy should be MPOL_BIND and nodes match");
-+
-+	/* Test MPOL_DEFAULT policy */
-+	ret = syscall(__NR_mbind, mem, total_size, MPOL_DEFAULT, NULL, 0, 0);
-+	TEST_ASSERT(!ret, "mbind with MPOL_DEFAULT should succeed");
-+	ret = syscall(__NR_get_mempolicy, &get_policy, &get_nodemask,
-+		      maxnode, mem, MPOL_F_ADDR);
-+	TEST_ASSERT(!ret && get_policy == MPOL_DEFAULT && get_nodemask == 0,
-+		    "Policy should be MPOL_DEFAULT and nodes zero");
-+
-+	/* Test with invalid policy */
-+	ret = syscall(__NR_mbind, mem, page_size, 999, &nodemask, maxnode, 0);
-+	TEST_ASSERT(ret == -1 && errno == EINVAL,
-+		    "mbind with invalid policy should fail with EINVAL");
-+
-+	TEST_ASSERT(munmap(mem, total_size) == 0, "munmap should succeed");
-+}
-+
-+static void test_numa_allocation(int fd, size_t page_size, size_t total_size)
-+{
-+	unsigned long nodemask = 1;  /* Node 0 */
-+	unsigned long maxnode = 8;
-+	void *mem;
-+	int ret;
-+
-+	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	TEST_ASSERT(mem != MAP_FAILED, "mmap should succeed");
-+
-+	/* Set NUMA policy after allocation */
-+	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE, 0, page_size * 2);
-+	TEST_ASSERT(!ret, "fallocate with aligned offset and size should succeed");
-+	ret = syscall(__NR_mbind, mem, page_size * 2, MPOL_BIND, &nodemask,
-+		      maxnode, 0);
-+	TEST_ASSERT(!ret, "mbind should succeed");
-+
-+	/* Set NUMA policy before allocation */
-+	ret = syscall(__NR_mbind, mem + page_size * 2, page_size, MPOL_BIND,
-+		      &nodemask, maxnode, 0);
-+	TEST_ASSERT(!ret, "mbind should succeed");
-+	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE, page_size * 2, page_size * 2);
-+	TEST_ASSERT(!ret, "fallocate with aligned offset and size should succeed");
-+
-+	TEST_ASSERT(munmap(mem, total_size) == 0, "munmap should succeed");
- }
- 
- static void test_file_size(int fd, size_t page_size, size_t total_size)
-@@ -190,7 +266,9 @@ int main(int argc, char *argv[])
- 	fd = vm_create_guest_memfd(vm, total_size, 0);
- 
- 	test_file_read_write(fd);
--	test_mmap(fd, page_size);
-+	test_mmap(fd, page_size, total_size);
-+	test_mbind(fd, page_size, total_size);
-+	test_numa_allocation(fd, page_size, total_size);
- 	test_file_size(fd, page_size, total_size);
- 	test_fallocate(fd, page_size, total_size);
- 	test_invalid_punch_hole(fd, page_size, total_size);
--- 
-2.34.1
+> reasonable, the immediate problem is that IOMMUFD's vIOMMU knows the guest
+> BDFn (well, for AMD) and VFIO PCI does not.
 
+For Intel, it is host BDF. But I think this is TSM architecture
+difference that could be hidden in TSM framework. From TSM caller's POV,
+it could just be a magic number identifying the TDI.
+
+Back to your concern, I don't think it is a problem. From your patch,
+vIOMMU doesn't know the guest BDFn by nature, it is just the user
+stores the id in vdevice via iommufd_vdevice_alloc_ioctl(). A proper
+VFIO API could also do this work.
+
+I'm suggesting a VFIO API:
+
+/*
+ * @tdi_id: A TSM recognizable TDI identifier
+ *	    On input, user suggests the TDI identifier number for TSM.
+ *	    On output, TSM's decision of the TDI identifier number.
+ */
+struct vfio_pci_tsm_bind {
+	__u32 argsz;
+	__u32 flags;
+	__u32 tdi_id;
+	__u32 pad;
+};
+
+#define VFIO_DEVICE_TSM_BIND		_IO(VFIO_TYPE, VFIO_BASE + 22)
+
+I need the tdi_id as output cause I don't want any outside TSM user and
+Guest to assume what the TDI id should be.
+
+static int vfio_pci_ioctl_tsm_bind(struct vfio_pci_core_device *vdev,
+				   void __user *arg)
+{
+	unsigned long minsz = offsetofend(struct vfio_pci_tsm_bind, tdi_id);
+	struct pci_dev *pdev = vdev->pdev;
+	struct kvm *kvm = vdev->vdev.kvm;
+	struct vfio_pci_tsm_bind bind;
+
+	if (copy_from_user(&bind, arg, minsz))
+		return -EFAULT;
+
+	ret = pci_tsm_dev_bind(pdev, kvm, &bind.tdi_id);
+
+}
+
+A call to TSM makes TSM driver know the tdi_id and could find the real
+device inside TSM via tdi_id. Following TSM call could directly use
+tdi_id as parameter.
+
+The implementation is basically no difference from:
+
++       vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
++                                              IOMMUFD_OBJ_VDEVICE),
+
+The real concern is the device owner, VFIO, should initiate the bind.
+
+> 
+> 
+> > > Add TDI bind to do the initial binding of a passed through PCI
+> > > function to a VM. Add a forwarder for TIO GUEST REQUEST. These two
+> > > call into the TSM which forwards the calls to the PSP.
+> > > 
+> > > Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+> > > ---
+> > > 
+> > > Both enabling secure DMA (== "SDTE Write") and secure MMIO (== "MMIO
+> > > validate") are TIO GUEST REQUEST messages. These are encrypted and
+> > > the HV (==IOMMUFD or KVM or VFIO) cannot see them unless the guest
+> > > shares some via kvm_run::kvm_user_vmgexit (and then QEMU passes those
+> > > via ioctls).
+> > > 
+> > > This RFC routes all TIO GUEST REQUESTs via IOMMUFD which arguably should
+> > > only do so only for "SDTE Write" and leave "MMIO validate" for VFIO.
+> > 
+> > The fact is HV cannot see the guest requests, even I think HV never have
+> > to care about the guest requests. HV cares until bind, then no HV side
+> > MMIO & DMA access is possible, any operation/state after bind won't
+> > affect HV more. And HV could always unbind to rollback guest side thing.
+> > 
+> > That said guest requests are nothing to do with any host side component,
+> > iommu or vfio. It is just the message posting between VM & firmware. I
+> > suppose KVM could directly do it by calling TSM driver API.
+> 
+> No, it could not as the HV needs to add the host BDFn to the guest's request
+> before calling the firmware and KVM does not have that knowledge.
+
+I think if TSM has knowledge about tdi_id, KVM doesn't have to know host BDFn.
+Just let TSM handle the vendor difference. Not sure if this solves all
+the problem.
+
+> 
+> These guest requests are only partly encrypted as the guest needs
+> cooperation from the HV. The guest BDFn comes unencrypted from the VM to let
+> the HV find the host BDFn and do the bind.
+
+It is not about HV never touch any message content. It is about HV
+doesn't (and shouldn't, since some info is encrypted) influence any host
+behavior by executing guest request, so no need to route to any other
+component.
+
+Thanks,
+Yilun
+
+> 
+> Also, say, in order to enable MMIO range, the host needs to "rmpupdate"
+> MMIOs first (and then the firmware does "pvalidate") so it needs to know the
+> range which is in unencrypted part of guest request.
+> 
+> Here is a rough idea: https://github.com/aik/qemu/commit/f804b65aff5b
+> 
+> A TIO Guest request is made of:
+> - guest page with unencrypted header (msg type is essential) and encrypted
+> body for consumption by the firmware;
+> - a couple of 64bit bit fields and RAX/RBX/... in shared GHCB page.
+> 
+> Thanks,
+> 
+> > Thanks,
+> > Yilun
+> 
+> -- 
+> Alexey
+> 
