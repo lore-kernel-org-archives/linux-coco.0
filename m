@@ -1,223 +1,204 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2067.outbound.protection.outlook.com [40.107.236.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245AE14B965;
-	Thu, 27 Feb 2025 00:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740616429; cv=fail; b=Gu+dJ+HTqyAUqH24RSDeEghHC7l8/y74p2o+5s/Oeq6FUMi1hqKNH6ARXC4AWOq1dOv+DwlKXrf2LhUHrDu/O4PXvotuxmCO5LyWy2TWfzKC+RXgN6Z9lyb5pvk//+NA0eBht8+moWEfaz8+dStuNG3OhnwgtkLKEY9fytwyTb8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740616429; c=relaxed/simple;
-	bh=7DUQs0Ho3TPXYqgsvSWSfccSUGW8gNWC3Bt4Q25zdqY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Tq9W43d9mY6o4CG06ZKmNZSOUFr9fLseURmz83imjVNVSUbZxbVkfhSKv1zo2ATw3ND3nKAhTwB3Wgw/uF9346ETkYBS9vb7XzFfp6IKNVqDMKo8Q5mt4ETkmv3bTWLqcgmaN2OnVj4JGstOpj9ObivcaJwK2qADSISGvEcF6lw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qIeUc3xD; arc=fail smtp.client-ip=40.107.236.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0E31A4F2F
+	for <linux-coco@lists.linux.dev>; Thu, 27 Feb 2025 02:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740622745; cv=none; b=eIU4NApiqRjGA2zV6Shqi0hbrderXGeUhOzXLGr24cPqEyZCbomPKBe02kD6A6fr8ul+GOGX0G/sqHDvk0gmiXa5LkVE8gvgz+DT0RbgtHsVghFuW7v2AVCRNHK7lXwBhIhO5KsmtrHVqVTrcsblgtK5jiVQuFpXc7ysmybCzKw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740622745; c=relaxed/simple;
+	bh=6vzm1ly57iavrGyYCwy8YTCbhY8JsEYqKT94TS5Hqqk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=J7hLFez7WAaumj59oNhgKWfLI5tBoySUrMpO63Ljnl+OvXpY9AfFaaTQyG6rDu0IOmATfkttQkE5RssLtznM4PqIz9aEEluyQsa+Kx+2eotWI0w7Pz7fMcmQ/V6kkEvr4Uxyh/8wudtB7Qqh0bthYpMtMbL0fvEfuLRjGJFeIUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PyCGmm6G; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qIeUc3xD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KHbNxnpmx2WMdzFbb0S86CyPaSd/tr0D3GKDxDV8w+qDwB5MC4mZRbt6ZzOjKjK8qGCW9iRY6KeRg5g7SXDEycN3ybqPu22Wo1TQTuEnYNAhbPmK8MKGne2a1eDUeur8tZuvVQHCDb1CZR7aJTU/V7qNzFAVLJlHpmabmaTYMy5o79WXSGOFLosQAZnVcylRiBD/ilnrcaXkPumAvzjegrqkurGVY2e5u6F8KjBUP5xBg/Ylw7k2fZzoTdWCUKem0FxhiaDr4CPjxKiPijP42KkVlT4gWu6bt0MRkUvtsgQ6MWgGsUX3mv/s0QlUxCU1PohatMFlucEtcPFvfhL4eA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9tABq2iIKsp7aigREQL13bMpbZoZpUdcqxTePJGpGAE=;
- b=ohD+LAiFtfJtPt0WdNoR9NAcF1B5mhWILtWYOhwb+q8W7/a+aUjonuJ0bdInptrtaQEDM4fLNJyD9bOEDvwt1yhuq+ALbKJ9AfH14QGL1q3hXsN5Tl2fdyBceGzDGTGxYvLyIWIDKAIuM1R33B2S1OMcm8uRC2ySIR0o+cMGPMLQqPYBB27VlveGDEjWYxAtYYdrKg1SoYHbVzggqjdSZNHLjlmm75EbAE7zenEevKRnQzBGtPjqeZK/WSn9i766j66hgeu7NFUxPsTfa+CK55cSePei5CqZC2fqsBqSxNkD51zk5IuojQYxRGoGH3GbuouZ+1l3lbtzdAqeSn3jeQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9tABq2iIKsp7aigREQL13bMpbZoZpUdcqxTePJGpGAE=;
- b=qIeUc3xDoWl2nJBtiwnp+L4w+KCvqbxBZ4bN2FiKMs5Didv/72jJFRRZX93RQ8oLHQalsH+sUn9OKbZ2rOJP0hgQg8pz5cXfNeW0yrknZF1zYr8VKIkWXxeE2BDfsLJ5vH54ikx/MjCZOmNks9p6iZlqOnFS9h0Kf8diki+tq/s=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by IA1PR12MB6604.namprd12.prod.outlook.com (2603:10b6:208:3a0::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.18; Thu, 27 Feb
- 2025 00:33:44 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8466.016; Thu, 27 Feb 2025
- 00:33:44 +0000
-Message-ID: <433217be-55e3-477b-bc10-cf81f02ab21e@amd.com>
-Date: Thu, 27 Feb 2025 11:33:31 +1100
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
-Content-Language: en-US
-To: Jason Gunthorpe <jgg@ziepe.ca>, Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Dan Williams
- <dan.j.williams@intel.com>, Christoph Hellwig <hch@lst.de>,
- Nikunj A Dadhania <nikunj@amd.com>, Michael Roth <michael.roth@amd.com>,
- Vasant Hegde <vasant.hegde@amd.com>, Joao Martins
- <joao.m.martins@oracle.com>, Nicolin Chen <nicolinc@nvidia.com>,
- Lu Baolu <baolu.lu@linux.intel.com>,
- Steve Sistare <steven.sistare@oracle.com>, Lukas Wunner <lukas@wunner.de>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
- iommu@lists.linux.dev, linux-coco@lists.linux.dev, Zhi Wang
- <zhiw@nvidia.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250218111017.491719-1-aik@amd.com>
- <20250218111017.491719-15-aik@amd.com>
- <Z72GmixR6NkzXAl7@yilunxu-OptiPlex-7050>
- <2fe6b3c6-3eed-424d-87f0-34c4e7e1c906@amd.com>
- <Z77xrqLtJfB84dJF@yilunxu-OptiPlex-7050> <20250226131202.GH5011@ziepe.ca>
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <20250226131202.GH5011@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MEWP282CA0133.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:220:1d1::14) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PyCGmm6G"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2fe9527c041so1100160a91.0
+        for <linux-coco@lists.linux.dev>; Wed, 26 Feb 2025 18:19:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740622743; x=1741227543; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=st/MNJiEmtSZ09xGK+8+BbgbXd3TSC2HpMD5MWqL4Rs=;
+        b=PyCGmm6Gsh3ktXrO9y0rvWRyTvRVP588sMS338qynA7oMfeOvphlqb7d602mu9ut+8
+         amRBfF6D/zAOxMWGAirkTdezOSvL0v9bybb6nuvl5Bz+CoIEqBDLMQaNMHcwWxcBquaR
+         EQfwVNqC90LATGMuTZZiQopraupMmk5mpUfT7nWnZNSZaeLzy6dvfpGRNfe7jp73XF8F
+         3zYbRTX7mu3WKMGzgijTAO85v2SAnT7xUQ7vUyyB+T2L59DcsYpxpfiJvzK4I0WRjiLN
+         zR61gRtI6gZK3GAg9li5INtXHjp61HNdrh2QUhUS+ktKV/VNttUVbgtU7cz9HF1p81Gq
+         y86g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740622743; x=1741227543;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=st/MNJiEmtSZ09xGK+8+BbgbXd3TSC2HpMD5MWqL4Rs=;
+        b=v9gzxCKs1jJaaf2PEgPy4C61LQSl45QPnfXubpvd8bwA6NOSWW3n8CnfznXo3B6CiP
+         TG0Rapp0n39brQdZMmHz4U263MG96QXBmXqMLGMZSfg2u9BLP26a1RR8USDQ0CWBUQ8T
+         Z+2MUMuXZgQyC56fMwq2k/H7oogzwZ535uhxxqahqHSOMaVPju44ktDnK3b4WbJJfA73
+         feWNvk8mlUfVNWYBwsC+eql/PuxPFoZ+X9B77mos8NGhxBLbg3xmnsz4KRVCThG7l1Kx
+         Yi8PYHBZhGpAj7yyNedSj5UQQIi7NxMBHOJ3YKpf6o9482q4XPYPYqOPh+ztxReLIybj
+         LKIg==
+X-Forwarded-Encrypted: i=1; AJvYcCXIfEzsA+MoaRwFsWZ3t7wYleP3DO0iBIZu7JFFKOfFSZhopa0TrV00U3c/VcvFCW8rocc87lLL8fUy@lists.linux.dev
+X-Gm-Message-State: AOJu0YyRycyfAWakp9I0kPtzYdsK/P6f3vU7dUG0q/9NGTHJwJCCjl9l
+	RtrrwSS6RJU/NYJz9Zza/wKJ1veXIKvI9/5kTTVpyPVivqWISWM0WQKG2Mg01T/c0UO/AL/Vg3n
+	ufA==
+X-Google-Smtp-Source: AGHT+IH0Z5GBXLArvAZe/lakaosQcAMuaUE8ywgN1crYyvWwIhA/1v2sV6rL/y5U8JWXjzB9EKIe2Lk1Tz0=
+X-Received: from pjbqn6.prod.google.com ([2002:a17:90b:3d46:b0:2fc:201d:6026])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17cd:b0:2f9:c139:b61f
+ with SMTP id 98e67ed59e1d1-2fce78a3812mr44219981a91.14.1740622742780; Wed, 26
+ Feb 2025 18:19:02 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 26 Feb 2025 18:18:16 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|IA1PR12MB6604:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12b151fd-6d97-45ca-0d92-08dd56c66440
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?M01INlczaGV3aGxwUk1XRThkRVRsU3NudStJbUdxam1nTXpkbThHWEVPZi9N?=
- =?utf-8?B?Z09UQ0JEQTFxYnMzS0I5ZHY1NmMwZHFxVmUwZ1oyOTJ2UUJyVG8yQ3VuQS9v?=
- =?utf-8?B?M3NLaEZFdFBCZjk3R2d6U1R4bzc2T1NVakx3NDVhYlJ6ZzFqazdyOXEvcFVI?=
- =?utf-8?B?S2VSS09aVHdVazh2ekxabXoyV0paK3hnNXNsblEvUHBVdmxjS3FQWXZLY0ti?=
- =?utf-8?B?SlJEOFZKN1lrTk5qN3JYLzVWVVJQVHBvdUIxenp5RDQ3NlZSSGdNTU5tRFN5?=
- =?utf-8?B?eUd6azNOR2dxellxZFdVZlRFQ2g0QXg3OTFobitYSWNOOFhlQlRFcXZ0TEVx?=
- =?utf-8?B?SytWU3ZScHhnbXNCQnd2Mk9TTEF6L1k2OXh5NCszUml4cUdLRjlUVXR1QzIy?=
- =?utf-8?B?R1ZuL20rcHZzQ1cyWEZYZjNKaTNjT1VxNGZXTzhJL3ZqaG5ncjZZSEFLaHF5?=
- =?utf-8?B?OWUvbW02MFdVbWJhaFRRTWRiVU9PU0laZnZvMUE0Z2hkcUthSkhWbldpSWl6?=
- =?utf-8?B?WTNNdTZKeTFNZDkzMnJzd1FSRGlKZ0FzK0QySFBuc2pZcmwyMCtvQ1lHZGNM?=
- =?utf-8?B?U2Y4TXc2cUZvOVo5cm14S25VTCsrb2pXckZHZmt5em5Lb3dhWEV6MUgrWVJH?=
- =?utf-8?B?cU45dWJzdHNQN2xSN05WV0hBcVY1WkNKbml4bkxzMkNWZE1FRE12alFONEt0?=
- =?utf-8?B?WnVWZ1BCTWd0SVBXU2Z1N3dhZ0JTWVVCSzloT1lsdGF2dzRBaUpjbkRYMVht?=
- =?utf-8?B?anhtcWF6M0QveWVPdFgzSHNOM1VjTWRoeEtadkl0Z2dyZ1FxeE9QTVdvQ3dx?=
- =?utf-8?B?L2N5TXhTSEkyVnQzZnB5SGp4UGpCL3ZNNUwveXRUMGVMTTlPMnJ5SVc5TkIv?=
- =?utf-8?B?SDVTejhick5HT1NQbG92YVpYcEE2Z1crc3NWenplRHkwMnFNQVRwRjRSQ0J3?=
- =?utf-8?B?cjBidXJVS2NDVnl2NHk2Z1oyRnRWcXI1VG5md2grMWhONTZ2dGw4andWbWFG?=
- =?utf-8?B?NFhHQ1FpNzlkS1FQdnhFZDYybm5XZDlwaWFRZEJSaHovZ0cwTVZDNEZQOWlL?=
- =?utf-8?B?NVJFQmxQUWdFak5tUnViOURjSUtBZzV1MlhZeTdNMGFkNjM3Qy9PWEs4cm5O?=
- =?utf-8?B?Zkx1aVQvMWlFWm9VNXN6WXpGMitETEQ3YUpiV3R0QVRHY3FOT2Z0aWQyUjlM?=
- =?utf-8?B?TGNmMDJheDZIZEpDME5wZmdmSFNLTmlJZFl3alo5VlZyTHZob2Jtdzdtdjdj?=
- =?utf-8?B?YmlQbGlEajNOQXUzVzE0NElZcElFZDZTWnZVRzRlNlIzYjhzM1c2ZEFDUi9u?=
- =?utf-8?B?TEl1VzZzblFCc2NMTklsZ3pjWVI3RU13RlpaQkJ0ZGpOZWE3NTJxOFAwNFlQ?=
- =?utf-8?B?NzYwK3ZSVUNzSWxoYjc3N3puaG02Q3E0cm9QVjczNlVIdWowaTg4VFBhVExH?=
- =?utf-8?B?ZVZtUCtOKzBsYzlFQUhDTitzQk8zOU5WREFTZ0tjMGtyZ2h4ZWIwYlY3bmY0?=
- =?utf-8?B?aGxQZVdRYXVOZXdmWnFaM1hYcU5lL2wwUXcxMHNvUkZjd05WdXNNMVpsajBE?=
- =?utf-8?B?WkJWQm5FMkVDRG1BSkRBOWFWTytLclMvNGw4SFpaTjhwODdLUVEvdnRod2sw?=
- =?utf-8?B?VWxGNEt4akkvcERHMWNyN0JMM3Jsc3dsaDd5ejltVXkyaCtoeDIzcTBTYVA0?=
- =?utf-8?B?M3Nyb1dHYVptdEdRZ0JEMTFxa0NqZmVidkM3VXl1eTBBS1ViQ2Q4QmpYTkxm?=
- =?utf-8?B?R0szQWZYbTUyU1d1S2Zwb3NPTmNmWkZwQUtQR0x6d0NINlBHZ1Y5TlpWUENK?=
- =?utf-8?B?R3AvdkgrRlRSWW1GZzFkd3lLb2x6TkdZVFBsREZZdWIwODFjQ21kMVdwUThV?=
- =?utf-8?Q?zHIWbaTIQq2zk?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QVJEZm9xNEpQTTRPL3ZpRTlLRE5zc0U3RytCVTFmM3VWTXZBK2lUbFkzTGpm?=
- =?utf-8?B?bmZEa1ZEY3JFTUcrU2FEV3haYjZBUjI4bVA2TnR4cWJWRFl4MzlCWmNZK1hU?=
- =?utf-8?B?UUZ2WWtQS0cyVk52Y1poNTJTUVB0MkVxN1JwQlVkRW03TWt6MS9UaUlqVUZO?=
- =?utf-8?B?aWEzWVBBdk5oYk0vT1JqdzFLaHlTNStRRFl5eUluSG00Q09KQlBZY1k2SWxV?=
- =?utf-8?B?VUl6YVlpZG9HYzBvWEZRa1JFMEk0dnd1cVU0ZTRkc1VXcW5RYXFXOXhqMnh2?=
- =?utf-8?B?NmVZYmMzaDAvY25yc0w5VGNOZkZPcGxJWC9WNFp3Ukw4WGdFc2grZmJOQlJB?=
- =?utf-8?B?bjE0VG82WGtnMHBBaWx3bzlmUTdFMDdsUExvNW9EaE5OUUdGMEo2M3BDNmRP?=
- =?utf-8?B?WlVZd3g4MFhPdkZEUm14YVFkMlFUQ3dSVlZCR2l6b2VBaHBvT3o3TWVHbEh0?=
- =?utf-8?B?SVNVU2c0eUVQSnJaSnhwajhQQURqaFpWaEpndHNockQwWTdoUm1PYWtZTVRP?=
- =?utf-8?B?clR1Zkt4dCtJTE1aZmxqWWZRZzB4RHJiTEMzNHpzRnNuWkh1eUFrcndnNWdN?=
- =?utf-8?B?ZEtLUFRMTGF2M1BNRzg2a0l1YnRxRUJUZm5ReWpiYjIwQ0NFRHNPYkV4Y3BR?=
- =?utf-8?B?dVQ0c0ZaSWdRT1dXSSsrMDB4b3ErS21weTB1bkIyWmRtSUVLNUl0R003Zlhw?=
- =?utf-8?B?cVhDR3ltZTNTaS9WZENzQXhxeUswSFBvbFYwQlJySXJtcThYK0kwMnVCUmhF?=
- =?utf-8?B?L1R3Q0hmUTlvVHNMY3djV1E1ZmdQbnFjbTgyTS9Kb3BZbW1uQndXUEwyRDRY?=
- =?utf-8?B?MEtTN2ppNVd3TEJxQTQ0SnVwUjJoMTBsbllYN3d0cnIyZkJ5MXFrYk1NakN6?=
- =?utf-8?B?YTlDRzhzNzgxVmNMZDI4a0dxQ0dPK1BGRUlicVNPRTF4bXRTWnFzbjlUNWlT?=
- =?utf-8?B?K2I0eDNLWVJwSzkzRGMyYzRTQ2ozaldDSkp4bEhpcVNtY3RxcURGd1Bud3g2?=
- =?utf-8?B?dXhnMDlnVGtneDJuSUN5U0ZlMThFZHhBdU4zK1k5NitqbnJPbzJQbUp6eTZP?=
- =?utf-8?B?SmZFRytydzNjMUgzQkpZVFBzR1BxZ2tKblVJSks5eGNtNTQ1cWw3Rzd4RDU1?=
- =?utf-8?B?R0lnZGxFWTBVMmdKOXVtU0ZjMmVvV1Z4UXBDL0pvdkVLRmFWZVQ3bGdtRVUr?=
- =?utf-8?B?eFpJaVFvdDNyV1B0bW5VOU10aWFLM3ZnTFFsbU5UY0wzVzYvdllGYzRSdm5V?=
- =?utf-8?B?WjZDQnBKOFVCZDRaSFBQSUFyeDQ4WFVhUGFEaGp3aUNXbVBMaVFGVWdwMnls?=
- =?utf-8?B?cERScllsckpuZGZTcVpGQUFWdmRDVEQyWTFkSXFtM1Iycmo4d09Mc0pZNzZa?=
- =?utf-8?B?WmwyNGttTnlnMzBQdGpLMEJMdno5eGErTlZkUVJZYmlsV2VNdFhGOG9HMm4z?=
- =?utf-8?B?U0Rra2FVZ3ExT05PMmg4YzBoTEM1SUdaNkx3cXNWZ0I3ekk5RUJXZ00vRlZG?=
- =?utf-8?B?MG1GTVBTdlJjSkNmUjlFOGlzKzRpY1lCVmRCUW5tcFhsRjd4OGhLcDNlVjda?=
- =?utf-8?B?d0gyV1pDbUNyRFltckk0aGg1SGQxaklQZXlzRjJnalhKRUxQeTZZZmdkQVM2?=
- =?utf-8?B?ckJ2UjlsdEhpZm5xZWpGUDM0TFI5YU1HeXNhOUw0c0Z1dFdiK0tVSDdDWFBR?=
- =?utf-8?B?VW9nQ0d6SitYQ3d3aDRLQnFNdlMyS3dWQTlzS1g0MEpDMkRhS2doTC9uTXov?=
- =?utf-8?B?TGMyK0VDblVYODZRRkdFRTgrbFRKZ01NczUxQW9wUzg3U01ma09IdnBVdlB3?=
- =?utf-8?B?bVlQSXJEcUdKYzJQOU9haVFvTW1KeFRGUDM0cUxZaTRTeklqSnRlSHlaR3Nt?=
- =?utf-8?B?K2pPMEZmb2pSNGlJSlBtakJiYkpzbXJhcE9uN0VPVlZwc0N6bitHL0JSeHRI?=
- =?utf-8?B?Syt6TUFzTEYzRmZPcnRYUW4rZHhiWVZraEN1bkRWUkFnODVFWU9WaTZ4NllV?=
- =?utf-8?B?UUhTUkhIaUtPSE9nYUFmM21BOElLbEFxd1ZtK0wwTEVvL2M2R0lFMGFzVEFD?=
- =?utf-8?B?UlRWMDNDUzVWdkZvSlVhWjBNOHJZVVNEdGM0MVZSYTlzUi9LMWROZGRyVUlP?=
- =?utf-8?Q?yM/B5/+Zad87rVgsnSJFBPJYh?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12b151fd-6d97-45ca-0d92-08dd56c66440
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2025 00:33:44.5203
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L4ai6cqlyCKM8IYAWYq8U3XV5WyLnVA7suRhxgDpX7kOSjtlzTKLVNXt7GPLh61nZzdnt90B+1QiDIa/6O4QvA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6604
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.711.g2feabab25a-goog
+Message-ID: <20250227021855.3257188-1-seanjc@google.com>
+Subject: [PATCH v2 00/38] x86: Try to wrangle PV clocks vs. TSC
+From: Sean Christopherson <seanjc@google.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Juergen Gross <jgross@suse.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	John Stultz <jstultz@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+
+This... snowballed a bit.
+
+The bulk of the changes are in kvmclock and TSC, but pretty much every
+hypervisor's guest-side code gets touched at some point.  I am reaonsably
+confident in the correctness of the KVM changes.  For all other hypervisors,
+assume it's completely broken until proven otherwise.
+
+Note, I deliberately omitted:
+
+  Alexey Makhalov <alexey.amakhalov@broadcom.com>
+  jailhouse-dev@googlegroups.com
+
+from the To/Cc, as those emails bounced on the last version, and I have zero
+desire to get 38*2 emails telling me an email couldn't be delivered.
+
+The primary goal of this series is (or at least was, when I started) to
+fix flaws with SNP and TDX guests where a PV clock provided by the untrusted
+hypervisor is used instead of the secure/trusted TSC that is controlled by
+trusted firmware.
+
+The secondary goal is to draft off of the SNP and TDX changes to slightly
+modernize running under KVM.  Currently, KVM guests will use TSC for
+clocksource, but not sched_clock.  And they ignore Intel's CPUID-based TSC
+and CPU frequency enumeration, even when using the TSC instead of kvmclock.
+And if the host provides the core crystal frequency in CPUID.0x15, then KVM
+guests can use that for the APIC timer period instead of manually calibrating
+the frequency.
+
+Lots more background on the SNP/TDX motiviation:
+https://lore.kernel.org/all/20250106124633.1418972-13-nikunj@amd.com
+
+v2:
+ - Add struct to hold the TSC CPUID output. [Boris]
+ - Don't pointlessly inline the TSC CPUID helpers. [Boris]
+ - Fix a variable goof in a helper, hopefully for real this time. [Dan]
+ - Collect reviews. [Nikunj]
+ - Override the sched_clock save/restore hooks if and only if a PV clock
+   is successfully registered.
+ - During resome, restore clocksources before reading persistent time.
+ - Clean up more warts created by kvmclock.
+ - Fix more bugs in kvmclock's suspend/resume handling.
+ - Try to harden kvmclock against future bugs.
+
+v1: https://lore.kernel.org/all/20250201021718.699411-1-seanjc@google.com
+
+Sean Christopherson (38):
+  x86/tsc: Add a standalone helpers for getting TSC info from CPUID.0x15
+  x86/tsc: Add standalone helper for getting CPU frequency from CPUID
+  x86/tsc: Add helper to register CPU and TSC freq calibration routines
+  x86/sev: Mark TSC as reliable when configuring Secure TSC
+  x86/sev: Move check for SNP Secure TSC support to tsc_early_init()
+  x86/tdx: Override PV calibration routines with CPUID-based calibration
+  x86/acrn: Mark TSC frequency as known when using ACRN for calibration
+  clocksource: hyper-v: Register sched_clock save/restore iff it's
+    necessary
+  clocksource: hyper-v: Drop wrappers to sched_clock save/restore
+    helpers
+  clocksource: hyper-v: Don't save/restore TSC offset when using HV
+    sched_clock
+  x86/kvmclock: Setup kvmclock for secondary CPUs iff CONFIG_SMP=y
+  x86/kvm: Don't disable kvmclock on BSP in syscore_suspend()
+  x86/paravirt: Move handling of unstable PV clocks into
+    paravirt_set_sched_clock()
+  x86/kvmclock: Move sched_clock save/restore helpers up in kvmclock.c
+  x86/xen/time: Nullify x86_platform's sched_clock save/restore hooks
+  x86/vmware: Nullify save/restore hooks when using VMware's sched_clock
+  x86/tsc: WARN if TSC sched_clock save/restore used with PV sched_clock
+  x86/paravirt: Pass sched_clock save/restore helpers during
+    registration
+  x86/kvmclock: Move kvm_sched_clock_init() down in kvmclock.c
+  x86/xen/time: Mark xen_setup_vsyscall_time_info() as __init
+  x86/pvclock: Mark setup helpers and related various as
+    __init/__ro_after_init
+  x86/pvclock: WARN if pvclock's valid_flags are overwritten
+  x86/kvmclock: Refactor handling of PVCLOCK_TSC_STABLE_BIT during
+    kvmclock_init()
+  timekeeping: Resume clocksources before reading persistent clock
+  x86/kvmclock: Hook clocksource.suspend/resume when kvmclock isn't
+    sched_clock
+  x86/kvmclock: WARN if wall clock is read while kvmclock is suspended
+  x86/kvmclock: Enable kvmclock on APs during onlining if kvmclock isn't
+    sched_clock
+  x86/paravirt: Mark __paravirt_set_sched_clock() as __init
+  x86/paravirt: Plumb a return code into __paravirt_set_sched_clock()
+  x86/paravirt: Don't use a PV sched_clock in CoCo guests with trusted
+    TSC
+  x86/tsc: Pass KNOWN_FREQ and RELIABLE as params to registration
+  x86/tsc: Rejects attempts to override TSC calibration with lesser
+    routine
+  x86/kvmclock: Mark TSC as reliable when it's constant and nonstop
+  x86/kvmclock: Get CPU base frequency from CPUID when it's available
+  x86/kvmclock: Get TSC frequency from CPUID when its available
+  x86/kvmclock: Stuff local APIC bus period when core crystal freq comes
+    from CPUID
+  x86/kvmclock: Use TSC for sched_clock if it's constant and non-stop
+  x86/paravirt: kvmclock: Setup kvmclock early iff it's sched_clock
+
+ arch/x86/coco/sev/core.c           |   9 +-
+ arch/x86/coco/tdx/tdx.c            |  27 ++-
+ arch/x86/include/asm/kvm_para.h    |  10 +-
+ arch/x86/include/asm/paravirt.h    |  16 +-
+ arch/x86/include/asm/tdx.h         |   2 +
+ arch/x86/include/asm/tsc.h         |  20 +++
+ arch/x86/include/asm/x86_init.h    |   2 -
+ arch/x86/kernel/cpu/acrn.c         |   5 +-
+ arch/x86/kernel/cpu/mshyperv.c     |  69 +-------
+ arch/x86/kernel/cpu/vmware.c       |  11 +-
+ arch/x86/kernel/jailhouse.c        |   6 +-
+ arch/x86/kernel/kvm.c              |  39 +++--
+ arch/x86/kernel/kvmclock.c         | 260 +++++++++++++++++++++--------
+ arch/x86/kernel/paravirt.c         |  35 +++-
+ arch/x86/kernel/pvclock.c          |   9 +-
+ arch/x86/kernel/smpboot.c          |   2 +-
+ arch/x86/kernel/tsc.c              | 141 ++++++++++++----
+ arch/x86/kernel/x86_init.c         |   1 -
+ arch/x86/mm/mem_encrypt_amd.c      |   3 -
+ arch/x86/xen/time.c                |  13 +-
+ drivers/clocksource/hyperv_timer.c |  38 +++--
+ include/clocksource/hyperv_timer.h |   2 -
+ kernel/time/timekeeping.c          |   9 +-
+ 23 files changed, 487 insertions(+), 242 deletions(-)
 
 
-
-On 27/2/25 00:12, Jason Gunthorpe wrote:
-> On Wed, Feb 26, 2025 at 06:49:18PM +0800, Xu Yilun wrote:
-> 
->> E.g. I don't think VFIO driver would expect its MMIO access suddenly
->> failed without knowing what happened.
-> 
-> What do people expect to happen here anyhow? Do you still intend to
-> mmap any of the MMIO into the hypervisor? No, right? It is all locked
-> down?
-
-This patchset expects it to be mmap'able as this is how MMIO gets mapped 
-in the NPT and SEV-SNP still works with that (and updates the RMPs on 
-top), the host os is not expected to access these though. TDX will 
-handle this somehow different. Thanks,
-
-> 
-> So perhaps the answer is that the VFIO side has to put the device into
-> CC mode which disables MMAP/etc, then the viommu/vdevice iommufd
-> object can control it.
-> 
->> Back to your concern, I don't think it is a problem. From your patch,
->> vIOMMU doesn't know the guest BDFn by nature, it is just the user
->> stores the id in vdevice via iommufd_vdevice_alloc_ioctl(). A proper
->> VFIO API could also do this work.
-> 
-> We don't want duplication though. If the viommu/vdevice/vbdf are owned
-> and lifecycle controlled by iommufd then the operations against them
-> must go through iommufd and through it's locking regime.
->>
->> The implementation is basically no difference from:
->>
->> +       vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
->> +                                              IOMMUFD_OBJ_VDEVICE),
->>
->> The real concern is the device owner, VFIO, should initiate the bind.
-> 
-> There is a big different, the above has correct locking, the other
-> does not :)
-> 
-> Jason
-
+base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
 -- 
-Alexey
+2.48.1.711.g2feabab25a-goog
 
