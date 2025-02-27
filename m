@@ -1,86 +1,55 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7802222B7;
-	Thu, 27 Feb 2025 07:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AC82222A5
+	for <linux-coco@lists.linux.dev>; Thu, 27 Feb 2025 08:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740642544; cv=none; b=QHNobQBWMJU1l9aTMEn0IQ5a6o76kzn3JxruXADRTRsHtN9dS/I/SGKkaabTEY57PUYyHLUmDhQyfopl4r5W1xJm2rPn35zR2O8kMOwHCkb7nM7dM5yo8k1lcBjJG6aBozXy1lm0kyUQxuvHzwKgUI4cyVyTv2zlXwjwpdLlDGk=
+	t=1740645600; cv=none; b=Efb9pypcQleS2gxWE1pPXPNo/pz5YUcJhcZa1PXICILjuc3fU4Uv6sItGK9VH4HkvNXrOjpVE+X8Ja0G/Xsp+Ubbjc0LgDkRP9tEgk+Knz4J15S5JSphPT5MCwNJX83NBbPbJKCDqqfSjh4GsFfJYfkvYc07VHO6N8pPO8nEH/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740642544; c=relaxed/simple;
-	bh=8xHwxb7DULW5yuedeqj1TqfqkEO+Z4YwLcQFV1stEpA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=MpTcrh7lvl/+kEgMmTpHeek8+jumd7y8NJWx5vTPUWu6kwiyEBki2oh8mh9I854Pwv2XZoKy+otqrEeS78rSHoP/H3xcu2abEyvOFDP06mdEgmHBQpKjjDwMHf3ZWN0MSC823Rf1c0CFMlUfHZgfTse2+BCO8Vf9EvAU58PR/Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=j1XjA1dW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8ISW4tf/; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1740645600; c=relaxed/simple;
+	bh=y59QjIcLfjFjt1pNpO2eyc8kZZhyw3XsTR9ldS73Dc8=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jNPbamAZomOla8TNJG9+xL7rcwqaSKsLx3H16Ecu+4AfXBSCANOCe5MBnIaaUn26K5diAbWazpgsb667q8NUrFduPbiSvA6DsqBzFMd+KoBmtcEmPCuMifdZdBIzoUI+zV/+EursjDP9CBghfzMwNc5Pd5kueUhJilaCvxohIq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=quNnpsFH; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="j1XjA1dW";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8ISW4tf/"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740642533;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z/FiwpGgcFsUVJIrAAggZ118vbyRdPHUpVwLgvzzG6g=;
-	b=j1XjA1dW4vnGkpn5Ci9y75c6Hdtwk4+Ny32gBE+duhCt1GqH+SXgRR8OpfDqAuGbWuEt1h
-	5EJbYwhnGxs5hjLOxbM+6Emv5CZEuK3td6X14YzCv3acdSA9qJBj39CKJLgzNXURkKDViy
-	0iBhoMl/MyKy3kGACfuxeLZzn/9ezs2VF+nelJPTcZFERUxRkA/Z16PYeh4FqaYt+wCxMI
-	aXjwKb4z5MkbSu3pyzx965lwDghTQomZT81AkpHNuj9pZSh7BpG6U82ffo9q/wb1pqAdJA
-	tKWZyeKKyru4urnzo1wUAlcKzsUWT7XqFBVJHaYqHguCn3LQgZ2m5ojNvENTqw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740642533;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z/FiwpGgcFsUVJIrAAggZ118vbyRdPHUpVwLgvzzG6g=;
-	b=8ISW4tf/hrqDpFSd37qm+hMBh7bnHgcoCCi0Z02YB2HvefWAxjbmeiVp57WxbL7NKjJPKI
-	kpAAcrCDeSx49VDA==
-To: Sean Christopherson <seanjc@google.com>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Juergen Gross <jgross@suse.com>, "K. Y. Srinivasan"
- <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
- <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Ajay Kaher
- <ajay.kaher@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, Andy
- Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, John Stultz
- <jstultz@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, virtualization@lists.linux.dev,
- linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, Tom Lendacky
- <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>
-Subject: Re: [PATCH v2 24/38] timekeeping: Resume clocksources before
- reading persistent clock
-In-Reply-To: <20250227021855.3257188-25-seanjc@google.com>
-References: <20250227021855.3257188-1-seanjc@google.com>
- <20250227021855.3257188-25-seanjc@google.com>
-Date: Thu, 27 Feb 2025 08:48:53 +0100
-Message-ID: <87r03jeska.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="quNnpsFH"
+Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 374B143C0E;
+	Thu, 27 Feb 2025 09:39:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1740645591;
+	bh=y59QjIcLfjFjt1pNpO2eyc8kZZhyw3XsTR9ldS73Dc8=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=quNnpsFHNPc3gYg97mM/EsQCvbrbvOJPSheoHwaVP91BhtyiCbbe/2Kx5x+K4uA/s
+	 9TO4L/PppdXVLRJbsF6gH1T/lt10j5hVBGogaCRAJm1rGtoVQrDc6svelKuZcOy1Mg
+	 oeN2u8Jy0PJJmu4EQ3FGSVfotX/gg01vGWUWYbI8zaxveQb7XnYAqeZz3ohRJSDefS
+	 7RH4XVH2MUoJILfyQT1VRZmS/3mKMz+JGyjLpnCPqh/4SOfk+qyfiD8uNxJ1Uvlh3m
+	 LNaA1Xd/OQkH33KGjE+FT2MAqSMsNaebZw0OHH5FsZ9y1Q10pRyJ94n9igGdqtGU8b
+	 G+10mg7Sj7osQ==
+Date: Thu, 27 Feb 2025 09:39:50 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: Re: [svsm-devel] SVSM Development Call February 26th, 2025
+Message-ID: <Z8Ak1tgXN3vs1nUx@8bytes.org>
+References: <Z74zNJjPvsnSlotP@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z74zNJjPvsnSlotP@8bytes.org>
 
-On Wed, Feb 26 2025 at 18:18, Sean Christopherson wrote:
+Meeting minutes are now available here:
 
-> When resuming timekeeping after suspend, restore clocksources prior to
-> reading the persistent clock.  Paravirt clocks, e.g. kvmclock, tie the
-> validity of a PV persistent clock to a clocksource, i.e. reading the PV
-> persistent clock will return garbage if the underlying PV clocksource
-> hasn't been enabled.  The flaw has gone unnoticed because kvmclock is a
-> mess and uses its own suspend/resume hooks instead of the clocksource
-> suspend/resume hooks, which happens to work by sheer dumb luck (the
-> kvmclock resume hook runs before timekeeping_resume()).
->
-> Note, there is no evidence that any clocksource supported by the kernel
-> depends on a persistent clock.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+	https://github.com/coconut-svsm/governance/pull/47
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Regards,
+
+	Joerg
