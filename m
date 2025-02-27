@@ -1,162 +1,250 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B5518FC84
-	for <linux-coco@lists.linux.dev>; Thu, 27 Feb 2025 22:06:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740693993; cv=none; b=nh491TsoVBJqMFxaLxfNq6ELVACQQ7sw6U53kPlqY5jCBHS4Hv1DELcxFfPU6xuP/nmyv/0RlKxCBd8YMfXXW2Xxmy9TLodpGAwM7AvbklOXPZsAT8ffs6zrEVhrXDu6e9s7QjyrSrosxEuh1J8k+WEH8tZuV1DFlz/HzHD7mkQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740693993; c=relaxed/simple;
-	bh=5Q9dXnV2OU7GlUBrJYgNHKi5rIDnxJLNS92uttMHlkQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q3P40mZ4ZW/xg+xKJcLLCH+bmUlC4sJ4nxpfLS3ucCgVMR0VUrJyYrA2Jx/qSUyHAxsmlIS/6zKpbFjfV+F9KzPY2bXxEGEX/HiyAPKy6GTLGacraJrhCl/sZuNQZXI81WqM9YpQza0ujd0ILm6t3rfqTkkPeUJFNj2lwgVkTkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EWJm9D1X; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E39C276D02
+	for <linux-coco@lists.linux.dev>; Thu, 27 Feb 2025 23:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740698885; cv=fail; b=bL3di+Ls1SMY/G3SzFTQhEI8EeoOpmCA6RDnLbsBj1XXRX8ip9xaKCwjZYN3n5+QONHp0JHw3gsYZTuidLGV2yrZby0z6vwhsYjHpbQPI3uCLoupaq3hfMH7XZEkN8fKgCGtd1hkIDgqOWTLa0j5kH6cQuJXr+XkZZg35RYB2Ag=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740698885; c=relaxed/simple;
+	bh=TxEeugAU7GfvOkb6XU9H8S+PCaU4IfyGBu94CFj3Fa4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Kklida99oNLv2Va5Db+z9LCO0cjCI4d1kKK0TG9+bMUtU2Nd4KxrosRe9qR4TWUfJ9WWU7a1RVMGUVq2ZMedF6xRpbZ1Ecx9rQ+f0lLuuq2K73L3b0xxZ1cGp9cJYe8TDngIPAiXgZMxKJnmKMtPCKDpKYj8MkPqs7+axS1vs/U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hhUDKW3M; arc=fail smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EWJm9D1X"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-471f1dd5b80so20351cf.1
-        for <linux-coco@lists.linux.dev>; Thu, 27 Feb 2025 14:06:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740693990; x=1741298790; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=exaIoQIbo874p+9B0DlQldEF7QdZ2qt5VRBLmXNOHJ4=;
-        b=EWJm9D1Xq7p1wmGHyibvCboQbq5P5rMq9cm4VHSXYiFoQYkS3XaPQwRwwfE0WciLrD
-         9VIFdMJTlWYAjKbtHH0OBGpsJIe7GrLCb57H5c7KYK1QxnmkBiVFoRLLV+lcKAGARBsH
-         8uc8OztvRwxcDdC3YnXblcO4BpoKE/8bnc+BopJ9WJ2eFCrFKrYLjG6SQORxYV0D2MeI
-         H+cHLYspt/OyKMu0IEkO9hLAsE/3Mebcw/+djQNOorThVTcCbGR0WVzAvJDESF28Hx2Z
-         1ePt5yhzkWsbzcK+aZrjFNMps6txlOm3v/UtMVfY+4RnHnTSSRPKT6Tdd+XV8q8vFUt4
-         ROoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740693990; x=1741298790;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=exaIoQIbo874p+9B0DlQldEF7QdZ2qt5VRBLmXNOHJ4=;
-        b=JKkHbyIzrBYTHE5WYmDjbYJkriWKEQebBYqyxmt+iozhZJTx91+cr86R2veIcbtr7k
-         VDjetwvtciWU24m62YqhHWw9axfOyxrt6VbsFHBy5J8dgwR5hTZveKHJ2AVyycIOnJNw
-         HBShZvix9BkT8EcGHnzp332azd4NEd0OlrwCdlmMEE+UuMg1E5TTswR4jIv/ppA+HWnH
-         uj9Wnsk2XWpPlmwwGYzBI16/ZfEhaPBETb0RyxryiGOJHC0CxVFpruGjm+odRfSgpGHN
-         SDKHPzCB4bCSIriojQPlb2zXcRLoUEPJJ/RLW8JPWZONgSPsTt1pDg4dvEvFQg7eFVLh
-         XiQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWbi/PkTe+IQLpCNp3UOszcfZpruPYxtFQJT3R3UtuIssERNbg8Iszij8ZXnQ4AE3D2xXdu4mGTpMu8@lists.linux.dev
-X-Gm-Message-State: AOJu0YwdOpqCFRA2CaZvJQs3R4UabAN0osaQcLjAHcCP/bf29So/MP8C
-	eQlyC9PxFRv5oTb55cDAaFgNlVhUeu+ItkoV312yS69ZWTNvKQgE9NIoIjrT+rp4JDYD0RhYR8i
-	KWVLy6JS2J9NHXdWCgOfQA1+/bNUYX0vRmP3N
-X-Gm-Gg: ASbGncutQ5AY+Tb0VKeOjDm29Sg732XGhklQXCh4/kfR1rwnMrEXNGX5oP1766aQHIA
-	xwclbvvF141Bne2O2RCoo6jC4PoCfiPYPlZWfj/mBVqV7KOUaSI36TJbNF9k0ypjucGfjVdi+Bd
-	VI+6ThFEqzK6DXfjZhldWFrWq/s08PxXPSufHiTg==
-X-Google-Smtp-Source: AGHT+IFpvl7aZXExG5hgmgTkv/JU8rJKQ04ySfj4maggC5ukM4GdGwcgmDYXokKyoHEJUAkBvZC3g4Y6GTYUgYzvl0w=
-X-Received: by 2002:a05:622a:1a8a:b0:471:eab0:ef21 with SMTP id
- d75a77b69052e-474bd0d397dmr161991cf.13.1740693990253; Thu, 27 Feb 2025
- 14:06:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hhUDKW3M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740698884; x=1772234884;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=TxEeugAU7GfvOkb6XU9H8S+PCaU4IfyGBu94CFj3Fa4=;
+  b=hhUDKW3MZy5+TpkUpgQYSl/a7XIrC+9rsBPMA4S5+Bj6Vc7MIqFREOcu
+   gpAhXY4B7/v6V5vxMrVOvYTJeq+gcerFaH4SXQEmUTJ90ovlTbjOamv+1
+   67Li52qbyb5bN8QGJTn3bgdskl/KThks84STVXjK3FNgCz3v+BN7rrgql
+   HLzGXv05YbbJ6L7fv8xg40aNt4oAs36sFt9KUx8zMec0SObLjjCZpQzrt
+   LMWaxxCD1AKJ0xxQmKiC5akj9sutwBNEEKwwkw0K1RX2hYhlqkNZTj1k8
+   I0M9ccnjlqgJLEHZQwiqosGQ31g6YryAJvgoYX0c+QPIaNqa5sKcNSj0G
+   Q==;
+X-CSE-ConnectionGUID: O6NFieuTSAaloWBW+sttBQ==
+X-CSE-MsgGUID: Na5bkcVBRzqGvsKaIHgQzg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="45264919"
+X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
+   d="scan'208";a="45264919"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 15:28:04 -0800
+X-CSE-ConnectionGUID: mw647Q+2SSqFx1q+N+sNDw==
+X-CSE-MsgGUID: 44yqdvYORUSi9R+l3QVjnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="154354508"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 27 Feb 2025 15:28:03 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Thu, 27 Feb 2025 15:28:02 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Thu, 27 Feb 2025 15:28:02 -0800
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.41) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 27 Feb 2025 15:28:01 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vN4Bo5t3OuRSL1FFKKw+AtLXE9Uja5G53j7G8/ClRJGlfXyQCz2xlGCKRjHP0/7gu4EBBleqNgpP5hHI6TQLBIUFEjPJBBxapSIvmsadvzURUcvz5WZqT8hTgAKMmVA7lu2XZZVHVsV+jUfELLEnFyqZyM4zEwDC+X0/ARkC1KNmwVrEZOUcCFip0I03HkPH3paoaePMxkrV3isl01nbQbitIseCabwpYCWSJ0prcXBx5p9OD69ufyQrVDbyeOO+8iyGDdpRI/XEUzTfTIEwnPECg+SboDobFGYyCguHqLvDG2yo2PmoHy1tYw0P7ieoboFtSopYc7uGjQxh+Brt1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oetTXHR4QuBLUHWOUOu9at1bdoICAKHorXcoJbLPahY=;
+ b=UVEpRts5+WfsjKoKvCXeSlai8Zc1+OXlq6pBhAFxGPsvauikON2byfqhrNxRMq9Apj0ysxqFBr2Xk2EHfuOi4QL7wAgN1iBVmUdBulvnw3LUU49StY9Bd/N1kvc3AkAGAJ6EcHEu5CCNO9SqkHiZ5kmmNdySUoQ1o0LJqSMD/vPe/qBs9iKC3FRCa2GseR/1gA05iCDdlRXsmkgkqEBByuuqu+Z3eyUoQ9TotQDMyiVygW5dupfsqpk6M59fg3v6DUu+c6YF/H5I3X6pZwSX9lJHioDkLSBAGFrNiuIRENuEZFeyywtqypaSnF5h9nlTQ3FrMk0cc1tGjRjKdJJzeQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by PH7PR11MB8571.namprd11.prod.outlook.com (2603:10b6:510:2fd::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.22; Thu, 27 Feb
+ 2025 23:27:18 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8489.018; Thu, 27 Feb 2025
+ 23:27:18 +0000
+Date: Thu, 27 Feb 2025 15:27:15 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Dan Williams
+	<dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, Bjorn Helgaas <bhelgaas@google.com>, "Lukas
+ Wunner" <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>, "Alexey
+ Kardashevskiy" <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+	<linux-pci@vger.kernel.org>, <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 11/11] samples/devsec: Add sample IDE establishment
+Message-ID: <67c0f4d357529_1a7729483@dwillia2-xfh.jf.intel.com.notmuch>
+References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
+ <173343745958.1074769.12896997365766327404.stgit@dwillia2-xfh.jf.intel.com>
+ <20250130133917.0000539c@huawei.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250130133917.0000539c@huawei.com>
+X-ClientProxiedBy: MW4PR03CA0156.namprd03.prod.outlook.com
+ (2603:10b6:303:8d::11) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250223-tdx-rtmr-v2-0-f2d85b0a5f94@intel.com>
-In-Reply-To: <20250223-tdx-rtmr-v2-0-f2d85b0a5f94@intel.com>
-From: Jianxiong Gao <jxgao@google.com>
-Date: Thu, 27 Feb 2025 14:06:18 -0800
-X-Gm-Features: AQ5f1JrgX1HCGO9jxqsT5pan3n3q7ChIHAUS1azxaXTIyAjrLA-6lzFR0u6BIGk
-Message-ID: <CAMGD6P2ewVZyZU26QRbhjn1ZEMHGnFhgCHq9dZyWw91R9jixnw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] tsm: Unified Measurement Register ABI for TVMs
-To: Cedric Xing <cedric.xing@intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Dan Middleton <dan.middleton@linux.intel.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH7PR11MB8571:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32b8d4ed-1962-4505-92f4-08dd578646e7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?qzFROl3gfbaKPnrEUjLu6/18OrHtz8WEg1FBWZUy81QFFKRGjozax96OL5fO?=
+ =?us-ascii?Q?zjJ4u/4Av9jr1mas/eJlv0RbZDeuZuJNvyyQTNPTy/TgLLh0Ei5ePpJK80P+?=
+ =?us-ascii?Q?QJNkY7t9rcB2GMrOPoBUvVwH/CEqoZ6zgnD1ixu9TxVDzurJY9pVpBo4b+zC?=
+ =?us-ascii?Q?4ANoX02t35w8Iq9wQOBzBWphtlrrJbLfuzemGsnVhVxv5Psm9vib+9ApW9JB?=
+ =?us-ascii?Q?39wtWNE9RFUJiy2Bfb92mocOe08aYKkqIuyuLD/w5/1f3vX8U5EW2kscZUe/?=
+ =?us-ascii?Q?HPHWzVkIocRsMBcUjwojXbZmGfkL2yIh5RQXvPCRBUwrsWupEo5/UV0+/9rv?=
+ =?us-ascii?Q?uxsDpyXlk1aXE30iR5T3V/5pM3XmPGFkbcR+IRP9tOFz+jg36VI/acFEDK7T?=
+ =?us-ascii?Q?tNjNWmDZAjnibG0LAG/PM5joxA3EjBHR1nwjr2D4pEDKYtGfuRfYDhwRcTow?=
+ =?us-ascii?Q?Q1wLZp32wmlIbL4fhiC+x6E45jPw3ToZ3mJoH3MoNQdtopG3HWONXG0Spv5Y?=
+ =?us-ascii?Q?Bjg7U7T+xptAIQn+CXbbp2hmezljHkZ5OztlUmfW0lPWnv3KBIT9Ka1Z6eqa?=
+ =?us-ascii?Q?719YR8xJataPPqvcRm2F0hDIVAX1jkx5lj7XEHpSzwBUwHy5xYPVXBVm7gEb?=
+ =?us-ascii?Q?s9TwdIp0ruy+GvJW0AJDSPkPdaQDHIvvJqBoiUirGZ7FxrlTN6fFRmZeKGmh?=
+ =?us-ascii?Q?U9/js4DYDG2iJ4FLETm7zDY8ayDeCOQ+LFuOJm2U8QrfNjmNUzh/UqTdbv9p?=
+ =?us-ascii?Q?tOPGmKSqyGDOrb41u0LcrvqpyiIuuK8+hDW4qFgQiHO3ondkdNkkTcdFZXUx?=
+ =?us-ascii?Q?WJ8d855h9KC1LzdlAhGs4QEtK/7dgBRVXs/NJTHmm4oLubW7TWqHeqOPVALw?=
+ =?us-ascii?Q?Xcmtq86axCTOxpbduaqcCm2Om34MPwvCXpMXsRKbbqw9pEVAIIGefVzXm+XI?=
+ =?us-ascii?Q?d4847TRV30KTu3NwHy2QnTuoaOsa5D4Oci5XWtKffITUIYTGt+RNoRTHQkeX?=
+ =?us-ascii?Q?oh63yMsk4rb453lW2iEwxAt3tkiS7sBRkoZ+zxacUlE9OEpu8LyYskjsdN3Y?=
+ =?us-ascii?Q?KufrOMOfykKhPX1ona4nn80F+pR3Y6GV6NJ0kXWQX4SR3TxxBYr/+dSIzJDT?=
+ =?us-ascii?Q?Qo5wh4rTaQHbFRYEp469Yq3t7m3LZ/MOTGufqJ5zFYFZKw8G/UVYTVETvyR9?=
+ =?us-ascii?Q?Yyb9VxelCyrm6JMpvpsctnQnl0xZ5J4Rkdd5PA8PbrK265/kuCquBV0lncHj?=
+ =?us-ascii?Q?xRq/aLRMjQrHDnx09PuPTLVTwWMMuFeyPEsPsSDoFo2Lci99UCkd/2rW41ft?=
+ =?us-ascii?Q?zf6Ib3N2C9D+Nhs+jfXq7bYxFv1Z8/Rl5fiICDLZnXecA0NpUMoJSYhGcofG?=
+ =?us-ascii?Q?lL5S+IdWhnOKPW8LD3s1VKFdk31q?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?dHAhmoJamGFRMmuuSpVkIl3od3YsOh5pncv+E7z3fnh1/WZeRidkQQ4V7+7U?=
+ =?us-ascii?Q?alGQBFFz3H6HshS0M70ePA4Bpo+i+WKbLo9NzFxnO5+77D6ULy5/2NT3QYDF?=
+ =?us-ascii?Q?OCrpFnDROX2S4GTapvry7TfqcQQrx7f58oDgmEUVU2RqSs5tApsS1Z5J1mhT?=
+ =?us-ascii?Q?7AHZE17Fbx/P0QBlUWfxpZ8rP8kyMpTJUVmfx1ecQmVEroJxrhL4+mZS88o3?=
+ =?us-ascii?Q?5TUcTTcvpAG/iaBFQ1Zdg3DX0Man7ed1BPQKiIifxqNHEH0btS435YBml/am?=
+ =?us-ascii?Q?tJxxJjXXWjBtJ4kmNRxtkgbGPNh5ob5F5Ck4lUmALYMv8irhKnTHHN8d0dg3?=
+ =?us-ascii?Q?2w0BXGUcWmeW6J53sD3hK1R9dGfFp7qZ2dEkpNeiMOCaqyTYOVz30LPLQPfr?=
+ =?us-ascii?Q?1aK2qUNrX9TCEy2mRefg1EXF5y3agfaMcH4qjwRq26Gwrp/i12ZnZTLRqFLj?=
+ =?us-ascii?Q?0bvGhVOseSMfyxKtPEDyJTITfz2Hs8FSX0tTMzIx28iMlzVNAQJZka73gBCO?=
+ =?us-ascii?Q?g21JZtecXaY7n5QG1XrVjwybFbc5l5GzGwLHMBtaVek6aZlX0PWuR2cPubAx?=
+ =?us-ascii?Q?sppeAz+deKPyWZi6pYo/5P47jJtTxjtiGGABvNCdedfLnc/hBOv2+UlDPcIQ?=
+ =?us-ascii?Q?rSI/MYhERzcNIezdDwa9PBZAnduR8D3yZZ7s29WvNG/dWSi896BECGEq/K4R?=
+ =?us-ascii?Q?APyvZanWAygF20UDDrSCm7i9u4JOTiaxbGDiTKC8kv2Z2Ups4lacCroEVslm?=
+ =?us-ascii?Q?+0sv7KA49C5jEXZXSu2X7+fOE4pnOCQ/QQq1fpEhnQVhKB95FMGSscJoP5i9?=
+ =?us-ascii?Q?uZIssMrOKTAFcg/GTuEZDqMGSX36VesTAyCqNSa/wnre1AJ0CIPFG+jpHFpb?=
+ =?us-ascii?Q?4qk3RYRh3v2FPF5ghhyja5NmXhBd+Sca4j9UUNNHTH3LsFipVCLi0BF8VQGK?=
+ =?us-ascii?Q?i7Yv+cdnlkxVPONc46x55snm1IuiTLLC1WVDhDxRTuh4o24KYQppftUqhaGv?=
+ =?us-ascii?Q?KYBENNGRGPnR+e98f2ZhnMEUvpERHTZzXtg1Y4LQ5Q8M57LhLLpxjbYfm2M1?=
+ =?us-ascii?Q?9V7F5CbqAkPYyyxsO+vCqXQje0tOc31AxyTasNsJbR6guxFCIu0q+Nog5jc0?=
+ =?us-ascii?Q?3FTgTwCfSwwpS19RpxBnzND9BBY+zhVv2nPp5csFzPANs2PlvMccLTRYBV4g?=
+ =?us-ascii?Q?fXBulAKYYJeBvo+uyXOBfHv+YZ3lckN4XPYAPj4Sy311h1DlCZAT3gWbxyNL?=
+ =?us-ascii?Q?lkWsa87Mgj6jiv6jK09x3ka+uxBc2VeWvoHcD2XffAwP5TTptkOJmMfvdkMA?=
+ =?us-ascii?Q?g8p28o2Dl1uUQIO9y3oUCUnb92EhbyY6MJXBupl8gOocrGjLnAtw/p2Q4MHj?=
+ =?us-ascii?Q?001HkR5w6Ap54yli2eh5XhpqSuQruMlrXhWKx73vxJAuxB8b2Z7P4bM2NRfg?=
+ =?us-ascii?Q?CYyj6h6Y0dZ18ocxq65WcXUuZQiURolWmBVjOqucEydYMbdxxFosxDtkXvua?=
+ =?us-ascii?Q?7jb+nkAykhZ+Zjve0M/tSwntz1OfnMLBlh6oFNkxnpEf796lhm7Bec7ZZE4/?=
+ =?us-ascii?Q?p156cYxGMmk9xiRdWV2vqGxEIr/Opsr6Yi1MPTbQj0iGIs3Zv+N/3h9lIBKR?=
+ =?us-ascii?Q?0Q=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32b8d4ed-1962-4505-92f4-08dd578646e7
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2025 23:27:18.5188
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kUHwCv3v9uW69RUG6ZouAV/36kbMV1he10YN/40j1hG7X+uGQY57ihvN9+evGPk6B7EGz28wLs2/OSS5Upie6RxNFfd+Owk1cvIV2TVDmiE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8571
+X-OriginatorOrg: intel.com
 
-On Sun, Feb 23, 2025 at 7:23=E2=80=AFPM Cedric Xing <cedric.xing@intel.com>=
- wrote:
->
-> NOTE: This patch series introduces the Measurement Register (MR) ABI, and
-> is a continuation of the RFC series on the same topic [1].
->
-> This patch series adds a unified interface to the TSM core, allowing TVM
-> (TEE VM) guest drivers to expose measurement registers (MRs) as attribute=
-s
-> (files) in sysfs. With this interface, applications can read and write
-> (extend) MRs like regular files, enabling usages like configuration
-> verification (e.g., verifying a TVM's configuration against digests store=
-d
-> in static/immutable MRs like MRCONFIGID on TDX or HOSTDATA on SEV) and
-> runtime measurements (e.g., extending the measurement of a container imag=
-e
-> to an RTMR before running it).
->
-> Patches included in this series:
->
-> - Patch 1 adds TSM APIs for TVM guest drivers to register/expose MRs
->   through sysfs.
-> - Patch 2 provides a sample module demonstrating the usage of the new TSM
->   APIs.
-> - The remaining patches update the TDX guest driver to expose TDX MRs
->   through the new TSM APIs.
->
-> [1]: https://lore.kernel.org/linux-coco/20241210-tsm-rtmr-v3-0-5997d4dbda=
-73@intel.com/
->
-> Signed-off-by: Cedric Xing <cedric.xing@intel.com>
-> ---
-> Changes in v2:
-> - Added TSM_MR_MAXBANKS Kconfig option
-> - Updated Kconfig dependency for TSM_REPORTS
-> - Updated comments in include/linux/tsm.h
-> - Updated drivers/virt/coco/tsm-mr.c to use `IS_BUILTIN()` for determinin=
-g
->   if static buffer addresses can be converted to GPAs by `virt_to_phys()`
-> - Renamed function `tdx_mcall_rtmr_extend()` -> `tdx_mcall_extend_rtmr()`
-> - Link to v1: https://lore.kernel.org/r/20250212-tdx-rtmr-v1-0-9795dc49e1=
-32@intel.com
->
-> ---
-> Cedric Xing (4):
->       tsm: Add TVM Measurement Register support
->       tsm: Add TSM measurement sample code
->       x86/tdx: Add tdx_mcall_extend_rtmr() interface
->       x86/tdx: Expose TDX MRs through TSM sysfs interface
->
->  Documentation/ABI/testing/sysfs-kernel-tsm |  20 ++
->  MAINTAINERS                                |   3 +-
->  arch/x86/coco/tdx/tdx.c                    |  36 +++
->  arch/x86/include/asm/shared/tdx.h          |   1 +
->  arch/x86/include/asm/tdx.h                 |   2 +
->  drivers/virt/coco/Kconfig                  |  17 +-
->  drivers/virt/coco/Makefile                 |   2 +
->  drivers/virt/coco/tdx-guest/Kconfig        |  24 +-
->  drivers/virt/coco/tdx-guest/tdx-guest.c    | 115 +++++++++
->  drivers/virt/coco/{tsm.c =3D> tsm-core.c}    |   6 +-
->  drivers/virt/coco/tsm-mr.c                 | 383 +++++++++++++++++++++++=
-++++++
->  include/linux/tsm.h                        |  65 +++++
->  samples/Kconfig                            |  13 +
->  samples/Makefile                           |   1 +
->  samples/tsm/Makefile                       |   2 +
->  samples/tsm/tsm_mr_sample.c                | 107 ++++++++
->  16 files changed, 789 insertions(+), 8 deletions(-)
-> ---
-> base-commit: d082ecbc71e9e0bf49883ee4afd435a77a5101b6
-> change-id: 20250209-tdx-rtmr-255479667146
->
-> Best regards,
-> --
-> Cedric Xing <cedric.xing@intel.com>
->
->
-Tested-by: Jianxiong Gao <jxgao@google.com>
-I have verified that the patchset works on Google Cloud.
+Jonathan Cameron wrote:
+> On Thu, 05 Dec 2024 14:24:19 -0800
+> Dan Williams <dan.j.williams@intel.com> wrote:
+> 
+> > Exercise common setup and teardown flows for a sample platform TSM
+> > driver that implements the TSM 'connect' and 'disconnect' flows.
+> > 
+> > This is both a template for platform specific implementations and a test
+> > case for the shared infrastructure.
+> > 
+> > Cc: Bjorn Helgaas <bhelgaas@google.com>
+> > Cc: Lukas Wunner <lukas@wunner.de>
+> > Cc: Samuel Ortiz <sameo@rivosinc.com>
+> > Cc: Alexey Kardashevskiy <aik@amd.com>
+> > Cc: Xu Yilun <yilun.xu@linux.intel.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Trivial comments inline.
+> 
+> >  static int devsec_tsm_connect(struct pci_dev *pdev)
+> >  {
+> > -	return -ENXIO;
+> > +	struct pci_ide *ide;
+> > +	int rc, stream_id;
+> > +
+> > +	stream_id =
+> > +		find_first_zero_bit(devsec_stream_ids, DEVSEC_NR_IDE_STREAMS);
+> > +	if (stream_id == DEVSEC_NR_IDE_STREAMS)
+> > +		return -EBUSY;
+> > +	set_bit(stream_id, devsec_stream_ids);
+> > +	ide = &devsec_streams[stream_id].ide;
+> > +	pci_ide_stream_probe(pdev, ide);
+> > +
+> > +	ide->stream_id = stream_id;
+> > +	rc = pci_ide_stream_setup(pdev, ide, PCI_IDE_SETUP_ROOT_PORT);
+> > +	if (rc)
+> > +		return rc;
+> > +	rc = tsm_register_ide_stream(pdev, ide);
+> > +	if (rc)
+> > +		goto err;
+> > +
+> > +	devsec_streams[stream_id].pdev = pdev;
+> > +	pci_ide_enable_stream(pdev, ide);
+> > +	return 0;
+> > +err:
+> > +	pci_ide_stream_teardown(pdev, ide, PCI_IDE_SETUP_ROOT_PORT);
+> 
+> I'd kind of expect to see more of what we have in disconnect here.
+> Like clearing the bit.
 
---=20
-Jianxiong Gao
+Yeah, that was a leak, now fixed and symmetric.
+
+> > +	return rc;
+> >  }
+> >  
+> >  static void devsec_tsm_disconnect(struct pci_dev *pdev)
+> >  {
+> > +	struct pci_ide *ide;
+> > +	int i;
+> > +
+> > +	for_each_set_bit(i, devsec_stream_ids, DEVSEC_NR_IDE_STREAMS)
+> > +		if (devsec_streams[i].pdev == pdev)
+> > +			break;
+> > +
+> > +	if (i >= DEVSEC_NR_IDE_STREAMS)
+> > +		return;
+> > +
+> > +	ide = &devsec_streams[i].ide;
+> > +	pci_ide_disable_stream(pdev, ide);
+> > +	tsm_unregister_ide_stream(ide);
+> > +	pci_ide_stream_teardown(pdev, ide, PCI_IDE_SETUP_ROOT_PORT);
+> > +	devsec_streams[i].pdev = NULL;
+> If this setting to NULL needs to be out of order wrt to what happens
+> in probe, add a comment.  If not move it to after pci_ide_disable_steram()
+
+Also fixed with the same symmetry as the connect unwind case.
