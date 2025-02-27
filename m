@@ -1,150 +1,86 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002591EB5ED
-	for <linux-coco@lists.linux.dev>; Thu, 27 Feb 2025 06:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7802222B7;
+	Thu, 27 Feb 2025 07:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740639178; cv=none; b=tTHkWnTipovTZz5BtorMSRzvW6lHODz93Li6G0Ou9ojtBstUDwX/5hw2qKneCBv3q41XH2PoOl81JwRDawg5kIwtIK+d2pmvLhqjyhnSNMjBKJ5LBl1JZnpY8LG7htgKPZpGqpICU3FUvokY64Z1YArLAJOnZTcLftNyl09jNNs=
+	t=1740642544; cv=none; b=QHNobQBWMJU1l9aTMEn0IQ5a6o76kzn3JxruXADRTRsHtN9dS/I/SGKkaabTEY57PUYyHLUmDhQyfopl4r5W1xJm2rPn35zR2O8kMOwHCkb7nM7dM5yo8k1lcBjJG6aBozXy1lm0kyUQxuvHzwKgUI4cyVyTv2zlXwjwpdLlDGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740639178; c=relaxed/simple;
-	bh=3iGW3fm0Z/AOAoj0gEvfG7tHoiHYesoOb9VZ3XDreoY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kG3VcVXRaq38IiTww1tCZN3NwdtJ+5+FM3cAp7bUzp7298C56HcO045S+Uzjs63XYh+SAvEq4wHgEaHEtWR3d83nW86MVdaFpRIjySwXEnTzXTmSv7DOHlK1dBmc3gXRv0vqdeiz4t/istG14Mhk3xfq0tWVllioFoaZ05GKHsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BPGluZte; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1740642544; c=relaxed/simple;
+	bh=8xHwxb7DULW5yuedeqj1TqfqkEO+Z4YwLcQFV1stEpA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=MpTcrh7lvl/+kEgMmTpHeek8+jumd7y8NJWx5vTPUWu6kwiyEBki2oh8mh9I854Pwv2XZoKy+otqrEeS78rSHoP/H3xcu2abEyvOFDP06mdEgmHBQpKjjDwMHf3ZWN0MSC823Rf1c0CFMlUfHZgfTse2+BCO8Vf9EvAU58PR/Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=j1XjA1dW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8ISW4tf/; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BPGluZte"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740639177; x=1772175177;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3iGW3fm0Z/AOAoj0gEvfG7tHoiHYesoOb9VZ3XDreoY=;
-  b=BPGluZteiq0UGOtoL8EbVheKZLZbsWujQA7lq6SIrE+qkNzuMEAsp5Fb
-   atNYuI6KT3QwJn24W4mlgbbjCQbdrA8MCVhea4R6Ho8sO2albM7qngCLx
-   tBF+PLvsPbH27t7huT36iqJI0unat32VJBfia5Uz11kFoWiicUy/PBt2u
-   why6FyJzb2ic6TxwWRjnyPqFfh0bY9HjeOxubMepdQOaYyycnwnWVGtTA
-   es7sQzR7+o83UIjMYcXqcNeUYa3+xqKnZdOEfjhRQYlnsR1nIybJI3Lj5
-   0RzzLAoqNfmRYzI8vJ6i+Ek4dP0DWHWyx6U2NZil7o3gq1GpJBkLatrt2
-   Q==;
-X-CSE-ConnectionGUID: L3gKqzAmTUOZfhlzabaGpA==
-X-CSE-MsgGUID: cYWobaO2Tf6v/SKwRIvm0w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="63983038"
-X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; 
-   d="scan'208";a="63983038"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 22:52:49 -0800
-X-CSE-ConnectionGUID: HjSS5j02Q6uaMoAGVbUdMw==
-X-CSE-MsgGUID: QZ6uRdMZRwe4W0k3303+9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; 
-   d="scan'208";a="117578649"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa009.fm.intel.com with ESMTP; 26 Feb 2025 22:52:47 -0800
-Date: Thu, 27 Feb 2025 14:50:54 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, gregkh@linuxfoundation.org
-Subject: Re: [RFC PATCH 7/7] tsm: Add secure SPDM support
-Message-ID: <Z8ALTvCGOKwvqZwO@yilunxu-OptiPlex-7050>
-References: <yq5a4j0gc3fp.fsf@kernel.org>
- <20250226121323.577328-1-aneesh.kumar@kernel.org>
- <20250226121323.577328-7-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="j1XjA1dW";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8ISW4tf/"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1740642533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z/FiwpGgcFsUVJIrAAggZ118vbyRdPHUpVwLgvzzG6g=;
+	b=j1XjA1dW4vnGkpn5Ci9y75c6Hdtwk4+Ny32gBE+duhCt1GqH+SXgRR8OpfDqAuGbWuEt1h
+	5EJbYwhnGxs5hjLOxbM+6Emv5CZEuK3td6X14YzCv3acdSA9qJBj39CKJLgzNXURkKDViy
+	0iBhoMl/MyKy3kGACfuxeLZzn/9ezs2VF+nelJPTcZFERUxRkA/Z16PYeh4FqaYt+wCxMI
+	aXjwKb4z5MkbSu3pyzx965lwDghTQomZT81AkpHNuj9pZSh7BpG6U82ffo9q/wb1pqAdJA
+	tKWZyeKKyru4urnzo1wUAlcKzsUWT7XqFBVJHaYqHguCn3LQgZ2m5ojNvENTqw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1740642533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z/FiwpGgcFsUVJIrAAggZ118vbyRdPHUpVwLgvzzG6g=;
+	b=8ISW4tf/hrqDpFSd37qm+hMBh7bnHgcoCCi0Z02YB2HvefWAxjbmeiVp57WxbL7NKjJPKI
+	kpAAcrCDeSx49VDA==
+To: Sean Christopherson <seanjc@google.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Juergen Gross <jgross@suse.com>, "K. Y. Srinivasan"
+ <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
+ <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Ajay Kaher
+ <ajay.kaher@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, Andy
+ Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, John Stultz
+ <jstultz@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, Tom Lendacky
+ <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>
+Subject: Re: [PATCH v2 24/38] timekeeping: Resume clocksources before
+ reading persistent clock
+In-Reply-To: <20250227021855.3257188-25-seanjc@google.com>
+References: <20250227021855.3257188-1-seanjc@google.com>
+ <20250227021855.3257188-25-seanjc@google.com>
+Date: Thu, 27 Feb 2025 08:48:53 +0100
+Message-ID: <87r03jeska.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250226121323.577328-7-aneesh.kumar@kernel.org>
+Content-Type: text/plain
 
-On Wed, Feb 26, 2025 at 05:43:23PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> Add secure doe mailbox support
-> 
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
->  drivers/pci/tsm.c       | 24 +++++++++++++++++++-----
->  include/linux/pci-tsm.h |  1 +
->  2 files changed, 20 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-> index 3251dc5eeef8..cb251497ca68 100644
-> --- a/drivers/pci/tsm.c
-> +++ b/drivers/pci/tsm.c
-> @@ -194,12 +194,16 @@ static void __pci_tsm_init(struct pci_dev *pdev)
->  		return;
->  
->  	mutex_init(&pci_tsm->lock);
-> -	pci_tsm->doe_mb = pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
-> +	pci_tsm->doe_mb 	= pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
->  					       PCI_DOE_PROTO_CMA);
-> -	pci_info(pdev, "Device security capabilities detected (%s%s%s)\n",
-> +	pci_tsm->doe_secure_mb 	= pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
-> +					       PCI_DOE_PROTO_SSESSION);
+On Wed, Feb 26 2025 at 18:18, Sean Christopherson wrote:
 
-Do you have 2 doe mb instances on PCI cap? And one only support CMA,
-another only support SSESSION?
+> When resuming timekeeping after suspend, restore clocksources prior to
+> reading the persistent clock.  Paravirt clocks, e.g. kvmclock, tie the
+> validity of a PV persistent clock to a clocksource, i.e. reading the PV
+> persistent clock will return garbage if the underlying PV clocksource
+> hasn't been enabled.  The flaw has gone unnoticed because kvmclock is a
+> mess and uses its own suspend/resume hooks instead of the clocksource
+> suspend/resume hooks, which happens to work by sheer dumb luck (the
+> kvmclock resume hook runs before timekeeping_resume()).
+>
+> Note, there is no evidence that any clocksource supported by the kernel
+> depends on a persistent clock.
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-If it is not the case, pci_tsm->doe_mb & pci_tsm->doe_secure_mb are
-likely the same one.
-
-Thanks,
-Yilun
-
-> +
-> +	pci_info(pdev, "Device security capabilities detected (%s%s%s%s)\n",
->  		 pdev->ide_cap ? " ide" : "",
->  		 tee_cap ? " tee" : "",
-> -		 pci_tsm->doe_mb ? " doe" : "");
-> +		 pci_tsm->doe_mb ? " doe" : "",
-> +		 pci_tsm->doe_secure_mb ? " secure-doe" : "");
->  
->  	pci_tsm->state = PCI_TSM_INIT;
->  	pci_tsm->dsm = no_free_ptr(dsm);
-> @@ -277,10 +281,20 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, enum pci_doe_proto type,
->  			 const void *req, size_t req_sz, void *resp,
->  			 size_t resp_sz)
->  {
-> -	if (!pdev->tsm || !pdev->tsm->doe_mb)
-> +	struct pci_doe_mb *mb = NULL;
-> +
-> +	if (!pdev->tsm)
-> +		return -ENXIO;
-> +
-> +	if (type == PCI_DOE_PROTO_CMA)
-> +		mb = pdev->tsm->doe_mb;
-> +	else if (type == PCI_DOE_PROTO_SSESSION)
-> +		mb = pdev->tsm->doe_secure_mb;
-> +
-> +	if (!mb)
->  		return -ENXIO;
->  
-> -	return pci_doe(pdev->tsm->doe_mb, PCI_VENDOR_ID_PCI_SIG, type, req,
-> +	return pci_doe(mb, PCI_VENDOR_ID_PCI_SIG, type, req,
->  		       req_sz, resp, resp_sz);
->  }
->  EXPORT_SYMBOL_GPL(pci_tsm_doe_transfer);
-> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
-> index 6ad2081a329d..815da9c3fc50 100644
-> --- a/include/linux/pci-tsm.h
-> +++ b/include/linux/pci-tsm.h
-> @@ -34,6 +34,7 @@ struct pci_tsm {
->  	enum pci_tsm_state state;
->  	struct mutex lock;
->  	struct pci_doe_mb *doe_mb;
-> +	struct pci_doe_mb *doe_secure_mb;
->  	struct pci_dsm *dsm;
->  };
->  
-> -- 
-> 2.43.0
-> 
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
