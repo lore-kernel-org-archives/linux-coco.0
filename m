@@ -1,107 +1,219 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E421DC997;
-	Thu, 27 Feb 2025 10:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEC81EEE6;
+	Thu, 27 Feb 2025 13:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740653706; cv=none; b=W9y3VVhZ9SFeBgbbSuZ7HWMBXLWyoFJOtBEG+N4v8LwMWvkok4YQ86um2ToxtgmVW8HwxM9djj8YlGjLDYz/GMw3kPjlBq9qeNW6vyFk9pT7muRnOegWzfAgxxFI456ynS7E6nX7fIFwknZbaNV6GjnisM5bd59R8GjX0SCbfwk=
+	t=1740662132; cv=none; b=Rm9pQHU4FOo1DDSr38NIRQvszgrFBpGDgAGdsHF619CzvrLOmUjnW01S7ryvz9rUQB/dE3H6cPMiqG5kzEFDOBrrzjSQuc5MlAgihutBMMgb8L8+NWpTZkAHHZoenJVvQHetuAe49rZu9/7NBGPUesFmVjezO4XFcoSB/iNGTo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740653706; c=relaxed/simple;
-	bh=au2uGxWas7Tjk9gJv8TRw03CCJBiNltN8pVoM9Agk/8=;
+	s=arc-20240116; t=1740662132; c=relaxed/simple;
+	bh=10uz/6GHPznmkoEebLO3Ry9z1Iblsqs6tsAuZLbb6pM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oWTuHc+OIty/b8Nrs0WuA4ea0coQa29T67/tmw9lb4lmVXauoUHCNVg1NooAmRzNwQFXH+0ETKh0d2ckNqhu/14xeEo/OEQR7lLoAnho6awiTL0M5P6ykRKSFE3KHDiGnoHn+K2MIXxbJaNkQopWcdHKljK83a5YzD1kvJxBxDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0075C4CEDD;
-	Thu, 27 Feb 2025 10:55:02 +0000 (UTC)
-Date: Thu, 27 Feb 2025 10:55:00 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Will Deacon <will@kernel.org>
-Cc: Steven Price <steven.price@arm.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH v7 09/11] arm64: Enable memory encrypt for Realms
-Message-ID: <Z8BEhK8P7FXgG11f@arm.com>
-References: <20241017131434.40935-1-steven.price@arm.com>
- <20241017131434.40935-10-steven.price@arm.com>
- <5aeb6f47-12be-40d5-be6f-847bb8ddc605@arm.com>
- <Z79lZdYqWINaHfrp@arm.com>
- <20250227002330.GA24899@willie-the-truck>
+	 Content-Type:Content-Disposition:In-Reply-To; b=GoTuIZQqFj0KVjbXRJ5AjgLJ6F0+3ERY371jS2t0wmZC035UQ+ktvdaxwNHJ7IUGIU8gkN5XtR1QGSVeVXGxRiuRnasBAl4OU2jM1uQIh68Pn44FnrYRdCByJJEEsPbt5mOTkjzeIS7qpS0K8su4hWzBxOtIv/uJhZUeK0ZtWIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LYFX06Ck; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LYFX06Ck"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740662131; x=1772198131;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=10uz/6GHPznmkoEebLO3Ry9z1Iblsqs6tsAuZLbb6pM=;
+  b=LYFX06CkwC+gqCyG3pnqEIG85r6LcJ44amr7ziTISBfi3LW9L/bRnNWh
+   T3YnJ8Dehcc5HrrwwVnapXBCmdnqi2n+4wXwAeM4Hb21F7NkmZDETjXwa
+   hy/pr5ROdtqXYbplzDyEc6F6vq6bSmWSCqbEEv+pZOOWt3qX/64Qh5WA0
+   hu2Y7h/JgUQKpPOfT+nft/rOLldWaZPdeH2bWQYPRebwSJtaPF+980hKi
+   U1LM9wbrZk0LGJydSvUHK4uJ3dkRbhXUcts5yOprY5k88RURTAWkaww08
+   hnnKCU3peWjioL3ppBxYiwl4fxc/XxF4CI3WD1Xr8BnvI5/AG7UNWhvXu
+   w==;
+X-CSE-ConnectionGUID: Uejk03lKSdyZRjU+hRxW6w==
+X-CSE-MsgGUID: yBJITMkJQO6SETeEkaJILA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="52945600"
+X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; 
+   d="scan'208";a="52945600"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 05:15:30 -0800
+X-CSE-ConnectionGUID: YSzANlW6TheqXNJb8PsEYQ==
+X-CSE-MsgGUID: IW3p7XzcS9++CSw8VxGIiQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="147939679"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 27 Feb 2025 05:15:24 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 8582D2D5; Thu, 27 Feb 2025 15:15:23 +0200 (EET)
+Date: Thu, 27 Feb 2025 15:15:23 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, John Stultz <jstultz@google.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>
+Subject: Re: [PATCH v2 06/38] x86/tdx: Override PV calibration routines with
+ CPUID-based calibration
+Message-ID: <buq5hn27q7r5ktb33rxejp7i54s22zqu3vw44bie6vzcouzzdc@btjgkdpoeclw>
+References: <20250227021855.3257188-1-seanjc@google.com>
+ <20250227021855.3257188-7-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250227002330.GA24899@willie-the-truck>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250227021855.3257188-7-seanjc@google.com>
 
-On Thu, Feb 27, 2025 at 12:23:31AM +0000, Will Deacon wrote:
-> On Wed, Feb 26, 2025 at 07:03:01PM +0000, Catalin Marinas wrote:
-> > On Wed, Feb 19, 2025 at 02:30:28PM +0000, Steven Price wrote:
-> > > > @@ -23,14 +25,16 @@ bool rodata_full __ro_after_init = IS_ENABLED(CONFIG_RODATA_FULL_DEFAULT_ENABLED
-> > > >  bool can_set_direct_map(void)
-> > > >  {
-> > > >  	/*
-> > > > -	 * rodata_full and DEBUG_PAGEALLOC require linear map to be
-> > > > -	 * mapped at page granularity, so that it is possible to
-> > > > +	 * rodata_full, DEBUG_PAGEALLOC and a Realm guest all require linear
-> > > > +	 * map to be mapped at page granularity, so that it is possible to
-> > > >  	 * protect/unprotect single pages.
-> > > >  	 *
-> > > >  	 * KFENCE pool requires page-granular mapping if initialized late.
-> > > > +	 *
-> > > > +	 * Realms need to make pages shared/protected at page granularity.
-> > > >  	 */
-> > > >  	return rodata_full || debug_pagealloc_enabled() ||
-> > > > -	       arm64_kfence_can_set_direct_map();
-> > > > +		arm64_kfence_can_set_direct_map() || is_realm_world();
-> > > >  }
-> > > 
-> > > Aneesh pointed out that this call to is_realm_world() is now too early 
-> > > since the decision to delay the RSI detection. The upshot is that a 
-> > > realm guest which doesn't have page granularity forced for other reasons 
-> > > will fail to share pages with the host.
-> > > 
-> > > At the moment I can think of a couple of options:
-> > > 
-> > > (1) Make rodata_full a requirement for realm guests. 
-> > >     CONFIG_RODATA_FULL_DEFAULT_ENABLED is already "default y" so this 
-> > >     isn't a big ask.
-> > > 
-> > > (2) Revisit the idea of detecting when running as a realm guest early. 
-> > >     This has the advantage of also "fixing" earlycon (no need to 
-> > >     manually specify the shared-alias of an unprotected UART).
-> > > 
-> > > I'm currently leaning towards (1) because it's the default anyway. But 
-> > > if we're going to need to fix earlycon (or indeed find other similar 
-> > > issues) then (2) would obviously make sense.
-> > 
-> > I'd go with (1) since the end result is the same even if we implemented
-> > (2) - i.e. we still avoid block mappings in realms.
+On Wed, Feb 26, 2025 at 06:18:22PM -0800, Sean Christopherson wrote:
+> When running as a TDX guest, explicitly override the TSC frequency
+> calibration routine with CPUID-based calibration instead of potentially
+> relying on a hypervisor-controlled PV routine.  For TDX guests, CPUID.0x15
+> is always emulated by the TDX-Module, i.e. the information from CPUID is
+> more trustworthy than the information provided by the hypervisor.
 > 
-> Is it, though? The config option is about the default behaviour but there's
-> still an "rodata=" option on the command-line.
+> To maintain backwards compatibility with TDX guest kernels that use native
+> calibration, and because it's the least awful option, retain
+> native_calibrate_tsc()'s stuffing of the local APIC bus period using the
+> core crystal frequency.  While it's entirely possible for the hypervisor
+> to emulate the APIC timer at a different frequency than the core crystal
+> frequency, the commonly accepted interpretation of Intel's SDM is that APIC
+> timer runs at the core crystal frequency when that latter is enumerated via
+> CPUID:
+> 
+>   The APIC timer frequency will be the processor’s bus clock or core
+>   crystal clock frequency (when TSC/core crystal clock ratio is enumerated
+>   in CPUID leaf 0x15).
+> 
+> If the hypervisor is malicious and deliberately runs the APIC timer at the
+> wrong frequency, nothing would stop the hypervisor from modifying the
+> frequency at any time, i.e. attempting to manually calibrate the frequency
+> out of paranoia would be futile.
+> 
+> Deliberately leave the CPU frequency calibration routine as is, since the
+> TDX-Module doesn't provide any guarantees with respect to CPUID.0x16.
+> 
+> Opportunistically add a comment explaining that CoCo TSC initialization
+> needs to come after hypervisor specific initialization.
+> 
+> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/coco/tdx/tdx.c    | 30 +++++++++++++++++++++++++++---
+>  arch/x86/include/asm/tdx.h |  2 ++
+>  arch/x86/kernel/tsc.c      |  8 ++++++++
+>  3 files changed, 37 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 32809a06dab4..42cdaa98dc5e 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -8,6 +8,7 @@
+>  #include <linux/export.h>
+>  #include <linux/io.h>
+>  #include <linux/kexec.h>
+> +#include <asm/apic.h>
+>  #include <asm/coco.h>
+>  #include <asm/tdx.h>
+>  #include <asm/vmx.h>
+> @@ -1063,9 +1064,6 @@ void __init tdx_early_init(void)
+>  
+>  	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
+>  
+> -	/* TSC is the only reliable clock in TDX guest */
+> -	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
+> -
+>  	cc_vendor = CC_VENDOR_INTEL;
+>  
+>  	/* Configure the TD */
+> @@ -1122,3 +1120,29 @@ void __init tdx_early_init(void)
+>  
+>  	tdx_announce();
+>  }
+> +
+> +static unsigned long tdx_get_tsc_khz(void)
+> +{
+> +	struct cpuid_tsc_info info;
+> +
+> +	if (WARN_ON_ONCE(cpuid_get_tsc_freq(&info)))
+> +		return 0;
+> +
+> +	lapic_timer_period = info.crystal_khz * 1000 / HZ;
+> +
+> +	return info.tsc_khz;
+> +}
+> +
+> +void __init tdx_tsc_init(void)
+> +{
+> +	/* TSC is the only reliable clock in TDX guest */
+> +	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
+> +	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+> +
+> +	/*
+> +	 * Override the PV calibration routines (if set) with more trustworthy
+> +	 * CPUID-based calibration.  The TDX module emulates CPUID, whereas any
+> +	 * PV information is provided by the hypervisor.
+> +	 */
+> +	tsc_register_calibration_routines(tdx_get_tsc_khz, NULL);
+> +}
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index b4b16dafd55e..621fbdd101e2 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -53,6 +53,7 @@ struct ve_info {
+>  #ifdef CONFIG_INTEL_TDX_GUEST
+>  
+>  void __init tdx_early_init(void);
+> +void __init tdx_tsc_init(void);
+>  
+>  void tdx_get_ve_info(struct ve_info *ve);
+>  
+> @@ -72,6 +73,7 @@ void __init tdx_dump_td_ctls(u64 td_ctls);
+>  #else
+>  
+>  static inline void tdx_early_init(void) { };
+> +static inline void tdx_tsc_init(void) { }
+>  static inline void tdx_safe_halt(void) { };
+>  
+>  static inline bool tdx_early_handle_ve(struct pt_regs *regs) { return false; }
+> diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+> index 6a011cd1ff94..472d6c71d3a5 100644
+> --- a/arch/x86/kernel/tsc.c
+> +++ b/arch/x86/kernel/tsc.c
+> @@ -32,6 +32,7 @@
+>  #include <asm/topology.h>
+>  #include <asm/uv/uv.h>
+>  #include <asm/sev.h>
+> +#include <asm/tdx.h>
+>  
+>  unsigned int __read_mostly cpu_khz;	/* TSC clocks / usec, not used here */
+>  EXPORT_SYMBOL(cpu_khz);
+> @@ -1563,8 +1564,15 @@ void __init tsc_early_init(void)
+>  	if (is_early_uv_system())
+>  		return;
+>  
+> +	/*
+> +	 * Do CoCo specific "secure" TSC initialization *after* hypervisor
+> +	 * platform initialization so that the secure variant can override the
+> +	 * hypervisor's PV calibration routine with a more trusted method.
+> +	 */
+>  	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
+>  		snp_secure_tsc_init();
+> +	else if (boot_cpu_has(X86_FEATURE_TDX_GUEST))
+> +		tdx_tsc_init();
 
-Yeah, that's why I suggested the pr_err() to only state that it cannot
-set the direct map and consider rodata=full rather than a config option.
-We already force CONFIG_STRICT_KERNEL_RWX.
+Maybe a x86_platform.guest callback for this?
 
-But we can also revisit the decision not to probe the RSI early.
 
 -- 
-Catalin
+  Kiryl Shutsemau / Kirill A. Shutemov
