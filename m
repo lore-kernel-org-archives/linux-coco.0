@@ -1,222 +1,344 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27729270047;
-	Thu, 27 Feb 2025 13:57:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E9B18C32C;
+	Thu, 27 Feb 2025 15:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740664650; cv=none; b=tprnNVC3R3gu0EJX9Fqwd6eECi7i+JC/7RMIRxeTvaKeVaS4RgayHi90POuPA5uiUQ5ScYGtJSGBQo/UKpMNflWEswt7mizW4MATWlmAaQXERyyETypTGdWnGapFbVpgyvfPIvj9EZTGcIP1MsS4L6cSS8fezw8Kcx8haJWXXXI=
+	t=1740671333; cv=none; b=JtD50AGjgFYGdWVcCcdriM4rBj8au+4PY1Uujs1xsSNL27NVQnje33xZI+QEbfYRsB8/bX/k4/kezKAfZcisqvoY2vTNxLfAyDdicrr9aovn6X6uHJqN3oq1QFE9Tj8NisFw6LLL1s6i47E7u0HFnisJaRS1HIsqpMhiIo/9ZSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740664650; c=relaxed/simple;
-	bh=nVOQTG+1AjyPHbVpv+mJt48NO8vRQ6pRUwN9R5/RxAk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=NmW3bB5ZS9F7Xdk/NeMAWGjlYzKNOeahsgj6EiZPMYZg9A09zj4gF3CVllPcEtW04Z6ux1Djwmm6yTEFhySezwS6Pq3flxQ3r7voybUuEXrpXCLQbov0q24OCcU4UcKZD/5j0xMU8kYBXXKCto36b9YHTlVi++nd4aVmbAWUPHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Id8+Gld8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740671333; c=relaxed/simple;
+	bh=0wcPQPb2fNJUO+Eb0zzXVRSq1giqQ/8OloyEuJ66EuU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d4deXHDcFBpobp+/StatMmZjnBOLpFE/aEKX46eMczNJJ9fuK4mYMEGut+Et+yivvdkt/9Ku+fUymKa7/gCDggnBADcFA/K0LAcwR6NRR9KtsBhyvrwgkVxqIq/NfLO4YSeBla6LLjNwixPeSJQdpj0P037FsTplzZZoUm2fJWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=bhB7HFJJ; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Id8+Gld8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83EFC4CEDD;
-	Thu, 27 Feb 2025 13:57:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740664649;
-	bh=nVOQTG+1AjyPHbVpv+mJt48NO8vRQ6pRUwN9R5/RxAk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Id8+Gld8p0AgGJ304FQvSuKf1AHG4L03TVgI03uIaMSKXlEVlZIfl22eTibsPVIhn
-	 z5PkmUiKs4Nt3mHhrb9fEOn2UOXQ6LH+rzy/FPNBdDgDuEpl49AI32MqWKZQ/fxT2D
-	 JUQFQJj4yajzP3hM+HfrLZSubMBxYGuzCeH1+nxaeaAvycwFJ04WporrZIf0Sl8SdC
-	 8+155v+VfqiztVoQicl2NpPcxuWT6uT0LH/Rzvo0y0sQzPnVsByf+7XMTYciZf0a2n
-	 mM7Roz+NIamyrNVhJQF/4+2SonZdBsAvrh0eP8fOU2YYmHe7c8h525RTNSDY/pgCwC
-	 vy4RAJ8swAH+g==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Subject: Re: [PATCH 05/11] PCI/TSM: Authenticate devices via platform TSM
-In-Reply-To: <Z8AHtcYgz2JukdfM@yilunxu-OptiPlex-7050>
-References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
- <173343742510.1074769.16552514658771224955.stgit@dwillia2-xfh.jf.intel.com>
- <efc5ba59-964d-4988-a412-47f5297fedd3@amd.com>
- <yq5aeczrww9j.fsf@kernel.org> <Z71umSkkyV0rAC25@yilunxu-OptiPlex-7050>
- <yq5a4j0gc3fp.fsf@kernel.org> <Z8AHtcYgz2JukdfM@yilunxu-OptiPlex-7050>
-Date: Thu, 27 Feb 2025 19:27:22 +0530
-Message-ID: <yq5aa5a78p8d.fsf@kernel.org>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="bhB7HFJJ"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C698740E0202;
+	Thu, 27 Feb 2025 15:48:47 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id BNABbrUU7UVH; Thu, 27 Feb 2025 15:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1740671322; bh=RfLqHPbgshcEvdoRTouaG0WtklGb1Cpk3e2N6dqyufI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bhB7HFJJTzYFiNtEQ7Ry4AOSt+vubFQzRFpl8pLH6lPdQY/vQZbECcxmJVRXwDmP+
+	 Ty0v2D0PZSVvAiKSlknFOnYeY6hmAdymwquUcvE8s+lnlKzU5oN6xiCKrGigmQHZlA
+	 HUKlzBCh2DSBLhqseypFt3nfP87QHViv09pPRZ9cStHVwu9Ra7yxH0iUukeCynPVfu
+	 pE0hWYT3MCM8WDmTZNIZ0pGVkm0lIbvDE+kkqcjQyVp3Q+8NOl6yqga2XySI3G2d8d
+	 Hk0iNfyWnrbHCnkOEWfR5Zo7Jgk0tbkq6z34pfF5c6TYjT3xUD+aZKxjk+XKGlnJtS
+	 F507b++2ioSacDGZCMftapo8KZpR9qMEs8SaaLG+bm2KBuqO1tJBr9kHV3xAJXLhGU
+	 MjN69DOjsUWpB369Cg+waI3WeAJbXZLnmOjtn1OwfrU9zgtbmwJmAv++V62xOSjkWu
+	 FzpO1lFiY2aGpM9CKQt/N1KqdBR7XbmF7R6/Qwrp3Oaz6e+cJUIMKND2uwUfkzvWgx
+	 F8mCAiny/KwMv+psAH0hvJIKcvgFo+z4ic3PdzQtIdB8K8LZy49D2Qdu5hBzdb22m7
+	 dL77myrMRKlvcfeXqdmanb+iCtPV1R+CJeNIDaG59kRGo9BR0uzrxrPQOuxkN0HhFH
+	 7ihXLCSdSnOlQm3BClQguJvM=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EBBA240E01A3;
+	Thu, 27 Feb 2025 15:48:06 +0000 (UTC)
+Date: Thu, 27 Feb 2025 16:48:00 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
+	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
+	Zhi Wang <zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: Re: [RFC PATCH v2 00/22] TSM: Secure VFIO, TDISP, SEV TIO
+Message-ID: <20250227154800.GBZ8CJMCH9wIptw1jd@fat_crate.local>
+References: <20250218111017.491719-1-aik@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250218111017.491719-1-aik@amd.com>
 
-Xu Yilun <yilun.xu@linux.intel.com> writes:
+FWIW,
 
-> On Wed, Feb 26, 2025 at 05:40:02PM +0530, Aneesh Kumar K.V wrote:
->> Xu Yilun <yilun.xu@linux.intel.com> writes:
->> 
->> > On Fri, Feb 21, 2025 at 01:43:28PM +0530, Aneesh Kumar K.V wrote:
->> >> Alexey Kardashevskiy <aik@amd.com> writes:
->> >> 
->> >> ....
->> >> 
->> >> >
->> >> > I am trying to wrap my head around your tsm. here is what I got in my tree:
->> >> > https://github.com/aik/linux/blob/tsm/include/linux/tsm.h
->> >> >
->> >> > Shortly:
->> >> >
->> >> > drivers/virt/coco/tsm.ko does sysfs (including "connect" and "bind" to 
->> >> > control and "certs"/"report" to attest) and implements tsm_dev/tsm_tdi, 
->> >> > it does not know pci_dev;
->> >> >
->> >> > drivers/pci/tsm-pci.ko creates/destroys tsm_dev/tsm_dev using tsm.ko;
->> >> >
->> >> > drivers/crypto/ccp/ccp.ko (the PSP guy) registers:
->> >> > - tsm_subsys in tsm.ko (which does "connect" and "bind" and
->> >> > - tsm_bus_subsys in tsm-pci.ko (which does "spdm_forward")
->> >> > ccp.ko knows about pci_dev and whatever else comes in the future, and 
->> >> > ccp.ko's "connect" implementation calls the IDE library (I am adopting 
->> >> > yours now, with some tweaks).
->> >> >
->> >> > tsm-dev and tsm-tdi embed struct dev each and are added as children to 
->> >> > PCI devices: no hide/show attrs, no additional TSM pointer in struct 
->> >> > device or pci_dev, looks like:
->> >> >
->> >> > aik@sc ~> ls  /sys/bus/pci/devices/0000:e1:04.0/tsm-tdi/tdi:0000:e1:04.0/
->> >> > device  power  subsystem  tsm_report  tsm_report_user  tsm_tdi_bind 
->> >> > tsm_tdi_status  tsm_tdi_status_user  uevent
->> >> >
->> >> > aik@sc ~> ls  /sys/bus/pci/devices/0000:e1:04.0/tsm_dev/
->> >> > device  power  subsystem  tsm_certs  tsm_cert_slot  tsm_certs_user 
->> >> > tsm_dev_connect  tsm_dev_status  tsm_meas  tsm_meas_user  uevent
->> >> >
->> >> > aik@sc ~> ls /sys/class/tsm/tsm0/
->> >> > device  power  stream0:0000:e1:00.0  subsystem  uevent
->> >> >
->> >> > aik@sc ~> ls /sys/class/tsm-dev/
->> >> > tdev:0000:c0:01.1  tdev:0000:e0:01.1  tdev:0000:e1:00.0
->> >> >
->> >> > aik@sc ~> ls /sys/class/tsm-tdi/
->> >> > tdi:0000:c0:01.1  tdi:0000:e0:01.1  tdi:0000:e1:00.0  tdi:0000:e1:04.0 
->> >> > tdi:0000:e1:04.1  tdi:0000:e1:04.2  tdi:0000:e1:04.3
->> >> >
->> >> >
->> >> > SPDM forwarding seems a bus-agnostic concept, "connect" is a PCI thing 
->> >> > but pci_dev is only needed for DOE/IDE.
->> >> >
->> >> > Or is separating struct pci_dev from struct device not worth it and most 
->> >> > of it should go to tsm-pci.ko? Then what is left for tsm.ko? Thanks,
->> >> >
->> >> 
->> >> For the Arm CCA DA, I have structured the flow as follows. I am
->> >> currently refining my changes to prepare them for posting. I am using
->> >> tsm-core in both the host and guest. There is no bind interface at the
->> >> sysfs level; instead, it is managed via the KVM ioctl
->> >> 
->> >> Host:
->> >> step 1.
->> >> echo ${DEVICE} > /sys/bus/pci/devices/${DEVICE}/driver/unbind
->> >> echo vfio-pci > /sys/bus/pci/devices/${DEVICE}/driver_override
->> >> echo ${DEVICE} > /sys/bus/pci/drivers_probe
->> >> 
->> >> step 2.
->> >> echo 1 > /sys/bus/pci/devices/$DEVICE/tsm/connect
->> >> 
->> >> step 3.
->> >> using VMM to make the new KVM_SET_DEVICE_ATTR ioctl
->> >> 
->> >> +		dev_num = vfio_devices[i].dev_hdr.dev_num;
->> >> +		/* kvmtool only do 0 domain, 0 bus and 0 function devices. */
->> >> +		guest_bdf = (0ULL << 32) | (0 << 16) | dev_num << 11 | (0 << 8);
->> >> +
->> >> +		struct kvm_vfio_tsm_bind param = {
->> >> +			.guest_rid = guest_bdf,
->> >> +			.devfd = vfio_devices[i].fd,
->> >> +		};
->> >> +		struct kvm_device_attr attr = {
->> >> +			.group = KVM_DEV_VFIO_DEVICE,
->> >> +			.attr = KVM_DEV_VFIO_DEVICE_TDI_BIND,
->> >> +			.addr = (__u64)&param,
->> >> +		};
->> >> +
->> >> +		if (ioctl(kvm_vfio_device, KVM_SET_DEVICE_ATTR, &attr)) {
->> >> +			pr_err("Failed KVM_SET_DEVICE_ATTR for KVM_DEV_VFIO_DEVICE");
->> >> +			return -ENODEV;
->> >> +		}
->> >> +
->> >
->> > I think bind (which brings device to a LOCKED state, no MMIO, no DMA)
->> > cannot be a driver agnostic behavior. So I think it should be a VFIO
->> > ioctl.
->> >
->> 
->> For the current CCA implementation bind is equivalent to VDEV_CREATE
->> which doesn't mark the device LOCKED. Marking the device LOCKED is
->> driven by the guest as shown in the steps below.
->
-> Could you elaborate why vdev create & LOCK can't be done at the same
-> time, when guest requests "lock"? Intel TDX also requires firmware calls
-> like tdi_create(alloc metadata) & tdi_bind(do LOCK), but I don't see
-> there is need to break them out in different phases.
->
+I really appreciate this mail which explains to unenlightened people like me
+what this is all about.
 
-Yes, that is possible and might be what I will end up doing. Right now
-I have kept the interface flexible enough as I am writing these changes.
-Device can possibly be presented in locked state to the guest.
+Especially the Acronyms, Flow, Specs pointers etc. I wish I could see this
+type of writeups in all patchsets' 0th messages, leading in the reader into
+the topic while not expecting the latter to actually *know* all those things
+because, d0h, it is obvious. You can read my mind, right? :-)
 
->
->> 
->> 
->> >> 
->> >> Now in the guest we follow the below steps
->> >> 
->> >> step 1:
->> >> echo ${DEVICE} > /sys/bus/pci/devices/${DEVICE}/driver/unbind
->> >> 
->> >> step 2: Move the device to TDISP LOCK state
->> >> echo 1 > /sys/bus/pci/devices/0000:00:00.0/tsm/connect
->> >> echo 3 > /sys/bus/pci/devices/0000:00:00.0/tsm/connect
->> >
->> > Reuse the 'connect' interface? I think it conceptually brings chaos. Is
->> > it better we create a new interface?
->> >
->> 
->> I was looking at converting these numbers to strings.
->> "1" -> connect
->
-> What does "connect" do in guest?
->
+So thanks for taking the time - it is very helpful!
 
-Nothing much for now. I added that to keep it consistent with host
-workflow. That is device transition from PCI_TSM_INIT -> PCI_TSM_CONNECT
--> PCI_TSM_BOUND -> PCI_TSM_LOCK -> PCI_TSM_RUN.
+On Tue, Feb 18, 2025 at 10:09:47PM +1100, Alexey Kardashevskiy wrote:
+> Here are some patches to enable SEV-TIO on AMD Turin. It's been a while
+> and got quiet and I kept fixing my tree and wondering if I am going in
+> the right direction.
+> 
+> SEV-TIO allow a guest to establish trust in a device that supports TEE
+> Device Interface Security Protocol (TDISP, defined in PCIe r6.0+) and
+> then interact with the device via private memory.
+> 
+> These include both guest and host support. QEMU also requires changes.
+> This is more to show what it takes on AMD EPYC to pass through TDISP
+> devices, hence "RFC".
+> 
+> Components affected:
+> KVM
+> IOMMUFD
+> CCP (AMD)
+> SEV-GUEST (AMD)
+> 
+> New components:
+> PCI IDE
+> PCI TSM
+> VIRT CoCo TSM
+> VIRT CoCo TSM-HOST
+> VIRT CoCo TSM-GUEST
+> 
+> 
+> This is based on a merge of Lukas'es CMA and 1 week old upstream + some of Dan's patches:
+> 
+> https://github.com/aik/linux/tree/tsm
+> https://github.com/aik/qemu/tree/tsm
+> 
+> Not using "[PATCH 03/11] coco/tsm: Introduce a class device for TEE Security Managers"
+> yet as may be (may be) my approach makes sense too. Tried to stick to the terminology.
+> I have done some changes on top of that, these are on github, not posting here as
+> I expect those to be addressed in that thread:
+> https://lore.kernel.org/linux-coco/173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com/T/
+> 
+> 
+> SEV TIO spec:
+> https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58271_0_70.pdf
+> Whitepaper:
+> https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/sev-tio-whitepaper.pdf
+> 
+> 
+> Acronyms:
+> 
+> TEE - Trusted Execution Environments, a concept of managing trust between the host
+> 	and devices
+> TSM - TEE Security Manager (TSM), an entity which ensures security on the host
+> PSP - AMD platform secure processor (also "ASP", "AMD-SP"), acts as TSM on AMD.
+> SEV TIO - the TIO protocol implemented by the PSP and used by the host
+> GHCB - guest/host communication block - a protocol for guest-to-host communication
+> 	via a shared page
+> TDISP - TEE Device Interface Security Protocol (PCIe).
+> 
+> 
+> Flow:
+> 
+> - Boot host OS, load CCP and PCI TSM (they will load TSM-HOST too)
+> - PCI TSM creates sysfs nodes in "coco/tsm: Add tsm and tsm-host modules" for all TDISP-capable devices
+> - Enable IDE via "echo 0 > /sys/bus/pci/devices/0000:e1:00.0/tsm-dev/tdev:0000:e1:00.0/tsm_dev_connect"
+> - Examine certificates/measurements/status via sysfs
+> 
+> - run an SNP VM _without_ VFIO PCI device, wait till it is booted
+> - hotplug a TDISP-capable PCI function, IOMMUFD must be used (not a VFIO container)
+> - QEMU pins all guest memory via IOMMUFD map-from-fd ioctl()
+> - the VM detects a TDISP-capable device, creates sysfs nodes in "coco/tsm: Add tsm-guest module"
+> - the VM loads the device driver which goes as usual till enabling bus master (for convinience)
+> - TSM-GUEST modules listens for bus master event (hacked in "pci: Add BUS_NOTIFY_PCI_BUS_MASTER event")
+> - TSM-GUEST requests TDI ("trusted PCI VF") info, traps into QEMU
+> - QEMU binds the VF to the Coco VM in the secure fw (AMD PSP) via IOMMUFD ioctl
+> - QEMU reads certificates/measurements/interface report from the hosts sysfs and writes to the guest memory
+> - the guest receives all the data, examines it (not in this series though)
+> - the guest enables secure DMA and MMIO by calling GHCB which traps into QEMU
+> - QEMU calls IOMMUFD ioctl to enable secure DMA and MMIO
+> - the guest can now stop sharing memory for DMA (and expect DMA to encrypted memory to work) and
+> start accessing validated MMIO with Cbit set.
+> 
+> 
+> 
+> Assumptions
+> 
+> This requires hotpligging into the VM vs passing the device via the command line as
+> VFIO maps all guest memory as the device init step which is too soon as
+> SNP LAUNCH UPDATE happens later and will fail if VFIO maps private memory before that.
+> 
+> This requires the BME hack as MMIO and BusMaster enable bits cannot be 0 after MMIO
+> validation is done and there are moments in the guest OS booting process when this
+> appens.
+> 
+> SVSM could help addressing these (not implemented).
+> 
+> QEMU advertises TEE-IO capability to the VM. An additional x-tio flag is added to
+> vfio-pci.
+> 
+> Trying to avoid the device driver modification as much as possible at
+> the moment as my test devices already exist in non-TDISP form and need to work without
+> modification. Arguably this may not be always the case.
+> 
+> 
+> TODOs
+> 
+> Deal with PCI reset. Hot unplug+plug? Power states too.
+> Actually collaborate with CMA.
+> Other tons of things.
+> 
+> 
+> The previous conversation is here:
+> https://lore.kernel.org/r/20240823132137.336874-1-aik@amd.com
+> 
+> 
+> Changes:
+> v2:
+> * redid the whole thing pretty much
+> * RMPUPDATE API for QEMU
+> * switched to IOMMUFD
+> * mapping guest memory via IOMMUFD map-from-fd
+> * marking resouces as validated
+> * more modules
+> * moved tons to the userspace (QEMU), such as TDI bind and GHCB guest requests
+> 
+> 
+> Sean, get_maintainer.pl produced more than 100 emails for the entire
+> patchset, should I have posted them all anyway?
+> 
+> Please comment. Thanks.
+> 
+> 
+> 
+> Alexey Kardashevskiy (22):
+>   pci/doe: Define protocol types and make those public
+>   PCI/IDE: Fixes to make it work on AMD SNP-SEV
+>   PCI/IDE: Init IDs on all IDE streams beforehand
+>   iommu/amd: Report SEV-TIO support
+>   crypto: ccp: Enable SEV-TIO feature in the PSP when supported
+>   KVM: X86: Define tsm_get_vmid
+>   coco/tsm: Add tsm and tsm-host modules
+>   pci/tsm: Add PCI driver for TSM
+>   crypto/ccp: Implement SEV TIO firmware interface
+>   KVM: SVM: Add uAPI to change RMP for MMIO
+>   KVM: SEV: Add TIO VMGEXIT
+>   iommufd: Allow mapping from guest_memfd
+>   iommufd: amd-iommu: Add vdevice support
+>   iommufd: Add TIO calls
+>   KVM: X86: Handle private MMIO as shared
+>   coco/tsm: Add tsm-guest module
+>   resource: Mark encrypted MMIO resource on validation
+>   coco/sev-guest: Implement the guest support for SEV TIO
+>   RFC: pci: Add BUS_NOTIFY_PCI_BUS_MASTER event
+>   sev-guest: Stop changing encrypted page state for TDISP devices
+>   pci: Allow encrypted MMIO mapping via sysfs
+>   pci: Define pci_iomap_range_encrypted
+> 
+>  drivers/crypto/ccp/Makefile                 |   13 +
+>  drivers/pci/Makefile                        |    3 +
+>  drivers/virt/coco/Makefile                  |    2 +
+>  drivers/virt/coco/guest/Makefile            |    3 +
+>  drivers/virt/coco/host/Makefile             |    6 +
+>  drivers/virt/coco/sev-guest/Makefile        |    2 +-
+>  arch/x86/include/asm/kvm-x86-ops.h          |    1 +
+>  arch/x86/include/asm/kvm_host.h             |    2 +
+>  arch/x86/include/asm/sev.h                  |   31 +
+>  arch/x86/include/uapi/asm/kvm.h             |   11 +
+>  arch/x86/include/uapi/asm/svm.h             |    2 +
+>  drivers/crypto/ccp/sev-dev-tio.h            |  111 ++
+>  drivers/crypto/ccp/sev-dev.h                |   19 +
+>  drivers/iommu/amd/amd_iommu_types.h         |    3 +
+>  drivers/iommu/iommufd/iommufd_private.h     |    3 +
+>  include/asm-generic/pci_iomap.h             |    4 +
+>  include/linux/amd-iommu.h                   |    2 +
+>  include/linux/device.h                      |    4 +
+>  include/linux/device/bus.h                  |    3 +
+>  include/linux/dma-direct.h                  |    8 +
+>  include/linux/ioport.h                      |    2 +
+>  include/linux/kvm_host.h                    |    2 +
+>  include/linux/pci-doe.h                     |    4 +
+>  include/linux/pci-ide.h                     |   19 +-
+>  include/linux/pci.h                         |    2 +-
+>  include/linux/psp-sev.h                     |   61 +-
+>  include/linux/swiotlb.h                     |    8 +
+>  include/linux/tsm.h                         |  315 ++++
+>  include/uapi/linux/iommufd.h                |   26 +
+>  include/uapi/linux/kvm.h                    |   24 +
+>  include/uapi/linux/pci_regs.h               |    5 +-
+>  include/uapi/linux/psp-sev.h                |    6 +-
+>  include/uapi/linux/sev-guest.h              |   39 +
+>  arch/x86/coco/sev/core.c                    |   19 +-
+>  arch/x86/kvm/mmu/mmu.c                      |    6 +-
+>  arch/x86/kvm/svm/sev.c                      |  205 +++
+>  arch/x86/kvm/svm/svm.c                      |   12 +
+>  arch/x86/mm/ioremap.c                       |    2 +
+>  arch/x86/mm/mem_encrypt.c                   |    6 +
+>  arch/x86/virt/svm/sev.c                     |   34 +-
+>  drivers/crypto/ccp/sev-dev-tio.c            | 1664 ++++++++++++++++++++
+>  drivers/crypto/ccp/sev-dev-tsm.c            |  709 +++++++++
+>  drivers/crypto/ccp/sev-dev.c                |   94 +-
+>  drivers/iommu/amd/init.c                    |    9 +
+>  drivers/iommu/amd/iommu.c                   |   60 +-
+>  drivers/iommu/iommufd/main.c                |    6 +
+>  drivers/iommu/iommufd/pages.c               |   88 +-
+>  drivers/iommu/iommufd/viommu.c              |  112 ++
+>  drivers/pci/doe.c                           |    2 -
+>  drivers/pci/ide.c                           |  103 +-
+>  drivers/pci/iomap.c                         |   24 +
+>  drivers/pci/mmap.c                          |   11 +-
+>  drivers/pci/pci-sysfs.c                     |   27 +-
+>  drivers/pci/pci.c                           |    3 +
+>  drivers/pci/proc.c                          |    2 +-
+>  drivers/pci/tsm.c                           |  233 +++
+>  drivers/virt/coco/guest/tsm-guest.c         |  326 ++++
+>  drivers/virt/coco/host/tsm-host.c           |  551 +++++++
+>  drivers/virt/coco/sev-guest/sev_guest.c     |   10 +
+>  drivers/virt/coco/sev-guest/sev_guest_tio.c |  738 +++++++++
+>  drivers/virt/coco/tsm.c                     |  638 ++++++++
+>  kernel/resource.c                           |   48 +
+>  virt/kvm/kvm_main.c                         |    6 +
+>  Documentation/virt/coco/tsm.rst             |  132 ++
+>  drivers/crypto/ccp/Kconfig                  |    2 +
+>  drivers/pci/Kconfig                         |   15 +
+>  drivers/virt/coco/Kconfig                   |   14 +
+>  drivers/virt/coco/guest/Kconfig             |    3 +
+>  drivers/virt/coco/host/Kconfig              |    6 +
+>  drivers/virt/coco/sev-guest/Kconfig         |    1 +
+>  70 files changed, 6614 insertions(+), 53 deletions(-)
+>  create mode 100644 drivers/virt/coco/host/Makefile
+>  create mode 100644 drivers/crypto/ccp/sev-dev-tio.h
+>  create mode 100644 drivers/crypto/ccp/sev-dev-tio.c
+>  create mode 100644 drivers/crypto/ccp/sev-dev-tsm.c
+>  create mode 100644 drivers/pci/tsm.c
+>  create mode 100644 drivers/virt/coco/guest/tsm-guest.c
+>  create mode 100644 drivers/virt/coco/host/tsm-host.c
+>  create mode 100644 drivers/virt/coco/sev-guest/sev_guest_tio.c
+>  create mode 100644 drivers/virt/coco/tsm.c
+>  create mode 100644 Documentation/virt/coco/tsm.rst
+>  create mode 100644 drivers/virt/coco/host/Kconfig
+> 
+> -- 
+> 2.47.1
+> 
 
-Relevant part of the TSM backend in guest
+-- 
+Regards/Gruss,
+    Boris.
 
-static int cca_tsm_connect(struct pci_dev *pdev, int new_state)
-{
-	unsigned long ret;
-	int connect_state;
-	struct pci_tsm *pci_tsm = pdev->tsm;
-
-	connect_state = pci_tsm->state;
-	switch (new_state) {
-	case PCI_TSM_CONNECT:
-		pci_tsm->state = PCI_TSM_CONNECT;
-		break;
-	case PCI_TSM_LOCKED:
-		if (connect_state != PCI_TSM_CONNECT)
-			return -EINVAL;
-
-		ret = rsi_device_lock(pdev);
-		if (ret) {
-			pci_err(pdev, "failed to lock the device (%lu)\n", ret);
-			return -EIO;
-		}
-		pci_tsm->state = PCI_TSM_LOCKED;
-		break;
-
-
--aneesh
+https://people.kernel.org/tglx/notes-about-netiquette
