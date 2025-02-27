@@ -1,119 +1,222 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C532E22615;
-	Thu, 27 Feb 2025 13:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27729270047;
+	Thu, 27 Feb 2025 13:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740662257; cv=none; b=mPYgadH+4VFq/1B3NvLBXK6Z0LYhl6wK7s8AJSTTdidISFTN2K+oofG5aVR9Ka5QKD6sfvSMJb36rsOD2U7uI6vy5tjxyufbInIUY/17dhvamTjCyOHduLITez/qIJunB5udsz63Tfh1Yzh0JGYP35KqzOObWQ/vNJcAix0qnbU=
+	t=1740664650; cv=none; b=tprnNVC3R3gu0EJX9Fqwd6eECi7i+JC/7RMIRxeTvaKeVaS4RgayHi90POuPA5uiUQ5ScYGtJSGBQo/UKpMNflWEswt7mizW4MATWlmAaQXERyyETypTGdWnGapFbVpgyvfPIvj9EZTGcIP1MsS4L6cSS8fezw8Kcx8haJWXXXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740662257; c=relaxed/simple;
-	bh=toSHPZ1YVa1gl//0kRiyLUjjHt9nXx8rDY0Mkemm0Mc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u5xZB48f6YgmP/Nc5+rxRM5+iMR0TQ7/MO3SIGzk+reQx4luNgP9b76WcHtJ45Gv9BDlnN5SatbcyLIDiD7tzSc7Sj1TPd/jKnb/Yje+cXexPhykInK3J1w/+JxCZlxT9eyuhiXLGTLfYiCD8AcmHaF9c5R2mZMrlF2MjmmhOyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KQQf0wJ/; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1740664650; c=relaxed/simple;
+	bh=nVOQTG+1AjyPHbVpv+mJt48NO8vRQ6pRUwN9R5/RxAk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NmW3bB5ZS9F7Xdk/NeMAWGjlYzKNOeahsgj6EiZPMYZg9A09zj4gF3CVllPcEtW04Z6ux1Djwmm6yTEFhySezwS6Pq3flxQ3r7voybUuEXrpXCLQbov0q24OCcU4UcKZD/5j0xMU8kYBXXKCto36b9YHTlVi++nd4aVmbAWUPHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Id8+Gld8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KQQf0wJ/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740662256; x=1772198256;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=toSHPZ1YVa1gl//0kRiyLUjjHt9nXx8rDY0Mkemm0Mc=;
-  b=KQQf0wJ/MoVgzYrn//vvFyFlDbMGCmtaatMheq1icKYMMl3WBPqWx4to
-   JgkxXQ/iOQu6LXdps7fqgAPUzpGy7XnqEPRhLMxH5WvuactwFDePLEeL4
-   reAzqlZUD4alXZwA1LCJ3A5RHcywkzTkVNuZMagSjXgQbWKtpOmmBuHLW
-   XZePs3hI00g5AXhySiw4YtRNVCqUO+04cfhX9ZDQWGmm8qC/zH7lznF+t
-   j/38W0Rd7nDlDm+AdLz39q32lF3VTycFacLJolB2/tbZSfeLYUwfpap38
-   +TSdilXJVSS/oGRKDpUhUxlzEjngjujMmQ1a9DOq9U56QU64bIGtgmJ9b
-   A==;
-X-CSE-ConnectionGUID: +aFVXJUxS7eyD4byPX+E6A==
-X-CSE-MsgGUID: 0B9vUW/AQ2KklOzYPCgG/Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="41433023"
-X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; 
-   d="scan'208";a="41433023"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 05:17:34 -0800
-X-CSE-ConnectionGUID: sGPlddMNR0G8ZteOUDv6gg==
-X-CSE-MsgGUID: QI2K/LkMQjKqVmN4JfZORA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="154208682"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa001.jf.intel.com with ESMTP; 27 Feb 2025 05:17:28 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id AD1B92D5; Thu, 27 Feb 2025 15:17:26 +0200 (EET)
-Date: Thu, 27 Feb 2025 15:17:26 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, John Stultz <jstultz@google.com>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>
-Subject: Re: [PATCH v2 30/38] x86/paravirt: Don't use a PV sched_clock in
- CoCo guests with trusted TSC
-Message-ID: <okuuhll3ymxlvno46dlimlpnkhg5vcxm2jiaew7uce4f35sps3@xaommgjd447m>
-References: <20250227021855.3257188-1-seanjc@google.com>
- <20250227021855.3257188-31-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Id8+Gld8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83EFC4CEDD;
+	Thu, 27 Feb 2025 13:57:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740664649;
+	bh=nVOQTG+1AjyPHbVpv+mJt48NO8vRQ6pRUwN9R5/RxAk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Id8+Gld8p0AgGJ304FQvSuKf1AHG4L03TVgI03uIaMSKXlEVlZIfl22eTibsPVIhn
+	 z5PkmUiKs4Nt3mHhrb9fEOn2UOXQ6LH+rzy/FPNBdDgDuEpl49AI32MqWKZQ/fxT2D
+	 JUQFQJj4yajzP3hM+HfrLZSubMBxYGuzCeH1+nxaeaAvycwFJ04WporrZIf0Sl8SdC
+	 8+155v+VfqiztVoQicl2NpPcxuWT6uT0LH/Rzvo0y0sQzPnVsByf+7XMTYciZf0a2n
+	 mM7Roz+NIamyrNVhJQF/4+2SonZdBsAvrh0eP8fOU2YYmHe7c8h525RTNSDY/pgCwC
+	 vy4RAJ8swAH+g==
+X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Subject: Re: [PATCH 05/11] PCI/TSM: Authenticate devices via platform TSM
+In-Reply-To: <Z8AHtcYgz2JukdfM@yilunxu-OptiPlex-7050>
+References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
+ <173343742510.1074769.16552514658771224955.stgit@dwillia2-xfh.jf.intel.com>
+ <efc5ba59-964d-4988-a412-47f5297fedd3@amd.com>
+ <yq5aeczrww9j.fsf@kernel.org> <Z71umSkkyV0rAC25@yilunxu-OptiPlex-7050>
+ <yq5a4j0gc3fp.fsf@kernel.org> <Z8AHtcYgz2JukdfM@yilunxu-OptiPlex-7050>
+Date: Thu, 27 Feb 2025 19:27:22 +0530
+Message-ID: <yq5aa5a78p8d.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250227021855.3257188-31-seanjc@google.com>
+Content-Type: text/plain
 
-On Wed, Feb 26, 2025 at 06:18:46PM -0800, Sean Christopherson wrote:
-> Silently ignore attempts to switch to a paravirt sched_clock when running
-> as a CoCo guest with trusted TSC.  In hand-wavy theory, a misbehaving
-> hypervisor could attack the guest by manipulating the PV clock to affect
-> guest scheduling in some weird and/or predictable way.  More importantly,
-> reading TSC on such platforms is faster than any PV clock, and sched_clock
-> is all about speed.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kernel/paravirt.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-> index a3a1359cfc26..c538c608d9fb 100644
-> --- a/arch/x86/kernel/paravirt.c
-> +++ b/arch/x86/kernel/paravirt.c
-> @@ -89,6 +89,15 @@ DEFINE_STATIC_CALL(pv_sched_clock, native_sched_clock);
->  int __init __paravirt_set_sched_clock(u64 (*func)(void), bool stable,
->  				      void (*save)(void), void (*restore)(void))
->  {
-> +	/*
-> +	 * Don't replace TSC with a PV clock when running as a CoCo guest and
-> +	 * the TSC is secure/trusted; PV clocks are emulated by the hypervisor,
-> +	 * which isn't in the guest's TCB.
-> +	 */
-> +	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC) ||
-> +	    boot_cpu_has(X86_FEATURE_TDX_GUEST))
-> +		return -EPERM;
-> +
+Xu Yilun <yilun.xu@linux.intel.com> writes:
 
-Looks like a call for generic CC_ATTR_GUEST_SECURE_TSC that would be true
-for TDX and SEV with CC_ATTR_GUEST_SNP_SECURE_TSC.
+> On Wed, Feb 26, 2025 at 05:40:02PM +0530, Aneesh Kumar K.V wrote:
+>> Xu Yilun <yilun.xu@linux.intel.com> writes:
+>> 
+>> > On Fri, Feb 21, 2025 at 01:43:28PM +0530, Aneesh Kumar K.V wrote:
+>> >> Alexey Kardashevskiy <aik@amd.com> writes:
+>> >> 
+>> >> ....
+>> >> 
+>> >> >
+>> >> > I am trying to wrap my head around your tsm. here is what I got in my tree:
+>> >> > https://github.com/aik/linux/blob/tsm/include/linux/tsm.h
+>> >> >
+>> >> > Shortly:
+>> >> >
+>> >> > drivers/virt/coco/tsm.ko does sysfs (including "connect" and "bind" to 
+>> >> > control and "certs"/"report" to attest) and implements tsm_dev/tsm_tdi, 
+>> >> > it does not know pci_dev;
+>> >> >
+>> >> > drivers/pci/tsm-pci.ko creates/destroys tsm_dev/tsm_dev using tsm.ko;
+>> >> >
+>> >> > drivers/crypto/ccp/ccp.ko (the PSP guy) registers:
+>> >> > - tsm_subsys in tsm.ko (which does "connect" and "bind" and
+>> >> > - tsm_bus_subsys in tsm-pci.ko (which does "spdm_forward")
+>> >> > ccp.ko knows about pci_dev and whatever else comes in the future, and 
+>> >> > ccp.ko's "connect" implementation calls the IDE library (I am adopting 
+>> >> > yours now, with some tweaks).
+>> >> >
+>> >> > tsm-dev and tsm-tdi embed struct dev each and are added as children to 
+>> >> > PCI devices: no hide/show attrs, no additional TSM pointer in struct 
+>> >> > device or pci_dev, looks like:
+>> >> >
+>> >> > aik@sc ~> ls  /sys/bus/pci/devices/0000:e1:04.0/tsm-tdi/tdi:0000:e1:04.0/
+>> >> > device  power  subsystem  tsm_report  tsm_report_user  tsm_tdi_bind 
+>> >> > tsm_tdi_status  tsm_tdi_status_user  uevent
+>> >> >
+>> >> > aik@sc ~> ls  /sys/bus/pci/devices/0000:e1:04.0/tsm_dev/
+>> >> > device  power  subsystem  tsm_certs  tsm_cert_slot  tsm_certs_user 
+>> >> > tsm_dev_connect  tsm_dev_status  tsm_meas  tsm_meas_user  uevent
+>> >> >
+>> >> > aik@sc ~> ls /sys/class/tsm/tsm0/
+>> >> > device  power  stream0:0000:e1:00.0  subsystem  uevent
+>> >> >
+>> >> > aik@sc ~> ls /sys/class/tsm-dev/
+>> >> > tdev:0000:c0:01.1  tdev:0000:e0:01.1  tdev:0000:e1:00.0
+>> >> >
+>> >> > aik@sc ~> ls /sys/class/tsm-tdi/
+>> >> > tdi:0000:c0:01.1  tdi:0000:e0:01.1  tdi:0000:e1:00.0  tdi:0000:e1:04.0 
+>> >> > tdi:0000:e1:04.1  tdi:0000:e1:04.2  tdi:0000:e1:04.3
+>> >> >
+>> >> >
+>> >> > SPDM forwarding seems a bus-agnostic concept, "connect" is a PCI thing 
+>> >> > but pci_dev is only needed for DOE/IDE.
+>> >> >
+>> >> > Or is separating struct pci_dev from struct device not worth it and most 
+>> >> > of it should go to tsm-pci.ko? Then what is left for tsm.ko? Thanks,
+>> >> >
+>> >> 
+>> >> For the Arm CCA DA, I have structured the flow as follows. I am
+>> >> currently refining my changes to prepare them for posting. I am using
+>> >> tsm-core in both the host and guest. There is no bind interface at the
+>> >> sysfs level; instead, it is managed via the KVM ioctl
+>> >> 
+>> >> Host:
+>> >> step 1.
+>> >> echo ${DEVICE} > /sys/bus/pci/devices/${DEVICE}/driver/unbind
+>> >> echo vfio-pci > /sys/bus/pci/devices/${DEVICE}/driver_override
+>> >> echo ${DEVICE} > /sys/bus/pci/drivers_probe
+>> >> 
+>> >> step 2.
+>> >> echo 1 > /sys/bus/pci/devices/$DEVICE/tsm/connect
+>> >> 
+>> >> step 3.
+>> >> using VMM to make the new KVM_SET_DEVICE_ATTR ioctl
+>> >> 
+>> >> +		dev_num = vfio_devices[i].dev_hdr.dev_num;
+>> >> +		/* kvmtool only do 0 domain, 0 bus and 0 function devices. */
+>> >> +		guest_bdf = (0ULL << 32) | (0 << 16) | dev_num << 11 | (0 << 8);
+>> >> +
+>> >> +		struct kvm_vfio_tsm_bind param = {
+>> >> +			.guest_rid = guest_bdf,
+>> >> +			.devfd = vfio_devices[i].fd,
+>> >> +		};
+>> >> +		struct kvm_device_attr attr = {
+>> >> +			.group = KVM_DEV_VFIO_DEVICE,
+>> >> +			.attr = KVM_DEV_VFIO_DEVICE_TDI_BIND,
+>> >> +			.addr = (__u64)&param,
+>> >> +		};
+>> >> +
+>> >> +		if (ioctl(kvm_vfio_device, KVM_SET_DEVICE_ATTR, &attr)) {
+>> >> +			pr_err("Failed KVM_SET_DEVICE_ATTR for KVM_DEV_VFIO_DEVICE");
+>> >> +			return -ENODEV;
+>> >> +		}
+>> >> +
+>> >
+>> > I think bind (which brings device to a LOCKED state, no MMIO, no DMA)
+>> > cannot be a driver agnostic behavior. So I think it should be a VFIO
+>> > ioctl.
+>> >
+>> 
+>> For the current CCA implementation bind is equivalent to VDEV_CREATE
+>> which doesn't mark the device LOCKED. Marking the device LOCKED is
+>> driven by the guest as shown in the steps below.
+>
+> Could you elaborate why vdev create & LOCK can't be done at the same
+> time, when guest requests "lock"? Intel TDX also requires firmware calls
+> like tdi_create(alloc metadata) & tdi_bind(do LOCK), but I don't see
+> there is need to break them out in different phases.
+>
 
->  	if (!stable)
->  		clear_sched_clock_stable();
->  
-> -- 
-> 2.48.1.711.g2feabab25a-goog
-> 
+Yes, that is possible and might be what I will end up doing. Right now
+I have kept the interface flexible enough as I am writing these changes.
+Device can possibly be presented in locked state to the guest.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+>
+>> 
+>> 
+>> >> 
+>> >> Now in the guest we follow the below steps
+>> >> 
+>> >> step 1:
+>> >> echo ${DEVICE} > /sys/bus/pci/devices/${DEVICE}/driver/unbind
+>> >> 
+>> >> step 2: Move the device to TDISP LOCK state
+>> >> echo 1 > /sys/bus/pci/devices/0000:00:00.0/tsm/connect
+>> >> echo 3 > /sys/bus/pci/devices/0000:00:00.0/tsm/connect
+>> >
+>> > Reuse the 'connect' interface? I think it conceptually brings chaos. Is
+>> > it better we create a new interface?
+>> >
+>> 
+>> I was looking at converting these numbers to strings.
+>> "1" -> connect
+>
+> What does "connect" do in guest?
+>
+
+Nothing much for now. I added that to keep it consistent with host
+workflow. That is device transition from PCI_TSM_INIT -> PCI_TSM_CONNECT
+-> PCI_TSM_BOUND -> PCI_TSM_LOCK -> PCI_TSM_RUN.
+
+Relevant part of the TSM backend in guest
+
+static int cca_tsm_connect(struct pci_dev *pdev, int new_state)
+{
+	unsigned long ret;
+	int connect_state;
+	struct pci_tsm *pci_tsm = pdev->tsm;
+
+	connect_state = pci_tsm->state;
+	switch (new_state) {
+	case PCI_TSM_CONNECT:
+		pci_tsm->state = PCI_TSM_CONNECT;
+		break;
+	case PCI_TSM_LOCKED:
+		if (connect_state != PCI_TSM_CONNECT)
+			return -EINVAL;
+
+		ret = rsi_device_lock(pdev);
+		if (ret) {
+			pci_err(pdev, "failed to lock the device (%lu)\n", ret);
+			return -EIO;
+		}
+		pci_tsm->state = PCI_TSM_LOCKED;
+		break;
+
+
+-aneesh
