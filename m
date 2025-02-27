@@ -1,55 +1,123 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AC82222A5
-	for <linux-coco@lists.linux.dev>; Thu, 27 Feb 2025 08:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2922B22A7F2;
+	Thu, 27 Feb 2025 10:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740645600; cv=none; b=Efb9pypcQleS2gxWE1pPXPNo/pz5YUcJhcZa1PXICILjuc3fU4Uv6sItGK9VH4HkvNXrOjpVE+X8Ja0G/Xsp+Ubbjc0LgDkRP9tEgk+Knz4J15S5JSphPT5MCwNJX83NBbPbJKCDqqfSjh4GsFfJYfkvYc07VHO6N8pPO8nEH/U=
+	t=1740653157; cv=none; b=n0BeoTklsOrL9+Yg2N1TfrWfnDiyDJ+u99t0Qw6Z1wbRVH0H9FTHnOKzCtBsZbrC8ClycV/aglck9yLPARW42cy87PupsjWV7S+21II8a30JczogBHSS7MSYhb04d4Z7G3UknSD6oy3Y7VbyR5apgiCwi7/qItZVIkp1oTUxEoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740645600; c=relaxed/simple;
-	bh=y59QjIcLfjFjt1pNpO2eyc8kZZhyw3XsTR9ldS73Dc8=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jNPbamAZomOla8TNJG9+xL7rcwqaSKsLx3H16Ecu+4AfXBSCANOCe5MBnIaaUn26K5diAbWazpgsb667q8NUrFduPbiSvA6DsqBzFMd+KoBmtcEmPCuMifdZdBIzoUI+zV/+EursjDP9CBghfzMwNc5Pd5kueUhJilaCvxohIq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=quNnpsFH; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="quNnpsFH"
-Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 374B143C0E;
-	Thu, 27 Feb 2025 09:39:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1740645591;
-	bh=y59QjIcLfjFjt1pNpO2eyc8kZZhyw3XsTR9ldS73Dc8=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=quNnpsFHNPc3gYg97mM/EsQCvbrbvOJPSheoHwaVP91BhtyiCbbe/2Kx5x+K4uA/s
-	 9TO4L/PppdXVLRJbsF6gH1T/lt10j5hVBGogaCRAJm1rGtoVQrDc6svelKuZcOy1Mg
-	 oeN2u8Jy0PJJmu4EQ3FGSVfotX/gg01vGWUWYbI8zaxveQb7XnYAqeZz3ohRJSDefS
-	 7RH4XVH2MUoJILfyQT1VRZmS/3mKMz+JGyjLpnCPqh/4SOfk+qyfiD8uNxJ1Uvlh3m
-	 LNaA1Xd/OQkH33KGjE+FT2MAqSMsNaebZw0OHH5FsZ9y1Q10pRyJ94n9igGdqtGU8b
-	 G+10mg7Sj7osQ==
-Date: Thu, 27 Feb 2025 09:39:50 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: Re: [svsm-devel] SVSM Development Call February 26th, 2025
-Message-ID: <Z8Ak1tgXN3vs1nUx@8bytes.org>
-References: <Z74zNJjPvsnSlotP@8bytes.org>
+	s=arc-20240116; t=1740653157; c=relaxed/simple;
+	bh=rl7PDQVu9xbZVpMs2pbjVuHwz+EkGPkkI2IIJhdpEU8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IM0fVjEUgEjRjrae5bdYapEFE4kgOuo0afn6tj6ZBnQVGsjGiZySEDHC+idfXcshB0VQo49M0XCCnfGgJp7C1dAUYgANddmS+e8l+Tcnzehw7XvL6pZK2axZXd1Guw2mREDapuq+2gR//l0cSDo7uU6gP/g7Ivsz2MqYCGMFhdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F03E12BCC;
+	Thu, 27 Feb 2025 02:46:08 -0800 (PST)
+Received: from [10.1.30.50] (e122027.cambridge.arm.com [10.1.30.50])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B6B373F673;
+	Thu, 27 Feb 2025 02:45:48 -0800 (PST)
+Message-ID: <aec8ecd9-55b0-4690-9c54-780fc47643bc@arm.com>
+Date: Thu, 27 Feb 2025 10:45:46 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z74zNJjPvsnSlotP@8bytes.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 09/11] arm64: Enable memory encrypt for Realms
+To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+References: <20241017131434.40935-1-steven.price@arm.com>
+ <20241017131434.40935-10-steven.price@arm.com>
+ <5aeb6f47-12be-40d5-be6f-847bb8ddc605@arm.com> <Z79lZdYqWINaHfrp@arm.com>
+ <20250227002330.GA24899@willie-the-truck>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20250227002330.GA24899@willie-the-truck>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Meeting minutes are now available here:
+On 27/02/2025 00:23, Will Deacon wrote:
+> On Wed, Feb 26, 2025 at 07:03:01PM +0000, Catalin Marinas wrote:
+>> On Wed, Feb 19, 2025 at 02:30:28PM +0000, Steven Price wrote:
+>>>> @@ -23,14 +25,16 @@ bool rodata_full __ro_after_init = IS_ENABLED(CONFIG_RODATA_FULL_DEFAULT_ENABLED
+>>>>  bool can_set_direct_map(void)
+>>>>  {
+>>>>  	/*
+>>>> -	 * rodata_full and DEBUG_PAGEALLOC require linear map to be
+>>>> -	 * mapped at page granularity, so that it is possible to
+>>>> +	 * rodata_full, DEBUG_PAGEALLOC and a Realm guest all require linear
+>>>> +	 * map to be mapped at page granularity, so that it is possible to
+>>>>  	 * protect/unprotect single pages.
+>>>>  	 *
+>>>>  	 * KFENCE pool requires page-granular mapping if initialized late.
+>>>> +	 *
+>>>> +	 * Realms need to make pages shared/protected at page granularity.
+>>>>  	 */
+>>>>  	return rodata_full || debug_pagealloc_enabled() ||
+>>>> -	       arm64_kfence_can_set_direct_map();
+>>>> +		arm64_kfence_can_set_direct_map() || is_realm_world();
+>>>>  }
+>>>
+>>> Aneesh pointed out that this call to is_realm_world() is now too early 
+>>> since the decision to delay the RSI detection. The upshot is that a 
+>>> realm guest which doesn't have page granularity forced for other reasons 
+>>> will fail to share pages with the host.
+>>>
+>>> At the moment I can think of a couple of options:
+>>>
+>>> (1) Make rodata_full a requirement for realm guests. 
+>>>     CONFIG_RODATA_FULL_DEFAULT_ENABLED is already "default y" so this 
+>>>     isn't a big ask.
+>>>
+>>> (2) Revisit the idea of detecting when running as a realm guest early. 
+>>>     This has the advantage of also "fixing" earlycon (no need to 
+>>>     manually specify the shared-alias of an unprotected UART).
+>>>
+>>> I'm currently leaning towards (1) because it's the default anyway. But 
+>>> if we're going to need to fix earlycon (or indeed find other similar 
+>>> issues) then (2) would obviously make sense.
+>>
+>> I'd go with (1) since the end result is the same even if we implemented
+>> (2) - i.e. we still avoid block mappings in realms.
+> 
+> Is it, though? The config option is about the default behaviour but there's
+> still an "rodata=" option on the command-line.
 
-	https://github.com/coconut-svsm/governance/pull/47
+I think the question comes down to is there any value in having page
+mappings and not setting the read-only permissions? I.e.
+rodata_full=false but we're still avoiding block mappings.
 
-Regards,
+(1) as I've currently proposed doesn't allow that combination - if you
+disable rodata_full you also break realms (assuming
+DEBUG_PAGEALLOC/kfence don't otherwise force can_set_direct_map().
 
-	Joerg
+(2) forces page mappings if there's an RMM present, but does allow
+disabling the read-only permissions with "rodata=".
+
+So I guess there's also another option:
+
+(3) Provide another compile/command line flag which forces page mapping
+which is different from rodata_full. That would then allow realms
+without affecting the permissions.
+
+or indeed:
+
+(4) Change can_set_direct_map() to always return true! ;)
+
+Thanks,
+Steve
+
