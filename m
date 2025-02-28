@@ -1,146 +1,247 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B571F4CAD
-	for <linux-coco@lists.linux.dev>; Fri, 28 Feb 2025 17:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6576F1F4C90
+	for <linux-coco@lists.linux.dev>; Fri, 28 Feb 2025 17:25:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740762497; cv=none; b=pdzyXBqmN1lh4ilKasP/q0jIr58DLd3bC/DTTHc4FVHJ8d6UARMYpUk5XGGHM9sLLL/QKssYPMDpgcaWTQ/UQY1HitLCQLy+euF9+1FiELRuMkr5u+TIbonJRI5bFbrimmbgSpAo/Y1/8nm3U1HYDUJ6IpPT+eKJqbaYLXcIa3M=
+	t=1740763540; cv=none; b=DeORt7ejnwKBoyzCJe7gY1AJtvz+mBdWsi/oXuH2pXvd9z2cM3HNDgDXlTWcdAbz+2mmE3Ll8CY5XPo/YYAUIGXE+DWh64OKm+bPW9/RkloPZYbFzI7t81nx9Ce0sUBnPft+ZTZLE71m3YtH9YZCSlw+mphtUMpB5gjpl9zrnEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740762497; c=relaxed/simple;
-	bh=qJd0Z4j/r1sbdRqfPYytxXq2rpI9PhS6oCSmMOfbFOw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=lxl7hmBqsDUQr2HAFYk/kdEDBF6gfypL1mn7eIhBjRJyHdnZGu1HdtEavCq57zWEHZvNPSP30+5SWo6CELT1fGX1a8A1wX2Wbl5Nf2JR7PM6+5vRkgkx60Dnc8+ZMj1kxmcMOkRnLgpR+OHLjpSxVURgjaOlvQ5smakZfavhUAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HFccmuOQ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1740763540; c=relaxed/simple;
+	bh=1TiCYUZ0vAqCAZx3Sr7pnzlY5Thqhl5/A1sQyss2dIM=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=YyjgA1TrBhjm5CHET3QbwU/6tx1IPnvsGGApvzScrnl8GyEAnmmMxZ+PP527OsaNjxP8erkJ+I/rTbZ+D8IyR0tHgdw+5cfsQbBSEm2ucoxa7Z4Tkyh1CN0qxtxBpVrk3mL53+KHPYJzQ0zgFF+y335Egqqjb+kl8D6fdbAWqU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NGTaJ2VC; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HFccmuOQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740762495;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dnSy+8VlJ8fotBQ+d996WFV/2A3QtkEvLLAc1C6w9D0=;
-	b=HFccmuOQiFd1s1pjUlDUc4laOv+tVM0JpDq7drv8lsuUt1KYdjFHbI8RuKhmjch+kPmIFU
-	VJ6EbuuaHMVsHn4FPoUzpyarVNkK0Of6r3mXGKzMcqaQILfZ11jbjeTWkaQJ5Mcqy2/Q1W
-	fPfJysrJXAVlG8SVjAxsZyvldUQCFXc=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-76-Gxs2t4xpMlaePWI1iNUd4Q-1; Fri, 28 Feb 2025 12:08:13 -0500
-X-MC-Unique: Gxs2t4xpMlaePWI1iNUd4Q-1
-X-Mimecast-MFC-AGG-ID: Gxs2t4xpMlaePWI1iNUd4Q_1740762492
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-390e003c1easo1172578f8f.1
-        for <linux-coco@lists.linux.dev>; Fri, 28 Feb 2025 09:08:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NGTaJ2VC"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2f83e54432dso8186686a91.2
+        for <linux-coco@lists.linux.dev>; Fri, 28 Feb 2025 09:25:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740763538; x=1741368338; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HGWX9JyCXcF3HXXuHfM2kyrS8sFlOh2/32kcia7ZZ1o=;
+        b=NGTaJ2VC+VMHZ27wXBQGeTCAlf0z713y9Fow6t/QDwloimczIRJnbJ2NOMiAER2JQJ
+         XEMy1vyofdf8e1o0Ca9ThejE75fVymss1s7pvZXWBkr1gvP/jNkxVlRA5R7uE7hQFOoB
+         yFVd8+oUzlTuv8rWA9WM+pRwmuc0GhcKumN1mSFYz5AmWBoLnYANqEGa3pFOosfn982v
+         yboJEc1zHX+cwjq5DLvunjQxUBvzG17W7neNzjW15vEEta+2fJa+Uo9FXu2+D+JRx66c
+         ZwAKuoGaK+H3oaJw4bHzuEtg8gIPBplAu8c8NaTvdldy0vv933NIVrqlnEBz6b+RNnE1
+         g+fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740762492; x=1741367292;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dnSy+8VlJ8fotBQ+d996WFV/2A3QtkEvLLAc1C6w9D0=;
-        b=TVaYDlHBRPrQ6H/E704gU4ps2Pp5Pn3JQ3oGtJrNySp4jVQCr6ulRItj5KCxkElJBa
-         raCwyoUyqtm1KVtkm2RJR0aOPsbQ5Elw5cjfch2zO2PsIn9IB4fyPtQ6+Gs7nY9f5Ops
-         PQyBdJisAnVFli+gTqGM89zsOli4zz491jC6CDZBr+B1gsOuLRtBpEercd5GvNSkppe6
-         sAIILWX8Fbrj5E2aZ4zpt2j/JNvJcLS/gcYhALySiekmbGzgmGzP0/0Nalxu1jA5BBqE
-         EQ5AxFEfmKSziO1UUzW5mpWQ6WnX8+POV4DwEin8Kz2QqPefMFmYDnWbh/c+m8l0iHIi
-         Qgew==
-X-Forwarded-Encrypted: i=1; AJvYcCUDgLHLVECt2bvlUlur7Hpevgm24AE96znbgQmng/7XL3mDwzM9axMaBo3m4GPm5IW3L5iPmlIQkSpM@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzibh4W5UwWa7If933XtSNe8vjDGidY78xvYRYdWexL82cIVZ3P
-	emf6IwOkzYC7inoxiwhaDNZmmXLWJj0lz6bu7Kl4zh9m1L7kA9eP6WtetMgj3EYfP2zR4G/t0Xh
-	uxtYxO8wX/Ts+nQoUmzokXZZrclLDiBizYwhmPOi84fnkwHKKZyKyseW+L7M=
-X-Gm-Gg: ASbGncvUCLlJLmVexiC0vWpNihbcWecVDhFOE5cCIrUIIIjYnW6kIw0wR6oJMagfBuB
-	j/ZYvhHdIohgjq8QH4O9Z+oTbzMYODT09xHKoi+r3ZG5BXi6DLxv4/jFxaISNO3dBlEhakU56gT
-	EU9t7vsXxLTEpIkzhGBaTNe+CLGw7d8cgVEdpObTJQK9AFvdZkNPaIYZeoDOg8O8x5bC4mRkGUZ
-	GRo+M6ffXgpsFTqb5a+BSIi2ykmg+GGTo72gNxGFFjrHf+ZFmNsfXE5IReQ6XDC49l/uSqgMixD
-	nWHFlhczLZ6hSbHwBPl6
-X-Received: by 2002:a5d:5847:0:b0:38d:e3da:8b4f with SMTP id ffacd0b85a97d-390ebf7f818mr3864162f8f.0.1740762492226;
-        Fri, 28 Feb 2025 09:08:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEzR5hk357PFuAqN46Kj8Gt6yD0kfZMjS/ZQgfr804lPGex0gArLFn/VwUHjTCi7DihJcYMUQ==
-X-Received: by 2002:a5d:5847:0:b0:38d:e3da:8b4f with SMTP id ffacd0b85a97d-390ebf7f818mr3864097f8f.0.1740762491681;
-        Fri, 28 Feb 2025 09:08:11 -0800 (PST)
-Received: from stex1.redhat.com ([5.179.147.181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e47b7d69sm5912302f8f.60.2025.02.28.09.08.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2025 09:08:07 -0800 (PST)
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Claudio Carvalho <cclaudio@linux.ibm.com>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	x86@kernel.org,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	linux-coco@lists.linux.dev,
-	Dionna Glaze <dionnaglaze@google.com>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Stefano Garzarella <sgarzare@redhat.com>
-Subject: [RFC PATCH v2 6/6] x86/sev: register tpm-svsm platform device
-Date: Fri, 28 Feb 2025 18:07:20 +0100
-Message-ID: <20250228170720.144739-7-sgarzare@redhat.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250228170720.144739-1-sgarzare@redhat.com>
-References: <20250228170720.144739-1-sgarzare@redhat.com>
+        d=1e100.net; s=20230601; t=1740763538; x=1741368338;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HGWX9JyCXcF3HXXuHfM2kyrS8sFlOh2/32kcia7ZZ1o=;
+        b=Mlt8V/2qNug8SI8KJySJD3ruPUpLomXAWjsfuJ1PLnGPapjQzkZOfn+AzGTXa9rOys
+         OwW2IX0LLt1Vv8qKDUFvAr7UUaISr53C5ZfbcUFPG9V3skh1lHwAMdQjFBxPkGORN7v+
+         kTPf9b9li31olaCyc/745amIxhxWtl+66M4wS7jOzL4gbW/DAoOpMCP8J/4qvXXUvNIz
+         IRnhfSU4LFb4f2ANPOtTqrEpyM2GEie08Gu3y/W/MZIeiiskQkq53vY7nuwFch30QQ5Z
+         7xQy1VJiYe0HZDCduL0L0KBTVZEqWPvx7mBta9DrgbgDycNZy7awJ/r3BgQmYnqixiyB
+         XphA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPgn5dgNaI5UBn77cd7Aq71wLDnuTiGzhGVNwHp9t2nx1OVmUUdtDvtMju4W0qMXz1tiKjVCtT5Exd@lists.linux.dev
+X-Gm-Message-State: AOJu0YyROZ/HnaXgxe7lJB9IZxS/+x6PbXLpQ0CDJvXpTPR3GNaJ6RBw
+	2V4lGoxW16PBw1xou2M6hwdzcejLUTcg+hsYyvAhdE6agd4gqtqY6t0xZVHGOmc/gKoiLkdGGRL
+	nA6l3LEW47OrVhfvHYCYtig==
+X-Google-Smtp-Source: AGHT+IEVamZ4Dk4Q9ektIiuhDOuGpmOLJiM7+w7jPIdHbpsjyMEUWr13Zn8uzbBWjARX1bXsyUzJf2To/ZLRvVhVPg==
+X-Received: from pjn11.prod.google.com ([2002:a17:90b:570b:b0:2f5:4762:e778])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90a:e7c6:b0:2ee:53b3:3f1c with SMTP id 98e67ed59e1d1-2febab2ed89mr6434291a91.5.1740763537744;
+ Fri, 28 Feb 2025 09:25:37 -0800 (PST)
+Date: Fri, 28 Feb 2025 17:25:36 +0000
+In-Reply-To: <20250226082549.6034-5-shivankg@amd.com> (message from Shivank
+ Garg on Wed, 26 Feb 2025 08:25:48 +0000)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 23v5KT1d6Xcrmpn0KD4LTux73mcIJ-s-T0C149hYRm4_1740762492
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Mime-Version: 1.0
+Message-ID: <diqzbjumm167.fsf@ackerleytng-ctop.c.googlers.com>
+Subject: Re: [PATCH v6 4/5] KVM: guest_memfd: Enforce NUMA mempolicy using
+ shared policy
+From: Ackerley Tng <ackerleytng@google.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: akpm@linux-foundation.org, willy@infradead.org, pbonzini@redhat.com, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	chao.gao@intel.com, seanjc@google.com, david@redhat.com, vbabka@suse.cz, 
+	bharata@amd.com, nikunj@amd.com, michael.day@amd.com, Neeraj.Upadhyay@amd.com, 
+	thomas.lendacky@amd.com, michael.roth@amd.com, shivankg@amd.com, 
+	tabba@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-SNP platform can provide a vTPM device emulated by SVSM.
+Shivank Garg <shivankg@amd.com> writes:
 
-The "tpm-svsm" device can be handled by the platform driver added
-by the previous commit in drivers/char/tpm/tpm_svsm.c
+> Previously, guest-memfd allocations followed local NUMA node id in absence
+> of process mempolicy, resulting in arbitrary memory allocation.
+> Moreover, mbind() couldn't be used since memory wasn't mapped to userspace
+> in the VMM.
+>
+> Enable NUMA policy support by implementing vm_ops for guest-memfd mmap
+> operation. This allows the VMM to map the memory and use mbind() to set
+> the desired NUMA policy. The policy is then retrieved via
+> mpol_shared_policy_lookup() and passed to filemap_grab_folio_mpol() to
+> ensure that allocations follow the specified memory policy.
+>
+> This enables the VMM to control guest memory NUMA placement by calling
+> mbind() on the mapped memory regions, providing fine-grained control over
+> guest memory allocation across NUMA nodes.
+>
+> The policy change only affect future allocations and does not migrate
+> existing memory. This matches mbind(2)'s default behavior which affects
+> only new allocations unless overridden with MPOL_MF_MOVE/MPOL_MF_MOVE_ALL
+> flags, which are not supported for guest_memfd as it is unmovable.
+>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>  virt/kvm/guest_memfd.c | 76 +++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 75 insertions(+), 1 deletion(-)
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index f18176976ae3..b3a8819117a0 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -2,6 +2,7 @@
+>  #include <linux/backing-dev.h>
+>  #include <linux/falloc.h>
+>  #include <linux/kvm_host.h>
+> +#include <linux/mempolicy.h>
+>  #include <linux/pagemap.h>
+>  #include <linux/anon_inodes.h>
+>
+> @@ -11,8 +12,12 @@ struct kvm_gmem {
+>  	struct kvm *kvm;
+>  	struct xarray bindings;
+>  	struct list_head entry;
+> +	struct shared_policy policy;
+>  };
+>
 
-The driver will call snp_svsm_vtpm_probe() to check if SVSM is
-present and if it's support the vTPM protocol.
+struct shared_policy should be stored on the inode rather than the file,
+since the memory policy is a property of the memory (struct inode),
+rather than a property of how the memory is used for a given VM (struct
+file).
 
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
----
- arch/x86/coco/sev/core.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+When the shared_policy is stored on the inode, intra-host migration [1]
+will work correctly, since the while the inode will be transferred from
+one VM (struct kvm) to another, the file (a VM's view/bindings of the
+memory) will be recreated for the new VM.
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 4158e447d645..7e91fae7d43a 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -2680,6 +2680,11 @@ static struct platform_device sev_guest_device = {
- 	.id		= -1,
- };
- 
-+static struct platform_device tpm_svsm_device = {
-+	.name		= "tpm-svsm",
-+	.id		= -1,
-+};
-+
- static int __init snp_init_platform_device(void)
- {
- 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-@@ -2688,6 +2693,9 @@ static int __init snp_init_platform_device(void)
- 	if (platform_device_register(&sev_guest_device))
- 		return -ENODEV;
- 
-+	if (platform_device_register(&tpm_svsm_device))
-+		return -ENODEV;
-+
- 	pr_info("SNP guest platform device initialized.\n");
- 	return 0;
- }
--- 
-2.48.1
+I'm thinking of having a patch like this [2] to introduce inodes.
 
+With this, we shouldn't need to pass file pointers instead of inode
+pointers.
+
+> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem *gmem,
+> +						   pgoff_t index);
+> +
+>  /**
+>   * folio_file_pfn - like folio_file_page, but return a pfn.
+>   * @folio: The folio which contains this index.
+> @@ -99,7 +104,25 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  static struct folio *kvm_gmem_get_folio(struct file *file, pgoff_t index)
+>  {
+>  	/* TODO: Support huge pages. */
+> -	return filemap_grab_folio(file_inode(file)->i_mapping, index);
+> +	struct kvm_gmem *gmem = file->private_data;
+> +	struct inode *inode = file_inode(file);
+> +	struct mempolicy *policy;
+> +	struct folio *folio;
+> +
+> +	/*
+> +	 * Fast-path: See if folio is already present in mapping to avoid
+> +	 * policy_lookup.
+> +	 */
+> +	folio = __filemap_get_folio(inode->i_mapping, index,
+> +				    FGP_LOCK | FGP_ACCESSED, 0);
+> +	if (!IS_ERR(folio))
+> +		return folio;
+> +
+> +	policy = kvm_gmem_get_pgoff_policy(gmem, index);
+> +	folio = filemap_grab_folio_mpol(inode->i_mapping, index, policy);
+> +	mpol_cond_put(policy);
+> +
+> +	return folio;
+>  }
+>
+>  static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
+> @@ -291,6 +314,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
+>  	mutex_unlock(&kvm->slots_lock);
+>
+>  	xa_destroy(&gmem->bindings);
+> +	mpol_free_shared_policy(&gmem->policy);
+>  	kfree(gmem);
+>
+>  	kvm_put_kvm(kvm);
+> @@ -312,8 +336,57 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
+>  {
+>  	return gfn - slot->base_gfn + slot->gmem.pgoff;
+>  }
+> +#ifdef CONFIG_NUMA
+> +static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *new)
+> +{
+> +	struct file *file = vma->vm_file;
+> +	struct kvm_gmem *gmem = file->private_data;
+> +
+> +	return mpol_set_shared_policy(&gmem->policy, vma, new);
+> +}
+> +
+> +static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+> +		unsigned long addr, pgoff_t *pgoff)
+> +{
+> +	struct file *file = vma->vm_file;
+> +	struct kvm_gmem *gmem = file->private_data;
+> +
+> +	*pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +	return mpol_shared_policy_lookup(&gmem->policy, *pgoff);
+> +}
+> +
+> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem *gmem,
+> +						   pgoff_t index)
+> +{
+> +	struct mempolicy *mpol;
+> +
+> +	mpol = mpol_shared_policy_lookup(&gmem->policy, index);
+> +	return mpol ? mpol : get_task_policy(current);
+> +}
+> +#else
+> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem *gmem,
+> +						   pgoff_t index)
+> +{
+> +	return NULL;
+> +}
+> +#endif /* CONFIG_NUMA */
+> +
+> +static const struct vm_operations_struct kvm_gmem_vm_ops = {
+> +#ifdef CONFIG_NUMA
+> +	.get_policy	= kvm_gmem_get_policy,
+> +	.set_policy	= kvm_gmem_set_policy,
+> +#endif
+> +};
+> +
+> +static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+> +{
+> +	file_accessed(file);
+> +	vma->vm_ops = &kvm_gmem_vm_ops;
+> +	return 0;
+> +}
+>
+>  static struct file_operations kvm_gmem_fops = {
+> +	.mmap		= kvm_gmem_mmap,
+>  	.open		= generic_file_open,
+>  	.release	= kvm_gmem_release,
+>  	.fallocate	= kvm_gmem_fallocate,
+> @@ -446,6 +519,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+>  	kvm_get_kvm(kvm);
+>  	gmem->kvm = kvm;
+>  	xa_init(&gmem->bindings);
+> +	mpol_shared_policy_init(&gmem->policy, NULL);
+>  	list_add(&gmem->entry, &inode->i_mapping->i_private_list);
+>
+>  	fd_install(fd, file);
+
+[1] https://lore.kernel.org/lkml/cover.1691446946.git.ackerleytng@google.com/T/
+[2] https://lore.kernel.org/all/d1940d466fc69472c8b6dda95df2e0522b2d8744.1726009989.git.ackerleytng@google.com/
