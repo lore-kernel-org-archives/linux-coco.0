@@ -1,247 +1,198 @@
 Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6576F1F4C90
-	for <linux-coco@lists.linux.dev>; Fri, 28 Feb 2025 17:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED731BD9F2
+	for <linux-coco@lists.linux.dev>; Fri, 28 Feb 2025 17:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740763540; cv=none; b=DeORt7ejnwKBoyzCJe7gY1AJtvz+mBdWsi/oXuH2pXvd9z2cM3HNDgDXlTWcdAbz+2mmE3Ll8CY5XPo/YYAUIGXE+DWh64OKm+bPW9/RkloPZYbFzI7t81nx9Ce0sUBnPft+ZTZLE71m3YtH9YZCSlw+mphtUMpB5gjpl9zrnEA=
+	t=1740765064; cv=none; b=E9/bmLzhbp60kkFNjHvRlzO7ODruYsy4UZC/IvxE5Dzt5kQHthCrzIxgkTxdGc1Hz6kTDXnwXz3aaSa+JOvU6S+ceWlYMm6uyDAy4L/LLhBALn0Fss1cJWz4Li5KtNJgU6oQvV9+6F4cW3vKGouzNWx5VYOdv+MmPwHQiRpbsDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740763540; c=relaxed/simple;
-	bh=1TiCYUZ0vAqCAZx3Sr7pnzlY5Thqhl5/A1sQyss2dIM=;
+	s=arc-20240116; t=1740765064; c=relaxed/simple;
+	bh=Rd7/uBItQJX+8uapYTk/rpUyTGiqOA264qrStMAcZuw=;
 	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=YyjgA1TrBhjm5CHET3QbwU/6tx1IPnvsGGApvzScrnl8GyEAnmmMxZ+PP527OsaNjxP8erkJ+I/rTbZ+D8IyR0tHgdw+5cfsQbBSEm2ucoxa7Z4Tkyh1CN0qxtxBpVrk3mL53+KHPYJzQ0zgFF+y335Egqqjb+kl8D6fdbAWqU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NGTaJ2VC; arc=none smtp.client-ip=209.85.216.73
+	 Content-Type; b=B2cjyJ2ttbdGZMGsXwiT3OImm/DymxG6Kf2xS+768/Ztv0niPugphNTBjdBKAbjW3wHWqIbHyvfYSvihohFU7ZxhxaFX4ipHA7V8eNqGYHFDZhP9dY/xp6kPEyCD/QTtcf/vtgwlS7xhDfvGk0fAZ5MtcyEkjlp/ZYM03Dy2fS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gxnd6C9/; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NGTaJ2VC"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2f83e54432dso8186686a91.2
-        for <linux-coco@lists.linux.dev>; Fri, 28 Feb 2025 09:25:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gxnd6C9/"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2fe86c01e2bso4977632a91.2
+        for <linux-coco@lists.linux.dev>; Fri, 28 Feb 2025 09:51:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740763538; x=1741368338; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1740765062; x=1741369862; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=HGWX9JyCXcF3HXXuHfM2kyrS8sFlOh2/32kcia7ZZ1o=;
-        b=NGTaJ2VC+VMHZ27wXBQGeTCAlf0z713y9Fow6t/QDwloimczIRJnbJ2NOMiAER2JQJ
-         XEMy1vyofdf8e1o0Ca9ThejE75fVymss1s7pvZXWBkr1gvP/jNkxVlRA5R7uE7hQFOoB
-         yFVd8+oUzlTuv8rWA9WM+pRwmuc0GhcKumN1mSFYz5AmWBoLnYANqEGa3pFOosfn982v
-         yboJEc1zHX+cwjq5DLvunjQxUBvzG17W7neNzjW15vEEta+2fJa+Uo9FXu2+D+JRx66c
-         ZwAKuoGaK+H3oaJw4bHzuEtg8gIPBplAu8c8NaTvdldy0vv933NIVrqlnEBz6b+RNnE1
-         g+fg==
+        bh=6NyvctiqOUa3n9gcjc6FONh/SC/E+DJ6Q+NnNJwCpW4=;
+        b=Gxnd6C9/ocAF+tfIge5Ii8qkC+opioxERmlRFC3gShTfb1eitqB5UuyPLmdfbTuczK
+         SOUMQ9jP/DwrlIdDYNigqQBfpznMZHzVplzuZ1R2epmMk4rWHZtOc6GIVhnXnp2g6wnf
+         fwuwmETjuBnW4svewtpeg0y1wdlAyYpRWzNvpqi88Sxakzynqlt3PMPr/EMEoC472Eib
+         eHLji7LE40lwTyf/Aem+qoS0lxn2jLrUQR1I8CmhI30xjfIcKpxJJjJJck7UTEn4XksP
+         mkhoTnKcJ3JiMj/QrZrm6ll6iNkWRT4bVXhlOSMF7CKR1yve+kmM/HXPoeCEtVBz8+jp
+         VW/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740763538; x=1741368338;
+        d=1e100.net; s=20230601; t=1740765062; x=1741369862;
         h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HGWX9JyCXcF3HXXuHfM2kyrS8sFlOh2/32kcia7ZZ1o=;
-        b=Mlt8V/2qNug8SI8KJySJD3ruPUpLomXAWjsfuJ1PLnGPapjQzkZOfn+AzGTXa9rOys
-         OwW2IX0LLt1Vv8qKDUFvAr7UUaISr53C5ZfbcUFPG9V3skh1lHwAMdQjFBxPkGORN7v+
-         kTPf9b9li31olaCyc/745amIxhxWtl+66M4wS7jOzL4gbW/DAoOpMCP8J/4qvXXUvNIz
-         IRnhfSU4LFb4f2ANPOtTqrEpyM2GEie08Gu3y/W/MZIeiiskQkq53vY7nuwFch30QQ5Z
-         7xQy1VJiYe0HZDCduL0L0KBTVZEqWPvx7mBta9DrgbgDycNZy7awJ/r3BgQmYnqixiyB
-         XphA==
-X-Forwarded-Encrypted: i=1; AJvYcCWPgn5dgNaI5UBn77cd7Aq71wLDnuTiGzhGVNwHp9t2nx1OVmUUdtDvtMju4W0qMXz1tiKjVCtT5Exd@lists.linux.dev
-X-Gm-Message-State: AOJu0YyROZ/HnaXgxe7lJB9IZxS/+x6PbXLpQ0CDJvXpTPR3GNaJ6RBw
-	2V4lGoxW16PBw1xou2M6hwdzcejLUTcg+hsYyvAhdE6agd4gqtqY6t0xZVHGOmc/gKoiLkdGGRL
-	nA6l3LEW47OrVhfvHYCYtig==
-X-Google-Smtp-Source: AGHT+IEVamZ4Dk4Q9ektIiuhDOuGpmOLJiM7+w7jPIdHbpsjyMEUWr13Zn8uzbBWjARX1bXsyUzJf2To/ZLRvVhVPg==
-X-Received: from pjn11.prod.google.com ([2002:a17:90b:570b:b0:2f5:4762:e778])
+        bh=6NyvctiqOUa3n9gcjc6FONh/SC/E+DJ6Q+NnNJwCpW4=;
+        b=T2DwAbtzXAECbXAI40SNX8Bf15bWhYSnVeouUG23gpLvf5gpCDJin3Nj0OeRReVxMl
+         vTn5LmfQd6z2quHmPB7MjJja2rVGGh00JD/aFY4I+yS5IyoSidlcJMICjINwU3hSmKjO
+         DIbo7hrr9TqZ8wYLVg5lNDpsYS0fYW+ebLiJfZB4e33XINMXanMOuEkOfYo1srESpoEQ
+         ZNrLNfAuQYp9ghbFJKnxFLNg7fCYCDdDySyzeA2D65rZh5023dKho2tvZ5W+yg38cu8a
+         4VZjxXOU2QReqEstXX2nzNG8yDJMBEx1tcbmxx2Ar/tcI0WqlLY90X0KstAJy9LaXbQC
+         ZBUg==
+X-Forwarded-Encrypted: i=1; AJvYcCUgxf7fA2VZNjt6ss3ClpweoH+H7eJN9emp6Mf/bXcdIMNESIiI5G+yX9PIbEy0JHTy2ToHSduHVoRO@lists.linux.dev
+X-Gm-Message-State: AOJu0YyljtonmDKcxkTiMIr9AmNN/K8FD7xSRnkqWE2M7ctLH6Oc/jKX
+	blvCMZ3SvbOOL6mCKCb9G+tXj8oSGTHtuyvFGL5YPQcozDbyDJaNl0v28Tkr1RB5tCi29RQaym+
+	agUnbTmctSOHMCy4yKWSCEw==
+X-Google-Smtp-Source: AGHT+IFcKOkFii9o7crCwA/34cEMAOGG0lMrGvepv/XtLz3NB8cMI+uVglV3v5h1Vekl5o+ofsDoALDBoCUPhMpdGg==
+X-Received: from pjbrr3.prod.google.com ([2002:a17:90b:2b43:b0:2fc:1eb0:5743])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:e7c6:b0:2ee:53b3:3f1c with SMTP id 98e67ed59e1d1-2febab2ed89mr6434291a91.5.1740763537744;
- Fri, 28 Feb 2025 09:25:37 -0800 (PST)
-Date: Fri, 28 Feb 2025 17:25:36 +0000
-In-Reply-To: <20250226082549.6034-5-shivankg@amd.com> (message from Shivank
- Garg on Wed, 26 Feb 2025 08:25:48 +0000)
+ 2002:a17:90b:4990:b0:2ee:f80c:687c with SMTP id 98e67ed59e1d1-2febac07e18mr6481041a91.31.1740765061874;
+ Fri, 28 Feb 2025 09:51:01 -0800 (PST)
+Date: Fri, 28 Feb 2025 17:51:00 +0000
+In-Reply-To: <503c4ba7-c667-444a-b396-e85c46469f0a@suse.cz> (message from
+ Vlastimil Babka on Fri, 28 Feb 2025 15:17:11 +0100)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-Message-ID: <diqzbjumm167.fsf@ackerleytng-ctop.c.googlers.com>
-Subject: Re: [PATCH v6 4/5] KVM: guest_memfd: Enforce NUMA mempolicy using
- shared policy
+Message-ID: <diqz8qpqlzzv.fsf@ackerleytng-ctop.c.googlers.com>
+Subject: Re: [PATCH v6 1/5] mm/filemap: add mempolicy support to the filemap layer
 From: Ackerley Tng <ackerleytng@google.com>
-To: Shivank Garg <shivankg@amd.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, pbonzini@redhat.com, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: shivankg@amd.com, akpm@linux-foundation.org, willy@infradead.org, 
+	pbonzini@redhat.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	chao.gao@intel.com, seanjc@google.com, david@redhat.com, vbabka@suse.cz, 
-	bharata@amd.com, nikunj@amd.com, michael.day@amd.com, Neeraj.Upadhyay@amd.com, 
-	thomas.lendacky@amd.com, michael.roth@amd.com, shivankg@amd.com, 
-	tabba@google.com
+	chao.gao@intel.com, seanjc@google.com, david@redhat.com, bharata@amd.com, 
+	nikunj@amd.com, michael.day@amd.com, Neeraj.Upadhyay@amd.com, 
+	thomas.lendacky@amd.com, michael.roth@amd.com, tabba@google.com
 Content-Type: text/plain; charset="UTF-8"
 
-Shivank Garg <shivankg@amd.com> writes:
+Vlastimil Babka <vbabka@suse.cz> writes:
 
-> Previously, guest-memfd allocations followed local NUMA node id in absence
-> of process mempolicy, resulting in arbitrary memory allocation.
-> Moreover, mbind() couldn't be used since memory wasn't mapped to userspace
-> in the VMM.
+> On 2/26/25 09:25, Shivank Garg wrote:
+>> From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+>> 
+>> Add NUMA mempolicy support to the filemap allocation path by introducing
+>> new APIs that take a mempolicy argument:
+>> - filemap_grab_folio_mpol()
+>> - filemap_alloc_folio_mpol()
+>> - __filemap_get_folio_mpol()
+>> 
+>> These APIs allow callers to specify a NUMA policy during page cache
+>> allocations, enabling fine-grained control over memory placement. This is
+>> particularly needed by KVM when using guest-memfd memory backends, where
+>> the guest memory needs to be allocated according to the NUMA policy
+>> specified by VMM.
+>> 
+>> The existing non-mempolicy APIs remain unchanged and continue to use the
+>> default allocation behavior.
+>> 
+>> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+>> Signed-off-by: Shivank Garg <shivankg@amd.com>
 >
-> Enable NUMA policy support by implementing vm_ops for guest-memfd mmap
-> operation. This allows the VMM to map the memory and use mbind() to set
-> the desired NUMA policy. The policy is then retrieved via
-> mpol_shared_policy_lookup() and passed to filemap_grab_folio_mpol() to
-> ensure that allocations follow the specified memory policy.
+> <snip>
 >
-> This enables the VMM to control guest memory NUMA placement by calling
-> mbind() on the mapped memory regions, providing fine-grained control over
-> guest memory allocation across NUMA nodes.
+>> --- a/mm/filemap.c
+>> +++ b/mm/filemap.c
+>> @@ -1001,11 +1001,17 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
+>>  EXPORT_SYMBOL_GPL(filemap_add_folio);
+>>  
+>>  #ifdef CONFIG_NUMA
+>> -struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order)
+>> +struct folio *filemap_alloc_folio_mpol_noprof(gfp_t gfp, unsigned int order,
+>> +		struct mempolicy *mpol)
+>>  {
+>>  	int n;
+>>  	struct folio *folio;
+>>  
+>> +	if (mpol)
+>> +		return folio_alloc_mpol_noprof(gfp, order, mpol,
+>> +					       NO_INTERLEAVE_INDEX,
+
+Could we pass in the interleave index instead of hard-coding it?
+
+>> +					       numa_node_id());
+>> +
+>>  	if (cpuset_do_page_mem_spread()) {
+>>  		unsigned int cpuset_mems_cookie;
+>>  		do {
+>> @@ -1018,6 +1024,12 @@ struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order)
+>>  	}
+>>  	return folio_alloc_noprof(gfp, order);
+>>  }
+>> +EXPORT_SYMBOL(filemap_alloc_folio_mpol_noprof);
+>> +
+>> +struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order)
+>> +{
+>> +	return filemap_alloc_folio_mpol_noprof(gfp, order, NULL);
+>> +}
+>>  EXPORT_SYMBOL(filemap_alloc_folio_noprof);
+>>  #endif
 >
-> The policy change only affect future allocations and does not migrate
-> existing memory. This matches mbind(2)'s default behavior which affects
-> only new allocations unless overridden with MPOL_MF_MOVE/MPOL_MF_MOVE_ALL
-> flags, which are not supported for guest_memfd as it is unmovable.
+> Here it seems to me:
 >
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->  virt/kvm/guest_memfd.c | 76 +++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 75 insertions(+), 1 deletion(-)
+> - filemap_alloc_folio_noprof() could stay unchanged
+> - filemap_alloc_folio_mpol_noprof() would
+>   - call folio_alloc_mpol_noprof() if (mpol)
+>   - call filemap_alloc_folio_noprof() otherwise
 >
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index f18176976ae3..b3a8819117a0 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -2,6 +2,7 @@
->  #include <linux/backing-dev.h>
->  #include <linux/falloc.h>
->  #include <linux/kvm_host.h>
-> +#include <linux/mempolicy.h>
->  #include <linux/pagemap.h>
->  #include <linux/anon_inodes.h>
->
-> @@ -11,8 +12,12 @@ struct kvm_gmem {
->  	struct kvm *kvm;
->  	struct xarray bindings;
->  	struct list_head entry;
-> +	struct shared_policy policy;
->  };
+> The code would be a bit more clearly structured that way?
 >
 
-struct shared_policy should be stored on the inode rather than the file,
-since the memory policy is a property of the memory (struct inode),
-rather than a property of how the memory is used for a given VM (struct
-file).
+I feel that the original proposal makes it clearer that for all filemap
+folio allocations, if mpol is defined, anything to do with cpuset's page
+spread is overridden. Just a slight preference though. I do also agree
+that having filemap_alloc_folio_mpol_noprof() call
+filemap_alloc_folio_noprof() would result in fewer changes.
 
-When the shared_policy is stored on the inode, intra-host migration [1]
-will work correctly, since the while the inode will be transferred from
-one VM (struct kvm) to another, the file (a VM's view/bindings of the
-memory) will be recreated for the new VM.
-
-I'm thinking of having a patch like this [2] to introduce inodes.
-
-With this, we shouldn't need to pass file pointers instead of inode
-pointers.
-
-> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem *gmem,
-> +						   pgoff_t index);
-> +
->  /**
->   * folio_file_pfn - like folio_file_page, but return a pfn.
->   * @folio: The folio which contains this index.
-> @@ -99,7 +104,25 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
->  static struct folio *kvm_gmem_get_folio(struct file *file, pgoff_t index)
->  {
->  	/* TODO: Support huge pages. */
-> -	return filemap_grab_folio(file_inode(file)->i_mapping, index);
-> +	struct kvm_gmem *gmem = file->private_data;
-> +	struct inode *inode = file_inode(file);
-> +	struct mempolicy *policy;
-> +	struct folio *folio;
-> +
-> +	/*
-> +	 * Fast-path: See if folio is already present in mapping to avoid
-> +	 * policy_lookup.
-> +	 */
-> +	folio = __filemap_get_folio(inode->i_mapping, index,
-> +				    FGP_LOCK | FGP_ACCESSED, 0);
-> +	if (!IS_ERR(folio))
-> +		return folio;
-> +
-> +	policy = kvm_gmem_get_pgoff_policy(gmem, index);
-> +	folio = filemap_grab_folio_mpol(inode->i_mapping, index, policy);
-> +	mpol_cond_put(policy);
-> +
-> +	return folio;
->  }
->
->  static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
-> @@ -291,6 +314,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
->  	mutex_unlock(&kvm->slots_lock);
->
->  	xa_destroy(&gmem->bindings);
-> +	mpol_free_shared_policy(&gmem->policy);
->  	kfree(gmem);
->
->  	kvm_put_kvm(kvm);
-> @@ -312,8 +336,57 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
->  {
->  	return gfn - slot->base_gfn + slot->gmem.pgoff;
->  }
-> +#ifdef CONFIG_NUMA
-> +static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *new)
-> +{
-> +	struct file *file = vma->vm_file;
-> +	struct kvm_gmem *gmem = file->private_data;
-> +
-> +	return mpol_set_shared_policy(&gmem->policy, vma, new);
-> +}
-> +
-> +static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
-> +		unsigned long addr, pgoff_t *pgoff)
-> +{
-> +	struct file *file = vma->vm_file;
-> +	struct kvm_gmem *gmem = file->private_data;
-> +
-> +	*pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
-> +	return mpol_shared_policy_lookup(&gmem->policy, *pgoff);
-> +}
-> +
-> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem *gmem,
-> +						   pgoff_t index)
-> +{
-> +	struct mempolicy *mpol;
-> +
-> +	mpol = mpol_shared_policy_lookup(&gmem->policy, index);
-> +	return mpol ? mpol : get_task_policy(current);
-> +}
-> +#else
-> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem *gmem,
-> +						   pgoff_t index)
-> +{
-> +	return NULL;
-> +}
-> +#endif /* CONFIG_NUMA */
-> +
-> +static const struct vm_operations_struct kvm_gmem_vm_ops = {
-> +#ifdef CONFIG_NUMA
-> +	.get_policy	= kvm_gmem_get_policy,
-> +	.set_policy	= kvm_gmem_set_policy,
-> +#endif
-> +};
-> +
-> +static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
-> +{
-> +	file_accessed(file);
-> +	vma->vm_ops = &kvm_gmem_vm_ops;
-> +	return 0;
-> +}
->
->  static struct file_operations kvm_gmem_fops = {
-> +	.mmap		= kvm_gmem_mmap,
->  	.open		= generic_file_open,
->  	.release	= kvm_gmem_release,
->  	.fallocate	= kvm_gmem_fallocate,
-> @@ -446,6 +519,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
->  	kvm_get_kvm(kvm);
->  	gmem->kvm = kvm;
->  	xa_init(&gmem->bindings);
-> +	mpol_shared_policy_init(&gmem->policy, NULL);
->  	list_add(&gmem->entry, &inode->i_mapping->i_private_list);
->
->  	fd_install(fd, file);
-
-[1] https://lore.kernel.org/lkml/cover.1691446946.git.ackerleytng@google.com/T/
-[2] https://lore.kernel.org/all/d1940d466fc69472c8b6dda95df2e0522b2d8744.1726009989.git.ackerleytng@google.com/
+>> @@ -1881,11 +1893,12 @@ void *filemap_get_entry(struct address_space *mapping, pgoff_t index)
+>>  }
+>>  
+>>  /**
+>> - * __filemap_get_folio - Find and get a reference to a folio.
+>> + * __filemap_get_folio_mpol - Find and get a reference to a folio.
+>>   * @mapping: The address_space to search.
+>>   * @index: The page index.
+>>   * @fgp_flags: %FGP flags modify how the folio is returned.
+>>   * @gfp: Memory allocation flags to use if %FGP_CREAT is specified.
+>> + * @mpol: The mempolicy to apply when allocating a new folio.
+>>   *
+>>   * Looks up the page cache entry at @mapping & @index.
+>>   *
+>> @@ -1896,8 +1909,8 @@ void *filemap_get_entry(struct address_space *mapping, pgoff_t index)
+>>   *
+>>   * Return: The found folio or an ERR_PTR() otherwise.
+>>   */
+>> -struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
+>> -		fgf_t fgp_flags, gfp_t gfp)
+>> +struct folio *__filemap_get_folio_mpol(struct address_space *mapping, pgoff_t index,
+>> +		fgf_t fgp_flags, gfp_t gfp, struct mempolicy *mpol)
+>>  {
+>>  	struct folio *folio;
+>>  
+>> @@ -1967,7 +1980,7 @@ struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
+>>  			err = -ENOMEM;
+>>  			if (order > min_order)
+>>  				alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
+>> -			folio = filemap_alloc_folio(alloc_gfp, order);
+>> +			folio = filemap_alloc_folio_mpol(alloc_gfp, order, mpol);
+>>  			if (!folio)
+>>  				continue;
+>>  
+>> @@ -2003,6 +2016,13 @@ struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
+>>  		folio_clear_dropbehind(folio);
+>>  	return folio;
+>>  }
+>> +EXPORT_SYMBOL(__filemap_get_folio_mpol);
+>> +
+>> +struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
+>> +		fgf_t fgp_flags, gfp_t gfp)
+>> +{
+>> +	return __filemap_get_folio_mpol(mapping, index, fgp_flags, gfp, NULL);
+>> +}
+>>  EXPORT_SYMBOL(__filemap_get_folio);
+>>  
+>>  static inline struct folio *find_get_entry(struct xa_state *xas, pgoff_t max,
