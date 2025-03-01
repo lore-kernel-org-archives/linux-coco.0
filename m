@@ -1,67 +1,67 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2D5A935
-	for <linux-coco@lists.linux.dev>; Sat,  1 Mar 2025 00:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D779A930
+	for <linux-coco@lists.linux.dev>; Sat,  1 Mar 2025 00:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740788904; cv=none; b=G/u2HXHmW5TFkV58yDif/PxYaw3RTP6+1bcCHrt7vm01cFUa5nKWUvsZGqCIylOKlcAA7AT80/qRXIikwf5OgdFKnLFSQDgCjtAR/JRVYHCaqjACf6yBN4yAQfY8YNn/v1pQFqS7LRjqJ4Iz2yI66AmsZ93OSrrgdZoWNpak5BM=
+	t=1740789013; cv=none; b=sB7zg9CtNMeSXY0LtLEDc98ZbDLxjzqmAPHkVbqWWc7rwtO1is8PqRet3T/lJ2TtmYn0rshfFrBvPmMbo4EmgaKS2VCcOBSvqenhGOhVMDZM0/c5/ZWs2D2eDqVTjDUE2X5uxnaYhihD7vIBtV+L8SV5uJMDmJf1WVtVGzhi1So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740788904; c=relaxed/simple;
-	bh=etpaj8E6HzSygIZNR+IwBTh7AHHX2A8bGyqGJTitllQ=;
+	s=arc-20240116; t=1740789013; c=relaxed/simple;
+	bh=FZkF3GDM9Co50Ilt0+rIiJqCj1sUDXhtjC6soaQyIto=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XhIAo8FQdbVoL0WpvWA+lHC9V70lAYM0xreAxfSpcp9rQoHSECzVpv3Lc7d8bobFSIbjTT+S5fGSH5UkqHb7Tw2Fy/9AzGzM1RjuwrOxHzC0GYTeC4EnK4pUOVIkFb27gZUmQGq8/oGDXs7hHvue7jIM4fUcqV8/5e0izt7P7bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=IHLImALg; arc=none smtp.client-ip=209.85.219.54
+	 Content-Type:Content-Disposition:In-Reply-To; b=tHvfB6fZPoTZtB/3YQktzrAwD4KRXBk8VTiiUs2k8GAANcTNyj3l2GYJfu4Inu4SzCYPz6t2Np2YJOfJ9z2BtQNilj0cdwoysij2yvcanHT2mwT6/RYNZFg97oVToDtmRIWt1j+PLUmsOhTgbjC1M//140tBDnma6heLBzekk5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=IemCmL8k; arc=none smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="IHLImALg"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6dd01781b56so30736576d6.0
-        for <linux-coco@lists.linux.dev>; Fri, 28 Feb 2025 16:28:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="IemCmL8k"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-472180fec01so27888051cf.0
+        for <linux-coco@lists.linux.dev>; Fri, 28 Feb 2025 16:30:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1740788901; x=1741393701; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1740789011; x=1741393811; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=etpaj8E6HzSygIZNR+IwBTh7AHHX2A8bGyqGJTitllQ=;
-        b=IHLImALg9CLSvuC9MamRaXEfTr2PpLWrD2R/5XNkPlJvqweuW5XBMLKtUesPYRP/85
-         6XKC+ksGw7YZAL17Jtq6xtcSDcMYErcrzX1HmycXg6g5giENmLmFXdMBW2WelnnzeHnv
-         WQW8lG2RBiswbVV9mcht+mMAU75UbNKDcBj+nelnUkWoc+MHXkhb1gx1lk6ylbi0b+aB
-         Y0kWuDUxchuq2BgJu0JnyZytb9hFiEdxsZ80ul8sD09UXNlueQ10OiwlxE2QxJXfHttd
-         qNyc7Qla/oMpi0O06DO7MGzkw1wPwIWakCpx9RSk7TYdicxl58bA7KJeGKCtjZl6ZF0+
-         2AYQ==
+        bh=FZkF3GDM9Co50Ilt0+rIiJqCj1sUDXhtjC6soaQyIto=;
+        b=IemCmL8kSBgGJEO8PW3UoZPvbQrbVVPVhOSvd0Yn+/ag5M6XaVGrN11qDs1cbkbiGm
+         Oo23Dtp4pufvE92P8gSYJkQpZdwe0UQuvFCYb2kc76vQ7gPpjfKiefsEMtSIFH/j7jYs
+         1DgXpVG9Yuycyb07Qx+6vmsBjaHnbOdd/Bz/hkOvSfLrKHRx23/Vq4bMyY5RjiIwogfp
+         hWS2mCN5N/KESgDzmtBZJC99ZTeYg0e0vKlvTiS3sECpdQD838Lfk5PDULgD/8I11nJ2
+         u62dDPWXUOkJjtM2GtUKVVK0lJoeQLmDIum+MsY5vk3kHP2E64L5AB5ujTwFzhbdcQI3
+         rU3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740788901; x=1741393701;
+        d=1e100.net; s=20230601; t=1740789011; x=1741393811;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=etpaj8E6HzSygIZNR+IwBTh7AHHX2A8bGyqGJTitllQ=;
-        b=sbYLAaOYTiwqut1/jQ+cxvhxeNCc8qpcrH0+2QTT+caQ33I9VkymEKp+Kt4kUfRs9y
-         EqhjtgzmhhfLroSft15uciDq58g3Yc//TXYV4JmEVM8o9Zsm/2eg84dnd0tk2bVY4yd5
-         7tMeO96Wkbzbbh5hrqXeb/VZq6G41v3WF8/C+GweHyuOXzcM9wa20hSP4yw5vz+Rt6FG
-         wGoPBJFEjxE15RTb/3f+n0emw6+VlqrAfI5DXt9Z34Y3BQHpc3V8p9Sons6p/4DYTN51
-         k3GRgCClsDax9gbx6yfFzVKoMPiWjU0qoPoB8rluXE3rCn7yA9iATy7xcfDVtRCFPvLw
-         yRyw==
-X-Forwarded-Encrypted: i=1; AJvYcCW0mV2qUxq27/tCrbx9MnaHog42oqSeNgdwVwwDM8oF9JunpZ0Xg5h5BQ+9AaInMVHG1qfSSv2xCRNq@lists.linux.dev
-X-Gm-Message-State: AOJu0YwjT4JGqbcamsTvEb2vjqSpo3XnM3TS/ag69TGRqStu9kGdpRAB
-	9Cp10+K9HABzyb804ziyByYrdDPisnCPjPKMOLpC068vu+vRFA1VOUu/HviQX0s=
-X-Gm-Gg: ASbGncumEFy9OWdzpdZGrD+y4zF9vvKp1vcADAGqIyv2Ag2c15MUCFp3dLLyo8LPjMQ
-	JivudyFm4btlhIQlUOHbYVvwRCvULc+d/JUpHJXPCimx8VJGPk6efaKEHSntE0I4z/UNP4XgKgS
-	c95C+amcaLHgIYFgtMGmCSUE+fk/OAPt7i8DS2fgHf8X9xdkXG2BuGlKRKGPxg9SQ2KppzJdah6
-	8TETAlLCEa75aEIV0lBx5aItJ5ZwoaGbxAHzzFWus1C3XNDL6f2NUuQy/ekjC/uQn2IYqcuynmS
-	DYbmqfvcoPeWQSa3x3cIZSVSV51PUmM+XTYJ/TdfLOid+u4jq/hSFLYD0F96dTPypjjA2n1cBYh
-	wQ3ZUzLk8uAvKSKL1ZA==
-X-Google-Smtp-Source: AGHT+IGWUW0tauc6sDT2qPhkNDpocp6ePHjchDO/mgzAg7gbE6xKrSwlcBJaiGl9R/g8B01dEdQcag==
-X-Received: by 2002:a05:6214:262b:b0:6d8:5642:d9dc with SMTP id 6a1803df08f44-6e8a0c9f135mr80504936d6.11.1740788901200;
-        Fri, 28 Feb 2025 16:28:21 -0800 (PST)
+        bh=FZkF3GDM9Co50Ilt0+rIiJqCj1sUDXhtjC6soaQyIto=;
+        b=R907dgCS593aanzVI94lPCEs8RhW6cFj78UhpHT57dqXwdLg03yp90RfMCsBdLjFVo
+         3mh/wVyiC7pkO/QjaagEoJ3zXbLixvRoN1QpL3k9BXZ06aM4v9v2lWTn7Lfspxyrg1Sq
+         ffJJw9IsaFPX3p4GkyHcSJdWt6H0Z3FkQGEfFpBLYki6R/6Ww6OLaetApNtlgpSUOq7b
+         l0V9dGfqLsk8kTb4S8UTwYxPKBQG2YD3aEzvOWOAC3v9dnJ/6czu3r6kuAdYsIbFP8eg
+         McZzutaRunZ9JXv9T2KQH0+fVkb+eC6+suICkZxGz6Q3xLOiHASN6TyaqaHN1zK7VwOH
+         Js4g==
+X-Forwarded-Encrypted: i=1; AJvYcCXuI19kZ8VmSsejIN9+4Nz9W70oqjSy8S4+rr4dYyTTu8s0yvvpxOicGsNHdY2dMxNJk1AJzPjhtUbW@lists.linux.dev
+X-Gm-Message-State: AOJu0YwKslMkMso9aCczt6jjWlfeViSH/NyHXZZ/DH0aisAUQipMnOAF
+	7TxK7/fn2+RZdQCN3B93yzYCZuHyNHIDyXPuDMVX40UrYGMlcct7Vum00P8zjDM=
+X-Gm-Gg: ASbGnctvIe9NuBmGqJAoS0V2xQRX61h7pEH4nFqFQOjaVdfrBzC/D/XGE/vN4KOtRVE
+	7nhE18PQEL/uZ+0gT1afYRrNacceKnFGvlwycRudGtfcmxl5liUoKMpWoRj5p67FnajcQDP3DpA
+	O7LJ6PzxL1zbo3Hor0+0Y21DUN1jR1JW4gvq/yn4WsNFd5rRESiRxH/pK9uMiNTElCchG6ZaM66
+	Bkqzp3wwim7IhoL2CtNnNQ1pH6P87SxylG08eGDWLtKvIIVn0Utuj81WXssp0pRX6fbByJqbEYQ
+	TJngSaTs4gBdU5Bdd2l0vWAFFCD51kl0mDSe4G8FeFrSMoMAAdc83O1IlehNNs9DrAFPsMuqnqf
+	ZXG6g/31dbAzru4tOqQ==
+X-Google-Smtp-Source: AGHT+IGoKXhCq1vdLsUCIzF4lunmHcwYw+D3mRuNmPD/25PERj7Y5vHDBX7k1/qClqDvWD+UHansAA==
+X-Received: by 2002:ac8:570b:0:b0:471:ef27:a30a with SMTP id d75a77b69052e-474bc08cb95mr87868941cf.28.1740789011339;
+        Fri, 28 Feb 2025 16:30:11 -0800 (PST)
 Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c378d9fe15sm307375585a.66.2025.02.28.16.28.20
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-474721bf857sm30749961cf.38.2025.02.28.16.30.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2025 16:28:20 -0800 (PST)
+        Fri, 28 Feb 2025 16:30:10 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1toAiJ-00000000VMt-2hZA;
-	Fri, 28 Feb 2025 20:28:19 -0400
-Date: Fri, 28 Feb 2025 20:28:19 -0400
+	id 1toAk5-00000000VNV-3jdd;
+	Fri, 28 Feb 2025 20:30:09 -0400
+Date: Fri, 28 Feb 2025 20:30:09 -0400
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Stefano Garzarella <sgarzare@redhat.com>
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -76,10 +76,9 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [RFC PATCH v2 5/6] tpm: add SNP SVSM vTPM driver
-Message-ID: <20250301002819.GO5011@ziepe.ca>
+Subject: Re: [RFC PATCH v2 0/6] Enlightened vTPM support for SVSM on SEV-SNP
+Message-ID: <20250301003009.GP5011@ziepe.ca>
 References: <20250228170720.144739-1-sgarzare@redhat.com>
- <20250228170720.144739-6-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -88,18 +87,17 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250228170720.144739-6-sgarzare@redhat.com>
+In-Reply-To: <20250228170720.144739-1-sgarzare@redhat.com>
 
-On Fri, Feb 28, 2025 at 06:07:19PM +0100, Stefano Garzarella wrote:
-> +/*
-> + * tpm_svsm_remove() lives in .exit.text. For drivers registered via
-> + * module_platform_driver_probe() this is ok because they cannot get unbound
-> + * at runtime. So mark the driver struct with __refdata to prevent modpost
-> + * triggering a section mismatch warning.
-> + */
+On Fri, Feb 28, 2025 at 06:07:14PM +0100, Stefano Garzarella wrote:
+> I put RFC back in because we haven't yet decided if this is the best
+> approach to support SVSM vTPM, but I really like to receive feedbacks
+> especially from the maintainer/reviewers of the TPM subsystem, to see if
+> this approach is acceptable.
 
-??? Is that really true? I didn't know that
-
-I thought you could unbind anything using /sys/../unbind?
+I didn't look in high detail, but the overall shape is what I was
+thinking about in our previous conversations. Very little TPM code is
+under arch/, we have a nice simplifying helper in the core code, and
+you have a tidy platform device to tie it all together.
 
 Jason
