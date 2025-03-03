@@ -1,71 +1,71 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1173187550
-	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 04:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C491DE2DE
+	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 04:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740977338; cv=none; b=lHbURprRc2ygw4IBTDmuKejXPCAUBWXlDWmsYRkiHCy6oH9AQuIahAQWcY+lA0MVqQYqgHn6jeHGRRoBIzVYVwoQRr7s0xbxGmaD/2D5axbhMbwBc3ZnQHrEpiPL8feyk2vh+mSFHWItaHgR9Q0bNC97QWMM6JNFR+a9F/4bXJ8=
+	t=1740977648; cv=none; b=MNBc1oOw+SLP5z5quYiBThhcTco7M64ktp1UuQD71m7BmrWEVkSjKr1sor/K4JdpDOPkYk7q2+nJcdxAKzjgXmTjU5axGxd3WFPMxhRiirRI8m8umcoT6/Gc2bDl5Mwzz0mTht1bIVM7BiTvWJqYUEfTU4w4Y+Av8IzwSiLag1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740977338; c=relaxed/simple;
-	bh=zGU7A3mRvM1g91UEynHedjBx/bXUZ7w7qLMnWHvuBwk=;
+	s=arc-20240116; t=1740977648; c=relaxed/simple;
+	bh=/Q3d4gUCjX1Ns3emiF4KTsF0mBF/50bMqjvHn7VKOsA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L0kgUJsqLCQIWW2HpZxRSwdFnuSmMC2vYJwrd4IwL6DrlAEtQwt0/0gGwYdKVDrUTfLNolU8mdyjjLzb0NoPyBXedRVkYE/MXaKG5pio/uiHCPQnnxzcQo62J+oKo8NWwJ5YxLRAO7xKstEzlh8HSo0gFhbumq1Vw3PWhsDLEmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QN8alu6p; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=rN3VWpbS41UfuFQvzyX8O7/QXbQW1ydcSBFp26ERBxhIW1bh+41I42AblnprXVdKlSEaDAt3ATpFy61K+L7LwhBZ4dwDamGLGyMCc9mLVV/TwtlWcAgavOhxI+y/FQdbC2aI+C6QmfPswasf6Nrif01km7HHftkp50QMFWaUql8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QsG8RQtM; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QN8alu6p"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QsG8RQtM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740977335;
+	s=mimecast20190719; t=1740977645;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=szUhRzEc3gD/KXfeBaNWZbbt2DelRUyv9Ye2MPiDleo=;
-	b=QN8alu6pm3R3ygZWRkUmDyYI1U+xq+WnrhO3AA/6L0M0ecSxhMC0cKoYJYqWFHiL9SEV6v
-	d0WGREYaalthJXnPW2r30Eq6CP1OO0a0f9USmwrk48juAlGxiJVCA0cyMNsDwzQJkiJPUd
-	xZXc0D/LgsQxXPIMncO35dKijRHKpdA=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=gOpndmvGS2CTNAq9sooQow9PnGsS4iRFoQMUou58z7M=;
+	b=QsG8RQtM+H8CTJYCviWVW7aX6QC5zkCrO65CrXEYpDNpVdUVDiGic1P/2vm62Ci72mSY3V
+	1CTZBMnYYvj/MpFZboYoCuQoGQ+I1mKaGyD/x5jKyddeIfrr9fvuvR+/IsR8rhQ7HLfyFo
+	XzEzvyDU+V+KncT7uAfBQOs66HVrZyk=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-626-RJUJ6_e8P4Gp3goIjN3Spw-1; Sun, 02 Mar 2025 23:48:54 -0500
-X-MC-Unique: RJUJ6_e8P4Gp3goIjN3Spw-1
-X-Mimecast-MFC-AGG-ID: RJUJ6_e8P4Gp3goIjN3Spw_1740977333
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2fed20dd70cso3235352a91.1
-        for <linux-coco@lists.linux.dev>; Sun, 02 Mar 2025 20:48:54 -0800 (PST)
+ us-mta-679-wU_3Z935OgOvbuQ6JxZ0Jg-1; Sun, 02 Mar 2025 23:53:49 -0500
+X-MC-Unique: wU_3Z935OgOvbuQ6JxZ0Jg-1
+X-Mimecast-MFC-AGG-ID: wU_3Z935OgOvbuQ6JxZ0Jg_1740977628
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-223a2770b75so17216085ad.1
+        for <linux-coco@lists.linux.dev>; Sun, 02 Mar 2025 20:53:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740977333; x=1741582133;
+        d=1e100.net; s=20230601; t=1740977628; x=1741582428;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=szUhRzEc3gD/KXfeBaNWZbbt2DelRUyv9Ye2MPiDleo=;
-        b=KwXy4eskV8rI5qonaemEu+kaiTOhHOUnuiwRx2JT9xhjaYDH8lLriSttAm7SPNDP6u
-         hgDxQveQjQQ+6AVcFOBMouCcDTtkIH35pgpMkj9TdykKFYo0SPszkHI+raxrlpPFM/Xp
-         O7kjuP393fUZbLU/jyunqq2NT2EwEGNS2NrMaCajq/qZpos7QgO5uv+qNRqdNitO4gJ9
-         Qr1u4C+C6K0L+2I2H3EYhYY+cyZXjKLWAYxYTImbgqFmKyT1a60KDlxpHcpcX9N0lBUq
-         iBmvLi27duOpSqXAsoa/NIFLlQOCyLB7Wmx8FjWvrxhH9InU7c2dgTDQaNyaygYeNzwj
-         9zjA==
-X-Forwarded-Encrypted: i=1; AJvYcCV1XfCuh4SAVPubS8XO6rgnLiZMb1RK6o31xUVVGwLlQ+72IPGuBkg2MT7RJJ+KkQSigu3e0ZvUlFzh@lists.linux.dev
-X-Gm-Message-State: AOJu0YzJGXNBiRGO0/v+7kgzjUhgxq+OPLVCGpqP6ubeQQ8VM5DPqmHE
-	wizzlNuM0tq9Y5wV9AQgwrdlQsEOT9n3Lpqn6/3O5U6a7tVI7d+shr4rr+wL4BofL2wvoq/cKzr
-	92HZU2kAGzqavQyXwtfPBHSn0x42Oer1EEatSa1RK9eBMYNJb/DVLkYgDi54=
-X-Gm-Gg: ASbGncs5hINfzqn5MoPCgi9H58tplUA28XOTaMIzgGWWGy5BV5/1jaW0zARoMPk+kEl
-	A+Lpnk9/MFdNwD9JU6UcoUUc6n4zxzd+PcL+rSc21HvxGPHoqBrF0rw8SALhCnFYJfCZES4tGZ0
-	M7Ico5884brCBfzrEXrPdFYVCkqno1UqFqr0ZEfnPMsOLT1//QznjRWdJ2I5nBz9/ePY5tFoswv
-	9fXon2NshYPDLQ273PyUlpgchftNLnqmhRNJ0+cr/ci9qAER+p8tO+ZeNxjg+nFqXyb4V+HjtzR
-	Aea4vjellTeaMBDbnA==
-X-Received: by 2002:a17:90b:3e84:b0:2ee:8031:cdbc with SMTP id 98e67ed59e1d1-2febac046a6mr14181195a91.23.1740977333517;
-        Sun, 02 Mar 2025 20:48:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF0bFqBHp5vrV5kno/u9pdc5LbTz/krk4wxyP++znTwdfie+ZMz0iB8kF9GwoMI70Qf1wWKBg==
-X-Received: by 2002:a17:90b:3e84:b0:2ee:8031:cdbc with SMTP id 98e67ed59e1d1-2febac046a6mr14181169a91.23.1740977333178;
-        Sun, 02 Mar 2025 20:48:53 -0800 (PST)
+        bh=gOpndmvGS2CTNAq9sooQow9PnGsS4iRFoQMUou58z7M=;
+        b=LtoIaWL2korXAA1cUlOBkh6MgTg1NncNoPfo2Nauxr9iILX+oNkG4z6DfeMYkX9o4n
+         douOyl4+o6OOxaaIDXTIgwHCZMC60Ag7wGL4h0SXjInQGGiafhs5SxQSdqQYnvV1Envs
+         XICi9P33M8BGc8prZtNXb9S2/1Jk90V08N5crLB0QffPEOP1eRFzkybRJLTUomtdD3Xl
+         tWOx3dsRSc1AVroL+JQq0i7HkKYrkrQDiLxaijcg1RIu/cv9+Vx5K/wmg1XC8TWwV5Vs
+         FQCrjsTswMHfkbQbEQQaRJLeOf0sAxw02tnOiXlkijRcZEyADl4uYLXKhj3/o0fclH4z
+         K4Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCVvRA4FAoM0pDa6KH+ZHnY3fCXEA6XHIrHHCBahSGequKLnZemA2D6DDbyGo99xHeSavM2SRk5Ae1rb@lists.linux.dev
+X-Gm-Message-State: AOJu0YyxZf8Ao/n0UBe5ah0VUE0zvCF7yJsgJPqQqURJUwXVinvSqOnm
+	oCz5/EZcXaFzV2Za+V2OFmYQASGwpHJVe4LGkBmV5BDjxWuTaW7IPU3hiFs/D9L9L8neT73Op7u
+	KIjunM+9K7EGLNbTOr11HEidT6Ln2XTuLVONwKZK5cL5g1LP+w+k4yzJdXXU=
+X-Gm-Gg: ASbGncsORK8i4XF5azh2LCAX4Gqr1nE3+sisxGqrB5kPaQMLzMwhjAogBCcZW7tW6bR
+	+HSmuCrq2noSTBzcgT2XOM/PVA+izC6Ad9TJjSzacOJInKKwtc8l39JXmPNOzTrWUKQxoU2BUHl
+	89tisQ7pG/gwePbKN2f5VIAILwIiL4M+oYFgWV9PjAwxeFnwZiSO48IhjUZVkNHSwBb4xfFJo4i
+	a+XHOPYxFnHu2Rf9iFkKR9oNQvl2U1oqYQgRvW8598aJDSXjI/80NW14IiafejwCEv7kHnBYMce
+	75G9XTJJa4pLSWTxZA==
+X-Received: by 2002:a17:903:41cb:b0:223:3781:b600 with SMTP id d9443c01a7336-2236920acb2mr202357145ad.45.1740977628216;
+        Sun, 02 Mar 2025 20:53:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGLRAVnzN70JdT8ECZbLP+/KQdRigH/UQkGxmw0H8i5HF/nVSSmnBIohZTsVrXlcl3ik9AvfQ==
+X-Received: by 2002:a17:903:41cb:b0:223:3781:b600 with SMTP id d9443c01a7336-2236920acb2mr202356895ad.45.1740977627908;
+        Sun, 02 Mar 2025 20:53:47 -0800 (PST)
 Received: from [192.168.68.55] ([180.233.125.164])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2235050d7c1sm68704355ad.198.2025.03.02.20.48.46
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22350513dd4sm68505855ad.224.2025.03.02.20.53.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Mar 2025 20:48:52 -0800 (PST)
-Message-ID: <cec600f2-2ddc-4c71-9bab-0a0403132b43@redhat.com>
-Date: Mon, 3 Mar 2025 14:48:44 +1000
+        Sun, 02 Mar 2025 20:53:47 -0800 (PST)
+Message-ID: <48b68e9c-e550-4fa9-b479-7b2aad4fd538@redhat.com>
+Date: Mon, 3 Mar 2025 14:53:39 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,115 +73,132 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 09/45] kvm: arm64: Expose debug HW register numbers for
- Realm
+Subject: Re: [PATCH v7 10/45] arm64: kvm: Allow passing machine type in KVM
+ creation
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
  Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
  Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
  <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-10-steven.price@arm.com>
+ <20250213161426.102987-11-steven.price@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250213161426.102987-10-steven.price@arm.com>
+In-Reply-To: <20250213161426.102987-11-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: kk-H1ZHSvandP5xoVTvG2Xc5RHMYLLvw4RUDYbRTpj0_1740977333
+X-Mimecast-MFC-PROC-ID: JKHNyUdVLgaWrB65jhNvVy5GVTt5eUQEhX5MBNVAV8g_1740977628
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 2/14/25 2:13 AM, Steven Price wrote:
-> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Previously machine type was used purely for specifying the physical
+> address size of the guest. Reserve the higher bits to specify an ARM
+> specific machine type and declare a new type 'KVM_VM_TYPE_ARM_REALM'
+> used to create a realm guest.
 > 
-> Expose VM specific Debug HW register numbers.
-> 
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
->   arch/arm64/kvm/arm.c | 24 +++++++++++++++++++++---
->   1 file changed, 21 insertions(+), 3 deletions(-)
+> Changes since v6:
+>   * Make the check for kvm_rme_is_available more visible and report an
+>     error code of -EPERM (instead of -EINVAL) to make it explicit that
+>     the kernel supports RME, but the platform doesn't.
+> ---
+>   arch/arm64/kvm/arm.c     | 15 +++++++++++++++
+>   arch/arm64/kvm/mmu.c     |  3 ---
+>   include/uapi/linux/kvm.h | 19 +++++++++++++++----
+>   3 files changed, 30 insertions(+), 7 deletions(-)
 > 
 
-Documentation/virt/kvm/api.rst needs to be updated accordingly.
+Section 4.2 of Documentation/virt/kvm/api.rst needs to be updated. Other
+than that, it looks good to me:
+
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
 > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index b8fa82be251c..df6eb5e9ca96 100644
+> index df6eb5e9ca96..917ee7c674f5 100644
 > --- a/arch/arm64/kvm/arm.c
 > +++ b/arch/arm64/kvm/arm.c
-> @@ -78,6 +78,22 @@ bool is_kvm_arm_initialised(void)
->   	return kvm_arm_initialised;
->   }
+> @@ -180,6 +180,21 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>   	mutex_unlock(&kvm->lock);
+>   #endif
 >   
-> +static u32 kvm_arm_get_num_brps(struct kvm *kvm)
-> +{
-> +	if (!kvm_is_realm(kvm))
-> +		return get_num_brps();
-> +	/* Realm guest is not debuggable. */
-> +	return 0;
-> +}
+> +	if (type & ~(KVM_VM_TYPE_ARM_MASK | KVM_VM_TYPE_ARM_IPA_SIZE_MASK))
+> +		return -EINVAL;
 > +
-> +static u32 kvm_arm_get_num_wrps(struct kvm *kvm)
-> +{
-> +	if (!kvm_is_realm(kvm))
-> +		return get_num_wrps();
-> +	/* Realm guest is not debuggable. */
-> +	return 0;
-> +}
-> +
-
-The above two comments "Realm guest is not debuggable." can be dropped since
-the code is self-explanatory, and those two functions are unnecessary to be
-kept in that way, for example:
-
-	case KVM_CAP_GUEST_DEBUG_HW_BPS:
-		return kvm_is_realm(kvm) ? 0 : get_num_brps();
-	case KVM_CAP_GUEST_DEBUG_HW_WRPS:
-		return kvm_is_realm(kvm) ? 0 : get_num_wrps();
-
-
->   int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
->   {
->   	return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
-> @@ -323,7 +339,6 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->   	case KVM_CAP_ARM_IRQ_LINE_LAYOUT_2:
->   	case KVM_CAP_ARM_NISV_TO_USER:
->   	case KVM_CAP_ARM_INJECT_EXT_DABT:
-> -	case KVM_CAP_SET_GUEST_DEBUG:
->   	case KVM_CAP_VCPU_ATTRIBUTES:
->   	case KVM_CAP_PTP_KVM:
->   	case KVM_CAP_ARM_SYSTEM_SUSPEND:
-> @@ -331,6 +346,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->   	case KVM_CAP_COUNTER_OFFSET:
->   		r = 1;
->   		break;
-> +	case KVM_CAP_SET_GUEST_DEBUG:
-> +		r = !kvm_is_realm(kvm);
+> +	switch (type & KVM_VM_TYPE_ARM_MASK) {
+> +	case KVM_VM_TYPE_ARM_NORMAL:
 > +		break;
->   	case KVM_CAP_SET_GUEST_DEBUG2:
->   		return KVM_GUESTDBG_VALID_MASK;
->   	case KVM_CAP_ARM_SET_DEVICE_ADDR:
-> @@ -376,10 +394,10 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->   		r = cpus_have_final_cap(ARM64_HAS_32BIT_EL1);
->   		break;
->   	case KVM_CAP_GUEST_DEBUG_HW_BPS:
-> -		r = get_num_brps();
-> +		r = kvm_arm_get_num_brps(kvm);
->   		break;
->   	case KVM_CAP_GUEST_DEBUG_HW_WPS:
-> -		r = get_num_wrps();
-> +		r = kvm_arm_get_num_wrps(kvm);
->   		break;
->   	case KVM_CAP_ARM_PMU_V3:
->   		r = kvm_arm_support_pmu_v3();
+> +	case KVM_VM_TYPE_ARM_REALM:
+> +		if (!static_branch_unlikely(&kvm_rme_is_available))
+> +			return -EPERM;
+> +		kvm->arch.is_realm = true;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+>   	kvm_init_nested(kvm);
+>   
+>   	ret = kvm_share_hyp(kvm, kvm + 1);
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 8cda128aafef..f8ad8f88bbb8 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -886,9 +886,6 @@ static int kvm_init_ipa_range(struct kvm *kvm,
+>   	if (kvm_is_realm(kvm))
+>   		kvm_ipa_limit = kvm_realm_ipa_limit();
+>   
+> -	if (type & ~KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
+> -		return -EINVAL;
+> -
+>   	phys_shift = KVM_VM_TYPE_ARM_IPA_SIZE(type);
+>   	if (is_protected_kvm_enabled()) {
+>   		phys_shift = kvm_ipa_limit;
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index fa8f45029dff..9cabf9b6a9b4 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -644,14 +644,25 @@ struct kvm_enable_cap {
+>   #define KVM_S390_SIE_PAGE_OFFSET 1
+>   
+>   /*
+> - * On arm64, machine type can be used to request the physical
+> - * address size for the VM. Bits[7-0] are reserved for the guest
+> - * PA size shift (i.e, log2(PA_Size)). For backward compatibility,
+> - * value 0 implies the default IPA size, 40bits.
+> + * On arm64, machine type can be used to request both the machine type and
+> + * the physical address size for the VM.
+> + *
+> + * Bits[11-8] are reserved for the ARM specific machine type.
+> + *
+> + * Bits[7-0] are reserved for the guest PA size shift (i.e, log2(PA_Size)).
+> + * For backward compatibility, value 0 implies the default IPA size, 40bits.
+>    */
+> +#define KVM_VM_TYPE_ARM_SHIFT		8
+> +#define KVM_VM_TYPE_ARM_MASK		(0xfULL << KVM_VM_TYPE_ARM_SHIFT)
+> +#define KVM_VM_TYPE_ARM(_type)		\
+> +	(((_type) << KVM_VM_TYPE_ARM_SHIFT) & KVM_VM_TYPE_ARM_MASK)
+> +#define KVM_VM_TYPE_ARM_NORMAL		KVM_VM_TYPE_ARM(0)
+> +#define KVM_VM_TYPE_ARM_REALM		KVM_VM_TYPE_ARM(1)
+> +
+>   #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
+>   #define KVM_VM_TYPE_ARM_IPA_SIZE(x)		\
+>   	((x) & KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
+> +
+>   /*
+>    * ioctls for /dev/kvm fds:
+>    */
 
 Thanks,
 Gavin
