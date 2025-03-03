@@ -1,108 +1,134 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4321EE013
-	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 20:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9B91E883E
+	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 20:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741034990; cv=none; b=oKJTG9HrTCOnrKEDab+qAwD69k49VAS6/J73cxsv4VVtP9iyLm2RDdaSOsyXYeA2duN8lnF6w0imd9gs47bR8ikI0racWu/dhWGEgPW2G+nToPf2iEwCYnGiuuJb54hbSWzy5Lxv1o7GxXnLPaDkRF5vHPr4NncJ1Ocu8tSIHxA=
+	t=1741035194; cv=none; b=YxzzDnPKLNJQCNPrMzPUt38bok7V4dXt3d8z7+hS3qB2vg8EcsUdOH1K/+3MB8josJ8cJIWPCx0TR/wFqhxGEfEV10gg10d2gFBxNvYhr1792gpwKMe5RH5VkWkLOn5Bkn+AX2o61wdYWhAobK6/4nP75kH4fX8nlWXWafP8PqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741034990; c=relaxed/simple;
-	bh=b9+l60C5FmoVBcnZ+2dbkAJ08foGGzMBuHGxYh0c6wM=;
+	s=arc-20240116; t=1741035194; c=relaxed/simple;
+	bh=lYiwGGpy+jObEGmZeK6fiOPc7idRqjoFD+d0OH5vfY8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FrkzDBznzFbEgO2ymBTH4erzEVXQjpdRmZ+NCoiiH6KlESw+oeOm0rl8JksEJWDStfE4hdqSeKChS6Q89m1PBridjygd8YiaExFPs/MyyNGJRm+bMDYBaq8vXwRNU93zA5i69k+2Q1HDJ4zy8UTU9JFF0XJjf6hfG9UlEQDpTXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DW5LGK12; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=Kp5bRbKxH/bHjjzCRZrjHO2vh98SHAtmubzYoZOgEugt7Wdjhri3ucNGEx9nr3+aClFTR79wPEiGsOSmIaRiF2JVu48ciTIqeGBwi8lCahhN7AATj9jjhiJLXTr+8GeXjztUp5GwGZ1pmp0M6nmoZdMuPh5mHIPlGGSoVJ8eQPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cLURY1tq; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DW5LGK12"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2236b6fb4a6so117720265ad.2
-        for <linux-coco@lists.linux.dev>; Mon, 03 Mar 2025 12:49:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cLURY1tq"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2fe8c5dbdb0so9529758a91.3
+        for <linux-coco@lists.linux.dev>; Mon, 03 Mar 2025 12:53:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741034988; x=1741639788; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rX5WpwWoXZ5gyhXwc+nu9BIgzZ5Qej6ZgjHIIk8ELGc=;
-        b=DW5LGK12jvSXUxvzdd0EeXn8ZEcK7fCLrlgTXXwTxXF5OodVteWH5kEXHqXkvGnKN1
-         bdIVSEAbRIMVqTqdMnW5P8bbbVoe7s1Y/LaEe5YnTx42f29tSljRGO39UmwsOseei8U2
-         TJAPXvC80yfGoXitrNWm0q1RE1t/daIY3i/yReNrRjH13OxuhkwR24d/0+dJGW1hRNPN
-         d98atz/I3DcG1uMu6Nroooo7garqFBWBPj3EdnTargMi3WrfKBNOJm00w7+jdt/StO2r
-         MaDoH5p6MkYCXJZyfGw70DMXQcW5S8izfZrhUdM/+s2tR+LHUtH+5lAc1aiKCHjEmyIY
-         Zo8Q==
+        d=google.com; s=20230601; t=1741035192; x=1741639992; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sN1tRRXOdkRuhSE1RMnqdPqM5oFgXi6jywzgZSSDWUM=;
+        b=cLURY1tqol0/xSmR70zqjS8Jprzn+jkcf7bhGWq2RajxQNDRAEBS5Zv/C7I5QVXGEs
+         NcyhtxD36qHvGz7PNGEhne52XLj8+QaSZtN5lB/TlF+LKtCXJvhlKqfgKACVHrVTYR/z
+         O0ULpxpZNGwsY6J3le7Q6ARgUC98N1jB3XzLMOtOcoKVNEdc1qfOjEhJ/mb6JDhvUSJJ
+         jEQK8gPw4AkFPyzhzBUCK2K7m8z1nxNRXRtmfZFNb18JC9+0xkFOImb4DRH95DpXY/K0
+         AtnFT3Sf9yUoLRYUJ9QipvK59x91FT1BqayZT19xU9B0tt67ebxI+sL+acgCD4wZzKAL
+         gpeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741034988; x=1741639788;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rX5WpwWoXZ5gyhXwc+nu9BIgzZ5Qej6ZgjHIIk8ELGc=;
-        b=sp4iP4o/u5JWbTZeLJEJV/v2YiF9/szjUlfMoeiVzj8fZtyZ+IfCXK+ZIEeS6AG885
-         9cdtsbQsxUBgdeTtHgiryncbcqWA98O6LhuS9Ayoz8pw5Mmb9N4PNzOqZ/O++joSdtTZ
-         Xwe63BrbR/jeXKDjn85nnMr5gTXp2RKR/cBZLX1Od18255pCdRVbCB161lQqhsm19uRr
-         0MutTSCUYb1zUoI6j5qR8Ng2rV7upVs9XsaxLDIsggbDXzLd69dVQWTEV8XZ4LlZ+Hji
-         +CZ4TIWW969tZperCkbi9UN2cjCrhZr6az2iYR7H2U0umEfsbPoUt9ayFUTsk8/Gp6Pc
-         38Zg==
-X-Forwarded-Encrypted: i=1; AJvYcCViNqSm/JIisS+R85Ov8JAJ6HyVDEYDtPAHnQwm3x7tsN14teL7HVQ7eukde/6j2i3tqjn8vVyXKnLH@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy/id1QknBmvCJcmrSc47znpuTZzaAYEztZrstVWZDFhqi1T+Fx
-	KSQefvLEwVh6kSDXyvHgTgtbqiqOp+iKNLcdnONGa3RM/QaIFS4V5XGk8Y++QLyS3C1Zh/EI0H9
-	zCg==
-X-Google-Smtp-Source: AGHT+IE+C6JcZdh5hffwpn3YaLy4DTdjGMQWY0Wxr9tX8RPUF4fmhR1pHZq+6TPiOW5dJqi6J/yP+vTUj+Q=
-X-Received: from pjbqx5.prod.google.com ([2002:a17:90b:3e45:b0:2fa:a101:755])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fc4e:b0:220:c4f0:4ed9
- with SMTP id d9443c01a7336-2236921eb6amr236795425ad.45.1741034988314; Mon, 03
- Mar 2025 12:49:48 -0800 (PST)
-Date: Mon, 3 Mar 2025 12:49:47 -0800
-In-Reply-To: <8dc83535-a594-4447-a112-22b25aea26f9@amd.com>
+        d=1e100.net; s=20230601; t=1741035192; x=1741639992;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=sN1tRRXOdkRuhSE1RMnqdPqM5oFgXi6jywzgZSSDWUM=;
+        b=vkYfpQimVyce/IJM3I5oPSp8lQSxsK4+FrGschfl3ya//IkLJUm7bAUxiFAuEfH6hF
+         GQuWA0xnmSLgine8/6tF2ayLolXfzqobkCri77KCv5WVizMGAECJr5NArmlkGofUHftX
+         IJh0fQYU7LWSwCOCFc8mAl239VizyiYjrYWFDRK6DUXDL57XUrmBlwqkdVbLkMSEleps
+         /OserJCY10HkSJn+SK3yNA4TOOopBfDtkL04oTkJOTsKXK5hP1ne8AmQKRa+lm9ixlAx
+         QLAlH8TEYp42oX9TGChhBcPRxEijxwGdBtGTF3CZ4Qk8y/bjm98Vmd3bEbnnWRPJNd0r
+         EQCg==
+X-Forwarded-Encrypted: i=1; AJvYcCV4VxveT2sfj6KHI2aujChi7YDMx8m9kUEEKqI7v7t+1OBhavtC64lb3V2c3o3jtRfbqXt0ZrrRUJq7@lists.linux.dev
+X-Gm-Message-State: AOJu0YylKTcQ+TwJXDslRcLOML6Nsx7F61DUyG/jqkHlM6M5A1HXXmW/
+	zYQQerO3mGtQYUJoB3cNKs/QMnNogHHGLC61tjfIB/3RFokHM0aG6kBqa7cgjFkt9Ekkl3LGVbJ
+	dTQ==
+X-Google-Smtp-Source: AGHT+IGvAbM1SbEAkwQZlxQS7zV3KYE59+INXt1p2VCN8UPIm/E/EWQNfbPJi6CZOYL8GIUxW/fPR5QROP8=
+X-Received: from pjn11.prod.google.com ([2002:a17:90b:570b:b0:2f5:4762:e778])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1a86:b0:2ee:ab29:1a63
+ with SMTP id 98e67ed59e1d1-2febab30c7amr20186639a91.3.1741035192190; Mon, 03
+ Mar 2025 12:53:12 -0800 (PST)
+Date: Mon, 3 Mar 2025 12:53:10 -0800
+In-Reply-To: <5bdb92ab83269b49ad8fbbe8f54df01f6b98ea8f.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <cover.1740512583.git.ashish.kalra@amd.com> <27a491ee16015824b416e72921b02a02c27433f7.1740512583.git.ashish.kalra@amd.com>
- <Z8IBHuSc3apsxePN@google.com> <cf34c479-c741-4173-8a94-b2e69e89810b@amd.com>
- <Z8I5cwDFFQZ-_wqI@google.com> <8dc83535-a594-4447-a112-22b25aea26f9@amd.com>
-Message-ID: <Z8YV64JanLqzo-DS@google.com>
-Subject: Re: [PATCH v5 6/7] KVM: SVM: Add support to initialize SEV/SNP
- functionality in KVM
+References: <20250227021855.3257188-1-seanjc@google.com> <5bdb92ab83269b49ad8fbbe8f54df01f6b98ea8f.camel@infradead.org>
+Message-ID: <Z8YWttWDtvkyCtdJ@google.com>
+Subject: Re: [PATCH v2 00/38] x86: Try to wrangle PV clocks vs. TSC
 From: Sean Christopherson <seanjc@google.com>
-To: Ashish Kalra <ashish.kalra@amd.com>
-Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	thomas.lendacky@amd.com, john.allen@amd.com, herbert@gondor.apana.org.au, 
-	michael.roth@amd.com, dionnaglaze@google.com, nikunj@amd.com, ardb@kernel.org, 
-	kevinloughlin@google.com, Neeraj.Upadhyay@amd.com, aik@amd.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Juergen Gross <jgross@suse.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	John Stultz <jstultz@google.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-hyperv@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Nikunj A Dadhania <nikunj@amd.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 03, 2025, Ashish Kalra wrote:
-> On 2/28/2025 4:32 PM, Sean Christopherson wrote:
-> > On Fri, Feb 28, 2025, Ashish Kalra wrote:
-> >> And the other consideration is that runtime setup of especially SEV-ES VMs will not
-> >> work if/when first SEV-ES VM is launched, if SEV INIT has not been issued at 
-> >> KVM setup time.
-> >>
-> >> This is because qemu has a check for SEV INIT to have been done (via SEV platform
-> >> status command) prior to launching SEV-ES VMs via KVM_SEV_INIT2 ioctl. 
-> >>
-> >> So effectively, __sev_guest_init() does not get invoked in case of launching 
-> >> SEV_ES VMs, if sev_platform_init() has not been done to issue SEV INIT in 
-> >> sev_hardware_setup().
-> >>
-> >> In other words the deferred initialization only works for SEV VMs and not SEV-ES VMs.
-> > 
-> > In that case, I vote to kill off deferred initialization entirely, and commit to
-> > enabling all of SEV+ when KVM loads (which we should have done from day one).
-> > Assuming we can do that in a way that's compatible with the /dev/sev ioctls.
-> 
-> Yes, that's what seems to be the right approach to enabling all SEV+ when KVM loads. 
-> 
-> For SEV firmware hotloading we will do implicit SEV Shutdown prior to DLFW_EX
-> and SEV (re)INIT after that to ensure that SEV is in UNINIT state before
-> DLFW_EX.
-> 
-> We still probably want to keep the deferred initialization for SEV in 
-> __sev_guest_init() by calling sev_platform_init() to support the SEV INIT_EX
-> case.
+On Fri, Feb 28, 2025, David Woodhouse wrote:
+> On Wed, 2025-02-26 at 18:18 -0800, Sean Christopherson wrote:
+> > This... snowballed a bit.
+> >=20
+> > The bulk of the changes are in kvmclock and TSC, but pretty much every
+> > hypervisor's guest-side code gets touched at some point.=C2=A0 I am rea=
+onsably
+> > confident in the correctness of the KVM changes.=C2=A0 For all other hy=
+pervisors,
+> > assume it's completely broken until proven otherwise.
+> >
+> > Note, I deliberately omitted:
+> >=20
+> > =C2=A0 Alexey Makhalov <alexey.amakhalov@broadcom.com>
+> > =C2=A0 jailhouse-dev@googlegroups.com
+> >=20
+> > from the To/Cc, as those emails bounced on the last version, and I have=
+ zero
+> > desire to get 38*2 emails telling me an email couldn't be delivered.
+> >=20
+> > The primary goal of this series is (or at least was, when I started) to
+> > fix flaws with SNP and TDX guests where a PV clock provided by the untr=
+usted
+> > hypervisor is used instead of the secure/trusted TSC that is controlled=
+ by
+> > trusted firmware.
+> >=20
+> > The secondary goal is to draft off of the SNP and TDX changes to slight=
+ly
+> > modernize running under KVM.=C2=A0 Currently, KVM guests will use TSC f=
+or
+> > clocksource, but not sched_clock.=C2=A0 And they ignore Intel's CPUID-b=
+ased TSC
+> > and CPU frequency enumeration, even when using the TSC instead of kvmcl=
+ock.
+> > And if the host provides the core crystal frequency in CPUID.0x15, then=
+ KVM
+> > guests can use that for the APIC timer period instead of manually calib=
+rating
+> > the frequency.
+> >=20
+> > Lots more background on the SNP/TDX motiviation:
+> > https://lore.kernel.org/all/20250106124633.1418972-13-nikunj@amd.com
+>=20
+> Looks good; thanks for tackling this.
+>=20
+> I think there are still some things from my older series at
+> https://lore.kernel.org/all/20240522001817.619072-1-dwmw2@infradead.org/
+> which this doesn't address.
 
-Refresh me, how does INIT_EX fit into all of this?  I.e. why does it need special
-casing?
+Most definitely.  I was/am assuming you're going to send a v4 at some point=
+?
