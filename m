@@ -1,261 +1,233 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2062.outbound.protection.outlook.com [40.107.93.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507441F1527
-	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 09:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740995676; cv=none; b=eLac+7n2x03OrGQVfiIytcapYmPbyKJFgW508ZSjRAMi7NAZDVpv+AOQ1lcvPiuZiquWm01oLl4atxYgIjugbquaWqj10eecj5ZRU4GSN+eoLzRLlzrNnJeY6genBHJlDySuO4uABFafaRjh4OjeiOQfLGv3O2ww1OBwL9Fj56k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740995676; c=relaxed/simple;
-	bh=A58wzXqspOCF7y1nRcqMkTGPyro87VFDTZ78HorgFs8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tFZVblnCX0Y09OkpfLGX0Lver4oMli9sI5WK6Ptn+CJds7b+/KPA00o72M5gUS49ViyI7Ud+AMtS8W1yFUaylj5kcnG9wUM51cJC6N44NREgjxFqO2WGyhyKktiXrTCP33uPG5fMutTbiMKZFHscPXdjW35NdbazY3prnwP3YWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=BPBl6yfz; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B35212B0A
+	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 14:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741010811; cv=fail; b=Nk46W8rTTP8w17BA/Yk6JJG4cBzDXFPrKxTHQtlPlOtbOMMr542puACPOOjvS3LOhF+st1aKsNy9OxhZrjtRc4Y8MQuv+bcBvmHT0VQxWhcwdApJfwG3pYyts41GK4W2KzXC3gRVaF2ULyyD0ees1SkHLMghNxbl/6Y88p+XNpQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741010811; c=relaxed/simple;
+	bh=0Uv1yhHk3002hAluQFciow4dAq8FF8lLMqLialcd8u0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=tyuO2/MAo1e6NIUuOaqjYkVQkFAB+1IL6ZlbbaGowB5M/JWw9e3HBES1u8o9VS/3N9lAnP9XB4kkGGRly7eyyS0XBcDMPr/cAJqbxBQuaE+B/qGaw/JMjLq4qNHQTtkCECdmi09y890JcoHJbKwV083VoHZWvnd5cI6xxDUZJTc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wl6iXmqA; arc=fail smtp.client-ip=40.107.93.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="BPBl6yfz"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e4ad1d67bdso6629217a12.2
-        for <linux-coco@lists.linux.dev>; Mon, 03 Mar 2025 01:54:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1740995672; x=1741600472; darn=lists.linux.dev;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=A58wzXqspOCF7y1nRcqMkTGPyro87VFDTZ78HorgFs8=;
-        b=BPBl6yfzYTdE/AJ1h/IyISRYqZ23d3qMN0xNEv2NuuULyEbCcc3vnEfRW0Olu8TRKI
-         Xen3gEQZcOAiIJmp92HN84JT8RsPWnVcXdkknu9dEiPJ+Fllxf84617Yk9iYFUTSnp7/
-         7nMlYMO/ygZKwkjxnEwtrN1rKvo2WdwPrXE64SaI1JRoSJZDcVSLQd7WrNexrPwri5uB
-         GIwCSsqYMCtPnHSXBIl8u997gaKDgdZV0epqgcKbzHuLRyt66nGCpxOFrTiNiNpEu5mJ
-         WvtxAIPrOpbEnvJ3IPhA3U/hAqqCkFHKbHxCMYp6phVo+cY8Tvqkz8UA17Gr/V7NBo9/
-         eQ/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740995672; x=1741600472;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=A58wzXqspOCF7y1nRcqMkTGPyro87VFDTZ78HorgFs8=;
-        b=YnHcugmWTwtaKJJS+U2OHQgh0U0WjEtZRIvs3KDSHLmFxO+2Vah7YzmAoVqh4sPk2Z
-         bhZfD7nTECl9kVEgewbaIVdAt4R7woy8hXx4EJbVhJucjAlcXRb5Ks0MKCauVuv6pvmv
-         pHHiGMJ/WSFMwu2nsej3QS8YXAFFcIswQ1fvyV2f9EZTeM63KaxRKYExAZcaadi7KR90
-         gN2Vad11zx/m84JcdY19gF/0o5G0e9pxCMwXphUJT6CAmJSG7RS6R4oX+5dMoSLbV0lT
-         dN+juBqjbkhk3lqpssO6CBK6prXq6Aya/nv+DYd00b57nBhR/zEtRf/ks4hMZstNO8CU
-         Zs6w==
-X-Forwarded-Encrypted: i=1; AJvYcCW7L7/AVmkszqAWT5jhZbD8Y79oXd/F+4SpfEz7oRO6yQ+HXciFDl1uEfdP1l4tqFpKcFAN26YQDSnb@lists.linux.dev
-X-Gm-Message-State: AOJu0YwugUt5zYGOwelf70IOTJwALhbaLQozzqmyaV+3Dfle82vJ7jqO
-	9D+LlEL975rwDYE9MLd/l5UsALe+bNyGWU0v+z9SpTNbajGU4kJPr9mRci2YX1c=
-X-Gm-Gg: ASbGncu6v72Z+iMH6CN51oEcjwARFTqjCtRCtTiH7hvl11bmTOqzuQoT9kZVIxXC02C
-	8xz2Z1jc19PWzt0c3gb7JQBAxd0Aj/LwezTqa4WAd/QpcKoiut/S2a3XdEXz+Bv7aHowwN01auS
-	IrIrXvcTnG5MFvhzxI/S4xqcpCwtDmVnLKH8IEaAg+PRR8hEu+Z4ZJSKIPuYGto0CfTBzHsRTgy
-	c0yeb11m0c4kau6bTlt4MUw3pqzMruNa2ztm+6vte3kwjsjUhk2KTMQ9TtATU2ELdjPXM0pUPto
-	+Irsj8B25bOKm0ia0NpNoCymz/wFM1Dbn8kGlXy+glB5HqcUHpZmrKMHFOPhVS7001zqei5gd4x
-	9JKZ2C/2kItIlIj1QsUUE/Gn6L8j3HKbtIihLoD0iSdHh2cW/S8vbqcV4zSMIGdR4jnA=
-X-Google-Smtp-Source: AGHT+IGW4m97/5Z6mzGE+FtM7OG3AsUThkKvGu7Efn6SS4sBYUvLGkxkFKD9S/u/8MdUzBtxBFwR1w==
-X-Received: by 2002:a05:6402:26c9:b0:5e0:34b5:13c0 with SMTP id 4fb4d7f45d1cf-5e4d6b05015mr11608759a12.19.1740995672489;
-        Mon, 03 Mar 2025 01:54:32 -0800 (PST)
-Received: from ?IPV6:2003:e5:8714:500:2aea:6ec9:1d88:c1ef? (p200300e5871405002aea6ec91d88c1ef.dip0.t-ipconnect.de. [2003:e5:8714:500:2aea:6ec9:1d88:c1ef])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e4c43a6ab7sm6603426a12.74.2025.03.03.01.54.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 01:54:32 -0800 (PST)
-Message-ID: <e49c22e8-04df-4a1b-b68e-378f73a861f9@suse.com>
-Date: Mon, 3 Mar 2025 10:54:31 +0100
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wl6iXmqA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=An+X5qG8xpkeiNUxKFwjh+X0q1NlrjAAFiUsMvLJbOMJwPS5awj5RdIAUibygL9zfrCNFn4Y1Co7Z24R2l9deWY/fFWUAu/uRXRd2yVYV3uwzgxmIgWnpEHtp9j9UdkiQqrr9aec9YkQPV9tXHyooeF5YBgPoC0BDE2QnYrKICtsTOmrQ0E86hUwO1ROPB3F15G43grMsrdQS8ef88GK3c1O843t6LusGwVv9oLJ9EFOdWXbdqlWnAxEE1K9Q8+JDoew3DBrCoS0WUngcKJ1k2NTZxofPpV7hzCVdwC2yOllONPdivULOY0w9tMaS1Bi4k3QgwwaSSkqjPukvx78Jg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VI0pk/D4wK+j3TjNK3QsSu57F9eGHHcRF4cNghH0MWo=;
+ b=mo9XYnS27Zyhl3q4nWBTBTBf2XYzTDysojxi0w44By3PpAsPh+BeMFOe7W01uQVCYUHigQ1bSXYSkjpcROY2ZD8DSoes6msSMmIgjFua9Olzimn+TSOrBHE0MYZvJA/Tf0jzZViVax+n4lor3omFZnt3MfIjTKoFvF+D3jvvtlXwIogP/Z9U+nLkRabLA0oSwlmouH5VCiBO84L1j310LISeEmVeHR5DmtcbV+/14bsyb7+IlCuJONK2wif4LlamTDzi0eLzzieVGMKTJ1lWRIGYnJfAAeTgWcBfdTBq0bLBQxSnYBihjkERU4ojbvPPtBP96qGXO/Sbs4/pLaNePw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VI0pk/D4wK+j3TjNK3QsSu57F9eGHHcRF4cNghH0MWo=;
+ b=wl6iXmqAJlnZi8ml1ftCRxl9wCHOx93BUWbiGGxRcRWVESLidmKY7XGHO6va1HT/2STQuja1VKLZbZUWJ2Bj6ufvbnrtz0RcVwTri686TBxV29+hKQg459UTNAD0FeQnKICNW6sIiTlUYg42YuukOISnNIDpo8ov1NHopC1xG0o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by PH7PR12MB5807.namprd12.prod.outlook.com (2603:10b6:510:1d3::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.22; Mon, 3 Mar
+ 2025 14:06:46 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e%7]) with mapi id 15.20.8489.025; Mon, 3 Mar 2025
+ 14:06:45 +0000
+Message-ID: <c8e067f3-117a-7737-64ea-ac016b697d0e@amd.com>
+Date: Mon, 3 Mar 2025 08:06:43 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [RFC PATCH v2 3/6] tpm: add send_recv() ops in tpm_class_ops
+To: Stefano Garzarella <sgarzare@redhat.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, Peter Huewe <peterhuewe@gmx.de>,
+ x86@kernel.org, Dov Murik <dovmurik@linux.ibm.com>,
+ linux-coco@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-integrity@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+References: <20250228170720.144739-1-sgarzare@redhat.com>
+ <20250228170720.144739-4-sgarzare@redhat.com>
+Content-Language: en-US
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <20250228170720.144739-4-sgarzare@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA1PR02CA0021.namprd02.prod.outlook.com
+ (2603:10b6:806:2cf::20) To DM4PR12MB5070.namprd12.prod.outlook.com
+ (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 1/4] x86/paravirt: Move halt paravirt calls under
- CONFIG_PARAVIRT
-To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Vishal Annapurve <vannapurve@google.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- virtualization@lists.linux.dev, pbonzini@redhat.com, seanjc@google.com,
- erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com,
- sagis@google.com, oupton@google.com, pgonda@google.com,
- kirill@shutemov.name, dave.hansen@linux.intel.com,
- chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, ajay.kaher@broadcom.com,
- alexey.amakhalov@broadcom.com,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- stable@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Tony Luck <tony.luck@intel.com>
-References: <20250220211628.1832258-1-vannapurve@google.com>
- <20250220211628.1832258-2-vannapurve@google.com>
- <Z8IvDeIJH2EJuPo-@char.us.oracle.com>
-Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <Z8IvDeIJH2EJuPo-@char.us.oracle.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------5LLYudiyGxvk0eCeMC0cD70G"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|PH7PR12MB5807:EE_
+X-MS-Office365-Filtering-Correlation-Id: a67c407c-d6a0-4e78-8c22-08dd5a5ca1d9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QUV5UmRRMzc2SExQNDRnMGFZUlhvTWFHcFFrdzk4elNaa29OS3J6QW5ta29J?=
+ =?utf-8?B?anJwb2s4c1RMQmV3OVdvbVpHUGFaUmJLWVpVVy83eWR5Ym5VWEQ0MzFOVUlW?=
+ =?utf-8?B?Z3ZTZnBmSkRMR29kUnFkWUpEOHc2SWcvcGRnL3RuTldTV0dQT04zTGwrV0JZ?=
+ =?utf-8?B?QXMrc2pOa0xtem4wUk9WcXJMVm9vMjhESGRUUnQ1UmRaZGpRZ0E5TVVkUEFp?=
+ =?utf-8?B?Z0lMSjk4NGtVQTRiY3pnS1MrTUIwbmVGVVpvMU44RXluTWJ6YXFYYitFN3dH?=
+ =?utf-8?B?ZzFjTHJaZmRDZzZFaWdsVEJqdFhNQ0locE4rZnZyQmhvVnQ2RVpRQmtPMmFC?=
+ =?utf-8?B?eWhiY0xmdEJGT1laYU5XWVJXZE84VlJQWWJwZnh1UWVKUHV6dVBLeTRucXFK?=
+ =?utf-8?B?WVFtaU9LbVJjY0FNMEFWKzlMY0MrVFI3b3pneG1qaVBNUGhIVEJkdHNaREFU?=
+ =?utf-8?B?bTM3Y28zRlhXbVVIdWhHSHM4ZFY0TlhlMjZvcGZpemlmWGU3a1FZV0lQLzVT?=
+ =?utf-8?B?ZXVqb3Y4eFVCazhQM29sWUE5STBtYmRISHh5ZVYzV2pDV0tFeGN3dWM5aGdB?=
+ =?utf-8?B?SFVjVlNiTFd3NFlyVlpnUFpoUGNqTTEwbkRHZjE2NkRYblBXdElkNVdYSWwz?=
+ =?utf-8?B?NzZyQktWcWJleWEzKy9WVElRcVYzM0xBSlJGR2RFcWhVamhSSWNtaWY1aWNF?=
+ =?utf-8?B?aURFT2xDYWF6M1VoZlcwNE4wZE9SUjJUbFRKbm41aXU2akgxcElqYnlWelhY?=
+ =?utf-8?B?d3J5NmR4VmVwYVFaNDlsUTRYU0s4T3Y4WGYrSUE3dzJZbnpDWW9SV2Y4Z2lJ?=
+ =?utf-8?B?bFUveFJON2FlUU83QzNXLzRhYm5tbXBrVXlXaTVWZ3dwRXNuVm5PVjJISXVl?=
+ =?utf-8?B?ZHRSUndycWZDZDlFVnVOQU8wR3VhenZXdXRxc1hiZ2ZkT3dHUmxlRGlVajVh?=
+ =?utf-8?B?bzVyMi9lMFh5MmN4M0Ryd1dkbllKNlpUcnJpVGFPM0hzS1lGZ2JhYlBPUjdm?=
+ =?utf-8?B?SVpvdEdIaVJYbVpXSExCQUF2RkZwYVdnUTh2VTNoTng3RlY3RXhNaUlsc1Jj?=
+ =?utf-8?B?cVd1SENVZWhmZnI0bGROeTdVWGVjSjliU1p2bzlBdHZkVTV4S0hJSU03cVZW?=
+ =?utf-8?B?UGVyajFzZGswQ0NyVkZTaTB3eW96cW55a0IveExvZGhrbTZiU1NuMlVTb0dG?=
+ =?utf-8?B?NUV6Z1hpQTZjWW1yeUJxajlGaEQ2MkRDMGdWY1JISDUzSE1GVHIra3Vxc0dJ?=
+ =?utf-8?B?UGMveG5STGZWWHE0Qi9QbFJBd3JtY09UbStNUGtYL2NDRG1QTm0xSmdGSlYz?=
+ =?utf-8?B?TWFncCtWS001QTA0bEtzS2dESnNoOWd4a1cySi9oOU4reHJMTFhWZE1lRWZP?=
+ =?utf-8?B?UXNibk81b0NQOFJIRkZHWFRQMzIzQnI2Ri9OQk9ZdGdFRHV3UVdlci8wMFZ2?=
+ =?utf-8?B?U05NTlZxcXpIQzlrd0tOci9KeHU5TzdSSTNWNnFPMVZrVzIzSHpYeUZQTVda?=
+ =?utf-8?B?Wk52NjBkWGQ3clNNSGxkeXc1Tk9vaEVrdkp2UnoyM1B5ZWhSUW9iL0FOZFdp?=
+ =?utf-8?B?RGx5a2QyWW9JTUhuQ3VZU250WTNpTXhmQ0E4d3VFc3p1NktjdUE4VElNRjBQ?=
+ =?utf-8?B?UjdUTGwxR3lPcm5YOExBS1F0ckVLQmo5YXVYbExpV3VtZXA0UlZPbjFQV0o4?=
+ =?utf-8?B?L0RKM1Z5dGN4TDg3bFM3T2FmekRKTVBaM1lQOUNhUUN3b0ltK1p5M1FBTkFC?=
+ =?utf-8?B?VHpobE9sbmVvTHZEYVU3ZkhacStvV2FOU24rUWpjd2JpWEZibjNRQkZCUHhV?=
+ =?utf-8?B?NTAzSVgya1Z4UjRmN2xFc2tINlZsbFhvcWhwREhaKzA4UVpqWmlhYzM5OHY2?=
+ =?utf-8?Q?hJW0ZQjoeL228?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VjFKOW5GMVJrK2VkSjdFb0c4YWFLN2dIOVFpdEVhMGRuWHVVN05nUnl1d3hF?=
+ =?utf-8?B?Q1RBamRmeEt2WW50SW9OTDJGci9IRm5nQlUzU0g1ei9zSDIvbDlwK256UW5T?=
+ =?utf-8?B?eDFJL2l6eU5JcHNMS29adjhOYzFKSlRrek9tVTdQUUFFQjJCOFdGZTBNUnNr?=
+ =?utf-8?B?YUtpL3MzYUloRDBhUnduZ0FzdStmMzF3Mzd6ZUVYaHQ1MjFkRXNJRXpjaDg0?=
+ =?utf-8?B?S3VqeW5SRGdRZjBUUDNRRUw1aUhYOTdRSW1MaU9SemdJVzNTYXo1cnFrVy83?=
+ =?utf-8?B?MSt3eU5SVmJKYWdCcjRkY0pta2xrckVVWlpBQzhnaWJ1cDdwTGhvbjNWY2xm?=
+ =?utf-8?B?UFY5RXpTanpBMmQyaisrTHcwOHFxSmlIa01qRHBOMDRCTndVRWlKNW1scTJM?=
+ =?utf-8?B?UFQwOVByTHlnZzU4eHhleU1sZ0tFZHN5K0xZMUJZQ1pSRDZiV0ZueGhFclpz?=
+ =?utf-8?B?S2xNSlk2azBzZUdQOGxSVFRZNmlOdzBEc0IrMEx2MlR2akxKWFJnYzV5R3h0?=
+ =?utf-8?B?NDFZQWROUm1URGY1dnNXc0lacmJTNUJOc3ZPbjJOaURSeXZ6MnhhemxvMGNm?=
+ =?utf-8?B?Zm1nNVZCamo0OUxJUXNQMkI3emVVcnRiTjVvb2VpMytaR21sWEVyUzhPbEE2?=
+ =?utf-8?B?V2k1c3N6MEp2SElBK1JkWFdiTjhWeFQ4VytpU05lZE9YWEpiNFFWVjByK0Jq?=
+ =?utf-8?B?U1pGRDN0M1ErdVJwZ2xCS2laMFIwdDFvd2hTVTJjakdmeW5pUmRYV3pZRS9y?=
+ =?utf-8?B?ZERHcmswVktLNlJCMjZZdy9HMm5TVzlFVTNyVC9qZEdDTkYzdUVwem41Qko5?=
+ =?utf-8?B?OE9aL3ZlZWZvaUQ1U290bjNpbDY4YnlkZHAxMC9BSXU1RFlpYkt3VWgxbjRF?=
+ =?utf-8?B?R0dZeGlpTmFTeHV0c3ZKZHorcVV3TE5McEhnTFE4RkhTd2hpTlI3RXhoOWYz?=
+ =?utf-8?B?cXFXeHFXYjZZcHJSWTQ1L3dkb2oyakpWWEJGNEFmOWl5cklsaGE2RXV0bE1C?=
+ =?utf-8?B?VU8ycU02VlFPWHQ5VkhhQ0FaTndPdTYrNDd0U3ZPSlR6M1A0SmpwWWxUTU8v?=
+ =?utf-8?B?OHc1SXRSdDRDY1lmRmJkWWZ4bGQydGVVVy8vMktKeStSeW1RQWpQcyt3WVJn?=
+ =?utf-8?B?bVl2ZkV2bm1ndmdkc2I3UXhGczJLSDJVZ2YwRkQvbjlSTUM3d3B4czhBR0hU?=
+ =?utf-8?B?SjMxZkt0bzVCcENwaWtFaDdVM0lTdkpORVBtaUE1dzIxcWkwQXpqVXljUS8w?=
+ =?utf-8?B?QWFaV2phbUdpaG5XL0QyWW1UWXhka0xFV1pRQ3lNQXg1OXhMdkRuTEdsT2RI?=
+ =?utf-8?B?WU01dGhWMGQ3T3dUVytWa0lGNnVETmVzNTI0YUwvdGkzempXNFk5K240WHFE?=
+ =?utf-8?B?RUZ0dXdoRjBoNysyU1hZS0JTc2VBSS9CZkpRSExveVZIZ3RyaEk4eDVoU0FI?=
+ =?utf-8?B?R0U1M1Axb1hvVTk1bWRGUDR5QTZZR05mbUI3c0Vaa0FqNjBMbC9YWktZSWRZ?=
+ =?utf-8?B?d05qT3B1TjhMUFZpYWxERU5vbHc4dVpLOTNqZldlcEUxQi9VVnhiTGhKVUI5?=
+ =?utf-8?B?U2tXMXhqcEtSRGpiYUFZbjEyNnFaNU42QmM4THBVMk9QWDdheFhsaHZsSWtZ?=
+ =?utf-8?B?dUIvUTdHdWVHajRwQXRKaURwZ1lMMExBbTNzSTVZR1JseTJSM1d3K3FPdjNR?=
+ =?utf-8?B?VkhtWXV2UnNhczdRVVY0TWlmY2VYYzM1YnpuSVBFZTJPZnMwRkpnV1RqVnVv?=
+ =?utf-8?B?TDdPTEZWWFpnWXZ1ZW9FZTVxWSsyV0pMVVRFd2xiVzdTcEZ3NDRZQURxMXJk?=
+ =?utf-8?B?bUpMVUlHbkNSRDBsZmxCYkxhRGVNUkNnVE1mMEJZT0FaNFAyVHpsYnNyclZF?=
+ =?utf-8?B?dGoxUENHa05CVWNpOGdyN2N5WkdIRlBJSjdpN3NBUEliaVZ2QzdRK0dXK21X?=
+ =?utf-8?B?VXlEakJDVTlBeHJqRVNpejAwTk8zdGdJYlB6THhqSzcxRTVPd3d4M28zUk5t?=
+ =?utf-8?B?UmdyQlcwdmpQdkVmcVRQR1FlaWxsaEE0eEtFOThpVU1rQzBNTGYyYUZGMEVs?=
+ =?utf-8?B?dTZrSE96d1k3K3BCakVJRW9yc0hCOGdrZzRhaGo3cE5Bd2V4aVpSN0FpbHlQ?=
+ =?utf-8?Q?fGELJ9g8AsHDuIGB+kPgNY/z3?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a67c407c-d6a0-4e78-8c22-08dd5a5ca1d9
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2025 14:06:45.6939
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Mgj190qHEFrDQEItYJ9IVjcvqHyoHowAfE2PxrNdX6EnizfUI2hI/HhRjJDeBWjbR290LI3ay8fVS3LqeJdHhA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5807
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------5LLYudiyGxvk0eCeMC0cD70G
-Content-Type: multipart/mixed; boundary="------------Uen3bzhHMfNu8u1d60iDkUwy";
- protected-headers="v1"
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Vishal Annapurve <vannapurve@google.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- virtualization@lists.linux.dev, pbonzini@redhat.com, seanjc@google.com,
- erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com,
- sagis@google.com, oupton@google.com, pgonda@google.com,
- kirill@shutemov.name, dave.hansen@linux.intel.com,
- chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, ajay.kaher@broadcom.com,
- alexey.amakhalov@broadcom.com,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- stable@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Tony Luck <tony.luck@intel.com>
-Message-ID: <e49c22e8-04df-4a1b-b68e-378f73a861f9@suse.com>
-Subject: Re: [PATCH V5 1/4] x86/paravirt: Move halt paravirt calls under
- CONFIG_PARAVIRT
-References: <20250220211628.1832258-1-vannapurve@google.com>
- <20250220211628.1832258-2-vannapurve@google.com>
- <Z8IvDeIJH2EJuPo-@char.us.oracle.com>
-In-Reply-To: <Z8IvDeIJH2EJuPo-@char.us.oracle.com>
+On 2/28/25 11:07, Stefano Garzarella wrote:
+> Some devices do not support interrupts and provide a single operation
+> to send the command and receive the response on the same buffer.
+> 
+> To support this scenario, a driver could set TPM_CHIP_FLAG_IRQ in the
+> chip's flags to get recv() to be called immediately after send() in
+> tpm_try_transmit().
+> 
+> Instead of abusing TPM_CHIP_FLAG_IRQ, introduce a new callback
+> send_recv(). If that callback is defined, it is called in
+> tpm_try_transmit() to send the command and receive the response on
+> the same buffer in a single call.
+> 
+> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+>  include/linux/tpm.h              | 2 ++
+>  drivers/char/tpm/tpm-interface.c | 8 +++++++-
+>  2 files changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+> index 20a40ade8030..2ede8e0592d3 100644
+> --- a/include/linux/tpm.h
+> +++ b/include/linux/tpm.h
+> @@ -88,6 +88,8 @@ struct tpm_class_ops {
+>  	bool (*req_canceled)(struct tpm_chip *chip, u8 status);
+>  	int (*recv) (struct tpm_chip *chip, u8 *buf, size_t len);
+>  	int (*send) (struct tpm_chip *chip, u8 *buf, size_t len);
+> +	int (*send_recv)(struct tpm_chip *chip, u8 *buf, size_t buf_len,
+> +			 size_t to_send);
+>  	void (*cancel) (struct tpm_chip *chip);
+>  	u8 (*status) (struct tpm_chip *chip);
+>  	void (*update_timeouts)(struct tpm_chip *chip,
+> diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
+> index b1daa0d7b341..4f92b0477696 100644
+> --- a/drivers/char/tpm/tpm-interface.c
+> +++ b/drivers/char/tpm/tpm-interface.c
+> @@ -82,6 +82,9 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip, void *buf, size_t bufsiz)
+>  		return -E2BIG;
+>  	}
+>  
+> +	if (chip->ops->send_recv)
+> +		goto out_recv;
 
---------------Uen3bzhHMfNu8u1d60iDkUwy
-Content-Type: multipart/mixed; boundary="------------jshMhZZ1nAInseKi0TepNMrO"
+It might look a bit cleaner if you issue the send_recv() call here and
+then jump to a new label after the recv() call just before 'len' is checked.
 
---------------jshMhZZ1nAInseKi0TepNMrO
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Thanks,
+Tom
 
-T24gMjguMDIuMjUgMjI6NDcsIEtvbnJhZCBSemVzenV0ZWsgV2lsayB3cm90ZToNCj4gT24g
-VGh1LCBGZWIgMjAsIDIwMjUgYXQgMDk6MTY6MjVQTSArMDAwMCwgVmlzaGFsIEFubmFwdXJ2
-ZSB3cm90ZToNCj4+IEZyb206ICJLaXJpbGwgQS4gU2h1dGVtb3YiIDxraXJpbGwuc2h1dGVt
-b3ZAbGludXguaW50ZWwuY29tPg0KPj4NCj4+IENPTkZJR19QQVJBVklSVF9YWEwgaXMgbWFp
-bmx5IGRlZmluZWQvdXNlZCBieSBYRU4gUFYgZ3Vlc3RzLiBGb3INCj4+IG90aGVyIFZNIGd1
-ZXN0IHR5cGVzLCBmZWF0dXJlcyBzdXBwb3J0ZWQgdW5kZXIgQ09ORklHX1BBUkFWSVJUDQo+
-PiBhcmUgc2VsZiBzdWZmaWNpZW50LiBDT05GSUdfUEFSQVZJUlQgbWFpbmx5IHByb3ZpZGVz
-IHN1cHBvcnQgZm9yDQo+PiBUTEIgZmx1c2ggb3BlcmF0aW9ucyBhbmQgdGltZSByZWxhdGVk
-IG9wZXJhdGlvbnMuDQo+Pg0KPj4gRm9yIFREWCBndWVzdCBhcyB3ZWxsLCBwYXJhdmlydCBj
-YWxscyB1bmRlciBDT05GSUdfUEFSVklSVCBtZWV0cw0KPj4gbW9zdCBvZiBpdHMgcmVxdWly
-ZW1lbnQgZXhjZXB0IHRoZSBuZWVkIG9mIEhMVCBhbmQgU0FGRV9ITFQNCj4+IHBhcmF2aXJ0
-IGNhbGxzLCB3aGljaCBpcyBjdXJyZW50bHkgZGVmaW5lZCB1bmRlcg0KPj4gQ09ORklHX1BB
-UkFWSVJUX1hYTC4NCj4+DQo+PiBTaW5jZSBlbmFibGluZyBDT05GSUdfUEFSQVZJUlRfWFhM
-IGlzIHRvbyBibG9hdGVkIGZvciBURFggZ3Vlc3QNCj4+IGxpa2UgcGxhdGZvcm1zLCBtb3Zl
-IEhMVCBhbmQgU0FGRV9ITFQgcGFyYXZpcnQgY2FsbHMgdW5kZXINCj4+IENPTkZJR19QQVJB
-VklSVC4NCj4gDQo+IENvdWxkIHlvdSB1c2UgdGhlIGJsb2F0LW8tbWV0ZXIgdG8gZ2l2ZSBh
-biBpZGVhIG9mIHRoZSBzYXZpbmdzPw0KPiANCj4gQWxzbyAuLiBhcmVuJ3QgbW9zdCBkaXN0
-cm9zIGJ1aWxkaW5nIHdpdGggWGVuIHN1cHBvcnQgc28gdGhleSB3aWxsDQo+IGFsd2F5cyBo
-YXZlIHRoZSBmdWxsIHBhcmF2aXJ0IHN1cHBvcnQ/DQoNCkFkZGluZyBQQVJBVklSVF9YWEwg
-dXNlcnMgc2hvdWxkIGJlIGF2b2lkZWQgaWYgcG9zc2libGUuDQoNCk1haW4gcmVhc29uIGlz
-IHRoYXQgdGhlIHdvcmsgdG8gbWFrZSBQVkggZG9tMCBmdWxseSBmdW5jdGlvbmFsIGNvbXBh
-cmVkDQp0byBQViBkb20wIHdpbGwgbWFrZSBpdCBwb3NzaWJsZSB0byBkZXByZWNhdGUgUFYg
-bW9kZSBpbiB0aGUgbG9uZyBydW4uDQoNCg0KSnVlcmdlbg0K
---------------jshMhZZ1nAInseKi0TepNMrO
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
-
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
-
---------------jshMhZZ1nAInseKi0TepNMrO--
-
---------------Uen3bzhHMfNu8u1d60iDkUwy--
-
---------------5LLYudiyGxvk0eCeMC0cD70G
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmfFfFcFAwAAAAAACgkQsN6d1ii/Ey+4
-gwgAjrMMPRApBqvCdhGtxXLUvaKbrAWmodQYmqbOQ/crvyMlpszoJIjIfkMV7jL1OQBvz9E42wrP
-gt5UqElNT/CGt/teMeWGqvX8fmR25Yy6QAInCAa788M+g3qjxnbgBNF4kdstU4ejihHuEdfCNW7f
-aPudvRQk32GnVtYjLZX82MuHTHziub5ySmuuDY8AVNIVDm5f4Sj49dGDdC1WuaYl927Gc0iNCOJy
-mO+nmJ++ysZHqYhCtMReG75fPLnjrRkXHERjOAOxSXm+dFMRJCp5RNF0Jvd7nd8HAdFhDxpzOP0j
-QPWONYei2pGbVzafpTgjHSTnwqGxp9iIMUdmVbV0gA==
-=QRkL
------END PGP SIGNATURE-----
-
---------------5LLYudiyGxvk0eCeMC0cD70G--
+> +
+>  	rc = chip->ops->send(chip, buf, count);
+>  	if (rc < 0) {
+>  		if (rc != -EPIPE)
+> @@ -123,7 +126,10 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip, void *buf, size_t bufsiz)
+>  	return -ETIME;
+>  
+>  out_recv:
+> -	len = chip->ops->recv(chip, buf, bufsiz);
+> +	if (chip->ops->send_recv)
+> +		len = chip->ops->send_recv(chip, buf, bufsiz, count);
+> +	else
+> +		len = chip->ops->recv(chip, buf, bufsiz);
+>  	if (len < 0) {
+>  		rc = len;
+>  		dev_err(&chip->dev, "tpm_transmit: tpm_recv: error %d\n", rc);
