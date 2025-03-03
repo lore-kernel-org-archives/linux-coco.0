@@ -1,71 +1,71 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE51F1E47A3
-	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 06:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42461E7C28
+	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 07:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740983162; cv=none; b=CiMxFTH+1jGiiv+GOUeVf+14BGO3I7HxJ9MxgnKvyzpDN/2/igFFrh1VD/ZoJfvYT18vGlqGC2wpr7qm2OG0UiegHdfivWFrT1hvhLvmf1VziFhZs4iPwwxgDc9h+S/UQvX3sPFIzAFFu4+pTYv7zB/xzeuxLh4eKN5ow/STPLw=
+	t=1740985700; cv=none; b=Moc0bKcukwdwXSBBQAUw1GCizltDkCUHl3jUEU6JCw4ouYMPms05OIvuPubxMLc2Lhm8/cPZZOdMV+8d6EVCkhAvy29p4FIegD5G4iBoE9wPK40OgIks18ww0+HLAFE7709tCvODZenxc9BE0u1jY3Bg3GQnf/vPBM8JdsavHnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740983162; c=relaxed/simple;
-	bh=7M+DRz2hm03rBgj2x3UrNt6vpeHXng5+xitohQvfcAY=;
+	s=arc-20240116; t=1740985700; c=relaxed/simple;
+	bh=AfwoLDxtt+un9QaIe0gjqSA+BcKTtkK/lo1w1S7u5uw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NqI5b6VVVRURlsIXnjhDVIpCRuMC2BG2Kk9w+/ZwQlgxUzzmvnPEdl/rZHAM2cBMKfLdQxFB+/XcHhTDsoNSjV18llj8EbkZhPO1fxIb7uIIosoblVHjX7KCvtmlxj3FwQz2LmqzKxnUnGixbtAzyRB+nLil1I1D+Afqf0f9I5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XjwU5P4B; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=Szn3jOWUBX+zFWOW2i0OBZar+0r2v34/4GO2rnpkmkYu14NJo52W7zVFBAPnaASUbcXEWhN+WijHothf3HSCvTkpG5NZhhEbvhIqV63SOKSW70eeJPlP7cncTar8A3sOtSn1UTgAYT1roRG/+XooFrszIq/jhSr67IcBLyCCg2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FYImNMJq; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XjwU5P4B"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FYImNMJq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740983159;
+	s=mimecast20190719; t=1740985697;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=N+ANXerGfs05Qx5JuBBnd1YtOYkq281duKe5pNwiLBs=;
-	b=XjwU5P4BipKFB3PnMww7FkDxuhqtkJ4RXL1JGHDmcWkz79M00BeiAJ2E+HGPhuTUMpVa5G
-	N0VhTQcZJCYkyflHU2iiPL8gEyKtRpFhItRtYWqyzFWyYKimVj5zNvfDVs9K4sJ9fhg7n2
-	puDDYCeYZ7O6wpkdPMjrzZAgMhZ/7Vo=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=TAZt9bZkuhMK3xl5j9Jo0Thv7hZQ7De0iSCYDAJHnkY=;
+	b=FYImNMJqXUftCR+yLo7x5F7BQzqsQWS/CbFGnSsXOI6no0Qw2Td5aHSBPy6DnlqVyNs5Em
+	JArMBPVl7jUoFuHE/wAkW1HqWqbuhEq9fTPlpDLmtW9fWhwl7lBLgYtoo+EG1aLnmHfv4X
+	GbQ8YdIoEuWlNK10L6Z8yW2ICrewFAQ=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-BLSMFMJQMx-HHVgXJuYUzA-1; Mon, 03 Mar 2025 01:25:58 -0500
-X-MC-Unique: BLSMFMJQMx-HHVgXJuYUzA-1
-X-Mimecast-MFC-AGG-ID: BLSMFMJQMx-HHVgXJuYUzA_1740983158
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-22107b29ac3so65953495ad.1
-        for <linux-coco@lists.linux.dev>; Sun, 02 Mar 2025 22:25:58 -0800 (PST)
+ us-mta-588-RK4-0HU6MMupN28xjezOGw-1; Mon, 03 Mar 2025 02:08:14 -0500
+X-MC-Unique: RK4-0HU6MMupN28xjezOGw-1
+X-Mimecast-MFC-AGG-ID: RK4-0HU6MMupN28xjezOGw_1740985694
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2233b764fc8so74577665ad.3
+        for <linux-coco@lists.linux.dev>; Sun, 02 Mar 2025 23:08:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740983157; x=1741587957;
+        d=1e100.net; s=20230601; t=1740985693; x=1741590493;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N+ANXerGfs05Qx5JuBBnd1YtOYkq281duKe5pNwiLBs=;
-        b=CZ7N/Wiuqe4Xej3QaITtEi1kh72dCQU9HdU7g9F2XG6eggTXsoYAUojlo2p2Dvh/5i
-         0F4qfoPP/nldsCtDidY8ohvNw/v90SkxvD2ywNmwqsf3eRsFSoX9amZ1ibQKDYw2eQWw
-         TRU7dMCneSfyyUC9pMoOZp7FAHJam4hnCrBnhfsSoVA8wEW/tWUStrctfu4lvZjxgIWp
-         CA1+C0331WecPv7SklJtvmfJeclA9JQQteEWgHm1+AWS7J8L4+KStTYrkse3rqQpba9h
-         Yqt/JJw2SE5N+K1l2Uf9eN0QqP57qh9R4B20fis5g6HNRNShEvEKFX0MoosjPZWqUCXP
-         pPCg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5vLTPVWq4qjat4sC5cEOzQSnLHnjc1ZUQP2yQT1woVyM3bIOHcqVSkQiYG3HkB2ouyJelIbaOprL0@lists.linux.dev
-X-Gm-Message-State: AOJu0YyOCj1okxDq1eBBXeklOH1eVW2Xg6ltuTDgbDObDyAGyz9mju6t
-	tVH9kUhuVfpp3dsOD6eVjJSdi1AaSGUcw2Xcj0bjBflPGD1vO2O5cWeZLLH4JAYvWgXZq1eplPg
-	6jxKqUWnOhkAMMuEurVebBe3piYNIOxjeoS4COySyHzwhv/La4dnRZYfPWv4=
-X-Gm-Gg: ASbGnct0lUk7LBlQwflhTGmP6fH34iSAL5f43umWXvxgX3wFwRW9vReG3cuhedJQA4G
-	0lI7rblGjd0XWoO6FcoUuQwY7+Vibob8bl74FyDpjqzyR1Y4g/km+BDKRZa1K/FCnIIfZKeeFqU
-	LZqfLRTX+yLvaYYKXydP9U/rtT3UoxVMfl1WXsBo/hqJ+yM8XWpVtBrA0ALNuunbeyHdQk0Y07M
-	gCxgMfBdPW+IUwMqV/6y0zbWeE5854JKAzpFgxkxV4woAPnMShO7ETV3HMRbRZNBYsD0J0/n3Dk
-	deqFXAn4n5kCU5D4HQ==
-X-Received: by 2002:a17:902:e5cf:b0:220:ff82:1c60 with SMTP id d9443c01a7336-2234a4891c5mr239752345ad.14.1740983157572;
-        Sun, 02 Mar 2025 22:25:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFpXtcArHUqT2hI5ax8evJjGCyGJEtPHCAmH1OVzs9dnw0tbzauezRsGnlG5Grz1mEDveiZtg==
-X-Received: by 2002:a17:902:e5cf:b0:220:ff82:1c60 with SMTP id d9443c01a7336-2234a4891c5mr239752075ad.14.1740983157279;
-        Sun, 02 Mar 2025 22:25:57 -0800 (PST)
+        bh=TAZt9bZkuhMK3xl5j9Jo0Thv7hZQ7De0iSCYDAJHnkY=;
+        b=FZvknjBgiwDYd4mwdI4Zl7iDNsrAOUlpa5mazxjQ+NoNbnmn2thhjDfDMRmeH7bkGd
+         d4kF5H+WwLIP+EvjZsDsakdBQZM2ltaW9jYImZQg8SRRrchg2lR27bMcl47DkYyuSElR
+         YPOiOx83TkJWWmkulKFNcFqo2U0WiqAenZdHIFpNuFF41Ud1skxff3zwMB7xD0uI1uc1
+         CT9ZnqOm4tLur/gHwe8vWElnFRp5yUJPxD2I/lYgZDC8b9yHmyddmZZK90YTJK61WlFy
+         a+MF4qJwCA6FajYNX3OMyD00Dud7nzs6VnSviDtrPn2zWu/Lpv6LqBWHseZlXI3Mg5U2
+         bclA==
+X-Forwarded-Encrypted: i=1; AJvYcCVU4dtv71z9IlmrglU7k90nOeRNlNEnRgxe8gP+kLny4qbJcrQSSqvzEMFiCAr1wb+8DKe5pp7WXfzu@lists.linux.dev
+X-Gm-Message-State: AOJu0YzdZqFpVnYzpQFCNJ+Lcn9uc87Oi9NF/g2okz3mKqX8o8mFfBiI
+	wBJQTC/IgzqMomLstAgqC8GP97ppVh5GRHbHmhT3xh5egJqrXcX+Rlr6HrCVQMRltYf/gaH2k5p
+	/vgdL0rjU86dJtntAWSZr5mNcTSSK/dKx5hpMRFpKW3Zs8NVWyoFiWx3vxr0=
+X-Gm-Gg: ASbGncu5Bi0Q2Lu32PeDhJZqQNWmsg+R4nuE1hEtqk9rrqg78HSTsOAubLW5ny61/fz
+	7Ee+s4zCQqq2asj4/tLYaIYbULOp6OV+kOq+I3/Fzr1Gfvf8CRHTVDj/42QjG4yJahMfeg4IDxQ
+	STe2smRCh3Snu13JTGyo7uIu+GY88AJtuV2S46b7MUy9RovSbRoA9j+mN33AcP8JfDMQptjMcv3
+	m3PldPQo/CAOu+SjlT6yVgI9WoLkGEtsApdYSwfjOXrXScoq6sItFnwvJ2g4Wrh4BkmhgpZ53Qh
+	cH83QTA1ydATDW7N4A==
+X-Received: by 2002:a17:902:c951:b0:221:78a1:27fb with SMTP id d9443c01a7336-22368f72060mr189619875ad.11.1740985693566;
+        Sun, 02 Mar 2025 23:08:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFj6AXAjs67EIGwQMhzQQGbQbpNnv+WHLAlTElHzKGobUYvRKx1SI4QHA9TpJnCJTfgJ55bPw==
+X-Received: by 2002:a17:902:c951:b0:221:78a1:27fb with SMTP id d9443c01a7336-22368f72060mr189619505ad.11.1740985693207;
+        Sun, 02 Mar 2025 23:08:13 -0800 (PST)
 Received: from [192.168.68.55] ([180.233.125.164])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223504c59e1sm70112765ad.158.2025.03.02.22.25.50
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223504c5cd2sm71285075ad.143.2025.03.02.23.08.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Mar 2025 22:25:56 -0800 (PST)
-Message-ID: <e432ee67-6afb-40c8-9542-48770834ee40@redhat.com>
-Date: Mon, 3 Mar 2025 16:25:48 +1000
+        Sun, 02 Mar 2025 23:08:12 -0800 (PST)
+Message-ID: <7639eca7-8fd8-491c-90bd-1be084fbd710@redhat.com>
+Date: Mon, 3 Mar 2025 17:08:04 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,7 +73,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 11/45] arm64: RME: RTT tear down
+Subject: Re: [PATCH v7 12/45] arm64: RME: Allocate/free RECs to match vCPUs
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
@@ -89,47 +89,112 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
  <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-12-steven.price@arm.com>
+ <20250213161426.102987-13-steven.price@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250213161426.102987-12-steven.price@arm.com>
+In-Reply-To: <20250213161426.102987-13-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: B_pY55-zt7aaf16c-oKE-aNgja083hzZFl0yoUqbPKQ_1740983158
+X-Mimecast-MFC-PROC-ID: ZnETXmP3M4YwpMj8GUUBY17430DeI-eHj4ccowStAGA_1740985694
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 2/14/25 2:13 AM, Steven Price wrote:
-> The RMM owns the stage 2 page tables for a realm, and KVM must request
-> that the RMM creates/destroys entries as necessary. The physical pages
-> to store the page tables are delegated to the realm as required, and can
-> be undelegated when no longer used.
+> The RMM maintains a data structure known as the Realm Execution Context
+> (or REC). It is similar to struct kvm_vcpu and tracks the state of the
+> virtual CPUs. KVM must delegate memory and request the structures are
+> created when vCPUs are created, and suitably tear down on destruction.
 > 
-> Creating new RTTs is the easy part, tearing down is a little more
-> tricky. The result of realm_rtt_destroy() can be used to effectively
-> walk the tree and destroy the entries (undelegating pages that were
-> given to the realm).
+> RECs must also be supplied with addition pages - auxiliary (or AUX)
+> granules - for storing the larger registers state (e.g. for SVE). The
+> number of AUX granules for a REC depends on the parameters with which
+> the Realm was created - the RMM makes this information available via the
+> RMI_REC_AUX_COUNT call performed after creating the Realm Descriptor (RD).
+> 
+> Note that only some of register state for the REC can be set by KVM, the
+> rest is defined by the RMM (zeroed). The register state then cannot be
+> changed by KVM after the REC is created (except when the guest
+> explicitly requests this e.g. by performing a PSCI call). The RMM also
+> requires that the VMM creates RECs in ascending order of the MPIDR.
+> 
+> See Realm Management Monitor specification (DEN0137) for more information:
+> https://developer.arm.com/documentation/den0137/
 > 
 > Signed-off-by: Steven Price <steven.price@arm.com>
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > ---
 > Changes since v6:
->   * Move rme_rtt_level_mapsize() and supporting defines from kvm_rme.h
->     into rme.c as they are only used in that file.
+>   * Avoid reporting the KVM_ARM_VCPU_REC feature if the guest isn't a
+>     realm guest.
+>   * Support host page size being larger than RMM's granule size when
+>     allocating/freeing aux granules.
 > Changes since v5:
->   * Rename some RME_xxx defines to do with page sizes as RMM_xxx - they are
->     a property of the RMM specification not the RME architecture.
+>   * Separate the concept of vcpu_is_rec() and
+>     kvm_arm_vcpu_rec_finalized() by using the KVM_ARM_VCPU_REC feature as
+>     the indication that the VCPU is a REC.
 > Changes since v2:
->   * Moved {alloc,free}_delegated_page() and ensure_spare_page() to a
->     later patch when they are actually used.
->   * Some simplifications now rmi_xxx() functions allow NULL as an output
->     parameter.
->   * Improved comments and code layout.
+>   * Free rec->run earlier in kvm_destroy_realm() and adapt to previous patches.
 > ---
->   arch/arm64/include/asm/kvm_rme.h |   7 ++
->   arch/arm64/kvm/mmu.c             |   6 +-
->   arch/arm64/kvm/rme.c             | 128 +++++++++++++++++++++++++++++++
->   3 files changed, 138 insertions(+), 3 deletions(-)
+>   arch/arm64/include/asm/kvm_emulate.h |   7 ++
+>   arch/arm64/include/asm/kvm_host.h    |   3 +
+>   arch/arm64/include/asm/kvm_rme.h     |  18 +++
+>   arch/arm64/kvm/arm.c                 |  13 +-
+>   arch/arm64/kvm/reset.c               |  11 ++
+>   arch/arm64/kvm/rme.c                 | 179 +++++++++++++++++++++++++++
+>   6 files changed, 229 insertions(+), 2 deletions(-)
+> 
+
+With the following one comment addressed:
 
 Reviewed-by: Gavin Shan <gshan@redhat.com>
+
+[...]
+
+>   
+>   /*
+> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
+> index 698bb48a8ae1..5db377943db4 100644
+> --- a/arch/arm64/include/asm/kvm_rme.h
+> +++ b/arch/arm64/include/asm/kvm_rme.h
+> @@ -6,6 +6,7 @@
+>   #ifndef __ASM_KVM_RME_H
+>   #define __ASM_KVM_RME_H
+>   
+> +#include <asm/rmi_smc.h>
+>   #include <uapi/linux/kvm.h>
+>   
+>   /**
+> @@ -65,6 +66,21 @@ struct realm {
+>   	unsigned int ia_bits;
+>   };
+>   
+> +/**
+> + * struct realm_rec - Additional per VCPU data for a Realm
+> + *
+> + * @mpidr: MPIDR (Multiprocessor Affinity Register) value to identify this VCPU
+> + * @rec_page: Kernel VA of the RMM's private page for this REC
+> + * @aux_pages: Additional pages private to the RMM for this REC
+> + * @run: Kernel VA of the RmiRecRun structure shared with the RMM
+> + */
+> +struct realm_rec {
+> +	unsigned long mpidr;
+> +	void *rec_page;
+> +	struct page *aux_pages[REC_PARAMS_AUX_GRANULES];
+> +	struct rec_run *run;
+> +};
+> +
+
+REC_PARAMS_AUX_GRANULES represents the maximal number of the auxiliary granules.
+Since the base page size is always larger than or equal to granule size (4KB).
+The capacity of array @aux_pages[] needs to be REC_PARAMS_AUX_GRANULES. Ideally,
+the array's size can be computed dynamically and it's allocated in kvm_create_rec().
+
+Alternatively, to keep the code simple, a comment is needed here to explain why
+the array's size has been set to REC_PARAMS_AUX_GRANULES.
+
+An relevant question: Do we plan to support differentiated sizes between page
+and granule? I had the assumption this feature will be supported in the future
+after the base model (equal page and granule size) gets merged first.
+
+Thanks,
+Gavin
 
