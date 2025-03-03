@@ -1,173 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6001E23BE;
-	Mon,  3 Mar 2025 05:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE51F1E47A3
+	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 06:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740980100; cv=none; b=nn5EVYStP4eQFrhrhQhcEy13qsDQBdK17PBQ8TaFcrc8CIpnq0ySGGSmb/qQdQuAhk7ZpAwyzJjuJ2H2hvaXN3JG0dz3UaPbC3nup2VLdYw9vF+0QwrF4hEJCnDD27wjJvZjALp77hjmQG21s0DnnwaSSe92incjThgFZFJ0upo=
+	t=1740983162; cv=none; b=CiMxFTH+1jGiiv+GOUeVf+14BGO3I7HxJ9MxgnKvyzpDN/2/igFFrh1VD/ZoJfvYT18vGlqGC2wpr7qm2OG0UiegHdfivWFrT1hvhLvmf1VziFhZs4iPwwxgDc9h+S/UQvX3sPFIzAFFu4+pTYv7zB/xzeuxLh4eKN5ow/STPLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740980100; c=relaxed/simple;
-	bh=hD6xzP3FpFewH9I665wRKi/LE9Ov9GLuAPFoz3tFtBo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KraR2gLMV8PV1LbFyZkr2yKr4tQbIiwbcMn4APrYZNcqmTjL87J630oBUUhcEz1vXW8y0nyvJ9k6BDVpDrwUuzyXymP7Q/z0991USx1lyrBFSKmqZfzJWuHlnR8mvakQ1WDO7EXABvVQ2kN/Zm6pgVTtNIuJDewspPF7kAkaZvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dqzVwvQM; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1740983162; c=relaxed/simple;
+	bh=7M+DRz2hm03rBgj2x3UrNt6vpeHXng5+xitohQvfcAY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NqI5b6VVVRURlsIXnjhDVIpCRuMC2BG2Kk9w+/ZwQlgxUzzmvnPEdl/rZHAM2cBMKfLdQxFB+/XcHhTDsoNSjV18llj8EbkZhPO1fxIb7uIIosoblVHjX7KCvtmlxj3FwQz2LmqzKxnUnGixbtAzyRB+nLil1I1D+Afqf0f9I5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XjwU5P4B; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dqzVwvQM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740980100; x=1772516100;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hD6xzP3FpFewH9I665wRKi/LE9Ov9GLuAPFoz3tFtBo=;
-  b=dqzVwvQMVEaBYLAiIyDrTH5mmjTlFFLLhGUp08JyFIyzPnB5AZlarXUe
-   Ng7761e37Ln2bmPINWx9mpE7tJ39EeVy2lrSms/YgKsU3arWTjcXZsJM9
-   KYh7XSSUlBrGgk6/4tmT/xgQdSYbJ0hoOmP3ekZFVb1bNhDyXCOOSMCYm
-   eu8xnbA2EZjrQFavAWd2D6LuLoF43uZqw8hsmbydMOVou9GNdBR7/uNV7
-   Rdqf1DFj7kUlodfDm8lb/YWICXNdVgqQcd0LNTLb2QCs+XUKTgSJdIt9P
-   xDWBEacXwWBfCkXIebAvVrSJGWLuQm4PDJezTdS0EWS1Z79Iz0Su6eumE
-   g==;
-X-CSE-ConnectionGUID: xXx6PnFpQmuDcWSnzlINBg==
-X-CSE-MsgGUID: N6+a8MB9TSiC12uqvXNiUQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11361"; a="64301588"
-X-IronPort-AV: E=Sophos;i="6.13,328,1732608000"; 
-   d="scan'208";a="64301588"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2025 21:34:59 -0800
-X-CSE-ConnectionGUID: 0DG/Qx3+S8OpHKZszWb+pg==
-X-CSE-MsgGUID: kxKYVUmhSwaPW7RpjZz9WQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,328,1732608000"; 
-   d="scan'208";a="122499750"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa005.fm.intel.com with ESMTP; 02 Mar 2025 21:34:51 -0800
-Date: Mon, 3 Mar 2025 13:32:47 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Alexey Kardashevskiy <aik@amd.com>, x86@kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arch@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
-	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	Zhi Wang <zhiw@nvidia.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
-Message-ID: <Z8U+/0IYyn7XX3ao@yilunxu-OptiPlex-7050>
-References: <20250218111017.491719-1-aik@amd.com>
- <20250218111017.491719-15-aik@amd.com>
- <Z72GmixR6NkzXAl7@yilunxu-OptiPlex-7050>
- <2fe6b3c6-3eed-424d-87f0-34c4e7e1c906@amd.com>
- <Z77xrqLtJfB84dJF@yilunxu-OptiPlex-7050>
- <20250226131202.GH5011@ziepe.ca>
- <Z7/jFhlsBrbrloia@yilunxu-OptiPlex-7050>
- <20250301003711.GR5011@ziepe.ca>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XjwU5P4B"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740983159;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N+ANXerGfs05Qx5JuBBnd1YtOYkq281duKe5pNwiLBs=;
+	b=XjwU5P4BipKFB3PnMww7FkDxuhqtkJ4RXL1JGHDmcWkz79M00BeiAJ2E+HGPhuTUMpVa5G
+	N0VhTQcZJCYkyflHU2iiPL8gEyKtRpFhItRtYWqyzFWyYKimVj5zNvfDVs9K4sJ9fhg7n2
+	puDDYCeYZ7O6wpkdPMjrzZAgMhZ/7Vo=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-79-BLSMFMJQMx-HHVgXJuYUzA-1; Mon, 03 Mar 2025 01:25:58 -0500
+X-MC-Unique: BLSMFMJQMx-HHVgXJuYUzA-1
+X-Mimecast-MFC-AGG-ID: BLSMFMJQMx-HHVgXJuYUzA_1740983158
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-22107b29ac3so65953495ad.1
+        for <linux-coco@lists.linux.dev>; Sun, 02 Mar 2025 22:25:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740983157; x=1741587957;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N+ANXerGfs05Qx5JuBBnd1YtOYkq281duKe5pNwiLBs=;
+        b=CZ7N/Wiuqe4Xej3QaITtEi1kh72dCQU9HdU7g9F2XG6eggTXsoYAUojlo2p2Dvh/5i
+         0F4qfoPP/nldsCtDidY8ohvNw/v90SkxvD2ywNmwqsf3eRsFSoX9amZ1ibQKDYw2eQWw
+         TRU7dMCneSfyyUC9pMoOZp7FAHJam4hnCrBnhfsSoVA8wEW/tWUStrctfu4lvZjxgIWp
+         CA1+C0331WecPv7SklJtvmfJeclA9JQQteEWgHm1+AWS7J8L4+KStTYrkse3rqQpba9h
+         Yqt/JJw2SE5N+K1l2Uf9eN0QqP57qh9R4B20fis5g6HNRNShEvEKFX0MoosjPZWqUCXP
+         pPCg==
+X-Forwarded-Encrypted: i=1; AJvYcCV5vLTPVWq4qjat4sC5cEOzQSnLHnjc1ZUQP2yQT1woVyM3bIOHcqVSkQiYG3HkB2ouyJelIbaOprL0@lists.linux.dev
+X-Gm-Message-State: AOJu0YyOCj1okxDq1eBBXeklOH1eVW2Xg6ltuTDgbDObDyAGyz9mju6t
+	tVH9kUhuVfpp3dsOD6eVjJSdi1AaSGUcw2Xcj0bjBflPGD1vO2O5cWeZLLH4JAYvWgXZq1eplPg
+	6jxKqUWnOhkAMMuEurVebBe3piYNIOxjeoS4COySyHzwhv/La4dnRZYfPWv4=
+X-Gm-Gg: ASbGnct0lUk7LBlQwflhTGmP6fH34iSAL5f43umWXvxgX3wFwRW9vReG3cuhedJQA4G
+	0lI7rblGjd0XWoO6FcoUuQwY7+Vibob8bl74FyDpjqzyR1Y4g/km+BDKRZa1K/FCnIIfZKeeFqU
+	LZqfLRTX+yLvaYYKXydP9U/rtT3UoxVMfl1WXsBo/hqJ+yM8XWpVtBrA0ALNuunbeyHdQk0Y07M
+	gCxgMfBdPW+IUwMqV/6y0zbWeE5854JKAzpFgxkxV4woAPnMShO7ETV3HMRbRZNBYsD0J0/n3Dk
+	deqFXAn4n5kCU5D4HQ==
+X-Received: by 2002:a17:902:e5cf:b0:220:ff82:1c60 with SMTP id d9443c01a7336-2234a4891c5mr239752345ad.14.1740983157572;
+        Sun, 02 Mar 2025 22:25:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFpXtcArHUqT2hI5ax8evJjGCyGJEtPHCAmH1OVzs9dnw0tbzauezRsGnlG5Grz1mEDveiZtg==
+X-Received: by 2002:a17:902:e5cf:b0:220:ff82:1c60 with SMTP id d9443c01a7336-2234a4891c5mr239752075ad.14.1740983157279;
+        Sun, 02 Mar 2025 22:25:57 -0800 (PST)
+Received: from [192.168.68.55] ([180.233.125.164])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223504c59e1sm70112765ad.158.2025.03.02.22.25.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Mar 2025 22:25:56 -0800 (PST)
+Message-ID: <e432ee67-6afb-40c8-9542-48770834ee40@redhat.com>
+Date: Mon, 3 Mar 2025 16:25:48 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250301003711.GR5011@ziepe.ca>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 11/45] arm64: RME: RTT tear down
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20250213161426.102987-1-steven.price@arm.com>
+ <20250213161426.102987-12-steven.price@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20250213161426.102987-12-steven.price@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: B_pY55-zt7aaf16c-oKE-aNgja083hzZFl0yoUqbPKQ_1740983158
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 28, 2025 at 08:37:11PM -0400, Jason Gunthorpe wrote:
-> On Thu, Feb 27, 2025 at 11:59:18AM +0800, Xu Yilun wrote:
-> > On Wed, Feb 26, 2025 at 09:12:02AM -0400, Jason Gunthorpe wrote:
-> > > On Wed, Feb 26, 2025 at 06:49:18PM +0800, Xu Yilun wrote:
-> > > 
-> > > > E.g. I don't think VFIO driver would expect its MMIO access suddenly
-> > > > failed without knowing what happened.
-> > > 
-> > > What do people expect to happen here anyhow? Do you still intend to
-> > > mmap any of the MMIO into the hypervisor? No, right? It is all locked
-> > 
-> > Not expecting mmap the MMIO, but I switched to another way. VFIO doesn't
-> > disallow mmap until bind, and if there is mmap on bind, bind failed.
-> > That's my understanding of your comments.
+On 2/14/25 2:13 AM, Steven Price wrote:
+> The RMM owns the stage 2 page tables for a realm, and KVM must request
+> that the RMM creates/destroys entries as necessary. The physical pages
+> to store the page tables are delegated to the realm as required, and can
+> be undelegated when no longer used.
 > 
-> That seems reasonable
+> Creating new RTTs is the easy part, tearing down is a little more
+> tricky. The result of realm_rtt_destroy() can be used to effectively
+> walk the tree and destroy the entries (undelegating pages that were
+> given to the realm).
 > 
-> > Another concern is about dma-buf importer (e.g. KVM) mapping the MMIO.
-> > Recall we are working on the VFIO dma-buf solution, on bind/unbind the
-> > MMIO accessibility is being changed and importers should be notified to
-> > remove their mapping beforehand, and rebuild later if possible.
-> > An immediate requirement for Intel TDX is, KVM should remove secure EPT
-> > mapping for MMIO before unbind.
-> 
-> dmabuf can do that..
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> ---
+> Changes since v6:
+>   * Move rme_rtt_level_mapsize() and supporting defines from kvm_rme.h
+>     into rme.c as they are only used in that file.
+> Changes since v5:
+>   * Rename some RME_xxx defines to do with page sizes as RMM_xxx - they are
+>     a property of the RMM specification not the RME architecture.
+> Changes since v2:
+>   * Moved {alloc,free}_delegated_page() and ensure_spare_page() to a
+>     later patch when they are actually used.
+>   * Some simplifications now rmi_xxx() functions allow NULL as an output
+>     parameter.
+>   * Improved comments and code layout.
+> ---
+>   arch/arm64/include/asm/kvm_rme.h |   7 ++
+>   arch/arm64/kvm/mmu.c             |   6 +-
+>   arch/arm64/kvm/rme.c             | 128 +++++++++++++++++++++++++++++++
+>   3 files changed, 138 insertions(+), 3 deletions(-)
 
-Yes, dmabuf can do that via notify. dmabuf is implemented in VFIO,
-so iommufd/vdevice couldn't operate on dmabuf and send the notify.
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
-> 
-> > > > The implementation is basically no difference from:
-> > > > 
-> > > > +       vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
-> > > > +                                              IOMMUFD_OBJ_VDEVICE),
-> > > > 
-> > > > The real concern is the device owner, VFIO, should initiate the bind.
-> > > 
-> > > There is a big different, the above has correct locking, the other
-> > > does not :)
-> > 
-> > Could you elaborate more on that? Any locking problem if we implement
-> > bind/unbind outside iommufd. Thanks in advance.
-> 
-> You will be unable to access any information iommufd has in the viommu
-> and vdevice objects. So you will not be able to pass a viommu ID or
-> vBDF to the secure world unless you enter through an iommufd path, and
-> use iommufd_get_object() to obtain the required locks.
->  
-> I don't know what the API signatures are for all three platforms to
-> tell if this is a problem or not.
-
-Seems not a problem for Intel TDX. Basically secure DMA settings for TDX
-is just to build the secure IOMMUPT, only need host BDF. Also secure
-device setting needs no secure DMA info.
-
-All these settings cannot really take function until guest verifies them
-and does TDISP start. Guest verification does not (should not) need host
-awareness.
-
-Our solution is, separate the secure DMA setting and secure device setting
-in different components, iommufd & vfio.
-
-Guest require bind:
-  - ioctl(iommufd, IOMMU_VIOMMU_ALLOC, {.type = IOMMU_VIOMMU_TYPE_KVM_VALID,
-					.kvm_fd = kvm_fd,
-					.out_viommu_id = &viommu_id});
-  - ioctl(iommufd, IOMMU_HWPT_ALLOC, {.flag = IOMMU_HWPT_ALLOC_TRUSTED,
-				      .pt_id = viommu_id,
-				      .out_hwpt_id = &hwpt_id});
-  - ioctl(vfio_fd, VFIO_DEVICE_ATTACH_IOMMUFD_PT, {.pt_id = hwpt_id})
-    - do secure DMA setting in Intel iommu driver.
-
-  - ioctl(vfio_fd, VFIO_DEVICE_TSM_BIND, ...)
-    - do bind in Intel TSM driver.
-
-Thanks,
-Yilun
-
-> 
-> Jason
