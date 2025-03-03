@@ -1,72 +1,69 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2056.outbound.protection.outlook.com [40.107.96.56])
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2079.outbound.protection.outlook.com [40.107.101.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAF778F39
-	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 14:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8B12139DC
+	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 14:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.79
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741012132; cv=fail; b=dBJ/yRgVFaQPJ9RjnPH/tZKD/0ItJ5ULaRedMCF1LGz8wEPIAKLy6giMCWwppNOdfEG236pfUCbTs9JFasBknOjHQelzGYIGtV8kFvZxrCmNGnRKBzaldyPikTlGHAzSnmog6bamatZZz10xFgk+OXUWRIDOD4HsZ1LdFqerL3w=
+	t=1741012738; cv=fail; b=IWeBFFQjDuVAWwdACD6Oq7OBcO80+BcHIo1OaXYOtwFSCvPMLTHQSrWQR1QGyOPC/cq/7boq7qznCguxLj8jMxKpCtfHNdUKVPs2S89Z8zAiYzlVKv7SHeznqYB6gSUSoi2W97dC40jsppLm6tuEEiBWdHL1QWs8Lv94JG5xmZA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741012132; c=relaxed/simple;
-	bh=T6dr6lcm/f7hIMcvlf057PVesRA7FZndmHthDd+9yOU=;
-	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
-	 Content-Type:MIME-Version; b=pvF1a48sVpBpPBjbvtM7ctzJJ9hPzKa1LHbcl/9HBgek0AbL0f42qXGAjoeiHhakzG8/V5LpSUjUhwwIZaqGw3bBLsEAQsJAzIXDLJ3eKNZgOklR466ecARP67orBm3DrPyO2dzwMDtCsuODUTepG8MKt6MTEOMf26TuvXX/OEU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=U9daH1X6; arc=fail smtp.client-ip=40.107.96.56
+	s=arc-20240116; t=1741012738; c=relaxed/simple;
+	bh=8+eCZjok4M9qs5zy5Mku0rXVy9TojchPdezV9NU5HrE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZDQ48wWKnLjV/OfH9oPk+EoVl2x8LIlb+FhZLm7gZFaalm2GxHotxHwoctttOi0OLh7gZ+jFI9rpkrkEyx1jI5NJumqqu/GZa3tWqIe7VGM7L2f41XrD7MxJUU3FOB2bHmnTx3/qO4dbUaM45x5WWgiNBM5YAdZxU7JmePFAFqI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xBNV4l+5; arc=fail smtp.client-ip=40.107.101.79
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="U9daH1X6"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xBNV4l+5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wy2Qs5os+8xawIeDpHCV5l60plS/VQ86qwSXY/VaE2TFY8V3DLP+YF9AqQBM2roiaD3oBg19ed54FTRoHBGIKxVRDal/ubvheXXul+o664kilatMNFIuVZ2NZpxM4p3O90eWnS9StkMcADjrUHEeanJ2yAGFQrIq7rXwnEzWYCi7d0Ebn2SiqjaCY/IXVGMSSPJplVSaR7+/Q/mbNS9KJGJm21KWo5UiyXpTQyBHd18WBogBwk1TLboi17WA77QVVBJ1LHUrjTT8ortwYQvgTGHgvZwa7rYsysONKcIxfO3WcixxyWbv66q1Z9x4UhwGJ30sbnNiYtwkkx26YJpgow==
+ b=QPlLGahGTODJKx4suS06thy9nnNk5WbHMci8YKPbWX2FnXBSDc4EqXloZHNiF0VUca1RpgbmOQ4oifm99MJKD5zAtM1QZcB8+Q0tKj8bZXoA+dvidRH76c5ASpqdOcCsPZhfIVh0HT6W5Z14V2rq02EpkH51wwXsT9mSwyKY8/KSOJe58S7VYRLJaFF1nbY8KT4Y9qHxqgCtMz3XHGK529yxy5w5z7jjbuPblryGTQVIdak9kwNbjTB+Am/JZZkLGH1SvnP5KWtu/rAmgN7MMX6W4WdP35P9Hqp5tUxqiJN+bDkrHqAooNxfW0iqBgOKxp1eKm1yr7imcrv1Ryk1Ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TirtGI3/bGjHLic+cuJvUpuQp6fimqcL5Nupv1buS/0=;
- b=PasiwPKwghqnNJ49qUM6J0pRJS7qRILGMGH5AIEswyCEHg7OnIn+fg8kBL+ju4nsYSfLX/7HX0lR6DJ9+kG32rR+WjYuUQJjmBOvE/V4OgZ50DYqPsSKHu1lVRDaSt8bI+QtKjmk4rezOSgYByWvqq7ppWuaTp0bV7J7icD715Qol2tcH+MG8V3B2LMYGtzvcJaRGquEJqyqpUOeIx8O/91CuJG6bI4rNUE/kYInlfsx7T5CD2U16mVVAwDKtMO6eByVnxDK4tVdu4tysmApY9rCezi0oXSzhy53xyH39maTBPOP7ZSSO+/GW8+091CBA83t5GZda2NU9JhIQXlT2w==
+ bh=pu5H9Q/lcoVoyt28hdLpuccgEDngqw9Rxe06+eh+Cn4=;
+ b=SuNwYGX3XxZ9A6Tx3+RI055vcWkiKpOjOPaByuge5FtFwzJQQj+raLqZ2tg3BB6ItL16m1Tg4XNPtuKy6m8kHxr8zME9ObUZoynrRaNozfY3znbqVg3vSKuugSMZ5Mt2MHbfm5mzqGUFP7A/tIzwaz4xH38v9pFXJAfLJDnA4GnNrryKijcD2AO1SxkLdK9O6fbZgZ1kvMIi+1KHjaG7cQS+rMH7SQwH1ogEEWtmKcXdrJpD/5qMLEaLzK3WYtVULGgkBs/Hwepd89fUjX/Q9/3WxmPGafEMYLQssbQo5CdYMz8WAvXMp5aAS3XvRy+ZHITmVv+3ZwDf4BTBSaehmA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TirtGI3/bGjHLic+cuJvUpuQp6fimqcL5Nupv1buS/0=;
- b=U9daH1X6imOnzsPXFd6bsRNeKsuQ6ZG254psKVRlMpcupl2tFFKWz8ULCAwMIWRvcU/W0kUtBZGAug57NDc4t+87a6G0TgpG86c43d3dUuUXneGjEad20Sz9Me5AUjSxc12Tew2kD6P7+QLIxT9px8WYSS4WROpbS7Ie+yGznis=
+ bh=pu5H9Q/lcoVoyt28hdLpuccgEDngqw9Rxe06+eh+Cn4=;
+ b=xBNV4l+515xADU+m5ZP2j7+lftqB5exP2h6ARm/vErKfyuLwCK9yRoWSgUCtGz5DaDc4mpb7+QcjQaYEg8F6cr7SSHDApmCB5fjzINjjhUUa8Jt5gzFpUJng4rs5OAnxRP2PiBkCa/hm9jZZBS07DTE51tgjz0UCZByc/oCZ1HA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by LV8PR12MB9262.namprd12.prod.outlook.com (2603:10b6:408:1e7::16) with
+ by DS7PR12MB5744.namprd12.prod.outlook.com (2603:10b6:8:73::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Mon, 3 Mar
- 2025 14:28:48 +0000
+ 2025 14:38:51 +0000
 Received: from DM4PR12MB5070.namprd12.prod.outlook.com
  ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
  ([fe80::20a9:919e:fd6b:5a6e%7]) with mapi id 15.20.8489.025; Mon, 3 Mar 2025
- 14:28:47 +0000
-Message-ID: <d50d9d6e-10e4-23e8-a584-df28a1c41e86@amd.com>
-Date: Mon, 3 Mar 2025 08:28:45 -0600
+ 14:38:51 +0000
+Message-ID: <1ff85a39-8c5a-9fba-45ff-f5fef54ea630@amd.com>
+Date: Mon, 3 Mar 2025 08:38:48 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
+Subject: Re: [PATCH v5 1/7] crypto: ccp: Move dev_info/err messages for
+ SEV/SNP init and shutdown
 Content-Language: en-US
-To: Stefano Garzarella <sgarzare@redhat.com>,
- Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, Peter Huewe <peterhuewe@gmx.de>,
- x86@kernel.org, Dov Murik <dovmurik@linux.ibm.com>,
- linux-coco@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-integrity@vger.kernel.org,
- linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-References: <20250228170720.144739-1-sgarzare@redhat.com>
- <20250228170720.144739-5-sgarzare@redhat.com>
+To: Ashish Kalra <Ashish.Kalra@amd.com>, seanjc@google.com,
+ pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ john.allen@amd.com, herbert@gondor.apana.org.au
+Cc: michael.roth@amd.com, dionnaglaze@google.com, nikunj@amd.com,
+ ardb@kernel.org, kevinloughlin@google.com, Neeraj.Upadhyay@amd.com,
+ aik@amd.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1740512583.git.ashish.kalra@amd.com>
+ <52a878930a84fa0d5905a26d230baeb0ce554fc1.1740512583.git.ashish.kalra@amd.com>
 From: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [RFC PATCH v2 4/6] tpm: add interface to interact with devices
- based on TCG Simulator
-In-Reply-To: <20250228170720.144739-5-sgarzare@redhat.com>
+In-Reply-To: <52a878930a84fa0d5905a26d230baeb0ce554fc1.1740512583.git.ashish.kalra@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR13CA0104.namprd13.prod.outlook.com
- (2603:10b6:806:24::19) To DM4PR12MB5070.namprd12.prod.outlook.com
+X-ClientProxiedBy: SN4PR0501CA0123.namprd05.prod.outlook.com
+ (2603:10b6:803:42::40) To DM4PR12MB5070.namprd12.prod.outlook.com
  (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -75,267 +72,241 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|LV8PR12MB9262:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2da39aa3-af94-45b1-85d8-08dd5a5fb5eb
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|DS7PR12MB5744:EE_
+X-MS-Office365-Filtering-Correlation-Id: b7261d61-6be2-4422-36dd-08dd5a611d9b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SVI0SGZGUWFDZUJCWk0yK21PVXljREdkT25YUVRyR3RWQkIrQ010eWN1eGcy?=
- =?utf-8?B?RkFyS2lRNVV3TytGVTJTODFuMENDVEUzbENwbWtKa0R5aTEzSnRhQUlMY2ox?=
- =?utf-8?B?OE5ENENTTCs1N2ptNWdRK2VUR0htQ29QWndrclI2aGRYcFhYMEVmb21pQVg2?=
- =?utf-8?B?QnZHbjlBSzhoMUp3T0k1dEE5M3N2enIwUHhZZWZjUlV2Z2ZYMkQycFhqeVNx?=
- =?utf-8?B?L3VMKzA5VUNuRHV3RW5BVkV3WERZMkFoN2krRVVLS3dBZUQwdHpZdEFGTjc4?=
- =?utf-8?B?Um8xU21TVnEzeFVTRlkzNmNERXR4Wk9pMHZvV2pIYWFTNHdZcFhVMW9TZTgw?=
- =?utf-8?B?OWdEaktzVkVyNXgwSDBYVUo1TEkxN2QybjhnbzlRWUNRVGVTeXJVcERtOURo?=
- =?utf-8?B?TVVWVTI4TUw4MnNvbjI0MUxkdzluTHVSckppU3p6K3JWSWRVbUdjRHlRcUdP?=
- =?utf-8?B?R1ZJcWF1M09DM240Y2xVTklkSGlBNVVUOXZuOXErV0FOeldqREE2SXNqcWYy?=
- =?utf-8?B?QUU4dEJpQ3doTVZlU3VwaHhqcHBuYnZ4aGNEM0EvV01uYVJSV1Q3Rkx5YlFR?=
- =?utf-8?B?c2QwOVZkdjhZa1hxU0tLMjJJcEc2V1lESDhvdjZ4MTRzbjRuNXNvY2RiTS9D?=
- =?utf-8?B?Z2syR1VhNG4zcUJ1bUxNWUh2aW1vcWVOd2V3bHZmemNMRmd4UlcxdXEvekg3?=
- =?utf-8?B?cGJRK1VYVzZHdG1YazczZGdjT29mNzJaaytJM1pDcUUyY1F3Z1htYmJPQUFn?=
- =?utf-8?B?U2FFdGhaVDdIUWpBeGxKd0xIdWJhNXdJUmRPZUw2MTN4ajhpb2t2TzVTY2Ra?=
- =?utf-8?B?MklCdGl2aXE5TU9VN0x0Si9xYjBsWEZWczdLUm5CTU96alRTZ0F4cjRKRWlN?=
- =?utf-8?B?RU5GZENlTUlKN2ZIU0tBd1hERVBFa1kyTmtrMDYydXJZRUZ6T1loNTMwdkZS?=
- =?utf-8?B?Ny9wT0ZYLzRNSytpWkFpTkRUUHhPUUdJNXBiVm1NVGlFSmIxUU0yejV1NFdj?=
- =?utf-8?B?WityNmZaWXRjVXA4TFMwWnJnZER3OWlCeG1KaXliT0lxenBUditsc3A1SFlE?=
- =?utf-8?B?cU5EL1ptT1h0SG9xU1A3U3Z6ZjF3TTBYZ2pQUGk4Mi8xaUp2ZXNCU3htYjl6?=
- =?utf-8?B?RjNmQjFQZGxqWnh3S0NSNmUxalJkaHdXQ2dILzhjRTJjQk13VGV3WjBQVEo3?=
- =?utf-8?B?LzVzSzRCS0Z1aEJnQldZNUROUmVRcnJhMzd4aGEwQU1BN0ZScHBUa3o2TzJv?=
- =?utf-8?B?ZHdtVHNmcUczYUk3NTVKUklTZnc2dHdYVktzWlM1Mkk5RkdPMHN3MEFHbnpW?=
- =?utf-8?B?Y0NVdHZPVUhRbXcxYXVLa1BpQUJDYkxuZGwvNHNoVUFGbXF2SDZ3ck1RVzFr?=
- =?utf-8?B?czM4a1hVaHcveHFNL3Rna2JjUXB0Y1d1QmcwTFhoaUw3T21WQzdKL0lBMHZN?=
- =?utf-8?B?ZlFidVJrYytuQzNDUzZaVmV1NFRjZjVkS0dBZGZoRTlqcWhsYUs3c0FyampL?=
- =?utf-8?B?N3dFWktiMlkxbzVEN3U2M3VackdxMjR4SG9FS3o1MzlzeFg3alVsYjF4QWtv?=
- =?utf-8?B?dmc4eE12QjRQc3BWL2hMWmVXODNGRi81YXphbndGVGU0TWczVHd2MTNUSVMx?=
- =?utf-8?B?U09JZEpHL3FnQ01OYnBxVFlHUXZLNVBHbGhhcnlRNG9lRm9SOGlRMDR0VE5z?=
- =?utf-8?B?VTJqQnRvY056K244NHR4VHc0UU9CZ3I5RkFZN1Fzb1VZVjBEY054ckpocFM2?=
- =?utf-8?B?SVp0c0M1em1QbzYxczVjZ1l3dFhUOFMrbHFQOUxOY1JFNkJXeEE4Nk8vWW5v?=
- =?utf-8?B?Rkk5RjNrbWZpN2xEalQ1KzhaRzVId1d4VDUrQitmS0dSeXNPbGo4Y2RjNURV?=
- =?utf-8?B?eit6YStGaWN5NTVqUDJLNytQWGlKdXEwRjc1L1VWajNmOWc9PQ==?=
+	=?utf-8?B?SWx3L1VJZXFzQjZuTzZxSnRDWkxObTBGTGp1RGI2V21NWi80OWdYUERCQUpm?=
+ =?utf-8?B?OGdLR29GekE2UWJIczhRaUE5M0VFL1NEeUFUWnFUelYzTERyUTNSeE54Z01s?=
+ =?utf-8?B?bUduK2pOMnFFemRBbFZGUStpRFZ6czdPVDA1ZGdWWGU0ZVMzUkN5WmhRZXl5?=
+ =?utf-8?B?ak84L080QjNnRDBVVUhSbFNETlJzYWk5ZW1BRnAvOXBzLzFEV1ZCK3lzNGZ5?=
+ =?utf-8?B?RGpaMVIzY2R1bWdmcVJtcTd3NnVTZ0t1VUJXNGs0Z0poR2dud1llR20zOWpI?=
+ =?utf-8?B?S0IzZnNGbVB5UWZnRWM5SVZWNFFTbWhHa3dHb1IzMUk3Wkl6RnlFbUU4ZTI0?=
+ =?utf-8?B?KzhZellnc29PUmtCalBZQmdha1JMazFuRVRKbDBIclZEUEFSUTBOaXlvN3hB?=
+ =?utf-8?B?eUMwSzR0M09YUHErM3YySW95c3lvaXphOXNJZTZCRmt5UVBHMXNDaHBYZ2Zw?=
+ =?utf-8?B?dmloa1ZhRWsvcEg4bko0MmVYcEI4SHdiZmF5Y0hqVHFlODBYa2VEN253ZmZR?=
+ =?utf-8?B?RVhCQzFPWktpdDI0SHpvRXV4QkJSWGVNYXZkZ1pxbjZ3QytkTDJ2UXF1S05B?=
+ =?utf-8?B?MkM1cUdMSjM4NHQvZ2R6VnNpeksxSVpzSmptcEl4T3BsMy9RNHlKSXN3U1M0?=
+ =?utf-8?B?ekMxeVpTOFowT3lwYjdHOUdHVmltYzU0MEpwejI3SkI5K3NpTElBZ2VLWGNP?=
+ =?utf-8?B?cjRFTDUvbUp4ZDBTMzNncXlQOGdUOVQzeENxUVBxUDNSZi9zakJUb2FzTmVJ?=
+ =?utf-8?B?NnFvZGJVQ2FPVU92RE53TVloeDByamU4aFNDTWJobXZERE16T2RXQ3pzYjhL?=
+ =?utf-8?B?cDFYSGhaOC81a0xnc0Yvb2gwdlBocnY3b2I4UWR0bkJVVUJoVWhmOEpNeEVB?=
+ =?utf-8?B?NzNjU3BFbHF1SUVWcU9PTXkzaFdVTGpaVFVMSEJMcDRtNFExakdRYmRZb1U3?=
+ =?utf-8?B?ZUV4dTdXNEFXMGZEYzc4NmdHK280N0FxWnZSbHNSY1VweTl3ZmVZSjFnM3F6?=
+ =?utf-8?B?TkhSSjIrMEVyR1gzQWljRTFJR294c2wvMHJMbUVldEFKdHBXYVlWMjNwdW8y?=
+ =?utf-8?B?T25heDFUZTBjeUFuM2NhNG0xRFpmRFFvOGFZMkQ1YjlhU2czL1c5SkVrOHFT?=
+ =?utf-8?B?dDlZVnd6VEw4elpUb1prOUNxM01iYU83WU1yZzBHNDRPam12UkxOVkJTSmRw?=
+ =?utf-8?B?QjVaRm9tN2RBSmFQck5wQm9WcGJZcUhGYnNmQ2ZSL0U4YWkzYkFNU1d3aW5a?=
+ =?utf-8?B?QnVMd2pBWXBPL1JXQXY5SW9uOW5vVUNZaWwvdEErdTRUWCtRTFVjR09jeTRK?=
+ =?utf-8?B?UjVETmpsdFViTEplRkpNZEdvUm1sNDBoME44RHJHSTh2QlE0ZlZvWW4rb2Vh?=
+ =?utf-8?B?U2VPdFNXakVTd2pHZkNnN05zWHhjYk9CNzE1Wkg5NUVXMnBCY01KbzV1d0NB?=
+ =?utf-8?B?ai9BRUE2Q25rSmRwTVFxMVRMTnZTOVFPNXdZUW84Q2duL3QzOU9XVVN5VVVB?=
+ =?utf-8?B?b1VxWkt4RWZ0YVpDMzBVOEZEZ0tCalhoZVVWajBEU3VLYk1KZkdzU1dYd2J2?=
+ =?utf-8?B?eE1yd1J0R09LWXRkakY2Rm9HYlg3dEtKby9vMUhHTjJUKzM1RlU2VkpobjRS?=
+ =?utf-8?B?eVJhdzRUTyt4aXpvQ2NmaENLUVh6MkVzU3A4S2lyQ1lBejVaSFlnS0V4MkZ6?=
+ =?utf-8?B?ZkZheVJocE12Z1NYdDRIVzl0dmljcVpiNEhJWnB6MWJKVFhlTk82bzNsc25B?=
+ =?utf-8?B?cS9HekI3U1FadmZmOWpPY3BaY056ZCtxR0JIeFE3MGNBNVBXZnFOcGVhL3Vq?=
+ =?utf-8?B?QUNxWUZ6a1BIN0x4NFRFaHdCVjBkbG96Yk1FaFBaZlNVOWZnV1JaK3NiN1F5?=
+ =?utf-8?B?VUxjMHZENC9GV2RtOHIySkFMQ2hqd2szZ0tYdHVBWWN1N1M3RE1sZGs4UXl5?=
+ =?utf-8?Q?yS1oTZOdDz0=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?L3hJcERybHF0b2FKWkVpZjVPZ2VIZFF3TkxNSzR5M2dibXVGdkNaMjBzNVU5?=
- =?utf-8?B?alIwS0F4K3RMNmQ4M2p4bEJXbGo5RHBFZjJaMjBvdVJaOUU5SmlDQVlkWHZl?=
- =?utf-8?B?THh6MVdKa2p2dUVJRjZkM1ZzY0IyMnZTU3FRLzlxVEttWXhKMHZLUDR6ak1l?=
- =?utf-8?B?aXVtRVEvMWdnbG9zVGJXblc4Znh4NHExaVNVaUpGRUIwbTBnMUc1eWJZRUxB?=
- =?utf-8?B?VWI5UklucGNQZHJLTzJ5Vy9CZnBTazRaY0VkUVRGaTZudFUzcSt2YUc3WFhi?=
- =?utf-8?B?UkRoYlVTeTBPRyt6cFlPdFRqcWpSWit5ZGkvWFBHdTdpdXYwZUVtNi9BT3Az?=
- =?utf-8?B?dnlGM0RMRkRwazE0Wm41WEN6cnJTSTBrUDJDc1E3Um94bndzVFFycmV0eEhs?=
- =?utf-8?B?U1NSc0x0WXpGNTBNOTFGaDE1bUI1SmNaNGdpaHBPRzlmcGVDRnFhcks1SVUy?=
- =?utf-8?B?dWZmaWZmbnpVSlRuNXVJekI3N3ducCtia2JtcUpIdjBWbVhQQWJlRzRCQ3JZ?=
- =?utf-8?B?SGphT3dMMEtGeWNXZmhiVXQwb3VXZmJvcXBQNTF6Vk42b3IxdzBqRDZwTEFs?=
- =?utf-8?B?TE80OWFKd2lJK0dzYXhNRGMxSTR4QkNibE9yQUtoZkF4NW9NclBFN3F1bnNa?=
- =?utf-8?B?dFQyV3k3SnJDOHVmb3VXdXJyMXNwNitsYUp6K2c1d2piQTFBdU41dEppSXV0?=
- =?utf-8?B?d0tBOTl1c09pZHp0QmFOb1AzSmtDb1dkaDhYWC9wMkJtQTA2Mk42eTFSM0VD?=
- =?utf-8?B?ck92Y0pzaWE1dUJwL1NxM3ZzWGIyU09VM2ZwdkdTWDY1VUxCSncxMzJBbGg2?=
- =?utf-8?B?SnhtOUZ5TXZNelc4VXR2YmZOR3RKWFdrL0RGdkxUUWZKS2E2bVgrRUFMalcv?=
- =?utf-8?B?WmF2bjM2QnFuQU0vdUZiK0VkK0hkVjB6SCs1c0lQSXU2akZvSVRVTUQ1bzdZ?=
- =?utf-8?B?a2VhYWgwWVZqQlJscnIyUWx3ZVBJK3ZVUElBeWJ6RzRtaE0xQjdZaXNYeUs2?=
- =?utf-8?B?WnRtTmhCOWtmQ01KeURuM1BSM1NQTm5OVHhUUTZLb0p2a0FaTTZ5VXYyRzVV?=
- =?utf-8?B?M1VoeVVzYUVHdXhFam9vWS9wMTMrOFZwejFnMzJ5RG9tK2doRmc2WDRYU3Rw?=
- =?utf-8?B?VTZmMitIcDNqTjBCd2Y0OG90MDFIVFRrSnlGUUxCNVRYZnZSYTE2VXpEdW5n?=
- =?utf-8?B?NHNPK1dVK1VlaDlIbzVrNzhWc21jc0oxbU5naDg3OENoeERzbS9mR1lUM2RI?=
- =?utf-8?B?Zmt1TkFJTnZmbWRKU1VUVzNKQ3RwL0dLdXNZaUppNTZaZTF0eDZpTmhkSVcx?=
- =?utf-8?B?ZjhQRXdkbGoxWDA1Z0lJNWI3Y3ZaQXYrdklkNVpiSzYvR0x1c0E2cno0b1Mr?=
- =?utf-8?B?Q1A0OWRvVUU0aHdkVGpSUUdUKzMzRTQ3YTcvM3djV1VDMmFqcmYwNUlQOUkw?=
- =?utf-8?B?RUZTNDl3ZFhuT3IrU0Z4T1RLQ2VFcWpFWlVOS1BpOVNGaTdkV1pVaHZDcVpR?=
- =?utf-8?B?Wko1ZDlpLzBRK1NBSHFRckQ1WmdwdDIrNXpGL0NkQnNVbHhzQVBnNThWcUM1?=
- =?utf-8?B?ZWZ6TU41RzRWMjdxaGRlQzJ1N2JLM2pNcmdBKzkwaHpaaXVpbWtkV04ydzVB?=
- =?utf-8?B?US9nWS9ZT2dDTlFFTThvbHhhTjFQcExIa0JMT3NHelh6Uk43V0kwenljUi9F?=
- =?utf-8?B?M1hGYzFQTHJjUTR1eFhLMHJEVGN1b2ttL0ZIc2VySE9nellPZ2Y5MUhUYVgr?=
- =?utf-8?B?YWIwVlFpbXgxL0hVRW9xclNybkd6d2pvUUJJTmpQR1FxNUtGMXdLa0Z3cVFF?=
- =?utf-8?B?SEJTL29GcCtlYjluVkI1TnFMYnBKSmVjSHRuemFFdjdQa3l2VTV1MUc5UHI2?=
- =?utf-8?B?OVhhRERiMDF4aXYxWmdXcEh6M2FDTzR0bzQ0cDBaWktBMXdaTDVRbGhWYTEr?=
- =?utf-8?B?SEdIa3dwWEEwZlF0SUJyZU9NbmFEck9CRVZEYjlVSTZhOUsxYUtabEVKTmZC?=
- =?utf-8?B?dzdYSXBLT3FPSEQ1aXAvL2hWbW9BMk9EdVFmT2E4S0xxRWIvdEpJVDJMQ1lF?=
- =?utf-8?B?alhMV28waFVONG5ZQUQ4UmtPczkyZnM1a0x2NmxMdlVVMHNUYnFxL3ZKZ3N1?=
- =?utf-8?Q?zzSUh/4nPh4yurbu3J5X+wmi0?=
+	=?utf-8?B?U2Z2aHZ3V0ppMlA1YmszZWtmOHBlWTdWOWw4K1dqZUpERG1xa1duZGxGSnhP?=
+ =?utf-8?B?bE81U3lvRjhOanYxbTI0eXhjazZJWUZhcDRwOUZlWDQ5eG1kZzFpR29Cb0Mx?=
+ =?utf-8?B?VEYzQ3ZxekprUkFDUm9VbWdhT1lrelpuUGpWQ2tycmZHTFkyYVpXWFZQRXN5?=
+ =?utf-8?B?YzgwbjZ0ZzRFakNGZ250TTNhbFc2N3FoTCsxOERZM3ZpL0RTdk5IcTBMc1A3?=
+ =?utf-8?B?alR6eisrbW5YUEZMcG1HaGdRME1sbk00QTFBL3dabFk4ZFpoa0x6V0MrbVc2?=
+ =?utf-8?B?ZnBNRXQ5VGJvUlRJV2o1Y25jS0dHYWJCUmc2NHJEZThiZVM2M0xTcVpEaU5C?=
+ =?utf-8?B?UXFCK1VKdTdyNkJzY25wUE9kaER1K3FpcFh5MVpqUUczUi9MU3ZZZHpJRzI1?=
+ =?utf-8?B?ayt4ZGF3SldKUkpSVzBBeURvdTFsWTFBRXVTa2hSVFlpSmdVdVQ3QUlXc20y?=
+ =?utf-8?B?WHAycUFCWXRMT2QwR1JYSjR2dGpYVkVrMXNuWGtFV1djTHg3c1ozZGo4ekZi?=
+ =?utf-8?B?TTRGQndWL0pySlJUejlwRDlKUFppRWhFbnNaVnN0eVVXa0VwWnYwbmFQd3l6?=
+ =?utf-8?B?czRhV0ovdldXZXNHaGQ0V01WdUlISEVaci9FOFBaNVlIN1NRam1qS0syQnV1?=
+ =?utf-8?B?MkU3dFFOMVNTc1hseWVMQk0zMkh4WWtLTkdFTkpOQmQ0THp6T0liSVNBVVB2?=
+ =?utf-8?B?ZWttZjdJTld2UitoQ2dmV0NNQStKMzc0dHJKY1FPMFVxZjllYTlLNGtnK010?=
+ =?utf-8?B?K0ZRRlBldlJFc3RXNG16a0laT2dxaEFxU3pHdHFDVnN3cERvMm45UXFQRXJ0?=
+ =?utf-8?B?YW5HWGlHZ2orNGJaWkZxbVY2RmQ4S28rRk15MGltUlZHY1d1Ukw5UVJvc3hu?=
+ =?utf-8?B?Yk1kaHZTcHZkeW56NE1wTmRtTFBWQUVXcXdVU3B0RnZVd2FKNFU4eEFXa0Y5?=
+ =?utf-8?B?ek0ySTZ5VlNWai9WTUNqL3liVjBFZ3hnTnFzWEcrY0ZCWXMzUFIyZnNVdUdB?=
+ =?utf-8?B?cElFeVRpYS9yVEo4RzY0MVJuYWV3RXpBaGkvbW9hbXB4Z3JORlYvY2x3Rldi?=
+ =?utf-8?B?dTdFaE9KNmh3bWJ4MGc3NnBNRFFxcXBFajVuR0drb0MxaWN0NVVTclI3NUVz?=
+ =?utf-8?B?WndZU2ZkQ1dCdHBvUE41UFpyT2dYRi9xQWVxZTFaNmg1aXVRMGdCMVFtZ1Ur?=
+ =?utf-8?B?UkU4MkRMSm9YV3IxTGsxSWxKY3lhTGFaZXVBTWI1M0VBSXRYRHJkQ01hL2lE?=
+ =?utf-8?B?NVJXSVd4RkxzRDdRQzNlbGp5R0NSUm84ajczZVJrTTk3bXdSd1djcmJCWk4r?=
+ =?utf-8?B?Mm5qbThXWnZ4SFptaVQ4UTJEWDFsdXRCbEt5d0dKYjBnUmd3Z3VTT0doK1Ri?=
+ =?utf-8?B?elFCWjhvZXduV3BnTDRYNWFnUkg1bkRGMUtGZXdNVE5IaGZ4NnFDeG94b1pF?=
+ =?utf-8?B?TmE4MVZ2UFdxTFp2NmVBck5IM3VMbHJGalNMVGRkaGhUK0VZZEpabHJIV1pi?=
+ =?utf-8?B?MzhmL09wdWc1VTVKdXF5Y0ZUOUZUcjRBQzhLYWRHcG1Ra0tHSGI3OFRtazFR?=
+ =?utf-8?B?QlFHSyt6ZGVxNC9wOFVmcEdUekc5MUR2VVpGM01yZDIyWVZnWDQyaTlKMVYw?=
+ =?utf-8?B?SFpNN1FJaE1kUVVCb2VNS29WN1VNdjJFdUw3S3NpaThydklkeXA4YlptbE1Y?=
+ =?utf-8?B?aHBNRi9pdjdxVzVRRldIMmI0dWpSVE9BK29vUjY2N3g1NURSRmp2VGM0NDZO?=
+ =?utf-8?B?QTZQU1YyY1ZBVFBhTjhWNU1aazB0VmtxNkd5dnpLeFE1TDJWKzlFS1dTanQv?=
+ =?utf-8?B?NUNBWFNJcWJBWTRyNlNsREtkeUJsb0dJcGY5bVlFNi9PM3FTcS8rRkJzbG51?=
+ =?utf-8?B?STdWT0U0TDNDdUQ0N1ZsS09YcHhXMVVOcjBpdE96ZHBRQ2w1S0QzTEpRUm1E?=
+ =?utf-8?B?eUF0Y1JpaE15YUFSbSt2UVFLU2VMYUlHbDVIalozb1ovRy9KUUVHMGM2U0ZV?=
+ =?utf-8?B?NmtuS1JNc0FTaHhHWXlqT1VlTXEwZGo2WjczYmVWL3l1WUNYZnlFWVlpTmps?=
+ =?utf-8?B?UU5PUUFNS3JkY2J5VXJOWjAwTDdUU2lqcSsyWXBBWHM3bzZYaFdZdEdXb0Mr?=
+ =?utf-8?Q?2PQuMZPv6YpgqCviOfoYrLHtb?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2da39aa3-af94-45b1-85d8-08dd5a5fb5eb
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7261d61-6be2-4422-36dd-08dd5a611d9b
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2025 14:28:47.8351
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2025 14:38:51.3425
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ToGvMP7nPCy0I+onVDDzvkQCW2uGp1qUaajVrMHMUa7MScB5w4WZSXBsOVUj3pMHLyaX2yJaO39GaSXeCjmwsw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9262
+X-MS-Exchange-CrossTenant-UserPrincipalName: U91FqqfLpJDXNabJiA91AMYQ26xcJC76F/UaBQhTG6fs4iR5elmOsgkXC2WqN8X/TDaRm965tGoUYtcY7OfSGg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5744
 
-On 2/28/25 11:07, Stefano Garzarella wrote:
-> This is primarily designed to support an enlightened driver for the
-> AMD SVSM based vTPM, but it could be used by any TPM driver which
-> communicates with a TPM device implemented through the TCG TPM reference
-> implementation (https://github.com/TrustedComputingGroup/TPM)
+On 2/25/25 14:59, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> Co-developed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-> Co-developed-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
-> James, Claudio are you fine with the Cdb, Sob?
-> The code is based to what was in the initial RFC, but I removed the
-> tpm_platform module, moved some code in the header, changed some names,
-> etc.
-> For these reasons I reset the author but added C-o-b.
-> Please, let me know if this is okay or if I need to do anything
-> else (reset the author, etc.)
-> ---
->  include/linux/tpm_tcgsim.h | 136 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 136 insertions(+)
->  create mode 100644 include/linux/tpm_tcgsim.h
+> Move dev_info and dev_err messages related to SEV/SNP initialization
+> and shutdown into __sev_platform_init_locked(), __sev_snp_init_locked()
+> and __sev_platform_shutdown_locked(), __sev_snp_shutdown_locked() so
+> that they don't need to be issued from callers.
 > 
-> diff --git a/include/linux/tpm_tcgsim.h b/include/linux/tpm_tcgsim.h
-> new file mode 100644
-> index 000000000000..bd5b123c393b
-> --- /dev/null
-> +++ b/include/linux/tpm_tcgsim.h
-> @@ -0,0 +1,136 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (C) 2023 James.Bottomley@HansenPartnership.com
-> + * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
-> + *
-> + * Generic interface usable by TPM drivers interacting with devices
-> + * implemented through the TCG Simulator.
-> + */
-> +#ifndef _TPM_TCGSIM_H_
-> +#define _TPM_TCGSIM_H_
+> This allows both _sev_platform_init_locked() and various SEV/SNP ioctls
+> to call __sev_platform_init_locked(), __sev_snp_init_locked() and
+> __sev_platform_shutdown_locked(), __sev_snp_shutdown_locked() for
+> implicit SEV/SNP initialization and shutdown without additionally
+> printing any errors/success messages.
+> 
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  drivers/crypto/ccp/sev-dev.c | 44 ++++++++++++++++++++++++++----------
+>  1 file changed, 32 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+> index 2e87ca0e292a..8962a0dbc66f 100644
+> --- a/drivers/crypto/ccp/sev-dev.c
+> +++ b/drivers/crypto/ccp/sev-dev.c
+> @@ -1176,21 +1176,31 @@ static int __sev_snp_init_locked(int *error)
+>  	wbinvd_on_all_cpus();
+>  
+>  	rc = __sev_do_cmd_locked(cmd, arg, error);
+> -	if (rc)
+> +	if (rc) {
+> +		dev_err(sev->dev, "SEV-SNP: %s failed rc %d, error %#x\n",
+> +			cmd == SEV_CMD_SNP_INIT_EX ? "SNP_INIT_EX" : "SNP_INIT",
+> +			rc, *error);
+>  		return rc;
+> +	}
+>  
+>  	/* Prepare for first SNP guest launch after INIT. */
+>  	wbinvd_on_all_cpus();
+>  	rc = __sev_do_cmd_locked(SEV_CMD_SNP_DF_FLUSH, NULL, error);
+> -	if (rc)
+> +	if (rc) {
+> +		dev_err(sev->dev, "SEV-SNP: SNP_DF_FLUSH failed rc %d, error %#x\n",
+> +			rc, *error);
+>  		return rc;
+> +	}
+>  
+>  	sev->snp_initialized = true;
+>  	dev_dbg(sev->dev, "SEV-SNP firmware initialized\n");
+>  
+> +	dev_info(sev->dev, "SEV-SNP API:%d.%d build:%d\n", sev->api_major,
+> +		 sev->api_minor, sev->build);
 > +
-> +#include <linux/errno.h>
-> +#include <linux/string.h>
-> +#include <linux/types.h>
-> +
-> +/*
-> + * The current TCG Simulator TPM commands we support.  The complete list is
-> + * in the TcpTpmProtocol header:
-> + *
-> + * https://github.com/TrustedComputingGroup/TPM/blob/main/TPMCmd/Simulator/include/TpmTcpProtocol.h
-> + */
-> +
-> +#define TPM_SEND_COMMAND		8
-> +#define TPM_SIGNAL_CANCEL_ON		9
-> +#define TPM_SIGNAL_CANCEL_OFF		10
-> +/*
-> + * Any platform specific commands should be placed here and should start
-> + * at 0x8000 to avoid clashes with the TCG Simulator protocol.  They should
-> + * follow the same self describing buffer format below.
-> + */
-> +
-> +#define TPM_TCGSIM_MAX_BUFFER		4096 /* max req/resp buffer size */
-> +
-> +/**
-> + * struct tpm_req - generic request header for single word command
-> + *
-> + * @cmd:	The command to send
-> + */
-> +struct tpm_req {
-> +	u32 cmd;
-> +} __packed;
-> +
-> +/**
-> + * struct tpm_resp - generic response header
-> + *
-> + * @size:	The response size (zero if nothing follows)
-> + *
-> + * Note: most TCG Simulator commands simply return zero here with no indication
-> + * of success or failure.
-> + */
-> +struct tpm_resp {
-> +	u32 size;
-> +} __packed;
-> +
-> +/**
-> + * struct tpm_send_cmd_req - Structure for a TPM_SEND_COMMAND request
-> + *
-> + * @hdr:	The request header whit the command (must be TPM_SEND_COMMAND)
-> + * @locality:	The locality
-> + * @inbuf_size:	The size of the input buffer following
-> + * @inbuf:	A buffer of size inbuf_size
-> + *
-> + * Note that TCG Simulator expects @inbuf_size to be equal to the size of the
-> + * specific TPM command, otherwise an TPM_RC_COMMAND_SIZE error is
-> + * returned.
-> + */
-> +struct tpm_send_cmd_req {
-> +	struct tpm_req hdr;
-> +	u8 locality;
-> +	u32 inbuf_size;
-> +	u8 inbuf[];
-> +} __packed;
-> +
-> +/**
-> + * struct tpm_send_cmd_req - Structure for a TPM_SEND_COMMAND response
-> + *
-> + * @hdr:	The response header whit the following size
-> + * @outbuf:	A buffer of size hdr.size
-> + */
-> +struct tpm_send_cmd_resp {
-> +	struct tpm_resp hdr;
-> +	u8 outbuf[];
-> +} __packed;
-> +
-> +/**
-> + * tpm_tcgsim_fill_send_cmd() - fill a struct tpm_send_cmd_req to be sent to the
-> + * TCG Simulator.
-> + * @req: The struct tpm_send_cmd_req to fill
-> + * @locality: The locality
-> + * @buf: The buffer from where to copy the payload of the command
-> + * @len: The size of the buffer
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +static inline int
-> +tpm_tcgsim_fill_send_cmd(struct tpm_send_cmd_req *req, u8 locality,
-> +			 const u8 *buf, size_t len)
-> +{
-> +	if (len > TPM_TCGSIM_MAX_BUFFER - sizeof(*req))
-> +		return -EINVAL;
-> +
-> +	req->hdr.cmd = TPM_SEND_COMMAND;
-> +	req->locality = locality;
-> +	req->inbuf_size = len;
-> +
-> +	memcpy(req->inbuf, buf, len);
-> +
+>  	sev_es_tmr_size = SNP_TMR_SIZE;
+>  
+> -	return rc;
 > +	return 0;
-> +}
-> +
-> +/**
-> + * tpm_tcgsim_parse_send_cmd() - Parse a struct tpm_send_cmd_resp received from
-> + * the TCG Simulator
-> + * @resp: The struct tpm_send_cmd_resp to parse
-> + * @buf: The buffer where to copy the response
-> + * @len: The size of the buffer
-> + *
-> + * Return: buffer size filled with the response on success, negative error
-> + * code on failure.
-> + */
-> +static inline int
-> +tpm_tcgsim_parse_send_cmd(const struct tpm_send_cmd_resp *resp, u8 *buf,
-> +			  size_t len)
+>  }
+>  
+>  static void __sev_platform_init_handle_tmr(struct sev_device *sev)
+> @@ -1287,16 +1297,22 @@ static int __sev_platform_init_locked(int *error)
+>  	if (error)
+>  		*error = psp_ret;
+>  
+> -	if (rc)
+> +	if (rc) {
+> +		dev_err(sev->dev, "SEV: %s failed %#x, rc %d\n",
+> +			sev_init_ex_buffer ? "INIT_EX" : "INIT", psp_ret, rc);
+>  		return rc;
+> +	}
+>  
+>  	sev->state = SEV_STATE_INIT;
+>  
+>  	/* Prepare for first SEV guest launch after INIT */
+>  	wbinvd_on_all_cpus();
+>  	rc = __sev_do_cmd_locked(SEV_CMD_DF_FLUSH, NULL, error);
+> -	if (rc)
+> +	if (rc) {
+> +		dev_err(sev->dev, "SEV: DF_FLUSH failed %#x, rc %d\n",
+> +			*error, rc);
+>  		return rc;
+> +	}
+>  
+>  	dev_dbg(sev->dev, "SEV firmware initialized\n");
+>  
+> @@ -1329,8 +1345,7 @@ static int _sev_platform_init_locked(struct sev_platform_init_args *args)
+>  		 * Don't abort the probe if SNP INIT failed,
+>  		 * continue to initialize the legacy SEV firmware.
+>  		 */
+> -		dev_err(sev->dev, "SEV-SNP: failed to INIT rc %d, error %#x\n",
+> -			rc, args->error);
+> +		dev_err(sev->dev, "SEV-SNP: failed to INIT, continue SEV INIT\n");
+>  	}
+>  
+>  	/* Defer legacy SEV/SEV-ES support if allowed by caller/module. */
+> @@ -1367,8 +1382,11 @@ static int __sev_platform_shutdown_locked(int *error)
+>  		return 0;
+>  
+>  	ret = __sev_do_cmd_locked(SEV_CMD_SHUTDOWN, NULL, error);
+> -	if (ret)
+> +	if (ret) {
+> +		dev_err(sev->dev, "SEV: failed to SHUTDOWN error %#x, rc %d\n",
+> +			*error, ret);
+>  		return ret;
+> +	}
+>  
+>  	sev->state = SEV_STATE_UNINIT;
+>  	dev_dbg(sev->dev, "SEV firmware shutdown\n");
+> @@ -1654,7 +1672,7 @@ static int __sev_snp_shutdown_locked(int *error, bool panic)
+>  	struct psp_device *psp = psp_master;
+>  	struct sev_device *sev;
+>  	struct sev_data_snp_shutdown_ex data;
+> -	int ret;
+> +	int ret, psp_error;
 
-This is a confusing name... would tpm_tcgsim_parse_cmd_resp() be a
-better name?
+Move the psp_error variable into the if statement where it is used and
+name it dfflush_error.
 
-Thanks,
-Tom
+With that,
 
-> +{
-> +	if (len < resp->hdr.size)
-> +		return -E2BIG;
-> +
-> +	if (resp->hdr.size > TPM_TCGSIM_MAX_BUFFER - sizeof(*resp))
-> +		return -EINVAL;  // Invalid response from the platform TPM
-> +
-> +	memcpy(buf, resp->outbuf, resp->hdr.size);
-> +
-> +	return resp->hdr.size;
-> +}
-> +
-> +#endif /* _TPM_TCGSIM_H_ */
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+
+>  
+>  	if (!psp || !psp->sev_data)
+>  		return 0;
+> @@ -1682,9 +1700,10 @@ static int __sev_snp_shutdown_locked(int *error, bool panic)
+>  	ret = __sev_do_cmd_locked(SEV_CMD_SNP_SHUTDOWN_EX, &data, error);
+>  	/* SHUTDOWN may require DF_FLUSH */
+>  	if (*error == SEV_RET_DFFLUSH_REQUIRED) {
+> -		ret = __sev_do_cmd_locked(SEV_CMD_SNP_DF_FLUSH, NULL, NULL);
+> +		ret = __sev_do_cmd_locked(SEV_CMD_SNP_DF_FLUSH, NULL, &psp_error);
+>  		if (ret) {
+> -			dev_err(sev->dev, "SEV-SNP DF_FLUSH failed\n");
+> +			dev_err(sev->dev, "SEV-SNP DF_FLUSH failed, ret = %d, error = %#x\n",
+> +				ret, psp_error);
+>  			return ret;
+>  		}
+>  		/* reissue the shutdown command */
+> @@ -1692,7 +1711,8 @@ static int __sev_snp_shutdown_locked(int *error, bool panic)
+>  					  error);
+>  	}
+>  	if (ret) {
+> -		dev_err(sev->dev, "SEV-SNP firmware shutdown failed\n");
+> +		dev_err(sev->dev, "SEV-SNP firmware shutdown failed, rc %d, error %#x\n",
+> +			ret, *error);
+>  		return ret;
+>  	}
+>  
