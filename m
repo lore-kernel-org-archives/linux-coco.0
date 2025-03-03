@@ -1,71 +1,71 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E2F18B494
-	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 04:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0C81DC9B8
+	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 04:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740975039; cv=none; b=okl/KAGnHRG3DwzaiOC0XoZMo6JNZBr7mH3m1rECfCTCJ4vhjhTyTXC1bfrXuJ2YllL/lnGRNuDl/Ab6GRqVoT+PmeNY+HDV7wf9tX5keG5vWbvkaMe/ydGR/2L0500AXWwSnar8Mk2r9pKjoF4GXLWRbyt2H9bgbLCJO/vhctU=
+	t=1740976946; cv=none; b=BISMYU/Sk/dU//vPFylCUYUAPNQ5UEdvk5AcrznzFhURzspnD9ytJTIA/y6kAlxMedv01RBKl5VPEMeDzClDbw5/fwHyUvua4mu8AEZdMNCfH1G1gXDP46VRwHWLCkxkVaO89G1bZONa/2ODqRwgZlGPzWopnZG+FhsByb0M5RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740975039; c=relaxed/simple;
-	bh=Y7HjfUwf/Jdo7JmIWpCYe9yTIbXiqAYv6OQCDypKD3o=;
+	s=arc-20240116; t=1740976946; c=relaxed/simple;
+	bh=d9xG4OwrGjzvhEjvrP19eENQGSWBx98WpPyZysjrJ10=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pjb43/qC1g4KXN3i1pM908NPYbRNRoFp86VHE83rwWcoHNJcOY2Q8IPCLXAbm9uCyEcc2imOpdkbMLjxGWj3u5HhXnFEioCZCGPzN99a8lLwb7W7Pyiggjju3yxQGbIPmIeGhinIFbGYrnS7jkCPnB2EY5sas5hJTQ32e5wFkzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RkWPa80V; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=OjfrsyiTvBEF7y4p8wbVDLrJFy/QI8ensp3Q9mHx9qtDORNxbCppsJZ5ieMpnHR0rfSt6eqFUrsOYuHnFV+W72cU1yKDj3WRAfWuRda/wHmRekA7C7ySr+cXPdFcE1ZUeGX4/Utbk0sEt7HjmTFxuTSXMIBk9KmXFSZAE1+kI/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cx63D7Nv; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RkWPa80V"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cx63D7Nv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740975037;
+	s=mimecast20190719; t=1740976942;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=F8Jpi5dvbsyJ9QNrNx2h/R0ed7l3DEYZ+0/PjrpQmlY=;
-	b=RkWPa80Vcxo2tyD7lmUvOeRpzHAVvKUxFG1JKnVUxrLL14+fIAgU/dikxUJtAqMgwBL8I3
-	rg+DhXnqyfuNTjZivBTfd44ckBFyLhdgGDWE+y2TuR6RlGeR9avVmXVrcdHx1uliNFuWZV
-	hbWLT6Ari7YJZK2rpS1jQhJ/r4sXxtQ=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=uZWlrNkWyyIdXT2p4tYOkQhHrguS4IQ3yj366dONwt0=;
+	b=cx63D7NvT1NnXfhpOJQvYHtHNK/ZkoUNnuGERX1UJ2lGjlKgVr0r/ydkhbiqn3Kxg2l80X
+	G4yBsQkkjfGiblMPPmuDfe2mNTNpdN8VBCxG7XGwajo1r5MnIO2/RHkSvzyUrQYDahEF6v
+	rnoSGZKm8+23ZhmmKCUPc+AlJgH1G+0=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-267-eyzgj0fFNuWT31iK4ZYODA-1; Sun, 02 Mar 2025 23:10:35 -0500
-X-MC-Unique: eyzgj0fFNuWT31iK4ZYODA-1
-X-Mimecast-MFC-AGG-ID: eyzgj0fFNuWT31iK4ZYODA_1740975035
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2217a4bfcc7so68623135ad.3
-        for <linux-coco@lists.linux.dev>; Sun, 02 Mar 2025 20:10:35 -0800 (PST)
+ us-mta-183-HKYCTpaUN2yxys74HS_BVg-1; Sun, 02 Mar 2025 23:42:15 -0500
+X-MC-Unique: HKYCTpaUN2yxys74HS_BVg-1
+X-Mimecast-MFC-AGG-ID: HKYCTpaUN2yxys74HS_BVg_1740976934
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2fee7f85d03so3947389a91.3
+        for <linux-coco@lists.linux.dev>; Sun, 02 Mar 2025 20:42:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740975034; x=1741579834;
+        d=1e100.net; s=20230601; t=1740976934; x=1741581734;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F8Jpi5dvbsyJ9QNrNx2h/R0ed7l3DEYZ+0/PjrpQmlY=;
-        b=HFgpVEH2iP4VKV/fbTZw8fUROhoRhH5ns/+RKDTKBTC5Chsn/hVHVmVMKZO3pCr0Wg
-         5SAaPJdR7xC+hXYLfPcsQkfN916bdBHgXV2FaPjM+vvs3bdv9o2n25dRLdpXbwRcSiZg
-         1Q2nPw/mGfvUI8WkFyvOki9eGug5HOk9Nlc/wd4lKrV/2yJH24ME3q98OWoRpgjdy7xR
-         gMY0hK5Q0GU2ObVxk/A2GsuuocpdN8U9Pp343pX6qF1klFmHsEOFXW1Q9D+9cPIKGF/N
-         RIQaKv9D+R9OfyV1TJSRFggR+J+O3VJyaFM0jrHTj9bvlLjSg/Lnscj4Sr4EALwtl/ix
-         YHHw==
-X-Forwarded-Encrypted: i=1; AJvYcCX90fMc7jpO4qDuPiOR4cKUDuFx1tgQgk7Ns0LkfvHVHlQR585oGniqjxK+NXIPfn5JPPWz/W44MHdu@lists.linux.dev
-X-Gm-Message-State: AOJu0YzOpQaIB/okiBhhNQSckQwZVyxMzKHKyG2wmli1VAXR15nRyAPD
-	Q1/iuaLeJnMQXP7Sgu+a+l61UIOzRD7sHNZw7qJ18UxhtlD6td0XELsvGQHhwogya512+LfrMh9
-	QdJhbP0ZPnncoA+5G1S2O1aTHG0PkhhvSDGPLBKPaGmM1wTsCb3YgYH6PHokSN+SGYTw=
-X-Gm-Gg: ASbGncsOOtDJ4HDioGAZwlauy+2GSyxjLiSyPNZu48b5/NJMixaw9BHKoQkYIP01ZCf
-	F/Blre68sqo8AsNyWktMKKCTtIFDKemttwKpJdsKfZdCi/PFIYPEGce8d4sMlvVlXh8bSG+q84w
-	L6BlF3jwgW4c0LzueC+n+qpi5RCgVotdOPS3MRjhArYc5ialkzzskSopgYKakMLi+9R7p9/yEDq
-	4suaZVubzAgCuhH/39AmPqUBN9VRXZHRPkwy4iAyjqP8oDfADi8tu+sCmMGmYuuBj8p9NTkCw8i
-	oUwi8u2AcvzaaLkb3w==
-X-Received: by 2002:a17:902:fc4f:b0:220:f509:686a with SMTP id d9443c01a7336-22368fbeaffmr188469605ad.29.1740975034356;
-        Sun, 02 Mar 2025 20:10:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEw8k64wqsi9xaJMniYJ96OZyxXCWbCHDZik8qo7jA9iBAMykPZRI5AC4LCj7ThWiPsfJiuoQ==
-X-Received: by 2002:a17:902:fc4f:b0:220:f509:686a with SMTP id d9443c01a7336-22368fbeaffmr188469335ad.29.1740975034020;
-        Sun, 02 Mar 2025 20:10:34 -0800 (PST)
+        bh=uZWlrNkWyyIdXT2p4tYOkQhHrguS4IQ3yj366dONwt0=;
+        b=YIAku7JLQjKpzBlt30qehX62QLUwMcXqJ3UkQXNT0r3NMHaT94KYO3JVp5cvnwIpfa
+         wrGhp3A/IU3EVN7xvlns6ifj+deE3UgiNXeAKtumoLg1FOGhJxxtE5HnDVcqBynUuLHZ
+         l95xILewTCq7vuyUWvtM35FK6Dy5cd31RX80dCbAQN+RmUwE1pSKflnEIx0pIeirH80A
+         CaCd0Gi2giHklSWFVkDJBHLonVDlQN2B16tkath9gCOFQ+Nbym2fj1i6c8VhWkUT3oH4
+         BYHKb9+HmcqrgiKl4OWCGHsIwgxKP8gSlcFWT818WGrCVzdPNwArPdr7jUzFsmBTm9Nk
+         rBFA==
+X-Forwarded-Encrypted: i=1; AJvYcCXqoo4c8NDUGMpKhEBgjIYtqW94XAGCaZGtAy5hPhckFkDYWuSU5j6Bp9bSP5NxGqXl84YxXQQHPdi5@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxf5/Q2EBhkUUcQohKOFLTGDYiGsg8Twm/lVdgzuy5rDOJUw9u8
+	tqigW5tVbecR4msO1DgObslsKxM4Qb7sJ4EdUXQejvOCvioU+LD6NirR0JbA7mWQ5SjaXnjEdyA
+	dpmYqLFkvoW0Q+oEwOjaboGYZ1vKxITh+wn9h+x9atfFrPAH9hrJgGWjfWSs=
+X-Gm-Gg: ASbGncv05YcZ7kHjKx1sXtKufoSPanO5Xlm4RnkQg6SXlqoj4joc5IiC2QyDHFWKkpr
+	jJVSVPIGg4xzE4Rj53GDfjnnjjEEgDD1Jp7jtvnaNc/8PvXDgdqkIkgTE8bbKyJDZ86cR8U9WW2
+	pJEHZD3ptdcoQ63xVRgmJoWD3A0T0Pn3R7UBBcBVGb+pFZW6UVPJIDi3QTzbSqDs+Syq9671ILj
+	mlIpP3NjfcV6pHsvhQ+a/rBWuMe/iy9e/B3iT/J+MWkgHOmvxGRK+MiHa4yVytWFfMDdewsnFGh
+	hfnUpG3rN9BJzuOaXQ==
+X-Received: by 2002:a05:6a20:7347:b0:1f0:e7e2:b295 with SMTP id adf61e73a8af0-1f2f4c9c884mr15086802637.5.1740976934441;
+        Sun, 02 Mar 2025 20:42:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFMQAnjp3aPLIp+JkScadGYw1k0nhzSpzFpRULDgvvNejMSWpiBemFKZIbJFmyuqZgvHibZmA==
+X-Received: by 2002:a05:6a20:7347:b0:1f0:e7e2:b295 with SMTP id adf61e73a8af0-1f2f4c9c884mr15086777637.5.1740976934109;
+        Sun, 02 Mar 2025 20:42:14 -0800 (PST)
 Received: from [192.168.68.55] ([180.233.125.164])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223501d26acsm68417915ad.9.2025.03.02.20.10.26
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af221346042sm3304724a12.28.2025.03.02.20.42.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Mar 2025 20:10:33 -0800 (PST)
-Message-ID: <e130dd51-330e-43ef-b86f-41fd96cc9ec3@redhat.com>
-Date: Mon, 3 Mar 2025 14:10:24 +1000
+        Sun, 02 Mar 2025 20:42:13 -0800 (PST)
+Message-ID: <3413f278-2507-4bb5-8904-550abe93e459@redhat.com>
+Date: Mon, 3 Mar 2025 14:42:04 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,7 +73,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 07/45] arm64: RME: Define the user ABI
+Subject: Re: [PATCH v7 08/45] arm64: RME: ioctls to create and configure
+ realms
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
@@ -89,149 +90,212 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
  <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-8-steven.price@arm.com>
+ <20250213161426.102987-9-steven.price@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250213161426.102987-8-steven.price@arm.com>
+In-Reply-To: <20250213161426.102987-9-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Je7RIqcoaSFfcXTy_w8QuIctbbncTK_Ui-H5624HhYU_1740975035
+X-Mimecast-MFC-PROC-ID: gjXUEf4mKGWMn8VNx92wEU-Bp9Y-846W2GlSX_h2wKs_1740976934
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 2/14/25 2:13 AM, Steven Price wrote:
-> There is one (multiplexed) CAP which can be used to create, populate and
-> then activate the realm.
+> Add the KVM_CAP_ARM_RME_CREATE_RD ioctl to create a realm. This involves
+> delegating pages to the RMM to hold the Realm Descriptor (RD) and for
+> the base level of the Realm Translation Tables (RTT). A VMID also need
+> to be picked, since the RMM has a separate VMID address space a
+> dedicated allocator is added for this purpose.
+> 
+> KVM_CAP_ARM_RME_CONFIG_REALM is provided to allow configuring the realm
+> before it is created. Configuration options can be classified as:
+> 
+>   1. Parameters specific to the Realm stage2 (e.g. IPA Size, vmid, stage2
+>      entry level, entry level RTTs, number of RTTs in start level, LPA2)
+>      Most of these are not measured by RMM and comes from KVM book
+>      keeping.
+> 
+>   2. Parameters controlling "Arm Architecture features for the VM". (e.g.
+>      SVE VL, PMU counters, number of HW BRPs/WPs), configured by the VMM
+>      using the "user ID register write" mechanism. These will be
+>      supported in the later patches.
+> 
+>   3. Parameters are not part of the core Arm architecture but defined
+>      by the RMM spec (e.g. Hash algorithm for measurement,
+>      Personalisation value). These are programmed via
+>      KVM_CAP_ARM_RME_CONFIG_REALM.
+> 
+> For the IPA size there is the possibility that the RMM supports a
+> different size to the IPA size supported by KVM for normal guests. At
+> the moment the 'normal limit' is exposed by KVM_CAP_ARM_VM_IPA_SIZE and
+> the IPA size is configured by the bottom bits of vm_type in
+> KVM_CREATE_VM. This means that it isn't easy for the VMM to discover
+> what IPA sizes are supported for Realm guests. Since the IPA is part of
+> the measurement of the realm guest the current expectation is that the
+> VMM will be required to pick the IPA size demanded by attestation and
+> therefore simply failing if this isn't available is fine. An option
+> would be to expose a new capability ioctl to obtain the RMM's maximum
+> IPA size if this is needed in the future.
 > 
 > Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
 > Changes since v6:
->   * Rename some of the symbols to make their usage clearer and avoid
->     repetition.
-> Changes from v5:
->   * Actually expose the new VCPU capability (KVM_ARM_VCPU_REC) by bumping
->     KVM_VCPU_MAX_FEATURES - note this also exposes KVM_ARM_VCPU_HAS_EL2!
+>   * Separate RMM RTT calculations from host PAGE_SIZE. This allows the
+>     host page size to be larger than 4k while still communicating with an
+>     RMM which uses 4k granules.
+> Changes since v5:
+>   * Introduce free_delegated_granule() to replace many
+>     undelegate/free_page() instances and centralise the comment on
+>     leaking when the undelegate fails.
+>   * Several other minor improvements suggested by reviews - thanks for
+>     the feedback!
+> Changes since v2:
+>   * Improved commit description.
+>   * Improved return failures for rmi_check_version().
+>   * Clear contents of PGD after it has been undelegated in case the RMM
+>     left stale data.
+>   * Minor changes to reflect changes in previous patches.
 > ---
->   Documentation/virt/kvm/api.rst    |  1 +
->   arch/arm64/include/uapi/asm/kvm.h | 49 +++++++++++++++++++++++++++++++
->   include/uapi/linux/kvm.h          | 12 ++++++++
->   3 files changed, 62 insertions(+)
+>   arch/arm64/include/asm/kvm_emulate.h |   5 +
+>   arch/arm64/include/asm/kvm_rme.h     |  19 ++
+>   arch/arm64/kvm/arm.c                 |  16 ++
+>   arch/arm64/kvm/mmu.c                 |  22 +-
+>   arch/arm64/kvm/rme.c                 | 322 +++++++++++++++++++++++++++
+>   5 files changed, 382 insertions(+), 2 deletions(-)
 > 
 
-The newly added ioctl commands need to be documented in Documentation/virt/kvm/api.rst.
-Section 4 would be the right place for it. Other than that, it looks good to me except
-the ioctl commands need to be fixed as suggested by Aneesh.
+With below comments addressed:
+
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+
+[...]
+
+> +
+> +static int realm_create_rd(struct kvm *kvm)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	struct realm_params *params = realm->params;
+> +	void *rd = NULL;
+> +	phys_addr_t rd_phys, params_phys;
+> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+> +	int i, r;
+> +	int rtt_num_start;
+> +
+> +	realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+> +	rtt_num_start = realm_num_root_rtts(realm);
+> +
+> +	if (WARN_ON(realm->rd) || WARN_ON(!realm->params))
+> +		return -EEXIST;
+> +
+
+Two WARN_ON() can be combined into one.
+
+	if (WARN_ON(realm->rd || !realm->param))
+
+> +	if (pgd_size / RMM_PAGE_SIZE < rtt_num_start)
+> +		return -EINVAL;
+> +
+> +	rd = (void *)__get_free_page(GFP_KERNEL);
+> +	if (!rd)
+> +		return -ENOMEM;
+> +
+> +	rd_phys = virt_to_phys(rd);
+> +	if (rmi_granule_delegate(rd_phys)) {
+> +		r = -ENXIO;
+> +		goto free_rd;
+> +	}
+> +
+> +	for (i = 0; i < pgd_size; i += RMM_PAGE_SIZE) {
+> +		phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i;
+> +
+> +		if (rmi_granule_delegate(pgd_phys)) {
+> +			r = -ENXIO;
+> +			goto out_undelegate_tables;
+> +		}
+> +	}
+> +
+> +	params->s2sz = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+> +	params->rtt_level_start = get_start_level(realm);
+> +	params->rtt_num_start = rtt_num_start;
+> +	params->rtt_base = kvm->arch.mmu.pgd_phys;
+> +	params->vmid = realm->vmid;
+> +
+> +	params_phys = virt_to_phys(params);
+> +
+> +	if (rmi_realm_create(rd_phys, params_phys)) {
+> +		r = -ENXIO;
+> +		goto out_undelegate_tables;
+> +	}
+> +
+> +	if (WARN_ON(rmi_rec_aux_count(rd_phys, &realm->num_aux))) {
+> +		WARN_ON(rmi_realm_destroy(rd_phys));
+> +		goto out_undelegate_tables;
+> +	}
+> +
+> +	realm->rd = rd;
+> +
+> +	return 0;
+> +
+> +out_undelegate_tables:
+> +	while (i > 0) {
+> +		i -= RMM_PAGE_SIZE;
+> +
+> +		phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i;
+> +
+> +		if (WARN_ON(rmi_granule_undelegate(pgd_phys))) {
+> +			/* Leak the pages if they cannot be returned */
+> +			kvm->arch.mmu.pgt = NULL;
+> +			break;
+> +		}
+> +	}
+> +	if (WARN_ON(rmi_granule_undelegate(rd_phys))) {
+> +		/* Leak the page if it isn't returned */
+> +		return r;
+> +	}
+> +free_rd:
+> +	free_page((unsigned long)rd);
+> +	return r;
+> +}
+> +
+
+[...]
+
+> +
+> +int kvm_init_realm_vm(struct kvm *kvm)
+> +{
+> +	struct realm_params *params;
+> +
+> +	params = (struct realm_params *)get_zeroed_page(GFP_KERNEL);
+> +	if (!params)
+> +		return -ENOMEM;
+> +
+> +	kvm->arch.realm.params = params;
+> +	return 0;
+> +}
+> +
+
+The local variable @params is unnecessary, something like below.
+
+	kvm->arch.realm.params = (struct realm_parms *)get_zeroed_page(GFP_KERNEL);
+
+>   void kvm_init_rme(void)
+>   {
+>   	if (PAGE_SIZE != SZ_4K)
+> @@ -52,5 +368,11 @@ void kvm_init_rme(void)
+>   		/* Continue without realm support */
+>   		return;
+>   
+> +	if (WARN_ON(rmi_features(0, &rmm_feat_reg0)))
+> +		return;
+> +
+> +	if (rme_vmid_init())
+> +		return;
+> +
+>   	/* Future patch will enable static branch kvm_rme_is_available */
+>   }
 
 Thanks,
 Gavin
-
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 0d1c3a820ce6..06763d89c0d7 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -5094,6 +5094,7 @@ Recognised values for feature:
->   
->     =====      ===========================================
->     arm64      KVM_ARM_VCPU_SVE (requires KVM_CAP_ARM_SVE)
-> +  arm64      KVM_ARM_VCPU_REC (requires KVM_CAP_ARM_RME)
->     =====      ===========================================
->   
->   Finalizes the configuration of the specified vcpu feature.
-> diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/asm/kvm.h
-> index 568bf858f319..7eae0b1a482e 100644
-> --- a/arch/arm64/include/uapi/asm/kvm.h
-> +++ b/arch/arm64/include/uapi/asm/kvm.h
-> @@ -105,6 +105,7 @@ struct kvm_regs {
->   #define KVM_ARM_VCPU_PTRAUTH_ADDRESS	5 /* VCPU uses address authentication */
->   #define KVM_ARM_VCPU_PTRAUTH_GENERIC	6 /* VCPU uses generic authentication */
->   #define KVM_ARM_VCPU_HAS_EL2		7 /* Support nested virtualization */
-> +#define KVM_ARM_VCPU_REC		8 /* VCPU REC state as part of Realm */
->   
->   struct kvm_vcpu_init {
->   	__u32 target;
-> @@ -415,6 +416,54 @@ enum {
->   #define   KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES	3
->   #define   KVM_DEV_ARM_ITS_CTRL_RESET		4
->   
-> +/* KVM_CAP_ARM_RME on VM fd */
-> +#define KVM_CAP_ARM_RME_CONFIG_REALM		0
-> +#define KVM_CAP_ARM_RME_CREATE_REALM		1
-> +#define KVM_CAP_ARM_RME_INIT_RIPAS_REALM	2
-> +#define KVM_CAP_ARM_RME_POPULATE_REALM		3
-> +#define KVM_CAP_ARM_RME_ACTIVATE_REALM		4
-> +
-> +/* List of configuration items accepted for KVM_CAP_ARM_RME_CONFIG_REALM */
-> +#define ARM_RME_CONFIG_RPV			0
-> +#define ARM_RME_CONFIG_HASH_ALGO		1
-> +
-> +#define ARM_RME_CONFIG_MEASUREMENT_ALGO_SHA256		0
-> +#define ARM_RME_CONFIG_MEASUREMENT_ALGO_SHA512		1
-> +
-> +#define ARM_RME_CONFIG_RPV_SIZE 64
-> +
-> +struct arm_rme_config {
-> +	__u32 cfg;
-> +	union {
-> +		/* cfg == ARM_RME_CONFIG_RPV */
-> +		struct {
-> +			__u8	rpv[ARM_RME_CONFIG_RPV_SIZE];
-> +		};
-> +
-> +		/* cfg == ARM_RME_CONFIG_HASH_ALGO */
-> +		struct {
-> +			__u32	hash_algo;
-> +		};
-> +
-> +		/* Fix the size of the union */
-> +		__u8	reserved[256];
-> +	};
-> +};
-> +
-> +#define KVM_ARM_RME_POPULATE_FLAGS_MEASURE	(1 << 0)
-> +struct arm_rme_populate_realm {
-> +	__u64 base;
-> +	__u64 size;
-> +	__u32 flags;
-> +	__u32 reserved[3];
-> +};
-> +
-> +struct arm_rme_init_ripas {
-> +	__u64 base;
-> +	__u64 size;
-> +	__u64 reserved[2];
-> +};
-> +
->   /* Device Control API on vcpu fd */
->   #define KVM_ARM_VCPU_PMU_V3_CTRL	0
->   #define   KVM_ARM_VCPU_PMU_V3_IRQ	0
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index 45e6d8fca9b9..fa8f45029dff 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -930,6 +930,8 @@ struct kvm_enable_cap {
->   #define KVM_CAP_X86_APIC_BUS_CYCLES_NS 237
->   #define KVM_CAP_X86_GUEST_MODE 238
->   
-> +#define KVM_CAP_ARM_RME 300 /* FIXME: Large number to prevent conflicts */
-> +
->   struct kvm_irq_routing_irqchip {
->   	__u32 irqchip;
->   	__u32 pin;
-> @@ -1581,4 +1583,14 @@ struct kvm_pre_fault_memory {
->   	__u64 padding[5];
->   };
->   
-> +/* Available with KVM_CAP_ARM_RME, only for VMs with KVM_VM_TYPE_ARM_REALM  */
-> +struct kvm_arm_rmm_psci_complete {
-> +	__u64 target_mpidr;
-> +	__u32 psci_status;
-> +	__u32 padding[3];
-> +};
-> +
-> +/* FIXME: Update nr (0xd2) when merging */
-> +#define KVM_ARM_VCPU_RMM_PSCI_COMPLETE	_IOW(KVMIO, 0xd2, struct kvm_arm_rmm_psci_complete)
-> +
->   #endif /* __LINUX_KVM_H */
 
