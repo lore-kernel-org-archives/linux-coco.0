@@ -1,71 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42461E7C28
-	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 07:08:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E261F03D5
+	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 08:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740985700; cv=none; b=Moc0bKcukwdwXSBBQAUw1GCizltDkCUHl3jUEU6JCw4ouYMPms05OIvuPubxMLc2Lhm8/cPZZOdMV+8d6EVCkhAvy29p4FIegD5G4iBoE9wPK40OgIks18ww0+HLAFE7709tCvODZenxc9BE0u1jY3Bg3GQnf/vPBM8JdsavHnU=
+	t=1740992335; cv=none; b=PSCmZKAjrsR7v8UH3DbQOB3IX30EiLM67TWO/u637+C2LEY2VZ3yMyhEzB98g84vNzMGQn/xKrK9gP8Z/vP1g9Zg32VfRojRhHMSCC6H25zGx+ngea/w3xiKxDOXCcNCSxNFt3qd+f0h8dsdMLzN2/+Nk/n9EeW88fX4nycXUk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740985700; c=relaxed/simple;
-	bh=AfwoLDxtt+un9QaIe0gjqSA+BcKTtkK/lo1w1S7u5uw=;
+	s=arc-20240116; t=1740992335; c=relaxed/simple;
+	bh=zAf1+BM44wP25cv6hyE2HCECIGSZwz/rO3r4AqVG9Z8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Szn3jOWUBX+zFWOW2i0OBZar+0r2v34/4GO2rnpkmkYu14NJo52W7zVFBAPnaASUbcXEWhN+WijHothf3HSCvTkpG5NZhhEbvhIqV63SOKSW70eeJPlP7cncTar8A3sOtSn1UTgAYT1roRG/+XooFrszIq/jhSr67IcBLyCCg2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FYImNMJq; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=qUF/Of090mqqtPStHlfS8+YgcsEY5kq5gNJHFvftJ6A+hKvKmt0235NP94G2Ygz0xi6BaHBQTbYJ9bcXsBvVb5opIDtwPZxSsH8/amr5PA/LYJAYBQiroKd+Xc4f4NRgbZVP5u2KVgbrIlOrH+Olqyu13UXXO30nm/040SPgAiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=B8CnYRgD; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=8rEpUTS9; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=B8CnYRgD; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=8rEpUTS9; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FYImNMJq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740985697;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="B8CnYRgD";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="8rEpUTS9";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="B8CnYRgD";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="8rEpUTS9"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 40A462117A;
+	Mon,  3 Mar 2025 08:58:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1740992332; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TAZt9bZkuhMK3xl5j9Jo0Thv7hZQ7De0iSCYDAJHnkY=;
-	b=FYImNMJqXUftCR+yLo7x5F7BQzqsQWS/CbFGnSsXOI6no0Qw2Td5aHSBPy6DnlqVyNs5Em
-	JArMBPVl7jUoFuHE/wAkW1HqWqbuhEq9fTPlpDLmtW9fWhwl7lBLgYtoo+EG1aLnmHfv4X
-	GbQ8YdIoEuWlNK10L6Z8yW2ICrewFAQ=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-RK4-0HU6MMupN28xjezOGw-1; Mon, 03 Mar 2025 02:08:14 -0500
-X-MC-Unique: RK4-0HU6MMupN28xjezOGw-1
-X-Mimecast-MFC-AGG-ID: RK4-0HU6MMupN28xjezOGw_1740985694
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2233b764fc8so74577665ad.3
-        for <linux-coco@lists.linux.dev>; Sun, 02 Mar 2025 23:08:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740985693; x=1741590493;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TAZt9bZkuhMK3xl5j9Jo0Thv7hZQ7De0iSCYDAJHnkY=;
-        b=FZvknjBgiwDYd4mwdI4Zl7iDNsrAOUlpa5mazxjQ+NoNbnmn2thhjDfDMRmeH7bkGd
-         d4kF5H+WwLIP+EvjZsDsakdBQZM2ltaW9jYImZQg8SRRrchg2lR27bMcl47DkYyuSElR
-         YPOiOx83TkJWWmkulKFNcFqo2U0WiqAenZdHIFpNuFF41Ud1skxff3zwMB7xD0uI1uc1
-         CT9ZnqOm4tLur/gHwe8vWElnFRp5yUJPxD2I/lYgZDC8b9yHmyddmZZK90YTJK61WlFy
-         a+MF4qJwCA6FajYNX3OMyD00Dud7nzs6VnSviDtrPn2zWu/Lpv6LqBWHseZlXI3Mg5U2
-         bclA==
-X-Forwarded-Encrypted: i=1; AJvYcCVU4dtv71z9IlmrglU7k90nOeRNlNEnRgxe8gP+kLny4qbJcrQSSqvzEMFiCAr1wb+8DKe5pp7WXfzu@lists.linux.dev
-X-Gm-Message-State: AOJu0YzdZqFpVnYzpQFCNJ+Lcn9uc87Oi9NF/g2okz3mKqX8o8mFfBiI
-	wBJQTC/IgzqMomLstAgqC8GP97ppVh5GRHbHmhT3xh5egJqrXcX+Rlr6HrCVQMRltYf/gaH2k5p
-	/vgdL0rjU86dJtntAWSZr5mNcTSSK/dKx5hpMRFpKW3Zs8NVWyoFiWx3vxr0=
-X-Gm-Gg: ASbGncu5Bi0Q2Lu32PeDhJZqQNWmsg+R4nuE1hEtqk9rrqg78HSTsOAubLW5ny61/fz
-	7Ee+s4zCQqq2asj4/tLYaIYbULOp6OV+kOq+I3/Fzr1Gfvf8CRHTVDj/42QjG4yJahMfeg4IDxQ
-	STe2smRCh3Snu13JTGyo7uIu+GY88AJtuV2S46b7MUy9RovSbRoA9j+mN33AcP8JfDMQptjMcv3
-	m3PldPQo/CAOu+SjlT6yVgI9WoLkGEtsApdYSwfjOXrXScoq6sItFnwvJ2g4Wrh4BkmhgpZ53Qh
-	cH83QTA1ydATDW7N4A==
-X-Received: by 2002:a17:902:c951:b0:221:78a1:27fb with SMTP id d9443c01a7336-22368f72060mr189619875ad.11.1740985693566;
-        Sun, 02 Mar 2025 23:08:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFj6AXAjs67EIGwQMhzQQGbQbpNnv+WHLAlTElHzKGobUYvRKx1SI4QHA9TpJnCJTfgJ55bPw==
-X-Received: by 2002:a17:902:c951:b0:221:78a1:27fb with SMTP id d9443c01a7336-22368f72060mr189619505ad.11.1740985693207;
-        Sun, 02 Mar 2025 23:08:13 -0800 (PST)
-Received: from [192.168.68.55] ([180.233.125.164])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223504c5cd2sm71285075ad.143.2025.03.02.23.08.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Mar 2025 23:08:12 -0800 (PST)
-Message-ID: <7639eca7-8fd8-491c-90bd-1be084fbd710@redhat.com>
-Date: Mon, 3 Mar 2025 17:08:04 +1000
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=aSON7+XnjGfp+c6nCY9Q1Nyp8iCGTByScIrdxR+QXcU=;
+	b=B8CnYRgDFesPnktfWJW3OZH+DNLlQUg2CuQ00iXZpbMajpG2B6/garfUkEbOFCfiflnKmQ
+	A3+srEERN74fzyDoxhcoWqgestuE1o9MPwGpaUA+CQtjoZilWaHrPLVQtl3WrfoZfNM9yS
+	nlDlPu7MeKKtkb9AmeiuqNB69h8Uj7E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1740992332;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=aSON7+XnjGfp+c6nCY9Q1Nyp8iCGTByScIrdxR+QXcU=;
+	b=8rEpUTS9caaL2Wrykctdl/I1wdPdVYVyRksK83SPToX2ti1iYIu9q/ccAw793D7E9potHg
+	vbRbExkz2osvc3CQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=B8CnYRgD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8rEpUTS9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1740992332; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=aSON7+XnjGfp+c6nCY9Q1Nyp8iCGTByScIrdxR+QXcU=;
+	b=B8CnYRgDFesPnktfWJW3OZH+DNLlQUg2CuQ00iXZpbMajpG2B6/garfUkEbOFCfiflnKmQ
+	A3+srEERN74fzyDoxhcoWqgestuE1o9MPwGpaUA+CQtjoZilWaHrPLVQtl3WrfoZfNM9yS
+	nlDlPu7MeKKtkb9AmeiuqNB69h8Uj7E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1740992332;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=aSON7+XnjGfp+c6nCY9Q1Nyp8iCGTByScIrdxR+QXcU=;
+	b=8rEpUTS9caaL2Wrykctdl/I1wdPdVYVyRksK83SPToX2ti1iYIu9q/ccAw793D7E9potHg
+	vbRbExkz2osvc3CQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B97913939;
+	Mon,  3 Mar 2025 08:58:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id nQCHAkxvxWdXeAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 03 Mar 2025 08:58:52 +0000
+Message-ID: <b494af0e-3441-48d4-abc8-df3d5c006935@suse.cz>
+Date: Mon, 3 Mar 2025 09:58:51 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,128 +83,164 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 12/45] arm64: RME: Allocate/free RECs to match vCPUs
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-13-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250213161426.102987-13-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ZnETXmP3M4YwpMj8GUUBY17430DeI-eHj4ccowStAGA_1740985694
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v6 4/5] KVM: guest_memfd: Enforce NUMA mempolicy using
+ shared policy
+To: Ackerley Tng <ackerleytng@google.com>, Shivank Garg <shivankg@amd.com>
+Cc: akpm@linux-foundation.org, willy@infradead.org, pbonzini@redhat.com,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, chao.gao@intel.com, seanjc@google.com,
+ david@redhat.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com,
+ Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com,
+ tabba@google.com
+References: <diqzbjumm167.fsf@ackerleytng-ctop.c.googlers.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ EP+ylKVEKb0Q2A==
+In-Reply-To: <diqzbjumm167.fsf@ackerleytng-ctop.c.googlers.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 40A462117A
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:mid,suse.cz:dkim]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On 2/14/25 2:13 AM, Steven Price wrote:
-> The RMM maintains a data structure known as the Realm Execution Context
-> (or REC). It is similar to struct kvm_vcpu and tracks the state of the
-> virtual CPUs. KVM must delegate memory and request the structures are
-> created when vCPUs are created, and suitably tear down on destruction.
+On 2/28/25 18:25, Ackerley Tng wrote:
+> Shivank Garg <shivankg@amd.com> writes:
 > 
-> RECs must also be supplied with addition pages - auxiliary (or AUX)
-> granules - for storing the larger registers state (e.g. for SVE). The
-> number of AUX granules for a REC depends on the parameters with which
-> the Realm was created - the RMM makes this information available via the
-> RMI_REC_AUX_COUNT call performed after creating the Realm Descriptor (RD).
+>> Previously, guest-memfd allocations followed local NUMA node id in absence
+>> of process mempolicy, resulting in arbitrary memory allocation.
+>> Moreover, mbind() couldn't be used since memory wasn't mapped to userspace
+>> in the VMM.
+>>
+>> Enable NUMA policy support by implementing vm_ops for guest-memfd mmap
+>> operation. This allows the VMM to map the memory and use mbind() to set
+>> the desired NUMA policy. The policy is then retrieved via
+>> mpol_shared_policy_lookup() and passed to filemap_grab_folio_mpol() to
+>> ensure that allocations follow the specified memory policy.
+>>
+>> This enables the VMM to control guest memory NUMA placement by calling
+>> mbind() on the mapped memory regions, providing fine-grained control over
+>> guest memory allocation across NUMA nodes.
+>>
+>> The policy change only affect future allocations and does not migrate
+>> existing memory. This matches mbind(2)'s default behavior which affects
+>> only new allocations unless overridden with MPOL_MF_MOVE/MPOL_MF_MOVE_ALL
+>> flags, which are not supported for guest_memfd as it is unmovable.
+>>
+>> Suggested-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+>> ---
+>>  virt/kvm/guest_memfd.c | 76 +++++++++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 75 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> index f18176976ae3..b3a8819117a0 100644
+>> --- a/virt/kvm/guest_memfd.c
+>> +++ b/virt/kvm/guest_memfd.c
+>> @@ -2,6 +2,7 @@
+>>  #include <linux/backing-dev.h>
+>>  #include <linux/falloc.h>
+>>  #include <linux/kvm_host.h>
+>> +#include <linux/mempolicy.h>
+>>  #include <linux/pagemap.h>
+>>  #include <linux/anon_inodes.h>
+>>
+>> @@ -11,8 +12,12 @@ struct kvm_gmem {
+>>  	struct kvm *kvm;
+>>  	struct xarray bindings;
+>>  	struct list_head entry;
+>> +	struct shared_policy policy;
+>>  };
+>>
 > 
-> Note that only some of register state for the REC can be set by KVM, the
-> rest is defined by the RMM (zeroed). The register state then cannot be
-> changed by KVM after the REC is created (except when the guest
-> explicitly requests this e.g. by performing a PSCI call). The RMM also
-> requires that the VMM creates RECs in ascending order of the MPIDR.
+> struct shared_policy should be stored on the inode rather than the file,
+> since the memory policy is a property of the memory (struct inode),
+> rather than a property of how the memory is used for a given VM (struct
+> file).
+
+That makes sense. AFAICS shmem also uses inodes to store policy.
+
+> When the shared_policy is stored on the inode, intra-host migration [1]
+> will work correctly, since the while the inode will be transferred from
+> one VM (struct kvm) to another, the file (a VM's view/bindings of the
+> memory) will be recreated for the new VM.
 > 
-> See Realm Management Monitor specification (DEN0137) for more information:
-> https://developer.arm.com/documentation/den0137/
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v6:
->   * Avoid reporting the KVM_ARM_VCPU_REC feature if the guest isn't a
->     realm guest.
->   * Support host page size being larger than RMM's granule size when
->     allocating/freeing aux granules.
-> Changes since v5:
->   * Separate the concept of vcpu_is_rec() and
->     kvm_arm_vcpu_rec_finalized() by using the KVM_ARM_VCPU_REC feature as
->     the indication that the VCPU is a REC.
-> Changes since v2:
->   * Free rec->run earlier in kvm_destroy_realm() and adapt to previous patches.
-> ---
->   arch/arm64/include/asm/kvm_emulate.h |   7 ++
->   arch/arm64/include/asm/kvm_host.h    |   3 +
->   arch/arm64/include/asm/kvm_rme.h     |  18 +++
->   arch/arm64/kvm/arm.c                 |  13 +-
->   arch/arm64/kvm/reset.c               |  11 ++
->   arch/arm64/kvm/rme.c                 | 179 +++++++++++++++++++++++++++
->   6 files changed, 229 insertions(+), 2 deletions(-)
-> 
+> I'm thinking of having a patch like this [2] to introduce inodes.
 
-With the following one comment addressed:
+shmem has it easier by already having inodes
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+> With this, we shouldn't need to pass file pointers instead of inode
+> pointers.
 
-[...]
+Any downsides, besides more work needed? Or is it feasible to do it using
+files now and convert to inodes later?
 
->   
->   /*
-> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
-> index 698bb48a8ae1..5db377943db4 100644
-> --- a/arch/arm64/include/asm/kvm_rme.h
-> +++ b/arch/arm64/include/asm/kvm_rme.h
-> @@ -6,6 +6,7 @@
->   #ifndef __ASM_KVM_RME_H
->   #define __ASM_KVM_RME_H
->   
-> +#include <asm/rmi_smc.h>
->   #include <uapi/linux/kvm.h>
->   
->   /**
-> @@ -65,6 +66,21 @@ struct realm {
->   	unsigned int ia_bits;
->   };
->   
-> +/**
-> + * struct realm_rec - Additional per VCPU data for a Realm
-> + *
-> + * @mpidr: MPIDR (Multiprocessor Affinity Register) value to identify this VCPU
-> + * @rec_page: Kernel VA of the RMM's private page for this REC
-> + * @aux_pages: Additional pages private to the RMM for this REC
-> + * @run: Kernel VA of the RmiRecRun structure shared with the RMM
-> + */
-> +struct realm_rec {
-> +	unsigned long mpidr;
-> +	void *rec_page;
-> +	struct page *aux_pages[REC_PARAMS_AUX_GRANULES];
-> +	struct rec_run *run;
-> +};
-> +
-
-REC_PARAMS_AUX_GRANULES represents the maximal number of the auxiliary granules.
-Since the base page size is always larger than or equal to granule size (4KB).
-The capacity of array @aux_pages[] needs to be REC_PARAMS_AUX_GRANULES. Ideally,
-the array's size can be computed dynamically and it's allocated in kvm_create_rec().
-
-Alternatively, to keep the code simple, a comment is needed here to explain why
-the array's size has been set to REC_PARAMS_AUX_GRANULES.
-
-An relevant question: Do we plan to support differentiated sizes between page
-and granule? I had the assumption this feature will be supported in the future
-after the base model (equal page and granule size) gets merged first.
-
-Thanks,
-Gavin
+Feels like something that must have been discussed already, but I don't
+recall specifics.
 
