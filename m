@@ -1,69 +1,69 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC1022370F
-	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 16:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7542022AE6B
+	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 16:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741018761; cv=none; b=Ebhowsto5miyiklmCs0cVBfMqKdKD/TLP2Kkqczz4EPw7W+QtyyEiwIxN3NIQvyy2CDu4D9WHnW7Mr9lzn444Vv7yUqGm/4l6AFmhPIyClswK5VgxoRpy8W9WOAByLPHJjKUUzLODqRhf4n0ruQ0gmqDpygZXzDE1MSVVh7fLXY=
+	t=1741018866; cv=none; b=gvMQ5e7ds+fLpeQ0RsK9SMEiOX6EBxsDEwr7AujUzXa2oxHXX3ed0niDyceG4QTH8zJRQ1AGetMKrfCk1LcxpJ/X92GmAPsB6QhCaO2FPaneQZkv6hzew1XxGZcj7CLqEVACin1+YVrQ3PqelB/FVKOdKKWf2S6sPMLXJBU0hFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741018761; c=relaxed/simple;
-	bh=kkHQcZoTJndCnwcbB9E+wpOiprPx3EnYCYUyF+KeBqo=;
+	s=arc-20240116; t=1741018866; c=relaxed/simple;
+	bh=402wUqZufsOsa3QE1ks4oJmtnZKVbPJ2tFfnJxLD8J0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=i1MFEa8+TKiPsRdxodUxcl7ZX+Nhc7HB8mY2LAPnHZIPQZ0X1AL0lZJlFs2sEUxAOrowTQfuqZecU9+kVk/ODnWI/PsLSMGFyGRlZKgD811+YFOxvwFwggwM7vjGhUDBZbs2zU17h8N8g5+jDBgDir5vKOEOXayCc6D5LF5WuL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C9pXhRSU; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type:Content-Disposition; b=SroWvz33UMDffnjp9lDdFtLc4TKHerNi8EFhyu1gFRjEsq9fX253f1yQOHWv6bVoxQLLuzIDBgCTmBRk3iCRiQg/tDBI5t+KLNGMxEkIzjG4D+RcTVzvdKlqcsKUNGFo0IRay+L8l7vnJULpkBbyLprRq3+sOZ4dBgBPZnOzVAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XJGdciWJ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C9pXhRSU"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XJGdciWJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741018758;
+	s=mimecast20190719; t=1741018863;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L5XdYcpLAdNxNfxY8Lfqw4ebX+gqF0nBQ5UXPPTJPbQ=;
-	b=C9pXhRSUQkkTjgpMtimrc8zF4kdfH9JrgM0Obqtgy1R05IOQWPMnrwQLNxCdXhujUQliZb
-	8ZBURthsfKX8xPGOzMAoj/LemWoo+tEXHsL99lldKZf1NP9dCT8MYkcQknxxdgl+DqcGb/
-	Hp0aCU3C8mfeBBasXZBoNHpBlmuYb9I=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=kwE0kZnHaMHXEDQxouFsy+p0EMd7yWpEqSqhQfyrJvg=;
+	b=XJGdciWJKUoAlUY+cuFN4P4KOycUsEMmmaxBXyXl+czsV0DulQMKy3uULAbSdtJXlt1CpF
+	c8yhtBgo+y+xtmxrh3KwNL6D1Sag2nTEHOa8CGKqaHvoW7ztlNDtU4//ucy8h2YAuRjvf+
+	GMDkb0Jtk+0knyK5yGAhI6Oil3kezrg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-PORPLMtKN0-BJfcCNiHTBw-1; Mon, 03 Mar 2025 11:19:12 -0500
-X-MC-Unique: PORPLMtKN0-BJfcCNiHTBw-1
-X-Mimecast-MFC-AGG-ID: PORPLMtKN0-BJfcCNiHTBw_1741018751
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3910afe5769so578263f8f.2
-        for <linux-coco@lists.linux.dev>; Mon, 03 Mar 2025 08:19:12 -0800 (PST)
+ us-mta-636-j18hCyYHMb2QAM7Rpur9vA-1; Mon, 03 Mar 2025 11:20:51 -0500
+X-MC-Unique: j18hCyYHMb2QAM7Rpur9vA-1
+X-Mimecast-MFC-AGG-ID: j18hCyYHMb2QAM7Rpur9vA_1741018851
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-390f7db84faso1740065f8f.2
+        for <linux-coco@lists.linux.dev>; Mon, 03 Mar 2025 08:20:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741018751; x=1741623551;
+        d=1e100.net; s=20230601; t=1741018850; x=1741623650;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L5XdYcpLAdNxNfxY8Lfqw4ebX+gqF0nBQ5UXPPTJPbQ=;
-        b=ewY23tQ/yy0VJgh8yQXPE6cHQ9f3V1TTP/7yltMnj/sjT1IidOMZ7jpkmxdhZFHy2s
-         Mna7IxRQMRJqQ8eT6LpjvS4EhXrp2fk+VzL/0hEgPt2xvVpLfRTCnUmPxlD7aM3Lh5/Q
-         z0WPhVNM7UTWug78vQIHIADLiV9m3WlRcJYMtc3zo3TLCdP3gkt6SxAJMqsP51BmIzl7
-         kpuIKirCi9MJMpodWIBBgo2QNZ7UlgY8LHjaXohCKe6uArP2B3jLFqzTP2yAVpFPBoNH
-         Am8VFGRMcdKMVZCKWlDnwKquc+c63y/IfV2n7QdzcMfDV+KZqsSkiAuleU0plBExFNe+
-         sCuA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqKegK8K4Hm/JLJeqvJUQC5vZ44WqT+bzgIE4pHv1mEyw1he2QlOHIbs1eiwOAbzKV+xnDsQOICjKM@lists.linux.dev
-X-Gm-Message-State: AOJu0YxuDCAEID35F7a6S6083Xry6+q2T9MEUlbg00KVE5FnONm5GuEb
-	OXJUtuwrra02nQByi3IphIvSYX/8Yw1OagVIK+dFNdJjUGhZJKwRtsEhCGF1d1/ZMQGfNj2tKJ0
-	KBA/pZMJ++vZyXzV9tTjqyn4FjpUbqKGlVMBJY/R9iDJHDZrX9Xv/B5fDoY8=
-X-Gm-Gg: ASbGncuwZ8b0tugl3Hd+utsKUSjPprk/n/yq5oc+cDLwp5qBoQsg39rdUZA60ntOSXU
-	IeQVfgHWHkhgNzl0ojsbNZu/ee76nrUk6GNBN8m/C13Zt0D32nTLyqJ+O5T94cdXUipflGwFQRI
-	N67T0m+IphkNQ2LFqhIuXJWaLwn15gjBaUOl9fMdN6AoeqYNemY7cSmnlq4zisXlS1OPHOWJPEU
-	FbA2zERPkoiJGYiwf9gO3oyPhgQWDeSKaoucLh/yKijiJqJ1Z2Gn/gCxhZIwO+HKxxU3aibdTCj
-	rLAYA50DTeb2ppayc34IdarDunV30rHJHBInRO4hPn+h7gcLZxb6RYhRE+MCbC0R
-X-Received: by 2002:a05:6000:2ac:b0:391:42f:7e94 with SMTP id ffacd0b85a97d-391042f836emr4415532f8f.18.1741018751449;
-        Mon, 03 Mar 2025 08:19:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHNgTP7CW85b75d/hToTcBGfinaj7PcJa9xIMaekWrZFC7WO4fkAD1vXiloSjC5Lawdn0s6dg==
-X-Received: by 2002:a05:6000:2ac:b0:391:42f:7e94 with SMTP id ffacd0b85a97d-391042f836emr4415499f8f.18.1741018750944;
-        Mon, 03 Mar 2025 08:19:10 -0800 (PST)
+        bh=kwE0kZnHaMHXEDQxouFsy+p0EMd7yWpEqSqhQfyrJvg=;
+        b=ZxxgubAJ0cos15T3l7GuqoKZwlACbaKTrfgidHmdlvj7zKtbdrTaU5X1SrYs48CQDn
+         sAzxgGNPImgR063U7VYzPKWz33i2ZhK539lJ8Z3IWBrZSlcl9k8uwTNLv5mPOsgPoh+e
+         KYfaXXwtkgN7VboTbgY2Q47czkl0qP6Q8QkLxyd6RKZxFUitlLAx2xpVrXdJiJ5qYJF6
+         e0qED8ySDsDRi5ihoOftSLCup7Q39gy2N2GtpVEtLFRjTYk3Uf8fIshFGgx+RAAwWu5R
+         KD6+hZRnK1GkR+e5Gg879cspRKraDkcs7ZL1N4oczLGgaFFP0mi+o6nwAyrAQQqa0s5a
+         bMdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlrQ3YMg+16ie2kJ0lxAjWXQvIwJZ0hZ4oDCh5EIMVczRqt3RQjwDlmIFDnEsaQfdI9vV/clzjnhJJ@lists.linux.dev
+X-Gm-Message-State: AOJu0YzE+nNPO8t/H5SDeUDGwS87wGnHYnAnG9ibj9x1OX18FeoFg5Zu
+	P7xOWkW7jkSRlZUFkHuVwHUG1/VdRJ34jElLQsoEwXEXo2lf9XfcAQC2aUzSVQ5xiVW0OM1saQX
+	cCMOPASXd9Bld3UKr8KpZxXMV7wNO020rFEc4daFtKj2cW8fKjHVB/7Prl+8=
+X-Gm-Gg: ASbGncuLnOVj6TgYDcm9NNXvqTVjRwrzbicd9fJz6lPSvwnruFfND8jQT8NVdeOWAeh
+	U2XddbuqczTSBj/dDXeibs+jmi9IRYa+uCI3EFyfkaQgT/t/ZaM1JHMshOCsVXcoAUqjJJOHHvi
+	JJrNo/iG2aAlVF4zL2MmuuOP6q/lHQTvAX2WAcw0H/Do05W7YOOhvgTF3KxEEV3JcQ/nLnD5Yzq
+	PR4c3cGMvhtRWgZXAoqBBvghg1dTdxSd91UsR+sRl//Ewsz9BU39+X10rMh2UlifqcUfl8ZaSDN
+	F5fbL53O8n4e2Uoegb8QtCYTyiqyKIATnjCq7CwAeqfusgvOcxTQTy5t+AMs8+DV
+X-Received: by 2002:a05:6000:4021:b0:391:a74:d7d7 with SMTP id ffacd0b85a97d-3910a74d8e6mr4864371f8f.8.1741018850662;
+        Mon, 03 Mar 2025 08:20:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHJkGVDdAKM9Y8PmJ0U+nghUhjVOpFdN8aFO96nlwoN01M7SmNc/xMw3vIU8qZIs/W7CGHyJA==
+X-Received: by 2002:a05:6000:4021:b0:391:a74:d7d7 with SMTP id ffacd0b85a97d-3910a74d8e6mr4864327f8f.8.1741018850234;
+        Mon, 03 Mar 2025 08:20:50 -0800 (PST)
 Received: from sgarzare-redhat (host-79-46-200-29.retail.telecomitalia.it. [79.46.200.29])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba53943asm193042295e9.19.2025.03.03.08.19.09
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e47960b6sm15276831f8f.17.2025.03.03.08.20.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 08:19:10 -0800 (PST)
-Date: Mon, 3 Mar 2025 17:19:05 +0100
+        Mon, 03 Mar 2025 08:20:49 -0800 (PST)
+Date: Mon, 3 Mar 2025 17:20:44 +0100
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Jason Gunthorpe <jgg@ziepe.ca>
 Cc: Jarkko Sakkinen <jarkko@kernel.org>, 
@@ -74,57 +74,37 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Dave Hansen <dave.hansen@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
 	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [RFC PATCH v2 5/6] tpm: add SNP SVSM vTPM driver
-Message-ID: <45ze5sxvcvg2ituxrefw6konxtwjgs4zs5bscrp2khfqkf3jb4@zozeerbmtik5>
+Subject: Re: [RFC PATCH v2 0/6] Enlightened vTPM support for SVSM on SEV-SNP
+Message-ID: <w4zyf33sixofbqmz4mxyobihicrywjwvjbpmiipcqrlejjfwjd@t7ok7sjni3cn>
 References: <20250228170720.144739-1-sgarzare@redhat.com>
- <20250228170720.144739-6-sgarzare@redhat.com>
- <20250301002819.GO5011@ziepe.ca>
+ <20250301003009.GP5011@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20250301002819.GO5011@ziepe.ca>
+In-Reply-To: <20250301003009.GP5011@ziepe.ca>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qcqo-vDKkt1Td9r_VlbOZSwG94Vy_57waMfzsucnT8Y_1741018751
+X-Mimecast-MFC-PROC-ID: 8M5wQjZS_NnZzUqCE70sgIb2Byd_PPCW-QTcfviZs4Q_1741018851
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
 
-On Fri, Feb 28, 2025 at 08:28:19PM -0400, Jason Gunthorpe wrote:
->On Fri, Feb 28, 2025 at 06:07:19PM +0100, Stefano Garzarella wrote:
->> +/*
->> + * tpm_svsm_remove() lives in .exit.text. For drivers registered via
->> + * module_platform_driver_probe() this is ok because they cannot get unbound
->> + * at runtime. So mark the driver struct with __refdata to prevent modpost
->> + * triggering a section mismatch warning.
->> + */
+On Fri, Feb 28, 2025 at 08:30:09PM -0400, Jason Gunthorpe wrote:
+>On Fri, Feb 28, 2025 at 06:07:14PM +0100, Stefano Garzarella wrote:
+>> I put RFC back in because we haven't yet decided if this is the best
+>> approach to support SVSM vTPM, but I really like to receive feedbacks
+>> especially from the maintainer/reviewers of the TPM subsystem, to see if
+>> this approach is acceptable.
 >
->??? Is that really true? I didn't know that
+>I didn't look in high detail, but the overall shape is what I was
+>thinking about in our previous conversations. Very little TPM code is
+>under arch/, we have a nice simplifying helper in the core code, and
+>you have a tidy platform device to tie it all together.
 
-I initially followed drivers/virt/coco/sev-guest/sev-guest.c to figure 
-out how to clean a driver registered with 
-module_platform_driver_probe(), then I saw that pattern with the same 
-comment is used in several other drivers.
+Thank you so much for taking a look and confirming that I understood 
+your suggestions correctly!
 
->
->I thought you could unbind anything using /sys/../unbind?
-
-I can't see `unbind` for this driver:
-
-   $ ls /sys/bus/platform/drivers/tpm-svsm/
-   module	tpm-svsm  uevent
-
-While I can see it for example for others like fw_cfg:
-
-   $ ls /sys/bus/platform/drivers/fw_cfg
-   bind  module  QEMU0002:00  uevent  unbind
-
-BTW I can unload the `tpm-svsm` module. Loading it again will cause 
-issues if I don't have a remove function that calls 
-tpm_chip_unregister().
-
-Thanks,
 Stefano
 
