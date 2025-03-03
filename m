@@ -1,235 +1,130 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2089.outbound.protection.outlook.com [40.107.94.89])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B877B14F9D6
-	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 15:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741016159; cv=fail; b=UTP/F4qIyAVZnT43TaMO4Tz5/1UeNktk8UxTu4Uqt3W/MOHtz0v4733qBBr/ZNCctfjWsTrcaMhzQY8j4sayIMVj9w5J70OvxTES7xJdyVZ5YgyV9IlP9O8dn7aPprIIpu+M/tkszAJd2TZ2H7dDAtJnFa0e1M0Fa4jVotrCC70=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741016159; c=relaxed/simple;
-	bh=km+jJQ4HyjD6FUQTUBO2Kp+LZBkreFjuKtRkbAGZElA=;
-	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
-	 Content-Type:MIME-Version; b=kTES4rVjFItFFZdx5INtbsceGcqCuo9Rkxdx41n8ghoja7znAI2gQl2doob8OFHdnTlOGs6V3RRnGgE1qP8bQzsxH+g2qV+TJLx4Um3iMDhQq7CNKNrORGMbNK6+olG3QmYrQPw4vB8vMrUN2qscYnqkVzmfYo6rQBzAFu1X8LQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=st9SPkrb; arc=fail smtp.client-ip=40.107.94.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC1022370F
+	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 16:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741018761; cv=none; b=Ebhowsto5miyiklmCs0cVBfMqKdKD/TLP2Kkqczz4EPw7W+QtyyEiwIxN3NIQvyy2CDu4D9WHnW7Mr9lzn444Vv7yUqGm/4l6AFmhPIyClswK5VgxoRpy8W9WOAByLPHJjKUUzLODqRhf4n0ruQ0gmqDpygZXzDE1MSVVh7fLXY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741018761; c=relaxed/simple;
+	bh=kkHQcZoTJndCnwcbB9E+wpOiprPx3EnYCYUyF+KeBqo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=i1MFEa8+TKiPsRdxodUxcl7ZX+Nhc7HB8mY2LAPnHZIPQZ0X1AL0lZJlFs2sEUxAOrowTQfuqZecU9+kVk/ODnWI/PsLSMGFyGRlZKgD811+YFOxvwFwggwM7vjGhUDBZbs2zU17h8N8g5+jDBgDir5vKOEOXayCc6D5LF5WuL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C9pXhRSU; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="st9SPkrb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C+0AzoaIOGQs9UBa3181x4/ngxQp01jKUpXRcMLgys/o2SgNAX98w8YHWB+2QOnhRhEG4fvRDlgDhqA07wxm0DixuuVkLSfW2ID1o7gRYUIEyYUWGohAswzPQjI9UM4/Bb/J6stTUGrnGakppjBqHZWCVcqW28i70yhpkNfGDISvQEIwrR//VXNEtINSAyKw1eIToIqnffY2keRUY8Z0cWNmV6VGqsXsFsbOXDBQ1R0DL7c7NUYLRIpzCZDPl/9ky/j1Mc1w97ku0PHHTRdXnM/2HegF4lRVv2tiM6QXJ/xt7lgwE0UedeXCorOrN9BH46mHANbwDX+g9+LgyJBTqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4du8ljfuhMr/P+D7sVdaogkOHdetV7k4sAzdWnogH5Y=;
- b=dgcwTOSYGryLI7YwWYPJhSXaIzhWBu4UR0tXLV2FN2n4tSdrw2fffE9BRliErtxEodnLtU3IbqmWdOszDOCVCFVgc/ihTkWR/hxVmTtEtJ0Wxao0OA1ndR3k34B7z7wVq24RNxZew72wvml0chd967TZcyXaMkzTUzYbEIIDu120m5qsdWO1Q4UkP6GHSjMZJd/LUVdZ5fMYshQrAMMxGnwk2YUwHmLwiDClu6OvqdUCbIv5qE9h5B3dMjpsRuZcFCd37hWRrJGlsnYsht9y2Mz0hy3hKoaPj4509WULpOLIbINq0QtIs24AoG7/jQYDM5c3Qvix+FE1j/wcr3vNGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4du8ljfuhMr/P+D7sVdaogkOHdetV7k4sAzdWnogH5Y=;
- b=st9SPkrbFcZjp4H/GIS57OnwAKXuIxZNByx8BkacjF94CsJxM7gEQJXXlFsOu4sE8fR/Pxmyih9oQ/gXoYkH8P2sb8or+VDWe62OsUap6tUl2I5VnGUIzqIVpdxtAVqs9mCTJJxu5FFDQrhS2sLqmmWIEY7BVRrWBe6VJP1TNg8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by BL3PR12MB6642.namprd12.prod.outlook.com (2603:10b6:208:38e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Mon, 3 Mar
- 2025 15:35:52 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%7]) with mapi id 15.20.8489.025; Mon, 3 Mar 2025
- 15:35:52 +0000
-Message-ID: <98945b3c-5669-1bc4-36b3-53380173b631@amd.com>
-Date: Mon, 3 Mar 2025 09:35:49 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To: Ashish Kalra <Ashish.Kalra@amd.com>, seanjc@google.com,
- pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- john.allen@amd.com, herbert@gondor.apana.org.au
-Cc: michael.roth@amd.com, dionnaglaze@google.com, nikunj@amd.com,
- ardb@kernel.org, kevinloughlin@google.com, Neeraj.Upadhyay@amd.com,
- aik@amd.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1740512583.git.ashish.kalra@amd.com>
- <6c8dbb978e0785ee5a33165a9c43d555991fc505.1740512583.git.ashish.kalra@amd.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH v5 7/7] crypto: ccp: Move SEV/SNP Platform initialization
- to KVM
-In-Reply-To: <6c8dbb978e0785ee5a33165a9c43d555991fc505.1740512583.git.ashish.kalra@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR03CA0020.namprd03.prod.outlook.com
- (2603:10b6:806:20::25) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C9pXhRSU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741018758;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L5XdYcpLAdNxNfxY8Lfqw4ebX+gqF0nBQ5UXPPTJPbQ=;
+	b=C9pXhRSUQkkTjgpMtimrc8zF4kdfH9JrgM0Obqtgy1R05IOQWPMnrwQLNxCdXhujUQliZb
+	8ZBURthsfKX8xPGOzMAoj/LemWoo+tEXHsL99lldKZf1NP9dCT8MYkcQknxxdgl+DqcGb/
+	Hp0aCU3C8mfeBBasXZBoNHpBlmuYb9I=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-586-PORPLMtKN0-BJfcCNiHTBw-1; Mon, 03 Mar 2025 11:19:12 -0500
+X-MC-Unique: PORPLMtKN0-BJfcCNiHTBw-1
+X-Mimecast-MFC-AGG-ID: PORPLMtKN0-BJfcCNiHTBw_1741018751
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3910afe5769so578263f8f.2
+        for <linux-coco@lists.linux.dev>; Mon, 03 Mar 2025 08:19:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741018751; x=1741623551;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L5XdYcpLAdNxNfxY8Lfqw4ebX+gqF0nBQ5UXPPTJPbQ=;
+        b=ewY23tQ/yy0VJgh8yQXPE6cHQ9f3V1TTP/7yltMnj/sjT1IidOMZ7jpkmxdhZFHy2s
+         Mna7IxRQMRJqQ8eT6LpjvS4EhXrp2fk+VzL/0hEgPt2xvVpLfRTCnUmPxlD7aM3Lh5/Q
+         z0WPhVNM7UTWug78vQIHIADLiV9m3WlRcJYMtc3zo3TLCdP3gkt6SxAJMqsP51BmIzl7
+         kpuIKirCi9MJMpodWIBBgo2QNZ7UlgY8LHjaXohCKe6uArP2B3jLFqzTP2yAVpFPBoNH
+         Am8VFGRMcdKMVZCKWlDnwKquc+c63y/IfV2n7QdzcMfDV+KZqsSkiAuleU0plBExFNe+
+         sCuA==
+X-Forwarded-Encrypted: i=1; AJvYcCVqKegK8K4Hm/JLJeqvJUQC5vZ44WqT+bzgIE4pHv1mEyw1he2QlOHIbs1eiwOAbzKV+xnDsQOICjKM@lists.linux.dev
+X-Gm-Message-State: AOJu0YxuDCAEID35F7a6S6083Xry6+q2T9MEUlbg00KVE5FnONm5GuEb
+	OXJUtuwrra02nQByi3IphIvSYX/8Yw1OagVIK+dFNdJjUGhZJKwRtsEhCGF1d1/ZMQGfNj2tKJ0
+	KBA/pZMJ++vZyXzV9tTjqyn4FjpUbqKGlVMBJY/R9iDJHDZrX9Xv/B5fDoY8=
+X-Gm-Gg: ASbGncuwZ8b0tugl3Hd+utsKUSjPprk/n/yq5oc+cDLwp5qBoQsg39rdUZA60ntOSXU
+	IeQVfgHWHkhgNzl0ojsbNZu/ee76nrUk6GNBN8m/C13Zt0D32nTLyqJ+O5T94cdXUipflGwFQRI
+	N67T0m+IphkNQ2LFqhIuXJWaLwn15gjBaUOl9fMdN6AoeqYNemY7cSmnlq4zisXlS1OPHOWJPEU
+	FbA2zERPkoiJGYiwf9gO3oyPhgQWDeSKaoucLh/yKijiJqJ1Z2Gn/gCxhZIwO+HKxxU3aibdTCj
+	rLAYA50DTeb2ppayc34IdarDunV30rHJHBInRO4hPn+h7gcLZxb6RYhRE+MCbC0R
+X-Received: by 2002:a05:6000:2ac:b0:391:42f:7e94 with SMTP id ffacd0b85a97d-391042f836emr4415532f8f.18.1741018751449;
+        Mon, 03 Mar 2025 08:19:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHNgTP7CW85b75d/hToTcBGfinaj7PcJa9xIMaekWrZFC7WO4fkAD1vXiloSjC5Lawdn0s6dg==
+X-Received: by 2002:a05:6000:2ac:b0:391:42f:7e94 with SMTP id ffacd0b85a97d-391042f836emr4415499f8f.18.1741018750944;
+        Mon, 03 Mar 2025 08:19:10 -0800 (PST)
+Received: from sgarzare-redhat (host-79-46-200-29.retail.telecomitalia.it. [79.46.200.29])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba53943asm193042295e9.19.2025.03.03.08.19.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 08:19:10 -0800 (PST)
+Date: Mon, 3 Mar 2025 17:19:05 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Claudio Carvalho <cclaudio@linux.ibm.com>, 
+	Peter Huewe <peterhuewe@gmx.de>, x86@kernel.org, Dov Murik <dovmurik@linux.ibm.com>, 
+	linux-coco@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
+	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [RFC PATCH v2 5/6] tpm: add SNP SVSM vTPM driver
+Message-ID: <45ze5sxvcvg2ituxrefw6konxtwjgs4zs5bscrp2khfqkf3jb4@zozeerbmtik5>
+References: <20250228170720.144739-1-sgarzare@redhat.com>
+ <20250228170720.144739-6-sgarzare@redhat.com>
+ <20250301002819.GO5011@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|BL3PR12MB6642:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b436f60-2b80-416d-18e3-08dd5a6914bd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QlhDa3lZYjk0OERaSkIvamxBQmlBRHl1a0U4Y3hxTnh6VDM2dTIzU1dOTFlP?=
- =?utf-8?B?cVdkNFJBT3BwSFE3RnQ4US9haEpIU3REMzBDaCsxREM0TDZ5dzBjQ1F1emhV?=
- =?utf-8?B?cGVkK2ZNT1RSbDAzNGZtL2JjSnVLR2xtZkEzT2dUU0g2YkpyUTBDclFMUDhV?=
- =?utf-8?B?UC8wdWVLQm5aYVdsL0llZ2h5dkE1R1hOd2Z5b1lneTl0Ujh4VGZoaEYwcUtO?=
- =?utf-8?B?cmlqN08ya1FFek1kdWlTOVRCcFZScUZ6SG9NOGtMMWlMejI1YUxTeEd2WkVs?=
- =?utf-8?B?SXN4K21seGZENWlKbER0WGpxSW90Z2ZaU1k3K21SY0sweWVIbmZuMWFYano3?=
- =?utf-8?B?VUR0YkZxRkFtUHQwVXlaaU9YQkoxcVVsaE1OcTdISUpIR0lRdnpXYS9RNENj?=
- =?utf-8?B?OVplUW1jcVZsNnJnd1kyRW9ncG1HZ0Q0eHZDZEpzLzU2NWFLSWorYjFSeFBB?=
- =?utf-8?B?Q1ZZWUxFb1RudmVCdFJjNFBBT0xsak5ScXB0WFRrV1k2MFh6OHlPd2JKWmtF?=
- =?utf-8?B?SFBnMEpmK215elJMaEdhdVJWOUpybHFCYVVVbkoxN0Z4bHBQZGM3QndFR3VQ?=
- =?utf-8?B?VmFvd1o1aStNT0xIOC9maDkveE8zUUpURGhkdm5WeTVkUWpVWmJWRjBubkwy?=
- =?utf-8?B?MC9rUzkwVWl4aUlwNEx4aHAzT2ZGYnR3R2JiZGoxYkJxTkdHaHNMdXRuOENr?=
- =?utf-8?B?ZDJLWmV3ZUV0U216MGY5UnVHN0FrbjNWcTA5UmJZb2FSaEZjb2pEWmcrbDNU?=
- =?utf-8?B?bEJHL2xsbmRmTHJUVVFhY3FtMlo3Z0RhaWw5bGdwRjlYT2llNFVObWZiSmM2?=
- =?utf-8?B?c1FrcTdJL1pSRkpZQ1hVWnl0Sk8xcVozR0UwN2ZrRmpzZys3S2V3c1pBUjg0?=
- =?utf-8?B?azJzNVBFdnFaYnVIRlMwKzJmZ1RxTTNPa001YkcwVHRiUkp1MFhPSEFLaDM4?=
- =?utf-8?B?TU4xY0tZUUM0a0pXZG95SHdQeVJrOXNiSDhpOG5IdzhXSHVxY3FZNTllTTJx?=
- =?utf-8?B?Yit6Y1BCVkxGWEw0Nlh0M2ticWl0OE1NcS9LMjVGTWdDNk1PcXhuMHpPbDlQ?=
- =?utf-8?B?MmJBUG5hdHRRak9yVkY0M3d5aVUxbFNaL2VEOVRSNyt4ODFPTmgwZ0NITDB1?=
- =?utf-8?B?WDhzZklkeXRmZ0x4M25tbTk0V2duNk1idGlwUitCbmZZcWFsNWJySFdIQ1d0?=
- =?utf-8?B?ZmVCNWpZbzVJb1FUdWQvZXZqQW44RU5xQjl3UjdqclFEUzhYUHRjUVRyWDVz?=
- =?utf-8?B?QUk3anphNkVIUndRRTRBZUhRUWJsS0ZrNW5UWVRBMDc5N0lOWEZTUW44N1My?=
- =?utf-8?B?ZWFHZVhQblZldXpSM3FhK013S0pwWGU2VTBkaVRiUXVNZWtZdHIvK2FlN3V3?=
- =?utf-8?B?aGtaMG14cDdnKzlwem9hNzIzVHJSM0FYb3p6TFh3UnlEWEEvYmV0ekJkZmNB?=
- =?utf-8?B?NTFuS2Y3WVNFNmR5VVJYZHNIbU53WHhFb09GZzNyQk5lMllZY1Axd3NiN2Vi?=
- =?utf-8?B?ejhiejNBdUp1cThEeXZ6c3JOUzc0dG5lUGp5UHdpSlgwcUVjbG9EOThBSHE3?=
- =?utf-8?B?M3ZabTh6aStWZFhMZkcyYmM0Yk5WdGxWMUt1VkFDb0gxdTNFamdDUi9oRTFx?=
- =?utf-8?B?Y1hSdjhRd2U4Tk03ZkdpNmNIOFRGMmNLQVQyL0E4NDg0WndCU0tkeWVjWkRC?=
- =?utf-8?B?SHRXd1Q3QzBNaG5GeXNvTGZCQTF5UW02WDB4QVZxUWg0RWdzOEF5bVRoajZt?=
- =?utf-8?B?NVB3U1NKbXJRQ0hHNXg2NUVYdjhpZ2RzRUJXbEdkaUhNZ1B6MnpMNGRRNGh5?=
- =?utf-8?B?Ykpmd0swOTgrdHU1WTNzMXgzNmIzb0ppdDZKK04za1loR29sa1QwZzN6aC82?=
- =?utf-8?B?ZThaQXRGNjMzQUJHUDhnZWpHbncwR3NuKytOWHZIZFVYbUdOUjhjZ083TGhG?=
- =?utf-8?Q?yZFg0zx0jvU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?L3NaZEUzOGZmbVlsd2tkNnIzaENjSWwvS0taVVMybzBkeUpCWTFVSU41bzBK?=
- =?utf-8?B?MHJnKzRIM25BaXlrck1IbEt2cklPRDBtQ1o4RUM3TXE5dmtLMVZzV3RpSE9K?=
- =?utf-8?B?ME5ENTBWaGo5MlVSQWtZcXA2U0lPUnFnd2ZqMkdIRG9rR3hLMHVVQkpHbmRK?=
- =?utf-8?B?ektndHBnMDQwVGZqbmlZajBnSTB3Q3c4cjAwNVRiTjBYenc4QW9PRmRzMlk2?=
- =?utf-8?B?UXIwYWZQUTJhd3owREEzSHFUc3o2aTRrd2xFcHdGU056eGs3UUVBQ25KSHcy?=
- =?utf-8?B?Y3IvQXZFUU8rcjJScitQYXJjU3N5RVM2SDQ0ZVA3cHd2MkEwdG9udTNjUXhO?=
- =?utf-8?B?dDlCS0VoUTFKTXRnNkNYWUY5WEt0YXk2eHMvRVNneFdDbHJmb3hNY01oc3lO?=
- =?utf-8?B?VHg2YXVRYzk0WGw3WmRNckRReDVieG1xTmZzSVJJMGtVdFhBNzZyZEdCL2lU?=
- =?utf-8?B?Z1pId2dBN2U5RTQ3dlpma0hkWUplN2owWi9Oc1k2cEcvOHo1R2FjQ3U3d0xZ?=
- =?utf-8?B?K2h1NUN4MkRPS01aN1pEaCs4VjFaUFc4ZVNVUnlEZm14R1hzczl0OWJFTGht?=
- =?utf-8?B?NEhwMkd5K3NPTHYyOHRNU3p1OFFIL1dkUDdvUEFjR0hMbjdQNW5Fc3orVzho?=
- =?utf-8?B?T2t0WTdIcTgvVkdoRmZ5bzBuZzd5MkdaV0JvYUxTY3ZyWEpZaEFtZ0RkbmRF?=
- =?utf-8?B?cXl2aEhuckZTdWdZemhFQnB4Uk1rQmJnNFdVQnNnZHdqc0xBYUxkSEZJbjZI?=
- =?utf-8?B?WnJudElvTzd4eXNtQjMydk5wbjhWYkc2dmtJREdFUFJUYVAvaU5pcjc0Nysx?=
- =?utf-8?B?RzY4ZEJXbVl6SkxGYUp2RGM2WWpEdk9IeDdrNWZEbC9EdTJPMUNwdmNtVGVK?=
- =?utf-8?B?SUlwL3cwNURpYmRCRGpDeGI5SUVsQjR5dndxcHdrOGxmeWRRTlNzME5iTkM3?=
- =?utf-8?B?VzJSR0hGRWpVanFnWlY2NStrWUVHR2JoNEFYN0VNNzVwMk1ON1hvcTR1bGJB?=
- =?utf-8?B?dGNSMDZWNEMyOEp0MDNUdWhyRmE3dUNpaVJsMzhEbnRtVnJEZ0grR25TSzUz?=
- =?utf-8?B?WXA4aFExb01LaVVDV1lCN2N6Z0Rac0NNMkYyeUdoNCsvQWZZYTl6Sk80bmRv?=
- =?utf-8?B?V2JmdXVYd0FuNVJlVWtnN1R3UFg3NGtjOHoxYmtjWXIyZnhVUmQ0SkFhVTQ0?=
- =?utf-8?B?U2xyYWxuRzZHZGFEYThnMHRuZklEbE5KRWZuUVoyRWdmM1ZBTmZKVkQ3R3dV?=
- =?utf-8?B?QWxoRDdkNkdmK3p6bmE3eldmbXp3SFVibHpDdk9BenVMQlZ2N2kvcWVFYkNE?=
- =?utf-8?B?V3dySzUwK2xZRVVBSFp1d1dTRHlIeGt6aVlrbjlYTmhIMDEzN2RGYnFpR050?=
- =?utf-8?B?ZlVFaGtTU3pCYWFPcDcwbU5VRElpVFJsZjZIRlFPekE2WUZjT2NwMVFINU9H?=
- =?utf-8?B?QWlYQTVQS1ZrSUlvSXo3QTIyY3I4L2tRcmEvMUh2NWNRTjFnQkc2Rmszcmht?=
- =?utf-8?B?VmUxYnpuOFpFTmxFMndBbnR0akdldXNFaEZYczR4ZUwrVVdaSDM1VGxQT2p3?=
- =?utf-8?B?MlVjSitNQ2NmcHdtNGF4dGpjRDlTU3RycFpkTDNHVjF3YnhXWFkrdnlVU2xF?=
- =?utf-8?B?ZHJweHE3Y21RMkV3ZTM0aW13MEY2M1JiMlFaelV1V1NlYkNvcnFVMXExTk1v?=
- =?utf-8?B?cGxqOFF5Mk1ncXIxWTlrUlNoRnlVL3AzZzgzMktRa0JuYmFOanduNEo0RURU?=
- =?utf-8?B?d09mK1d6NEp2ZElIbjlsSEt1ZlhpTlM3dVFNd1RqNWlqWjNBNm54NFNMbW9T?=
- =?utf-8?B?WE1IVy9YMm84cE9xZ3VLTFhCVFR3ODlCckVkUDBmS0wreUxoNW9WbFZvR0hi?=
- =?utf-8?B?c2E2VFNkM0l5Wis5R3FJUE9tSHp3VU90L1VPbWlOR21IUWlrOTNmR09yNXIr?=
- =?utf-8?B?dFovZVJHamNVSVgrekxVL1lsRkN4ZTNTRU5keGxXQ1V6dlMwS0lDRzhudGdy?=
- =?utf-8?B?K3ZMRDdKRVRma0tWQmRmakN5K09iekpXNUQrcDNnUkZQWmlOR2dZOGl1cnhI?=
- =?utf-8?B?MkpBQURiVC9hcFZZZ0kzemVTd0VqRFl5a0NnSi9PbWpOUnlQakVZOStYQ2U5?=
- =?utf-8?Q?c7X/7kaHpfVSixxaJ4cEug1KL?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b436f60-2b80-416d-18e3-08dd5a6914bd
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2025 15:35:52.4182
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VL1Qov0puud3Eum/sJBF+QeL8BU1WPpowkCTE/dmn2k1WXhN5MZLi62FTqvzw2MWIdyGCmBLZvzodHsv+3tJKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6642
+In-Reply-To: <20250301002819.GO5011@ziepe.ca>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: qcqo-vDKkt1Td9r_VlbOZSwG94Vy_57waMfzsucnT8Y_1741018751
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
 
-On 2/25/25 15:02, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> SNP initialization is forced during PSP driver probe purely because SNP
-> can't be initialized if VMs are running.  But the only in-tree user of
-> SEV/SNP functionality is KVM, and KVM depends on PSP driver for the same.
-> Forcing SEV/SNP initialization because a hypervisor could be running
-> legacy non-confidential VMs make no sense.
-> 
-> This patch removes SEV/SNP initialization from the PSP driver probe
-> time and moves the requirement to initialize SEV/SNP functionality
-> to KVM if it wants to use SEV/SNP.
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> ---
->  drivers/crypto/ccp/sev-dev.c | 16 ----------------
->  1 file changed, 16 deletions(-)
-> 
-> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-> index cde6ebab589d..42988d757665 100644
-> --- a/drivers/crypto/ccp/sev-dev.c
-> +++ b/drivers/crypto/ccp/sev-dev.c
-> @@ -1345,10 +1345,6 @@ static int _sev_platform_init_locked(struct sev_platform_init_args *args)
->  	if (sev->state == SEV_STATE_INIT)
->  		return 0;
->  
-> -	/*
-> -	 * Legacy guests cannot be running while SNP_INIT(_EX) is executing,
-> -	 * so perform SEV-SNP initialization at probe time.
-> -	 */
->  	rc = __sev_snp_init_locked(&args->error);
->  	if (rc && rc != -ENODEV) {
->  		/*
-> @@ -2516,9 +2512,7 @@ EXPORT_SYMBOL_GPL(sev_issue_cmd_external_user);
->  void sev_pci_init(void)
->  {
->  	struct sev_device *sev = psp_master->sev_data;
-> -	struct sev_platform_init_args args = {0};
->  	u8 api_major, api_minor, build;
-> -	int rc;
->  
->  	if (!sev)
->  		return;
-> @@ -2541,16 +2535,6 @@ void sev_pci_init(void)
->  			 api_major, api_minor, build,
->  			 sev->api_major, sev->api_minor, sev->build);
->  
-> -	/* Initialize the platform */
-> -	args.probe = true;
-> -	rc = sev_platform_init(&args);
-> -	if (rc)
-> -		dev_err(sev->dev, "SEV: failed to INIT error %#x, rc %d\n",
-> -			args.error, rc);
-> -
-> -	dev_info(sev->dev, "SEV%s API:%d.%d build:%d\n", sev->snp_initialized ?
-> -		"-SNP" : "", sev->api_major, sev->api_minor, sev->build);
+On Fri, Feb 28, 2025 at 08:28:19PM -0400, Jason Gunthorpe wrote:
+>On Fri, Feb 28, 2025 at 06:07:19PM +0100, Stefano Garzarella wrote:
+>> +/*
+>> + * tpm_svsm_remove() lives in .exit.text. For drivers registered via
+>> + * module_platform_driver_probe() this is ok because they cannot get unbound
+>> + * at runtime. So mark the driver struct with __refdata to prevent modpost
+>> + * triggering a section mismatch warning.
+>> + */
+>
+>??? Is that really true? I didn't know that
 
-Should this dev_info() have been removed in patch #1? Because it looks
-like this would have been a duplicate message after the first patch, right?
+I initially followed drivers/virt/coco/sev-guest/sev-guest.c to figure 
+out how to clean a driver registered with 
+module_platform_driver_probe(), then I saw that pattern with the same 
+comment is used in several other drivers.
+
+>
+>I thought you could unbind anything using /sys/../unbind?
+
+I can't see `unbind` for this driver:
+
+   $ ls /sys/bus/platform/drivers/tpm-svsm/
+   module	tpm-svsm  uevent
+
+While I can see it for example for others like fw_cfg:
+
+   $ ls /sys/bus/platform/drivers/fw_cfg
+   bind  module  QEMU0002:00  uevent  unbind
+
+BTW I can unload the `tpm-svsm` module. Loading it again will cause 
+issues if I don't have a remove function that calls 
+tpm_chip_unregister().
 
 Thanks,
-Tom
+Stefano
 
-> -
->  	return;
->  
->  err:
