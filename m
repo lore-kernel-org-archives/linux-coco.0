@@ -1,247 +1,341 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2054.outbound.protection.outlook.com [40.107.92.54])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazolkn19010010.outbound.protection.outlook.com [52.103.13.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC23113212A
-	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 01:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD23225D6;
+	Tue,  4 Mar 2025 04:17:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.13.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741051909; cv=fail; b=A9Vzm3Mm84r5YnLB2uswai9+QPJkw01RAueD5QQ0rtd2ppXN+RpGWhRW6/aFYqAH4ZuDTQDGdKymr2m8k9FqfFGtynjdjW4R/NA+Z5YJVLnvl0AImZkMdgl9ECW4s1RzbFJCFj4yGhYNBYWl66IV0OiXJzIntch8oddJin+QQMc=
+	t=1741061849; cv=fail; b=iVWmO8BrBhLtCVao42NzH7PWFXKG7CDsJWDi8Fsk3JuKOCJX5HAH2QH2pMaVlhd90lqyz02TqUaKxKpWpdEIgxulUZBmGtg/Ylm2zNWW6VZoPNKwuj9y/PizTo6bSc8CDdjO8BDYa7jtsgj9na+6itIv4bhPArL3x+JbkU7mMdU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741051909; c=relaxed/simple;
-	bh=odbiFUNXJUPmz7dcc1zellHJg8/s2ylEC9TgOkhB/uc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Gxleig30tirsUQX8sy6/Zs7IpLm0qf7ietamJjY0zPDYEViO2ZnkEJPnOgMqj49c0kJBqMpplQ6T1+p5BC7YP//U649YlBNtp3dZ+lHQ24jymJQem50+nWlpAwqB54z3raS2gmEjUmlhzRGcsf6kZIlJeg/85qNGOp7raynN7sc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jWyMqwMo; arc=fail smtp.client-ip=40.107.92.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1741061849; c=relaxed/simple;
+	bh=NhTwR32+27i+8Vm+nq+/PBjyVge3rcNkRe/y6yOAK4I=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=SJUoaN7Iing9xE5LuSQIoqOQodIaoHAC8foj6SQVkYtunHACojBWqruXEz6E7TN/avtNq3a1k+sXPuDZ9qbZtiMnls+7uhOxfnjDMvFX+NrQzAmJRqCoDrjPIjgzuDdTBVpgEdhWrWdBDKdXhiitP1iRfID1TZ6kik3FYAKfhwE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=U/mE/iZQ; arc=fail smtp.client-ip=52.103.13.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jWyMqwMo"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="U/mE/iZQ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iQaIowBdV6++sOaHzjz3MO3xyFlX9xk0szNpNeB1GhzMrfHaPS5THnb0fJxZZyplfdClWBjU7K5SwaPz5A4OQ8RJ0Cx/tjf3t3nLTSEYar2L1DWmlyw/cWW8+0aWo2+qAOR1MJgtfJ2qtaxX7casV4M/hhrTo9eXHCbwQNMV1ye3PW3vvb509Dz0raScgBDhSuSt+sFO6vSr21VDMBxhlH7rxmixpFfouOcIk1R+ZUUA9s+SYscxTpTuKUCxd2nN+k7xNeZziF1HARsWHY5ffKAdYFJRfSHU55EcBicrzQpiKxSuA8SR4XrMTsW33RLM+Ucn+qQWl00xOyaWcdIRiQ==
+ b=vYaxWVCncCXTII5UOkm0kIDzJXsgk6sYqPh57IoGMMxQgfv9xw6bKUXHw6MEkeytD1fgWTyE9G1sjfTpNBjfBD0JIjuy5xx1iRwN02efwPige9gEHCaipqG92plwS5AFz99GKD1/iVmmJwEACqd404Phck5OuLCrUFAMMVDs4UXfqAi2e4tN7K4Yxo1w2HrtvScrNYAEdCWyd8Kz2IpmF4uVtrEbGAIKsqzbK8AXE+KIL4bQnEfNTOXLVArpfwaZhFjAJinr8jXztvGaz3gCyY6zSJy7bopSnnHUGQFkyckZYDqB3BzG8fSdMIMXwKLiIhTYFbdhHpLioYEBmYjjrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BiwwY4KfTWqsYMSN4IK8u3nEm7yVQ/5sbQhVY3oZS+0=;
- b=dS3ec5HpdXiNRfYIkFW18meUMovSiKfsMeOnCST4MyFEvuMAAPZdy72cMTorSnZNxyBIQc9aPr1teVeKdShDgKVw4jF9MBqJK6KaFfXkfaJaO8/cud23rBwfcW/v21DLpC9P+NoGH3EmqRwb4qwLbQOi2GD5OnLMp/OALQQ2wUvngVb8p0m7YsCyYIK8LVhWKmR3RnALtVqqBB2t8FYGmYJGLCeEdJu8O+qOahcigWn7TFs4oSC4tkf3kbs1ML1j28nSB7dp9D3JnICtdVnywLI7++Puf42Cqlv5p0mZvkwTQVTmGi5n0aoxHlotgMjrUv9MHlnOMrTt9djeMX6lPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=kqRClfs4rHwkXJCbcoLWbHt7kxv4Q2TM/yrd6z2vGVc=;
+ b=W20FfDnYowjNaaBZtFAh9WRnMkvU1ONpc/3K6uf+kEzXDNlEtSHqFPX3Ls72geZjSL+CX51j+znlo037dDVZc3dqsDk+dQAGbuyTL/LJmYi/kjpz9keW9oDVEyNDhtIYQd8t0HacGdWzdTn5HF7FPGzugfjLU7G70KCpOgN25nQTC7BVlR2maarkV6OB1ty+rl8cyKhOx90mUis6FD13NRL4QadFmZnCD3H7vW238GYn2WqmEJqLHAtsKmvO7TeyiakiouFzr827DTlv29P0n4lGuJcgjlVm2woAwboAUPProG+QnVxuMOBqOEAPbKo2L0Kh381G9jlLkW6FRu7Diw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BiwwY4KfTWqsYMSN4IK8u3nEm7yVQ/5sbQhVY3oZS+0=;
- b=jWyMqwMosqDKMatYAOTRleiZmwwEjBLfn83xbccMw613738mmZN+b/N5SgPxHW3z8VYFcYpb1Xsr57H9X7sT1YHINF3T3zoWl5TXgacErPA7S8NeLFR1ZNnzlt8LBBUk56jk1HV53nYD+HqEIhfkJiFFffqEXwYRkabSb232Bsg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by SA1PR12MB6917.namprd12.prod.outlook.com (2603:10b6:806:24c::18) with
+ bh=kqRClfs4rHwkXJCbcoLWbHt7kxv4Q2TM/yrd6z2vGVc=;
+ b=U/mE/iZQqz0TH3t4WsPwoxDDmJvB8CdO2SBWYPEU5xaPdLh6Rh+Ac6A7iEeUkW9N3tMrlLH4ikQVccxM91MDRAcf3irqrvAwAwqWasibtZwgxEUbZ8yrlDX92sq37KSkwERQMDlhjpi0jS227mz9YjLGIa82GMirH6sjtYK4zU0Fgsf8TgwCj/ni8JNvGZAi9JmNQzyMTo4UXOY+tmAGyPgH5+3zLO9KaWKdC957LY7H5PBfWFvSTkGCZoI1q55enphNVQKizOtzrm9glTjb4Hna+/iGOrMnFcHn11bEAYqfoXAJgEr9ScGrRuh2YxEr6ULyK10ZngUuNJ02cNkdSQ==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by PH8PR02MB10184.namprd02.prod.outlook.com (2603:10b6:510:224::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Tue, 4 Mar
- 2025 01:31:44 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%3]) with mapi id 15.20.8489.025; Tue, 4 Mar 2025
- 01:31:44 +0000
-Message-ID: <bd5d59bc-6a60-47fa-b7f3-da3272309740@amd.com>
-Date: Tue, 4 Mar 2025 12:31:32 +1100
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 08/11] PCI/IDE: Add IDE establishment helpers
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.26; Tue, 4 Mar
+ 2025 04:17:22 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df%3]) with mapi id 15.20.8489.025; Tue, 4 Mar 2025
+ 04:17:22 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Sean Christopherson <seanjc@google.com>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Juergen Gross <jgross@suse.com>, "K. Y.
+ Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei
+ Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Ajay Kaher
+	<ajay.kaher@broadcom.com>, Jan Kiszka <jan.kiszka@siemens.com>, Andy
+ Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Daniel
+ Lezcano <daniel.lezcano@linaro.org>, John Stultz <jstultz@google.com>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "virtualization@lists.linux.dev"
+	<virtualization@lists.linux.dev>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "xen-devel@lists.xenproject.org"
+	<xen-devel@lists.xenproject.org>, Tom Lendacky <thomas.lendacky@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>
+Subject: RE: [PATCH v2 03/38] x86/tsc: Add helper to register CPU and TSC freq
+ calibration routines
+Thread-Topic: [PATCH v2 03/38] x86/tsc: Add helper to register CPU and TSC
+ freq calibration routines
+Thread-Index: AQHbiL80axP959hlHU2Wqtf1uuWY5rNiXsPw
+Date: Tue, 4 Mar 2025 04:17:22 +0000
+Message-ID:
+ <SN6PR02MB41579F676A4F30B1421A0376D4C82@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20250227021855.3257188-1-seanjc@google.com>
+ <20250227021855.3257188-4-seanjc@google.com>
+In-Reply-To: <20250227021855.3257188-4-seanjc@google.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>,
- Xu Yilun <yilun.xu@linux.intel.com>
-Cc: linux-coco@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
- Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
- linux-pci@vger.kernel.org, gregkh@linuxfoundation.org
-References: <9f151a74-cc5c-4a7c-8304-1714159e4b2c@amd.com>
- <6d50f215-93c4-49a5-9ee2-f9775b740f92@amd.com>
- <Z32H2Tzd1UHCQEt5@yilunxu-OptiPlex-7050>
- <d71dd5c5-4c20-4e8e-abaa-fe2cdea4f3b2@amd.com>
- <Z4A/g5Yyu4Whncuu@yilunxu-OptiPlex-7050>
- <a11c82c3-b5fb-48d9-8c95-047ac4503dc6@amd.com>
- <67bd098f4dcd1_1a7729449@dwillia2-xfh.jf.intel.com.notmuch>
- <cf2f615d-2a28-45ec-8bb9-563c2a5bde73@amd.com>
- <67c11ed38ff8_1a7729458@dwillia2-xfh.jf.intel.com.notmuch>
- <8c091787-9275-40db-9167-af270dc5bb8e@amd.com>
- <67c6501494901_1a7f2941b@dwillia2-xfh.jf.intel.com.notmuch>
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <67c6501494901_1a7f2941b@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TP0P295CA0036.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:4::15) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|PH8PR02MB10184:EE_
+x-ms-office365-filtering-correlation-id: 256c2bec-8b45-41fe-fc3a-08dd5ad37673
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|19110799003|8060799006|15080799006|461199028|8062599003|41001999003|102099032|3412199025|440099028;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?S0zfeu77VqqkIQL1LKS9qo9rbeB+e8P5djta9XwmrTXXp4h9igAMJmQ3A4sD?=
+ =?us-ascii?Q?IRoMRLA5fMpPripeXv2vzoALKYDkmdJwKXDI7xClhvDOk9LEMVyvy40SFeC9?=
+ =?us-ascii?Q?P9UMVnLW3j0psfUuGTzpCJzBUU8f5jR9CBlIwSlP8qw9KJslsUjLBLunjPag?=
+ =?us-ascii?Q?3jsSFIYr8sRVi5e1sqozYk31m7I8DG+DpkHW5Jb8zh0kjYbQejfhlB2auS9H?=
+ =?us-ascii?Q?9b00UyCkJxsoHCoCsFwiul5Rw3VvJb0i+AXTmAf0pvtnoNNgLZ6HUPpTgrGf?=
+ =?us-ascii?Q?I2YDrl0ZNUdjwD9womHeT+6O+5VhLL66l4MtgRaiWs+1opg5YDVEIr8PNQ5O?=
+ =?us-ascii?Q?uPrKflaxPlHKQDyAEVuX7/dIo9iQi/Q48zZHskeYdRL49rhSyi0yLuCnknG+?=
+ =?us-ascii?Q?22Fr53r7vts74hdPIofrWfJNXanrkLAbrdiFo8XcKM/UakrA+ZPNXylOO3RE?=
+ =?us-ascii?Q?uQEAJmaZBBw0bzw/XCVJ686n1gUGpKjwxpqKee/ppxbGtalbp1ggPJFDL1pu?=
+ =?us-ascii?Q?TATNvIn4sV5+ioRPrXCmLd+V8BsdYrx88AS29G267diTYPqcxvPNd53Nv1Ik?=
+ =?us-ascii?Q?yeHbxPaSh5s0dCERP//wsoYCeuJUmN653ADDDimllycFhMCer2GdxvNOsOnj?=
+ =?us-ascii?Q?9xMfkyqz3p5Y5wwAOHbiZ0In3vsWiH5XbNbQhJTk7UU5fSp0AZQtapdv8FZY?=
+ =?us-ascii?Q?BJjECOg8lXSbD3OlcbK8906g7MPjaH2HXWIJU1EiNO8FoxLDwot1WdGS3/me?=
+ =?us-ascii?Q?vYjQ/Nv2m2BHZNJxXpT/l8KIdujHwjR67sJDmghqnK4zGvih3Wq9Rzt60NA/?=
+ =?us-ascii?Q?A3OHv5fPB18iRhOw86r8RVQpxbgSBZuY+L5TpQZPvn9pa3wV2HtipQUW7yi1?=
+ =?us-ascii?Q?5NcBs7Y4itOcNwySHh07nkhBhtBa0cu8QfpIV+I5Z7IpCkPPdXgm4Lnkezud?=
+ =?us-ascii?Q?aUN+hz0BUsOFl/yhwa7/dXATJU714MLhBR0g3YL0VroQTJS5H4UyHwYVwOsg?=
+ =?us-ascii?Q?Gjbf4FHlRS0ZSIhII66k+t0/PIPIWFRv2SUPsJWhfE6aP97eJqRKoB1kDwCO?=
+ =?us-ascii?Q?ZfNLG2X/XpwGFjB0fCfsw296tV1Mew=3D=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?MFm2fnpYv+YbSElqhHP7G7yII5hW41sxxZMPrZ4BZONQZz/xgwUHYuxk0s+5?=
+ =?us-ascii?Q?ayKb9HNOoNGe/z0H7VSvdhOPpE+oiTC6I2ZGxvSTqZqBukrjmKLoPGp3t5wN?=
+ =?us-ascii?Q?JqJRr791ylftKtAi/nlePVHC/njUyHizICjkGrrN+ojmg5LwLM6pD5A8a4XM?=
+ =?us-ascii?Q?fmS+9pH9A01hr6sgIZ4G0i7w56Sfa6zNwL+N8eRQ9uk2rRN50lO+siX9chli?=
+ =?us-ascii?Q?glKsKFP2o/rHuwYRoMd+R/k7O8AVlAcEOXlvizgbJD0IrgK1HKWRw4laZiPQ?=
+ =?us-ascii?Q?fO9uxJRA/w6ofd3LbqydNpl7oHri8MG9X1GlFGtHXIFgIwttXx7pL8Abdr+t?=
+ =?us-ascii?Q?NL9+QoOzg2CvJa+lX5x6J+SHOS+Bb3L//bVDHi9G0XJojqhXMN2QX4lLFRlj?=
+ =?us-ascii?Q?QrURPQAu4P17R8rVdwrW+7K6T3xxxhPACR8d7lsr+hrQnJBSIK4A6x/ySz42?=
+ =?us-ascii?Q?Qv3graqkcsgFswegQMAc+J80uiKLWl0tzKm6D5hK9uLcgFUVi1gUs7hqwsyV?=
+ =?us-ascii?Q?2AOBw755sU+gEIjeTAQeTYg14r2S6fFFYNmN0fZyAX7dZTpzdrCBfuK+Lw5U?=
+ =?us-ascii?Q?4vZ6a2ueU8J3EcB2Ketd933FztbLR3r5sN3GskOjELRy+LZf5hvkHcLElGAJ?=
+ =?us-ascii?Q?sJTNfD8pdSLacvJ5ng9Pbbr0YjM1yp2m5Y8d46uUtUtXNuHh0DcfCQ5gC+81?=
+ =?us-ascii?Q?raiZZ9QzTxqImoiykes3VXqc8UfEpkMsrt3cajus/Ec7HPrqWScfkEgqgzlM?=
+ =?us-ascii?Q?0PxXhBPV+t9dWcktP4WZZFwr2+OmchNfI1o+bafpOKvzfXoACI89a5KRinWl?=
+ =?us-ascii?Q?s7mYU0J54Qc7RyrsIJUQmL4ITParvZBQC90KIx0eciMzKTDRy0n+T8qVSxDB?=
+ =?us-ascii?Q?UxgzLxlCJiUgzIw34dt+Iv6tNA/l1XNxJN66tXKkp+LGLZ4uu8FZ8KfnXJc8?=
+ =?us-ascii?Q?F8qAylfq2Sd/PfS0kn2STIlsnrpaCV/z2o9RfGZWgjndd9efWAWozYGg3RIT?=
+ =?us-ascii?Q?4yiGtfKfruNrWiyvRVwHmT4vIPsA30OZrnvjGZLAlcDIVlT7uiJI2vDJIwmw?=
+ =?us-ascii?Q?RNsOyyg0DpVSwsaNvRf2kTqCtJ1VUnus82571Gz2GSB5Fn+l5SfMsivtumkd?=
+ =?us-ascii?Q?eHCkR250o2po5ykHJ5LkKroRE+NXlRLzcnGNpjisdNjXL4o4qRXWJrVUNKP9?=
+ =?us-ascii?Q?ptsCXjOVFNaPruULAFLBOzj9pnOX9mURYprEov3A6xORJqkDjd1CuvTW8Ks?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SA1PR12MB6917:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3a2b44a-6343-48bd-7a82-08dd5abc527b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?aE9kWE1Eck9qU1h6Y3UxWVlCUjFiMC9aNWJla0VCeThid0JZZHpLaFNqemdV?=
- =?utf-8?B?ZDEwRlF4MS8vUU9EaWdZdVpSUS9ldTVGUEZLQnpKdUNONExQamtiWlc1eU03?=
- =?utf-8?B?Y0NndDNwT29XK1FMSnlFKzJFZXpReFJzNDVSd05xblp1aDNzQ2x5RFNZbC9C?=
- =?utf-8?B?Y25BMkxnOUhtMDM5Nkg2SGQwSjB0dnBDL2d3S3JkbExrdUxDU0dUOFlUckxx?=
- =?utf-8?B?YkJWK2NLRzFYN1VNK0ZkQTdMYzZQVitUTHBNMEpUOUFWOWN0Q0lyWFFMZ1Ew?=
- =?utf-8?B?VHB2bEpIdmJ4b2tkNGdoWndmOEw2NXI4blZiOTB1WFphenFnUTVoaWg0b1l1?=
- =?utf-8?B?MzhMN3B2MFVQbTd6cmRVMHBnd1l0VUd4aFp4Umk3TXQvbGNYVDR6Ui92dVFx?=
- =?utf-8?B?WEdIYm8ycGMrQ3FLaXhFVkVSekVMaUlrd1d6V1BjTzlzNjhVcUhtTWNJQytn?=
- =?utf-8?B?cWdKYVk5MVBHdWlRWGFtVlNZQ1pYcExpajVvL1I5OXBNbUx2QmdaQmZMY3ZF?=
- =?utf-8?B?KzV5MFk3Q24rVFI5RnlCL1VHdGlZTVluZWhkU2JyYm44U3lWY0Y4ZWdmeFRr?=
- =?utf-8?B?eEErNVhYako3ZTRvSmlVSzA3eUFPWEZzNjRGS3NHc2tmZXlCUG11T1Rsb0Z4?=
- =?utf-8?B?WVRYZzFCSEtXdVUyOGxUNy93ZDdRR3A3NDV5L2dhODk4QWZ4NFZsN2FwTGJu?=
- =?utf-8?B?UXZta3N4cXVRZnBhZnBWNTdadExucEpCb1ZIQkVORXdaeWdQSm9vTThoV09l?=
- =?utf-8?B?a0QvVjN5aWdrd3NOKzBlc1Q4d2hOcWxpN2dDT1FOMVJyektscWhPSkg3RmFk?=
- =?utf-8?B?RmpXQTllMWw3TUViWDZ5K0JiTnE4MTkwQ2NaU0dOajk0RUU5OFhBb2pCekx5?=
- =?utf-8?B?c3NkcjNSZ3ZiOXhkejA0Zm5BOVo1eUgxMGt6VEtWRW5RRDZjTVY0dk1NQVZz?=
- =?utf-8?B?MTlmNWFFT3ZValpMbWlTdFZiRGNNZGlZazFnOC82SW5JTTh6WlZtWTBqUmFR?=
- =?utf-8?B?WlpadjN3K2JGNUcxdnp6MEUrNklmU3JiZEpLMkxkVVlGdVZxV1M0VEhaT2g0?=
- =?utf-8?B?L2tWc3kvOFRKOTZnbTN0NTNoRGhBUE9SN2gvZ1VyeFcwL2RSaDBCK0pXNklN?=
- =?utf-8?B?cENRUGE3d1dXak5GMEV2WFp3YzdBU2NvMkpsMjlmRmgzRGtUcmFTMXZhbjFK?=
- =?utf-8?B?SHF4YkUwMUpNZXd2RW5vUkVIN09WZUhNdkVITlpXV2ZFYmhROEE4Ynh3aTNF?=
- =?utf-8?B?MlQ1M3ZHN0Ezb2ZqN1BWSWRxZkZSRkNINFhxMjlBbmd5ay9ENGhmZXZYVlBI?=
- =?utf-8?B?TlVYcmtJRzVWcUNJL2V3ODRFTERIa2FKKzZjTWp3cXhjek1sNi95dXJvR3Zh?=
- =?utf-8?B?WVVvL05oSVZMQVRxM1A0em5KQVVEcWx5QzdqMS9jSi9jTElQRFRWbFZycFd3?=
- =?utf-8?B?RzZFa0N3ZXVid0sxNGV5M2hFSG5raXZDVmhWTlA1V3pha0l6U25ZRTEvL2ZM?=
- =?utf-8?B?aDRObzB1NHloSUlBaHk5VDhSZnlqeitkVTh2WE55VWdvdjVuMTNMQnVMcGgy?=
- =?utf-8?B?dWZTdy8zaEpTK0NBa0lPRmJZT3ladzVCTlo2MFoxNEw2UGhDQWxKd2dyUUJM?=
- =?utf-8?B?Um9jRngydlhiMU1WcGk0MFp4QzBsMS9JcFhaSUxhKzVPUm5aaEd3SEhlYWlW?=
- =?utf-8?B?V0ZiREpwZkNkcnhRZHRFdzM5M0czT1MzK2grREkrYUQ4aCthMFhZWTlzdnJO?=
- =?utf-8?B?NFVuTHhrSjdKUExhQ2xkcno5OTVBNXN0V01IdUJyYzkzejYzNDNxZDYza2lm?=
- =?utf-8?B?cjFreXhYdDFQdzJITnlFbWdLQnJleFNFUWw5S1U4SEJiVXd1L1RGTnRHNjlq?=
- =?utf-8?Q?dyAAHvDwRLzg5?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TDIrUmpRSHhpcHRYb21RSjcyZDRwQzNSNGhydWFnSHdTa01IWFdtT0ZXTWg3?=
- =?utf-8?B?ZGQyRm1FK2NHWW1SKzhDcnc4THUwejk3QkVqSmZFemUvS0w0YTNSOWxKQWdX?=
- =?utf-8?B?N1VHOUNnU0FwenRGVUlybmlPTzMxUDBzM3lzVCtrUVZMU2JaeVpibCtBUklI?=
- =?utf-8?B?czV6K1R0MDBHa0ZIZDF3UGNoQTJkbkxMK2d2aUF6bGFPYm4xTUJ5RVFleVRF?=
- =?utf-8?B?eUZVaUt3dnFyM29WbHVwYnZOeXdvQ1N3T2dKS3VQdVRTVE1TUlRlR0twVVVL?=
- =?utf-8?B?VTljN1d0Z25BQ1pvNVdSZ3RzMTNBY2N3YnQvRGhLN3l3ZGkxWlZXVVBHMWZv?=
- =?utf-8?B?SlVLSzNtUjRuVnR2eHhTYWE1NnppcFpiNGM2cjlQamlxRk9sREUwM1RJc3RS?=
- =?utf-8?B?YmRlcXlmMU4vOXBJUEdQZ3JQWFJyR0IzMlpUaXFzYW9EQmgrWnJTMjZlaGlz?=
- =?utf-8?B?eVlESVRJRm5vSnFKR1lnVElmclZOSncwS1hrU0s2TXlQOTQwYVlsWTM4dnJD?=
- =?utf-8?B?eTEwcERvbEd4RHoweUJ5Q1l0T095MWpKRlpSb2UwYzN4cWxyN1AvZnBiUVN0?=
- =?utf-8?B?VXRweENHMUtZL0pHa2VDQ3AzbDRidkNwWnRGV0YvaElBNEIvam1JTmF5L01U?=
- =?utf-8?B?QVZ1SjFFUzk3ZGtWZDMrSjlHSjNOcVpGZlBic1MwVkF5RmVZQk9MV3UzS2NB?=
- =?utf-8?B?OVBYQTFKaXBtM2FWRmRYWmc3U2hYTXQ4OFVldWcvTi9xWGg3Vm15aXRZOFlq?=
- =?utf-8?B?Rm5uZUJFK2ZZY2VNQkgxQ0RJdGZZcFRHSVV5R2dWQms3bFJiWU5XRlJqcmQ4?=
- =?utf-8?B?WlVtcXVId3U5NlRtdW1YK04waFRzTGR6VTJYRHJNQWx6bEtkK3B6MFBVRDlN?=
- =?utf-8?B?Y2ZNdTZmMFpDanl4VTNnb0U2bDUrSmwvSTRIMVVVdk5CSXBlUWVqcVF6bEFC?=
- =?utf-8?B?eVptQVFYZmNxeEFlSWxzeVNSaE1rejJiODFCTVZPdnNrL0tRcG5lY2ZYMVR6?=
- =?utf-8?B?Z1VjdkhyeGJEMDZOU0s4MTFDZjNTUGJMR0lUUWZ3UGdTenE5bDdtWjJnamNS?=
- =?utf-8?B?M3hzQ2hhbUliZ240a01UdHFCcVk2d01QR1RCVzU0NFQxeG91UTNKZk1mZktY?=
- =?utf-8?B?WGlKVTJBbTJuRVJaZGduSzhnd21hMUt5WXBKa2U4dHFIcjZ0T1ZnaStnZ3NQ?=
- =?utf-8?B?RUlJQ3Q0R0Z5MFhhdXN6MS82Z0lldmh2anNOVjdJV0xPUThGcXlpdTl1SUlY?=
- =?utf-8?B?Vm45bC8veXBrQzRvRmFUMUxBeEpZOU5MYnZEVExGdzdxOTNVTlVCWGJxQ2Mw?=
- =?utf-8?B?OFlheXpuN2QvcG03MVFhVzl4UzllRlkvbjFNelRrdWJacTY2RnlkNHJQQWtm?=
- =?utf-8?B?eGR0RW8zbGdZOGxSZEsvRytCckthd0JHYkVHOW44cTFDNVpEZHlHaE52b3d1?=
- =?utf-8?B?bjI1UWxZdTBQcnE3QjNobFg5RVoyNUk3RGNZU0diZjJxUlFnK2Fsb1dPNmZm?=
- =?utf-8?B?MGg2UytPS3pJRzRIUVJEYTlVTnJGYURDTTJFUUQrT1d2MFF4cTMveTRTOVEy?=
- =?utf-8?B?Nk94eTErZklYWnQvNk5uQnYrejFPazF0eFZPdEhEaFFoR2NQNUdYR21XTVNw?=
- =?utf-8?B?MnF6VkcyWVVuK1ZJeXowTyt1ZnhSNVRab0Z1UHNjT1VHMEd3TVF0MWdYTjNh?=
- =?utf-8?B?VjFMeCtIY2dxc3lycjZMTmV6QXl3ekZhTWEyeVpTSEZTaXliVHJoamVGNm9l?=
- =?utf-8?B?Q2pCQ0g0aHNXNVYrUzJZelQ3M2dweDZ2V1VsNDlqR2xEczlxRWR1c1NLTkZw?=
- =?utf-8?B?YXY1UHdvcG1aOXFLZVM4cmdRVEh6WmhkTllhSUFmeVRncmdpczJINlgyOTY0?=
- =?utf-8?B?QklxWGFWSUdZZjR2WjN0azg4djB1aUVvQnZ6R2p4UmEzRDhxaEswVEMrM1pU?=
- =?utf-8?B?dDEraVk2MHduMEZoY0cvUkpSYi8zdnBHSDV3K2hwc0pMclJ4Y0dQZmtTbWZy?=
- =?utf-8?B?bU5GeW1xdnRpTk04dEc1YkJDR05BbWxBeXh2aFN5eHN5eWF2UVhjTTVFS2NZ?=
- =?utf-8?B?RjFuNmJuM1dlWi9GL3JsSG9OYVIyOStzenpKbWppOExxWm5rb3pnVVc2dDVZ?=
- =?utf-8?Q?rNGg/23kaTtxVyYDccAFcXoV7?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3a2b44a-6343-48bd-7a82-08dd5abc527b
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-OriginatorOrg: outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2025 01:31:44.3999
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 256c2bec-8b45-41fe-fc3a-08dd5ad37673
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Mar 2025 04:17:22.8096
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IcA8pnmVmUbw0xRn438msxJfsP7niWiWXHOpv1SmQK6BB12rR+3KjMmP0Vo2xSid9l8G+oLG1ad+IAlWgumbhg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6917
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR02MB10184
+
+From: Sean Christopherson <seanjc@google.com> Sent: Wednesday, February 26,=
+ 2025 6:18 PM
+>=20
+> Add a helper to register non-native, i.e. PV and CoCo, CPU and TSC
+> frequency calibration routines.  This will allow consolidating handling
+> of common TSC properties that are forced by hypervisor (PV routines),
+> and will also allow adding sanity checks to guard against overriding a
+> TSC calibration routine with a routine that is less robust/trusted.
+>=20
+> Make the CPU calibration routine optional, as Xen (very sanely) doesn't
+> assume the CPU runs as the same frequency as the TSC.
+>=20
+> Wrap the helper in an #ifdef to document that the kernel overrides
+> the native routines when running as a VM, and to guard against unwanted
+> usage.  Add a TODO to call out that AMD_MEM_ENCRYPT is a mess and doesn't
+> depend on HYPERVISOR_GUEST because it gates both guest and host code.
+>=20
+> No functional change intended.
+>=20
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/coco/sev/core.c       |  4 ++--
+>  arch/x86/include/asm/tsc.h     |  4 ++++
+>  arch/x86/kernel/cpu/acrn.c     |  4 ++--
+>  arch/x86/kernel/cpu/mshyperv.c |  3 +--
+>  arch/x86/kernel/cpu/vmware.c   |  4 ++--
+>  arch/x86/kernel/jailhouse.c    |  4 ++--
+>  arch/x86/kernel/kvmclock.c     |  4 ++--
+>  arch/x86/kernel/tsc.c          | 17 +++++++++++++++++
+>  arch/x86/xen/time.c            |  2 +-
+>  9 files changed, 33 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+> index 82492efc5d94..684cef70edc1 100644
+> --- a/arch/x86/coco/sev/core.c
+> +++ b/arch/x86/coco/sev/core.c
+> @@ -3291,6 +3291,6 @@ void __init snp_secure_tsc_init(void)
+>  	rdmsrl(MSR_AMD64_GUEST_TSC_FREQ, tsc_freq_mhz);
+>  	snp_tsc_freq_khz =3D (unsigned long)(tsc_freq_mhz * 1000);
+>=20
+> -	x86_platform.calibrate_cpu =3D securetsc_get_tsc_khz;
+> -	x86_platform.calibrate_tsc =3D securetsc_get_tsc_khz;
+> +	tsc_register_calibration_routines(securetsc_get_tsc_khz,
+> +					  securetsc_get_tsc_khz);
+>  }
+> diff --git a/arch/x86/include/asm/tsc.h b/arch/x86/include/asm/tsc.h
+> index c3a14df46327..9318c74e8d13 100644
+> --- a/arch/x86/include/asm/tsc.h
+> +++ b/arch/x86/include/asm/tsc.h
+> @@ -40,6 +40,10 @@ extern int cpuid_get_cpu_freq(unsigned int *cpu_khz);
+>=20
+>  extern void tsc_early_init(void);
+>  extern void tsc_init(void);
+> +#if defined(CONFIG_HYPERVISOR_GUEST) || defined(CONFIG_AMD_MEM_ENCRYPT)
+> +extern void tsc_register_calibration_routines(unsigned long (*calibrate_=
+tsc)(void),
+> +					      unsigned long (*calibrate_cpu)(void));
+> +#endif
+>  extern void mark_tsc_unstable(char *reason);
+>  extern int unsynchronized_tsc(void);
+>  extern int check_tsc_unstable(void);
+> diff --git a/arch/x86/kernel/cpu/acrn.c b/arch/x86/kernel/cpu/acrn.c
+> index 2c5b51aad91a..c1506cb87d8c 100644
+> --- a/arch/x86/kernel/cpu/acrn.c
+> +++ b/arch/x86/kernel/cpu/acrn.c
+> @@ -29,8 +29,8 @@ static void __init acrn_init_platform(void)
+>  	/* Install system interrupt handler for ACRN hypervisor callback */
+>  	sysvec_install(HYPERVISOR_CALLBACK_VECTOR, sysvec_acrn_hv_callback);
+>=20
+> -	x86_platform.calibrate_tsc =3D acrn_get_tsc_khz;
+> -	x86_platform.calibrate_cpu =3D acrn_get_tsc_khz;
+> +	tsc_register_calibration_routines(acrn_get_tsc_khz,
+> +					  acrn_get_tsc_khz);
+>  }
+>=20
+>  static bool acrn_x2apic_available(void)
+> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyper=
+v.c
+> index f285757618fc..aa60491bf738 100644
+> --- a/arch/x86/kernel/cpu/mshyperv.c
+> +++ b/arch/x86/kernel/cpu/mshyperv.c
+> @@ -478,8 +478,7 @@ static void __init ms_hyperv_init_platform(void)
+>=20
+>  	if (ms_hyperv.features & HV_ACCESS_FREQUENCY_MSRS &&
+>  	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
+> -		x86_platform.calibrate_tsc =3D hv_get_tsc_khz;
+> -		x86_platform.calibrate_cpu =3D hv_get_tsc_khz;
+> +		tsc_register_calibration_routines(hv_get_tsc_khz, hv_get_tsc_khz);
+>  		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+>  	}
+>=20
+
+For the Hyper-V guest code,
+
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
 
 
-
-On 4/3/25 11:57, Dan Williams wrote:
-> Alexey Kardashevskiy wrote:
-> [..]
->>> Otherwise, at pci_ide_stream_setup() time I expect that the core would
->>> need to do something gross like check the incoming Stream ID and walk
->>> all idle streams to make sure they are not aliasing that ID.
->>
->> This is what PCIe spec suggests doing now imho.
-> 
-> Ok, I am about to send out v2, let's follow on to that with an
-> implementation that simply sets all idle stream indexes to Stream ID
-> 255. Then, catch cases where the low-level TSM driver tries to use ID
-> 255. This is on the assumption that most implementations will allocate
-> starting from zero.
-> 
->>>>>> And then what are we doing to do when we start adding link streams? I
->>>>>> suggest decoupling pci_ide::stream_id from stream_id in sel_ide_offset()
->>>>>> (which is more like selective_stream_index) from the start.
->>>>>
->>>>> Setting aside that I agree with you that Stream index be separated from
->>>>> from Stream ID, what would motivate Linux to consider setting up Link
->>>>> Stream IDE?
->>>>>
->>>>> One of the operational criticisms of Link IDE is that it requires adding
->>>>> more points of failure into the TCB where a compromised switch can snoop
->>>>> traffic. It also adds more Keys and their associated maintainenace
->>>>> overhead. So, before we start planning ahead for Link IDE and Selective
->>>>> Stream IDE to co-exist in the implementation, I think we need a clear
->>>>> use case that demonstrates Link IDE is going to graduate from the
->>>>> specification into practical deployments.
->>>>
->>>> Probably for things like CXL which connect directly to the soc? I do not
->>>> really know, I only touch link streams because of that only device which
->>>> is like to see the light of the day though.
->>>
->>> CXL TSP is a wholly separate operation model and it expects that CXL
->>> devices, and more specifically CXL memory, are inside the TCB before the
->>> OS boots. So there is no current need for Linux to consider Link IDE for
->>> CXL.
->>
->> Link IDE or any IDE? I know very little about CXL but some of those
->> device types are not just simple fast memory but also do read/write
->> from/to that memory so they cannot rely on CPU memory encryption and IDE
->> makes sense for those (especially Link IDE as there are no bridges, or
->> are there?). Thanks,
-> 
-> So there are 2 use cases CXL.cache and CXL.mem, and of CXL.mem there is
-> general memory expansion and accelerator memory. Most of the devices in
-> the market and the sole focus of the CXL TSP (TEE Security Protocol)
-> specification is how to get CXL.mem from general memory expansion
-> devices (Type-3) into the TCB. From the spec:
-
-
-(self educating now)
-So CXL.io is not a thing, or not going to support TSP?
-Wiki mentions IO registers and DMA, not relevant here why? Thanks,
-
-
-> 
->      "This CXL security content scope focuses on features that are needed for
->       confidential computing utilizing CXL Type 3 memory expander devices"
-> 
-> The TSP definition specifies that CXL.mem memory is brought into the TCB
-> by pre-OS software.
-> 
-> It goes on to say, "Transport security is optional for TSP", i.e. IDE is
-> optional. If you have initiator based memory encryption then you do not
-> also need encryption on the transport.
-> 
-> So, IDE is optional and any optional IDE establishment will be by pre-OS
-> software. There is nothing I can see from CXL-land threatening to make
-> the Linux IDE implementation care about Link IDE.
-
-
--- 
-Alexey
+> diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
+> index 00189cdeb775..d6f079a75f05 100644
+> --- a/arch/x86/kernel/cpu/vmware.c
+> +++ b/arch/x86/kernel/cpu/vmware.c
+> @@ -416,8 +416,8 @@ static void __init vmware_platform_setup(void)
+>  		}
+>=20
+>  		vmware_tsc_khz =3D tsc_khz;
+> -		x86_platform.calibrate_tsc =3D vmware_get_tsc_khz;
+> -		x86_platform.calibrate_cpu =3D vmware_get_tsc_khz;
+> +		tsc_register_calibration_routines(vmware_get_tsc_khz,
+> +						  vmware_get_tsc_khz);
+>=20
+>  #ifdef CONFIG_X86_LOCAL_APIC
+>  		/* Skip lapic calibration since we know the bus frequency. */
+> diff --git a/arch/x86/kernel/jailhouse.c b/arch/x86/kernel/jailhouse.c
+> index cd8ed1edbf9e..b0a053692161 100644
+> --- a/arch/x86/kernel/jailhouse.c
+> +++ b/arch/x86/kernel/jailhouse.c
+> @@ -209,8 +209,6 @@ static void __init jailhouse_init_platform(void)
+>  	x86_init.mpparse.parse_smp_cfg		=3D jailhouse_parse_smp_config;
+>  	x86_init.pci.arch_init			=3D jailhouse_pci_arch_init;
+>=20
+> -	x86_platform.calibrate_cpu		=3D jailhouse_get_tsc;
+> -	x86_platform.calibrate_tsc		=3D jailhouse_get_tsc;
+>  	x86_platform.get_wallclock		=3D jailhouse_get_wallclock;
+>  	x86_platform.legacy.rtc			=3D 0;
+>  	x86_platform.legacy.warm_reset		=3D 0;
+> @@ -220,6 +218,8 @@ static void __init jailhouse_init_platform(void)
+>=20
+>  	machine_ops.emergency_restart		=3D jailhouse_no_restart;
+>=20
+> +	tsc_register_calibration_routines(jailhouse_get_tsc, jailhouse_get_tsc)=
+;
+> +
+>  	while (pa_data) {
+>  		mapping =3D early_memremap(pa_data, sizeof(header));
+>  		memcpy(&header, mapping, sizeof(header));
+> diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
+> index 5b2c15214a6b..b898b95a7d50 100644
+> --- a/arch/x86/kernel/kvmclock.c
+> +++ b/arch/x86/kernel/kvmclock.c
+> @@ -320,8 +320,8 @@ void __init kvmclock_init(void)
+>  	flags =3D pvclock_read_flags(&hv_clock_boot[0].pvti);
+>  	kvm_sched_clock_init(flags & PVCLOCK_TSC_STABLE_BIT);
+>=20
+> -	x86_platform.calibrate_tsc =3D kvm_get_tsc_khz;
+> -	x86_platform.calibrate_cpu =3D kvm_get_tsc_khz;
+> +	tsc_register_calibration_routines(kvm_get_tsc_khz, kvm_get_tsc_khz);
+> +
+>  	x86_platform.get_wallclock =3D kvm_get_wallclock;
+>  	x86_platform.set_wallclock =3D kvm_set_wallclock;
+>  #ifdef CONFIG_X86_LOCAL_APIC
+> diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+> index bb4619148161..d65e85929d3e 100644
+> --- a/arch/x86/kernel/tsc.c
+> +++ b/arch/x86/kernel/tsc.c
+> @@ -1294,6 +1294,23 @@ static void __init check_system_tsc_reliable(void)
+>  		tsc_disable_clocksource_watchdog();
+>  }
+>=20
+> +/*
+> + * TODO: Disentangle AMD_MEM_ENCRYPT and make SEV guest support depend o=
+n
+> + *	 HYPERVISOR_GUEST.
+> + */
+> +#if defined(CONFIG_HYPERVISOR_GUEST) || defined(CONFIG_AMD_MEM_ENCRYPT)
+> +void tsc_register_calibration_routines(unsigned long (*calibrate_tsc)(vo=
+id),
+> +				       unsigned long (*calibrate_cpu)(void))
+> +{
+> +	if (WARN_ON_ONCE(!calibrate_tsc))
+> +		return;
+> +
+> +	x86_platform.calibrate_tsc =3D calibrate_tsc;
+> +	if (calibrate_cpu)
+> +		x86_platform.calibrate_cpu =3D calibrate_cpu;
+> +}
+> +#endif
+> +
+>  /*
+>   * Make an educated guess if the TSC is trustworthy and synchronized
+>   * over all CPUs.
+> diff --git a/arch/x86/xen/time.c b/arch/x86/xen/time.c
+> index 96521b1874ac..9e2e900dc0c7 100644
+> --- a/arch/x86/xen/time.c
+> +++ b/arch/x86/xen/time.c
+> @@ -566,7 +566,7 @@ static void __init xen_init_time_common(void)
+>  	static_call_update(pv_steal_clock, xen_steal_clock);
+>  	paravirt_set_sched_clock(xen_sched_clock);
+>=20
+> -	x86_platform.calibrate_tsc =3D xen_tsc_khz;
+> +	tsc_register_calibration_routines(xen_tsc_khz, NULL);
+>  	x86_platform.get_wallclock =3D xen_get_wallclock;
+>  }
+>=20
+> --
+> 2.48.1.711.g2feabab25a-goog
+>=20
 
