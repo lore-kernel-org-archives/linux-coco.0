@@ -1,199 +1,115 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1B227EC81
-	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 15:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EBF27C868
+	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 16:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741103494; cv=none; b=HZUzS4RqSmmaGv5qhUi/TEGxf72Wwqz5vWHwmZMv1rw8j/hYMb78YK50nTi6r4Iv2T/LWhEA0UwLb2twYaDPpPlTNMNC4Cb20uWbww8qGheRkymP5aFUr8HvQNtqbwRHe3RXKDDYP+d69rUjjCuLYheU17FpbQxTpH14cKg0WMM=
+	t=1741104971; cv=none; b=TYKxwb/ok5M0QFnbBO3b0Q1ic6W7kpaoJvBRCna2ssQtusq67Dh0nbeRZBKCe/pVnfg8o3HyE+XkuyNeU+mCfhUQ7afEqqcA0MhzGE2cAO8sxeaBWAPVPeCLzAioQRDjM6ahkhGwWH3Y6uXKBa5DukmaJVS4uzWonIos7BTgBkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741103494; c=relaxed/simple;
-	bh=SO8mydmZaQBmGHqkXm7nBWI/I8sW6KvltUItc+vR0F4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L1KnTi9pO7U3JxfNtIa13hJS+k2iwhTWgMMqdNhdMSwETSkPfXDE/WItgcQ1eVcRPpJMrGIvQBhKUN4tCOH743YZ6VekhjPrt0qXlFV2qy/MEW4AbDlMMVZwuzc/KJ42WkvKHGY2u2+nWTwD3/qY+IZGb82AMS7OHJKUFfe6yP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AvT2gysq; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1741104971; c=relaxed/simple;
+	bh=ei1atgXGeYYTuLt5guFpMJeVzRYzeQDXd3FashRnRG4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Bv+xCTJ8mnerG0mLmF3Y+ni6uywznwKt/SkkRsGfBUmgvYgRABk8ONgZJhZJ6w+KKWV9f1nIbkoqRh58Cbzc/mrlJLVqtT8F8cs6dSKYeNZoFW4R14aFD38hfqhv3LSXMRG+ctsLNqD55+MZSUpfvu8SRSbWn6Heb5TiKMKMms8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J1pWPtDc; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AvT2gysq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J1pWPtDc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741103492;
+	s=mimecast20190719; t=1741104968;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sn11KJZxds0ej1UosF1rLJ47UkMAak3JuCgvKoEZngM=;
-	b=AvT2gysqGW0Y3CTumqG9kbYRiTVNmGh7POQKyecTXOb4GGtQlUyJbTm0HyT4ZyjPeBNO4u
-	dh77oWWfhXxkG6yrsgjeYRxn1fI4cPXZlxmGI63Cl65FcjNL9UEi9zOhq8ADLevudqBGfF
-	7Ak+IiPMHvw012J46TuMuytv93qZYPI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=eqsXsyxO1KVsnnLWSz+A1YdPbG1qCjXfcy058K8vyIA=;
+	b=J1pWPtDcvQScI7XOKlpMU9/eLNhkFtfAxMnwhUiJYTfzhK2A68r6T6fQBf81/D5uziIrmV
+	p2woFb5+HjzGNF5MJ3KJuWAHrMeuCLkK+MSyMv926nPq4LYiuyUbgRaTjwmKDBdxS+ODvB
+	UlgFMpOS4t2BPGTYhC0fb2R9y0R1DcM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-26-VZQtKAx2Oqi2znlQ-aDnTw-1; Tue, 04 Mar 2025 10:51:21 -0500
-X-MC-Unique: VZQtKAx2Oqi2znlQ-aDnTw-1
-X-Mimecast-MFC-AGG-ID: VZQtKAx2Oqi2znlQ-aDnTw_1741103480
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-390df5962e1so2813975f8f.0
-        for <linux-coco@lists.linux.dev>; Tue, 04 Mar 2025 07:51:20 -0800 (PST)
+ us-mta-475-SoXId_HYPyeEfRy_CzZfXA-1; Tue, 04 Mar 2025 11:16:07 -0500
+X-MC-Unique: SoXId_HYPyeEfRy_CzZfXA-1
+X-Mimecast-MFC-AGG-ID: SoXId_HYPyeEfRy_CzZfXA_1741104966
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4394c489babso31995595e9.1
+        for <linux-coco@lists.linux.dev>; Tue, 04 Mar 2025 08:16:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741103480; x=1741708280;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=sn11KJZxds0ej1UosF1rLJ47UkMAak3JuCgvKoEZngM=;
-        b=acJ+qVtjIPxBavmw1cOeblWJcpvAK8Ds6oZ43ckqRn8cpn2xsgEPHqDre9ZV8qty3J
-         CugUbxYpOrMBlSWAXYRpaBWYZgZgECcMu2OYNR7FQ9XnCyp6szLnT83Z3T185SWSTKU4
-         PvoG56dA2vJihDO5I1l3tXtoxfW/4BxEp6BeJ9OKsaVCgPyJhrPHr7tfUDH+WkIo4FWf
-         ebL13JfZ7Z4buxk4OQFht8Eo9fPRJjvGF7bCwiRhFY8kPGpg/1ZmiVjA3J72VQ4fcJbY
-         BK7AdHHB5rE6Bx0ebouqRW5zFkQYzLHFZUKWHirN71cEvit2dhLbExd/VrZJhZ8gBiIo
-         qpFA==
-X-Forwarded-Encrypted: i=1; AJvYcCWqsXh7ehtQZUbwoUJrszFzC3qb5Ri/oX9oxAOSea2SW7ok6pD4bYo+5C/UFGtk9b70YaJensSXTgPC@lists.linux.dev
-X-Gm-Message-State: AOJu0YwoMIo6A5oh+GXzfWGnBFm2dLGXjHENzFeq+VRO3stJLQgWGvDj
-	nP2eDAwwjYYiPh2vrt2ZszWCjeYrrvric1uH9w4nRLzB+bett5oiNkYizBwwOlQRoKFJ3mv2U6T
-	YucsOO9LBo4EpxFmTS+laQEhg1mhXX0t9HjfQKQJPSVheqEDQkNQjrvPa294=
-X-Gm-Gg: ASbGnctuIFA7f9OZBcpm2XSkzzQSMGLg8uK6YyZ/8neUH7OaR5RGd+dKOybb7YyOf9B
-	aYTIziRMpVRX+i/HIxdd0r1CQiv8N99+dRSFSoGOQggbAfxntxIT15E9mD4PmDdkgszJiWsmR+X
-	gTFMp1/bgatFneuzPvooG7dxFj0TnVMHS+MwhizaFLAyxPavePvu1Z0QT0HgUS6Pw+hOlk5argJ
-	R/rrPeQBNE9HPCk6vYSwIP19NEbASFtg7uKzDpvBMG9RxrGyEDWs7aFegZjM2mK/dnGcRKi3rlC
-	0QB+RTPvdyM1izta0PSOx+g0SAo2/bTDBqULYelSM1IONomB++mmAJAQ4GDeCSrbmDIas90R66F
-	zc2aFh8AkQVA7UXhcIc8FUBl7CFoUFmMMbnOuqUjUCFI=
-X-Received: by 2002:a05:6000:144a:b0:391:bc8:564a with SMTP id ffacd0b85a97d-3911561aaeemr3168075f8f.22.1741103479807;
-        Tue, 04 Mar 2025 07:51:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHBKRpR1ew37y+xSwqdiAEEYgp9jcG+1wVSkkDjUC24e/FeWlE3M4RoXhNkgSdEbUx9SQm6QA==
-X-Received: by 2002:a05:6000:144a:b0:391:bc8:564a with SMTP id ffacd0b85a97d-3911561aaeemr3168051f8f.22.1741103479428;
-        Tue, 04 Mar 2025 07:51:19 -0800 (PST)
-Received: from ?IPV6:2003:cb:c736:1000:9e30:2a8a:cd3d:419c? (p200300cbc73610009e302a8acd3d419c.dip0.t-ipconnect.de. [2003:cb:c736:1000:9e30:2a8a:cd3d:419c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bc38986cbsm68968655e9.35.2025.03.04.07.51.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Mar 2025 07:51:18 -0800 (PST)
-Message-ID: <9d04c204-cb9a-4109-977b-3d39b992c521@redhat.com>
-Date: Tue, 4 Mar 2025 16:51:16 +0100
+        d=1e100.net; s=20230601; t=1741104966; x=1741709766;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eqsXsyxO1KVsnnLWSz+A1YdPbG1qCjXfcy058K8vyIA=;
+        b=p+mEmEM5VPckHLKi3InUNp1T/2/3XqUgwem+XEHcsVCBf3tutcZF95Sm6nr6aoRXFH
+         H5DJvnqGggapirlImopMZber5MPYtrpUOA+l8FA1b15GICGc0gUnFRxl/BG1MD6kzpeK
+         PBcVGvDgMcjIgaFmqm6/VJbnQkbOf7y0gW0Bnuo5ADYtktF8ZIWmRHSAKlIsR3MDWb/j
+         E2Hy+pX8sR8SnLLpxLuzBSkgCiFDPf3y2E9p1t6WdXYblqs1yqsiBppXh+tdq8OxpHPd
+         FhjtozMFchypzFaO51EmDcMwzIggNZCFVjPgzQ8MAgy/MUItJhlI1RuUeOrOFx2jXiBq
+         MODA==
+X-Forwarded-Encrypted: i=1; AJvYcCWkMbl0YfdTUFZTEmkHbTcnoT5FfmdDaDM/NBY1mTIXuSo7k2LezYcr2IiSCfROO9MGc15DBAGk7stf@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy9UpWA5datM2KNK93kMAiKBrobh0PnlLdapHLIWMzYjPvsFdtT
+	c7RVeHRSOovGoSRvTLiiCBpyxEW6meykSHsZ3PsVggApCp3a9wSHNu+WGeUuhTeBVykI2d7Hlmv
+	NLwjtJR8hmYRresjlP0SKlDbseIR0TI2m7C1t9q1wo57LKgbrY07dnyMkkxhUqiD5i6g=
+X-Gm-Gg: ASbGncu/IpU4asnnFTyJMqWWftRDnDuJZIlx4fjgYZqOx2F+VEMhKvmkwDGNgCWcB7j
+	srMeRTAGP5nRpwlc81zhwoGUxGS5cUZYwE7nUDzEC0u47f2dbmFHf9pDsknHZnoQnW54wCW+zgv
+	oV3bTFb6EqJ577m01b7b+lISwXgQ+mDqfl2NnsECb0L14RMxnLy84afaKlafIbNgmx1SxiEb90q
+	yQBpsYXiuadB2+33BSpWfQyoat622x8zbWWGQuYyiBO5es4rQPiMzAhBebSz/sy95rSBgrLWDlL
+	nVKWGv9NxKYTcyE82ifMJywA/PJMMjAzcuOgAOwo3L8JoBL0B32BIAv8CxXGMQ5X
+X-Received: by 2002:a05:600c:3ca3:b0:439:930a:58aa with SMTP id 5b1f17b1804b1-43ba665e31dmr167597685e9.0.1741104965945;
+        Tue, 04 Mar 2025 08:16:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGGMLW+IQf5vUMjDJYIFiNZkehtlY6JpXLehiUwbPpYYUonprT8sGLr+GR9PNBcKoio1DDnGw==
+X-Received: by 2002:a05:600c:3ca3:b0:439:930a:58aa with SMTP id 5b1f17b1804b1-43ba665e31dmr167597115e9.0.1741104965500;
+        Tue, 04 Mar 2025 08:16:05 -0800 (PST)
+Received: from sgarzare-redhat (host-79-46-200-29.retail.telecomitalia.it. [79.46.200.29])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba5329besm228465585e9.15.2025.03.04.08.16.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Mar 2025 08:16:04 -0800 (PST)
+Date: Tue, 4 Mar 2025 17:16:00 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Claudio Carvalho <cclaudio@linux.ibm.com>, svsm-devel@coconut-svsm.dev, 
+	linux-coco@lists.linux.dev
+Subject: SVSM_VTPM_CMD Call question
+Message-ID: <CAGxU2F55-JDYqt62rg6HUVEZo4voHrsuPizYxv7mWO+PE0fM-w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] KVM: guest_memfd: Enforce NUMA mempolicy using
- shared policy
-To: Sean Christopherson <seanjc@google.com>,
- Ackerley Tng <ackerleytng@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, shivankg@amd.com,
- akpm@linux-foundation.org, willy@infradead.org, pbonzini@redhat.com,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, chao.gao@intel.com, bharata@amd.com,
- nikunj@amd.com, michael.day@amd.com, Neeraj.Upadhyay@amd.com,
- thomas.lendacky@amd.com, michael.roth@amd.com, tabba@google.com
-References: <b494af0e-3441-48d4-abc8-df3d5c006935@suse.cz>
- <diqz8qplabre.fsf@ackerleytng-ctop.c.googlers.com>
- <Z8cci0nNtwja8gyR@google.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
- 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
- rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
- wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
- 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
- pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
- KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
- BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
- 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
- 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
- M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63XOwU0EVcufkQEQAOfX3n0g0fZz
- Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
- T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
- 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
- CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
- NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
- 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
- 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
- lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
- AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
- N7eop7uh+6bezi+rugUI+w6DABEBAAHCwXwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
- AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
- boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
- 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
- XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
- a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
- Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
- 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
- kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
- th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
- jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <Z8cci0nNtwja8gyR@google.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: WYrn6yoVei30pGbQz4WwRpahCHmuEF2-D8f0a0ZxHcE_1741103480
+X-Mimecast-MFC-PROC-ID: QbaTxHdD4Ayu6zNrP_PaEjxWIQSHTvPodAFQ5Yj0yEA_1741104966
 X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 04.03.25 16:30, Sean Christopherson wrote:
-> On Tue, Mar 04, 2025, Ackerley Tng wrote:
->> Vlastimil Babka <vbabka@suse.cz> writes:
->>>> struct shared_policy should be stored on the inode rather than the file,
->>>> since the memory policy is a property of the memory (struct inode),
->>>> rather than a property of how the memory is used for a given VM (struct
->>>> file).
->>>
->>> That makes sense. AFAICS shmem also uses inodes to store policy.
->>>
->>>> When the shared_policy is stored on the inode, intra-host migration [1]
->>>> will work correctly, since the while the inode will be transferred from
->>>> one VM (struct kvm) to another, the file (a VM's view/bindings of the
->>>> memory) will be recreated for the new VM.
->>>>
->>>> I'm thinking of having a patch like this [2] to introduce inodes.
->>>
->>> shmem has it easier by already having inodes
->>>
->>>> With this, we shouldn't need to pass file pointers instead of inode
->>>> pointers.
->>>
->>> Any downsides, besides more work needed? Or is it feasible to do it using
->>> files now and convert to inodes later?
->>>
->>> Feels like something that must have been discussed already, but I don't
->>> recall specifics.
->>
->> Here's where Sean described file vs inode: "The inode is effectively the
->> raw underlying physical storage, while the file is the VM's view of that
->> storage." [1].
->>
->> I guess you're right that for now there is little distinction between
->> file and inode and using file should be feasible, but I feel that this
->> dilutes the original intent.
-> 
-> Hmm, and using the file would be actively problematic at some point.  One could
-> argue that NUMA policy is property of the VM accessing the memory, i.e. that two
-> VMs mapping the same guest_memfd could want different policies.  But in practice,
-> that would allow for conflicting requirements, e.g. different policies in each
-> VM for the same chunk of memory, and would likely lead to surprising behavior due
-> to having to manually do mbind() for every VM/file view.
+Hi Tom, James,
+working on the SVSM side of the vTPM emulation, I'm a bit lost on `8.2 
+SVSM_VTPM_CMD Call` section.
 
-I think that's the same behavior with shmem? I mean, if you have two 
-people asking for different things for the same MAP_SHARE file range, 
-surprises are unavoidable.
+In the SVSM code [1] we are assuming that the driver is always using a 
+PAGE_SIZE buffer for TPM_SEND_COMMAND request/response, but I can't find 
+anything in the spec apart from this:
 
-Or am I missing something?
+   It is expected that the request/response structure is large
+   enough to hold the expected output of the vTPM request. The vTPM
+   request/response buffer will be treated as physically contiguous in
+   the guest address space.
 
--- 
-Cheers,
+IIUC from `Table 16: TPM_SEND_COMMAND Request Structure` the 3rd field 
+`TPM Command size (in bytes)` is just the amount of bytes filled with 
+the request.
 
-David / dhildenb
+How does SVSM know the total buffer size it can use for response?
+
+Claudio mentioned that in an old discussion, we were thinking of adding 
+in the specification that the buffer should always be PAGE_SIZE. This 
+would explain the assumption we make in SVSM and also the driver that 
+always allocates a page.
+
+If there are any changes already planned for the specification, 
+apologies in advance for my confusion.
+
+Thanks,
+Stefano
+
+[1] https://github.com/coconut-svsm/svsm/blob/376e4571099ee5e9aab8343c137600e97ebe1b4b/kernel/src/protocols/vtpm.rs#L67
 
