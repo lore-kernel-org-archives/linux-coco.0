@@ -1,120 +1,324 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA6F1F4734
-	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 06:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E8F1F9ED2
+	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 07:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741069688; cv=none; b=JyuVBPo5NkrCL6/DCK6Buo6a2SAPypCsxfONZo6IeL8g2oo50oN/SwjN0yHTaq9nH9FvJ3Q+c87fHav6U7SNxCFWfyaIkB7aKrmaSBsayAPH1i75Sp94MHBx50YCLdVNfGH7HKX6PX4u8+ypP5u9lKkr24jQGutO0TqTKh3XgBg=
+	t=1741072459; cv=none; b=VXZo0VQ07XFnOAnIdQZy0Ta9u64qGV2zKSVj9tcdf/zlYAyrACh8JyaFq7IwPQFaxw8xB8Xluv/pmGFQpxVGf4beLJWNkqiyFha3zNUh5pvIbsQDWXCPeS7egrqaTFGvHA4Wu1BWnPDyBFqFoyTdQmbllPDVU0p1XL/hfTPmZP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741069688; c=relaxed/simple;
-	bh=sANxphPEpJhSoJRv2v+wz0k0ncvT/idn6pMCGmv7Dyg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bjZGZjNfpgof6VTZyxEBBL5R3+hm+u1494CaKQATc+ErgrjLtzNGbGWNO9Yn9KxZoVgvF4Jz1Vq0MRYasA1ZYEwqU8QmIoWRIu6LrvG8YiRrcbqbGC9Sor6PxS1Um/aOnemVBmD7L5MI7Y55TjXOEwLm+bBHX+JlR+6QnWdtTqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iLch63xH; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1741072459; c=relaxed/simple;
+	bh=2P/ln9lrhKSlXuf6pNo4cqYdV2q/s4L0PRH305lE+H4=;
+	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=E208BGUAv5SNeVts+QTAJHv1jlFi9rksEsqfC5k7i6HAR+cXGx/+loDO5WmzMUe5/HPlazJSkJ7tZhAUtTgvGh1jEfOc6N8F8fIX6w0yLibHgWeKZuLSpmt7BSsW8R6bW8sbB/aR9QIA5ihSjHDDn0tYiTyLHNmslzesoOWr3Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kdau4J4r; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iLch63xH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741069684;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iAefvd9tbj7LNYMHtdDRot9Yl7dRO2WNDbwoA2ZpIZQ=;
-	b=iLch63xHmsEu5A+DvPOvFeMkcbqJ8/+1UioiD4rJzw0bHgngXQPcOxQcWh9ho8LaRzvCmJ
-	DDn/dx3laB8gJtyjiVDRbow+Tp9XO89x/498UO6Cwry4a10gO3qm71MHBSlwaeUGPWrh8J
-	1PyQ3eSNS0OP0c3E0tmhOFLa+XDbaXQ=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-137-N2CODmX9P9CjWFY8V8rGKA-1; Tue, 04 Mar 2025 01:27:58 -0500
-X-MC-Unique: N2CODmX9P9CjWFY8V8rGKA-1
-X-Mimecast-MFC-AGG-ID: N2CODmX9P9CjWFY8V8rGKA_1741069678
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2fe98fad333so10540014a91.2
-        for <linux-coco@lists.linux.dev>; Mon, 03 Mar 2025 22:27:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741069678; x=1741674478;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iAefvd9tbj7LNYMHtdDRot9Yl7dRO2WNDbwoA2ZpIZQ=;
-        b=NNAVHA8PHuSFJ/QRLhm1Ou0palBD7Brrfp6tLSvaaVw0xDKWYZbU/cUGd+r1irGH1w
-         Z4cu7MDwA+YQnrb9lMd2cuRml1LkLs1YFX1Cxzb9+TVX0MWStscItiKgfnQC9DBcdPfR
-         +F9s8z9ROcNPmyHI8ehYo0xVbW6N+LXnXlGmx+E6YH7sjzKXoU6IjpsIS4c4+pJHpVQt
-         ZfkeMV/Ec0A9dQIklvGr8RW6fKInbhnMugGi4fRNFOi2yPsxy+7LayGj+TuNpwPUCcOT
-         RNDSs4J9Wg73dM8z4hDL67kBpgy6f+ElJWzQKAYHYBbEBWbnNuN15AZM3PXzh1IRq/LE
-         QKfg==
-X-Forwarded-Encrypted: i=1; AJvYcCW7GeYB2Q8Bns1LpWXSUtesaJzSrxg+U/+9572hsa4NttX8YcMWPwODi/Gceev9G4BFLBSbYkKrNFXS@lists.linux.dev
-X-Gm-Message-State: AOJu0YwF4c6Nm8LXrO82ZKIV8e1WMmZvVYtphTiTWYMQDJHnCk94mfgt
-	ozKrTLUyjsWfcK9WQTgVnY5yrMkQrCiZZN9K8jrlp71jqDNy+0jMg34hnBpRaoGrDYzQM4lsheH
-	hhebUGR+LbQzSa7JYLg3XHeohOxrKSTvzhVllOQQZM+s+2rLU6WfIZiaWAtk=
-X-Gm-Gg: ASbGnctGAkqGtUtY/PVz1kMid7+rLtUMnQ06aeY2THv+loekY7zOKSbWi7SWp0oZ1mF
-	VU6tXKn3eo2uNobP8eNULlYY+ptS6Eg66Q6Em6qMg8gYInqJkCRuMUTK6zhYW/tleg03qeYmXvP
-	5MJPntRcdo8gZmNExx/8vHuwvvUSeipviC8uTdtzWytlVKiH/QSYA7eLwXwxdKrnvnmOmuyP212
-	+HLh28UBgm4ibn1h0IMNGdzz50L09Qg/yTHxmetetCE8N+ouTttPas8s7XICikkgL5up7X2nFu/
-	oVa8BQ/+BbyTjaS75Q==
-X-Received: by 2002:a05:6a00:230c:b0:736:7270:4d18 with SMTP id d2e1a72fcca58-73672704d81mr1945042b3a.14.1741069677582;
-        Mon, 03 Mar 2025 22:27:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGMjQLRj3AUSUbMsClYXUXqxqJWhk5KrbeXBQgXSoViyrHJ8djjcdkYHY0nBVtVH5e57rXWYg==
-X-Received: by 2002:a05:6a00:230c:b0:736:7270:4d18 with SMTP id d2e1a72fcca58-73672704d81mr1945005b3a.14.1741069677191;
-        Mon, 03 Mar 2025 22:27:57 -0800 (PST)
-Received: from [192.168.68.55] ([180.233.125.164])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7363986010asm5850843b3a.52.2025.03.03.22.27.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 22:27:56 -0800 (PST)
-Message-ID: <780f593c-81cd-495c-8ca6-38ecd64ddb35@redhat.com>
-Date: Tue, 4 Mar 2025 16:27:48 +1000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kdau4J4r"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741072457; x=1772608457;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2P/ln9lrhKSlXuf6pNo4cqYdV2q/s4L0PRH305lE+H4=;
+  b=kdau4J4rtypume6waqkY9DgncE529QwVteQb/Hb0KoqjISlB1QOE3h23
+   kblAM0MgxJ4qlMxKg4rj25waf2ob8Je4i7mhY3/o0snIztf6S/OAf8KL6
+   rPwMJV8foyXO6Aw3UIlkPQRa71mcTi1lHPhEx70Boj2rvofACmDEOm4Jy
+   rSGil7Edoa3ZWPXAVsm/8a0nhO2IfS9DV0C70j8vBkN7j3QncgojCrH9E
+   CeDTZTHU69PGD4Knu5WBcGi7hsnXQDXj3NZ9SUhj5coPQpLut0TI6D8va
+   Fc+lmilAYJeEoKo6OLD7t1WEjGPoOVBhg5PY9w3hCNUSHzI2XOQU+FNNr
+   w==;
+X-CSE-ConnectionGUID: hAByiGq5SWOD7DPTS0K5Ww==
+X-CSE-MsgGUID: mxWN3dc/Q+ecIVMyQpNMYQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41224007"
+X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
+   d="scan'208";a="41224007"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 23:14:15 -0800
+X-CSE-ConnectionGUID: pjHCIlK8R+OvdWytjYcmEg==
+X-CSE-MsgGUID: x1escmBoSSal0Mq4eL4N3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
+   d="scan'208";a="118078470"
+Received: from inaky-mobl1.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.125.109.47])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 23:14:14 -0800
+Subject: [PATCH v2 00/11] PCI/TSM: Core infrastructure for PCI device
+ security (TDISP)
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-coco@lists.linux.dev
+Cc: Isaku Yamahata <isaku.yamahata@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Lukas Wunner <lukas@wunner.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+ Wu Hao <hao.wu@intel.com>, Samuel Ortiz <sameo@rivosinc.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Sami Mujawar <sami.mujawar@arm.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Steven Price <steven.price@arm.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Yilun Xu <yilun.xu@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+ John Allen <john.allen@amd.com>,
+ Ilpo =?utf-8?b?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+ gregkh@linuxfoundation.org, linux-pci@vger.kernel.org, aik@amd.com,
+ lukas@wunner.de
+Date: Mon, 03 Mar 2025 23:14:14 -0800
+Message-ID: <174107245357.1288555.10863541957822891561.stgit@dwillia2-xfh.jf.intel.com>
+User-Agent: StGit/0.18-3-g996c
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 31/45] arm64: rme: Prevent Device mappings for Realms
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-32-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250213161426.102987-32-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: kjSEPn4d3jW-tlTDDUfceS9aX6x1ubSe3_W1Xju6iDA_1741069678
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-On 2/14/25 2:14 AM, Steven Price wrote:
-> Physical device assignment is not yet supported by the RMM, so it
-> doesn't make much sense to allow device mappings within the realm.
-> Prevent them when the guest is a realm.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes from v6:
->   * Fix the check in user_mem_abort() to prevent all pages that are not
->     guest_memfd() from being mapped into the protected half of the IPA.
-> Changes from v5:
->   * Also prevent accesses in user_mem_abort()
-> ---
->   arch/arm64/kvm/mmu.c | 13 +++++++++++++
->   1 file changed, 13 insertions(+)
-> 
+Changes since v1 [1]:
+ - [configfs-tsm: Namespace TSM report symbols]
+   - collect tags
+ - [coco/guest: Move shared guest CC infrastructure to drivers/virt/coco/guest/]
+   - collect tags
+ - [coco/tsm: Introduce a core device for TEE Security Managers]
+   - Rename 'tsm_subsys' => 'tsm_core_dev' (Jonathan)
+ - [PCI/IDE: Enumerate Selective Stream IDE capabilities]
+   - Fix the reference PCIe 6.2 specification chapter to 7.9.26 (Bjoen)
+   - Treat all specification terms as proper nouns, like "Stream ID" (Bjorn)
+   - Rename PCI_IDE_LINK_STREAM to PCI_IDE_LINK_STREAM_0 to indicate
+     first of a series (Jonathan)
+   - Stop saving sel_ide_cap in pci_dev as it is not a capability block
+     (Jonathan)
+   - Add support for the "Configuration cycles over Selective Stream"
+     mechanism (Alexey, Jonathan)
+   - Cache the number of Link Stream register blocks in pci_dev to save
+     IDE capability re-reads
+   - Clarify 'from Endpoint to Root Port' comment in pci_ide_init()
+     (Jonathan)
+   - Fix "Number of Selective IDE Streams Supported" 1-based field
+     interpretation (Aneesh, Yilun, Jonathan)
+   - Switch all register mask definitions to use __GENMASK() to fix
+     bugs, cleanup readability, and support usage of FIELD_{PREP,GET}()
+     in ide.c (Alexey, Jonathan, Yilun, Aneesh)
+ - [PCI/TSM: Authenticate devices via platform TSM]
+   - Line wrap documentation, and fixup fidelity to specification
+     terminology (Bjorn)
+   - Prepare for calling tsm_ops->probe() for Physical Functions beyond
+     0 and Virtual Functions, introduce 'struct pci_tsm_pf0' as the
+     object to wrap 'struct pci_tsm' in the Physical Function 0 case.
+     Call tsm_ops->probe() and tsm_ops->remove() for all functions on a
+     device if Physical Function 0 sets pdev->tsm. (Yilun, Aneesh)
+   - Drop the complicated 'struct pci_dsm' scheme (Alexey)
+   - Fix tsm->state validation, 'init before connect' (Yilun)
+   - Move on from if_not_guard(), but not onto the whitespace column
+     pressure of scoped_cond_guard() (Jonathan)
+   - Rename pci_tsm_register() pci_tsm_core_register() to disambiguate
+     from device init in pci_tsm_init() (Jonathan)
+ - [samples/devsec: Introduce a PCI device-security bus + endpoint sample]
+   - Fix CONFIG_VIRT_DRIVERS=n compilation dependency (0day Kbuild Robot)
+   - Switch from a single devm action to remove emulated devices and
+     ports to a per-device / per-port scheme (Jonathan)
+   - Fix "Number of Selective IDE Streams Supported"
+   - Use devm_gen_pool_create() (Jonathan)
+ - [PCI: Add PCIe Device 3 Extended Capability enumeration]
+ - [PCI/IDE: Add IDE establishment helpers]
+   - Drop PCI_IDE_SETUP_ROOT_PORT and its related complications. Push
+     Root Port programming responsibility to leaf drivers. (Alexey,
+     Jonathan, Bjorn)
+   - Clarify that some TSM technologies do not allow system-software to
+     allocate the Stream ID (Aneesh)
+   - Fundamentally rework the API to stop tying the Stream ID to the
+     Endpoint register block index, the Root Port register block index,
+     and the platform stream slot. Add pci_ide_strem_alloc() to grab
+     those resources and clarify that Stream IDs only need to be unique
+     within a Partner Port pairing. The 'struct pci_ide' object is
+     updated accordingly to carry all the Partner Port details. (Alexey,
+     Jonathan, Aneesh)
+   - Add kernel-doc commentary for all exported APIs (Bjorn)
+   - Miscellaneous specific terminology fixups and pci.h comment
+     cleanups (Bjorn)
+   - Drop address association setup for now given the questions around
+     its value (Alexey, Yilun)
+   - Switch from "devid" to "RID" to match specification language, add a
+     comment to address the discrepancy in Linux terms vs PCIe spec
+     terms (Bjorn)
+   - Setup RID association registers relative to which RIDs are seen at
+     either Partner Port (Yilun, Alexey)
+ - [PCI/IDE: Report available IDE streams]
+   - Rename pci_set_nr_ide_streams() to pci_ide_init_nr_streams() to
+     clarify why this one symbols is in the "PCI_IDE" symbol namespace
+     since PCI init code is typically built-in. (Alexey)
+   - Fix missing quotes in usage of EXPORT_SYMBOL_NS_GPL() and
+     MODULE_IMPORT() (Alexey)
+ - [PCI/TSM: Report active IDE streams]
+   - Documentation fixups (Bjorn)
+   - Rename tsm_register_ide_stream() to tsm_ide_stream_register() for
+     naming consistency
+   - Reflect that the format of the stream link changed from:
+     pciDDDD:BB/streamN:DDDD:BB:DD:F
+     ...to:
+     pciDDDD:BB/streamH.R.E:DDDD:BB:DD:F
+ - [samples/devsec: Add sample IDE establishment]
+   - Mirror the devsec_tsm_disconnect() sequence in the
+     devsec_tsm_connect() error unwind path (Jonathan)
+   - Other miscellaneous symmetry on error unwind fixups (Jonathan)
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+[1]: http://lore.kernel.org/173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com
 
+---
+Towards devsec-next:
+
+As evidenced by a full page of change notes from v1 to v2 there is
+multi-party interest in this core infrastructure, and more importantly,
+many small details to negotiate. That number of details to negotiate
+only increases with the follow-on "device bind" flows and the
+interactions across VFIO, IOMMUFD and KVM.
+
+I expect it will continue to be the case that the mainline ingestion
+rate of all this infrastructure results in several more cycles before
+mainline ships a complete solution for one or more vendors. In the
+meantime, I am looking to run a devsec-next integration tree for kernel
+and QEMU. That is, a supplemental staging tree to enable end-to-end
+testing while proposals make their way upstream. For now, consider
+sending a branch and I will aim to do periodic octopus merges of
+submitted branches on top of a kvm-coco-queue + devsec-core baseline.
+
+The main motivation for a "devsec-next" tree, as I mentioned to some in
+the hallway track at Plumbers, is to wrangle private hacks and
+workarounds in vendor trees to coalesce if not mature.  An example of
+multiple vendors solving the same problem in different ways in their
+vendor trees is: [2] vs [3]. Note that devsec-next is not intended to
+replace vendor trees, and instead reflect the snapshot state of
+cross-vendor consensus before topics are ready for linux-next /
+mainline.
+
+I will send out more details as a follow up.
+
+[2]: https://github.com/aik/qemu/commit/5256c41f
+[3]: http://lore.kernel.org/20250217081833.21568-1-chenyi.qiang@intel.com
+
+---
+Original Cover letter:
+
+Trusted execution environment (TEE) Device Interface Security Protocol
+(TDISP) is a chapter name in the PCI specification. It describes an
+alphabet soup of mechanisms, SPDM, CMA, IDE, TSM/DSM, that system
+software uses to establish trust in a device and assign it to a
+confidential virtual machine (CVM). It is protocol for dynamically
+extending the trusted computing boundary (TCB) of a CVM with a PCI
+device interface that can issue DMA to CVM private memory.
+   
+The acronym soup problem is enhanced by every major platform vendor
+having distinct TEE Security Manager (TSM) API implementations /
+capabilities, and to a lesser extent, every potential endpoint Device
+Security Manager (DSM) having its own idiosyncratic behaviors around
+TDISP state transitions. 
+     
+Despite all that opportunity for differentiation, there is a significant
+portion of the implementation that is cross-vendor common. However, it
+is difficult to develop, debate, test and settle all those pieces absent
+a low level TSM driver implementation to pull it all together.
+   
+The proposal is incrementally develop the shared infrastructure on top
+of a sample TSM driver implementation to enable clean vendor agnostic
+discussions about the commons. "samples/devsec/" is meant to be: just
+enough emulation to exercise all the core infrastructure, a reference
+implementation, and a simple unit test. The sample also enables
+coordination with the native PCI device security effort [4].
+   
+The devsec_tsm driver already yielding benefits as it drove many of
+the fixes and enhancements of this patch-kit relative to the last RFC
+[1]. Future development would either reuse established devsec_tsm paths,
+or extend the sample alongside the vendor-specific implementation.
+     
+This first batch is just enough infrastructure for IDE (link Integrity
+and Data Encryption) establishment via TSM APIs. It is based on a review
+and curation of the IDE establishment flows from the SEV-TIO RFC [5] and
+a work-in-progress TDX Connect RFC (see the Co-developed-by and thanks
+yous in the changelogs for where code was copied).
+
+It deliberately avoids SPDM details and does not touch upon the "bind"
+flows, or guest-side flows, simply to allow for upstream digestion of
+all the assumptions and tradeoffs for the "simple" IDE establishment
+baseline.
+
+Note that devsec_tsm is for near term staging of vendor TSM
+implementations. The expectation is that every piece of new core
+infrastructure that devsec_tsm consumes must also have a vendor TSM
+driver consumer within 1 to 2 kernel development cycles.
+
+The full series is available via devsec/tsm.git [6].
+
+[4]: http://lore.kernel.org/cover.1719771133.git.lukas@wunner.de
+[5]: http://lore.kernel.org/20240823132137.336874-1-aik@amd.com
+[6]: https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/log/?h=devsec-20250303
+
+---
+
+Dan Williams (11):
+      configfs-tsm: Namespace TSM report symbols
+      coco/guest: Move shared guest CC infrastructure to drivers/virt/coco/guest/
+      coco/tsm: Introduce a core device for TEE Security Managers
+      PCI/IDE: Enumerate Selective Stream IDE capabilities
+      PCI/TSM: Authenticate devices via platform TSM
+      samples/devsec: Introduce a PCI device-security bus + endpoint sample
+      PCI: Add PCIe Device 3 Extended Capability enumeration
+      PCI/IDE: Add IDE establishment helpers
+      PCI/IDE: Report available IDE streams
+      PCI/TSM: Report active IDE streams
+      samples/devsec: Add sample IDE establishment
+
+
+ Documentation/ABI/testing/configfs-tsm-report      |    0 
+ Documentation/ABI/testing/sysfs-bus-pci            |   45 +
+ Documentation/ABI/testing/sysfs-class-tsm          |   20 +
+ .../ABI/testing/sysfs-devices-pci-host-bridge      |   44 +
+ MAINTAINERS                                        |   10 
+ drivers/pci/Kconfig                                |   37 +
+ drivers/pci/Makefile                               |    2 
+ drivers/pci/ide.c                                  |  499 ++++++++++++++
+ drivers/pci/pci-sysfs.c                            |    4 
+ drivers/pci/pci.h                                  |   19 +
+ drivers/pci/probe.c                                |   26 +
+ drivers/pci/remove.c                               |    3 
+ drivers/pci/tsm.c                                  |  377 +++++++++++
+ drivers/virt/coco/Kconfig                          |    8 
+ drivers/virt/coco/Makefile                         |    3 
+ drivers/virt/coco/arm-cca-guest/arm-cca-guest.c    |    8 
+ drivers/virt/coco/guest/Kconfig                    |    7 
+ drivers/virt/coco/guest/Makefile                   |    3 
+ drivers/virt/coco/guest/report.c                   |   32 -
+ drivers/virt/coco/host/Kconfig                     |    6 
+ drivers/virt/coco/host/Makefile                    |    6 
+ drivers/virt/coco/host/tsm-core.c                  |  144 ++++
+ drivers/virt/coco/sev-guest/sev-guest.c            |   12 
+ drivers/virt/coco/tdx-guest/tdx-guest.c            |    8 
+ include/linux/pci-ide.h                            |   60 ++
+ include/linux/pci-tsm.h                            |  135 ++++
+ include/linux/pci.h                                |   25 +
+ include/linux/tsm.h                                |   33 +
+ include/uapi/linux/pci_regs.h                      |   89 +++
+ samples/Kconfig                                    |   16 
+ samples/Makefile                                   |    1 
+ samples/devsec/Makefile                            |   10 
+ samples/devsec/bus.c                               |  698 ++++++++++++++++++++
+ samples/devsec/common.c                            |   26 +
+ samples/devsec/devsec.h                            |    7 
+ samples/devsec/tsm.c                               |  192 ++++++
+ 36 files changed, 2564 insertions(+), 51 deletions(-)
+ rename Documentation/ABI/testing/{configfs-tsm => configfs-tsm-report} (100%)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-tsm
+ create mode 100644 Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+ create mode 100644 drivers/pci/ide.c
+ create mode 100644 drivers/pci/tsm.c
+ create mode 100644 drivers/virt/coco/guest/Kconfig
+ create mode 100644 drivers/virt/coco/guest/Makefile
+ rename drivers/virt/coco/{tsm.c => guest/report.c} (93%)
+ create mode 100644 drivers/virt/coco/host/Kconfig
+ create mode 100644 drivers/virt/coco/host/Makefile
+ create mode 100644 drivers/virt/coco/host/tsm-core.c
+ create mode 100644 include/linux/pci-ide.h
+ create mode 100644 include/linux/pci-tsm.h
+ create mode 100644 samples/devsec/Makefile
+ create mode 100644 samples/devsec/bus.c
+ create mode 100644 samples/devsec/common.c
+ create mode 100644 samples/devsec/devsec.h
+ create mode 100644 samples/devsec/tsm.c
+
+base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
