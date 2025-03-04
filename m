@@ -1,71 +1,71 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B1C1F4622
-	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 05:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC8F1C863F
+	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 05:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741065359; cv=none; b=OzJqdfM/xIKRDCTcpudRCtCBXAKO3qYQKNkPERg5g6z/p5P8a5a39KnqRN+x/ihaQNyK/YnP+SCiYGct9Gcb9oJ77SEtLVTT671EniyFWsnIc7ftTUIftWR62VN/z9bkX/YivAem/r/C5X6kiO9EN/GFhVWdoHuLZBn/fNf5fOE=
+	t=1741066195; cv=none; b=jwSuDj5txnhRZXzbnF7F8aUTHvF/Wipd8Q+gK7RVt/p8NsBfy9xJTOxykAKfLCP+dWqJw55FwxDBPZQ2ySv4C8cA1jSeoZv1ka2lVN+PESv5R6OU9aaH+4gViLNHNRpHRgxhirDs4wmgRzDWhqsfKw3RiWUU2c+N5oj0WBfUl4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741065359; c=relaxed/simple;
-	bh=I70BjEXqWMzdLTvepT7oYU6oxEIcfIfhUlrieGGjjJk=;
+	s=arc-20240116; t=1741066195; c=relaxed/simple;
+	bh=CAzIhVsIFi4/3ByvCvQJWA17BzFjI6peJWwCPB4wM7U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PdlBjJa2krSlpevoegMMC5PAUZ+O/GMWrVWvpAkRuVoX37QQ5/MXXHsXVL5PCxDZ3+WF/5PvksgcQqsULT/VUM06/0/utDxrmj0dg8CQnSGnE5FBKsSaztLr3cKLpPc2RLywYalKo+x5EbqRBK4ZmxOoSenzE88f/cEboFuOEMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IkgD6eOX; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=AsKpwGt7EpUO4s8G2mma1X9GhoIsmU6ZzqF5u/17QZTtpmuJtkjHs8H5cZVHitpIQSDH0cBF10XbtuvuR5cLsNOXlxLMqlWWzkHL9Fj8yhRg8djr7AIIgyy8b4ulY9w8tpGxcQBNGVD/XytGsIz2cUH1h6uvXz58CHzQ7+pC4Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KiI4CmG+; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IkgD6eOX"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KiI4CmG+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741065356;
+	s=mimecast20190719; t=1741066191;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iHp7c8083IblnSkSElkO4q8Pyi74C3j+q7Rd++XFOzQ=;
-	b=IkgD6eOXzM1xiRqPrcfR3Y4JBEr8pqoFcbNIWaEs2gJi/tC/mEOUXc5O9NzwDoEKJQ3T/F
-	FyuvdCdRcXvWSPIAKrqRNsZOLT9cHSo14W639FZM3EWb8ZBb9J6vEHKZtprRpfkv7EsrAw
-	2C50wul1zT0ZFfbvs2cytVI73kG9ssA=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=K5NVuBpJLlZnTOLyK2ct+nvinMD4r7ch0nzerHgxTzg=;
+	b=KiI4CmG+xq0/3CzXrgS3WVJ66qAzgrDMd9fRYE13gyFHcTUp1b1fpUxyV45NCOFyubBmMz
+	5c9mIacX63xYUSAiMq21VndX5qYVha1daIDbNzOPtUvl/2MNVghkb2phCwHv1ZRTdj9T3h
+	B0KCTvjMOdFdRgcnIhOZXjtZCRKPdeM=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-49-olQL1sWAOpCXtYocTQxHxw-1; Tue, 04 Mar 2025 00:15:40 -0500
-X-MC-Unique: olQL1sWAOpCXtYocTQxHxw-1
-X-Mimecast-MFC-AGG-ID: olQL1sWAOpCXtYocTQxHxw_1741065340
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-22350e4b7baso91810855ad.3
-        for <linux-coco@lists.linux.dev>; Mon, 03 Mar 2025 21:15:40 -0800 (PST)
+ us-mta-153-ueTAuv-FPg2PriP-BWdwKg-1; Tue, 04 Mar 2025 00:29:49 -0500
+X-MC-Unique: ueTAuv-FPg2PriP-BWdwKg-1
+X-Mimecast-MFC-AGG-ID: ueTAuv-FPg2PriP-BWdwKg_1741066189
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2fede63f32dso8305121a91.1
+        for <linux-coco@lists.linux.dev>; Mon, 03 Mar 2025 21:29:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741065339; x=1741670139;
+        d=1e100.net; s=20230601; t=1741066189; x=1741670989;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iHp7c8083IblnSkSElkO4q8Pyi74C3j+q7Rd++XFOzQ=;
-        b=wkaJCwxEuN3kCWIcNxvSHNwCQWgzEH3j5Bv/zAwmX+0zcMP8yuOhlMMbKpukjrIADD
-         yW+37adnkFvtgTuQSv5GCvhFyU4dWVcBCGEPBB8gnEE25HKW1syvNbNYKEbYd9LN6t3U
-         H1qySZ/WdBv6ReGYG+KLtd2WRRzIrkzTZViXyc6npKC5hXdQtlGjhxykIlx82vijwheD
-         13E444Cll2Jpv/LEda8gEBaGiyQXwBcxZz8ox3mbj/weMFlZw89BTo9GSxLpBcIBwFoA
-         6m2yX7ygYsVhnyBtpDu6ZQuXPsereHTrQ4FMjF8Cm03OHfzKS1mZDpmFSaNklw90uSmq
-         /vfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+ldK9bf7NMqJtLfWbw4kpG4bRoK8C+wIvayCmSVBFsqHKQTOPaDloAOsy3G6HbOo6qSsGblK3gkyP@lists.linux.dev
-X-Gm-Message-State: AOJu0YwJgkmANIp++f552LaI8+hkG/47RMgXtiU5g/QsBBPR9eimS4St
-	+5qPtU7fGBuuGfwGsiOp4k0rJ0ZefdC8wSKaKJU7s5UmHyrO2CDsscGbcwQPBdvlRvlm5iOjM+i
-	kA4Wbs0fHZhT3EnvJnVQ/ZbHTBR2XL/bWZwshj1JuJ8ZZdviKw2O7fWTHafs=
-X-Gm-Gg: ASbGncsc0KjKXzzYpGovLsHeAiOKIaoocO/3boNqXfNvy5j8qwHW4keYKyO2dVrB0Zi
-	hn+ri13pbWU7P+9fpijbGQobmjpXLSB4uyvLd8yozTh+KJfjtNNi2FKKpwGq1vZFAAjEsSLztGs
-	DaH5LDmitMUTGGC53eHRzZoeMi15d/XtUxdl+FIYe2XtZtI/hpsLHIa7j7lPy9KKH6+3LKzkpdo
-	Wdpx09ld4vvCTGkeADb4k4XNYbH+2Rlat27Ast0hvvQVlUUqXei6PgO2098IgYLtaM9XStNu6+/
-	3kjdkkj9d/O0n5JiGg==
-X-Received: by 2002:a17:903:244d:b0:215:9470:7e82 with SMTP id d9443c01a7336-22368f71b7amr213249465ad.4.1741065339575;
-        Mon, 03 Mar 2025 21:15:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHwYeNz4BZ5M1mONF0+zOWTYRV5h3Fu8fVqk+GofZ0hdvm3v9bSMtAm5K07jzNGKbCercWDMg==
-X-Received: by 2002:a17:903:244d:b0:215:9470:7e82 with SMTP id d9443c01a7336-22368f71b7amr213249125ad.4.1741065339283;
-        Mon, 03 Mar 2025 21:15:39 -0800 (PST)
+        bh=K5NVuBpJLlZnTOLyK2ct+nvinMD4r7ch0nzerHgxTzg=;
+        b=Tr7LjYlXiVZqftUzkeOtCG0+RcQqQSYGVRG2J0Hwqwb0wyL66CKbt0tbVhw4inR5dD
+         26550FBTqZVEoX6B/BjgsPUWxdxZMWkhgQAgo5tXT23wYOqAZ/uz7P/RAnfAW9QkRxyO
+         22kcUDHrLVFJsgRvKB8PWyHk7oI4zy5FaUAx/5sDBidd93gaQ71OE1/9qkTK9e3JfFE2
+         /VRwZw8lDoUwKKyA//OXWC007H6MEGDpdtXYGyIE81wxOb8RInunB38kSoOtgJkvjVbq
+         qXuf/KNkr6ZNII0IDrt9pnzroFPGjK02Ui+Wyp5nzWs6ZqTaXDSZ4sI5qrq/ioXi/hhI
+         qCBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUUChS+zUaxcW5qjdm3VdScuONoaza4IZm7HIfCbC2PYB8dwVskqTTB/Z+XsoWAMhmmwohdQqRAKRsJ@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywb00bKkEwIgA6U12fRQ8OJBnJHTyGlpCPAtzmdqzFwR/bqN+2f
+	o+TP2jXwmyR8dLzoFn0ksUAQHmgLRrPy07JLUGPn3sSUID2lx2lWqeZJcQaGb9ohogPGgAN5jJH
+	JIgTg1adrkycRfDFn1WD0byIMT55xlJUhUdUzcqF0NSnpZItG2HRf0MDkFuA=
+X-Gm-Gg: ASbGncsDBKpHHUFxnxv5oQv/xnGv4oqr0nRlz3wquxJmafv1F/whHXpZn6pXqoN8ea8
+	Gq4MTkWK6/gRUJsp7KeLYFAY8k+Zrytq8PMTVl0GsdZm7byvvoPfiBrVIELnBq4llESfznAguhZ
+	MEKgMk1888KZK/QBLX3jzopF3eTKJL9zaoEb/EgLXedLt2Mrjjj3wtYQm/+WIu4ra/VxdQ2XfUp
+	Gb0LF4AyCYopCyPWpzuXsP80Afw78IpXth4hgaJsUsMd1tM9bf9mEgnS0Ewt4kNp+qYmyFMOcyj
+	qQf036A9Dx1+fiqxjg==
+X-Received: by 2002:a05:6a21:3d83:b0:1f3:289e:36d9 with SMTP id adf61e73a8af0-1f3289e3a2fmr9220373637.40.1741066188755;
+        Mon, 03 Mar 2025 21:29:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWg73A+PEVA+mHDKOgju64xlHqN6DY26ozmlm+MoWJ+dQTX/kJaWOUjo5QtcrSQGbf6nj6HQ==
+X-Received: by 2002:a05:6a21:3d83:b0:1f3:289e:36d9 with SMTP id adf61e73a8af0-1f3289e3a2fmr9220343637.40.1741066188462;
+        Mon, 03 Mar 2025 21:29:48 -0800 (PST)
 Received: from [192.168.68.55] ([180.233.125.164])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fe825a99a7sm13451855a91.6.2025.03.03.21.15.32
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af174933aa5sm6247124a12.46.2025.03.03.21.29.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 21:15:38 -0800 (PST)
-Message-ID: <eb8ea5a0-fe6c-4b96-92da-f9ec0355b4dd@redhat.com>
-Date: Tue, 4 Mar 2025 15:15:31 +1000
+        Mon, 03 Mar 2025 21:29:47 -0800 (PST)
+Message-ID: <b4cc58db-b9d8-4cdb-8954-8697972a54ae@redhat.com>
+Date: Tue, 4 Mar 2025 15:29:38 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,7 +73,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 22/45] KVM: arm64: Handle realm VCPU load
+Subject: Re: [PATCH v7 23/45] KVM: arm64: Validate register access for a Realm
+ VM
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
@@ -89,64 +90,100 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
  <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-23-steven.price@arm.com>
+ <20250213161426.102987-24-steven.price@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250213161426.102987-23-steven.price@arm.com>
+In-Reply-To: <20250213161426.102987-24-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7UhQhUCD2G1sVMAGcjCAI5TDz2VxUE6tG5eXfdbUEbs_1741065340
+X-Mimecast-MFC-PROC-ID: xiamF0uX1L0CW8XovcHjcvtyRVgubDFqRpk_i6ugNfQ_1741066189
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 2/14/25 2:14 AM, Steven Price wrote:
-> When loading a realm VCPU much of the work is handled by the RMM so only
-> some of the actions are required. Rearrange kvm_arch_vcpu_load()
-> slightly so we can bail out early for a realm guest.
+> The RMM only allows setting the GPRS (x0-x30) and PC for a realm
+> guest. Check this in kvm_arm_set_reg() so that the VMM can receive a
+> suitable error return if other registers are accessed.
 > 
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
->   arch/arm64/kvm/arm.c | 12 ++++++++----
->   1 file changed, 8 insertions(+), 4 deletions(-)
+> Changes since v5:
+>   * Upper GPRS can be set as part of a HOST_CALL return, so fix up the
+>     test to allow them.
+> ---
+>   arch/arm64/kvm/guest.c | 40 ++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 40 insertions(+)
 > 
 
-One nitpick below:
+The subject isn't 100% matching with what has been done in this patch.
+It's actually to limit the scope for the write operations. The question
+is do we need similar limitation for the read operations? If not, it's
+nice to explain in the change log :)
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 49ad633c5ca5..3e13e3d87ed9 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -633,10 +633,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
->   	kvm_vgic_load(vcpu);
->   	kvm_timer_vcpu_load(vcpu);
->   	kvm_vcpu_load_debug(vcpu);
-> -	if (has_vhe())
-> -		kvm_vcpu_load_vhe(vcpu);
-> -	kvm_arch_vcpu_load_fp(vcpu);
-> -	kvm_vcpu_pmu_restore_guest(vcpu);
->   	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
->   		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
+> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+> index 2196979a24a3..ff0306650b39 100644
+> --- a/arch/arm64/kvm/guest.c
+> +++ b/arch/arm64/kvm/guest.c
+> @@ -73,6 +73,24 @@ static u64 core_reg_offset_from_id(u64 id)
+>   	return id & ~(KVM_REG_ARCH_MASK | KVM_REG_SIZE_MASK | KVM_REG_ARM_CORE);
+>   }
 >   
-> @@ -659,6 +655,14 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
->   		kvm_call_hyp(__vgic_v3_restore_vmcr_aprs,
->   			     &vcpu->arch.vgic_cpu.vgic_v3);
->   	}
-
-A spare line is needed here.
-
-> +	/* No additional state needs to be loaded on Realmed VMs */
-> +	if (vcpu_is_rec(vcpu))
-> +		return;
+> +static bool kvm_realm_validate_core_reg(u64 off)
+> +{
+> +	/*
+> +	 * Note that GPRs can only sometimes be controlled by the VMM.
+> +	 * For PSCI only X0-X6 are used, higher registers are ignored (restored
+> +	 * from the REC).
+> +	 * For HOST_CALL all of X0-X30 are copied to the RsiHostCall structure.
+> +	 * For emulated MMIO X0 is always used.
+> +	 */
+> +	switch (off) {
+> +	case KVM_REG_ARM_CORE_REG(regs.regs[0]) ...
+> +	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
+> +	case KVM_REG_ARM_CORE_REG(regs.pc):
+> +		return true;
+> +	}
+> +	return false;
+> +}
 > +
-> +	if (has_vhe())
-> +		kvm_vcpu_load_vhe(vcpu);
-> +	kvm_arch_vcpu_load_fp(vcpu);
-> +	kvm_vcpu_pmu_restore_guest(vcpu);
+>   static int core_reg_size_from_offset(const struct kvm_vcpu *vcpu, u64 off)
+>   {
+>   	int size;
+> @@ -783,12 +801,34 @@ int kvm_arm_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+>   	return kvm_arm_sys_reg_get_reg(vcpu, reg);
+>   }
 >   
->   	if (!cpumask_test_cpu(cpu, vcpu->kvm->arch.supported_cpus))
->   		vcpu_set_on_unsupported_cpu(vcpu);
+> +/*
+> + * The RMI ABI only enables setting some GPRs and PC. The selection of GPRs
+> + * that are available depends on the Realm state and the reason for the last
+> + * exit.  All other registers are reset to architectural or otherwise defined
+> + * reset values by the RMM, except for a few configuration fields that
+> + * correspond to Realm parameters.
+> + */
+> +static bool validate_realm_set_reg(struct kvm_vcpu *vcpu,
+> +				   const struct kvm_one_reg *reg)
+> +{
+> +	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_CORE) {
+> +		u64 off = core_reg_offset_from_id(reg->id);
+> +
+> +		return kvm_realm_validate_core_reg(off);
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>   int kvm_arm_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+>   {
+>   	/* We currently use nothing arch-specific in upper 32 bits */
+>   	if ((reg->id & ~KVM_REG_SIZE_MASK) >> 32 != KVM_REG_ARM64 >> 32)
+>   		return -EINVAL;
+>   
+> +	if (kvm_is_realm(vcpu->kvm) && !validate_realm_set_reg(vcpu, reg))
+> +		return -EINVAL;
+> +
+>   	switch (reg->id & KVM_REG_ARM_COPROC_MASK) {
+>   	case KVM_REG_ARM_CORE:	return set_core_reg(vcpu, reg);
+>   	case KVM_REG_ARM_FW:
 
 Thanks,
 Gavin
