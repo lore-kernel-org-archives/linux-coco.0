@@ -1,53 +1,64 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3358D2E3377;
-	Tue,  4 Mar 2025 20:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B775625F7A8;
+	Tue,  4 Mar 2025 20:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741119721; cv=none; b=K8hIV+jKiPdn8urUF8TsfEEJIB3SXA4bUTlsg/oENPFNd239OcbjwyNXXx0AwC7nXM1mzL4kz8vl95cH5lN92Uo2gQsC7yEhh67As2nVmV3xRQpPVpeKi0WkTI2K+7/XaMNz+2a4E8KypvxRuhXdT7mtHhy7ZHxO0APWdS2XuyU=
+	t=1741121093; cv=none; b=Tsj7MyNERljVVao5c2XsAHtnj/NknLmUznvxFjJVALrf6b6r/WU/bLgvYf90t8ebjl2rlmDU9zr15h180Lm/N0fg3LPsJi0Gd3VuLiSzmCrdAgYbPPa4eVnUdxqA2bGUBm1kKx87t1tgNMAljdDGfUo88e+Ad1Mniea0T1Mmt2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741119721; c=relaxed/simple;
-	bh=v+zXX4gxemuvYPYz9gTEXXPj3dauyXTR1ZerFpHGJeM=;
+	s=arc-20240116; t=1741121093; c=relaxed/simple;
+	bh=Vnv99RWNGluKpYHXL7lFNjVLkjdeSGN36GQK6E9XPj8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PWlPiXv8FshutgHqaC7yGkTL/W6BlyMSkzQbid5sXR3FP9Rpx3DmcUhHSDykbfy6zDClnEFhYbXPgvhArt7Zv7Qv1kG6VvLDJmfokGN6et79iUpRbuF7ybEkutp5pZgm/QObeLhQCsO2hvvSC4X1t49dgnravMPS8jI4eNwd1yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c4B4IRRC; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=aFxWsZiY7ofF2P/xkhbsjn+tXC1CHsLFBLDXXFzSoYqbZp+XiooZqfWlrIHmWEZgf+NNbLeQMUr3k9PrBQLbVYWAhviAm7hLw4ejA8cATq6FL5ly7SoB17BGS8QDWA+q/ST77ygJPIDXdZuQQW1Gkgc61Em8dv1rK8kkDB5cBig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i7kC52JP; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c4B4IRRC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE65C4CEE5;
-	Tue,  4 Mar 2025 20:21:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741119720;
-	bh=v+zXX4gxemuvYPYz9gTEXXPj3dauyXTR1ZerFpHGJeM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c4B4IRRCcNR5JaM1MBUhTbUHG4oSAj6i2aH9q6e1OsmPPsdqLSFU77dAaqt4KsK/H
-	 AtMka3WMRkIk7Cxck41bsN5V2+8WcngCIKmnZPDW3GSUEOo1omoMLpKD8+MG/GQ1Jg
-	 F3jtHqz6UiGtH/05GlEAwTR40CPiZHv6C3r9ZNZuTA45r76IEdU0g7oJkvzA5io2YP
-	 RLGKJTXJWy7YsMMlDyxnphQYcvq22+dw3rKKdRKnIwqwc//MdZwb8LcAbOsf++kwZI
-	 QmNrhWMY4bKE9WCyanL4dufi/+Bz+D3fon5pjw9vycpryXy9lOQ5EIYlXmz/D9kLJt
-	 shh0s47V8V/Sw==
-Date: Tue, 4 Mar 2025 22:21:55 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Claudio Carvalho <cclaudio@linux.ibm.com>,
-	Peter Huewe <peterhuewe@gmx.de>, x86@kernel.org,
-	Dov Murik <dovmurik@linux.ibm.com>, linux-coco@lists.linux.dev,
-	Dionna Glaze <dionnaglaze@google.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [RFC PATCH v2 3/6] tpm: add send_recv() ops in tpm_class_ops
-Message-ID: <Z8dg46Mj81Q9Z0WV@kernel.org>
-References: <20250228170720.144739-1-sgarzare@redhat.com>
- <20250228170720.144739-4-sgarzare@redhat.com>
- <Z8Jmps6AF_geaHUw@kernel.org>
- <3p5erujbhxw7ozdnfpmresv3dqdh2xszolv6mh4khkagoy3wit@ow5qht4keh4h>
- <0e156883acf95d31b9358831550d6d675e3ce4ff.camel@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i7kC52JP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741121092; x=1772657092;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Vnv99RWNGluKpYHXL7lFNjVLkjdeSGN36GQK6E9XPj8=;
+  b=i7kC52JPX5Or3IPYTnxo+ERcvM4dxnXKp4lR6gCuLSJ3F8JzwOVYPbON
+   3B22wqeZoZ8oqoSt7Hpth49Oaw6d459tSsNLtBMtYKDaFmQPA6F/5dl50
+   DNhTSPWdRCTMjnFlr7P2ZPwFTOLvr6/3+teRBmf3yZD+zKZBWdHbOqHog
+   z7KWCZgELys2EdEHSB7A1f3N2Rs3uuGBJhdC338/CziomXtwFhAGUYlnh
+   tNW1rYtKeXIy71vdIbnihPt5nT1zNbxULphkhdBbNTio0MBPFDtesynF2
+   gsFQVVfS1KDZt90NgzkvDpQ2MQ6EgttTN1sb6KPV7RGPLknlfMnIKVvS1
+   A==;
+X-CSE-ConnectionGUID: pGDaykosQ2K37T9f6PTJxw==
+X-CSE-MsgGUID: IjV6pEJhQJ+blIF8F5Ey6Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="44867514"
+X-IronPort-AV: E=Sophos;i="6.14,221,1736841600"; 
+   d="scan'208";a="44867514"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 12:44:51 -0800
+X-CSE-ConnectionGUID: zSPDW30oSReEUr3P2Iihwg==
+X-CSE-MsgGUID: 6Nkh5EyLQiOggjWVC1fsaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="118379129"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 04 Mar 2025 12:44:48 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tpZ89-000KFe-1h;
+	Tue, 04 Mar 2025 20:44:45 +0000
+Date: Wed, 5 Mar 2025 04:44:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Bjorn Helgaas <helgaas@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, gregkh@linuxfoundation.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v2 08/11] PCI/IDE: Add IDE establishment helpers
+Message-ID: <202503050439.9Ubeq0dP-lkp@intel.com>
+References: <174107250147.1288555.16948528371146013276.stgit@dwillia2-xfh.jf.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -56,50 +67,93 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0e156883acf95d31b9358831550d6d675e3ce4ff.camel@kernel.org>
+In-Reply-To: <174107250147.1288555.16948528371146013276.stgit@dwillia2-xfh.jf.intel.com>
 
-On Tue, Mar 04, 2025 at 06:56:02PM +0200, Jarkko Sakkinen wrote:
-> On Mon, 2025-03-03 at 17:21 +0100, Stefano Garzarella wrote:
-> > On Sat, Mar 01, 2025 at 03:45:10AM +0200, Jarkko Sakkinen wrote:
-> > > On Fri, Feb 28, 2025 at 06:07:17PM +0100, Stefano Garzarella wrote:
-> > > > +	int (*send_recv)(struct tpm_chip *chip, u8 *buf, size_t
-> > > > buf_len,
-> > > > +			 size_t to_send);
-> > > 
-> > > Please describe the meaning and purpose of to_send.
-> > 
-> > Sure, I'll add in the commit description.
-> 
-> It's always a command, right? So better be more concerete than
-> "to_send", e.g. "cmd_len".
-> 
-> I'd do instead:
-> 
-> if (!chip->send)
-> 	goto out_recv;
-> 
-> And change recv into:
-> 
-> int (*recv)(struct tpm_chip *chip, u8 *buf, size_t buf_len,
-> 	    cmd_len);
+Hi Dan,
 
-I think I went here over the top, and *if* we need a new callback
-putting send_recv would be fine. Only thing I'd take from this is to
-rename to_len as cmd_len.
+kernel test robot noticed the following build warnings:
 
-However, I don't think there are strong enough reasons to add complexity
-to the callback interface with the basis of this single driver. You
-should deal with this internally inside the driver instead.
+[auto build test WARNING on 7eb172143d5508b4da468ed59ee857c6e5e01da6]
 
-So do something along the lines of, e.g.:
+url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Williams/configfs-tsm-Namespace-TSM-report-symbols/20250304-152958
+base:   7eb172143d5508b4da468ed59ee857c6e5e01da6
+patch link:    https://lore.kernel.org/r/174107250147.1288555.16948528371146013276.stgit%40dwillia2-xfh.jf.intel.com
+patch subject: [PATCH v2 08/11] PCI/IDE: Add IDE establishment helpers
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20250305/202503050439.9Ubeq0dP-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250305/202503050439.9Ubeq0dP-lkp@intel.com/reproduce)
 
-1. Create dummy send() copying the command to internal
-   buffer.
-2. Create ->status() returning zero, and set req_complete_mask and
-   req_complete_val to zero.
-3. Performan transaction in recv().
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503050439.9Ubeq0dP-lkp@intel.com/
 
-How you split send_recv() between send() and recv() is up to you. This
-was merely showing that we don't need send_recv() desperately.
+All warnings (new ones prefixed by >>):
 
-BR, Jarkko
+   In file included from drivers/pci/ide.c:7:
+   In file included from include/linux/pci.h:37:
+   In file included from include/linux/device.h:32:
+   In file included from include/linux/device/driver.h:21:
+   In file included from include/linux/module.h:19:
+   In file included from include/linux/elf.h:6:
+   In file included from arch/s390/include/asm/elf.h:181:
+   In file included from arch/s390/include/asm/mmu_context.h:11:
+   In file included from arch/s390/include/asm/pgalloc.h:18:
+   In file included from include/linux/mm.h:2224:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     505 |                            item];
+         |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     512 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     525 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/pci/ide.c:322:3: warning: label followed by a declaration is a C23 extension [-Wc23-extensions]
+     322 |                 struct pci_dev *rp = pcie_find_root_port(ide->pdev);
+         |                 ^
+   4 warnings generated.
+
+
+vim +322 drivers/pci/ide.c
+
+   306	
+   307	static struct pci_ide_partner *to_settings(struct pci_dev *pdev, struct pci_ide *ide)
+   308	{
+   309		if (!pci_is_pcie(pdev)) {
+   310			pci_warn_once(pdev, "not a PCIe device\n");
+   311			return NULL;
+   312		}
+   313	
+   314		switch (pci_pcie_type(pdev)) {
+   315		case PCI_EXP_TYPE_ENDPOINT:
+   316			if (pdev != ide->pdev) {
+   317				pci_warn_once(pdev, "setup expected Endpoint: %s\n", pci_name(ide->pdev));
+   318				return NULL;
+   319			}
+   320			return &ide->partner[PCI_IDE_EP];
+   321		case PCI_EXP_TYPE_ROOT_PORT:
+ > 322			struct pci_dev *rp = pcie_find_root_port(ide->pdev);
+   323	
+   324			if (pdev != pcie_find_root_port(ide->pdev)) {
+   325				pci_warn_once(pdev, "setup expected Root Port: %s\n",
+   326					      pci_name(rp));
+   327				return NULL;
+   328			}
+   329			return &ide->partner[PCI_IDE_RP];
+   330		default:
+   331			pci_warn_once(pdev, "invalid device type\n");
+   332			return NULL;
+   333		}
+   334	}
+   335	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
