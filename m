@@ -1,126 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A226127D763;
-	Tue,  4 Mar 2025 16:56:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4C62C154C
+	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 16:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741107367; cv=none; b=HImkErZmyaQScNZVS2zfY0Kb/nbHWrNCXCQEpCCbBPi+qzWbVwbpiC4IGmkY2dAB5CK9vs4R4ia5/1UVM4P1BQ6lIC+mDOPOqA5Xvni03iqsmG9wNne/OIpmXp5PHKKTaeaiA3kBicJ6TfNkPxnBfp/uwD2ifnfzSVm2WYv4jh4=
+	t=1741107564; cv=none; b=EcUqm/j29Lei1jTeQyLJDis8WSGghPwiJVpGz4eQdn9FSLIds3g699r0BTGHocQeslWEp8lMi4pcKOpmLK8+kI/G5Bv5iEYGB3av7EDQYHd0CE8741C7NieowTK1KnvIO4UbjOg4bVgE17YbDbR8dlkkoEd6BJH3r3LRUbRhtEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741107367; c=relaxed/simple;
-	bh=hnuVQHcISgnPrz28CUmLXrSIfzs3nEzmNy8Xa28V/S4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hqIbEyJvjlhXE2U15lamqG7/ZDIiObEzLeac/bVDBSSEmJbaFBUgyFZjIuRJSvIbD1VqTiP4rXazj95eynt3hQ9dvNXvP1bU8zMRw44ChzVoQMiQCNOQ+hiVy9cca52Xo/Z90FWJ8b39Lq8BrS8YZ6ekJpwz4UZ8bnGtwV11KZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RLNC1RX2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741107564; c=relaxed/simple;
+	bh=NMceGXU1AayKIvYDDDytTT9zM6ePfplkGhj1Gwrp0Tc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mccJJ5+GmU3r6fM6budCpTtTPyQUGks42AB2K1oK7AQVKZCSXHPT+A24vSOgk53LP4ITxQsL+ea/eLkJMmk8581yrhoROTDxiZS+IwBRtJF8mW+Qe/xhL8zxsIKQKjy2C2YJQ+TDNmo4BzO9aptHrLPXg+A/LhRVmSoPej7LwSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lQb+SXDh; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RLNC1RX2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D55AC4CEEC;
-	Tue,  4 Mar 2025 16:56:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741107367;
-	bh=hnuVQHcISgnPrz28CUmLXrSIfzs3nEzmNy8Xa28V/S4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=RLNC1RX2WCbRpU5Xv5Y185YLUdYLv+QX3XDw90vIHszAijwgDCuGLm05T1G8U5SKp
-	 aBQzttZjFTVJ5hhkepFV1G+BvcXgPWQfmltMz53Ay9eX0EpVfQjI6xTR9DnUIcyeFZ
-	 HbUfcv8kCiW4o9Yl9PsFTNY38i9QD/C6d5kq9NYMj5WtqMd+XHQ2ccri1nbAwsbNmX
-	 y+V1Lsx5SxNSDjPf4mD2iEO9+u0LWGulwu0IP8JT1oWqsm9mVAQxK77TcYtxNNIUOn
-	 /5UoElygJb/r5YtchJHg3gewAuFTUYRoUaHmaR6H8rwIQIxuaxG/CYLEFsQpO9D4UQ
-	 7jHdbm/bb5C6g==
-Message-ID: <0e156883acf95d31b9358831550d6d675e3ce4ff.camel@kernel.org>
-Subject: Re: [RFC PATCH v2 3/6] tpm: add send_recv() ops in tpm_class_ops
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Claudio Carvalho	
- <cclaudio@linux.ibm.com>, Peter Huewe <peterhuewe@gmx.de>, x86@kernel.org,
- Dov Murik <dovmurik@linux.ibm.com>, linux-coco@lists.linux.dev, Dionna
- Glaze	 <dionnaglaze@google.com>, James Bottomley	
- <James.Bottomley@hansenpartnership.com>, Ingo Molnar <mingo@redhat.com>, 
- Joerg Roedel <jroedel@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-integrity@vger.kernel.org, 	linux-kernel@vger.kernel.org, Dave Hansen
- <dave.hansen@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-Date: Tue, 04 Mar 2025 18:56:02 +0200
-In-Reply-To: <3p5erujbhxw7ozdnfpmresv3dqdh2xszolv6mh4khkagoy3wit@ow5qht4keh4h>
-References: <20250228170720.144739-1-sgarzare@redhat.com>
-	 <20250228170720.144739-4-sgarzare@redhat.com> <Z8Jmps6AF_geaHUw@kernel.org>
-	 <3p5erujbhxw7ozdnfpmresv3dqdh2xszolv6mh4khkagoy3wit@ow5qht4keh4h>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lQb+SXDh"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-22387acb40eso97044065ad.3
+        for <linux-coco@lists.linux.dev>; Tue, 04 Mar 2025 08:59:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741107562; x=1741712362; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=V7W7yQmf61Pq53pMS2vzrgU7eZq7ZkAtUnxQ4fLwZP8=;
+        b=lQb+SXDhfbQjFugXRveXBwO+gC+Fd6ak3ZlQa3KL3A3kIU9CxCahNnm15GGiW1d9Fc
+         f8ykZfip5j19dtzdC0k+kLhwl5PK+Oj97MbHovpgn9bfRGhn/vpY+GsIu+vfhy/B7kY/
+         frqyFRHq9SFKyXbuA3GVK0jNm5y+2WGY95fTCFpxuWP+WRVw1SgqguP03gKihE2AZSHl
+         RUS/VbvMT7RKAWqeGNnM5S0+nGgtuyeM+cj3hXz3lHb4HlhZ5FI9s+GEKVPuCgPiqb7h
+         hNNfHGaGvXCIUTqdusYVD6tbcsNxMV3Tfsn84w6XTVD6BoEFKsXMhLt9kVcg8TFqMdr0
+         Fyhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741107562; x=1741712362;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V7W7yQmf61Pq53pMS2vzrgU7eZq7ZkAtUnxQ4fLwZP8=;
+        b=gSQNtcp+Ieqc+8jgyX8wWCOXRFoDBeLCvBFUMupUZXOkQTrN8oOIlvvWNf9puqmr0+
+         auK0BLF6MVdiIwzgOqewRzmEdZUvVmbSfcXBetAi75w8jRLBkknw3JdQ9OUKK83eIyrK
+         wafMwvI0dyBuwSLRKZqqUIjK0sE/QqrGCY2jUvRbmusrhzwXBgdOSh9Holzw5z7nVfI3
+         kF/mJKjHYaiQnRIJKznpB5WJmpwf4ib+udQuUZ9PZCMuqwSXG2dRkjOV4BxpynWQZyNM
+         cvn7vvqukQklkm/ULBjwsMqodJMYJY9guiErm5nvpN3w6ob8nScEH6C4UoNNdEiqqll1
+         XT1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUcrp30tiZImRq+uiHRJ1dt2Sa/T6t0QR8FwxDMn7OLfgjrHgxXQqPmiCR+1WoecL2v9GflYf+42yGQ@lists.linux.dev
+X-Gm-Message-State: AOJu0YyZzjlEIkko3L+amdfY3aI4TCcS7s6uFkmu9yocEwugbD30zsb5
+	scVZTGR6JB5JaauhOiODI5z2I/YDH0yZ+3ZREtyS8VJHuOM58Xt06qa0unAxyRBYA0nxTxdTV1A
+	VTg==
+X-Google-Smtp-Source: AGHT+IHAFrEgPQdnRru2RpcA9ojFQVDAwMfLY/u9ofYMqa8EKlltfiiKVsKJDm4SpBm3Hx0wphR2ehXHeKw=
+X-Received: from plbju14.prod.google.com ([2002:a17:903:428e:b0:220:e84e:350c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3b83:b0:221:7955:64c3
+ with SMTP id d9443c01a7336-22368f9d123mr262199705ad.23.1741107562128; Tue, 04
+ Mar 2025 08:59:22 -0800 (PST)
+Date: Tue, 4 Mar 2025 08:59:20 -0800
+In-Reply-To: <9d04c204-cb9a-4109-977b-3d39b992c521@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <b494af0e-3441-48d4-abc8-df3d5c006935@suse.cz> <diqz8qplabre.fsf@ackerleytng-ctop.c.googlers.com>
+ <Z8cci0nNtwja8gyR@google.com> <9d04c204-cb9a-4109-977b-3d39b992c521@redhat.com>
+Message-ID: <Z8cxaGGoQ2163-R6@google.com>
+Subject: Re: [PATCH v6 4/5] KVM: guest_memfd: Enforce NUMA mempolicy using
+ shared policy
+From: Sean Christopherson <seanjc@google.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, Vlastimil Babka <vbabka@suse.cz>, shivankg@amd.com, 
+	akpm@linux-foundation.org, willy@infradead.org, pbonzini@redhat.com, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com, 
+	Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com, 
+	tabba@google.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 2025-03-03 at 17:21 +0100, Stefano Garzarella wrote:
-> On Sat, Mar 01, 2025 at 03:45:10AM +0200, Jarkko Sakkinen wrote:
-> > On Fri, Feb 28, 2025 at 06:07:17PM +0100, Stefano Garzarella wrote:
-> > > +	int (*send_recv)(struct tpm_chip *chip, u8 *buf, size_t
-> > > buf_len,
-> > > +			 size_t to_send);
-> >=20
-> > Please describe the meaning and purpose of to_send.
->=20
-> Sure, I'll add in the commit description.
+On Tue, Mar 04, 2025, David Hildenbrand wrote:
+> On 04.03.25 16:30, Sean Christopherson wrote:
+> > On Tue, Mar 04, 2025, Ackerley Tng wrote:
+> > > Vlastimil Babka <vbabka@suse.cz> writes:
+> > > > > struct shared_policy should be stored on the inode rather than the file,
+> > > > > since the memory policy is a property of the memory (struct inode),
+> > > > > rather than a property of how the memory is used for a given VM (struct
+> > > > > file).
+> > > > 
+> > > > That makes sense. AFAICS shmem also uses inodes to store policy.
+> > > > 
+> > > > > When the shared_policy is stored on the inode, intra-host migration [1]
+> > > > > will work correctly, since the while the inode will be transferred from
+> > > > > one VM (struct kvm) to another, the file (a VM's view/bindings of the
+> > > > > memory) will be recreated for the new VM.
+> > > > > 
+> > > > > I'm thinking of having a patch like this [2] to introduce inodes.
+> > > > 
+> > > > shmem has it easier by already having inodes
+> > > > 
+> > > > > With this, we shouldn't need to pass file pointers instead of inode
+> > > > > pointers.
+> > > > 
+> > > > Any downsides, besides more work needed? Or is it feasible to do it using
+> > > > files now and convert to inodes later?
+> > > > 
+> > > > Feels like something that must have been discussed already, but I don't
+> > > > recall specifics.
+> > > 
+> > > Here's where Sean described file vs inode: "The inode is effectively the
+> > > raw underlying physical storage, while the file is the VM's view of that
+> > > storage." [1].
+> > > 
+> > > I guess you're right that for now there is little distinction between
+> > > file and inode and using file should be feasible, but I feel that this
+> > > dilutes the original intent.
+> > 
+> > Hmm, and using the file would be actively problematic at some point.  One could
+> > argue that NUMA policy is property of the VM accessing the memory, i.e. that two
+> > VMs mapping the same guest_memfd could want different policies.  But in practice,
+> > that would allow for conflicting requirements, e.g. different policies in each
+> > VM for the same chunk of memory, and would likely lead to surprising behavior due
+> > to having to manually do mbind() for every VM/file view.
+> 
+> I think that's the same behavior with shmem? I mean, if you have two people
+> asking for different things for the same MAP_SHARE file range, surprises are
+> unavoidable.
 
-It's always a command, right? So better be more concerete than
-"to_send", e.g. "cmd_len".
-
-I'd do instead:
-
-if (!chip->send)
-	goto out_recv;
-
-And change recv into:
-
-int (*recv)(struct tpm_chip *chip, u8 *buf, size_t buf_len,
-	    cmd_len);
-
-Those who don't need the last parameter, can ignore it.
-
-This also reduces meaningless possible states for the ops structure
-such as "send_recv and send or recv defined", i.e. makes it overall
-more mutually exclusive.
-
-
->=20
-> Should I add documentation in the code as well?
->=20
-> The other callbacks don't have that, but if you think it's useful we
-> can=20
-> start with that, I mean something like this:
->=20
-> 	/**
-> 	 * send_recv() - send the command and receive the response
-> on the same
-> 	 * buffer in a single call.
-> 	 *
-> 	 * @chip: The TPM chip
-> 	 * @buf: A buffer used to both send the command and receive
-> the response
-> 	 * @buf_len: The size of the buffer
-> 	 * @to_send: Number of bytes in the buffer to send
-> 	 *
-> 	 * Return: number of received bytes on success, negative
-> error code on
-> 	 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 failure.
-> 	 */
-> 	int (*send_recv)(struct tpm_chip *chip, u8 *buf, size_t
-> buf_len,
-> 			 size_t to_send);
-
-I would not document in callback level as their implementation is not globa=
-l.
-This is probably stance also taken by file_operations, vm_ops and many othe=
-r
-places with "ops" structure.
-
->=20
-> Thanks,
-> Stefano
->=20
->=20
-
-BR, Jarkko
+Yeah, I was specifically thinking of the case where a secondary mapping doesn't
+do mbind() at all, e.g. could end up effectively polluting guest_memfd with "bad"
+allocations.
