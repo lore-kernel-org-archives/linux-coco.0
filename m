@@ -1,161 +1,77 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FD9264F8C
-	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 21:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1643F1FF7BF;
+	Tue,  4 Mar 2025 23:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741125528; cv=none; b=aTJLJOTDGTTwqtfe8b8ge3AnWwqV/HBvxFlm0Ze0yKNdxDStjtcXdH44wGQiK/ivx5Zo39HFXUq5TNzzharKErLswIfyoRXalxTNXyBmodRNG4NGPO8ctqEPNhEoAhbL9CQxWSpppSS5oVEx8MNzsehCshYG3OVWr8Xh+NOPsGE=
+	t=1741131835; cv=none; b=WH/yE+AYW5vUBWdh80R0Ir7q8OYMarX9FYykdR1PRFwa0ZNv7PNqymFnzGLmthSjSAEwpOQAXJcGC2WAMJct+Bh8j8odnBr/7GIh2Jrtq5ods6oiLGizWAGYwRMYfD52J5ChP6c7bL7mmSiprXd6TqfYsl5SYwMlDP6Tv54geqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741125528; c=relaxed/simple;
-	bh=oSozo7BznZq14l5z/ZoFH+lJ1JJjswQ4w2zFnLW19RQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GAD1jL7Jwu6NqmLDCj046SuBbmdpdfMCju2jzBKkc65o0oOi4s5oZ9XM3jdUeV4SWzG+tSaaAhmsTONxOEkyqPdT8Zvvv8WHypBQ11pnMyNMj/fI2W0s5VAbuC7zMmTzliGg0BUV+ag7ERMbwgk3f89QR3D5gsEXTvsXcpBpKqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pPkr2F/A; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1741131835; c=relaxed/simple;
+	bh=KJTrKAUFeXqKd7gJGLa34anESOCeXSsRQo75HdiIUuc=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=XpaLSYNzo88AblanvK3NfjcNDXBuKrRCZI/YjAP6B1JnsffowIrMw57p8xjWTmqdERSqOQdISRXcE6SZaptmXRtUudbe7vVcnpV1QmImvmQVvTCpkDlvEdllJ9LQVmMKkfoimRURC+Ny68uAQa1cbqmSEBG9MpzLmigGqyQlDwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=n5Dvx1am; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pPkr2F/A"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2feb8d29740so9574058a91.1
-        for <linux-coco@lists.linux.dev>; Tue, 04 Mar 2025 13:58:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741125526; x=1741730326; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rU2M9OXwTVnYbkbyQeQ/NuCDqqxkxOkVZk19DIvCT9w=;
-        b=pPkr2F/AXNdQNFPNMSsqd7urvPK72WhU9IFUAQN2jcEUDjIlO4yYYdi6N2vHOwxpSW
-         7I88XBXfNuLjG92F4KD7UO9WIC3Jy66Lip6f+KLzRY+ldkdediFk8wO/W4MnTIKATUEX
-         CZZcjMn1o2Qv0tPUzxhchpvty0aqJ3K2v0VKuLf0koqfRFiVe4GkMU7xJOgWh78CHfYK
-         99A444kRl1a6BClR0osZy1iuyZp4aGesAIUre7bPcidqPZibA8Z00J+O/oUrxVdBGFdb
-         +SgSmnEyBT21zRNeFz041LFoyGftffXrj00KxYvmDFhenfVTLIzFxWbgPEBtrQemE2oh
-         Q3hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741125526; x=1741730326;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rU2M9OXwTVnYbkbyQeQ/NuCDqqxkxOkVZk19DIvCT9w=;
-        b=acKli3hSmwT3gm5FUfC03WECRCYzCS97VT1ufKgBKtSAk385LrZh91z3rlbwnAORp0
-         /exj6bkkiC7uUXw2zx7Fp5X+DLKdM0MSJzCiGYGf/D7qD4s6o1BWWunM8qbJc0Z+6+uQ
-         DLu3pdrTx3suauOdlEAByeFMim/TOwHA9UQFUMQQeX0Y9ZONyIPXx36EAdjOm3yBObPJ
-         RoK2fZhS7XgugmukfpSfslwj/JFHM8+whemZuzUXXkaNpIltE6y+yaiAmMFqZKyFW03Y
-         Xq6nhuufv2tNZX8aacJIJ7Q3K7xc3lvCaUsQJp2JCiCeotdHV4+xXjbM1xt4xmOFsnml
-         t8Zw==
-X-Forwarded-Encrypted: i=1; AJvYcCVlSN35kTVLg9qDbOSXujoC5mYdddsTtysdpD+N0TwjFfUWFf4mT3hG9ivuwsq79xebSShF6H1V5tIb@lists.linux.dev
-X-Gm-Message-State: AOJu0YxsKgZw4qJj+Pf9XXUofVi4PCTKdJqkmQPjxwGHPkM04Aa+ifGu
-	N8brK6Dq9nOza1qM+bKdez+aKQuTFQs6lFFKXfMsbRP1U3OCX4zCEEN0ygymS/TGMHCaaQlqAUb
-	+Sw==
-X-Google-Smtp-Source: AGHT+IFwhJrFtcLOUPHJp0NCI/99GBs81nXEXvmHLfhsmwGYjVBAdZr5LyhZb46FaL0Cxv1fDqlkY4W/+pM=
-X-Received: from pjbrr3.prod.google.com ([2002:a17:90b:2b43:b0:2fc:1eb0:5743])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2643:b0:2ee:d7d3:3019
- with SMTP id 98e67ed59e1d1-2ff49728419mr1782201a91.12.1741125526427; Tue, 04
- Mar 2025 13:58:46 -0800 (PST)
-Date: Tue, 4 Mar 2025 13:58:44 -0800
-In-Reply-To: <217bc786-4c81-4a7a-9c66-71f971c2e8fd@amd.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="n5Dvx1am"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3185BC4CEE5;
+	Tue,  4 Mar 2025 23:43:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1741131834;
+	bh=KJTrKAUFeXqKd7gJGLa34anESOCeXSsRQo75HdiIUuc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=n5Dvx1amUKlj7tZ5ib0hANnaD0kL4bR5H++aFlnZlMavfGt2NvSv6biQs+v5UsvXU
+	 qTBHf4/fEDaPUrfNWTEj2itQHGutHHiZOgCv7mvYnRX1j2oTx9CSeqItjR3GkL8Kqz
+	 5OpDEIdQBk+dgK8S/UPygPvRVQMGSres/aTiqcsk=
+Date: Tue, 4 Mar 2025 15:43:53 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Baoquan He <bhe@redhat.com>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>, ebiederm@xmission.com,
+ kexec@lists.infradead.org, Yan Zhao <yan.y.zhao@intel.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org,
+ rick.p.edgecombe@intel.com, kirill.shutemov@linux.intel.com
+Subject: Re: [PATCH v2 0/1] Accept unaccepted kexec segments' destination
+ addresses
+Message-Id: <20250304154353.a79c330bffb4d21dce2dad9c@linux-foundation.org>
+In-Reply-To: <Z4T1G4dwzo7qdwSP@MiWiFi-R3L-srv>
+References: <20241213094930.748-1-yan.y.zhao@intel.com>
+	<xgycziy2o56hnom3oau7sbqed3meoni3razc6njj7ujatldnmm@s7odbl4splbn>
+	<Z4T1G4dwzo7qdwSP@MiWiFi-R3L-srv>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <cover.1740512583.git.ashish.kalra@amd.com> <27a491ee16015824b416e72921b02a02c27433f7.1740512583.git.ashish.kalra@amd.com>
- <Z8IBHuSc3apsxePN@google.com> <cf34c479-c741-4173-8a94-b2e69e89810b@amd.com>
- <Z8I5cwDFFQZ-_wqI@google.com> <8dc83535-a594-4447-a112-22b25aea26f9@amd.com>
- <Z8YV64JanLqzo-DS@google.com> <217bc786-4c81-4a7a-9c66-71f971c2e8fd@amd.com>
-Message-ID: <Z8d3lDKfN1ffZbt5@google.com>
-Subject: Re: [PATCH v5 6/7] KVM: SVM: Add support to initialize SEV/SNP
- functionality in KVM
-From: Sean Christopherson <seanjc@google.com>
-To: Ashish Kalra <ashish.kalra@amd.com>
-Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	thomas.lendacky@amd.com, john.allen@amd.com, herbert@gondor.apana.org.au, 
-	michael.roth@amd.com, dionnaglaze@google.com, nikunj@amd.com, ardb@kernel.org, 
-	kevinloughlin@google.com, Neeraj.Upadhyay@amd.com, aik@amd.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 03, 2025, Ashish Kalra wrote:
-> On 3/3/2025 2:49 PM, Sean Christopherson wrote:
-> > On Mon, Mar 03, 2025, Ashish Kalra wrote:
-> >> On 2/28/2025 4:32 PM, Sean Christopherson wrote:
-> >>> On Fri, Feb 28, 2025, Ashish Kalra wrote:
-> >>>> And the other consideration is that runtime setup of especially SEV-ES VMs will not
-> >>>> work if/when first SEV-ES VM is launched, if SEV INIT has not been issued at 
-> >>>> KVM setup time.
-> >>>>
-> >>>> This is because qemu has a check for SEV INIT to have been done (via SEV platform
-> >>>> status command) prior to launching SEV-ES VMs via KVM_SEV_INIT2 ioctl. 
-> >>>>
-> >>>> So effectively, __sev_guest_init() does not get invoked in case of launching 
-> >>>> SEV_ES VMs, if sev_platform_init() has not been done to issue SEV INIT in 
-> >>>> sev_hardware_setup().
-> >>>>
-> >>>> In other words the deferred initialization only works for SEV VMs and not SEV-ES VMs.
-> >>>
-> >>> In that case, I vote to kill off deferred initialization entirely, and commit to
-> >>> enabling all of SEV+ when KVM loads (which we should have done from day one).
-> >>> Assuming we can do that in a way that's compatible with the /dev/sev ioctls.
-> >>
-> >> Yes, that's what seems to be the right approach to enabling all SEV+ when KVM loads. 
-> >>
-> >> For SEV firmware hotloading we will do implicit SEV Shutdown prior to DLFW_EX
-> >> and SEV (re)INIT after that to ensure that SEV is in UNINIT state before
-> >> DLFW_EX.
-> >>
-> >> We still probably want to keep the deferred initialization for SEV in 
-> >> __sev_guest_init() by calling sev_platform_init() to support the SEV INIT_EX
-> >> case.
+On Mon, 13 Jan 2025 19:12:27 +0800 Baoquan He <bhe@redhat.com> wrote:
+
+> On 01/13/25 at 12:01pm, Kirill A. Shutemov wrote:
+> > On Fri, Dec 13, 2024 at 05:49:30PM +0800, Yan Zhao wrote:
+> > > Hi Eric,
+> > > 
+> > > This is a repost of the patch "kexec_core: Accept unaccepted kexec
+> > > destination addresses" [1], rebased to v6.13-rc2.
 > > 
-> > Refresh me, how does INIT_EX fit into all of this?  I.e. why does it need special
-> > casing?
+> > Can we get this patch applied?
 > 
-> For SEV INIT_EX, we need the filesystem to be up and running as the user-supplied
-> SEV related persistent data is read from a regular file and provided to the
-> INIT_EX command.
+> This looks good to me. In v1, we have analyzed all other possible
+> solutions, however change in this patch seems the simplest and most
+> accepatable one. 
 > 
-> Now, with the modified SEV/SNP init flow, when SEV/SNP initialization is 
-> performed during KVM module load, then as i believe the filesystem will be
-> mounted before KVM module loads, so SEV INIT_EX can be supported without
-> any issues.
-> 
-> Therefore, we don't need deferred initialization support for SEV INIT_EX
-> in case of KVM being loaded as a module.
-> 
-> But if KVM module is built-in, then filesystem will not be mounted when 
-> SEV/SNP initialization is done during KVM initialization and in that case
-> SEV INIT_EX cannot be supported. 
-> 
-> Therefore to support SEV INIT_EX when KVM module is built-in, the following
-> will need to be done:
-> 
-> - Boot kernel with psp_init_on_probe=false command line.
-> - This ensures that during KVM initialization, only SNP INIT is done.
-> - Later at runtime, when filesystem has already been mounted, 
-> SEV VM launch will trigger deferred SEV (INIT_EX) initialization
-> (via the __sev_guest_init() -> sev_platform_init() code path).
-> 
-> NOTE: psp_init_on_probe module parameter and deferred SEV initialization
-> during SEV VM launch (__sev_guest_init()->sev_platform_init()) was added
-> specifically to support SEV INIT_EX case.
+> If Eric has no objection, maybe Andrew can help pick this into his tree.
 
-Ugh.  That's quite the unworkable mess.  sev_hardware_setup() can't determine
-if SEV/SEV-ES is fully supported without initializing the platform, but userspace
-needs KVM to do initialization so that SEV platform status reads out correctly.
+OK, but that patch is the only thing in the world which is older than me.
 
-Aha!
+Yan, can you please refresh, retest and resend?
 
-Isn't that a Google problem?  And one that resolves itself if initialization is
-done on kvm-amd.ko load?
+Also, please consolidate the changelogging into a single email -
+a single-patch series with a coverletter is just weird.
 
-A system/kernel _could_ be configured to use a path during initcalls, with the
-approproate initramfs magic.  So there's no hard requirement that makes init_ex_path
-incompatible with CRYPTO_DEV_CCP_DD=y or CONFIG_KVM_AMD=y.  Google's environment
-simply doesn't jump through those hoops.
+Putting the [0/n] info into the singleton patch's changelog is more
+reader-friendly, and that's what counts, no?
 
-But Google _does_ build kvm-amd.ko as a module.
-
-So rather than carry a bunch of hard-to-follow code (and potentially impossible
-constraints), always do initialization at kvm-amd.ko load, and require the platform
-owner to ensure init_ex_path can be resolved when sev_hardware_setup() runs, i.e.
-when kvm-amd.ko is loaded or its initcall runs.
+Thanks.
