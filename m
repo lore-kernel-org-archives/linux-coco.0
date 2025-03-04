@@ -1,71 +1,71 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DA21EF0BC
-	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 04:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2C71F4607
+	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 05:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741063986; cv=none; b=F08WZG3U2VhSXKR2/CGJ13RHWb4+mr0XO5kBF+Hqfvm3fdt3P335eKhd1earJBtArwQqno9mfhF1i/7QIFq4i1ELBmBvdrw/xh34MCZiQy/h9guuhrhAP2bjVA4HJSzwPnTtO3wfy12sLWh9Y4JX/BCJTWjRE9Lg5rPokAeGw6w=
+	t=1741065018; cv=none; b=fBfxaEtKAhTL56+ajmoZn1fy4yOaDtEo5SaExwwslSDyqLre5QqX55efZFv9xKZIyFPS1lucyFb0dKWB8foP4tTf2SSPIEcel60PHg9jvvXFl0n4CUcQLQkrvKJPG65xH2PAgHFZcy59eRUrjOowX/gYLUjV6Iaf139MCNyZjc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741063986; c=relaxed/simple;
-	bh=zfjVZcx2cE/z0JCBIXKs0CNEtspZuks9Gv3CVhRkmYI=;
+	s=arc-20240116; t=1741065018; c=relaxed/simple;
+	bh=mo6UEqLjhhD/gYk0pYC+753IVwsq5HZnkglHB39gdLU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ulM6buzRtrDFLP+HKch8wES03RwbKDdH8J/EPrOSiNrrDY8z6IcdiBpV617wU+BtCeU1bWnqsgJyKZiXhFhHfC+2I52kPt55F/8RVT/cV0cC0SCbs20rff3fgfm8zfQsKjqNrxlgnzyl55cWAbWUPp7t6FyzvfZ0PhyKlfhTvT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W6jF0xPz; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=YmWWqw+wNkumfxpos3niKhXuHG1eGzkB90haHUBXT2mn9zCgqxvz9sgpQFL07FdwEV01JcVIiptEo8/AVCwxUmBcypNOf7TxdST/d3kukZ0f3x8N9rckigSYfwKC04D7+xvBT1TIRiMMnf7JZy6Y+v8fNgXqTxES27qF9blkiAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XgCdK5rK; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W6jF0xPz"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XgCdK5rK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741063983;
+	s=mimecast20190719; t=1741065014;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AxELm9JZG3yKkBZZ33qtCi2pLAO/qCPDSQRXT6O3LAA=;
-	b=W6jF0xPzzINshIkDXfI7c1bYn1VDP2vJT94Gymg3aKhjtIYyVZXcZCKAQ5v2rkSx4ilzJO
-	0M9UZWfAVuI71t3OoaS0hL/NHo3DoOgms9tzJzG0PZiyCPHlmobk5fBFmpbzaomBTBZspZ
-	DXT60igXr/MhQ6+YsrroZ0OWtss6bQw=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=U8NQ+qKZ44E29enCPM7Eb/wfq67YXGlkr0AyFJChf4s=;
+	b=XgCdK5rKtY1yMWlBsS4uUogWiwSUKA8/GSbaXIMcoeivR1+zsMhLp+tCmrVkuzhdjKjY9W
+	Tqm4QxBdqru8ldRt6liUpmBi6ywhtAdrE/eoks+jvC3UKgBqNNnIMvJ9NI87BRZxKioqK0
+	kWSjW66rD4sG7AryYmDRz1yO5U8U25E=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-464-dConsKSoMyKF1O_xfcZjtw-1; Mon, 03 Mar 2025 23:53:01 -0500
-X-MC-Unique: dConsKSoMyKF1O_xfcZjtw-1
-X-Mimecast-MFC-AGG-ID: dConsKSoMyKF1O_xfcZjtw_1741063981
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-22379af38e0so51114545ad.2
-        for <linux-coco@lists.linux.dev>; Mon, 03 Mar 2025 20:53:01 -0800 (PST)
+ us-mta-224-AMbJ-Oi9PcSXrgWeeQlzJQ-1; Tue, 04 Mar 2025 00:10:10 -0500
+X-MC-Unique: AMbJ-Oi9PcSXrgWeeQlzJQ-1
+X-Mimecast-MFC-AGG-ID: AMbJ-Oi9PcSXrgWeeQlzJQ_1741065009
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2feb5cd04a0so8158658a91.2
+        for <linux-coco@lists.linux.dev>; Mon, 03 Mar 2025 21:10:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741063981; x=1741668781;
+        d=1e100.net; s=20230601; t=1741065009; x=1741669809;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AxELm9JZG3yKkBZZ33qtCi2pLAO/qCPDSQRXT6O3LAA=;
-        b=iNNMD9kTBsjDr4QfKYQqg0dhkBUrsI/ErcIDSG8Jytn0JKgY7qdPmhVj84+LJ/PT4m
-         QdBGfmrhA5OTv7Qiq7sCiBbNHKDEopnPaVccQEG9Kat2NwU7Zstf3ipWzAPzmrB0PJNU
-         UURNqpjnYvdJRpX4wvz9EptGsV9hVOq5sLJ+XkiZJwPc/YuO3iT6xDMzOuSrm7Mvr590
-         gvv7SzzRJaEVmz3q5b6jnsBfR0XfSxdysWdtVQbIwuzQvskeDaO3va0zzIun7R+GTh33
-         qd2JHRLu9RvgLZ/LWd89UlyqHUOETj0DYqFPNWoIpc5HQsfQ0SSqwq4CckNHt37SgbeH
-         L24A==
-X-Forwarded-Encrypted: i=1; AJvYcCVALDPGfKmsi9xLuE5CbZ1BguNdDmG96MeCOjCfd1sSat+HqBz9PTukDYNHmr+yOQTEot4QtGH2AG8Y@lists.linux.dev
-X-Gm-Message-State: AOJu0YzlzK+Fd6R+NU29bCg4yAAz0zBXJ14jgjGc8wKHM0r58mDikgBQ
-	8naidYoTiRcdwK3v+zcuJzI5qIlFchRI0gNI8snzDf06WV84irYQT6oQGac3mmCJTfRzvCiRYgU
-	MXmCIvUI/uu4C9YID7d5ZCyWXkFWF0+gduUQm0tLwyh8ZN5TOxGidCaPwrxg=
-X-Gm-Gg: ASbGncsMM91gQaYMiqZktS/jYxmAWDxYcug1bmQvzg92DGtXXyypAe2hnBbg8jkqodx
-	U69Jf4fLpO2UoQD4Z9NFKYuBRRKcJ7Dhac5g01joykszmWvaBPr4dx2o7cjiQ40F1Dzdhu6Awer
-	jSj+usFo8J8oiLfoENh77BU7VYyBw05bgAc4FhIVAcu1jQTA0PztMzrmbs0FhoVioi5DwFDXxK+
-	3Jzs6DX5axH1uqvQO0gfjFFvc/xZUifr4c8VGRbgLdLqKMOc6VV8LpkY99zy1AlGcY/BpDHK7FE
-	hnYm0vzJkbO1/UzvOw==
-X-Received: by 2002:a05:6a00:3916:b0:730:79bf:c893 with SMTP id d2e1a72fcca58-734ac33818amr25659491b3a.4.1741063980690;
-        Mon, 03 Mar 2025 20:53:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHrKK12tR3N+mbAAVfdfQ2dTRLheKip2yCmHrOCAijBgggtR8kRt8J5JVYj+IuDCpb/96NhUg==
-X-Received: by 2002:a05:6a00:3916:b0:730:79bf:c893 with SMTP id d2e1a72fcca58-734ac33818amr25659458b3a.4.1741063980378;
-        Mon, 03 Mar 2025 20:53:00 -0800 (PST)
+        bh=U8NQ+qKZ44E29enCPM7Eb/wfq67YXGlkr0AyFJChf4s=;
+        b=qSzCvOAqIsvRHVJMlIgUspqMIJ+seELCsmHGTJ94Aj/B0k07TISVfclW5b1FgXSsBQ
+         MKJYRKqRCN/nu1ODdRk5ch2byTZAwPZ90ix6/H2dd1Bj0Lq0yBPZSufN8q8DuhAZV5mZ
+         MM+79STT8snbH9vrQOthjPXqKO/Ino8bWutwRRDZEjYrHCT79B5funt0Wo6dk03yRWOd
+         mHAVDXijGMIZsRPhvUwgi0av/z638lqLHnQBVL6zRyMDLjWzu6OHrbuBoFLmZl7/mZXj
+         Swwy0NIhQ5ZJ6X13hV1zz8htARyfEGAPBnXEQAtWmiHqHtmjXKhUvzlV4FSs4qf3xw3R
+         MaJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWusRXToQwma4vaukonqK+QeFUxpjAIxsSbP2W/ROtBS0xpAvUsLkIK96KnTtUY2/ezPbqnEHKDbB+j@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxj+ry4oUi61jIGJBJFa7JJm/kfvxchUOeqwDxgKzrThmdqe/av
+	8LIDu6CBcpDhwYv4vEbTmVCtFD+KdTz7QE6KgeeDHsODTw4OyTO8CYYcvdT67Rutvipqc6QQOB9
+	9yDlfXQTjR9MPMgWzLnpFazkE3iIki1eBizREHhiFT36Vun7DOVV4J+U6tMM=
+X-Gm-Gg: ASbGncudIpR5Ffc0VqS4YjlXXKdUL9kRVrhDaD6eEaSA48dOpX6AdNDVwqOZ4A7Kafr
+	2hHqQ6AUszYzMTLDI+AdMvEjOhnIyL4emERZ3BkK7w+kIbMFVCQeE3vl/A22Nk1CiVvdyRVZgyC
+	yvjm+JbpBhMWUqqE0itWiZpmOSVV9F3z+8v5iUxPLNmEiHKoYp372WeGqda/6g7dDTa+B/yix+O
+	KkSWaJ5t70BR7lwnJQnYDe/MfIgWmFHu3bqt1Jw6F3qad26wx7q1mRvmeqsxb+SHei7Qp91H5f6
+	rn4nYo8VckJPTGXZ9g==
+X-Received: by 2002:a17:90b:4c4d:b0:2fa:e9b:33ab with SMTP id 98e67ed59e1d1-2febab7878bmr27494282a91.16.1741065008851;
+        Mon, 03 Mar 2025 21:10:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEiZnTyS+PczRxTvLSMdHTFs/jB2+JERIbLYMAxRPKra+AaKI0Fes/aNpheWezo+oJpvWNtmw==
+X-Received: by 2002:a17:90b:4c4d:b0:2fa:e9b:33ab with SMTP id 98e67ed59e1d1-2febab7878bmr27494245a91.16.1741065008475;
+        Mon, 03 Mar 2025 21:10:08 -0800 (PST)
 Received: from [192.168.68.55] ([180.233.125.164])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7362dbde43bsm6584335b3a.25.2025.03.03.20.52.53
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fe825d2b85sm12057524a91.26.2025.03.03.21.10.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 20:52:59 -0800 (PST)
-Message-ID: <abec92a5-0158-4d97-bfdc-03e805a4c96b@redhat.com>
-Date: Tue, 4 Mar 2025 14:52:51 +1000
+        Mon, 03 Mar 2025 21:10:07 -0800 (PST)
+Message-ID: <8e852bc0-9a02-42d9-8d56-712c11508626@redhat.com>
+Date: Tue, 4 Mar 2025 15:09:59 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,7 +73,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 19/45] KVM: arm64: Handle realm MMIO emulation
+Subject: Re: [PATCH v7 20/45] arm64: RME: Allow populating initial contents
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
@@ -89,144 +89,319 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
  <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-20-steven.price@arm.com>
+ <20250213161426.102987-21-steven.price@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250213161426.102987-20-steven.price@arm.com>
+In-Reply-To: <20250213161426.102987-21-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: tB6qe3-WALIS-uMLnvj9me2hI60nbhk3P-7k2rkgAJE_1741063981
+X-Mimecast-MFC-PROC-ID: 2EQJB-l2yzqZ67JptLD3nFZXvf8rq5ceizPqSAQ5Jc0_1741065009
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 2/14/25 2:13 AM, Steven Price wrote:
-> MMIO emulation for a realm cannot be done directly with the VM's
-> registers as they are protected from the host. However, for emulatable
-> data aborts, the RMM uses GPRS[0] to provide the read/written value.
-> We can transfer this from/to the equivalent VCPU's register entry and
-> then depend on the generic MMIO handling code in KVM.
+On 2/14/25 2:14 AM, Steven Price wrote:
+> The VMM needs to populate the realm with some data before starting (e.g.
+> a kernel and initrd). This is measured by the RMM and used as part of
+> the attestation later on.
 > 
-> For a MMIO read, the value is placed in the shared RecExit structure
-> during kvm_handle_mmio_return() rather than in the VCPU's register
-> entry.
-> 
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
+> Changes since v6:
+>   * Handle host potentially having a larger page size than the RMM
+>     granule.
+>   * Drop historic "par" (protected address range) from
+>     populate_par_region() - it doesn't exist within the current
+>     architecture.
+>   * Add a cond_resched() call in kvm_populate_realm().
 > Changes since v5:
->   * Inject SEA to the guest is an emulatable MMIO access triggers a data
->     abort.
->   * kvm_handle_mmio_return() - disable kvm_incr_pc() for a REC (as the PC
->     isn't under the host's control) and move the REC_ENTER_EMULATED_MMIO
->     flag setting to this location (as that tells the RMM to skip the
->     instruction).
+>   * Refactor to use PFNs rather than tracking struct page in
+>     realm_create_protected_data_page().
+>   * Pull changes from a later patch (in the v5 series) for accessing
+>     pages from a guest memfd.
+>   * Do the populate in chunks to avoid holding locks for too long and
+>     triggering RCU stall warnings.
 > ---
->   arch/arm64/kvm/inject_fault.c |  4 +++-
->   arch/arm64/kvm/mmio.c         | 16 ++++++++++++----
->   arch/arm64/kvm/rme-exit.c     |  6 ++++++
->   3 files changed, 21 insertions(+), 5 deletions(-)
+>   arch/arm64/kvm/rme.c | 234 +++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 234 insertions(+)
 > 
 
-One nitpick below, with it addressed:
+With the following comments addressed:
 
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 
-> diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
-> index a640e839848e..2a9682b9834f 100644
-> --- a/arch/arm64/kvm/inject_fault.c
-> +++ b/arch/arm64/kvm/inject_fault.c
-> @@ -165,7 +165,9 @@ static void inject_abt32(struct kvm_vcpu *vcpu, bool is_pabt, u32 addr)
->    */
->   void kvm_inject_dabt(struct kvm_vcpu *vcpu, unsigned long addr)
->   {
-> -	if (vcpu_el1_is_32bit(vcpu))
-> +	if (unlikely(vcpu_is_rec(vcpu)))
-> +		vcpu->arch.rec.run->enter.flags |= REC_ENTER_FLAG_INJECT_SEA;
-> +	else if (vcpu_el1_is_32bit(vcpu))
->   		inject_abt32(vcpu, false, addr);
->   	else
->   		inject_abt64(vcpu, false, addr);
-> diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
-> index ab365e839874..bff89d47a4d5 100644
-> --- a/arch/arm64/kvm/mmio.c
-> +++ b/arch/arm64/kvm/mmio.c
-> @@ -6,6 +6,7 @@
+> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+> index f965869e9ef7..7880894db722 100644
+> --- a/arch/arm64/kvm/rme.c
+> +++ b/arch/arm64/kvm/rme.c
+> @@ -624,6 +624,228 @@ void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start, u64 size,
+>   		realm_unmap_private_range(kvm, start, end);
+>   }
 >   
->   #include <linux/kvm_host.h>
->   #include <asm/kvm_emulate.h>
-> +#include <asm/rmi_smc.h>
->   #include <trace/events/kvm.h>
->   
->   #include "trace.h"
-> @@ -136,14 +137,21 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
->   		trace_kvm_mmio(KVM_TRACE_MMIO_READ, len, run->mmio.phys_addr,
->   			       &data);
->   		data = vcpu_data_host_to_guest(vcpu, data, len);
-> -		vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu), data);
+> +static int realm_create_protected_data_granule(struct realm *realm,
+> +					       unsigned long ipa,
+> +					       phys_addr_t dst_phys,
+> +					       phys_addr_t src_phys,
+> +					       unsigned long flags)
+> +{
+> +	phys_addr_t rd = virt_to_phys(realm->rd);
+> +	int ret;
 > +
-> +		if (vcpu_is_rec(vcpu))
-> +			vcpu->arch.rec.run->enter.gprs[0] = data;
-> +		else
-> +			vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu), data);
+> +	if (rmi_granule_delegate(dst_phys))
+> +		return -ENXIO;
+> +
+> +	ret = rmi_data_create(rd, dst_phys, ipa, src_phys, flags);
+> +	if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+> +		/* Create missing RTTs and retry */
+> +		int level = RMI_RETURN_INDEX(ret);
+> +
+> +		WARN_ON(level == RMM_RTT_MAX_LEVEL);
+> +
+> +		ret = realm_create_rtt_levels(realm, ipa, level,
+> +					      RMM_RTT_MAX_LEVEL, NULL);
+> +		if (ret)
+> +			return -EIO;
+> +
+> +		ret = rmi_data_create(rd, dst_phys, ipa, src_phys, flags);
+> +	}
+> +	if (ret)
+> +		return -EIO;
+> +
+> +	return 0;
+> +}
+> +
+> +static int realm_create_protected_data_page(struct realm *realm,
+> +					    unsigned long ipa,
+> +					    kvm_pfn_t dst_pfn,
+> +					    kvm_pfn_t src_pfn,
+> +					    unsigned long flags)
+> +{
+> +	unsigned long rd = virt_to_phys(realm->rd);
+> +	phys_addr_t dst_phys, src_phys;
+> +	bool undelegate_failed = false;
+> +	int ret, offset;
+> +
+> +	dst_phys = __pfn_to_phys(dst_pfn);
+> +	src_phys = __pfn_to_phys(src_pfn);
+> +
+> +	for (offset = 0; offset < PAGE_SIZE; offset += RMM_PAGE_SIZE) {
+> +		ret = realm_create_protected_data_granule(realm,
+> +							  ipa,
+> +							  dst_phys,
+> +							  src_phys,
+> +							  flags);
+> +		if (ret)
+> +			goto err;
+> +
+> +		ipa += RMM_PAGE_SIZE;
+> +		dst_phys += RMM_PAGE_SIZE;
+> +		src_phys += RMM_PAGE_SIZE;
+> +	}
+> +
+> +	return 0;
+> +
+> +err:
+> +	if (ret == -EIO) {
+> +		/* current offset needs undelegating */
+> +		if (WARN_ON(rmi_granule_undelegate(dst_phys)))
+> +			undelegate_failed = true;
+> +	}
+> +	while (offset > 0) {
+> +		ipa -= RMM_PAGE_SIZE;
+> +		offset -= RMM_PAGE_SIZE;
+> +		dst_phys -= RMM_PAGE_SIZE;
+> +
+> +		rmi_data_destroy(rd, ipa, NULL, NULL);
+> +
+> +		if (WARN_ON(rmi_granule_undelegate(dst_phys)))
+> +			undelegate_failed = true;
+> +	}
+> +
+> +	if (undelegate_failed) {
+> +		/*
+> +		 * A granule could not be undelegated,
+> +		 * so the page has to be leaked
+> +		 */
+> +		get_page(pfn_to_page(dst_pfn));
+> +	}
+> +
+> +	return -ENXIO;
+> +}
+> +
+> +static int populate_region(struct kvm *kvm,
+> +			   phys_addr_t ipa_base,
+> +			   phys_addr_t ipa_end,
+> +			   unsigned long data_flags)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	struct kvm_memory_slot *memslot;
+> +	gfn_t base_gfn, end_gfn;
+> +	int idx;
+> +	phys_addr_t ipa;
+> +	int ret = 0;
+> +
+> +	base_gfn = gpa_to_gfn(ipa_base);
+> +	end_gfn = gpa_to_gfn(ipa_end);
+> +
+> +	idx = srcu_read_lock(&kvm->srcu);
+> +	memslot = gfn_to_memslot(kvm, base_gfn);
+> +	if (!memslot) {
+> +		ret = -EFAULT;
+> +		goto out;
+> +	}
+> +
+> +	/* We require the region to be contained within a single memslot */
+> +	if (memslot->base_gfn + memslot->npages < end_gfn) {
+> +		ret = -EINVAL;
+> +		goto out;
+> +	}
+> +
+> +	if (!kvm_slot_can_be_private(memslot)) {
+> +		ret = -EINVAL;
+		ret = -EPERM;
+
+> +		goto out;
+> +	}
+> +
+> +	write_lock(&kvm->mmu_lock);
+> +
+> +	ipa = ALIGN_DOWN(ipa_base, PAGE_SIZE);
+
+The aignment operation is unnecessary since the base/size are ensured
+to be aligned to PAGE_SIZE by its caller (kvm_populate_realm()).
+
+> +	while (ipa < ipa_end) {
+> +		struct vm_area_struct *vma;
+> +		unsigned long hva;
+> +		struct page *page;
+> +		bool writeable;
+> +		kvm_pfn_t pfn;
+> +		kvm_pfn_t priv_pfn;
+> +		struct page *gmem_page;
+> +
+> +		hva = gfn_to_hva_memslot(memslot, gpa_to_gfn(ipa));
+> +		vma = vma_lookup(current->mm, hva);
+> +		if (!vma) {
+> +			ret = -EFAULT;
+> +			break;
+> +		}
+> +
+> +		pfn = __kvm_faultin_pfn(memslot, gpa_to_gfn(ipa), FOLL_WRITE,
+> +					&writeable, &page);
+> +
+> +		if (is_error_pfn(pfn)) {
+> +			ret = -EFAULT;
+> +			break;
+> +		}
+> +
+> +		ret = kvm_gmem_get_pfn(kvm, memslot,
+> +				       ipa >> PAGE_SHIFT,
+> +				       &priv_pfn, &gmem_page, NULL);
+> +		if (ret)
+> +			break;
+> +
+> +		ret = realm_create_protected_data_page(realm, ipa,
+> +						       priv_pfn,
+> +						       pfn,
+> +						       data_flags);
+> +
+> +		kvm_release_faultin_page(kvm, page, false, false);
+> +
+> +		if (ret)
+> +			break;
+> +
+> +		ipa += PAGE_SIZE;
+> +	}
+> +
+> +	write_unlock(&kvm->mmu_lock);
+> +
+> +out:
+> +	srcu_read_unlock(&kvm->srcu, idx);
+> +	return ret;
+> +}
+> +
+> +static int kvm_populate_realm(struct kvm *kvm,
+> +			      struct arm_rme_populate_realm *args)
+> +{
+> +	phys_addr_t ipa_base, ipa_end;
+> +	unsigned long data_flags = 0;
+> +
+> +	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
+> +		return -EINVAL;
+		return -EPERM;
+
+> +
+> +	if (!IS_ALIGNED(args->base, PAGE_SIZE) ||
+> +	    !IS_ALIGNED(args->size, PAGE_SIZE))
+> +		return -EINVAL;
+> +
+> +	if (args->flags & ~RMI_MEASURE_CONTENT)
+> +		return -EINVAL;
+
+It's perfect to combine those checks:
+
+	if (!IS_ALIGNED(...) ||
+	    !IS_ALIGNED(...) ||
+	    args->flags & ~RMI_MEASURE_CONTENT)
+		return -EINVAL;
+
+> +
+> +	ipa_base = args->base;
+> +	ipa_end = ipa_base + args->size;
+> +
+> +	if (ipa_end < ipa_base)
+> +		return -EINVAL;
+> +
+> +	if (args->flags & RMI_MEASURE_CONTENT)
+> +		data_flags |= RMI_MEASURE_CONTENT;
+> +
+> +	/*
+> +	 * Perform the populate in parts to ensure locks are not held for too
+> +	 * long
+> +	 */
+	
+s/populate/population ?
+
+> +	while (ipa_base < ipa_end) {
+> +		phys_addr_t end = min(ipa_end, ipa_base + SZ_2M);
+> +
+> +		int ret = populate_region(kvm, ipa_base, end,
+> +					  args->flags);
+> +
+> +		if (ret)
+> +			return ret;
+> +
+> +		ipa_base = end;
+> +
+> +		cond_resched();
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>   static int realm_set_ipa_state(struct kvm_vcpu *vcpu,
+>   			       unsigned long start,
+>   			       unsigned long end,
+> @@ -873,6 +1095,18 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
+>   		r = kvm_init_ipa_range_realm(kvm, &args);
+>   		break;
 >   	}
->   
->   	/*
->   	 * The MMIO instruction is emulated and should not be re-executed
->   	 * in the guest.
->   	 */
-> -	kvm_incr_pc(vcpu);
-> +	if (vcpu_is_rec(vcpu))
-> +		vcpu->arch.rec.run->enter.flags |= REC_ENTER_FLAG_EMULATED_MMIO;
-> +	else
-> +		kvm_incr_pc(vcpu);
->   
->   	return 1;
->   }
-> @@ -162,14 +170,14 @@ int io_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa)
->   	 * No valid syndrome? Ask userspace for help if it has
->   	 * volunteered to do so, and bail out otherwise.
->   	 *
-> -	 * In the protected VM case, there isn't much userspace can do
-> +	 * In the protected/realm VM case, there isn't much userspace can do
->   	 * though, so directly deliver an exception to the guest.
->   	 */
->   	if (!kvm_vcpu_dabt_isvalid(vcpu)) {
->   		trace_kvm_mmio_nisv(*vcpu_pc(vcpu), kvm_vcpu_get_esr(vcpu),
->   				    kvm_vcpu_get_hfar(vcpu), fault_ipa);
->   
-> -		if (vcpu_is_protected(vcpu)) {
-> +		if (vcpu_is_protected(vcpu) || vcpu_is_rec(vcpu)) {
->   			kvm_inject_dabt(vcpu, kvm_vcpu_get_hfar(vcpu));
->   			return 1;
->   		}
-> diff --git a/arch/arm64/kvm/rme-exit.c b/arch/arm64/kvm/rme-exit.c
-> index aae1adefe1a3..c785005f821f 100644
-> --- a/arch/arm64/kvm/rme-exit.c
-> +++ b/arch/arm64/kvm/rme-exit.c
-> @@ -25,6 +25,12 @@ static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu)
->   
->   static int rec_exit_sync_dabt(struct kvm_vcpu *vcpu)
->   {
-> +	struct realm_rec *rec = &vcpu->arch.rec;
+> +	case KVM_CAP_ARM_RME_POPULATE_REALM: {
+> +		struct arm_rme_populate_realm args;
+> +		void __user *argp = u64_to_user_ptr(cap->args[1]);
 > +
-> +	if (kvm_vcpu_dabt_iswrite(vcpu) && kvm_vcpu_dabt_isvalid(vcpu))
-> +		vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu),
-> +			     rec->run->exit.gprs[0]);
+> +		if (copy_from_user(&args, argp, sizeof(args))) {
+> +			r = -EFAULT;
+> +			break;
+> +		}
 > +
-
-A comment may be needed to explain why GPR[0] has to be copied over. The contexnt
-in GPR[0] isn't needed by all cases, being handled by kvm_handle_guest_abort().
-Something like below.
-
-	/*
-	 * Copy over GPR[0] to the target GPR, preparing to handle MMIO write
-	 * fault. The content to be written has been saved to GPR[0] by RMM.
-	 * It's overhead to other cases like fault due to MMIO read, shared
-	 * or private space access.
-	 */
-
->   	return kvm_handle_guest_abort(vcpu);
->   }
->   
+> +		r = kvm_populate_realm(kvm, &args);
+> +		break;
+> +	}
+>   	default:
+>   		r = -EINVAL;
+>   		break;
 
 Thanks,
 Gavin
