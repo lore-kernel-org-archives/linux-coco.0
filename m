@@ -1,72 +1,74 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2066.outbound.protection.outlook.com [40.107.220.66])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2089.outbound.protection.outlook.com [40.107.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83CD2356B0
-	for <linux-coco@lists.linux.dev>; Mon,  3 Mar 2025 21:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34ADF2F24
+	for <linux-coco@lists.linux.dev>; Tue,  4 Mar 2025 00:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.89
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741037953; cv=fail; b=OWZxJx45LxNzECYDPimEduiIa3RlcMCvIlnKQIgE4rcBahiZGmtNTKJhrqKif4xEUM5C65bRz2zOanJkPLx3y/3y+ZnS3mnaLX6iaOexQhA1uHpX5JCyI7TzPzQzGTnm6wDfsOywn8DyQc6O7DBi9bVUO+XvoVqhwtHzID0sRds=
+	t=1741046609; cv=fail; b=I5xy7YqWj7mRLCoF7+aI6BpflmjUG0Pe3KW5BIRnzYWbMXA9Q0E+8sIPD3fCqxGOxUY98dHhU9ApX8blKveTIuvsgsCnlDluBO+ppEG7LILUb9FEhiEMJeoJlPMS5JB1DnC35DJI6OCHI8BF+v9EpiYAHhAUst2qt3XtrABk5Uw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741037953; c=relaxed/simple;
-	bh=Zg5/EHfE6imRrlJ3gCxaJV2H2/HP+11xWfbSWe9EhtU=;
+	s=arc-20240116; t=1741046609; c=relaxed/simple;
+	bh=6V4kuKfVl0NNd8rrjI0I6qQSTmJ5TxtSNV/FSyNrrXI=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=jTi2FqH21wSbN74PVMgV1jw7fTVzv0ahksjy8H7MZMl8ireBiUdiKwqLLVAOYahHnFOt7dA/6IyqMAjQVuwrfGiNw242rO6G9vUNSqOr6TbKpUd0hlt5hRj8Fj+iXEP8+z+i6JMizmSNzhRjaiSbYe68fmiwpIXBP167k6e1vds=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UQ574O5O; arc=fail smtp.client-ip=40.107.220.66
+	 Content-Type:MIME-Version; b=gYldfuDEgcr0tkljM0haB8pSSQujBskv4QjP+0eNGfwIk8n8nXJWvExk/lyG+z7YyPwvGlRcNzPCQnF1fnpAv9sivznLj6YvYsU9AKTbBEvUsj9B5Pl+QO/yS0Bvgdxj7emEFG3qiSwcdQPQbRDPMBbqziZ8b391kXx6tnSQn2Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=giic5pL5; arc=fail smtp.client-ip=40.107.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UQ574O5O"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="giic5pL5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nGYxhCjbU9o8xFDG/r+U9i1pdxJ0CVUHQGNP9YJLFQ3ot5pQCLzEnO1eUIH8t9egVUqpnGQiuPNS+ZiHOfEb/kyJxWFMjkMBQiJSaloIGw0wZPjeKOfaQxlT8uqIYionKLO+e0X//oUnsRYGuEYZGHZK+cE7P5wDgYkdteh1GCA4c6EoxNBd7vnHWgY1u8g7+1WftCxAuY0sAy58oi5t9Zea74rs3OlVGu/Y5iR1q/lM6m1N0CK2hTRQpbPYmW8XjGvgc4JLiLMZD6xIXv9x9hlLsk9q22lFsJbb+M6N/PRSSdKYYBzQ1uJqoivAlR4q0LE/2Lb2CMOu3omwL+30+w==
+ b=TzB0O4wH+M6s84vRDhcuS5tWL6yvOTse8I+xxF4AqQzPGhhHQy/CTyHoKwrNOjMMm24GZppVFUOjzKuxe9ZiZMgkUt3YmtoGU6iYY5jW9nsSVt6m07LZOAfsfurOr9zGGDfNouOlyruw6kFneobxqMCLmbKeMenSyTI1CTmBxIpLBGxcRvBA5H/sm8QH6WawlNuacKjEjB7pgrPXcTGozcktnvdDk4P+iWDNOspCezPv4hwTc6Ittce4Wz/x4htOkhhD2KGz6mkT+tPpl0IkE4K1GsPDZ1kmtU748R6UNskM6b7ESippvJ4b/L/r8xkorLx7/I9sl9bJKjzAV0euZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pbsv/wB4DSCzU+ILHj73GbCri1M/4zofM1JQQK35t1I=;
- b=nSOirw02FxGtWZ756md7r5OHN5lf7EcHlVXa618/NBzXBn9BRJWgYXiMpY+1Hjc9DBd7YHAky2/p4F27DCOtGUb6ZZVvXN3FC1TBXHXOuVyOsvv61DGUeF32eUFcFj0lRsXW0P34Fnueq/UdyAXDI9GuQw1GOVfSXENyf3DuAguZlncZu6qI+l5l5qYTY6lW3t2/Glz2ESrkAYXo3X1OA3Yc9+Nra8IFKgXox3sepxCgSguZz0YzR22umtoirLJAG7qq0M9wh9nNYJAJ8SD9Fj4CWSxDyxf0qZr3LasxqHBp9pbVS5UiDyx1Q6QrzLVai3wHlSAvfyfncvvbCSY8Jw==
+ bh=o5ehYn54zcfnIgqEYABd2X3JiTzW4MoRZ/xM0YltDGc=;
+ b=ud2ZmGSKdX9sBnktijmTYBGJjMJm9f9d58xXgPc5/L7hnhH4l8HoYRjW7LwlkMLb9ERhV6jVzpTDc49kjKZqfEIgVtAd9VOSGdDZn30kEfzCdtaOin22rMH0zlysAsKTwILpAtvUuprAH2mDCUJYXiG6/39zs1CfxJR96arjtvr47qnJNdXBUk99qiIiokvQ1MHl3/+GTg5RP8Ga3xfq1fJwIdTIUlw/xyWoqbVurQRd8TJVMIPhLlF0OPw/RS0xY+ii89RNbJvAFPtwsozBBQi83hB5zls7r+mMlNbYi34Fb8//HEncHlK4pLcLtQiE2kIspZcdFb9Ubb671eBERA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pbsv/wB4DSCzU+ILHj73GbCri1M/4zofM1JQQK35t1I=;
- b=UQ574O5OT6GqUEu39m7bDdI4/PJX2wXaRgYJ9qwgQnZ7Nc3IOmB/zfhzKCXWb6s3i75h5MSdFrJ+I0JfGw5bPlOMEktsvfPvO4iDxSnl9SnAur+FAdhl0uyCpHyrQ5j1SEPefj0bvdKnQu28+xpya3fwG/rvUsx51BWaAa73FuY=
+ bh=o5ehYn54zcfnIgqEYABd2X3JiTzW4MoRZ/xM0YltDGc=;
+ b=giic5pL5CjOdPDP3O4v9VpCAeemFvEZabvYtY7uchgnfyt+WCzpyggj2wpPZleBijfPdCGjGa+e19OSTJitlsBo+S64yOFojV4ZZrkUNArt+2OFW+sCG39rF++VNnuLh/PFT50nrBNaQjh9X+xJEp6IeEbzazHOpnOuk0aiB4gU=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by SN7PR12MB7934.namprd12.prod.outlook.com (2603:10b6:806:346::16) with
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by LV2PR12MB6014.namprd12.prod.outlook.com (2603:10b6:408:170::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Mon, 3 Mar
- 2025 21:39:09 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::c170:6906:9ef3:ecef]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::c170:6906:9ef3:ecef%3]) with mapi id 15.20.8489.025; Mon, 3 Mar 2025
- 21:39:09 +0000
-Message-ID: <217bc786-4c81-4a7a-9c66-71f971c2e8fd@amd.com>
-Date: Mon, 3 Mar 2025 15:39:05 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 6/7] KVM: SVM: Add support to initialize SEV/SNP
- functionality in KVM
-To: Sean Christopherson <seanjc@google.com>
-Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- thomas.lendacky@amd.com, john.allen@amd.com, herbert@gondor.apana.org.au,
- michael.roth@amd.com, dionnaglaze@google.com, nikunj@amd.com,
- ardb@kernel.org, kevinloughlin@google.com, Neeraj.Upadhyay@amd.com,
- aik@amd.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1740512583.git.ashish.kalra@amd.com>
- <27a491ee16015824b416e72921b02a02c27433f7.1740512583.git.ashish.kalra@amd.com>
- <Z8IBHuSc3apsxePN@google.com> <cf34c479-c741-4173-8a94-b2e69e89810b@amd.com>
- <Z8I5cwDFFQZ-_wqI@google.com> <8dc83535-a594-4447-a112-22b25aea26f9@amd.com>
- <Z8YV64JanLqzo-DS@google.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Tue, 4 Mar
+ 2025 00:03:24 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%3]) with mapi id 15.20.8489.025; Tue, 4 Mar 2025
+ 00:03:24 +0000
+Message-ID: <8c091787-9275-40db-9167-af270dc5bb8e@amd.com>
+Date: Tue, 4 Mar 2025 11:03:17 +1100
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 08/11] PCI/IDE: Add IDE establishment helpers
 Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <Z8YV64JanLqzo-DS@google.com>
-Content-Type: text/plain; charset=UTF-8
+To: Dan Williams <dan.j.williams@intel.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>
+Cc: linux-coco@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+ Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
+ linux-pci@vger.kernel.org, gregkh@linuxfoundation.org
+References: <173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com>
+ <173343744264.1074769.10935494914881159519.stgit@dwillia2-xfh.jf.intel.com>
+ <9f151a74-cc5c-4a7c-8304-1714159e4b2c@amd.com>
+ <6d50f215-93c4-49a5-9ee2-f9775b740f92@amd.com>
+ <Z32H2Tzd1UHCQEt5@yilunxu-OptiPlex-7050>
+ <d71dd5c5-4c20-4e8e-abaa-fe2cdea4f3b2@amd.com>
+ <Z4A/g5Yyu4Whncuu@yilunxu-OptiPlex-7050>
+ <a11c82c3-b5fb-48d9-8c95-047ac4503dc6@amd.com>
+ <67bd098f4dcd1_1a7729449@dwillia2-xfh.jf.intel.com.notmuch>
+ <cf2f615d-2a28-45ec-8bb9-563c2a5bde73@amd.com>
+ <67c11ed38ff8_1a7729458@dwillia2-xfh.jf.intel.com.notmuch>
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <67c11ed38ff8_1a7729458@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7PR04CA0173.namprd04.prod.outlook.com
- (2603:10b6:806:125::28) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+X-ClientProxiedBy: MEWPR01CA0019.ausprd01.prod.outlook.com
+ (2603:10c6:220:1e4::13) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,158 +76,197 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|SN7PR12MB7934:EE_
-X-MS-Office365-Filtering-Correlation-Id: c32e917d-fbe8-406a-77d0-08dd5a9bd46b
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|LV2PR12MB6014:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5bdfda43-1d12-4255-d79c-08dd5aaffb72
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QjZrZDkwcEg3Q3BoRWxZK2lXTGcwd1ZsQ0NRam82SS9Kd1F0WVZtVGJ6VFVI?=
- =?utf-8?B?ZkE0a2JWQ2lhRGNPN01YNTI3MDUyUUdtT3RNaXJyTzl1NWs3M2Ztay85MXp2?=
- =?utf-8?B?dXA4VzNQcFpoSGs4eVh3QWpNbXJNWDREejhiZEhMSTUvSlZ1MzcwTUtFQ0JY?=
- =?utf-8?B?dkwxVkdNc3VzNENIR2N3TmprZkpNVEUwQzUrNTk3MnRzQ1Jmb0s4aGZ1cDNY?=
- =?utf-8?B?QnhPR2F2eG53NjBLZ04xTEd2QjBnbGNTV212T2VlTFM3SitwaldhZi9ZRkpo?=
- =?utf-8?B?OFkrN3NoNW8wUFQ5VHpHbytUTTdkR3IxMmdiWGVvUkFnb1BlRmtzWVljOVBW?=
- =?utf-8?B?RjRKOWU4eXl4SHR4VG9zdWxZVS9UK0JLZ2c1MldGMTZpL1J6VjV2Qm5JckxD?=
- =?utf-8?B?OXBUYjd2Z3dtQzNKV2xwOUhwN3RPN28rcmkzaGM1Wmo0TjdWYlhETGd4bHhs?=
- =?utf-8?B?UWRacDBoTWxUQUc3NEJsM1o0UFlnU1dFbkN3V0RnSlpoMktiUm1MVTM5R3pm?=
- =?utf-8?B?d3p6cXNqZ2haN1lIWVJRTUNPWndSMWJFaWNSdXh5Ly8wbXhnSFVxaHV0NjBy?=
- =?utf-8?B?WUhaL3d4QktDVzlDa21URStiK3NTZlF0MXRqeWYyUE9Wc1Yyb2l1RnNmUitN?=
- =?utf-8?B?ak9xWXFSRE9Xa2pOMmxrY2xMUWM1WFc2Mi94VHNsNjJKNWpVY0Y0OWhxK2hl?=
- =?utf-8?B?aTlqS21QNzIzM1M4NlZHZzlCQVdDSzkvRlc3eHFKVldEN200TW9hMzVXRDUv?=
- =?utf-8?B?cTZqditIVXBlVHBVblNhQ3E2bEp0WThJc2doVG5tT1pkTjF6QTh5b0Zyb0Qx?=
- =?utf-8?B?c2ZLRlUzdXFMNHZsN2c0RkZ2dFZxQzlxU1NUdjV5U0NrZjlGSWtZbThJVlR3?=
- =?utf-8?B?QjMrN3JKOFhrVU03OTcyK1ZQNWdyQWorWC9RRlVxNTRKVml5VFpTZmNzVy9h?=
- =?utf-8?B?amNJVVlDa2hsS1poWEI0TE9lNUFKOHlUdkYwTGxQM0tzK1hJT2ZpeW10R0Yx?=
- =?utf-8?B?NVIxZzZ2OHJ0Z3dUK3JYU1paK1NNMHZHZkdCdWtyQWpUWGNDN1ExaFFJZUp5?=
- =?utf-8?B?TE8yNzVPTy9OQVdINVd0ekVBWGZNMWJBcURucjBTUEtyMDZGWmdBZ090and5?=
- =?utf-8?B?V1pIb2pRalJzY2ozZXJDS0xYcGpRNDVMeFZLd3BrNXE2M0w2L2l0NzR6ZDNB?=
- =?utf-8?B?dW5NaWdhd2hsTG02T0d5K1FBKzllN05OSWxKbExCSVBpNENlYzFCTDkyc2R4?=
- =?utf-8?B?TkJscWIybjJabUhPeWRscnFhK1lyeFhuOG1mNG56M3hmQVVXWFhzdnBRRE4w?=
- =?utf-8?B?bE9hbDNxWlJ4UWxtdGQwRWNlNVZVWU0vbXdTbFpHdmNqTHNoK2M4TmpRV0hD?=
- =?utf-8?B?dzZiblU2OVZnRURZenlaQ3hZekFBQStrNWUxMjVwRHp3cnltY3JabTlBOXFZ?=
- =?utf-8?B?cGFXa1ZqT1NVRzNBM0l2a1pTZGw1c1oyZy9pNUVMQzlTcDhuQ0NZbEdkSW0z?=
- =?utf-8?B?ZzJ6Q3NjV2xGaTB5QTJhKzhvSGNSeUpTOWxYclV0WHc5L1E2ak5rbUN4WVNx?=
- =?utf-8?B?WDFOR2h4dDREWTd0MXhkNk5iYWdJZXc3WHpDdGJjQVRKY2ZReWdmcGM4QmVq?=
- =?utf-8?B?Q25oTGhWcGZLNUczbFNmZ2FsMHVyOElWazU0Ri8vbmZzanZuVWRIK3dEUFF3?=
- =?utf-8?B?VlMyemlXWlJxZ2IrMUd3Uk1jaEg5QytqK3VvV0QvLzBtaGVobWo5cWdWZmc2?=
- =?utf-8?B?MjB3bXExT3k3ZllmV0RYcmRQNXBnbUovdFNMckFXU2NFNFhKdVdRTnpFWHpR?=
- =?utf-8?B?NjZVSFYzS0cwRWlhY2IxM0xDWVp3S3o0ekNFalZOK0JWU3ljNTFocGFlQ05X?=
- =?utf-8?Q?PFwEWgSEQwtQB?=
+	=?utf-8?B?TW9IaVVuaU85VGVLNEV3NG9WK1NRWWpYTFNCSWV1T2R3S3g0U2xsb2F4Ynhu?=
+ =?utf-8?B?Vm1ZdDJwR3A5Y2NXbXdyelNzRlozMi9nU1dnOHhpSm1hWkJsazBQc29NTVdC?=
+ =?utf-8?B?OHBoOFZUTDFTMmZrSW5UNVVCbDJpbWxlUXNkd1JlalBHSE90dXZBYi9GVGhv?=
+ =?utf-8?B?SWhFcWhpRFF0bTQrT1A0c2dnayt5Kzdxd2FlUjlKUkk2V0d3SGN1N3A0NXhV?=
+ =?utf-8?B?S05maGRSTk5rS0FEQm1FNlpXVFV2U24vNTRTcmZIc0lKbGFHUUx3ZDhZRUN1?=
+ =?utf-8?B?b2IyMms1QkNtNnZ5VnA4bi9kdzZzSC9zbkFmTi9sSHdKYzF2QzBWV3F3cUlF?=
+ =?utf-8?B?ODFNYzZYUTZsbEZoVEJyOGNwTmNwdCtJQVRCME1Gc3RhbW93dnp5SHduMG9V?=
+ =?utf-8?B?aWRreHFpR3FNQzIrcGpDQXo2SWcwMUlkU0VJRUZub0NHVkVqMnNXQ1ZkTDZL?=
+ =?utf-8?B?a000YTdubGxRZHJWSzFTWUVtdzFUUGJnbktFcjVTNUtQNkJMTGE4OC92bll4?=
+ =?utf-8?B?VEFlT0lUNEg5WC9QUTRtVTR0T1pNV0pQSnpDVHdKQUp3R0xmZUxSWWlmcFVO?=
+ =?utf-8?B?b1hkY0cyaTc5YnpjZUhPUG1TdUlmbm1KOXpKOVBidE9DMGZGdzBzS0hHR0VU?=
+ =?utf-8?B?bjQxRVg5SW9GVWhuQitsY0xmSkhoM1hCUGhSV2dDMGE0elJQUWNuT2dGUmpQ?=
+ =?utf-8?B?SE85ZFl4dFVob2FQSjVKZy9HZVpXWW01S1pXbUxOV2RlTHQ2aXVTQTdPT3pP?=
+ =?utf-8?B?R2lDYTFVbzg4eFlKU0Z6SXUvOTVKRWdyT2p1VklYb3dDTlJNRkxaUW9wMXgx?=
+ =?utf-8?B?Vmc3eUtiTUlGMnJJR24wQWZ2RnhNOEtsT2Q1QlNCeHJZbVcxa09QNDRQalZ5?=
+ =?utf-8?B?U3ZhTnY3b0V0UHdraEk5WVBQSEZlQktoSnZHNmlicHhZNmYwbHFDdEQrOXcz?=
+ =?utf-8?B?RzJqN2N3Q2dYVnpGMy9oQTRGd0txN1M1dVcxZlZ1OWdTQ2VBWHBJWXc2NXNs?=
+ =?utf-8?B?RFpTNGJXbUNaQ25Ha3F1SHl3S3B4eHVJczRqMTNuRXJQNXBLQmxWUk10M1Vn?=
+ =?utf-8?B?K2ZoVnRkVVJhc1BnYllLNXliVmpSSjFNK2kyQ1oralJpZUJDTFhNL08wU204?=
+ =?utf-8?B?TFdQUlNrbE40aTlEdS9yZWhRSnI5TU5Tc0xENzg5QWRNS1h0YWhMT3JZajM1?=
+ =?utf-8?B?UzFuWWwxMUpzdDQvRmZKWlZnWnU4Z2NUNzl2QUE1VUIxSjE0UThLWFRaM3RK?=
+ =?utf-8?B?SDdaYnovQ0IrRW5CZ0VlZVhQT3M0SGxNeVhTbi8wSUgzTm55UTBMOGxaaTIy?=
+ =?utf-8?B?c1lQeXJ0SnZlZExMUmpWeDd2MHZjbUR6QmJGWFp3aGlHUUExRk53a05Mbmdw?=
+ =?utf-8?B?aGdZSFdiYTltc2l5aDRLLzFUekpvQlRRNDUzNGZ3M3JrNzFPTDZGQTJtSUJl?=
+ =?utf-8?B?QTlSYWVrWXVIZ0FaSzFZWVNDalVmYjlQQ0IyKzZPT2VnWXo2VVNUc0RJYjhm?=
+ =?utf-8?B?RzBxWWNwWEJRb2IwR3lLVWFVenBWYVJyVnNmR0xPdzVHL3JMR05rS0txZ3Bu?=
+ =?utf-8?B?TVdDRWRwOGhhMEZnL21qQ2V0NnlvS1haMmZjcEpaalYrelJ4U1Q2eGg4UmVj?=
+ =?utf-8?B?Rmh3a0xYK1VKdVJxdTVydjV2RXR1TzB1OXRmZVhIVWx2SEg4TFhGcG9sQjBk?=
+ =?utf-8?B?YlF1ZCs5NS9iN0RVbEZ5R0gwUjdIdWFkd0RvT21adnhxQi9QVWFUbWFOZ21v?=
+ =?utf-8?B?WmJZdXhFaEs0VTB2dUdNMEJ4MDJKbnJqWWdhNktLNzNHeWtWMEg3RGNDZ2kz?=
+ =?utf-8?B?YTgzSjZYNDlmN1ZHQUw2S04wQm1QOEFyTnNhTzJBMkIwcXU1NnhkaFZvSzRR?=
+ =?utf-8?Q?aXIMVrzN7GbgH?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MFJWWk5JQTFEdTkxRHZpNTAxTTZxd0Y5WEh2U3hFOFl2NlRxQVJLeUZLR0VM?=
- =?utf-8?B?WjFTRXpOUmlrOSsvb1Y2dXhqNjExait1NGR0bk5VUHJiMStJT2hWL3Q3Tmcv?=
- =?utf-8?B?T1UrUG5YdU1aTFM0QkpaZENvRCtwaXJJdG9yZmdXeTVXNlpicDUveTU4cldD?=
- =?utf-8?B?d1ZPNTdGQXhmTkhFeWRxSWJ0U01FTkFKZ1lLNjByelBoTDdreGxKNm5HMjQ4?=
- =?utf-8?B?N2t6QWxZWEtqaGZ6bU1ITkJWTnpYMzFOQm8wenBQUFRLOFFLbmVQYUVlejB0?=
- =?utf-8?B?Z2JLUnh6QmlIUnh6YXlhSThobWlwWE5HbGJ5UWY5OFd2WnlxZ3pDRm5GZE5X?=
- =?utf-8?B?S3pBSmM2VXFBazZ2clBFR1VGZVAxajhBS3l0WkcxcG12aFJMYmMyQnhURElH?=
- =?utf-8?B?WURJUmxHTitLK3NBQnFYa3A5RnNsTXBiZW5OQ3dQaG0rVk90dlU3cElIOGRU?=
- =?utf-8?B?T1JvK1lqMTcwQ1pJNVNnWmwrVnM2cHJDemtvc3V1RG8yZFU3NUFJdXdUZTBO?=
- =?utf-8?B?WnM1UmJUZ2Q1NCt5VFZaL2liOW5rKzV0aDc5ZjVyNjVMeWt4U3Y3VXFreExa?=
- =?utf-8?B?VGZsek5aY1FMRllzM0FBVW1La0RqQ1dFOTFZc1FUWGxnUlJOSDF2SWt3Ymti?=
- =?utf-8?B?ZFFPckdkM09MYzMzdDkrcHVZU3daUFJYTEtJd0dDYWgwTGJNdzk5SlF3Smt6?=
- =?utf-8?B?b2FPaWR0ZmVwSjB4SjdEM0xLY1BKYWZvR0JkZVRpYXdWMkFNeXhSWS9uQW9v?=
- =?utf-8?B?NGRGRnF5MWhKUkNDV1llNCtVT2ZqSjJpanZlUUVnWVM2TE52Tmk0eGNXU0sx?=
- =?utf-8?B?dWd4UVNJaG1FOU9xWjhlNEJya2NiQmY3MnhaRm13UmFmcW5DcHJObXZkdnBF?=
- =?utf-8?B?eFpFK0tOL0dVWVdNR2ZZZHN4UUxNWll5NFVnZk5WZXN4QTJuUjlPemhnY1Vy?=
- =?utf-8?B?UnBSNUdvckw4VVNjU01YTjY2ZlA2c0RCcmwxdSttTnh1VW85V094bEYvZEdV?=
- =?utf-8?B?amMwdEZDOHVFYlhzenFMa1h6bzZlYUoxTk9Hd0s0U1A4SHZmTFZCMlI3Yk9o?=
- =?utf-8?B?bC9lV3d3QWx2NElyVUZMYnFPSjA4L2JqUGVaZWkwTU9KNk1sUjFHUlU2NWRn?=
- =?utf-8?B?Qy9pZGgxYlpDNHFROE1RUXRMRGllcUNzeU12SklGTCtINkVtVlc2eGhMMUwy?=
- =?utf-8?B?NGxRWkRGWkhCWUt2UUF0bEliQWxYY3M1RStTcWJmRE5DS0NpMURRejJaQ0FN?=
- =?utf-8?B?QnJTQ3A1cXVNaVZjS3VaNjF6SWY5YUtUYU9Qbi9ocEVOdXkvRkpWajY0SEhh?=
- =?utf-8?B?UGVwSEZQazFYcUhZSEpiaU9iM1NUMVcwbldjZFJlZEg5U0c0L2ZBV3IyYzdq?=
- =?utf-8?B?UEs5OVNYc0EveWlTN2FxQkQ4YUdiemRybFJ1WEFESFYweDY1THZPV0lZNkht?=
- =?utf-8?B?WVpoRnhIelZFZndnRXJVVmFOYmZJbDdDcWphbzZ4UmxPR3RuZWpUTGhPelVS?=
- =?utf-8?B?cFEwc2F6ZlR4SHRYSlFJckdHMzJLSmR4VVNvcmxuNzhkZUFyWWczMHNROUh4?=
- =?utf-8?B?bVJnVUlibXFGU3lZK3VmZE92VnloRjlEVVhFcTVyOG5VSjRjWExka2xSTFFs?=
- =?utf-8?B?aFREMjRhZzBHNE1relRhVllOWEhVYkJ2akV4LzFndG14UnI2UW5PU1h5Zmww?=
- =?utf-8?B?aVVzUktqdDdMSFdXRFUrUm9ERWEwNUZlT3EzbXNyTE8xWjk1TjRpL1d6RDhH?=
- =?utf-8?B?eEVSOFpueUdIWEVGR0wwNkJEQjNqMEoxSzBKa3lkMUFxTGhUSkt1Mlh6RDlM?=
- =?utf-8?B?cGRRK2d1Y0VacEZhRGVrRkRMdmxiWml1bmdlWUJEYWJST2ZabmVmd1JOSmxt?=
- =?utf-8?B?dTVydjk2clREemg4Q2NUTTlzZ2wxdkhHMG94aURMdTJJWGh2QW5JZWRLaG5B?=
- =?utf-8?B?dWFsT1BCTHhleVZTWjNoV3ZaKytJSUdFR1BSSHRsK0V3aGNQNHVhcytZSlR4?=
- =?utf-8?B?aWg0RHYxN2FNMmRadDBXMjJDTGZMdUZNczN0ODlycUNLTDVpeFNrZVRvQ0cv?=
- =?utf-8?B?Nm5GV3lzUUQ0alVvVnJhLzIxY0k5Rjc4WXIxdjhtSHFnd1l4eE5Kcm8vUXF0?=
- =?utf-8?Q?bEf2IsHgPuaz70YUzsdkuLZHX?=
+	=?utf-8?B?cDEyOVBTcCtuM1RneGRrSHNwLzBuK043N2M3d3lDUzlCRE1iRVZDYklEVU8r?=
+ =?utf-8?B?Q1h5SkhuZXEzWUdyVW82WVRHZXRTWTNxb2JsU2ZWbFZ3ck5xV2VNZktiNEtB?=
+ =?utf-8?B?U1NRVXhPMllxN2dsZkNLZFlTR2RBQWQrdlNkdXJYZmdlcDNJcDllVktxRDFw?=
+ =?utf-8?B?Vm9sVGlRcUpPaHQ1Ky9vbEtMZmdPRGJjdXNIMWFQUzd3eUpzKzN2UlVzVFM3?=
+ =?utf-8?B?UyttUUVlOTBOWit6N0ZhYTJYbDByVjVlak5RQlg2ODdTbjB2WE03QWQxK0xp?=
+ =?utf-8?B?Q2V1ajlNMVl4YkE2OGlYQ1ZYVWtnbTFEbW9RbHJ0QnJVU2hnVjNjM0tUTEdK?=
+ =?utf-8?B?Y1lidytiYmdTUE1hY1c5cXNQVUlDMHRxYVovOGV5a3lDdWMycVRVOGR4cXB6?=
+ =?utf-8?B?am5BaGtHbnJMQUsrZ2F4RHgycU8ySEpkVk9tOEQwMVUyenFMOTQzNm5KT3hV?=
+ =?utf-8?B?SWJUbkx5MWhYTERSbXBRaG5GK2NNK21JVUo1ZkVMcGxvZXZwMWw5VHJZMGxs?=
+ =?utf-8?B?YUt4akNFSlhlaEFSS0ROS0xOZTdtL3EwT25xYXpwaitHQVZWbzZtdm5CS2Zy?=
+ =?utf-8?B?WjVTK3ZwcDhzS0pHc0daQ042ZGN5elNlbnlMU0Z3dDN1enhSMjRGeSs0R3Zv?=
+ =?utf-8?B?eG5pMVVWY1QwMkdYSUlmSk9JRVczTmJ4UHBrSnVKWWZCR1Q0cWpodUtKa01J?=
+ =?utf-8?B?VkJlMGZWKzdNWVlaL1JSdi9jeFhNOWovSFhkeU1yY253My95dWJvWWV1bllW?=
+ =?utf-8?B?eml1d1pBSlBkcFRXdFBqQlloNEhYOUFRVnhiZWRPa0RZVWppNGFBUEs4VTNG?=
+ =?utf-8?B?aXFQbE1YMThTN0l2dElCcllnd0Rlb2trZnZqQUxqc3IrbElscGJzVmFZRlRQ?=
+ =?utf-8?B?Y08xcDlxTXg2dGlIdDlFNzdDNU13U0h2WUptRXQxUmhWRTdrOWxSeFU5VXJC?=
+ =?utf-8?B?ay81aE5HRU10MWY1SlNYVjdaZ0hXUCs2K2ZZRlRGV3RQcGVVWkswdmthd2FM?=
+ =?utf-8?B?Sk01RGZ5STNmMk93S3Y3WUY0MWVvdm5Sdm84YWdOcUJRYnRqKy82UWtEL1Z6?=
+ =?utf-8?B?R1JCT3ZydDEyOEQwMjQrZFRrKzI5bnZVMkd4eGVSc09LN2xZdCtkM0Z4L1Zp?=
+ =?utf-8?B?Wlo1ZitTTytleml1UkNocEJTOFNPWm5GYXlZenRnSERIem9sTWt6eUZBOFlZ?=
+ =?utf-8?B?TVoxNUhzMVkzNjd6OWRjMVlYRE1XOEFzRlE0LytjSjdzd2tXaGRVTjJLbERV?=
+ =?utf-8?B?dWlQdDdqT2ZtcU92SWczL1Y0dXZaNytNMFVxeCs0V3dESGN1eVdGYkRQUUE5?=
+ =?utf-8?B?eWJYWS84VW04MENxMU4vRWlzeHROcWlEMkhVNjAvbytod0NTLytKQmJxSjVX?=
+ =?utf-8?B?QzhLN1BYN0ZkMHpOU0FOYmdTNi9QTEw3Y0pPb0dxL0E4REtqdWVyK1BPZFlG?=
+ =?utf-8?B?K3VqbWYxTDdvK1lqaE1RZWFoOTJpNU5aSXZhbkNCQW5JNUVqYnJtY3BoQTFk?=
+ =?utf-8?B?TXRxU295dk0wRUdibkVaODdjTGNTd0V3RHFrSFZLcVRGUGdyY3dpSmFXcm1u?=
+ =?utf-8?B?UnZZd3oxOFZqU2t5a01KdWdCWkNkS25lNC9NUnViN3luQzRRKzQvZldSeVNn?=
+ =?utf-8?B?dXlOKzJkOFJjVWFCRDdsK3RacWpoS0JHc2xzR3phYW5VYUNNeFlVVDl4VkR0?=
+ =?utf-8?B?RFBEZENDS091Y0ZoeHhOcmsvWmtNQWNjM2V2d1BmUU95V1AyK2NIcjRkNGRm?=
+ =?utf-8?B?ci9hR2pmVGxXd2NlYnUreWpES0tnajB5Zk9EUjUrcjh5VGhNd3hFTHA2VTdu?=
+ =?utf-8?B?cGhFZ2Y4Y2xSTlkrV2lkWElzcUxDeEluRmhKUDN6OG95VnQ3dDdURDJsZmhh?=
+ =?utf-8?B?bXZqRmJWVnVwVlVZazRyNmlwb05LWXUydG0yNU1sQnhOMWVQZm92b09sM3By?=
+ =?utf-8?B?SUE4S0dmdk81aURzQmljZkE3OGRRUkpYRTNnUnJCY2REdXU2VnVIcGdwSDNF?=
+ =?utf-8?B?cWN6UXNMWUY4TkZQeEdBbGwwbUxqbFQ4T2JwZVVIS1dqbDNQekp5T3BCdk9i?=
+ =?utf-8?B?aTV5N1V6bUhMTmQ3eW44RmJBSDVMRW9DRGdMWno5K01lL3VHRm41RmdNbm1k?=
+ =?utf-8?Q?x3Id3Pp/48tha0tfdin6TwRQl?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c32e917d-fbe8-406a-77d0-08dd5a9bd46b
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5bdfda43-1d12-4255-d79c-08dd5aaffb72
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2025 21:39:08.9012
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2025 00:03:24.4503
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e3KBKwf/RVDG1b4wgsk2FNo+Vri0lMCTrVanm8mAtUyCmWUNB+uEDL+CztSWYXXniOKJtgTTaOOLb6ywQSOzSA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7934
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0RjNXfw8gxo6pD0bIjlrzTLHOIuuVl5zppB6pLE2IfbWoS/P3noDO+PWS55fP4/fdKxPdwI4Vv8PKSd/QsbYrA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB6014
 
-On 3/3/2025 2:49 PM, Sean Christopherson wrote:
-> On Mon, Mar 03, 2025, Ashish Kalra wrote:
->> On 2/28/2025 4:32 PM, Sean Christopherson wrote:
->>> On Fri, Feb 28, 2025, Ashish Kalra wrote:
->>>> And the other consideration is that runtime setup of especially SEV-ES VMs will not
->>>> work if/when first SEV-ES VM is launched, if SEV INIT has not been issued at 
->>>> KVM setup time.
->>>>
->>>> This is because qemu has a check for SEV INIT to have been done (via SEV platform
->>>> status command) prior to launching SEV-ES VMs via KVM_SEV_INIT2 ioctl. 
->>>>
->>>> So effectively, __sev_guest_init() does not get invoked in case of launching 
->>>> SEV_ES VMs, if sev_platform_init() has not been done to issue SEV INIT in 
->>>> sev_hardware_setup().
->>>>
->>>> In other words the deferred initialization only works for SEV VMs and not SEV-ES VMs.
+
+
+On 28/2/25 13:26, Dan Williams wrote:
+> Alexey Kardashevskiy wrote:
+> [..]
+>>>> And it just leaves link streams unconfigured. So I have to work around
+>>>> my device by writing unique numbers to all streams (link + selective)
+>>>> I am not using. Meh.
 >>>
->>> In that case, I vote to kill off deferred initialization entirely, and commit to
->>> enabling all of SEV+ when KVM loads (which we should have done from day one).
->>> Assuming we can do that in a way that's compatible with the /dev/sev ioctls.
+>>> This sounds like a device-quirk where it is not waiting for an enable
+>>> event to associate the key with a given stream index. One could imagine
+>>> this is either a pervasive problem and TSMs will start considering
+>>> Stream ID 0 as burned for compatibilitiy reasons. Or, this device is
+>>> just exhibiting a pre-production quirk that Linux does not need to
+>>> react, yet.
 >>
->> Yes, that's what seems to be the right approach to enabling all SEV+ when KVM loads. 
->>
->> For SEV firmware hotloading we will do implicit SEV Shutdown prior to DLFW_EX
->> and SEV (re)INIT after that to ensure that SEV is in UNINIT state before
->> DLFW_EX.
->>
->> We still probably want to keep the deferred initialization for SEV in 
->> __sev_guest_init() by calling sev_platform_init() to support the SEV INIT_EX
->> case.
+>> The hw people call it "the device needs to have an errata" (for which we
+>> will later have a quirk?).
 > 
-> Refresh me, how does INIT_EX fit into all of this?  I.e. why does it need special
-> casing?
+> It would be great if by the time this device hit production that problem
+> could be fixed, but hey, errata happens.
 
-For SEV INIT_EX, we need the filesystem to be up and running as the user-supplied
-SEV related persistent data is read from a regular file and provided to the
-INIT_EX command.
+Unlikely though.
 
-Now, with the modified SEV/SNP init flow, when SEV/SNP initialization is 
-performed during KVM module load, then as i believe the filesystem will be
-mounted before KVM module loads, so SEV INIT_EX can be supported without
-any issues.
+>>> Can you say whether this problem is going to escape your test bench into
+>>> something mainline Linux needs to worry about?
+>>
+>> Likely going to escape, unless the PCIe spec says specifically that this
+>> is a bug. Hence
+> 
+> Linux has a role to play here in influencing what is acceptable in
+> advance of the specification catching up to provide an implementation
+> clarification.
+> 
+>> https://github.com/aik/linux/commit/745ee4e151bcc8e3b6db8281af445ab498e87a70
+> 
+> I would not expect the core to have a "Some devices insist on streamid
+> to be unique even for not enabled streams" path that gets inflicted on
+> everything unless it is clear that this bug is not not limited to this
+> one device.
+> 
+> Also, I expect the workaround needs to be re-applied at every Stream
+> establishment event especially to support TSM implementations that
+> allocate the Stream ID. I.e. it is presumptuous for the core to assume
+> that it can pick Stream IDs at pci_ide_init() time.
 
-Therefore, we don't need deferred initialization support for SEV INIT_EX
-in case of KVM being loaded as a module.
+True.
 
-But if KVM module is built-in, then filesystem will not be mounted when 
-SEV/SNP initialization is done during KVM initialization and in that case
-SEV INIT_EX cannot be supported. 
+> It would be great if Linux could just say "the maximum number of
+> potential Stream IDs is 255 (instead of 256). All TSM implementations
+> must allocate starting at 1". Then this conflict never exists for the
+> default Stream ID 0 case. That is, if this problem is widespread.
 
-Therefore to support SEV INIT_EX when KVM module is built-in, the following
-will need to be done:
+Better if the PCIe spec said that but yeah, this would do.
 
-- Boot kernel with psp_init_on_probe=false command line.
-- This ensures that during KVM initialization, only SNP INIT is done.
-- Later at runtime, when filesystem has already been mounted, 
-SEV VM launch will trigger deferred SEV (INIT_EX) initialization
-(via the __sev_guest_init() -> sev_platform_init() code path).
+> Otherwise, at pci_ide_stream_setup() time I expect that the core would
+> need to do something gross like check the incoming Stream ID and walk
+> all idle streams to make sure they are not aliasing that ID.
 
-NOTE: psp_init_on_probe module parameter and deferred SEV initialization
-during SEV VM launch (__sev_guest_init()->sev_platform_init()) was added
-specifically to support SEV INIT_EX case.
+This is what PCIe spec suggests doing now imho.
 
-Thanks,
-Ashish
+
+>>>> And then what are we doing to do when we start adding link streams? I
+>>>> suggest decoupling pci_ide::stream_id from stream_id in sel_ide_offset()
+>>>> (which is more like selective_stream_index) from the start.
+>>>
+>>> Setting aside that I agree with you that Stream index be separated from
+>>> from Stream ID, what would motivate Linux to consider setting up Link
+>>> Stream IDE?
+>>>
+>>> One of the operational criticisms of Link IDE is that it requires adding
+>>> more points of failure into the TCB where a compromised switch can snoop
+>>> traffic. It also adds more Keys and their associated maintainenace
+>>> overhead. So, before we start planning ahead for Link IDE and Selective
+>>> Stream IDE to co-exist in the implementation, I think we need a clear
+>>> use case that demonstrates Link IDE is going to graduate from the
+>>> specification into practical deployments.
+>>
+>> Probably for things like CXL which connect directly to the soc? I do not
+>> really know, I only touch link streams because of that only device which
+>> is like to see the light of the day though.
+> 
+> CXL TSP is a wholly separate operation model and it expects that CXL
+> devices, and more specifically CXL memory, are inside the TCB before the
+> OS boots. So there is no current need for Linux to consider Link IDE for
+> CXL.
+
+Link IDE or any IDE? I know very little about CXL but some of those 
+device types are not just simple fast memory but also do read/write 
+from/to that memory so they cannot rely on CPU memory encryption and IDE 
+makes sense for those (especially Link IDE as there are no bridges, or 
+are there?). Thanks,
+
+
+>>> We can always cross that sophistication bridge later.
+>>
+>> Today SEV-TIO does not do link streams at all so I am with you :) Thanks,
+> 
+> Sounds good.
+
+
+-- 
+Alexey
+
