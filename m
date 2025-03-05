@@ -1,281 +1,227 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2082.outbound.protection.outlook.com [40.107.94.82])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5280256C63
-	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 22:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741213068; cv=fail; b=qzNB2VUZzW4mjYPabMF7m9yBiN6r9TLLIZMDK32OxIp4qH5+E9nUcuXX0Rck5EgRLOA5y4n13CI6hFcOmypHMNHn0WgR1aGwfqNTo3F8+Z3+OsRKc+tWs8MaFVFw8DmD2fGt/rT1SqfuRumThMXX3No1REVx2hBjk5vTtpj0b4A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741213068; c=relaxed/simple;
-	bh=4APFVzlGEAFAq/TCJehrc8iz3brWh//LIiV++bXYy/o=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=bpV1A2EcsBYNMOV9i3uJ/KgVlw63GuOnTJFxi6ejI5a3UutkY02eiRZDd2gwfJ5dWZjENGyoTt3E1305CYbOw/Yh8tzV1JoxfwKM3yEhB4eCkPP6ir8IhkCJM1Oo363LPjSy2HKbuFfXFpddaECDS9xIaaqOOchYjPhM7lgy1g0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VjhQAOpj; arc=fail smtp.client-ip=40.107.94.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90167207DE9
+	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 23:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741217525; cv=none; b=V8XtHv/F0jEmNsBTsXcTlMHRIuqCzRGTsSNrIhGIUArDn1pL8fbfGE/vOTUWSroxWAQdv+iG+9L936POY50NkZWZLtjAfqvPJdsjl5//I/B9IfNCzkxuW/LusY5wEhT7eejODx+m2I2S7caJfio7zX90JqgQfWv23epLqE1uSuo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741217525; c=relaxed/simple;
+	bh=REQ/IfjD8heLKs2fU0174gHx+56fArKa2gF2nY/f/EM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P7UMEUZ2tbd0thi3sr/OkHpF/ZtaRtaFV8dtJUdg+MC+6G9FiN2Ix7eVdNUEbTTrMWrhLe5pWQwcjURtHvFRzhr0rSRxOcZTLRlGG+HXSZTWAVgTvFnaQ5XRqWbe9PgL/StSPyzLWtE0iAxiyp1D8oYKcnYlV30rc6fnZOkA4gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d+m3Nc7f; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VjhQAOpj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kgM1rQNHwian3pbAV+PCRD1vPn5CPfi4WOa0j4oMmUQxymBOVqi+9Xyr2SwMXb39mLYdwE5Pix4tTDF9A0iLwNH7327oRMwwVO2fCj8XUM/EbcCLuPBSSmgi8gZUXL2md+MKyNVsAm1IdYR2ln6ZV/gkqH3loClHRkfwAQgcqIkUIjvGrUulQ2/EW+Cz/wv7XG04llDboeyZXtAkSEXgRAd/m5YclLIWyt7KDtTBX/ZpIjWdj16+xxv0LYAbbYYqUhelUW2mkSeTuZOh4c6dA9nxIbaHxe+ZV1DEwxB5+Ri/vIy2oJvskAUtTITHTrtJBzXfD6DkDZ8x+cPi+O+KAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QoOjp5abgQr/OroP8QQEgN1WbEH8edCHZRrthl25aMU=;
- b=CP9tLnWZDELCOGH3Kn3ek/hLk9HXKoiLJSZDUKYLz6urN6gP6ckChxPiRAMRVxEwopdsLb3rSY84bIhtDBvAvO1fR2Qryd0OpT3eGYikdTGRrYHB2R4uZ7yzP57AgCE1Jud55CWhBClh6OLU7itCcg6CHDS2FYkAOsr5rUq7pBzAUydvVTEufSF64PeRDFwLw/+jxDsi556mnv0c228HMc/yC+ABE0xGpDbg09zWU8f8Rzyc9utInuboUTHnMN5E9t7a3nU1iLyK7KHK4Gd5t8yHv/3/T5nr6IJNf7r7EwKGz2wyZJozjMGeeOQaZCQc6O1l2R5j6+Ctb+6Y+dCXkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QoOjp5abgQr/OroP8QQEgN1WbEH8edCHZRrthl25aMU=;
- b=VjhQAOpjIEALytJYXdIZbs2ZHdmFPUwCEmdNpZA27qhI9xuGl8VnICIHRfCfeaD2xohwxMGdG7VIk9cmdp7GmGZUuATMDqFY0Q6e//4kHfRCsFrYdpP4TU0e9b0g7Vr/0KmxfsbP4D9ezoO7qDllgPyXMLRq1BY36JzX4OPX3C0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by IA0PR12MB7652.namprd12.prod.outlook.com (2603:10b6:208:434::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Wed, 5 Mar
- 2025 22:17:42 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::c170:6906:9ef3:ecef]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::c170:6906:9ef3:ecef%3]) with mapi id 15.20.8511.017; Wed, 5 Mar 2025
- 22:17:42 +0000
-Message-ID: <8d3771fc-b486-4655-a9a1-30a8f1134d1e@amd.com>
-Date: Wed, 5 Mar 2025 16:17:38 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 6/7] KVM: SVM: Add support to initialize SEV/SNP
- functionality in KVM
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- thomas.lendacky@amd.com, john.allen@amd.com, herbert@gondor.apana.org.au,
- michael.roth@amd.com, dionnaglaze@google.com, nikunj@amd.com,
- ardb@kernel.org, kevinloughlin@google.com, Neeraj.Upadhyay@amd.com,
- aik@amd.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev,
- Peter Gonda <pgonda@google.com>
-References: <cover.1740512583.git.ashish.kalra@amd.com>
- <27a491ee16015824b416e72921b02a02c27433f7.1740512583.git.ashish.kalra@amd.com>
- <Z8IBHuSc3apsxePN@google.com> <cf34c479-c741-4173-8a94-b2e69e89810b@amd.com>
- <Z8I5cwDFFQZ-_wqI@google.com> <8dc83535-a594-4447-a112-22b25aea26f9@amd.com>
- <Z8YV64JanLqzo-DS@google.com> <217bc786-4c81-4a7a-9c66-71f971c2e8fd@amd.com>
- <Z8d3lDKfN1ffZbt5@google.com> <a0feef4a-1e12-445c-8a17-0f2ecc4d7c85@amd.com>
-Content-Language: en-US
-In-Reply-To: <a0feef4a-1e12-445c-8a17-0f2ecc4d7c85@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7PR04CA0065.namprd04.prod.outlook.com
- (2603:10b6:806:121::10) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d+m3Nc7f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741217522;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kFCm6qFAyYGc4VFf2sS3vwJnAyvK+30pL4l8MO3Di54=;
+	b=d+m3Nc7fx4JoqOjOZh6btxLZJ8F5yJlzUy6nzWolovqxiHRDfQR4r/ytflFpVlknzFc6/B
+	hoSR6lK2myz2ykVTAZSJIcYRhcYlXyGphphSsDO+OCehy/r3iMCKA23zkcRXWeCsbue1+v
+	bkjo+p9febCcOJ1+kubsjPDARkQ5L7Y=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-113-WqisIYL1PYGeWsgvawto7A-1; Wed, 05 Mar 2025 18:31:54 -0500
+X-MC-Unique: WqisIYL1PYGeWsgvawto7A-1
+X-Mimecast-MFC-AGG-ID: WqisIYL1PYGeWsgvawto7A_1741217513
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-22380c707d3so244385ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 05 Mar 2025 15:31:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741217513; x=1741822313;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kFCm6qFAyYGc4VFf2sS3vwJnAyvK+30pL4l8MO3Di54=;
+        b=AHh4OmjIb8TBrqWGrcy6dSTiaglNbseTpD6efqV+MVyLJZDpGF+MLzXCKl9vakafd7
+         xVukY2nVrHE0IikhEbLf5I58gBTd/5momvLFt4H62a/UOJJ/h6f2nhI2eLJlQGjmJfU+
+         WF+Id6jkJhbdg8hpIePQhdAx6vfBiorM5fmvAvNR9lMrWAykJjarnyoLTcfN5UN+liqy
+         yjmv9Vr9qjQT2R0aMaDv60djYKSUfLejDzu+X3P6LPw+nYgP5X7Ww/9DZx3aR0rxobFc
+         iL5FkPDnU7K5BsY25vhtVxnK0nRr1t6JsBlIb+JBqxVDO+RDCpqeONZQGD2SzCw7qSwk
+         O4Mg==
+X-Forwarded-Encrypted: i=1; AJvYcCUFd1waS2eUAaJ0jS+yB0kZCEEwZmtZ3igeYyz86vCSQcgEjYg2hlKyI/nAG+qRcFp+zQvL8lyBldx0@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz2blHDD5Y7kRvWx08ix2h4VGlYmxCb5h8pOsbp9scqjGQWIa5R
+	ANaGmwl9kXfgHOTRbzM9YR/jz3ANaStW77vYoCz1ksYcShQZu8AdXzqqdQ+0m120sbkh1SnH83z
+	0lO54V0ayN39ca2FPMcZ4CAwTWzwp+h/PotPRu3EiLsHicQxvFMu0E8Hf1Js=
+X-Gm-Gg: ASbGncv7rTa+gSe544fiAClo0865Z83ETh3NPnToeUWphpvgI5dEMaKM01f5hr2GBAp
+	0M/30bLiCmwjz/BlxO0+YP1Gn/JOQfDF/6i7/OuWnMY23fPuw14Ndsq64g8lAuPbhCjWcfol+N7
+	P9F52Bqs5FTSduXs9LKlsS69nhha+YVENuBl65/lIuc2p7duLpCSPFd14wkVm1hwoMCiiK6ryKt
+	zqHvdFuyDAaCTJK8eUJXCvxfIy3gRFP6mjgnA5fj0SapFCvSQSP8z0kIL4TTj/B3vMWlIMc3JXC
+	MOQFoj2HjGLNjwg=
+X-Received: by 2002:a05:6a00:856:b0:736:51a6:78b1 with SMTP id d2e1a72fcca58-73682bdf13fmr5864413b3a.11.1741217512911;
+        Wed, 05 Mar 2025 15:31:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFr5llQOo8uwX2X7Rw/daISqoaMPhAadKna3dfRjuli6+dA3NfteMRLNkx9LXdBAsG0P/3xwA==
+X-Received: by 2002:a05:6a00:856:b0:736:51a6:78b1 with SMTP id d2e1a72fcca58-73682bdf13fmr5864388b3a.11.1741217512567;
+        Wed, 05 Mar 2025 15:31:52 -0800 (PST)
+Received: from [192.168.68.55] ([180.233.125.1])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734a00400a0sm13952388b3a.140.2025.03.05.15.31.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Mar 2025 15:31:51 -0800 (PST)
+Message-ID: <3190c4b0-4826-4d9b-9b12-8063acff57fa@redhat.com>
+Date: Thu, 6 Mar 2025 09:31:43 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|IA0PR12MB7652:EE_
-X-MS-Office365-Filtering-Correlation-Id: f098a91c-7d9e-4b04-6c87-08dd5c338c3d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Z3oyR3dPQ2RNdFVRM1VqNFFvNkJ0eUxXQlRJL1FaeFNpT2ErdkhWTlNsd29X?=
- =?utf-8?B?UTZCWXdna1g2eG5XU0wwR1RNRHNTQUFvZVl0WFpFRXhiYWozZDNxZlE5d2VR?=
- =?utf-8?B?THkybWRMc2pMZVlJMUpHb1pIQkloYjdBQm4xRnpEMkpkcll2czRtYlJiRW40?=
- =?utf-8?B?K3lnNEZqSnhWaDkrNjJja2F4WUt5UDJoQjB0ZUI5SkNwOTN1UXJVN0dEQjVl?=
- =?utf-8?B?bk11VVpuOXE5ak1DMk9UeENWbk82UWVrZWpkNnZGS0tMM0VnVzFaTjdWTCtS?=
- =?utf-8?B?dUhETmExb3Z5bytUSjhNN05xajRGSFJIV2NLbTVGMVRDUVhFbDJ5Mmx5bVcx?=
- =?utf-8?B?WHhpWGVGTm9ZRVNpK3oxVWJDTUJPZDVJSkRwaEgwYUFGYlF2Qyt0TVNTWlBh?=
- =?utf-8?B?VHdiTXlIcmxSSlpXUHFmaTRvUVJINUlPemV4Y0hsZEtscWUvRE1NeGVTdk5z?=
- =?utf-8?B?QXZxNzNBQzdHaXRRdUxoY3BwSUFGTGFjeklHak1ZT01hOEo1MGc5UmpFemdm?=
- =?utf-8?B?dHVzMXlCV2o2VnVvcUNSQ0Z0c21aUXdCV2xDNEdidDY1OFNxWmh3a1dobjVW?=
- =?utf-8?B?LzRiVk02ZVBna1lUMnp5RkxaeGd2WlRIdFlLZS9ROFVDTVpCMGV0QWFBOVJZ?=
- =?utf-8?B?WEpjeGtWaGFnMXVxWWpKWnZmOFNPL01mTCtFcjVrS3dzTTJKQTQ5QXhZVXRw?=
- =?utf-8?B?NXU2NFRRRzg2aUwzcUg5WGd6SEFORFEvZkU5dStGVW51SjZYVHh3U09PM3FF?=
- =?utf-8?B?TmprZGlLQU95aHNhRVpWOXdGSVhlNUgycE4wU1FTOGJ5eXNjeWd1cFVKWEJO?=
- =?utf-8?B?d0ptRS9Dc0E0S3p3eW5OazBRUVFsdGR3ZXRHV2hTMWVBZ3hVQmswUnNXV2s0?=
- =?utf-8?B?WFR3ekdXT1FkZ3M0MXo3Yi9haTNpSzlCUnJqV2xNcTNJcWdSbzNiaFQ5NC8x?=
- =?utf-8?B?cWE3SmhXMi9ZNHhmMDM1OVV1OVdCRzhOeUVGM2lSSG5kcmEzWDRqOUVQYXJS?=
- =?utf-8?B?TWE3NDNOR0llNm0wZExQYnM4VklVVXNUNDZOMzRKRGFaQmp2K29CVTNVT3px?=
- =?utf-8?B?MXp3dkNFc0RqMVVxL3JsY1NGQ2FBMHhSelFndVJrNXNDNlk4TVcwM1Y0QWJV?=
- =?utf-8?B?a2ZTelpMTzJNQ3VnSitwU0dtTk5zUzVweTd6T2R6bmQwellGNXE4dDlNcGlk?=
- =?utf-8?B?NDZDSUhlMHRxcDh2SXVUVU9wbGRCTnpLVWgya05McXhWZ0x2OUYyc1Y5ZG4w?=
- =?utf-8?B?L3ZHLzAwalBXTmg2KytOYlRuNHhnY2xJbFV6RjQ5c24vaDhuK00vWUZrbXFX?=
- =?utf-8?B?QzM1Nlc0UXVmWk9CWEdYZFR5QUQwb05IU01IZ0dPWDUxTkYwd1JzRUZvekFE?=
- =?utf-8?B?dEE3eDNwR1k4Wk5zOXBkK2x6bkNmN1dUdE9YNTdIbXFyeHlIdEJxNWJIMCts?=
- =?utf-8?B?MnNxM0tWTVUySGo4eWJBWVoyVVFObENzaThYbWxXb0QyL05hUU5XaVVjdld4?=
- =?utf-8?B?a3lRSTd5VkpFd2l1R0hzemJ6ZnlVc3FJaVdiT0dGRW9DR1lFSERCazN0REVr?=
- =?utf-8?B?cWMvWkdwYWJKY1pqRHZmL2hqbFlxcDlzcGl6dTkwSUtKeDA2OXk1MGdtejlV?=
- =?utf-8?B?cHI2ck5xMjJVMFNua0ZoeVR5RkpPUE10UWh0aFhKVUM4MnJTZjlOTTM4d0k5?=
- =?utf-8?B?cUI1d3BMcVMycHZPb0J3SDdpT01UODN0Z2N6Y1VGSS9tNVNKVEN2UVFwbjJM?=
- =?utf-8?B?SHNMN1dDUFlLQ1Zad0tVR0ZKK2dkdmd5dFpCbDNOcExMNENxWTErTHpKU3U5?=
- =?utf-8?B?dHdJZVhTc1BPKytMYU4wZHVmTXd5UXdwQWlRUXIxWk43UzRqaEQ2Y0lQc2Fl?=
- =?utf-8?Q?fmCyyp9KLaYzF?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aXN3d0ZPeGZHeW5vMFpQQ2Y4Q2Yvb1dKb0dNbGJSVThQZ3FNMUdLVnl5TkJw?=
- =?utf-8?B?QlEwZTh0eVptRXh6cDdJT2JDVVE4U09RMENrQktDcEhsRGhnL0JPTGZ3eExJ?=
- =?utf-8?B?bTlSN2JNTzNJZE1hdVU0cEdPMHc5cStyUmphcUVZd0x4OCtEOWNaQzFjUHFm?=
- =?utf-8?B?NlpuNGlxNTQ4d0VnRTZVTzlGeHBNZ3N4U1J3Uk03TFcyd3hmb2puSlZjdFI5?=
- =?utf-8?B?ZjRCTDNqaWpiNTZFVlA1aDl3cHdGVDl6Ym9CU0xzQWpvTW1kRzN6aXE0Uytx?=
- =?utf-8?B?N0xKdldUT25KeXZJVmxLYkRRSTd1UXFEZ01YUXpFMXZsUlAzRGlYM09OcEJV?=
- =?utf-8?B?WGoxaGlQUWJmOGJvN1JRbDVnc0VvMHdIamdoMTJ1c0ZBaUNuWlE4c1dYQlFl?=
- =?utf-8?B?bnFwRkwvSDlmeEo0N0dnYTVYUXI5VzRSWTA2N243RnY1SC9PYTZFak03KzVI?=
- =?utf-8?B?MXFJSjBtNUVXUmtLVzFaYkhsbk5wL01TenVjem9WTXd3dVZtVkZ1R3g1Q2x5?=
- =?utf-8?B?bTg5aEk4K2J2dEpaSUo2WmZHSXlVOVJEeXU2TGNjYXlLK3lLTHlEVDhsVG9L?=
- =?utf-8?B?bld3TW96ak9pZmpTN3R5TGtYdFFSQm9GNXF6QkRyQ29OanZ3QjI4ZjBYUWFB?=
- =?utf-8?B?dFpKRHBIVGpncStJc2YvOFN2NjZ4WFp6RGZ4OWR4YkcwQVFyV0o0aEExMTY3?=
- =?utf-8?B?ZjF0WERZYXhtSzdaUzl1UVZvQlJDT29NeDJwNXErK1lOK2pka1Q0bEZCNXpu?=
- =?utf-8?B?dFNHczVNUjh3OEQrRWNENWFjQmJUR2JCY1RxaVlOamNxS29WdmwzWElvT1dD?=
- =?utf-8?B?K0RreGQxai8vNEV6VXczbHpueXRyWnNpaEdEVnhlVVJrNkdXN0Jzb1V4UlhU?=
- =?utf-8?B?Q0xmbUJVTDhuRGQ0aE5XOVUvQ1RmcFhxQUNYNzVqeDdWb09lb3ZSQ1BpWnNu?=
- =?utf-8?B?UWNwWUZ2ZlRUUSsreTZibFdYT0pPbHE1M0g1elZkSXZCeDRRcTRjZVptZFNy?=
- =?utf-8?B?aFcwMUYrc1ducWNZd2QrcEE5eU5tSmlRUFpRRldGNDlPWDBRbDVxb0RZaVdy?=
- =?utf-8?B?bGM2T0lWOGxmOHhDWlNrSGJvWU8wdURXR2FxQU5RdUZ0SjNwcGZqUTczc0hP?=
- =?utf-8?B?eVR4TU9Ed2NGZkZ6SWtYdFlwckVHYTFlQmdSTllEWWYvVVdJazF4RWtlRGFz?=
- =?utf-8?B?NmVLWW40SDMyeHhNaTZyV21XVmUxUjVDNUMzZDY1Ly9lb2ZDRnc5empRMTRD?=
- =?utf-8?B?cDkra2FPNm93d0FIYXljV0tuZWxtVnUybXVDU2dqVWFaMDJ0WExrTTc3c1Jv?=
- =?utf-8?B?TUQyQjNQcmZ4d3pxWTRzNytKcWR3OC9mL3dVUjhQd3JFbDJ0NFF1WEdLS0Uv?=
- =?utf-8?B?MXZVMkJkUVNUbGs1dGlvYVpoa1VyajlHVjZTK0gxdFBGQnNRZ3MyZE42OGRr?=
- =?utf-8?B?RHEreGdHdjZlY3cvQnVzSmFpclRRVk5lZnhINUFsdlNBaWQyMmxHTktxVGp5?=
- =?utf-8?B?bi96NVd4NG84OUtRby9MT0R5bGhmZEZyWFVhTGwyY0FQcGZTR2ZodytmRjVH?=
- =?utf-8?B?Z0s2djhVVmcvL1lxWC8xa3dTYXg1SGJ0Tml4eHJhbG1NUWxDZTJnRlV1RUZG?=
- =?utf-8?B?WVBtclpTbGpsY1Zjb1NhNFZJbkF1RVdES0hwRWd0SEUrem02STgybVhaOVlC?=
- =?utf-8?B?dGtwbnNzN1ZhVGxNTm51cDVWQlhMcVd2WjJ3YlZpTG5vUS9Ra1JSV1NuQ2ZE?=
- =?utf-8?B?K3dvcVlYcUhmditQL3p1WGRNRHZzc2lseGNjVDVHWjBzNkh5VWVwamJnUURD?=
- =?utf-8?B?N3l3d0NWcWQwYWZMM2VsWWk2ZGFId3ZVTjVveWlZelpCQWRTTnRXR0cvNnor?=
- =?utf-8?B?MURGbk5xTk5sdkNkYWVEZ2tlajQ2Z1dNOTlBMitRaEJ3QWhoN0ZLQndETDBG?=
- =?utf-8?B?ZXA5ODE5TDNZUUR4TE1sK0p3a1ZYOEY1VXFoR2JFVG9od212RVN5MnkxTnhX?=
- =?utf-8?B?dXFhWE5QdjQ3UzRRMXgzL2tuSTQybWMydVViZDFOSFV5eTA5MTRzMUx5dHA3?=
- =?utf-8?B?N1pHNC9MUmNFSU13NjJaRWpxTm9nTjlyRFRWTUtZbUFSRzI2cmlYQTZEL2Fn?=
- =?utf-8?Q?DIDwRm+4GTVZFOodp4lUKBWQT?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f098a91c-7d9e-4b04-6c87-08dd5c338c3d
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 22:17:42.5654
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: omUrrwgiHQpe+UFXfcxgfMR8NE/zaj7hcgOw8hQIJ5SKwhKojYMOkH1AEjz5jGbMuqOB5s4hgI3AVh+nUDc2PA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7652
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 09/45] kvm: arm64: Expose debug HW register numbers for
+ Realm
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20250213161426.102987-1-steven.price@arm.com>
+ <20250213161426.102987-10-steven.price@arm.com>
+ <cec600f2-2ddc-4c71-9bab-0a0403132b43@redhat.com>
+ <ea9bb982-cf31-4079-8fea-dc39e91a975b@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <ea9bb982-cf31-4079-8fea-dc39e91a975b@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: rf2KzH6ZOZpG8J2-9GwkMMeLzd_22Hs1Oo-lf3b_Chw_1741217513
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+Hi Steven,
 
-On 3/4/2025 7:58 PM, Kalra, Ashish wrote:
+On 3/6/25 2:25 AM, Steven Price wrote:
+> On 03/03/2025 04:48, Gavin Shan wrote:
+>> On 2/14/25 2:13 AM, Steven Price wrote:
+>>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>
+>>> Expose VM specific Debug HW register numbers.
 > 
-> On 3/4/2025 3:58 PM, Sean Christopherson wrote:
->> On Mon, Mar 03, 2025, Ashish Kalra wrote:
->>> On 3/3/2025 2:49 PM, Sean Christopherson wrote:
->>>> On Mon, Mar 03, 2025, Ashish Kalra wrote:
->>>>> On 2/28/2025 4:32 PM, Sean Christopherson wrote:
->>>>>> On Fri, Feb 28, 2025, Ashish Kalra wrote:
->>>>>>> And the other consideration is that runtime setup of especially SEV-ES VMs will not
->>>>>>> work if/when first SEV-ES VM is launched, if SEV INIT has not been issued at 
->>>>>>> KVM setup time.
->>>>>>>
->>>>>>> This is because qemu has a check for SEV INIT to have been done (via SEV platform
->>>>>>> status command) prior to launching SEV-ES VMs via KVM_SEV_INIT2 ioctl. 
->>>>>>>
->>>>>>> So effectively, __sev_guest_init() does not get invoked in case of launching 
->>>>>>> SEV_ES VMs, if sev_platform_init() has not been done to issue SEV INIT in 
->>>>>>> sev_hardware_setup().
->>>>>>>
->>>>>>> In other words the deferred initialization only works for SEV VMs and not SEV-ES VMs.
->>>>>>
->>>>>> In that case, I vote to kill off deferred initialization entirely, and commit to
->>>>>> enabling all of SEV+ when KVM loads (which we should have done from day one).
->>>>>> Assuming we can do that in a way that's compatible with the /dev/sev ioctls.
->>>>>
->>>>> Yes, that's what seems to be the right approach to enabling all SEV+ when KVM loads. 
->>>>>
->>>>> For SEV firmware hotloading we will do implicit SEV Shutdown prior to DLFW_EX
->>>>> and SEV (re)INIT after that to ensure that SEV is in UNINIT state before
->>>>> DLFW_EX.
->>>>>
->>>>> We still probably want to keep the deferred initialization for SEV in 
->>>>> __sev_guest_init() by calling sev_platform_init() to support the SEV INIT_EX
->>>>> case.
->>>>
->>>> Refresh me, how does INIT_EX fit into all of this?  I.e. why does it need special
->>>> casing?
->>>
->>> For SEV INIT_EX, we need the filesystem to be up and running as the user-supplied
->>> SEV related persistent data is read from a regular file and provided to the
->>> INIT_EX command.
->>>
->>> Now, with the modified SEV/SNP init flow, when SEV/SNP initialization is 
->>> performed during KVM module load, then as i believe the filesystem will be
->>> mounted before KVM module loads, so SEV INIT_EX can be supported without
->>> any issues.
->>>
->>> Therefore, we don't need deferred initialization support for SEV INIT_EX
->>> in case of KVM being loaded as a module.
->>>
->>> But if KVM module is built-in, then filesystem will not be mounted when 
->>> SEV/SNP initialization is done during KVM initialization and in that case
->>> SEV INIT_EX cannot be supported. 
->>>
->>> Therefore to support SEV INIT_EX when KVM module is built-in, the following
->>> will need to be done:
->>>
->>> - Boot kernel with psp_init_on_probe=false command line.
->>> - This ensures that during KVM initialization, only SNP INIT is done.
->>> - Later at runtime, when filesystem has already been mounted, 
->>> SEV VM launch will trigger deferred SEV (INIT_EX) initialization
->>> (via the __sev_guest_init() -> sev_platform_init() code path).
->>>
->>> NOTE: psp_init_on_probe module parameter and deferred SEV initialization
->>> during SEV VM launch (__sev_guest_init()->sev_platform_init()) was added
->>> specifically to support SEV INIT_EX case.
->>
->> Ugh.  That's quite the unworkable mess.  sev_hardware_setup() can't determine
->> if SEV/SEV-ES is fully supported without initializing the platform, but userspace
->> needs KVM to do initialization so that SEV platform status reads out correctly.
->>
->> Aha!
->>
->> Isn't that a Google problem?  And one that resolves itself if initialization is
->> done on kvm-amd.ko load?
+> Looking at this now, this patch description is garbage. Probably the
+> patch has changed over time - so I suspect it's my fault not Suzuki's.
+> We're not exposing anything new here. This is purely about telling the
+> VMM that a realm cannot (currently) be debugged. Something like the
+> below would be more accurate:
 > 
-> Yes, SEV INIT_EX is mainly used/required by Google.
+> """
+> kvm: arm64: Don't expose debug capabilities for realm guests
 > 
->>
->> A system/kernel _could_ be configured to use a path during initcalls, with the
->> approproate initramfs magic.  So there's no hard requirement that makes init_ex_path
->> incompatible with CRYPTO_DEV_CCP_DD=y or CONFIG_KVM_AMD=y.  Google's environment
->> simply doesn't jump through those hoops.
->>
->> But Google _does_ build kvm-amd.ko as a module.
->>
->> So rather than carry a bunch of hard-to-follow code (and potentially impossible
->> constraints), always do initialization at kvm-amd.ko load, and require the platform
->> owner to ensure init_ex_path can be resolved when sev_hardware_setup() runs, i.e.
->> when kvm-amd.ko is loaded or its initcall runs.
-> 
-> So you are proposing that we drop all deferred initialization support for SEV, i.e,
-> we drop the psp_init_on_probe module parameter for CCP driver, remove the probe
-> field from sev_platform_init_args and correspondingly drop any support to skip/defer
-> SEV INIT in _sev_platform_init_locked() and then also drop all existing support in
-> KVM for SEV deferred initialization, i.e, remove the call to sev_platform_init()
-> from __sev_guest_init().
+> RMM v1.0 provides no mechanism for the host to perform debug operations
+> on the guest. So don't expose KVM_CAP_SET_GUEST_DEBUG and report 0
+> breakpoints and 0 watch points.
+> """
 > 
 
-Also looking at the patch commit logs for psp_init_on_probe parameter:
-https://lore.kernel.org/lkml/20211115174102.2211126-5-pgonda@google.com/
+Yes, the improved change log looks good to me.
 
-User may decouple module init from PSP init due to use of the INIT_EX support in
-upcoming patch which allows for users to save PSP's internal state to file. The
-file may be unavailable at module init.
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> ---
+>>>    arch/arm64/kvm/arm.c | 24 +++++++++++++++++++++---
+>>>    1 file changed, 21 insertions(+), 3 deletions(-)
+>>>
+>>
+>> Documentation/virt/kvm/api.rst needs to be updated accordingly.
+> 
+> I don't think (with the above clarification) there's anything to update
+> in the API documentation. There's nothing new being added, just
+> capabilities being hidden where the functionality isn't available.
+> 
+> And eventually we hope to add support for this (in a later RMM spec) - I
+> don't yet know exactly what form this will take, but I hope to keep the
+> interfaces as close as possible to what we already have so that existing
+> tooling can be used.
+> 
 
-So it probably makes sense to keep SEV deferred initialization support there, as it may
-not only be filesystem unavailability at CCP module load (or KVM module load with new flow),
-but user may have the file available only later after module load/init.
+Ok.
+
+>>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>>> index b8fa82be251c..df6eb5e9ca96 100644
+>>> --- a/arch/arm64/kvm/arm.c
+>>> +++ b/arch/arm64/kvm/arm.c
+>>> @@ -78,6 +78,22 @@ bool is_kvm_arm_initialised(void)
+>>>        return kvm_arm_initialised;
+>>>    }
+>>>    +static u32 kvm_arm_get_num_brps(struct kvm *kvm)
+>>> +{
+>>> +    if (!kvm_is_realm(kvm))
+>>> +        return get_num_brps();
+>>> +    /* Realm guest is not debuggable. */
+>>> +    return 0;
+>>> +}
+>>> +
+>>> +static u32 kvm_arm_get_num_wrps(struct kvm *kvm)
+>>> +{
+>>> +    if (!kvm_is_realm(kvm))
+>>> +        return get_num_wrps();
+>>> +    /* Realm guest is not debuggable. */
+>>> +    return 0;
+>>> +}
+>>> +
+>>
+>> The above two comments "Realm guest is not debuggable." can be dropped
+>> since
+>> the code is self-explanatory, and those two functions are unnecessary to be
+>> kept in that way, for example:
+>>
+>>      case KVM_CAP_GUEST_DEBUG_HW_BPS:
+>>          return kvm_is_realm(kvm) ? 0 : get_num_brps();
+>>      case KVM_CAP_GUEST_DEBUG_HW_WRPS:
+>>          return kvm_is_realm(kvm) ? 0 : get_num_wrps();
+>>
+>>
+>>>    int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
+>>>    {
+>>>        return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
+>>> @@ -323,7 +339,6 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
+>>> long ext)
+>>>        case KVM_CAP_ARM_IRQ_LINE_LAYOUT_2:
+>>>        case KVM_CAP_ARM_NISV_TO_USER:
+>>>        case KVM_CAP_ARM_INJECT_EXT_DABT:
+>>> -    case KVM_CAP_SET_GUEST_DEBUG:
+>>>        case KVM_CAP_VCPU_ATTRIBUTES:
+>>>        case KVM_CAP_PTP_KVM:
+>>>        case KVM_CAP_ARM_SYSTEM_SUSPEND:
+>>> @@ -331,6 +346,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
+>>> long ext)
+>>>        case KVM_CAP_COUNTER_OFFSET:
+>>>            r = 1;
+>>>            break;
+>>> +    case KVM_CAP_SET_GUEST_DEBUG:
+>>> +        r = !kvm_is_realm(kvm);
+>>> +        break;
+>>>        case KVM_CAP_SET_GUEST_DEBUG2:
+>>>            return KVM_GUESTDBG_VALID_MASK;
+>>>        case KVM_CAP_ARM_SET_DEVICE_ADDR:
+>>> @@ -376,10 +394,10 @@ int kvm_vm_ioctl_check_extension(struct kvm
+>>> *kvm, long ext)
+>>>            r = cpus_have_final_cap(ARM64_HAS_32BIT_EL1);
+>>>            break;
+>>>        case KVM_CAP_GUEST_DEBUG_HW_BPS:
+>>> -        r = get_num_brps();
+>>> +        r = kvm_arm_get_num_brps(kvm);
+>>>            break;
+>>>        case KVM_CAP_GUEST_DEBUG_HW_WPS:
+>>> -        r = get_num_wrps();
+>>> +        r = kvm_arm_get_num_wrps(kvm);
+>>>            break;
+>>>        case KVM_CAP_ARM_PMU_V3:
+>>>            r = kvm_arm_support_pmu_v3();
+>>
 
 Thanks,
-Ashish
+Gavin
+
