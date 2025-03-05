@@ -1,73 +1,72 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD551624F1
-	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 19:18:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D011B24C062
+	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 19:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741202313; cv=none; b=F2yCM4nAKGAIKtU1mWWC99QdIPOjegmMFNCKJqB5VgQ2dDBW4b0v/sflKysbafTKUMUXzKNjL6bh7jPYyCDb2HZ4tRxDM+mwPFL2tb3Xv0uk6mX4QmRWKETN8eHaqmRT2dlVYQKQ1Hx2gIVn0/q5uwYClkklXVnDMUK4myUAkTA=
+	t=1741202926; cv=none; b=jMlxoZqzXXC7hUma2XjUjBHWPfExx0XMKRLL9/rxcV/8ASxNObyE26U3hbiRVYGTkQo1hP1OsHgT6SwZSgZAfrCPp1P8gi1yLL9qhq2Tg95ku+7QL3BqKJpRXUvgnolQqBFZt7kxF2I2AmVgOz3mxrK0lqfCgs2eA8YBAzBr+w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741202313; c=relaxed/simple;
-	bh=3SzijABCo7L0oRCqEvdXZEB88jTL2x7bJ6AOPFFhYh4=;
+	s=arc-20240116; t=1741202926; c=relaxed/simple;
+	bh=yags00HimzcK4ADiEl0X3eL1vhGMGirpJlRolnATCxg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M/D/VXwuoYPGJmi+TrOIyS7e8MeYY/hXSI4ttu7vLIRoGsL68CON5PRoYbFwA5yD3qWgFxAia5tJCUqHNrDhIZQsSFU68JOR5IPrBB4t/Twfc8M7bZ4AFe316X1a9VeYSJvYqoa6yziPhhb93e4HeVHVTEQnakrbDkjCSHVkYEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=bhVz5ZHk; arc=none smtp.client-ip=209.85.222.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=n8wZe6WO9THhvmXKl16qDfY5gF+r2Vd2nkE5I2jaHYqDowWLb8qqH1EVLM4tY8E26FpKrRmqJIq3dzk+d/XTCkYJieYOgwYDAGRaXknTONObbiurDxEvm7lGaro9CLm5MUycL/AC4RAmb/9SnbNChMTmiKHEA2eXnD64IJWu7zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=OzyS60LM; arc=none smtp.client-ip=209.85.222.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="bhVz5ZHk"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7c3d591e50aso209956885a.0
-        for <linux-coco@lists.linux.dev>; Wed, 05 Mar 2025 11:18:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="OzyS60LM"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7c3c9f7b1a6so131368985a.1
+        for <linux-coco@lists.linux.dev>; Wed, 05 Mar 2025 11:28:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1741202310; x=1741807110; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1741202924; x=1741807724; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=C7y/oLdinpDpvBC2aTZl0N56MEM+KgeXEJqvXNG5yTE=;
-        b=bhVz5ZHklQl2Mx+SMjhi0JY2GAkWtuSk/816mq5BfeBrIOSbVlVtxUw1faZTzbxdc/
-         ItWocFNCB+s31SU18Rqk4VKaMEEX2OTE6Zjitpq130PXZXghYPG8XTWyaqyc4Q9gd3LL
-         2aIq8+vIPuiidUOAYM4Dg7XIfskUrZn1ugIe+c/ZMczGMy70wXZlKgcYrcVM3pL3J/6e
-         OK7j+g9r4mOYKx2v8cB2faqtytWhUxiRrsXQhFkZaVBob2bn/1HkjkUBArRwLDNXz13z
-         SqbVz/T5qKxOq60Niu81q4ANJfrvnK5OxsSswpg9UshEuwZJEycROnkxGxbMC63iOqWn
-         u85Q==
+        bh=tTrOJMautZJ74CE8chK1zIyRNkTfUPScJmXz0FQll+Y=;
+        b=OzyS60LMucaIVAbE2Hoqgq/YUT5Xvl1Tevud41XU46v87t5Fl+o2s87AhWZ6uI7cF3
+         zK7eMOBR4GScmv4ILwcwIU9tCp6mStLSigzeAst74ePfI3l9nN8S/WlD/H1k5D0YKVIt
+         BKLoD+svFC62cqSokNFQhUXofPqEB7k9tSuF7f4Fh0OYYTiIBFdyoRX+HnE7CxFmnZxQ
+         L7DZwsSRLKNL0nUitGajoH6vndQhat0RWZtgmIWbkWiVRLXEcbpvlMwnSePw0hMs+eIU
+         yyP+9ETw+fbYQlhAcLG41D5/gahMDnbhGkfUu4QuUGRSckN45Dhg5gFXyvIVDV8UZP17
+         PKxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741202310; x=1741807110;
+        d=1e100.net; s=20230601; t=1741202924; x=1741807724;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=C7y/oLdinpDpvBC2aTZl0N56MEM+KgeXEJqvXNG5yTE=;
-        b=DeIFL1//kLnBRXwJJVskQtZcaefZkuEgNk/KQRdoBLx/fzROuHmuHTixZLwXTDe4EN
-         a+bbb6WaoBzEW0ZiY1ZQtnW66zvDpOWN9y6gJ56zW6THd/mayQWzillkvZ37NUvJyKej
-         qBvSzykjjvRIkWoomMbofcgFc5s9gaAbIKFOmKmNAESi/AQ24TX1X1/sh3eW/ruuLWsT
-         Cbx6Ci2itR5G2dJXiW2HxqrYT5HIkFJ3jickY3sgMqhS9U0z1Yyf318mTNgueXOBY+Ha
-         CR5DboaybtEFLegmfVOwQIB0pJGeDRuaJpf765OYMPCXUWOwtjQK5AKNq8M2tN1DbfmI
-         e0eA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5rdmGcj06Y+y/eHh72lX1qU3pprgs6q5QH/lRR1W5hDbwPIqFRefHRjzDV/naK+exU99fCD+R7FVB@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx/u8WdHt1XhoCg1MOdk9a0Vc5flhrSuXxQIP4Sblik07SLV4HR
-	dFlOKDHGVnzTXAz3IbZQzJ2pR9+/Mrdurt4NotQaJSXYx38K7UJoi3foN+dezmU=
-X-Gm-Gg: ASbGncsuiUSXbzz6BznrYvGmWGAkruA7uP856jhjMS+1uqvHw8GMYYDY+NqkfFCHP6E
-	dHPm8KUi8eaRuDSYgC20TT0V4rO2UfmFgpNwyPl5kZAaGQqozyM6i3ISW01Tjv5/QsApF+QalQ2
-	eLhGHYTJbv6zqSeqGhYmGdiB8yHsx1GlJvxmvQjCJDCZOaXZ+d+T+BdlrAkiwpmhtvTkNDPmTs8
-	l9uZXZVrvdaMqM1IVJeA5cP2Uhy55dXgeiN4e2Sj9ODwcts7/OSF7i1k9w1+AUgJ6QNznQVpqyw
-	P2gPZ9fMZ4LGeHpk0dWEYLL5BAZMHVQVTSX/YhQoKhEZGQ5auFQGHoLxzrXXAWo3e1yTv8TN/Ev
-	GC7PaITrW0IJvvt2hkA==
-X-Google-Smtp-Source: AGHT+IFwvrtrBNb8MOcl/UiqO1Z26YCuhB0icUQG2aJEfrzqQ/D1xCWD+/mL64bShsE0pSsh+4l3sg==
-X-Received: by 2002:a05:620a:6285:b0:7c3:cd78:df38 with SMTP id af79cd13be357-7c3d8e465a9mr663299885a.10.1741202310279;
-        Wed, 05 Mar 2025 11:18:30 -0800 (PST)
+        bh=tTrOJMautZJ74CE8chK1zIyRNkTfUPScJmXz0FQll+Y=;
+        b=C755CcQQYBApQK9COSk5109QhS/Ruo84ES1P7xvECrV3ny2heSVFqL+x39OOCmV7CF
+         wEx00tLPldBborsBj7Ml0shnYGUM1NLPqLDWCKkR8T4SehiAO20DhtVVVsPibHocQwd/
+         OrXf0tOTgtt/4xDXBcIb7yE9WMcWLhBE4au7cmDIFF0nKYFZMhAiKspC4ixv6p2NxI6u
+         GGfGIixjzvoZALYK1XZn3kk6B8q6y39ITQJnHyvNVCHesPmMkP8YnB6Nunji0YKX7G0W
+         6b9ArvlAdqh0TNAE6J1LW79XuiXoJFMVubDYtRnL8P5AeGjKc/Ki/gaDPDY6YUgkw622
+         qNiw==
+X-Forwarded-Encrypted: i=1; AJvYcCXETdyANe/gI4Lc6zk7XGUfrLKWl7sdOHn0MKYiOvKeSQGTgpmjG89mmiGjaKRpJCaVUz6TQCdzzDOR@lists.linux.dev
+X-Gm-Message-State: AOJu0YynV4+VL36gpA+tIWYm2WtIT4P3jU8RSGt7f7NU6GgX2pt3Zten
+	hvWSJlPASXRq22S5v5Jn38vqGyhsU5wihNvGUubOZitphXDl+DFhVcsZQM99dyE=
+X-Gm-Gg: ASbGncsQSd36uvZeJR3nfG9T2Rfmz8uxw1gy5Iu4chM+G4VS7n9chQq3u3Rhwhwvu9j
+	VlyJP4jd+94ARJaSHGMLj8DFjC0Aqot7ixzQtlaIJ9519+GI6yGsSswLojFGpo7xqUYPnh8PD45
+	xAD379iEWsicccANtzybL96flT3LBoSEfrnFyDC2r1cGmT0Vp222TfQo3VxMv7zkHeug1WlT+6V
+	J2NsA+eoSK76o002aqXgEWhDRW7q6LDOvstHTun4Mcn5Igy9wK3sfbDtwRnsrKWRYNvyJ6ruhlu
+	HDdbXqvDStH8RjYXoR6cPe7AocHTjqksUyACGGnUheNQlDlm/M/3Llo1NQRF3v9hbtGbK2F5M8y
+	GxXTRg1i+Uv1BI1T4AA==
+X-Google-Smtp-Source: AGHT+IEHx2UVGeNJCjdCHNzkys/fqlsDci1nQ/1m9GKN7AMZGI83uk7z1IQe+K7jbrNiF4r725P/BQ==
+X-Received: by 2002:a05:620a:6285:b0:7c0:b350:820 with SMTP id af79cd13be357-7c3e39b1392mr81853985a.5.1741202923780;
+        Wed, 05 Mar 2025 11:28:43 -0800 (PST)
 Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c378d9f917sm915979885a.78.2025.03.05.11.18.29
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3c9f640cbsm324838085a.108.2025.03.05.11.28.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Mar 2025 11:18:29 -0800 (PST)
+        Wed, 05 Mar 2025 11:28:43 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1tpuGC-00000001V2T-3xgf;
-	Wed, 05 Mar 2025 15:18:28 -0400
-Date: Wed, 5 Mar 2025 15:18:28 -0400
+	id 1tpuQ6-00000001VBp-37wk;
+	Wed, 05 Mar 2025 15:28:42 -0400
+Date: Wed, 5 Mar 2025 15:28:42 -0400
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
-	kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, x86@kernel.org, kvm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
@@ -91,16 +90,16 @@ Cc: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
 	Zhi Wang <zhiw@nvidia.com>,
 	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
-Message-ID: <20250305191828.GD354403@ziepe.ca>
+Message-ID: <20250305192842.GE354403@ziepe.ca>
 References: <20250218111017.491719-1-aik@amd.com>
  <20250218111017.491719-15-aik@amd.com>
  <Z72GmixR6NkzXAl7@yilunxu-OptiPlex-7050>
  <2fe6b3c6-3eed-424d-87f0-34c4e7e1c906@amd.com>
  <Z77xrqLtJfB84dJF@yilunxu-OptiPlex-7050>
  <20250226131202.GH5011@ziepe.ca>
- <433217be-55e3-477b-bc10-cf81f02ab21e@amd.com>
- <20250301003200.GQ5011@ziepe.ca>
- <4ae5eda3-824a-4bb5-b763-19083c085575@amd.com>
+ <Z7/jFhlsBrbrloia@yilunxu-OptiPlex-7050>
+ <20250301003711.GR5011@ziepe.ca>
+ <Z8U+/0IYyn7XX3ao@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -109,45 +108,41 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4ae5eda3-824a-4bb5-b763-19083c085575@amd.com>
+In-Reply-To: <Z8U+/0IYyn7XX3ao@yilunxu-OptiPlex-7050>
 
-On Wed, Mar 05, 2025 at 02:09:09PM +1100, Alexey Kardashevskiy wrote:
+On Mon, Mar 03, 2025 at 01:32:47PM +0800, Xu Yilun wrote:
+> All these settings cannot really take function until guest verifies them
+> and does TDISP start. Guest verification does not (should not) need host
+> awareness.
 > 
+> Our solution is, separate the secure DMA setting and secure device setting
+> in different components, iommufd & vfio.
 > 
-> On 1/3/25 11:32, Jason Gunthorpe wrote:
-> > On Thu, Feb 27, 2025 at 11:33:31AM +1100, Alexey Kardashevskiy wrote:
-> > > 
-> > > 
-> > > On 27/2/25 00:12, Jason Gunthorpe wrote:
-> > > > On Wed, Feb 26, 2025 at 06:49:18PM +0800, Xu Yilun wrote:
-> > > > 
-> > > > > E.g. I don't think VFIO driver would expect its MMIO access suddenly
-> > > > > failed without knowing what happened.
-> > > > 
-> > > > What do people expect to happen here anyhow? Do you still intend to
-> > > > mmap any of the MMIO into the hypervisor? No, right? It is all locked
-> > > > down?
-> > > 
-> > > This patchset expects it to be mmap'able as this is how MMIO gets mapped in
-> > > the NPT and SEV-SNP still works with that (and updates the RMPs on top), the
-> > > host os is not expected to access these though. TDX will handle this somehow
-> > > different. Thanks,
-> > 
-> > I'm expecting you'll wrap that in a FD,
+> Guest require bind:
+>   - ioctl(iommufd, IOMMU_VIOMMU_ALLOC, {.type = IOMMU_VIOMMU_TYPE_KVM_VALID,
+> 					.kvm_fd = kvm_fd,
+> 					.out_viommu_id = &viommu_id});
+>   - ioctl(iommufd, IOMMU_HWPT_ALLOC, {.flag = IOMMU_HWPT_ALLOC_TRUSTED,
+> 				      .pt_id = viommu_id,
+> 				      .out_hwpt_id = &hwpt_id});
+>   - ioctl(vfio_fd, VFIO_DEVICE_ATTACH_IOMMUFD_PT, {.pt_id = hwpt_id})
+>     - do secure DMA setting in Intel iommu driver.
 > 
-> A KVM memslot from VFIO's fd similar to gmemfd's fd, and skip VMA? Doable
-> but 1) creates a KVM->VFIO dependency to do gpa->hpa translation 2) is not
-> necessary in the AMD case (although host-mmap of guest-assigned private BAR
-> is way too easy way of shooting yourself in the foot).
+>   - ioctl(vfio_fd, VFIO_DEVICE_TSM_BIND, ...)
+>     - do bind in Intel TSM driver.
 
-But since it is necessary in other cases, the code will be there and
-everyone should just use it..
+Except what do command do you issue to the secure world for TSM_BIND
+and what are it's argument? Again you can't include the vBDF or vIOMMU
+ID here.
 
-> > since iommufd will not be accessing MMIO through mmaps.
-> 
-> here I do not follow, why would iommufd care about MMIO? or it is about p2p
-> DMA? Thanks,
+vfio also can't validate that the hwpt is in the right state when it
+executes this function.
 
-Yes, p2p dma
+You could also issue the TSM bind against the idev on the iommufd
+side..
+
+Part of my problem here is I don't see anyone who seems to have read
+all three specs and is trying to mush them together. Everyone is
+focused on their own spec. I know there are subtle differences :\
 
 Jason
