@@ -1,186 +1,239 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2057.outbound.protection.outlook.com [40.107.244.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4321142AA3
-	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 03:53:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741146811; cv=none; b=OpT4LVXmslsh0+IBVbkQupiEiu+CyJGNFpN+2bNUej+wuy+EoxWA4w8fJf6bZsMbTtbUWUiXCugIpwgYUiqSUxF04650rXKykZD9x7133rVGHqeOlfxO2/6z+o392b5Cn1UHNJGeFlblOdcY7O4mxtH7/FJKTwMeP7gUj11NDMw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741146811; c=relaxed/simple;
-	bh=KYu15OTxtFs2mF10JuE1RcryLYxEkKONS/St8WU9dMw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lXmsB9RKFtSfx7DHcHEa7pi64XkXffkyBR1ClY4GOKbNooraLNxbRtI0TZ1lx+5idYR+WBkozg37dcFlI9yM/KN3B8WzzbmO5WOWNjjOM+xBnPvQsNqXhmPpGS8iYdcO3DZ6jApoq4/Pxkr0IQgrSQua5Ujdn8n2nukO7rUrFYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fqB2QLuD; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551D913C67E
+	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 06:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741154576; cv=fail; b=ZK0IdNTCryGOQRgbejlHS+laM/7b190C26Y4XSXlSFBGM55sO3dldVceqZIQcfEt0aQzoX7ONsrja97RIzIowbu2sYSqXSMQQ/HKDkS1A/mU+TvdZahvZr5Q9n0phgkjRtI4tTc6Bb1Yo5M3uARm4wl56SYGmbQKG/N6dVf6RKk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741154576; c=relaxed/simple;
+	bh=HdTruijo+1rFwNZ4V0p3gYDevZJFVgD/rZIOB3U2lXg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=K/1BRDV8ypiLA6CyOAas41B+tNeqMRmLSLV9gYn4VecSR1sWj1BbKB3wP03IVGnKLh1OG1MWkhNDJNx70HiFuy69b0sLgckRn/DQ3aPWncHnSCGWC0yA/Ilo1nQff+yBpfWz+8/LnvHtxCp6JPWpoXOaUCXERqm3S/xdU72TUdc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=LTiN0JFZ; arc=fail smtp.client-ip=40.107.244.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fqB2QLuD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741146809;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+mJRNWDqZaDl0D1j/RlDn06NEO5jFGolr9VYIE5+CIg=;
-	b=fqB2QLuDuGWtmtYcRxw5h1rnGeXHUkfJ/7RahvZBAnUu0jgPmg15eTIQtHJE6vYEQPyNFP
-	ikyEawHv5DUAyGMa2QljQy4zk6IlgGzrpAGhib6E6O3FUI6ijOy+hsu0RGLhDY/ZPepa4p
-	emximgOa5XMvyKbAfaGdLav2DqECXeE=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-CtI7rqqoP8GOkVCeN_-08w-1; Tue, 04 Mar 2025 22:53:17 -0500
-X-MC-Unique: CtI7rqqoP8GOkVCeN_-08w-1
-X-Mimecast-MFC-AGG-ID: CtI7rqqoP8GOkVCeN_-08w_1741146796
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2ff0875e92bso8717519a91.2
-        for <linux-coco@lists.linux.dev>; Tue, 04 Mar 2025 19:53:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741146796; x=1741751596;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+mJRNWDqZaDl0D1j/RlDn06NEO5jFGolr9VYIE5+CIg=;
-        b=SB9qhNNJhvoNyI8dlsc2mlMt+VT+nbrj5Guyip4jHFVBFjy4QlEaSnfxsUKzn+SpGY
-         Lsot43WW/ckSBBZRKL1QCBQbSn58N5JqNa18JoAG39aNTbWp0zKQ+L3T7KNEGMCMb11+
-         fmRGtFYIhZbDvdajUBx4u477EqkeKnK8dyV/abLWhXuG7/Y7dcW5eYad56/1S1mE4kid
-         sHOVc4uB4PiJYxyapoPYl9aYIwz5qFDO+3DDTg3lqFz9xdjSKaeK65QbonL3GGKrEy4C
-         PjI1OMACMJazclrISvoFQ5m21yO1OdWPd+8ZrJ0acO23+XUIwaNaeL1d4cop/ZUFxHD2
-         LQQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXj82TcFqFcQ6dkxE7Sv+psYkYjqd8+wznWMluDxkt35qrBdbeiUNOmEoSCSLoiHJkwMGR+8AXLEeRW@lists.linux.dev
-X-Gm-Message-State: AOJu0YyffrIMUW9FO6Mn5Plv5OSeNkmWyyTLBfkXp8X3Pth1iuB9gwDU
-	eAk5O5nsyPdTSmrwuKDBQZ5H9U+ACaNZNiIXY0fDsi8cMpGRZPemiMj0Sjvt9YbeN/lDF0HsGEX
-	05NfgMJu+EhPjIEClb/55fZWVu9WlHtfjE/r/acMZwSoNIbtL07KcoyTqOUA=
-X-Gm-Gg: ASbGncsahS8LlzW0Uga2THSWf2vWO80EJ5ebJDPXuzShhLqAx+KHglLQD8++3mwV8Nx
-	7NnezhQYJs76tIoEL5Ow74MxS/nMcpXGpJpwtPDhn3NRKoUbrSDplVU6hoMpbczWrZ43jqlkfdO
-	yuNGKU6ulngsrfpmJV3Xn5XxhkUAxXOIl3NBMSLpYyHGFa0v+CB5a9EOQ5wOdgT3sfMpkFtIT/B
-	lfccwkoDhwNAl14YoZPX/PyJUGfaUTiMqcgkinCmUSZeKOiSA+KzW03GNjVRx0lrNZSZxlgyT9u
-	LevTqUFeNng+bgQ=
-X-Received: by 2002:a05:6a21:150c:b0:1ee:cf13:d4b5 with SMTP id adf61e73a8af0-1f3495afc1dmr2823091637.39.1741146796420;
-        Tue, 04 Mar 2025 19:53:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFuyA16zIv02ugj3FPLruOV0ZdxdHMNTCUw0ZHSpkP3eGnIKTFgv0oqMKMfRXj1Nc/YwnybSw==
-X-Received: by 2002:a05:6a21:150c:b0:1ee:cf13:d4b5 with SMTP id adf61e73a8af0-1f3495afc1dmr2823058637.39.1741146796108;
-        Tue, 04 Mar 2025 19:53:16 -0800 (PST)
-Received: from [192.168.68.55] ([180.233.125.1])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7ddf20b8sm11041231a12.7.2025.03.04.19.53.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Mar 2025 19:53:15 -0800 (PST)
-Message-ID: <af65c1ea-202a-4a60-ab13-0c325385b7ec@redhat.com>
-Date: Wed, 5 Mar 2025 13:53:06 +1000
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="LTiN0JFZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AjhdG0u/Z15+jT/xouOMPQ4i7gqWxbbdOn3SG5J+FqrFooSAJpd1AjXMrDsD/bBUpW40aE7CjsEwOXHRCMQTTsNjXq12+BwdfLAZt1UaUvQOtnH5NfPn9GFXhipEa40yLJddhAOltyfBhpwJaIbsgluyx/fjXR6vUVdB60gnlj9q5NG2aW8KTQmqUZw0VYTBOWHcZUfBwVQvxRou3PolrLp6CeemDnMVYxREDE50Nf+6qjQrSC420yRNp8bocwUCoeQyOJ2FEOaJ9AFBKQSWe9tvmbNGUw940dBfUCHnX6GZFG5sBXv2/pqB4j237Rjah/J1NEMdhMfJrP3XgXjSjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VmpCS2wXnuE28S1kHmm/Qwp0LdSpoI9uBh3K2vmhOYI=;
+ b=Qq2X/ru1IPUARlAbf6/J9wFRp83H49GAefi8B4jEfJBFCBcaY3Q5LroQVzfMkEt6aM/Gykez0+JJXuycZOQm0MsNpzUmdQMdB+wNXjNBaAJ5otrMtBfH9KCnSVuN3cwnk5I79RSN0ECSucgYrshIh0RN8nnaCyKuoBQULIeV3Hir5YBO5Z9u0sr7akMLWEO+QahSVbn/oxYX1MgL9pyViAsgA6q4rYMlz4QxnFdzeuLpqkDOUPhu7KupPFztYjaNNKr8KJzNhhIHm/vtgxZxmd9hHS8JVLLhBJULIFP8ygDAgf+IeXC+il4TWAyFD9croKAQMwpvkUsT5BusJeNmCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VmpCS2wXnuE28S1kHmm/Qwp0LdSpoI9uBh3K2vmhOYI=;
+ b=LTiN0JFZ4DAldtKr7tenrhd8NgH8/qctfjxb/2VGutkvCaLk4Uy7/i/mAdjKcH7+vx05KHMI/mZekrXPuDXJlTlH+lJJy1sjf6jbX/AIfjSddzrVD+SgdJklzUaEqdeopbh/F4tqD5fmaCMyqP6iXg9hrtDrXXFJL4NOlql5gkg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH2PR12MB4262.namprd12.prod.outlook.com (2603:10b6:610:af::8)
+ by MN6PR12MB8591.namprd12.prod.outlook.com (2603:10b6:208:471::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Wed, 5 Mar
+ 2025 06:02:51 +0000
+Received: from CH2PR12MB4262.namprd12.prod.outlook.com
+ ([fe80::3bdb:bf3d:8bde:7870]) by CH2PR12MB4262.namprd12.prod.outlook.com
+ ([fe80::3bdb:bf3d:8bde:7870%5]) with mapi id 15.20.8489.025; Wed, 5 Mar 2025
+ 06:02:51 +0000
+Message-ID: <b22ccda0-15b8-4cac-96f1-de6c9fad48b0@amd.com>
+Date: Wed, 5 Mar 2025 11:32:41 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 4/5] KVM: guest_memfd: Enforce NUMA mempolicy using
+ shared policy
+To: Sean Christopherson <seanjc@google.com>,
+ David Hildenbrand <david@redhat.com>, Ackerley Tng <ackerleytng@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>
+Cc: akpm@linux-foundation.org, willy@infradead.org, pbonzini@redhat.com,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, chao.gao@intel.com, bharata@amd.com,
+ nikunj@amd.com, michael.day@amd.com, Neeraj.Upadhyay@amd.com,
+ thomas.lendacky@amd.com, michael.roth@amd.com, tabba@google.com
+References: <b494af0e-3441-48d4-abc8-df3d5c006935@suse.cz>
+ <diqz8qplabre.fsf@ackerleytng-ctop.c.googlers.com>
+ <Z8cci0nNtwja8gyR@google.com>
+ <9d04c204-cb9a-4109-977b-3d39b992c521@redhat.com>
+ <Z8cxaGGoQ2163-R6@google.com>
+Content-Language: en-US
+From: Shivank Garg <shivankg@amd.com>
+In-Reply-To: <Z8cxaGGoQ2163-R6@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0036.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:97::15) To CH2PR12MB4262.namprd12.prod.outlook.com
+ (2603:10b6:610:af::8)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 00/45] arm64: Support for Arm CCA in KVM
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250213161426.102987-1-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250213161426.102987-1-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: VzwkVy0pYPFngJhRnG-dr52LLlxpaG5UGh_js_-Liz4_1741146796
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB4262:EE_|MN6PR12MB8591:EE_
+X-MS-Office365-Filtering-Correlation-Id: 840f51cb-42f1-46b0-18ce-08dd5bab5cd6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eERPR3ZpSGV6UGV5RG4ySndkZUtGakM0UmJ2d2pXOUZSTEJnUFdIUkxsQjBi?=
+ =?utf-8?B?RVkyRHBpSzVvRzExUCtZUVliUklaWVFsT2U0SGJKU3gxeWpVR3lOTFgzODJ3?=
+ =?utf-8?B?dlJmbXA0a3RwWFUwQmpQQ0lqQS90QW0xeEozVDFKU2V4QVRQUFNpSXA4N0tP?=
+ =?utf-8?B?MUw0Qi8rVDNrcVFGYlA2ZFpsQTNxQ1VXZkNUL1k0Zzh6L3VzT0JzbExvL2hh?=
+ =?utf-8?B?bHRaOGVQQXNFeXhDbjlXOGxscWJkUDVNeE8xNVhXdGNVZHRZV2tkeDBZWWN2?=
+ =?utf-8?B?ZkdGa3NGUGJWb3FVZS9lT2pWTWZHUWpzT1lKVDBVR3BacHNtY0g2bFF2TENI?=
+ =?utf-8?B?aWcwdXNUS0pIaFBGZUJWWXN0WmpWUmEwZXpRdDFZU3kra0h2M2JYOUxtMDZu?=
+ =?utf-8?B?VGl5OWg4YVFsc1dMZFBRZVNuMXpLSW9mM3FNcWlLQitMQnBRVGxDVlNrWWZ5?=
+ =?utf-8?B?Z094K2wxeXczL0JKSEFtU1NuUmpzWHJHSklidEIrdEIycTU3VlBEcXZVbEJU?=
+ =?utf-8?B?YVlEZFlzSFViS3VmZzV0ektVSG1OWFUwcEQxd2IzRXI3TEhPV0ZxN1lXVm5B?=
+ =?utf-8?B?U2NBMDJQcFRiYW80SEwrRkxnQ1poL0V5enpsTklOeEVHMWpHSGVlZkhHT2VV?=
+ =?utf-8?B?VWJCS1JHUFovNkNNS1hIdG5iWW9wcUY5b0gwYWRaWGcrWUFKUDRYVGY4V2FK?=
+ =?utf-8?B?WEMxaHl4SE1QK2M4U3d4WTQ5bVdBZWJyOXVUVUFreUhxeGZTUTlQVGt6UkZQ?=
+ =?utf-8?B?bDJONFl2Rk5RT3BCaU05ZGs5czc3cSs3ZU1iclZKc3M0R2ZOQzNIL0lCeXVJ?=
+ =?utf-8?B?NVNxTjRBOGlwUUI3WlhOM3dBM2RSL1hLcCt3Ym4yTUJDR2poVEZKYXBBR2k5?=
+ =?utf-8?B?NWhnalg4TXQ0RHlYQUdsMnVaczFFK3BIYS9QZGFWU1Z0cFlCczRIRUdvdEda?=
+ =?utf-8?B?d3oxQnVQZHE5WkhDbzU0cG8ya1dhQldEK3czUit3a0pOSlpvRWUrTndab001?=
+ =?utf-8?B?MFM0cHdEcTE2R2VyODNFeG1kbjdReUdxU09BcjBESFhMS0E3Yy9UdWJBeklJ?=
+ =?utf-8?B?NndJa1hvQzNPZm51bDF3c20yc1NtdnUweVJVQW5RK3ZhMy9reEVlSjJCdHFS?=
+ =?utf-8?B?dW9xK2dKVmhXdkhjUlc5SHhGSUJIV2hpZE11QTZHNll1N095cWc1UEd5ZUZB?=
+ =?utf-8?B?S250TmFrN1h4WWErK0JIWEFwVHp5Z1VkbDZYcERIUW1FS3o4bTh4WVQ1MElL?=
+ =?utf-8?B?SlZ6MXVKZ09ZcVhhSElWaUl5cmJUK2NlTE8yZ0dtVHhiYzRweE52YytUVkto?=
+ =?utf-8?B?Q3M1WmxueGxISFZhWFduK01WK29NK1ZBVXYwK1BHTjNkKzMyTnpLdGNjTGcz?=
+ =?utf-8?B?MExXMHovT3kwT3YwRUZiTzZDUjUyTnlWS3hlKzZTNHQxOXFJUkhaL2RpTjlZ?=
+ =?utf-8?B?OEJ3S1VYWks4Tk9BNW0rUEtEcTQ5aVd3T2ZNNTFPMEUySVREODBHbmVaZzIw?=
+ =?utf-8?B?UFI4cjk1SHF5aEI5RTBXbDRDRWdQKzA2NlgzRzRzeGpqODI2WktGUk8veVFh?=
+ =?utf-8?B?N2JZdE43Skt5R2ZEYWF3RnF5aDUyNlo5RjF4NEFlQ3VzTkdieVFoZmswMHor?=
+ =?utf-8?B?MnRuTElnRStXZGp3WHA1T3pCU29QdGVsaDNxcG94YUxsaWNxdlVoZThQMDF6?=
+ =?utf-8?B?a3FYQ3VNZ2tZeWFrb1Z1K1ZadXNBV2Z5M2ZMenRFcytFK2UyeFZnNkFrQWFY?=
+ =?utf-8?B?OWU3Uk1YcmN4K2Z0Nmk5bXRGdEhCYWVLUlpMWGtiQWpucU1XV1dMaGc5QmM0?=
+ =?utf-8?B?VmpQZzB6ODZ2K1kxMWxmUGJFbzgyeEZLU2d3UmlOemhDN3RKMFZTS1VISGZx?=
+ =?utf-8?Q?tlXQxDNqaBzhq?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4262.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OTg3dTFvMGRQNWozVFgrM0ZsSURvYXR5ZkdRa3EzUUc2V1g5WlFNNjVoWGhz?=
+ =?utf-8?B?Q3RDZkZEdmVDNUFrWmlnL3RyRWV3VEpKdGhDcDNlYXJUdjJRZWRwS3JEbERV?=
+ =?utf-8?B?TXNraTV6MXQ2RmxKNHM3a1cyMnJXakV4b2d0OWszN05yQVdFTTR5S2Z4cyt4?=
+ =?utf-8?B?VEZyVFNoVkYwWXJQeUtCeHZ1Y1FZcUhGS3AzVEhnajgzbjJaNVhGWWxvOFBa?=
+ =?utf-8?B?NFFPdE0zUldmb1M0NGxmNlZhSmlnT1o0Njg5QXZMZjlmQUp6QUxuSjRlR2Iw?=
+ =?utf-8?B?OXdNSGNMV1U5SlRnakRyYlB2U3JhaEgvSjJabktBQWFVV3NpaFhzbEZJUFY3?=
+ =?utf-8?B?VThRRHZiWkU2aWQzTkVpUGQrbTZpc3ozYnlHMFVtTGxFK2taNTN5cTR4U1Rt?=
+ =?utf-8?B?cGFkcnNnOHpRWnFvdnQ3SjNuSnhHWjVwRllodHB4RFdMdTFHTThBYWZOcDJU?=
+ =?utf-8?B?MmE4WHJqY0RtcmllNFNqVS9PSU1GUkZLcjZrTTV5cHoxK3ZtZTFFUi82ZUhl?=
+ =?utf-8?B?LzZMenZlWHozZTJJOCt6Nk5YZitEK2duRnB6Vzh0QklvRmMwSmVMYWJVVVI3?=
+ =?utf-8?B?VUtocWpYYmtvdGVMaUtMYTZlbjFaMkh1RDdxci9YazR5QXlIV3VscWZDSUxE?=
+ =?utf-8?B?c25ZNEVySHVKZ21lTDdSandKOU5NVmQvTzBTM2dnRFVyYjZWbEZNZUJRYVh1?=
+ =?utf-8?B?TzFjWlJvRUlUWE9FaGduQVBoSVViTlEyS0luY2NmNWdzRDB0R0FRV3JtRFhM?=
+ =?utf-8?B?eTE2WkZFVDhPUStaL3c3ZTZDL05Kc2FsZzJRYXl2d3ZkaW4wQjBOaDRoeTJD?=
+ =?utf-8?B?SU1KYzZvYUhzUFUxN2t1YktMK3NCT0R0c2NEVkNxYWI1QWFqRjdyWGJ0QXFs?=
+ =?utf-8?B?TkRNRTN5d29pRlFKckM0cmozMmZJQ1JIeCs5MHNlTDhsU3IzQmh4M3RybHh5?=
+ =?utf-8?B?R3liVGxuWWtVbmVZTTNBTmNnTkw0VkowWkkvYnpNWlBqMG9yVUtTUUNEdHRZ?=
+ =?utf-8?B?R2JrR3QxcXJSSlQ1U1RzVTZoZktrZmI5cnlkc0hONldIbEpDR3NBNzN5SjY0?=
+ =?utf-8?B?YnNJcmFyOUFTUnVvcEFmME5JTmk4dlNDNG9ySXFGMzFHd1lBekZTL2NDR0pl?=
+ =?utf-8?B?dXh6VGdUSDNVYjkreUkvZkg2Zm8xckpRYTczcDdtQ3N5a1UvdUc0d05BZVhr?=
+ =?utf-8?B?QUJFcUpNY2NETzhFcU1iaU1VZ1czdEZ5ZXZnTkRpc2ZNb1RoclBlUWNtZzh5?=
+ =?utf-8?B?Q2orNUpOQlo3eXRhSmdEZE1jc1QxTkJuK0RZcERHeEFyb3Z5UGY0ME8wWFE0?=
+ =?utf-8?B?S1N2OWttdG84dkRVWmFTV1VxUStzMEIzaGp1Ti95dUlaeStaZmdyTEVNd1Jp?=
+ =?utf-8?B?bnNuSWhoK0tCU2F5eHFOVFZIRFBwOGc1MWxyaG5OWDB6Z05Xa003d3ZCM1Rj?=
+ =?utf-8?B?SHl5RG9kejRSTzJaVGZJNnBtNk5mTUVXbFIrdUt2YmtzUlhzSDZneXI0YURx?=
+ =?utf-8?B?cFhCcmZ4TjNrOEowVk5TbmJRS3hGK3ZIdGR5am1XK3d2NDByNk9HTU9tcEJl?=
+ =?utf-8?B?NDRFMG1SLzFNSlgyanNCZjRJMXFhUHlEUHlVcTI3QXJUUVBtaUpTdVE1bExu?=
+ =?utf-8?B?dHhqVVQybnhtdjlGV1NKellYd3ZLWDVXZXpQVTlFb0xaTjNCUmV4Z2I3ZzZ6?=
+ =?utf-8?B?VGEwSlJ6WU1jbDlPRzYyT2xCK3p1Sit3TnZVU2J3Q1Exc1FBN2lISHlLTndt?=
+ =?utf-8?B?ME1Fa3loUHhxZnNPdlZCcTFsU0x0cElONlR0TSt4V1hTdFR2UVpCUlZoUUdh?=
+ =?utf-8?B?Y2IzT2M3RHlZRVFtUWxwajltUjJpSFJsdnQwYUlxcWR6dXdldGJCZDVSR1NG?=
+ =?utf-8?B?bHlzaUplMXQ3U3Z0Y1YwZm8yalAxY1dKcnUzZVBxVVl3eHUrclhEeDlQS0pE?=
+ =?utf-8?B?c1QrNUtjR0tINWQ0c0JjRkF0bndGNXV4cE80UHVqak9Xa3FaRGtjVlpRRE5n?=
+ =?utf-8?B?aGMvYnQzSEk2MWFFN3kwQjh2a0JrenljaEIzcUhFc2RGOENKK2VSRlJqQThG?=
+ =?utf-8?B?WkxpZkJqWEtVdWQ0VGgyVng2RGthOE1vQlJVNDMzZHA1c21FR2wrVmJXWnZK?=
+ =?utf-8?Q?sK1rwxQ0SCdCheQF7DJKl7DUC?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 840f51cb-42f1-46b0-18ce-08dd5bab5cd6
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4262.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 06:02:51.5804
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jbx/caJEskBTOOelNMejZ1VC6iDJerEgSdcp8GQkAeT2DP7FJuHxuEHtLZzIliHnDEmQWar7SvhNZKEtAzKtew==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8591
 
-On 2/14/25 2:13 AM, Steven Price wrote:
 
-[...]
 
+On 3/4/2025 10:29 PM, Sean Christopherson wrote:
+> On Tue, Mar 04, 2025, David Hildenbrand wrote:
+>> On 04.03.25 16:30, Sean Christopherson wrote:
+>>> On Tue, Mar 04, 2025, Ackerley Tng wrote:
+>>>> Vlastimil Babka <vbabka@suse.cz> writes:
+>>>>>> struct shared_policy should be stored on the inode rather than the file,
+>>>>>> since the memory policy is a property of the memory (struct inode),
+>>>>>> rather than a property of how the memory is used for a given VM (struct
+>>>>>> file).
+>>>>>
+>>>>> That makes sense. AFAICS shmem also uses inodes to store policy.
+>>>>>
+>>>>>> When the shared_policy is stored on the inode, intra-host migration [1]
+>>>>>> will work correctly, since the while the inode will be transferred from
+>>>>>> one VM (struct kvm) to another, the file (a VM's view/bindings of the
+>>>>>> memory) will be recreated for the new VM.
+>>>>>>
+>>>>>> I'm thinking of having a patch like this [2] to introduce inodes.
+>>>>>
+>>>>> shmem has it easier by already having inodes
+>>>>>
+>>>>>> With this, we shouldn't need to pass file pointers instead of inode
+>>>>>> pointers.
+>>>>>
+>>>>> Any downsides, besides more work needed? Or is it feasible to do it using
+>>>>> files now and convert to inodes later?
+>>>>>
+>>>>> Feels like something that must have been discussed already, but I don't
+>>>>> recall specifics.
+>>>>
+>>>> Here's where Sean described file vs inode: "The inode is effectively the
+>>>> raw underlying physical storage, while the file is the VM's view of that
+>>>> storage." [1].
+>>>>
+>>>> I guess you're right that for now there is little distinction between
+>>>> file and inode and using file should be feasible, but I feel that this
+>>>> dilutes the original intent.
+>>>
+>>> Hmm, and using the file would be actively problematic at some point.  One could
+>>> argue that NUMA policy is property of the VM accessing the memory, i.e. that two
+>>> VMs mapping the same guest_memfd could want different policies.  But in practice,
+>>> that would allow for conflicting requirements, e.g. different policies in each
+>>> VM for the same chunk of memory, and would likely lead to surprising behavior due
+>>> to having to manually do mbind() for every VM/file view.
+>>
+>> I think that's the same behavior with shmem? I mean, if you have two people
+>> asking for different things for the same MAP_SHARE file range, surprises are
+>> unavoidable.
 > 
-> The ABI to the RMM (the RMI) is based on RMM v1.0-rel0 specification[1].
-> 
-> This series is based on v6.14-rc1. It is also available as a git
-> repository:
-> 
-> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v7
-> 
-> Work in progress changes for kvmtool are available from the git
-> repository below:
-> 
-> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v5
-> 
-> [1] https://developer.arm.com/documentation/den0137/1-0rel0/
-> [2] https://lore.kernel.org/r/a7011738-a084-46fa-947f-395d90b37f8b%40arm.com
-> 
+> Yeah, I was specifically thinking of the case where a secondary mapping doesn't
+> do mbind() at all, e.g. could end up effectively polluting guest_memfd with "bad"
+> allocations.
 
-I had a chance to test it by following Jean's instructions [1-2]. The guest can
-boot up and kvmtool also can boot the guest. I'm listing the repositories I used
-in case some body else want to give it a try.
+Thank you for the feedback.
+I agree that storing the policy in the inode is the correct approach, as it aligns
+with shmem's behavior. I now understand that keeping the policy in file-private data
+could lead to surprising behavior, especially with multiple VMs mapping the same
+guest_memfd.
 
-[1] Jean's guide to build software components needed by ARM CCA stack
-     https://linaro.atlassian.net/wiki/spaces/QEMU/pages/29051027459/Building+an+RME+stack+for+QEMU
-[2] Jean's guide to build firmware needed by the emulated host
+The inode-based approach also makes sense from a long-term perspective, especially
+with upcoming restricted mapping support. I'll pick the Ackerley's patch[1] to add
+support for gmem inodes. With this patch, it does not seem overly complex to
+implement to policy storage in inodes.
 
-host
-====
-tf-rmm    https://git.codelinaro.org/linaro/dcap/rmm.git                       (cca/v4)
-edk2:     git@github.com:tianocore/edk2.git                                    (edk2-stable202411)
-tf-a:     https://git.codelinaro.org/linaro/dcap/tf-a/trusted-firmware-a.git   (cca/v4)
-qemu      https://git.qemu.org/git/qemu.git                                    (stable-9.2)
-linux     https://git.gitlab.arm.com/linux-arm/linux-cca.git                   (cca-host/v7)
-buildroot https://github.com/buildroot/buildroot                               (master)
+I'll test this approach and submit a revised patch shortly.
 
-guest
-=====
-qemu      https://git.codelinaro.org/linaro/dcap/qemu.git                      (cca/latest)
-kvmtool   https://gitlab.arm.com/linux-arm/kvmtool-cca                         (cca/latest)
-linux     https://git.gitlab.arm.com/linux-arm/linux-cca.git                   (cca-guest/v7)
-
-Command lines to start the host
-================================
-[gshan@virtlab723 host]$ cat start.sh
-#!/bin/sh
-HOST_PATH=/home/gshan/sandbox/qemu/host
-GUEST_PATH=/home/gshan/sandbox/qemu/guest
-
-sudo ${HOST_PATH}/qemu/build/qemu-system-aarch64                      \
--M virt,virtualization=on,secure=on,gic-version=3,acpi=off            \
--cpu max,x-rme=on -m 4G -smp 8                                        \
--serial mon:stdio -monitor none -nographic -nodefaults                \
--bios ${HOST_PATH}/tf-a/flash.bin                                     \
--kernel ${HOST_PATH}/linux/arch/arm64/boot/Image                      \
--initrd ${HOST_PATH}/buildroot/output/images/rootfs.cpio.xz           \
--device pcie-root-port,bus=pcie.0,chassis=1,id=pcie.1                 \
--device pcie-root-port,bus=pcie.0,chassis=2,id=pcie.2                 \
--device pcie-root-port,bus=pcie.0,chassis=3,id=pcie.3                 \
--device pcie-root-port,bus=pcie.0,chassis=4,id=pcie.4                 \
--device virtio-9p-device,fsdev=shr0,mount_tag=shr0                    \
--fsdev local,security_model=none,path=${GUEST_PATH},id=shr0           \
--netdev tap,id=tap1,script=/etc/qemu-ifup,downscript=/etc/qemu-ifdown \
--device virtio-net-pci,bus=pcie.2,netdev=tap1,mac=78:ac:44:2b:43:f0
-
-Command lines to start the guest
-================================
-[gshan@virtlab723 guest]$ cat start_guest.sh
-#!/bin/sh
-key="VGhlIHJlYWxtIGd1ZXN0IHBlcnNvbmFsaXphdGlvbiBrZXkga"
-key+="W4gZm9ybWF0IG9mIGJhc2U2NCAgICAgICAgIA=="
-
-qemu-system-aarch64 -enable-kvm                                                     \
--object rme-guest,id=rme0,measurement-algorithm=sha512,personalization-value=${key} \
--M virt,gic-version=3,its=on,confidential-guest-support=rme0                        \
--cpu host -smp 2 -m 1024M                                                           \
--serial mon:stdio -monitor none -nographic -nodefaults                              \
--kernel /mnt/linux/arch/arm64/boot/Image                                            \
--initrd /mnt/buildroot/output/images/rootfs.cpio.xz                                 \
--append earlycon=pl011,mmio,0x10009000000
+[1] https://lore.kernel.org/all/d1940d466fc69472c8b6dda95df2e0522b2d8744.1726009989.git.ackerleytng@google.com/
 
 Thanks,
-Gavin
-
+Shivank
