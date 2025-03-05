@@ -1,235 +1,266 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2082.outbound.protection.outlook.com [40.107.237.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C37C2C6
-	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 00:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741133772; cv=none; b=XsokB3WZ6LVX+3f1Q9x6GUinYQuxdBMNLHzjeikLJxrqdm6u1/XR0xlljV+0zZvpqKPIocrvXggwVEA/0jb1LcyWX181ECXEKbIWlVm9cOE0THxT60F05MUHsyu7j5r0w0GL6TI0wvFpmEvDDDl8jxVKNk0Oe+nRod6RZgmEyYM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741133772; c=relaxed/simple;
-	bh=1eNeeZMatMhbyDkf4IzA6vyYEqGA9LjWEzci90EKIKM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q+7FMLBXHKc8+0A/SbINjx2aGZ5b/egeESD7Q0EPcV0MEFrkRB8Ss+qVFarNCijixyChacaNbPlXXQqjfTrQwlD7AUOH2LXhKdMn9Lvhkdd3oihLDhT/EsOSlApodimgTRp88UwzOiExI/JVRPdNefHDQ4ILaOfTyZhRNmMn6eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dejinywc; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0198E1519A1
+	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 01:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741139916; cv=fail; b=MxUUhHyVyXA7VJ/i9AFnxyIqF/U2Ujzp72Q2hyKQuHsUaSt/HE1QaryqwPDekJftPh+ZyFTvQyTeoJre/W6F1pEC7caTUQHniPiGpkdcSGnoq9stATEgAV8mGv1LXV0a4BvLxwsqN8WN5aobWeto0yEjBmy/AXawqriFQRtJeTM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741139916; c=relaxed/simple;
+	bh=s/n9+oD1z+HLxMbvIpELH717JeVWUBcIk/Veg1x3PHk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=PFF5inw6pBNR9gAkTX8HhBuKShv5m2AYKUemHmmuQTmEfBNi6CsG6TlYwz21cHWPgoVPan2XUjSVDvwk3B0+J+qQoCNDPXeIWoow238HNe2fayWrFDalOws/LNIKJeb8VcXNZGzKgxxsLizwDQybhdN9R1FZQGYmrKXT7FLy198=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Pf6znWzu; arc=fail smtp.client-ip=40.107.237.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dejinywc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741133769;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K+nZIdJ+GUg9TiIWa5Z45oEZwDdDHGq5zn5aUSYMnu4=;
-	b=dejinywc0xPzvpCNvruoSHQKXK2dp5bh0o92Q0O/d6KRyS+4vNKPHIkDnZzICPRkZ64VK1
-	igLcqFuiRxYMbmwIjviI2voyg078/px3n21wWisEiWb6XQiu2FziN0v+/ZOp868azk4AIJ
-	6cb29zMl3Njc9x29IrjMb3WQixA1Hqs=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-Hkc_C0riMqSRj8eIC3hzWA-1; Tue, 04 Mar 2025 19:16:06 -0500
-X-MC-Unique: Hkc_C0riMqSRj8eIC3hzWA-1
-X-Mimecast-MFC-AGG-ID: Hkc_C0riMqSRj8eIC3hzWA_1741133765
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-22349ce68a9so48514415ad.0
-        for <linux-coco@lists.linux.dev>; Tue, 04 Mar 2025 16:16:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741133765; x=1741738565;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K+nZIdJ+GUg9TiIWa5Z45oEZwDdDHGq5zn5aUSYMnu4=;
-        b=egW0VOVZFQmqRDafIlNq0KIHpP16ETMUBgYY4fvRfTcaviIp/K7BRKM3CbsBohhaR6
-         rYVjvgN+BkZFblzPkgZ2DQ2zucHDO4VkGcT0IvrFQ92FfJ7gtMLLNNT2L5nOLbt85KHI
-         MD7pisqnV/51OjaOuevdqSGxMHBaip96JnjIdqH0JuM+O7YdPHJrX4fDpyTVJQsgvXS6
-         ELtyQgYe4uXUzlzrcOb6I+ylZWHUATR2iLvKXdVnV4vCAyCmNsZ0sAvueZrchMjxZJif
-         7I24QA3brskI+SzAfZ/9d5KGa6U5tJZeAjYXzUCEMNttJhx+ArD6NB9nZCHXlR/Pf206
-         8QUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUGeEkNvd+Ii7pMtFdOjFmHXq3u4OER0ZcesYNQPkPCiAIy+0Ne6R7z/ajsVO4UW021wNNWBAzjoqlk@lists.linux.dev
-X-Gm-Message-State: AOJu0YxDcO+r0Yz23d27S74roa4JHQh1KuQjXs+2sPyUIAal6Z9s/ic+
-	ccUnsJ77bXvmn01tfxDgGdm2uf0HdjIp22C8v74Xse13M8qiWaSd54raEP8l65G6M36OHMFWHzN
-	0euGz1X3JL99nKvNb5K46b8sgnZ7KBSKGTXH1tiHVz9/sik2nfzzSU0BKo3o=
-X-Gm-Gg: ASbGncvMpvPTB6QNEVyhdIxNgORu3WvFE9St1zP65k+ysX6VFBeCW8Yyh/lTNtv4AiF
-	XNNI3lhgeNlCeuektD2CknqXte0hekBjZtI9FDAiIQf34TmwwxQ0PHqYloTuAvnE3n4S2B6DAx0
-	d6D4zbkrBsNgL9/tb7qMgoh/VFvkkGSWGoN4Y56lOMrh7lzefs2NpYl84IatPmAvUL66WHWHMox
-	vOte2txn0nW7+cf2Wi7Nb5shVC47V7SaaRJCf/LS3ihZCFBDRwZ78B5yK8UFeuPRWfp1srM7SzC
-	nvWAxudy1HF0D7E=
-X-Received: by 2002:a05:6a00:b42:b0:736:4e02:c543 with SMTP id d2e1a72fcca58-73682b73e82mr1248282b3a.9.1741133764836;
-        Tue, 04 Mar 2025 16:16:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFtbldcyedC0VzElSl5L414yZHuxZ/AzfRFOHxkoXbZKPjFlAxwXPjGCGBZbMPisg2mcwac1Q==
-X-Received: by 2002:a05:6a00:b42:b0:736:4e02:c543 with SMTP id d2e1a72fcca58-73682b73e82mr1248225b3a.9.1741133764350;
-        Tue, 04 Mar 2025 16:16:04 -0800 (PST)
-Received: from [192.168.68.55] ([180.233.125.1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7363a0f88bfsm7109144b3a.24.2025.03.04.16.15.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Mar 2025 16:16:03 -0800 (PST)
-Message-ID: <1e1aa766-c358-4a4f-918e-f0044fe499fe@redhat.com>
-Date: Wed, 5 Mar 2025 10:15:54 +1000
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Pf6znWzu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OCzmOXrx8lDiBc6v4zPVtOu0QQied+ttxNmzHVQC/YBx4RN3x7TQfDuo4fA4uwUdmQxfeLrxrhDhNFVEp8/s+KeHAqGGp7TNBXJ7i0ISIK2yhCL+g5bBeLRN3x+B5Q9sgyQxGsWBWjob0YaBag0EAWIvfiDMJQpPgep+ME425b/Ot6YLgQofBRIwH3OD3hbwaKxVbXJvZAGLbBBZh+YJNfWIMA5YfqUW7owGGWhCF4uHQ9Da80KiPJnI87Lfb2aYMxHb7FCNBeTpOyKaTHxREjBnDBdWLskPqxEi84M1mb8stIGgshsQ4mVVpfqeFp0j4MLlquaabirr2RLCE9nOUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2CEQmh9ssTJ/wSyYzeAqXx0sdN6lNRmxLbEIFIrSkdk=;
+ b=yn7aBx6E1bzCctIbNZqWpVYgVXilmpr9mCCXFgSscrjJM7orS/T2S40D02/thzf4Djbf4l9i2Zg4/AunXCrS5TlArHSQLGnJKZNhd7TmuPeMNKeonH1bbCOz3E+tJgWdzeZl/5z5ignJP5wnLhuA6Mpfsm1rV389G1cotIJKjoal9uyLSjGF2GiZyspa0FzxNQ5fuoWIEaK3bdKsLZzdkdvkKA4YRkDSsE1UYoD0TVdpc2SKudR/JCh+Wqwe8WHXGzTOgJquw/dUMd+d+q1OX2qzRV+aY5BP4NV5yTArZ0Vnb5L41iF3Ge8xb6/wJ7EUc8mAP77yy4R1qBDvUxOIfw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2CEQmh9ssTJ/wSyYzeAqXx0sdN6lNRmxLbEIFIrSkdk=;
+ b=Pf6znWzuUwRy4NwkXrf+dyCIqnrhKHctaynBh1FFLWaopmEdyO44of2irIKzk3j0S7ypzXUO84CQ10jMZFEZ0pIr9iGRtp41wMAZNW67mX79sMX/1b15xGsl6Zuw5vfkiuNRPInivbXoe+8hhOHrYvv84UGjHzn5aujEYEDJzrA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB9066.namprd12.prod.outlook.com (2603:10b6:510:1f6::5)
+ by CY8PR12MB8363.namprd12.prod.outlook.com (2603:10b6:930:7a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.29; Wed, 5 Mar
+ 2025 01:58:31 +0000
+Received: from PH7PR12MB9066.namprd12.prod.outlook.com
+ ([fe80::954d:ca3a:4eac:213f]) by PH7PR12MB9066.namprd12.prod.outlook.com
+ ([fe80::954d:ca3a:4eac:213f%2]) with mapi id 15.20.8511.017; Wed, 5 Mar 2025
+ 01:58:31 +0000
+Message-ID: <a0feef4a-1e12-445c-8a17-0f2ecc4d7c85@amd.com>
+Date: Tue, 4 Mar 2025 19:58:28 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 6/7] KVM: SVM: Add support to initialize SEV/SNP
+ functionality in KVM
+To: Sean Christopherson <seanjc@google.com>
+Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ thomas.lendacky@amd.com, john.allen@amd.com, herbert@gondor.apana.org.au,
+ michael.roth@amd.com, dionnaglaze@google.com, nikunj@amd.com,
+ ardb@kernel.org, kevinloughlin@google.com, Neeraj.Upadhyay@amd.com,
+ aik@amd.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1740512583.git.ashish.kalra@amd.com>
+ <27a491ee16015824b416e72921b02a02c27433f7.1740512583.git.ashish.kalra@amd.com>
+ <Z8IBHuSc3apsxePN@google.com> <cf34c479-c741-4173-8a94-b2e69e89810b@amd.com>
+ <Z8I5cwDFFQZ-_wqI@google.com> <8dc83535-a594-4447-a112-22b25aea26f9@amd.com>
+ <Z8YV64JanLqzo-DS@google.com> <217bc786-4c81-4a7a-9c66-71f971c2e8fd@amd.com>
+ <Z8d3lDKfN1ffZbt5@google.com>
+Content-Language: en-US
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+In-Reply-To: <Z8d3lDKfN1ffZbt5@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA1P222CA0138.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c2::27) To PH7PR12MB9066.namprd12.prod.outlook.com
+ (2603:10b6:510:1f6::5)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 05/45] arm64: RME: Add wrappers for RMI calls
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-6-steven.price@arm.com>
- <8f08b96b-8219-4d51-8f46-bc367bbf2031@redhat.com>
- <59f84354-e890-48c8-ba06-87dda471f364@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <59f84354-e890-48c8-ba06-87dda471f364@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -SP7JpCM45rSctzCBqomyGljBAYqWOUQ023PAc5-Dj8_1741133765
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB9066:EE_|CY8PR12MB8363:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1401fab-2011-4dca-695e-08dd5b893aa5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cDNGVzBQYXFVa1dWUU1nT2crQzdPVGp6aVRqVkRhdDV2UTFCSXJmWlQwdFdO?=
+ =?utf-8?B?OC8yOE5wb0o1YlFxbVM4RVpDalpNMzVBNm5ZcDlpMFhlbWw5K0d3cytta3pm?=
+ =?utf-8?B?dktvTHArOER6cW95SVh4djFMNUxEMHRNdllJV05HZTJlWHc3Nk5mWWVaVm1r?=
+ =?utf-8?B?bFJxa1diakhPVGFvNzZQOEQ0L1pWenVVTnU0ZnM2cFlVWk9nUzhGUGdObU95?=
+ =?utf-8?B?eDBvSUo5V2ZPRnVabDVuMlZYZEI5U0Rib0tYQUFDL0xNcC9Ld3crWmYrR1Fi?=
+ =?utf-8?B?dWhvcUhpZHpzbURlKzlycW5TaW9xUzQrS1pjZFNpREp1ZmduZzhmM0RtTS9U?=
+ =?utf-8?B?OGxCeVl5RnlIUkpWdm5uYTRPV1B4WEYyamMvTEVOOEhFRHdTOWt0S1Y1ZlpT?=
+ =?utf-8?B?V0IwUTBZUitnTVhQN0kwREZzbHI3NElQRlEzYmMzZFQyNzNlcm5MdXpXRzNv?=
+ =?utf-8?B?NTlSMmZQUzZMWU9iQnlJdy9sbEg1VldqMVQwTm42NVBEQVRlTXd6bFJvSlk1?=
+ =?utf-8?B?Vy9XTENpbzZLcDJ3U0p6Vi82OU96STZSUzlxOURoQXo0T29GVkpIVWxWTkc0?=
+ =?utf-8?B?a1pNOGJDK2cxeXZJK0RyS1pDMEdCTERzMlJ6OTc3S3ROY1NjUHNCay9tajFT?=
+ =?utf-8?B?N3NtSEVhQXpXMUk0b282a240cTZjWkY0TG04d0t6Nmp4RFl2QnNKWU11akdC?=
+ =?utf-8?B?YzBsUnZRbXAxbmxpWGNZelVTb3Njell3ckxKKzV1WUhEQm5BUlNjR2VsZys3?=
+ =?utf-8?B?akRvcVArRTBCMVFSK1F4VytZV0h4UDFJa3RGNWpSZ2k4azR1anJ2Kyt2eUpE?=
+ =?utf-8?B?enVZREQ1YjFjZHZJZnZlbUZmczdldndzT2thdzNNVDFBcnNZbEdGdCtLbk5S?=
+ =?utf-8?B?WlJ6ckEzNHgzaDltdGR5WFNXbW9ncEEzK2kvR2VMWnJ5TlJYK3RtMVFsZW5k?=
+ =?utf-8?B?d2RralFkNVdpL3FOcDVtZTRlQXZmTi9IcXJjOVZqU3dlZS9DeHBqUzlUaXVk?=
+ =?utf-8?B?dk1TeTBvR0VGdFN6RTBlQWhka2RBRjljS0wxM2xKWTR0QkpQd0VsQjVrYTc3?=
+ =?utf-8?B?MGQ0dlRxRHVZUklVQW1EOUdKemlJZW9mZGgxMlRSWVNYT3JEUzU0VlRhcHFF?=
+ =?utf-8?B?aTlPOWhWeFI0dnBJSHhJZXdHNjBpMnYvUHFSellXM3o1NHJPZGxMb29ZQ2Nm?=
+ =?utf-8?B?Q2xqVzV4cHJtc3cxRjIzZVcycjNRcXIyempDQ3IrejNIb0hqMFg3djJ1S2pJ?=
+ =?utf-8?B?SW5seXRYOG9aOEtrVG9icmJlUFBaUG1mencvakVzdVo4Zkh4ck5QKzNFVmxj?=
+ =?utf-8?B?T2h1TlRqR2hCaXdmWXJmUERtbk02OC9Ob3hTay9LaGVTOXIvSGJ5cE56V0NR?=
+ =?utf-8?B?NWZYSklxVG8wQ1NBQndmWkRDbXBCY0dacllKZm5nbkwvYW0wU29DWmRXQlFs?=
+ =?utf-8?B?RlgwNzFxN25ubWFnNll3bXFyc3F4bSt2aDlycXVyKytJMVJ5b3NwMnM4Q2JD?=
+ =?utf-8?B?eVZFMnhxNS9PRDcyTVY5c1c1UDFrRHlVN3JuOFcyMFZrSFhkWVViTExHWjhV?=
+ =?utf-8?B?VVdkVllPNmFTRUpERWZBank1cmhva0g3MCt2eTdDYVRDQXdHbUNIS1I4c1F2?=
+ =?utf-8?B?cEdLZDVvMy8yOEdRWTV4ZU5oV2pqT1l2UVNoaGNTcmNaVlE4K1R5dndoYVhn?=
+ =?utf-8?B?SHpqeXJOdGNLY09uYzNHc0h0SThBeGV0eVRlQkdJZlVibDQrQ1puMGgySnJR?=
+ =?utf-8?B?bE1zSVphajkyL0doTWlnN0VhMk1EdTIvRkZvQ3VueUFQNExMNEgwcmRxMGNs?=
+ =?utf-8?B?azA0dHdhaDRpbThLYnpWK25wQzFhU0VaU242SXZJdFRDSzFlTDdWWllUNHAw?=
+ =?utf-8?Q?CPPELKDRsr2Md?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB9066.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MUl5NEtiOVd6enhCelhINm9wQjdnT1JzVWZFdVJ0WUtBNXRTT1VqNFNwOFhV?=
+ =?utf-8?B?Um13VllSaWkzRC9sNHdqaTdwdVdPRXorellVWkJIMXhHd0FlYlpwcG5vMDRy?=
+ =?utf-8?B?cHlJeVdSa1hRanJBeU5nc29ZYmVBeTBIV3paWDJiaVNhOE91SWVzV3QwVnRG?=
+ =?utf-8?B?QkliVFUxVmRHV3VtT1JvZitGbGxueXJjRHNPMDJXZjVEcU9OYzdkNG5iNUxV?=
+ =?utf-8?B?QVRZUG9IdVVHMUtZMzdzK2RDTGtnL0l5dGFpRHFZeHhvMGtaN0VleDd3WnRy?=
+ =?utf-8?B?NlRHNnBBNTVmQjQ5ZnZmMFl5YnlMLzZITjRJYmpOekswVDBmdTZQRTkrZVhq?=
+ =?utf-8?B?U1h0R2YwSFo1VmsxM0tDcHJMck9lV0FYSlBGeWE0L1lXeXZUM1l1Q3lGVnFh?=
+ =?utf-8?B?NWJZak9vaU9jWENqb0RCcDhDREt0L21jT3RXQTAwS3JjNFc4ZEJ5K1h4VzFP?=
+ =?utf-8?B?SWE2WnBuSk1Ic2U4UHVORGpyWE1BWHNkcVM5ZjVZQmVXUTNCRFRScjM2S0FP?=
+ =?utf-8?B?VGJuWmIrdnFKTEUrd05qQVVaMmI4VDZYL0ZDbGh5V2tJcHdvRlNFOFc1M25N?=
+ =?utf-8?B?N2kwNXJkSmNVenNXSnY4N0t3M1I5NnlpOHoyWWxYeGdnWEFRM1Bwb242ZmRu?=
+ =?utf-8?B?a2w5L3VVa1IweS9paXNXcitEbUlVRHBsV3BmdnNNc3FqZTBKZXVUVitFSlV6?=
+ =?utf-8?B?eDBtMFlHNFM4dFZibnBjbzZ1M2JCbWZ0TS9talhSQ29sQkpXdVcyUTYyR1V1?=
+ =?utf-8?B?WFFLQ3F6YUg1K1I1bi9SS0RIN1pveDExMWtCTjlmdFJiMXd4eHZMV2d3VEhE?=
+ =?utf-8?B?QTljUjF5WGVqdVdTSWZrWGtuc0llc2JyU2lXVVdHUjFDV3RPZEtsNjA5MmFU?=
+ =?utf-8?B?SGJjTkNMbWtqZS9jckE1UVg0OUNBK2ZtL2pQM3UyaUhKUlFMa1RaQ3NiUFA3?=
+ =?utf-8?B?Z1dYUDZnM20rZkltM2RqWlhhTzNTTng2dnhyZ1FOQ0tzUGVocE1YTGd0UVZ4?=
+ =?utf-8?B?OG9vUjk5eDFieFR1M1JCdSt1M3BlVEpJcGhmbWdLMU40cG9PcEF1OU5KVjgv?=
+ =?utf-8?B?aDF4c2xVSmpXKzQ1TnNkMlFhbzB1V0QvaFBacVhZTGszYUZTQ0haVnJHSXV2?=
+ =?utf-8?B?bmVQeEloaDc2S3UxUlZQTDJKODFMbkowdm9ReDF2NG0wSnd0WUpadU5TVnlQ?=
+ =?utf-8?B?akczU0hTMWJJR0ZYekxIdXFLM0lmd2J6bzRUaS9PZDVrV3J4R0cxQTJOcUt6?=
+ =?utf-8?B?cC9SVDR3dUpsSmZ0TS9HcnZmNFJzNFNPck1TaHNiUXBtS3dHelZyNVgwb2oy?=
+ =?utf-8?B?NkJpbGRaK29qOUlaRnNoOWVmRWJmaDhWdCtSYjhObzBLTkZoTGhRZndJeWtU?=
+ =?utf-8?B?c0pnZm5NRHpMRWZPd1RkdlhNMkQ5dUNPRWZyaEhISGtkdG44NEVZOFNZUGtM?=
+ =?utf-8?B?YmUyQ3J2VjZOMThaTFBpdTEyWG1KNU40Z1pzaGJqRlpvdE84SGE3YnljZDMx?=
+ =?utf-8?B?dXovM3ZqMFNreXRsRWZxcVpFRE10NHFoc0VOak9PdGorcWwzbFhQbE5OMSs4?=
+ =?utf-8?B?QURNSG05QzBnR1JqWjlBZ0FQQytkVVpBREpocjB2VDlGYmFwY3ZLUnhkNVNa?=
+ =?utf-8?B?bmhrb3Z2dkpTT2NqUzJ1YXRjVjY5QkZVMHNwRkIwc3pacEZaYWRJRzVOamhP?=
+ =?utf-8?B?MzNjLzlYdzFROGNERmhKbi9HejZtdjNhV0dhdFBGWUZBTnhISSsySnRuUmlS?=
+ =?utf-8?B?YUNuVVRiK2NDS25RQmw0cW4xTlZkNzl6a3Q5b2NIcnc3NzR3cVR1aXdiYkh3?=
+ =?utf-8?B?dElXaXk5VnpjZ1NkZW90S090R3d2NzNQaE5CalF1cTV0NVFYWXRsT2srMStw?=
+ =?utf-8?B?T3JUcmQ4K1lFaVpvSlgwT1pCMG8wY3BMNDBMd0xZbDRtUmg4RUpheFFCTDcr?=
+ =?utf-8?B?TlR1ZEptUStkQW0zTlN3dXdGUk9CT3pod2xsSFBVb3NpcXB0cVlkNVNYd010?=
+ =?utf-8?B?bFdpY0tYeTlsR21EQjNLYzBBRGdBYzZOQkZPa2ZlcHNlVE5WTEJYSXhVckRl?=
+ =?utf-8?B?R05jeW1kS1lTRVY3RHhaeFh5MGY3eVVTWnB2ZXVkRzRJbG9OMzJsYmtyeTlV?=
+ =?utf-8?Q?1E79TtetohdLLbHPxc8ybqTvC?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1401fab-2011-4dca-695e-08dd5b893aa5
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB9066.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 01:58:31.1151
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uiuwh3MyEvGDNTx7PYOvVAdaOL+gtYHZ8cp0BkW9WrH0wdGPTpnpvfVVqG6Dcr9WMgUM2NAZGBU0KBFD5Q7HIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8363
 
-On 3/4/25 1:05 AM, Steven Price wrote:
-> On 03/03/2025 03:42, Gavin Shan wrote:
->> On 2/14/25 2:13 AM, Steven Price wrote:
->>> The wrappers make the call sites easier to read and deal with the
->>> boiler plate of handling the error codes from the RMM.
+
+On 3/4/2025 3:58 PM, Sean Christopherson wrote:
+> On Mon, Mar 03, 2025, Ashish Kalra wrote:
+>> On 3/3/2025 2:49 PM, Sean Christopherson wrote:
+>>> On Mon, Mar 03, 2025, Ashish Kalra wrote:
+>>>> On 2/28/2025 4:32 PM, Sean Christopherson wrote:
+>>>>> On Fri, Feb 28, 2025, Ashish Kalra wrote:
+>>>>>> And the other consideration is that runtime setup of especially SEV-ES VMs will not
+>>>>>> work if/when first SEV-ES VM is launched, if SEV INIT has not been issued at 
+>>>>>> KVM setup time.
+>>>>>>
+>>>>>> This is because qemu has a check for SEV INIT to have been done (via SEV platform
+>>>>>> status command) prior to launching SEV-ES VMs via KVM_SEV_INIT2 ioctl. 
+>>>>>>
+>>>>>> So effectively, __sev_guest_init() does not get invoked in case of launching 
+>>>>>> SEV_ES VMs, if sev_platform_init() has not been done to issue SEV INIT in 
+>>>>>> sev_hardware_setup().
+>>>>>>
+>>>>>> In other words the deferred initialization only works for SEV VMs and not SEV-ES VMs.
+>>>>>
+>>>>> In that case, I vote to kill off deferred initialization entirely, and commit to
+>>>>> enabling all of SEV+ when KVM loads (which we should have done from day one).
+>>>>> Assuming we can do that in a way that's compatible with the /dev/sev ioctls.
+>>>>
+>>>> Yes, that's what seems to be the right approach to enabling all SEV+ when KVM loads. 
+>>>>
+>>>> For SEV firmware hotloading we will do implicit SEV Shutdown prior to DLFW_EX
+>>>> and SEV (re)INIT after that to ensure that SEV is in UNINIT state before
+>>>> DLFW_EX.
+>>>>
+>>>> We still probably want to keep the deferred initialization for SEV in 
+>>>> __sev_guest_init() by calling sev_platform_init() to support the SEV INIT_EX
+>>>> case.
 >>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> ---
->>> Changes from v5:
->>>    * Further improve comments
->>> Changes from v4:
->>>    * Improve comments
->>> Changes from v2:
->>>    * Make output arguments optional.
->>>    * Mask RIPAS value rmi_rtt_read_entry()
->>>    * Drop unused rmi_rtt_get_phys()
->>> ---
->>>    arch/arm64/include/asm/rmi_cmds.h | 508 ++++++++++++++++++++++++++++++
->>>    1 file changed, 508 insertions(+)
->>>    create mode 100644 arch/arm64/include/asm/rmi_cmds.h
->>>
+>>> Refresh me, how does INIT_EX fit into all of this?  I.e. why does it need special
+>>> casing?
 >>
->> With the following nitpicks addressed:
+>> For SEV INIT_EX, we need the filesystem to be up and running as the user-supplied
+>> SEV related persistent data is read from a regular file and provided to the
+>> INIT_EX command.
 >>
->> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>> Now, with the modified SEV/SNP init flow, when SEV/SNP initialization is 
+>> performed during KVM module load, then as i believe the filesystem will be
+>> mounted before KVM module loads, so SEV INIT_EX can be supported without
+>> any issues.
+>>
+>> Therefore, we don't need deferred initialization support for SEV INIT_EX
+>> in case of KVM being loaded as a module.
+>>
+>> But if KVM module is built-in, then filesystem will not be mounted when 
+>> SEV/SNP initialization is done during KVM initialization and in that case
+>> SEV INIT_EX cannot be supported. 
+>>
+>> Therefore to support SEV INIT_EX when KVM module is built-in, the following
+>> will need to be done:
+>>
+>> - Boot kernel with psp_init_on_probe=false command line.
+>> - This ensures that during KVM initialization, only SNP INIT is done.
+>> - Later at runtime, when filesystem has already been mounted, 
+>> SEV VM launch will trigger deferred SEV (INIT_EX) initialization
+>> (via the __sev_guest_init() -> sev_platform_init() code path).
+>>
+>> NOTE: psp_init_on_probe module parameter and deferred SEV initialization
+>> during SEV VM launch (__sev_guest_init()->sev_platform_init()) was added
+>> specifically to support SEV INIT_EX case.
 > 
-> Thanks, there were a couple of other pages and params_ptr references
-> that I've updated to granules and just 'params' too now. With hindsight
-> conflating pages and granules in the earlier versions of this series was
-> a big mistake ;)
+> Ugh.  That's quite the unworkable mess.  sev_hardware_setup() can't determine
+> if SEV/SEV-ES is fully supported without initializing the platform, but userspace
+> needs KVM to do initialization so that SEV platform status reads out correctly.
 > 
+> Aha!
+> 
+> Isn't that a Google problem?  And one that resolves itself if initialization is
+> done on kvm-amd.ko load?
 
-Yeah, that was because the assumption was the page size and granule size are
-equal(4KB), but they're still different things. With the intention to support
-ARM CCA on host with non-aligned page sizes (16KB/64KB), we have to differentiate
-granule/page.
+Yes, SEV INIT_EX is mainly used/required by Google.
 
-Ideally, the granule is only visible to RMI calls and their helpers. An new memory
-allocator seems inevitable so that the allocated pages can be distributed on requests
-by various RMI helpers in granule. It means the allocator is the line to separate page
-and granule :)
+> 
+> A system/kernel _could_ be configured to use a path during initcalls, with the
+> approproate initramfs magic.  So there's no hard requirement that makes init_ex_path
+> incompatible with CRYPTO_DEV_CCP_DD=y or CONFIG_KVM_AMD=y.  Google's environment
+> simply doesn't jump through those hoops.
+> 
+> But Google _does_ build kvm-amd.ko as a module.
+> 
+> So rather than carry a bunch of hard-to-follow code (and potentially impossible
+> constraints), always do initialization at kvm-amd.ko load, and require the platform
+> owner to ensure init_ex_path can be resolved when sev_hardware_setup() runs, i.e.
+> when kvm-amd.ko is loaded or its initcall runs.
+
+So you are proposing that we drop all deferred initialization support for SEV, i.e,
+we drop the psp_init_on_probe module parameter for CCP driver, remove the probe
+field from sev_platform_init_args and correspondingly drop any support to skip/defer
+SEV INIT in _sev_platform_init_locked() and then also drop all existing support in
+KVM for SEV deferred initialization, i.e, remove the call to sev_platform_init()
+from __sev_guest_init().
 
 Thanks,
-Gavin
-
-> Steve
-> 
->>> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/
->>> asm/rmi_cmds.h
->>> new file mode 100644
->>> index 000000000000..043b7ff278ee
->>> --- /dev/null
->>> +++ b/arch/arm64/include/asm/rmi_cmds.h
->>> @@ -0,0 +1,508 @@
->>> +/* SPDX-License-Identifier: GPL-2.0 */
->>> +/*
->>> + * Copyright (C) 2023 ARM Ltd.
->>> + */
->>> +
->>> +#ifndef __ASM_RMI_CMDS_H
->>> +#define __ASM_RMI_CMDS_H
->>> +
->>
->> [...]
->>
->>> +
->>> +/**
->>> + * rmi_rec_aux_count() - Get number of auxiliary granules required
->>> + * @rd: PA of the RD
->>> + * @aux_count: Number of pages written to this pointer
->>                    ^^^^^^^^^^^^^^^
->>                    Number of granules
->>> + *
->>> + * A REC may require extra auxiliary pages to be delegated for the
->>> RMM to
->>                                          ^^^^^
->>                                          granules
->>
->>> + * store metadata (not visible to the normal world) in. This function
->>> provides
->>> + * the number of pages that are required.
->>                      ^^^^^
->>                      granules
->>> + *
->>> + * Return: RMI return code
->>> + */
->>> +static inline int rmi_rec_aux_count(unsigned long rd, unsigned long
->>> *aux_count)
->>> +{
->>> +    struct arm_smccc_res res;
->>> +
->>> +    arm_smccc_1_1_invoke(SMC_RMI_REC_AUX_COUNT, rd, &res);
->>> +
->>> +    if (aux_count)
->>> +        *aux_count = res.a1;
->>> +    return res.a0;
->>> +}
->>> +
->>> +/**
->>> + * rmi_rec_create() - Create a REC
->>> + * @rd: PA of the RD
->>> + * @rec: PA of the target REC
->>> + * @params_ptr: PA of REC parameters
->>> + *
->>> + * Create a REC using the parameters specified in the struct
->>> rec_params pointed
->>> + * to by @params_ptr.
->>> + *
->>> + * Return: RMI return code
->>> + */
->>> +static inline int rmi_rec_create(unsigned long rd, unsigned long rec,
->>> +                 unsigned long params_ptr)
->>> +{
->>> +    struct arm_smccc_res res;
->>> +
->>> +    arm_smccc_1_1_invoke(SMC_RMI_REC_CREATE, rd, rec, params_ptr, &res);
->>> +
->>> +    return res.a0;
->>> +}
->>> +
->>
->> 'params_ptr' may be renamed to 'params'.
->>
->>
->> [...]
->>> +#endif /* __ASM_RMI_CMDS_H */
->>
->> Thanks,
->> Gavin
->>
-> 
-
+Ashish
