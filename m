@@ -1,137 +1,172 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD95221930D;
-	Wed,  5 Mar 2025 12:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46431567D;
+	Wed,  5 Mar 2025 16:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741177986; cv=none; b=Y+CSUAWADU6lvGuRnC1UIIoLd3r2y0V8cIgVs9/71LMC0uhgfMSGtEwYiAq2MxuiCxWqcOBtTnbdr3y8C+/Nb8J7/nPEut7mO6lz7aY9v2BeJOsbAgkJLzf9FSvEJaXFtzILnzK9yKk7wLlbfa1A/4exW2PM7b6Gu8AgOk3Z0/0=
+	t=1741191925; cv=none; b=r0PJqZCTZIuxvD/ODxIeIy4XJTo6c40y4hcQfplVwYMp/hAolal+UAVOc16VbUIylsCpFMfgozHPZG5gRTl4qfHcGdh3q5cMWVtEB1xL5BczEaT1OcciwRv/JSbT8j5N5udQeNmecHeaqGYYCdr+AUmBOkrYxOLY8lPdGsHKowU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741177986; c=relaxed/simple;
-	bh=MY4NkJMgNuThrBNquBSiScNhOWXhVfL9Nxx5FV6sinA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hT24mxf+h+OLg+KUVK78g7gi0coR0R/D6IvmU0bGw+EqeRzqu+6bYu9jFb77S9Qw6OvWd48F7a8T9Z3y4LG0D91COi3awWro3ClM8IllzhXyhRww+hYkpcAbil/TKXsUH8XcA987WqKUM3KGiObwdI3jS9MMrI0jECNGa2H01jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PBvJ8s4M; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PBvJ8s4M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741177985; x=1772713985;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MY4NkJMgNuThrBNquBSiScNhOWXhVfL9Nxx5FV6sinA=;
-  b=PBvJ8s4Mq2HtJ9sABq0LRPdq8agKVlOF2MCInBs3fnGbQHpbtgLJZekF
-   Kax6upScB/rR+B90NeWEfr+qefOeSgaYidCRJOcl3U9VgwqQMXfdqcf1p
-   4z26da4fWSHtuYRt5wy2pNLo1YzvLCXnQL/g5i92MCRLNFgl2qvirfZSv
-   xRu/Zm/7vwYWiR5xMgmiE2mTYDaGOAdYZPJAS2vwVTB9oTxHDI7r+8HBf
-   Ar9KPAEqLHjjgwBxVHHScOYOVZk80vuHE5em+UWImmD/e0PF79wIEpmEe
-   qsHtRp0lA14SfnIaGvkQSGjb4lDJ0dWDxB43NTjXAmRnIP98vckbrALfB
-   w==;
-X-CSE-ConnectionGUID: sCLKaqSXRM69uE2N0U/0Yw==
-X-CSE-MsgGUID: 3HN3FT+oS8un4xni8XF9bQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="42274287"
-X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; 
-   d="scan'208";a="42274287"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 04:33:04 -0800
-X-CSE-ConnectionGUID: M81unOAeSiCDOjADajyr1Q==
-X-CSE-MsgGUID: K+SUYzkkQAaYguIVDQXFNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="155889623"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 05 Mar 2025 04:33:01 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tpnvn-000Kws-0k;
-	Wed, 05 Mar 2025 12:32:59 +0000
-Date: Wed, 5 Mar 2025 20:32:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Bjorn Helgaas <helgaas@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, gregkh@linuxfoundation.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 08/11] PCI/IDE: Add IDE establishment helpers
-Message-ID: <202503052042.Clxxh3ZH-lkp@intel.com>
-References: <174107250147.1288555.16948528371146013276.stgit@dwillia2-xfh.jf.intel.com>
+	s=arc-20240116; t=1741191925; c=relaxed/simple;
+	bh=K+K6DmUC+Wxvngt/uU7W1IItHbJf0lWSGmSE11WgMBc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BPqJx0JQeYupde7zJn/OvGQrkEn4d62QJKKESQ2GYnyi4xDV+9GjPisuya+dEOkxukkNWLlvJReRDJr4aD1eLPlTYgZCQ0uNqVcTgJni4+eekcH62xvdiv59zBN8T2zcrPiuzhcWeuzA4My637jeCariHRTvKj2+rcY13r/D2mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D5D60FEC;
+	Wed,  5 Mar 2025 08:25:36 -0800 (PST)
+Received: from [10.57.67.16] (unknown [10.57.67.16])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1FB763F5A1;
+	Wed,  5 Mar 2025 08:25:18 -0800 (PST)
+Message-ID: <ea9bb982-cf31-4079-8fea-dc39e91a975b@arm.com>
+Date: Wed, 5 Mar 2025 16:25:17 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <174107250147.1288555.16948528371146013276.stgit@dwillia2-xfh.jf.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 09/45] kvm: arm64: Expose debug HW register numbers for
+ Realm
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20250213161426.102987-1-steven.price@arm.com>
+ <20250213161426.102987-10-steven.price@arm.com>
+ <cec600f2-2ddc-4c71-9bab-0a0403132b43@redhat.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <cec600f2-2ddc-4c71-9bab-0a0403132b43@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Dan,
+Hi Gavin,
 
-kernel test robot noticed the following build errors:
+On 03/03/2025 04:48, Gavin Shan wrote:
+> On 2/14/25 2:13 AM, Steven Price wrote:
+>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>
+>> Expose VM specific Debug HW register numbers.
 
-[auto build test ERROR on 7eb172143d5508b4da468ed59ee857c6e5e01da6]
+Looking at this now, this patch description is garbage. Probably the
+patch has changed over time - so I suspect it's my fault not Suzuki's.
+We're not exposing anything new here. This is purely about telling the
+VMM that a realm cannot (currently) be debugged. Something like the
+below would be more accurate:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Williams/configfs-tsm-Namespace-TSM-report-symbols/20250304-152958
-base:   7eb172143d5508b4da468ed59ee857c6e5e01da6
-patch link:    https://lore.kernel.org/r/174107250147.1288555.16948528371146013276.stgit%40dwillia2-xfh.jf.intel.com
-patch subject: [PATCH v2 08/11] PCI/IDE: Add IDE establishment helpers
-config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20250305/202503052042.Clxxh3ZH-lkp@intel.com/config)
-compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250305/202503052042.Clxxh3ZH-lkp@intel.com/reproduce)
+"""
+kvm: arm64: Don't expose debug capabilities for realm guests
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503052042.Clxxh3ZH-lkp@intel.com/
+RMM v1.0 provides no mechanism for the host to perform debug operations
+on the guest. So don't expose KVM_CAP_SET_GUEST_DEBUG and report 0
+breakpoints and 0 watch points.
+"""
 
-All errors (new ones prefixed by >>):
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>>   arch/arm64/kvm/arm.c | 24 +++++++++++++++++++++---
+>>   1 file changed, 21 insertions(+), 3 deletions(-)
+>>
+> 
+> Documentation/virt/kvm/api.rst needs to be updated accordingly.
 
->> drivers/pci/ide.c:322:3: error: expected expression
-                   struct pci_dev *rp = pcie_find_root_port(ide->pdev);
-                   ^
->> drivers/pci/ide.c:326:20: error: use of undeclared identifier 'rp'
-                                         pci_name(rp));
-                                                  ^
-   2 errors generated.
+I don't think (with the above clarification) there's anything to update
+in the API documentation. There's nothing new being added, just
+capabilities being hidden where the functionality isn't available.
 
+And eventually we hope to add support for this (in a later RMM spec) - I
+don't yet know exactly what form this will take, but I hope to keep the
+interfaces as close as possible to what we already have so that existing
+tooling can be used.
 
-vim +322 drivers/pci/ide.c
+Thanks,
+Steve
 
-   306	
-   307	static struct pci_ide_partner *to_settings(struct pci_dev *pdev, struct pci_ide *ide)
-   308	{
-   309		if (!pci_is_pcie(pdev)) {
-   310			pci_warn_once(pdev, "not a PCIe device\n");
-   311			return NULL;
-   312		}
-   313	
-   314		switch (pci_pcie_type(pdev)) {
-   315		case PCI_EXP_TYPE_ENDPOINT:
-   316			if (pdev != ide->pdev) {
-   317				pci_warn_once(pdev, "setup expected Endpoint: %s\n", pci_name(ide->pdev));
-   318				return NULL;
-   319			}
-   320			return &ide->partner[PCI_IDE_EP];
-   321		case PCI_EXP_TYPE_ROOT_PORT:
- > 322			struct pci_dev *rp = pcie_find_root_port(ide->pdev);
-   323	
-   324			if (pdev != pcie_find_root_port(ide->pdev)) {
-   325				pci_warn_once(pdev, "setup expected Root Port: %s\n",
- > 326					      pci_name(rp));
-   327				return NULL;
-   328			}
-   329			return &ide->partner[PCI_IDE_RP];
-   330		default:
-   331			pci_warn_once(pdev, "invalid device type\n");
-   332			return NULL;
-   333		}
-   334	}
-   335	
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index b8fa82be251c..df6eb5e9ca96 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -78,6 +78,22 @@ bool is_kvm_arm_initialised(void)
+>>       return kvm_arm_initialised;
+>>   }
+>>   +static u32 kvm_arm_get_num_brps(struct kvm *kvm)
+>> +{
+>> +    if (!kvm_is_realm(kvm))
+>> +        return get_num_brps();
+>> +    /* Realm guest is not debuggable. */
+>> +    return 0;
+>> +}
+>> +
+>> +static u32 kvm_arm_get_num_wrps(struct kvm *kvm)
+>> +{
+>> +    if (!kvm_is_realm(kvm))
+>> +        return get_num_wrps();
+>> +    /* Realm guest is not debuggable. */
+>> +    return 0;
+>> +}
+>> +
+> 
+> The above two comments "Realm guest is not debuggable." can be dropped
+> since
+> the code is self-explanatory, and those two functions are unnecessary to be
+> kept in that way, for example:
+> 
+>     case KVM_CAP_GUEST_DEBUG_HW_BPS:
+>         return kvm_is_realm(kvm) ? 0 : get_num_brps();
+>     case KVM_CAP_GUEST_DEBUG_HW_WRPS:
+>         return kvm_is_realm(kvm) ? 0 : get_num_wrps();
+> 
+> 
+>>   int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
+>>   {
+>>       return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
+>> @@ -323,7 +339,6 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
+>> long ext)
+>>       case KVM_CAP_ARM_IRQ_LINE_LAYOUT_2:
+>>       case KVM_CAP_ARM_NISV_TO_USER:
+>>       case KVM_CAP_ARM_INJECT_EXT_DABT:
+>> -    case KVM_CAP_SET_GUEST_DEBUG:
+>>       case KVM_CAP_VCPU_ATTRIBUTES:
+>>       case KVM_CAP_PTP_KVM:
+>>       case KVM_CAP_ARM_SYSTEM_SUSPEND:
+>> @@ -331,6 +346,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
+>> long ext)
+>>       case KVM_CAP_COUNTER_OFFSET:
+>>           r = 1;
+>>           break;
+>> +    case KVM_CAP_SET_GUEST_DEBUG:
+>> +        r = !kvm_is_realm(kvm);
+>> +        break;
+>>       case KVM_CAP_SET_GUEST_DEBUG2:
+>>           return KVM_GUESTDBG_VALID_MASK;
+>>       case KVM_CAP_ARM_SET_DEVICE_ADDR:
+>> @@ -376,10 +394,10 @@ int kvm_vm_ioctl_check_extension(struct kvm
+>> *kvm, long ext)
+>>           r = cpus_have_final_cap(ARM64_HAS_32BIT_EL1);
+>>           break;
+>>       case KVM_CAP_GUEST_DEBUG_HW_BPS:
+>> -        r = get_num_brps();
+>> +        r = kvm_arm_get_num_brps(kvm);
+>>           break;
+>>       case KVM_CAP_GUEST_DEBUG_HW_WPS:
+>> -        r = get_num_wrps();
+>> +        r = kvm_arm_get_num_wrps(kvm);
+>>           break;
+>>       case KVM_CAP_ARM_PMU_V3:
+>>           r = kvm_arm_support_pmu_v3();
+> 
+> Thanks,
+> Gavin
+> 
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
