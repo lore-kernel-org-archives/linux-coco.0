@@ -1,303 +1,166 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2077.outbound.protection.outlook.com [40.107.223.77])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF75243AB7
-	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 06:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741155059; cv=fail; b=KpiKsBMQqyhJvjVIteu3iIiKTZb7ubSEwg7Q5Y1htEPLcEXPuu4tvmfhyEcqjaWoewWLFPhHy47PP2ULSvsgLph7XP2O6yWsUPKWKLfopUtv+wIx+vYyZlBfiGb3LDZ+JifecTU76m0+tiqaJqds6jb2mC+ZZR0po2PfRGhjFeA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741155059; c=relaxed/simple;
-	bh=F2vM6bdoZxhWmSkKCRkUDEkPDGRX8ZlINtwVazdGDqc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=FTj4t0rjXK56h91V+fepvoVaapToURbLM+YIRBiqY+PvBk3/2B/4hx5rHTbCem9ZRANYfrdOuYQd6+VqjuvyXb0nsZeFRzOcK2DyTJlrjWLap1nN95qO5sHRpVW2kPFXNDbKM7bSUHVSfJz1DrRyqgptFFpt/owBMnQ9ni2+fTM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HPEsFP5g; arc=fail smtp.client-ip=40.107.223.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E078A202964
+	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 09:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741165477; cv=none; b=tvv19Dfu0I7vKPSOcvFIo7TrOanKfoP98DzAABC9W3hhOg9Sga8XtjhEIESh6MCANX3jybai4FvlUsfSPFsqEw2fecppMIHrouxbWR7V9hHS7i9aPAKy2m+i04/yokbo544eH6xKSg2XgDAhN74MO/Z4Rw9KGO22U5pOjzocfcE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741165477; c=relaxed/simple;
+	bh=AE3jTHl3RCqDhjjVKJXOh6ubweX3rBsEb/KueUuwrTY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=XwuvkTgg5aZbcNUSaiUHTUsxUMFxZhzk46pXWRIUeXUXuQbvOXGqK7vZTtxYctzZrQlAXoR+QUiKc44WyhsfgdKd4hXTIa4/skR8s06OSUtdgA1SW1JuNbKKmVNvfK/tEa70buoapm7sh4Ds5FMwnF5sq1i4YSoxFIOzpVARJUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Dic1urce; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HPEsFP5g"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dphgHOrHS/oGfUPsOuoSO659LCqq8WEoGSl0H+62c9CluKG0SQqbpOzpWRqNwiCSoRcto9hY0IsMceTsU51Y4YCKVWqQcDhmmHCIoGGvCrq3hH3cGPiydNM2AWJS65jqYrXhHoqtzNZbMwKh6lrkQUTLdkt8OB0i+/Klr3dUQHTjRyMOQ2QY0U3i8B/Egvx8UoLaa8/SasfbxPa6PD1/yMleTmtg50tOeHlTmpADzym+VZqXDCBhDwbangcBpK441EgzDcM6i/ApiBoNziyjJCh0Ngm/g138AkgTgXVh7dGr8f04r4/AXp+wyHMuzbbPN/UEDIrO7O73/J4/9xqKpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qyTXpHcVfgoEcrTj/hOybcrS08QQ5PuT2e3ccUDhUsw=;
- b=MfMbGENFhL8JJpmo48/d7/jbBmKnm5o9kGdjzVJUSl3LzdUw2DXaWPu8ZTXvCevwYXQ1RGj1ldZtkLS5aMgURcqkjpPeC9Ya86DtPph8zWzwzyc5fYttB7Rueb7fhW1WXm83a7Gklo56BG4TJExSHL4xSh/92hTQxQWS29tLeI9MMAF9JoaAJp300maiym/5TFJNyu2vy4/iXjBcQ+kkNgbgXKHxgL1kpUc94NI07dyFb3DpX01d+TPpafDSdSrj92U4tu1ILeQ0HibfQlugSz8YkVfCnUBL1W2wLOXySZcV5s5bQrbFcx3oD7BDTrHYpfLaeYa1hPMV50KOBOSzKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qyTXpHcVfgoEcrTj/hOybcrS08QQ5PuT2e3ccUDhUsw=;
- b=HPEsFP5gk/q14Ecz/pAKLDnf5PsMXXqx/98EqKQWwPoe90GuhTtVVIHX/M+NqrQL6awVEb2eebKfdHFCmqRPr7pmIrVXmQokQX76UcNWTc6X3qVj+Du5JxaX+R3hSwkl/z+bmSkM5sgjO/8O6wRp+wZwxtzQWpLWPednx8vYIFQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH2PR12MB4262.namprd12.prod.outlook.com (2603:10b6:610:af::8)
- by DS0PR12MB6582.namprd12.prod.outlook.com (2603:10b6:8:d2::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Wed, 5 Mar
- 2025 06:10:55 +0000
-Received: from CH2PR12MB4262.namprd12.prod.outlook.com
- ([fe80::3bdb:bf3d:8bde:7870]) by CH2PR12MB4262.namprd12.prod.outlook.com
- ([fe80::3bdb:bf3d:8bde:7870%5]) with mapi id 15.20.8489.025; Wed, 5 Mar 2025
- 06:10:55 +0000
-Message-ID: <476ddccb-3736-46c9-bbd6-b803138d5a3a@amd.com>
-Date: Wed, 5 Mar 2025 11:40:45 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] mm/filemap: add mempolicy support to the filemap
- layer
-To: Ackerley Tng <ackerleytng@google.com>, Vlastimil Babka <vbabka@suse.cz>
-Cc: akpm@linux-foundation.org, willy@infradead.org, pbonzini@redhat.com,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, chao.gao@intel.com, seanjc@google.com,
- david@redhat.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com,
- Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com,
- tabba@google.com
-References: <diqz8qpqlzzv.fsf@ackerleytng-ctop.c.googlers.com>
-Content-Language: en-US
-From: Shivank Garg <shivankg@amd.com>
-In-Reply-To: <diqz8qpqlzzv.fsf@ackerleytng-ctop.c.googlers.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BMXP287CA0009.INDP287.PROD.OUTLOOK.COM
- (2603:1096:b00:2c::15) To CH2PR12MB4262.namprd12.prod.outlook.com
- (2603:10b6:610:af::8)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Dic1urce"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741165474;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BEth4fIZlz8Imlyl+6R1z/6iq4I7j5kDgxxdnJQebak=;
+	b=Dic1urceS9GM8RrHyx52NN/KxL7sKlLFSK30ngikwYL2K39IRSfClyt/JfOSB/S6Q9RoNh
+	fSQERM2togte13f/8R9o1hm/jqa5eqtxhSNJjOmVyaImf+I02Do/bH33eYqf8UdnACw0rm
+	0wbqnC0DqJ21hjY4SyYFx459uWQWOtA=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-6-e70z2S6ON7yqf-mKPUG7qQ-1; Wed, 05 Mar 2025 04:04:33 -0500
+X-MC-Unique: e70z2S6ON7yqf-mKPUG7qQ-1
+X-Mimecast-MFC-AGG-ID: e70z2S6ON7yqf-mKPUG7qQ_1741165473
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-ac21ef37e38so12982466b.3
+        for <linux-coco@lists.linux.dev>; Wed, 05 Mar 2025 01:04:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741165472; x=1741770272;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BEth4fIZlz8Imlyl+6R1z/6iq4I7j5kDgxxdnJQebak=;
+        b=HjsbF84hEL1j6DRpa/yH5DcNO2L0xv97BbBcXY9TldXVy9A93ekUx4ZX+fE0ydU5Nu
+         e/Cg3KzDQ1iN4YSz+0sKyiX2DxIcQHfn6Q1qrYWrqYUMMo8e7AycBoJijZEXFJFTiUD3
+         idpAfGlUUD1pEbgDsMkw6HPgHwQrjgvas1h/sIqvgA7Q2MioLdqS2vIW4CXkYJmx7iGE
+         E7UnY5hvzyKzrecqADb/r9mdAS5u000sk8RQ/GPoKXFxMGorpvre7/IKSZj5Gqw1nJLZ
+         NfghFh9Jp9xR4WPAZT4Jp2k1hL/RmY6jpueahz78mtMBcVNBpUr8mS0iJgqhu5GRikyE
+         e0Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZCX13KERpbYJtVLfxspxsdymkpinELT0yTGYyEdEcYY86b71d/E2qNUL9AgpiOsmk0Fyozv8vWsNO@lists.linux.dev
+X-Gm-Message-State: AOJu0YxiGFq9I4JF9edzP/9aogLqLs7DpyUr7h4eyVno4MY8fJzaG/Jc
+	EfbZBmwm1dSjuNTLn+8yvkalx7TV0J8xl91dSFyF1nImAlZAiC3NhG/Z2D7LjZhoWbKb1OGAgMV
+	psavMl1PnotEoJdLQ5bIJA4RuH16Ygf4HUQevogPUa0XsXJccahbUePLAju9ZgUzRx00=
+X-Gm-Gg: ASbGncuYl7KAE28QyIOBIMHxn4zHG7/3sgAVB22lUp7Iklvx7pKp97rGiGvmo8GOVZf
+	xRNH1j1K49qO6Av/kD9aqlxSmMVOJEl2JnLGKlB+jxo9tKxKzc9W5ajXoDf24SJQkuV4SMl2BFA
+	C2JIDaCf9kK/e0Lhuyi9I7/7guvSyMNjgSb622Sz6c2lMNPFZLxVTXquNugUswtrxqvORJ1Str+
+	bB9mmwnqN7AOQ/4L4uehTAttRBTyM0Rif0zOIoM2YMZY9pDtLXDNGwPdNWrywZuGGWsQVrcyy/D
+	8QRqZim7Zl9VbBidbku3Oyfw/tHMpj3K2UkTUAu1HBFaUaZfXVkGfT2/2bS37iVl
+X-Received: by 2002:a17:906:794e:b0:abf:7a26:c47b with SMTP id a640c23a62f3a-ac20e152a8dmr216330966b.39.1741165472164;
+        Wed, 05 Mar 2025 01:04:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGscyqZ5x+Y/FizJPiAUuTdN5MEIafB1TLPqWDWprgT1XpnNzoBuyuavmFNtXAojOn0ZOWyxA==
+X-Received: by 2002:a17:906:794e:b0:abf:7a26:c47b with SMTP id a640c23a62f3a-ac20e152a8dmr216326966b.39.1741165471489;
+        Wed, 05 Mar 2025 01:04:31 -0800 (PST)
+Received: from sgarzare-redhat (host-79-46-200-29.retail.telecomitalia.it. [79.46.200.29])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf71a0e0b6sm533326666b.7.2025.03.05.01.04.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 01:04:30 -0800 (PST)
+Date: Wed, 5 Mar 2025 10:04:25 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Thomas Gleixner <tglx@linutronix.de>, 
+	Claudio Carvalho <cclaudio@linux.ibm.com>, Peter Huewe <peterhuewe@gmx.de>, x86@kernel.org, 
+	Dov Murik <dovmurik@linux.ibm.com>, linux-coco@lists.linux.dev, 
+	Dionna Glaze <dionnaglaze@google.com>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [RFC PATCH v2 3/6] tpm: add send_recv() ops in tpm_class_ops
+Message-ID: <jkr5z4thb55gs2jcmtcfipgg6p7z6ikhr6etd6l3nqpf723hf7@3fns3z5cjqk4>
+References: <20250228170720.144739-1-sgarzare@redhat.com>
+ <20250228170720.144739-4-sgarzare@redhat.com>
+ <Z8Jmps6AF_geaHUw@kernel.org>
+ <3p5erujbhxw7ozdnfpmresv3dqdh2xszolv6mh4khkagoy3wit@ow5qht4keh4h>
+ <0e156883acf95d31b9358831550d6d675e3ce4ff.camel@kernel.org>
+ <Z8dg46Mj81Q9Z0WV@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB4262:EE_|DS0PR12MB6582:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd9a4931-c234-4551-67a7-08dd5bac7d13
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bFNGQVR3UWRuR2lrbFIwcHdTR2o5TDU5RkdmSHNTMnRUclVHOEtUMkdHSjFD?=
- =?utf-8?B?VU1McHpYaHgwbHcrTVhzcHlPT0RiVUZFanBGVGw5amEwcTY1em9vdkVaSlVG?=
- =?utf-8?B?cWEzU0ozTEs3WjZ6L0xZQVpIdXROQm51TDNKZGtCcGREWE96MW5wb0ZmQ2pU?=
- =?utf-8?B?YVpyZExDbzJKTXVWOWFYUzlxOXNKbGVBcS9tdnJCUzlXZnU4eGZVa0JkNmdW?=
- =?utf-8?B?a0tqNWNoLzRaL3lEQ2FLNkxTU0lDM0lQUHF0VG16cms5ZXFhaks3eG9MMVhT?=
- =?utf-8?B?dENmRVVwckk0a1BJYzlSdHg2aGVHUklRY0Fnb3NmamEzWjRJOWNTTU11b2g4?=
- =?utf-8?B?UjZidTZqdW0zWmVRRC9TRlpLNmxLbjd4WENRK1FoOWMvMEo5aDJCTTk0Nms2?=
- =?utf-8?B?dUl2cmxoSmJkWk42ZENNZytzMnorYnlQK2pYeHF1NTRDMFYzbmZNTVZuNkxE?=
- =?utf-8?B?TUlYdS8rTVZyMllKL2FNNGIwTmpXRFRPQlZpU0pDT0Rwa0VySWJJSXJ4ZGZz?=
- =?utf-8?B?RzFyd2diOHB5REU1d1k4SzFxbXV5OWo4RFBkV2hQY0VLaGovVmpBRVc5dzly?=
- =?utf-8?B?d29LajhCVG9jeW9PbFU1MG05NW1oZUpVL2RSTjVxUTRQL2VSb3l4b3RoRlJk?=
- =?utf-8?B?U25ZK3VhUVVjVjlNTkhjMHNhUlBqTWRuZGtXb09FZmlrV3Z3WGV3SUZDL25B?=
- =?utf-8?B?SytuWk42OEQrVnVvTlpBOFkydUN6Mnh4ckZRWk45dGpQL0xhWi9DWEo1V09O?=
- =?utf-8?B?K3hyRDBXN3FYZXVrVkh3a0dMb0ptWWhrSDI5OGtzVmkxbDArbzNJNXlRUUdR?=
- =?utf-8?B?VXhiQk81SUErSVBOZnlOWFp6aXducUE2YitIdm85TmtpeU5kTlpqMDZaNUZD?=
- =?utf-8?B?aXhXcDBUMUxwQ0VJMWszZ0FUd3NkOFBFN2RlekxaUmlZYWg3OWRGa1k1Z1ZC?=
- =?utf-8?B?bFRjOG90U2xLRjlhZG1hdkpZZFR6Y2lpek1aS1JsVUYwdkw1L0hJOVAzcEVM?=
- =?utf-8?B?ZlNIaUdMNUFuSCtZUUhIb2cyVFZiQzF6ZTkwa1BKYVllcjJhaGlmcTRNTGww?=
- =?utf-8?B?ZHhRY1JOMXlsY3dIS2JVdkJuVkhHOTB2c0ZmVGtFRk0zcEVqcGhCOCs2WG5V?=
- =?utf-8?B?K09BSzFtMTlYVVdWekY3TjRad1kvOXBEWkhwT05aNVN5R3V1NzlGOXBTUTlZ?=
- =?utf-8?B?SU82blpmMW1LWG9ocjhwL1FnNEpyRmdFMEQycmhCMXpPZzczc0M4RWtkMzNP?=
- =?utf-8?B?bU1hRXJGZ2hiam1waDlhODdWRkZTZllSbVZac2JDTmNkemJHTEtDdXFFc0xK?=
- =?utf-8?B?c1hjclZVNXdSNnRGbmhQTWwrWEFDUnVNdGJ3eHdwUElJMmdNZ2QwUGhnbjRC?=
- =?utf-8?B?L1NpUVdBOUhFTFNJUGg4UU9SV0xCUS9uNVRCaFg1eEkxSitLWXlyNm05MEVo?=
- =?utf-8?B?cHd5NkYrcVdXcDBaSVZwcy95NmE2RG9SK3owZ2xwTXhId2hsOG9SNnJkcXZJ?=
- =?utf-8?B?OFAvcHdvVjkvNVhGR2lkKzVDMVAxOEpDRnF3eWY2cDVJUkJsR3RZbGh2ajFl?=
- =?utf-8?B?ME0wdElqUkR3OE1mYStxTmxGcVRGdlo5QktwWGxSbktRL1JFaXh2TmppcW1I?=
- =?utf-8?B?ekU0Q0wySHBjc0VTZ3lmMTROY3NpNnBqVWRtSVJtZlIzRXkyLzJNenlqTFlX?=
- =?utf-8?B?bnFyMDF1RXpvbWIzVTZkRWF3WG1SWVIvNGhIaTlHWC91RHIxUzBsMFZyUjBh?=
- =?utf-8?B?MXhnVTMwSE1kc2JrTmJXVlFJUVdwSURQSTk1QW1wSTZlSVgvazkxendWK092?=
- =?utf-8?B?NzIwWWtpd2ZGQTVQa0xSUU5VcnFqQ05wMzRUSUpOSDIwMDR1ZmYwVk1YNFdk?=
- =?utf-8?Q?RVB2LXiCg/w/L?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4262.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZVhtb01RUnpabVZxeERIZGxMUU1xV0Y2VlhacysySEltYS9BeXdtUmc1VXpi?=
- =?utf-8?B?ampBcW5sdlgvbnpjYi9jVVRpdlR0TytFeFc0eG9mR0V5ZmlXOXNmY05CZTlm?=
- =?utf-8?B?L0pEMTVxU0djcDlZT0FMRXNPakdDQi9wRnJTZHVpWmZHektIeE1RSVdNNFlW?=
- =?utf-8?B?eXFEbXNGNkc0dkMybFc2UG8vMDlleGpQZThNeHArQkdKM2N5OHNPMGR3cnp2?=
- =?utf-8?B?dGl5Q2c5R0Q0cUMvZW9xTUFmSmk3MWZSR3ZRM3lnU0paQmc3ekdGTWdDK2pa?=
- =?utf-8?B?eUlMWWlUM25BSGl6VXRXTXp3T1dCU1ZRVWgybThnU3ZOOGFvUjZhVCsxZVdJ?=
- =?utf-8?B?bUVRMnowMnNGOEo3K1dSQk1SRVdXMG11dGtSMllUOE1FOGdIdEU3ZVVmTzFR?=
- =?utf-8?B?M0p2RHI5OXVVakVtRVVDek84V0tRTjFZVkRFRmJEVE5QTEU0TTBmS0pBOVp2?=
- =?utf-8?B?UXBJY2RXUXlKOXkxd1R4NUR4cW9xT0huSkVSRDAyYUE1WVh4dllwaWcxMVlW?=
- =?utf-8?B?a3FmSTNQelY2MGgyYWxYR2lHV3NvN2pYblA5bURzMGhCcXU1ZFBaLzI0a3hi?=
- =?utf-8?B?V0FhRUxEdFJpeCtEZUNST1FqQ0Q5eDBpTy82VmJyY1lGMnc1aU5yUHBhWnBL?=
- =?utf-8?B?aEU3MzJya2ZVcFhyL3ZNK3UzZm5ySzN4L3RxOEFOYWtNQ09vU0NTTzNKd2JO?=
- =?utf-8?B?QUZPZVdZaWRid1E0RkhCODZSQytJU0JuNGxObytuSEFsY1VMdDZyY0xMTlgv?=
- =?utf-8?B?VXZzOUJieWw2bkhMQXpWRmRTTmxOU1R1dzY3VDlqLzNlRnNxc3NMWXdPU0t5?=
- =?utf-8?B?UnBRaDFCMlowcEJjYlM1WTFtMTBKNFE1Wk9udHFzenlUUTczRHNESFhJWDVE?=
- =?utf-8?B?VVVIamtyYzVUcVdJQnU0Z0pFS2ExcFhvZUd6ekZXZW81RFBaMHJrOWp3Q3VT?=
- =?utf-8?B?aGlYSUkzZURLTDFubVZBanZFN2hoRnNSK25BOHhmV1ZBN3NWdE1ZNG0rcWV4?=
- =?utf-8?B?MVBvU3UyYmlSbEkvL2NKMVVYeUtJcTk4KzJxdlNXWlF4M2JMc3dsLzRuV3ll?=
- =?utf-8?B?VHFkeDhOb1VROWR0SHB3WXAyUDFValU4RCthYXJ4YmhNSXRQdE1EWlp2SWFW?=
- =?utf-8?B?NUZNRGYxaWF1TXU5YWIzbUx2N3kyeVJtMVhCNUFBaEVOV1B1QnNQbWpITStF?=
- =?utf-8?B?Zi9CektCOGlEYUpNNEJNMXZXc0N2bkYxQjlKQW9XdnhHSmd3OFphN0pwczlw?=
- =?utf-8?B?RFMwdXkxd0xtejh5S3pMcnNhZHM4OUR4M3U1S0dZbUJIMnRxMXNBcXB6VW1o?=
- =?utf-8?B?Ykh4K3RBSmFmSFFWNHhxK2pMWFhqK29RSksyeDFONTg4SlE5SmRqSEE4OHpV?=
- =?utf-8?B?NFhJeUd4VVlsbVNua2d0QkFQYmhCVGVzbDI0ZnBnOGRNQkZLUUt0akpUQzlU?=
- =?utf-8?B?OHgydy9FYzB6aHBHNGUyNjd3SW5HWFplUCtnOXpOdjNYbjc0NUJLQ3pvRThD?=
- =?utf-8?B?d0pJb21HcTE3cU1wUjZOZHJKUCszblF1Zkg1bkVIZ1dsQXJmbWxrZWkzeHF2?=
- =?utf-8?B?VUxYY3IxaU9RZnh1aG1GdjBlU2ZzR1FSYi9pYzJ1YURLdWRkblhUTVZUN21q?=
- =?utf-8?B?NFhZYXF1L2F0Mlk1b2Mvbm94TVhKVFpHRnkybzNrdHVkR2lOaWVEalltVXdY?=
- =?utf-8?B?Qlo5VmNpakdvVXRiY1BpeUhuL0l4dUxqL01sL2ErOEkxeFJCcTJoSUw3RnNM?=
- =?utf-8?B?N0JIYU1NV1lQYmt0U1ZhcDhYbkpnTkF2YWcwa3JDMkYrNmpZVThtdzc3RVlF?=
- =?utf-8?B?R2NwenM0QmozR2J0TXpJektTR2pKSDIxREduOVA3L2RFOVJ3Zk9HWXBHVVZV?=
- =?utf-8?B?UE1ybEYzZ2xOZE5MV2dSYkdnYVZWL28rcDZPYU4yUVdMQUxad2p4QTZUU2hp?=
- =?utf-8?B?V0Z5RVBNd3pGT09jN2p3bmZDeG1HWGZpZjdWeEJsMnA2YkNQeUh1RVc5NWJq?=
- =?utf-8?B?NGJHcytTZnBRMnVpaTFoTEMvUGZRZ1VOR0dUbHAwaDdYQUgraUVTdHNLR2Nh?=
- =?utf-8?B?TVdtS0VOSTdmSEVCd3lLVXF6YnI4UWQ0bENBTzlGc3Foa2JmWDZGU1pZNzR4?=
- =?utf-8?Q?ybG0dQ2+O71KBSdNThs+CBD2K?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd9a4931-c234-4551-67a7-08dd5bac7d13
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4262.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 06:10:55.1158
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r2H/F0h1s5WX3Wm0hVt6RLRctraeuKFngo5QAXzbExLLId2/MZdRnD8N3k5mYbUuOlX0kCR2cc3OX0bT5pdHEw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6582
+In-Reply-To: <Z8dg46Mj81Q9Z0WV@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: yNn8CGmxEqptjiGKLN2Vo0a8fzC0bqxDNdib7eeQDd0_1741165473
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
 
+On Tue, Mar 04, 2025 at 10:21:55PM +0200, Jarkko Sakkinen wrote:
+>On Tue, Mar 04, 2025 at 06:56:02PM +0200, Jarkko Sakkinen wrote:
+>> On Mon, 2025-03-03 at 17:21 +0100, Stefano Garzarella wrote:
+>> > On Sat, Mar 01, 2025 at 03:45:10AM +0200, Jarkko Sakkinen wrote:
+>> > > On Fri, Feb 28, 2025 at 06:07:17PM +0100, Stefano Garzarella wrote:
+>> > > > +	int (*send_recv)(struct tpm_chip *chip, u8 *buf, size_t
+>> > > > buf_len,
+>> > > > +			 size_t to_send);
+>> > >
+>> > > Please describe the meaning and purpose of to_send.
+>> >
+>> > Sure, I'll add in the commit description.
+>>
+>> It's always a command, right? So better be more concerete than
+>> "to_send", e.g. "cmd_len".
 
+Right!
 
-On 2/28/2025 11:21 PM, Ackerley Tng wrote:
-> Vlastimil Babka <vbabka@suse.cz> writes:
-> 
->> On 2/26/25 09:25, Shivank Garg wrote:
->>> From: Shivansh Dhiman <shivansh.dhiman@amd.com>
->>>
->>> Add NUMA mempolicy support to the filemap allocation path by introducing
->>> new APIs that take a mempolicy argument:
->>> - filemap_grab_folio_mpol()
->>> - filemap_alloc_folio_mpol()
->>> - __filemap_get_folio_mpol()
->>>
->>> These APIs allow callers to specify a NUMA policy during page cache
->>> allocations, enabling fine-grained control over memory placement. This is
->>> particularly needed by KVM when using guest-memfd memory backends, where
->>> the guest memory needs to be allocated according to the NUMA policy
->>> specified by VMM.
->>>
->>> The existing non-mempolicy APIs remain unchanged and continue to use the
->>> default allocation behavior.
->>>
->>> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
->>> Signed-off-by: Shivank Garg <shivankg@amd.com>
 >>
->> <snip>
+>> I'd do instead:
 >>
->>> --- a/mm/filemap.c
->>> +++ b/mm/filemap.c
->>> @@ -1001,11 +1001,17 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
->>>  EXPORT_SYMBOL_GPL(filemap_add_folio);
->>>  
->>>  #ifdef CONFIG_NUMA
->>> -struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order)
->>> +struct folio *filemap_alloc_folio_mpol_noprof(gfp_t gfp, unsigned int order,
->>> +		struct mempolicy *mpol)
->>>  {
->>>  	int n;
->>>  	struct folio *folio;
->>>  
->>> +	if (mpol)
->>> +		return folio_alloc_mpol_noprof(gfp, order, mpol,
->>> +					       NO_INTERLEAVE_INDEX,
-> 
-> Could we pass in the interleave index instead of hard-coding it?
+>> if (!chip->send)
+>> 	goto out_recv;
+>>
+>> And change recv into:
+>>
+>> int (*recv)(struct tpm_chip *chip, u8 *buf, size_t buf_len,
+>> 	    cmd_len);
+>
+>I think I went here over the top, and *if* we need a new callback
+>putting send_recv would be fine. Only thing I'd take from this is to
+>rename to_len as cmd_len.
 
-Good point.
-I'll modify this to allow passing the interleave index. 
+Got it.
 
-> 
->>> +					       numa_node_id());
->>> +
->>>  	if (cpuset_do_page_mem_spread()) {
->>>  		unsigned int cpuset_mems_cookie;
->>>  		do {
->>> @@ -1018,6 +1024,12 @@ struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order)
->>>  	}
->>>  	return folio_alloc_noprof(gfp, order);
->>>  }
->>> +EXPORT_SYMBOL(filemap_alloc_folio_mpol_noprof);
->>> +
->>> +struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order)
->>> +{
->>> +	return filemap_alloc_folio_mpol_noprof(gfp, order, NULL);
->>> +}
->>>  EXPORT_SYMBOL(filemap_alloc_folio_noprof);
->>>  #endif
->>
->> Here it seems to me:
->>
->> - filemap_alloc_folio_noprof() could stay unchanged
->> - filemap_alloc_folio_mpol_noprof() would
->>   - call folio_alloc_mpol_noprof() if (mpol)
->>   - call filemap_alloc_folio_noprof() otherwise
->>
->> The code would be a bit more clearly structured that way?
->>
-> 
-> I feel that the original proposal makes it clearer that for all filemap
-> folio allocations, if mpol is defined, anything to do with cpuset's page
-> spread is overridden. Just a slight preference though. I do also agree
-> that having filemap_alloc_folio_mpol_noprof() call
-> filemap_alloc_folio_noprof() would result in fewer changes.
-> 
+>
+>However, I don't think there are strong enough reasons to add complexity
+>to the callback interface with the basis of this single driver. You
+>should deal with this internally inside the driver instead.
+>
+>So do something along the lines of, e.g.:
+>
+>1. Create dummy send() copying the command to internal
+>   buffer.
+>2. Create ->status() returning zero, and set req_complete_mask and
+>   req_complete_val to zero.
+>3. Performan transaction in recv().
+>
+>How you split send_recv() between send() and recv() is up to you. This
+>was merely showing that we don't need send_recv() desperately.
 
-Your proposed structure makes sense.
-I'll update the patch to add these suggestions in the next version.
+We did something similar in v1 [1], but instead of your point 2, we just 
+set `chip->flags |= TPM_CHIP_FLAG_IRQ;` in the probe() after we 
+allocated the chip.
+
+Jason suggested the send_recv() ops [2], which I liked, but if you 
+prefer to avoid that, I can restore what we did in v1 and replace the 
+TPM_CHIP_FLAG_IRQ hack with your point 2 (or use TPM_CHIP_FLAG_IRQ if 
+you think it is fine).
+
+@Jarkko, @Jason, I don't have a strong preference about it, so your 
+choice :-)
 
 Thanks,
-Shivank
+Stefano
 
->>> @@ -1881,11 +1893,12 @@ void *filemap_get_entry(struct address_space *mapping, pgoff_t index)
->>>  }
->>>  
->>>  /**
->>> - * __filemap_get_folio - Find and get a reference to a folio.
->>> + * __filemap_get_folio_mpol - Find and get a reference to a folio.
->>>   * @mapping: The address_space to search.
->>>   * @index: The page index.
->>>   * @fgp_flags: %FGP flags modify how the folio is returned.
->>>   * @gfp: Memory allocation flags to use if %FGP_CREAT is specified.
->>> + * @mpol: The mempolicy to apply when allocating a new folio.
->>>   *
->>>   * Looks up the page cache entry at @mapping & @index.
->>>   *
->>> @@ -1896,8 +1909,8 @@ void *filemap_get_entry(struct address_space *mapping, pgoff_t index)
->>>   *
->>>   * Return: The found folio or an ERR_PTR() otherwise.
->>>   */
->>> -struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
->>> -		fgf_t fgp_flags, gfp_t gfp)
->>> +struct folio *__filemap_get_folio_mpol(struct address_space *mapping, pgoff_t index,
->>> +		fgf_t fgp_flags, gfp_t gfp, struct mempolicy *mpol)
->>>  {
->>>  	struct folio *folio;
->>>  
->>> @@ -1967,7 +1980,7 @@ struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
->>>  			err = -ENOMEM;
->>>  			if (order > min_order)
->>>  				alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
->>> -			folio = filemap_alloc_folio(alloc_gfp, order);
->>> +			folio = filemap_alloc_folio_mpol(alloc_gfp, order, mpol);
->>>  			if (!folio)
->>>  				continue;
->>>  
->>> @@ -2003,6 +2016,13 @@ struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
->>>  		folio_clear_dropbehind(folio);
->>>  	return folio;
->>>  }
->>> +EXPORT_SYMBOL(__filemap_get_folio_mpol);
->>> +
->>> +struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
->>> +		fgf_t fgp_flags, gfp_t gfp)
->>> +{
->>> +	return __filemap_get_folio_mpol(mapping, index, fgp_flags, gfp, NULL);
->>> +}
->>>  EXPORT_SYMBOL(__filemap_get_folio);
->>>  
->>>  static inline struct folio *find_get_entry(struct xa_state *xas, pgoff_t max,
+[1] https://lore.kernel.org/linux-integrity/20241210143423.101774-2-sgarzare@redhat.com/
+[2] https://lore.kernel.org/linux-integrity/CAGxU2F51EoqDqi6By6eBa7qT+VT006DJ9+V-PANQ6GQrwVWt_Q@mail.gmail.com/
 
