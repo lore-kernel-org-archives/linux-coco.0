@@ -1,219 +1,186 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2049.outbound.protection.outlook.com [40.107.93.49])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29201624F1;
-	Wed,  5 Mar 2025 03:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741144170; cv=fail; b=Ko5DjVO1D2YRiJR9Lh81cfni4mIK/+xX7BOEdb9d8OthVQ73zhezpIsI841hokheoVynO+X2dxW21uRW9kUGdGNqF28U2wWOFBm/VOncvvjQ9xrJ9q9vhAPIwK4fHYII7mBIBpxyc1gDlFTtI5mWQVYqsJqFJIjFbaHrr2FNx3k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741144170; c=relaxed/simple;
-	bh=lW5Ri0kjJ5fOHf954fBxiSK8NMN/iFmhFDWjV5RmMII=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qAqezQHhP3FsWb4M8/4hrwCubBMp3duOFIiJ9M14wy1RCvdkI3BUfBOe+Bg0WoeGSmolcQT9r7/2Co/dsaYwgAnN6sCPg3TAgyxFRcjzC2WYp24n3HPLOFb3OMlqRClVBzFjM3VuDKHRbHJ+piEeLZ7FR5ey6R/mH4altWeiZrI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=LkaCWuZB; arc=fail smtp.client-ip=40.107.93.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4321142AA3
+	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 03:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741146811; cv=none; b=OpT4LVXmslsh0+IBVbkQupiEiu+CyJGNFpN+2bNUej+wuy+EoxWA4w8fJf6bZsMbTtbUWUiXCugIpwgYUiqSUxF04650rXKykZD9x7133rVGHqeOlfxO2/6z+o392b5Cn1UHNJGeFlblOdcY7O4mxtH7/FJKTwMeP7gUj11NDMw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741146811; c=relaxed/simple;
+	bh=KYu15OTxtFs2mF10JuE1RcryLYxEkKONS/St8WU9dMw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lXmsB9RKFtSfx7DHcHEa7pi64XkXffkyBR1ClY4GOKbNooraLNxbRtI0TZ1lx+5idYR+WBkozg37dcFlI9yM/KN3B8WzzbmO5WOWNjjOM+xBnPvQsNqXhmPpGS8iYdcO3DZ6jApoq4/Pxkr0IQgrSQua5Ujdn8n2nukO7rUrFYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fqB2QLuD; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="LkaCWuZB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ie/dEGvShq/bEqKIUpWc7913RtoS4uqVIQz57LjeyB7OVV5Rqfpgsh9hEUoG8/iwsRSX/PTkGqMPv5SNrrWnM9jvAWGQ4zlbPqpUSL75LNsYkjFwuIrVCp8bZaEp6yRCmYqxDCGJ4Ru8Mxc7nc9HPbDbfAkUjjUpFR6p6g0PTl1pttNtEGk6FNsNHjGvUC8yOU+h+J2OsDnYrWMBSQ3LNniY6ra2TYVAiG7sYyOPIPjlzx1bjlcjcekqXCaAwmFBJ/V+3LvSMACmAjGr6CxSLN7h4rTqqAm/Uv3GGLmEy4S+4CvXdZ4faygLjeSnpifFHMY7I5+VFQSvAWbkBkzbcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rHJY49zrPRm909rZzLMgVcIljaFiTqmzozXbJpA4zkE=;
- b=TO/FrIir+lFOEKwAkngiasVV8BcZg5+kVWLBm8bofHgWK9Xen3iIwX3nj/iOp+62LN9tlRrBaJfEbt0BXoLzqCYbVovUUyCxo/dn/bNMRzRi7ulIKMo2iNoKkY7RwdN6KlOd4ITDERMISpphI2bhMyJzmMVWCl3gAx+BnsK1HKfSdMA1b0wPVdJPywjsHdGlFuGGNyMHjVwOwuhF8wJ9RgURSkNTN8wp/drkYbiirTNeHq4EzjCVSI7002cHYEJwbtlDDNJk9K84iObWODFTqe0FBAGN1N8yFdpxPtD89znIDQOpPkqNewfOPWA6V7jaINEBJAD/33XBKJJHJFxchg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rHJY49zrPRm909rZzLMgVcIljaFiTqmzozXbJpA4zkE=;
- b=LkaCWuZBA+2ksek+hbIN4GeAZ8LwWKvbQbHAqeeXJbZ6udKX7JVGXHobv7QjlkW2sKjdlmOHyeYOnE6/Sq8hmlX7ySnplpmo3vz6x2v4EvklQGNKv4oGdxdMm/3pAVqZF1In4rbSmA/o86xpDNQSmS0HcODQG/UzaCfRjPS+qKE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by MW4PR12MB7165.namprd12.prod.outlook.com (2603:10b6:303:21b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Wed, 5 Mar
- 2025 03:09:23 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%3]) with mapi id 15.20.8489.025; Wed, 5 Mar 2025
- 03:09:23 +0000
-Message-ID: <4ae5eda3-824a-4bb5-b763-19083c085575@amd.com>
-Date: Wed, 5 Mar 2025 14:09:09 +1100
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
-Content-Language: en-US
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, kvm@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-arch@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Dan Williams
- <dan.j.williams@intel.com>, Christoph Hellwig <hch@lst.de>,
- Nikunj A Dadhania <nikunj@amd.com>, Michael Roth <michael.roth@amd.com>,
- Vasant Hegde <vasant.hegde@amd.com>, Joao Martins
- <joao.m.martins@oracle.com>, Nicolin Chen <nicolinc@nvidia.com>,
- Lu Baolu <baolu.lu@linux.intel.com>,
- Steve Sistare <steven.sistare@oracle.com>, Lukas Wunner <lukas@wunner.de>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
- iommu@lists.linux.dev, linux-coco@lists.linux.dev, Zhi Wang
- <zhiw@nvidia.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250218111017.491719-1-aik@amd.com>
- <20250218111017.491719-15-aik@amd.com>
- <Z72GmixR6NkzXAl7@yilunxu-OptiPlex-7050>
- <2fe6b3c6-3eed-424d-87f0-34c4e7e1c906@amd.com>
- <Z77xrqLtJfB84dJF@yilunxu-OptiPlex-7050> <20250226131202.GH5011@ziepe.ca>
- <433217be-55e3-477b-bc10-cf81f02ab21e@amd.com>
- <20250301003200.GQ5011@ziepe.ca>
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <20250301003200.GQ5011@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ME2PR01CA0100.ausprd01.prod.outlook.com
- (2603:10c6:201:2c::16) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fqB2QLuD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741146809;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+mJRNWDqZaDl0D1j/RlDn06NEO5jFGolr9VYIE5+CIg=;
+	b=fqB2QLuDuGWtmtYcRxw5h1rnGeXHUkfJ/7RahvZBAnUu0jgPmg15eTIQtHJE6vYEQPyNFP
+	ikyEawHv5DUAyGMa2QljQy4zk6IlgGzrpAGhib6E6O3FUI6ijOy+hsu0RGLhDY/ZPepa4p
+	emximgOa5XMvyKbAfaGdLav2DqECXeE=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-180-CtI7rqqoP8GOkVCeN_-08w-1; Tue, 04 Mar 2025 22:53:17 -0500
+X-MC-Unique: CtI7rqqoP8GOkVCeN_-08w-1
+X-Mimecast-MFC-AGG-ID: CtI7rqqoP8GOkVCeN_-08w_1741146796
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2ff0875e92bso8717519a91.2
+        for <linux-coco@lists.linux.dev>; Tue, 04 Mar 2025 19:53:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741146796; x=1741751596;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+mJRNWDqZaDl0D1j/RlDn06NEO5jFGolr9VYIE5+CIg=;
+        b=SB9qhNNJhvoNyI8dlsc2mlMt+VT+nbrj5Guyip4jHFVBFjy4QlEaSnfxsUKzn+SpGY
+         Lsot43WW/ckSBBZRKL1QCBQbSn58N5JqNa18JoAG39aNTbWp0zKQ+L3T7KNEGMCMb11+
+         fmRGtFYIhZbDvdajUBx4u477EqkeKnK8dyV/abLWhXuG7/Y7dcW5eYad56/1S1mE4kid
+         sHOVc4uB4PiJYxyapoPYl9aYIwz5qFDO+3DDTg3lqFz9xdjSKaeK65QbonL3GGKrEy4C
+         PjI1OMACMJazclrISvoFQ5m21yO1OdWPd+8ZrJ0acO23+XUIwaNaeL1d4cop/ZUFxHD2
+         LQQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXj82TcFqFcQ6dkxE7Sv+psYkYjqd8+wznWMluDxkt35qrBdbeiUNOmEoSCSLoiHJkwMGR+8AXLEeRW@lists.linux.dev
+X-Gm-Message-State: AOJu0YyffrIMUW9FO6Mn5Plv5OSeNkmWyyTLBfkXp8X3Pth1iuB9gwDU
+	eAk5O5nsyPdTSmrwuKDBQZ5H9U+ACaNZNiIXY0fDsi8cMpGRZPemiMj0Sjvt9YbeN/lDF0HsGEX
+	05NfgMJu+EhPjIEClb/55fZWVu9WlHtfjE/r/acMZwSoNIbtL07KcoyTqOUA=
+X-Gm-Gg: ASbGncsahS8LlzW0Uga2THSWf2vWO80EJ5ebJDPXuzShhLqAx+KHglLQD8++3mwV8Nx
+	7NnezhQYJs76tIoEL5Ow74MxS/nMcpXGpJpwtPDhn3NRKoUbrSDplVU6hoMpbczWrZ43jqlkfdO
+	yuNGKU6ulngsrfpmJV3Xn5XxhkUAxXOIl3NBMSLpYyHGFa0v+CB5a9EOQ5wOdgT3sfMpkFtIT/B
+	lfccwkoDhwNAl14YoZPX/PyJUGfaUTiMqcgkinCmUSZeKOiSA+KzW03GNjVRx0lrNZSZxlgyT9u
+	LevTqUFeNng+bgQ=
+X-Received: by 2002:a05:6a21:150c:b0:1ee:cf13:d4b5 with SMTP id adf61e73a8af0-1f3495afc1dmr2823091637.39.1741146796420;
+        Tue, 04 Mar 2025 19:53:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFuyA16zIv02ugj3FPLruOV0ZdxdHMNTCUw0ZHSpkP3eGnIKTFgv0oqMKMfRXj1Nc/YwnybSw==
+X-Received: by 2002:a05:6a21:150c:b0:1ee:cf13:d4b5 with SMTP id adf61e73a8af0-1f3495afc1dmr2823058637.39.1741146796108;
+        Tue, 04 Mar 2025 19:53:16 -0800 (PST)
+Received: from [192.168.68.55] ([180.233.125.1])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7ddf20b8sm11041231a12.7.2025.03.04.19.53.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Mar 2025 19:53:15 -0800 (PST)
+Message-ID: <af65c1ea-202a-4a60-ab13-0c325385b7ec@redhat.com>
+Date: Wed, 5 Mar 2025 13:53:06 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|MW4PR12MB7165:EE_
-X-MS-Office365-Filtering-Correlation-Id: fcb4c789-5bdb-4ce3-4216-08dd5b932118
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?c0FVNzZaUWNwYmlRYUIxWEJYaVFwZThJUnFIKzB3YmpicXpIZ0NES2Rnbmk0?=
- =?utf-8?B?MUN0ZzNYWmVZTk1oMWNSQStIdjVmWUtOdFkvWmhIaVlERFJ0NUxCVEJKeHNU?=
- =?utf-8?B?cm1uQlpVdVZESUdJdHRveS9YLzE3cjJqcnZBTzh0aHVaR1RndmJVSjJBZG13?=
- =?utf-8?B?UEFKRTZMOXlHQVBtSGFlOVVHRS9jeGV5WmJVWWt2NGpuSWphSlFGNVlJbXQx?=
- =?utf-8?B?WjNXR0Y1MXdvQnFSRElrd3FYU1E2ZHIwdzFiZkJSVXk1VXNaVHJEb3pzSVRC?=
- =?utf-8?B?bXNGTy82WDJ2WEZzSmExUEZQWU9tcGkvK1VEV1JzbExVMmdwcTMrY0F6dDYv?=
- =?utf-8?B?dUliSXozb2Rxc1QvVzVJVzJBQlBVNUNvdEFuakkwVGI5K2VmSEt5b0JXOVVx?=
- =?utf-8?B?M1FNRHlORENmR0ZOeDE4ckducmNnR1l1NmNEMjVPeGRXbTd4MmJHTTUwNnRu?=
- =?utf-8?B?Ymh6bENpRUlYS0Vaa21GcVRSb1NBS0dZdlF2S01KaVBLNGhOOGw4U0dnaVl5?=
- =?utf-8?B?dTRjdzQ2cVJFbWZhd2krMHRvYStoV2ZnNzZIYkZPVlZzVnRNR3F6VDZidUho?=
- =?utf-8?B?ZTVoQ1oyaWhaVTBNcmJVVUZkZlBpejJXZy8zZHUzei9kN1U3U0VoRC9xeFF5?=
- =?utf-8?B?cHFMK3RWQmNBRHZ2anBoNjltcHBrVk15WmxYdU9FT3V4T2F4OVY5dmpZaGNI?=
- =?utf-8?B?TnVkUjhidXN1NUQ2OHhWM1k2Z3FxUlprWXI5bnNHRXV3MDJUNk1VaGlvcVc5?=
- =?utf-8?B?UTg4bTdkZzlGRTFmSmh3MFkwMkZMRDJSb3FUMllOZ0dLZVM0RWRvMm1sM1BC?=
- =?utf-8?B?cTVyZjhHUEp3YUtDR3BISk9yU3B2U2xkcFJFMnFPODI1eFVWckV5RWxnSXhn?=
- =?utf-8?B?RllRSlZFSTJnOHUvVGpJclY2U3dzb2RjaXRsS2UrZXhaV1Z0MnZycmlObEl4?=
- =?utf-8?B?a2E1VkFBN216UGxDbUQ1cHhBK3Y4MDZpZTMySXpSY3NBaFpMUEMvK0VHWWxo?=
- =?utf-8?B?MU5ZQUdOcm8yOVF0MXhjQy9KaW5iV3B6TXArMzdnNlRGWTVuK3RsZzV6ZTln?=
- =?utf-8?B?bmtpT01DK0NLV0tmaEJWTlJFYVpJd2x1RXlJSVh3RDZCV0lRcVlSa3R6NjJX?=
- =?utf-8?B?aFhpaGNwaTNqTDZGQ2tJa1BERDJVVXpsN3Y4bng1cE55S0VTVURiU2tXZStv?=
- =?utf-8?B?K3pRWW52Qi95Y0VRRHJMU2p2U0I2c0xXZ0RZbzZjaHcrWE1jNVVxQ1BEMnJE?=
- =?utf-8?B?Q3pMS3dRNlpwNUhjR0JYRFV1Zms0eWNiR245UHVQMFNRUFp6eEYwZUdraUxw?=
- =?utf-8?B?N25ZTVZzWWMrKzVjNDBhd3YvcThiSFlYK1FMZzhSSTN3MXFHYnA5bW5XNnF3?=
- =?utf-8?B?V1lTRHdTbjRlU0ZiTEluRU41VU53Q0YxV1pNUE0vRGFCK2VwVGVIRXVKSEho?=
- =?utf-8?B?bEtBYnhGU3lOSzVWei9FZWF5V2VOYzZjczV6bUxLQTZ1VlhwdXR5eEV0anRx?=
- =?utf-8?B?ZG5RZGgxNmxLNzQ5Rnd6VVZhZU1FWS8wWUNKZjJOSEdhRitTU0dXNHp0dks0?=
- =?utf-8?B?djJPcEtPdFNlOEsrWmdVdFBGUGVnUnhOdGkyTzRIMHhZNERza1Izemx2OTgr?=
- =?utf-8?B?MVRSaEoyK1RVd251bzdZaTVsV2dXMGtVNEdjVTNYbjdialZBVWhUaU4zelBD?=
- =?utf-8?B?RXZ1R2VMdmFyYWpjckRIT1Y3Vjc0K3RXYlY3WWFHZ0FGQmJXWjBYWG1FWVMv?=
- =?utf-8?B?ckozdXU5VFZNOGZ2WVhMZ3V5Vk8reEEvaVJDaW1pZHlnSjFTQ2lveEdxQnBn?=
- =?utf-8?B?OSt1bmZwaHdER0xXSmpxMUM0NHduQkxod1FJUFFWc2tyNFJqSTdRVk4vZGxD?=
- =?utf-8?Q?y1K481HOkeMWG?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?STJrd1VVTmtpTGFpcVBNcnNjeGRQbGRvaVpxM1FpNjFtRWhzcUNFb0lSYUlh?=
- =?utf-8?B?R2p3UTUwd3ZDanhpTVhkc3dxcXBobklRcWxuR3NFYWNMbHcvTmg1dlFCWVRV?=
- =?utf-8?B?RU1hRW51VDM4N3lKYXlHTCt1ajNuVnhWbEdoR29sTjZjcmZCclFVbkhQcEc0?=
- =?utf-8?B?eElRZVgramc4bllXVHBDWFd3czhYMnBPZW5mbHY3eXhmN1FTTDdTZzRZaUFt?=
- =?utf-8?B?VENyZ1VRdFg2Y2lLQ2RJR1M0b05sVFhNTXZnTHUwVjN5ZWNMeXFISHpQMXpQ?=
- =?utf-8?B?cmVvZVpET0V4UDhjVzBBSG04ZThwZjBsOEpEUFhFTTBHRkZOSms1ZUo5M0hh?=
- =?utf-8?B?My9RYVRBMHNuOUtsOHNFMTB0SEVaRmVaZWEzeUhNVXR4VWtMalcvZEtibHQv?=
- =?utf-8?B?enJDSyt5b0E0MTlQQVNVdE5zaGhMMkpsNkhUM0x2UE9VclBJbFBNNDB5bEw3?=
- =?utf-8?B?S0lOSGVvNWtOWGJwMExycVdJNTljVUtSR3BpSVlPL1A5RHRtWE1mb2dRcEhS?=
- =?utf-8?B?eUphMDNuZzNwckVOdTlzRnpHSjBnZlU1Z2dMNmNoMXczeldxbDlYQ09KKzJt?=
- =?utf-8?B?aWVTQnI2cmE2OHlERzZ2LzJ0cjUrOXlzWjBZUjR6cGd6cmZXQWRXc1lRVjdr?=
- =?utf-8?B?MzlhN1F6anJQWGV1TVFqUXZHTEZGMG8yMFRJd1hjaFNjUEVJYXMzV3M1dHd1?=
- =?utf-8?B?MjMvNVcvTTl3dW52MHdHQ3VPRisvUDBRdDBJNFJITnpWckJUczE3RFhLS0Zn?=
- =?utf-8?B?MmNSbDN6WWgyaU5UUjhJM1ZENE4rc2RqZGhqWmo2c1YrbUIyc2YraUpHUzJV?=
- =?utf-8?B?eHYyY0Y3WlEyYlpqWmVPUmVwWVNpOHpiaVFpQy85dnZLeGY5NWJjTTBhZnY0?=
- =?utf-8?B?bFlBcGFtZ293WEIwOUp5bE9vTjhteEhDaWh1YnNLZWtSUFkxd1BJSi9rN0t0?=
- =?utf-8?B?NVoyUjQrU3E0ZW9uZW4xTTNBNlFkQVJUb0E0dVhvUk8yYU5ZZEFETWdKVzZI?=
- =?utf-8?B?dktjZXh1SG5uMzcwUW15dy9pNVRMeTh2cm1OdDc2TFQ4b04rcHpTQ1NoaW02?=
- =?utf-8?B?T0xxRHRsVzdBUDMyeFFTMEtLZTk2OVRzS2VJNDVQbGgzMGRPQ2pGeVZNSCs1?=
- =?utf-8?B?bkwzVlVzZVhCd0UrNjRYakRnTzdrODFmQWVkWTUrQURtNjNHYk5yNkJJVGF6?=
- =?utf-8?B?UUZDSmV0TnloZVd5ZHYzU2o1UVNieFNMVWl1SUx2TEhHOGpnWGtYSUpwcEUy?=
- =?utf-8?B?TTZ5VkVvNnlKKzVpWDlmS3hIVWFYZGxYYWlySHRQRGttYWlmM2RoUGlwOGEy?=
- =?utf-8?B?bklZN2sxSTZvVDdQb3Z5U0tKVVhwQ2wxbzkrajlaVCtoSTkyWkN6aGRMOS9Y?=
- =?utf-8?B?N3QvSG5NT0ZZQURyMXIwbWNoUFdFWFliNDBYSS9XWHk5SE1KYWFhSEhabXpD?=
- =?utf-8?B?djVlZHFHdnRURUhYdThsOUUwVjVjQzdqbjNsZ24rWFFuM2RlQWg4dEZEdjlY?=
- =?utf-8?B?ZmhYV2d2QWhsQ3pld1ZCMTU4ODBuK2ZYbWRoN243MnU1dXM2RWIxK1M3Lzdz?=
- =?utf-8?B?R0YySUJPUVNYQ1ErWWNaVjNZSHBJNDJHcEhuaHNidUxNUTdFNWpLNGZqdVh1?=
- =?utf-8?B?NlZJOUZHQkFTQ3Urb05Pc21reVFaSWlGVjZCaEY4YVhPSzFKQWlYZ2Yya1Nl?=
- =?utf-8?B?dTR3a1J4NFVxS1kva3o4RWRrTVZNWmluSFlmTHVOUFA1TmV2UHRWTTJyUURE?=
- =?utf-8?B?VGJMYmlpSGcwR1h4a2dNTU9Na3VaZkw4M2xuTXdFZnUvYUZnR0ZFbGtZRUJ3?=
- =?utf-8?B?N1Q5cFZRYUhVR3lGUDlQWDNyTThZMlFBbTlIYVFKY09jZk44VUgyTVRMYnk5?=
- =?utf-8?B?MVlxR2RVRVhKVVlMSlBwQnRqUnAzV0ZncWJLOTlBUFE3Z0taWVJ6VlBvRU9M?=
- =?utf-8?B?WjlxRktUa2RpQmRMVDhkZWRtN25LNFAvK3VRYTkvZCtydWJFeitmQ0V1eXN1?=
- =?utf-8?B?T0t2RWs3RDVxTldtUThvZWpSRG5hSUVlNTRLSzRrRmpLWnI0c1ZHdm9mdFdj?=
- =?utf-8?B?Z3lyQkppV1VQWUpUT1JxeEFzTVRkbUQ5L2xRZEFUUEVqNXJIUlljK0lMelQw?=
- =?utf-8?Q?W4npUBtRleDXjkgX+aN+Vgf70?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fcb4c789-5bdb-4ce3-4216-08dd5b932118
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 03:09:23.3195
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pWIaE4L8TsxuLiFSGuxju17KAX7KIh/xk8xu9qufpz60YXwXx+nyS8BXTuSQ4DBPhYQS/mhwOoOShqXWmH1CpQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7165
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 00/45] arm64: Support for Arm CCA in KVM
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20250213161426.102987-1-steven.price@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20250213161426.102987-1-steven.price@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: VzwkVy0pYPFngJhRnG-dr52LLlxpaG5UGh_js_-Liz4_1741146796
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+On 2/14/25 2:13 AM, Steven Price wrote:
 
-
-On 1/3/25 11:32, Jason Gunthorpe wrote:
-> On Thu, Feb 27, 2025 at 11:33:31AM +1100, Alexey Kardashevskiy wrote:
->>
->>
->> On 27/2/25 00:12, Jason Gunthorpe wrote:
->>> On Wed, Feb 26, 2025 at 06:49:18PM +0800, Xu Yilun wrote:
->>>
->>>> E.g. I don't think VFIO driver would expect its MMIO access suddenly
->>>> failed without knowing what happened.
->>>
->>> What do people expect to happen here anyhow? Do you still intend to
->>> mmap any of the MMIO into the hypervisor? No, right? It is all locked
->>> down?
->>
->> This patchset expects it to be mmap'able as this is how MMIO gets mapped in
->> the NPT and SEV-SNP still works with that (and updates the RMPs on top), the
->> host os is not expected to access these though. TDX will handle this somehow
->> different. Thanks,
-> 
-> I'm expecting you'll wrap that in a FD,
-
-A KVM memslot from VFIO's fd similar to gmemfd's fd, and skip VMA? 
-Doable but 1) creates a KVM->VFIO dependency to do gpa->hpa translation 
-2) is not necessary in the AMD case (although host-mmap of 
-guest-assigned private BAR is way too easy way of shooting yourself in 
-the foot).
-
- > since iommufd will not be accessing MMIO through mmaps.
-
-here I do not follow, why would iommufd care about MMIO? or it is about 
-p2p DMA? Thanks,
+[...]
 
 > 
-> Jason
+> The ABI to the RMM (the RMI) is based on RMM v1.0-rel0 specification[1].
+> 
+> This series is based on v6.14-rc1. It is also available as a git
+> repository:
+> 
+> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v7
+> 
+> Work in progress changes for kvmtool are available from the git
+> repository below:
+> 
+> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v5
+> 
+> [1] https://developer.arm.com/documentation/den0137/1-0rel0/
+> [2] https://lore.kernel.org/r/a7011738-a084-46fa-947f-395d90b37f8b%40arm.com
+> 
 
--- 
-Alexey
+I had a chance to test it by following Jean's instructions [1-2]. The guest can
+boot up and kvmtool also can boot the guest. I'm listing the repositories I used
+in case some body else want to give it a try.
+
+[1] Jean's guide to build software components needed by ARM CCA stack
+     https://linaro.atlassian.net/wiki/spaces/QEMU/pages/29051027459/Building+an+RME+stack+for+QEMU
+[2] Jean's guide to build firmware needed by the emulated host
+
+host
+====
+tf-rmm    https://git.codelinaro.org/linaro/dcap/rmm.git                       (cca/v4)
+edk2:     git@github.com:tianocore/edk2.git                                    (edk2-stable202411)
+tf-a:     https://git.codelinaro.org/linaro/dcap/tf-a/trusted-firmware-a.git   (cca/v4)
+qemu      https://git.qemu.org/git/qemu.git                                    (stable-9.2)
+linux     https://git.gitlab.arm.com/linux-arm/linux-cca.git                   (cca-host/v7)
+buildroot https://github.com/buildroot/buildroot                               (master)
+
+guest
+=====
+qemu      https://git.codelinaro.org/linaro/dcap/qemu.git                      (cca/latest)
+kvmtool   https://gitlab.arm.com/linux-arm/kvmtool-cca                         (cca/latest)
+linux     https://git.gitlab.arm.com/linux-arm/linux-cca.git                   (cca-guest/v7)
+
+Command lines to start the host
+================================
+[gshan@virtlab723 host]$ cat start.sh
+#!/bin/sh
+HOST_PATH=/home/gshan/sandbox/qemu/host
+GUEST_PATH=/home/gshan/sandbox/qemu/guest
+
+sudo ${HOST_PATH}/qemu/build/qemu-system-aarch64                      \
+-M virt,virtualization=on,secure=on,gic-version=3,acpi=off            \
+-cpu max,x-rme=on -m 4G -smp 8                                        \
+-serial mon:stdio -monitor none -nographic -nodefaults                \
+-bios ${HOST_PATH}/tf-a/flash.bin                                     \
+-kernel ${HOST_PATH}/linux/arch/arm64/boot/Image                      \
+-initrd ${HOST_PATH}/buildroot/output/images/rootfs.cpio.xz           \
+-device pcie-root-port,bus=pcie.0,chassis=1,id=pcie.1                 \
+-device pcie-root-port,bus=pcie.0,chassis=2,id=pcie.2                 \
+-device pcie-root-port,bus=pcie.0,chassis=3,id=pcie.3                 \
+-device pcie-root-port,bus=pcie.0,chassis=4,id=pcie.4                 \
+-device virtio-9p-device,fsdev=shr0,mount_tag=shr0                    \
+-fsdev local,security_model=none,path=${GUEST_PATH},id=shr0           \
+-netdev tap,id=tap1,script=/etc/qemu-ifup,downscript=/etc/qemu-ifdown \
+-device virtio-net-pci,bus=pcie.2,netdev=tap1,mac=78:ac:44:2b:43:f0
+
+Command lines to start the guest
+================================
+[gshan@virtlab723 guest]$ cat start_guest.sh
+#!/bin/sh
+key="VGhlIHJlYWxtIGd1ZXN0IHBlcnNvbmFsaXphdGlvbiBrZXkga"
+key+="W4gZm9ybWF0IG9mIGJhc2U2NCAgICAgICAgIA=="
+
+qemu-system-aarch64 -enable-kvm                                                     \
+-object rme-guest,id=rme0,measurement-algorithm=sha512,personalization-value=${key} \
+-M virt,gic-version=3,its=on,confidential-guest-support=rme0                        \
+-cpu host -smp 2 -m 1024M                                                           \
+-serial mon:stdio -monitor none -nographic -nodefaults                              \
+-kernel /mnt/linux/arch/arm64/boot/Image                                            \
+-initrd /mnt/buildroot/output/images/rootfs.cpio.xz                                 \
+-append earlycon=pl011,mmio,0x10009000000
+
+Thanks,
+Gavin
 
