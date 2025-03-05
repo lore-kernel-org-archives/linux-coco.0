@@ -1,172 +1,110 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46431567D;
-	Wed,  5 Mar 2025 16:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42069250C1D
+	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 19:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741191925; cv=none; b=r0PJqZCTZIuxvD/ODxIeIy4XJTo6c40y4hcQfplVwYMp/hAolal+UAVOc16VbUIylsCpFMfgozHPZG5gRTl4qfHcGdh3q5cMWVtEB1xL5BczEaT1OcciwRv/JSbT8j5N5udQeNmecHeaqGYYCdr+AUmBOkrYxOLY8lPdGsHKowU=
+	t=1741201353; cv=none; b=NV0XfhuRKZxNYVN3s6y5/OmjAseoim4oRRHhW1a5bO8IXQagyrGRxhkOHpQqbGn7wPrMGvGRfzVOv/5FZHUs3KBwNwABiifmzcge5HV9m+Hxq7ZeJ1Oqh2kmXBd5NLuDKU8GBRuYvbFi+6WXi+Wwo2/EnkIBnIswF82F633Teok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741191925; c=relaxed/simple;
-	bh=K+K6DmUC+Wxvngt/uU7W1IItHbJf0lWSGmSE11WgMBc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BPqJx0JQeYupde7zJn/OvGQrkEn4d62QJKKESQ2GYnyi4xDV+9GjPisuya+dEOkxukkNWLlvJReRDJr4aD1eLPlTYgZCQ0uNqVcTgJni4+eekcH62xvdiv59zBN8T2zcrPiuzhcWeuzA4My637jeCariHRTvKj2+rcY13r/D2mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D5D60FEC;
-	Wed,  5 Mar 2025 08:25:36 -0800 (PST)
-Received: from [10.57.67.16] (unknown [10.57.67.16])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1FB763F5A1;
-	Wed,  5 Mar 2025 08:25:18 -0800 (PST)
-Message-ID: <ea9bb982-cf31-4079-8fea-dc39e91a975b@arm.com>
-Date: Wed, 5 Mar 2025 16:25:17 +0000
+	s=arc-20240116; t=1741201353; c=relaxed/simple;
+	bh=PImNvEb9R7mU674MFRkVo7MQticSDFJlq5WrSF4+QLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tzu+FI0b0s49qZNw+39qlFgLZSNilB89dHS9PZzhwy6lY7IH7zD+ag18YDt/TESHuaLfoIK5K3PEHg33iQDptVAATzNOasUPXKct0lPQVepgdXEsEx9Mkmx0Q18bRTK1eG3hhGNO4UsqF9/XO+AaftwrsxyGot4Edo4lV4AX1Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=dl8nRq+e; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="dl8nRq+e"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6e17d3e92d9so47462006d6.1
+        for <linux-coco@lists.linux.dev>; Wed, 05 Mar 2025 11:02:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1741201351; x=1741806151; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PImNvEb9R7mU674MFRkVo7MQticSDFJlq5WrSF4+QLo=;
+        b=dl8nRq+eJgsyO/LfaoOj+Jrte/mzHNMLoUyBYdLc93dlRqTUlv0/BhnyuqwQMEwy70
+         FPSLWaP2iGnnFBtqUtaIWCfHQ9/q2NUIx7vxhb15b1nxM0d2/cNHulCX5Jhcbl7dna0M
+         9AQEENu0Hi2ROugZN0X3s1K2EEfjqulKPZMxmXN7J2MaoivKNWoBcVPNcBJT6NcyrLKc
+         BD/xFLLCNoYi4bOCSRSYHLVoPmQl/xr1BTdHTE4dGqQX57JiW4kJAWpdBovFBhQl311C
+         L1krYNhVXMPq9WGVWKi/Dft5bqvTewGxUFoX8A+ElstxMMCfzR91Vp2bJiEQxSAG+O57
+         ZI1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741201351; x=1741806151;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PImNvEb9R7mU674MFRkVo7MQticSDFJlq5WrSF4+QLo=;
+        b=OuqInAEUC+P1K6iR4Gs0JOgKTXNgxaSjEO71hyae5yawybNAYUmL5lcj54vtEnBKzs
+         2F25/oUexLXD8PDvc0QRbymv3h2t5vNJ8tXeRg8l9TtTgBYv9tWNc1jFMt62aO1D2TT3
+         Qzqhq2lsGaKkREJsrMJL5ylS+PVMOYMIZIPLsr5rF/FDfM1D3KC4KU0uMw8izjymiNL4
+         nIdJMeECKJ1OZOB8j5JJctlQocuh/xOmdWknkOY3A6TsUmaT9MGl8frZ50G9Oyu0DFeK
+         XC60tP3RSqhrJJRkmrs5MKFAXl6K/dWe7ZPUT3Rtn6jje7JhrOKWOl9vZiMZdTEIZczC
+         84tg==
+X-Forwarded-Encrypted: i=1; AJvYcCUuJeWLhayrfu8592wlmBRUgjyEsgZci+0DL1sxtkYzsUsHoUoA3eQWUUMj7Khk9VOyzdVv8DkNPbK+@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyf26OhskkrizWYZX+w9hGAzV5b/Q6Q56nYWyw8FZ17YuUGT7FY
+	gApeVpGhEQqqiHSuXtwqSNvlmNzPngjDeyOStvD3VSRl768zvAECvdGDbXol1JM=
+X-Gm-Gg: ASbGncvxyJVALCvEXOqll99LYhmVvX6KyOOY9omskH/2EwlG6NjMwdRo21hkpGyZ0D7
+	Sh6aP27eDR6cKlcad8UHCZOReuW51cM0MFC+8adqkkDzhaPsL12f8SVeHge6ZzhSznWwlVP/iLw
+	aU3VWkmL9uajbNIyBTLqCar6gGuFcC1v5hEJrUFe32QBqj9egEn26fVX11INtw5Krun5Xw7UAMC
+	8v5bZpYspO11CA0aHAUOEMgirKIuWBiCMp7RwCpfK4Yi60bNUH5JVH4Kl0UG3ucNl8tnGZDx7jp
+	CldW/kdCXr7GOPp+vmXGmdvpVjxmxL0JX2NyztpYYGWQDT3uyuaKrUYJSYMg3HA6/HV8sM+j4Oa
+	hxel6zFteLE+b4orQ8Q==
+X-Google-Smtp-Source: AGHT+IFj/qwQTwKG8SNNtgVxRj9GZyBrMpWQIs1ECNvXkzZ0QEhM4dpXu10vspXzdcAPMQORADqmUA==
+X-Received: by 2002:a05:6214:c48:b0:6e8:952a:240 with SMTP id 6a1803df08f44-6e8e6d1366emr58222716d6.32.1741201351058;
+        Wed, 05 Mar 2025 11:02:31 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8e885f85csm11121396d6.100.2025.03.05.11.02.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 11:02:30 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1tpu0j-00000001Ucp-3R2H;
+	Wed, 05 Mar 2025 15:02:29 -0400
+Date: Wed, 5 Mar 2025 15:02:29 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Claudio Carvalho <cclaudio@linux.ibm.com>,
+	Peter Huewe <peterhuewe@gmx.de>, x86@kernel.org,
+	Dov Murik <dovmurik@linux.ibm.com>, linux-coco@lists.linux.dev,
+	Dionna Glaze <dionnaglaze@google.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [RFC PATCH v2 3/6] tpm: add send_recv() ops in tpm_class_ops
+Message-ID: <20250305190229.GC354403@ziepe.ca>
+References: <20250228170720.144739-1-sgarzare@redhat.com>
+ <20250228170720.144739-4-sgarzare@redhat.com>
+ <Z8Jmps6AF_geaHUw@kernel.org>
+ <3p5erujbhxw7ozdnfpmresv3dqdh2xszolv6mh4khkagoy3wit@ow5qht4keh4h>
+ <0e156883acf95d31b9358831550d6d675e3ce4ff.camel@kernel.org>
+ <Z8dg46Mj81Q9Z0WV@kernel.org>
+ <jkr5z4thb55gs2jcmtcfipgg6p7z6ikhr6etd6l3nqpf723hf7@3fns3z5cjqk4>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 09/45] kvm: arm64: Expose debug HW register numbers for
- Realm
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-10-steven.price@arm.com>
- <cec600f2-2ddc-4c71-9bab-0a0403132b43@redhat.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <cec600f2-2ddc-4c71-9bab-0a0403132b43@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <jkr5z4thb55gs2jcmtcfipgg6p7z6ikhr6etd6l3nqpf723hf7@3fns3z5cjqk4>
 
-Hi Gavin,
+On Wed, Mar 05, 2025 at 10:04:25AM +0100, Stefano Garzarella wrote:
+> Jason suggested the send_recv() ops [2], which I liked, but if you prefer to
+> avoid that, I can restore what we did in v1 and replace the
+> TPM_CHIP_FLAG_IRQ hack with your point 2 (or use TPM_CHIP_FLAG_IRQ if you
+> think it is fine).
 
-On 03/03/2025 04:48, Gavin Shan wrote:
-> On 2/14/25 2:13 AM, Steven Price wrote:
->> From: Suzuki K Poulose <suzuki.poulose@arm.com>
->>
->> Expose VM specific Debug HW register numbers.
+I think it is a pretty notable simplification for the driver as it
+does not need to implement send, status, req_canceled and more ops.
 
-Looking at this now, this patch description is garbage. Probably the
-patch has changed over time - so I suspect it's my fault not Suzuki's.
-We're not exposing anything new here. This is purely about telling the
-VMM that a realm cannot (currently) be debugged. Something like the
-below would be more accurate:
+Given the small LOC on the core side I'd call that simplification a
+win..
 
-"""
-kvm: arm64: Don't expose debug capabilities for realm guests
-
-RMM v1.0 provides no mechanism for the host to perform debug operations
-on the guest. So don't expose KVM_CAP_SET_GUEST_DEBUG and report 0
-breakpoints and 0 watch points.
-"""
-
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->>   arch/arm64/kvm/arm.c | 24 +++++++++++++++++++++---
->>   1 file changed, 21 insertions(+), 3 deletions(-)
->>
-> 
-> Documentation/virt/kvm/api.rst needs to be updated accordingly.
-
-I don't think (with the above clarification) there's anything to update
-in the API documentation. There's nothing new being added, just
-capabilities being hidden where the functionality isn't available.
-
-And eventually we hope to add support for this (in a later RMM spec) - I
-don't yet know exactly what form this will take, but I hope to keep the
-interfaces as close as possible to what we already have so that existing
-tooling can be used.
-
-Thanks,
-Steve
-
->> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->> index b8fa82be251c..df6eb5e9ca96 100644
->> --- a/arch/arm64/kvm/arm.c
->> +++ b/arch/arm64/kvm/arm.c
->> @@ -78,6 +78,22 @@ bool is_kvm_arm_initialised(void)
->>       return kvm_arm_initialised;
->>   }
->>   +static u32 kvm_arm_get_num_brps(struct kvm *kvm)
->> +{
->> +    if (!kvm_is_realm(kvm))
->> +        return get_num_brps();
->> +    /* Realm guest is not debuggable. */
->> +    return 0;
->> +}
->> +
->> +static u32 kvm_arm_get_num_wrps(struct kvm *kvm)
->> +{
->> +    if (!kvm_is_realm(kvm))
->> +        return get_num_wrps();
->> +    /* Realm guest is not debuggable. */
->> +    return 0;
->> +}
->> +
-> 
-> The above two comments "Realm guest is not debuggable." can be dropped
-> since
-> the code is self-explanatory, and those two functions are unnecessary to be
-> kept in that way, for example:
-> 
->     case KVM_CAP_GUEST_DEBUG_HW_BPS:
->         return kvm_is_realm(kvm) ? 0 : get_num_brps();
->     case KVM_CAP_GUEST_DEBUG_HW_WRPS:
->         return kvm_is_realm(kvm) ? 0 : get_num_wrps();
-> 
-> 
->>   int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
->>   {
->>       return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
->> @@ -323,7 +339,6 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
->> long ext)
->>       case KVM_CAP_ARM_IRQ_LINE_LAYOUT_2:
->>       case KVM_CAP_ARM_NISV_TO_USER:
->>       case KVM_CAP_ARM_INJECT_EXT_DABT:
->> -    case KVM_CAP_SET_GUEST_DEBUG:
->>       case KVM_CAP_VCPU_ATTRIBUTES:
->>       case KVM_CAP_PTP_KVM:
->>       case KVM_CAP_ARM_SYSTEM_SUSPEND:
->> @@ -331,6 +346,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
->> long ext)
->>       case KVM_CAP_COUNTER_OFFSET:
->>           r = 1;
->>           break;
->> +    case KVM_CAP_SET_GUEST_DEBUG:
->> +        r = !kvm_is_realm(kvm);
->> +        break;
->>       case KVM_CAP_SET_GUEST_DEBUG2:
->>           return KVM_GUESTDBG_VALID_MASK;
->>       case KVM_CAP_ARM_SET_DEVICE_ADDR:
->> @@ -376,10 +394,10 @@ int kvm_vm_ioctl_check_extension(struct kvm
->> *kvm, long ext)
->>           r = cpus_have_final_cap(ARM64_HAS_32BIT_EL1);
->>           break;
->>       case KVM_CAP_GUEST_DEBUG_HW_BPS:
->> -        r = get_num_brps();
->> +        r = kvm_arm_get_num_brps(kvm);
->>           break;
->>       case KVM_CAP_GUEST_DEBUG_HW_WPS:
->> -        r = get_num_wrps();
->> +        r = kvm_arm_get_num_wrps(kvm);
->>           break;
->>       case KVM_CAP_ARM_PMU_V3:
->>           r = kvm_arm_support_pmu_v3();
-> 
-> Thanks,
-> Gavin
-> 
-
+Jason
