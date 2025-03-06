@@ -1,114 +1,144 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5BC25C702
-	for <linux-coco@lists.linux.dev>; Thu,  6 Mar 2025 17:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A676126E624
+	for <linux-coco@lists.linux.dev>; Thu,  6 Mar 2025 18:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741280435; cv=none; b=iVy29kS1k/ut+vnsGRovQT4VkXWTd5ugF0nz8fjnyoDK3ufy6twHvm27OA5Bh3hfQ+Q2SJFys8V5OHqwXZebHCjfH9Z3RWW5GFxMNhGDWogZnAKkAu2OKPwQAwakB89MOeLB+Wo4H07TioCoDv8nfsF0JWnxxrCrZ3MrEn0ZlgI=
+	t=1741285579; cv=none; b=eIPhlp6XFqgFK6DuvCnwobrED65DIV7Q1YqzDxCo3logZahCGMXd7vV0iMUIZF9rIJMFaRTNNEpnlKILgAR7zwcO5jajebIYZcekrfFWJI1L+odxqem3A3H7flxxoMUtkr98r4DZd5Ef5cSie3tMZjjRMKP5IB06RmKvJvRAh+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741280435; c=relaxed/simple;
-	bh=CA3oS7yvpfmULftQdCN1MhnvUH4iqwV7t8JiQGZfNqg=;
+	s=arc-20240116; t=1741285579; c=relaxed/simple;
+	bh=A0wvu3n9vFC16f3qlUsNA6dfIvpISQcUDrHPkbUkZ+c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F9hP8j88V6OtOMFOv85uJkJb1BLiVsWGcdCiJyvgjmTfcxEhUS3FQRhfdLnqgIh4W4Pl22+ZLAfTfLvroZkkYS+CBIUcFCIV9ExWv+/osJJZo80xIPnpAX6iGn0XCD0Y8e5DPO+UMqVVCzv5IhYd3oXUF+1Oxuocf2eu++wjX/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=iNTknRuK; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=qiYyOSK+mlPkAn4C50Ilq8Me885yH+fmzwQupDHkpGleOfZDRv+ZQmQ+r2u0e9fOHAAbgsdy3C2ZvF4JPU62z5YjWGTfU8vyC2CSLS0cqzPyQLbTKbQ3zaO9adMgxeWRXjKIxmLV7LKgOamX6P2Mi0hwj/SLzs7abcFo/mVgh9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=nzYm4u8p; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="iNTknRuK"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 24B8440E0216;
-	Thu,  6 Mar 2025 17:00:30 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id nxFP5hBSf08p; Thu,  6 Mar 2025 17:00:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1741280419; bh=yRS5zdx12qlghPTisegH/MGSTWiNp0ZxQFtA1dzgSCA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iNTknRuK8K0YaWLMKsbSE7wAsBn+qoAs+cnac+2DvCsqlfCH/sERig2gFVI1M1kjX
-	 VjELmvuYsSFT11HDtmwZoEnhliioJJ/OfeH1mqNo2lcg6/6DZhypTeHvRiLX6FLlFl
-	 S60Q1ssaFWb1BBd8EQ6GG1lJObJCygUFYlDUdW4uhTT+69wxNGpcEb9G8g+DaWX49b
-	 5LZH6lpb83J0wjbfeRU/KshRXJ7gxGjI33g5O4VFYJk5EMkGdFAkQrNEbJwlZ9Ro/H
-	 tpyeqR+7F6XOR1d3JZ8vWlJy6h61gPmjidntFdDQoGL8+O/NTTh7DcaW1xYczGf55t
-	 zfXC/16gAmErg2eewKpj7WmDneFcSkWoygk8lrW62aHAQUk8s7YyQVZXGb/MrbM4CH
-	 iHrvUjPaEJy33pAWsfOpPot0tdlZjbh7tvrR/OkRaQZV7qZnqZIEoIfgp0DvNDEjQD
-	 MGegSFaOjE5SgwIWY1tg7WaRPyOtwHKdfg170zLElbeiuWScJeLFHv+YDCWqRh9JEn
-	 E995j59TN8+AZRo9KvMpjv1jkZKveh9BDpFcGVvbxksXCyH32po7/4LkQ3y2tY+hbQ
-	 ySTjZgs4n5QJMgF5fGlbacB9+KY6IWVh2dQwRIyq5N04YM84nwS0eRnK3wIEeJ1MA8
-	 5KZ40LTgQLk49vGlN0AfzjmI=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 32F4A40E0214;
-	Thu,  6 Mar 2025 17:00:05 +0000 (UTC)
-Date: Thu, 6 Mar 2025 17:59:58 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="nzYm4u8p"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-46fa764aac2so7350421cf.1
+        for <linux-coco@lists.linux.dev>; Thu, 06 Mar 2025 10:26:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1741285576; x=1741890376; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kJmNeR7cBbicmXZ58VNFTx5zHy0Fy/985QYAD/du2Go=;
+        b=nzYm4u8pSPDfWc4fWZZfB+AfM6K6wR9dFSoBY91fdYh3HiV9Uht4uPfjaoWoYq0ILf
+         V28GBB19GHeB6AU6F2OCMuyjyFC5e2IjvBfEP5Ees6BvXyQPJilmSSh9IilO/ywQnArg
+         vYkPO4ch8W8bLMKylxle/EXWnGaj9yTi1dmii5h+KShAmpCi08DslO90xFoxZDBvD6rw
+         Hbx3FFUFmNW18VlPRZ3N5TUUKGv9+eIOzqPFNNT7ymsepD1ieG4Cpf2gWcalufBfFwb3
+         kJSYpvLd/Uqg5DrqHXjCG0DUaRris4kKhsB7oeFVkoRaN0vXKnhpnD1Dje/b1wkgJ+cb
+         kdsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741285576; x=1741890376;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kJmNeR7cBbicmXZ58VNFTx5zHy0Fy/985QYAD/du2Go=;
+        b=tLxRV77M6l5Xdg4Z1YzaKwkFz6U9rjHwA2nY8KArkpF034we7xZSs4MseKUqKbqzwr
+         /7tRL2/J0ck54dOMKHQkAGV9n0zY1GwpbwKXLxkisXP09HeuUwyd72/CEIpVHcfr0VbL
+         nrASJdKfWwsLyEvfBAbuL7Iy6UBFdsYyZWqIexawEzL+nwPclYusB3cOwF+gG8keJYfP
+         EefdFB3wa6rrHso4NyWHcYVlv/1ljHjOdAqvw+qHrnIo6RVGJ0B7kUwkgorJIfkrNonL
+         7BwEYRlvgVfB66PcCwMcqeemCXs4V6KzXi7E3sAp8mGwaQXkWnrFyiq4qXfFfIE6OzS0
+         Yfhg==
+X-Forwarded-Encrypted: i=1; AJvYcCXREQbejgAEZpXd2Ix0fjXtvOeue8EeJ/eoXfpuMrFlgwngAj4XoBhtVWXDOS7Yj09kX5S9klg9aaBx@lists.linux.dev
+X-Gm-Message-State: AOJu0YxA++M6d4z79HsXa+/1BEWmrPvea294d1wxwW9M506Miv9iZXcB
+	NvZlti3gUvXfciRYdbwlGCLueuUz+Jfcdi/cZNwWzcNQZSpnm7FVaqgORYXd1Ko=
+X-Gm-Gg: ASbGnctzRwrzzHBVF3hjeDkJEUvN9VF6RnDiCNmH9iViq2hklqFwm5Gt/QfzzQ23c0n
+	nxvt61hDwQc4jP2h2XM0JXDI9fm5dyuHbJT2qEX+Aln6TuykZ3YazAeOiA0leBwhhcjMq3abAnN
+	snc3uvLu2PMlMbdF1y8g9Ce4705K1NFpa9RmjGMROKFmorwJ+Ipp8QPJFgpSRWvTv5n3Bq9K9Cy
+	OLdT/bRrofwDlsdTFCQcZHuRajkDa75EP4+u7jSLyW7FuXuXARHmijv+ont2mOGZxCG7z0JO9qV
+	h7qDjDoFG19SMsZ8dDN4lBwdctfktDICzTjmdS6gIw386HMo/DcA0NZ5jkAnKoV7RelTUCo6AOD
+	VGmuJuHPNL3hzG9mQNA==
+X-Google-Smtp-Source: AGHT+IHdLGu9+NkI+poSobXraQKM371I6DGk+LdkIPbK8ktXY1plTaVgGJ4wX3yHHMcP8NJrRnY4AQ==
+X-Received: by 2002:a05:6214:76c:b0:6e8:fde9:5d07 with SMTP id 6a1803df08f44-6e90066a2e7mr783186d6.26.1741285576387;
+        Thu, 06 Mar 2025 10:26:16 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8f7090c4csm9806836d6.33.2025.03.06.10.26.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 10:26:15 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1tqFvC-00000001eHR-3E6L;
+	Thu, 06 Mar 2025 14:26:14 -0400
+Date: Thu, 6 Mar 2025 14:26:14 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, x86@kernel.org, kvm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
 	Michael Roth <michael.roth@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	"Nikunj A . Dadhania" <nikunj@amd.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v4 1/2] x86/cpufeatures: Add "Allowed SEV Features"
- Feature
-Message-ID: <20250306165958.GGZ8nUjqVyJnw-JV0B@fat_crate.local>
-References: <20250306003806.1048517-1-kim.phillips@amd.com>
- <20250306003806.1048517-2-kim.phillips@amd.com>
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
+	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
+	Zhi Wang <zhiw@nvidia.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
+Message-ID: <20250306182614.GF354403@ziepe.ca>
+References: <20250218111017.491719-15-aik@amd.com>
+ <Z72GmixR6NkzXAl7@yilunxu-OptiPlex-7050>
+ <2fe6b3c6-3eed-424d-87f0-34c4e7e1c906@amd.com>
+ <Z77xrqLtJfB84dJF@yilunxu-OptiPlex-7050>
+ <20250226131202.GH5011@ziepe.ca>
+ <Z7/jFhlsBrbrloia@yilunxu-OptiPlex-7050>
+ <20250301003711.GR5011@ziepe.ca>
+ <Z8U+/0IYyn7XX3ao@yilunxu-OptiPlex-7050>
+ <20250305192842.GE354403@ziepe.ca>
+ <Z8lE+5OpqZc746mT@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250306003806.1048517-2-kim.phillips@amd.com>
+In-Reply-To: <Z8lE+5OpqZc746mT@yilunxu-OptiPlex-7050>
 
-On Wed, Mar 05, 2025 at 06:38:04PM -0600, Kim Phillips wrote:
-> From: Kishon Vijay Abraham I <kvijayab@amd.com>
+On Thu, Mar 06, 2025 at 02:47:23PM +0800, Xu Yilun wrote:
+
+> While for AMD:
+>         ...
+>         b.guest_device_id = guest_rid;  //TDI ID, it is the vBDF
+>         b.gctx_paddr = gctx_paddr;      //AMDs CoCo-VM ID
 > 
-> Add CPU feature detection for "Allowed SEV Features" to allow the
-> Hypervisor to enforce that SEV-ES and SEV-SNP guest VMs cannot
-> enable features (via SEV_FEATURES) that the Hypervisor does not
-> support or wish to be enabled.
+>         ret = sev_tio_do_cmd(SEV_CMD_TIO_TDI_BIND, &b, ...
 > 
-> Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-> ---
->  arch/x86/include/asm/cpufeatures.h | 1 +
->  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-> index 8f8aaf94dc00..6a12c8c48bd2 100644
-> --- a/arch/x86/include/asm/cpufeatures.h
-> +++ b/arch/x86/include/asm/cpufeatures.h
-> @@ -454,6 +454,7 @@
->  #define X86_FEATURE_DEBUG_SWAP		(19*32+14) /* "debug_swap" SEV-ES full debug state swap support */
->  #define X86_FEATURE_RMPREAD		(19*32+21) /* RMPREAD instruction */
->  #define X86_FEATURE_SEGMENTED_RMP	(19*32+23) /* Segmented RMP support */
-> +#define X86_FEATURE_ALLOWED_SEV_FEATURES (19*32+27) /* Allowed SEV Features */
->  #define X86_FEATURE_SVSM		(19*32+28) /* "svsm" SVSM present */
->  #define X86_FEATURE_HV_INUSE_WR_ALLOWED	(19*32+30) /* Allow Write to in-use hypervisor-owned pages */
->  
-> -- 
+> Neither of them use vIOMMU ID or any IOMMU info, so the only concern is
+> vBDF.
 
-I guess this goes thru Sean:
+I think that is enough, we should not be putting this in VFIO if it
+cannot execute it for AMD :\
 
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+> > You could also issue the TSM bind against the idev on the iommufd
+> > side..
+> 
+> But I cannot figure out how idev could ensure no mmap on VFIO, and how
+> idev could call dma_buf_move_notify.
 
--- 
-Regards/Gruss,
-    Boris.
+I suggest you start out this way from the VFIO. Put the device in a CC
+mode which bans the mmap entirely and pass that CC capable as a flag
+into iommufd when creating the idev.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+If it really needs to be dyanmic a VFIO feature could change the CC
+mode and that could call back to iommufd to synchronize if that is
+allowed.
+
+Jason
