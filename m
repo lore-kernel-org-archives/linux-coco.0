@@ -1,227 +1,187 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2055.outbound.protection.outlook.com [40.107.92.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90167207DE9
-	for <linux-coco@lists.linux.dev>; Wed,  5 Mar 2025 23:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741217525; cv=none; b=V8XtHv/F0jEmNsBTsXcTlMHRIuqCzRGTsSNrIhGIUArDn1pL8fbfGE/vOTUWSroxWAQdv+iG+9L936POY50NkZWZLtjAfqvPJdsjl5//I/B9IfNCzkxuW/LusY5wEhT7eejODx+m2I2S7caJfio7zX90JqgQfWv23epLqE1uSuo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741217525; c=relaxed/simple;
-	bh=REQ/IfjD8heLKs2fU0174gHx+56fArKa2gF2nY/f/EM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P7UMEUZ2tbd0thi3sr/OkHpF/ZtaRtaFV8dtJUdg+MC+6G9FiN2Ix7eVdNUEbTTrMWrhLe5pWQwcjURtHvFRzhr0rSRxOcZTLRlGG+HXSZTWAVgTvFnaQ5XRqWbe9PgL/StSPyzLWtE0iAxiyp1D8oYKcnYlV30rc6fnZOkA4gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d+m3Nc7f; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EB718EA2
+	for <linux-coco@lists.linux.dev>; Thu,  6 Mar 2025 00:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741221500; cv=fail; b=dcEhZVUauBG6ASO6z7yl3XbOVHZ/bq8zjNpKey8ZdR8CpdZd5TVPPu9hHfpTsQjd9pF7U0EzT+K74Pso6ogEzLYfWhV5Tdm9103sCGcjL/KFAyBv7oGWw4ESkIdIm462rFmoSea6fWIsxuhVRprSGktJTUDahanEGzojEAjhFhE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741221500; c=relaxed/simple;
+	bh=oqp+O5/JJl+nrEF07v8f8bBnFK1pd7N0IRy0ZYIOBJQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HQWA6AK0j9+fhU4rvSSjzqVCGfJOP9kHPvtD8lCqsDTREyjucmkKLwSI5RpfxnmIfvNoiVlkL4i/Q1w/0cj3PhVSeRrl3ioaM9VhtzwFQyjyXqo4SPDVAYdv8ffY+BlKsdkMiw1lN2MDPRayG3gTEwKF8jg9AsexA8pT0U7GneQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=LWeamPK8; arc=fail smtp.client-ip=40.107.92.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d+m3Nc7f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741217522;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kFCm6qFAyYGc4VFf2sS3vwJnAyvK+30pL4l8MO3Di54=;
-	b=d+m3Nc7fx4JoqOjOZh6btxLZJ8F5yJlzUy6nzWolovqxiHRDfQR4r/ytflFpVlknzFc6/B
-	hoSR6lK2myz2ykVTAZSJIcYRhcYlXyGphphSsDO+OCehy/r3iMCKA23zkcRXWeCsbue1+v
-	bkjo+p9febCcOJ1+kubsjPDARkQ5L7Y=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-WqisIYL1PYGeWsgvawto7A-1; Wed, 05 Mar 2025 18:31:54 -0500
-X-MC-Unique: WqisIYL1PYGeWsgvawto7A-1
-X-Mimecast-MFC-AGG-ID: WqisIYL1PYGeWsgvawto7A_1741217513
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-22380c707d3so244385ad.1
-        for <linux-coco@lists.linux.dev>; Wed, 05 Mar 2025 15:31:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741217513; x=1741822313;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kFCm6qFAyYGc4VFf2sS3vwJnAyvK+30pL4l8MO3Di54=;
-        b=AHh4OmjIb8TBrqWGrcy6dSTiaglNbseTpD6efqV+MVyLJZDpGF+MLzXCKl9vakafd7
-         xVukY2nVrHE0IikhEbLf5I58gBTd/5momvLFt4H62a/UOJJ/h6f2nhI2eLJlQGjmJfU+
-         WF+Id6jkJhbdg8hpIePQhdAx6vfBiorM5fmvAvNR9lMrWAykJjarnyoLTcfN5UN+liqy
-         yjmv9Vr9qjQT2R0aMaDv60djYKSUfLejDzu+X3P6LPw+nYgP5X7Ww/9DZx3aR0rxobFc
-         iL5FkPDnU7K5BsY25vhtVxnK0nRr1t6JsBlIb+JBqxVDO+RDCpqeONZQGD2SzCw7qSwk
-         O4Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCUFd1waS2eUAaJ0jS+yB0kZCEEwZmtZ3igeYyz86vCSQcgEjYg2hlKyI/nAG+qRcFp+zQvL8lyBldx0@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz2blHDD5Y7kRvWx08ix2h4VGlYmxCb5h8pOsbp9scqjGQWIa5R
-	ANaGmwl9kXfgHOTRbzM9YR/jz3ANaStW77vYoCz1ksYcShQZu8AdXzqqdQ+0m120sbkh1SnH83z
-	0lO54V0ayN39ca2FPMcZ4CAwTWzwp+h/PotPRu3EiLsHicQxvFMu0E8Hf1Js=
-X-Gm-Gg: ASbGncv7rTa+gSe544fiAClo0865Z83ETh3NPnToeUWphpvgI5dEMaKM01f5hr2GBAp
-	0M/30bLiCmwjz/BlxO0+YP1Gn/JOQfDF/6i7/OuWnMY23fPuw14Ndsq64g8lAuPbhCjWcfol+N7
-	P9F52Bqs5FTSduXs9LKlsS69nhha+YVENuBl65/lIuc2p7duLpCSPFd14wkVm1hwoMCiiK6ryKt
-	zqHvdFuyDAaCTJK8eUJXCvxfIy3gRFP6mjgnA5fj0SapFCvSQSP8z0kIL4TTj/B3vMWlIMc3JXC
-	MOQFoj2HjGLNjwg=
-X-Received: by 2002:a05:6a00:856:b0:736:51a6:78b1 with SMTP id d2e1a72fcca58-73682bdf13fmr5864413b3a.11.1741217512911;
-        Wed, 05 Mar 2025 15:31:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFr5llQOo8uwX2X7Rw/daISqoaMPhAadKna3dfRjuli6+dA3NfteMRLNkx9LXdBAsG0P/3xwA==
-X-Received: by 2002:a05:6a00:856:b0:736:51a6:78b1 with SMTP id d2e1a72fcca58-73682bdf13fmr5864388b3a.11.1741217512567;
-        Wed, 05 Mar 2025 15:31:52 -0800 (PST)
-Received: from [192.168.68.55] ([180.233.125.1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734a00400a0sm13952388b3a.140.2025.03.05.15.31.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Mar 2025 15:31:51 -0800 (PST)
-Message-ID: <3190c4b0-4826-4d9b-9b12-8063acff57fa@redhat.com>
-Date: Thu, 6 Mar 2025 09:31:43 +1000
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="LWeamPK8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Mnc7qZjc6UsY51dXEZ9zB2GOCag/HrHSjuk+K5+pC242HDas6BaO1KfiLn/N6Db8SrvDlS2Znny+a5LLZ0Irv+UcjKCArG0zodmtz7Lcy63+gIJbE90ohvh7afDLA2+I3YLj0tMYAmaLnbH6iR4JGf7HZjtJUr0FZxqQfNEUosRgkH5ro4+WwMQr9DeovzEk55W4TOCT7rbOexp7QJ7R8VQPVsJbG8d92zysXjDxfYGF1veOrEhsV08QdWwPWxhyaSZyrhAmr515T0wls2F8sHhFZFyZ5V5mjIBDFSNwzh26olNlmYm/asxnw5UiCn25yenDjzOuIZGOjykKbquSQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ml3hS+OvqzZ+jyPpvfsvlBxL7I8HKTWzOcjyLHUHpPQ=;
+ b=EiZ4loQJhcMr6Skx7QDFAmL3dXlInqUVHfSU1MchD63W8WphwUO/DatMMODwsesYbacddgci8Gc8MZTQgvaiy6oMKM0jXHQ7SeVY75vXdhBWKVDm8+LZem4w1TXwNmzn5SpjtqLFYGsJoPW2iqkHFdlFEukhvoelM/F3/lSNBZqiKCbrcpLadupOJ5LIUJe8vvOoufkd/Em68TRPst6737oUCxZCbfh7k/+Q9Og2Bp5F9thSChYgdqlqcawnaWeiuGf3XEt5GxlfCPpTQLIKV2bGRzzy4PBVDbP2ew+cQWOIrQvMESDZaftFRf6nbxxWF/n78Pt2jeT6WDWZ2f8X2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ml3hS+OvqzZ+jyPpvfsvlBxL7I8HKTWzOcjyLHUHpPQ=;
+ b=LWeamPK8/e+OBhOaMrcPkzOx8IcpLlb5/bP/myYlJBpSlQUUjN7LwyjVtNAPiF7rXnTsPodORKw6t2m1jbwVwEW8oBTSX3wEzFSJa61kAW4J3zTxLXQ+Cx1Xkh1kI28LcGQM4+paqZSLHZOqajcmoDfDRMhbptZkfIabk1QoQYU=
+Received: from BN0PR04CA0083.namprd04.prod.outlook.com (2603:10b6:408:ea::28)
+ by DS0PR12MB7779.namprd12.prod.outlook.com (2603:10b6:8:150::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.19; Thu, 6 Mar
+ 2025 00:38:13 +0000
+Received: from MN1PEPF0000F0E1.namprd04.prod.outlook.com
+ (2603:10b6:408:ea:cafe::86) by BN0PR04CA0083.outlook.office365.com
+ (2603:10b6:408:ea::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8489.28 via Frontend Transport; Thu,
+ 6 Mar 2025 00:38:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MN1PEPF0000F0E1.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8511.15 via Frontend Transport; Thu, 6 Mar 2025 00:38:13 +0000
+Received: from zweier.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 5 Mar
+ 2025 18:38:11 -0600
+From: Kim Phillips <kim.phillips@amd.com>
+To: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>
+CC: Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth
+	<michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>, "Nikunj A .
+ Dadhania" <nikunj@amd.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Sean Christopherson <seanjc@google.com>,
+	"Paolo Bonzini" <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH v4 0/2] KVM: SEV: Add support for the ALLOWED_SEV_FEATURES feature
+Date: Wed, 5 Mar 2025 18:38:03 -0600
+Message-ID: <20250306003806.1048517-1-kim.phillips@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 09/45] kvm: arm64: Expose debug HW register numbers for
- Realm
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-10-steven.price@arm.com>
- <cec600f2-2ddc-4c71-9bab-0a0403132b43@redhat.com>
- <ea9bb982-cf31-4079-8fea-dc39e91a975b@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <ea9bb982-cf31-4079-8fea-dc39e91a975b@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: rf2KzH6ZOZpG8J2-9GwkMMeLzd_22Hs1Oo-lf3b_Chw_1741217513
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E1:EE_|DS0PR12MB7779:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1b1db463-41f4-4546-a66b-08dd5c472d85
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014|7416014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9C19G3Oq4X9J0ebHyFQfXIvFSn5CYuFj7go3e1GQiMbJR6AGk54wWNFqCbTG?=
+ =?us-ascii?Q?edImpU+1SwdAU9sZ0rNpBiPvCVyqf1VlmjvFCmiVyWtsDSRt4Nd0w9aqg5N2?=
+ =?us-ascii?Q?ziARXVtuK998f9RAU7G0oQjGZ6FHKf5igRov3WSU2v4NaMy0VsR9KKqyF9MK?=
+ =?us-ascii?Q?gqwPiPKwT9Wz7QoYtqJYiDOCo5lOxKGy7wczCAGaL++t3tYE1KdmCrPlB+6K?=
+ =?us-ascii?Q?yt31iA7biw3SgyPGI0B3SSKsqG+uDLKN1LaHzkyLlYyaTu8oPd8H8lA86m4b?=
+ =?us-ascii?Q?FjqF/r1V+sLHIRUuxjheFH9nugbKczvxlRZjSFDGhCgTRbknxhq5eQmx2sRT?=
+ =?us-ascii?Q?GgirwqpGj8cG90ckNpgWKi6j3YnarXa3gjg/ComcvTtUy1QMtYlZOchBCQkm?=
+ =?us-ascii?Q?pc5W5F5X4Sk4JAafW3YPvfN9hDSGesg1SNdkIlWdmNFw7XwM+5fW2sJ7N/Em?=
+ =?us-ascii?Q?wKUahFLBtpAVeQLRgOCLnidKmB7sqP+x5J1OKy4OSyShwSB25P5BtkkkZTGt?=
+ =?us-ascii?Q?qhrpL8iW9wLZIYqIUPu7oeiwe9B18TnF2uVr9VKro7xWzMpKUWrhMqEZG8tU?=
+ =?us-ascii?Q?ub1dq/ny1okmOduTURvQed7khONAZpIjjTywjZydlmMDNeUHbyXed6fxZ1kL?=
+ =?us-ascii?Q?IpE4cJSaG9JldoKgX/Pv1BYf1ZM9bo/1dXaINUDa8FU6D3JtkiJ4rdJ7BPZh?=
+ =?us-ascii?Q?EXcnj1fsLIpAD8nqb8vKXquTuGLPtji4CvI2YBH46J2fbvhjawPt21GcSIA9?=
+ =?us-ascii?Q?496q4iC+RjLWKsw+sWywsbkh9vIkb4s9NPgEjqQZYAyYnD7C4WmySdpZgEnf?=
+ =?us-ascii?Q?YpcNeqpxOmeNedKk0+Rka4QDx2gTL9YLwmCkwbheEujlYV8MW80CLwPQNsg9?=
+ =?us-ascii?Q?gy8ijo0Mns+QGtGPTxv36ye0QD8uLeTB7ZY6uPVv+zemDa/4+2BnButBoF4Z?=
+ =?us-ascii?Q?y3mjf5IKIt6zFOlroWdq3QAHqEAVRnhNn56dFdYCNI9BmBlbpOfHQ4RUO8sW?=
+ =?us-ascii?Q?xl9ZDNzODGhSf6k3ZziApccqtCv9FTH/hUOQ14LBnDJ2DZLJSz/X6fgTrH+2?=
+ =?us-ascii?Q?kLVTt/Cl35vZvU1fLezifRY/P0pagm7fF1cQ50KSZoi6ea2xPBgdJlxNhs0G?=
+ =?us-ascii?Q?UA28ItQBCR3Z+an+wxXlfEQ827unB/ON4tDKL3AQUSg8OD9HtmPpNXiBFNyx?=
+ =?us-ascii?Q?jypOXYB9YDeLkAUwvlMQ2kwhtvqUsI73CWQ5TH3GHgbUlZZXRhRFYBQGwmt2?=
+ =?us-ascii?Q?thYRXHZzP9FdrbflDlID+qRnfP0ew8PalDzDA/j4lmrTSDKhM7Rs+vzviAbT?=
+ =?us-ascii?Q?22AHJ4w03qpi898AYJysYdq4AcOd1lcqJ+wyn3Jomps3yJA56Xf4HHUUVcxu?=
+ =?us-ascii?Q?V4fjSo1KU+Jr/hvdEPlx1kIydagUIh1E8qpY4ust6roieSSHqI8J78BJGgsr?=
+ =?us-ascii?Q?EMe7snrndjtdctFihSSx4kK21miMPXlR?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014)(7416014)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2025 00:38:13.2176
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b1db463-41f4-4546-a66b-08dd5c472d85
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000F0E1.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7779
 
-Hi Steven,
+AMD EPYC 5th generation processors have introduced a feature that allows
+the hypervisor to control the SEV_FEATURES that are set for, or by, a
+guest [1].  ALLOWED_SEV_FEATURES can be used by the hypervisor to enforce
+that SEV-ES and SEV-SNP guests cannot enable features that the
+hypervisor does not want to be enabled.
 
-On 3/6/25 2:25 AM, Steven Price wrote:
-> On 03/03/2025 04:48, Gavin Shan wrote:
->> On 2/14/25 2:13 AM, Steven Price wrote:
->>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>
->>> Expose VM specific Debug HW register numbers.
-> 
-> Looking at this now, this patch description is garbage. Probably the
-> patch has changed over time - so I suspect it's my fault not Suzuki's.
-> We're not exposing anything new here. This is purely about telling the
-> VMM that a realm cannot (currently) be debugged. Something like the
-> below would be more accurate:
-> 
-> """
-> kvm: arm64: Don't expose debug capabilities for realm guests
-> 
-> RMM v1.0 provides no mechanism for the host to perform debug operations
-> on the guest. So don't expose KVM_CAP_SET_GUEST_DEBUG and report 0
-> breakpoints and 0 watch points.
-> """
-> 
+Patch 1/2 adds support to detect the feature.
 
-Yes, the improved change log looks good to me.
+Patch 2/2 configures the ALLOWED_SEV_FEATURES field in the VMCB
+according to the features the hypervisor supports.
 
->>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> ---
->>>    arch/arm64/kvm/arm.c | 24 +++++++++++++++++++++---
->>>    1 file changed, 21 insertions(+), 3 deletions(-)
->>>
->>
->> Documentation/virt/kvm/api.rst needs to be updated accordingly.
-> 
-> I don't think (with the above clarification) there's anything to update
-> in the API documentation. There's nothing new being added, just
-> capabilities being hidden where the functionality isn't available.
-> 
-> And eventually we hope to add support for this (in a later RMM spec) - I
-> don't yet know exactly what form this will take, but I hope to keep the
-> interfaces as close as possible to what we already have so that existing
-> tooling can be used.
-> 
+Tested SNP by setting random feature bits to the sev_features
+assignment in wakeup_cpu_via_vmgexit() (but not its ghcb_set_rax).
 
-Ok.
+Tested SEV-ES by manipulating the save->sev_features assignment
+in sev_es_sync_vmsa().  Note that SEV-ES "allows" operation only
+works on features available in SEV-ES, i.e., it ignores SNP-only
+features.  Zen5 SEV-ES features are DEBUG_SWAP, PREVENT_HOST_IBS,
+VMGEXIT_PARAMETER, PMC_VIRTUALIZATION, and IBS_VIRTUALIZATION.
 
->>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->>> index b8fa82be251c..df6eb5e9ca96 100644
->>> --- a/arch/arm64/kvm/arm.c
->>> +++ b/arch/arm64/kvm/arm.c
->>> @@ -78,6 +78,22 @@ bool is_kvm_arm_initialised(void)
->>>        return kvm_arm_initialised;
->>>    }
->>>    +static u32 kvm_arm_get_num_brps(struct kvm *kvm)
->>> +{
->>> +    if (!kvm_is_realm(kvm))
->>> +        return get_num_brps();
->>> +    /* Realm guest is not debuggable. */
->>> +    return 0;
->>> +}
->>> +
->>> +static u32 kvm_arm_get_num_wrps(struct kvm *kvm)
->>> +{
->>> +    if (!kvm_is_realm(kvm))
->>> +        return get_num_wrps();
->>> +    /* Realm guest is not debuggable. */
->>> +    return 0;
->>> +}
->>> +
->>
->> The above two comments "Realm guest is not debuggable." can be dropped
->> since
->> the code is self-explanatory, and those two functions are unnecessary to be
->> kept in that way, for example:
->>
->>      case KVM_CAP_GUEST_DEBUG_HW_BPS:
->>          return kvm_is_realm(kvm) ? 0 : get_num_brps();
->>      case KVM_CAP_GUEST_DEBUG_HW_WRPS:
->>          return kvm_is_realm(kvm) ? 0 : get_num_wrps();
->>
->>
->>>    int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
->>>    {
->>>        return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
->>> @@ -323,7 +339,6 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
->>> long ext)
->>>        case KVM_CAP_ARM_IRQ_LINE_LAYOUT_2:
->>>        case KVM_CAP_ARM_NISV_TO_USER:
->>>        case KVM_CAP_ARM_INJECT_EXT_DABT:
->>> -    case KVM_CAP_SET_GUEST_DEBUG:
->>>        case KVM_CAP_VCPU_ATTRIBUTES:
->>>        case KVM_CAP_PTP_KVM:
->>>        case KVM_CAP_ARM_SYSTEM_SUSPEND:
->>> @@ -331,6 +346,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
->>> long ext)
->>>        case KVM_CAP_COUNTER_OFFSET:
->>>            r = 1;
->>>            break;
->>> +    case KVM_CAP_SET_GUEST_DEBUG:
->>> +        r = !kvm_is_realm(kvm);
->>> +        break;
->>>        case KVM_CAP_SET_GUEST_DEBUG2:
->>>            return KVM_GUESTDBG_VALID_MASK;
->>>        case KVM_CAP_ARM_SET_DEVICE_ADDR:
->>> @@ -376,10 +394,10 @@ int kvm_vm_ioctl_check_extension(struct kvm
->>> *kvm, long ext)
->>>            r = cpus_have_final_cap(ARM64_HAS_32BIT_EL1);
->>>            break;
->>>        case KVM_CAP_GUEST_DEBUG_HW_BPS:
->>> -        r = get_num_brps();
->>> +        r = kvm_arm_get_num_brps(kvm);
->>>            break;
->>>        case KVM_CAP_GUEST_DEBUG_HW_WPS:
->>> -        r = get_num_wrps();
->>> +        r = kvm_arm_get_num_wrps(kvm);
->>>            break;
->>>        case KVM_CAP_ARM_PMU_V3:
->>>            r = kvm_arm_support_pmu_v3();
->>
+Based on x86-kvm/next.
 
-Thanks,
-Gavin
+[1] Section 15.36.20 "Allowed SEV Features", AMD64 Architecture
+    Programmer's Manual, Pub. 24593 Rev. 3.42 - March 2024:
+    https://bugzilla.kernel.org/attachment.cgi?id=306250
+
+v4:
+ - Revert the user-opt in (Sean, sorry for the misunderstanding)
+ - this basically undoes v3 uAPI changes and makes the feature
+   always-on, if available
+ - rebased on top of x86-kvm/next
+
+v3: https://lore.kernel.org/kvm/20250207233410.130813-1-kim.phillips@amd.com/
+ - Assign allowed_sev_features based on user-provided vmsa_features mask (Sean)
+ - Users now have to explicitly opt-in with a qemu "allowed-sev-features=on" switch.
+ - Rebased on top of 6.14-rc1 and reworked authorship chain (tglx)
+
+v2: https://lore.kernel.org/lkml/20240822221938.2192109-1-kim.phillips@amd.com/
+ - Added some SEV_FEATURES require to be explicitly allowed by
+   ALLOWED_SEV_FEATURES wording (Sean).
+ - Added Nikunj's Reviewed-by.
+
+v1: https://lore.kernel.org/lkml/20240802015732.3192877-3-kim.phillips@amd.com/
+
+Kim Phillips (1):
+  KVM: SEV: Configure "ALLOWED_SEV_FEATURES" VMCB Field
+
+Kishon Vijay Abraham I (1):
+  x86/cpufeatures: Add "Allowed SEV Features" Feature
+
+ arch/x86/include/asm/cpufeatures.h |  1 +
+ arch/x86/include/asm/svm.h         |  7 ++++++-
+ arch/x86/kvm/svm/sev.c             | 13 +++++++++++++
+ 3 files changed, 20 insertions(+), 1 deletion(-)
+
+
+base-commit: 7d2154117a02832ab3643fe2da4cdc9d2090dcb2
+-- 
+2.43.0
 
