@@ -1,55 +1,114 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34E018C332
-	for <linux-coco@lists.linux.dev>; Thu,  6 Mar 2025 08:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741251305; cv=none; b=Y6QFQAVL2LDOhVVnKKKzYHOsssC+IOdHqINQfavRUPfqn28Y983jP/vF69lZrdkJdwOw5iR9lH7IkhSLoKGtkFo2Ef1kxEnvQjklOvDBwZ6sF344aWbK3Oi9mPlE0UJ3KxcuN+RsXtp/TDMGJUzV5dQuC5iD/BRGFyalRwine60=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741251305; c=relaxed/simple;
-	bh=Z/Mdft8hOPGxfgQHOzw+nWsF3o2FCEvgA+AA6KKz4aQ=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kqK9vZSq/AuHaWvz/3QPkY5JEQzyHwxDFsXKuduLajgllMrlnHwkxI+ezR7NtHht/XrYEo4vkSlyjfAGB24QZkI9YOqnJB6qvXCtqTXoI+gN4WZgQHFEui/ldD07gLLKjydBpNyjcV8lD27JXlQ/BU3jRvqVxd71uw8wb3faiKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=2/SCusvf; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="2/SCusvf"
-Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 7DCCE43007;
-	Thu,  6 Mar 2025 09:55:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1741251301;
-	bh=Z/Mdft8hOPGxfgQHOzw+nWsF3o2FCEvgA+AA6KKz4aQ=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=2/SCusvf3+n+bCCOdmqTMm8g2LVUb0HnbB371wI06gsPErNlAIgMoUnihPQ3BN3fA
-	 RUEBh9vVonCxzlZTBtTp6hEBNskPwrg2mChFONkSQiEL+25NNsamOzoAkBU6N76WlS
-	 tVDuhP50wFgua1dSOc8Ae4Bx6O74M6xseaoISQbLQEJnDZqA4n1R4KiJfbOGS0MGWC
-	 HCguNocTEhMZwim0bHQ8aulYFGdZfazfJZ2t7cISUS/PVjt7PoEWB24zlsfoAA+IuU
-	 16/xl6N9qHEm2KJ1iANzq/9Rb0b50XPMBjH1n8x7J6cQvnQI0knYrDfRenGWxSUm0O
-	 Ecf4+jwZvZFVA==
-Date: Thu, 6 Mar 2025 09:55:00 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: Re: [svsm-devel] SVSM Development Call March 5th, 2025
-Message-ID: <Z8li5JEfdogfJO_4@8bytes.org>
-References: <Z8dM9Tp49ZFR50lJ@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5BC25C702
+	for <linux-coco@lists.linux.dev>; Thu,  6 Mar 2025 17:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741280435; cv=none; b=iVy29kS1k/ut+vnsGRovQT4VkXWTd5ugF0nz8fjnyoDK3ufy6twHvm27OA5Bh3hfQ+Q2SJFys8V5OHqwXZebHCjfH9Z3RWW5GFxMNhGDWogZnAKkAu2OKPwQAwakB89MOeLB+Wo4H07TioCoDv8nfsF0JWnxxrCrZ3MrEn0ZlgI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741280435; c=relaxed/simple;
+	bh=CA3oS7yvpfmULftQdCN1MhnvUH4iqwV7t8JiQGZfNqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F9hP8j88V6OtOMFOv85uJkJb1BLiVsWGcdCiJyvgjmTfcxEhUS3FQRhfdLnqgIh4W4Pl22+ZLAfTfLvroZkkYS+CBIUcFCIV9ExWv+/osJJZo80xIPnpAX6iGn0XCD0Y8e5DPO+UMqVVCzv5IhYd3oXUF+1Oxuocf2eu++wjX/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=iNTknRuK; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="iNTknRuK"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 24B8440E0216;
+	Thu,  6 Mar 2025 17:00:30 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id nxFP5hBSf08p; Thu,  6 Mar 2025 17:00:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1741280419; bh=yRS5zdx12qlghPTisegH/MGSTWiNp0ZxQFtA1dzgSCA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iNTknRuK8K0YaWLMKsbSE7wAsBn+qoAs+cnac+2DvCsqlfCH/sERig2gFVI1M1kjX
+	 VjELmvuYsSFT11HDtmwZoEnhliioJJ/OfeH1mqNo2lcg6/6DZhypTeHvRiLX6FLlFl
+	 S60Q1ssaFWb1BBd8EQ6GG1lJObJCygUFYlDUdW4uhTT+69wxNGpcEb9G8g+DaWX49b
+	 5LZH6lpb83J0wjbfeRU/KshRXJ7gxGjI33g5O4VFYJk5EMkGdFAkQrNEbJwlZ9Ro/H
+	 tpyeqR+7F6XOR1d3JZ8vWlJy6h61gPmjidntFdDQoGL8+O/NTTh7DcaW1xYczGf55t
+	 zfXC/16gAmErg2eewKpj7WmDneFcSkWoygk8lrW62aHAQUk8s7YyQVZXGb/MrbM4CH
+	 iHrvUjPaEJy33pAWsfOpPot0tdlZjbh7tvrR/OkRaQZV7qZnqZIEoIfgp0DvNDEjQD
+	 MGegSFaOjE5SgwIWY1tg7WaRPyOtwHKdfg170zLElbeiuWScJeLFHv+YDCWqRh9JEn
+	 E995j59TN8+AZRo9KvMpjv1jkZKveh9BDpFcGVvbxksXCyH32po7/4LkQ3y2tY+hbQ
+	 ySTjZgs4n5QJMgF5fGlbacB9+KY6IWVh2dQwRIyq5N04YM84nwS0eRnK3wIEeJ1MA8
+	 5KZ40LTgQLk49vGlN0AfzjmI=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 32F4A40E0214;
+	Thu,  6 Mar 2025 17:00:05 +0000 (UTC)
+Date: Thu, 6 Mar 2025 17:59:58 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	"Nikunj A . Dadhania" <nikunj@amd.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v4 1/2] x86/cpufeatures: Add "Allowed SEV Features"
+ Feature
+Message-ID: <20250306165958.GGZ8nUjqVyJnw-JV0B@fat_crate.local>
+References: <20250306003806.1048517-1-kim.phillips@amd.com>
+ <20250306003806.1048517-2-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Z8dM9Tp49ZFR50lJ@8bytes.org>
+In-Reply-To: <20250306003806.1048517-2-kim.phillips@amd.com>
 
-Minutes are now posted for review:
+On Wed, Mar 05, 2025 at 06:38:04PM -0600, Kim Phillips wrote:
+> From: Kishon Vijay Abraham I <kvijayab@amd.com>
+> 
+> Add CPU feature detection for "Allowed SEV Features" to allow the
+> Hypervisor to enforce that SEV-ES and SEV-SNP guest VMs cannot
+> enable features (via SEV_FEATURES) that the Hypervisor does not
+> support or wish to be enabled.
+> 
+> Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+> ---
+>  arch/x86/include/asm/cpufeatures.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index 8f8aaf94dc00..6a12c8c48bd2 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -454,6 +454,7 @@
+>  #define X86_FEATURE_DEBUG_SWAP		(19*32+14) /* "debug_swap" SEV-ES full debug state swap support */
+>  #define X86_FEATURE_RMPREAD		(19*32+21) /* RMPREAD instruction */
+>  #define X86_FEATURE_SEGMENTED_RMP	(19*32+23) /* Segmented RMP support */
+> +#define X86_FEATURE_ALLOWED_SEV_FEATURES (19*32+27) /* Allowed SEV Features */
+>  #define X86_FEATURE_SVSM		(19*32+28) /* "svsm" SVSM present */
+>  #define X86_FEATURE_HV_INUSE_WR_ALLOWED	(19*32+30) /* Allow Write to in-use hypervisor-owned pages */
+>  
+> -- 
 
-	https://github.com/coconut-svsm/governance/pull/48
+I guess this goes thru Sean:
 
-Regards,
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
 
-	Joerg
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
