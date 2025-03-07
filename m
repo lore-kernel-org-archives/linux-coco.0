@@ -1,72 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B3417583
-	for <linux-coco@lists.linux.dev>; Fri,  7 Mar 2025 15:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A89C21D002
+	for <linux-coco@lists.linux.dev>; Fri,  7 Mar 2025 15:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741361843; cv=none; b=DnVS8DPr330cTNgRVONuQ4kr7oxJIMpPNgVO1eyghblOhd5lhmTCHv3gdfKJYCvkCEb/FOtfjHL8upLYMVZvY6zkPQuX/97vr3Uw5j3jHEwTantkiDij6a+qrI4zw7BNAJXJA7xKRu1lpw9kjFTq8vmHkko4S7S14KCUW3O1bHw=
+	t=1741361882; cv=none; b=DNCDbK/vZsZE0TJdc8qN7RQxlEQCAzE68mWQ5Ir3y9yJOk2YncMf+WktKESOTTcL699QokFA0WrDhJ6W5LudwsN/XxjeTJgPWtIlnlqyYNaVlmduXRTnClbYOOLmSCIb/5zjIFbezokUROLwOGzXzapBm54KT17KJ+ueMNEcZIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741361843; c=relaxed/simple;
-	bh=WZMUU+0do32vIB4ayqbki3un77HmpR/Tr9pMARBVFEM=;
+	s=arc-20240116; t=1741361882; c=relaxed/simple;
+	bh=UaKgYKgRNweERNpL0sYd2eYOjEHfRdISZiNE+9EOqdM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=ZQe4dX6DExe0rjism0iHj+1jx8CPyGqzhC6St1r7NQdlGdu4Qi2GucTlkJFlsQ6xSBLOUwxswI0k6AztG2c8fAK6AwiXMWQJ0OZhzPKzcZYVDBCR51+FdTbAulvgXMq9pnWgq7cFPL6TfOLyKVeEndaAjYut0hfotAivgr9wo0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MKlBE672; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type:Content-Disposition; b=WJVIE2b4eHrMnUzJu1+0wqkMPbvWtwlIk95r0nLR5lD5TzgNXr57zWIeJJHaSaC2PZqmFBTB67T8LpLNkhn+yTWwKiqeb2FJQR38UuSe5yxOklENeLMOcPRts6T/YhIZQfXDLsvf1rE8DmPcBa4nXk97GTJC0qO/e1BJtXRZ28Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RF9uQAcS; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MKlBE672"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RF9uQAcS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741361840;
+	s=mimecast20190719; t=1741361879;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yqwct7Qo/RvM8L19VRfmymsuLYi1f8S6Qn9ogdk5ZAQ=;
-	b=MKlBE672Zb5t/e1fHjPo94W0azqMjcBXjfKqxuH1tcrBxgkqXa/QMYDeVlvminjyMj0Ssu
-	ZytQtk/ClS3Hhwshnd4KaF76v7Osv+KFeO7z1xNxR503oPefMtbUSj2jpH1koUfYL7ymla
-	/OUFNr70xpeGD7PWEoFXF1/hD2jyJd8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=uCEnBg90XzFtM7VUQEX7isG0VF2FTRraT+UhcAxtG0U=;
+	b=RF9uQAcSKZxf85Z6ImZCGnjT033M2BIC6Hy1Dq2NVfkylAuGtIF3NUdKXiz2H7U5IoqFef
+	pvgRXUfftdl1rad5FDe2OtdEQ8zqXQF50CwS+w74CsOlZMTTcvw2mqZ84USIn7pDy69Fln
+	IDVJwqFJ6Gu0FqtF9wxycbO52bHrBek=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-_UWvFpXtMW2HOkMba-S7pA-1; Fri, 07 Mar 2025 10:37:19 -0500
-X-MC-Unique: _UWvFpXtMW2HOkMba-S7pA-1
-X-Mimecast-MFC-AGG-ID: _UWvFpXtMW2HOkMba-S7pA_1741361839
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43ce1eaf9f4so1674315e9.0
-        for <linux-coco@lists.linux.dev>; Fri, 07 Mar 2025 07:37:19 -0800 (PST)
+ us-mta-352-aKp-HKx8PD-BT_J-6UYmlg-1; Fri, 07 Mar 2025 10:37:58 -0500
+X-MC-Unique: aKp-HKx8PD-BT_J-6UYmlg-1
+X-Mimecast-MFC-AGG-ID: aKp-HKx8PD-BT_J-6UYmlg_1741361877
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3912fc9861cso713402f8f.1
+        for <linux-coco@lists.linux.dev>; Fri, 07 Mar 2025 07:37:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741361838; x=1741966638;
+        d=1e100.net; s=20230601; t=1741361877; x=1741966677;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yqwct7Qo/RvM8L19VRfmymsuLYi1f8S6Qn9ogdk5ZAQ=;
-        b=WnLuUzNHZNn9SPApL4F2ERpWUzFRuRBwtT3Nm9usQn6qRpnzlSqpTtqnxWIGZbw884
-         b1myAYDJjcLrXksd33ysGoZLZQEg6w//ZtBFE7PvOWh8BhPXUzesJ9qaww3hnaI7PvKr
-         WWR1bi6YzV6SmjZ7E7sxo9Gxy+JOqlDCqJJBY+zGjkF0iEr0p7r/E+hzpIaCQVnHEdwM
-         sAr0EuT+aZ649GMehQB3ROdU7PkCTT+24PkGRMo7u/jZLFTTQOvodfxnAROW8MyJCQlK
-         sSVX3YeVLjehZQ8+2SwBEprEbDt0Pkngr+LcT3ATVN8n6mbyjAkiI1OSrcuOmOxX1Gbs
-         2imw==
-X-Forwarded-Encrypted: i=1; AJvYcCWX024OHNn8WOVfSkA49kHKDuJfCCIE9EaOIw6uEcXnaZ5IIzzE75Buk0Z3AYm0f8qk07k971ShEhTF@lists.linux.dev
-X-Gm-Message-State: AOJu0YzqC9wsa394VwqMnqwoQdq6w8Ry43lrPgXBQb4kd1DECjEInqKe
-	K7nN6GeFGONSAMLzFzlfl9rUYFMc6dGhtWxCzP2e6uEJxb/I8WoBzAZErqBVjyLFz6aEhJKFNgv
-	IaO4SnDix0e41drNLDwpbfSNNv9/CSyAyJMsmlaqcePhiU5W0UCk1qEjxWig=
-X-Gm-Gg: ASbGncuwRvQ/rvF9hqKQwcQzhMBoyaKNtmK6u3pEc/wdLvSFOyHvD6u2A6+uHyO9Yxj
-	SxRIwaxreDsWGbP24prfMdbFili2R4u9j2Rs6sbcYkbbAgx5VsBbQhqp2HSq01gQoT8tUlIhDb2
-	o/6itUKhaghsJwfilsTzVlHyR+5AjVqGUspo1fdlJCcH4PVAnWFbWHP61O/LXV7820Ic0lrK+So
-	1OOQI71hlQtCLnLrQSXMAzrAR1rZyVkfvd1MH0AhQCgPHj5wAYGcllSkTWydsRTrIczwHYwnLMz
-	sRoIYuzzk/YvRwTZmJGLR4h6rXNSxz2OSYSrnNdwkSrAbqLjlyp262gQXCWcnxjx
-X-Received: by 2002:a05:600c:1d03:b0:43b:cf12:2c9e with SMTP id 5b1f17b1804b1-43c601cf24amr22907625e9.1.1741361838531;
-        Fri, 07 Mar 2025 07:37:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGCWNbeddeZHfz4UovoxYVfEDe+cZ0Hg5a6sskYJHpSKTFtNwY3+RHZMac+Si09BWeINjSZVQ==
-X-Received: by 2002:a05:600c:1d03:b0:43b:cf12:2c9e with SMTP id 5b1f17b1804b1-43c601cf24amr22907195e9.1.1741361837942;
-        Fri, 07 Mar 2025 07:37:17 -0800 (PST)
+        bh=uCEnBg90XzFtM7VUQEX7isG0VF2FTRraT+UhcAxtG0U=;
+        b=bkoVr8jch8fF+pzyaFxNFYce8P32vVBOGJse0QwHUgC6Evrkmy801ImNBm6+7daasn
+         IfAnKTJzpMN+3we5+0LxR0EzFIDKk7YDpz6HkV8KGt1aaeLGf0zQ19UB9yprfv1Od4s0
+         tqucMmJo99wkAtvIbxhV60ekkNJXbYurnY3PnvHuYsPD/nSrqsBoHEzxAf083+7MqtIC
+         D8xoZ7p55F95nUuV5fgAYWuvzgAZGoZVk98QuZJe4N9a3bWVk/msFDNg3ROYdF5+gMct
+         Wi2aIXiv04CkhKzV3clr0pdGf085OyEXiuddNTz8/VEM7R0ivFx17WDvitt9iprSR1ZL
+         J+KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWIq/c67zwNxv/S6PjvGFdlhhBC7E+U6+MAHN1gNPDUaVxcZjdsKuHveE64qbz3SeTg/vcMj4KfDhHW@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz/dEjYl1g6qPtOay/yhBXKnjfPW4v9hW0ZMjXJEWWxp15pkzRw
+	iIpOo9wyrDEay7rs+HwXllNH5a6jra43YVdH6xeL7o78YN1D7ca/hbzHYJmfHRkZy2veDJ4sYFW
+	zPj5MCoLL4oMrdANc7cy21eum2oUcWhU2/+gIMbblZ4xeOWS91MeEsF5PJzk=
+X-Gm-Gg: ASbGncvrdZp88vvwXldUxzBYwWijv/pK3SgHu7EFcuSSQBoSyBfXIAQurHwWYqG6BXI
+	AZPgjF7aRnPTgMGjBFfVbAayXGSvtLVqtlDC0yiP8onT9xzs+kt8/4p05W6Ji7xhzb9DYWVqmQq
+	OcL14LlP8rpyHYhCLUYPMs7swyv2xp4rAIABiaxgbpaaMvj4r8ij6UfdFXqxg5hEwJqKck8vB/r
+	22UnJ1nbVL0517pAAYdryMQvV1iUjdG5lBVtOMd9jPrXsj5llOo0UMKFiDBsAW+2cyrffJjjQbO
+	Pu4wbACElmfZzn2aitZchCjU+3Bgoy9WvAtSF6B9U9JMTZ6eHo73AvATB4RtkZRG
+X-Received: by 2002:a05:6000:1fa1:b0:390:d6b0:b89 with SMTP id ffacd0b85a97d-39132da91b9mr2467058f8f.50.1741361876988;
+        Fri, 07 Mar 2025 07:37:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGIJMvm5xV/SzBS3SsEtyfC9KwyMaXW507M9hj1kZ3KsK4zYX0qBeDOTEmMi3doGmekM7Y1Mg==
+X-Received: by 2002:a05:6000:1fa1:b0:390:d6b0:b89 with SMTP id ffacd0b85a97d-39132da91b9mr2467028f8f.50.1741361876487;
+        Fri, 07 Mar 2025 07:37:56 -0800 (PST)
 Received: from sgarzare-redhat (host-79-46-200-29.retail.telecomitalia.it. [79.46.200.29])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd8b046dsm54598135e9.5.2025.03.07.07.37.16
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd9470e2sm54526185e9.33.2025.03.07.07.37.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 07:37:17 -0800 (PST)
-Date: Fri, 7 Mar 2025 16:37:12 +0100
+        Fri, 07 Mar 2025 07:37:56 -0800 (PST)
+Date: Fri, 7 Mar 2025 16:37:53 +0100
 From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Thomas Gleixner <tglx@linutronix.de>, 
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Thomas Gleixner <tglx@linutronix.de>, 
 	Claudio Carvalho <cclaudio@linux.ibm.com>, Peter Huewe <peterhuewe@gmx.de>, x86@kernel.org, 
 	Dov Murik <dovmurik@linux.ibm.com>, linux-coco@lists.linux.dev, 
 	Dionna Glaze <dionnaglaze@google.com>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
@@ -74,7 +74,7 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
 Subject: Re: [RFC PATCH v2 3/6] tpm: add send_recv() ops in tpm_class_ops
-Message-ID: <fgxwcfm6fctdsjnzdbf3ecxss453dir3pgaqio7bzazjj5qotj@mdi6wtuzorvn>
+Message-ID: <tjo335oq47ogyobxzlopuxwqzto6gzm4gezqs6umphndehothu@5u4hqukop36i>
 References: <20250228170720.144739-1-sgarzare@redhat.com>
  <20250228170720.144739-4-sgarzare@redhat.com>
  <Z8Jmps6AF_geaHUw@kernel.org>
@@ -82,67 +82,90 @@ References: <20250228170720.144739-1-sgarzare@redhat.com>
  <0e156883acf95d31b9358831550d6d675e3ce4ff.camel@kernel.org>
  <Z8dg46Mj81Q9Z0WV@kernel.org>
  <jkr5z4thb55gs2jcmtcfipgg6p7z6ikhr6etd6l3nqpf723hf7@3fns3z5cjqk4>
- <20250305190229.GC354403@ziepe.ca>
- <Z8oZLqn4p2-AWQbz@kernel.org>
+ <Z8oehuPVMXbgjAxz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <Z8oZLqn4p2-AWQbz@kernel.org>
+In-Reply-To: <Z8oehuPVMXbgjAxz@kernel.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ZYerM_PmCbrCJvLH9d0R9RiHoOV_Jcaoimc16B6CDi8_1741361839
+X-Mimecast-MFC-PROC-ID: BLjw3BguXXYPGisB-0F52YcnK6im7zwJ8Xd_9-4eXts_1741361877
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
 
-On Thu, Mar 06, 2025 at 11:52:46PM +0200, Jarkko Sakkinen wrote:
->On Wed, Mar 05, 2025 at 03:02:29PM -0400, Jason Gunthorpe wrote:
->> On Wed, Mar 05, 2025 at 10:04:25AM +0100, Stefano Garzarella wrote:
->> > Jason suggested the send_recv() ops [2], which I liked, but if you prefer to
->> > avoid that, I can restore what we did in v1 and replace the
->> > TPM_CHIP_FLAG_IRQ hack with your point 2 (or use TPM_CHIP_FLAG_IRQ if you
->> > think it is fine).
+On Fri, Mar 07, 2025 at 12:15:34AM +0200, Jarkko Sakkinen wrote:
+>On Wed, Mar 05, 2025 at 10:04:25AM +0100, Stefano Garzarella wrote:
+>> On Tue, Mar 04, 2025 at 10:21:55PM +0200, Jarkko Sakkinen wrote:
+>> > On Tue, Mar 04, 2025 at 06:56:02PM +0200, Jarkko Sakkinen wrote:
+>> > > On Mon, 2025-03-03 at 17:21 +0100, Stefano Garzarella wrote:
+>> > > > On Sat, Mar 01, 2025 at 03:45:10AM +0200, Jarkko Sakkinen wrote:
+>> > > > > On Fri, Feb 28, 2025 at 06:07:17PM +0100, Stefano Garzarella wrote:
+>> > > > > > +	int (*send_recv)(struct tpm_chip *chip, u8 *buf, size_t
+>> > > > > > buf_len,
+>> > > > > > +			 size_t to_send);
+>> > > > >
+>> > > > > Please describe the meaning and purpose of to_send.
+>> > > >
+>> > > > Sure, I'll add in the commit description.
+>> > >
+>> > > It's always a command, right? So better be more concerete than
+>> > > "to_send", e.g. "cmd_len".
 >>
->> I think it is a pretty notable simplification for the driver as it
->> does not need to implement send, status, req_canceled and more ops.
+>> Right!
 >>
->> Given the small LOC on the core side I'd call that simplification a
->> win..
+>> > >
+>> > > I'd do instead:
+>> > >
+>> > > if (!chip->send)
+>> > > 	goto out_recv;
+>> > >
+>> > > And change recv into:
+>> > >
+>> > > int (*recv)(struct tpm_chip *chip, u8 *buf, size_t buf_len,
+>> > > 	    cmd_len);
+>> >
+>> > I think I went here over the top, and *if* we need a new callback
+>> > putting send_recv would be fine. Only thing I'd take from this is to
+>> > rename to_len as cmd_len.
+>>
+>> Got it.
+>>
+>> >
+>> > However, I don't think there are strong enough reasons to add complexity
+>> > to the callback interface with the basis of this single driver. You
+>> > should deal with this internally inside the driver instead.
+>> >
+>> > So do something along the lines of, e.g.:
+>> >
+>> > 1. Create dummy send() copying the command to internal
+>> >   buffer.
+>> > 2. Create ->status() returning zero, and set req_complete_mask and
+>> >   req_complete_val to zero.
+>> > 3. Performan transaction in recv().
+>> >
+>> > How you split send_recv() between send() and recv() is up to you. This
+>> > was merely showing that we don't need send_recv() desperately.
+>>
+>> We did something similar in v1 [1], but instead of your point 2, we just set
+>> `chip->flags |= TPM_CHIP_FLAG_IRQ;` in the probe() after we allocated the
+>> chip.
+>>
+>> Jason suggested the send_recv() ops [2], which I liked, but if you prefer to
+>> avoid that, I can restore what we did in v1 and replace the
+>> TPM_CHIP_FLAG_IRQ hack with your point 2 (or use TPM_CHIP_FLAG_IRQ if you
+>> think it is fine).
+>>
+>> @Jarkko, @Jason, I don't have a strong preference about it, so your choice
+>> :-)
 >
->I'm sorry to disagree with you on this but adding a callback for
->one leaf driver is not what I would call "a win" :-)
+>I'd say, unless you have actual identified blocker, please go with
+>a driver where the complexity is managed within the driver.
 
-IIUC in the ftpm driver (tpm_ftpm_tee.c) we could also use send_recv() 
-and save a memcpy() to a temporally buffer (pvt_data->resp_buf) and also 
-that 4k buffer allocated with the private data of the driver.
-
-BTW if you agree, for now I'll do something similar of what we do in the 
-ftpm driver (which would be what Jarkko recommended - status() returns 
-0, .req_complete_mask = 0, .req_complete_val = 0) and we can discuss 
-send_recv() in a new series where I can include changes for the ftpm 
-driver too, to see whether it makes sense or not.
-
-WDYT?
+Yep, got it ;-)
 
 Thanks,
 Stefano
-
->
->I mean, it's either a minor twist in
->
->1. "the framework code" which affects in a way all other leaf drivers.
->   At bare minimum it adds a tiny bit of complexity to the callback
->   interface and a tiny bit of accumulated maintenance cost.
->2. in the leaf driver
->
->So I'd really would want to keep that tiny bit of extra complexity
->localized.
->
->>
->> Jason
->
->BR, Jarkko
->
 
