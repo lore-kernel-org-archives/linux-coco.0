@@ -1,143 +1,165 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57921632D9;
-	Fri,  7 Mar 2025 06:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FC61AF4C1
+	for <linux-coco@lists.linux.dev>; Fri,  7 Mar 2025 08:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741330329; cv=none; b=a45OsXWJytHK2SmAPF8nWxKuszscPtkz/SYmhIlctA6FPMj/LqkozImElRHLed22ceP8eoN2wPdHcCk9yA34ysCSiXccegsaQNDj1I/EmANWNxLJoT2AADCv3LGHxZKb/MxK4AcqPnLqbwjpR/NZMPY+WwLsS9C2zmdckB/iEQE=
+	t=1741337281; cv=none; b=u5mt2nTKGdg6KNsu+Ozv03rfKxaqBhteAicJsf0oSSvEguaBmxbW682jaytK+9IgZ8wXBORe+rm2wI2OvPEH7hBj0yb1n/t+jtEWQ8chU/yqr1k5nfo9FwulE9K4E1CXpzDsW1YNRC57zdS0I5H80O6ayU59PYwQOWQvXOx23Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741330329; c=relaxed/simple;
-	bh=0FboRi4T5lRhBpOLmxfTGg8DNG9FS+J/OvKiP4g1uVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FzRlJLFGhFTksWNeuIl12MmiEP3ZBrB/sZWwwW/cJwFbitPkVAp68lqD3/9jervXGvzb0SBExouqTYRTJDmRwu/39VwISNe0m5cx3uBe1yWItN5XdOaPc2BL5L+XkRF8L+1bauBjdXySbpg7DAsBeDz0qOpAKNmp5Eh9fcPETpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z4Kfm9ma; arc=none smtp.client-ip=192.198.163.10
+	s=arc-20240116; t=1741337281; c=relaxed/simple;
+	bh=stm8J5gXFKeg0kDXqkjFf2m6eLexUCdtvHC4jHfKAJ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Lr8McSgp3BE3DcbRuLqDPngqfsLFSfPIvUbqhM32yGFZ1MnazeYX98R29rAeBvNuMbB1thUORuCzDjXb51RbCLy1K/kMAJFWMUZvTOQiVNGsZhsaDGfRc+mJ/EJ+08rIkQP2LhQFgKQjpWfb7XHcqclaecWuueL5Zsb17Wp5Kc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UEafKVHp; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z4Kfm9ma"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UEafKVHp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741330328; x=1772866328;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0FboRi4T5lRhBpOLmxfTGg8DNG9FS+J/OvKiP4g1uVM=;
-  b=Z4Kfm9makxyVipxRXMcPGI4emlaIPxZqFUh8PAWEzx8OQ+K9DEcmoP6u
-   Ekt2QKkJ8pkNE76WmBG/QM31ah7zfqrGV2JNMvtQB1qwiA8smhUI4CwmC
-   p/y96BkgrGoimVQ1tZtju2INIvV3qx0UcRz6Dlz+X+gUjo98e0xo4JsLn
-   WDcksOu637MJXlwO/XHesSdmaBvsNypVIBTyJiGd9NsSzssQcPDiRFMOR
-   BXKbsjSMmyvvJLzLVS7Z2XVLQim+Idxgg9bqs26/dNvpB4xiUDzXIuFEE
-   VlNcUnGFlNPDnyh5mBSaHABi+Y/7vcGYhEvp97vXbsGIBdt/ZcQMNNrIG
-   A==;
-X-CSE-ConnectionGUID: TJujjajZRTK3yuO+CyxBXg==
-X-CSE-MsgGUID: pUz6ORGvQVCU3z5ATBsrrg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="53769933"
+  t=1741337280; x=1772873280;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=stm8J5gXFKeg0kDXqkjFf2m6eLexUCdtvHC4jHfKAJ0=;
+  b=UEafKVHpbv7S9AyFCrWlzt1YSZGiipN8+qh6jVtiUUwwNpKUTnKs0jc7
+   vprzwtIcdAVpmTBeJCQm0R8FF8i+5qniVN7ar5RiU8k6Di3NuWsCcuXmM
+   OPyQbhzxhVlGPDRLG6N+8gl2e5NcUOi6TyDgNhLPVbRWwO62XpVDHH1d6
+   ZqjtAboYTkce6sSE8FtK86RWOX3Zd2OeT2xEaM8d/sijlaHPiHLOFgyFA
+   xPBb+WzFgAX8eR9ZhJE2HrTLp/HVDdRnp1JLDWyBmKtUXsfyj46CY9qDN
+   0ENYVAMxcPwOdmdXvwyMVPAsucYHSSIXFFLs99R4jcHsoR6YU6VQ8InNM
+   g==;
+X-CSE-ConnectionGUID: llPG5bDySA6pL/XHEWYHZw==
+X-CSE-MsgGUID: nyFG7StDSNeddT+KgExD1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="53769253"
 X-IronPort-AV: E=Sophos;i="6.14,228,1736841600"; 
-   d="scan'208";a="53769933"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 22:52:07 -0800
-X-CSE-ConnectionGUID: fMKAQkc6S7ifR+dbATnnfQ==
-X-CSE-MsgGUID: 7tBYnb24QYOZP5v4PpdyhQ==
+   d="scan'208";a="53769253"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 00:44:34 -0800
+X-CSE-ConnectionGUID: oGr4x6h7SmuAvUGno+g93w==
+X-CSE-MsgGUID: DiqR7WcBTBW1JLx2QHUJ8A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="123425163"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa003.fm.intel.com with ESMTP; 06 Mar 2025 22:52:00 -0800
-Date: Fri, 7 Mar 2025 14:49:44 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Alexey Kardashevskiy <aik@amd.com>, x86@kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arch@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
-	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	Zhi Wang <zhiw@nvidia.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
-Message-ID: <Z8qXCI6Wwygvwhya@yilunxu-OptiPlex-7050>
-References: <Z72GmixR6NkzXAl7@yilunxu-OptiPlex-7050>
- <2fe6b3c6-3eed-424d-87f0-34c4e7e1c906@amd.com>
- <Z77xrqLtJfB84dJF@yilunxu-OptiPlex-7050>
- <20250226131202.GH5011@ziepe.ca>
- <Z7/jFhlsBrbrloia@yilunxu-OptiPlex-7050>
- <20250301003711.GR5011@ziepe.ca>
- <Z8U+/0IYyn7XX3ao@yilunxu-OptiPlex-7050>
- <20250305192842.GE354403@ziepe.ca>
- <Z8lE+5OpqZc746mT@yilunxu-OptiPlex-7050>
- <20250306182614.GF354403@ziepe.ca>
+X-IronPort-AV: E=Sophos;i="6.14,228,1736841600"; 
+   d="scan'208";a="119447799"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa008.fm.intel.com with ESMTP; 07 Mar 2025 00:44:30 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id CE7751FC; Fri, 07 Mar 2025 10:44:28 +0200 (EET)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: akpm@linux-foundation.org,
+	ebiederm@xmission.com,
+	bhe@redhat.com
+Cc: dave.hansen@intel.com,
+	x86@kernel.org,
+	kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	rick.p.edgecombe@intel.com,
+	Yan Zhao <yan.y.zhao@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ashish Kalra <Ashish.Kalra@amd.com>,
+	Jianxiong Gao <jxgao@google.com>
+Subject: [PATCHv3] kexec_core: Accept unaccepted kexec segments' destination addresses
+Date: Fri,  7 Mar 2025 10:44:11 +0200
+Message-ID: <20250307084411.2150367-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250306182614.GF354403@ziepe.ca>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 06, 2025 at 02:26:14PM -0400, Jason Gunthorpe wrote:
-> On Thu, Mar 06, 2025 at 02:47:23PM +0800, Xu Yilun wrote:
-> 
-> > While for AMD:
-> >         ...
-> >         b.guest_device_id = guest_rid;  //TDI ID, it is the vBDF
-> >         b.gctx_paddr = gctx_paddr;      //AMDs CoCo-VM ID
-> > 
-> >         ret = sev_tio_do_cmd(SEV_CMD_TIO_TDI_BIND, &b, ...
-> > 
-> > 
-> > Neither of them use vIOMMU ID or any IOMMU info, so the only concern is
-> > vBDF.
-> 
-> I think that is enough, we should not be putting this in VFIO if it
-> cannot execute it for AMD :\
+From: Yan Zhao <yan.y.zhao@intel.com>
 
-OK. With these discussion, my understanding is it can execute for AMD
-but we don't duplicate the effort for vdevice->id.
+The UEFI Specification version 2.9 introduces the concept of memory
+acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
+SEV-SNP, require memory to be accepted before it can be used by the
+guest.
 
-We can swtich to vdevice and try to solve the rest problems.
+Accepting memory is expensive. The memory must be allocated by the VMM
+and then brought to a known safe state: cache must be flushed, memory
+must be zeroed with the guest's encryption key, and associated metadata
+must be manipulated. These operations must be performed from a trusted
+environment (firmware or TDX module). Switching context to and from it
+also takes time.
 
-> 
-> > > You could also issue the TSM bind against the idev on the iommufd
-> > > side..
-> > 
-> > But I cannot figure out how idev could ensure no mmap on VFIO, and how
-> > idev could call dma_buf_move_notify.
-> 
-> I suggest you start out this way from the VFIO. Put the device in a CC
-> mode which bans the mmap entirely and pass that CC capable as a flag
-> into iommufd when creating the idev.
+This cost adds up. On large confidential VMs, memory acceptance alone
+can take minutes. It is better to delay memory acceptance until the
+memory is actually needed.
 
-IIUC, it basically switches back to my previous implementation for mmap.
+The kernel accepts memory when it is allocated from buddy allocator for
+the first time. This reduces boot time and decreases memory overhead as
+the VMM can allocate memory as needed.
 
-https://lore.kernel.org/kvm/20250107142719.179636-9-yilun.xu@linux.intel.com/
+It does not work when the guest attempts to kexec into a new kernel.
 
-I can do that.
+The kexec segments' destination addresses are not allocated by the buddy
+allocator. Instead, they are searched from normal system RAM (top-down or
+bottom-up) and exclude driver-managed memory, ACPI, persistent, and
+reserved memory. Unaccepted memory is normal system RAM from kernel
+point of view and kexec can place segments there.
 
-Thanks,
-yilun
+Kexec bypasses the code path in buddy allocator where memory gets
+accepted and it leads to a crash when kexec accesses segments' memory.
 
-> 
-> If it really needs to be dyanmic a VFIO feature could change the CC
-> mode and that could call back to iommufd to synchronize if that is
-> allowed.
-> 
-> Jason
+Accept the destination addresses during the kexec load, immediately after
+they pass sanity checks. This ensures the code is located in a common place
+shared by both the kexec_load and kexec_file_load system calls.
+
+This will not conflict with the accounting in try_to_accept_memory_one()
+since the accounting is set during kernel boot and decremented when pages
+are moved to the freelists. There is no harm in invoking accept_memory() on
+a page before making it available to the buddy allocator.
+
+No need to worry about re-accepting memory since accept_memory() checks the
+unaccepted bitmap before accepting a memory page.
+
+Although a user may perform kexec loading without ever triggering the jump,
+it doesn't impact much since kexec loading is not in a performance-critical
+path. Additionally, the destination addresses are always searched and found
+in the same location on a given system.
+
+Changes to the destination address searching logic to locate only memory in
+either unaccepted or accepted status are unnecessary and complicated.
+
+Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+[ kirill: Update the commit message ]
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Jianxiong Gao <jxgao@google.com>
+---
+ v3:
+   - Update the commit message and retest the patch.
+
+ kernel/kexec_core.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index c0bdc1686154..9a2095216f4f 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -210,6 +210,16 @@ int sanity_check_segment_list(struct kimage *image)
+ 	}
+ #endif
+ 
++	/*
++	 * The destination addresses are searched from system RAM rather than
++	 * being allocated from the buddy allocator, so they are not guaranteed
++	 * to be accepted by the current kernel.  Accept the destination
++	 * addresses before kexec swaps their content with the segments' source
++	 * pages to avoid accessing memory before it is accepted.
++	 */
++	for (i = 0; i < nr_segments; i++)
++		accept_memory(image->segment[i].mem, image->segment[i].memsz);
++
+ 	return 0;
+ }
+ 
+-- 
+2.47.2
+
