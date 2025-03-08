@@ -1,103 +1,109 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8520F16C850
-	for <linux-coco@lists.linux.dev>; Sat,  8 Mar 2025 05:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0501AF0C1
+	for <linux-coco@lists.linux.dev>; Sat,  8 Mar 2025 13:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741412468; cv=none; b=mVnVi+/91cUire3O18+6kd2OpyhEAaWUc3GPBakiOcEX6Me1eQ02byoTYou8qnMLMAu2mXVriFpPDQyBFKbQ4H1dv/q1z5zfyV0hEGiP6febDyp/d/R08BCCvDnJw9zv1oFX1qImtooILFe3sB94SSIjf/oKeXxFifir95WfyNk=
+	t=1741440808; cv=none; b=L/ihbVKC1ezTRGDx3HaSAMp3WO5N5Tius7IftNhJKB/HWxjz9NIn/pksAJpXbAL7/0GbnHz+SjdPEiu/CBWsbXM7HP+dVujvYOtzBCYnfx1Ru2mbyrkf4jq6GfKVKcaw3GczsykUvyUbsI321ChynhzrA1/IIPLQKdgqMnCjelA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741412468; c=relaxed/simple;
-	bh=zdInW9/Q0g3TtRuFFjxtdjGT1ntLsubGIabA7azNnF8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hpEbow1X1QD3kIQbPKnVHlCdX+wS/7xQYcuouQEcGQGW/jdEJMI3GMHeZm6zVln/AMYtc0EQX61pNBERI8PtqzyqZJq5c9Q1kHfkCzV1DAC9B25QNHBdgKfTyv6AeW8PutJQSDARTtLKbn1MOXJxh+latLKg+feftu3M9LBzS+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hLHTC8ck; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1741440808; c=relaxed/simple;
+	bh=115Ze+IxI3/vfEm4pnf9cpZTmUZlkDAqgkOYFm8bgM0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aLLPPUnZm9Z6KDpe6c+05SQnWP8sQ3EHuepSHQjng0wt72l+0l2kFTSqEF0KviE6rr9muUxvDlS1J53fOXnvYd/rSlzNvoLoYgqZP3uvDhNYD6u0328gOI4wt31Oac3anelbQyMx6WEF5Ke+fBjV+zNh72GbreG0I/HbwwSLSGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CAuEjA+o reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hLHTC8ck"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5e6167d0536so836839a12.1
-        for <linux-coco@lists.linux.dev>; Fri, 07 Mar 2025 21:41:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741412465; x=1742017265; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zdInW9/Q0g3TtRuFFjxtdjGT1ntLsubGIabA7azNnF8=;
-        b=hLHTC8ckcxNjRgWt+Kbjs0OLlPbxMXh2hz4tsct9oohXr/xAMBClwmuBnU1VBSYZ0o
-         K6hB7vAbrZvMDAqnUNsTiaNrlIXwGfzDv6Xf0754OXcvRHp9A9oUsVPMlaCbBGjRB7iC
-         ylMAaKIMEf+x0cgpxrYsgJ4PCspRlLLRi0u3oc1xD2nCyuF4BFM8bA3+N1NowdeULM2W
-         vHUoLDNr/uQ8hs3V/e7Rn0WbwsAPtddiLhwNPfcSSUIPKD9JTUN3o8sNeAeHJGZ44FF1
-         kc04BAxsMTfinwKPub66wWfrTJBAfm1e6Sa/mJhK4cPgOwWDUbJsEQL1+I5ahuclR4DS
-         a30g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741412465; x=1742017265;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zdInW9/Q0g3TtRuFFjxtdjGT1ntLsubGIabA7azNnF8=;
-        b=M6ca8o826ln35w+rFCPeEwSjQdf4bZINt7igcy3excn01qg28NyVKDvzUSZ6PJYFnT
-         hmmEJNbMDm0/wn6Ke3brMUpGr/MQelf7Kjtiq23+05ghxtPjyL8wqe8GfWTV8TJxTy73
-         2R/foMsGvYDdQwCYaUuB0iSbKv56WW0I5304D5Ms8a6xftw3G7d7jDgdLe/wN/5GSb5J
-         V+LVr7kCta1myAQWet9aECwzN7Z7vTdiPnYext/pux+80S1ZjjfviC65eeg8RHQEwCZW
-         r8u54aCw7cr6jshDgFRJkeQR0zqZdlVckO+0iT7PHHxnGO3Vc/7Trw0F54qRe/0aB0Fu
-         mu5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUiWpsdzBJt721UmwCH1W/4H1GlYNbNw2tuqgzmV9M2Srz4Xtif1QYCU69v3rXLP5aHiZ0Q4w695DCO@lists.linux.dev
-X-Gm-Message-State: AOJu0YxsHlbwcJliuxrlrdNenh/SUiEaR8JMJQMt0T/05wcMpnu+ueyZ
-	dqZT9YVgRNOCqUY+HNbke7CUeI1kPiuBYdVwvBbcxxGk6ZvEMLs+jO8V3reJ46GYsDiljJ3HZMO
-	TGBEyo+VYIDEJUfA1DzWQvv0DuHR30ISqk9CA
-X-Gm-Gg: ASbGncvgWks1lfKXVQeZS/CkTBcw6eS/IyDrO2H9M0qya/vjo5VY6jjJRPIs1H8EhY6
-	lLwNGfBOl8kRwfso6CCzFzsbRT/XmMNXsOgC+cOQKXPD1TLNC8Vgv0ZvItxxLwuCPHLukbSM6Yn
-	9DcpmLLlhTQ99UuHV4la88IYETre7lUcKU55iX
-X-Google-Smtp-Source: AGHT+IHo2PDDI9I6qlRDO6UBHqyRzd05L8tQZ+VxcalVUvx7hfwObQ0npt6/o1jp9kL48JbYgSiDJElWv/K6VQ8EdhA=
-X-Received: by 2002:a05:6402:2791:b0:5e4:d11e:7c4c with SMTP id
- 4fb4d7f45d1cf-5e5e24bb58cmr7202371a12.28.1741412464668; Fri, 07 Mar 2025
- 21:41:04 -0800 (PST)
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CAuEjA+o"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B3CF040E015E;
+	Sat,  8 Mar 2025 13:33:23 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id fUOTjdyFzZYW; Sat,  8 Mar 2025 13:33:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1741440798; bh=mGUnWVGEljwRD/vFW5lzAbLtqCZsrT5Mor9RAoXgYyQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CAuEjA+oufa4li9tDQ0w1Tt+g9NQ2+DCEOZiizHP92xumN76F16HsASw9+eAtvZ4D
+	 ZzSxv0mg09iZzSTaTycYd7JYASUXK9G05+DQmRpC3AXHoaSIEmHBY9bfSzzuBkHyit
+	 SA03K8Egc2lDY/c1OiPBemVPYZTX5z/XNRji4bWoAZhcstXdrN523dAZVtK0pEV9MB
+	 aTlGOguhVs8N2mRdotkvuBYybKADKYpLGE6QSpTc92cJ9M0dRwXCfJ8lg7GzmlvPMK
+	 wfuLdvFDWVRbuRWq3rU3xmPk4GK63QtoZDM3e0r1nhhuUR3KhT7/cPErryvt7kIWWM
+	 OB0AJROTpv1oFRLdxPsmZaV6tVilTndruIzlv3lQyVfydgymZWdi7OwV1UQxJmmWEK
+	 LLBP7taxoDK5WcaobNlt1TQyiNPJ3JA9jZmtN6iqf7nCX9YStC0TyyHxJhRmK/hPxm
+	 59sFO6Q55TkKduj+/y0FwKNUC256t3K5aGxn0BsbcfoK4bAHhJlYD93JPbEOUa2DgD
+	 lyxT4i3Il8cE2BtKLyH1T2Pn+8MW4YGHl7f33Y/PmWqcU0Sj/il3aqsjJ5OsHItkGK
+	 toJnZrFTyqwqMGvB95oJzz2vtUiWycr3MCTTDds63z4cnAF90Q2xpohgqHfYW16mDL
+	 7j5l97NE3JinsBfG0j9RDWYA=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8105740E015D;
+	Sat,  8 Mar 2025 13:33:09 +0000 (UTC)
+Date: Sat, 8 Mar 2025 14:33:08 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Dionna Amalie Glaze <dionnaglaze@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>
+Cc: linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: ccp: Fix uAPI definitions of PSP errors
+Message-ID: <20250308133308.GCZ8xHFOX4JKRG1Mpk@fat_crate.local>
+References: <20250308011028.719002-1-aik@amd.com>
+ <CAAH4kHaK3Z-_aYizZM0Kvmsjvs_RT88tKG5aefm2_9GTUsU4bg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250308011028.719002-1-aik@amd.com>
-In-Reply-To: <20250308011028.719002-1-aik@amd.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Fri, 7 Mar 2025 21:40:52 -0800
-X-Gm-Features: AQ5f1JqHUPD1cUQbwC0XGvEQjFvxgeTUlhoO_RT4hTgIRg1b6omcoJrhiqinDuY
-Message-ID: <CAAH4kHaK3Z-_aYizZM0Kvmsjvs_RT88tKG5aefm2_9GTUsU4bg@mail.gmail.com>
-Subject: Re: [PATCH] crypto: ccp: Fix uAPI definitions of PSP errors
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAAH4kHaK3Z-_aYizZM0Kvmsjvs_RT88tKG5aefm2_9GTUsU4bg@mail.gmail.com>
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 7, 2025 at 5:10=E2=80=AFPM Alexey Kardashevskiy <aik@amd.com> w=
-rote:
->
-> Additions to the error enum after explicit 0x27 setting for
-> SEV_RET_INVALID_KEY leads to incorrect value assignments.
->
-> Use explicit values to match the manufacturer specifications more
-> clearly.
->
-> Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-> ---
->
-> Reposting as requested in
-> https://lore.kernel.org/r/Z7f2S3MigLEY80P2@gondor.apana.org.au
->
-> I wrote it in the first place but since then it travelled a lot,
-> feel free to correct the chain of SOBs and RB :)
+On Fri, Mar 07, 2025 at 09:40:52PM -0800, Dionna Amalie Glaze wrote:
+> On Fri, Mar 7, 2025 at 5:10=E2=80=AFPM Alexey Kardashevskiy <aik@amd.co=
+m> wrote:
+> >
+> > Additions to the error enum after explicit 0x27 setting for
+> > SEV_RET_INVALID_KEY leads to incorrect value assignments.
+> >
+> > Use explicit values to match the manufacturer specifications more
+> > clearly.
+> >
+> > Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
+> > CC: stable@vger.kernel.org
+> > Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
+> > Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> > Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+> > ---
+> >
+> > Reposting as requested in
+> > https://lore.kernel.org/r/Z7f2S3MigLEY80P2@gondor.apana.org.au
+> >
+> > I wrote it in the first place but since then it travelled a lot,
+> > feel free to correct the chain of SOBs and RB :)
+>=20
+> It's all good. Thanks for seeing this through to the end.
 
-It's all good. Thanks for seeing this through to the end.
+It should be corrected because the current SOB chain says that Dionna is =
+the
+author but From is yours, making you the author when it gets applied.
 
+All is documented here and in the following sections:
+
+https://kernel.org/doc/html/latest/process/submitting-patches.html#sign-y=
+our-work-the-developer-s-certificate-of-origin
 
 --=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
