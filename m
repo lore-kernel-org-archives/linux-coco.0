@@ -1,176 +1,152 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D528F1DF259
-	for <linux-coco@lists.linux.dev>; Sun,  9 Mar 2025 18:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B251D1CAA6C
+	for <linux-coco@lists.linux.dev>; Sun,  9 Mar 2025 23:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741546341; cv=none; b=WaaMkraMYoO2cvjsT69ogm4BtIhwyyXltdh1oNPU9mv9tR9wZiQKw8kC7m3TGSpigNdGbaKSf7gsYLtXICVzJaNEzYBMnpGC/V4IVrWMR+Jl6CYpLZNv9V6+AZP+AJVSylW6IR/3Gq+6b/QCbcztZAED716JuPcarcY/KUw5Kis=
+	t=1741564529; cv=none; b=Ks2nqFkNLUKVESpgWMtjtiVgTAhnJVQT2OHvTHD2hRDxq91NBKhRGJm08BFlI5z9jTBhRzybgsdhi4hlSCcXJBBxW7uPHuHdssh26Ukwi8tNqIeI0nY9h9KJcf0PHANSmsf4tCzjffxxuaP/asb214WbcjGSIC2Qq5AIL9rTZgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741546341; c=relaxed/simple;
-	bh=zXJZIdGJR4OS9afIEosSDb+g7DJuyc8R4tm7TR6XlYU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fu7rPzvriaryM+20/lvC9Q2W7mA1kC7fbLIkNk6Eua2Wed8HSbOQml+2EH7KWiC5TwxjXKtdGxjFmUW/puqSTzy0rSzNdDK1YYZ/eh1T+t00hqkF4YtYfXMGKlYqY0ng/EVfT36J1icrhjkRfiZHtWmNC3K+p9ZXRnp1xuHjaf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hrL0+pyk; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1741564529; c=relaxed/simple;
+	bh=vZRTfKc7Nz6Fk75fdMEnM7/6lX1wjeYmnB5PUeL1XXw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fm2sRoluLJ4OIdzJVYSouXMUIp50OrU66ezHXJHY8ya8MHVXcZAu3RRzpXx2Vk9uuO2vTnjDgTT9zKuvoRGk0FgX8RRZpMuJWNV5OVKVBTaQz/xFVeE/qUL+nf85didv1cAs1UvsOm2QndMtrYhfY2Tzlc3JRALkAveNCKcWy6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QSXzjJqd; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hrL0+pyk"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-225489a0ae6so133475ad.0
-        for <linux-coco@lists.linux.dev>; Sun, 09 Mar 2025 11:52:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741546339; x=1742151139; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f0F9uAQ7tctvQCnO0ZWm2wGaaH5f4voNwAJg6oGX9SI=;
-        b=hrL0+pykLxLthe4yM0g1dzmUCATJ3kTY0f6MP56arbsMNWQP1ctCc4eAvSiE2xqSV7
-         QVvqzuXOCWTMvNGuxp+i0LuoRQFTwxWkpLpRxmoUIAkGBt7sVu17PcgRkWX4OFgha59L
-         ZeolEWxRLGGJddX8vmqfRFsgkMKJD3Qn8zBVoad0SahvtOsNSLMMACUNPmxDyeALgEVY
-         fEvZi+f5J9qeO9GFlZo5kvhbC9Oh8hgy2yX6Ts8GvwS8N0SlPldy6N4s2AoMg9JYI5IK
-         Ls/y3ovpSHZQ8eKCqZjZVs1Ajzd3oGW4QAfsXYFu4RavLbLmavmRMVxzkVR8rEhB2q2G
-         KAWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741546339; x=1742151139;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f0F9uAQ7tctvQCnO0ZWm2wGaaH5f4voNwAJg6oGX9SI=;
-        b=n+SwRKf0KGICdNPwt4NjGHu+d3LBQVLbjFKqU/Rw7FOslrjOJcX9oMC5FzOUdIyfpj
-         WxnTsOmbvQpndAwYwrcifDvZlQuguirY8ucFf8mrqZZjDCYhhmQQCMuGUY5yctT7qTW9
-         Yl3FOiCPxUNAzqVzCEpoc47GPT23x/JmIxpDiaQkkPOGAK5GgYk7A5O21rygg/ng2n9J
-         1C/WQC1EidjJ6E1SyXlIXwKO4O3LcuNWNyZUZGOOwFC08NF0ZHTiSAqoCGQVU29n4N+6
-         7b+e6KG9qD2GmGum9JUkCyKxtwGJXlcPAihoF3Q4aohlJTru28w5Pd3yP77vmav94D3Y
-         oPCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXCQUotbwkxD5nnKYNWKjjaw17ybEgp/4fDbKo9qHbL4JMsoqkxXpz+7iWdZPCR6OgeTjTJizSQUJDZ@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw8UpT2HsEN5AtisFlWyE8COPY5ugf6HcwEu89R+JTSZIhpw6/v
-	6h91z8zN0Kc/4IO5DuSjokXPpAb26SRGf6LA/kn9Tu4WylLoSptobaYvWHCRi3SxTMI2lCCPktr
-	43MBAIw7m/t1T4i3gtveLbZnvNAFM8A5Xh+xL
-X-Gm-Gg: ASbGncsUcspjfZJgL+Au6TttN8jGeQ/LioazWWQWZsdUQU/utsOYcJYYK4VcMteJqvT
-	jMSiGS395Y7Tx9GYxk6l331a62gu1T0Kqt/wSYhVN5wkeTYz2jT8A3nPE7LaY+dgF1aS/mWsspG
-	MRBmFO1xb5vXy9u0F+cKj9wj/niM8HnuKBeVPznLvDDnRuGO7a1PU/sVvrox4=
-X-Google-Smtp-Source: AGHT+IFG9SSJTufI0eFYbf0wQm2WofP3DAL5foaE083K56zTD/V1FvHHIehtuzbAThLlpAJshuGX+RU/r/N5IlTVF58=
-X-Received: by 2002:a17:903:32c7:b0:21f:56e5:daee with SMTP id
- d9443c01a7336-22540e5a9aemr2472185ad.6.1741546338366; Sun, 09 Mar 2025
- 11:52:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QSXzjJqd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741564528; x=1773100528;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=vZRTfKc7Nz6Fk75fdMEnM7/6lX1wjeYmnB5PUeL1XXw=;
+  b=QSXzjJqdnT0g974cd498etRCDaqX+wwISctKnSpw1Onpbe8mo1fRsZmP
+   5mBv12e1LVn77PugKJsczjPbKowje6JRO3J7RQKYWupuxVE3QM3wvFFVL
+   vaiRnf9GXcIJOqYVLukE6a2prMoruG9L6SmshLIwJ0+8FunAxqHZ43Vn4
+   URjL4iqeVJDeFj/pfl1L5geTVbZ/XaNRG5KDnOfx6fkOL6te+Fs8u7IOp
+   hZvCV8KcWBi6pgIbVP5Ih84O49SBkYaTsO1FtSUL785GY1XnMKNHcXZTJ
+   NOKtzxqc2C5IbU6vRxT39R5Zg4uZrQycej+MbXJKhMK3sWDG/li9urK8k
+   Q==;
+X-CSE-ConnectionGUID: 6H97NfTUTyebmCxYmuPG9A==
+X-CSE-MsgGUID: CET0PgrVRditO7F0mvhIyQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="53928410"
+X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
+   d="scan'208";a="53928410"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2025 16:55:26 -0700
+X-CSE-ConnectionGUID: VKZ+FcipSaOpE3ya4Y5oZQ==
+X-CSE-MsgGUID: J+W1lSi+SbyDsrxtJg+zAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="120357223"
+Received: from jdoman-desk1.amr.corp.intel.com (HELO [10.125.111.6]) ([10.125.111.6])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2025 16:55:26 -0700
+Message-ID: <62586df1-fa54-44ef-bb74-3557ffa194fc@intel.com>
+Date: Sun, 9 Mar 2025 16:55:53 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250226082549.6034-1-shivankg@amd.com> <CAGtprH8akKUF=8+RkX_QMjp35C0bU1zxGi4v1Zm5AWCw=8V8AQ@mail.gmail.com>
-In-Reply-To: <CAGtprH8akKUF=8+RkX_QMjp35C0bU1zxGi4v1Zm5AWCw=8V8AQ@mail.gmail.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Sun, 9 Mar 2025 11:52:05 -0700
-X-Gm-Features: AQ5f1JrURSpnxKRR4ttTpVJoZfdt94X5FqXT7N9vOmgEqpVIhGKcMYbUZvLcn9Y
-Message-ID: <CAGtprH8Rzgg55knK467NEZ3gnhNFhYA8fL3zda188wgcmj1YYA@mail.gmail.com>
-Subject: Re: [PATCH v6 0/5] Add NUMA mempolicy support for KVM guest-memfd
-To: Shivank Garg <shivankg@amd.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, pbonzini@redhat.com, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	chao.gao@intel.com, seanjc@google.com, ackerleytng@google.com, 
-	david@redhat.com, vbabka@suse.cz, bharata@amd.com, nikunj@amd.com, 
-	michael.day@amd.com, Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, 
-	michael.roth@amd.com, tabba@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] virt/tdx: Enhance tdx-guest driver with improved memory
+ management
+To: liu.yun@linux.dev, kirill.shutemov@linux.intel.com
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+ Jackie Liu <liuyun01@kylinos.cn>
+References: <20250309140426.281868-1-liu.yun@linux.dev>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250309140426.281868-1-liu.yun@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Mar 8, 2025 at 5:09=E2=80=AFPM Vishal Annapurve <vannapurve@google.=
-com> wrote:
->
-> On Wed, Feb 26, 2025 at 12:28=E2=80=AFAM Shivank Garg <shivankg@amd.com> =
-wrote:
-> >
-> > In this patch-series:
-> > Based on the discussion in the bi-weekly guest_memfd upstream call on
-> > 2025-02-20[4], I have dropped the RFC tag, documented the memory alloca=
-tion
-> > behavior after policy changes and added selftests.
-> >
-> >
-> > KVM's guest-memfd memory backend currently lacks support for NUMA polic=
-y
-> > enforcement, causing guest memory allocations to be distributed arbitra=
-rily
-> > across host NUMA nodes regardless of the policy specified by the VMM. T=
-his
-> > occurs because conventional userspace NUMA control mechanisms like mbin=
-d()
-> > are ineffective with guest-memfd, as the memory isn't directly mapped t=
-o
-> > userspace when allocations occur.
-> >
-> > This patch-series adds NUMA binding capabilities to guest_memfd backend
-> > KVM guests. It has evolved through several approaches based on communit=
-y
-> > feedback:
-> >
-> > - v1,v2: Extended the KVM_CREATE_GUEST_MEMFD IOCTL to pass mempolicy.
-> > - v3: Introduced fbind() syscall for VMM memory-placement configuration=
-.
-> > - v4-v6: Current approach using shared_policy support and vm_ops (based=
- on
-> >       suggestions from David[1] and guest_memfd biweekly upstream call[=
-2]).
-> >
-> > For SEV-SNP guests, which use the guest-memfd memory backend, NUMA-awar=
-e
-> > memory placement is essential for optimal performance, particularly for
-> > memory-intensive workloads.
-> >
-> > This series implements proper NUMA policy support for guest-memfd by:
-> >
-> > 1. Adding mempolicy-aware allocation APIs to the filemap layer.
->
-> I have been thinking more about this after the last guest_memfd
-> upstream call on March 6th.
->
-> To allow 1G page support with guest_memfd [1] without encountering
-> significant memory overheads, its important to support in-place memory
-> conversion with private hugepages getting split/merged upon
-> conversion. Private pages can be seamlessly split/merged only if the
-> refcounts of complete subpages are frozen, most effective way to
-> achieve and enforce this is to just not have struct pages for private
-> memory. All the guest_memfd private range users (including IOMMU [2]
-> in future) can request pfns for offsets and get notified about
-> invalidation when pfns go away.
->
-> Not having struct pages for private memory also provide additional benefi=
-ts:
-> * Significantly lesser memory overhead for handling splitting/merge opera=
-tions
->     - With struct pages around, every split of 1G page needs struct
-> page allocation for 512 * 512 4K pages in worst case.
-> * Enable roadmap for PFN range allocators in the backend and usecases
-> like KHO [3] that target use of memory without struct page.
->
-> IIRC, filemap was initially used as a matter of convenience for
-> initial guest memfd implementation.
->
-> As pointed by David in the call, to get rid of struct page for private
-> memory ranges, filemap/pagecache needs to be replaced by a lightweight
-> mechanism that tracks offsets -> pfns mapping for private memory
-> ranges while still keeping filemap/pagecache for shared memory ranges
-> (it's still needed to allow GUP usecases). I am starting to think that
+On 3/9/25 07:04, liu.yun@linux.dev wrote:
+> From: Jackie Liu <liuyun01@kylinos.cn>
+> 
+> This patch refines the tdx-guest driver by introducing better memory
+> management and error handling practices. The use of the `__free` attribute
+> ensures that allocated memory for `reportdata` and `tdreport` is
+> automatically freed, reducing the risk of memory leaks. Additionally,
+> the manual mutex lock/unlock has been replaced with `scoped_cond_guard`
+> to ensure proper mutex handling and simplify the code.
+> 
+> Error handling has been streamlined by returning directly on failure,
+> eliminating unnecessary `goto` statements. These changes not only
+> enhance the robustness of the driver but also improve its readability
+> and maintainability.
 
-Going one step further, If we support folio->mapping and possibly any
-other needed bits while still tracking folios corresponding to shared
-memory ranges along with private memory pfns in a separate
-"gmem_cache" to keep core-mm interaction compatible, can that allow
-pursuing the direction of not needing filemap at all?
+Thanks for the patch.
 
-> the filemap replacement for private memory ranges should be done
-> sooner rather than later, otherwise it will become more and more
-> difficult with features landing in guest_memfd relying on presence of
-> filemap.
->
-> This discussion matters more for hugepages and PFN range allocations.
-> I would like to ensure that we have consensus on this direction.
->
-> [1] https://lpc.events/event/18/contributions/1764/
-> [2] https://lore.kernel.org/kvm/CAGtprH8C4MQwVTFPBMbFWyW4BrK8-mDqjJn-UUFb=
-Fhw4w23f3A@mail.gmail.com/
-> [3] https://lore.kernel.org/linux-mm/20240805093245.889357-1-jgowans@amaz=
-on.com/
+But, no, sorry, we're not going to take patches like this. If you're
+refactoring the code for _other_ reasons and want to convert over to the
+new fancy stuff, go ahead.
+
+But, we're not going to introduce bugs (and this kind of rework *WILL*
+have bugs), make everyone else's code harder to merge, and clutter up
+the history just to move to the newest shiny thing.
+
+I'd much rather folks spend their time reviewing code or fixing bugs
+than just churning code around.
+
+Also, if anyone _does_ make code to use these new locks, *PLEASE* don't
+do it this way:
+
+> +	scoped_cond_guard(mutex_intr, return -EINTR, &quote_lock) {
+> +		int ret;
+> +		u8 *buf;
+> +		struct tdx_quote_buf *quote_buf = quote_data;
+> +		struct tsm_desc *desc = &report->desc;
+> +		u64 err;
+
+Indentation matters. Increasing the indenting on the whole function
+makes it less readable. Don't do it like that ^.
+
+I feel the need to reiterate: please don't send patches like this.
+Please tell your friends.
