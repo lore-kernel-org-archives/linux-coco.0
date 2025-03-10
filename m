@@ -1,183 +1,97 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2334928EA
-	for <linux-coco@lists.linux.dev>; Mon, 10 Mar 2025 11:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7B8227EB1
+	for <linux-coco@lists.linux.dev>; Mon, 10 Mar 2025 12:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741606649; cv=none; b=gymJLN0fy14q00efXXiumEzIW2Vsc3OsVRjROqYkXnUtC4hglhXpxHpZSY8ZLKMEqIcB/IPzo1tqguyV290csBUqJ/NxzsTK13Ryrv9G5PenMnwKrkndiZ4UQVSdlLHaOPQ0alpqeBHpiI+PZGoIWPdH+Q8JgPOnaKhJHygiilg=
+	t=1741608388; cv=none; b=mzMcfip9y2nfXquD4T9jukM+ehGDbcK0I5XpwjCPlnqo9vSa0xKNI6HUJH77ZZxZbcN1lKTDVaOBupqDsZvdg+a2PhFYGa/QDccWCJLJ4Cjee30GgaIJ+nJ/CAjClNCZ+HJiMmQm8XCE266FC2W6qIewIwwMpGZGv7mhU7Mc5pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741606649; c=relaxed/simple;
-	bh=DMs/TAlP3Os2nxZau3ARmh/n4V/08GFKW/xi2WtQBSI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y1upZfvswVZuneK407XR9KLqaFC884pJ5nz7uN89tUnmFNlG++hcaTTfW8PBnBUErcCN6Ltr7nlnIOzRs9BX+PDRIqNnCiNRDfIvGJRpR2IhpdbCccHxm5XAaZVVKqgrYFzBdCna/oy27X7craUJwvgDtvtGeg0lxNs65qHGGgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=xcNZI6Pk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=k4MRRiFZ; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=xcNZI6Pk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=k4MRRiFZ; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1741608388; c=relaxed/simple;
+	bh=fLAJAiqYd+Sl4aTlzjXT7WtMKBaFjK51w6THZu36tD4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L2V75APqx3UFqzYBN0HugzG/43SLWCPJxGhiuje5Yzy8HWZVnpq5SbbJmUIz0R+CYdvVSZc4CVOe1sg7Aykwx8tbNA+Z/GJB2ESiyXTArz6eS9lGMVLUFdg+kX+DnkUUhIrVhFMuz9WUgY/ivVnqagk4GwU2kBuBS7k4Qjq23TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A1kIOsDv; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="xcNZI6Pk";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="k4MRRiFZ";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="xcNZI6Pk";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="k4MRRiFZ"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0CF721F38C;
-	Mon, 10 Mar 2025 11:37:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1741606646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PfW0icj+R9uq3V3PyovxRXcxaOTH8rdLWSIUiTmY8c0=;
-	b=xcNZI6Pk6vvaINpdGf5jo7J4jmr2mj+lwY9UyB/3nEOjoMU+AhkU35JnFa0BPVsFfLPcWS
-	+sn0XLx4Z2aqnwEHjvHKx+1NnS9J/qyASd0SjBVh0p6QKZti64sA8uoU6tWP7CtJ9EEMeE
-	J/drOe0g4JU4nLpHWAkaKrIF/HSFrSo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1741606646;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PfW0icj+R9uq3V3PyovxRXcxaOTH8rdLWSIUiTmY8c0=;
-	b=k4MRRiFZkZwWAGpJwFbr/uxf8Virpg/n2xQLkPc81RUTZEs9PUGXN0SkqSYDbP2Ci3w0eT
-	0nQvFQZut0mW7HCg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xcNZI6Pk;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=k4MRRiFZ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1741606646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PfW0icj+R9uq3V3PyovxRXcxaOTH8rdLWSIUiTmY8c0=;
-	b=xcNZI6Pk6vvaINpdGf5jo7J4jmr2mj+lwY9UyB/3nEOjoMU+AhkU35JnFa0BPVsFfLPcWS
-	+sn0XLx4Z2aqnwEHjvHKx+1NnS9J/qyASd0SjBVh0p6QKZti64sA8uoU6tWP7CtJ9EEMeE
-	J/drOe0g4JU4nLpHWAkaKrIF/HSFrSo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1741606646;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PfW0icj+R9uq3V3PyovxRXcxaOTH8rdLWSIUiTmY8c0=;
-	b=k4MRRiFZkZwWAGpJwFbr/uxf8Virpg/n2xQLkPc81RUTZEs9PUGXN0SkqSYDbP2Ci3w0eT
-	0nQvFQZut0mW7HCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DFE211399F;
-	Mon, 10 Mar 2025 11:37:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id G3j/NfXOzmdLfwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 10 Mar 2025 11:37:25 +0000
-Message-ID: <03b53f18-8c16-4716-8ed4-1902d7247354@suse.cz>
-Date: Mon, 10 Mar 2025 12:37:25 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A1kIOsDv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741608386; x=1773144386;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fLAJAiqYd+Sl4aTlzjXT7WtMKBaFjK51w6THZu36tD4=;
+  b=A1kIOsDvW3zdSt/12iMBWVnsws0qVfYuiXO/sNrWBK5AhdwQ+PhmWtzp
+   EHofZ94/dAoQ3xtr4YdUwU3VB7XbwNj7tvUJagPbtQtyOR3Y5K3k6NTZ3
+   cXzrX7tUdmq2wFtMAr/UpfOVdcpCZHO/sYkLrAc0//QresmNXVu5OQxhN
+   LAXCeyIvMTrB4yXN5bEiI8OvqiUXt2JM/c0qlMJOqMBoY4X7oGNfGY/CO
+   K4hHUC+r/g3dDgo0B11ITgH5exvcN79Wgs9Zz+5KOflcbHUqZrvdhJifb
+   wzJeYvo6jKjBhTg0FXAUvbNkzKohGC7XPj1thPzo0mLkVQsntAdanFVQo
+   A==;
+X-CSE-ConnectionGUID: kdSVTlZWSR6FP95jx8oDlA==
+X-CSE-MsgGUID: r9gHQeppTI2OlwYBuCZffg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="60150537"
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="60150537"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 05:06:25 -0700
+X-CSE-ConnectionGUID: EBoIinS3T/2ESNvpSDaWog==
+X-CSE-MsgGUID: AY3cGCFuTmKo8D50e1j/+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="124582470"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa005.fm.intel.com with ESMTP; 10 Mar 2025 05:06:23 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id E7AC0156; Mon, 10 Mar 2025 14:06:20 +0200 (EET)
+Date: Mon, 10 Mar 2025 14:06:20 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>, 
+	Mel Gorman <mgorman@techsingularity.net>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	"Kalra, Ashish" <ashish.kalra@amd.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Farrah Chen <farrah.chen@intel.com>
+Subject: Re: [PATCH] mm/page_alloc: Fix memory accept before watermarks gets
+ initialized
+Message-ID: <asxbkez3pwoc2p4jb5ftwbvapzvoj3kma2tunprrnp4ptihebb@dxhvj3uicw6c>
+References: <20250310082855.2587122-1-kirill.shutemov@linux.intel.com>
+ <03b53f18-8c16-4716-8ed4-1902d7247354@suse.cz>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: Fix memory accept before watermarks gets
- initialized
-Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
- Mel Gorman <mgorman@techsingularity.net>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, Farrah Chen <farrah.chen@intel.com>
-References: <20250310082855.2587122-1-kirill.shutemov@linux.intel.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20250310082855.2587122-1-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0CF721F38C
-X-Spam-Score: -4.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <03b53f18-8c16-4716-8ed4-1902d7247354@suse.cz>
 
-On 3/10/25 09:28, Kirill A. Shutemov wrote:
-> Watermarks are initialized during the postcore initcall. Until then, all
-> watermarks are set to zero. This causes cond_accept_memory() to
-> incorrectly skip memory acceptance because a watermark of 0 is always
-> met.
-
-What are the user-visible consequences of that?
-
-> To ensure progress, accept one MAX_ORDER page if the watermark is zero.
+On Mon, Mar 10, 2025 at 12:37:25PM +0100, Vlastimil Babka wrote:
+> On 3/10/25 09:28, Kirill A. Shutemov wrote:
+> > Watermarks are initialized during the postcore initcall. Until then, all
+> > watermarks are set to zero. This causes cond_accept_memory() to
+> > incorrectly skip memory acceptance because a watermark of 0 is always
+> > met.
 > 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reported-and-tested-by: Farrah Chen <farrah.chen@intel.com>
+> What are the user-visible consequences of that?
 
-Fixes:, Cc: stable etc?
+Premature OOM on boot.
 
-> ---
->  mm/page_alloc.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
+It can be triggered with certain combinations of number of vCPUs and
+memory size.
+
+> > To ensure progress, accept one MAX_ORDER page if the watermark is zero.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Reported-and-tested-by: Farrah Chen <farrah.chen@intel.com>
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 579789600a3c..4fe93029bcb6 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7004,7 +7004,7 @@ static inline bool has_unaccepted_memory(void)
->  
->  static bool cond_accept_memory(struct zone *zone, unsigned int order)
->  {
-> -	long to_accept;
-> +	long to_accept, wmark;
->  	bool ret = false;
->  
->  	if (!has_unaccepted_memory())
-> @@ -7013,8 +7013,18 @@ static bool cond_accept_memory(struct zone *zone, unsigned int order)
->  	if (list_empty(&zone->unaccepted_pages))
->  		return false;
->  
-> +	wmark = promo_wmark_pages(zone);
-> +
-> +	/*
-> +	 * Watermarks have not been initialized yet.
-> +	 *
-> +	 * Accepting one MAX_ORDER page to ensure progress.
-> +	 */
-> +	if (!wmark)
-> +		return try_to_accept_memory_one(zone);
-> +
->  	/* How much to accept to get to promo watermark? */
-> -	to_accept = promo_wmark_pages(zone) -
-> +	to_accept = wmark -
->  		    (zone_page_state(zone, NR_FREE_PAGES) -
->  		    __zone_watermark_unusable_free(zone, order, 0) -
->  		    zone_page_state(zone, NR_UNACCEPTED));
+> Fixes:, Cc: stable etc?
 
+Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+Cc: stable@@vger.kernel.org # v6.5+
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
