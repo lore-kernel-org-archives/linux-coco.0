@@ -1,185 +1,195 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2045.outbound.protection.outlook.com [40.107.93.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A1E22FDF1
-	for <linux-coco@lists.linux.dev>; Mon, 10 Mar 2025 16:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741624011; cv=none; b=aBALvlovRYz8pgEBYNOAe4TQKGlsorZICnrbDZWAnArn7aad0L0TRYwWv/dNIAlK1OVey/HlTNRCPW3l+65nXmTjBkxrVXyQO5uWzOI9XQEOHMXvaqNOtTzINBdIfL7EATlFICIBJkdgZkhf5xXTJpIUp9hOl4YOjNElGXNz0Io=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741624011; c=relaxed/simple;
-	bh=Fbu15y+4+MuCNp8wyBHZk4lxmToA8kq6KLy2njV3kh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hJhqe83pRqK1awRTbaFrjeR7G7QFNtzr8Dqc5+ao2jKt0ZLSDh5ahkj7NDLcnqXl978t0qLAlJOvI5hMomHROLWsFLYu+KTxWk6NNKnwYMljrOWvuGkF+pkiFgyVih3vDXFNXJfM2/kcGRdPcNei9TWcUAsozwYunrWZn085pRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E41Gf/ML; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047CD140E5F
+	for <linux-coco@lists.linux.dev>; Mon, 10 Mar 2025 20:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741637786; cv=fail; b=cpzcH/dsoE+sduXvwMzdsFOUi8UTqU5KDXML+nQl5xWI5yK2CjUk320FWJwDqM2qtkOUb+2Z4oj8n3FJWfEBb2xK73vMjWwnhw7MuIj9iJ96l6lE5orv8e+KxokGdxYQpCrvkHPRliqvtPSDk6T3ZH+K1SOzypBWYo8ZLTlLFSw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741637786; c=relaxed/simple;
+	bh=FlfBIlFdvX1yWcnnBzVLo2meShH1hkVNuzyCFYXjO1c=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tXLIIdo1CplOzyGWom5rvqvU46aw7uAxqKSyj6YMQ3cdVPhFXV2H0fDFKUPAnBOmlTecOo+vYh7i9VC/BmG4TK9Q8/y+878MlbVnc2dmb2ez8WO65z+NxTP5wMq/aoA1DO8J1na99V/hd2X0JzBY4uGFI73Q1QzHQC0l1bo4KMk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bkN/DESx; arc=fail smtp.client-ip=40.107.93.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E41Gf/ML"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741624009; x=1773160009;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Fbu15y+4+MuCNp8wyBHZk4lxmToA8kq6KLy2njV3kh4=;
-  b=E41Gf/MLngWnbfAL6p/9OJPs6RQ4psm3L6WJ+wD6F1IFXdEy331Z7tFA
-   2A1+O6qwCYdjHCni9LI+VVB3b44fuMp1qqtTFM4KHC9MN1nbKiRNcZTsw
-   sfudyucqy/DNtxwHpiTi51eXPDIWM5cAQZzZ2C6PvRse4Y6HyarFpLZE3
-   gSRdPXrFJMSS/2nzCqGFSnQ+xuVrL8SMSffBGzLQ9F6QAJjCyNf26d/TH
-   Nx+gHIsiZ/Bd4NcojiXTa44h5xSRFZUL+Q2XS27LKJm8l+w8X0cI/y8qG
-   o5zmuBWcGFn78DaVLHvC6KCUUGwKZV4c05Pf6iJzsZuBmUdwgwO9pCrLn
-   w==;
-X-CSE-ConnectionGUID: LQlhXwAjSjeznJfW14k65w==
-X-CSE-MsgGUID: fR61EkzcQGq9tgAyNK8t0A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="42663879"
-X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="42663879"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 09:26:49 -0700
-X-CSE-ConnectionGUID: soSpy2//TWm64rkDngTYgw==
-X-CSE-MsgGUID: grecUCfVQ0S6v8g1WBOcWw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="120530772"
-Received: from bkammerd-mobl.amr.corp.intel.com (HELO [10.124.220.122]) ([10.124.220.122])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 09:26:48 -0700
-Message-ID: <2bbc5ed1-f5c3-4cd3-b72a-a40bc0749d8e@linux.intel.com>
-Date: Mon, 10 Mar 2025 09:26:47 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bkN/DESx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lY6lbzfy/m6DxFYWCG/qZK0hw1GHHKYNNNaGRpW0YevJJU8IXmXPNPg/4GKOJZ3qmYY+AimbIZFtEVcNNn0gbd0jjRjDBmcNapWx00KysnZnKhE3YCeCunsT5IA/3TBUuPmpCrW9EUrJfpBoyh+B/OheiIpS7MfnnrbatT0vRMiaekiq9kr9eKhDtdV3gMPJdl2o+V76bMhjjY4bc9LXPuGsSYsYZcn+FZLWEZ/djt5d5j6XVF66qn0avIFkBM0ot8D+0ZRrNh7lokITw73wBALhpY37RpQbkXtr9cye9QRZhhPcEOLn3AjkEgF1OwTCdOblZug9W1iYJAOqQYed5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2hvPg7b7mLu+THFfuNVZR4OopxdD9Sjf8aHysGvUqXs=;
+ b=f6auvFTtFIl+PcKsMphmgwqtNdCTFN87IJQX+q45d2SXZT6hm9CLYQhSH8gPyLUmFqrxQhMfC7vfMSFAXhrj1hBX8dv2aAR/bHTZ0cC470n2IaCHitaQ09Xo1jmk5F8xoOCenXZ9itgZXO9YGfAMSd07zq3WiDguifEPuq9fAgR2Zpz1YQdHAfaNEKSSJX2uy24XSlqigT29qafJx20Y4eqhEJvy7EDhLZvABb4pXl1C9HGQ+8sba4R1/FCgM+3fp45IvtWzcn7mFGc6A6ayNRkdVdsLKN6Kwct7ZYZM4DpzgMSifXfv96GjoxxqT8Ax2d3+Jw49/qObqSaVvCH6ew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2hvPg7b7mLu+THFfuNVZR4OopxdD9Sjf8aHysGvUqXs=;
+ b=bkN/DESxhwyOcVJjCgR3N+1XVY2E9QUPmPJF+5dc5X1TQPiJ4+L8S2OpzvCg10R/l+unLHcZ3+2NryMV8JwVOMaCPESGCO/yIw4wqiUPabWT3/fQYg2H55GMO0jDan2wrLgRXv0Cj9jfRYv1ccrXPIKBXMf8vJO8KY5lMzpaMxU=
+Received: from MN2PR06CA0021.namprd06.prod.outlook.com (2603:10b6:208:23d::26)
+ by MN0PR12MB5932.namprd12.prod.outlook.com (2603:10b6:208:37f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Mon, 10 Mar
+ 2025 20:16:16 +0000
+Received: from BL6PEPF00020E5F.namprd04.prod.outlook.com
+ (2603:10b6:208:23d:cafe::f1) by MN2PR06CA0021.outlook.office365.com
+ (2603:10b6:208:23d::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8511.24 via Frontend Transport; Mon,
+ 10 Mar 2025 20:16:16 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL6PEPF00020E5F.mail.protection.outlook.com (10.167.249.20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8534.20 via Frontend Transport; Mon, 10 Mar 2025 20:16:15 +0000
+Received: from zweier.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 10 Mar
+ 2025 15:16:14 -0500
+From: Kim Phillips <kim.phillips@amd.com>
+To: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>
+CC: Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth
+	<michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>, "Nikunj A .
+ Dadhania" <nikunj@amd.com>, Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	"Naveen N Rao" <naveen@kernel.org>, Alexey Kardashevskiy <aik@amd.com>,
+	"Borislav Petkov" <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	"Sean Christopherson" <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, "Ingo Molnar" <mingo@redhat.com>, "H. Peter Anvin"
+	<hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH v5 0/2] KVM: SEV: Add support for the ALLOWED_SEV_FEATURES feature
+Date: Mon, 10 Mar 2025 15:16:01 -0500
+Message-ID: <20250310201603.1217954-1-kim.phillips@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/11] coco/guest: Move shared guest CC infrastructure
- to drivers/virt/coco/guest/
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
-Cc: Wu Hao <hao.wu@intel.com>, Yilun Xu <yilun.xu@intel.com>,
- Samuel Ortiz <sameo@rivosinc.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Alexey Kardashevskiy <aik@amd.com>, gregkh@linuxfoundation.org,
- linux-pci@vger.kernel.org, lukas@wunner.de
-References: <174107245357.1288555.10863541957822891561.stgit@dwillia2-xfh.jf.intel.com>
- <174107246641.1288555.208426916259466774.stgit@dwillia2-xfh.jf.intel.com>
-Content-Language: en-US
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <174107246641.1288555.208426916259466774.stgit@dwillia2-xfh.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00020E5F:EE_|MN0PR12MB5932:EE_
+X-MS-Office365-Filtering-Correlation-Id: d07fe43e-1dd7-4f1f-4562-08dd6010695f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?lb+xJ0Pco49DhCnuLrdZazOC/2RBdtVWu/6groF+qqgE2NPTeYUz4ipH6Yrs?=
+ =?us-ascii?Q?zIAHl9VOI2Ap88ObP83RFU82mivYakKiE3hva7dQphCy/ErGsFsGFr/DPWtW?=
+ =?us-ascii?Q?fBdGRzIf4Bg1zGq4JOQEHj+lujkMEFHuN2K58VlQ/hUBB4Htd3EOdTfCGzVn?=
+ =?us-ascii?Q?K9pYfvIFet+8wJx+lICK8LcGBQAYlS1NanFro8IC/GjLjFz+rzMlsWZEfy/9?=
+ =?us-ascii?Q?zzlx/DmZ88dewzU2suQYsBgOBfLcJI7mHkimxUQab5lGku08IeXwUVTJpADV?=
+ =?us-ascii?Q?hofgt6+vfaxY2LqmhooIRNReNGIWBGTIZUS2ohpFi9RbFkzl+s4+kGekL3gL?=
+ =?us-ascii?Q?2C+dzSu4/UGyIKEr6CMpU/6HTG+io5khilVeychtRY8OkdqWAegfI1Qud43p?=
+ =?us-ascii?Q?cC7frj+6AtvwPYbpXtZxZSZlX1Xskfa5Cb7bMz/AU+YhRiyK8CDzvLRv6j1U?=
+ =?us-ascii?Q?2PaZzerSkctYL3gnlTARup0DYG50rdi9ltetYF5OOVUT0grmNJH6a0PaoMLZ?=
+ =?us-ascii?Q?HLFitMWq8kkDEYf42DuTZSPEd3g+KymLAcczWiDUZf3v0U/3iZQd9oaro4h3?=
+ =?us-ascii?Q?ZTf8A5uV7iYL2g+X/Xx2+RPi3ijkc1r0bmtQeWlYEKLXUCdeklVGgrUl/oCX?=
+ =?us-ascii?Q?yKSM4ifriEKCKje/H+VUtHipS7xo46nNhMUcQpCfQvyZklcr1X8REIKjXIHt?=
+ =?us-ascii?Q?sTFp9rPNZU3YJpfSu43Az1iplctxBeHR9ivH/jIc/IeZuMUC2petFzeoeFr2?=
+ =?us-ascii?Q?RgIB1qwtAOQGg/LH8wOZZQVVAxRVMYfi3yCgE8amWtDPqG26YmldnRH0coox?=
+ =?us-ascii?Q?TGaqBynVFP/VowYC1QvFrskoaxE7RCnQFQdA7XmNpR08Hs/hHHze0DIlopxE?=
+ =?us-ascii?Q?740xteGBoKr1hovDii+Eb95nvzb8oYb1wkgbGja3/zIj3pJ7HXX0m8hQwnRe?=
+ =?us-ascii?Q?/L0v6O83Yd+hvIHMYS8IYQSEvUf/dchIDBFZWpSChS+O4Dl4nja86iyg7FAX?=
+ =?us-ascii?Q?GY7z2w5nKS4p66YCZDMjXGla+mOIeNyTuhVCV3wUrgOitzW/9JDgJYFOBy+Q?=
+ =?us-ascii?Q?jav5qkGqdJgBwp+3FJYC2qwKz+zjlthQ4GIiUESnR/kyZtDLmo9nd3omDRMp?=
+ =?us-ascii?Q?AaQv5D6Orzj2FxpvhggmCIZ2E0ks8mTgFRh66lfRai21Cb+LzZadUMTvvhW2?=
+ =?us-ascii?Q?rkLAn1YKB/mIvCICNVmZzMJ8TJR+P/rvcOCV1/o2Jqztu10EREoL/rBIDjfB?=
+ =?us-ascii?Q?pIVwTQnzL1AtyRV6NNHuDJ+SGLGPKBHYTVoz0Qgu8De9GV3vPEJU0bKNoMDo?=
+ =?us-ascii?Q?sN++tL/Jmzrof68o1ZCi+gkVHuPx51sa/yproLv1mWJgVjdXGH/sh272lZv4?=
+ =?us-ascii?Q?6PaT8fsy/k9tvGmgFXzR1cu09kiYjh9KwXIIOZ+iPlAUGUUHh+08KLPJbA8k?=
+ =?us-ascii?Q?YNgdExi9z+TNE6LEAL6fwV+WmoVITXIc?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2025 20:16:15.9604
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d07fe43e-1dd7-4f1f-4562-08dd6010695f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF00020E5F.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5932
+
+AMD EPYC 5th generation processors have introduced a feature that allows
+the hypervisor to control the SEV_FEATURES that are set for, or by, a
+guest [1].  ALLOWED_SEV_FEATURES can be used by the hypervisor to enforce
+that SEV-ES and SEV-SNP guests cannot enable features that the
+hypervisor does not want to be enabled.
+
+Patch 1/2 adds support to detect the feature.
+
+Patch 2/2 configures the ALLOWED_SEV_FEATURES field in the VMCB
+according to the features the hypervisor supports.
+
+Tested SNP by setting random feature bits to the sev_features
+assignment in wakeup_cpu_via_vmgexit() (but not its ghcb_set_rax).
+
+Tested SEV-ES by manipulating the save->sev_features assignment
+in sev_es_sync_vmsa().  Note that SEV-ES "allows" operation only
+works on features available in SEV-ES, i.e., it ignores SNP-only
+features.  Zen5 SEV-ES features are DEBUG_SWAP, PREVENT_HOST_IBS,
+VMGEXIT_PARAMETER, PMC_VIRTUALIZATION, and IBS_VIRTUALIZATION.
+
+Based on x86-kvm/next.
+
+[1] Section 15.36.20 "Allowed SEV Features", AMD64 Architecture
+    Programmer's Manual, Pub. 24593 Rev. 3.42 - March 2024:
+    https://bugzilla.kernel.org/attachment.cgi?id=306250
+
+v5:
+ - Add reviews-by
+ - Add the two new vmcb fields to dump_vmcb() output (Pankaj)
+ - Address comment by Tom and put single assignment in sev_es_init_vmcb
+
+v4: https://lore.kernel.org/kvm/20250306003806.1048517-1-kim.phillips@amd.com/
+ - Revert the user-opt in (Sean, sorry for the misunderstanding)
+ - this basically undoes v3 uAPI changes and makes the feature
+   always-on, if available
+ - rebased on top of x86-kvm/next
+
+v3: https://lore.kernel.org/kvm/20250207233410.130813-1-kim.phillips@amd.com/
+ - Assign allowed_sev_features based on user-provided vmsa_features mask (Sean)
+ - Users now have to explicitly opt-in with a qemu "allowed-sev-features=on" switch.
+ - Rebased on top of 6.14-rc1 and reworked authorship chain (tglx)
+
+v2: https://lore.kernel.org/lkml/20240822221938.2192109-1-kim.phillips@amd.com/
+ - Added some SEV_FEATURES require to be explicitly allowed by
+   ALLOWED_SEV_FEATURES wording (Sean).
+ - Added Nikunj's Reviewed-by.
+
+v1: https://lore.kernel.org/lkml/20240802015732.3192877-3-kim.phillips@amd.com/
+
+Kim Phillips (1):
+  KVM: SEV: Configure "ALLOWED_SEV_FEATURES" VMCB Field
+
+Kishon Vijay Abraham I (1):
+  x86/cpufeatures: Add "Allowed SEV Features" Feature
+
+ arch/x86/include/asm/cpufeatures.h | 1 +
+ arch/x86/include/asm/svm.h         | 7 ++++++-
+ arch/x86/kvm/svm/sev.c             | 5 +++++
+ arch/x86/kvm/svm/svm.c             | 2 ++
+ 4 files changed, 14 insertions(+), 1 deletion(-)
 
 
-On 3/3/25 11:14 PM, Dan Williams wrote:
-> In preparation for creating a new drivers/virt/coco/host/ directory to
-> house shared host driver infrastructure for confidential computing, move
-> configfs-tsm to a guest/ sub-directory. The tsm.ko module is renamed to
-> tsm_reports.ko. The old tsm.ko module was only ever demand loaded by
-> kernel internal dependencies, so it should not affect existing userspace
-> module install scripts.
->
-> The new drivers/virt/coco/guest/ is also a preparatory landing spot for
-> new / optional TSM Report mechanics like a TCB stability enumeration /
-> watchdog mechanism. To be added later.
->
-> Cc: Wu Hao <hao.wu@intel.com>
-> Cc: Yilun Xu <yilun.xu@intel.com>
-> Cc: Samuel Ortiz <sameo@rivosinc.com>
-> Cc: Tom Lendacky <thomas.lendacky@amd.com>
-> Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
-
-Reviewed-by: Kuppuswamy Sathyanarayanan 
-<sathyanarayanan.kuppuswamy@linux.intel.com>
-
->   MAINTAINERS                      |    2 +-
->   drivers/virt/coco/Kconfig        |    6 ++----
->   drivers/virt/coco/Makefile       |    2 +-
->   drivers/virt/coco/guest/Kconfig  |    7 +++++++
->   drivers/virt/coco/guest/Makefile |    3 +++
->   drivers/virt/coco/guest/report.c |    0
->   6 files changed, 14 insertions(+), 6 deletions(-)
->   create mode 100644 drivers/virt/coco/guest/Kconfig
->   create mode 100644 drivers/virt/coco/guest/Makefile
->   rename drivers/virt/coco/{tsm.c => guest/report.c} (100%)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 38bcf530c2ae..6a1d705c8eac 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -24116,7 +24116,7 @@ M:	Dan Williams <dan.j.williams@intel.com>
->   L:	linux-coco@lists.linux.dev
->   S:	Maintained
->   F:	Documentation/ABI/testing/configfs-tsm-report
-> -F:	drivers/virt/coco/tsm.c
-> +F:	drivers/virt/coco/guest/
->   F:	include/linux/tsm.h
->   
->   TRUSTED SERVICES TEE DRIVER
-> diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
-> index ff869d883d95..819a97e8ba99 100644
-> --- a/drivers/virt/coco/Kconfig
-> +++ b/drivers/virt/coco/Kconfig
-> @@ -3,10 +3,6 @@
->   # Confidential computing related collateral
->   #
->   
-> -config TSM_REPORTS
-> -	select CONFIGFS_FS
-> -	tristate
-> -
->   source "drivers/virt/coco/efi_secret/Kconfig"
->   
->   source "drivers/virt/coco/pkvm-guest/Kconfig"
-> @@ -16,3 +12,5 @@ source "drivers/virt/coco/sev-guest/Kconfig"
->   source "drivers/virt/coco/tdx-guest/Kconfig"
->   
->   source "drivers/virt/coco/arm-cca-guest/Kconfig"
-> +
-> +source "drivers/virt/coco/guest/Kconfig"
-> diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
-> index c3d07cfc087e..885c9ef4e9fc 100644
-> --- a/drivers/virt/coco/Makefile
-> +++ b/drivers/virt/coco/Makefile
-> @@ -2,9 +2,9 @@
->   #
->   # Confidential computing related collateral
->   #
-> -obj-$(CONFIG_TSM_REPORTS)	+= tsm.o
->   obj-$(CONFIG_EFI_SECRET)	+= efi_secret/
->   obj-$(CONFIG_ARM_PKVM_GUEST)	+= pkvm-guest/
->   obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
->   obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
->   obj-$(CONFIG_ARM_CCA_GUEST)	+= arm-cca-guest/
-> +obj-$(CONFIG_TSM_REPORTS)	+= guest/
-> diff --git a/drivers/virt/coco/guest/Kconfig b/drivers/virt/coco/guest/Kconfig
-> new file mode 100644
-> index 000000000000..ed9bafbdd854
-> --- /dev/null
-> +++ b/drivers/virt/coco/guest/Kconfig
-> @@ -0,0 +1,7 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +#
-> +# Confidential computing shared guest collateral
-> +#
-> +config TSM_REPORTS
-> +	select CONFIGFS_FS
-> +	tristate
-> diff --git a/drivers/virt/coco/guest/Makefile b/drivers/virt/coco/guest/Makefile
-> new file mode 100644
-> index 000000000000..b3b217af77cf
-> --- /dev/null
-> +++ b/drivers/virt/coco/guest/Makefile
-> @@ -0,0 +1,3 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +obj-$(CONFIG_TSM_REPORTS)	+= tsm_report.o
-> +tsm_report-y := report.o
-> diff --git a/drivers/virt/coco/tsm.c b/drivers/virt/coco/guest/report.c
-> similarity index 100%
-> rename from drivers/virt/coco/tsm.c
-> rename to drivers/virt/coco/guest/report.c
->
->
+base-commit: c9ea48bb6ee6b28bbc956c1e8af98044618fed5e
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.43.0
 
