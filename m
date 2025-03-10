@@ -1,121 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3392622330F
-	for <linux-coco@lists.linux.dev>; Mon, 10 Mar 2025 08:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFE6226D1B
+	for <linux-coco@lists.linux.dev>; Mon, 10 Mar 2025 11:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741595346; cv=none; b=O80Wmh+UYYN5UyxvV6VqCZaWiECRlPi1Xosj+Mn91R8zqDVH6+RRmXWPCtLtUAgsY0yhHfoZa8SqYchNIaaTHMtxLzZjaHbn6g3hoY1TubRntX4AunxvHst0kj2hrclYCBKFu5zbAyiID583PVMNac+ooTroya5Cn/L80agWzLo=
+	t=1741604943; cv=none; b=dr/s/KzCJeLW/CLxTo0cp+X0ZnmsrVNaJzgHPcqEwyidfxJSUrPfO/RWEo2kQN3aA0hO2rRkZRruqnnG/Wxv0w/YtqqLOQGK7U9BfR1fpA83YBNQhxtDbw9wYO610wmPw10FEbcXX3LoFPdbCo5KsxKPSeNPDewJEalkw/KquHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741595346; c=relaxed/simple;
-	bh=bdmthZTfeFQ5jVmiLX6ZsJvK3Q9ebBnX6m48VBCKrFE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nyOdNkCw8UJcVgIJe/xRuxYskxZelFAcWL16zbcaYjmW0/irh+LNUTuxVEE5HoFyXn4cUXq8ZfNzdlYFWl2LoN7vabxkQsyxw2W/qoH9nLlLMlNYDNdksJpv8LpzI4eRX7fkbIo6NrGvvRhY2ZKvO6B9ES6LdMju/XmUBfzLTvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nyNlS6rC; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+	s=arc-20240116; t=1741604943; c=relaxed/simple;
+	bh=zyuUROdM8RYQHtdyR8GD86eCrfq6ILVcngJvYInm2Xw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aQF7vI2QsdxmFOppeMhdAhdc8bZnKXqtPPc3QeuJoQDjfA9plSQySaqKf8VPgD7CvozmQ104KUZYO+UbXt42K3vPM66oHKyFm7b8QD/ESJxn4pQwSHu6VEOPk03XalYN0G0D/1wWJQrRKIdOS5B7cfpDfiPq9JlSYE2IyaUCjJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=j9RSy0HF; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nyNlS6rC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741595345; x=1773131345;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bdmthZTfeFQ5jVmiLX6ZsJvK3Q9ebBnX6m48VBCKrFE=;
-  b=nyNlS6rCVzkdQHkyFk18dHrpAvNgRdhhZ6hwZ5h56IrfjL+ekgiC9usj
-   pdjZjMiK5oxaPtrWr0uti2Nqu1l/ZbkvY0YXB8zlSAX0Upqyep62Qag69
-   JdPCtyUXmyvdrhZdcJj0QDryc0qNA/23JVVUbc7VI4RQNfGZYVnjBXqr1
-   6ag/ylxtmcM/ANFBplAUcLQ6IruM+xvrgFlS/ZFNafCPc1ny9EakDLGre
-   PMaew8VCt4sExc1rc0IaHMmJhYOLTjgHCP+ZNszTjVJUOkYDhzRDSMMfi
-   3EG0IGjJOXj5a24D05Uy9XXzO/D8Dvr1Qr1weLUm3YTk73ytW3IihYRED
-   Q==;
-X-CSE-ConnectionGUID: OCRU/ydtRM2/M0wpfmFw7w==
-X-CSE-MsgGUID: 9yosu7WBRi6QRhUcFO3gRg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11368"; a="46489282"
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
-   d="scan'208";a="46489282"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 01:29:04 -0700
-X-CSE-ConnectionGUID: SfFdmbs1Q92ASSjkAL0xCg==
-X-CSE-MsgGUID: Y8iTlEFQQdORZ01VPc53Bg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,235,1736841600"; 
-   d="scan'208";a="120820004"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa008.jf.intel.com with ESMTP; 10 Mar 2025 01:29:02 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 04CFE23F; Mon, 10 Mar 2025 10:28:59 +0200 (EET)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Rick Edgecombe  <rick.p.edgecombe@intel.com>,
-	linux-mm@kvack.org,
-	linux-coco@lists.linux.dev,
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="j9RSy0HF"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3F0F740E0176;
+	Mon, 10 Mar 2025 11:08:58 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id bKnyDEiQksym; Mon, 10 Mar 2025 11:08:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1741604933; bh=YQAaINXv5w2Ci1rsU+w5Dx9VoI6ACjlMHpZFyp5XQpU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j9RSy0HFlqKlxAbOMr3YapFNwd0xktOUTfuUieUpH6MtW5IEpR6cR9MQsuVUA10MQ
+	 BMkqTeprw9v+v8LpmvCbumr88U/SVTkkmsu2E5lHMU1CdRpsuUkXlILRbB2OxZIeuV
+	 xh26yU0kKBjyI/L7h6KnpKFwzlol/RnsVKBN+RoRu32An/FUAwISUKOHfK91g3RsaR
+	 nBeQ5LExjVwiyy7jsFwRRtehMnd65feMUitCSTix1X44V8AdXbYQqTt76GFDVVQj7A
+	 XvlDAfm//Ue4dd7L8syXz0vrdEr84Ags/4ZpbvJYol1aoi6ZdcFA+rUfhlc/5C3JlL
+	 b4AtwQiEOyYtpSQX/UUcwrdXqmO+7Cc3qkyorC/LiXr5ejYGnjynNeXHotd+V6G4mb
+	 WXwZZxG1DGyfgmwN5Pa9Vca0pFQPEAJdacKCByyzddVzKozzf4+7DscdfUUL+ER9Ew
+	 Quy8cd/rfSCsIjC41fSekVL3+7rKUkv87p8yQJ2FVgQNqkCGfXyzFZfx5UXjtVaGb4
+	 LVtLYIJZ+5Js1Bf62nhwBSA4HPWDnKzVEhlFKSpHvpQXc1ViSeZf7koIP4JXmPnKal
+	 weDhmzqF76Elfy/8XQC3C7254kuGX/6izP2uOk5inKJQ/UC1FDeNXzgnE8lpsr0xk9
+	 VrlRgAi2vTCUMebcF4Q5Cb/k=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4CFC640E015D;
+	Mon, 10 Mar 2025 11:08:35 +0000 (UTC)
+Date: Mon, 10 Mar 2025 12:08:34 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Claudio Carvalho <cclaudio@linux.ibm.com>,
+	Peter Huewe <peterhuewe@gmx.de>, x86@kernel.org,
+	Dov Murik <dovmurik@linux.ibm.com>, linux-coco@lists.linux.dev,
+	Dionna Glaze <dionnaglaze@google.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-integrity@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Farrah Chen <farrah.chen@intel.com>
-Subject: [PATCH] mm/page_alloc: Fix memory accept before watermarks gets initialized
-Date: Mon, 10 Mar 2025 10:28:55 +0200
-Message-ID: <20250310082855.2587122-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.47.2
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [RFC PATCH v2 1/6] x86/sev: add SVSM call macros for the vTPM
+ protocol
+Message-ID: <20250310110834.GEZ87IMgB_I86-3u3l@fat_crate.local>
+References: <20250228170720.144739-1-sgarzare@redhat.com>
+ <20250228170720.144739-2-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250228170720.144739-2-sgarzare@redhat.com>
 
-Watermarks are initialized during the postcore initcall. Until then, all
-watermarks are set to zero. This causes cond_accept_memory() to
-incorrectly skip memory acceptance because a watermark of 0 is always
-met.
+On Fri, Feb 28, 2025 at 06:07:15PM +0100, Stefano Garzarella wrote:
+> Add macros for SVSM_VTPM_QUERY and SVSM_VTPM_CMD calls as defined
+> in the "Secure VM Service Module for SEV-SNP Guests"
+> Publication # 58019 Revision: 1.00
+> 
+> Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58019.pdf
 
-To ensure progress, accept one MAX_ORDER page if the watermark is zero.
+Those URLs are unstable - simply naming the document properly in the commit
+message so that a search engine can find it is enough.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reported-and-tested-by: Farrah Chen <farrah.chen@intel.com>
----
- mm/page_alloc.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+>  arch/x86/include/asm/sev.h | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index 1581246491b5..f6ebf4492606 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -384,6 +384,10 @@ struct svsm_call {
+>  #define SVSM_ATTEST_SERVICES		0
+>  #define SVSM_ATTEST_SINGLE_SERVICE	1
+>  
+> +#define SVSM_VTPM_CALL(x)		((2ULL << 32) | (x))
+> +#define SVSM_VTPM_QUERY			0
+> +#define SVSM_VTPM_CMD			1
+> +
+>  #ifdef CONFIG_AMD_MEM_ENCRYPT
+>  
+>  extern u8 snp_vmpl;
+> -- 
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 579789600a3c..4fe93029bcb6 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7004,7 +7004,7 @@ static inline bool has_unaccepted_memory(void)
- 
- static bool cond_accept_memory(struct zone *zone, unsigned int order)
- {
--	long to_accept;
-+	long to_accept, wmark;
- 	bool ret = false;
- 
- 	if (!has_unaccepted_memory())
-@@ -7013,8 +7013,18 @@ static bool cond_accept_memory(struct zone *zone, unsigned int order)
- 	if (list_empty(&zone->unaccepted_pages))
- 		return false;
- 
-+	wmark = promo_wmark_pages(zone);
-+
-+	/*
-+	 * Watermarks have not been initialized yet.
-+	 *
-+	 * Accepting one MAX_ORDER page to ensure progress.
-+	 */
-+	if (!wmark)
-+		return try_to_accept_memory_one(zone);
-+
- 	/* How much to accept to get to promo watermark? */
--	to_accept = promo_wmark_pages(zone) -
-+	to_accept = wmark -
- 		    (zone_page_state(zone, NR_FREE_PAGES) -
- 		    __zone_watermark_unusable_free(zone, order, 0) -
- 		    zone_page_state(zone, NR_UNACCEPTED));
+Merge this patch with the patch where those are used - no need for a separate
+patch.
+
+Thx.
+
 -- 
-2.47.2
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
