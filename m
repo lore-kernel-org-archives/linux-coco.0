@@ -1,71 +1,104 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EA36088F
-	for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 17:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741713232; cv=none; b=rXWNy401yAGDtFt+sl+bE3+jqpBOrna/18NNaq6oNYBwnY086CXncLg38DZ64weN6FrOQgnjk4ueAWdHvw7exDsiU7T/SqAYv+NRhmVRL4ciN3Ny77uRRUdXYVzsc3KwDbv+ScZ63nIl4ssD/xONKtdKye4iZW2oP74neXidX1M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741713232; c=relaxed/simple;
-	bh=/fBZgkJEL5wUUGzQGkc5Eq/RgKaQQFa0MH8wEPk/S2E=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=iDHyLD9twBpHP8Y5QkAaJF7d85zUxkA9Ta0qYNeq2yf/0ih4ZEku9lwgxpMPqH2kX1EbhzoO5mQyKkhBVAuvBzsicf0vD7t8H0USDOPJAoYqATmHJHsqDZ3pYHqR7eIkYtJ6i6P+e0ew3D1HvAU8RPBYXBSsVpd/T1kLVsvFUPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=UBQ9RIpd; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="UBQ9RIpd"
-Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 4F3DC452C6;
-	Tue, 11 Mar 2025 18:13:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1741713229;
-	bh=/fBZgkJEL5wUUGzQGkc5Eq/RgKaQQFa0MH8wEPk/S2E=;
-	h=Date:From:To:Subject:From;
-	b=UBQ9RIpdCKq03FchmKsgOFIU0RhHDkEVpThzZE8M7N5aipIcre3wXTRbq+5ao/WOC
-	 Ob80pcjpiNh9y+63oJjS5RrurwtCx0NKPxX14+1RWV2FLjp4CyUFrfTUeYfFlUl6cc
-	 wJw4fhVhFvSEDOqJSG6DOrt2WwplWgc42BZ0zWkytmWaFa7NpI6ERLHp3j2473Lspa
-	 Ys4X1VCjcCIAlOJzq1CX1m8jBVcMDnPxBSCz/tgogoOgU7urE6kYHguzsJhsyQ8ijx
-	 adSwzDgmfWMpaMl7x5p+XhXy48m4LDOE8117P7aELFymlL6aAyoIoTRuGtUvdJEXEV
-	 nUS9/x/RvR8/w==
-Date: Tue, 11 Mar 2025 18:13:48 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call March 12th, 2025 (Changed meeting time for US)
-Message-ID: <Z9BvTJSoc166l2cf@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DF425BAB1
+	for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 18:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741718955; cv=none; b=AV6fMZUGDP/1NPDwrNunh2Gn12xSPld+ZB1oaabzV66lfnLyIKo/EIrpctctHjRMpsmlTNBdaTW5WChaEjrZgwkAgzFNIKnXPmRtZU+eAf/P4ROxgM6DykjE0r9FMZ/SRD3hbyZ52e+xdXHKKRLVhtqpBMr849Z02GmzjOo8Nqo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741718955; c=relaxed/simple;
+	bh=sYA1TxEVckFMYxaiPxQTwTk51QQHZg9peFirsjU5nGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HvSOn53aPNS0xd6+R4VbDabYIsUSjYtZmj/mjmqB37PxlBNnN/ZW9z+sZo8ehQ2NUmWF5inGC2YmldcUVAwqjvni/O7juA4liCMO2LzEPeGejMSf3Dwn7p4aq0k/cGDGI/0BMBoZ+NbVHliBhAVy2ja9arwc/7EPzz+R+lDoYsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MFWcCpxO; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MFWcCpxO"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ac28e66c0e1so442728666b.0
+        for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 11:49:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741718952; x=1742323752; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sYA1TxEVckFMYxaiPxQTwTk51QQHZg9peFirsjU5nGc=;
+        b=MFWcCpxOROp7Q9OC+8XNhR4Fmn3feTSYIcYqBSzsoq6buR4sxvK8u5Qa4ZPZPeVFXv
+         xhBngaYzhNvKkELSeRzjLDEWsCUgpJTA4v+yMhggyd7kRBHsvUapnEUKkwRqq8qfok4h
+         3GW5nsyeDd+wjKC/eNpnQCv9vCXVhODLNo5XoxF5mcArMbI7ry4BbUgDAiyy3m4kqHWQ
+         KFKRGRb/6BXaFA0mxN0EZSibgBMMh8qpWNUr1xEtsbpoWLTZO7aIcQfZWsrhmaFR3UXv
+         Tfpw0cKs1U3C/4Sy/pl6mIcVuV4vrMNXV8rDavNBXDxUnEWgEFaP5/mlyTfhCRBzo58J
+         vAQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741718952; x=1742323752;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sYA1TxEVckFMYxaiPxQTwTk51QQHZg9peFirsjU5nGc=;
+        b=lYbV2shMFZo0+hhEkDzfuVwzSXZ/KSlGrfftnc4b04f7g7ismtM01Pah/SfVj3tnak
+         JjVv8vEew5h6V6EMBR2X3E7JrixECyZ4Cj32MJ9tMIvm8nl3JB266USS6fx0mSbqHKAv
+         IfPkbxz/VTHCCV7613ZNIROxFZBckzRjTWjCDMPJmb9uGIo0s4WJUJP+4pRX5PF0LlDi
+         1tuUp3fmn8vJVg1ewNqHQ0SNXUi9EII8/+8KhmFByK5uEBCgqtNHcCZV+N2I5ADsP2xE
+         dJ+6VRYw+8GsFzpSL8CHZFzCujNr36BqLgXbcgs32NYgZDmT+tKQr43ph5PvFeDx7DqJ
+         iodQ==
+X-Gm-Message-State: AOJu0YzDlnBeRVIaS75LsJ3PN47vPYxDK/KDINmtrMbbECgFK1/807er
+	Y2QN9yfWuU1FFNnkRbyYpqKkn7M5LxvojkM8kdbVOS6IULvQFhbG4ZowGrsBDAKeqVyVLDriZWT
+	m+ImBc9Y47QWpojnwRTOFDiGH2OtoRC7Up2QxSoHMN9lmk7AqRlku
+X-Gm-Gg: ASbGncvc490qNFouwfhpuuswzt4IPK1GkJoh1TPd6VD7EXb336+sG6cFIMvWKRUSBZy
+	n13WVOI6rV9QCVCC+l98Ej+ZA2iqVIWAqTyjsspqql8njOmC5OQ7uksAATUIl1r6frvvfAFI9Fk
+	/y2HzIWHhUtD0kHUf2LcX8aExX
+X-Google-Smtp-Source: AGHT+IHmRnU2uKgHpiKAfsKDFgbgseDYwKOj2QbYqq2TZv0gI8xklxtSmDqf2guePf4k19GvVAwzAMOHYxELB6UeaJ4=
+X-Received: by 2002:a17:907:9487:b0:ac2:cfb0:9c10 with SMTP id
+ a640c23a62f3a-ac2cfb09ddamr256610566b.32.1741718951886; Tue, 11 Mar 2025
+ 11:49:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <CABayD+dsAeqQnX7izBA-RkyM5W6p7zg+hgvVEo8B2i6L-WrHVw@mail.gmail.com>
+In-Reply-To: <CABayD+dsAeqQnX7izBA-RkyM5W6p7zg+hgvVEo8B2i6L-WrHVw@mail.gmail.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Tue, 11 Mar 2025 11:49:00 -0700
+X-Gm-Features: AQ5f1Jqu1Mu6BL8q-A6h2KaAiC49rLdW7_iQkpzT7kChS5smNsF6kN-L8YogyLA
+Message-ID: <CAAH4kHaOO-61nFtqgSHkA0Qhk5tAD8NZ-hbSFVR1oG629OD=Yw@mail.gmail.com>
+Subject: Re: Kernel SIG meeting 3/13 - Continuing discussions on SVSM
+To: Steve Rutherford <srutherford@google.com>
+Cc: linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Mon, Mar 10, 2025 at 3:27=E2=80=AFPM Steve Rutherford <srutherford@googl=
+e.com> wrote:
+>
+> Hi all,
+>
+> We have another instance of the Kernel SIG coming up, at 9AM PDT on
+> Thursday, March 10th.
+March 13th, yes?
 
-The US is already on summer time and Europe does not switch before March
-30th, so the SVSM call will be an hour later in the US for the next
-three weeks. If you are in the US, please be aware of that.
+>
+> **Be aware of the DST skewing that happens this time of year!** The USA
+> jumped forward an hour, and, for example, Europe won't do so for
+> another ~3 weeks. The meeting will be an hour for much of the world
+> (e.g. 4PM in the UK, 5PM in Germany).
+>
+> Zoom link - https://zoom-lfx.platform.linuxfoundation.org/meeting/9240116=
+9243?password=3De6c02995-6cfb-4f90-82b6-747f767eb168
+> Agenda - https://docs.google.com/document/d/18D820gyt2xe84Jy6dGXgrNThApoo=
+zcekDzvIlK2_bd4/edit?tab=3Dt.0
+> Calendar - https://confidentialcomputing.io/get-involved/calendar/
+>
+> We should continue discussions of OS <-> SVSM communication. If you
+> have concrete questions/topics, please add them to the agenda. Any
+> topic, not just the SVSM, is welcome.
+>
+> Thanks,
+> Steve
+>
 
-Otherwise:
 
-Here is the usual call for agenda items for the this weeks SVSM
-development call.  Please send me any agenda items you have in mind or
-raise them in the meeting.
-
-Details of the meeting (GMeet and Calendar links, meeting time) can be
-found in our governance repository at:
-
-	https://github.com/coconut-svsm/governance
-
-The meeting will be recorded and the recording eventually published.
-
-See you all there.
-
-Regards,
-
-	Jörg
+--=20
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
