@@ -1,183 +1,71 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31003257AF7
-	for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 14:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EA36088F
+	for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 17:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741704376; cv=none; b=CBAfWKiQWtNlcNM5/26+AoiBr+JVz5kNts7OojhxLzYNHghCiNd4NpiWh5ych/GVmurZ2YxY1jhdDUqnWNFVltqLZ0aQMm2FXnpeBpEUBdQGsBYDmyJbZexwjnskBbvKqftNNxDMAfPY/LsF5CZOFBY2rGgbwAD0V1Le0NnzCao=
+	t=1741713232; cv=none; b=rXWNy401yAGDtFt+sl+bE3+jqpBOrna/18NNaq6oNYBwnY086CXncLg38DZ64weN6FrOQgnjk4ueAWdHvw7exDsiU7T/SqAYv+NRhmVRL4ciN3Ny77uRRUdXYVzsc3KwDbv+ScZ63nIl4ssD/xONKtdKye4iZW2oP74neXidX1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741704376; c=relaxed/simple;
-	bh=x//dKC9oGUFGVKaiveq/8PxZA285XCr2A7hIamJNYYs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fp46Zts+fKanvvzolRtIglecPUMraJi7ko2rJCjiPO+ZWyGTIBon/iXIWoIu3M+NMY3FWep4GpZ8oA4w5L3GtcxNwv56cusnNH64T3ax7Ikp5RU+Wqvip7qcoPqyVYLJfRroLwXmUlqMXVa/RDmaPs+Dvho6jUXxrUaW8Ysa9ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE5771692;
-	Tue, 11 Mar 2025 07:46:25 -0700 (PDT)
-Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.1.197.1])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 597B23F694;
-	Tue, 11 Mar 2025 07:46:13 -0700 (PDT)
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: lpieralisi@kernel.org,
-	robin.murphy@arm.com,
-	aneesh.kumar@kernel.org,
-	linux-coco@lists.linux.dev,
-	bhelgaas@google.com,
-	lukas@wunner.de,
-	sameo@rivosinc.com,
-	aik@amd.com,
-	yilun.xu@linux.intel.com,
-	linux-pci@vger.kernel.org,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [RESEND RFC PATCH 3/3] samples: devsec: Add support for PCI_DOMAINS_GENERIC
-Date: Tue, 11 Mar 2025 14:46:01 +0000
-Message-ID: <20250311144601.145736-3-suzuki.poulose@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250311144601.145736-1-suzuki.poulose@arm.com>
-References: <20250311141712.145625-1-suzuki.poulose@arm.com>
- <20250311144601.145736-1-suzuki.poulose@arm.com>
+	s=arc-20240116; t=1741713232; c=relaxed/simple;
+	bh=/fBZgkJEL5wUUGzQGkc5Eq/RgKaQQFa0MH8wEPk/S2E=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=iDHyLD9twBpHP8Y5QkAaJF7d85zUxkA9Ta0qYNeq2yf/0ih4ZEku9lwgxpMPqH2kX1EbhzoO5mQyKkhBVAuvBzsicf0vD7t8H0USDOPJAoYqATmHJHsqDZ3pYHqR7eIkYtJ6i6P+e0ew3D1HvAU8RPBYXBSsVpd/T1kLVsvFUPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=UBQ9RIpd; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="UBQ9RIpd"
+Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 4F3DC452C6;
+	Tue, 11 Mar 2025 18:13:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1741713229;
+	bh=/fBZgkJEL5wUUGzQGkc5Eq/RgKaQQFa0MH8wEPk/S2E=;
+	h=Date:From:To:Subject:From;
+	b=UBQ9RIpdCKq03FchmKsgOFIU0RhHDkEVpThzZE8M7N5aipIcre3wXTRbq+5ao/WOC
+	 Ob80pcjpiNh9y+63oJjS5RrurwtCx0NKPxX14+1RWV2FLjp4CyUFrfTUeYfFlUl6cc
+	 wJw4fhVhFvSEDOqJSG6DOrt2WwplWgc42BZ0zWkytmWaFa7NpI6ERLHp3j2473Lspa
+	 Ys4X1VCjcCIAlOJzq1CX1m8jBVcMDnPxBSCz/tgogoOgU7urE6kYHguzsJhsyQ8ijx
+	 adSwzDgmfWMpaMl7x5p+XhXy48m4LDOE8117P7aELFymlL6aAyoIoTRuGtUvdJEXEV
+	 nUS9/x/RvR8/w==
+Date: Tue, 11 Mar 2025 18:13:48 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call March 12th, 2025 (Changed meeting time for US)
+Message-ID: <Z9BvTJSoc166l2cf@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-Allocate/free a domain at runtime for the sample devsec TSM.
+Hi,
 
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
----
- samples/Kconfig         |  1 -
- samples/devsec/bus.c    | 32 +++++++++++++++++++++-----------
- samples/devsec/common.c |  2 +-
- samples/devsec/devsec.h |  2 +-
- 4 files changed, 23 insertions(+), 14 deletions(-)
+The US is already on summer time and Europe does not switch before March
+30th, so the SVSM call will be an hour later in the US for the next
+three weeks. If you are in the US, please be aware of that.
 
-diff --git a/samples/Kconfig b/samples/Kconfig
-index 6bd64fc54ac1..f23be5088b9e 100644
---- a/samples/Kconfig
-+++ b/samples/Kconfig
-@@ -308,7 +308,6 @@ config SAMPLE_DEVSEC
- 	tristate "Build a sample TEE Security Manager with an emulated PCI endpoint"
- 	depends on PCI
- 	depends on VIRT_DRIVERS
--	depends on X86 # TODO: PCI_DOMAINS_GENERIC support
- 	select PCI_BRIDGE_EMUL
- 	select PCI_TSM
- 	select TSM
-diff --git a/samples/devsec/bus.c b/samples/devsec/bus.c
-index b78c04b21eb9..8ec04b3549f0 100644
---- a/samples/devsec/bus.c
-+++ b/samples/devsec/bus.c
-@@ -21,7 +21,7 @@
- #define NR_DEVSEC_DEVS 1
- 
- struct devsec {
--	struct pci_sysdata sysdata;
-+	int domain;
- 	struct gen_pool *iomem_pool;
- 	struct resource resource[2];
- 	struct pci_bus *bus;
-@@ -70,7 +70,7 @@ struct devsec {
- 
- static struct devsec *bus_to_devsec(struct pci_bus *bus)
- {
--	return container_of(bus->sysdata, struct devsec, sysdata);
-+	return container_of(bus->sysdata, struct devsec, domain);
- }
- 
- static int devsec_dev_config_read(struct devsec *devsec, struct pci_bus *bus,
-@@ -309,6 +309,17 @@ static struct pci_ops devsec_ops = {
- };
- 
- /* borrowed from vmd_find_free_domain() */
-+#ifdef CONFIG_PCI_GENERIC_DOMAINS
-+static int find_free_domain(void)
-+{
-+	return pci_alloc_dynamic_domain();
-+}
-+
-+static int release_domain(int domain)
-+{
-+	pci_free_dynamic_domain(domain);
-+}
-+#else
- static int find_free_domain(void)
- {
- 	int domain = 0xffff;
-@@ -318,13 +329,15 @@ static int find_free_domain(void)
- 		domain = max_t(int, domain, pci_domain_nr(bus));
- 	return domain + 1;
- }
--
-+static void release_domain(int domain) {}
-+#endif
- static void destroy_bus(void *data)
- {
- 	struct devsec *devsec = data;
- 
- 	pci_stop_root_bus(devsec->bus);
- 	pci_remove_root_bus(devsec->bus);
-+	release_domain(devsec->domain);
- }
- 
- static u32 build_ext_cap_header(u32 id, u32 ver, u32 next)
-@@ -588,7 +601,6 @@ static int __init devsec_bus_probe(struct platform_device *pdev)
- 	int rc;
- 	LIST_HEAD(resources);
- 	struct devsec *devsec;
--	struct pci_sysdata *sd;
- 	u64 mmio_size = SZ_64G;
- 	struct pci_host_bridge *hb;
- 	struct device *dev = &pdev->dev;
-@@ -633,15 +645,13 @@ static int __init devsec_bus_probe(struct platform_device *pdev)
- 	};
- 	pci_add_resource(&resources, &devsec->resource[1]);
- 
--	sd = &devsec->sysdata;
--	devsec_sysdata = sd;
--	sd->domain = find_free_domain();
--	if (sd->domain < 0)
--		return sd->domain;
--
-+	devsec_sysdata = &devsec->domain;
-+	devsec->domain = find_free_domain();
-+	if (devsec->domain < 0)
-+		return devsec->domain;
- 
- 	devsec->bus = pci_create_root_bus(dev, 0, &devsec_ops,
--					  &devsec->sysdata, &resources);
-+					  &devsec->domain, &resources);
- 	if (!devsec->bus) {
- 		pci_free_resource_list(&resources);
- 		return -ENOMEM;
-diff --git a/samples/devsec/common.c b/samples/devsec/common.c
-index 9b6f4022f241..4da85b53b6a9 100644
---- a/samples/devsec/common.c
-+++ b/samples/devsec/common.c
-@@ -8,7 +8,7 @@
-  * devsec_bus and devsec_tsm need a common location for this data to
-  * avoid depending on each other. Enables load order testing
-  */
--struct pci_sysdata *devsec_sysdata;
-+void *devsec_sysdata;
- EXPORT_SYMBOL_GPL(devsec_sysdata);
- 
- static int __init common_init(void)
-diff --git a/samples/devsec/devsec.h b/samples/devsec/devsec.h
-index 794a9898ee2d..496020c9cb6d 100644
---- a/samples/devsec/devsec.h
-+++ b/samples/devsec/devsec.h
-@@ -3,5 +3,5 @@
- 
- #ifndef __DEVSEC_H__
- #define __DEVSEC_H__
--extern struct pci_sysdata *devsec_sysdata;
-+extern void *devsec_sysdata;
- #endif /* __DEVSEC_H__ */
--- 
-2.43.0
+Otherwise:
 
+Here is the usual call for agenda items for the this weeks SVSM
+development call.  Please send me any agenda items you have in mind or
+raise them in the meeting.
+
+Details of the meeting (GMeet and Calendar links, meeting time) can be
+found in our governance repository at:
+
+	https://github.com/coconut-svsm/governance
+
+The meeting will be recorded and the recording eventually published.
+
+See you all there.
+
+Regards,
+
+	Jörg
