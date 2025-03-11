@@ -1,69 +1,69 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF99322E41D
-	for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 09:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8DD231A30
+	for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 09:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741686165; cv=none; b=CNC6yPNfgUOs1GtRi2MoNmLTcabH3cATZk/NC+bZ/85R458TQKE8335tOEh7T+qwLGBVIG+7HPSLYzhLX20hrHV+rKRvSyyPJqFsd1vQ0URdaqx9pTWAkirefLhYJjW6XZTtOR6z9OLKJYkkjIF//8CkPWriuod0DJyAEp5GRZo=
+	t=1741686168; cv=none; b=YQ5uXdandClfgk7BTuHDmaml7GDGnOO8TITRQIMHd4I5n3cPwjGhm/scwgoibBRx4/naA23vMeQzPUo1UZG3RWI7nGdkNb9SYv/3w7xIU+7vUBasyY6oHZztIBMggfN0lHeI5oK4nAFsxFALWVBr2Lh0jnP1uJQogMig6Cdkrf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741686165; c=relaxed/simple;
-	bh=s48TuCB7hx4s0XQbfy+bStqom7rSsuzABfR49ZEXiRE=;
+	s=arc-20240116; t=1741686168; c=relaxed/simple;
+	bh=/A3bynKEsxmf0Y53DPDvuqNqTHcudnSVLkcL8DWcb4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=LSKfvjNgbtVcgPhAokRU8vWFF4EbTp2cPM82/EaPBQrPeYJ5/kXcdVf4UwOKmz+NXOT6UlEGfPxwWNMcW9FIFiTFm/dYQ936f6Xpkv1L4/i7wB4u8WNKbVqk4YGSydSWTARR8Ay4FLNKkuC9Z8timz4hl1N9llQ6/CkjPRba3B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Micx7+nO; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=oda3g7NH5SCutumUUUfx2BSlppRKO2Mvceln5LqOzVVnYTlU4hptHAgRvmxoC7tX4D1se7nIy/4Jzc5dUnHn6wtZYJ6dTVd4K5XkHIWiQc4kTdiYGH3kBAs+vrmlNaaqMNrdele1AjrSXelCsfZ7pJ8CRimQGLLlQJMJ6XlcI04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hVL1E3cZ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Micx7+nO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hVL1E3cZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741686160;
+	s=mimecast20190719; t=1741686166;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gWbgBYfOGia6Jpo6dySuLR4cc3OA1mqpDszmSXqcblw=;
-	b=Micx7+nOZMR/RihdQbdwbOMC2FMCwiWY7eVY9OMFtWOFblIg13BzsGgILTCu1Qlgjoz/F7
-	2h1r/+WR3eKHv9iLZmU4jGTcpsRpWJjdyPCYlaji0JLzh8ArIWcGIaRzM2bk8xEl2nvlRx
-	3mBKQEkkJqaCq7XTrb77c3MnFM0VkY8=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=diTiRQ4QEE+DrXrQrQ/ial0maPf28mPhXHy+LSWc3KI=;
+	b=hVL1E3cZSfqK5EtXNzSYGnGhnbKTwuGvvXVE7pgu0HQ9GoiFBy1wkqxIAe1mqsJEPBTi0C
+	dNuSHM7qivVSAVsOV9TD/zy/mpCM5+MwTPNwoZAv5NTxsdTLcD5pD53mukVujFyFBOh1Gn
+	yO1dlgQI0u1EtnKxZ2eMl2Op5B7QU/s=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-9YgqQ6YtO3anOdyUW5w5rg-1; Tue, 11 Mar 2025 05:42:39 -0400
-X-MC-Unique: 9YgqQ6YtO3anOdyUW5w5rg-1
-X-Mimecast-MFC-AGG-ID: 9YgqQ6YtO3anOdyUW5w5rg_1741686158
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-5d9e4d33f04so5127193a12.0
-        for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 02:42:39 -0700 (PDT)
+ us-mta-306-XGocJ1XCPA-DOkGnxIg5Zw-1; Tue, 11 Mar 2025 05:42:43 -0400
+X-MC-Unique: XGocJ1XCPA-DOkGnxIg5Zw-1
+X-Mimecast-MFC-AGG-ID: XGocJ1XCPA-DOkGnxIg5Zw_1741686163
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-ab68fbe53a4so628554066b.2
+        for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 02:42:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741686158; x=1742290958;
+        d=1e100.net; s=20230601; t=1741686162; x=1742290962;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gWbgBYfOGia6Jpo6dySuLR4cc3OA1mqpDszmSXqcblw=;
-        b=p6H6tr549STCm48gGiJ8M2t8OFpkZLBtPR8gvlQxOm/NHFJwzd0f/wVQGUnuZkMC5W
-         6/8WafacL9c9YbmXKetSiY/eMj36AClRWwZl1U2aSqDmd+NKRW8TNrDTyO1cd12Va5dX
-         GhyM0iooEotCjClc4aFsrJlfT59K3cIG+4bpIvlU36Q+P4WX5/bk4W7nMXDSlBUlBd5q
-         RKAOcF5OGqmrrHplus8ZV06cNqlx6K6iHfLbzwbzOiWUvQPa9BPLpH/Wen/l64Os0s0/
-         KyPV1MukKhHn9n+bwGe/bwIkztRgF1NsrmC4836M4IxfMOXojSYOtlCShfGclKi1OBmj
-         2EkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW41Eidcw1vfd1gTlTcgsT+0NpG1reRo6mKvtWNA6sEkopiez6s0Q3Lac7EPv+UMo3WJTRdbhUEP8V4@lists.linux.dev
-X-Gm-Message-State: AOJu0YxCB6pmRYJav/l4I8T4YtqLi23CXOm98NzCtGI9oVwhmF1s3Abd
-	1NQWW/HJhldOh06K+Z1VRDK2Za0fTbvzLM8gBJani0RWk3/ZxVqRuYHG+SMdgJRwF3/avE1fh1j
-	0aIqdM1WCvsnVxLQVa++aF7pYVFn4d3Spb2Vz2LeAdNbPnFSGM4mtZ/ZINx0=
-X-Gm-Gg: ASbGncusKN6JALFIr8NczjmW/lLIOiysEezZNLke0z951FDxXKAROfkifzVl/BTkDeg
-	XbP6jjob8Md9clY4X2+okO9Xr8cDt7v3sJ4+NUVNsgeTAdqiDGF6Gcc7sEEjnoo2BsToAgSe2Zr
-	YBjL6q9hryu5BVO+zWqfGgS17bEHh7ZB88Eu7tDK086o5YPhwIqwqR39W5dDsaQJRj65E1yiAeX
-	lPYUFpUKlRxYtg8qVtD1Pt/UAfMvi40c7IVIYvwRHg7utohGy5f7aA1ZY9uOKri2qUVdSV2xEAb
-	DOJtBdnMQ7L6ERU7+6PHKKbsCKfXjvute2TD5/94ij7HZeI2w76BqrwPstbsvxO7pqF4fNIx
-X-Received: by 2002:a05:6402:254a:b0:5e6:1602:bfbb with SMTP id 4fb4d7f45d1cf-5e75f984412mr3427194a12.27.1741686158201;
-        Tue, 11 Mar 2025 02:42:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEPkM6rVc1QOWMePtECn1wZste/fTBV6MwarFwJ8JBd8XyGWLzR60WZC4WklV0jI8qfpX5GoA==
-X-Received: by 2002:a05:6402:254a:b0:5e6:1602:bfbb with SMTP id 4fb4d7f45d1cf-5e75f984412mr3427137a12.27.1741686157633;
-        Tue, 11 Mar 2025 02:42:37 -0700 (PDT)
+        bh=diTiRQ4QEE+DrXrQrQ/ial0maPf28mPhXHy+LSWc3KI=;
+        b=lbgEchNN8Ual/bRNnferCP3e5/R8YTcRsWiGpGxmJhMcrM1kW9RTGyHJclKS1wQMfP
+         xdY2MxL4gJbsYAXGnhaWEjnyyreqEZ1XQ/NB9SAyKuLaXKy35HrNsP+JiLhdTFruR7+l
+         ZgwsmXhnABphqQBfwu01gL64IKrYgNuAYPxjcheuLweSVBGfwdWWIDyFgt20YX0tnQXg
+         qjqXsjPXvf/8xZbwJFydX09eO//54K9MvBQD9hJgneaZrz6CX+3WBg/i1kGwt4IvOWwi
+         Ms0P1FCjbsWiVf4yIE84/p4q4frhjbfUY8jY8u8iXzcjiTfsc2+7JjWYx0raeZc4jRM/
+         EjZg==
+X-Forwarded-Encrypted: i=1; AJvYcCXNn4XDFbaiBSPIIIyHw8BDkuYPX1d5HNfbOVvB2fGTQsVrlFHkr18gMDS4uFLiACJu/pMV5HZDVe2p@lists.linux.dev
+X-Gm-Message-State: AOJu0YydyQonD43xgSMLSWhGQf5aiJR8y/P1f0QP29AzCWxzyEL/8I+R
+	Uwzs4hnaYKbaS1X42jNFmv7amKkLInq7AgvdBU4ypp6RQo+Bc4BY99ijH8uWX69vgTRa7Lv/jmK
+	U0VN0gN0oKrNqxjdCWaG1suRRaCtDmM6pzAKzJq+GqxXTYYqX7gaqEHx7ZUM=
+X-Gm-Gg: ASbGncvqpGkAWnKVTSLR8ofa+sitsRG8CW8DMLPHDqW2lOl21Jj7Qw2vKFEHdEKW50h
+	Sh8AuuSY/be++jO6pYPyfLfZm6f0SQoYksbR1S163+xiF/JnG7AeYnc2xHytA+vT6yQLFG/R31U
+	tw9bwhRKIDUKcDgjnA4MT/2FFGZqqQ58J1sk9UJkR8XWA1KHC1riVBhoaze2eXGaXOWPRzBMxx+
+	5+AIsDhhmlZY4E3Iib9yU+bnltk3qhASQQ3uykpqZ0WL9z0tmMveQoZpgx6U1HrIcfN6eSMGwek
+	v/KCS26h6DM4o4jhWrJDtZYYU9xkNp/2+RJHZwWmrATnlD6NroKmUf71aeEovSTvvCZdgo9t
+X-Received: by 2002:a17:907:7d9f:b0:ac2:97b2:1d3f with SMTP id a640c23a62f3a-ac297b22079mr1114321966b.33.1741686162465;
+        Tue, 11 Mar 2025 02:42:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHUcxLn6TcACG5q0J+lrMTI7KwpBjie28By2PFquAKqewgotRjAJtSnPnu+qLJ4qo42XwLXVg==
+X-Received: by 2002:a17:907:7d9f:b0:ac2:97b2:1d3f with SMTP id a640c23a62f3a-ac297b22079mr1114316766b.33.1741686161827;
+        Tue, 11 Mar 2025 02:42:41 -0700 (PDT)
 Received: from localhost.localdomain (host-79-46-200-29.retail.telecomitalia.it. [79.46.200.29])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e5c7472169sm8085277a12.24.2025.03.11.02.42.36
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac2a27d2613sm298483166b.12.2025.03.11.02.42.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 02:42:36 -0700 (PDT)
+        Tue, 11 Mar 2025 02:42:41 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Jarkko Sakkinen <jarkko@kernel.org>
 Cc: Peter Huewe <peterhuewe@gmx.de>,
@@ -84,9 +84,9 @@ Cc: Peter Huewe <peterhuewe@gmx.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Joerg Roedel <jroedel@suse.de>,
 	Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH v3 1/4] x86/sev: add SVSM vTPM probe/send_command functions
-Date: Tue, 11 Mar 2025 10:42:22 +0100
-Message-ID: <20250311094225.35129-2-sgarzare@redhat.com>
+Subject: [PATCH v3 2/4] svsm: add header with SVSM_VTPM_CMD helpers
+Date: Tue, 11 Mar 2025 10:42:23 +0100
+Message-ID: <20250311094225.35129-3-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311094225.35129-1-sgarzare@redhat.com>
 References: <20250311094225.35129-1-sgarzare@redhat.com>
@@ -97,17 +97,16 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qGQlsYzozI62ssAh_pz6doz1U_ivMudcbG_87-peblw_1741686158
+X-Mimecast-MFC-PROC-ID: QaBqdty1HkQ7xafJn8oUbFIur1OidWhyrHx7Sm8iX6c_1741686163
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Add two new functions to probe and send commands to the SVSM vTPM.
-They leverage the two calls defined by the AMD SVSM specification [1]
-for the vTPM protocol: SVSM_VTPM_QUERY and SVSM_VTPM_CMD.
+Helpers for the SVSM_VTPM_CMD calls used by the vTPM protocol defined by
+the AMD SVSM spec [1].
 
-Expose these functions to be used by other modules such as a tpm
-driver.
+The vTPM protocol follows the Official TPM 2.0 Reference Implementation
+(originally by Microsoft, now part of the TCG) simulator protocol.
 
 [1] "Secure VM Service Module for SEV-SNP Guests"
     Publication # 58019 Revision: 1.00
@@ -119,83 +118,162 @@ Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
 v3:
+- renamed header and prefix to make clear it's related to the SVSM vTPM
+  protocol
+- renamed fill/parse functions [Tom]
 - removed link to the spec because those URLs are unstable [Borislav]
-- squashed "x86/sev: add SVSM call macros for the vTPM protocol" patch
-  in this one [Borislav]
-- slimmed down snp_svsm_vtpm_probe() [Borislav]
-- removed features check and any print related [Tom]
 ---
- arch/x86/include/asm/sev.h |  7 +++++++
- arch/x86/coco/sev/core.c   | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ include/linux/svsm_vtpm.h | 141 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 141 insertions(+)
+ create mode 100644 include/linux/svsm_vtpm.h
 
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index ba7999f66abe..09471d058ce5 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -384,6 +384,10 @@ struct svsm_call {
- #define SVSM_ATTEST_SERVICES		0
- #define SVSM_ATTEST_SINGLE_SERVICE	1
- 
-+#define SVSM_VTPM_CALL(x)		((2ULL << 32) | (x))
-+#define SVSM_VTPM_QUERY			0
-+#define SVSM_VTPM_CMD			1
+diff --git a/include/linux/svsm_vtpm.h b/include/linux/svsm_vtpm.h
+new file mode 100644
+index 000000000000..2ce9b1cb827e
+--- /dev/null
++++ b/include/linux/svsm_vtpm.h
+@@ -0,0 +1,141 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2023 James.Bottomley@HansenPartnership.com
++ * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
++ *
++ * Helpers for the SVSM_VTPM_CMD calls used by the vTPM protocol defined by the
++ * AMD SVSM spec [1].
++ *
++ * The vTPM protocol follows the Official TPM 2.0 Reference Implementation
++ * (originally by Microsoft, now part of the TCG) simulator protocol.
++ *
++ * [1] "Secure VM Service Module for SEV-SNP Guests"
++ *     Publication # 58019 Revision: 1.00
++ */
++#ifndef _SVSM_VTPM_H_
++#define _SVSM_VTPM_H_
 +
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- 
- extern u8 snp_vmpl;
-@@ -481,6 +485,9 @@ void snp_msg_free(struct snp_msg_desc *mdesc);
- int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
- 			   struct snp_guest_request_ioctl *rio);
- 
-+bool snp_svsm_vtpm_probe(void);
-+int snp_svsm_vtpm_send_command(u8 *buffer);
++#include <linux/errno.h>
++#include <linux/string.h>
++#include <linux/types.h>
 +
- void __init snp_secure_tsc_prepare(void);
- void __init snp_secure_tsc_init(void);
- 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 96c7bc698e6b..2166bdff88b7 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -2628,6 +2628,37 @@ static int snp_issue_guest_request(struct snp_guest_req *req, struct snp_req_dat
- 	return ret;
- }
- 
-+bool snp_svsm_vtpm_probe(void)
++/*
++ * The current TCG Simulator TPM commands we support.  The complete list is
++ * in the TcpTpmProtocol header:
++ *
++ * https://github.com/TrustedComputingGroup/TPM/blob/main/TPMCmd/Simulator/include/TpmTcpProtocol.h
++ */
++
++#define TPM_SEND_COMMAND		8
++#define TPM_SIGNAL_CANCEL_ON		9
++#define TPM_SIGNAL_CANCEL_OFF		10
++/*
++ * Any platform specific commands should be placed here and should start
++ * at 0x8000 to avoid clashes with the TCG Simulator protocol.  They should
++ * follow the same self describing buffer format below.
++ */
++
++#define SVSM_VTPM_MAX_BUFFER		4096 /* max req/resp buffer size */
++
++/**
++ * struct tpm_req - generic request header for single word command
++ *
++ * @cmd:	The command to send
++ */
++struct tpm_req {
++	u32 cmd;
++} __packed;
++
++/**
++ * struct tpm_resp - generic response header
++ *
++ * @size:	The response size (zero if nothing follows)
++ *
++ * Note: most TCG Simulator commands simply return zero here with no indication
++ * of success or failure.
++ */
++struct tpm_resp {
++	u32 size;
++} __packed;
++
++/**
++ * struct tpm_send_cmd_req - Structure for a TPM_SEND_COMMAND request
++ *
++ * @hdr:	The request header whit the command (must be TPM_SEND_COMMAND)
++ * @locality:	The locality
++ * @inbuf_size:	The size of the input buffer following
++ * @inbuf:	A buffer of size inbuf_size
++ *
++ * Note that TCG Simulator expects @inbuf_size to be equal to the size of the
++ * specific TPM command, otherwise an TPM_RC_COMMAND_SIZE error is
++ * returned.
++ */
++struct tpm_send_cmd_req {
++	struct tpm_req hdr;
++	u8 locality;
++	u32 inbuf_size;
++	u8 inbuf[];
++} __packed;
++
++/**
++ * struct tpm_send_cmd_req - Structure for a TPM_SEND_COMMAND response
++ *
++ * @hdr:	The response header whit the following size
++ * @outbuf:	A buffer of size hdr.size
++ */
++struct tpm_send_cmd_resp {
++	struct tpm_resp hdr;
++	u8 outbuf[];
++} __packed;
++
++/**
++ * svsm_vtpm_fill_cmd_req() - fill a struct tpm_send_cmd_req to be sent to SVSM
++ * @req: The struct tpm_send_cmd_req to fill
++ * @locality: The locality
++ * @buf: The buffer from where to copy the payload of the command
++ * @len: The size of the buffer
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++static inline int
++svsm_vtpm_fill_cmd_req(struct tpm_send_cmd_req *req, u8 locality,
++		       const u8 *buf, size_t len)
 +{
-+	struct svsm_call call = {};
++	if (len > SVSM_VTPM_MAX_BUFFER - sizeof(*req))
++		return -EINVAL;
 +
-+	/* The vTPM device is available only if a SVSM is present */
-+	if (!snp_vmpl)
-+		return false;
++	req->hdr.cmd = TPM_SEND_COMMAND;
++	req->locality = locality;
++	req->inbuf_size = len;
 +
-+	call.caa = svsm_get_caa();
-+	call.rax = SVSM_VTPM_CALL(SVSM_VTPM_QUERY);
++	memcpy(req->inbuf, buf, len);
 +
-+	if (svsm_perform_call_protocol(&call))
-+		return false;
-+
-+	/* Check platform commands contains TPM_SEND_COMMAND - platform command 8 */
-+	return (call.rcx_out & BIT_ULL(8)) == BIT_ULL(8);
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(snp_svsm_vtpm_probe);
 +
-+int snp_svsm_vtpm_send_command(u8 *buffer)
++/**
++ * svsm_vtpm_parse_cmd_resp() - Parse a struct tpm_send_cmd_resp received from
++ * SVSM
++ * @resp: The struct tpm_send_cmd_resp to parse
++ * @buf: The buffer where to copy the response
++ * @len: The size of the buffer
++ *
++ * Return: buffer size filled with the response on success, negative error
++ * code on failure.
++ */
++static inline int
++svsm_vtpm_parse_cmd_resp(const struct tpm_send_cmd_resp *resp, u8 *buf,
++			 size_t len)
 +{
-+	struct svsm_call call = {};
++	if (len < resp->hdr.size)
++		return -E2BIG;
 +
-+	call.caa = svsm_get_caa();
-+	call.rax = SVSM_VTPM_CALL(SVSM_VTPM_CMD);
-+	call.rcx = __pa(buffer);
++	if (resp->hdr.size > SVSM_VTPM_MAX_BUFFER - sizeof(*resp))
++		return -EINVAL;  // Invalid response from the platform TPM
 +
-+	return svsm_perform_call_protocol(&call);
++	memcpy(buf, resp->outbuf, resp->hdr.size);
++
++	return resp->hdr.size;
 +}
-+EXPORT_SYMBOL_GPL(snp_svsm_vtpm_send_command);
 +
- static struct platform_device sev_guest_device = {
- 	.name		= "sev-guest",
- 	.id		= -1,
++#endif /* _SVSM_VTPM_H_ */
 -- 
 2.48.1
 
