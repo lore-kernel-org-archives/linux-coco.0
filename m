@@ -1,112 +1,184 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F91267AEE
-	for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 19:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D551A260A22
+	for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 20:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741719789; cv=none; b=KFReJJ/yj9qPjhOjR/Ke9rHiA8g0RFmJIgSnesoS6FQ7x9cahXRY+PNolHW0bg4b+Zvxbl6fC0l9dKhvrrIrdbaptVvp3qtFhYTvbu11+3Sg5hODxTk99irXgzHLXIklCY+xnK44Cs20aALRXqwa1YrI3QK71CS34MDAVRwX8T4=
+	t=1741724120; cv=none; b=rnZwPXTz5xsYVjrJ8gmR08y39Rg8uSycxzLEOmq29syOG7VLRx5U+aVlaBqYi159roxhxoWJgBjJ/VsBQ2d2frsSvuRS8NlqnAjzBAUQP2ZtT3c3RJSM6pOBM4WwUCuI8oWnZiH7MURy6KK97ZE0nw6khNOy1dvaEpCIoO3L2vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741719789; c=relaxed/simple;
-	bh=a+G3ktv7XSYAXeW3+zo8X/exI06nPQhUgW2tLJ59+eM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rEtHpO8Z3tl73fQF/zXJH3AsuQKtZp8+kF57USGNJe5eWLow00I2gpyNQ+i+Xb8iANNEt/SXhvJ0TILmBiddgf+fTuUM+zDnkb3yeTbvVHt8XcYh0/vpiOahGfAVcgdLsgdxYDpWgoFUh3R/MufFlfZGrnnHkQmpg/KaiV+T2cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S6UGxtOd; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1741724120; c=relaxed/simple;
+	bh=gzYjPCmlJWUGrIy1NZsbrqTW6eUdr3n8qqb1vCqcOA0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rFB5mdnLymS2JrfaE681Sk3HdEYKB8wO3KmMg3BuEczw863Gnv+x0RkoJ4VcYkIG9wjs6ncCzB/4a9FY9EgOGq49tn0ihzswPKThv8KJYdt99Sf7wj59kqvoFJnOoIhQQ/Vo86dtvayHrsrO7ikoMQU4Iay/8PD86/epZgwP9gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=DSY1Yh1J; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=AOPuZBRa; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=fRspo3fo; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=kXcGZ1Vm; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S6UGxtOd"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4767e969b94so45215001cf.2
-        for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 12:03:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741719787; x=1742324587; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a+G3ktv7XSYAXeW3+zo8X/exI06nPQhUgW2tLJ59+eM=;
-        b=S6UGxtOdXnto9WQoO4S4O4+4YT6+1D5JnbX10lgHEZ+13+gGkye76ZiV3RKG/1lhME
-         ofFYU6LxISwAZ80KD78cWNJPDfiLxDIrQRKHirqMfhn+xa4u8obGNCnB5kWEEbiu9uN4
-         YxiP3tbMdlvC/ZT0qr4QaQ2emAnfo6xXUmJFthSBFqxcB7uFfvDytUE2cP8WIlF99SHd
-         el2HeLz8+iotkZvYu7GNbxz/1llfHARoyuFP7MvUy5dcaZE+xs3jILBr7+CGyz4xYWMe
-         Gueyw+eqfvBxJptpobJPHnX08xIeQ2610IBLlk+QRUxqVmYhThLNqv37JLhOoCireTzC
-         DIzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741719787; x=1742324587;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a+G3ktv7XSYAXeW3+zo8X/exI06nPQhUgW2tLJ59+eM=;
-        b=gatANhoEAFXoKDuRyZ+uRFI/lTXzndJtWDnoCH0GjjM6ENz9uFjTo/XaROnJcVupeU
-         AS7etFw6cjBCwOrMYulHa0zgwW0OktC9DBFvvgH1whwlz5I08BMJZsxZsyze9IE87mzo
-         D+n62LGvPUKV4D7XIJrl3lPHvq1hGRIAg+JLZCdQUH01r3i5Ke8RkZBITvOIag2ELFJb
-         Br2AF9FMZu22BQKTthhoSe0JQbsOzagYBHa0LLzI4OJw6vaMrRzNDQmXelQlGEB4+zbA
-         Oc/fv/hcUoQxA9xbP0ddNdIwQhNw6QghhtD2iXRfxHUGTTTXthZcRQ7XeCfaHESrlf+E
-         uJ/Q==
-X-Gm-Message-State: AOJu0YwXHLtWZUn2QPUFqcX1kkdXtHyKq2GIfXB509MrrLjqfIf7RNG5
-	twY+m7zFK3vF4KYrZwtw5mR80HxD1CKLPWCyhl/Hpu/QvLpjFZGJs1ppBxmbnX3540JAvtPuv9j
-	dMhzMZWoZH/gNkj9DsbJC7knTNf/fkD4oRSOJ
-X-Gm-Gg: ASbGncv3bSHXD7niEg235j+QQbRVptKoyh6xe26WbukMrdOyOV8Q0NizYY2CYzxeKKK
-	q4wNwYK7pd4Rd5p+0xtCJHsAI5usRwjRZz8qtdlmEpJlGqnQpNvTGJ+LOpqt/FcQKerRyNDy2dl
-	Rqj+mlJb9FIntLuLCyjrMmhiFX8AfT0waCvwCE4xvM0AEmP6PlG+yJ/MG5
-X-Google-Smtp-Source: AGHT+IFIKCBXWud3BGbPdZIMtpxHPM2FWYepT0hlh0UQPKNMf8jje7xNmv5nY9V+hyZeEbwhxmhch9CLoRxE/pvianA=
-X-Received: by 2002:ad4:5c6c:0:b0:6e6:656f:3c34 with SMTP id
- 6a1803df08f44-6e90061fd83mr187171486d6.12.1741719786518; Tue, 11 Mar 2025
- 12:03:06 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DSY1Yh1J";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="AOPuZBRa";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="fRspo3fo";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="kXcGZ1Vm"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C9ECA2117D;
+	Tue, 11 Mar 2025 20:15:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1741724117; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MOymMAqxQuWdddRLmuh9+YU6OLKrxhKGbPPHnJzrflY=;
+	b=DSY1Yh1JOVv/ZTzcEVsr9Ti1k9cmcp22Scvv2CWSTQX3axcqqi3rW3t0x2Pynyi+DwqyHR
+	ZuY/Ulf1yNNiR/f3Rnar/X0aKAwe57XY0sZxT7VgPyfBvR3o1/QRE1L7MjS/fJAn5/7EMO
+	iEbHrQ8WoA0Oi5a2Mcp/zEqgbDGv0ac=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1741724117;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MOymMAqxQuWdddRLmuh9+YU6OLKrxhKGbPPHnJzrflY=;
+	b=AOPuZBRaUBqYhLrakEgihcY4LJWL5b9svAc2c/X6W9ZvXBM4plw5Nv2jJ55KzMXiBbzDfn
+	skKgz0yMOhT8V1Cw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fRspo3fo;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kXcGZ1Vm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1741724116; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MOymMAqxQuWdddRLmuh9+YU6OLKrxhKGbPPHnJzrflY=;
+	b=fRspo3fok3Djsq0C0D/DB5ui1oCrOZP5AUscfN+gf9QlFPoyMIG746eUTe7zAU8Nml+ckp
+	YHZbtCLD0IBe1z1pL3bgLqbgyDLTCUbxa5Aa5TykH+CVAU32xueaNbZbRfJDUROxQ0KrV1
+	E74CMv5qVFtXTnocqS+iRb8qX+LWcsI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1741724116;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MOymMAqxQuWdddRLmuh9+YU6OLKrxhKGbPPHnJzrflY=;
+	b=kXcGZ1Vmr4aoGYZRETCaSzu18GsByerx0YeDPI4/+vBPNPNwndvKfARFu3MlKrERsFOHbu
+	wm5/JAzb8hI398Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A0C56134A0;
+	Tue, 11 Mar 2025 20:15:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5DmmJtSZ0GeiQQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 11 Mar 2025 20:15:16 +0000
+Message-ID: <12460463-a2c4-4d02-b3fd-42a490d500a9@suse.cz>
+Date: Tue, 11 Mar 2025 21:15:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CABayD+dsAeqQnX7izBA-RkyM5W6p7zg+hgvVEo8B2i6L-WrHVw@mail.gmail.com>
- <CAAH4kHaOO-61nFtqgSHkA0Qhk5tAD8NZ-hbSFVR1oG629OD=Yw@mail.gmail.com>
-In-Reply-To: <CAAH4kHaOO-61nFtqgSHkA0Qhk5tAD8NZ-hbSFVR1oG629OD=Yw@mail.gmail.com>
-From: Steve Rutherford <srutherford@google.com>
-Date: Tue, 11 Mar 2025 12:02:30 -0700
-X-Gm-Features: AQ5f1Jr0KaIi56718beb5yiIxFIJJNB2TMu8RA62iX4XmUPNPJHOjw_SyTkbdY8
-Message-ID: <CABayD+dSjFc5ET3_qigp9Xz-7R328DcPhpkja4ahpqDTOLmAhQ@mail.gmail.com>
-Subject: Re: Kernel SIG meeting 3/13 - Continuing discussions on SVSM
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: Fix memory accept before watermarks gets
+ initialized
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
+ Mel Gorman <mgorman@techsingularity.net>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
+ <ashish.kalra@amd.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Farrah Chen <farrah.chen@intel.com>
+References: <20250310082855.2587122-1-kirill.shutemov@linux.intel.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20250310082855.2587122-1-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C9ECA2117D
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim,suse.cz:mid,suse.cz:email,intel.com:email];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-Yes, D:
+On 3/10/25 09:28, Kirill A. Shutemov wrote:
+> Watermarks are initialized during the postcore initcall. Until then, all
+> watermarks are set to zero. This causes cond_accept_memory() to
+> incorrectly skip memory acceptance because a watermark of 0 is always
+> met.
+> 
+> To ensure progress, accept one MAX_ORDER page if the watermark is zero.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Reported-and-tested-by: Farrah Chen <farrah.chen@intel.com>
 
-Thursday, March 13th.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-On Tue, Mar 11, 2025 at 11:49=E2=80=AFAM Dionna Amalie Glaze
-<dionnaglaze@google.com> wrote:
->
-> On Mon, Mar 10, 2025 at 3:27=E2=80=AFPM Steve Rutherford <srutherford@goo=
-gle.com> wrote:
-> >
-> > Hi all,
-> >
-> > We have another instance of the Kernel SIG coming up, at 9AM PDT on
-> > Thursday, March 10th.
-> March 13th, yes?
->
-> >
-> > **Be aware of the DST skewing that happens this time of year!** The USA
-> > jumped forward an hour, and, for example, Europe won't do so for
-> > another ~3 weeks. The meeting will be an hour for much of the world
-> > (e.g. 4PM in the UK, 5PM in Germany).
-> >
-> > Zoom link - https://zoom-lfx.platform.linuxfoundation.org/meeting/92401=
-169243?password=3De6c02995-6cfb-4f90-82b6-747f767eb168
-> > Agenda - https://docs.google.com/document/d/18D820gyt2xe84Jy6dGXgrNThAp=
-oozcekDzvIlK2_bd4/edit?tab=3Dt.0
-> > Calendar - https://confidentialcomputing.io/get-involved/calendar/
-> >
-> > We should continue discussions of OS <-> SVSM communication. If you
-> > have concrete questions/topics, please add them to the agenda. Any
-> > topic, not just the SVSM, is welcome.
-> >
-> > Thanks,
-> > Steve
-> >
->
->
-> --
-> -Dionna Glaze, PhD, CISSP, CCSP (she/her)
+> ---
+>  mm/page_alloc.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 579789600a3c..4fe93029bcb6 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7004,7 +7004,7 @@ static inline bool has_unaccepted_memory(void)
+>  
+>  static bool cond_accept_memory(struct zone *zone, unsigned int order)
+>  {
+> -	long to_accept;
+> +	long to_accept, wmark;
+>  	bool ret = false;
+>  
+>  	if (!has_unaccepted_memory())
+> @@ -7013,8 +7013,18 @@ static bool cond_accept_memory(struct zone *zone, unsigned int order)
+>  	if (list_empty(&zone->unaccepted_pages))
+>  		return false;
+>  
+> +	wmark = promo_wmark_pages(zone);
+> +
+> +	/*
+> +	 * Watermarks have not been initialized yet.
+> +	 *
+> +	 * Accepting one MAX_ORDER page to ensure progress.
+> +	 */
+> +	if (!wmark)
+> +		return try_to_accept_memory_one(zone);
+> +
+>  	/* How much to accept to get to promo watermark? */
+> -	to_accept = promo_wmark_pages(zone) -
+> +	to_accept = wmark -
+>  		    (zone_page_state(zone, NR_FREE_PAGES) -
+>  		    __zone_watermark_unusable_free(zone, order, 0) -
+>  		    zone_page_state(zone, NR_UNACCEPTED));
+
