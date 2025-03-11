@@ -1,69 +1,69 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E540B233151
-	for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 09:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB285233729
+	for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 09:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741686172; cv=none; b=tmGsdSF60e/+4tCNzPFCSAAJhXQ6+1882HBl5GVZRd26c2fPOFb8qapzr56gx8XAJv6xFQphGTzm4B7o1E9NfKOkTHvo1loGfcXBXf32krjuB+plaQXTEpwLZ99CT01NBdkZ/4gz+QzCGzu3tmJQSCGU1VyjdaJi906hud0/fv4=
+	t=1741686176; cv=none; b=bFiJ4y109xzzLsjiI7talYWE2Jajy+kpqLj5ER4vDo11HHJup6bidtSqu0bsnmXbYJANDZN5UszgTJEI7OwDlpDDhv5IcMN8/kZnrcFwEY2UjG0axTnJB6VUhI7sOVbsFGXrCeu8hJfj+uKypKGwTcNywx7H1zatYgYup5XJp64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741686172; c=relaxed/simple;
-	bh=Q+8vPxxDbfpg9fRYXDZlhPTHw0u84I0SSyU4Nc1rsy4=;
+	s=arc-20240116; t=1741686176; c=relaxed/simple;
+	bh=7ofinKFlIYAPL0uFGFVvSScK4HwNUlqf6CGOFX+txk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=VYdU8AOg06AcUdJjpe7H845M5w2bPlkvg3xyumDkZDaKC81/kLIayeotPz5kc4naPwBFmgbg4qUZX5KA0tiheg95g/MgG1tL8Gx3wpjx8JumpsMpHq1zQKP4Nu7ESJggGRbvkRZYDhkIu0S489KuC3uHWMCmstIHj04OBIzcXIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N3fQqsiH; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=RJ/t9pEdFe3vZuhdr4YVPv0cTDD3Em2FHCCcy6SM+7rkr3R0wO5GakLyArnaYxHXbOmURm3GeaGPEqVG9UgQnE0jxwECbI2aZ0aYpAzcdsr7C8zPAKEU/AHuoGPWBB7D3yzg7MASmtms8khtaMRUWOjtkjkcrhfrQCA7tpkUZjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TZJGjvDo; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N3fQqsiH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TZJGjvDo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741686169;
+	s=mimecast20190719; t=1741686174;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2wb6+hQNYEWIXedIcFLeKnafG1DD76+LTwe3b4OwUzY=;
-	b=N3fQqsiHpFe9lrn5YCSGzTL9FKuiaDsPI9qhT9h07dNeSxZewGmLI2whsXOASzWDbaQAI4
-	MDY8GGoYYuRG6spAuyn8xtmN/YyUKE/kwefw3poiXLgDY6CCghOb/G6KC8ujzOopzt4v5g
-	LTrMKjZTHBi2Mp3iq9rK3gguL+gUqKY=
+	bh=4Hg6I6nIDb7vIFIV7ygI8oxn0FMZLdQaKjCFJAirlRo=;
+	b=TZJGjvDo5ZXoufPxReXh7s10S7A+NCgiNL6BesFiyw/5EvrLFbw0IkA2q3aKM0qw1rmHK/
+	PQ/nkX7lHnzRUPcT+keyOx7OLRC5TWVZmkXCrzcRkB5hAocw4YtUGJqUOL42iV7hlsNXJI
+	RUxTlgGoWw1rAGKLJB5Z4z070NYqGqk=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-yosolohBMn-gsDf1Ih_YnA-1; Tue, 11 Mar 2025 05:42:48 -0400
-X-MC-Unique: yosolohBMn-gsDf1Ih_YnA-1
-X-Mimecast-MFC-AGG-ID: yosolohBMn-gsDf1Ih_YnA_1741686167
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-ac28f255a36so192087766b.3
-        for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 02:42:48 -0700 (PDT)
+ us-mta-140-r0F0V4kYN7GCjnGhRbf3sQ-1; Tue, 11 Mar 2025 05:42:52 -0400
+X-MC-Unique: r0F0V4kYN7GCjnGhRbf3sQ-1
+X-Mimecast-MFC-AGG-ID: r0F0V4kYN7GCjnGhRbf3sQ_1741686171
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-ac254e4b515so454714266b.0
+        for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 02:42:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741686167; x=1742290967;
+        d=1e100.net; s=20230601; t=1741686171; x=1742290971;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2wb6+hQNYEWIXedIcFLeKnafG1DD76+LTwe3b4OwUzY=;
-        b=gb+xrK5E7ElTpuI0YVth+gRXxjfCi2nCcNHf7wTXRFVDqRQwnu7tBXTKwQZ1ipO4MN
-         MDaYOIHa9btfCQw6Dr660W99UOb0+lQ5quzkl3/U2qfMJnUF/aIOK5wGfC6/SlUE8Zgq
-         dI5OoeFviun/Decftv/l6OVqIH1dCtNKxhP9oKyVp9Ebf/E3eeWB5IaiCsxOl1Q0/OZq
-         ngg0Po0kTZZ5UgwpGb1fmEBjZbUp9uodHvM9ow6pSg0EEXNdd2VAID+7rpCDaTqo/aFT
-         +CZ/xVdYlk+ra08M8I9biZ4k87q1+Qz3c7X+AUPDOGmtvI09CLO9PEq48ig6Jz3uPZAc
-         g9Hw==
-X-Forwarded-Encrypted: i=1; AJvYcCVDK/iPV3GyVYW1D3DNYqPtoUNmE/sVpQ6lzeHYeUPnaxfjJjKKPhb5Qi6UmvPrx8y8TR6Tl1H5skDI@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy0w4GkRfuYKAeKFgTLL4l0nbfse/M40vW5CHWPeiPFRdQFQy8k
-	nSGeAU5rixI6ayXgRIwEcCmz5/Bg/yIOPwCj3yCAvACpsFVoBPOl0YWHFDPkHBLXE3ruNJy6VNK
-	m+JzbukAAxBMp6Pd/ubikwGbxiNPe74koU2VW1zPfYKtGBxCusc1mDBRz2ec=
-X-Gm-Gg: ASbGncvuXfTFdwOpAlfmFPUUxcL0XVOTW67O8k3loBaKFUHs0QD4nCqOhEkfCAtkpMs
-	/04J11c/TCCSJd/P+Lk6Ht+CTFsysd7UhTLUVqctufUE9PY/CYbtBfUefgDkgkP+eWAEdf7dsGq
-	01krv1Xl8nYbL4/HgJfOSekMdIAxGvRKIwAY9L71+pVuDu/ClCMMWI/c68T1cBC9gDXfuVG0Cep
-	1O+7oxxCNTIARKtLAplBxFBgiTtn+wGORwb4/w1vcXmoOM1KL8XxbQc3BvoLQOq5tgTcJQ+nrBY
-	Z6GKM9bfu4X/+37OX1cR/gYAeYXpVuXiQqsswF4Mxw1s94f1WzOxDVF8BfyNY8rrzM0DPmBN
-X-Received: by 2002:a17:907:268a:b0:ac2:1c64:b26 with SMTP id a640c23a62f3a-ac252b2354amr2037756966b.32.1741686166779;
-        Tue, 11 Mar 2025 02:42:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFWmq7wXuMFVs0mGI08LvEZtWDeEa9Z/7uGOGcAtsq0hFXFdDMeo+Cdbl0Zx81eoMP5bl5BOw==
-X-Received: by 2002:a17:907:268a:b0:ac2:1c64:b26 with SMTP id a640c23a62f3a-ac252b2354amr2037753166b.32.1741686166106;
-        Tue, 11 Mar 2025 02:42:46 -0700 (PDT)
+        bh=4Hg6I6nIDb7vIFIV7ygI8oxn0FMZLdQaKjCFJAirlRo=;
+        b=uHwyB3Dp3+pR88GW1t0AeW5i3dvT0OTLAmGxz6fjEp/4NwpT4tWxLSwqR3d0Sdik8+
+         LBpPMQvYMkIZtWcD4HoAPPscdC26TDOaM5HSP1eZDpgSTINQf5/Bsqajj0VN4bqzTkBy
+         UBYqgJOSnpwenbRV85UNg7xnULJ092zKrC3HtqQOGbU28aJ0THoATOIqlT7F5W5DBD7y
+         DHH+kAMjfo6WdDHGxriYLfoP1ZUPkz+jeJS/64Ck7TMeF3NxmOF1XicbZ6who79acVcA
+         7QB7YXZ4ue0CEIxTliPDl46Mmr2kWRnKfzhTsCc+drvXIkRmlJ2EcZ9ACcLKwicuTtjk
+         5ybQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIHMLmhUoZxkM0yuPTK/B8jGYpGntz+STph7/tm3FAcMWwaHYlx1Hh21wm/XVeVd6xtOD70yIfnnO0@lists.linux.dev
+X-Gm-Message-State: AOJu0YwboE++og2NFgAeA9n69JUZ4/mh9DI1vc9W8kPMB0ggtvwq5KKI
+	LvLv+QoeXl/L4nqzX63fTL8O9U0fO81CEeroBFnO+VmdeXgVX5wtNcCAm8fmL14jBulC4S5UTlq
+	0dn32uZ6/7LDpwOxAHI9TCRqIgywhv75A0mtsz12j1OA8HRJArz3hLTxB4/s=
+X-Gm-Gg: ASbGncvHPCGXoSoyKna+PRe/i3INTqG10KCO2aUghdjNthi9nrPVOjnJMfmLtpjaOD8
+	zoyqxJUbKkmj68SNlGOGrAxMoxmelmNJujH6Di1K7Kqv7TkG5Cft5A3MkDqXrAmbazx6LpL9LVG
+	YgcdytqgPpR7msdhYbrjXDY1STiupQn3DqIHpvNXC7oAsXNpWxkz2ifoS+gg95pqKwI+yL1g48H
+	mLhUErzmWsYVjW2SX1/cjpb2KuZ+fIDrNdquAUpYn2xd4/mU8VtJeQPgetn8oz9U6Zrl3cSdaoS
+	3sGrbAeaiSIlEDWav5XSrZmrZGc/qqZzoDSLClvZ07YXHndXfJOpxq0xVNiy1YEJWNvHQZhO
+X-Received: by 2002:a17:907:a310:b0:ac2:6fc6:b93d with SMTP id a640c23a62f3a-ac2ba473173mr370177366b.1.1741686171315;
+        Tue, 11 Mar 2025 02:42:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkmP0r13TRekW78HkAFefp5cjLkHl6Mq2Ghd/8jrWtGCOF1SbwGI8W62TAbwjYfxllk7Faww==
+X-Received: by 2002:a17:907:a310:b0:ac2:6fc6:b93d with SMTP id a640c23a62f3a-ac2ba473173mr370172766b.1.1741686170721;
+        Tue, 11 Mar 2025 02:42:50 -0700 (PDT)
 Received: from localhost.localdomain (host-79-46-200-29.retail.telecomitalia.it. [79.46.200.29])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac25fae7d83sm701558766b.99.2025.03.11.02.42.44
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac239485bf3sm903753666b.63.2025.03.11.02.42.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 02:42:45 -0700 (PDT)
+        Tue, 11 Mar 2025 02:42:49 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Jarkko Sakkinen <jarkko@kernel.org>
 Cc: Peter Huewe <peterhuewe@gmx.de>,
@@ -84,9 +84,9 @@ Cc: Peter Huewe <peterhuewe@gmx.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Joerg Roedel <jroedel@suse.de>,
 	Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH v3 3/4] tpm: add SNP SVSM vTPM driver
-Date: Tue, 11 Mar 2025 10:42:24 +0100
-Message-ID: <20250311094225.35129-4-sgarzare@redhat.com>
+Subject: [PATCH v3 4/4] x86/sev: register tpm-svsm platform device
+Date: Tue, 11 Mar 2025 10:42:25 +0100
+Message-ID: <20250311094225.35129-5-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311094225.35129-1-sgarzare@redhat.com>
 References: <20250311094225.35129-1-sgarzare@redhat.com>
@@ -97,230 +97,50 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: hyyWbZ0iS8_QjfJNq9Q_bZt3kytyVi1ZUvKfgMrijss_1741686167
+X-Mimecast-MFC-PROC-ID: HBhIMHVeY-32IFtMJfOh9caokBz3_T7GbOdMP_mYpMk_1741686171
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Add driver for the vTPM defined by the AMD SVSM spec [1].
+SNP platform can provide a vTPM device emulated by SVSM.
 
-The specification defines a protocol that a SEV-SNP guest OS can use to
-discover and talk to a vTPM emulated by the Secure VM Service Module (SVSM)
-in the guest context, but at a more privileged level (VMPL0).
+The "tpm-svsm" device can be handled by the platform driver added
+by the previous commit in drivers/char/tpm/tpm_svsm.c
 
-The new tpm-svsm platform driver uses two functions exposed by x86/sev
-to verify that the device is actually emulated by the platform and to
-send commands and receive responses.
-
-The device cannot be hot-plugged/unplugged as it is emulated by the
-platform, so we can use module_platform_driver_probe(). The probe
-function will only check whether in the current runtime configuration,
-SVSM is present and provides a vTPM.
-
-This device does not support interrupts and sends responses to commands
-synchronously. In order to have .recv() called just after .send() in
-tpm_try_transmit(), the .status() callback returns 0, and both
-.req_complete_mask and .req_complete_val are set to 0.
-
-[1] "Secure VM Service Module for SEV-SNP Guests"
-    Publication # 58019 Revision: 1.00
+The driver will call snp_svsm_vtpm_probe() to check if SVSM is
+present and if it's support the vTPM protocol.
 
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
-v3:
-- removed send_recv() ops and followed the ftpm driver implementing .status,
-  .req_complete_mask, .req_complete_val, etc. [Jarkko]
-- removed link to the spec because those URLs are unstable [Borislav]
----
- drivers/char/tpm/tpm_svsm.c | 148 ++++++++++++++++++++++++++++++++++++
- drivers/char/tpm/Kconfig    |  10 +++
- drivers/char/tpm/Makefile   |   1 +
- 3 files changed, 159 insertions(+)
- create mode 100644 drivers/char/tpm/tpm_svsm.c
+ arch/x86/coco/sev/core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
-new file mode 100644
-index 000000000000..5540d0227eed
---- /dev/null
-+++ b/drivers/char/tpm/tpm_svsm.c
-@@ -0,0 +1,148 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
-+ *
-+ * Driver for the vTPM defined by the AMD SVSM spec [1].
-+ *
-+ * The specification defines a protocol that a SEV-SNP guest OS can use to
-+ * discover and talk to a vTPM emulated by the Secure VM Service Module (SVSM)
-+ * in the guest context, but at a more privileged level (usually VMPL0).
-+ *
-+ * [1] "Secure VM Service Module for SEV-SNP Guests"
-+ *     Publication # 58019 Revision: 1.00
-+ */
-+
-+#include <asm/sev.h>
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+#include <linux/platform_device.h>
-+#include <linux/svsm_vtpm.h>
-+
-+#include "tpm.h"
-+
-+struct tpm_svsm_priv {
-+	u8 buffer[SVSM_VTPM_MAX_BUFFER];
-+	u8 locality;
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 2166bdff88b7..a2383457889e 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -2664,6 +2664,11 @@ static struct platform_device sev_guest_device = {
+ 	.id		= -1,
+ };
+ 
++static struct platform_device tpm_svsm_device = {
++	.name		= "tpm-svsm",
++	.id		= -1,
 +};
 +
-+static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t len)
-+{
-+	struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
-+	int ret;
-+
-+	ret = svsm_vtpm_fill_cmd_req((struct tpm_send_cmd_req *)priv->buffer,
-+				     priv->locality, buf, len);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * The SVSM call uses the same buffer for the command and for the
-+	 * response, so after this call, the buffer will contain the response
-+	 * that can be used by .recv() op.
-+	 */
-+	return snp_svsm_vtpm_send_command(priv->buffer);
-+}
-+
-+static int tpm_svsm_recv(struct tpm_chip *chip, u8 *buf, size_t len)
-+{
-+	struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
-+
-+	/*
-+	 * The internal buffer contains the response after we send the command
-+	 * to SVSM.
-+	 */
-+	return svsm_vtpm_parse_cmd_resp((struct tpm_send_cmd_resp *)priv->buffer,
-+					buf, len);
-+}
-+
-+static void tpm_svsm_cancel(struct tpm_chip *chip)
-+{
-+	/* not supported */
-+}
-+
-+static u8 tpm_svsm_status(struct tpm_chip *chip)
-+{
-+	return 0;
-+}
-+
-+static bool tpm_svsm_req_canceled(struct tpm_chip *chip, u8 status)
-+{
-+	return false;
-+}
-+
-+static struct tpm_class_ops tpm_chip_ops = {
-+	.flags = TPM_OPS_AUTO_STARTUP,
-+	.recv = tpm_svsm_recv,
-+	.send = tpm_svsm_send,
-+	.cancel = tpm_svsm_cancel,
-+	.status = tpm_svsm_status,
-+	.req_complete_mask = 0,
-+	.req_complete_val = 0,
-+	.req_canceled = tpm_svsm_req_canceled,
-+};
-+
-+static int __init tpm_svsm_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct tpm_svsm_priv *priv;
-+	struct tpm_chip *chip;
-+	int err;
-+
-+	if (!snp_svsm_vtpm_probe())
+ static int __init snp_init_platform_device(void)
+ {
+ 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+@@ -2672,6 +2677,9 @@ static int __init snp_init_platform_device(void)
+ 	if (platform_device_register(&sev_guest_device))
+ 		return -ENODEV;
+ 
++	if (platform_device_register(&tpm_svsm_device))
 +		return -ENODEV;
 +
-+	priv = devm_kmalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	/*
-+	 * FIXME: before implementing locality we need to agree what it means
-+	 * for the SNP SVSM vTPM
-+	 */
-+	priv->locality = 0;
-+
-+	chip = tpmm_chip_alloc(dev, &tpm_chip_ops);
-+	if (IS_ERR(chip))
-+		return PTR_ERR(chip);
-+
-+	dev_set_drvdata(&chip->dev, priv);
-+
-+	err = tpm2_probe(chip);
-+	if (err)
-+		return err;
-+
-+	err = tpm_chip_register(chip);
-+	if (err)
-+		return err;
-+
-+	dev_info(dev, "SNP SVSM vTPM %s device\n",
-+		 (chip->flags & TPM_CHIP_FLAG_TPM2) ? "2.0" : "1.2");
-+
-+	return 0;
-+}
-+
-+static void __exit tpm_svsm_remove(struct platform_device *pdev)
-+{
-+	struct tpm_chip *chip = platform_get_drvdata(pdev);
-+
-+	tpm_chip_unregister(chip);
-+}
-+
-+/*
-+ * tpm_svsm_remove() lives in .exit.text. For drivers registered via
-+ * module_platform_driver_probe() this is ok because they cannot get unbound
-+ * at runtime. So mark the driver struct with __refdata to prevent modpost
-+ * triggering a section mismatch warning.
-+ */
-+static struct platform_driver tpm_svsm_driver __refdata = {
-+	.remove = __exit_p(tpm_svsm_remove),
-+	.driver = {
-+		.name = "tpm-svsm",
-+	},
-+};
-+
-+module_platform_driver_probe(tpm_svsm_driver, tpm_svsm_probe);
-+
-+MODULE_DESCRIPTION("SNP SVSM vTPM Driver");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:tpm-svsm");
-diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
-index 0fc9a510e059..fc3f1d10d31d 100644
---- a/drivers/char/tpm/Kconfig
-+++ b/drivers/char/tpm/Kconfig
-@@ -225,5 +225,15 @@ config TCG_FTPM_TEE
- 	help
- 	  This driver proxies for firmware TPM running in TEE.
- 
-+config TCG_SVSM
-+	tristate "SNP SVSM vTPM interface"
-+	depends on AMD_MEM_ENCRYPT
-+	help
-+	  This is a driver for the AMD SVSM vTPM protocol that a SEV-SNP guest
-+	  OS can use to discover and talk to a vTPM emulated by the Secure VM
-+	  Service Module (SVSM) in the guest context, but at a more privileged
-+	  level (usually VMPL0).  To compile this driver as a module, choose M
-+	  here; the module will be called tpm_svsm.
-+
- source "drivers/char/tpm/st33zp24/Kconfig"
- endif # TCG_TPM
-diff --git a/drivers/char/tpm/Makefile b/drivers/char/tpm/Makefile
-index 9bb142c75243..52d9d80a0f56 100644
---- a/drivers/char/tpm/Makefile
-+++ b/drivers/char/tpm/Makefile
-@@ -44,3 +44,4 @@ obj-$(CONFIG_TCG_XEN) += xen-tpmfront.o
- obj-$(CONFIG_TCG_CRB) += tpm_crb.o
- obj-$(CONFIG_TCG_VTPM_PROXY) += tpm_vtpm_proxy.o
- obj-$(CONFIG_TCG_FTPM_TEE) += tpm_ftpm_tee.o
-+obj-$(CONFIG_TCG_SVSM) += tpm_svsm.o
+ 	pr_info("SNP guest platform device initialized.\n");
+ 	return 0;
+ }
 -- 
 2.48.1
 
