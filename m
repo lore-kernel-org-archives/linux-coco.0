@@ -1,392 +1,240 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2073.outbound.protection.outlook.com [40.107.243.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1D423237C
-	for <linux-coco@lists.linux.dev>; Wed, 12 Mar 2025 11:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741780062; cv=none; b=kvPLjDMnKYz8fY5VQho7/4Wk/EmQavLD8CUkhgJKtrJuhBkpIk8gIcsyya9nKqFSHGECu1aIoCL3vGOQOJnu2AZYcbKfgze3Cy+FxgR6DbhY5Qr7YlSEtlfdZY7tkmGTrGP7GESGHUyrgQjGz0YLjILTrGn+IlyeCkElAR1HJqQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741780062; c=relaxed/simple;
-	bh=X5t1MXEx3Ri3qf8vGAqhZ06ZCh7vspadQpZMzTBv6YQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=k+yxTYQSaztifrzbs7K+/3PHGoJl2P7stGmIzSq5km05uxn1jpBydYCLVMYAtIJdC9ifTO6yrJheWqbQeaYoGaH92TxA+1xlxolh8+HwntFe4v2F4TN6/KqFbp0pqKFPrABEulnfla3s+x5dBnxFLZN3bVJFkT90H0/HPpUkwxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hO8O4OKz; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC36824291B
+	for <linux-coco@lists.linux.dev>; Wed, 12 Mar 2025 13:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.73
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741786461; cv=fail; b=TnlzEf0xBteK8qzujBIa1dnoZ+SoOIIwAxlazdESmE7ESWgXBr/d+OzHTzdIW6y/k3L3sEX/sXIIBo9w3tHDqHZo0r1s2sdOFGS+E4a8oPKOiu0rki3HcNwkXrqyVVPDpZtN1+o9X8A/A9QLmCJTtfZWd3f1hjy28UL1FHzT308=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741786461; c=relaxed/simple;
+	bh=TXu7XddEwLXG9sycsj/+BlANWxIj7SzphoARRMjbbzM=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=lxEPs5z1OmUSbaAck/a4q+UmlKjaWstVUXe4jpTIjBMo2XbsWKc59C+d4sczBXBvhQNiNRde39e5YtYe+FSHYSNd54yFDPfursH2k7m2JvvXvW/WuEpesJTb+ul1Yws+ldxUzFWAPvCUE5Vj9K+TDvroQN7Rv5XXVRaCVOS3jeM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hzhQMjPO; arc=fail smtp.client-ip=40.107.243.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hO8O4OKz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741780059;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TmCcwhncm33zmtKRef3o88MIfofDnFACWeQE9MPkbx4=;
-	b=hO8O4OKz+nGoPNsHOJN+CSLt0sIlPphs2Ck0+dJHAZtjUJvTIKyEV6xsKIsd4Vax3OFgqm
-	l3KRTEyW0Thf8KHMpCGJ41POm5+w0+FTUlckex28TisA/nZN0urthQ0ljNI6SIZkMV0PIV
-	znPSaV0+/fqrMM33Gba3paeHvpp+AsE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-573-hJiI0MiZP62xUyiEqjnZ7g-1; Wed, 12 Mar 2025 07:47:38 -0400
-X-MC-Unique: hJiI0MiZP62xUyiEqjnZ7g-1
-X-Mimecast-MFC-AGG-ID: hJiI0MiZP62xUyiEqjnZ7g_1741780057
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43bd0586b86so46484035e9.3
-        for <linux-coco@lists.linux.dev>; Wed, 12 Mar 2025 04:47:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741780056; x=1742384856;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TmCcwhncm33zmtKRef3o88MIfofDnFACWeQE9MPkbx4=;
-        b=XKDyc9Hbk4ajKUUhETCv23CCSr6iAB48HaCWMWg+RhLbCeQJjaICioBLhBOpLE1WUc
-         ltIA2Oj3BYtRGMIlxekwnf0FN3m7xOLyQUqDsU/QzVY2tiwY5fekddi4bLjeQ+ebgUTo
-         vuTSJO+Osgnz9WfllMNJQMDj9k78zT27Hk5eFC2/PuIeT7NjAGdNvH3ljHE/h7omzLOf
-         ij3uDK8L99NXcVhxE7vdek6b5vzxy+TCV3iZeFmfckBRk2gbO1Gw4V6OmFkrviy63Llr
-         +UySiMhtAOVl+5pWh14mZFpLPvJwl5QiPGKif93aTMPDpMUzoj9qXQla8HEGUUyFsZpW
-         rlGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFQw6haZ0NsxT+3R0A69ZSiaxZXdTfK38mbJcbV0TaKylRyZiAkO+La/TB7DgVy7XbngDDR0jGrDIB@lists.linux.dev
-X-Gm-Message-State: AOJu0YxS735hedA1n6HO2jMl5DP6DBti0XcjkEL8009+pt16DAxEtYCI
-	QVvfYZm5Cpa9AL4gm4UlC9NCVUQbwOsXBRI1roo2Lk0GmQPxMkpy4AgVy3lo394lxUYFDN6/JDf
-	5sJ9tvrHJ+b07tVnisnmDsPdCg7qPWlvjAvnSs879NH/amh2hXEDKc8m6IcBJO0ZSDgo=
-X-Gm-Gg: ASbGncvSX+ZSQb/W3fNWZGuMQa7kEumjq5+o7KkkVLTFrttFOQjOoqwj54fDkiDHZzo
-	nK2GmOil7dyAKlON34krkIYi0E4fgWt9eFJQnwIfk4moK9CWhYZL8JywbeFENKZEeD4Im/y5oq5
-	YIV1jJNYyPYCzBpxzGnOZsUOuiu1Ej55XhYmU0K90zsXKQv13A9KBSG1fe39VgpGB2PhJUd482z
-	QW0mBuSfVm2iscZYN64aWmQoyM9iw9ElBXo0MmOtHQuyNuQmcwuldqAWWSaWmm2Tc4m9neLFvgd
-	6kkIuU3HU28+OoMu/29B1nGMoeG0drQQ1anPK/mh/r10zdFxeSbCgxw13yuWg6fK
-X-Received: by 2002:a05:600c:444d:b0:43c:fe15:41cb with SMTP id 5b1f17b1804b1-43cfe154379mr99859475e9.15.1741780056448;
-        Wed, 12 Mar 2025 04:47:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxuXx5YQe6jpb0et/xycveTFCsQDpLIYQDyO8eKnK5ImWZcZaA1Nsnk4i8zat+sFwBG9k2Og==
-X-Received: by 2002:a05:600c:444d:b0:43c:fe15:41cb with SMTP id 5b1f17b1804b1-43cfe154379mr99858675e9.15.1741780054340;
-        Wed, 12 Mar 2025 04:47:34 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-46-200-29.retail.telecomitalia.it. [79.46.200.29])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c103290sm20465220f8f.87.2025.03.12.04.47.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 04:47:33 -0700 (PDT)
-Date: Wed, 12 Mar 2025 12:47:29 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Peter Huewe <peterhuewe@gmx.de>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, linux-integrity@vger.kernel.org, 
-	Dov Murik <dovmurik@linux.ibm.com>, Dionna Glaze <dionnaglaze@google.com>, 
-	linux-coco@lists.linux.dev, James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Claudio Carvalho <cclaudio@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Joerg Roedel <jroedel@suse.de>
-Subject: Re: [PATCH v3 2/4] svsm: add header with SVSM_VTPM_CMD helpers
-Message-ID: <irkhppcqw6gbttshmfqggjzsjcq624wk67ovjp2wynfui6prec@e6ausihrq2il>
-References: <20250311094225.35129-1-sgarzare@redhat.com>
- <20250311094225.35129-3-sgarzare@redhat.com>
- <Z9ALe-kPZ5o_pim7@kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hzhQMjPO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hlz3T+jjAJyvbKUU8qk8wWXqcdnzhA4HGwY9JxtJDxDVD9OA1tDQdg+2tnWSlQooT2mTrIV83VZuAcq84HgiKkAxzFlxgVHPWBInkFtDGLsgQolrHL2Of0GI7vRzTI4/vkhQ6xTHoQjA38SSzuh1VncoxJrD2nl7SusaSrM/85CDG6KcVKA5uwgnVcpxvUR8dH0KFC2k2qMZJtH0WlVTKekxR2DLgV4or7PVyaEAYEhj4CxY4vgp1iZOP8fneVJCSWImsxwSSJgwxRPJXy14qgpwPes9bxoLIKVt/eWtEJ9GZYBbFOeWcz1bvzzwyKCsYS/j5OPrJ78MgGQtpeoChQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ga/l4i5GyTumrZTCiUyc1731tQHeoFknpSFgdgJThgo=;
+ b=T1Pr4aI3hhxmgke/JpvsbUgGt5ojthFUmdFH6i6MXzSuc/jdqgKMaAmqQKiv3H/Ezbh/E9TUue4kBmUjzFpqlwh0jZ67MI8xcepycNjQOu0vP1MlH8jG8GXONiKuSlYpiv9DWPc4gpWA3UrfPU6JITPiIKctAEfwE6mEN9tjEZnV/r9GuDKnAGTdWfSvbb3q4dFM4oCmcYz95wGmEXDwrBXvM7F0yUr6qeISOA8xV2v8A05Wh0Dr3crTmg/sa/11BENRWJ6T4uAUym9v1Tkic0PD69yfa4SdgUhef/wUjOzGRYw2DA8Qc85p9MnjqUnqaTpzUlEkxet+KLu1RqPsHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ga/l4i5GyTumrZTCiUyc1731tQHeoFknpSFgdgJThgo=;
+ b=hzhQMjPOtMkDfJZtO5IpoejeYeK0JXcDooY67M6FWnE+51oLu4+sbGm844Hb/gWbQ9B2WgnwweBodQMRpJ7OGOuFu5NCWQ8C6TRqwu7sDOV5FN19Jo1EjzNBS7dUBxTV20OwlOt2F+aJmSwY/cCXfRnTYo/fH8wZtcf/222BK1Y=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
+ by MW3PR12MB4395.namprd12.prod.outlook.com (2603:10b6:303:5c::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Wed, 12 Mar
+ 2025 13:34:16 +0000
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::c170:6906:9ef3:ecef]) by BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::c170:6906:9ef3:ecef%3]) with mapi id 15.20.8511.026; Wed, 12 Mar 2025
+ 13:34:16 +0000
+Message-ID: <a2b711b5-e0d3-4abf-9a21-0553e69788f9@amd.com>
+Date: Wed, 12 Mar 2025 08:34:03 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 7/8] KVM: SVM: Add support to initialize SEV/SNP
+ functionality in KVM
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+To: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+ hpa@zytor.com, thomas.lendacky@amd.com, john.allen@amd.com,
+ herbert@gondor.apana.org.au
+Cc: michael.roth@amd.com, dionnaglaze@google.com, nikunj@amd.com,
+ ardb@kernel.org, kevinloughlin@google.com, Neeraj.Upadhyay@amd.com,
+ aik@amd.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1741300901.git.ashish.kalra@amd.com>
+ <cbd2f5252549d8499a7a0058db17376003317e15.1741300901.git.ashish.kalra@amd.com>
+Content-Language: en-US
+In-Reply-To: <cbd2f5252549d8499a7a0058db17376003317e15.1741300901.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CP6P284CA0030.BRAP284.PROD.OUTLOOK.COM
+ (2603:10d6:103:15d::9) To BL3PR12MB9049.namprd12.prod.outlook.com
+ (2603:10b6:208:3b8::21)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <Z9ALe-kPZ5o_pim7@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: XWhG8M0_6Fp9QSjs_gNQMBMJiQ3luY4fwJhqGBZjIw8_1741780057
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|MW3PR12MB4395:EE_
+X-MS-Office365-Filtering-Correlation-Id: aea48e41-caf6-43ff-6652-08dd616a9590
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N3g1bG1MUDV6VUZqY05mc0FOUWZ3eGRVUnlGb1c2cGF6akdJZFIyMWNoWWFC?=
+ =?utf-8?B?RGxYakMzc2V5UGozNjY4TW1qR2hiSGE1blFxUm56VlRSaDF6U1hzQ2Mwb0Vl?=
+ =?utf-8?B?NXpQOXBJUEdGTFFGdjJ4ak1Jb2FKVVlvTWc1aiszcVhzOEMzN09jYWdYR0M5?=
+ =?utf-8?B?bjdJVC8rNnArNFQyMFUzOUNsVGhTcHVFYmFyc0haNis1bTgwM01uVFJqckJ1?=
+ =?utf-8?B?RnJpd2ZSeitWeHRmNlFhN0RBdjFmYURkemg1bTZWRWE4elErajFOeXYrY0Fi?=
+ =?utf-8?B?Q2N4UE93UWRGZ0I4VUtaSjMvVk9ISTQ4VEkzaGZ6aHlObHh6ZjdkWEVQanZD?=
+ =?utf-8?B?eDFqbnFGRkdwVExjUm9CUk14UklYYWlyenRqeENmUURNSitVSk9FVzRyOVNm?=
+ =?utf-8?B?c3c2cDFkY29zcXROODBXLzNlYmNDVEJ6WXVsYVM0aGdJMEh1aUhJWjdEaVpo?=
+ =?utf-8?B?YkMzK3FtbExkYng4U2JzR08yOW0wK0MyYmtxU0pvYXRDY3J0WE9MNXRsL0hw?=
+ =?utf-8?B?MnBsb2dORVhTd1ozMnFhZUVadnBJMkUzTDduRTdURVBzNEQvTVNUUmptRGRa?=
+ =?utf-8?B?c1p2WFM1TjcyS2M4anREUmJ0Q1hJdDBlb1EyaTdhaFdGbGRaa1FHTVhSNnFV?=
+ =?utf-8?B?b1ZLQlY4Y3daVVNwaFo2MjdMcGVaRTJJanNqZkpZVDhQYVg2bHA4TVJmc1VZ?=
+ =?utf-8?B?WUpyRGFXU2pyQzB6TEJPREN3R2pZZVBTdytVazFwcVg2MThhQUx3ZXFjWUIw?=
+ =?utf-8?B?MGtOUGtYNkhEN1JpQXoxQUZ2emM3WmZFamJ0Ry9vTWs5dG9WbmljTjZSUWhQ?=
+ =?utf-8?B?QkZyRk1heUdGYXBQa1pSNkVyRnFtbGxMa25MSjBDVFMrdFE5RDV0ckhIVEdv?=
+ =?utf-8?B?K1hvYTl1QWxlWHBvQldXampEOUZuUEl1MFd2OE9XRFJOeHBhWHJtenJUNWxD?=
+ =?utf-8?B?VFo1amR1eW9mWVlja25RRGZSdU1QMHo1YzlwWW0xKzRMcW5VTlJhaWNZUUVw?=
+ =?utf-8?B?SnM0SmRDUlRWWDZJTVhMZy9Ka1BhWUFrL0dBRS9jekk0SW82SzJRRVQ2Um5F?=
+ =?utf-8?B?a1Y0OWFmWDZQSWtTeWkyYi9tMnVlMHYwUjZaSEtPcWZVYW1rWWpYdWpqVHlK?=
+ =?utf-8?B?YjQwN1hkYUUzQ2RneFE1dzFpTDZ3czA0dlZpWHMwZUFveXE0TmVjbzV3V0Y2?=
+ =?utf-8?B?anlPNmVzQmQ5dlRsR0JEZnIxeTQvd20reENuMEtIUFM2VFVycDVhQjJSVHZo?=
+ =?utf-8?B?RVVKRHM0Mk5LWVRvOHM0SlFsYSszdlkxUUx4OFpENU44cXZWTkZWUk9pODRE?=
+ =?utf-8?B?MEhUampKbGVFU0JOTVU4N3ltVm5Wc04rQzNpL1MwaFJOQkVQTDZicUhtK1pE?=
+ =?utf-8?B?b3lhbGY3R3pqOTUxcUx6eFpTZkY5U2toYjBlN2QvOXVSdkdHQ0tDU3NncUhB?=
+ =?utf-8?B?WGQ1eUxBS0lZUno0K01vRW9zNHpVTXJRbEN2SU93bG90akFZTUZDeVU1OGxz?=
+ =?utf-8?B?MnJvYit1elh4ZkM5Vnc5ZFQ0ZWg1dzRSQmVjY2RsenJrMWtZRVptNkZIOTdx?=
+ =?utf-8?B?Nmx1QitIV1BvMkdKUlIwYmlwb2llY1g1NVBTT040SDRFbXBIbFhkZnR4a01o?=
+ =?utf-8?B?bnlrUWpXMXBoN0pGNUcyMGgvTmtJMWxZdEZMdmVzUXBuclVwUHZ2K0tXR2lG?=
+ =?utf-8?B?d2F2YmhTUG91a0duekVNYWl4OUFuOUMyQzlxeUVzSFRWMVp5RHFqN2RDcmdl?=
+ =?utf-8?B?T0xUWUk5N0MvNHB0ZkRDdUdUekRhdGV1NVF5S1lZcTNKdWRubzZOZGhBdURt?=
+ =?utf-8?B?TWZPZCt6YjRwNUsvVHNYbUNmZXJMT3BvMmNlUzB4eFRoUDlaUVA0YjU0UkMv?=
+ =?utf-8?B?N3ROQlcvSWlac3NRVWRTRmxBYVdkaTNkZnEwNVVqditkRXVLV0pWUDBtL1JI?=
+ =?utf-8?Q?a0ZpR7CJcDM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YStxcXdqbjh3emlZd3F4WGZrMHpKamQ5UU5XRXJKWG9NUEh6VFIvS0FOS1Yr?=
+ =?utf-8?B?OXVUQm9La0RyMEUwN1hQQmh3dGtQRHMyRlJDZE55N3c1Zk51aThxMFlYUHJS?=
+ =?utf-8?B?UGtuV0ROS28rZ1dVaGtkZUVUMGhGcG5iWE5FMXhhNHFjbTgyNjdzc29pcXBr?=
+ =?utf-8?B?a3R1L01CTjFQU3dtU1gvUkk2V09HOTUzRUw2d1EvdzBVQU13dVRiUkZyVzQ4?=
+ =?utf-8?B?aDFsYXNOR21NNE8xWGUwSWJFekVnSTlTZHljb1dpQTZkL3BYK1ZxdkQ5Y2JD?=
+ =?utf-8?B?akI1dCtlUGkxd29Ob0pncGZvYURnSXRVRHVHaStvY0I2MGQxMEVpd3ZsV21G?=
+ =?utf-8?B?M3hva2VsOXZoNHpHY1lrTkJlbk54VlpIN215b1VVbnlFdHVYVHlCU0hwSGZ3?=
+ =?utf-8?B?QmVkcGJvcS9mYmV1eUtPbEI3VzN4NTQ4aVhXeUMxUkdOMjlzQlJ2WThhdWRN?=
+ =?utf-8?B?MmJGTjNPMERkci8wZTRmbDZpeGQvWHN5cWtEWENaeXhTdFM4eEkwUE1Id28r?=
+ =?utf-8?B?OVNqOXpkTGVzVkRmYlN0ZXl1WEtqM0Y5Vy81UWJ1MnUwRjRheHZRYUR0WFMr?=
+ =?utf-8?B?aXc5QThCZU9OcFdFbGErV0FvYmhyQ0RxQXN2SW16L2llb1l4MjIxQlZIY3Az?=
+ =?utf-8?B?WUx3cW5HQlFRczcwbGVLb05obFlCcGlEWXNBK0NBdDdKTGlWclpqQTJtc3lq?=
+ =?utf-8?B?Rnh6N0NHYytQdnVJaHBmUExwT3lWSVlwYzF1OTZjcTAxOWhnUnRyZTVPM0Iz?=
+ =?utf-8?B?OEd3NnY1Z0syQWg5SXRNMWxHdTZyMDRqcjNkdEVSZU1lc1NpV0Vsb3BWU2N0?=
+ =?utf-8?B?UVpjZDJPbmJyTmxxWkFYUUsrZ25mQ1czaUtvc0IzVEdmek5md05iTkRQL2dE?=
+ =?utf-8?B?b3Y0MUlzS3MreE1QK3pibjlPNi9RT2lhemlpMHAydWdoYlhFQVJpK0ZwWEsy?=
+ =?utf-8?B?UmZCQXJkSmFkODJIeXQzWmQzQ3YyU3ZMUjRNUFNYMFlCTnZiSW54UElEeXl3?=
+ =?utf-8?B?QmQ0dExudCs0eVlsd0N3VVRWcmt6aUlxc2ZWYzYyYmtUVEdnMWJIQ0d2eC9L?=
+ =?utf-8?B?NjJBTkdLMXdyNlVLZGdKUllLVVpDMG1qL1FMVXNRTGVmRG01VDN5YTg0OTFV?=
+ =?utf-8?B?KzE1eFJLVFFOM2pRYWU5ZVE0UFZoSEtGK2lQc1lORGpJZmF5UmYycFBGNUVN?=
+ =?utf-8?B?VnBtdklpamR3NVFSOXg1amZCUXFhVThKdE5VK3pUNzcraml2OVRaNmN4WGJK?=
+ =?utf-8?B?T2o0bGFvK0h6QkI3bXJ0ZWtrMzd0ZDNTbjFxd1dhNW1XSnBnVGV4YW1GRGxa?=
+ =?utf-8?B?cXpSUkNrN2krWDJaRzF6eVhvK25lZm5XTVhZRXlsNWFseE1xVVdZekE4dldh?=
+ =?utf-8?B?emJBc3pSNmVBLzJPYnA0MzdVUS8wSTJxdmhBMXZNVS93SmF5dXdDRm1wTW5U?=
+ =?utf-8?B?T2NMd1JuWllHK0Zsek51a2w4dFhla0xpM3RLRmFWeEtsWW1xSlFnZm5VRjFO?=
+ =?utf-8?B?TThqNXFPQkF2eHRYODJ1RUVVaFFwd0JQditoSm5zYTU1d3pFZzRYSVphTmo5?=
+ =?utf-8?B?aEk2RnRLRnZnaVlhRlIzSmpLeSt1Ty83NzlWMmV6UlhKRzRjVUp1UGtaMk5L?=
+ =?utf-8?B?SVl1eUVIc2kwRm5HQzBlQk1kMHhiY0tQazNSYmd1Rzk0bmZkbHpCWENOcVhy?=
+ =?utf-8?B?VUNlNW1qZzVCZ0JqQmMzWU1YWGY3TUcvVjI0ZHVmY0VpUzJseTZmUGRJeXEx?=
+ =?utf-8?B?MzlZMlQ5c0NyVVpIRnJpRnZEQ0lXd1haVHdTVEIwOVN5VGtqSTJOVWJQNnZi?=
+ =?utf-8?B?b2M1U0M0S0o2VC83cHcwWlhHTWRnS2l2d24xSXJaVEZzU2VFWFNrZGFPeTZ0?=
+ =?utf-8?B?b1J6ZGNZU3YweUJwT3lPZG1ZMklIZldNOVhSRDZ2Y1dIYlFrZ3F2UkJJd0dF?=
+ =?utf-8?B?am9KdFZySmhiWG40R2RmL1dCa3c5V01PR1Q5b3N5dEwyRHloOU5RUnNnYTgx?=
+ =?utf-8?B?QzBkbGlXNUhzOUhMalc2TFFqczBTWjVyQnVualp0RFFXQjNiUGxobU5Pa0hO?=
+ =?utf-8?B?Zmg4M1J1S0E5T1VSQThUV2N2YUZJVUZNVUFsdDVCUnUvaStoR1k1NGVkaU1n?=
+ =?utf-8?Q?pHpKl4ea9YiiH2q4uC4N2JQxe?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aea48e41-caf6-43ff-6652-08dd616a9590
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2025 13:34:16.2652
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yWikiLIPCWcCX5XyrgWyDRaLY3FseK29S3sLnwF/1535NpKYXSt0EDPjDMJV85TIhx+6h9hEYWMD4BJ+wdJECw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4395
 
-On Tue, Mar 11, 2025 at 12:07:55PM +0200, Jarkko Sakkinen wrote:
->On Tue, Mar 11, 2025 at 10:42:23AM +0100, Stefano Garzarella wrote:
->> Helpers for the SVSM_VTPM_CMD calls used by the vTPM protocol defined by
->> the AMD SVSM spec [1].
->>
->> The vTPM protocol follows the Official TPM 2.0 Reference Implementation
->> (originally by Microsoft, now part of the TCG) simulator protocol.
->>
->> [1] "Secure VM Service Module for SEV-SNP Guests"
->>     Publication # 58019 Revision: 1.00
->>
->> Co-developed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
->> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
->> Co-developed-by: Claudio Carvalho <cclaudio@linux.ibm.com>
->> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
->> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->> ---
->> v3:
->> - renamed header and prefix to make clear it's related to the SVSM vTPM
->>   protocol
->> - renamed fill/parse functions [Tom]
->> - removed link to the spec because those URLs are unstable [Borislav]
->> ---
->>  include/linux/svsm_vtpm.h | 141 ++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 141 insertions(+)
->>  create mode 100644 include/linux/svsm_vtpm.h
->>
->> diff --git a/include/linux/svsm_vtpm.h b/include/linux/svsm_vtpm.h
->> new file mode 100644
->> index 000000000000..2ce9b1cb827e
->> --- /dev/null
->> +++ b/include/linux/svsm_vtpm.h
->> @@ -0,0 +1,141 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +/*
->> + * Copyright (C) 2023 James.Bottomley@HansenPartnership.com
->> + * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
->> + *
->> + * Helpers for the SVSM_VTPM_CMD calls used by the vTPM protocol defined by the
->> + * AMD SVSM spec [1].
->> + *
->> + * The vTPM protocol follows the Official TPM 2.0 Reference Implementation
->> + * (originally by Microsoft, now part of the TCG) simulator protocol.
->> + *
->> + * [1] "Secure VM Service Module for SEV-SNP Guests"
->> + *     Publication # 58019 Revision: 1.00
->> + */
->> +#ifndef _SVSM_VTPM_H_
->> +#define _SVSM_VTPM_H_
->> +
->> +#include <linux/errno.h>
->> +#include <linux/string.h>
->> +#include <linux/types.h>
->> +
->> +/*
->> + * The current TCG Simulator TPM commands we support.  The complete list is
->> + * in the TcpTpmProtocol header:
->> + *
->> + * https://github.com/TrustedComputingGroup/TPM/blob/main/TPMCmd/Simulator/include/TpmTcpProtocol.h
->> + */
->> +
->> +#define TPM_SEND_COMMAND		8
->> +#define TPM_SIGNAL_CANCEL_ON		9
->> +#define TPM_SIGNAL_CANCEL_OFF		10
->> +/*
->> + * Any platform specific commands should be placed here and should start
->> + * at 0x8000 to avoid clashes with the TCG Simulator protocol.  They should
->> + * follow the same self describing buffer format below.
->> + */
->> +
->> +#define SVSM_VTPM_MAX_BUFFER		4096 /* max req/resp buffer size */
->> +
->
->Across the board below data structures: I'd svsm_vtpm_ prefix them.
->The rational is quite practical: it would easier to grep them later
->on.
+Hello Sean,
 
-I see, I'll fix in v4.
+On 3/6/2025 5:11 PM, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> Move platform initialization of SEV/SNP from CCP driver probe time to
+> KVM module load time so that KVM can do SEV/SNP platform initialization
+> explicitly if it actually wants to use SEV/SNP functionality.
+> 
+> Add support for KVM to explicitly call into the CCP driver at load time
+> to initialize SEV/SNP. If required, this behavior can be altered with KVM
+> module parameters to not do SEV/SNP platform initialization at module load
+> time. Additionally, a corresponding SEV/SNP platform shutdown is invoked
+> during KVM module unload time.
+> 
+> Continue to support SEV deferred initialization as the user may have the
+> file containing SEV persistent data for SEV INIT_EX available only later
+> after module load/init.
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/kvm/svm/sev.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 0bc708ee2788..7be4e1647903 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2933,6 +2933,7 @@ void __init sev_set_cpu_caps(void)
+>  void __init sev_hardware_setup(void)
+>  {
+>  	unsigned int eax, ebx, ecx, edx, sev_asid_count, sev_es_asid_count;
+> +	struct sev_platform_init_args init_args = {0};
+>  	bool sev_snp_supported = false;
+>  	bool sev_es_supported = false;
+>  	bool sev_supported = false;
+> @@ -3059,6 +3060,15 @@ void __init sev_hardware_setup(void)
+>  	sev_supported_vmsa_features = 0;
+>  	if (sev_es_debug_swap_enabled)
+>  		sev_supported_vmsa_features |= SVM_SEV_FEAT_DEBUG_SWAP;
+> +
+> +	if (!sev_enabled)
+> +		return;
+> +
+> +	/*
+> +	 * Do both SNP and SEV initialization at KVM module load.
+> +	 */
+> +	init_args.probe = true;
+> +	sev_platform_init(&init_args);
+>  }
+>  
+>  void sev_hardware_unsetup(void)
+> @@ -3074,6 +3084,8 @@ void sev_hardware_unsetup(void)
+>  
+>  	misc_cg_set_capacity(MISC_CG_RES_SEV, 0);
+>  	misc_cg_set_capacity(MISC_CG_RES_SEV_ES, 0);
+> +
+> +	sev_platform_shutdown();
+>  }
+>  
+>  int sev_cpu_init(struct svm_cpu_data *sd)
 
->
->> +/**
->> + * struct tpm_req - generic request header for single word command
->> + *
->> + * @cmd:	The command to send
->> + */
->> +struct tpm_req {
->> +	u32 cmd;
->> +} __packed;
->
->__packed is useless here.
->
->> +
->> +/**
->> + * struct tpm_resp - generic response header
->> + *
->> + * @size:	The response size (zero if nothing follows)
->> + *
->> + * Note: most TCG Simulator commands simply return zero here with no indication
->> + * of success or failure.
->> + */
->> +struct tpm_resp {
->> +	u32 size;
->> +} __packed;
->
->Ditto.
+I am looking for feedback on this patch.
 
-Ack, for both.
+Can we go ahead and merge this patch or are you looking for anything
+to be changed specifically for this patch ?
 
->
->> +
->> +/**
->> + * struct tpm_send_cmd_req - Structure for a TPM_SEND_COMMAND request
->> + *
->> + * @hdr:	The request header whit the command (must be TPM_SEND_COMMAND)
->> + * @locality:	The locality
->> + * @inbuf_size:	The size of the input buffer following
->> + * @inbuf:	A buffer of size inbuf_size
->> + *
->> + * Note that TCG Simulator expects @inbuf_size to be equal to the size of the
->> + * specific TPM command, otherwise an TPM_RC_COMMAND_SIZE error is
->> + * returned.
->> + */
->> +struct tpm_send_cmd_req {
->> +	struct tpm_req hdr;
->
->Useless nesting that makes this obfuscated: you can just as well put
->that single field here, i.e.
->
->	u32 cmd;
-
-Yep, I see. I'll remove tpm_req and tpm_resp since for now we support
-only TPM_SEND_COMMAND, if in the future we will support other requests
-we can think of re-introduce them if needed.
-
->
->> +	u8 locality;
->> +	u32 inbuf_size;
->> +	u8 inbuf[];
->
->Why not just buf?
-
-I can change in `buf` and `size`.
-
->
->> +} __packed;
->
->Since we don't care about TCG Simulator compatibility I'd expect that
->these are ordered in a way that they align nicely. E.g.
-
-Maybe I should add in the documentation that this structure is defined
-by the AMD SVSM spec.
-
-This is where request and response for TPM_SEND_COMMAND are defined:
-
-   8.2.1 TPM_SEND_COMMAND
-     Execute a TPM command and return the results.
-
-     For TPM_SEND_COMMAND, platform command 8, the request buffer is
-     specified according to the format of the following table.
-
-     Table 16: TPM_SEND_COMMAND Request Structure
-
-     Byte      Size         Meaning
-     Offset    (Bytes)
-     0x000     4            Platform command (8)
-     0x004     1            Locality (must-be-0)
-     0x005     4            TPM Command size (in bytes)
-     0x009     Variable     TPM Command
-
-     The response buffer is specified according to the format of the
-     following table.
-
-     Table 17: TPM_SEND_COMMAND Response Structure
-
-     Byte      Size         Meaning
-     Offset    (Bytes)
-     0x000     4            Response size (in bytes)
-     0x004     Variable     Response
-
->
->struct svsm_vtpm_request {
->	u32 command;
->	u16 locality;
->	u16 buffer_size;
->	u8 buffer[];
->};
->
->64k should enough for any possible TPM command.
->
->> +
->> +/**
->> + * struct tpm_send_cmd_req - Structure for a TPM_SEND_COMMAND response
->> + *
->> + * @hdr:	The response header whit the following size
->> + * @outbuf:	A buffer of size hdr.size
->> + */
->> +struct tpm_send_cmd_resp {
->> +	struct tpm_resp hdr;
->> +	u8 outbuf[];
->> +} __packed;
->
->Why this does not have size? Here also __packed is useless even with the
->pre-existing layout, and something like svsm_tpm_response would be a
->factor more reasonable name.
-
-Because it's "obfuscated" as you pointed out in the request :-)
-The size is in the header, but I'll fix with something like this:
-
-struct svsm_tpm_response {
-     u32 size;
-     u8 outbuf[];
-} __packed;
-
->
->> +
->> +/**
->> + * svsm_vtpm_fill_cmd_req() - fill a struct tpm_send_cmd_req to be sent to SVSM
->
->> + * @req: The struct tpm_send_cmd_req to fill
->> + * @locality: The locality
->> + * @buf: The buffer from where to copy the payload of the command
->> + * @len: The size of the buffer
->> + *
->> + * Return: 0 on success, negative error code on failure.
->> + */
->> +static inline int
->> +svsm_vtpm_fill_cmd_req(struct tpm_send_cmd_req *req, u8 locality,
->> +		       const u8 *buf, size_t len)
->
->svsm_vtpm_fill_request()
->
->> +{
->> +	if (len > SVSM_VTPM_MAX_BUFFER - sizeof(*req))
->> +		return -EINVAL;
->> +
->> +	req->hdr.cmd = TPM_SEND_COMMAND;
->> +	req->locality = locality;
->> +	req->inbuf_size = len;
->> +
->> +	memcpy(req->inbuf, buf, len);
->> +
->> +	return 0;
->> +}
->> +
->> +/**
->> + * svsm_vtpm_parse_cmd_resp() - Parse a struct tpm_send_cmd_resp received from
->> + * SVSM
->> + * @resp: The struct tpm_send_cmd_resp to parse
->> + * @buf: The buffer where to copy the response
->> + * @len: The size of the buffer
->> + *
->> + * Return: buffer size filled with the response on success, negative error
->> + * code on failure.
->> + */
->> +static inline int
->> +svsm_vtpm_parse_cmd_resp(const struct tpm_send_cmd_resp *resp, u8 *buf,
->> +			 size_t len)
->
->svsm_vtpm_parse_response()
-
-About the naming, I added "cmd" because in the future we can support
-also other requests/responses different from TPM_SEND_COMMAND, like
-TPM_SIGNAL_HASH_DATA, TPM_REMOTE_HANDSHAKE, TPM_SET_ALTERNATIVE_RESULT
-as specified in the AMD SVSM spec.
-
-For now it's true that we support only TPM_SEND_COMMAND, so I can avoid
-`cmd`, but if we will need to support the other requests in the future,
-we may need to differentiate them.
-
-Would be okay to have svsm_vtpm_cmd_[request|response], 
-svsm_vtpm_fill_cmd_request(), svsm_vtpm_parse_cmd_response() ?
-Or do you prefer to avoid "_cmd_"?
-Not a strong opinion on my side.
+The SNP CipherTextHiding support and SEV firmware hotloading patch-sets
+are gated on this patch series, so it will be nice to have some feedback
+on moving this patch-set forward.
 
 Thanks,
-Stefano
-
->
->> +{
->> +	if (len < resp->hdr.size)
->> +		return -E2BIG;
->> +
->> +	if (resp->hdr.size > SVSM_VTPM_MAX_BUFFER - sizeof(*resp))
->> +		return -EINVAL;  // Invalid response from the platform TPM
->> +
->> +	memcpy(buf, resp->outbuf, resp->hdr.size);
->> +
->> +	return resp->hdr.size;
->> +}
->> +
->> +#endif /* _SVSM_VTPM_H_ */
->> --
->> 2.48.1
->>
->
->BR, Jarkko
->
-
+Ashish
