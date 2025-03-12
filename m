@@ -1,156 +1,85 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF7F3D76
-	for <linux-coco@lists.linux.dev>; Wed, 12 Mar 2025 16:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF0C1D514E
+	for <linux-coco@lists.linux.dev>; Wed, 12 Mar 2025 16:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741795466; cv=none; b=H7+rdWsgi76R6KzAk1wZ2g2DJDXXLJmD0daVpSrWqV3iIcJOe8jzuEWSIyIBEOnxW8l2+04fovvYk83+YnmaLEWwCjQB9nd02db2aSSY6ObemdWN/tWXPjXIXmyM8hnLhjZZ4mJqpbCUAkQ2/ieb8uE7DDBmFUA/OhTCbX44wvc=
+	t=1741796345; cv=none; b=elluxTAmpKwF5aXWE3NNBRTVK9TfnjQ0bQGTcjkJO5iKsukjIBCyrxMs8jCG+thyPpesrXMIuJitnLeDoJas5ATQ2lLkFBcaNPPmKYfICEIj9Od3foYq79BLutiYcANh1iWIXajdsPcCem83whtwoVLyw1CHXZ6gEdekOKuDZqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741795466; c=relaxed/simple;
-	bh=26j2v2DQ3GUOw0AF/uXCCC3eGKkDd0WjfkZJu/OaKeU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pWvy5VBxmYQOG5geltYRPBtNrFVMrl1f9iCS62IHOM/SaQF2rTtQfgilGq4bm9bD96RUtsjJLR0FN1IYFJTyPmCQDohMafGnBBKG812ny4Ezl9VAk8BcvQRUxStwN/oRrN4EcY7wt9HVzOoXU56EAoVKgvJtlDcoYAiw01V/0+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hnTcTtTZ; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1741796345; c=relaxed/simple;
+	bh=r5wW3O7Nnkvs71M/SLdq386LsVv5kb/pJTQyMSmxX7c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VblLtmvc6OIcBqikTc/mxynoWECzDYqEKhSJaQ6gSuqLkojW1Y1FdbuNfwNB9e+Mk4o7QKhxEMCHFJlo+Mkoab8gjM+5dYpa3+6uTauKEzE20R7YE1c3ZQqVql+xYcQCLGKt5GUAwNv8uHPE/QYOLXQmpSj4C/Rq3JIsqn5p3pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=pV3kuEbb; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hnTcTtTZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741795464; x=1773331464;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=26j2v2DQ3GUOw0AF/uXCCC3eGKkDd0WjfkZJu/OaKeU=;
-  b=hnTcTtTZ5q/qLTwCpx/g8vOsKx8BZSEHH77kIRULjDvjFEU7b7avK3ed
-   cbEB+SefWDYVPvvzFE2/Qu/IMckzPpxYOBPjmtMrF+CD29ETgmzC6L9tM
-   0+228nP1DAW0CgAQdjjxvGE5Lduu2b+hjzirXHgSDZSQwDpGqH12vpo4v
-   dcD0wlYlk1omd57Avcvo6McBB1kQmBHAAKRpnFfTcRtLHVFMzi02G+0Sn
-   UB9E1qx+HnVehp1RryWskQPxn6pIQqX7W7yfKLRPYI7pgAgkAHG/64Qbh
-   oVjWk6WoU6Xe1RrbsAStYMMdxco01KOXGNTiFEkXCJEoY8sIYcCfI3Efm
-   Q==;
-X-CSE-ConnectionGUID: DfPYLpYtSWGbu3xUaWBJNg==
-X-CSE-MsgGUID: eWdeZIFeSDOTm7hBtEEF/g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="42741908"
-X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="42741908"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 09:04:24 -0700
-X-CSE-ConnectionGUID: Sd/nwZmtQjGCvGi4SH4L8A==
-X-CSE-MsgGUID: /4TOiqpLQ+qYetFEnI7wLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="121383959"
-Received: from ldmartin-desk2.corp.intel.com (HELO [10.125.108.3]) ([10.125.108.3])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 09:04:15 -0700
-Message-ID: <862e626a-3d4b-40c0-b1b1-6a51b30dcd22@intel.com>
-Date: Wed, 12 Mar 2025 09:04:14 -0700
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="pV3kuEbb"
+Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id BC68345742;
+	Wed, 12 Mar 2025 17:19:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1741796342;
+	bh=r5wW3O7Nnkvs71M/SLdq386LsVv5kb/pJTQyMSmxX7c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pV3kuEbbx74gmsu4xnQaEbkMf6NVwuMeR0+cqxHb8z16w9rNqF2rPdjGeT75ll+qK
+	 Kx6VrHkBCBJJqz++GyYBhhiyJGKdggkAbG3QgjXu/JwYcqMxCLvB22R/uZOUuO/QUb
+	 cHzko8fC0Iva21PpnhKhjGRhiC906h/f0MmwaZMXvaqloTxRDBdOFSEsVE9oTVod6c
+	 xFNkZNb/DLuUxIP/isWmOuPt+s8Aiu2TTET2zvSKZy6Oto1CYNO/o83UQZRq25UPOr
+	 nfWnQWDbaz+J+fPZcXiPLlGTLVOAI4iP443X8JFJkHoln+jBExxJkuHm70yrI4vksq
+	 EitZqTSOX0uYg==
+Date: Wed, 12 Mar 2025 17:19:01 +0100
+From: Joerg Roedel <joro@8bytes.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Joerg Roedel <jroedel@suse.de>, x86@kernel.org, hpa@zytor.com,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>, Larry.Dewey@amd.com,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Juergen Gross <jgross@suse.com>, kirill.shutemov@linux.intel.com,
+	alexey.gladkov@intel.com
+Subject: Re: [PATCH 2/2] x86/sev: Make SEV_STATUS available via SYSFS
+Message-ID: <Z9Gz9WnQRmLUR73I@8bytes.org>
+References: <20250312144107.108451-1-joro@8bytes.org>
+ <20250312144107.108451-3-joro@8bytes.org>
+ <ef3f3117-6cd5-4b94-8ddb-e6d224efac60@intel.com>
+ <Z9GjTBHBqXenCWYx@suse.de>
+ <862e626a-3d4b-40c0-b1b1-6a51b30dcd22@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/sev: Make SEV_STATUS available via SYSFS
-To: Joerg Roedel <jroedel@suse.de>
-Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org, hpa@zytor.com,
- Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
- Larry.Dewey@amd.com, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, Juergen Gross <jgross@suse.com>,
- kirill.shutemov@linux.intel.com, alexey.gladkov@intel.com
-References: <20250312144107.108451-1-joro@8bytes.org>
- <20250312144107.108451-3-joro@8bytes.org>
- <ef3f3117-6cd5-4b94-8ddb-e6d224efac60@intel.com> <Z9GjTBHBqXenCWYx@suse.de>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <Z9GjTBHBqXenCWYx@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <862e626a-3d4b-40c0-b1b1-6a51b30dcd22@intel.com>
 
-On 3/12/25 08:07, Joerg Roedel wrote:
-> Hi Dave,
+On Wed, Mar 12, 2025 at 09:04:14AM -0700, Dave Hansen wrote:
+> Let's draw this out to its natural conclusion. There are also a bunch of
+> TDX attributes that tell you about the capabilities of the VM and the
+> TDX module.
 > 
-> On Wed, Mar 12, 2025 at 07:57:31AM -0700, Dave Hansen wrote:
->> Do we really want to just plumb the raw MSR out to userspace? Users
->> would still need to parse the thing, so it's not _really_ human readable.
+> Should we have:
 > 
-> I agree that this is not really human readable. On the other side SYSFS
-> is more an interface targeted for tools than optimized for human
-> readability (see the one-datum-per-file rule).
+> 	/sys/devices/system/cpu/tdx/tdx_attributes
+> 
+> which just dumps out the raw register values that come back from the
+> TDCALL? Then we'll go write a tdxguest tool to parse those values.
 
-Right, but I think it's also intended to be independent and not
-*require* tools to make sense of the output. A raw MSR requires tooling
-or someone sitting there with the hardware docs to make sense of it.
+If I remember correctly the goal of the VirTEE project (where the
+snpguest tool lives) is to come up with a combined teeguest tool. This
+will serve as a vendor- and architecture-independent frontend for the
+various kernel interfaces for confidential computing (configfs-tsm,
+sysfs-attributes, ...).
 
-That's why we have things like:
+So yes, my expectation is that this tool will understand the raw values
+returned from the TDCALL, as long as they are architectural.
 
-	/sys/kernel/mm/transparent_hugepage/enabled
+But let me think a bit more about a solution that takes care of the
+tooling and the human requirements.
 
-that tell you:
+Regards,
 
-	[always] madvise never
-
-as opposed to the old style in:
-
-	/proc/sys/vm/zone_reclaim_mode
-
-which require you to go read the docs and figure out what 0/1/2 mean.
-
-> The actual use-case (and the reason for these patches) of the sev_status
-> file is to provide a better and more secure interface than /dev/msr to a
-> tool named snpguest.
-
-Let's draw this out to its natural conclusion. There are also a bunch of
-TDX attributes that tell you about the capabilities of the VM and the
-TDX module.
-
-Should we have:
-
-	/sys/devices/system/cpu/tdx/tdx_attributes
-
-which just dumps out the raw register values that come back from the
-TDCALL? Then we'll go write a tdxguest tool to parse those values.
+	Joerg
